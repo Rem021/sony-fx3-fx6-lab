@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/audit_exit_interfaces.py", line 107, in <module>
+    ck('source range '+name+':'+str(a),all(t in piece for t in tokens))
+    ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/audit_exit_interfaces.py", line 18, in ck
+    assert ok,name
+           ^^
+AssertionError: source range pid.c:250

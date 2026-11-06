@@ -1,0 +1,39 @@
+--- run_trial_v14_mss_all.py	2026-11-03 08:06:47
++++ run_trial_v15_mss_all.py	2026-11-03 08:18:20
+@@ -93,12 +93,14 @@
+     ap = argparse.ArgumentParser(description='FX3 固件菜单本机试用')
+     ap.add_argument('--port', type=int, default=8765, help='127.0.0.1 本地端口，默认8765')
+     ap.add_argument('--max-minutes', type=int, default=15, help='本轮诊断上限，1..15分钟；默认15分钟')
+-    ap.add_argument('--max-steps', type=int, default=12, help='本轮诊断按键上限，1..12；默认12')
++    ap.add_argument('--max-steps', type=int, default=32, help='底层协议容量固定32；诊断实际最多12键')
+     ap.add_argument('--internal-hoststep', action='store_true', help='内部逐键文件门；不启动网页服务，不构成浏览器验收')
+     ap.add_argument('--exit-at-phase', choices=['pre-bind', 'bound-before-first-frame'], help='有界退出边界验证')
+     ns = ap.parse_args()
+-    if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 15 or not 1 <= ns.max_steps <= 12 or not ns.internal_hoststep:
+-        ap.error('本版只允许内部逐键诊断：端口0..65535，会话1..15分钟，按键1..12次')
++    if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 15 or ns.max_steps != 32 or not ns.internal_hoststep:
++        ap.error('本版只允许内部逐键诊断：端口0..65535，会话1..15分钟，底层协议容量32，实际最多12键')
++    if not valid_command(1, 0x1ab, 100, 0, 0, ns.max_steps) or not valid_command(12, 0x30, 100, 11, 0, ns.max_steps):
++        raise RuntimeError('InputGate capacity contract rejected before QEMU startup')
+     ns.candidate = OUT/'vmopt-20261103-try2-mss-all-v3/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+@@ -363,6 +365,9 @@
+ 
+             phase_exit_hit = False
+             while time.monotonic() < deadline and p.poll() is None and not trial.stop.is_set():
++                if ns.internal_hoststep and current_command is None and host_step >= 12:
++                    stop_cause = 'diagnostic_actual_step_limit_12'
++                    break
+                 if ns.internal_hoststep and time.monotonic() >= deadline-240:
+                     stop_cause = 'internal_input_window_end_with_240s_cleanup_reserve'
+                     break
+@@ -653,7 +658,7 @@
+                'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+                'models_identical_to_frozen_AP101_r4': False, 'authority': 'msg_3a52a0ab7e46',
+                'observer_source_snapshot': observer_sources, 'run': str(run),
+-               'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps, 'stop_cause': stop_cause,
++               'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps, 'diagnostic_actual_step_limit': 12, 'stop_cause': stop_cause,
+                'internal_hoststep_mode': ns.internal_hoststep, 'HTTP_key_source_used': not ns.internal_hoststep,
+                'qemu_pid': None if p is None else p.pid, 'qemu_exit': None if p is None else p.returncode,
+                'process_reaped': p is not None and p.poll() is not None, 'PID_absent': pid_absent,

@@ -1,0 +1,34 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 16f1118: b4000340     	cbz	x0, 0x16f1180 <Application_System_Init+0x15f0>
+ 16f111c: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+ 16f1120: 910003fd     	mov	x29, sp
+ 16f1124: 910063a3     	add	x3, x29, #0x18
+ 16f1128: f9400000     	ldr	x0, [x0]
+ 16f112c: f90027bf     	str	xzr, [x29, #0x48]
+ 16f1130: a9007c7f     	stp	xzr, xzr, [x3]
+ 16f1134: 9100a3a3     	add	x3, x29, #0x28
+ 16f1138: a9007c7f     	stp	xzr, xzr, [x3]
+ 16f113c: 9100e3a3     	add	x3, x29, #0x38
+ 16f1140: a9007c7f     	stp	xzr, xzr, [x3]
+ 16f1144: 52800703     	mov	w3, #0x38               // =56
+ 16f1148: a90307a0     	stp	x0, x1, [x29, #0x30]
+ 16f114c: 910063a1     	add	x1, x29, #0x18
+ 16f1150: 52800800     	mov	w0, #0x40               // =64
+ 16f1154: b9001ba3     	str	w3, [x29, #0x18]
+ 16f1158: 72a01220     	movk	w0, #0x91, lsl #16
+ 16f115c: 52800043     	mov	w3, #0x2                // =2
+ 16f1160: b90043a2     	str	w2, [x29, #0x40]
+ 16f1164: b9002ba3     	str	w3, [x29, #0x28]
+ 16f1168: 97fa84e6     	bl	0x1592500 <osal_snd_sync_direct@plt>
+ 16f116c: b9402fa1     	ldr	w1, [x29, #0x2c]
+ 16f1170: 7100001f     	cmp	w0, #0x0
+ 16f1174: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+ 16f1178: 1a800020     	csel	w0, w1, w0, eq
+ 16f117c: d65f03c0     	ret
+ 16f1180: 12807fe0     	mov	w0, #-0x400             // =-1024
+ 16f1184: d65f03c0     	ret

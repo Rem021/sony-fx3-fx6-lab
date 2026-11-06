@@ -1,0 +1,201 @@
+{
+  "created_utc": "2026-10-30T12:09:41.995896+00:00",
+  "full_objective_preserved": true,
+  "requirements": [
+    {
+      "id": "FX5_full_private_donor",
+      "status": "missing",
+      "proof_required": "Complete readable private system/menu payload and dependencies",
+      "completion_proved": false,
+      "refreshed_status_note": "No new completing evidence in this refreshed source scope. Prior partial results retained."
+    },
+    {
+      "id": "VENICE_complete_ISP_color_chain",
+      "status": "incomplete",
+      "proof_required": "Readable private inner plus full realtime ISP/sensor calibration/data-domain mapping",
+      "completion_proved": false,
+      "refreshed_status_note": "No new completing evidence in this refreshed source scope. Prior partial results retained."
+    },
+    {
+      "id": "RAM_chip_and_DMM_runtime",
+      "status": "incomplete",
+      "proof_required": "Normal hardware initialization and actual buffers/capacity/payload linked to allocation",
+      "completion_proved": false,
+      "refreshed_status_note": "No new completing evidence in this refreshed source scope. Prior partial results retained."
+    },
+    {
+      "id": "CMOS_RAW_and_calibration",
+      "status": "unproven",
+      "proof_required": "Reachable original acquisition and actual RAW samples/domain validation",
+      "completion_proved": false,
+      "refreshed_status_note": "No new completing evidence in this refreshed source scope. Prior partial results retained."
+    },
+    {
+      "id": "professional_menu_and_MAIN_recording",
+      "status": "incomplete",
+      "proof_required": "Whole professional UI/control route and target recording output",
+      "completion_proved": false,
+      "refreshed_status_note": "No new completing evidence in this refreshed source scope. Prior partial results retained."
+    },
+    {
+      "id": "exact_modified_target_firmware",
+      "status": "missing",
+      "proof_required": "Concrete classic FX3 target package carrying the requested full change",
+      "completion_proved": false,
+      "refreshed_status_note": "No new completing evidence in this refreshed source scope. Prior partial results retained."
+    },
+    {
+      "id": "classic_FX3_7_02_modified_package_admission",
+      "status": "unproven",
+      "proof_required": "Reproducible acceptance evidence for modified whole package, not original signature/repacking",
+      "completion_proved": false,
+      "refreshed_status_note": "No new completing evidence in this refreshed source scope. Prior partial results retained."
+    },
+    {
+      "id": "normal_boot_support_and_independent_recovery",
+      "status": "unproven",
+      "proof_required": "Target compatibility and independent recovery evidence sufficient for readiness",
+      "completion_proved": false,
+      "refreshed_status_note": "No new completing evidence in this refreshed source scope. Prior partial results retained."
+    },
+    {
+      "id": "stop_before_actual_flash",
+      "status": "preserved",
+      "proof_required": "No target flashing; not a substitute for earlier requirements",
+      "completion_proved": true,
+      "refreshed_status_note": "Constraint preserved only; not evidence for the functional requirements."
+    }
+  ],
+  "public_repositories": [
+    {
+      "repository": "leogenot/sony-a7iv-feature-research",
+      "prior_commit": "12582457829e34eae7211df5b0c599fa46b7e5e1",
+      "current_commit": "12582457829e34eae7211df5b0c599fa46b7e5e1",
+      "changed": false,
+      "transport": "git ls-remote HEAD only"
+    },
+    {
+      "repository": "nicolvus/a6000-fw-decomp",
+      "prior_commit": "8a28f96bde389f1d4c24a2be3503a120eebbc927",
+      "current_commit": "8a28f96bde389f1d4c24a2be3503a120eebbc927",
+      "changed": false,
+      "transport": "git ls-remote HEAD only"
+    },
+    {
+      "repository": "ma1co/fwtool.py",
+      "prior_commit": "cdba742b73eed5981480c326aeb30033aabf0223",
+      "current_commit": "cdba742b73eed5981480c326aeb30033aabf0223",
+      "changed": false,
+      "transport": "git ls-remote HEAD only"
+    },
+    {
+      "repository": "masterflai/pmca-re-reloaded",
+      "prior_commit": "d4bcaef29191a44b290ff23c3290f8551c8303fa",
+      "current_commit": "0f03359e72cdf9d75330219c7ae15bf97180486a",
+      "changed": true,
+      "transport": "git ls-remote HEAD only"
+    }
+  ],
+  "changed_repository_review": "reloaded-applicability-review.json",
+  "selected_history_reverified": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/native-openssl-verification-results.json",
+      "bytes": 862,
+      "sha256": "896f3344b01324b5d4603d117e1cba6068bfd98cdf85eea43a3bf2892316c519",
+      "scope": "Selected member and historical seal digest only, not all old stage files."
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/official-key-rsa-verification-results.json",
+      "bytes": 7402,
+      "sha256": "323965d979d40bf71497fb4311cffe55e924fde6c431ded07662c304d10d503b",
+      "scope": "Selected member and historical seal digest only, not all old stage files."
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/validation-results.json",
+      "bytes": 902,
+      "sha256": "98d17c3afbf23cefe7577acd90c7f346214ca9ca2f17d92149181317b88c7a7b",
+      "scope": "Selected member and historical seal digest only, not all old stage files."
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/donor-venice1-20261029/validation-results.json",
+      "bytes": 771,
+      "sha256": "09f8a103eec9b588d3cb654e2f6d92ee2ec25c4537f42b7c11b7b6ea970b9e03",
+      "scope": "Selected member and historical seal digest only, not all old stage files."
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/donor-loader-20261029/validation-results.json",
+      "bytes": 832,
+      "sha256": "b36e761e10cb27f0c45dc243a80d8b2b9193b56b2198fec3f1a5c9feaf20c228",
+      "scope": "Selected member and historical seal digest only, not all old stage files."
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/loader-host-20261029/validation-results.json",
+      "bytes": 859,
+      "sha256": "1a61cb386135ddd728081ab72889cb6196a1b4970502e3955eef775ee9e43143",
+      "scope": "Selected member and historical seal digest only, not all old stage files."
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/body-state-20261029/README.md",
+      "bytes": 6105,
+      "sha256": "606aa6c9fa49f2c131c0edde760b7102eae150d80faa61b67288d04caeede85f",
+      "scope": "Selected member and historical seal digest only, not all old stage files."
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/frame-route-20261029/README.md",
+      "bytes": 5266,
+      "sha256": "94bb0c4df39a7acca002373e17c1418b992705a3fde821f593d0998319ee42f0",
+      "scope": "Selected member and historical seal digest only, not all old stage files."
+    }
+  ],
+  "three_original_packages_rehashed": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+      "bytes": 811876768,
+      "sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+      "preserved_prior_original_signature_result": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA1Data_ILMEFX3V204.dat",
+      "bytes": 779108760,
+      "sha256": "774982ecfbeae1cd9d822a2da6599cc390438ae4012b3f9ba8c43e75ec4e9068",
+      "preserved_prior_original_signature_result": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA2Data_ILMEFX3V205.dat",
+      "bytes": 756424088,
+      "sha256": "dc411c1e1ea77e1c8614d6045a345d85553e46f60ec9105e6236299a3620740a",
+      "preserved_prior_original_signature_result": true
+    }
+  ],
+  "official_public_key": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/etc/VerificationKey.pem",
+    "bytes": 451,
+    "sha256": "8281413b5607446939613e07d020b2c7d8ee2371349099de56bc8288f7be0a43"
+  },
+  "native_RSA_tests_rerun": false,
+  "prior_signature_results_preserved": "Original3 valid; retained-signature12 byte mutations rejected; original7.02 body+IV native verification previously passes. Unchanged input SHA rechecked here.",
+  "latest_other_owner_report": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/README.md",
+    "bytes": 6991,
+    "sha256": "465de8a949857f623a21d6511dad5f0a3df422524f0974c1381b6f65618959bc",
+    "scope": "Static im child-reaper/loader ABI plus own ARM64 models; no actual target AP/capture/recovery supplied."
+  },
+  "previous_goal_turn_classification": "progress: WBI zero-fill dispatch and current default staging exclusion",
+  "current_goal_turn_classification": "no_progress_toward_full_requested_goal",
+  "same_impasse_consecutive_goal_turns": 1,
+  "earlier_Oct29_blocked_counter_not_reused": true,
+  "shared_blocker": [
+    "No accessible readable complete private FX5/VENICE donor or verified inner decoder in reviewed inputs",
+    "No validated classic FX3 7.02 modified-package admission path or concrete requested modified package",
+    "Current same-model AP/Backup, full hardware buffers/RAW delivery and independent recovery not supplied by scoped reference/model results"
+  ],
+  "verified_wait": false,
+  "all_current_fetch_sessions_confirmed_terminal": true,
+  "persistent_goal_status": "active",
+  "goal_complete": false,
+  "other_owner_files_written": false,
+  "device_actions": 0,
+  "downloaded_source_built_or_executed": false,
+  "modified_firmware_produced": false,
+  "flashable_package_produced": false
+}

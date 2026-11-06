@@ -1,0 +1,60 @@
+{
+  "UTC": "2026-11-04T21:34:30.507735+00:00",
+  "scope": "five local fake subprocess output checks; zero browser/arm/key",
+  "passed": true,
+  "cases": [
+    {
+      "case": "nonzero_despite_qualified",
+      "fake_CLI_exit": 2,
+      "wrapper_exit": 2,
+      "result": {
+        "status": "capture_failed",
+        "reason": "bounded_CLI_nonzero_exit:2"
+      },
+      "passed": true
+    },
+    {
+      "case": "status_failure",
+      "fake_CLI_exit": 0,
+      "wrapper_exit": 2,
+      "result": {
+        "status": "capture_failed",
+        "reason": "bounded_CLI_not_qualified:fake_cli_error_for_local_validation"
+      },
+      "passed": true
+    },
+    {
+      "case": "missing_file",
+      "fake_CLI_exit": 0,
+      "wrapper_exit": 2,
+      "result": {
+        "status": "capture_failed",
+        "reason": "screenshot_missing_nonregular_or_symlink"
+      },
+      "passed": true
+    },
+    {
+      "case": "outside_directory",
+      "fake_CLI_exit": 0,
+      "wrapper_exit": 2,
+      "result": {
+        "status": "capture_failed",
+        "reason": "screenshot_not_in_this_new_exclusive_evidence_directory"
+      },
+      "passed": true
+    },
+    {
+      "case": "valid_current_file",
+      "fake_CLI_exit": 0,
+      "wrapper_exit": 0,
+      "result": {
+        "status": "qualified_screenshot_for_operator_review",
+        "validated_new_screenshot": true,
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r2/wrapper-local-checks/valid_current_file/new-capture/menu-reference-page.png",
+        "screenshot_file_sha256": "2640059609118b695c139804676372eca75c30d30e5906775902d13e44f5356c",
+        "firmware_png_sha256": null
+      },
+      "passed": true
+    }
+  ]
+}

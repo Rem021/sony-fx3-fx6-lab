@@ -1,0 +1,1567 @@
+{
+  "status": "FAIL",
+  "cases": [
+    {
+      "name": "control-0",
+      "result": {
+        "token": "5efe5f509e1980add9656fd27576ecf8-3",
+        "status": "CONTROL_OK",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 0,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-1",
+      "result": {
+        "token": "440aa1ea00f1a9403f8877b03d78a1fa-3",
+        "status": "CONTROL_STALL",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 3,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854449,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "STALL",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-2",
+      "result": {
+        "token": "cddafc210bd4f1456cb8e9ae38b4d245-3",
+        "status": "CONTROL_TIMEOUT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 4,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854447,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "TIMEOUT",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-3",
+      "result": {
+        "token": "6679d21dff56779ee431e9ed1c8f87b9-3",
+        "status": "DISCONNECTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 5,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870208,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "GONE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-13",
+      "result": {
+        "token": "bc0bf186b715ec33035c66cb7602b95c-3",
+        "status": "INVALID_NATIVE_COUNT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 8,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 1,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BAD_COUNT",
+            "actual_count_known": true,
+            "transferred": 1
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-15",
+      "result": {
+        "token": "45f1761f2cff4cd2ae13de378192dfd2-3",
+        "status": "CONTROL_ERROR",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 6,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870212,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "ERROR",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-8",
+      "result": {
+        "token": "22a08008b0cc7214dbaeae05bf5f2510-3",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 10,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-9",
+      "result": {
+        "token": "9a23cd1bc1fce8210187fe067a014455-3",
+        "status": "CLOCK_INVALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 11,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CLOCK",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-10",
+      "result": {
+        "token": "144bc4db0cf48c6d2ac9f781ce8d3cab-3",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 12,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-11",
+      "result": {
+        "token": "77d8257b6f6c9034ea1fc0de2b0b7469-3",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 12,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-16",
+      "result": {
+        "token": "de8a2bd5f8f5e1d79b3b9b1443388732-3",
+        "status": "CANCEL_REQUESTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 17,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CANCEL",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-17",
+      "result": {
+        "token": "2a8dd5f053ae7cd4bbadf9f2d47c1a3d-3",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 10,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-1",
+      "result": {
+        "token": "b4fce72482dc995c6eb751ea34ae625e-4",
+        "status": "BULK_STALL",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 3,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854449,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "STALL",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-2",
+      "result": {
+        "token": "44dda5323128c5c207bcf96bcb5e0f15-4",
+        "status": "BULK_TIMEOUT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 4,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854447,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "TIMEOUT",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-3",
+      "result": {
+        "token": "3b9e91c0d2fc2826948f1fd6d4e70cbf-4",
+        "status": "DISCONNECTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 5,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870208,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "GONE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-7",
+      "result": {
+        "token": "66746781904106e634b7e1181fdbf758-4",
+        "status": "BUFFER_OR_OUTBOUND_MUTATION",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 9,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 0,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BUFFER",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-8",
+      "result": {
+        "token": "fd5757cdf39352786ca54e8b34ed1bcd-4",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 10,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-9",
+      "result": {
+        "token": "45133e82d8b34d12cef7d9d97e00898e-4",
+        "status": "CLOCK_INVALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 11,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CLOCK",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-10",
+      "result": {
+        "token": "deeb390c01613e19c7e3bf9e6ffb5d00-4",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 12,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-11",
+      "result": {
+        "token": "9679942b1d5f9b10fe400ff07bcb6653-4",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 12,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-15",
+      "result": {
+        "token": "79b78250cc0c676f283cab917cded2bc-4",
+        "status": "BULK_ERROR",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 6,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870212,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "ERROR",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-16",
+      "result": {
+        "token": "320c5296ed0e4e858a94915fef4bc40e-4",
+        "status": "CANCEL_REQUESTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 17,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CANCEL",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-17",
+      "result": {
+        "token": "d92c8b34136e4e8c4b8e9232a43c9354-4",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 10,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-4",
+      "result": {
+        "token": "518d87c6e9ff608c596a0c700da3fd17-4",
+        "status": "BUFFER_OR_OUTBOUND_MUTATION",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 9,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 0,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BUFFER",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-1",
+      "result": {
+        "token": "9087d055a7494a5f02113b604d23261d-4",
+        "status": "BULK_STALL",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 3,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854449,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "STALL",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-2",
+      "result": {
+        "token": "a1b4722df8ea6e30433456b318bb76a5-4",
+        "status": "BULK_TIMEOUT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 4,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854447,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "TIMEOUT",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-3",
+      "result": {
+        "token": "8315e6bd55e7188ba7be3dd1555b75a5-4",
+        "status": "DISCONNECTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 5,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870208,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "GONE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-7",
+      "result": {
+        "token": "0ba44e14e0fc90b20d3a4d552cf40715-4",
+        "status": "BUFFER_OR_OUTBOUND_MUTATION",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 9,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 0,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BUFFER",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-8",
+      "result": {
+        "token": "331dd3e591f0df54905d9fd5102cab21-4",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 10,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-9",
+      "result": {
+        "token": "5e713267a1fc7f76e64acd2fff37131f-4",
+        "status": "CLOCK_INVALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 11,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CLOCK",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-10",
+      "result": {
+        "token": "f5bdb13163729c156c2a69d238c73264-4",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 12,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-11",
+      "result": {
+        "token": "1cc4f9c41ef1f7a493031230d5f6d2b4-4",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 12,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-15",
+      "result": {
+        "token": "fec848e8bda68b810d8a19b6e105149e-4",
+        "status": "BULK_ERROR",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 6,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870212,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "ERROR",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-16",
+      "result": {
+        "token": "761c6414131470319a8839eba0bc05f2-4",
+        "status": "CANCEL_REQUESTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 17,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CANCEL",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-17",
+      "result": {
+        "token": "4b8716692e1a73c0dff7dc6062dfe6f9-4",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 10,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-5",
+      "result": {
+        "token": "b9057cf99e7d8a7f48ff75a95f73e71a-4",
+        "status": "SHORT_TRANSFER",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 7,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 515,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "SHORT",
+            "actual_count_known": true,
+            "transferred": 515
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-6",
+      "result": {
+        "token": "87a758eab4d52cf42bcedbbbd1933336-4",
+        "status": "INVALID_NATIVE_COUNT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 8,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 517,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BAD_COUNT",
+            "actual_count_known": true,
+            "transferred": 517
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "IOKit-pipe-index-and-unknown-write-count-False",
+      "result": {
+        "token": "ab8d9121d66c69ab6e3cd95031f897b0-4",
+        "status": "AUTH_REPLY_VALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 516,
+        "protocol_reply_accepted": true,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "IOKit-pipe-index-and-unknown-write-count-True",
+      "result": {
+        "token": "51848ee3e8ea826f661f1b70aaca67d0-4",
+        "status": "AUTH_REPLY_VALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 516,
+        "protocol_reply_accepted": true,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "submillisecond-positive-timeout"
+    },
+    {
+      "name": "binding-reject-handle"
+    },
+    {
+      "name": "binding-reject-handle"
+    },
+    {
+      "name": "binding-reject-ep_in"
+    },
+    {
+      "name": "binding-reject-max_packet"
+    },
+    {
+      "name": "binding-reject-authentication_endpoint_roles_reviewed"
+    },
+    {
+      "name": "binding-reject-exclusive_ownership_confirmed"
+    },
+    {
+      "name": "unregistered-forked-disposed-contexts-rejected-before-dereference"
+    },
+    {
+      "name": "live-denied-before-native-lookup-even-with-synthetic-authority"
+    },
+    {
+      "name": "auth-shape-rejected-wire"
+    },
+    {
+      "name": "auth-shape-rejected-wire"
+    },
+    {
+      "name": "auth-shape-rejected-wire"
+    },
+    {
+      "name": "auth-shape-rejected-wire"
+    },
+    {
+      "name": "auth-shape-rejected-kind"
+    },
+    {
+      "name": "real-blocked-fake-C-call-retains-owner-and-refuses-cleanup",
+      "result": {
+        "token": "cffad4fd7e6848744b0447f7f93d50ec-4",
+        "status": "AUTH_REPLY_VALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 516,
+        "protocol_reply_accepted": true,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "explicit-single-STOP-only-after-new-owner-observation",
+      "result": {
+        "token": "b7fe7a2c9028b7b9c5083932a3242b4d-6",
+        "status": "CONTROL_OK",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 0,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    }
+  ],
+  "inert_flows": [],
+  "real_USB_or_camera_operations": 0,
+  "root_admin_or_privacy_changes": 0,
+  "error": {
+    "type": "Rejected",
+    "text": "fresh owner observation required",
+    "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/test_iokit_wire.py\", line 280, in main\n    wire.observe(observation(binding(refs[mode]), now))\n    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/iokit_wire.py\", line 98, in invoke\n    with _exclusive(self.budget):return method(self,*args,**kwargs)\n                                        ~~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/iokit_wire.py\", line 160, in observe\n    raise Rejected('fresh owner observation required')\niokit_wire.Rejected: fresh owner observation required\n"
+  },
+  "case_count": 55,
+  "flow_count": 0,
+  "sources": {
+    "iokit_wire.h": "523f9f8bfa10668ed04df5e580d38440b9b1486b035de0ceba3f81bd42a0d645",
+    "iokit_wire.c": "1f2e967a46fe43c5bdadb33e5effb2db31fad13bda0a40e590cca7343c9056f4",
+    "fake_iokit.c": "756359c4aed4201ac81116620c1e686f20557e047e4cf8d07fefe06f0b63e612",
+    "iokit_wire.py": "004bd34be5f0a310407436cea37bb6668951f5d3ce965f9d4983f05493c4d9d0",
+    "iokit_fixture_api.py": "df4ad4bf01db84889d1e9213527b043787d073f0b4d6811b1136b2c921ad190a",
+    "test_iokit_wire.py": "970da609b4d85ddd68c95327dabb5a8f53c89eef2eb20a2ea42537b3b11072ab"
+  }
+}

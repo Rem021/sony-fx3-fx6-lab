@@ -1,0 +1,982 @@
+{
+  "schema": "fx3-stage133-FX5-portability/1",
+  "created_utc": "2026-10-27T19:26:40.532392+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/README.md",
+      "bytes": 7376,
+      "sha256": "bc0ce5013a9a3db7b8ed0cbcc8e81333542600a4fda98dd45346849f948c3b53"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/code-portability-review.json",
+      "bytes": 9591,
+      "sha256": "c5df48468ff5c37438c19cf240e1337bfdd0db8067916d49e23965496d3b4b7e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/collect_public_sources.py",
+      "bytes": 4229,
+      "sha256": "be7377ca450d8129316d3a1580b7fa9f92b718c4d1751f5bafae79fca0483758"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/completed-evidence-review.json",
+      "bytes": 1994,
+      "sha256": "32996473562d0765746508cdd448b6ec2d98e758065cd29e5afad7084bb7838f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fetch_fx5_gpl.py",
+      "bytes": 4570,
+      "sha256": "c44eb289fa11c51f6e9836eb64693e18c3864febf6ab129a1f5beaea98ecc419"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx3-gpl-reference/linux-kernel/Makefile",
+      "bytes": 65128,
+      "sha256": "fb781eef261d086f560125ebb071737061f659aefc95c714b1c4e1bda88c3eaa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx3-gpl-reference/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057.dtsi",
+      "bytes": 28387,
+      "sha256": "4c7a16829a732d24cd21b8fc2a481e15d56cbfe0371c81c7562765ca266a1663"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx3-gpl-reference/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_set.dts",
+      "bytes": 1535,
+      "sha256": "f3714ed982621c68f64e39723d576642ffd7cdc4b77d48d0a9825a20600eb492"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx3-gpl-reference/linux-kernel/arch/arm64/configs/cxd90057_set_defconfig",
+      "bytes": 86732,
+      "sha256": "eb2e59b9b6bedd9d27c1b607bba77ba40f76a270dabde0986e82c0d558c0293f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx3-gpl-reference-receipt.json",
+      "bytes": 1605,
+      "sha256": "07d96d5c8c1dc4f9a49157b8fe375dfccf898607f8524a877cedb014c17b9f0f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx5-gpl-download-receipt.json",
+      "bytes": 3276,
+      "sha256": "1266c95c1ec58a242dc4a7853588c72298e1850823c76855eb2ada848edec606"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx5-recording-table-review.json",
+      "bytes": 15333,
+      "sha256": "8b24c58407ccec479f999bcca37a8347c01244f555f17130357c9930098d79a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/goal-status-after.json",
+      "bytes": 428894,
+      "sha256": "d451cdd2948192dab7eb2ce959d252e4ad063f6a835eb9736cbe79fa2246a8ac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/goal-status-before.json",
+      "bytes": 426735,
+      "sha256": "d7633db86a66456261c9184472915c331c93d6dd76c23e28d54ae116bef0af1a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-archives/cemmc-init.tar.gz",
+      "bytes": 6973,
+      "sha256": "16b07a4b638c0fd8dcf846a2ffb3672825bf9f84415513ba09dbc74d5a93b4c0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-archives/cryptoram.tar.gz",
+      "bytes": 33222,
+      "sha256": "b75689c2773fc7fa4613b52ba653f5330d4bbd5c20478c632670f9938d63d9a6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-archives/ldec.tar.gz",
+      "bytes": 23159,
+      "sha256": "10170f675b0452b79e72d55d41c100d0acbc9bebb7b3339997a358e87e0c1e7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-archives/linux-kernel.tar.gz",
+      "bytes": 151522353,
+      "sha256": "1e1cf32816e841462bd1d0f4e93c4897a44d0a9b95641387c74cafb6d6f44190"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-archives/sio.tar.gz",
+      "bytes": 10932,
+      "sha256": "379207674b4ccd3f63e6b7069c4a1936278ac1738a4fe9b2fa23f5c7fde0edd7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/.gitignore",
+      "bytes": 55,
+      "sha256": "57ad647abffce2ac6ea32bf417d79975ee5173ee57c747f68025cde1f5498ff8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/Makefile",
+      "bytes": 4667,
+      "sha256": "6ece884f1941181bca429d0e84c94139fb7578f42697b325f2875a7cdf596567"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/Makefile",
+      "bytes": 4356,
+      "sha256": "1f214040fe7b340e6d6424ccb4d6cd0b7e19f505c81a7ac4d7199c49fb14ded0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/Makefile",
+      "bytes": 4645,
+      "sha256": "ab76dcfdc3947066c919fb9f8551dbb3c2bb879157fdee0edc88a8324d867bc5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init.c",
+      "bytes": 2780,
+      "sha256": "61f029560fce79bb3e9794bd144aa43072fb4bd7b9438242dd81080727715f4d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init.h",
+      "bytes": 1574,
+      "sha256": "84c5922bc585a769e6cd14f6bca8937f0fd5c908a81cc220fb2251676f720e46"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_config.h",
+      "bytes": 426,
+      "sha256": "fe21439b426465d07350a0f82e991ae29daa9deb2e839bd92437de55c8c7f51c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_driver.c",
+      "bytes": 6129,
+      "sha256": "6ad75844cad2141b0dc0eed2c70f600d0726feefaabef7e84ec66099bff7cf25"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_external.h",
+      "bytes": 1767,
+      "sha256": "012d74ff33da4a8e9e594c58a8fdf10840387ec0daa2fbeb19b221c662aa2cf6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_internal.h",
+      "bytes": 582,
+      "sha256": "cc977383f8e1f3c328545e262d25ce6dcd65bf383fbfec2ec3039a21e540268d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_print.h",
+      "bytes": 1733,
+      "sha256": "d53dfbea90d440ac5466c9d77c15e8b3be8bc445e002c5b7b9a7220d8f45ddee"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_cmd.c",
+      "bytes": 3696,
+      "sha256": "92ff7eea4dc779ff81a2cb05f1ddc333749f2f51139dcca0cba5c6c18aaf6e02"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_cmd.h",
+      "bytes": 904,
+      "sha256": "d309b253f2117140831015464cf23a9db3a3e8d5effa16fb97f44d640fbd9266"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_core.c",
+      "bytes": 3186,
+      "sha256": "01889c39a17f994f7a2fca8e871b44bf8af08520cb3a41e82ce92b4e20b1976a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_core.h",
+      "bytes": 985,
+      "sha256": "63d25e9c9949f926e338dea1f7296e3d50229b1ee4ba457be041b393ab75df91"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_aead_req.c",
+      "bytes": 3971,
+      "sha256": "db217d8672b3c9d4ad8f068d96f927961a627ee9de939e5ff2c887fd2395b14a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_aead_req.h",
+      "bytes": 412,
+      "sha256": "8af2bda9175fcd9d95d9fc8b38cf8565dab19727096366c755fa0ddbbb802da0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_api_internal.h",
+      "bytes": 1146,
+      "sha256": "7685911f3f78287a38b667be91e1949e7aab7deea082c001f909abf617b73f51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_cdev.c",
+      "bytes": 2146,
+      "sha256": "e9db4b929fa8d55e178d510dc4f9632f16d9d594f766e3524db3367895e6782a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_cdev.h",
+      "bytes": 711,
+      "sha256": "287629de151f2eef21c7373e2a5eb1d3832d56023c9c4094aeface0eaa38e473"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_handle.c",
+      "bytes": 40356,
+      "sha256": "efa53a8a75ddf463905381fe13b0172ff5f27fbf3e7d38225f4378a4ec469f13"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_handle.h",
+      "bytes": 3199,
+      "sha256": "f95b1b27d9757a40e3a7a1fb074506b1bdf1f630df1fa9b8e49022db9ed1db0d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_if_driver.c",
+      "bytes": 7171,
+      "sha256": "4630b6453272d4502548340f4b82aa0daa443cc665ccdb1f5b1e6deaee26e3dd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ioctl.c",
+      "bytes": 10391,
+      "sha256": "cb815569bc422fde03dc723bceba6b88f10888557b4d61bca1447f34cea11903"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ioctl.h",
+      "bytes": 369,
+      "sha256": "d9b4da984cc024b6aacc466b8c267e6879317b287676930afe752aeb09b5633a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_aead.c",
+      "bytes": 21905,
+      "sha256": "4e20de53f9b4b4eae1c8d52a36e5f99088780bc779132098d6c0d9c2626d73ca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_aead.h",
+      "bytes": 634,
+      "sha256": "c3572cf630779317de277aaf75504c1c72634b3093daf9a28dc2cdb105f50414"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_algs.c",
+      "bytes": 2492,
+      "sha256": "5ab747d91509d606452bc7a03e030487fa4fbb353bf1ded40d1f2fb2d0f49a65"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_algs.h",
+      "bytes": 2725,
+      "sha256": "a6a5f5865fe66e0e66d9d6deceb7719e89bb34d896ec721b518d8c62785f60d0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_core.c",
+      "bytes": 9779,
+      "sha256": "a663dd1927dd5e05a2d2d5f8d773047d736bb754b2c1b488fcd98dd51a493103"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_core.h",
+      "bytes": 3827,
+      "sha256": "fc41e1ff32e5048499ac1e3989f5713b386ac0056de7a929250a9ff3ebe51a20"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_print.h",
+      "bytes": 896,
+      "sha256": "685ec827af04fe467f3730f61bb215bd1ebb5d4c3cbfd22f45efc8cb13dbe374"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_shash.c",
+      "bytes": 26183,
+      "sha256": "586e3de31aa8bd76fca8463afe2e9d34adcbc238958f1b7ef9395ea6077b8653"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_shash.h",
+      "bytes": 616,
+      "sha256": "be9e93515b0239e9e54fab51437773fce933a550ff816d10872eea81c234bef9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_skcipher.c",
+      "bytes": 15599,
+      "sha256": "fe284c77c8d1e8eff88dceb458919bbd72ef52fd4bc9e5d2174e4e3462c901e1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_ram_skcipher.h",
+      "bytes": 658,
+      "sha256": "373e26b283ed97c77f86ca2edb688a0b15eadcbb5ca1932924f9998ef349488f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_shash_req.c",
+      "bytes": 2644,
+      "sha256": "8ca50453304619b1148772bb20576413252cb7bccf4e5440ea94ac6c21abff35"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_shash_req.h",
+      "bytes": 416,
+      "sha256": "1c7af67782028dc07420dde6ec52b493459033ed08914537367657711aa0e3ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_skcipher_req.c",
+      "bytes": 3204,
+      "sha256": "9bcdbe86f7663779eaef8d2a5de830e5fd406e7026468601696a02e880b572aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/crypto_skcipher_req.h",
+      "bytes": 428,
+      "sha256": "fb01a67264337225a8deaf3a6f93f0a9d5185b89f63afbf2a6c8268b5a53ed09"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/lld/pfdep/pfdep.c",
+      "bytes": 990,
+      "sha256": "d9bc668d36fcf3465a1b53804a2ac4c7c312838f6ea021533a7da3eddd2697a1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/driver/lld/pfdep/pfdep.h",
+      "bytes": 7139,
+      "sha256": "8fcc796141b0f98d4f1631a0dc0d3cbbafaa45a5164e10cddd85fbd0573babde"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/export/crypto_param.h",
+      "bytes": 2641,
+      "sha256": "373240e33e906a05d06999248230e430b17f04d62a5a6c53c7b68b4494eed769"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/export/crypto_ram.h",
+      "bytes": 1008,
+      "sha256": "22551e0939d570554bc2b3c1e3827da4aa6a52a7d1adcc6bb0a80a02677d68e6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/userspace/include/crypto_config.h",
+      "bytes": 441,
+      "sha256": "dde98f2a9ab777e293efd1f84ce73dff940d62b8a8a42b666a67063cd29e7c32"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/userspace/include/crypto_ioctl_cmd.h",
+      "bytes": 2435,
+      "sha256": "690c4ee70253c658941975fbe2272fd560398497a6941de39bcd4ba96d4b272b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/userspace/include/crypto_type.h",
+      "bytes": 435,
+      "sha256": "064cbc882da6188bebd884a56a59532ea5c9c9b4655428b24dc880de56721ba6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/userspace/include/do_ioctl.h",
+      "bytes": 360,
+      "sha256": "c0126c5a8081c0c12c57c313698482b6cd77178cf4f9e4190dec71f77afd1c4b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/userspace/include/sdebug.h",
+      "bytes": 1590,
+      "sha256": "5a3ad4af99807e176a3de20991b4df38abc375be4846cbce3fa7e5c010b6bec3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/userspace/src/crypto_ram.c",
+      "bytes": 12341,
+      "sha256": "bb1bfd9edc394df815b437ab7f37239ecf064f42a5c82d68d8d6bfc08ef29e58"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/cryptoram/userspace/src/do_ioctl.c",
+      "bytes": 886,
+      "sha256": "dd5573be1f104b7ddb7eb7e83ed933676d95b8a4da70f31d2cb347424cdea224"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/ldec/driver/src/Makefile",
+      "bytes": 1825,
+      "sha256": "00a4345f9a024066c5ac42818a3433ebae1042bc4374e077c407108f9b9a0d61"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/ldec/driver/src/ldec_debug.h",
+      "bytes": 2117,
+      "sha256": "f1adf620f120f70255e34ab950a69b531e178788c935763af5ff7d371115adbc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/ldec/driver/src/ldec_driver.h",
+      "bytes": 1378,
+      "sha256": "044e299e38f48b0bc9e907100bd388155a149559140bd91991430da3e3af763d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/ldec/driver/src/ldec_drv.c",
+      "bytes": 86744,
+      "sha256": "8baf1351b6e3a19198ca03874c27272a4f995890ec312a7e893158ad3001a8f1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/ldec/driver/src/ldec_drv.h",
+      "bytes": 4631,
+      "sha256": "c6a9d42c363230219213bb63add1d8b591226bae9b11ae751278cce7cee9a7a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/ldec/driver/src/ldec_hw.h",
+      "bytes": 5292,
+      "sha256": "bcbc39926bf9eb1ed2d3680e5e816d969064708cd81067e1a9d25f6c99d9218c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/ldec/driver/src/ldec_reg.h",
+      "bytes": 5462,
+      "sha256": "77ad5d7ef7c88ac1180da35774f3318144011fa6fcf6fe07fe0793bec286dde2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/Makefile",
+      "bytes": 72421,
+      "sha256": "3049e43f316da546a7d3be2a79311c7ef0d330488073fb14206b119adf39af95"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/Makefile",
+      "bytes": 1008,
+      "sha256": "e5b7ac3b95d5fa4227dae7a5b7b31b7adfe1d9cdf570515681fe3a1052a06b19"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_8G.dts",
+      "bytes": 1700,
+      "sha256": "9e60230003adf90e606445d01562fb8c37eefc05a57346ac703f7799c5faa9bf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_pcie3-ep.dts",
+      "bytes": 1822,
+      "sha256": "a4bbee2d740489f291dd7850d05bbe1a457edd8e7fa5f5d461793293694d2786"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_pcie4-ep.dts",
+      "bytes": 1822,
+      "sha256": "fb08b2ea9ae3728ad2f28c83d3e9f61ececeb1cbd3256ee81bbea380e7b98ca0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set.dts",
+      "bytes": 1914,
+      "sha256": "47cdfd96eceb71a05ac46b2d59d8595e20d87fc957de394d5d610bb3d6d114b6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_6G.dts",
+      "bytes": 1917,
+      "sha256": "9189a1d4eba4baaa6c2a31691672791b8a36daf4317aad37d76135039df8d60e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_8G.dts",
+      "bytes": 1587,
+      "sha256": "6bc057f141443c5b1cd218fac38bed96293498863304d83484eac7a07f7aacfe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_noUSB20.dts",
+      "bytes": 1618,
+      "sha256": "5732fcff06588ac0e0cf7ff14050b68655b286437c1fcf5b98eff016371cf95d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep.dts",
+      "bytes": 1723,
+      "sha256": "81159b763480b084c1649efbd09f3ff18e1c9f82560f7309959f9b2913ed57d1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep_0dma.dts",
+      "bytes": 1781,
+      "sha256": "8917920270357e84f09156f452af0b7fa2057c2b849d17f70973b07ef9db9941"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep_4dma.dts",
+      "bytes": 1781,
+      "sha256": "b5e3ed15eebbc695cd46f2a7b8330069633bd735ebe91d0a053e5737e2d996d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep.dts",
+      "bytes": 1723,
+      "sha256": "732034357f4b33dd871002959606e982c04e8883a3cae23abbd1e6a63ed48983"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep_0dma.dts",
+      "bytes": 1787,
+      "sha256": "040bf8bac7a2c3d379e7e59935fdca37172b0320d3e343c4ec7c20228fcb1da8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep_4dma.dts",
+      "bytes": 1787,
+      "sha256": "d0fc1b86ae73f0d4b8c5cb82f53c9af53c7a0eb309c3d0a6d697d8065ec8478d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx.dtsi",
+      "bytes": 40080,
+      "sha256": "884a7262505d0b053d61f3791df2486d7f61a2d02d791d558ea5962caa56e05a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_3G+usb.dts",
+      "bytes": 1590,
+      "sha256": "faf48e68f42478b2a9253821b3fa71a8b7c6dd19f17b6164eee128f64e877948"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_3G.dts",
+      "bytes": 1618,
+      "sha256": "cc59378f49d3672ed5e551a12debc0d3120fb7e720b0298ddaa89615964b1fb0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_8G+usb.dts",
+      "bytes": 1590,
+      "sha256": "6537e6c8ec0523844d539c9c2b4633324dc8f6b215087a5c7a9a0e0b0e94b3b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_8G.dts",
+      "bytes": 1618,
+      "sha256": "928943dafa18373b232f90343f0640e97c97e12b019824448d43be22b0b6ddf7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/disable-USB20.dtsi",
+      "bytes": 65,
+      "sha256": "7cf305bc4c7d47d5a8c6b44881d5124524396a0afdcffd5f04ce46670d01a7d2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fpga.dts",
+      "bytes": 4472,
+      "sha256": "e9fc0620c4ab0ea141b621a146d36601fd34b962ef8d128c7d431c8329948730"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fpga2.dts",
+      "bytes": 4618,
+      "sha256": "1096f35a89eae4f030c4c0d06c571433e4550856640554508bdeec2490da0d62"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fpga6.dts",
+      "bytes": 4050,
+      "sha256": "9060db9d277a097185e25281b2c163a187db2a8edb053c0e430beaaad0e4d306"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts",
+      "bytes": 1104,
+      "sha256": "357ebffd8ee5db332e64f1dca6d232797fa0b3b19fd48355c5f8050e5a499eeb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts.old",
+      "bytes": 1006,
+      "sha256": "636d9a486448e76b1537e7469bb8e4a98ca55a12e003b8010d2647d5190318ac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/i2c.dtsi",
+      "bytes": 2578,
+      "sha256": "04e09fe3f243042a52a7765f0858283525e7ae43f1e2ab908a438a5546a14092"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-3G.dtsi",
+      "bytes": 1412,
+      "sha256": "ea1f9fa30a2e7264013b655f6411a122936b2c17ee11863e86d664381169efb8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-4G.dtsi",
+      "bytes": 1412,
+      "sha256": "071fa1beed55d360d05b0ff5b56db45d856aa068649968db86ed8135f4851b1c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-6G.dtsi",
+      "bytes": 1412,
+      "sha256": "acae11f706e21fbaa237a9e4dd55ddb2374a1737a882ac11ef5cbc69cb18441e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-8G.dtsi",
+      "bytes": 1412,
+      "sha256": "a80d09ea6f02b100c8beb2156f36c3c67ebc8e83aabf7e9db21dfc1a607f70ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/qemu-gicv2.dts",
+      "bytes": 3274,
+      "sha256": "784afefe2e852b57a803c5615e7ca5b5b3bceff5a4503ccfaf97193be37b666d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/qemu.dts",
+      "bytes": 3211,
+      "sha256": "ca381ce630b4676029d7d07b843781c0a1108230ae9fb6181de7821276b35991"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spi.dtsi",
+      "bytes": 1490,
+      "sha256": "c4e2668dd2a42e9dd6985240fc8839c120406564e7ddd287f63bf6d37cb3bd1d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spi0-master.dtsi",
+      "bytes": 428,
+      "sha256": "07d3774fc9881dc6b38faac05169b6913600e684a86ea9e02c1fcd6559498028"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spi0-slave.dtsi",
+      "bytes": 426,
+      "sha256": "513e5e0ca8556ec7a608ef9689e306110f900096fd7e4ed4efc56168bd43842d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spidev.dtsi",
+      "bytes": 499,
+      "sha256": "4de85657989d536064516a3edfb20668104788104a1a39c2758064f1651f64a4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spitest.dtsi",
+      "bytes": 958,
+      "sha256": "46b65058e41e5b9274d07e53f5b114ee06943bcc4a0921ba934839a83a165d4b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/usb-disable.dtsi",
+      "bytes": 279,
+      "sha256": "321ee9985f8661505b5b9dd36f8bca5b5bc41acb3d694c628d3be1e81c2a94b1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/usb64.dtsi",
+      "bytes": 2018,
+      "sha256": "f1b0153d2830a2a9955ce522753478818149f8af8fb666cb9df538c860d412d8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_ice_nfs_defconfig",
+      "bytes": 106234,
+      "sha256": "3a571a8717a94ab5d0112155af4e7d9c4e94fb56ec7e2287f65d4c2a8074c7ac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_ipv4_set2_defconfig",
+      "bytes": 104939,
+      "sha256": "4a5c380dad4fc005ed696d40246272afa91635015513a62d5d045600947ae28d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_ipv4_set_defconfig",
+      "bytes": 104918,
+      "sha256": "2ea88d331f40723022447c9587acd2eaa4da8b65bfb49eee02be932098781dcd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_nfs_defconfig",
+      "bytes": 106279,
+      "sha256": "e849d187be302c5f2b529974b0992464f7c5a02c80ef8506691d0dce3c7beee4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_set_defconfig",
+      "bytes": 104325,
+      "sha256": "bfeee3c51d60cd9635d0b94a7a939ce2db850599c99b6be487f6085db14f7498"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/configs/cxd90xxx_ice_set_defconfig",
+      "bytes": 105046,
+      "sha256": "aca0ec96c1d1fa0ee5759f7a9fe2de92a1b02fd93c6cad46b374a70bdbc2c979"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/sio/driver/src/Makefile",
+      "bytes": 401,
+      "sha256": "75e5e18ee079c4848c081e1772dd4fa1305996fa98a2da5707895f9ee7152c52"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/sio/driver/src/pbl_sio.h",
+      "bytes": 3827,
+      "sha256": "8dd469c4b940d1699d48bdda33fc1ec0aa997778e64b728394ddf6a3c9341b3f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/sio/driver/src/sdebug.h",
+      "bytes": 485,
+      "sha256": "3cb578b07932c12d9b19e9b9566c3da5344a19c344f92f9307a3feda4a4df5f0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/sio/driver/src/sio.h",
+      "bytes": 1420,
+      "sha256": "54a6170d97e6b4532342a357b4042c0ca64f9810fec8769c8bcd3385999bf046"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/sio/driver/src/sio_lin.c",
+      "bytes": 43714,
+      "sha256": "68bb6b6112c43ce598e4eeaedf1fcb18e394ef7c64cab7971445fae0b3a2e36e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-source-selection-receipt.json",
+      "bytes": 51070,
+      "sha256": "37dcae74e975c9c62e519de1ba0d4a6c2f0507a6fed7bdcbe907f0fcefed86af"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/preflight-verification.json",
+      "bytes": 758,
+      "sha256": "c8a71e9597dee0efe579829200f141c9f4c1fb495f18103a7c6a59902ccc3b25"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-guide-captures.json",
+      "bytes": 146874,
+      "sha256": "11a3e68073d6aa35bbd50d83dd5762ed70fcbedd1a1e8db7dd820990b6d12971"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-oss-captures.json",
+      "bytes": 59292,
+      "sha256": "70c25fd476b142093369d9a4f4fc47c8117f1eaff16ccb93a3b7a2db68a1bfc3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-oss-supplementary.json",
+      "bytes": 18714,
+      "sha256": "a53826000e7d237c85ca6f0202a1c377d32b20da096d6228141ed726f58a2352"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx3-jp-spec.html",
+      "bytes": 168741,
+      "sha256": "effbafb6ff6bac677a9c221b9d3297d0db59f9fec47d9fa4acc65a17f5d7502d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx3-jp-spec.text.txt",
+      "bytes": 30963,
+      "sha256": "938289f996aed8c0908d988884ebb3973f78fbe7ac53e6dd7fdeb5bf0f622cf9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx3-oss-model.html",
+      "bytes": 17467,
+      "sha256": "ca193f749b7379bf6b0ade144b56cf5297b9bbb9332012ad776eb335a52f9446"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx3-oss-model.text.txt",
+      "bytes": 2102,
+      "sha256": "23d92d81d293463359989cf3df54f2b822335ae9748b8e793676e66c409009ea"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-cn-product.html",
+      "bytes": 89663,
+      "sha256": "02c62d70226e39ce8b6ad52c62b4299697ed09becc5154d7a60672518e65962f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-cn-product.text.txt",
+      "bytes": 25522,
+      "sha256": "909acaa23714919c974a2a54a8f7c7ff803a0503323e6dce8c78f24bd993c865"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-block_diagram.html",
+      "bytes": 25230,
+      "sha256": "4e129a440108428c721153717ae6ff4f703260c49d2d03b530f36c1c309d9de4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-block_diagram.text.txt",
+      "bytes": 7322,
+      "sha256": "489b42d1631c489c8fccf75928e9536290d215d6f90990c9f930b3b1ca3797b0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-index.html",
+      "bytes": 27453,
+      "sha256": "a73ef3e54227a269f30cf35ec65cbda67c368335aabe3afd8fd51b8460a0736f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-index.text.txt",
+      "bytes": 7495,
+      "sha256": "05756291ddb63cc92d0e7b94a865ad303ec494c15a8f81b3befe642d7252db09"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-maintenance.html",
+      "bytes": 34130,
+      "sha256": "4f098a658010e7bf93e3674f65c3cfd26729495d7730dcc74e1f692eb2043f49"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-maintenance.text.txt",
+      "bytes": 10965,
+      "sha256": "a53060cc67bca4ca477dd4c36eac8a7cf186f72b09114ecef8db8b58ef3d0595"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-project.html",
+      "bytes": 49870,
+      "sha256": "7c2bd9b517427b721f248982d2730ffa803c4d34d8f2bf33bd8201266d3f1bc0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-project.text.txt",
+      "bytes": 21376,
+      "sha256": "3772979323e953c39e2f7da16a81c941e07c38a024c95b81c7dd19e6a1d1888f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-rec_format.html",
+      "bytes": 27745,
+      "sha256": "387f3b4e5ffca0c0b8b856c56d170c468d9a2476716e556ffccdb1f051f19acb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-rec_format.text.txt",
+      "bytes": 8822,
+      "sha256": "cd6e6276d3a47948d9e7eb3e3502ff3f7531006655ca2f17d83a8a5031d3158a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-spec.html",
+      "bytes": 32878,
+      "sha256": "65f73d5a8b58e6b082f0e95041363326f2945089085f47ed18c650e0140438c6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-spec.text.txt",
+      "bytes": 11729,
+      "sha256": "c93bccbd73882349d081c5e1e2351fd6be6cffd48a2ad0d4a83afe5a5f3a6a06"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-video_quality_setting.html",
+      "bytes": 33939,
+      "sha256": "d638686423c9f2615606709b1af40cccc84316c3410dd9d472d31b7bfff53a6b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-guide-video_quality_setting.text.txt",
+      "bytes": 8600,
+      "sha256": "b31b9a15617476ecf87dfc80a3657dee951cf70468d43eef90c0db00267dff38"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-jp-announcement.html",
+      "bytes": 128952,
+      "sha256": "f18e6389ccd1da74e3ffa80dada2716ba62e5b7a06c03a24fd8038206de77bc9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-jp-announcement.text.txt",
+      "bytes": 36340,
+      "sha256": "e6da3265d42aab242083e1e3021c9cfb03fbfbf6e2fe1a7093dd4d5ebb77e804"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-jp-spec.html",
+      "bytes": 363043,
+      "sha256": "163cff5e150552d482367e00e2a7a6e088f93256989a69e3609c8846b0db2e7d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-jp-spec.text.txt",
+      "bytes": 34333,
+      "sha256": "0dc9387592b0598e67b6924d1e0634fd84b5d76389b62e4e61a9597b2af0fd90"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-jp-support.html",
+      "bytes": 648948,
+      "sha256": "55e198ab849f0ad38c9be9df7b8c29ab0405178feea5ff6fc2546433eea78691"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-jp-support.text.txt",
+      "bytes": 574941,
+      "sha256": "6ca1f9f7af5fea75d1e442a0008cc37210c474c9625ccb6d07eb00da4657939d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-license.html",
+      "bytes": 27022,
+      "sha256": "6a38a239c0a52eda68b5f60e5fd9eb343d367aa68c1e6a9e61d3b75db6afc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-license.text.txt",
+      "bytes": 9183,
+      "sha256": "ad33176b1746f5697596e34d5c2a27a99e34a76f910ff7f9b64cbb4937ae43d6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-oss-model.html",
+      "bytes": 22357,
+      "sha256": "31d454aed7d74033a4d315bea158db1209251a968f7d907f5c44815571b1c957"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-oss-model.text.txt",
+      "bytes": 2456,
+      "sha256": "0b9f1bc4d67be34957dc4689531827052473c3b8971083585d25dc76cf8105ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-sg-downloads.html",
+      "bytes": 184,
+      "sha256": "6e79933a1f3585f71e554804316e769e28ed0068d7316cd547373b518c8f76b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-sg-downloads.text.txt",
+      "bytes": 116,
+      "sha256": "f4366dd5a612a7209d43889cdb2939b751ffbff189e357efbe5e27e7cacc6e34"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-us-downloads.html",
+      "bytes": 184,
+      "sha256": "da2e420025d952df0e770f88b1bfaac125f630019cd79b037be59c1f8c755bc2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/fx5-us-downloads.text.txt",
+      "bytes": 116,
+      "sha256": "9d403450a5d91df0044c686af3094022101b92fac25899dc2fc9993050f5938f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/sony-oss-b2b-category.html",
+      "bytes": 73182,
+      "sha256": "bda6c7e9d299bc2287dad1b45c2f74cd85ad932a09b65f371e51d537220a1a73"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/sony-oss-b2b-category.text.txt",
+      "bytes": 12519,
+      "sha256": "c9e70f565ac1d804cd148d10a57dd1247e5325c0eb92a896898d85c070db8d9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/sony-oss-notice.html",
+      "bytes": 4812,
+      "sha256": "df62a79ccdc4144ecc5f9e002314d1084274ddc4ed6de007908c15ad84a5cfd0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/sony-oss-notice.text.txt",
+      "bytes": 1534,
+      "sha256": "40c4489bc16f3a4a4f809a9a8cbb32b8528e6f7e2730ac6a7bf806dca1debc55"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/sony-oss-root.html",
+      "bytes": 176,
+      "sha256": "285a0adf760bf8d77394c208af850dcf0831a254370073ec5b76d47119f3b3a3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/sony-oss-root.text.txt",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/sony-oss-search.html",
+      "bytes": 5215,
+      "sha256": "f11146280e6d67701abeecf17a643e442a26710add895e07c2f78be9e1591b48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-pages/sony-oss-search.text.txt",
+      "bytes": 1203,
+      "sha256": "2afd68d359dae101e1ca0aada5dad94ffa9657dbc0981dcc87bd0ec483a37731"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/public-source-captures.json",
+      "bytes": 220468,
+      "sha256": "4f70d22cf0961583d10de4a6d29177d8c5b2e0dbcacf372885df337630dd9ec4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/read_recording_table.py",
+      "bytes": 4743,
+      "sha256": "abe7a971824909ec75036b7d83a3ba51c72deb1fc0fecbc0c130b5349c0b9947"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/readme-after.md",
+      "bytes": 48657,
+      "sha256": "857a48469c3bd1bdd71d83cd0cb665357992497fe147d83e93adc8da8afacca8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/readme-before.md",
+      "bytes": 48368,
+      "sha256": "29d9039e3470fe450776dcd91aa294e55eb42b0e9e58e9de78ce7245e0f7ac26"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/review_and_seal.py",
+      "bytes": 13051,
+      "sha256": "581c41a1c2fa764d2583de034ce6648859e5d391322f1001d165c5f5d0f0078a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/select_gpl_sources.py",
+      "bytes": 3656,
+      "sha256": "3bacf2751e1656e621e58bced023e3338b91b4871c95734c6ace56ebe9b4700d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/source-availability-and-scope.json",
+      "bytes": 2839,
+      "sha256": "8a92b6fe9052612462d090266a134d7272a6b56ee9c194e929e5ca4c649643d3"
+    }
+  ],
+  "member_count": 182,
+  "previous_manifest_sha256": "2d4715011c2498828f0886dce8f13b0a9587074d308397a830db022d4c6266a4",
+  "previous_stage132_mutable_heads_validated_via_immutable_after_snapshots": true,
+  "mutable_progress": {
+    "canonical_before_sha256": "d7633db86a66456261c9184472915c331c93d6dd76c23e28d54ae116bef0af1a",
+    "canonical_after_sha256": "d451cdd2948192dab7eb2ce959d252e4ad063f6a835eb9736cbe79fa2246a8ac",
+    "readme_before_sha256": "29d9039e3470fe450776dcd91aa294e55eb42b0e9e58e9de78ce7245e0f7ac26",
+    "readme_after_sha256": "857a48469c3bd1bdd71d83cd0cb665357992497fe147d83e93adc8da8afacca8"
+  },
+  "mutable_project_heads_not_manifest_members": true,
+  "allowed_goal_keys_changed": [
+    "latest_stage",
+    "latest_stage_evidence",
+    "next_safe_offline_actions",
+    "progress_audit",
+    "research_activity",
+    "updated_utc"
+  ],
+  "operations": {
+    "status": "PASS_FX5_PUBLIC_SOURCE_PORTABILITY_REVIEW_NOT_DEVICE_OR_FLASH_RELEASE",
+    "created_utc": "2026-10-27T19:26:40.532392+00:00",
+    "previous_manifest_members_verified_via_snapshots": 17,
+    "five_archives_length_MD5_SHA_verified": true,
+    "selected_sources_hashes_verified": true,
+    "recording_table_rows": 52,
+    "code_fact_groups": 8,
+    "stage75_bundle_and_stage117_frontend_pins": [
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/resource_alias.c",
+        "bytes": 7493,
+        "sha256": "69d8dc8eb8f4ca03c71918fd07b51070749e2f7a561e4e3fb23cab2a7cf5d150"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/run-20261026/resource_alias.a64.o",
+        "bytes": 4384,
+        "sha256": "88fa4d56540eb579e1b5ebd401aaf5ce4346a675be856765ffedced288718a87"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/channel_adapter.c",
+        "bytes": 2140,
+        "sha256": "100c9d097660c3bfdcba8a5101bd81890fdee2722ebb1605169c04104e24f7f4"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/run-20261026/channel_adapter.a64.o",
+        "bytes": 2144,
+        "sha256": "0f67a495ef93841234cacf6f9565a018e983fe08e82dd1075ce961f44cae65b5"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage117-native-audio-proxy-admission/scoped_frontend.a64.o",
+        "bytes": 1920,
+        "sha256": "673da2d23b9c0736a36ebc515258a9e94ebe5018c355afaf81ffd40ce923b407"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage117-native-audio-proxy-admission/scoped_frontend.c",
+        "bytes": 3152,
+        "sha256": "264c95ec3fb63e5c6843cf6cfa557f8e9ad7f5acceb1b03333b2701d507e3d5a"
+      }
+    ],
+    "all16_requirements_and_authorization_unchanged": true,
+    "canonical_equals_after": true,
+    "stage131_unsealed_preserved": true,
+    "same_agent_local_review_not_independent_engine_or_real_camera_acceptance": true,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

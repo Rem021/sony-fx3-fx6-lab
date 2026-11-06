@@ -1,0 +1,17 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-lifetime-wrapper-v2.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-lifetime-wrapper-v2"
+  ],
+  "exit": 0,
+  "stdout": "LIFETIME_WRAPPER_PASS actual_full_helper/all_native_args_and_errno_results_preserved/original_body_unchanged/no_extra_free_or_receive/failure_passthrough/enabled_disabled\n",
+  "stderr": "FX3_OSD_LIFE_ALLOC_BEGIN sequence=1 tid=77 destination=0x8280074d bytes=12 wait=1 op=1002 native_caller=0xf1db8 original_follows=1\nFX3_OSD_LIFE_ALLOC_RETURN sequence=1 tid=77 destination=0x8280074d bytes=12 pointer=0x102459b60 result=0 errno=723 record=0 tracked_live=1 native_reuses_without_user_free=0\nFX3_OSD_LIFE_SEND sequence=1 destination=0x8280074d source=0x8288076c op=1002 bytes=12 pointer=0x102459b60 result=0 record=0 sends=1 pair_pending=1005 original_owned=unchanged\nFX3_OSD_LIFE_USER_FREE destination=0x8280074d pointer=0x102459b60 role=1002 result=0 record=0 count=1 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1\nFX3_OSD_LIFE_ALLOC_BEGIN sequence=2 tid=77 destination=0x8280074d bytes=12 wait=7 op=1002 native_caller=0xf1db8 original_follows=1\nFX3_OSD_LIFE_ALLOC_RETURN sequence=2 tid=77 destination=0x8280074d bytes=12 pointer=0x102459b60 result=-1022 errno=723 record=-1 tracked_live=0 native_reuses_without_user_free=0\nFX3_OSD_LIFE_ALLOC_BEGIN sequence=3 tid=77 destination=0x8288076c bytes=8 wait=1 op=6008 native_caller=0xf1db8 original_follows=1\nFX3_OSD_LIFE_ALLOC_RETURN sequence=3 tid=77 destination=0x8288076c bytes=8 pointer=0x102459b60 result=0 errno=723 record=0 tracked_live=1 native_reuses_without_user_free=0\nFX3_OSD_LIFE_SEND sequence=1 destination=0x8288076c source=0x8280074d op=6008 bytes=8 pointer=0x102459b60 result=0 record=0 sends=2 pair_pending=1005 original_owned=unchanged\nFX3_OSD_LIFE_USER_FREE destination=0x8288076c pointer=0x102459b60 role=6008 result=0 record=0 count=2 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1\nFX3_OSD_LIFE_ALLOC_BEGIN sequence=4 tid=77 destination=0x8288076c bytes=40 wait=1 op=7040 native_caller=0xf1db8 original_follows=1\nFX3_OSD_LIFE_ALLOC_RETURN sequence=4 tid=77 destination=0x8288076c bytes=40 pointer=0x102459b60 result=0 errno=723 record=0 tracked_live=1 native_reuses_without_user_free=0\nFX3_OSD_LIFE_USER_FREE destination=0x8288076c pointer=0x102459b60 role=7040 result=0 record=0 count=3 tracked_live=1 retired_before_native_free=1 original_call_forwarded=1\nFX3_OSD_LIFE_USER_FREE destination=0x8288076c pointer=0x102459b60 role=7040 result=-9 record=0 count=3 tracked_live=1 retired_before_native_free=1 original_call_forwarded=1\nFX3_OSD_LIFE_USER_FREE destination=0x8288076c pointer=0x102459b60 role=7040 result=0 record=0 count=4 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1\n",
+  "actual_helper_sha256": "c987bb1b0bb4e5e9e9e36bed6e970c0ccfe3248b69a6d970d8f156b5629bd3e5",
+  "scope": "Full actual helper compiled with native API/system mocks; no guest acceptance"
+}

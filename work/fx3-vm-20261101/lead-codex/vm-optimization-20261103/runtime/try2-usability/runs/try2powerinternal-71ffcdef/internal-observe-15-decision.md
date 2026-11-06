@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-14-key-030.png using image tool. Setup>Sound Option 55/59 orange category focus; volume/audio items listed Next: DOWN to USB category for read-only navigation; no USB/device operation or setting activated

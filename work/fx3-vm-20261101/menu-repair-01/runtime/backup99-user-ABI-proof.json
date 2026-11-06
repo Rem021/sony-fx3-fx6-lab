@@ -1,0 +1,308 @@
+{
+  "appFw.so@0x2ebfd1c": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+    "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "code": [
+      {
+        "va": "0x2ebfd1c",
+        "raw": "e10300aa",
+        "asm": "mov x1, x0"
+      },
+      {
+        "va": "0x2ebfd20",
+        "raw": "80028052",
+        "asm": "mov w0, #0x14"
+      },
+      {
+        "va": "0x2ebfd24",
+        "raw": "22008052",
+        "asm": "mov w2, #1"
+      },
+      {
+        "va": "0x2ebfd28",
+        "raw": "e059a072",
+        "asm": "movk w0, #0x2cf, lsl #16"
+      },
+      {
+        "va": "0x2ebfd2c",
+        "raw": "ad4a9b17",
+        "asm": "b #0x15927e0"
+      }
+    ]
+  },
+  "libbackup.so@0x1dd4": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libbackup.so",
+    "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+    "code": [
+      {
+        "va": "0x1dd4",
+        "raw": "fd7bbea9",
+        "asm": "stp x29, x30, [sp, #-0x20]!"
+      },
+      {
+        "va": "0x1dd8",
+        "raw": "02008012",
+        "asm": "mov w2, #-1"
+      },
+      {
+        "va": "0x1ddc",
+        "raw": "e50301aa",
+        "asm": "mov x5, x1"
+      },
+      {
+        "va": "0x1de0",
+        "raw": "e403002a",
+        "asm": "mov w4, w0"
+      },
+      {
+        "va": "0x1de4",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x1de8",
+        "raw": "a6830091",
+        "asm": "add x6, x29, #0x20"
+      },
+      {
+        "va": "0x1dec",
+        "raw": "a1298052",
+        "asm": "mov w1, #0x14d"
+      },
+      {
+        "va": "0x1df0",
+        "raw": "43008052",
+        "asm": "mov w3, #2"
+      },
+      {
+        "va": "0x1df4",
+        "raw": "c107a072",
+        "asm": "movk w1, #0x3e, lsl #16"
+      },
+      {
+        "va": "0x1df8",
+        "raw": "c2cc1fb8",
+        "asm": "str w2, [x6, #-4]!"
+      },
+      {
+        "va": "0x1dfc",
+        "raw": "62008052",
+        "asm": "mov w2, #3"
+      },
+      {
+        "va": "0x1e00",
+        "raw": "e00306aa",
+        "asm": "mov x0, x6"
+      },
+      {
+        "va": "0x1e04",
+        "raw": "cbfdff97",
+        "asm": "bl #0x1530"
+      },
+      {
+        "va": "0x1e08",
+        "raw": "a01f40b9",
+        "asm": "ldr w0, [x29, #0x1c]"
+      },
+      {
+        "va": "0x1e0c",
+        "raw": "fd7bc2a8",
+        "asm": "ldp x29, x30, [sp], #0x20"
+      },
+      {
+        "va": "0x1e10",
+        "raw": "c0035fd6",
+        "asm": "ret "
+      }
+    ]
+  },
+  "libbackup.so@0x24b0": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libbackup.so",
+    "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+    "code": [
+      {
+        "va": "0x24b0",
+        "raw": "fd7bbea9",
+        "asm": "stp x29, x30, [sp, #-0x20]!"
+      },
+      {
+        "va": "0x24b4",
+        "raw": "03008012",
+        "asm": "mov w3, #-1"
+      },
+      {
+        "va": "0x24b8",
+        "raw": "467c4093",
+        "asm": "sxtw x6, w2"
+      },
+      {
+        "va": "0x24bc",
+        "raw": "e50301aa",
+        "asm": "mov x5, x1"
+      },
+      {
+        "va": "0x24c0",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x24c4",
+        "raw": "a7830091",
+        "asm": "add x7, x29, #0x20"
+      },
+      {
+        "va": "0x24c8",
+        "raw": "e403002a",
+        "asm": "mov w4, w0"
+      },
+      {
+        "va": "0x24cc",
+        "raw": "a1298052",
+        "asm": "mov w1, #0x14d"
+      },
+      {
+        "va": "0x24d0",
+        "raw": "e2038052",
+        "asm": "mov w2, #0x1f"
+      },
+      {
+        "va": "0x24d4",
+        "raw": "c107a072",
+        "asm": "movk w1, #0x3e, lsl #16"
+      },
+      {
+        "va": "0x24d8",
+        "raw": "e3cc1fb8",
+        "asm": "str w3, [x7, #-4]!"
+      },
+      {
+        "va": "0x24dc",
+        "raw": "63008052",
+        "asm": "mov w3, #3"
+      },
+      {
+        "va": "0x24e0",
+        "raw": "e00307aa",
+        "asm": "mov x0, x7"
+      },
+      {
+        "va": "0x24e4",
+        "raw": "13fcff97",
+        "asm": "bl #0x1530"
+      },
+      {
+        "va": "0x24e8",
+        "raw": "a01f40b9",
+        "asm": "ldr w0, [x29, #0x1c]"
+      },
+      {
+        "va": "0x24ec",
+        "raw": "fd7bc2a8",
+        "asm": "ldp x29, x30, [sp], #0x20"
+      },
+      {
+        "va": "0x24f0",
+        "raw": "c0035fd6",
+        "asm": "ret "
+      }
+    ]
+  },
+  "libbackup.so@0x1ff0": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libbackup.so",
+    "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+    "code": [
+      {
+        "va": "0x1ff0",
+        "raw": "fd7bbea9",
+        "asm": "stp x29, x30, [sp, #-0x20]!"
+      },
+      {
+        "va": "0x1ff4",
+        "raw": "03008012",
+        "asm": "mov w3, #-1"
+      },
+      {
+        "va": "0x1ff8",
+        "raw": "e60302aa",
+        "asm": "mov x6, x2"
+      },
+      {
+        "va": "0x1ffc",
+        "raw": "e503012a",
+        "asm": "mov w5, w1"
+      },
+      {
+        "va": "0x2000",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2004",
+        "raw": "a7830091",
+        "asm": "add x7, x29, #0x20"
+      },
+      {
+        "va": "0x2008",
+        "raw": "043c0053",
+        "asm": "uxth w4, w0"
+      },
+      {
+        "va": "0x200c",
+        "raw": "a1298052",
+        "asm": "mov w1, #0x14d"
+      },
+      {
+        "va": "0x2010",
+        "raw": "22018052",
+        "asm": "mov w2, #9"
+      },
+      {
+        "va": "0x2014",
+        "raw": "c107a072",
+        "asm": "movk w1, #0x3e, lsl #16"
+      },
+      {
+        "va": "0x2018",
+        "raw": "e3cc1fb8",
+        "asm": "str w3, [x7, #-4]!"
+      },
+      {
+        "va": "0x201c",
+        "raw": "63008052",
+        "asm": "mov w3, #3"
+      },
+      {
+        "va": "0x2020",
+        "raw": "e00307aa",
+        "asm": "mov x0, x7"
+      },
+      {
+        "va": "0x2024",
+        "raw": "43fdff97",
+        "asm": "bl #0x1530"
+      },
+      {
+        "va": "0x2028",
+        "raw": "a01f40b9",
+        "asm": "ldr w0, [x29, #0x1c]"
+      },
+      {
+        "va": "0x202c",
+        "raw": "fd7bc2a8",
+        "asm": "ldp x29, x30, [sp], #0x20"
+      },
+      {
+        "va": "0x2030",
+        "raw": "c0035fd6",
+        "asm": "ret "
+      }
+    ]
+  },
+  "user_ABI": {
+    "Backup_read": "int Backup_read(uint32_key,void*buffer)",
+    "Backup_nread": "int Backup_nread(uint32_key,void*buffer,int_bytes)",
+    "Backup_write": "int Backup_write(uint32_service,uint32_key,const void*buffer)",
+    "getter": "2ebfd1c uses actualkey02cf0014,x1buffer,w2=1; nread one byte",
+    "correction": "v2-date99 incorrectly used kernel-style3args with userBackup_read; returned-1. Newobserverv3 uses originalusernread key/buffer/1; no originalAPI altered."
+  }
+}

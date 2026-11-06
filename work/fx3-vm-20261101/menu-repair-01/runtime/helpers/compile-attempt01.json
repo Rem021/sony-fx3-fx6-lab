@@ -1,0 +1,34 @@
+{
+  "created_utc": "2026-11-01T11:08:44.408608+00:00",
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-ioctl-trace.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace.so"
+  ],
+  "cache_env": {
+    "ZIG_GLOBAL_CACHE_DIR": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-cache",
+    "ZIG_LOCAL_CACHE_DIR": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-local-cache"
+  },
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "explicit_original_libraries": true,
+  "bundled_libc_linked": false,
+  "source_sha256": "1330adb0d1a5b5aa5b1c8d4a42799d28956ee14e292fc41e9a08171228c6c700",
+  "output_sha256": "a896f1bc96053da5df0bd507bc33c465883888059cc3a7a6f4a5e2cb389fd12c"
+}

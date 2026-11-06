@@ -1,0 +1,44 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 1ca0988: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 1ca098c: 910003fd     	mov	x29, sp
+ 1ca0990: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 1ca0994: aa0803f4     	mov	x20, x8
+ 1ca0998: f9400013     	ldr	x19, [x0]
+ 1ca099c: aa1303e0     	mov	x0, x19
+ 1ca09a0: 97ffffb6     	bl	0x1ca0878 <Application_System_Init+0x1095834>
+ 1ca09a4: f9400a60     	ldr	x0, [x19, #0x10]
+ 1ca09a8: f9000a7f     	str	xzr, [x19, #0x10]
+ 1ca09ac: f9000280     	str	x0, [x20]
+ 1ca09b0: aa1403e0     	mov	x0, x20
+ 1ca09b4: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 1ca09b8: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 1ca09bc: d65f03c0     	ret
+ 1ca09c0: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 1ca09c4: 910003fd     	mov	x29, sp
+ 1ca09c8: f9400001     	ldr	x1, [x0]
+ 1ca09cc: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 1ca09d0: f9401414     	ldr	x20, [x0, #0x28]
+ 1ca09d4: f90013f5     	str	x21, [sp, #0x20]
+ 1ca09d8: f9402415     	ldr	x21, [x0, #0x48]
+ 1ca09dc: b40001a1     	cbz	x1, 0x1ca0a10 <Application_System_Init+0x10959cc>
+ 1ca09e0: aa0003f3     	mov	x19, x0
+ 1ca09e4: 910022b5     	add	x21, x21, #0x8
+ 1ca09e8: eb1402bf     	cmp	x21, x20
+ 1ca09ec: 54000089     	b.ls	0x1ca09fc <Application_System_Init+0x10959b8>
+ 1ca09f0: f8408680     	ldr	x0, [x20], #0x8
+ 1ca09f4: 97b9dbbb     	bl	0xb178e0 <_ZdlPv@plt>
+ 1ca09f8: 17fffffc     	b	0x1ca09e8 <Application_System_Init+0x10959a4>
+ 1ca09fc: f9400260     	ldr	x0, [x19]
+ 1ca0a00: f94013f5     	ldr	x21, [sp, #0x20]
+ 1ca0a04: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 1ca0a08: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 1ca0a0c: 17b9dbb5     	b	0xb178e0 <_ZdlPv@plt>
+ 1ca0a10: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 1ca0a14: f94013f5     	ldr	x21, [sp, #0x20]
+ 1ca0a18: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 1ca0a1c: d65f03c0     	ret

@@ -1,0 +1,768 @@
+{
+  "created_utc": "2026-11-02T16:51:20.348847+00:00",
+  "run": "ap93r3setup-d8c86a95",
+  "receipt_sha256": "6615b0f2b2affa9d5e5b899468de81f1877f45c6a1146647f2dc2bdcd3e1a2e5",
+  "duration_seconds": 38.470645042019896,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "host_observer_error": null,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "fatal_markers": [],
+  "missing_markers_combined_serial_and_printk": [],
+  "receipt_serial_only_missing": [],
+  "marker_evidence_scope": "Rawserial flags retained; kernelprintkring independentlyrecovers interleavedkernelmarkers, neverrewritesreceipt",
+  "im_alive_last_complete_maps": {
+    "pid": 228,
+    "uptime": 35.7,
+    "byte_offset": 3134742,
+    "im_maps_lines": [
+      "00400000-00409000 r-xp 00000000 00:02 78                                 /usr/bin/im.elf",
+      "00418000-00419000 r--p 00008000 00:02 78                                 /usr/bin/im.elf",
+      "00419000-0041a000 rw-p 00009000 00:02 78                                 /usr/bin/im.elf"
+    ]
+  },
+  "im_complete_maps_samples": 23,
+  "CP_kernel_records": [
+    {
+      "LF_line": 849,
+      "text": "848 [60.929406] FX3_BACKUP_CP_PUBLIC_OWNER capture_only=0 exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+    },
+    {
+      "LF_line": 867,
+      "text": "866 [66.903437] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000030000000d00000000000000000000000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 868,
+      "text": "867 [66.924625] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=20 captured=20 raw=5602920000000000060000001a0000001f000000 epoch=1"
+    },
+    {
+      "LF_line": 869,
+      "text": "868 [66.925562] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 870,
+      "text": "869 [67.002750] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 871,
+      "text": "870 [67.114281] FX3_BACKUP_CP_UNHANDLED destination=0x928708f7 logical_bytes=16 captured=16 raw=5a019200010000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 873,
+      "text": "872 [67.193375] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x928708f7 source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 874,
+      "text": "873 [67.294750] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292004f00ffff epoch=1"
+    },
+    {
+      "LF_line": 875,
+      "text": "874 [67.318375] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000001a00000080ffffff94368e000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 876,
+      "text": "875 [67.319031] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 877,
+      "text": "876 [67.397156] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 878,
+      "text": "877 [67.452531] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292005200ffff epoch=1"
+    },
+    {
+      "LF_line": 879,
+      "text": "878 [67.491187] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 880,
+      "text": "879 [67.526938] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292003e000000 epoch=1"
+    },
+    {
+      "LF_line": 882,
+      "text": "881 [67.561156] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 883,
+      "text": "882 [67.596718] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 885,
+      "text": "884 [67.658031] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 886,
+      "text": "885 [67.690313] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=40 captured=40 raw=53029200120192000000000000000000ffffffffffffffff01000000010000000100ff0400000000 epoch=1"
+    },
+    {
+      "LF_line": 887,
+      "text": "886 [67.732844] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 888,
+      "text": "887 [67.806156] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 889,
+      "text": "888 [67.844125] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 890,
+      "text": "889 [67.879406] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 891,
+      "text": "890 [67.913781] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 892,
+      "text": "891 [67.949594] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 893,
+      "text": "892 [67.987062] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 894,
+      "text": "893 [68.207343] FX3_BACKUP_CP_UNHANDLED destination=0x909005c5 logical_bytes=44 captured=40 raw=01000000000000000000000000000000000000000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 895,
+      "text": "894 [68.233031] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x909005c5 source=0x809005c5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 898,
+      "text": "897 [223.402187] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000000d00000080ffffff00e78d0080ffffff8600000000000000c053030400000000 epoch=1"
+    },
+    {
+      "LF_line": 899,
+      "text": "898 [223.460938] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 907,
+      "text": "906 [338.926219] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=44 captured=40 raw=5202920000000000ffffffffffffffff000000000000000000000000ffffffff0000000003000000 epoch=1"
+    },
+    {
+      "LF_line": 908,
+      "text": "907 [339.058406] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 909,
+      "text": "908 [339.126531] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=5402920050000000 epoch=1"
+    },
+    {
+      "LF_line": 910,
+      "text": "909 [339.143562] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    }
+  ],
+  "native_reset_API_records": [],
+  "screen_records": [
+    {
+      "LF_line": 10556,
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7eda6ea4c0 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1\r"
+    },
+    {
+      "LF_line": 13236,
+      "text": "open screen: scr0039_boot -> scr0099_0001\r"
+    },
+    {
+      "LF_line": 13245,
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7eda6ea4c0 id1=0x2ae id2=0xfa id3=0x2ae three_reference_args_one_call=1 creation_not_yet_complete=1\r"
+    }
+  ],
+  "native_power_event_records": [
+    {
+      "LF_line": 10511,
+      "text": "FX3_BOOT_QUEUE_SEND tid=357 bytes=28 source=0x830128 raw=72000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1\r"
+    }
+  ],
+  "GPE_records": [
+    {
+      "LF_line": 16326,
+      "text": "FX3_GPE_CMD op=FillRect seq=0 async=1 fmt=0 w=640 h=480 dst_phys=0x43feb5100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 16455,
+      "text": "FX3_GPE_CMD op=FillRect seq=1 async=1 fmt=0 w=640 h=480 dst_phys=0x43feb5100 src_phys=0 flags=0x1ff result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 16520,
+      "text": "FX3_GPE_CMD op=BitBlit seq=2 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 16592,
+      "text": "FX3_GPE_CMD op=BitBlit seq=3 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 16663,
+      "text": "FX3_GPE_CMD op=BitBlit seq=4 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 16729,
+      "text": "FX3_GPE_CMD op=BitBlit seq=5 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 16797,
+      "text": "FX3_GPE_CMD op=BitBlit seq=6 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 16913,
+      "text": "FX3_GPE_CMD op=BitBlit seq=7 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 16989,
+      "text": "FX3_GPE_CMD op=BitBlit seq=8 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17058,
+      "text": "FX3_GPE_CMD op=BitBlit seq=9 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17126,
+      "text": "FX3_GPE_CMD op=BitBlit seq=10 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17195,
+      "text": "FX3_GPE_CMD op=BitBlit seq=11 async=1 fmt=0 w=106 h=42 dst_phys=0x43feb5100 src_phys=0x410c643c0 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 17268,
+      "text": "FX3_GPE_CMD op=BitBlit seq=12 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17397,
+      "text": "FX3_GPE_CMD op=BitBlit seq=13 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17466,
+      "text": "FX3_GPE_CMD op=BitBlit seq=14 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17543,
+      "text": "FX3_GPE_CMD op=BitBlit seq=15 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17615,
+      "text": "FX3_GPE_CMD op=BitBlit seq=16 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17682,
+      "text": "FX3_GPE_CMD op=BitBlit seq=17 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17801,
+      "text": "FX3_GPE_CMD op=BitBlit seq=18 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17881,
+      "text": "FX3_GPE_CMD op=BitBlit seq=19 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 17951,
+      "text": "FX3_GPE_CMD op=BitBlit seq=20 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18018,
+      "text": "FX3_GPE_CMD op=BitBlit seq=21 async=1 fmt=0 w=96 h=42 dst_phys=0x43feb5100 src_phys=0x410c65680 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 18140,
+      "text": "FX3_GPE_CMD op=BitBlit seq=22 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18218,
+      "text": "FX3_GPE_CMD op=BitBlit seq=23 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18285,
+      "text": "FX3_GPE_CMD op=BitBlit seq=24 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18356,
+      "text": "FX3_GPE_CMD op=BitBlit seq=25 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18424,
+      "text": "FX3_GPE_CMD op=BitBlit seq=26 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18493,
+      "text": "FX3_GPE_CMD op=BitBlit seq=27 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18608,
+      "text": "FX3_GPE_CMD op=BitBlit seq=28 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18685,
+      "text": "FX3_GPE_CMD op=BitBlit seq=29 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18751,
+      "text": "FX3_GPE_CMD op=BitBlit seq=30 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 18821,
+      "text": "FX3_GPE_CMD op=BitBlit seq=31 async=1 fmt=0 w=121 h=42 dst_phys=0x43feb5100 src_phys=0x410c66680 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 18945,
+      "text": "FX3_GPE_CMD op=BitBlit seq=32 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19011,
+      "text": "FX3_GPE_CMD op=BitBlit seq=33 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19081,
+      "text": "FX3_GPE_CMD op=BitBlit seq=34 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19151,
+      "text": "FX3_GPE_CMD op=BitBlit seq=35 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19216,
+      "text": "FX3_GPE_CMD op=BitBlit seq=36 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19286,
+      "text": "FX3_GPE_CMD op=BitBlit seq=37 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19352,
+      "text": "FX3_GPE_CMD op=BitBlit seq=38 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19418,
+      "text": "FX3_GPE_CMD op=BitBlit seq=39 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19484,
+      "text": "FX3_GPE_CMD op=BitBlit seq=40 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19550,
+      "text": "FX3_GPE_CMD op=BitBlit seq=41 async=1 fmt=0 w=117 h=42 dst_phys=0x43feb5100 src_phys=0x410c67bc0 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 19616,
+      "text": "FX3_GPE_CMD op=BitBlit seq=42 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19737,
+      "text": "FX3_GPE_CMD op=BitBlit seq=43 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19795,
+      "text": "FX3_GPE_CMD op=BitBlit seq=44 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19859,
+      "text": "FX3_GPE_CMD op=BitBlit seq=45 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 19934,
+      "text": "FX3_GPE_CMD op=BitBlit seq=46 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20003,
+      "text": "FX3_GPE_CMD op=BitBlit seq=47 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20072,
+      "text": "FX3_GPE_CMD op=BitBlit seq=48 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20142,
+      "text": "FX3_GPE_CMD op=BitBlit seq=49 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20208,
+      "text": "FX3_GPE_CMD op=BitBlit seq=50 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20338,
+      "text": "FX3_GPE_CMD op=BitBlit seq=51 async=1 fmt=0 w=107 h=42 dst_phys=0x43feb5100 src_phys=0x410c69100 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 20408,
+      "text": "FX3_GPE_CMD op=BitBlit seq=52 async=1 fmt=0 w=4 h=2 dst_phys=0x43feb5100 src_phys=0x410924e00 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20526,
+      "text": "FX3_GPE_CMD op=BitBlit seq=53 async=1 fmt=0 w=4 h=5 dst_phys=0x43feb5100 src_phys=0x410924e00 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20594,
+      "text": "FX3_GPE_CMD op=BitBlit seq=54 async=1 fmt=0 w=4 h=2 dst_phys=0x43feb5100 src_phys=0x410924e00 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20660,
+      "text": "FX3_GPE_CMD op=BitBlit seq=55 async=1 fmt=0 w=4 h=2 dst_phys=0x43feb5100 src_phys=0x4109243c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20736,
+      "text": "FX3_GPE_CMD op=BitBlit seq=56 async=1 fmt=0 w=4 h=76 dst_phys=0x43feb5100 src_phys=0x4109243c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20806,
+      "text": "FX3_GPE_CMD op=BitBlit seq=57 async=1 fmt=0 w=4 h=2 dst_phys=0x43feb5100 src_phys=0x4109243c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20873,
+      "text": "FX3_GPE_CMD op=BitBlit seq=58 async=1 fmt=0 w=640 h=60 dst_phys=0x43feb5100 src_phys=0x4105243c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 20941,
+      "text": "FX3_GPE_CMD op=BitBlit seq=59 async=1 fmt=0 w=640 h=60 dst_phys=0x43feb5100 src_phys=0x410537000 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21008,
+      "text": "FX3_GPE_CMD op=BitBlit seq=60 async=1 fmt=0 w=100 h=42 dst_phys=0x43feb5100 src_phys=0x410c6b900 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 21078,
+      "text": "FX3_GPE_CMD op=BitBlit seq=61 async=1 fmt=0 w=58 h=36 dst_phys=0x43feb5100 src_phys=0x410c6cbc0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21201,
+      "text": "FX3_GPE_CMD op=BitBlit seq=62 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21259,
+      "text": "FX3_GPE_CMD op=BitBlit seq=63 async=1 fmt=0 w=33 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21336,
+      "text": "FX3_GPE_CMD op=BitBlit seq=64 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21403,
+      "text": "FX3_GPE_CMD op=BitBlit seq=65 async=1 fmt=0 w=6 h=32 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21475,
+      "text": "FX3_GPE_CMD op=BitBlit seq=66 async=1 fmt=0 w=33 h=32 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21536,
+      "text": "FX3_GPE_CMD op=BitBlit seq=67 async=1 fmt=0 w=6 h=32 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21608,
+      "text": "FX3_GPE_CMD op=BitBlit seq=68 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21674,
+      "text": "FX3_GPE_CMD op=BitBlit seq=69 async=1 fmt=0 w=33 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21789,
+      "text": "FX3_GPE_CMD op=BitBlit seq=70 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 21801,
+      "text": "FX3_GPE_CMD op=Flush seq=71 async=0 fmt=0 w=0 h=0 dst_phys=0 src_phys=0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=0 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30557,
+      "text": "FX3_GPE_CMD op=FillRect seq=72 async=1 fmt=0 w=640 h=480 dst_phys=0x43ae96100 src_phys=0 flags=0xff result=5 reason=2 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30561,
+      "text": "FX3_GPE_CMD op=FillRect seq=73 async=1 fmt=0 w=640 h=480 dst_phys=0x43ae96100 src_phys=0 flags=0x1ff result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0[ \r"
+    },
+    {
+      "LF_line": 30569,
+      "text": "FX3_GPE_CMD op=BitBlit seq=74 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30571,
+      "text": "FX3_GPE_CMD op=BitBlit seq=75 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30574,
+      "text": "FX3_GPE_CMD op=BitBlit seq=76 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30625,
+      "text": "FX3_GPE_CMD op=BitBlit seq=77 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30628,
+      "text": "FX3_GPE_CMD op=BitBlit seq=78 async=1 fmt=0 w=308 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30640,
+      "text": "FX3_GPE_CMD op=BitBlit seq=79 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30642,
+      "text": "FX3_GPE_CMD op=BitBlit seq=80 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30646,
+      "text": "FX3_GPE_CMD op=BitBlit seq=81 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30648,
+      "text": "FX3_GPE_CMD op=BitBlit seq=82 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30651,
+      "text": "FX3_GPE_CMD op=BitBlit seq=83 async=1 fmt=0 w=106 h=42 dst_phys=0x43ae96100 src_phys=0x410c643c0 flags=0x10000000e0001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 30653,
+      "text": "FX3_GPE_CMD op=BitBlit seq=84 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30655,
+      "text": "FX3_GPE_CMD op=BitBlit seq=85 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30658,
+      "text": "FX3_GPE_CMD op=BitBlit seq=86 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30662,
+      "text": "FX3_GPE_CMD op=BitBlit seq=87 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30665,
+      "text": "FX3_GPE_CMD op=BitBlit seq=88 async=1 fmt=0 w=308 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30671,
+      "text": "FX3_GPE_CMD op=BitBlit seq=89 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30673,
+      "text": "FX3_GPE_CMD op=BitBlit seq=90 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30676,
+      "text": "FX3_GPE_CMD op=BitBlit seq=91 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30678,
+      "text": "FX3_GPE_CMD op=BitBlit seq=92 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30729,
+      "text": "FX3_GPE_CMD op=BitBlit seq=93 async=1 fmt=0 w=96 h=42 dst_phys=0x43ae96100 src_phys=0x410c65680 flags=0x10000000e0001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 30739,
+      "text": "FX3_GPE_CMD op=BitBlit seq=94 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30743,
+      "text": "FX3_GPE_CMD op=BitBlit seq=95 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30746,
+      "text": "FX3_GPE_CMD op=BitBlit seq=96 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30748,
+      "text": "FX3_GPE_CMD op=BitBlit seq=97 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30751,
+      "text": "FX3_GPE_CMD op=BitBlit seq=98 async=1 fmt=0 w=308 h=40 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30756,
+      "text": "FX3_GPE_CMD op=BitBlit seq=99 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30761,
+      "text": "FX3_GPE_CMD op=BitBlit seq=100 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30763,
+      "text": "FX3_GPE_CMD op=BitBlit seq=101 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30765,
+      "text": "FX3_GPE_CMD op=BitBlit seq=102 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x41092d1c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0[ 1150.497156] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1022\r"
+    },
+    {
+      "LF_line": 30817,
+      "text": "FX3_GPE_CMD op=BitBlit seq=103 async=1 fmt=0 w=121 h=42 dst_phys=0x43ae96100 src_phys=0x410c66680 flags=0x10000000e0001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 30830,
+      "text": "FX3_GPE_CMD op=BitBlit seq=104 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30832,
+      "text": "FX3_GPE_CMD op=BitBlit seq=105 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30834,
+      "text": "FX3_GPE_CMD op=BitBlit seq=106 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30836,
+      "text": "FX3_GPE_CMD op=BitBlit seq=107 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30838,
+      "text": "FX3_GPE_CMD op=BitBlit seq=108 async=1 fmt=0 w=308 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30847,
+      "text": "FX3_GPE_CMD op=BitBlit seq=109 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30849,
+      "text": "FX3_GPE_CMD op=BitBlit seq=110 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30851,
+      "text": "FX3_GPE_CMD op=BitBlit seq=111 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30855,
+      "text": "FX3_GPE_CMD op=BitBlit seq=112 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30857,
+      "text": "FX3_GPE_CMD op=BitBlit seq=113 async=1 fmt=0 w=117 h=42 dst_phys=0x43ae96100 src_phys=0x410c67bc0 flags=0x10000000e0001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 30907,
+      "text": "FX3_GPE_CMD op=BitBlit seq=114 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30920,
+      "text": "FX3_GPE_CMD op=BitBlit seq=115 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30922,
+      "text": "FX3_GPE_CMD op=BitBlit seq=116 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30924,
+      "text": "FX3_GPE_CMD op=BitBlit seq=117 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30932,
+      "text": "FX3_GPE_CMD op=BitBlit seq=118 async=1 fmt=0 w=308 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30934,
+      "text": "FX3_GPE_CMD op=BitBlit seq=119 async=1 fmt=0 w=6 h=40 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30936,
+      "text": "[ 1153.965093] UDIF: cdevFX3_GPE_CMD op=BitBlit seq=120 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0_\r"
+    },
+    {
+      "LF_line": 30987,
+      "text": "FX3_GPE_CMD op=BitBlit seq=121 async=1 fmt=0 w=308 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 30998,
+      "text": "FX3_GPE_CMD op=BitBlit seq=122 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410924f80 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31001,
+      "text": "FX3_GPE_CMD op=BitBlit seq=123 async=1 fmt=0 w=107 h=42 dst_phys=0x43ae96100 src_phys=0x410c69100 flags=0x10000000e0001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 31010,
+      "text": "FX3_GPE_CMD op=BitBlit seq=124 async=1 fmt=0 w=4 h=2 dst_phys=0x43ae96100 src_phys=0x410924e00 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31012,
+      "text": "FX3_GPE_CMD op=BitBlit seq=125 async=1 fmt=0 w=4 h=5 dst_phys=0x43ae96100 src_phys=0x410924e00 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31014,
+      "text": "FX3_GPE_CMD op=BitBlit seq=126 async=1 fmt=0 w=4 h=2 dst_phys=0x43ae96100 src_phys=0x410924e00 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31016,
+      "text": "FX3_GPE_CMD op=BitBlit seq=127 async=1 fmt=0 w=4 h=2 dst_phys=0x43ae96100 src_phys=0x4109243c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31069,
+      "text": "FX3_GPE_CMD op=BitBlit seq=128 async=1 fmt=0 w=4 h=76 dst_phys=0x43ae96100 src_phys=0x4109243c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31079,
+      "text": "FX3_GPE_CMD op=BitBlit seq=129 async=1 fmt=0 w=4 h=2 dst_phys=0x43ae96100 src_phys=0x4109243c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31082,
+      "text": "FX3_GPE_CMD op=BitBlit seq=130 async=1 fmt=0 w=640 h=60 dst_phys=0x43ae96100 src_phys=0x4105243c0 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31088,
+      "text": "FX3_GPE_CMD op=BitBlit seq=131 async=1 fmt=0 w=640 h=60 dst_phys=0x43ae96100 src_phys=0x410537000 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31093,
+      "text": "FX3_GPE_CMD op=BitBlit seq=132 async=1 fmt=0 w=142 h=42 dst_phys=0x43ae96100 src_phys=0x410c6de00 flags=0x10000000e0001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 31095,
+      "text": "FX3_GPE_CMD op=BitBlit seq=133 async=1 fmt=0 w=58 h=36 dst_phys=0x43ae96100 src_phys=0x410c6f600 flags=0x1000000000001 result=5 reason=2 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 31097,
+      "text": "FX3_GPE_CMD op=BitBlit seq=134 async=1 fmt=0 w=6 h=6 dst_phys=0x43ae96100 src_phys=0x410935400 flags=0x1000000000001 result=5"
+    }
+  ],
+  "backup_snapshot": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap93r3setup-d8c86a95/backup-after-shutdown.bin",
+    "exists": true,
+    "scope": "QuiescedreservedRAM; filenamealone isnotshutdowncompletion",
+    "bytes": 2232320,
+    "sha256": "2cefc2c11729311168836685f5c0e7d4d52d50dcf53ab3aabc8029452eb4191b",
+    "CP_second_bank_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+    "CP_second_bank_matches_pinned_seed": true
+  },
+  "timeline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93r3setup-d8c86a95-post11a-requests.json",
+  "original_menu_verified": false,
+  "AP89_boot_executed": true,
+  "early_stop_reason": "AP90 first new GPE rejection; quiesce and review without further changes",
+  "AP93_executed": true,
+  "symbol_lookup_error": false,
+  "RM_input_observation": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93r3setup-d8c86a95-rm-input-observation.json",
+  "GPE_statistics": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93r3setup-d8c86a95-gpe-statistics.json",
+  "QMP_readback": {
+    "physical": "0x43feb5100",
+    "bytes": 614400,
+    "geometry": [
+      640,
+      480
+    ],
+    "logical_fmt": 0,
+    "unique_pixels": 14,
+    "sha256": "2485079bdfe8c91590235540c1929a813f03a96b17cae33b32d53539e77e708e",
+    "independent_QMP": true,
+    "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap93r3setup-d8c86a95/ap93-final-QMP-logical-fmt0.png"
+  },
+  "no_card_or_standby_pixels_verified": false,
+  "synthetic_key_events": 2,
+  "native_init_timeout_count": 0,
+  "native_Mount_count": 0,
+  "RM_unknown_count": 0
+}

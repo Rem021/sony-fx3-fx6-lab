@@ -1,0 +1,94 @@
+{
+  "source_only": true,
+  "reference": "Linux v4.9 upstream AArch64, not actual FX3 kernel",
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/mprotect.c",
+      "sha256": "c8ce613d4ed6560ec11bea5e8487f9573a9815733b81d441845b858ed0183d33",
+      "first_line": 94,
+      "last_line": 115,
+      "range_sha256": "be8301a1a7ac413b6643ff66dac498f3b4d611f274d0b51d0f1110e86dec1009",
+      "required_tokens": [
+        "ptep_modify_prot_commit"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/mprotect.c",
+      "sha256": "c8ce613d4ed6560ec11bea5e8487f9573a9815733b81d441845b858ed0183d33",
+      "first_line": 218,
+      "last_line": 240,
+      "range_sha256": "68029bf40bca1d70899e912d9a5810c108410bbe1bd2a4245bb5b2785f65ab22",
+      "required_tokens": [
+        "flush_cache_range"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/pgtable-generic.h",
+      "sha256": "fdc5a713f959a57e7003ba660e37dc39ca241bcfb85fc163c73b278cb65225c1",
+      "first_line": 410,
+      "last_line": 420,
+      "range_sha256": "0774a83611c13baca9a8d0ca23bb1b62f423d84deb9aeaeaa9bf2d8f16041127",
+      "required_tokens": [
+        "set_pte_at"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/pgtable-generic.h",
+      "sha256": "fdc5a713f959a57e7003ba660e37dc39ca241bcfb85fc163c73b278cb65225c1",
+      "first_line": 443,
+      "last_line": 453,
+      "range_sha256": "cf43b4ba9861c3f98e31be841559ef40c7c98d72cdd3fc0d1d0fd3334383938e",
+      "required_tokens": [
+        "__ptep_modify_prot_commit"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/pgtable.h",
+      "sha256": "0f0aa31482cf38bba336927a0e3445b080f376dfdb13fd6978bf3bb6abb0a757",
+      "first_line": 207,
+      "last_line": 218,
+      "range_sha256": "37f264e3369d2b56476db0f41d0e0cb3ac609013f792b42cd8f413a6681f6e0b",
+      "required_tokens": [
+        "__sync_icache_dcache"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/pgtable.h",
+      "sha256": "0f0aa31482cf38bba336927a0e3445b080f376dfdb13fd6978bf3bb6abb0a757",
+      "first_line": 709,
+      "last_line": 724,
+      "range_sha256": "97fbab5d37b7c6278725fd0cca4cba909004ec152ccc1750595ca307dfd07805",
+      "required_tokens": [
+        "set_pte_at"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/flush.c",
+      "sha256": "029c10c7c509e308f5468296a9ef00b8c7fc8c976e38590ae659f101a1bcee3b",
+      "first_line": 28,
+      "last_line": 45,
+      "range_sha256": "88a1f8a078e7a1275aef69b133449d57910f8e90d7c4167da9eae842fed323f0",
+      "required_tokens": [
+        "VM_EXEC",
+        "flush_icache_range"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/flush.c",
+      "sha256": "029c10c7c509e308f5468296a9ef00b8c7fc8c976e38590ae659f101a1bcee3b",
+      "first_line": 68,
+      "last_line": 77,
+      "range_sha256": "4e3bb6d9f066b75abe2fccb8b106470cfd8a2d1074aa5a4f25ca673dd4a7dd00",
+      "required_tokens": [
+        "PG_dcache_clean",
+        "sync_icache_aliases"
+      ]
+    }
+  ],
+  "fresh_anonymous_pages_copied_before_first_executable_permission": true,
+  "reference_path": "mprotect -> generic ptep_modify_prot_commit -> arm64 set_pte_at -> __sync_icache_dcache",
+  "own_ARM64_model_checks_permissions_and_file_mapping_independence_only": true,
+  "Unicorn_models_real_instruction_cache": false,
+  "Sony_current_kernel_cache_or_anonymous_execution_verified": false,
+  "first_flash_released": false
+}

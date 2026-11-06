@@ -1,0 +1,32 @@
+009e6c5e push       {r4, r5, r6, r7, lr}
+009e6c60 add        r7, sp, #0xc
+009e6c62 str        fp, [sp, #-0x4]!
+009e6c66 mov        r4, r0
+009e6c68 mov        r2, r1
+009e6c6a ldr        r0, [r4]
+009e6c6c adds       r1, r0, #1
+009e6c6e beq        #0x9e6c86
+009e6c70 ldrb       r1, [r4, #6]
+009e6c72 movs       r6, #0
+009e6c74 cbz        r1, #0x9e6c8a
+009e6c76 ldrh       r1, [r4, #4]
+009e6c78 cmp        r1, #0
+009e6c7a it         ne
+009e6c7c movne      r1, #2
+009e6c7e bl         #0x44de7c
+009e6c82 mov        r5, r0
+009e6c84 b          #0x9e6c8c
+009e6c86 movs       r5, #0
+009e6c88 b          #0x9e6ca2
+009e6c8a movs       r5, #0
+009e6c8c mov.w      r0, #-1
+009e6c90 movs       r1, #0x40
+009e6c92 str        r0, [r4]
+009e6c94 add.w      r0, r4, #0x10
+009e6c98 strh       r6, [r4, #4]
+009e6c9a str        r6, [r4, #8]
+009e6c9c strb       r6, [r4, #6]
+009e6c9e blx        #0x558af4
+009e6ca2 mov        r0, r5
+009e6ca4 ldr        fp, [sp], #4
+009e6ca8 pop        {r4, r5, r6, r7, pc}

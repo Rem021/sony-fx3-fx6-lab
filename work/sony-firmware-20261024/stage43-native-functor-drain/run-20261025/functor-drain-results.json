@@ -1,0 +1,4178 @@
+{
+  "status": "PASS_ORIGINAL_CONSTRUCTOR_FUNCTOR_DRAIN_AND_ORDERED_CONTEXT_SCOPE",
+  "created_utc": "2026-10-26T01:01:51.793820+00:00",
+  "metadata": [
+    {
+      "kind": "START_sys_v",
+      "table_header_offset": "0x37f118",
+      "typeinfo_offset": "0x330c50",
+      "name_offset": "0x330bd0",
+      "type_name": "N7mc_util13state_machine18state_machine_backIN5imola13imola_enc_sm_EE23process_event_functor_iINS2_11enc_sys_v_tEEE",
+      "address_point": "0xffffffc00137f128",
+      "generic_virtual_operator": "0xffffffc001253db4",
+      "typed_virtual_body": "0xffffffc001253ec4"
+    },
+    {
+      "kind": "STOP_done",
+      "table_header_offset": "0x37f178",
+      "typeinfo_offset": "0x330d90",
+      "name_offset": "0x330d10",
+      "type_name": "N7mc_util13state_machine18state_machine_backIN5imola13imola_enc_sm_EE23process_event_functor_iINS2_15enc_stop_done_tEEE",
+      "address_point": "0xffffffc00137f188",
+      "generic_virtual_operator": "0xffffffc001253db4",
+      "typed_virtual_body": "0xffffffc001253ee4"
+    }
+  ],
+  "seeded_constructor_prefix": {
+    "start_offset": "0x253b38",
+    "reason": "boundary: before_unbound_runtime_clear",
+    "stop_pc": "0xffffffc00102f67c",
+    "pcs": [
+      "0xffffffc001253b38",
+      "0xffffffc001253b3c",
+      "0xffffffc001253b40",
+      "0xffffffc001253b44",
+      "0xffffffc001253b48",
+      "0xffffffc001253b4c",
+      "0xffffffc001253b50",
+      "0xffffffc001253b54",
+      "0xffffffc001253b58",
+      "0xffffffc001253b5c",
+      "0xffffffc001253b60",
+      "0xffffffc001253b64",
+      "0xffffffc001253b68",
+      "0xffffffc001253b6c",
+      "0xffffffc001253b70",
+      "0xffffffc001253b74",
+      "0xffffffc001253b78",
+      "0xffffffc001253b7c",
+      "0xffffffc001253b80",
+      "0xffffffc001253b84",
+      "0xffffffc001253b88",
+      "0xffffffc001253b8c",
+      "0xffffffc001253b90",
+      "0xffffffc001253b94",
+      "0xffffffc001253b98",
+      "0xffffffc001253b9c",
+      "0xffffffc001253ba0",
+      "0xffffffc001253ba4",
+      "0xffffffc001253ba8",
+      "0xffffffc001253bac",
+      "0xffffffc001253bb0",
+      "0xffffffc001253bb4",
+      "0xffffffc001253bb8",
+      "0xffffffc001253bbc",
+      "0xffffffc001253bc0",
+      "0xffffffc001253bc4",
+      "0xffffffc001253bc8",
+      "0xffffffc001253bcc",
+      "0xffffffc001253bd0",
+      "0xffffffc001253bd4",
+      "0xffffffc001253bd8",
+      "0xffffffc001253bdc",
+      "0xffffffc001253be0",
+      "0xffffffc001253be4",
+      "0xffffffc001253be8",
+      "0xffffffc001253bec",
+      "0xffffffc001253bf0",
+      "0xffffffc001253bf4",
+      "0xffffffc001253bf8",
+      "0xffffffc001253bfc",
+      "0xffffffc001253c00",
+      "0xffffffc001253c04",
+      "0xffffffc001253c08",
+      "0xffffffc001253c0c",
+      "0xffffffc001253c10",
+      "0xffffffc001253c14",
+      "0xffffffc001253c18",
+      "0xffffffc001253c1c",
+      "0xffffffc001253c20",
+      "0xffffffc001253c24",
+      "0xffffffc001253c28",
+      "0xffffffc001253c2c",
+      "0xffffffc001253c30",
+      "0xffffffc001253c34",
+      "0xffffffc001253c38",
+      "0xffffffc001253c3c",
+      "0xffffffc001253c40",
+      "0xffffffc001253c44",
+      "0xffffffc001253c48",
+      "0xffffffc001253c4c",
+      "0xffffffc001253c50",
+      "0xffffffc001253c54",
+      "0xffffffc001253c58",
+      "0xffffffc001253c5c",
+      "0xffffffc001253c60",
+      "0xffffffc001253c64",
+      "0xffffffc001253c68",
+      "0xffffffc001253c6c",
+      "0xffffffc001253c70",
+      "0xffffffc001253c74",
+      "0xffffffc001253c78",
+      "0xffffffc001253c7c",
+      "0xffffffc001253c80",
+      "0xffffffc001253c84",
+      "0xffffffc001253c88",
+      "0xffffffc001253c8c",
+      "0xffffffc001253c90",
+      "0xffffffc001253c94",
+      "0xffffffc001253c98",
+      "0xffffffc001253c9c",
+      "0xffffffc001253ca0",
+      "0xffffffc001253ca4",
+      "0xffffffc001253ca8",
+      "0xffffffc001253cac",
+      "0xffffffc001253cb0",
+      "0xffffffc001253cb4",
+      "0xffffffc001253cb8",
+      "0xffffffc001253cbc",
+      "0xffffffc001253cc0",
+      "0xffffffc001253cc4",
+      "0xffffffc001253cc8",
+      "0xffffffc001253ccc",
+      "0xffffffc001253cd0",
+      "0xffffffc001253cd4",
+      "0xffffffc001253cd8",
+      "0xffffffc001253cdc",
+      "0xffffffc001253ce0",
+      "0xffffffc001253ce4",
+      "0xffffffc001253ce8",
+      "0xffffffc001253cec",
+      "0xffffffc001253cf0",
+      "0xffffffc001253cf4",
+      "0xffffffc001253cf8",
+      "0xffffffc001253cfc",
+      "0xffffffc001253d00",
+      "0xffffffc001253d04",
+      "0xffffffc001253d08",
+      "0xffffffc001253d0c",
+      "0xffffffc001253d10",
+      "0xffffffc001253d14",
+      "0xffffffc001253d18",
+      "0xffffffc001253d1c",
+      "0xffffffc001253d20",
+      "0xffffffc001253d24",
+      "0xffffffc001253d28",
+      "0xffffffc001253d2c",
+      "0xffffffc001253d30",
+      "0xffffffc001253d34",
+      "0xffffffc001253d38",
+      "0xffffffc001253d3c",
+      "0xffffffc001253d40",
+      "0xffffffc001253d44",
+      "0xffffffc001253d48",
+      "0xffffffc001253d4c",
+      "0xffffffc001253d50",
+      "0xffffffc001253d54",
+      "0xffffffc001253d58",
+      "0xffffffc001253d5c",
+      "0xffffffc001253d60",
+      "0xffffffc001253d64",
+      "0xffffffc001253d68",
+      "0xffffffc001253d6c",
+      "0xffffffc001253d70",
+      "0xffffffc001253d74",
+      "0xffffffc001253d78",
+      "0xffffffc001253d7c",
+      "0xffffffc001253d80",
+      "0xffffffc001253d84",
+      "0xffffffc001253d88",
+      "0xffffffc001253d8c",
+      "0xffffffc00102f67c"
+    ],
+    "writes": [
+      {
+        "pc": "0xffffffc001253b38",
+        "address": "0x10007fe0",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253b3c",
+        "address": "0x10007ff0",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253b3c",
+        "address": "0x10007ff8",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253b5c",
+        "address": "0x11240160",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253b64",
+        "address": "0x11240208",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253b74",
+        "address": "0x11240200",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253b7c",
+        "address": "0x11240230",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253b8c",
+        "address": "0x11240228",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253b94",
+        "address": "0x11240250",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253ba4",
+        "address": "0x11240248",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253bac",
+        "address": "0x11240270",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253bbc",
+        "address": "0x11240268",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253bc4",
+        "address": "0x11240310",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253bd4",
+        "address": "0x11240308",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253bdc",
+        "address": "0x11240330",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253bec",
+        "address": "0x11240328",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253bf4",
+        "address": "0x11240370",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253c04",
+        "address": "0x11240368",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253c0c",
+        "address": "0x112403b0",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253c1c",
+        "address": "0x112403a8",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253c24",
+        "address": "0x112403d0",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253c34",
+        "address": "0x112403c8",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253c3c",
+        "address": "0x11240438",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253c4c",
+        "address": "0x11240430",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253c54",
+        "address": "0x11240468",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253c64",
+        "address": "0x11240460",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253c6c",
+        "address": "0x11240488",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253c7c",
+        "address": "0x11240480",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253c8c",
+        "address": "0x112404b0",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253c94",
+        "address": "0x112404a8",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253c9c",
+        "address": "0x11240000",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253ca0",
+        "address": "0x112404c8",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253ca8",
+        "address": "0x112404f0",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253cb4",
+        "address": "0x11240008",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253cbc",
+        "address": "0x11240168",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253cc0",
+        "address": "0x1124016c",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253cc4",
+        "address": "0x112404e8",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253ccc",
+        "address": "0x1124020c",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253cd0",
+        "address": "0x11240234",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253cd4",
+        "address": "0x11240510",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253ce0",
+        "address": "0x11240254",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253ce8",
+        "address": "0x11240274",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253cec",
+        "address": "0x11240314",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253cf0",
+        "address": "0x11240508",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253cf8",
+        "address": "0x11240334",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253cfc",
+        "address": "0x11240374",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d00",
+        "address": "0x11240530",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253d0c",
+        "address": "0x112403b4",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d14",
+        "address": "0x112403d4",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d18",
+        "address": "0x1124043c",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d1c",
+        "address": "0x11240528",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253d24",
+        "address": "0x1124046c",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d28",
+        "address": "0x1124048c",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d2c",
+        "address": "0x11240558",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253d38",
+        "address": "0x112404b4",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d40",
+        "address": "0x112404d0",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253d44",
+        "address": "0x112404d4",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d48",
+        "address": "0x11240550",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253d50",
+        "address": "0x112404f4",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d54",
+        "address": "0x11240514",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d58",
+        "address": "0x11240578",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253d64",
+        "address": "0x11240534",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d6c",
+        "address": "0x1124055c",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d70",
+        "address": "0x1124057c",
+        "size": 1
+      },
+      {
+        "pc": "0xffffffc001253d74",
+        "address": "0x11240570",
+        "size": 8
+      },
+      {
+        "pc": "0xffffffc001253d7c",
+        "address": "0x11240598",
+        "size": 4
+      },
+      {
+        "pc": "0xffffffc001253d80",
+        "address": "0x11240590",
+        "size": 8
+      }
+    ],
+    "x0_to_x5": [
+      "0x112405a0",
+      "0x0",
+      "0x58",
+      "0x0",
+      "0x0",
+      "0x0"
+    ],
+    "native_output_or_diagnostic_adapters": false,
+    "label": "original state-machine constructor prefix",
+    "scope": "Original constructor stores through first runtime-clear call only. Global singleton binding, both runtime clears and complete state initialization unexecuted.",
+    "active_byte_at_stop": 165,
+    "queue_bytes_at_stop": "a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5",
+    "selected_vtables_created_by_original_stores": true
+  },
+  "scheduled_cases": [
+    {
+      "queued_kind": "START_sys_v",
+      "original_fragments": [
+        {
+          "start_offset": "0x253b38",
+          "reason": "boundary: before_unbound_runtime_clear",
+          "stop_pc": "0xffffffc00102f67c",
+          "pcs": [
+            "0xffffffc001253b38",
+            "0xffffffc001253b3c",
+            "0xffffffc001253b40",
+            "0xffffffc001253b44",
+            "0xffffffc001253b48",
+            "0xffffffc001253b4c",
+            "0xffffffc001253b50",
+            "0xffffffc001253b54",
+            "0xffffffc001253b58",
+            "0xffffffc001253b5c",
+            "0xffffffc001253b60",
+            "0xffffffc001253b64",
+            "0xffffffc001253b68",
+            "0xffffffc001253b6c",
+            "0xffffffc001253b70",
+            "0xffffffc001253b74",
+            "0xffffffc001253b78",
+            "0xffffffc001253b7c",
+            "0xffffffc001253b80",
+            "0xffffffc001253b84",
+            "0xffffffc001253b88",
+            "0xffffffc001253b8c",
+            "0xffffffc001253b90",
+            "0xffffffc001253b94",
+            "0xffffffc001253b98",
+            "0xffffffc001253b9c",
+            "0xffffffc001253ba0",
+            "0xffffffc001253ba4",
+            "0xffffffc001253ba8",
+            "0xffffffc001253bac",
+            "0xffffffc001253bb0",
+            "0xffffffc001253bb4",
+            "0xffffffc001253bb8",
+            "0xffffffc001253bbc",
+            "0xffffffc001253bc0",
+            "0xffffffc001253bc4",
+            "0xffffffc001253bc8",
+            "0xffffffc001253bcc",
+            "0xffffffc001253bd0",
+            "0xffffffc001253bd4",
+            "0xffffffc001253bd8",
+            "0xffffffc001253bdc",
+            "0xffffffc001253be0",
+            "0xffffffc001253be4",
+            "0xffffffc001253be8",
+            "0xffffffc001253bec",
+            "0xffffffc001253bf0",
+            "0xffffffc001253bf4",
+            "0xffffffc001253bf8",
+            "0xffffffc001253bfc",
+            "0xffffffc001253c00",
+            "0xffffffc001253c04",
+            "0xffffffc001253c08",
+            "0xffffffc001253c0c",
+            "0xffffffc001253c10",
+            "0xffffffc001253c14",
+            "0xffffffc001253c18",
+            "0xffffffc001253c1c",
+            "0xffffffc001253c20",
+            "0xffffffc001253c24",
+            "0xffffffc001253c28",
+            "0xffffffc001253c2c",
+            "0xffffffc001253c30",
+            "0xffffffc001253c34",
+            "0xffffffc001253c38",
+            "0xffffffc001253c3c",
+            "0xffffffc001253c40",
+            "0xffffffc001253c44",
+            "0xffffffc001253c48",
+            "0xffffffc001253c4c",
+            "0xffffffc001253c50",
+            "0xffffffc001253c54",
+            "0xffffffc001253c58",
+            "0xffffffc001253c5c",
+            "0xffffffc001253c60",
+            "0xffffffc001253c64",
+            "0xffffffc001253c68",
+            "0xffffffc001253c6c",
+            "0xffffffc001253c70",
+            "0xffffffc001253c74",
+            "0xffffffc001253c78",
+            "0xffffffc001253c7c",
+            "0xffffffc001253c80",
+            "0xffffffc001253c84",
+            "0xffffffc001253c88",
+            "0xffffffc001253c8c",
+            "0xffffffc001253c90",
+            "0xffffffc001253c94",
+            "0xffffffc001253c98",
+            "0xffffffc001253c9c",
+            "0xffffffc001253ca0",
+            "0xffffffc001253ca4",
+            "0xffffffc001253ca8",
+            "0xffffffc001253cac",
+            "0xffffffc001253cb0",
+            "0xffffffc001253cb4",
+            "0xffffffc001253cb8",
+            "0xffffffc001253cbc",
+            "0xffffffc001253cc0",
+            "0xffffffc001253cc4",
+            "0xffffffc001253cc8",
+            "0xffffffc001253ccc",
+            "0xffffffc001253cd0",
+            "0xffffffc001253cd4",
+            "0xffffffc001253cd8",
+            "0xffffffc001253cdc",
+            "0xffffffc001253ce0",
+            "0xffffffc001253ce4",
+            "0xffffffc001253ce8",
+            "0xffffffc001253cec",
+            "0xffffffc001253cf0",
+            "0xffffffc001253cf4",
+            "0xffffffc001253cf8",
+            "0xffffffc001253cfc",
+            "0xffffffc001253d00",
+            "0xffffffc001253d04",
+            "0xffffffc001253d08",
+            "0xffffffc001253d0c",
+            "0xffffffc001253d10",
+            "0xffffffc001253d14",
+            "0xffffffc001253d18",
+            "0xffffffc001253d1c",
+            "0xffffffc001253d20",
+            "0xffffffc001253d24",
+            "0xffffffc001253d28",
+            "0xffffffc001253d2c",
+            "0xffffffc001253d30",
+            "0xffffffc001253d34",
+            "0xffffffc001253d38",
+            "0xffffffc001253d3c",
+            "0xffffffc001253d40",
+            "0xffffffc001253d44",
+            "0xffffffc001253d48",
+            "0xffffffc001253d4c",
+            "0xffffffc001253d50",
+            "0xffffffc001253d54",
+            "0xffffffc001253d58",
+            "0xffffffc001253d5c",
+            "0xffffffc001253d60",
+            "0xffffffc001253d64",
+            "0xffffffc001253d68",
+            "0xffffffc001253d6c",
+            "0xffffffc001253d70",
+            "0xffffffc001253d74",
+            "0xffffffc001253d78",
+            "0xffffffc001253d7c",
+            "0xffffffc001253d80",
+            "0xffffffc001253d84",
+            "0xffffffc001253d88",
+            "0xffffffc001253d8c",
+            "0xffffffc00102f67c"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc001253b38",
+              "address": "0x10007fe0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b3c",
+              "address": "0x10007ff0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b3c",
+              "address": "0x10007ff8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b5c",
+              "address": "0x11240160",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b64",
+              "address": "0x11240208",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253b74",
+              "address": "0x11240200",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b7c",
+              "address": "0x11240230",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253b8c",
+              "address": "0x11240228",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b94",
+              "address": "0x11240250",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253ba4",
+              "address": "0x11240248",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253bac",
+              "address": "0x11240270",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253bbc",
+              "address": "0x11240268",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253bc4",
+              "address": "0x11240310",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253bd4",
+              "address": "0x11240308",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253bdc",
+              "address": "0x11240330",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253bec",
+              "address": "0x11240328",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253bf4",
+              "address": "0x11240370",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c04",
+              "address": "0x11240368",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c0c",
+              "address": "0x112403b0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c1c",
+              "address": "0x112403a8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c24",
+              "address": "0x112403d0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c34",
+              "address": "0x112403c8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c3c",
+              "address": "0x11240438",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c4c",
+              "address": "0x11240430",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c54",
+              "address": "0x11240468",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c64",
+              "address": "0x11240460",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c6c",
+              "address": "0x11240488",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c7c",
+              "address": "0x11240480",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c8c",
+              "address": "0x112404b0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c94",
+              "address": "0x112404a8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c9c",
+              "address": "0x11240000",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253ca0",
+              "address": "0x112404c8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253ca8",
+              "address": "0x112404f0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253cb4",
+              "address": "0x11240008",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253cbc",
+              "address": "0x11240168",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253cc0",
+              "address": "0x1124016c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cc4",
+              "address": "0x112404e8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253ccc",
+              "address": "0x1124020c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cd0",
+              "address": "0x11240234",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cd4",
+              "address": "0x11240510",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253ce0",
+              "address": "0x11240254",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253ce8",
+              "address": "0x11240274",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cec",
+              "address": "0x11240314",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cf0",
+              "address": "0x11240508",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253cf8",
+              "address": "0x11240334",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cfc",
+              "address": "0x11240374",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d00",
+              "address": "0x11240530",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d0c",
+              "address": "0x112403b4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d14",
+              "address": "0x112403d4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d18",
+              "address": "0x1124043c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d1c",
+              "address": "0x11240528",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253d24",
+              "address": "0x1124046c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d28",
+              "address": "0x1124048c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d2c",
+              "address": "0x11240558",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d38",
+              "address": "0x112404b4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d40",
+              "address": "0x112404d0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d44",
+              "address": "0x112404d4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d48",
+              "address": "0x11240550",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253d50",
+              "address": "0x112404f4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d54",
+              "address": "0x11240514",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d58",
+              "address": "0x11240578",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d64",
+              "address": "0x11240534",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d6c",
+              "address": "0x1124055c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d70",
+              "address": "0x1124057c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d74",
+              "address": "0x11240570",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253d7c",
+              "address": "0x11240598",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d80",
+              "address": "0x11240590",
+              "size": 8
+            }
+          ],
+          "x0_to_x5": [
+            "0x112405a0",
+            "0x0",
+            "0x58",
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          "native_output_or_diagnostic_adapters": false,
+          "label": "original state-machine constructor prefix",
+          "scope": "Original constructor stores through first runtime-clear call only. Global singleton binding, both runtime clears and complete state initialization unexecuted.",
+          "active_byte_at_stop": 0,
+          "queue_bytes_at_stop": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "selected_vtables_created_by_original_stores": true
+        },
+        {
+          "start_offset": "0x252f38",
+          "reason": "boundary: outer_START_active_before_next_selector",
+          "stop_pc": "0xffffffc001252fd4",
+          "pcs": [
+            "0xffffffc001252f38",
+            "0xffffffc001252f3c",
+            "0xffffffc001252f40",
+            "0xffffffc001252f54",
+            "0xffffffc001252f58",
+            "0xffffffc001252f5c",
+            "0xffffffc001252f60",
+            "0xffffffc001252f64",
+            "0xffffffc001252f68",
+            "0xffffffc001252f6c",
+            "0xffffffc001252f70",
+            "0xffffffc001252f74",
+            "0xffffffc001252f78",
+            "0xffffffc001252f90",
+            "0xffffffc001252f94",
+            "0xffffffc001252fac",
+            "0xffffffc001252fb0",
+            "0xffffffc001252fb4",
+            "0xffffffc001252fb8",
+            "0xffffffc001252fbc",
+            "0xffffffc001252fc0",
+            "0xffffffc001252fc4",
+            "0xffffffc001252fc8",
+            "0xffffffc001252fcc",
+            "0xffffffc001252fd0",
+            "0xffffffc001252fd4"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc001252f38",
+              "address": "0x10007ff0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f54",
+              "address": "0x10007fc0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f54",
+              "address": "0x10007fc8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f58",
+              "address": "0x10007fd0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f58",
+              "address": "0x10007fd8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f5c",
+              "address": "0x10007fe0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f5c",
+              "address": "0x10007fe8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252fcc",
+              "address": "0x1124000c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001252fd0",
+              "address": "0x1124009b",
+              "size": 1
+            }
+          ],
+          "x0_to_x5": [
+            "0x11240000",
+            "0x1123e000",
+            "0x58",
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          "native_output_or_diagnostic_adapters": false,
+          "label": "outer original START-state wrapper reaches active point"
+        },
+        {
+          "label": "separate guest CPU context queues START_sys_v",
+          "reason": "returned",
+          "start_pc": "0xffffffc001252f38",
+          "cpu_before": {
+            "pc": "0xffffffc001252fd4",
+            "sp": "0x10002000",
+            "lr": "0x12000000",
+            "x0_to_x5": [
+              "0x1123f000",
+              "0x1123e100",
+              "0x58",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "cpu_after": {
+            "pc": "0x12000000",
+            "sp": "0x10002000",
+            "lr": "0x12000000",
+            "x0_to_x5": [
+              "0x1",
+              "0x1123e100",
+              "0x1",
+              "0x0",
+              "0x1123e101",
+              "0x11240521"
+            ]
+          },
+          "pcs": [
+            "0xffffffc001252f38",
+            "0xffffffc001252f3c",
+            "0xffffffc001252f40",
+            "0xffffffc001252f54",
+            "0xffffffc001252f58",
+            "0xffffffc001252f5c",
+            "0xffffffc001252f60",
+            "0xffffffc001252f64",
+            "0xffffffc001252f68",
+            "0xffffffc001252f6c",
+            "0xffffffc001252f70",
+            "0xffffffc001252f74",
+            "0xffffffc001252f78",
+            "0xffffffc001252f90",
+            "0xffffffc001252f94",
+            "0xffffffc001252f98",
+            "0xffffffc001252f9c",
+            "0xffffffc001253014",
+            "0xffffffc001253018",
+            "0xffffffc00125301c",
+            "0xffffffc001253020",
+            "0xffffffc001253024",
+            "0xffffffc001253028",
+            "0xffffffc00127da84",
+            "0xffffffc00127da88",
+            "0xffffffc00127da8c",
+            "0xffffffc001000d80",
+            "0xffffffc001000d84",
+            "0xffffffc001000d88",
+            "0xffffffc001000d8c",
+            "0xffffffc001000d90",
+            "0xffffffc001000dd0",
+            "0xffffffc001000dd4",
+            "0xffffffc001000df0",
+            "0xffffffc001000e08",
+            "0xffffffc001000e0c",
+            "0xffffffc001000e10",
+            "0xffffffc001000e14",
+            "0xffffffc001000e18",
+            "0xffffffc001000e1c",
+            "0xffffffc001000e20",
+            "0xffffffc001000e24",
+            "0xffffffc001000e28",
+            "0xffffffc00127da90",
+            "0xffffffc00127da94",
+            "0xffffffc00127da98",
+            "0xffffffc00125302c",
+            "0xffffffc001253030",
+            "0xffffffc001253034",
+            "0xffffffc001253038",
+            "0xffffffc00125303c",
+            "0xffffffc001253040",
+            "0xffffffc001253044",
+            "0xffffffc001253048",
+            "0xffffffc00125304c",
+            "0xffffffc001253050",
+            "0xffffffc001253054",
+            "0xffffffc001253058",
+            "0xffffffc00125305c",
+            "0xffffffc001253060",
+            "0xffffffc001253064",
+            "0xffffffc001253068",
+            "0xffffffc001253000",
+            "0xffffffc001253004",
+            "0xffffffc001253008",
+            "0xffffffc00125300c",
+            "0xffffffc001253010",
+            "0xffffffc001252f44",
+            "0xffffffc001252f48",
+            "0xffffffc001252f4c",
+            "0xffffffc001252f50",
+            "0x12000000"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc001252f38",
+              "address": "0x10001ff0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f54",
+              "address": "0x10001fc0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f54",
+              "address": "0x10001fc8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f58",
+              "address": "0x10001fd0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f58",
+              "address": "0x10001fd8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f5c",
+              "address": "0x10001fe0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f5c",
+              "address": "0x10001fe8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253018",
+              "address": "0x11240518",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc00127da84",
+              "address": "0x10001fb0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc00127da84",
+              "address": "0x10001fb8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001000e1c",
+              "address": "0x11240520",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001000e20",
+              "address": "0x11240520",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001000e24",
+              "address": "0x11240520",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253034",
+              "address": "0x11240514",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253054",
+              "address": "0x112405a0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc00125305c",
+              "address": "0x11240594",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253060",
+              "address": "0x11240590",
+              "size": 4
+            }
+          ],
+          "state_after": {
+            "state": 6,
+            "active": 1,
+            "START_pending": 1,
+            "STOP_pending": 0,
+            "START_event_hex": "b2",
+            "STOP_event_hex": "000000000000",
+            "queue_count": 1,
+            "queue_write": 1,
+            "queue_read": 0,
+            "queued_pointers": [
+              "0x11240508",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "native_output_or_diagnostic_adapters": false
+        },
+        {
+          "label": "resume exact outer context into queued START_sys_v",
+          "reason": "boundary: after_native_pop_and_pending_clear_before_typed_body",
+          "start_pc": "0xffffffc001252fd4",
+          "cpu_before": {
+            "pc": "0xffffffc001252fd4",
+            "sp": "0x10007fc0",
+            "lr": "0xffffffc001252f44",
+            "x0_to_x5": [
+              "0x11240000",
+              "0x1123e000",
+              "0x58",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "cpu_after": {
+            "pc": "0xffffffc001253ec4",
+            "sp": "0x10007fc0",
+            "lr": "0xffffffc001253140",
+            "x0_to_x5": [
+              "0x11240508",
+              "0xffffffc001253ec4",
+              "0x6",
+              "0x6",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "pcs": [
+            "0xffffffc001252fd4",
+            "0xffffffc00125565c",
+            "0xffffffc001255660",
+            "0xffffffc001252fd8",
+            "0xffffffc001252fdc",
+            "0xffffffc001252fe0",
+            "0xffffffc001253074",
+            "0xffffffc001253078",
+            "0xffffffc00125307c",
+            "0xffffffc001253080",
+            "0xffffffc001253084",
+            "0xffffffc001253088",
+            "0xffffffc00125564c",
+            "0xffffffc001255650",
+            "0xffffffc00125308c",
+            "0xffffffc001253090",
+            "0xffffffc001253094",
+            "0xffffffc0012530c0",
+            "0xffffffc0012530c4",
+            "0xffffffc0012530c8",
+            "0xffffffc0012530cc",
+            "0xffffffc0012530d0",
+            "0xffffffc0012530d4",
+            "0xffffffc0012530d8",
+            "0xffffffc0012530dc",
+            "0xffffffc001255654",
+            "0xffffffc001255658",
+            "0xffffffc0012530e0",
+            "0xffffffc0012530e4",
+            "0xffffffc0012530e8",
+            "0xffffffc0012530fc",
+            "0xffffffc001253100",
+            "0xffffffc001253104",
+            "0xffffffc001253108",
+            "0xffffffc00125310c",
+            "0xffffffc001253110",
+            "0xffffffc001253114",
+            "0xffffffc001253118",
+            "0xffffffc00125311c",
+            "0xffffffc001253120",
+            "0xffffffc001253124",
+            "0xffffffc001253128",
+            "0xffffffc00125312c",
+            "0xffffffc001253134",
+            "0xffffffc001253138",
+            "0xffffffc00125313c",
+            "0xffffffc001253db4",
+            "0xffffffc001253db8",
+            "0xffffffc001253dbc",
+            "0xffffffc001253dc0",
+            "0xffffffc001253ec4"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc001253100",
+              "address": "0x1124000c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253120",
+              "address": "0x11240598",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253128",
+              "address": "0x11240590",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253db8",
+              "address": "0x11240514",
+              "size": 1
+            }
+          ],
+          "state_after": {
+            "state": 6,
+            "active": 0,
+            "START_pending": 0,
+            "STOP_pending": 0,
+            "START_event_hex": "b2",
+            "STOP_event_hex": "000000000000",
+            "queue_count": 0,
+            "queue_write": 1,
+            "queue_read": 1,
+            "queued_pointers": [
+              "0x11240508",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "native_output_or_diagnostic_adapters": false
+        },
+        {
+          "label": "resume exact queued native body START_sys_v",
+          "reason": "returned",
+          "start_pc": "0xffffffc001253ec4",
+          "cpu_before": {
+            "pc": "0xffffffc001253ec4",
+            "sp": "0x10007fc0",
+            "lr": "0xffffffc001253140",
+            "x0_to_x5": [
+              "0x11240508",
+              "0xffffffc001253ec4",
+              "0x6",
+              "0x6",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "cpu_after": {
+            "pc": "0x12000000",
+            "sp": "0x10008000",
+            "lr": "0x12000000",
+            "x0_to_x5": [
+              "0x1",
+              "0x11240520",
+              "0x6",
+              "0x6",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "pcs": [
+            "0xffffffc001253ec4",
+            "0xffffffc001253ec8",
+            "0xffffffc001253ecc",
+            "0xffffffc001252f54",
+            "0xffffffc001252f58",
+            "0xffffffc001252f5c",
+            "0xffffffc001252f60",
+            "0xffffffc001252f64",
+            "0xffffffc001252f68",
+            "0xffffffc001252f6c",
+            "0xffffffc001252f70",
+            "0xffffffc001252f74",
+            "0xffffffc001252f78",
+            "0xffffffc001252f90",
+            "0xffffffc001252f94",
+            "0xffffffc001252fac",
+            "0xffffffc001252fb0",
+            "0xffffffc001252fb4",
+            "0xffffffc001252fb8",
+            "0xffffffc001252fbc",
+            "0xffffffc001252fc0",
+            "0xffffffc001252fc4",
+            "0xffffffc001252fc8",
+            "0xffffffc001252fcc",
+            "0xffffffc001252fd0",
+            "0xffffffc001252fd4",
+            "0xffffffc00125565c",
+            "0xffffffc001255660",
+            "0xffffffc001252fd8",
+            "0xffffffc001252fdc",
+            "0xffffffc001252fe0",
+            "0xffffffc001253074",
+            "0xffffffc001253078",
+            "0xffffffc00125307c",
+            "0xffffffc001253080",
+            "0xffffffc001253084",
+            "0xffffffc001253088",
+            "0xffffffc00125564c",
+            "0xffffffc001255650",
+            "0xffffffc00125308c",
+            "0xffffffc001253090",
+            "0xffffffc001253094",
+            "0xffffffc0012530c0",
+            "0xffffffc0012530c4",
+            "0xffffffc0012530c8",
+            "0xffffffc0012530cc",
+            "0xffffffc0012530d0",
+            "0xffffffc0012530d4",
+            "0xffffffc0012530d8",
+            "0xffffffc0012530dc",
+            "0xffffffc001255654",
+            "0xffffffc001255658",
+            "0xffffffc0012530e0",
+            "0xffffffc0012530e4",
+            "0xffffffc0012530e8",
+            "0xffffffc0012530fc",
+            "0xffffffc001253100",
+            "0xffffffc001253104",
+            "0xffffffc001253150",
+            "0xffffffc001253154",
+            "0xffffffc001253000",
+            "0xffffffc001253004",
+            "0xffffffc001253008",
+            "0xffffffc00125300c",
+            "0xffffffc001253010",
+            "0xffffffc001253140",
+            "0xffffffc001253144",
+            "0xffffffc001253000",
+            "0xffffffc001253004",
+            "0xffffffc001253008",
+            "0xffffffc00125300c",
+            "0xffffffc001253010",
+            "0xffffffc001252f44",
+            "0xffffffc001252f48",
+            "0xffffffc001252f4c",
+            "0xffffffc001252f50",
+            "0x12000000"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc001252f54",
+              "address": "0x10007f90",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f54",
+              "address": "0x10007f98",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f58",
+              "address": "0x10007fa0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f58",
+              "address": "0x10007fa8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f5c",
+              "address": "0x10007fb0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f5c",
+              "address": "0x10007fb8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252fcc",
+              "address": "0x1124000c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001252fd0",
+              "address": "0x1124009b",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253100",
+              "address": "0x1124000c",
+              "size": 1
+            }
+          ],
+          "state_after": {
+            "state": 6,
+            "active": 0,
+            "START_pending": 0,
+            "STOP_pending": 0,
+            "START_event_hex": "b2",
+            "STOP_event_hex": "000000000000",
+            "queue_count": 0,
+            "queue_write": 1,
+            "queue_read": 1,
+            "queued_pointers": [
+              "0x11240508",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "native_output_or_diagnostic_adapters": false
+        }
+      ],
+      "outer_context_before_pause": {
+        "pc": "0xffffffc001252fd4",
+        "sp": "0x10007fc0",
+        "lr": "0xffffffc001252f44",
+        "x0_to_x5": [
+          "0x11240000",
+          "0x1123e000",
+          "0x58",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      "pending_after_nested_native_call": {
+        "state": 6,
+        "active": 1,
+        "START_pending": 1,
+        "STOP_pending": 0,
+        "START_event_hex": "b2",
+        "STOP_event_hex": "000000000000",
+        "queue_count": 1,
+        "queue_write": 1,
+        "queue_read": 0,
+        "queued_pointers": [
+          "0x11240508",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      "zero_count_zero_flags_code_still_active_witness": {
+        "state": {
+          "state": 6,
+          "active": 0,
+          "START_pending": 0,
+          "STOP_pending": 0,
+          "START_event_hex": "b2",
+          "STOP_event_hex": "000000000000",
+          "queue_count": 0,
+          "queue_write": 1,
+          "queue_read": 1,
+          "queued_pointers": [
+            "0x11240508",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "cpu": {
+          "pc": "0xffffffc001253ec4",
+          "sp": "0x10007fc0",
+          "lr": "0xffffffc001253140",
+          "x0_to_x5": [
+            "0x11240508",
+            "0xffffffc001253ec4",
+            "0x6",
+            "0x6",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "observed_native_typed_body_offset": "0x253ec4",
+        "code_exit_not_reached": true
+      },
+      "state_after_native_resume": {
+        "state": 6,
+        "active": 0,
+        "START_pending": 0,
+        "STOP_pending": 0,
+        "START_event_hex": "b2",
+        "STOP_event_hex": "000000000000",
+        "queue_count": 0,
+        "queue_write": 1,
+        "queue_read": 1,
+        "queued_pointers": [
+          "0x11240508",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      "typed_body_returned_to_original_outer_caller": true,
+      "STOP_in_READY_is_explicit_invalid_order_fixture": false,
+      "real_threads_multicore_lock_runtime_owner_epoch_Hal_or_restore_verified": false
+    },
+    {
+      "queued_kind": "STOP_done",
+      "original_fragments": [
+        {
+          "start_offset": "0x253b38",
+          "reason": "boundary: before_unbound_runtime_clear",
+          "stop_pc": "0xffffffc00102f67c",
+          "pcs": [
+            "0xffffffc001253b38",
+            "0xffffffc001253b3c",
+            "0xffffffc001253b40",
+            "0xffffffc001253b44",
+            "0xffffffc001253b48",
+            "0xffffffc001253b4c",
+            "0xffffffc001253b50",
+            "0xffffffc001253b54",
+            "0xffffffc001253b58",
+            "0xffffffc001253b5c",
+            "0xffffffc001253b60",
+            "0xffffffc001253b64",
+            "0xffffffc001253b68",
+            "0xffffffc001253b6c",
+            "0xffffffc001253b70",
+            "0xffffffc001253b74",
+            "0xffffffc001253b78",
+            "0xffffffc001253b7c",
+            "0xffffffc001253b80",
+            "0xffffffc001253b84",
+            "0xffffffc001253b88",
+            "0xffffffc001253b8c",
+            "0xffffffc001253b90",
+            "0xffffffc001253b94",
+            "0xffffffc001253b98",
+            "0xffffffc001253b9c",
+            "0xffffffc001253ba0",
+            "0xffffffc001253ba4",
+            "0xffffffc001253ba8",
+            "0xffffffc001253bac",
+            "0xffffffc001253bb0",
+            "0xffffffc001253bb4",
+            "0xffffffc001253bb8",
+            "0xffffffc001253bbc",
+            "0xffffffc001253bc0",
+            "0xffffffc001253bc4",
+            "0xffffffc001253bc8",
+            "0xffffffc001253bcc",
+            "0xffffffc001253bd0",
+            "0xffffffc001253bd4",
+            "0xffffffc001253bd8",
+            "0xffffffc001253bdc",
+            "0xffffffc001253be0",
+            "0xffffffc001253be4",
+            "0xffffffc001253be8",
+            "0xffffffc001253bec",
+            "0xffffffc001253bf0",
+            "0xffffffc001253bf4",
+            "0xffffffc001253bf8",
+            "0xffffffc001253bfc",
+            "0xffffffc001253c00",
+            "0xffffffc001253c04",
+            "0xffffffc001253c08",
+            "0xffffffc001253c0c",
+            "0xffffffc001253c10",
+            "0xffffffc001253c14",
+            "0xffffffc001253c18",
+            "0xffffffc001253c1c",
+            "0xffffffc001253c20",
+            "0xffffffc001253c24",
+            "0xffffffc001253c28",
+            "0xffffffc001253c2c",
+            "0xffffffc001253c30",
+            "0xffffffc001253c34",
+            "0xffffffc001253c38",
+            "0xffffffc001253c3c",
+            "0xffffffc001253c40",
+            "0xffffffc001253c44",
+            "0xffffffc001253c48",
+            "0xffffffc001253c4c",
+            "0xffffffc001253c50",
+            "0xffffffc001253c54",
+            "0xffffffc001253c58",
+            "0xffffffc001253c5c",
+            "0xffffffc001253c60",
+            "0xffffffc001253c64",
+            "0xffffffc001253c68",
+            "0xffffffc001253c6c",
+            "0xffffffc001253c70",
+            "0xffffffc001253c74",
+            "0xffffffc001253c78",
+            "0xffffffc001253c7c",
+            "0xffffffc001253c80",
+            "0xffffffc001253c84",
+            "0xffffffc001253c88",
+            "0xffffffc001253c8c",
+            "0xffffffc001253c90",
+            "0xffffffc001253c94",
+            "0xffffffc001253c98",
+            "0xffffffc001253c9c",
+            "0xffffffc001253ca0",
+            "0xffffffc001253ca4",
+            "0xffffffc001253ca8",
+            "0xffffffc001253cac",
+            "0xffffffc001253cb0",
+            "0xffffffc001253cb4",
+            "0xffffffc001253cb8",
+            "0xffffffc001253cbc",
+            "0xffffffc001253cc0",
+            "0xffffffc001253cc4",
+            "0xffffffc001253cc8",
+            "0xffffffc001253ccc",
+            "0xffffffc001253cd0",
+            "0xffffffc001253cd4",
+            "0xffffffc001253cd8",
+            "0xffffffc001253cdc",
+            "0xffffffc001253ce0",
+            "0xffffffc001253ce4",
+            "0xffffffc001253ce8",
+            "0xffffffc001253cec",
+            "0xffffffc001253cf0",
+            "0xffffffc001253cf4",
+            "0xffffffc001253cf8",
+            "0xffffffc001253cfc",
+            "0xffffffc001253d00",
+            "0xffffffc001253d04",
+            "0xffffffc001253d08",
+            "0xffffffc001253d0c",
+            "0xffffffc001253d10",
+            "0xffffffc001253d14",
+            "0xffffffc001253d18",
+            "0xffffffc001253d1c",
+            "0xffffffc001253d20",
+            "0xffffffc001253d24",
+            "0xffffffc001253d28",
+            "0xffffffc001253d2c",
+            "0xffffffc001253d30",
+            "0xffffffc001253d34",
+            "0xffffffc001253d38",
+            "0xffffffc001253d3c",
+            "0xffffffc001253d40",
+            "0xffffffc001253d44",
+            "0xffffffc001253d48",
+            "0xffffffc001253d4c",
+            "0xffffffc001253d50",
+            "0xffffffc001253d54",
+            "0xffffffc001253d58",
+            "0xffffffc001253d5c",
+            "0xffffffc001253d60",
+            "0xffffffc001253d64",
+            "0xffffffc001253d68",
+            "0xffffffc001253d6c",
+            "0xffffffc001253d70",
+            "0xffffffc001253d74",
+            "0xffffffc001253d78",
+            "0xffffffc001253d7c",
+            "0xffffffc001253d80",
+            "0xffffffc001253d84",
+            "0xffffffc001253d88",
+            "0xffffffc001253d8c",
+            "0xffffffc00102f67c"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc001253b38",
+              "address": "0x10007fe0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b3c",
+              "address": "0x10007ff0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b3c",
+              "address": "0x10007ff8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b5c",
+              "address": "0x11240160",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b64",
+              "address": "0x11240208",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253b74",
+              "address": "0x11240200",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b7c",
+              "address": "0x11240230",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253b8c",
+              "address": "0x11240228",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253b94",
+              "address": "0x11240250",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253ba4",
+              "address": "0x11240248",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253bac",
+              "address": "0x11240270",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253bbc",
+              "address": "0x11240268",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253bc4",
+              "address": "0x11240310",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253bd4",
+              "address": "0x11240308",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253bdc",
+              "address": "0x11240330",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253bec",
+              "address": "0x11240328",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253bf4",
+              "address": "0x11240370",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c04",
+              "address": "0x11240368",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c0c",
+              "address": "0x112403b0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c1c",
+              "address": "0x112403a8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c24",
+              "address": "0x112403d0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c34",
+              "address": "0x112403c8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c3c",
+              "address": "0x11240438",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c4c",
+              "address": "0x11240430",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c54",
+              "address": "0x11240468",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c64",
+              "address": "0x11240460",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c6c",
+              "address": "0x11240488",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c7c",
+              "address": "0x11240480",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c8c",
+              "address": "0x112404b0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253c94",
+              "address": "0x112404a8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253c9c",
+              "address": "0x11240000",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253ca0",
+              "address": "0x112404c8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253ca8",
+              "address": "0x112404f0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253cb4",
+              "address": "0x11240008",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253cbc",
+              "address": "0x11240168",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253cc0",
+              "address": "0x1124016c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cc4",
+              "address": "0x112404e8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253ccc",
+              "address": "0x1124020c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cd0",
+              "address": "0x11240234",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cd4",
+              "address": "0x11240510",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253ce0",
+              "address": "0x11240254",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253ce8",
+              "address": "0x11240274",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cec",
+              "address": "0x11240314",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cf0",
+              "address": "0x11240508",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253cf8",
+              "address": "0x11240334",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253cfc",
+              "address": "0x11240374",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d00",
+              "address": "0x11240530",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d0c",
+              "address": "0x112403b4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d14",
+              "address": "0x112403d4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d18",
+              "address": "0x1124043c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d1c",
+              "address": "0x11240528",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253d24",
+              "address": "0x1124046c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d28",
+              "address": "0x1124048c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d2c",
+              "address": "0x11240558",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d38",
+              "address": "0x112404b4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d40",
+              "address": "0x112404d0",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d44",
+              "address": "0x112404d4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d48",
+              "address": "0x11240550",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253d50",
+              "address": "0x112404f4",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d54",
+              "address": "0x11240514",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d58",
+              "address": "0x11240578",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d64",
+              "address": "0x11240534",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d6c",
+              "address": "0x1124055c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d70",
+              "address": "0x1124057c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253d74",
+              "address": "0x11240570",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253d7c",
+              "address": "0x11240598",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253d80",
+              "address": "0x11240590",
+              "size": 8
+            }
+          ],
+          "x0_to_x5": [
+            "0x112405a0",
+            "0x0",
+            "0x58",
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          "native_output_or_diagnostic_adapters": false,
+          "label": "original state-machine constructor prefix",
+          "scope": "Original constructor stores through first runtime-clear call only. Global singleton binding, both runtime clears and complete state initialization unexecuted.",
+          "active_byte_at_stop": 0,
+          "queue_bytes_at_stop": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "selected_vtables_created_by_original_stores": true
+        },
+        {
+          "start_offset": "0x252f38",
+          "reason": "boundary: outer_START_active_before_next_selector",
+          "stop_pc": "0xffffffc001252fd4",
+          "pcs": [
+            "0xffffffc001252f38",
+            "0xffffffc001252f3c",
+            "0xffffffc001252f40",
+            "0xffffffc001252f54",
+            "0xffffffc001252f58",
+            "0xffffffc001252f5c",
+            "0xffffffc001252f60",
+            "0xffffffc001252f64",
+            "0xffffffc001252f68",
+            "0xffffffc001252f6c",
+            "0xffffffc001252f70",
+            "0xffffffc001252f74",
+            "0xffffffc001252f78",
+            "0xffffffc001252f90",
+            "0xffffffc001252f94",
+            "0xffffffc001252fac",
+            "0xffffffc001252fb0",
+            "0xffffffc001252fb4",
+            "0xffffffc001252fb8",
+            "0xffffffc001252fbc",
+            "0xffffffc001252fc0",
+            "0xffffffc001252fc4",
+            "0xffffffc001252fc8",
+            "0xffffffc001252fcc",
+            "0xffffffc001252fd0",
+            "0xffffffc001252fd4"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc001252f38",
+              "address": "0x10007ff0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f54",
+              "address": "0x10007fc0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f54",
+              "address": "0x10007fc8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f58",
+              "address": "0x10007fd0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f58",
+              "address": "0x10007fd8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f5c",
+              "address": "0x10007fe0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252f5c",
+              "address": "0x10007fe8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001252fcc",
+              "address": "0x1124000c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001252fd0",
+              "address": "0x1124009b",
+              "size": 1
+            }
+          ],
+          "x0_to_x5": [
+            "0x11240000",
+            "0x1123e000",
+            "0x58",
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          "native_output_or_diagnostic_adapters": false,
+          "label": "outer original START-state wrapper reaches active point"
+        },
+        {
+          "label": "separate guest CPU context queues STOP_done",
+          "reason": "returned",
+          "start_pc": "0xffffffc0012533b8",
+          "cpu_before": {
+            "pc": "0xffffffc001252fd4",
+            "sp": "0x10002000",
+            "lr": "0x12000000",
+            "x0_to_x5": [
+              "0x1123f000",
+              "0x1123e100",
+              "0x58",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "cpu_after": {
+            "pc": "0x12000000",
+            "sp": "0x10002000",
+            "lr": "0x12000000",
+            "x0_to_x5": [
+              "0x1",
+              "0x1123e100",
+              "0x6",
+              "0x0",
+              "0x1123e106",
+              "0x1124056e"
+            ]
+          },
+          "pcs": [
+            "0xffffffc0012533b8",
+            "0xffffffc0012533bc",
+            "0xffffffc0012533c0",
+            "0xffffffc0012533d4",
+            "0xffffffc0012533d8",
+            "0xffffffc0012533dc",
+            "0xffffffc0012533e0",
+            "0xffffffc0012533e4",
+            "0xffffffc0012533e8",
+            "0xffffffc0012533ec",
+            "0xffffffc0012533f0",
+            "0xffffffc0012533f4",
+            "0xffffffc0012533f8",
+            "0xffffffc001253410",
+            "0xffffffc001253414",
+            "0xffffffc001253418",
+            "0xffffffc00125341c",
+            "0xffffffc001253490",
+            "0xffffffc001253494",
+            "0xffffffc001253498",
+            "0xffffffc00125349c",
+            "0xffffffc0012534a0",
+            "0xffffffc00127da84",
+            "0xffffffc00127da88",
+            "0xffffffc00127da8c",
+            "0xffffffc001000d80",
+            "0xffffffc001000d84",
+            "0xffffffc001000d88",
+            "0xffffffc001000d8c",
+            "0xffffffc001000d90",
+            "0xffffffc001000dd0",
+            "0xffffffc001000dd4",
+            "0xffffffc001000df0",
+            "0xffffffc001000df4",
+            "0xffffffc001000df8",
+            "0xffffffc001000dfc",
+            "0xffffffc001000e00",
+            "0xffffffc001000e04",
+            "0xffffffc00127da90",
+            "0xffffffc00127da94",
+            "0xffffffc00127da98",
+            "0xffffffc0012534a4",
+            "0xffffffc0012534a8",
+            "0xffffffc0012534ac",
+            "0xffffffc0012534b0",
+            "0xffffffc0012534b4",
+            "0xffffffc0012534b8",
+            "0xffffffc0012534bc",
+            "0xffffffc0012534c0",
+            "0xffffffc0012534c4",
+            "0xffffffc0012534c8",
+            "0xffffffc0012534cc",
+            "0xffffffc0012534d0",
+            "0xffffffc0012534d4",
+            "0xffffffc0012534d8",
+            "0xffffffc0012534dc",
+            "0xffffffc0012534e0",
+            "0xffffffc0012534e4",
+            "0xffffffc001253480",
+            "0xffffffc001253484",
+            "0xffffffc001253488",
+            "0xffffffc00125348c",
+            "0xffffffc0012533c4",
+            "0xffffffc0012533c8",
+            "0xffffffc0012533cc",
+            "0xffffffc0012533d0",
+            "0x12000000"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc0012533b8",
+              "address": "0x10001ff0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533d4",
+              "address": "0x10001fc0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533d4",
+              "address": "0x10001fc8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533d8",
+              "address": "0x10001fd0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533d8",
+              "address": "0x10001fd8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533dc",
+              "address": "0x10001fe0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533dc",
+              "address": "0x10001fe8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001253494",
+              "address": "0x11240560",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc00127da84",
+              "address": "0x10001fb0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc00127da84",
+              "address": "0x10001fb8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001000dfc",
+              "address": "0x11240568",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001000e00",
+              "address": "0x1124056a",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc0012534b0",
+              "address": "0x1124055c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc0012534d0",
+              "address": "0x112405a0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012534d8",
+              "address": "0x11240594",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc0012534dc",
+              "address": "0x11240590",
+              "size": 4
+            }
+          ],
+          "state_after": {
+            "state": 6,
+            "active": 1,
+            "START_pending": 0,
+            "STOP_pending": 1,
+            "START_event_hex": "00",
+            "STOP_event_hex": "b2c3d4e5f617",
+            "queue_count": 1,
+            "queue_write": 1,
+            "queue_read": 0,
+            "queued_pointers": [
+              "0x11240550",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "native_output_or_diagnostic_adapters": false
+        },
+        {
+          "label": "resume exact outer context into queued STOP_done",
+          "reason": "boundary: after_native_pop_and_pending_clear_before_typed_body",
+          "start_pc": "0xffffffc001252fd4",
+          "cpu_before": {
+            "pc": "0xffffffc001252fd4",
+            "sp": "0x10007fc0",
+            "lr": "0xffffffc001252f44",
+            "x0_to_x5": [
+              "0x11240000",
+              "0x1123e000",
+              "0x58",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "cpu_after": {
+            "pc": "0xffffffc001253ee4",
+            "sp": "0x10007fc0",
+            "lr": "0xffffffc001253140",
+            "x0_to_x5": [
+              "0x11240550",
+              "0xffffffc001253ee4",
+              "0x6",
+              "0x6",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "pcs": [
+            "0xffffffc001252fd4",
+            "0xffffffc00125565c",
+            "0xffffffc001255660",
+            "0xffffffc001252fd8",
+            "0xffffffc001252fdc",
+            "0xffffffc001252fe0",
+            "0xffffffc001253074",
+            "0xffffffc001253078",
+            "0xffffffc00125307c",
+            "0xffffffc001253080",
+            "0xffffffc001253084",
+            "0xffffffc001253088",
+            "0xffffffc00125564c",
+            "0xffffffc001255650",
+            "0xffffffc00125308c",
+            "0xffffffc001253090",
+            "0xffffffc001253094",
+            "0xffffffc0012530c0",
+            "0xffffffc0012530c4",
+            "0xffffffc0012530c8",
+            "0xffffffc0012530cc",
+            "0xffffffc0012530d0",
+            "0xffffffc0012530d4",
+            "0xffffffc0012530d8",
+            "0xffffffc0012530dc",
+            "0xffffffc001255654",
+            "0xffffffc001255658",
+            "0xffffffc0012530e0",
+            "0xffffffc0012530e4",
+            "0xffffffc0012530e8",
+            "0xffffffc0012530fc",
+            "0xffffffc001253100",
+            "0xffffffc001253104",
+            "0xffffffc001253108",
+            "0xffffffc00125310c",
+            "0xffffffc001253110",
+            "0xffffffc001253114",
+            "0xffffffc001253118",
+            "0xffffffc00125311c",
+            "0xffffffc001253120",
+            "0xffffffc001253124",
+            "0xffffffc001253128",
+            "0xffffffc00125312c",
+            "0xffffffc001253134",
+            "0xffffffc001253138",
+            "0xffffffc00125313c",
+            "0xffffffc001253db4",
+            "0xffffffc001253db8",
+            "0xffffffc001253dbc",
+            "0xffffffc001253dc0",
+            "0xffffffc001253ee4"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc001253100",
+              "address": "0x1124000c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253120",
+              "address": "0x11240598",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253128",
+              "address": "0x11240590",
+              "size": 4
+            },
+            {
+              "pc": "0xffffffc001253db8",
+              "address": "0x1124055c",
+              "size": 1
+            }
+          ],
+          "state_after": {
+            "state": 6,
+            "active": 0,
+            "START_pending": 0,
+            "STOP_pending": 0,
+            "START_event_hex": "00",
+            "STOP_event_hex": "b2c3d4e5f617",
+            "queue_count": 0,
+            "queue_write": 1,
+            "queue_read": 1,
+            "queued_pointers": [
+              "0x11240550",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "native_output_or_diagnostic_adapters": false
+        },
+        {
+          "label": "resume exact queued native body STOP_done",
+          "reason": "boundary: before_unexecuted_diagnostic_acquire",
+          "start_pc": "0xffffffc001253ee4",
+          "cpu_before": {
+            "pc": "0xffffffc001253ee4",
+            "sp": "0x10007fc0",
+            "lr": "0xffffffc001253140",
+            "x0_to_x5": [
+              "0x11240550",
+              "0xffffffc001253ee4",
+              "0x6",
+              "0x6",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "cpu_after": {
+            "pc": "0xffffffc00127d528",
+            "sp": "0x10007f50",
+            "lr": "0xffffffc001254154",
+            "x0_to_x5": [
+              "0x11240000",
+              "0x6",
+              "0x12",
+              "0x6",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "pcs": [
+            "0xffffffc001253ee4",
+            "0xffffffc001253ee8",
+            "0xffffffc001253eec",
+            "0xffffffc0012533d4",
+            "0xffffffc0012533d8",
+            "0xffffffc0012533dc",
+            "0xffffffc0012533e0",
+            "0xffffffc0012533e4",
+            "0xffffffc0012533e8",
+            "0xffffffc0012533ec",
+            "0xffffffc0012533f0",
+            "0xffffffc0012533f4",
+            "0xffffffc0012533f8",
+            "0xffffffc001253410",
+            "0xffffffc001253414",
+            "0xffffffc00125342c",
+            "0xffffffc001253430",
+            "0xffffffc001253434",
+            "0xffffffc001253438",
+            "0xffffffc00125343c",
+            "0xffffffc001253440",
+            "0xffffffc001253444",
+            "0xffffffc001253448",
+            "0xffffffc00125344c",
+            "0xffffffc001253450",
+            "0xffffffc001253454",
+            "0xffffffc0012558fc",
+            "0xffffffc001255900",
+            "0xffffffc001253458",
+            "0xffffffc00125345c",
+            "0xffffffc001253460",
+            "0xffffffc001253464",
+            "0xffffffc001253468",
+            "0xffffffc00125346c",
+            "0xffffffc001253470",
+            "0xffffffc001254138",
+            "0xffffffc00125413c",
+            "0xffffffc001254140",
+            "0xffffffc001254144",
+            "0xffffffc001254148",
+            "0xffffffc00125414c",
+            "0xffffffc001254150",
+            "0xffffffc00127d528"
+          ],
+          "writes": [
+            {
+              "pc": "0xffffffc0012533d4",
+              "address": "0x10007f90",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533d4",
+              "address": "0x10007f98",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533d8",
+              "address": "0x10007fa0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533d8",
+              "address": "0x10007fa8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533dc",
+              "address": "0x10007fb0",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc0012533dc",
+              "address": "0x10007fb8",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc00125344c",
+              "address": "0x1124000c",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc001253450",
+              "address": "0x1124009d",
+              "size": 1
+            },
+            {
+              "pc": "0xffffffc00125413c",
+              "address": "0x10007f70",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc00125413c",
+              "address": "0x10007f78",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001254140",
+              "address": "0x10007f80",
+              "size": 8
+            },
+            {
+              "pc": "0xffffffc001254140",
+              "address": "0x10007f88",
+              "size": 8
+            }
+          ],
+          "state_after": {
+            "state": 6,
+            "active": 1,
+            "START_pending": 0,
+            "STOP_pending": 0,
+            "START_event_hex": "00",
+            "STOP_event_hex": "b2c3d4e5f617",
+            "queue_count": 0,
+            "queue_write": 1,
+            "queue_read": 1,
+            "queued_pointers": [
+              "0x11240550",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0",
+              "0x0"
+            ]
+          },
+          "native_output_or_diagnostic_adapters": false
+        }
+      ],
+      "outer_context_before_pause": {
+        "pc": "0xffffffc001252fd4",
+        "sp": "0x10007fc0",
+        "lr": "0xffffffc001252f44",
+        "x0_to_x5": [
+          "0x11240000",
+          "0x1123e000",
+          "0x58",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      "pending_after_nested_native_call": {
+        "state": 6,
+        "active": 1,
+        "START_pending": 0,
+        "STOP_pending": 1,
+        "START_event_hex": "00",
+        "STOP_event_hex": "b2c3d4e5f617",
+        "queue_count": 1,
+        "queue_write": 1,
+        "queue_read": 0,
+        "queued_pointers": [
+          "0x11240550",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      "zero_count_zero_flags_code_still_active_witness": {
+        "state": {
+          "state": 6,
+          "active": 0,
+          "START_pending": 0,
+          "STOP_pending": 0,
+          "START_event_hex": "00",
+          "STOP_event_hex": "b2c3d4e5f617",
+          "queue_count": 0,
+          "queue_write": 1,
+          "queue_read": 1,
+          "queued_pointers": [
+            "0x11240550",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "cpu": {
+          "pc": "0xffffffc001253ee4",
+          "sp": "0x10007fc0",
+          "lr": "0xffffffc001253140",
+          "x0_to_x5": [
+            "0x11240550",
+            "0xffffffc001253ee4",
+            "0x6",
+            "0x6",
+            "0x0",
+            "0x0"
+          ]
+        },
+        "observed_native_typed_body_offset": "0x253ee4",
+        "code_exit_not_reached": true
+      },
+      "state_after_native_resume": {
+        "state": 6,
+        "active": 1,
+        "START_pending": 0,
+        "STOP_pending": 0,
+        "START_event_hex": "00",
+        "STOP_event_hex": "b2c3d4e5f617",
+        "queue_count": 0,
+        "queue_write": 1,
+        "queue_read": 1,
+        "queued_pointers": [
+          "0x11240550",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      "typed_body_returned_to_original_outer_caller": false,
+      "STOP_in_READY_is_explicit_invalid_order_fixture": true,
+      "real_threads_multicore_lock_runtime_owner_epoch_Hal_or_restore_verified": false
+    }
+  ],
+  "original_fragments": 11,
+  "source_regions": [
+    {
+      "name": "original state-machine constructor prefix",
+      "instructions": [
+        {
+          "offset": "0x253b38",
+          "va": "0xffffffc001253b38",
+          "bytes": "f40f1ef8",
+          "asm": "str x20, [sp, #-0x20]!"
+        },
+        {
+          "offset": "0x253b3c",
+          "va": "0xffffffc001253b3c",
+          "bytes": "f37b01a9",
+          "asm": "stp x19, x30, [sp, #0x10]"
+        },
+        {
+          "offset": "0x253b40",
+          "va": "0xffffffc001253b40",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0"
+        },
+        {
+          "offset": "0x253b44",
+          "va": "0xffffffc001253b44",
+          "bytes": "480900f0",
+          "asm": "adrp x8, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253b48",
+          "va": "0xffffffc001253b48",
+          "bytes": "08213891",
+          "asm": "add x8, x8, #0xe08"
+        },
+        {
+          "offset": "0x253b4c",
+          "va": "0xffffffc001253b4c",
+          "bytes": "08410091",
+          "asm": "add x8, x8, #0x10"
+        },
+        {
+          "offset": "0x253b50",
+          "va": "0xffffffc001253b50",
+          "bytes": "e9030032",
+          "asm": "mov w9, #1"
+        },
+        {
+          "offset": "0x253b54",
+          "va": "0xffffffc001253b54",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253b58",
+          "va": "0xffffffc001253b58",
+          "bytes": "4a213991",
+          "asm": "add x10, x10, #0xe48"
+        },
+        {
+          "offset": "0x253b5c",
+          "va": "0xffffffc001253b5c",
+          "bytes": "68b200f9",
+          "asm": "str x8, [x19, #0x160]"
+        },
+        {
+          "offset": "0x253b60",
+          "va": "0xffffffc001253b60",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253b64",
+          "va": "0xffffffc001253b64",
+          "bytes": "690a02b9",
+          "asm": "str w9, [x19, #0x208]"
+        },
+        {
+          "offset": "0x253b68",
+          "va": "0xffffffc001253b68",
+          "bytes": "e9031f32",
+          "asm": "mov w9, #2"
+        },
+        {
+          "offset": "0x253b6c",
+          "va": "0xffffffc001253b6c",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253b70",
+          "va": "0xffffffc001253b70",
+          "bytes": "4ae13991",
+          "asm": "add x10, x10, #0xe78"
+        },
+        {
+          "offset": "0x253b74",
+          "va": "0xffffffc001253b74",
+          "bytes": "680201f9",
+          "asm": "str x8, [x19, #0x200]"
+        },
+        {
+          "offset": "0x253b78",
+          "va": "0xffffffc001253b78",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253b7c",
+          "va": "0xffffffc001253b7c",
+          "bytes": "693202b9",
+          "asm": "str w9, [x19, #0x230]"
+        },
+        {
+          "offset": "0x253b80",
+          "va": "0xffffffc001253b80",
+          "bytes": "e9070032",
+          "asm": "mov w9, #3"
+        },
+        {
+          "offset": "0x253b84",
+          "va": "0xffffffc001253b84",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253b88",
+          "va": "0xffffffc001253b88",
+          "bytes": "4aa13a91",
+          "asm": "add x10, x10, #0xea8"
+        },
+        {
+          "offset": "0x253b8c",
+          "va": "0xffffffc001253b8c",
+          "bytes": "681601f9",
+          "asm": "str x8, [x19, #0x228]"
+        },
+        {
+          "offset": "0x253b90",
+          "va": "0xffffffc001253b90",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253b94",
+          "va": "0xffffffc001253b94",
+          "bytes": "695202b9",
+          "asm": "str w9, [x19, #0x250]"
+        },
+        {
+          "offset": "0x253b98",
+          "va": "0xffffffc001253b98",
+          "bytes": "e9031e32",
+          "asm": "mov w9, #4"
+        },
+        {
+          "offset": "0x253b9c",
+          "va": "0xffffffc001253b9c",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253ba0",
+          "va": "0xffffffc001253ba0",
+          "bytes": "4a613b91",
+          "asm": "add x10, x10, #0xed8"
+        },
+        {
+          "offset": "0x253ba4",
+          "va": "0xffffffc001253ba4",
+          "bytes": "682601f9",
+          "asm": "str x8, [x19, #0x248]"
+        },
+        {
+          "offset": "0x253ba8",
+          "va": "0xffffffc001253ba8",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253bac",
+          "va": "0xffffffc001253bac",
+          "bytes": "697202b9",
+          "asm": "str w9, [x19, #0x270]"
+        },
+        {
+          "offset": "0x253bb0",
+          "va": "0xffffffc001253bb0",
+          "bytes": "a9008052",
+          "asm": "mov w9, #5"
+        },
+        {
+          "offset": "0x253bb4",
+          "va": "0xffffffc001253bb4",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253bb8",
+          "va": "0xffffffc001253bb8",
+          "bytes": "4a213c91",
+          "asm": "add x10, x10, #0xf08"
+        },
+        {
+          "offset": "0x253bbc",
+          "va": "0xffffffc001253bbc",
+          "bytes": "683601f9",
+          "asm": "str x8, [x19, #0x268]"
+        },
+        {
+          "offset": "0x253bc0",
+          "va": "0xffffffc001253bc0",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253bc4",
+          "va": "0xffffffc001253bc4",
+          "bytes": "691203b9",
+          "asm": "str w9, [x19, #0x310]"
+        },
+        {
+          "offset": "0x253bc8",
+          "va": "0xffffffc001253bc8",
+          "bytes": "e9071f32",
+          "asm": "mov w9, #6"
+        },
+        {
+          "offset": "0x253bcc",
+          "va": "0xffffffc001253bcc",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253bd0",
+          "va": "0xffffffc001253bd0",
+          "bytes": "4ae13c91",
+          "asm": "add x10, x10, #0xf38"
+        },
+        {
+          "offset": "0x253bd4",
+          "va": "0xffffffc001253bd4",
+          "bytes": "688601f9",
+          "asm": "str x8, [x19, #0x308]"
+        },
+        {
+          "offset": "0x253bd8",
+          "va": "0xffffffc001253bd8",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253bdc",
+          "va": "0xffffffc001253bdc",
+          "bytes": "693203b9",
+          "asm": "str w9, [x19, #0x330]"
+        },
+        {
+          "offset": "0x253be0",
+          "va": "0xffffffc001253be0",
+          "bytes": "e90b0032",
+          "asm": "mov w9, #7"
+        },
+        {
+          "offset": "0x253be4",
+          "va": "0xffffffc001253be4",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253be8",
+          "va": "0xffffffc001253be8",
+          "bytes": "4aa13d91",
+          "asm": "add x10, x10, #0xf68"
+        },
+        {
+          "offset": "0x253bec",
+          "va": "0xffffffc001253bec",
+          "bytes": "689601f9",
+          "asm": "str x8, [x19, #0x328]"
+        },
+        {
+          "offset": "0x253bf0",
+          "va": "0xffffffc001253bf0",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253bf4",
+          "va": "0xffffffc001253bf4",
+          "bytes": "697203b9",
+          "asm": "str w9, [x19, #0x370]"
+        },
+        {
+          "offset": "0x253bf8",
+          "va": "0xffffffc001253bf8",
+          "bytes": "e9031d32",
+          "asm": "mov w9, #8"
+        },
+        {
+          "offset": "0x253bfc",
+          "va": "0xffffffc001253bfc",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253c00",
+          "va": "0xffffffc001253c00",
+          "bytes": "4a613e91",
+          "asm": "add x10, x10, #0xf98"
+        },
+        {
+          "offset": "0x253c04",
+          "va": "0xffffffc001253c04",
+          "bytes": "68b601f9",
+          "asm": "str x8, [x19, #0x368]"
+        },
+        {
+          "offset": "0x253c08",
+          "va": "0xffffffc001253c08",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253c0c",
+          "va": "0xffffffc001253c0c",
+          "bytes": "69b203b9",
+          "asm": "str w9, [x19, #0x3b0]"
+        },
+        {
+          "offset": "0x253c10",
+          "va": "0xffffffc001253c10",
+          "bytes": "29018052",
+          "asm": "mov w9, #9"
+        },
+        {
+          "offset": "0x253c14",
+          "va": "0xffffffc001253c14",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253c18",
+          "va": "0xffffffc001253c18",
+          "bytes": "4a213f91",
+          "asm": "add x10, x10, #0xfc8"
+        },
+        {
+          "offset": "0x253c1c",
+          "va": "0xffffffc001253c1c",
+          "bytes": "68d601f9",
+          "asm": "str x8, [x19, #0x3a8]"
+        },
+        {
+          "offset": "0x253c20",
+          "va": "0xffffffc001253c20",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253c24",
+          "va": "0xffffffc001253c24",
+          "bytes": "69d203b9",
+          "asm": "str w9, [x19, #0x3d0]"
+        },
+        {
+          "offset": "0x253c28",
+          "va": "0xffffffc001253c28",
+          "bytes": "49018052",
+          "asm": "mov w9, #0xa"
+        },
+        {
+          "offset": "0x253c2c",
+          "va": "0xffffffc001253c2c",
+          "bytes": "4a0900f0",
+          "asm": "adrp x10, #0xffffffc00137e000"
+        },
+        {
+          "offset": "0x253c30",
+          "va": "0xffffffc001253c30",
+          "bytes": "4ae13f91",
+          "asm": "add x10, x10, #0xff8"
+        },
+        {
+          "offset": "0x253c34",
+          "va": "0xffffffc001253c34",
+          "bytes": "68e601f9",
+          "asm": "str x8, [x19, #0x3c8]"
+        },
+        {
+          "offset": "0x253c38",
+          "va": "0xffffffc001253c38",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253c3c",
+          "va": "0xffffffc001253c3c",
+          "bytes": "693a04b9",
+          "asm": "str w9, [x19, #0x438]"
+        },
+        {
+          "offset": "0x253c40",
+          "va": "0xffffffc001253c40",
+          "bytes": "69018052",
+          "asm": "mov w9, #0xb"
+        },
+        {
+          "offset": "0x253c44",
+          "va": "0xffffffc001253c44",
+          "bytes": "6a090090",
+          "asm": "adrp x10, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253c48",
+          "va": "0xffffffc001253c48",
+          "bytes": "4aa10091",
+          "asm": "add x10, x10, #0x28"
+        },
+        {
+          "offset": "0x253c4c",
+          "va": "0xffffffc001253c4c",
+          "bytes": "681a02f9",
+          "asm": "str x8, [x19, #0x430]"
+        },
+        {
+          "offset": "0x253c50",
+          "va": "0xffffffc001253c50",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253c54",
+          "va": "0xffffffc001253c54",
+          "bytes": "696a04b9",
+          "asm": "str w9, [x19, #0x468]"
+        },
+        {
+          "offset": "0x253c58",
+          "va": "0xffffffc001253c58",
+          "bytes": "e9071e32",
+          "asm": "mov w9, #0xc"
+        },
+        {
+          "offset": "0x253c5c",
+          "va": "0xffffffc001253c5c",
+          "bytes": "6a090090",
+          "asm": "adrp x10, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253c60",
+          "va": "0xffffffc001253c60",
+          "bytes": "4a610191",
+          "asm": "add x10, x10, #0x58"
+        },
+        {
+          "offset": "0x253c64",
+          "va": "0xffffffc001253c64",
+          "bytes": "683202f9",
+          "asm": "str x8, [x19, #0x460]"
+        },
+        {
+          "offset": "0x253c68",
+          "va": "0xffffffc001253c68",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253c6c",
+          "va": "0xffffffc001253c6c",
+          "bytes": "698a04b9",
+          "asm": "str w9, [x19, #0x488]"
+        },
+        {
+          "offset": "0x253c70",
+          "va": "0xffffffc001253c70",
+          "bytes": "a9018052",
+          "asm": "mov w9, #0xd"
+        },
+        {
+          "offset": "0x253c74",
+          "va": "0xffffffc001253c74",
+          "bytes": "6a090090",
+          "asm": "adrp x10, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253c78",
+          "va": "0xffffffc001253c78",
+          "bytes": "4a210291",
+          "asm": "add x10, x10, #0x88"
+        },
+        {
+          "offset": "0x253c7c",
+          "va": "0xffffffc001253c7c",
+          "bytes": "684202f9",
+          "asm": "str x8, [x19, #0x480]"
+        },
+        {
+          "offset": "0x253c80",
+          "va": "0xffffffc001253c80",
+          "bytes": "48410091",
+          "asm": "add x8, x10, #0x10"
+        },
+        {
+          "offset": "0x253c84",
+          "va": "0xffffffc001253c84",
+          "bytes": "6a090090",
+          "asm": "adrp x10, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253c88",
+          "va": "0xffffffc001253c88",
+          "bytes": "4ae10291",
+          "asm": "add x10, x10, #0xb8"
+        },
+        {
+          "offset": "0x253c8c",
+          "va": "0xffffffc001253c8c",
+          "bytes": "69b204b9",
+          "asm": "str w9, [x19, #0x4b0]"
+        },
+        {
+          "offset": "0x253c90",
+          "va": "0xffffffc001253c90",
+          "bytes": "49410091",
+          "asm": "add x9, x10, #0x10"
+        },
+        {
+          "offset": "0x253c94",
+          "va": "0xffffffc001253c94",
+          "bytes": "685602f9",
+          "asm": "str x8, [x19, #0x4a8]"
+        },
+        {
+          "offset": "0x253c98",
+          "va": "0xffffffc001253c98",
+          "bytes": "e80f0032",
+          "asm": "mov w8, #0xf"
+        },
+        {
+          "offset": "0x253c9c",
+          "va": "0xffffffc001253c9c",
+          "bytes": "7f0200f9",
+          "asm": "str xzr, [x19]"
+        },
+        {
+          "offset": "0x253ca0",
+          "va": "0xffffffc001253ca0",
+          "bytes": "696602f9",
+          "asm": "str x9, [x19, #0x4c8]"
+        },
+        {
+          "offset": "0x253ca4",
+          "va": "0xffffffc001253ca4",
+          "bytes": "f40b1f32",
+          "asm": "mov w20, #0xe"
+        },
+        {
+          "offset": "0x253ca8",
+          "va": "0xffffffc001253ca8",
+          "bytes": "68f204b9",
+          "asm": "str w8, [x19, #0x4f0]"
+        },
+        {
+          "offset": "0x253cac",
+          "va": "0xffffffc001253cac",
+          "bytes": "68090090",
+          "asm": "adrp x8, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253cb0",
+          "va": "0xffffffc001253cb0",
+          "bytes": "08a10391",
+          "asm": "add x8, x8, #0xe8"
+        },
+        {
+          "offset": "0x253cb4",
+          "va": "0xffffffc001253cb4",
+          "bytes": "740a00b9",
+          "asm": "str w20, [x19, #8]"
+        },
+        {
+          "offset": "0x253cb8",
+          "va": "0xffffffc001253cb8",
+          "bytes": "08410091",
+          "asm": "add x8, x8, #0x10"
+        },
+        {
+          "offset": "0x253cbc",
+          "va": "0xffffffc001253cbc",
+          "bytes": "7f6a01b9",
+          "asm": "str wzr, [x19, #0x168]"
+        },
+        {
+          "offset": "0x253cc0",
+          "va": "0xffffffc001253cc0",
+          "bytes": "7fb20539",
+          "asm": "strb wzr, [x19, #0x16c]"
+        },
+        {
+          "offset": "0x253cc4",
+          "va": "0xffffffc001253cc4",
+          "bytes": "687602f9",
+          "asm": "str x8, [x19, #0x4e8]"
+        },
+        {
+          "offset": "0x253cc8",
+          "va": "0xffffffc001253cc8",
+          "bytes": "e8031c32",
+          "asm": "mov w8, #0x10"
+        },
+        {
+          "offset": "0x253ccc",
+          "va": "0xffffffc001253ccc",
+          "bytes": "7f320839",
+          "asm": "strb wzr, [x19, #0x20c]"
+        },
+        {
+          "offset": "0x253cd0",
+          "va": "0xffffffc001253cd0",
+          "bytes": "7fd20839",
+          "asm": "strb wzr, [x19, #0x234]"
+        },
+        {
+          "offset": "0x253cd4",
+          "va": "0xffffffc001253cd4",
+          "bytes": "681205b9",
+          "asm": "str w8, [x19, #0x510]"
+        },
+        {
+          "offset": "0x253cd8",
+          "va": "0xffffffc001253cd8",
+          "bytes": "68090090",
+          "asm": "adrp x8, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253cdc",
+          "va": "0xffffffc001253cdc",
+          "bytes": "08610491",
+          "asm": "add x8, x8, #0x118"
+        },
+        {
+          "offset": "0x253ce0",
+          "va": "0xffffffc001253ce0",
+          "bytes": "7f520939",
+          "asm": "strb wzr, [x19, #0x254]"
+        },
+        {
+          "offset": "0x253ce4",
+          "va": "0xffffffc001253ce4",
+          "bytes": "08410091",
+          "asm": "add x8, x8, #0x10"
+        },
+        {
+          "offset": "0x253ce8",
+          "va": "0xffffffc001253ce8",
+          "bytes": "7fd20939",
+          "asm": "strb wzr, [x19, #0x274]"
+        },
+        {
+          "offset": "0x253cec",
+          "va": "0xffffffc001253cec",
+          "bytes": "7f520c39",
+          "asm": "strb wzr, [x19, #0x314]"
+        },
+        {
+          "offset": "0x253cf0",
+          "va": "0xffffffc001253cf0",
+          "bytes": "688602f9",
+          "asm": "str x8, [x19, #0x508]"
+        },
+        {
+          "offset": "0x253cf4",
+          "va": "0xffffffc001253cf4",
+          "bytes": "28028052",
+          "asm": "mov w8, #0x11"
+        },
+        {
+          "offset": "0x253cf8",
+          "va": "0xffffffc001253cf8",
+          "bytes": "7fd20c39",
+          "asm": "strb wzr, [x19, #0x334]"
+        },
+        {
+          "offset": "0x253cfc",
+          "va": "0xffffffc001253cfc",
+          "bytes": "7fd20d39",
+          "asm": "strb wzr, [x19, #0x374]"
+        },
+        {
+          "offset": "0x253d00",
+          "va": "0xffffffc001253d00",
+          "bytes": "683205b9",
+          "asm": "str w8, [x19, #0x530]"
+        },
+        {
+          "offset": "0x253d04",
+          "va": "0xffffffc001253d04",
+          "bytes": "68090090",
+          "asm": "adrp x8, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253d08",
+          "va": "0xffffffc001253d08",
+          "bytes": "08210591",
+          "asm": "add x8, x8, #0x148"
+        },
+        {
+          "offset": "0x253d0c",
+          "va": "0xffffffc001253d0c",
+          "bytes": "7fd20e39",
+          "asm": "strb wzr, [x19, #0x3b4]"
+        },
+        {
+          "offset": "0x253d10",
+          "va": "0xffffffc001253d10",
+          "bytes": "08410091",
+          "asm": "add x8, x8, #0x10"
+        },
+        {
+          "offset": "0x253d14",
+          "va": "0xffffffc001253d14",
+          "bytes": "7f520f39",
+          "asm": "strb wzr, [x19, #0x3d4]"
+        },
+        {
+          "offset": "0x253d18",
+          "va": "0xffffffc001253d18",
+          "bytes": "7ff21039",
+          "asm": "strb wzr, [x19, #0x43c]"
+        },
+        {
+          "offset": "0x253d1c",
+          "va": "0xffffffc001253d1c",
+          "bytes": "689602f9",
+          "asm": "str x8, [x19, #0x528]"
+        },
+        {
+          "offset": "0x253d20",
+          "va": "0xffffffc001253d20",
+          "bytes": "48028052",
+          "asm": "mov w8, #0x12"
+        },
+        {
+          "offset": "0x253d24",
+          "va": "0xffffffc001253d24",
+          "bytes": "7fb21139",
+          "asm": "strb wzr, [x19, #0x46c]"
+        },
+        {
+          "offset": "0x253d28",
+          "va": "0xffffffc001253d28",
+          "bytes": "7f321239",
+          "asm": "strb wzr, [x19, #0x48c]"
+        },
+        {
+          "offset": "0x253d2c",
+          "va": "0xffffffc001253d2c",
+          "bytes": "685a05b9",
+          "asm": "str w8, [x19, #0x558]"
+        },
+        {
+          "offset": "0x253d30",
+          "va": "0xffffffc001253d30",
+          "bytes": "68090090",
+          "asm": "adrp x8, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253d34",
+          "va": "0xffffffc001253d34",
+          "bytes": "08e10591",
+          "asm": "add x8, x8, #0x178"
+        },
+        {
+          "offset": "0x253d38",
+          "va": "0xffffffc001253d38",
+          "bytes": "7fd21239",
+          "asm": "strb wzr, [x19, #0x4b4]"
+        },
+        {
+          "offset": "0x253d3c",
+          "va": "0xffffffc001253d3c",
+          "bytes": "08410091",
+          "asm": "add x8, x8, #0x10"
+        },
+        {
+          "offset": "0x253d40",
+          "va": "0xffffffc001253d40",
+          "bytes": "74d204b9",
+          "asm": "str w20, [x19, #0x4d0]"
+        },
+        {
+          "offset": "0x253d44",
+          "va": "0xffffffc001253d44",
+          "bytes": "7f521339",
+          "asm": "strb wzr, [x19, #0x4d4]"
+        },
+        {
+          "offset": "0x253d48",
+          "va": "0xffffffc001253d48",
+          "bytes": "68aa02f9",
+          "asm": "str x8, [x19, #0x550]"
+        },
+        {
+          "offset": "0x253d4c",
+          "va": "0xffffffc001253d4c",
+          "bytes": "68028052",
+          "asm": "mov w8, #0x13"
+        },
+        {
+          "offset": "0x253d50",
+          "va": "0xffffffc001253d50",
+          "bytes": "7fd21339",
+          "asm": "strb wzr, [x19, #0x4f4]"
+        },
+        {
+          "offset": "0x253d54",
+          "va": "0xffffffc001253d54",
+          "bytes": "7f521439",
+          "asm": "strb wzr, [x19, #0x514]"
+        },
+        {
+          "offset": "0x253d58",
+          "va": "0xffffffc001253d58",
+          "bytes": "687a05b9",
+          "asm": "str w8, [x19, #0x578]"
+        },
+        {
+          "offset": "0x253d5c",
+          "va": "0xffffffc001253d5c",
+          "bytes": "68090090",
+          "asm": "adrp x8, #0xffffffc00137f000"
+        },
+        {
+          "offset": "0x253d60",
+          "va": "0xffffffc001253d60",
+          "bytes": "08a10691",
+          "asm": "add x8, x8, #0x1a8"
+        },
+        {
+          "offset": "0x253d64",
+          "va": "0xffffffc001253d64",
+          "bytes": "7fd21439",
+          "asm": "strb wzr, [x19, #0x534]"
+        },
+        {
+          "offset": "0x253d68",
+          "va": "0xffffffc001253d68",
+          "bytes": "08410091",
+          "asm": "add x8, x8, #0x10"
+        },
+        {
+          "offset": "0x253d6c",
+          "va": "0xffffffc001253d6c",
+          "bytes": "7f721539",
+          "asm": "strb wzr, [x19, #0x55c]"
+        },
+        {
+          "offset": "0x253d70",
+          "va": "0xffffffc001253d70",
+          "bytes": "7ff21539",
+          "asm": "strb wzr, [x19, #0x57c]"
+        },
+        {
+          "offset": "0x253d74",
+          "va": "0xffffffc001253d74",
+          "bytes": "68ba02f9",
+          "asm": "str x8, [x19, #0x570]"
+        },
+        {
+          "offset": "0x253d78",
+          "va": "0xffffffc001253d78",
+          "bytes": "60821691",
+          "asm": "add x0, x19, #0x5a0"
+        },
+        {
+          "offset": "0x253d7c",
+          "va": "0xffffffc001253d7c",
+          "bytes": "7f9a05b9",
+          "asm": "str wzr, [x19, #0x598]"
+        },
+        {
+          "offset": "0x253d80",
+          "va": "0xffffffc001253d80",
+          "bytes": "7fca02f9",
+          "asm": "str xzr, [x19, #0x590]"
+        },
+        {
+          "offset": "0x253d84",
+          "va": "0xffffffc001253d84",
+          "bytes": "020b8052",
+          "asm": "mov w2, #0x58"
+        },
+        {
+          "offset": "0x253d88",
+          "va": "0xffffffc001253d88",
+          "bytes": "e1031f2a",
+          "asm": "mov w1, wzr"
+        },
+        {
+          "offset": "0x253d8c",
+          "va": "0xffffffc001253d8c",
+          "bytes": "3c6ef797",
+          "asm": "bl #0xffffffc00102f67c"
+        }
+      ]
+    },
+    {
+      "name": "unexecuted constructor final clear",
+      "instructions": [
+        {
+          "offset": "0x253d90",
+          "va": "0xffffffc001253d90",
+          "bytes": "60320091",
+          "asm": "add x0, x19, #0xc"
+        },
+        {
+          "offset": "0x253d94",
+          "va": "0xffffffc001253d94",
+          "bytes": "222a8052",
+          "asm": "mov w2, #0x151"
+        },
+        {
+          "offset": "0x253d98",
+          "va": "0xffffffc001253d98",
+          "bytes": "e1031f2a",
+          "asm": "mov w1, wzr"
+        },
+        {
+          "offset": "0x253d9c",
+          "va": "0xffffffc001253d9c",
+          "bytes": "740a00b9",
+          "asm": "str w20, [x19, #8]"
+        },
+        {
+          "offset": "0x253da0",
+          "va": "0xffffffc001253da0",
+          "bytes": "f37b41a9",
+          "asm": "ldp x19, x30, [sp, #0x10]"
+        },
+        {
+          "offset": "0x253da4",
+          "va": "0xffffffc001253da4",
+          "bytes": "f40742f8",
+          "asm": "ldr x20, [sp], #0x20"
+        },
+        {
+          "offset": "0x253da8",
+          "va": "0xffffffc001253da8",
+          "bytes": "356ef717",
+          "asm": "b #0xffffffc00102f67c"
+        }
+      ]
+    },
+    {
+      "name": "generic functor operator",
+      "instructions": [
+        {
+          "offset": "0x253db4",
+          "va": "0xffffffc001253db4",
+          "bytes": "080040f9",
+          "asm": "ldr x8, [x0]"
+        },
+        {
+          "offset": "0x253db8",
+          "va": "0xffffffc001253db8",
+          "bytes": "1f300039",
+          "asm": "strb wzr, [x0, #0xc]"
+        },
+        {
+          "offset": "0x253dbc",
+          "va": "0xffffffc001253dbc",
+          "bytes": "010d40f9",
+          "asm": "ldr x1, [x8, #0x18]"
+        },
+        {
+          "offset": "0x253dc0",
+          "va": "0xffffffc001253dc0",
+          "bytes": "20001fd6",
+          "asm": "br x1"
+        }
+      ]
+    },
+    {
+      "name": "typed START and STOP functor bodies",
+      "instructions": [
+        {
+          "offset": "0x253ec4",
+          "va": "0xffffffc001253ec4",
+          "bytes": "01600091",
+          "asm": "add x1, x0, #0x18"
+        },
+        {
+          "offset": "0x253ec8",
+          "va": "0xffffffc001253ec8",
+          "bytes": "000840f9",
+          "asm": "ldr x0, [x0, #0x10]"
+        },
+        {
+          "offset": "0x253ecc",
+          "va": "0xffffffc001253ecc",
+          "bytes": "22fcff17",
+          "asm": "b #0xffffffc001252f54"
+        },
+        {
+          "offset": "0x253ed0",
+          "va": "0xffffffc001253ed0",
+          "bytes": "b2bff617",
+          "asm": "b #0xffffffc001003d98"
+        },
+        {
+          "offset": "0x253ed4",
+          "va": "0xffffffc001253ed4",
+          "bytes": "01600091",
+          "asm": "add x1, x0, #0x18"
+        },
+        {
+          "offset": "0x253ed8",
+          "va": "0xffffffc001253ed8",
+          "bytes": "000840f9",
+          "asm": "ldr x0, [x0, #0x10]"
+        },
+        {
+          "offset": "0x253edc",
+          "va": "0xffffffc001253edc",
+          "bytes": "affcff17",
+          "asm": "b #0xffffffc001253198"
+        },
+        {
+          "offset": "0x253ee0",
+          "va": "0xffffffc001253ee0",
+          "bytes": "aebff617",
+          "asm": "b #0xffffffc001003d98"
+        },
+        {
+          "offset": "0x253ee4",
+          "va": "0xffffffc001253ee4",
+          "bytes": "01600091",
+          "asm": "add x1, x0, #0x18"
+        },
+        {
+          "offset": "0x253ee8",
+          "va": "0xffffffc001253ee8",
+          "bytes": "000840f9",
+          "asm": "ldr x0, [x0, #0x10]"
+        },
+        {
+          "offset": "0x253eec",
+          "va": "0xffffffc001253eec",
+          "bytes": "3afdff17",
+          "asm": "b #0xffffffc0012533d4"
+        }
+      ]
+    },
+    {
+      "name": "original queue pop and virtual call",
+      "instructions": [
+        {
+          "offset": "0x2530fc",
+          "va": "0xffffffc0012530fc",
+          "bytes": "689245b9",
+          "asm": "ldr w8, [x19, #0x590]"
+        },
+        {
+          "offset": "0x253100",
+          "va": "0xffffffc001253100",
+          "bytes": "7f320039",
+          "asm": "strb wzr, [x19, #0xc]"
+        },
+        {
+          "offset": "0x253104",
+          "va": "0xffffffc001253104",
+          "bytes": "68020034",
+          "asm": "cbz w8, #0xffffffc001253150"
+        },
+        {
+          "offset": "0x253108",
+          "va": "0xffffffc001253108",
+          "bytes": "699a45b9",
+          "asm": "ldr w9, [x19, #0x598]"
+        },
+        {
+          "offset": "0x25310c",
+          "va": "0xffffffc00125310c",
+          "bytes": "6a421691",
+          "asm": "add x10, x19, #0x590"
+        },
+        {
+          "offset": "0x253110",
+          "va": "0xffffffc001253110",
+          "bytes": "4a0d098b",
+          "asm": "add x10, x10, x9, lsl #3"
+        },
+        {
+          "offset": "0x253114",
+          "va": "0xffffffc001253114",
+          "bytes": "29050011",
+          "asm": "add w9, w9, #1"
+        },
+        {
+          "offset": "0x253118",
+          "va": "0xffffffc001253118",
+          "bytes": "400940f9",
+          "asm": "ldr x0, [x10, #0x10]"
+        },
+        {
+          "offset": "0x25311c",
+          "va": "0xffffffc00125311c",
+          "bytes": "08050051",
+          "asm": "sub w8, w8, #1"
+        },
+        {
+          "offset": "0x253120",
+          "va": "0xffffffc001253120",
+          "bytes": "699a05b9",
+          "asm": "str w9, [x19, #0x598]"
+        },
+        {
+          "offset": "0x253124",
+          "va": "0xffffffc001253124",
+          "bytes": "3f290071",
+          "asm": "cmp w9, #0xa"
+        },
+        {
+          "offset": "0x253128",
+          "va": "0xffffffc001253128",
+          "bytes": "689205b9",
+          "asm": "str w8, [x19, #0x590]"
+        },
+        {
+          "offset": "0x25312c",
+          "va": "0xffffffc00125312c",
+          "bytes": "41000054",
+          "asm": "b.ne #0xffffffc001253134"
+        },
+        {
+          "offset": "0x253130",
+          "va": "0xffffffc001253130",
+          "bytes": "7f9a05b9",
+          "asm": "str wzr, [x19, #0x598]"
+        },
+        {
+          "offset": "0x253134",
+          "va": "0xffffffc001253134",
+          "bytes": "080040f9",
+          "asm": "ldr x8, [x0]"
+        },
+        {
+          "offset": "0x253138",
+          "va": "0xffffffc001253138",
+          "bytes": "080940f9",
+          "asm": "ldr x8, [x8, #0x10]"
+        },
+        {
+          "offset": "0x25313c",
+          "va": "0xffffffc00125313c",
+          "bytes": "00013fd6",
+          "asm": "blr x8"
+        },
+        {
+          "offset": "0x253140",
+          "va": "0xffffffc001253140",
+          "bytes": "f403002a",
+          "asm": "mov w20, w0"
+        },
+        {
+          "offset": "0x253144",
+          "va": "0xffffffc001253144",
+          "bytes": "f4f5ff34",
+          "asm": "cbz w20, #0xffffffc001253000"
+        },
+        {
+          "offset": "0x253148",
+          "va": "0xffffffc001253148",
+          "bytes": "e80f0032",
+          "asm": "mov w8, #0xf"
+        },
+        {
+          "offset": "0x25314c",
+          "va": "0xffffffc00125314c",
+          "bytes": "acffff17",
+          "asm": "b #0xffffffc001252ffc"
+        },
+        {
+          "offset": "0x253150",
+          "va": "0xffffffc001253150",
+          "bytes": "f4031f2a",
+          "asm": "mov w20, wzr"
+        },
+        {
+          "offset": "0x253154",
+          "va": "0xffffffc001253154",
+          "bytes": "abffff17",
+          "asm": "b #0xffffffc001253000"
+        }
+      ]
+    }
+  ],
+  "scheduler_scope": "Two explicit ordered guest CPU contexts via Unicorn context_save/context_restore, disjoint stacks. Not real concurrency, weak memory or runtime lock behavior. Only CPU context restored; RAM preserved.",
+  "runtime_clear_and_diagnostic_output_adapters": false,
+  "complete_constructor_runtime_instance_binding_or_real_Hal_restore_verified": false,
+  "camera_or_remote_access_attempted": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

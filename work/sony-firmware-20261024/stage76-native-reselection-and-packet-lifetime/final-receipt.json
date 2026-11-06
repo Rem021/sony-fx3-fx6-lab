@@ -1,0 +1,119 @@
+{
+  "schema": "fx3-stage76-sequential-reselection-and-packet-lifetime/1",
+  "created_utc": "2026-10-27T03:58:28.895909+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/README.md",
+      "bytes": 5005,
+      "sha256": "f59049e33e57643ed26843d0ee16da5cfaeec2422eefb3d46c5f4d93adc586ab"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/completed-evidence-review.json",
+      "bytes": 1010,
+      "sha256": "d7cdf345f00fefbfb1980ae9514c50a7e00a2f691bff397500a0cce4bd502632"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/coordinator-observations.json",
+      "bytes": 1000,
+      "sha256": "765a5e8b405992689eac06edad05c545319fced7bd2c5fce452377e476b5d43a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/finalize_stage76.py",
+      "bytes": 9342,
+      "sha256": "a18534ab5f71a47a85cdb12a074dcd08ddcff97e7a812fb5e29bcba0d271e4e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/goal-status-after.json",
+      "bytes": 232210,
+      "sha256": "294d4c55db657b8330b3dac8ce797868bba630c2089aa2680df5245bc161004c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/goal-status-before.json",
+      "bytes": 227951,
+      "sha256": "6eea1083899d6203d164a0b0a0ad5cb05b2c8d895fcffc01c8a7e6d5211d996a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/reselection.py",
+      "bytes": 11764,
+      "sha256": "8d3bfbda7ea3f373656b030fcd83674a1d3e95d8bbc8e896c0729dd245c76153"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/review_stage76.py",
+      "bytes": 8294,
+      "sha256": "a9c99d4fe097c213442411b61f4762cf8287bae3985bbcff563f7ac1c4037a12"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/run-20261026/attempt-failure.json",
+      "bytes": 2666,
+      "sha256": "b2188d3a057311137c3a342b56556dee18230cd345ffc2c3823d4cd691d0d379"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/run-20261026/attempt-source.py",
+      "bytes": 11686,
+      "sha256": "ef6d2f05cd70e83433a4e2db4d1f67f030ed9439fa5462de7470471a68a12844"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/run-20261026/failure-state.json",
+      "bytes": 383,
+      "sha256": "2e4d6200b31561b7ebffaffb37fb93244139adc113affbec73eff53ab9fac4c4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/run-explicit-packer-stop-20261026/executed-source.py",
+      "bytes": 11764,
+      "sha256": "8d3bfbda7ea3f373656b030fcd83674a1d3e95d8bbc8e896c0729dd245c76153"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/run-explicit-packer-stop-20261026/reselection-results.json",
+      "bytes": 52110436,
+      "sha256": "d52a4931bea47b33e9d462da9e8b284362ee86c5025db63a375dd6527da9900c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/selector-caller-and-packet-scope.json",
+      "bytes": 932,
+      "sha256": "9eb7b3f48720cce4d6ce986ecbce346026f65b60c0bce37c469da64bc10674b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/summary.json",
+      "bytes": 837,
+      "sha256": "c899a2ab844e6df071de771f4ba5e5fb75bdfc305e8f90aa5248ecbaed3218b0"
+    }
+  ],
+  "previous_manifest_sha256": "e0cf1c37bc032542958e19b9a4c42ee50949a570d8cd80908c25274bd857b2df",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "6eea1083899d6203d164a0b0a0ad5cb05b2c8d895fcffc01c8a7e6d5211d996a",
+    "after_sha256": "294d4c55db657b8330b3dac8ce797868bba630c2089aa2680df5245bc161004c"
+  },
+  "readme_index_entry": "- [2026-10-26 FX3 原重选与参数包寿命](<work/sony-firmware-20261024/stage76-native-reselection-and-packet-lifetime/README.md>)：独立重选后新局部包回默认24498176，旧16M包保持；原型再入OWNER13关闭私有gate并保留引用，3例29段。非真实并发/完整Start/主录/恢复证据；仅Mac。",
+  "readme_index_before_sha256": "bc4b5ef43db2595e88f3ddcd02b7ec45c7373b9aa50cb9c3a0351d3489111ec3",
+  "readme_index_after_sha256": "a386ac6aad83b3efb22539604232b2c50dafcec0ad2f24334f911a6a64906833",
+  "operations": {
+    "created_utc": "2026-10-27T03:58:28.895909+00:00",
+    "status": "MAC_ONLY_SEQUENTIAL_NATIVE_RESELECTION_PACKET_DIVERGENCE_AND_OWNER_GUARD",
+    "reselection_cases": 2,
+    "no_reselection_control": 1,
+    "bounded_fragments": 29,
+    "first_prepared_partial_packet_target": 16000000,
+    "new_partial_packet_after_reselection_target": 24498176,
+    "private_copy_and_first_packet_and_pending_stack_preserved": true,
+    "writer_reentry_after_foreign_selection": {
+      "result": 13,
+      "private_gate": 0,
+      "fault": 13,
+      "live": 1
+    },
+    "writer_reentry_without_reselection": {
+      "result": 0,
+      "private_gate": 1,
+      "fault": 0,
+      "live": 2
+    },
+    "actual_config_generation_shared_lock_full_Start_concurrency_or_recording": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

@@ -1,0 +1,15 @@
+set -euC
+cd /
+umask 077
+[ "$(/usr/bin/id -u)" = 0 ] || exit 77
+if [ ! -e /private/var/root/fx3-owner-trials ]; then /bin/mkdir -m 700 /private/var/root/fx3-owner-trials; fi
+[ ! -L /private/var/root/fx3-owner-trials ] && [ -d /private/var/root/fx3-owner-trials ] || exit 78
+[ "$(/usr/bin/stat -f %u:%Lp /private/var/root/fx3-owner-trials)" = 0:700 ] || exit 78
+/bin/mkdir -m 700 /private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01
+/usr/bin/install -m 500 /private/tmp/fx3-702-port-association-diagnostic-20261101-01/source-helper /private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/helper
+actual=$(/usr/bin/shasum -a 256 /private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/helper)
+[ "$actual" = '677866f6ff8bb06bd0cfb0d5ec78343943088400eb3063513fadf5a23abdbc58  /private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/helper' ] || exit 78
+/usr/bin/install -m 400 /private/tmp/fx3-702-port-association-diagnostic-20261101-01/source-permit /private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/permit.bin
+actual=$(/usr/bin/shasum -a 256 /private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/permit.bin)
+[ "$actual" = 'b9ac6cbff608396562acea05f35a73c17dd3c88f86a2b08db2b5cb8bc68f033b  /private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/permit.bin' ] || exit 78
+exec /private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/helper /private/tmp/fx3-702-port-association-diagnostic-20261101-01/shared.bin 3a1b3b211dbbd082a2992ef1c1ed229d 2>&1

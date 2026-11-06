@@ -1,0 +1,64 @@
+{
+  "schema": "fx3-offline-status-diagnostic-candidate/2",
+  "status": "UNDEPLOYABLE_UNAUTHORIZED_DEVICE_USE",
+  "model": "classic ILME-FX3",
+  "firmware_sample": "7.02",
+  "address_kind": "ELF virtual addresses; actual process base and same-body identity missing",
+  "candidate_reader": {
+    "symbol": "mpr::GetMovieRecStatusInternal",
+    "ELF_entry": "0xf3f7c",
+    "output_bytes": 136,
+    "scope": "native reader/copy/unlock call order only; runtime pthread and caller context unverified"
+  },
+  "exclude_from_read_only_diagnostic": [
+    "GetMovieRecStatusForUpdate",
+    "SetMovieRecStatus",
+    "UnlockMovieRecStatus",
+    "SetMovieRecParam",
+    "RecStart",
+    "RecStop",
+    "mpr::msidconv::GetSlotID (may register new media mapping)"
+  ],
+  "status_header": 83,
+  "constructor_zero_body_does_not_mean_idle": true,
+  "state_and_parameter_queries_do_not_provide_atomic_joint_snapshot": true,
+  "three_sync_objects": {
+    "status_rwlock": "0x38d478",
+    "parameter_rwlock": "0x38cc30",
+    "integration_API_mutex": "0x372190"
+  },
+  "shared_integration_mutex_covers_all_async_writers_or_epoch": false,
+  "auxiliary_parameter_pointer_policy": "Collect length/pointer metadata only; no dereference until actual bounded region, lifetime and synchronization proven.",
+  "next_runtime_acceptance_requirements": [
+    "exact same-body loaded program identity/base and ABI",
+    "authorized non-device-writing observation route",
+    "normal caller/thread context and lock order/reentrancy",
+    "real valid entries, media/slot and state semantics",
+    "full immutable value/auxiliary ownership snapshot and actual record instance relation",
+    "all Start/Stop/async completion and config writers mapped into a verified synchronization/lifetime contract",
+    "distinguish selected slot byte from hardware completion for same recording instance",
+    "verify existing media-to-slot mapping without introducing converter registration side effects"
+  ],
+  "runtime_idle_epoch_or_record_start_admission_available": false,
+  "camera_interface_or_code_load_or_persistent_write_permitted": false,
+  "actual_MAIN_hardware_recording_backup_restore_or_rescue_proven": false,
+  "refined_in_stage": "stage120-native-start-slot-publication",
+  "slot_state_evidence": {
+    "first_byte_offset": "0x0c",
+    "stride_bytes": 16,
+    "count": 4,
+    "producer": "GetStartSlotId accepted slot/boolean records, before this RecStart queue calls",
+    "not_encoder_Open_Start_completion_or_actual_idle": true,
+    "all_input_indices_in_this_run_declared_0_to_3": true
+  },
+  "media_ID_to_slot_policy": "Do not call GetSlotID for supposedly read-only resolution. Preserve raw IDs; require separately proven existing association and bounds; reject unknown/full/sentinel indices.",
+  "GetSlotID_body": {
+    "entry_ELF": "0x9a95c",
+    "record_count": 4,
+    "record_stride": "0x80",
+    "ID_offset": "0x7c",
+    "new_ID_can_write_first_free_slot": true,
+    "full_no_match_return_u32": 4294967295,
+    "actual_current_table_not_observed": true
+  }
+}

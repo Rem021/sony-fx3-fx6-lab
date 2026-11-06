@@ -1,0 +1,20 @@
+fe0524b8 28d345b9 ldr      w8, [x25, #0x5d0]
+fe0524bc 084d1453 lsl      w8, w8, #0xc
+fe0524c0 08011d0b add      w8, w8, w29
+fe0524c4 090140b9 ldr      w9, [x8]
+fe0524c8 e900e836 tbz      w9, #0x1d, #0xfe0524e4
+fe0524cc 09008012 mov      w9, #-1
+fe0524d0 29050011 add      w9, w9, #1
+fe0524d4 2a7d1053 lsr      w10, w9, #0x10
+fe0524d8 2a010035 cbnz     w10, #0xfe0524fc
+fe0524dc 0a0140b9 ldr      w10, [x8]
+fe0524e0 8affef37 tbnz     w10, #0x1d, #0xfe0524d0
+fe0524e4 01010411 add      w1, w8, #0x100
+fe0524e8 e2031932 mov      w2, #0x80
+fe0524ec e00313aa mov      x0, x19
+fe0524f0 dbe3ff97 bl       #0xfe04b45c
+fe0524f4 fa031f2a mov      w26, wzr
+fe0524f8 02000014 b        #0xfe052500
+fe0524fc fa070032 mov      w26, #3
+fe052500 e0031f32 mov      w0, #2
+fe052504 6d290094 bl       #0xfe05cab8

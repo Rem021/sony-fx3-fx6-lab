@@ -1,0 +1,43 @@
+{
+  "observed_utc": "2026-11-01T06:37:42.941588+00:00",
+  "job": "/private/tmp/fx3-702-port-association-diagnostic-20261101-01",
+  "observer": {
+    "uid": 501,
+    "pid": 82324,
+    "sec": 1793515061,
+    "usec": 924886,
+    "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+    "image_sha256": "104402c76823baa218defcdb2a96c2e3d94302dd12cabf0db3c1f39cd620cb64"
+  },
+  "cached_preflight": {
+    "source": "Mac IORegistry cache only",
+    "candidate_count": 1,
+    "candidates": [
+      {
+        "VID": 1356,
+        "PID": 3489,
+        "locationID": 17825792,
+        "location_hex": "0x01100000",
+        "registryID": 4295901308,
+        "model": "ILME-FX3",
+        "physical_port_registryID": 4294968654
+      }
+    ],
+    "unique_target_cache_candidate": true,
+    "serial_values_selected_used_or_saved": false,
+    "raw_cache_saved": false,
+    "camera_interface_opened_or_commands_sent": false,
+    "same_unit_firmware_hash_health_or_USB_return_proven": false,
+    "cached_media_BSD_names": [],
+    "storage_driver_classes": [
+      "IOUSBMassStorageDriver",
+      "IOUSBMassStorageDriverNub",
+      "IOUSBMassStorageInterfaceNub"
+    ],
+    "mounted_camera_media": [],
+    "media_unknown": false,
+    "cached_IOService_and_host_mount_metadata_only": true
+  },
+  "root_helper_not_yet_verified": true,
+  "automatic_retry": false
+}

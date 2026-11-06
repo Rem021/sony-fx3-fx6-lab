@@ -1,0 +1,288 @@
+00000488 stp     x29, x30, [sp, #-0x70]!
+0000048c mov     x29, sp
+00000490 stp     x21, x22, [sp, #0x20]
+00000494 ldr     x22, #0x928 ; literal ('', '.bss', '0x1b8')
+00000498 stp     x19, x20, [sp, #0x10]
+0000049c stp     x23, x24, [sp, #0x30]
+000004a0 stp     x25, x26, [sp, #0x40]
+000004a4 stp     x27, x28, [sp, #0x50]
+000004a8 ldr     w1, [x22]
+000004ac cbz     w1, #0x4b4
+000004b0 brk     #0x800
+000004b4 ldr     x25, #0x938 ; literal ('', '.rodata.str1.8', '0x2178')
+000004b8 mov     x19, x0
+000004bc ldr     x2, #0x930 ; literal ('', '.rodata.str1.8', '0x1800')
+000004c0 ldr     x0, #0x940 ; literal ('', '.rodata.str1.8', '0x2180')
+000004c4 mov     x1, x25
+000004c8 bl      #0x4c8 ; ('printk', 'SHN_UNDEF', '0x0')
+000004cc str     wzr, [x19]
+000004d0 add     x0, x19, #0x10
+000004d4 add     x1, x22, #0xd0
+000004d8 str     x1, [x19, #8]
+000004dc str     x0, [x19, #0x10]
+000004e0 str     x0, [x19, #0x18]
+000004e4 bl      #0x4e4 ; ('va_init', '.init.text', '0x10a8')
+000004e8 mov     w20, w0
+000004ec tbnz    w0, #0x1f, #0x8e8
+000004f0 bl      #0x4f0 ; ('va_get_dev', '.text', '0x6948')
+000004f4 mov     x24, x0
+000004f8 cbz     x0, #0x814
+000004fc mov     w1, #0x400
+00000500 str     x0, [x19, #0x68]
+00000504 bl      #0x504 ; ('va_emmc_init', '.init.text', '0x1c0')
+00000508 mov     w20, w0
+0000050c tbz     w0, #0x1f, #0x530
+00000510 ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+00000514 mov     w4, w20
+00000518 ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+0000051c mov     w2, #0x553
+00000520 ldr     x0, #0x958 ; literal ('', '.rodata.str1.8', '0x2190')
+00000524 add     x3, x3, #0xf0
+00000528 bl      #0x528 ; ('printk', 'SHN_UNDEF', '0x0')
+0000052c b       #0x818
+00000530 ldr     x4, [x22, #0x370]
+00000534 cbnz    x4, #0x558
+00000538 ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+0000053c mov     w2, #0x55b
+00000540 ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+00000544 mov     w20, #-0x16
+00000548 ldr     x0, #0x960 ; literal ('', '.rodata.str1.8', '0x21d0')
+0000054c add     x3, x3, #0xf0
+00000550 bl      #0x550 ; ('printk', 'SHN_UNDEF', '0x0')
+00000554 b       #0x80c
+00000558 ldr     w0, [x4, #8]
+0000055c add     x23, x4, #8
+00000560 cbz     w0, #0x58c
+00000564 ldr     w0, [x4, #0xc]
+00000568 cbz     w0, #0x58c
+0000056c ldr     w0, [x4, #0x10]
+00000570 cbz     w0, #0x58c
+00000574 ldr     w0, [x4, #0x14]
+00000578 cbz     w0, #0x58c
+0000057c ldr     w0, [x4, #0x18]
+00000580 cbz     w0, #0x58c
+00000584 ldr     w0, [x4, #0x1c]
+00000588 cbnz    w0, #0x824
+0000058c ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+00000590 mov     w2, #0x518
+00000594 ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+00000598 mov     x21, #0
+0000059c ldr     x0, #0x968 ; literal ('', '.rodata.str1.8', '0x2010')
+000005a0 add     x3, x3, #0xc8
+000005a4 mov     x23, #0
+000005a8 bl      #0x5a8 ; ('printk', 'SHN_UNDEF', '0x0')
+000005ac mov     w1, #0x40000000
+000005b0 ldr     x0, #0x970 ; literal ('', '.data', '0xd0')
+000005b4 mov     w2, #1
+000005b8 bl      #0x5b8 ; ('emmc_seq_init', '.init.text', '0x1f50')
+000005bc mov     w20, w0
+000005c0 tbz     w0, #0x1f, #0x5e4
+000005c4 ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+000005c8 mov     w4, w20
+000005cc ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+000005d0 mov     w2, #0x571
+000005d4 ldr     x0, #0x978 ; literal ('', '.rodata.str1.8', '0x2210')
+000005d8 add     x3, x3, #0xf0
+000005dc bl      #0x5dc ; ('printk', 'SHN_UNDEF', '0x0')
+000005e0 b       #0x80c
+000005e4 mov     x0, x23
+000005e8 mov     w27, #0x3238
+000005ec mov     x23, #0
+000005f0 movk    w27, #0x3634, lsl #16
+000005f4 bl      #0x5f4 ; ('emmc_seq_set_cid', '.text', '0x17980')
+000005f8 mov     x0, x21
+000005fc bl      #0x5fc ; ('emmc_seq_set_csd', '.text', '0x179c0')
+00000600 ldr     x28, #0x910 ; literal ('udif_devnodes', 'SHN_UNDEF', '0x20')
+00000604 ldr     x26, #0x908 ; literal ('udif_devnodes', 'SHN_UNDEF', '0x10')
+00000608 mov     x20, #0xe0
+0000060c ldr     x0, [x19, #8]
+00000610 madd    x20, x23, x20, x0
+00000614 str     x19, [x20, #8]
+00000618 cbnz    x23, #0x754
+0000061c ldr     x21, #0x980 ; literal ('udif_devnodes', 'SHN_UNDEF', '0x0')
+00000620 cbnz    x21, #0x644
+00000624 ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+00000628 mov     w2, #0xa9
+0000062c ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+00000630 mov     w20, #-0x13
+00000634 ldr     x0, #0x988 ; literal ('', '.rodata.str1.8', '0x2250')
+00000638 add     x3, x3, #0x108
+0000063c bl      #0x63c ; ('printk', 'SHN_UNDEF', '0x0')
+00000640 b       #0x7d8
+00000644 ldr     x1, [x21]
+00000648 add     x0, x19, #0x24
+0000064c mov     x2, #0x20
+00000650 bl      #0x650 ; ('strncpy', 'SHN_UNDEF', '0x0')
+00000654 ldrb    w0, [x19, #0x43]
+00000658 cbnz    w0, #0x680
+0000065c ldr     x3, [x20, #8]
+00000660 mov     x2, #0x20
+00000664 ldr     x1, #0x990 ; literal ('', '.rodata.str1.8', '0x2288')
+00000668 add     x0, x3, #0x44
+0000066c str     x3, [x29, #0x68]
+00000670 bl      #0x670 ; ('strncpy', 'SHN_UNDEF', '0x0')
+00000674 ldr     x3, [x29, #0x68]
+00000678 ldrb    w0, [x3, #0x63]
+0000067c cbz     w0, #0x684
+00000680 brk     #0x800
+00000684 ldr     x0, [x20, #8]
+00000688 ldrh    w1, [x21, #0xa]
+0000068c str     w1, [x0, #0x20]
+00000690 mov     x0, x21
+00000694 mov     x1, x20
+00000698 bl      #0x388
+0000069c ldr     x0, #0x998 ; literal ('udif_km_debug', 'SHN_UNDEF', '0x0')
+000006a0 ldr     w0, [x0]
+000006a4 cbz     w0, #0x6c4
+000006a8 mov     w2, #0x80c0
+000006ac mov     x0, x25
+000006b0 movk    w2, #0x240, lsl #16
+000006b4 mov     w1, #0x218
+000006b8 bl      #0x6b8 ; ('__udif_kmalloc', 'SHN_UNDEF', '0x0')
+000006bc mov     x21, x0
+000006c0 b       #0x6ec
+000006c4 ldr     x0, #0x9a0 ; literal ('kmalloc_caches', 'SHN_UNDEF', '0x0')
+000006c8 mov     w1, #0x80c0
+000006cc movk    w1, #0x240, lsl #16
+000006d0 ldr     x0, [x0, #0x50]
+000006d4 bl      #0x6d4 ; ('kmem_cache_alloc', 'SHN_UNDEF', '0x0')
+000006d8 mov     x21, x0
+000006dc mov     w2, #0x80c0
+000006e0 mov     x1, #0x218
+000006e4 movk    w2, #0x240, lsl #16
+000006e8 bl      #0x6e8 ; ('kmalloc_add_trace', 'SHN_UNDEF', '0x0')
+000006ec cbnz    x21, #0x714
+000006f0 ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+000006f4 mov     w2, #0xbc
+000006f8 ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+000006fc ldr     x0, #0x9a8 ; literal ('', '.rodata.str1.8', '0x2290')
+00000700 add     x3, x3, #0x108
+00000704 str     xzr, [x20, #0xd8]
+00000708 mov     w20, #-0xc
+0000070c bl      #0x70c ; ('printk', 'SHN_UNDEF', '0x0')
+00000710 b       #0x7d8
+00000714 mov     w0, #0x200
+00000718 str     w27, [x21, #0x200]
+0000071c str     wzr, [x21, #0x210]
+00000720 str     w0, [x21, #0x20c]
+00000724 mov     w0, #0x2e32
+00000728 movk    w0, #0x3030, lsl #16
+0000072c str     wzr, [x21, #0x214]
+00000730 str     w0, [x21, #0x204]
+00000734 mov     w0, #0x1e
+00000738 str     w0, [x21, #0x208]
+0000073c mov     w0, #-1
+00000740 str     wzr, [x20, #0xbc]
+00000744 str     xzr, [x20, #0xc8]
+00000748 str     w0, [x20, #0xd0]
+0000074c str     x21, [x20, #0xd8]
+00000750 b       #0x84c
+00000754 cmp     w23, #1
+00000758 b.ne    #0x78c
+0000075c cbnz    x26, #0x780
+00000760 ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+00000764 mov     w2, #0xe2
+00000768 ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+0000076c mov     w20, #-0x13
+00000770 ldr     x0, #0x988 ; literal ('', '.rodata.str1.8', '0x2250')
+00000774 add     x3, x3, #0x118
+00000778 bl      #0x778 ; ('printk', 'SHN_UNDEF', '0x0')
+0000077c b       #0x8e0
+00000780 mov     x0, x26
+00000784 str     w23, [x20, #0xbc]
+00000788 b       #0x7bc
+0000078c cbnz    x28, #0x7b0
+00000790 ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+00000794 mov     w2, #0xea
+00000798 ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+0000079c mov     w20, #-2
+000007a0 ldr     x0, #0x988 ; literal ('', '.rodata.str1.8', '0x2250')
+000007a4 add     x3, x3, #0x118
+000007a8 bl      #0x7a8 ; ('printk', 'SHN_UNDEF', '0x0')
+000007ac b       #0x8e0
+000007b0 mov     w1, #2
+000007b4 mov     x0, x28
+000007b8 str     w1, [x20, #0xbc]
+000007bc mov     w2, #-1
+000007c0 mov     x1, x20
+000007c4 str     xzr, [x20, #0xc8]
+000007c8 str     w2, [x20, #0xd0]
+000007cc str     xzr, [x20, #0xd8]
+000007d0 bl      #0x388
+000007d4 b       #0x84c
+000007d8 ldr     x4, #0x918 ; literal ('', '.rodata.str1.8', '0x2150')
+000007dc ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+000007e0 mov     w5, w20
+000007e4 ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+000007e8 mov     w2, #0x587
+000007ec ldr     x0, #0x9b0 ; literal ('', '.rodata.str1.8', '0x22d0')
+000007f0 add     x3, x3, #0xf0
+000007f4 bl      #0x7f4 ; ('printk', 'SHN_UNDEF', '0x0')
+000007f8 ldr     w0, [x19]
+000007fc mov     x21, #0
+00000800 cmp     w0, #0
+00000804 b.gt    #0x8cc
+00000808 bl      #0x808 ; ('emmc_seq_exit', '.text', '0x17a00')
+0000080c bl      #0x80c ; ('va_emmc_exit', '.text', '0x4b50')
+00000810 b       #0x818
+00000814 mov     w20, #-0x13
+00000818 mov     x0, x24
+0000081c bl      #0x81c ; ('va_exit', '.text', '0x69a8')
+00000820 b       #0x8e8
+00000824 ldr     w0, [x4, #0x20]
+00000828 cbz     w0, #0x58c
+0000082c ldr     w0, [x4, #0x24]
+00000830 cbz     w0, #0x58c
+00000834 ldr     w0, [x4]
+00000838 cmp     w0, #1
+0000083c b.ne    #0x58c
+00000840 add     x21, x4, #0x18
+00000844 ldr     w1, [x4, #4]
+00000848 b       #0x5b0
+0000084c ldr     w0, [x19]
+00000850 add     x23, x23, #1
+00000854 cmp     x23, #3
+00000858 add     w0, w0, #1
+0000085c str     w0, [x19]
+00000860 b.ne    #0x608
+00000864 mov     w2, #0x400
+00000868 mov     w20, #1
+0000086c mov     w1, w20
+00000870 mov     w0, w2
+00000874 str     w20, [x22, #4]
+00000878 str     w2, [x22, #0x10]
+0000087c bl      #0x87c ; ('alloc_sg_list', '.text', '0x76a8')
+00000880 str     x0, [x22, #8]
+00000884 cbnz    x0, #0x8a8
+00000888 ldr     x3, #0x948 ; literal ('', '.rodata', '0x5c8')
+0000088c mov     w2, #0x593
+00000890 ldr     x1, #0x950 ; literal ('', '.rodata.str1.8', '0x1508')
+00000894 mov     w20, #-0xc
+00000898 ldr     x0, #0x9b8 ; literal ('', '.rodata.str1.8', '0x2308')
+0000089c add     x3, x3, #0xf0
+000008a0 bl      #0x8a0 ; ('printk', 'SHN_UNDEF', '0x0')
+000008a4 b       #0x7f8
+000008a8 str     w20, [x22]
+000008ac mov     w20, #0
+000008b0 b       #0x8e8
+000008b4 ldr     w0, [x19]
+000008b8 add     x21, x21, #1
+000008bc cmp     x21, #3
+000008c0 sub     w0, w0, #1
+000008c4 str     w0, [x19]
+000008c8 b.eq    #0x808
+000008cc cbnz    x21, #0x8b4
+000008d0 ldr     x0, [x19, #8]
+000008d4 add     x0, x0, #0xd8
+000008d8 bl      #0x8d8 ; ('', '.text.unlikely', '0x0')
+000008dc b       #0x8b4
+000008e0 ldr     x4, #0x920 ; literal ('', '.rodata.str1.8', '0x2160')
+000008e4 b       #0x7dc
+000008e8 mov     w0, w20
+000008ec ldp     x19, x20, [sp, #0x10]
+000008f0 ldp     x21, x22, [sp, #0x20]
+000008f4 ldp     x23, x24, [sp, #0x30]
+000008f8 ldp     x25, x26, [sp, #0x40]
+000008fc ldp     x27, x28, [sp, #0x50]
+00000900 ldp     x29, x30, [sp], #0x70
+00000904 ret     

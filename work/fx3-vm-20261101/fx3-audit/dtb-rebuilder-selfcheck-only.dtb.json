@@ -1,0 +1,28 @@
+{
+  "input": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/originals/7.02-setting-cxd90057.dtb",
+  "input_sha256": "c5735ad9c6da8c48fb24eeee0bb743d07c486a47d5db19bef13b5eaea24ad280",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/dtb-rebuilder-selfcheck-only.dtb",
+  "output_sha256": "e75cae4ba3c05058e6f8ca200ab8503e38e14cfe4c6a2730da117fac528c3efb",
+  "bytes": 17004,
+  "only_changed_properties": [
+    [
+      "/chosen",
+      "bootargs"
+    ],
+    [
+      "/chosen",
+      "linux,initrd-end"
+    ],
+    [
+      "/chosen",
+      "linux,initrd-start"
+    ]
+  ],
+  "bootargs": "semantic_rebuild_only=1",
+  "initrd_start": "0x48000000",
+  "initrd_end": "0x480e0a74",
+  "reserve_map_unchanged": true,
+  "nodes_before": 68,
+  "nodes_after": 68,
+  "original_fx3_kernel_changed": false
+}

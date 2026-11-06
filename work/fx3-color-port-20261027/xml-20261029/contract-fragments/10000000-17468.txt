@@ -1,0 +1,32 @@
+00017468 stp        x29, x30, [sp, #-0x30]!
+0001746c mov        x29, sp
+00017470 stp        x19, x20, [sp, #0x10]
+00017474 mov        x20, x0
+00017478 ldr        x0, [x0, #0x10]
+0001747c str        x21, [sp, #0x20]
+00017480 mov        x21, x1
+00017484 cbz        x0, #0x17498
+00017488 ldr        x1, [x0]
+0001748c ldr        x1, [x1, #8]
+00017490 blr        x1
+00017494 str        xzr, [x20, #0x10]
+00017498 mov        x0, #0x70
+0001749c bl         #0x10140 ; operator new
+000174a0 mov        x19, x0
+000174a4 bl         #0xfcf0 ; Updater::Xml::DomDocument::DomDocument
+000174a8 mov        x0, x21
+000174ac str        x19, [x20, #0x10]
+000174b0 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+000174b4 ldr        x21, [sp, #0x20]
+000174b8 mov        x1, x0
+000174bc mov        x0, x19
+000174c0 ldp        x19, x20, [sp, #0x10]
+000174c4 mov        w2, #0
+000174c8 ldp        x29, x30, [sp], #0x30
+000174cc b          #0x106f0 ; Updater::Xml::DomDocument::loadFile
+000174d0 mov        x20, x0
+000174d4 mov        x0, x19
+000174d8 mov        x1, #0x70
+000174dc bl         #0x10190 ; operator delete
+000174e0 mov        x0, x20
+000174e4 bl         #0x107a0 ; _Unwind_Resume

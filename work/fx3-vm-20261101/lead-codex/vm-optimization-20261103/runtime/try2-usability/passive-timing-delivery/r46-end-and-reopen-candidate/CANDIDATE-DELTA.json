@@ -1,0 +1,100 @@
+{
+  "schema": "fx3-r46-candidate-delta-v1",
+  "generated_utc": "2026-11-05T11:49:26.904672+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "non_git_root": true,
+  "input_pins": {
+    "r44_source43_sha256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+    "r44_core38_sha256": "b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1",
+    "r45_task_manifest_count": 554,
+    "r45_task_manifest_sha256": "82f91be572e61b896718d8f7c8689d3c7a79cac3edf28fb0a4d02bd41f49a614",
+    "r45_native_manifest_count": 150,
+    "r45_native_manifest_sha256": "8e500b1c1bc76146533b5e4d36db1eb657d0309d79f97b8f34ce05fb5ae0b79f",
+    "r45_approval_note": "local task_r45vm0323/ctx_r45vm0323 are not formal Orca IDs; independent verification of the original user message remains pending"
+  },
+  "changed_files": [
+    {
+      "path": "runtime-wrapper/cleanup.py",
+      "old_path": "r44-review-budget-candidate/runtime-wrapper/cleanup.py",
+      "old_sha256": "7c567bd53ad86b7d55db4b84640e018e80443328e53a7576b4e025c9073ea3e8",
+      "new_sha256": "ed3edbb402529acfa84a6fb18ce96720b48cb7b7c1edc1cbc622da9c92b7a1cb",
+      "kind": "remove local alarm allowlist; use shared strict classify; write full armed dispose-not-invoked identity + digest; marker binds alarm digest/dispose state"
+    },
+    {
+      "path": "runtime-wrapper/cleanup_evidence.py",
+      "old_path": "r44-review-budget-candidate/runtime-wrapper/cleanup_evidence.py",
+      "old_sha256": "a293ab051ca2f744bb8189e708a1a3bcc1360b252d63253141198e78d2dd2a5d",
+      "new_sha256": "b9c511e2c4ecf1ff24a0446a6a462dce86776b58ac983c73db12f811261a00dc",
+      "kind": "armed evidence path; conditional dispose stage; strict ended/browser binding; conditional manifest requirements; revalidate compares alarm/ended/browser"
+    },
+    {
+      "path": "page/trial_web_v22_navigation_review_r46.py",
+      "old_path": "v25-r21-recovery-integration/trial_web_v22_navigation_review.py",
+      "old_sha256": "1459d5b7afd792e291e51f54fd37e6730335c34d39ebf0988a9eba6384d0d521",
+      "new_sha256": "8a40a4a67bdbe4ce8712d1a4ef78c893ffc2ea625fb6f0966d1a4e4136ba1be7",
+      "kind": "minimal page candidate: recovery eligibility budget 20000 -> 60000 (two literals); not wired; not enabled"
+    },
+    {
+      "path": "page/PAGE-script-r46.txt",
+      "old_path": "r44-review-budget-candidate/tests/fixtures/PAGE-script.txt",
+      "old_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+      "new_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+      "kind": "assembled r24 canonical PAGE candidate with the same two literals; new hash f9a428..."
+    }
+  ],
+  "unchanged_copies": [
+    {
+      "path": "runtime-wrapper/common.py",
+      "sha256": "96196e962cf9e2cdc520a9128508e32a45349db4d9d86442c7c2a05395b11c5e",
+      "equals_r44": true
+    },
+    {
+      "path": "tests/fixtures/PAGE-script.txt",
+      "sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+      "equals_r44": true
+    }
+  ],
+  "page_candidate": {
+    "original_canonical_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+    "patched_canonical_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "changed_lines": 2,
+    "enabled": false,
+    "requires_new_profile": true,
+    "binding_sites": [
+      "operator-helpers/deadline.js SCRIPT_SHA",
+      "operator-helpers/planned_navigation_click.py PAGE_SHA",
+      "PAGE-IDENTITY.json canonical_script_sha256",
+      "SOURCE-FREEZE/CORE-SOURCE-FREEZE self-hash",
+      "trial_web_r24_review_snapshot.py PAGE_SCRIPT_SHA is computed at import"
+    ]
+  },
+  "tests": {
+    "cleanup_cases": 35,
+    "cleanup_passed": 35,
+    "page_replay_cases": 5,
+    "page_replay_passed": 5,
+    "page_source_changed_lines_base": 2,
+    "page_source_changed_lines_final": 2,
+    "suite_passed": true,
+    "input_seal_unchanged": true,
+    "receipts": [
+      "receipts/cleanup-evidence-tests.json",
+      "receipts/page-replay-tests.json",
+      "receipts/page-source-check.json",
+      "receipts/test-run.json",
+      "receipts/input-seal-before.json",
+      "receipts/input-seal-after.json",
+      "receipts/input-seal-compare.json"
+    ]
+  },
+  "r45_status": {
+    "run": "failed",
+    "step8": "not_posted",
+    "mutation_called": false,
+    "cleanup": "unknown",
+    "retain_original_failure_and_unknown": true,
+    "upgraded": false
+  },
+  "enabled": false,
+  "no_vm_browser_server_qmp_guest_deployment": true
+}

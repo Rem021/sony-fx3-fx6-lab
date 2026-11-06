@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/internal-preview-10.png using image tool. Setup>Power Setting Option 54/59, orange left category; Power Save Start Time and Auto Power OFF Temp. visible Next: RIGHT moves focus to Power Save Start Time for read-only inspection; no value selected or modified

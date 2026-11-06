@@ -1,0 +1,14 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-fsanitize=address,undefined",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe-proc-read.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe-proc-read"
+  ],
+  "compile_stderr": "",
+  "exit": 0,
+  "stdout": "PROC_SHORT_READ_PASS validextent_after9000B; missing_and_foreign_type_rejected\n",
+  "stderr": ""
+}

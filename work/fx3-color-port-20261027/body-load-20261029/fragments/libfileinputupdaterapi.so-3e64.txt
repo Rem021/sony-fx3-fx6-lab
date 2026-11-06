@@ -1,0 +1,64 @@
+00003e64 stp        x29, x30, [sp, #-0x30]!
+00003e68 sub        w1, w1, #1
+00003e6c cmp        w1, #5
+00003e70 mov        x29, sp
+00003e74 str        x19, [sp, #0x10]
+00003e78 mov        x19, x0
+00003e7c b.hi       #0x3f40
+00003e80 adrp       x0, #0x4000
+00003e84 add        x0, x0, #0x8f8
+00003e88 ldrb       w0, [x0, w1, uxtw]
+00003e8c adr        x1, #0x3e98
+00003e90 add        x0, x1, w0, sxtb #2
+00003e94 br         x0
+00003e98 cbnz       x3, #0x3ef4
+00003e9c mov        w19, #0x1a
+00003ea0 adrp       x2, #0x4000
+00003ea4 movk       w19, #3, lsl #16
+00003ea8 adrp       x0, #0x4000
+00003eac add        x2, x2, #0x9cb
+00003eb0 mov        w1, w19
+00003eb4 add        x0, x0, #0x9e7
+00003eb8 mov        w3, #0xc3
+00003ebc bl         #0x3b50 ; printf
+00003ec0 mov        x0, #0x10
+00003ec4 bl         #0x3780 ; __cxa_allocate_exception
+00003ec8 str        w19, [x0, #8]
+00003ecc adrp       x1, #0x15000
+00003ed0 adrp       x2, #0x15000
+00003ed4 strb       wzr, [x0, #0xc]
+00003ed8 ldr        x1, [x1, #0xf90]
+00003edc ldr        x2, [x2, #0xfa0]
+00003ee0 add        x1, x1, #0x10
+00003ee4 str        x1, [x0]
+00003ee8 adrp       x1, #0x15000
+00003eec ldr        x1, [x1, #0xfc0]
+00003ef0 bl         #0x3aa0 ; __cxa_throw
+00003ef4 strb       wzr, [x3]
+00003ef8 ldr        x19, [sp, #0x10]
+00003efc ldp        x29, x30, [sp], #0x30
+00003f00 ret        
+00003f04 adrp       x0, #0x15000
+00003f08 ldr        x0, [x0, #0xf90]
+00003f0c add        x0, x0, #0x10
+00003f10 str        x0, [x29, #0x20]
+00003f14 ldr        w0, [x2, #8]
+00003f18 str        w0, [x29, #0x28]
+00003f1c ldrb       w0, [x2, #0xc]
+00003f20 uxtb       w0, w0
+00003f24 strb       w0, [x29, #0x2c]
+00003f28 ldr        x0, [x19, #0x10]
+00003f2c add        x1, x29, #0x20
+00003f30 bl         #0x3910 ; Updater::CommonUpdaterManagerStatus::SetError(Updater::ApiException const&)
+00003f34 ldr        x0, [x19, #0x10]
+00003f38 bl         #0x3b00 ; Updater::CommonUpdaterManagerStatus::Stop()
+00003f3c b          #0x3ef8
+00003f40 adrp       x0, #0x15000
+00003f44 ldr        x0, [x0, #0xf90]
+00003f48 add        x0, x0, #0x10
+00003f4c str        x0, [x29, #0x20]
+00003f50 mov        w0, #0x25
+00003f54 movk       w0, #3, lsl #16
+00003f58 str        w0, [x29, #0x28]
+00003f5c strb       wzr, [x29, #0x2c]
+00003f60 b          #0x3f28

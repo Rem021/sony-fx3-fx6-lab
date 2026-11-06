@@ -1,0 +1,287 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap99cpdate600-da98cc9f",
+  "created_utc": "2026-11-02T20:23:49.476735+00:00",
+  "health_pass": false,
+  "native_health_no_assert": false,
+  "completed_requested_window": false,
+  "unsupported_drawing": false,
+  "lifecycle_pass": false,
+  "native_assertions": [],
+  "native_application_failed": false,
+  "duration_seconds": 112.60944454200217,
+  "requested_seconds": 600,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "input_SHA_reverified": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap99-v1-cp-date-consumer/guest.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap99-v1-cp-date-consumer/guest.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap99-v1-cp-date-consumer/candidate.json",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "matches": true
+    }
+  ],
+  "missing_markers": [
+    "FX3_GPE_SCOPE",
+    "FX3_OSD_FRAME_TARGET_VALID",
+    "FX3_GPE_DRAW_INTERVAL",
+    "const_alpha="
+  ],
+  "fatal_markers": [],
+  "early_stop_reason": "AP99 readonly Backup_read observation returned -1; inspect original user API signature before any host input; controlled stop, no model mutation.\n",
+  "im_alive_last_complete_maps": {
+    "pid": 229,
+    "uptime": 110.62,
+    "LF_line": 72709,
+    "maps": [
+      "00400000-00409000 r-xp 00000000 00:02 2303                               /usr/bin/im.elf",
+      "00418000-00419000 r--p 00008000 00:02 2303                               /usr/bin/im.elf",
+      "00419000-0041a000 rw-p 00009000 00:02 2303                               /usr/bin/im.elf"
+    ]
+  },
+  "host_gate_commands": 0,
+  "guest_done_steps": 0,
+  "sent_events": 0,
+  "received_events": 0,
+  "keys": [],
+  "key_receipts": [],
+  "done": [],
+  "raw20": [],
+  "leases": [
+    {
+      "lease": "1",
+      "allocation": {
+        "LF_line": 6025,
+        "fields": {
+          "destination": "0x80af6181",
+          "pointer": "0x7f76fa5740",
+          "bytes": "136",
+          "lease": "1",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x80af6181 pointer=0x7f76fa5740 bytes=136 lease=1 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 6075,
+          "fields": {
+            "destination": "0x80af6181",
+            "pointer": "0x7f76fa5740",
+            "bytes": "136",
+            "lease": "1",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x80af6181 pointer=0x7f76fa5740 bytes=136 lease=1 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "2",
+      "allocation": {
+        "LF_line": 6989,
+        "fields": {
+          "destination": "0x80af6182",
+          "pointer": "0x7f76fa3100",
+          "bytes": "7",
+          "lease": "2",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x80af6182 pointer=0x7f76fa3100 bytes=7 lease=2 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 7026,
+          "fields": {
+            "destination": "0x80af6182",
+            "pointer": "0x7f76fa3100",
+            "bytes": "7",
+            "lease": "2",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x80af6182 pointer=0x7f76fa3100 bytes=7 lease=2 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "3",
+      "allocation": {
+        "LF_line": 7044,
+        "fields": {
+          "destination": "0x80af6181",
+          "pointer": "0x7f76fa2e40",
+          "bytes": "28",
+          "lease": "3",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x80af6181 pointer=0x7f76fa2e40 bytes=28 lease=3 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 7063,
+          "fields": {
+            "destination": "0x80af6181",
+            "pointer": "0x7f76fa2e40",
+            "bytes": "28",
+            "lease": "3",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x80af6181 pointer=0x7f76fa2e40 bytes=28 lease=3 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    }
+  ],
+  "all_leases_native_free_once0": true,
+  "captures": [],
+  "capture_count": 0,
+  "GPE_complete_records": 0,
+  "GPE_incomplete_records": [],
+  "GPE_nonzero_records": [],
+  "screens": [
+    {
+      "LF_line": 11246,
+      "fields": {
+        "manager": "0x7ec7758490",
+        "id1": "0x407",
+        "id2": "0x2ae",
+        "id3": "0x407",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec7758490 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 14142,
+      "fields": {
+        "manager": "0x7ec7758490",
+        "id1": "0x2ae",
+        "id2": "0xfa",
+        "id3": "0x2ae",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec7758490 id1=0x2ae id2=0xfa id3=0x2ae three_reference_args_one_call=1 creation_not_yet_complete=1"
+    }
+  ],
+  "RM_native_branches": [
+    {
+      "LF_line": 11618,
+      "fields": {
+        "eid": "20",
+        "state": "2",
+        "if_state2_native_status0_else_request_and_count": "1"
+      },
+      "text": "FX3_MEDIA_START_BRANCH eid=20 state=2 if_state2_native_status0_else_request_and_count=1"
+    },
+    {
+      "LF_line": 11725,
+      "fields": {
+        "eid": "29",
+        "state": "2",
+        "if_state2_native_status0_else_request_and_count": "1"
+      },
+      "text": "FX3_MEDIA_START_BRANCH eid=29 state=2 if_state2_native_status0_else_request_and_count=1"
+    }
+  ],
+  "RM_native_notifications": [
+    {
+      "LF_line": 11643,
+      "fields": {
+        "eid": "23",
+        "tid": "424",
+        "mediaID": "0x1000",
+        "destination": "0x1cfe09d",
+        "status": "0",
+        "hold": "0",
+        "RemoveCnt": "1",
+        "extra16": "0",
+        "native": "1",
+        "synthetic": "0"
+      },
+      "text": "FX3_MEDIA_NOTIFY eid=23 tid=424 mediaID=0x1000 destination=0x1cfe09d status=0 hold=0 RemoveCnt=1 extra16=0 native=1 synthetic=0"
+    },
+    {
+      "LF_line": 11752,
+      "fields": {
+        "eid": "32",
+        "tid": "424",
+        "mediaID": "0x1010",
+        "destination": "0x1cfe09b",
+        "status": "0",
+        "hold": "0",
+        "RemoveCnt": "1",
+        "extra16": "0",
+        "native": "1",
+        "synthetic": "0"
+      },
+      "text": "FX3_MEDIA_NOTIFY eid=32 tid=424 mediaID=0x1010 destination=0x1cfe09b status=0 hold=0 RemoveCnt=1 extra16=0 native=1 synthetic=0"
+    }
+  ],
+  "RM_mount_count": 0,
+  "RM_timeout_count": 0,
+  "host_command_not_proven_sent": [],
+  "standby_verified": false,
+  "menu_verified": false,
+  "scope": "Independent read-only review; no changes inside completed runs; raw LF interleaving retained, not global lossless proof"
+}

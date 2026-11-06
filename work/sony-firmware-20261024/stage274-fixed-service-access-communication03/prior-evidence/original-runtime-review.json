@@ -1,0 +1,339 @@
+{
+  "recorded_utc": "2026-11-01T09:07:42.263180+00:00",
+  "status": "HELD_SERVICE_ACQUISITION_EXCLUSIVE_ACCESS",
+  "grant_id": "fx3-702-recovered-communication-20261101-02",
+  "approval_bundle_sha256": "6fd06531682f9a34c53626bd9bbc5b7ce7f50c6d35ae4b6a182cefe9747ae8e0",
+  "original_live_observer_pid": 34391,
+  "helper_identity": {
+    "uid": 0,
+    "pid": 34474,
+    "sec": 1793523718,
+    "usec": 860262,
+    "path": "/private/var/root/fx3-owner-trials/fx3-702-recovered-communication-20261101-02/helper",
+    "image_sha256": ""
+  },
+  "live_self_image": {
+    "image_sha256": "dff1d0706af1a110c03fb231f7a551c153c410e4b4d319db175903df11942b91",
+    "kernel_peer_and_self_image_checked": true
+  },
+  "helper_still_present": true,
+  "private_receipt": {
+    "phase": "HELD",
+    "native_return": 4,
+    "global_guard_result": 0,
+    "frame_io_failed": false,
+    "owner_ran": true,
+    "result": {
+      "abi": 4,
+      "status": 2,
+      "event_count": 18,
+      "capture_attempted": 1,
+      "claim_attempted": 1,
+      "interface_claimed": 1,
+      "clock_invalid": 0,
+      "cleanup_error": 0,
+      "active_call_pending": 0,
+      "persistent_camera_or_vendor_commands": 1,
+      "owner_retained": 1,
+      "session_state": 0,
+      "wire_pending": 0,
+      "vendor_attempted": 1
+    },
+    "result_sha256": "6f308f3ace73172ce5324bf38ba339004428aafac17053b8c9b35f08cf7d71bf",
+    "record_sha256": "e162e001133cedb8161c9cf7a90d871b035e8f47776645809b58ecaea8e92c23",
+    "transport_peer_verified": true,
+    "physical_camera_acceptance": false,
+    "manual_recovery": {
+      "schema": 1,
+      "stage": 2,
+      "prior_tail_hash": "612a37eddea4ac4ecab7b6e2450b8447c05b60827cce6746e42c86b914b28937",
+      "recovered_hash": "4ade535cf0d6c8a5bdef0ad083692493f267cc37af7fa6f24510130a1d0dc73c",
+      "source_node": 4295963942,
+      "physical_port": 4294968654,
+      "location": 17825792,
+      "before_count": 5
+    }
+  },
+  "flow_frames": 46,
+  "MSC_exchanges_out": 7,
+  "MSC_exchanges_in": 7,
+  "source_MSC_objects_disposal_returned": true,
+  "SERVICE_node": 4296004479,
+  "SERVICE_acquisition_return": {
+    "sequence": 45,
+    "op": 11,
+    "point": 1,
+    "status": 8,
+    "returned": 1,
+    "count": 0,
+    "raw_return": -536870203,
+    "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+    "camera_authentication_proven": false,
+    "camera_threads_proven": false
+  },
+  "raw_return_hex": "0xe00002c5",
+  "SDK_symbol": "kIOReturnExclusiveAccess",
+  "acquisition_substep_not_serialized": true,
+  "exact_failed_IOKit_substep_unproven": true,
+  "pending_flow_call": null,
+  "wire_pending": 0,
+  "SERVICE_authentication_started": false,
+  "SERVICE_read0_or_STOP_sent": false,
+  "automatic_retry": false,
+  "helper_killed_or_reset": false,
+  "camera_screen_confirmation_pending": true,
+  "firmware_write": false,
+  "saved_flow_replay_is_not_new_live_origin_proof": true,
+  "evidence": [
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/verified-helper.json",
+      "bytes": 331,
+      "sha256": "5a0b3a855edac0f714c63206e55b5499073da88b0e389e3daed24d99e467d133"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/live-self-image.bin",
+      "bytes": 160,
+      "sha256": "bb81d375839735d726b51e2c91a00dc383721add9c2d9d318407dad19d126914"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/received-final-record.bin",
+      "bytes": 1024,
+      "sha256": "e162e001133cedb8161c9cf7a90d871b035e8f47776645809b58ecaea8e92c23"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/private-record.json",
+      "bytes": 1101,
+      "sha256": "4ec0cc28933142674fb54545ca9eb665d27c8b0b77abc875fe6a810da9308482"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0000.bin",
+      "bytes": 672,
+      "sha256": "a410ce3d8802a02e599b67cbf1ea87d65de19c8d1d5c4ea5a308a0710dca27ea"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0001.bin",
+      "bytes": 672,
+      "sha256": "e65bff70cd47855f45d3f4f5e521b5afac8d2a9ea2a285e1e8966260ddd77def"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0002.bin",
+      "bytes": 672,
+      "sha256": "46747e0e548a2056a092f9a79f562772b05910dd96240c080d4a1c73913bbfea"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0003.bin",
+      "bytes": 672,
+      "sha256": "047b7b5c78de071017021704e9460c8b4e2ccfa8d8c40980dd5a45161de12ffd"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0004.bin",
+      "bytes": 672,
+      "sha256": "031c5dcf5c20a482dedf8ada73116379194a9db82c24f90cd029eb099b769a9a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0005.bin",
+      "bytes": 672,
+      "sha256": "2c555e48e53e21cd017db9e588e10e160bdee1a2561f96a11493fee6e1a70a25"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0006.bin",
+      "bytes": 672,
+      "sha256": "ced2f9e99f36b3a8d4d4e1c58a73e1b156985ea7b229cdebd11a92ab5a0d3700"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0007.bin",
+      "bytes": 672,
+      "sha256": "7c9b440671c96f895e7c434fa64413c424a104458ee025cf6ca8482b5552f610"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0008.bin",
+      "bytes": 672,
+      "sha256": "a166f539d6ac0afe1ab11c8dba043cafa2dcdc14afa18fa8a1cc69eb715a9776"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0009.bin",
+      "bytes": 672,
+      "sha256": "860b76d28641c13b62b16560db5ca2e39a375554041a847e189c699e08af0240"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0010.bin",
+      "bytes": 672,
+      "sha256": "c9655aa9b05c4f1f6edfb914e965a4922b9659075678f19bd4e03d566b2e270d"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0011.bin",
+      "bytes": 672,
+      "sha256": "6bf845bd83659c8b065d29adddcf074a9085f61197384ce7158d4ef3c8323086"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0012.bin",
+      "bytes": 672,
+      "sha256": "c1f7d2a554392b91b01e63b49f039537e82c771cff3b38be11559d378e307161"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0013.bin",
+      "bytes": 672,
+      "sha256": "863e43b05ceae90d3aa99a6f686f785b8f25de69e2a36abba450cf422d591906"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0014.bin",
+      "bytes": 672,
+      "sha256": "533130e60d778b2d50a786aeba9968dc0dcfb17039f0f2640a07a1f7a3344c27"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0015.bin",
+      "bytes": 672,
+      "sha256": "9ba192e80ecd4ec2c2998bb0ff79e81d31ffd8241cbbf0b6f569d1a44aaf966a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0016.bin",
+      "bytes": 672,
+      "sha256": "511fee5197575e0827ee9341fb0c418d098661a8c2053a70412d525f419bba62"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0017.bin",
+      "bytes": 672,
+      "sha256": "7b8fd377e1df04e891ee63b9b02eea9326781cb87a492443e9d3dfe21e04778a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0018.bin",
+      "bytes": 672,
+      "sha256": "40c33243ed0f335c81eb3e5cc424cfbc34d0f06e7c9da3ca62e3d9d85356f466"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0019.bin",
+      "bytes": 672,
+      "sha256": "6256127b8afbcc85d51b15eacfa5832b1f0e565cd938b218260f7898d0381da9"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0020.bin",
+      "bytes": 672,
+      "sha256": "2aad628476e54d03524591659d3105f8c404c65d640083b9e8a0a8e8c6344103"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0021.bin",
+      "bytes": 672,
+      "sha256": "433ad3eddd71deb305bcd1658c63adbbeaa88f4d2e915d51e27c60ead55a336e"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0022.bin",
+      "bytes": 672,
+      "sha256": "ea3c17a2124a3d5d2f4c4197608e83775703d01f3d71bf14d663cd71fdf3ef0c"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0023.bin",
+      "bytes": 672,
+      "sha256": "5fa18e3276beb04a03583c3921155f1dff0856c678d7308b5755b2434ae98c16"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0024.bin",
+      "bytes": 672,
+      "sha256": "84f4a980ce2a9342f3d832c8459071855a4e5b2da56f7ecc0adf6f2cd8e669ed"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0025.bin",
+      "bytes": 672,
+      "sha256": "691220937655ac8ae3428720d39ae62e38f2f62cb2dc95f1f82102236a6a7455"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0026.bin",
+      "bytes": 672,
+      "sha256": "e3cd7e53b1ce0c447bc5e1213a37f965c25657efbf1e22fbe905e0e66239e26e"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0027.bin",
+      "bytes": 672,
+      "sha256": "06ae4ab579d24b78e5368095afc09abe2aa8a2687297cfec43d76dca15797756"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0028.bin",
+      "bytes": 672,
+      "sha256": "373d39e93bc979a089e1850dd212dcc3a86a3b9aa23dcb86922bf7cb211e9500"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0029.bin",
+      "bytes": 672,
+      "sha256": "2fc130fd760705d06b3d1d7837ca7994b6e25ab18b730d544e1581cc079081f1"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0030.bin",
+      "bytes": 672,
+      "sha256": "77007ffb078c2acb002dca600cf6efea76de76ecef828f94840285a10ffcbdc5"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0031.bin",
+      "bytes": 672,
+      "sha256": "8ea468f1cceba602146bb710897f02bea8a1ce9d6c31499171e66545de628371"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0032.bin",
+      "bytes": 672,
+      "sha256": "21751c33a7e70cff56931b7b6253cf18d1ca5ca7a8e320c832abebadc00059a4"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0033.bin",
+      "bytes": 672,
+      "sha256": "c056fca31b9230b2e5c4b4071ce12a3268ba37edb9a51f865a91e49174e5167a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0034.bin",
+      "bytes": 672,
+      "sha256": "3725294650673c4e48adf787d9c487134d83b664aadb741fc31f3b660802a042"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0035.bin",
+      "bytes": 672,
+      "sha256": "43e3e3218212164a6551b6e466ff47982a1137fd26ef8e6ff724384901aabc4e"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0036.bin",
+      "bytes": 672,
+      "sha256": "d52fb0e051707f323af0a2555d7d7015b8b75ea9f75cfb7bb7ce2fcc0eef229f"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0037.bin",
+      "bytes": 672,
+      "sha256": "ae4d40c1538311d1a1cd70b9e11402fc90c7dc9e94a8fa3dc317bc0808b9dc1d"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0038.bin",
+      "bytes": 672,
+      "sha256": "6f926c3879d81eaa285f0e6ba5a2715f41c15b8cca14d2c6a048915e6361ee4a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0039.bin",
+      "bytes": 672,
+      "sha256": "5357ef170f84c9dd2867538424602234e5abea10f0a179c27a0bf699d45ae85b"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0040.bin",
+      "bytes": 672,
+      "sha256": "e498b409202824765a0baa50adfd66c88595815eab9a3ec4bd8bcceac2beb68a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0041.bin",
+      "bytes": 672,
+      "sha256": "e5c2577077d5b47b795da1cded25ae481b43dee2bf7ce4785ec2006959d14a80"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0042.bin",
+      "bytes": 672,
+      "sha256": "b7e0d3eb3612981a89b06526bbbf304b90f83c7ddc8657649827b1b67331c634"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0043.bin",
+      "bytes": 672,
+      "sha256": "3f81164bc1b365579029fd3d3448684c26d9f4d2618ad328a1ced730c99d1098"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0044.bin",
+      "bytes": 672,
+      "sha256": "cfe38ab96d4672d58b1ee96d4f94315039f65aa2aa6517d9cb217b6f216f2839"
+    },
+    {
+      "path": "/private/tmp/fx3-702-recovered-communication-20261101-02/flow-0045.bin",
+      "bytes": 672,
+      "sha256": "337fe248d65c637e1689b6bf90abc52cd45f707b92b9eee124854f9b72311097"
+    }
+  ]
+}

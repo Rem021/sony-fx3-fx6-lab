@@ -1,0 +1,14 @@
+{
+  "preserved_failures": [
+    {"artifact": "attempts/external-parser-download-failure.json", "outcome": "Pinned dependency fetch failed before creating parser or initrd outputs. Replaced dependency with a task-local SquashFS4 gzip reader checked against all 65 independent prior records."},
+    {"artifact": "attempts/vtable-initial-address-failure.json", "outcome": "Initial exploratory read used a virtual data address as a flat file offset and failed bounds. Correct resolution now translates through PT_LOAD; first-segment code addresses are separately rechecked."}
+  ],
+  "network_scope": "A public encrypted DNS read and per-request TLS-preserving fallback were researched. The actual successful public format-source fetch receipt records system DNS. No system DNS/proxy/firewall settings were changed; the unsuccessful external parser fetch created no wheel.",
+  "source_version_scope": "Historical official 2.04/2.05 initrd SD components are byte-identical. Current WBI SKD and CryptoCore snapshot code have separate pinned identities; historical boot SKD is not assumed to be the current snapshot binary.",
+  "signature_probe_scope": "Public official RSA parameters and original signature bytes only. Twelve changed-byte digest comparisons stay in memory. No full changed package or new signature is emitted.",
+  "independent_verification": "Host LibreSSL 3.3.6 verifies original 7.02 ciphertext plus IV and rejects IV omission.",
+  "signing_parameters": "No private RSA parameter read or derivation, no actual ROM/OTP/MMIO access, and no signing function invoked.",
+  "no_sony_code_executed": true,
+  "no_camera_usb_phone_or_flash_actions": true,
+  "goal_completion_claimed": false
+}

@@ -1,0 +1,10 @@
+{
+  "results": [
+    {
+      "name": "observe_end_real_peer",
+      "status": "FAIL",
+      "error": "OSError(57, 'Socket is not connected')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/test_integration.py\", line 180, in case\n    try:fn();results.append({'name':name,'status':'PASS','processes':Job.serial-before,'seconds':time.monotonic()-start})\n        ~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/test_integration.py\", line 187, in clean\n    assert j.send(1,fragment=fragment)[0]==0;assert j.send(5)[0]==0;r=j.finish()\n                                                                      ~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/test_integration.py\", line 124, in finish\n    self.receive_receipt(required=self.record['receipt_delivered'])\n    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/test_integration.py\", line 133, in receive_receipt\n    raw,self.receipt=self.receiver.receive(time.monotonic()+1)\n                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/receipt_receiver.py\", line 146, in receive\n    if socket_peer(self.conn)!=(self.verified.identity.uid,self.verified.identity.pid):raise Rejected('kernel peer changed')\n       ~~~~~~~~~~~^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/receipt_receiver.py\", line 61, in socket_peer\n    raw=conn.getsockopt(0,2,4)\nOSError: [Errno 57] Socket is not connected\n"
+    }
+  ]
+}

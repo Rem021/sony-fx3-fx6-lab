@@ -1,0 +1,50 @@
+{
+  "schema": "fx3-stage33-coordinator-review/1",
+  "created_utc": "2026-10-25T22:55:16.966426+00:00",
+  "status": "PASS_SOURCE_TABLE_NATIVE_MISMATCH_AND_CONDITIONAL_MATCH_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent source-byte/table/hash and fragment-boundary review; no independent implementation or camera replay.",
+  "previous_stage32_sealed_files_verified": 12,
+  "raw_instruction_records_checked": 667,
+  "additional_anchor_instruction_records_checked": 30,
+  "original_table_rows_checked": 689,
+  "HEVC_rows": 258,
+  "bounded_executions": 41,
+  "matcher_case_results": [
+    -1,
+    -1,
+    -1,
+    607,
+    431,
+    -1,
+    386,
+    -1
+  ],
+  "FH_target_no_mandatory_row_independent_of_unknown_tail": true,
+  "FF_candidate_only_conditional_match_not_actual16Mbps": true,
+  "appended_fields_are_explicit_fixture_not_camera_observation": true,
+  "initial_W20_3_is_original_constant_precondition_not_backend_output": true,
+  "exhausted_matcher_visits_all_applicable_rows3_through688": true,
+  "maximum_instructions_in_one_fragment": 6833,
+  "receiver_and_common_handler_not_connected_as_full_runtime_chain": true,
+  "all_guest_stores_stack_or_fixture": true,
+  "native_diagnostic_clear_or_output_adapters": false,
+  "original_image_unchanged": true,
+  "primary_sources_refreshed": {
+    "date": "2026-10-25",
+    "urls": [
+      "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000868279.html",
+      "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000868278.html"
+    ],
+    "scope": "Classic FX3 published MAIN menu lacks HS HD. Shared firmware preset row is not official support."
+  },
+  "unverified": [
+    "Complete resource Open state/construction/transport bridge, appended-field source, clear/log effects and actual receiver replies",
+    "MAIN FF preset actual bitrate/QoS, consistent upstream model/quality/query/cache/menu/persistence",
+    "Physical buffers/VCD, hardware Open/Start, MAIN media/audio/timebase/sync/long-run/temperature/regression",
+    "Same-body healthy backup, native safe points/restricted restore/readback, WBI/cold boot and independent recovery"
+  ],
+  "camera_or_remote_access_attempted": false,
+  "authorization_unchanged": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

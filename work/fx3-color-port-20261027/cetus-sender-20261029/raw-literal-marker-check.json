@@ -1,0 +1,34 @@
+{
+  "method": "Exact bytes.find across each complete pinned raw file; no decoding or execution.",
+  "checks": [
+    {
+      "file": "vmlinux.bin",
+      "bytes": 6610952,
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "marker_bytes": "4b524e45",
+      "file_offsets": []
+    },
+    {
+      "file": "vmlinux.bin",
+      "bytes": 6610952,
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "marker_bytes": "45534350",
+      "file_offsets": []
+    },
+    {
+      "file": "av-cam.bin",
+      "bytes": 13348560,
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "marker_bytes": "4b524e45",
+      "file_offsets": []
+    },
+    {
+      "file": "av-cam.bin",
+      "bytes": 13348560,
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "marker_bytes": "45534350",
+      "file_offsets": []
+    }
+  ],
+  "scope": "Only these literal32-bit byte patterns. Missing literals do not exclude constructed values, other encodings, stages or processors."
+}

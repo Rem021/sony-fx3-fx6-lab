@@ -1,0 +1,29 @@
+{
+  "checked_utc": "2026-10-29T22:23:35.456179+00:00",
+  "sources": [
+    {
+      "url": "https://www.sony.com/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx3/software/00298561",
+      "title": "ILME-FX3 System Software Update Ver7.02",
+      "version": "7.02",
+      "published": "2026-03-17",
+      "package_bytes": 811876768,
+      "facts": [
+        "applicable model ILME-FX3; card update selected from version menu",
+        "failure section covers incorrect model/copy/version and specified lamp patterns, with another-card retry",
+        "does not establish arbitrary modified-image rollback or bootloader recovery interface"
+      ],
+      "not_AP_brick_recovery_receipt": true
+    },
+    {
+      "url": "https://www.sony.com/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx3/software/00280268",
+      "title": "Historical FX3 Ver3.00 Mac update via2.04/2.05",
+      "facts": [
+        "official black-screen-over30min troubleshooting permits disconnect/power removal/computer reboot and restart installation for that specific historical procedure"
+      ],
+      "limit": "historical official USB updater conditions; cannot be generalized to altered7.02 partitions"
+    }
+  ],
+  "search_scope": "Primary-source targeted GitHub searches for exact FX3 queue/av-cam boot names yielded no useful new result; not evidence that no other recovery exists. FX3A/FX6/RSV/video-recovery results excluded.",
+  "local_binary_analysis_primary_for_endpoint": true,
+  "camera_operation": false
+}

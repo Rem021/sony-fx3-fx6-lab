@@ -1,0 +1,4389 @@
+{
+  "source": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+  "source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+  "functions": [
+    {
+      "name": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j",
+      "VA": 46376,
+      "bytes": 180,
+      "sha256": "b37a0339049942a5be1922575a869b57261f5585352bc1fabb99bcb171e02fb9",
+      "raw": "fd7bbaa9fd030091f35301a9f47f8012f55b02a9f76303a9f92300f9e1030034f303012aa1630191e003132af70303aaf803022a2300805202048052f903062af50305aaf60304aabceaff97f403002a40020035a02f40f9e103192a7fe9ff97a02f40f9010080d2400100b4180000b917d800a9a12f40f9150c00f9e003132a46eaff97f403002a80000034a12f40f9e003132ad9ecff97e003142af92340f9f35341a9f55b42a9f76343a9fd7bc6a8c0035fd6",
+      "instructions": [
+        {
+          "pc": 46376,
+          "asm": "stp x29, x30, [sp, #-0x60]!",
+          "PLT": null
+        },
+        {
+          "pc": 46380,
+          "asm": "mov x29, sp",
+          "PLT": null
+        },
+        {
+          "pc": 46384,
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46388,
+          "asm": "mov w20, #-0x400",
+          "PLT": null
+        },
+        {
+          "pc": 46392,
+          "asm": "stp x21, x22, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 46396,
+          "asm": "stp x23, x24, [sp, #0x30]",
+          "PLT": null
+        },
+        {
+          "pc": 46400,
+          "asm": "str x25, [sp, #0x40]",
+          "PLT": null
+        },
+        {
+          "pc": 46404,
+          "asm": "cbz w1, #0xb5c0",
+          "PLT": null
+        },
+        {
+          "pc": 46408,
+          "asm": "mov w19, w1",
+          "PLT": null
+        },
+        {
+          "pc": 46412,
+          "asm": "add x1, x29, #0x58",
+          "PLT": null
+        },
+        {
+          "pc": 46416,
+          "asm": "mov w0, w19",
+          "PLT": null
+        },
+        {
+          "pc": 46420,
+          "asm": "mov x23, x3",
+          "PLT": null
+        },
+        {
+          "pc": 46424,
+          "asm": "mov w24, w2",
+          "PLT": null
+        },
+        {
+          "pc": 46428,
+          "asm": "mov w3, #1",
+          "PLT": null
+        },
+        {
+          "pc": 46432,
+          "asm": "mov w2, #0x20",
+          "PLT": null
+        },
+        {
+          "pc": 46436,
+          "asm": "mov w25, w6",
+          "PLT": null
+        },
+        {
+          "pc": 46440,
+          "asm": "mov x21, x5",
+          "PLT": null
+        },
+        {
+          "pc": 46444,
+          "asm": "mov x22, x4",
+          "PLT": null
+        },
+        {
+          "pc": 46448,
+          "asm": "bl #0x6060",
+          "PLT": "osal_valloc_msg_wait"
+        },
+        {
+          "pc": 46452,
+          "asm": "mov w20, w0",
+          "PLT": null
+        },
+        {
+          "pc": 46456,
+          "asm": "cbnz w0, #0xb5c0",
+          "PLT": null
+        },
+        {
+          "pc": 46460,
+          "asm": "ldr x0, [x29, #0x58]",
+          "PLT": null
+        },
+        {
+          "pc": 46464,
+          "asm": "mov w1, w25",
+          "PLT": null
+        },
+        {
+          "pc": 46468,
+          "asm": "bl #0x5b80",
+          "PLT": "osal_set_msg_src"
+        },
+        {
+          "pc": 46472,
+          "asm": "ldr x0, [x29, #0x58]",
+          "PLT": null
+        },
+        {
+          "pc": 46476,
+          "asm": "mov x1, #0",
+          "PLT": null
+        },
+        {
+          "pc": 46480,
+          "asm": "cbz x0, #0xb5b8",
+          "PLT": null
+        },
+        {
+          "pc": 46484,
+          "asm": "str w24, [x0]",
+          "PLT": null
+        },
+        {
+          "pc": 46488,
+          "asm": "stp x23, x22, [x0, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 46492,
+          "asm": "ldr x1, [x29, #0x58]",
+          "PLT": null
+        },
+        {
+          "pc": 46496,
+          "asm": "str x21, [x0, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 46500,
+          "asm": "mov w0, w19",
+          "PLT": null
+        },
+        {
+          "pc": 46504,
+          "asm": "bl #0x5ec0",
+          "PLT": "osal_snd_msg"
+        },
+        {
+          "pc": 46508,
+          "asm": "mov w20, w0",
+          "PLT": null
+        },
+        {
+          "pc": 46512,
+          "asm": "cbz w0, #0xb5c0",
+          "PLT": null
+        },
+        {
+          "pc": 46516,
+          "asm": "ldr x1, [x29, #0x58]",
+          "PLT": null
+        },
+        {
+          "pc": 46520,
+          "asm": "mov w0, w19",
+          "PLT": null
+        },
+        {
+          "pc": 46524,
+          "asm": "bl #0x6920",
+          "PLT": "osal_free_msg"
+        },
+        {
+          "pc": 46528,
+          "asm": "mov w0, w20",
+          "PLT": null
+        },
+        {
+          "pc": 46532,
+          "asm": "ldr x25, [sp, #0x40]",
+          "PLT": null
+        },
+        {
+          "pc": 46536,
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46540,
+          "asm": "ldp x21, x22, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 46544,
+          "asm": "ldp x23, x24, [sp, #0x30]",
+          "PLT": null
+        },
+        {
+          "pc": 46548,
+          "asm": "ldp x29, x30, [sp], #0x60",
+          "PLT": null
+        },
+        {
+          "pc": 46552,
+          "asm": "ret ",
+          "PLT": null
+        }
+      ]
+    },
+    {
+      "name": "_ZN10IM_JIRITSU10CImJiritsu4initEv",
+      "VA": 46556,
+      "bytes": 240,
+      "sha256": "c21d98e842548d070303109c21949fad852fa511149aa8c19b042e25c2e17a09",
+      "raw": "fd7bbba902300091e12d8052fd030091f30b00f9f30300aa4005805276ebff9760010034210100f0e203002a21480991c00f801260e9ff9720008052600a00b9f30b40f9fd7bc5a8c0035fd6200100b06142009100703891bf3300b9a01700f9c00100d000bc47f9a01f00f9e02d8052a0930079600e40b9a02300f9a0a3009181e9ff97a000f836210100f0e203002a219c0991e7ffff17660e40b9250100f0240100d0230100d0a5000a91845c0791630c0891e00313aae103062a2200805291ebff97c0000034210100f0c00f8012211c0a91a0eaff97d8ffff17210100f0600f8012216c0a919beaff97d5ffff17",
+      "instructions": [
+        {
+          "pc": 46556,
+          "asm": "stp x29, x30, [sp, #-0x50]!",
+          "PLT": null
+        },
+        {
+          "pc": 46560,
+          "asm": "add x2, x0, #0xc",
+          "PLT": null
+        },
+        {
+          "pc": 46564,
+          "asm": "mov w1, #0x16f",
+          "PLT": null
+        },
+        {
+          "pc": 46568,
+          "asm": "mov x29, sp",
+          "PLT": null
+        },
+        {
+          "pc": 46572,
+          "asm": "str x19, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46576,
+          "asm": "mov x19, x0",
+          "PLT": null
+        },
+        {
+          "pc": 46580,
+          "asm": "mov w0, #0x2a",
+          "PLT": null
+        },
+        {
+          "pc": 46584,
+          "asm": "bl #0x63d0",
+          "PLT": "osal_dynamic_id"
+        },
+        {
+          "pc": 46588,
+          "asm": "cbz w0, #0xb628",
+          "PLT": null
+        },
+        {
+          "pc": 46592,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46596,
+          "asm": "mov w2, w0",
+          "PLT": null
+        },
+        {
+          "pc": 46600,
+          "asm": "add x1, x1, #0x252",
+          "PLT": null
+        },
+        {
+          "pc": 46604,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 46608,
+          "asm": "bl #0x5b90",
+          "PLT": "_Z18jiritsu_cpp_logrechPKcj"
+        },
+        {
+          "pc": 46612,
+          "asm": "mov w0, #1",
+          "PLT": null
+        },
+        {
+          "pc": 46616,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 46620,
+          "asm": "ldr x19, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46624,
+          "asm": "ldp x29, x30, [sp], #0x50",
+          "PLT": null
+        },
+        {
+          "pc": 46628,
+          "asm": "ret ",
+          "PLT": null
+        },
+        {
+          "pc": 46632,
+          "asm": "adrp x0, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 46636,
+          "asm": "add x1, x19, #0x10",
+          "PLT": null
+        },
+        {
+          "pc": 46640,
+          "asm": "add x0, x0, #0xe1c",
+          "PLT": null
+        },
+        {
+          "pc": 46644,
+          "asm": "str wzr, [x29, #0x30]",
+          "PLT": null
+        },
+        {
+          "pc": 46648,
+          "asm": "str x0, [x29, #0x28]",
+          "PLT": null
+        },
+        {
+          "pc": 46652,
+          "asm": "adrp x0, #0x45000",
+          "PLT": null
+        },
+        {
+          "pc": 46656,
+          "asm": "ldr x0, [x0, #0xf78]",
+          "PLT": null
+        },
+        {
+          "pc": 46660,
+          "asm": "str x0, [x29, #0x38]",
+          "PLT": null
+        },
+        {
+          "pc": 46664,
+          "asm": "mov w0, #0x16f",
+          "PLT": null
+        },
+        {
+          "pc": 46668,
+          "asm": "strh w0, [x29, #0x48]",
+          "PLT": null
+        },
+        {
+          "pc": 46672,
+          "asm": "ldr w0, [x19, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 46676,
+          "asm": "str x0, [x29, #0x40]",
+          "PLT": null
+        },
+        {
+          "pc": 46680,
+          "asm": "add x0, x29, #0x28",
+          "PLT": null
+        },
+        {
+          "pc": 46684,
+          "asm": "bl #0x5c60",
+          "PLT": "osal_create_waitable_thread"
+        },
+        {
+          "pc": 46688,
+          "asm": "tbz w0, #0x1f, #0xb674",
+          "PLT": null
+        },
+        {
+          "pc": 46692,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46696,
+          "asm": "mov w2, w0",
+          "PLT": null
+        },
+        {
+          "pc": 46700,
+          "asm": "add x1, x1, #0x267",
+          "PLT": null
+        },
+        {
+          "pc": 46704,
+          "asm": "b #0xb60c",
+          "PLT": null
+        },
+        {
+          "pc": 46708,
+          "asm": "ldr w6, [x19, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 46712,
+          "asm": "adrp x5, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46716,
+          "asm": "adrp x4, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 46720,
+          "asm": "adrp x3, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 46724,
+          "asm": "add x5, x5, #0x280",
+          "PLT": null
+        },
+        {
+          "pc": 46728,
+          "asm": "add x4, x4, #0x1d7",
+          "PLT": null
+        },
+        {
+          "pc": 46732,
+          "asm": "add x3, x3, #0x203",
+          "PLT": null
+        },
+        {
+          "pc": 46736,
+          "asm": "mov x0, x19",
+          "PLT": null
+        },
+        {
+          "pc": 46740,
+          "asm": "mov w1, w6",
+          "PLT": null
+        },
+        {
+          "pc": 46744,
+          "asm": "mov w2, #1",
+          "PLT": null
+        },
+        {
+          "pc": 46748,
+          "asm": "bl #0x64e0",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+        },
+        {
+          "pc": 46752,
+          "asm": "cbz w0, #0xb6b8",
+          "PLT": null
+        },
+        {
+          "pc": 46756,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46760,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 46764,
+          "asm": "add x1, x1, #0x287",
+          "PLT": null
+        },
+        {
+          "pc": 46768,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 46772,
+          "asm": "b #0xb614",
+          "PLT": null
+        },
+        {
+          "pc": 46776,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46780,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 46784,
+          "asm": "add x1, x1, #0x29b",
+          "PLT": null
+        },
+        {
+          "pc": 46788,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 46792,
+          "asm": "b #0xb61c",
+          "PLT": null
+        }
+      ]
+    },
+    {
+      "name": "_ZN10IM_JIRITSU10CImJiritsu4exitEv",
+      "VA": 46796,
+      "bytes": 156,
+      "sha256": "a3bdb1a7a0d79aec15ae152d8437484db37c241f5b0cc2adeabc7f3922b864c6",
+      "raw": "fd7bbea9210100f021780891fd030091f30b00f9f30300aa600f801292eaff97210100d0600f8012215809918eeaff97660e40b9e00313aa050080d2040080d2e103062a030080d26200805272ebff97210100f0600f8012219c089182eaff97600a40f98ce9ff977f0a00f9210100f0600f8012210809917beaff97620e40b901008052400980521febff977f0e00b9f30b40f9fd7bc2a8c0035fd6",
+      "instructions": [
+        {
+          "pc": 46796,
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "PLT": null
+        },
+        {
+          "pc": 46800,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46804,
+          "asm": "add x1, x1, #0x21e",
+          "PLT": null
+        },
+        {
+          "pc": 46808,
+          "asm": "mov x29, sp",
+          "PLT": null
+        },
+        {
+          "pc": 46812,
+          "asm": "str x19, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46816,
+          "asm": "mov x19, x0",
+          "PLT": null
+        },
+        {
+          "pc": 46820,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 46824,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 46828,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 46832,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 46836,
+          "asm": "add x1, x1, #0x256",
+          "PLT": null
+        },
+        {
+          "pc": 46840,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 46844,
+          "asm": "ldr w6, [x19, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 46848,
+          "asm": "mov x0, x19",
+          "PLT": null
+        },
+        {
+          "pc": 46852,
+          "asm": "mov x5, #0",
+          "PLT": null
+        },
+        {
+          "pc": 46856,
+          "asm": "mov x4, #0",
+          "PLT": null
+        },
+        {
+          "pc": 46860,
+          "asm": "mov w1, w6",
+          "PLT": null
+        },
+        {
+          "pc": 46864,
+          "asm": "mov x3, #0",
+          "PLT": null
+        },
+        {
+          "pc": 46868,
+          "asm": "mov w2, #3",
+          "PLT": null
+        },
+        {
+          "pc": 46872,
+          "asm": "bl #0x64e0",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+        },
+        {
+          "pc": 46876,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46880,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 46884,
+          "asm": "add x1, x1, #0x227",
+          "PLT": null
+        },
+        {
+          "pc": 46888,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 46892,
+          "asm": "ldr x0, [x19, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46896,
+          "asm": "bl #0x5d60",
+          "PLT": "osal_wait_thread_exit"
+        },
+        {
+          "pc": 46900,
+          "asm": "str xzr, [x19, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46904,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46908,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 46912,
+          "asm": "add x1, x1, #0x242",
+          "PLT": null
+        },
+        {
+          "pc": 46916,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 46920,
+          "asm": "ldr w2, [x19, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 46924,
+          "asm": "mov w1, #0",
+          "PLT": null
+        },
+        {
+          "pc": 46928,
+          "asm": "mov w0, #0x4a",
+          "PLT": null
+        },
+        {
+          "pc": 46932,
+          "asm": "bl #0x63d0",
+          "PLT": "osal_dynamic_id"
+        },
+        {
+          "pc": 46936,
+          "asm": "str wzr, [x19, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 46940,
+          "asm": "ldr x19, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46944,
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT": null
+        },
+        {
+          "pc": 46948,
+          "asm": "ret ",
+          "PLT": null
+        }
+      ]
+    },
+    {
+      "name": "_ZN10IM_JIRITSU10CImJiritsu7releaseEv",
+      "VA": 46952,
+      "bytes": 132,
+      "sha256": "7779678c5b400c2dca5526203dc78322f6506435b96c1087c65f533e8d4e5ec4",
+      "raw": "fd7bbea9fd030091f35301a9f30300aa000c40f9600200b4210100f021d00b919ee9ff97f40300aadce9ff97c00000b4210100f0210c0c91600f801263eaff9704000014601240f9800100b480023fd6600e40f97f1200f98ceaff977f0e00f9f35341a9200100f0fd7bc2a800d40c9121008052c1eaff17210100f021680c91eeffff17",
+      "instructions": [
+        {
+          "pc": 46952,
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "PLT": null
+        },
+        {
+          "pc": 46956,
+          "asm": "mov x29, sp",
+          "PLT": null
+        },
+        {
+          "pc": 46960,
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 46964,
+          "asm": "mov x19, x0",
+          "PLT": null
+        },
+        {
+          "pc": 46968,
+          "asm": "ldr x0, [x0, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 46972,
+          "asm": "cbz x0, #0xb7c8",
+          "PLT": null
+        },
+        {
+          "pc": 46976,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 46980,
+          "asm": "add x1, x1, #0x2f4",
+          "PLT": null
+        },
+        {
+          "pc": 46984,
+          "asm": "bl #0x5e00",
+          "PLT": "dlsym"
+        },
+        {
+          "pc": 46988,
+          "asm": "mov x20, x0",
+          "PLT": null
+        },
+        {
+          "pc": 46992,
+          "asm": "bl #0x5f00",
+          "PLT": "dlerror"
+        },
+        {
+          "pc": 46996,
+          "asm": "cbz x0, #0xb7ac",
+          "PLT": null
+        },
+        {
+          "pc": 47000,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 47004,
+          "asm": "add x1, x1, #0x303",
+          "PLT": null
+        },
+        {
+          "pc": 47008,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 47012,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47016,
+          "asm": "b #0xb7b8",
+          "PLT": null
+        },
+        {
+          "pc": 47020,
+          "asm": "ldr x0, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 47024,
+          "asm": "cbz x0, #0xb7e0",
+          "PLT": null
+        },
+        {
+          "pc": 47028,
+          "asm": "blr x20",
+          "PLT": null
+        },
+        {
+          "pc": 47032,
+          "asm": "ldr x0, [x19, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 47036,
+          "asm": "str xzr, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 47040,
+          "asm": "bl #0x61f0",
+          "PLT": "dlclose"
+        },
+        {
+          "pc": 47044,
+          "asm": "str xzr, [x19, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 47048,
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 47052,
+          "asm": "adrp x0, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 47056,
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT": null
+        },
+        {
+          "pc": 47060,
+          "asm": "add x0, x0, #0x335",
+          "PLT": null
+        },
+        {
+          "pc": 47064,
+          "asm": "mov w1, #1",
+          "PLT": null
+        },
+        {
+          "pc": 47068,
+          "asm": "b #0x62e0",
+          "PLT": "ramdisk_umount"
+        },
+        {
+          "pc": 47072,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 47076,
+          "asm": "add x1, x1, #0x31a",
+          "PLT": null
+        },
+        {
+          "pc": 47080,
+          "asm": "b #0xb7a0",
+          "PLT": null
+        }
+      ]
+    },
+    {
+      "name": "_ZN10IM_JIRITSU10CImJiritsu10jit_threadEPv",
+      "VA": 47092,
+      "bytes": 2152,
+      "sha256": "422bd5a0dd4dd80327de1462ba5cb970f1d9d3c03b6c7e8d5c3359811932b722",
+      "raw": "ff0740d1ff432cd1fd7bbaa9fd030091f35301a9f30300aaf55b02a9f40301aa40008052f603012a210100d0f76303a9f96b04a921c43b91fb7305a9370100d0600a00b9600f8012390100b0f73e3c913beaff97385f3891210100d0e203142a21f43b91600f8012cde8ff977ce9ff97210080d206eaff97600a40b91f1c0071c03d0054e203162ae10317aa600f8012c3e8ff97a1c30191e003162a02008012b7e9ff97e0000034210100d0e203002a21783c91c00f8012b9e8ff97efffff1720018052b43b40f9600a00b9d40000b5210100d0c00f801221b83c9118eaff97e6ffff17800240b91f080071802700541f0c0071203000541f040071c13000543b0100d0a1e301916073099172180094e0000034210100d0219c0991600f801207eaff97e000805244000014355f3891a1e30391e00315aa67180094002f0035a00b41b9000c14121f104071812e0054200100b0e10315aa00a4389188e8ff9720010035200100d0a1e30791001c3d915918009480010035210100d021683d91e7ffff17210100d0e20318aa21f43c9183018052c00f8012a5eaff976001805226000014e00313aa3a0100b05cdb2e9197e9ff97e0031caa81e8ff9780070035350100b0a02a30917de8ff9700040035220100d0600f801242b43d91e10302aaa23700f9d6e9ff97a23740f9e11f8052e11fb0720000805205eaff97e10318aae0031caa1eeaff9720020034210100d0c00f801221103e91c9e9ff97220100d0e11f805242883e9100008052e11fb072f7e9ff97c0028052600a00b9a13b40f9e003162abaebff978cffff1740db2e913beaff97fa03002aa02a309138eaff975f03002ba0010054210100b0c00f801221583691b2e9ff97220100d0e11f805242083f9100008052e11fb072e0e9ff97e0028052e9ffff17220100b00100805242dc2d9100008052d9e9ff97210100b0200100f02128329100d40c9190eaff97c0000034210100d0c00f801221a03f919be9ff97b2ffff17350100d0800640f9bafa3f91e1031aaa9de8ff97e0000034210100f0c00f8012218c009190e9ff97a0028052cdffff17e0031aaa2100805287e9ff97600e00f9fde8ff97fa0300aa630e40f9430100b549e8ff97e303002a210100f0e2031aaa21e40091c00f80123beaff9740028052bcffff17210100f0e00303aa21240191ade8ff97fc0300aaebe8ff97fa0300aa400100b438e8ff97e303002a210100f0e2031aaa215c0191c00f80122aeaff9780028052abffff1780033fd6601200f9e00000b5210100d0c00f8012212c079165e9ff9700028052a2ffff17210100f0600e40f921ac019193e8ff97fa0300aad1e8ff97fc0300aa400100b41ee8ff97e303002a210100f0e2031caa21dc0191c00f801210eaff976002805291ffff17a05740f91f0400f1ad020054607309910100805240e8ff97fc03002ae000f836210100f0c00f80122124029146e9ff97e001805283ffff17a25740f9010880d25f0001f142d0819a61a20091427c4093ede8ff97e0031c2a7feaff9760aa40391f140171c1000054200100b0a1e3059100d43b919a17009460160034601240f9810a40f940033fd61f1c0072a1060054601240f9340100d094923b91001c40f91f0000f19402809ae00314aaeae7ff97e303002a210100f0e20314aa21600491c00f8012dce9ff97210100f0200100d021b00291006808915beaff97f50300aa200100b4210100f0e20314aa21840491dde7ff97e00315aae7e9ff97e00315aa2de8ff97220100f0e123013242f404910000805240e9ff97e30314aac2000014660e40b9250100f0a5cc0391e40314aaa3fa3f91e00313aae103062a42008052ede9ff9700e8ff34210100f021000491c00f8012fce8ff970003805239ffff1760a240391f2801712103005460a640391f2801716000005460730991fee8ff9760a20091410780524fe8ff97600000b400040091800e00f9660e40b9240100d0850e40f9845c0791a3fa3f91e00313aae103062a42008052cfe9ff9780000034210100f021440591e2ffff17210100f0600f8012217c0591dbe8ff97c001805218ffff1720038052bae30991021f83d201008052600a00b9e0031aaa1ee8ff977a0200f9200100d0210100f00068089121a40591a05f0df920008052a09302b960428052e002a472a09b02b9600e40f9f9e7ff97fb0300aa37e8ff97f50300aa400100b484e7ff97e303002a210100f0e20315aa21dc0191c00f801276e9ff9780038052f7feff1740038052350100b0b5d63b91a23d8052600a00b9e00315aa21088052a4e7ff97e000f836210100f0c00f801221d00591abe8ff9760038052e8feff17ece9ff97820e40f9e1031aaa601240f960033fd6e00315aaaee8ff977f0200f9200100d0940e40f900b03b919f0200f11400949ae00314aa5ee7ff97e303002a210100f0e20314aa21100691600f801250e9ff97a0038052d1feff17210100f0c00f8012214806918ee8ff97e00313aa40e8ff9785feff1740008052c8feff17210100f0e20318aa21680691c00f8012830180523fe9ff9780018052c0feff17940640f9e00314aa42e7ff97e303002a210100f0e20314aa21880691600f8012340100d0945e079132e9ff97a1e30991e00314aad9160094e0050035601240f9e10314aa40033fd61f1c007281ecff54601240f9141c40f9e00314aa2de7ff97e303002a210100f0e20314aa21640291c00f80121fe9ff97210100f0200100d021b00291006808919ee9ff97f40300aac00100b4611240f9221c40f9210100b021dc2d915f0000f12200829a210100f021b802911be7ff97e00314aa25e9ff97e00314aa6be7ff97220100f0e123013242500391000080527ee8ff97030080d2220000b0e1230132425c37912000805278e8ff972002805281feff1740018052f55b42a9f76343a9f96b44a9fb7345a9600a00b900008052f35341a9fd7bc6a8ff074091ff432c91c0035fd6",
+      "instructions": [
+        {
+          "pc": 47092,
+          "asm": "sub sp, sp, #1, lsl #12",
+          "PLT": null
+        },
+        {
+          "pc": 47096,
+          "asm": "sub sp, sp, #0xb10",
+          "PLT": null
+        },
+        {
+          "pc": 47100,
+          "asm": "stp x29, x30, [sp, #-0x60]!",
+          "PLT": null
+        },
+        {
+          "pc": 47104,
+          "asm": "mov x29, sp",
+          "PLT": null
+        },
+        {
+          "pc": 47108,
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 47112,
+          "asm": "mov x19, x0",
+          "PLT": null
+        },
+        {
+          "pc": 47116,
+          "asm": "stp x21, x22, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 47120,
+          "asm": "mov x20, x1",
+          "PLT": null
+        },
+        {
+          "pc": 47124,
+          "asm": "mov w0, #2",
+          "PLT": null
+        },
+        {
+          "pc": 47128,
+          "asm": "mov w22, w1",
+          "PLT": null
+        },
+        {
+          "pc": 47132,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47136,
+          "asm": "stp x23, x24, [sp, #0x30]",
+          "PLT": null
+        },
+        {
+          "pc": 47140,
+          "asm": "stp x25, x26, [sp, #0x40]",
+          "PLT": null
+        },
+        {
+          "pc": 47144,
+          "asm": "add x1, x1, #0xef1",
+          "PLT": null
+        },
+        {
+          "pc": 47148,
+          "asm": "stp x27, x28, [sp, #0x50]",
+          "PLT": null
+        },
+        {
+          "pc": 47152,
+          "asm": "adrp x23, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47156,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 47160,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 47164,
+          "asm": "adrp x25, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 47168,
+          "asm": "add x23, x23, #0xf0f",
+          "PLT": null
+        },
+        {
+          "pc": 47172,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47176,
+          "asm": "add x24, x25, #0xe17",
+          "PLT": null
+        },
+        {
+          "pc": 47180,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47184,
+          "asm": "mov w2, w20",
+          "PLT": null
+        },
+        {
+          "pc": 47188,
+          "asm": "add x1, x1, #0xefd",
+          "PLT": null
+        },
+        {
+          "pc": 47192,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 47196,
+          "asm": "bl #0x5b90",
+          "PLT": "_Z18jiritsu_cpp_logrechPKcj"
+        },
+        {
+          "pc": 47200,
+          "asm": "bl #0x5e50",
+          "PLT": "osal_thread_id"
+        },
+        {
+          "pc": 47204,
+          "asm": "mov x1, #1",
+          "PLT": null
+        },
+        {
+          "pc": 47208,
+          "asm": "bl #0x6080",
+          "PLT": "osal_set_cpu"
+        },
+        {
+          "pc": 47212,
+          "asm": "ldr w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 47216,
+          "asm": "cmp w0, #7",
+          "PLT": null
+        },
+        {
+          "pc": 47220,
+          "asm": "b.eq #0xc02c",
+          "PLT": null
+        },
+        {
+          "pc": 47224,
+          "asm": "mov w2, w22",
+          "PLT": null
+        },
+        {
+          "pc": 47228,
+          "asm": "mov x1, x23",
+          "PLT": null
+        },
+        {
+          "pc": 47232,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 47236,
+          "asm": "bl #0x5b90",
+          "PLT": "_Z18jiritsu_cpp_logrechPKcj"
+        },
+        {
+          "pc": 47240,
+          "asm": "add x1, x29, #0x70",
+          "PLT": null
+        },
+        {
+          "pc": 47244,
+          "asm": "mov w0, w22",
+          "PLT": null
+        },
+        {
+          "pc": 47248,
+          "asm": "mov w2, #-1",
+          "PLT": null
+        },
+        {
+          "pc": 47252,
+          "asm": "bl #0x5f70",
+          "PLT": "osal_rcv_msg_tmo"
+        },
+        {
+          "pc": 47256,
+          "asm": "cbz w0, #0xb8b4",
+          "PLT": null
+        },
+        {
+          "pc": 47260,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47264,
+          "asm": "mov w2, w0",
+          "PLT": null
+        },
+        {
+          "pc": 47268,
+          "asm": "add x1, x1, #0xf1e",
+          "PLT": null
+        },
+        {
+          "pc": 47272,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47276,
+          "asm": "bl #0x5b90",
+          "PLT": "_Z18jiritsu_cpp_logrechPKcj"
+        },
+        {
+          "pc": 47280,
+          "asm": "b #0xb86c",
+          "PLT": null
+        },
+        {
+          "pc": 47284,
+          "asm": "mov w0, #9",
+          "PLT": null
+        },
+        {
+          "pc": 47288,
+          "asm": "ldr x20, [x29, #0x70]",
+          "PLT": null
+        },
+        {
+          "pc": 47292,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 47296,
+          "asm": "cbnz x20, #0xb8d8",
+          "PLT": null
+        },
+        {
+          "pc": 47300,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47304,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47308,
+          "asm": "add x1, x1, #0xf2e",
+          "PLT": null
+        },
+        {
+          "pc": 47312,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47316,
+          "asm": "b #0xb86c",
+          "PLT": null
+        },
+        {
+          "pc": 47320,
+          "asm": "ldr w0, [x20]",
+          "PLT": null
+        },
+        {
+          "pc": 47324,
+          "asm": "cmp w0, #2",
+          "PLT": null
+        },
+        {
+          "pc": 47328,
+          "asm": "b.eq #0xbdd0",
+          "PLT": null
+        },
+        {
+          "pc": 47332,
+          "asm": "cmp w0, #3",
+          "PLT": null
+        },
+        {
+          "pc": 47336,
+          "asm": "b.eq #0xbeec",
+          "PLT": null
+        },
+        {
+          "pc": 47340,
+          "asm": "cmp w0, #1",
+          "PLT": null
+        },
+        {
+          "pc": 47344,
+          "asm": "b.ne #0xbf08",
+          "PLT": null
+        },
+        {
+          "pc": 47348,
+          "asm": "adrp x27, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47352,
+          "asm": "add x1, x29, #0x78",
+          "PLT": null
+        },
+        {
+          "pc": 47356,
+          "asm": "add x0, x27, #0x25c",
+          "PLT": null
+        },
+        {
+          "pc": 47360,
+          "asm": "bl #0x11ac8",
+          "PLT": null
+        },
+        {
+          "pc": 47364,
+          "asm": "cbz w0, #0xb920",
+          "PLT": null
+        },
+        {
+          "pc": 47368,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47372,
+          "asm": "add x1, x1, #0x267",
+          "PLT": null
+        },
+        {
+          "pc": 47376,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 47380,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47384,
+          "asm": "mov w0, #7",
+          "PLT": null
+        },
+        {
+          "pc": 47388,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 47392,
+          "asm": "add x21, x25, #0xe17",
+          "PLT": null
+        },
+        {
+          "pc": 47396,
+          "asm": "add x1, x29, #0xf8",
+          "PLT": null
+        },
+        {
+          "pc": 47400,
+          "asm": "mov x0, x21",
+          "PLT": null
+        },
+        {
+          "pc": 47404,
+          "asm": "bl #0x11ac8",
+          "PLT": null
+        },
+        {
+          "pc": 47408,
+          "asm": "cbnz w0, #0xbf10",
+          "PLT": null
+        },
+        {
+          "pc": 47412,
+          "asm": "ldr w0, [x29, #0x108]",
+          "PLT": null
+        },
+        {
+          "pc": 47416,
+          "asm": "and w0, w0, #0xf000",
+          "PLT": null
+        },
+        {
+          "pc": 47420,
+          "asm": "cmp w0, #4, lsl #12",
+          "PLT": null
+        },
+        {
+          "pc": 47424,
+          "asm": "b.ne #0xbf10",
+          "PLT": null
+        },
+        {
+          "pc": 47428,
+          "asm": "adrp x0, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 47432,
+          "asm": "mov x1, x21",
+          "PLT": null
+        },
+        {
+          "pc": 47436,
+          "asm": "add x0, x0, #0xe29",
+          "PLT": null
+        },
+        {
+          "pc": 47440,
+          "asm": "bl #0x5b70",
+          "PLT": "sys_mount"
+        },
+        {
+          "pc": 47444,
+          "asm": "cbnz w0, #0xb978",
+          "PLT": null
+        },
+        {
+          "pc": 47448,
+          "asm": "adrp x0, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47452,
+          "asm": "add x1, x29, #0x1f8",
+          "PLT": null
+        },
+        {
+          "pc": 47456,
+          "asm": "add x0, x0, #0xf47",
+          "PLT": null
+        },
+        {
+          "pc": 47460,
+          "asm": "bl #0x11ac8",
+          "PLT": null
+        },
+        {
+          "pc": 47464,
+          "asm": "cbnz w0, #0xb998",
+          "PLT": null
+        },
+        {
+          "pc": 47468,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47472,
+          "asm": "add x1, x1, #0xf5a",
+          "PLT": null
+        },
+        {
+          "pc": 47476,
+          "asm": "b #0xb910",
+          "PLT": null
+        },
+        {
+          "pc": 47480,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47484,
+          "asm": "mov x2, x24",
+          "PLT": null
+        },
+        {
+          "pc": 47488,
+          "asm": "add x1, x1, #0xf3d",
+          "PLT": null
+        },
+        {
+          "pc": 47492,
+          "asm": "mov w3, #0xc",
+          "PLT": null
+        },
+        {
+          "pc": 47496,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47500,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 47504,
+          "asm": "mov w0, #0xb",
+          "PLT": null
+        },
+        {
+          "pc": 47508,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 47512,
+          "asm": "mov x0, x19",
+          "PLT": null
+        },
+        {
+          "pc": 47516,
+          "asm": "adrp x26, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 47520,
+          "asm": "add x28, x26, #0xbb6",
+          "PLT": null
+        },
+        {
+          "pc": 47524,
+          "asm": "bl #0x6000",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu7releaseEv"
+        },
+        {
+          "pc": 47528,
+          "asm": "mov x0, x28",
+          "PLT": null
+        },
+        {
+          "pc": 47532,
+          "asm": "bl #0x5bb0",
+          "PLT": "sys_file_chk_exist"
+        },
+        {
+          "pc": 47536,
+          "asm": "cbnz w0, #0xbaa0",
+          "PLT": null
+        },
+        {
+          "pc": 47540,
+          "asm": "adrp x21, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 47544,
+          "asm": "add x0, x21, #0xc0a",
+          "PLT": null
+        },
+        {
+          "pc": 47548,
+          "asm": "bl #0x5bb0",
+          "PLT": "sys_file_chk_exist"
+        },
+        {
+          "pc": 47552,
+          "asm": "cbnz w0, #0xba40",
+          "PLT": null
+        },
+        {
+          "pc": 47556,
+          "asm": "adrp x2, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47560,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 47564,
+          "asm": "add x2, x2, #0xf6d",
+          "PLT": null
+        },
+        {
+          "pc": 47568,
+          "asm": "mov x1, x2",
+          "PLT": null
+        },
+        {
+          "pc": 47572,
+          "asm": "str x2, [x29, #0x68]",
+          "PLT": null
+        },
+        {
+          "pc": 47576,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47580,
+          "asm": "ldr x2, [x29, #0x68]",
+          "PLT": null
+        },
+        {
+          "pc": 47584,
+          "asm": "mov w1, #0xff",
+          "PLT": null
+        },
+        {
+          "pc": 47588,
+          "asm": "movk w1, #0x80ff, lsl #16",
+          "PLT": null
+        },
+        {
+          "pc": 47592,
+          "asm": "mov w0, #0",
+          "PLT": null
+        },
+        {
+          "pc": 47596,
+          "asm": "bl #0x6200",
+          "PLT": "UI_PrintString"
+        },
+        {
+          "pc": 47600,
+          "asm": "mov x1, x24",
+          "PLT": null
+        },
+        {
+          "pc": 47604,
+          "asm": "mov x0, x28",
+          "PLT": null
+        },
+        {
+          "pc": 47608,
+          "asm": "bl #0x6270",
+          "PLT": "sys_tar_extract"
+        },
+        {
+          "pc": 47612,
+          "asm": "cbz w0, #0xba40",
+          "PLT": null
+        },
+        {
+          "pc": 47616,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47620,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47624,
+          "asm": "add x1, x1, #0xf84",
+          "PLT": null
+        },
+        {
+          "pc": 47628,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47632,
+          "asm": "adrp x2, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47636,
+          "asm": "mov w1, #0xff",
+          "PLT": null
+        },
+        {
+          "pc": 47640,
+          "asm": "add x2, x2, #0xfa2",
+          "PLT": null
+        },
+        {
+          "pc": 47644,
+          "asm": "mov w0, #0",
+          "PLT": null
+        },
+        {
+          "pc": 47648,
+          "asm": "movk w1, #0x80ff, lsl #16",
+          "PLT": null
+        },
+        {
+          "pc": 47652,
+          "asm": "bl #0x6200",
+          "PLT": "UI_PrintString"
+        },
+        {
+          "pc": 47656,
+          "asm": "mov w0, #0x16",
+          "PLT": null
+        },
+        {
+          "pc": 47660,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 47664,
+          "asm": "ldr x1, [x29, #0x70]",
+          "PLT": null
+        },
+        {
+          "pc": 47668,
+          "asm": "mov w0, w22",
+          "PLT": null
+        },
+        {
+          "pc": 47672,
+          "asm": "bl #0x6920",
+          "PLT": "osal_free_msg"
+        },
+        {
+          "pc": 47676,
+          "asm": "b #0xb86c",
+          "PLT": null
+        },
+        {
+          "pc": 47680,
+          "asm": "add x0, x26, #0xbb6",
+          "PLT": null
+        },
+        {
+          "pc": 47684,
+          "asm": "bl #0x6330",
+          "PLT": "sys_file_remove"
+        },
+        {
+          "pc": 47688,
+          "asm": "mov w26, w0",
+          "PLT": null
+        },
+        {
+          "pc": 47692,
+          "asm": "add x0, x21, #0xc0a",
+          "PLT": null
+        },
+        {
+          "pc": 47696,
+          "asm": "bl #0x6330",
+          "PLT": "sys_file_remove"
+        },
+        {
+          "pc": 47700,
+          "asm": "cmn w26, w0",
+          "PLT": null
+        },
+        {
+          "pc": 47704,
+          "asm": "b.eq #0xba8c",
+          "PLT": null
+        },
+        {
+          "pc": 47708,
+          "asm": "adrp x1, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 47712,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47716,
+          "asm": "add x1, x1, #0xd96",
+          "PLT": null
+        },
+        {
+          "pc": 47720,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47724,
+          "asm": "adrp x2, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47728,
+          "asm": "mov w1, #0xff",
+          "PLT": null
+        },
+        {
+          "pc": 47732,
+          "asm": "add x2, x2, #0xfc2",
+          "PLT": null
+        },
+        {
+          "pc": 47736,
+          "asm": "mov w0, #0",
+          "PLT": null
+        },
+        {
+          "pc": 47740,
+          "asm": "movk w1, #0x80ff, lsl #16",
+          "PLT": null
+        },
+        {
+          "pc": 47744,
+          "asm": "bl #0x6200",
+          "PLT": "UI_PrintString"
+        },
+        {
+          "pc": 47748,
+          "asm": "mov w0, #0x17",
+          "PLT": null
+        },
+        {
+          "pc": 47752,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 47756,
+          "asm": "adrp x2, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 47760,
+          "asm": "mov w1, #0",
+          "PLT": null
+        },
+        {
+          "pc": 47764,
+          "asm": "add x2, x2, #0xb77",
+          "PLT": null
+        },
+        {
+          "pc": 47768,
+          "asm": "mov w0, #0",
+          "PLT": null
+        },
+        {
+          "pc": 47772,
+          "asm": "bl #0x6200",
+          "PLT": "UI_PrintString"
+        },
+        {
+          "pc": 47776,
+          "asm": "adrp x1, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 47780,
+          "asm": "adrp x0, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 47784,
+          "asm": "add x1, x1, #0xc8a",
+          "PLT": null
+        },
+        {
+          "pc": 47788,
+          "asm": "add x0, x0, #0x335",
+          "PLT": null
+        },
+        {
+          "pc": 47792,
+          "asm": "bl #0x64f0",
+          "PLT": "ramdisk_mount"
+        },
+        {
+          "pc": 47796,
+          "asm": "cbz w0, #0xbacc",
+          "PLT": null
+        },
+        {
+          "pc": 47800,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47804,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47808,
+          "asm": "add x1, x1, #0xfe8",
+          "PLT": null
+        },
+        {
+          "pc": 47812,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47816,
+          "asm": "b #0xb990",
+          "PLT": null
+        },
+        {
+          "pc": 47820,
+          "asm": "adrp x21, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 47824,
+          "asm": "ldr x0, [x20, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 47828,
+          "asm": "add x26, x21, #0xffe",
+          "PLT": null
+        },
+        {
+          "pc": 47832,
+          "asm": "mov x1, x26",
+          "PLT": null
+        },
+        {
+          "pc": 47836,
+          "asm": "bl #0x5d50",
+          "PLT": "sys_file_copy"
+        },
+        {
+          "pc": 47840,
+          "asm": "cbz w0, #0xbafc",
+          "PLT": null
+        },
+        {
+          "pc": 47844,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 47848,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47852,
+          "asm": "add x1, x1, #0x23",
+          "PLT": null
+        },
+        {
+          "pc": 47856,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 47860,
+          "asm": "mov w0, #0x15",
+          "PLT": null
+        },
+        {
+          "pc": 47864,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 47868,
+          "asm": "mov x0, x26",
+          "PLT": null
+        },
+        {
+          "pc": 47872,
+          "asm": "mov w1, #1",
+          "PLT": null
+        },
+        {
+          "pc": 47876,
+          "asm": "bl #0x6120",
+          "PLT": "dlopen"
+        },
+        {
+          "pc": 47880,
+          "asm": "str x0, [x19, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 47884,
+          "asm": "bl #0x5f00",
+          "PLT": "dlerror"
+        },
+        {
+          "pc": 47888,
+          "asm": "mov x26, x0",
+          "PLT": null
+        },
+        {
+          "pc": 47892,
+          "asm": "ldr x3, [x19, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 47896,
+          "asm": "cbnz x3, #0xbb40",
+          "PLT": null
+        },
+        {
+          "pc": 47900,
+          "asm": "bl #0x5c40",
+          "PLT": "strlen"
+        },
+        {
+          "pc": 47904,
+          "asm": "mov w3, w0",
+          "PLT": null
+        },
+        {
+          "pc": 47908,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 47912,
+          "asm": "mov x2, x26",
+          "PLT": null
+        },
+        {
+          "pc": 47916,
+          "asm": "add x1, x1, #0x39",
+          "PLT": null
+        },
+        {
+          "pc": 47920,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47924,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 47928,
+          "asm": "mov w0, #0x12",
+          "PLT": null
+        },
+        {
+          "pc": 47932,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 47936,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 47940,
+          "asm": "mov x0, x3",
+          "PLT": null
+        },
+        {
+          "pc": 47944,
+          "asm": "add x1, x1, #0x49",
+          "PLT": null
+        },
+        {
+          "pc": 47948,
+          "asm": "bl #0x5e00",
+          "PLT": "dlsym"
+        },
+        {
+          "pc": 47952,
+          "asm": "mov x28, x0",
+          "PLT": null
+        },
+        {
+          "pc": 47956,
+          "asm": "bl #0x5f00",
+          "PLT": "dlerror"
+        },
+        {
+          "pc": 47960,
+          "asm": "mov x26, x0",
+          "PLT": null
+        },
+        {
+          "pc": 47964,
+          "asm": "cbz x0, #0xbb84",
+          "PLT": null
+        },
+        {
+          "pc": 47968,
+          "asm": "bl #0x5c40",
+          "PLT": "strlen"
+        },
+        {
+          "pc": 47972,
+          "asm": "mov w3, w0",
+          "PLT": null
+        },
+        {
+          "pc": 47976,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 47980,
+          "asm": "mov x2, x26",
+          "PLT": null
+        },
+        {
+          "pc": 47984,
+          "asm": "add x1, x1, #0x57",
+          "PLT": null
+        },
+        {
+          "pc": 47988,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 47992,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 47996,
+          "asm": "mov w0, #0x14",
+          "PLT": null
+        },
+        {
+          "pc": 48000,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48004,
+          "asm": "blr x28",
+          "PLT": null
+        },
+        {
+          "pc": 48008,
+          "asm": "str x0, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 48012,
+          "asm": "cbnz x0, #0xbba8",
+          "PLT": null
+        },
+        {
+          "pc": 48016,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 48020,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48024,
+          "asm": "add x1, x1, #0x1cb",
+          "PLT": null
+        },
+        {
+          "pc": 48028,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 48032,
+          "asm": "mov w0, #0x10",
+          "PLT": null
+        },
+        {
+          "pc": 48036,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48040,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48044,
+          "asm": "ldr x0, [x19, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 48048,
+          "asm": "add x1, x1, #0x6b",
+          "PLT": null
+        },
+        {
+          "pc": 48052,
+          "asm": "bl #0x5e00",
+          "PLT": "dlsym"
+        },
+        {
+          "pc": 48056,
+          "asm": "mov x26, x0",
+          "PLT": null
+        },
+        {
+          "pc": 48060,
+          "asm": "bl #0x5f00",
+          "PLT": "dlerror"
+        },
+        {
+          "pc": 48064,
+          "asm": "mov x28, x0",
+          "PLT": null
+        },
+        {
+          "pc": 48068,
+          "asm": "cbz x0, #0xbbec",
+          "PLT": null
+        },
+        {
+          "pc": 48072,
+          "asm": "bl #0x5c40",
+          "PLT": "strlen"
+        },
+        {
+          "pc": 48076,
+          "asm": "mov w3, w0",
+          "PLT": null
+        },
+        {
+          "pc": 48080,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48084,
+          "asm": "mov x2, x28",
+          "PLT": null
+        },
+        {
+          "pc": 48088,
+          "asm": "add x1, x1, #0x77",
+          "PLT": null
+        },
+        {
+          "pc": 48092,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48096,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 48100,
+          "asm": "mov w0, #0x13",
+          "PLT": null
+        },
+        {
+          "pc": 48104,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48108,
+          "asm": "ldr x0, [x29, #0xa8]",
+          "PLT": null
+        },
+        {
+          "pc": 48112,
+          "asm": "cmp x0, #1",
+          "PLT": null
+        },
+        {
+          "pc": 48116,
+          "asm": "b.le #0xbc48",
+          "PLT": null
+        },
+        {
+          "pc": 48120,
+          "asm": "add x0, x27, #0x25c",
+          "PLT": null
+        },
+        {
+          "pc": 48124,
+          "asm": "mov w1, #0",
+          "PLT": null
+        },
+        {
+          "pc": 48128,
+          "asm": "bl #0x5d00",
+          "PLT": "open"
+        },
+        {
+          "pc": 48132,
+          "asm": "mov w28, w0",
+          "PLT": null
+        },
+        {
+          "pc": 48136,
+          "asm": "tbz w0, #0x1f, #0xbc24",
+          "PLT": null
+        },
+        {
+          "pc": 48140,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48144,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48148,
+          "asm": "add x1, x1, #0x89",
+          "PLT": null
+        },
+        {
+          "pc": 48152,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 48156,
+          "asm": "mov w0, #0xf",
+          "PLT": null
+        },
+        {
+          "pc": 48160,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48164,
+          "asm": "ldr x2, [x29, #0xa8]",
+          "PLT": null
+        },
+        {
+          "pc": 48168,
+          "asm": "mov x1, #0x40",
+          "PLT": null
+        },
+        {
+          "pc": 48172,
+          "asm": "cmp x2, #0x40",
+          "PLT": null
+        },
+        {
+          "pc": 48176,
+          "asm": "csel x2, x2, x1, le",
+          "PLT": null
+        },
+        {
+          "pc": 48180,
+          "asm": "add x1, x19, #0x28",
+          "PLT": null
+        },
+        {
+          "pc": 48184,
+          "asm": "sxtw x2, w2",
+          "PLT": null
+        },
+        {
+          "pc": 48188,
+          "asm": "bl #0x5ff0",
+          "PLT": "read"
+        },
+        {
+          "pc": 48192,
+          "asm": "mov w0, w28",
+          "PLT": null
+        },
+        {
+          "pc": 48196,
+          "asm": "bl #0x6640",
+          "PLT": "close"
+        },
+        {
+          "pc": 48200,
+          "asm": "ldrb w0, [x19, #0x2a]",
+          "PLT": null
+        },
+        {
+          "pc": 48204,
+          "asm": "cmp w0, #0x45",
+          "PLT": null
+        },
+        {
+          "pc": 48208,
+          "asm": "b.ne #0xbc68",
+          "PLT": null
+        },
+        {
+          "pc": 48212,
+          "asm": "adrp x0, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 48216,
+          "asm": "add x1, x29, #0x178",
+          "PLT": null
+        },
+        {
+          "pc": 48220,
+          "asm": "add x0, x0, #0xef5",
+          "PLT": null
+        },
+        {
+          "pc": 48224,
+          "asm": "bl #0x11ac8",
+          "PLT": null
+        },
+        {
+          "pc": 48228,
+          "asm": "cbz w0, #0xbf30",
+          "PLT": null
+        },
+        {
+          "pc": 48232,
+          "asm": "ldr x0, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 48236,
+          "asm": "ldr x1, [x20, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 48240,
+          "asm": "blr x26",
+          "PLT": null
+        },
+        {
+          "pc": 48244,
+          "asm": "tst w0, #0xff",
+          "PLT": null
+        },
+        {
+          "pc": 48248,
+          "asm": "b.ne #0xbd4c",
+          "PLT": null
+        },
+        {
+          "pc": 48252,
+          "asm": "ldr x0, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 48256,
+          "asm": "adrp x20, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 48260,
+          "asm": "add x20, x20, #0xee4",
+          "PLT": null
+        },
+        {
+          "pc": 48264,
+          "asm": "ldr x0, [x0, #0x38]",
+          "PLT": null
+        },
+        {
+          "pc": 48268,
+          "asm": "cmp x0, #0",
+          "PLT": null
+        },
+        {
+          "pc": 48272,
+          "asm": "csel x20, x20, x0, eq",
+          "PLT": null
+        },
+        {
+          "pc": 48276,
+          "asm": "mov x0, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48280,
+          "asm": "bl #0x5c40",
+          "PLT": "strlen"
+        },
+        {
+          "pc": 48284,
+          "asm": "mov w3, w0",
+          "PLT": null
+        },
+        {
+          "pc": 48288,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48292,
+          "asm": "mov x2, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48296,
+          "asm": "add x1, x1, #0x118",
+          "PLT": null
+        },
+        {
+          "pc": 48300,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48304,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 48308,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48312,
+          "asm": "adrp x0, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 48316,
+          "asm": "add x1, x1, #0xac",
+          "PLT": null
+        },
+        {
+          "pc": 48320,
+          "asm": "add x0, x0, #0x21a",
+          "PLT": null
+        },
+        {
+          "pc": 48324,
+          "asm": "bl #0x6630",
+          "PLT": "fopen"
+        },
+        {
+          "pc": 48328,
+          "asm": "mov x21, x0",
+          "PLT": null
+        },
+        {
+          "pc": 48332,
+          "asm": "cbz x0, #0xbcf0",
+          "PLT": null
+        },
+        {
+          "pc": 48336,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48340,
+          "asm": "mov x2, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48344,
+          "asm": "add x1, x1, #0x121",
+          "PLT": null
+        },
+        {
+          "pc": 48348,
+          "asm": "bl #0x5c50",
+          "PLT": "fprintf"
+        },
+        {
+          "pc": 48352,
+          "asm": "mov x0, x21",
+          "PLT": null
+        },
+        {
+          "pc": 48356,
+          "asm": "bl #0x6480",
+          "PLT": "fflush"
+        },
+        {
+          "pc": 48360,
+          "asm": "mov x0, x21",
+          "PLT": null
+        },
+        {
+          "pc": 48364,
+          "asm": "bl #0x5da0",
+          "PLT": "fclose"
+        },
+        {
+          "pc": 48368,
+          "asm": "adrp x2, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48372,
+          "asm": "mov w1, #-0x7fffff01",
+          "PLT": null
+        },
+        {
+          "pc": 48376,
+          "asm": "add x2, x2, #0x13d",
+          "PLT": null
+        },
+        {
+          "pc": 48380,
+          "asm": "mov w0, #0",
+          "PLT": null
+        },
+        {
+          "pc": 48384,
+          "asm": "bl #0x6200",
+          "PLT": "UI_PrintString"
+        },
+        {
+          "pc": 48388,
+          "asm": "mov x3, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48392,
+          "asm": "b #0xc010",
+          "PLT": null
+        },
+        {
+          "pc": 48396,
+          "asm": "ldr w6, [x19, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 48400,
+          "asm": "adrp x5, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48404,
+          "asm": "add x5, x5, #0xf3",
+          "PLT": null
+        },
+        {
+          "pc": 48408,
+          "asm": "mov x4, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48412,
+          "asm": "add x3, x21, #0xffe",
+          "PLT": null
+        },
+        {
+          "pc": 48416,
+          "asm": "mov x0, x19",
+          "PLT": null
+        },
+        {
+          "pc": 48420,
+          "asm": "mov w1, w6",
+          "PLT": null
+        },
+        {
+          "pc": 48424,
+          "asm": "mov w2, #2",
+          "PLT": null
+        },
+        {
+          "pc": 48428,
+          "asm": "bl #0x64e0",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+        },
+        {
+          "pc": 48432,
+          "asm": "cbz w0, #0xba30",
+          "PLT": null
+        },
+        {
+          "pc": 48436,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48440,
+          "asm": "add x1, x1, #0x100",
+          "PLT": null
+        },
+        {
+          "pc": 48444,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48448,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 48452,
+          "asm": "mov w0, #0x18",
+          "PLT": null
+        },
+        {
+          "pc": 48456,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48460,
+          "asm": "ldrb w0, [x19, #0x28]",
+          "PLT": null
+        },
+        {
+          "pc": 48464,
+          "asm": "cmp w0, #0x4a",
+          "PLT": null
+        },
+        {
+          "pc": 48468,
+          "asm": "b.ne #0xbdb8",
+          "PLT": null
+        },
+        {
+          "pc": 48472,
+          "asm": "ldrb w0, [x19, #0x29]",
+          "PLT": null
+        },
+        {
+          "pc": 48476,
+          "asm": "cmp w0, #0x4a",
+          "PLT": null
+        },
+        {
+          "pc": 48480,
+          "asm": "b.eq #0xbd6c",
+          "PLT": null
+        },
+        {
+          "pc": 48484,
+          "asm": "add x0, x27, #0x25c",
+          "PLT": null
+        },
+        {
+          "pc": 48488,
+          "asm": "bl #0x6160",
+          "PLT": "unlink"
+        },
+        {
+          "pc": 48492,
+          "asm": "add x0, x19, #0x28",
+          "PLT": null
+        },
+        {
+          "pc": 48496,
+          "asm": "mov w1, #0x3a",
+          "PLT": null
+        },
+        {
+          "pc": 48500,
+          "asm": "bl #0x5eb0",
+          "PLT": "strchr"
+        },
+        {
+          "pc": 48504,
+          "asm": "cbz x0, #0xbd84",
+          "PLT": null
+        },
+        {
+          "pc": 48508,
+          "asm": "add x0, x0, #1",
+          "PLT": null
+        },
+        {
+          "pc": 48512,
+          "asm": "str x0, [x20, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 48516,
+          "asm": "ldr w6, [x19, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 48520,
+          "asm": "adrp x4, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 48524,
+          "asm": "ldr x5, [x20, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 48528,
+          "asm": "add x4, x4, #0x1d7",
+          "PLT": null
+        },
+        {
+          "pc": 48532,
+          "asm": "add x3, x21, #0xffe",
+          "PLT": null
+        },
+        {
+          "pc": 48536,
+          "asm": "mov x0, x19",
+          "PLT": null
+        },
+        {
+          "pc": 48540,
+          "asm": "mov w1, w6",
+          "PLT": null
+        },
+        {
+          "pc": 48544,
+          "asm": "mov w2, #2",
+          "PLT": null
+        },
+        {
+          "pc": 48548,
+          "asm": "bl #0x64e0",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+        },
+        {
+          "pc": 48552,
+          "asm": "cbz w0, #0xbdb8",
+          "PLT": null
+        },
+        {
+          "pc": 48556,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48560,
+          "asm": "add x1, x1, #0x151",
+          "PLT": null
+        },
+        {
+          "pc": 48564,
+          "asm": "b #0xbd3c",
+          "PLT": null
+        },
+        {
+          "pc": 48568,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48572,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 48576,
+          "asm": "add x1, x1, #0x15f",
+          "PLT": null
+        },
+        {
+          "pc": 48580,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 48584,
+          "asm": "mov w0, #0xe",
+          "PLT": null
+        },
+        {
+          "pc": 48588,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48592,
+          "asm": "mov w0, #0x19",
+          "PLT": null
+        },
+        {
+          "pc": 48596,
+          "asm": "add x26, x29, #0x278",
+          "PLT": null
+        },
+        {
+          "pc": 48600,
+          "asm": "mov x2, #0x18f8",
+          "PLT": null
+        },
+        {
+          "pc": 48604,
+          "asm": "mov w1, #0",
+          "PLT": null
+        },
+        {
+          "pc": 48608,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 48612,
+          "asm": "mov x0, x26",
+          "PLT": null
+        },
+        {
+          "pc": 48616,
+          "asm": "bl #0x5e60",
+          "PLT": "memset"
+        },
+        {
+          "pc": 48620,
+          "asm": "str x26, [x19]",
+          "PLT": null
+        },
+        {
+          "pc": 48624,
+          "asm": "adrp x0, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 48628,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48632,
+          "asm": "add x0, x0, #0x21a",
+          "PLT": null
+        },
+        {
+          "pc": 48636,
+          "asm": "add x1, x1, #0x169",
+          "PLT": null
+        },
+        {
+          "pc": 48640,
+          "asm": "str x0, [x29, #0x1ab8]",
+          "PLT": null
+        },
+        {
+          "pc": 48644,
+          "asm": "mov w0, #1",
+          "PLT": null
+        },
+        {
+          "pc": 48648,
+          "asm": "str w0, [x29, #0x290]",
+          "PLT": null
+        },
+        {
+          "pc": 48652,
+          "asm": "mov w0, #0x213",
+          "PLT": null
+        },
+        {
+          "pc": 48656,
+          "asm": "movk w0, #0x2017, lsl #16",
+          "PLT": null
+        },
+        {
+          "pc": 48660,
+          "asm": "str w0, [x29, #0x298]",
+          "PLT": null
+        },
+        {
+          "pc": 48664,
+          "asm": "ldr x0, [x19, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 48668,
+          "asm": "bl #0x5e00",
+          "PLT": "dlsym"
+        },
+        {
+          "pc": 48672,
+          "asm": "mov x27, x0",
+          "PLT": null
+        },
+        {
+          "pc": 48676,
+          "asm": "bl #0x5f00",
+          "PLT": "dlerror"
+        },
+        {
+          "pc": 48680,
+          "asm": "mov x21, x0",
+          "PLT": null
+        },
+        {
+          "pc": 48684,
+          "asm": "cbz x0, #0xbe54",
+          "PLT": null
+        },
+        {
+          "pc": 48688,
+          "asm": "bl #0x5c40",
+          "PLT": "strlen"
+        },
+        {
+          "pc": 48692,
+          "asm": "mov w3, w0",
+          "PLT": null
+        },
+        {
+          "pc": 48696,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48700,
+          "asm": "mov x2, x21",
+          "PLT": null
+        },
+        {
+          "pc": 48704,
+          "asm": "add x1, x1, #0x77",
+          "PLT": null
+        },
+        {
+          "pc": 48708,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48712,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 48716,
+          "asm": "mov w0, #0x1c",
+          "PLT": null
+        },
+        {
+          "pc": 48720,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48724,
+          "asm": "mov w0, #0x1a",
+          "PLT": null
+        },
+        {
+          "pc": 48728,
+          "asm": "adrp x21, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 48732,
+          "asm": "add x21, x21, #0xef5",
+          "PLT": null
+        },
+        {
+          "pc": 48736,
+          "asm": "mov w2, #0x1ed",
+          "PLT": null
+        },
+        {
+          "pc": 48740,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 48744,
+          "asm": "mov x0, x21",
+          "PLT": null
+        },
+        {
+          "pc": 48748,
+          "asm": "mov w1, #0x41",
+          "PLT": null
+        },
+        {
+          "pc": 48752,
+          "asm": "bl #0x5d00",
+          "PLT": "open"
+        },
+        {
+          "pc": 48756,
+          "asm": "tbz w0, #0x1f, #0xbe90",
+          "PLT": null
+        },
+        {
+          "pc": 48760,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48764,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48768,
+          "asm": "add x1, x1, #0x174",
+          "PLT": null
+        },
+        {
+          "pc": 48772,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 48776,
+          "asm": "mov w0, #0x1b",
+          "PLT": null
+        },
+        {
+          "pc": 48780,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48784,
+          "asm": "bl #0x6640",
+          "PLT": "close"
+        },
+        {
+          "pc": 48788,
+          "asm": "ldr x2, [x20, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 48792,
+          "asm": "mov x1, x26",
+          "PLT": null
+        },
+        {
+          "pc": 48796,
+          "asm": "ldr x0, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 48800,
+          "asm": "blr x27",
+          "PLT": null
+        },
+        {
+          "pc": 48804,
+          "asm": "mov x0, x21",
+          "PLT": null
+        },
+        {
+          "pc": 48808,
+          "asm": "bl #0x6160",
+          "PLT": "unlink"
+        },
+        {
+          "pc": 48812,
+          "asm": "str xzr, [x19]",
+          "PLT": null
+        },
+        {
+          "pc": 48816,
+          "asm": "adrp x0, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 48820,
+          "asm": "ldr x20, [x20, #0x18]",
+          "PLT": null
+        },
+        {
+          "pc": 48824,
+          "asm": "add x0, x0, #0xeec",
+          "PLT": null
+        },
+        {
+          "pc": 48828,
+          "asm": "cmp x20, #0",
+          "PLT": null
+        },
+        {
+          "pc": 48832,
+          "asm": "csel x20, x0, x20, eq",
+          "PLT": null
+        },
+        {
+          "pc": 48836,
+          "asm": "mov x0, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48840,
+          "asm": "bl #0x5c40",
+          "PLT": "strlen"
+        },
+        {
+          "pc": 48844,
+          "asm": "mov w3, w0",
+          "PLT": null
+        },
+        {
+          "pc": 48848,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48852,
+          "asm": "mov x2, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48856,
+          "asm": "add x1, x1, #0x184",
+          "PLT": null
+        },
+        {
+          "pc": 48860,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 48864,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 48868,
+          "asm": "mov w0, #0x1d",
+          "PLT": null
+        },
+        {
+          "pc": 48872,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48876,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48880,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48884,
+          "asm": "add x1, x1, #0x192",
+          "PLT": null
+        },
+        {
+          "pc": 48888,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 48892,
+          "asm": "mov x0, x19",
+          "PLT": null
+        },
+        {
+          "pc": 48896,
+          "asm": "bl #0x6000",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu7releaseEv"
+        },
+        {
+          "pc": 48900,
+          "asm": "b #0xb918",
+          "PLT": null
+        },
+        {
+          "pc": 48904,
+          "asm": "mov w0, #2",
+          "PLT": null
+        },
+        {
+          "pc": 48908,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48912,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48916,
+          "asm": "mov x2, x24",
+          "PLT": null
+        },
+        {
+          "pc": 48920,
+          "asm": "add x1, x1, #0x19a",
+          "PLT": null
+        },
+        {
+          "pc": 48924,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 48928,
+          "asm": "mov w3, #0xc",
+          "PLT": null
+        },
+        {
+          "pc": 48932,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 48936,
+          "asm": "mov w0, #0xc",
+          "PLT": null
+        },
+        {
+          "pc": 48940,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 48944,
+          "asm": "ldr x20, [x20, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 48948,
+          "asm": "mov x0, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48952,
+          "asm": "bl #0x5c40",
+          "PLT": "strlen"
+        },
+        {
+          "pc": 48956,
+          "asm": "mov w3, w0",
+          "PLT": null
+        },
+        {
+          "pc": 48960,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 48964,
+          "asm": "mov x2, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48968,
+          "asm": "add x1, x1, #0x1a2",
+          "PLT": null
+        },
+        {
+          "pc": 48972,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 48976,
+          "asm": "adrp x20, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 48980,
+          "asm": "add x20, x20, #0x1d7",
+          "PLT": null
+        },
+        {
+          "pc": 48984,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 48988,
+          "asm": "add x1, x29, #0x278",
+          "PLT": null
+        },
+        {
+          "pc": 48992,
+          "asm": "mov x0, x20",
+          "PLT": null
+        },
+        {
+          "pc": 48996,
+          "asm": "bl #0x11ac8",
+          "PLT": null
+        },
+        {
+          "pc": 49000,
+          "asm": "cbnz w0, #0xc024",
+          "PLT": null
+        },
+        {
+          "pc": 49004,
+          "asm": "ldr x0, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 49008,
+          "asm": "mov x1, x20",
+          "PLT": null
+        },
+        {
+          "pc": 49012,
+          "asm": "blr x26",
+          "PLT": null
+        },
+        {
+          "pc": 49016,
+          "asm": "tst w0, #0xff",
+          "PLT": null
+        },
+        {
+          "pc": 49020,
+          "asm": "b.ne #0xbd0c",
+          "PLT": null
+        },
+        {
+          "pc": 49024,
+          "asm": "ldr x0, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 49028,
+          "asm": "ldr x20, [x0, #0x38]",
+          "PLT": null
+        },
+        {
+          "pc": 49032,
+          "asm": "mov x0, x20",
+          "PLT": null
+        },
+        {
+          "pc": 49036,
+          "asm": "bl #0x5c40",
+          "PLT": "strlen"
+        },
+        {
+          "pc": 49040,
+          "asm": "mov w3, w0",
+          "PLT": null
+        },
+        {
+          "pc": 49044,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49048,
+          "asm": "mov x2, x20",
+          "PLT": null
+        },
+        {
+          "pc": 49052,
+          "asm": "add x1, x1, #0x99",
+          "PLT": null
+        },
+        {
+          "pc": 49056,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 49060,
+          "asm": "bl #0x6420",
+          "PLT": "_Z22jiritsu_cppdump_logrechPKcPhj"
+        },
+        {
+          "pc": 49064,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49068,
+          "asm": "adrp x0, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 49072,
+          "asm": "add x1, x1, #0xac",
+          "PLT": null
+        },
+        {
+          "pc": 49076,
+          "asm": "add x0, x0, #0x21a",
+          "PLT": null
+        },
+        {
+          "pc": 49080,
+          "asm": "bl #0x6630",
+          "PLT": "fopen"
+        },
+        {
+          "pc": 49084,
+          "asm": "mov x20, x0",
+          "PLT": null
+        },
+        {
+          "pc": 49088,
+          "asm": "cbz x0, #0xbff8",
+          "PLT": null
+        },
+        {
+          "pc": 49092,
+          "asm": "ldr x1, [x19, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 49096,
+          "asm": "ldr x2, [x1, #0x38]",
+          "PLT": null
+        },
+        {
+          "pc": 49100,
+          "asm": "adrp x1, #0x30000",
+          "PLT": null
+        },
+        {
+          "pc": 49104,
+          "asm": "add x1, x1, #0xb77",
+          "PLT": null
+        },
+        {
+          "pc": 49108,
+          "asm": "cmp x2, #0",
+          "PLT": null
+        },
+        {
+          "pc": 49112,
+          "asm": "csel x2, x1, x2, eq",
+          "PLT": null
+        },
+        {
+          "pc": 49116,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49120,
+          "asm": "add x1, x1, #0xae",
+          "PLT": null
+        },
+        {
+          "pc": 49124,
+          "asm": "bl #0x5c50",
+          "PLT": "fprintf"
+        },
+        {
+          "pc": 49128,
+          "asm": "mov x0, x20",
+          "PLT": null
+        },
+        {
+          "pc": 49132,
+          "asm": "bl #0x6480",
+          "PLT": "fflush"
+        },
+        {
+          "pc": 49136,
+          "asm": "mov x0, x20",
+          "PLT": null
+        },
+        {
+          "pc": 49140,
+          "asm": "bl #0x5da0",
+          "PLT": "fclose"
+        },
+        {
+          "pc": 49144,
+          "asm": "adrp x2, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49148,
+          "asm": "mov w1, #-0x7fffff01",
+          "PLT": null
+        },
+        {
+          "pc": 49152,
+          "asm": "add x2, x2, #0xd4",
+          "PLT": null
+        },
+        {
+          "pc": 49156,
+          "asm": "mov w0, #0",
+          "PLT": null
+        },
+        {
+          "pc": 49160,
+          "asm": "bl #0x6200",
+          "PLT": "UI_PrintString"
+        },
+        {
+          "pc": 49164,
+          "asm": "mov x3, #0",
+          "PLT": null
+        },
+        {
+          "pc": 49168,
+          "asm": "adrp x2, #0x11000",
+          "PLT": null
+        },
+        {
+          "pc": 49172,
+          "asm": "mov w1, #-0x7fffff01",
+          "PLT": null
+        },
+        {
+          "pc": 49176,
+          "asm": "add x2, x2, #0xdd7",
+          "PLT": null
+        },
+        {
+          "pc": 49180,
+          "asm": "mov w0, #1",
+          "PLT": null
+        },
+        {
+          "pc": 49184,
+          "asm": "bl #0x6200",
+          "PLT": "UI_PrintString"
+        },
+        {
+          "pc": 49188,
+          "asm": "mov w0, #0x11",
+          "PLT": null
+        },
+        {
+          "pc": 49192,
+          "asm": "b #0xba2c",
+          "PLT": null
+        },
+        {
+          "pc": 49196,
+          "asm": "mov w0, #0xa",
+          "PLT": null
+        },
+        {
+          "pc": 49200,
+          "asm": "ldp x21, x22, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 49204,
+          "asm": "ldp x23, x24, [sp, #0x30]",
+          "PLT": null
+        },
+        {
+          "pc": 49208,
+          "asm": "ldp x25, x26, [sp, #0x40]",
+          "PLT": null
+        },
+        {
+          "pc": 49212,
+          "asm": "ldp x27, x28, [sp, #0x50]",
+          "PLT": null
+        },
+        {
+          "pc": 49216,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 49220,
+          "asm": "mov w0, #0",
+          "PLT": null
+        },
+        {
+          "pc": 49224,
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 49228,
+          "asm": "ldp x29, x30, [sp], #0x60",
+          "PLT": null
+        },
+        {
+          "pc": 49232,
+          "asm": "add sp, sp, #1, lsl #12",
+          "PLT": null
+        },
+        {
+          "pc": 49236,
+          "asm": "add sp, sp, #0xb10",
+          "PLT": null
+        },
+        {
+          "pc": 49240,
+          "asm": "ret ",
+          "PLT": null
+        }
+      ]
+    },
+    {
+      "name": "_ZN10IM_JIRITSU10CImJiritsu3runEPKc",
+      "VA": 49244,
+      "bytes": 288,
+      "sha256": "529465c9d43f4b15b04bef37621ac9200d972688ced77e7e940b1461350f2840",
+      "raw": "fd7bbca9fd030091f35301a9f40301aaf55b02a9f30300aaf76303a9010840b9216400513f040071a8000054210100d021d80691600f80121a000014210100d09f0200f121000a91060c40b93400949a350100b0360100b0e50314aaa45e0791c30e0891e103062a2200805206e9ff97e001003518d49052f70380523800a072600a40b91f38007180020054f706007121040054210100d0c00f8012217c07910de8ff97600a40b907000014210100d0211c0791c00f801207e8ff9700038052600a00b9f35341a9f55b42a9f76343a9fd7bc4a8c0035fd6660e40b9e50314aaa45e0791c30e0891e00313aae103062a42008052e4e8ff9780000034210100d021e00791ecffff17210100d0212c0891c9ffff17e003182ad7e8ff97d9ffff17",
+      "instructions": [
+        {
+          "pc": 49244,
+          "asm": "stp x29, x30, [sp, #-0x40]!",
+          "PLT": null
+        },
+        {
+          "pc": 49248,
+          "asm": "mov x29, sp",
+          "PLT": null
+        },
+        {
+          "pc": 49252,
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 49256,
+          "asm": "mov x20, x1",
+          "PLT": null
+        },
+        {
+          "pc": 49260,
+          "asm": "stp x21, x22, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 49264,
+          "asm": "mov x19, x0",
+          "PLT": null
+        },
+        {
+          "pc": 49268,
+          "asm": "stp x23, x24, [sp, #0x30]",
+          "PLT": null
+        },
+        {
+          "pc": 49272,
+          "asm": "ldr w1, [x0, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 49276,
+          "asm": "sub w1, w1, #0x19",
+          "PLT": null
+        },
+        {
+          "pc": 49280,
+          "asm": "cmp w1, #1",
+          "PLT": null
+        },
+        {
+          "pc": 49284,
+          "asm": "b.hi #0xc098",
+          "PLT": null
+        },
+        {
+          "pc": 49288,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49292,
+          "asm": "add x1, x1, #0x1b6",
+          "PLT": null
+        },
+        {
+          "pc": 49296,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 49300,
+          "asm": "b #0xc0fc",
+          "PLT": null
+        },
+        {
+          "pc": 49304,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49308,
+          "asm": "cmp x20, #0",
+          "PLT": null
+        },
+        {
+          "pc": 49312,
+          "asm": "add x1, x1, #0x280",
+          "PLT": null
+        },
+        {
+          "pc": 49316,
+          "asm": "ldr w6, [x0, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 49320,
+          "asm": "csel x20, x1, x20, eq",
+          "PLT": null
+        },
+        {
+          "pc": 49324,
+          "asm": "adrp x21, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 49328,
+          "asm": "adrp x22, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 49332,
+          "asm": "mov x5, x20",
+          "PLT": null
+        },
+        {
+          "pc": 49336,
+          "asm": "add x4, x21, #0x1d7",
+          "PLT": null
+        },
+        {
+          "pc": 49340,
+          "asm": "add x3, x22, #0x203",
+          "PLT": null
+        },
+        {
+          "pc": 49344,
+          "asm": "mov w1, w6",
+          "PLT": null
+        },
+        {
+          "pc": 49348,
+          "asm": "mov w2, #1",
+          "PLT": null
+        },
+        {
+          "pc": 49352,
+          "asm": "bl #0x64e0",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+        },
+        {
+          "pc": 49356,
+          "asm": "cbnz w0, #0xc108",
+          "PLT": null
+        },
+        {
+          "pc": 49360,
+          "asm": "mov w24, #0x86a0",
+          "PLT": null
+        },
+        {
+          "pc": 49364,
+          "asm": "mov w23, #0x1f",
+          "PLT": null
+        },
+        {
+          "pc": 49368,
+          "asm": "movk w24, #1, lsl #16",
+          "PLT": null
+        },
+        {
+          "pc": 49372,
+          "asm": "ldr w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 49376,
+          "asm": "cmp w0, #0xe",
+          "PLT": null
+        },
+        {
+          "pc": 49380,
+          "asm": "b.eq #0xc134",
+          "PLT": null
+        },
+        {
+          "pc": 49384,
+          "asm": "subs w23, w23, #1",
+          "PLT": null
+        },
+        {
+          "pc": 49388,
+          "asm": "b.ne #0xc170",
+          "PLT": null
+        },
+        {
+          "pc": 49392,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49396,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 49400,
+          "asm": "add x1, x1, #0x1df",
+          "PLT": null
+        },
+        {
+          "pc": 49404,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 49408,
+          "asm": "ldr w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 49412,
+          "asm": "b #0xc120",
+          "PLT": null
+        },
+        {
+          "pc": 49416,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49420,
+          "asm": "add x1, x1, #0x1c7",
+          "PLT": null
+        },
+        {
+          "pc": 49424,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 49428,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 49432,
+          "asm": "mov w0, #0x18",
+          "PLT": null
+        },
+        {
+          "pc": 49436,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 49440,
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 49444,
+          "asm": "ldp x21, x22, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 49448,
+          "asm": "ldp x23, x24, [sp, #0x30]",
+          "PLT": null
+        },
+        {
+          "pc": 49452,
+          "asm": "ldp x29, x30, [sp], #0x40",
+          "PLT": null
+        },
+        {
+          "pc": 49456,
+          "asm": "ret ",
+          "PLT": null
+        },
+        {
+          "pc": 49460,
+          "asm": "ldr w6, [x19, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 49464,
+          "asm": "mov x5, x20",
+          "PLT": null
+        },
+        {
+          "pc": 49468,
+          "asm": "add x4, x21, #0x1d7",
+          "PLT": null
+        },
+        {
+          "pc": 49472,
+          "asm": "add x3, x22, #0x203",
+          "PLT": null
+        },
+        {
+          "pc": 49476,
+          "asm": "mov x0, x19",
+          "PLT": null
+        },
+        {
+          "pc": 49480,
+          "asm": "mov w1, w6",
+          "PLT": null
+        },
+        {
+          "pc": 49484,
+          "asm": "mov w2, #2",
+          "PLT": null
+        },
+        {
+          "pc": 49488,
+          "asm": "bl #0x64e0",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+        },
+        {
+          "pc": 49492,
+          "asm": "cbz w0, #0xc164",
+          "PLT": null
+        },
+        {
+          "pc": 49496,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49500,
+          "asm": "add x1, x1, #0x1f8",
+          "PLT": null
+        },
+        {
+          "pc": 49504,
+          "asm": "b #0xc110",
+          "PLT": null
+        },
+        {
+          "pc": 49508,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49512,
+          "asm": "add x1, x1, #0x20b",
+          "PLT": null
+        },
+        {
+          "pc": 49516,
+          "asm": "b #0xc090",
+          "PLT": null
+        },
+        {
+          "pc": 49520,
+          "asm": "mov w0, w24",
+          "PLT": null
+        },
+        {
+          "pc": 49524,
+          "asm": "bl #0x64d0",
+          "PLT": "usleep"
+        },
+        {
+          "pc": 49528,
+          "asm": "b #0xc0dc",
+          "PLT": null
+        }
+      ]
+    },
+    {
+      "name": "_ZN10IM_JIRITSU10CImJiritsu4stopEv",
+      "VA": 49532,
+      "bytes": 180,
+      "sha256": "5e5949ac155a2df80e133d22feefd688abd34cdfefb2e0cc6325ed2f70faddfb",
+      "raw": "fd7bbda9240100b0230100b0845c0791fd030091f35301a9630c0891f51300f9050080d262008052f30300aa060c40b9e103062acce8ff978001003515d49052f40380523500a072600a40b91f280071000200549406007181020054210100d0211c0b9103000014210100d021bc0a91c00f8012d0e7ff97c0038052600a00b9f35341a9f51340f9fd7bc3a8c0035fd6210100d0600f801221800b91c6e7ff97600a40b9f7ffff17e003152aaae8ff97e6ffff17",
+      "instructions": [
+        {
+          "pc": 49532,
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "PLT": null
+        },
+        {
+          "pc": 49536,
+          "asm": "adrp x4, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 49540,
+          "asm": "adrp x3, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 49544,
+          "asm": "add x4, x4, #0x1d7",
+          "PLT": null
+        },
+        {
+          "pc": 49548,
+          "asm": "mov x29, sp",
+          "PLT": null
+        },
+        {
+          "pc": 49552,
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 49556,
+          "asm": "add x3, x3, #0x203",
+          "PLT": null
+        },
+        {
+          "pc": 49560,
+          "asm": "str x21, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 49564,
+          "asm": "mov x5, #0",
+          "PLT": null
+        },
+        {
+          "pc": 49568,
+          "asm": "mov w2, #3",
+          "PLT": null
+        },
+        {
+          "pc": 49572,
+          "asm": "mov x19, x0",
+          "PLT": null
+        },
+        {
+          "pc": 49576,
+          "asm": "ldr w6, [x0, #0xc]",
+          "PLT": null
+        },
+        {
+          "pc": 49580,
+          "asm": "mov w1, w6",
+          "PLT": null
+        },
+        {
+          "pc": 49584,
+          "asm": "bl #0x64e0",
+          "PLT": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+        },
+        {
+          "pc": 49588,
+          "asm": "cbnz w0, #0xc1e4",
+          "PLT": null
+        },
+        {
+          "pc": 49592,
+          "asm": "mov w21, #0x86a0",
+          "PLT": null
+        },
+        {
+          "pc": 49596,
+          "asm": "mov w20, #0x1f",
+          "PLT": null
+        },
+        {
+          "pc": 49600,
+          "asm": "movk w21, #1, lsl #16",
+          "PLT": null
+        },
+        {
+          "pc": 49604,
+          "asm": "ldr w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 49608,
+          "asm": "cmp w0, #0xa",
+          "PLT": null
+        },
+        {
+          "pc": 49612,
+          "asm": "b.eq #0xc20c",
+          "PLT": null
+        },
+        {
+          "pc": 49616,
+          "asm": "subs w20, w20, #1",
+          "PLT": null
+        },
+        {
+          "pc": 49620,
+          "asm": "b.ne #0xc224",
+          "PLT": null
+        },
+        {
+          "pc": 49624,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49628,
+          "asm": "add x1, x1, #0x2c7",
+          "PLT": null
+        },
+        {
+          "pc": 49632,
+          "asm": "b #0xc1ec",
+          "PLT": null
+        },
+        {
+          "pc": 49636,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49640,
+          "asm": "add x1, x1, #0x2af",
+          "PLT": null
+        },
+        {
+          "pc": 49644,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 49648,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 49652,
+          "asm": "mov w0, #0x1e",
+          "PLT": null
+        },
+        {
+          "pc": 49656,
+          "asm": "str w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 49660,
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 49664,
+          "asm": "ldr x21, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 49668,
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "PLT": null
+        },
+        {
+          "pc": 49672,
+          "asm": "ret ",
+          "PLT": null
+        },
+        {
+          "pc": 49676,
+          "asm": "adrp x1, #0x32000",
+          "PLT": null
+        },
+        {
+          "pc": 49680,
+          "asm": "mov w0, #-0x7c",
+          "PLT": null
+        },
+        {
+          "pc": 49684,
+          "asm": "add x1, x1, #0x2e0",
+          "PLT": null
+        },
+        {
+          "pc": 49688,
+          "asm": "bl #0x6130",
+          "PLT": "_Z18jiritsu_cpp_logrechPKc"
+        },
+        {
+          "pc": 49692,
+          "asm": "ldr w0, [x19, #8]",
+          "PLT": null
+        },
+        {
+          "pc": 49696,
+          "asm": "b #0xc1fc",
+          "PLT": null
+        },
+        {
+          "pc": 49700,
+          "asm": "mov w0, w21",
+          "PLT": null
+        },
+        {
+          "pc": 49704,
+          "asm": "bl #0x64d0",
+          "PLT": "usleep"
+        },
+        {
+          "pc": 49708,
+          "asm": "b #0xc1c4",
+          "PLT": null
+        }
+      ]
+    },
+    {
+      "name": "ramdisk_mount",
+      "VA": 35544,
+      "bytes": 120,
+      "sha256": "6435c641bd56464753c885100f99d36f348bfff2a2eb5a6e647d0593aaff8b0a",
+      "raw": "fd7bbda9fd030091f35301a9f40300aaf51300f9f50301aa94f6ff97f30300aa1f0000b9e00314aa7cf5ff97c0010035420100b0e40315aa42540c91e10314aae00302aaa31db8d2a0f5ff97e0000034410100b0620240b9216c0c91c00f801216f4ff9720008052f35341a9f51340f9fd7bc3a8c0035fd6",
+      "instructions": [
+        {
+          "pc": 35544,
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "PLT": null
+        },
+        {
+          "pc": 35548,
+          "asm": "mov x29, sp",
+          "PLT": null
+        },
+        {
+          "pc": 35552,
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 35556,
+          "asm": "mov x20, x0",
+          "PLT": null
+        },
+        {
+          "pc": 35560,
+          "asm": "str x21, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 35564,
+          "asm": "mov x21, x1",
+          "PLT": null
+        },
+        {
+          "pc": 35568,
+          "asm": "bl #0x6540",
+          "PLT": "__errno_location"
+        },
+        {
+          "pc": 35572,
+          "asm": "mov x19, x0",
+          "PLT": null
+        },
+        {
+          "pc": 35576,
+          "asm": "str wzr, [x0]",
+          "PLT": null
+        },
+        {
+          "pc": 35580,
+          "asm": "mov x0, x20",
+          "PLT": null
+        },
+        {
+          "pc": 35584,
+          "asm": "bl #0x60f0",
+          "PLT": "sys_dir_create"
+        },
+        {
+          "pc": 35588,
+          "asm": "cbnz w0, #0x8b3c",
+          "PLT": null
+        },
+        {
+          "pc": 35592,
+          "asm": "adrp x2, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 35596,
+          "asm": "mov x4, x21",
+          "PLT": null
+        },
+        {
+          "pc": 35600,
+          "asm": "add x2, x2, #0x315",
+          "PLT": null
+        },
+        {
+          "pc": 35604,
+          "asm": "mov x1, x20",
+          "PLT": null
+        },
+        {
+          "pc": 35608,
+          "asm": "mov x0, x2",
+          "PLT": null
+        },
+        {
+          "pc": 35612,
+          "asm": "mov x3, #0xc0ed0000",
+          "PLT": null
+        },
+        {
+          "pc": 35616,
+          "asm": "bl #0x61a0",
+          "PLT": "mount"
+        },
+        {
+          "pc": 35620,
+          "asm": "cbz w0, #0x8b40",
+          "PLT": null
+        },
+        {
+          "pc": 35624,
+          "asm": "adrp x1, #0x31000",
+          "PLT": null
+        },
+        {
+          "pc": 35628,
+          "asm": "ldr w2, [x19]",
+          "PLT": null
+        },
+        {
+          "pc": 35632,
+          "asm": "add x1, x1, #0x31b",
+          "PLT": null
+        },
+        {
+          "pc": 35636,
+          "asm": "mov w0, #-0x7f",
+          "PLT": null
+        },
+        {
+          "pc": 35640,
+          "asm": "bl #0x5b90",
+          "PLT": "_Z18jiritsu_cpp_logrechPKcj"
+        },
+        {
+          "pc": 35644,
+          "asm": "mov w0, #1",
+          "PLT": null
+        },
+        {
+          "pc": 35648,
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT": null
+        },
+        {
+          "pc": 35652,
+          "asm": "ldr x21, [sp, #0x20]",
+          "PLT": null
+        },
+        {
+          "pc": 35656,
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "PLT": null
+        },
+        {
+          "pc": 35660,
+          "asm": "ret ",
+          "PLT": null
+        }
+      ]
+    }
+  ],
+  "original_code_executed": false
+}

@@ -1,0 +1,14 @@
+diff -Naur busybox-1.29.3_orig/libbb/copy_file.c busybox-1.29.3/libbb/copy_file.c
+--- busybox-1.29.3_orig/libbb/copy_file.c	2018-10-09 10:40:29.120080398 +0530
++++ busybox-1.29.3/libbb/copy_file.c	2018-10-09 11:24:24.768160751 +0530
+@@ -269,7 +269,9 @@
+ 			goto dont_cat;
+ 		}
+ 
+-		if (ENABLE_FEATURE_PRESERVE_HARDLINKS && !FLAGS_DEREF) {
++                if (ENABLE_FEATURE_PRESERVE_HARDLINKS && !FLAGS_DEREF
++                         && (source_stat.st_nlink > 1))  {
++
+ 			const char *link_target;
+ 			link_target = is_in_ino_dev_hashtable(&source_stat);
+ 			if (link_target) {

@@ -1,0 +1,35 @@
+0044d854 ldrh.w     r0, [sb, #2]
+0044d858 cbz        r0, #0x44d878
+0044d85a cmp        r0, #6
+0044d85c beq        #0x44d872
+0044d85e sxth       r1, r0
+0044d860 movw       r0, #0xce0e
+0044d864 mov        r2, r4
+0044d866 mov        r3, r5
+0044d868 str        r6, [sp]
+0044d86a movt       r0, #0xd8
+0044d86e bl         #0x9e6684
+0044d872 mvn        r4, #3
+0044d876 b          #0x44d8cc
+0044d878 ldrh.w     r1, [sb]
+0044d87c movw       r0, #0x8020
+0044d880 cmp        r1, r0
+0044d882 bne        #0x44d8b2
+0044d884 ldrh.w     r0, [sb, #6]
+0044d888 cmp        r0, #0x55
+0044d88a bne        #0x44d8b2
+0044d88c ldr.w      r0, [sb, #0xc]
+0044d890 adds       r0, #1
+0044d892 beq        #0x44d8e2
+0044d894 cmp        r5, #1
+0044d896 bne        #0x44d8a4
+0044d898 ldrh.w     r0, [sb, #8]
+0044d89c cbz        r0, #0x44d8f4
+0044d89e ldr.w      r0, [sb, #0x20]
+0044d8a2 cbz        r0, #0x44d8f4
+0044d8a4 mov        r0, r8
+0044d8a6 mov        r1, sb
+0044d8a8 movs       r2, #0xd8
+0044d8aa blx        #0x558400
+0044d8ae movs       r4, #0
+0044d8b0 b          #0x44d8cc

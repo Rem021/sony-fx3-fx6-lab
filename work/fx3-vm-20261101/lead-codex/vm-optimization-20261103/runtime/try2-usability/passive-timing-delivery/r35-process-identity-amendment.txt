@@ -1,0 +1,15 @@
+r35协调端合同修订：仅限实时进程身份核验的getpid系统调用
+
+回复问题msg_43da4bffa559。继续同一r35离线任务，不因协调端原“热路径零新增syscall”约束直接把本轮封为failed。该限制为协调端性能预算，不是用户的硬件/运行政策；现有实现已证需要实时TGID核验来避免raw fork/clone/vfork复制旧身份和预算。
+
+允许的唯一热路径新增系统调用：实际getpid/TGID查询（AArch64现有syscall(172)，须核实际ABI），只用于诊断所有权检查，不缓存成跨进程假身份。每个新collector记录点/快照入口最多1次；原已选中的UI日志回调最多2次（UI自身+跨模块快照各一次），必须报告实际每条原wrapper最坏累计次数和成本。clock/syscall/dlsym/malloc的其他新增仍禁止，原有系统调用/errno/核心控制流保持；没有新增I/O调用、物理映射或VM授权。
+
+先核真实调用者TGID再触碰记录、丢弃标志、锁、预算等诊断共享状态；遇到与初始化owner不符必须拒绝，不能重设owner/额度。尤其CLONE_VM无CLONE_THREAD共享BSS时，子进程不得修改父进程collector/预算/失效位；不能只在日志出口检查。原native调用仍一次且原rc不变。初始化之前的事件继续unknown，不能因身份检查提前返回而伪造“从未尝试”。同进程多线程允许，原gettid不可代替getpid。不要把进程ID或时间戳单独当全局runID；仍须原UI claim、原hook绑定实例和host run身份合同。已存在的同进程额外模块/重载需由原安装失败/唯一活跃hook实例证明不会重新产生日志，否则保留限制并报告，不默许每模块1288B无限累加。
+
+补测试：不同TGID继承相同PID缓存/记录/日志预算，全部记录点与snapshot拒绝且共享parent BSS不变；同TGID不同线程允许；原fork回调失效；初始化早期unknown；native rc/errno和调用次数；不同实例/新exec原claim禁二次安装；预算不可重置。宿主身份注入模型与实际宿主fork验证要分开，不冒充AArch64 raw clone/vfork运行验收；无VM。
+
+新增成本必须实测宿主getpid调用以及完整wrapper/回调，并从实际AArch64汇编核新增调用位置、次数与无重试循环。不能用host测量给guest性能保证；候选仍需运行前审查。原<=184B每摘要、最多7条/<=1288B拟定更紧预算和正式<=2048B总上限都不放宽。保留原任务书及本修订，原零syscall声明需明确更新，不能把新syscall藏在helper里。
+
+主线FX6仍不在本实现中；固定FX3硬件/QEMU/kernel/DTB、180秒/20秒、输入和退出策略全部不变。本修订仅必要身份检查，其他尚未闭合项如magic真实load/解析器兼容仍需完成。
+
+依据：Linux man-pages getpid(2) https://man7.org/linux/man-pages/man2/getpid.2.html 与 gettid(2) https://man7.org/linux/man-pages/man2/gettid.2.html ，2026-11-04 PT核对；getpid是进程/TGID，gettid为线程ID。此文档说明接口，不代替目标内核/SDK绑定。

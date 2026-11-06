@@ -1,0 +1,67 @@
+000176c0 cbz        x1, #0x177c8
+000176c4 stp        x29, x30, [sp, #-0x60]!
+000176c8 mov        x29, sp
+000176cc stp        x21, x22, [sp, #0x20]
+000176d0 mov        x22, x0
+000176d4 add        x0, x29, #0x60
+000176d8 stp        x19, x20, [sp, #0x10]
+000176dc stp        x23, x24, [sp, #0x30]
+000176e0 add        x20, x29, #0x48
+000176e4 mov        x8, x20
+000176e8 mov        x21, x2
+000176ec str        x1, [x0, #-0x20]!
+000176f0 adrp       x1, #0x1b000
+000176f4 add        x1, x1, #0xb2e ; literal 'updater'
+000176f8 add        x19, x29, #0x50
+000176fc add        x24, x29, #0x58
+00017700 adrp       x23, #0x1b000
+00017704 add        x23, x23, #0xf36
+00017708 bl         #0x108e0 ; Updater::Xml::DomHandle::getFirstChild
+0001770c adrp       x1, #0x1b000
+00017710 mov        x8, x19
+00017714 mov        x0, x20
+00017718 add        x1, x1, #0xf28 ; literal 'programs'
+0001771c adrp       x20, #0x1b000
+00017720 add        x20, x20, #0xf31 ; literal 'proc'
+00017724 bl         #0x108e0 ; Updater::Xml::DomHandle::getFirstChild
+00017728 mov        x0, x19
+0001772c mov        x8, x24
+00017730 mov        x1, x20 ; literal 'proc'
+00017734 bl         #0x108e0 ; Updater::Xml::DomHandle::getFirstChild
+00017738 ldr        x19, [x29, #0x58]
+0001773c cbz        x19, #0x177b4
+00017740 ldr        x0, [x19]
+00017744 ldr        x1, [x0, #0x28]
+00017748 mov        x0, x19
+0001774c blr        x1
+00017750 str        xzr, [x29, #0x58]
+00017754 mov        x2, x24
+00017758 mov        x1, x23
+0001775c bl         #0x10760 ; Updater::Xml::DomElement::queryStringAttribute
+00017760 cbnz       w0, #0x17784
+00017764 ldr        x1, [x29, #0x58]
+00017768 cbz        x1, #0x17784
+0001776c ldr        x0, [x21]
+00017770 ldr        x2, [x0, #0x30]
+00017774 mov        x0, x21
+00017778 blr        x2
+0001777c tst        w0, #0xff
+00017780 b.ne       #0x17798
+00017784 mov        x0, x19
+00017788 mov        x1, x20
+0001778c bl         #0xff30 ; Updater::Xml::DomNode::getNextSibling
+00017790 mov        x19, x0
+00017794 b          #0x1773c
+00017798 ldr        x0, [x22]
+0001779c mov        x1, x21
+000177a0 ldr        x2, [x19, #0x28]
+000177a4 ldr        x3, [x0, #0x60]
+000177a8 mov        x0, x22
+000177ac blr        x3
+000177b0 b          #0x17784
+000177b4 ldp        x19, x20, [sp, #0x10]
+000177b8 ldp        x21, x22, [sp, #0x20]
+000177bc ldp        x23, x24, [sp, #0x30]
+000177c0 ldp        x29, x30, [sp], #0x60
+000177c4 ret        
+000177c8 ret        

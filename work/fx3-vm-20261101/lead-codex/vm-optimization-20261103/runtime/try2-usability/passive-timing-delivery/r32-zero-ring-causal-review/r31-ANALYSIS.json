@@ -1,0 +1,1593 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd",
+  "serial_bytes": 3882426,
+  "NUL_bytes_full": 22,
+  "windows": {
+    "comparison": {
+      "cut": 3819978,
+      "scope": "exact last consumed serial prefix at host entry to original finally, before cleanup serial polling; not global guest event boundary",
+      "NUL_bytes": 22,
+      "gate_samples": {
+        "5": {
+          "strict_records": 50,
+          "excluded_fragment_or_partial_records": 0,
+          "raw_literal_count": 50,
+          "first": [
+            {
+              "byte_offset": 2477832,
+              "LF_line": 22981,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=5 n=1 tid=547 pc=0x16f247c object=0x7f061ddd60 a18=33 a12=0 a13=0 r0=0x21 decision_a18=33 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "5",
+                "n": "1",
+                "tid": "547",
+                "pc": "0x16f247c",
+                "object": "0x7f061ddd60",
+                "a18": "33",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0x21",
+                "decision_a18": "33",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 2480726,
+              "LF_line": 22997,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=5 n=2 tid=547 pc=0x16f247c object=0x7f061ddd60 a18=36 a12=0 a13=0 r0=0x24 decision_a18=36 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "5",
+                "n": "2",
+                "tid": "547",
+                "pc": "0x16f247c",
+                "object": "0x7f061ddd60",
+                "a18": "36",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0x24",
+                "decision_a18": "36",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "last": [
+            {
+              "byte_offset": 3276660,
+              "LF_line": 31378,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=5 n=49 tid=547 pc=0x16f247c object=0x7f061ddd60 a18=969 a12=0 a13=0 r0=0x3c9 decision_a18=969 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "5",
+                "n": "49",
+                "tid": "547",
+                "pc": "0x16f247c",
+                "object": "0x7f061ddd60",
+                "a18": "969",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0x3c9",
+                "decision_a18": "969",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 3278143,
+              "LF_line": 31386,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=5 n=50 tid=547 pc=0x16f247c object=0x7f061ddd60 a18=970 a12=0 a13=0 r0=0x3ca decision_a18=970 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "5",
+                "n": "50",
+                "tid": "547",
+                "pc": "0x16f247c",
+                "object": "0x7f061ddd60",
+                "a18": "970",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0x3ca",
+                "decision_a18": "970",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "maximum_logged_n": 50,
+          "roots": {
+            "0x7f061ddd60": 50
+          },
+          "tids": {
+            "547": 50
+          },
+          "signed_decision_min": 33,
+          "signed_decision_max": 970,
+          "a12_nonzero_samples": 0,
+          "consumer_sample_source_type": null
+        },
+        "6": {
+          "strict_records": 50,
+          "excluded_fragment_or_partial_records": 0,
+          "raw_literal_count": 50,
+          "first": [
+            {
+              "byte_offset": 2478019,
+              "LF_line": 22982,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=6 n=1 tid=547 pc=0x16f2488 object=0x7f061ddd60 a18=34 a12=0 a13=0 r0=0 decision_a18=33 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "6",
+                "n": "1",
+                "tid": "547",
+                "pc": "0x16f2488",
+                "object": "0x7f061ddd60",
+                "a18": "34",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "33",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 2480913,
+              "LF_line": 22998,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=6 n=2 tid=547 pc=0x16f2488 object=0x7f061ddd60 a18=36 a12=0 a13=0 r0=0 decision_a18=36 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "6",
+                "n": "2",
+                "tid": "547",
+                "pc": "0x16f2488",
+                "object": "0x7f061ddd60",
+                "a18": "36",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "36",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "last": [
+            {
+              "byte_offset": 3276851,
+              "LF_line": 31379,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=6 n=49 tid=547 pc=0x16f2488 object=0x7f061ddd60 a18=969 a12=0 a13=0 r0=0 decision_a18=969 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "6",
+                "n": "49",
+                "tid": "547",
+                "pc": "0x16f2488",
+                "object": "0x7f061ddd60",
+                "a18": "969",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "969",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 3278334,
+              "LF_line": 31387,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=6 n=50 tid=547 pc=0x16f2488 object=0x7f061ddd60 a18=971 a12=0 a13=0 r0=0 decision_a18=970 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "6",
+                "n": "50",
+                "tid": "547",
+                "pc": "0x16f2488",
+                "object": "0x7f061ddd60",
+                "a18": "971",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "970",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "maximum_logged_n": 50,
+          "roots": {
+            "0x7f061ddd60": 50
+          },
+          "tids": {
+            "547": 50
+          },
+          "signed_decision_min": 33,
+          "signed_decision_max": 970,
+          "a12_nonzero_samples": 0,
+          "consumer_sample_source_type": null
+        },
+        "7": {
+          "strict_records": 0,
+          "excluded_fragment_or_partial_records": 0,
+          "raw_literal_count": 0,
+          "first": [],
+          "last": [],
+          "maximum_logged_n": 0,
+          "roots": {},
+          "tids": {},
+          "signed_decision_min": null,
+          "signed_decision_max": null,
+          "a12_nonzero_samples": 0,
+          "consumer_sample_source_type": null
+        },
+        "8": {
+          "strict_records": 0,
+          "excluded_fragment_or_partial_records": 0,
+          "raw_literal_count": 0,
+          "first": [],
+          "last": [],
+          "maximum_logged_n": 0,
+          "roots": {},
+          "tids": {},
+          "signed_decision_min": null,
+          "signed_decision_max": null,
+          "a12_nonzero_samples": 0,
+          "consumer_sample_source_type": null
+        },
+        "9": {
+          "strict_records": 52,
+          "excluded_fragment_or_partial_records": 0,
+          "raw_literal_count": 52,
+          "first": [
+            {
+              "byte_offset": 2430290,
+              "LF_line": 22512,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=9 n=1 tid=253 pc=0x16f1a74 object=0x7f061ddd60 a18=1 a12=0 a13=0 r0=0 decision_a18=0 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "9",
+                "n": "1",
+                "tid": "253",
+                "pc": "0x16f1a74",
+                "object": "0x7f061ddd60",
+                "a18": "1",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "0",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 2431910,
+              "LF_line": 22531,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=9 n=2 tid=251 pc=0x16f1a74 object=0x7f061ddd60 a18=2 a12=0 a13=0 r0=0 decision_a18=0 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "9",
+                "n": "2",
+                "tid": "251",
+                "pc": "0x16f1a74",
+                "object": "0x7f061ddd60",
+                "a18": "2",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "0",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "last": [
+            {
+              "byte_offset": 3267346,
+              "LF_line": 31327,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=9 n=1000 tid=252 pc=0x16f1a74 object=0x7f061ddd60 a18=958 a12=0 a13=0 r0=0 decision_a18=0 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "9",
+                "n": "1000",
+                "tid": "252",
+                "pc": "0x16f1a74",
+                "object": "0x7f061ddd60",
+                "a18": "958",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "0",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 3608791,
+              "LF_line": 34289,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=9 n=2000 tid=253 pc=0x16f1a74 object=0x7f061ddd60 a18=1595 a12=0 a13=0 r0=0 decision_a18=0 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "9",
+                "n": "2000",
+                "tid": "253",
+                "pc": "0x16f1a74",
+                "object": "0x7f061ddd60",
+                "a18": "1595",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "0",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "maximum_logged_n": 2000,
+          "roots": {
+            "0x7f061ddd60": 52
+          },
+          "tids": {
+            "253": 10,
+            "251": 19,
+            "252": 22,
+            "257": 1
+          },
+          "signed_decision_min": 0,
+          "signed_decision_max": 0,
+          "a12_nonzero_samples": 0,
+          "consumer_sample_source_type": null
+        },
+        "10": {
+          "strict_records": 50,
+          "excluded_fragment_or_partial_records": 0,
+          "raw_literal_count": 50,
+          "first": [
+            {
+              "byte_offset": 2444789,
+              "LF_line": 22651,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=10 n=1 tid=547 pc=0x16f1d68 object=0x7f061ddd60 a18=10 a12=0 a13=0 r0=0xa decision_a18=0 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "10",
+                "n": "1",
+                "tid": "547",
+                "pc": "0x16f1d68",
+                "object": "0x7f061ddd60",
+                "a18": "10",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0xa",
+                "decision_a18": "0",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 2478775,
+              "LF_line": 22986,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=10 n=2 tid=547 pc=0x16f1d68 object=0x7f061ddd60 a18=33 a12=0 a13=0 r0=0x21 decision_a18=33 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "10",
+                "n": "2",
+                "tid": "547",
+                "pc": "0x16f1d68",
+                "object": "0x7f061ddd60",
+                "a18": "33",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0x21",
+                "decision_a18": "33",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "last": [
+            {
+              "byte_offset": 3278873,
+              "LF_line": 31390,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=10 n=49 tid=547 pc=0x16f1d68 object=0x7f061ddd60 a18=971 a12=0 a13=0 r0=0x3cb decision_a18=970 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "10",
+                "n": "49",
+                "tid": "547",
+                "pc": "0x16f1d68",
+                "object": "0x7f061ddd60",
+                "a18": "971",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0x3cb",
+                "decision_a18": "970",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 3279400,
+              "LF_line": 31393,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=10 n=50 tid=547 pc=0x16f1d68 object=0x7f061ddd60 a18=971 a12=0 a13=0 r0=0x3cb decision_a18=972 elapsed=0 old_time=0 new_time=0 message=0 type=0 source=0 observed_only=1",
+              "fields": {
+                "id": "10",
+                "n": "50",
+                "tid": "547",
+                "pc": "0x16f1d68",
+                "object": "0x7f061ddd60",
+                "a18": "971",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0x3cb",
+                "decision_a18": "972",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0",
+                "type": "0",
+                "source": "0",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "maximum_logged_n": 50,
+          "roots": {
+            "0x7f061ddd60": 50
+          },
+          "tids": {
+            "547": 50
+          },
+          "signed_decision_min": 0,
+          "signed_decision_max": 972,
+          "a12_nonzero_samples": 0,
+          "consumer_sample_source_type": null
+        },
+        "11": {
+          "strict_records": 50,
+          "excluded_fragment_or_partial_records": 0,
+          "raw_literal_count": 50,
+          "first": [
+            {
+              "byte_offset": 2444026,
+              "LF_line": 22647,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=11 n=1 tid=547 pc=0x16f217c object=0x7f061ddd60 a18=10 a12=0 a13=0 r0=0 decision_a18=0 elapsed=0 old_time=0 new_time=0 message=0x7fabb1dcd8 type=0x150000 source=0x830128 observed_only=1",
+              "fields": {
+                "id": "11",
+                "n": "1",
+                "tid": "547",
+                "pc": "0x16f217c",
+                "object": "0x7f061ddd60",
+                "a18": "10",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "0",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0x7fabb1dcd8",
+                "type": "0x150000",
+                "source": "0x830128",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 2478565,
+              "LF_line": 22985,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=11 n=2 tid=547 pc=0x16f217c object=0x7f061ddd60 a18=34 a12=0 a13=0 r0=0 decision_a18=33 elapsed=0 old_time=0 new_time=0 message=0x7fabb1dd18 type=0x150000 source=0x830128 observed_only=1",
+              "fields": {
+                "id": "11",
+                "n": "2",
+                "tid": "547",
+                "pc": "0x16f217c",
+                "object": "0x7f061ddd60",
+                "a18": "34",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "33",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0x7fabb1dd18",
+                "type": "0x150000",
+                "source": "0x830128",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "last": [
+            {
+              "byte_offset": 3275247,
+              "LF_line": 31370,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=11 n=49 tid=547 pc=0x16f217c object=0x7f061ddd60 a18=967 a12=0 a13=0 r0=0 decision_a18=966 elapsed=0 old_time=0 new_time=0 message=0x7fabb1e858 type=0x150000 source=0x830128 observed_only=1",
+              "fields": {
+                "id": "11",
+                "n": "49",
+                "tid": "547",
+                "pc": "0x16f217c",
+                "object": "0x7f061ddd60",
+                "a18": "967",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "966",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0x7fabb1e858",
+                "type": "0x150000",
+                "source": "0x830128",
+                "observed_only": "1"
+              }
+            },
+            {
+              "byte_offset": 3277403,
+              "LF_line": 31382,
+              "partial_record": false,
+              "window_end": 3819978,
+              "text": "FX3_UI_GATE_SAMPLE id=11 n=50 tid=547 pc=0x16f217c object=0x7f061ddd60 a18=970 a12=0 a13=0 r0=0 decision_a18=969 elapsed=0 old_time=0 new_time=0 message=0x7fabb1e9d8 type=0x150000 source=0x830128 observed_only=1",
+              "fields": {
+                "id": "11",
+                "n": "50",
+                "tid": "547",
+                "pc": "0x16f217c",
+                "object": "0x7f061ddd60",
+                "a18": "970",
+                "a12": "0",
+                "a13": "0",
+                "r0": "0",
+                "decision_a18": "969",
+                "elapsed": "0",
+                "old_time": "0",
+                "new_time": "0",
+                "message": "0x7fabb1e9d8",
+                "type": "0x150000",
+                "source": "0x830128",
+                "observed_only": "1"
+              }
+            }
+          ],
+          "maximum_logged_n": 50,
+          "roots": {
+            "0x7f061ddd60": 50
+          },
+          "tids": {
+            "547": 50
+          },
+          "signed_decision_min": 0,
+          "signed_decision_max": 969,
+          "a12_nonzero_samples": 0,
+          "consumer_sample_source_type": {
+            "0x830128:0x150000": 48,
+            "0x830128:0x30072": 1,
+            "0x830128:0x30170": 1
+          }
+        }
+      },
+      "marker_counts": {
+        "FX3_UI_GATE_BOUND": 1,
+        "FX3_TIMER_BOUND": 1,
+        "FX3_UI_CONFIG_DONE": 2,
+        "FX3_TIMER_ENTRY": 0,
+        "FX3_UI_FILL_EXEC": 0,
+        "FX3_OSD_HEADLESS_BOUND": 0,
+        "FX3_OSD_OWNER_START": 0,
+        "FX3_OSD102_COMMIT": 0,
+        "FX3_AP89_SCREEN_OPEN_ENTER": 4,
+        "FX3_BOOT_QUEUE_SEND": 2763,
+        "FX3_UI_WIRE": 63,
+        "FX3_GPE_CMD": 0,
+        "FX3_KEY_INPUT_RECV": 0
+      },
+      "marker_firsts": {
+        "FX3_UI_GATE_BOUND": [
+          {
+            "byte_offset": 1516257,
+            "LF_line": 10290,
+            "partial_record": false,
+            "window_end": 3819978,
+            "text": "FX3_UI_GATE_BOUND count=60 single_instruction_near_islands=1 full_register_state_preserved=1 observer_physical=41dc00000 publication_interval=64 ordinary_ram_authority=1 snapshot_protocol_v5=ready",
+            "fields": {
+              "count": "60",
+              "single_instruction_near_islands": "1",
+              "full_register_state_preserved": "1",
+              "observer_physical": "41dc00000",
+              "publication_interval": "64",
+              "ordinary_ram_authority": "1",
+              "snapshot_protocol_v5": "ready"
+            }
+          }
+        ],
+        "FX3_TIMER_BOUND": [
+          {
+            "byte_offset": 1517103,
+            "LF_line": 10294,
+            "partial_record": false,
+            "window_end": 3819978,
+            "text": "FX3_TIMER_BOUND count=4 prefixes_verified=16 pc_relative_in_stolen=0 original_calls_preserved=1 app_base=0x7ef7b68000 obj_base=0x7f991a1000",
+            "fields": {
+              "count": "4",
+              "prefixes_verified": "16",
+              "pc_relative_in_stolen": "0",
+              "original_calls_preserved": "1",
+              "app_base": "0x7ef7b68000",
+              "obj_base": "0x7f991a1000"
+            }
+          }
+        ],
+        "FX3_UI_CONFIG_DONE": [
+          {
+            "byte_offset": 3194349,
+            "LF_line": 30778,
+            "partial_record": false,
+            "window_end": 3819978,
+            "text": "FX3_UI_CONFIG_DONE seq=1 tid=547 caller=0x2191df4 result=0x7 ui_update=1",
+            "fields": {
+              "seq": "1",
+              "tid": "547",
+              "caller": "0x2191df4",
+              "result": "0x7",
+              "ui_update": "1"
+            }
+          }
+        ],
+        "FX3_TIMER_ENTRY": [],
+        "FX3_UI_FILL_EXEC": [],
+        "FX3_OSD_HEADLESS_BOUND": [],
+        "FX3_OSD_OWNER_START": [],
+        "FX3_OSD102_COMMIT": [],
+        "FX3_AP89_SCREEN_OPEN_ENTER": [
+          {
+            "byte_offset": 2457422,
+            "LF_line": 22806,
+            "partial_record": false,
+            "window_end": 3819978,
+            "text": "FX3_AP89_SCREEN_OPEN_ENTER clock_id=1 ns=113990202992 tid=547 manager=0x7f061de470 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1",
+            "fields": {
+              "clock_id": "1",
+              "ns": "113990202992",
+              "tid": "547",
+              "manager": "0x7f061de470",
+              "id1": "0x407",
+              "id2": "0x2ae",
+              "id3": "0x407",
+              "three_reference_args_one_call": "1",
+              "creation_not_yet_complete": "1"
+            }
+          }
+        ],
+        "FX3_BOOT_QUEUE_SEND": [
+          {
+            "byte_offset": 2431226,
+            "LF_line": 22521,
+            "partial_record": false,
+            "window_end": 3819978,
+            "text": "FX3_BOOT_QUEUE_SEND tid=253 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1",
+            "fields": {
+              "tid": "253",
+              "bytes": "28",
+              "source": "0x830128",
+              "raw": "00001500000000000000000000000000000000000000000000000000",
+              "caller_relative": "0x16f1bb4",
+              "passive": "1",
+              "completion_not_assumed": "1"
+            }
+          }
+        ],
+        "FX3_UI_WIRE": [
+          {
+            "byte_offset": 2465822,
+            "LF_line": 22881,
+            "partial_record": false,
+            "window_end": 3819978,
+            "text": "FX3_UI_WIRE tid=547 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1",
+            "fields": {
+              "tid": "547",
+              "target": "0x8280074d",
+              "op": "4",
+              "tag1": "0x1001",
+              "tag2": "0",
+              "result": "0",
+              "independent_of_unique_lock": "1"
+            }
+          }
+        ],
+        "FX3_GPE_CMD": [],
+        "FX3_KEY_INPUT_RECV": []
+      },
+      "BOOT_QUEUE_SEND": {
+        "literal_records": 2763,
+        "complete_field_records": 2763,
+        "record_byte_estimate": 483597,
+        "grouping_columns": [
+          "source",
+          "body_low32_type",
+          "caller_relative",
+          "tid",
+          "body_bytes"
+        ],
+        "groups": [
+          {
+            "key": [
+              "0x830128",
+              "0x150000",
+              "0x16f1bb4",
+              "253",
+              "28"
+            ],
+            "records": 415
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x150000",
+              "0x16f1bb4",
+              "251",
+              "28"
+            ],
+            "records": 1357
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x150000",
+              "0x16f1bb4",
+              "252",
+              "28"
+            ],
+            "records": 886
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30072",
+              "0x2eacd4c",
+              "547",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30170",
+              "0x2eacd4c",
+              "812",
+              "28"
+            ],
+            "records": 2
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x150000",
+              "0x16f1bb4",
+              "257",
+              "28"
+            ],
+            "records": 78
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30184",
+              "0x2eacd4c",
+              "547",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30070",
+              "0x2eacd4c",
+              "547",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x3010b",
+              "0x2eacd4c",
+              "547",
+              "28"
+            ],
+            "records": 2
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x3010a",
+              "0x2eacd4c",
+              "547",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0xa5a5a5a5",
+              "0xc000003",
+              "0x16f10b4",
+              "1157",
+              "32"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0xa5a5a5a5",
+              "0xc000004",
+              "0x16f10b4",
+              "1157",
+              "32"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x300f6",
+              "0x2eacd4c",
+              "806",
+              "28"
+            ],
+            "records": 2
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x10004",
+              "0x2eacd4c",
+              "558",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x10005",
+              "0x2eacd4c",
+              "558",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30172",
+              "0x2eacd4c",
+              "558",
+              "28"
+            ],
+            "records": 2
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30173",
+              "0x2eacd4c",
+              "558",
+              "28"
+            ],
+            "records": 2
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x3010c",
+              "0x2eacd4c",
+              "793",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x300f4",
+              "0x2eacd4c",
+              "799",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x3010c",
+              "0x2eacd4c",
+              "794",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30170",
+              "0x2eacd4c",
+              "794",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x300f0",
+              "0x2eacd4c",
+              "797",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x300f1",
+              "0x2eacd4c",
+              "797",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30197",
+              "0x2eacd4c",
+              "796",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x300f7",
+              "0x2eacd4c",
+              "547",
+              "28"
+            ],
+            "records": 1
+          },
+          {
+            "key": [
+              "0x830128",
+              "0x30100",
+              "0x2eacd4c",
+              "799",
+              "28"
+            ],
+            "records": 1
+          }
+        ],
+        "scope": "capid hook before underlying native send; no result or delivery proof, no complete production/consumption pairing"
+      },
+      "native_send_unique_5503e0": {
+        "records": 15,
+        "results": {
+          "0": 15
+        },
+        "first_150000": [
+          {
+            "byte_offset": 2431402,
+            "LF_line": 22522,
+            "partial_record": false,
+            "window_end": 3819978,
+            "text": "FX3_UIPC_SEND_UNIQUE tid=253 target=0x5503e0 op=4 tag1=0x150000 tag2=0 result=0 errno=0 caller=0x7fae700a4c delegated=1",
+            "fields": {
+              "tid": "253",
+              "target": "0x5503e0",
+              "op": "4",
+              "tag1": "0x150000",
+              "tag2": "0",
+              "result": "0",
+              "errno": "0",
+              "caller": "0x7fae700a4c",
+              "delegated": "1"
+            }
+          }
+        ],
+        "scope": "original ioctl returned for selected unique bodies; dedup key omits result and tid, not every send status"
+      },
+      "UI_WIRE": [
+        {
+          "target_low16_result": [
+            "0x8280074d",
+            "0x1001",
+            "0"
+          ],
+          "records": 59
+        },
+        {
+          "target_low16_result": [
+            "0x8280074d",
+            "0x1000",
+            "0"
+          ],
+          "records": 4
+        }
+      ],
+      "recv_begin_queue_counts": {
+        "0x94020a": 1,
+        "0x8f0139": 1,
+        "0x282078f": 1,
+        "0x82cd08e0": 1,
+        "0x80bd017a": 1,
+        "0x83310a20": 1,
+        "0x807a0020": 1,
+        "0x816f610f": 1,
+        "0x832f0a1b": 1,
+        "0x8055011e": 1,
+        "0x8288076c": 1,
+        "0x8055011f": 1,
+        "0x80550120": 1,
+        "0x8082088b": 1,
+        "0x818104bb": 1,
+        "0x80820884": 1,
+        "0x805c011d": 1,
+        "0x807e002f": 1,
+        "0x80550121": 1,
+        "0x80550122": 1,
+        "0x805502f2": 1,
+        "0x80550123": 1,
+        "0x8055001f": 1,
+        "0x807b0026": 1,
+        "0x807b002b": 1,
+        "0x807c0038": 1,
+        "0x807d07ee": 1,
+        "0x807d07ed": 1,
+        "0x80a506fd": 1,
+        "0x812802f1": 1,
+        "0x8277096f": 1,
+        "0x82380691": 1,
+        "0x80af6181": 1,
+        "0x8102021f": 1,
+        "0x82386188": 1,
+        "0x94016a": 1,
+        "0x81cf6188": 1,
+        "0x81cf6189": 1,
+        "0x802a0116": 1,
+        "0x81cf618a": 1,
+        "0x80020002": 1,
+        "0x8088044d": 1,
+        "0x829008db": 1,
+        "0x80920916": 1,
+        "0x80830450": 1,
+        "0x1480453": 1,
+        "0x8030619f": 1,
+        "0x8285074f": 1,
+        "0x80c7619f": 1,
+        "0x803c619f": 1,
+        "0x81cf619f": 2,
+        "0x5503df": 1,
+        "0x5503e0": 1,
+        "0x81cf61c0": 6,
+        "0x81cf61c1": 3,
+        "0x81cf61c2": 3,
+        "0x809461c1": 1,
+        "0x81cf61c3": 1,
+        "0x81cf61c4": 1,
+        "0x81cf61c5": 2
+      },
+      "task_snapshot_byte_coverage": {
+        "matched_intervals": 212,
+        "union_bytes": 2255433,
+        "unclosed": 1,
+        "unpaired_ends": 0,
+        "meaning": "diagnostic log volume/overlap only; neither write duration nor time spent blocked"
+      },
+      "last_original_screen": [
+        {
+          "byte_offset": 3453017,
+          "LF_line": 32780,
+          "partial_record": false,
+          "window_end": 3819978,
+          "text": "FX3_AP89_SCREEN_OPEN_ENTER clock_id=1 ns=157558316000 tid=547 manager=0x7f061de470 id1=0x2dd id2=0 id3=0x2dd three_reference_args_one_call=1 creation_not_yet_complete=1",
+          "fields": {
+            "clock_id": "1",
+            "ns": "157558316000",
+            "tid": "547",
+            "manager": "0x7f061de470",
+            "id1": "0x2dd",
+            "id2": "0",
+            "id3": "0x2dd",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          }
+        }
+      ]
+    }
+  },
+  "post_End_published_bank_only": {
+    "header": [
+      3550336520595658822,
+      2,
+      0,
+      120,
+      241,
+      66,
+      0,
+      1
+    ],
+    "counts0_11": [
+      1,
+      0,
+      1,
+      1,
+      804,
+      803,
+      803,
+      0,
+      0,
+      2742,
+      788,
+      804
+    ],
+    "peak_gate": 1954,
+    "hist0_1_2_3to10_11to100_gt100": [
+      0,
+      0,
+      0,
+      0,
+      9,
+      794
+    ],
+    "backlog_skip": 803,
+    "time_pass": 0,
+    "last_a18": 1955,
+    "producer9": 2742,
+    "consumer10": 788,
+    "object_mismatch": 0,
+    "root_change": 0,
+    "scope": "paused original optional readback after End; N64 individually copied published fields can lag; controls contain a later key; not strict startup state or transaction snapshot"
+  },
+  "actual_members": {
+    "usr/lib/appFw.so": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "simulation/fx3-osd-headless-v5.so": "67155b38fbbe23c3b6273c64ce8fc4676e59ad98da4a30a238508c26d9b5fba8",
+    "simulation/fx3-capid-v1.so": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e",
+    "simulation/ioctl-trace.so": "f2799333d67b4b118634e273f50f7d48106a228c1c40132075d923f040ca0b74",
+    "simulation/fx3-ui-gate-v1.so": "6673b9beaf8a2adfbc2c68dc7337df369e484bd58ede10edff3519dcf8d258df"
+  },
+  "fixed_argv": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "-machine",
+    "virt,gic-version=2,secure=off",
+    "-accel",
+    "tcg,thread=multi",
+    "-cpu",
+    "cortex-a35",
+    "-smp",
+    "4",
+    "-m",
+    "5120",
+    "-display",
+    "none",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-monitor",
+    "none",
+    "-serial",
+    "file:<RUN>/serial.log",
+    "-qmp",
+    "unix:q,server=on,wait=off",
+    "-chardev",
+    "socket,path=g,server=on,wait=off,id=keygate93",
+    "-gdb",
+    "chardev:keygate93",
+    "-S",
+    "-kernel",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "-device",
+    "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64/guest.cpio,addr=0x440000000,force-raw=on",
+    "-device",
+    "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb,addr=0x400002000,force-raw=on"
+  ],
+  "cpio_SHA": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+  "queue_owner_guest_init": true,
+  "actual_QMP_ring_dump": [
+    {
+      "journal_index": 861,
+      "id": 424,
+      "Popen_relative_s": 180.63877287501236,
+      "command_line": "pmemsave 0x41e000000 0x1000000 \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd/osd-ring-final.bin\""
+    }
+  ],
+  "pre_AP_read_Popen_relative_s": 8.638062333047856,
+  "after_End_tail_checkpoint_NOT_startup_or_terminal": {
+    "counts0_11": [
+      1,
+      0,
+      1,
+      1,
+      804,
+      804,
+      804,
+      0,
+      0,
+      2743,
+      788,
+      804
+    ],
+    "peak_gate": 1954,
+    "backlog_skip": 804,
+    "time_pass": 0,
+    "scope": "separate post-End nontransactional checkpoint, excluded from all startup window statistics"
+  },
+  "zero_ring": {
+    "bytes": 16777216,
+    "all_zero": true,
+    "sha256": "080acf35a507ac9849cfcba47dc2ad83e01b75663a516279c8b9d243b719643e",
+    "paused_readback": {
+      "consistent": false,
+      "paused_proven": true,
+      "readback_complete": true,
+      "parse_valid": false,
+      "method": "QMP stop acknowledged; query-status running=false,status=paused; full pmemsave while paused",
+      "query_status": {
+        "status": "paused",
+        "running": false
+      },
+      "bytes": 16777216,
+      "sha256": "080acf35a507ac9849cfcba47dc2ad83e01b75663a516279c8b9d243b719643e",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd/osd-ring-final.bin",
+      "parse_path": null,
+      "parse_error": "ValueError('not a v25-r3 diagnostic readback')"
+    }
+  },
+  "r30_observation_summary": {
+    "header_counts": {
+      "bad_magic": 399
+    },
+    "markers": {
+      "FX3_SYNC100_BACKEND_BOUND": {
+        "byte_offset": 80907,
+        "token_bytes": 25,
+        "host_first_complete_token_received_ns": 437453778028125,
+        "serial_chunk_start": 80417,
+        "serial_chunk_end": 82186,
+        "stage": "startup",
+        "line_complete_received_ns": 437453778028125,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      },
+      "FX3_FILE103_READY_CONFIRMED": {
+        "byte_offset": 80417,
+        "token_bytes": 27,
+        "host_first_complete_token_received_ns": 437453778028125,
+        "serial_chunk_start": 80417,
+        "serial_chunk_end": 82186,
+        "stage": "startup",
+        "line_complete_received_ns": 437453778028125,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      },
+      "FX3_BACKUP_INSMOD_RC=0": {
+        "byte_offset": 82403,
+        "token_bytes": 22,
+        "host_first_complete_token_received_ns": 437453832653166,
+        "serial_chunk_start": 82186,
+        "serial_chunk_end": 83845,
+        "stage": "startup",
+        "line_complete_received_ns": 437453832653166,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      },
+      "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": {
+        "byte_offset": 96716,
+        "token_bytes": 43,
+        "host_first_complete_token_received_ns": 437458219865625,
+        "serial_chunk_start": 96716,
+        "serial_chunk_end": 96882,
+        "stage": "startup",
+        "line_complete_received_ns": 437458219865625,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      },
+      "FX3_AP_NATURAL_BOOTIN_BEGIN": {
+        "byte_offset": 97275,
+        "token_bytes": 27,
+        "host_first_complete_token_received_ns": 437466655596041,
+        "serial_chunk_start": 97232,
+        "serial_chunk_end": 97423,
+        "stage": "startup",
+        "line_complete_received_ns": 437466655596041,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      },
+      "FX3_KEY96_READY": {
+        "byte_offset": 1049853,
+        "token_bytes": 15,
+        "host_first_complete_token_received_ns": 437488070281375,
+        "serial_chunk_start": 1048575,
+        "serial_chunk_end": 1053479,
+        "stage": "startup",
+        "line_complete_received_ns": 437488070281375,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      },
+      "FX3_AP89_SCREEN_OPEN_ENTER ": {
+        "byte_offset": 2457422,
+        "token_bytes": 27,
+        "host_first_complete_token_received_ns": 437566204422208,
+        "serial_chunk_start": 2455830,
+        "serial_chunk_end": 2458894,
+        "stage": "startup",
+        "line_complete_received_ns": 437566204422208,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      },
+      "FX3_AP89_SCREEN_CREATE ": {
+        "byte_offset": 2463166,
+        "token_bytes": 23,
+        "host_first_complete_token_received_ns": 437566377631541,
+        "serial_chunk_start": 2463143,
+        "serial_chunk_end": 2465278,
+        "stage": "startup",
+        "line_complete_received_ns": 437566377631541,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      },
+      "FX3_UI_CONFIG_DONE ": {
+        "byte_offset": 3194349,
+        "token_bytes": 19,
+        "host_first_complete_token_received_ns": 437595075860083,
+        "serial_chunk_start": 3191910,
+        "serial_chunk_end": 3195131,
+        "stage": "startup",
+        "line_complete_received_ns": 437595075860083,
+        "semantics": "first complete literal token; no guest occurrence time or full record/semantic acceptance claim"
+      }
+    },
+    "serial": {
+      "chunks": 2622,
+      "bytes": 3882426,
+      "consumed_offset": 3882426,
+      "carry_bytes": 42
+    },
+    "errors": {}
+  },
+  "r30_observation_header_initial_last": {
+    "initial": {
+      "kind": "bad_magic",
+      "stage": "startup",
+      "serial_offset": 0,
+      "host_read_before_ns": 437450360311291,
+      "host_read_after_ns": 437450362227500,
+      "request_id_before": 4,
+      "request_id_after": 5,
+      "request_id": 5,
+      "returned_length": 256,
+      "file_length_at_original_gate": 256,
+      "raw_16Q": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "words_source": "original_returned_header",
+      "exception_type": null,
+      "semantics": "host read observation only; no guest/server/browser atomic claim"
+    },
+    "last": {
+      "kind": "bad_magic",
+      "stage": "startup",
+      "serial_offset": 3819978,
+      "host_read_before_ns": 437630154446916,
+      "host_read_after_ns": 437630157679666,
+      "request_id_before": 419,
+      "request_id_after": 420,
+      "request_id": 420,
+      "returned_length": 256,
+      "file_length_at_original_gate": 256,
+      "raw_16Q": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "words_source": "original_returned_header",
+      "exception_type": null,
+      "semantics": "host read observation only; no guest/server/browser atomic claim"
+    }
+  },
+  "r30_ready_changes": [
+    {
+      "predicates": {
+        "phaseA_unobserved": true,
+        "replay_input_verified": false,
+        "screen_open_observed": "not_evaluated",
+        "validated_ring_present": "not_evaluated",
+        "screen_quiet_10s": "not_evaluated",
+        "media_branches_exact": "not_evaluated",
+        "media_notifications_exact": "not_evaluated",
+        "native_free_sizes_present": "not_evaluated",
+        "key96_ready": "not_evaluated",
+        "front_full_body": "not_evaluated",
+        "expected_raw_message": "not_evaluated",
+        "last_screen_allowed": "not_evaluated",
+        "nonuniform_pixels": "not_evaluated"
+      },
+      "evaluation_complete": true,
+      "stage": "startup",
+      "host_received_ns": 437450362531541,
+      "serial_offset": 0,
+      "last_screen_observed_host_monotonic": 437450.358165541,
+      "qualified": false,
+      "validated_ring_identity": null
+    },
+    {
+      "predicates": {
+        "phaseA_unobserved": true,
+        "replay_input_verified": true,
+        "screen_open_observed": false,
+        "validated_ring_present": "not_evaluated",
+        "screen_quiet_10s": "not_evaluated",
+        "media_branches_exact": "not_evaluated",
+        "media_notifications_exact": "not_evaluated",
+        "native_free_sizes_present": "not_evaluated",
+        "key96_ready": "not_evaluated",
+        "front_full_body": "not_evaluated",
+        "expected_raw_message": "not_evaluated",
+        "last_screen_allowed": "not_evaluated",
+        "nonuniform_pixels": "not_evaluated"
+      },
+      "evaluation_complete": true,
+      "stage": "startup",
+      "host_received_ns": 437458642981291,
+      "serial_offset": 96882,
+      "last_screen_observed_host_monotonic": 437450.358165541,
+      "qualified": false,
+      "validated_ring_identity": null
+    },
+    {
+      "predicates": {
+        "phaseA_unobserved": true,
+        "replay_input_verified": true,
+        "screen_open_observed": true,
+        "validated_ring_present": false,
+        "screen_quiet_10s": "not_evaluated",
+        "media_branches_exact": "not_evaluated",
+        "media_notifications_exact": "not_evaluated",
+        "native_free_sizes_present": "not_evaluated",
+        "key96_ready": "not_evaluated",
+        "front_full_body": "not_evaluated",
+        "expected_raw_message": "not_evaluated",
+        "last_screen_allowed": "not_evaluated",
+        "nonuniform_pixels": "not_evaluated"
+      },
+      "evaluation_complete": true,
+      "stage": "startup",
+      "host_received_ns": 437566205828125,
+      "serial_offset": 2458894,
+      "last_screen_observed_host_monotonic": 437566.20582025,
+      "qualified": false,
+      "validated_ring_identity": null
+    }
+  ]
+}

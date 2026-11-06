@@ -1,0 +1,84 @@
+{
+  "status": "CONTROLLED_PORT_ASSOCIATION_OWN_CODE_CHECKS_PASS",
+  "checks": 8,
+  "rows": [
+    {
+      "case": "bounded_identity_C_unit",
+      "status": "PASS",
+      "compile_argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage260-controlled-port-transition-association/transition_identity.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage260-controlled-port-transition-association/transition_unit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage260-controlled-port-transition-association/artifacts/transition-unit"
+      ],
+      "stdout": "PASS bounded association:absent SERVICE serial and companion logical port;original return serial;unarmed/wrong port/copied or wrong serial/reused node/deadline/sample bounds\n",
+      "binary_sha256": "787a75b79dea6513f42f4e547989386d624a8d15fa045cce4c96b6975bd21d40"
+    },
+    {
+      "case": "no-SERVICE-serial-SS",
+      "status": "PASS",
+      "observed_status": "HOST_RETURN_CONTROLLED_PORT_ASSOCIATION",
+      "flow_frames": 85,
+      "physical_identity_artificial": true,
+      "global_camera_acceptance": false
+    },
+    {
+      "case": "wrong-service-physical-port",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "flow_frames": 37,
+      "physical_identity_artificial": true,
+      "global_camera_acceptance": false
+    },
+    {
+      "case": "wrong-returned-serial",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "flow_frames": 82,
+      "physical_identity_artificial": true,
+      "global_camera_acceptance": false
+    },
+    {
+      "case": "unexpected-SERVICE-serial",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "flow_frames": 37,
+      "physical_identity_artificial": true,
+      "global_camera_acceptance": false
+    },
+    {
+      "case": "control-only-no-SERVICE-serial",
+      "status": "PASS",
+      "observed_status": "HOST_CONTROL_RETURN_CAPABILITY_UNTESTED",
+      "flow_frames": 49,
+      "physical_identity_artificial": true,
+      "global_camera_acceptance": false
+    },
+    {
+      "case": "saved_byte_forgery_rejected",
+      "status": "PASS",
+      "variants": 3,
+      "live_origin_recreated": false
+    },
+    {
+      "case": "ejected_zero_media_cache_preflight",
+      "status": "PASS",
+      "zero_media_accepted": true,
+      "mounted_unknown_or_no_driver_rejected": true,
+      "no_new_query": true
+    }
+  ],
+  "actual_root_or_USB_commands": false,
+  "actual_port_metadata_probe_is_a_separate_cache_receipt": true,
+  "no_camera_authentication_or_exit_proven": true
+}

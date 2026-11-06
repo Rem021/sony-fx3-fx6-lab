@@ -1,0 +1,9 @@
+fe06081c 8816188b add      x8, x20, x24, lsl #5
+fe060820 1c410091 add      x28, x8, #0x10
+fe060824 abe8ff97 bl       #0xfe05aad0
+fe060828 210000b0 adrp     x1, #0xfe065000
+fe06082c e30300aa mov      x3, x0
+fe060830 e0031f32 mov      w0, #2
+fe060834 217c0c91 add      x1, x1, #0x31f
+fe060838 e2031caa mov      x2, x28
+fe06083c 3dd3ff97 bl       #0xfe055530

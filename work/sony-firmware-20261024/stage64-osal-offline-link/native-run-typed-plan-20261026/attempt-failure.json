@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage64-osal-offline-link/native_osal.py\", line 244, in main\n    try:run(out)\n        ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage64-osal-offline-link/native_osal.py\", line 220, in run\n    inits=[init_entry(assets,modules,providers,x) for x in ('osal_uipc.ko','osal_utm.ko')]\n           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage64-osal-offline-link/native_osal.py\", line 192, in init_entry\n    assert data['base']<=address<data['base']+data['size']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "passing_result": false
+}

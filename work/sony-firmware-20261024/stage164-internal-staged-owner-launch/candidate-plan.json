@@ -1,0 +1,53 @@
+{
+  "schema": "fx3-single-owner-trial-approval-plan/2",
+  "grant_id": "fx3-702-msc-owner-20261028-02",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "bundle_sha256": "e36a8777d113300bf32cc5dd0721e69836bc7eea97648a01e0ce1b8b78b5d183",
+  "native_sha256": "1182295ad4405fc30773673467ae2d6b1bb8b3ca26343a6e02c76a1dc9fd9e0b",
+  "authorized": false,
+  "released": false,
+  "prerequisites": [
+    "Manually eject all FX3 volumes; keep powered, connected, MSC",
+    "Recheck unique cached body/port and no mounted media",
+    "Old grant01 remains preserved; no live previous worker;02 never consumed",
+    "Explicit approval for this exact new candidate before any administrator or USB operation"
+  ],
+  "host_files": {
+    "user_job": "/private/tmp/fx3-702-msc-owner-20261028-02",
+    "user_source": "/private/tmp/fx3-702-msc-owner-20261028-02/source-helper",
+    "root_job": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-02",
+    "root_helper": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-02/helper",
+    "modes": {
+      "user_job": "0700",
+      "user_source": "0500",
+      "shared_frame": "0600",
+      "root_job": "0700",
+      "root_helper": "0500"
+    }
+  },
+  "operations": [
+    "User-only exclusive hash-verified internal executable copy",
+    "Native administrator validation by user; system shell installs fixed SHA copy in root-private directory",
+    "Actual helper PID/UID/birth/path must be confirmed before ACK",
+    "At most one native ownership/return run; temporary MSC disconnect possible",
+    "Independent cached same-body and storage driver association check after verified terminal receipt"
+  ],
+  "exclusions": [
+    "No Sony authentication or service commands",
+    "No card or camera file access",
+    "No module, WBI, settings or firmware writes",
+    "No driver installation or broader security permissions",
+    "No USB reset, force kill, automatic unmount or retry",
+    "Missing or blocked calls stay UNKNOWN"
+  ],
+  "failure_policy": "Any submitted attempt consumes this grant, even if preflight, staging, administrator launch or native provider fails. Preserve records; require a new separately reviewable attempt for any retry.",
+  "recovery_claim": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

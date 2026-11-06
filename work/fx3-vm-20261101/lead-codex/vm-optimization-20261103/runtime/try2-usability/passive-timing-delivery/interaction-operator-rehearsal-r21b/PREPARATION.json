@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "no_arm_yet": true,
+  "no_key_yet": true,
+  "historical_fixture_visual": {
+    "initial": "standby icons",
+    "current_after_rejection": "NO CARD historical partial view",
+    "accepted_target": "complete Setup > Area/Date 45/59 with orange focus"
+  },
+  "session": "fx3-deadline-operator-r21b-b83358633d9e-74ca3f17",
+  "url": "http://127.0.0.1:52524/",
+  "tab": {
+    "active": true,
+    "label": null,
+    "tabId": "t1",
+    "targetId": "299A8CCF8896CC83295A54B2F26FD298",
+    "title": "127.0.0.1:52524",
+    "type": "page",
+    "url": "http://127.0.0.1:52524/"
+  },
+  "action_commands": [
+    "python3 operate.py reject_capture",
+    "python3 operate.py cancel_A",
+    "python3 operate.py accept_capture",
+    "python3 operate.py confirm_B",
+    "python3 cleanup.py"
+  ],
+  "failures": "End and cleanup then FAILED; never rerun",
+  "model_received_at": "unknown",
+  "model_review_completed_at": "unknown",
+  "UTC": "2026-11-04T23:50:33.893484+00:00",
+  "host_ns": 419919425266041
+}

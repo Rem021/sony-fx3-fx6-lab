@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "operate.py",
+    "click",
+    "1",
+    "已亲看当前NO CARD待机完整图；明确按一次MENU，目标完整Setup > Area/Date及橙色Area/Date/Time Setting"
+  ],
+  "cwd": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134",
+  "exit_code": 1,
+  "combined_output_file": "OPERATOR-CLI-FAILURE.combined.txt",
+  "combined_output_sha256": "961a1e3bb4bf46c4c86d479ad28864553708cfd35101b62bb8ef2838394c1903",
+  "evidence_origin": "exact combined output copied from exec tool result chunk cc82bb; no separate stdout/stderr stream was captured",
+  "operation_entered": false,
+  "arm_calls": 0,
+  "operator_click_calls": 0,
+  "confirm_calls": 0,
+  "cause": "sys.argv evaluated at real __main__ before guarded run_action; sys missing from operate globals",
+  "additional_unexecuted_site": "later_capture.py uses sys.argv without importing sys",
+  "host_check_gap": "imported-function guard check exercised only operate.run_action; it never executed either real __main__ path",
+  "coordinator_independent_messages": [
+    "msg_5ddb3c4cab2c",
+    "msg_2425b11bf72d"
+  ]
+}

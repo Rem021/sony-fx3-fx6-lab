@@ -1,0 +1,93 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 16f16bc: a9b87bfd     	stp	x29, x30, [sp, #-0x80]!
+ 16f16c0: 910003fd     	mov	x29, sp
+ 16f16c4: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 16f16c8: aa0003f4     	mov	x20, x0
+ 16f16cc: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 16f16d0: 911c4015     	add	x21, x0, #0x710
+ 16f16d4: f9400c00     	ldr	x0, [x0, #0x18]
+ 16f16d8: 910123b3     	add	x19, x29, #0x48
+ 16f16dc: f9400001     	ldr	x1, [x0]
+ 16f16e0: f9400022     	ldr	x2, [x1]
+ 16f16e4: aa1503e1     	mov	x1, x21
+ 16f16e8: f9001bf7     	str	x23, [sp, #0x30]
+ 16f16ec: 52800717     	mov	w23, #0x38              // =56
+ 16f16f0: d63f0040     	blr	x2
+ 16f16f4: aa1303e0     	mov	x0, x19
+ 16f16f8: 9441d847     	bl	0x2767814 <Application_System_Init+0x1077c84>
+ 16f16fc: aa1303e0     	mov	x0, x19
+ 16f1700: 9444ead3     	bl	0x282c24c <Application_System_Init+0x113c6bc>
+ 16f1704: aa1303e0     	mov	x0, x19
+ 16f1708: 9441d847     	bl	0x2767824 <Application_System_Init+0x1077c94>
+ 16f170c: f9400e80     	ldr	x0, [x20, #0x18]
+ 16f1710: 94411b5e     	bl	0x2738488 <Application_System_Init+0x10488f8>
+ 16f1714: 9400fcd0     	bl	0x1730a54 <Application_System_Init+0x40ec4>
+ 16f1718: 94411a84     	bl	0x2738128 <Application_System_Init+0x1048598>
+ 16f171c: 94411a8d     	bl	0x2738150 <Application_System_Init+0x10485c0>
+ 16f1720: aa1503e0     	mov	x0, x21
+ 16f1724: 942a04e7     	bl	0x2172ac0 <Application_System_Init+0xa82f30>
+ 16f1728: 94002f62     	bl	0x16fd4b0 <Application_System_Init+0xd920>
+ 16f172c: 9461e8a4     	bl	0x2f6b9bc <Application_System_Init+0x187be2c>
+ 16f1730: 9461fce8     	bl	0x2f70ad0 <Application_System_Init+0x1880f40>
+ 16f1734: 945f47bf     	bl	0x2ec3630 <Application_System_Init+0x17d3aa0>
+ 16f1738: 945f37b5     	bl	0x2ebf60c <Application_System_Init+0x17cfa7c>
+ 16f173c: 94003067     	bl	0x16fd8d8 <Application_System_Init+0xdd48>
+ 16f1740: 9400ca6e     	bl	0x17240f8 <Application_System_Init+0x34568>
+ 16f1744: 97fffa93     	bl	0x16f0190 <Application_System_Init+0x600>
+ 16f1748: 9400337b     	bl	0x16fe534 <Application_System_Init+0xe9a4>
+ 16f174c: f9003fbf     	str	xzr, [x29, #0x78]
+ 16f1750: 910123a0     	add	x0, x29, #0x48
+ 16f1754: aa1303e1     	mov	x1, x19
+ 16f1758: a9007c1f     	stp	xzr, xzr, [x0]
+ 16f175c: 910163a0     	add	x0, x29, #0x58
+ 16f1760: b9004bb7     	str	w23, [x29, #0x48]
+ 16f1764: a9007c1f     	stp	xzr, xzr, [x0]
+ 16f1768: 9101a3a0     	add	x0, x29, #0x68
+ 16f176c: a9007c1f     	stp	xzr, xzr, [x0]
+ 16f1770: 52800800     	mov	w0, #0x40               // =64
+ 16f1774: 72a01220     	movk	w0, #0x91, lsl #16
+ 16f1778: 97fa8362     	bl	0x1592500 <osal_snd_sync_direct@plt>
+ 16f177c: 7100001f     	cmp	w0, #0x0
+ 16f1780: b9405fa1     	ldr	w1, [x29, #0x5c]
+ 16f1784: b9406bb6     	ldr	w22, [x29, #0x68]
+ 16f1788: 1a800020     	csel	w0, w1, w0, eq
+ 16f178c: f94033b5     	ldr	x21, [x29, #0x60]
+ 16f1790: 35000bc0     	cbnz	w0, 0x16f1908 <Application_System_Init+0x1d78>
+ 16f1794: 90000002     	adrp	x2, 0x16f1000 <Application_System_Init+0x1470>
+ 16f1798: 910103a1     	add	x1, x29, #0x40
+ 16f179c: 910d6042     	add	x2, x2, #0x358
+ 16f17a0: 2a1603e0     	mov	w0, w22
+ 16f17a4: d2800003     	mov	x3, #0x0                // =0
+ 16f17a8: 97fa817e     	bl	0x1591da0 <osal_reg_msg_queue_cb@plt>
+ 16f17ac: 350008e0     	cbnz	w0, 0x16f18c8 <Application_System_Init+0x1d38>
+ 16f17b0: 910123a0     	add	x0, x29, #0x48
+ 16f17b4: aa1303e1     	mov	x1, x19
+ 16f17b8: a9007c1f     	stp	xzr, xzr, [x0]
+ 16f17bc: 910163a0     	add	x0, x29, #0x58
+ 16f17c0: b9004bb7     	str	w23, [x29, #0x48]
+ 16f17c4: a9007c1f     	stp	xzr, xzr, [x0]
+ 16f17c8: 52800020     	mov	w0, #0x1                // =1
+ 16f17cc: f90033b5     	str	x21, [x29, #0x60]
+ 16f17d0: b9005ba0     	str	w0, [x29, #0x58]
+ 16f17d4: 90018480     	adrp	x0, 0x4781000
+ 16f17d8: f9003bb4     	str	x20, [x29, #0x70]
+ 16f17dc: f943fc00     	ldr	x0, [x0, #0x7f8]
+ 16f17e0: f90037a0     	str	x0, [x29, #0x68]
+ 16f17e4: f94023a0     	ldr	x0, [x29, #0x40]
+ 16f17e8: f9003fa0     	str	x0, [x29, #0x78]
+ 16f17ec: 52800800     	mov	w0, #0x40               // =64
+ 16f17f0: 72a01220     	movk	w0, #0x91, lsl #16
+ 16f17f4: 97fa8343     	bl	0x1592500 <osal_snd_sync_direct@plt>
+ 16f17f8: 35000620     	cbnz	w0, 0x16f18bc <Application_System_Init+0x1d2c>
+ 16f17fc: b9405fa0     	ldr	w0, [x29, #0x5c]
+ 16f1800: 350005e0     	cbnz	w0, 0x16f18bc <Application_System_Init+0x1d2c>
+ 16f1804: f90027b5     	str	x21, [x29, #0x48]
+ 16f1808: aa1303e0     	mov	x0, x19
+ 16f180c: 52800042     	mov	w2, #0x2                // =2
+ 16f1810: d289c401     	mov	x1, #0x4e20             // =20000
+ 16f1814: 97fffe41     	bl	0x16f1118 <Application_System_Init+0x1588>

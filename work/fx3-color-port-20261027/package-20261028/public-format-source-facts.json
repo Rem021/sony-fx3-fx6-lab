@@ -1,0 +1,23 @@
+{
+  "url": "https://raw.githubusercontent.com/DavidBuchanan314/fwtool.py/3955d7890fc38daf942bb52827599bfe35de4a14/fwtool/sony/fdat.py",
+  "commit": "3955d7890fc38daf942bb52827599bfe35de4a14",
+  "bytes": 9791,
+  "sha256": "ea1feccdc115fa46cdb29061cfa6cd1bb7277bb454892c0c7f8e9f6257c6d628",
+  "facts": [
+    {
+      "class": "AesCbcCrypter",
+      "method": "decrypt",
+      "line_start": 204,
+      "line_end": 209,
+      "normalized_ast": "FunctionDef(name='decrypt', args=arguments(args=[arg(arg='self'), arg(arg='file')]), body=[Expr(value=Call(func=Attribute(value=Name(id='file', ctx=Load()), attr='seek', ctx=Load()), args=[UnaryOp(op=USub(), operand=Constant(value=272)), Constant(value=2)])), Assign(targets=[Name(id='size', ctx=Store())], value=Call(func=Attribute(value=Name(id='file', ctx=Load()), attr='tell', ctx=Load()))), Assign(targets=[Attribute(value=Name(id='self', ctx=Load()), attr='_iv', ctx=Store())], value=Call(func=Attribute(value=Name(id='file', ctx=Load()), attr='read', ctx=Load()), args=[Constant(value=16)])), Assign(targets=[Name(id='file', ctx=Store())], value=Call(func=Name(id='FilePart', ctx=Load()), args=[Name(id='file', ctx=Load()), Constant(value=0), Name(id='size', ctx=Load())])), Return(value=Call(func=Attribute(value=Call(func=Name(id='super', ctx=Load()), args=[Name(id='AesCbcCrypter', ctx=Load()), Name(id='self', ctx=Load())]), attr='decrypt', ctx=Load()), args=[Name(id='file', ctx=Load())]))])"
+    },
+    {
+      "class": "AesCbcCrypter",
+      "method": "encrypt",
+      "line_start": 211,
+      "line_end": 212,
+      "normalized_ast": "FunctionDef(name='encrypt', args=arguments(args=[arg(arg='self'), arg(arg='file')]), body=[Raise(exc=Call(func=Name(id='Exception', ctx=Load()), args=[Constant(value='Encryption not supported')]))])"
+    }
+  ],
+  "scope": "Pinned maintainer source facts. Decrypt skips IV plus 256-byte tail, encrypt raises unsupported. Tail cryptographic meaning must be established from original verifier, not inferred from length alone."
+}

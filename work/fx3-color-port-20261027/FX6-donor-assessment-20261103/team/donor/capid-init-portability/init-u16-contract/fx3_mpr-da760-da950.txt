@@ -1,0 +1,132 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000da760 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_>:
+   da760: a9b97bfd     	stp	x29, x30, [sp, #-0x70]!
+   da764: 910003fd     	mov	x29, sp
+   da768: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   da76c: aa0003f5     	mov	x21, x0
+   da770: 52800020     	mov	w0, #0x1                // =1
+   da774: 910163b6     	add	x22, x29, #0x58
+   da778: a90153f3     	stp	x19, x20, [sp, #0x10]
+   da77c: 2a0103f3     	mov	w19, w1
+   da780: 390173a0     	strb	w0, [x29, #0x5c]
+   da784: 52842200     	mov	w0, #0x2110             // =8464
+   da788: 290c07b5     	stp	w21, w1, [x29, #0x60]
+   da78c: 90001114     	adrp	x20, 0x2fa000
+   da790: 7900b3a0     	strh	w0, [x29, #0x58]
+   da794: 5280e400     	mov	w0, #0x720              // =1824
+   da798: 52800301     	mov	w1, #0x18               // =24
+   da79c: a90397a3     	stp	x3, x5, [x29, #0x38]
+   da7a0: 7900b7a0     	strh	w0, [x29, #0x5a]
+   da7a4: aa1603e0     	mov	x0, x22
+   da7a8: 29090ba4     	stp	w4, w2, [x29, #0x48]
+   da7ac: 290d7fa2     	stp	w2, wzr, [x29, #0x68]
+   da7b0: 390177bf     	strb	wzr, [x29, #0x5d]
+   da7b4: 39017bbf     	strb	wzr, [x29, #0x5e]
+   da7b8: 39017fbf     	strb	wzr, [x29, #0x5f]
+   da7bc: 97ffb92d     	bl	0xc8c70 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0xa0>
+   da7c0: f9433a80     	ldr	x0, [x20, #0x670]
+   da7c4: 97fe8df7     	bl	0x7dfa0 <_ZN3mpr6thread10normalLock4lockEv@plt>
+   da7c8: 52800060     	mov	w0, #0x3                // =3
+   da7cc: 72a80000     	movk	w0, #0x4000, lsl #16
+   da7d0: 6b00027f     	cmp	w19, w0
+   da7d4: 29490ba4     	ldp	w4, w2, [x29, #0x48]
+   da7d8: a94397a3     	ldp	x3, x5, [x29, #0x38]
+   da7dc: 540003a0     	b.eq	0xda850 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xf0>
+   da7e0: 11000800     	add	w0, w0, #0x2
+   da7e4: 6b00027f     	cmp	w19, w0
+   da7e8: 540003c0     	b.eq	0xda860 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0x100>
+   da7ec: 52800020     	mov	w0, #0x1                // =1
+   da7f0: 72a80000     	movk	w0, #0x4000, lsl #16
+   da7f4: 6b00027f     	cmp	w19, w0
+   da7f8: 54000081     	b.ne	0xda808 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xa8>
+   da7fc: 2a1303e1     	mov	w1, w19
+   da800: aa1503e0     	mov	x0, x21
+   da804: 97fe87bb     	bl	0x7c6f0 <_ZN3mpr20RecvWriterEvtStopCmpEmjiPvjS0_@plt>
+   da808: f9433a80     	ldr	x0, [x20, #0x670]
+   da80c: 97fe99b9     	bl	0x80ef0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+   da810: 390177bf     	strb	wzr, [x29, #0x5d]
+   da814: 52800080     	mov	w0, #0x4                // =4
+   da818: 52800101     	mov	w1, #0x8                // =8
+   da81c: 39017bbf     	strb	wzr, [x29, #0x5e]
+   da820: 390173a0     	strb	w0, [x29, #0x5c]
+   da824: 52842200     	mov	w0, #0x2110             // =8464
+   da828: 39017fbf     	strb	wzr, [x29, #0x5f]
+   da82c: 7900b3a0     	strh	w0, [x29, #0x58]
+   da830: 5280e5e0     	mov	w0, #0x72f              // =1839
+   da834: 7900b7a0     	strh	w0, [x29, #0x5a]
+   da838: aa1603e0     	mov	x0, x22
+   da83c: 97ffb90d     	bl	0xc8c70 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0xa0>
+   da840: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   da844: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   da848: a8c77bfd     	ldp	x29, x30, [sp], #0x70
+   da84c: d65f03c0     	ret
+   da850: 2a1303e1     	mov	w1, w19
+   da854: aa1503e0     	mov	x0, x21
+   da858: 97fe8bae     	bl	0x7d710 <_ZN3mpr26RecvWriterEvtNeedDivideCmpEmjiPvjS0_@plt>
+   da85c: 17ffffeb     	b	0xda808 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xa8>
+   da860: 2a1303e1     	mov	w1, w19
+   da864: aa1503e0     	mov	x0, x21
+   da868: 97fe9be6     	bl	0x81800 <_ZN3mpr32RecvWriterEvtReachRecordableTimeEmjiPvjS0_@plt>
+   da86c: 17ffffe7     	b	0xda808 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xa8>
+
+00000000000da870 <_ZN3mpr24RecvCodecEvtDotThmEncCmpEP12PayloadCodec>:
+   da870: d14007ff     	sub	sp, sp, #0x1, lsl #12   // =0x1000
+   da874: 52800101     	mov	w1, #0x8                // =8
+   da878: d11803ff     	sub	sp, sp, #0x600
+   da87c: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+   da880: 910003fd     	mov	x29, sp
+   da884: a90153f3     	stp	x19, x20, [sp, #0x10]
+   da888: aa0003f3     	mov	x19, x0
+   da88c: 52800080     	mov	w0, #0x4                // =4
+   da890: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   da894: 910203b6     	add	x22, x29, #0x80
+   da898: a90363f7     	stp	x23, x24, [sp, #0x30]
+   da89c: 390213a0     	strb	w0, [x29, #0x84]
+   da8a0: 52812000     	mov	w0, #0x900              // =2304
+   da8a4: 52842218     	mov	w24, #0x2110            // =8464
+   da8a8: a9046bf9     	stp	x25, x26, [sp, #0x40]
+   da8ac: 790107a0     	strh	w0, [x29, #0x82]
+   da8b0: aa1603e0     	mov	x0, x22
+   da8b4: a90573fb     	stp	x27, x28, [sp, #0x50]
+   da8b8: 390217bf     	strb	wzr, [x29, #0x85]
+   da8bc: 39021bbf     	strb	wzr, [x29, #0x86]
+   da8c0: 39021fbf     	strb	wzr, [x29, #0x87]
+   da8c4: 790103b8     	strh	w24, [x29, #0x80]
+   da8c8: 97ffb8ea     	bl	0xc8c70 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0xa0>
+   da8cc: 39407677     	ldrb	w23, [x19, #0x1d]
+   da8d0: 9101e3a0     	add	x0, x29, #0x78
+   da8d4: f9003fbf     	str	xzr, [x29, #0x78]
+   da8d8: 2a1703e1     	mov	w1, w23
+   da8dc: 97fe8b61     	bl	0x7d660 <_ZN3mpr22SearchThnmbnailControlEPPNS_16ThnmbnailControlEh@plt>
+   da8e0: 34000340     	cbz	w0, 0xda948 <_ZN3mpr24RecvCodecEvtDotThmEncCmpEP12PayloadCodec+0xd8>
+   da8e4: 52800040     	mov	w0, #0x2                // =2
+   da8e8: 52800054     	mov	w20, #0x2               // =2
+   da8ec: 390217bf     	strb	wzr, [x29, #0x85]
+   da8f0: 390213a0     	strb	w0, [x29, #0x84]
+   da8f4: 52812020     	mov	w0, #0x901              // =2305
+   da8f8: 39021bbf     	strb	wzr, [x29, #0x86]
+   da8fc: 790107a0     	strh	w0, [x29, #0x82]
+   da900: 52867e80     	mov	w0, #0x33f4             // =13300
+   da904: 39021fbf     	strb	wzr, [x29, #0x87]
+   da908: 790103b8     	strh	w24, [x29, #0x80]
+   da90c: b9008bb4     	str	w20, [x29, #0x88]
+   da910: 52800201     	mov	w1, #0x10               // =16
+   da914: b9008fa0     	str	w0, [x29, #0x8c]
+   da918: aa1603e0     	mov	x0, x22
+   da91c: 97ffb8d5     	bl	0xc8c70 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0xa0>
+   da920: 2a1403e0     	mov	w0, w20
+   da924: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   da928: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   da92c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   da930: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+   da934: a94573fb     	ldp	x27, x28, [sp, #0x50]
+   da938: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+   da93c: 914007ff     	add	sp, sp, #0x1, lsl #12   // =0x1000
+   da940: 911803ff     	add	sp, sp, #0x600
+   da944: d65f03c0     	ret
+   da948: f9403fa0     	ldr	x0, [x29, #0x78]
+   da94c: f00010f5     	adrp	x21, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>

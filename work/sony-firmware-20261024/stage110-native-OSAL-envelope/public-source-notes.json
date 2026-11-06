@@ -1,0 +1,19 @@
+{
+  "checked_date": "2026-10-27",
+  "source": {
+    "url": "https://man7.org/linux/man-pages/man3/pthread_cond_wait.3.html",
+    "observation": "The Linux man-pages project describes condition waiting as releasing the mutex while blocked and acquiring it again before returning.",
+    "scope": "Generic API semantics only, not Sony scheduler, active pthread state, actual wakeups or verified payload lifetime."
+  },
+  "official_POSIX_fetch_attempts": [
+    {
+      "url": "https://pubs.opengroup.org/onlinepubs/9799919799/functions/pthread_cond_wait.html",
+      "result": "HTTP403"
+    },
+    {
+      "url": "https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_cond_wait.html",
+      "result": "HTTP403"
+    }
+  ],
+  "no_runtime_threading_device_or_recovery_operations": true
+}

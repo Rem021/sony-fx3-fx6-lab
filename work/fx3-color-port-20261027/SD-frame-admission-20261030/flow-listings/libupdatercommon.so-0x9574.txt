@@ -1,0 +1,29 @@
+_ZN7Updater10RingBuffer5ResetEv
+00009574 stp       x29, x30, [sp, #-0x40]!
+00009578 mov       x29, sp
+0000957c stp       x19, x20, [sp, #0x10]
+00009580 mov       x19, x0
+00009584 add       x0, x0, #0x98
+00009588 add       x20, x29, #0x40
+0000958c str       x0, [x29, #0x28]
+00009590 bl        #0x6a90 ; pthread_mutex_lock
+00009594 add       x0, x19, #0xc8
+00009598 str       x0, [x29, #0x30]
+0000959c bl        #0x6a90 ; pthread_mutex_lock
+000095a0 add       x0, x19, #0x38
+000095a4 str       x0, [x20, #-8]!
+000095a8 bl        #0x6a90 ; pthread_mutex_lock
+000095ac str       xzr, [x19, #0x28]
+000095b0 ldr       x0, [x19, #8]
+000095b4 strb      wzr, [x19, #0x30]
+000095b8 stp       x0, x0, [x19, #0x18]
+000095bc mov       x0, x20
+000095c0 strb      wzr, [x19, #0x31]
+000095c4 bl        #0x956c
+000095c8 add       x0, x29, #0x30
+000095cc bl        #0x956c
+000095d0 add       x0, x29, #0x28
+000095d4 bl        #0x956c
+000095d8 ldp       x19, x20, [sp, #0x10]
+000095dc ldp       x29, x30, [sp], #0x40
+000095e0 ret       

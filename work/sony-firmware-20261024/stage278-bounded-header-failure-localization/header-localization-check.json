@@ -1,0 +1,185 @@
+{
+  "status": "FULL_CONTROLLER_V6_BOUNDED_HEADER_LOCALIZATION_PASS",
+  "checks": 11,
+  "rows": [
+    {
+      "case": "hdr-short-count",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 2,
+        "name": "short_count",
+        "mask": 0,
+        "fields": []
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-size-mismatch",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 3,
+        "name": "size_mismatch",
+        "mask": 1,
+        "fields": [
+          "size"
+        ]
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-pfunc-mismatch",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 4,
+        "name": "pfunc_mismatch",
+        "mask": 2,
+        "fields": [
+          "pFunc"
+        ]
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-sequence-mismatch",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 5,
+        "name": "sequence_mismatch",
+        "mask": 4,
+        "fields": [
+          "sequence"
+        ]
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-version-mismatch",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 6,
+        "name": "version_mismatch",
+        "mask": 8,
+        "fields": [
+          "version"
+        ]
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-micon-mismatch",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 7,
+        "name": "micon_mismatch",
+        "mask": 16,
+        "fields": [
+          "miconType"
+        ]
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-offset-mismatch",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 8,
+        "name": "offset_mismatch",
+        "mask": 32,
+        "fields": [
+          "offsetType"
+        ]
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-response-mismatch",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 9,
+        "name": "response_mismatch",
+        "mask": 64,
+        "fields": [
+          "response"
+        ]
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-multiple-mismatch",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 10,
+        "name": "multiple_mismatch",
+        "mask": 73,
+        "fields": [
+          "size",
+          "version",
+          "response"
+        ]
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "hdr-op5-io-error",
+      "status": "PASS",
+      "read0_header": {
+        "reason": 0,
+        "name": "not_evaluated",
+        "mask": 0,
+        "fields": []
+      },
+      "frames": 74,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "no_body_read_or_STOP_after_header_reject": true,
+      "raw_header_or_HASP_bytes_exported": false,
+      "artificial_device_and_cache": true
+    },
+    {
+      "case": "saved-frame-and-shape-header-forgeries-denied",
+      "status": "PASS",
+      "variants": 15,
+      "live_origin_recreated": false
+    }
+  ],
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_root_or_USB_operations": 0,
+  "raw_header_or_HASP_or_auth_bytes_exported": false,
+  "whole_real_camera_flow_proven": false
+}

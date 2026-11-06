@@ -1,0 +1,21 @@
+{
+  "references": [
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/sys/un.h",
+      "use": "LOCAL_PEERPID/SOL_LOCAL definition and104-byte sockaddr path; checked against local build SDK"
+    },
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/uipc_syscalls.c",
+      "use": "control copyout truncation and sockargs MCLBYTES bound; web read only"
+    },
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/uipc_usrreq.c",
+      "use": "512 FD control bound/externalization before user control copyout; downloaded main is reference, not proof of exact running-kernel source identity",
+      "local_sha256": "c34d28100931762957c2cb2f3b7a2bef5fe078e4d9c1dca1c494345cbec0e12c"
+    }
+  ],
+  "host_version": "27.2",
+  "kernel": "27.2.0",
+  "SDK": "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+  "new_device_operations": 0
+}

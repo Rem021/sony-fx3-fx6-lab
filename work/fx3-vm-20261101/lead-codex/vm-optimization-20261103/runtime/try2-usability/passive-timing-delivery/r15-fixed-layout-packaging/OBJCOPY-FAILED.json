@@ -1,0 +1,16 @@
+{
+  "state": "incomplete",
+  "command": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "objcopy",
+    "--strip-debug",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-v14-n1.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/samples/fx3-ui-gate-v14-n1-strip-debug.so"
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "error: unimplemented\n",
+  "output_bytes": 0,
+  "source_proof": "toolchain lib/compiler/objcopy.zig:197-207: ELF branch unconditionally fatal unimplemented",
+  "original_unchanged": true
+}

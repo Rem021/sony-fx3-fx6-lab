@@ -1,0 +1,31 @@
+{
+  "attempts": [
+    {
+      "status": "click_invoked",
+      "reservation_id": "937063f4-657e-4b69-9b26-c7f2d9000963",
+      "key": 427,
+      "host_ns": 419420680882541,
+      "attempt_id": "c75de8c6-2738-41ff-998b-a35c8cce19da",
+      "step": 1
+    },
+    {
+      "status": "click_invoked",
+      "reservation_id": "ae66dd30-9e57-45bf-9134-1e0bdf27d292",
+      "key": 427,
+      "host_ns": 419437954362208,
+      "attempt_id": "40490ef1-0ef4-4311-8785-a879c5bac42e",
+      "step": 1
+    }
+  ],
+  "recoveries": [
+    {
+      "step": 1,
+      "attempt_id": "c75de8c6-2738-41ff-998b-a35c8cce19da",
+      "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f",
+      "status": "cancelled_unqueued_alarm_only",
+      "host_ns": 419428976853458,
+      "alarm_cleanup_status": "confirmed_cancelled",
+      "current_screenshot_status": "delivered_requires_separate_operator_review"
+    }
+  ]
+}

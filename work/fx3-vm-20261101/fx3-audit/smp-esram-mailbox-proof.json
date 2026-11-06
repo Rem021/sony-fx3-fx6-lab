@@ -1,0 +1,48 @@
+{
+  "cxd900xx_smp_init": "file+0x426750",
+  "mailbox_base_literal": "0xfe005000",
+  "secondary_init_flags_literal": "0xfe00501c",
+  "secondary_init_instructions": [
+    {
+      "offset": "0x426790",
+      "mnemonic": "ldr",
+      "operands": "x5, #0x4267b8"
+    },
+    {
+      "offset": "0x426794",
+      "mnemonic": "mrs",
+      "operands": "x0, mpidr_el1"
+    },
+    {
+      "offset": "0x426798",
+      "mnemonic": "ands",
+      "operands": "x0, x0, #0xff"
+    },
+    {
+      "offset": "0x42679c",
+      "mnemonic": "mov",
+      "operands": "w1, #0xff"
+    },
+    {
+      "offset": "0x4267a0",
+      "mnemonic": "strb",
+      "operands": "w1, [x5, x0]"
+    },
+    {
+      "offset": "0x4267a4",
+      "mnemonic": "orr",
+      "operands": "x30, x30, #0x400000000"
+    },
+    {
+      "offset": "0x4267a8",
+      "mnemonic": "ret",
+      "operands": ""
+    },
+    {
+      "offset": "0x4267ac",
+      "mnemonic": "udf",
+      "operands": "#0"
+    }
+  ],
+  "scope": "Original code treats this region as SMP entry pointer and per-core flags in the independently defined ESRAM window; no observed hardware-controller protocol at these slots. Minimal QEMU model may back only page [0xfe005000,0xfe006000) as RAM for this prefix; this is not physical-hardware verification."
+}

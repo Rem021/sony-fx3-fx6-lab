@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-22-key-030.png using image tool. Shooting>Media 6/59 orange focus; Format/Rec Media/Recover Image DB visible Next: DOWN to File category for read-only browse; do not invoke Format or Recovery

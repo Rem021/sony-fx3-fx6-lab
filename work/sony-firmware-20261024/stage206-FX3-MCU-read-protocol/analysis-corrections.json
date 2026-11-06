@@ -1,0 +1,14 @@
+{
+  "corrections": [
+    "The source is the bundled7.02 MCU component, not current-body firmware/ROM identity or an observed target execution state.",
+    "The0x16 read arm is established only inside InitCom; availability in other power/runtime states was not inferred.",
+    "CRC-valid commands call common MMIO-writing code before dispatch. A memory-read arm is not proof that the whole transaction has no peripheral side effects.",
+    "Hardware-watchdog refresh is an interpretation of the unlock/clear and adjacent configuration pattern; virtual counter reload and physical timing were not proved.",
+    "Header+CRC matching excludes many unrelated replies but does not prove freshness for repeated identical query headers.",
+    "An initial format-string check read one byte beyond the NUL into adjacent data and failed before extracting proof pins. The check now bounds the read and splits at the first NUL; actual format is percent-d.",
+    "The initial zero-function fragment did not cover the shared bulk loop. The selected proof now pins the whole3867E..38784 shared fill region; old locator/fragment retained as exploratory.",
+    "The official current helper PLT was selected by label. Historical helpers have different symbol addresses and were not used to name current calls."
+  ],
+  "source_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

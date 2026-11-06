@@ -1,0 +1,617 @@
+{
+  "schema": "fx3-apo-existing-runs-differential-v1",
+  "clock": "guest CLOCK_MONOTONIC only for step and power ns; serial-order neighboring polls are an approximation, not strict event timestamps",
+  "runs": {
+    "continuous27": {
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef",
+      "serial_sha256": "143421ac90476b9032f5de4331df48c046d7abeab4e72c590198b4283b737e6f",
+      "serial_bytes": 80977079,
+      "candidate_sha256": "d53363f076f5d0129c68e7489d407b0baab300bec62f487decf96a73e29d90a6",
+      "steps": [
+        {
+          "step": 1,
+          "key": "0x1ab",
+          "observed_page": "English standby, orange NO CARD prompt, lower status icons; no dialog",
+          "reason": "实际看过同SHA的NO CARD原生待机PNG，只有底栏与NO CARD提示，无弹窗；MENU进入Setup读取原生设置，不修改值。",
+          "guest_down_ns": 125051626000,
+          "guest_up_ns": 125180039008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-01-key-1ab.png",
+          "after_png_sha256": "168a2787c26a0ec885b6ae816404991f6dcce5e770a0f904d66d6000229a265e",
+          "after_frame_sequence": 1106,
+          "after_nonuniform": true
+        },
+        {
+          "step": 2,
+          "key": "0x15",
+          "observed_page": "Setup > Area/Date, orange focus on Area/Date/Time Setting, English row",
+          "reason": "看图确认Setup>Area/Date列表，Area/Date/Time Setting橙色焦点；按LEFT回到左侧Setup页签列表，以寻找Power Setting Option，不选择/修改当前项目。",
+          "guest_down_ns": 167745722000,
+          "guest_up_ns": 167852262000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-02-key-015.png",
+          "after_png_sha256": "d2ead30b5ce54a2548eb9076db9ecc11b8dedd7fc8ef08658a01a81f6a957d5d",
+          "after_frame_sequence": 1797,
+          "after_nonuniform": true
+        },
+        {
+          "step": 3,
+          "key": "0x30",
+          "observed_page": "Setup left category Area/Date orange focus; Reset/Save Settings below",
+          "reason": "实际看图确认左侧Area/Date橙焦点，下一类Reset/Save Settings可通过DOWN浏览；只移动焦点不执行重置或保存。",
+          "guest_down_ns": 193492716000,
+          "guest_up_ns": 193606716000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-03-key-030.png",
+          "after_png_sha256": "3d071654943844a37e1651eb74b2919150d885664a6bbde5ed23407e3f970e17",
+          "after_frame_sequence": 2218,
+          "after_nonuniform": true
+        },
+        {
+          "step": 4,
+          "key": "0x30",
+          "observed_page": "Setup Reset/Save Settings category, Setting Reset and Save/Load Settings listed",
+          "reason": "实际看图与第3键结果同PNG，Setup左侧Reset/Save Settings为当前类，右侧显示Setting Reset/Save Load；DOWN仅移动到Operation Customize继续寻找Power Setting Option，不进入重置。",
+          "guest_down_ns": 229230314000,
+          "guest_up_ns": 229367941008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-04-key-030.png",
+          "after_png_sha256": "4f53b2e7e66a6211134ac1b5470a614407a7a42a16082b3be621e13a0aa2bcf8",
+          "after_frame_sequence": 2864,
+          "after_nonuniform": true
+        },
+        {
+          "step": 5,
+          "key": "0x30",
+          "observed_page": "Setup>Operation Customize; orange category focus, Custom Key/Dial items visible",
+          "reason": "DOWN to Dial Customize to continue checking Setup categories for Power Setting Option; no item activated or edited",
+          "guest_down_ns": 272589115008,
+          "guest_up_ns": 272704607008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-05-key-030.png",
+          "after_png_sha256": "468d6dff00e29aae9bf498e76400ffec3379d1db9431290f6845456f2488da46",
+          "after_frame_sequence": 3609,
+          "after_nonuniform": true
+        },
+        {
+          "step": 6,
+          "key": "0x30",
+          "observed_page": "Setup>Dial Customize 49/59, orange focus; dial settings listed",
+          "reason": "DOWN to Touch Operation to continue browsing Setup categories without changing values",
+          "guest_down_ns": 285742178000,
+          "guest_up_ns": 285863941008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-06-key-030.png",
+          "after_png_sha256": "3e70df0b1e49e56d0f6299242c3bb09d4443084eaa3544ec4b66c9803985758b",
+          "after_frame_sequence": 3814,
+          "after_nonuniform": true
+        },
+        {
+          "step": 7,
+          "key": "0x30",
+          "observed_page": "Setup>Touch Operation 50/59, orange focus; touch settings listed",
+          "reason": "DOWN to Monitor category; continue seeking original Power Setting Option without edits",
+          "guest_down_ns": 297519828000,
+          "guest_up_ns": 297642439008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-07-key-030.png",
+          "after_png_sha256": "da006693eb672d64cdec05654e0d77b091417516324e0b36759a24d65ec9fbc3",
+          "after_frame_sequence": 4001,
+          "after_nonuniform": true
+        },
+        {
+          "step": 8,
+          "key": "0x30",
+          "observed_page": "Setup>Monitor 51/59, orange focus; brightness/display quality listed",
+          "reason": "DOWN to Display Option; browse original Setup categories without selecting values",
+          "guest_down_ns": 308615979008,
+          "guest_up_ns": 308784459008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-08-key-030.png",
+          "after_png_sha256": "bd7fae0a5e380ceca4f2b7749f95ab721f7e291e3d539c41828ef358cf1937df",
+          "after_frame_sequence": 4174,
+          "after_nonuniform": true
+        },
+        {
+          "step": 9,
+          "key": "0x30",
+          "observed_page": "Setup>Display Option 52/59 orange category focus; Remain Shoot Display and Auto Review also visible",
+          "reason": "DOWN to next Setup category while leaving display values untouched; seek Power Setting Option",
+          "guest_down_ns": 332282879008,
+          "guest_up_ns": 332392612000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-09-key-030.png",
+          "after_png_sha256": "b576d8d77df09c226bef0e2e78bc48ed7fb5ff5d6c676799f61d76b6d3cdb321",
+          "after_frame_sequence": 4571,
+          "after_nonuniform": true
+        },
+        {
+          "step": 10,
+          "key": "0x1af",
+          "observed_page": "Setup>Power Setting Option 54/59, orange left category; Power Save Start Time and Auto Power OFF Temp. visible",
+          "reason": "RIGHT moves focus to Power Save Start Time for read-only inspection; no value selected or modified",
+          "guest_down_ns": 362792325008,
+          "guest_up_ns": 362906327008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-10-key-1af.png",
+          "after_png_sha256": "a46330f751d0d93fd15f67bfa8f8378652d08e2eb6312c4828ae4e226996cdcf",
+          "after_frame_sequence": 5029,
+          "after_nonuniform": true
+        },
+        {
+          "step": 11,
+          "key": "0x1ab",
+          "observed_page": "Setup>Power Setting Option; Power Save Start Time shows 5 Min, orange focus; Auto Power OFF Temp. shows Standard",
+          "reason": "MENU closes the native menu after read-only inspection; no setting value is changed",
+          "guest_down_ns": 390384356000,
+          "guest_up_ns": 390503843008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-11-key-1ab.png",
+          "after_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "after_frame_sequence": 5456,
+          "after_nonuniform": true
+        },
+        {
+          "step": 12,
+          "key": "0x1ab",
+          "observed_page": "English standby after native MENU close; NO CARD prompt and status icons visible",
+          "reason": "MENU reopens native menu for normal longer-session navigation without settings modification",
+          "guest_down_ns": 433123623008,
+          "guest_up_ns": 433251914000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-12-key-1ab.png",
+          "after_png_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+          "after_frame_sequence": 6018,
+          "after_nonuniform": true
+        },
+        {
+          "step": 13,
+          "key": "0x15",
+          "observed_page": "Reopened Setup>Power Setting Option, Power Save Start Time still 5 Min, orange right row; no changes",
+          "reason": "LEFT moves to Setup category list for browsing other settings pages; no value opened",
+          "guest_down_ns": 461452201008,
+          "guest_up_ns": 461599402000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-13-key-015.png",
+          "after_png_sha256": "5a1c64425a54beb425516bed32d47575dcbf607c2e1b2ab5b8383d35b1a5de85",
+          "after_frame_sequence": 6445,
+          "after_nonuniform": true
+        },
+        {
+          "step": 14,
+          "key": "0x30",
+          "observed_page": "Setup left Power Setting Option orange focus; Sound Option next, no selection changed",
+          "reason": "DOWN to Sound Option for another distinct Setup page",
+          "guest_down_ns": 489673468000,
+          "guest_up_ns": 489852847008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-14-key-030.png",
+          "after_png_sha256": "9b2f0720d32937cbcac24924de1f4140f71f849baa5a55a280b82fd20e79b716",
+          "after_frame_sequence": 6843,
+          "after_nonuniform": true
+        },
+        {
+          "step": 15,
+          "key": "0x30",
+          "observed_page": "Setup>Sound Option 55/59 orange category focus; volume/audio items listed",
+          "reason": "DOWN to USB category for read-only navigation; no USB/device operation or setting activated",
+          "guest_down_ns": 503813413008,
+          "guest_up_ns": 503927623008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-15-key-030.png",
+          "after_png_sha256": "6efc7add0e1742c52d3187c513dd6dd7e834eda46d6bcd2032582e97a3f8365d",
+          "after_frame_sequence": 7079,
+          "after_nonuniform": true
+        },
+        {
+          "step": 16,
+          "key": "0x30",
+          "observed_page": "Setup>USB 56/59, orange category focus; connection/LUN/power supply options listed",
+          "reason": "DOWN to External Output category; no USB selection or physical-device operation",
+          "guest_down_ns": 515837585008,
+          "guest_up_ns": 515955591008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-16-key-030.png",
+          "after_png_sha256": "0eec6fecd659da83390d5db4557cf98c9946bddbd98a230e5cd632af1f207235",
+          "after_frame_sequence": 7268,
+          "after_nonuniform": true
+        },
+        {
+          "step": 17,
+          "key": "0x30",
+          "observed_page": "Setup>External Output 57/59 orange category focus; HDMI options visible",
+          "reason": "DOWN to Setup Option; browse distinct page without selecting HDMI settings",
+          "guest_down_ns": 528929548000,
+          "guest_up_ns": 529046533008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-17-key-030.png",
+          "after_png_sha256": "d7b4f550780996b35b204e9dc890a3ffa29b6d78cafb61e95c5b5e8c477673ad",
+          "after_frame_sequence": 7485,
+          "after_nonuniform": true
+        },
+        {
+          "step": 18,
+          "key": "0x30",
+          "observed_page": "Setup>Setup Option 58/59 orange category focus; Video Light/Fan/IR/Pixel items visible",
+          "reason": "DOWN to last Setup category for read-only page navigation; no cleaning or remote control action",
+          "guest_down_ns": 542480690000,
+          "guest_up_ns": 542601178000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-18-key-030.png",
+          "after_png_sha256": "37b2af6c45c33927ac42ab005ff3677b08be2833445a7eab5acc6c5a42160f8f",
+          "after_frame_sequence": 7705,
+          "after_nonuniform": true
+        },
+        {
+          "step": 19,
+          "key": "0x30",
+          "observed_page": "My Menu page 1/59, orange My Menu Setting category; add/sort/delete items listed but not entered",
+          "reason": "DOWN to next menu category for read-only browse; no deletion or My Menu mutation",
+          "guest_down_ns": 571107550000,
+          "guest_up_ns": 571227800000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-19-key-030.png",
+          "after_png_sha256": "9003bc1019da436ff75b3309783a8b156faa2249fbf23fd3d63cf3e758fb6f20",
+          "after_frame_sequence": 8100,
+          "after_nonuniform": true
+        },
+        {
+          "step": 20,
+          "key": "0x30",
+          "observed_page": "Main1 2/59 orange focus, Main2 visible below; 59.94p ISO100 AWB PP11 tiles",
+          "reason": "DOWN to Main2 for read-only menu browse; no tile selected",
+          "guest_down_ns": 602756923008,
+          "guest_up_ns": 602913244000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-20-key-030.png",
+          "after_png_sha256": "c9718dc5fe901ca18b0fcc44c666b88992be29b9a4f2b1954a225acb9fca2502",
+          "after_frame_sequence": 8512,
+          "after_nonuniform": true
+        },
+        {
+          "step": 21,
+          "key": "0x30",
+          "observed_page": "Main2 3/59 orange focus, Fixed/Log OFF/AF-C tiles; NO CARD alternates",
+          "reason": "已看过Main2两种同页原生PNG（NO CARD闪现/隐藏）；当前图与其中一张逐字节同SHA，DOWN浏览下一个Shooting类别，不修改任何参数。",
+          "guest_down_ns": 653734311008,
+          "guest_up_ns": 653862870000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-21-key-030.png",
+          "after_png_sha256": "4f18b6fa8301cd70626f849572506304c6e1f67244e209a501d83e4d9ee8a99b",
+          "after_frame_sequence": 8662,
+          "after_nonuniform": true
+        },
+        {
+          "step": 22,
+          "key": "0x30",
+          "observed_page": "Shooting>Image Quality/Rec 4/59 orange category; File Format/Movie Settings/FPS listed",
+          "reason": "DOWN to Media for distinct Shooting page read-only navigation; no recording format or parameter selected",
+          "guest_down_ns": 680860696000,
+          "guest_up_ns": 680986737008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-22-key-030.png",
+          "after_png_sha256": "f75fdff815a2f94dd00ce76f2aa804510dbb43ed1a1c3a64e88fb028b9ca302f",
+          "after_frame_sequence": 8734,
+          "after_nonuniform": true
+        },
+        {
+          "step": 23,
+          "key": "0x30",
+          "observed_page": "Shooting>Media 6/59 orange focus; Format/Rec Media/Recover Image DB visible",
+          "reason": "DOWN to File category for read-only browse; do not invoke Format or Recovery",
+          "guest_down_ns": 693739717008,
+          "guest_up_ns": 693850798000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-23-key-030.png",
+          "after_png_sha256": "5271d5ebc4db8dab1a785274492b8d725804545e4c6ae2b8678935c1e230e112",
+          "after_frame_sequence": 8881,
+          "after_nonuniform": true
+        },
+        {
+          "step": 24,
+          "key": "0x30",
+          "observed_page": "Shooting>File 7/59 orange focus; Write Serial Number and File Settings listed",
+          "reason": "DOWN to Shooting Mode category; do not enter serial-number or file settings",
+          "guest_down_ns": 707754720000,
+          "guest_up_ns": 707868304000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-24-key-030.png",
+          "after_png_sha256": "481e00ce4b1fb81a155b1d1f74b98910340aa0a4b44329a75216d11231d10629",
+          "after_frame_sequence": 9060,
+          "after_nonuniform": true
+        },
+        {
+          "step": 25,
+          "key": "0x30",
+          "observed_page": "Shooting>Shooting Mode 8/59 orange category focus; exposure and memory items visible",
+          "reason": "DOWN to Shutter/Silent category for read-only browsing; no mode or memory change",
+          "guest_down_ns": 727647652000,
+          "guest_up_ns": 727770645008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-25-key-030.png",
+          "after_png_sha256": "98ee67976f3397b5607c7d99befb8be3c7182357a784e625f03e43057e2c090f",
+          "after_frame_sequence": 9310,
+          "after_nonuniform": true
+        },
+        {
+          "step": 26,
+          "key": "0x30",
+          "observed_page": "Shooting>Shutter/Silent 9/59 orange category; Silent Mode and Release w/o Lens listed",
+          "reason": "DOWN to Audio Recording for another distinct page; no shutter or lens setting selected",
+          "guest_down_ns": 740255998000,
+          "guest_up_ns": 740385719008,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-26-key-030.png",
+          "after_png_sha256": "7465f81fc5862f17a45c046f8ad246fb638c0cbab1912f226ae9c45b26aa6097",
+          "after_frame_sequence": 9504,
+          "after_nonuniform": true
+        },
+        {
+          "step": 27,
+          "key": "0x30",
+          "observed_page": "Shooting>Audio Recording 10/59 orange category; audio recording/level/out timing listed",
+          "reason": "DOWN to TC/UB category; no audio setting selected",
+          "guest_down_ns": 751773441008,
+          "guest_up_ns": 751888634000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-27-key-030.png",
+          "after_png_sha256": "8c2819da0cce7807d9425789b88e1bdd829da6f6d3d87e534284419489fbba2c",
+          "after_frame_sequence": 9673,
+          "after_nonuniform": true
+        }
+      ],
+      "original_app_callback32_key_counts": {
+        "0x15": 4,
+        "0x30": 42,
+        "0x1ab": 6,
+        "0x1af": 2
+      },
+      "special_app_to_boot20": [
+        {
+          "serial_byte": 17756124,
+          "after_key_up_step": 2,
+          "before_key_down_step": 3,
+          "neighboring_poll_guest_ns": [
+            168868256000,
+            169870852000
+          ],
+          "body20_hex": "0100150001000000050000000000000000000000",
+          "source": "0x830128",
+          "destination": "0x5503e0",
+          "original_app_call_site": "appFw.so+0x16f12ec"
+        },
+        {
+          "serial_byte": 49728876,
+          "after_key_up_step": 13,
+          "before_key_down_step": 14,
+          "neighboring_poll_guest_ns": [
+            462609430000,
+            463619256000
+          ],
+          "body20_hex": "0100150001000000050000000000000000000000",
+          "source": "0x830128",
+          "destination": "0x5503e0",
+          "original_app_call_site": "appFw.so+0x16f12ec"
+        }
+      ],
+      "power_first_notify_guest_ns": 763759481008,
+      "last_key_up_to_power_guest_s": 11.870847008,
+      "shutdown": {
+        "source": "native_model_power_off_observed: FX3_BOOT_QUEUE_SEND tid=378 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1",
+        "stop_cause": "health_failure",
+        "native_power_off": true,
+        "native_shutdown_screen": true,
+        "host_duration_s": 770.1333617089549,
+        "host_limit_s": 1800,
+        "qemu_exit": 0,
+        "reaped": true,
+        "pid_absent": true,
+        "inputs_unchanged": true,
+        "api16_restored": true,
+        "locks": [
+          {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+            "free_at_close": true
+          },
+          {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+            "free_at_close": true
+          }
+        ],
+        "health_pass": false,
+        "render_pass": true
+      },
+      "mss_original_path_points": 0,
+      "mss_ring_overflow": false
+    },
+    "twoMENU": {
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a",
+      "serial_sha256": "cab0891be83fa46d2f16096ba2d7f354609289357d21b5e2d70fde2f4d594ada",
+      "serial_bytes": 40898502,
+      "candidate_sha256": "6dd9fee185c4ea1a8859a70cca19a3af7f5c6d8d0280f849fc60afd21eba30b4",
+      "steps": [
+        {
+          "step": 1,
+          "key": "0x1ab",
+          "observed_page": "English standby, HD Fixed-59.94fps and icons visible",
+          "reason": "Open native MENU to correlate a meaningful user action with the original MSS sequence",
+          "guest_down_ns": 81945418000,
+          "guest_up_ns": 82054992000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/trial-step-01-key-1ab.png",
+          "after_png_sha256": "168a2787c26a0ec885b6ae816404991f6dcce5e770a0f904d66d6000229a265e",
+          "after_frame_sequence": 100,
+          "after_nonuniform": true
+        },
+        {
+          "step": 2,
+          "key": "0x1ab",
+          "observed_page": "Setup > Area/Date; English value visible; orange focus on Area/Date/Time Setting; MENU Close",
+          "reason": "Close menu by displayed native MENU action without changing any setting",
+          "guest_down_ns": 131663584992,
+          "guest_up_ns": 131782332000,
+          "native_receive_down_up": {
+            "1": 1,
+            "0": 1
+          },
+          "native_done_count": 1,
+          "after_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/trial-step-02-key-1ab.png",
+          "after_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "after_frame_sequence": 699,
+          "after_nonuniform": true
+        }
+      ],
+      "original_app_callback32_key_counts": {
+        "0x1ab": 4
+      },
+      "special_app_to_boot20": [],
+      "power_first_notify_guest_ns": 431981032992,
+      "last_key_up_to_power_guest_s": 300.198700992,
+      "shutdown": {
+        "source": "native_model_power_off_observed: FX3_BOOT_QUEUE_SEND tid=381 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1",
+        "stop_cause": "health_failure",
+        "native_power_off": true,
+        "native_shutdown_screen": true,
+        "host_duration_s": 437.7664160829736,
+        "host_limit_s": 1200,
+        "qemu_exit": 0,
+        "reaped": true,
+        "pid_absent": true,
+        "inputs_unchanged": true,
+        "api16_restored": true,
+        "locks": [
+          {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+            "free_at_close": true
+          },
+          {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+            "free_at_close": true
+          }
+        ],
+        "health_pass": false,
+        "render_pass": false
+      },
+      "mss_original_path_points": 8,
+      "mss_ring_overflow": false
+    }
+  },
+  "candidate_guest_intervals": {
+    "continuous27_step13_left_up_to_power_s": 302.160079008,
+    "continuous27_step27_down_up_to_power_s": 11.870847008,
+    "twoMENU_step2_menu_up_to_power_s": 300.198700992
+  },
+  "interpretation_guard": "special 20B message is a correlated app-to-boot event, not proven UPM consume or timer reset; no synthetic 0x00920204 instruction follows"
+}

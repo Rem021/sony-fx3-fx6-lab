@@ -1,0 +1,37 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b3d78 <_ZN3mpr14IntegEventInitEv>:
+   b3d78: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+   b3d7c: 910003fd     	mov	x29, sp
+   b3d80: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b3d84: d0001233     	adrp	x19, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b3d88: f0001234     	adrp	x20, 0x2fa000
+   b3d8c: f90013f5     	str	x21, [sp, #0x20]
+   b3d90: f946fe60     	ldr	x0, [x19, #0xdf8]
+   b3d94: 91002000     	add	x0, x0, #0x8
+   b3d98: 97ff2216     	bl	0x7c5f0 <pthread_mutex_lock@plt>
+   b3d9c: f9408e94     	ldr	x20, [x20, #0x118]
+   b3da0: 39400280     	ldrb	w0, [x20]
+   b3da4: 350001c0     	cbnz	w0, 0xb3ddc <_ZN3mpr14IntegEventInitEv+0x64>
+   b3da8: 9100e3b5     	add	x21, x29, #0x38
+   b3dac: 52800ec0     	mov	w0, #0x76               // =118
+   b3db0: aa1503e1     	mov	x1, x21
+   b3db4: 97ff3663     	bl	0x81740 <_ZN3mpr10ThreadInfo13GetThreadInfoEiR18__osal_thread_info@plt>
+   b3db8: f0001220     	adrp	x0, 0x2fa000
+   b3dbc: d0001221     	adrp	x1, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b3dc0: f9412800     	ldr	x0, [x0, #0x250]
+   b3dc4: f9475821     	ldr	x1, [x1, #0xeb0]
+   b3dc8: f90027a0     	str	x0, [x29, #0x48]
+   b3dcc: 52800020     	mov	w0, #0x1                // =1
+   b3dd0: 39000280     	strb	w0, [x20]
+   b3dd4: aa1503e0     	mov	x0, x21
+   b3dd8: 97ff2242     	bl	0x7c6e0 <osal_create_waitable_thread@plt>
+   b3ddc: f946fe60     	ldr	x0, [x19, #0xdf8]
+   b3de0: 97ff3444     	bl	0x80ef0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+   b3de4: f94013f5     	ldr	x21, [sp, #0x20]
+   b3de8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   b3dec: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+   b3df0: d65f03c0     	ret

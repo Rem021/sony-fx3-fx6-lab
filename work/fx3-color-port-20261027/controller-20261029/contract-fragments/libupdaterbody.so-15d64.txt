@@ -1,0 +1,120 @@
+00015d64 stp        x29, x30, [sp, #-0xb0]!
+00015d68 mov        x29, sp
+00015d6c stp        x19, x20, [sp, #0x10]
+00015d70 mov        x20, x0
+00015d74 ldr        x0, [x0, #0x10]
+00015d78 stp        x21, x22, [sp, #0x20]
+00015d7c mov        x21, x1
+00015d80 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015d84 mov        x19, x0
+00015d88 ldr        x0, [x20, #0x10]
+00015d8c bl         #0xfec0 ; Updater::StringHandler::GetSize
+00015d90 cbz        x0, #0x15da4
+00015d94 sub        x2, x0, #1
+00015d98 ldrb       w1, [x19, x2]
+00015d9c cmp        w1, #0x2f
+00015da0 b.eq       #0x15de0
+00015da4 strb       wzr, [x19, x0]
+00015da8 ldrb       w0, [x20, #0x28]
+00015dac cmp        w0, #0x44
+00015db0 b.ne       #0x15de8
+00015db4 ldr        x0, [x20]
+00015db8 mov        x1, x21
+00015dbc ldr        x2, [x0, #0x20]
+00015dc0 mov        x0, x20
+00015dc4 blr        x2
+00015dc8 uxtb       w1, w0
+00015dcc ldp        x19, x20, [sp, #0x10]
+00015dd0 mov        w0, w1
+00015dd4 ldp        x21, x22, [sp, #0x20]
+00015dd8 ldp        x29, x30, [sp], #0xb0
+00015ddc ret        
+00015de0 mov        x0, x2
+00015de4 b          #0x15d90
+00015de8 ldr        x0, [x20, #0x20]
+00015dec ldr        w21, [x0, #0x10]
+00015df0 mov        x0, x19
+00015df4 mov        w1, w21
+00015df8 bl         #0x10430 ; mkdir
+00015dfc mov        w1, #1
+00015e00 cbz        w0, #0x15dcc
+00015e04 add        x1, x29, #0x30
+00015e08 mov        x0, x19
+00015e0c bl         #0x1b4c8
+00015e10 cbnz       w0, #0x15ef4
+00015e14 ldr        w0, [x29, #0x40]
+00015e18 and        w1, w0, #0xf000
+00015e1c cmp        w1, #4, lsl #12
+00015e20 b.eq       #0x15ec0
+00015e24 mov        x0, x19
+00015e28 bl         #0xfff0 ; unlink
+00015e2c cbz        w0, #0x15e94
+00015e30 bl         #0x103d0 ; __errno_location
+00015e34 ldr        w4, [x0]
+00015e38 mov        w20, #5
+00015e3c mov        x5, x19
+00015e40 movk       w20, #3, lsl #16
+00015e44 mov        w3, #0xd9
+00015e48 adrp       x2, #0x1b000
+00015e4c adrp       x0, #0x1b000
+00015e50 add        x2, x2, #0xe2e ; literal 'NewFirmwareFile.cpp'
+00015e54 mov        w1, w20
+00015e58 add        x0, x0, #0xe11 ; literal 'UdrAPI,%d,%s:%d,""%d:(%s)""\n'
+00015e5c bl         #0x10930 ; printf
+00015e60 mov        x0, #0x10
+00015e64 bl         #0xfd80 ; __cxa_allocate_exception
+00015e68 str        w20, [x0, #8]
+00015e6c adrp       x1, #0x31000
+00015e70 adrp       x2, #0x31000
+00015e74 strb       wzr, [x0, #0xc]
+00015e78 ldr        x1, [x1, #0xe30]
+00015e7c ldr        x2, [x2, #0xe88]
+00015e80 add        x1, x1, #0x10
+00015e84 str        x1, [x0]
+00015e88 adrp       x1, #0x31000
+00015e8c ldr        x1, [x1, #0xfc0]
+00015e90 bl         #0x10700 ; __cxa_throw
+00015e94 mov        w1, w21
+00015e98 mov        x0, x19
+00015e9c bl         #0x10430 ; mkdir
+00015ea0 cbz        w0, #0x15f3c
+00015ea4 bl         #0x103d0 ; __errno_location
+00015ea8 mov        w20, #5
+00015eac movk       w20, #3, lsl #16
+00015eb0 mov        x5, x19
+00015eb4 mov        w3, #0xdc
+00015eb8 ldr        w4, [x0]
+00015ebc b          #0x15e48
+00015ec0 cmp        w21, w0
+00015ec4 b.eq       #0x15f3c
+00015ec8 mov        w1, w21
+00015ecc mov        x0, x19
+00015ed0 bl         #0x10290 ; chmod
+00015ed4 cbz        w0, #0x15f3c
+00015ed8 bl         #0x103d0 ; __errno_location
+00015edc mov        w20, #5
+00015ee0 movk       w20, #3, lsl #16
+00015ee4 mov        x5, x19
+00015ee8 mov        w3, #0xe0
+00015eec ldr        w4, [x0]
+00015ef0 b          #0x15e48
+00015ef4 bl         #0x103d0 ; __errno_location
+00015ef8 ldr        w2, [x0]
+00015efc mov        x22, x0
+00015f00 ldr        x0, [x20]
+00015f04 mov        x1, x19
+00015f08 ldr        x3, [x0, #0x30]
+00015f0c mov        x0, x20
+00015f10 blr        x3
+00015f14 mov        w1, w21
+00015f18 mov        x0, x19
+00015f1c bl         #0x10430 ; mkdir
+00015f20 cbz        w0, #0x15f3c
+00015f24 mov        w20, #5
+00015f28 mov        x5, x19
+00015f2c movk       w20, #3, lsl #16
+00015f30 mov        w3, #0xe6
+00015f34 ldr        w4, [x22]
+00015f38 b          #0x15e48
+00015f3c mov        w1, #1
+00015f40 b          #0x15dcc

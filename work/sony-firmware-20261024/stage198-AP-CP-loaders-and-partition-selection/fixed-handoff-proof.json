@@ -1,0 +1,156 @@
+{
+  "source_sha256": "314d372d0d2b9883c3b9dc04b40389edb3100e6d5ef529633cc427c3d0cab72e",
+  "source_bytes": 39184,
+  "tentative_base": "0xfe049000",
+  "base_not_runtime_verified": true,
+  "offset_bound_proof_does_not_require_measured_base": true,
+  "raw_BL_target_offset": "0x41bc",
+  "raw_tail_B_target_offset": "0x3ca8",
+  "fixed_handoff_target": "0x108000",
+  "ELR_EL3_source_register": "x0",
+  "x0_no_write_in_target_leaf": true,
+  "SCR_EL3": "0x30",
+  "SCR_EL3_RW_bit": 0,
+  "SPSR_EL3": "0x13",
+  "SPSR_mode_bits": "0b10011",
+  "interpretation": "AArch32 Supervisor-mode handoff candidate; matches current cpapp-b config, not a proven AP p1/p3 selector",
+  "cpapp_b_config_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/pformat_config.txt",
+  "cpapp_b_config_load": "0x108000",
+  "historical2_05_AP_kernel_address": "0x400080000",
+  "historical_not_current_body": true,
+  "selected_original_ranges": [
+    {
+      "label": "spi-handoff-caller",
+      "start_offset": "0x5a28",
+      "end_offset_exclusive": "0x5ac8",
+      "bytes": 160,
+      "sha256": "2a895f70177a90e6bb15338f794ec7d4b4eeb2e2c89fb6f8028df275bd4edb31",
+      "instructions": 40
+    },
+    {
+      "label": "spi-handoff-tail-stub",
+      "start_offset": "0x41bc",
+      "end_offset_exclusive": "0x41c0",
+      "bytes": 4,
+      "sha256": "347cc599410b56ca5f34f6575c0d69f01a2bd09422f3f3f67ab857c402f81250",
+      "instructions": 1
+    },
+    {
+      "label": "spi-handoff-eret-leaf",
+      "start_offset": "0x3ca8",
+      "end_offset_exclusive": "0x3cdc",
+      "bytes": 52,
+      "sha256": "d2e225c9515cf0a4324702bece5e51396ce0baef01eb6f61d755d4a4c56ec0fb",
+      "instructions": 13
+    },
+    {
+      "label": "spi-startup-base-clues",
+      "start_offset": "0x0",
+      "end_offset_exclusive": "0x100",
+      "bytes": 256,
+      "sha256": "6e71369aabca8b806b4565e4908fdc8e2901a91081f6c42966c122c0b27a8599",
+      "instructions": 64
+    }
+  ],
+  "on_sequence_table": [
+    {
+      "file_offset": "0x9748",
+      "absolute_target": "0xfe04ce08",
+      "flags": "0x0",
+      "name": "CM:ldr_common_",
+      "target_offset_if_base_correct": "0x3e08"
+    },
+    {
+      "file_offset": "0x9768",
+      "absolute_target": "0xfe04d0b0",
+      "flags": "0x0",
+      "name": "Load LBkup",
+      "target_offset_if_base_correct": "0x40b0"
+    },
+    {
+      "file_offset": "0x9788",
+      "absolute_target": "0xfe04ccdc",
+      "flags": "0x8000",
+      "name": "Init DbgLv",
+      "target_offset_if_base_correct": "0x3cdc"
+    },
+    {
+      "file_offset": "0x97a8",
+      "absolute_target": "0xfe04ceac",
+      "flags": "0x0",
+      "name": "Disp Ldr ver",
+      "target_offset_if_base_correct": "0x3eac"
+    },
+    {
+      "file_offset": "0x97c8",
+      "absolute_target": "0xfe04cfcc",
+      "flags": "0x0",
+      "name": "CM:PCIe Setup",
+      "target_offset_if_base_correct": "0x3fcc"
+    },
+    {
+      "file_offset": "0x97e8",
+      "absolute_target": "0xfe04ce44",
+      "flags": "0x0",
+      "name": "CM:ddr_wake",
+      "target_offset_if_base_correct": "0x3e44"
+    },
+    {
+      "file_offset": "0x9808",
+      "absolute_target": "0xfe04cedc",
+      "flags": "0x0",
+      "name": "CM:NOR Init",
+      "target_offset_if_base_correct": "0x3edc"
+    },
+    {
+      "file_offset": "0x9828",
+      "absolute_target": "0xfe04cf0c",
+      "flags": "0x0",
+      "name": "PCIe Clear Sig",
+      "target_offset_if_base_correct": "0x3f0c"
+    },
+    {
+      "file_offset": "0x9848",
+      "absolute_target": "0xfe04cf28",
+      "flags": "0x1",
+      "name": "PCIE sns state",
+      "target_offset_if_base_correct": "0x3f28"
+    },
+    {
+      "file_offset": "0x9868",
+      "absolute_target": "0xfe04cfec",
+      "flags": "0x0",
+      "name": "CM:EP Set STBY",
+      "target_offset_if_base_correct": "0x3fec"
+    },
+    {
+      "file_offset": "0x9888",
+      "absolute_target": "0xfe04e7f0",
+      "flags": "0x8000",
+      "name": "Cpy TRNG data",
+      "target_offset_if_base_correct": "0x57f0"
+    },
+    {
+      "file_offset": "0x98a8",
+      "absolute_target": "0xfe04d034",
+      "flags": "0x1",
+      "name": "CM:wait com fin",
+      "target_offset_if_base_correct": "0x4034"
+    },
+    {
+      "file_offset": "0x98c8",
+      "absolute_target": "0x0",
+      "flags": "0x8000",
+      "name": "end on seq tbl",
+      "target_offset_if_base_correct": "-0xfe049000"
+    }
+  ],
+  "callee_normal_return_assumptions": [
+    "preceding log/sequence/cache subcalls return normally to observed fixed handoff prefix"
+  ],
+  "device_boot_trace_or_controller_identity_verified": false,
+  "p1_p3_selection_proven": false,
+  "original_or_guest_execution": false,
+  "device_or_administrator_operations": 0,
+  "source_unchanged": true
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "UTC_request_start": "2026-11-05T03:48:00.77292288Z",
+    "duration_ms": 1.1709999802187085,
+    "endpoint": "start",
+    "request_body_text": "{\"request_id\":\"d3cea3e0-d910-4050-aa16-0932e595f25c\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"request_id\": \"d3cea3e0-d910-4050-aa16-0932e595f25c\", \"guest_spawned_by_http\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T03:51:01.115731968Z",
+    "duration_ms": 0.9090000231973827,
+    "endpoint": "stop",
+    "request_body_text": "{}",
+    "status": 202,
+    "response_body_text": "{\"stopping\": true}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T03:51:04.037437952Z",
+    "duration_ms": 0.5740000020414591,
+    "endpoint": "final-ack",
+    "request_body_text": "{\"receipt_id\":\"R_Mivz6MNALFORqhMrhOIw\"}",
+    "status": 200,
+    "response_body_text": "{\"acknowledged\": true}"
+  }
+]

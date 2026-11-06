@@ -1,0 +1,40 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx/compat",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-gpe-observe-v17-native-target.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v17-native-target.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-backend-v3.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v17-native-target.so"
+  ],
+  "exit": 0,
+  "source_sha256": "74cda5dffc870b3637cbe8f46134bcf087a11dbe936b8f53f1e6f0373aa6f9a8",
+  "included_sources": {
+    "fx3-gpe-resource-v3-target.inc": "25f79aa749e39f5b202aaed3c62e858f057d0b30d163f390dafb07f0c8f678c8",
+    "fx3-gpe-screen-v1.inc": "bc659bcbac7db0258ccb06a796d2a518c65e1db2222a38bab242c6c02bb991c6",
+    "fx3-gpe-backend-v3.c": "e5a46b178254c3e35848680e9d5ab04521a3515ac1168af1f8f11bcf1edfe5da",
+    "fx3-gpe-backend-v3.h": "cef891ddf2acd4f938f6fc3a90971b73f2daadce2c4a8ecf8632986a1668fb15"
+  },
+  "output_sha256": "a3c597873520ead5579a24e6bc69d7310182c7f8d70a3291351c3ac6acd64f11",
+  "contract": "msg_4c95916cbc49 existingnativeopen destination guard extension; no physical address allowlist",
+  "host_check": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93-native-target-host-check.json"
+}

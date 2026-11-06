@@ -1,0 +1,69 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b6844 <_ZN3mpr4InitERKNS_11initInParamE>:
+   b6d34: 528018e1     	mov	w1, #0xc7               // =199
+   b6d38: 52800540     	mov	w0, #0x2a               // =42
+   b6d3c: b9005fbf     	str	wzr, [x29, #0x5c]
+   b6d40: f90033bf     	str	xzr, [x29, #0x60]
+   b6d44: 97ff23ab     	bl	0x7fbf0 <osal_dynamic_id@plt>
+   b6d48: 34000080     	cbz	w0, 0xb6d58 <_ZN3mpr4InitERKNS_11initInParamE+0x514>
+   b6d4c: 52800018     	mov	w24, #0x0               // =0
+   b6d50: 52800015     	mov	w21, #0x0               // =0
+   b6d54: 14000024     	b	0xb6de4 <_ZN3mpr4InitERKNS_11initInParamE+0x5a0>
+   b6d58: 9101e3a0     	add	x0, x29, #0x78
+   b6d5c: b9405fa4     	ldr	w4, [x29, #0x5c]
+   b6d60: aa0003e3     	mov	x3, x0
+   b6d64: 528023a1     	mov	w1, #0x11d              // =285
+   b6d68: 2a0403e2     	mov	w2, w4
+   b6d6c: a9007c1f     	stp	xzr, xzr, [x0]
+   b6d70: 52800420     	mov	w0, #0x21               // =33
+   b6d74: 72a01280     	movk	w0, #0x94, lsl #16
+   b6d78: 97fffa2c     	bl	0xb5628 <_ZN3mpr11PowerOnMainEPv+0x30>
+   b6d7c: 35fffe80     	cbnz	w0, 0xb6d4c <_ZN3mpr4InitERKNS_11initInParamE+0x508>
+   b6d80: b9407fa0     	ldr	w0, [x29, #0x7c]
+   b6d84: 35fffe40     	cbnz	w0, 0xb6d4c <_ZN3mpr4InitERKNS_11initInParamE+0x508>
+   b6d88: 528049c0     	mov	w0, #0x24e              // =590
+   b6d8c: 910183a1     	add	x1, x29, #0x60
+   b6d90: 52800023     	mov	w3, #0x1                // =1
+   b6d94: 52800482     	mov	w2, #0x24               // =36
+   b6d98: 72a00960     	movk	w0, #0x4b, lsl #16
+   b6d9c: 97ff1d6d     	bl	0x7e350 <osal_valloc_msg_wait@plt>
+   b6da0: 35fffd60     	cbnz	w0, 0xb6d4c <_ZN3mpr4InitERKNS_11initInParamE+0x508>
+   b6da4: f94033b4     	ldr	x20, [x29, #0x60]
+   b6da8: 528000a0     	mov	w0, #0x5                // =5
+   b6dac: a9007e9f     	stp	xzr, xzr, [x20]
+   b6db0: a9017e9f     	stp	xzr, xzr, [x20, #0x10]
+   b6db4: b900229f     	str	wzr, [x20, #0x20]
+   b6db8: b9405fa1     	ldr	w1, [x29, #0x5c]
+   b6dbc: b9000280     	str	w0, [x20]
+   b6dc0: f94033a0     	ldr	x0, [x29, #0x60]
+   b6dc4: 97ff1493     	bl	0x7c010 <osal_set_msg_src@plt>
+   b6dc8: f94033a1     	ldr	x1, [x29, #0x60]
+   b6dcc: 528049c0     	mov	w0, #0x24e              // =590
+   b6dd0: 72a00960     	movk	w0, #0x4b, lsl #16
+   b6dd4: 97ff2e7b     	bl	0x827c0 <osal_snd_sync_msg@plt>
+   b6dd8: 35fffba0     	cbnz	w0, 0xb6d4c <_ZN3mpr4InitERKNS_11initInParamE+0x508>
+   b6ddc: 79400e95     	ldrh	w21, [x20, #0x6]
+   b6de0: 79401298     	ldrh	w24, [x20, #0x8]
+   b6de4: f94033a1     	ldr	x1, [x29, #0x60]
+   b6de8: b4000081     	cbz	x1, 0xb6df8 <_ZN3mpr4InitERKNS_11initInParamE+0x5b4>
+   b6dec: 528049c0     	mov	w0, #0x24e              // =590
+   b6df0: 72a00960     	movk	w0, #0x4b, lsl #16
+   b6df4: 97ff315f     	bl	0x83370 <osal_free_msg@plt>
+   b6df8: b9405fa4     	ldr	w4, [x29, #0x5c]
+   b6dfc: 340001a4     	cbz	w4, 0xb6e30 <_ZN3mpr4InitERKNS_11initInParamE+0x5ec>
+   b6e00: 9101e3a0     	add	x0, x29, #0x78
+   b6e04: 2a0403e2     	mov	w2, w4
+   b6e08: aa0003e3     	mov	x3, x0
+   b6e0c: 528023a1     	mov	w1, #0x11d              // =285
+   b6e10: a9007c1f     	stp	xzr, xzr, [x0]
+   b6e14: 52800440     	mov	w0, #0x22               // =34
+   b6e18: 72a01280     	movk	w0, #0x94, lsl #16
+   b6e1c: 97fffa03     	bl	0xb5628 <_ZN3mpr11PowerOnMainEPv+0x30>
+   b6e20: b9405fa2     	ldr	w2, [x29, #0x5c]
+   b6e24: 52800001     	mov	w1, #0x0                // =0
+   b6e28: 52800940     	mov	w0, #0x4a               // =74
+   b6e2c: 97ff2371     	bl	0x7fbf0 <osal_dynamic_id@plt>

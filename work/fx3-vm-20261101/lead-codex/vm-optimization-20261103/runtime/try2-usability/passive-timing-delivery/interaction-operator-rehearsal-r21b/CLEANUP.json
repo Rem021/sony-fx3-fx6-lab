@@ -1,0 +1,97 @@
+{
+  "fixture_pid": 34922,
+  "pid_alive": false,
+  "port": 52524,
+  "connect_ex": 61,
+  "port_closed": true,
+  "fixture_closed": {
+    "server_thread_alive": false,
+    "final_ack_seen": true,
+    "snapshot": {
+      "phase": "finished",
+      "message": "OFFLINE FIXTURE ended; no VM lifecycle claim",
+      "error": null,
+      "ready": false,
+      "busy": false,
+      "steps": 1,
+      "max_steps": 8,
+      "visual_state": "user_confirmed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "review_required": false,
+      "review_step": null,
+      "review_confirmation": {
+        "request_id": "d1d4d07e-f757-4070-8a56-ef85685f5591",
+        "step": 1,
+        "observed_sequence": 213,
+        "content_generation": 3,
+        "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "guest_input_written": false
+      },
+      "browser_ready": true,
+      "launch_request_id": "eaf767d2-d2fb-421f-a062-dc70cfb5de25",
+      "launch_status": "running",
+      "render_valid": true,
+      "black_after_ready_count": 0,
+      "frame": {
+        "sequence": 213,
+        "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "width": 640,
+        "height": 480,
+        "all_zero_pixels": false,
+        "content_generation": 3
+      },
+      "result": {
+        "scope": "offline simulation only",
+        "actual_guest_inputs": 0
+      },
+      "final_receipt_id": "upHPrYTSxtObDgWL2rM-Pg",
+      "remaining_seconds": 548,
+      "events": [
+        "01 · 用户确认已加载的当前画面；没有发送新的固件按键。"
+      ]
+    },
+    "key_rejections": {
+      "schema": "fx3-host-key-rejection-v1",
+      "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+      "capacity": 64,
+      "total": 1,
+      "truncated": 0,
+      "records": [
+        {
+          "host_monotonic_ns": 419936207896375,
+          "http_status": 409,
+          "reason": "frame_identity_or_render_invalid",
+          "failed_predicates": [
+            "sha_mismatch",
+            "generation_mismatch"
+          ],
+          "observed_sequence": 211,
+          "observed_cached": true,
+          "observed_png_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+          "observed_content_generation": 1,
+          "current_sequence": 212,
+          "current_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "current_content_generation": 2,
+          "render_valid": true,
+          "phase": "ready",
+          "ready": true,
+          "busy": false,
+          "pending_count": 0,
+          "review_required": false,
+          "steps": 0,
+          "stop_requested": false,
+          "error_present": false,
+          "request_id": "1ab761ff-1c75-485b-a24d-db9412ff4945"
+        }
+      ]
+    },
+    "key_calls": 2,
+    "actual_guest_inputs": 0,
+    "UTC": "2026-11-04T23:51:23.469673+00:00",
+    "host_ns": 419969001368458
+  },
+  "errors": [],
+  "UTC": "2026-11-04T23:51:23.505206+00:00",
+  "host_ns": 419969036880166
+}

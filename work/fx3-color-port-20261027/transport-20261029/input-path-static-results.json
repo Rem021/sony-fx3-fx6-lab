@@ -1,0 +1,1854 @@
+{
+  "files": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so",
+      "bytes": 105984,
+      "sha256": "2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7",
+      "identical_to_204": true,
+      "functions": [
+        {
+          "label": "Updater::DebugExBase::GetUpdaterMode() const",
+          "va": "0x11fc4",
+          "file_offset": 73668,
+          "bytes": 8,
+          "sha256": "04d63990d737e9b1c54f43eb89304f2b27873d85e0b71a0f00dd4109dbb6e578",
+          "calls": [],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-DebugExBase-GetUpdaterMode-11fc4.txt"
+        },
+        {
+          "label": "Updater::UpdaterManager::SwitchMode(UpdaterAPI::MODE_OPTION)",
+          "va": "0x101e8",
+          "file_offset": 66024,
+          "bytes": 784,
+          "sha256": "96cf304a9a8e504326bb9332467e46c562f310936ba7af400f80743a1e0b8f3b",
+          "calls": [
+            {
+              "site": "0x10228",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10234",
+              "target": "0xc450",
+              "label": "pthread_mutex_lock"
+            },
+            {
+              "site": "0x10258",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10260",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x10294",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x102a0",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x102b0",
+              "target": "0xcbe0",
+              "label": "Updater::UpdaterManager::getResultValue(Updater::ApiException const&)"
+            },
+            {
+              "site": "0x102e0",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x102e8",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x1031c",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x10340",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10348",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x1037c",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x103ac",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x103b4",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x103e8",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x10420",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10444",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10468",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x104a4",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x104b0",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x104c0",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            },
+            {
+              "site": "0x104c8",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UpdaterManager-SwitchMode-101e8.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::exec_write_firm()",
+          "va": "0x12ea8",
+          "file_offset": 77480,
+          "bytes": 1060,
+          "sha256": "9f2c620037105ed651f5dbfce89b58f0448be41226af104b78269e479167145c",
+          "calls": [
+            {
+              "site": "0x12eec",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x12f14",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x12f64",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x12f6c",
+              "target": "0xca50",
+              "label": "Updater::SignatureVerification::SignatureVerification()"
+            },
+            {
+              "site": "0x12fb4",
+              "target": "0xc540",
+              "label": "Updater::SignatureVerification::VerifySignature(Updater::verify_info_t, char const*)"
+            },
+            {
+              "site": "0x12fd8",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x12fe0",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x13014",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x13020",
+              "target": "0xc710",
+              "label": "Updater::SignatureVerification::~SignatureVerification()"
+            },
+            {
+              "site": "0x13028",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            },
+            {
+              "site": "0x13044",
+              "target": "0xc710",
+              "label": "Updater::SignatureVerification::~SignatureVerification()"
+            },
+            {
+              "site": "0x13090",
+              "target": "0xc9d0",
+              "label": "snprintf"
+            },
+            {
+              "site": "0x130bc",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x130d4",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x13108",
+              "target": "0xccb0",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x13118",
+              "target": "0xc9f0",
+              "label": "Updater::DecryptorModule::updateData()"
+            },
+            {
+              "site": "0x13160",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x13168",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x13198",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x131b0",
+              "target": "0xc3f0",
+              "label": "Updater::DecryptorModule::verifySum()"
+            },
+            {
+              "site": "0x131b8",
+              "target": "0xc960",
+              "label": "Updater::DecryptorModule::getHdEndFlag()"
+            },
+            {
+              "site": "0x131fc",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x13204",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x13228",
+              "target": "0xc570",
+              "label": "Updater::DecryptorModule::setData()"
+            },
+            {
+              "site": "0x13250",
+              "target": "0xccb0",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x13270",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x13290",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x132b8",
+              "target": "0xccb0",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-exec_write_firm-12ea8.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::UFPDecryptorModule()",
+          "va": "0x12c74",
+          "file_offset": 76916,
+          "bytes": 124,
+          "sha256": "b60f8bf2d5bd8de7a1ba4154eaf634dfe0dbe1c506952e391b5613b596c671cc",
+          "calls": [
+            {
+              "site": "0x12c84",
+              "target": "0xc730",
+              "label": "Updater::DecryptorModule::DecryptorModule()"
+            },
+            {
+              "site": "0x12ca8",
+              "target": "0xc6d0",
+              "label": "pthread_mutex_init"
+            },
+            {
+              "site": "0x12cb4",
+              "target": "0xc530",
+              "label": "pthread_cond_init"
+            },
+            {
+              "site": "0x12cc4",
+              "target": "0xc620",
+              "label": "memset"
+            },
+            {
+              "site": "0x12cc8",
+              "target": "0xcae0",
+              "label": "Dec_ScrambleInit"
+            },
+            {
+              "site": "0x12cd8",
+              "target": "0xcb80",
+              "label": "Updater::DecryptorModule::~DecryptorModule()"
+            },
+            {
+              "site": "0x12ce0",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-UFPDecryptorModule-12c74.txt"
+        },
+        {
+          "label": "GetUpdater",
+          "va": "0x10960",
+          "file_offset": 67936,
+          "bytes": 208,
+          "sha256": "308a19f9510e49fedfc03b0c48863407b06ef569202becf9515248f0c6d6b2f6",
+          "calls": [
+            {
+              "site": "0x10990",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10998",
+              "target": "0xc920",
+              "label": "operator new(unsigned long)"
+            },
+            {
+              "site": "0x109a8",
+              "target": "0xc340",
+              "label": "Updater::UpdaterManager::UpdaterManager(Updater::UPDATER_ACTION_MODE, bool)"
+            },
+            {
+              "site": "0x109c4",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x109e8",
+              "target": "0xc950",
+              "label": "operator delete(void*, unsigned long)"
+            },
+            {
+              "site": "0x109f0",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x10a08",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10a14",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10a24",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10a2c",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-GetUpdater-10960.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::UFPDecryptorModule()",
+          "va": "0x12c74",
+          "file_offset": 76916,
+          "bytes": 124,
+          "sha256": "b60f8bf2d5bd8de7a1ba4154eaf634dfe0dbe1c506952e391b5613b596c671cc",
+          "calls": [
+            {
+              "site": "0x12c84",
+              "target": "0xc730",
+              "label": "Updater::DecryptorModule::DecryptorModule()"
+            },
+            {
+              "site": "0x12ca8",
+              "target": "0xc6d0",
+              "label": "pthread_mutex_init"
+            },
+            {
+              "site": "0x12cb4",
+              "target": "0xc530",
+              "label": "pthread_cond_init"
+            },
+            {
+              "site": "0x12cc4",
+              "target": "0xc620",
+              "label": "memset"
+            },
+            {
+              "site": "0x12cc8",
+              "target": "0xcae0",
+              "label": "Dec_ScrambleInit"
+            },
+            {
+              "site": "0x12cd8",
+              "target": "0xcb80",
+              "label": "Updater::DecryptorModule::~DecryptorModule()"
+            },
+            {
+              "site": "0x12ce0",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-UFPDecryptorModule-12c74.txt"
+        },
+        {
+          "label": "Updater::SignatureVerification::verifyKey(char const*)",
+          "va": "0x1332c",
+          "file_offset": 78636,
+          "bytes": 584,
+          "sha256": "220a10fe4a89c533feff9bde23fb092945c5897cf2fa05e3599efe0b08cec594",
+          "calls": [
+            {
+              "site": "0x13348",
+              "target": "0xc520",
+              "label": "open"
+            },
+            {
+              "site": "0x13370",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x13378",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x133a8",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x133b8",
+              "target": "0xce20",
+              "label": "lseek"
+            },
+            {
+              "site": "0x13408",
+              "target": "0xc910",
+              "label": "mmap"
+            },
+            {
+              "site": "0x13414",
+              "target": "0xc9b0",
+              "label": "SHA1_Init"
+            },
+            {
+              "site": "0x13424",
+              "target": "0xced0",
+              "label": "SHA1_Update"
+            },
+            {
+              "site": "0x13430",
+              "target": "0xc5b0",
+              "label": "SHA1_Final"
+            },
+            {
+              "site": "0x1344c",
+              "target": "0xc740",
+              "label": "osal_valloc_msg_wait"
+            },
+            {
+              "site": "0x1347c",
+              "target": "0xcd90",
+              "label": "osal_snd_sync_msg"
+            },
+            {
+              "site": "0x134a0",
+              "target": "0xc380",
+              "label": "memcpy"
+            },
+            {
+              "site": "0x134b4",
+              "target": "0xcec0",
+              "label": "osal_free_msg"
+            },
+            {
+              "site": "0x134e0",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x134e8",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x1351c",
+              "target": "0xc930",
+              "label": "strncmp"
+            },
+            {
+              "site": "0x13550",
+              "target": "0xc970",
+              "label": "munmap"
+            },
+            {
+              "site": "0x13558",
+              "target": "0xcb20",
+              "label": "close"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-SignatureVerification-verifyKey-1332c.txt"
+        },
+        {
+          "label": "Updater::UpdaterManager::SwitchModeMsCrypt()",
+          "va": "0x104f8",
+          "file_offset": 66808,
+          "bytes": 416,
+          "sha256": "1dfa20ba8b9e1324cfb9f6ab6f89f31e0ea6df56b60977101efc592f6dd7a72a",
+          "calls": [
+            {
+              "site": "0x1052c",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10538",
+              "target": "0xc450",
+              "label": "pthread_mutex_lock"
+            },
+            {
+              "site": "0x10548",
+              "target": "0xc920",
+              "label": "operator new(unsigned long)"
+            },
+            {
+              "site": "0x10554",
+              "target": "0xc8f0",
+              "label": "Updater::Firmware::Firmware(bool)"
+            },
+            {
+              "site": "0x10588",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x105a8",
+              "target": "0xc950",
+              "label": "operator delete(void*, unsigned long)"
+            },
+            {
+              "site": "0x105bc",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x105cc",
+              "target": "0xcbe0",
+              "label": "Updater::UpdaterManager::getResultValue(Updater::ApiException const&)"
+            },
+            {
+              "site": "0x105e4",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10608",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x10644",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10650",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10660",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            },
+            {
+              "site": "0x10668",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UpdaterManager-SwitchModeMsCrypt-104f8.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::exec_chk_guard()",
+          "va": "0x12cf0",
+          "file_offset": 77040,
+          "bytes": 440,
+          "sha256": "844809ebf3eea584bed3a7119a29207e3dd3a32540313b2871a609162bf3b4b2",
+          "calls": [
+            {
+              "site": "0x12d30",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x12d60",
+              "target": "0xccb0",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x12d9c",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x12da4",
+              "target": "0xc9f0",
+              "label": "Updater::DecryptorModule::updateData()"
+            },
+            {
+              "site": "0x12de0",
+              "target": "0xccb0",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x12e08",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x12e10",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x12e40",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x12e48",
+              "target": "0xc570",
+              "label": "Updater::DecryptorModule::setData()"
+            },
+            {
+              "site": "0x12e50",
+              "target": "0xccb0",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x12e80",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x12e88",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-exec_chk_guard-12cf0.txt"
+        },
+        {
+          "label": "Updater::UpdaterManager::ReadyToSwitchMode()",
+          "va": "0xff50",
+          "file_offset": 65360,
+          "bytes": 664,
+          "sha256": "b434de806ef5268763278f0915a7c74e4ba364216c2c1589e10146c4ab0c07bd",
+          "calls": [
+            {
+              "site": "0xff88",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0xff94",
+              "target": "0xc450",
+              "label": "pthread_mutex_lock"
+            },
+            {
+              "site": "0xffb8",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0xffc0",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0xfff4",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x10000",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x10010",
+              "target": "0xcbe0",
+              "label": "Updater::UpdaterManager::getResultValue(Updater::ApiException const&)"
+            },
+            {
+              "site": "0x10040",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10048",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x1007c",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x100ac",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x100b4",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x100e8",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x10118",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10134",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10158",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x10194",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x101a0",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x101b0",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            },
+            {
+              "site": "0x101b8",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UpdaterManager-ReadyToSwitchMode-ff50.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::WaitForFirmwareCopyCompletion()",
+          "va": "0x12c28",
+          "file_offset": 76840,
+          "bytes": 76,
+          "sha256": "f02d1a899e05b7b7836e6191ecf00d77949cc3192514dfac742f2e0542255f97",
+          "calls": [
+            {
+              "site": "0x12c40",
+              "target": "0xc450",
+              "label": "pthread_mutex_lock"
+            },
+            {
+              "site": "0x12c4c",
+              "target": "0xcdd0",
+              "label": "pthread_cond_wait"
+            },
+            {
+              "site": "0x12c5c",
+              "target": "0xc650",
+              "label": "pthread_mutex_unlock"
+            },
+            {
+              "site": "0x12c68",
+              "target": "0xc650",
+              "label": "pthread_mutex_unlock"
+            },
+            {
+              "site": "0x12c70",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-WaitForFirmwareCopyCompletion-12c28.txt"
+        },
+        {
+          "label": "Updater::SignatureVerification::VerifySignature(Updater::verify_info_t, char const*)",
+          "va": "0x13574",
+          "file_offset": 79220,
+          "bytes": 372,
+          "sha256": "8453bc0ef0125056c2654f775f95a6c5c5eeef817b0f04f9eeaefb880116f462",
+          "calls": [
+            {
+              "site": "0x13590",
+              "target": "0xcad0",
+              "label": "Updater::SignatureVerification::verifyKey(char const*)"
+            },
+            {
+              "site": "0x135b8",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x135c0",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x135ec",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x135fc",
+              "target": "0xcb10",
+              "label": "fopen"
+            },
+            {
+              "site": "0x13638",
+              "target": "0xcf20",
+              "label": "PEM_read_RSA_PUBKEY"
+            },
+            {
+              "site": "0x13678",
+              "target": "0xcba0",
+              "label": "SHA256"
+            },
+            {
+              "site": "0x13694",
+              "target": "0xc6f0",
+              "label": "RSA_verify"
+            },
+            {
+              "site": "0x136c8",
+              "target": "0xce50",
+              "label": "RSA_free"
+            },
+            {
+              "site": "0x136d0",
+              "target": "0xc580",
+              "label": "fclose"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-SignatureVerification-VerifySignature-13574.txt"
+        },
+        {
+          "label": "Updater::UpdaterManager::Initialize(void (*)(UpdaterAPI::CALLBACK_ID, void*), void*)",
+          "va": "0x10c24",
+          "file_offset": 68644,
+          "bytes": 764,
+          "sha256": "094bc934e0b20326f0f75913eeb851c4742c9cda0a49786fd4615ee25e4de8d4",
+          "calls": [
+            {
+              "site": "0x10c6c",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10c78",
+              "target": "0xc450",
+              "label": "pthread_mutex_lock"
+            },
+            {
+              "site": "0x10c9c",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10ca4",
+              "target": "0xc590",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x10cd8",
+              "target": "0xcd30",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x10cec",
+              "target": "0xc920",
+              "label": "operator new(unsigned long)"
+            },
+            {
+              "site": "0x10cf4",
+              "target": "0xc490",
+              "label": "Updater::BufferManager::BufferManager()"
+            },
+            {
+              "site": "0x10d00",
+              "target": "0xc460",
+              "label": "Updater::BufferManager::Initialize()"
+            },
+            {
+              "site": "0x10d08",
+              "target": "0xc920",
+              "label": "operator new(unsigned long)"
+            },
+            {
+              "site": "0x10d14",
+              "target": "0xc8f0",
+              "label": "Updater::Firmware::Firmware(bool)"
+            },
+            {
+              "site": "0x10d20",
+              "target": "0xc920",
+              "label": "operator new(unsigned long)"
+            },
+            {
+              "site": "0x10d30",
+              "target": "0xca70",
+              "label": "Updater::BodyLoaderModule::BodyLoaderModule(Updater::UPDATER_ACTION_MODE, bool)"
+            },
+            {
+              "site": "0x10d3c",
+              "target": "0xc920",
+              "label": "operator new(unsigned long)"
+            },
+            {
+              "site": "0x10d44",
+              "target": "0xc820",
+              "label": "Updater::UFPDecryptorModule::UFPDecryptorModule()"
+            },
+            {
+              "site": "0x10d50",
+              "target": "0xc920",
+              "label": "operator new(unsigned long)"
+            },
+            {
+              "site": "0x10d64",
+              "target": "0xc810",
+              "label": "Updater::UpdateCommand::UpdateCommand(bool, Updater::Firmware*, Updater::CallbackInterface*)"
+            },
+            {
+              "site": "0x10e10",
+              "target": "0xcf00",
+              "label": "printf"
+            },
+            {
+              "site": "0x10e34",
+              "target": "0xc4b0",
+              "label": "Updater::UpdaterManager::cleanResource()"
+            },
+            {
+              "site": "0x10e54",
+              "target": "0xc950",
+              "label": "operator delete(void*, unsigned long)"
+            },
+            {
+              "site": "0x10e64",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x10e70",
+              "target": "0xcbe0",
+              "label": "Updater::UpdaterManager::getResultValue(Updater::ApiException const&)"
+            },
+            {
+              "site": "0x10ebc",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10ec8",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x10ecc",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10ed8",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            },
+            {
+              "site": "0x10ee8",
+              "target": "0xcdb0",
+              "label": "_Unwind_Resume"
+            },
+            {
+              "site": "0x10eec",
+              "target": "0xc4f0",
+              "label": "__cxa_begin_catch"
+            },
+            {
+              "site": "0x10ef0",
+              "target": "0xcc90",
+              "label": "__cxa_end_catch"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UpdaterManager-Initialize-10c24.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::execute()",
+          "va": "0x132cc",
+          "file_offset": 78540,
+          "bytes": 32,
+          "sha256": "fe997324eb76a2f524eaaa9ae8b6713654d11964af0d6264d90490c33acab1b7",
+          "calls": [
+            {
+              "site": "0x132d8",
+              "target": "0xc410",
+              "label": "Updater::UFPDecryptorModule::exec_chk_guard()"
+            },
+            {
+              "site": "0x132e4",
+              "target": "0xc430",
+              "label": "Updater::UFPDecryptorModule::exec_write_firm()"
+            }
+          ],
+          "disassembly": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-execute-132cc.txt"
+        }
+      ],
+      "rsa_verify_imported": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libuudfileinputupdaterapi.so",
+      "bytes": 52288,
+      "sha256": "f8a622fd2b038080cf682b22febe60e379b916f72d8890687b1a6b2109c5182e",
+      "identical_to_204": true,
+      "functions": [
+        {
+          "label": "Updater::UFPDecryptorModule::UFPDecryptorModule()",
+          "va": "0x7d14",
+          "file_offset": 32020,
+          "bytes": 124,
+          "sha256": "510aa247bbd193327665380dddc9b2f7c2b1a471487ea0e7ff4f0f78e78b91d3",
+          "calls": [
+            {
+              "site": "0x7d24",
+              "target": "0x67f0",
+              "label": "Updater::DecryptorModule::DecryptorModule()"
+            },
+            {
+              "site": "0x7d48",
+              "target": "0x6790",
+              "label": "pthread_mutex_init"
+            },
+            {
+              "site": "0x7d54",
+              "target": "0x6630",
+              "label": "pthread_cond_init"
+            },
+            {
+              "site": "0x7d64",
+              "target": "0x66f0",
+              "label": "memset"
+            },
+            {
+              "site": "0x7d68",
+              "target": "0x6af0",
+              "label": "Dec_ScrambleInit"
+            },
+            {
+              "site": "0x7d78",
+              "target": "0x6b70",
+              "label": "Updater::DecryptorModule::~DecryptorModule()"
+            },
+            {
+              "site": "0x7d80",
+              "target": "0x6c90",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-UFPDecryptorModule-UFPDecryptorModule-7d14.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::WaitForFirmwareCopyCompletion()",
+          "va": "0x7cc8",
+          "file_offset": 31944,
+          "bytes": 76,
+          "sha256": "4ba8c6eec938dea151092a297f23f0169bdae024027415e616450d2e774018e5",
+          "calls": [
+            {
+              "site": "0x7ce0",
+              "target": "0x65a0",
+              "label": "pthread_mutex_lock"
+            },
+            {
+              "site": "0x7cec",
+              "target": "0x6ca0",
+              "label": "pthread_cond_wait"
+            },
+            {
+              "site": "0x7cfc",
+              "target": "0x6730",
+              "label": "pthread_mutex_unlock"
+            },
+            {
+              "site": "0x7d08",
+              "target": "0x6730",
+              "label": "pthread_mutex_unlock"
+            },
+            {
+              "site": "0x7d10",
+              "target": "0x6c90",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-UFPDecryptorModule-WaitForFirmwareCopyCompletion-7cc8.txt"
+        },
+        {
+          "label": "Updater::UUDFileDecryptorModule::UUDFileDecryptorModule()",
+          "va": "0x86f0",
+          "file_offset": 34544,
+          "bytes": 132,
+          "sha256": "f12e68a41de84cc48117862d39294ea17e1386fb198379e541571723d86ffefc",
+          "calls": [
+            {
+              "site": "0x8700",
+              "target": "0x6b60",
+              "label": "Updater::UFPDecryptorModule::UFPDecryptorModule()"
+            },
+            {
+              "site": "0x8728",
+              "target": "0x6790",
+              "label": "pthread_mutex_init"
+            },
+            {
+              "site": "0x8734",
+              "target": "0x6630",
+              "label": "pthread_cond_init"
+            },
+            {
+              "site": "0x8744",
+              "target": "0x66f0",
+              "label": "memset"
+            },
+            {
+              "site": "0x8748",
+              "target": "0x6af0",
+              "label": "Dec_ScrambleInit"
+            },
+            {
+              "site": "0x874c",
+              "target": "0x6700",
+              "label": "SKData_Init"
+            },
+            {
+              "site": "0x875c",
+              "target": "0x6cb0",
+              "label": "Updater::UFPDecryptorModule::~UFPDecryptorModule()"
+            },
+            {
+              "site": "0x8764",
+              "target": "0x6c90",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-UUDFileDecryptorModule-UUDFileDecryptorModule-86f0.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::UFPDecryptorModule()",
+          "va": "0x7d14",
+          "file_offset": 32020,
+          "bytes": 124,
+          "sha256": "510aa247bbd193327665380dddc9b2f7c2b1a471487ea0e7ff4f0f78e78b91d3",
+          "calls": [
+            {
+              "site": "0x7d24",
+              "target": "0x67f0",
+              "label": "Updater::DecryptorModule::DecryptorModule()"
+            },
+            {
+              "site": "0x7d48",
+              "target": "0x6790",
+              "label": "pthread_mutex_init"
+            },
+            {
+              "site": "0x7d54",
+              "target": "0x6630",
+              "label": "pthread_cond_init"
+            },
+            {
+              "site": "0x7d64",
+              "target": "0x66f0",
+              "label": "memset"
+            },
+            {
+              "site": "0x7d68",
+              "target": "0x6af0",
+              "label": "Dec_ScrambleInit"
+            },
+            {
+              "site": "0x7d78",
+              "target": "0x6b70",
+              "label": "Updater::DecryptorModule::~DecryptorModule()"
+            },
+            {
+              "site": "0x7d80",
+              "target": "0x6c90",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-UFPDecryptorModule-UFPDecryptorModule-7d14.txt"
+        },
+        {
+          "label": "Updater::SignatureVerification::VerifySignature(Updater::verify_info_t, char const*)",
+          "va": "0x97f4",
+          "file_offset": 38900,
+          "bytes": 372,
+          "sha256": "ac5614b7a5d88713de340c79624ce05cbe7815e0ec5851403e3bd022d3c99584",
+          "calls": [
+            {
+              "site": "0x9810",
+              "target": "0x6ae0",
+              "label": "Updater::SignatureVerification::verifyKey(char const*)"
+            },
+            {
+              "site": "0x9838",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x9840",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x986c",
+              "target": "0x6c50",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x987c",
+              "target": "0x6b10",
+              "label": "fopen"
+            },
+            {
+              "site": "0x98b8",
+              "target": "0x6d80",
+              "label": "PEM_read_RSA_PUBKEY"
+            },
+            {
+              "site": "0x98f8",
+              "target": "0x6b80",
+              "label": "SHA256"
+            },
+            {
+              "site": "0x9914",
+              "target": "0x67c0",
+              "label": "RSA_verify"
+            },
+            {
+              "site": "0x9948",
+              "target": "0x6d10",
+              "label": "RSA_free"
+            },
+            {
+              "site": "0x9950",
+              "target": "0x6670",
+              "label": "fclose"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-SignatureVerification-VerifySignature-97f4.txt"
+        },
+        {
+          "label": "Updater::UUDFileDecryptorModule::execWriteFirm()",
+          "va": "0x8774",
+          "file_offset": 34676,
+          "bytes": 1084,
+          "sha256": "231e536c7e88cdeae4e62550539f88373b960b0a7e5f349b7c360017b4e89a08",
+          "calls": [
+            {
+              "site": "0x87bc",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x87e4",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8820",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8828",
+              "target": "0x6a60",
+              "label": "Updater::SignatureVerification::SignatureVerification()"
+            },
+            {
+              "site": "0x8870",
+              "target": "0x6640",
+              "label": "Updater::SignatureVerification::VerifySignature(Updater::verify_info_t, char const*)"
+            },
+            {
+              "site": "0x8894",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x889c",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x88d0",
+              "target": "0x6c50",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x88dc",
+              "target": "0x67d0",
+              "label": "Updater::SignatureVerification::~SignatureVerification()"
+            },
+            {
+              "site": "0x88e4",
+              "target": "0x6c90",
+              "label": "_Unwind_Resume"
+            },
+            {
+              "site": "0x8900",
+              "target": "0x67d0",
+              "label": "Updater::SignatureVerification::~SignatureVerification()"
+            },
+            {
+              "site": "0x894c",
+              "target": "0x6a10",
+              "label": "snprintf"
+            },
+            {
+              "site": "0x8978",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8990",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x89c4",
+              "target": "0x6c10",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x89d4",
+              "target": "0x6a20",
+              "label": "Updater::DecryptorModule::updateData()"
+            },
+            {
+              "site": "0x8a1c",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8a24",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x8a54",
+              "target": "0x6c50",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x8a6c",
+              "target": "0x6570",
+              "label": "Updater::DecryptorModule::verifySum()"
+            },
+            {
+              "site": "0x8a74",
+              "target": "0x6990",
+              "label": "Updater::DecryptorModule::getHdEndFlag()"
+            },
+            {
+              "site": "0x8ab8",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8ac0",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x8ae4",
+              "target": "0x6660",
+              "label": "Updater::DecryptorModule::setData()"
+            },
+            {
+              "site": "0x8b0c",
+              "target": "0x6c10",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x8b2c",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8b74",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8b9c",
+              "target": "0x6c10",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-UUDFileDecryptorModule-execWriteFirm-8774.txt"
+        },
+        {
+          "label": "Updater::UFPDecryptorModule::exec_write_firm()",
+          "va": "0x7f48",
+          "file_offset": 32584,
+          "bytes": 1060,
+          "sha256": "e5b84a8b69f634d584a0ae91b3c626778a5a1e48c09fdb3ed98f234011676939",
+          "calls": [
+            {
+              "site": "0x7f8c",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x7fb4",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8004",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x800c",
+              "target": "0x6a60",
+              "label": "Updater::SignatureVerification::SignatureVerification()"
+            },
+            {
+              "site": "0x8054",
+              "target": "0x6640",
+              "label": "Updater::SignatureVerification::VerifySignature(Updater::verify_info_t, char const*)"
+            },
+            {
+              "site": "0x8078",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8080",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x80b4",
+              "target": "0x6c50",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x80c0",
+              "target": "0x67d0",
+              "label": "Updater::SignatureVerification::~SignatureVerification()"
+            },
+            {
+              "site": "0x80c8",
+              "target": "0x6c90",
+              "label": "_Unwind_Resume"
+            },
+            {
+              "site": "0x80e4",
+              "target": "0x67d0",
+              "label": "Updater::SignatureVerification::~SignatureVerification()"
+            },
+            {
+              "site": "0x8130",
+              "target": "0x6a10",
+              "label": "snprintf"
+            },
+            {
+              "site": "0x815c",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8174",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x81a8",
+              "target": "0x6c10",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x81b8",
+              "target": "0x6a20",
+              "label": "Updater::DecryptorModule::updateData()"
+            },
+            {
+              "site": "0x8200",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8208",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x8238",
+              "target": "0x6c50",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x8250",
+              "target": "0x6570",
+              "label": "Updater::DecryptorModule::verifySum()"
+            },
+            {
+              "site": "0x8258",
+              "target": "0x6990",
+              "label": "Updater::DecryptorModule::getHdEndFlag()"
+            },
+            {
+              "site": "0x829c",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x82a4",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x82c8",
+              "target": "0x6660",
+              "label": "Updater::DecryptorModule::setData()"
+            },
+            {
+              "site": "0x82f0",
+              "target": "0x6c10",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            },
+            {
+              "site": "0x8310",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8330",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x8358",
+              "target": "0x6c10",
+              "label": "Updater::BaseModule::ThreadStatus::IsRunning()"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-UFPDecryptorModule-exec_write_firm-7f48.txt"
+        },
+        {
+          "label": "Updater::UUDFileDecryptorModule::UUDFileDecryptorModule()",
+          "va": "0x86f0",
+          "file_offset": 34544,
+          "bytes": 132,
+          "sha256": "f12e68a41de84cc48117862d39294ea17e1386fb198379e541571723d86ffefc",
+          "calls": [
+            {
+              "site": "0x8700",
+              "target": "0x6b60",
+              "label": "Updater::UFPDecryptorModule::UFPDecryptorModule()"
+            },
+            {
+              "site": "0x8728",
+              "target": "0x6790",
+              "label": "pthread_mutex_init"
+            },
+            {
+              "site": "0x8734",
+              "target": "0x6630",
+              "label": "pthread_cond_init"
+            },
+            {
+              "site": "0x8744",
+              "target": "0x66f0",
+              "label": "memset"
+            },
+            {
+              "site": "0x8748",
+              "target": "0x6af0",
+              "label": "Dec_ScrambleInit"
+            },
+            {
+              "site": "0x874c",
+              "target": "0x6700",
+              "label": "SKData_Init"
+            },
+            {
+              "site": "0x875c",
+              "target": "0x6cb0",
+              "label": "Updater::UFPDecryptorModule::~UFPDecryptorModule()"
+            },
+            {
+              "site": "0x8764",
+              "target": "0x6c90",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-UUDFileDecryptorModule-UUDFileDecryptorModule-86f0.txt"
+        },
+        {
+          "label": "Updater::SignatureVerification::verifyKey(char const*)",
+          "va": "0x95ac",
+          "file_offset": 38316,
+          "bytes": 584,
+          "sha256": "d5b285358774ca5e81a50fbce8feeb2bd5a9494666c9dfef7c0716a98a95b044",
+          "calls": [
+            {
+              "site": "0x95c8",
+              "target": "0x6620",
+              "label": "open"
+            },
+            {
+              "site": "0x95f0",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x95f8",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x9628",
+              "target": "0x6c50",
+              "label": "__cxa_throw"
+            },
+            {
+              "site": "0x9638",
+              "target": "0x6cf0",
+              "label": "lseek"
+            },
+            {
+              "site": "0x9688",
+              "target": "0x6910",
+              "label": "mmap"
+            },
+            {
+              "site": "0x9694",
+              "target": "0x69f0",
+              "label": "SHA1_Init"
+            },
+            {
+              "site": "0x96a4",
+              "target": "0x6d40",
+              "label": "SHA1_Update"
+            },
+            {
+              "site": "0x96b0",
+              "target": "0x66a0",
+              "label": "SHA1_Final"
+            },
+            {
+              "site": "0x96cc",
+              "target": "0x6800",
+              "label": "osal_valloc_msg_wait"
+            },
+            {
+              "site": "0x96fc",
+              "target": "0x6c60",
+              "label": "osal_snd_sync_msg"
+            },
+            {
+              "site": "0x9720",
+              "target": "0x6530",
+              "label": "memcpy"
+            },
+            {
+              "site": "0x9734",
+              "target": "0x6d30",
+              "label": "osal_free_msg"
+            },
+            {
+              "site": "0x9760",
+              "target": "0x6d70",
+              "label": "printf"
+            },
+            {
+              "site": "0x9768",
+              "target": "0x6680",
+              "label": "__cxa_allocate_exception"
+            },
+            {
+              "site": "0x979c",
+              "target": "0x6950",
+              "label": "strncmp"
+            },
+            {
+              "site": "0x97d0",
+              "target": "0x69b0",
+              "label": "munmap"
+            },
+            {
+              "site": "0x97d8",
+              "target": "0x6b30",
+              "label": "close"
+            }
+          ],
+          "disassembly": "disassembly/libuudfileinputupdaterapi.so-Updater-SignatureVerification-verifyKey-95ac.txt"
+        }
+      ],
+      "rsa_verify_imported": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libcryptfileinputupdaterapi.so",
+      "bytes": 27088,
+      "sha256": "06ee88247f9d1da34f28aebbe9ff5b355b661ce9645e1b83c6ee6a0bf292d17a",
+      "identical_to_204": true,
+      "functions": [
+        {
+          "label": "Updater::CryptFileInputUpdaterManager::verifyFile(Updater::FsysFileHandler*)",
+          "va": "0x3f88",
+          "file_offset": 16264,
+          "bytes": 236,
+          "sha256": "f7199d7d244e5031b651459d0ca47679d6d39322e69f89cd5e36d2d37cbdbe3d",
+          "calls": [
+            {
+              "site": "0x3fbc",
+              "target": "0x3820",
+              "label": "Updater::CrcChecker::CrcChecker()"
+            },
+            {
+              "site": "0x3fe4",
+              "target": "0x3630",
+              "label": "Updater::FsysFileHandler::Seek(long)"
+            },
+            {
+              "site": "0x3ff4",
+              "target": "0x3710",
+              "label": "Updater::FsysFileHandler::Read(void*, unsigned long)"
+            },
+            {
+              "site": "0x4038",
+              "target": "0x3750",
+              "label": "Updater::CrcChecker::Verify(Updater::FsysFileHandler*, unsigned int)"
+            },
+            {
+              "site": "0x4044",
+              "target": "0x3790",
+              "label": "Updater::CrcChecker::~CrcChecker()"
+            },
+            {
+              "site": "0x4068",
+              "target": "0x3790",
+              "label": "Updater::CrcChecker::~CrcChecker()"
+            },
+            {
+              "site": "0x4070",
+              "target": "0x3930",
+              "label": "_Unwind_Resume"
+            }
+          ],
+          "disassembly": "disassembly/libcryptfileinputupdaterapi.so-Updater-CryptFileInputUpdaterManager-verifyFile-3f88.txt"
+        },
+        {
+          "label": "non-virtual thunk to Updater::CryptFileInputUpdaterManager::verifyFile(Updater::FsysFileHandler*)",
+          "va": "0x4074",
+          "file_offset": 16500,
+          "bytes": 8,
+          "sha256": "dfd956637f892456db9fce91cd00e92a0d98f990d6754b874ac8723fa6ab2166",
+          "calls": [
+            {
+              "site": "0x4078",
+              "target": "0x3f88",
+              "label": "Updater::CryptFileInputUpdaterManager::verifyFile(Updater::FsysFileHandler*)"
+            }
+          ],
+          "disassembly": "disassembly/libcryptfileinputupdaterapi.so-non-virtual thunk to Updater-CryptFileInputUpdaterManager-verifyFile-4074.txt"
+        }
+      ],
+      "rsa_verify_imported": false
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libfileinputupdaterapi.so",
+      "bytes": 27232,
+      "sha256": "7f8ab4a0f2b1a92497cce8cc655eb59c62cdd6fb2760722ee9b614b2d67ea3a6",
+      "identical_to_204": true,
+      "functions": [
+        {
+          "label": "Updater::FileInputUpdaterManager::verifyFile(Updater::FsysFileHandler*)",
+          "va": "0x3dec",
+          "file_offset": 15852,
+          "bytes": 8,
+          "sha256": "5103ba3de080c52a046485f800433848701faa49ab8f60241a80987ca249d7ac",
+          "calls": [],
+          "disassembly": "disassembly/libfileinputupdaterapi.so-Updater-FileInputUpdaterManager-verifyFile-3dec.txt"
+        }
+      ],
+      "rsa_verify_imported": false
+    }
+  ],
+  "scope": "Historical original 2.05 update engine static functions, separately byte-compared to 2.04. Does not prove these paths are present or reachable on the current 7.02 body; no Sony executable, device or transport run."
+}

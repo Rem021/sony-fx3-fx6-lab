@@ -1,0 +1,21 @@
+{
+  "reviewed_date": "2026-10-30",
+  "sources": [
+    {
+      "url": "https://man7.org/linux/man-pages/man7/unix.7.html",
+      "publisher": "Linux man-pages project",
+      "limited_support": "AF_UNIX datagrams preserve boundaries and order; unnamed socketpair addresses; SO_PEERCRED creation-time credentials; SO_PASSCRED and message credentials; privilege caveats; excess SCM_RIGHTS descriptors on ancillary truncation",
+      "does_not_prove": "Sony support, actual sender identity, live global lease, full code identity, approval or recovery"
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man2/recvmsg.2.html",
+      "publisher": "Linux man-pages project",
+      "limited_support": "recvmsg nested user buffers, per-call nonblocking behavior, message flags and ancillary data",
+      "does_not_prove": "Hard syscall timeouts, safe source view, target kernel behavior or authenticated completion"
+    }
+  ],
+  "kernel_source_capture": "kernel-source-capture.json",
+  "initial_urllib_TLS_EOF_then_curl_without_disabling_validation": true,
+  "optional_extra_headers_HTTP429_not_retried": true,
+  "new_camera_operations": 0
+}

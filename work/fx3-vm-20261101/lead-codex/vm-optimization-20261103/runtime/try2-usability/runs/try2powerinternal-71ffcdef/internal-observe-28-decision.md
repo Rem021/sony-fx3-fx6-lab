@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-27-key-030.png using image tool. Shooting>TC/UB 11/59 orange category; Time Code/User Bit options visible Next: DOWN to next Shooting category for read-only browse; no time-code setting selected

@@ -1,0 +1,200 @@
+00277738 fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+0027773c 1f0000f1 cmp      x0, #0
+00277740 241840fa ccmp     x1, #0, #4, ne
+00277744 fd030091 mov      x29, sp
+00277748 f35301a9 stp      x19, x20, [sp, #0x10]
+0027774c f55b02a9 stp      x21, x22, [sp, #0x20]
+00277750 40020054 b.eq     #0x277798
+00277754 340440f9 ldr      x20, [x1, #8]
+00277758 140200b4 cbz      x20, #0x277798
+0027775c 004138d5 mrs      x0, sp_el0
+00277760 e20314aa mov      x2, x20
+00277764 000440f9 ldr      x0, [x0, #8]
+00277768 424000b1 adds     x2, x2, #0x10
+0027776c e083809a csel     x0, xzr, x0, hi
+00277770 42309fda csinv    x2, x2, xzr, lo
+00277774 5f0000fa sbcs     xzr, x2, x0
+00277778 e2879f9a cset     x2, ls
+0027777c a20100b5 cbnz     x2, #0x2777b0
+00277780 b4018012 mov      w20, #-0xe
+00277784 e003142a mov      w0, w20
+00277788 f35341a9 ldp      x19, x20, [sp, #0x10]
+0027778c f55b42a9 ldp      x21, x22, [sp, #0x20]
+00277790 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+00277794 c0035fd6 ret      
+00277798 b4028012 mov      w20, #-0x16
+0027779c e003142a mov      w0, w20
+002777a0 f35341a9 ldp      x19, x20, [sp, #0x10]
+002777a4 f55b42a9 ldp      x21, x22, [sp, #0x20]
+002777a8 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+002777ac c0035fd6 ret      
+002777b0 e30301aa mov      x3, x1
+002777b4 a0c30091 add      x0, x29, #0x30
+002777b8 e10314aa mov      x1, x20
+002777bc 020280d2 mov      x2, #0x10
+002777c0 750040b9 ldr      w21, [x3]
+002777c4 9fdffd97 bl       #0x1ef640 ; __arch_copy_from_user
+002777c8 c0fdffb5 cbnz     x0, #0x277780
+002777cc a2d34039 ldrb     w2, [x29, #0x34]
+002777d0 5f480071 cmp      w2, #0x12
+002777d4 28feff54 b.hi     #0x277798
+002777d8 e103022a mov      w1, w2
+002777dc b31d0090 adrp     x19, #0x62b000
+002777e0 63021891 add      x3, x19, #0x600
+002777e4 e04371b2 mov      x0, #0xffff8000
+002777e8 2104018b add      x1, x1, x1, lsl #1
+002777ec 21e87bd3 lsl      x1, x1, #5
+002777f0 616861f8 ldr      x1, [x3, x1]
+002777f4 3f0000eb cmp      x1, x0
+002777f8 00fdff54 b.eq     #0x277798
+002777fc 010c8052 mov      w1, #0x60
+00277800 000b80d2 mov      x0, #0x58
+00277804 2000a29b umaddl   x0, w1, w2, x0
+00277808 6000008b add      x0, x3, x0
+0027780c 77b10694 bl       #0x423de8 ; _raw_spin_lock_irqsave
+00277810 f60300aa mov      x22, x0
+00277814 00209752 mov      w0, #0xb900
+00277818 e0fda772 movk     w0, #0x3fef, lsl #16
+0027781c a002000b add      w0, w21, w0
+00277820 1f0c0071 cmp      w0, #3
+00277824 e9010054 b.ls     #0x277860
+00277828 a3d34039 ldrb     w3, [x29, #0x34]
+0027782c b4028012 mov      w20, #-0x16
+00277830 040b80d2 mov      x4, #0x58
+00277834 020c8052 mov      w2, #0x60
+00277838 60021891 add      x0, x19, #0x600
+0027783c e10316aa mov      x1, x22
+00277840 4210a39b umaddl   x2, w2, w3, x4
+00277844 0000028b add      x0, x0, x2
+00277848 14b20694 bl       #0x424098 ; _raw_spin_unlock_irqrestore
+0027784c e003142a mov      w0, w20
+00277850 f35341a9 ldp      x19, x20, [sp, #0x10]
+00277854 f55b42a9 ldp      x21, x22, [sp, #0x20]
+00277858 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+0027785c c0035fd6 ret      
+00277860 810f0090 adrp     x1, #0x467000
+00277864 21a01a91 add      x1, x1, #0x6a8
+00277868 20486038 ldrb     w0, [x1, w0, uxtw]
+0027786c 61000010 adr      x1, #0x277878
+00277870 2088208b add      x0, x1, w0, sxtb #2
+00277874 00001fd6 br       x0
+00277878 a03340b9 ldr      w0, [x29, #0x30]
+0027787c e0080035 cbnz     w0, #0x277998
+00277880 a1e34039 ldrb     w1, [x29, #0x38]
+00277884 230080d2 mov      x3, #1
+00277888 a0d34039 ldrb     w0, [x29, #0x34]
+0027788c 14008052 mov      w20, #0
+00277890 a23f40b9 ldr      w2, [x29, #0x3c]
+00277894 6120c19a lsl      x1, x3, x1
+00277898 22fbff97 bl       #0x276520 ; hw_gpio_set_mode_port
+0027789c a3d34039 ldrb     w3, [x29, #0x34]
+002778a0 e4ffff17 b        #0x277830
+002778a4 1f2003d5 nop      
+002778a8 a03340b9 ldr      w0, [x29, #0x30]
+002778ac 20080035 cbnz     w0, #0x2779b0
+002778b0 a1e34039 ldrb     w1, [x29, #0x38]
+002778b4 250080d2 mov      x5, #1
+002778b8 a43f40b9 ldr      w4, [x29, #0x3c]
+002778bc a3d34039 ldrb     w3, [x29, #0x34]
+002778c0 a620c19a lsl      x6, x5, x1
+002778c4 e40a0034 cbz      w4, #0x277a20
+002778c8 9f040071 cmp      w4, #1
+002778cc 01060054 b.ne     #0x27798c
+002778d0 9f3e03d5 dsb      st
+002778d4 627c4093 sxtw     x2, w3
+002778d8 63021891 add      x3, x19, #0x600
+002778dc 4204028b add      x2, x2, x2, lsl #1
+002778e0 40e87bd3 lsl      x0, x2, #5
+002778e4 626860f8 ldr      x2, [x3, x0]
+002778e8 42100191 add      x2, x2, #0x44
+002778ec 460000b9 str      w6, [x2]
+002778f0 6000008b add      x0, x3, x0
+002778f4 14008052 mov      w20, #0
+002778f8 a3d34039 ldrb     w3, [x29, #0x34]
+002778fc 0100218b add      x1, x0, w1, uxtb
+00277900 24600039 strb     w4, [x1, #0x18]
+00277904 cbffff17 b        #0x277830
+00277908 a03340b9 ldr      w0, [x29, #0x30]
+0027790c e0070035 cbnz     w0, #0x277a08
+00277910 a1e34039 ldrb     w1, [x29, #0x38]
+00277914 a2f30091 add      x2, x29, #0x3c
+00277918 a0d34039 ldrb     w0, [x29, #0x34]
+0027791c 1fffff97 bl       #0x277598 ; hw_gpio_get_data_bit
+00277920 004138d5 mrs      x0, sp_el0
+00277924 e10314aa mov      x1, x20
+00277928 000440f9 ldr      x0, [x0, #8]
+0027792c 214000b1 adds     x1, x1, #0x10
+00277930 e083809a csel     x0, xzr, x0, hi
+00277934 21309fda csinv    x1, x1, xzr, lo
+00277938 3f0000fa sbcs     xzr, x1, x0
+0027793c e1879f9a cset     x1, ls
+00277940 810100b5 cbnz     x1, #0x277970
+00277944 a3d34039 ldrb     w3, [x29, #0x34]
+00277948 b4018012 mov      w20, #-0xe
+0027794c b9ffff17 b        #0x277830
+00277950 a03340b9 ldr      w0, [x29, #0x30]
+00277954 1f040071 cmp      w0, #1
+00277958 80f6ff54 b.eq     #0x277828
+0027795c a1e34039 ldrb     w1, [x29, #0x38]
+00277960 a2f30091 add      x2, x29, #0x3c
+00277964 a0d34039 ldrb     w0, [x29, #0x34]
+00277968 82feff97 bl       #0x277370 ; hw_gpio_get_mode_bit
+0027796c edffff17 b        #0x277920
+00277970 e00314aa mov      x0, x20
+00277974 a1c30091 add      x1, x29, #0x30
+00277978 020280d2 mov      x2, #0x10
+0027797c b4018012 mov      w20, #-0xe
+00277980 20e0fd97 bl       #0x1efa00 ; __arch_copy_to_user
+00277984 a3d34039 ldrb     w3, [x29, #0x34]
+00277988 40f5ffb5 cbnz     x0, #0x277830
+0027798c 14008052 mov      w20, #0
+00277990 a8ffff17 b        #0x277830
+00277994 1f2003d5 nop      
+00277998 a0d34039 ldrb     w0, [x29, #0x34]
+0027799c 14008052 mov      w20, #0
+002779a0 a10b4729 ldp      w1, w2, [x29, #0x38]
+002779a4 dffaff97 bl       #0x276520 ; hw_gpio_set_mode_port
+002779a8 a3d34039 ldrb     w3, [x29, #0x34]
+002779ac a1ffff17 b        #0x277830
+002779b0 a0d34039 ldrb     w0, [x29, #0x34]
+002779b4 a40b4729 ldp      w4, w2, [x29, #0x38]
+002779b8 9f3e03d5 dsb      st
+002779bc 0004008b add      x0, x0, x0, lsl #1
+002779c0 61021891 add      x1, x19, #0x600
+002779c4 8500220a bic      w5, w4, w2
+002779c8 00e87bd3 lsl      x0, x0, #5
+002779cc 236860f8 ldr      x3, [x1, x0]
+002779d0 63200191 add      x3, x3, #0x48
+002779d4 650000b9 str      w5, [x3]
+002779d8 9f3e03d5 dsb      st
+002779dc 236860f8 ldr      x3, [x1, x0]
+002779e0 8200020a and      w2, w4, w2
+002779e4 63100191 add      x3, x3, #0x44
+002779e8 620000b9 str      w2, [x3]
+002779ec 2000008b add      x0, x1, x0
+002779f0 a3d34039 ldrb     w3, [x29, #0x34]
+002779f4 14008052 mov      w20, #0
+002779f8 014440b9 ldr      w1, [x0, #0x44]
+002779fc 2100042a orr      w1, w1, w4
+00277a00 014400b9 str      w1, [x0, #0x44]
+00277a04 8bffff17 b        #0x277830
+00277a08 a0d34039 ldrb     w0, [x29, #0x34]
+00277a0c a2f30091 add      x2, x29, #0x3c
+00277a10 a13b40b9 ldr      w1, [x29, #0x38]
+00277a14 17ffff97 bl       #0x277670 ; hw_gpio_get_data_port
+00277a18 c2ffff17 b        #0x277920
+00277a1c 1f2003d5 nop      
+00277a20 9f3e03d5 dsb      st
+00277a24 627c4093 sxtw     x2, w3
+00277a28 63021891 add      x3, x19, #0x600
+00277a2c 4204028b add      x2, x2, x2, lsl #1
+00277a30 40e87bd3 lsl      x0, x2, #5
+00277a34 626860f8 ldr      x2, [x3, x0]
+00277a38 42200191 add      x2, x2, #0x48
+00277a3c 460000b9 str      w6, [x2]
+00277a40 6000008b add      x0, x3, x0
+00277a44 14008052 mov      w20, #0
+00277a48 a3d34039 ldrb     w3, [x29, #0x34]
+00277a4c 0100218b add      x1, x0, w1, uxtb
+00277a50 25600039 strb     w5, [x1, #0x18]
+00277a54 77ffff17 b        #0x277830

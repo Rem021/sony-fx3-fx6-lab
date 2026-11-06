@@ -1,0 +1,178 @@
+{
+  "schema": "fx3-service-read-entry-and-exit-readiness/1",
+  "reviewed_utc": "2026-10-29T12:20:21.406599+00:00",
+  "source_references": [
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/authentication-publication-review.json",
+      "sha256": "e8cc6815e51661cbbf8719e1706cc081c45123d4400afcdd8c5623cd2c1580ac",
+      "reused_prior_original_firmware_evidence": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage137-service-exit-and-host-cleanup/service-exit-review.json",
+      "sha256": "19fb6e817f2ab6cdc96960c229654a35c16bb3c9f30f7e0ebc8dcf4093be06ce",
+      "reused_prior_original_firmware_evidence": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/system-read-admission-review.json",
+      "sha256": "41d2b3984b87d5ec2b8e5aababcda329bfb457e5947f87c77f8999c28873208f",
+      "reused_prior_original_firmware_evidence": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage157-original-whole-file-read-length-and-status/read-length-and-result-admission-review.json",
+      "sha256": "22ff3e09efc57a68789076a0b93da55a8c2b4f73dad322884ef44cb8dcbb32e9",
+      "reused_prior_original_firmware_evidence": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage161-bounded-read-import-inventory/original-read-route-review.json",
+      "sha256": "9c5e61fd1ddfea8789bd296ff38aab3f7283693c6fe66d3ec5f8f644418dd40d",
+      "reused_prior_original_firmware_evidence": true
+    }
+  ],
+  "current_pinned_PMCA_source_AST_rechecked": {
+    "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+    "stop_swallows_GenericUsbException": true,
+    "authenticate_calls": [
+      {
+        "line": 671,
+        "enclosed_by_stop_finally": false
+      },
+      {
+        "line": 698,
+        "enclosed_by_stop_finally": false
+      }
+    ],
+    "source_executed": false
+  },
+  "transport_adapter_gap": {
+    "old_wire_api": "libusb_device_handle* via ctypes libusb_control_transfer/libusb_bulk_transfer",
+    "actual05_api": "IOUSBDeviceInterface650** / IOUSBInterfaceInterface650** inside root helper process",
+    "old_wire_source_sha256": "58e8026f2b314cf38a2587c59ae56b6ee6d15f609e29a0faed710c2403b8cf58",
+    "actual_owner_source_sha256": "7b33b03256f3c226ade7049c10a9e3f42790b9240d8291a60fbd600170f34fae",
+    "pointer_ABI_compatible": false,
+    "cross_process_pointer_reuse_allowed": false,
+    "05_handles_closed_and_helper_exited": true,
+    "MSC_descriptor_metadata_proves_auth_endpoint_role": false,
+    "SERVICE0336_profile_actually_observed": false,
+    "required_implementation": "Bounded IOKit calls inside the owning native helper, plus typed request/reply IPC and fresh same-incarnation ownership before protocol work."
+  },
+  "authentication_effects": {
+    "final_reply_is_before_tail_writers": true,
+    "conditional_original_order": [
+      {
+        "pc": "0xbe6c",
+        "event": "serialize final auth reply"
+      },
+      {
+        "pc": "0xbea4",
+        "event": "virtual registHaspId; standard worker slot -> Regist_HaspId"
+      },
+      {
+        "pc": "0xbf2c",
+        "event": "virtual onComplete; standard worker slot -> table publication and callback"
+      },
+      {
+        "pc": "0xbf4c",
+        "event": "if tlog file exists, request log update"
+      },
+      {
+        "pc": "0xc044",
+        "event": "level3 path prepares 3-byte /ramdsk/dev/mode write before thread return"
+      }
+    ],
+    "history_effects": {
+      "hasp": "conditional88B history update, as stage134; no target file presence assumed",
+      "etools": "existing/readable4096B log -> decoder/update/encoder -> wb fwrite4096B; actual existence/mount/output not tested",
+      "mode": "level3 creates/writes3B path; other branch removes/rmdir; backing of /ramdsk not established here"
+    },
+    "tmp_configured_on_nflasha10_not_RAM_assumption": true,
+    "actual_body_history_files_or_mounts_queried": false,
+    "not_asserting_writes_already_happened_on_user_camera": true
+  },
+  "exit_gaps": {
+    "cancel_request_is_not_join": true,
+    "plain_join_and_state_wait_not_hardware_bounded": true,
+    "host_STOP_return_not_camera_worker_exit_or_MSC_restore": true,
+    "existing_original_findings": [
+      {
+        "id": "normal_auth_join",
+        "fact": "Event6 starts run_workers: join object+8 before starting command workers 0 and1; join return ignored.",
+        "limit": "Successful join can wait for auth tail; actual success, process state and USB-to-event binding not established."
+      },
+      {
+        "id": "cancel_is_request",
+        "fact": "Worker.cancel targets Thread objects +8/+16; Thread.cancel calls pthread_cancel without any join.",
+        "limit": "No bounded cancellation latency or completed writers established by request return."
+      },
+      {
+        "id": "join_and_cleanup",
+        "fact": "Worker.join invokes two plain pthread_join wrappers, then mass-data cleanup and plugin unload; wrapper returns are ignored.",
+        "limit": "No internal timeout; cleanup/unload bodies and all external threads not closed by this review."
+      },
+      {
+        "id": "callback_not_success",
+        "fact": "Both stop callbacks log nonzero status, then still clear USB state to0; async callback also pushes event3, whose handler invokes join before callbacks.",
+        "limit": "State0 or a callback alone is not successful interface stop or successful join proof."
+      },
+      {
+        "id": "finalize_sequence",
+        "fact": "Finalize can wait for state1, stop state2, join workers, wait for state3, virtual close, destroy USB and Senser interfaces. SenserIfStop then removes handler/closes channel.",
+        "limit": "spin_wait_while has usleep(10) retry and no deadline; pthread_join is plain join. Actual time bounds or return-to-MSC not proved."
+      },
+      {
+        "id": "cooperative_windows",
+        "fact": "NinThread and SenserThread call setcancelstate with0, testcancel, then state1 before receive/work; numeric arguments pinned.",
+        "interpretation": "Under normal Linux pthread constants this is an enabled checkpoint followed by a disabled section; a host timeout cannot assume immediate camera cancellation.",
+        "limit": "Actual libc behavior, I/O unblock and cancellation cleanup not executed or wholly traced."
+      },
+      {
+        "id": "host_cleanup_gap",
+        "fact": "Fixed PMCA stop swallows GenericUsbException; local finally starts after service authenticate, leaving auth failure outside that cleanup.",
+        "limit": "No conclusion that all failures leave service mode, nor that physical damage occurred."
+      }
+    ],
+    "fresh_real_service_exit_or_recovery": false
+  },
+  "system_read_gaps": {
+    "two_library_drafts_not_full_backup": true,
+    "whole_GET_FILE_requested_length_not_independently_bounded_by_host_frame": true,
+    "short_read_and_outer_success_must_be_separate": true,
+    "bounded_prefix_helpers_do_not_yet_prove_reachable_full_continuation": true,
+    "same_body_full_backup_restore_readback": false,
+    "independent_rescue": false
+  },
+  "readiness_rows": [
+    {
+      "component": "USB ownership/interface metadata/return",
+      "state": "BOUNDED_REAL05_EVIDENCE_PLUS_NORMAL_SCREEN"
+    },
+    {
+      "component": "Readable result delivery",
+      "state": "INTEGRATED_USER_FIXTURE77_NO_FRESH_ROOT_TEST"
+    },
+    {
+      "component": "Actual IOKit vendor/control and auth bulk transport",
+      "state": "NOT_IMPLEMENTED_IN_OWNER_HELPER"
+    },
+    {
+      "component": "Initial MSC crypto verifier equivalence",
+      "state": "PUBLIC_REFERENCE_AND_STATIC_ROUTE_NOT_REAL_MSC_AUTH_PROOF"
+    },
+    {
+      "component": "Auth side effects and exit",
+      "state": "STATIC_BRANCHES_IDENTIFIED_REAL_COMPLETION_UNPROVEN"
+    },
+    {
+      "component": "Whole system backup/restore/rescue",
+      "state": "NOT_VALIDATED"
+    }
+  ],
+  "next_safe_implementation": [
+    "Implement bounded IOKit control/bulk operations inside the native owner process; never cast a libusb handle or export raw root pointers to user Python.",
+    "Preserve exact lengths, positive driver timeouts, actual-return/inflight separation and no retry/reset/clear-halt fallback.",
+    "Bind current same-camera handle generation and interface pipe mapping, then integrate typed IPC and the already-reviewed single-session policy.",
+    "Keep authentication and camera-file access disabled until a concrete complete entry/read/exit plan covers observed side effects and separate user authority."
+  ],
+  "new_service_authentication_or_camera_files_or_USB_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "fx3-linker-strip-build/v1",
+  "command": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-Wl,--strip-debug",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-DFX3_GATE_PUBLISH_INTERVAL=1",
+    "-Wl,-soname,fx3-ui-gate-v14-n1.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-v14.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-probes-v1.S",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/samples/fx3-ui-gate-v14-n1-linker-strip.so"
+  ],
+  "original_command": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-DFX3_GATE_PUBLISH_INTERVAL=1",
+    "-Wl,-soname,fx3-ui-gate-v14-n1.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-v14.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-probes-v1.S",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-v14-n1.so"
+  ],
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "raw_sha256": "71779256b68ccb97ff911bba30e84d906c5a6365575fbfb59f498f652a743993",
+  "stripped_sha256": "f95d91c1c5f3ca41303edf0df9fa25b574f0c70f903f163b8aaef36c36a4b1b4",
+  "raw_build_manifest_sha256": "af9cfbae2f0e8bbc076f74f699b2fe2227a422433bce1234f9d25e1c950af387",
+  "source_manifest_sha256": "d71ae629cb023774def26481f631ed12e6e77e55ca08e4acb17545ce568227b3",
+  "command_input_hashes": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "sha256": "1c5f706db0ed6d55451940f31dc05a6177d05696bc1fa5d853696d04c718b523"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-v14.c",
+      "sha256": "f1bd05b39ac054e4ffef74f4821858ee3a7f2f241689f28b68ff6c039be4212a"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-probes-v1.S",
+      "sha256": "b82a530c86ad3d37e06ba37828c72942c3c9188d904ed2b3a3bee89ebf9f62a1"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+      "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+      "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+    }
+  ],
+  "source_rows": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-v14.c",
+      "sha256": "f1bd05b39ac054e4ffef74f4821858ee3a7f2f241689f28b68ff6c039be4212a"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-probes-v1.S",
+      "sha256": "b82a530c86ad3d37e06ba37828c72942c3c9188d904ed2b3a3bee89ebf9f62a1"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/build_offline.py",
+      "sha256": "d52a7c328ae689bdb676687722e781a44a2a679ec898bdea1f888375d2ddec70"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/audit_offline.py",
+      "sha256": "191f4b7412a7bd99447dbc9f871bb50213048752d427bc32777626b7227b7eaf"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/test_gate_actual.c",
+      "sha256": "e836772fabcfdef0f67451add1f5a592b68c6fbc44e492e572c97a03cf0d4321"
+    }
+  ],
+  "raw_bytes": 60544,
+  "stripped_bytes": 20400,
+  "no_VM": true,
+  "no_CPIO": true,
+  "method_authority": "Orca msg_b4a35376625d"
+}

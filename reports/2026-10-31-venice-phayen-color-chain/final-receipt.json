@@ -1,0 +1,78 @@
+{
+  "created_utc": "2026-10-31T07:51:50.385126+00:00",
+  "status": "HANDOFF_DURABLY_ENQUEUED_READ_UNCONFIRMED",
+  "target_tab_id": "structured-agent-session-codex_e3a65c98_10e6_4c31_b346_419867ee1515",
+  "requested_session_mailbox": "orca_session_id:codex_e3a65c98_10e6_4c31_b346_419867ee1515",
+  "runtime_resolved_recipient": "run:run_b0609fcdc355",
+  "runtime_run_id": "run_b0609fcdc355",
+  "runtime_resolution_note": "The one send addressed the exact session mailbox; Orca normalized it to its current Run delivery inbox. No separate Run send or retry was performed.",
+  "message_id": "msg_863b6539959e",
+  "request_id": "07608a7c-6cc9-46c2-9cda-44ddb7830d33",
+  "send_call_count": 1,
+  "replayed": false,
+  "delivered_at_from_send_receipt": null,
+  "recipient_read_or_started_proven": false,
+  "validation": [
+    "8 selected core files equal their original stage seal",
+    "table copies byte-identical and row counts 9/512/8000",
+    "local source links exist; chain JSON parsed and preserves unknown ISP/MAIN boundaries",
+    "exact live structured pane verified before one send",
+    "runtime ok=true and message body equals prepared text",
+    "project README prefix preserved by locked append"
+  ],
+  "camera_usb_phone_or_firmware_actions": 0,
+  "product_source_edits": 0,
+  "full_venice_isp_or_flash_readiness_claimed": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 10226,
+      "sha256": "5bd7daed85a1fb018be2393f4b066b909f6f1669603d9271163894cdc88edd36"
+    },
+    {
+      "path": "color-chain.json",
+      "bytes": 7892,
+      "sha256": "454d0d33293743fa87b86dd21d038160fab675be1164fd8ac972bcc872305707"
+    },
+    {
+      "path": "delivery-receipt.json",
+      "bytes": 3036,
+      "sha256": "793f56283ade3228e98844166c4464f4bacfc88f861ed275ab18b1a2930f521c"
+    },
+    {
+      "path": "handoff-message.txt",
+      "bytes": 2108,
+      "sha256": "d675ecdcbe7b0eda2fdc60803c3baf1f026d2d2a51a8c65345141893ab8ee43c"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 735,
+      "sha256": "d5a517b952ee0c97dd9b6fdcf1bd50d5c8e1624591470da0efa1a76896314d40"
+    },
+    {
+      "path": "recipient-preflight.json",
+      "bytes": 1062,
+      "sha256": "bc589b316221a3f61af21c850bb1414532bb6b38f9c1513d265a54f0d3167b0c"
+    },
+    {
+      "path": "source-verification.json",
+      "bytes": 13720,
+      "sha256": "4012dd408d68b952b91a075c0b2befc7e0be361576aad558e9e5721716b6dc47"
+    },
+    {
+      "path": "tables/venice_1d_packed_halfwords.csv",
+      "bytes": 9837,
+      "sha256": "0af185e7acce5b5d902a395f5f7d7d61c3cadfe55d5b7a94865bb7d416b2029d"
+    },
+    {
+      "path": "tables/venice_3d_20x20x20_raw.csv",
+      "bytes": 276333,
+      "sha256": "e330dc99154fe589bc7ea7cfb1f17c9d45976f340412ec0c4b5fef309efffc14"
+    },
+    {
+      "path": "tables/venice_matrix_signed_q16.csv",
+      "bytes": 361,
+      "sha256": "99a822c13db47d6dc0b2cfb7e6e8fafc40eee4cb723e41ffe6f8af3189a01cb5"
+    }
+  ]
+}

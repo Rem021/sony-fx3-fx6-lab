@@ -1,0 +1,3761 @@
+{
+  "created_utc": "2026-11-03T06:27:35.143970+00:00",
+  "duration_seconds": 285.2927743750042,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap104-r2-observer-ready/candidate.json",
+  "candidate_sha256": "4a30144ca93d224127f704e06e1e0fb6966acfdf969220c3aa96ee28cae9afb9",
+  "observer_source_snapshot": [
+    {
+      "name": "run_candidate104_v6.py",
+      "sha256": "de4fffba3f7f1d039e1bc3d0dbeeba5d3e4b3cb5150e863f8acb6f23a38af367"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "key_readback103_v1.py",
+      "sha256": "0743e22eaeb54732effd65bd675f32135a0a988be5b2c460f2dbb26f652d211b"
+    },
+    {
+      "name": "gate_input102_v4.py",
+      "sha256": "8430534bffab5d61ce54096e9f3da8233f2945724dfa299455ba03e47bb8c35e"
+    },
+    {
+      "name": "gate_input101.py",
+      "sha256": "2d430d401488d12868e5dd81d7107c975a30a87a01758b8429ad58bf088ce88a"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_ring_v1.py",
+      "sha256": "31393143a1fecb5eecb6e5d4f0c169f19c8b47b600c6fe2b22120908bed1c230"
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    },
+    {
+      "name": "gate_input104_v5.py",
+      "sha256": "9225993e89ec7a8b929f6d6474547a282def47a0afe995c0fb7c6870853154c5"
+    },
+    {
+      "name": "gdb_sysregs104_v2.py",
+      "sha256": "55404f4a333dd8dbd89b50f2e4d8a0d9075ab77203e331bbb66d5852a3f08f73"
+    },
+    {
+      "name": "gdb_native104_v2.py",
+      "sha256": "23c4770338fdb8dc6b41cd1a9ab534f2339efd67cdc3b444a5a04540ab58eb81"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57",
+  "requested_seconds": 600,
+  "qemu_pid": 13362,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap100v1sync600-8d0d69c0/Backup-native-file-before-menu.bin",
+      "sha256": "552fd5f8b422f855aecbe0c3918b56f83f60fb76ea9a3b6fc7a0291c26035d9e"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap104-r2-observer-ready/guest.dtb",
+      "sha256": "38540f530845970cd7c15670d22db483ca33ee62b7fac26cffb9f289c171b244"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap104-r2-observer-ready/guest.cpio",
+      "sha256": "a68e747662a71fcfe7b3f029b600674f557c3f4f932d2485f3b1f380e0152ec5"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap104-r2-observer-ready/candidate.json",
+      "sha256": "4a30144ca93d224127f704e06e1e0fb6966acfdf969220c3aa96ee28cae9afb9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "host_observer_error": "RuntimeError('AP104 original single-vCPU instruction PC mismatch')",
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.1354937910218723,
+      "rss_vsz_kib": "946912 495713328"
+    },
+    {
+      "elapsed_seconds": 0.39967691601486877,
+      "rss_vsz_kib": "1105440 495713328"
+    },
+    {
+      "elapsed_seconds": 0.660017832997255,
+      "rss_vsz_kib": "1106800 495713328"
+    },
+    {
+      "elapsed_seconds": 0.9206125410273671,
+      "rss_vsz_kib": "1112496 495713328"
+    },
+    {
+      "elapsed_seconds": 1.1804601660114713,
+      "rss_vsz_kib": "1238032 495713328"
+    },
+    {
+      "elapsed_seconds": 1.4586490000365302,
+      "rss_vsz_kib": "1528048 495713328"
+    },
+    {
+      "elapsed_seconds": 1.726124125008937,
+      "rss_vsz_kib": "1566528 495713328"
+    },
+    {
+      "elapsed_seconds": 1.990347916027531,
+      "rss_vsz_kib": "1578656 495713328"
+    },
+    {
+      "elapsed_seconds": 2.2849264160031453,
+      "rss_vsz_kib": "1588320 495713328"
+    },
+    {
+      "elapsed_seconds": 2.5562503749970347,
+      "rss_vsz_kib": "1601296 495713328"
+    },
+    {
+      "elapsed_seconds": 2.803696833027061,
+      "rss_vsz_kib": "1605280 495713328"
+    },
+    {
+      "elapsed_seconds": 3.057109041023068,
+      "rss_vsz_kib": "1611136 495713328"
+    },
+    {
+      "elapsed_seconds": 3.3400451660272665,
+      "rss_vsz_kib": "1611392 495713328"
+    },
+    {
+      "elapsed_seconds": 3.625633125018794,
+      "rss_vsz_kib": "1611408 495713328"
+    },
+    {
+      "elapsed_seconds": 3.9069339580019005,
+      "rss_vsz_kib": "1611408 495713328"
+    },
+    {
+      "elapsed_seconds": 4.182385499996599,
+      "rss_vsz_kib": "1611488 495713328"
+    },
+    {
+      "elapsed_seconds": 4.454137500026263,
+      "rss_vsz_kib": "1611488 495713328"
+    },
+    {
+      "elapsed_seconds": 4.734591874992475,
+      "rss_vsz_kib": "1611504 495713328"
+    },
+    {
+      "elapsed_seconds": 5.003254458017182,
+      "rss_vsz_kib": "1611504 495713328"
+    },
+    {
+      "elapsed_seconds": 5.359466750000138,
+      "rss_vsz_kib": "1358560 495713328"
+    },
+    {
+      "elapsed_seconds": 5.622911415994167,
+      "rss_vsz_kib": "1319328 495713328"
+    },
+    {
+      "elapsed_seconds": 5.901875750045292,
+      "rss_vsz_kib": "1259664 495713328"
+    },
+    {
+      "elapsed_seconds": 6.173217000032309,
+      "rss_vsz_kib": "1259664 495713328"
+    },
+    {
+      "elapsed_seconds": 6.446059166046325,
+      "rss_vsz_kib": "1259664 495713328"
+    },
+    {
+      "elapsed_seconds": 6.71708191599464,
+      "rss_vsz_kib": "1259664 495713328"
+    },
+    {
+      "elapsed_seconds": 6.999137958046049,
+      "rss_vsz_kib": "1259808 495713328"
+    },
+    {
+      "elapsed_seconds": 7.540673791023437,
+      "rss_vsz_kib": "1259856 495713328"
+    },
+    {
+      "elapsed_seconds": 7.807891458040103,
+      "rss_vsz_kib": "1259872 495713328"
+    },
+    {
+      "elapsed_seconds": 8.078709416033234,
+      "rss_vsz_kib": "1259872 495713328"
+    },
+    {
+      "elapsed_seconds": 8.347632291028276,
+      "rss_vsz_kib": "1259888 495713328"
+    },
+    {
+      "elapsed_seconds": 8.615946458012331,
+      "rss_vsz_kib": "1259888 495713328"
+    },
+    {
+      "elapsed_seconds": 8.885209416039288,
+      "rss_vsz_kib": "1256496 495713328"
+    },
+    {
+      "elapsed_seconds": 9.160541416029446,
+      "rss_vsz_kib": "1256496 495713328"
+    },
+    {
+      "elapsed_seconds": 9.42789074999746,
+      "rss_vsz_kib": "1017680 495713328"
+    },
+    {
+      "elapsed_seconds": 9.698188541049603,
+      "rss_vsz_kib": "1017680 495713328"
+    },
+    {
+      "elapsed_seconds": 9.963498791039456,
+      "rss_vsz_kib": "1017680 495713328"
+    },
+    {
+      "elapsed_seconds": 10.232000374991912,
+      "rss_vsz_kib": "1017680 495713328"
+    },
+    {
+      "elapsed_seconds": 10.50242720800452,
+      "rss_vsz_kib": "1017680 495713328"
+    },
+    {
+      "elapsed_seconds": 10.773019290994853,
+      "rss_vsz_kib": "1017680 495713328"
+    },
+    {
+      "elapsed_seconds": 11.044412791030481,
+      "rss_vsz_kib": "1017680 495713328"
+    },
+    {
+      "elapsed_seconds": 11.325916041037999,
+      "rss_vsz_kib": "1017696 495713328"
+    },
+    {
+      "elapsed_seconds": 11.599837416026276,
+      "rss_vsz_kib": "1017696 495713328"
+    },
+    {
+      "elapsed_seconds": 11.866717000026256,
+      "rss_vsz_kib": "1017696 495713328"
+    },
+    {
+      "elapsed_seconds": 12.133120790997054,
+      "rss_vsz_kib": "1017696 495713328"
+    },
+    {
+      "elapsed_seconds": 12.409513875027187,
+      "rss_vsz_kib": "1017696 495713328"
+    },
+    {
+      "elapsed_seconds": 12.67667379102204,
+      "rss_vsz_kib": "1017696 495713328"
+    },
+    {
+      "elapsed_seconds": 12.950168916024268,
+      "rss_vsz_kib": "1017696 495713328"
+    },
+    {
+      "elapsed_seconds": 13.217243541032076,
+      "rss_vsz_kib": "1017696 495713328"
+    },
+    {
+      "elapsed_seconds": 13.496507041039877,
+      "rss_vsz_kib": "1017712 495713328"
+    },
+    {
+      "elapsed_seconds": 13.768206000037026,
+      "rss_vsz_kib": "1017712 495713328"
+    },
+    {
+      "elapsed_seconds": 14.036790458019823,
+      "rss_vsz_kib": "1017712 495713328"
+    },
+    {
+      "elapsed_seconds": 14.307721000048332,
+      "rss_vsz_kib": "1017712 495713328"
+    },
+    {
+      "elapsed_seconds": 14.582626375020482,
+      "rss_vsz_kib": "1017712 495713328"
+    },
+    {
+      "elapsed_seconds": 14.848557833000086,
+      "rss_vsz_kib": "1017712 495713328"
+    },
+    {
+      "elapsed_seconds": 15.119073458015919,
+      "rss_vsz_kib": "1017712 495713328"
+    },
+    {
+      "elapsed_seconds": 15.388611583039165,
+      "rss_vsz_kib": "1017712 495713328"
+    },
+    {
+      "elapsed_seconds": 15.667270791018382,
+      "rss_vsz_kib": "1045056 495713328"
+    },
+    {
+      "elapsed_seconds": 16.171171041030902,
+      "rss_vsz_kib": "1069408 495713328"
+    },
+    {
+      "elapsed_seconds": 16.487440458033234,
+      "rss_vsz_kib": "1072656 495713328"
+    },
+    {
+      "elapsed_seconds": 16.811358916049358,
+      "rss_vsz_kib": "989024 495713328"
+    },
+    {
+      "elapsed_seconds": 17.084190916037187,
+      "rss_vsz_kib": "717216 495713328"
+    },
+    {
+      "elapsed_seconds": 17.379922791034915,
+      "rss_vsz_kib": "729984 495713328"
+    },
+    {
+      "elapsed_seconds": 17.65782504103845,
+      "rss_vsz_kib": "732704 495713328"
+    },
+    {
+      "elapsed_seconds": 17.983218915993348,
+      "rss_vsz_kib": "736176 495713328"
+    },
+    {
+      "elapsed_seconds": 18.26794562500436,
+      "rss_vsz_kib": "737712 495713328"
+    },
+    {
+      "elapsed_seconds": 18.680772416002583,
+      "rss_vsz_kib": "739696 495713328"
+    },
+    {
+      "elapsed_seconds": 19.09607433300698,
+      "rss_vsz_kib": "741008 495713328"
+    },
+    {
+      "elapsed_seconds": 19.3899505410227,
+      "rss_vsz_kib": "741584 495713328"
+    },
+    {
+      "elapsed_seconds": 19.687114541011397,
+      "rss_vsz_kib": "741808 495713328"
+    },
+    {
+      "elapsed_seconds": 19.989381875027902,
+      "rss_vsz_kib": "742144 495713328"
+    },
+    {
+      "elapsed_seconds": 20.47270862502046,
+      "rss_vsz_kib": "743568 495713328"
+    },
+    {
+      "elapsed_seconds": 20.586917583015747,
+      "rss_vsz_kib": "744944 495713328"
+    },
+    {
+      "elapsed_seconds": 20.839398583048023,
+      "rss_vsz_kib": "746064 495713328"
+    },
+    {
+      "elapsed_seconds": 21.09664345800411,
+      "rss_vsz_kib": "747680 495713328"
+    },
+    {
+      "elapsed_seconds": 21.46302183304215,
+      "rss_vsz_kib": "749040 495713328"
+    },
+    {
+      "elapsed_seconds": 21.87316133303102,
+      "rss_vsz_kib": "754192 495713328"
+    },
+    {
+      "elapsed_seconds": 22.19574466603808,
+      "rss_vsz_kib": "754512 495713328"
+    },
+    {
+      "elapsed_seconds": 22.51421950000804,
+      "rss_vsz_kib": "754976 495713328"
+    },
+    {
+      "elapsed_seconds": 22.83634154102765,
+      "rss_vsz_kib": "756768 495713328"
+    },
+    {
+      "elapsed_seconds": 23.204855125048198,
+      "rss_vsz_kib": "757248 495713328"
+    },
+    {
+      "elapsed_seconds": 23.517765666008927,
+      "rss_vsz_kib": "757504 495713328"
+    },
+    {
+      "elapsed_seconds": 23.85167945799185,
+      "rss_vsz_kib": "757936 495713328"
+    },
+    {
+      "elapsed_seconds": 24.182900208048522,
+      "rss_vsz_kib": "759792 495713328"
+    },
+    {
+      "elapsed_seconds": 24.51823637500638,
+      "rss_vsz_kib": "817856 495713328"
+    },
+    {
+      "elapsed_seconds": 24.864076833007857,
+      "rss_vsz_kib": "849792 495713328"
+    },
+    {
+      "elapsed_seconds": 25.156975708028767,
+      "rss_vsz_kib": "870784 495713328"
+    },
+    {
+      "elapsed_seconds": 25.497767791035585,
+      "rss_vsz_kib": "874592 495713328"
+    },
+    {
+      "elapsed_seconds": 25.837027208006475,
+      "rss_vsz_kib": "876416 495713328"
+    },
+    {
+      "elapsed_seconds": 26.26427095802501,
+      "rss_vsz_kib": "877456 495713328"
+    },
+    {
+      "elapsed_seconds": 26.61465316603426,
+      "rss_vsz_kib": "878752 495713328"
+    },
+    {
+      "elapsed_seconds": 26.969136958010495,
+      "rss_vsz_kib": "889008 495721520"
+    },
+    {
+      "elapsed_seconds": 27.3257972500287,
+      "rss_vsz_kib": "890272 495721520"
+    },
+    {
+      "elapsed_seconds": 27.682689666049555,
+      "rss_vsz_kib": "892160 495721520"
+    },
+    {
+      "elapsed_seconds": 28.045933415996842,
+      "rss_vsz_kib": "894432 495721520"
+    },
+    {
+      "elapsed_seconds": 28.413110374996904,
+      "rss_vsz_kib": "896704 495721520"
+    },
+    {
+      "elapsed_seconds": 28.777004291012418,
+      "rss_vsz_kib": "884624 495721520"
+    },
+    {
+      "elapsed_seconds": 29.140377708012238,
+      "rss_vsz_kib": "877920 495721520"
+    },
+    {
+      "elapsed_seconds": 29.394895958015695,
+      "rss_vsz_kib": "880016 495721520"
+    },
+    {
+      "elapsed_seconds": 29.66924287501024,
+      "rss_vsz_kib": "881904 495721520"
+    },
+    {
+      "elapsed_seconds": 29.923973291006405,
+      "rss_vsz_kib": "884480 495721520"
+    },
+    {
+      "elapsed_seconds": 30.29600670799846,
+      "rss_vsz_kib": "892880 495721520"
+    },
+    {
+      "elapsed_seconds": 30.659656750038266,
+      "rss_vsz_kib": "893936 495721520"
+    },
+    {
+      "elapsed_seconds": 31.02538408304099,
+      "rss_vsz_kib": "894784 495721520"
+    },
+    {
+      "elapsed_seconds": 31.387292958039325,
+      "rss_vsz_kib": "894800 495721520"
+    },
+    {
+      "elapsed_seconds": 31.760495125025045,
+      "rss_vsz_kib": "894832 495721520"
+    },
+    {
+      "elapsed_seconds": 32.12360525003169,
+      "rss_vsz_kib": "895024 495721520"
+    },
+    {
+      "elapsed_seconds": 32.48247466603061,
+      "rss_vsz_kib": "895184 495721520"
+    },
+    {
+      "elapsed_seconds": 32.85383904102491,
+      "rss_vsz_kib": "895184 495721520"
+    },
+    {
+      "elapsed_seconds": 33.21843558299588,
+      "rss_vsz_kib": "895184 495721520"
+    },
+    {
+      "elapsed_seconds": 33.57729108299827,
+      "rss_vsz_kib": "895296 495721520"
+    },
+    {
+      "elapsed_seconds": 33.94408308301354,
+      "rss_vsz_kib": "895408 495721520"
+    },
+    {
+      "elapsed_seconds": 34.34283445804613,
+      "rss_vsz_kib": "896464 495721520"
+    },
+    {
+      "elapsed_seconds": 34.70300983299967,
+      "rss_vsz_kib": "896816 495721520"
+    },
+    {
+      "elapsed_seconds": 35.071450958028436,
+      "rss_vsz_kib": "896992 495721520"
+    },
+    {
+      "elapsed_seconds": 35.43139020801755,
+      "rss_vsz_kib": "917344 495721520"
+    },
+    {
+      "elapsed_seconds": 35.68670212500729,
+      "rss_vsz_kib": "929024 495721520"
+    },
+    {
+      "elapsed_seconds": 36.05638958304189,
+      "rss_vsz_kib": "929072 495721520"
+    },
+    {
+      "elapsed_seconds": 36.38424500002293,
+      "rss_vsz_kib": "930704 495721520"
+    },
+    {
+      "elapsed_seconds": 36.726965875015594,
+      "rss_vsz_kib": "935664 495721520"
+    },
+    {
+      "elapsed_seconds": 36.98451475001639,
+      "rss_vsz_kib": "941424 495721520"
+    },
+    {
+      "elapsed_seconds": 37.314380583004095,
+      "rss_vsz_kib": "942432 495721520"
+    },
+    {
+      "elapsed_seconds": 37.69489554100437,
+      "rss_vsz_kib": "955808 495721520"
+    },
+    {
+      "elapsed_seconds": 38.07471208303468,
+      "rss_vsz_kib": "970352 495721520"
+    },
+    {
+      "elapsed_seconds": 38.45501425000839,
+      "rss_vsz_kib": "974640 495721520"
+    },
+    {
+      "elapsed_seconds": 38.896229375037365,
+      "rss_vsz_kib": "979792 495721520"
+    },
+    {
+      "elapsed_seconds": 39.26595016603824,
+      "rss_vsz_kib": "982496 495721520"
+    },
+    {
+      "elapsed_seconds": 39.52165775001049,
+      "rss_vsz_kib": "984576 495721520"
+    },
+    {
+      "elapsed_seconds": 39.7731802079943,
+      "rss_vsz_kib": "986816 495721520"
+    },
+    {
+      "elapsed_seconds": 40.02549370803172,
+      "rss_vsz_kib": "988336 495721520"
+    },
+    {
+      "elapsed_seconds": 40.53170004102867,
+      "rss_vsz_kib": "993232 495721520"
+    },
+    {
+      "elapsed_seconds": 40.97273825004231,
+      "rss_vsz_kib": "993664 495721520"
+    },
+    {
+      "elapsed_seconds": 41.10509462503251,
+      "rss_vsz_kib": "993664 495721520"
+    },
+    {
+      "elapsed_seconds": 41.36085116601316,
+      "rss_vsz_kib": "994016 495721520"
+    },
+    {
+      "elapsed_seconds": 41.62122975004604,
+      "rss_vsz_kib": "994160 495721520"
+    },
+    {
+      "elapsed_seconds": 41.871874541044235,
+      "rss_vsz_kib": "996704 495721520"
+    },
+    {
+      "elapsed_seconds": 42.129870458040386,
+      "rss_vsz_kib": "999264 495721520"
+    },
+    {
+      "elapsed_seconds": 42.44353295804467,
+      "rss_vsz_kib": "999872 495721520"
+    },
+    {
+      "elapsed_seconds": 42.73804745799862,
+      "rss_vsz_kib": "1000064 495721520"
+    },
+    {
+      "elapsed_seconds": 43.04610387503635,
+      "rss_vsz_kib": "1000432 495721520"
+    },
+    {
+      "elapsed_seconds": 43.32303045800654,
+      "rss_vsz_kib": "1000448 495721520"
+    },
+    {
+      "elapsed_seconds": 43.593105958017986,
+      "rss_vsz_kib": "1000480 495721520"
+    },
+    {
+      "elapsed_seconds": 43.85741454100935,
+      "rss_vsz_kib": "1000480 495721520"
+    },
+    {
+      "elapsed_seconds": 44.13050095801009,
+      "rss_vsz_kib": "1000496 495721520"
+    },
+    {
+      "elapsed_seconds": 44.394500875030644,
+      "rss_vsz_kib": "1000656 495721520"
+    },
+    {
+      "elapsed_seconds": 44.65742412500549,
+      "rss_vsz_kib": "1000768 495721520"
+    },
+    {
+      "elapsed_seconds": 44.922343000012916,
+      "rss_vsz_kib": "1000816 495721520"
+    },
+    {
+      "elapsed_seconds": 45.20046808302868,
+      "rss_vsz_kib": "1001680 495721520"
+    },
+    {
+      "elapsed_seconds": 45.45776429102989,
+      "rss_vsz_kib": "1001728 495721520"
+    },
+    {
+      "elapsed_seconds": 45.70588904101169,
+      "rss_vsz_kib": "1001776 495721520"
+    },
+    {
+      "elapsed_seconds": 45.96908037504181,
+      "rss_vsz_kib": "1001792 495721520"
+    },
+    {
+      "elapsed_seconds": 46.218183832999784,
+      "rss_vsz_kib": "1001840 495721520"
+    },
+    {
+      "elapsed_seconds": 46.50602295802673,
+      "rss_vsz_kib": "1001968 495721520"
+    },
+    {
+      "elapsed_seconds": 46.84605045802891,
+      "rss_vsz_kib": "1003136 495721520"
+    },
+    {
+      "elapsed_seconds": 47.10423458303558,
+      "rss_vsz_kib": "1003312 495721520"
+    },
+    {
+      "elapsed_seconds": 47.43561325001065,
+      "rss_vsz_kib": "1003536 495721520"
+    },
+    {
+      "elapsed_seconds": 47.8672112080385,
+      "rss_vsz_kib": "1008016 495721520"
+    },
+    {
+      "elapsed_seconds": 48.217478541017044,
+      "rss_vsz_kib": "1010400 495721520"
+    },
+    {
+      "elapsed_seconds": 48.48279450001428,
+      "rss_vsz_kib": "1011712 495721520"
+    },
+    {
+      "elapsed_seconds": 48.97090366604971,
+      "rss_vsz_kib": "1020816 495721520"
+    },
+    {
+      "elapsed_seconds": 49.38619370799279,
+      "rss_vsz_kib": "1031696 495721520"
+    },
+    {
+      "elapsed_seconds": 49.73319304100005,
+      "rss_vsz_kib": "1035424 495721520"
+    },
+    {
+      "elapsed_seconds": 50.01113770803204,
+      "rss_vsz_kib": "1041520 495721520"
+    },
+    {
+      "elapsed_seconds": 50.4259720830014,
+      "rss_vsz_kib": "1053376 495721520"
+    },
+    {
+      "elapsed_seconds": 50.81181312503759,
+      "rss_vsz_kib": "1083760 495737904"
+    },
+    {
+      "elapsed_seconds": 51.147147250012495,
+      "rss_vsz_kib": "1093616 495737904"
+    },
+    {
+      "elapsed_seconds": 51.46600045799278,
+      "rss_vsz_kib": "1094656 495737904"
+    },
+    {
+      "elapsed_seconds": 51.71988650003914,
+      "rss_vsz_kib": "1094736 495737904"
+    },
+    {
+      "elapsed_seconds": 52.14200408302713,
+      "rss_vsz_kib": "1094816 495737904"
+    },
+    {
+      "elapsed_seconds": 52.56562208302785,
+      "rss_vsz_kib": "1095680 495737904"
+    },
+    {
+      "elapsed_seconds": 53.00488041603239,
+      "rss_vsz_kib": "1097792 495737904"
+    },
+    {
+      "elapsed_seconds": 53.430272666038945,
+      "rss_vsz_kib": "1098816 495737904"
+    },
+    {
+      "elapsed_seconds": 53.841053375042975,
+      "rss_vsz_kib": "1098832 495737904"
+    },
+    {
+      "elapsed_seconds": 54.32588537503034,
+      "rss_vsz_kib": "1101136 495737904"
+    },
+    {
+      "elapsed_seconds": 54.81283287500264,
+      "rss_vsz_kib": "1101280 495737904"
+    },
+    {
+      "elapsed_seconds": 55.24087566602975,
+      "rss_vsz_kib": "1101296 495737904"
+    },
+    {
+      "elapsed_seconds": 55.68447808304336,
+      "rss_vsz_kib": "1101312 495737904"
+    },
+    {
+      "elapsed_seconds": 56.11661195801571,
+      "rss_vsz_kib": "1101696 495737904"
+    },
+    {
+      "elapsed_seconds": 56.36427083302988,
+      "rss_vsz_kib": "1103264 495737904"
+    },
+    {
+      "elapsed_seconds": 56.635277958004735,
+      "rss_vsz_kib": "1103408 495737904"
+    },
+    {
+      "elapsed_seconds": 57.108187291014474,
+      "rss_vsz_kib": "1104528 495737904"
+    },
+    {
+      "elapsed_seconds": 57.552390875003766,
+      "rss_vsz_kib": "1104640 495737904"
+    },
+    {
+      "elapsed_seconds": 58.00015620799968,
+      "rss_vsz_kib": "1104768 495737904"
+    },
+    {
+      "elapsed_seconds": 58.25379200000316,
+      "rss_vsz_kib": "1106128 495737904"
+    },
+    {
+      "elapsed_seconds": 58.70699829101795,
+      "rss_vsz_kib": "1123104 495737904"
+    },
+    {
+      "elapsed_seconds": 59.16610508301528,
+      "rss_vsz_kib": "1123136 495737904"
+    },
+    {
+      "elapsed_seconds": 59.611924250028096,
+      "rss_vsz_kib": "1123696 495737904"
+    },
+    {
+      "elapsed_seconds": 59.85690341604641,
+      "rss_vsz_kib": "1123760 495737904"
+    },
+    {
+      "elapsed_seconds": 60.1563273750362,
+      "rss_vsz_kib": "1123808 495737904"
+    },
+    {
+      "elapsed_seconds": 60.732610125036445,
+      "rss_vsz_kib": "1124352 495737904"
+    },
+    {
+      "elapsed_seconds": 61.3468739160453,
+      "rss_vsz_kib": "1124352 495737904"
+    },
+    {
+      "elapsed_seconds": 61.79632333299378,
+      "rss_vsz_kib": "1124384 495737904"
+    },
+    {
+      "elapsed_seconds": 62.25922220799839,
+      "rss_vsz_kib": "1124448 495737904"
+    },
+    {
+      "elapsed_seconds": 62.706432250037324,
+      "rss_vsz_kib": "1124464 495737904"
+    },
+    {
+      "elapsed_seconds": 63.01574666600209,
+      "rss_vsz_kib": "1124464 495737904"
+    },
+    {
+      "elapsed_seconds": 63.272945791017264,
+      "rss_vsz_kib": "1124464 495737904"
+    },
+    {
+      "elapsed_seconds": 63.53138445800869,
+      "rss_vsz_kib": "1124464 495737904"
+    },
+    {
+      "elapsed_seconds": 64.0126394580002,
+      "rss_vsz_kib": "1124512 495737904"
+    },
+    {
+      "elapsed_seconds": 64.46792283304967,
+      "rss_vsz_kib": "1124512 495737904"
+    },
+    {
+      "elapsed_seconds": 64.88226575002773,
+      "rss_vsz_kib": "1124512 495737904"
+    },
+    {
+      "elapsed_seconds": 65.34743929101387,
+      "rss_vsz_kib": "1124512 495737904"
+    },
+    {
+      "elapsed_seconds": 65.90920491603902,
+      "rss_vsz_kib": "1124512 495737904"
+    },
+    {
+      "elapsed_seconds": 66.3699878330226,
+      "rss_vsz_kib": "1124560 495737904"
+    },
+    {
+      "elapsed_seconds": 66.61831808299758,
+      "rss_vsz_kib": "1124560 495737904"
+    },
+    {
+      "elapsed_seconds": 66.92768841603538,
+      "rss_vsz_kib": "1124560 495737904"
+    },
+    {
+      "elapsed_seconds": 67.18655979103642,
+      "rss_vsz_kib": "1124576 495737904"
+    },
+    {
+      "elapsed_seconds": 67.44157020800048,
+      "rss_vsz_kib": "1124576 495737904"
+    },
+    {
+      "elapsed_seconds": 67.90979783301009,
+      "rss_vsz_kib": "1124576 495737904"
+    },
+    {
+      "elapsed_seconds": 68.38342841604026,
+      "rss_vsz_kib": "1124576 495737904"
+    },
+    {
+      "elapsed_seconds": 68.86150408303365,
+      "rss_vsz_kib": "1124576 495737904"
+    },
+    {
+      "elapsed_seconds": 69.23271858302178,
+      "rss_vsz_kib": "1124576 495737904"
+    },
+    {
+      "elapsed_seconds": 69.72218304104172,
+      "rss_vsz_kib": "1124576 495737904"
+    },
+    {
+      "elapsed_seconds": 70.20622358302353,
+      "rss_vsz_kib": "1124576 495737904"
+    },
+    {
+      "elapsed_seconds": 70.68429604102857,
+      "rss_vsz_kib": "1124592 495737904"
+    },
+    {
+      "elapsed_seconds": 71.00585204100935,
+      "rss_vsz_kib": "1124592 495737904"
+    },
+    {
+      "elapsed_seconds": 71.29045116604539,
+      "rss_vsz_kib": "1124592 495737904"
+    },
+    {
+      "elapsed_seconds": 71.78414900001371,
+      "rss_vsz_kib": "1124592 495737904"
+    },
+    {
+      "elapsed_seconds": 72.05111233302159,
+      "rss_vsz_kib": "1124624 495737904"
+    },
+    {
+      "elapsed_seconds": 72.45975579100195,
+      "rss_vsz_kib": "1124624 495737904"
+    },
+    {
+      "elapsed_seconds": 72.96586466603912,
+      "rss_vsz_kib": "1124640 495737904"
+    },
+    {
+      "elapsed_seconds": 73.21134487504605,
+      "rss_vsz_kib": "1124640 495737904"
+    },
+    {
+      "elapsed_seconds": 73.6523365410394,
+      "rss_vsz_kib": "1124640 495737904"
+    },
+    {
+      "elapsed_seconds": 73.9812729160185,
+      "rss_vsz_kib": "1124640 495737904"
+    },
+    {
+      "elapsed_seconds": 74.46772370801773,
+      "rss_vsz_kib": "1124640 495737904"
+    },
+    {
+      "elapsed_seconds": 74.95178991602734,
+      "rss_vsz_kib": "1124656 495737904"
+    },
+    {
+      "elapsed_seconds": 75.28141229104949,
+      "rss_vsz_kib": "1124656 495737904"
+    },
+    {
+      "elapsed_seconds": 75.66218475002097,
+      "rss_vsz_kib": "1124656 495737904"
+    },
+    {
+      "elapsed_seconds": 76.16562741604866,
+      "rss_vsz_kib": "1124656 495737904"
+    },
+    {
+      "elapsed_seconds": 76.77239850000478,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 77.01948570803506,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 77.3245634160121,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 77.74599183304235,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 78.25737250002567,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 78.53767695801798,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 78.9592695000465,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 79.3427528750035,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 79.85818654100876,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 80.20386350003537,
+      "rss_vsz_kib": "1124688 495737904"
+    },
+    {
+      "elapsed_seconds": 80.66946900001494,
+      "rss_vsz_kib": "1124784 495737904"
+    },
+    {
+      "elapsed_seconds": 81.17871658300282,
+      "rss_vsz_kib": "1124896 495737904"
+    },
+    {
+      "elapsed_seconds": 81.85525241604773,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 82.14013850002084,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 82.40228125004796,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 82.77268341602758,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 83.01677612500498,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 83.29797158302972,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 83.81299900001613,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 84.5091982500162,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 84.76643962500384,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 85.01952650002204,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 85.30983108299552,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 85.56006450002315,
+      "rss_vsz_kib": "1124912 495737904"
+    },
+    {
+      "elapsed_seconds": 85.84631266602082,
+      "rss_vsz_kib": "1124928 495737904"
+    },
+    {
+      "elapsed_seconds": 86.10181941604242,
+      "rss_vsz_kib": "1124928 495737904"
+    },
+    {
+      "elapsed_seconds": 86.56206529104384,
+      "rss_vsz_kib": "1124928 495737904"
+    },
+    {
+      "elapsed_seconds": 86.80715545802377,
+      "rss_vsz_kib": "1124928 495737904"
+    },
+    {
+      "elapsed_seconds": 87.27649962500436,
+      "rss_vsz_kib": "1124928 495737904"
+    },
+    {
+      "elapsed_seconds": 87.62992675002897,
+      "rss_vsz_kib": "1124928 495737904"
+    },
+    {
+      "elapsed_seconds": 87.90376416599611,
+      "rss_vsz_kib": "1124928 495737904"
+    },
+    {
+      "elapsed_seconds": 88.36292504100129,
+      "rss_vsz_kib": "1124960 495737904"
+    },
+    {
+      "elapsed_seconds": 88.61697079101577,
+      "rss_vsz_kib": "1124960 495737904"
+    },
+    {
+      "elapsed_seconds": 88.99472520803101,
+      "rss_vsz_kib": "1124848 495737904"
+    },
+    {
+      "elapsed_seconds": 89.26309212500928,
+      "rss_vsz_kib": "1119280 495737904"
+    },
+    {
+      "elapsed_seconds": 89.58529416599777,
+      "rss_vsz_kib": "1062896 495737904"
+    },
+    {
+      "elapsed_seconds": 89.85207458300283,
+      "rss_vsz_kib": "1029088 495737904"
+    },
+    {
+      "elapsed_seconds": 90.26393587503117,
+      "rss_vsz_kib": "1029088 495737904"
+    },
+    {
+      "elapsed_seconds": 90.51708712504478,
+      "rss_vsz_kib": "1029088 495737904"
+    },
+    {
+      "elapsed_seconds": 90.76693595800316,
+      "rss_vsz_kib": "1029088 495737904"
+    },
+    {
+      "elapsed_seconds": 91.22630820801714,
+      "rss_vsz_kib": "1029088 495737904"
+    },
+    {
+      "elapsed_seconds": 91.58707579103066,
+      "rss_vsz_kib": "1029104 495737904"
+    },
+    {
+      "elapsed_seconds": 91.85544195800321,
+      "rss_vsz_kib": "1029200 495737904"
+    },
+    {
+      "elapsed_seconds": 92.37000104103936,
+      "rss_vsz_kib": "1029232 495737904"
+    },
+    {
+      "elapsed_seconds": 92.74060595803894,
+      "rss_vsz_kib": "1029296 495737904"
+    },
+    {
+      "elapsed_seconds": 93.0043070410029,
+      "rss_vsz_kib": "1029328 495737904"
+    },
+    {
+      "elapsed_seconds": 93.26396650000243,
+      "rss_vsz_kib": "1033712 495737904"
+    },
+    {
+      "elapsed_seconds": 93.77923825004837,
+      "rss_vsz_kib": "1036320 495737904"
+    },
+    {
+      "elapsed_seconds": 94.26732262503356,
+      "rss_vsz_kib": "1036368 495737904"
+    },
+    {
+      "elapsed_seconds": 94.66323745803675,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 95.16790133301402,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 95.68538383301347,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 96.23296816600487,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 96.76370400004089,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 97.28230054100277,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 97.81288279104047,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 98.32060366601218,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 98.9496139580151,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 99.46720000001369,
+      "rss_vsz_kib": "1036400 495737904"
+    },
+    {
+      "elapsed_seconds": 99.86219608300598,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 100.12125795800239,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 100.37968549999641,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 100.63782062503742,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 100.8972364999936,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 101.15130495803896,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 101.40501095802756,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 101.66244812501827,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 102.1056448330055,
+      "rss_vsz_kib": "1037072 495737904"
+    },
+    {
+      "elapsed_seconds": 102.36131516599562,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 102.61735837504966,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 102.87223287503002,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 103.13114045804832,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 103.38446229102556,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 103.65864779101685,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 103.91324641602114,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 104.1705504580168,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 104.42548650002573,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 104.68083683302393,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 104.9371401250246,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 105.19399041600991,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 105.45164525002474,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 105.70870250003645,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 105.96765708300518,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 106.22574470803374,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 106.4782817499945,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 106.7332668750314,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 106.98593945801258,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 107.24485791602638,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 107.49761950003449,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 107.74967683304567,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 108.00359070801642,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 108.26169862499228,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 108.521797583031,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 108.78107675001957,
+      "rss_vsz_kib": "1037088 495737904"
+    },
+    {
+      "elapsed_seconds": 109.03960304101929,
+      "rss_vsz_kib": "1037120 495737904"
+    },
+    {
+      "elapsed_seconds": 109.30058329104213,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 109.55806587502593,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 109.81423229101347,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 110.07341641600942,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 110.32986045803409,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 110.58514987502713,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 110.84140791604295,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 111.09644254104933,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 111.35381475003669,
+      "rss_vsz_kib": "1037152 495737904"
+    },
+    {
+      "elapsed_seconds": 111.6075103750336,
+      "rss_vsz_kib": "1037168 495737904"
+    },
+    {
+      "elapsed_seconds": 111.8889867500402,
+      "rss_vsz_kib": "1037168 495737904"
+    },
+    {
+      "elapsed_seconds": 112.14482950000092,
+      "rss_vsz_kib": "1037168 495737904"
+    },
+    {
+      "elapsed_seconds": 112.40208987501683,
+      "rss_vsz_kib": "1037168 495737904"
+    },
+    {
+      "elapsed_seconds": 112.6585027500405,
+      "rss_vsz_kib": "1037168 495737904"
+    },
+    {
+      "elapsed_seconds": 112.91468516603345,
+      "rss_vsz_kib": "1037168 495737904"
+    },
+    {
+      "elapsed_seconds": 113.1737243750249,
+      "rss_vsz_kib": "1037168 495737904"
+    },
+    {
+      "elapsed_seconds": 113.43149833299685,
+      "rss_vsz_kib": "1037200 495737904"
+    },
+    {
+      "elapsed_seconds": 113.68913966603577,
+      "rss_vsz_kib": "1037200 495737904"
+    },
+    {
+      "elapsed_seconds": 113.94881333300145,
+      "rss_vsz_kib": "1037200 495737904"
+    },
+    {
+      "elapsed_seconds": 114.20816758304136,
+      "rss_vsz_kib": "1037200 495737904"
+    },
+    {
+      "elapsed_seconds": 114.46834158303682,
+      "rss_vsz_kib": "1037200 495737904"
+    },
+    {
+      "elapsed_seconds": 114.73086137499195,
+      "rss_vsz_kib": "1037200 495737904"
+    },
+    {
+      "elapsed_seconds": 114.99234720802633,
+      "rss_vsz_kib": "1037200 495737904"
+    },
+    {
+      "elapsed_seconds": 115.26666800002567,
+      "rss_vsz_kib": "1037216 495737904"
+    },
+    {
+      "elapsed_seconds": 115.79916441603564,
+      "rss_vsz_kib": "1037232 495737904"
+    },
+    {
+      "elapsed_seconds": 116.33092308300547,
+      "rss_vsz_kib": "1037232 495737904"
+    },
+    {
+      "elapsed_seconds": 116.86530150001636,
+      "rss_vsz_kib": "1037232 495737904"
+    },
+    {
+      "elapsed_seconds": 117.40412100002868,
+      "rss_vsz_kib": "1037232 495737904"
+    },
+    {
+      "elapsed_seconds": 117.94076858303742,
+      "rss_vsz_kib": "1037360 495737904"
+    },
+    {
+      "elapsed_seconds": 118.48098875000142,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 119.02886070800014,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 119.58287137502339,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 119.89848162501585,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 120.18030879099388,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 120.47959679103224,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 121.02648687502369,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 121.70047591603361,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 122.42879754101159,
+      "rss_vsz_kib": "1037392 495737904"
+    },
+    {
+      "elapsed_seconds": 122.98187695804518,
+      "rss_vsz_kib": "1037408 495737904"
+    },
+    {
+      "elapsed_seconds": 123.53312983299838,
+      "rss_vsz_kib": "1037408 495737904"
+    },
+    {
+      "elapsed_seconds": 124.10416000004625,
+      "rss_vsz_kib": "1037424 495737904"
+    },
+    {
+      "elapsed_seconds": 124.6900608750293,
+      "rss_vsz_kib": "1037424 495737904"
+    },
+    {
+      "elapsed_seconds": 125.20882808300667,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 125.50319483299972,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 125.80237650003983,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 126.09874441602733,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 126.3922935409937,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 126.68627379101235,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 126.97893387504155,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 127.27208083303412,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 127.5633472080226,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 127.85733716603136,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 128.15147783304565,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 128.44588241603924,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 128.7406706660404,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 129.03302808303852,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 129.32990383304423,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 129.62421241600532,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 129.9179540410405,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 130.21206604101462,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 130.508791500004,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 130.80588354100473,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 131.10413254104787,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 131.40128845802974,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 131.69913087500026,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 131.99323812499642,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 132.28785600000992,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 132.58081675000722,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 132.87871695804643,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 133.17718187504215,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 133.474992708012,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 133.77208354102913,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 134.06931483303197,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 134.36666066601174,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 134.68028787500225,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 134.974220041011,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 135.26993291603867,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 135.56477262504632,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 135.86042691604234,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 136.1554935000022,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 136.45239987503737,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 136.74706729099853,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 137.04091025004163,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 137.33293520804727,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 137.6249286660459,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 137.9216667500441,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 138.22028033301467,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 138.51741895801388,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 138.81600062502548,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 139.11492541601183,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 139.41352612501942,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 139.71308591600973,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 140.01101058302447,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 140.31164304103004,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 140.60940412501805,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 140.90797020803438,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 141.20669600000838,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 141.50542908301577,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 141.80282716604415,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 142.09654262504773,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 142.38897766603623,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 142.8562731660204,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 143.16540575004183,
+      "rss_vsz_kib": "1037616 495737904"
+    },
+    {
+      "elapsed_seconds": 143.51515454100445,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 143.81134137499612,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 144.1059457079973,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 144.40147995803272,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 144.6964494160493,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 144.99211029103026,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 145.28816799999913,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 145.58737366599962,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 145.88409629103262,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 146.1849787500105,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 146.4836093329941,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 146.78287679102505,
+      "rss_vsz_kib": "1037632 495737904"
+    },
+    {
+      "elapsed_seconds": 147.08231441600947,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 147.3783994160476,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 147.67134508304298,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 147.9666264160187,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 148.26528783299727,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 148.56273666600464,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 148.85784741601674,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 149.15354508301243,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 149.4501457500155,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 149.7457419160055,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 150.03841095801909,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 150.3342653750442,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 150.62952700001188,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 150.92558354104403,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 151.22027329099365,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 151.51553395803785,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 151.81017820804846,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 152.10583750001388,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 152.39809537504334,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 152.6916300409939,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 153.00610862503527,
+      "rss_vsz_kib": "1037664 495737904"
+    },
+    {
+      "elapsed_seconds": 153.58101883303607,
+      "rss_vsz_kib": "1037680 495737904"
+    },
+    {
+      "elapsed_seconds": 154.15666675003013,
+      "rss_vsz_kib": "1037696 495737904"
+    },
+    {
+      "elapsed_seconds": 154.72857254103292,
+      "rss_vsz_kib": "1037728 495737904"
+    },
+    {
+      "elapsed_seconds": 155.29154250002466,
+      "rss_vsz_kib": "1037776 495737904"
+    },
+    {
+      "elapsed_seconds": 155.86082208302105,
+      "rss_vsz_kib": "1037776 495737904"
+    },
+    {
+      "elapsed_seconds": 156.43455404101405,
+      "rss_vsz_kib": "1037792 495737904"
+    },
+    {
+      "elapsed_seconds": 157.0046296250075,
+      "rss_vsz_kib": "1037792 495737904"
+    },
+    {
+      "elapsed_seconds": 157.547095832997,
+      "rss_vsz_kib": "1037792 495737904"
+    },
+    {
+      "elapsed_seconds": 157.86486274999334,
+      "rss_vsz_kib": "1037792 495737904"
+    },
+    {
+      "elapsed_seconds": 158.18886749999365,
+      "rss_vsz_kib": "1037808 495737904"
+    },
+    {
+      "elapsed_seconds": 158.76753716601525,
+      "rss_vsz_kib": "1037824 495737904"
+    },
+    {
+      "elapsed_seconds": 159.47087933303555,
+      "rss_vsz_kib": "1037824 495737904"
+    },
+    {
+      "elapsed_seconds": 160.0536945410422,
+      "rss_vsz_kib": "1037824 495737904"
+    },
+    {
+      "elapsed_seconds": 160.63267620804254,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 160.958018208039,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 161.28424150001956,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 161.60978404100752,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 161.93413854099344,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 162.25875416601775,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 162.58517125004437,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 163.08096804103116,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 163.4059153330163,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 163.74918566603446,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 164.0749750410323,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 164.4014854580164,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 164.72535879100906,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 165.05195516604,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 165.3787749580224,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 165.7033027909929,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 166.02875216602115,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 166.35291329101892,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 166.6799774580286,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 167.00563895801315,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 167.33301541599212,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 167.6563549580169,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 167.97807579103392,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 168.29974912502803,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 168.62350400001742,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 168.94834225001978,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 169.2726970000076,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 169.59653420804534,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 169.92110870801844,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 170.2471777080209,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 170.5740107910242,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 170.89871091599343,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 171.222637916042,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 171.54711195803247,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 171.8710391659988,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 172.31074025004636,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 172.63641199999256,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 172.96005533303833,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 173.28478849999374,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 173.61125545803225,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 173.94005254103104,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 174.26684375002515,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 174.59076137503143,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 174.91926908300957,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 175.24741991603514,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 175.5730083330418,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 175.89748870802578,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 176.22320870804833,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 176.55047408299288,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 176.87904395803344,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 177.20467170799384,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 177.52762700000312,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 177.8525785410311,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 178.1725086250226,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 178.497649750032,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 178.82486087502912,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 179.14947708300315,
+      "rss_vsz_kib": "1037856 495737904"
+    },
+    {
+      "elapsed_seconds": 179.47469954099506,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 179.7983857500367,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 180.12425716599682,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 180.46897441602778,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 180.79630533303134,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 181.1207447500201,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 181.44643679104047,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 181.77400400000624,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 182.10418133303756,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 182.42982641601702,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 182.75354583299486,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 183.07865166600095,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 183.5836690000142,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 183.90955520799616,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 184.23668708303012,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 184.5660404160153,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 184.89264141599415,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 185.21766987501178,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 185.54379408300156,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 185.86843237502035,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 186.19592716603074,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 186.52396995801246,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 186.85060450003948,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 187.17714158300078,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 187.50151283299783,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 187.825646665995,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 188.16857400001027,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 188.49104516603984,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 188.81506804103265,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 189.13578320801025,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 189.46009350003442,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 189.7835243330337,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 190.11005791602656,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 190.43834250001237,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 190.76436904101865,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 191.09089154104004,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 191.429108500015,
+      "rss_vsz_kib": "1037872 495737904"
+    },
+    {
+      "elapsed_seconds": 192.01770720799686,
+      "rss_vsz_kib": "1037888 495737904"
+    },
+    {
+      "elapsed_seconds": 192.61250537500018,
+      "rss_vsz_kib": "1037904 495737904"
+    },
+    {
+      "elapsed_seconds": 193.21211004100041,
+      "rss_vsz_kib": "1037904 495737904"
+    },
+    {
+      "elapsed_seconds": 193.8125865830225,
+      "rss_vsz_kib": "1037904 495737904"
+    },
+    {
+      "elapsed_seconds": 194.41977437504102,
+      "rss_vsz_kib": "1037920 495737904"
+    },
+    {
+      "elapsed_seconds": 195.11749112501275,
+      "rss_vsz_kib": "1037920 495737904"
+    },
+    {
+      "elapsed_seconds": 195.70286587503506,
+      "rss_vsz_kib": "1037920 495737904"
+    },
+    {
+      "elapsed_seconds": 196.04730350000318,
+      "rss_vsz_kib": "1037920 495737904"
+    },
+    {
+      "elapsed_seconds": 196.42335020803148,
+      "rss_vsz_kib": "1037920 495737904"
+    },
+    {
+      "elapsed_seconds": 197.0204161250149,
+      "rss_vsz_kib": "1037952 495737904"
+    },
+    {
+      "elapsed_seconds": 197.49412633304019,
+      "rss_vsz_kib": "1037952 495737904"
+    },
+    {
+      "elapsed_seconds": 197.8437867910252,
+      "rss_vsz_kib": "1038000 495737904"
+    },
+    {
+      "elapsed_seconds": 198.19703583302908,
+      "rss_vsz_kib": "1038000 495737904"
+    },
+    {
+      "elapsed_seconds": 198.54157908301568,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 198.8946962080081,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 199.2440658750129,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 199.697668333014,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 200.32191616599448,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 200.9703730409965,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 201.57972570799757,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 202.2160442500026,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 202.84719037503237,
+      "rss_vsz_kib": "1038016 495737904"
+    },
+    {
+      "elapsed_seconds": 203.47200433304533,
+      "rss_vsz_kib": "1030992 495737904"
+    },
+    {
+      "elapsed_seconds": 204.2922649999964,
+      "rss_vsz_kib": "1027936 495737904"
+    },
+    {
+      "elapsed_seconds": 204.89812175004045,
+      "rss_vsz_kib": "1008896 495737904"
+    },
+    {
+      "elapsed_seconds": 205.2570923330495,
+      "rss_vsz_kib": "981440 495737904"
+    },
+    {
+      "elapsed_seconds": 205.87711766600842,
+      "rss_vsz_kib": "922208 495737904"
+    },
+    {
+      "elapsed_seconds": 206.44681150000542,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 206.80092729104217,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 207.1572420830489,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 207.51220358302817,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 207.86555445799604,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 208.22197549999692,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 208.57410758303013,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 208.92570166604128,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 209.28093587502372,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 209.63551654102048,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 209.98876845801715,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 210.34336387499934,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 210.69906795804854,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 211.054818833014,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 211.40930383303203,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 211.7669104160159,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 212.12274133303436,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 212.47886929102242,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 212.83607554103946,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 213.19036195799708,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 213.5440171660157,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 213.90921129100025,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 214.26422033301787,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 214.61586225003703,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 214.97030841599917,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 215.32286704104627,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 215.67758100002538,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 216.0322488330421,
+      "rss_vsz_kib": "922256 495737904"
+    },
+    {
+      "elapsed_seconds": 216.38907233299688,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 216.7433490830008,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 217.09650487499312,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 217.44815625000047,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 217.79978350002784,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 218.15682008303702,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 218.51440479099983,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 218.86394475004636,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 219.22099325002637,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 219.57586029102094,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 219.93021433299873,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 220.28561429103138,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 220.63910133304307,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 220.9908835410024,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 221.3435268329922,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 221.71595570800127,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 222.06941520801047,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 222.42537383304443,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 222.77995695802383,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 223.1326618330204,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 223.4884031250258,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 223.83689966599923,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 224.18911825004034,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 224.7236928330385,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 225.07712854101555,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 225.42924283299362,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 225.78424750000704,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 226.14181795803597,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 226.49801333301002,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 226.85367491602665,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 227.20921404100955,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 227.5643165000365,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 227.91383062500972,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 228.26432408299297,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 228.61611525004264,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 228.98389162501553,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 229.33273349999217,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 229.7009433330386,
+      "rss_vsz_kib": "922272 495737904"
+    },
+    {
+      "elapsed_seconds": 230.33645908301696,
+      "rss_vsz_kib": "922320 495737904"
+    },
+    {
+      "elapsed_seconds": 230.97440270800143,
+      "rss_vsz_kib": "922320 495737904"
+    },
+    {
+      "elapsed_seconds": 231.61401287501212,
+      "rss_vsz_kib": "922320 495737904"
+    },
+    {
+      "elapsed_seconds": 232.2543316660449,
+      "rss_vsz_kib": "922336 495737904"
+    },
+    {
+      "elapsed_seconds": 233.00272741599474,
+      "rss_vsz_kib": "922352 495737904"
+    },
+    {
+      "elapsed_seconds": 233.6532937909942,
+      "rss_vsz_kib": "922352 495737904"
+    },
+    {
+      "elapsed_seconds": 234.31579379102914,
+      "rss_vsz_kib": "922400 495737904"
+    },
+    {
+      "elapsed_seconds": 234.70403158303816,
+      "rss_vsz_kib": "922400 495737904"
+    },
+    {
+      "elapsed_seconds": 235.09639179101214,
+      "rss_vsz_kib": "922400 495737904"
+    },
+    {
+      "elapsed_seconds": 235.49563383299392,
+      "rss_vsz_kib": "922400 495737904"
+    },
+    {
+      "elapsed_seconds": 236.1542014160077,
+      "rss_vsz_kib": "922400 495737904"
+    },
+    {
+      "elapsed_seconds": 236.9403428750229,
+      "rss_vsz_kib": "922400 495737904"
+    },
+    {
+      "elapsed_seconds": 237.61850437504472,
+      "rss_vsz_kib": "922400 495737904"
+    },
+    {
+      "elapsed_seconds": 238.2723806250142,
+      "rss_vsz_kib": "922400 495737904"
+    },
+    {
+      "elapsed_seconds": 238.92187170800753,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 239.44242870801827,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 239.8375972910435,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 240.2327372910222,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 240.63067199999932,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 241.02753116603708,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 241.42759541602572,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 241.83044487499865,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 242.22851691604592,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 242.62631037499523,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 243.02724100003252,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 243.42557604104513,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 243.84115041600307,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 244.24340554099763,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 244.64168779103784,
+      "rss_vsz_kib": "925168 495737904"
+    },
+    {
+      "elapsed_seconds": 245.2121933750459,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 245.61424966604682,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 246.01248916599434,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 246.41450916603208,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 246.818832207995,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 247.2187031659996,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 247.62300808302825,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 248.0245749159949,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 248.42838916601613,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 248.829249833012,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 249.22736050002277,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 249.62416670803213,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 250.01684395800112,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 250.41702283301856,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 250.816225416027,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 251.23338550003245,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 251.63314450002508,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 252.03098308300832,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 252.42974162503378,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 252.82989541604184,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 253.22630341601325,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 253.62411766604055,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 254.0217071250081,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 254.4204029579996,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 254.814865791006,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 255.21317804104183,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 255.60932566603879,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 256.0076844160212,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 256.40789633302484,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 256.8079754160135,
+      "rss_vsz_kib": "925216 495737904"
+    },
+    {
+      "elapsed_seconds": 257.2067764160456,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 257.6073880830081,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 258.00721233303193,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 258.4092960410053,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 258.82683337503113,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 259.22705620800843,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 259.62509662500815,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 260.0204386250116,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 260.41565466602333,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 260.82536420802353,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 261.23130495799705,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 261.63035987503827,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 262.02743508300046,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 262.4270061250427,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 262.82691833301215,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 263.22507583303377,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 263.62286004103953,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 264.0190860000439,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 264.41957716603065,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 264.8171472080285,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 265.3818751249928,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 265.7789040830103,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 266.18811154103605,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 266.58653379103635,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 266.9874820410041,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 267.40984129102435,
+      "rss_vsz_kib": "925232 495737904"
+    },
+    {
+      "elapsed_seconds": 268.08541258302284,
+      "rss_vsz_kib": "925280 495737904"
+    },
+    {
+      "elapsed_seconds": 268.7626745000016,
+      "rss_vsz_kib": "925280 495737904"
+    },
+    {
+      "elapsed_seconds": 269.44606308301445,
+      "rss_vsz_kib": "925280 495737904"
+    },
+    {
+      "elapsed_seconds": 270.1356706250226,
+      "rss_vsz_kib": "925328 495737904"
+    },
+    {
+      "elapsed_seconds": 270.8200022910023,
+      "rss_vsz_kib": "925328 495737904"
+    },
+    {
+      "elapsed_seconds": 271.30484829103807,
+      "rss_vsz_kib": "925328 495737904"
+    },
+    {
+      "elapsed_seconds": 271.725283833046,
+      "rss_vsz_kib": "925328 495737904"
+    },
+    {
+      "elapsed_seconds": 272.18627375003416,
+      "rss_vsz_kib": "925328 495737904"
+    },
+    {
+      "elapsed_seconds": 272.9849297910114,
+      "rss_vsz_kib": "925344 495737904"
+    },
+    {
+      "elapsed_seconds": 273.71652279101545,
+      "rss_vsz_kib": "880400 495737904"
+    },
+    {
+      "elapsed_seconds": 274.4032593330485,
+      "rss_vsz_kib": "880304 495737904"
+    },
+    {
+      "elapsed_seconds": 275.0853691250086,
+      "rss_vsz_kib": "880304 495737904"
+    },
+    {
+      "elapsed_seconds": 275.8957664160407,
+      "rss_vsz_kib": "880320 495737904"
+    },
+    {
+      "elapsed_seconds": 276.59259287500754,
+      "rss_vsz_kib": "880368 495737904"
+    },
+    {
+      "elapsed_seconds": 277.84464816603577,
+      "rss_vsz_kib": "880336 495737904"
+    },
+    {
+      "elapsed_seconds": 278.5488656660309,
+      "rss_vsz_kib": "880352 495737904"
+    },
+    {
+      "elapsed_seconds": 279.81207545800135,
+      "rss_vsz_kib": "880448 495737904"
+    },
+    {
+      "elapsed_seconds": 280.5192006659927,
+      "rss_vsz_kib": "880464 495737904"
+    },
+    {
+      "elapsed_seconds": 281.7730067500379,
+      "rss_vsz_kib": "880496 495737904"
+    },
+    {
+      "elapsed_seconds": 282.49029595800675,
+      "rss_vsz_kib": "880512 495737904"
+    }
+  ],
+  "printk_ring_decode": null,
+  "read_only_guest_memory_snapshots": [
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-reserved-ram.bin",
+      "scope": "Quiesced original Backup RAM only; not persistence/API acceptance",
+      "present": false
+    },
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-after-shutdown.bin",
+      "scope": "AP88 final quiescedreservedBackup; shutdowncompletion separatelyverified; notAP89 input yet",
+      "present": false
+    },
+    {
+      "address": 17674797056,
+      "size": 65536,
+      "name": "capid-reserved-ram.bin",
+      "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+      "present": false
+    },
+    {
+      "address": 17675845632,
+      "size": 1048576,
+      "name": "dmm-virtual-ram.bin",
+      "scope": "Quiesced explicit virtual two-slot DMM backing only; no originalCP/capture acceptance",
+      "present": false
+    },
+    {
+      "address": 17676894208,
+      "size": 65536,
+      "name": "adf-muted-ram.bin",
+      "scope": "Explicit muted software backing; original_sound=0",
+      "present": false
+    },
+    {
+      "address": 17678991360,
+      "size": 65536,
+      "name": "ui-gate-counters.bin",
+      "scope": "Observer-only counters and boot records, double-bank published snapshot; no behavior model",
+      "present": false
+    },
+    {
+      "address": 17680039936,
+      "size": 589824,
+      "name": "face-dmm-reserved-ram.bin",
+      "scope": "Independent virtual face-registration byte storage; actual local-to-remote copy; no recognition/physical camera acceptance",
+      "present": false
+    },
+    {
+      "address": 17683185664,
+      "size": 16777216,
+      "name": "osd-ring-final.bin",
+      "scope": "Software OSD snapshot ring; no CP panel/compositor acceptance",
+      "present": false
+    },
+    {
+      "address": 17682141184,
+      "size": 24576,
+      "name": "date98-trace-final.bin",
+      "scope": "Read-only observer-output copy only, native user32 and kernel44; first4K input unchanged",
+      "present": false
+    },
+    {
+      "address": 17682169856,
+      "size": 4096,
+      "name": "date99-clock-final.bin",
+      "scope": "Software CP clock plus native ready/type2 request/reply/type4 trace; no originalCP address",
+      "present": false
+    },
+    {
+      "address": 17682137088,
+      "size": 256,
+      "name": "ap102-control-final.bin",
+      "scope": "Read-only final hoststep command/done header",
+      "present": false
+    }
+  ],
+  "guest_exception_markers": [],
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": true,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY96_READY": true,
+    "FX3_OSD_FRAME_TARGET_VALID": true,
+    "FX3_GPE_COMPACTION_BOUND": true,
+    "FX3_GPE_DRAW_INTERVAL": true,
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": true,
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": true,
+    "FX3_KEY96_POLL": true,
+    "FX3_KEY96_THREAD_BEGIN": true,
+    "FX3_PANEL_CONFIG_V2_COMMIT": true,
+    "FX3_PROC97_STATUS_BEGIN": true,
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": true,
+    "FX3_DATE98_KERNEL_OBSERVE_READY": true,
+    "FX3_DATE99_WORKER_READY": true,
+    "FX3_DATE99_CONSUMER_BOUND": true,
+    "FX3_SYNC100_BACKEND_BOUND": true,
+    "FX3_FILE100_OBSERVER_READY": true,
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": true,
+    "FX3_BACKUP_INSMOD_RC=0": true,
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": true,
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": true,
+    "FX3_LDEC103_SELFTEST_RC=0": true,
+    "FX3_UIPC104_TEXT_BASE=": true,
+    "FX3_GPE104_LIB_BIND": true,
+    "FX3_FILE103_READY_CONFIRMED": true
+  },
+  "guest_warning_lines": [],
+  "menu_verified": false,
+  "classification": "OBSERVATION_ONLY_REVIEW_GUEST_LOGS",
+  "physical_devices_host_disks_network": 0,
+  "early_stop_reason": null,
+  "receipt_scope": "AP104 passive observation only per msg_b94a0dacc3e4: same AP103-r2 original inputs and device/Backup/pixel models. Added original dynamic owner store/release, native SyncCallback/SendDrawComp probes and exact-once adapter callback/send/dynamic_id logs. Completion semantics and ordering unchanged. Stop at first native unfetched; preserve source and API cleanup acknowledgment. AP104-r2 starts the same read-only file/control observer before CP API binding, requires a matching live PID readiness marker, and removes its late duplicate startup. New observer only adds readiness after header initialization; original shutdown script, CP/GPE/Backup/LDEC models unchanged.",
+  "AP104_passive_probe": {
+    "method": "QEMU TCG Z1 tables; native stopped CPU; original instruction single step; no original memory/register writes",
+    "module_bases": {
+      "uipc": "0xffffff80004be000",
+      "gpe": "0x7f88096000"
+    },
+    "backup_base_from_sysfs": "0xffffff80004fe000",
+    "installed_points": [
+      {
+        "va": "0x5b4c",
+        "raw": "601800f9",
+        "asm": "str x0, [x3, #0x30]",
+        "offset": 23372,
+        "label": "dynamic_owner_claim",
+        "module": "uipc",
+        "queue_register": 3,
+        "token_register": 0,
+        "relocated_call": false,
+        "runtime_word": "601800f9",
+        "runtime_address": "0xffffff80004c3b4c"
+      },
+      {
+        "va": "0x59b0",
+        "raw": "ff1a00f9",
+        "asm": "str xzr, [x23, #0x30]",
+        "offset": 22960,
+        "label": "dynamic_owner_release",
+        "module": "uipc",
+        "queue_register": 23,
+        "token_register": null,
+        "relocated_call": false,
+        "runtime_word": "ff1a00f9",
+        "runtime_address": "0xffffff80004c39b0"
+      },
+      {
+        "va": "0x5c80",
+        "raw": "ff1a00f9",
+        "asm": "str xzr, [x23, #0x30]",
+        "offset": 23680,
+        "label": "dynamic_owner_pending_release",
+        "module": "uipc",
+        "queue_register": 23,
+        "token_register": null,
+        "relocated_call": false,
+        "runtime_word": "ff1a00f9",
+        "runtime_address": "0xffffff80004c3c80"
+      },
+      {
+        "va": "0x34a4",
+        "raw": "207f8012",
+        "asm": "mov w0, #-0x3fa",
+        "offset": 13476,
+        "label": "first_unfetched_return",
+        "module": "uipc",
+        "queue_register": 21,
+        "token_register": null,
+        "relocated_call": false,
+        "runtime_word": "207f8012",
+        "runtime_address": "0xffffff80004c14a4"
+      },
+      {
+        "va": "0x2ea0",
+        "raw": "fd7bbda9",
+        "asm": "stp x29, x30, [sp, #-0x30]!",
+        "offset": 11936,
+        "label": "Backup_sync_subsystem_entry",
+        "relocated_call": false,
+        "runtime_word": "fd7bbda9",
+        "runtime_address": "0xffffff8000500ea0"
+      },
+      {
+        "va": "0x2ca0",
+        "raw": "fd7bbea9",
+        "asm": "stp x29, x30, [sp, #-0x20]!",
+        "offset": 11424,
+        "label": "sync_subsystem_mp_entry",
+        "relocated_call": false,
+        "runtime_word": "fd7bbea9",
+        "runtime_address": "0xffffff8000500ca0"
+      },
+      {
+        "va": "0x3f0",
+        "raw": "fd7bb6a9",
+        "asm": "stp x29, x30, [sp, #-0xa0]!",
+        "offset": 1008,
+        "label": "local_merge_entry",
+        "relocated_call": false,
+        "runtime_word": "fd7bb6a9",
+        "runtime_address": "0xffffff80004fe3f0"
+      },
+      {
+        "va": "0x42c",
+        "raw": "401200b4",
+        "asm": "cbz x0, #0x674",
+        "offset": 1068,
+        "label": "malloc_actual_return",
+        "relocated_call": false,
+        "runtime_word": "401200b4",
+        "runtime_address": "0xffffff80004fe42c"
+      },
+      {
+        "va": "0x438",
+        "raw": "1f440071",
+        "asm": "cmp w0, #0x11",
+        "offset": 1080,
+        "label": "cache_type_actual_return",
+        "relocated_call": false,
+        "runtime_word": "1f440071",
+        "runtime_address": "0xffffff80004fe438"
+      },
+      {
+        "va": "0x448",
+        "raw": "f30300aa",
+        "asm": "mov x19, x0",
+        "offset": 1096,
+        "label": "physical_to_VA_actual_return",
+        "relocated_call": false,
+        "runtime_word": "f30300aa",
+        "runtime_address": "0xffffff80004fe448"
+      },
+      {
+        "va": "0x464",
+        "raw": "000f00b4",
+        "asm": "cbz x0, #0x644",
+        "offset": 1124,
+        "label": "old_file_load_actual_return",
+        "relocated_call": false,
+        "runtime_word": "000f00b4",
+        "runtime_address": "0xffffff80004fe464"
+      },
+      {
+        "va": "0x614",
+        "raw": "a07b00b9",
+        "asm": "str w0, [x29, #0x78]",
+        "offset": 1556,
+        "label": "local_file_save_actual_return",
+        "relocated_call": false,
+        "runtime_word": "a07b00b9",
+        "runtime_address": "0xffffff80004fe614"
+      },
+      {
+        "va": "0x5fc",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 1532,
+        "label": "local_merge_return",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0xffffff80004fe5fc"
+      },
+      {
+        "va": "0x8fd8",
+        "raw": "fd7bbaa9",
+        "asm": "stp x29, x30, [sp, #-0x60]!",
+        "offset": 36824,
+        "label": "DMM_malloc_entry",
+        "relocated_call": false,
+        "runtime_word": "fd7bbaa9",
+        "runtime_address": "0xffffff8000506fd8"
+      },
+      {
+        "va": "0x90b4",
+        "raw": "00000094",
+        "asm": "bl #0x90b4",
+        "relocation": {
+          "symbol": "osal_snd_msg",
+          "section": "SHN_UNDEF",
+          "value": "0x0",
+          "addend": 0,
+          "type": 283
+        },
+        "offset": 37044,
+        "label": "DMM_send_original_request",
+        "relocated_call": true,
+        "runtime_word": "d1eafe97",
+        "runtime_address": "0xffffff80005070b4"
+      },
+      {
+        "va": "0x90b8",
+        "raw": "000a0035",
+        "asm": "cbnz w0, #0x91f8",
+        "offset": 37048,
+        "label": "DMM_send_actual_return",
+        "relocated_call": false,
+        "runtime_word": "000a0035",
+        "runtime_address": "0xffffff80005070b8"
+      },
+      {
+        "va": "0x90e0",
+        "raw": "00000094",
+        "asm": "bl #0x90e0",
+        "relocation": {
+          "symbol": "osal_rcv_msg_tmo",
+          "section": "SHN_UNDEF",
+          "value": "0x0",
+          "addend": 0,
+          "type": 283
+        },
+        "offset": 37088,
+        "label": "DMM_receive_original_args",
+        "relocated_call": true,
+        "runtime_word": "2eecfe97",
+        "runtime_address": "0xffffff80005070e0"
+      },
+      {
+        "va": "0x90e4",
+        "raw": "f303002a",
+        "asm": "mov w19, w0",
+        "offset": 37092,
+        "label": "DMM_receive_actual_return",
+        "relocated_call": false,
+        "runtime_word": "f303002a",
+        "runtime_address": "0xffffff80005070e4"
+      },
+      {
+        "va": "0x9034",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 36916,
+        "label": "DMM_malloc_return",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0xffffff8000507034"
+      },
+      {
+        "va": "0x91d0",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 37328,
+        "label": "DMM_malloc_alt_return",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0xffffff80005071d0"
+      },
+      {
+        "va": "0x6a88",
+        "raw": "fd7bbaa9",
+        "asm": "stp x29, x30, [sp, #-0x60]!",
+        "offset": 27272,
+        "label": "backupfile_save_file_entry",
+        "relocated_call": false,
+        "runtime_word": "fd7bbaa9",
+        "runtime_address": "0xffffff8000504a88"
+      },
+      {
+        "va": "0x6c2c",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 27692,
+        "label": "backupfile_save_file_return",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0xffffff8000504c2c"
+      },
+      {
+        "va": "0x6c88",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 27784,
+        "label": "backupfile_save_file_return",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0xffffff8000504c88"
+      },
+      {
+        "va": "0x6cc8",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 27848,
+        "label": "backupfile_save_file_return",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0xffffff8000504cc8"
+      },
+      {
+        "va": "0x6d20",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 27936,
+        "label": "backupfile_save_file_return",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0xffffff8000504d20"
+      },
+      {
+        "va": "0xa110",
+        "raw": "fd7bbea9",
+        "asm": "stp x29, x30, [sp, #-0x20]!",
+        "offset": 41232,
+        "label": "original_Main_SyncCallback_enter",
+        "module": "gpe",
+        "relocated_call": false,
+        "runtime_word": "fd7bbea9",
+        "runtime_address": "0x7f880a0110"
+      },
+      {
+        "va": "0xa154",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 41300,
+        "label": "original_Main_SyncCallback_return",
+        "module": "gpe",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0x7f880a0154"
+      },
+      {
+        "va": "0xd888",
+        "raw": "e30301aa",
+        "asm": "mov x3, x1",
+        "offset": 55432,
+        "label": "original_SendDrawComp_enter",
+        "module": "gpe",
+        "relocated_call": false,
+        "runtime_word": "e30301aa",
+        "runtime_address": "0x7f880a3888"
+      },
+      {
+        "va": "0xd714",
+        "raw": "c0035fd6",
+        "asm": "ret",
+        "offset": 55060,
+        "label": "original_shared_Send_return",
+        "module": "gpe",
+        "relocated_call": false,
+        "runtime_word": "c0035fd6",
+        "runtime_address": "0x7f880a3714"
+      }
+    ],
+    "records_count": 1152,
+    "total_observer_pause_seconds": 2.26331642922014,
+    "first_unfetched": null,
+    "breakpoints_removed": false,
+    "removal_replies_nonzero": null,
+    "fallback_clear_all_CPUs": null,
+    "original_words_unchanged": null,
+    "optional_probe_omitted": "completion_alloc_owner_read at +3480 only; all original owner stores, all native completion sites and first_unfetched at +34a4 retained",
+    "notification_mode": "native T05 identity; Hg/Hc only actual stopped CPU; vCont;s:thread holds other CPUs; asynchronous vCont;c resume",
+    "timing_limit": "Recorded pause sums processing after debug detection; excludes stop-notification transit and QMP latency. Debug observation alters scheduling; UART order alone is not happens-before"
+  },
+  "restore103": {
+    "passed": true,
+    "reason": "guest_acknowledged_and_original_bytes_verified",
+    "timeout_seconds": 20,
+    "elapsed_seconds": 1.5449544159928337,
+    "request_bytes": 8,
+    "request_issued": true,
+    "existing_request_reused": false,
+    "request_physical": "0x41d400030",
+    "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+    "requires_ack_and_original_bytes_after_request": true,
+    "already_original_without_pending_request_never_resumed": false,
+    "original_guest_code_written_by_host": false,
+    "guest_left_stopped": true,
+    "exception": null,
+    "attempts": [
+      {
+        "attempt": 0,
+        "elapsed_seconds": 0.0015822909772396088,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-000-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-000-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 0,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "737d592f59598ed5b45f635b8242fdfa3cd2f421d58051d4bb7f5b41c19e85e2"
+      },
+      {
+        "attempt": 1,
+        "elapsed_seconds": 0.2555670830188319,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-001-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-001-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "e93527e86c4a32337d2c9f36e651a96d944b9fef6fba45103fb2aaf0d007f2e6"
+      },
+      {
+        "attempt": 2,
+        "elapsed_seconds": 0.5101733329938725,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-002-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-002-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "e93527e86c4a32337d2c9f36e651a96d944b9fef6fba45103fb2aaf0d007f2e6"
+      },
+      {
+        "attempt": 3,
+        "elapsed_seconds": 0.7691213749931194,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-003-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-003-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "e93527e86c4a32337d2c9f36e651a96d944b9fef6fba45103fb2aaf0d007f2e6"
+      },
+      {
+        "attempt": 4,
+        "elapsed_seconds": 1.0300980829633772,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-004-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-004-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "e93527e86c4a32337d2c9f36e651a96d944b9fef6fba45103fb2aaf0d007f2e6"
+      },
+      {
+        "attempt": 5,
+        "elapsed_seconds": 1.2897365000098944,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-005-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-005-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "e93527e86c4a32337d2c9f36e651a96d944b9fef6fba45103fb2aaf0d007f2e6"
+      },
+      {
+        "attempt": 6,
+        "elapsed_seconds": 1.5447555829887278,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-006-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/restore103-006-api16.bin",
+        "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+        "api16_original": true,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 1,
+        "header_SHA256": "7f5ae73e2da9585aae54843dc1fae7bb45962303bc3573e3478de19e024599ef"
+      }
+    ]
+  }
+}

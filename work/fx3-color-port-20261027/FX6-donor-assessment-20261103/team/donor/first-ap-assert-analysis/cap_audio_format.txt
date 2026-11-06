@@ -1,0 +1,54 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000015164 <fx3_audio_format_apply>:
+   15164: aa0003e8     	mov	x8, x0
+   15168: 7100285f     	cmp	w2, #0xa
+   1516c: 12807fe0     	mov	w0, #-0x400             // =-1024
+   15170: 54000581     	b.ne	0x15220 <fx3_audio_format_apply+0xbc>
+   15174: b4000568     	cbz	x8, 0x15220 <fx3_audio_format_apply+0xbc>
+   15178: b4000541     	cbz	x1, 0x15220 <fx3_audio_format_apply+0xbc>
+   1517c: b4000523     	cbz	x3, 0x15220 <fx3_audio_format_apply+0xbc>
+   15180: 39400029     	ldrb	w9, [x1]
+   15184: 7100353f     	cmp	w9, #0xd
+   15188: 540004c1     	b.ne	0x15220 <fx3_audio_format_apply+0xbc>
+   1518c: 39400429     	ldrb	w9, [x1, #0x1]
+   15190: 7100813f     	cmp	w9, #0x20
+   15194: 54000461     	b.ne	0x15220 <fx3_audio_format_apply+0xbc>
+   15198: 39400829     	ldrb	w9, [x1, #0x2]
+   1519c: 7100b53f     	cmp	w9, #0x2d
+   151a0: 54000401     	b.ne	0x15220 <fx3_audio_format_apply+0xbc>
+   151a4: 39400c29     	ldrb	w9, [x1, #0x3]
+   151a8: 71000d3f     	cmp	w9, #0x3
+   151ac: 540003a1     	b.ne	0x15220 <fx3_audio_format_apply+0xbc>
+   151b0: 39401029     	ldrb	w9, [x1, #0x4]
+   151b4: 7100293f     	cmp	w9, #0xa
+   151b8: 54000341     	b.ne	0x15220 <fx3_audio_format_apply+0xbc>
+   151bc: 39401429     	ldrb	w9, [x1, #0x5]
+   151c0: 35000309     	cbnz	w9, 0x15220 <fx3_audio_format_apply+0xbc>
+   151c4: 39401829     	ldrb	w9, [x1, #0x6]
+   151c8: 7100053f     	cmp	w9, #0x1
+   151cc: 540002a1     	b.ne	0x15220 <fx3_audio_format_apply+0xbc>
+   151d0: 39401c29     	ldrb	w9, [x1, #0x7]
+   151d4: 7102013f     	cmp	w9, #0x80
+   151d8: 54000241     	b.ne	0x15220 <fx3_audio_format_apply+0xbc>
+   151dc: 39402029     	ldrb	w9, [x1, #0x8]
+   151e0: 7100053f     	cmp	w9, #0x1
+   151e4: 540001e8     	b.hi	0x15220 <fx3_audio_format_apply+0xbc>
+   151e8: 3940242a     	ldrb	w10, [x1, #0x9]
+   151ec: 350001aa     	cbnz	w10, 0x15220 <fx3_audio_format_apply+0xbc>
+   151f0: b940050a     	ldr	w10, [x8, #0x4]
+   151f4: 5280006b     	mov	w11, #0x3               // =3
+   151f8: f0ffff4c     	adrp	x12, 0x0 <syscall>
+   151fc: 9133e18c     	add	x12, x12, #0xcf8
+   15200: b900090b     	str	w11, [x8, #0x8]
+   15204: 2a1f03e0     	mov	w0, wzr
+   15208: f940018b     	ldr	x11, [x12]
+   1520c: 1100054a     	add	w10, w10, #0x1
+   15210: 29002909     	stp	w9, w10, [x8]
+   15214: 52a00b08     	mov	w8, #0x580000           // =5767168
+   15218: f900006b     	str	x11, [x3]
+   1521c: b9000868     	str	w8, [x3, #0x8]
+   15220: d65f03c0     	ret

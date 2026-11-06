@@ -1,0 +1,693 @@
+{
+  "source_pins": {
+    "DGU": "39eeb6d572a060149194463507800ed66b866a20dceb8ed49b01a04eb6fb2ba7",
+    "MIS": "4cd3e9bc3a0a4aec4793bff77e7ca4dccdba8637212cd632cdc5ecbe550daf98",
+    "NOR": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942"
+  },
+  "helper": {
+    "path": "probe_mis_consumer.py",
+    "sha256": "9010849205aeed159f75f922396f70611fa2fc173cc6e4b2a9837174d552199e"
+  },
+  "added_original_NOR": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/config-producer-20261029/original-files/loader_nor.bin",
+    "bytes": 101888,
+    "base": "0xfe049000",
+    "word_at_probe": "0x645f68637461705f",
+    "compared_magic": "0x59634649cafec0da",
+    "original_bytes_match_magic": false,
+    "range_only_original_file_bytes": true
+  },
+  "cases": [
+    {
+      "script_offset": "0xa00",
+      "result": {
+        "entry": "0xfe04536c",
+        "arguments": [
+          "0x10",
+          "0xfe080a00"
+        ],
+        "boundary": {
+          "reason": "before_outside_model_write",
+          "PC": "0xfe045918",
+          "address": "0xf1020024",
+          "bytes": 4,
+          "value": "0x1"
+        },
+        "original_instructions": 2302,
+        "original_dispatches": [
+          {
+            "PC": "0xfe045648",
+            "cursor": "0xfe080b00",
+            "opcode": "0x25",
+            "word_count": 11,
+            "raw_flags_u16": "0x0",
+            "handler": "0xfe0427a0",
+            "decoded_payload_hex": "4d495320666f72204447553620235072616d657465722076657273696f6e3a363030303139000000"
+          },
+          {
+            "PC": "0xfe045648",
+            "cursor": "0xfe080b2c",
+            "opcode": "0x10",
+            "word_count": 1,
+            "raw_flags_u16": "0x0",
+            "handler": "0xfe042110",
+            "decoded_payload_hex": ""
+          },
+          {
+            "PC": "0xfe045648",
+            "cursor": "0xfe080b30",
+            "opcode": "0x11",
+            "word_count": 1,
+            "raw_flags_u16": "0x0",
+            "handler": "0xfe042654",
+            "decoded_payload_hex": ""
+          }
+        ],
+        "nonstack_RAM_write_operations": 253,
+        "first_nonstack_RAM_writes": [
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046978",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04697c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046980",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046984",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046988",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04698c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046990",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046994",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046998",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04699c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469ac",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469bc",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469cc",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469d0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469d4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          }
+        ],
+        "register_snapshot": [
+          "0x0",
+          "0x1",
+          "0x28",
+          "0xe"
+        ],
+        "hardware_state_or_reply_supplied": false,
+        "function_returns_replaced": false,
+        "original_files_modified": false,
+        "whole_DGU_or_real_boot_proved": false
+      }
+    },
+    {
+      "script_offset": "0xc200",
+      "result": {
+        "entry": "0xfe04536c",
+        "arguments": [
+          "0x10",
+          "0xfe08c200"
+        ],
+        "boundary": {
+          "reason": "before_outside_model_write",
+          "PC": "0xfe045918",
+          "address": "0xf1020024",
+          "bytes": 4,
+          "value": "0x1"
+        },
+        "original_instructions": 1352,
+        "original_dispatches": [
+          {
+            "PC": "0xfe045648",
+            "cursor": "0xfe08c300",
+            "opcode": "0x10",
+            "word_count": 1,
+            "raw_flags_u16": "0x0",
+            "handler": "0xfe042110",
+            "decoded_payload_hex": ""
+          },
+          {
+            "PC": "0xfe045648",
+            "cursor": "0xfe08c304",
+            "opcode": "0x11",
+            "word_count": 1,
+            "raw_flags_u16": "0x0",
+            "handler": "0xfe042654",
+            "decoded_payload_hex": ""
+          }
+        ],
+        "nonstack_RAM_write_operations": 166,
+        "first_nonstack_RAM_writes": [
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046978",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04697c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046980",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046984",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046988",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04698c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046990",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046994",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046998",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04699c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469ac",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469bc",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469cc",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469d0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469d4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          }
+        ],
+        "register_snapshot": [
+          "0x0",
+          "0x1",
+          "0x28",
+          "0xe"
+        ],
+        "hardware_state_or_reply_supplied": false,
+        "function_returns_replaced": false,
+        "original_files_modified": false,
+        "whole_DGU_or_real_boot_proved": false
+      }
+    },
+    {
+      "script_offset": "0x13200",
+      "result": {
+        "entry": "0xfe04536c",
+        "arguments": [
+          "0x10",
+          "0xfe093200"
+        ],
+        "boundary": {
+          "reason": "before_outside_model_write",
+          "PC": "0xfe045918",
+          "address": "0xf1020024",
+          "bytes": 4,
+          "value": "0x1"
+        },
+        "original_instructions": 1352,
+        "original_dispatches": [
+          {
+            "PC": "0xfe045648",
+            "cursor": "0xfe093300",
+            "opcode": "0x10",
+            "word_count": 1,
+            "raw_flags_u16": "0x0",
+            "handler": "0xfe042110",
+            "decoded_payload_hex": ""
+          },
+          {
+            "PC": "0xfe045648",
+            "cursor": "0xfe093304",
+            "opcode": "0x11",
+            "word_count": 1,
+            "raw_flags_u16": "0x0",
+            "handler": "0xfe042654",
+            "decoded_payload_hex": ""
+          }
+        ],
+        "nonstack_RAM_write_operations": 166,
+        "first_nonstack_RAM_writes": [
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046978",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04697c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046980",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046984",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046988",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04698c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046990",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046994",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe046998",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe04699c",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469a8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469ac",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469b8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469bc",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469c8",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469cc",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469d0",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          },
+          {
+            "PC": "0xfe040a5c",
+            "address": "0xfe0469d4",
+            "bytes": 4,
+            "value": "0x0",
+            "kind": "original_DGU_BSS_RAM"
+          }
+        ],
+        "register_snapshot": [
+          "0x0",
+          "0x1",
+          "0x28",
+          "0xe"
+        ],
+        "hardware_state_or_reply_supplied": false,
+        "function_returns_replaced": false,
+        "original_files_modified": false,
+        "whole_DGU_or_real_boot_proved": false
+      }
+    }
+  ],
+  "scope": "Independent explicit original DGU/MIS/NOR RAM composition. Original NOR is read-only data; no NOR code or original boot-information block is mapped/executed. Other restrictions are inherited from the strict DGU-only probe. These bytes are a source-context projection, not a live boot-state measurement.",
+  "CPU_or_hardware_operations_executed": 0,
+  "device_actions": 0,
+  "native_Sony_programs_executed": 0,
+  "modified_firmware_or_flashable_package_produced": false
+}

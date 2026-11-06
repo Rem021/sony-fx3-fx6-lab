@@ -1,0 +1,60 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000000d028 <Updater::RVchk4PI::chkFirmInfo_before(UpdaterAPI::firmware_information_t::information*)>:
+    d1d0: 7103fe9f     	cmp	w20, #0xff
+    d1d4: 1a9fc7e0     	cset	w0, le
+    d1d8: 0a0002d6     	and	w22, w22, w0
+    d1dc: 14000007     	b	0xd1f8 <Updater::RVchk4PI::chkFirmInfo_before(UpdaterAPI::firmware_information_t::information*)+0x1d0>
+    d1e0: aa0003f4     	mov	x20, x0
+    d1e4: aa1303e0     	mov	x0, x19
+    d1e8: 97ffedee     	bl	0x89a0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv@plt>
+    d1ec: aa1403e0     	mov	x0, x20
+    d1f0: 97ffee90     	bl	0x8c30 <_Unwind_Resume@plt>
+    d1f4: 52800016     	mov	w22, #0x0               // =0
+    d1f8: aa1303e0     	mov	x0, x19
+    d1fc: 97ffede9     	bl	0x89a0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv@plt>
+    d200: 34000236     	cbz	w22, 0xd244 <Updater::RVchk4PI::chkFirmInfo_before(UpdaterAPI::firmware_information_t::information*)+0x21c>
+    d204: 90000000     	adrp	x0, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    d208: 12800013     	mov	w19, #-0x1              // =-1
+    d20c: 912f2400     	add	x0, x0, #0xbc9
+    d210: 97ffed40     	bl	0x8710 <remove@plt>
+    d214: 90000000     	adrp	x0, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    d218: 912f7c00     	add	x0, x0, #0xbdf
+    d21c: 97ffed3d     	bl	0x8710 <remove@plt>
+    d220: 35000077     	cbnz	w23, 0xd22c <Updater::RVchk4PI::chkFirmInfo_before(UpdaterAPI::firmware_information_t::information*)+0x204>
+    d224: 912d96a0     	add	x0, x21, #0xb65
+    d228: 97ffee26     	bl	0x8ac0 <umount@plt>
+    d22c: 2a1303e0     	mov	w0, w19
+    d230: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    d234: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    d238: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    d23c: a8ce7bfd     	ldp	x29, x30, [sp], #0xe0
+    d240: d65f03c0     	ret
+    d244: 910183b3     	add	x19, x29, #0x60
+    d248: 90000000     	adrp	x0, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    d24c: aa1303e1     	mov	x1, x19
+    d250: 912fd800     	add	x0, x0, #0xbf6
+    d254: 9400007f     	bl	0xd450 <Updater::RVchk4PI::chkFirmInfo_after(UpdaterAPI::firmware_information_t::information*)+0x1cc>
+    d258: 34000060     	cbz	w0, 0xd264 <Updater::RVchk4PI::chkFirmInfo_before(UpdaterAPI::firmware_information_t::information*)+0x23c>
+    d25c: 52800013     	mov	w19, #0x0               // =0
+    d260: 17fffff0     	b	0xd220 <Updater::RVchk4PI::chkFirmInfo_before(UpdaterAPI::firmware_information_t::information*)+0x1f8>
+    d264: 90000000     	adrp	x0, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    d268: aa1303e1     	mov	x1, x19
+    d26c: 9115d000     	add	x0, x0, #0x574
+    d270: 94000078     	bl	0xd450 <Updater::RVchk4PI::chkFirmInfo_after(UpdaterAPI::firmware_information_t::information*)+0x1cc>
+    d274: 35ffff40     	cbnz	w0, 0xd25c <Updater::RVchk4PI::chkFirmInfo_before(UpdaterAPI::firmware_information_t::information*)+0x234>
+    d278: 6b18029f     	cmp	w20, w24
+    d27c: 5a9fc3f3     	csetm	w19, le
+    d280: 17ffffe8     	b	0xd220 <Updater::RVchk4PI::chkFirmInfo_before(UpdaterAPI::firmware_information_t::information*)+0x1f8>
+
+000000000000d284 <Updater::RVchk4PI::chkFirmInfo_after(UpdaterAPI::firmware_information_t::information*)>:
+    d284: a9b17bfd     	stp	x29, x30, [sp, #-0xf0]!
+    d288: 910003fd     	mov	x29, sp
+    d28c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    d290: 910143b6     	add	x22, x29, #0x50
+    d294: 900000b5     	adrp	x21, 0x21000
+    d298: a90153f3     	stp	x19, x20, [sp, #0x10]
+    d29c: a90363f7     	stp	x23, x24, [sp, #0x30]

@@ -1,0 +1,31 @@
+# AP75 timer / 首次绘制的两轮有界观测
+
+两次固定候选240秒运行一致：**timer回调、指定配置调用、首次FillRect三个门槛均归为“未调用”**，限本候选与本观测窗口。不是“ID不匹配”或“timer表无记录”的证明：比较与查询入口均未到达。尚未解释上游为何未调用，没有实施行为修正。
+
+正式运行`ap75final1-a67fe198`与`ap75final2-4d01e9f8`使用同一candidate75.json，SHA256 `9f0c7840b78504c125ecfbf3d3cb62dad3b2e5a4a0cb0cdfe045f78a51b4e9fd`。两轮均qemu_exit=0、process_reaped=true、宿主PID消失、inputs_unchanged=true、missing_markers=[]、两锁实际重取释放、末次完整snapshot含im.elf映射，无guest exception或symbol lookup error。没有菜单、绘制或物理显示验收。
+
+| 正式run | (a) timer入口 | ID比较 / getInfo | (b) timer表查询 | (c)配置调用2191df4 | (d) FillRect execute | (e)独立1001 / 1004 | 关键时刻hook读回 |
+|---|---:|---|---:|---:|---:|---|---|
+| ap75final1-a67fe198 | 0 | 0 | 0 | 0 | 0 | 6 / 0 | 6次均0xf |
+| ap75final2-4d01e9f8 | 0 | 0 | 0 | 0 | 0 | 6 / 0 | 6次均0xf |
+
+(a) appFw+176fb4c入口计数为0；因此176fb80/176fbc0实际比较结果与取得时间均无样本，不能造出失败条件。(b) libObj+176ab0仅当timer wrapper当前widget上下文匹配才记录；本轮无该上下文，不能宣称表未命中。静态表头+890/next+30保留原执行。(c) hook16ee6f8既记录全部caller，也专门识别返回2191df8（调用点2191df4），两者均0；不能把其它路径观察到的1001当作该调用点执行证明。(d) libObj+100c48 execute计数0，故没有bitmap身份、序号或线程样本。
+
+每轮6次关键发送前后邻接的FX3_TIMER_SNAPSHOT均bound=1/patch_mask=0xf，逐处读回原入口16B的跳转指令及目标指针匹配，计数也均0；收尾文件快照同为0。这排除了这些关键发送时刻的跳转被覆盖这一种观测盲点。四处原前16B逐字节校验，均普通prologue无PC相对指令，跳板回放后返回原+16。IDeq和getTimerInfo以原导出ABI转发，只读原结果并恢复errno。全部依据在[指令及ABI核验](../../work/fx3-vm-20261101/menu-repair-01/runtime/ap75-hook-instruction-review.json)。通用参数/结果寄存器与IP0 scratch约定参照[Arm AAPCS64固定2025Q1版本](https://github.com/ARM-software/abi-aa/blob/2025Q1/aapcs64/aapcs64.rst)，Sony具体原型与条件来自本地反汇编，不能由通用ABI证明Sony业务等价。
+
+发送观察器保留原target/op/tag1/tag2去重规则、容量256，增加容量/抢锁丢失计数；三目标8288076c/8280074d/8280084d另有不经过unique锁的FX3_UI_WIRE。两轮实际独立事件均为发往8280074d的6次1001，未记录1004、发布1002/1003或GPE命令。
+
+| 末次计数快照 | seen | emitted | dedup | capacity_drop | lock_drop | stats_write_drop |
+|---|---:|---:|---:|---:|---:|---:|
+| 第1轮 / im202 | 20438 | 195 | 20243 | 0 | 0 | 55 |
+| 第2轮 / im202 | 19637 | 198 | 19439 | 0 | 0 | 112 |
+
+每轮seen=emitted+dedup+capacity_drop+lock_drop。stats_write_drop只表示并发更新统计文件时跳过一次快照，不代表UIPC请求或unique观察丢失。END marker由init沿用的1秒循环读取进程独立统计文件；sleep语句数量保持13不变，没有新增sleep。它是最后可见guest快照，不是QMP停止后在guest执行的原子终态；之后的小窗口不作全局否定证明。两轮“1004缺失”同时有独立wire与入口0计数支持，不能仅用去重日志缺失推导。
+
+**首次FillRect是否与1004同一次UI更新：无法判定。** 两个事件均没有样本，不存在可配对序号或bitmap；不能以同时缺失建立因果关系。
+
+下一步最小方案（未执行，须Lead另行批准）：静态核对1001其它构造/内联/转发路径，以及176fb4c的虚表调用者与timer注册时机；若还需动态证据，只对74d/1001发送回溯一次有界原调用栈，再按实际caller定位UI更新门控。先解决“实际走哪条调用路径”，不补发1004、不强制清屏、不改返回、不加sleep。当前没有足够依据批准任何确定性行为修正。
+
+校准材料保留：`ap75timer1-125f0a33`（首版把事件型CONFIG_DONE误设必需marker，导致missing；未据此判业务回归），`ap75r2timer1-f0cfc82b`（补全入口计数但尚无关键时刻代码读回）。校准首轮unique lock_drop=3，说明早期drop0不代表整轮；正式两轮上述值均0。两轮正式候选固定后未再扩展。
+
+[正式第1轮完整事件及回执](../../work/fx3-vm-20261101/menu-repair-01/runtime/ap75_final1-review.json) · [正式第2轮](../../work/fx3-vm-20261101/menu-repair-01/runtime/ap75_final2-review.json)。本报告与正式摘要行号按LF计数；历史摘要已统一校正，既有runs原日志未改。

@@ -1,0 +1,28 @@
+{
+  "schema": "fx3-stage46-public-case-refresh/1",
+  "observed_utc": "2026-10-26T01:53:50.564621+00:00",
+  "attachments_downloaded": false,
+  "cases": [
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31",
+      "issue_opened": "2026-10-23",
+      "observed_status": "open",
+      "initial_report": "User reports startup failure, repeating2-3-5 lamp pattern and HID054C:0D68 after modification/restart.",
+      "new_report_date": "2026-10-25",
+      "new_report": "One commenter reports entering the system in Movie/P after removing card and then using the repository restore function.",
+      "evidence_level": "Unverified community self-report; not our reproduction or maintainer-certified root cause/recovery.",
+      "repair_or_cost_guarantee_adopted": false,
+      "FX3_applicability": "Unknown. FX3 changes target video; an unaffected movie startup path is not established."
+    },
+    {
+      "url": "https://github.com/MDHan/a7c2-fl23-macos/issues/7",
+      "issue_opened": "2026-10-18",
+      "maintainer_response": "2026-10-21",
+      "observed_status": "open",
+      "scope": "Restore waits for0336 before native restore/write. Maintainer notes mode/auth operations already occurred; stale normal_usb_returned can be inherited from a prior session.",
+      "evidence_level": "User failure report plus maintainer code-position analysis; no validated general restore continuation reported on the page.",
+      "FX3_applicability": "Use per-session receipts and preserve ambiguous outcomes; do not copy its model/PID or hand-edit transaction phase."
+    }
+  ],
+  "no_camera_recovery_test_performed": true
+}

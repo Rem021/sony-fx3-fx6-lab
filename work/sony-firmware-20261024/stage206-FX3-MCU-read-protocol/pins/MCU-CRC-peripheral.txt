@@ -1,0 +1,19 @@
+0000bda4 10b5 push     {r4, lr}
+0000bda6 0022 movs     r2, #0
+0000bda8 00b9 cbnz     r0, #0xbdac
+0000bdaa 1260 str      r2, [r2]
+0000bdac 134b ldr      r3, [pc, #0x4c]
+0000bdae 1a70 strb     r2, [r3]
+0000bdb0 1a78 ldrb     r2, [r3]
+0000bdb2 42f00102 orr      r2, r2, #1
+0000bdb6 1a70 strb     r2, [r3]
+0000bdb8 0022 movs     r2, #0
+0000bdba 02e0 b        #0xbdc2
+0000bdbc 845c ldrb     r4, [r0, r2]
+0000bdbe 1c72 strb     r4, [r3, #8]
+0000bdc0 521c adds     r2, r2, #1
+0000bdc2 8a42 cmp      r2, r1
+0000bdc4 fad3 blo      #0xbdbc
+0000bdc6 d868 ldr      r0, [r3, #0xc]
+0000bdc8 80b2 uxth     r0, r0
+0000bdca 10bd pop      {r4, pc}

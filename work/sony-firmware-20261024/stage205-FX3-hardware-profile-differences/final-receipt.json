@@ -1,0 +1,520 @@
+{
+  "schema": "fx3-stage205-static-hardware-comparison-v1",
+  "created_utc": "2026-10-29T23:26:04.771888+00:00",
+  "previous_manifest_sha256": "abc88a1a2fe6a04b7d80b278b6448190af4b1e7db392b6e5a46ffe13dffc0a14",
+  "previous_members_reverified": 50,
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/DTB-decoded.json",
+      "bytes": 57375,
+      "sha256": "c17609253b19cfdebc7ab0cd175b8e4a93bfb6217957481a16045e42b3e41cf7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/DTB-source-capture.json",
+      "bytes": 1009,
+      "sha256": "a18ad355c01e62c96950df287f77c080a8195ba8e3b75f41e474a7b54ecfa6f7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/Darwin-WDT-source-proof.json",
+      "bytes": 5253,
+      "sha256": "95b4394ffd8fb1f64a090911ed6fe0f69345b980de3a7cd4af1f7114389b8d95"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/README.md",
+      "bytes": 6334,
+      "sha256": "057e8044959237c7b779883be5a3fb2b1cf2d97b5130def10bc592a8e33895d8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/analysis-corrections.json",
+      "bytes": 1117,
+      "sha256": "afeb9ec2cd23b7922a848c99e1b87641ded326e419e77c1b34a9410ab998db8b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/clock-reset-source-capture.json",
+      "bytes": 2307,
+      "sha256": "2f3dc9c94faf0673830c4f961b152b34f81cb00ef8682541e69d378adb23ce13"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/compare_hardware.py",
+      "bytes": 9434,
+      "sha256": "f758f9e70185babae06e305a39a0a8aa4a712b9d4716627a325a5a5f94c5e53d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/goal-status-after.json",
+      "bytes": 391596,
+      "sha256": "ffebfbe5a4c3fcb1934750bb120ac070c3db6ac76cecc3a8ae8eb09009589e1e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/goal-status-before.json",
+      "bytes": 389111,
+      "sha256": "001367e89093bd64788cc23ecb14b26edc688d0d037a30b89242b6cd1df05971"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/hardware-profile-comparison.json",
+      "bytes": 17194,
+      "sha256": "2ab85a380a8c2cc90806f9788273eeeab40ddff0d4ddbd2166b63fb4bf4a3162"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/implementation-review.json",
+      "bytes": 2120,
+      "sha256": "a0436edd95ca53232560218a892097de593459c171bee7017fd96e7c5687d430"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/inspect_DTB.py",
+      "bytes": 5123,
+      "sha256": "b845f41721477992e3820c4a31e5b7a5e687ffc0a8e067b3f96be86484489c77"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/native-goal-observed.json",
+      "bytes": 384,
+      "sha256": "da40ccb7e6d335eef22d226d58aab889f893bdb0aeda4a325c0e8b27b5965f6b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/originals/7.02-setting-cxd90057.dtb",
+      "bytes": 16875,
+      "sha256": "c5735ad9c6da8c48fb24eeee0bb743d07c486a47d5db19bef13b5eaea24ad280"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/payload-source-capture.json",
+      "bytes": 19389,
+      "sha256": "07666af9fd1dc3198712da288f247f114abcf60140dc39b294b844a3ebb53092"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-address-pool.txt",
+      "bytes": 21,
+      "sha256": "cade07b7eeb347af766237cf04d96f90e86111824039eef0b0278cc3ba998c91"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-base-pool0.txt",
+      "bytes": 21,
+      "sha256": "cd24a975c029ff4a35c55f36734071fb5167345a42dbf0f66be3007c776ae252"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-base-pool12.txt",
+      "bytes": 21,
+      "sha256": "bc7f243a7bde400f74583439484ff3b3e2092bb76cf832f28e67edf5af178150"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-counter-consumer.txt",
+      "bytes": 1090,
+      "sha256": "3ba8a766d0424706b81eb4b67b39162720593aafea56cf072353bb8377ff0c78"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-init-set-disable.txt",
+      "bytes": 858,
+      "sha256": "549f6af064f6c1b9b3d338b45c9526265c4e82c7ad6ad220e473fe489b962ced"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload0-base.txt",
+      "bytes": 173,
+      "sha256": "18c4bab141d6f4200da23ebc9221f4475e6f8065d6d7823618f4247f2dd44ea8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload0-call.txt",
+      "bytes": 108,
+      "sha256": "15bf8ccd2353113831ac007691403aa88e9bcb5230e5fc4559cd0c4c9615bebc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload1-call.txt",
+      "bytes": 148,
+      "sha256": "e7cad70c479d18c11ecaf53cade661a32ff46efb68d8a8e68a55152bf3e4db6e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload2-base.txt",
+      "bytes": 40,
+      "sha256": "883b2587654bf2dcb7676140bea8c6686c03647a384ef85ec42c12e7d049809b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload2-call.txt",
+      "bytes": 108,
+      "sha256": "9704c5543a1cbfe715b42a79d8ac6203c81620dfa15b053aa410fe7b7c992539"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/prove_Darwin_WDT.py",
+      "bytes": 4914,
+      "sha256": "7c8519e1af40a102ee4cee168c90e51e6ed695a27672036459adf7dcab622fd3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/readme-after.md",
+      "bytes": 87472,
+      "sha256": "53a564e953da77a9ac26a9d2963f625ebc88ba447651c1ae17b350d58aa8a4ea"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/readme-before.md",
+      "bytes": 87129,
+      "sha256": "fd0820eaf32a2b18cc08ac3758d9ea0d10c0504f16914c5815e9fd54459531e1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/readme-rebased-before.md",
+      "bytes": 87129,
+      "sha256": "fd0820eaf32a2b18cc08ac3758d9ea0d10c0504f16914c5815e9fd54459531e1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/LICENSE",
+      "bytes": 310,
+      "sha256": "4bb51600b105ed757919271f3d8b6a1bc6fd1553e4d3803adfbf1e4c3094876b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/Makefile",
+      "bytes": 2806,
+      "sha256": "02bbb2a505321746eee793a99d5531bce168931ed46d493d79c73b20cac3ca38"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/README.md",
+      "bytes": 1441,
+      "sha256": "4b3b650f34e73b6699d28deca3a86b03f9d7eb755ec89e2c16ea57fd52a058dd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/Makefile",
+      "bytes": 1822,
+      "sha256": "c9eeca5269011a614a5a1109cbe4481662ab50f79b632cc9f731ba1fdd9d82e3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/cetus.ld",
+      "bytes": 1498,
+      "sha256": "1b558e1346c9efb2630385a9821241e9ce6fd1d03d1c492082cfe82c16c1fafc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/include/io.h",
+      "bytes": 908,
+      "sha256": "3db50630efc5bb8189f6e6777dc1e20bf6acf93e034bee86064e7983d772b795"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/include/mbox.h",
+      "bytes": 1167,
+      "sha256": "410300652d1fb0364ff3932c92548a27addd7b20bd6491701293652d31cd28b9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/include/monitor.h",
+      "bytes": 759,
+      "sha256": "a32c7d6ef860d05de6551fc1e4ec0fce5f6091bd66216ad37bf6d15c0f249183"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/include/ospi.h",
+      "bytes": 1310,
+      "sha256": "0ecaa9878dc983598f722170b589ffd338278264d0fcf06bbd02fc727ba3603f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/include/spi.h",
+      "bytes": 1153,
+      "sha256": "7a7ffd72a7da3ca6d1f8c2fa27347cb62fbb13f661b7552038778addec9019ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/include/uart.h",
+      "bytes": 557,
+      "sha256": "ae2cb861a6075a2ecaf589ee098110bd0fb32cec92ada4599e7a865ffe393d42"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/src/main.c",
+      "bytes": 733,
+      "sha256": "0b4758e3d940af6881d700a0be78b0c973754502f8ec4398a07042e6f3b7700e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/src/monitor.c",
+      "bytes": 6827,
+      "sha256": "00f4e33b79cda192276fc0ec1d6a4b59ef775f490c0b9f94ad3abcc143dda8e1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/src/ospi.c",
+      "bytes": 7306,
+      "sha256": "a2306e8a901689a1dc28eacd7a8c08d9237bb277a9aacd4dcf3a87ae8953daf3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/src/spi.c",
+      "bytes": 2945,
+      "sha256": "4d12ebef0f909163a98b256c9ca84e36c4fe3d602b14db1ffa1c5e42120db685"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/src/start.S",
+      "bytes": 461,
+      "sha256": "f4e125545ef8d824cdb7ddd446404ad50eb34036427c110c58a25e80f7533de1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/cetus/src/uart.c",
+      "bytes": 2392,
+      "sha256": "b222ece78f24710984589ab909596a11f2824b68c90869330d8ddde0f8823ebc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/fastboot.ld",
+      "bytes": 1605,
+      "sha256": "ea0e88b7b118931a56769ea070f7c89c65b1426357feaa46c0cae494d369fbed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/cetus.h",
+      "bytes": 2396,
+      "sha256": "c7ba299c2d9c5071958647fe38e787a0c57200b75d6ffb30333f9a3d3de9c690"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/darwin.h",
+      "bytes": 2284,
+      "sha256": "b3b5b781e69e5ee8b599bbffa12c9674dbbd914c95c5b27e2af50ba1bda783cc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/dwc3.h",
+      "bytes": 2725,
+      "sha256": "3e8a47224ce963dd4e400a5493a7e3b49eebe636f81c0c309a0c02186ff8f301"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/dwc3_regs.h",
+      "bytes": 10127,
+      "sha256": "8c3485481c08494445bde21fc0859dd8c41630ce64448be069fd865cb71fec25"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/fastboot.h",
+      "bytes": 232,
+      "sha256": "413ea36887bdd72195ab7871aee2590f3406878d8336db2c28fd4b8f5df197e6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/io.h",
+      "bytes": 1742,
+      "sha256": "df605b6819d6da339641e8a7c289781149c1490a6f317f437824a05f3afab75c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/led.h",
+      "bytes": 1220,
+      "sha256": "544f49017a9b555a1dad65d3d06f9348851959f3f86232c4289a3bf4e0a97286"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/log.h",
+      "bytes": 380,
+      "sha256": "a06d4f462f2db88db489c5ccd352945ba3af00030b94204e95082751ca08b840"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/reset.h",
+      "bytes": 215,
+      "sha256": "f4d0e345c50fe6012cf23f4c5cb30f9ad1d9f4b66fc11a1e56e26050ddaa0585"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/scu.h",
+      "bytes": 2682,
+      "sha256": "13c8a4bbba35f835bdd389129453e0fd325752ef0a4e5e9b0aa71c04ea1189ee"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/sdhci.h",
+      "bytes": 6786,
+      "sha256": "00fbf2c9b7f84d5351afb010eb7019e86b11d0dc15dd11114e21c53b89368c98"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/spacc.h",
+      "bytes": 3637,
+      "sha256": "0786ce0b6dc9cb8352613a89350e2a6cb50a307775b83602d522697c0eda1fe4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/timer.h",
+      "bytes": 962,
+      "sha256": "a8960cd36c294e5b90cbb97b26ef9c2ab4da2d6962ea16d3f2fbfe107d519be9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/usb.h",
+      "bytes": 3158,
+      "sha256": "94e6927e192cbba89e934690966f77cc21d321ccac48bb63da2011aedd613a53"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/usb_phy.h",
+      "bytes": 2464,
+      "sha256": "e3c1fa7970f0bcfa4898dfad2084c4b3ef7b36c5431465f0b72a4cdefe8648de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/cetus.c",
+      "bytes": 14246,
+      "sha256": "9e505446ea6e7c0f86c117044ad81d46fe07288c4ec2590bf2e801395f9332bd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/darwin.c",
+      "bytes": 8368,
+      "sha256": "220ce98b18773a66df1aa499e2f9aa6e82dadb6a409d6130f65a5511d8088a1b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/delay.c",
+      "bytes": 622,
+      "sha256": "a71bec1ce7fb11840378dc7826cddb2dcbe8c6121030e27cf806d4e00c30a60b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/dwc3.c",
+      "bytes": 10068,
+      "sha256": "114391cbcca73107751e48da3858f5d82b46ffe2c81f4c9e6a500cb77d9343c2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/fastboot.c",
+      "bytes": 54340,
+      "sha256": "b0627eac91911ec8c7de268d005f1842f915da757510fa20cbae51f436c72dda"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/led.c",
+      "bytes": 1874,
+      "sha256": "b0e69c6be7ac3ecd7b603d5fda1ef40be3b3924aecb0bdcb93a9e43e2dbe0247"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/log.c",
+      "bytes": 1030,
+      "sha256": "dcd94d9421f1a41547301461ab853dd58ddbeda59cd1f99c4b926d6cd8c5878b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/main.c",
+      "bytes": 2049,
+      "sha256": "d52c0a9f926917e6eb5b3ebcb1f28ac4d776b476c53bb9e6adff2e6ecf254ad6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/reset.c",
+      "bytes": 1019,
+      "sha256": "8129e55c2d0c496ff670d8bf32ded2f00bebab70d10d9d63c8952d2bef40f619"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/sdhci.c",
+      "bytes": 13741,
+      "sha256": "767b7800a5d4bd8aaa17bb591289971d1cd3b310495e6cd784143856dd8f2820"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/spacc.c",
+      "bytes": 4844,
+      "sha256": "e799ee731d5781ec6d41c998da77eb87c8c0e089df2614669e90f77e58523310"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/start.S",
+      "bytes": 679,
+      "sha256": "16d92ebc1765bde9578b633de18496ba4c03e5152f1eb08dc7669d72390ccac2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/usb.c",
+      "bytes": 19214,
+      "sha256": "07d500ac07fbf96320c267375c1afe903f95d333844a829623eb04edd48440fc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/usb_phy.c",
+      "bytes": 3171,
+      "sha256": "78d8159632b5d782daed690617c4add9fe3eb137d52b88880be0125d857249ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057-memmap.dtsi",
+      "bytes": 1480,
+      "sha256": "f5ac7227828ee057bd5c3985d86070b38ad13f539ad5b6873c4f5dd2001431e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057.dtsi",
+      "bytes": 28387,
+      "sha256": "4c7a16829a732d24cd21b8fc2a481e15d56cbfe0371c81c7562765ca266a1663"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_nfs.dts",
+      "bytes": 1596,
+      "sha256": "7d5a8a00937d1c18cc7f4bd58d623fa485d1c98f36ca11abfab3247837b665f4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_nfs_ssp.dts",
+      "bytes": 1587,
+      "sha256": "b3576f7e717c6f8f13742d19824211fdb4b36ddb3d579207590c628a457d7bd4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_set.dts",
+      "bytes": 1535,
+      "sha256": "f3714ed982621c68f64e39723d576642ffd7cdc4b77d48d0a9825a20600eb492"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_set2.dts",
+      "bytes": 1892,
+      "sha256": "02b9e05e68d2204dc60ef1f9cee3474402741dcb83fabb2244c5c837beca8e12"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_set_ssp.dts",
+      "bytes": 1526,
+      "sha256": "efa2421eb7f74fea7bb370596de5bc72231925a33f3ab0700159efac0fcaa204"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/clk/cxd/clk-cxd-900xx.c",
+      "bytes": 13478,
+      "sha256": "e08b50424fea1042b14cd4e636773faa8a552f3715158667552afe646254e394"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/clk/cxd/cxd-clk-define.h",
+      "bytes": 1219,
+      "sha256": "597e79d58aae96fe3a46b9b368795a60cfa776ab9990bfe0acb2f28dc48b7f39"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/clk/cxd/cxd-clk-gate.c",
+      "bytes": 4203,
+      "sha256": "f6c9444903ce6fd322f1919b981421ce9b46c9b7e5e7273a9d7f34f627aba233"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/clk/cxd/cxd-clk.h",
+      "bytes": 1937,
+      "sha256": "ffb57fd761d03bee5657d257bf8ea15219607537ac63a10351428d7e84ac960f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/reset/reset-cxd900xx.c",
+      "bytes": 4055,
+      "sha256": "0caa00ea0cd5ed99c6510c8048e9b1c071b474892e79307c8234939f714da1c6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/include/mach/platform.h",
+      "bytes": 3821,
+      "sha256": "a34b127dfd8e3adfb67890a676f3df5cfb885e73d5977d4306f2c288c95875f8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif/platform.h",
+      "bytes": 2859,
+      "sha256": "9626885e97cbd0f879f65a60a3d388c25cb5c658236ab6b2c09fb4265839380d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/platform.c",
+      "bytes": 19859,
+      "sha256": "5cdcdbeb56a5f1a0c6fff9f954884a779e2651740adcae6c6c22e3ab4b66c482"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/usb/dwc3/cxd-phy.c",
+      "bytes": 25547,
+      "sha256": "e9b31ce6dca328d47175c7e18ec155b90b0c73e6cbfb67327ffd14faa0d9b60c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/usb/dwc3/dwc3-of-cxd.c",
+      "bytes": 20657,
+      "sha256": "74fde3862a5124307468d68102dc81b9c69e249410946af503e69b156970ccf6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/include/dt-bindings/clock/cxd-900xx-clk.h",
+      "bytes": 5357,
+      "sha256": "4b03a1d7aef0363dae9ed69c6f8538f0c09d74bf7ecc4ba3c3093613968446eb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/seal_stage.py",
+      "bytes": 11323,
+      "sha256": "46ef8235dc7dbd1651e9418779ba22d48bd4da01b49fd8b854869addb9643c2d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/upstream-head-check.json",
+      "bytes": 298,
+      "sha256": "4979b047637b073f237db1c18d065eee4ea2adde0bf89e574921282fad53fab1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/vendor-candidate-paths.json",
+      "bytes": 625,
+      "sha256": "d9acaeed4daee880567aca8cd07db86210591c18544fff82f6ed92122c6fd230"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/vendor-source-capture.json",
+      "bytes": 4581,
+      "sha256": "bd25dda49a59b46522f30f3a138776c69fdc7c1195c6be3a6c183a573423587b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/verification-receipt.json",
+      "bytes": 792,
+      "sha256": "44a006e8ec5808d6a8137af90fd8ab91b28d1eeb06b2f5dbffae75259f8d5fcb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/web-source-review.json",
+      "bytes": 1341,
+      "sha256": "0ca6ff4d4029a507c0a2ce5b980d0025934a22dedc0033e70e77e30570652bbc"
+    }
+  ],
+  "member_count": 100,
+  "mutable_heads_not_manifest_members": true,
+  "goal_before_sha256": "001367e89093bd64788cc23ecb14b26edc688d0d037a30b89242b6cd1df05971",
+  "goal_after_sha256": "ffebfbe5a4c3fcb1934750bb120ac070c3db6ac76cecc3a8ae8eb09009589e1e",
+  "host01_bundle_sha256_unchanged": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0",
+  "new_approval_granted": false,
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "native_goal_observed": "active",
+  "native_goal_status_changed_by_assistant": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

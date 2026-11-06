@@ -1,0 +1,17 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so
+# SHA256 537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797
+# VA [0x9278, 0x92b0) raw slice SHA256 135b381fd8bbaf1c36699fc2a55b09b02d7d6bfc73c6d888d9073e655dfea12b
+    9278: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+    927c: b0000002     	adrp	x2, 0xa000 <Updater::DllHandler::Close()+0x6c>
+    9280: 91225842     	add	x2, x2, #0x896
+    9284: 910003fd     	mov	x29, sp
+    9288: f9000bf3     	str	x19, [sp, #0x10]
+    928c: aa0003f3     	mov	x19, x0
+    9290: 97fff6c0     	bl	0x6d90 <Updater::BaseFlagFile::BaseFlagFile(char const*, char const*)@plt>
+    9294: f0000080     	adrp	x0, 0x1c000
+    9298: f947d400     	ldr	x0, [x0, #0xfa8]
+    929c: 91004000     	add	x0, x0, #0x10
+    92a0: f9000260     	str	x0, [x19]
+    92a4: f9400bf3     	ldr	x19, [sp, #0x10]
+    92a8: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    92ac: d65f03c0     	ret

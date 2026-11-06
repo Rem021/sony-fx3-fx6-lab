@@ -1,0 +1,41 @@
+# File offsets authoritative; display VA tentative, no firmware execution.
+0xfe04ea28 [file+0x5a28] f40f1ef8 str      x20, [sp, #-0x20]!
+0xfe04ea2c [file+0x5a2c] f37b01a9 stp      x19, x30, [sp, #0x10]
+0xfe04ea30 [file+0x5a30] 48feff97 bl       #0xfe04e350
+0xfe04ea34 [file+0x5a34] 66020094 bl       #0xfe04f3cc
+0xfe04ea38 [file+0x5a38] 33000090 adrp     x19, #0xfe052000
+0xfe04ea3c [file+0x5a3c] 73c22a91 add      x19, x19, #0xab0
+0xfe04ea40 [file+0x5a40] 20000090 adrp     x0, #0xfe052000
+0xfe04ea44 [file+0x5a44] 00201d91 add      x0, x0, #0x748
+0xfe04ea48 [file+0x5a48] e10313aa mov      x1, x19
+0xfe04ea4c [file+0x5a4c] 7fc201b9 str      wzr, [x19, #0x1c0]
+0xfe04ea50 [file+0x5a50] f3010094 bl       #0xfe04f21c
+0xfe04ea54 [file+0x5a54] 8003f837 tbnz     w0, #0x1f, #0xfe04eac4
+0xfe04ea58 [file+0x5a58] 68e24839 ldrb     w8, [x19, #0x238]
+0xfe04ea5c [file+0x5a5c] 010000f0 adrp     x1, #0xfe051000
+0xfe04ea60 [file+0x5a60] 02009052 mov      w2, #0x8000
+0xfe04ea64 [file+0x5a64] 21600c91 add      x1, x1, #0x318
+0xfe04ea68 [file+0x5a68] e0031f32 mov      w0, #2
+0xfe04ea6c [file+0x5a6c] 0202a072 movk     w2, #0x10, lsl #16
+0xfe04ea70 [file+0x5a70] 140d0353 ubfx     w20, w8, #3, #1
+0xfe04ea74 [file+0x5a74] 29fbff97 bl       #0xfe04d718
+0xfe04ea78 [file+0x5a78] c8fffff0 adrp     x8, #0xfe049000
+0xfe04ea7c [file+0x5a7c] 09028a52 mov      w9, #0x5010
+0xfe04ea80 [file+0x5a80] 08e11391 add      x8, x8, #0x4f8
+0xfe04ea84 [file+0x5a84] 09c0bf72 movk     w9, #0xfe00, lsl #16
+0xfe04ea88 [file+0x5a88] 7fba01b9 str      wzr, [x19, #0x1b8]
+0xfe04ea8c [file+0x5a8c] 280100b9 str      w8, [x9]
+0xfe04ea90 [file+0x5a90] 280500b9 str      w8, [x9, #4]
+0xfe04ea94 [file+0x5a94] 280900b9 str      w8, [x9, #8]
+0xfe04ea98 [file+0x5a98] 3f350039 strb     wzr, [x9, #0xd]
+0xfe04ea9c [file+0x5a9c] 3f390039 strb     wzr, [x9, #0xe]
+0xfe04eaa0 [file+0x5aa0] 3f3d0039 strb     wzr, [x9, #0xf]
+0xfe04eaa4 [file+0x5aa4] 9f3f03d5 dsb      sy
+0xfe04eaa8 [file+0x5aa8] 42ebff97 bl       #0xfe0497b0
+0xfe04eaac [file+0x5aac] 00009052 mov      w0, #0x8000
+0xfe04eab0 [file+0x5ab0] 0002a072 movk     w0, #0x10, lsl #16
+0xfe04eab4 [file+0x5ab4] e10314aa mov      x1, x20
+0xfe04eab8 [file+0x5ab8] 9f2003d5 sev      
+0xfe04eabc [file+0x5abc] c0f9ff97 bl       #0xfe04d1bc
+0xfe04eac0 [file+0x5ac0] 60ba41b9 ldr      w0, [x19, #0x1b8]
+0xfe04eac4 [file+0x5ac4] c9fdff97 bl       #0xfe04e1e8

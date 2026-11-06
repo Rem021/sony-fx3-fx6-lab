@@ -1,0 +1,252 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+  "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "configured_VA": "0xfe049000",
+  "original_or_guest_execution": false,
+  "source_unchanged": true,
+  "ranges": [
+    {
+      "label": "spi-state-consumer",
+      "start": "0xfe054c88",
+      "end_exclusive": "0xfe055724",
+      "sha256": "a85260e0b63a4a9354d8ef8ff95d6d0a17816b98e0618545bcf422cc5091c3ed",
+      "bytes": 2716,
+      "instructions": 679,
+      "string_candidates": [
+        {
+          "site": "0xfe054cb0",
+          "address": "0xfe0606e6",
+          "value": "PWD:Set Reg\n"
+        },
+        {
+          "site": "0xfe054d60",
+          "address": "0xfe060708",
+          "value": "PWD:Snd Bkup\n"
+        },
+        {
+          "site": "0xfe054db0",
+          "address": "0xfe0604a7",
+          "value": "PWD_E:bkup area_size OVER 0x%X\n"
+        },
+        {
+          "site": "0xfe054de0",
+          "address": "0xfe060570",
+          "value": "PWD:chg watch key:0x%014lX\n"
+        },
+        {
+          "site": "0xfe054eb0",
+          "address": "0xfe060666",
+          "value": "PWD:SHUTTER_ID[%d-%d][0x%08X]:%d\n"
+        },
+        {
+          "site": "0xfe054fc4",
+          "address": "0xfe0605ff",
+          "value": "PWD_E:bk_r WDT_OF_PWR_MICON:%d\n"
+        },
+        {
+          "site": "0xfe055068",
+          "address": "0xfe060485",
+          "value": "PWD:stby_mode:%d->%d/ontimer(%d)\n"
+        },
+        {
+          "site": "0xfe0551e0",
+          "address": "0xfe060688",
+          "value": "PWD:cha:%d ont:%d lbt:%d psw:%d apo:%d\n"
+        },
+        {
+          "site": "0xfe055224",
+          "address": "0xfe0604e8",
+          "value": "PWD:ptn:0x%02X\n"
+        },
+        {
+          "site": "0xfe055274",
+          "address": "0xfe06054e",
+          "value": "PWD:[LBT]base watch key:0x%014lX\n"
+        },
+        {
+          "site": "0xfe05528c",
+          "address": "0xfe060633",
+          "value": "PWD_E:bk_r M.SW:%d\n"
+        },
+        {
+          "site": "0xfe0552b4",
+          "address": "0xfe0604c7",
+          "value": "PWD_E:lbk_get_datasize ERR 0x%X\n"
+        },
+        {
+          "site": "0xfe0554ec",
+          "address": "0xfe06059f",
+          "value": "PWD_E:Prm[%d:%d]\n"
+        },
+        {
+          "site": "0xfe055508",
+          "address": "0xfe0605c4",
+          "value": "PWD_E:Snd Bkup[%d]\n"
+        },
+        {
+          "site": "0xfe055518",
+          "address": "0xfe0605c4",
+          "value": "PWD_E:Snd Bkup[%d]\n"
+        },
+        {
+          "site": "0xfe055524",
+          "address": "0xfe0606b0",
+          "value": "PWD_E:bk_r fr_pwr:%d\n"
+        },
+        {
+          "site": "0xfe055538",
+          "address": "0xfe060647",
+          "value": "PWD_E:lbk err[ESHUT_CTYPE]:%d\n"
+        },
+        {
+          "site": "0xfe055550",
+          "address": "0xfe0604f8",
+          "value": "PWD_E:bk_r 0x%8X\n"
+        },
+        {
+          "site": "0xfe055568",
+          "address": "0xfe0605c4",
+          "value": "PWD_E:Snd Bkup[%d]\n"
+        },
+        {
+          "site": "0xfe055590",
+          "address": "0xfe06052c",
+          "value": "PWD:[APO]base watch key:0x%014lX\n"
+        },
+        {
+          "site": "0xfe0555f4",
+          "address": "0xfe06050a",
+          "value": "PWD:[NML]base watch key:0x%014lX\n"
+        },
+        {
+          "site": "0xfe055674",
+          "address": "0xfe0605ec",
+          "value": "PWD_E:bk_r NML:%d\n"
+        },
+        {
+          "site": "0xfe055688",
+          "address": "0xfe06061f",
+          "value": "PWD_E:lbk_r APO:%d\n"
+        },
+        {
+          "site": "0xfe0556a4",
+          "address": "0xfe0605b1",
+          "value": "PWD_E:Set Reg[%d]\n"
+        }
+      ]
+    },
+    {
+      "label": "first-spi-input",
+      "start": "0xfe05c03c",
+      "end_exclusive": "0xfe05c22c",
+      "sha256": "52f723c24db28f962882e493554f637c95bda3851bc75169e1b161fa24c2aff0",
+      "bytes": 496,
+      "instructions": 124,
+      "string_candidates": [
+        {
+          "site": "0xfe05c088",
+          "address": "0xfe06043b",
+          "value": "LDR_E:Recv Header: %s\n"
+        },
+        {
+          "site": "0xfe05c090",
+          "address": "0xfe060465",
+          "value": "spi_response_combined_init_comm"
+        },
+        {
+          "site": "0xfe05c0f8",
+          "address": "0xfe0603b1",
+          "value": "LDR:Send Data: %s header->response_id = %d, header->length = %d, payload->data2 = %d\n"
+        },
+        {
+          "site": "0xfe05c0fc",
+          "address": "0xfe060452",
+          "value": "_response_ank_mode"
+        },
+        {
+          "site": "0xfe05c164",
+          "address": "0xfe060423",
+          "value": "LDR_E:Recv Payload: %s\n"
+        },
+        {
+          "site": "0xfe05c174",
+          "address": "0xfe060407",
+          "value": "LDR_E:Recv command[%d]: %s\n"
+        },
+        {
+          "site": "0xfe05c178",
+          "address": "0xfe060465",
+          "value": "spi_response_combined_init_comm"
+        },
+        {
+          "site": "0xfe05c1c4",
+          "address": "0xfe0603b1",
+          "value": "LDR:Send Data: %s header->response_id = %d, header->length = %d, payload->data2 = %d\n"
+        },
+        {
+          "site": "0xfe05c1c8",
+          "address": "0xfe060452",
+          "value": "_response_ank_mode"
+        }
+      ]
+    },
+    {
+      "label": "initial-handshake",
+      "start": "0xfe05c22c",
+      "end_exclusive": "0xfe05c2d4",
+      "sha256": "5d43d17ea33ac366ba6967f872bf07d97e62aa42e36e653e335816d7effbf750",
+      "bytes": 168,
+      "instructions": 42,
+      "string_candidates": [
+        {
+          "site": "0xfe05c270",
+          "address": "0xfe060c4e",
+          "value": "SPI:%s Busy wait timeout\n"
+        },
+        {
+          "site": "0xfe05c274",
+          "address": "0xfe060c9a",
+          "value": "spi_rxfifo_clear"
+        }
+      ]
+    },
+    {
+      "label": "bootdata-import",
+      "start": "0xfe059198",
+      "end_exclusive": "0xfe059218",
+      "sha256": "05c8c460ae0868d298d56a2180fc777ec3a14eb38206f1f494f092173c26067e",
+      "bytes": 128,
+      "instructions": 32,
+      "string_candidates": []
+    },
+    {
+      "label": "common-first-spi",
+      "start": "0xfe05331c",
+      "end_exclusive": "0xfe0533f4",
+      "sha256": "41e590659afe30b57b5a74d9098a6a23e5e3fda38bbd672e4211bdf40e799384",
+      "bytes": 216,
+      "instructions": 54,
+      "string_candidates": []
+    },
+    {
+      "label": "mode-get-and-set",
+      "start": "0xfe053ab4",
+      "end_exclusive": "0xfe053c78",
+      "sha256": "3bf31e1743a02442bb49102dc184a6648b8048790a9591bb662a1880ce2c9b06",
+      "bytes": 452,
+      "instructions": 113,
+      "string_candidates": [
+        {
+          "site": "0xfe053b84",
+          "address": "0xfe05ed57",
+          "value": "BOM:ANK:%02X(L:%02X/U:%02X) u:%d c:%d\n"
+        },
+        {
+          "site": "0xfe053bd4",
+          "address": "0xfe05ed36",
+          "value": "BOM:ANK[%d]:%02X\n"
+        }
+      ]
+    }
+  ]
+}

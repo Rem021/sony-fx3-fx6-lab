@@ -1,0 +1,75 @@
+{
+  "schema": "fx3-stage30-frontend-pending-consumption/1",
+  "created_utc": "2026-10-25T22:13:14.202036+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/README.md",
+      "bytes": 6080,
+      "sha256": "2f8a735b832bbac9d07ea7a5c3a371576147f2e12344f92a608bd7092e669410"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/coordinator-observations.json",
+      "bytes": 1825,
+      "sha256": "c14db54d9dc606e48329366230e28950a3c603006a8b787049e94d723de14677"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/goal-status-after.json",
+      "bytes": 46554,
+      "sha256": "094014b94e884ac5f5f3a83b9230322ae834727ad2741263911d86d6966c699a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/goal-status-before.json",
+      "bytes": 44432,
+      "sha256": "df0ff7b4f685e959bab0431a026c0cef17fa9984ab2ca6e0c3c3ec68e430dda3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/next-receiver-anchors.json",
+      "bytes": 31968,
+      "sha256": "50cdcd2746e587845c3bfe44949c6139ce8be9c08e7d0fbed351d5cfa214633c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/pending_consumption.py",
+      "bytes": 11498,
+      "sha256": "f0c80d1f5f82e4f7c156af8c031027f35469fce3d47fed2e4c3baa276eca119c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/pending-consumption-results.json",
+      "bytes": 238361,
+      "sha256": "a16c110d4062772befb91f0da35288290ea4b3d9805054d063c13d8f5ee4d3ad"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/source-receipt.json",
+      "bytes": 1102,
+      "sha256": "ae2d40b96acc989554b1b4800b72b28edbd28ef46f671e91dddb83c76a9a4d6c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/summary.json",
+      "bytes": 455,
+      "sha256": "764a4fc595fff3063e3c79897e06268dbe95364b7b9af5ec4525bd32c726bb73"
+    }
+  ],
+  "previous_manifest_sha256": "4865eda16b3f7c7f105fc9ccd4780aa3416d020e869448b80c432759ad6b14ef",
+  "scope": "7scenarios/18bounded phases for original pending consume/nested defer/common timing handle entry plus static next-action anchors. Not real config transition, merge, resource/hardware or restore.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/goal-status-after.json",
+    "before_sha256": "df0ff7b4f685e959bab0431a026c0cef17fa9984ab2ca6e0c3c3ec68e430dda3",
+    "after_sha256": "094014b94e884ac5f5f3a83b9230322ae834727ad2741263911d86d6966c699a",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "explicit_post_transition_state_fixture": true,
+    "native_output_adapters": false,
+    "actual_configuration_transition_entry_diagnostic_task_timing_resource_hardware": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 前端消费与共同timing接收端](<work/sony-firmware-20261024/stage30-frontend-pending-consumption/README.md>)：原消费片段令前端计数归零时下游仍持有参数；Open和SET_REC_FORMAT共同句柄已定位，完整协调/资源/硬件和恢复仍未验证。"
+}

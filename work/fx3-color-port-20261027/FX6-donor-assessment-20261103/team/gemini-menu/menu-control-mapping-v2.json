@@ -1,0 +1,63 @@
+{
+  "schema_version": "2.0.0",
+  "generated_at_utc": "2026-11-03T09:32:25.864717+00:00",
+  "task_id": "task_c03fd449177f",
+  "v1_errata_summary": [
+    "1. Harness Scope: `verify_menu_backend_chains_v2.py` executes ONLY bounded AP packet builders and direct CP RAM setters/checkers/gates with explicit `mov w0, #0` (`00008052`) stubs and host-side manual packet handoff. It does NOT execute `0x470f78` DMA list construction, cross-core IPC hardware transport, or flash persistence ('落盘').",
+    "2. Assertions & Counterexamples: v2 enforces fixed SHA256/size assertions, ELF PT_LOAD and CP `0x108000` entry literal proofs, instruction budget (`steps < budget`) and return-PC assertions, pre/post guard sentinels (`0xdeadbeef`/`0xcafebabe`), and negative/invalid input counterexamples.",
+    "3. MLUT Layout Errata: Retracted v1's erroneous '33^3 / 149,888 (160+3*1984+143748+36=149896)' claim. Bound Look ID 22 (`MLUT_LOOKNAME_SL3SG3_TO_ACESREC709`) to its exact 70 descriptors in `av-cam.bin` (152B records at `0xb05638`, `20x20x20` 3D LUT across 24 SRAM banks = 48,000B) and `cpapp-b.bin` (140B records at `0x02015794`, 9,800B profile), citing sibling receipts for DMA.",
+    "4. White Balance 1K vs 100K Hypothesis: Downgraded folding 1K Kelvin residuals into AB/GM (`+0x9..+0xf` -> `+0x9f8..+0x9fc`) to an UNVERIFIED HYPOTHESIS. Proven via `cpapp-b.bin` `0x3c9162` that `+0xa00` (100K byte) and `+0x9f8..+0x9fc` (AB/GM) are copied as separate fields (`[r0+0xfc]` vs `[r0+0xf4..0xf8]`).",
+    "5. Model RAM vs Persistence: `0x821c538` is an `appFw.so` PT_LOAD[1] BSS runtime RAM address, NOT non-volatile Backup/CAMSET storage. `base_look=12` and 8-slot WB Memories A..H are marked as unverified conceptual designs.",
+    "6. VM Status Correction: Corrected v1's outdated 'VM has no GUI' claim. In current workspace reports (`ap103-software-ldec-and-native-save.md`, `ap105-offline-preparation.md`), AP103-r2 renders full graphical UI via software `/dev/ldec` (` Standby -> MENU -> Setup -> Language popup`), AP105 GPE performance candidate is prepared offline pending execution, while VM still lacks real CP/ISP hardware.",
+    "7. FX5 vs FX6 Source Separation: Separated directly fetched FX5 Help Guide (2630 v1, 9 pages HTTP 200 with extracted HTML sections) from FX6 6.01 (`00259043` HTTP 403, secondary search summary only), and removed `fx6-prefix-curl.bin` as BIG6/menu capability evidence."
+  ],
+  "fx5_and_fx6_specification_separation": {
+    "fx5_official_help_guide_2630_v1": {
+      "evidence_tier": "DIRECT_HTTP_200_HTML_VERIFIED",
+      "page_citations": {
+        "home_screen.html": {
+          "h1": "HOME screen",
+          "verified_sections": [
+            "1. FPS: [Variable] (On/Off) + [Value] (frame rate); corresponds to [Shooting] - [FPS] in full menu.",
+            "2. ISO / Gain / Exposure Index: switches by [Project] - [Base Setting] - [Shooting Mode]: Custom ([ISO/Gain], [Base Sensitivity], [AGC]), Flexible ISO ([ISO], [Base ISO], [AGC]), Cine EI ([Exposure Index], [Base ISO]), Cine EI Quick ([Exposure Index]).",
+            "3. Shutter: [Angle] or [Speed] (Step / Cont.) + [Auto Shutter]; corresponds to [Shooting] - [Shutter].",
+            "4. Iris: [F-number] + [Auto Iris]; corresponds to [Shooting] - [Iris] (NO internal ND filter on FX5 HOME screen).",
+            "5. Scene File (Custom mode) / Look (Log mode): Custom selects [Paint/Look] - [Scene File]; Log displays [Paint/Look] - [Base Look] - [Select] with Item 1 (Main/Sub Rec LUT On/Off), Item 4 (Edit Look), Item 6 (HDMI/VF/LCD LUT On/Off).",
+            "6. White Balance: [Mode] (Memory A..H / Preset / ATW / AWB), [Color Temp] ([Coarse] 100K / [Fine] 1K), [Tint] (-99..+99), [AWB] one-push."
+          ]
+        },
+        "quick_menu.html": {
+          "h1": "Quick Menu",
+          "verified_sections": [
+            "Triggered by short-pressing the MENU button.",
+            "Items 1 to 5 switch Quick Menu pages via Left/Right or touch: [Project], [TC/Media], [Monitoring], [Audio], [Info].",
+            "Item 6 jumps directly to the Full Menu for the selected category.",
+            "[Info] page displays read-only System (Date/Time, Sensor Temp, Hours Meter), Battery/USB-PD, and Lens (Model, Serial, Iris, Focal Length, Focus Distance, Depth of Field) information."
+          ]
+        },
+        "fullmenu_use.html": {
+          "h1": "Using the Full Menu",
+          "verified_sections": [
+            "Triggered by long-pressing the MENU button or selecting Item 6 in Quick Menu.",
+            "10 categories: [Shooting], [Project], [Paint/Look], [TC/Media], [Monitoring], [Audio], [Clip Operations], [Technical], [Network], [Maintenance].",
+            "Up to 8 lines displayed per screen; wide numeric ranges (-99 to +99) highlight inline for direct adjustment without a popup list.",
+            "Pressing BACK before confirmation cancels the in-progress change and returns to the previous level.",
+            "[Execute] items display a confirmation dialog and temporarily hide the menu."
+          ]
+        }
+      }
+    },
+    "fx6_ver_601_specification": {
+      "evidence_tier": "RESTRICTED_EXTERNAL_SEARCH_INDEX_HTTP_403_ON_DIRECT_FETCH",
+      "differences_vs_fx5_home_screen": [
+        "FX6 has a built-in electronic variable ND filter (Clear, 1/4, 1/16, 1/64, Variable 1/4..1/128, Auto ND) in its BIG6 top-right pillar, whereas FX5 HOME screen (`home_screen.html` item 4) has only [Iris] (`F-number` + `Auto Iris`)—matching FX3's physical hardware!",
+        "FX6 Ver. 6.00/6.01 release note summary (secondary index) notes BIG6 Home screen layout updates and 1.2F (1/50) shutter speed at 59.94P; `fx6-prefix-curl.bin` is a binary updater header and does NOT prove these UI rules."
+      ]
+    }
+  },
+  "vm_status_in_workspace": {
+    "ap103_status": "VERIFIED_IN_WORKSPACE_REPORTS (`reports/2026-11-01-fx3-vm-resumed-repair/ap103-software-ldec-and-native-save.md`, `ap103-visual-step-log.md`): AP103-r2 with software `/dev/ldec` renders the full graphical UI (`Standby -> MENU -> Setup -> Language dialog`), though native file save after menu edits and 5000ms draw budget under load remain open.",
+    "ap105_status": "OFFLINE_PREPARED_PENDING_EXECUTION (`reports/2026-11-01-fx3-vm-resumed-repair/ap105-offline-preparation.md`): GPE performance replacement candidate (`ap105-v1-gpe-perf`) is prepared offline; guest timing/long-run and save verification are pending.",
+    "cp_isp_in_vm": "ABSENT: QEMU guest runs AP Linux only and does NOT execute real CP RTOS (`cpapp-b.bin`) or hardware ISP/MLUT engines."
+  }
+}

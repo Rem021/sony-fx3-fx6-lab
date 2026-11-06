@@ -1,0 +1,111 @@
+{
+  "ui": {
+    "raw_sha256": "8fbad11e585a88ba55fc657785b6bc132bd12ee20ac3a31f23c603b1b1b322d1",
+    "release_sha256": "87267da03bbc5f05b81aa559a4a1c713d1e7462bdb4602a571405dc048bba4fe",
+    "dynamic_constructor_tags_unchanged": [
+      {
+        "tag": 25,
+        "value": 152096
+      },
+      {
+        "tag": 27,
+        "value": 8
+      }
+    ],
+    "relocated_initializers_unchanged": [
+      {
+        "array": ".init_array",
+        "relocation_section": ".rela.dyn",
+        "relocation_target": 152096,
+        "relocation_type": 1027,
+        "relative_addend": 73540,
+        "function": {
+          "name": "r35_ui_init",
+          "value": 73540,
+          "size": 172
+        },
+        "function_file_offset": 8004,
+        "machine_bytes_equal": true,
+        "function_sha256": "8e356caa93940b71db58e7362de68b19d76dc32851838c1ff74a3c1b9b8c238a"
+      }
+    ],
+    "all_alloc_section_names": [
+      ".dynsym",
+      ".gnu.version",
+      ".gnu.version_r",
+      ".gnu.hash",
+      ".hash",
+      ".dynstr",
+      ".rela.dyn",
+      ".rela.plt",
+      ".rodata",
+      ".eh_frame_hdr",
+      ".eh_frame",
+      ".text",
+      ".plt",
+      ".tbss",
+      ".init_array",
+      ".dynamic",
+      ".got",
+      ".got.plt",
+      ".relro_padding",
+      ".bss"
+    ],
+    "scope": "offline ELF decoding only; loader and constructor not executed"
+  },
+  "osd": {
+    "raw_sha256": "1a0761b8c73fb04502406686499ff01f3683bcc767ce1503fae3e6bbb996bf21",
+    "release_sha256": "51685bf707f7c1947c81936de03a0694b2228228792e732ee177c788acd09837",
+    "dynamic_constructor_tags_unchanged": [
+      {
+        "tag": 25,
+        "value": 163584
+      },
+      {
+        "tag": 27,
+        "value": 8
+      }
+    ],
+    "relocated_initializers_unchanged": [
+      {
+        "array": ".init_array",
+        "relocation_section": ".rela.dyn",
+        "relocation_target": 163584,
+        "relocation_type": 1027,
+        "relative_addend": 74140,
+        "function": {
+          "name": "r35_init",
+          "value": 74140,
+          "size": 192
+        },
+        "function_file_offset": 8604,
+        "machine_bytes_equal": true,
+        "function_sha256": "c28b7d93958588ab6c829fbb9f739176f39f566a857a30ed707e80d128904696"
+      }
+    ],
+    "all_alloc_section_names": [
+      ".dynsym",
+      ".gnu.version",
+      ".gnu.version_r",
+      ".gnu.hash",
+      ".hash",
+      ".dynstr",
+      ".rela.dyn",
+      ".rela.plt",
+      ".rodata",
+      ".eh_frame_hdr",
+      ".eh_frame",
+      ".text",
+      ".plt",
+      ".tbss",
+      ".init_array",
+      ".dynamic",
+      ".got",
+      ".got.plt",
+      ".relro_padding",
+      ".data",
+      ".bss"
+    ],
+    "scope": "offline ELF decoding only; loader and constructor not executed"
+  }
+}

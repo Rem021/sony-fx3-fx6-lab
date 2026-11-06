@@ -1,0 +1,158 @@
+{
+  "runs": [
+    {
+      "run": "ap103r2ldec600-a7c9c32d",
+      "serial_SHA256": "537caa04a1ec8a0750c6dd79f96e3cf274bf82d14b242f696fa320a382e7a149",
+      "kernel_unfetched_lines": [],
+      "commands_parsed": 2789,
+      "failure_markers": [],
+      "per_command_return_ns_count": 0,
+      "start_enqueue_backend_queue_depth_available": false,
+      "clock_note": "v24 command markers have no per-command monotonic timestamp. Kernel printk clock cannot substitute for user command clocks."
+    },
+    {
+      "run": "ap103v3ldec600-4ad191d2",
+      "serial_SHA256": "d8e111d62d76448b4d6aaef5e468cce4cfeafc14960dc25f986b751bd15711c9",
+      "kernel_unfetched_lines": [],
+      "commands_parsed": 1786,
+      "failure_markers": [
+        {
+          "op": "BitBlit",
+          "seq": "1780",
+          "async": "1",
+          "fmt": "0",
+          "w": "32",
+          "h": "2",
+          "dst_phys": "0x43ae96100",
+          "src_phys": "0x41093d500",
+          "flags": "0x1000000000101",
+          "result": "5",
+          "reason": "5",
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0",
+          "empty_clip_noop": "0",
+          "dst_nominal_outside": "0",
+          "approx_tile": "none",
+          "line": 180993
+        }
+      ],
+      "per_command_return_ns_count": 0,
+      "start_enqueue_backend_queue_depth_available": false,
+      "clock_note": "v24 command markers have no per-command monotonic timestamp. Kernel printk clock cannot substitute for user command clocks.",
+      "previous_successful_Flush_seq": 1741,
+      "failed_seq": 1780,
+      "commands_in_partial_batch": 39,
+      "path_counts": {
+        "FillRect|tile": 1,
+        "BitBlit|Kblend:255": 15,
+        "FillRect|Kblend:255": 1,
+        "BitBlit|fmt2|Kblend:255": 5,
+        "BitBlit|stretch:nearest_v1|Kblend:255": 9,
+        "BitBlit|tile|stretch:none[|Kblend:255": 1,
+        "BitBlit|stretch:nearest_v1[|Kblend:255": 1,
+        "BitBlit|tile|stretch:none7|Kblend:255": 1,
+        "BitBlit|stretch:none[|Kblend:255": 2,
+        "BitBlit|tile|Kblend:255": 2,
+        "BitBlit|stretch:none[|fmt2|Kblend:255": 1
+      },
+      "batch_csv": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap103v3ldec600-4ad191d2-unfetched-batch-v1.csv",
+      "recorded_lock_waits": [
+        {
+          "line": 180977,
+          "seq": "1780",
+          "op": "1",
+          "waits": "79",
+          "wait_ns": "527150000",
+          "acquired": "0",
+          "max_ns": "500000000",
+          "original_FIFO_serialization": "1"
+        }
+      ]
+    },
+    {
+      "run": "ap103v4ldec600-71ce5752",
+      "serial_SHA256": "763b67b58721879e72c500fff7613c166585a8811af3490d016a97a7909f87f2",
+      "kernel_unfetched_lines": [
+        {
+          "line": 81985,
+          "text": "[ 4137.942468] [K]**UIPC ERROR** alloc_msg: alloc_msg() for unfetched dynamic queue QID[808261c0] size[4]"
+        },
+        {
+          "line": 82011,
+          "text": "[ 4143.977375] [K]**UIPC ERROR** alloc_msg: alloc_msg() for unfetched dynamic queue QID[808261c0] size[4]"
+        }
+      ],
+      "commands_parsed": 438,
+      "failure_markers": [
+        {
+          "op": "Flush",
+          "seq": "437",
+          "async": "0",
+          "fmt": "0",
+          "w": "0",
+          "h": "0",
+          "dst_phys": "0",
+          "src_phys": "0",
+          "flags": "0",
+          "result": "5",
+          "reason": "8",
+          "read": "1",
+          "approx_blend": "0",
+          "formula": "none",
+          "selector": "0",
+          "K": "0",
+          "const_alpha": "0",
+          "rotation": "0",
+          "src_fmt": "0",
+          "empty_clip_noop": "0",
+          "dst_nominal_outside": "0",
+          "approx_tile": "none",
+          "line": 82000
+        }
+      ],
+      "per_command_return_ns_count": 0,
+      "start_enqueue_backend_queue_depth_available": false,
+      "clock_note": "v24 command markers have no per-command monotonic timestamp. Kernel printk clock cannot substitute for user command clocks.",
+      "previous_successful_Flush_seq": 378,
+      "failed_seq": 437,
+      "commands_in_partial_batch": 59,
+      "path_counts": {
+        "FillRect": 1,
+        "FillRect|stretch:none[|Kblend:255": 1,
+        "FillRect|Kblend:255": 19,
+        "BitBlit|Kblend:255": 20,
+        "FillRect|stretch:nonev_ioc|Kblend:255": 1,
+        "BitBlit|tile|fmt2|Kblend:255": 1,
+        "BitBlit|stretch:nearest_v1|Kblend:255": 4,
+        "BitBlit|stretch:nearest_v1[|Kblend:255": 1,
+        "BitBlit|fmt2|Kblend:255": 2,
+        "BitBlit|fmt2|Kblend:128": 1,
+        "BitBlit|stretch:none[|Kblend:255": 4,
+        "BitBlit|tile|Kblend:255": 1,
+        "BitBlit|tile|stretch:none[|Kblend:255": 1,
+        "BitBlit|tile|Kblend:65": 1,
+        "Flush": 1
+      },
+      "batch_csv": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap103v4ldec600-71ce5752-unfetched-batch-v1.csv",
+      "recorded_lock_waits": [
+        {
+          "line": 76768,
+          "seq": "421",
+          "op": "1",
+          "waits": "21",
+          "wait_ns": "414932000",
+          "acquired": "1",
+          "max_ns": "500000000",
+          "original_FIFO_serialization": "1"
+        }
+      ]
+    }
+  ],
+  "no_old_run_writes": true
+}

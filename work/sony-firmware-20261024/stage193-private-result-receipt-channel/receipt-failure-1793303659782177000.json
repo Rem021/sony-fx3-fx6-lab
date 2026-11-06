@@ -1,0 +1,55 @@
+{
+  "results": [
+    {
+      "name": "private_complete_after_public_file_destroyed_and_peer_exit",
+      "status": "PASS",
+      "seconds": 0.1032559999730438
+    },
+    {
+      "name": "held_private_result_defeats_public_completion_forgery",
+      "status": "PASS",
+      "seconds": 0.24742662499193102
+    },
+    {
+      "name": "missing_receipt_cannot_release_pending_owner",
+      "status": "PASS",
+      "seconds": 0.2269556660321541
+    },
+    {
+      "name": "actual_kernel_peer_PID_UID_and_duplicate_ACK_rejected",
+      "status": "PASS",
+      "seconds": 0.07007058302406222
+    },
+    {
+      "name": "captured_executable_digest_and_native_UID_path_policy",
+      "status": "PASS",
+      "seconds": 0.07227000000420958
+    },
+    {
+      "name": "pre_owner_ACK_wrong_nonce",
+      "status": "PASS",
+      "seconds": 0.05761983303818852
+    },
+    {
+      "name": "pre_owner_ACK_none",
+      "status": "PASS",
+      "seconds": 1.0639134160010144
+    },
+    {
+      "name": "pre_owner_ACK_rights32",
+      "status": "PASS",
+      "seconds": 0.06143145897658542
+    },
+    {
+      "name": "pre_owner_ACK_rights200",
+      "status": "PASS",
+      "seconds": 0.05305087496526539
+    },
+    {
+      "name": "format_identity_digest_and_replay_rejections",
+      "status": "FAIL",
+      "error": "AssertionError('invalid record/peer unexpectedly accepted')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/test_receipt.py\", line 185, in case\n    try:fn();results.append({'name':name,'status':'PASS','seconds':time.monotonic()-start})\n        ~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/test_receipt.py\", line 96, in format_and_replay_rejections\n    rejected(lambda data=data:R.decode_record(rehash(data),template_identity,template_nonce))\n    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/test_receipt.py\", line 20, in rejected\n    raise AssertionError('invalid record/peer unexpectedly accepted')\nAssertionError: invalid record/peer unexpectedly accepted\n"
+    }
+  ]
+}

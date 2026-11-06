@@ -1,0 +1,24 @@
+0000a840 stp        x29, x30, [sp, #-0x20]!
+0000a844 mov        x29, sp
+0000a848 stp        x19, x20, [sp, #0x10]
+0000a84c mov        x19, x0
+0000a850 bl         #0x7f30 ; Updater::BaseModule::BaseModule
+0000a854 adrp       x0, #0x1e000
+0000a858 mov        x2, #0x400
+0000a85c mov        w1, #0xff
+0000a860 str        xzr, [x19, #0x4b0]
+0000a864 ldr        x0, [x0, #0xf88]
+0000a868 add        x0, x0, #0x10
+0000a86c str        x0, [x19]
+0000a870 add        x0, x19, #0xb0
+0000a874 bl         #0x7be0 ; memset
+0000a878 bl         #0x7fc0 ; Dec_ScrambleInit
+0000a87c b          #0xa894
+0000a880 mov        x20, x0
+0000a884 mov        x0, x19
+0000a888 bl         #0x7c90 ; Updater::BaseModule::~BaseModule
+0000a88c mov        x0, x20
+0000a890 bl         #0x8150 ; _Unwind_Resume
+0000a894 ldp        x19, x20, [sp, #0x10]
+0000a898 ldp        x29, x30, [sp], #0x20
+0000a89c ret        

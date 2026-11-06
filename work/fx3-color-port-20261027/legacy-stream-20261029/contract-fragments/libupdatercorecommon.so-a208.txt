@@ -1,0 +1,15 @@
+0000a208 stp        x29, x30, [sp, #-0x30]!
+0000a20c mov        x29, sp
+0000a210 stp        x19, x20, [sp, #0x10]
+0000a214 add        x20, x29, #0x30
+0000a218 mov        x19, x0
+0000a21c str        x0, [x20, #-8]!
+0000a220 bl         #0x7ab0 ; pthread_mutex_lock
+0000a224 ldrb       w19, [x19, #0x30]
+0000a228 mov        x0, x20
+0000a22c uxtb       w19, w19
+0000a230 bl         #0xa0bc
+0000a234 mov        w0, w19
+0000a238 ldp        x19, x20, [sp, #0x10]
+0000a23c ldp        x29, x30, [sp], #0x30
+0000a240 ret        

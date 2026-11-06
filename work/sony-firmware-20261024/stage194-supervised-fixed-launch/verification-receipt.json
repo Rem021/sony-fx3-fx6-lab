@@ -1,0 +1,112 @@
+{
+  "status": "PASS_FIXED_LAUNCH_SELF_HELLO_REVIEW",
+  "created_utc": "2026-10-29T20:19:35.211554+00:00",
+  "local_checks": 17,
+  "previous_manifest_sha256": "0f7003ae6081b585c9b03254a4e5a5f6b5e5ceb28f4a906effd1a40f4fb3f01e",
+  "previous_manifest_members_reverified": 1194,
+  "lowlevel_byte_identical_to193": [
+    "owner_core.c",
+    "owner_iokit.c",
+    "owner_channel.c",
+    "owner_channel.h",
+    "iokit_wire.c",
+    "iokit_wire.h",
+    "native_session.c",
+    "native_session.h",
+    "global_guard.c",
+    "global_guard.h",
+    "frame_io.c",
+    "frame_io.h",
+    "owner_trial.h",
+    "owner_fixture.c",
+    "fake_iokit.c",
+    "entry_shared.h",
+    "entry_support.c",
+    "owner_ipc.c"
+  ],
+  "native_helper_released_or_executed": false,
+  "root_or_camera_operations": 0,
+  "physical_backup_restore_or_recording_proven": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 4490,
+      "sha256": "dc56116aa8c1d690a822ebad0d08f08df227bf4e096b940cddcfbcc03aadfcd5"
+    },
+    {
+      "path": "build-receipt-v2.json",
+      "bytes": 11030,
+      "sha256": "f81338c7b4549c0d92d1c14aff059217066a2a0308c1deffdd1d966dddbd11f4"
+    },
+    {
+      "path": "supervisor-results.json",
+      "bytes": 2880,
+      "sha256": "4cc3715565de28babf21fb759bbd1371232e19b742a0f4b5b297ecd2c1f14716"
+    },
+    {
+      "path": "incremental-stream-result.json",
+      "bytes": 533,
+      "sha256": "ea4507903891460077ffb4e5af48f4133bb855602cc83fa0bec053bdd11c4c6d"
+    },
+    {
+      "path": "test_supervisor.py",
+      "bytes": 11755,
+      "sha256": "3b9259d6422c132a566ec29f61a2c85087520e8064e22406573821256155366b"
+    },
+    {
+      "path": "test_incremental_stream.py",
+      "bytes": 3030,
+      "sha256": "40b9aae5a6fbfbb881f00b87161c71c9f7d7550c58cbcf05fd14ef9803520c34"
+    },
+    {
+      "path": "supervisor.py",
+      "bytes": 11898,
+      "sha256": "23364117b2f00b7cff1d2bada38b4614bb787bb28beae446d5e95ce1a2abe1e5"
+    },
+    {
+      "path": "controller_ipc.py",
+      "bytes": 6039,
+      "sha256": "25014a0432135f32b918e8466cf758072723a921ce620a01f717e0daea5d329c"
+    },
+    {
+      "path": "fixed_launch.py",
+      "bytes": 4622,
+      "sha256": "dcbedd1fe345001c76046f28787bd5b74332c3ec254c9a7671bcdf779650ac1f"
+    },
+    {
+      "path": "receipt_receiver.py",
+      "bytes": 11382,
+      "sha256": "88e77424e5351994c23d3ebf0232275a2e28e0ea4deec4a22a1ebd269dcc659b"
+    },
+    {
+      "path": "helper_hello.c",
+      "bytes": 2595,
+      "sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719"
+    },
+    {
+      "path": "owner_receipt.c",
+      "bytes": 5006,
+      "sha256": "10eaa35cab22efa3ee9d5277c99760c04de276412c77900ae3758b010ef52a35"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "bytes": 17904,
+      "sha256": "5a8e47dd4be3183660e8772a5b6c8efbed219353457b46ec2ccdc73854842e3b"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 1779,
+      "sha256": "89ca097d5d62185d404d43e3f72114d5ceb31aa9e70649cf2c990aa8ea0030f2"
+    },
+    {
+      "path": "primary-source-review.json",
+      "bytes": 1244,
+      "sha256": "4380814d0e64695217e659d0fdb1a97b59b96c5e675e650de3f92b2d6a320e3c"
+    },
+    {
+      "path": "native-goal-observed.json",
+      "bytes": 449,
+      "sha256": "ffe2899e72fce0b5b8702e2c09eeb93972ff2bce654fa5afea857b77da52b86d"
+    }
+  ]
+}

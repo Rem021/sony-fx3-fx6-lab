@@ -1,0 +1,58 @@
+--- r18/trial_web_v22_navigation_review.py
++++ r19/trial_web_v22_navigation_review.py
+@@ -451,15 +451,44 @@
+ }
+ keys.forEach(b=>b.onclick=async()=>{
+  if(b.disabled||busy||ending||renderFault||awaitingStep!==null||!lastStatus)return;
+- // Defend the click boundary as well as the visible disabled state. This
+- // compares with the latest *known* status; the server remains authoritative.
+  if(!frameLoadedFor(lastStatus)){
+    lockVisualControls();
+    explicitRejection={kind:'key',detail:'浏览器尚未显示最新画面；本次未发送按键。请看新图后自行决定。'};
+    presentFeedback(lastStatus);
+    return;
+  }
+- busy=true;awaitingStep=lastStatus.steps+1;disableKeys();
++ // Reserve this click before the read-only preflight. A second click cannot
++ // create a second request while the status GET is pending.
++ busy=true;disableKeys();
++ const clickedStep=lastStatus.steps;
++ const clickedSHA=shownSHA,clickedGeneration=displayedGeneration;
++ let preflight;
++ try{
++   preflight=(await request('/api/status')).body;
++ }catch(e){
++   // No mutation was sent. A fresh ordinary tick is required before keys reopen.
++   renderFault='按键前状态读取失败；本次未发送按键。请等待状态刷新并看最新画面。';
++   busy=false;disableKeys();presentFeedback(lastStatus);
++   return;
++ }
++ // A tick or End may have advanced while the GET was in flight. All identities
++ // must still match the image actually loaded in this document.
++ if(ending||finished||deliveryUnknown||reviewUnknown||renderFault||
++    awaitingStep!==null||reviewAwaiting||preflight.phase!=='ready'||
++    !preflight.ready||preflight.busy||preflight.review_required||
++    preflight.steps!==clickedStep||!frameLoadedFor(preflight)||
++    preflight.frame.PNG_sha256!==clickedSHA||preflight.frame.content_generation!==clickedGeneration||
++    shownSHA!==clickedSHA||displayedGeneration!==clickedGeneration||
++    !lastStatus||!frameLoadedFor(lastStatus)||lastStatus.steps!==clickedStep||
++    lastStatus.frame.PNG_sha256!==clickedSHA||lastStatus.frame.content_generation!==clickedGeneration){
++   busy=false;lockVisualControls();
++   if(!ending&&!finished){
++     explicitRejection={kind:'key',detail:'按键前画面或状态已变化；本次未发送按键。请看最新画面后自行决定。'};
++     presentFeedback(lastStatus||preflight);
++   }
++   return;
++ }
++ awaitingStep=clickedStep+1;
+  try{
+    const ack=await post('/api/key',{key:Number(b.dataset.key),observed_sequence:displayed});
+    if(ack.accepted!==true||ack.next_step!==awaitingStep)throw Error('按键回执不完整，请等待状态确认。');
+@@ -473,6 +502,7 @@
+    presentFeedback(lastStatus);
+  }finally{busy=false;}
+ });
++
+ startButton.onclick=async()=>{
+  if(startButton.disabled||!lastStatus||lastStatus.phase!=='awaiting_launch')return;
+  const id=crypto.randomUUID().toLowerCase();launchPending=id;startButton.disabled=true;

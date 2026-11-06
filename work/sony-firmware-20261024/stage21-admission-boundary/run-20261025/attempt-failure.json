@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage21-admission-boundary/admission_boundary.py\", line 276, in main\n    try: run(out)\n         ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage21-admission-boundary/admission_boundary.py\", line 195, in run\n    im = cr.ss.StaticImage(); rows, wide = cr.cache_rows(im)\n                                           ~~~~~~~~~~~~~^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage18-cached-remain/cached_remain.py\", line 72, in cache_rows\n    cell = getter_cell(im, getter)\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage18-cached-remain/cached_remain.py\", line 56, in getter_cell\n    cell = im.leaf(getter)\n           ^^^^^^^\nAttributeError: 'Image' object has no attribute 'leaf'\n",
+  "passing_result": false
+}

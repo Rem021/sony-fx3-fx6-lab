@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-r21-n64-a9195ba9-9d78217a",
+    "eval",
+    "--stdin"
+  ],
+  "start": {
+    "UTC": "2026-11-05T00:05:56.098102+00:00",
+    "host_ns": 420841629194000
+  },
+  "end": {
+    "UTC": "2026-11-05T00:05:56.110542+00:00",
+    "host_ns": 420841641625791
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"alarm\": {\n    \"current\": null,\n    \"deadline_ms\": 20000,\n    \"documentTimeOrigin\": 1793837083649.4,\n    \"events\": [\n      {\n        \"event\": \"installed\",\n        \"performance_ms\": 13152.899999976158,\n        \"script_SHA256\": \"f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab\",\n        \"wall_UTC\": \"2026-11-05T00:04:56.801Z\"\n      }\n    ],\n    \"expectedLaunchId\": \"62a51040-9879-4bee-a8dd-8acb825027ce\",\n    \"expectedURL\": \"http://127.0.0.1:54376/\",\n    \"sealed\": false,\n    \"version\": 1\n  },\n  \"ending\": true,\n  \"finished\": true,\n  \"lastStatus\": {\n    \"black_after_ready_count\": 0,\n    \"browser_ready\": true,\n    \"busy\": false,\n    \"error\": null,\n    \"events\": [],\n    \"final_receipt_id\": \"5TY15Np5c9fCdsrb5VZTxA\",\n    \"frame\": {\n      \"CP_composition_panel_acceptance\": false,\n      \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\",\n      \"QMP_read_only\": true,\n      \"all_zero_pixels\": false,\n      \"committed_slot\": 1,\n      \"content_generation\": 33,\n      \"epoch\": 1,\n      \"fnv64\": \"0x19abb616faf34124\",\n      \"guest_native_lease_released_before_ring_commit\": true,\n      \"height\": 480,\n      \"host_monotonic\": 420839.269361291,\n      \"native_bitmap_format\": 1,\n      \"native_format\": 0,\n      \"native_identity\": {\n        \"FB\": \"0x7f74001160\",\n        \"FB_format\": 1,\n        \"allocation\": \"0x74001340\",\n        \"bitmap\": \"0x7f7068ed60\",\n        \"bits_cpu_VA\": \"0x7efc7ae100\",\n        \"config_hash\": \"0x272d4976f4c97e5c\",\n        \"entry\": \"0x7f74001198\",\n        \"map_begin\": \"0x7efc7ae000\",\n        \"map_end\": \"0x7efc845000\",\n        \"map_offset\": \"0x43feb5000\",\n        \"metadata_physical\": \"0x402\",\n        \"publish_sem\": \"0x288604a\"\n      },\n      \"nonuniform_pixels\": true,\n      \"physical\": \"0x43feb5100\",\n      \"pixel_source_sequence\": 209,\n      \"registered_target\": {\n        \"captured_physical\": \"0x43feb5100\",\n        \"epoch\": 2,\n        \"identity\": \"0x0\",\n        \"kind\": 1,\n        \"native_token\": \"0x402\",\n        \"object\": \"0x0\",\n        \"parent_bytes\": 1310720,\n        \"parent_physical\": \"0x43feb5000\",\n        \"valid_during_native_read_lease_and_raster_lifecycle_guards\": true,\n        \"version\": 1,\n        \"vptr\": \"0x0\"\n      },\n      \"sequence\": 210,\n      \"sha256\": \"139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086\",\n      \"span\": 614400,\n      \"stride_pixels\": 640,\n      \"token\": \"0x402\",\n      \"update_id\": \"0x1005\",\n      \"width\": 640\n    },\n    \"input_received\": false,\n    \"launch_request_id\": \"62a51040-9879-4bee-a8dd-8acb825027ce\",\n    \"launch_status\": \"running\",\n    \"max_steps\": 32,\n    \"message\": \"试用已结束：本轮健康检查通过，资源已回收。\",\n    \"phase\": \"finished\",\n    \"ready\": false,\n    \"remaining_seconds\": 420,\n    \"render_valid\": true,\n    \"result\": {\n      \"API16_restored\": true,\n      \"duration_seconds\": 59.53724737500306,\n      \"health_pass\": true,\n      \"qemu_exit\": 0\n    },\n    \"review_confirmation\": null,\n    \"review_required\": false,\n    \"review_step\": null,\n    \"steps\": 0,\n    \"visual_change_observed\": false,\n    \"visual_state\": \"idle\"\n  }\n}\n",
+  "stderr": ""
+}

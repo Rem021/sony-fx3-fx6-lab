@@ -1,0 +1,59 @@
+{
+  "source": "work/sony-firmware-20261024/stage221-private-IPC-entry-gate/ipc_gate.inc",
+  "source_sha256": "159dc5cb16b937f02f0399939831370c58242779d9bbc8a71d2bee6c1ee55725",
+  "source_prefix_bytes": 4233,
+  "ordered_changes": [
+    {
+      "offset_in_previous": 239,
+      "before": "IPC_FD=198, ",
+      "after": ""
+    },
+    {
+      "offset_in_previous": 306,
+      "before": "G_IPC_CLOSE=58 };",
+      "after": "G_IPC_CLOSE=58,G_AGAIN=59,G_CHANNEL_CLOSED=60 };"
+    },
+    {
+      "offset_in_previous": 515,
+      "before": "struct ipc_context {int owned;u8 hand[256];};",
+      "after": "struct ipc_context {int owned;long fd,child;u8 hand[256];};"
+    },
+    {
+      "offset_in_previous": 1764,
+      "before": "get32(packet+24)||get32(packet+28)",
+      "after": "(kind==4?get32(packet+24)>255:get32(packet+24)!=0)||get32(packet+28)"
+    },
+    {
+      "offset_in_previous": 2035,
+      "before": "    struct {int fd;short events,revents;} pollfd={IPC_FD,1,0};long timeout[2]={1,0};\n    if(kind==3){u64 now=0;if(!ipc_clock(gate->hand,&now))return G_EXPIRED;u64 left=get64(gate->hand+160)-now;if(left<1000000000ULL){timeout[0]=0;timeout[1]=(long)left;}}\n    u64 start=0;if(!tick(&start))return G_TIME;u64 budget=(u64)timeout[0]*1000000000ULL+(u64)timeout[1];\n    long ready=ipc_sc(73,(long)&pollfd,1,(long)timeout,0,8,0);\n    u64 end=start;if(!tick(&end)||end-start>budget||ready!=1||pollfd.revents!=1)return G_IPC_WAIT;\n",
+      "after": "    struct {int fd;short events,revents;} pollfd={IPC_FD,1,0};long timeout[2]={0,0};\n    long ready=ipc_sc(73,(long)&pollfd,1,(long)timeout,0,8,0);\n    if(ready==0)return G_AGAIN;\n    if(ready!=1||(pollfd.revents&(8|32)))return G_IPC_WAIT;\n    if(pollfd.revents==16)return G_CHANNEL_CLOSED;\n    if(!(pollfd.revents&1)||(pollfd.revents&~17))return G_IPC_WAIT;\n"
+    },
+    {
+      "offset_in_previous": 3456,
+      "before": "get32(control+at+16)!=(u32)sc(173,0,0,0,0)",
+      "after": "get32(control+at+16)!=(u32)gate->child"
+    },
+    {
+      "offset_in_previous": 3746,
+      "before": "if(kind==3&&!equal(out+32,gate->hand,256))",
+      "after": "if(!equal(out+32,gate->hand,256))"
+    },
+    {
+      "offset_in_previous": 4072,
+      "before": "IPC_FD",
+      "after": "gate->fd"
+    },
+    {
+      "offset_in_previous": 2642,
+      "before": "IPC_FD",
+      "after": "gate->fd"
+    },
+    {
+      "offset_in_previous": 2085,
+      "before": "IPC_FD",
+      "after": "gate->fd"
+    }
+  ],
+  "derived_sha256": "90a2c47e89b9d91d7f51e0a431cdb56d4d8ae04bef5918dcb70db0a975620318",
+  "scope": "parent transport only, zero-time nonblocking poll and child per-message credentials; no launcher"
+}

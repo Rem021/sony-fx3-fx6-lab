@@ -1,0 +1,279 @@
+{
+  "source_sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+  "candidates": [
+    {
+      "needle_label": "original_ELF_header_64",
+      "needle_bytes": 64,
+      "hits": [
+        {
+          "file_offset": "0x612a200",
+          "physical_address": "0x40ece2000",
+          "section": 1081
+        }
+      ]
+    },
+    {
+      "needle_label": "original_ELF_header_128",
+      "needle_bytes": 128,
+      "hits": [
+        {
+          "file_offset": "0x612a200",
+          "physical_address": "0x40ece2000",
+          "section": 1081
+        }
+      ]
+    },
+    {
+      "needle_label": "original_gnu_hash",
+      "needle_bytes": 32,
+      "hits": [
+        {
+          "file_offset": "0x612a358",
+          "physical_address": "0x40ece2158",
+          "section": 1081
+        }
+      ]
+    },
+    {
+      "needle_label": "SKD_Verify",
+      "needle_bytes": 10,
+      "hits": [
+        {
+          "file_offset": "0x2243cb3",
+          "physical_address": "0x4063f6ab3",
+          "section": 198
+        },
+        {
+          "file_offset": "0x613e223",
+          "physical_address": "0x40ed16023",
+          "section": 1082
+        }
+      ]
+    },
+    {
+      "needle_label": "SKD_Sign",
+      "needle_bytes": 8,
+      "hits": [
+        {
+          "file_offset": "0x2243c89",
+          "physical_address": "0x4063f6a89",
+          "section": 198
+        },
+        {
+          "file_offset": "0x2243c92",
+          "physical_address": "0x4063f6a92",
+          "section": 198
+        },
+        {
+          "file_offset": "0x2243ca3",
+          "physical_address": "0x4063f6aa3",
+          "section": 198
+        },
+        {
+          "file_offset": "0x46fb549",
+          "physical_address": "0x40a8e5349",
+          "section": 635
+        },
+        {
+          "file_offset": "0x46fb55a",
+          "physical_address": "0x40a8e535a",
+          "section": 635
+        },
+        {
+          "file_offset": "0x46fb56a",
+          "physical_address": "0x40a8e536a",
+          "section": 635
+        },
+        {
+          "file_offset": "0x48f0bc1",
+          "physical_address": "0x40ad7a9c1",
+          "section": 671
+        },
+        {
+          "file_offset": "0x48f0bd2",
+          "physical_address": "0x40ad7a9d2",
+          "section": 671
+        },
+        {
+          "file_offset": "0x48f0bdb",
+          "physical_address": "0x40ad7a9db",
+          "section": 671
+        },
+        {
+          "file_offset": "0x613e202",
+          "physical_address": "0x40ed16002",
+          "section": 1082
+        },
+        {
+          "file_offset": "0x613e213",
+          "physical_address": "0x40ed16013",
+          "section": 1082
+        },
+        {
+          "file_offset": "0xc03b680",
+          "physical_address": "0x41fde6480",
+          "section": 1367
+        },
+        {
+          "file_offset": "0xc03b691",
+          "physical_address": "0x41fde6491",
+          "section": 1367
+        },
+        {
+          "file_offset": "0xc03b69a",
+          "physical_address": "0x41fde649a",
+          "section": 1367
+        }
+      ]
+    },
+    {
+      "needle_label": "SKData_Init",
+      "needle_bytes": 11,
+      "hits": [
+        {
+          "file_offset": "0x1f47942",
+          "physical_address": "0x404d4c742",
+          "section": 156
+        },
+        {
+          "file_offset": "0x2243c24",
+          "physical_address": "0x4063f6a24",
+          "section": 198
+        },
+        {
+          "file_offset": "0x46fb531",
+          "physical_address": "0x40a8e5331",
+          "section": 635
+        },
+        {
+          "file_offset": "0x4fd294c",
+          "physical_address": "0x40bfd574c",
+          "section": 813
+        },
+        {
+          "file_offset": "0x5bb4a98",
+          "physical_address": "0x40d7fb898",
+          "section": 975
+        },
+        {
+          "file_offset": "0x60029a9",
+          "physical_address": "0x40eb007a9",
+          "section": 1066
+        },
+        {
+          "file_offset": "0x612b194",
+          "physical_address": "0x40ece2f94",
+          "section": 1081
+        }
+      ]
+    },
+    {
+      "needle_label": "libInfraSKD.so",
+      "needle_bytes": 14,
+      "hits": [
+        {
+          "file_offset": "0x1f47ba3",
+          "physical_address": "0x404d4c9a3",
+          "section": 156
+        },
+        {
+          "file_offset": "0x224416c",
+          "physical_address": "0x4063f6f6c",
+          "section": 198
+        },
+        {
+          "file_offset": "0x386ca29",
+          "physical_address": "0x408a13829",
+          "section": 404
+        },
+        {
+          "file_offset": "0x3a5c209",
+          "physical_address": "0x408d63009",
+          "section": 414
+        },
+        {
+          "file_offset": "0x46fba08",
+          "physical_address": "0x40a8e5808",
+          "section": 635
+        },
+        {
+          "file_offset": "0x48f1121",
+          "physical_address": "0x40ad7af21",
+          "section": 671
+        },
+        {
+          "file_offset": "0x5b7d000",
+          "physical_address": "0x40d74ee00",
+          "section": 970
+        },
+        {
+          "file_offset": "0x5bb4ab0",
+          "physical_address": "0x40d7fb8b0",
+          "section": 975
+        },
+        {
+          "file_offset": "0x600299a",
+          "physical_address": "0x40eb0079a",
+          "section": 1066
+        },
+        {
+          "file_offset": "0x613e6dc",
+          "physical_address": "0x40ed164dc",
+          "section": 1082
+        },
+        {
+          "file_offset": "0x6650449",
+          "physical_address": "0x40f655249",
+          "section": 1139
+        },
+        {
+          "file_offset": "0x66508f8",
+          "physical_address": "0x40f6556f8",
+          "section": 1139
+        },
+        {
+          "file_offset": "0x6650919",
+          "physical_address": "0x40f655719",
+          "section": 1139
+        },
+        {
+          "file_offset": "0x7c23778",
+          "physical_address": "0x41b5f8578",
+          "section": 1270
+        },
+        {
+          "file_offset": "0x7c23838",
+          "physical_address": "0x41b5f8638",
+          "section": 1270
+        },
+        {
+          "file_offset": "0x8068518",
+          "physical_address": "0x41bc56318",
+          "section": 1331
+        }
+      ]
+    },
+    {
+      "needle_label": "MainCPS",
+      "needle_bytes": 7,
+      "hits": [
+        {
+          "file_offset": "0x5c3009c",
+          "physical_address": "0x40d960e9c",
+          "section": 982
+        },
+        {
+          "file_offset": "0x639209c",
+          "physical_address": "0x40f0d9e9c",
+          "section": 1102
+        }
+      ]
+    },
+    {
+      "needle_label": "WibuCmAct",
+      "needle_bytes": 9,
+      "hits": []
+    }
+  ],
+  "scope": "Exact static metadata pattern locations only; no userspace mapping or decrypted verifier established."
+}

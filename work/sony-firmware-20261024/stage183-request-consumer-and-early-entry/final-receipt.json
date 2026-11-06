@@ -1,0 +1,666 @@
+{
+  "schema": "fx3-stage183-request-consumer-and-early-entry/1",
+  "created_utc": "2026-10-29T14:55:42.862854+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "previous_manifest_path": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/final-receipt.json",
+  "previous_manifest_sha256": "874847808039f583b5bfce9874da4b95d5a0c8b65e68d8dded5bb79c49f1db0f",
+  "previous_manifest_members_verified": 641,
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/README.md",
+      "bytes": 1549,
+      "sha256": "2ce786732c602578bae371dbe9bb62035909af212f53f2627523be88c20b9665"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/analyze_loader.py",
+      "bytes": 2562,
+      "sha256": "65d54f6ce129dbd7fbd35a98ccc268dcc0dcb62d59d43cccc708c2748975c8ea"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/backup-read-wrapper.txt",
+      "bytes": 1657,
+      "sha256": "832a4473f2e1d5c0a8464ec7189c68816724c9370d6060f43c2961a2aad64383"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/backup-write-wrapper.txt",
+      "bytes": 2248,
+      "sha256": "8b3d86f5d5a56196b3b043264afdb39174d8203c770937ffef76708c6571b09f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/bootdata-copy-mode.txt",
+      "bytes": 2135,
+      "sha256": "440c44abaa5242c68949b18ae8f2cd4332dfdee1f7975f530a3b17770bcb2921"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/capture_evidence.py",
+      "bytes": 4446,
+      "sha256": "459dbc93b20b37977c36902fed9594827ce41f6fb0cb3bea33ad01150904d40e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/config-record-consumer.txt",
+      "bytes": 16839,
+      "sha256": "77e969a3f111cb5156110e3132fe8e75444e1ac3ac8785b9db5d4c227116c3b9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/early-selector-evidence.json",
+      "bytes": 12618,
+      "sha256": "6261ed0fb6b4404b91239923e441b50dd92e21a5d580a1f36ce26cd0187c51f2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/early-spi-choice.txt",
+      "bytes": 5570,
+      "sha256": "134e295b485c292acc2a96c05e76a1c3e9dd428db0b78e758dfd0f1bb9808e6e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/external-signal-collect.txt",
+      "bytes": 1767,
+      "sha256": "071986e635d27bc059b5374c4c6ff57f550beb880e7a5662a582d0d391e1b01e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/external-signal-read.txt",
+      "bytes": 5717,
+      "sha256": "07f6085b1bd6cf7f41ee029b78565638a42f1ad8c419fb2e5cb2a8ab7ad23459"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/fat-mount-preconditions.txt",
+      "bytes": 2388,
+      "sha256": "bd03e4d8c69bb7584470f81a21ccaba3361dbafeeed6ba719293e7fa566c8d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/fat-open.txt",
+      "bytes": 7429,
+      "sha256": "84739a5318f9499ee43c0491fef3de35185b0ff90a65b5d117b40d5a53491867"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/kernel-jump-counter.txt",
+      "bytes": 5817,
+      "sha256": "4d240d79b9d223aa8793a197c69ba0d7fb696c25883b31dceef04c0f69d14ecb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/loader-all.txt",
+      "bytes": 1600540,
+      "sha256": "51beb974b4584e9f0415335681139ce53a7f700d09652a3ff809f12593f174d7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/loader-main-sequences.txt",
+      "bytes": 5403,
+      "sha256": "7b7fe5ece04f5a4ec174fe6966cc88f520e962f5284de89763c3aa085348a868"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/loader-xrefs.json",
+      "bytes": 5408,
+      "sha256": "e328fd8a9f1867aaaa5a5f313f3367daaa7de65f0c7dc352aed802a34cd975a5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/mode-file-consumer.txt",
+      "bytes": 2689,
+      "sha256": "0776065e66c3f8875b40e1787d191582ac60b34ddf55b4ebf1f3ce9c14e68ed4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/mode-global-setter.txt",
+      "bytes": 272,
+      "sha256": "31e64b32592be2aafa8c2b295627136ad6a3032aea5f2e3399db8a83059bc087"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/mode-to-backup.txt",
+      "bytes": 4375,
+      "sha256": "f6f9572e509ecef64314f3af4ee021c515d83ced489402562d0f831cca128024"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/spi-input-and-mode-import.txt",
+      "bytes": 3473,
+      "sha256": "9d53bbcf31cfe15169856587aa14cf508a8e725f072eb9c1ee55adb39caa18f9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/spi-read.txt",
+      "bytes": 5008,
+      "sha256": "9ea0b2f56672c36e9d8c8c1480b6abc6ff1b0b3d61a817a6c50f494ba7f272a2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/startup-bss-zero.txt",
+      "bytes": 1293,
+      "sha256": "ef698793c0286304c0137a4397a5318ad14603f7714182d190e597075998ac9c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/annotated-pins.txt",
+      "bytes": 44339,
+      "sha256": "bafb8fe3e89efe5bb8eb0d0faeb529906fe3b2f085f46c853af992778e745de6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam-api-xrefs.json",
+      "bytes": 19873,
+      "sha256": "d1e6da365e805345fb0334d534772b07cfe67fa40985886013cb81f976506071"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam-generic-initialization.txt",
+      "bytes": 15653,
+      "sha256": "fbb16beca61ebc53fb2356b0d821a86be74167f38ad88c9fb60842465afd93ec"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam-id-constant-windows.txt",
+      "bytes": 95091,
+      "sha256": "a23ba83cc4e036dd62c01daa1f6ec951a844dbf04877b55b8b4e41ce500d437e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam-queue-table.txt",
+      "bytes": 23493,
+      "sha256": "cce747e318129c15ef9767ac01fd68151becde742996b751b66ca2c6ff7e35f5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam-registration-windows.txt",
+      "bytes": 41208,
+      "sha256": "2b5478b3d10ffbfdc4401038103945f926dacbdaab77c43367d79af305b67b7e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam-target-immediates.json",
+      "bytes": 42273,
+      "sha256": "91b06c26c972d5df003ce17d7eb3fae7a3c169c8fc0ea0ccd7cfeaec744c42b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam-veneers.txt",
+      "bytes": 15275,
+      "sha256": "2a1c0da45e27f8ce0591681a7d119dc6e91728211060edf6f37c0f9ab130888e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam_id_constants.py",
+      "bytes": 869,
+      "sha256": "18dcb2528b398a0e361190dfa259a78cd990a5f0817229604d977b075cb069b3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam_scan.py",
+      "bytes": 877,
+      "sha256": "449a1dccf7aa13498fd4649759e6835653bb38bd038aa19c859f1bf52d89d1b1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam_table.py",
+      "bytes": 980,
+      "sha256": "3b7b3145de7cbcd74066fdf2ad8f27cdf9f410d10777d3f325b64f9531cb6214"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/avcam_xrefs.py",
+      "bytes": 1509,
+      "sha256": "571f339636a415d97f7b816a49d1315a29546758d9a2bec6d4f9c07b74bb1b45"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/bootin-log.txt",
+      "bytes": 27331,
+      "sha256": "30f1aae37d38ab92f92edda31643ee30150e95be2572dc4147dd626f86762bba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/bootin.elf-full-text.txt",
+      "bytes": 13367,
+      "sha256": "f62a6f13ae927ca1595ce8429830f7b1cecdcbf8f77bca8d3e369eeb2565db73"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/callback-provider-relocations.json",
+      "bytes": 815,
+      "sha256": "c59edf558cb286ca14611457ffd70eb96b57d34fc801848c8651128bacca48c1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/evidence-files.json",
+      "bytes": 5072,
+      "sha256": "b005158b62015ef473e05f9096be5162b160746dfef0838813d33bd105865731"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/high-id-audit.json",
+      "bytes": 72822,
+      "sha256": "27a8931a8f52c4343dc2cb75e2756d036442b02d6ec843c6ed4e6665c27a6a53"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/high-id-log.txt",
+      "bytes": 97169,
+      "sha256": "58ad4c1dccca2e6ef978e5ea5d89a8e4aa445b0d9c9ffa9b02a6f9e8b46cd6f5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/high_id_audit.py",
+      "bytes": 1089,
+      "sha256": "28328469221360e3b17eb3132132f1d00c3a0fd7826b09452eb9f15241907320"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/import-audit.json",
+      "bytes": 107902,
+      "sha256": "3d9c5b1668893cb05f4a66aa6b1c72350217df48d9964162aabc8d51e3dc74c9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/import_audit.py",
+      "bytes": 1767,
+      "sha256": "dde8503b4404540a408cebd5c123f2c43293664948a02e3c5c9040e2f050f118"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/instruction-slices.json",
+      "bytes": 3728,
+      "sha256": "d5468c6df751601afe35dbae6d6b1772253405c9657c8ad0215e8dea55617dc0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/liro-log.txt",
+      "bytes": 30478,
+      "sha256": "0373be6f05f44492b5c5f18e4fa4b058646ae4a0def84d92b587e542e2d00111"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/liro-metadata.json",
+      "bytes": 137031,
+      "sha256": "b5d6d69542c923a6759033cf82d9c2c39b54d3ee3e35559ed8310b9651d0a45a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/liro_audit.py",
+      "bytes": 1183,
+      "sha256": "8816d44e7bfd42d553aa3dc80219d75f2710afa4700095e9c53aa5c739cb121e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/pin_dump.py",
+      "bytes": 532,
+      "sha256": "e001faaa71c121e7088bccdfa666d064800afb1484cd3f0b2ce520e9ef306919"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/registration-log.txt",
+      "bytes": 24357,
+      "sha256": "9729f30fcc6ab501aeb1819f06266ea1bb3e43bbad80883efe2cc750c9805cf2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/registration-windows.txt",
+      "bytes": 80345,
+      "sha256": "aacf4c45d3f21947d87e9d48fe239a3bcd9c8d0f71ce66e9531de0985549752c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/registration_windows.py",
+      "bytes": 1347,
+      "sha256": "129cf38ce6011aa2265e618800665aee91e1ce5e45d72e3d1e5128d9bfaacb56"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/scope.json",
+      "bytes": 406,
+      "sha256": "e74c4013b18d225dd6eb45af32cffe2187e5ef139e1b34219d4c9ed57be591cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/seal_queue_evidence.py",
+      "bytes": 4189,
+      "sha256": "c0a872be43ae52a6fd161539b45d0f1701a15bd332dfc5a06d95695ef055a07a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/source-manifest.json",
+      "bytes": 1222,
+      "sha256": "5d006a5aab027de6cbb7c02d8ece60510c2ef13a79956617a4be37bf81a48b23"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/user-import-audit.json",
+      "bytes": 56891,
+      "sha256": "cff762c6208f009aa5a1a56a9dfe729ee1e66ba494224675d2ef43f48bfadd64"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/user-import-log.txt",
+      "bytes": 45807,
+      "sha256": "57a040e2894724f8ee53294f1f278d0777d09c92f09d415484beb2498122ace2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/user_imports.py",
+      "bytes": 1115,
+      "sha256": "8b8ddea5060624da05de32ff19abee36cfa0241e2feda70fe1b6fef7ec0638ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/user_target_dump.py",
+      "bytes": 908,
+      "sha256": "2d2bb7d0c2b2d7f8c9003c878ccf125b1ecafe8a948a75974deb73d63361b516"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/ap-topology.json",
+      "bytes": 1557317,
+      "sha256": "466d32fa27b1e3ad52f51709997ae1de8a1f077f19e4e8aa8545db525a97c9b8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/code-metadata.json",
+      "bytes": 52583,
+      "sha256": "e02036e3cf57da767d928dd51cb74a23f235dab35cb6f0f5f7041602b716db9f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassemble_topology.py",
+      "bytes": 3387,
+      "sha256": "c0b190194f7aa36dcad2e6dc9207a04e6b08bb88cfad378adc37972ba75ce944"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/bootin.elf.txt",
+      "bytes": 70079,
+      "sha256": "7a857b03b0e68783f3d2c1f2aab54688d44200a6e9638a65f2b0a1abe7bab253"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/im.elf.txt",
+      "bytes": 174449,
+      "sha256": "7b09095144efa1e32ad2e9fb92fcaed3355d7d5a9ccd8295f5c183635e57c989"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libIMDB.so.txt",
+      "bytes": 4075,
+      "sha256": "39d34023c8442a092143e57364da29c70a84841adda4ca25e8cf5f0dc0f73b8b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-120fc.txt",
+      "bytes": 1380,
+      "sha256": "31ce36410cf966ee851615b12af3afb3d42d256449c020274d4b87045a03db1d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-134c8.txt",
+      "bytes": 4584,
+      "sha256": "906615388b9ddcdb27f27db8f637902a3479a935c119f0f672f6159ab0bca9e3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-13cd8.txt",
+      "bytes": 1536,
+      "sha256": "fd5e63cbc2845e61621c075508fd88ab527b14b203b0f541c0fc7d743f10395a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-16730.txt",
+      "bytes": 6419,
+      "sha256": "5c1b641029d9cb4880076db2436192105ffa1f7501432c6634c605c09bf7f4a7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-16ba8.txt",
+      "bytes": 2562,
+      "sha256": "da516b55a5393ef4a2b716d7b8bbda666fc6964e54a9326af03c2f1f0b1a182c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-17da4.txt",
+      "bytes": 4489,
+      "sha256": "265d358becb60d48c548e9cd16f11a12dc850153dff484fa1e767d89d34ae54b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-18be8.txt",
+      "bytes": 680,
+      "sha256": "72a0514c63edf0e5075dcc670506d7517132848040d581ff545a39196caa510a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-19434.txt",
+      "bytes": 1033,
+      "sha256": "168ae85a74110c167ed31d53135b91b25fedfac6d36ab5527757d911b8624a5f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libInfraUsbCmn.so-1c47c.txt",
+      "bytes": 735,
+      "sha256": "9835ddfe58fa0c2493cdeb96fff6118c4bae9cf50e169c7179bcb31bad0cbc68"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-148a4.txt",
+      "bytes": 730,
+      "sha256": "6330572677b9d6812fb773a50921ec84b7ab33c4a89d5468a86486b882ba495a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-148f8.txt",
+      "bytes": 897,
+      "sha256": "4ff409d45551fe7d887709f336b093dd02b8faa2ac5e74341f13a08083be4eb4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-14960.txt",
+      "bytes": 706,
+      "sha256": "0e2aa74cb1e550b3288c73aafbdd05cb0debe0a4da7588a0d05cbbb1936f3db6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-14ab8.txt",
+      "bytes": 1266,
+      "sha256": "2c0cedaf415418d98b3ee62b78018b03507a7eeae5b60a4a02186525660df0d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-14b38.txt",
+      "bytes": 4920,
+      "sha256": "0c3f5999870c2f5b988970437e191186d2f8754c5fee346d75c1240b9ca525e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-14f08.txt",
+      "bytes": 2730,
+      "sha256": "30fe7774825fbfaaa68df6c10c951b08fee5c5c238811996976b13e33555931f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-158a4.txt",
+      "bytes": 490,
+      "sha256": "e84fb20369de6c663bd7e0bff14b4c34a8290475dac36a682ef2185853a607b5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-b094.txt",
+      "bytes": 521,
+      "sha256": "7c21ce6190feb580d81ad779a527737cde63ad27ecd859f2e74242995c288e4b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-b0d0.txt",
+      "bytes": 517,
+      "sha256": "407ccbabaac3261e997234a0b464808eed2a248ee5dc1fdcdd6d56c32f3cb86b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-caec.txt",
+      "bytes": 2119,
+      "sha256": "32994fdb9b8a3eae711360399d437c734e3e3c9ded674de28ab03c0228c42dec"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-cc1c.txt",
+      "bytes": 3354,
+      "sha256": "d242f6e5c2662d1e88ae1f2a3cf291bb7d1629df491a8b22c00da5a140321020"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-ceb0.txt",
+      "bytes": 997,
+      "sha256": "03d8d83b385fca3c8c71ed1e732a5d881fef876ec2b6beaf9ff84f0692c08012"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/libsencore.so-cf1c.txt",
+      "bytes": 751,
+      "sha256": "c2e7710770fd95395dc9ad9bbefe1e305686588bb16d85dc7f4d7e26fff4e5ab"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/disassembly/sen.elf.txt",
+      "bytes": 76270,
+      "sha256": "4acd4e3f02354f665b26165205bd09640eb3c81fd5797f92503c6d3bbdb1f1ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/imdb-table-raw.json",
+      "bytes": 294766,
+      "sha256": "7dd29adc0eb7549f4a2ce7edcca0031d1752d37205e32ab314701ff53154df36"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/independent-service-slices.json",
+      "bytes": 20084,
+      "sha256": "cf4f096a02e8e42b8ef6eb2d029dbfc90dfc870673f83080fddbdc56c91aa383"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/inspect_topology.py",
+      "bytes": 2331,
+      "sha256": "98fa857e1074a8291ebf8359e93a2ab5c07b07ee7aa7c2edc80003087633fdf3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/manifest.json",
+      "bytes": 15232,
+      "sha256": "03f8b83db1680aa303b1d25963922cbd5b47ad69c0563bf26f141a1635002641"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/bin/bootin.elf",
+      "bytes": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/bin/im.elf",
+      "bytes": 40920,
+      "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/bin/sen.elf",
+      "bytes": 27240,
+      "sha256": "9e3236666176b69746848edaac31e1e0ef00c4e80a9f062794ff62be2d605470"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/bin/usb_insmod.sh",
+      "bytes": 225,
+      "sha256": "5e885d964a9ab9c9e18c23453af42f7ff7da57d0aa446c1812b385206f3d8f7a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/lib/libIMDB.so",
+      "bytes": 71536,
+      "sha256": "6ceaea432bc7c4645897c2f1272941b33b0c04115ec62ffa000b37faf3d8517d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/lib/libInfraUsbCmn.so",
+      "bytes": 159504,
+      "sha256": "6caefd0677ee01cc6cdd54555f4422b03a86d12304c60f5372de18315bdd4396"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/lib/libObj.so",
+      "bytes": 2876600,
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/lib/libSTMcmdexecute.so",
+      "bytes": 10120,
+      "sha256": "4bcde80b18a30b08c36d5ca1183b3c2fa5e357bb81530a8a9f39c5ec267d8a71"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/lib/libUsbControl.so",
+      "bytes": 135424,
+      "sha256": "2bf51f28fd5066e56afc8bbb02ddbaa96b36f57ff2a823cecf9f901781754ed9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/lib/libsencore.so",
+      "bytes": 377328,
+      "sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/sbin/init",
+      "bytes": 735,
+      "sha256": "c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/sbin/init2",
+      "bytes": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/sbin/initrc/fstab",
+      "bytes": 1085,
+      "sha256": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/sbin/initrc/insmod_drv2",
+      "bytes": 1298,
+      "sha256": "19757bdd450061f861e2da44a6a93be2525668e3f7edc64e5a99a25bde56564e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/process-registration-dependency-graph.json",
+      "bytes": 12049,
+      "sha256": "4173b87668236b06cafd545ff657faeeb3acc83f546f2495ea26698b5efdc5bf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/record_graph.py",
+      "bytes": 6103,
+      "sha256": "01b3e707e5be68842b6b5a86c56d48b302679061423470df491e4b7f05540475"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/resolve_dependencies.py",
+      "bytes": 3374,
+      "sha256": "58c80d63555fc3603c929abbd74aa827cf0c2300a882c85c0a51f45a785f4b37"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/service-start-slices.json",
+      "bytes": 3312,
+      "sha256": "6e401f682d201de839934ff38fc9a8091939a4740201b25ff359116df8bdbb54"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/static-dependency-closure.json",
+      "bytes": 25365,
+      "sha256": "e1098e48b7ad7f99abe1c3cdf5a5e6fde9b5a97575d81eb78c61cf5cdee5d04a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/goal-status-after.json",
+      "bytes": 344049,
+      "sha256": "bbd930476e8481b9fc2992318c66a768c32649f10a9bb8c73b8482032f37649d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/goal-status-before.json",
+      "bytes": 340877,
+      "sha256": "c0da212f3ad83a2f050a7f93c42001e3915bfb8986b14617cbe640740e091420"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/provenance.json",
+      "bytes": 6457,
+      "sha256": "9da94fa08bec936d949897bec30d5770d80405b06bb5efad2a078bd64bfa6c2e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/readme-after.md",
+      "bytes": 71275,
+      "sha256": "d4be52f1b5ddeb86b7cf0dbe0fc6cc59842eb258a26c7e16f2d40145ec025811"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/readme-before.md",
+      "bytes": 70983,
+      "sha256": "0d45b23d22bc098495f28242edbd85459e1ba5770975c76e75f019ec41143c9c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/register_research.py",
+      "bytes": 18172,
+      "sha256": "d74bdd9884fa28430be29aba52dbf4f421f02754c3f4193106f9c7b710431227"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/registration-verification.json",
+      "bytes": 973,
+      "sha256": "7a71f330f3eca94d7df790fe465315751c0f599f3a497de3024316874b479221"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/reports/FX3 请求处理 独立启动.md",
+      "bytes": 7374,
+      "sha256": "47e0d858c7ef12a2f1b28501062a607aaab44e04f73bb8317cd88bcc64d9e08b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/research_notes/FX3 请求处理 独立启动/early-selector.md",
+      "bytes": 15094,
+      "sha256": "2141c5d5f9a27588af46107694989593fa91e14a970d01a031a1419886faf89a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/research_notes/FX3 请求处理 独立启动/queue-consumer.md",
+      "bytes": 13208,
+      "sha256": "d4d12f4e73c963d6f77c61f82a49e4fe246f1d1def44ea91aa06c1ee79e48b58"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/research_notes/FX3 请求处理 独立启动/usb-main-dependency.md",
+      "bytes": 14714,
+      "sha256": "d3d6f4bea6f3bb272707495cfdfe322968417b3000598a69408fc77d63cf6686"
+    }
+  ],
+  "member_count": 122,
+  "mutable_heads_not_manifest_members": true,
+  "exclusion_rules": {
+    "directory_names_any_depth": [
+      ".cache",
+      ".mypy_cache",
+      ".pip-cache",
+      ".pip_cache",
+      ".pytest_cache",
+      ".ruff_cache",
+      ".venv",
+      "__pycache__",
+      "dependency-cache",
+      "dependency_cache",
+      "pip-cache",
+      "pip_cache",
+      "venv"
+    ],
+    "file_suffixes": [
+      ".pyc",
+      ".pyo"
+    ],
+    "self_manifest": "final-receipt.json",
+    "reason": "Exclude rebuildable dependency environments, pip/dependency caches and compiled caches; retain analysis scripts, original/disassembly evidence, notes, provenance and receipts.",
+    "excluded_paths_retained_without_deletion": true
+  },
+  "excluded_paths": [],
+  "allowed_goal_keys_changed": [
+    "latest_stage",
+    "latest_stage_evidence",
+    "next_safe_offline_actions",
+    "progress_audit",
+    "research_activity",
+    "updated_utc"
+  ],
+  "mutable_progress": {
+    "before_sha256": "c0da212f3ad83a2f050a7f93c42001e3915bfb8986b14617cbe640740e091420",
+    "after_sha256": "bbd930476e8481b9fc2992318c66a768c32649f10a9bb8c73b8482032f37649d",
+    "readme_before_sha256": "0d45b23d22bc098495f28242edbd85459e1ba5770975c76e75f019ec41143c9c",
+    "readme_after_sha256": "d4be52f1b5ddeb86b7cf0dbe0fc6cc59842eb258a26c7e16f2d40145ec025811"
+  },
+  "research_priority_exactly_preserved": true,
+  "native_goal_manager_untouched": true,
+  "new_device_operations_or_test_runs": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

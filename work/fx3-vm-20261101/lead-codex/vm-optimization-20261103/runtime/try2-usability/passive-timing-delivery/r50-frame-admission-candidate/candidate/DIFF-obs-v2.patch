@@ -1,0 +1,98 @@
+--- a/PAGE-script.txt
++++ b/PAGE-script-obs-v2.txt
+@@ -1,6 +1,7 @@
+ 
+ const token=__TOKEN__;
+ let displayed=0,shown=0,shownSHA='',displayedGeneration=0,busy=false,ending=false,finished=false;
++let lastStatusAtMs=0,displayedAtMs=0;
+ let lastURL=null,renderFault=null,lastStatus=null,awaitingStep=null,deliveryUnknown=false,reviewAwaiting=false,reviewUnknown=false,pendingConfirm=null;
+ let explicitRejection=null,uncertainDetail='';
+ const attemptDocumentTimeOrigin=performance.timeOrigin,attemptDocument=document;let currentKeyAttempt=null;
+@@ -168,13 +169,13 @@
+    image.src=u;
+  });}catch(e){URL.revokeObjectURL(u);throw e;}
+  document.querySelector('#placeholder').hidden=true;
+- displayed=shown=seq;shownSHA=sha;displayedGeneration=generation;
++ displayed=shown=seq;shownSHA=sha;displayedGeneration=generation;displayedAtMs=performance.now();
+  if(lastURL)URL.revokeObjectURL(lastURL);lastURL=u;
+ }
+ async function tick(){
+  if(finished)return;
+  try{
+-   const s=(await request('/api/status')).body;if(reviewTerminated&&!['stopping','finished'].includes(s.phase)){disableKeys();return;}lastStatus=s;
++   const s=(await request('/api/status')).body;if(reviewTerminated&&!['stopping','finished'].includes(s.phase)){disableKeys();return;}lastStatus=s;lastStatusAtMs=performance.now();
+    if(s.error||s.review_protocol_unknown)invalidateReview('server_error_or_unknown',true);
+    if(s.review_required&&reviewSnapshot&&s.review_step!==reviewSnapshot.step)invalidateReview('review_step_changed',true);
+    statusEl.textContent=s.message+(s.visual_state==='visual_pending'?'（输入已接收，仍在观察画面）':'');
+@@ -267,6 +268,49 @@
+    snapshot_monotonic_ms:performance.now(),server_atomic_permission:false};
+ }
+ Object.defineProperty(window,'fx3KeyAttemptRecoveryEligibility',{value:keyAttemptRecoveryEligibility,writable:false,configurable:false});
++
++function recordFrameAdmission(a,preflight,clickState,preflightStartMs,preflightEndMs){
++ try{
++  const preflightFrame=preflight&&preflight.frame;
++  const lastFrame=lastStatus&&lastStatus.frame;
++  const preflightLoaded=!!preflightFrame&&displayed>0&&shownSHA===preflightFrame.PNG_sha256&&displayedGeneration===preflightFrame.content_generation&&preflight.render_valid&&!renderFault;
++  const lastLoaded=!!lastFrame&&displayed>0&&shownSHA===lastFrame.PNG_sha256&&displayedGeneration===lastFrame.content_generation&&lastStatus.render_valid&&!renderFault;
++  const terms=[
++   ['ending',!!ending],['finished',!!finished],['delivery_unknown',!!deliveryUnknown],['review_unknown',!!reviewUnknown],
++   ['render_fault',!!renderFault],['awaiting_step',awaitingStep!==null],['review_awaiting',!!reviewAwaiting],
++   ['preflight_phase_not_ready',!preflight||preflight.phase!=='ready'],['preflight_not_ready',!preflight||!preflight.ready],
++   ['preflight_busy',!preflight||!!preflight.busy],['preflight_review_required',!preflight||!!preflight.review_required],
++   ['preflight_steps_changed',!preflight||preflight.steps!==a.base_step],['not_frame_loaded_for_preflight',!preflightLoaded],
++   ['preflight_sha_ne_clicked',!preflightFrame||preflightFrame.PNG_sha256!==a.frame.PNG_sha256],
++   ['preflight_generation_ne_clicked',!preflightFrame||preflightFrame.content_generation!==a.frame.content_generation],
++   ['shown_sha_ne_clicked',shownSHA!==a.frame.PNG_sha256],['displayed_generation_ne_clicked',displayedGeneration!==a.frame.content_generation],
++   ['last_status_missing',!lastStatus],['not_frame_loaded_for_last_status',!lastLoaded],
++   ['last_status_steps_changed',!lastStatus||lastStatus.steps!==a.base_step],
++   ['last_status_sha_ne_clicked',!lastFrame||lastFrame.PNG_sha256!==a.frame.PNG_sha256],
++   ['last_status_generation_ne_clicked',!lastFrame||lastFrame.content_generation!==a.frame.content_generation]
++  ];
++  let first=-1;for(let i=0;i<terms.length;i++){if(terms[i][1]){first=i;break;}}
++  const evaluated=terms.slice(0,first<0?terms.length:first+1).map(x=>x[0]);
++  const rec={schema:'fx3-frame-admission-obs-v2',version:1,attempt_id:a.attempt_id,
++   clicked:{PNG_sha256:a.frame.PNG_sha256,content_generation:a.frame.content_generation,sequence:a.frame.sequence,monotonic_ms:a.created_monotonic_ms},
++   displayed_at_click:clickState.displayed,last_status_at_click:clickState.lastStatus,
++   preflight:{PNG_sha256:preflightFrame?preflightFrame.PNG_sha256:null,content_generation:preflightFrame?preflightFrame.content_generation:null,sequence:preflightFrame?preflightFrame.sequence:null,
++    request_start_ms:preflightStartMs,request_end_ms:preflightEndMs,response_ms:preflightEndMs==null?null:preflightEndMs-preflightStartMs},
++   displayed_at_decision:{sequence:displayed,PNG_sha256:shownSHA,content_generation:displayedGeneration,monotonic_ms:displayedAtMs},
++   last_status_at_decision:lastStatus?{steps:lastStatus.steps,phase:lastStatus.phase,ready:lastStatus.ready,busy:lastStatus.busy,review_required:lastStatus.review_required,
++    frame:lastFrame?{sequence:lastFrame.sequence,PNG_sha256:lastFrame.PNG_sha256,content_generation:lastFrame.content_generation}:null,monotonic_ms:lastStatusAtMs}:null,
++   predicates:Object.fromEntries(terms),condition_order:terms.map(x=>x[0]),evaluated_terms:evaluated,
++   first_true_term:first<0?null:terms[first][0],first_true_index:first,
++   reason:'preflight_identity_or_lifecycle_changed',sequence_in_gate:false,
++   sequence_observed:{clicked:a.frame.sequence,displayed_at_click:clickState.displayed.sequence,preflight:preflightFrame?preflightFrame.sequence:null,displayed_at_decision:displayed,last_status_at_decision:lastFrame?lastFrame.sequence:null},
++   monotonic_ms:{click:a.created_monotonic_ms,last_status_at_click:clickState.lastStatusAtMs,displayed_at_click:clickState.displayedAtMs,
++    preflight_start:preflightStartMs,preflight_end:preflightEndMs,last_status_at_decision:lastStatusAtMs,displayed_at_decision:displayedAtMs,decision:performance.now()},
++   network:'no additional request; preflight status request is the original one',key_semantics:'unchanged; reason string unchanged'};
++  const box=window.__fx3FrameAdmissionObsV2||(window.__fx3FrameAdmissionObsV2={schema:'fx3-frame-admission-obs-v2',version:1,records:[],last:null});
++  box.records.push(rec);if(box.records.length>8)box.records.shift();box.last=rec;
++ }catch(_){}
++}
++
+ keys.forEach(b=>b.onclick=async()=>{
+  if(b.disabled||busy||ending||renderFault||awaitingStep!==null||!lastStatus||reviewProtocolUnknown||reviewTerminated)return;
+  invalidateReview('new_input');
+@@ -287,8 +331,11 @@
+  }
+  busy=true;disableKeys();
+  const clickedStep=a.base_step,clickedSHA=a.frame.PNG_sha256,clickedGeneration=a.frame.content_generation;
+- let preflight;
+- try{preflight=(await request('/api/status')).body;
++ const clickState={lastStatusAtMs,displayedAtMs,displayed:{sequence:displayed,PNG_sha256:shownSHA,content_generation:displayedGeneration,monotonic_ms:displayedAtMs},
++  lastStatus:lastStatus?{steps:lastStatus.steps,phase:lastStatus.phase,ready:lastStatus.ready,busy:lastStatus.busy,review_required:lastStatus.review_required,
++   frame:lastStatus.frame?{sequence:lastStatus.frame.sequence,PNG_sha256:lastStatus.frame.PNG_sha256,content_generation:lastStatus.frame.content_generation}:null}:null};
++ let preflight;let preflightStartMs=performance.now(),preflightEndMs=null;
++ try{preflight=(await request('/api/status')).body;preflightEndMs=performance.now();
+    if(currentKeyAttempt!==a)return;
+    if(!preflight||typeof preflight!=='object'||!preflight.frame||typeof preflight.frame!=='object')
+      throw Error('按键前状态格式无效');
+@@ -306,6 +353,7 @@
+     shownSHA!==clickedSHA||displayedGeneration!==clickedGeneration||
+     !lastStatus||!frameLoadedFor(lastStatus)||lastStatus.steps!==clickedStep||
+     lastStatus.frame.PNG_sha256!==clickedSHA||lastStatus.frame.content_generation!==clickedGeneration){
++   recordFrameAdmission(a,preflight,clickState,preflightStartMs,preflightEndMs);
+    setAttempt(a.attempt_id,'not_posted',{reason:'preflight_identity_or_lifecycle_changed'});
+    busy=false;lockVisualControls();
+    if(!ending&&!finished){

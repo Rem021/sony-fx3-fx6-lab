@@ -1,0 +1,12 @@
+{
+  "corrections": [
+    "The reference linker places the recovery program and DMA buffers in eSRAM; complete external DDR training is not a universal prerequisite for this design.",
+    "The 7.02 package DTB memory declaration is a configuration value, not measured current-body DDR capacity or a running/fixed-up device tree.",
+    "DTB parser output was renamed from physical to translated_bus_address before sealing: generic ranges do not resolve syscon/MFD driver-relative register offsets.",
+    "DTB emmc0 has no reg property. The eMMC base match is against named Ver7.00 GPL platform data, not an exact current-body DTB MMIO measurement.",
+    "An initial exact-literal search did not find2000003C; following current MCU register-base loads plus3C/3D/3E bound three actual reload sources. Literal absence was not used as absence proof.",
+    "The normal-main keepalive claim is limited to the explicit source path. Matching addresses do not establish framing, live counter values, reset timing or all indirect hardware effects."
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

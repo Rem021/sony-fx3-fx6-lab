@@ -1,0 +1,187 @@
+{
+  "source_sha256": "61a53457be8c1e38f1cf75992ede374356943ef47c8f9e3e9c024b78431cb376",
+  "arm64_slice_offset": 15335424,
+  "segments": [
+    {
+      "name": "__TEXT",
+      "va": 0,
+      "vm_bytes": 7487488,
+      "file_offset": 0,
+      "file_bytes": 7487488,
+      "protection": 5
+    },
+    {
+      "name": "__DATA_CONST",
+      "va": 7487488,
+      "vm_bytes": 16384,
+      "file_offset": 7487488,
+      "file_bytes": 16384,
+      "protection": 3
+    },
+    {
+      "name": "__DATA",
+      "va": 7503872,
+      "vm_bytes": 16384,
+      "file_offset": 7503872,
+      "file_bytes": 16384,
+      "protection": 3
+    },
+    {
+      "name": "__LINKEDIT",
+      "va": 7520256,
+      "vm_bytes": 6864896,
+      "file_offset": 7520256,
+      "file_bytes": 6851344,
+      "protection": 1
+    }
+  ],
+  "sections": [
+    {
+      "name": "__text",
+      "segment": "__TEXT",
+      "va": 15036,
+      "bytes": 7186084,
+      "file_offset": 15036,
+      "flags": 2147484672,
+      "index": 1
+    },
+    {
+      "name": "__stubs",
+      "segment": "__TEXT",
+      "va": 7201120,
+      "bytes": 1212,
+      "file_offset": 7201120,
+      "flags": 2147484680,
+      "index": 2
+    },
+    {
+      "name": "__stub_helper",
+      "segment": "__TEXT",
+      "va": 7202332,
+      "bytes": 1188,
+      "file_offset": 7202332,
+      "flags": 2147484672,
+      "index": 3
+    },
+    {
+      "name": "__gcc_except_tab",
+      "segment": "__TEXT",
+      "va": 7203520,
+      "bytes": 255936,
+      "file_offset": 7203520,
+      "flags": 0,
+      "index": 4
+    },
+    {
+      "name": "__const",
+      "segment": "__TEXT",
+      "va": 7459456,
+      "bytes": 5940,
+      "file_offset": 7459456,
+      "flags": 0,
+      "index": 5
+    },
+    {
+      "name": "__cstring",
+      "segment": "__TEXT",
+      "va": 7465396,
+      "bytes": 15813,
+      "file_offset": 7465396,
+      "flags": 2,
+      "index": 6
+    },
+    {
+      "name": "__unwind_info",
+      "segment": "__TEXT",
+      "va": 7481212,
+      "bytes": 5804,
+      "file_offset": 7481212,
+      "flags": 0,
+      "index": 7
+    },
+    {
+      "name": "__eh_frame",
+      "segment": "__TEXT",
+      "va": 7487016,
+      "bytes": 468,
+      "file_offset": 7487016,
+      "flags": 0,
+      "index": 8
+    },
+    {
+      "name": "__got",
+      "segment": "__DATA_CONST",
+      "va": 7487488,
+      "bytes": 248,
+      "file_offset": 7487488,
+      "flags": 6,
+      "index": 9
+    },
+    {
+      "name": "__const",
+      "segment": "__DATA_CONST",
+      "va": 7487736,
+      "bytes": 1056,
+      "file_offset": 7487736,
+      "flags": 0,
+      "index": 10
+    },
+    {
+      "name": "__la_symbol_ptr",
+      "segment": "__DATA",
+      "va": 7503872,
+      "bytes": 808,
+      "file_offset": 7503872,
+      "flags": 7,
+      "index": 11
+    },
+    {
+      "name": "__data",
+      "segment": "__DATA",
+      "va": 7504680,
+      "bytes": 8,
+      "file_offset": 7504680,
+      "flags": 0,
+      "index": 12
+    }
+  ],
+  "function_starts": 16716,
+  "functions": [
+    {
+      "va": "0x5c25a8",
+      "label": "Venice-Lut1D0-RAM",
+      "bytes": 128,
+      "sha256": "50a8c60c4c9cca922dece54abf518ff70eda1c316ae850a3202fa6a23d179de6",
+      "symbol": "Venice_regaddres::Lut1D0_RAM_regad(std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>>&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>>&)"
+    },
+    {
+      "va": "0x5c3b24",
+      "label": "Venice-Lmx0-reg",
+      "bytes": 872,
+      "sha256": "56c368cd5e9664871636f700b35ff56abe8c0d4242fd87008dceb4e4e68e0626",
+      "symbol": "Venice_regaddres::Lmx0_reg(std::__1::vector<std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>>, std::__1::allocator<std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>>>>&, std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>&)"
+    },
+    {
+      "va": "0x1bb80",
+      "label": "ART-setLmxParamData",
+      "bytes": 468,
+      "sha256": "09bebef556f6d30289b1cd3bd6e2c0b9065175cc203bee39cbd0eed73fb8f2d4",
+      "symbol": "ArtModeController::setLmxParamData(std::__1::vector<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>, std::__1::allocator<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>>>&, std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>&, std::__1::vector<int, std::__1::allocator<int>>&, int, int, int)"
+    },
+    {
+      "va": "0x1bd54",
+      "label": "ART-setL1dParamData",
+      "bytes": 628,
+      "sha256": "887a13e0920b4b7e67573897b5e5915c0798faa69ba1784ae76e4e918e678af1",
+      "symbol": "ArtModeController::setL1dParamData(std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>&, std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>&, std::__1::vector<int, std::__1::allocator<int>>&, int, int, int, int, int, int, int)"
+    },
+    {
+      "va": "0x1b7e8",
+      "label": "ART-setSt3dParamData",
+      "bytes": 920,
+      "sha256": "f988dea2e38e4321973c0d86bb04473ca89f6b75b9545d413c7429d5a36a4d31",
+      "symbol": "ArtModeController::setSt3dParamData(std::__1::vector<std::__1::vector<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>, std::__1::allocator<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>>>, std::__1::allocator<std::__1::vector<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>, std::__1::allocator<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>>>>>&, std::__1::vector<std::__1::vector<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>, std::__1::allocator<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>>>, std::__1::allocator<std::__1::vector<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>, std::__1::allocator<std::__1::vector<std::__1::vector<double, std::__1::allocator<double>>, std::__1::allocator<std::__1::vector<double, std::__1::allocator<double>>>>>>>>&, std::__1::vector<int, std::__1::allocator<int>>&, int, int, int)"
+    }
+  ],
+  "scope": "Original ARM64 file-backed static functions bounded with LC_FUNCTION_STARTS; no vendor dylib loaded, no register access or device action."
+}

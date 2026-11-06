@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "created_utc": "2026-11-01T11:34:37.637217+00:00",
+  "source_commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "goal": "Original menu data writes and later real virtual-file persistence/restoration, never a no-op ACK",
+  "current_message": "FX3 observed selector9 Backup_write; independent original owner static registration/dispatch update in backup-3e014d-contract-v2.json",
+  "official_FX3_seed_receipt": "fx3-public-seed-source-receipt.json",
+  "same_model_seed_bytes": 2229740,
+  "same_model_region_or_bank_selection_claimed": false,
+  "startup_sequence_candidate": [
+    {
+      "step": "private guest namespace",
+      "requirement": "/setting is VM-private tmpfs; no real devices/physical SD mapped; source FDAT remains host read-only"
+    },
+    {
+      "step": "paired seeds",
+      "requirement": "same exact verified FX3 Backup bytes in seed-backup.bin and seed-setting/Backup.bin; copy to /setting/Backup.bin before module; later copy seed-setting must retain identical Backup bytes"
+    },
+    {
+      "step": "original Backup module",
+      "command_reference": "insmod /usr/kmod/backup.ko Backup_load=1 Backup_save=0",
+      "scope": "upstream successful public-input baseline; actual FX3 init/record selection/readback must be observed"
+    },
+    {
+      "step": "original ulogio module",
+      "command_reference": "insmod /usr/kmod/osal_ulogio.ko ulogio_initfile=/setting/ulogio.bin",
+      "config_bytes": 2784,
+      "config_sha256": "dd5a1729788d6ee49b2217afc949eeb1e7c04c7244166d174bc90fda303dfc96",
+      "source": "same-model FDAT outer0800 member, not nflasha15"
+    },
+    {
+      "step": "original current write",
+      "requirement": "unaltered Backup_write path and original callback result/actual property data; no fake success"
+    },
+    {
+      "step": "progress to App",
+      "requirement": "trace next exact op/SID; no blanket extra modules or CP ACK"
+    }
+  ],
+  "load_save_semantics_limits": {
+    "Backup_load_1": "actual upstream successful loading argument; no claim it alone proves valid selection/contents",
+    "Backup_load_0": "not a supported way to avoid missing seed; original owner independently reported select_path/load_file still reached",
+    "Backup_save_0": "explicit initial experiment parameter, not a guarantee that no file write can occur",
+    "Backup_save_1": "not a global save guarantee; upstream real controlled comparison did not make all requested records persist by toggling it",
+    "isolation_basis": "private tmpfs and virtual-only storage topology, not the save parameter"
+  },
+  "ulogio_dependency_limits": {
+    "stream": "upstream order is after stream but order alone is not dependency proof; independent FX3 original owner reports no unresolved stream dependency",
+    "Backup": "upstream loaded after original Backup; independent FX3 original owner reports symbol closure needs backup plus current kernel/IPC",
+    "DMM": "upstream ulogio is loaded before dmm.ko; this does not prove all config physical-workspace accesses supported on FX3",
+    "pcidma": "symbol-resolution availability is distinct from executing transfer; Backup_write local path does not imply later Backup_sync_all remote sync/DMA succeeds",
+    "actual_memory": "ulogio.bin references must fall into valid reserved/model RAM before actual access; no all-ones MMIO substitute"
+  },
+  "persistence_acceptance": [
+    "Capture actual original API value after selector9 write",
+    "Use exact intended original Backup_sync_subsystem(SID) only when persistence is requested",
+    "Check actual selected bank, matching property IDs/sizes and file-return path; return0 may be no-op",
+    "Read complete private guest Backup file, validate both same-model BK4 records/checksums/target bytes and repeat API read",
+    "Export exact full file with guest/host independent hash agreement",
+    "Publish a new immutable private-instance generation only after full readback",
+    "Start fresh VM from two identical saved seed copies; before App and after App original Backup_nread confirm actual changed values",
+    "Menu input, configuration persistence and first-setup bypass are separate claims"
+  ],
+  "do_not_copy_from_A7C2_helpers": {
+    "source": "runtime/analysis/user-settings-checkpoint.c",
+    "hardcoded_A7C2_values": [
+      "file2390264 bytes",
+      "subsystem count819",
+      "bank0 size968981",
+      "bank1 offset970752/size1419512",
+      "property IDs/language date expected values"
+    ],
+    "FX3_replacement": "derive from actual 2229740B original FX3 seed structure and selected original properties"
+  },
+  "new_runtime_actions_by_this_source_researcher": 0
+}

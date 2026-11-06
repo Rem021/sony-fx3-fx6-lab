@@ -1,0 +1,55 @@
+_ZN7Updater10RingBuffer13writeToBufferEPKhmb
+00009864 stp       x29, x30, [sp, #-0x50]!
+00009868 mov       x29, sp
+0000986c stp       x19, x20, [sp, #0x10]
+00009870 mov       x19, x0
+00009874 stp       x21, x22, [sp, #0x20]
+00009878 mov       x20, x2
+0000987c stp       x23, x24, [sp, #0x30]
+00009880 uxtb      w22, w3
+00009884 cbz       x2, #0x98e8
+00009888 ldr       x21, [x0, #8]
+0000988c ldr       x0, [x0, #0x20]
+00009890 sub       x3, x0, x21
+00009894 ldr       x21, [x19, #0x10]
+00009898 sub       x21, x21, x3
+0000989c cmp       x2, x21
+000098a0 b.hs      #0x98b8
+000098a4 bl        #0x6a50 ; memcpy
+000098a8 ldr       x0, [x19, #0x20]
+000098ac add       x0, x0, x20
+000098b0 str       x0, [x19, #0x20]
+000098b4 b         #0x98e8
+000098b8 b.ls      #0x9930
+000098bc mov       x2, x21
+000098c0 mov       x24, x1
+000098c4 sub       x23, x20, x21
+000098c8 bl        #0x6a50 ; memcpy
+000098cc ldr       x0, [x19, #8]
+000098d0 mov       x2, x23
+000098d4 add       x1, x24, x21
+000098d8 bl        #0x6a50 ; memcpy
+000098dc ldr       x2, [x19, #8]
+000098e0 add       x2, x2, x23
+000098e4 str       x2, [x19, #0x20]
+000098e8 add       x21, x29, #0x50
+000098ec add       x0, x19, #0x38
+000098f0 str       x0, [x21, #-8]!
+000098f4 bl        #0x6a90 ; pthread_mutex_lock
+000098f8 ldr       x0, [x19, #0x28]
+000098fc add       x0, x20, x0
+00009900 str       x0, [x19, #0x28]
+00009904 add       x0, x19, #0x68
+00009908 strb      w22, [x19, #0x30]
+0000990c bl        #0x6c60 ; pthread_cond_broadcast
+00009910 mov       x0, x21
+00009914 bl        #0x956c
+00009918 mov       x0, x20
+0000991c ldp       x19, x20, [sp, #0x10]
+00009920 ldp       x21, x22, [sp, #0x20]
+00009924 ldp       x23, x24, [sp, #0x30]
+00009928 ldp       x29, x30, [sp], #0x50
+0000992c ret       
+00009930 bl        #0x6a50 ; memcpy
+00009934 ldr       x0, [x19, #8]
+00009938 b         #0x98b0

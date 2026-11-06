@@ -1,0 +1,79 @@
+{
+  "status": "PASS_PRIVATE_OWNER_RECEIPT_REVIEW",
+  "created_utc": "2026-10-29T19:58:32.984113+00:00",
+  "local_checks": 58,
+  "integration": 38,
+  "targeted_receipts": 20,
+  "previous_manifest_sha256": "1f7a34f67f28c998863b1eed5219597a115dfb05c7491b884b207a4896831079",
+  "previous_manifest_members_reverified": 649,
+  "lowlevel_byte_identical_to192": [
+    "iokit_wire.c",
+    "iokit_wire.h",
+    "native_session.c",
+    "native_session.h",
+    "owner_channel.c",
+    "owner_channel.h",
+    "owner_core.c",
+    "owner_iokit.c",
+    "global_guard.c",
+    "global_guard.h",
+    "frame_io.c",
+    "frame_io.h"
+  ],
+  "native_candidate_released_or_executed": false,
+  "new_administrator_or_camera_operations": 0,
+  "native_goal_observed": "active",
+  "physical_backup_restore_or_boot_proven": false,
+  "files": [
+    {
+      "path": "build-receipt-v3.json",
+      "bytes": 10788,
+      "sha256": "4ab2e83dbef554f38cfc9a2a2835f23d8d6bcbd98a3349f182d025fe5dc2b3ca"
+    },
+    {
+      "path": "integration-results.json",
+      "bytes": 5966,
+      "sha256": "8d6a90c500017e4ec2340f810a240894e04e92d5cefa491aeea4b394f11f7b21"
+    },
+    {
+      "path": "receipt-results.json",
+      "bytes": 3397,
+      "sha256": "eab938cbed90a7bde2a66f3fd8f5103c7953e6e76bedc4d75e2948b53e84482c"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 1746,
+      "sha256": "d12d31b7a6c8c9a33cd73b4f34485f589e22733d8d091ebf995a161a77eac519"
+    },
+    {
+      "path": "primary-source-review.json",
+      "bytes": 967,
+      "sha256": "4c60308c60dbb80639adbc40b409e258f7b14259173a65a4f8251e164674703b"
+    },
+    {
+      "path": "native-goal-observed.json",
+      "bytes": 444,
+      "sha256": "a0166a4c954d6603ea25d2efdfef7ccd1af48952ec3ffd2739011128581a14b2"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3844,
+      "sha256": "f3d5e5eab06a0240b4138aae6a9e188249e997ebbdb831f1edfb9fd8d2e5f773"
+    },
+    {
+      "path": "receipt_receiver.py",
+      "bytes": 10216,
+      "sha256": "43a4ba66c1fab36c83380cb5a2f561f35368e970e32a495645574686cab1712b"
+    },
+    {
+      "path": "test_integration.py",
+      "bytes": 24542,
+      "sha256": "c05b48867a65f27704c71458eb93cc84f0be8b722ca390be16c4def0a1aff795"
+    },
+    {
+      "path": "test_receipt.py",
+      "bytes": 12445,
+      "sha256": "3a1d32f3c63aaa532e3bf877b9249c638663a8071eaac1195ec4b698c407b530"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+00400d90 9cffff97 bl       #0x400c00 ; get_power_IC_type
+00400d94 01040051 sub      w1, w0, #1
+00400d98 3f180071 cmp      w1, #6
+00400d9c c8350054 b.hi     #0x401454
+00400da0 020000b0 adrp     x2, #0x401000
+00400da4 42802791 add      x2, x2, #0x9e0
+00400da8 41586178 ldrh     w1, [x2, w1, uxtw #1]
+00400dac 62000010 adr      x2, #0x400db8
+00400db0 41a8218b add      x1, x2, w1, sxth #2
+00400db4 20001fd6 br       x1

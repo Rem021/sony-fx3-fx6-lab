@@ -1,0 +1,30 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap97-r2-const-alpha-date-observe/candidate.json",
+  "base_sha256": "ce7dfd047af78d8220a5ebb39a51799cdd579da1552ba76066792d305e4346fb",
+  "changed_member_bodies": [
+    "init",
+    "simulation/fx3-preset-context-v2-screen.so",
+    "simulation/fx3-cp-backup-reset-v1.ko"
+  ],
+  "all_other_members_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "tests": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-date98-user-v1.log": "3cf2b5fe398cd0ec66ceae5ba9dc47449e32c605a7fb7f214a3183a06664f97d",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-date98-kernel-v1.log": "a5b63f6c8a6dbba53eac86d9bc509ebd58b6284382bdc2fcf8d228094611847b",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-date98-core-v1.log": "d348360c9f25a043b26ee54c717d1048860e275623701981c4c686863df310ac"
+  },
+  "helpers": {
+    "simulation/fx3-preset-context-v2-screen.so": {
+      "body": "fx3-preset-context-v4-date98.so",
+      "sha256": "fe7988c7bf74537042aa5cf8a63a847c1333ba2d52b0aef657562724eb701708"
+    },
+    "simulation/fx3-cp-backup-reset-v1.ko": {
+      "body": "fx3-cp-backup-reset-v2-date98.ko",
+      "sha256": "1336b006829a875a259dcb68260a8947b1bdca46f8ae52be9e8e69d8c2bd4286"
+    }
+  },
+  "authority": [
+    "msg_de25f58b89eb",
+    "msg_2c43f8a7ac82"
+  ]
+}

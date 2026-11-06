@@ -1,0 +1,61 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review/dmm.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000009ff8 <dmm_unit_ctrl_GetExtentAreaInfo>:
+    9ff8: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    9ffc: 910003fd     	mov	x29, sp
+    a000: a90153f3     	stp	x19, x20, [sp, #0x10]
+    a004: 2a0003f3     	mov	w19, w0
+    a008: f90013f5     	str	x21, [sp, #0x20]
+    a00c: aa0203f4     	mov	x20, x2
+    a010: aa0103f5     	mov	x21, x1
+    a014: 94000000     	bl	0xa014 <dmm_unit_ctrl_GetExtentAreaInfo+0x1c>
+		000000000000a014:  R_AARCH64_CALL26	dmm_unit_tbl_GetUnitTbl
+    a018: b9400001     	ldr	w1, [x0]
+    a01c: f9001bbf     	str	xzr, [x29, #0x30]
+    a020: 3100043f     	cmn	w1, #0x1
+    a024: b9003bbf     	str	wzr, [x29, #0x38]
+    a028: 54000120     	b.eq	0xa04c <dmm_unit_ctrl_GetExtentAreaInfo+0x54>
+    a02c: 6b01027f     	cmp	w19, w1
+    a030: 54000081     	b.ne	0xa040 <dmm_unit_ctrl_GetExtentAreaInfo+0x48>
+    a034: 1400000f     	b	0xa070 <dmm_unit_ctrl_GetExtentAreaInfo+0x78>
+    a038: 6b13003f     	cmp	w1, w19
+    a03c: 540001a0     	b.eq	0xa070 <dmm_unit_ctrl_GetExtentAreaInfo+0x78>
+    a040: b8410c01     	ldr	w1, [x0, #0x10]!
+    a044: 3100043f     	cmn	w1, #0x1
+    a048: 54ffff81     	b.ne	0xa038 <dmm_unit_ctrl_GetExtentAreaInfo+0x40>
+    a04c: b90002bf     	str	wzr, [x21]
+    a050: 529fffe2     	mov	w2, #0xffff             // =65535
+    a054: f900029f     	str	xzr, [x20]
+    a058: 2a0203e0     	mov	w0, w2
+    a05c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    a060: f94013f5     	ldr	x21, [sp, #0x20]
+    a064: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    a068: d65f03c0     	ret
+    a06c: d503201f     	nop
+    a070: f9400400     	ldr	x0, [x0, #0x8]
+    a074: b4fffec0     	cbz	x0, 0xa04c <dmm_unit_ctrl_GetExtentAreaInfo+0x54>
+    a078: 12bfe001     	mov	w1, #0xffffff           // =16777215
+    a07c: b9400002     	ldr	w2, [x0]
+    a080: 12800000     	mov	w0, #-0x1               // =-1
+    a084: 290607a2     	stp	w2, w1, [x29, #0x30]
+    a088: 790073a0     	strh	w0, [x29, #0x38]
+    a08c: f9401ba0     	ldr	x0, [x29, #0x30]
+    a090: b9403ba1     	ldr	w1, [x29, #0x38]
+    a094: 94000000     	bl	0xa094 <dmm_unit_ctrl_GetExtentAreaInfo+0x9c>
+		000000000000a094:  R_AARCH64_CALL26	dmm_ext_ctrl_GetRootExtentTbl
+    a098: b4fffda0     	cbz	x0, 0xa04c <dmm_unit_ctrl_GetExtentAreaInfo+0x54>
+    a09c: b9400c01     	ldr	w1, [x0, #0xc]
+    a0a0: 52800002     	mov	w2, #0x0                // =0
+    a0a4: b90002a1     	str	w1, [x21]
+    a0a8: 79400c01     	ldrh	w1, [x0, #0x6]
+    a0ac: b9400000     	ldr	w0, [x0]
+    a0b0: 8b018001     	add	x1, x0, x1, lsl #32
+    a0b4: 2a0203e0     	mov	w0, w2
+    a0b8: f9000281     	str	x1, [x20]
+    a0bc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    a0c0: f94013f5     	ldr	x21, [sp, #0x20]
+    a0c4: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    a0c8: d65f03c0     	ret

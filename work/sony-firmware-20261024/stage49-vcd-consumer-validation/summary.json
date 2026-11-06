@@ -1,0 +1,41 @@
+{
+  "created_utc": "2026-10-26T03:17:22.153959+00:00",
+  "status": "PASS_WITH_EXPLICIT_COMPLETE_START_INPUT_AND_DEVICE_GAPS",
+  "original_functions_and_router_fragments": 71,
+  "core_runs": 66,
+  "additional_runs": 5,
+  "original_VCD_version": "SW_VER_46_21_02_0______________",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "positive_config_native_returns": [
+    {
+      "case": "fresh_file_stock",
+      "v0": "0x0"
+    },
+    {
+      "case": "fresh_file_private16M",
+      "v0": "0x0"
+    },
+    {
+      "case": "prior_A5_private16M",
+      "v0": "0x0"
+    },
+    {
+      "case": "prior_C3_private16M",
+      "v0": "0x0"
+    }
+  ],
+  "HEVC_config_read_bytes": 16,
+  "HEVC_config_reads_packed_rate_words": false,
+  "HEVC_config_reads_stage48_unwritten_bytes": false,
+  "all52_single_plus_combined_FF_return_zero": true,
+  "common_only_other_codec_uses_offset_e": true,
+  "unchanged_stage48_baseband_native_error": "0x3006",
+  "host_geometry_control_pass_is_not_native_producer": true,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "camera_backup_restore_or_encoding_verified": false,
+  "core_proof": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/run-corrected-20261025/vcd-consumer-results.json",
+  "core_proof_sha256": "846fb70665fd21bfa30691d0f326e402ec5cfb0db418117ef3482d757c587899",
+  "additional_proof": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/baseband-run-20261025/baseband-results.json",
+  "additional_proof_sha256": "80a3f1975ae771e46b9ebc1853aa8979a81a290cb55e0ba9442abc56370a7656"
+}

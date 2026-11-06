@@ -1,0 +1,45 @@
+{
+  "scope": "offline only",
+  "host_unittest_cases": 12,
+  "host_test_sha256": "aa82b3fe5eecaad42167cbed28833acc8f5cc63ad29bf79b6d338d4f1e074795",
+  "guest_native_cases": {
+    "N1-NORMAL": {
+      "receipt": "GUEST-N1-NORMAL.txt",
+      "summary": "mode=1 probe=9 payload=784 count9=4058 frozen=1 checksum=1832941445 errno=123",
+      "ack_lines": 1,
+      "sha256": "fb5d4506b2254a4f38bc3e3e804871024c5d60895db82b5f576113f35e2f7aa7"
+    },
+    "N1-BOOT": {
+      "receipt": "GUEST-N1-BOOT.txt",
+      "summary": "mode=1 probe=40 payload=784 count9=4057 frozen=1 checksum=2993320932 errno=123",
+      "ack_lines": 1,
+      "sha256": "409b4b3115e3e0b1565850447c7e64ba643a9281a0b5b8a25ba869f3e8cd4370"
+    },
+    "N1-MULTI": {
+      "receipt": "GUEST-N1-MULTI.txt",
+      "summary": "mode=1 probe=9 payload=784 count9=8057 frozen=1 checksum=48919981 errno=123",
+      "ack_lines": 1,
+      "sha256": "31da0e0feb14e5eb810c262ac84a08c56e7802deb64a4a8a7fa21cc870d9f439"
+    },
+    "N64-NORMAL": {
+      "receipt": "GUEST-N64-NORMAL.txt",
+      "summary": "mode=64 probe=9 payload=784 count9=4058 frozen=1 checksum=792007815 errno=123",
+      "ack_lines": 1,
+      "sha256": "f915c4dd555317e15acbd33482d3fd579cf2b016045463b39cddbde33e6e58d7"
+    },
+    "N64-BOOT": {
+      "receipt": "GUEST-N64-BOOT.txt",
+      "summary": "mode=64 probe=40 payload=784 count9=4057 frozen=1 checksum=297711322 errno=123",
+      "ack_lines": 1,
+      "sha256": "e99202db18a858aab1a67d3d335dd7dc9e328f32871ffb76e5a6bc351929eca4"
+    },
+    "N64-MULTI": {
+      "receipt": "GUEST-N64-MULTI.txt",
+      "summary": "mode=64 probe=9 payload=784 count9=8057 frozen=1 checksum=1446468683 errno=123",
+      "ack_lines": 1,
+      "sha256": "dbe9235ae8244dc5fc3089d122491cb6607a2482f6ba3cec07950d7e2811a80f"
+    }
+  },
+  "cross_build": "N1/N64 exit0",
+  "static_audit": "r15 static ABI/layout audit PASS"
+}

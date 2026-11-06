@@ -1,0 +1,53 @@
+{
+  "schema": "fx3-current-root-cache-nodes/1",
+  "source_selection": {
+    "from_saved_CIM": true,
+    "source_observed_utc": "2026-10-26T17:15:31.4415345Z",
+    "qualified_usb_root_count": 1,
+    "node_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+    "source_present": true,
+    "source_status": "OK",
+    "source_config_manager_error_code": 0,
+    "source_service": "USBSTOR",
+    "source_vid": "054C",
+    "source_pid": "0DA1",
+    "same_as_old_fx3_root": true
+  },
+  "new_pnputil_observation": {
+    "command": "connected-only exact instance ID query",
+    "root_match_count": 0,
+    "exit_code": 0,
+    "no_devices_reported": true,
+    "stderr_empty": true,
+    "permission_or_parameter_error": false,
+    "roots": [],
+    "disks": [],
+    "relations": [],
+    "interfaces": []
+  },
+  "branch_states": {
+    "saved_CIM_usb_root_selection": "PASS_UNIQUE_ROOT",
+    "exact_instance_id_query": "COMPLETE_NO_CURRENT_MATCH",
+    "connected_device_tree": "NOT_RUN_NO_CURRENT_PNPUTIL_ROOT",
+    "connected_disk_queries": "NOT_RUN_NO_CURRENT_PNPUTIL_ROOT"
+  },
+  "current_disk_candidate_count": "UNKNOWN",
+  "current_binding_status": "MISSING_CURRENT_PNPUTIL_ROOT",
+  "present": "UNKNOWN",
+  "started": "UNKNOWN",
+  "problem_code": "UNKNOWN",
+  "driver_inf": "UNKNOWN",
+  "driver_provider": "UNKNOWN",
+  "driver_version": "UNKNOWN",
+  "reported_signer": "UNKNOWN",
+  "service": "UNKNOWN",
+  "stack": "UNKNOWN",
+  "address": "UNKNOWN",
+  "ui_number": "UNKNOWN",
+  "requested_disk_interface_guid": "53f56307-b6bf-11d0-94f2-00a0c91efb8b",
+  "interface_enable_state": "UNKNOWN",
+  "instance_hash_algorithm": "SHA256(UTF8(ToUpperInvariant(instanceID)))",
+  "traced_current_pnputil_nodes": 0,
+  "max_related_nodes": 16,
+  "selection_vs_new_observation_kept_separate": true
+}

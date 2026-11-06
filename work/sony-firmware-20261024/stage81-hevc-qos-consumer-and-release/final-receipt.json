@@ -1,0 +1,85 @@
+{
+  "schema": "fx3-stage81-hevc-consumer-release/1",
+  "created_utc": "2026-10-27T05:15:59.260890+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/README.md",
+      "bytes": 4334,
+      "sha256": "dc16c3528ce1224da42e400aaaf81205599a28876c4d86e3930b275cc5b33843"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/completed-evidence-review.json",
+      "bytes": 805,
+      "sha256": "9af7e5d885e8a557ce1a041d80dae4622896d2889393c6cbeb6d2cb32886e0f3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/coordinator-observations.json",
+      "bytes": 582,
+      "sha256": "1c52975bb5dfd4cc47165dff83f87abbcc1d78f890300bb096402762a95ea45e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/goal-status-after.json",
+      "bytes": 247778,
+      "sha256": "70b4088e67640fa8e86f98ee5318f3a4cc1760ccfd0e4d1d1de44ecd3a5cd224"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/goal-status-before.json",
+      "bytes": 245209,
+      "sha256": "e10c536103bd7421511b9215bba63cb92a85dfda5a77e4b90deb78c879c5b8fe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/hevc_consumer.py",
+      "bytes": 11675,
+      "sha256": "47fb255cd5be6431ab4399a0bf1f74d874609e7e2a0ca031b274bbc03e3ead05"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/review_and_seal.py",
+      "bytes": 11606,
+      "sha256": "574eaf362ad0623c4e6a7efa18ffeca9e8725b8e666dc6dc2848cc203dd7e92d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/run-20261026/executed-source.py",
+      "bytes": 11675,
+      "sha256": "47fb255cd5be6431ab4399a0bf1f74d874609e7e2a0ca031b274bbc03e3ead05"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/run-20261026/hevc-consumer-results.json",
+      "bytes": 321391,
+      "sha256": "495d6d214fc65415aa73752611fa2235ce08d7052092d9f67810786d5d0a4665"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/summary.json",
+      "bytes": 805,
+      "sha256": "9af7e5d885e8a557ce1a041d80dae4622896d2889393c6cbeb6d2cb32886e0f3"
+    }
+  ],
+  "previous_manifest_sha256": "d4b7808e3690b8c5fea35237dad9a0bfd164bb92052b96bc9d0c46f944e11c9f",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "e10c536103bd7421511b9215bba63cb92a85dfda5a77e4b90deb78c879c5b8fe",
+    "after_sha256": "70b4088e67640fa8e86f98ee5318f3a4cc1760ccfd0e4d1d1de44ecd3a5cd224"
+  },
+  "readme_index_entry": "- [2026-10-26 FX3 HEVC目标消费与清理边界](<work/sony-firmware-20261024/stage81-hevc-qos-consumer-and-release/README.md>)：原HEVC GOP消费两层更新位及目标字，清最后位仍未释放句柄；10消费/6清理22阶段，完整GOP/硬件/主录/恢复未证，仅Mac。",
+  "readme_index_before_sha256": "321433fe7c1fb5d2d82e560ce1ca1d223fa9d54f0ab7091e3fd6aa346f7f8e05",
+  "readme_index_after_sha256": "8475a88c355b673b9bad5d6025ac61ea5172616fa58b19f0a6f1015b7a624658",
+  "operations": {
+    "created_utc": "2026-10-27T05:15:59.260890+00:00",
+    "status": "PASS_HEVC_TARGET_FRAGMENT_AND_RELEASE_MASK_SCOPE",
+    "prior_sealed_files_verified": 35,
+    "target_cases": 10,
+    "release_cases": 6,
+    "bounded_phases": 22,
+    "HEVC_source_identity_checked_AVC_not_substituted": true,
+    "both_update_flags_required_for_target_copy_to_declared_GOP_c8": true,
+    "getters_leave_update_flags_and_buffer_unchanged": true,
+    "last_flag_zero_before_unknown_GP_release_handle_still_present": true,
+    "full_GOP_initialization_Main_binding_physical_release_hardware_recording_or_recovery_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false,
+    "review_scope": "Same agent source/PC/poststate check; no independent emulator or physical acceptance."
+  },
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

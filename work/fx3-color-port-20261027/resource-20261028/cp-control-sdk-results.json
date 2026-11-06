@@ -1,0 +1,855 @@
+{
+  "status": "PASS_ORIGINAL_CP_CONTROLLER_THROUGH_ORIGINAL_SDK",
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "successful_resource_groups": [
+    {
+      "mask": 1,
+      "phases": {
+        "pre": {
+          "state": 1,
+          "look": 0,
+          "pending": 0,
+          "queue_commands": 0
+        },
+        "submit": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "busy_repeat": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "declared_callback": {
+          "state": 2,
+          "look": 22,
+          "pending": 0,
+          "queue_commands": 1
+        }
+      },
+      "command": [
+        0,
+        22,
+        0,
+        4384385,
+        44959834,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          0
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          0
+        ],
+        [
+          "declared_ei_stage",
+          0
+        ]
+      ]
+    },
+    {
+      "mask": 2,
+      "phases": {
+        "pre": {
+          "state": 1,
+          "look": 0,
+          "pending": 0,
+          "queue_commands": 0
+        },
+        "submit": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "busy_repeat": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "declared_callback": {
+          "state": 2,
+          "look": 22,
+          "pending": 0,
+          "queue_commands": 1
+        }
+      },
+      "command": [
+        0,
+        22,
+        1,
+        4384385,
+        44959834,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          1
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          1
+        ],
+        [
+          "declared_ei_stage",
+          0
+        ]
+      ]
+    },
+    {
+      "mask": 4,
+      "phases": {
+        "pre": {
+          "state": 1,
+          "look": 0,
+          "pending": 0,
+          "queue_commands": 0
+        },
+        "submit": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "busy_repeat": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "declared_callback": {
+          "state": 2,
+          "look": 22,
+          "pending": 0,
+          "queue_commands": 1
+        }
+      },
+      "command": [
+        0,
+        22,
+        2,
+        4384385,
+        44959834,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          2
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          2
+        ],
+        [
+          "declared_ei_stage",
+          0
+        ]
+      ]
+    },
+    {
+      "mask": 8,
+      "phases": {
+        "pre": {
+          "state": 1,
+          "look": 0,
+          "pending": 0,
+          "queue_commands": 0
+        },
+        "submit": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "busy_repeat": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "declared_callback": {
+          "state": 2,
+          "look": 22,
+          "pending": 0,
+          "queue_commands": 1
+        }
+      },
+      "command": [
+        0,
+        22,
+        3,
+        4384385,
+        44959834,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          3
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          3
+        ],
+        [
+          "declared_ei_stage",
+          0
+        ]
+      ]
+    },
+    {
+      "mask": 15,
+      "phases": {
+        "pre": {
+          "state": 1,
+          "look": 0,
+          "pending": 0,
+          "queue_commands": 0
+        },
+        "submit": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "busy_repeat": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "declared_callback": {
+          "state": 2,
+          "look": 22,
+          "pending": 0,
+          "queue_commands": 1
+        }
+      },
+      "command": [
+        0,
+        22,
+        4,
+        4384385,
+        44959834,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          0
+        ],
+        [
+          "declared_busy_probe",
+          1
+        ],
+        [
+          "declared_busy_probe",
+          2
+        ],
+        [
+          "declared_busy_probe",
+          3
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          0
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          1
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          2
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          3
+        ],
+        [
+          "declared_ei_stage",
+          0
+        ]
+      ]
+    },
+    {
+      "mask": 3,
+      "phases": {
+        "pre": {
+          "state": 1,
+          "look": 0,
+          "pending": 0,
+          "queue_commands": 0
+        },
+        "submit": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "busy_repeat": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "declared_callback": {
+          "state": 2,
+          "look": 22,
+          "pending": 0,
+          "queue_commands": 1
+        }
+      },
+      "command": [
+        0,
+        22,
+        5,
+        4384385,
+        44959834,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          0
+        ],
+        [
+          "declared_busy_probe",
+          1
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          0
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          1
+        ],
+        [
+          "declared_ei_stage",
+          0
+        ]
+      ]
+    },
+    {
+      "mask": 12,
+      "phases": {
+        "pre": {
+          "state": 1,
+          "look": 0,
+          "pending": 0,
+          "queue_commands": 0
+        },
+        "submit": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "busy_repeat": {
+          "state": 2,
+          "look": 22,
+          "pending": 1,
+          "queue_commands": 1
+        },
+        "declared_callback": {
+          "state": 2,
+          "look": 22,
+          "pending": 0,
+          "queue_commands": 1
+        }
+      },
+      "command": [
+        0,
+        22,
+        6,
+        4384385,
+        44959834,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          2
+        ],
+        [
+          "declared_busy_probe",
+          3
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          2
+        ],
+        [
+          "declared_post_submit_resource_operation",
+          3
+        ],
+        [
+          "declared_ei_stage",
+          0
+        ]
+      ]
+    }
+  ],
+  "failures": [
+    {
+      "label": "no_owner",
+      "state": {
+        "state": 0,
+        "look": 0,
+        "pending": 0,
+        "queue_commands": 0
+      },
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          224
+        ],
+        [
+          "CP_diagnostic"
+        ]
+      ],
+      "commands": []
+    },
+    {
+      "label": "busy",
+      "state": {
+        "state": 0,
+        "look": 0,
+        "pending": 0,
+        "queue_commands": 0
+      },
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          0
+        ],
+        [
+          "diagnostic",
+          61442,
+          226
+        ],
+        [
+          "CP_diagnostic"
+        ]
+      ],
+      "commands": []
+    },
+    {
+      "label": "queue",
+      "state": {
+        "state": 0,
+        "look": 0,
+        "pending": 0,
+        "queue_commands": 1
+      },
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          66
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          0
+        ],
+        [
+          "diagnostic",
+          61442,
+          229
+        ],
+        [
+          "CP_diagnostic"
+        ]
+      ],
+      "commands": [
+        [
+          0,
+          22,
+          0,
+          4384385,
+          44959834,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "label": "pre_owner_mismatch",
+      "state": {
+        "state": 0,
+        "look": 0,
+        "pending": 0,
+        "queue_commands": 0
+      },
+      "events": [
+        [
+          "declared_pre_stage",
+          0,
+          153
+        ],
+        [
+          "context"
+        ],
+        [
+          "lock"
+        ],
+        [
+          "context"
+        ],
+        [
+          "unlock"
+        ],
+        [
+          "diagnostic",
+          61442,
+          22
+        ],
+        [
+          "declared_busy_probe",
+          0
+        ],
+        [
+          "diagnostic",
+          61442,
+          227
+        ],
+        [
+          "CP_diagnostic"
+        ]
+      ],
+      "commands": []
+    },
+    {
+      "label": "pre_error",
+      "state": {
+        "state": 0,
+        "look": 0,
+        "pending": 0,
+        "queue_commands": 0
+      },
+      "events": [
+        [
+          "declared_pre_stage",
+          5,
+          66
+        ],
+        [
+          "CP_diagnostic"
+        ],
+        [
+          "declared_pre_stage",
+          5,
+          66
+        ],
+        [
+          "CP_diagnostic"
+        ]
+      ],
+      "commands": []
+    }
+  ],
+  "callback_error": {
+    "state": 0,
+    "look": 0,
+    "pending": 0,
+    "queue_commands": 1
+  },
+  "original_instructions": 7379,
+  "scope": "Controller, owner resolver, SDK admission, core command construction and callback all execute in one guest. Pre preparation/EI, scheduler, busy status, queue outcome and manual callback arrival remain declared. Actual queue transport and DMA are separately bounded; no camera state or footage."
+}

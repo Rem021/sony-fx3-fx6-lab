@@ -1,0 +1,156 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/actual-fx3-capid-v1.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000015bf0 <fx3_pin_snapshot>:
+   15bf0: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+   15bf4: a9015ff8     	stp	x24, x23, [sp, #0x10]
+   15bf8: a90257f6     	stp	x22, x21, [sp, #0x20]
+   15bfc: a9034ff4     	stp	x20, x19, [sp, #0x30]
+   15c00: 910003fd     	mov	x29, sp
+   15c04: 2a0103f5     	mov	w21, w1
+   15c08: aa0003f4     	mov	x20, x0
+   15c0c: 94003b41     	bl	0x24910 <__errno_location@plt>
+   15c10: b9400017     	ldr	w23, [x0]
+   15c14: b00001b3     	adrp	x19, 0x4a000 <touch100_live+0x38>
+   15c18: 91326273     	add	x19, x19, #0xc98
+   15c1c: 52800028     	mov	w8, #0x1                // =1
+   15c20: 885ffe69     	ldaxr	w9, [x19]
+   15c24: 35000589     	cbnz	w9, 0x15cd4 <fx3_pin_snapshot+0xe4>
+   15c28: 88097e68     	stxr	w9, w8, [x19]
+   15c2c: 35ffffa9     	cbnz	w9, 0x15c20 <fx3_pin_snapshot+0x30>
+   15c30: 2a1f03f6     	mov	w22, wzr
+   15c34: b40002d4     	cbz	x20, 0x15c8c <fx3_pin_snapshot+0x9c>
+   15c38: d503201f     	nop
+   15c3c: 10178228     	adr	x8, 0x44c80 <pins>
+   15c40: b9400109     	ldr	w9, [x8]
+   15c44: 34000249     	cbz	w9, 0x15c8c <fx3_pin_snapshot+0x9c>
+   15c48: b9400508     	ldr	w8, [x8, #0x4]
+   15c4c: 35000208     	cbnz	w8, 0x15c8c <fx3_pin_snapshot+0x9c>
+   15c50: 90000188     	adrp	x8, 0x45000 <pins+0x380>
+   15c54: 52801580     	mov	w0, #0xac               // =172
+   15c58: f9458518     	ldr	x24, [x8, #0xb08]
+   15c5c: 94003b31     	bl	0x24920 <syscall@plt>
+   15c60: 713a22bf     	cmp	w21, #0xe88
+   15c64: 2a1f03f6     	mov	w22, wzr
+   15c68: 54000123     	b.lo	0x15c8c <fx3_pin_snapshot+0x9c>
+   15c6c: eb00031f     	cmp	x24, x0
+   15c70: 540000e1     	b.ne	0x15c8c <fx3_pin_snapshot+0x9c>
+   15c74: d503201f     	nop
+   15c78: 10178041     	adr	x1, 0x44c80 <pins>
+   15c7c: aa1403e0     	mov	x0, x20
+   15c80: 5281d102     	mov	w2, #0xe88              // =3720
+   15c84: 5281d116     	mov	w22, #0xe88             // =3720
+   15c88: 94003b2a     	bl	0x24930 <memcpy@plt>
+   15c8c: 52800c40     	mov	w0, #0x62               // =98
+   15c90: aa1303e1     	mov	x1, x19
+   15c94: 52801022     	mov	w2, #0x81               // =129
+   15c98: 52800023     	mov	w3, #0x1                // =1
+   15c9c: 2a1f03e4     	mov	w4, wzr
+   15ca0: 2a1f03e5     	mov	w5, wzr
+   15ca4: 2a1f03e6     	mov	w6, wzr
+   15ca8: 889ffe7f     	stlr	wzr, [x19]
+   15cac: 94003b1d     	bl	0x24920 <syscall@plt>
+   15cb0: 94003b18     	bl	0x24910 <__errno_location@plt>
+   15cb4: aa0003e8     	mov	x8, x0
+   15cb8: 2a1603e0     	mov	w0, w22
+   15cbc: b9000117     	str	w23, [x8]
+   15cc0: a9434ff4     	ldp	x20, x19, [sp, #0x30]
+   15cc4: a94257f6     	ldp	x22, x21, [sp, #0x20]
+   15cc8: a9415ff8     	ldp	x24, x23, [sp, #0x10]
+   15ccc: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+   15cd0: d65f03c0     	ret
+   15cd4: 52800036     	mov	w22, #0x1               // =1
+   15cd8: 52800c40     	mov	w0, #0x62               // =98
+   15cdc: aa1303e1     	mov	x1, x19
+   15ce0: 52801002     	mov	w2, #0x80               // =128
+   15ce4: 52800023     	mov	w3, #0x1                // =1
+   15ce8: 2a1f03e4     	mov	w4, wzr
+   15cec: 2a1f03e5     	mov	w5, wzr
+   15cf0: 2a1f03e6     	mov	w6, wzr
+   15cf4: d5033f5f     	clrex
+   15cf8: 94003b0a     	bl	0x24920 <syscall@plt>
+   15cfc: 885ffe68     	ldaxr	w8, [x19]
+   15d00: 35fffec8     	cbnz	w8, 0x15cd8 <fx3_pin_snapshot+0xe8>
+   15d04: 88087e76     	stxr	w8, w22, [x19]
+   15d08: 34fff948     	cbz	w8, 0x15c30 <fx3_pin_snapshot+0x40>
+   15d0c: 17fffffc     	b	0x15cfc <fx3_pin_snapshot+0x10c>
+
+0000000000015d90 <fx3_panel_config_snapshot>:
+   15d90: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+   15d94: a9015ff8     	stp	x24, x23, [sp, #0x10]
+   15d98: a90257f6     	stp	x22, x21, [sp, #0x20]
+   15d9c: a9034ff4     	stp	x20, x19, [sp, #0x30]
+   15da0: 910003fd     	mov	x29, sp
+   15da4: 2a0103f5     	mov	w21, w1
+   15da8: aa0003f4     	mov	x20, x0
+   15dac: 94003ad9     	bl	0x24910 <__errno_location@plt>
+   15db0: b9400017     	ldr	w23, [x0]
+   15db4: b00001b3     	adrp	x19, 0x4a000 <touch100_live+0x38>
+   15db8: 91326273     	add	x19, x19, #0xc98
+   15dbc: 52800028     	mov	w8, #0x1                // =1
+   15dc0: 885ffe69     	ldaxr	w9, [x19]
+   15dc4: 35000609     	cbnz	w9, 0x15e84 <fx3_panel_config_snapshot+0xf4>
+   15dc8: 88097e68     	stxr	w9, w8, [x19]
+   15dcc: 35ffffa9     	cbnz	w9, 0x15dc0 <fx3_panel_config_snapshot+0x30>
+   15dd0: 2a1f03f6     	mov	w22, wzr
+   15dd4: b4000354     	cbz	x20, 0x15e3c <fx3_panel_config_snapshot+0xac>
+   15dd8: 90000188     	adrp	x8, 0x45000 <pins+0x380>
+   15ddc: b94b1108     	ldr	w8, [x8, #0xb10]
+   15de0: 340002e8     	cbz	w8, 0x15e3c <fx3_panel_config_snapshot+0xac>
+   15de4: 90000188     	adrp	x8, 0x45000 <pins+0x380>
+   15de8: 52801580     	mov	w0, #0xac               // =172
+   15dec: f9458518     	ldr	x24, [x8, #0xb08]
+   15df0: 94003acc     	bl	0x24920 <syscall@plt>
+   15df4: 7101e2bf     	cmp	w21, #0x78
+   15df8: 2a1f03f6     	mov	w22, wzr
+   15dfc: 54000203     	b.lo	0x15e3c <fx3_panel_config_snapshot+0xac>
+   15e00: eb00031f     	cmp	x24, x0
+   15e04: 540001c1     	b.ne	0x15e3c <fx3_panel_config_snapshot+0xac>
+   15e08: 90000188     	adrp	x8, 0x45000 <pins+0x380>
+   15e0c: 912c4108     	add	x8, x8, #0xb10
+   15e10: 52800f16     	mov	w22, #0x78              // =120
+   15e14: ad410101     	ldp	q1, q0, [x8, #0x20]
+   15e18: ad400d02     	ldp	q2, q3, [x8]
+   15e1c: ad010281     	stp	q1, q0, [x20, #0x20]
+   15e20: ad000e82     	stp	q2, q3, [x20]
+   15e24: ad428102     	ldp	q2, q0, [x8, #0x50]
+   15e28: f9403909     	ldr	x9, [x8, #0x70]
+   15e2c: 3dc01101     	ldr	q1, [x8, #0x40]
+   15e30: f9003a89     	str	x9, [x20, #0x70]
+   15e34: ad028282     	stp	q2, q0, [x20, #0x50]
+   15e38: 3d801281     	str	q1, [x20, #0x40]
+   15e3c: 52800c40     	mov	w0, #0x62               // =98
+   15e40: aa1303e1     	mov	x1, x19
+   15e44: 52801022     	mov	w2, #0x81               // =129
+   15e48: 52800023     	mov	w3, #0x1                // =1
+   15e4c: 2a1f03e4     	mov	w4, wzr
+   15e50: 2a1f03e5     	mov	w5, wzr
+   15e54: 2a1f03e6     	mov	w6, wzr
+   15e58: 889ffe7f     	stlr	wzr, [x19]
+   15e5c: 94003ab1     	bl	0x24920 <syscall@plt>
+   15e60: 94003aac     	bl	0x24910 <__errno_location@plt>
+   15e64: aa0003e8     	mov	x8, x0
+   15e68: 2a1603e0     	mov	w0, w22
+   15e6c: b9000117     	str	w23, [x8]
+   15e70: a9434ff4     	ldp	x20, x19, [sp, #0x30]
+   15e74: a94257f6     	ldp	x22, x21, [sp, #0x20]
+   15e78: a9415ff8     	ldp	x24, x23, [sp, #0x10]
+   15e7c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+   15e80: d65f03c0     	ret
+   15e84: 52800036     	mov	w22, #0x1               // =1
+   15e88: 52800c40     	mov	w0, #0x62               // =98
+   15e8c: aa1303e1     	mov	x1, x19
+   15e90: 52801002     	mov	w2, #0x80               // =128
+   15e94: 52800023     	mov	w3, #0x1                // =1
+   15e98: 2a1f03e4     	mov	w4, wzr
+   15e9c: 2a1f03e5     	mov	w5, wzr
+   15ea0: 2a1f03e6     	mov	w6, wzr
+   15ea4: d5033f5f     	clrex
+   15ea8: 94003a9e     	bl	0x24920 <syscall@plt>
+   15eac: 885ffe68     	ldaxr	w8, [x19]
+   15eb0: 35fffec8     	cbnz	w8, 0x15e88 <fx3_panel_config_snapshot+0xf8>
+   15eb4: 88087e76     	stxr	w8, w22, [x19]
+   15eb8: 34fff8c8     	cbz	w8, 0x15dd0 <fx3_panel_config_snapshot+0x40>
+   15ebc: 17fffffc     	b	0x15eac <fx3_panel_config_snapshot+0x11c>

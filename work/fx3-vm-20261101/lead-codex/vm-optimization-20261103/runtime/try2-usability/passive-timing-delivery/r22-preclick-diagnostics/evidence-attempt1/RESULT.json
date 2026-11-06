@@ -1,0 +1,175 @@
+{
+  "scope": "offline fixture: actual frozen r21 PAGE and server gate; no VM, no human visual review",
+  "session": "fx3-deadline-r22-c83d4bcb5872",
+  "cases": {
+    "stale_generation": {
+      "receipt_status": "preflight_not_clicked",
+      "clicks": 0,
+      "keyPOST": 0,
+      "pending": 0,
+      "PAGE_attempt": null,
+      "rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 0,
+        "truncated": 0,
+        "records": []
+      },
+      "reserved_before_eval": [
+        {
+          "status": "reserved_unknown",
+          "reservation_id": "bd3a0a7a-9175-4285-b6cc-000c496c9d1b",
+          "key": 427,
+          "host_ns": 422079486627583
+        }
+      ],
+      "ledger_final": {
+        "attempts": [
+          {
+            "status": "preflight_not_clicked",
+            "reservation_id": "bd3a0a7a-9175-4285-b6cc-000c496c9d1b",
+            "key": 427,
+            "host_ns": 422079486627583,
+            "attempt_id": null,
+            "step": null
+          }
+        ],
+        "recoveries": []
+      }
+    },
+    "stale_SHA": {
+      "receipt_status": "preflight_not_clicked",
+      "clicks": 0,
+      "keyPOST": 0,
+      "pending": 0,
+      "PAGE_attempt": null,
+      "rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 0,
+        "truncated": 0,
+        "records": []
+      },
+      "reserved_before_eval": [
+        {
+          "status": "reserved_unknown",
+          "reservation_id": "8d78d2b5-faf6-447e-89e2-173c69f7faa1",
+          "key": 427,
+          "host_ns": 422079595900666
+        }
+      ],
+      "ledger_final": {
+        "attempts": [
+          {
+            "status": "preflight_not_clicked",
+            "reservation_id": "8d78d2b5-faf6-447e-89e2-173c69f7faa1",
+            "key": 427,
+            "host_ns": 422079595900666,
+            "attempt_id": null,
+            "step": null
+          }
+        ],
+        "recoveries": []
+      }
+    },
+    "render_not_loaded": {
+      "receipt_status": "preflight_not_clicked",
+      "clicks": 0,
+      "keyPOST": 0,
+      "pending": 0,
+      "PAGE_attempt": null,
+      "rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 0,
+        "truncated": 0,
+        "records": []
+      },
+      "reserved_before_eval": [
+        {
+          "status": "reserved_unknown",
+          "reservation_id": "7119fa33-1e26-4df7-8864-a030c5ab6878",
+          "key": 427,
+          "host_ns": 422079696406875
+        }
+      ],
+      "ledger_final": {
+        "attempts": [
+          {
+            "status": "preflight_not_clicked",
+            "reservation_id": "7119fa33-1e26-4df7-8864-a030c5ab6878",
+            "key": 427,
+            "host_ns": 422079696406875,
+            "attempt_id": null,
+            "step": null
+          }
+        ],
+        "recoveries": []
+      }
+    }
+  },
+  "server_pid": 41714,
+  "port": 57294,
+  "browser_session_info": {
+    "data": {
+      "active": true,
+      "namespace": null,
+      "pid": 41717,
+      "runtime": {
+        "backgroundPid": 41717,
+        "browserLaunched": true,
+        "compatibilityStatus": "current",
+        "effectiveLaunch": {
+          "browserLaunched": true,
+          "engine": "chrome",
+          "launchHash": 11677035664275010974
+        },
+        "engine": "chrome",
+        "launchHash": 11677035664275010974,
+        "lifecycle": {
+          "effectiveLaunch": {
+            "browserLaunched": true,
+            "engine": "chrome",
+            "launchHash": 11677035664275010974
+          },
+          "launched": false,
+          "relaunchedBrowser": false,
+          "restartedBackground": false,
+          "restoreStatus": "not_configured",
+          "reused": false,
+          "saveStatus": "not_attempted"
+        },
+        "namespace": null,
+        "pageCount": 1,
+        "restoreCheckFn": null,
+        "restoreCheckText": null,
+        "restoreCheckUrl": null,
+        "restoreKey": null,
+        "restoreLoadedPath": null,
+        "restoreSave": "auto",
+        "restoreSavedPath": null,
+        "restoreSkippedOrigins": [],
+        "restoreStatus": "not_configured",
+        "restoreStatusDetail": null,
+        "restoreValidationPending": false,
+        "saveStatus": "not_attempted",
+        "session": "fx3-deadline-r22-c83d4bcb5872",
+        "socketDir": "/Users/kafu/.agent-browser"
+      },
+      "runtimeError": null,
+      "session": "fx3-deadline-r22-c83d4bcb5872",
+      "socketDir": "/Users/kafu/.agent-browser",
+      "version": "0.41.2"
+    },
+    "success": true
+  },
+  "processes_before": [],
+  "browser_close": "✓ Browser closed",
+  "server_thread_alive": false,
+  "server_port_connect_ex_after_close": 61,
+  "processes_after": [],
+  "pid_port_lsof_after": ""
+}

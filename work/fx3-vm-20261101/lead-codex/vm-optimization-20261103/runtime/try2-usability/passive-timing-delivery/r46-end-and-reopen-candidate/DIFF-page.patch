@@ -1,0 +1,32 @@
+--- a/trial_web_v22_navigation_review.py
++++ b/page/trial_web_v22_navigation_review_r46.py
+@@ -480,11 +480,11 @@
+     a.frame.sequence!==binding.sequence||a.alarm_nonce!==binding.nonce||!a.alarm_nonce)
+    return deny('binding_mismatch');
+  if(document!==attemptDocument||performance.timeOrigin!==a.document_time_origin||
+-    !h||h.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedURL!==location.href||
++    !h||h.version!==1||h.sealed||h.deadline_ms!==60000||h.expectedURL!==location.href||
+     h.current?.state!=='armed'||h.current.nonce!==binding.nonce||
+     h.expectedLaunchId!==a.launch_request_id||h.documentTimeOrigin!==a.document_time_origin||
+     !Number.isFinite(h.current.armed_ms)||!Number.isFinite(h.current.due_ms)||
+-    h.current.due_ms!==h.current.armed_ms+20000||
++    h.current.due_ms!==h.current.armed_ms+60000||
+     h.current.due_ms!==a.alarm_due_ms||performance.now()>=h.current.due_ms)return deny('document_or_alarm_mismatch');
+  if(!['not_posted','explicit_rejected_unqueued'].includes(a.outcome)||
+     (a.outcome==='not_posted'&&a.mutation_called)||
+--- a/tests/fixtures/PAGE-script.txt
++++ b/page/PAGE-script-r46.txt
+@@ -249,11 +249,11 @@
+     a.frame.sequence!==binding.sequence||a.alarm_nonce!==binding.nonce||!a.alarm_nonce)
+    return deny('binding_mismatch');
+  if(document!==attemptDocument||performance.timeOrigin!==a.document_time_origin||
+-    !h||h.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedURL!==location.href||
++    !h||h.version!==1||h.sealed||h.deadline_ms!==60000||h.expectedURL!==location.href||
+     h.current?.state!=='armed'||h.current.nonce!==binding.nonce||
+     h.expectedLaunchId!==a.launch_request_id||h.documentTimeOrigin!==a.document_time_origin||
+     !Number.isFinite(h.current.armed_ms)||!Number.isFinite(h.current.due_ms)||
+-    h.current.due_ms!==h.current.armed_ms+20000||
++    h.current.due_ms!==h.current.armed_ms+60000||
+     h.current.due_ms!==a.alarm_due_ms||performance.now()>=h.current.due_ms)return deny('document_or_alarm_mismatch');
+  if(!['not_posted','explicit_rejected_unqueued'].includes(a.outcome)||
+     (a.outcome==='not_posted'&&a.mutation_called)||

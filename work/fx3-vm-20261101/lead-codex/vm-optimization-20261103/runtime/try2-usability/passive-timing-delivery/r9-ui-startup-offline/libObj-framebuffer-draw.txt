@@ -1,0 +1,59 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000016ea10 <_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv>:
+  16ea10: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+  16ea14: 910003fd     	mov	x29, sp
+  16ea18: a90153f3     	stp	x19, x20, [sp, #0x10]
+  16ea1c: aa0003f3     	mov	x19, x0
+  16ea20: 9102c014     	add	x20, x0, #0xb0
+  16ea24: f90013f5     	str	x21, [sp, #0x20]
+  16ea28: 97ffbbb0     	bl	0x15d8e8 <_ZN2ux4core5ColorC1ERKS1_+0x25a0>
+  16ea2c: 97ff8fe1     	bl	0x1529b0 <_ZN2ux7animeng9Animation16addEventCallbackEPvPFvRKNS0_17EventCallbackDataEEj+0x1d0f8>
+  16ea30: 394c4a60     	ldrb	w0, [x19, #0x312]
+  16ea34: 35000100     	cbnz	w0, 0x16ea54 <_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv+0x44>
+  16ea38: 97ffbbb2     	bl	0x15d900 <_ZN2ux4core5ColorC1ERKS1_+0x25b8>
+  16ea3c: 72001c1f     	tst	w0, #0xff
+  16ea40: 54000480     	b.eq	0x16ead0 <_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv+0xc0>
+  16ea44: aa1403e0     	mov	x0, x20
+  16ea48: 97fe7ca1     	bl	0x10dccc <_ZN5alcor21LayoutAttributeWriter16setVerticalAlignENS_15LayoutAttribute13VerticalAlignE+0x67d8>
+  16ea4c: 97fee816     	bl	0x128aa4 <_ZN5libra10ArenaParam14setMaximumSizeEj+0x5b18>
+  16ea50: 97ffbbb3     	bl	0x15d91c <_ZN2ux4core5ColorC1ERKS1_+0x25d4>
+  16ea54: aa1403e0     	mov	x0, x20
+  16ea58: 97fe7c9d     	bl	0x10dccc <_ZN5alcor21LayoutAttributeWriter16setVerticalAlignENS_15LayoutAttribute13VerticalAlignE+0x67d8>
+  16ea5c: 97fee6af     	bl	0x128518 <_ZN5libra10ArenaParam14setMaximumSizeEj+0x558c>
+  16ea60: 340003e0     	cbz	w0, 0x16eadc <_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv+0xcc>
+  16ea64: aa1403e0     	mov	x0, x20
+  16ea68: 9100e3b5     	add	x21, x29, #0x38
+  16ea6c: 97fe7c98     	bl	0x10dccc <_ZN5alcor21LayoutAttributeWriter16setVerticalAlignENS_15LayoutAttribute13VerticalAlignE+0x67d8>
+  16ea70: aa1503e1     	mov	x1, x21
+  16ea74: 97fee8db     	bl	0x128de0 <_ZN5libra10ArenaParam14setMaximumSizeEj+0x5e54>
+  16ea78: aa1503e1     	mov	x1, x21
+  16ea7c: aa1303e0     	mov	x0, x19
+  16ea80: 97fffca1     	bl	0x16dd04 <_ZNK2ux6gfxeng14GraphicsEngine20getFramebufferHeightEv+0x560>
+  16ea84: 794073a0     	ldrh	w0, [x29, #0x38]
+  16ea88: 79407fa3     	ldrh	w3, [x29, #0x3e]
+  16ea8c: 79407ba2     	ldrh	w2, [x29, #0x3c]
+  16ea90: 794077a1     	ldrh	w1, [x29, #0x3a]
+  16ea94: 97ffbbcf     	bl	0x15d9d0 <_ZN2ux4core5ColorC1ERKS1_+0x2688>
+  16ea98: 97ffbc1e     	bl	0x15db10 <_ZN2ux4core5ColorC1ERKS1_+0x27c8>
+  16ea9c: aa1403e0     	mov	x0, x20
+  16eaa0: 97fe7c4d     	bl	0x10dbd4 <_ZN5alcor21LayoutAttributeWriter16setVerticalAlignENS_15LayoutAttribute13VerticalAlignE+0x66e0>
+  16eaa4: aa1303e0     	mov	x0, x19
+  16eaa8: 390c4a7f     	strb	wzr, [x19, #0x312]
+  16eaac: 97fffb3f     	bl	0x16d7a8 <_ZNK2ux6gfxeng14GraphicsEngine20getFramebufferHeightEv+0x4>
+  16eab0: aa1303e0     	mov	x0, x19
+  16eab4: 97fffb7b     	bl	0x16d8a0 <_ZNK2ux6gfxeng14GraphicsEngine20getFramebufferHeightEv+0xfc>
+  16eab8: aa1303e0     	mov	x0, x19
+  16eabc: 97fffcc7     	bl	0x16ddd8 <_ZN2ux6gfxeng14GraphicsEngine28getAreaCheckExtensionManagerEv+0x30>
+  16eac0: f94013f5     	ldr	x21, [sp, #0x20]
+  16eac4: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  16eac8: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+  16eacc: d65f03c0     	ret
+  16ead0: aa1303e0     	mov	x0, x19
+  16ead4: 97fffbf6     	bl	0x16daac <_ZNK2ux6gfxeng14GraphicsEngine20getFramebufferHeightEv+0x308>
+  16ead8: 17ffffdf     	b	0x16ea54 <_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv+0x44>
+  16eadc: 97ffbbe9     	bl	0x15da80 <_ZN2ux4core5ColorC1ERKS1_+0x2738>
+  16eae0: 17fffff1     	b	0x16eaa4 <_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv+0x94>

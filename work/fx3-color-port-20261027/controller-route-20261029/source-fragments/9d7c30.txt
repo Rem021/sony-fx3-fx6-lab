@@ -1,0 +1,35 @@
+009d7c30 push       {r4, r5, r7, lr}
+009d7c32 add        r7, sp, #8
+009d7c34 sub        sp, #0x20
+009d7c36 mov        r4, r0
+009d7c38 ldr.w      r1, [r4, #0x8e0]
+009d7c3c ldr.w      r0, [r4, #0x8dc]
+009d7c40 ldrb.w     r1, [r1, #0x394]
+009d7c44 cmp        r1, #0
+009d7c46 it         ne
+009d7c48 movne      r1, #2
+009d7c4a add.w      r0, r0, r1, lsl #3
+009d7c4e ldr.w      r5, [r0, #0x464]
+009d7c52 cmp        r5, #0
+009d7c54 it         ne
+009d7c56 addne.w    r5, r0, #0x460
+009d7c5a beq        #0x9d7c8c
+009d7c5c movs       r0, #0
+009d7c5e movs       r1, #1
+009d7c60 movs       r2, #0
+009d7c62 movs       r3, #0
+009d7c64 strd       r0, r0, [sp]
+009d7c68 strd       r1, r0, [sp, #8]
+009d7c6c strd       r0, r0, [sp, #0x10]
+009d7c70 str        r0, [sp, #0x18]
+009d7c72 mov        r0, r5
+009d7c74 movs       r1, #0
+009d7c76 bl         #0x6bf71a
+009d7c7a movw       r0, #0x1614
+009d7c7e ldrb       r1, [r4, r0]
+009d7c80 mov        r0, r5
+009d7c82 add        sp, #0x20
+009d7c84 pop.w      {r4, r5, r7, lr}
+009d7c88 b.w        #0x24cff4
+009d7c8c add        sp, #0x20
+009d7c8e pop        {r4, r5, r7, pc}

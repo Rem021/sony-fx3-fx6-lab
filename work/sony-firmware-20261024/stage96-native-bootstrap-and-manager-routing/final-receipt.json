@@ -1,0 +1,81 @@
+{
+  "schema": "fx3-stage96-native-bootstrap-manager-routing/1",
+  "created_utc": "2026-10-27T09:12:31.945040+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/README.md",
+      "bytes": 5953,
+      "sha256": "9bb822991cb1602998f0df49086904ad4b2881f2dda5ef5f8c0fa16d5e617dcc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/completed-evidence-review.json",
+      "bytes": 892,
+      "sha256": "55e8e73ef50644ee603f3d17995a8f2544d12308ae55083df48b559507ab17db"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/goal-status-after.json",
+      "bytes": 288454,
+      "sha256": "3f75b70e4871b3d4751aba858f2de55f8cb9db684794008889feec0f4a9f2793"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/goal-status-before.json",
+      "bytes": 285020,
+      "sha256": "6fda602b993d9fd5ee1415e911f0503aeb17bd9ddb84c25966a01c92fbdd3967"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/manager_routing.py",
+      "bytes": 14445,
+      "sha256": "e942159323f58e8c4b40e6b56bbc4fad264af35ffe000b9959af10a2dfbae0bd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/native-provenance-and-boundaries.json",
+      "bytes": 6349,
+      "sha256": "73d0ba0354448848394967669dc12e1a0c380489102c9c4985facb6f7d4924dc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/review_and_seal.py",
+      "bytes": 18003,
+      "sha256": "e1321e50df2bc5a7f2797c223da5279ec84a771277e65dab870c845b1a5e56bc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/run-initial-20261027/executed-source.py",
+      "bytes": 14445,
+      "sha256": "e942159323f58e8c4b40e6b56bbc4fad264af35ffe000b9959af10a2dfbae0bd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/run-initial-20261027/manager-routing-results.json",
+      "bytes": 13292428,
+      "sha256": "2c8142770219228885de2404fe8fd77b1e2c9a240a2d08c1a0244f7e481b252b"
+    }
+  ],
+  "previous_manifest_sha256": "57f0fc88da75fc18e4519e8b6d305b3d3bd482fcac39b3a73e357f76f8db8bbd",
+  "operations": {
+    "status": "PASS_NATIVE_FACTORY_OBJECT_ORIGIN_SELECTION_AND_BOOT_TABLE_PREFIX_WITH_SCOPE_GAPS",
+    "created_utc": "2026-10-27T09:12:31.945040+00:00",
+    "prior_sealed_files_verified": 11,
+    "cases": 18,
+    "formal_phases": 62,
+    "native_factory_suffix_completions": 14,
+    "native_heap_allocations": 56,
+    "valid_selector_and_frame_routes": 12,
+    "length_mismatch_diagnostic_stops": 2,
+    "bound_allocator_lock_stops": 2,
+    "original_boot_table_prefixes": 2,
+    "failed_attempts": 0,
+    "full_boot_or_mode_transition_or_MAIN_acceptance": false,
+    "review_scope": "Same-agent original-byte/source and saved-output review of pointers, all block headers/links and relevant private structures; harness checks entire image/all regions/full stack. Not independent engine or physical acceptance.",
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "6fda602b993d9fd5ee1415e911f0503aeb17bd9ddb84c25966a01c92fbdd3967",
+    "after_sha256": "3f75b70e4871b3d4751aba858f2de55f8cb9db684794008889feec0f4a9f2793"
+  },
+  "readme_index_before_sha256": "35a2670bdca836680a5623d34e299732c9381d4153226f38371f1f8439b40097",
+  "readme_index_after_sha256": "e1adf605872781e12540ba182ab81c8340b1ee8ad95c6766396193e44e600d80",
+  "readme_index_entry": "- [2026-10-27 FX3 原初始化表、管理器对象与选择路由](<work/sony-firmware-20261024/stage96-native-bootstrap-and-manager-routing/README.md>)：18场景62阶段；原manager后半段分配双类，两个原消息字段选择并独立路由至frame锁前。原boot表前缀有界执行；模式回调/正常启动/MAIN硬件未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

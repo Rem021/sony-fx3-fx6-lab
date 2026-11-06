@@ -1,0 +1,138 @@
+{
+  "schema": "r42-package-source-binding-v1",
+  "base_candidate": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/candidate.json",
+    "sha256": "0bf214178ab8e60d1ac7755e1d1b2fcc0d2c325ff8473abd50402f09ab81fab4"
+  },
+  "base_archive": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/guest.cpio",
+    "sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff"
+  },
+  "output_candidate": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/candidate.json",
+    "sha256": "857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806"
+  },
+  "output_archive": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/guest.cpio",
+    "sha256": "59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63"
+  },
+  "GPE": {
+    "member": "simulation/fx3-gpe-observe-v7.so",
+    "original_slot_sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+    "new_ELF_body": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/gpe-r41-fixed-slot.so",
+      "bytes": 129600,
+      "sha256": "19ca7deaf570eeb68fda0036bb75dec740ab30f404f9f91bd208fd3d53c06a39"
+    },
+    "slot_bytes": 276984,
+    "padded_slot_sha256": "17abe2cab22da7ede9e3af337e9958e4f1e592f75670cf038928110bb4b8bcdd",
+    "zero_tail_bytes": 147384,
+    "payload_offset": 451447396,
+    "source_files": {
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src/fx3-gpe-observe-v26-perf.c": "e362f72e8c78c04f1360761c569226e9f2d4f5a483818f7569e30e53e4dd0f7a",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src/fx3-complete104-observe-v1.h": "c86b40953528f96ef316b0252ba4a99f2c724191d4d1d74e79369ff973f17032"
+    },
+    "source_freeze": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/SOURCE-FREEZE.json",
+      "sha256": "0f34af0ecfc72c9264c0a13e0e279424ce7eec38bd5e8e127b05b9b1f6537f15"
+    },
+    "backend": "original v26_perf/backend-v9; r41 entry clock and same CMD_RETURN suffix only"
+  },
+  "archive_index": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/source-index.json",
+    "sha256": "589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a"
+  },
+  "dependencies": [
+    {
+      "needed": "libc.so.6",
+      "archive_chain": [
+        {
+          "name": "lib/libc.so.6",
+          "header_offset": 3653692,
+          "payload_offset": 3653816,
+          "size": 12,
+          "mode": 41471,
+          "nlink": 1,
+          "inode": 121,
+          "devmajor": 0,
+          "devminor": 0,
+          "next_offset": 3653828,
+          "header_hex": "3037303730313030303030303739303030306131666630303030303030303030303030303030303030303030303130303030303030303030303030303063303030303030303030303030303030303030303030303030303030303030303030303030303030653030303030303030",
+          "body_sha256": "e453935786dc5cbb3c2b341c0853e19a34c69018625d9fc618413dfce851f3b2",
+          "symlink_target": "libc-2.25.so"
+        },
+        {
+          "name": "lib/libc-2.25.so",
+          "header_offset": 2369628,
+          "payload_offset": 2369756,
+          "size": 1283936,
+          "mode": 33261,
+          "nlink": 1,
+          "inode": 120,
+          "devmajor": 0,
+          "devminor": 0,
+          "next_offset": 3653692,
+          "header_hex": "3037303730313030303030303738303030303831656430303030303030303030303030303030303030303030303130303030303030303030313339373630303030303030303030303030303030303030303030303030303030303030303030303030303031313030303030303030",
+          "body_sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+        }
+      ],
+      "all_bytes_unchanged_from_r36": true
+    },
+    {
+      "needed": "libdl.so.2",
+      "archive_chain": [
+        {
+          "name": "lib/libdl.so.2",
+          "header_offset": 3695464,
+          "payload_offset": 3695592,
+          "size": 13,
+          "mode": 41471,
+          "nlink": 1,
+          "inode": 125,
+          "devmajor": 0,
+          "devminor": 0,
+          "next_offset": 3695608,
+          "header_hex": "3037303730313030303030303764303030306131666630303030303030303030303030303030303030303030303130303030303030303030303030303064303030303030303030303030303030303030303030303030303030303030303030303030303030663030303030303030",
+          "body_sha256": "77e7192a34b349e3efbb3ccb27a2616db3423b689eeea62cb70389168819a14f",
+          "symlink_target": "libdl-2.25.so"
+        },
+        {
+          "name": "lib/libdl-2.25.so",
+          "header_offset": 3684968,
+          "payload_offset": 3685096,
+          "size": 10368,
+          "mode": 33261,
+          "nlink": 1,
+          "inode": 124,
+          "devmajor": 0,
+          "devminor": 0,
+          "next_offset": 3695464,
+          "header_hex": "3037303730313030303030303763303030303831656430303030303030303030303030303030303030303030303130303030303030303030303032383830303030303030303030303030303030303030303030303030303030303030303030303030303031323030303030303030",
+          "body_sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+        }
+      ],
+      "all_bytes_unchanged_from_r36": true
+    }
+  ],
+  "DTB": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+    "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+  },
+  "ELF_dynamic": {
+    "needed": [
+      "libc.so.6",
+      "libdl.so.2"
+    ],
+    "soname": [
+      "fx3-gpe-observe-v26-perf.so"
+    ],
+    "rpath": [],
+    "runpath": []
+  },
+  "prior_acceptance": {
+    "r41": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-coordinator-final-review.json",
+    "r39": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-coordinator-final-review.json"
+  },
+  "no_compilation": true,
+  "no_target_execution": true
+}

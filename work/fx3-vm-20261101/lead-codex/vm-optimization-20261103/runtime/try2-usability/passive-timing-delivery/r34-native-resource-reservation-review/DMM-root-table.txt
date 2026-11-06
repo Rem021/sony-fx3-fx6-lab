@@ -1,0 +1,182 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review/dmm.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+    b850: 00 00 00 00  	.word	0x00000000
+		000000000000b850:  R_AARCH64_ABS64	.bss+0x16ddd8
+    b854: 00 00 00 00  	.word	0x00000000
+
+000000000000b858 <dmm_ext_ctrl_GetExtentSize>:
+    b858: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+    b85c: 910003fd     	mov	x29, sp
+    b860: f9000bf3     	str	x19, [sp, #0x10]
+    b864: 2a0003f3     	mov	w19, w0
+    b868: 94000000     	bl	0xb868 <dmm_ext_ctrl_GetExtentSize+0x10>
+		000000000000b868:  R_AARCH64_CALL26	dmm_ext_tbl_GetExtentTbl
+    b86c: b4000300     	cbz	x0, 0xb8cc <dmm_ext_ctrl_GetExtentSize+0x74>
+    b870: f9400004     	ldr	x4, [x0]
+    b874: 52800006     	mov	w6, #0x0                // =0
+    b878: 52800285     	mov	w5, #0x14               // =20
+    b87c: 52800b07     	mov	w7, #0x58               // =88
+    b880: b4000264     	cbz	x4, 0xb8cc <dmm_ext_ctrl_GetExtentSize+0x74>
+    b884: b9400881     	ldr	w1, [x4, #0x8]
+    b888: 3100043f     	cmn	w1, #0x1
+    b88c: 54000180     	b.eq	0xb8bc <dmm_ext_ctrl_GetExtentSize+0x64>
+    b890: 6b01027f     	cmp	w19, w1
+    b894: 54000240     	b.eq	0xb8dc <dmm_ext_ctrl_GetExtentSize+0x84>
+    b898: 52800001     	mov	w1, #0x0                // =0
+    b89c: 14000003     	b	0xb8a8 <dmm_ext_ctrl_GetExtentSize+0x50>
+    b8a0: 6b13005f     	cmp	w2, w19
+    b8a4: 540001e0     	b.eq	0xb8e0 <dmm_ext_ctrl_GetExtentSize+0x88>
+    b8a8: 11000421     	add	w1, w1, #0x1
+    b8ac: 9ba51023     	umaddl	x3, w1, w5, x4
+    b8b0: b9400862     	ldr	w2, [x3, #0x8]
+    b8b4: 3100045f     	cmn	w2, #0x1
+    b8b8: 54ffff41     	b.ne	0xb8a0 <dmm_ext_ctrl_GetExtentSize+0x48>
+    b8bc: 110004c6     	add	w6, w6, #0x1
+    b8c0: 9ba77cc1     	umull	x1, w6, w7
+    b8c4: f8616804     	ldr	x4, [x0, x1]
+    b8c8: b5fffde4     	cbnz	x4, 0xb884 <dmm_ext_ctrl_GetExtentSize+0x2c>
+    b8cc: 52800000     	mov	w0, #0x0                // =0
+    b8d0: f9400bf3     	ldr	x19, [sp, #0x10]
+    b8d4: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    b8d8: d65f03c0     	ret
+    b8dc: aa0403e3     	mov	x3, x4
+    b8e0: b9400c60     	ldr	w0, [x3, #0xc]
+    b8e4: f9400bf3     	ldr	x19, [sp, #0x10]
+    b8e8: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    b8ec: d65f03c0     	ret
+
+000000000000b8f0 <dmm_ext_ctrl_GetExtentMaxAlloc>:
+    b8f0: a9b97bfd     	stp	x29, x30, [sp, #-0x70]!
+    b8f4: 910003fd     	mov	x29, sp
+    b8f8: a9046bf9     	stp	x25, x26, [sp, #0x40]
+    b8fc: 2a0003f9     	mov	w25, w0
+    b900: 53001c20     	uxtb	w0, w1
+    b904: a90153f3     	stp	x19, x20, [sp, #0x10]
+    b908: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    b90c: 2a0003f3     	mov	w19, w0
+    b910: a90363f7     	stp	x23, x24, [sp, #0x30]
+    b914: a90573fb     	stp	x27, x28, [sp, #0x50]
+    b918: b9006fa0     	str	w0, [x29, #0x6c]
+    b91c: 94000000     	bl	0xb91c <dmm_ext_ctrl_GetExtentMaxAlloc+0x2c>
+		000000000000b91c:  R_AARCH64_CALL26	dmm_ext_tbl_GetExtentTbl
+    b920: aa0003f6     	mov	x22, x0
+    b924: 2a1903e0     	mov	w0, w25
+    b928: 94000000     	bl	0xb928 <dmm_ext_ctrl_GetExtentMaxAlloc+0x38>
+		000000000000b928:  R_AARCH64_CALL26	dmm_ext_tbl_GetExtentCount
+    b92c: 53003c14     	uxth	w20, w0
+    b930: 34000914     	cbz	w20, 0xba50 <dmm_ext_ctrl_GetExtentMaxAlloc+0x160>
+    b934: 93407e78     	sxtw	x24, w19
+    b938: 5280001b     	mov	w27, #0x0               // =0
+    b93c: 52800013     	mov	w19, #0x0               // =0
+    b940: 52800b17     	mov	w23, #0x58              // =88
+    b944: 52800295     	mov	w21, #0x14              // =20
+    b948: 14000005     	b	0xb95c <dmm_ext_ctrl_GetExtentMaxAlloc+0x6c>
+    b94c: d503201f     	nop
+    b950: 1100077b     	add	w27, w27, #0x1
+    b954: 6b3b229f     	cmp	w20, w27, uxth
+    b958: 540004a9     	b.ls	0xb9ec <dmm_ext_ctrl_GetExtentMaxAlloc+0xfc>
+    b95c: 2a1b03e1     	mov	w1, w27
+    b960: 2a1903e0     	mov	w0, w25
+    b964: 94000000     	bl	0xb964 <dmm_ext_ctrl_GetExtentMaxAlloc+0x74>
+		000000000000b964:  R_AARCH64_CALL26	dmm_ext_tbl_GetExtentTblIndex
+    b968: 3100041f     	cmn	w0, #0x1
+    b96c: 54ffff20     	b.eq	0xb950 <dmm_ext_ctrl_GetExtentMaxAlloc+0x60>
+    b970: 9bb77c1a     	umull	x26, w0, w23
+    b974: 8b1a02c0     	add	x0, x22, x26
+    b978: 8b180001     	add	x1, x0, x24
+    b97c: 3940503c     	ldrb	w28, [x1, #0x14]
+    b980: 34fffe9c     	cbz	w28, 0xb950 <dmm_ext_ctrl_GetExtentMaxAlloc+0x60>
+    b984: 3941b3a1     	ldrb	w1, [x29, #0x6c]
+    b988: b9400c00     	ldr	w0, [x0, #0xc]
+    b98c: 94000000     	bl	0xb98c <dmm_ext_ctrl_GetExtentMaxAlloc+0x9c>
+		000000000000b98c:  R_AARCH64_CALL26	dmm_ext_ctrl_GetExtentMaxAlloc
+    b990: 53003c00     	uxth	w0, w0
+    b994: 6b20039f     	cmp	w28, w0, uxtb
+    b998: 1a80339c     	csel	w28, w28, w0, lo
+    b99c: 53001f9c     	uxtb	w28, w28
+    b9a0: 34fffd9c     	cbz	w28, 0xb950 <dmm_ext_ctrl_GetExtentMaxAlloc+0x60>
+    b9a4: f87a6ac4     	ldr	x4, [x22, x26]
+    b9a8: b9400882     	ldr	w2, [x4, #0x8]
+    b9ac: 3100045f     	cmn	w2, #0x1
+    b9b0: 54fffd00     	b.eq	0xb950 <dmm_ext_ctrl_GetExtentMaxAlloc+0x60>
+    b9b4: 52800000     	mov	w0, #0x0                // =0
+    b9b8: 11000400     	add	w0, w0, #0x1
+    b9bc: 0b1c0261     	add	w1, w19, w28
+    b9c0: 6b02033f     	cmp	w25, w2
+    b9c4: 53003c00     	uxth	w0, w0
+    b9c8: 53003c21     	uxth	w1, w1
+    b9cc: 1a930033     	csel	w19, w1, w19, eq
+    b9d0: 9bb51001     	umaddl	x1, w0, w21, x4
+    b9d4: b9400822     	ldr	w2, [x1, #0x8]
+    b9d8: 3100045f     	cmn	w2, #0x1
+    b9dc: 54fffee1     	b.ne	0xb9b8 <dmm_ext_ctrl_GetExtentMaxAlloc+0xc8>
+    b9e0: 1100077b     	add	w27, w27, #0x1
+    b9e4: 6b3b229f     	cmp	w20, w27, uxth
+    b9e8: 54fffba8     	b.hi	0xb95c <dmm_ext_ctrl_GetExtentMaxAlloc+0x6c>
+    b9ec: 94000000     	bl	0xb9ec <dmm_ext_ctrl_GetExtentMaxAlloc+0xfc>
+		000000000000b9ec:  R_AARCH64_CALL26	dmm_ext_tbl_GetRootExtentTbl
+    b9f0: f9400004     	ldr	x4, [x0]
+    b9f4: b9400882     	ldr	w2, [x4, #0x8]
+    b9f8: 3100045f     	cmn	w2, #0x1
+    b9fc: 540001a0     	b.eq	0xba30 <dmm_ext_ctrl_GetExtentMaxAlloc+0x140>
+    ba00: 52800000     	mov	w0, #0x0                // =0
+    ba04: 52800285     	mov	w5, #0x14               // =20
+    ba08: 11000400     	add	w0, w0, #0x1
+    ba0c: 11000661     	add	w1, w19, #0x1
+    ba10: 6b02033f     	cmp	w25, w2
+    ba14: 53003c00     	uxth	w0, w0
+    ba18: 53003c21     	uxth	w1, w1
+    ba1c: 1a930033     	csel	w19, w1, w19, eq
+    ba20: 9ba51001     	umaddl	x1, w0, w5, x4
+    ba24: b9400822     	ldr	w2, [x1, #0x8]
+    ba28: 3100045f     	cmn	w2, #0x1
+    ba2c: 54fffee1     	b.ne	0xba08 <dmm_ext_ctrl_GetExtentMaxAlloc+0x118>
+    ba30: 2a1303e0     	mov	w0, w19
+    ba34: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    ba38: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    ba3c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    ba40: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+    ba44: a94573fb     	ldp	x27, x28, [sp, #0x50]
+    ba48: a8c77bfd     	ldp	x29, x30, [sp], #0x70
+    ba4c: d65f03c0     	ret
+    ba50: 52800013     	mov	w19, #0x0               // =0
+    ba54: 17ffffe6     	b	0xb9ec <dmm_ext_ctrl_GetExtentMaxAlloc+0xfc>
+
+000000000000ba58 <dmm_ext_ctrl_GetCurrentAllocRule>:
+    ba58: 58000141     	ldr	x1, 0xba80 <dmm_ext_ctrl_GetCurrentAllocRule+0x28>
+    ba5c: f942d022     	ldr	x2, [x1, #0x5a0]
+    ba60: f942d421     	ldr	x1, [x1, #0x5a8]
+    ba64: 79400042     	ldrh	w2, [x2]
+    ba68: 78627821     	ldrh	w1, [x1, x2, lsl #1]
+    ba6c: 7100fc3f     	cmp	w1, #0x3f
+    ba70: 79000001     	strh	w1, [x0]
+    ba74: 5a9f93e0     	csetm	w0, hi
+    ba78: d65f03c0     	ret
+    ba7c: d503201f     	nop
+    ba80: 00 00 00 00  	.word	0x00000000
+		000000000000ba80:  R_AARCH64_ABS64	.bss+0x16ddd8
+    ba84: 00 00 00 00  	.word	0x00000000
+
+000000000000ba88 <dmm_ext_ctrl_GetCurrentRuleAttribute>:
+    ba88: 58000200     	ldr	x0, 0xbac8 <dmm_ext_ctrl_GetCurrentRuleAttribute+0x40>
+    ba8c: f942d001     	ldr	x1, [x0, #0x5a0]
+    ba90: f942d400     	ldr	x0, [x0, #0x5a8]
+    ba94: 79400021     	ldrh	w1, [x1]
+    ba98: 78617800     	ldrh	w0, [x0, x1, lsl #1]
+    ba9c: 7100fc1f     	cmp	w0, #0x3f
+    baa0: 54000089     	b.ls	0xbab0 <dmm_ext_ctrl_GetCurrentRuleAttribute+0x28>
+    baa4: 52800000     	mov	w0, #0x0                // =0
+    baa8: d65f03c0     	ret
+    baac: d503201f     	nop
+    bab0: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!
+    bab4: 910003fd     	mov	x29, sp
+    bab8: 94000000     	bl	0xbab8 <dmm_ext_ctrl_GetCurrentRuleAttribute+0x30>
+		000000000000bab8:  R_AARCH64_CALL26	dmm_ext_tbl_GetRuleAttribute
+    babc: 53001c00     	uxtb	w0, w0
+    bac0: a8c17bfd     	ldp	x29, x30, [sp], #0x10
+    bac4: d65f03c0     	ret
+    bac8: 00 00 00 00  	.word	0x00000000
+		000000000000bac8:  R_AARCH64_ABS64	.bss+0x16ddd8
+    bacc: 00 00 00 00  	.word	0x00000000

@@ -1,0 +1,50 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000146cd8 <_ZN3mpr15SetEnterRecInfoERKNS_15enterRecInParamEPNS_12MovieRecInfoE>:
+  146cd8: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+  146cdc: 910003fd     	mov	x29, sp
+  146ce0: a90153f3     	stp	x19, x20, [sp, #0x10]
+  146ce4: aa0003f3     	mov	x19, x0
+  146ce8: 52800080     	mov	w0, #0x4                // =4
+  146cec: 9100c3b4     	add	x20, x29, #0x30
+  146cf0: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  146cf4: aa0103f6     	mov	x22, x1
+  146cf8: 3900d3a0     	strb	w0, [x29, #0x34]
+  146cfc: 52825a00     	mov	w0, #0x12d0             // =4816
+  146d00: 52842215     	mov	w21, #0x2110            // =8464
+  146d04: 52800101     	mov	w1, #0x8                // =8
+  146d08: 790067a0     	strh	w0, [x29, #0x32]
+  146d0c: aa1403e0     	mov	x0, x20
+  146d10: 3900d7bf     	strb	wzr, [x29, #0x35]
+  146d14: 3900dbbf     	strb	wzr, [x29, #0x36]
+  146d18: 3900dfbf     	strb	wzr, [x29, #0x37]
+  146d1c: 790063b5     	strh	w21, [x29, #0x30]
+  146d20: 97ffeff0     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  146d24: aa1303e0     	mov	x0, x19
+  146d28: 97fea75e     	bl	0xf0aa0 <_ZN3mpr20CheckEnterRecInParamERKNS_15enterRecInParamE@plt>
+  146d2c: 34000260     	cbz	w0, 0x146d78 <_ZN3mpr15SetEnterRecInfoERKNS_15enterRecInParamEPNS_12MovieRecInfoE+0xa0>
+  146d30: 52800060     	mov	w0, #0x3                // =3
+  146d34: 52800181     	mov	w1, #0xc                // =12
+  146d38: 3900d7bf     	strb	wzr, [x29, #0x35]
+  146d3c: 3900d3a0     	strb	w0, [x29, #0x34]
+  146d40: 52825a20     	mov	w0, #0x12d1             // =4817
+  146d44: 3900dbbf     	strb	wzr, [x29, #0x36]
+  146d48: 790067a0     	strh	w0, [x29, #0x32]
+  146d4c: 52838b80     	mov	w0, #0x1c5c             // =7260
+  146d50: 3900dfbf     	strb	wzr, [x29, #0x37]
+  146d54: b9003ba0     	str	w0, [x29, #0x38]
+  146d58: aa1403e0     	mov	x0, x20
+  146d5c: 790063b5     	strh	w21, [x29, #0x30]
+  146d60: 97ffefe0     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  146d64: 52800060     	mov	w0, #0x3                // =3
+  146d68: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  146d6c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  146d70: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+  146d74: d65f03c0     	ret
+  146d78: aa1603e1     	mov	x1, x22
+  146d7c: aa1303e0     	mov	x0, x19
+  146d80: 97ffff72     	bl	0x146b48 <_ZN3mpr18CheckMovieRecParamERNS_13movieRecParamE+0x3fc>
+  146d84: 17fffff9     	b	0x146d68 <_ZN3mpr15SetEnterRecInfoERKNS_15enterRecInParamEPNS_12MovieRecInfoE+0x90>

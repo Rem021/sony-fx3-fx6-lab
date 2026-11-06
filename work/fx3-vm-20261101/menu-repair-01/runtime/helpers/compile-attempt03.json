@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-11-01T11:13:40.440590+00:00",
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-ioctl-trace.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v3.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v3.so"
+  ],
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "source_sha256": "3dd8d54d5b354b14a4e2cefd4033f5fd139a170cbd53189dd4bc3b15f9147d86",
+  "explicit_original_glibc": true,
+  "bundled_libc_linked": false,
+  "observation": "Original return/errno pass-through; atomic function pointers; original verified op4/5/6 record traversal with safe self-read only, distinct raw arg1 and actual body. Not run yet.",
+  "output_sha256": "2480b04afd99f7130a64a61b4d2f716925b5034759541410573fc157ffbc349e"
+}

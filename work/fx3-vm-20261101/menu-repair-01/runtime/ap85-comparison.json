@@ -1,0 +1,56 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap84ar2native-4b70eab2",
+  "AP85": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap85r4osdring-5dcb8371",
+  "UI_updates": [
+    2,
+    1360
+  ],
+  "boot_barrier_passed": [
+    true,
+    true
+  ],
+  "pin_commit_consume": [
+    42,
+    42
+  ],
+  "face_DMM_commit_consume": [
+    4,
+    4
+  ],
+  "face_ICDT_commit_consume": [
+    3,
+    3
+  ],
+  "GPE_AP85": [
+    {
+      "op": "FillRect",
+      "fmt": "0",
+      "flags": "0xff",
+      "result": "0",
+      "approx_blend": "0",
+      "count": 1
+    },
+    {
+      "op": "Flush",
+      "fmt": "0",
+      "flags": "0",
+      "result": "0",
+      "approx_blend": "0",
+      "count": 1
+    }
+  ],
+  "approx_blend": 0,
+  "new_blocks": {
+    "completed_seq": 1358,
+    "ACK_queued": 1358,
+    "native_signal_success": 1358,
+    "stage": 1,
+    "pending": "1005",
+    "unchanged_tail_host_seconds": 102.01709316699998,
+    "software_failure": 0,
+    "claim": "1002 observed for next batch; matching1005 descriptor never observed during tail; no ACK outstanding at1358",
+    "unproven_cause": "Original allocation/send/pool/queue path; passive shadow leaves original messages ownership unchanged. Do not infer pool exhaustion without allocator/thread evidence.",
+    "bounded_pair_deadline": "No explicit guest pair timeout implemented in current helper; owner bounded run terminates observation. Required before claiming complete robust consumer."
+  },
+  "menu_verified": false
+}

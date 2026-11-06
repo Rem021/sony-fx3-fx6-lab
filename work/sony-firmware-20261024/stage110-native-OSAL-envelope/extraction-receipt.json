@@ -1,0 +1,19 @@
+{
+  "created_utc": "2026-10-27T13:19:14.373305+00:00",
+  "source_image": "work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+  "source_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "reader": "work/sony-firmware-20261024/stage2/extraction/read_filesystems.py",
+  "reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "entry": {
+    "path": "/lib/libosal_uipc.so",
+    "inode": 95132,
+    "mode": "0o100555",
+    "size": 43752,
+    "flags": "0x0",
+    "type": 32768
+  },
+  "output": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/inputs/libosal_uipc.so",
+  "output_sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+  "read_only_regular_file_extraction": true,
+  "mount_or_native_host_execution": false
+}

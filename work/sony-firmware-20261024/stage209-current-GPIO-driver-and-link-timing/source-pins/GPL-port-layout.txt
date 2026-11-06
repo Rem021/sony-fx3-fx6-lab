@@ -1,0 +1,10 @@
+typedef struct gpio_ioctl_port
+{
+    GPIO_PORTCTRL       portctl;                            /**< port contrl flag(BIT/PORT) */
+    unsigned char       portid;                             /**< Port number */
+    union{
+        unsigned char   bitnum;                             /**< bit number */
+        unsigned int    bitmask;                            /**< bitmask */
+    };
+    unsigned int value;                                     /**< set/get value */
+}GPIO_PORT;

@@ -1,0 +1,24 @@
+{
+  "schema": "fx6-hybrid-conddiag-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal21.cpio",
+  "source_sha256": "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal39.cpio",
+  "output_sha256": "b2f74af8fa2f9c29682e1dd1dbb3150dd7f2705f0c4d29fe81a38fb143c183de",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 21195,
+    "new_bytes": 21219,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libconddiag.so",
+      "bytes": 5008,
+      "sha256": "aab4d14e908b1753c349cb0766d923060d7eac99c59e0b65806587a985182dcd"
+    }
+  ],
+  "source_member_count": 1158
+}

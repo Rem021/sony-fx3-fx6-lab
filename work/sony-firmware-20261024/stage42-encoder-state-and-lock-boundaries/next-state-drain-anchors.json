@@ -1,0 +1,56 @@
+{
+  "schema": "fx3-stage42-next-state-drain-and-action-anchors/1",
+  "created_utc": "2026-10-26T00:53:54.240958+00:00",
+  "image_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "state_tables": {
+    "names": "0xbddee0",
+    "events": "0xbdde38",
+    "START_sys_v_table": "0x3806d8",
+    "STOP_done_table": "0x380978",
+    "note": "Original selector targets require guards/actions/transition diagnostics and entry/exit before real transition is complete."
+  },
+  "pending_storage": {
+    "active_flag": "state+0xc",
+    "START_sys_v": "flag514,self518,data520(1byte),functor508",
+    "STOP_done": "flag55c,self560,data568(6bytes),functor550",
+    "queue": "count590,write594,read598,slots5a0(cap10)",
+    "native_state_object_constructor_embedded_functor_vptr_and_real_active_context_unbound": true
+  },
+  "native_drain_candidates": {
+    "START_helper_tail": "0x2530fc..0x253150",
+    "STOP_helper_tail": "0x253578..0x2535c8",
+    "work": "Find actual constructor and original typed functor virtual body; bind owner/current epoch, pending flag clear, queue drain and code exit before using counts as completion."
+  },
+  "unbound_action_candidates": [
+    {
+      "offset": "0x24c5ec",
+      "role": "START_sys_v ready condition, early false if outer+31fb0=0; true branch enters0x22e1e4 dependencies."
+    },
+    {
+      "offset": "0x24cb90",
+      "role": "STOP table state8 action, target ENC_INFRA_STOP_WAIT10; body unexecuted."
+    },
+    {
+      "offset": "0x24cbb0",
+      "role": "STOP table state9 action, target ENC_IDLE4; body unexecuted."
+    },
+    {
+      "offset": "0x253f44",
+      "role": "Transition diagnostic, unexecuted."
+    }
+  ],
+  "runtime_lock_boundary": {
+    "wrapper": "0x22b628",
+    "guard_acquire": "0x27dc14 ->0x2ef4c",
+    "guard_release": "0x27dc6c ->0x2ef60",
+    "lock_identifier_and_runtime_result_failure_semantics_not_observed": true,
+    "guard_byte_zero_not_unlock_receipt": true
+  },
+  "remaining": [
+    "Bind actual state object/typed embedded functor construction, current active event and complete pending drain; low-level buffer return and wrapper true are not global quiescence.",
+    "Execute/understand full ready/STOP infra/idle actions, transition and entry/exit, underlying HAL and error paths without success/log adapters.",
+    "Bind real lock domain/runtime, actual message transport/current request epoch/all consumers and code exit.",
+    "Retain52byte initialization/full input/valid HAL/model/query/cache/mux and actual MAIN media/audio/longrun/thermal, same-body backup/restricted restore/WBI/coldboot/independent rescue requirements."
+  ],
+  "camera_or_remote_access_attempted": false
+}

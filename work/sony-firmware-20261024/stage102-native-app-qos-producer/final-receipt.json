@@ -1,0 +1,91 @@
+{
+  "schema": "fx3-stage102-original-app-QoS-producer/1",
+  "created_utc": "2026-10-27T11:00:28.895441+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/README.md",
+      "bytes": 6079,
+      "sha256": "246106c56588d6babf6a02016a24542c1faf815038893a688e70eed901f12534"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/app_qos.py",
+      "bytes": 10442,
+      "sha256": "3adc67eb6b1026b1570b98a1647ea579dd91831f5846497c44c0c9af1ce9e8e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/completed-evidence-review.json",
+      "bytes": 549,
+      "sha256": "0f0443418b73a9be3fc186568fe102f0b46872e654780627faee83fa290976b8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/goal-status-after.json",
+      "bytes": 309059,
+      "sha256": "7ac643804ab102a83f52cc8366ecf9086bffe4027ac6037b67b2c08ba70bd9c0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/goal-status-before.json",
+      "bytes": 305755,
+      "sha256": "590bc86fcc43a6483c506aec5dae42355c61910265532b371eeca023040adbbb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/official-source-notes.json",
+      "bytes": 1078,
+      "sha256": "435ae2a2a0d795a70620132a248ceb901ecdb6396c16ff7f10f3139cfdc7022b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/review_and_seal.py",
+      "bytes": 13603,
+      "sha256": "dcf55a570925ec7f3fab543fea32cc5cce9898fc522e3d038e1f75db7deccb65"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/run-initial-20261027/app-qos-results.json",
+      "bytes": 213840,
+      "sha256": "6dd632ee5969914ec4b5ed03bd85ce4d8f6dbcb67f24edae90151890959e40ce"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/run-initial-20261027/executed-source.py",
+      "bytes": 10442,
+      "sha256": "3adc67eb6b1026b1570b98a1647ea579dd91831f5846497c44c0c9af1ce9e8e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage102-native-app-qos-producer/source-and-callers-audit.json",
+      "bytes": 14057,
+      "sha256": "8c7ebbca129b1ee17ee126c5135b68cd08877f82c650a31ccf7e207cef4102e3"
+    }
+  ],
+  "previous_manifest_sha256": "b3761c58d773ede3f1a7e47e63d22617cbf8ab062c5bcb315f2e9e982206f292",
+  "operations": {
+    "status": "PASS_ORIGINAL_APP_QOS_PACKET_PRODUCTION_AND_EXPLICIT_RECEIVER_BYTE_HANDOFF",
+    "created_utc": "2026-10-27T11:00:28.895441+00:00",
+    "prior_sealed_member_files_checked": 26,
+    "producer_cases": 8,
+    "OSAL_prefix_cases": 2,
+    "byte_handoff_cases": 4,
+    "bounded_phases": 50,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "actual_MAIN_transport_Hal_or_recovery_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "590bc86fcc43a6483c506aec5dae42355c61910265532b371eeca023040adbbb",
+    "after_sha256": "7ac643804ab102a83f52cc8366ecf9086bffe4027ac6037b67b2c08ba70bd9c0"
+  },
+  "readme_index_before_sha256": "97c16c8626a8accfe7459df05cd935603bcb0d8bc39bf26f3a3146c7d3ff3854",
+  "readme_index_after_sha256": "883bcf4c664942ade2c5d1e1e11a1e25b3fcaa34b145b91ddf9d75576de2b4a3",
+  "readme_index_entry": "- [2026-10-27 FX3 原应用码率请求生产与SRT范围](<work/sony-firmware-20261024/stage102-native-app-qos-producer/README.md>)：原16000输入生成16M/80字节命令，原字节接收及下层转发保持；14组/50阶段。现有调用者属推流，卡内MAIN/实录/恢复仍未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

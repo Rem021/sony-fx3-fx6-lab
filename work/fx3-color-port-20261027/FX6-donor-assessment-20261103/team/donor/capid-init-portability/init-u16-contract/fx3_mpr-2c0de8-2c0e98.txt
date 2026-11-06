@@ -1,0 +1,50 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000002c0de8 <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_>:
+  2c0de8: 71002c1f     	cmp	w0, #0xb
+  2c0dec: 54000448     	b.hi	0x2c0e74 <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x8c>
+  2c0df0: 90000103     	adrp	x3, 0x2e0000 <_ZN4sidb7g_magicE+0x2070>
+  2c0df4: 91295063     	add	x3, x3, #0xa54
+  2c0df8: 38604860     	ldrb	w0, [x3, w0, uxtw]
+  2c0dfc: 10000063     	adr	x3, 0x2c0e08 <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x20>
+  2c0e00: 8b208860     	add	x0, x3, w0, sxtb #2
+  2c0e04: d61f0000     	br	x0
+  2c0e08: 528bb800     	mov	w0, #0x5dc0             // =24000
+  2c0e0c: b9000020     	str	w0, [x1]
+  2c0e10: 52807d20     	mov	w0, #0x3e9              // =1001
+  2c0e14: 14000004     	b	0x2c0e24 <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x3c>
+  2c0e18: 52800300     	mov	w0, #0x18               // =24
+  2c0e1c: b9000020     	str	w0, [x1]
+  2c0e20: 52800020     	mov	w0, #0x1                // =1
+  2c0e24: b9000040     	str	w0, [x2]
+  2c0e28: d65f03c0     	ret
+  2c0e2c: 52800320     	mov	w0, #0x19               // =25
+  2c0e30: 17fffffb     	b	0x2c0e1c <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x34>
+  2c0e34: 528ea600     	mov	w0, #0x7530             // =30000
+  2c0e38: 17fffff5     	b	0x2c0e0c <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x24>
+  2c0e3c: 52800640     	mov	w0, #0x32               // =50
+  2c0e40: 17fffff7     	b	0x2c0e1c <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x34>
+  2c0e44: 529d4c00     	mov	w0, #0xea60             // =60000
+  2c0e48: 17fffff1     	b	0x2c0e0c <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x24>
+  2c0e4c: 52800c80     	mov	w0, #0x64               // =100
+  2c0e50: 17fffff3     	b	0x2c0e1c <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x34>
+  2c0e54: 529a9800     	mov	w0, #0xd4c0             // =54464
+  2c0e58: 72a00020     	movk	w0, #0x1, lsl #16
+  2c0e5c: 17ffffec     	b	0x2c0e0c <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x24>
+  2c0e60: 52801900     	mov	w0, #0xc8               // =200
+  2c0e64: 17ffffee     	b	0x2c0e1c <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x34>
+  2c0e68: 52953000     	mov	w0, #0xa980             // =43392
+  2c0e6c: 72a00060     	movk	w0, #0x3, lsl #16
+  2c0e70: 17ffffe7     	b	0x2c0e0c <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_+0x24>
+  2c0e74: 528ea600     	mov	w0, #0x7530             // =30000
+  2c0e78: b9000020     	str	w0, [x1]
+  2c0e7c: 52807d20     	mov	w0, #0x3e9              // =1001
+  2c0e80: 90000101     	adrp	x1, 0x2e0000 <_ZN4sidb7g_magicE+0x2070>
+  2c0e84: b9000040     	str	w0, [x2]
+  2c0e88: b0000060     	adrp	x0, 0x2cd000 <_ZN3mpr16g_videoParamCombE+0x1ef8>
+  2c0e8c: 91342021     	add	x1, x1, #0xd08
+  2c0e90: 91233800     	add	x0, x0, #0x8ce
+  2c0e94: 17f709f7     	b	0x83670 <printf@plt>

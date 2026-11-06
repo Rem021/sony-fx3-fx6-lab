@@ -1,0 +1,1 @@
+Step 1 reconsidered after stale_no_guest_write: reviewed new immutable near-black standby frame e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4 sequence 1391. NO CARD and corner indicator remain; previous full standby image and guest identity show menu closed. MENU remains a single non-mutating navigation input. This is a fresh human decision, not an auto-retry.

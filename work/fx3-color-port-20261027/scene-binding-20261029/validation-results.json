@@ -1,0 +1,43 @@
+{
+  "previous_checkpoints_verified": {
+    "body-state-20261029": {
+      "files": 27,
+      "receipt_sha256": "55a132887d05e33101540709bd8660049a39aaedb8737d148363fa00111c377f"
+    },
+    "binding-20261028": {
+      "files": 63,
+      "receipt_sha256": "8d2589a7ad5e638a0e235e8e364a3575d45bed01b882d7424045ccd3b5f3ee86"
+    }
+  },
+  "python_ast_files": 4,
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "original_source_fragments": 8,
+  "candidate_scans_verified": {
+    "store": 127,
+    "load": 221,
+    "vector": 129,
+    "direct_branch": 6
+  },
+  "case_counts": {
+    "default_zero": 1,
+    "without_vfx": 2,
+    "constructor_through_colour_sdk": 4,
+    "total": 7
+  },
+  "original_caller_fragment_supplies_stage_and_graph": true,
+  "original_parameter_record_writes_verified": true,
+  "original_two_copies_per_case": true,
+  "original_vector_constructor_used": true,
+  "local_links_verified": 6,
+  "public_sources_reviewed": 5,
+  "boundary": {
+    "normal_scene_or_main_routing": false,
+    "pixel_output": false,
+    "native_target_execution": false,
+    "device_actions": 0,
+    "firmware_output": false,
+    "goal_complete": false,
+    "termination_condition_met": false
+  },
+  "conclusion": "One original parameter-production layer recovered. Normal callback/argument selection, source pixel domain, donor complete ISP and flashability remain unproven."
+}

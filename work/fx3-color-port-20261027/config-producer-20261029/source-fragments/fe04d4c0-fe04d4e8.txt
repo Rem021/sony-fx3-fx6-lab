@@ -1,0 +1,10 @@
+fe04d4c0 082040b8 ldur     w8, [x0, #2]
+fe04d4c4 007d1853 lsr      w0, w8, #0x18
+fe04d4c8 1ffc0371 cmp      w0, #0xff
+fe04d4cc 40000054 b.eq     #0xfe04d4d4
+fe04d4d0 a0000035 cbnz     w0, #0xfe04d4e4
+fe04d4d4 a9000090 adrp     x9, #0xfe061000
+fe04d4d8 295147f9 ldr      x9, [x9, #0xea0]
+fe04d4dc 085d0012 and      w8, w8, #0xffffff
+fe04d4e0 20496878 ldrh     w0, [x9, w8, uxtw]
+fe04d4e4 c0035fd6 ret      

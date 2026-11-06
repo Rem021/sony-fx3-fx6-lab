@@ -1,0 +1,32 @@
+{
+  "schema": "fx3-offline-internal-storage-observations/1",
+  "status": "SPEC_ONLY_UNDEPLOYABLE",
+  "refines": "stage111 diagnostic-layout-not-deployable.json",
+  "old_sealed_spec_preserved": true,
+  "observed_original_reply_wire_bytes": 44,
+  "observed_original_MPR_copy_bytes": 48,
+  "conditional_original_allocator_explanation": {
+    "tested_QID": "0x80c70047",
+    "requested_bytes": 44,
+    "block_request_bytes": 128,
+    "data_offset": 64,
+    "data_to_block_end": 64,
+    "tail_offset": 44,
+    "tail_hex": "77777777",
+    "copied48_equals_declared_wire44_plus_original_tail4": true
+  },
+  "tail_is_allocator_marker_not_additional_wire_payload_or_virtual_pointer": true,
+  "conditional_fixture_result_not_global_device_safe_flag": true,
+  "live_evidence_still_required": [
+    "actual client configuration",
+    "actual pool allocation extent/owner",
+    "ioctl handler and user pointer conversion",
+    "user readable extent covering48 bytes",
+    "callback identity and valid storage through copy",
+    "message release/refcount generation",
+    "real hardware Open/Start,target file and corresponding recovery"
+  ],
+  "not_USB_protocol_or_authorization_to_open_camera": true,
+  "guest_prototype_changed": false,
+  "goal_complete": false
+}

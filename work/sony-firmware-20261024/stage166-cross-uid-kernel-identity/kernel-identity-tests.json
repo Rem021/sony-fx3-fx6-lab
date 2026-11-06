@@ -1,0 +1,96 @@
+{
+  "status": "PASS_CROSS_UID_KERNEL_IDENTITY_NOT_ROOT_HELPER_OR_DEVICE_ACCEPTANCE",
+  "checks": 6,
+  "cases": [
+    {
+      "name": "own_microsecond_identity_matches_original_full_BSD",
+      "pid": 94089,
+      "old_full_info_errno": 0
+    },
+    {
+      "name": "existing_root_identity_matches_short_BSD_and_path",
+      "pid": 1,
+      "old_full_info_errno": 1
+    },
+    {
+      "name": "changed_identity_across_path_lookup_is_rejected",
+      "errno": 35
+    },
+    {
+      "name": "live_metadata_failure_retains_errno_and_is_not_exit",
+      "errno": 1
+    },
+    {
+      "name": "actual_own_reaped_process_is_absent",
+      "pid": 94100
+    },
+    {
+      "name": "nonexistent_pid_is_absent_without_a_signal",
+      "pid": 2147483647
+    }
+  ],
+  "reference": [
+    {
+      "new_kernel_identity": {
+        "pid": 94089,
+        "uid": 501,
+        "birth_sec": 1793192918,
+        "birth_usec": 807429,
+        "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python"
+      },
+      "separate_BSD_reference": {
+        "pid": 94089,
+        "short_return": 64,
+        "short_size": 64,
+        "short_errno": 0,
+        "short_uid": 501,
+        "full_return": 136,
+        "full_size": 136,
+        "full_errno": 0,
+        "full_uid": 501,
+        "full_birth_sec": 1793192918,
+        "full_birth_usec": 807429
+      }
+    },
+    {
+      "new_kernel_identity": {
+        "pid": 1,
+        "uid": 0,
+        "birth_sec": 1792850495,
+        "birth_usec": 350077,
+        "path": "/sbin/launchd"
+      },
+      "separate_BSD_reference": {
+        "pid": 1,
+        "short_return": 64,
+        "short_size": 64,
+        "short_errno": 0,
+        "short_uid": 0,
+        "full_return": 0,
+        "full_size": 136,
+        "full_errno": 1,
+        "full_uid": 0,
+        "full_birth_sec": 0,
+        "full_birth_usec": 0
+      }
+    }
+  ],
+  "build_argv": [
+    "xcrun",
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage166-cross-uid-kernel-identity/host_identity_reference.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage166-cross-uid-kernel-identity/artifacts/host-identity-reference"
+  ],
+  "reference_source_sha256": "102b321ce4c756ce479618033195febd2e4c34988d01a3e362cae5e1b076b7cb",
+  "reference_executable_sha256": "aca6f0d0bd9b80c00d8ba00fce49c1bae990b7c2d2236fc925720928aabed7e3",
+  "reference_dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage166-cross-uid-kernel-identity/artifacts/host-identity-reference:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+  "root_process_launched": false,
+  "root_helper_or_IOKit_executed": false,
+  "administrator_prompt_requested": false,
+  "new_device_operations": 0
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "fx6-backup-reader-coordinator-review-v1",
+  "utc": "2026-11-05T17:11:15.795878+00:00",
+  "status": "kernel_helper_contract_accepted_application_dispatch_unresolved",
+  "task": "task_568d9012fa77",
+  "dispatch": "ctx_be16af1121ff",
+  "report": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-read-contract/REPORT.md",
+  "manifest_sha256": "dc905d2c20795a277a1e67f5ae100a125de91c5f942cd6cb7ccdadad0c586ddd",
+  "manifest_count": 87,
+  "manifest_mismatches": [],
+  "ccmp_host_integer_cases": 8,
+  "ccmp_result": "actual==capacity does not enter diagnostic branch; actual>capacity and flag1 does",
+  "user_copy": "access failure or copy failure may still return actual; return count does not prove copy",
+  "application_provider": "libbackup.so sha256 6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d defines Backup_nread; appFw UND; im/bootin NEEDED libbackup",
+  "application_path": "Backup_nread -> backup_sync_msg -> osal_snd_sync_msg target0x3e014d; receiver to reviewed kernel helper not found",
+  "coordinator_new_log_evidence": {
+    "file": "donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-66ed0f78/serial.log",
+    "lines": [
+      1302,
+      1303,
+      1305,
+      1307
+    ],
+    "target": "0x3e014d",
+    "observation": "retained UIPC_PASS op10/5/11 and SEND_UNIQUE target with delegated=1; no assertion thread/key ownership inferred from nearby records"
+  },
+  "supersedes_prior_inference": "FX3 seed values incompatible with FX6 static enum contract remain a hypothesis for observed asserts; application-to-kernel copy chain is not proved",
+  "unresolved": [
+    "0x3e014d receiver and actual call edge",
+    "runtime appFw input values",
+    "shared FX3 consumers",
+    "Backup source producer before base CPIO"
+  ],
+  "new_VM": false,
+  "data_candidate_generated": false,
+  "platform_changed": false,
+  "menu_verified": false,
+  "next": "trace retained target0x3e014d dispatch using existing code/logs; no speculative config edit"
+}

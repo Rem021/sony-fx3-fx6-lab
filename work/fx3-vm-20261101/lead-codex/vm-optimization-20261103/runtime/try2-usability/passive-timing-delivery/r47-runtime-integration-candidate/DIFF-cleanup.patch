@@ -1,0 +1,279 @@
+--- a/runtime-wrapper/cleanup.py
++++ b/runtime-wrapper/cleanup.py
+@@ -1,24 +1,7 @@
+ """Original End first; classify alarm explicitly, preserve HAR/close, await final exit."""
+-import socket, math, re
++import socket
+ from common import *
+ 
+-def alarm_disposition(value,c):
+- if not isinstance(value,dict):return 'unknown_malformed'
+- if (value.get('version')!=1 or value.get('deadline_ms')!=60000 or
+-     value.get('expectedURL')!=c['url'] or value.get('expectedLaunchId')!=c['launch_id'] or
+-     type(value.get('sealed')) is not bool or type(value.get('documentTimeOrigin')) not in (int,float) or
+-     not math.isfinite(value['documentTimeOrigin']) or not isinstance(value.get('events'),list) or 'current' not in value):return 'unknown_malformed'
+- current=value['current']
+- if current is None:
+-  return 'valid_null_never_armed' if not any(isinstance(e,dict) and e.get('event') in ('armed','cancelled','expired') for e in value['events']) else 'unknown_malformed'
+- if not isinstance(current,dict):return 'unknown_malformed'
+- if (not isinstance(current.get('nonce'),str) or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',current['nonce']) or
+-     any(type(current.get(k)) not in (int,float) or not math.isfinite(current[k]) for k in ('armed_ms','due_ms')) or
+-     current['due_ms']-current['armed_ms']!=60000 or current.get('deadline_ms')!=60000):return 'unknown_malformed'
+- if current.get('state')=='armed':return 'valid_armed_do_not_cancel_or_dispose'
+- if current.get('state') in ('cancelled','expired'):return 'valid_nonarmed'
+- return 'unknown_malformed'
+-
+ def _cleanup_once(c,output):
+  errors=[];event('cleanup_entry_End_first')
+  try:
+@@ -33,14 +16,32 @@
+   ended=ev('ended-state','({lastStatus,finished,ending,url:location.href,document_time_origin:performance.timeOrigin,document_id:reviewDocumentId,alarm:window.__fx3InteractionDeadlineV1?.status?.()})');write('ENDED-STATE.json',ended)
+   browser('ended-page',['screenshot',str(output/'ended-page.png')],timeout=10)
+  except Exception as e:errors.append('ended document capture: '+repr(e))
+- disposition='unknown_status_fetch_failed'
++ disposition='unknown_status_fetch_failed';alarm_sha=None
+  try:
+-  alarm=dl('deadline-after-End','status');write('deadline-after-End.json',alarm);disposition=alarm_disposition(alarm,c)
+-  if disposition in ('valid_null_never_armed','valid_nonarmed'):
++  alarm=dl('deadline-after-End','status');write('deadline-after-End.json',alarm)
++  alarm_sha=evidence.digest(output/'deadline-after-End.json')
++  disposition=evidence.classify_alarm(alarm,c)
++  if disposition=='valid_armed_do_not_cancel_or_dispose':
++   current=alarm['current']
++   write('dispose-not-invoked.json',{'reason':disposition,
++    'alarm_cleanup':'no cancel/no dispose; owned document closes below',
++    'alarm_sha256':alarm_sha,'alarm':alarm,
++    'version':alarm['version'],'deadline_ms':alarm['deadline_ms'],
++    'expectedURL':alarm['expectedURL'],'expectedLaunchId':alarm['expectedLaunchId'],
++    'documentTimeOrigin':alarm['documentTimeOrigin'],'sealed':alarm['sealed'],
++    'nonce':current['nonce'],'state':current['state'],'armed_ms':current['armed_ms'],
++    'due_ms':current['due_ms'],'current_deadline_ms':current['deadline_ms']})
++  elif disposition in ('valid_null_never_armed','valid_nonarmed'):
+    write('deadline-dispose.json',dl('deadline-dispose','dispose'))
+-  else:write('dispose-not-invoked.json',{'reason':disposition,'alarm_cleanup':'no cancel/no dispose; owned document closes below'})
++  else:
++   # Keep a negative record only; certify refuses every non-armed/unknown disposition.
++   write('dispose-not-invoked.json',{'reason':disposition,
++    'alarm_cleanup':'no cancel/no dispose; owned document closes below',
++    'alarm_sha256':alarm_sha,'alarm':alarm})
+  except Exception as e:errors.append('alarm status/dispose: '+repr(e))
+- write('ALARM-DISPOSITION.json',{'classification':disposition,'forced_cancel':False})
++ write('ALARM-DISPOSITION.json',{'classification':disposition,'forced_cancel':False,
++  'dispose_invoked':disposition in ('valid_null_never_armed','valid_nonarmed'),
++  'alarm_sha256':alarm_sha})
+  try:browser('HAR-stop',['network','har','stop',str(output/'traffic.har')],timeout=15)
+  except Exception as e:errors.append('HAR: '+repr(e))
+  try:browser('browser-before-close',['session','info','--json'])
+--- a/runtime-wrapper/cleanup_evidence.py
++++ b/runtime-wrapper/cleanup_evidence.py
+@@ -1,5 +1,5 @@
+ """r39 cleanup-only evidence/lease helpers. No launch, browser, QMP or guest API."""
+-import contextvars,errno,fcntl,hashlib,json,os,socket,stat,subprocess,time,uuid
++import contextvars,errno,fcntl,hashlib,json,math,os,re,socket,stat,subprocess,time,uuid
+ from pathlib import Path
+ ACTIVE=contextvars.ContextVar('r39_cleanup_output',default=None)
+ ROOT=Path(__file__).resolve().parents[1]
+@@ -8,6 +8,148 @@
+ SCHEMA='fx3-cleanup-r39-v1'
+ def digest(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def encoded(v):return (json.dumps(v,ensure_ascii=False,indent=2)+'\n').encode()
++_UUID=re.compile(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}')
++def classify_alarm(value,c):
++ """Strictly classify the exact installed alarm status; shared by body/certify/revalidate.
++
++ valid_armed_do_not_cancel_or_dispose is a real classification, not permission to
++ skip evidence: certify below still requires the full armed identity, original End,
++ closed browser session and independent native/resource receipts.
++ """
++ if not isinstance(value,dict):return 'unknown_malformed'
++ if (value.get('version')!=1 or value.get('deadline_ms')!=60000 or
++     value.get('expectedURL')!=c['url'] or value.get('expectedLaunchId')!=c['launch_id'] or
++     type(value.get('sealed')) is not bool or type(value.get('documentTimeOrigin')) not in (int,float) or
++     not math.isfinite(value['documentTimeOrigin']) or not isinstance(value.get('events'),list) or 'current' not in value):return 'unknown_malformed'
++ current=value['current']
++ if current is None:
++  return 'valid_null_never_armed' if not any(isinstance(e,dict) and e.get('event') in ('armed','cancelled','expired') for e in value['events']) else 'unknown_malformed'
++ if not isinstance(current,dict):return 'unknown_malformed'
++ if (not isinstance(current.get('nonce'),str) or not _UUID.fullmatch(current['nonce']) or
++     any(type(current.get(k)) not in (int,float) or not math.isfinite(current[k]) for k in ('armed_ms','due_ms')) or
++     current['due_ms']-current['armed_ms']!=60000 or current.get('deadline_ms')!=60000):return 'unknown_malformed'
++ if current.get('state')=='armed':return 'valid_armed_do_not_cancel_or_dispose'
++ if current.get('state') in ('cancelled','expired'):return 'valid_nonarmed'
++ return 'unknown_malformed'
++
++def _alarm_identity(alarm):
++ cur=alarm.get('current') if isinstance(alarm.get('current'),dict) else None
++ return {'version':alarm.get('version'),'deadline_ms':alarm.get('deadline_ms'),
++  'expectedURL':alarm.get('expectedURL'),'expectedLaunchId':alarm.get('expectedLaunchId'),
++  'documentTimeOrigin':alarm.get('documentTimeOrigin'),'sealed':alarm.get('sealed'),
++  'nonce':None if cur is None else cur.get('nonce'),'state':None if cur is None else cur.get('state'),
++  'armed_ms':None if cur is None else cur.get('armed_ms'),'due_ms':None if cur is None else cur.get('due_ms'),
++  'current_deadline_ms':None if cur is None else cur.get('deadline_ms')}
++
++def _same_identity(got,expected):
++ return all(got.get(k)==v for k,v in expected.items())
++
++def _dispose_matches(dispose,alarm,cls):
++ if not isinstance(dispose,dict):return False
++ if (dispose.get('version')!=1 or dispose.get('deadline_ms')!=60000 or
++     dispose.get('expectedURL')!=alarm.get('expectedURL') or dispose.get('expectedLaunchId')!=alarm.get('expectedLaunchId') or
++     dispose.get('documentTimeOrigin')!=alarm.get('documentTimeOrigin') or dispose.get('sealed') is not True or
++     not isinstance(dispose.get('events'),list) or not any(isinstance(e,dict) and e.get('event')=='disposed' for e in dispose['events'])):return False
++ if cls=='valid_null_never_armed':
++  return (dispose.get('current') is None and
++          not any(isinstance(e,dict) and e.get('event') in ('armed','cancelled','expired') for e in dispose['events']))
++ cur=alarm.get('current');dcur=dispose.get('current')
++ if not isinstance(cur,dict) or not isinstance(dcur,dict):return False
++ return (dcur.get('state')==cur.get('state') and dcur.get('nonce')==cur.get('nonce') and
++         dcur.get('armed_ms')==cur.get('armed_ms') and dcur.get('due_ms')==cur.get('due_ms') and
++         dcur.get('deadline_ms')==60000)
++
++def alarm_evidence(call,c,body):
++ """Bind body disposition to the sealed status and require disposal only when nonarmed.
++
++ Armed: no cancel / no dispose is the designed path, but the complete alarm identity,
++         nonce and due must survive in dispose-not-invoked.json and no dispose artifact
++         may exist.
++ Nonarmed: the original deadline-dispose receipt and its disposed event are required.
++ Unknown / malformed: refuse; never infer completion from errors=[] or a file name.
++ """
++ try:alarm=load(call/'deadline-after-End.json')
++ except Exception as exc:raise ValueError('alarm_status_missing:'+repr(exc))
++ cls=classify_alarm(alarm,c)
++ if cls=='unknown_malformed':raise ValueError('alarm_identity_malformed')
++ if body.get('alarm_disposition')!=cls:raise ValueError('alarm_disposition_mismatch')
++ try:marker=load(call/'ALARM-DISPOSITION.json')
++ except Exception as exc:raise ValueError('alarm_marker_missing:'+repr(exc))
++ alarm_sha=digest(call/'deadline-after-End.json')
++ if marker.get('classification')!=cls or marker.get('forced_cancel') is not False:raise ValueError('alarm_marker_classification')
++ if marker.get('alarm_sha256')!=alarm_sha:raise ValueError('alarm_marker_digest')
++ identity=_alarm_identity(alarm)
++ if cls=='valid_armed_do_not_cancel_or_dispose':
++  if (alarm.get('current') or {}).get('state')!='armed':raise ValueError('armed_state_lost')
++  try:not_invoked=load(call/'dispose-not-invoked.json')
++  except Exception as exc:raise ValueError('armed_dispose_not_invoked_missing:'+repr(exc))
++  if not_invoked.get('reason')!=cls:raise ValueError('armed_dispose_reason')
++  if not_invoked.get('alarm_cleanup')!='no cancel/no dispose; owned document closes below':raise ValueError('armed_dispose_notice')
++  if not_invoked.get('alarm_sha256')!=alarm_sha:raise ValueError('armed_dispose_alarm_digest')
++  if not_invoked.get('alarm')!=alarm:raise ValueError('armed_dispose_alarm_identity')
++  if not _same_identity(not_invoked,identity):raise ValueError('armed_dispose_field_identity')
++  if (call/'deadline-dispose.json').exists() or (call/'deadline-dispose-process.json').exists():raise ValueError('armed_dispose_invoked')
++  if marker.get('dispose_invoked') is not False:raise ValueError('armed_marker_dispose_state')
++  return {**identity,'classification':cls,'dispose_invoked':False,'alarm_sha256':alarm_sha}
++ if cls in ('valid_null_never_armed','valid_nonarmed'):
++  if (call/'dispose-not-invoked.json').exists():raise ValueError('nonarmed_dispose_not_invoked_artifact')
++  try:dispose=load(call/'deadline-dispose.json')
++  except Exception as exc:raise ValueError('nonarmed_dispose_missing:'+repr(exc))
++  if not _dispose_matches(dispose,alarm,cls):raise ValueError('nonarmed_dispose_unproven')
++  if marker.get('dispose_invoked') is not True:raise ValueError('nonarmed_marker_dispose_state')
++  return {**identity,'classification':cls,'dispose_invoked':True,'alarm_sha256':alarm_sha,'dispose_sha256':digest(call/'deadline-dispose.json')}
++ raise ValueError('alarm_disposition_unhandled')
++
++def ended_state_evidence(call,c,alarm):
++ state=load(call/'ENDED-STATE.json');status=state.get('lastStatus')
++ if not isinstance(status,dict):raise ValueError('ended_status_missing')
++ if state.get('finished') is not True or status.get('phase')!='finished':raise ValueError('ended_not_finished')
++ if status.get('launch_request_id')!=c['launch_id'] or not status.get('run_incarnation'):raise ValueError('ended_launch_or_run')
++ if state.get('url')!=c['url'] or not state.get('document_id'):raise ValueError('ended_url_or_document')
++ origin=state.get('document_time_origin')
++ if type(origin) not in (int,float) or not math.isfinite(origin):raise ValueError('ended_time_origin')
++ if origin!=alarm.get('documentTimeOrigin'):raise ValueError('ended_alarm_document_mismatch')
++ sa=state.get('alarm')
++ if not isinstance(sa,dict) or 'current' not in sa:raise ValueError('ended_alarm_missing')
++ sc=sa.get('current');ac=alarm.get('current')
++ for k in ('version','deadline_ms','expectedURL','expectedLaunchId','documentTimeOrigin'):
++  if sa.get(k)!=alarm.get(k):raise ValueError('ended_alarm_'+k)
++ if sc is None or ac is None:
++  if sc is not ac:raise ValueError('ended_alarm_current_identity')
++ else:
++  for k in ('nonce','state','armed_ms','due_ms','deadline_ms'):
++   if sc.get(k)!=ac.get(k):raise ValueError('ended_alarm_current_'+k)
++ end=json.loads(load(call/'End-original-button-process.json')['stdout'])
++ if end.get('End_invoked') is True:
++  if state.get('ending') is not True:raise ValueError('ended_not_ending_after_End')
++ elif end.get('End_invoked') is False:
++  if state.get('finished') is not True:raise ValueError('ended_not_finished')
++ else:raise ValueError('end_invocation_unknown')
++ attempt_path=Path(call).parent.parent/'current-attempt.json'
++ bound=False
++ if attempt_path.exists():
++  attempt=load(attempt_path);pb=attempt.get('postkey_binding')
++  if not isinstance(pb,dict):raise ValueError('current_attempt_binding_missing')
++  if (state.get('document_id')!=pb.get('document_id') or origin!=pb.get('document_time_origin') or
++      status.get('run_incarnation')!=pb.get('run_incarnation')):raise ValueError('current_attempt_document_or_run')
++  if ac is not None and attempt.get('nonce')!=ac.get('nonce'):raise ValueError('current_attempt_alarm_nonce')
++  bound=True
++ return {'document_id':state['document_id'],'document_time_origin':origin,
++  'run_incarnation':status['run_incarnation'],'url':state['url'],
++  'launch_request_id':status['launch_request_id'],'End_invoked':end['End_invoked'],
++  'current_attempt_bound':bound}
++
++def browser_evidence(call,cfg):
++ before=json.loads(load(call/'browser-before-close-process.json')['stdout'])
++ after=json.loads(load(call/'browser-after-close-process.json')['stdout'])
++ bd=before.get('data') if isinstance(before,dict) else None
++ if not isinstance(before,dict) or before.get('success') is not True or not isinstance(bd,dict):raise ValueError('browser_before_close_missing')
++ if bd.get('session')!=cfg['session'] or bd.get('active') is not True or type(bd.get('pid')) is not int or bd.get('pid')<=1:raise ValueError('browser_before_close_not_active')
++ ad=after.get('data') if isinstance(after,dict) else None
++ if not isinstance(after,dict) or after.get('success') is not True or not isinstance(ad,dict):raise ValueError('browser_after_close_missing')
++ if ad.get('session')!=cfg['session'] or ad.get('active') is not False or ad.get('pid') is not None:raise ValueError('browser_close_unproven')
++ return {'session':cfg['session'],'before_pid':bd['pid'],'after_active':False,'after_pid':None}
++
+ def regular(p):
+  p=Path(p)
+  if not p.is_absolute() or p.resolve()!=p or any(x.is_symlink() for x in (p,*p.parents)) or not p.is_file():raise ValueError('exact_regular_file:'+str(p))
+@@ -119,19 +261,24 @@
+ 
+ def certify(call,c,cfg,body,probe=resource_check,copy_native=True):
+  if not isinstance(c.get('launch_id'),str) or not c['launch_id']:raise ValueError('launch_not_yet_established_no_completion_certificate')
+- if body['errors'] or body['runner_alive'] is not False or body['port_closed'] is not True or body['alarm_disposition'] not in ('valid_null_never_armed','valid_nonarmed'):raise ValueError('cleanup_body_incomplete')
+- state=load(call/'ENDED-STATE.json');status=state['lastStatus'];alarm=load(call/'deadline-after-End.json')
+- if (state['finished'] is not True or status['phase']!='finished' or status['launch_request_id']!=c['launch_id'] or not status['run_incarnation'] or state['url']!=c['url'] or not state['document_id'] or state['document_time_origin']!=alarm['documentTimeOrigin']):raise ValueError('finished_page_launch_document_binding')
+- after=json.loads(load(call/'browser-after-close-process.json')['stdout'])
+- if after.get('success') is not True or after['data']['session']!=cfg['session'] or after['data']['active'] is not False or after['data']['pid'] is not None:raise ValueError('browser_close_unproven')
+- for name in ['End-original-button','ended-state','ended-page','deadline-after-End','deadline-dispose','HAR-stop','browser-before-close','browser-close','browser-after-close']:
++ if body.get('errors') or body.get('runner_alive') is not False or body.get('port_closed') is not True:raise ValueError('cleanup_body_incomplete')
++ alarm=load(call/'deadline-after-End.json')
++ alarm_proof=alarm_evidence(call,c,body)
++ ended=ended_state_evidence(call,c,alarm)
++ browser=browser_evidence(call,cfg)
++ stages=['End-original-button','ended-state','ended-page','deadline-after-End','HAR-stop','browser-before-close','browser-close','browser-after-close']
++ if alarm_proof['dispose_invoked']:stages.append('deadline-dispose')
++ for name in stages:
+   if load(call/(name+'-process.json'))['returncode']!=0:raise ValueError('incomplete_stage:'+name)
+  if not regular(call/'ended-page.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n'):raise ValueError('cleanup_PNG_missing')
+  har=load(call/'traffic.har')
+  if not isinstance(har.get('log',{}).get('entries'),list):raise ValueError('cleanup_HAR_missing')
+  native=native_evidence(c,call/'native' if copy_native else None);resources=probe(c,native['qemu_pid'])
+  if resources.get('resources_closed') is not True:raise ValueError('current_resources_unproven:'+json.dumps(resources))
+- return {'native':native,'resources':resources,'run_incarnation':status['run_incarnation'],'document_id':state['document_id'],'scope':'cleanup completion only; original action/menu outcome unchanged'}
++ return {'native':native,'resources':resources,'run_incarnation':ended['run_incarnation'],
++  'document_id':ended['document_id'],'document_time_origin':ended['document_time_origin'],
++  'alarm':alarm_proof,'ended_state':ended,'browser':browser,
++  'scope':'cleanup completion only; original action/menu outcome unchanged'}
+ 
+ def seal(call):
+  files={}
+@@ -149,8 +296,13 @@
+  for name,v in manifest['files'].items():
+   p=call/name
+   if p.resolve()!=p or not p.is_relative_to(call) or digest(regular(p))!=v['sha256'] or p.stat().st_size!=v['bytes']:raise ValueError('artifact_integrity:'+name)
++ body=load(call/'body-result.json')
++ disposition=body.get('alarm_disposition')
++ if disposition not in ('valid_null_never_armed','valid_nonarmed','valid_armed_do_not_cancel_or_dispose'):raise ValueError('alarm_disposition_not_completed')
+  required={'invocation.json','result.json','body-result.json','proof.json','stdout.txt','stderr.txt','ENDED-STATE.json','traffic.har','ended-page.png','deadline-after-End.json','ALARM-DISPOSITION.json'}
+  required|={'native/'+n for n in ('command.json','trial-session.json','receipt.json','trial-web-final-receipt.json','resource-guard-receipt.json')}
++ if disposition=='valid_armed_do_not_cancel_or_dispose':required.add('dispose-not-invoked.json')
++ else:required|={'deadline-dispose.json','deadline-dispose-process.json'}
+  if not required.issubset(manifest['files']):raise ValueError('incomplete_manifest')
+  public=load(call/'RETURN-HASH.json');raw=regular(call/'return.stdout.txt')
+  if digest(raw)!=public['sha256'] or raw.stat().st_size!=public['bytes']:raise ValueError('public_stdout_integrity')
+@@ -169,7 +321,7 @@
+  if now_native!=proof['native']:raise ValueError('original_native_evidence_changed')
+  body=load(call/'body-result.json')
+  fresh=certify(call,c,cfg,body,probe,copy_native=False)
+- if any(fresh[k]!=proof[k] for k in ('native','run_incarnation','document_id')):raise ValueError('original_semantic_proof_changed')
++ if any(fresh[k]!=proof.get(k) for k in ('native','run_incarnation','document_id','document_time_origin','alarm','ended_state','browser')):raise ValueError('original_semantic_proof_changed')
+  resources=fresh['resources']
+  return {'original_receipt':ref,'resources':resources,'original_completed_call':call.name,'scope':'prior bound completion plus current point probes; not global End atomicity'}
+ 

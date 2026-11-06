@@ -1,0 +1,43 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-pic",
+    "-mcmodel=large",
+    "-mgeneral-regs-only",
+    "-mno-outline-atomics",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-unwind-tables",
+    "-O2",
+    "-nostdlib",
+    "-c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-reset-v1-module-unit.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-reset-v1.ko"
+  ],
+  "exit": 0,
+  "original_abi_template_sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+  "source_sha256": "1b16f98cfc2cec225be63ee82e1cfb80e66a1ba0398908123d7e709f72e333e1",
+  "output_sha256": "7e756a4e9a2edb9770baf92c07cb88f342690b1636d6c258f0ec2e1d6a98abd2",
+  "undefined_symbols": [
+    "osal_reg_public",
+    "printk",
+    "osal_unreg_public",
+    "vfree",
+    "osal_msg_size",
+    "osal_get_msg_src",
+    "osal_valloc_msg_wait",
+    "osal_set_msg_src",
+    "osal_free_msg",
+    "osal_snd_msg",
+    "arch_phys_to_va",
+    "vmalloc"
+  ],
+  "kernel_module_ABI": "Original4.9.337-scel+ 768B module,name24,init158,cleanup2b8;noMODVERSIONS; originalexports inspected",
+  "scope": "Newstandardin-kernel publicsender module,no originalmodule/text changes"
+}

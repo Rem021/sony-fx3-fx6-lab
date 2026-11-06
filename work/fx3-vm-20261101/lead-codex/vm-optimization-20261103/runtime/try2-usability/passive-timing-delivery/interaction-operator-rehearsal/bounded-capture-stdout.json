@@ -1,0 +1,86 @@
+{
+  "status": "no_qualified_screenshot",
+  "scope": "first_MENU_reference_only",
+  "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+  "session": "fx3-deadline-operator-rehearsal-9240ea35",
+  "url": "http://127.0.0.1:62277/",
+  "launch_id": "13cb80fa-2e76-45d3-a862-a0a00c7836d0",
+  "alarm_nonce": "2273f116-c81b-4c40-96d9-c6b2f27a40b7",
+  "step": 1,
+  "host_started_UTC": "2026-11-04T21:27:58.087979+00:00",
+  "host_monotonic_started": 411363.635037958,
+  "screenshot_attempted": false,
+  "guest_keys_sent": 0,
+  "confirm_calls": 0,
+  "alarm_mutations": 0,
+  "timeline": [
+    {
+      "stage": "initial_receipt_write_enter",
+      "UTC": "2026-11-04T21:27:58.088125+00:00",
+      "monotonic": 411363.635050083
+    },
+    {
+      "stage": "initial_receipt_write_exit",
+      "UTC": "2026-11-04T21:27:58.088678+00:00",
+      "monotonic": 411363.635604916
+    },
+    {
+      "stage": "tab_preflight_enter",
+      "UTC": "2026-11-04T21:27:58.088684+00:00",
+      "monotonic": 411363.635607708
+    },
+    {
+      "stage": "tab_preflight_exit",
+      "UTC": "2026-11-04T21:27:58.094840+00:00",
+      "monotonic": 411363.641766458
+    },
+    {
+      "stage": "before_eval_enter",
+      "UTC": "2026-11-04T21:27:58.094890+00:00",
+      "monotonic": 411363.641818416
+    },
+    {
+      "stage": "before_eval_exit",
+      "UTC": "2026-11-04T21:27:58.101878+00:00",
+      "monotonic": 411363.64880475
+    },
+    {
+      "stage": "final_receipt_write_enter",
+      "UTC": "2026-11-04T21:27:58.101921+00:00",
+      "monotonic": 411363.648844291
+    },
+    {
+      "stage": "final_receipt_write_exit",
+      "UTC": "2026-11-04T21:27:58.102327+00:00",
+      "monotonic": 411363.64925275
+    },
+    {
+      "stage": "return_boundary",
+      "UTC": "2026-11-04T21:27:58.102331+00:00",
+      "monotonic": 411363.649257375
+    }
+  ],
+  "tab_id": null,
+  "before_eval": {
+    "events": [
+      {
+        "kind": "invoked",
+        "performance_ms": 13603.299999952316,
+        "wall_UTC": "2026-11-04T21:27:58.100Z"
+      },
+      {
+        "kind": "refused",
+        "performance_ms": 13603.69999998808,
+        "reason": "Error: phase_or_input_gate_not_ready",
+        "wall_UTC": "2026-11-04T21:27:58.100Z"
+      }
+    ],
+    "reason": "Error: phase_or_input_gate_not_ready",
+    "status": "no_qualified_screenshot",
+    "waited_ms": 0.40000003576278687
+  },
+  "reason": "Error: phase_or_input_gate_not_ready",
+  "host_finished_UTC": "2026-11-04T21:27:58.101912+00:00",
+  "host_monotonic_finished": 411363.648838708,
+  "host_elapsed_ms": 13.801
+}

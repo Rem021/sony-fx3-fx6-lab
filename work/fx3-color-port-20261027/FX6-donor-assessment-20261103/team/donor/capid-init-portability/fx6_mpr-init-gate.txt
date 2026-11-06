@@ -1,0 +1,45 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000012b3dc <_ZN3mpr4InitERKNS_11initInParamE>:
+  12b3dc: a9b27bfd     	stp	x29, x30, [sp, #-0xe0]!
+  12b3e0: 52805201     	mov	w1, #0x290              // =656
+  12b3e4: 910003fd     	mov	x29, sp
+  12b3e8: a90153f3     	stp	x19, x20, [sp, #0x10]
+  12b3ec: aa0003f3     	mov	x19, x0
+  12b3f0: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  12b3f4: a90363f7     	stp	x23, x24, [sp, #0x30]
+  12b3f8: f90023f9     	str	x25, [sp, #0x40]
+  12b3fc: 97fffaee     	bl	0x129fb4 <_ZN3mpr11PowerOnMainEPv+0xf4>
+  12b400: aa1303e0     	mov	x0, x19
+  12b404: 97ff2b4b     	bl	0xf6130 <_ZNK3mpr11initInParam8DbgPrintEv@plt>
+  12b408: b9426a60     	ldr	w0, [x19, #0x268]
+  12b40c: 7100101f     	cmp	w0, #0x4
+  12b410: 54000349     	b.ls	0x12b478 <_ZN3mpr4InitERKNS_11initInParamE+0x9c>
+  12b414: 52800061     	mov	w1, #0x3                // =3
+  12b418: b90083a0     	str	w0, [x29, #0x80]
+  12b41c: 9101e3a0     	add	x0, x29, #0x78
+  12b420: 3901f7bf     	strb	wzr, [x29, #0x7d]
+  12b424: 3901f3a1     	strb	w1, [x29, #0x7c]
+  12b428: 52843401     	mov	w1, #0x21a0             // =8608
+  12b42c: 3901fbbf     	strb	wzr, [x29, #0x7e]
+  12b430: 52800073     	mov	w19, #0x3               // =3
+  12b434: 7900f3a1     	strh	w1, [x29, #0x78]
+  12b438: 52800181     	mov	w1, #0xc                // =12
+  12b43c: 3901ffbf     	strb	wzr, [x29, #0x7f]
+  12b440: 7900f7bf     	strh	wzr, [x29, #0x7a]
+  12b444: 97fffadc     	bl	0x129fb4 <_ZN3mpr11PowerOnMainEPv+0xf4>
+  12b448: 52800020     	mov	w0, #0x1                // =1
+  12b44c: 52800101     	mov	w1, #0x8                // =8
+  12b450: 290f7fa0     	stp	w0, wzr, [x29, #0x78]
+  12b454: 9101e3a0     	add	x0, x29, #0x78
+  12b458: 97fffad7     	bl	0x129fb4 <_ZN3mpr11PowerOnMainEPv+0xf4>
+  12b45c: f94023f9     	ldr	x25, [sp, #0x40]
+  12b460: 2a1303e0     	mov	w0, w19
+  12b464: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  12b468: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  12b46c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+  12b470: a8ce7bfd     	ldp	x29, x30, [sp], #0xe0
+  12b474: d65f03c0     	ret

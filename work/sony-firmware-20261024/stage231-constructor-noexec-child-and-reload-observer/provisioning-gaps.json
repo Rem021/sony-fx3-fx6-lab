@@ -1,0 +1,26 @@
+{
+  "probe_deployable": false,
+  "scope": "lifecycle substrate only; purpose1 NOOP",
+  "required_before_device_plan": [
+    "Verified path to stage root0600 RAM plan; ordinary service writer permissions not assumed compatible.",
+    "Obtain target CLOCK_MONOTONIC for the fixed deadline without unsupported requests.",
+    "Prove both direct-load calls stay in same live creator thread within one authenticated session.",
+    "Bind actual same-body identity and current process/file profile.",
+    "Verify actual upload size/framing, ELF/page/loading policy, fresh anonymous executable mapping/cache coherency, root/FD/signal/wait semantics, RAM FD closure and return to MSC.",
+    "Integrate full boot capture worker and independent recovery/restore before firmware-write acceptance."
+  ],
+  "approval_hash_is_user_authorization": false,
+  "body_binding_field_is_live_body_identity_proof": false,
+  "entry_result_is_full_RAM_FD_cleanup_or_USB_return_receipt": false,
+  "actual_device_operations": 0,
+  "anonymous_copy_and_no_exec_child_implemented": true,
+  "source_program_file_reads_if_deployed": [
+    "/proc/self/exe",
+    "/tmp/jiritsu/libJit.so",
+    "/proc/self/task/<creator_tid>",
+    "/proc/self/fd"
+  ],
+  "no_GO_child_wait_bounded_in_own_program": true,
+  "full_capture_worker_integrated": false,
+  "real_cache_model_or_hardware_test": false
+}

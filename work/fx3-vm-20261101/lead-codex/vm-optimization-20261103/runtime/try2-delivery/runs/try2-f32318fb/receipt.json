@@ -1,0 +1,330 @@
+{
+  "created_utc": "2026-11-03T11:16:25.736699+00:00",
+  "duration_seconds": 43.47520170797361,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/vmopt-20261103-try2-v1/candidate.json",
+  "candidate_sha256": "c7691dcc0cb35fb9aabf471b3859da2b54c19bde4b77b9446e14d293d67d5487",
+  "models_identical_to_frozen_AP101_r4": false,
+  "authority": "msg_3a52a0ab7e46",
+  "observer_source_snapshot": [
+    {
+      "name": "run_trial_v4_try2.py",
+      "sha256": "791cc7a338d057dd65f18e5efaeb7e31c1725ca06388586de27a053403cd8947"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "gate_input101.py",
+      "sha256": "2d430d401488d12868e5dd81d7107c975a30a87a01758b8429ad58bf088ce88a"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_web_try2.py",
+      "sha256": "a673832f5a3f95627d61f410329878350d28abdca4042a487a0d28d55d7cf84d"
+    },
+    {
+      "name": "trial_ring_v1.py",
+      "sha256": "31393143a1fecb5eecb6e5d4f0c169f19c8b47b600c6fe2b22120908bed1c230"
+    },
+    {
+      "name": "trial_log_try2.py",
+      "sha256": "9cfa1402672d48397a868ccccbcaf19a9c20315ffee25b657139b0475119ae9c"
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb",
+  "maximum_seconds": 300,
+  "stop_cause": "Ctrl-C",
+  "qemu_pid": 13812,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/vmopt-20261103-try2-v1/guest.dtb",
+      "sha256": "872e09351ea03939931886ef1c77ee82ba623d893966423399aa29e2818c1387"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/vmopt-20261103-try2-v1/guest.cpio",
+      "sha256": "502f2be1b575d2031ba9ee999cc23698795a69110297768c3588efb6ccc64caa"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/vmopt-20261103-try2-v1/candidate.json",
+      "sha256": "c7691dcc0cb35fb9aabf471b3859da2b54c19bde4b77b9446e14d293d67d5487"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.6549731659470126,
+      "rss_vsz_kib": "607776 495717632"
+    },
+    {
+      "elapsed_seconds": 5.687213957950007,
+      "rss_vsz_kib": "303488 495717632"
+    },
+    {
+      "elapsed_seconds": 10.712871207972057,
+      "rss_vsz_kib": "297744 495717632"
+    },
+    {
+      "elapsed_seconds": 15.751034415967297,
+      "rss_vsz_kib": "96256 495717632"
+    },
+    {
+      "elapsed_seconds": 20.81667229096638,
+      "rss_vsz_kib": "100704 495717632"
+    },
+    {
+      "elapsed_seconds": 25.867788249976,
+      "rss_vsz_kib": "242096 495717632"
+    },
+    {
+      "elapsed_seconds": 30.89455258299131,
+      "rss_vsz_kib": "194128 495725824"
+    },
+    {
+      "elapsed_seconds": 35.91994745796546,
+      "rss_vsz_kib": "319088 495725824"
+    },
+    {
+      "elapsed_seconds": 40.93891720799729,
+      "rss_vsz_kib": "277984 495742208"
+    }
+  ],
+  "early_stop_reason": "requested exit phase not observed",
+  "full_serial_bytes_inspected": 2884263,
+  "serial_health_failure": null,
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": false,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY96_READY": true,
+    "FX3_OSD_FRAME_TARGET_VALID": false,
+    "FX3_GPE_COMPACTION_BOUND": true,
+    "FX3_GPE_DRAW_INTERVAL": false,
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": true,
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": false,
+    "FX3_KEY96_POLL": true,
+    "FX3_KEY96_THREAD_BEGIN": true,
+    "FX3_PANEL_CONFIG_V2_COMMIT": true,
+    "FX3_PROC97_STATUS_BEGIN": true,
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": true,
+    "FX3_DATE98_KERNEL_OBSERVE_READY": true,
+    "FX3_DATE99_WORKER_READY": true,
+    "FX3_DATE99_CONSUMER_BOUND": true,
+    "FX3_SYNC100_BACKEND_BOUND": true,
+    "FX3_FILE100_OBSERVER_READY": true,
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": true,
+    "FX3_BACKUP_INSMOD_RC=0": true,
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": true,
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": true,
+    "FX3_LDEC103_SELFTEST_RC=0": true,
+    "FX3_GPE104_LIB_BIND": true,
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": true,
+    "FX3_FILE103_READY_CONFIRMED": true
+  },
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": true,
+    "quit_sent": true,
+    "serial_bytes_before_cleanup": 2757614,
+    "restore103": {
+      "passed": true,
+      "reason": "guest_acknowledged_and_original_bytes_verified",
+      "timeout_seconds": 20,
+      "elapsed_seconds": 1.286539167049341,
+      "request_bytes": 8,
+      "request_issued": true,
+      "existing_request_reused": false,
+      "request_physical": "0x41d400030",
+      "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "requires_ack_and_original_bytes_after_request": true,
+      "already_original_without_pending_request_never_resumed": false,
+      "original_guest_code_written_by_host": false,
+      "guest_left_stopped": true,
+      "exception": null,
+      "attempts": [
+        {
+          "attempt": 0,
+          "elapsed_seconds": 0.0024612080305814743,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-000-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-000-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 0,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "59331853f519666979b1a57a5ca6603a7fa1b2f8af1c4400c2daf5eb99366e2c"
+        },
+        {
+          "attempt": 1,
+          "elapsed_seconds": 0.261949583014939,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-001-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-001-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 2,
+          "elapsed_seconds": 0.5170247920323163,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-002-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-002-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 3,
+          "elapsed_seconds": 0.7743234999943525,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-003-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-003-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 4,
+          "elapsed_seconds": 1.0287117499974556,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-004-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-004-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 5,
+          "elapsed_seconds": 1.2862658750382252,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-005-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-f32318fb/restore103-005-api16.bin",
+          "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+          "api16_original": true,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 1,
+          "header_SHA256": "fc5563e2787ea0ddd29fc3986d24c7d335c5fa23ebceb1ee000b0e060fb82dc9"
+        }
+      ]
+    },
+    "native_unbind_return": 0
+  },
+  "lifecycle_pass": true,
+  "health_pass": false,
+  "requested_exit_phase": "bound-before-first-frame",
+  "requested_exit_phase_hit": false,
+  "key_steps": 0,
+  "step_captures": [],
+  "standby_ready": false,
+  "menu_verified": false,
+  "visual_acceptance_separate_from_health": true,
+  "physical_device_operations": 0,
+  "remote_network_connections": 0,
+  "HTTP_loopback_only": true,
+  "scope": "TRY2 original FX3 menu software model with improved icon and focus presentation; no camera, live view, or exact compositor claim"
+}

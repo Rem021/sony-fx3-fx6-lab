@@ -1,0 +1,61 @@
+00003e18: fd7bbba9 stp x29, x30, [sp, #-0x50]!
+00003e1c: fd030091 mov x29, sp
+00003e20: f76303a9 stp x23, x24, [sp, #0x30]
+00003e24: f70300aa mov x23, x0
+00003e28: 40008052 mov w0, #2
+00003e2c: f35301a9 stp x19, x20, [sp, #0x10]
+00003e30: f55b02a9 stp x21, x22, [sp, #0x20]
+00003e34: f80301aa mov x24, x1
+00003e38: f50302aa mov x21, x2
+00003e3c: f603032a mov w22, w3
+00003e40: f92300f9 str x25, [sp, #0x40]
+00003e44: f90304aa mov x25, x4
+00003e48: 10f3ff97 bl #0xa88
+00003e4c: 33060058 ldr x19, #0x3f10
+00003e50: e20a40f9 ldr x2, [x23, #0x10]
+00003e54: e103162a mov w1, w22
+00003e58: e00315aa mov x0, x21
+00003e5c: 63420191 add x3, x19, #0x50
+00003e60: 420040b9 ldr w2, [x2]
+00003e64: 00000094 bl #0x3e64 ; {'section': '.text', 'offset': 15972, 'type': 283, 'symbol': 'sdhci_dma_map', 'symbol_section': '.text', 'symbol_value': 624, 'addend': 0}
+00003e68: f403002a mov w20, w0
+00003e6c: 2004f837 tbnz w0, #0x1f, #0x3ef0
+00003e70: 9f3e03d5 dsb st
+00003e74: 600640f9 ldr x0, [x19, #8]
+00003e78: 612a40f9 ldr x1, [x19, #0x50]
+00003e7c: 00600191 add x0, x0, #0x58
+00003e80: 010000b9 str w1, [x0]
+00003e84: 9f3e03d5 dsb st
+00003e88: 600640f9 ldr x0, [x19, #8]
+00003e8c: 615640b9 ldr w1, [x19, #0x54]
+00003e90: 00700191 add x0, x0, #0x5c
+00003e94: 010000b9 str w1, [x0]
+00003e98: a30240f9 ldr x3, [x21]
+00003e9c: e10318aa mov x1, x24
+00003ea0: e20319aa mov x2, x25
+00003ea4: e00317aa mov x0, x23
+00003ea8: 630840f9 ldr x3, [x3, #0x10]
+00003eac: 634e00f9 str x3, [x19, #0x98]
+00003eb0: 00000094 bl #0x3eb0 ; {'section': '.text', 'offset': 16048, 'type': 283, 'symbol': 'sdhci_emmc_exec_cmd', 'symbol_section': '.text', 'symbol_value': 8304, 'addend': 0}
+00003eb4: f403002a mov w20, w0
+00003eb8: e103162a mov w1, w22
+00003ebc: e00315aa mov x0, x21
+00003ec0: 7f4e00f9 str xzr, [x19, #0x98]
+00003ec4: 00000094 bl #0x3ec4 ; {'section': '.text', 'offset': 16068, 'type': 283, 'symbol': 'sdhci_dma_unmap', 'symbol_section': '.text', 'symbol_value': 104, 'addend': 0}
+00003ec8: 54010034 cbz w20, #0x3ef0
+00003ecc: a00240f9 ldr x0, [x21]
+00003ed0: 130840f9 ldr x19, [x0, #0x10]
+00003ed4: f30000b4 cbz x19, #0x3ef0
+00003ed8: 600640f9 ldr x0, [x19, #8]
+00003edc: a00000b4 cbz x0, #0x3ef0
+00003ee0: 000080d2 mov x0, #0
+00003ee4: 00000094 bl #0x3ee4 ; {'section': '.text', 'offset': 16100, 'type': 283, 'symbol': 'sdhci_emmc_reset', 'symbol_section': '.text', 'symbol_value': 15712, 'addend': 0}
+00003ee8: 600640f9 ldr x0, [x19, #8]
+00003eec: 00003fd6 blr x0
+00003ef0: e003142a mov w0, w20
+00003ef4: f92340f9 ldr x25, [sp, #0x40]
+00003ef8: f35341a9 ldp x19, x20, [sp, #0x10]
+00003efc: f55b42a9 ldp x21, x22, [sp, #0x20]
+00003f00: f76343a9 ldp x23, x24, [sp, #0x30]
+00003f04: fd7bc5a8 ldp x29, x30, [sp], #0x50
+00003f08: c0035fd6 ret 

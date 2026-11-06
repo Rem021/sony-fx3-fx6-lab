@@ -1,0 +1,105 @@
+{
+  "schema": "fx3-stage85-slice-and-zero-mode-GOP/1",
+  "created_utc": "2026-10-27T06:10:42.560420+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/README.md",
+      "bytes": 4988,
+      "sha256": "48ef885ce2c74d4d95b2a1645c95172dab24c5f9702f8a58628210d0ce0ce319"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/attempt-reference-diagnostic-20261026/executed-source.py",
+      "bytes": 12468,
+      "sha256": "ffb30c35b36652e9ed31ff6544fa2809d3085086da818c7aa3ace14141a5a091"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/attempt-reference-diagnostic-20261026/failure.json",
+      "bytes": 666,
+      "sha256": "d8fd195a1b8652a5f5969a00b72b1a7dac96eca7d82b6e8abce14abf4de1d285"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/attempt-reference-mismatch-20261026/executed-source.py",
+      "bytes": 12332,
+      "sha256": "0616df0470f075ef86fd64dd8c7a832fa7ac3fafa5364b84624d3341e1205f39"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/attempt-reference-mismatch-20261026/failure.json",
+      "bytes": 234,
+      "sha256": "cd988c6f74159b07abd9cee524df66bc58a210b640007cdcea47d8b643f27bd6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/completed-evidence-review.json",
+      "bytes": 956,
+      "sha256": "02d1184b7128c79e39c65e756410e617d6ec85cbe6ce050015d4e845d48b1511"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/goal-status-after.json",
+      "bytes": 257675,
+      "sha256": "e7a70d26dc374ecac76d5e08d21b07cb8aee3ca9ec64100eb552f3c0fbcc017c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/goal-status-before.json",
+      "bytes": 255448,
+      "sha256": "113eee6c7cc204de71dd715837a927cf65a227469fafff562edd10471e5d5d0d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/review_and_seal.py",
+      "bytes": 12299,
+      "sha256": "75e1215fa6bf2ec72754cb826192aace427727bc003a82dac73ff4f77191a9f1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/run-20261026/executed-source.py",
+      "bytes": 12733,
+      "sha256": "b00b8aa449d7c8302aab9ed29e9b841dd4d30fe3972babe157d0bd4eb7b9d646"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/run-20261026/slice-layout-results.json",
+      "bytes": 556333,
+      "sha256": "8e3f0a04fe85d2fd95ea8ecd563177d0bcd77fbfda40896fc879822b6525dfd4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/run-full-gop-20261026/executed-source.py",
+      "bytes": 13470,
+      "sha256": "a602da99cf3e795fc62b53f1f8bb6dc3e1695372d71c0a1e109d523ee8e1aa29"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/run-full-gop-20261026/slice-layout-results.json",
+      "bytes": 583605,
+      "sha256": "d11eb70c1f32695e79537dc1398da97a507e2fec4b1baa2809a1e26d3d528692"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage85-hevc-slice-layout-production/slice_layout.py",
+      "bytes": 13470,
+      "sha256": "a602da99cf3e795fc62b53f1f8bb6dc3e1695372d71c0a1e109d523ee8e1aa29"
+    }
+  ],
+  "previous_manifest_sha256": "33cfb85162fe38893b0acb62282eee5b5ba1813cf103316892aa887e7917c667",
+  "operations": {
+    "status": "PASS_NATIVE_SLICE32_AND_COMPLETE_ZERO_MODE_GOP_CONSTRUCTION",
+    "created_utc": "2026-10-27T06:10:42.560420+00:00",
+    "prior_sealed_files_verified": 17,
+    "formal_cases": 10,
+    "formal_bounded_phases": 80,
+    "native_slice32_no_A5_C3_old_seed_dependency": true,
+    "native_second_zero_count_group_has_leading2_not_extra_row_coverage": true,
+    "reference_failure_sources_and_initial_partial_GOP_result_retained": true,
+    "complete_GOP_constructor_returns_on_native_zero_mode_words": true,
+    "GOP_frame_gate_still_clear_not_hardware_handoff": true,
+    "remaining_GOP_block_old_seed_dependency_bytes": 7,
+    "full_address_translation_actual_Start_timing_MAIN_hardware_or_recovery": false,
+    "review_scope": "Same-agent source/whole-region/returned-state and independent integer partition review; no independent emulator or camera acceptance.",
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "113eee6c7cc204de71dd715837a927cf65a227469fafff562edd10471e5d5d0d",
+    "after_sha256": "e7a70d26dc374ecac76d5e08d21b07cb8aee3ca9ec64100eb552f3c0fbcc017c"
+  },
+  "readme_index_before_sha256": "4a6624403b4872ec190b56b3d500952f272034b3a834b005019d68ddcde76247",
+  "readme_index_after_sha256": "71211495b2b92a62599b968073c3c2479b30e1d472d6d1f4d8dce334283e50fb",
+  "readme_index_entry": "- [2026-10-26 FX3 HEVC分行布局与完整GOP构造](<work/sony-firmware-20261024/stage85-hevc-slice-layout-production/README.md>)：原32字节布局生成、零模式完整构造自然返回，10例80阶段；GOP块旧值依赖39降7、帧gate仍0，非硬件提交，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

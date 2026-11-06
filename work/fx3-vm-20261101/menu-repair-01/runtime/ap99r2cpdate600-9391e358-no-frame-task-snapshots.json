@@ -1,0 +1,290 @@
+[
+  {
+    "tid": 266,
+    "name": "ExternalOSDIF",
+    "LF": 17836,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7f2fffe580 0x7f2ffff740 0x0 0x0 0x7f2fffe1c0 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tExternalOSDIF\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t266\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t4\nnonvoluntary_ctxt_switches:\t0\n29 0x3 0xffffffff80000007 0x7f2fffe580 0x7f2ffff740 0x0 0x0 0x7f2fffe1c0 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_266_BEGIN\n266 (ExternalOSDIF) S 1 0 0 0 -1 4194624 4 0 0 0 0 0 0 0 20 0 190 0 1056 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_266_END\n"
+  },
+  {
+    "tid": 269,
+    "name": "grm_gpe",
+    "LF": 18030,
+    "syscall": [
+      "98 0x7f48000ad0 0x189 0x0 0x7f2e7fe770 0x0 0xffffffff 0x7f2e7fe660 0x7f8519fae0"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138",
+      "[<ffffff800810c774>] futex_wait+0xd4/0x1e8",
+      "[<ffffff800810ebcc>] do_futex+0x17c/0xb50",
+      "[<ffffff800810f650>] SyS_futex+0xb0/0x170",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tgrm_gpe\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t269\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t2\nnonvoluntary_ctxt_switches:\t1\n98 0x7f48000ad0 0x189 0x0 0x7f2e7fe770 0x0 0xffffffff 0x7f2e7fe660 0x7f8519fae0\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138\n[<ffffff800810c774>] futex_wait+0xd4/0x1e8\n[<ffffff800810ebcc>] do_futex+0x17c/0xb50\n[<ffffff800810f650>] SyS_futex+0xb0/0x170\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_269_BEGIN\n269 (grm_gpe) S 1 0 0 0 -1 1077936448 1 0 0 0 0 0 0 0 20 0 190 0 1066 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_269_END\n"
+  },
+  {
+    "tid": 270,
+    "name": "MPGRM_GPE0",
+    "LF": 18092,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7f2dffe480 0x7f2dfff740 0x0 0x0 0x7f2dffe0c0 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "FX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nName:\tMPGRM_GPE0\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t270\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t3\nnonvoluntary_ctxt_switches:\t7\n29 0x3 0xffffffff80000007 0x7f2dffe480 0x7f2dfff740 0x0 0x0 0x7f2dffe0c0 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_270_BEGIN\n270 (MPGRM_GPE0) S 1 0 0 0 -1 4194624 4 0 0 0 0 0 0 0 20 0 190 0 1070 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_270_END\n"
+  },
+  {
+    "tid": 368,
+    "name": "AppFw",
+    "LF": 21261,
+    "syscall": [
+      "98 0x7edbde4a88 0x80 0x0 0x0 0x0 0x7ed2eec050 0x7ed2eea600 0x7f8519f5f0"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138",
+      "[<ffffff800810c774>] futex_wait+0xd4/0x1e8",
+      "[<ffffff800810ebcc>] do_futex+0x17c/0xb50",
+      "[<ffffff800810f650>] SyS_futex+0xb0/0x170",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tAppFw\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t368\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t177\nnonvoluntary_ctxt_switches:\t236\n98 0x7edbde4a88 0x80 0x0 0x0 0x0 0x7ed2eec050 0x7ed2eea600 0x7f8519f5f0\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138\n[<ffffff800810c774>] futex_wait+0xd4/0x1e8\n[<ffffff800810ebcc>] do_futex+0x17c/0xb50\n[<ffffff800810f650>] SyS_futex+0xb0/0x170\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_368_BEGIN\n368 (AppFw) S 1 0 0 0 -1 1077936448 4636 0 0 0 105 282 0 0 -2 0 190 0 1613 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 1 2 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_368_END\n"
+  },
+  {
+    "tid": 424,
+    "name": "SeqQueueCommon",
+    "LF": 23737,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7ebfd25440 0x7ebfd26740 0x0 0x0 0x7ebfd25080 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tSeqQueueCommon\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t424\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t136\nnonvoluntary_ctxt_switches:\t357\n29 0x3 0xffffffff80000007 0x7ebfd25440 0x7ebfd26740 0x0 0x0 0x7ebfd25080 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_BOOT_QUEUE_SEND tid=233 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nFX3_TASK_AFFINITY_424_BEGIN\n424 (SeqQueueCommon) S 1 0 0 0 -1 4194624 789 0 0 0 59 342 0 0 -2 0 190 0 1887 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 1 2 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_424_END\n"
+  },
+  {
+    "tid": 266,
+    "name": "ExternalOSDIF",
+    "LF": 34074,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7f2fffe580 0x7f2ffff740 0x0 0x0 0x7f2fffe1c0 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tExternalOSDIF\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t266\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t4\nnonvoluntary_ctxt_switches:\t0\n29 0x3 0xffffffff80000007 0x7f2fffe580 0x7f2ffff740 0x0 0x0 0x7f2fffe1c0 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_266_BEGIN\n266 (ExternalOSDIF) S 1 0 0 0 -1 4194624 4 0 0 0 0 0 0 0 20 0 190 0 1056 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_266_END\n"
+  },
+  {
+    "tid": 269,
+    "name": "grm_gpe",
+    "LF": 34268,
+    "syscall": [
+      "98 0x7f48000ad0 0x189 0x0 0x7f2e7fe770 0x0 0xffffffff 0x7f2e7fe660 0x7f8519fae0"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138",
+      "[<ffffff800810c774>] futex_wait+0xd4/0x1e8",
+      "[<ffffff800810ebcc>] do_futex+0x17c/0xb50",
+      "[<ffffff800810f650>] SyS_futex+0xb0/0x170",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tgrm_gpe\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t269\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t4\nnonvoluntary_ctxt_switches:\t1\n98 0x7f48000ad0 0x189 0x0 0x7f2e7fe770 0x0 0xffffffff 0x7f2e7fe660 0x7f8519fae0\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138\n[<ffffff800810c774>] futex_wait+0xd4/0x1e8\n[<ffffff800810ebcc>] do_futex+0x17c/0xb50\n[<ffffff800810f650>] SyS_futex+0xb0/0x170\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_269_BEGIN\nFX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\n269 (grm_gpe) S 1 0 0 0 -1 1077936448 1 0 0 0 0 0 0 0 20 0 190 0 1066 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 2 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_269_END\n"
+  },
+  {
+    "tid": 270,
+    "name": "MPGRM_GPE0",
+    "LF": 34331,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7f2dffe480 0x7f2dfff740 0x0 0x0 0x7f2dffe0c0 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tMPGRM_GPE0\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t270\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t3\nnonvoluntary_ctxt_switches:\t7\n29 0x3 0xffffffff80000007 0x7f2dffe480 0x7f2dfff740 0x0 0x0 0x7f2dffe0c0 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_270_BEGIN\nFX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\n270 (MPGRM_GPE0) S 1 0 0 0 -1 4194624 4 0 0 0 0 0 0 0 20 0 190 0 1070 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_270_END\n"
+  },
+  {
+    "tid": 368,
+    "name": "AppFw",
+    "LF": 37642,
+    "syscall": [
+      "98 0x7edbde4a88 0x80 0x0 0x0 0x0 0x7ed2eec050 0x7ed2eea600 0x7f8519f5f0"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138",
+      "[<ffffff800810c774>] futex_wait+0xd4/0x1e8",
+      "[<ffffff800810ebcc>] do_futex+0x17c/0xb50",
+      "[<ffffff800810f650>] SyS_futex+0xb0/0x170",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tAppFw\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t368\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t177\nnonvoluntary_ctxt_switches:\t236\n98 0x7edbde4a88 0x80 0x0 0x0 0x0 0x7ed2eec050 0x7ed2eea600 0x7f8519f5f0\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138\n[<ffffff800810c774>] futex_wait+0xd4/0x1e8\n[<ffffff800810ebcc>] do_futex+0x17c/0xb50\n[<ffffff800810f650>] SyS_futex+0xb0/0x170\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_368_BEGIN\nFX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\n368 (AppFw) S 1 0 0 0 -1 1077936448 4636 0 0 0 105 282 0 0 -2 0 190 0 1613 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 1 2 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_368_END\n"
+  },
+  {
+    "tid": 424,
+    "name": "SeqQueueCommon",
+    "LF": 39980,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7ebfd25440 0x7ebfd26740 0x0 0x0 0x7ebfd25080 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tSeqQueueCommon\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t424\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t136\nnonvoluntary_ctxt_switches:\t357\n29 0x3 0xffffffff80000007 0x7ebfd25440 0x7ebfd26740 0x0 0x0 0x7ebfd25080 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_424_BEGIN\n424 (SeqQueueCommon) S 1 0 0 0 -1 4194624 789 0 0 0 59 342 0 0 -2 0 190 0 1887 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 1 2 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_424_END\n"
+  },
+  {
+    "tid": 266,
+    "name": "ExternalOSDIF",
+    "LF": 50301,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7f2fffe580 0x7f2ffff740 0x0 0x0 0x7f2fffe1c0 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tExternalOSDIF\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t266\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t4\nnonvoluntary_ctxt_switches:\t0\nFX3_BOOT_QUEUE_SEND tid=234 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\n29 0x3 0xffffffff80000007 0x7f2fffe580 0x7f2ffff740 0x0 0x0 0x7f2fffe1c0 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_266_BEGIN\n266 (ExternalOSDIF) S 1 0 0 0 -1 4194624 4 0 0 0 0 0 0 0 20 0 190 0 1056 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_266_END\n"
+  },
+  {
+    "tid": 269,
+    "name": "grm_gpe",
+    "LF": 50496,
+    "syscall": [
+      "98 0x7f48000ad0 0x189 0x0 0x7f2e7fe770 0x0 0xffffffff 0x7f2e7fe660 0x7f8519fae0"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138",
+      "[<ffffff800810c774>] futex_wait+0xd4/0x1e8",
+      "[<ffffff800810ebcc>] do_futex+0x17c/0xb50",
+      "[<ffffff800810f650>] SyS_futex+0xb0/0x170",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tgrm_gpe\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t269\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t5\nnonvoluntary_ctxt_switches:\t1\n98 0x7f48000ad0 0x189 0x0 0x7f2e7fe770 0x0 0xffffffff 0x7f2e7fe660 0x7f8519fae0\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138\n[<ffffff800810c774>] futex_wait+0xd4/0x1e8\n[<ffffff800810ebcc>] do_futex+0x17c/0xb50\n[<ffffff800810f650>] SyS_futex+0xb0/0x170\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_269_BEGIN\n269 (grm_gpe) S 1 0 0 0 -1 1077936448 1 0 0 0 0 0 0 0 20 0 190 0 1066 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 2 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_269_END\n"
+  },
+  {
+    "tid": 270,
+    "name": "MPGRM_GPE0",
+    "LF": 50558,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7f2dffe480 0x7f2dfff740 0x0 0x0 0x7f2dffe0c0 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "Name:\tMPGRM_GPE0\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t270\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t3\nnonvoluntary_ctxt_switches:\t7\n29 0x3 0xffffffff80000007 0x7f2dffe480 0x7f2dfff740 0x0 0x0 0x7f2dffe0c0 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nFX3_TASK_AFFINITY_270_BEGIN\n270 (MPGRM_GPE0) S 1 0 0 0 -1 4194624 4 0 0 0 0 0 0 0 20 0 190 0 1070 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 0 0 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_270_END\n"
+  },
+  {
+    "tid": 368,
+    "name": "AppFw",
+    "LF": 54071,
+    "syscall": [
+      "98 0x7edbde4a88 0x80 0x0 0x0 0x0 0x7ed2eec050 0x7ed2eea600 0x7f8519f5f0"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138",
+      "[<ffffff800810c774>] futex_wait+0xd4/0x1e8",
+      "[<ffffff800810ebcc>] do_futex+0x17c/0xb50",
+      "[<ffffff800810f650>] SyS_futex+0xb0/0x170",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "FX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nName:\tAppFw\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t368\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t177\nnonvoluntary_ctxt_switches:\t236\n98 0x7edbde4a88 0x80 0x0 0x0 0x0 0x7ed2eec050 0x7ed2eea600 0x7f8519f5f0\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff800810bd08>] futex_wait_queue_me+0xb8/0x138\n[<ffffff800810c774>] futex_wait+0xd4/0x1e8\n[<ffffff800810ebcc>] do_futex+0x17c/0xb50\n[<ffffff800810f650>] SyS_futex+0xb0/0x170\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_368_BEGIN\n368 (AppFw) S 1 0 0 0 -1 1077936448 4636 0 0 0 105 282 0 0 -2 0 190 0 1613 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 1 2 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_368_END\n"
+  },
+  {
+    "tid": 424,
+    "name": "SeqQueueCommon",
+    "LF": 56410,
+    "syscall": [
+      "29 0x3 0xffffffff80000007 0x7ebfd25440 0x7ebfd26740 0x0 0x0 0x7ebfd25080 0x7f84a71cbc"
+    ],
+    "stack": [
+      "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+      "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]",
+      "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]",
+      "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+      "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+      "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+      "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+      "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+      "[<ffffffffffffffff>] 0xffffffffffffffff"
+    ],
+    "raw": "FX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nName:\tSeqQueueCommon\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t229\nNgid:\t0\nPid:\t424\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7557492 kB\nVmSize:\t 7557492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3292856 kB\nVmRSS:\t 3292856 kB\nRssAnon:\t   58252 kB\nRssFile:\t 3160948 kB\nRssShmem:\t   73656 kB\nVmData:\t 1742216 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95540 kB\nVmPTE:\t    7540 kB\nVmPMD:\t      44 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t190\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t136\nnonvoluntary_ctxt_switches:\t357\n29 0x3 0xffffffff80000007 0x7ebfd25440 0x7ebfd26740 0x0 0x0 0x7ebfd25080 0x7f84a71cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_424_BEGIN\n424 (SeqQueueCommon) S 1 0 0 0 -1 4194624 789 0 0 0 59 342 0 0 -2 0 190 0 1887 7738871808 823214 18446744073709551615 4194304 4229451 549245326704 0 0 0 0 4102 196608 1 0 0 -1 1 1 2 0 0 0 4295760 4298576 4300800 549245331528 549245331588 549245331588 549245333480 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_424_END\n"
+  }
+]

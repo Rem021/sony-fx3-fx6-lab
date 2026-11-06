@@ -1,0 +1,26 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000117b20 <_ZN16XavcsMovieWriter25ConvertVideoCodecTypeNameEN6NRTDEF14VideoRecFormatEN3mpr10StreamTypeEPc>:
+  118150: a9076bf9     	stp	x25, x26, [sp, #0x70]
+  118154: 52800015     	mov	w21, #0x0               // =0
+  118158: a90873fb     	stp	x27, x28, [sp, #0x80]
+  11815c: 390493b8     	strb	w24, [x29, #0x124]
+  118160: 390497bf     	strb	wzr, [x29, #0x125]
+  118164: 39049bbf     	strb	wzr, [x29, #0x126]
+  118168: 39049fbf     	strb	wzr, [x29, #0x127]
+  11816c: 790243b7     	strh	w23, [x29, #0x120]
+  118170: 97fff62f     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  118174: 394f4a60     	ldrb	w0, [x19, #0x3d2]
+  118178: f941ca76     	ldr	x22, [x19, #0x390]
+  11817c: f941c67a     	ldr	x26, [x19, #0x388]
+  118180: 12175ad6     	and	w22, w22, #0xfffffe00
+  118184: 340001c0     	cbz	w0, 0x1181bc <_ZN16XavcsMovieWriter25ConvertVideoCodecTypeNameEN6NRTDEF14VideoRecFormatEN3mpr10StreamTypeEPc+0x69c>
+  118188: b943f660     	ldr	w0, [x19, #0x3f4]
+  11818c: 35000180     	cbnz	w0, 0x1181bc <_ZN16XavcsMovieWriter25ConvertVideoCodecTypeNameEN6NRTDEF14VideoRecFormatEN3mpr10StreamTypeEPc+0x69c>
+  118190: 52806a20     	mov	w0, #0x351              // =849
+  118194: 52800101     	mov	w1, #0x8                // =8
+  118198: 52800055     	mov	w21, #0x2               // =2
+  11819c: 390493b8     	strb	w24, [x29, #0x124]

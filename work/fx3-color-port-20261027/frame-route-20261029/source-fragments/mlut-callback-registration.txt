@@ -1,0 +1,12 @@
+009d3266 movw       r1, #0x36c1
+009d326a strd       r0, r0, [sp, #0x28]
+009d326e add.w      sb, sp, #0x1c
+009d3272 mov        r2, r6
+009d3274 movt       r1, #0x9d
+009d3278 strd       r1, r0, [sp, #0x1c]
+009d327c movw       r0, #0x3455
+009d3280 mov        r1, r4
+009d3282 movt       r0, #0x9d
+009d3286 str        r0, [sp, #0x24]
+009d3288 mov        r0, sb
+009d328a bl         #0x9d5f6c

@@ -1,0 +1,135 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001c6800 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE>:
+  1c75cc: a9b97bfd     	stp	x29, x30, [sp, #-0x70]!
+  1c75d0: 52801c00     	mov	w0, #0xe0               // =224
+  1c75d4: 52800101     	mov	w1, #0x8                // =8
+  1c75d8: 910003fd     	mov	x29, sp
+  1c75dc: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1c75e0: 910183b3     	add	x19, x29, #0x60
+  1c75e4: a90363f7     	stp	x23, x24, [sp, #0x30]
+  1c75e8: 52848218     	mov	w24, #0x2410            // =9232
+  1c75ec: 7900c7a0     	strh	w0, [x29, #0x62]
+  1c75f0: aa1303e0     	mov	x0, x19
+  1c75f4: f90023f9     	str	x25, [sp, #0x40]
+  1c75f8: 52800099     	mov	w25, #0x4               // =4
+  1c75fc: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  1c7600: f000d135     	adrp	x21, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>
+  1c7604: 390197bf     	strb	wzr, [x29, #0x65]
+  1c7608: f000d134     	adrp	x20, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>
+  1c760c: 39019bbf     	strb	wzr, [x29, #0x66]
+  1c7610: f000d137     	adrp	x23, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>
+  1c7614: 39019fbf     	strb	wzr, [x29, #0x67]
+  1c7618: 7900c3b8     	strh	w24, [x29, #0x60]
+  1c761c: 390193b9     	strb	w25, [x29, #0x64]
+  1c7620: 97ffff67     	bl	0x1c73bc <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xbbc>
+  1c7624: 913442a0     	add	x0, x21, #0xd10
+  1c7628: 97fcacda     	bl	0xf2990 <pthread_mutex_lock@plt>
+  1c762c: b90d42ff     	str	wzr, [x23, #0xd40]
+  1c7630: f9467e80     	ldr	x0, [x20, #0xcf8]
+  1c7634: b40007a0     	cbz	x0, 0x1c7728 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xf28>
+  1c7638: 9101c3b6     	add	x22, x29, #0x70
+  1c763c: 5280ea00     	mov	w0, #0x750              // =1872
+  1c7640: 52800023     	mov	w3, #0x1                // =1
+  1c7644: 52820002     	mov	w2, #0x1000             // =4096
+  1c7648: 72b250a0     	movk	w0, #0x9285, lsl #16
+  1c764c: f81e8edf     	str	xzr, [x22, #-0x18]!
+  1c7650: aa1603e1     	mov	x1, x22
+  1c7654: 97fcaa93     	bl	0xf20a0 <osal_valloc_msg_wait@plt>
+  1c7658: 35000900     	cbnz	w0, 0x1c7778 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xf78>
+  1c765c: 52801c60     	mov	w0, #0xe3               // =227
+  1c7660: 390193b9     	strb	w25, [x29, #0x64]
+  1c7664: 390197bf     	strb	wzr, [x29, #0x65]
+  1c7668: 52800101     	mov	w1, #0x8                // =8
+  1c766c: 39019bbf     	strb	wzr, [x29, #0x66]
+  1c7670: 39019fbf     	strb	wzr, [x29, #0x67]
+  1c7674: 7900c3b8     	strh	w24, [x29, #0x60]
+  1c7678: 7900c7a0     	strh	w0, [x29, #0x62]
+  1c767c: aa1303e0     	mov	x0, x19
+  1c7680: 97ffff4f     	bl	0x1c73bc <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xbbc>
+  1c7684: f9402fa0     	ldr	x0, [x29, #0x58]
+  1c7688: 5280e9e1     	mov	w1, #0x74f              // =1871
+  1c768c: 72b050a1     	movk	w1, #0x8285, lsl #16
+  1c7690: 97fca6fc     	bl	0xf1280 <osal_set_msg_src@plt>
+  1c7694: f000d120     	adrp	x0, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>
+  1c7698: f9402fa1     	ldr	x1, [x29, #0x58]
+  1c769c: f9468400     	ldr	x0, [x0, #0xd08]
+  1c76a0: 7900183f     	strh	wzr, [x1, #0xc]
+  1c76a4: f9000020     	str	x0, [x1]
+  1c76a8: 52800020     	mov	w0, #0x1                // =1
+  1c76ac: 79001c3f     	strh	wzr, [x1, #0xe]
+  1c76b0: b9000820     	str	w0, [x1, #0x8]
+  1c76b4: f9467e80     	ldr	x0, [x20, #0xcf8]
+  1c76b8: 29400c04     	ldp	w4, w3, [x0]
+  1c76bc: b90d42e3     	str	w3, [x23, #0xd40]
+  1c76c0: 29020c24     	stp	w4, w3, [x1, #0x10]
+  1c76c4: b9400803     	ldr	w3, [x0, #0x8]
+  1c76c8: b9001823     	str	w3, [x1, #0x18]
+  1c76cc: 29418003     	ldp	w3, w0, [x0, #0xc]
+  1c76d0: 29038023     	stp	w3, w0, [x1, #0x1c]
+  1c76d4: 5280ea00     	mov	w0, #0x750              // =1872
+  1c76d8: 72b250a0     	movk	w0, #0x9285, lsl #16
+  1c76dc: 97fcb9c9     	bl	0xf5e00 <osal_snd_msg@plt>
+  1c76e0: 34000620     	cbz	w0, 0x1c77a4 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xfa4>
+  1c76e4: 52800061     	mov	w1, #0x3                // =3
+  1c76e8: b9006ba0     	str	w0, [x29, #0x68]
+  1c76ec: aa1303e0     	mov	x0, x19
+  1c76f0: 390197bf     	strb	wzr, [x29, #0x65]
+  1c76f4: 390193a1     	strb	w1, [x29, #0x64]
+  1c76f8: 52848201     	mov	w1, #0x2410             // =9232
+  1c76fc: 39019bbf     	strb	wzr, [x29, #0x66]
+  1c7700: 7900c3a1     	strh	w1, [x29, #0x60]
+  1c7704: 52801c21     	mov	w1, #0xe1               // =225
+  1c7708: 39019fbf     	strb	wzr, [x29, #0x67]
+  1c770c: 7900c7a1     	strh	w1, [x29, #0x62]
+  1c7710: 52800181     	mov	w1, #0xc                // =12
+  1c7714: 97ffff2a     	bl	0x1c73bc <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xbbc>
+  1c7718: f9402fa1     	ldr	x1, [x29, #0x58]
+  1c771c: 5280ea00     	mov	w0, #0x750              // =1872
+  1c7720: 72b250a0     	movk	w0, #0x9285, lsl #16
+  1c7724: 97fcb32f     	bl	0xf43e0 <osal_free_msg@plt>
+  1c7728: 913442a0     	add	x0, x21, #0xd10
+  1c772c: 97fca66d     	bl	0xf10e0 <pthread_mutex_unlock@plt>
+  1c7730: 390197bf     	strb	wzr, [x29, #0x65]
+  1c7734: 52800080     	mov	w0, #0x4                // =4
+  1c7738: 52800101     	mov	w1, #0x8                // =8
+  1c773c: 39019bbf     	strb	wzr, [x29, #0x66]
+  1c7740: 390193a0     	strb	w0, [x29, #0x64]
+  1c7744: 52848200     	mov	w0, #0x2410             // =9232
+  1c7748: 39019fbf     	strb	wzr, [x29, #0x67]
+  1c774c: 7900c3a0     	strh	w0, [x29, #0x60]
+  1c7750: 52801de0     	mov	w0, #0xef               // =239
+  1c7754: 7900c7a0     	strh	w0, [x29, #0x62]
+  1c7758: aa1303e0     	mov	x0, x19
+  1c775c: 97ffff18     	bl	0x1c73bc <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xbbc>
+  1c7760: f94023f9     	ldr	x25, [sp, #0x40]
+  1c7764: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  1c7768: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  1c776c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+  1c7770: a8c77bfd     	ldp	x29, x30, [sp], #0x70
+  1c7774: d65f03c0     	ret
+  1c7778: 52800061     	mov	w1, #0x3                // =3
+  1c777c: 390197bf     	strb	wzr, [x29, #0x65]
+  1c7780: 39019bbf     	strb	wzr, [x29, #0x66]
+  1c7784: 390193a1     	strb	w1, [x29, #0x64]
+  1c7788: 52801c81     	mov	w1, #0xe4               // =228
+  1c778c: 39019fbf     	strb	wzr, [x29, #0x67]
+  1c7790: 7900c7a1     	strh	w1, [x29, #0x62]
+  1c7794: 52800181     	mov	w1, #0xc                // =12
+  1c7798: 7900c3b8     	strh	w24, [x29, #0x60]
+  1c779c: b9006ba0     	str	w0, [x29, #0x68]
+  1c77a0: 17ffffb7     	b	0x1c767c <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xe7c>
+  1c77a4: aa1603e1     	mov	x1, x22
+  1c77a8: 5280e9e0     	mov	w0, #0x74f              // =1871
+  1c77ac: 12800002     	mov	w2, #-0x1               // =-1
+  1c77b0: 72b050a0     	movk	w0, #0x8285, lsl #16
+  1c77b4: 97fcb50b     	bl	0xf4be0 <osal_rcv_msg_tmo@plt>
+  1c77b8: f9402fa0     	ldr	x0, [x29, #0x58]
+  1c77bc: f9467e81     	ldr	x1, [x20, #0xcf8]
+  1c77c0: b9400402     	ldr	w2, [x0, #0x4]
+  1c77c4: b9000422     	str	w2, [x1, #0x4]
+  1c77c8: b9401401     	ldr	w1, [x0, #0x14]
+  1c77cc: f000d120     	adrp	x0, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>

@@ -1,0 +1,27 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-fx3-capid-v32.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v32.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v32.so"
+  ],
+  "exit": 0,
+  "source_sha256": "144be92429fa78110d457b580a91c2d1c7fc44445a770b050016a1a7addd7469",
+  "output_sha256": "69c0fc9c246e2bde553394b8017c36b1ef87986bd2e46460f688a8ec6998550b"
+}

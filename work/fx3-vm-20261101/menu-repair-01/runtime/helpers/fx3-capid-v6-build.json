@@ -1,0 +1,30 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-fx3-capid-v6.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v6.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v6.so"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "source_sha256": "55cd9ee0224f99dda7cba56e1198d9863c6224b04bd7c4cbd0152b54568b32bd",
+  "core_sha256": "45b787c1e078cc8970d026a913b5294a7a9f2f6f79a14050830e01a00d14f157",
+  "exclusive_guest_claim": "lazy on first selected request, O_EXCL/NOFOLLOW0600, PID guard; no reset by unrelated bootin process",
+  "revision": "Source-bound FX3 032d inactive HDMI audio format, 132d/580000; original transport/leases and rollback. No output audio producer."
+}

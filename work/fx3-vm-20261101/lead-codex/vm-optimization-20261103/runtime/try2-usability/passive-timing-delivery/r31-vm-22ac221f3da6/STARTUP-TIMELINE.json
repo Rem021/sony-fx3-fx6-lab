@@ -1,0 +1,230 @@
+{
+  "Start_POST": {
+    "UTC_request_start": "2026-11-05T04:42:44.081090816Z",
+    "duration_ms": 1.8070000057704745,
+    "endpoint": "start",
+    "request_body_text": "{\"request_id\":\"58df38f6-d1dd-4ed4-ab6e-938ea0bea423\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"request_id\": \"58df38f6-d1dd-4ed4-ab6e-938ea0bea423\", \"guest_spawned_by_http\": false}"
+  },
+  "first_frame_clock": {
+    "limit_seconds": 180,
+    "start_monotonic": 437449.545704541,
+    "UTC": "2026-11-05T04:42:44.457284+00:00",
+    "host_ns": 437449947277500
+  },
+  "last_startup_poll": {
+    "argv": [
+      "agent-browser",
+      "--session",
+      "fx3-deadline-r31-22ac221f3da6",
+      "eval",
+      "--stdin"
+    ],
+    "start": {
+      "UTC": "2026-11-05T04:45:43.497291+00:00",
+      "host_ns": 437628986773875
+    },
+    "end": {
+      "UTC": "2026-11-05T04:45:43.509331+00:00",
+      "host_ns": 437628998810916
+    },
+    "returncode": 0,
+    "stdout": "{\n  \"error\": null,\n  \"finished\": false,\n  \"loaded\": false,\n  \"phase\": \"starting\",\n  \"ready\": false\n}\n",
+    "stderr": ""
+  },
+  "startup_failure": {
+    "error": "RuntimeError('first frame not ready by 180 seconds')",
+    "UTC": "2026-11-05T04:45:44.518646+00:00",
+    "host_ns": 437630008115541
+  },
+  "startup_failure_at_seconds": 180.46241100004409,
+  "End_tool": {
+    "argv": [
+      "agent-browser",
+      "--session",
+      "fx3-deadline-r31-22ac221f3da6",
+      "eval",
+      "--stdin"
+    ],
+    "start": {
+      "UTC": "2026-11-05T04:45:44.653746+00:00",
+      "host_ns": 437630143204000
+    },
+    "end": {
+      "UTC": "2026-11-05T04:45:44.690039+00:00",
+      "host_ns": 437630179501375
+    },
+    "returncode": 0,
+    "stdout": "{\n  \"End_invoked\": true\n}\n",
+    "stderr": ""
+  },
+  "End_tool_start_at_seconds": 180.5974994590506,
+  "stop_POST": {
+    "UTC_request_start": "2026-11-05T04:45:44.675332096Z",
+    "duration_ms": 1.5040000203326345,
+    "endpoint": "stop",
+    "request_body_text": "{}",
+    "status": 202,
+    "response_body_text": "{\"stopping\": true}"
+  },
+  "HAR_frame_status_entries": [],
+  "ready_true_status_entries": [],
+  "ended_page_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r31-vm-22ac221f3da6/ended-page.png",
+  "ended_page_sha256": "3267f7dc9f80d8c4d27d0e0ab4d5b9798ad187db7a8ee5c4360816afd41decb7",
+  "ended_page_actual_review": "End后亲看整页PNG为黑色图区及本轮已结束，0键、最后提交帧无、健康未通过；没有待机或完整菜单。",
+  "observation_phases": {
+    "observations": 3,
+    "transitions": 3,
+    "recent_limit": 8,
+    "evicted_transitions": 0,
+    "first_kind_omitted": 0,
+    "initial": {
+      "stage": "startup",
+      "host_received_ns": 437438258913083,
+      "serial_offset": 0
+    },
+    "first_kinds": [
+      {
+        "stage": "startup",
+        "host_received_ns": 437438258913083,
+        "serial_offset": 0
+      },
+      {
+        "stage": "cleanup",
+        "host_received_ns": 437630217918041,
+        "serial_offset": 3819978
+      },
+      {
+        "stage": "after_cleanup",
+        "host_received_ns": 437634082546166,
+        "serial_offset": 3882426
+      }
+    ],
+    "recent": [
+      {
+        "stage": "startup",
+        "host_received_ns": 437438258913083,
+        "serial_offset": 0
+      },
+      {
+        "stage": "cleanup",
+        "host_received_ns": 437630217918041,
+        "serial_offset": 3819978
+      },
+      {
+        "stage": "after_cleanup",
+        "host_received_ns": 437634082546166,
+        "serial_offset": 3882426
+      }
+    ],
+    "last": {
+      "stage": "after_cleanup",
+      "host_received_ns": 437634082546166,
+      "serial_offset": 3882426
+    }
+  },
+  "header_first_last_QMP_links": [
+    {
+      "observation": {
+        "kind": "bad_magic",
+        "stage": "startup",
+        "serial_offset": 0,
+        "host_read_before_ns": 437450360311291,
+        "host_read_after_ns": 437450362227500,
+        "request_id_before": 4,
+        "request_id_after": 5,
+        "request_id": 5,
+        "returned_length": 256,
+        "file_length_at_original_gate": 256,
+        "raw_16Q": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "words_source": "original_returned_header",
+        "exception_type": null,
+        "semantics": "host read observation only; no guest/server/browser atomic claim"
+      },
+      "QMP_request": {
+        "request": {
+          "execute": "human-monitor-command",
+          "id": 5,
+          "arguments": {
+            "command-line": "pmemsave 0x41e000000 0x100 \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd/osd-ring-header-live.bin\""
+          }
+        },
+        "elapsed_seconds": 0.7733542080386542
+      },
+      "QMP_response": {
+        "return": "",
+        "id": 5
+      }
+    },
+    {
+      "observation": {
+        "kind": "bad_magic",
+        "stage": "startup",
+        "serial_offset": 3819978,
+        "host_read_before_ns": 437630154446916,
+        "host_read_after_ns": 437630157679666,
+        "request_id_before": 419,
+        "request_id_after": 420,
+        "request_id": 420,
+        "returned_length": 256,
+        "file_length_at_original_gate": 256,
+        "raw_16Q": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "words_source": "original_returned_header",
+        "exception_type": null,
+        "semantics": "host read observation only; no guest/server/browser atomic claim"
+      },
+      "QMP_request": {
+        "request": {
+          "execute": "human-monitor-command",
+          "id": 420,
+          "arguments": {
+            "command-line": "pmemsave 0x41e000000 0x100 \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd/osd-ring-header-live.bin\""
+          }
+        },
+        "elapsed_seconds": 180.56748791702557
+      },
+      "QMP_response": {
+        "return": "",
+        "id": 420
+      }
+    }
+  ],
+  "model_received_at": "unknown",
+  "model_review_completed_at": "unknown",
+  "limits": "HAR request start / host marker received / host header read / guest clock / browser loaded are distinct time domains or boundaries"
+}

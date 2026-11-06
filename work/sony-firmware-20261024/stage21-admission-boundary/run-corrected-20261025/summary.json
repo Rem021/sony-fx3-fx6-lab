@@ -1,0 +1,24 @@
+{
+  "status": "PASS_ADMISSION_BOUNDARY_FRAGMENTS_NOT_REAL_QUIESCENCE",
+  "case_counts": {
+    "table_dispatch_cases": 2,
+    "typed_wrapper_cases": 2,
+    "post_constructor_marshalling_cases": 2,
+    "off_queue_capture_cases": 2,
+    "metadata_before_queue_cases": 1,
+    "registry_lock_control_cases": 2,
+    "pool_lock_destination_cases": 3,
+    "queue_notification_cases": 1,
+    "null_selected_task_cases": 1,
+    "stop_thread_wait_cases": 1
+  },
+  "bounded_phase_cases": 17,
+  "copied_pool_predicates": 3,
+  "direct_constructor_sites": 5,
+  "marked_off_queue_pool_acceptance_witness": true,
+  "actual_race_proven": false,
+  "complete_gate_or_safe_unload_verified": false,
+  "whole_manager_stop_not_executed": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

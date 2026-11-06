@@ -1,0 +1,112 @@
+{
+  "kind": "word-gated byte semantics; synthetic fixtures, not observed events",
+  "original_elf_execution": false,
+  "stubs": [],
+  "positive_cases": [
+    {
+      "condition": "counter differs; only record-time writer modifies zeroed timer record",
+      "previous": 0,
+      "counter": 1,
+      "record_fps_x10000": 300000,
+      "imaging_fps_x10000": 300000,
+      "fx3_hex": "2210000001000000e0930400e09304000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fx6_native_hex": "2910000001000000e0930400e09304000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fx3_sha256": "3277212030628901255be8804c20012ccc6132596d7a83a43c3b583e24c65fbe",
+      "fx6_sha256": "842d645ece8fb666c95dc62166c8384f2a8304834997e4faa1fa713398e78338",
+      "ap_message_hex": "ec000000e0930400e093040001000000"
+    },
+    {
+      "condition": "counter differs; only record-time writer modifies zeroed timer record",
+      "previous": 99,
+      "counter": 100,
+      "record_fps_x10000": 239760,
+      "imaging_fps_x10000": 599400,
+      "fx3_hex": "221000000100000090a80300682509006400000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fx6_native_hex": "291000000100000090a80300682509006400000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fx3_sha256": "a3412cb640e49e399bbd95965380c98fb534d5d56637110102a52437b1c16b92",
+      "fx6_sha256": "b6e3635e99002875c05248f93dbb79135b194fa0a503757e34e24e11f7f39eb8",
+      "ap_message_hex": "ec00000090a803006825090064000000"
+    },
+    {
+      "condition": "counter differs; only record-time writer modifies zeroed timer record",
+      "previous": 4294967295,
+      "counter": 0,
+      "record_fps_x10000": 0,
+      "imaging_fps_x10000": 0,
+      "fx3_hex": "221000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fx6_native_hex": "291000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fx3_sha256": "309be8571cb5913f68242a21814415e34bcae0ece5fe07dcbafd7ce7bdc43338",
+      "fx6_sha256": "bf6df7b9ae1cda256471131583afe5952141c844fb81922bce9bbafafb369a24",
+      "ap_message_hex": "ec000000000000000000000000000000"
+    },
+    {
+      "condition": "counter differs; only record-time writer modifies zeroed timer record",
+      "previous": 0,
+      "counter": 4294967295,
+      "record_fps_x10000": 4294967295,
+      "imaging_fps_x10000": 4294967295,
+      "fx3_hex": "2210000001000000ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fx6_native_hex": "2910000001000000ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "fx3_sha256": "dc0bbab8d673fd8241c3471da92c4d0c7df5c99d1de4b53f485169bc49b9b300",
+      "fx6_sha256": "d8465cc1a9ee96aa311214b81aab1d35ca18c9aedd5927de65757f4ecaab489c",
+      "ap_message_hex": "ec000000ffffffffffffffffffffffff"
+    }
+  ],
+  "rejected_cases": [
+    {
+      "case": "short",
+      "error": "requires an immutable, exactly 60-byte snapshot"
+    },
+    {
+      "case": "long",
+      "error": "requires an immutable, exactly 60-byte snapshot"
+    },
+    {
+      "case": "mutable",
+      "error": "requires an immutable, exactly 60-byte snapshot"
+    },
+    {
+      "case": "wrong_event",
+      "error": "not the proven FX3 RecPbTime event"
+    },
+    {
+      "case": "unchanged_counter_flag",
+      "error": "requires a changed movie-record counter"
+    },
+    {
+      "case": "noncanonical_flag",
+      "error": "requires a changed movie-record counter"
+    },
+    {
+      "case": "padding",
+      "error": "playback/audio/noncanonical fields are unproved"
+    },
+    {
+      "case": "playback",
+      "error": "playback/audio/noncanonical fields are unproved"
+    },
+    {
+      "case": "audio_record",
+      "error": "playback/audio/noncanonical fields are unproved"
+    },
+    {
+      "case": "audio_playback",
+      "error": "playback/audio/noncanonical fields are unproved"
+    },
+    {
+      "case": "hidden_playback_scalar",
+      "error": "playback/audio/noncanonical fields are unproved"
+    },
+    {
+      "case": "tail_unknown",
+      "error": "playback/audio/noncanonical fields are unproved"
+    }
+  ],
+  "not_proven": [
+    "event occurs during Init",
+    "runtime callback binding",
+    "valid live memory size/provenance",
+    "playback/audio semantics",
+    "AP downstream message release"
+  ]
+}

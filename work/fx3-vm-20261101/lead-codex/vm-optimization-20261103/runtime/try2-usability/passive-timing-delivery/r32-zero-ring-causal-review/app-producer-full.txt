@@ -1,0 +1,122 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 16f1a48: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+ 16f1a4c: 910003fd     	mov	x29, sp
+ 16f1a50: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 16f1a54: 91288014     	add	x20, x0, #0xa20
+ 16f1a58: aa0003f3     	mov	x19, x0
+ 16f1a5c: aa1403e0     	mov	x0, x20
+ 16f1a60: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 16f1a64: 97ffeebc     	bl	0x16ed554 <.text+0x158ed4>
+ 16f1a68: b94a1a63     	ldr	w3, [x19, #0xa18]
+ 16f1a6c: 11000463     	add	w3, w3, #0x1
+ 16f1a70: 7102587f     	cmp	w3, #0x96
+ 16f1a74: b90a1a63     	str	w3, [x19, #0xa18]
+ 16f1a78: 540000e1     	b.ne	0x16f1a94 <Application_System_Init+0x1f04>
+ 16f1a7c: b000c561     	adrp	x1, 0x2f9e000
+ 16f1a80: b000c560     	adrp	x0, 0x2f9e000
+ 16f1a84: 91238021     	add	x1, x1, #0x8e0
+ 16f1a88: 9121a000     	add	x0, x0, #0x868
+ 16f1a8c: 52803222     	mov	w2, #0x191              // =401
+ 16f1a90: 9461e8ee     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 16f1a94: d0018520     	adrp	x0, 0x4797000
+ 16f1a98: f9421400     	ldr	x0, [x0, #0x428]
+ 16f1a9c: b4000060     	cbz	x0, 0x16f1aa8 <Application_System_Init+0x1f18>
+ 16f1aa0: aa1403e0     	mov	x0, x20
+ 16f1aa4: 97fa8963     	bl	0x1594030 <pthread_mutex_unlock@plt>
+ 16f1aa8: 52807c00     	mov	w0, #0x3e0              // =992
+ 16f1aac: 9100e3a1     	add	x1, x29, #0x38
+ 16f1ab0: 52800023     	mov	w3, #0x1                // =1
+ 16f1ab4: 52800382     	mov	w2, #0x1c               // =28
+ 16f1ab8: 72a00aa0     	movk	w0, #0x55, lsl #16
+ 16f1abc: a9047fbf     	stp	xzr, xzr, [x29, #0x40]
+ 16f1ac0: f9001fbf     	str	xzr, [x29, #0x38]
+ 16f1ac4: f9002bbf     	str	xzr, [x29, #0x50]
+ 16f1ac8: b9005bbf     	str	wzr, [x29, #0x58]
+ 16f1acc: 97fa8995     	bl	0x1594120 <osal_valloc_msg_wait@plt>
+ 16f1ad0: 34000500     	cbz	w0, 0x16f1b70 <Application_System_Init+0x1fe0>
+ 16f1ad4: b000c574     	adrp	x20, 0x2f9e000
+ 16f1ad8: f000c4b6     	adrp	x22, 0x2f88000 <Application_System_Init+0x1898470>
+ 16f1adc: 9121f694     	add	x20, x20, #0x87d
+ 16f1ae0: 913bb2d6     	add	x22, x22, #0xeec
+ 16f1ae4: aa1403e1     	mov	x1, x20
+ 16f1ae8: aa1603e0     	mov	x0, x22
+ 16f1aec: 52803322     	mov	w2, #0x199              // =409
+ 16f1af0: b000c573     	adrp	x19, 0x2f9e000
+ 16f1af4: b0010555     	adrp	x21, 0x379a000
+ 16f1af8: 91232273     	add	x19, x19, #0x8c8
+ 16f1afc: 9461f8d0     	bl	0x2f6fe3c <Application_System_Init+0x18802ac>
+ 16f1b00: 911886b5     	add	x21, x21, #0x621
+ 16f1b04: aa1303e1     	mov	x1, x19
+ 16f1b08: aa1503e0     	mov	x0, x21
+ 16f1b0c: 9461f8cc     	bl	0x2f6fe3c <Application_System_Init+0x18802ac>
+ 16f1b10: aa1403e1     	mov	x1, x20
+ 16f1b14: aa1603e0     	mov	x0, x22
+ 16f1b18: 52803322     	mov	w2, #0x199              // =409
+ 16f1b1c: 9461e8cb     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 16f1b20: aa1303e1     	mov	x1, x19
+ 16f1b24: aa1503e0     	mov	x0, x21
+ 16f1b28: 9461e8c8     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 16f1b2c: 52803322     	mov	w2, #0x199              // =409
+ 16f1b30: f000c4a0     	adrp	x0, 0x2f88000 <Application_System_Init+0x1898470>
+ 16f1b34: aa1403e1     	mov	x1, x20
+ 16f1b38: 913bf000     	add	x0, x0, #0xefc
+ 16f1b3c: 97fa8321     	bl	0x15927c0 <printf@plt>
+ 16f1b40: f000c4a0     	adrp	x0, 0x2f88000 <Application_System_Init+0x1898470>
+ 16f1b44: aa1303e1     	mov	x1, x19
+ 16f1b48: 913c3400     	add	x0, x0, #0xf0d
+ 16f1b4c: 97fa831d     	bl	0x15927c0 <printf@plt>
+ 16f1b50: 5290d400     	mov	w0, #0x86a0             // =34464
+ 16f1b54: 72a00020     	movk	w0, #0x1, lsl #16
+ 16f1b58: 97fa84da     	bl	0x1592ec0 <usleep@plt>
+ 16f1b5c: 945f3615     	bl	0x2ebf3b0 <Application_System_Init+0x17cf820>
+ 16f1b60: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 16f1b64: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 16f1b68: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+ 16f1b6c: d65f03c0     	ret
+ 16f1b70: 52a002a1     	mov	w1, #0x150000           // =1376256
+ 16f1b74: f9401fa0     	ldr	x0, [x29, #0x38]
+ 16f1b78: b90043a1     	str	w1, [x29, #0x40]
+ 16f1b7c: f9402ba1     	ldr	x1, [x29, #0x50]
+ 16f1b80: a9440fa2     	ldp	x2, x3, [x29, #0x40]
+ 16f1b84: f9000801     	str	x1, [x0, #0x10]
+ 16f1b88: a9000c02     	stp	x2, x3, [x0]
+ 16f1b8c: b9405ba1     	ldr	w1, [x29, #0x58]
+ 16f1b90: b9001801     	str	w1, [x0, #0x18]
+ 16f1b94: 52802501     	mov	w1, #0x128              // =296
+ 16f1b98: f9401fa0     	ldr	x0, [x29, #0x38]
+ 16f1b9c: 72a01061     	movk	w1, #0x83, lsl #16
+ 16f1ba0: 97fa8098     	bl	0x1591e00 <osal_set_msg_src@plt>
+ 16f1ba4: f9401fa1     	ldr	x1, [x29, #0x38]
+ 16f1ba8: 52807c00     	mov	w0, #0x3e0              // =992
+ 16f1bac: 72a00aa0     	movk	w0, #0x55, lsl #16
+ 16f1bb0: 97fa84d8     	bl	0x1592f10 <osal_snd_msg@plt>
+ 16f1bb4: 34fffd60     	cbz	w0, 0x16f1b60 <Application_System_Init+0x1fd0>
+ 16f1bb8: b000c574     	adrp	x20, 0x2f9e000
+ 16f1bbc: f000c4b6     	adrp	x22, 0x2f88000 <Application_System_Init+0x1898470>
+ 16f1bc0: 9121f694     	add	x20, x20, #0x87d
+ 16f1bc4: 913bb2d6     	add	x22, x22, #0xeec
+ 16f1bc8: aa1403e1     	mov	x1, x20
+ 16f1bcc: aa1603e0     	mov	x0, x22
+ 16f1bd0: 52803442     	mov	w2, #0x1a2              // =418
+ 16f1bd4: b000c573     	adrp	x19, 0x2f9e000
+ 16f1bd8: b0010555     	adrp	x21, 0x379a000
+ 16f1bdc: 91232273     	add	x19, x19, #0x8c8
+ 16f1be0: 9461f897     	bl	0x2f6fe3c <Application_System_Init+0x18802ac>
+ 16f1be4: 911886b5     	add	x21, x21, #0x621
+ 16f1be8: aa1303e1     	mov	x1, x19
+ 16f1bec: aa1503e0     	mov	x0, x21
+ 16f1bf0: 9461f893     	bl	0x2f6fe3c <Application_System_Init+0x18802ac>
+ 16f1bf4: aa1403e1     	mov	x1, x20
+ 16f1bf8: aa1603e0     	mov	x0, x22
+ 16f1bfc: 52803442     	mov	w2, #0x1a2              // =418
+ 16f1c00: 9461e892     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 16f1c04: aa1303e1     	mov	x1, x19
+ 16f1c08: aa1503e0     	mov	x0, x21
+ 16f1c0c: 9461e88f     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 16f1c10: 52803442     	mov	w2, #0x1a2              // =418
+ 16f1c14: 17ffffc7     	b	0x16f1b30 <Application_System_Init+0x1fa0>

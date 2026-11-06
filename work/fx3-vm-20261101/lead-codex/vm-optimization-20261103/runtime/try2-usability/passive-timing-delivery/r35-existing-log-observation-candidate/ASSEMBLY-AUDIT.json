@@ -1,0 +1,509 @@
+{
+  "scope": "static AArch64 code only; original locks may retain their old retry loops",
+  "candidate": {
+    "osd": {
+      "fx3_r35_snapshot_v1": {
+        "new_weak_claims": [
+          {
+            "stxr": "0x12340",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x12390",
+            "no_direct_retry": true
+          }
+        ],
+        "address": "0x122b8",
+        "bytes": 224,
+        "sha256": "7e16bd96dc8036954d34085d62966d2bf12abbb1dd09891b0cb6bd7bf40d96da",
+        "mov172_sites": [
+          {
+            "number_load": "0x122ec",
+            "call": "0x122f0"
+          }
+        ],
+        "stxr_sites": [
+          {
+            "stxr": "0x12340",
+            "following": "cbnz w9, #0x12390",
+            "direct_retry": false
+          }
+        ]
+      },
+      "osal_snd_msg": {
+        "new_weak_claims": [
+          {
+            "stxr": "0x1259c",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x131ec",
+            "no_direct_retry": true
+          },
+          {
+            "stxr": "0x12c58",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x132a4",
+            "no_direct_retry": true
+          }
+        ],
+        "address": "0x12398",
+        "bytes": 4032,
+        "sha256": "f747668b9eeec1577a4c4e555eccbfc707d18a17ab3fbeba90d1875606cbdb63",
+        "mov172_sites": [
+          {
+            "number_load": "0x1255c",
+            "call": "0x12560"
+          },
+          {
+            "number_load": "0x127b4",
+            "call": "0x127bc"
+          },
+          {
+            "number_load": "0x12c14",
+            "call": "0x12c18"
+          }
+        ],
+        "stxr_sites": [
+          {
+            "stxr": "0x123ec",
+            "following": "cbnz w9, #0x123e4",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x1259c",
+            "following": "cbnz w10, #0x131ec",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x1262c",
+            "following": "cbnz w9, #0x12624",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12798",
+            "following": "cbnz w9, #0x12784",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x128f0",
+            "following": "cbnz w9, #0x128e8",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12a0c",
+            "following": "cbnz w9, #0x12a04",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12c58",
+            "following": "cbnz w10, #0x132a4",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x12ed4",
+            "following": "cbnz w9, #0x12ecc",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x1318c",
+            "following": "mov w23, w24",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x131d0",
+            "following": "mov w19, #0x76c",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x13234",
+            "following": "ldr w24, [sp, #0x4c]",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x13288",
+            "following": "mov x1, x23",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x132f4",
+            "following": "cbz w8, #0x128f8",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x13344",
+            "following": "mov x1, x23",
+            "direct_retry": false
+          }
+        ]
+      },
+      "observer_bind": {
+        "new_weak_claims": [
+          {
+            "stxr": "0x14430",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x148f0",
+            "no_direct_retry": true
+          },
+          {
+            "stxr": "0x14610",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x14914",
+            "no_direct_retry": true
+          },
+          {
+            "stxr": "0x146b0",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x14900",
+            "no_direct_retry": true
+          },
+          {
+            "stxr": "0x14724",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x14900",
+            "no_direct_retry": true
+          },
+          {
+            "stxr": "0x147bc",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x14900",
+            "no_direct_retry": true
+          },
+          {
+            "stxr": "0x14840",
+            "BSS_lock": "r35_lock",
+            "failure_target": "0x14900",
+            "no_direct_retry": true
+          }
+        ],
+        "address": "0x1439c",
+        "bytes": 1416,
+        "sha256": "c03b47ffed71d0943ba8d6ee1499cf917a54397ecc500542cfedb3f0e5b7ee16",
+        "mov172_sites": [
+          {
+            "number_load": "0x143ec",
+            "call": "0x143f0"
+          },
+          {
+            "number_load": "0x14458",
+            "call": "0x1445c"
+          },
+          {
+            "number_load": "0x145d8",
+            "call": "0x145dc"
+          },
+          {
+            "number_load": "0x14670",
+            "call": "0x14674"
+          },
+          {
+            "number_load": "0x146e4",
+            "call": "0x146e8"
+          },
+          {
+            "number_load": "0x1477c",
+            "call": "0x14780"
+          },
+          {
+            "number_load": "0x14800",
+            "call": "0x14804"
+          }
+        ],
+        "stxr_sites": [
+          {
+            "stxr": "0x14430",
+            "following": "cbnz w10, #0x148f0",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x14610",
+            "following": "cbnz w10, #0x14914",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x146b0",
+            "following": "cbnz w10, #0x14900",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x14724",
+            "following": "cbnz w10, #0x14900",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x147bc",
+            "following": "cbnz w10, #0x14900",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x14840",
+            "following": "cbnz w10, #0x14900",
+            "direct_retry": false
+          }
+        ],
+        "all_64bit_loads_for_magic_review": [
+          {
+            "address": "0x14484",
+            "instruction": "ldr x2, [x23, #0x5a8]"
+          },
+          {
+            "address": "0x1458c",
+            "instruction": "ldr x8, [x23, #0x5a8]"
+          },
+          {
+            "address": "0x1462c",
+            "instruction": "ldr x10, [x19]"
+          },
+          {
+            "address": "0x14894",
+            "instruction": "ldr x19, [x23, #0x5a8]"
+          }
+        ],
+        "verified_magic_load": {
+          "address": "0x1462c",
+          "raw": "6a0240f9",
+          "instruction": "ldr x10, [x19]",
+          "meaning": "one actual volatile ring magic read after original stores and successful new ownership/claim, not a constant or End state"
+        }
+      }
+    },
+    "ui": {
+      "fx3_gate_event": {
+        "new_weak_claims": [
+          {
+            "stxr": "0x12b88",
+            "BSS_lock": "r35_log_lock",
+            "failure_target": "0x12e84",
+            "no_direct_retry": true
+          }
+        ],
+        "address": "0x12218",
+        "bytes": 7300,
+        "sha256": "8a18afa45593692729899d1ab7e56571339bf0efc75450ff548d0cf80566f0b4",
+        "mov172_sites": [
+          {
+            "number_load": "0x12b48",
+            "call": "0x12b54"
+          }
+        ],
+        "stxr_sites": [
+          {
+            "stxr": "0x1230c",
+            "following": "cbnz w9, #0x12304",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x123b0",
+            "following": "cbnz w10, #0x123ac",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x123d4",
+            "following": "cbnz w11, #0x123cc",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12430",
+            "following": "cbnz w10, #0x12428",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x1247c",
+            "following": "cbnz w10, #0x12474",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12498",
+            "following": "cbnz w10, #0x12490",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12570",
+            "following": "cbnz w11, #0x12564",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x125cc",
+            "following": "cbnz w10, #0x125c4",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12940",
+            "following": "cbnz w11, #0x12934",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12978",
+            "following": "cbnz w10, #0x12970",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x129b4",
+            "following": "cbnz w10, #0x129ac",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x129d4",
+            "following": "cbnz w10, #0x129cc",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12acc",
+            "following": "cbnz w10, #0x12ac4",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12b88",
+            "following": "cbnz w9, #0x12e84",
+            "direct_retry": false
+          },
+          {
+            "stxr": "0x12f4c",
+            "following": "cbnz w10, #0x12f44",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x12f98",
+            "following": "cbnz w10, #0x12f90",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x13024",
+            "following": "cbnz w13, #0x13018",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x131f8",
+            "following": "cbnz w9, #0x131f0",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x1341c",
+            "following": "cbnz w12, #0x13414",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x136e0",
+            "following": "cbnz w10, #0x136d8",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x1372c",
+            "following": "cbnz w10, #0x13724",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x137bc",
+            "following": "cbnz w13, #0x137b0",
+            "direct_retry": true
+          },
+          {
+            "stxr": "0x13e34",
+            "following": "cbnz w12, #0x13e2c",
+            "direct_retry": true
+          }
+        ]
+      }
+    }
+  },
+  "unchanged_probe_instructions_except_same_target_BL_relocations": [
+    {
+      "name": "fx3_gate_probe_core",
+      "bytes": 352,
+      "sha256": "77a6188f8ea7ff0167a0e6cc6d7d428ae5b0e8d28f37d93d8ff234b619ec9783",
+      "only_relocated_BL_differences": [
+        {
+          "offset": 184,
+          "same_call_target": [
+            "fx3_gate_event"
+          ]
+        }
+      ]
+    }
+  ],
+  "libc_syscall": {
+    "address": "0xc54e0",
+    "bytes": 56,
+    "raw": "e803002ae00301aae10302aae20303aae30304aae40305aae50306aae60307aa010000d41ffc3fb142000054c0035fd67469fd177369fd17"
+  },
+  "kernel_172": [
+    {
+      "address": "0xffffff80080b1d10",
+      "instruction": "stp x29, x30, [sp, #-0x10]!"
+    },
+    {
+      "address": "0xffffff80080b1d14",
+      "instruction": "mov x29, sp"
+    },
+    {
+      "address": "0xffffff80080b1d18",
+      "instruction": "mrs x0, sp_el0"
+    },
+    {
+      "address": "0xffffff80080b1d1c",
+      "instruction": "mov x2, #0"
+    },
+    {
+      "address": "0xffffff80080b1d20",
+      "instruction": "mov w1, #4"
+    },
+    {
+      "address": "0xffffff80080b1d24",
+      "instruction": "bl #0xffffff80080ba548"
+    },
+    {
+      "address": "0xffffff80080b1d28",
+      "instruction": "sxtw x0, w0"
+    },
+    {
+      "address": "0xffffff80080b1d2c",
+      "instruction": "ldp x29, x30, [sp], #0x10"
+    },
+    {
+      "address": "0xffffff80080b1d30",
+      "instruction": "ret "
+    },
+    {
+      "address": "0xffffff80080b1d34",
+      "instruction": "nop "
+    }
+  ],
+  "kernel_178": [
+    {
+      "address": "0xffffff80080b1d38",
+      "instruction": "stp x29, x30, [sp, #-0x10]!"
+    },
+    {
+      "address": "0xffffff80080b1d3c",
+      "instruction": "mov x29, sp"
+    },
+    {
+      "address": "0xffffff80080b1d40",
+      "instruction": "mrs x0, sp_el0"
+    },
+    {
+      "address": "0xffffff80080b1d44",
+      "instruction": "mov x2, #0"
+    },
+    {
+      "address": "0xffffff80080b1d48",
+      "instruction": "mov w1, #0"
+    },
+    {
+      "address": "0xffffff80080b1d4c",
+      "instruction": "bl #0xffffff80080ba548"
+    },
+    {
+      "address": "0xffffff80080b1d50",
+      "instruction": "sxtw x0, w0"
+    },
+    {
+      "address": "0xffffff80080b1d54",
+      "instruction": "ldp x29, x30, [sp], #0x10"
+    },
+    {
+      "address": "0xffffff80080b1d58",
+      "instruction": "ret "
+    },
+    {
+      "address": "0xffffff80080b1d5c",
+      "instruction": "nop "
+    }
+  ]
+}

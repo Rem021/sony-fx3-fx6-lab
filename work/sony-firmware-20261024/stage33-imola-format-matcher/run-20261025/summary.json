@@ -1,0 +1,92 @@
+{
+  "status": "PASS_ORIGINAL_IMOLA_TABLE_MISMATCH_AND_CONDITIONAL_FF_MATCH",
+  "original_table_rows": 689,
+  "HEVC_rows": 258,
+  "target_FH_necessary_matches": 0,
+  "MAIN_HD_quality_names": {
+    "4": "FH",
+    "6": "FF",
+    "34": "QT50M",
+    "39": "QT35M",
+    "53": "QT9M"
+  },
+  "artificial_FF_conditional_row": 386,
+  "native_matcher_scenarios": 8,
+  "matcher_results": [
+    {
+      "label": "target MAIN FH",
+      "tail": {
+        "raw88": 2,
+        "raw8c": 10,
+        "actual_input_image_tail_not_observed": true
+      },
+      "row": -1
+    },
+    {
+      "label": "target MAIN FH",
+      "tail": {
+        "raw88": 2,
+        "raw8c": 1,
+        "actual_input_image_tail_not_observed": true
+      },
+      "row": -1
+    },
+    {
+      "label": "matching proxy FH",
+      "tail": {
+        "raw88": 2,
+        "raw8c": 10,
+        "actual_input_image_tail_not_observed": true
+      },
+      "row": -1
+    },
+    {
+      "label": "matching proxy FH",
+      "tail": {
+        "raw88": 2,
+        "raw8c": 1,
+        "actual_input_image_tail_not_observed": true
+      },
+      "row": 607
+    },
+    {
+      "label": "UHD control",
+      "tail": {
+        "raw88": 2,
+        "raw8c": 10,
+        "actual_input_image_tail_not_observed": true
+      },
+      "row": 431
+    },
+    {
+      "label": "UHD control",
+      "tail": {
+        "raw88": 2,
+        "raw8c": 1,
+        "actual_input_image_tail_not_observed": true
+      },
+      "row": -1
+    },
+    {
+      "label": "artificial MAIN FF",
+      "tail": {
+        "raw88": 2,
+        "raw8c": 10,
+        "actual_input_image_tail_not_observed": true
+      },
+      "row": 386
+    },
+    {
+      "label": "artificial MAIN FF",
+      "tail": {
+        "raw88": 2,
+        "raw8c": 1,
+        "actual_input_image_tail_not_observed": true
+      },
+      "row": -1
+    }
+  ],
+  "actual_16Mbps_hardware_or_restore_verified": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

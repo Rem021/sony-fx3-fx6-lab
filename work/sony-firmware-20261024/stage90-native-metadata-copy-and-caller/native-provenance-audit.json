@@ -1,0 +1,170 @@
+{
+  "created_utc": "2026-10-27T07:39:51.743935+00:00",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "instructions": [
+    {
+      "VA": "0x801f5cf0",
+      "word_hex": "3c000426",
+      "instruction": "addiu $a0, $s0, 0x3c",
+      "meaning": "candidate A4 copier destination+3c"
+    },
+    {
+      "VA": "0x801f5cf4",
+      "word_hex": "4b2e070c",
+      "instruction": "jal 0x801cb92c",
+      "meaning": "candidate A4 nested helper call"
+    },
+    {
+      "VA": "0x801cb990",
+      "word_hex": "1400a394",
+      "instruction": "lhu $v1, 0x14($a1)",
+      "meaning": "nested helper source halfword+14 corresponds enclosing offset50"
+    },
+    {
+      "VA": "0x801cb9a4",
+      "word_hex": "00b8427c",
+      "instruction": "ext $v0, $v0, 0, 0x18",
+      "meaning": "nested helper extracts lower24 bits of word+18"
+    },
+    {
+      "VA": "0x801cb9a8",
+      "word_hex": "04b8477c",
+      "instruction": "ins $a3, $v0, 0, 0x18",
+      "meaning": "nested helper preserves destination high8 bits"
+    },
+    {
+      "VA": "0x801f3a8c",
+      "word_hex": "50002292",
+      "instruction": "lbu $v0, 0x50($s1)",
+      "meaning": "raw metadata flag load+50"
+    },
+    {
+      "VA": "0x801f3a90",
+      "word_hex": "500002a2",
+      "instruction": "sb $v0, 0x50($s0)",
+      "meaning": "raw metadata flag store+50"
+    },
+    {
+      "VA": "0x801f3a94",
+      "word_hex": "5400328e",
+      "instruction": "lw $s2, 0x54($s1)",
+      "meaning": "raw metadata full parameter handle load+54"
+    },
+    {
+      "VA": "0x801f3a9c",
+      "word_hex": "540012ae",
+      "instruction": "sw $s2, 0x54($s0)",
+      "meaning": "raw metadata full parameter handle store+54"
+    },
+    {
+      "VA": "0x801f3b40",
+      "word_hex": "c4a28287",
+      "instruction": "lh $v0, -0x5d3c($gp)",
+      "meaning": "unexecuted nonnull parameter reference GP read"
+    },
+    {
+      "VA": "0x801f88a4",
+      "word_hex": "67ce070c",
+      "instruction": "jal 0x801f399c",
+      "meaning": "raw copier at outer container+14"
+    },
+    {
+      "VA": "0x80146830",
+      "word_hex": "8c000424",
+      "instruction": "addiu $a0, $zero, 0x8c",
+      "meaning": "raw-copy slot size8c"
+    },
+    {
+      "VA": "0x80146838",
+      "word_hex": "67ce070c",
+      "instruction": "jal 0x801f399c",
+      "meaning": "raw-copy caller for declared queue slot"
+    },
+    {
+      "VA": "0x80144124",
+      "word_hex": "50002292",
+      "instruction": "lbu $v0, 0x50($s1)",
+      "meaning": "actual caller raw flag load"
+    },
+    {
+      "VA": "0x80144178",
+      "word_hex": "ec00a594",
+      "instruction": "lhu $a1, 0xec($a1)",
+      "meaning": "parameter buffer u16 ec load"
+    },
+    {
+      "VA": "0x801441bc",
+      "word_hex": "ee006694",
+      "instruction": "lhu $a2, 0xee($v1)",
+      "meaning": "parameter buffer u16 ee load"
+    },
+    {
+      "VA": "0x80131e50",
+      "word_hex": "240085a4",
+      "instruction": "sh $a1, 0x24($a0)",
+      "meaning": "owner field24 write"
+    },
+    {
+      "VA": "0x80131e5c",
+      "word_hex": "260046a4",
+      "instruction": "sh $a2, 0x26($v0)",
+      "meaning": "owner field26 write"
+    },
+    {
+      "VA": "0x80131e60",
+      "word_hex": "03ce040c",
+      "instruction": "jal 0x8013380c",
+      "meaning": "unexecuted geometry builder call"
+    },
+    {
+      "VA": "0x801441d0",
+      "word_hex": "6cd4040c",
+      "instruction": "jal 0x801351b0",
+      "meaning": "actual caller JAL frame wrapper"
+    },
+    {
+      "VA": "0x80069c90",
+      "word_hex": "0800e003",
+      "instruction": "jr $ra",
+      "meaning": "address/type helper returns normally"
+    },
+    {
+      "VA": "0x80069c94",
+      "word_hex": "2110a000",
+      "instruction": "move $v0, $a1",
+      "meaning": "address/type helper returns second argument"
+    },
+    {
+      "VA": "0x80140d84",
+      "word_hex": "04000424",
+      "instruction": "addiu $a0, $zero, 4",
+      "meaning": "cache allocation type4"
+    },
+    {
+      "VA": "0x80140d88",
+      "word_hex": "1c010524",
+      "instruction": "addiu $a1, $zero, 0x11c",
+      "meaning": "cache allocation request size11c"
+    },
+    {
+      "VA": "0x80140d8c",
+      "word_hex": "cf7b010c",
+      "instruction": "jal 0x8005ef3c",
+      "meaning": "cache actual allocation dispatcher5ef3c call"
+    },
+    {
+      "VA": "0x8005ef78",
+      "word_hex": "c0a2828f",
+      "instruction": "lw $v0, -0x5d40($gp)",
+      "meaning": "runtime allocator provider GP load"
+    },
+    {
+      "VA": "0x8005ef98",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "runtime allocator virtual call not executed"
+    }
+  ],
+  "static_queue_and_allocator_call_sites_not_full_runtime_validation": true,
+  "binding_of_true_raw_producer_queue_and_actual_MAIN_unproved": true
+}

@@ -1,0 +1,12 @@
+{
+  "corrections": [
+    "The old stage135 local selection lacks ROM/boot0 binary files; it was not a complete current upstream tree. Current API returned98 entries without truncation and the binary blobs were obtained.",
+    "Do not claim the boot0 binaries were newly published today; the acquisition is new to this local investigation.",
+    "mode-table-locator.txt begins its exploratory rows at labels. The actual consumer establishes callback+0, flags+8, label+16, stride32; AP-reference-boot-proof.json uses this corrected layout.",
+    "AP-sequence-dispatch-locator.txt was a guessed-location exploration containing other file-read/wrapper code. The actual selector and consumer are pinned separately; its filename does not establish dispatch coverage.",
+    "No printable USB strings in a ROM does not establish absence of a USB implementation.",
+    "The saved public ROM includes derivation constants. The precise claim is that no derived key was printed or separately persisted, not that no public key-related bytes were saved. Receipt field names were corrected before sealing."
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

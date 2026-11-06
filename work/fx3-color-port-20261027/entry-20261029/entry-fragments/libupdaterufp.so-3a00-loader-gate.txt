@@ -1,0 +1,63 @@
+00003a00 stp        x29, x30, [sp, #-0x70]!
+00003a04 mov        w2, #1
+00003a08 mov        x29, sp
+00003a0c stp        x21, x22, [sp, #0x20]
+00003a10 add        x21, x29, #0x70
+00003a14 stp        x25, x26, [sp, #0x40]
+00003a18 mov        x25, x1
+00003a1c mov        x1, #8
+00003a20 stp        x19, x20, [sp, #0x10]
+00003a24 str        xzr, [x21, #-8]!
+00003a28 mov        x22, x0
+00003a2c stp        x23, x24, [sp, #0x30]
+00003a30 mov        x3, x21
+00003a34 bl         #0x1490 ; Fsys_Seek
+00003a38 cbz        w0, #0x3a58
+00003a3c mov        w0, #3
+00003a40 ldp        x19, x20, [sp, #0x10]
+00003a44 ldp        x21, x22, [sp, #0x20]
+00003a48 ldp        x23, x24, [sp, #0x30]
+00003a4c ldp        x25, x26, [sp, #0x40]
+00003a50 ldp        x29, x30, [sp], #0x70
+00003a54 ret        
+00003a58 adrp       x23, #0x3000
+00003a5c add        x26, x29, #0x58
+00003a60 add        x24, x29, #0x60
+00003a64 add        x23, x23, #0xe6f ; literal 'FDAT'
+00003a68 mov        w20, #0xb
+00003a6c mov        x1, x26
+00003a70 mov        x0, x22
+00003a74 mov        w2, #4
+00003a78 bl         #0x1440 ; Fsys_Read
+00003a7c cmp        w0, #3
+00003a80 b.le       #0x3a3c
+00003a84 ldrb       w0, [x29, #0x5a]
+00003a88 mov        w2, #4
+00003a8c ldrb       w19, [x29, #0x59]
+00003a90 ldrb       w1, [x29, #0x5b]
+00003a94 lsl        w0, w0, #8
+00003a98 orr        w19, w0, w19, lsl #16
+00003a9c ldrb       w0, [x29, #0x58]
+00003aa0 orr        w0, w1, w0, lsl #24
+00003aa4 mov        x1, x24
+00003aa8 orr        w19, w19, w0
+00003aac mov        x0, x22
+00003ab0 bl         #0x1440 ; Fsys_Read
+00003ab4 tbnz       w0, #0x1f, #0x3a3c
+00003ab8 mov        x1, x23
+00003abc mov        x0, x24
+00003ac0 mov        x2, #4
+00003ac4 bl         #0x1470 ; strncmp
+00003ac8 cbnz       w0, #0x3ad4
+00003acc str        w19, [x25]
+00003ad0 b          #0x3a40
+00003ad4 sub        w20, w20, #1
+00003ad8 uxtb       w20, w20
+00003adc cbz        w20, #0x3a3c
+00003ae0 mov        x3, x21
+00003ae4 mov        w1, w19
+00003ae8 mov        x0, x22
+00003aec mov        w2, #1
+00003af0 bl         #0x1490 ; Fsys_Seek
+00003af4 cbz        w0, #0x3a6c
+00003af8 b          #0x3a3c

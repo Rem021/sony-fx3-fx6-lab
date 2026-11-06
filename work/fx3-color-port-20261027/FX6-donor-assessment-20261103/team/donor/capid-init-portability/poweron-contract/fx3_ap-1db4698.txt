@@ -1,0 +1,36 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 1db4698: 528204a0     	mov	w0, #0x1025             // =4133
+ 1db469c: d285e107     	mov	x7, #0x2f08             // =12040
+ 1db46a0: aa1403e1     	mov	x1, x20
+ 1db46a4: b90526a0     	str	w0, [x21, #0x524]
+ 1db46a8: b0015000     	adrp	x0, 0x47b5000
+ 1db46ac: f9412000     	ldr	x0, [x0, #0x240]
+ 1db46b0: a904ffa0     	stp	x0, xzr, [x29, #0x48]
+ 1db46b4: 8b070260     	add	x0, x19, x7
+ 1db46b8: 97fff18f     	bl	0x1db0cf4 <Application_System_Init+0x6c1164>
+ 1db46bc: f9002fb3     	str	x19, [x29, #0x58]
+ 1db46c0: 528204c0     	mov	w0, #0x1026             // =4134
+ 1db46c4: d285e508     	mov	x8, #0x2f28             // =12072
+ 1db46c8: aa1403e1     	mov	x1, x20
+ 1db46cc: b9052aa0     	str	w0, [x21, #0x528]
+ 1db46d0: d0014aa0     	adrp	x0, 0x470a000
+ 1db46d4: f9478000     	ldr	x0, [x0, #0xf00]
+ 1db46d8: a904ffa0     	stp	x0, xzr, [x29, #0x48]
+ 1db46dc: 8b080260     	add	x0, x19, x8
+ 1db46e0: 97fff185     	bl	0x1db0cf4 <Application_System_Init+0x6c1164>
+ 1db46e4: f9002fb3     	str	x19, [x29, #0x58]
+ 1db46e8: 528204e0     	mov	w0, #0x1027             // =4135
+ 1db46ec: d285e909     	mov	x9, #0x2f48             // =12104
+ 1db46f0: aa1403e1     	mov	x1, x20
+ 1db46f4: b9052ea0     	str	w0, [x21, #0x52c]
+ 1db46f8: 90014cc0     	adrp	x0, 0x474c000
+ 1db46fc: f9402800     	ldr	x0, [x0, #0x50]
+ 1db4700: a904ffa0     	stp	x0, xzr, [x29, #0x48]
+ 1db4704: 8b090260     	add	x0, x19, x9
+ 1db4708: 97fff17b     	bl	0x1db0cf4 <Application_System_Init+0x6c1164>
+ 1db470c: f9002fb3     	str	x19, [x29, #0x58]

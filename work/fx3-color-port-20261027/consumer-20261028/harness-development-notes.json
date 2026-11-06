@@ -1,0 +1,21 @@
+{
+  "scope": "Analysis harness development only, not firmware failures. Original images were unchanged.",
+  "corrected_checks": [
+    {
+      "observed": "Code-range assertion at VA 0x2dc1cc",
+      "cause": "Handler 10 has an early BX return before other legitimate branch targets.",
+      "correction": "Explicit reviewed end file 0x1d41e8."
+    },
+    {
+      "observed": "Hand-decoded anchor assertion did not match execution.",
+      "cause": "Initial expected values for the mode-0 TBB entries were wrong.",
+      "correction": "Re-read original 14 table bytes and target instructions; 0x320/321/322/325 map to 17/9/13/0."
+    },
+    {
+      "observed": "Code-range assertion at VA 0x2d7c58",
+      "cause": "Metadata helper has a late basic block after its first return.",
+      "correction": "Reviewed function end is file 0x1cfc5c."
+    }
+  ],
+  "final_checks": "See validation-results.json for successful corrected harness executions."
+}

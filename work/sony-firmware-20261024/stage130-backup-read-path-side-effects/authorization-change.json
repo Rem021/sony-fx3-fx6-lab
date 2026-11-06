@@ -1,0 +1,40 @@
+{
+  "source": "latest direct user reply to explicit Mac cache scope question",
+  "user_quote": "可以，仅查 Mac USB 缓存",
+  "recorded_utc": "2026-10-27T18:37:56.473430+00:00",
+  "before": {
+    "scope": "Windows_cached_PnP_inventory_only",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": false,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false
+  },
+  "after": {
+    "scope": "Windows_and_Mac_cached_USB_metadata_only",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": false,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false,
+    "Mac_cached_USB_metadata_authorized": true
+  },
+  "allowed_delta": "Read Mac IORegistry cached USB metadata, filter/sanitize and save association evidence.",
+  "actual_queries": [
+    "IOUSB plane cached properties",
+    "IOService USB device subtree cached properties"
+  ],
+  "unchanged_denials": [
+    "active USB/SCSI/PTP/vendor",
+    "service authentication/mode/stop",
+    "driver changes",
+    "camera/media file access",
+    "module/native upload",
+    "WBI/boot/settings/firmware write"
+  ],
+  "new_user_permission_is_not_inferred_from_goal_or_web_content": true
+}

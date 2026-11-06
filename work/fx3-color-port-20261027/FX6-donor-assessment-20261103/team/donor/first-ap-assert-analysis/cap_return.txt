@@ -1,0 +1,29 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000015ec0 <osal_snd_msg>:
+   19838: 12807f95     	mov	w21, #-0x3fd            // =-1021
+   1983c: 889fff1f     	stlr	wzr, [x24]
+   19840: 52800c40     	mov	w0, #0x62               // =98
+   19844: aa1803e1     	mov	x1, x24
+   19848: 52801022     	mov	w2, #0x81               // =129
+   1984c: 52800023     	mov	w3, #0x1                // =1
+   19850: 2a1f03e4     	mov	w4, wzr
+   19854: 2a1f03e5     	mov	w5, wzr
+   19858: 2a1f03e6     	mov	w6, wzr
+   1985c: 94002c31     	bl	0x24920 <syscall@plt>
+   19860: 94002c2c     	bl	0x24910 <__errno_location@plt>
+   19864: b9406fe8     	ldr	w8, [sp, #0x6c]
+   19868: b9000008     	str	w8, [x0]
+   1986c: 2a1503e0     	mov	w0, w21
+   19870: 914007ff     	add	sp, sp, #0x1, lsl #12   // =0x1000
+   19874: 910403ff     	add	sp, sp, #0x100
+   19878: a9454ff4     	ldp	x20, x19, [sp, #0x50]
+   1987c: a94457f6     	ldp	x22, x21, [sp, #0x40]
+   19880: a9435ff8     	ldp	x24, x23, [sp, #0x30]
+   19884: a94267fa     	ldp	x26, x25, [sp, #0x20]
+   19888: a9416ffc     	ldp	x28, x27, [sp, #0x10]
+   1988c: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+   19890: d65f03c0     	ret

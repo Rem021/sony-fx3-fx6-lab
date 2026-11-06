@@ -1,0 +1,89 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so
+# SHA256 b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74
+# VA [0xcd30, 0xce88) raw slice SHA256 c1cbd0bdb1c1996b1a2ad31666ebd3bc667ea968ff25291f146b86a7da57af70
+    cd30: a9b77bfd     	stp	x29, x30, [sp, #-0x90]!
+    cd34: 910003fd     	mov	x29, sp
+    cd38: a90153f3     	stp	x19, x20, [sp, #0x10]
+    cd3c: b0000014     	adrp	x20, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    cd40: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    cd44: 910103b5     	add	x21, x29, #0x40
+    cd48: aa1503e0     	mov	x0, x21
+    cd4c: aa0103f6     	mov	x22, x1
+    cd50: 9128a681     	add	x1, x20, #0xa29
+    cd54: f9001bf7     	str	x23, [sp, #0x30]
+    cd58: aa0203f7     	mov	x23, x2
+    cd5c: 900000b3     	adrp	x19, 0x20000
+    cd60: 97ffeea8     	bl	0x8800 <Updater::ModelFile::ModelFile(char const*)@plt>
+    cd64: aa1503e0     	mov	x0, x21
+    cd68: 97ffee12     	bl	0x85b0 <Updater::BaseFirmwareInformationFile::GetValue() const@plt>
+    cd6c: b90002c0     	str	w0, [x22]
+    cd70: 9101a3b6     	add	x22, x29, #0x68
+    cd74: 9128a681     	add	x1, x20, #0xa29
+    cd78: aa1603e0     	mov	x0, x22
+    cd7c: 97ffef29     	bl	0x8a20 <Updater::RegionFile::RegionFile(char const*)@plt>
+    cd80: aa1603e0     	mov	x0, x22
+    cd84: 97ffee0b     	bl	0x85b0 <Updater::BaseFirmwareInformationFile::GetValue() const@plt>
+    cd88: b90002e0     	str	w0, [x23]
+    cd8c: 910022c0     	add	x0, x22, #0x8
+    cd90: f947e273     	ldr	x19, [x19, #0xfc0]
+    cd94: 91004273     	add	x19, x19, #0x10
+    cd98: f90037b3     	str	x19, [x29, #0x68]
+    cd9c: 97ffef9d     	bl	0x8c10 <Updater::StringHandler::~StringHandler()@plt>
+    cda0: 910022a0     	add	x0, x21, #0x8
+    cda4: f90023b3     	str	x19, [x29, #0x40]
+    cda8: 97ffef9a     	bl	0x8c10 <Updater::StringHandler::~StringHandler()@plt>
+    cdac: f9401bf7     	ldr	x23, [sp, #0x30]
+    cdb0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    cdb4: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    cdb8: a8c97bfd     	ldp	x29, x30, [sp], #0x90
+    cdbc: d65f03c0     	ret
+    cdc0: aa0003f4     	mov	x20, x0
+    cdc4: f947e260     	ldr	x0, [x19, #0xfc0]
+    cdc8: 91004000     	add	x0, x0, #0x10
+    cdcc: f90037a0     	str	x0, [x29, #0x68]
+    cdd0: 910022c0     	add	x0, x22, #0x8
+    cdd4: 97ffef8f     	bl	0x8c10 <Updater::StringHandler::~StringHandler()@plt>
+    cdd8: f947e273     	ldr	x19, [x19, #0xfc0]
+    cddc: 910022a0     	add	x0, x21, #0x8
+    cde0: 91004273     	add	x19, x19, #0x10
+    cde4: f90023b3     	str	x19, [x29, #0x40]
+    cde8: 97ffef8a     	bl	0x8c10 <Updater::StringHandler::~StringHandler()@plt>
+    cdec: aa1403e0     	mov	x0, x20
+    cdf0: 97ffef90     	bl	0x8c30 <_Unwind_Resume@plt>
+    cdf4: aa0003f4     	mov	x20, x0
+    cdf8: 17fffff8     	b	0xcdd8 <Updater::CurrentFirmware::getModelAndRegion(unsigned int*, unsigned int*)+0xa8>
+    cdfc: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+    ce00: 910003fd     	mov	x29, sp
+    ce04: a90153f3     	stp	x19, x20, [sp, #0x10]
+    ce08: 9100e3b4     	add	x20, x29, #0x38
+    ce0c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    ce10: aa0103f6     	mov	x22, x1
+    ce14: b0000001     	adrp	x1, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    ce18: aa1403e0     	mov	x0, x20
+    ce1c: 9128a421     	add	x1, x1, #0xa29
+    ce20: aa0203f5     	mov	x21, x2
+    ce24: 900000b3     	adrp	x19, 0x20000
+    ce28: 97ffef9a     	bl	0x8c90 <Updater::VersionFile::VersionFile(char const*)@plt>
+    ce2c: aa1403e0     	mov	x0, x20
+    ce30: 97ffede0     	bl	0x85b0 <Updater::BaseFirmwareInformationFile::GetValue() const@plt>
+    ce34: d3483c01     	ubfx	x1, x0, #8, #8
+    ce38: 12001c00     	and	w0, w0, #0xff
+    ce3c: b90002c1     	str	w1, [x22]
+    ce40: b90002a0     	str	w0, [x21]
+    ce44: 91002280     	add	x0, x20, #0x8
+    ce48: f947e273     	ldr	x19, [x19, #0xfc0]
+    ce4c: 91004273     	add	x19, x19, #0x10
+    ce50: f9001fb3     	str	x19, [x29, #0x38]
+    ce54: 97ffef6f     	bl	0x8c10 <Updater::StringHandler::~StringHandler()@plt>
+    ce58: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    ce5c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    ce60: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+    ce64: d65f03c0     	ret
+    ce68: aa0003f5     	mov	x21, x0
+    ce6c: f947e273     	ldr	x19, [x19, #0xfc0]
+    ce70: 91002280     	add	x0, x20, #0x8
+    ce74: 91004273     	add	x19, x19, #0x10
+    ce78: f9001fb3     	str	x19, [x29, #0x38]
+    ce7c: 97ffef65     	bl	0x8c10 <Updater::StringHandler::~StringHandler()@plt>
+    ce80: aa1503e0     	mov	x0, x21
+    ce84: 97ffef6b     	bl	0x8c30 <_Unwind_Resume@plt>

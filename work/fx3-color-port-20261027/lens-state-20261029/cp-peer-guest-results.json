@@ -1,0 +1,173 @@
+{
+  "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "cases": [
+    {
+      "command": 3,
+      "request_bytes": 8,
+      "instructions": 118,
+      "reply_hex": "0300000000000000",
+      "original_entries": {
+        "receive_thread": 1,
+        "lens_handler": 1,
+        "lens_kind_getter": 2,
+        "reply_size_and_route": 1,
+        "reply_allocation_and_send": 1
+      },
+      "events": [
+        {
+          "adapter": "RAM receive",
+          "source": "0x11d0000",
+          "request_hex": "0300000000000000"
+        },
+        {
+          "adapter": "RAM reply allocation",
+          "target": "0x11d0000",
+          "bytes": 8
+        },
+        {
+          "adapter": "RAM send reply",
+          "source": "0x912503d0",
+          "target": "0x11d0000",
+          "reply_hex": "0300000000000000"
+        },
+        {
+          "adapter": "RAM free input"
+        }
+      ],
+      "declared_cp_lens_state": {
+        "kind": 2,
+        "ready": 1,
+        "error": 0,
+        "present": 1,
+        "special": 0,
+        "version": 1793,
+        "model": 2443182208,
+        "region": 0
+      }
+    },
+    {
+      "command": 1,
+      "request_bytes": 12,
+      "instructions": 138,
+      "reply_hex": "010000000000000000000000",
+      "original_entries": {
+        "receive_thread": 1,
+        "lens_handler": 1,
+        "error_path": 1,
+        "lens_kind_getter": 2,
+        "reply_size_and_route": 1,
+        "reply_allocation_and_send": 1
+      },
+      "events": [
+        {
+          "adapter": "RAM receive",
+          "source": "0x11d0000",
+          "request_hex": "010000000000000000000000"
+        },
+        {
+          "adapter": "RAM reply allocation",
+          "target": "0x11d0000",
+          "bytes": 12
+        },
+        {
+          "adapter": "RAM send reply",
+          "source": "0x912503d0",
+          "target": "0x11d0000",
+          "reply_hex": "010000000000000000000000"
+        },
+        {
+          "adapter": "RAM free input"
+        }
+      ],
+      "declared_cp_lens_state": {
+        "kind": 2,
+        "ready": 1,
+        "error": 0,
+        "present": 1,
+        "special": 0,
+        "version": 1793,
+        "model": 2443182208,
+        "region": 0
+      }
+    },
+    {
+      "command": 0,
+      "request_bytes": 20,
+      "instructions": 234,
+      "reply_hex": "0000000000000000010791a08000000000000000",
+      "original_entries": {
+        "receive_thread": 1,
+        "lens_handler": 1,
+        "lens_kind_getter": 5,
+        "ready_path": 1,
+        "error_path": 1,
+        "reply_size_and_route": 1,
+        "reply_allocation_and_send": 1
+      },
+      "events": [
+        {
+          "adapter": "RAM receive",
+          "source": "0x11d0000",
+          "request_hex": "0000000000000000000000000000000000000000"
+        },
+        {
+          "adapter": "RAM reply allocation",
+          "target": "0x11d0000",
+          "bytes": 20
+        },
+        {
+          "adapter": "RAM send reply",
+          "source": "0x912503d0",
+          "target": "0x11d0000",
+          "reply_hex": "0000000000000000010791a08000000000000000"
+        },
+        {
+          "adapter": "RAM free input"
+        }
+      ],
+      "declared_cp_lens_state": {
+        "kind": 2,
+        "ready": 1,
+        "error": 0,
+        "present": 1,
+        "special": 0,
+        "version": 1793,
+        "model": 2443182208,
+        "region": 0
+      }
+    },
+    {
+      "case": "sender_group_mismatch",
+      "instructions": 37,
+      "reply_hex": null,
+      "original_entries": {
+        "receive_thread": 1
+      },
+      "events": [
+        {
+          "adapter": "RAM receive",
+          "source": "0x11c0000",
+          "request_hex": "0000000000000000000000000000000000000000"
+        },
+        {
+          "adapter": "discarded CP log",
+          "address": "0x391be4"
+        },
+        {
+          "adapter": "RAM free input"
+        }
+      ],
+      "declared_cp_lens_state": {
+        "kind": 2,
+        "ready": 1,
+        "error": 0,
+        "present": 1,
+        "special": 0,
+        "version": 1793,
+        "model": 2443182208,
+        "region": 0
+      }
+    }
+  ],
+  "scope": "Original CP receive loop, sender-header check, commands 0/1/3, lens-type/ready/error getters, data-field packing, reply size table, reply allocation wrapper, original header accessors and source routing execute in Thumb. Lens kind/state/metadata are explicit synthetic RAM inputs; no MMIO or hardware getter is stubbed to return success. OSAL allocation/receive/send/free, memcpy and logs are a strict RAM-only bus. Command 2 and actual update-data paths are forbidden. No real peer state, service session, IPC/device, firmware write or native target execution."
+}

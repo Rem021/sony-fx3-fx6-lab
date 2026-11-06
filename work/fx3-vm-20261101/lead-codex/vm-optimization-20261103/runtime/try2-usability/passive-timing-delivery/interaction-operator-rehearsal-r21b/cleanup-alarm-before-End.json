@@ -1,0 +1,52 @@
+{
+  "current": {
+    "armed_ms": 35478.60000002384,
+    "cancelled_ms": 44000.30000001192,
+    "deadline_ms": 20000,
+    "due_ms": 55478.60000002384,
+    "nonce": "5ddc8de6-3263-44e7-86af-da110ff3f9fc",
+    "state": "cancelled"
+  },
+  "deadline_ms": 20000,
+  "documentTimeOrigin": 1793836232863.8,
+  "events": [
+    {
+      "event": "installed",
+      "performance_ms": 943.3000000119208,
+      "script_SHA256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+      "wall_UTC": "2026-11-04T23:50:33.806Z"
+    },
+    {
+      "due_ms": 37719.80000001192,
+      "event": "armed",
+      "nonce": "c9c50d56-6b22-4834-bf04-9cfa9abfdd28",
+      "performance_ms": 17719.899999976158,
+      "wall_UTC": "2026-11-04T23:50:50.583Z"
+    },
+    {
+      "elapsed_ms": 8566.300000011921,
+      "event": "cancelled",
+      "nonce": "c9c50d56-6b22-4834-bf04-9cfa9abfdd28",
+      "performance_ms": 26286.10000002384,
+      "wall_UTC": "2026-11-04T23:50:59.149Z"
+    },
+    {
+      "due_ms": 55478.60000002384,
+      "event": "armed",
+      "nonce": "5ddc8de6-3263-44e7-86af-da110ff3f9fc",
+      "performance_ms": 35478.60000002384,
+      "wall_UTC": "2026-11-04T23:51:08.342Z"
+    },
+    {
+      "elapsed_ms": 8521.699999988079,
+      "event": "cancelled",
+      "nonce": "5ddc8de6-3263-44e7-86af-da110ff3f9fc",
+      "performance_ms": 44000.39999997616,
+      "wall_UTC": "2026-11-04T23:51:16.864Z"
+    }
+  ],
+  "expectedLaunchId": "eaf767d2-d2fb-421f-a062-dc70cfb5de25",
+  "expectedURL": "http://127.0.0.1:52524/",
+  "sealed": false,
+  "version": 1
+}

@@ -1,0 +1,71 @@
+{
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "configuration_file_sha256": "820dc02b6a001636b93fff51d90baaced1ba75cf9bbaa90600dfc7fd7a705166",
+  "original_unit": {
+    "key": "0x4af",
+    "record": "0x1fbafc0",
+    "list_pointer": "0x1fbcfc0",
+    "extent_IDs": [
+      "0x62a"
+    ]
+  },
+  "original_region_base_lookup": {
+    "returned": true,
+    "raw_r0": "0x1da7968",
+    "boundary": null,
+    "file_offset": "0xa938"
+  },
+  "extents": [
+    {
+      "extent_ID": "0x62a",
+      "original_mapping_count": {
+        "returned": true,
+        "raw_r0": "0x1",
+        "boundary": null,
+        "file_offset": "0xa938"
+      },
+      "mappings": [
+        {
+          "original_lookup": {
+            "returned": true,
+            "raw_r0": "0x1",
+            "boundary": null,
+            "file_offset": "0xa938"
+          },
+          "region_index": 1,
+          "region_record_address": "0x1da79b8",
+          "region_record_hex": "9001f80100000000200000000200000001010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101",
+          "region_raw_u16_4": "0x0",
+          "region_raw_u16_6": "0x0",
+          "region_raw_word8": "0x20",
+          "region_raw_wordC": "0x2",
+          "matching_extent_records": [
+            {
+              "address": "0x1f80294",
+              "bytes_hex": "00000000070000002a06000080b425000f010000",
+              "raw_word0": "0x0",
+              "raw_u16_4": "0x7",
+              "raw_u16_6": "0x0",
+              "extent_ID": "0x62a",
+              "raw_wordC": "0x25b480",
+              "raw_word10": "0x10f"
+            },
+            {
+              "address": "0x1f802a8",
+              "bytes_hex": "00000000070000002a06000080b425000f010000",
+              "raw_word0": "0x0",
+              "raw_u16_4": "0x7",
+              "raw_u16_6": "0x0",
+              "extent_ID": "0x62a",
+              "raw_wordC": "0x25b480",
+              "raw_word10": "0x10f"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "configuration_parse_bytes": 43320,
+  "file_read_adapter": "Same explicit sequential original-file adapter; normal filename/boot/parameter mapping still unproven.",
+  "scope": "Original lookup count/index/root helpers execute over original parsed configuration. Raw group/extent fields are saved without assuming live memory mapping, allocated buffers, pixels, cache-chip identity or cross-model ABI compatibility. No image allocator, IPC, kernel, native Sony execution or device action."
+}

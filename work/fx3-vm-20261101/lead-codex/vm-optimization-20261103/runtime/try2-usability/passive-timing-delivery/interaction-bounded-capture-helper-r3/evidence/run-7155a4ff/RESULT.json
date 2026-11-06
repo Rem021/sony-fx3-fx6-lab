@@ -1,0 +1,1379 @@
+{
+  "scope": "offline real r17 PAGE/TrialState + dedicated Chrome; no QEMU",
+  "session": "fx3-deadline-bounded-5de4392c",
+  "pinned_inputs": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r17-tail-receipt/trial_web_v22_navigation_review.py": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-deadline-helper/deadline.js": "93af6b5ce6eb3f736eeed38320c990c6a05701cb6c883493589dadaf4bb57916",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-c33f8c46/trial-final.png": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292"
+  },
+  "cases": {
+    "transition-target": {
+      "capture": {
+        "status": "qualified_screenshot_for_operator_review",
+        "scope": "first_MENU_reference_only",
+        "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "session": "fx3-deadline-bounded-5de4392c",
+        "url": "http://127.0.0.1:49858/",
+        "launch_id": "5503bcbd-602f-4ef5-9475-65ba989c6a69",
+        "alarm_nonce": "8457da23-43b0-4628-9b0a-ce1631eb155e",
+        "step": 1,
+        "host_started_UTC": "2026-11-04T21:51:25.604619+00:00",
+        "host_monotonic_started": 412771.14926525,
+        "screenshot_attempted": true,
+        "guest_keys_sent": 0,
+        "confirm_calls": 0,
+        "alarm_mutations": 0,
+        "timeline": [
+          {
+            "stage": "initial_receipt_write_enter",
+            "UTC": "2026-11-04T21:51:25.604646+00:00",
+            "monotonic": 412771.149278916
+          },
+          {
+            "stage": "initial_receipt_write_exit",
+            "UTC": "2026-11-04T21:51:25.604945+00:00",
+            "monotonic": 412771.149578791
+          },
+          {
+            "stage": "tab_preflight_enter",
+            "UTC": "2026-11-04T21:51:25.604950+00:00",
+            "monotonic": 412771.149582041
+          },
+          {
+            "stage": "tab_preflight_exit",
+            "UTC": "2026-11-04T21:51:25.611502+00:00",
+            "monotonic": 412771.15615625
+          },
+          {
+            "stage": "before_eval_enter",
+            "UTC": "2026-11-04T21:51:25.611570+00:00",
+            "monotonic": 412771.1562065
+          },
+          {
+            "stage": "before_eval_exit",
+            "UTC": "2026-11-04T21:51:26.291152+00:00",
+            "monotonic": 412771.835847541
+          },
+          {
+            "stage": "screenshot_enter",
+            "UTC": "2026-11-04T21:51:26.291416+00:00",
+            "monotonic": 412771.83611825
+          },
+          {
+            "stage": "screenshot_exit",
+            "UTC": "2026-11-04T21:51:26.361417+00:00",
+            "monotonic": 412771.906136458
+          },
+          {
+            "stage": "after_eval_enter",
+            "UTC": "2026-11-04T21:51:26.362196+00:00",
+            "monotonic": 412771.906882916
+          },
+          {
+            "stage": "after_eval_exit",
+            "UTC": "2026-11-04T21:51:26.370628+00:00",
+            "monotonic": 412771.915331375
+          },
+          {
+            "stage": "final_receipt_write_enter",
+            "UTC": "2026-11-04T21:51:26.370713+00:00",
+            "monotonic": 412771.915398666
+          },
+          {
+            "stage": "final_receipt_write_exit",
+            "UTC": "2026-11-04T21:51:26.371100+00:00",
+            "monotonic": 412771.91578675
+          },
+          {
+            "stage": "return_boundary",
+            "UTC": "2026-11-04T21:51:26.371103+00:00",
+            "monotonic": 412771.915788583
+          }
+        ],
+        "tab_id": null,
+        "before_eval": {
+          "before": {
+            "content_generation": 2,
+            "document_origin_token": "1793829082577.3000",
+            "document_time_origin": 1793829082577.3,
+            "due_ms": 23026,
+            "due_token": "23026.000000000000",
+            "frame_generation": 2,
+            "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "frame_sequence": 33,
+            "kind": "ready_loaded_review",
+            "launch_id": "5503bcbd-602f-4ef5-9475-65ba989c6a69",
+            "performance_ms": 3709.199999988079,
+            "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "remaining_ms": 19316.80000001192,
+            "review_step": 1,
+            "sequence": 33,
+            "step": 1,
+            "wall_UTC": "2026-11-04T21:51:26.286Z"
+          },
+          "confirm_reserve_ms": 8000,
+          "events": [
+            {
+              "kind": "invoked",
+              "performance_ms": 3040.7999999523163,
+              "wall_UTC": "2026-11-04T21:51:25.617Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "8457da23-43b0-4628-9b0a-ce1631eb155e",
+                "alarm_state": "armed",
+                "awaiting_step": null,
+                "delivery_unknown": false,
+                "displayed_generation": 1,
+                "displayed_sequence": 32,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 1,
+                "frame_sequence": 32,
+                "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "host_busy": false,
+                "input_received": true,
+                "phase": "ready",
+                "remaining_ms": 19984.900000035763,
+                "render_valid": true,
+                "review_required": true,
+                "review_step": 1,
+                "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "status_busy": false,
+                "steps": 1,
+                "visual_state": "visual_changed"
+              },
+              "kind": "state_transition",
+              "performance_ms": 3041.099999964237,
+              "state": "ready_loaded_review",
+              "wall_UTC": "2026-11-04T21:51:25.618Z"
+            },
+            {
+              "generation": 2,
+              "kind": "reference_loaded",
+              "performance_ms": 3709.299999952316,
+              "sequence": 33,
+              "wall_UTC": "2026-11-04T21:51:26.286Z"
+            }
+          ],
+          "reference_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "status": "ready_for_screenshot",
+          "waited_ms": 668.5
+        },
+        "screenshot_file_sha256": "d202c7f05214ef72eca209f4f8cf32c563e89aeed1110a75429074c1f40608ee",
+        "screenshot_file_bytes": 146734,
+        "after_eval": {
+          "alarm_due_ms": 23026,
+          "alarm_nonce": "8457da23-43b0-4628-9b0a-ce1631eb155e",
+          "alarm_state": "armed",
+          "content_generation": 2,
+          "document_time_origin": 1793829082577.3,
+          "error": null,
+          "failed_checks": [],
+          "frame_generation": 2,
+          "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "frame_sequence": 33,
+          "image_complete": true,
+          "image_width": 640,
+          "input_received": true,
+          "launch_id": "5503bcbd-602f-4ef5-9475-65ba989c6a69",
+          "location": "http://127.0.0.1:49858/",
+          "performance_ms": 3792.599999964237,
+          "phase": "ready",
+          "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "qualified": true,
+          "remaining_ms": 19233.400000035763,
+          "render_valid": true,
+          "review_required": true,
+          "review_step": 1,
+          "sequence": 33,
+          "step": 1,
+          "wall_UTC": "2026-11-04T21:51:26.369Z"
+        },
+        "reason": "loaded_reference_identity_stable_before_and_after_screenshot",
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-bounded-capture-helper-r3/evidence/run-7155a4ff/transition-target/menu-reference-page.png",
+        "host_finished_UTC": "2026-11-04T21:51:26.370703+00:00",
+        "host_monotonic_finished": 412771.915391625,
+        "host_elapsed_ms": 766.126
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3026,
+            "deadline_ms": 20000,
+            "due_ms": 23026,
+            "nonce": "8457da23-43b0-4628-9b0a-ce1631eb155e",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793829082577.3,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3017.899999976158,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T21:51:25.594Z"
+            },
+            {
+              "due_ms": 23026,
+              "event": "armed",
+              "nonce": "8457da23-43b0-4628-9b0a-ce1631eb155e",
+              "performance_ms": 3026.099999964237,
+              "wall_UTC": "2026-11-04T21:51:25.602Z"
+            }
+          ],
+          "expectedLaunchId": "5503bcbd-602f-4ef5-9475-65ba989c6a69",
+          "expectedURL": "http://127.0.0.1:49858/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayed": 33,
+        "displayedGeneration": 2,
+        "frame": {
+          "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "all_zero_pixels": false,
+          "content_generation": 2,
+          "height": 640,
+          "sequence": 33,
+          "width": 960
+        },
+        "pendingConfirm": null,
+        "phase": "ready",
+        "reviewAwaiting": false,
+        "shownSHA": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292"
+      },
+      "key_count": 0,
+      "confirm_count": 0
+    },
+    "no-match-bounded": {
+      "capture": {
+        "status": "no_qualified_screenshot",
+        "scope": "first_MENU_reference_only",
+        "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "session": "fx3-deadline-bounded-5de4392c",
+        "url": "http://127.0.0.1:49906/",
+        "launch_id": "636178f1-6d6f-4cb7-aa63-76dc9758a6e2",
+        "alarm_nonce": "7b44fa57-0b9f-4fd1-97ab-ec16ecd1d867",
+        "step": 1,
+        "host_started_UTC": "2026-11-04T21:51:30.495720+00:00",
+        "host_monotonic_started": 412776.040658583,
+        "screenshot_attempted": false,
+        "guest_keys_sent": 0,
+        "confirm_calls": 0,
+        "alarm_mutations": 0,
+        "timeline": [
+          {
+            "stage": "initial_receipt_write_enter",
+            "UTC": "2026-11-04T21:51:30.495743+00:00",
+            "monotonic": 412776.0406715
+          },
+          {
+            "stage": "initial_receipt_write_exit",
+            "UTC": "2026-11-04T21:51:30.496063+00:00",
+            "monotonic": 412776.040993166
+          },
+          {
+            "stage": "tab_preflight_enter",
+            "UTC": "2026-11-04T21:51:30.496069+00:00",
+            "monotonic": 412776.0409985
+          },
+          {
+            "stage": "tab_preflight_exit",
+            "UTC": "2026-11-04T21:51:30.502087+00:00",
+            "monotonic": 412776.047041166
+          },
+          {
+            "stage": "before_eval_enter",
+            "UTC": "2026-11-04T21:51:30.502152+00:00",
+            "monotonic": 412776.047081458
+          },
+          {
+            "stage": "before_eval_exit",
+            "UTC": "2026-11-04T21:51:38.513791+00:00",
+            "monotonic": 412784.059062875
+          },
+          {
+            "stage": "final_receipt_write_enter",
+            "UTC": "2026-11-04T21:51:38.513915+00:00",
+            "monotonic": 412784.059155958
+          },
+          {
+            "stage": "final_receipt_write_exit",
+            "UTC": "2026-11-04T21:51:38.516268+00:00",
+            "monotonic": 412784.061517875
+          },
+          {
+            "stage": "return_boundary",
+            "UTC": "2026-11-04T21:51:38.516281+00:00",
+            "monotonic": 412784.061520666
+          }
+        ],
+        "tab_id": null,
+        "before_eval": {
+          "events": [
+            {
+              "kind": "invoked",
+              "performance_ms": 3103.800000011921,
+              "wall_UTC": "2026-11-04T21:51:30.507Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "7b44fa57-0b9f-4fd1-97ab-ec16ecd1d867",
+                "alarm_state": "armed",
+                "awaiting_step": null,
+                "delivery_unknown": false,
+                "displayed_generation": 1,
+                "displayed_sequence": 32,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 1,
+                "frame_sequence": 32,
+                "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "host_busy": false,
+                "input_received": true,
+                "phase": "ready",
+                "remaining_ms": 19986.400000035763,
+                "render_valid": true,
+                "review_required": true,
+                "review_step": 1,
+                "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "status_busy": false,
+                "steps": 1,
+                "visual_state": "visual_changed"
+              },
+              "kind": "state_transition",
+              "performance_ms": 3104,
+              "state": "ready_loaded_review",
+              "wall_UTC": "2026-11-04T21:51:30.507Z"
+            }
+          ],
+          "reason": "reference_not_loaded_before_bound",
+          "status": "no_qualified_screenshot",
+          "waited_ms": 8001.800000011921
+        },
+        "reason": "reference_not_loaded_before_bound",
+        "host_finished_UTC": "2026-11-04T21:51:38.513898+00:00",
+        "host_monotonic_finished": 412784.05914475,
+        "host_elapsed_ms": 8018.486
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3090.400000035763,
+            "deadline_ms": 20000,
+            "due_ms": 23090.400000035763,
+            "nonce": "7b44fa57-0b9f-4fd1-97ab-ec16ecd1d867",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793829087404,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3083.100000023842,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T21:51:30.486Z"
+            },
+            {
+              "due_ms": 23090.400000035763,
+              "event": "armed",
+              "nonce": "7b44fa57-0b9f-4fd1-97ab-ec16ecd1d867",
+              "performance_ms": 3090.400000035763,
+              "wall_UTC": "2026-11-04T21:51:30.494Z"
+            }
+          ],
+          "expectedLaunchId": "636178f1-6d6f-4cb7-aa63-76dc9758a6e2",
+          "expectedURL": "http://127.0.0.1:49906/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayed": 32,
+        "displayedGeneration": 1,
+        "frame": {
+          "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "all_zero_pixels": false,
+          "content_generation": 1,
+          "height": 640,
+          "sequence": 32,
+          "width": 960
+        },
+        "pendingConfirm": null,
+        "phase": "ready",
+        "reviewAwaiting": false,
+        "shownSHA": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+      },
+      "key_count": 0,
+      "confirm_count": 0
+    },
+    "wrong-nonce-refused": {
+      "capture": {
+        "status": "no_qualified_screenshot",
+        "scope": "first_MENU_reference_only",
+        "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "session": "fx3-deadline-bounded-5de4392c",
+        "url": "http://127.0.0.1:49990/",
+        "launch_id": "0649fa64-e934-455c-a5e4-6746a2c339f4",
+        "alarm_nonce": "30b6fc63-d116-4777-9327-12dc1e95c46e",
+        "step": 1,
+        "host_started_UTC": "2026-11-04T21:51:42.508552+00:00",
+        "host_monotonic_started": 412788.053906375,
+        "screenshot_attempted": false,
+        "guest_keys_sent": 0,
+        "confirm_calls": 0,
+        "alarm_mutations": 0,
+        "timeline": [
+          {
+            "stage": "initial_receipt_write_enter",
+            "UTC": "2026-11-04T21:51:42.508576+00:00",
+            "monotonic": 412788.053916416
+          },
+          {
+            "stage": "initial_receipt_write_exit",
+            "UTC": "2026-11-04T21:51:42.520703+00:00",
+            "monotonic": 412788.066050875
+          },
+          {
+            "stage": "tab_preflight_enter",
+            "UTC": "2026-11-04T21:51:42.520714+00:00",
+            "monotonic": 412788.066057708
+          },
+          {
+            "stage": "tab_preflight_exit",
+            "UTC": "2026-11-04T21:51:42.526940+00:00",
+            "monotonic": 412788.072302083
+          },
+          {
+            "stage": "before_eval_enter",
+            "UTC": "2026-11-04T21:51:42.527004+00:00",
+            "monotonic": 412788.072351791
+          },
+          {
+            "stage": "before_eval_exit",
+            "UTC": "2026-11-04T21:51:42.534650+00:00",
+            "monotonic": 412788.080008166
+          },
+          {
+            "stage": "final_receipt_write_enter",
+            "UTC": "2026-11-04T21:51:42.534727+00:00",
+            "monotonic": 412788.080067875
+          },
+          {
+            "stage": "final_receipt_write_exit",
+            "UTC": "2026-11-04T21:51:42.534981+00:00",
+            "monotonic": 412788.080323041
+          },
+          {
+            "stage": "return_boundary",
+            "UTC": "2026-11-04T21:51:42.534984+00:00",
+            "monotonic": 412788.0803245
+          }
+        ],
+        "tab_id": null,
+        "before_eval": {
+          "diagnostics": {
+            "alarm_nonce": "bd1a9e51-1c15-4fb2-a370-e3cd40324133",
+            "alarm_state": "armed",
+            "awaiting_step": null,
+            "delivery_unknown": false,
+            "displayed_generation": 1,
+            "displayed_sequence": 32,
+            "error": null,
+            "explicit_rejection": null,
+            "frame_generation": 1,
+            "frame_sequence": 32,
+            "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+            "host_busy": false,
+            "input_received": true,
+            "phase": "ready",
+            "remaining_ms": 19973.80000001192,
+            "render_valid": true,
+            "review_required": true,
+            "review_step": 1,
+            "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+            "status_busy": false,
+            "steps": 1,
+            "visual_state": "visual_changed"
+          },
+          "events": [
+            {
+              "kind": "invoked",
+              "performance_ms": 2940,
+              "wall_UTC": "2026-11-04T21:51:42.533Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "bd1a9e51-1c15-4fb2-a370-e3cd40324133",
+                "alarm_state": "armed",
+                "awaiting_step": null,
+                "delivery_unknown": false,
+                "displayed_generation": 1,
+                "displayed_sequence": 32,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 1,
+                "frame_sequence": 32,
+                "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "host_busy": false,
+                "input_received": true,
+                "phase": "ready",
+                "remaining_ms": 19973.80000001192,
+                "render_valid": true,
+                "review_required": true,
+                "review_step": 1,
+                "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "status_busy": false,
+                "steps": 1,
+                "visual_state": "visual_changed"
+              },
+              "kind": "refused",
+              "performance_ms": 2940.300000011921,
+              "reason": "Error: alarm_nonce_or_state_changed",
+              "wall_UTC": "2026-11-04T21:51:42.533Z"
+            }
+          ],
+          "reason": "Error: alarm_nonce_or_state_changed",
+          "status": "no_qualified_screenshot",
+          "waited_ms": 0.3999999761581421
+        },
+        "reason": "Error: alarm_nonce_or_state_changed",
+        "host_finished_UTC": "2026-11-04T21:51:42.534720+00:00",
+        "host_monotonic_finished": 412788.080062916,
+        "host_elapsed_ms": 26.157
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 2913.900000035763,
+            "deadline_ms": 20000,
+            "due_ms": 22913.900000035763,
+            "nonce": "bd1a9e51-1c15-4fb2-a370-e3cd40324133",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793829099593.2,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 2905.900000035763,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T21:51:42.498Z"
+            },
+            {
+              "due_ms": 22913.900000035763,
+              "event": "armed",
+              "nonce": "bd1a9e51-1c15-4fb2-a370-e3cd40324133",
+              "performance_ms": 2914,
+              "wall_UTC": "2026-11-04T21:51:42.507Z"
+            }
+          ],
+          "expectedLaunchId": "0649fa64-e934-455c-a5e4-6746a2c339f4",
+          "expectedURL": "http://127.0.0.1:49990/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayed": 32,
+        "displayedGeneration": 1,
+        "frame": {
+          "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "all_zero_pixels": false,
+          "content_generation": 1,
+          "height": 640,
+          "sequence": 32,
+          "width": 960
+        },
+        "pendingConfirm": null,
+        "phase": "ready",
+        "reviewAwaiting": false,
+        "shownSHA": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+      },
+      "key_count": 0,
+      "confirm_count": 0
+    },
+    "expired-refused-after-expiry": {
+      "capture": {
+        "status": "no_qualified_screenshot",
+        "scope": "first_MENU_reference_only",
+        "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "session": "fx3-deadline-bounded-5de4392c",
+        "url": "http://127.0.0.1:50030/",
+        "launch_id": "4b63976d-e461-49ae-b116-096f25016596",
+        "alarm_nonce": "dd607299-6eff-4f18-b927-bbd5453e01b4",
+        "step": 1,
+        "host_started_UTC": "2026-11-04T21:52:06.820394+00:00",
+        "host_monotonic_started": 412812.365972958,
+        "screenshot_attempted": false,
+        "guest_keys_sent": 0,
+        "confirm_calls": 0,
+        "alarm_mutations": 0,
+        "timeline": [
+          {
+            "stage": "initial_receipt_write_enter",
+            "UTC": "2026-11-04T21:52:06.820432+00:00",
+            "monotonic": 412812.365998708
+          },
+          {
+            "stage": "initial_receipt_write_exit",
+            "UTC": "2026-11-04T21:52:06.820976+00:00",
+            "monotonic": 412812.36654475
+          },
+          {
+            "stage": "tab_preflight_enter",
+            "UTC": "2026-11-04T21:52:06.820985+00:00",
+            "monotonic": 412812.366549791
+          },
+          {
+            "stage": "tab_preflight_exit",
+            "UTC": "2026-11-04T21:52:06.831499+00:00",
+            "monotonic": 412812.3771015
+          },
+          {
+            "stage": "before_eval_enter",
+            "UTC": "2026-11-04T21:52:06.831611+00:00",
+            "monotonic": 412812.377181166
+          },
+          {
+            "stage": "before_eval_exit",
+            "UTC": "2026-11-04T21:52:06.843788+00:00",
+            "monotonic": 412812.389380958
+          },
+          {
+            "stage": "final_receipt_write_enter",
+            "UTC": "2026-11-04T21:52:06.843887+00:00",
+            "monotonic": 412812.389451333
+          },
+          {
+            "stage": "final_receipt_write_exit",
+            "UTC": "2026-11-04T21:52:06.844237+00:00",
+            "monotonic": 412812.389801875
+          },
+          {
+            "stage": "return_boundary",
+            "UTC": "2026-11-04T21:52:06.844240+00:00",
+            "monotonic": 412812.389803791
+          }
+        ],
+        "tab_id": null,
+        "before_eval": {
+          "diagnostics": {
+            "alarm_nonce": "dd607299-6eff-4f18-b927-bbd5453e01b4",
+            "alarm_state": "expired",
+            "awaiting_step": null,
+            "delivery_unknown": false,
+            "displayed_generation": 1,
+            "displayed_sequence": 32,
+            "error": null,
+            "explicit_rejection": null,
+            "frame_generation": 1,
+            "frame_sequence": 32,
+            "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+            "host_busy": false,
+            "input_received": true,
+            "phase": "stopping",
+            "remaining_ms": -73.89999997615814,
+            "render_valid": true,
+            "review_required": true,
+            "review_step": 1,
+            "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+            "status_busy": false,
+            "steps": 1,
+            "visual_state": "visual_changed"
+          },
+          "events": [
+            {
+              "kind": "invoked",
+              "performance_ms": 23190.900000035763,
+              "wall_UTC": "2026-11-04T21:52:06.841Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "dd607299-6eff-4f18-b927-bbd5453e01b4",
+                "alarm_state": "expired",
+                "awaiting_step": null,
+                "delivery_unknown": false,
+                "displayed_generation": 1,
+                "displayed_sequence": 32,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 1,
+                "frame_sequence": 32,
+                "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "host_busy": false,
+                "input_received": true,
+                "phase": "stopping",
+                "remaining_ms": -73.89999997615814,
+                "render_valid": true,
+                "review_required": true,
+                "review_step": 1,
+                "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "status_busy": false,
+                "steps": 1,
+                "visual_state": "visual_changed"
+              },
+              "kind": "refused",
+              "performance_ms": 23191.19999998808,
+              "reason": "Error: alarm_nonce_or_state_changed",
+              "wall_UTC": "2026-11-04T21:52:06.842Z"
+            }
+          ],
+          "reason": "Error: alarm_nonce_or_state_changed",
+          "status": "no_qualified_screenshot",
+          "waited_ms": 0.3999999761581421
+        },
+        "reason": "Error: alarm_nonce_or_state_changed",
+        "host_finished_UTC": "2026-11-04T21:52:06.843879+00:00",
+        "host_monotonic_finished": 412812.389445708,
+        "host_elapsed_ms": 23.473
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3117.100000023842,
+            "deadline_ms": 20000,
+            "due_ms": 23117.10000002384,
+            "elapsed_ms": 20003,
+            "nonce": "dd607299-6eff-4f18-b927-bbd5453e01b4",
+            "state": "expired"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793829103651.4,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3109.600000023842,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T21:51:46.760Z"
+            },
+            {
+              "due_ms": 23117.10000002384,
+              "event": "armed",
+              "nonce": "dd607299-6eff-4f18-b927-bbd5453e01b4",
+              "performance_ms": 3117.100000023842,
+              "wall_UTC": "2026-11-04T21:51:46.768Z"
+            },
+            {
+              "elapsed_ms": 20003,
+              "event": "end_click",
+              "nonce": "dd607299-6eff-4f18-b927-bbd5453e01b4",
+              "performance_ms": 23120.30000001192,
+              "wall_UTC": "2026-11-04T21:52:06.771Z"
+            }
+          ],
+          "expectedLaunchId": "4b63976d-e461-49ae-b116-096f25016596",
+          "expectedURL": "http://127.0.0.1:50030/",
+          "sealed": true,
+          "version": 1
+        },
+        "displayed": 32,
+        "displayedGeneration": 1,
+        "frame": {
+          "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "all_zero_pixels": false,
+          "content_generation": 1,
+          "height": 640,
+          "sequence": 32,
+          "width": 960
+        },
+        "pendingConfirm": null,
+        "phase": "stopping",
+        "reviewAwaiting": false,
+        "shownSHA": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+      },
+      "key_count": 0,
+      "confirm_count": 0
+    },
+    "changed-post-rejected": {
+      "capture": {
+        "status": "no_qualified_screenshot",
+        "scope": "first_MENU_reference_only",
+        "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "session": "fx3-deadline-bounded-5de4392c",
+        "url": "http://127.0.0.1:50167/",
+        "launch_id": "683d26a7-a845-4c14-b8aa-240323ba258c",
+        "alarm_nonce": "072747a5-a1d5-4082-8101-5ac0cf60c950",
+        "step": 1,
+        "host_started_UTC": "2026-11-04T21:52:11.260102+00:00",
+        "host_monotonic_started": 412816.805684166,
+        "screenshot_attempted": true,
+        "guest_keys_sent": 0,
+        "confirm_calls": 0,
+        "alarm_mutations": 0,
+        "timeline": [
+          {
+            "stage": "initial_receipt_write_enter",
+            "UTC": "2026-11-04T21:52:11.260132+00:00",
+            "monotonic": 412816.8057025
+          },
+          {
+            "stage": "initial_receipt_write_exit",
+            "UTC": "2026-11-04T21:52:11.260527+00:00",
+            "monotonic": 412816.806097958
+          },
+          {
+            "stage": "tab_preflight_enter",
+            "UTC": "2026-11-04T21:52:11.260533+00:00",
+            "monotonic": 412816.806101666
+          },
+          {
+            "stage": "tab_preflight_exit",
+            "UTC": "2026-11-04T21:52:11.267662+00:00",
+            "monotonic": 412816.813258375
+          },
+          {
+            "stage": "before_eval_enter",
+            "UTC": "2026-11-04T21:52:11.267736+00:00",
+            "monotonic": 412816.813306625
+          },
+          {
+            "stage": "before_eval_exit",
+            "UTC": "2026-11-04T21:52:11.275969+00:00",
+            "monotonic": 412816.82155675
+          },
+          {
+            "stage": "screenshot_enter",
+            "UTC": "2026-11-04T21:52:11.276056+00:00",
+            "monotonic": 412816.821626291
+          },
+          {
+            "stage": "screenshot_exit",
+            "UTC": "2026-11-04T21:52:11.647372+00:00",
+            "monotonic": 412817.192946958
+          },
+          {
+            "stage": "after_eval_enter",
+            "UTC": "2026-11-04T21:52:11.648047+00:00",
+            "monotonic": 412817.193625541
+          },
+          {
+            "stage": "after_eval_exit",
+            "UTC": "2026-11-04T21:52:11.656711+00:00",
+            "monotonic": 412817.202299708
+          },
+          {
+            "stage": "final_receipt_write_enter",
+            "UTC": "2026-11-04T21:52:11.656781+00:00",
+            "monotonic": 412817.202349875
+          },
+          {
+            "stage": "final_receipt_write_exit",
+            "UTC": "2026-11-04T21:52:11.657095+00:00",
+            "monotonic": 412817.202664791
+          },
+          {
+            "stage": "return_boundary",
+            "UTC": "2026-11-04T21:52:11.657100+00:00",
+            "monotonic": 412817.202673583
+          }
+        ],
+        "tab_id": null,
+        "before_eval": {
+          "before": {
+            "content_generation": 2,
+            "document_origin_token": "1793829127927.2000",
+            "document_time_origin": 1793829127927.2,
+            "due_ms": 23048.80000001192,
+            "due_token": "23048.800000011921",
+            "frame_generation": 2,
+            "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "frame_sequence": 33,
+            "kind": "ready_loaded_review",
+            "launch_id": "683d26a7-a845-4c14-b8aa-240323ba258c",
+            "performance_ms": 3347.5,
+            "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "remaining_ms": 19701.30000001192,
+            "review_step": 1,
+            "sequence": 33,
+            "step": 1,
+            "wall_UTC": "2026-11-04T21:52:11.274Z"
+          },
+          "confirm_reserve_ms": 8000,
+          "events": [
+            {
+              "kind": "invoked",
+              "performance_ms": 3347.2000000476837,
+              "wall_UTC": "2026-11-04T21:52:11.274Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "072747a5-a1d5-4082-8101-5ac0cf60c950",
+                "alarm_state": "armed",
+                "awaiting_step": null,
+                "delivery_unknown": false,
+                "displayed_generation": 2,
+                "displayed_sequence": 33,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 2,
+                "frame_sequence": 33,
+                "frame_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+                "host_busy": false,
+                "input_received": true,
+                "phase": "ready",
+                "remaining_ms": 19701.30000001192,
+                "render_valid": true,
+                "review_required": true,
+                "review_step": 1,
+                "shown_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+                "status_busy": false,
+                "steps": 1,
+                "visual_state": "visual_changed"
+              },
+              "kind": "state_transition",
+              "performance_ms": 3347.600000023842,
+              "state": "ready_loaded_review",
+              "wall_UTC": "2026-11-04T21:52:11.274Z"
+            },
+            {
+              "generation": 2,
+              "kind": "reference_loaded",
+              "performance_ms": 3347.600000023842,
+              "sequence": 33,
+              "wall_UTC": "2026-11-04T21:52:11.274Z"
+            }
+          ],
+          "reference_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "status": "ready_for_screenshot",
+          "waited_ms": 0.3999999761581421
+        },
+        "screenshot_file_sha256": "d202c7f05214ef72eca209f4f8cf32c563e89aeed1110a75429074c1f40608ee",
+        "screenshot_file_bytes": 146734,
+        "after_eval": {
+          "alarm_due_ms": 23048.80000001192,
+          "alarm_nonce": "072747a5-a1d5-4082-8101-5ac0cf60c950",
+          "alarm_state": "armed",
+          "content_generation": 3,
+          "document_time_origin": 1793829127927.2,
+          "error": null,
+          "failed_checks": [
+            "generation",
+            "sha"
+          ],
+          "frame_generation": 3,
+          "frame_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "frame_sequence": 34,
+          "image_complete": true,
+          "image_width": 640,
+          "input_received": true,
+          "launch_id": "683d26a7-a845-4c14-b8aa-240323ba258c",
+          "location": "http://127.0.0.1:50167/",
+          "performance_ms": 3728.300000011921,
+          "phase": "ready",
+          "png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "qualified": false,
+          "remaining_ms": 19320.5,
+          "render_valid": true,
+          "review_required": true,
+          "review_step": 1,
+          "sequence": 34,
+          "step": 1,
+          "wall_UTC": "2026-11-04T21:52:11.655Z"
+        },
+        "reason": "post_screenshot_identity_or_reserve_changed",
+        "host_finished_UTC": "2026-11-04T21:52:11.656772+00:00",
+        "host_monotonic_finished": 412817.202344291,
+        "host_elapsed_ms": 396.66
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3048.800000011921,
+            "deadline_ms": 20000,
+            "due_ms": 23048.80000001192,
+            "nonce": "072747a5-a1d5-4082-8101-5ac0cf60c950",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793829127927.2,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3041.400000035763,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T21:52:10.968Z"
+            },
+            {
+              "due_ms": 23048.80000001192,
+              "event": "armed",
+              "nonce": "072747a5-a1d5-4082-8101-5ac0cf60c950",
+              "performance_ms": 3048.800000011921,
+              "wall_UTC": "2026-11-04T21:52:10.976Z"
+            }
+          ],
+          "expectedLaunchId": "683d26a7-a845-4c14-b8aa-240323ba258c",
+          "expectedURL": "http://127.0.0.1:50167/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayed": 34,
+        "displayedGeneration": 3,
+        "frame": {
+          "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "all_zero_pixels": false,
+          "content_generation": 3,
+          "height": 640,
+          "sequence": 34,
+          "width": 960
+        },
+        "pendingConfirm": null,
+        "phase": "ready",
+        "reviewAwaiting": false,
+        "shownSHA": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+      },
+      "key_count": 0,
+      "confirm_count": 0
+    },
+    "actual-menu-click": {
+      "capture": {
+        "status": "qualified_screenshot_for_operator_review",
+        "scope": "first_MENU_reference_only",
+        "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "session": "fx3-deadline-bounded-5de4392c",
+        "url": "http://127.0.0.1:50208/",
+        "launch_id": "8ce958b3-b319-4dde-9349-7917294085de",
+        "alarm_nonce": "7d85e65b-d5cc-486c-9815-5f07a1cc3d54",
+        "step": 1,
+        "host_started_UTC": "2026-11-04T21:52:15.768377+00:00",
+        "host_monotonic_started": 412821.313946791,
+        "screenshot_attempted": true,
+        "guest_keys_sent": 0,
+        "confirm_calls": 0,
+        "alarm_mutations": 0,
+        "timeline": [
+          {
+            "stage": "initial_receipt_write_enter",
+            "UTC": "2026-11-04T21:52:15.768391+00:00",
+            "monotonic": 412821.31395975
+          },
+          {
+            "stage": "initial_receipt_write_exit",
+            "UTC": "2026-11-04T21:52:15.780694+00:00",
+            "monotonic": 412821.326266166
+          },
+          {
+            "stage": "tab_preflight_enter",
+            "UTC": "2026-11-04T21:52:15.780705+00:00",
+            "monotonic": 412821.326273666
+          },
+          {
+            "stage": "tab_preflight_exit",
+            "UTC": "2026-11-04T21:52:15.787486+00:00",
+            "monotonic": 412821.333074416
+          },
+          {
+            "stage": "before_eval_enter",
+            "UTC": "2026-11-04T21:52:15.787552+00:00",
+            "monotonic": 412821.33312125
+          },
+          {
+            "stage": "before_eval_exit",
+            "UTC": "2026-11-04T21:52:23.002140+00:00",
+            "monotonic": 412828.547713166
+          },
+          {
+            "stage": "screenshot_enter",
+            "UTC": "2026-11-04T21:52:23.002330+00:00",
+            "monotonic": 412828.547893625
+          },
+          {
+            "stage": "screenshot_exit",
+            "UTC": "2026-11-04T21:52:23.056402+00:00",
+            "monotonic": 412828.601986583
+          },
+          {
+            "stage": "after_eval_enter",
+            "UTC": "2026-11-04T21:52:23.067590+00:00",
+            "monotonic": 412828.613151916
+          },
+          {
+            "stage": "after_eval_exit",
+            "UTC": "2026-11-04T21:52:23.075237+00:00",
+            "monotonic": 412828.620828041
+          },
+          {
+            "stage": "final_receipt_write_enter",
+            "UTC": "2026-11-04T21:52:23.075328+00:00",
+            "monotonic": 412828.62088875
+          },
+          {
+            "stage": "final_receipt_write_exit",
+            "UTC": "2026-11-04T21:52:23.076033+00:00",
+            "monotonic": 412828.62159675
+          },
+          {
+            "stage": "return_boundary",
+            "UTC": "2026-11-04T21:52:23.076038+00:00",
+            "monotonic": 412828.621599
+          }
+        ],
+        "tab_id": null,
+        "before_eval": {
+          "before": {
+            "content_generation": 2,
+            "document_origin_token": "1793829132776.6001",
+            "document_time_origin": 1793829132776.6,
+            "due_ms": 22956.19999998808,
+            "due_token": "22956.199999988079",
+            "frame_generation": 2,
+            "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "frame_sequence": 213,
+            "kind": "ready_loaded_review",
+            "launch_id": "8ce958b3-b319-4dde-9349-7917294085de",
+            "performance_ms": 10221.400000035765,
+            "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "remaining_ms": 12734.69999998808,
+            "review_step": 1,
+            "sequence": 213,
+            "step": 1,
+            "wall_UTC": "2026-11-04T21:52:22.998Z"
+          },
+          "confirm_reserve_ms": 8000,
+          "events": [
+            {
+              "kind": "invoked",
+              "performance_ms": 3016.900000035763,
+              "wall_UTC": "2026-11-04T21:52:15.793Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "7d85e65b-d5cc-486c-9815-5f07a1cc3d54",
+                "alarm_state": "armed",
+                "awaiting_step": 1,
+                "delivery_unknown": false,
+                "displayed_generation": 1,
+                "displayed_sequence": 212,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 1,
+                "frame_sequence": 212,
+                "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "host_busy": false,
+                "input_received": false,
+                "phase": "ready",
+                "remaining_ms": 19939,
+                "render_valid": true,
+                "review_required": false,
+                "review_step": null,
+                "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "status_busy": false,
+                "steps": 0,
+                "visual_state": "idle"
+              },
+              "kind": "state_transition",
+              "performance_ms": 3017.199999988079,
+              "state": "accepted_menu_waiting_for_status",
+              "wall_UTC": "2026-11-04T21:52:15.793Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "7d85e65b-d5cc-486c-9815-5f07a1cc3d54",
+                "alarm_state": "armed",
+                "awaiting_step": 1,
+                "delivery_unknown": false,
+                "displayed_generation": 1,
+                "displayed_sequence": 212,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 1,
+                "frame_sequence": 212,
+                "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "host_busy": false,
+                "input_received": false,
+                "phase": "ready",
+                "remaining_ms": 19226.39999997616,
+                "render_valid": true,
+                "review_required": false,
+                "review_step": null,
+                "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "status_busy": true,
+                "steps": 1,
+                "visual_state": "input_pending"
+              },
+              "kind": "state_transition",
+              "performance_ms": 3729.800000011921,
+              "state": "step_one_input_pending",
+              "wall_UTC": "2026-11-04T21:52:16.506Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "7d85e65b-d5cc-486c-9815-5f07a1cc3d54",
+                "alarm_state": "armed",
+                "awaiting_step": 1,
+                "delivery_unknown": false,
+                "displayed_generation": 1,
+                "displayed_sequence": 212,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 1,
+                "frame_sequence": 212,
+                "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "host_busy": false,
+                "input_received": true,
+                "phase": "ready",
+                "remaining_ms": 17590.19999998808,
+                "render_valid": true,
+                "review_required": false,
+                "review_step": null,
+                "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+                "status_busy": true,
+                "steps": 1,
+                "visual_state": "visual_pending"
+              },
+              "kind": "state_transition",
+              "performance_ms": 5366,
+              "state": "step_one_visual_pending_native_ack",
+              "wall_UTC": "2026-11-04T21:52:18.142Z"
+            },
+            {
+              "diagnostics": {
+                "alarm_nonce": "7d85e65b-d5cc-486c-9815-5f07a1cc3d54",
+                "alarm_state": "armed",
+                "awaiting_step": null,
+                "delivery_unknown": false,
+                "displayed_generation": 2,
+                "displayed_sequence": 213,
+                "error": null,
+                "explicit_rejection": null,
+                "frame_generation": 2,
+                "frame_sequence": 213,
+                "frame_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+                "host_busy": false,
+                "input_received": true,
+                "phase": "ready",
+                "remaining_ms": 12734.599999964235,
+                "render_valid": true,
+                "review_required": true,
+                "review_step": 1,
+                "shown_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+                "status_busy": false,
+                "steps": 1,
+                "visual_state": "visual_changed"
+              },
+              "kind": "state_transition",
+              "performance_ms": 10221.600000023842,
+              "state": "ready_loaded_review",
+              "wall_UTC": "2026-11-04T21:52:22.998Z"
+            },
+            {
+              "generation": 2,
+              "kind": "reference_loaded",
+              "performance_ms": 10221.600000023842,
+              "sequence": 213,
+              "wall_UTC": "2026-11-04T21:52:22.998Z"
+            }
+          ],
+          "reference_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "status": "ready_for_screenshot",
+          "waited_ms": 7204.699999988079
+        },
+        "screenshot_file_sha256": "7071f0422a8ec62047ec83518948b4116cafd84d8a423cb1d65c711002a90582",
+        "screenshot_file_bytes": 146954,
+        "after_eval": {
+          "alarm_due_ms": 22956.19999998808,
+          "alarm_nonce": "7d85e65b-d5cc-486c-9815-5f07a1cc3d54",
+          "alarm_state": "armed",
+          "content_generation": 2,
+          "document_time_origin": 1793829132776.6,
+          "error": null,
+          "failed_checks": [],
+          "frame_generation": 2,
+          "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "frame_sequence": 213,
+          "image_complete": true,
+          "image_width": 640,
+          "input_received": true,
+          "launch_id": "8ce958b3-b319-4dde-9349-7917294085de",
+          "location": "http://127.0.0.1:50208/",
+          "performance_ms": 10297.400000035765,
+          "phase": "ready",
+          "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "qualified": true,
+          "remaining_ms": 12658.799999952316,
+          "render_valid": true,
+          "review_required": true,
+          "review_step": 1,
+          "sequence": 213,
+          "step": 1,
+          "wall_UTC": "2026-11-04T21:52:23.073Z"
+        },
+        "reason": "loaded_reference_identity_stable_before_and_after_screenshot",
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-bounded-capture-helper-r3/evidence/run-7155a4ff/actual-menu-click/menu-reference-page.png",
+        "host_finished_UTC": "2026-11-04T21:52:23.075321+00:00",
+        "host_monotonic_finished": 412828.620883041,
+        "host_elapsed_ms": 7306.936
+      },
+      "initial_page": {
+        "awaitingStep": 1,
+        "hostBusy": true,
+        "review": false,
+        "status_steps": 0
+      },
+      "fixture_counts": {
+        "key_http_202": 1,
+        "confirm": 0
+      },
+      "fixture_events": [
+        {
+          "event": "alarm_armed",
+          "UTC": "2026-11-04T21:52:15.734080+00:00",
+          "host_monotonic": 412821.279663208,
+          "due_ms": 22956.19999998808
+        },
+        {
+          "event": "MENU_HTTP_result",
+          "UTC": "2026-11-04T21:52:15.759571+00:00",
+          "host_monotonic": 412821.305148708,
+          "code": 202,
+          "body": {
+            "key": 427,
+            "observed_sequence": 212
+          }
+        },
+        {
+          "event": "capture_invoked",
+          "UTC": "2026-11-04T21:52:15.768069+00:00",
+          "host_monotonic": 412821.313649291,
+          "initial": {
+            "awaitingStep": 1,
+            "hostBusy": true,
+            "review": false,
+            "status_steps": 0
+          }
+        },
+        {
+          "event": "step1_input_pending_published",
+          "UTC": "2026-11-04T21:52:16.169787+00:00",
+          "host_monotonic": 412821.715375125
+        },
+        {
+          "event": "step1_visual_pending_native_ack_published",
+          "UTC": "2026-11-04T21:52:17.766684+00:00",
+          "host_monotonic": 412823.312303666
+        },
+        {
+          "event": "complete_reference_published",
+          "UTC": "2026-11-04T21:52:22.767109+00:00",
+          "host_monotonic": 412828.312708333,
+          "sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292"
+        },
+        {
+          "event": "step1_visual_changed_review_published",
+          "UTC": "2026-11-04T21:52:22.869394+00:00",
+          "host_monotonic": 412828.414992166
+        },
+        {
+          "event": "capture_returned",
+          "UTC": "2026-11-04T21:52:23.076814+00:00",
+          "host_monotonic": 412828.622376125,
+          "status": "qualified_screenshot_for_operator_review"
+        }
+      ],
+      "state_transitions": [
+        "accepted_menu_waiting_for_status",
+        "step_one_input_pending",
+        "step_one_visual_pending_native_ack",
+        "ready_loaded_review"
+      ]
+    }
+  },
+  "evidence_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-bounded-capture-helper-r3/evidence/run-7155a4ff",
+  "passed": true
+}

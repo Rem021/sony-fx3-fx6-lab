@@ -1,0 +1,66 @@
+{
+  "task_id": "task_35fdfe758f3f",
+  "dispatch_id": "ctx_e8db2b14dba0",
+  "host_only": true,
+  "commands": [
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/package_r36.py",
+        "prepare-release"
+      ],
+      "exit": 0,
+      "outputs": [
+        "INPUTS.json",
+        "RELEASES.json",
+        "TOOL.json",
+        "ui-ELF-AUDIT.json",
+        "osd-ELF-AUDIT.json"
+      ]
+    },
+    {
+      "argv": [
+        "python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/package_r36.py",
+        "test-package"
+      ],
+      "exit": 0,
+      "outputs": [
+        "TESTS.json",
+        "guest.cpio",
+        "candidate.json",
+        "ARCHIVE-DIFF.json",
+        "member-comparison.json",
+        "PACKAGE-COMPLETE.json"
+      ]
+    }
+  ],
+  "additional_analysis": [
+    {
+      "method": "read-only Python newc archive dependency/symlink walk",
+      "output": "DEPENDENCIES.json"
+    },
+    {
+      "method": "read-only Python ELF DT_INIT_ARRAY/RELA/static-symbol decoding and initializer machine byte comparison",
+      "output": "CONSTRUCTOR-PROOF.json"
+    }
+  ],
+  "release_commands_and_source_hashes": [
+    "receipts/ui-release-command.json",
+    "receipts/osd-release-command.json"
+  ],
+  "tool_probe_observations": {
+    "xcrun --find llvm-strip": "utility not found (observed initial discovery; no strip target executed)",
+    "xcrun --find llvm-objcopy": "utility not found (observed initial discovery; no objcopy target executed)",
+    "zig objcopy --strip-debug": "not executed; existing r15 OBJCOPY-FAILED.json records unimplemented"
+  },
+  "coordinator_messages": {
+    "metadata_method_authority": "msg_d0073edba2ce",
+    "r35_final_input_gate_accepted": "msg_a9774da2cd5d"
+  },
+  "VM_guest_browser_service_device_started": false,
+  "runner_imported_or_modified": false,
+  "deployed": false
+}

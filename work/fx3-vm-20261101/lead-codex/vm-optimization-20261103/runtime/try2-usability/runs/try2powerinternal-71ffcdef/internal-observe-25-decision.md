@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/internal-preview-25.png using image tool. Shooting>Shooting Mode 8/59 orange category focus; exposure and memory items visible Next: DOWN to Shutter/Silent category for read-only browsing; no mode or memory change

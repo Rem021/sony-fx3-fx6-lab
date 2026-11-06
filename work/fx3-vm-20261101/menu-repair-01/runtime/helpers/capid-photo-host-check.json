@@ -1,0 +1,35 @@
+[
+  {
+    "args": [
+      "clang",
+      "-O1",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-DFX3_HDMI_PHOTO_TEST",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-hdmi-photo-core.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-hdmi-photo-core"
+    ],
+    "compile_stderr": "",
+    "exit": 0,
+    "stdout": "FX3_HDMI_PHOTO_TEST_PASS\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "clang",
+      "-O1",
+      "-g",
+      "-fsanitize=address,undefined",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-capid-photo-transport.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-capid-photo-transport"
+    ],
+    "compile_stderr": "",
+    "exit": 0,
+    "stdout": "CAPID_TRANSPORT_TEST_PASS: original request ownership, lease free, state rollback, no-reply, envelope and allocation failure\n",
+    "stderr": "FX3_CAPID_COMMIT destination=0x9004015e op=0x1000 source=0x803061c0 reply=0x1002c4e00 lease=1 bytes=16 request_free=0 header=0,0,0,0,0 initialized=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1000 lease=1 result=0\nFX3_CAPID_COMMIT destination=0x9004015e op=0x1001 source=0x803061c0 reply=0x1002c4e00 lease=3 bytes=8 request_free=0 header=0,0,0,0,0 initialized=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1001 lease=3 result=0\nFX3_CAPID_COMMIT destination=0x9004015e op=0x1002 source=0x803061c0 reply=0x1002c4e00 lease=4 bytes=8 request_free=0 header=0,0,0,0,0 initialized=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1002 lease=4 result=0\nFX3_CAPID_COMMIT destination=0x9004015e op=0x1003 source=0x803061c0 reply=0x0 lease=0 bytes=0 request_free=0 header=1024,0,0,0,0 initialized=1\nFX3_CAPID_COMMIT destination=0x92850750 op=0x1 source=0x803061c0 reply=0x1002c4e00 lease=6 bytes=24 request_free=0 header=1024,0,0,0,0 initialized=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1 lease=6 result=0\nFX3_CAPID_COMMIT destination=0x9004015e op=0x1000 source=0x803061c0 reply=0x1002c4e00 lease=7 bytes=16 request_free=0 header=0,0,0,0,0 initialized=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1000 lease=7 result=0\nFX3_SA_REPLY source=0x803061c0 count=1 reverse=0 first_input=0x4ffd81000 first_output=0xffd81000 status=0 detail=0 lease=8 request_free=0 virtual_contract=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0xb850 lease=8 result=0\nFX3_CP_VERSION_UNAVAILABLE command=4 bytes=8 source=0x803061c0 caller=0x1002aded8 caller_owned=1 reply_added=0 result=-1021 outermost_validated=1\nFX3_HDMI_AUDIO_COMMIT command=0x32d completion=0x132d source=0x803061c0 format=1 applied=1 notification_reason=3 raw_status=0x580000 lease=10 request_free=0 active_output=0 audio_frames=0 CP_executed=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x32d lease=10 result=0\nFX3_HDMI_PHOTO_COMMIT command=0x102 completion=0x8102 source=0x803061c0 raw=2 preset6=2 applied=1 lease=12 request_free=0 active_output=0 frames=0 CP_executed=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x102 lease=12 result=0\n"
+  }
+]

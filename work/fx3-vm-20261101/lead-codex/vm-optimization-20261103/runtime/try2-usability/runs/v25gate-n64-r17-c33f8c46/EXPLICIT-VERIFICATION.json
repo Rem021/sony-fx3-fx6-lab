@@ -1,0 +1,325 @@
+{
+  "variant": "N64",
+  "host_launch_uuid": "8aa1d19c-484a-424e-a1f6-d85ac0c0f79f",
+  "browser_launch_request_id": "7f817bca-60aa-4dfe-a6a0-022ddea71496",
+  "health_pass": true,
+  "protocol_pass": true,
+  "render_pass": true,
+  "lifecycle_pass": true,
+  "diagnostic_pass": true,
+  "key_HTTP": 1,
+  "manual_confirm_HTTP": 0,
+  "native_marker_counts": {
+    "FX3_KEY_INPUT_RECV": 2,
+    "FX3_KEY_INPUT_SEND": 0,
+    "FX3_KEY_STEP_DONE": 0,
+    "FX3_KEY95_STEP_DONE": 1,
+    "FX3_UI_GATE_SELFTEST_PASS": 1,
+    "FX3_UI_GATE_SNAPSHOT_ACK": 1
+  },
+  "PID_independent_ps": {
+    "exit": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "exclusive_probe": "free"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "exclusive_probe": "free"
+    }
+  ],
+  "restore_raw_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+  "restore_raw_API16_sha256": "1f0175375cf56ba7d5296358bd15bd91ab55fb921540c2f3197d0b12c4669c75",
+  "restore_header_sha256": "fc5563e2787ea0ddd29fc3986d24c7d335c5fa23ebceb1ee000b0e060fb82dc9",
+  "restore_header_decoded": {
+    "magic": "F100FILE",
+    "shutdown_control": "0x100c1ea9",
+    "restore_status": 0,
+    "restore_seen": 1
+  },
+  "QMP_quit_id": 318,
+  "QMP_quit_same_id_ACK": {
+    "return": {},
+    "id": 318
+  },
+  "web_final_ACK": true,
+  "inputs": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+      "actual_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2",
+      "actual_sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110",
+      "actual_sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8",
+      "actual_sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476",
+      "actual_sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047",
+      "actual_sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c",
+      "actual_sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+      "actual_sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "actual_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+      "actual_sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+      "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+      "actual_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64/guest.cpio",
+      "sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+      "actual_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64/candidate.json",
+      "sha256": "96666a719b1a4cf576e4d2d7ec461e10f5ce1143650450719e5273d75d970672",
+      "actual_sha256": "96666a719b1a4cf576e4d2d7ec461e10f5ce1143650450719e5273d75d970672",
+      "matched": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+      "actual_sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+      "matched": true
+    }
+  ],
+  "sources": [
+    {
+      "name": "audit_offline_v15.py",
+      "sha256": "0bb170c8b9f7f966446ad2aa4d73c0fb4ec721be8a01dd628a8476ad68f502a6",
+      "matched": true
+    },
+    {
+      "name": "build_guest_offline.py",
+      "sha256": "fb5da04e14d5edd4d6a759b9ceccc58adc4dfa2b1415f6acb03353aa9aec7982",
+      "matched": true
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec",
+      "matched": true
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d",
+      "matched": true
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e",
+      "matched": true
+    },
+    {
+      "name": "fx3-ui-gate-probes-v1.S",
+      "sha256": "b82a530c86ad3d37e06ba37828c72942c3c9188d904ed2b3a3bee89ebf9f62a1",
+      "matched": true
+    },
+    {
+      "name": "fx3-ui-gate-v15.c",
+      "sha256": "956df1600610ce071c0316b93a890cb0fea75359246456d73a0a3fa520c3869c",
+      "matched": true
+    },
+    {
+      "name": "gate_input_usability.py",
+      "sha256": "3c612905bb53861e8a3804aaa0696ba14d376646b37f52894b0c1ad7ed508104",
+      "matched": true
+    },
+    {
+      "name": "host_exception_clock.py",
+      "sha256": "5f133dd0c8f6d17b19cab87616b1efe725445829d75447ac0de71ceb99a083dc",
+      "matched": true
+    },
+    {
+      "name": "optional_paused_snapshots.py",
+      "sha256": "15fbc3b50b1871b815b13c05b8275922f561ea2683c64c0d9a2e81c611d451a9",
+      "matched": true
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc",
+      "matched": true
+    },
+    {
+      "name": "parse_v25_diag_r3.py",
+      "sha256": "c232254a1991894e8a6a0446ee7a516ba7491211bfcf894852b56008345dcb9a",
+      "matched": true
+    },
+    {
+      "name": "pending_visual_v20.py",
+      "sha256": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3",
+      "matched": true
+    },
+    {
+      "name": "pre_input_observation.py",
+      "sha256": "243f33e19c1362d3d1741ad60ac863cb5e5dd27fc9ab01dadd7f8f2fb829e50f",
+      "matched": true
+    },
+    {
+      "name": "procdiag_readback.py",
+      "sha256": "0f6d479e7a1072f45ede37562bde66f22bea9c682886345a6b36f38ba92312f4",
+      "matched": true
+    },
+    {
+      "name": "qmp_line_transport.py",
+      "sha256": "2686ee46ff1ce06b12650f4cb3c86ebe9d64fdeafc9e6ce8176a64c4b5ded0c3",
+      "matched": true
+    },
+    {
+      "name": "quiesced_diag_readback.py",
+      "sha256": "51b2507730a5a7515333c0611022bf4a8c29d9a43663db8dd6e385db007ca6cb",
+      "matched": true
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168",
+      "matched": true
+    },
+    {
+      "name": "run_trial_v25_diag_r3.py",
+      "sha256": "845a1f2d33a00d10ede293d5e397c88f7b0e387460ce1f890475b5b18a4006f8",
+      "matched": true
+    },
+    {
+      "name": "runtime_resource_guard.py",
+      "sha256": "6bb095d299b695818708360c355d6c3b4f6a7eff0112e03474b474b180051680",
+      "matched": true
+    },
+    {
+      "name": "seal.py",
+      "sha256": "850848f3819b5f2fbf410a78589b1476074d93bfc8b95f634af7e7188ea765f7",
+      "matched": true
+    },
+    {
+      "name": "snapshot_tail_v15.py",
+      "sha256": "659250b731d80e45d76be9c2f4d849b89d4c4153a741b92644164b59e2730aad",
+      "matched": true
+    },
+    {
+      "name": "startup_qmp_v1.py",
+      "sha256": "efba2c336e063e18208f21df6e3bf9ae462abb1fef5ed0ec618f009004b67c74",
+      "matched": true
+    },
+    {
+      "name": "terminal_status_v23.py",
+      "sha256": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75",
+      "matched": true
+    },
+    {
+      "name": "test_fixed_slot_selection.py",
+      "sha256": "2fcd80a1952ce90f0da5d8fdfbfc9a491c0297d146c8845bb07c908251e30ac6",
+      "matched": true
+    },
+    {
+      "name": "test_guest_snapshot_actual.c",
+      "sha256": "609e952652b360d70c166d58ee6755f9ee7a85293e5684e9f4d029033d758499",
+      "matched": true
+    },
+    {
+      "name": "test_independent_diagnostics.py",
+      "sha256": "5af361a26fe3b7ddd1041559a0df4b7c1f20cd15b5ebd39d5bdf07d4046d8221",
+      "matched": true
+    },
+    {
+      "name": "test_snapshot_tail_actual.py",
+      "sha256": "a36dc5bccdf7a6bd163b23ef130b2f1805c745e6d8bdfba42f476a07bf558c13",
+      "matched": true
+    },
+    {
+      "name": "trial_health_v2.py",
+      "sha256": "99bb8104dd63fbb8cff7b887447fe56baf468d972c325fa39da2091f4e0c5751",
+      "matched": true
+    },
+    {
+      "name": "trial_log_v4_mss.py",
+      "sha256": "4d57629fc8bf1c8d158bfcf101915b9edd626f7bfb11c55fc78fe634ef7d6645",
+      "matched": true
+    },
+    {
+      "name": "trial_ring_cached.py",
+      "sha256": "9309794feded60291d6748bd4d19ab98a909e7ba73c91233a2ffb983551f9e11",
+      "matched": true
+    },
+    {
+      "name": "trial_web_v22_navigation_review.py",
+      "sha256": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+      "matched": true
+    }
+  ],
+  "snapshot_independent": "EXPLICIT-SNAPSHOT-INDEPENDENT.json",
+  "timeline": "EXPLICIT-TIMELINE.json",
+  "raw_hashes": {
+    "osd-ring-final.bin": "76d0ad788e390c97f4f4613334b411bb2a1f52a785ab19ed7c6fa75a0b7e1227",
+    "osd-ring-header-live.bin": "001f73ceae0922129a1b367fa101fe1946a4ad09c8a1fc6563cb9e81c231db7f",
+    "ui-gate-counters.bin": "f5bf8dc6075e9fd280c83ac796f3d1328e8b79fe73979ad37a29d2fbe983f4c6",
+    "snapshot-tail-slot-1.bin": "092ccfdda00fa3d42cbae7b843cc47015b77e253572921be185846d1f1445021",
+    "snapshot-tail-slot-2.bin": "092ccfdda00fa3d42cbae7b843cc47015b77e253572921be185846d1f1445021",
+    "trial-standby-ready.raw": "b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051",
+    "trial-final.raw": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+    "trial-standby-ready.png": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+    "page-00.png": "92e57d944082b6ac4c33b438fc2aa516517593b281f11af2c02a19189a8da7d1",
+    "EXPLICIT-final-browser.png": "a38495afa6324d39e6ab3a1a88acf0b48cfbda6fd7806de8409ae78b3af3b1c2"
+  },
+  "native_shutdown_after_ready": false,
+  "native_model_power_off_after_ready": false,
+  "single_run_complete": true,
+  "one_sample_not_performance_conclusion": true,
+  "snapshot_is_end_state": false,
+  "receipt_field_fix": "qmp_cont_sent absent; attempted/acknowledged true match actual QMP cont ACK and running/stop/paused; frozen files unmodified",
+  "interaction_chain_passed": false,
+  "step1_complete_target_inspected_before_expiry": false,
+  "step1_complete_menu_observed_after_stop": true,
+  "step1_manual_confirmation_completed": false,
+  "explicit_confirm_cli_invocations": 0,
+  "step1_timer_expired": true,
+  "steps_2_to_8": "unexecuted"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "fx3-stage47-same-agent-native-provider-review/1",
+  "created_utc": "2026-10-26T02:25:18.642116+00:00",
+  "reviewer": "same coordinator; not independent replay or physical acceptance",
+  "original_fragments": 16,
+  "header_and_veneer_fragments": 8,
+  "memory_loader_constructor_fragments": 8,
+  "ordinary_memory_store_hooks_in_native_run": 4121,
+  "checks": [
+    "Official partition and selected file hashes verified, no payload mounted or started as an OS/kernel module.",
+    "LIRO original magic/version5 checks and vector copy to API+48 length698 agree with211entry relocation table.",
+    "CAPI388/390 are OSAL wait/signal, not assumed ITRON twai_sem/sig_sem;698 unmap and6b8memset match original symbols.",
+    "Kernel export addresses/names and9adjacent string-boundary/sorted records checked; base is static image model, not runtime ASLR observation.",
+    "Three declared original ELF relocations used in native run: init.text598 ABS64, init.text4c4 CALL26 and init.data670 ABS64. Other210avcam imports stay0.",
+    "Original loader calls original kernel memcpy and returns; avcam writes confined to import DATA, other bytes compared unchanged. No guest code patch beyond official call relocation.",
+    "Original kernel memset interpreted through native MRS/DC ZVA using virtual CPU DCZID4; no register/output/zeroing shim. Exact bytes/redzones and per-store bounds verified.",
+    "Two A5seeded original constructors complete both clears and return with SP restored. Owner/factory/runtime locks/logs/HAL and52codec bytes remain unbound."
+  ],
+  "no_full_kernel_boot_real_CPU_or_camera_recovery_claim": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

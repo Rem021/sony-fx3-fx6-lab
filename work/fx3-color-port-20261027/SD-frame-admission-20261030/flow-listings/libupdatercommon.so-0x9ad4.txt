@@ -1,0 +1,24 @@
+_ZN7Updater10RingBuffer12GetEmptySizeEv
+00009ad4 stp       x29, x30, [sp, #-0x30]!
+00009ad8 mov       x29, sp
+00009adc stp       x19, x20, [sp, #0x10]
+00009ae0 mov       x20, x0
+00009ae4 add       x19, x29, #0x30
+00009ae8 add       x0, x0, #0x38
+00009aec str       x0, [x19, #-8]!
+00009af0 bl        #0x6a90 ; pthread_mutex_lock
+00009af4 mov       x0, x20
+00009af8 bl        #0x6ef0 ; _ZN7Updater10RingBuffer26getEmptySizeWithoutLockingEv
+00009afc b         #0x9b14
+00009b00 mov       x20, x0
+00009b04 mov       x0, x19
+00009b08 bl        #0x956c
+00009b0c mov       x0, x20
+00009b10 bl        #0x6f40 ; _Unwind_Resume
+00009b14 mov       x20, x0
+00009b18 mov       x0, x19
+00009b1c bl        #0x956c
+00009b20 mov       x0, x20
+00009b24 ldp       x19, x20, [sp, #0x10]
+00009b28 ldp       x29, x30, [sp], #0x30
+00009b2c ret       

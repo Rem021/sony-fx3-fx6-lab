@@ -1,0 +1,24 @@
+--- ../v25-r4-postmortem-host/gate_input_usability.py	2026-11-04 05:25:44
++++ gate_input_usability.py	2026-11-04 06:58:54
+@@ -5,7 +5,7 @@
+ def valid_command(step,key,hold_ms,count,delete_key=0,max_steps=4096):
+  return 32<=max_steps<=4096 and count<max_steps and step==count+1 and 1<=step<=max_steps and key in BASE_KEYS|({delete_key} if delete_key else set()) and 50<=hold_ms<=200
+ class InputGate:
+- def __init__(self,run,delete_key=0,max_steps=4096):self.run=Path(run);self.sock=None;self.history=[];self.delete_key=delete_key;self.max_steps=max_steps
++ def __init__(self,run,delete_key=0,max_steps=4096,socket_path=None):self.run=Path(run);self.sock=None;self.history=[];self.delete_key=delete_key;self.max_steps=max_steps;self.socket_path=socket_path
+  def exact(self,n):
+   out=bytearray()
+   while len(out)<n:
+@@ -33,9 +33,9 @@
+    return v
+  def connect(self):
+   if self.sock:return
+-  self.sock=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM);self.sock.settimeout(3);old=Path.cwd()
+-  try:os.chdir(self.run);self.sock.connect('g')
+-  finally:os.chdir(old)
++  if not self.socket_path:raise RuntimeError('short GDB socket path required; no global chdir fallback')
++  self.sock=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM);self.sock.settimeout(3)
++  self.sock.connect(self.socket_path)
+   if self.packet('Qqemu.PhyMemMode:1')!='OK':raise RuntimeError('physical GDB mode unavailable')
+   if self.packet('qqemu.PhyMemMode')!='1':raise RuntimeError('physical GDB mode readback failed')
+  def command(self,step,key,hold_ms,observed_page,reason):

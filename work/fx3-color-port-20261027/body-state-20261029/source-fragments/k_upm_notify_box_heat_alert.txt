@@ -1,0 +1,110 @@
+00025c68 stp        x29, x30, [sp, #-0x1b0]!
+00025c6c mov        x29, sp
+00025c70 add        x3, x29, #0x58
+00025c74 stp        x21, x22, [sp, #0x20]
+00025c78 stp        x19, x20, [sp, #0x10]
+00025c7c mov        w20, w2
+00025c80 str        x23, [sp, #0x30]
+00025c84 mov        x2, #0x98
+00025c88 stp        xzr, xzr, [x3]
+00025c8c add        x3, x29, #0x68
+00025c90 mov        w21, w1
+00025c94 add        x1, x29, #0x48
+00025c98 mov        w22, w0
+00025c9c add        x0, x29, #0xec
+00025ca0 stp        xzr, xzr, [x3]
+00025ca4 add        x3, x29, #0x78
+00025ca8 stp        xzr, xzr, [x1]
+00025cac stp        xzr, xzr, [x29, #0xe0]
+00025cb0 stp        xzr, xzr, [x3]
+00025cb4 add        x3, x29, #0x88
+00025cb8 stp        xzr, xzr, [x29, #0xf0]
+00025cbc str        xzr, [x29, #0xd8]
+00025cc0 stp        xzr, xzr, [x3]
+00025cc4 add        x3, x29, x2
+00025cc8 stp        xzr, xzr, [x3]
+00025ccc add        x3, x29, #0xa8
+00025cd0 stp        xzr, xzr, [x3]
+00025cd4 add        x3, x29, #0xb8
+00025cd8 stp        xzr, xzr, [x3]
+00025cdc add        x3, x29, #0xc8
+00025ce0 stp        xzr, xzr, [x3]
+00025ce4 add        x3, x29, #0x100
+00025ce8 stp        xzr, xzr, [x3]
+00025cec add        x3, x29, #0x110
+00025cf0 stp        xzr, xzr, [x3]
+00025cf4 add        x3, x29, #0x120
+00025cf8 stp        xzr, xzr, [x3]
+00025cfc add        x3, x29, #0x130
+00025d00 stp        xzr, xzr, [x3]
+00025d04 add        x3, x29, #0x140
+00025d08 stp        xzr, xzr, [x3]
+00025d0c add        x3, x29, #0x150
+00025d10 stp        xzr, xzr, [x3]
+00025d14 add        x3, x29, #0x160
+00025d18 stp        xzr, xzr, [x3]
+00025d1c add        x3, x29, #0x170
+00025d20 stp        xzr, xzr, [x3]
+00025d24 add        x3, x29, #0x180
+00025d28 stp        xzr, xzr, [x3]
+00025d2c add        x3, x29, #0x190
+00025d30 stp        xzr, xzr, [x3]
+00025d34 add        x3, x29, #0x1a0
+00025d38 stp        xzr, xzr, [x3]
+00025d3c stp        w22, w21, [x29, #0x4c]
+00025d40 str        w20, [x29, #0x5c]
+00025d44 bl         #0x25d44 ; [{"symbol": "memcpy", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00025d48 mov        w0, #0x871
+00025d4c add        x1, x29, #0x40
+00025d50 mov        w3, #1
+00025d54 mov        w2, #0xd0
+00025d58 movk       w0, #0x8092, lsl #16
+00025d5c bl         #0x25d5c ; [{"symbol": "osal_valloc_msg_wait", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00025d60 cbz        w0, #0x25dc8
+00025d64 mov        w19, w0
+00025d68 add        x23, x29, #0xe0
+00025d6c mov        w0, #0xbb
+00025d70 mov        w2, #0x13
+00025d74 mov        w1, #-1
+00025d78 movk       w0, #0x92, lsl #16
+00025d7c stp        w2, w19, [x29, #0xe0]
+00025d80 bl         #0x25d80 ; [{"symbol": "osal_wai_sem_tmo", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00025d84 mov        w0, #0xbb
+00025d88 movk       w0, #0x92, lsl #16
+00025d8c bl         #0x25d8c ; [{"symbol": "osal_sig_sem", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00025d90 mov        x4, x23
+00025d94 mov        w5, #8
+00025d98 mov        w3, #0x200
+00025d9c mov        w2, #6
+00025da0 mov        w1, #2
+00025da4 mov        w0, #0
+00025da8 bl         #0x25da8 ; [{"symbol": "upm_blog_writeonce", "addend": 0, "type": 283, "section": 2}]
+00025dac mov        w0, w19
+00025db0 ldr        x23, [sp, #0x30]
+00025db4 ldp        x19, x20, [sp, #0x10]
+00025db8 ldp        x21, x22, [sp, #0x20]
+00025dbc ldp        x29, x30, [sp], #0x1b0
+00025dc0 ret        
+00025dc4 nop        
+00025dc8 add        x23, x29, #0xe0
+00025dcc ldr        x0, [x29, #0x40]
+00025dd0 mov        x1, x23
+00025dd4 mov        w4, #2
+00025dd8 mov        w3, #0x13
+00025ddc mov        x2, #0xd0
+00025de0 str        w4, [x29, #0xe0]
+00025de4 str        w3, [x29, #0xe8]
+00025de8 stp        w22, w21, [x29, #0xf0]
+00025dec str        w20, [x29, #0x100]
+00025df0 bl         #0x25df0 ; [{"symbol": "memcpy", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00025df4 ldr        x1, [x29, #0x40]
+00025df8 mov        w0, #0x871
+00025dfc movk       w0, #0x8092, lsl #16
+00025e00 bl         #0x25e00 ; [{"symbol": "osal_snd_msg", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00025e04 mov        w19, w0
+00025e08 cbz        w0, #0x25dac
+00025e0c ldr        x1, [x29, #0x40]
+00025e10 mov        w0, #0x871
+00025e14 movk       w0, #0x8092, lsl #16
+00025e18 bl         #0x25e18 ; [{"symbol": "osal_free_msg", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00025e1c b          #0x25d6c

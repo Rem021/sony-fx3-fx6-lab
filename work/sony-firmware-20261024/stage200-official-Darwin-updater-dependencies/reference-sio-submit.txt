@@ -1,0 +1,16 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x1458 630280b9 ldrsw    x3, [x19]
+0x145c 17630091 add      x23, x24, #0x18
+0x1460 01230191 add      x1, x24, #0x48
+0x1464 e00313aa mov      x0, x19
+0x1468 020080d2 mov      x2, #0
+0x146c 63ec7cd3 lsl      x3, x3, #4
+0x1470 e402038b add      x4, x23, x3
+0x1474 ff6a2378 strh     wzr, [x23, x3]
+0x1478 9f040079 strh     wzr, [x4, #2]
+0x147c 9f0400f9 str      xzr, [x4, #8]
+0x1480 630280b9 ldrsw    x3, [x19]
+0x1484 2114038b add      x1, x1, x3, lsl #5
+0x1488 00000094 bl       #0x1488 ; relocation {"symbol": "sio_master_transfer", "addend": 0}
+0x148c f403002a mov      w20, w0
+0x1490 a0070035 cbnz     w0, #0x1584

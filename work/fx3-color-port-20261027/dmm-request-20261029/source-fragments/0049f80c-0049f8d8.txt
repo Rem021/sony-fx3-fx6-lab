@@ -1,0 +1,79 @@
+0049f80c push       {r4, r5, r6, r7, lr}
+0049f80e add        r7, sp, #0xc
+0049f810 push.w     {r8, sb, sl}
+0049f814 movw       sl, #0xfc00
+0049f818 mov        r6, r1
+0049f81a mov        r8, r3
+0049f81c mov        sb, r2
+0049f81e mov        r4, r0
+0049f820 movt       sl, #0xffff
+0049f824 cmp        r6, #0
+0049f826 mov        r5, sl
+0049f828 beq        #0x49f8d0
+0049f82a cmp.w      sb, #0x1000
+0049f82e bhi        #0x49f8d0
+0049f830 movw       r0, #0x7fff
+0049f834 tst        r4, r0
+0049f836 beq        #0x49f8a4
+0049f838 lsls       r0, r4, #0x10
+0049f83a bmi        #0x49f8d0
+0049f83c mov        r0, r4
+0049f83e mov        r1, r6
+0049f840 mov        r2, sb
+0049f842 movs       r3, #0
+0049f844 bl         #0x49fc4c
+0049f848 mov        r5, r0
+0049f84a movw       r0, #0xfc01
+0049f84e movt       r0, #0xffff
+0049f852 cmp        r5, r0
+0049f854 bne        #0x49f8d0
+0049f856 uxth       r0, r4
+0049f858 bl         #0xa87248
+0049f85c cbz        r0, #0x49f87c
+0049f85e ldrb       r1, [r0]
+0049f860 lsls       r1, r1, #0x1c
+0049f862 bmi        #0x49f87c
+0049f864 ldr        r0, [r0, #0x18]
+0049f866 cbz        r0, #0x49f87c
+0049f868 lsrs       r0, r4, #0x10
+0049f86a bfc        r0, #0xc, #0x14
+0049f86e cmp        r0, #0x3e
+0049f870 it         ne
+0049f872 cmpne      r0, #0x8f
+0049f874 beq        #0x49f882
+0049f876 cmp.w      r0, #0x110
+0049f87a beq        #0x49f882
+0049f87c mov        r0, r4
+0049f87e bl         #0x49e0ac
+0049f882 cmp.w      r8, #0
+0049f886 beq        #0x49f8c8
+0049f888 mov        r0, r4
+0049f88a mov        r1, r6
+0049f88c mov        r2, sb
+0049f88e mov        r3, r8
+0049f890 bl         #0x49fc4c
+0049f894 mov        r5, r0
+0049f896 cbz        r5, #0x49f8ce
+0049f898 adr        r0, #0x3c
+0049f89a adr        r1, #0x54
+0049f89c mov        r2, r5
+0049f89e blx        #0x53fa30
+0049f8a2 b          #0x49f8d0
+0049f8a4 movw       r0, #0xf980
+0049f8a8 movt       r0, #0x147
+0049f8ac ldr        r0, [r0]
+0049f8ae ldrb       r0, [r0, #0x17]
+0049f8b0 cbz        r0, #0x49f8d0
+0049f8b2 movw       r0, #0xfe03
+0049f8b6 adr        r1, #0x38
+0049f8b8 mov.w      r2, #0x5f0
+0049f8bc movt       r0, #0xe0
+0049f8c0 blx        #0x53fa30
+0049f8c4 .byte      0x8b, 0xba
+0049f8c6 b          #0x49f8d0
+0049f8c8 add.w      r5, sl, #1
+0049f8cc b          #0x49f8d0
+0049f8ce movs       r5, #0
+0049f8d0 mov        r0, r5
+0049f8d2 pop.w      {r8, sb, sl}
+0049f8d6 pop        {r4, r5, r6, r7, pc}

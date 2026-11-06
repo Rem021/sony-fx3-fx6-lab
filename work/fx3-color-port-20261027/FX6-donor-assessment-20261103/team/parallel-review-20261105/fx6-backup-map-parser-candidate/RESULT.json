@@ -1,0 +1,144 @@
+{
+  "schema": "fx6-map-parser-result-v2",
+  "task": "task_8f5be8c859b0",
+  "dispatch": "ctx_ee9fb5d365bf",
+  "status": "BLOCKED_SOURCE_CONTRACT_NOT_ACCEPTED",
+  "started": false,
+  "vm": false,
+  "qmp_rsp_guest": false,
+  "candidate": "fx6-backup-map-parser-candidate",
+  "frozen_r6_manifest": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49",
+  "source_contract": {
+    "IM_ENDMAPS": "project diagnostic /init greps /usr/bin/im.elf only (not Sony official)",
+    "EARLY_MAPS": "project diagnostic /init cats full /proc/<pid>/maps",
+    "source_file": "work/cpio/init",
+    "source_evidence": "receipts/producer-contract.md",
+    "contract_label": "official_im_elf is a project-script label, not Sony official"
+  },
+  "current": {
+    "serial": "runs/r6-stop-only-20261106T2005Z/run/serial.log",
+    "decision": {
+      "code": "newest_block_incomplete",
+      "message": "newest top-level map block has no matching END",
+      "block": {
+        "kind": "IM_ENDMAPS",
+        "pid": 239,
+        "epoch": null,
+        "begin_line": 47959,
+        "end_line": null,
+        "complete": false,
+        "depth": 0,
+        "nested_under": null,
+        "nested_children": 0,
+        "overlap_with_previous": false,
+        "overlap_with_next": false
+      },
+      "diagnostics": {
+        "stray_end_count": 5
+      }
+    },
+    "replay": "receipts/replay-current-official.json",
+    "appfw_block": {
+      "kind": "IM_ENDMAPS",
+      "pid": 239,
+      "epoch": null,
+      "begin": 8955,
+      "end": 9222,
+      "complete": true,
+      "depth": 0,
+      "nested_children": 0,
+      "overlap_with_previous": false,
+      "rows": 104,
+      "appfw_rows": 4,
+      "appfw_lines": [
+        9078,
+        9079,
+        9080,
+        9081
+      ],
+      "imelf_rows": 6,
+      "foreign_rows": 98
+    },
+    "latest": {
+      "kind": "IM_ENDMAPS",
+      "pid": 239,
+      "epoch": null,
+      "begin_line": 47959,
+      "end_line": null,
+      "complete": false,
+      "depth": 0,
+      "nested_under": null,
+      "nested_children": 0,
+      "overlap_with_previous": false,
+      "overlap_with_next": false
+    },
+    "full_log_status": "blocked"
+  },
+  "66ed": {
+    "serial": "cp-bind-66ed0f78/serial.log",
+    "appfw_block": {
+      "kind": "EARLY_MAPS",
+      "pid": 237,
+      "epoch": 5,
+      "begin": 8029,
+      "end": 8950,
+      "complete": true,
+      "depth": 0,
+      "nested_children": 1,
+      "overlap_with_previous": false,
+      "rows": 313,
+      "appfw_rows": 3,
+      "appfw_lines": [
+        8039,
+        8040,
+        8041
+      ],
+      "imelf_rows": 3,
+      "foreign_rows": 0
+    },
+    "segment_8950": "structural_complete_ONLY_not_source_safe_runtime",
+    "full_log": {
+      "code": "newest_block_incomplete",
+      "begin_line": 69489
+    },
+    "replay": "receipts/replay-66ed-official.json",
+    "note": "END at 8950 exists; initial parser discarded parent due nested IM 8135-8678; corrected stack resumes parent",
+    "runtime_admission": false,
+    "source_safe": false
+  },
+  "synthetic_full_contract": {
+    "status": "accepted_structural_only_not_actual",
+    "bias": "0x7efab5b000",
+    "block_span": [
+      8955,
+      9222
+    ],
+    "appfw_rows": 4,
+    "pt_loads": 2,
+    "static_words": 4,
+    "file": "receipts/synthetic-full-mapping.json"
+  },
+  "tests": {
+    "status": "PASS_OFFLINE_MAP_PARSER",
+    "count": 13,
+    "file": "tests/test-parser.json",
+    "sha256": "7e46f0d85787a23ca2ea38145daf339062b226ed3f4559f5793258cdd3577d3e"
+  },
+  "input_seal": {
+    "count": 6,
+    "unchanged": true,
+    "file": "receipts/input-compare.json"
+  },
+  "diff": "CODE-DIFF.txt",
+  "report": "REPORT.md",
+  "note": "offline map parser candidate; no VM; official producer admission blocked; no boot/menu claim",
+  "correction": {
+    "source_66ed_end_line": 8950,
+    "initial_parser_error": "nested IM BEGIN interrupted/discarded EARLY parent",
+    "parser_fix": "stack + innermost-row attribution + top-level selection",
+    "overlap_flags_fixed": true,
+    "interval_gap_check": true,
+    "source_safe_runtime": false,
+    "note": "stack supports structural analysis only; interleaved old logs remain source unknown"
+  }
+}

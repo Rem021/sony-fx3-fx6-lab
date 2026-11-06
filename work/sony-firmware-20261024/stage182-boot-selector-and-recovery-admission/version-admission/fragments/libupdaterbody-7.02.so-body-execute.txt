@@ -1,0 +1,436 @@
+# work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so
+# SHA256 6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9
+# VA [0x122a4, 0x12968) raw slice SHA256 10991e068d10aeffd687f7e1ff539f66a50b9629b714ca7efe1718d953cc2e02
+   122a4: d11303ff     	sub	sp, sp, #0x4c0
+   122a8: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+   122ac: 910003fd     	mov	x29, sp
+   122b0: a90363f7     	stp	x23, x24, [sp, #0x30]
+   122b4: aa0003f7     	mov	x23, x0
+   122b8: d2800000     	mov	x0, #0x0                // =0
+   122bc: a90153f3     	stp	x19, x20, [sp, #0x10]
+   122c0: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   122c4: aa0103f6     	mov	x22, x1
+   122c8: a9046bf9     	stp	x25, x26, [sp, #0x40]
+   122cc: b0000055     	adrp	x21, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   122d0: a90573fb     	stp	x27, x28, [sp, #0x50]
+   122d4: aa0203fc     	mov	x28, x2
+   122d8: f9004fbf     	str	xzr, [x29, #0x98]
+   122dc: 97fff829     	bl	0x10380 <time@plt>
+   122e0: f9004fa0     	str	x0, [x29, #0x98]
+   122e4: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   122e8: f00000f8     	adrp	x24, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   122ec: 911e06a2     	add	x2, x21, #0x781
+   122f0: 911f3800     	add	x0, x0, #0x7ce
+   122f4: 528005a3     	mov	w3, #0x2d               // =45
+   122f8: 52800001     	mov	w1, #0x0                // =0
+   122fc: b0000054     	adrp	x20, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   12300: 911fce94     	add	x20, x20, #0x7f3
+   12304: d2800013     	mov	x19, #0x0               // =0
+   12308: 97fff98a     	bl	0x10930 <printf@plt>
+   1230c: f947f319     	ldr	x25, [x24, #0xfe0]
+   12310: b000005a     	adrp	x26, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   12314: f9400320     	ldr	x0, [x25]
+   12318: f8736800     	ldr	x0, [x0, x19]
+   1231c: b4000200     	cbz	x0, 0x1235c <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0xb8>
+   12320: aa1403e1     	mov	x1, x20
+   12324: 97fff627     	bl	0xfbc0 <strstr@plt>
+   12328: b4000160     	cbz	x0, 0x12354 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0xb0>
+   1232c: 911fff40     	add	x0, x26, #0x7ff
+   12330: 97fff634     	bl	0xfc00 <puts@plt>
+   12334: f947f301     	ldr	x1, [x24, #0xfe0]
+   12338: f9400020     	ldr	x0, [x1]
+   1233c: f8736802     	ldr	x2, [x0, x19]
+   12340: 52800b00     	mov	w0, #0x58               // =88
+   12344: 39000040     	strb	w0, [x2]
+   12348: f9400021     	ldr	x1, [x1]
+   1234c: f8736821     	ldr	x1, [x1, x19]
+   12350: 39000420     	strb	w0, [x1, #0x1]
+   12354: 91002273     	add	x19, x19, #0x8
+   12358: 17ffffef     	b	0x12314 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x70>
+   1235c: 910363b8     	add	x24, x29, #0xd8
+   12360: aa1803e0     	mov	x0, x24
+   12364: 97fff887     	bl	0x10580 <Updater::StringHandler::StringHandler()@plt>
+   12368: b0000041     	adrp	x1, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1236c: aa1803e0     	mov	x0, x24
+   12370: 91207821     	add	x1, x1, #0x81e
+   12374: 97fff85b     	bl	0x104e0 <Updater::StringHandler::SetString(char const*)@plt>
+   12378: aa1803e0     	mov	x0, x24
+   1237c: 97fff7b5     	bl	0x10250 <Updater::DirectoryHandler::Create(Updater::StringHandler const&)@plt>
+   12380: f00000e0     	adrp	x0, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12384: 9102c3b9     	add	x25, x29, #0xb0
+   12388: b94042e1     	ldr	w1, [x23, #0x40]
+   1238c: f947a800     	ldr	x0, [x0, #0xf50]
+   12390: 91004000     	add	x0, x0, #0x10
+   12394: a90a5ba0     	stp	x0, x22, [x29, #0xa0]
+   12398: aa1903e0     	mov	x0, x25
+   1239c: 97fff83d     	bl	0x10490 <Updater::FlagFirmwareInformationHandler::FlagFirmwareInformationHandler(Updater::UPDATER_ACTION_MODE)@plt>
+   123a0: 910583b3     	add	x19, x29, #0x160
+   123a4: b94042e1     	ldr	w1, [x23, #0x40]
+   123a8: aa1303e0     	mov	x0, x19
+   123ac: 97fff6a5     	bl	0xfe40 <Updater::XmlConfigHandler::XmlConfigHandler(Updater::UPDATER_ACTION_MODE)@plt>
+   123b0: b94042e1     	ldr	w1, [x23, #0x40]
+   123b4: 910303a0     	add	x0, x29, #0xc0
+   123b8: f9003fa0     	str	x0, [x29, #0x78]
+   123bc: 97fff831     	bl	0x10480 <Updater::MountEntryHandler::MountEntryHandler(Updater::UPDATER_ACTION_MODE)@plt>
+   123c0: 9103e3a0     	add	x0, x29, #0xf8
+   123c4: f90047a0     	str	x0, [x29, #0x88]
+   123c8: 97fff86e     	bl	0x10580 <Updater::StringHandler::StringHandler()@plt>
+   123cc: 910943b4     	add	x20, x29, #0x250
+   123d0: aa1403e0     	mov	x0, x20
+   123d4: 97fff72b     	bl	0x10080 <Updater::PackedFileHeader::PackedFileHeader()@plt>
+   123d8: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   123dc: 910743a1     	add	x1, x29, #0x1d0
+   123e0: 9120e800     	add	x0, x0, #0x83a
+   123e4: 94002439     	bl	0x1b4c8 <Updater::BackupIF::GetBackupModelCode_FromFirm(char const*, unsigned int*)+0x4c>
+   123e8: 350005c0     	cbnz	w0, 0x124a0 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x1fc>
+   123ec: b0000056     	adrp	x22, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   123f0: b0000044     	adrp	x4, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   123f4: b0000042     	adrp	x2, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   123f8: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   123fc: 91215ac1     	add	x1, x22, #0x856
+   12400: 91212c84     	add	x4, x4, #0x84b
+   12404: d2800203     	mov	x3, #0x10               // =16
+   12408: 9116cc42     	add	x2, x2, #0x5b3
+   1240c: 91217c00     	add	x0, x0, #0x85f
+   12410: f2b81da3     	movk	x3, #0xc0ed, lsl #16
+   12414: b000005a     	adrp	x26, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   12418: 97fff702     	bl	0x10020 <mount@plt>
+   1241c: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12420: 9121b740     	add	x0, x26, #0x86d
+   12424: f947cc21     	ldr	x1, [x1, #0xf98]
+   12428: 97fff7f6     	bl	0x10400 <Updater::BackupIF::GetBackupType(char const*, char*)@plt>
+   1242c: 72001c1f     	tst	w0, #0xff
+   12430: 54000341     	b.ne	0x12498 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x1f4>
+   12434: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   12438: 528000a1     	mov	w1, #0x5                // =5
+   1243c: 9121b744     	add	x4, x26, #0x86d
+   12440: 911e06a2     	add	x2, x21, #0x781
+   12444: 91220400     	add	x0, x0, #0x881
+   12448: 52801203     	mov	w3, #0x90               // =144
+   1244c: 72a00061     	movk	w1, #0x3, lsl #16
+   12450: 97fff938     	bl	0x10930 <printf@plt>
+   12454: d2800200     	mov	x0, #0x10               // =16
+   12458: 97fff64a     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1245c: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12460: f00000e2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12464: f9471821     	ldr	x1, [x1, #0xe30]
+   12468: f9474442     	ldr	x2, [x2, #0xe88]
+   1246c: 91004021     	add	x1, x1, #0x10
+   12470: f9000001     	str	x1, [x0]
+   12474: 528000a1     	mov	w1, #0x5                // =5
+   12478: 72a00061     	movk	w1, #0x3, lsl #16
+   1247c: b9000801     	str	w1, [x0, #0x8]
+   12480: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12484: 3900301f     	strb	wzr, [x0, #0xc]
+   12488: f947e021     	ldr	x1, [x1, #0xfc0]
+   1248c: 97fff89d     	bl	0x10700 <__cxa_throw@plt>
+   12490: aa0003f5     	mov	x21, x0
+   12494: 14000148     	b	0x129b4 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x710>
+   12498: 91215ac0     	add	x0, x22, #0x856
+   1249c: 97fff819     	bl	0x10500 <umount@plt>
+   124a0: aa1903e0     	mov	x0, x25
+   124a4: 97fff8e3     	bl	0x10830 <Updater::FlagFirmwareInformationHandler::StartUpdate()@plt>
+   124a8: b94042e0     	ldr	w0, [x23, #0x40]
+   124ac: 97fff68d     	bl	0xfee0 <Updater::BuildInPlugin::StartUpdate(Updater::UPDATER_ACTION_MODE)@plt>
+   124b0: 910463bb     	add	x27, x29, #0x118
+   124b4: aa1b03e0     	mov	x0, x27
+   124b8: 97fff832     	bl	0x10580 <Updater::StringHandler::StringHandler()@plt>
+   124bc: b0000041     	adrp	x1, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   124c0: aa1b03e0     	mov	x0, x27
+   124c4: 91226421     	add	x1, x1, #0x899
+   124c8: 97fff806     	bl	0x104e0 <Updater::StringHandler::SetString(char const*)@plt>
+   124cc: aa1c03e1     	mov	x1, x28
+   124d0: aa1303e0     	mov	x0, x19
+   124d4: 97fff5cf     	bl	0xfc10 <Updater::XmlConfigHandler::Initialize(Updater::CallbackInterface*)@plt>
+   124d8: aa1b03e1     	mov	x1, x27
+   124dc: aa1303e0     	mov	x0, x19
+   124e0: 97fff5a0     	bl	0xfb60 <Updater::XmlConfigHandler::LoadConfig(Updater::StringHandler const&)@plt>
+   124e4: 53001c1a     	uxtb	w26, w0
+   124e8: 3500033a     	cbnz	w26, 0x1254c <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x2a8>
+   124ec: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   124f0: 52800041     	mov	w1, #0x2                // =2
+   124f4: 911e06a2     	add	x2, x21, #0x781
+   124f8: 9118b800     	add	x0, x0, #0x62e
+   124fc: 528013a3     	mov	w3, #0x9d               // =157
+   12500: 72a00061     	movk	w1, #0x3, lsl #16
+   12504: 97fff90b     	bl	0x10930 <printf@plt>
+   12508: d2800200     	mov	x0, #0x10               // =16
+   1250c: 97fff61d     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   12510: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12514: f00000e2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12518: f9471821     	ldr	x1, [x1, #0xe30]
+   1251c: f9474442     	ldr	x2, [x2, #0xe88]
+   12520: 91004021     	add	x1, x1, #0x10
+   12524: f9000001     	str	x1, [x0]
+   12528: 52800041     	mov	w1, #0x2                // =2
+   1252c: 72a00061     	movk	w1, #0x3, lsl #16
+   12530: b9000801     	str	w1, [x0, #0x8]
+   12534: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12538: 3900301f     	strb	wzr, [x0, #0xc]
+   1253c: f947e021     	ldr	x1, [x1, #0xfc0]
+   12540: 97fff870     	bl	0x10700 <__cxa_throw@plt>
+   12544: aa0003f5     	mov	x21, x0
+   12548: 14000119     	b	0x129ac <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x708>
+   1254c: 910663b6     	add	x22, x29, #0x198
+   12550: f9403fa5     	ldr	x5, [x29, #0x78]
+   12554: aa1303e4     	mov	x4, x19
+   12558: aa1903e3     	mov	x3, x25
+   1255c: aa1c03e2     	mov	x2, x28
+   12560: aa1803e1     	mov	x1, x24
+   12564: aa1603e0     	mov	x0, x22
+   12568: 97fff5fa     	bl	0xfd50 <Updater::BodyInformation::BodyInformation(Updater::StringHandler const&, Updater::CallbackInterface*, Updater::FlagFirmwareInformationHandler*, Updater::XmlConfigHandler*, Updater::MountEntryHandler*)@plt>
+   1256c: 910022e0     	add	x0, x23, #0x8
+   12570: f90043a0     	str	x0, [x29, #0x80]
+   12574: 910283a0     	add	x0, x29, #0xa0
+   12578: f9003ba0     	str	x0, [x29, #0x70]
+   1257c: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   12580: 91232000     	add	x0, x0, #0x8c8
+   12584: f90037a0     	str	x0, [x29, #0x68]
+   12588: 9104e3a0     	add	x0, x29, #0x138
+   1258c: f90033a0     	str	x0, [x29, #0x60]
+   12590: f94043a0     	ldr	x0, [x29, #0x80]
+   12594: 97fff57b     	bl	0xfb80 <Updater::UpdaterBody::StopFlag::GetFlag()@plt>
+   12598: 72001c1f     	tst	w0, #0xff
+   1259c: 54000761     	b.ne	0x12688 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x3e4>
+   125a0: f9403ba1     	ldr	x1, [x29, #0x70]
+   125a4: aa1403e0     	mov	x0, x20
+   125a8: 97fff6b2     	bl	0x10070 <Updater::PackedFileHeader::Parse(Updater::PackedFirmwareBuffer*)@plt>
+   125ac: 35000760     	cbnz	w0, 0x12698 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x3f4>
+   125b0: f940e7a0     	ldr	x0, [x29, #0x1c8]
+   125b4: b9429bbc     	ldr	w28, [x29, #0x298]
+   125b8: f9400001     	ldr	x1, [x0]
+   125bc: f9401421     	ldr	x1, [x1, #0x28]
+   125c0: d63f0020     	blr	x1
+   125c4: 6b1c001f     	cmp	w0, w28
+   125c8: 540000e1     	b.ne	0x125e4 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x340>
+   125cc: aa1803e0     	mov	x0, x24
+   125d0: 97fff680     	bl	0xffd0 <Updater::StringHandler::GetCharString() const@plt>
+   125d4: aa0003fc     	mov	x28, x0
+   125d8: 91002280     	add	x0, x20, #0x8
+   125dc: 97fff67d     	bl	0xffd0 <Updater::StringHandler::GetCharString() const@plt>
+   125e0: 14000012     	b	0x12628 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x384>
+   125e4: f940e7a0     	ldr	x0, [x29, #0x1c8]
+   125e8: f9400001     	ldr	x1, [x0]
+   125ec: f9401022     	ldr	x2, [x1, #0x20]
+   125f0: aa1603e1     	mov	x1, x22
+   125f4: d63f0040     	blr	x2
+   125f8: 91002281     	add	x1, x20, #0x8
+   125fc: 2a1c03e0     	mov	w0, w28
+   12600: 97fff7e4     	bl	0x10590 <Updater::KeyTagFactory::GetKeyTag(unsigned int, Updater::StringHandler const&)@plt>
+   12604: aa0003e1     	mov	x1, x0
+   12608: aa1603e0     	mov	x0, x22
+   1260c: 97fff86d     	bl	0x107c0 <Updater::BodyInformation::SetCurrentKeyTag(Updater::BaseKeyTag*)@plt>
+   12610: f940e7a0     	ldr	x0, [x29, #0x1c8]
+   12614: f9400001     	ldr	x1, [x0]
+   12618: f9400822     	ldr	x2, [x1, #0x10]
+   1261c: aa1603e1     	mov	x1, x22
+   12620: d63f0040     	blr	x2
+   12624: 17ffffea     	b	0x125cc <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x328>
+   12628: aa0003e3     	mov	x3, x0
+   1262c: f94037a2     	ldr	x2, [x29, #0x68]
+   12630: f94047a0     	ldr	x0, [x29, #0x88]
+   12634: aa1c03e1     	mov	x1, x28
+   12638: 97fff886     	bl	0x10850 <Updater::StringHandler::SetString(char const*, char const*, char const*)@plt>
+   1263c: 394ef3a0     	ldrb	w0, [x29, #0x3bc]
+   12640: 91002281     	add	x1, x20, #0x8
+   12644: f9009fa1     	str	x1, [x29, #0x138]
+   12648: 390563a0     	strb	w0, [x29, #0x158]
+   1264c: f94047a1     	ldr	x1, [x29, #0x88]
+   12650: f940e7a0     	ldr	x0, [x29, #0x1c8]
+   12654: f900a3a1     	str	x1, [x29, #0x140]
+   12658: 9100a281     	add	x1, x20, #0x28
+   1265c: f900a7a1     	str	x1, [x29, #0x148]
+   12660: 91014281     	add	x1, x20, #0x50
+   12664: f900aba1     	str	x1, [x29, #0x150]
+   12668: f9400001     	ldr	x1, [x0]
+   1266c: f94033a3     	ldr	x3, [x29, #0x60]
+   12670: f9403ba2     	ldr	x2, [x29, #0x70]
+   12674: f9400c24     	ldr	x4, [x1, #0x18]
+   12678: aa1603e1     	mov	x1, x22
+   1267c: d63f0080     	blr	x4
+   12680: 72001c1f     	tst	w0, #0xff
+   12684: 54fff861     	b.ne	0x12590 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x2ec>
+   12688: 5280001a     	mov	w26, #0x0               // =0
+   1268c: f94043a0     	ldr	x0, [x29, #0x80]
+   12690: 97fff53c     	bl	0xfb80 <Updater::UpdaterBody::StopFlag::GetFlag()@plt>
+   12694: 14000032     	b	0x1275c <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x4b8>
+   12698: 7100041f     	cmp	w0, #0x1
+   1269c: 540001a1     	b.ne	0x126d0 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x42c>
+   126a0: f940e7a0     	ldr	x0, [x29, #0x1c8]
+   126a4: f9400001     	ldr	x1, [x0]
+   126a8: f9401022     	ldr	x2, [x1, #0x20]
+   126ac: aa1603e1     	mov	x1, x22
+   126b0: d63f0040     	blr	x2
+   126b4: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   126b8: 911e06a2     	add	x2, x21, #0x781
+   126bc: 9118b800     	add	x0, x0, #0x62e
+   126c0: 52801763     	mov	w3, #0xbb               // =187
+   126c4: 52800001     	mov	w1, #0x0                // =0
+   126c8: 97fff89a     	bl	0x10930 <printf@plt>
+   126cc: 17fffff0     	b	0x1268c <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x3e8>
+   126d0: 71000c1f     	cmp	w0, #0x3
+   126d4: 54fffda0     	b.eq	0x12688 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x3e4>
+   126d8: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   126dc: 52800041     	mov	w1, #0x2                // =2
+   126e0: 911e06a2     	add	x2, x21, #0x781
+   126e4: 9118b800     	add	x0, x0, #0x62e
+   126e8: 52801803     	mov	w3, #0xc0               // =192
+   126ec: 72a00061     	movk	w1, #0x3, lsl #16
+   126f0: 97fff890     	bl	0x10930 <printf@plt>
+   126f4: d2800200     	mov	x0, #0x10               // =16
+   126f8: 97fff5a2     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   126fc: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12700: f00000e2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12704: f9471821     	ldr	x1, [x1, #0xe30]
+   12708: f9474442     	ldr	x2, [x2, #0xe88]
+   1270c: 91004021     	add	x1, x1, #0x10
+   12710: f9000001     	str	x1, [x0]
+   12714: 52800041     	mov	w1, #0x2                // =2
+   12718: 72a00061     	movk	w1, #0x3, lsl #16
+   1271c: b9000801     	str	w1, [x0, #0x8]
+   12720: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12724: 3900301f     	strb	wzr, [x0, #0xc]
+   12728: f947e021     	ldr	x1, [x1, #0xfc0]
+   1272c: 97fff7f5     	bl	0x10700 <__cxa_throw@plt>
+   12730: f100043f     	cmp	x1, #0x1
+   12734: f00000fc     	adrp	x28, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12738: f00000f7     	adrp	x23, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1273c: f00000fa     	adrp	x26, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12740: 540015c1     	b.ne	0x129f8 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x754>
+   12744: 97fff57b     	bl	0xfd30 <__cxa_begin_catch@plt>
+   12748: aa0003f5     	mov	x21, x0
+   1274c: aa1303e0     	mov	x0, x19
+   12750: 52800001     	mov	w1, #0x0                // =0
+   12754: 97fff6ef     	bl	0x10310 <Updater::XmlConfigHandler::Join(bool)@plt>
+   12758: 14000084     	b	0x12968 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x6c4>
+   1275c: 53001c00     	uxtb	w0, w0
+   12760: 2a00035a     	orr	w26, w26, w0
+   12764: 350002fa     	cbnz	w26, 0x127c0 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x51c>
+   12768: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1276c: 52800041     	mov	w1, #0x2                // =2
+   12770: 911e06a2     	add	x2, x21, #0x781
+   12774: 9118b800     	add	x0, x0, #0x62e
+   12778: 528018a3     	mov	w3, #0xc5               // =197
+   1277c: 72a00061     	movk	w1, #0x3, lsl #16
+   12780: 97fff86c     	bl	0x10930 <printf@plt>
+   12784: d2800200     	mov	x0, #0x10               // =16
+   12788: 97fff57e     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1278c: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12790: f00000e2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12794: f9471821     	ldr	x1, [x1, #0xe30]
+   12798: f9474442     	ldr	x2, [x2, #0xe88]
+   1279c: 91004021     	add	x1, x1, #0x10
+   127a0: f9000001     	str	x1, [x0]
+   127a4: 52800041     	mov	w1, #0x2                // =2
+   127a8: 72a00061     	movk	w1, #0x3, lsl #16
+   127ac: b9000801     	str	w1, [x0, #0x8]
+   127b0: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   127b4: 3900301f     	strb	wzr, [x0, #0xc]
+   127b8: f947e021     	ldr	x1, [x1, #0xfc0]
+   127bc: 97fff7d1     	bl	0x10700 <__cxa_throw@plt>
+   127c0: 910283bc     	add	x28, x29, #0xa0
+   127c4: f94043a0     	ldr	x0, [x29, #0x80]
+   127c8: 97fff4ee     	bl	0xfb80 <Updater::UpdaterBody::StopFlag::GetFlag()@plt>
+   127cc: 72001c1f     	tst	w0, #0xff
+   127d0: 54000721     	b.ne	0x128b4 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x610>
+   127d4: aa1c03e1     	mov	x1, x28
+   127d8: aa1403e0     	mov	x0, x20
+   127dc: 97fff625     	bl	0x10070 <Updater::PackedFileHeader::Parse(Updater::PackedFirmwareBuffer*)@plt>
+   127e0: 71000c1f     	cmp	w0, #0x3
+   127e4: 54000680     	b.eq	0x128b4 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x610>
+   127e8: 7100041f     	cmp	w0, #0x1
+   127ec: 540002e0     	b.eq	0x12848 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x5a4>
+   127f0: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   127f4: 52800041     	mov	w1, #0x2                // =2
+   127f8: 911e06a2     	add	x2, x21, #0x781
+   127fc: 9118b800     	add	x0, x0, #0x62e
+   12800: 528019a3     	mov	w3, #0xcd               // =205
+   12804: 72a00061     	movk	w1, #0x3, lsl #16
+   12808: 97fff84a     	bl	0x10930 <printf@plt>
+   1280c: d2800200     	mov	x0, #0x10               // =16
+   12810: 97fff55c     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   12814: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12818: f00000e2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1281c: f9471821     	ldr	x1, [x1, #0xe30]
+   12820: f9474442     	ldr	x2, [x2, #0xe88]
+   12824: 91004021     	add	x1, x1, #0x10
+   12828: f9000001     	str	x1, [x0]
+   1282c: 52800041     	mov	w1, #0x2                // =2
+   12830: 72a00061     	movk	w1, #0x3, lsl #16
+   12834: b9000801     	str	w1, [x0, #0x8]
+   12838: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1283c: 3900301f     	strb	wzr, [x0, #0xc]
+   12840: f947e021     	ldr	x1, [x1, #0xfc0]
+   12844: 97fff7af     	bl	0x10700 <__cxa_throw@plt>
+   12848: aa1c03e0     	mov	x0, x28
+   1284c: 97fff5dd     	bl	0xffc0 <Updater::PackedFirmwareBuffer::SkipCurrentBlock()@plt>
+   12850: 72001c1f     	tst	w0, #0xff
+   12854: 54fffb81     	b.ne	0x127c4 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x520>
+   12858: b0000042     	adrp	x2, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1285c: b0000040     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   12860: 52800341     	mov	w1, #0x1a               // =26
+   12864: 911e0442     	add	x2, x2, #0x781
+   12868: 9118b800     	add	x0, x0, #0x62e
+   1286c: 52801a03     	mov	w3, #0xd0               // =208
+   12870: 72a00061     	movk	w1, #0x3, lsl #16
+   12874: 97fff82f     	bl	0x10930 <printf@plt>
+   12878: d2800200     	mov	x0, #0x10               // =16
+   1287c: 97fff541     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   12880: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12884: f00000e2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   12888: f9471821     	ldr	x1, [x1, #0xe30]
+   1288c: f9474442     	ldr	x2, [x2, #0xe88]
+   12890: 91004021     	add	x1, x1, #0x10
+   12894: f9000001     	str	x1, [x0]
+   12898: 52800341     	mov	w1, #0x1a               // =26
+   1289c: 72a00061     	movk	w1, #0x3, lsl #16
+   128a0: b9000801     	str	w1, [x0, #0x8]
+   128a4: f00000e1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   128a8: 3900301f     	strb	wzr, [x0, #0xc]
+   128ac: f947e021     	ldr	x1, [x1, #0xfc0]
+   128b0: 97fff794     	bl	0x10700 <__cxa_throw@plt>
+   128b4: aa1303e0     	mov	x0, x19
+   128b8: 52800001     	mov	w1, #0x0                // =0
+   128bc: 97fff695     	bl	0x10310 <Updater::XmlConfigHandler::Join(bool)@plt>
+   128c0: f94043a0     	ldr	x0, [x29, #0x80]
+   128c4: 97fff4af     	bl	0xfb80 <Updater::UpdaterBody::StopFlag::GetFlag()@plt>
+   128c8: 72001c1f     	tst	w0, #0xff
+   128cc: 540003a0     	b.eq	0x12940 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x69c>
+   128d0: 5280001a     	mov	w26, #0x0               // =0
+   128d4: aa1603e0     	mov	x0, x22
+   128d8: 97fff726     	bl	0x10570 <Updater::BodyInformation::~BodyInformation()@plt>
+   128dc: aa1b03e0     	mov	x0, x27
+   128e0: 97fff7a4     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   128e4: aa1403e0     	mov	x0, x20
+   128e8: 97fff632     	bl	0x101b0 <Updater::PackedFileHeader::~PackedFileHeader()@plt>
+   128ec: f94047a0     	ldr	x0, [x29, #0x88]
+   128f0: 97fff7a0     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   128f4: f9403fa0     	ldr	x0, [x29, #0x78]
+   128f8: 97fff5ce     	bl	0x10030 <Updater::MountEntryHandler::~MountEntryHandler()@plt>
+   128fc: aa1303e0     	mov	x0, x19
+   12900: 97fff5f8     	bl	0x100e0 <Updater::XmlConfigHandler::~XmlConfigHandler()@plt>
+   12904: aa1903e0     	mov	x0, x25
+   12908: 97fff73e     	bl	0x10600 <Updater::FlagFirmwareInformationHandler::~FlagFirmwareInformationHandler()@plt>
+   1290c: aa1803e0     	mov	x0, x24
+   12910: 97fff798     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   12914: 910263a0     	add	x0, x29, #0x98
+   12918: 97fffdf1     	bl	0x120dc <Updater::PackedFirmwareBuffer::~PackedFirmwareBuffer()+0x8>
+   1291c: 2a1a03e0     	mov	w0, w26
+   12920: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   12924: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   12928: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   1292c: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+   12930: a94573fb     	ldp	x27, x28, [sp, #0x50]
+   12934: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+   12938: 911303ff     	add	sp, sp, #0x4c0
+   1293c: d65f03c0     	ret
+   12940: aa1303e0     	mov	x0, x19
+   12944: 97fff4ef     	bl	0xfd00 <Updater::XmlConfigHandler::HasError()@plt>
+   12948: 72001c1f     	tst	w0, #0xff
+   1294c: 54fffc21     	b.ne	0x128d0 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x62c>
+   12950: b94042e0     	ldr	w0, [x23, #0x40]
+   12954: 97fff6a3     	bl	0x103e0 <Updater::BuildInPlugin::EndUpdate(Updater::UPDATER_ACTION_MODE)@plt>
+   12958: f94026e1     	ldr	x1, [x23, #0x48]
+   1295c: aa1903e0     	mov	x0, x25
+   12960: 97fff6f0     	bl	0x10520 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)@plt>
+   12964: 17ffffdc     	b	0x128d4 <Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)+0x630>

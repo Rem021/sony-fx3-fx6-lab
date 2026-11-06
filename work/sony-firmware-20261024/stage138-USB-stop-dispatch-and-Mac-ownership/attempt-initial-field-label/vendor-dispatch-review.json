@@ -1,0 +1,2621 @@
+{
+  "status": "PASS_STATIC_FX3_VENDOR_HEADERS_KERNEL_DISPATCH_NOT_LIVE_SERVICE_OR_RECOVERY",
+  "original_library_functions": [
+    {
+      "image": "libInfraUsbCmn.so",
+      "name": "_ZN13CUsbGadgetSen9on_createEP7CUsbSvcP19CUSB_GADGET_REGINFOP19CUSB_GADGET_CREINFO",
+      "VA": "0x18cb4",
+      "bytes": 224,
+      "sha256": "1ecb027130d77115c79b42e56aaf5d5dcd61053678a68771d6350a3c715a4ffe",
+      "instructions": [
+        {
+          "pc": "0x18cb4",
+          "bytes": "fd7bb5a9",
+          "asm": "stp x29, x30, [sp, #-0xb0]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cb8",
+          "bytes": "41008052",
+          "asm": "mov w1, #2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cbc",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cc0",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cc4",
+          "bytes": "b4030191",
+          "asm": "add x20, x29, #0x40",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cc8",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18ccc",
+          "bytes": "80220091",
+          "asm": "add x0, x20, #8",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cd0",
+          "bytes": "f51300f9",
+          "asm": "str x21, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cd4",
+          "bytes": "15008012",
+          "asm": "mov w21, #-1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cd8",
+          "bytes": "b32300f9",
+          "asm": "str x19, [x29, #0x40]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cdc",
+          "bytes": "1f7c03a9",
+          "asm": "stp xzr, xzr, [x0, #0x30]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18ce0",
+          "bytes": "1f7c02a9",
+          "asm": "stp xzr, xzr, [x0, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18ce4",
+          "bytes": "1f7c01a9",
+          "asm": "stp xzr, xzr, [x0, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18ce8",
+          "bytes": "c00000f0",
+          "asm": "adrp x0, #0x33000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cec",
+          "bytes": "000846f9",
+          "asm": "ldr x0, [x0, #0xc10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cf0",
+          "bytes": "a08304a9",
+          "asm": "stp x0, x0, [x29, #0x48]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cf4",
+          "bytes": "a04300f9",
+          "asm": "str x0, [x29, #0x80]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cf8",
+          "bytes": "600440f9",
+          "asm": "ldr x0, [x3, #8]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18cfc",
+          "bytes": "a04700f9",
+          "asm": "str x0, [x29, #0x88]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d00",
+          "bytes": "60604039",
+          "asm": "ldrb w0, [x3, #0x18]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d04",
+          "bytes": "757201b9",
+          "asm": "str w21, [x19, #0x170]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d08",
+          "bytes": "a0670239",
+          "asm": "strb w0, [x29, #0x99]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d0c",
+          "bytes": "200000b0",
+          "asm": "adrp x0, #0x1d000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d10",
+          "bytes": "00801191",
+          "asm": "add x0, x0, #0x460",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d14",
+          "bytes": "020c40a9",
+          "asm": "ldp x2, x3, [x0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d18",
+          "bytes": "a0c30291",
+          "asm": "add x0, x29, #0xb0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d1c",
+          "bytes": "020cb8a9",
+          "asm": "stp x2, x3, [x0, #-0x80]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d20",
+          "bytes": "a05300f9",
+          "asm": "str x0, [x29, #0xa0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d24",
+          "bytes": "00028052",
+          "asm": "mov w0, #0x10",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d28",
+          "bytes": "a0ab00b9",
+          "asm": "str w0, [x29, #0xa8]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d2c",
+          "bytes": "60b240f9",
+          "asm": "ldr x0, [x19, #0x160]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d30",
+          "bytes": "5cd5ff97",
+          "asm": "bl #0xe2a0",
+          "PLT_symbol": "open"
+        },
+        {
+          "pc": "0x18d34",
+          "bytes": "607201b9",
+          "asm": "str w0, [x19, #0x170]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d38",
+          "bytes": "2001f837",
+          "asm": "tbnz w0, #0x1f, #0x18d5c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d3c",
+          "bytes": "60b640f9",
+          "asm": "ldr x0, [x19, #0x168]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d40",
+          "bytes": "41008052",
+          "asm": "mov w1, #2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d44",
+          "bytes": "757601b9",
+          "asm": "str w21, [x19, #0x174]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d48",
+          "bytes": "56d5ff97",
+          "asm": "bl #0xe2a0",
+          "PLT_symbol": "open"
+        },
+        {
+          "pc": "0x18d4c",
+          "bytes": "607601b9",
+          "asm": "str w0, [x19, #0x174]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d50",
+          "bytes": "a000f836",
+          "asm": "tbz w0, #0x1f, #0x18d64",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d54",
+          "bytes": "607241b9",
+          "asm": "ldr w0, [x19, #0x170]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d58",
+          "bytes": "36d7ff97",
+          "asm": "bl #0xea30",
+          "PLT_symbol": "close"
+        },
+        {
+          "pc": "0x18d5c",
+          "bytes": "e0008052",
+          "asm": "mov w0, #7",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d60",
+          "bytes": "09000014",
+          "asm": "b #0x18d84",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d64",
+          "bytes": "607241b9",
+          "asm": "ldr w0, [x19, #0x170]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d68",
+          "bytes": "e20314aa",
+          "asm": "mov x2, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d6c",
+          "bytes": "01009cd2",
+          "asm": "mov x1, #0xe000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d70",
+          "bytes": "010ea8f2",
+          "asm": "movk x1, #0x4070, lsl #16",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d74",
+          "bytes": "13d6ff97",
+          "asm": "bl #0xe5c0",
+          "PLT_symbol": "ioctl"
+        },
+        {
+          "pc": "0x18d78",
+          "bytes": "1f000071",
+          "asm": "cmp w0, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d7c",
+          "bytes": "20018052",
+          "asm": "mov w0, #9",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d80",
+          "bytes": "00b09f1a",
+          "asm": "csel w0, w0, wzr, lt",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d84",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d88",
+          "bytes": "f51340f9",
+          "asm": "ldr x21, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d8c",
+          "bytes": "fd7bcba8",
+          "asm": "ldp x29, x30, [sp], #0xb0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18d90",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "image": "libInfraUsbCmn.so",
+      "name": "_ZN13CUsbGadgetSen11proc_keventEmhhPv",
+      "VA": "0x18be8",
+      "bytes": 96,
+      "sha256": "850d0e7beec9e617cac1cea6234c992221c8b4de06fdbe1a6168d04aa1683f38",
+      "instructions": [
+        {
+          "pc": "0x18be8",
+          "bytes": "211c0053",
+          "asm": "uxtb w1, w1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18bec",
+          "bytes": "421c0053",
+          "asm": "uxtb w2, w2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18bf0",
+          "bytes": "3f040071",
+          "asm": "cmp w1, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18bf4",
+          "bytes": "20020054",
+          "asm": "b.eq #0x18c38",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18bf8",
+          "bytes": "3f1c0071",
+          "asm": "cmp w1, #7",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18bfc",
+          "bytes": "41020054",
+          "asm": "b.ne #0x18c44",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c00",
+          "bytes": "5f100071",
+          "asm": "cmp w2, #4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c04",
+          "bytes": "01020054",
+          "asm": "b.ne #0x18c44",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c08",
+          "bytes": "610040b9",
+          "asm": "ldr w1, [x3]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c0c",
+          "bytes": "21010035",
+          "asm": "cbnz w1, #0x18c30",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c10",
+          "bytes": "047840f9",
+          "asm": "ldr x4, [x0, #0xf0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c14",
+          "bytes": "45008052",
+          "asm": "mov w5, #2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c18",
+          "bytes": "640100b4",
+          "asm": "cbz x4, #0x18c44",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c1c",
+          "bytes": "e30300aa",
+          "asm": "mov x3, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c20",
+          "bytes": "e003052a",
+          "asm": "mov w0, w5",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c24",
+          "bytes": "02008052",
+          "asm": "mov w2, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c28",
+          "bytes": "010080d2",
+          "asm": "mov x1, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c2c",
+          "bytes": "80001fd6",
+          "asm": "br x4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c30",
+          "bytes": "3f040071",
+          "asm": "cmp w1, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c34",
+          "bytes": "81000054",
+          "asm": "b.ne #0x18c44",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c38",
+          "bytes": "65008052",
+          "asm": "mov w5, #3",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c3c",
+          "bytes": "047c40f9",
+          "asm": "ldr x4, [x0, #0xf8]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c40",
+          "bytes": "f6ffff17",
+          "asm": "b #0x18c18",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x18c44",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "image": "libInfraUsbCmn.so",
+      "name": "_ZN7CUsbSvc24check_forced_senser_modeEv",
+      "VA": "0x120fc",
+      "bytes": 172,
+      "sha256": "a19316f6f53bf07cc093b398ff83fce881d18f3ed2b3a066b1965dbc41dff841",
+      "instructions": [
+        {
+          "pc": "0x120fc",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12100",
+          "bytes": "400000f0",
+          "asm": "adrp x0, #0x1d000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12104",
+          "bytes": "00180691",
+          "asm": "add x0, x0, #0x186",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12108",
+          "bytes": "01008052",
+          "asm": "mov w1, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1210c",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12110",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12114",
+          "bytes": "13008052",
+          "asm": "mov w19, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12118",
+          "bytes": "bf530079",
+          "asm": "strh wzr, [x29, #0x28]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1211c",
+          "bytes": "bfab0039",
+          "asm": "strb wzr, [x29, #0x2a]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12120",
+          "bytes": "60f0ff97",
+          "asm": "bl #0xe2a0",
+          "PLT_symbol": "open"
+        },
+        {
+          "pc": "0x12124",
+          "bytes": "0003f837",
+          "asm": "tbnz w0, #0x1f, #0x12184",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12128",
+          "bytes": "b3a30091",
+          "asm": "add x19, x29, #0x28",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1212c",
+          "bytes": "620080d2",
+          "asm": "mov x2, #3",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12130",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12134",
+          "bytes": "f403002a",
+          "asm": "mov w20, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12138",
+          "bytes": "f2f0ff97",
+          "asm": "bl #0xe500",
+          "PLT_symbol": "read"
+        },
+        {
+          "pc": "0x1213c",
+          "bytes": "1f0000f1",
+          "asm": "cmp x0, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12140",
+          "bytes": "ad020054",
+          "asm": "b.le #0x12194",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12144",
+          "bytes": "410000f0",
+          "asm": "adrp x1, #0x1d000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12148",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1214c",
+          "bytes": "21640691",
+          "asm": "add x1, x1, #0x199",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12150",
+          "bytes": "420080d2",
+          "asm": "mov x2, #2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12154",
+          "bytes": "33008052",
+          "asm": "mov w19, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12158",
+          "bytes": "76f1ff97",
+          "asm": "bl #0xe730",
+          "PLT_symbol": "strncmp"
+        },
+        {
+          "pc": "0x1215c",
+          "bytes": "00010034",
+          "asm": "cbz w0, #0x1217c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12160",
+          "bytes": "e203132a",
+          "asm": "mov w2, w19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12164",
+          "bytes": "e103132a",
+          "asm": "mov w1, w19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12168",
+          "bytes": "44b58152",
+          "asm": "mov w4, #0xdaa",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1216c",
+          "bytes": "83038052",
+          "asm": "mov w3, #0x1c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12170",
+          "bytes": "60048052",
+          "asm": "mov w0, #0x23",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12174",
+          "bytes": "13008052",
+          "asm": "mov w19, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12178",
+          "bytes": "a2f0ff97",
+          "asm": "bl #0xe400",
+          "PLT_symbol": "usb_trace_out"
+        },
+        {
+          "pc": "0x1217c",
+          "bytes": "e003142a",
+          "asm": "mov w0, w20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12180",
+          "bytes": "2cf2ff97",
+          "asm": "bl #0xea30",
+          "PLT_symbol": "close"
+        },
+        {
+          "pc": "0x12184",
+          "bytes": "e003132a",
+          "asm": "mov w0, w19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12188",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1218c",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12190",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12194",
+          "bytes": "22008052",
+          "asm": "mov w2, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x12198",
+          "bytes": "c4b58152",
+          "asm": "mov w4, #0xdae",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1219c",
+          "bytes": "83038052",
+          "asm": "mov w3, #0x1c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x121a0",
+          "bytes": "e103022a",
+          "asm": "mov w1, w2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x121a4",
+          "bytes": "f3ffff17",
+          "asm": "b #0x12170",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "image": "libsencore.so",
+      "name": "_ZN3Usb24initialize_usb_interfaceE20usb_port_selection_t",
+      "VA": "0xcaec",
+      "bytes": 248,
+      "sha256": "c84d8de9c906da49b11496498b10141b60b332232e46bd6138f3a918c797075a",
+      "instructions": [
+        {
+          "pc": "0xcaec",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcaf0",
+          "bytes": "e20200d0",
+          "asm": "adrp x2, #0x6a000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcaf4",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcaf8",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcafc",
+          "bytes": "f40200f0",
+          "asm": "adrp x20, #0x6b000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb00",
+          "bytes": "94822991",
+          "asm": "add x20, x20, #0xa60",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb04",
+          "bytes": "42cc47f9",
+          "asm": "ldr x2, [x2, #0xf98]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb08",
+          "bytes": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb0c",
+          "bytes": "f603012a",
+          "asm": "mov w22, w1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb10",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb14",
+          "bytes": "f50300aa",
+          "asm": "mov x21, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb18",
+          "bytes": "20008052",
+          "asm": "mov w0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb1c",
+          "bytes": "b1f6ff97",
+          "asm": "bl #0xa5e0",
+          "PLT_symbol": "senif_init"
+        },
+        {
+          "pc": "0xcb20",
+          "bytes": "60010034",
+          "asm": "cbz w0, #0xcb4c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb24",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb28",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb2c",
+          "bytes": "210c3691",
+          "asm": "add x1, x1, #0xd83",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb30",
+          "bytes": "8cf7ff97",
+          "asm": "bl #0xa960",
+          "PLT_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "pc": "0xcb34",
+          "bytes": "14008052",
+          "asm": "mov w20, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb38",
+          "bytes": "e003142a",
+          "asm": "mov w0, w20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb3c",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb40",
+          "bytes": "f55b42a9",
+          "asm": "ldp x21, x22, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb44",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb48",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb4c",
+          "bytes": "e10200d0",
+          "asm": "adrp x1, #0x6a000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb50",
+          "bytes": "f30200f0",
+          "asm": "adrp x19, #0x6b000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb54",
+          "bytes": "60622991",
+          "asm": "add x0, x19, #0xa58",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb58",
+          "bytes": "212847f9",
+          "asm": "ldr x1, [x1, #0xe50]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb5c",
+          "bytes": "51f8ff97",
+          "asm": "bl #0xaca0",
+          "PLT_symbol": "usbif_initialize"
+        },
+        {
+          "pc": "0xcb60",
+          "bytes": "20010034",
+          "asm": "cbz w0, #0xcb84",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb64",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb68",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb6c",
+          "bytes": "21583691",
+          "asm": "add x1, x1, #0xd96",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb70",
+          "bytes": "7cf7ff97",
+          "asm": "bl #0xa960",
+          "PLT_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "pc": "0xcb74",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb78",
+          "bytes": "7f2e05f9",
+          "asm": "str xzr, [x19, #0xa58]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb7c",
+          "bytes": "91f6ff97",
+          "asm": "bl #0xa5c0",
+          "PLT_symbol": "senif_destroy"
+        },
+        {
+          "pc": "0xcb80",
+          "bytes": "edffff17",
+          "asm": "b #0xcb34",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb84",
+          "bytes": "625a4ab9",
+          "asm": "ldr w2, [x19, #0xa58]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb88",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb8c",
+          "bytes": "21a43691",
+          "asm": "add x1, x1, #0xda9",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb90",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb94",
+          "bytes": "2ff6ff97",
+          "asm": "bl #0xa450",
+          "PLT_symbol": "_Z10cpp_logrechPKcj"
+        },
+        {
+          "pc": "0xcb98",
+          "bytes": "602e45f9",
+          "asm": "ldr x0, [x19, #0xa58]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcb9c",
+          "bytes": "010040f9",
+          "asm": "ldr x1, [x0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcba0",
+          "bytes": "20003fd6",
+          "asm": "blr x1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcba4",
+          "bytes": "00010034",
+          "asm": "cbz w0, #0xcbc4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcba8",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbac",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbb0",
+          "bytes": "21143791",
+          "asm": "add x1, x1, #0xdc5",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbb4",
+          "bytes": "6bf7ff97",
+          "asm": "bl #0xa960",
+          "PLT_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "pc": "0xcbb8",
+          "bytes": "602e45f9",
+          "asm": "ldr x0, [x19, #0xa58]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbbc",
+          "bytes": "fdf4ff97",
+          "asm": "bl #0x9fb0",
+          "PLT_symbol": "usbif_destroy"
+        },
+        {
+          "pc": "0xcbc0",
+          "bytes": "edffff17",
+          "asm": "b #0xcb74",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbc4",
+          "bytes": "34008052",
+          "asm": "mov w20, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbc8",
+          "bytes": "df02146b",
+          "asm": "cmp w22, w20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbcc",
+          "bytes": "61fbff54",
+          "asm": "b.ne #0xcb38",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbd0",
+          "bytes": "602e45f9",
+          "asm": "ldr x0, [x19, #0xa58]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbd4",
+          "bytes": "012840f9",
+          "asm": "ldr x1, [x0, #0x50]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbd8",
+          "bytes": "20003fd6",
+          "asm": "blr x1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbdc",
+          "bytes": "a02200b9",
+          "asm": "str w0, [x21, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xcbe0",
+          "bytes": "d6ffff17",
+          "asm": "b #0xcb38",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "image": "libsencore.so",
+      "name": "_ZN3Usb20active_event_handlerE15__SENIF_EVENT_TPhmi",
+      "VA": "0xc948",
+      "bytes": 120,
+      "sha256": "68ee8fb4adbe8ce9277f09856850b169ba5c031ebd83067be7e1d2be95327b4a",
+      "instructions": [
+        {
+          "pc": "0xc948",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc94c",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc950",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc954",
+          "bytes": "f403002a",
+          "asm": "mov w20, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc958",
+          "bytes": "f30301aa",
+          "asm": "mov x19, x1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc95c",
+          "bytes": "c3000034",
+          "asm": "cbz w3, #0xc974",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc960",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc964",
+          "bytes": "e203032a",
+          "asm": "mov w2, w3",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc968",
+          "bytes": "21183491",
+          "asm": "add x1, x1, #0xd06",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc96c",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc970",
+          "bytes": "b8f6ff97",
+          "asm": "bl #0xa450",
+          "PLT_symbol": "_Z10cpp_logrechPKcj"
+        },
+        {
+          "pc": "0xc974",
+          "bytes": "9f060071",
+          "asm": "cmp w20, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc978",
+          "bytes": "81010054",
+          "asm": "b.ne #0xc9a8",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc97c",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc980",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc984",
+          "bytes": "214c3091",
+          "asm": "add x1, x1, #0xc13",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc988",
+          "bytes": "f6f7ff97",
+          "asm": "bl #0xa960",
+          "PLT_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "pc": "0xc98c",
+          "bytes": "e00200f0",
+          "asm": "adrp x0, #0x6b000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc990",
+          "bytes": "132805f9",
+          "asm": "str x19, [x0, #0xa50]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc994",
+          "bytes": "e7f5ff97",
+          "asm": "bl #0xa130",
+          "PLT_symbol": "_ZN3Usb8InstanceEv"
+        },
+        {
+          "pc": "0xc998",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc99c",
+          "bytes": "81008052",
+          "asm": "mov w1, #4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9a0",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9a4",
+          "bytes": "27f9ff17",
+          "asm": "b #0xae40",
+          "PLT_symbol": "_ZNK3Usb4pushENS_10event_typeE"
+        },
+        {
+          "pc": "0xc9a8",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9ac",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9b0",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9b4",
+          "bytes": "21943091",
+          "asm": "add x1, x1, #0xc25",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9b8",
+          "bytes": "a00f8012",
+          "asm": "mov w0, #-0x7e",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9bc",
+          "bytes": "e9f7ff17",
+          "asm": "b #0xa960",
+          "PLT_symbol": "_Z10cpp_logrechPKc"
+        }
+      ]
+    },
+    {
+      "image": "libsencore.so",
+      "name": "_ZN3Usb22inactive_event_handlerE15__SENIF_EVENT_TPhmi",
+      "VA": "0xc9c0",
+      "bytes": 116,
+      "sha256": "e764fc1d91dd54003cc3f38e87e7196818526e714973eb4bcbff34bf36e6536d",
+      "instructions": [
+        {
+          "pc": "0xc9c0",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9c4",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9c8",
+          "bytes": "f30b00f9",
+          "asm": "str x19, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9cc",
+          "bytes": "f303002a",
+          "asm": "mov w19, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9d0",
+          "bytes": "c3000034",
+          "asm": "cbz w3, #0xc9e8",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9d4",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9d8",
+          "bytes": "e203032a",
+          "asm": "mov w2, w3",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9dc",
+          "bytes": "21183491",
+          "asm": "add x1, x1, #0xd06",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9e0",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9e4",
+          "bytes": "9bf6ff97",
+          "asm": "bl #0xa450",
+          "PLT_symbol": "_Z10cpp_logrechPKcj"
+        },
+        {
+          "pc": "0xc9e8",
+          "bytes": "7f0a0071",
+          "asm": "cmp w19, #2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9ec",
+          "bytes": "81010054",
+          "asm": "b.ne #0xca1c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9f0",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9f4",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9f8",
+          "bytes": "21c83391",
+          "asm": "add x1, x1, #0xcf2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xc9fc",
+          "bytes": "d9f7ff97",
+          "asm": "bl #0xa960",
+          "PLT_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "pc": "0xca00",
+          "bytes": "e00200f0",
+          "asm": "adrp x0, #0x6b000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca04",
+          "bytes": "1f2805f9",
+          "asm": "str xzr, [x0, #0xa50]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca08",
+          "bytes": "caf5ff97",
+          "asm": "bl #0xa130",
+          "PLT_symbol": "_ZN3Usb8InstanceEv"
+        },
+        {
+          "pc": "0xca0c",
+          "bytes": "f30b40f9",
+          "asm": "ldr x19, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca10",
+          "bytes": "a1008052",
+          "asm": "mov w1, #5",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca14",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca18",
+          "bytes": "0af9ff17",
+          "asm": "b #0xae40",
+          "PLT_symbol": "_ZNK3Usb4pushENS_10event_typeE"
+        },
+        {
+          "pc": "0xca1c",
+          "bytes": "f30b40f9",
+          "asm": "ldr x19, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca20",
+          "bytes": "410000d0",
+          "asm": "adrp x1, #0x16000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca24",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca28",
+          "bytes": "21943091",
+          "asm": "add x1, x1, #0xc25",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca2c",
+          "bytes": "a00f8012",
+          "asm": "mov w0, #-0x7e",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xca30",
+          "bytes": "ccf7ff17",
+          "asm": "b #0xa960",
+          "PLT_symbol": "_Z10cpp_logrechPKc"
+        }
+      ]
+    }
+  ],
+  "checked_common_PLT_calls": [
+    {
+      "pc": "0x18d74",
+      "bytes": "13d6ff97",
+      "asm": "bl #0xe5c0",
+      "PLT_symbol": "ioctl"
+    },
+    {
+      "pc": "0x12120",
+      "bytes": "60f0ff97",
+      "asm": "bl #0xe2a0",
+      "PLT_symbol": "open"
+    },
+    {
+      "pc": "0x12138",
+      "bytes": "f2f0ff97",
+      "asm": "bl #0xe500",
+      "PLT_symbol": "read"
+    },
+    {
+      "pc": "0x12158",
+      "bytes": "76f1ff97",
+      "asm": "bl #0xe730",
+      "PLT_symbol": "strncmp"
+    },
+    {
+      "pc": "0x12180",
+      "bytes": "2cf2ff97",
+      "asm": "bl #0xea30",
+      "PLT_symbol": "close"
+    }
+  ],
+  "upstream_reference_pins": [
+    {
+      "path": "work/sony-firmware-20261024/stage134-backup-reader-scope-and-service-extension/audit_readers.py",
+      "bytes": 8603,
+      "sha256": "1bff3cd4993406760cda36356d4d2607ff7d3e0a0072a2214db34ea67090c40a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage134-backup-reader-scope-and-service-extension/upstream/sony.py",
+      "bytes": 36033,
+      "sha256": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage134-backup-reader-scope-and-service-extension/upstream/usb-commands.py",
+      "bytes": 21952,
+      "sha256": "44783d222548598dab97d4813abbd35c3f20540686a579949dbf54e5ab1a5673"
+    }
+  ],
+  "configured_control_headers": {
+    "VA": "0x1d460",
+    "bytes": "4301ff37aad70000430100c855280000",
+    "frames": [
+      {
+        "purpose": "start",
+        "bmRequestType": "0x43",
+        "bRequest": 1,
+        "wValue": "0x37ff",
+        "wIndex": "0xd7aa",
+        "wLength": 0,
+        "setup_hex": "4301ff37aad70000",
+        "inert_data_not_sent": true
+      },
+      {
+        "purpose": "stop",
+        "bmRequestType": "0x43",
+        "bRequest": 1,
+        "wValue": "0xc800",
+        "wIndex": "0x2855",
+        "wLength": 0,
+        "setup_hex": "430100c855280000",
+        "inert_data_not_sent": true
+      }
+    ]
+  },
+  "kernel_vendor_code": {
+    "image_sha256": "1a7294dd9d3babde3f1e8cc2ac4aa12f54356f61995993bbc18ace095ed0cbf2",
+    "code_section": ".text",
+    "entry_offset": "0x0",
+    "span_bytes": 200,
+    "mapping_delimited_not_STT_FUNC_named": true,
+    "native_static_instructions": [
+      {
+        "section_offset": "0x0",
+        "bytes": "fd7bbca9",
+        "asm": "stp x29, x30, [sp, #-0x40]!",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4",
+        "bytes": "fd030091",
+        "asm": "mov x29, sp",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x8",
+        "bytes": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xc",
+        "bytes": "f55b02a9",
+        "asm": "stp x21, x22, [sp, #0x20]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x10",
+        "bytes": "141040f9",
+        "asm": "ldr x20, [x0, #0x20]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x14",
+        "bytes": "00008012",
+        "asm": "mov w0, #-1",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x18",
+        "bytes": "a03f00b9",
+        "asm": "str w0, [x29, #0x3c]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x1c",
+        "bytes": "80be40f9",
+        "asm": "ldr x0, [x20, #0x178]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x20",
+        "bytes": "130040f9",
+        "asm": "ldr x19, [x0]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x24",
+        "bytes": "f30300b4",
+        "asm": "cbz x19, #0xa0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x28",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x2c",
+        "bytes": "020180d2",
+        "asm": "mov x2, #8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x30",
+        "bytes": "f60301aa",
+        "asm": "mov x22, x1",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x34",
+        "bytes": "00000094",
+        "asm": "bl #0x34",
+        "relocation_symbol": "memcmp",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x38",
+        "bytes": "f503002a",
+        "asm": "mov w21, w0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x3c",
+        "bytes": "80010034",
+        "asm": "cbz w0, #0x6c",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40",
+        "bytes": "e10316aa",
+        "asm": "mov x1, x22",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x44",
+        "bytes": "60220091",
+        "asm": "add x0, x19, #8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x48",
+        "bytes": "020180d2",
+        "asm": "mov x2, #8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4c",
+        "bytes": "00000094",
+        "asm": "bl #0x4c",
+        "relocation_symbol": "memcmp",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x50",
+        "bytes": "c0000034",
+        "asm": "cbz w0, #0x68",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x54",
+        "bytes": "f35341a9",
+        "asm": "ldp x19, x20, [sp, #0x10]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x58",
+        "bytes": "40008052",
+        "asm": "mov w0, #2",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x5c",
+        "bytes": "f55b42a9",
+        "asm": "ldp x21, x22, [sp, #0x20]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x60",
+        "bytes": "fd7bc4a8",
+        "asm": "ldp x29, x30, [sp], #0x40",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x64",
+        "bytes": "c0035fd6",
+        "asm": "ret ",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x68",
+        "bytes": "35008052",
+        "asm": "mov w21, #1",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x6c",
+        "bytes": "80c20191",
+        "asm": "add x0, x20, #0x70",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x70",
+        "bytes": "00000094",
+        "asm": "bl #0x70",
+        "relocation_symbol": "usb_gadgetcore_stop_other_driver",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x74",
+        "bytes": "e303002a",
+        "asm": "mov w3, w0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x78",
+        "bytes": "e0010035",
+        "asm": "cbnz w0, #0xb4",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x7c",
+        "bytes": "a5030191",
+        "asm": "add x5, x29, #0x40",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x80",
+        "bytes": "812240f9",
+        "asm": "ldr x1, [x20, #0x40]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x84",
+        "bytes": "84008052",
+        "asm": "mov w4, #4",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x88",
+        "bytes": "e3008052",
+        "asm": "mov w3, #7",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x8c",
+        "bytes": "00008052",
+        "asm": "mov w0, #0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x90",
+        "bytes": "b5cc1fb8",
+        "asm": "str w21, [x5, #-4]!",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x94",
+        "bytes": "820240f9",
+        "asm": "ldr x2, [x20]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x98",
+        "bytes": "00000094",
+        "asm": "bl #0x98",
+        "relocation_symbol": "usb_event_add_queue",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x9c",
+        "bytes": "eeffff17",
+        "asm": "b #0x54",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xa0",
+        "bytes": "42010058",
+        "asm": "ldr x2, #0xc8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xa4",
+        "bytes": "61010058",
+        "asm": "ldr x1, #0xd0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xa8",
+        "bytes": "80010058",
+        "asm": "ldr x0, #0xd8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xac",
+        "bytes": "00000094",
+        "asm": "bl #0xac",
+        "relocation_symbol": "printk",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0xb0",
+        "bytes": "e9ffff17",
+        "asm": "b #0x54",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xb4",
+        "bytes": "a2000058",
+        "asm": "ldr x2, #0xc8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xb8",
+        "bytes": "c1000058",
+        "asm": "ldr x1, #0xd0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xbc",
+        "bytes": "20010058",
+        "asm": "ldr x0, #0xe0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0xc0",
+        "bytes": "00000094",
+        "asm": "bl #0xc0",
+        "relocation_symbol": "printk",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0xc4",
+        "bytes": "e4ffff17",
+        "asm": "b #0x54",
+        "relocation_symbol": null,
+        "relocation_type": null
+      }
+    ],
+    "registration_prefix": [
+      {
+        "section_offset": "0x1580",
+        "bytes": "a13b40f9",
+        "asm": "ldr x1, [x29, #0x70]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x1584",
+        "bytes": "e00318aa",
+        "asm": "mov x0, x24",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x1588",
+        "bytes": "16bf40f9",
+        "asm": "ldr x22, [x24, #0x178]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x158c",
+        "bytes": "00000094",
+        "asm": "bl #0x158c",
+        "relocation_symbol": "usbg_cmn_copy_probe_info",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x1590",
+        "bytes": "001e0035",
+        "asm": "cbnz w0, #0x1950",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x1594",
+        "bytes": "00674139",
+        "asm": "ldrb w0, [x24, #0x59]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x1598",
+        "bytes": "1f040071",
+        "asm": "cmp w0, #1",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x159c",
+        "bytes": "881b0054",
+        "asm": "b.hi #0x190c",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15a0",
+        "bytes": "012740f9",
+        "asm": "ldr x1, [x24, #0x48]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15a4",
+        "bytes": "00c30191",
+        "asm": "add x0, x24, #0x70",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15a8",
+        "bytes": "1f3b00f9",
+        "asm": "str xzr, [x24, #0x70]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15ac",
+        "bytes": "184b00f9",
+        "asm": "str x24, [x24, #0x90]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15b0",
+        "bytes": "c4230058",
+        "asm": "ldr x4, #0x1a28",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15b4",
+        "bytes": "25004039",
+        "asm": "ldrb w5, [x1]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15b8",
+        "bytes": "c3230058",
+        "asm": "ldr x3, #0x1a30",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15bc",
+        "bytes": "05e30139",
+        "asm": "strb w5, [x24, #0x78]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15c0",
+        "bytes": "c2230058",
+        "asm": "ldr x2, #0x1a38",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15c4",
+        "bytes": "21044039",
+        "asm": "ldrb w1, [x1, #1]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15c8",
+        "bytes": "040f0aa9",
+        "asm": "stp x4, x3, [x24, #0xa0]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15cc",
+        "bytes": "01e70139",
+        "asm": "strb w1, [x24, #0x79]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15d0",
+        "bytes": "027300f9",
+        "asm": "str x2, [x24, #0xe0]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15d4",
+        "bytes": "00000094",
+        "asm": "bl #0x15d4",
+        "relocation_symbol": "usb_gadgetcore_register_driver",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x15d8",
+        "bytes": "f303002a",
+        "asm": "mov w19, w0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x15dc",
+        "bytes": "40180035",
+        "asm": "cbnz w0, #0x18e4",
+        "relocation_symbol": null,
+        "relocation_type": null
+      }
+    ],
+    "callback_pointer_literal": {
+      "offset": "0x1a38",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "addend": 0
+    },
+    "behavior": "Two exact8B setup comparisons; match0/1 -> stop other gadget driver, if success queue4B command id under event7; queue return not checked before constant2 return.",
+    "not_proof_host_ACK_waits_for_consumption_or_cancel_join": true
+  },
+  "kernel_ldisc_stop": {
+    "section_offset": "0x3ff0",
+    "bytes": 252,
+    "instructions": [
+      {
+        "section_offset": "0x3ff0",
+        "bytes": "fd7bbea9",
+        "asm": "stp x29, x30, [sp, #-0x20]!",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x3ff4",
+        "bytes": "fd030091",
+        "asm": "mov x29, sp",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x3ff8",
+        "bytes": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x3ffc",
+        "bytes": "f40300aa",
+        "asm": "mov x20, x0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4000",
+        "bytes": "93070058",
+        "asm": "ldr x19, #0x40f0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4004",
+        "bytes": "60820091",
+        "asm": "add x0, x19, #0x20",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4008",
+        "bytes": "00000094",
+        "asm": "bl #0x4008",
+        "relocation_symbol": "mutex_lock",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x400c",
+        "bytes": "7fb200b9",
+        "asm": "str wzr, [x19, #0xb0]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4010",
+        "bytes": "61620091",
+        "asm": "add x1, x19, #0x18",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4014",
+        "bytes": "20018052",
+        "asm": "mov w0, #9",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4018",
+        "bytes": "00000094",
+        "asm": "bl #0x4018",
+        "relocation_symbol": "clear_bit",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x401c",
+        "bytes": "22008052",
+        "asm": "mov w2, #1",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4020",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4024",
+        "bytes": "e103022a",
+        "asm": "mov w1, w2",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4028",
+        "bytes": "030080d2",
+        "asm": "mov x3, #0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x402c",
+        "bytes": "00000094",
+        "asm": "bl #0x402c",
+        "relocation_symbol": "__wake_up",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x4030",
+        "bytes": "7f5600f9",
+        "asm": "str xzr, [x19, #0xa8]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4034",
+        "bytes": "940300b4",
+        "asm": "cbz x20, #0x40a4",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4038",
+        "bytes": "81b640f9",
+        "asm": "ldr x1, [x20, #0x168]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x403c",
+        "bytes": "200840f9",
+        "asm": "ldr x0, [x1, #0x10]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4040",
+        "bytes": "a00400b4",
+        "asm": "cbz x0, #0x40d4",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4044",
+        "bytes": "020040f9",
+        "asm": "ldr x2, [x0]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4048",
+        "bytes": "820000b4",
+        "asm": "cbz x2, #0x4058",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x404c",
+        "bytes": "410040f9",
+        "asm": "ldr x1, [x2]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4050",
+        "bytes": "f8fdff97",
+        "asm": "bl #0x3830",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4054",
+        "bytes": "81b640f9",
+        "asm": "ldr x1, [x20, #0x168]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4058",
+        "bytes": "200c40f9",
+        "asm": "ldr x0, [x1, #0x18]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x405c",
+        "bytes": "000300b4",
+        "asm": "cbz x0, #0x40bc",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4060",
+        "bytes": "010040f9",
+        "asm": "ldr x1, [x0]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4064",
+        "bytes": "610000b4",
+        "asm": "cbz x1, #0x4070",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4068",
+        "bytes": "210040f9",
+        "asm": "ldr x1, [x1]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x406c",
+        "bytes": "f1fdff97",
+        "asm": "bl #0x3830",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4070",
+        "bytes": "54040058",
+        "asm": "ldr x20, #0x40f8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4074",
+        "bytes": "60820091",
+        "asm": "add x0, x19, #0x20",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4078",
+        "bytes": "00000094",
+        "asm": "bl #0x4078",
+        "relocation_symbol": "mutex_unlock",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x407c",
+        "bytes": "014138d5",
+        "asm": "mrs x1, sp_el0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4080",
+        "bytes": "00050058",
+        "asm": "ldr x0, #0x4120",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4084",
+        "bytes": "03008052",
+        "asm": "mov w3, #0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4088",
+        "bytes": "228843b9",
+        "asm": "ldr w2, [x1, #0x388]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x408c",
+        "bytes": "81220b91",
+        "asm": "add x1, x20, #0x2c8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4090",
+        "bytes": "00000094",
+        "asm": "bl #0x4090",
+        "relocation_symbol": "printk",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x4094",
+        "bytes": "00008052",
+        "asm": "mov w0, #0",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x4098",
+        "bytes": "f35341a9",
+        "asm": "ldp x19, x20, [sp, #0x10]",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x409c",
+        "bytes": "fd7bc2a8",
+        "asm": "ldp x29, x30, [sp], #0x20",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40a0",
+        "bytes": "c0035fd6",
+        "asm": "ret ",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40a4",
+        "bytes": "b4020058",
+        "asm": "ldr x20, #0x40f8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40a8",
+        "bytes": "c1020058",
+        "asm": "ldr x1, #0x4100",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40ac",
+        "bytes": "e0020058",
+        "asm": "ldr x0, #0x4108",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40b0",
+        "bytes": "82220b91",
+        "asm": "add x2, x20, #0x2c8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40b4",
+        "bytes": "00000094",
+        "asm": "bl #0x40b4",
+        "relocation_symbol": "printk",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x40b8",
+        "bytes": "efffff17",
+        "asm": "b #0x4074",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40bc",
+        "bytes": "f4010058",
+        "asm": "ldr x20, #0x40f8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40c0",
+        "bytes": "01020058",
+        "asm": "ldr x1, #0x4100",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40c4",
+        "bytes": "a0020058",
+        "asm": "ldr x0, #0x4118",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40c8",
+        "bytes": "82220b91",
+        "asm": "add x2, x20, #0x2c8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40cc",
+        "bytes": "00000094",
+        "asm": "bl #0x40cc",
+        "relocation_symbol": "printk",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x40d0",
+        "bytes": "e9ffff17",
+        "asm": "b #0x4074",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40d4",
+        "bytes": "34010058",
+        "asm": "ldr x20, #0x40f8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40d8",
+        "bytes": "41010058",
+        "asm": "ldr x1, #0x4100",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40dc",
+        "bytes": "a0010058",
+        "asm": "ldr x0, #0x4110",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40e0",
+        "bytes": "82220b91",
+        "asm": "add x2, x20, #0x2c8",
+        "relocation_symbol": null,
+        "relocation_type": null
+      },
+      {
+        "section_offset": "0x40e4",
+        "bytes": "00000094",
+        "asm": "bl #0x40e4",
+        "relocation_symbol": "printk",
+        "relocation_type": 283
+      },
+      {
+        "section_offset": "0x40e8",
+        "bytes": "e3ffff17",
+        "asm": "b #0x4074",
+        "relocation_symbol": null,
+        "relocation_type": null
+      }
+    ],
+    "no_end_to_end_timeout_or_return_proven": true
+  },
+  "kernel_reference_snippets": [
+    {
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_main.c",
+      "first_line": 437,
+      "last_line": 502,
+      "text": "  */\nstatic int fops_cmn_ioctl_probe(struct inode *inode,\n\t\t\t\tstruct file *fd, void *p_arg)\n{\n\tint err = -ENOSYS;\n\tstruct func_data* p_this = (struct func_data*)(fd->private_data);\n\tstruct probe_info *p_info = p_arg;\n\tstruct usbg_sen_probe_info* p_sen_probe=NULL;\n\tstruct usbg_se_user* p_user = (struct usbg_se_user*)(p_this->vp_user);\n\n\t/* <framework>\t*/\n\t/* copy probe param.\t*/\n\tif( usbg_cmn_copy_probe_info(p_this, p_info) ){\n\t\terr = -ENOBUFS;\n\t\tKERR(\"%s() copy probe info\\n\", __FUNCTION__);\n\t\tgoto SUB_RET;\n\t}\n\tif(p_this->info.uc_func_info_interface_num > USBG_SEN_IF_NR){\n\t\terr = -ENOSYS;\n\t\tKERR(\"%s() if num too big\\n\", __FUNCTION__);\n\t\tKERR(\"                 %d\\n\",\n\t\t     p_this->info.uc_func_info_interface_num);\n\t\tKERR(\"                 %d\\n\",USBG_SEN_IF_NR);\n\t\tgoto SUB_RET;\n\t}\n\tKINFO(\"%s() if num=%d\\n\",\n\t      __FUNCTION__, p_this->info.uc_func_info_interface_num);\n\n\tp_this->core_reg_info.function = NULL;\n\tp_this->core_reg_info.context = p_this;\n\n\tp_this->core_reg_info.config\n\t\t= p_this->info.tbl_interface[0].uc_configuration;\n\n\tp_this->core_reg_info.interface\n\t\t= p_this->info.tbl_interface[0].uc_interface;\n\n\tp_this->core_reg_info.start = core_start;\n\tp_this->core_reg_info.stop = core_stop;\n\tp_this->core_reg_info.vendor = core_vendor;\n\n\terr = usb_gadgetcore_register_driver(&p_this->core_reg_info);\n\n\t/* </framework>\t*/\n\n\tif(err){\n\t\tKERR(\"%s() err=%x\\n\", __FUNCTION__, err);\n\t} else {\n\t\tKINFO(\"%s() err=%x\\n\\n\", __FUNCTION__, err);\n\t}\n\n\t/* <user>\t*/\n\tp_sen_probe = (struct usbg_sen_probe_info*)p_this->info.vp_user;\n\n\tif(p_sen_probe){\n\t\terr = alloc_usbg_se_user(p_user);\n\t\tif(err==0){\n\t\t\tmemcpy(p_user->p_cmd,\n\t\t\t\t       p_sen_probe->cmd,\n\t\t\t\t       sizeof(struct usbg_sen_cmd)\n\t\t\t\t       * USBG_SEN_CMD_NR);\n\t\t}\n\t}\n\t/* </user>\t*/\nSUB_RET:\n\treturn err;"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_main.c",
+      "first_line": 1236,
+      "last_line": 1275,
+      "text": "static int core_vendor(struct usb_gadget_func_driver* p_drv,\n\t\t       const struct usb_ctrlrequest* request, struct usb_ep* ep)\n{\n\tstruct func_data* p_this = (struct func_data*)(p_drv->context);\n\tstruct usbg_se_user* p_user = (struct usbg_se_user*)(p_this->vp_user);\n\tusbg_sen_cmd_id cmd_id = USBG_SEN_CMD_NONE;\n\tint i;\n\tint ret=0;\n\t\n\tif(p_user->p_cmd==NULL){\n\t\tKERR(\"%s() p_user->p_cmd==NULL\\n\", __FUNCTION__);\n\t\tgoto SUB_RET;\n\t}\n\n\tfor(i=0;i<USBG_SEN_CMD_NR;i++){\n\t\tif(0==memcmp(&p_user->p_cmd[i].setup,\n\t\t\t     request, sizeof(struct usb_ctrlrequest))){\n            USBG_SEN_API_DETAIL(\" i = %d\\n\", i);\n\t\t\tret = usb_gadgetcore_stop_other_driver(\n\t\t\t\t&p_this->core_reg_info);\n\t\t\tif(ret){\n\t\t\t\tKERR(\"%s() error ret=%d\\n\", __FUNCTION__, ret);\n\t\t\t\tgoto SUB_RET;\n\t\t\t}\n\n\t\t\tcmd_id = i;\n\t\t\tusb_event_add_queue(\n\t\t\t\tUSB_EVENT_PRI_NORMAL,\n\t\t\t\tp_this->info.event.vendor_req,\n\t\t\t\t(usb_hndl_t)(p_this->info.hndl),\n\t\t\t\tUSBG_KEVENT_ID_CMN_VENDOR,\n\t\t\t\tsizeof(cmd_id),\n\t\t\t\t(void*)&cmd_id );\n\t\t\tbreak;\n\t\t}\n\t}\n\nSUB_RET:\n\treturn USB_GADGETCORE_THRU;\n}"
+    }
+  ],
+  "consumer_boundary": {
+    "function": "CUsbGadgetSen::proc_kevent",
+    "VA": "0x18be8",
+    "condition": "common event7 and subtype4, command id from payload",
+    "cmd0": "invoke stored+f0 callback with event2 and zero status",
+    "cmd1": "invoke stored+f8 callback with event3 and zero status",
+    "all_registration_dynamic_callbacks_queue_ownership_and_wire_completion_closed": false,
+    "distinguish_from_core_SENSER_event1_and2": "Core active/inactive handlers publish internal4/5; these types cannot be equated solely by matching integers."
+  },
+  "separate_forced_service_file": {
+    "path": "/setting/sen/smode",
+    "two_byte_marker": "UU",
+    "reference_open_flags": 0,
+    "read_max_bytes": 3,
+    "compare_bytes": 2,
+    "different_from_stage136_ramdsk_dev_mode_AA": true,
+    "setting_fstab_configured_flash_backed": true,
+    "actual_file_exists_or_is_modified_by_this_authentication": false,
+    "actual_body_mount_or_coldboot_persistence_verified": false
+  },
+  "no_original_Sony_execution_or_device_operations": true,
+  "safe_exit_or_independent_recovery_proven": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

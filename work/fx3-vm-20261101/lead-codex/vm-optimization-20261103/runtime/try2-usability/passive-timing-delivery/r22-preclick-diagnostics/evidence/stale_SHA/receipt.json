@@ -1,0 +1,108 @@
+{
+  "status": "preflight_not_clicked",
+  "session": "fx3-deadline-r22-c83d4bcb5872",
+  "tab": null,
+  "target": "scripted fixture only; no human review",
+  "key": 427,
+  "host_start_ns": 422228621284083,
+  "eval_may_have_started": true,
+  "guest_keys_sent_directly_by_cli": 0,
+  "result": {
+    "checks": {
+      "alarm_armed": true,
+      "alarm_due_in_future": true,
+      "alarm_nonce_matches": true,
+      "delivery_known": true,
+      "frame_loaded": true,
+      "key_enabled": true,
+      "key_exists": true,
+      "no_awaiting_step": true,
+      "no_render_fault": true,
+      "page_not_busy": true,
+      "page_not_ending": true,
+      "page_not_finished": true,
+      "phase_ready": true,
+      "review_known": true,
+      "review_not_awaiting": true,
+      "reviewed_generation_matches": true,
+      "reviewed_sha_matches": false,
+      "server_no_error": true,
+      "server_no_review": true,
+      "server_not_busy": true,
+      "server_ready": true,
+      "status_present": true,
+      "steps_under_eight": true
+    },
+    "click_called": false,
+    "decision": "refuse_before_click",
+    "failed_checks": [
+      "reviewed_sha_matches"
+    ],
+    "schema": "fx3-operator-preclick-v1",
+    "server_atomic_permission": false,
+    "snapshot": {
+      "alarm": {
+        "armed_ms": 40.60000002384186,
+        "due_ms": 20040.60000002384,
+        "expected_nonce": "15061684-05c8-4c78-bbbc-83368ce95762",
+        "nonce": "15061684-05c8-4c78-bbbc-83368ce95762",
+        "now_ms": 53.10000002384186,
+        "state": "armed"
+      },
+      "awaiting_step": null,
+      "canonical_sha256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+      "delivery_unknown": false,
+      "digest_document_time_origin": 1793838543045,
+      "document_time_origin": 1793838543045,
+      "ending": false,
+      "error_present": false,
+      "expected_launch": "89fb8864-b525-4d19-b7f4-b97af67f6781",
+      "expected_page_sha256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+      "finished": false,
+      "frame_loaded": true,
+      "identity_trusted": true,
+      "key": 427,
+      "key_enabled": true,
+      "key_exists": true,
+      "launch": "89fb8864-b525-4d19-b7f4-b97af67f6781",
+      "loaded": {
+        "displayed_sequence": 1,
+        "generation": 1,
+        "sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+        "shown_sequence": 1
+      },
+      "page": {
+        "document_unchanged": true,
+        "exact_url": true,
+        "launch_identity": true,
+        "one_inline_script": true,
+        "page_fingerprint": true,
+        "script_unchanged_during_digest": true,
+        "time_origin_unchanged": true,
+        "top_level": true
+      },
+      "page_busy": false,
+      "phase": "ready",
+      "ready": true,
+      "render_fault_present": false,
+      "render_valid": true,
+      "review_awaiting": false,
+      "review_required": false,
+      "review_unknown": false,
+      "reviewed": {
+        "generation": 1,
+        "sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a"
+      },
+      "script_count": 1,
+      "server_busy": false,
+      "status_frame": {
+        "generation": 1,
+        "sequence": 1,
+        "sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+      },
+      "steps": 0
+    },
+    "status": "preflight_not_clicked"
+  },
+  "host_end_ns": 422228628405625
+}

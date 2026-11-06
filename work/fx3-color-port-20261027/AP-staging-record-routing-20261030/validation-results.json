@@ -1,0 +1,182 @@
+{
+  "status": "PASS_SCOPED_STAGING_AND_RECORD_ROUTING",
+  "instruction_checks": [
+    {
+      "VA": "0xfe04ec0c",
+      "bytes": "3df7ff97",
+      "mnemonic": "bl",
+      "operands": "#0xfe04c900"
+    },
+    {
+      "VA": "0xfe04edf4",
+      "bytes": "c3f6ff97",
+      "mnemonic": "bl",
+      "operands": "#0xfe04c900"
+    },
+    {
+      "VA": "0xfe04c900",
+      "bytes": "f5010014",
+      "mnemonic": "b",
+      "operands": "#0xfe04d0d4"
+    },
+    {
+      "VA": "0xfe04d0d8",
+      "bytes": "202100f9",
+      "mnemonic": "str",
+      "operands": "x0, [x9, #0x40]"
+    },
+    {
+      "VA": "0xfe05b2dc",
+      "bytes": "1f110071",
+      "mnemonic": "cmp",
+      "operands": "w8, #4"
+    },
+    {
+      "VA": "0xfe05b2e0",
+      "bytes": "a1020054",
+      "mnemonic": "b.ne",
+      "operands": "#0xfe05b334"
+    },
+    {
+      "VA": "0xfe05b33c",
+      "bytes": "72c5ff97",
+      "mnemonic": "bl",
+      "operands": "#0xfe04c904"
+    },
+    {
+      "VA": "0xfe050164",
+      "bytes": "40338052",
+      "mnemonic": "mov",
+      "operands": "w0, #0x19a"
+    },
+    {
+      "VA": "0xfe050170",
+      "bytes": "401fa072",
+      "mnemonic": "movk",
+      "operands": "w0, #0xfa, lsl #16"
+    },
+    {
+      "VA": "0xfe05018c",
+      "bytes": "09008012",
+      "mnemonic": "mov",
+      "operands": "w9, #-1"
+    },
+    {
+      "VA": "0xfe050190",
+      "bytes": "5f0009eb",
+      "mnemonic": "cmp",
+      "operands": "x2, x9"
+    },
+    {
+      "VA": "0xfe050198",
+      "bytes": "80060011",
+      "mnemonic": "add",
+      "operands": "w0, w20, #1"
+    },
+    {
+      "VA": "0xfe0501a0",
+      "bytes": "621e00f9",
+      "mnemonic": "str",
+      "operands": "x2, [x19, #0x38]"
+    },
+    {
+      "VA": "0xfe0501c0",
+      "bytes": "80b60011",
+      "mnemonic": "add",
+      "operands": "w0, w20, #0x2d"
+    },
+    {
+      "VA": "0xfe0501c8",
+      "bytes": "622200f9",
+      "mnemonic": "str",
+      "operands": "x2, [x19, #0x40]"
+    },
+    {
+      "VA": "0xfe0501ec",
+      "bytes": "622600f9",
+      "mnemonic": "str",
+      "operands": "x2, [x19, #0x48]"
+    },
+    {
+      "VA": "0xfe0501f0",
+      "bytes": "420a0094",
+      "mnemonic": "bl",
+      "operands": "#0xfe052af8"
+    },
+    {
+      "VA": "0xfe052b0c",
+      "bytes": "010c41f9",
+      "mnemonic": "ldr",
+      "operands": "x1, [x0, #0x218]"
+    },
+    {
+      "VA": "0xfe052b10",
+      "bytes": "021c40f9",
+      "mnemonic": "ldr",
+      "operands": "x2, [x0, #0x38]"
+    },
+    {
+      "VA": "0xfe052b14",
+      "bytes": "031041f9",
+      "mnemonic": "ldr",
+      "operands": "x3, [x0, #0x220]"
+    },
+    {
+      "VA": "0xfe052b24",
+      "bytes": "582b0094",
+      "mnemonic": "bl",
+      "operands": "#0xfe05d884"
+    },
+    {
+      "VA": "0xfe052168",
+      "bytes": "40338052",
+      "mnemonic": "mov",
+      "operands": "w0, #0x19a"
+    },
+    {
+      "VA": "0xfe05216c",
+      "bytes": "401fa072",
+      "mnemonic": "movk",
+      "operands": "w0, #0xfa, lsl #16"
+    },
+    {
+      "VA": "0xfe052290",
+      "bytes": "1d010a8b",
+      "mnemonic": "add",
+      "operands": "x29, x8, x10"
+    },
+    {
+      "VA": "0xfe05b6e8",
+      "bytes": "e8070032",
+      "mnemonic": "mov",
+      "operands": "w8, #3"
+    },
+    {
+      "VA": "0xfe05b6f0",
+      "bytes": "c80200b9",
+      "mnemonic": "str",
+      "operands": "w8, [x22]"
+    }
+  ],
+  "complete_original_leaf_API_calls": 14,
+  "original_leaf_instructions": 6489,
+  "CP_context_fragment_instructions": 6102,
+  "AP_wrapper_prefix_instructions": 417,
+  "independent_original_fragments_not_whole_boot": true,
+  "mode3_explicit_fixture_not_current_body": true,
+  "original_record1_offset_verified": "0xd2000",
+  "source_pointer_0x38_bound_to_FA019A_in_reference": true,
+  "AP_CP_property_selection_proved_in_reference": true,
+  "source_pointer_admission_check_complete": false,
+  "class5_default_address_roundtrips": 9,
+  "original_p8_members": 4,
+  "DmmCfg_slot_bytes": 102400,
+  "DmmCfg_actual_bytes": 43320,
+  "DmmCfg_tail_initialization_proved": false,
+  "wrong_CP_record_allones_reaches_transfer_boundary": true,
+  "wrong_record_is_analytical_control_not_observed_boot": true,
+  "actual_transfer_file_load_hardware_or_privileged_execution": false,
+  "FX3_AP_boot_or_current_backup_obtained": false,
+  "CMOS_RAW_full_ISP_or_flashable_modified_package_produced": false,
+  "goal_complete": false
+}

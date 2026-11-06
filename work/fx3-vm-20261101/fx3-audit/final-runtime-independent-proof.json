@@ -1,0 +1,234 @@
+{
+  "status": "FINAL_NATIVE_MAC_FX3_CORE_AND_LOADER_INDEPENDENTLY_VERIFIED",
+  "qemu_binary": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+  "qemu_binary_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+  "profiles": {
+    "minimal": {
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/a-7811bbff",
+      "receipt_sha256": "adfd1fa2ed4d67a68689a3d80188eed9437d219387d0a0cd2295bf4abdbc2c74",
+      "serial_sha256": "ebada89f3144a8a0db2f99f63538abfdc7025affe2cee3bfa675cb3097e4b307",
+      "status": "ORIGINAL_USERLAND_REACHED",
+      "uname": "Linux (none) 4.9.337-scel+ #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025 aarch64 GNU/Linux",
+      "raw_printk_records_independently_parsed": 803,
+      "seven_original_initcalls_actually_skipped": [
+        "__boottime___udif_init_udif_hwtimer",
+        "__boottime___udif_init_udif_wdt",
+        "__boottime___udif_init_udif_fusb_otg",
+        "__boottime___udif_init_udif_pcie",
+        "__boottime___udif_init_udif_ddrc",
+        "__boottime___udif_init_pcidma",
+        "__boottime_sony_usb_init"
+      ],
+      "qemu_runtime_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+      "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "process_reaped": true
+    },
+    "app-loader": {
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/a-2d6d46e5",
+      "receipt_sha256": "4826860d171aa39e2e1b4397a0fb6e7136538501d893cd81c7e2d3aa222d9980",
+      "serial_sha256": "ab8b8df119e09afc62d8026c0b28453160d5c2bae1c36638a7b957323736ed0a",
+      "status": "ORIGINAL_APP_LOADER_VERIFY_LIST_PASSED",
+      "uname": "Linux (none) 4.9.337-scel+ #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025 aarch64 GNU/Linux",
+      "raw_printk_records_independently_parsed": 803,
+      "seven_original_initcalls_actually_skipped": [
+        "__boottime___udif_init_udif_hwtimer",
+        "__boottime___udif_init_udif_wdt",
+        "__boottime___udif_init_udif_fusb_otg",
+        "__boottime___udif_init_udif_pcie",
+        "__boottime___udif_init_udif_ddrc",
+        "__boottime___udif_init_pcidma",
+        "__boottime_sony_usb_init"
+      ],
+      "qemu_runtime_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+      "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "process_reaped": true,
+      "required_markers": [
+        "FX3_LD_VERIFY_RC_bootin=0",
+        "FX3_LD_LIST_RC_bootin=0",
+        "FX3_LD_VERIFY_RC_im=0",
+        "FX3_LD_LIST_RC_im=0",
+        "FX3_APPLICATION_LOADER_PROBE_END"
+      ],
+      "original_elf_count": 20,
+      "mapped_library_provider_rows": [
+        {
+          "application": "bootin",
+          "soname": "libbackup.so",
+          "runtime_path": "/usr/lib/libbackup.so",
+          "canonical_original_path": "/usr/lib/libbackup.so",
+          "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d"
+        },
+        {
+          "application": "bootin",
+          "soname": "libosal_utm.so",
+          "runtime_path": "/usr/lib/libosal_utm.so",
+          "canonical_original_path": "/usr/lib/libosal_utm.so",
+          "sha256": "d9510b4ce1d7e59a0f2e9b5be14624a4cece6f514879e8a6d23ce890a46d25eb"
+        },
+        {
+          "application": "bootin",
+          "soname": "libosal_uipc.so",
+          "runtime_path": "/usr/lib/libosal_uipc.so",
+          "canonical_original_path": "/usr/lib/libosal_uipc.so",
+          "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3"
+        },
+        {
+          "application": "bootin",
+          "soname": "libpthread.so.0",
+          "runtime_path": "/lib/libpthread.so.0",
+          "canonical_original_path": "/lib/libpthread-2.25.so",
+          "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+        },
+        {
+          "application": "bootin",
+          "soname": "libstdc++.so.6",
+          "runtime_path": "/usr/lib/libstdc++.so.6",
+          "canonical_original_path": "/usr/lib/libstdc++.so.6.0.22",
+          "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+        },
+        {
+          "application": "bootin",
+          "soname": "libm.so.6",
+          "runtime_path": "/lib/libm.so.6",
+          "canonical_original_path": "/lib/libm-2.25.so",
+          "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+        },
+        {
+          "application": "bootin",
+          "soname": "libdl.so.2",
+          "runtime_path": "/lib/libdl.so.2",
+          "canonical_original_path": "/lib/libdl-2.25.so",
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+        },
+        {
+          "application": "bootin",
+          "soname": "libgcc_s.so.1",
+          "runtime_path": "/usr/lib/libgcc_s.so.1",
+          "canonical_original_path": "/usr/lib/libgcc_s.so.1",
+          "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+        },
+        {
+          "application": "bootin",
+          "soname": "libc.so.6",
+          "runtime_path": "/lib/libc.so.6",
+          "canonical_original_path": "/lib/libc-2.25.so",
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+        },
+        {
+          "application": "bootin",
+          "soname": "librt.so.1",
+          "runtime_path": "/lib/librt.so.1",
+          "canonical_original_path": "/lib/librt-2.25.so",
+          "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+        },
+        {
+          "application": "im",
+          "soname": "libjemalloc_ds.so.2",
+          "runtime_path": "/usr/lib/libjemalloc_ds.so.2",
+          "canonical_original_path": "/usr/lib/libjemalloc_ds.so.2",
+          "sha256": "2832f529913186277b242b3ae51391d0e24481b857f11a5690a20937f45ba564"
+        },
+        {
+          "application": "im",
+          "soname": "libIMDB.so",
+          "runtime_path": "/usr/lib/libIMDB.so",
+          "canonical_original_path": "/usr/lib/libIMDB.so",
+          "sha256": "6ceaea432bc7c4645897c2f1272941b33b0c04115ec62ffa000b37faf3d8517d"
+        },
+        {
+          "application": "im",
+          "soname": "libbackup.so",
+          "runtime_path": "/usr/lib/libbackup.so",
+          "canonical_original_path": "/usr/lib/libbackup.so",
+          "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d"
+        },
+        {
+          "application": "im",
+          "soname": "libosal_utm.so",
+          "runtime_path": "/usr/lib/libosal_utm.so",
+          "canonical_original_path": "/usr/lib/libosal_utm.so",
+          "sha256": "d9510b4ce1d7e59a0f2e9b5be14624a4cece6f514879e8a6d23ce890a46d25eb"
+        },
+        {
+          "application": "im",
+          "soname": "libosal_uipc.so",
+          "runtime_path": "/usr/lib/libosal_uipc.so",
+          "canonical_original_path": "/usr/lib/libosal_uipc.so",
+          "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3"
+        },
+        {
+          "application": "im",
+          "soname": "libdl.so.2",
+          "runtime_path": "/lib/libdl.so.2",
+          "canonical_original_path": "/lib/libdl-2.25.so",
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+        },
+        {
+          "application": "im",
+          "soname": "libpthread.so.0",
+          "runtime_path": "/lib/libpthread.so.0",
+          "canonical_original_path": "/lib/libpthread-2.25.so",
+          "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+        },
+        {
+          "application": "im",
+          "soname": "libSTMcmdexecute.so",
+          "runtime_path": "/lib/libSTMcmdexecute.so",
+          "canonical_original_path": "/lib/libSTMcmdexecute.so",
+          "sha256": "4bcde80b18a30b08c36d5ca1183b3c2fa5e357bb81530a8a9f39c5ec267d8a71"
+        },
+        {
+          "application": "im",
+          "soname": "libssl.so.3",
+          "runtime_path": "/usr/lib/libssl.so.3",
+          "canonical_original_path": "/usr/lib/libssl.so.3",
+          "sha256": "27bc25f1e766877b72888dba67dc60fe4589c4a7b253c9324fce8c8ad1913f21"
+        },
+        {
+          "application": "im",
+          "soname": "libcrypto.so.3",
+          "runtime_path": "/usr/lib/libcrypto.so.3",
+          "canonical_original_path": "/usr/lib/libcrypto.so.3",
+          "sha256": "893a37bd6f5a19069362e7c54c023ac9b93eb5d3c976dc45a82502fb4317a8d4"
+        },
+        {
+          "application": "im",
+          "soname": "libstdc++.so.6",
+          "runtime_path": "/usr/lib/libstdc++.so.6",
+          "canonical_original_path": "/usr/lib/libstdc++.so.6.0.22",
+          "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+        },
+        {
+          "application": "im",
+          "soname": "libm.so.6",
+          "runtime_path": "/lib/libm.so.6",
+          "canonical_original_path": "/lib/libm-2.25.so",
+          "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+        },
+        {
+          "application": "im",
+          "soname": "libgcc_s.so.1",
+          "runtime_path": "/usr/lib/libgcc_s.so.1",
+          "canonical_original_path": "/usr/lib/libgcc_s.so.1",
+          "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+        },
+        {
+          "application": "im",
+          "soname": "libc.so.6",
+          "runtime_path": "/lib/libc.so.6",
+          "canonical_original_path": "/lib/libc-2.25.so",
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+        },
+        {
+          "application": "im",
+          "soname": "librt.so.1",
+          "runtime_path": "/lib/librt.so.1",
+          "canonical_original_path": "/lib/librt-2.25.so",
+          "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+        }
+      ],
+      "app_main_or_ui_claimed": false
+    }
+  },
+  "limits": "Minimal custom init and explicit unsupported-device blacklist. Full original AP main/menu/capture require separate proof."
+}

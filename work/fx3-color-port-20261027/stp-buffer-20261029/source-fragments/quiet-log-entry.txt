@@ -1,0 +1,14 @@
+004848c0 sub        sp, #4
+004848c2 push       {r4, r5, r6, r7, lr}
+004848c4 add        r7, sp, #0xc
+004848c6 push.w     {r8, sb, fp}
+004848ca sub        sp, #0x114
+004848cc movw       sb, #0x4a85
+004848d0 mov        r6, r0
+004848d2 mov        r5, r2
+004848d4 mov        r8, r1
+004848d6 str        r3, [r7, #8]
+004848d8 movt       sb, #0x100
+004848dc ldrb.w     r0, [sb]
+004848e0 cmp        r0, #0
+004848e2 beq        #0x484994

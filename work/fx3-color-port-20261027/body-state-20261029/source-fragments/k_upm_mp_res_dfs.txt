@@ -1,0 +1,250 @@
+0001ffa0 stp        x29, x30, [sp, #-0x1c0]!
+0001ffa4 mov        x29, sp
+0001ffa8 stp        x19, x20, [sp, #0x10]
+0001ffac mov        w20, #1
+0001ffb0 stp        x21, x22, [sp, #0x20]
+0001ffb4 stp        xzr, xzr, [x29, #0x40]
+0001ffb8 str        wzr, [x29, #0x34]
+0001ffbc str        xzr, [x29, #0x50]
+0001ffc0 bl         #0x1d880
+0001ffc4 bl         #0x1d8c0
+0001ffc8 bl         #0x1ffc8 ; [{"symbol": "k_upm_mp_Backup_read_dfs", "addend": 0, "type": 283, "section": 2}]
+0001ffcc bl         #0x1ffcc ; [{"symbol": "upm_mp_dfs_mode_init", "addend": 0, "type": 283, "section": 2}]
+0001ffd0 ldr        x0, #0x20388
+0001ffd4 strb       w20, [x0, #0x6c]
+0001ffd8 bl         #0x1ffd8 ; [{"symbol": "k_upm_mp_dfs_driver_init", "addend": 0, "type": 283, "section": 2}]
+0001ffdc str        w0, [x29, #0x34]
+0001ffe0 ldr        x19, #0x20390
+0001ffe4 cbnz       w0, #0x20268
+0001ffe8 strb       w20, [x19, #0x70]
+0001ffec bl         #0x1ffec ; [{"symbol": "upm_mp_dfs_state_machine_resume", "addend": 0, "type": 283, "section": 2}]
+0001fff0 ldrb       w0, [x19, #0x70]
+0001fff4 cbnz       w0, #0x20278
+0001fff8 add        x3, x29, #0x68
+0001fffc mov        x2, #0x98
+00020000 add        x1, x29, #0x58
+00020004 add        x0, x29, #0xfc
+00020008 mov        w22, #0x170
+0002000c mov        w20, #1
+00020010 stp        xzr, xzr, [x3]
+00020014 add        x3, x29, #0x78
+00020018 movk       w22, #0x92, lsl #16
+0002001c mov        w21, #0x4f
+00020020 stp        xzr, xzr, [x1]
+00020024 stp        xzr, xzr, [x3]
+00020028 add        x3, x29, #0x88
+0002002c stp        xzr, xzr, [x29, #0xf0]
+00020030 str        xzr, [x29, #0xe8]
+00020034 stp        xzr, xzr, [x3]
+00020038 add        x3, x29, x2
+0002003c stp        xzr, xzr, [x3]
+00020040 add        x3, x29, #0xa8
+00020044 stp        xzr, xzr, [x3]
+00020048 add        x3, x29, #0xb8
+0002004c stp        xzr, xzr, [x3]
+00020050 add        x3, x29, #0xc8
+00020054 stp        xzr, xzr, [x3]
+00020058 add        x3, x29, #0xd8
+0002005c stp        xzr, xzr, [x3]
+00020060 add        x3, x29, #0x100
+00020064 strb       w21, [x29, #0x74]
+00020068 stp        w22, w20, [x29, #0x6c]
+0002006c stp        xzr, xzr, [x3]
+00020070 add        x3, x29, #0x110
+00020074 stp        xzr, xzr, [x3]
+00020078 add        x3, x29, #0x120
+0002007c stp        xzr, xzr, [x3]
+00020080 add        x3, x29, #0x130
+00020084 stp        xzr, xzr, [x3]
+00020088 add        x3, x29, #0x140
+0002008c stp        xzr, xzr, [x3]
+00020090 add        x3, x29, #0x150
+00020094 stp        xzr, xzr, [x3]
+00020098 add        x3, x29, #0x160
+0002009c stp        xzr, xzr, [x3]
+000200a0 add        x3, x29, #0x170
+000200a4 stp        xzr, xzr, [x3]
+000200a8 add        x3, x29, #0x180
+000200ac stp        xzr, xzr, [x3]
+000200b0 add        x3, x29, #0x190
+000200b4 stp        xzr, xzr, [x3]
+000200b8 add        x3, x29, #0x1a0
+000200bc stp        xzr, xzr, [x3]
+000200c0 add        x3, x29, #0x1b0
+000200c4 stp        xzr, xzr, [x3]
+000200c8 bl         #0x200c8 ; [{"symbol": "memcpy", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000200cc mov        w0, #0x871
+000200d0 mov        w3, w20
+000200d4 add        x1, x29, #0x38
+000200d8 mov        w2, #0xd0
+000200dc movk       w0, #0x8092, lsl #16
+000200e0 bl         #0x200e0 ; [{"symbol": "osal_valloc_msg_wait", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000200e4 cbz        w0, #0x20330
+000200e8 add        x3, x29, #0x68
+000200ec mov        x2, #0x98
+000200f0 add        x1, x29, #0x58
+000200f4 add        x0, x29, #0xfc
+000200f8 mov        w22, #0x170
+000200fc mov        w20, #1
+00020100 stp        xzr, xzr, [x3]
+00020104 add        x3, x29, #0x78
+00020108 movk       w22, #0x92, lsl #16
+0002010c mov        w21, #0x52
+00020110 stp        xzr, xzr, [x1]
+00020114 stp        xzr, xzr, [x3]
+00020118 add        x3, x29, #0x88
+0002011c stp        xzr, xzr, [x29, #0xf0]
+00020120 str        xzr, [x29, #0xe8]
+00020124 stp        xzr, xzr, [x3]
+00020128 add        x3, x29, x2
+0002012c stp        xzr, xzr, [x3]
+00020130 add        x3, x29, #0xa8
+00020134 stp        xzr, xzr, [x3]
+00020138 add        x3, x29, #0xb8
+0002013c stp        xzr, xzr, [x3]
+00020140 add        x3, x29, #0xc8
+00020144 stp        xzr, xzr, [x3]
+00020148 add        x3, x29, #0xd8
+0002014c stp        xzr, xzr, [x3]
+00020150 add        x3, x29, #0x100
+00020154 strb       w21, [x29, #0x74]
+00020158 stp        w22, w20, [x29, #0x6c]
+0002015c stp        xzr, xzr, [x3]
+00020160 add        x3, x29, #0x110
+00020164 stp        xzr, xzr, [x3]
+00020168 add        x3, x29, #0x120
+0002016c stp        xzr, xzr, [x3]
+00020170 add        x3, x29, #0x130
+00020174 stp        xzr, xzr, [x3]
+00020178 add        x3, x29, #0x140
+0002017c stp        xzr, xzr, [x3]
+00020180 add        x3, x29, #0x150
+00020184 stp        xzr, xzr, [x3]
+00020188 add        x3, x29, #0x160
+0002018c stp        xzr, xzr, [x3]
+00020190 add        x3, x29, #0x170
+00020194 stp        xzr, xzr, [x3]
+00020198 add        x3, x29, #0x180
+0002019c stp        xzr, xzr, [x3]
+000201a0 add        x3, x29, #0x190
+000201a4 stp        xzr, xzr, [x3]
+000201a8 add        x3, x29, #0x1a0
+000201ac stp        xzr, xzr, [x3]
+000201b0 add        x3, x29, #0x1b0
+000201b4 stp        xzr, xzr, [x3]
+000201b8 bl         #0x201b8 ; [{"symbol": "memcpy", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000201bc mov        w0, #0x871
+000201c0 mov        w3, w20
+000201c4 add        x1, x29, #0x38
+000201c8 mov        w2, #0xd0
+000201cc movk       w0, #0x8092, lsl #16
+000201d0 bl         #0x201d0 ; [{"symbol": "osal_valloc_msg_wait", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000201d4 cbz        w0, #0x202d8
+000201d8 ldr        x0, [x19, #0x98]
+000201dc cbz        x0, #0x20254
+000201e0 mov        w0, #0xbb
+000201e4 mov        w1, #-1
+000201e8 movk       w0, #0x92, lsl #16
+000201ec bl         #0x201ec ; [{"symbol": "osal_wai_sem_tmo", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000201f0 mov        w0, #0xbb
+000201f4 movk       w0, #0x92, lsl #16
+000201f8 bl         #0x201f8 ; [{"symbol": "osal_sig_sem", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000201fc stp        xzr, xzr, [x29, #0xf0]
+00020200 ldr        x3, [x19, #0xf0]
+00020204 add        x7, x29, #0x100
+00020208 ldr        x5, [x19, #0x98]
+0002020c mov        w0, #0x40
+00020210 add        x1, x29, #0xf0
+00020214 mov        w4, #2
+00020218 stp        xzr, xzr, [x7]
+0002021c add        x7, x29, #0x110
+00020220 lsl        x2, x3, #5
+00020224 mov        w6, #0x38
+00020228 sub        x2, x2, x3
+0002022c movk       w0, #0x91, lsl #16
+00020230 stp        xzr, xzr, [x7]
+00020234 add        x2, x3, x2, lsl #2
+00020238 str        w6, [x29, #0xf0]
+0002023c str        w4, [x29, #0x100]
+00020240 str        w4, [x29, #0x118]
+00020244 lsl        x2, x2, #3
+00020248 str        xzr, [x29, #0x120]
+0002024c stp        x5, x2, [x29, #0x108]
+00020250 bl         #0x20250 ; [{"symbol": "osal_snd_sync_direct", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00020254 ldp        x19, x20, [sp, #0x10]
+00020258 mov        w0, #0
+0002025c ldp        x21, x22, [sp, #0x20]
+00020260 ldp        x29, x30, [sp], #0x1c0
+00020264 ret        
+00020268 strb       wzr, [x19, #0x70]
+0002026c bl         #0x2026c ; [{"symbol": "upm_mp_dfs_state_machine_resume", "addend": 0, "type": 283, "section": 2}]
+00020270 ldrb       w0, [x19, #0x70]
+00020274 cbz        w0, #0x1fff8
+00020278 add        x1, x29, #0x40
+0002027c mov        w2, #0xc
+00020280 mov        w0, #0
+00020284 stp        wzr, wzr, [x29, #0x44]
+00020288 stp        w2, wzr, [x29, #0x4c]
+0002028c bl         #0x2028c ; [{"symbol": "upm_mp_dfs_state_machine_snd_msg", "addend": 0, "type": 283, "section": 2}]
+00020290 str        w0, [x29, #0x34]
+00020294 cbz        w0, #0x1fff8
+00020298 mov        w0, #0xbb
+0002029c mov        w1, #-1
+000202a0 movk       w0, #0x92, lsl #16
+000202a4 bl         #0x202a4 ; [{"symbol": "osal_wai_sem_tmo", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000202a8 mov        w0, #0xbb
+000202ac movk       w0, #0x92, lsl #16
+000202b0 bl         #0x202b0 ; [{"symbol": "osal_sig_sem", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000202b4 add        x4, x29, #0x34
+000202b8 mov        w5, #4
+000202bc mov        w3, #0x41
+000202c0 mov        w2, #0
+000202c4 mov        w1, #1
+000202c8 mov        w0, #0
+000202cc bl         #0x202cc ; [{"symbol": "upm_blog_writeonce", "addend": 0, "type": 283, "section": 2}]
+000202d0 b          #0x1fff8
+000202d4 nop        
+000202d8 ldr        x0, [x29, #0x38]
+000202dc add        x1, x29, #0xf0
+000202e0 mov        w4, #2
+000202e4 mov        w3, #0xc
+000202e8 mov        x2, #0xd0
+000202ec strb       w21, [x29, #0x118]
+000202f0 strb       wzr, [x29, #0x119]
+000202f4 str        w4, [x29, #0xf0]
+000202f8 str        w3, [x29, #0xf8]
+000202fc str        w22, [x29, #0x110]
+00020300 str        w20, [x29, #0x114]
+00020304 bl         #0x20304 ; [{"symbol": "memcpy", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00020308 ldr        x1, [x29, #0x38]
+0002030c mov        w0, #0x871
+00020310 movk       w0, #0x8092, lsl #16
+00020314 bl         #0x20314 ; [{"symbol": "osal_snd_msg", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00020318 cbz        w0, #0x201d8
+0002031c ldr        x1, [x29, #0x38]
+00020320 mov        w0, #0x871
+00020324 movk       w0, #0x8092, lsl #16
+00020328 bl         #0x20328 ; [{"symbol": "osal_free_msg", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+0002032c b          #0x201d8
+00020330 mov        w3, #2
+00020334 ldr        x0, [x29, #0x38]
+00020338 add        x1, x29, #0xf0
+0002033c mov        x2, #0xd0
+00020340 str        w3, [x29, #0xf0]
+00020344 mov        w3, #0xc
+00020348 strb       w21, [x29, #0x118]
+0002034c strb       wzr, [x29, #0x119]
+00020350 str        w22, [x29, #0x110]
+00020354 str        w20, [x29, #0x114]
+00020358 str        w3, [x29, #0xf8]
+0002035c bl         #0x2035c ; [{"symbol": "memcpy", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00020360 ldr        x1, [x29, #0x38]
+00020364 mov        w0, #0x871
+00020368 movk       w0, #0x8092, lsl #16
+0002036c bl         #0x2036c ; [{"symbol": "osal_snd_msg", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00020370 cbz        w0, #0x200e8
+00020374 ldr        x1, [x29, #0x38]
+00020378 mov        w0, #0x871
+0002037c movk       w0, #0x8092, lsl #16
+00020380 bl         #0x20380 ; [{"symbol": "osal_free_msg", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00020384 b          #0x200e8

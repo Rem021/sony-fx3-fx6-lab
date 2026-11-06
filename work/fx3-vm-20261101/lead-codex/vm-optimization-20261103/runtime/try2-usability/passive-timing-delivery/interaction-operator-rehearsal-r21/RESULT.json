@@ -1,0 +1,117 @@
+{
+  "outcome": "failed",
+  "scope": "one offline independent operator rehearsal; no VM/guest",
+  "checks": {
+    "frozen_dependency_integrity": "passed",
+    "two_explicit_clicks_one_reject_one_accept": "passed",
+    "A_original_lock_rejection_request_attribution_pending0": "passed",
+    "A_capture_new_PNG_returned_and_actually_reviewed": "passed",
+    "A_separate_cancel_same_nonce_due_elapsed_under20s_no_confirm_no_key_no_rearm": "passed",
+    "A_new_post_cancel_PNG_returned_separate_visual_review": "passed",
+    "B_fresh_nonce_explicit_click_accepted": "passed",
+    "B_bounded_qualified_capture": "failed",
+    "B_independent_complete_menu_visual_confirmation": "not_performed",
+    "B_original_explicit_confirm_historical_ACK_and_cancel": "not_performed",
+    "End_and_finalACK": "passed",
+    "deadline_dispose": "failed_refused_B_still_armed",
+    "own_browser_service_pid_port_cleanup": "passed"
+  },
+  "counts": {
+    "explicit_operator_clicks": 2,
+    "HTTP_key_posts": 2,
+    "rejected_unqueued": 1,
+    "accepted_fixture_keys": 1,
+    "unqueued_recoveries": 1,
+    "actual_guest_inputs": 0,
+    "confirm_visual_posts": 0,
+    "independent_accepted_menu_visual_confirmations": 0,
+    "new_nonce_arms": 2,
+    "same_nonce_rearm": 0,
+    "retries": 0
+  },
+  "timing": {
+    "browser_performance_domain": {
+      "origin": 1793835724436,
+      "nonce_A": {
+        "armed_ms": 10655.100000023842,
+        "due_ms": 30655.10000002384,
+        "cancelled_ms": 19022.200000047684,
+        "elapsed_ms": 8367.100000023842,
+        "due_unchanged": true,
+        "complete_cancel_events": [
+          {
+            "event": "installed",
+            "performance_ms": 936.100000023842,
+            "script_SHA256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+            "wall_UTC": "2026-11-04T23:42:05.371Z"
+          },
+          {
+            "due_ms": 30655.10000002384,
+            "event": "armed",
+            "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f",
+            "performance_ms": 10655.200000047684,
+            "wall_UTC": "2026-11-04T23:42:15.091Z"
+          },
+          {
+            "elapsed_ms": 8367.100000023842,
+            "event": "cancelled",
+            "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f",
+            "performance_ms": 19022.200000047684,
+            "wall_UTC": "2026-11-04T23:42:23.458Z"
+          }
+        ]
+      },
+      "nonce_B": {
+        "armed_ms": 27933.80000001192,
+        "original_due_ms": 47933.80000001192,
+        "confirmed_or_cancelled": false,
+        "last_recorded_state": "armed",
+        "remaining_ms_at_capture_failure": 19787.89999997616,
+        "closed_document_before_original_due": true
+      }
+    },
+    "host_same_domain_deltas_ms": {
+      "recovery_tool_return_prepared_to_next_cancel_tool_entry": 7769.955292,
+      "cancel_tool_return_prepared_to_next_B_tool_entry": 8819.718792,
+      "bounded_capture_child_process": 148.286542,
+      "bounded_capture_failure_to_End_HTTP_response": 3851.793916,
+      "End_to_finalACK_HTTP_response": 216.815209
+    },
+    "model_image_received_at": "unknown",
+    "model_review_completed_at": "unknown",
+    "timing_note": "Tool-return-prepared is instrumented before image encoding/tool delivery, not actual model receipt; gaps include tool delivery, review, next-call scheduling; never subtract host_ns from performance_ms."
+  },
+  "ledger_final": {
+    "attempts": [
+      {
+        "status": "click_invoked",
+        "reservation_id": "937063f4-657e-4b69-9b26-c7f2d9000963",
+        "key": 427,
+        "host_ns": 419420680882541,
+        "attempt_id": "c75de8c6-2738-41ff-998b-a35c8cce19da",
+        "step": 1
+      },
+      {
+        "status": "click_invoked",
+        "reservation_id": "ae66dd30-9e57-45bf-9134-1e0bdf27d292",
+        "key": 427,
+        "host_ns": 419437954362208,
+        "attempt_id": "40490ef1-0ef4-4311-8785-a879c5bac42e",
+        "step": 1
+      }
+    ],
+    "recoveries": [
+      {
+        "step": 1,
+        "attempt_id": "c75de8c6-2738-41ff-998b-a35c8cce19da",
+        "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f",
+        "status": "cancelled_unqueued_alarm_only",
+        "host_ns": 419428976853458,
+        "alarm_cleanup_status": "confirmed_cancelled",
+        "current_screenshot_status": "delivered_requires_separate_operator_review"
+      }
+    ]
+  },
+  "local_preexecution_sources_unchanged": true,
+  "next": "Coordinator must separately authorize a corrected fixture assignment; preserve this failed round and frozen helpers."
+}

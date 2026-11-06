@@ -1,0 +1,630 @@
+{
+  "scope": "host_static_original_bytes_plus_prior_vm_receipt",
+  "inputs": {
+    "fx3_mpr": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so",
+      "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+      "size": 3517008
+    },
+    "fx6_mpr": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so",
+      "sha256": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e",
+      "size": 28921824
+    },
+    "fx6_ap": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "size": 50520424
+    }
+  },
+  "prior_contracts": {
+    "poweron": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/capid-init-portability/poweron-contract/README.md",
+      "sha256": "22484628b889c6191306217c3455eea9dc7a6b9d45573f85470d48437e79f979"
+    },
+    "timer": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/capid-init-portability/init-callback-entry-contract/README.md",
+      "sha256": "7b715aa5949d8958ec3d05a757309231ed57b71f98b30bab6d8ba732370ea823"
+    },
+    "u16": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/capid-init-portability/init-u16-contract/README.md",
+      "sha256": "337b1dd21dc0606cf1af6ba82ae28a6eabb48297d40ac56948c1c2d17af63d28"
+    }
+  },
+  "edges": {
+    "fx3_mpr": {
+      "write_stack": [
+        {
+          "va": "0xcb488",
+          "fileoff": "0xcb488",
+          "word_le": "b9400661",
+          "disassembly": "ldr\tw1, [x19, #0x4]"
+        },
+        {
+          "va": "0xcb490",
+          "fileoff": "0xcb490",
+          "word_le": "290807a0",
+          "disassembly": "stp\tw0, w1, [x29, #0x40]"
+        },
+        {
+          "va": "0xcb494",
+          "fileoff": "0xcb494",
+          "word_le": "b9402e61",
+          "disassembly": "ldr\tw1, [x19, #0x2c]"
+        },
+        {
+          "va": "0xcb49c",
+          "fileoff": "0xcb49c",
+          "word_le": "b9403261",
+          "disassembly": "ldr\tw1, [x19, #0x30]"
+        },
+        {
+          "va": "0xcb4a4",
+          "fileoff": "0xcb4a4",
+          "word_le": "9100e261",
+          "disassembly": "add\tx1, x19, #0x38"
+        },
+        {
+          "va": "0xcb4a8",
+          "fileoff": "0xcb4a8",
+          "word_le": "a9400c22",
+          "disassembly": "ldp\tx2, x3, [x1]"
+        },
+        {
+          "va": "0xcb4b0",
+          "fileoff": "0xcb4b0",
+          "word_le": "a9050fa2",
+          "disassembly": "stp\tx2, x3, [x29, #0x50]"
+        },
+        {
+          "va": "0xcb4b4",
+          "fileoff": "0xcb4b4",
+          "word_le": "d2800402",
+          "disassembly": "mov\tx2, #0x20               // =32"
+        },
+        {
+          "va": "0xcb4b8",
+          "fileoff": "0xcb4b8",
+          "word_le": "97feda76",
+          "disassembly": "bl\t0x81e90 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm@plt>"
+        }
+      ],
+      "auto_stack": [
+        {
+          "va": "0xcb920",
+          "fileoff": "0xcb920",
+          "word_le": "a9047fbf",
+          "disassembly": "stp\txzr, xzr, [x29, #0x40]"
+        },
+        {
+          "va": "0xcb924",
+          "fileoff": "0xcb924",
+          "word_le": "b9004ba1",
+          "disassembly": "str\tw1, [x29, #0x48]"
+        },
+        {
+          "va": "0xcb928",
+          "fileoff": "0xcb928",
+          "word_le": "b85f4261",
+          "disassembly": "ldur\tw1, [x19, #-0xc]"
+        },
+        {
+          "va": "0xcb930",
+          "fileoff": "0xcb930",
+          "word_le": "b90047a1",
+          "disassembly": "str\tw1, [x29, #0x44]"
+        },
+        {
+          "va": "0xcb938",
+          "fileoff": "0xcb938",
+          "word_le": "a9050fa2",
+          "disassembly": "stp\tx2, x3, [x29, #0x50]"
+        },
+        {
+          "va": "0xcb93c",
+          "fileoff": "0xcb93c",
+          "word_le": "d2800402",
+          "disassembly": "mov\tx2, #0x20               // =32"
+        },
+        {
+          "va": "0xcb940",
+          "fileoff": "0xcb940",
+          "word_le": "b90043a0",
+          "disassembly": "str\tw0, [x29, #0x40]"
+        },
+        {
+          "va": "0xcb944",
+          "fileoff": "0xcb944",
+          "word_le": "97fed953",
+          "disassembly": "bl\t0x81e90 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm@plt>"
+        }
+      ],
+      "set_event_heap": [
+        {
+          "va": "0xb4168",
+          "fileoff": "0xb4168",
+          "word_le": "aa0203e3",
+          "disassembly": "mov\tx3, x2"
+        },
+        {
+          "va": "0xb416c",
+          "fileoff": "0xb416c",
+          "word_le": "aa0103e2",
+          "disassembly": "mov\tx2, x1"
+        },
+        {
+          "va": "0xb3f70",
+          "fileoff": "0xb3f70",
+          "word_le": "aa0303e0",
+          "disassembly": "mov\tx0, x3"
+        },
+        {
+          "va": "0xb3f7c",
+          "fileoff": "0xb3f7c",
+          "word_le": "97ff3689",
+          "disassembly": "bl\t0x819a0 <malloc@plt>"
+        },
+        {
+          "va": "0xb3f80",
+          "fileoff": "0xb3f80",
+          "word_le": "aa0003f7",
+          "disassembly": "mov\tx23, x0"
+        },
+        {
+          "va": "0xb3f84",
+          "fileoff": "0xb3f84",
+          "word_le": "aa1303e2",
+          "disassembly": "mov\tx2, x19"
+        },
+        {
+          "va": "0xb3f88",
+          "fileoff": "0xb3f88",
+          "word_le": "aa1403e1",
+          "disassembly": "mov\tx1, x20"
+        },
+        {
+          "va": "0xb3f8c",
+          "fileoff": "0xb3f8c",
+          "word_le": "97ff1e91",
+          "disassembly": "bl\t0x7b9d0 <memcpy@plt>"
+        },
+        {
+          "va": "0xb3fc0",
+          "fileoff": "0xb3fc0",
+          "word_le": "29006418",
+          "disassembly": "stp\tw24, w25, [x0]"
+        },
+        {
+          "va": "0xb3fc4",
+          "fileoff": "0xb3fc4",
+          "word_le": "f9000417",
+          "disassembly": "str\tx23, [x0, #0x8]"
+        }
+      ],
+      "callback_and_free": [
+        {
+          "va": "0xb4440",
+          "fileoff": "0xb4440",
+          "word_le": "aa0103f3",
+          "disassembly": "mov\tx19, x1"
+        },
+        {
+          "va": "0xb4654",
+          "fileoff": "0xb4654",
+          "word_le": "f944c294",
+          "disassembly": "ldr\tx20, [x20, #0x980]"
+        },
+        {
+          "va": "0xb4664",
+          "fileoff": "0xb4664",
+          "word_le": "52800401",
+          "disassembly": "mov\tw1, #0x20               // =32"
+        },
+        {
+          "va": "0xb4668",
+          "fileoff": "0xb4668",
+          "word_le": "97fffd04",
+          "disassembly": "bl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>"
+        },
+        {
+          "va": "0xb4670",
+          "fileoff": "0xb4670",
+          "word_le": "aa1303e0",
+          "disassembly": "mov\tx0, x19"
+        },
+        {
+          "va": "0xb4674",
+          "fileoff": "0xb4674",
+          "word_le": "d63f0020",
+          "disassembly": "blr\tx1"
+        },
+        {
+          "va": "0xb46d8",
+          "fileoff": "0xb46d8",
+          "word_le": "f943aa94",
+          "disassembly": "ldr\tx20, [x20, #0x750]"
+        },
+        {
+          "va": "0xb46e8",
+          "fileoff": "0xb46e8",
+          "word_le": "52800401",
+          "disassembly": "mov\tw1, #0x20               // =32"
+        },
+        {
+          "va": "0xb46ec",
+          "fileoff": "0xb46ec",
+          "word_le": "97fffce3",
+          "disassembly": "bl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>"
+        },
+        {
+          "va": "0xb46f4",
+          "fileoff": "0xb46f4",
+          "word_le": "aa1303e0",
+          "disassembly": "mov\tx0, x19"
+        },
+        {
+          "va": "0xb46f8",
+          "fileoff": "0xb46f8",
+          "word_le": "d63f0020",
+          "disassembly": "blr\tx1"
+        },
+        {
+          "va": "0xb4488",
+          "fileoff": "0xb4488",
+          "word_le": "aa1303e0",
+          "disassembly": "mov\tx0, x19"
+        },
+        {
+          "va": "0xb4494",
+          "fileoff": "0xb4494",
+          "word_le": "17ff2467",
+          "disassembly": "b\t0x7d630 <free@plt>"
+        }
+      ],
+      "callback_relocations": {
+        "0x2f9980": "_ZN3mpr28gp_evtMovieWriteFinishedFuncE",
+        "0x2f9750": "_ZN3mpr29gp_evtMovieRecAutoDividedFuncE"
+      }
+    },
+    "fx6_mpr": {
+      "write_stack": [
+        {
+          "va": "0x1450f8",
+          "fileoff": "0x1450f8",
+          "word_le": "d280f118",
+          "disassembly": "mov\tx24, #0x788             // =1928"
+        },
+        {
+          "va": "0x145100",
+          "fileoff": "0x145100",
+          "word_le": "52820137",
+          "disassembly": "mov\tw23, #0x1009            // =4105"
+        },
+        {
+          "va": "0x145114",
+          "fileoff": "0x145114",
+          "word_le": "aa1803e2",
+          "disassembly": "mov\tx2, x24"
+        },
+        {
+          "va": "0x145120",
+          "fileoff": "0x145120",
+          "word_le": "97fea670",
+          "disassembly": "bl\t0xeeae0 <memset@plt>"
+        },
+        {
+          "va": "0x145124",
+          "fileoff": "0x145124",
+          "word_le": "b9400660",
+          "disassembly": "ldr\tw0, [x19, #0x4]"
+        },
+        {
+          "va": "0x14512c",
+          "fileoff": "0x14512c",
+          "word_le": "d280eb82",
+          "disassembly": "mov\tx2, #0x75c              // =1884"
+        },
+        {
+          "va": "0x145130",
+          "fileoff": "0x145130",
+          "word_le": "290903b7",
+          "disassembly": "stp\tw23, w0, [x29, #0x48]"
+        },
+        {
+          "va": "0x145144",
+          "fileoff": "0x145144",
+          "word_le": "39416260",
+          "disassembly": "ldrb\tw0, [x19, #0x58]"
+        },
+        {
+          "va": "0x145150",
+          "fileoff": "0x145150",
+          "word_le": "97feab1c",
+          "disassembly": "bl\t0xefdc0 <memcpy@plt>"
+        },
+        {
+          "va": "0x145154",
+          "fileoff": "0x145154",
+          "word_le": "395ee260",
+          "disassembly": "ldrb\tw0, [x19, #0x7b8]"
+        },
+        {
+          "va": "0x145168",
+          "fileoff": "0x145168",
+          "word_le": "a9000440",
+          "disassembly": "stp\tx0, x1, [x2]"
+        },
+        {
+          "va": "0x14516c",
+          "fileoff": "0x14516c",
+          "word_le": "aa1803e2",
+          "disassembly": "mov\tx2, x24"
+        },
+        {
+          "va": "0x145174",
+          "fileoff": "0x145174",
+          "word_le": "2a1703e0",
+          "disassembly": "mov\tw0, w23"
+        },
+        {
+          "va": "0x145178",
+          "fileoff": "0x145178",
+          "word_le": "97fead9e",
+          "disassembly": "bl\t0xf07f0 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm@plt>"
+        }
+      ],
+      "auto_stack": [
+        {
+          "va": "0x1455c0",
+          "fileoff": "0x1455c0",
+          "word_le": "d280f018",
+          "disassembly": "mov\tx24, #0x780             // =1920"
+        },
+        {
+          "va": "0x1455c8",
+          "fileoff": "0x1455c8",
+          "word_le": "528206f7",
+          "disassembly": "mov\tw23, #0x1037            // =4151"
+        },
+        {
+          "va": "0x1455dc",
+          "fileoff": "0x1455dc",
+          "word_le": "aa1803e2",
+          "disassembly": "mov\tx2, x24"
+        },
+        {
+          "va": "0x1455e8",
+          "fileoff": "0x1455e8",
+          "word_le": "97fea53e",
+          "disassembly": "bl\t0xeeae0 <memset@plt>"
+        },
+        {
+          "va": "0x1455f8",
+          "fileoff": "0x1455f8",
+          "word_le": "d280eb82",
+          "disassembly": "mov\tx2, #0x75c              // =1884"
+        },
+        {
+          "va": "0x1455fc",
+          "fileoff": "0x1455fc",
+          "word_le": "9100e273",
+          "disassembly": "add\tx19, x19, #0x38"
+        },
+        {
+          "va": "0x145618",
+          "fileoff": "0x145618",
+          "word_le": "97fea9ea",
+          "disassembly": "bl\t0xefdc0 <memcpy@plt>"
+        },
+        {
+          "va": "0x14561c",
+          "fileoff": "0x14561c",
+          "word_le": "395e0260",
+          "disassembly": "ldrb\tw0, [x19, #0x780]"
+        },
+        {
+          "va": "0x145628",
+          "fileoff": "0x145628",
+          "word_le": "a9400660",
+          "disassembly": "ldp\tx0, x1, [x19]"
+        },
+        {
+          "va": "0x14562c",
+          "fileoff": "0x14562c",
+          "word_le": "a9000440",
+          "disassembly": "stp\tx0, x1, [x2]"
+        },
+        {
+          "va": "0x145638",
+          "fileoff": "0x145638",
+          "word_le": "2a1703e0",
+          "disassembly": "mov\tw0, w23"
+        },
+        {
+          "va": "0x14563c",
+          "fileoff": "0x14563c",
+          "word_le": "97feac6d",
+          "disassembly": "bl\t0xf07f0 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm@plt>"
+        }
+      ],
+      "set_event_heap": [
+        {
+          "va": "0x128994",
+          "fileoff": "0x128994",
+          "word_le": "aa0203e3",
+          "disassembly": "mov\tx3, x2"
+        },
+        {
+          "va": "0x128998",
+          "fileoff": "0x128998",
+          "word_le": "aa0103e2",
+          "disassembly": "mov\tx2, x1"
+        },
+        {
+          "va": "0x12879c",
+          "fileoff": "0x12879c",
+          "word_le": "aa0303e0",
+          "disassembly": "mov\tx0, x3"
+        },
+        {
+          "va": "0x1287a8",
+          "fileoff": "0x1287a8",
+          "word_le": "97ff1f56",
+          "disassembly": "bl\t0xf0500 <malloc@plt>"
+        },
+        {
+          "va": "0x1287ac",
+          "fileoff": "0x1287ac",
+          "word_le": "aa0003f7",
+          "disassembly": "mov\tx23, x0"
+        },
+        {
+          "va": "0x1287b0",
+          "fileoff": "0x1287b0",
+          "word_le": "aa1303e2",
+          "disassembly": "mov\tx2, x19"
+        },
+        {
+          "va": "0x1287b4",
+          "fileoff": "0x1287b4",
+          "word_le": "aa1403e1",
+          "disassembly": "mov\tx1, x20"
+        },
+        {
+          "va": "0x1287b8",
+          "fileoff": "0x1287b8",
+          "word_le": "97ff1d82",
+          "disassembly": "bl\t0xefdc0 <memcpy@plt>"
+        }
+      ],
+      "callback_relocations": {
+        "0x108e460": "_ZN3mpr28gp_evtMovieWriteFinishedFuncE",
+        "0x108bfb8": "_ZN3mpr29gp_evtMovieRecAutoDividedFuncE"
+      }
+    },
+    "fx6_ap": {
+      "write_consumer": [
+        {
+          "va": "0x213caa0",
+          "fileoff": "0x213caa0",
+          "word_le": "395dc263",
+          "disassembly": "ldrb\tw3, [x19, #0x770]"
+        },
+        {
+          "va": "0x213caac",
+          "fileoff": "0x213caac",
+          "word_le": "f0002720",
+          "disassembly": "adrp\tx0, 0x2623000"
+        },
+        {
+          "va": "0x213caec",
+          "fileoff": "0x213caec",
+          "word_le": "f943be60",
+          "disassembly": "ldr\tx0, [x19, #0x778]"
+        },
+        {
+          "va": "0x213caf8",
+          "fileoff": "0x213caf8",
+          "word_le": "97e4ca6d",
+          "disassembly": "bl\t0x1a6f4ac <Application_System_Init+0xe64468>"
+        },
+        {
+          "va": "0x213cabc",
+          "fileoff": "0x213cabc",
+          "word_le": "d2800400",
+          "disassembly": "mov\tx0, #0x20               // =32"
+        },
+        {
+          "va": "0x213cb00",
+          "fileoff": "0x213cb00",
+          "word_le": "34000460",
+          "disassembly": "cbz\tw0, 0x213cb8c <Application_System_Init+0x1531b48>"
+        },
+        {
+          "va": "0x213cb20",
+          "fileoff": "0x213cb20",
+          "word_le": "91005261",
+          "disassembly": "add\tx1, x19, #0x14"
+        },
+        {
+          "va": "0x213cb24",
+          "fileoff": "0x213cb24",
+          "word_le": "d280eb82",
+          "disassembly": "mov\tx2, #0x75c              // =1884"
+        },
+        {
+          "va": "0x213cb30",
+          "fileoff": "0x213cb30",
+          "word_le": "97a76b54",
+          "disassembly": "bl\t0xb17880 <memcpy@plt>"
+        }
+      ],
+      "auto_consumer": [
+        {
+          "va": "0x212da18",
+          "fileoff": "0x212da18",
+          "word_le": "395db003",
+          "disassembly": "ldrb\tw3, [x0, #0x76c]"
+        },
+        {
+          "va": "0x212da1c",
+          "fileoff": "0x212da1c",
+          "word_le": "39403002",
+          "disassembly": "ldrb\tw2, [x0, #0xc]"
+        },
+        {
+          "va": "0x212da54",
+          "fileoff": "0x212da54",
+          "word_le": "f943ba82",
+          "disassembly": "ldr\tx2, [x20, #0x770]"
+        },
+        {
+          "va": "0x212da5c",
+          "fileoff": "0x212da5c",
+          "word_le": "97e50694",
+          "disassembly": "bl\t0x1a6f4ac <Application_System_Init+0xe64468>"
+        },
+        {
+          "va": "0x212da60",
+          "fileoff": "0x212da60",
+          "word_le": "395db280",
+          "disassembly": "ldrb\tw0, [x20, #0x76c]"
+        },
+        {
+          "va": "0x212da84",
+          "fileoff": "0x212da84",
+          "word_le": "91004281",
+          "disassembly": "add\tx1, x20, #0x10"
+        },
+        {
+          "va": "0x212da88",
+          "fileoff": "0x212da88",
+          "word_le": "d280eb82",
+          "disassembly": "mov\tx2, #0x75c              // =1884"
+        },
+        {
+          "va": "0x212da94",
+          "fileoff": "0x212da94",
+          "word_le": "97a7a77b",
+          "disassembly": "bl\t0xb17880 <memcpy@plt>"
+        }
+      ]
+    }
+  },
+  "run": {
+    "receipt.json": "cc2dcc056fecb556193610e2716062d462b6cb5d88cad2775113287046ad9e19",
+    "mpr-observation.json": "fa8e834e999aafb573118ee34de89b1d7b38111fc13ef1c7122ddef774ef31e2",
+    "serial.log": "011ba0bb9fb048a84428d4a732adeec953e348a3cd5ec65b4e4a3be9a99febd2",
+    "observed": {
+      "call_pc": "0x7ee3fa77b8",
+      "return_pc": "0x7ee3fa77bc",
+      "call_record_sha256": "585d8918da368cec6ef689aa3c14dc3306311ab6661c0bffc9a02e1685430cf1",
+      "got_before": "0x7ee298edd0",
+      "got_after": "0x7eed20d844",
+      "mpr_bias": "0x7eed157000",
+      "w0": 3,
+      "mpr_entry_observed": false,
+      "capid_breakpoint_armed": false
+    }
+  }
+}

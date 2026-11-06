@@ -1,0 +1,14 @@
+{
+  "commands": [
+    {
+      "id": "01-sony-camera-cache",
+      "query": "Get-CimInstance Win32_PnPEntity; server-side WQL Sony USB prefix or explicit ILME-FX3/Sony DSC name/description; Select-Object first 16",
+      "server_side_filter": "PNPDeviceID LIKE 'USB\\\\VID_054C%' OR Name LIKE '%ILME-FX3%' OR Description LIKE '%ILME-FX3%' OR Name LIKE '%Sony DSC%' OR Description LIKE '%Sony DSC%'",
+      "started_utc": "2026-10-26T17:15:31.086Z",
+      "finished_utc": "2026-10-26T17:15:31.497Z",
+      "exit_code": 0,
+      "private_result": "private/01-sony-camera-cache.private.json",
+      "private_stderr": "private/01-cim-query.stderr.txt"
+    }
+  ]
+}

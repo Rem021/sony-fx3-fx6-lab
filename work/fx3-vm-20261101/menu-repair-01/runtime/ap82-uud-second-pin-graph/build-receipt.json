@@ -1,0 +1,19 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap81-skd-hardware-unavailable/candidate81.json",
+  "base_sha256": "42e3857b5f7b5a5ae1973c79797923f006b7d6ae117e6deb93c4641ede9948b9",
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap82-uud-second-pin-graph/guest.cpio",
+    "sha256": "113ee9d8c38dfd0a89da797ffe931bbd43a92f0b9fe2d5a58280975f9cb6c20d"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap82-uud-second-pin-graph/guest.dtb",
+    "sha256": "d808f668bd4d3086bb1b41bc390e2620274f642e9d5c393b65a2d9e60b345882"
+  },
+  "helper_sha256": {
+    "fx3-capid-v37.so": "855e9ef3dfb5dc49fc00e813522e35e8537c3188c4dbd0a5caa77efe033d0d6f",
+    "fx3-ui-gate-v11.so": "54eeed923a6412cd2c6743f6e8c968d1ede71b92aa79aca4575868ebccc4a9ec",
+    "fx3-gpe-observe-v13-trace-v1.so": "5aa907051c15fd67911a47bb51ff13e30be643ecfc36ffbf3d85aa307cfacb44"
+  },
+  "changes": "AP82 second pin topology9ab2518 UUD reset: capidv37 graph28pins/9owners/14edges with original22 indices+states retained, emptyqueues/noimagebuffers/noDMA/no sensor frames; exact new90050004 GET outerSID and current native replyqueue,9 extra packets. Gatev11 passive original Backup compare/write,desired144,mode input,face procedure return and graph v2 QMP. SKD guard and enum2 inherited unchanged. GPE v13 trace variant adds raw marker only, original unsupported blend/conversion behavior unchanged; logical PNG only; no Backup/parameter prewrites or synthetic tokens/input.",
+  "backup_seed_or_reserved_source_modified": false
+}

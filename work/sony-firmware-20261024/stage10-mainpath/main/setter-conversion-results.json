@@ -1,0 +1,1151 @@
+{
+  "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "scope": "real main-setter conversion block only; model builder, complete setter and MPR call not executed",
+  "entry": "0x2e6ea58",
+  "stop": "0x2e6f040",
+  "allowed_ranges": [
+    [
+      "0x2e6ea58",
+      "0x2e6f040"
+    ],
+    [
+      "0x2e6f45c",
+      "0x2e6f494"
+    ]
+  ],
+  "stubs": [],
+  "synthetic_context": {
+    "x24": "input structure at 0x11000000",
+    "x29": "synthetic frame at 0x10010000",
+    "x19": "movieRecParam base x29+0x310",
+    "input_offsets": {
+      "frame": "0x10",
+      "format": "0x14",
+      "quality": "0x18",
+      "color": "0x1c"
+    },
+    "output_offsets": {
+      "VPC": "0x170",
+      "VQuality": "0x174",
+      "Frame": "0x178"
+    },
+    "all_other_synthetic_bytes": "zero; not a real model snapshot"
+  },
+  "instruction_limit": 2000,
+  "timeout_us": 100000,
+  "no_syscalls_devices_network_MMIO": true,
+  "source_unchanged": true,
+  "diagnostic_override": {
+    "va": "0x2e6ed04",
+    "original": "a0008052",
+    "memory_only": "c0008052",
+    "meaning": "MOV W0,#5 -> MOV W0,#6; changes ALL HS420 format6 inputs, not a usable patch or coherent menu/model solution"
+  },
+  "cases": [
+    {
+      "reason": "conversion block complete",
+      "steps": 43,
+      "stores": [
+        {
+          "pc": "0x2e6ec5c",
+          "movieRecParam_offset": "0x170",
+          "value": 5,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 6,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 3,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ed04",
+        "0x2e6ed08",
+        "0x2e6ec5c",
+        "0x2e6ec60",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef98",
+        "0x2e6ef9c",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f474",
+        "0x2e6f478",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        5,
+        6,
+        3
+      ],
+      "input": {
+        "format": 6,
+        "quality": 2,
+        "frame": 15,
+        "color": 0
+      },
+      "diagnostic_memory_override": false,
+      "label": "HS420 target tuple",
+      "expected": [
+        5,
+        6,
+        3
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 43,
+      "stores": [
+        {
+          "pc": "0x2e6ec5c",
+          "movieRecParam_offset": "0x170",
+          "value": 6,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 6,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 3,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ed04",
+        "0x2e6ed08",
+        "0x2e6ec5c",
+        "0x2e6ec60",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef98",
+        "0x2e6ef9c",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f474",
+        "0x2e6f478",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        6,
+        6,
+        3
+      ],
+      "input": {
+        "format": 6,
+        "quality": 2,
+        "frame": 15,
+        "color": 0
+      },
+      "diagnostic_memory_override": true,
+      "label": "HS420 target tuple",
+      "expected": [
+        6,
+        6,
+        3
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 41,
+      "stores": [
+        {
+          "pc": "0x2e6ee48",
+          "movieRecParam_offset": "0x170",
+          "value": 1,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 6,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 3,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6edb8",
+        "0x2e6edbc",
+        "0x2e6ee48",
+        "0x2e6ee4c",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef98",
+        "0x2e6ef9c",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f474",
+        "0x2e6f478",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        1,
+        6,
+        3
+      ],
+      "input": {
+        "format": 8,
+        "quality": 2,
+        "frame": 15,
+        "color": 0
+      },
+      "diagnostic_memory_override": false,
+      "label": "HD AVC control",
+      "expected": [
+        1,
+        6,
+        3
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 41,
+      "stores": [
+        {
+          "pc": "0x2e6ee48",
+          "movieRecParam_offset": "0x170",
+          "value": 1,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 6,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 3,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6edb8",
+        "0x2e6edbc",
+        "0x2e6ee48",
+        "0x2e6ee4c",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef98",
+        "0x2e6ef9c",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f474",
+        "0x2e6f478",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        1,
+        6,
+        3
+      ],
+      "input": {
+        "format": 8,
+        "quality": 2,
+        "frame": 15,
+        "color": 0
+      },
+      "diagnostic_memory_override": true,
+      "label": "HD AVC control",
+      "expected": [
+        1,
+        6,
+        3
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 40,
+      "stores": [
+        {
+          "pc": "0x2e6ed84",
+          "movieRecParam_offset": "0x170",
+          "value": 0,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 12,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 3,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ed14",
+        "0x2e6ed18",
+        "0x2e6ed84",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef40",
+        "0x2e6ef44",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f474",
+        "0x2e6f478",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        0,
+        12,
+        3
+      ],
+      "input": {
+        "format": 7,
+        "quality": 13,
+        "frame": 15,
+        "color": 0
+      },
+      "diagnostic_memory_override": false,
+      "label": "UHD AVC control",
+      "expected": [
+        0,
+        12,
+        3
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 40,
+      "stores": [
+        {
+          "pc": "0x2e6ed84",
+          "movieRecParam_offset": "0x170",
+          "value": 0,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 12,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 3,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ed14",
+        "0x2e6ed18",
+        "0x2e6ed84",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef40",
+        "0x2e6ef44",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f474",
+        "0x2e6f478",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        0,
+        12,
+        3
+      ],
+      "input": {
+        "format": 7,
+        "quality": 13,
+        "frame": 15,
+        "color": 0
+      },
+      "diagnostic_memory_override": true,
+      "label": "UHD AVC control",
+      "expected": [
+        0,
+        12,
+        3
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 45,
+      "stores": [
+        {
+          "pc": "0x2e6ec5c",
+          "movieRecParam_offset": "0x170",
+          "value": 7,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 6,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 3,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ec6c",
+        "0x2e6ec70",
+        "0x2e6ed0c",
+        "0x2e6ed10",
+        "0x2e6ec5c",
+        "0x2e6ec60",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef98",
+        "0x2e6ef9c",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f474",
+        "0x2e6f478",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        7,
+        6,
+        3
+      ],
+      "input": {
+        "format": 6,
+        "quality": 2,
+        "frame": 15,
+        "color": 1
+      },
+      "diagnostic_memory_override": false,
+      "label": "HS422 control",
+      "expected": [
+        7,
+        6,
+        3
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 45,
+      "stores": [
+        {
+          "pc": "0x2e6ec5c",
+          "movieRecParam_offset": "0x170",
+          "value": 7,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 6,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 3,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ec6c",
+        "0x2e6ec70",
+        "0x2e6ed0c",
+        "0x2e6ed10",
+        "0x2e6ec5c",
+        "0x2e6ec60",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef98",
+        "0x2e6ef9c",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f474",
+        "0x2e6f478",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        7,
+        6,
+        3
+      ],
+      "input": {
+        "format": 6,
+        "quality": 2,
+        "frame": 15,
+        "color": 1
+      },
+      "diagnostic_memory_override": true,
+      "label": "HS422 control",
+      "expected": [
+        7,
+        6,
+        3
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 43,
+      "stores": [
+        {
+          "pc": "0x2e6ec5c",
+          "movieRecParam_offset": "0x170",
+          "value": 5,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 12,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 2,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ed04",
+        "0x2e6ed08",
+        "0x2e6ec5c",
+        "0x2e6ec60",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef40",
+        "0x2e6ef44",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f47c",
+        "0x2e6f480",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        5,
+        12,
+        2
+      ],
+      "input": {
+        "format": 6,
+        "quality": 13,
+        "frame": 13,
+        "color": 0
+      },
+      "diagnostic_memory_override": false,
+      "label": "HS420 59.94 100M",
+      "expected": [
+        5,
+        12,
+        2
+      ]
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 43,
+      "stores": [
+        {
+          "pc": "0x2e6ec5c",
+          "movieRecParam_offset": "0x170",
+          "value": 6,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 12,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6f03c",
+          "movieRecParam_offset": "0x178",
+          "value": 2,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ed04",
+        "0x2e6ed08",
+        "0x2e6ec5c",
+        "0x2e6ec60",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef40",
+        "0x2e6ef44",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6eec8",
+        "0x2e6eecc",
+        "0x2e6eed0",
+        "0x2e6eed4",
+        "0x2e6eed8",
+        "0x2e6eedc",
+        "0x2e6f47c",
+        "0x2e6f480",
+        "0x2e6f03c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f040",
+      "output_vpc_quality_frame": [
+        6,
+        12,
+        2
+      ],
+      "input": {
+        "format": 6,
+        "quality": 13,
+        "frame": 13,
+        "color": 0
+      },
+      "diagnostic_memory_override": true,
+      "label": "HS420 59.94 100M",
+      "expected": [
+        6,
+        12,
+        2
+      ]
+    },
+    {
+      "reason": "unapproved execution 0x2f6fe3c",
+      "steps": 16,
+      "stores": [],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ee50",
+        "0x2e6ee54",
+        "0x2e6ee58",
+        "0x2e6ee5c",
+        "0x2e6ee60",
+        "0x2e6ee64",
+        "0x2e6ee68",
+        "0x2e6ee6c",
+        "0x2e6ee70",
+        "0x2e6ee74",
+        "0x2e6ee78",
+        "0x2f6fe3c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2f6fe3c",
+      "output_vpc_quality_frame": [
+        0,
+        0,
+        0
+      ],
+      "input": {
+        "format": 13,
+        "quality": 2,
+        "frame": 15,
+        "color": 0
+      },
+      "diagnostic_memory_override": false,
+      "label": "bad format"
+    },
+    {
+      "reason": "unapproved execution 0x2f6fe3c",
+      "steps": 33,
+      "stores": [
+        {
+          "pc": "0x2e6ec5c",
+          "movieRecParam_offset": "0x170",
+          "value": 5,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ed04",
+        "0x2e6ed08",
+        "0x2e6ec5c",
+        "0x2e6ec60",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6efa8",
+        "0x2e6efac",
+        "0x2e6efb0",
+        "0x2e6efb4",
+        "0x2e6efb8",
+        "0x2e6efbc",
+        "0x2e6efc0",
+        "0x2e6efc4",
+        "0x2e6efc8",
+        "0x2e6efcc",
+        "0x2e6efd0",
+        "0x2f6fe3c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2f6fe3c",
+      "output_vpc_quality_frame": [
+        5,
+        0,
+        0
+      ],
+      "input": {
+        "format": 6,
+        "quality": 0,
+        "frame": 15,
+        "color": 0
+      },
+      "diagnostic_memory_override": false,
+      "label": "bad quality"
+    },
+    {
+      "reason": "unapproved execution 0x2e6f494",
+      "steps": 35,
+      "stores": [
+        {
+          "pc": "0x2e6ec5c",
+          "movieRecParam_offset": "0x170",
+          "value": 5,
+          "size": 4
+        },
+        {
+          "pc": "0x2e6eeb4",
+          "movieRecParam_offset": "0x174",
+          "value": 6,
+          "size": 4
+        }
+      ],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ed04",
+        "0x2e6ed08",
+        "0x2e6ec5c",
+        "0x2e6ec60",
+        "0x2e6ed88",
+        "0x2e6ed8c",
+        "0x2e6ed90",
+        "0x2e6ed94",
+        "0x2e6ed98",
+        "0x2e6ed9c",
+        "0x2e6eda0",
+        "0x2e6eda4",
+        "0x2e6eda8",
+        "0x2e6edac",
+        "0x2e6ef98",
+        "0x2e6ef9c",
+        "0x2e6eeb4",
+        "0x2e6eeb8",
+        "0x2e6eebc",
+        "0x2e6eec0",
+        "0x2e6eec4",
+        "0x2e6f494"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2e6f494",
+      "output_vpc_quality_frame": [
+        5,
+        6,
+        0
+      ],
+      "input": {
+        "format": 6,
+        "quality": 2,
+        "frame": 0,
+        "color": 0
+      },
+      "diagnostic_memory_override": false,
+      "label": "bad frame"
+    },
+    {
+      "reason": "unapproved execution 0x2f6fe3c",
+      "steps": 27,
+      "stores": [],
+      "pcs": [
+        "0x2e6ea58",
+        "0x2e6ea5c",
+        "0x2e6ea60",
+        "0x2e6ea64",
+        "0x2e6ea68",
+        "0x2e6ea6c",
+        "0x2e6ea70",
+        "0x2e6ea74",
+        "0x2e6ea78",
+        "0x2e6ea7c",
+        "0x2e6ea80",
+        "0x2e6ec64",
+        "0x2e6ec68",
+        "0x2e6ec6c",
+        "0x2e6ec70",
+        "0x2e6ec74",
+        "0x2e6ec78",
+        "0x2e6ec7c",
+        "0x2e6ec80",
+        "0x2e6ec84",
+        "0x2e6ec88",
+        "0x2e6ec8c",
+        "0x2e6ec90",
+        "0x2e6ec94",
+        "0x2e6ec98",
+        "0x2e6ec9c",
+        "0x2f6fe3c"
+      ],
+      "start_pc": "0x2e6ea58",
+      "stop_pc": "0x2f6fe3c",
+      "output_vpc_quality_frame": [
+        0,
+        0,
+        0
+      ],
+      "input": {
+        "format": 6,
+        "quality": 2,
+        "frame": 15,
+        "color": 2
+      },
+      "diagnostic_memory_override": false,
+      "label": "bad color"
+    }
+  ],
+  "assertions": 14,
+  "status": "PASS"
+}

@@ -1,0 +1,58 @@
+{
+  "created_utc": "2026-10-26T05:42:40.865342+00:00",
+  "reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "files": [
+    {
+      "partition": "work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+      "partition_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+      "file_entry": {
+        "path": "/lib/libc-2.25.so",
+        "inode": 92,
+        "mode": "0o100777",
+        "size": 1283936,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "symlink_entry": {
+        "path": "/lib/libc.so.6",
+        "inode": 96,
+        "mode": "0o120777",
+        "size": 12,
+        "flags": "0x0",
+        "type": 40960
+      },
+      "symlink_target_recorded_not_created": "libc-2.25.so",
+      "output": "work/sony-firmware-20261024/stage56-native-stop-name-flow/official-files/nflasha7/lib/libc-2.25.so",
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "SONAME": "libc.so.6"
+    },
+    {
+      "partition": "work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+      "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "file_entry": {
+        "path": "/lib/libstdc++.so.6.0.22",
+        "inode": 95361,
+        "mode": "0o100777",
+        "size": 1549496,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "symlink_entry": {
+        "path": "/lib/libstdc++.so.6",
+        "inode": 95270,
+        "mode": "0o120777",
+        "size": 19,
+        "flags": "0x0",
+        "type": 40960
+      },
+      "symlink_target_recorded_not_created": "libstdc++.so.6.0.22",
+      "output": "work/sony-firmware-20261024/stage56-native-stop-name-flow/official-files/nflasha15/lib/libstdc++.so.6.0.22",
+      "bytes": 1549496,
+      "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+      "SONAME": "libstdc++.so.6"
+    }
+  ],
+  "mount_host_payload_execution_camera_or_network": false,
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B"
+}

@@ -1,0 +1,149 @@
+{
+  "created_utc": "2026-10-29T22:07:39.618723+00:00",
+  "stage": "dgu-mis-consumer-20261029",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "DGU-MIS-context-review.json",
+      "bytes": 9522,
+      "sha256": "4b16336a435cca84e10020a339cfd728b3133f2430dbda5fba692c51a4a4d3fa"
+    },
+    {
+      "path": "DGU-MIS-prefix-results.json",
+      "bytes": 17946,
+      "sha256": "776b69a1251db308ddb43e3cdae9db6485747626efba1841a6c49f7aff2b6a1d"
+    },
+    {
+      "path": "DGU-MIS-with-NOR-results.json",
+      "bytes": 19341,
+      "sha256": "da9b7f89c0dbe939b77f5617610cec0d6b4b9130cbaffdc65255afc987fbe96f"
+    },
+    {
+      "path": "MIS-record-prefix-inventory.json",
+      "bytes": 1155196,
+      "sha256": "fd7f4d514f4a7522cf5d8aef7de7604e3fd1e415578ee9fdf5f9433aec020f5e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7227,
+      "sha256": "53df93242eeaea7fe364da6902e7b8ba6ddfbb1ee97604b96bfead613ed3f701"
+    },
+    {
+      "path": "attempts/DTB-member-lookup-failure.json",
+      "bytes": 356,
+      "sha256": "daec61936950a947bca1b30e1fe15fce7a344fb79c6bb5ff2d1571bc630e42a7"
+    },
+    {
+      "path": "attempts/MIS-record-prefix-inventory-before-DTB-member-fix.json",
+      "bytes": 1155196,
+      "sha256": "fd7f4d514f4a7522cf5d8aef7de7604e3fd1e415578ee9fdf5f9433aec020f5e"
+    },
+    {
+      "path": "attempts/capture_context_review-before-DTB-member-fix.py",
+      "bytes": 8691,
+      "sha256": "05607b47fac7e0d280802ad750ced048b100f2eb1d946cf35e77b324adac988b"
+    },
+    {
+      "path": "capture_context_review.py",
+      "bytes": 9052,
+      "sha256": "4f241344e880d4dd56a3ad300bd8ac46aac73ce33a0dc500c20827bc6589e978"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 896,
+      "sha256": "538892ce9b2c932adfeae3a8f741813bde0dbc3fd73d5d16d3b514a7ee686831"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 339,
+      "sha256": "d6db5fc87810b1b604c2a055a1c153dfb844936cd7031055fea3690743a089f2"
+    },
+    {
+      "path": "listings/diagnostic-magic-read.txt",
+      "bytes": 1701,
+      "sha256": "0baf0b3e451dbe3fb285c3e7de8ec7e1b657f9fa59d27efc16da50ddad8397e8"
+    },
+    {
+      "path": "listings/flags-normalizer.txt",
+      "bytes": 2181,
+      "sha256": "fc7e48ed89a8c0f8740445c042dceb84b0f3128b245b88ec5306a1be54cd4687"
+    },
+    {
+      "path": "listings/opcode11-setup-prefix.txt",
+      "bytes": 783,
+      "sha256": "f4b5208e45eb9826f9a0253d371ec743d7c649387167fa963ca3b8e7f6e77d98"
+    },
+    {
+      "path": "listings/output-byte-writer.txt",
+      "bytes": 770,
+      "sha256": "5840e7e46846608fcd362182b2fcda357eb9012cfa416e7e4de2350ac577e577"
+    },
+    {
+      "path": "listings/output-port-selection.txt",
+      "bytes": 1441,
+      "sha256": "a6757f97878e809b1ee7351c5daa697b1d63fb9e79750023da056f0dd8311319"
+    },
+    {
+      "path": "listings/output-register-initializer.txt",
+      "bytes": 1977,
+      "sha256": "a702f552512f70939ea2a7578f0beab30995b920e616a83c7f93ccf7cb3a0d7d"
+    },
+    {
+      "path": "listings/record-framing-and-dispatch.txt",
+      "bytes": 4216,
+      "sha256": "6307dd4a091870d7082f534709c39fbfc52631969ea7efcc233ff7b4f7c82f01"
+    },
+    {
+      "path": "probe_mis_consumer.py",
+      "bytes": 7675,
+      "sha256": "9010849205aeed159f75f922396f70611fa2fc173cc6e4b2a9837174d552199e"
+    },
+    {
+      "path": "probe_with_original_NOR.py",
+      "bytes": 3008,
+      "sha256": "870163657193e014d613c4f19d7186ba885771ea8e0c36eeb169dfca460f2c6c"
+    },
+    {
+      "path": "source-refresh.json",
+      "bytes": 1171,
+      "sha256": "2d4e30fb5d530c67c06fee49da85c2d32016011ae6685d9b89abf314ee9f8793"
+    },
+    {
+      "path": "validate_and_seal.py",
+      "bytes": 9891,
+      "sha256": "6f56d213577f33c0a07ac0c563994644311edf006aff5622628f2c0b5f1fa39b"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 958,
+      "sha256": "9899650620dd3680eea7d865f95cd8ce48598841f91ebcb38d02549f86622cc3"
+    }
+  ],
+  "validation": {
+    "status": "PASS_ORIGINAL_MIS_FRAMING_AND_DGU_HARDWARE_BOUNDARIES",
+    "previous_sealed_files_verified": 23,
+    "sequential_valid_framing_records": 5654,
+    "original_control_flow_or_complete_script_semantics_proved": false,
+    "observed_opcode_dispatch_entries": 18,
+    "original_static_windows": 7,
+    "original_DGU_only_cases": 3,
+    "original_NOR_context_cases": 3,
+    "instruction_counts_are_entries_and_include_guarded_last_memory_instruction": true,
+    "normal_boot_or_DDR_initialization_completed": false,
+    "actual_fitted_RAM_vendor_or_capacity_proved": false,
+    "current7_02_DTB_or_active_nodes_proved": false,
+    "model_GPL_UART_reference_pinned": true,
+    "physical_buffer_or_RAW_or_ISP_recovered": false,
+    "CPU_or_hardware_operations_executed": 0,
+    "native_Sony_programs_executed": 0,
+    "device_actions": 0,
+    "other_owner_files_written": false,
+    "modified_firmware_produced": false,
+    "flashable_package_produced": false,
+    "goal_complete": false
+  },
+  "persistent_goal_status": "active",
+  "goal_complete": false,
+  "device_actions": 0,
+  "flashable_package_produced": false
+}

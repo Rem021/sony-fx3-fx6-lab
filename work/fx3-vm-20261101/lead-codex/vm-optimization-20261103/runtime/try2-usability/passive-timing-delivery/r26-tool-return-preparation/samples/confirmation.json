@@ -1,0 +1,88 @@
+{
+  "status": "confirmed_and_cancelled",
+  "receipt_schema": "fx3-r24-snapshot-confirm-v1",
+  "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+  "alarm_nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+  "step": 1,
+  "attempt_id": "07dfd2c1-26d0-46eb-8a3d-61ddbb274323",
+  "reviewed_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+  "target": "OFFLINE MOCK separately viewed actual fixed PNG, complete target confirmed",
+  "retries": 0,
+  "guest_keys_sent_by_helper": 0,
+  "eval_may_have_started": true,
+  "browser_result": {
+    "cancelled": {
+      "current": {
+        "armed_ms": 3764.799999952316,
+        "cancelled_ms": 11860.599999964235,
+        "deadline_ms": 20000,
+        "due_ms": 23764.799999952316,
+        "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+        "state": "cancelled"
+      },
+      "deadline_ms": 20000,
+      "documentTimeOrigin": 1793845545606.4,
+      "events": [
+        {
+          "event": "installed",
+          "performance_ms": 3142.599999964237,
+          "script_SHA256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+          "wall_UTC": "2026-11-05T02:25:48.748Z"
+        },
+        {
+          "due_ms": 23764.799999952316,
+          "event": "armed",
+          "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+          "performance_ms": 3764.899999976158,
+          "wall_UTC": "2026-11-05T02:25:49.371Z"
+        },
+        {
+          "elapsed_ms": 8095.800000011921,
+          "event": "cancelled",
+          "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+          "performance_ms": 11860.599999964235,
+          "wall_UTC": "2026-11-05T02:25:57.467Z"
+        }
+      ],
+      "expectedLaunchId": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+      "expectedURL": "http://127.0.0.1:58342/",
+      "sealed": false,
+      "version": 1
+    },
+    "click_invoked": true,
+    "expected": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "attempt_id": "07dfd2c1-26d0-46eb-8a3d-61ddbb274323",
+      "content_generation": 8,
+      "document_id": "a2e8dc88-1bf7-4c4f-afd3-febd20f396e6",
+      "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+      "observed_sequence": 54,
+      "pin_request_id": "873b3408-7977-4903-b49b-f6d6ed44ab7a",
+      "request_id": "4be410dc-908e-4034-9842-4ee86051ce25",
+      "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+      "schema": "fx3-review-snapshot-v1",
+      "snapshot_id": "68da9d15-ff77-43de-8de6-8bae02a0f749",
+      "step": 1
+    },
+    "guest_keys_sent": 0,
+    "historical_snapshot": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "attempt_id": "07dfd2c1-26d0-46eb-8a3d-61ddbb274323",
+      "byte_length": 30165,
+      "content_generation": 8,
+      "document_id": "a2e8dc88-1bf7-4c4f-afd3-febd20f396e6",
+      "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+      "native_receive_floor_sequence": 1,
+      "native_receive_observed_host_monotonic": 429235.110227833,
+      "observation_scope": "new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim",
+      "observed_sequence": 54,
+      "pin_request_id": "873b3408-7977-4903-b49b-f6d6ed44ab7a",
+      "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+      "schema": "fx3-review-snapshot-v1",
+      "snapshot_id": "68da9d15-ff77-43de-8de6-8bae02a0f749",
+      "step": 1
+    },
+    "receipt_schema": "fx3-r24-snapshot-confirm-v1",
+    "status": "confirmed_and_cancelled"
+  }
+}

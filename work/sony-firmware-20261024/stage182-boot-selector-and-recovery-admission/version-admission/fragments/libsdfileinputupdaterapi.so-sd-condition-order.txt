@@ -1,0 +1,42 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0xa360, 0xa3fc) raw slice SHA256 93b46af87de1ed0bf9060b1832f53a81fb605390741adc85b617b31e45f0961d
+    a360: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+    a364: 910003fd     	mov	x29, sp
+    a368: f9400003     	ldr	x3, [x0]
+    a36c: a90153f3     	stp	x19, x20, [sp, #0x10]
+    a370: aa0003f3     	mov	x19, x0
+    a374: aa0203f4     	mov	x20, x2
+    a378: f9402463     	ldr	x3, [x3, #0x48]
+    a37c: d63f0060     	blr	x3
+    a380: f9400260     	ldr	x0, [x19]
+    a384: aa1403e1     	mov	x1, x20
+    a388: f9401802     	ldr	x2, [x0, #0x30]
+    a38c: aa1303e0     	mov	x0, x19
+    a390: d63f0040     	blr	x2
+    a394: 72001c1f     	tst	w0, #0xff
+    a398: 540001e0     	b.eq	0xa3d4 <Updater::SDUUDConditionChecker::IsUUDConditionOK(char const*, UpdaterAPI::firmware_information_t&)+0x74>
+    a39c: f9400260     	ldr	x0, [x19]
+    a3a0: aa1403e1     	mov	x1, x20
+    a3a4: f9401c02     	ldr	x2, [x0, #0x38]
+    a3a8: aa1303e0     	mov	x0, x19
+    a3ac: d63f0040     	blr	x2
+    a3b0: 72001c1f     	tst	w0, #0xff
+    a3b4: 54000100     	b.eq	0xa3d4 <Updater::SDUUDConditionChecker::IsUUDConditionOK(char const*, UpdaterAPI::firmware_information_t&)+0x74>
+    a3b8: f9400260     	ldr	x0, [x19]
+    a3bc: aa1403e1     	mov	x1, x20
+    a3c0: f9402002     	ldr	x2, [x0, #0x40]
+    a3c4: aa1303e0     	mov	x0, x19
+    a3c8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    a3cc: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    a3d0: d61f0040     	br	x2
+    a3d4: 52800000     	mov	w0, #0x0                // =0
+    a3d8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    a3dc: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    a3e0: d65f03c0     	ret
+    a3e4: f0000081     	adrp	x1, 0x1d000
+    a3e8: f900081f     	str	xzr, [x0, #0x10]
+    a3ec: f947dc21     	ldr	x1, [x1, #0xfb8]
+    a3f0: 91004021     	add	x1, x1, #0x10
+    a3f4: a9007c01     	stp	x1, xzr, [x0]
+    a3f8: d65f03c0     	ret

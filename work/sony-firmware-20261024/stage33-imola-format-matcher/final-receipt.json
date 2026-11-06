@@ -1,0 +1,74 @@
+{
+  "schema": "fx3-stage33-imola-format-matcher/1",
+  "created_utc": "2026-10-25T22:55:16.966426+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/README.md",
+      "bytes": 7543,
+      "sha256": "3167c9526f6c77150a3fa4acb78108a9e20cc9fb45afb97f5aa6b84bbdbafb5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/coordinator-observations.json",
+      "bytes": 2250,
+      "sha256": "d4ac81e2a81eaf47ceacc4710e7bc33c26fe4d4054abe1e05c53281d02d939bc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/goal-status-after.json",
+      "bytes": 53233,
+      "sha256": "68c7af412c9e875589025a0a2e120aa93a082d8eb07cef6c42e6c22983c0361e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/goal-status-before.json",
+      "bytes": 51012,
+      "sha256": "c0c858cc49f5689e2775e37f2a43d1d59100918301adcb356a5e5039db7bcb3f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/imola_matcher.py",
+      "bytes": 16125,
+      "sha256": "4f157a5ce0c732f26a7b3f76f7e51831bbb6178982d392f382afd47fd8f5c938"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/next-receiver-anchors.json",
+      "bytes": 7521,
+      "sha256": "6a8a460212731cbc6f9cecdc8902ea305c4f482c4000731b25a72dcd7359b1fd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/run-20261025/imola-matcher-results.json",
+      "bytes": 2095255,
+      "sha256": "748b2767a1bcc2a392552147a8da3596e5cba968ca7e4a1de1603dade26a2727"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/run-20261025/source-receipt.json",
+      "bytes": 785,
+      "sha256": "4d9cc06904cc8667d1eb7c29396b2f04c41d95b67785415ff16be67314d831b9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage33-imola-format-matcher/run-20261025/summary.json",
+      "bytes": 1956,
+      "sha256": "cf7cf551f27cc61e3187c0612c1800b10863b99fc7771e3634bdc0127625f1c0"
+    }
+  ],
+  "previous_manifest_sha256": "0ae57711bc1a8d5756c224de9c1666140700359789ae7a66ec9bcbc29f5807f2",
+  "scope": "41 bounded original executions plus689-row inventory. Current FH profile fails this matcher; FF conditional fixture match. No complete resource/hardware/bitrate/restore proof.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage33-imola-format-matcher/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage33-imola-format-matcher/goal-status-after.json",
+    "before_sha256": "c0c858cc49f5689e2775e37f2a43d1d59100918301adcb356a5e5039db7bcb3f",
+    "after_sha256": "68c7af412c9e875589025a0a2e120aa93a082d8eb07cef6c42e6c22983c0361e",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "native_output_adapters": false,
+    "actual_clear_log_full_resource_channel_transport": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 IMOLA 参数匹配与质量边界](<work/sony-firmware-20261024/stage33-imola-format-matcher/README.md>)：现有FH主录目标未命中原表；原表存在HD29.97 HEVC42010 MAIN项，人工FF对照条件命中，真实码率、完整资源链与恢复仍未验证。"
+}

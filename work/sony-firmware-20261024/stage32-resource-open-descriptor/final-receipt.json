@@ -1,0 +1,89 @@
+{
+  "schema": "fx3-stage32-resource-open-descriptor/1",
+  "created_utc": "2026-10-25T22:41:26.492040+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/README.md",
+      "bytes": 7335,
+      "sha256": "7869dcd8f79634148b6df93189092ddef1ca0527767dbeb7e4b82e2640fa653e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/coordinator-observations.json",
+      "bytes": 2776,
+      "sha256": "bd171f95cfaa354d3c4155eb79870f957863bd92de2a4690e3a914f83869bce6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/goal-status-after.json",
+      "bytes": 51012,
+      "sha256": "c0c858cc49f5689e2775e37f2a43d1d59100918301adcb356a5e5039db7bcb3f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/goal-status-before.json",
+      "bytes": 48707,
+      "sha256": "8aa735292db537d90025eae4fea47f9b401806bd9c654cc7ad3085b40b7504bd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/resource_descriptor.py",
+      "bytes": 17817,
+      "sha256": "a02ed6b37b65c4ef356c15a6c4f6c3c7dc8d7e93fde75d890fe445846ad540bc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-20261025/resource-descriptor-results.json",
+      "bytes": 570891,
+      "sha256": "7378e074d667a11f6cd0366ac742cc1614376ac308ce88a3c3277d5f0aaac880"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-20261025/source-receipt.json",
+      "bytes": 888,
+      "sha256": "834fa2fad283294a628b02a36a9ac744bdd3c30636df56aa4c4649bbd86dd2be"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-20261025/source-snapshot.py",
+      "bytes": 15418,
+      "sha256": "87229c234d79e6788edebd70a6ec3374159deeddfe72c09a6eb8f803ba6cf324"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-20261025/summary.json",
+      "bytes": 2299,
+      "sha256": "0893d76dec022aeae98884c1c2b56a38aebc3f67bcea0d0276e88a468aa3bbee"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-enum-bound-20261025/resource-descriptor-results.json",
+      "bytes": 592043,
+      "sha256": "5b8b4fd35b79667c61f23365f82de3bd975da44b8544c4f9ba41327f765c3f4a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-enum-bound-20261025/source-receipt.json",
+      "bytes": 888,
+      "sha256": "9252316fb3469c1ccf6f5f5bdfb4ac71894ec6674f8ddbb5d992e104a382b5cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-enum-bound-20261025/summary.json",
+      "bytes": 2867,
+      "sha256": "fff273325f2674887a35454e1dd75a56e729df23c69bbbd2c6b8d25fed4a9383"
+    }
+  ],
+  "previous_manifest_sha256": "fe9f989a43aec83ced9b1a5a861efecea1d1c111007d10203bf0d98365fe8180",
+  "scope": "44 original bounded executions. Descriptor/name converters and sender prefix with explicit native gaps; not continuous builder, hardware or recovery.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage32-resource-open-descriptor/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage32-resource-open-descriptor/goal-status-after.json",
+    "before_sha256": "8aa735292db537d90025eae4fea47f9b401806bd9c654cc7ad3085b40b7504bd",
+    "after_sha256": "c0c858cc49f5689e2775e37f2a43d1d59100918301adcb356a5e5039db7bcb3f",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "native_output_adapters": false,
+    "actual_clear_diagnostics_full_input_or_resource_transport": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 编码资源描述符与原枚举](<work/sony-firmware-20261024/stage32-resource-open-descriptor/README.md>)：独立原片段保留HD/29.97/42010并区分HEVC_MP4与代理；质量转FH，原生依赖、资源接受、真实码率与恢复仍未验证。"
+}

@@ -1,0 +1,14 @@
+{
+  "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/r39-preflight-f02ee53c27b9-1793866535135556000",
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+    "-B",
+    "-c",
+    "import sys,os,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]).resolve()\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden offline event:'+event)\n if event=='subprocess.Popen':\n  argv=args[1]\n  safe=(list(argv[:3])==['diskutil','info','-plist'] or (Path(argv[0]).name.startswith('python') and ((len(argv)>3 and argv[2]=='-c' and \"run_name='r39_import_only'\" in argv[3]) or (len(argv)>3 and '--help' in argv and Path(argv[2]).parent==root/'operator-helpers'))))\n  if not safe:raise RuntimeError('forbidden offline child:'+str(argv))\n if event=='open':\n  p,mode,flags=args\n  if isinstance(p,(str,bytes)) and ((mode and any(c in mode for c in 'wax+')) or flags&0x603):\n   if not Path(p).resolve().is_relative_to(root):raise RuntimeError('outside write:'+str(p))\n if event=='os.mkdir' and not Path(args[0]).resolve().is_relative_to(root):raise RuntimeError('outside mkdir')\nsys.addaudithook(audit)\nsys.path.insert(0,str(root/'runtime-wrapper'))\nsys.argv=[str(root/'runtime-wrapper/preflight.py')]\nrunpy.run_path(sys.argv[0],run_name='__main__')\n",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate"
+  ],
+  "exit": 0,
+  "audit_policy": "import sys,os,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]).resolve()\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden offline event:'+event)\n if event=='subprocess.Popen':\n  argv=args[1]\n  safe=(list(argv[:3])==['diskutil','info','-plist'] or (Path(argv[0]).name.startswith('python') and ((len(argv)>3 and argv[2]=='-c' and \"run_name='r39_import_only'\" in argv[3]) or (len(argv)>3 and '--help' in argv and Path(argv[2]).parent==root/'operator-helpers'))))\n  if not safe:raise RuntimeError('forbidden offline child:'+str(argv))\n if event=='open':\n  p,mode,flags=args\n  if isinstance(p,(str,bytes)) and ((mode and any(c in mode for c in 'wax+')) or flags&0x603):\n   if not Path(p).resolve().is_relative_to(root):raise RuntimeError('outside write:'+str(p))\n if event=='os.mkdir' and not Path(args[0]).resolve().is_relative_to(root):raise RuntimeError('outside mkdir')\nsys.addaudithook(audit)\nsys.path.insert(0,str(root/'runtime-wrapper'))\nsys.argv=[str(root/'runtime-wrapper/preflight.py')]\nrunpy.run_path(sys.argv[0],run_name='__main__')\n",
+  "prepare_exit": 0,
+  "forbidden_entrypoints_executed": []
+}

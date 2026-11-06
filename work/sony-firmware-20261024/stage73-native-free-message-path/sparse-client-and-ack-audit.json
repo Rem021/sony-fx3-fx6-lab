@@ -1,0 +1,294 @@
+{
+  "created_utc": "2026-10-26T19:21:32.135933+00:00",
+  "module": "osal_uipc.ko",
+  "relocated_text_base": "0xffffff800a281000",
+  "module_text_bytes_sha256": "eec0ae4a2945e147835456ee6e5380610e85dd73119f4ba53b39514b28876997",
+  "regions": [
+    {
+      "text_relative_start": "0x2938",
+      "text_relative_end": "0x2978",
+      "sha256": "a5736470813d931ad08c206193d104f0cc1f26153b6d11390980df4db8cebb68",
+      "instructions": [
+        {
+          "offset": "0x2938",
+          "bytes": "02020058",
+          "asm": "ldr x2, #0xffffff800a283978"
+        },
+        {
+          "offset": "0x293c",
+          "bytes": "013849d3",
+          "asm": "ubfx x1, x0, #9, #6"
+        },
+        {
+          "offset": "0x2940",
+          "bytes": "032046d3",
+          "asm": "ubfx x3, x0, #6, #3"
+        },
+        {
+          "offset": "0x2944",
+          "bytes": "410c018b",
+          "asm": "add x1, x2, x1, lsl #3"
+        },
+        {
+          "offset": "0x2948",
+          "bytes": "211041f9",
+          "asm": "ldr x1, [x1, #0x220]"
+        },
+        {
+          "offset": "0x294c",
+          "bytes": "210100b4",
+          "asm": "cbz x1, #0xffffff800a283970"
+        },
+        {
+          "offset": "0x2950",
+          "bytes": "21d863f8",
+          "asm": "ldr x1, [x1, w3, sxtw #3]"
+        },
+        {
+          "offset": "0x2954",
+          "bytes": "e10000b4",
+          "asm": "cbz x1, #0xffffff800a283970"
+        },
+        {
+          "offset": "0x2958",
+          "bytes": "021443d3",
+          "asm": "ubfx x2, x0, #3, #3"
+        },
+        {
+          "offset": "0x295c",
+          "bytes": "217862f8",
+          "asm": "ldr x1, [x1, x2, lsl #3]"
+        },
+        {
+          "offset": "0x2960",
+          "bytes": "810000b4",
+          "asm": "cbz x1, #0xffffff800a283970"
+        },
+        {
+          "offset": "0x2964",
+          "bytes": "00084092",
+          "asm": "and x0, x0, #7"
+        },
+        {
+          "offset": "0x2968",
+          "bytes": "207860f8",
+          "asm": "ldr x0, [x1, x0, lsl #3]"
+        },
+        {
+          "offset": "0x296c",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "offset": "0x2970",
+          "bytes": "000080d2",
+          "asm": "mov x0, #0"
+        },
+        {
+          "offset": "0x2974",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        }
+      ]
+    },
+    {
+      "text_relative_start": "0x3248",
+      "text_relative_end": "0x3294",
+      "sha256": "c58cfaf2fa7df644150b8f0c470d2cbb5b9158aff2a7ff5b1ddcbca017303e54",
+      "instructions": [
+        {
+          "offset": "0x3248",
+          "bytes": "fd7bb9a9",
+          "asm": "stp x29, x30, [sp, #-0x70]!"
+        },
+        {
+          "offset": "0x324c",
+          "bytes": "04380012",
+          "asm": "and w4, w0, #0x7fff"
+        },
+        {
+          "offset": "0x3250",
+          "bytes": "9ffc0071",
+          "asm": "cmp w4, #0x3f"
+        },
+        {
+          "offset": "0x3254",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "offset": "0x3258",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "offset": "0x325c",
+          "bytes": "f30301aa",
+          "asm": "mov x19, x1"
+        },
+        {
+          "offset": "0x3260",
+          "bytes": "f76303a9",
+          "asm": "stp x23, x24, [sp, #0x30]"
+        },
+        {
+          "offset": "0x3264",
+          "bytes": "f403022a",
+          "asm": "mov w20, w2"
+        },
+        {
+          "offset": "0x3268",
+          "bytes": "fb2b00f9",
+          "asm": "str x27, [sp, #0x50]"
+        },
+        {
+          "offset": "0x326c",
+          "bytes": "f803002a",
+          "asm": "mov w24, w0"
+        },
+        {
+          "offset": "0x3270",
+          "bytes": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]"
+        },
+        {
+          "offset": "0x3274",
+          "bytes": "fb03032a",
+          "asm": "mov w27, w3"
+        },
+        {
+          "offset": "0x3278",
+          "bytes": "f96b04a9",
+          "asm": "stp x25, x26, [sp, #0x40]"
+        },
+        {
+          "offset": "0x327c",
+          "bytes": "e8090054",
+          "asm": "b.hi #0xffffff800a2843b8"
+        },
+        {
+          "offset": "0x3280",
+          "bytes": "c0140058",
+          "asm": "ldr x0, #0xffffff800a284518"
+        },
+        {
+          "offset": "0x3284",
+          "bytes": "81387dd3",
+          "asm": "ubfiz x1, x4, #3, #0xf"
+        },
+        {
+          "offset": "0x3288",
+          "bytes": "0000018b",
+          "asm": "add x0, x0, x1"
+        },
+        {
+          "offset": "0x328c",
+          "bytes": "150840f9",
+          "asm": "ldr x21, [x0, #0x10]"
+        },
+        {
+          "offset": "0x3290",
+          "bytes": "d50900b4",
+          "asm": "cbz x21, #0xffffff800a2843c8"
+        }
+      ]
+    },
+    {
+      "text_relative_start": "0x33b8",
+      "text_relative_end": "0x33dc",
+      "sha256": "e90c2c4b74df3078ef9530f88e1f00d898d5daf663ed8f40fbfe4cee90449ec2",
+      "instructions": [
+        {
+          "offset": "0x33b8",
+          "bytes": "e003042a",
+          "asm": "mov w0, w4"
+        },
+        {
+          "offset": "0x33bc",
+          "bytes": "5ffdff97",
+          "asm": "bl #0xffffff800a283938"
+        },
+        {
+          "offset": "0x33c0",
+          "bytes": "f50300aa",
+          "asm": "mov x21, x0"
+        },
+        {
+          "offset": "0x33c4",
+          "bytes": "80f6ffb5",
+          "asm": "cbnz x0, #0xffffff800a284294"
+        },
+        {
+          "offset": "0x33c8",
+          "bytes": "e003042a",
+          "asm": "mov w0, w4"
+        },
+        {
+          "offset": "0x33cc",
+          "bytes": "167f1f53",
+          "asm": "lsr w22, w24, #0x1f"
+        },
+        {
+          "offset": "0x33d0",
+          "bytes": "c6feff97",
+          "asm": "bl #0xffffff800a283ee8"
+        },
+        {
+          "offset": "0x33d4",
+          "bytes": "f50300aa",
+          "asm": "mov x21, x0"
+        },
+        {
+          "offset": "0x33d8",
+          "bytes": "00f6ffb5",
+          "asm": "cbnz x0, #0xffffff800a284298"
+        }
+      ]
+    },
+    {
+      "text_relative_start": "0x2f48",
+      "text_relative_end": "0x2f64",
+      "sha256": "6755516a44e9f2f9a3cb4c927b7ad47e7e1595bc6cbb23b82e7e4d92c2394926",
+      "instructions": [
+        {
+          "offset": "0x2f48",
+          "bytes": "80420891",
+          "asm": "add x0, x20, #0x210"
+        },
+        {
+          "offset": "0x2f4c",
+          "bytes": "763a49d3",
+          "asm": "ubfx x22, x19, #9, #6"
+        },
+        {
+          "offset": "0x2f50",
+          "bytes": "772246d3",
+          "asm": "ubfx x23, x19, #6, #3"
+        },
+        {
+          "offset": "0x2f54",
+          "bytes": "781643d3",
+          "asm": "ubfx x24, x19, #3, #3"
+        },
+        {
+          "offset": "0x2f58",
+          "bytes": "790a0012",
+          "asm": "and w25, w19, #7"
+        },
+        {
+          "offset": "0x2f5c",
+          "bytes": "97f4ff97",
+          "asm": "bl #0xffffff800a2811b8"
+        },
+        {
+          "offset": "0x2f60",
+          "bytes": "800e168b",
+          "asm": "add x0, x20, x22, lsl #3"
+        }
+      ]
+    }
+  ],
+  "lock_object_delta_between_low_and_high_client": 528,
+  "actual_module_initialization_or_driver_state_proven": false,
+  "ack_scope": "Local decoder success does not prove physical completion. An8-byte ACK may be legitimate; no protocol minimum/full-length rule, correlation failure or vulnerability is inferred."
+}

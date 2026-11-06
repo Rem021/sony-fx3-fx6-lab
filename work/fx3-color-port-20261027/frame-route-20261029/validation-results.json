@@ -1,0 +1,33 @@
+{
+  "previous_checkpoint_files_verified": 18,
+  "previous_receipt_sha256": "8692416fe7833eff1203ed3dee90c7926a9b7dfe868cee7a3e42edc88e1e26f5",
+  "python_ast_files": 4,
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "original_source_fragments": 13,
+  "direct_branch_candidates": 33,
+  "callback_pointer_candidates": 1,
+  "case_counts": {
+    "allocation": 3,
+    "gate_and_reset": 7,
+    "callback_record": 1,
+    "total": 11
+  },
+  "original_failure_latch_and_original_clear_verified": true,
+  "original_callback_packet_verified": true,
+  "repeat_allocation_not_falsely_accepted": true,
+  "stp_allocator_success_not_fabricated": true,
+  "local_links_verified": 5,
+  "boundary": {
+    "real_resource_state": false,
+    "full_frame_or_buffers": false,
+    "real_queue_delivery": false,
+    "MAIN_pixels": false,
+    "complete_donor": false,
+    "native_target_execution": false,
+    "device_actions": 0,
+    "firmware_output": false,
+    "goal_complete": false,
+    "termination_condition_met": false
+  },
+  "conclusion": "MLUT caller gate and registration record recovered. Empty-mask and STP-stub limits are explicit; normal frame/buffer/MAIN routing and flashability remain unproven."
+}

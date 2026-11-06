@@ -1,0 +1,12 @@
+# Original FX3 core bytes under source map0x4200. No execution.
+0x883e [file+0x463e] 10b5 push      {r4, lr}
+0x8840 [file+0x4640] 0446 mov       r4, r0
+0x8842 [file+0x4642] 1248 ldr       r0, [pc, #0x48]
+0x8844 [file+0x4644] 0069 ldr       r0, [r0, #0x10]
+0x8846 [file+0x4646] 8007 lsls      r0, r0, #0x1e
+0x8848 [file+0x4648] 02d5 bpl       #0x8850
+0x884a [file+0x464a] 1da0 adr       r0, #0x74
+0x884c [file+0x464c] 2ff046fd bl        #0x382dc
+0x8850 [file+0x4650] 1e48 ldr       r0, [pc, #0x78]
+0x8852 [file+0x4652] 50f82400 ldr.w     r0, [r0, r4, lsl #2]
+0x8856 [file+0x4656] 10bd pop       {r4, pc}

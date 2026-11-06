@@ -1,0 +1,33 @@
+{
+  "case": "new_group",
+  "error": "AssertionError()",
+  "pc": "0x10010550",
+  "steps": 403,
+  "system_requests": [],
+  "fs_events": [
+    {
+      "operation": "RAM directory create",
+      "path": "/tmp_updater/updater/update"
+    }
+  ],
+  "stat_events": [
+    {
+      "adapter": "RAM existence-only stat",
+      "path": "/tmp_updater/UFP",
+      "exists": false
+    },
+    {
+      "adapter": "RAM existence-only stat",
+      "path": "/root/IAMUPDATER",
+      "exists": false
+    }
+  ],
+  "ring_events": [],
+  "controller_entries": [
+    {
+      "entry": "Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)",
+      "pc": "0x100122a4",
+      "stream_position": 0
+    }
+  ]
+}

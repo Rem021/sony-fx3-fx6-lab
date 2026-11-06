@@ -1,0 +1,12 @@
+from pathlib import Path
+from elftools.elf.elffile import ELFFile
+from capstone import *
+import hashlib,json,re
+R=Path(__file__).resolve().parent;A=R.parent/'original-uipc/ap-projection/regular-files/usr/lib';out={}
+p=A/'appFw.so';b=p.read_bytes();e=ELFFile(p.open('rb'));sec=e.get_section_by_name('.text');cs=Cs(CS_ARCH_ARM64,CS_MODE_ARM);blocks=[(0x2df2e08,0xd0),(0x2dd2114,0x40),(0x2bb8acc,0x90),(0x2de72f4,0x50)];out['appFw']={'sha256':hashlib.sha256(b).hexdigest(),'blocks':{hex(a):[{'va':hex(i.address),'bytes':i.bytes.hex(),'instruction':i.mnemonic+' '+i.op_str} for i in cs.disasm(sec.data()[a-sec['sh_addr']:a-sec['sh_addr']+n],a)] for a,n in blocks},'strings':{}}
+for a in [0x392b88d,0x392b8a9]:
+ seg=next(s for s in e.iter_segments() if s['p_type']=='PT_LOAD' and s['p_vaddr']<=a<s['p_vaddr']+s['p_filesz']);off=seg['p_offset']+a-seg['p_vaddr'];out['appFw']['strings'][hex(a)]=b[off:b.index(b'\0',off)].decode()
+d=e.get_section_by_name('.dynsym');pl=e.get_section_by_name('.plt');rel=e.get_section_by_name('.rela.plt');mp={pl['sh_addr']+32+i*16:d.get_symbol(x['r_info_sym']).name for i,x in enumerate(rel.iter_relocations())};out['appFw']['wait_binding']={hex(k):mp[k] for k in [0x1592de0,0x15943d0,0x1592f10]}
+p=R.parents[2]/'sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin';b=p.read_bytes();base=0x108000;cs=Cs(CS_ARCH_ARM,CS_MODE_THUMB);blocks=[(0x20e648,0x70),(0x20f370,0xb4),(0x20f484,0x96),(0x652152,0x56),(0x20db68,0x80),(0x20c490,0x4a),(0x650990,6)];out['cpapp']={'path':str(p),'sha256':hashlib.sha256(b).hexdigest(),'blocks':{hex(a):[{'va':hex(i.address),'bytes':i.bytes.hex(),'instruction':i.mnemonic+' '+i.op_str} for i in cs.disasm(b[a-base:a-base+n],a)] for a,n in blocks},'UIPC_RTTI':'N3CEC8OSALUIPCILj2426143067ENS_7OSALLogILt156ELi0EEEE15UIPCInterpreterE','sid_decimal':2426143067,'sid_hex':hex(2426143067)}
+out['corrections']=['Old camera-profile-next-wait-proof incorrectlymatchedSIDlow15b toIMDBmodule15b; moduleID isnotSID. FullCECtemplateSID and originalcallerSET_POWER strings supersede it.','Headerflags1 doesnotmean fireandforget: selectedAPfunction explicitlycallsosal_rcv_msg_tmo(wait=-1), thenfree; expected8101/16B/status32/echopower8.','NativeCP success requiresstate/driver; explicitsoftwarebackend onlyretainsCECpower in disconnectedvirtualdomain. Not nativeCP/hardware/HDMIwire acceptance.']
+(R/'cec-power-original-proof.json').write_text(json.dumps(out,indent=2)+'\n');print('CEC proof saved',out['cpapp']['sid_hex'])

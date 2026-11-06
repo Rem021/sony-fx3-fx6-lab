@@ -1,0 +1,234 @@
+{
+  "HAR_sha256": "7670271b3d0cc678f4ee94f3e41e1bb0a7c8b49ba7f71ec1246ce5538f963973",
+  "scope": "browser CDP HAR; exact stored text bodies exported as UTF-8, no direct HTTP mutation",
+  "posts": [
+    {
+      "method": "POST",
+      "path": "/api/start",
+      "status": 202,
+      "startedDateTime": "2026-11-05T00:04:56.358382848Z",
+      "HAR_time_ms": 0.7160000101663173,
+      "request_body": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/raw-http/01-api-start-request.body",
+      "request_sha256": "947b9e0abef6088be01e4150adf2ca32a9b037ec210ffda2c8fbc32057e817a7",
+      "response_body": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/raw-http/01-api-start-response.body",
+      "response_sha256": "d60c58d918d5b56cd04cc622c8dad1710e0bd9d3f790950622085fcc8efdba13",
+      "request_headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Referer",
+          "value": ""
+        },
+        {
+          "name": "User-Agent",
+          "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "name": "X-Trial-Token",
+          "value": "WP_eLu7HSClFDNePEDJIkDFNqWenhafC9NKfjDXfEao"
+        },
+        {
+          "name": "sec-ch-ua",
+          "value": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\""
+        },
+        {
+          "name": "sec-ch-ua-mobile",
+          "value": "?0"
+        },
+        {
+          "name": "sec-ch-ua-platform",
+          "value": "\"macOS\""
+        }
+      ],
+      "response_headers": [
+        {
+          "name": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "name": "Content-Length",
+          "value": "104"
+        },
+        {
+          "name": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json; charset=utf-8"
+        },
+        {
+          "name": "Date",
+          "value": "Thu, 05 Nov 2026 00:04:56 GMT"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "name": "Server",
+          "value": "BaseHTTP/0.6 Python/3.14.6"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/stop",
+      "status": 202,
+      "startedDateTime": "2026-11-05T00:05:53.608572928Z",
+      "HAR_time_ms": 0.6609999824166297,
+      "request_body": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/raw-http/02-api-stop-request.body",
+      "request_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "response_body": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/raw-http/02-api-stop-response.body",
+      "response_sha256": "541edd5a6efd80237af324631e3720144356faa4fcef3cec2cf1665236ec4d0c",
+      "request_headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Referer",
+          "value": ""
+        },
+        {
+          "name": "User-Agent",
+          "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "name": "X-Trial-Token",
+          "value": "WP_eLu7HSClFDNePEDJIkDFNqWenhafC9NKfjDXfEao"
+        },
+        {
+          "name": "sec-ch-ua",
+          "value": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\""
+        },
+        {
+          "name": "sec-ch-ua-mobile",
+          "value": "?0"
+        },
+        {
+          "name": "sec-ch-ua-platform",
+          "value": "\"macOS\""
+        }
+      ],
+      "response_headers": [
+        {
+          "name": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "name": "Content-Length",
+          "value": "18"
+        },
+        {
+          "name": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json; charset=utf-8"
+        },
+        {
+          "name": "Date",
+          "value": "Thu, 05 Nov 2026 00:05:53 GMT"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "name": "Server",
+          "value": "BaseHTTP/0.6 Python/3.14.6"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/api/final-ack",
+      "status": 200,
+      "startedDateTime": "2026-11-05T00:05:56.013179904Z",
+      "HAR_time_ms": 0.7889999829269945,
+      "request_body": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/raw-http/03-api-final-ack-request.body",
+      "request_sha256": "32fc744c661fa8403c14d5a579cd38822eaf1e6ff2f0720c445f35bb669523df",
+      "response_body": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/raw-http/03-api-final-ack-response.body",
+      "response_sha256": "e2be3f2f9466b495c5f25e033f5f4b0b8bc2b005a88728a7a919cfd51d7d3acc",
+      "request_headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Referer",
+          "value": ""
+        },
+        {
+          "name": "User-Agent",
+          "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+        },
+        {
+          "name": "X-Trial-Token",
+          "value": "WP_eLu7HSClFDNePEDJIkDFNqWenhafC9NKfjDXfEao"
+        },
+        {
+          "name": "sec-ch-ua",
+          "value": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\""
+        },
+        {
+          "name": "sec-ch-ua-mobile",
+          "value": "?0"
+        },
+        {
+          "name": "sec-ch-ua-platform",
+          "value": "\"macOS\""
+        }
+      ],
+      "response_headers": [
+        {
+          "name": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "name": "Content-Length",
+          "value": "22"
+        },
+        {
+          "name": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'"
+        },
+        {
+          "name": "Content-Type",
+          "value": "application/json; charset=utf-8"
+        },
+        {
+          "name": "Date",
+          "value": "Thu, 05 Nov 2026 00:05:56 GMT"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "name": "Server",
+          "value": "BaseHTTP/0.6 Python/3.14.6"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ],
+  "key_POST_count": 0,
+  "visual_confirm_POST_count": 0,
+  "browser_ready_raw_capture": "not included; HAR started after initial page load, before Start"
+}

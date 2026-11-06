@@ -1,0 +1,33 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-pic",
+    "-mcmodel=large",
+    "-mgeneral-regs-only",
+    "-mno-outline-atomics",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-unwind-tables",
+    "-O2",
+    "-nostdlib",
+    "-c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ldec-soft103-v1-module-unit.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ldec-soft103-v1.ko"
+  ],
+  "exit": 0,
+  "source_sha256": "6c026aeb7231801f196af93524248d4c515f2a69788a3e3485b8b90d1ed35c9d",
+  "output_sha256": "dec6285407341319bfe6239a47e434f08b920ec23c6af960d2653c1d061c02df",
+  "decoder_sha256": "10eacafe48b4d3c6ff3afcde507619e394294cdf8324dc5e0c7af9d1fd233780",
+  "header_sha256": "492619efa49569136edefc0d1903939f2d18c8b218e3a4bacf5c26e485eb48c7",
+  "license_sha256": "03d743724e8d28c828c335f65b498dde48731706b0349832222488fb38731808",
+  "host_test_log_sha256": "89dabc88f319565190d40a5c8ba31c79a48b4c6d470a4eb2b432fccfbea2168a",
+  "authority": "msg_29cd3974555b",
+  "synthetic_ldec": true,
+  "original_ldec_hw": false
+}

@@ -1,0 +1,297 @@
+{
+  "created_utc": "2026-10-30T11:31:05.834728+00:00",
+  "stage": "AP-staging-record-routing-20261030",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6783,
+      "sha256": "8fb0442bef23ac5775735ba815a1902617270152296ee15f9a77f0d65f773f04"
+    },
+    {
+      "path": "attempts/initial-scoped-stop.json",
+      "bytes": 392,
+      "sha256": "78dcd3fb88c11e893d54d04f77c8189970d161aa1c180719c3e42795711974e9"
+    },
+    {
+      "path": "attempts/prove_staging-before-function-window-review.py",
+      "bytes": 15896,
+      "sha256": "d81e8e4c6408b2de75bad280cd5eb40786a969f6b7cc1a99b54f53e98d108a3b"
+    },
+    {
+      "path": "attempts/prove_staging-before-wrong-record-check-review.py",
+      "bytes": 15896,
+      "sha256": "a43e389623c34ffdadec64d130a22b9738ecf11fa93aae02c69453e1eafe15f1"
+    },
+    {
+      "path": "attempts/wrong-record-initial-result.json",
+      "bytes": 550,
+      "sha256": "3059894bdda8709e669c0af92d7c75c74c4fbca641895fe1a8b64583ccb9be6a"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 1002,
+      "sha256": "9ad08c68b2497f80c129a48980c0fea5d1274f675edc17b5a67564247b3a891c"
+    },
+    {
+      "path": "default-span-roundtrip.json",
+      "bytes": 5019,
+      "sha256": "8aa9723948b9553644c0e7812dcf9d7c1d45805a1953e0c4e570f835ddcf2f96"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 1063,
+      "sha256": "9460c34d57d8272bee357cbe76b14e35f86f48ac6df5e06190e796db773ce6b2"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 435,
+      "sha256": "bb5a34a1c3ffefb47d04506ebfafcadee50ab41e3679d5c8d3fdf1e88647fb7e"
+    },
+    {
+      "path": "listings/reference-AP-source-to-transfer-wrapper.txt",
+      "bytes": 2503,
+      "sha256": "943fa60aa0de708978bd3d2808c28d72aed44c3619198f0594e8225fdfe19a7b"
+    },
+    {
+      "path": "listings/reference-RAM-backed-mode-setting.txt",
+      "bytes": 5721,
+      "sha256": "6fd1da30964704fcd1af819955352483203eb6941a6abb01d315b613eb702f2d"
+    },
+    {
+      "path": "listings/reference-property-getter-mode.txt",
+      "bytes": 2595,
+      "sha256": "f14879cd933a4c2a3616b09693c69f5aacf179da5650e66fffaf5d0f870107f6"
+    },
+    {
+      "path": "listings/reference-record-address-size-and-init.txt",
+      "bytes": 3915,
+      "sha256": "40804ed9472e891d1d5a25cd76cbe8662e55eba715a215d4206983e619639e52"
+    },
+    {
+      "path": "listings/reference-record-select-and-CP-read.txt",
+      "bytes": 4027,
+      "sha256": "2537c47bfc703be020a6cfe8ab8ffee3b4bce1055ccf0c7e045890925ba383f3"
+    },
+    {
+      "path": "listings/reference-restore-AP-record.txt",
+      "bytes": 3272,
+      "sha256": "ab2dccb6394fe10104aa1a7a3539a09831ec2330293da4f15e7ca2c23eeb7ced"
+    },
+    {
+      "path": "listings/reference-transfer-arguments.txt",
+      "bytes": 2243,
+      "sha256": "d30fd1de83b456381bfcdfc3f3edf43ee719e203597877f4a226045fddce8ca8"
+    },
+    {
+      "path": "prove_staging.py",
+      "bytes": 16923,
+      "sha256": "0cab4646c47bfcd8827904bb37e837a737c8118eed0511ff7d71eb142530077b"
+    },
+    {
+      "path": "source-review.json",
+      "bytes": 808,
+      "sha256": "fd3cd808eda5f7b4483971bd36fdd146bc951fa7856018478b70e266cd123406"
+    },
+    {
+      "path": "staging-proof.json",
+      "bytes": 43990,
+      "sha256": "2bb8da6e09156171c1bd0e412f54878945e40afc6f3904bd9453d21b7432b846"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 4320,
+      "sha256": "800ce4c03ff7c46fb5a6fe35c1b856fca25b8fa8283bfce85c44a76b23efc1ab"
+    },
+    {
+      "path": "verify_staging.py",
+      "bytes": 6366,
+      "sha256": "8fafcd2c97412f8fd19f3cd42c0ba36e3f015df1082f71bf0a56469a20f56e4d"
+    }
+  ],
+  "validation": {
+    "status": "PASS_SCOPED_STAGING_AND_RECORD_ROUTING",
+    "instruction_checks": [
+      {
+        "VA": "0xfe04ec0c",
+        "bytes": "3df7ff97",
+        "mnemonic": "bl",
+        "operands": "#0xfe04c900"
+      },
+      {
+        "VA": "0xfe04edf4",
+        "bytes": "c3f6ff97",
+        "mnemonic": "bl",
+        "operands": "#0xfe04c900"
+      },
+      {
+        "VA": "0xfe04c900",
+        "bytes": "f5010014",
+        "mnemonic": "b",
+        "operands": "#0xfe04d0d4"
+      },
+      {
+        "VA": "0xfe04d0d8",
+        "bytes": "202100f9",
+        "mnemonic": "str",
+        "operands": "x0, [x9, #0x40]"
+      },
+      {
+        "VA": "0xfe05b2dc",
+        "bytes": "1f110071",
+        "mnemonic": "cmp",
+        "operands": "w8, #4"
+      },
+      {
+        "VA": "0xfe05b2e0",
+        "bytes": "a1020054",
+        "mnemonic": "b.ne",
+        "operands": "#0xfe05b334"
+      },
+      {
+        "VA": "0xfe05b33c",
+        "bytes": "72c5ff97",
+        "mnemonic": "bl",
+        "operands": "#0xfe04c904"
+      },
+      {
+        "VA": "0xfe050164",
+        "bytes": "40338052",
+        "mnemonic": "mov",
+        "operands": "w0, #0x19a"
+      },
+      {
+        "VA": "0xfe050170",
+        "bytes": "401fa072",
+        "mnemonic": "movk",
+        "operands": "w0, #0xfa, lsl #16"
+      },
+      {
+        "VA": "0xfe05018c",
+        "bytes": "09008012",
+        "mnemonic": "mov",
+        "operands": "w9, #-1"
+      },
+      {
+        "VA": "0xfe050190",
+        "bytes": "5f0009eb",
+        "mnemonic": "cmp",
+        "operands": "x2, x9"
+      },
+      {
+        "VA": "0xfe050198",
+        "bytes": "80060011",
+        "mnemonic": "add",
+        "operands": "w0, w20, #1"
+      },
+      {
+        "VA": "0xfe0501a0",
+        "bytes": "621e00f9",
+        "mnemonic": "str",
+        "operands": "x2, [x19, #0x38]"
+      },
+      {
+        "VA": "0xfe0501c0",
+        "bytes": "80b60011",
+        "mnemonic": "add",
+        "operands": "w0, w20, #0x2d"
+      },
+      {
+        "VA": "0xfe0501c8",
+        "bytes": "622200f9",
+        "mnemonic": "str",
+        "operands": "x2, [x19, #0x40]"
+      },
+      {
+        "VA": "0xfe0501ec",
+        "bytes": "622600f9",
+        "mnemonic": "str",
+        "operands": "x2, [x19, #0x48]"
+      },
+      {
+        "VA": "0xfe0501f0",
+        "bytes": "420a0094",
+        "mnemonic": "bl",
+        "operands": "#0xfe052af8"
+      },
+      {
+        "VA": "0xfe052b0c",
+        "bytes": "010c41f9",
+        "mnemonic": "ldr",
+        "operands": "x1, [x0, #0x218]"
+      },
+      {
+        "VA": "0xfe052b10",
+        "bytes": "021c40f9",
+        "mnemonic": "ldr",
+        "operands": "x2, [x0, #0x38]"
+      },
+      {
+        "VA": "0xfe052b14",
+        "bytes": "031041f9",
+        "mnemonic": "ldr",
+        "operands": "x3, [x0, #0x220]"
+      },
+      {
+        "VA": "0xfe052b24",
+        "bytes": "582b0094",
+        "mnemonic": "bl",
+        "operands": "#0xfe05d884"
+      },
+      {
+        "VA": "0xfe052168",
+        "bytes": "40338052",
+        "mnemonic": "mov",
+        "operands": "w0, #0x19a"
+      },
+      {
+        "VA": "0xfe05216c",
+        "bytes": "401fa072",
+        "mnemonic": "movk",
+        "operands": "w0, #0xfa, lsl #16"
+      },
+      {
+        "VA": "0xfe052290",
+        "bytes": "1d010a8b",
+        "mnemonic": "add",
+        "operands": "x29, x8, x10"
+      },
+      {
+        "VA": "0xfe05b6e8",
+        "bytes": "e8070032",
+        "mnemonic": "mov",
+        "operands": "w8, #3"
+      },
+      {
+        "VA": "0xfe05b6f0",
+        "bytes": "c80200b9",
+        "mnemonic": "str",
+        "operands": "w8, [x22]"
+      }
+    ],
+    "complete_original_leaf_API_calls": 14,
+    "original_leaf_instructions": 6489,
+    "CP_context_fragment_instructions": 6102,
+    "AP_wrapper_prefix_instructions": 417,
+    "independent_original_fragments_not_whole_boot": true,
+    "mode3_explicit_fixture_not_current_body": true,
+    "original_record1_offset_verified": "0xd2000",
+    "source_pointer_0x38_bound_to_FA019A_in_reference": true,
+    "AP_CP_property_selection_proved_in_reference": true,
+    "source_pointer_admission_check_complete": false,
+    "class5_default_address_roundtrips": 9,
+    "original_p8_members": 4,
+    "DmmCfg_slot_bytes": 102400,
+    "DmmCfg_actual_bytes": 43320,
+    "DmmCfg_tail_initialization_proved": false,
+    "wrong_CP_record_allones_reaches_transfer_boundary": true,
+    "wrong_record_is_analytical_control_not_observed_boot": true,
+    "actual_transfer_file_load_hardware_or_privileged_execution": false,
+    "FX3_AP_boot_or_current_backup_obtained": false,
+    "CMOS_RAW_full_ISP_or_flashable_modified_package_produced": false,
+    "goal_complete": false
+  },
+  "goal_status": "active",
+  "goal_complete": false,
+  "device_actions": 0,
+  "modified_or_flashable_firmware_produced": false
+}

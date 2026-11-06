@@ -1,0 +1,480 @@
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000b1a1f0 <.text>:
+  b868d4: 94560fc1     	bl	0x210a7d8 <Application_System_Init+0x14ff794>
+  b868d8: b000d422     	adrp	x2, 0x260b000
+  b868dc: d00285a0     	adrp	x0, 0x5c3c000
+  b868e0: 91272042     	add	x2, x2, #0x9c8
+  b868e4: 9116c000     	add	x0, x0, #0x5b0
+  b868e8: 52820061     	mov	w1, #0x1003             // =4099
+  b868ec: 94561387     	bl	0x210b708 <Application_System_Init+0x15006c4>
+  b868f0: b000d422     	adrp	x2, 0x260b000
+  b868f4: 900285a0     	adrp	x0, 0x5c3a000
+  b868f8: 91279442     	add	x2, x2, #0x9e5
+  b868fc: 91390000     	add	x0, x0, #0xe40
+  b86900: 52820081     	mov	w1, #0x1004             // =4100
+  b86904: 94561069     	bl	0x210aaa8 <Application_System_Init+0x14ffa64>
+  b86908: b000d422     	adrp	x2, 0x260b000
+  b8690c: d00285a0     	adrp	x0, 0x5c3c000
+  b86910: 9127ec42     	add	x2, x2, #0x9fb
+  b86914: 91004000     	add	x0, x0, #0x10
+  b86918: 528200a1     	mov	w1, #0x1005             // =4101
+  b8691c: 94561129     	bl	0x210adc0 <Application_System_Init+0x14ffd7c>
+  b86920: b000d422     	adrp	x2, 0x260b000
+  b86924: 900285a0     	adrp	x0, 0x5c3a000
+  b86928: 91285842     	add	x2, x2, #0xa16
+  b8692c: 913a4000     	add	x0, x0, #0xe90
+  b86930: 528200c1     	mov	w1, #0x1006             // =4102
+  b86934: 9456105d     	bl	0x210aaa8 <Application_System_Init+0x14ffa64>
+  b86938: b000d422     	adrp	x2, 0x260b000
+  b8693c: 900285a0     	adrp	x0, 0x5c3a000
+  b86940: 9128b042     	add	x2, x2, #0xa2c
+  b86944: 91336000     	add	x0, x0, #0xcd8
+  b86948: 528200e1     	mov	w1, #0x1007             // =4103
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 10053f0: 52887420     	mov	w0, #0x43a1             // =17313
+ 10053f4: 52820022     	mov	w2, #0x1001             // =4097
+ 10053f8: 72a04000     	movk	w0, #0x200, lsl #16
+ 10053fc: 6b02003f     	cmp	w1, w2
+ 1005400: 17ffffe4     	b	0x1005390 <Application_System_Init+0x3fa34c>
+ 1005404: 52820060     	mov	w0, #0x1003             // =4099
+ 1005408: 6b00003f     	cmp	w1, w0
+ 100540c: 540002c0     	b.eq	0x1005464 <Application_System_Init+0x3fa420>
+ 1005410: 52887520     	mov	w0, #0x43a9             // =17321
+ 1005414: 52820082     	mov	w2, #0x1004             // =4100
+ 1005418: 72a04000     	movk	w0, #0x200, lsl #16
+ 100541c: 17fffff8     	b	0x10053fc <Application_System_Init+0x3fa3b8>
+ 1005420: 528872a0     	mov	w0, #0x4395             // =17301
+ 1005424: 72a04000     	movk	w0, #0x200, lsl #16
+ 1005428: d65f03c0     	ret
+ 100542c: 528872c0     	mov	w0, #0x4396             // =17302
+ 1005430: 17fffffd     	b	0x1005424 <Application_System_Init+0x3fa3e0>
+ 1005434: 52887340     	mov	w0, #0x439a             // =17306
+ 1005438: 17fffffb     	b	0x1005424 <Application_System_Init+0x3fa3e0>
+ 100543c: 528873a0     	mov	w0, #0x439d             // =17309
+ 1005440: 17fffff9     	b	0x1005424 <Application_System_Init+0x3fa3e0>
+ 1005444: 52887500     	mov	w0, #0x43a8             // =17320
+ 1005448: 17fffff7     	b	0x1005424 <Application_System_Init+0x3fa3e0>
+ 100544c: 528874e0     	mov	w0, #0x43a7             // =17319
+ 1005450: 17fffff5     	b	0x1005424 <Application_System_Init+0x3fa3e0>
+ 1005454: 52887580     	mov	w0, #0x43ac             // =17324
+ 1005458: 17fffff3     	b	0x1005424 <Application_System_Init+0x3fa3e0>
+ 100545c: 52887460     	mov	w0, #0x43a3             // =17315
+ 1005460: 17fffff1     	b	0x1005424 <Application_System_Init+0x3fa3e0>
+ 1005464: 528874a0     	mov	w0, #0x43a5             // =17317
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 1d1a828: 1400001a     	b	0x1d1a890 <Application_System_Init+0x110f84c>
+ 1d1a82c: 7104b05f     	cmp	w2, #0x12c
+ 1d1a830: 54000160     	b.eq	0x1d1a85c <Application_System_Init+0x110f818>
+ 1d1a834: 54000108     	b.hi	0x1d1a854 <Application_System_Init+0x110f810>
+ 1d1a838: 7104a85f     	cmp	w2, #0x12a
+ 1d1a83c: 52820060     	mov	w0, #0x1003             // =4099
+ 1d1a840: 54000280     	b.eq	0x1d1a890 <Application_System_Init+0x110f84c>
+ 1d1a844: 7104ac5f     	cmp	w2, #0x12b
+ 1d1a848: 54fffdc1     	b.ne	0x1d1a800 <Application_System_Init+0x110f7bc>
+ 1d1a84c: 52802060     	mov	w0, #0x103              // =259
+ 1d1a850: 14000010     	b	0x1d1a890 <Application_System_Init+0x110f84c>
+ 1d1a854: 7104b45f     	cmp	w2, #0x12d
+ 1d1a858: 54fffe60     	b.eq	0x1d1a824 <Application_System_Init+0x110f7e0>
+ 1d1a85c: 52820080     	mov	w0, #0x1004             // =4100
+ 1d1a860: 1400000c     	b	0x1d1a890 <Application_System_Init+0x110f84c>
+ 1d1a864: 7104e85f     	cmp	w2, #0x13a
+ 1d1a868: 54000540     	b.eq	0x1d1a910 <Application_System_Init+0x110f8cc>
+ 1d1a86c: 54000388     	b.hi	0x1d1a8dc <Application_System_Init+0x110f898>
+ 1d1a870: 7104d85f     	cmp	w2, #0x136
+ 1d1a874: 540005a0     	b.eq	0x1d1a928 <Application_System_Init+0x110f8e4>
+ 1d1a878: 54000288     	b.hi	0x1d1a8c8 <Application_System_Init+0x110f884>
+ 1d1a87c: 7104cc5f     	cmp	w2, #0x133
+ 1d1a880: 54fffe60     	b.eq	0x1d1a84c <Application_System_Init+0x110f808>
+ 1d1a884: 7104d45f     	cmp	w2, #0x135
+ 1d1a888: 528020c0     	mov	w0, #0x106              // =262
+ 1d1a88c: 54fffba1     	b.ne	0x1d1a800 <Application_System_Init+0x110f7bc>
+ 1d1a890: b9000020     	str	w0, [x1]
+ 1d1a894: 52800033     	mov	w19, #0x1               // =1
+ 1d1a898: 2a0203e3     	mov	w3, w2
+ 1d1a89c: 900044e0     	adrp	x0, 0x25b6000
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 1d24c44: 1400001a     	b	0x1d24cac <Application_System_Init+0x1119c68>
+ 1d24c48: 7104b05f     	cmp	w2, #0x12c
+ 1d24c4c: 54000160     	b.eq	0x1d24c78 <Application_System_Init+0x1119c34>
+ 1d24c50: 54000108     	b.hi	0x1d24c70 <Application_System_Init+0x1119c2c>
+ 1d24c54: 7104a85f     	cmp	w2, #0x12a
+ 1d24c58: 52820060     	mov	w0, #0x1003             // =4099
+ 1d24c5c: 54000280     	b.eq	0x1d24cac <Application_System_Init+0x1119c68>
+ 1d24c60: 7104ac5f     	cmp	w2, #0x12b
+ 1d24c64: 54fffdc1     	b.ne	0x1d24c1c <Application_System_Init+0x1119bd8>
+ 1d24c68: 52802060     	mov	w0, #0x103              // =259
+ 1d24c6c: 14000010     	b	0x1d24cac <Application_System_Init+0x1119c68>
+ 1d24c70: 7104b45f     	cmp	w2, #0x12d
+ 1d24c74: 54fffe60     	b.eq	0x1d24c40 <Application_System_Init+0x1119bfc>
+ 1d24c78: 52820080     	mov	w0, #0x1004             // =4100
+ 1d24c7c: 1400000c     	b	0x1d24cac <Application_System_Init+0x1119c68>
+ 1d24c80: 7104e85f     	cmp	w2, #0x13a
+ 1d24c84: 54000540     	b.eq	0x1d24d2c <Application_System_Init+0x1119ce8>
+ 1d24c88: 54000388     	b.hi	0x1d24cf8 <Application_System_Init+0x1119cb4>
+ 1d24c8c: 7104d85f     	cmp	w2, #0x136
+ 1d24c90: 540005a0     	b.eq	0x1d24d44 <Application_System_Init+0x1119d00>
+ 1d24c94: 54000288     	b.hi	0x1d24ce4 <Application_System_Init+0x1119ca0>
+ 1d24c98: 7104cc5f     	cmp	w2, #0x133
+ 1d24c9c: 54fffe60     	b.eq	0x1d24c68 <Application_System_Init+0x1119c24>
+ 1d24ca0: 7104d45f     	cmp	w2, #0x135
+ 1d24ca4: 528020c0     	mov	w0, #0x106              // =262
+ 1d24ca8: 54fffba1     	b.ne	0x1d24c1c <Application_System_Init+0x1119bd8>
+ 1d24cac: b9000020     	str	w0, [x1]
+ 1d24cb0: 52800033     	mov	w19, #0x1               // =1
+ 1d24cb4: 2a0203e3     	mov	w3, w2
+ 1d24cb8: d0004480     	adrp	x0, 0x25b6000
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 20ee6e8: 6b01001f     	cmp	w0, w1
+ 20ee6ec: 540002c0     	b.eq	0x20ee744 <Application_System_Init+0x14e3700>
+ 20ee6f0: 54000148     	b.hi	0x20ee718 <Application_System_Init+0x14e36d4>
+ 20ee6f4: 7100401f     	cmp	w0, #0x10
+ 20ee6f8: 540002a0     	b.eq	0x20ee74c <Application_System_Init+0x14e3708>
+ 20ee6fc: 52820061     	mov	w1, #0x1003             // =4099
+ 20ee700: 528013d4     	mov	w20, #0x9e              // =158
+ 20ee704: 6b01001f     	cmp	w0, w1
+ 20ee708: 54fffd00     	b.eq	0x20ee6a8 <Application_System_Init+0x14e3664>
+ 20ee70c: 52801394     	mov	w20, #0x9c              // =156
+ 20ee710: 71001c1f     	cmp	w0, #0x7
+ 20ee714: 17ffffdc     	b	0x20ee684 <Application_System_Init+0x14e3640>
+ 20ee718: 52a20001     	mov	w1, #0x10000000         // =268435456
+ 20ee71c: 6b01001f     	cmp	w0, w1
+ 20ee720: 54fffb43     	b.lo	0x20ee688 <Application_System_Init+0x14e3644>
+ 20ee724: 11000821     	add	w1, w1, #0x2
+ 20ee728: 6b01001f     	cmp	w0, w1
+ 20ee72c: 54000109     	b.ls	0x20ee74c <Application_System_Init+0x14e3708>
+ 20ee730: 52801474     	mov	w20, #0xa3              // =163
+ 20ee734: 3100041f     	cmn	w0, #0x1
+ 20ee738: 17ffffd3     	b	0x20ee684 <Application_System_Init+0x14e3640>
+ 20ee73c: 52801374     	mov	w20, #0x9b              // =155
+ 20ee740: 17ffffda     	b	0x20ee6a8 <Application_System_Init+0x14e3664>
+ 20ee744: 528013f4     	mov	w20, #0x9f              // =159
+ 20ee748: 17ffffd8     	b	0x20ee6a8 <Application_System_Init+0x14e3664>
+ 20ee74c: 52800014     	mov	w20, #0x0               // =0
+ 20ee750: 2a1403e0     	mov	w0, w20
+ 20ee754: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 20ee758: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 20ee75c: d65f03c0     	ret
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 210268c: aa1403e0     	mov	x0, x20
+ 2102690: 52800001     	mov	w1, #0x0                // =0
+ 2102694: 910143b3     	add	x19, x29, #0x50
+ 2102698: 97a8573a     	bl	0xb18380 <_ZN3MWF6ObjMsgC1Ejj@plt>
+ 210269c: aa1403e0     	mov	x0, x20
+ 21026a0: 52820062     	mov	w2, #0x1003             // =4099
+ 21026a4: 528c20e1     	mov	w1, #0x6107             // =24839
+ 21026a8: 97a858be     	bl	0xb189a0 <_ZN3MWF6ObjMsg14SetCateIdMsgIdEjj@plt>
+ 21026ac: b945f2a1     	ldr	w1, [x21, #0x5f0]
+ 21026b0: aa1303e0     	mov	x0, x19
+ 21026b4: 97a85c8b     	bl	0xb198e0 <_ZN3MWF17ParamStd_TemplateIjLNS_5Param4TypeE8EEC1Ej@plt>
+ 21026b8: aa1303e2     	mov	x2, x19
+ 21026bc: aa1403e0     	mov	x0, x20
+ 21026c0: 528202c1     	mov	w1, #0x1016             // =4118
+ 21026c4: 97a85a17     	bl	0xb18f20 <_ZN3MWF6ObjMsg8AddParamEjRKNS_5ParamE@plt>
+ 21026c8: aa1303e0     	mov	x0, x19
+ 21026cc: 97a85345     	bl	0xb173e0 <_ZN3MWF17ParamStd_TemplateIjLNS_5Param4TypeE8EED1Ev@plt>
+ 21026d0: f9001bb4     	str	x20, [x29, #0x30]
+ 21026d4: aa1303e0     	mov	x0, x19
+ 21026d8: 52800002     	mov	w2, #0x0                // =0
+ 21026dc: 52800001     	mov	w1, #0x0                // =0
+ 21026e0: 97a85728     	bl	0xb18380 <_ZN3MWF6ObjMsgC1Ejj@plt>
+ 21026e4: f9001fb3     	str	x19, [x29, #0x38]
+ 21026e8: b945f2a3     	ldr	w3, [x21, #0x5f0]
+ 21026ec: 52905ec2     	mov	w2, #0x82f6             // =33526
+ 21026f0: 9100c3a0     	add	x0, x29, #0x30
+ 21026f4: 52800004     	mov	w4, #0x0                // =0
+ 21026f8: 72a02442     	movk	w2, #0x122, lsl #16
+ 21026fc: d2800201     	mov	x1, #0x10               // =16
+ 2102700: 94016740     	bl	0x215c400 <Application_System_Init+0x15513bc>
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 2114f4c: 540018a8     	b.hi	0x2115260 <Application_System_Init+0x150a21c>
+ 2114f50: 52820160     	mov	w0, #0x100b             // =4107
+ 2114f54: 6b00003f     	cmp	w1, w0
+ 2114f58: 540069a0     	b.eq	0x2115c8c <Application_System_Init+0x150ac48>
+ 2114f5c: 540012c8     	b.hi	0x21151b4 <Application_System_Init+0x150a170>
+ 2114f60: 52820060     	mov	w0, #0x1003             // =4099
+ 2114f64: 6b00003f     	cmp	w1, w0
+ 2114f68: 540070a0     	b.eq	0x2115d7c <Application_System_Init+0x150ad38>
+ 2114f6c: 54000188     	b.hi	0x2114f9c <Application_System_Init+0x1509f58>
+ 2114f70: 52820020     	mov	w0, #0x1001             // =4097
+ 2114f74: 6b00003f     	cmp	w1, w0
+ 2114f78: 540066e0     	b.eq	0x2115c54 <Application_System_Init+0x150ac10>
+ 2114f7c: 54006bc8     	b.hi	0x2115cf4 <Application_System_Init+0x150acb0>
+ 2114f80: 7140043f     	cmp	w1, #0x1, lsl #12       // =0x1000
+ 2114f84: 54007740     	b.eq	0x2115e6c <Application_System_Init+0x150ae28>
+ 2114f88: f9403ba1     	ldr	x1, [x29, #0x70]
+ 2114f8c: 5280a9a0     	mov	w0, #0x54d              // =1357
+ 2114f90: 72b03700     	movk	w0, #0x81b8, lsl #16
+ 2114f94: 97a8136b     	bl	0xb19d40 <osal_free_msg@plt>
+ 2114f98: 17ffffa5     	b	0x2114e2c <Application_System_Init+0x1509de8>
+ 2114f9c: 528200c0     	mov	w0, #0x1006             // =4102
+ 2114fa0: 6b00003f     	cmp	w1, w0
+ 2114fa4: 54008ba0     	b.eq	0x2116118 <Application_System_Init+0x150b0d4>
+ 2114fa8: 528200e0     	mov	w0, #0x1007             // =4103
+ 2114fac: 6b00003f     	cmp	w1, w0
+ 2114fb0: 54006b60     	b.eq	0x2115d1c <Application_System_Init+0x150acd8>
+ 2114fb4: 528200a0     	mov	w0, #0x1005             // =4101
+ 2114fb8: 6b00003f     	cmp	w1, w0
+ 2114fbc: 54fffe61     	b.ne	0x2114f88 <Application_System_Init+0x1509f44>
+ 2114fc0: d2809900     	mov	x0, #0x4c8              // =1224
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 212330c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2123310: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2123314: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+ 2123318: d65f03c0     	ret
+ 212331c: a9b87bfd     	stp	x29, x30, [sp, #-0x80]!
+ 2123320: 52820062     	mov	w2, #0x1003             // =4099
+ 2123324: 52874001     	mov	w1, #0x3a00             // =14848
+ 2123328: 910003fd     	mov	x29, sp
+ 212332c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2123330: 910123b4     	add	x20, x29, #0x48
+ 2123334: f90013f5     	str	x21, [sp, #0x20]
+ 2123338: aa0003f5     	mov	x21, x0
+ 212333c: aa1403e0     	mov	x0, x20
+ 2123340: 9101a3b3     	add	x19, x29, #0x68
+ 2123344: 97a7d40f     	bl	0xb18380 <_ZN3MWF6ObjMsgC1Ejj@plt>
+ 2123348: aa1303e0     	mov	x0, x19
+ 212334c: 52800021     	mov	w1, #0x1                // =1
+ 2123350: 97a7d52c     	bl	0xb18800 <_ZN3MWF17ParamStd_TemplateIiLNS_5Param4TypeE7EEC1Ei@plt>
+ 2123354: aa1303e2     	mov	x2, x19
+ 2123358: aa1403e0     	mov	x0, x20
+ 212335c: 52820021     	mov	w1, #0x1001             // =4097
+ 2123360: 97a7d6f0     	bl	0xb18f20 <_ZN3MWF6ObjMsg8AddParamEjRKNS_5ParamE@plt>
+ 2123364: aa1303e0     	mov	x0, x19
+ 2123368: 97a7d2ba     	bl	0xb17e50 <_ZN3MWF17ParamStd_TemplateIiLNS_5Param4TypeE7EED1Ev@plt>
+ 212336c: b94012a5     	ldr	w5, [x21, #0x10]
+ 2123370: b00027e0     	adrp	x0, 0x2620000
+ 2123374: 294112a3     	ldp	w3, w4, [x21, #0x8]
+ 2123378: 9135c000     	add	x0, x0, #0xd70
+ 212337c: 29400aa1     	ldp	w1, w2, [x21]
+ 2123380: b90043a3     	str	w3, [x29, #0x40]
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 21261b4: a9007c1f     	stp	xzr, xzr, [x0]
+ 21261b8: 910123a0     	add	x0, x29, #0x48
+ 21261bc: 79007ba4     	strh	w4, [x29, #0x3c]
+ 21261c0: b90043a7     	str	w7, [x29, #0x40]
+ 21261c4: a9007c1f     	stp	xzr, xzr, [x0]
+ 21261c8: 52820060     	mov	w0, #0x1003             // =4099
+ 21261cc: 72a00020     	movk	w0, #0x1, lsl #16
+ 21261d0: f9002fbf     	str	xzr, [x29, #0x58]
+ 21261d4: b9003ba0     	str	w0, [x29, #0x38]
+ 21261d8: 52800200     	mov	w0, #0x10               // =16
+ 21261dc: 79007fa0     	strh	w0, [x29, #0x3e]
+ 21261e0: 9100e3a0     	add	x0, x29, #0x38
+ 21261e4: 9400d887     	bl	0x215c400 <Application_System_Init+0x15513bc>
+ 21261e8: b94047a0     	ldr	w0, [x29, #0x44]
+ 21261ec: 528003c1     	mov	w1, #0x1e               // =30
+ 21261f0: 7100181f     	cmp	w0, #0x6
+ 21261f4: 54000088     	b.hi	0x2126204 <Application_System_Init+0x151b1c0>
+ 21261f8: f00027c1     	adrp	x1, 0x2621000
+ 21261fc: 910be021     	add	x1, x1, #0x2f8
+ 2126200: 38604821     	ldrb	w1, [x1, w0, uxtw]
+ 2126204: b9000261     	str	w1, [x19]
+ 2126208: 34fffc20     	cbz	w0, 0x212618c <Application_System_Init+0x151b148>
+ 212620c: f00027d4     	adrp	x20, 0x2621000
+ 2126210: d00023b3     	adrp	x19, 0x259c000
+ 2126214: 91168294     	add	x20, x20, #0x5a0
+ 2126218: 912c4273     	add	x19, x19, #0xb10
+ 212621c: b94002a4     	ldr	w4, [x21]
+ 2126220: f00027c0     	adrp	x0, 0x2621000
+ 2126224: aa1403e2     	mov	x2, x20
+ 2126228: aa1303e1     	mov	x1, x19
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 2141dac: aa1703e0     	mov	x0, x23
+ 2141db0: 910303b6     	add	x22, x29, #0xc0
+ 2141db4: d001d7f3     	adrp	x19, 0x5c3f000
+ 2141db8: 910263bb     	add	x27, x29, #0x98
+ 2141dbc: 9111e273     	add	x19, x19, #0x478
+ 2141dc0: 5282007a     	mov	w26, #0x1003            // =4099
+ 2141dc4: 97ed7979     	bl	0x1ca03a8 <Application_System_Init+0x1095364>
+ 2141dc8: aa1703e1     	mov	x1, x23
+ 2141dcc: aa1803e0     	mov	x0, x24
+ 2141dd0: 97ff15c7     	bl	0x21074ec <Application_System_Init+0x14fc4a8>
+ 2141dd4: aa1603e0     	mov	x0, x22
+ 2141dd8: d286a002     	mov	x2, #0x3500             // =13568
+ 2141ddc: 52800001     	mov	w1, #0x0                // =0
+ 2141de0: 97a755bc     	bl	0xb174d0 <memset@plt>
+ 2141de4: f90043b3     	str	x19, [x29, #0x80]
+ 2141de8: aa1303e0     	mov	x0, x19
+ 2141dec: f90063b7     	str	x23, [x29, #0xc0]
+ 2141df0: 97ab1e39     	bl	0xc096d4 <.text+0xef4e4>
+ 2141df4: f90053b6     	str	x22, [x29, #0xa0]
+ 2141df8: b001d7f6     	adrp	x22, 0x5c3e000
+ 2141dfc: aa1b03e1     	mov	x1, x27
+ 2141e00: 912222d6     	add	x22, x22, #0x888
+ 2141e04: b9009bba     	str	w26, [x29, #0x98]
+ 2141e08: aa1603e0     	mov	x0, x22
+ 2141e0c: 97ffec6c     	bl	0x213cfbc <Application_System_Init+0x1531f78>
+ 2141e10: 910203a3     	add	x3, x29, #0x80
+ 2141e14: aa0303e0     	mov	x0, x3
+ 2141e18: f90033a3     	str	x3, [x29, #0x60]
+ 2141e1c: 97ab3e02     	bl	0xc11624 <Application_System_Init+0x65e0>
+ 2141e20: 52800080     	mov	w0, #0x4                // =4
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 21550bc: 17ffff2b     	b	0x2154d68 <Application_System_Init+0x1549d24>
+ 21550c0: 900026c0     	adrp	x0, 0x262d000
+ 21550c4: 2a1603e1     	mov	w1, w22
+ 21550c8: 9127b400     	add	x0, x0, #0x9ed
+ 21550cc: 94019815     	bl	0x21bb120 <Application_System_Init+0x15b00dc>
+ 21550d0: 52820060     	mov	w0, #0x1003             // =4099
+ 21550d4: b9000260     	str	w0, [x19]
+ 21550d8: 17ffff24     	b	0x2154d68 <Application_System_Init+0x1549d24>
+ 21550dc: 900026c0     	adrp	x0, 0x262d000
+ 21550e0: 2a1603e1     	mov	w1, w22
+ 21550e4: 91296c00     	add	x0, x0, #0xa5b
+ 21550e8: 9401980e     	bl	0x21bb120 <Application_System_Init+0x15b00dc>
+ 21550ec: 52820080     	mov	w0, #0x1004             // =4100
+ 21550f0: b9000260     	str	w0, [x19]
+ 21550f4: 17ffff1d     	b	0x2154d68 <Application_System_Init+0x1549d24>
+ 21550f8: 900026c0     	adrp	x0, 0x262d000
+ 21550fc: 2a1603e1     	mov	w1, w22
+ 2155100: 912b0400     	add	x0, x0, #0xac1
+ 2155104: 94019807     	bl	0x21bb120 <Application_System_Init+0x15b00dc>
+ 2155108: 528200a0     	mov	w0, #0x1005             // =4101
+ 215510c: b9000260     	str	w0, [x19]
+ 2155110: 17ffff16     	b	0x2154d68 <Application_System_Init+0x1549d24>
+ 2155114: 900026c0     	adrp	x0, 0x262d000
+ 2155118: 2a1603e1     	mov	w1, w22
+ 215511c: 912cac00     	add	x0, x0, #0xb2b
+ 2155120: 94019800     	bl	0x21bb120 <Application_System_Init+0x15b00dc>
+ 2155124: 52800020     	mov	w0, #0x1                // =1
+ 2155128: b9000260     	str	w0, [x19]
+ 215512c: 17ffff0f     	b	0x2154d68 <Application_System_Init+0x1549d24>
+ 2155130: 900026c0     	adrp	x0, 0x262d000
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 2158474: 54003d00     	b.eq	0x2158c14 <Application_System_Init+0x154dbd0>
+ 2158478: 540001a8     	b.hi	0x21584ac <Application_System_Init+0x154d468>
+ 215847c: 52820021     	mov	w1, #0x1001             // =4097
+ 2158480: 6b01001f     	cmp	w0, w1
+ 2158484: 54003fe0     	b.eq	0x2158c80 <Application_System_Init+0x154dc3c>
+ 2158488: 52820061     	mov	w1, #0x1003             // =4099
+ 215848c: 6b01001f     	cmp	w0, w1
+ 2158490: 540042a0     	b.eq	0x2158ce4 <Application_System_Init+0x154dca0>
+ 2158494: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2158498: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 215849c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+ 21584a0: f94023f9     	ldr	x25, [sp, #0x40]
+ 21584a4: a8cb7bfd     	ldp	x29, x30, [sp], #0xb0
+ 21584a8: d65f03c0     	ret
+ 21584ac: 528205a1     	mov	w1, #0x102d             // =4141
+ 21584b0: 6b01001f     	cmp	w0, w1
+ 21584b4: 54000080     	b.eq	0x21584c4 <Application_System_Init+0x154d480>
+ 21584b8: 528205e1     	mov	w1, #0x102f             // =4143
+ 21584bc: 6b01001f     	cmp	w0, w1
+ 21584c0: 54fffea1     	b.ne	0x2158494 <Application_System_Init+0x154d450>
+ 21584c4: f001d720     	adrp	x0, 0x5c3f000
+ 21584c8: b905ac1f     	str	wzr, [x0, #0x5ac]
+ 21584cc: 140001fa     	b	0x2158cb4 <Application_System_Init+0x154dc70>
+ 21584d0: 528207e1     	mov	w1, #0x103f             // =4159
+ 21584d4: 6b01001f     	cmp	w0, w1
+ 21584d8: 540041c0     	b.eq	0x2158d10 <Application_System_Init+0x154dccc>
+ 21584dc: 54000248     	b.hi	0x2158524 <Application_System_Init+0x154d4e0>
+ 21584e0: 52820661     	mov	w1, #0x1033             // =4147
+ 21584e4: 6b01001f     	cmp	w0, w1
+ 21584e8: 54fffee0     	b.eq	0x21584c4 <Application_System_Init+0x154d480>
+
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 21585bc: 54001048     	b.hi	0x21587c4 <Application_System_Init+0x154d780>
+ 21585c0: 528205c1     	mov	w1, #0x102e             // =4142
+ 21585c4: 72a02001     	movk	w1, #0x100, lsl #16
+ 21585c8: 6b01001f     	cmp	w0, w1
+ 21585cc: 540038c2     	b.hs	0x2158ce4 <Application_System_Init+0x154dca0>
+ 21585d0: 52820061     	mov	w1, #0x1003             // =4099
+ 21585d4: 72a02001     	movk	w1, #0x100, lsl #16
+ 21585d8: 6b01001f     	cmp	w0, w1
+ 21585dc: 54001640     	b.eq	0x21588a4 <Application_System_Init+0x154d860>
+ 21585e0: 54000cc8     	b.hi	0x2158778 <Application_System_Init+0x154d734>
+ 21585e4: 52820d21     	mov	w1, #0x1069             // =4201
+ 21585e8: 6b01001f     	cmp	w0, w1
+ 21585ec: 540037c0     	b.eq	0x2158ce4 <Application_System_Init+0x154dca0>
+ 21585f0: 52820041     	mov	w1, #0x1002             // =4098
+ 21585f4: 72a02001     	movk	w1, #0x100, lsl #16
+ 21585f8: 6b01001f     	cmp	w0, w1
+ 21585fc: 54fff4c1     	b.ne	0x2158494 <Application_System_Init+0x154d450>
+ 2158600: aa1303e0     	mov	x0, x19
+ 2158604: 52820b01     	mov	w1, #0x1058             // =4184
+ 2158608: 52800017     	mov	w23, #0x0               // =0
+ 215860c: 97a70391     	bl	0xb19450 <_ZNK3MWF6ObjMsg8GetParamEj@plt>
+ 2158610: 97a6fc38     	bl	0xb176f0 <_ZNK3MWF17ParamStd_TemplateIjLNS_5Param4TypeE8EE8GetValueEv@plt>
+ 2158614: 2a0003f6     	mov	w22, w0
+ 2158618: aa1303e0     	mov	x0, x19
+ 215861c: 52820de1     	mov	w1, #0x106f             // =4207
+ 2158620: 97a7038c     	bl	0xb19450 <_ZNK3MWF6ObjMsg8GetParamEj@plt>
+ 2158624: b4000060     	cbz	x0, 0x2158630 <Application_System_Init+0x154d5ec>
+ 2158628: 97a6fc32     	bl	0xb176f0 <_ZNK3MWF17ParamStd_TemplateIjLNS_5Param4TypeE8EE8GetValueEv@plt>
+ 215862c: 2a0003f7     	mov	w23, w0
+ 2158630: b00026a0     	adrp	x0, 0x262d000

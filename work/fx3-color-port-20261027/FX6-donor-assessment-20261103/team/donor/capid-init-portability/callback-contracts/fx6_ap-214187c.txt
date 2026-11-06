@@ -1,0 +1,47 @@
+ 214187c: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+ 2141880: 910003fd     	mov	x29, sp
+ 2141884: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2141888: aa0003f3     	mov	x19, x0
+ 214188c: d2800200     	mov	x0, #0x10               // =16
+ 2141890: f90013f5     	str	x21, [sp, #0x20]
+ 2141894: b001d7f4     	adrp	x20, 0x5c3e000
+ 2141898: 97e4b552     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 214189c: 91222294     	add	x20, x20, #0x888
+ 21418a0: 52800302     	mov	w2, #0x18               // =24
+ 21418a4: b9000002     	str	w2, [x0]
+ 21418a8: b9400662     	ldr	w2, [x19, #0x4]
+ 21418ac: b9000402     	str	w2, [x0, #0x4]
+ 21418b0: 39402262     	ldrb	w2, [x19, #0x8]
+ 21418b4: 39002002     	strb	w2, [x0, #0x8]
+ 21418b8: b8409262     	ldur	w2, [x19, #0x9]
+ 21418bc: b8009002     	stur	w2, [x0, #0x9]
+ 21418c0: 97e4b6fb     	bl	0x1a6f4ac <Application_System_Init+0xe64468>
+ 21418c4: d001d7e0     	adrp	x0, 0x5c3f000
+ 21418c8: 9111e000     	add	x0, x0, #0x478
+ 21418cc: f9001ba0     	str	x0, [x29, #0x30]
+ 21418d0: 97ab1f81     	bl	0xc096d4 <.text+0xef4e4>
+ 21418d4: b9400260     	ldr	w0, [x19]
+ 21418d8: 910143b3     	add	x19, x29, #0x50
+ 21418dc: b81e8e60     	str	w0, [x19, #-0x18]!
+ 21418e0: aa1403e0     	mov	x0, x20
+ 21418e4: aa1303e1     	mov	x1, x19
+ 21418e8: 97ffe062     	bl	0x2139a70 <Application_System_Init+0x152ea2c>
+ 21418ec: b40001a0     	cbz	x0, 0x2141920 <Application_System_Init+0x15368dc>
+ 21418f0: aa0003f5     	mov	x21, x0
+ 21418f4: f9400800     	ldr	x0, [x0, #0x10]
+ 21418f8: f9400001     	ldr	x1, [x0]
+ 21418fc: aa1303e0     	mov	x0, x19
+ 2141900: 97ffb425     	bl	0x212e994 <Application_System_Init+0x1523950>
+ 2141904: aa1303e0     	mov	x0, x19
+ 2141908: 97f0ae0b     	bl	0x1d6d134 <Application_System_Init+0x11620f0>
+ 214190c: aa1503e1     	mov	x1, x21
+ 2141910: aa1403e0     	mov	x0, x20
+ 2141914: 97ffffc9     	bl	0x2141838 <Application_System_Init+0x15367f4>
+ 2141918: aa1303e0     	mov	x0, x19
+ 214191c: 97ed7b87     	bl	0x1ca0738 <Application_System_Init+0x10956f4>
+ 2141920: 9100c3a0     	add	x0, x29, #0x30
+ 2141924: 97ab3f40     	bl	0xc11624 <Application_System_Init+0x65e0>
+ 2141928: f94013f5     	ldr	x21, [sp, #0x20]
+ 214192c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2141930: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+ 2141934: d65f03c0     	ret

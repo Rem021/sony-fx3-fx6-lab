@@ -1,0 +1,15 @@
+{
+  "verified_utc": "2026-10-29T11:23:28.930797+00:00",
+  "url": "https://developer.apple.com/forums/thread/678819",
+  "title": "On File System Permissions",
+  "author": "Apple Developer Technical Support",
+  "latest_revision_observed": "2026-09-18",
+  "applicable_facts": [
+    "Root processes remain subject to mandatory access control.",
+    "Files and Folders consent prompts depend on GUI login context.",
+    "Responsible code and stable code identity affect attribution; inheriting GUI/audit identity does not prove consent."
+  ],
+  "local_evidence": "stage172 fixed Terminal/sudo root UID0 retained audit UID501 and GUI/audit session100022.",
+  "inference": "Try a specifically approved Terminal launch with fail-closed login admission to isolate context; this is not a verified TCC fix.",
+  "no_TCC_reset_or_permission_change_performed": true
+}

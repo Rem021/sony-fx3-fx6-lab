@@ -1,0 +1,178 @@
+{
+  "virtual_contracts": [
+    {
+      "library": "libcryptfileinputupdaterapi.so",
+      "table": "_ZTVN7Updater28CryptFileInputUpdaterManagerE",
+      "vptr_offset": 16,
+      "virtual_offset": "0x10",
+      "slot": "0x15b08",
+      "relocation_type": 257,
+      "target_symbol": "_ZN7Updater28CryptFileInputUpdaterManager10InitializeEN10UpdaterAPI10FILE_CHUNKE",
+      "demangled": "Updater::CryptFileInputUpdaterManager::Initialize(UpdaterAPI::FILE_CHUNK)",
+      "target_va_in_this_file": "0x3fcc"
+    },
+    {
+      "library": "libcryptfileinputupdaterapi.so",
+      "table": "_ZTVN7Updater28CryptFileInputUpdaterManagerE",
+      "vptr_offset": 16,
+      "virtual_offset": "0x18",
+      "slot": "0x15b10",
+      "relocation_type": 257,
+      "target_symbol": "_ZN7Updater28CryptFileInputUpdaterManager8FinalizeEv",
+      "demangled": "Updater::CryptFileInputUpdaterManager::Finalize()",
+      "target_va_in_this_file": "0x3a58"
+    },
+    {
+      "library": "libcryptfileinputupdaterapi.so",
+      "table": "_ZTVN7Updater28CryptFileInputUpdaterManagerE",
+      "vptr_offset": 16,
+      "virtual_offset": "0x20",
+      "slot": "0x15b18",
+      "relocation_type": 257,
+      "target_symbol": "_ZN7Updater28CryptFileInputUpdaterManager12StartWritingEPKc",
+      "demangled": "Updater::CryptFileInputUpdaterManager::StartWriting(char const*)",
+      "target_va_in_this_file": "0x3eb8"
+    },
+    {
+      "library": "libfileinputupdaterapi.so",
+      "table": "_ZTVN7Updater25FileInputBodyLoaderModuleE",
+      "vptr_offset": 16,
+      "virtual_offset": "0x98",
+      "slot": "0x15ba8",
+      "relocation_type": 257,
+      "target_symbol": "_ZN7Updater20BaseBodyLoaderModule15createBodyImageEv",
+      "demangled": "Updater::BaseBodyLoaderModule::createBodyImage()",
+      "target_va_in_this_file": "0x0"
+    },
+    {
+      "library": "libfileinputupdaterapi.so",
+      "table": "_ZTVN7Updater25FileInputBodyLoaderModuleE",
+      "vptr_offset": 16,
+      "virtual_offset": "0xa0",
+      "slot": "0x15bb0",
+      "relocation_type": 257,
+      "target_symbol": "_ZNK7Updater25FileInputBodyLoaderModule13checkFirmwareEv",
+      "demangled": "Updater::FileInputBodyLoaderModule::checkFirmware() const",
+      "target_va_in_this_file": "0x3c8c"
+    },
+    {
+      "library": "libfileinputupdaterapi.so",
+      "table": "_ZTVN7Updater25FileInputBodyLoaderModuleE",
+      "vptr_offset": 16,
+      "virtual_offset": "0xa8",
+      "slot": "0x15bb8",
+      "relocation_type": 257,
+      "target_symbol": "_ZN7Updater20BaseBodyLoaderModule12checkChassisEv",
+      "demangled": "Updater::BaseBodyLoaderModule::checkChassis()",
+      "target_va_in_this_file": "0x0"
+    },
+    {
+      "library": "libfileinputupdaterapi.so",
+      "table": "_ZTVN7Updater25FileInputBodyLoaderModuleE",
+      "vptr_offset": 16,
+      "virtual_offset": "0xb0",
+      "slot": "0x15bc0",
+      "relocation_type": 257,
+      "target_symbol": "_ZNK7Updater20BaseBodyLoaderModule13getActionModeEv",
+      "demangled": "Updater::BaseBodyLoaderModule::getActionMode() const",
+      "target_va_in_this_file": "0x0"
+    }
+  ],
+  "original_process_argv_tables": [
+    {
+      "table_va": "0x15188",
+      "argv": [
+        "/usr/bin/up.sh",
+        "ver",
+        null
+      ]
+    },
+    {
+      "table_va": "0x151a0",
+      "argv": [
+        "/usr/bin/up.sh",
+        "user",
+        null
+      ]
+    },
+    {
+      "table_va": "0x151b8",
+      "argv": [
+        "/usr/bin/crypter.elf",
+        "/tmp_updater/Firm.dat",
+        null
+      ]
+    },
+    {
+      "table_va": "0x151d0",
+      "argv": [
+        "/usr/bin/up.sh",
+        "ms",
+        null
+      ]
+    }
+  ],
+  "body_loader_literals": [
+    {
+      "library": "libupdatercorecommon.so",
+      "va": "0xc299",
+      "text": "/tmp_updater/updater/bodyimg"
+    },
+    {
+      "library": "libupdatercorecommon.so",
+      "va": "0xc2b6",
+      "text": "/usr/bin/udtrbody.bin"
+    },
+    {
+      "library": "libupdatercorecommon.so",
+      "va": "0xc2cc",
+      "text": "/root/IAMUPDATER"
+    },
+    {
+      "library": "libupdatercorecommon.so",
+      "va": "0xc2dd",
+      "text": "/tmp_updater/updater/bodyfs"
+    },
+    {
+      "library": "libupdatercorecommon.so",
+      "va": "0xc2f9",
+      "text": "/tmp_updater/updater/bodyfs/bodylib/libupdaterbody.so"
+    },
+    {
+      "library": "libupdatercorecommon.so",
+      "va": "0xc32f",
+      "text": "GetBody"
+    },
+    {
+      "library": "libupdatercorecommon.so",
+      "va": "0xc337",
+      "text": "ReleaseBody"
+    }
+  ],
+  "ufp_text_section": {
+    "va": "0x1600",
+    "bytes": 10056,
+    "sha256": "009039d79a2ace761e6a6cfe34becbd4bf6506d5cec4e882333982ba9342a1ed",
+    "listing": "updaterufp-text-section.txt",
+    "scope": "Whole bounded .text section; private function boundaries are not asserted."
+  },
+  "osal_registration_static": [
+    {
+      "service": "0x4b8290",
+      "callback_relative_va": "0x27c4"
+    },
+    {
+      "service": "0x4b0233",
+      "callback_relative_va": "0x3034"
+    },
+    {
+      "service": "0x4b024e",
+      "callback_relative_va": "0x3174"
+    },
+    {
+      "service": "0x804b0998",
+      "callback_relative_va": "0x2e6c"
+    }
+  ],
+  "scope": "Original ELF relocations and literal references. Vptr +16 is corroborated by saved constructors. No process launched, OSAL request sent, filesystem mounted, library loaded or device operated; runtime dispatch and native loader policy remain unverified."
+}

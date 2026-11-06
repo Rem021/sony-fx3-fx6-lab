@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "mode": "operate-click-5",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/operate.py",
+  "source_sha256": "4db0b4bc56825bfef3599dc18a3ac27b2441a21aa8a5244273f14b64acfa2e52",
+  "actual_runpy_name": "__main__",
+  "argv": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/operate.py",
+    "click",
+    "5",
+    "OK查看English语言列表但不改值"
+  ],
+  "init_globals_supplied": false,
+  "dependency_common_exports_sys": false,
+  "browser_HTTP_QEMU_processes_started": 0,
+  "strict_external_doubles": true,
+  "trace": [
+    {
+      "kind": "event",
+      "name": "operator_tool_click_entry"
+    },
+    {
+      "kind": "deadline_operation_double",
+      "action": "arm"
+    },
+    {
+      "kind": "helper_operation_double",
+      "file": "operator_click.py",
+      "args": [
+        "--session",
+        "fx3-deadline-r21c-024b06c9-073392e9",
+        "--url",
+        "http://127.0.0.1:32123/",
+        "--launch",
+        "11111111-1111-4111-8111-111111111111",
+        "--nonce",
+        "a632b12f-47ee-4e81-86dc-8e76af6459e1",
+        "--key",
+        "428",
+        "--reviewed-sha",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "--reviewed-generation",
+        "3",
+        "--target",
+        "OK查看English语言列表但不改值",
+        "--ledger",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-click-5/ledger.json",
+        "--receipt",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-click-5/step-05-attempt-01/click-receipt.json"
+      ]
+    },
+    {
+      "kind": "subprocess_operation_double",
+      "argv": [
+        "python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-click-5/later_capture.py",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-click-5/step-05-attempt-01/capture-config.json",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-click-5/step-05-attempt-01/capture"
+      ]
+    },
+    {
+      "kind": "event",
+      "name": "operator_tool_click_return_prepared"
+    }
+  ]
+}

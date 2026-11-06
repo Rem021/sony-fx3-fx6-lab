@@ -1,0 +1,52 @@
+{
+  "created_utc": "2026-11-04T16:06:58.576607+00:00",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r6-qmp-startup/run_trial_v25_diag_r3.py",
+  "source_sha256_before": "2101edb5eb9c7789faa5c753e206fe315df87307df0695d290a95e718fb4846c",
+  "source_sha256_after": "2101edb5eb9c7789faa5c753e206fe315df87307df0695d290a95e718fb4846c",
+  "patch_sha256": "66b48b09a53f2135bb0aa9f47b0fd1b2a0116b171d74516102b0d13f5384f532",
+  "applied_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/apply-checks/check-jizx4_yb/run_trial_v25_diag_r3.py",
+  "applied_source_sha256": "902869ee48c1c80dbe770316d0515ac429a5679beb1af73971dfabf7be041126",
+  "helper_sha256": "5f133dd0c8f6d17b19cab87616b1efe725445829d75447ac0de71ceb99a083dc",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/patch",
+        "--batch",
+        "--fuzz=0",
+        "-p1",
+        "-d",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/apply-checks/check-jizx4_yb",
+        "-i",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/r6-to-r7-host-exception-clock.patch",
+        "--dry-run"
+      ],
+      "exit_code": 0,
+      "stdout": "patching file run_trial_v25_diag_r3.py\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/usr/bin/patch",
+        "--batch",
+        "--fuzz=0",
+        "-p1",
+        "-d",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/apply-checks/check-jizx4_yb",
+        "-i",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/r6-to-r7-host-exception-clock.patch"
+      ],
+      "exit_code": 0,
+      "stdout": "patching file run_trial_v25_diag_r3.py\n",
+      "stderr": ""
+    }
+  ],
+  "compile_only": "PASS",
+  "main_finally_ast_unchanged": true,
+  "qmp_and_startup_budget_calls_ast_unchanged": true,
+  "execute_runner_control_flow_ast_unchanged_except_evidence_calls": true,
+  "runner_imported": false,
+  "runner_executed": false,
+  "vm_started": false,
+  "integration_status": "not_integrated"
+}

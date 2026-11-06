@@ -1,0 +1,160 @@
+_ZN7Updater25SDFileInputUpdaterManager10InitializeEPKcS2_
+00007d10 stp       x29, x30, [sp, #-0x40]!
+00007d14 mov       x29, sp
+00007d18 stp       x19, x20, [sp, #0x10]
+00007d1c mov       x19, x0
+00007d20 mov       x0, #0x30
+00007d24 stp       x21, x22, [sp, #0x20]
+00007d28 mov       x20, x1
+00007d2c mov       x21, x2
+00007d30 bl        #0x7480 ; _Znwm
+00007d34 mov       x22, x0
+00007d38 bl        #0x70c0 ; _ZN7Updater13BufferManagerC1Ev
+00007d3c mov       x0, #0x10
+00007d40 str       x22, [x19, #0x20]
+00007d44 bl        #0x7480 ; _Znwm
+00007d48 mov       x22, x0
+00007d4c bl        #0x7640 ; _ZN7Updater12BaseFirmwareC1Ev
+00007d50 mov       x0, #0x158
+00007d54 str       x22, [x19, #0x28]
+00007d58 bl        #0x7480 ; _Znwm
+00007d5c ldr       w1, [x19, #0x58]
+00007d60 mov       w2, #1
+00007d64 mov       x22, x0
+00007d68 bl        #0x71d0 ; _ZN7Updater27SDFileInputBodyLoaderModuleC1ENS_19UPDATER_ACTION_MODEEb
+00007d6c mov       x0, #0x5c0
+00007d70 str       x22, [x19, #0x30]
+00007d74 bl        #0x7480 ; _Znwm
+00007d78 mov       x22, x0
+00007d7c bl        #0x7210 ; _ZN7Updater17SDDecryptorModuleC1Ev
+00007d80 mov       x0, #0x18
+00007d84 str       x22, [x19, #0x38]
+00007d88 bl        #0x7480 ; _Znwm
+00007d8c mov       x22, x0
+00007d90 bl        #0x7670 ; _ZN7Updater21SDUUDConditionCheckerC1Ev
+00007d94 mov       x0, #0x10
+00007d98 str       x22, [x19, #0x40]
+00007d9c bl        #0x7480 ; _Znwm
+00007da0 mov       x22, x0
+00007da4 bl        #0x7720 ; _ZN7Updater22SDLedProgressIndicatorC1Ev
+00007da8 mov       x0, #0x428
+00007dac str       x22, [x19, #0x48]
+00007db0 bl        #0x7480 ; _Znwm
+00007db4 mov       x2, x21
+00007db8 mov       x1, x20
+00007dbc mov       x22, x0
+00007dc0 bl        #0x77a0 ; _ZN7Updater13SDFileManagerC1EPKcS2_
+00007dc4 ldr       x0, [x19, #0x20]
+00007dc8 ldr       x1, [x0]
+00007dcc ldr       x1, [x1, #0x10]
+00007dd0 str       x22, [x19, #0x50]
+00007dd4 blr       x1
+00007dd8 ldr       x20, [x19, #0x30]
+00007ddc ldr       x0, [x20]
+00007de0 ldr       x22, [x0, #0x10]
+00007de4 ldr       x0, [x19, #0x20]
+00007de8 ldr       x1, [x0]
+00007dec ldr       x1, [x1, #0x38]
+00007df0 blr       x1
+00007df4 add       x21, x19, #8
+00007df8 mov       x1, x0
+00007dfc mov       x3, x21
+00007e00 mov       x0, x20
+00007e04 mov       x2, #0
+00007e08 blr       x22
+00007e0c ldr       x20, [x19, #0x38]
+00007e10 ldr       x0, [x20]
+00007e14 ldr       x22, [x0, #0x10]
+00007e18 ldr       x0, [x19, #0x20]
+00007e1c ldr       x1, [x0]
+00007e20 ldr       x1, [x1, #0x28]
+00007e24 blr       x1
+00007e28 ldr       x2, [x19, #0x30]
+00007e2c mov       x1, x0
+00007e30 mov       x3, x21
+00007e34 mov       x0, x20
+00007e38 blr       x22
+00007e3c ldr       x0, [x19, #0x28]
+00007e40 ldr       x1, [x0]
+00007e44 ldr       x2, [x1, #0x10]
+00007e48 ldr       x1, [x19, #0x38]
+00007e4c blr       x2
+00007e50 ldp       x2, x0, [x19, #0x38]
+00007e54 ldr       x1, [x0]
+00007e58 ldr       x3, [x1, #0x10]
+00007e5c ldr       x1, [x19, #0x30]
+00007e60 blr       x3
+00007e64 ldr       x0, [x19, #0x48]
+00007e68 ldr       x1, [x0]
+00007e6c ldr       x1, [x1, #0x10]
+00007e70 blr       x1
+00007e74 ldr       x0, [x19, #0x50]
+00007e78 ldr       x1, [x0]
+00007e7c ldr       x1, [x1, #0x10]
+00007e80 blr       x1
+00007e84 mov       w0, #0
+00007e88 ldp       x19, x20, [sp, #0x10]
+00007e8c ldp       x21, x22, [sp, #0x20]
+00007e90 ldp       x29, x30, [sp], #0x40
+00007e94 ret       
+00007e98 mov       x20, x0
+00007e9c mov       x21, x1
+00007ea0 mov       x1, #0x30
+00007ea4 mov       x0, x22
+00007ea8 bl        #0x74b0 ; _ZdlPvm
+00007eac cmp       x21, #1
+00007eb0 mov       x0, x20
+00007eb4 b.ne      #0x7f38
+00007eb8 bl        #0x7100 ; __cxa_begin_catch
+00007ebc mov       x1, x0
+00007ec0 mov       x0, x19
+00007ec4 bl        #0x72a0 ; _ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE
+00007ec8 b         #0x7f2c
+00007ecc mov       x21, x1
+00007ed0 mov       x20, x0
+00007ed4 mov       x1, #0x10
+00007ed8 b         #0x7ea4
+00007edc mov       x21, x1
+00007ee0 mov       x20, x0
+00007ee4 mov       x1, #0x158
+00007ee8 b         #0x7ea4
+00007eec mov       x21, x1
+00007ef0 mov       x20, x0
+00007ef4 mov       x1, #0x5c0
+00007ef8 b         #0x7ea4
+00007efc mov       x21, x1
+00007f00 mov       x20, x0
+00007f04 mov       x1, #0x18
+00007f08 b         #0x7ea4
+00007f0c b         #0x7ecc
+00007f10 mov       x21, x1
+00007f14 mov       x20, x0
+00007f18 mov       x1, #0x428
+00007f1c b         #0x7ea4
+00007f20 mov       x20, x0
+00007f24 mov       x21, x1
+00007f28 b         #0x7eac
+00007f2c bl        #0x7750 ; __cxa_end_catch
+00007f30 mov       w0, #4
+00007f34 b         #0x7e88
+00007f38 bl        #0x7100 ; __cxa_begin_catch
+00007f3c adrp      x0, #0x1d000
+00007f40 add       x1, x29, #0x30
+00007f44 ldr       x0, [x0, #0xf50]
+00007f48 add       x0, x0, #0x10
+00007f4c str       x0, [x29, #0x30]
+00007f50 mov       w0, #0x25
+00007f54 movk      w0, #3, lsl #16
+00007f58 str       w0, [x29, #0x38]
+00007f5c mov       x0, x19
+00007f60 strb      wzr, [x29, #0x3c]
+00007f64 bl        #0x72a0 ; _ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE
+00007f68 bl        #0x7750 ; __cxa_end_catch
+00007f6c b         #0x7f30
+00007f70 mov       x19, x0
+00007f74 bl        #0x7750 ; __cxa_end_catch
+00007f78 mov       x0, x19
+00007f7c bl        #0x7830 ; _Unwind_Resume
+00007f80 mov       x19, x0
+00007f84 bl        #0x7750 ; __cxa_end_catch
+00007f88 b         #0x7f78

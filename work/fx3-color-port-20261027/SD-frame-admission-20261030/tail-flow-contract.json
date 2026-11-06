@@ -1,0 +1,588 @@
+{
+  "created_utc": "2026-10-30T16:41:16.394739+00:00",
+  "source_libraries": [
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "bytes": 72864,
+      "sha256": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater12BaseFirmware9WriteDataEPKhmb",
+          "VA": "0xbc6c",
+          "bytes": 124,
+          "sha256": "2383e5a63dfe8af3189ea56c217aaed42fe20401644bb727108ca0f315df841d",
+          "raw": "tail-flow-original-spans/libupdatercorecommon.so-0xbc6c.bin",
+          "listing": "tail-flow-listings/libupdatercorecommon.so-0xbc6c.txt",
+          "calls": [
+            {
+              "address": "0xbca0",
+              "kind": "direct",
+              "target": "0x8cf0",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xbca8",
+              "kind": "direct",
+              "target": "0x8590",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0xbcd4",
+              "kind": "direct",
+              "target": "0x8be0",
+              "symbol": "__cxa_throw"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater12BaseFirmware12EndWriteFirmEv",
+          "VA": "0xbbf4",
+          "bytes": 120,
+          "sha256": "2d7c29eabbb237d85274985a5a99ebd670aafcde18b051c3809046b36ca4ced0",
+          "raw": "tail-flow-original-spans/libupdatercorecommon.so-0xbbf4.bin",
+          "listing": "tail-flow-listings/libupdatercorecommon.so-0xbbf4.txt",
+          "calls": [
+            {
+              "address": "0xbc28",
+              "kind": "direct",
+              "target": "0x8cf0",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xbc30",
+              "kind": "direct",
+              "target": "0x8590",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0xbc5c",
+              "kind": "direct",
+              "target": "0x8be0",
+              "symbol": "__cxa_throw"
+            }
+          ]
+        }
+      ],
+      "vtables": [
+        {
+          "name": "_ZTVN7Updater12BaseFirmwareE",
+          "VA": "0x20a30",
+          "bytes": 80,
+          "sha256": "5b6fb58e61fa475939767d68a446f97f1bff02c0e5935a3ea8bb51e6515783d8",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater12BaseFirmwareE",
+              "addend": 0,
+              "resolved_link_VA": "0x20a20"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmwareD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xbb3c"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmwareD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xbb50"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware10InitializeEPNS_10BaseModuleE",
+              "addend": 0,
+              "resolved_link_VA": "0xbb40"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware8FinalizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0xbb48"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware14StartWriteFirmEv",
+              "addend": 0,
+              "resolved_link_VA": "0xbb78"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware12EndWriteFirmEv",
+              "addend": 0,
+              "resolved_link_VA": "0xbbf4"
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware9WriteDataEPKhmb",
+              "addend": 0,
+              "resolved_link_VA": "0xbc6c"
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware5ResetEv",
+              "addend": 0,
+              "resolved_link_VA": "0xbce8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "bytes": 56032,
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater10RingBuffer8SkipDataEm",
+          "VA": "0x94d4",
+          "bytes": 20,
+          "sha256": "0974eca31e195ffe3499e166ed9a05b050f664f01e571f1560176c9a01a2bfe7",
+          "raw": "tail-flow-original-spans/libupdatercommon.so-0x94d4.bin",
+          "listing": "tail-flow-listings/libupdatercommon.so-0x94d4.txt",
+          "calls": []
+        }
+      ],
+      "vtables": [
+        {
+          "name": "_ZTVN7Updater10RingBufferE",
+          "VA": "0x1cb88",
+          "bytes": 120,
+          "sha256": "6edd9f6f9cc92cded36e6c4a580933f9c9f1b90562b46903b806f21902a1a54f",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater10RingBufferE",
+              "addend": 0,
+              "resolved_link_VA": "0x1cb78"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBufferD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x94e8"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBufferD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9544"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer10InitializeEPhm",
+              "addend": 0,
+              "resolved_link_VA": "0x9490"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer8FinalizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x94a8"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer5ResetEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9574"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer4StopEv",
+              "addend": 0,
+              "resolved_link_VA": "0x966c"
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer5IsEndEv",
+              "addend": 0,
+              "resolved_link_VA": "0x95e4"
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer9WriteDataEPKhmb",
+              "addend": 0,
+              "resolved_link_VA": "0x994c"
+            },
+            {
+              "offset_from_symbol": "0x50",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer8ReadDataEPhm",
+              "addend": 0,
+              "resolved_link_VA": "0x9c2c"
+            },
+            {
+              "offset_from_symbol": "0x58",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer19ReadDataWithoutCopyEPPhm",
+              "addend": 0,
+              "resolved_link_VA": "0x96b0"
+            },
+            {
+              "offset_from_symbol": "0x60",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer8SkipDataEm",
+              "addend": 0,
+              "resolved_link_VA": "0x94d4"
+            },
+            {
+              "offset_from_symbol": "0x68",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer11GetDataSizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9630"
+            },
+            {
+              "offset_from_symbol": "0x70",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer12GetEmptySizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9ad4"
+            }
+          ]
+        },
+        {
+          "name": "_ZTVN7Updater27BaseFirmwareInformationFileE",
+          "VA": "0x1c658",
+          "bytes": 64,
+          "sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater27BaseFirmwareInformationFileE",
+              "addend": 0,
+              "resolved_link_VA": "0x1c600"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZNK7Updater27BaseFirmwareInformationFile8GetValueEv",
+              "addend": 0,
+              "resolved_link_VA": "0x72dc"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater27BaseFirmwareInformationFile10WriteValueEj",
+              "addend": 0,
+              "resolved_link_VA": "0x7494"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater27BaseFirmwareInformationFile7IsValidEv",
+              "addend": 0,
+              "resolved_link_VA": "0x72b4"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "__cxa_pure_virtual",
+              "addend": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "bytes": 60584,
+      "sha256": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater17SDDecryptorModule5IsEndEv",
+          "VA": "0x93d4",
+          "bytes": 68,
+          "sha256": "4f0e56132ce8dc801167666ed150249e0a39725e6977332b4996e532e8f831f5",
+          "raw": "tail-flow-original-spans/libsdfileinputupdaterapi.so-0x93d4.bin",
+          "listing": "tail-flow-listings/libsdfileinputupdaterapi.so-0x93d4.txt",
+          "calls": [
+            {
+              "address": "0x93f0",
+              "kind": "indirect",
+              "operand": "x1"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater17SDDecryptorModule7executeEv",
+          "VA": "0x99f4",
+          "bytes": 8,
+          "sha256": "65dd5bc9a69625b9105ffa5323c73f02d39ad02a0d785d4d9d92743a7d5f1a06",
+          "raw": "tail-flow-original-spans/libsdfileinputupdaterapi.so-0x99f4.bin",
+          "listing": "tail-flow-listings/libsdfileinputupdaterapi.so-0x99f4.txt",
+          "calls": []
+        }
+      ],
+      "vtables": [
+        {
+          "name": "_ZTVN7Updater17SDDecryptorModuleE",
+          "VA": "0x1d940",
+          "bytes": 200,
+          "sha256": "6d9c54dee5660c46886f32d80e57e9dd0ffa57ee0cd2a762b036d9c8e0c3a33a",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater17SDDecryptorModuleE",
+              "addend": 0,
+              "resolved_link_VA": "0x1d928"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModuleD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x91d8"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModuleD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9248"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule10InitializeEPNS_15BufferContainerEPS0_PNS_17CallbackInterfaceE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule8FinalizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule5StartENS_20COMMAND_PROCESS_MODEE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule4StopEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule9WriteDataEPKhmb",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule18GetEmptyBufferSizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x50",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule5ResetEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x58",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule14GetInformationEPN10UpdaterAPI22firmware_information_t11informationE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x60",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule30FirmwareCopyCompletionCallbackEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8ad8"
+            },
+            {
+              "offset_from_symbol": "0x68",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule11GetCompSizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x70",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule11resetModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8750"
+            },
+            {
+              "offset_from_symbol": "0x78",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule11startModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8754"
+            },
+            {
+              "offset_from_symbol": "0x80",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule10stopModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8758"
+            },
+            {
+              "offset_from_symbol": "0x88",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule7executeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x99f4"
+            },
+            {
+              "offset_from_symbol": "0x90",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule7cleanupEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x98",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule18getManagedThreadIDEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0xa0",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule7decryptEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9418"
+            },
+            {
+              "offset_from_symbol": "0xa8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule5IsEndEv",
+              "addend": 0,
+              "resolved_link_VA": "0x93d4"
+            },
+            {
+              "offset_from_symbol": "0xb0",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule29WaitForFirmwareCopyCompletionEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8b0c"
+            },
+            {
+              "offset_from_symbol": "0xb8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule11SetBuffSizeEm",
+              "addend": 0,
+              "resolved_link_VA": "0x91d0"
+            },
+            {
+              "offset_from_symbol": "0xc0",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule18DecScrambleWrapperEPh",
+              "addend": 0,
+              "resolved_link_VA": "0x9270"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Original historical intermediate updater data, not a current-body engine capture. Static only; no original execution, helper stubs, hardware, signing, or modified firmware."
+}

@@ -1,0 +1,194 @@
+{
+  "sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/config-producer-20261029/original-files/loader_nor.bin",
+      "bytes": 101888,
+      "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/DGU.bin",
+      "bytes": 24336,
+      "sha256": "39eeb6d572a060149194463507800ed66b866a20dceb8ed49b01a04eb6fb2ba7"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/MIS.bin",
+      "bytes": 119296,
+      "sha256": "4cd3e9bc3a0a4aec4793bff77e7ca4dccdba8637212cd632cdc5ecbe550daf98"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/config-producer-20261029/original-files/pformat_config.txt",
+      "bytes": 1274,
+      "sha256": "21cd5b29dd165c322f5b00bb057802c377ff94af15f95881e150a32130302ece"
+    }
+  ],
+  "other_owner_inventory": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/source-inventory.json",
+    "sha256": "8ea7ae8960e013ff46d281737262c28e4ee5a100e3d4f3894943176be9510b69",
+    "use": "Read-only hash/source binding. Its unguarded scripts are not imported or run."
+  },
+  "candidate_classification": {
+    "FDAT_offset": "0x2faf06ff",
+    "outer_member_start": "0x2fad9e00",
+    "inner_member_data_offset": "0x200",
+    "NOR_file_offset": "0x166ff",
+    "NOR_VA": "0xfe05f6ff",
+    "exact_NUL_delimited_string": "EXBL",
+    "kind": "Original code comparison string, not an EXBL information block"
+  },
+  "original_EXBL_check": {
+    "entry": "0xfe0588a4",
+    "compare_call": "0xfe0588bc",
+    "compare_helper": "0xfe04b364",
+    "comparison": "Bounded string comparison; both EXBL and MIS_HEAD have no NUL within their compared lengths.",
+    "source_address": "0xfe040000",
+    "comparison_string_VA": "0xfe05f6ff",
+    "bytes": 4,
+    "failure_return": -409
+  },
+  "original_boot_getter": {
+    "entry": "0xfe058794",
+    "field_base": "0xfe040050",
+    "stride": "0x40",
+    "index2_address": "0xfe040090",
+    "index3_address": "0xfe0400d0",
+    "index5_address": "0xfe040150",
+    "actual_values_available": false
+  },
+  "original_DGU_MIS_caller": {
+    "entry": "0xfe056024",
+    "DGU_getter_index": 2,
+    "MIS_getter_index": 3,
+    "function_tailcall": "0xfe05604c",
+    "target_reader": "0xfe055d14",
+    "reader_argument0": "0x10",
+    "real_boot_table_or_target_values_supplied": false
+  },
+  "original_MIS_reader": {
+    "entry": "0xfe055d14",
+    "magic_compare_bytes": 8,
+    "magic_compare_call": "0xfe055d40",
+    "declared_base_u32_offset": "0xc",
+    "count_u16_offset": "0x12",
+    "table_u32_offset": "0x14",
+    "table_stride": 4,
+    "count_read_PC": "0xfe055ddc",
+    "table_load_PC": "0xfe055e20",
+    "base_load_PC": "0xfe055e1c",
+    "base_plus_offset_PC": "0xfe055e30",
+    "indirect_DGU_call_PC": "0xfe055e40",
+    "first_argument": "Original mode argument preserved in w20",
+    "second_argument": "32-bit declared base plus selected u32 table entry"
+  },
+  "original_MIS": {
+    "magic": "MIS_HEAD",
+    "file_bytes": 119296,
+    "size_word_u32_8": 119296,
+    "declared_base": "0xfe080000",
+    "reader_count": 3,
+    "scripts": [
+      {
+        "index": 0,
+        "offset": "0xa00",
+        "original_callback_argument": "0xfe080a00",
+        "first32_hex": "0001c00818099809880ad80df80df80b300e580ee4a758aaacadc4ab980ec80e",
+        "initial_u16": "0x100"
+      },
+      {
+        "index": 1,
+        "offset": "0xc200",
+        "original_callback_argument": "0xfe08c200",
+        "first32_hex": "0001000100010001000100010001e84300010001000100010001685f00010001",
+        "initial_u16": "0x100"
+      },
+      {
+        "index": 2,
+        "offset": "0x13200",
+        "original_callback_argument": "0xfe093200",
+        "first32_hex": "0001000100010001000100010001000100010001000100010001000100010001",
+        "initial_u16": "0x100"
+      }
+    ],
+    "version_text_at_0x123": "600019",
+    "word_0x10_not_named_as_version": true,
+    "individual_script_lengths_not_established": true
+  },
+  "original_DGU_entry": {
+    "configured_load": "0xfe040800",
+    "original_literal_at": "0xfe040898",
+    "literal_target": "0xfe0440c8",
+    "branch_target": "0xfe04536c",
+    "CPU_maintenance_present": [
+      "0xfe040840 dsb sy",
+      "0xfe040844 ic ialluis",
+      "0xfe040848 dsb sy",
+      "0xfe04084c isb"
+    ],
+    "entry_executed": false
+  },
+  "source_fragments": [
+    {
+      "source": "NOR",
+      "VA": "0xfe058794",
+      "end_exclusive": "0xfe0588a4",
+      "bytes": 272,
+      "original_bytes_sha256": "0603e9e180f88bb26c154416bf9ae00fdb3a6b0ce1d6719d94faff441358bac5",
+      "listing": "listings/NOR-boot-table-getters.txt",
+      "instruction_listing_is_static": true
+    },
+    {
+      "source": "NOR",
+      "VA": "0xfe0588a4",
+      "end_exclusive": "0xfe0588e4",
+      "bytes": 64,
+      "original_bytes_sha256": "765b29e1a6d390cc1411f165f9bedb79236a3d9032e5085e501dfbfba90e66f3",
+      "listing": "listings/NOR-EXBL-check.txt",
+      "instruction_listing_is_static": true
+    },
+    {
+      "source": "NOR",
+      "VA": "0xfe055d14",
+      "end_exclusive": "0xfe055ec8",
+      "bytes": 436,
+      "original_bytes_sha256": "478e96f7a5e0ff02e65bc5824b86dea39cdec6f87e49d971d07b46109e6b238e",
+      "listing": "listings/NOR-MIS-header-reader.txt",
+      "instruction_listing_is_static": true
+    },
+    {
+      "source": "NOR",
+      "VA": "0xfe056024",
+      "end_exclusive": "0xfe056050",
+      "bytes": 44,
+      "original_bytes_sha256": "0d2e3fadaeed599394b017f539584934726620dfa393b95ff7e4092e5df3cbc0",
+      "listing": "listings/NOR-DGU-MIS-caller.txt",
+      "instruction_listing_is_static": true
+    },
+    {
+      "source": "DGU",
+      "VA": "0xfe040800",
+      "end_exclusive": "0xfe0408a0",
+      "bytes": 160,
+      "original_bytes_sha256": "adb68a2da79590e6403ff8d029c058286f2bfc8ec6a50227c3c00c43ffe55e6b",
+      "listing": "listings/DGU-entry-static-only.txt",
+      "instruction_listing_is_static": true
+    },
+    {
+      "source": "DGU",
+      "VA": "0xfe04536c",
+      "end_exclusive": "0xfe045448",
+      "bytes": 220,
+      "original_bytes_sha256": "cc248b5a8a0bcce333ff6f2f2da20e69aa54eb166bc5a8a8cd032492579a29bf",
+      "listing": "listings/DGU-parser-prefix-static-only.txt",
+      "instruction_listing_is_static": true
+    }
+  ],
+  "interpretation": {
+    "complete_FX3_EXBL_prefix_obtained": false,
+    "public_parser_exact_model_compatibility_proved": false,
+    "original_MIS_table_format_and_three_parameters_located": true,
+    "RAM_chip_capacity_or_timing_compatibility_proved": false,
+    "actual_DDR_initialization_executed": false,
+    "CMOS_RAW_or_ISP_recovered": false,
+    "flashable_package_produced": false
+  },
+  "scope": "Static original-byte review only. DGU/MIS are original CP payload components; their source path is not an operational device reading. Header offsets follow the FX3 NOR reader itself. No BootROM, keys, decryption, manufactured EXBL block, original DGU execution, CPU registers/cache/TLB, device or native Sony operation."
+}

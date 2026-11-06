@@ -1,0 +1,21 @@
+000ed4a8 fd7bbda9 stp      x29, x30, [sp, #-0x30]!
+000ed4ac 03008052 mov      w3, #0
+000ed4b0 42008052 mov      w2, #2
+000ed4b4 fd030091 mov      x29, sp
+000ed4b8 f35301a9 stp      x19, x20, [sp, #0x10]
+000ed4bc f40300aa mov      x20, x0
+000ed4c0 600700f0 adrp     x0, #0x1dc000
+000ed4c4 a1830091 add      x1, x29, #0x20
+000ed4c8 00342591 add      x0, x0, #0x94d
+000ed4cc a07f02a9 stp      x0, xzr, [x29, #0x20]
+000ed4d0 1ca5fd97 bl       #0x56940 ; stm_system
+000ed4d4 f303002a mov      w19, w0
+000ed4d8 600700f0 adrp     x0, #0x1dc000
+000ed4dc 008c2591 add      x0, x0, #0x963
+000ed4e0 60a0fd97 bl       #0x55660 ; puts
+000ed4e4 20008052 mov      w0, #1
+000ed4e8 80020039 strb     w0, [x20]
+000ed4ec e003132a mov      w0, w19
+000ed4f0 f35341a9 ldp      x19, x20, [sp, #0x10]
+000ed4f4 fd7bc3a8 ldp      x29, x30, [sp], #0x30
+000ed4f8 c0035fd6 ret      

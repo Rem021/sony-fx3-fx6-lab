@@ -1,0 +1,31 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x400e48 a13f40f9 ldr      x1, [x29, #0x78]
+0x400e4c a04b40f9 ldr      x0, [x29, #0x90]
+0x400e50 000001cb sub      x0, x0, x1
+0x400e54 1f0018eb cmp      x0, x24
+0x400e58 29010054 b.ls     #0x400e7c
+0x400e5c 13f5ff34 cbz      w19, #0x400cfc
+0x400e60 010000b0 adrp     x1, #0x401000
+0x400e64 000000b0 adrp     x0, #0x401000
+0x400e68 e303132a mov      w3, w19
+0x400e6c 82368052 mov      w2, #0x1b4
+0x400e70 21a02691 add      x1, x1, #0x9a8
+0x400e74 00603391 add      x0, x0, #0xcd8
+0x400e78 a0ffff17 b        #0x400cf8
+0x400e7c 007d8052 mov      w0, #0x3e8
+0x400e80 40ffff97 bl       #0x400b80
+0x400e84 b0010094 bl       #0x401544
+0x400e88 f303002a mov      w19, w0
+0x400e8c c0000034 cbz      w0, #0x400ea4
+0x400e90 e303002a mov      w3, w0
+0x400e94 e10316aa mov      x1, x22
+0x400e98 e00317aa mov      x0, x23
+0x400e9c a2278052 mov      w2, #0x13d
+0x400ea0 60ffff97 bl       #0x400c20
+0x400ea4 80020391 add      x0, x20, #0xc0
+0x400ea8 00044039 ldrb     w0, [x0, #1]
+0x400eac 1f100071 cmp      w0, #4
+0x400eb0 60fdff54 b.eq     #0x400e5c
+0x400eb4 a0430291 add      x0, x29, #0x90
+0x400eb8 ec000094 bl       #0x401268
+0x400ebc e3ffff17 b        #0x400e48

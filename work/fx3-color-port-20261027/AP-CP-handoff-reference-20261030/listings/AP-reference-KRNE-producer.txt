@@ -1,0 +1,13 @@
+0xfe052a08: fe0f1ff8 str x30, [sp, #-0x10]!
+0xfe052a0c: 01e48fd2 mov x1, #0x7f20
+0xfe052a10: 68498a52 mov w8, #0x524b
+0xfe052a14: 0102a0f2 movk x1, #0x10, lsl #16
+0xfe052a18: c8a9a872 movk w8, #0x454e, lsl #16
+0xfe052a1c: 00800291 add x0, x0, #0xa0
+0xfe052a20: 0101c0f2 movk x1, #8, lsl #32
+0xfe052a24: e2330091 add x2, sp, #0xc
+0xfe052a28: e3031e32 mov w3, #4
+0xfe052a2c: e80f00b9 str w8, [sp, #0xc]
+0xfe052a30: 952b0094 bl #0xfe05d884
+0xfe052a34: fe0741f8 ldr x30, [sp], #0x10
+0xfe052a38: c0035fd6 ret 

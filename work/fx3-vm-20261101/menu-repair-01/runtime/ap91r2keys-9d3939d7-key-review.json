@@ -1,0 +1,2565 @@
+{
+  "scope": "Synthetic originalOSALphysicalkeys: physical/internal/EventThread and originalapplicationcallback32Bforwardobserved; UIdequeue/controlleractionnotclosed",
+  "steps": [
+    {
+      "step": 1,
+      "sent": [
+        {
+          "LF_line": 28914,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "1",
+            "key": "0x1ac",
+            "status": "1",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "34867440000",
+            "raw_hex": "ac01000000000000010000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=1 key=0x1ac status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=34867440000 raw_hex=ac01000000000000010000000000000001000000\r"
+        },
+        {
+          "LF_line": 28961,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "1",
+            "key": "0x1ac",
+            "status": "0",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "35047159008",
+            "raw_hex": "ac01000000000000000000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=1 key=0x1ac status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=35047159008 raw_hex=ac01000000000000000000000000000001000000\r"
+        }
+      ],
+      "physical_receipts": [
+        {
+          "LF_line": 28915,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "1",
+            "receiver": "I-InputRecv",
+            "key": "0x1ac",
+            "status": "1",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "ac01000000000000010000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=1 receiver=I-InputRecv key=0x1ac status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ac01000000000000010000000000000001000000 native_conversion_follows=1\r"
+        },
+        {
+          "LF_line": 28955,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "1",
+            "receiver": "I-InputRecv",
+            "key": "0x1ac",
+            "status": "0",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "ac01000000000000000000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=1 receiver=I-InputRecv key=0x1ac status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ac01000000000000000000000000000001000000 native_conversion_follows=1\r"
+        }
+      ],
+      "native_internal_sends": [
+        {
+          "LF_line": 28928,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "1",
+            "key": "0x1ac",
+            "status": "1",
+            "from_type": "1",
+            "config_pos": "19",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=1 key=0x1ac status=1 from_type=1 config_pos=19 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        },
+        {
+          "LF_line": 28958,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "1",
+            "key": "0x1ac",
+            "status": "0",
+            "from_type": "1",
+            "config_pos": "19",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=1 key=0x1ac status=0 from_type=1 config_pos=19 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        }
+      ],
+      "EventThread_receipts": [
+        {
+          "LF_line": 28932,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "1",
+            "queue": "0x7ae0c2",
+            "event_code": "0x1ac",
+            "status": "1",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=1 queue=0x7ae0c2 event_code=0x1ac status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        },
+        {
+          "LF_line": 28959,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "1",
+            "queue": "0x7ae0c2",
+            "event_code": "0x1ac",
+            "status": "0",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=1 queue=0x7ae0c2 event_code=0x1ac status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        }
+      ],
+      "cache": [
+        {
+          "LF_line": 28913,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "1",
+            "key": "0x1ac",
+            "when": "before_down",
+            "readable": "1",
+            "status": "0x7fffffff",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=1 key=0x1ac when=before_down readable=1 status=0x7fffffff native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 28952,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "1",
+            "key": "0x1ac",
+            "when": "before_up",
+            "readable": "1",
+            "status": "0x1",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=1 key=0x1ac when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 28988,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "1",
+            "key": "0x1ac",
+            "when": "after_up_50ms",
+            "readable": "1",
+            "status": "0",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=1 key=0x1ac when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+        }
+      ],
+      "application_callback_execution_proven": false,
+      "key": "0x1ac",
+      "hold_ms": 179.719008,
+      "down_ns": 34867440000,
+      "up_ns": 35047159008,
+      "all_physical_bytes_match_sent": true
+    },
+    {
+      "step": 2,
+      "sent": [
+        {
+          "LF_line": 31267,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "2",
+            "key": "0x1ab",
+            "status": "1",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "39080404000",
+            "raw_hex": "ab01000000000000010000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=2 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=39080404000 raw_hex=ab01000000000000010000000000000001000000\r"
+        },
+        {
+          "LF_line": 31320,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "2",
+            "key": "0x1ab",
+            "status": "0",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "39210313008",
+            "raw_hex": "ab01000000000000000000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=2 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=39210313008 raw_hex=ab01000000000000000000000000000001000000\r"
+        }
+      ],
+      "physical_receipts": [
+        {
+          "LF_line": 31266,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "2",
+            "receiver": "I-InputRecv",
+            "key": "0x1ab",
+            "status": "1",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "ab01000000000000010000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=2 receiver=I-InputRecv key=0x1ab status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ab01000000000000010000000000000001000000 native_conversion_follows=1\r"
+        },
+        {
+          "LF_line": 31319,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "2",
+            "receiver": "I-InputRecv",
+            "key": "0x1ab",
+            "status": "0",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "ab01000000000000000000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=2 receiver=I-InputRecv key=0x1ab status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ab01000000000000000000000000000001000000 native_conversion_follows=1\r"
+        }
+      ],
+      "native_internal_sends": [
+        {
+          "LF_line": 31270,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "2",
+            "key": "0x1ab",
+            "status": "1",
+            "from_type": "1",
+            "config_pos": "18",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=2 key=0x1ab status=1 from_type=1 config_pos=18 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        },
+        {
+          "LF_line": 31328,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "2",
+            "key": "0x1ab",
+            "status": "0",
+            "from_type": "1",
+            "config_pos": "18",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=2 key=0x1ab status=0 from_type=1 config_pos=18 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        }
+      ],
+      "EventThread_receipts": [
+        {
+          "LF_line": 31272,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "2",
+            "queue": "0x7ae0c2",
+            "event_code": "0x1ab",
+            "status": "1",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=2 queue=0x7ae0c2 event_code=0x1ab status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        },
+        {
+          "LF_line": 31332,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "2",
+            "queue": "0x7ae0c2",
+            "event_code": "0x1ab",
+            "status": "0",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=2 queue=0x7ae0c2 event_code=0x1ab status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        }
+      ],
+      "cache": [
+        {
+          "LF_line": 31265,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "2",
+            "key": "0x1ab",
+            "when": "before_down",
+            "readable": "1",
+            "status": "0x7fffffff",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=2 key=0x1ab when=before_down readable=1 status=0x7fffffff native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 31318,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "2",
+            "key": "0x1ab",
+            "when": "before_up",
+            "readable": "1",
+            "status": "0x1",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=2 key=0x1ab when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 31371,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "2",
+            "key": "0x1ab",
+            "when": "after_up_50ms",
+            "readable": "1",
+            "status": "0",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=2 key=0x1ab when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+        }
+      ],
+      "application_callback_execution_proven": false,
+      "key": "0x1ab",
+      "hold_ms": 129.909008,
+      "down_ns": 39080404000,
+      "up_ns": 39210313008,
+      "all_physical_bytes_match_sent": true,
+      "gap_from_previous_up_ms": 4033.244992
+    },
+    {
+      "step": 3,
+      "sent": [
+        {
+          "LF_line": 33733,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "3",
+            "key": "0x30",
+            "status": "1",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "43248361008",
+            "raw_hex": "3000000000000000010000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=3 key=0x30 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=43248361008 raw_hex=3000000000000000010000000000000001000000\r"
+        },
+        {
+          "LF_line": 33801,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "3",
+            "key": "0x30",
+            "status": "0",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "43380139008",
+            "raw_hex": "3000000000000000000000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=3 key=0x30 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=43380139008 raw_hex=3000000000000000000000000000000001000000\r"
+        }
+      ],
+      "physical_receipts": [
+        {
+          "LF_line": 33735,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "3",
+            "receiver": "I-InputRecv",
+            "key": "0x30",
+            "status": "1",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "3000000000000000010000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=3 receiver=I-InputRecv key=0x30 status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=3000000000000000010000000000000001000000 native_conversion_follows=1\r"
+        },
+        {
+          "LF_line": 33795,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "3",
+            "receiver": "I-InputRecv",
+            "key": "0x30",
+            "status": "0",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "3000000000000000000000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=3 receiver=I-InputRecv key=0x30 status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=3000000000000000000000000000000001000000 native_conversion_follows=1\r"
+        }
+      ],
+      "native_internal_sends": [
+        {
+          "LF_line": 33738,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "3",
+            "key": "0x30",
+            "status": "1",
+            "from_type": "1",
+            "config_pos": "6",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=3 key=0x30 status=1 from_type=1 config_pos=6 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        },
+        {
+          "LF_line": 33798,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "3",
+            "key": "0x30",
+            "status": "0",
+            "from_type": "1",
+            "config_pos": "6",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=3 key=0x30 status=0 from_type=1 config_pos=6 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        }
+      ],
+      "EventThread_receipts": [
+        {
+          "LF_line": 33740,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "3",
+            "queue": "0x7ae0c2",
+            "event_code": "0x30",
+            "status": "1",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=3 queue=0x7ae0c2 event_code=0x30 status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        },
+        {
+          "LF_line": 33802,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "3",
+            "queue": "0x7ae0c2",
+            "event_code": "0x30",
+            "status": "0",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=3 queue=0x7ae0c2 event_code=0x30 status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        }
+      ],
+      "cache": [
+        {
+          "LF_line": 33732,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "3",
+            "key": "0x30",
+            "when": "before_down",
+            "readable": "1",
+            "status": "0x7fffffff",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=3 key=0x30 when=before_down readable=1 status=0x7fffffff native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 33794,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "3",
+            "key": "0x30",
+            "when": "before_up",
+            "readable": "1",
+            "status": "0x1",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=3 key=0x30 when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 33834,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "3",
+            "key": "0x30",
+            "when": "after_up_50ms",
+            "readable": "1",
+            "status": "0",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=3 key=0x30 when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+        }
+      ],
+      "application_callback_execution_proven": false,
+      "key": "0x30",
+      "hold_ms": 131.778,
+      "down_ns": 43248361008,
+      "up_ns": 43380139008,
+      "all_physical_bytes_match_sent": true,
+      "gap_from_previous_up_ms": 4038.048
+    },
+    {
+      "step": 4,
+      "sent": [
+        {
+          "LF_line": 38988,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "4",
+            "key": "0x30",
+            "status": "1",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "47449423008",
+            "raw_hex": "3000000000000000010000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=4 key=0x30 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=47449423008 raw_hex=3000000000000000010000000000000001000000\r"
+        },
+        {
+          "LF_line": 39110,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "4",
+            "key": "0x30",
+            "status": "0",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "47579274000",
+            "raw_hex": "3000000000000000000000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=4 key=0x30 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=47579274000 raw_hex=3000000000000000000000000000000001000000\r"
+        }
+      ],
+      "physical_receipts": [
+        {
+          "LF_line": 38995,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "4",
+            "receiver": "I-InputRecv",
+            "key": "0x30",
+            "status": "1",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "3000000000000000010000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=4 receiver=I-InputRecv key=0x30 status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=3000000000000000010000000000000001000000 native_conversion_follows=1\r"
+        },
+        {
+          "LF_line": 39106,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "4",
+            "receiver": "I-InputRecv",
+            "key": "0x30",
+            "status": "0",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "3000000000000000000000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=4 receiver=I-InputRecv key=0x30 status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=3000000000000000000000000000000001000000 native_conversion_follows=1\r"
+        }
+      ],
+      "native_internal_sends": [
+        {
+          "LF_line": 38999,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "4",
+            "key": "0x30",
+            "status": "1",
+            "from_type": "1",
+            "config_pos": "6",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=4 key=0x30 status=1 from_type=1 config_pos=6 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        },
+        {
+          "LF_line": 39109,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "4",
+            "key": "0x30",
+            "status": "0",
+            "from_type": "1",
+            "config_pos": "6",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=4 key=0x30 status=0 from_type=1 config_pos=6 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        }
+      ],
+      "EventThread_receipts": [
+        {
+          "LF_line": 39003,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "4",
+            "queue": "0x7ae0c2",
+            "event_code": "0x30",
+            "status": "1",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=4 queue=0x7ae0c2 event_code=0x30 status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        },
+        {
+          "LF_line": 39111,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "4",
+            "queue": "0x7ae0c2",
+            "event_code": "0x30",
+            "status": "0",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=4 queue=0x7ae0c2 event_code=0x30 status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        }
+      ],
+      "cache": [
+        {
+          "LF_line": 38986,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "4",
+            "key": "0x30",
+            "when": "before_down",
+            "readable": "1",
+            "status": "0",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=4 key=0x30 when=before_down readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 39105,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "4",
+            "key": "0x30",
+            "when": "before_up",
+            "readable": "1",
+            "status": "0x1",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=4 key=0x30 when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 39246,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "4",
+            "key": "0x30",
+            "when": "after_up_50ms",
+            "readable": "1",
+            "status": "0",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=4 key=0x30 when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+        }
+      ],
+      "application_callback_execution_proven": false,
+      "key": "0x30",
+      "hold_ms": 129.850992,
+      "down_ns": 47449423008,
+      "up_ns": 47579274000,
+      "all_physical_bytes_match_sent": true,
+      "gap_from_previous_up_ms": 4069.284
+    },
+    {
+      "step": 5,
+      "sent": [
+        {
+          "LF_line": 45057,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "5",
+            "key": "0x1af",
+            "status": "1",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "51626698000",
+            "raw_hex": "af01000000000000010000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=5 key=0x1af status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=51626698000 raw_hex=af01000000000000010000000000000001000000\r"
+        },
+        {
+          "LF_line": 45246,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "5",
+            "key": "0x1af",
+            "status": "0",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "51792118000",
+            "raw_hex": "af01000000000000000000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=5 key=0x1af status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=51792118000 raw_hex=af01000000000000000000000000000001000000\r"
+        }
+      ],
+      "physical_receipts": [
+        {
+          "LF_line": 45067,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "5",
+            "receiver": "I-InputRecv",
+            "key": "0x1af",
+            "status": "1",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "af01000000000000010000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=5 receiver=I-InputRecv key=0x1af status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=af01000000000000010000000000000001000000 native_conversion_follows=1\r"
+        },
+        {
+          "LF_line": 45231,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "5",
+            "receiver": "I-InputRecv",
+            "key": "0x1af",
+            "status": "0",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "af01000000000000000000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=5 receiver=I-InputRecv key=0x1af status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=af01000000000000000000000000000001000000 native_conversion_follows=1\r"
+        }
+      ],
+      "native_internal_sends": [
+        {
+          "LF_line": 45069,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "5",
+            "key": "0x1af",
+            "status": "1",
+            "from_type": "1",
+            "config_pos": "21",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=5 key=0x1af status=1 from_type=1 config_pos=21 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        },
+        {
+          "LF_line": 45234,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "5",
+            "key": "0x1af",
+            "status": "0",
+            "from_type": "1",
+            "config_pos": "21",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=5 key=0x1af status=0 from_type=1 config_pos=21 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        }
+      ],
+      "EventThread_receipts": [
+        {
+          "LF_line": 45075,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "5",
+            "queue": "0x7ae0c2",
+            "event_code": "0x1af",
+            "status": "1",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=5 queue=0x7ae0c2 event_code=0x1af status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        },
+        {
+          "LF_line": 45235,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "5",
+            "queue": "0x7ae0c2",
+            "event_code": "0x1af",
+            "status": "0",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=5 queue=0x7ae0c2 event_code=0x1af status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        }
+      ],
+      "cache": [
+        {
+          "LF_line": 45056,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "5",
+            "key": "0x1af",
+            "when": "before_down",
+            "readable": "1",
+            "status": "0x7fffffff",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=5 key=0x1af when=before_down readable=1 status=0x7fffffff native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 45230,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "5",
+            "key": "0x1af",
+            "when": "before_up",
+            "readable": "1",
+            "status": "0x1",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=5 key=0x1af when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 45336,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "5",
+            "key": "0x1af",
+            "when": "after_up_50ms",
+            "readable": "1",
+            "status": "0",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=5 key=0x1af when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+        }
+      ],
+      "application_callback_execution_proven": false,
+      "key": "0x1af",
+      "hold_ms": 165.42,
+      "down_ns": 51626698000,
+      "up_ns": 51792118000,
+      "all_physical_bytes_match_sent": true,
+      "gap_from_previous_up_ms": 4047.424
+    },
+    {
+      "step": 6,
+      "sent": [
+        {
+          "LF_line": 52200,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "6",
+            "key": "0x1ab",
+            "status": "1",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "55822705008",
+            "raw_hex": "ab01000000000000010000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=6 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=55822705008 raw_hex=ab01000000000000010000000000000001000000\r"
+        },
+        {
+          "LF_line": 52376,
+          "kind": "FX3_SYNTH_KEY step=",
+          "fields": {
+            "step": "6",
+            "key": "0x1ab",
+            "status": "0",
+            "synthetic_input": "1",
+            "original_cp_key_detection": "0",
+            "destination": "0x807a0020",
+            "source": "0x00410025",
+            "bytes": "20",
+            "result": "0",
+            "failed_send_free": "0",
+            "monotonic_ns": "55983406000",
+            "raw_hex": "ab01000000000000000000000000000001000000"
+          },
+          "text": "FX3_SYNTH_KEY step=6 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=55983406000 raw_hex=ab01000000000000000000000000000001000000\r"
+        }
+      ],
+      "physical_receipts": [
+        {
+          "LF_line": 52202,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "6",
+            "receiver": "I-InputRecv",
+            "key": "0x1ab",
+            "status": "1",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "ab01000000000000010000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=6 receiver=I-InputRecv key=0x1ab status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ab01000000000000010000000000000001000000 native_conversion_follows=1\r"
+        },
+        {
+          "LF_line": 52324,
+          "kind": "FX3_KEY_INPUT_RECV",
+          "fields": {
+            "step": "6",
+            "receiver": "I-InputRecv",
+            "key": "0x1ab",
+            "status": "0",
+            "from_type": "1",
+            "source": "0x410025",
+            "bytes": "20",
+            "native_result": "0",
+            "raw_hex": "ab01000000000000000000000000000001000000",
+            "native_conversion_follows": "1"
+          },
+          "text": "FX3_KEY_INPUT_RECV step=6 receiver=I-InputRecv key=0x1ab status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ab01000000000000000000000000000001000000 native_conversion_follows=1\r"
+        }
+      ],
+      "native_internal_sends": [
+        {
+          "LF_line": 52225,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "6",
+            "key": "0x1ab",
+            "status": "1",
+            "from_type": "1",
+            "config_pos": "18",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=6 key=0x1ab status=1 from_type=1 config_pos=18 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        },
+        {
+          "LF_line": 52327,
+          "kind": "FX3_KEY_INTERNAL_SEND",
+          "fields": {
+            "step": "6",
+            "key": "0x1ab",
+            "status": "0",
+            "from_type": "1",
+            "config_pos": "18",
+            "internal_flag": "0",
+            "destination": "0x007a804c",
+            "bytes": "28",
+            "native_send_follows": "1",
+            "no_synthetic_internal_event": "1"
+          },
+          "text": "FX3_KEY_INTERNAL_SEND step=6 key=0x1ab status=0 from_type=1 config_pos=18 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+        }
+      ],
+      "EventThread_receipts": [
+        {
+          "LF_line": 52226,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "6",
+            "queue": "0x7ae0c2",
+            "event_code": "0x1ab",
+            "status": "1",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=6 queue=0x7ae0c2 event_code=0x1ab status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        },
+        {
+          "LF_line": 52377,
+          "kind": "FX3_KEY_EVENT_THREAD_RECV",
+          "fields": {
+            "step": "6",
+            "queue": "0x7ae0c2",
+            "event_code": "0x1ab",
+            "status": "0",
+            "prev_status": "0",
+            "from_type": "1",
+            "caller_relative": "0xc8fc8",
+            "native_result": "0",
+            "callback_dispatch_unproven": "1"
+          },
+          "text": "FX3_KEY_EVENT_THREAD_RECV step=6 queue=0x7ae0c2 event_code=0x1ab status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+        }
+      ],
+      "cache": [
+        {
+          "LF_line": 52197,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "6",
+            "key": "0x1ab",
+            "when": "before_down",
+            "readable": "1",
+            "status": "0",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=6 key=0x1ab when=before_down readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 52323,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "6",
+            "key": "0x1ab",
+            "when": "before_up",
+            "readable": "1",
+            "status": "0x1",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=6 key=0x1ab when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+        },
+        {
+          "LF_line": 52468,
+          "kind": "FX3_KEY_CACHE",
+          "fields": {
+            "step": "6",
+            "key": "0x1ab",
+            "when": "after_up_50ms",
+            "readable": "1",
+            "status": "0",
+            "native_cache_readonly": "1",
+            "no_GetInstance_call": "1"
+          },
+          "text": "FX3_KEY_CACHE step=6 key=0x1ab when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+        }
+      ],
+      "application_callback_execution_proven": false,
+      "key": "0x1ab",
+      "hold_ms": 160.700992,
+      "down_ns": 55822705008,
+      "up_ns": 55983406000,
+      "all_physical_bytes_match_sent": true,
+      "gap_from_previous_up_ms": 4030.587008
+    }
+  ],
+  "records": [
+    {
+      "LF_line": 28913,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "1",
+        "key": "0x1ac",
+        "when": "before_down",
+        "readable": "1",
+        "status": "0x7fffffff",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=1 key=0x1ac when=before_down readable=1 status=0x7fffffff native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 28914,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "1",
+        "key": "0x1ac",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "34867440000",
+        "raw_hex": "ac01000000000000010000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=1 key=0x1ac status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=34867440000 raw_hex=ac01000000000000010000000000000001000000\r"
+    },
+    {
+      "LF_line": 28915,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "1",
+        "receiver": "I-InputRecv",
+        "key": "0x1ac",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "ac01000000000000010000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=1 receiver=I-InputRecv key=0x1ac status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ac01000000000000010000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 28928,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "1",
+        "key": "0x1ac",
+        "status": "1",
+        "from_type": "1",
+        "config_pos": "19",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=1 key=0x1ac status=1 from_type=1 config_pos=19 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 28932,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "1",
+        "queue": "0x7ae0c2",
+        "event_code": "0x1ac",
+        "status": "1",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=1 queue=0x7ae0c2 event_code=0x1ac status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 28952,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "1",
+        "key": "0x1ac",
+        "when": "before_up",
+        "readable": "1",
+        "status": "0x1",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=1 key=0x1ac when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 28955,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "1",
+        "receiver": "I-InputRecv",
+        "key": "0x1ac",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "ac01000000000000000000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=1 receiver=I-InputRecv key=0x1ac status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ac01000000000000000000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 28958,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "1",
+        "key": "0x1ac",
+        "status": "0",
+        "from_type": "1",
+        "config_pos": "19",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=1 key=0x1ac status=0 from_type=1 config_pos=19 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 28959,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "1",
+        "queue": "0x7ae0c2",
+        "event_code": "0x1ac",
+        "status": "0",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=1 queue=0x7ae0c2 event_code=0x1ac status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 28961,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "1",
+        "key": "0x1ac",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "35047159008",
+        "raw_hex": "ac01000000000000000000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=1 key=0x1ac status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=35047159008 raw_hex=ac01000000000000000000000000000001000000\r"
+    },
+    {
+      "LF_line": 28988,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "1",
+        "key": "0x1ac",
+        "when": "after_up_50ms",
+        "readable": "1",
+        "status": "0",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=1 key=0x1ac when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 31265,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "when": "before_down",
+        "readable": "1",
+        "status": "0x7fffffff",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=2 key=0x1ab when=before_down readable=1 status=0x7fffffff native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 31266,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "2",
+        "receiver": "I-InputRecv",
+        "key": "0x1ab",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "ab01000000000000010000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=2 receiver=I-InputRecv key=0x1ab status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ab01000000000000010000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 31267,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "39080404000",
+        "raw_hex": "ab01000000000000010000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=2 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=39080404000 raw_hex=ab01000000000000010000000000000001000000\r"
+    },
+    {
+      "LF_line": 31270,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "status": "1",
+        "from_type": "1",
+        "config_pos": "18",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=2 key=0x1ab status=1 from_type=1 config_pos=18 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 31272,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "2",
+        "queue": "0x7ae0c2",
+        "event_code": "0x1ab",
+        "status": "1",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=2 queue=0x7ae0c2 event_code=0x1ab status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 31318,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "when": "before_up",
+        "readable": "1",
+        "status": "0x1",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=2 key=0x1ab when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 31319,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "2",
+        "receiver": "I-InputRecv",
+        "key": "0x1ab",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "ab01000000000000000000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=2 receiver=I-InputRecv key=0x1ab status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ab01000000000000000000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 31320,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "39210313008",
+        "raw_hex": "ab01000000000000000000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=2 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=39210313008 raw_hex=ab01000000000000000000000000000001000000\r"
+    },
+    {
+      "LF_line": 31328,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "status": "0",
+        "from_type": "1",
+        "config_pos": "18",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=2 key=0x1ab status=0 from_type=1 config_pos=18 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 31332,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "2",
+        "queue": "0x7ae0c2",
+        "event_code": "0x1ab",
+        "status": "0",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=2 queue=0x7ae0c2 event_code=0x1ab status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 31371,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "when": "after_up_50ms",
+        "readable": "1",
+        "status": "0",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=2 key=0x1ab when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 33732,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "3",
+        "key": "0x30",
+        "when": "before_down",
+        "readable": "1",
+        "status": "0x7fffffff",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=3 key=0x30 when=before_down readable=1 status=0x7fffffff native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 33733,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "3",
+        "key": "0x30",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "43248361008",
+        "raw_hex": "3000000000000000010000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=3 key=0x30 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=43248361008 raw_hex=3000000000000000010000000000000001000000\r"
+    },
+    {
+      "LF_line": 33735,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "3",
+        "receiver": "I-InputRecv",
+        "key": "0x30",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "3000000000000000010000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=3 receiver=I-InputRecv key=0x30 status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=3000000000000000010000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 33738,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "3",
+        "key": "0x30",
+        "status": "1",
+        "from_type": "1",
+        "config_pos": "6",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=3 key=0x30 status=1 from_type=1 config_pos=6 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 33740,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "3",
+        "queue": "0x7ae0c2",
+        "event_code": "0x30",
+        "status": "1",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=3 queue=0x7ae0c2 event_code=0x30 status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 33794,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "3",
+        "key": "0x30",
+        "when": "before_up",
+        "readable": "1",
+        "status": "0x1",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=3 key=0x30 when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 33795,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "3",
+        "receiver": "I-InputRecv",
+        "key": "0x30",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "3000000000000000000000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=3 receiver=I-InputRecv key=0x30 status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=3000000000000000000000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 33798,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "3",
+        "key": "0x30",
+        "status": "0",
+        "from_type": "1",
+        "config_pos": "6",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=3 key=0x30 status=0 from_type=1 config_pos=6 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 33801,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "3",
+        "key": "0x30",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "43380139008",
+        "raw_hex": "3000000000000000000000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=3 key=0x30 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=43380139008 raw_hex=3000000000000000000000000000000001000000\r"
+    },
+    {
+      "LF_line": 33802,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "3",
+        "queue": "0x7ae0c2",
+        "event_code": "0x30",
+        "status": "0",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=3 queue=0x7ae0c2 event_code=0x30 status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 33834,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "3",
+        "key": "0x30",
+        "when": "after_up_50ms",
+        "readable": "1",
+        "status": "0",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=3 key=0x30 when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 38986,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "4",
+        "key": "0x30",
+        "when": "before_down",
+        "readable": "1",
+        "status": "0",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=4 key=0x30 when=before_down readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 38988,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "4",
+        "key": "0x30",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "47449423008",
+        "raw_hex": "3000000000000000010000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=4 key=0x30 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=47449423008 raw_hex=3000000000000000010000000000000001000000\r"
+    },
+    {
+      "LF_line": 38995,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "4",
+        "receiver": "I-InputRecv",
+        "key": "0x30",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "3000000000000000010000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=4 receiver=I-InputRecv key=0x30 status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=3000000000000000010000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 38999,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "4",
+        "key": "0x30",
+        "status": "1",
+        "from_type": "1",
+        "config_pos": "6",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=4 key=0x30 status=1 from_type=1 config_pos=6 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 39003,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "4",
+        "queue": "0x7ae0c2",
+        "event_code": "0x30",
+        "status": "1",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=4 queue=0x7ae0c2 event_code=0x30 status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 39105,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "4",
+        "key": "0x30",
+        "when": "before_up",
+        "readable": "1",
+        "status": "0x1",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=4 key=0x30 when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 39106,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "4",
+        "receiver": "I-InputRecv",
+        "key": "0x30",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "3000000000000000000000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=4 receiver=I-InputRecv key=0x30 status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=3000000000000000000000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 39109,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "4",
+        "key": "0x30",
+        "status": "0",
+        "from_type": "1",
+        "config_pos": "6",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=4 key=0x30 status=0 from_type=1 config_pos=6 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 39110,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "4",
+        "key": "0x30",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "47579274000",
+        "raw_hex": "3000000000000000000000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=4 key=0x30 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=47579274000 raw_hex=3000000000000000000000000000000001000000\r"
+    },
+    {
+      "LF_line": 39111,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "4",
+        "queue": "0x7ae0c2",
+        "event_code": "0x30",
+        "status": "0",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=4 queue=0x7ae0c2 event_code=0x30 status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 39246,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "4",
+        "key": "0x30",
+        "when": "after_up_50ms",
+        "readable": "1",
+        "status": "0",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=4 key=0x30 when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 45056,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "5",
+        "key": "0x1af",
+        "when": "before_down",
+        "readable": "1",
+        "status": "0x7fffffff",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=5 key=0x1af when=before_down readable=1 status=0x7fffffff native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 45057,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "5",
+        "key": "0x1af",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "51626698000",
+        "raw_hex": "af01000000000000010000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=5 key=0x1af status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=51626698000 raw_hex=af01000000000000010000000000000001000000\r"
+    },
+    {
+      "LF_line": 45067,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "5",
+        "receiver": "I-InputRecv",
+        "key": "0x1af",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "af01000000000000010000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=5 receiver=I-InputRecv key=0x1af status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=af01000000000000010000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 45069,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "5",
+        "key": "0x1af",
+        "status": "1",
+        "from_type": "1",
+        "config_pos": "21",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=5 key=0x1af status=1 from_type=1 config_pos=21 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 45075,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "5",
+        "queue": "0x7ae0c2",
+        "event_code": "0x1af",
+        "status": "1",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=5 queue=0x7ae0c2 event_code=0x1af status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 45230,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "5",
+        "key": "0x1af",
+        "when": "before_up",
+        "readable": "1",
+        "status": "0x1",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=5 key=0x1af when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 45231,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "5",
+        "receiver": "I-InputRecv",
+        "key": "0x1af",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "af01000000000000000000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=5 receiver=I-InputRecv key=0x1af status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=af01000000000000000000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 45234,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "5",
+        "key": "0x1af",
+        "status": "0",
+        "from_type": "1",
+        "config_pos": "21",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=5 key=0x1af status=0 from_type=1 config_pos=21 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 45235,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "5",
+        "queue": "0x7ae0c2",
+        "event_code": "0x1af",
+        "status": "0",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=5 queue=0x7ae0c2 event_code=0x1af status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 45246,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "5",
+        "key": "0x1af",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "51792118000",
+        "raw_hex": "af01000000000000000000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=5 key=0x1af status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=51792118000 raw_hex=af01000000000000000000000000000001000000\r"
+    },
+    {
+      "LF_line": 45336,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "5",
+        "key": "0x1af",
+        "when": "after_up_50ms",
+        "readable": "1",
+        "status": "0",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=5 key=0x1af when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 52197,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "6",
+        "key": "0x1ab",
+        "when": "before_down",
+        "readable": "1",
+        "status": "0",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=6 key=0x1ab when=before_down readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 52200,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "6",
+        "key": "0x1ab",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "55822705008",
+        "raw_hex": "ab01000000000000010000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=6 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=55822705008 raw_hex=ab01000000000000010000000000000001000000\r"
+    },
+    {
+      "LF_line": 52202,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "6",
+        "receiver": "I-InputRecv",
+        "key": "0x1ab",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "ab01000000000000010000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=6 receiver=I-InputRecv key=0x1ab status=1 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ab01000000000000010000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 52225,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "6",
+        "key": "0x1ab",
+        "status": "1",
+        "from_type": "1",
+        "config_pos": "18",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=6 key=0x1ab status=1 from_type=1 config_pos=18 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 52226,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "6",
+        "queue": "0x7ae0c2",
+        "event_code": "0x1ab",
+        "status": "1",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=6 queue=0x7ae0c2 event_code=0x1ab status=1 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 52323,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "6",
+        "key": "0x1ab",
+        "when": "before_up",
+        "readable": "1",
+        "status": "0x1",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=6 key=0x1ab when=before_up readable=1 status=0x1 native_cache_readonly=1 no_GetInstance_call=1\r"
+    },
+    {
+      "LF_line": 52324,
+      "kind": "FX3_KEY_INPUT_RECV",
+      "fields": {
+        "step": "6",
+        "receiver": "I-InputRecv",
+        "key": "0x1ab",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "bytes": "20",
+        "native_result": "0",
+        "raw_hex": "ab01000000000000000000000000000001000000",
+        "native_conversion_follows": "1"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=6 receiver=I-InputRecv key=0x1ab status=0 from_type=1 source=0x410025 bytes=20 native_result=0 raw_hex=ab01000000000000000000000000000001000000 native_conversion_follows=1\r"
+    },
+    {
+      "LF_line": 52327,
+      "kind": "FX3_KEY_INTERNAL_SEND",
+      "fields": {
+        "step": "6",
+        "key": "0x1ab",
+        "status": "0",
+        "from_type": "1",
+        "config_pos": "18",
+        "internal_flag": "0",
+        "destination": "0x007a804c",
+        "bytes": "28",
+        "native_send_follows": "1",
+        "no_synthetic_internal_event": "1"
+      },
+      "text": "FX3_KEY_INTERNAL_SEND step=6 key=0x1ab status=0 from_type=1 config_pos=18 internal_flag=0 destination=0x007a804c bytes=28 native_send_follows=1 no_synthetic_internal_event=1\r"
+    },
+    {
+      "LF_line": 52376,
+      "kind": "FX3_SYNTH_KEY step=",
+      "fields": {
+        "step": "6",
+        "key": "0x1ab",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "failed_send_free": "0",
+        "monotonic_ns": "55983406000",
+        "raw_hex": "ab01000000000000000000000000000001000000"
+      },
+      "text": "FX3_SYNTH_KEY step=6 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 failed_send_free=0 monotonic_ns=55983406000 raw_hex=ab01000000000000000000000000000001000000\r"
+    },
+    {
+      "LF_line": 52377,
+      "kind": "FX3_KEY_EVENT_THREAD_RECV",
+      "fields": {
+        "step": "6",
+        "queue": "0x7ae0c2",
+        "event_code": "0x1ab",
+        "status": "0",
+        "prev_status": "0",
+        "from_type": "1",
+        "caller_relative": "0xc8fc8",
+        "native_result": "0",
+        "callback_dispatch_unproven": "1"
+      },
+      "text": "FX3_KEY_EVENT_THREAD_RECV step=6 queue=0x7ae0c2 event_code=0x1ab status=0 prev_status=0 from_type=1 caller_relative=0xc8fc8 native_result=0 callback_dispatch_unproven=1\r"
+    },
+    {
+      "LF_line": 52468,
+      "kind": "FX3_KEY_CACHE",
+      "fields": {
+        "step": "6",
+        "key": "0x1ab",
+        "when": "after_up_50ms",
+        "readable": "1",
+        "status": "0",
+        "native_cache_readonly": "1",
+        "no_GetInstance_call": "1"
+      },
+      "text": "FX3_KEY_CACHE step=6 key=0x1ab when=after_up_50ms readable=1 status=0 native_cache_readonly=1 no_GetInstance_call=1\r"
+    }
+  ],
+  "step_readbacks": [
+    {
+      "step": 1,
+      "key": "0x1ac",
+      "QMP_read_only": true,
+      "physical": "0x43feb5100",
+      "format": "logical GPE fmt0 LE16 RGBA4444",
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "after_up_first_observed_host_seconds": 2.813890666991938,
+      "timing_scope": "Host +2s from first observed successful up marker; polling/QMP add delay, not exact guest event age",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-01-key-1ac.bin",
+      "raw_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-01-key-1ac.png",
+      "PNG_sha256": "c3257493ac9acf3a3066e21f9f028e8f7ef06ffd11149bf9c175f99a9b7873b0",
+      "unique_pixels": 14,
+      "latest_native_committed_sequence": 39,
+      "native_committed_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "matches_committed_ring": true,
+      "synthetic_input": true,
+      "original_cp_key_detection": false,
+      "menu_verified": false
+    },
+    {
+      "step": 2,
+      "key": "0x1ab",
+      "QMP_read_only": true,
+      "physical": "0x43feb5100",
+      "format": "logical GPE fmt0 LE16 RGBA4444",
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "after_up_first_observed_host_seconds": 3.031674583995482,
+      "timing_scope": "Host +2s from first observed successful up marker; polling/QMP add delay, not exact guest event age",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-02-key-1ab.bin",
+      "raw_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-02-key-1ab.png",
+      "PNG_sha256": "c3257493ac9acf3a3066e21f9f028e8f7ef06ffd11149bf9c175f99a9b7873b0",
+      "unique_pixels": 14,
+      "latest_native_committed_sequence": 147,
+      "native_committed_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "matches_committed_ring": true,
+      "synthetic_input": true,
+      "original_cp_key_detection": false,
+      "menu_verified": false
+    },
+    {
+      "step": 3,
+      "key": "0x30",
+      "QMP_read_only": true,
+      "physical": "0x43feb5100",
+      "format": "logical GPE fmt0 LE16 RGBA4444",
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "after_up_first_observed_host_seconds": 2.747047291981289,
+      "timing_scope": "Host +2s from first observed successful up marker; polling/QMP add delay, not exact guest event age",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-03-key-030.bin",
+      "raw_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-03-key-030.png",
+      "PNG_sha256": "c3257493ac9acf3a3066e21f9f028e8f7ef06ffd11149bf9c175f99a9b7873b0",
+      "unique_pixels": 14,
+      "latest_native_committed_sequence": 223,
+      "native_committed_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "matches_committed_ring": true,
+      "synthetic_input": true,
+      "original_cp_key_detection": false,
+      "menu_verified": false
+    },
+    {
+      "step": 4,
+      "key": "0x30",
+      "QMP_read_only": true,
+      "physical": "0x43feb5100",
+      "format": "logical GPE fmt0 LE16 RGBA4444",
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "after_up_first_observed_host_seconds": 2.802263582998421,
+      "timing_scope": "Host +2s from first observed successful up marker; polling/QMP add delay, not exact guest event age",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-04-key-030.bin",
+      "raw_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-04-key-030.png",
+      "PNG_sha256": "c3257493ac9acf3a3066e21f9f028e8f7ef06ffd11149bf9c175f99a9b7873b0",
+      "unique_pixels": 14,
+      "latest_native_committed_sequence": 273,
+      "native_committed_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "matches_committed_ring": true,
+      "synthetic_input": true,
+      "original_cp_key_detection": false,
+      "menu_verified": false
+    },
+    {
+      "step": 5,
+      "key": "0x1af",
+      "QMP_read_only": true,
+      "physical": "0x43feb5100",
+      "format": "logical GPE fmt0 LE16 RGBA4444",
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "after_up_first_observed_host_seconds": 2.8240152079961263,
+      "timing_scope": "Host +2s from first observed successful up marker; polling/QMP add delay, not exact guest event age",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-05-key-1af.bin",
+      "raw_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-05-key-1af.png",
+      "PNG_sha256": "c3257493ac9acf3a3066e21f9f028e8f7ef06ffd11149bf9c175f99a9b7873b0",
+      "unique_pixels": 14,
+      "latest_native_committed_sequence": 330,
+      "native_committed_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "matches_committed_ring": true,
+      "synthetic_input": true,
+      "original_cp_key_detection": false,
+      "menu_verified": false
+    },
+    {
+      "step": 6,
+      "key": "0x1ab",
+      "QMP_read_only": true,
+      "physical": "0x43feb5100",
+      "format": "logical GPE fmt0 LE16 RGBA4444",
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "after_up_first_observed_host_seconds": 2.855284457997186,
+      "timing_scope": "Host +2s from first observed successful up marker; polling/QMP add delay, not exact guest event age",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-06-key-1ab.bin",
+      "raw_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-step-06-key-1ab.png",
+      "PNG_sha256": "c3257493ac9acf3a3066e21f9f028e8f7ef06ffd11149bf9c175f99a9b7873b0",
+      "unique_pixels": 14,
+      "latest_native_committed_sequence": 385,
+      "native_committed_sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+      "matches_committed_ring": true,
+      "synthetic_input": true,
+      "original_cp_key_detection": false,
+      "menu_verified": false
+    }
+  ],
+  "native_input_errors": [],
+  "screen_records_after_first_key": [],
+  "GPE_commands_after_first_key": [],
+  "menu_input_feedback_verified": false,
+  "application_callback_execution_proven": true,
+  "application_forward_events": [
+    {
+      "line": 28935,
+      "raw": "ac0100000000000001000000ffffff7f00000000000000000100000000000000",
+      "event_code": "0x1ac",
+      "status": 1,
+      "prev_status": 2147483647,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 28960,
+      "raw": "ac01000000000000000000000100000000000000000000000100000000000000",
+      "event_code": "0x1ac",
+      "status": 0,
+      "prev_status": 1,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 31273,
+      "raw": "ab0100000000000001000000ffffff7f00000000000000000100000000000000",
+      "event_code": "0x1ab",
+      "status": 1,
+      "prev_status": 2147483647,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 31333,
+      "raw": "ab01000000000000000000000100000000000000000000000100000000000000",
+      "event_code": "0x1ab",
+      "status": 0,
+      "prev_status": 1,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 33742,
+      "raw": "300000000000000001000000ffffff7f00000000000000000100000000000000",
+      "event_code": "0x30",
+      "status": 1,
+      "prev_status": 2147483647,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 33803,
+      "raw": "3000000000000000000000000100000000000000000000000100000000000000",
+      "event_code": "0x30",
+      "status": 0,
+      "prev_status": 1,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 39006,
+      "raw": "3000000000000000010000000000000000000000000000000100000000000000",
+      "event_code": "0x30",
+      "status": 1,
+      "prev_status": 0,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 39112,
+      "raw": "3000000000000000000000000100000000000000000000000100000000000000",
+      "event_code": "0x30",
+      "status": 0,
+      "prev_status": 1,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 45077,
+      "raw": "af0100000000000001000000ffffff7f00000000000000000100000000000000",
+      "event_code": "0x1af",
+      "status": 1,
+      "prev_status": 2147483647,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 45236,
+      "raw": "af01000000000000000000000100000000000000000000000100000000000000",
+      "event_code": "0x1af",
+      "status": 0,
+      "prev_status": 1,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 52227,
+      "raw": "ab01000000000000010000000000000000000000000000000100000000000000",
+      "event_code": "0x1ab",
+      "status": 1,
+      "prev_status": 0,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    },
+    {
+      "line": 52380,
+      "raw": "ab01000000000000000000000100000000000000000000000100000000000000",
+      "event_code": "0x1ab",
+      "status": 0,
+      "prev_status": 1,
+      "ex_info": 0,
+      "repeat": 0,
+      "from_type": 1,
+      "inh": 0
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+0038e144 push       {r4, r5, r7, lr}
+0038e146 add        r7, sp, #8
+0038e148 mov        r4, r0
+0038e14a bl         #0xa878d8
+0038e14e ldr        r1, [r4]
+0038e150 mov        r5, r0
+0038e152 cmp        r1, #5
+0038e154 bhs        #0x38e15e
+0038e156 adr        r0, #0x20
+0038e158 ldr.w      r2, [r0, r1, lsl #2]
+0038e15c b          #0x38e16c
+0038e15e movw       r0, #0x53e3
+0038e162 movt       r0, #0xdc
+0038e166 bl         #0x9e6684
+0038e16a movs       r2, #8
+0038e16c mov        r0, r5
+0038e16e mov        r1, r4
+0038e170 pop.w      {r4, r5, r7, lr}
+0038e174 b.w        #0x391c60

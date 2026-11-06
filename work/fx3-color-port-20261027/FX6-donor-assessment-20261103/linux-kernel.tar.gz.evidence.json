@@ -1,0 +1,1932 @@
+{
+  "url": "https://prodgpl.blob.core.windows.net/download/B2B/2026031201_ILME_FX6_V600/linux-kernel.tar.gz",
+  "final_url": "https://prodgpl.blob.core.windows.net/download/B2B/2026031201_ILME_FX6_V600/linux-kernel.tar.gz",
+  "bytes": 109952792,
+  "sha256": "2e5bdfa72018cef6bdfa209635794973d7266c7ee657db094c7ee2c414dbcc42",
+  "server_md5_matches": true,
+  "files": [
+    {
+      "member": "linux/Makefile",
+      "sha256": "fb781eef261d086f560125ebb071737061f659aefc95c714b1c4e1bda88c3eaa",
+      "matches": [
+        {
+          "line": 1,
+          "text": "VERSION = 4"
+        },
+        {
+          "line": 2,
+          "text": "PATCHLEVEL = 9"
+        },
+        {
+          "line": 3,
+          "text": "SUBLEVEL = 337"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/configs/cxd90057_ipv4_fpu_set_defconfig",
+      "sha256": "a3c03780ff2e87a1c255aec9de582665987c38f19c177f911de9f6ccbfab88c7",
+      "matches": [
+        {
+          "line": 5,
+          "text": "CONFIG_ARM64=y"
+        },
+        {
+          "line": 10,
+          "text": "CONFIG_ARM64_PAGE_SHIFT=12"
+        },
+        {
+          "line": 11,
+          "text": "CONFIG_ARM64_CONT_SHIFT=4"
+        },
+        {
+          "line": 31,
+          "text": "CONFIG_SMP=y"
+        },
+        {
+          "line": 515,
+          "text": "CONFIG_ARM64_ERRATUM_826319=y"
+        },
+        {
+          "line": 516,
+          "text": "CONFIG_ARM64_ERRATUM_827319=y"
+        },
+        {
+          "line": 517,
+          "text": "CONFIG_ARM64_ERRATUM_824069=y"
+        },
+        {
+          "line": 518,
+          "text": "CONFIG_ARM64_ERRATUM_819472=y"
+        },
+        {
+          "line": 519,
+          "text": "CONFIG_ARM64_ERRATUM_832075=y"
+        },
+        {
+          "line": 520,
+          "text": "CONFIG_ARM64_ERRATUM_843419=y"
+        },
+        {
+          "line": 521,
+          "text": "CONFIG_ARM64_ERRATUM_1024718=y"
+        },
+        {
+          "line": 526,
+          "text": "CONFIG_ARM64_4K_PAGES=y"
+        },
+        {
+          "line": 527,
+          "text": "# CONFIG_ARM64_16K_PAGES is not set"
+        },
+        {
+          "line": 528,
+          "text": "# CONFIG_ARM64_64K_PAGES is not set"
+        },
+        {
+          "line": 529,
+          "text": "CONFIG_ARM64_VA_BITS_39=y"
+        },
+        {
+          "line": 530,
+          "text": "# CONFIG_ARM64_VA_BITS_48 is not set"
+        },
+        {
+          "line": 531,
+          "text": "CONFIG_ARM64_VA_BITS=39"
+        },
+        {
+          "line": 535,
+          "text": "CONFIG_NR_CPUS=4"
+        },
+        {
+          "line": 609,
+          "text": "CONFIG_ARM64_SSBD=y"
+        },
+        {
+          "line": 615,
+          "text": "# CONFIG_ARM64_HW_AFDBM is not set"
+        },
+        {
+          "line": 616,
+          "text": "# CONFIG_ARM64_PAN is not set"
+        },
+        {
+          "line": 617,
+          "text": "# CONFIG_ARM64_LSE_ATOMICS is not set"
+        },
+        {
+          "line": 618,
+          "text": "# CONFIG_ARM64_VHE is not set"
+        },
+        {
+          "line": 623,
+          "text": "# CONFIG_ARM64_UAO is not set"
+        },
+        {
+          "line": 624,
+          "text": "CONFIG_ARM64_MODULE_CMODEL_LARGE=y"
+        },
+        {
+          "line": 2670,
+          "text": "# CONFIG_TEE is not set"
+        },
+        {
+          "line": 3095,
+          "text": "# CONFIG_ARM64_PTDUMP is not set"
+        },
+        {
+          "line": 3097,
+          "text": "# CONFIG_ARM64_RANDOMIZE_TEXT_OFFSET is not set"
+        },
+        {
+          "line": 3263,
+          "text": "CONFIG_ARM64_CRYPTO=y"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/configs/cxd90057_ipv4_fpu_nfs_defconfig",
+      "sha256": "15de80e47cd5d55365f1b4566b4093f62c30f9209e4d355bc4b59ba9e500643b",
+      "matches": [
+        {
+          "line": 5,
+          "text": "CONFIG_ARM64=y"
+        },
+        {
+          "line": 10,
+          "text": "CONFIG_ARM64_PAGE_SHIFT=12"
+        },
+        {
+          "line": 11,
+          "text": "CONFIG_ARM64_CONT_SHIFT=4"
+        },
+        {
+          "line": 31,
+          "text": "CONFIG_SMP=y"
+        },
+        {
+          "line": 515,
+          "text": "CONFIG_ARM64_ERRATUM_826319=y"
+        },
+        {
+          "line": 516,
+          "text": "CONFIG_ARM64_ERRATUM_827319=y"
+        },
+        {
+          "line": 517,
+          "text": "CONFIG_ARM64_ERRATUM_824069=y"
+        },
+        {
+          "line": 518,
+          "text": "CONFIG_ARM64_ERRATUM_819472=y"
+        },
+        {
+          "line": 519,
+          "text": "CONFIG_ARM64_ERRATUM_832075=y"
+        },
+        {
+          "line": 520,
+          "text": "CONFIG_ARM64_ERRATUM_843419=y"
+        },
+        {
+          "line": 521,
+          "text": "CONFIG_ARM64_ERRATUM_1024718=y"
+        },
+        {
+          "line": 526,
+          "text": "CONFIG_ARM64_4K_PAGES=y"
+        },
+        {
+          "line": 527,
+          "text": "# CONFIG_ARM64_16K_PAGES is not set"
+        },
+        {
+          "line": 528,
+          "text": "# CONFIG_ARM64_64K_PAGES is not set"
+        },
+        {
+          "line": 529,
+          "text": "CONFIG_ARM64_VA_BITS_39=y"
+        },
+        {
+          "line": 530,
+          "text": "# CONFIG_ARM64_VA_BITS_48 is not set"
+        },
+        {
+          "line": 531,
+          "text": "CONFIG_ARM64_VA_BITS=39"
+        },
+        {
+          "line": 535,
+          "text": "CONFIG_NR_CPUS=4"
+        },
+        {
+          "line": 609,
+          "text": "CONFIG_ARM64_SSBD=y"
+        },
+        {
+          "line": 615,
+          "text": "# CONFIG_ARM64_HW_AFDBM is not set"
+        },
+        {
+          "line": 616,
+          "text": "# CONFIG_ARM64_PAN is not set"
+        },
+        {
+          "line": 617,
+          "text": "# CONFIG_ARM64_LSE_ATOMICS is not set"
+        },
+        {
+          "line": 618,
+          "text": "# CONFIG_ARM64_VHE is not set"
+        },
+        {
+          "line": 623,
+          "text": "# CONFIG_ARM64_UAO is not set"
+        },
+        {
+          "line": 624,
+          "text": "CONFIG_ARM64_MODULE_CMODEL_LARGE=y"
+        },
+        {
+          "line": 2719,
+          "text": "# CONFIG_TEE is not set"
+        },
+        {
+          "line": 3155,
+          "text": "# CONFIG_ARM64_PTDUMP is not set"
+        },
+        {
+          "line": 3157,
+          "text": "# CONFIG_ARM64_RANDOMIZE_TEXT_OFFSET is not set"
+        },
+        {
+          "line": 3323,
+          "text": "CONFIG_ARM64_CRYPTO=y"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/configs/cxd90057_fpu_nfs_defconfig",
+      "sha256": "f171e5145465d91e020bf960e6faad3740c0afe4f5d3619b4cdc6d6c1a2bbb8b",
+      "matches": [
+        {
+          "line": 5,
+          "text": "CONFIG_ARM64=y"
+        },
+        {
+          "line": 10,
+          "text": "CONFIG_ARM64_PAGE_SHIFT=12"
+        },
+        {
+          "line": 11,
+          "text": "CONFIG_ARM64_CONT_SHIFT=4"
+        },
+        {
+          "line": 31,
+          "text": "CONFIG_SMP=y"
+        },
+        {
+          "line": 513,
+          "text": "CONFIG_ARM64_ERRATUM_826319=y"
+        },
+        {
+          "line": 514,
+          "text": "CONFIG_ARM64_ERRATUM_827319=y"
+        },
+        {
+          "line": 515,
+          "text": "CONFIG_ARM64_ERRATUM_824069=y"
+        },
+        {
+          "line": 516,
+          "text": "CONFIG_ARM64_ERRATUM_819472=y"
+        },
+        {
+          "line": 517,
+          "text": "CONFIG_ARM64_ERRATUM_832075=y"
+        },
+        {
+          "line": 518,
+          "text": "CONFIG_ARM64_ERRATUM_843419=y"
+        },
+        {
+          "line": 519,
+          "text": "CONFIG_ARM64_ERRATUM_1024718=y"
+        },
+        {
+          "line": 524,
+          "text": "CONFIG_ARM64_4K_PAGES=y"
+        },
+        {
+          "line": 525,
+          "text": "# CONFIG_ARM64_16K_PAGES is not set"
+        },
+        {
+          "line": 526,
+          "text": "# CONFIG_ARM64_64K_PAGES is not set"
+        },
+        {
+          "line": 527,
+          "text": "CONFIG_ARM64_VA_BITS_39=y"
+        },
+        {
+          "line": 528,
+          "text": "# CONFIG_ARM64_VA_BITS_48 is not set"
+        },
+        {
+          "line": 529,
+          "text": "CONFIG_ARM64_VA_BITS=39"
+        },
+        {
+          "line": 533,
+          "text": "CONFIG_NR_CPUS=4"
+        },
+        {
+          "line": 607,
+          "text": "CONFIG_ARM64_SSBD=y"
+        },
+        {
+          "line": 612,
+          "text": "# CONFIG_ARM64_HW_AFDBM is not set"
+        },
+        {
+          "line": 613,
+          "text": "# CONFIG_ARM64_PAN is not set"
+        },
+        {
+          "line": 614,
+          "text": "# CONFIG_ARM64_LSE_ATOMICS is not set"
+        },
+        {
+          "line": 615,
+          "text": "# CONFIG_ARM64_VHE is not set"
+        },
+        {
+          "line": 620,
+          "text": "# CONFIG_ARM64_UAO is not set"
+        },
+        {
+          "line": 621,
+          "text": "CONFIG_ARM64_MODULE_CMODEL_LARGE=y"
+        },
+        {
+          "line": 2750,
+          "text": "# CONFIG_TEE is not set"
+        },
+        {
+          "line": 3185,
+          "text": "# CONFIG_ARM64_PTDUMP is not set"
+        },
+        {
+          "line": 3187,
+          "text": "# CONFIG_ARM64_RANDOMIZE_TEXT_OFFSET is not set"
+        },
+        {
+          "line": 3353,
+          "text": "CONFIG_ARM64_CRYPTO=y"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/configs/cxd90057_fpu_set_defconfig",
+      "sha256": "7bee437fed8331de3c26f550beb896acea3f54f19a4960c0746c8ef04ec6ceef",
+      "matches": [
+        {
+          "line": 5,
+          "text": "CONFIG_ARM64=y"
+        },
+        {
+          "line": 10,
+          "text": "CONFIG_ARM64_PAGE_SHIFT=12"
+        },
+        {
+          "line": 11,
+          "text": "CONFIG_ARM64_CONT_SHIFT=4"
+        },
+        {
+          "line": 31,
+          "text": "CONFIG_SMP=y"
+        },
+        {
+          "line": 515,
+          "text": "CONFIG_ARM64_ERRATUM_826319=y"
+        },
+        {
+          "line": 516,
+          "text": "CONFIG_ARM64_ERRATUM_827319=y"
+        },
+        {
+          "line": 517,
+          "text": "CONFIG_ARM64_ERRATUM_824069=y"
+        },
+        {
+          "line": 518,
+          "text": "CONFIG_ARM64_ERRATUM_819472=y"
+        },
+        {
+          "line": 519,
+          "text": "CONFIG_ARM64_ERRATUM_832075=y"
+        },
+        {
+          "line": 520,
+          "text": "CONFIG_ARM64_ERRATUM_843419=y"
+        },
+        {
+          "line": 521,
+          "text": "CONFIG_ARM64_ERRATUM_1024718=y"
+        },
+        {
+          "line": 526,
+          "text": "CONFIG_ARM64_4K_PAGES=y"
+        },
+        {
+          "line": 527,
+          "text": "# CONFIG_ARM64_16K_PAGES is not set"
+        },
+        {
+          "line": 528,
+          "text": "# CONFIG_ARM64_64K_PAGES is not set"
+        },
+        {
+          "line": 529,
+          "text": "CONFIG_ARM64_VA_BITS_39=y"
+        },
+        {
+          "line": 530,
+          "text": "# CONFIG_ARM64_VA_BITS_48 is not set"
+        },
+        {
+          "line": 531,
+          "text": "CONFIG_ARM64_VA_BITS=39"
+        },
+        {
+          "line": 535,
+          "text": "CONFIG_NR_CPUS=4"
+        },
+        {
+          "line": 609,
+          "text": "CONFIG_ARM64_SSBD=y"
+        },
+        {
+          "line": 615,
+          "text": "# CONFIG_ARM64_HW_AFDBM is not set"
+        },
+        {
+          "line": 616,
+          "text": "# CONFIG_ARM64_PAN is not set"
+        },
+        {
+          "line": 617,
+          "text": "# CONFIG_ARM64_LSE_ATOMICS is not set"
+        },
+        {
+          "line": 618,
+          "text": "# CONFIG_ARM64_VHE is not set"
+        },
+        {
+          "line": 623,
+          "text": "# CONFIG_ARM64_UAO is not set"
+        },
+        {
+          "line": 624,
+          "text": "CONFIG_ARM64_MODULE_CMODEL_LARGE=y"
+        },
+        {
+          "line": 2708,
+          "text": "# CONFIG_TEE is not set"
+        },
+        {
+          "line": 3133,
+          "text": "# CONFIG_ARM64_PTDUMP is not set"
+        },
+        {
+          "line": 3135,
+          "text": "# CONFIG_ARM64_RANDOMIZE_TEXT_OFFSET is not set"
+        },
+        {
+          "line": 3301,
+          "text": "CONFIG_ARM64_CRYPTO=y"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/configs/cxd90057_ice_nfs_defconfig",
+      "sha256": "b4a0d5d4a220155130732407742b5ebf3065839b563a7369b4933e958c30b3f0",
+      "matches": [
+        {
+          "line": 5,
+          "text": "CONFIG_ARM64=y"
+        },
+        {
+          "line": 10,
+          "text": "CONFIG_ARM64_PAGE_SHIFT=12"
+        },
+        {
+          "line": 11,
+          "text": "CONFIG_ARM64_CONT_SHIFT=4"
+        },
+        {
+          "line": 31,
+          "text": "CONFIG_SMP=y"
+        },
+        {
+          "line": 511,
+          "text": "CONFIG_ARM64_ERRATUM_826319=y"
+        },
+        {
+          "line": 512,
+          "text": "CONFIG_ARM64_ERRATUM_827319=y"
+        },
+        {
+          "line": 513,
+          "text": "CONFIG_ARM64_ERRATUM_824069=y"
+        },
+        {
+          "line": 514,
+          "text": "CONFIG_ARM64_ERRATUM_819472=y"
+        },
+        {
+          "line": 515,
+          "text": "CONFIG_ARM64_ERRATUM_832075=y"
+        },
+        {
+          "line": 516,
+          "text": "CONFIG_ARM64_ERRATUM_843419=y"
+        },
+        {
+          "line": 517,
+          "text": "CONFIG_ARM64_ERRATUM_1024718=y"
+        },
+        {
+          "line": 522,
+          "text": "CONFIG_ARM64_4K_PAGES=y"
+        },
+        {
+          "line": 523,
+          "text": "# CONFIG_ARM64_16K_PAGES is not set"
+        },
+        {
+          "line": 524,
+          "text": "# CONFIG_ARM64_64K_PAGES is not set"
+        },
+        {
+          "line": 525,
+          "text": "CONFIG_ARM64_VA_BITS_39=y"
+        },
+        {
+          "line": 526,
+          "text": "# CONFIG_ARM64_VA_BITS_48 is not set"
+        },
+        {
+          "line": 527,
+          "text": "CONFIG_ARM64_VA_BITS=39"
+        },
+        {
+          "line": 531,
+          "text": "CONFIG_NR_CPUS=4"
+        },
+        {
+          "line": 604,
+          "text": "CONFIG_ARM64_SSBD=y"
+        },
+        {
+          "line": 609,
+          "text": "# CONFIG_ARM64_HW_AFDBM is not set"
+        },
+        {
+          "line": 610,
+          "text": "# CONFIG_ARM64_PAN is not set"
+        },
+        {
+          "line": 611,
+          "text": "# CONFIG_ARM64_LSE_ATOMICS is not set"
+        },
+        {
+          "line": 612,
+          "text": "# CONFIG_ARM64_VHE is not set"
+        },
+        {
+          "line": 617,
+          "text": "# CONFIG_ARM64_UAO is not set"
+        },
+        {
+          "line": 618,
+          "text": "CONFIG_ARM64_MODULE_CMODEL_LARGE=y"
+        },
+        {
+          "line": 2556,
+          "text": "# CONFIG_TEE is not set"
+        },
+        {
+          "line": 2956,
+          "text": "# CONFIG_ARM64_PTDUMP is not set"
+        },
+        {
+          "line": 2958,
+          "text": "# CONFIG_ARM64_RANDOMIZE_TEXT_OFFSET is not set"
+        },
+        {
+          "line": 3113,
+          "text": "CONFIG_ARM64_CRYPTO=y"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/configs/cxd90057_ice_set_defconfig",
+      "sha256": "4de3624b2ef649475ec56284cd76dae7b9af63085138ad7a31e2cc5f38b2b972",
+      "matches": [
+        {
+          "line": 5,
+          "text": "CONFIG_ARM64=y"
+        },
+        {
+          "line": 10,
+          "text": "CONFIG_ARM64_PAGE_SHIFT=12"
+        },
+        {
+          "line": 11,
+          "text": "CONFIG_ARM64_CONT_SHIFT=4"
+        },
+        {
+          "line": 31,
+          "text": "CONFIG_SMP=y"
+        },
+        {
+          "line": 511,
+          "text": "CONFIG_ARM64_ERRATUM_826319=y"
+        },
+        {
+          "line": 512,
+          "text": "CONFIG_ARM64_ERRATUM_827319=y"
+        },
+        {
+          "line": 513,
+          "text": "CONFIG_ARM64_ERRATUM_824069=y"
+        },
+        {
+          "line": 514,
+          "text": "CONFIG_ARM64_ERRATUM_819472=y"
+        },
+        {
+          "line": 515,
+          "text": "CONFIG_ARM64_ERRATUM_832075=y"
+        },
+        {
+          "line": 516,
+          "text": "CONFIG_ARM64_ERRATUM_843419=y"
+        },
+        {
+          "line": 517,
+          "text": "CONFIG_ARM64_ERRATUM_1024718=y"
+        },
+        {
+          "line": 522,
+          "text": "CONFIG_ARM64_4K_PAGES=y"
+        },
+        {
+          "line": 523,
+          "text": "# CONFIG_ARM64_16K_PAGES is not set"
+        },
+        {
+          "line": 524,
+          "text": "# CONFIG_ARM64_64K_PAGES is not set"
+        },
+        {
+          "line": 525,
+          "text": "CONFIG_ARM64_VA_BITS_39=y"
+        },
+        {
+          "line": 526,
+          "text": "# CONFIG_ARM64_VA_BITS_48 is not set"
+        },
+        {
+          "line": 527,
+          "text": "CONFIG_ARM64_VA_BITS=39"
+        },
+        {
+          "line": 531,
+          "text": "CONFIG_NR_CPUS=4"
+        },
+        {
+          "line": 604,
+          "text": "CONFIG_ARM64_SSBD=y"
+        },
+        {
+          "line": 609,
+          "text": "# CONFIG_ARM64_HW_AFDBM is not set"
+        },
+        {
+          "line": 610,
+          "text": "# CONFIG_ARM64_PAN is not set"
+        },
+        {
+          "line": 611,
+          "text": "# CONFIG_ARM64_LSE_ATOMICS is not set"
+        },
+        {
+          "line": 612,
+          "text": "# CONFIG_ARM64_VHE is not set"
+        },
+        {
+          "line": 617,
+          "text": "# CONFIG_ARM64_UAO is not set"
+        },
+        {
+          "line": 618,
+          "text": "CONFIG_ARM64_MODULE_CMODEL_LARGE=y"
+        },
+        {
+          "line": 2494,
+          "text": "# CONFIG_TEE is not set"
+        },
+        {
+          "line": 2882,
+          "text": "# CONFIG_ARM64_PTDUMP is not set"
+        },
+        {
+          "line": 2884,
+          "text": "# CONFIG_ARM64_RANDOMIZE_TEXT_OFFSET is not set"
+        },
+        {
+          "line": 3039,
+          "text": "CONFIG_ARM64_CRYPTO=y"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/configs/cxd90057_set_defconfig",
+      "sha256": "eb2e59b9b6bedd9d27c1b607bba77ba40f76a270dabde0986e82c0d558c0293f",
+      "matches": [
+        {
+          "line": 5,
+          "text": "CONFIG_ARM64=y"
+        },
+        {
+          "line": 10,
+          "text": "CONFIG_ARM64_PAGE_SHIFT=12"
+        },
+        {
+          "line": 11,
+          "text": "CONFIG_ARM64_CONT_SHIFT=4"
+        },
+        {
+          "line": 31,
+          "text": "CONFIG_SMP=y"
+        },
+        {
+          "line": 514,
+          "text": "CONFIG_ARM64_ERRATUM_826319=y"
+        },
+        {
+          "line": 515,
+          "text": "CONFIG_ARM64_ERRATUM_827319=y"
+        },
+        {
+          "line": 516,
+          "text": "CONFIG_ARM64_ERRATUM_824069=y"
+        },
+        {
+          "line": 517,
+          "text": "CONFIG_ARM64_ERRATUM_819472=y"
+        },
+        {
+          "line": 518,
+          "text": "CONFIG_ARM64_ERRATUM_832075=y"
+        },
+        {
+          "line": 519,
+          "text": "CONFIG_ARM64_ERRATUM_843419=y"
+        },
+        {
+          "line": 520,
+          "text": "CONFIG_ARM64_ERRATUM_1024718=y"
+        },
+        {
+          "line": 525,
+          "text": "CONFIG_ARM64_4K_PAGES=y"
+        },
+        {
+          "line": 526,
+          "text": "# CONFIG_ARM64_16K_PAGES is not set"
+        },
+        {
+          "line": 527,
+          "text": "# CONFIG_ARM64_64K_PAGES is not set"
+        },
+        {
+          "line": 528,
+          "text": "CONFIG_ARM64_VA_BITS_39=y"
+        },
+        {
+          "line": 529,
+          "text": "# CONFIG_ARM64_VA_BITS_48 is not set"
+        },
+        {
+          "line": 530,
+          "text": "CONFIG_ARM64_VA_BITS=39"
+        },
+        {
+          "line": 534,
+          "text": "CONFIG_NR_CPUS=4"
+        },
+        {
+          "line": 608,
+          "text": "CONFIG_ARM64_SSBD=y"
+        },
+        {
+          "line": 614,
+          "text": "# CONFIG_ARM64_HW_AFDBM is not set"
+        },
+        {
+          "line": 615,
+          "text": "# CONFIG_ARM64_PAN is not set"
+        },
+        {
+          "line": 616,
+          "text": "# CONFIG_ARM64_LSE_ATOMICS is not set"
+        },
+        {
+          "line": 617,
+          "text": "# CONFIG_ARM64_VHE is not set"
+        },
+        {
+          "line": 622,
+          "text": "# CONFIG_ARM64_UAO is not set"
+        },
+        {
+          "line": 623,
+          "text": "CONFIG_ARM64_MODULE_CMODEL_LARGE=y"
+        },
+        {
+          "line": 2707,
+          "text": "# CONFIG_TEE is not set"
+        },
+        {
+          "line": 3132,
+          "text": "# CONFIG_ARM64_PTDUMP is not set"
+        },
+        {
+          "line": 3134,
+          "text": "# CONFIG_ARM64_RANDOMIZE_TEXT_OFFSET is not set"
+        },
+        {
+          "line": 3300,
+          "text": "CONFIG_ARM64_CRYPTO=y"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/configs/cxd90057_nfs_defconfig",
+      "sha256": "6cb68d4450309627619afc93b5b4f9a009ac796aefe61ebd81e0a553c7efa46b",
+      "matches": [
+        {
+          "line": 5,
+          "text": "CONFIG_ARM64=y"
+        },
+        {
+          "line": 10,
+          "text": "CONFIG_ARM64_PAGE_SHIFT=12"
+        },
+        {
+          "line": 11,
+          "text": "CONFIG_ARM64_CONT_SHIFT=4"
+        },
+        {
+          "line": 31,
+          "text": "CONFIG_SMP=y"
+        },
+        {
+          "line": 513,
+          "text": "CONFIG_ARM64_ERRATUM_826319=y"
+        },
+        {
+          "line": 514,
+          "text": "CONFIG_ARM64_ERRATUM_827319=y"
+        },
+        {
+          "line": 515,
+          "text": "CONFIG_ARM64_ERRATUM_824069=y"
+        },
+        {
+          "line": 516,
+          "text": "CONFIG_ARM64_ERRATUM_819472=y"
+        },
+        {
+          "line": 517,
+          "text": "CONFIG_ARM64_ERRATUM_832075=y"
+        },
+        {
+          "line": 518,
+          "text": "CONFIG_ARM64_ERRATUM_843419=y"
+        },
+        {
+          "line": 519,
+          "text": "CONFIG_ARM64_ERRATUM_1024718=y"
+        },
+        {
+          "line": 524,
+          "text": "CONFIG_ARM64_4K_PAGES=y"
+        },
+        {
+          "line": 525,
+          "text": "# CONFIG_ARM64_16K_PAGES is not set"
+        },
+        {
+          "line": 526,
+          "text": "# CONFIG_ARM64_64K_PAGES is not set"
+        },
+        {
+          "line": 527,
+          "text": "CONFIG_ARM64_VA_BITS_39=y"
+        },
+        {
+          "line": 528,
+          "text": "# CONFIG_ARM64_VA_BITS_48 is not set"
+        },
+        {
+          "line": 529,
+          "text": "CONFIG_ARM64_VA_BITS=39"
+        },
+        {
+          "line": 533,
+          "text": "CONFIG_NR_CPUS=4"
+        },
+        {
+          "line": 607,
+          "text": "CONFIG_ARM64_SSBD=y"
+        },
+        {
+          "line": 612,
+          "text": "# CONFIG_ARM64_HW_AFDBM is not set"
+        },
+        {
+          "line": 613,
+          "text": "# CONFIG_ARM64_PAN is not set"
+        },
+        {
+          "line": 614,
+          "text": "# CONFIG_ARM64_LSE_ATOMICS is not set"
+        },
+        {
+          "line": 615,
+          "text": "# CONFIG_ARM64_VHE is not set"
+        },
+        {
+          "line": 620,
+          "text": "# CONFIG_ARM64_UAO is not set"
+        },
+        {
+          "line": 621,
+          "text": "CONFIG_ARM64_MODULE_CMODEL_LARGE=y"
+        },
+        {
+          "line": 2748,
+          "text": "# CONFIG_TEE is not set"
+        },
+        {
+          "line": 3183,
+          "text": "# CONFIG_ARM64_PTDUMP is not set"
+        },
+        {
+          "line": 3185,
+          "text": "# CONFIG_ARM64_RANDOMIZE_TEXT_OFFSET is not set"
+        },
+        {
+          "line": 3351,
+          "text": "CONFIG_ARM64_CRYPTO=y"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/usb_ssp.dtsi",
+      "sha256": "c636dcf229dcc44cf1ba8fba061af5e93bb48e9f0da5b44ba614a8f7af7c0d17",
+      "matches": [
+        {
+          "line": 32,
+          "text": "compatible = \"cxdchip,dwc3\";"
+        },
+        {
+          "line": 51,
+          "text": "compatible = \"snps,dwc3\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/cxd90057_nfs.dts",
+      "sha256": "7d5a8a00937d1c18cc7f4bd58d623fa485d1c98f36ca11abfab3247837b665f4",
+      "matches": [
+        {
+          "line": 32,
+          "text": "#include \"cxd90057.dtsi\""
+        },
+        {
+          "line": 33,
+          "text": "#include \"usb_ss.dtsi\""
+        },
+        {
+          "line": 37,
+          "text": "compatible = \"cxd,cxd90057\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/fpga2.dtsi",
+      "sha256": "50374d84068e4f2bf8e78687bca1cca53fb62086354691d0d9e52ab2b91ce3c1",
+      "matches": [
+        {
+          "line": 29,
+          "text": "#include <dt-bindings/interrupt-controller/arm-gic.h>"
+        },
+        {
+          "line": 30,
+          "text": "#include <dt-bindings/arm/memtype.h>"
+        },
+        {
+          "line": 31,
+          "text": "#include <dt-bindings/reset/cxd900xx_reset_regs.h>"
+        },
+        {
+          "line": 32,
+          "text": "#include <dt-bindings/clock/cxd-900xx-clk.h>"
+        },
+        {
+          "line": 33,
+          "text": "#include <dt-bindings/soc/dwc3regs.h>"
+        },
+        {
+          "line": 35,
+          "text": "#include \"spidev.dtsi\""
+        },
+        {
+          "line": 36,
+          "text": "//#include \"spi-test.dtsi\""
+        },
+        {
+          "line": 39,
+          "text": "compatible = \"cxd,cxd900xx-fpga\";"
+        },
+        {
+          "line": 73,
+          "text": "compatible = \"arm,rmem\";"
+        },
+        {
+          "line": 81,
+          "text": "compatible = \"arm,rmem\";"
+        },
+        {
+          "line": 105,
+          "text": "compatible = \"arm,cortex-a35\", \"arm,armv8\";"
+        },
+        {
+          "line": 114,
+          "text": "compatible = \"arm,cortex-a35\", \"arm,armv8\";"
+        },
+        {
+          "line": 122,
+          "text": "compatible = \"cache\";"
+        },
+        {
+          "line": 127,
+          "text": "compatible = \"arm,gic-400\";"
+        },
+        {
+          "line": 139,
+          "text": "compatible = \"arm,armv8-timer\";"
+        },
+        {
+          "line": 149,
+          "text": "compatible = \"simple-bus\";"
+        },
+        {
+          "line": 155,
+          "text": "compatible = \"fixed-clock\";"
+        },
+        {
+          "line": 161,
+          "text": "compatible = \"fixed-clock\";"
+        },
+        {
+          "line": 169,
+          "text": "compatible = \"cxd900xx,scu\", \"syscon\", \"simple-mfd\";"
+        },
+        {
+          "line": 174,
+          "text": "compatible = \"cxd,900xx-clock\";"
+        },
+        {
+          "line": 181,
+          "text": "compatible = \"cxd900xx,reset\";"
+        },
+        {
+          "line": 189,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 197,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 205,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 213,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 221,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 229,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 243,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 257,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 271,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 285,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 301,
+          "text": "compatible = \"snps,designware-i2c\";"
+        },
+        {
+          "line": 318,
+          "text": "compatible = \"snps,designware-i2c\";"
+        },
+        {
+          "line": 330,
+          "text": "compatible = \"linux,extcon-fusb_otg\";"
+        },
+        {
+          "line": 334,
+          "text": "compatible = \"snps,fusb_dwc3regs\";"
+        },
+        {
+          "line": 339,
+          "text": "compatible = \"cxdchip,dwc3\";"
+        },
+        {
+          "line": 358,
+          "text": "compatible = \"snps,dwc3\";"
+        },
+        {
+          "line": 373,
+          "text": "//\tcompatible = \"snps,phy_dwc3\";"
+        },
+        {
+          "line": 383,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 426,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 470,
+          "text": "compatible = \"arasan,sdhci\";"
+        },
+        {
+          "line": 474,
+          "text": "compatible = \"arm,pl330\", \"arm,primecell\";"
+        },
+        {
+          "line": 491,
+          "text": "compatible = \"arm,pl330\", \"arm,primecell\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/fpgasl.dts",
+      "sha256": "e6e55fa2d5a0d3d4797aa93fd9025a5426ac71774312efd6a43d55e5e1074c2f",
+      "matches": [
+        {
+          "line": 31,
+          "text": "#include \"fpgasl.dtsi\""
+        },
+        {
+          "line": 35,
+          "text": "compatible = \"cxd,cxd900xx-fpga\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/fpgaslnfs.dts",
+      "sha256": "1e8b559102bd811fd469fc8f1c4b95ff0805877a0b0c822bd58f2ca437ea98d7",
+      "matches": [
+        {
+          "line": 31,
+          "text": "#include \"fpgasl.dtsi\""
+        },
+        {
+          "line": 35,
+          "text": "compatible = \"cxd,cxd900xx-fpga\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/spidev.dtsi",
+      "sha256": "72a3e22bbc79b79d03ffbbee7cf9986e7d5ff6405b121024862fceaced391f65",
+      "matches": [
+        {
+          "line": 5,
+          "text": "compatible = \"sony,cxd90057\";"
+        },
+        {
+          "line": 12,
+          "text": "compatible = \"sony,cxd90057\";"
+        },
+        {
+          "line": 19,
+          "text": "compatible = \"sony,cxd90057\";"
+        },
+        {
+          "line": 26,
+          "text": "compatible = \"sony,cxd90057\";"
+        },
+        {
+          "line": 33,
+          "text": "compatible = \"sony,cxd90057\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/usb_ss.dtsi",
+      "sha256": "404495d79f793faba83217bf6efada10b98cbd0766f42dc64bcfd937b7ae8a33",
+      "matches": [
+        {
+          "line": 32,
+          "text": "compatible = \"cxdchip,dwc3\";"
+        },
+        {
+          "line": 51,
+          "text": "compatible = \"snps,dwc3\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/spi-test.dtsi",
+      "sha256": "c88e1fe4f639247feb3805b2ddfe28475730ed9f7a570167e546a056f13157c1",
+      "matches": [
+        {
+          "line": 10,
+          "text": "compatible = \"linux,spi-loopback-test\";"
+        },
+        {
+          "line": 18,
+          "text": "compatible = \"linux,spi-loopback-test\";"
+        },
+        {
+          "line": 26,
+          "text": "compatible = \"linux,spi-loopback-test\";"
+        },
+        {
+          "line": 34,
+          "text": "compatible = \"linux,spi-loopback-test\";"
+        },
+        {
+          "line": 42,
+          "text": "compatible = \"linux,spi-loopback-test\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/qemu.dts",
+      "sha256": "1d8a78705869dd47a807377ddc20de0a0aed73353a51c206b0d9b580e53d8cdf",
+      "matches": [
+        {
+          "line": 3,
+          "text": "#include <dt-bindings/interrupt-controller/arm-gic.h>"
+        },
+        {
+          "line": 8,
+          "text": "compatible = \"cxd,cxd900xx-qemu\";"
+        },
+        {
+          "line": 32,
+          "text": "compatible = \"arm,psci-0.2\", \"arm,psci\";"
+        },
+        {
+          "line": 47,
+          "text": "compatible = \"arm,cortex-a53\", \"arm,armv8\";"
+        },
+        {
+          "line": 55,
+          "text": "compatible = \"arm,cortex-a53\", \"arm,armv8\";"
+        },
+        {
+          "line": 62,
+          "text": "compatible = \"cache\";"
+        },
+        {
+          "line": 67,
+          "text": "compatible = \"arm,cortex-a15-gic\";"
+        },
+        {
+          "line": 76,
+          "text": "compatible = \"arm,gic-v2m-frame\";"
+        },
+        {
+          "line": 83,
+          "text": "compatible = \"arm,armv8-timer\";"
+        },
+        {
+          "line": 92,
+          "text": "compatible = \"simple-bus\";"
+        },
+        {
+          "line": 98,
+          "text": "compatible = \"fixed-clock\";"
+        },
+        {
+          "line": 104,
+          "text": "compatible = \"fixed-clock\";"
+        },
+        {
+          "line": 110,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/fpgausb.dts",
+      "sha256": "fe54f2228b6fb2df561c59a6ca7b4bb0ed74a3e3e5f882a81c68d95204de0293",
+      "matches": [
+        {
+          "line": 31,
+          "text": "#include \"fpga2.dtsi\""
+        },
+        {
+          "line": 35,
+          "text": "compatible = \"cxd,cxd900xx-fpga\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/fpgasl.dtsi",
+      "sha256": "107c4368e455a63a0357b748515517ac4bbb81a0e24f93378bbd29c3c31e2169",
+      "matches": [
+        {
+          "line": 29,
+          "text": "#include <dt-bindings/interrupt-controller/arm-gic.h>"
+        },
+        {
+          "line": 30,
+          "text": "#include <dt-bindings/arm/memtype.h>"
+        },
+        {
+          "line": 31,
+          "text": "#include <dt-bindings/reset/cxd900xx_reset_regs.h>"
+        },
+        {
+          "line": 32,
+          "text": "#include <dt-bindings/clock/cxd-900xx-clk.h>"
+        },
+        {
+          "line": 35,
+          "text": "compatible = \"cxd,cxd900xx-fpga\";"
+        },
+        {
+          "line": 63,
+          "text": "compatible = \"arm,rmem\";"
+        },
+        {
+          "line": 68,
+          "text": "compatible = \"arm,rmem\";"
+        },
+        {
+          "line": 79,
+          "text": "compatible = \"arm,rmem\";"
+        },
+        {
+          "line": 87,
+          "text": "compatible = \"arm,rmem\";"
+        },
+        {
+          "line": 135,
+          "text": "compatible = \"arm,cortex-a35\", \"arm,armv8\";"
+        },
+        {
+          "line": 144,
+          "text": "compatible = \"arm,cortex-a35\", \"arm,armv8\";"
+        },
+        {
+          "line": 152,
+          "text": "compatible = \"cache\";"
+        },
+        {
+          "line": 157,
+          "text": "compatible = \"arm,gic-400\";"
+        },
+        {
+          "line": 169,
+          "text": "compatible = \"arm,armv8-timer\";"
+        },
+        {
+          "line": 179,
+          "text": "compatible = \"simple-bus\";"
+        },
+        {
+          "line": 185,
+          "text": "compatible = \"fixed-clock\";"
+        },
+        {
+          "line": 191,
+          "text": "compatible = \"fixed-clock\";"
+        },
+        {
+          "line": 199,
+          "text": "compatible = \"cxd900xx,scu\", \"syscon\", \"simple-mfd\";"
+        },
+        {
+          "line": 204,
+          "text": "compatible = \"cxd,900xx-clock\";"
+        },
+        {
+          "line": 211,
+          "text": "compatible = \"cxd900xx,reset\";"
+        },
+        {
+          "line": 219,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 227,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 241,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 255,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 269,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 283,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 299,
+          "text": "compatible = \"snps,designware-i2c\";"
+        },
+        {
+          "line": 316,
+          "text": "compatible = \"snps,designware-i2c\";"
+        },
+        {
+          "line": 328,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 366,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 404,
+          "text": "compatible = \"arm,pl330\", \"arm,primecell\";"
+        },
+        {
+          "line": 421,
+          "text": "compatible = \"arm,pl330\", \"arm,primecell\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/fpganfs.dts",
+      "sha256": "2bef9bd4c27c3c8772748690f093a62e8b4462d48d634c53a36fc4cb9d298942",
+      "matches": [
+        {
+          "line": 31,
+          "text": "#include \"fpga2.dtsi\""
+        },
+        {
+          "line": 35,
+          "text": "compatible = \"cxd,cxd900xx-fpga\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/cxd90057_set.dts",
+      "sha256": "f3714ed982621c68f64e39723d576642ffd7cdc4b77d48d0a9825a20600eb492",
+      "matches": [
+        {
+          "line": 32,
+          "text": "#include \"cxd90057.dtsi\""
+        },
+        {
+          "line": 33,
+          "text": "#include \"usb_ss.dtsi\""
+        },
+        {
+          "line": 37,
+          "text": "compatible = \"cxd,cxd90057\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/cxd90057_set2.dts",
+      "sha256": "02b9e05e68d2204dc60ef1f9cee3474402741dcb83fabb2244c5c837beca8e12",
+      "matches": [
+        {
+          "line": 31,
+          "text": "#include \"cxd90057.dtsi\""
+        },
+        {
+          "line": 35,
+          "text": "compatible = \"cxd,cxd90057\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/cxd90057_set_ssp.dts",
+      "sha256": "efa2421eb7f74fea7bb370596de5bc72231925a33f3ab0700159efac0fcaa204",
+      "matches": [
+        {
+          "line": 31,
+          "text": "#include \"cxd90057.dtsi\""
+        },
+        {
+          "line": 32,
+          "text": "#include \"usb_ssp.dtsi\""
+        },
+        {
+          "line": 36,
+          "text": "compatible = \"cxd,cxd90057\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/cxd90057_nfs_ssp.dts",
+      "sha256": "b3576f7e717c6f8f13742d19824211fdb4b36ddb3d579207590c628a457d7bd4",
+      "matches": [
+        {
+          "line": 31,
+          "text": "#include \"cxd90057.dtsi\""
+        },
+        {
+          "line": 32,
+          "text": "#include \"usb_ssp.dtsi\""
+        },
+        {
+          "line": 36,
+          "text": "compatible = \"cxd,cxd90057\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/fvp.dts",
+      "sha256": "4db528be0f9c4c16296d688d07b15ddf7dd12d819c20ec3b655cee08a55a8eed",
+      "matches": [
+        {
+          "line": 7,
+          "text": "#include \"../arm/foundation-v8.dtsi\""
+        },
+        {
+          "line": 17,
+          "text": "compatible = \"arm,cortex-a15-gic\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/cxd90057.dtsi",
+      "sha256": "4c7a16829a732d24cd21b8fc2a481e15d56cbfe0371c81c7562765ca266a1663",
+      "matches": [
+        {
+          "line": 30,
+          "text": "#include <dt-bindings/interrupt-controller/arm-gic.h>"
+        },
+        {
+          "line": 31,
+          "text": "#include <dt-bindings/arm/memtype.h>"
+        },
+        {
+          "line": 32,
+          "text": "#include <dt-bindings/reset/cxd900xx_reset_regs.h>"
+        },
+        {
+          "line": 33,
+          "text": "#include <dt-bindings/clock/cxd-900xx-clk.h>"
+        },
+        {
+          "line": 34,
+          "text": "#include <dt-bindings/soc/dwc3regs.h>"
+        },
+        {
+          "line": 36,
+          "text": "#include \"cxd90057-memmap.dtsi\""
+        },
+        {
+          "line": 38,
+          "text": "#include \"spidev.dtsi\""
+        },
+        {
+          "line": 39,
+          "text": "//#include \"spi-test.dtsi\""
+        },
+        {
+          "line": 42,
+          "text": "compatible = \"cxd,cxd90057\";"
+        },
+        {
+          "line": 93,
+          "text": "compatible = \"arm,cortex-a35\", \"arm,armv8\";"
+        },
+        {
+          "line": 102,
+          "text": "compatible = \"arm,cortex-a35\", \"arm,armv8\";"
+        },
+        {
+          "line": 111,
+          "text": "compatible = \"arm,cortex-a35\", \"arm,armv8\";"
+        },
+        {
+          "line": 120,
+          "text": "compatible = \"arm,cortex-a35\", \"arm,armv8\";"
+        },
+        {
+          "line": 128,
+          "text": "compatible = \"cache\";"
+        },
+        {
+          "line": 133,
+          "text": "compatible = \"arm,gic-400\";"
+        },
+        {
+          "line": 145,
+          "text": "compatible = \"arm,armv8-pmuv3\";"
+        },
+        {
+          "line": 153,
+          "text": "compatible = \"arm,armv8-timer\";"
+        },
+        {
+          "line": 163,
+          "text": "compatible = \"simple-bus\";"
+        },
+        {
+          "line": 171,
+          "text": "compatible = \"cxd900xx,scu\", \"syscon\", \"simple-mfd\";"
+        },
+        {
+          "line": 176,
+          "text": "compatible = \"cxd,900xx-clock\";"
+        },
+        {
+          "line": 183,
+          "text": "compatible = \"cxd900xx,reset\";"
+        },
+        {
+          "line": 191,
+          "text": "compatible = \"fixed-clock\";"
+        },
+        {
+          "line": 197,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 205,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 215,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 225,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 235,
+          "text": "compatible = \"arm,pl011\", \"arm,primecell\";"
+        },
+        {
+          "line": 245,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 259,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 273,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 287,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 301,
+          "text": "compatible = \"arm,pl022\", \"arm,primecell\";"
+        },
+        {
+          "line": 317,
+          "text": "compatible = \"snps,designware-i2c\";"
+        },
+        {
+          "line": 333,
+          "text": "compatible = \"snps,designware-i2c\";"
+        },
+        {
+          "line": 348,
+          "text": "compatible = \"linux,extcon-fusb_otg\";"
+        },
+        {
+          "line": 352,
+          "text": "compatible = \"snps,fusb_dwc3regs\";"
+        },
+        {
+          "line": 357,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 417,
+          "text": "compatible = \"cxd900xx-pcie-ep\";"
+        },
+        {
+          "line": 447,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 495,
+          "text": "compatible = \"cxd900xx-pcie-ep\";"
+        },
+        {
+          "line": 525,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 573,
+          "text": "compatible = \"cxd900xx-pcie-ep\";"
+        },
+        {
+          "line": 603,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 656,
+          "text": "compatible = \"cxd900xx-pcie-ep\";"
+        },
+        {
+          "line": 686,
+          "text": "compatible = \"snps,dw-pcie\";"
+        },
+        {
+          "line": 739,
+          "text": "compatible = \"cxd900xx-pcie-ep\";"
+        },
+        {
+          "line": 769,
+          "text": "compatible = \"arasan,sdhci\";"
+        },
+        {
+          "line": 773,
+          "text": "compatible = \"dev,fec\";"
+        },
+        {
+          "line": 779,
+          "text": "compatible = \"snps,designware-elpmem\";"
+        },
+        {
+          "line": 789,
+          "text": "compatible = \"arm,pl330\", \"arm,primecell\";"
+        },
+        {
+          "line": 806,
+          "text": "compatible = \"arm,pl330\", \"arm,primecell\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm64/boot/dts/cxd/fpgapci.dts",
+      "sha256": "5b85150f0241ac04d5d250e8d6c35ccdc052f29a84a01822484434809bbdbcae",
+      "matches": [
+        {
+          "line": 31,
+          "text": "#include \"fpga2.dtsi\""
+        },
+        {
+          "line": 35,
+          "text": "compatible = \"cxd,cxd900xx-fpga\";"
+        },
+        {
+          "line": 55,
+          "text": "compatible = \"cxd900xx-pcie-ep\";"
+        },
+        {
+          "line": 83,
+          "text": "compatible = \"cxd900xx-pcie-ep\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm/boot/dts/qcom-msm8974-sony-xperia-honami.dts",
+      "sha256": "879bb96836d47558f70bfafe32f6e54e0594e251b5eacb1112d4eec3d5c2c7f0",
+      "matches": [
+        {
+          "line": 1,
+          "text": "#include \"qcom-msm8974.dtsi\""
+        },
+        {
+          "line": 2,
+          "text": "#include \"qcom-pm8841.dtsi\""
+        },
+        {
+          "line": 3,
+          "text": "#include \"qcom-pm8941.dtsi\""
+        },
+        {
+          "line": 4,
+          "text": "#include <dt-bindings/gpio/gpio.h>"
+        },
+        {
+          "line": 5,
+          "text": "#include <dt-bindings/input/input.h>"
+        },
+        {
+          "line": 6,
+          "text": "#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>"
+        },
+        {
+          "line": 10,
+          "text": "compatible = \"sony,xperia-honami\", \"qcom,msm8974\";"
+        },
+        {
+          "line": 21,
+          "text": "compatible = \"gpio-keys\";"
+        },
+        {
+          "line": 307,
+          "text": "compatible = \"syna,rmi4-i2c\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm/boot/dts/berlin2-sony-nsz-gs7.dts",
+      "sha256": "855515f07aac8bd684f1067e6d62580deb04ec0086cbd886155c5f0f8a629211",
+      "matches": [
+        {
+          "line": 41,
+          "text": "#include \"berlin2.dtsi\""
+        },
+        {
+          "line": 45,
+          "text": "compatible = \"sony,nsz-gs7\", \"marvell,berlin2\", \"marvell,berlin\";"
+        }
+      ]
+    },
+    {
+      "member": "linux/arch/arm/boot/dts/qcom-apq8064-sony-xperia-yuga.dts",
+      "sha256": "fa158d2832a68ca91a324bf5cbaf4f9e6fd0643c51f4b7908372c80770acbcef",
+      "matches": [
+        {
+          "line": 1,
+          "text": "#include \"qcom-apq8064-v2.0.dtsi\""
+        },
+        {
+          "line": 2,
+          "text": "#include <dt-bindings/gpio/gpio.h>"
+        },
+        {
+          "line": 3,
+          "text": "#include <dt-bindings/input/input.h>"
+        },
+        {
+          "line": 4,
+          "text": "#include <dt-bindings/mfd/qcom-rpm.h>"
+        },
+        {
+          "line": 5,
+          "text": "#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>"
+        },
+        {
+          "line": 9,
+          "text": "compatible = \"sony,xperia-yuga\", \"qcom,apq8064\";"
+        },
+        {
+          "line": 20,
+          "text": "compatible = \"gpio-keys\";"
+        }
+      ]
+    }
+  ],
+  "scope": "Published kernel source, not proof of shipping DTB or RAW/ISP binary compatibility. Archive held in memory only."
+}

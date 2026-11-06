@@ -1,0 +1,11 @@
+0xfe056024: f37bbfa9 stp x19, x30, [sp, #-0x10]!
+0xfe056028: e0031f32 mov w0, #2
+0xfe05602c: da090094 bl #0xfe058794
+0xfe056030: f30300aa mov x19, x0
+0xfe056034: e0070032 mov w0, #3
+0xfe056038: d7090094 bl #0xfe058794
+0xfe05603c: e20300aa mov x2, x0
+0xfe056040: e0031c32 mov w0, #0x10
+0xfe056044: e10313aa mov x1, x19
+0xfe056048: f37bc1a8 ldp x19, x30, [sp], #0x10
+0xfe05604c: 32ffff17 b #0xfe055d14

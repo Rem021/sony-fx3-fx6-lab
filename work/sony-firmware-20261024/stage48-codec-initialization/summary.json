@@ -1,0 +1,73 @@
+{
+  "status": "PASS_FILE_ORIGIN_COMMON_CONSTRUCTORS_NATIVE_CLEARS_AND_PRIOR_CONTENT_CONTROLS",
+  "created_utc": "2026-10-26T02:51:37.882686+00:00",
+  "original_fragments": 32,
+  "complete_common_handler_constructor_bodies": 14,
+  "cases": [
+    {
+      "case": "fresh_file_stock",
+      "constructed_handler_bodies": 6,
+      "decoded_target": 24498176,
+      "decoded_trace": 25999360,
+      "decoded_cpb": 26000000,
+      "codec_written_bytes": 396,
+      "codec_prior_value_bytes": 52,
+      "prior_codec_byte": "0x0",
+      "payload_sha256": "f2dc6deae89e567f4f761217930602a2a752359b403f97fdde9358422eb0e910",
+      "constructor_instruction_hooks": 152072,
+      "constructor_store_hooks": 165164,
+      "constructor_clear_calls": 205
+    },
+    {
+      "case": "fresh_file_private16M",
+      "constructed_handler_bodies": 6,
+      "decoded_target": 16000000,
+      "decoded_trace": 25999360,
+      "decoded_cpb": 26000000,
+      "codec_written_bytes": 396,
+      "codec_prior_value_bytes": 52,
+      "prior_codec_byte": "0x0",
+      "payload_sha256": "2eddd3a1c99bc5da181b22e4007d15da5ff19f147e59730f8e4e12afd236b125",
+      "constructor_instruction_hooks": 152072,
+      "constructor_store_hooks": 165164,
+      "constructor_clear_calls": 205
+    },
+    {
+      "case": "prior_A5_private16M",
+      "constructed_handler_bodies": 1,
+      "decoded_target": 16000000,
+      "decoded_trace": 25999360,
+      "decoded_cpb": 26000000,
+      "codec_written_bytes": 396,
+      "codec_prior_value_bytes": 52,
+      "prior_codec_byte": "0xa5",
+      "payload_sha256": "905d5850097599961ad7e4ea9a544549489959e3d194cd4a5f694830920e19e5",
+      "constructor_instruction_hooks": 25336,
+      "constructor_store_hooks": 27481,
+      "constructor_clear_calls": 34
+    },
+    {
+      "case": "prior_C3_private16M",
+      "constructed_handler_bodies": 1,
+      "decoded_target": 16000000,
+      "decoded_trace": 25999360,
+      "decoded_cpb": 26000000,
+      "codec_written_bytes": 396,
+      "codec_prior_value_bytes": 52,
+      "prior_codec_byte": "0xc3",
+      "payload_sha256": "090c9609f75fb2548927653afba542db158a5677dd908ec5a1eee189842492e6",
+      "constructor_instruction_hooks": 25336,
+      "constructor_store_hooks": 27481,
+      "constructor_clear_calls": 34
+    }
+  ],
+  "fresh_file_origin_closed_only_in_declared_guest_fixture": true,
+  "general_runtime_reuse_or_complete_request_validity_closed": false,
+  "private16M_is_host_data_fixture": true,
+  "mandatory_diagnostic_not_executed_or_adapted": true,
+  "actual_camera_backup_restore_or_encoding_verified": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "proof_path": "work/sony-firmware-20261024/stage48-codec-initialization/run-20261025/codec-initialization-results.json",
+  "proof_sha256": "e804bc59fb2771b389c6bfdc8cc16fcc7570a365522d14ce5f487e6dd7f75fd9"
+}

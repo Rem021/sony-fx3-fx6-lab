@@ -1,0 +1,122 @@
+{
+  "proof_sha256": "7c87e69307631f6449ce6cb85b23e2c3cdabd27edeabe3c1613c0d04a77fd521",
+  "model_contract": {
+    "proposal_not_original_CP_physical": "reserve AP0x41db00000/0x60000, six64KiB strides, each advertised0xc800; CPdomain0x1db00000+i*0x10000; do not overlap prior reservations. Verify FDT/kernelreservation before integration.",
+    "allocation": "share remote handle namespace; indices2..7 in this proposal to avoid existing63a0..1; bit15 remote, generation1..31; retain4destination slots until unregister/shutdown; local scratch existingDMM freed each round",
+    "replies": [
+      {
+        "kind": 10,
+        "remote_handle": "0x8402",
+        "CPphysical": "0x1db00000",
+        "APbacking": "0x41db00000",
+        "8020_40B_corr0": "2080000000000000010000000284000017080700000000000000b01d0000000000c8000000000000",
+        "802a_40B": "2a80000000000000010000000284000000000000000000000000b01d0000000000c8000000000000",
+        "8023_40B_corr0": "23800000000000000000000002840000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "kind": 11,
+        "remote_handle": "0x8403",
+        "CPphysical": "0x1db10000",
+        "APbacking": "0x41db10000",
+        "8020_40B_corr0": "2080000000000000010000000384000017080700000000000000b11d0000000000c8000000000000",
+        "802a_40B": "2a80000000000000010000000384000000000000000000000000b11d0000000000c8000000000000",
+        "8023_40B_corr0": "23800000000000000000000003840000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "kind": 12,
+        "remote_handle": "0x8404",
+        "CPphysical": "0x1db20000",
+        "APbacking": "0x41db20000",
+        "8020_40B_corr0": "2080000000000000010000000484000017080700000000000000b21d0000000000c8000000000000",
+        "802a_40B": "2a80000000000000010000000484000000000000000000000000b21d0000000000c8000000000000",
+        "8023_40B_corr0": "23800000000000000000000004840000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "kind": 13,
+        "remote_handle": "0x8405",
+        "CPphysical": "0x1db30000",
+        "APbacking": "0x41db30000",
+        "8020_40B_corr0": "2080000000000000010000000584000017080700000000000000b31d0000000000c8000000000000",
+        "802a_40B": "2a80000000000000010000000584000000000000000000000000b31d0000000000c8000000000000",
+        "8023_40B_corr0": "23800000000000000000000005840000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "transfer": {
+      "request_destination": "0x02820746",
+      "request48B_layout": "+0 sourceDesc64 ptr; +8 dstDesc64 ptr; +16 length32; +20 mode32=1; +24 callback64; +32 context64; +40 result32; +44padding",
+      "desc8B": "handle32, offset32; current source/dest offsets0 fromAP0x2b60f8c/0x2b60f9c",
+      "request_result": "write LE00000000 at+40 before return tolib0x9f0; preserve other fields",
+      "completion_destination": "0x0282078f",
+      "completion24B": "LE64(original request callback) || LE64(original request context) || 00000000 || 00000000",
+      "numeric_completion": "runtime callback/contextASLR values cannot be statically hardcoded; exact bytes must echo captured fields",
+      "semantics": "validate distinct domains/live handles/offset+length bounds; record transfer metadata; under explicit mute can zero destination and callbacksuccess once; no CRC/header parsing in pinned DMA path; no PCM/codec/playback",
+      "optional_original_driver_path": "If retainingicdt.ko: must reply remote802a query then model pcidma completion; remoteop20success alone insufficient."
+    },
+    "ADF": {
+      "1327": "0d2027130c00018000000000",
+      "132a": "0d202a130c00018000000000",
+      "327phys": "raw remote DMM+24 copied atAP0x2b61354..358; DO NOT blindly add0x400000000. APbacking and CPphysical domains differ.",
+      "size": "freadbyte count; not advertisedslotcapacity"
+    }
+  },
+  "sources": {
+    "ap": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    "cp": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba"
+    },
+    "icdt": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libInfraInterchipDatatrans.so",
+      "sha256": "f110314281585f5be5d6315c0905e7d8adb878652433c84b6ca33bae7dda3367"
+    },
+    "icdt.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/regular-files/usr/kmod/icdt.ko",
+      "sha256": "9cb41cfbd876c8f1b719328fa97056b91b9ef19ef8984eca74488085a2487471"
+    }
+  },
+  "files": [
+    {
+      "index": 9,
+      "kind": 10,
+      "guest_path": "/usr/share/avsystemsound/Dslr_Emnt_High_SelfTimer_RemoteRelease.bin",
+      "payload": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/217829077e01ed93d475b3acad8327d0c0901ced4da8457c2a0a83d32841ed57",
+      "bytes": 2752,
+      "sha256": "217829077e01ed93d475b3acad8327d0c0901ced4da8457c2a0a83d32841ed57",
+      "first64": "170000000000fadbc4d5f30206121c2023231e191005fdf3ebe8e6e6e7ebeef316f70519313f4744311700ebe5e6e2e8e3dce7ded2dee2f1254c6571490be9c9",
+      "header_classification": "not RIFF/WAVE; raw proprietary .bin encoding unproven"
+    },
+    {
+      "index": 10,
+      "kind": 11,
+      "guest_path": "/usr/share/avsystemsound/Dslr_Emnt_High_SelfTimer_2sec.bin",
+      "payload": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/217829077e01ed93d475b3acad8327d0c0901ced4da8457c2a0a83d32841ed57",
+      "bytes": 2752,
+      "sha256": "217829077e01ed93d475b3acad8327d0c0901ced4da8457c2a0a83d32841ed57",
+      "first64": "170000000000fadbc4d5f30206121c2023231e191005fdf3ebe8e6e6e7ebeef316f70519313f4744311700ebe5e6e2e8e3dce7ded2dee2f1254c6571490be9c9",
+      "header_classification": "not RIFF/WAVE; raw proprietary .bin encoding unproven"
+    },
+    {
+      "index": 11,
+      "kind": 12,
+      "guest_path": "/usr/share/avsystemsound/Dslr_Emnt_High_Startup.bin",
+      "payload": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/4d77e70d0618223c0826c91a867b492c2c8a193a4cec69937f32af100761a0c4",
+      "bytes": 9600,
+      "sha256": "4d77e70d0618223c0826c91a867b492c2c8a193a4cec69937f32af100761a0c4",
+      "first64": "17000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000",
+      "header_classification": "not RIFF/WAVE; raw proprietary .bin encoding unproven"
+    },
+    {
+      "index": 12,
+      "kind": 13,
+      "guest_path": "/usr/share/avsystemsound/Dslr_Emnt_High_Shutdown.bin",
+      "payload": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/b1cb01f6931c29f3830394850e1cc5b5cca3ccd25f310a6ff1d5b58da19284c0",
+      "bytes": 12160,
+      "sha256": "b1cb01f6931c29f3830394850e1cc5b5cca3ccd25f310a6ff1d5b58da19284c0",
+      "first64": "17000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000",
+      "header_classification": "not RIFF/WAVE; raw proprietary .bin encoding unproven"
+    }
+  ]
+}

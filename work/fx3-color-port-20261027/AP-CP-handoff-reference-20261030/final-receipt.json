@@ -1,0 +1,94 @@
+{
+  "created_utc": "2026-10-30T10:53:52.430208+00:00",
+  "stage": "AP-CP-handoff-reference-20261030",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5708,
+      "sha256": "bab857f82c23d19dea9b857e08ea56b19ff93de3c153f5c5cb099767d36abd75"
+    },
+    {
+      "path": "analyze_handoff.py",
+      "bytes": 9017,
+      "sha256": "7734c744aafb1227fa61d39cf08c9cb5a032099a20973fa4ba0fdb4a6f1d4790"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 879,
+      "sha256": "d7a1719ff93113dbd76fda2a54823940b095b20858570a16d1f8d39ba6f2e4f9"
+    },
+    {
+      "path": "handoff-source-proof.json",
+      "bytes": 7137,
+      "sha256": "c0209a8c869680fa36fcd4968fe9c3138a2c7106df6d58fe28f17c43d1923509"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 291,
+      "sha256": "1556959c794f437dd1c714136d044c0a8a01170db88d0d36c27b19589d5d3d75"
+    },
+    {
+      "path": "listings/AP-reference-ESCP-producer.txt",
+      "bytes": 2243,
+      "sha256": "d30fd1de83b456381bfcdfc3f3edf43ee719e203597877f4a226045fddce8ca8"
+    },
+    {
+      "path": "listings/AP-reference-KRNE-producer.txt",
+      "bytes": 505,
+      "sha256": "9a6072f27752e18ec963d91b2d11f666b51993696923f705047b6c050281ef24"
+    },
+    {
+      "path": "listings/AP-reference-handoff-pointer.txt",
+      "bytes": 1561,
+      "sha256": "48766798231ebc670a311e4ebb15cc29e7565e67167cf710b8b3676520771bfa"
+    },
+    {
+      "path": "listings/AP-reference-transfer-class-filter.txt",
+      "bytes": 2580,
+      "sha256": "0d5d1276f45cfa0dd421e012f0ec2e169b2d4a08df866d74bdfe95e9c423ab61"
+    },
+    {
+      "path": "listings/AP-reference-transfer-function-prefix.txt",
+      "bytes": 843,
+      "sha256": "d1e451c5685d46d07a721ae9969de611cb17eedb384bf64c48266aca59b44508"
+    },
+    {
+      "path": "listings/FX3-original-CP-consumers.txt",
+      "bytes": 2540,
+      "sha256": "54bc9a7153049fec1d55fe9f314215e4cd766d9afebddbc0021c4f12fa522a7a"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 827,
+      "sha256": "02327ac3aaf1e5c1b252bb7994b66b7bc72a374a523aca7d08664d711a511dac"
+    }
+  ],
+  "validation": {
+    "status": "PASS_BOUNDED_REFERENCE_INTERFACE_AND_ORIGINAL_ROW_CLASSIFICATION",
+    "prior_blocked_stage_files_reverified": 14,
+    "public_reference_SRAM_bytes": 190464,
+    "reference_marker_producers": 2,
+    "FX3_CP_marker_consumers": 2,
+    "marker_values_and_addresses_independently_match": true,
+    "reference_pointer_handoff_field": "0x800107f28",
+    "static_original_windows": 6,
+    "original_FX3_rows_in_reference_fragment": 2,
+    "reference_escape_ordinary_return_explicit_zero": true,
+    "return_zero_not_delivery_proof": true,
+    "actual_FX3_AP_sender_found": false,
+    "actual_transfer_or_DmmCfg_arrival_proved": false,
+    "CMOS_RAW_or_full_ISP_obtained": false,
+    "device_actions": 0,
+    "other_owner_files_written": false,
+    "modified_firmware_produced": false,
+    "flashable_package_produced": false,
+    "goal_complete": false
+  },
+  "persistent_goal_status": "active",
+  "current_turn_classification": "progress",
+  "same_impasse_repeated_consecutive_goal_turns": 0,
+  "goal_complete": false,
+  "device_actions": 0,
+  "flashable_package_produced": false
+}

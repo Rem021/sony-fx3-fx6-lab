@@ -1,0 +1,26 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap97-v1-repeat-panel-enum2/candidate.json",
+  "base_sha256": "9f4040746acb2084bf3174a93780e520119d162bd7b55ce926ee33e174180ed5",
+  "changed_member_bodies": [
+    "simulation/fx3-gpe-observe-v7.so",
+    "simulation/fx3-preset-context-v2-screen.so"
+  ],
+  "all_other_members_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "tests": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe97r2-regression.log": "b084ccda2da60d3f7753d9a14930eefd7700da67069b4a26e0afe63f12d68101",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe97r2-alpha.log": "5f4a939233ceddd248e3c48bd7712e929f894903183cf8f31e5edad85a499e4b",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-date97r2.log": "acf1d56f0b252e9153e68b379c9085be6eece174700a96ad2f961f5a864a888e"
+  },
+  "helpers": {
+    "simulation/fx3-gpe-observe-v7.so": {
+      "body": "fx3-gpe-observe-v20-const-alpha97.so",
+      "sha256": "1ae0e6add804867b223f9ae68474fdece197a34a52e988baac609436e9e0dcdc"
+    },
+    "simulation/fx3-preset-context-v2-screen.so": {
+      "body": "fx3-preset-context-v3-date97.so",
+      "sha256": "5e764073d2c11eb745da3f3b4045b54175a1a0878e1c8f08762e339e8b11e8dd"
+    }
+  },
+  "authority": "msg_155b0cf9b5b7"
+}

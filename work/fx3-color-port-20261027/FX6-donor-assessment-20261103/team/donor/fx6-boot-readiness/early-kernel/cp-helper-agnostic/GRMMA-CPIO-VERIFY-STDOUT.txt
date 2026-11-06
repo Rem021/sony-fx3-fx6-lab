@@ -1,0 +1,22 @@
+{
+  "schema": "fx6-hybrid-grmma-cpio-verify-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal3.cpio",
+  "source_bytes": 453184500,
+  "source_sha256": "f7fd2c4f8d4e87d36015fba44cb4655a1764eb506c8b475c2c5bb9a92fefefcd",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal4.cpio",
+  "output_bytes": 453184500,
+  "output_sha256": "3d5191fca33d773c499515cc5f06d6c9e92a16cd3407bf4cee2d2826ed93f11f",
+  "member_count": 1144,
+  "target_member": "usr/kmod/grm_ma.ko",
+  "target_old_bytes": 36592,
+  "target_new_bytes": 36592,
+  "target_old_sha256": "6b579c7632bb90a6fe8c97d037abe24f5eb6b840823aa3a0ac8fdbed61ceee12",
+  "target_new_sha256": "81e0bf8754a898d4b70d3c1d46f7a6da4728a449bf575eaa6a6c9b2493f33a33",
+  "all_other_members_byte_identical": true,
+  "target_header_only_size_changed": true,
+  "trailer_present": true,
+  "trailing_bytes_after_trailer": 28443284,
+  "trailing_all_zero": true,
+  "fixed_length_preserved": true,
+  "verdict": "pass_offline_member_replacement"
+}

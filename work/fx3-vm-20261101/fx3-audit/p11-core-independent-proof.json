@@ -1,0 +1,69 @@
+{
+  "status": "ORIGINAL_FX3_KERNEL_AND_ORIGINAL_BUSYBOX_USERSPACE_CONFIRMED",
+  "source_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/p11",
+  "serial_sha256": "2dc0b0a1a6930cf1e1c1814bfb079adab581daa1f8653a498141f96f32fb8a06",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    }
+  ],
+  "original_busybox_sha256": "c3297a7086efe9a001c39fa98d74d125992cf3225cf353ab6ff2238d827c7799",
+  "identity_source": "raw initramfs source member SHA in minimal-probe-v2.json; runtime uname emitted by original busybox inside guest",
+  "uname": "Linux (none) 4.9.337-scel+ #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025 aarch64 GNU/Linux",
+  "markers": [
+    "FX3_ORIGINAL_BUSYBOX_REACHED",
+    "FX3_VM_PROBE_END"
+  ],
+  "seven_original_initcalls_skipped": [
+    {
+      "name": "__boottime___udif_init_udif_hwtimer",
+      "accepted": true,
+      "original_kernel_actually_skipped": true
+    },
+    {
+      "name": "__boottime___udif_init_udif_wdt",
+      "accepted": true,
+      "original_kernel_actually_skipped": true
+    },
+    {
+      "name": "__boottime___udif_init_udif_fusb_otg",
+      "accepted": true,
+      "original_kernel_actually_skipped": true
+    },
+    {
+      "name": "__boottime___udif_init_udif_pcie",
+      "accepted": true,
+      "original_kernel_actually_skipped": true
+    },
+    {
+      "name": "__boottime___udif_init_udif_ddrc",
+      "accepted": true,
+      "original_kernel_actually_skipped": true
+    },
+    {
+      "name": "__boottime___udif_init_pcidma",
+      "accepted": true,
+      "original_kernel_actually_skipped": true
+    },
+    {
+      "name": "__boottime_sony_usb_init",
+      "accepted": true,
+      "original_kernel_actually_skipped": true
+    }
+  ],
+  "independent_raw_printk_length_checks": true,
+  "printk_records": 803,
+  "printk_end_idx": 61300,
+  "panic_or_exception_marker_seen": false,
+  "scope": "Custom init + original kernel/userspace with explicit unsupported Sony driver blacklist. Full original init/app main/UI/capture not tested."
+}

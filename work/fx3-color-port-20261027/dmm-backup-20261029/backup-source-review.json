@@ -1,0 +1,186 @@
+{
+  "created_utc": "2026-10-29T18:53:37.574680+00:00",
+  "CP_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "previous_sealed_files_verified": 27,
+  "source_fragments": [
+    {
+      "va": "0x4982cc",
+      "bytes": 108,
+      "mode": "Thumb",
+      "sha256": "5231350b164eb771a089c0ebcb430c8bb7f92075be45dca4e8e4d7ad92ce30d4",
+      "listing": "source-fragments/004982cc-00498338.txt"
+    },
+    {
+      "va": "0x4985c4",
+      "bytes": 114,
+      "mode": "Thumb",
+      "sha256": "d144ce93663c3e7d1e7cb48499c0b2f41ee0d3ab5cdc7ffb9a22bd6121426478",
+      "listing": "source-fragments/004985c4-00498636.txt"
+    },
+    {
+      "va": "0xa85174",
+      "bytes": 264,
+      "mode": "Thumb",
+      "sha256": "e46b8078cbd6f306abc64e24ff3b23219251fc3f111cab4b47fffd81fec78ace",
+      "listing": "source-fragments/00a85174-00a8527c.txt"
+    },
+    {
+      "va": "0xa84be8",
+      "bytes": 84,
+      "mode": "Thumb",
+      "sha256": "22f09d7727a57f3bdc59ed20d3169040dfdf81f83015c1276c3d497dc561e4b3",
+      "listing": "source-fragments/00a84be8-00a84c3c.txt"
+    },
+    {
+      "va": "0x4d7a84",
+      "bytes": 188,
+      "mode": "Thumb",
+      "sha256": "d74f7dbe5b77a0e8ab061d1d295d7ea3a050f9e24c844ae8007c0065d8cfc604",
+      "listing": "source-fragments/004d7a84-004d7b40.txt"
+    },
+    {
+      "va": "0xa85482",
+      "bytes": 244,
+      "mode": "Thumb",
+      "sha256": "a24237c93e2101d6bd75b34d795d751ca2a04eb148f23911c62193e5c3afccba",
+      "listing": "source-fragments/00a85482-00a85576.txt"
+    },
+    {
+      "va": "0x53894c",
+      "bytes": 64,
+      "mode": "ARM",
+      "sha256": "e5bab7c3dde8c5b062955cf5d2a51f1cb6998cfe37893e0f14ac2e065982467b",
+      "listing": "source-fragments/0053894c-0053898c.txt"
+    },
+    {
+      "va": "0x54bbd0",
+      "bytes": 36,
+      "mode": "ARM",
+      "sha256": "7ebcc43401be3d7fbc6293c1afcfb84ef5838b60b0bcca874f81370bfd443baa",
+      "listing": "source-fragments/0054bbd0-0054bbf4.txt"
+    },
+    {
+      "va": "0x554ebc",
+      "bytes": 344,
+      "mode": "ARM",
+      "sha256": "b75420bc79280af9c57bc4f2e1fcee83f52d1e226c91d6caf29aaa79ec22d9fb",
+      "listing": "source-fragments/00554ebc-00555014.txt"
+    },
+    {
+      "va": "0x52ee34",
+      "bytes": 52,
+      "mode": "ARM",
+      "sha256": "ba8fabbe806a91300a4c113dd7f8a60029ef6030ef4fe87f8481dcb1712f808d",
+      "listing": "source-fragments/0052ee34-0052ee68.txt"
+    },
+    {
+      "va": "0x52f17c",
+      "bytes": 48,
+      "mode": "ARM",
+      "sha256": "8f7ba78515b1e4853d9771ef03a09a3cf481a5c376d406971c53c0e51f042b7f",
+      "listing": "source-fragments/0052f17c-0052f1ac.txt"
+    }
+  ],
+  "physical_range_table": {
+    "va": "0xb54930",
+    "sha256": "07bcbcb8c6f77de1ebdf3bc0cc7f6b26f191cfb5de5cf3337af2844e952e6ab9",
+    "entries": [
+      [
+        "0x500000000",
+        "0x80000000",
+        "0x80000000",
+        "0x7e000000"
+      ],
+      [
+        "0x800000000",
+        "0x0",
+        "0x0",
+        "0x80000000"
+      ],
+      [
+        "0xfe000000",
+        "0xfe000000",
+        "0xfe000000",
+        "0x500000"
+      ],
+      [
+        "0xfe800000",
+        "0xfe800000",
+        "0xfe800000",
+        "0x500000"
+      ]
+    ]
+  },
+  "original_parameter_transforms": [
+    {
+      "bank_index": 0,
+      "original_value": "0x4110c4000",
+      "matching_ranges": []
+    },
+    {
+      "bank_index": 1,
+      "original_value": "0x809a08e00",
+      "matching_ranges": [
+        {
+          "range_index": 1,
+          "logical_address": "0x9a08e00",
+          "high_word_zero": true
+        }
+      ]
+    }
+  ],
+  "candidate_layout": {
+    "bank_index": 1,
+    "candidate_CP_logical_address": "0x9a08e00",
+    "adjacent_parameter_0xfa0183": "0x19000",
+    "adjacent_parameter_capacity_meaning": "Layout inference; no dedicated0xfa0183 consumer recovered here.",
+    "computed_end": "0x9a21e00",
+    "original_tomco_snapshotdbg_addr": "0x9a21e00",
+    "within_tomco_uncached_region": true,
+    "CP_file_bytes": 43320,
+    "CP_file_fits": true,
+    "fit_does_not_prove_file_loading_or_identity": true
+  },
+  "WBI_evidence": {
+    "sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+    "sections": 1399,
+    "parameter_address_coverage": [
+      {
+        "bank_index": 0,
+        "parameter_address": "0x4110c4000",
+        "covering_sections": []
+      },
+      {
+        "bank_index": 1,
+        "parameter_address": "0x809a08e00",
+        "covering_sections": []
+      }
+    ]
+  },
+  "normal_selection_and_load": {
+    "selected_bank_proven": false,
+    "canonical_template_is_body_selection": false,
+    "upstream_loader_copy_to_CP_backup_or_config_RAM_proven": false,
+    "source_file_loaded_at_candidate_proven": false,
+    "observation": "Static default-template second record and CP address table agree; normal bank selection and memory state remain missing."
+  },
+  "original_memory_attribute_boundary": {
+    "entry": "0x53894c",
+    "query": "0x54bbd0",
+    "page_table_query": "0x554ebc",
+    "root_global": "0x14007c8",
+    "scope": "Pinned original code would inspect software MMU tables and mapping attributes before returning a usable pointer; no current tables or mapping success supplied."
+  },
+  "public_format_reference": {
+    "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/master/pmca/backup/__init__.py",
+    "use": "Maintainer parser independently supports BK4 six-byte property entries, data-offset bounds and checksum excluding0x20..0x23. Original CP source and official bytes are primary for this checkpoint.",
+    "compatibility": "No inference that PMCA updater/service execution is available on FX3; no upstream program run."
+  },
+  "sequential_file_read_adapter_used": false,
+  "real_configuration_copy_completed": false,
+  "real_buffer_or_MAIN_pixels_obtained": false,
+  "full_modified_firmware_emitted": false,
+  "flashable_package_produced": false,
+  "goal_complete": false,
+  "device_actions": 0
+}

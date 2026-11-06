@@ -1,0 +1,359 @@
+RANGE 0x25f8 0x280c
+000025f8 stp      x29, x30, [sp, #-0x50]!
+000025fc mov      x29, sp
+00002600 stp      x21, x22, [sp, #0x20]
+00002604 ldr      x22, #0x2820
+00002608 stp      x23, x24, [sp, #0x30]
+0000260c ldr      x24, #0x2810
+00002610 stp      x19, x20, [sp, #0x10]
+00002614 add      x19, x22, #8
+00002618 ldr      x1, #0x2818
+0000261c add      x2, x24, #0x3c8
+00002620 mov      x0, x19
+00002624 str      x25, [sp, #0x40]
+00002628 bl       #0x2628 ; ('__mutex_init', '0x0')
+0000262c add      x2, x22, #0x30
+00002630 mov      w0, #0xc0
+00002634 mov      w1, #9
+00002638 movk     w0, #0x240, lsl #16
+0000263c str      x2, [x22, #0x30]
+00002640 str      x2, [x22, #0x38]
+00002644 bl       #0x2644 ; ('__get_free_pages', '0x0')
+00002648 str      x0, [x22, #0x40]
+0000264c cbz      x0, #0x27f4
+00002650 mov      w2, #0x200000
+00002654 str      x0, [x22]
+00002658 mov      w1, #0x80000
+0000265c mov      x21, x22
+00002660 str      w2, [x0]
+00002664 add      x20, x0, #0x40
+00002668 mov      w4, #4
+0000266c mov      w5, #0x20000
+00002670 ldr      x3, [x22]
+00002674 mov      w2, #1
+00002678 ldr      x23, #0x2828
+0000267c str      w1, [x3, #4]
+00002680 add      x3, x23, #0x3c
+00002684 ldr      x0, [x21], #0x48
+00002688 mov      x19, x21
+0000268c stp      w1, w5, [x0, #8]
+00002690 mov      w1, #0x40
+00002694 str      w4, [x0, #0x10]
+00002698 strb     wzr, [x0, #0x17]
+0000269c strb     w2, [x0, #0x15]
+000026a0 strb     wzr, [x0, #0x16]
+000026a4 mov      x0, #0x25b0
+000026a8 add      x4, x22, x0
+000026ac mov      w0, #0x2000
+000026b0 b        #0x26bc
+000026b4 nop      
+000026b8 ldr      w0, [x3], #4
+000026bc strh     wzr, [x19]
+000026c0 add      w1, w1, w0
+000026c4 strh     wzr, [x19, #2]
+000026c8 stp      x20, x20, [x19, #0x10]
+000026cc add      x19, x19, #0x38
+000026d0 str      xzr, [x20]
+000026d4 cmp      x19, x4
+000026d8 add      x20, x20, w0, sxtw
+000026dc ldur     x2, [x19, #-0x28]
+000026e0 str      w0, [x2, #8]
+000026e4 stur     w0, [x19, #-0x18]
+000026e8 stp      w0, w0, [x19, #-8]
+000026ec b.ne     #0x26b8
+000026f0 mov      w25, #0x180000
+000026f4 mov      x0, x20
+000026f8 sub      w25, w25, w1
+000026fc mov      w1, w25
+00002700 bl       #0x2700 ; ('fblock_init', '0x0')
+00002704 ldr      x1, #0x2830
+00002708 add      x0, x20, w25, sxtw
+0000270c mov      w2, #0x80000
+00002710 stp      x0, x0, [x1, #0x10]
+00002714 mov      w0, #0x139
+00002718 strh     wzr, [x1]
+0000271c strh     wzr, [x1, #2]
+00002720 str      xzr, [x20, w25, sxtw]
+00002724 ldr      x20, #0x2838
+00002728 ldr      x3, [x1, #0x10]
+0000272c add      x20, x20, #0x18c
+00002730 str      w2, [x3, #8]
+00002734 str      w2, [x1, #0x20]
+00002738 stp      w2, w2, [x1, #0x30]
+0000273c b        #0x2744
+00002740 ldr      w0, [x20], #4
+00002744 mov      x1, x21
+00002748 uxth     w0, w0
+0000274c add      x21, x21, #0x38
+00002750 bl       #0x2750 ; ('osal_set_msgq_rt_mode', '0x0')
+00002754 cmp      x21, x19
+00002758 b.ne     #0x2740
+0000275c ldr      x20, #0x2840
+00002760 mov      x0, x20
+00002764 bl       #0x2764 ; ('udif_cdev_register', '0x0')
+00002768 mov      w19, w0
+0000276c cbnz     w0, #0x27b8
+00002770 ldr      x2, #0x2858
+00002774 add      x3, x20, #0x368
+00002778 ldr      x0, #0x2860
+0000277c mov      x4, #0
+00002780 mov      w1, #0x180
+00002784 ldr      x2, [x2]
+00002788 bl       #0x2788 ; ('proc_create_data', '0x0')
+0000278c cbz      x0, #0x27fc
+00002790 add      x1, x24, #0x3c8
+00002794 add      x0, x20, #0x340
+00002798 bl       #0x2798 ; ('osal_create_waitable_thread', '0x0')
+0000279c mov      w0, #0
+000027a0 ldp      x19, x20, [sp, #0x10]
+000027a4 ldp      x21, x22, [sp, #0x20]
+000027a8 ldp      x23, x24, [sp, #0x30]
+000027ac ldr      x25, [sp, #0x40]
+000027b0 ldp      x29, x30, [sp], #0x50
+000027b4 ret      
+000027b8 add      x2, x23, #0x2e8
+000027bc ldr      x0, #0x2848
+000027c0 mov      w3, w19
+000027c4 mov      x1, x2
+000027c8 bl       #0x27c8 ; ('printk', '0x0')
+000027cc ldr      x0, [x22, #0x40]
+000027d0 mov      w1, #9
+000027d4 bl       #0x27d4 ; ('free_pages', '0x0')
+000027d8 ldr      x25, [sp, #0x40]
+000027dc mov      w0, w19
+000027e0 ldp      x19, x20, [sp, #0x10]
+000027e4 ldp      x21, x22, [sp, #0x20]
+000027e8 ldp      x23, x24, [sp, #0x30]
+000027ec ldp      x29, x30, [sp], #0x50
+000027f0 ret      
+000027f4 mov      w0, #-0xc
+000027f8 b        #0x27a0
+000027fc ldr      x0, #0x2850
+00002800 add      x1, x23, #0x2f8
+00002804 bl       #0x2804 ; ('printk', '0x0')
+00002808 b        #0x2790
+RANGE 0x5660 0x56c0
+00005660 stp      x29, x30, [sp, #-0x20]!
+00005664 mov      x2, #0x400
+00005668 mov      w1, #0
+0000566c mov      x29, sp
+00005670 stp      x19, x20, [sp, #0x10]
+00005674 mov      x20, #0x200
+00005678 ldr      x19, #0x56b8
+0000567c add      x0, x19, #0x480
+00005680 bl       #0x5680 ; ('memset', '0x0')
+00005684 mov      x2, x20
+00005688 add      x0, x19, #0x880
+0000568c mov      w1, #0
+00005690 bl       #0x5690 ; ('memset', '0x0')
+00005694 mov      x2, x20
+00005698 add      x0, x19, #0xa80
+0000569c mov      w1, #0
+000056a0 bl       #0x56a0 ; ('memset', '0x0')
+000056a4 mov      w0, #0
+000056a8 ldp      x19, x20, [sp, #0x10]
+000056ac ldp      x29, x30, [sp], #0x20
+000056b0 ret      
+000056b4 nop      
+000056b8 udf      #0 ; ('', '0x2640')
+000056bc udf      #0
+RANGE 0x2938 0x29d8
+00002938 ldr      x2, #0x2978
+0000293c ubfx     x1, x0, #9, #6
+00002940 ubfx     x3, x0, #6, #3
+00002944 add      x1, x2, x1, lsl #3
+00002948 ldr      x1, [x1, #0x220]
+0000294c cbz      x1, #0x2970
+00002950 ldr      x1, [x1, w3, sxtw #3]
+00002954 cbz      x1, #0x2970
+00002958 ubfx     x2, x0, #3, #3
+0000295c ldr      x1, [x1, x2, lsl #3]
+00002960 cbz      x1, #0x2970
+00002964 and      x0, x0, #7
+00002968 ldr      x0, [x1, x0, lsl #3]
+0000296c ret      
+00002970 mov      x0, #0
+00002974 ret      
+00002978 udf      #0 ; ('', '0x2640')
+0000297c udf      #0
+00002980 stp      x29, x30, [sp, #-0x10]!
+00002984 mov      x1, #0
+00002988 mov      w0, #0
+0000298c mov      x29, sp
+00002990 bl       #0x2990 ; ('alloc_fblock', '0x0')
+00002994 cbz      x0, #0x29c4
+00002998 stp      xzr, xzr, [x0]
+0000299c stp      xzr, xzr, [x0, #0x10]
+000029a0 stp      xzr, xzr, [x0, #0x20]
+000029a4 stp      xzr, xzr, [x0, #0x30]
+000029a8 dmb      sy
+000029ac ldr      x2, #0x29d0
+000029b0 add      x2, x2, #0x450
+000029b4 ldxr     w1, [x2]
+000029b8 add      w1, w1, #1
+000029bc stxr     w3, w1, [x2]
+000029c0 cbnz     w3, #0x29b4
+000029c4 ldp      x29, x30, [sp], #0x10
+000029c8 ret      
+000029cc nop      
+000029d0 udf      #0 ; ('', '0x2640')
+000029d4 udf      #0
+RANGE 0x2ee8 0x3160
+00002ee8 stp      x29, x30, [sp, #-0x50]!
+00002eec mov      x29, sp
+00002ef0 stp      x19, x20, [sp, #0x10]
+00002ef4 mov      w19, w0
+00002ef8 cmp      w19, #0x3f
+00002efc stp      x21, x22, [sp, #0x20]
+00002f00 stp      x23, x24, [sp, #0x30]
+00002f04 str      x25, [sp, #0x40]
+00002f08 ldr      x20, #0x3158
+00002f0c b.hi     #0x2f48
+00002f10 mov      x0, x20
+00002f14 add      x22, x20, #0x10
+00002f18 bl       #0x2f18 ; ('osal_lock', '0x0')
+00002f1c ldr      x21, [x22, x19, lsl #3]
+00002f20 cbz      x21, #0x2fa8
+00002f24 mov      x0, x20
+00002f28 bl       #0x2f28 ; ('osal_unlock', '0x0')
+00002f2c ldr      x25, [sp, #0x40]
+00002f30 mov      x0, x21
+00002f34 ldp      x19, x20, [sp, #0x10]
+00002f38 ldp      x21, x22, [sp, #0x20]
+00002f3c ldp      x23, x24, [sp, #0x30]
+00002f40 ldp      x29, x30, [sp], #0x50
+00002f44 ret      
+00002f48 add      x0, x20, #0x210
+00002f4c ubfx     x22, x19, #9, #6
+00002f50 ubfx     x23, x19, #6, #3
+00002f54 ubfx     x24, x19, #3, #3
+00002f58 and      w25, w19, #7
+00002f5c bl       #0x2f5c ; ('osal_lock', '0x0')
+00002f60 add      x0, x20, x22, lsl #3
+00002f64 ldr      x0, [x0, #0x220]
+00002f68 cbz      x0, #0x3010
+00002f6c ldr      x0, [x0, w23, sxtw #3]
+00002f70 cbz      x0, #0x3010
+00002f74 ldr      x0, [x0, w24, sxtw #3]
+00002f78 cbz      x0, #0x3010
+00002f7c ldr      x21, [x0, w25, sxtw #3]
+00002f80 cbz      x21, #0x3010
+00002f84 add      x0, x20, #0x210
+00002f88 bl       #0x2f88 ; ('osal_unlock', '0x0')
+00002f8c ldr      x25, [sp, #0x40]
+00002f90 mov      x0, x21
+00002f94 ldp      x19, x20, [sp, #0x10]
+00002f98 ldp      x21, x22, [sp, #0x20]
+00002f9c ldp      x23, x24, [sp, #0x30]
+00002fa0 ldp      x29, x30, [sp], #0x50
+00002fa4 ret      
+00002fa8 mov      x1, #0
+00002fac mov      w0, #0
+00002fb0 bl       #0x2fb0 ; ('alloc_fblock', '0x0')
+00002fb4 mov      x23, x0
+00002fb8 cbz      x0, #0x3000
+00002fbc stp      xzr, xzr, [x0]
+00002fc0 mov      x1, #0
+00002fc4 stp      xzr, xzr, [x0, #0x10]
+00002fc8 stp      xzr, xzr, [x0, #0x20]
+00002fcc stp      xzr, xzr, [x0, #0x30]
+00002fd0 mov      w0, #0
+00002fd4 bl       #0x2fd4 ; ('alloc_fblock', '0x0')
+00002fd8 str      x0, [x23, #0x38]
+00002fdc cbz      x0, #0x3114
+00002fe0 add      x1, x20, #0x440
+00002fe4 stp      xzr, xzr, [x0]
+00002fe8 ldxr     w0, [x1]
+00002fec add      w0, w0, #1
+00002ff0 stxr     w2, w0, [x1]
+00002ff4 cbnz     w2, #0x2fe8
+00002ff8 ldr      x0, [x23, #0x38]
+00002ffc bl       #0x2ffc ; ('osal_lock_init', '0x0')
+00003000 mov      x21, x23
+00003004 str      x23, [x22, x19, lsl #3]
+00003008 b        #0x2f24
+0000300c nop      
+00003010 mov      x1, #0
+00003014 mov      w0, #0
+00003018 bl       #0x3018 ; ('alloc_fblock', '0x0')
+0000301c mov      x21, x0
+00003020 cbz      x0, #0x310c
+00003024 stp      xzr, xzr, [x0]
+00003028 mov      x1, #0
+0000302c stp      xzr, xzr, [x0, #0x10]
+00003030 stp      xzr, xzr, [x0, #0x20]
+00003034 stp      xzr, xzr, [x0, #0x30]
+00003038 mov      w0, #0
+0000303c bl       #0x303c ; ('alloc_fblock', '0x0')
+00003040 str      x0, [x21, #0x38]
+00003044 cbz      x0, #0x3124
+00003048 add      x1, x20, #0x440
+0000304c stp      xzr, xzr, [x0]
+00003050 ldxr     w0, [x1]
+00003054 add      w0, w0, #1
+00003058 stxr     w2, w0, [x1]
+0000305c cbnz     w2, #0x3050
+00003060 mov      w0, #0x1fff
+00003064 sub      w1, w19, #4, lsl #12
+00003068 cmp      w1, w0
+0000306c ldr      x0, [x21, #0x38]
+00003070 b.hi     #0x3080
+00003074 ldrb     w1, [x21]
+00003078 orr      w1, w1, #1
+0000307c strb     w1, [x21]
+00003080 sub      w19, w19, #6, lsl #12
+00003084 mov      w1, #0x1fff
+00003088 cmp      w19, w1
+0000308c b.hi     #0x309c
+00003090 ldrb     w1, [x21]
+00003094 orr      w1, w1, #8
+00003098 strb     w1, [x21]
+0000309c add      x19, x20, #0x220
+000030a0 bl       #0x30a0 ; ('osal_lock_init', '0x0')
+000030a4 ldr      x0, [x19, x22, lsl #3]
+000030a8 cbz      x0, #0x3134
+000030ac sxtw     x23, w23
+000030b0 add      x19, x0, x23, lsl #3
+000030b4 ldr      x0, [x0, x23, lsl #3]
+000030b8 cbz      x0, #0x3144
+000030bc sxtw     x24, w24
+000030c0 add      x19, x0, x24, lsl #3
+000030c4 ldr      x0, [x0, x24, lsl #3]
+000030c8 cbz      x0, #0x30d4
+000030cc str      x21, [x0, w25, sxtw #3]
+000030d0 b        #0x2f84
+000030d4 bl       #0x2980
+000030d8 cbz      x0, #0x30e8
+000030dc str      x0, [x19]
+000030e0 str      x21, [x0, w25, sxtw #3]
+000030e4 b        #0x2f84
+000030e8 ldr      x0, [x21, #0x38]
+000030ec bl       #0x30ec ; ('free_fblock', '0x0')
+000030f0 mov      x0, x21
+000030f4 bl       #0x30f4 ; ('free_fblock', '0x0')
+000030f8 add      x1, x20, #0x440
+000030fc ldxr     w0, [x1]
+00003100 sub      w0, w0, #1
+00003104 stxr     w2, w0, [x1]
+00003108 cbnz     w2, #0x30fc
+0000310c mov      x21, #0
+00003110 b        #0x2f84
+00003114 mov      x0, x23
+00003118 mov      x23, #0
+0000311c bl       #0x311c ; ('free_fblock', '0x0')
+00003120 b        #0x3000
+00003124 mov      x0, x21
+00003128 mov      x21, #0
+0000312c bl       #0x312c ; ('free_fblock', '0x0')
+00003130 b        #0x2f84
+00003134 bl       #0x2980
+00003138 cbz      x0, #0x30e8
+0000313c str      x0, [x19, x22, lsl #3]
+00003140 b        #0x30ac
+00003144 bl       #0x2980
+00003148 cbz      x0, #0x30e8
+0000314c str      x0, [x19]
+00003150 b        #0x30bc
+00003154 nop      
+00003158 udf      #0 ; ('', '0x2640')
+0000315c udf      #0

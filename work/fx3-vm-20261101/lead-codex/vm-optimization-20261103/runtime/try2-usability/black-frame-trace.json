@@ -1,0 +1,23 @@
+{
+  "key9_10": [
+    "FX3_SYNTH_KEY step=9 key=0x1af status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=96530749008 host_gate=1",
+    "FX3_SYNTH_KEY step=9 key=0x1af status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=97270004000 host_gate=1",
+    "FX3_SYNTH_KEY step=10 key=0x30 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=124518873008 host_gate=1",
+    "7f038a8000-7f08b03000 rw-p 00000000 00:00FX3_SYNTH_KEY step=10 key=0x30 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=124866324000 host_gate=1"
+  ],
+  "target_commits": [
+    "FX3_OSD102_COMMIT frame=254 op=0x1003 pixel_source_seq=254 copied_GPE_last=1026 FB=0x7f74001160 bitmap=0x7f7068ed40 entry=0x7f74001198 allocation=0x74001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1",
+    "FX3_OSD102_COMMIT frame=255 op=0x1003 pixel_source_seq=255 copied_GPE_last=1197 FB=0x7f74001160 bitmap=0x7f7068b3a0 entry=0x7f74001178 allocation=0x74001200 token=0x401 physical=0x43ae96100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000104000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1",
+    "FX3_OSD102_COMMIT frame=372 op=0x1005 pixel_source_seq=255 copied_GPE_last=1197 FB=0x7f74001160 bitmap=0x7f7068b3a0 entry=0x7f74001178 allocation=0x74001200 token=0x401 physical=0x43ae96100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000104000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1",
+    "FX3_OSD102_COMMIT frame=373 op=0x1003 pixel_source_seq=373 copied_GPE_last=1199 FB=0x7f74001160 bitmap=0x7f7068ed40 entry=0x7f74001198 allocation=0x74001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1",
+    "FX3_OSD102_COMMIT frame=374 op=0x1005 pixel_source_seq=373 copied_GPE_last=1199 FB=0x7f74001160 bitmap=0x7f7068ed40 entry=0x7f74001198 allocation=0x74001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+  ],
+  "gpe_target_after_clear": [
+    "FX3_GPE_CMD op=FillRect seq=1198 async=1 fmt=0 w=640 h=480 dst_phys=0x43feb5100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+  ],
+  "screen_opens": [
+    "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7efe475490 id1=0x275 id2=0x289 id3=0x275 three_reference_args_one_call=1 creation_not_yet_complete=1",
+    "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7efe475490 id1=0x289 id2=0x2af id3=0x289 three_reference_args_one_call=1 creation_not_yet_complete=1"
+  ],
+  "gpe_target_after_clear_count": 1
+}

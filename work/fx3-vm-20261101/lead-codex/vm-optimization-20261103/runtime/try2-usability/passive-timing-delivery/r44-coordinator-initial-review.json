@@ -1,0 +1,41 @@
+{
+  "reviewed_utc": "2026-11-05T10:32:14.566325+00:00",
+  "status": "in_progress_not_accepted",
+  "dispatch": "ctx_6858cb2b169a",
+  "observed_source_freeze_sha256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+  "preserved_files": {
+    "run_trial_r24_review_snapshot.py": {
+      "sha256": "1f8cf2b78f3a56e2f38ab561ff1a7a3c072d984878a02be9b6afedf68a4fcd28",
+      "identical_to_r42": true
+    },
+    "trial_web_r24_review_snapshot.py": {
+      "sha256": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+      "identical_to_r42": true
+    },
+    "review_page_r24.js": {
+      "sha256": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
+      "identical_to_r42": true
+    },
+    "confirm_page_r24.js": {
+      "sha256": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
+      "identical_to_r42": true
+    },
+    "NAVIGATION-PLAN.json": {
+      "sha256": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+      "identical_to_r42": true
+    },
+    "runtime-wrapper/start_and_wait.py": {
+      "sha256": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+      "identical_to_r42": true
+    }
+  },
+  "review_findings_sent": "msg_1b00effb9c08",
+  "required_fixes": [
+    "hash observation before and after entire final validation, not two reads after tests",
+    "fake monotonic clock must not rewind on delayed callbacks",
+    "verify all CORE manifest member hashes"
+  ],
+  "VM_authorized": false,
+  "policy_activation_authorized": false,
+  "limitations": "Worker still editing; this is not a final sealed artifact review"
+}

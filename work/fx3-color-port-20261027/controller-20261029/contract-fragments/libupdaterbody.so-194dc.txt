@@ -1,0 +1,10 @@
+000194dc stp        x29, x30, [sp, #-0x90]!
+000194e0 adrp       x0, #0x1c000
+000194e4 add        x0, x0, #0x488 ; literal '/root/IAMUPDATER'
+000194e8 mov        x29, sp
+000194ec add        x1, x29, #0x10
+000194f0 bl         #0x1b4c8
+000194f4 cmp        w0, #0
+000194f8 cset       w0, ne
+000194fc ldp        x29, x30, [sp], #0x90
+00019500 ret        

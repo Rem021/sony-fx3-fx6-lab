@@ -1,0 +1,84 @@
+{
+  "status": "PASS_USER_INTERNAL_STAGING_NOT_ADMIN_OR_USB_ACCEPTANCE",
+  "checks": 13,
+  "cases": [
+    {
+      "name": "actual_internal_exclusive_copy_hash_and_permissions",
+      "receipt": {
+        "path": "/private/tmp/fx3-owner-stage178-fixture-j8044aad/good/source-helper",
+        "sha256": "192e6464b6ffe6a35d64322c9acb60e656966a2e3ae7be02bcadb2d241bfdd25",
+        "bytes": 37640,
+        "uid": 501,
+        "directory_mode": "0700",
+        "file_mode": "0500",
+        "exclusive_no_follow_copy": true,
+        "native_executed": false
+      }
+    },
+    {
+      "name": "wrong_digest_no_private_executable",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "symlink_source_rejected",
+      "rejected": "OSError",
+      "destination_not_created": true
+    },
+    {
+      "name": "existing_destination_not_overwritten",
+      "rejected": "FileExistsError",
+      "destination_not_created": false
+    },
+    {
+      "name": "symlink_destination_not_followed",
+      "rejected": "FileExistsError",
+      "destination_not_created": false
+    },
+    {
+      "name": "nonprivate_directory_rejected",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "symlink_directory_rejected",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "internal_source_fixture_executes_with_external_alias_unavailable_and_cwd_root",
+      "helper_pid": 53307,
+      "actual_cwd": "/",
+      "helper_terminal_verified": true,
+      "status": "PROVIDER_OBSERVATION_COMPLETED",
+      "fixture_not_IOKit_or_root": true
+    },
+    {
+      "name": "reviewed_admin_source_has_only_internal_paths_and_postcopy_hash",
+      "admin_executed": false
+    },
+    {
+      "name": "old_grant_cannot_launch_new_candidate",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "old_consumed_claim_preserved",
+      "sha256": "ae3e6eb503d37a659267794e9468872da5b052bf27fc683af4d664ceacecd07f"
+    },
+    {
+      "name": "consumed_second_claim_preserved",
+      "sha256": "3bce6825fce44860b7b49e49e7d02f1ef1ce0784da52b3a232136e49b0fc3e44"
+    },
+    {
+      "name": "consumed_third_claim_preserved",
+      "sha256": "586f703ed0bc35473e23990a01d1ab25f08ec28d7ae75f6af789a58892d3aa39"
+    }
+  ],
+  "retained_fixture_private_directory": "/private/tmp/fx3-owner-stage178-fixture-j8044aad",
+  "root_or_native_IOKit_execution": false,
+  "administrator_prompt_requested": false,
+  "device_operations": 0,
+  "script_sha256": "0a7945ef6d6f4ee3f102c6ab87dc618f855b538942a16c631d25d907a628300e",
+  "bootstrap_sha256": "9c0c0737eec3f74e9a478b5aea402885882f0994bc6d58c1500a9b088d5377af"
+}

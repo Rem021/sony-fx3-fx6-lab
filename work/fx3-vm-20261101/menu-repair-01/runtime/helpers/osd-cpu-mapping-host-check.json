@@ -1,0 +1,16 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-cpu-mapping-v3.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-cpu-mapping-v3"
+  ],
+  "exit": 0,
+  "stdout": "CPU_MAPPING_PASS real_parser/large_maps_stream/chunk_and_overlong_lines/exact_shared_devmem_VA_physical_span/negative5\n",
+  "stderr": "",
+  "tested_helper_sha256": "1727b7fa06db56882b44bce7864c357ad42c6e3107820008ed91c7d6f0c14dd4"
+}

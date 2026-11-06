@@ -1,0 +1,22 @@
+{
+  "schema": "fx6-hybrid-capid-preinit-cpio-verify-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel.cpio",
+  "source_bytes": 453184500,
+  "source_sha256": "1cc4f88e77d97c1905ed3018564ff89c38451fc94506ebf0d2da7812709fbdeb",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-preinit.cpio",
+  "output_bytes": 453184500,
+  "output_sha256": "18b68fd47c3a1f8c4005b836b65ef70cf44bff179bdea8a311eb055d2db6da49",
+  "member_count": 1141,
+  "target_member": "simulation/fx3-capid-v1.so",
+  "target_old_bytes": 287872,
+  "target_new_bytes": 94128,
+  "target_old_sha256": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e",
+  "target_new_sha256": "c70fc778c9ccd709f34de2e2573cad25cccbf3133f8a56f78d555a92ca6e4644",
+  "all_other_members_byte_identical": true,
+  "target_header_only_size_changed": true,
+  "trailer_present": true,
+  "trailing_bytes_after_trailer": 28813128,
+  "trailing_all_zero": true,
+  "fixed_length_preserved": true,
+  "verdict": "pass_offline_member_replacement"
+}

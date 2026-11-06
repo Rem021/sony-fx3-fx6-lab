@@ -1,0 +1,37 @@
+{
+  "checked_date_local": "2026-10-27",
+  "sources": [
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/releases",
+      "observed_latest_tag": "v3.0.3",
+      "observed_short_commit": "7827856",
+      "release_date": "2026-10-23",
+      "method": "Primary release page read with web tool.",
+      "author_claims": ["USB receive handling fixes; a failed read-only operation normally exits service mode automatically.", "Interrupted installation can resume its remaining settings step."],
+      "scope": "A7CII tools; author release claims, no FX3 execution or validation here.",
+      "authorization_implication": "A tool's read-only label is not the current host cached-PnP-only scope; service entry/exit and camera file access remain outside current authority."
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/2328d18ce640e6c8cd9341efcf0043ce9042a135/README.md",
+      "commit": "2328d18ce640e6c8cd9341efcf0043ce9042a135",
+      "commit_date": "2026-10-07T14:52:21Z",
+      "README_sha256": "978976fe69b933e9ba194ddfadc96b1085e0a1aaaaf73727c5acf9e14b679f5a",
+      "method": "Primary repository page read with web; current head queried with unauthenticated public GitHub API; pinned README fetched as text over HTTPS, not executed.",
+      "author_claims": ["Serial boot mode and a bare-metal fastboot payload for eMMC partition backup/restoration on ILCE-7M4.", "The documented dump/flash cryptographic handling excludes boot0 as not yet implemented."],
+      "scope": "Author's A7IV research; no FX3 tested compatibility statement found in this README. This is not proof that FX3 is unsupported or recoverable."
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/2328d18ce640e6c8cd9341efcf0043ce9042a135/payloads/fastboot/README.md",
+      "README_sha256": "4b3b650f34e73b6699d28deca3a86b03f9d7eb755ec89e2c16ea57fd52a058dd",
+      "git_blob_sha": "561fe927b89259115b55d7e92ec1cb6b53180187",
+      "method": "Pinned primary README fetched as text over HTTPS after web subdirectory/API fetch errors; no payload/source downloaded to execute.",
+      "observations": ["Explicit ILCE-7M4 payload using the USB2 multi port; documented commands include partition dump and several memory/control-processor diagnostics."],
+      "not_verified": ["FX3 accessory connector pin/electrical compatibility", "FX3 bootROM entry", "FX3 partition geometry and format", "complete same-body raw backup", "boot-area coverage and restore/readback", "independent FX3 recovery after an application/boot failure"]
+    }
+  ],
+  "unavailable_web_fetches": ["GitHub fastboot and tools tree pages returned cache-miss errors", "GitHub API URLs were inaccessible through web tool; public HTTPS API/text reads succeeded via Python urllib"],
+  "third_party_code_or_payload_executed": false,
+  "Windows_UU_camera_operations": false,
+  "new_device_or_recovery_authority": false,
+  "FX3_recovery_or_goal_complete": false
+}

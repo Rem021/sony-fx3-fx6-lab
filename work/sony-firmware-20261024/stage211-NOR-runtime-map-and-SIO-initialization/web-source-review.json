@@ -1,0 +1,27 @@
+{
+  "reviewed_utc": "2026-10-30T00:57:23.793485+00:00",
+  "status": "FIXED_PRIMARY_SOURCE_AND_PUBLIC_DEFAULTS_WITH_PARTIAL_REFRESH",
+  "primary_reference": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/tree/e85e137fc3b88b7cb26e69faa9f1304184678ff7",
+  "reference_capture": "../stage204-public-AP-boot-reference/source-capture.json",
+  "PMCA_format": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/backup/__init__.py",
+  "PMCA_capture": "../stage207-Backup-template-and-GPIO-config/format-source-capture.json",
+  "current_official_inputs": [
+    "runtime-and-default-rate-proof.json",
+    "SIO-Backup-property-results.json"
+  ],
+  "refresh": "upstream-refresh.json",
+  "a7c2_retry": "a7c2-upstream-refresh-retry.json",
+  "searches": [
+    {
+      "query": "FE0625CC Sony / YuuLuo FX3 recovery on GitHub",
+      "scope": "No exact initializer result used; unrelated Cypress FX3/SDR recovery results excluded"
+    },
+    {
+      "url": "https://github.com/morluto/rea/discussions/3027",
+      "scope": "Request to investigate Sony battery restrictions; no successful modified flash/recovery evidence used"
+    }
+  ],
+  "no_new_exact_FX3_flash_recovery_success_claim": true,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

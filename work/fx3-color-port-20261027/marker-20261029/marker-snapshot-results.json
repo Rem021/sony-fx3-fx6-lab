@@ -1,0 +1,2237 @@
+{
+  "source_library_sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+  "snapshot_source_sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+  "root_physical_address": "0x40867a000",
+  "link_map_module": {
+    "link_map_va": "0x442d90",
+    "base": "0x7f7647b000",
+    "dynamic_va": "0x7f766dc0e8",
+    "name": "/usr/lib/libObj.so",
+    "name_pointer": "0x442d70",
+    "name_read_error": null
+  },
+  "cache_relative_va": "0x2d2c2c",
+  "cache_section": ".bss",
+  "cache_section_type": "SHT_NOBITS",
+  "selected_checks": [
+    {
+      "label": "ELF_header",
+      "relative_va": "0x0",
+      "bytes": 64,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "label": "initializer_code",
+      "relative_va": "0xee0b0",
+      "bytes": 76,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "label": "run_version_code",
+      "relative_va": "0xeccc8",
+      "bytes": 288,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "label": "marker_literal",
+      "relative_va": "0x1dc5be",
+      "bytes": 16,
+      "snapshot_sha256": "583d696f12c2d4a27bd6be34d55aa178b354f4fbca09110fd47c1a9e2fed44a2",
+      "original_sha256": "583d696f12c2d4a27bd6be34d55aa178b354f4fbca09110fd47c1a9e2fed44a2",
+      "matches_original": true
+    },
+    {
+      "label": "cache_GOT",
+      "relative_va": "0x262dc0",
+      "bytes": 8,
+      "snapshot_sha256": "b4f81c401c6d8c1c18abc34217c3931445cf0a5e2239aa6f30499d37faa9c9a0",
+      "pointer": "0x7f7674dc2c",
+      "expected_pointer": "0x7f7674dc2c",
+      "pointer_matches": true
+    },
+    {
+      "label": "cached_stat_result",
+      "relative_va": "0x2d2c2c",
+      "bytes": 4,
+      "snapshot_sha256": "ad95131bc0b799c0b1af477fb14fcf26a6a9f76079e48bf090acb7e8367bfd0e",
+      "unsigned_value": 4294967295,
+      "signed_value": -1
+    }
+  ],
+  "code_page_checks": [
+    {
+      "section": ".plt",
+      "va": "0x55320",
+      "bytes": 3296,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".plt",
+      "va": "0x56000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".plt",
+      "va": "0x57000",
+      "bytes": 3472,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x57d90",
+      "bytes": 624,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x58000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x59000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x5a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x5b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x5c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x5d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x5e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x5f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x60000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x61000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x62000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x63000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x64000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x65000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x66000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x67000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x68000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x69000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x6a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x6b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x6c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x6d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x6e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x6f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x70000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x71000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x72000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x73000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x74000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x75000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x76000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x77000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x78000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x79000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x7a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x7b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x7c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x7d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x7e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x7f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x80000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x81000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x82000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x83000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x84000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x85000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x86000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x87000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x88000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x89000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x8a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x8b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x8c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x8d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x8e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x8f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x90000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x91000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x92000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x93000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x94000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x95000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x96000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x97000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x98000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x99000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x9a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x9b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x9c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x9d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x9e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x9f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa0000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa1000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa2000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa3000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa4000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa5000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa6000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa7000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa8000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xa9000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xaa000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xab000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xac000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xad000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xae000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xaf000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb0000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb1000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb2000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb3000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb4000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb5000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb6000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb7000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb8000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xb9000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xba000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xbb000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xbc000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xbd000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xbe000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xbf000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc0000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc1000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc2000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc3000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc4000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc5000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc6000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc7000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc8000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xc9000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xca000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xcb000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xcc000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xcd000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xce000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xcf000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd0000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd1000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd2000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd3000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd4000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd5000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd6000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd7000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd8000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xd9000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xda000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xdb000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xdc000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xdd000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xde000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xdf000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe0000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe1000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe2000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe3000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe4000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe5000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe6000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe7000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe8000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xe9000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xea000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xeb000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xec000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xed000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xee000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xef000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf0000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf1000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf2000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf3000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf4000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf5000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf6000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf7000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf8000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xf9000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xfa000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xfb000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xfc000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xfd000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xfe000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0xff000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x100000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x101000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x102000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x103000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x104000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x105000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x106000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x107000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x108000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x109000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x10a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x10b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x10c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x10d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x10e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x10f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x110000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x111000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x112000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x113000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x114000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x115000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x116000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x117000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x118000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x119000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x11a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x11b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x11c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x11d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x11e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x11f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x120000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x121000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x122000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x123000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x124000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x125000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x126000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x127000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x128000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x129000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x12a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x12b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x12c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x12d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x12e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x12f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x130000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x131000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x132000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x133000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x134000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x135000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x136000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x137000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x138000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x139000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x13a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x13b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x13c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x13d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x13e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x13f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x140000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x141000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x142000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x143000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x144000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x145000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x146000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x147000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x148000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x149000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x14a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x14b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x14c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x14d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x14e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x14f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x150000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x151000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x152000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x153000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x154000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x155000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x156000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x157000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x158000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x159000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x15a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x15b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x15c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x15d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x15e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x15f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x160000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x161000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x162000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x163000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x164000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x165000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x166000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x167000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x168000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x169000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x16a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x16b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x16c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x16d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x16e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x16f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x170000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x171000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x172000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x173000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x174000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x175000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x176000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x177000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x178000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x179000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x17a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x17b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x17c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x17d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x17e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x17f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x180000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x181000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x182000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x183000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x184000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x185000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x186000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x187000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x188000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x189000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x18a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x18b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x18c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x18d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x18e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x18f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x190000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x191000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x192000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x193000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x194000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x195000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x196000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x197000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x198000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x199000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x19a000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x19b000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x19c000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x19d000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x19e000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x19f000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a0000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a1000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a2000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a3000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a4000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a5000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a6000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a7000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a8000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1a9000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1aa000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1ab000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1ac000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1ad000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1ae000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1af000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b0000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b1000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b2000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b3000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b4000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b5000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b6000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b7000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b8000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1b9000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1ba000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1bb000",
+      "bytes": 4096,
+      "unreadable": "invalid descriptor"
+    },
+    {
+      "section": ".text",
+      "va": "0x1bc000",
+      "bytes": 3688,
+      "unreadable": "invalid descriptor"
+    }
+  ],
+  "code_page_summary": {
+    "total": 361,
+    "readable": 0,
+    "matching": 0,
+    "unreadable": 361,
+    "contradicting": 0
+  },
+  "scope": "Original stored WBI page-table translation only. The cache GOT pointer and four-byte word are read separately from code identity. Missing initializer/version code or ELF headers are not reconstructed. Other matching pages support only their own identity, not execution of the unreadable initializer, a fresh stat result, complete runtime rootfs state, future bodyExecute behavior or the user camera. No zero fill, live device I/O, vendor native execution, mounts or changed firmware."
+}

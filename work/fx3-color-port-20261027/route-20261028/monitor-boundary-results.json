@@ -1,0 +1,84 @@
+{
+  "status": "PASS_ORIGINAL_MONITOR_LUT_MESSAGE_BOUNDARY",
+  "cases": [
+    {
+      "input_enum": 0,
+      "transport_message_ID": "0x92840747",
+      "request_bytes": "0d2061010a0001800100",
+      "request_size": 10,
+      "response_size": 12,
+      "header": [
+        "0x200d",
+        "0x161",
+        "0xa",
+        "0x8001"
+      ],
+      "payload": "0100",
+      "transport_function_entered": false
+    },
+    {
+      "input_enum": 1,
+      "transport_message_ID": "0x92840747",
+      "request_bytes": "0d2061010a0001800200",
+      "request_size": 10,
+      "response_size": 12,
+      "header": [
+        "0x200d",
+        "0x161",
+        "0xa",
+        "0x8001"
+      ],
+      "payload": "0200",
+      "transport_function_entered": false
+    },
+    {
+      "input_enum": 2,
+      "transport_message_ID": "0x92840747",
+      "request_bytes": "0d2061010a0001800400",
+      "request_size": 10,
+      "response_size": 12,
+      "header": [
+        "0x200d",
+        "0x161",
+        "0xa",
+        "0x8001"
+      ],
+      "payload": "0400",
+      "transport_function_entered": false
+    },
+    {
+      "input_enum": 3,
+      "transport_message_ID": "0x92840747",
+      "request_bytes": "0d2061010a0001800300",
+      "request_size": 10,
+      "response_size": 12,
+      "header": [
+        "0x200d",
+        "0x161",
+        "0xa",
+        "0x8001"
+      ],
+      "payload": "0300",
+      "transport_function_entered": false
+    },
+    {
+      "input_enum": 4,
+      "transport_message_ID": "0x92840747",
+      "request_bytes": "0d2061010a0001800000",
+      "request_size": 10,
+      "response_size": 12,
+      "header": [
+        "0x200d",
+        "0x161",
+        "0xa",
+        "0x8001"
+      ],
+      "payload": "0000",
+      "transport_function_entered": false
+    }
+  ],
+  "function_VA": "0x2debdb0",
+  "function_sha256": "3cbf6b8dbf8daa856b59763d1a500d335a6531327cc90847736452c2c25ba270",
+  "pretty_function_string_file": "0x3968e20",
+  "scope": "This is the explicitly named monitor-LUT wrapper. No transport, receiver, output routing or pixel change is proven. CP Base Picture Setting is a separate captured message path."
+}

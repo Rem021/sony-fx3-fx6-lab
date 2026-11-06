@@ -1,0 +1,1349 @@
+{
+  "cpio": {
+    "r3_members": 1140,
+    "r4e_members": 1141,
+    "only_r3": [],
+    "only_r4e": [
+      "simulation/fx3-procdiag-v1"
+    ],
+    "equal_shared_payload_count": 1139,
+    "changed_shared_payload": [
+      "init"
+    ],
+    "changed_shared_header_fields": [
+      "init"
+    ],
+    "init_old_bytes": 20733,
+    "init_new_bytes": 20840,
+    "init_common_prefix_bytes": 17071,
+    "init_common_suffix_bytes": 3662,
+    "init_removed_bytes_hex": "",
+    "init_inserted_bytes_hex": "206563686f2022242122203e202f746d702f6678332d70726f6339372d6f627365727665722e6964656e746974790a202f73696d756c6174696f6e2f6678332d70726f63646961672d763120260a206563686f204658335f50524f43444941475f56315f5049443d24210a",
+    "init_inserted_text": " echo \"$!\" > /tmp/fx3-proc97-observer.identity\n /simulation/fx3-procdiag-v1 &\n echo FX3_PROCDIAG_V1_PID=$!\n",
+    "init_r3_sha256": "8ad0be3aec240977060e25ba1193ad80f6ef596ffe47392e3d5b5b79c0ee4a05",
+    "init_r4e_sha256": "d8a00f8c99abd6abdb2dcb3207e2edf7a1204b550434987e9e048efe298017be",
+    "marker_owner_members": {
+      "simulation/fx3-gpe-observe-v7.so": {
+        "r3": [
+          "FX3_GPE_CMD op="
+        ],
+        "r4e": [
+          "FX3_GPE_CMD op="
+        ]
+      },
+      "simulation/fx3-osd-headless-v5.so": {
+        "r3": [
+          "FX3_OSD102_COMMIT"
+        ],
+        "r4e": [
+          "FX3_OSD102_COMMIT"
+        ]
+      },
+      "simulation/fx3-preset-context-v2-screen.so": {
+        "r3": [
+          "FX3_AP89_SCREEN_OPEN_ENTER"
+        ],
+        "r4e": [
+          "FX3_AP89_SCREEN_OPEN_ENTER"
+        ]
+      },
+      "simulation/fx3-timer-observe-v1.so": {
+        "r3": [
+          "FX3_UI_FILL_EXEC"
+        ],
+        "r4e": [
+          "FX3_UI_FILL_EXEC"
+        ]
+      },
+      "simulation/ioctl-trace.so": {
+        "r3": [
+          "FX3_UI_WIRE"
+        ],
+        "r4e": [
+          "FX3_UI_WIRE"
+        ]
+      }
+    }
+  },
+  "serial": {
+    "r3": {
+      "serial_bytes": 37526216,
+      "max_logged_guest_ns": 492004519008,
+      "marker_counts": {
+        "FX3_GPE104_DYNAMIC_ENTER": 397,
+        "FX3_GPE104_DYNAMIC_RETURN": 397,
+        "FX3_KEY96_POLL": 544,
+        "FX3_AP89_SCREEN_OPEN_ENTER": 10,
+        "FX3_AP89_SCREEN_CREATE": 20,
+        "FX3_UI_WIRE": 11443,
+        "FX3_UIPC_RECV_BEGIN": 74,
+        "FX3_UI_CONFIG_DONE": 8,
+        "FX3_UI_FILL_EXEC": 151,
+        "FX3_GPE_CMD op=": 1859,
+        "FX3_GPE104_CMD_RETURN": 1859,
+        "FX3_OSD_HEADLESS_BOUND": 1,
+        "FX3_OSD102_COMMIT": 3718,
+        "FX3_OSD_FRAME_TARGET_VALID": 72,
+        "FX3_OSD_NATIVE_SIGNAL": 3718
+      },
+      "screen_open": [
+        {
+          "id2": "0x2ae",
+          "guest_ns": 31096051008
+        },
+        {
+          "id2": "0x2e1",
+          "guest_ns": 36558809008
+        },
+        {
+          "id2": "0x2dd",
+          "guest_ns": 38425490000
+        },
+        {
+          "id2": "0",
+          "guest_ns": 38585485008
+        },
+        {
+          "id2": "0x2e0",
+          "guest_ns": 79057594000
+        },
+        {
+          "id2": "0x275",
+          "guest_ns": 79245153008
+        },
+        {
+          "id2": "0x274",
+          "guest_ns": 143498816000
+        },
+        {
+          "id2": "0x275",
+          "guest_ns": 353464622000
+        },
+        {
+          "id2": "0x289",
+          "guest_ns": 379857466000
+        },
+        {
+          "id2": "0x274",
+          "guest_ns": 468786223008
+        }
+      ],
+      "ui_wire_first70_target_tag": [
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1004"
+        ],
+        [
+          "0x8288076c",
+          "0x1"
+        ],
+        [
+          "0x8280074d",
+          "0x1002"
+        ],
+        [
+          "0x8280084d",
+          "0x1003"
+        ],
+        [
+          "0x8280074d",
+          "0x1004"
+        ],
+        [
+          "0x8288076c",
+          "0x6003"
+        ],
+        [
+          "0x8288076c",
+          "0x1"
+        ]
+      ],
+      "uipc_recv_begin_by_queue": {
+        "0x94020a": 1,
+        "0x8f0139": 1,
+        "0x282078f": 1,
+        "0x82cd08e0": 1,
+        "0x80bd017a": 1,
+        "0x83310a20": 1,
+        "0x807a0020": 1,
+        "0x816f610f": 1,
+        "0x832f0a1b": 1,
+        "0x8055011e": 1,
+        "0x8288076c": 1,
+        "0x8055011f": 1,
+        "0x80550120": 1,
+        "0x8082088b": 1,
+        "0x805c011d": 1,
+        "0x80820884": 1,
+        "0x818104bb": 1,
+        "0x807e002f": 1,
+        "0x80550121": 1,
+        "0x80550122": 1,
+        "0x805502f2": 1,
+        "0x80550123": 1,
+        "0x8055001f": 1,
+        "0x807b0026": 1,
+        "0x807b002b": 1,
+        "0x807c0038": 1,
+        "0x807d07ee": 1,
+        "0x807d07ed": 1,
+        "0x80a506fd": 1,
+        "0x812802f1": 1,
+        "0x8277096f": 1,
+        "0x82380691": 1,
+        "0x80af6181": 1,
+        "0x8102021f": 1,
+        "0x82386188": 1,
+        "0x94016a": 1,
+        "0x81cf6188": 1,
+        "0x81cf6189": 1,
+        "0x802a0116": 1,
+        "0x81cf618a": 1,
+        "0x80020002": 1,
+        "0x8088044d": 1,
+        "0x829008db": 1,
+        "0x80830450": 1,
+        "0x80920916": 1,
+        "0x1480453": 1,
+        "0x8030619f": 1,
+        "0x8285074f": 1,
+        "0x80c7619f": 1,
+        "0x803c619f": 1,
+        "0x81cf619f": 2,
+        "0x5503df": 1,
+        "0x5503e0": 1,
+        "0x81cf61c0": 5,
+        "0x81cf61c1": 4,
+        "0x81cf61c2": 3,
+        "0x81cf61c3": 1,
+        "0x809461c2": 1,
+        "0x81cf61c6": 1,
+        "0x808261c0": 1,
+        "0x8280074d": 1,
+        "0x8280084d": 1,
+        "0x8280084e": 1,
+        "0x808261c1": 1
+      },
+      "ui_wire_ninth_raw_hex": "4658335f55495f57495245207469643d333736207461726765743d30783832383030373464206f703d3420746167313d30783130303020746167323d3020726573756c743d3020696e646570656e64656e745f6f665f756e697175655f6c6f636b3d31",
+      "ui_wire_ninth_raw_ascii": "FX3_UI_WIRE tid=376 target=0x8280074d op=4 tag1=0x1000 tag2=0 result=0 independent_of_unique_lock=1",
+      "first": {
+        "FX3_GPE104_DYNAMIC_ENTER": {
+          "guest_ns": 16020361008,
+          "text": "FX3_GPE104_DYNAMIC_ENTER tid=237 tpidr=0x7f8b7486f0 event=1 ns=16020361008 flags=0x2a module=0x11e argument=0x7f8807932c caller=0x7f88066964 native_call_follows=1"
+        },
+        "FX3_GPE104_DYNAMIC_RETURN": {
+          "guest_ns": 16024213008,
+          "text": "FX3_GPE104_DYNAMIC_RETURN tid=237 tpidr=0x7f8b7486f0 event=1 ns=16024213008 flags=0x2a module=0x11e QID=0 QID_available=0 result=0 errno=1020 caller=0x7f88066964 owner_from_separate_kernel_probe=1 no_stat_msgq=1 no_extra_dynamic_id=1"
+        },
+        "FX3_KEY96_POLL": {
+          "guest_ns": 20884958000,
+          "text": "FX3_KEY96_POLL tid=343 poll=1 stage=1 failed=0 receiver_seen=1 done=0 control_step=0 key=0 hold_ms=0 last_send=-2147483647 native_receiver_queue_exists=1 receiver_query_ns=20884958000 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=20884958000"
+        },
+        "FX3_AP89_SCREEN_OPEN_ENTER": {
+          "guest_ns": 31096051008,
+          "text": "FX3_AP89_SCREEN_OPEN_ENTER clock_id=1 ns=31096051008 tid=376 manager=0x7ee4865470 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1"
+        },
+        "FX3_AP89_SCREEN_CREATE": {
+          "guest_ns": 31131545008,
+          "text": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=31131545008 tid=376 phase=controller_init_return screen_id=0x2ae controller=0x7ede36b0e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1"
+        },
+        "FX3_UI_WIRE": {
+          "guest_ns": null,
+          "text": "FX3_UI_WIRE tid=376 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+        },
+        "FX3_UIPC_RECV_BEGIN": {
+          "guest_ns": null,
+          "text": "FX3_UIPC_RECV_BEGIN tid=227 name=bootin.elf queue=0x94020a caller=0x7f809b3c9c original_wait_follows=1"
+        },
+        "FX3_UI_CONFIG_DONE": {
+          "guest_ns": null,
+          "text": "FX3_UI_CONFIG_DONE seq=1 tid=376 caller=0x2191df4 result=0x7 ui_update=1"
+        },
+        "FX3_UI_FILL_EXEC": {
+          "guest_ns": null,
+          "text": "FX3_UI_FILL_EXEC seq=7 tid=277 command=0x7f4882bb50 bitmap=0x7f486ab410 bitmap_read=1 ui_update=0 timer_depth=0"
+        },
+        "FX3_GPE_CMD op=": {
+          "guest_ns": null,
+          "text": "FX3_GPE_CMD op=FillRect seq=0 async=1 fmt=0 w=640 h=480 dst_phys=0x43feb5100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        "FX3_GPE104_CMD_RETURN": {
+          "guest_ns": 43713083008,
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f3dfff720 ns=43713083008 seq=0 op=0 completion_source=0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        "FX3_OSD_HEADLESS_BOUND": {
+          "guest_ns": null,
+          "text": "FX3_OSD_HEADLESS_BOUND pid=237 ring=0x41e000000 bytes=0x1000000 slots=8 passive_shadow=1 original_schema_unproven=1 queue_owner=1 native_receive_free=explicit_software_CP_endpoint v25_diag_offset=0x2000 records=256"
+        },
+        "FX3_OSD102_COMMIT": {
+          "guest_ns": 46871950000,
+          "text": "FX3_OSD102_COMMIT clock_id=1 ns=46871950000 tid=807 frame=1 op=0x1003 pixel_source_seq=1 copied_GPE_last=23 FB=0x7f50001160 bitmap=0x7f486ab410 entry=0x7f50001198 allocation=0x50001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+        },
+        "FX3_OSD_FRAME_TARGET_VALID": {
+          "guest_ns": null,
+          "text": "FX3_OSD_FRAME_TARGET_VALID physical=0x43feb5100 token=0x402 kind=1 object=0 epoch=2 identity=0 parent=0x43feb5000 bytes=0x140000 vptr=0 original_FB=0x7f50001160 bitmap=0x7f486ab410 native_read_lease=1 raster_guard=1 lifecycle_guard=1 before_after_fields_same=1"
+        },
+        "FX3_OSD_NATIVE_SIGNAL": {
+          "guest_ns": null,
+          "text": "FX3_OSD_NATIVE_SIGNAL frame=1 msg=6003 sem=0x288604b expected=0x288604b original_fd384=1 parent=0xf2280 result=0 matched=1 original_path=1"
+        }
+      },
+      "last_key_poll": {
+        "guest_ns": 492004519008,
+        "text": "FX3_KEY96_POLL tid=343 poll=48836 stage=1 failed=0 receiver_seen=1 done=15 control_step=15 key=0x30 hold_ms=100 last_send=0 native_receiver_queue_exists=1 receiver_query_ns=491951502000 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=492004519008"
+      }
+    },
+    "r4e": {
+      "serial_bytes": 3608408,
+      "max_logged_guest_ns": 216527759008,
+      "marker_counts": {
+        "FX3_GPE104_DYNAMIC_ENTER": 253,
+        "FX3_GPE104_DYNAMIC_RETURN": 253,
+        "FX3_KEY96_POLL": 124,
+        "FX3_AP89_SCREEN_OPEN_ENTER": 4,
+        "FX3_AP89_SCREEN_CREATE": 8,
+        "FX3_UI_WIRE": 63,
+        "FX3_UIPC_RECV_BEGIN": 67,
+        "FX3_UI_CONFIG_DONE": 2,
+        "FX3_UI_FILL_EXEC": 0,
+        "FX3_GPE_CMD op=": 0,
+        "FX3_GPE104_CMD_RETURN": 0,
+        "FX3_OSD_HEADLESS_BOUND": 0,
+        "FX3_OSD102_COMMIT": 0,
+        "FX3_OSD_FRAME_TARGET_VALID": 0,
+        "FX3_OSD_NATIVE_SIGNAL": 0
+      },
+      "screen_open": [
+        {
+          "id2": "0x2ae",
+          "guest_ns": 179974865008
+        },
+        {
+          "id2": "0x2e1",
+          "guest_ns": 199384211008
+        },
+        {
+          "id2": "0x2dd",
+          "guest_ns": 213854724000
+        },
+        {
+          "id2": "0",
+          "guest_ns": 214184752000
+        }
+      ],
+      "ui_wire_first70_target_tag": [
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0xe7641000"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ]
+      ],
+      "uipc_recv_begin_by_queue": {
+        "0x94020a": 1,
+        "0x8f0139": 1,
+        "0x282078f": 1,
+        "0x82cd08e0": 1,
+        "0x80bd017a": 1,
+        "0x83310a20": 1,
+        "0x807a0020": 1,
+        "0x816f610f": 1,
+        "0x832f0a1b": 1,
+        "0x8055011e": 1,
+        "0x8055011f": 1,
+        "0x80550120": 1,
+        "0x8288076c": 1,
+        "0x805c011d": 1,
+        "0x8082088b": 1,
+        "0x80820884": 1,
+        "0x818104bb": 1,
+        "0x80550121": 1,
+        "0x807e002f": 1,
+        "0x80550122": 1,
+        "0x805502f2": 1,
+        "0x80550123": 1,
+        "0x8055001f": 1,
+        "0x807b0026": 1,
+        "0x807b002b": 1,
+        "0x807c0038": 1,
+        "0x807d07ee": 1,
+        "0x807d07ed": 1,
+        "0x812802f1": 1,
+        "0x8277096f": 1,
+        "0x80a506fd": 1,
+        "0x82380691": 1,
+        "0x80af6181": 1,
+        "0x8102021f": 1,
+        "0x94016a": 1,
+        "0x82386188": 1,
+        "0x81cf6188": 1,
+        "0x802a0116": 1,
+        "0x81cf6189": 1,
+        "0x81cf618a": 1,
+        "0x80020002": 1,
+        "0x8088044d": 1,
+        "0x829008db": 1,
+        "0x80920916": 1,
+        "0x80830450": 1,
+        "0x1480453": 1,
+        "0x8030619f": 1,
+        "0x8285074f": 1,
+        "0x80c7619f": 1,
+        "0x803c619f": 1,
+        "0x81cf619f": 2,
+        "0x5503df": 1,
+        "0x5503e0": 1,
+        "0x81cf61c0": 5,
+        "0x81cf61c1": 2,
+        "0x81cf61c2": 2,
+        "0x809461c2": 1,
+        "0x81cf61c4": 3
+      },
+      "ui_wire_ninth_raw_hex": "4658335f55495f57495245207469643d353737207461726765743d30783832383030373464206f703d3420746167313d3078653736343130303020746167323d3020726573756c743d3020696e646570656e64656e745f6f665f756e697175655f6c6f636b3d31",
+      "ui_wire_ninth_raw_ascii": "FX3_UI_WIRE tid=577 target=0x8280074d op=4 tag1=0xe7641000 tag2=0 result=0 independent_of_unique_lock=1",
+      "first": {
+        "FX3_GPE104_DYNAMIC_ENTER": {
+          "guest_ns": 62038120000,
+          "text": "FX3_GPE104_DYNAMIC_ENTER tid=242 tpidr=0x7f934d16f0 event=1 ns=62038120000 flags=0x2a module=0x11e argument=0x7f8d60232c caller=0x7f8d5ef964 native_call_follows=1"
+        },
+        "FX3_GPE104_DYNAMIC_RETURN": {
+          "guest_ns": 62060262000,
+          "text": "FX3_GPE104_DYNAMIC_RETURN tid=242 tpidr=0x7f934d16f0 event=1 ns=62060262000 flags=0x2a module=0x11e QID=0 QID_available=0 result=0 errno=1020 caller=0x7f8d5ef964 owner_from_separate_kernel_probe=1 no_stat_msgq=1 no_extra_dynamic_id=1"
+        },
+        "FX3_KEY96_POLL": {
+          "guest_ns": 81273552000,
+          "text": "FX3_KEY96_POLL tid=459 poll=1 stage=1 failed=0 receiver_seen=1 done=0 control_step=0 key=0 hold_ms=0 last_send=-2147483647 native_receiver_queue_exists=1 receiver_query_ns=81273552000 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=81273552000"
+        },
+        "FX3_AP89_SCREEN_OPEN_ENTER": {
+          "guest_ns": 179974865008,
+          "text": "FX3_AP89_SCREEN_OPEN_ENTER clock_id=1 ns=179974865008 tid=577 manager=0x7eec6ab470 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1"
+        },
+        "FX3_AP89_SCREEN_CREATE": {
+          "guest_ns": 180156989008,
+          "text": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=180156989008 tid=577 phase=controller_init_return screen_id=0x2ae controller=0x7ee68e90e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1"
+        },
+        "FX3_UI_WIRE": {
+          "guest_ns": null,
+          "text": "FX3_UI_WIRE tid=577 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+        },
+        "FX3_UIPC_RECV_BEGIN": {
+          "guest_ns": null,
+          "text": "FX3_UIPC_RECV_BEGIN tid=227 name=bootin.elf queue=0x94020a caller=0x7fa9fcfc9c original_wait_follows=1"
+        },
+        "FX3_UI_CONFIG_DONE": {
+          "guest_ns": null,
+          "text": "FX3_UI_CONFIG_DONE seq=1 tid=577 caller=0x2191df4 result=0x7 ui_update=1"
+        },
+        "FX3_UI_FILL_EXEC": null,
+        "FX3_GPE_CMD op=": null,
+        "FX3_GPE104_CMD_RETURN": null,
+        "FX3_OSD_HEADLESS_BOUND": null,
+        "FX3_OSD102_COMMIT": null,
+        "FX3_OSD_FRAME_TARGET_VALID": null,
+        "FX3_OSD_NATIVE_SIGNAL": null
+      },
+      "last_key_poll": {
+        "guest_ns": 216527759008,
+        "text": "FX3_KEY96_POLL tid=459 poll=6613 stage=1 failed=0 receiver_seen=1 done=0 control_step=0 key=0 hold_ms=0 last_send=-2147483647 native_receiver_queue_exists=1 receiver_query_ns=216527759008 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=216527759008"
+      }
+    },
+    "r6": {
+      "serial_bytes": 6852189,
+      "max_logged_guest_ns": 440390426000,
+      "marker_counts": {
+        "FX3_GPE104_DYNAMIC_ENTER": 253,
+        "FX3_GPE104_DYNAMIC_RETURN": 253,
+        "FX3_KEY96_POLL": 370,
+        "FX3_AP89_SCREEN_OPEN_ENTER": 4,
+        "FX3_AP89_SCREEN_CREATE": 8,
+        "FX3_UI_WIRE": 63,
+        "FX3_UIPC_RECV_BEGIN": 67,
+        "FX3_UI_CONFIG_DONE": 2,
+        "FX3_UI_FILL_EXEC": 0,
+        "FX3_GPE_CMD op=": 0,
+        "FX3_GPE104_CMD_RETURN": 0,
+        "FX3_OSD_HEADLESS_BOUND": 0,
+        "FX3_OSD102_COMMIT": 0,
+        "FX3_OSD_FRAME_TARGET_VALID": 0,
+        "FX3_OSD_NATIVE_SIGNAL": 0
+      },
+      "screen_open": [
+        {
+          "id2": "0x2ae",
+          "guest_ns": 157728344992
+        },
+        {
+          "id2": "0x2e1",
+          "guest_ns": 204278162992
+        },
+        {
+          "id2": "0x2dd",
+          "guest_ns": 217138588992
+        },
+        {
+          "id2": "0",
+          "guest_ns": 218800826992
+        }
+      ],
+      "ui_wire_first70_target_tag": [
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0xe1de1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1001"
+        ],
+        [
+          "0x8280074d",
+          "0x1000"
+        ]
+      ],
+      "uipc_recv_begin_by_queue": {
+        "0x94020a": 1,
+        "0x8f0139": 1,
+        "0x282078f": 1,
+        "0x82cd08e0": 1,
+        "0x80bd017a": 1,
+        "0x83310a20": 1,
+        "0x807a0020": 1,
+        "0x816f610f": 1,
+        "0x832f0a1b": 1,
+        "0x8055011e": 1,
+        "0x8288076c": 1,
+        "0x8055011f": 1,
+        "0x80550120": 1,
+        "0x80820884": 1,
+        "0x8082088b": 1,
+        "0x805c011d": 1,
+        "0x818104bb": 1,
+        "0x807e002f": 1,
+        "0x80550121": 1,
+        "0x80550122": 1,
+        "0x805502f2": 1,
+        "0x8055001f": 1,
+        "0x80550123": 1,
+        "0x807b0026": 1,
+        "0x807b002b": 1,
+        "0x807c0038": 1,
+        "0x807d07ee": 1,
+        "0x807d07ed": 1,
+        "0x812802f1": 1,
+        "0x80a506fd": 1,
+        "0x8277096f": 1,
+        "0x82380691": 1,
+        "0x80af6181": 1,
+        "0x8102021f": 1,
+        "0x94016a": 1,
+        "0x82386188": 1,
+        "0x81cf6188": 1,
+        "0x81cf6189": 1,
+        "0x802a0116": 1,
+        "0x81cf618a": 1,
+        "0x80020002": 1,
+        "0x8088044d": 1,
+        "0x829008db": 1,
+        "0x80920916": 1,
+        "0x80830450": 1,
+        "0x1480453": 1,
+        "0x8030619f": 1,
+        "0x8285074f": 1,
+        "0x80c7619f": 1,
+        "0x803c619f": 1,
+        "0x81cf619f": 2,
+        "0x5503df": 1,
+        "0x5503e0": 1,
+        "0x81cf61c0": 5,
+        "0x81cf61c1": 4,
+        "0x81cf61c2": 1,
+        "0x809461c1": 1,
+        "0x81cf61c4": 2
+      },
+      "ui_wire_ninth_raw_hex": "4658335f55495f57495245207469643d353631207461726765743d30783832383030373464206f703d3420746167313d3078653164653130303020746167323d3020726573756c743d3020696e646570656e64656e745f6f665f756e697175655f6c6f636b3d31",
+      "ui_wire_ninth_raw_ascii": "FX3_UI_WIRE tid=561 target=0x8280074d op=4 tag1=0xe1de1000 tag2=0 result=0 independent_of_unique_lock=1",
+      "first": {
+        "FX3_GPE104_DYNAMIC_ENTER": {
+          "guest_ns": 24526322000,
+          "text": "FX3_GPE104_DYNAMIC_ENTER tid=238 tpidr=0x7f8e4676f0 event=1 ns=24526322000 flags=0x2a module=0x11e argument=0x7f8859832c caller=0x7f88585964 native_call_follows=1"
+        },
+        "FX3_GPE104_DYNAMIC_RETURN": {
+          "guest_ns": 24529516000,
+          "text": "FX3_GPE104_DYNAMIC_RETURN tid=238 tpidr=0x7f8e4676f0 event=1 ns=24529516000 flags=0x2a module=0x11e QID=0 QID_available=0 result=0 errno=1020 caller=0x7f88585964 owner_from_separate_kernel_probe=1 no_stat_msgq=1 no_extra_dynamic_id=1"
+        },
+        "FX3_KEY96_POLL": {
+          "guest_ns": 45270312992,
+          "text": "FX3_KEY96_POLL tid=416 poll=1 stage=1 failed=0 receiver_seen=1 done=0 control_step=0 key=0 hold_ms=0 last_send=-2147483647 native_receiver_queue_exists=1 receiver_query_ns=45270312992 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=45270312992"
+        },
+        "FX3_AP89_SCREEN_OPEN_ENTER": {
+          "guest_ns": 157728344992,
+          "text": "FX3_AP89_SCREEN_OPEN_ENTER clock_id=1 ns=157728344992 tid=561 manager=0x7ee763f470 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1"
+        },
+        "FX3_AP89_SCREEN_CREATE": {
+          "guest_ns": 158060530000,
+          "text": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=158060530000 tid=561 phase=controller_init_return screen_id=0x2ae controller=0x7ee108d0e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1"
+        },
+        "FX3_UI_WIRE": {
+          "guest_ns": null,
+          "text": "FX3_UI_WIRE tid=561 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+        },
+        "FX3_UIPC_RECV_BEGIN": {
+          "guest_ns": null,
+          "text": "FX3_UIPC_RECV_BEGIN tid=227 name=bootin.elf queue=0x94020a caller=0x7fa39afc9c original_wait_follows=1"
+        },
+        "FX3_UI_CONFIG_DONE": {
+          "guest_ns": null,
+          "text": "FX3_UI_CONFIG_DONE seq=1 tid=561 caller=0x2191df4 result=0x7 ui_update=1"
+        },
+        "FX3_UI_FILL_EXEC": null,
+        "FX3_GPE_CMD op=": null,
+        "FX3_GPE104_CMD_RETURN": null,
+        "FX3_OSD_HEADLESS_BOUND": null,
+        "FX3_OSD102_COMMIT": null,
+        "FX3_OSD_FRAME_TARGET_VALID": null,
+        "FX3_OSD_NATIVE_SIGNAL": null
+      },
+      "last_key_poll": {
+        "guest_ns": 440390426000,
+        "text": "FX3_KEY96_POLL tid=416 poll=15247 stage=1 failed=0 receiver_seen=1 done=0 control_step=0 key=0 hold_ms=0 last_send=-2147483647 native_receiver_queue_exists=1 receiver_query_ns=440390426000 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=440390426000"
+      }
+    }
+  }
+}

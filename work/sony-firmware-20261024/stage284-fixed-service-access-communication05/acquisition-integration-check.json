@@ -1,0 +1,53 @@
+{
+  "status": "FULL_CONTROLLER_V6_ACQUISITION_FAILURE_IPC_PASS",
+  "rows": [
+    {
+      "case": "full-IPC-acquisition-failure-203",
+      "status": "PASS",
+      "metadata": {
+        "step": 203,
+        "name": "device_open",
+        "raw_return": -536870210,
+        "device_open_disposition": 0,
+        "device_open_raw": -536870210
+      },
+      "frames": 40,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "artificial_device_and_cache": true,
+      "no_SERVICE_auth_or_read_or_STOP": true
+    },
+    {
+      "case": "full-IPC-acquisition-failure-210",
+      "status": "PASS",
+      "metadata": {
+        "step": 210,
+        "name": "interface_open",
+        "raw_return": -536870203,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "frames": 40,
+      "kernel_peer_and_private_RCPT5_checked": true,
+      "artificial_device_and_cache": true,
+      "no_SERVICE_auth_or_read_or_STOP": true
+    },
+    {
+      "case": "saved-post-return-acquisition-substitution-denied",
+      "status": "PASS",
+      "live_origin_recreated": false
+    },
+    {
+      "case": "old-reader-rejects-new-v6",
+      "status": "PASS"
+    },
+    {
+      "case": "new-live-authority-denied-and-job-not-staged",
+      "status": "PASS"
+    }
+  ],
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_root_or_USB_operations": 0,
+  "no_existing_process_signalled": true,
+  "whole_real_camera_flow_proven": false
+}

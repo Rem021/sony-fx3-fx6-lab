@@ -1,0 +1,24 @@
+{
+  "schema": "fx6-hybrid-stella-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal6.cpio",
+  "source_sha256": "1d99dccc891380408688beaaaa3863079943e817ec1abad4186aa3c41db30339",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal7.cpio",
+  "output_sha256": "cf260f1137c28ca5130d92410d4c5d57adaaea4fcd09171bb108343583d8c12f",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 20792,
+    "new_bytes": 20854,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libstella.so",
+      "bytes": 272744,
+      "sha256": "d8d1966ecb0e5b90c66046b9b771c60da3557f1a60d5b3b7b5ff2441264840db"
+    }
+  ],
+  "source_member_count": 1145
+}

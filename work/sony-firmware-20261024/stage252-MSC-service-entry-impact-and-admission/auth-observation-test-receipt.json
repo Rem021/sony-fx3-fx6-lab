@@ -1,0 +1,108 @@
+{
+  "status": "PASS_ARCHIVED_COUNTEREXAMPLE_CLASSIFICATION",
+  "archived_cases": 5,
+  "rows": [
+    {
+      "digest_style": "service_full512_plus_material",
+      "pattern": 0,
+      "native_comparisons": [
+        true,
+        true,
+        true
+      ],
+      "observation": {
+        "protocol_state": "EXCHANGE_FINISHED_AUTHENTICATION_UNVERIFIED",
+        "family": 8,
+        "authentication_verified": false,
+        "mode_transition_verified": false,
+        "camera_thread_exit_verified": false,
+        "persistent_effects_excluded": false,
+        "live_operation_authorized": false
+      },
+      "archived_CPU_fixture_only": true
+    },
+    {
+      "digest_style": "service_full512_plus_material",
+      "pattern": 1,
+      "native_comparisons": [
+        true,
+        true,
+        true
+      ],
+      "observation": {
+        "protocol_state": "EXCHANGE_FINISHED_AUTHENTICATION_UNVERIFIED",
+        "family": 8,
+        "authentication_verified": false,
+        "mode_transition_verified": false,
+        "camera_thread_exit_verified": false,
+        "persistent_effects_excluded": false,
+        "live_operation_authorized": false
+      },
+      "archived_CPU_fixture_only": true
+    },
+    {
+      "digest_style": "public_MSC_prefix4",
+      "pattern": 0,
+      "native_comparisons": [
+        false,
+        false,
+        false
+      ],
+      "observation": {
+        "protocol_state": "EXCHANGE_FINISHED_AUTHENTICATION_UNVERIFIED",
+        "family": 8,
+        "authentication_verified": false,
+        "mode_transition_verified": false,
+        "camera_thread_exit_verified": false,
+        "persistent_effects_excluded": false,
+        "live_operation_authorized": false
+      },
+      "archived_CPU_fixture_only": true
+    },
+    {
+      "digest_style": "public_MSC_prefix4",
+      "pattern": 1,
+      "native_comparisons": [
+        false,
+        false,
+        false
+      ],
+      "observation": {
+        "protocol_state": "EXCHANGE_FINISHED_AUTHENTICATION_UNVERIFIED",
+        "family": 8,
+        "authentication_verified": false,
+        "mode_transition_verified": false,
+        "camera_thread_exit_verified": false,
+        "persistent_effects_excluded": false,
+        "live_operation_authorized": false
+      },
+      "archived_CPU_fixture_only": true
+    },
+    {
+      "digest_style": "public_MSC_prefix4",
+      "pattern": 2,
+      "native_comparisons": [
+        false,
+        false,
+        false
+      ],
+      "observation": {
+        "protocol_state": "EXCHANGE_FINISHED_AUTHENTICATION_UNVERIFIED",
+        "family": 8,
+        "authentication_verified": false,
+        "mode_transition_verified": false,
+        "camera_thread_exit_verified": false,
+        "persistent_effects_excluded": false,
+        "live_operation_authorized": false
+      },
+      "archived_CPU_fixture_only": true
+    }
+  ],
+  "original_archive_sha256": "a16c2cf79dd60134ad74fa254b98152bf8df565059a5d2ee06d2bb0bf5763dde",
+  "synthetic_frame_format_cases": 3,
+  "malformed_transcript_rejections": 6,
+  "old_original_guest_tests_repeated": false,
+  "original_or_downloaded_code_executed": false,
+  "USB_cache_admin_or_camera_operations": 0,
+  "authentication_acceptance_not_inferred": true
+}

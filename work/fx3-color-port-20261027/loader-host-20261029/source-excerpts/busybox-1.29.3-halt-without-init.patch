@@ -1,0 +1,24 @@
+diff -Naur busybox-1.29.3_orig/init/halt.c busybox-1.29.3/init/halt.c
+--- busybox-1.29.3_orig/init/halt.c	2018-10-09 10:40:29.224080401 +0530
++++ busybox-1.29.3/init/halt.c	2018-10-09 11:53:47.288214485 +0530
+@@ -172,7 +172,7 @@
+ 	static const smallint signals[] = { SIGUSR1, SIGUSR2, SIGTERM };
+ 
+ 	int delay = 0;
+-	int which, flags, rc;
++        int which, flags, rc = 1;
+ 
+ 	/* Figure out which applet we're running */
+ 	if (ENABLE_HALT && !ENABLE_POWEROFF && !ENABLE_REBOOT)
+@@ -205,10 +205,7 @@
+ 		sync();
+ 
+ 	/* Perform action. */
+-	rc = 1;
+-	if (!(flags & 4)) { /* no -f */
+-//TODO: I tend to think that signalling linuxrc is wrong
+-// pity original author didn't comment on it...
++        if (ENABLE_INIT && !(flags & 4)) { /* no -f */
+ 		if (ENABLE_LINUXRC) {
+ 			/* talk to linuxrc */
+ 			/* bbox init/linuxrc assumed */

@@ -1,0 +1,65 @@
+00003bcc sub        sp, sp, #0x200, lsl #12
+00003bd0 sub        sp, sp, #0x10
+00003bd4 stp        x29, x30, [sp, #-0x30]!
+00003bd8 mov        x29, sp
+00003bdc stp        x19, x20, [sp, #0x10]
+00003be0 stp        x21, x22, [sp, #0x20]
+00003be4 str        wzr, [x29, #0x34]
+00003be8 str        xzr, [x29, #0x38]
+00003bec cbz        x0, #0x3c30
+00003bf0 add        x1, x29, #0x38
+00003bf4 mov        w2, #1
+00003bf8 bl         #0x1370 ; Fsys_Open
+00003bfc cbnz       w0, #0x3c30
+00003c00 ldr        x0, [x29, #0x38]
+00003c04 add        x1, x29, #0x34
+00003c08 bl         #0x14e0 ; udtr_cmd_search_chank
+00003c0c uxth       w19, w0
+00003c10 cbnz       w19, #0x3c24
+00003c14 ldr        w2, [x29, #0x34]
+00003c18 cmp        w2, #0x200, lsl #12
+00003c1c b.ls       #0x3c50
+00003c20 mov        w19, #3
+00003c24 ldr        x0, [x29, #0x38]
+00003c28 bl         #0x13f0 ; Fsys_Close
+00003c2c cbz        w0, #0x3c34
+00003c30 mov        w19, #3
+00003c34 ldp        x21, x22, [sp, #0x20]
+00003c38 mov        w0, w19
+00003c3c ldp        x19, x20, [sp, #0x10]
+00003c40 ldp        x29, x30, [sp], #0x30
+00003c44 add        sp, sp, #0x200, lsl #12
+00003c48 add        sp, sp, #0x10
+00003c4c ret        
+00003c50 add        x22, x29, #0x40
+00003c54 ldr        x0, [x29, #0x38]
+00003c58 mov        x1, x22
+00003c5c bl         #0x1440 ; Fsys_Read
+00003c60 tbnz       w0, #0x1f, #0x3c20
+00003c64 adrp       x20, #0x3000
+00003c68 adrp       x2, #0x3000
+00003c6c add        x2, x2, #0xe06 ; literal 'tmpfs'
+00003c70 add        x20, x20, #0xde3 ; literal '/tmp_updater'
+00003c74 adrp       x4, #0x3000
+00003c78 mov        x1, x20 ; literal '/tmp_updater'
+00003c7c add        x4, x4, #0xdfe ; literal 'size=5M'
+00003c80 mov        x0, x2 ; literal 'tmpfs'
+00003c84 mov        x3, #0xc0ed0000
+00003c88 bl         #0x1400 ; mount
+00003c8c uxth       w19, w0
+00003c90 cbnz       w19, #0x3c20
+00003c94 adrp       x0, #0x3000
+00003c98 mov        w1, #0x42
+00003c9c add        x0, x0, #0xd85 ; literal '/tmp_updater/Firm.dat'
+00003ca0 bl         #0x1350 ; open
+00003ca4 mov        w21, w0
+00003ca8 tbz        w0, #0x1f, #0x3cb8
+00003cac mov        x0, x20
+00003cb0 bl         #0x1550 ; umount
+00003cb4 b          #0x3c20
+00003cb8 ldr        w2, [x29, #0x34]
+00003cbc mov        x1, x22
+00003cc0 bl         #0x1560 ; write
+00003cc4 mov        w0, w21
+00003cc8 bl         #0x1540 ; close
+00003ccc b          #0x3c24

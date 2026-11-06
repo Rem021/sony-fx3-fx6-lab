@@ -1,0 +1,20 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap80b2digital-bd9672cf",
+  "enum_marker": [
+    "FX3_PANEL_REVERSE_ENUM tid=324 sequence=0x7f7c182da0 enum=2 captured_before_wrapper=1"
+  ],
+  "request_line": "FX3_BOOT_TAIL_REQUEST tid=324 destination=0x92840747 op=4 source=0x81cf61c0 bytes=28 observed=3 flow=0 truncated=0 raw=0d2019011c0001800101000000000000000000000000000000000000 attempt_only=1 reply_added_here=0",
+  "full_raw": "0d2019011c0001800101000000000000000000000000000000000000",
+  "frames": [
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=0 fp=0x7f2b9ab6d0 lr=0x7f4020c264 module=/usr/lib/appFw.so relative=0x2de7264",
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=1 fp=0x7f2b9ab730 lr=0x7f402110f0 module=/usr/lib/appFw.so relative=0x2dec0f0",
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=2 fp=0x7f2b9ab7b0 lr=0x7f401f58c0 module=/usr/lib/appFw.so relative=0x2dd08c0",
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=3 fp=0x7f2b9ab820 lr=0x7f3ff84cb8 module=/usr/lib/appFw.so relative=0x2b5fcb8",
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=4 fp=0x7f2b9ab840 lr=0x7f401f09c0 module=/usr/lib/appFw.so relative=0x2dcb9c0",
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=5 fp=0x7f2b9ab880 lr=0x7f40396ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=6 fp=0x7f2b9ab8d0 lr=0x7f91e4f184 module=/usr/lib/libosal_utm.so relative=0x1184",
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=7 fp=0x7f2b9ab8f0 lr=0x7f91df9020 module=/lib/libpthread.so.0 relative=0x7020",
+    "FX3_BOOT_TAIL_FRAME destination=0x92840747 seq=3 depth=8 fp=0x7f2b9ab940 lr=0x7f916d8dbc module=/lib/libc.so.6 relative=0xc8dbc"
+  ],
+  "identity_reply_enabled": false
+}

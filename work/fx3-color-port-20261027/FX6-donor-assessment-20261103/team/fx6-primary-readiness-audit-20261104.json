@@ -1,0 +1,264 @@
+{
+  "checked_utc": "2026-11-05T04:19:01.749303+00:00",
+  "user_priority": "FX6 software adaptation primary; FX3 usability parallel supporting line",
+  "route": "fixed FX3 platform, FX3 kernel plus FX6 upper system as previously accepted",
+  "scope": "Read-only audit of existing artifacts; no patching, test execution, VM, source reseal, or retry of provider-rejected work.",
+  "last_run": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1",
+    "receipt_sha256": "0e2c7745ab4d2407a247b4cb28d449293eb4f055551bc9cbce1ee8fe683ebee0",
+    "stop": "unknown_loader_return",
+    "elapsed_seconds": 38.5776543749962,
+    "diagnostic_captured": false,
+    "lifecycle_healthy": false,
+    "qemu_reaped": true
+  },
+  "candidate_integrity": {
+    "entries": 33,
+    "matched": 30,
+    "files": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/patch_ap.py",
+        "expected": "e586d2531f11d7ea56d585f29e0a6b81b4df0105eea4e1214bebdeefc066bc53",
+        "actual": "e586d2531f11d7ea56d585f29e0a6b81b4df0105eea4e1214bebdeefc066bc53",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/gen_bridge.py",
+        "expected": "f4c96e2d7a1d575c206292906d4366796b4d5b8a40375fcce4f49b30bc320e54",
+        "actual": "f4c96e2d7a1d575c206292906d4366796b4d5b8a40375fcce4f49b30bc320e54",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/extract_link_inputs.py",
+        "expected": "4c4c15de1dcb1ead5f594358fb9c777fd27d922b6117503df68d6d4f0d59323d",
+        "actual": "4c4c15de1dcb1ead5f594358fb9c777fd27d922b6117503df68d6d4f0d59323d",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/build_guest.py",
+        "expected": "3bca6a5b080aa704fddb95a65b2663f45c57a3c716aa358786d3198d7f2ee3b6",
+        "actual": "3bca6a5b080aa704fddb95a65b2663f45c57a3c716aa358786d3198d7f2ee3b6",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/build_cpio.py",
+        "expected": "a0d4e9c0285ed41094fbc9b66df4806e76b321bebb95535a019c6aa4c5566f71",
+        "actual": "a0d4e9c0285ed41094fbc9b66df4806e76b321bebb95535a019c6aa4c5566f71",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/audit_candidate.py",
+        "expected": "537ed0609976e1af18386c5e7c87b52e1e748ad2e67107324dce4d5bfd138adf",
+        "actual": "537ed0609976e1af18386c5e7c87b52e1e748ad2e67107324dce4d5bfd138adf",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/audit_elf.py",
+        "expected": "ec82c5ecb0a4642ba46af4226c635cf4b3e58bf8e7edcf3967f7e9385f00438d",
+        "actual": "ec82c5ecb0a4642ba46af4226c635cf4b3e58bf8e7edcf3967f7e9385f00438d",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/guest_probe.py",
+        "expected": "bb5c5e18b98cced5f86d4a57ff5487138d9cbc62ef7d98e4dfb4a1164db27921",
+        "actual": "f10defaad641b3565d49c78225e84c9bcc4d60dabe4e7fdc70a82883de7c0842",
+        "matches_sealed_manifest": false
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/run_guest_once.py",
+        "expected": "7c6be209e93120181f581556bec7667ea534c3747697a1246800ee229da20ee9",
+        "actual": "5723f483d3c9ef07a490bd66a12699a3938d7de912294d2c39eced3530710b39",
+        "matches_sealed_manifest": false
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/test_core.c",
+        "expected": "89274089bc605af848307f5a6a0ee780e65aa1050d646c181a9352845610bb3d",
+        "actual": "89274089bc605af848307f5a6a0ee780e65aa1050d646c181a9352845610bb3d",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/test_guest_host.py",
+        "expected": "ec7180da919c0338ddc9074d9d16a8a78cb1cb84c8b284fea886ab8bee2dbbdd",
+        "actual": "c75eb0cb7d5fa3f83e765fa5a1fb7412315a0d950b578b4e299c868ec7e107e9",
+        "matches_sealed_manifest": false
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/finalize.py",
+        "expected": "e16f40a65a010ee0238c9145ef2bc91b6f4346b7391c348b7b49718edea5336c",
+        "actual": "e16f40a65a010ee0238c9145ef2bc91b6f4346b7391c348b7b49718edea5336c",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/bridge_core.c",
+        "expected": "ea043f3e40901b05340ba5c4e7a8c47b4816fc0daef718d904c6db772a50f46b",
+        "actual": "ea043f3e40901b05340ba5c4e7a8c47b4816fc0daef718d904c6db772a50f46b",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/bridge_core.h",
+        "expected": "5b2aceb6eaab562d82ea55b675ddc8c88c7c94cad9e41bb84b546380ce6d0d0c",
+        "actual": "5b2aceb6eaab562d82ea55b675ddc8c88c7c94cad9e41bb84b546380ce6d0d0c",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/bridge_runtime.c",
+        "expected": "6324b0576dcdf0e3e1048044b9aaf4efee25117bc6762c16c1ecc85032b46a76",
+        "actual": "6324b0576dcdf0e3e1048044b9aaf4efee25117bc6762c16c1ecc85032b46a76",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/bridge_stops.S",
+        "expected": "8af9fb53a740c4acea239dcb7da01b8660d9c747a48a00f3bdce135fb246fb26",
+        "actual": "8af9fb53a740c4acea239dcb7da01b8660d9c747a48a00f3bdce135fb246fb26",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/sha256.c",
+        "expected": "296cab5215ee3116647cd26107109ae8f9f243af34e71d35a81c1904d824dc15",
+        "actual": "296cab5215ee3116647cd26107109ae8f9f243af34e71d35a81c1904d824dc15",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/sha256.h",
+        "expected": "5d1e26db49e164f1c7262bc7dbbfef85d0de12186071f1547fa6df469920bbb7",
+        "actual": "5d1e26db49e164f1c7262bc7dbbfef85d0de12186071f1547fa6df469920bbb7",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/callback_offsets.h",
+        "expected": "4e416ff4f8c1825fed89ded7c39c416e2b7fe00c6c0e05fba06d064410f81e49",
+        "actual": "4e416ff4f8c1825fed89ded7c39c416e2b7fe00c6c0e05fba06d064410f81e49",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/bridge_pins.h",
+        "expected": "7649b37555f6487c97b217f0b9aa66d4623fae7dfb87a38885588854f842783a",
+        "actual": "7649b37555f6487c97b217f0b9aa66d4623fae7dfb87a38885588854f842783a",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/appFw-bridge.so",
+        "expected": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1",
+        "actual": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/libfx6diag.so",
+        "expected": "b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b",
+        "actual": "b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/guest-veneer.cpio",
+        "expected": "8abed37418a0f07e8193228ca2242f185103b6b5f98959b98821bbeeb3ad3b5d",
+        "actual": "8abed37418a0f07e8193228ca2242f185103b6b5f98959b98821bbeeb3ad3b5d",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/genuine-input.bin",
+        "expected": "585d8918da368cec6ef689aa3c14dc3306311ab6661c0bffc9a02e1685430cf1",
+        "actual": "585d8918da368cec6ef689aa3c14dc3306311ab6661c0bffc9a02e1685430cf1",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/ap-patch.json",
+        "expected": "8a1884edb504845dbad960b8e8142b2a278f1b6341bd81a86abb9ca828439e97",
+        "actual": "8a1884edb504845dbad960b8e8142b2a278f1b6341bd81a86abb9ca828439e97",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/cpio-build.json",
+        "expected": "fba4862c4ded550c1aef940dcbff0246a5ca121bdc971e069fd552d95c9e7524",
+        "actual": "fba4862c4ded550c1aef940dcbff0246a5ca121bdc971e069fd552d95c9e7524",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/static-receipt.json",
+        "expected": "3b67d2e0cc6fc6650e9a90bb05294e5fdbd34c44fd35a180c5647244c8200082",
+        "actual": "3b67d2e0cc6fc6650e9a90bb05294e5fdbd34c44fd35a180c5647244c8200082",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/elf-audit.json",
+        "expected": "af84924d8503daa25ab0fcf48fd3d9379e3edb2279297237ee92ff895a3d3704",
+        "actual": "af84924d8503daa25ab0fcf48fd3d9379e3edb2279297237ee92ff895a3d3704",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/cross-build.json",
+        "expected": "b59af2774ce96dd176d7fe77c8208b269cbc660e5e300a3890a7cf9f5e458bcd",
+        "actual": "b59af2774ce96dd176d7fe77c8208b269cbc660e5e300a3890a7cf9f5e458bcd",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/host-tests.json",
+        "expected": "b9d13282eef94dade28fa1703064a2ae5e5f285ab1ef959a3bee030705c24370",
+        "actual": "b9d13282eef94dade28fa1703064a2ae5e5f285ab1ef959a3bee030705c24370",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/preflight.json",
+        "expected": "73cd3a3c69202d66e2bd50e6e9660e1c9fee3f6959f2c19b58b6d6339d581fd6",
+        "actual": "73cd3a3c69202d66e2bd50e6e9660e1c9fee3f6959f2c19b58b6d6339d581fd6",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/core-tests.txt",
+        "expected": "8f829bb27c619c369a99e9680ae7283d48cb8268a62816c7947e3cf5052152a0",
+        "actual": "8f829bb27c619c369a99e9680ae7283d48cb8268a62816c7947e3cf5052152a0",
+        "matches_sealed_manifest": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runner-diff.patch",
+        "expected": "018f43d7cb9994e01e9ff15ccdea25740de8f1461ee8e001279b43f128610b44",
+        "actual": "018f43d7cb9994e01e9ff15ccdea25740de8f1461ee8e001279b43f128610b44",
+        "matches_sealed_manifest": true
+      }
+    ],
+    "historical_observer_copies": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/observer-guest_probe.py",
+        "sha256": "bb5c5e18b98cced5f86d4a57ff5487138d9cbc62ef7d98e4dfb4a1164db27921",
+        "matches_original_sealed_source": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/observer-run_guest_once.py",
+        "sha256": "7c6be209e93120181f581556bec7667ea534c3747697a1246800ee229da20ee9",
+        "matches_original_sealed_source": true
+      }
+    ],
+    "additional_unsealed_file": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/test_im_inherited.py",
+      "sha256": "32d5a9a3734a57fc95518aa5668999e162e619909f02d2b070cc00b66f70ad83"
+    }
+  },
+  "open_gates": [
+    {
+      "gate": "candidate source integrity and regression evidence",
+      "status": "Three current sources differ from accepted manifest; current tests and runner cannot inherit old PASS_NO_QEMU receipt."
+    },
+    {
+      "gate": "first bridge/original Init",
+      "status": "Not observed in last run; stopped unknown_loader_return."
+    },
+    {
+      "gate": "callback ABI and ownership",
+      "status": "Only limited offline subsets; direct movie-event callbacks have incompatible payload sizes; no complete runtime compatibility."
+    },
+    {
+      "gate": "boot to usable FX6 menu",
+      "status": "No evidence."
+    }
+  ],
+  "execution_blocker": {
+    "message": "msg_chaterr_5a1b17d63a36b951f0927f33",
+    "task": "task_32e1aa43202b",
+    "dispatch": "ctx_86469d59ce80",
+    "reason": "Provider automatic safety flag for possible cybersecurity risk on AArch64 guest veneer/precise loader candidate task",
+    "status": "unresolved; no retry, model reroute, or blocked implementation executed"
+  },
+  "parallel_work": {
+    "FX6": "Coordinator read-only compatibility/readiness audit; primary priority",
+    "FX3": "r30 offline bounded startup observation candidate, ctx_671a3b6338c5 / task_6540dfe4e72f"
+  }
+}

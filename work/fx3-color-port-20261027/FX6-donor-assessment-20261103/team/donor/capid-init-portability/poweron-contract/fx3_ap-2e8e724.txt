@@ -1,0 +1,36 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2e8e724: 910163b4     	add	x20, x29, #0x58
+ 2e8e728: f90023f9     	str	x25, [sp, #0x40]
+ 2e8e72c: 910223b3     	add	x19, x29, #0x88
+ 2e8e730: 940385f7     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e8e734: 9101a3b9     	add	x25, x29, #0x68
+ 2e8e738: aa1403e0     	mov	x0, x20
+ 2e8e73c: 52800002     	mov	w2, #0x0                // =0
+ 2e8e740: 52800001     	mov	w1, #0x0                // =0
+ 2e8e744: 979c0ea7     	bl	0x15921e0 <_ZN3MWF6ObjMsgC1Ejj@plt>
+ 2e8e748: aa1403e0     	mov	x0, x20
+ 2e8e74c: 528204c2     	mov	w2, #0x1026             // =4134
+ 2e8e750: 528c2181     	mov	w1, #0x610c             // =24844
+ 2e8e754: 979c150f     	bl	0x1593b90 <_ZN3MWF6ObjMsg14SetCateIdMsgIdEjj@plt>
+ 2e8e758: 394002e1     	ldrb	w1, [x23]
+ 2e8e75c: aa1303e0     	mov	x0, x19
+ 2e8e760: 979c14fc     	bl	0x1593b50 <_ZN3MWF17ParamStd_TemplateIbLNS_5Param4TypeE1EEC1Eb@plt>
+ 2e8e764: aa1303e2     	mov	x2, x19
+ 2e8e768: aa1403e0     	mov	x0, x20
+ 2e8e76c: 52830001     	mov	w1, #0x1800             // =6144
+ 2e8e770: 979c0fc8     	bl	0x1592690 <_ZN3MWF6ObjMsg8AddParamEjRKNS_5ParamE@plt>
+ 2e8e774: aa1303e0     	mov	x0, x19
+ 2e8e778: 979c171a     	bl	0x15943e0 <_ZN3MWF17ParamStd_TemplateIbLNS_5Param4TypeE1EED1Ev@plt>
+ 2e8e77c: b94006e1     	ldr	w1, [x23, #0x4]
+ 2e8e780: aa1303e0     	mov	x0, x19
+ 2e8e784: 979c165f     	bl	0x1594100 <_ZN3MWF17ParamStd_TemplateIjLNS_5Param4TypeE8EEC1Ej@plt>
+ 2e8e788: aa1303e2     	mov	x2, x19
+ 2e8e78c: aa1403e0     	mov	x0, x20
+ 2e8e790: 52840041     	mov	w1, #0x2002             // =8194
+ 2e8e794: 979c0fbf     	bl	0x1592690 <_ZN3MWF6ObjMsg8AddParamEjRKNS_5ParamE@plt>
+ 2e8e798: aa1303e0     	mov	x0, x19

@@ -1,0 +1,24 @@
+{
+  "schema": "fx6-hybrid-cvdiag2-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal21.cpio",
+  "source_sha256": "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal36.cpio",
+  "output_sha256": "6eaf98eabb6911ebe390b1f30b66038fca940b339de8729273c74850a83f979d",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 21195,
+    "new_bytes": 21218,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libcvdiag2.so",
+      "bytes": 4824,
+      "sha256": "244c7b9b214f5b7b20fd767b12c68dcf5a9449369d20389065cd439c7f3fe757"
+    }
+  ],
+  "source_member_count": 1158
+}

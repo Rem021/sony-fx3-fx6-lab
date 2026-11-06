@@ -1,0 +1,15 @@
+_ZN7Updater15DecryptorModule10updateDataEv
+0000b6a4 stp       x29, x30, [sp, #-0x20]!
+0000b6a8 mov       x2, #0x400
+0000b6ac mov       x29, sp
+0000b6b0 str       x19, [sp, #0x10]
+0000b6b4 mov       x19, x0
+0000b6b8 ldr       x0, [x0, #0x48]
+0000b6bc ldr       x1, [x0]
+0000b6c0 ldr       x3, [x1, #0x40]
+0000b6c4 add       x1, x19, #0xb0
+0000b6c8 blr       x3
+0000b6cc str       x0, [x19, #0x4b0]
+0000b6d0 ldr       x19, [sp, #0x10]
+0000b6d4 ldp       x29, x30, [sp], #0x20
+0000b6d8 ret       

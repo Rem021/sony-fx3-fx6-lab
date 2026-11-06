@@ -1,0 +1,21 @@
+{
+  "created_utc": "2026-10-28T13:55:46.431731+00:00",
+  "argv": [
+    "/usr/bin/codesign",
+    "-dvv",
+    "--entitlements",
+    ":-",
+    "/private/tmp/fx3-702-msc-owner-20261028-04/source-helper"
+  ],
+  "returncode": 0,
+  "selected_signature_fields": [
+    "Identifier=owner-native-helper",
+    "Format=Mach-O thin (arm64)",
+    "CodeDirectory v=20400 size=556 flags=0x20002(adhoc,linker-signed) hashes=14+0 location=embedded",
+    "Signature=adhoc",
+    "TeamIdentifier=not set"
+  ],
+  "entitlements_output": "",
+  "scope": "static user-staged executable signature only; no signing, permission or device operation",
+  "source_sha256": "661e679e725a6b5cc9431c63b747fb1d15412b05856663461bb856c232b00651"
+}

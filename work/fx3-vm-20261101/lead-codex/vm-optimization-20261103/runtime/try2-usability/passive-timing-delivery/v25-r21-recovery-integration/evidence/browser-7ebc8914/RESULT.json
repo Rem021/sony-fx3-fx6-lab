@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "scope": "offline Chrome fixture, no VM or real operator semantic review",
+  "cases": {
+    "historical_review_B_current_A_cancel_only": {
+      "result": {
+        "attempt_id": "8d48c117-aa27-411d-8d92-d7325ffa7053",
+        "cancel_invoked": true,
+        "current_frame": {
+          "generation": 3,
+          "sequence": 3,
+          "sha": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9"
+        },
+        "due_ms": 22983.299999952316,
+        "historical_review_not_current": true,
+        "no_confirm_visual": true,
+        "no_guest_key": true,
+        "no_visual_approval": true,
+        "nonce": "72fcc262-3f95-4dd7-bc16-64c8a274992e",
+        "old_review": {
+          "generation": 2,
+          "sha": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1"
+        },
+        "performance_ms": 3743.099999964237,
+        "server_atomic_permission": false,
+        "status": "cancelled_unqueued_alarm_only"
+      },
+      "key_posts": 1,
+      "confirm_posts": 0,
+      "guest_steps": 0
+    },
+    "separate_explicit_new_click": {
+      "key_posts": 2,
+      "confirm_posts": 0,
+      "pending": 1
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "status": "PASS_HOST_ONLY_NO_QEMU",
+  "historical_serial_sha256": "034552e396f4dbd49aa55e85fb931272d009e41cf7c0a413d85b373b9c7b8536",
+  "historical_original_module_rc_zero": true,
+  "synthetic_marker_cases": {
+    "uipc_node_absent": "FX3_UIPC_DEPENDENCY_OR_NODE_NOT_READY",
+    "ldec_insmod_failure": "FX3_LDEC103_INSMOD_RC=1",
+    "ldec_selftest_failure": "FX3_LDEC103_SELFTEST_RC=4",
+    "file_ready_failure": "FX3_FILE103_READY_FAILED before_CP_API_bind=1",
+    "cp_helper_refusal": "FX3_BACKUP_CP_INSMOD_RC=1",
+    "unexpected_cp_success": "FX3_BACKUP_CP_INSMOD_RC=0",
+    "pre_ap_guard": true
+  },
+  "incomplete_line_rejected": true,
+  "platform_or_guest_modified": false,
+  "qemu_started": false
+}

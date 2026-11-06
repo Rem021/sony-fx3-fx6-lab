@@ -1,0 +1,101 @@
+{
+  "result": "THREE_KEY_BOUNDED_RUN_AND_CLEANUP_VERIFIED_NOT_LONG_SESSION_ACCEPTANCE",
+  "source_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssallinternal-keycontrast-06db37ef",
+  "receipt_sha256": "dbe36cd0181ca51143dc06314d3e6f2675ae38fcd6b0e2cced4e43ea8d78a948",
+  "serial_sha256": "863195a375445b53dc847f6790a441ef882f66e91dca18b327b27dae94933b34",
+  "duration_seconds": 551.2487710000132,
+  "keys": [
+    {
+      "step": 1,
+      "key": "0x1ab",
+      "native_receipts": [
+        {
+          "status": 1,
+          "byte_range": [
+            6453401,
+            6453489
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0"
+        },
+        {
+          "status": 0,
+          "byte_range": [
+            6462169,
+            6462257
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0"
+        }
+      ]
+    },
+    {
+      "step": 2,
+      "key": "0x15",
+      "native_receipts": [
+        {
+          "status": 1,
+          "byte_range": [
+            15819413,
+            15819500
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=2 key=0x15 status=1 from_type=1 source=0x410025 native_result=0"
+        },
+        {
+          "status": 0,
+          "byte_range": [
+            15830901,
+            15830988
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=2 key=0x15 status=0 from_type=1 source=0x410025 native_result=0"
+        }
+      ]
+    },
+    {
+      "step": 3,
+      "key": "0x30",
+      "native_receipts": [
+        {
+          "status": 1,
+          "byte_range": [
+            19407932,
+            19408019
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=3 key=0x30 status=1 from_type=1 source=0x410025 native_result=0"
+        },
+        {
+          "status": 0,
+          "byte_range": [
+            19442097,
+            19442184
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=3 key=0x30 status=0 from_type=1 source=0x410025 native_result=0"
+        }
+      ]
+    }
+  ],
+  "stop_cause": "Ctrl-C",
+  "cleanup": {
+    "qemu_exit": 0,
+    "process_absent_now": true,
+    "original_api16_readback": "000b00b4fd7bbba9fd030091f35301a9",
+    "locks": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "free_now": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "free_now": true
+      }
+    ]
+  },
+  "runtime_reported_native_poweroff": false,
+  "runtime_reported_black_after_ready": [],
+  "limits": [
+    "only 3 keys",
+    "manual stop before 15 minute limit",
+    "no actual browser round",
+    "no 31/32 key validation",
+    "sender MSS calls do not prove kernel timer state",
+    "not FX6 run"
+  ]
+}

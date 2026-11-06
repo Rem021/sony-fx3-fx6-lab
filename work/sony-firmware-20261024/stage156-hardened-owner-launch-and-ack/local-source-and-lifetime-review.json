@@ -1,0 +1,24 @@
+{
+  "status": "PASS_LOCAL_FIXTURE_REVIEW_NOT_PRIVILEGED_OR_DEVICE_ACCEPTANCE",
+  "fixed_grant_id": "fx3-702-msc-owner-20261028-01",
+  "bundle_sha256": "e099d58b73261c076491fc0c08c9b1b4b72f5a844fe3af22b3d8060110a956a4",
+  "native_helper_sha256": "a68bbdd86a4894792864955c73461cfb04477715031835880bceb800cc4f9c73",
+  "current_launch_fixture_checks": 12,
+  "current_recorded_observer_checks": 5,
+  "actual_own_parent_exit_tested": true,
+  "no_matching_fixture_helper_processes_currently_present": true,
+  "C_core_and_native_IOKit_source_equal_stage155": true,
+  "entry_schema": 2,
+  "root_IOKit_executable_or_administrator_prompt_executed": false,
+  "new_device_or_cache_queries": 0,
+  "authorization_unchanged": true,
+  "residual_limits": [
+    "Own fixtures do not prove root process metadata visibility, root staging permissions, Seize/capture/release or actual driver return on this Mac.",
+    "Native calls remain cooperatively bounded only; a blocked IOKit syscall cannot be safely cancelled. No kill, reset or automatic retry is implemented.",
+    "SDK capture excludes mass-storage driver termination; if MSC remains associated, native flow aborts before interface claim, returns and reports observed or UNKNOWN state. Success is not assumed.",
+    "Native helper rejects mounted or unknown media before capture and again before claim; user must manually eject all FX3 volumes while leaving MSC connected. No automatic unmount or configuration/reset fallback.",
+    "Recorded observer proves current PID incarnation or confirmed absence and receipt consistency only. It does not prove independent driver functionality or camera recovery.",
+    "Root staging and immutable lease create task records under /private/var/root/fx3-owner-trials and a fixed internal private temporary frame directory. No daemon, driver, login item or reusable root executor is installed.",
+    "Backup, actual restore/readback, independent rescue, actual target HEVC recording and persistent package remain unproven and unreleased."
+  ]
+}

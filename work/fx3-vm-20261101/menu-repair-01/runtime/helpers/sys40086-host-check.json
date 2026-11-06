@@ -1,0 +1,18 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-pthread",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-sys40086.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-sys40086"
+  ],
+  "exit": 0,
+  "stdout": "SYS0400_PASS exact10B/independent12B_barestatus0/ten_byte_mutations_length_source/duplicate_one_reply/stage_rollback_send_alloc/original_caller_owned/native_free_counter_pending\n",
+  "stderr": "FX3_SYS_TCMODE_COMMIT command=0x400 mode=0 status=0 source=0x803061c0 lease=1 generation=1 software_config_accepted=1 pending_counter_backend=1 physical_timecode=0 request_caller_owned=1 reply_bytes=12 reply=0d2000140c00018000000000\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x400 lease=1 result=0\nFX3_SYS_TCMODE_CONSUMED lease=1 source=0x803061c0 result=0 pending_counter_backend=1 physical_timecode=0\n"
+}

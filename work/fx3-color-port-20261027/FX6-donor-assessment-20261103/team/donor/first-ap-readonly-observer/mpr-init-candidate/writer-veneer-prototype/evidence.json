@@ -1,0 +1,357 @@
+{
+  "scope": "original ELF instruction static, prior real parameter snapshot, own host only",
+  "input_sha256": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/capid-init-portability/callback-fields.json": "aef19dda30c2120538ad4ed66b536b25f01eb94c8326239658b0f5953ff660a5",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/mpr-observation.json": "fa8e834e999aafb573118ee34de89b1d7b38111fc13ef1c7122ddef774ef31e2",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "instructions": {
+    "fx3_mpr": {
+      "init_ldrh": {
+        "va": "0xb7080",
+        "fileoff": "0xb7080",
+        "bytes_le": "63e64379",
+        "objdump": "b7080: 7943e663     \tldrh\tw3, [x19, #0x1f2]"
+      },
+      "init_record_call": {
+        "va": "0xb7094",
+        "fileoff": "0xb7094",
+        "bytes_le": "9b22ff97",
+        "objdump": "b7094: 97ff229b     \tbl\t0x7fb00 <_ZN3mpr20IntegRecordMovieInitEjPKjjt@plt>"
+      },
+      "u16_uxth": {
+        "va": "0xd603c",
+        "fileoff": "0xd603c",
+        "bytes_le": "793c0053",
+        "objdump": "d603c: 53003c79     \tuxth\tw25, w3"
+      },
+      "first_writer_new": {
+        "va": "0xd60a8",
+        "fileoff": "0xd60a8",
+        "bytes_le": "008b85d2",
+        "objdump": "d60a8: d2858b00     \tmov\tx0, #0x2c58             // =11352"
+      },
+      "second_writer_new": {
+        "va": "0xd60c8",
+        "fileoff": "0xd60c8",
+        "bytes_le": "008b85d2",
+        "objdump": "d60c8: d2858b00     \tmov\tx0, #0x2c58             // =11352"
+      },
+      "first_param_store": {
+        "va": "0xd60e4",
+        "fileoff": "0xd60e4",
+        "bytes_le": "b9430179",
+        "objdump": "d60e4: 790143b9     \tstrh\tw25, [x29, #0xa0]"
+      },
+      "first_writer_initializer": {
+        "va": "0xd60f8",
+        "fileoff": "0xd60f8",
+        "bytes_le": "990d0194",
+        "objdump": "d60f8: 94010d99     \tbl\t0x11975c <_ZN16XavcsMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0x4b4>"
+      },
+      "second_param_store": {
+        "va": "0xd6110",
+        "fileoff": "0xd6110",
+        "bytes_le": "b9930179",
+        "objdump": "d6110: 790193b9     \tstrh\tw25, [x29, #0xc8]"
+      },
+      "second_writer_initializer": {
+        "va": "0xd6120",
+        "fileoff": "0xd6120",
+        "bytes_le": "8f0d0194",
+        "objdump": "d6120: 94010d8f     \tbl\t0x11975c <_ZN16XavcsMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0x4b4>"
+      },
+      "init_log_u16_read": {
+        "va": "0x119798",
+        "fileoff": "0x119798",
+        "bytes_le": "20304079",
+        "objdump": "119798: 79403020     \tldrh\tw0, [x1, #0x18]"
+      },
+      "init_log_u16_stack": {
+        "va": "0x1197a8",
+        "fileoff": "0x1197a8",
+        "bytes_le": "a0a700b9",
+        "objdump": "1197a8: b900a7a0     \tstr\tw0, [x29, #0xa4]"
+      },
+      "init_log_call": {
+        "va": "0x1197c4",
+        "fileoff": "0x1197c4",
+        "bytes_le": "9af0ff97",
+        "objdump": "1197c4: 97fff09a     \tbl\t0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>"
+      },
+      "log_osal_allocation": {
+        "va": "0x115a70",
+        "fileoff": "0x115a70",
+        "bytes_le": "38a2fd97",
+        "objdump": "115a70: 97fda238     \tbl\t0x7e350 <osal_valloc_msg_wait@plt>"
+      },
+      "writer_param_read": {
+        "va": "0x1197c8",
+        "fileoff": "0x1197c8",
+        "bytes_le": "80324079",
+        "objdump": "1197c8: 79403280     \tldrh\tw0, [x20, #0x18]"
+      },
+      "writer_member_store": {
+        "va": "0x1197cc",
+        "fileoff": "0x1197cc",
+        "bytes_le": "604a0079",
+        "objdump": "1197cc: 79004a60     \tstrh\tw0, [x19, #0x24]"
+      },
+      "init_queue_new": {
+        "va": "0xd6278",
+        "fileoff": "0xd6278",
+        "bytes_le": "aaa4fe97",
+        "objdump": "d6278: 97fea4aa     \tbl\t0x7f520 <_Znwm@plt>"
+      },
+      "init_queue_ctor": {
+        "va": "0xd6284",
+        "fileoff": "0xd6284",
+        "bytes_le": "8fa4fe97",
+        "objdump": "d6284: 97fea48f     \tbl\t0x7f4c0 <_ZN9execqueueIN3mpr12execRecMovieEEC1EPv@plt>"
+      },
+      "threshold_this_saved": {
+        "va": "0x11d178",
+        "fileoff": "0x11d178",
+        "bytes_le": "f90300aa",
+        "objdump": "11d178: aa0003f9     \tmov\tx25, x0"
+      },
+      "threshold_precheck_notification": {
+        "va": "0x11faac",
+        "fileoff": "0x11faac",
+        "bytes_le": "a1f740b9",
+        "objdump": "11faac: b940f7a1     \tldr\tw1, [x29, #0xf4]"
+      },
+      "threshold_precheck_stream": {
+        "va": "0x11fab4",
+        "fileoff": "0x11fab4",
+        "bytes_le": "214744b9",
+        "objdump": "11fab4: b9444721     \tldr\tw1, [x25, #0x444]"
+      },
+      "threshold_precheck_fps": {
+        "va": "0x11fabc",
+        "fileoff": "0x11fabc",
+        "bytes_le": "1821201e",
+        "objdump": "11fabc: 1e202118     \tfcmpe\ts8, #0.0"
+      },
+      "threshold_member_read": {
+        "va": "0x11fac8",
+        "fileoff": "0x11fac8",
+        "bytes_le": "224b4079",
+        "objdump": "11fac8: 79404b22     \tldrh\tw2, [x25, #0x24]"
+      },
+      "enterrec_setinfo": {
+        "va": "0xd7e98",
+        "fileoff": "0xd7e98",
+        "bytes_le": "be9ffe97",
+        "objdump": "d7e98: 97fe9fbe     \tbl\t0x7fd90 <_ZN3mpr15SetEnterRecInfoERKNS_15enterRecInParamEPNS_12MovieRecInfoE@plt>"
+      },
+      "enterrec_enqueue_open": {
+        "va": "0xd7e28",
+        "fileoff": "0xd7e28",
+        "bytes_le": "6a9ffe97",
+        "objdump": "d7e28: 97fe9f6a     \tbl\t0x7fbd0 <_ZN3mpr18EnqueueExecEncOpenERNS_12MovieRecInfoE@plt>"
+      }
+    },
+    "fx6_mpr": {
+      "init_ldrh": {
+        "va": "0x12bd30",
+        "fileoff": "0x12bd30",
+        "bytes_le": "63164579",
+        "objdump": "12bd30: 79451663     \tldrh\tw3, [x19, #0x28a]"
+      },
+      "manager_u16_store": {
+        "va": "0x155de4",
+        "fileoff": "0x155de4",
+        "bytes_le": "765614b9",
+        "objdump": "155de4: b9145676     \tstr\tw22, [x19, #0x1454]"
+      },
+      "mode_field_read": {
+        "va": "0x157960",
+        "fileoff": "0x157960",
+        "bytes_le": "c07e42b9",
+        "objdump": "157960: b9427ec0     \tldr\tw0, [x22, #0x27c]"
+      },
+      "mode_compare_8": {
+        "va": "0x157964",
+        "fileoff": "0x157964",
+        "bytes_le": "1f200071",
+        "objdump": "157964: 7100201f     \tcmp\tw0, #0x8"
+      },
+      "mode_branch_to_xavcs": {
+        "va": "0x157968",
+        "fileoff": "0x157968",
+        "bytes_le": "01f5ff54",
+        "objdump": "157968: 54fff501     \tb.ne\t0x157808 <_ZN3mpr8EnterRecERKNS_15enterRecInParamE+0x224>"
+      },
+      "mxf_new": {
+        "va": "0x15796c",
+        "fileoff": "0x15796c",
+        "bytes_le": "006587d2",
+        "objdump": "15796c: d2876500     \tmov\tx0, #0x3b28             // =15144"
+      },
+      "mxf_ctor": {
+        "va": "0x157978",
+        "fileoff": "0x157978",
+        "bytes_le": "1b090194",
+        "objdump": "157978: 9401091b     \tbl\t0x199de4 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x1ad0>"
+      },
+      "xavcs_new": {
+        "va": "0x157808",
+        "fileoff": "0x157808",
+        "bytes_le": "002987d2",
+        "objdump": "157808: d2872900     \tmov\tx0, #0x3948             // =14664"
+      },
+      "xavcs_ctor": {
+        "va": "0x157814",
+        "fileoff": "0x157814",
+        "bytes_le": "9c6e0194",
+        "objdump": "157814: 94016e9c     \tbl\t0x1b3284 <_ZNSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS2_EEaSERKS4_+0x190>"
+      },
+      "xavcs_effective_constant": {
+        "va": "0x1b0f44",
+        "fileoff": "0x1b0f44",
+        "bytes_le": "80618052",
+        "objdump": "1b0f44: 52806180     \tmov\tw0, #0x30c              // =780"
+      },
+      "xavcs_effective_store": {
+        "va": "0x1b0f48",
+        "fileoff": "0x1b0f48",
+        "bytes_le": "60ea0079",
+        "objdump": "1b0f48: 7900ea60     \tstrh\tw0, [x19, #0x74]"
+      },
+      "mxf_param_read": {
+        "va": "0x194124",
+        "fileoff": "0x194124",
+        "bytes_le": "80324079",
+        "objdump": "194124: 79403280     \tldrh\tw0, [x20, #0x18]"
+      },
+      "mxf_effective_store": {
+        "va": "0x194128",
+        "fileoff": "0x194128",
+        "bytes_le": "60f20079",
+        "objdump": "194128: 7900f260     \tstrh\tw0, [x19, #0x78]"
+      },
+      "xavcs_threshold_read": {
+        "va": "0x1b679c",
+        "fileoff": "0x1b679c",
+        "bytes_le": "42eb4079",
+        "objdump": "1b679c: 7940eb42     \tldrh\tw2, [x26, #0x74]"
+      },
+      "mxf_threshold_read": {
+        "va": "0x199494",
+        "fileoff": "0x199494",
+        "bytes_le": "62f24079",
+        "objdump": "199494: 7940f262     \tldrh\tw2, [x19, #0x78]"
+      },
+      "movie_write_producer_size": {
+        "va": "0x1450f8",
+        "fileoff": "0x1450f8",
+        "bytes_le": "18f180d2",
+        "objdump": "1450f8: d280f118     \tmov\tx24, #0x788             // =1928"
+      },
+      "movie_write_size_argument": {
+        "va": "0x14516c",
+        "fileoff": "0x14516c",
+        "bytes_le": "e20318aa",
+        "objdump": "14516c: aa1803e2     \tmov\tx2, x24"
+      },
+      "movie_write_submit_call": {
+        "va": "0x145178",
+        "fileoff": "0x145178",
+        "bytes_le": "9eadfe97",
+        "objdump": "145178: 97fead9e     \tbl\t0xf07f0 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm@plt>"
+      },
+      "auto_divided_producer_size": {
+        "va": "0x1455c0",
+        "fileoff": "0x1455c0",
+        "bytes_le": "18f080d2",
+        "objdump": "1455c0: d280f018     \tmov\tx24, #0x780             // =1920"
+      },
+      "auto_divided_size_argument": {
+        "va": "0x145630",
+        "fileoff": "0x145630",
+        "bytes_le": "e20318aa",
+        "objdump": "145630: aa1803e2     \tmov\tx2, x24"
+      },
+      "auto_divided_submit_call": {
+        "va": "0x14563c",
+        "fileoff": "0x14563c",
+        "bytes_le": "6dacfe97",
+        "objdump": "14563c: 97feac6d     \tbl\t0xf07f0 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm@plt>"
+      }
+    },
+    "fx6_ap": {
+      "init_source_1440": {
+        "va": "0x212f498",
+        "fileoff": "0x212f498",
+        "bytes_le": "00b48052",
+        "objdump": "212f498: 5280b400     \tmov\tw0, #0x5a0              // =1440"
+      },
+      "init_source_store": {
+        "va": "0x212f49c",
+        "fileoff": "0x212f49c",
+        "bytes_le": "a0570579",
+        "objdump": "212f49c: 790557a0     \tstrh\tw0, [x29, #0x2aa]"
+      },
+      "init_plt_call": {
+        "va": "0x212f7b8",
+        "fileoff": "0x212f7b8",
+        "bytes_le": "429fa797",
+        "objdump": "212f7b8: 97a79f42     \tbl\t0xb174c0 <_ZN3mpr4InitERKNS_11initInParamE@plt>"
+      },
+      "enterrec_plt_call": {
+        "va": "0x214314c",
+        "fileoff": "0x214314c",
+        "bytes_le": "615aa797",
+        "objdump": "214314c: 97a75a61     \tbl\t0xb19ad0 <_ZN3mpr8EnterRecERKNS_15enterRecInParamE@plt>"
+      },
+      "movie_write_unconditional_byte": {
+        "va": "0x213caa0",
+        "fileoff": "0x213caa0",
+        "bytes_le": "63c25d39",
+        "objdump": "213caa0: 395dc263     \tldrb\tw3, [x19, #0x770]"
+      },
+      "movie_write_unconditional_qword": {
+        "va": "0x213caec",
+        "fileoff": "0x213caec",
+        "bytes_le": "60be43f9",
+        "objdump": "213caec: f943be60     \tldr\tx0, [x19, #0x778]"
+      },
+      "auto_unconditional_byte": {
+        "va": "0x212da18",
+        "fileoff": "0x212da18",
+        "bytes_le": "03b05d39",
+        "objdump": "212da18: 395db003     \tldrb\tw3, [x0, #0x76c]"
+      },
+      "auto_unconditional_qword": {
+        "va": "0x212da54",
+        "fileoff": "0x212da54",
+        "bytes_le": "82ba43f9",
+        "objdump": "212da54: f943ba82     \tldr\tx2, [x20, #0x770]"
+      }
+    }
+  },
+  "ap_jump_slots_and_fx3_exports": {
+    "Init": {
+      "ap_relocation": "0000000002ef1368 R_AARCH64_JUMP_SLOT      _ZN3mpr4InitERKNS_11initInParamE",
+      "fx3_export": "00000000000b6844 g    DF .text\t0000000000000884              _ZN3mpr4InitERKNS_11initInParamE"
+    },
+    "EnterRec": {
+      "ap_relocation": "0000000002ef2670 R_AARCH64_JUMP_SLOT      _ZN3mpr8EnterRecERKNS_15enterRecInParamE",
+      "fx3_export": "00000000000d7bdc g    DF .text\t0000000000000328              _ZN3mpr8EnterRecERKNS_15enterRecInParamE"
+    }
+  },
+  "snapshot": {
+    "sha256": "585d8918da368cec6ef689aa3c14dc3306311ab6661c0bffc9a02e1685430cf1",
+    "count": 2,
+    "slots": [
+      4096,
+      4112,
+      0,
+      0
+    ],
+    "u16": 1440
+  }
+}

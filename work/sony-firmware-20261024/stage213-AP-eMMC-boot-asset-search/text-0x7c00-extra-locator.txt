@@ -1,0 +1,100 @@
+00007c00: f30b00f9 str x19, [sp, #0x10]
+00007c04: f30300aa mov x19, x0
+00007c08: 001440f9 ldr x0, [x0, #0x28]
+00007c0c: 00000094 bl #0x7c0c ; {'section': '.text', 'offset': 31756, 'type': 283, 'symbol': 'del_gendisk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00007c10: 601640f9 ldr x0, [x19, #0x28]
+00007c14: 00000094 bl #0x7c14 ; {'section': '.text', 'offset': 31764, 'type': 283, 'symbol': 'put_disk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00007c18: 602240f9 ldr x0, [x19, #0x40]
+00007c1c: 00000094 bl #0x7c1c ; {'section': '.text', 'offset': 31772, 'type': 283, 'symbol': 'kthread_stop', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00007c20: 60020291 add x0, x19, #0x80
+00007c24: 00000094 bl #0x7c24 ; {'section': '.text', 'offset': 31780, 'type': 283, 'symbol': 'al_req_count_exit', 'symbol_section': '.text', 'symbol_value': 28888, 'addend': 0}
+00007c28: 601240f9 ldr x0, [x19, #0x20]
+00007c2c: 00000094 bl #0x7c2c ; {'section': '.text', 'offset': 31788, 'type': 283, 'symbol': 'blk_cleanup_queue', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00007c30: 600a40f9 ldr x0, [x19, #0x10]
+00007c34: 01bc40b9 ldr w1, [x0, #0xbc]
+00007c38: c1000034 cbz w1, #0x7c50
+00007c3c: 7f1a00b9 str wzr, [x19, #0x18]
+00007c40: 00008052 mov w0, #0
+00007c44: f30b40f9 ldr x19, [sp, #0x10]
+00007c48: fd7bc2a8 ldp x29, x30, [sp], #0x20
+00007c4c: c0035fd6 ret 
+00007c50: 00400091 add x0, x0, #0x10
+00007c54: 00000094 bl #0x7c54 ; {'section': '.text', 'offset': 31828, 'type': 283, 'symbol': 'emmc_proc_unregister_blkdev', 'symbol_section': '.text', 'symbol_value': 101088, 'addend': 0}
+00007c58: 7f1a00b9 str wzr, [x19, #0x18]
+00007c5c: 00008052 mov w0, #0
+00007c60: f30b40f9 ldr x19, [sp, #0x10]
+00007c64: fd7bc2a8 ldp x29, x30, [sp], #0x20
+00007c68: c0035fd6 ret 
+00007c6c: 1f2003d5 nop 
+00007c70: 42040051 sub w2, w2, #1
+00007c74: e503012a mov w5, w1
+00007c78: 4100010b add w1, w2, w1
+00007c7c: 020840f9 ldr x2, [x0, #0x10]
+00007c80: 067840b9 ldr w6, [x0, #0x78]
+00007c84: 03008052 mov w3, #0
+00007c88: 07038052 mov w7, #0x18
+00007c8c: 445840f9 ldr x4, [x2, #0xb0]
+00007c90: a508c49a udiv x5, x5, x4
+00007c94: 2108c49a udiv x1, x1, x4
+00007c98: 857c051b mul w5, w4, w5
+00007c9c: 847c011b mul w4, w4, w1
+00007ca0: 86010034 cbz w6, #0x7cd0
+00007ca4: 013840f9 ldr x1, [x0, #0x70]
+00007ca8: 6104279b smaddl x1, w3, w7, x1
+00007cac: 63040011 add w3, w3, #1
+00007cb0: 220c40b9 ldr w2, [x1, #0xc]
+00007cb4: 9f00026b cmp w4, w2
+00007cb8: a220427a ccmp w5, w2, #2, hs
+00007cbc: 68000054 b.hi #0x7cc8
+00007cc0: 3f1000b9 str wzr, [x1, #0x10]
+00007cc4: 067840b9 ldr w6, [x0, #0x78]
+00007cc8: df00036b cmp w6, w3
+00007ccc: c8feff54 b.hi #0x7ca4
+00007cd0: c0035fd6 ret 
+00007cd4: 1f2003d5 nop 
+00007cd8: fd7bb9a9 stp x29, x30, [sp, #-0x70]!
+00007cdc: fd030091 mov x29, sp
+00007ce0: f35301a9 stp x19, x20, [sp, #0x10]
+00007ce4: f51300f9 str x21, [sp, #0x20]
+00007ce8: 030840f9 ldr x3, [x0, #0x10]
+00007cec: 646440f9 ldr x4, [x3, #0xc8]
+00007cf0: 840300b4 cbz x4, #0x7d60
+00007cf4: 850040f9 ldr x5, [x4]
+00007cf8: 450300b4 cbz x5, #0x7d60
+00007cfc: 658840b9 ldr w5, [x3, #0x88]
+00007d00: 073040f9 ldr x7, [x0, #0x60]
+00007d04: a0430191 add x0, x29, #0x50
+00007d08: a100010b add w1, w5, w1
+00007d0c: 66d040b9 ldr w6, [x3, #0xd0]
+00007d10: a10b0a29 stp w1, w2, [x29, #0x50]
+00007d14: a1e30091 add x1, x29, #0x38
+00007d18: 654040f9 ldr x5, [x3, #0x80]
+00007d1c: e20040f9 ldr x2, [x7]
+00007d20: 636c40f9 ldr x3, [x3, #0xd8]
+00007d24: a63b00b9 str w6, [x29, #0x38]
+00007d28: a50f04a9 stp x5, x3, [x29, #0x40]
+00007d2c: a22f00f9 str x2, [x29, #0x58]
+00007d30: a13700f9 str x1, [x29, #0x68]
+00007d34: 810040f9 ldr x1, [x4]
+00007d38: 20003fd6 blr x1
+00007d3c: f303002a mov w19, w0
+00007d40: 2003f837 tbnz w0, #0x1f, #0x7da4
+00007d44: 13008052 mov w19, #0
+00007d48: e003132a mov w0, w19
+00007d4c: f51340f9 ldr x21, [sp, #0x20]
+00007d50: f35341a9 ldp x19, x20, [sp, #0x10]
+00007d54: fd7bc7a8 ldp x29, x30, [sp], #0x70
+00007d58: c0035fd6 ret 
+00007d5c: 1f2003d5 nop 
+00007d60: 003040f9 ldr x0, [x0, #0x60]
+00007d64: 648840b9 ldr w4, [x3, #0x88]
+00007d68: 62bc40b9 ldr w2, [x3, #0xbc]
+00007d6c: 030080d2 mov x3, #0
+00007d70: 2100040b add w1, w1, w4
+00007d74: 000040f9 ldr x0, [x0]
+00007d78: 00000094 bl #0x7d78 ; {'section': '.text', 'offset': 32120, 'type': 283, 'symbol': 'emmc_seq_read', 'symbol_section': '.text', 'symbol_value': 77528, 'addend': 0}
+00007d7c: f303002a mov w19, w0
+00007d80: 20feff36 tbz w0, #0x1f, #0x7d44
+00007d84: e3020058 ldr x3, #0x7de0
+00007d88: e403132a mov w4, w19
+00007d8c: e1020058 ldr x1, #0x7de8

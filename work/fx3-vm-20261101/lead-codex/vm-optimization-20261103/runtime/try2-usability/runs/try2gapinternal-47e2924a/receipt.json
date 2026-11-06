@@ -1,0 +1,1175 @@
+{
+  "created_utc": "2026-11-03T12:29:19.544489+00:00",
+  "duration_seconds": 726.3513545829919,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/candidate.json",
+  "candidate_sha256": "67eb81401a457bf7ffecb21f7367e7819b5bf3e13aef39dd8a4c9001ce408417",
+  "models_identical_to_frozen_AP101_r4": false,
+  "authority": "msg_3a52a0ab7e46",
+  "observer_source_snapshot": [
+    {
+      "name": "run_trial_v7_long_boundary.py",
+      "sha256": "425d74436250a1bdaf082384053af508f1410818e0b36003d75b37a97ad57f84"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "gate_input_usability.py",
+      "sha256": "a491ad53babf720830d5bda45ecf6467b018cd79dae7247ebcce45bd854f37f6"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_web_v3_usability.py",
+      "sha256": "1335ac18a7f29291182255ae88cd100d6df289f5266507ca7adfcca8675187f4"
+    },
+    {
+      "name": "trial_ring_usability.py",
+      "sha256": "4dea2f0154844e24675726727fee5bdb7bbb50456dfd15288dfdb8d7daef1bdc"
+    },
+    {
+      "name": "trial_log_usability.py",
+      "sha256": "5e10008a139cd5fcf4a954c5ec100d7f6c1d86d28c2cadf2383f520717e854d6"
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a",
+  "maximum_seconds": 1800,
+  "maximum_steps": 36,
+  "stop_cause": "Ctrl-C",
+  "internal_hoststep_mode": true,
+  "HTTP_key_source_used": false,
+  "qemu_pid": 34144,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+      "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+      "sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/candidate.json",
+      "sha256": "67eb81401a457bf7ffecb21f7367e7819b5bf3e13aef39dd8a4c9001ce408417"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.2019561660126783,
+      "rss_vsz_kib": "947136 495709936"
+    },
+    {
+      "elapsed_seconds": 5.248971750028431,
+      "rss_vsz_kib": "1487792 495709936"
+    },
+    {
+      "elapsed_seconds": 10.30719812499592,
+      "rss_vsz_kib": "1487904 495709936"
+    },
+    {
+      "elapsed_seconds": 15.35546458302997,
+      "rss_vsz_kib": "1512512 495709936"
+    },
+    {
+      "elapsed_seconds": 20.367808750015683,
+      "rss_vsz_kib": "1559136 495709936"
+    },
+    {
+      "elapsed_seconds": 25.43302933301311,
+      "rss_vsz_kib": "1678736 495718128"
+    },
+    {
+      "elapsed_seconds": 30.473249915987253,
+      "rss_vsz_kib": "1766880 495718128"
+    },
+    {
+      "elapsed_seconds": 35.48191324999789,
+      "rss_vsz_kib": "1853984 495734512"
+    },
+    {
+      "elapsed_seconds": 40.53131516603753,
+      "rss_vsz_kib": "1871952 495734512"
+    },
+    {
+      "elapsed_seconds": 45.57216375001008,
+      "rss_vsz_kib": "1872576 495734512"
+    },
+    {
+      "elapsed_seconds": 50.63851308298763,
+      "rss_vsz_kib": "1873216 495734512"
+    },
+    {
+      "elapsed_seconds": 55.68927520798752,
+      "rss_vsz_kib": "1873712 495734512"
+    },
+    {
+      "elapsed_seconds": 60.720984957995825,
+      "rss_vsz_kib": "1873760 495734512"
+    },
+    {
+      "elapsed_seconds": 65.72956566599896,
+      "rss_vsz_kib": "1873824 495734512"
+    },
+    {
+      "elapsed_seconds": 70.74334358301712,
+      "rss_vsz_kib": "1873856 495734512"
+    },
+    {
+      "elapsed_seconds": 75.7897984579904,
+      "rss_vsz_kib": "1874032 495734512"
+    },
+    {
+      "elapsed_seconds": 80.81408149999334,
+      "rss_vsz_kib": "1874096 495734512"
+    },
+    {
+      "elapsed_seconds": 85.91881633299636,
+      "rss_vsz_kib": "1874736 495734512"
+    },
+    {
+      "elapsed_seconds": 90.92962458299007,
+      "rss_vsz_kib": "1738688 495734512"
+    },
+    {
+      "elapsed_seconds": 95.95167275000131,
+      "rss_vsz_kib": "1739008 495734512"
+    },
+    {
+      "elapsed_seconds": 100.9819297909853,
+      "rss_vsz_kib": "1739024 495734512"
+    },
+    {
+      "elapsed_seconds": 106.01453345798654,
+      "rss_vsz_kib": "1739088 495734512"
+    },
+    {
+      "elapsed_seconds": 111.05492808303097,
+      "rss_vsz_kib": "1739168 495734512"
+    },
+    {
+      "elapsed_seconds": 116.06918008299544,
+      "rss_vsz_kib": "1518480 495734512"
+    },
+    {
+      "elapsed_seconds": 121.16427395801293,
+      "rss_vsz_kib": "1328576 495734512"
+    },
+    {
+      "elapsed_seconds": 126.2017394999857,
+      "rss_vsz_kib": "1283712 495734512"
+    },
+    {
+      "elapsed_seconds": 131.2203389580245,
+      "rss_vsz_kib": "720784 495734512"
+    },
+    {
+      "elapsed_seconds": 136.24111929099308,
+      "rss_vsz_kib": "721136 495734512"
+    },
+    {
+      "elapsed_seconds": 141.30251983302878,
+      "rss_vsz_kib": "357136 495734512"
+    },
+    {
+      "elapsed_seconds": 146.31022337503964,
+      "rss_vsz_kib": "357456 495734512"
+    },
+    {
+      "elapsed_seconds": 151.33431945799384,
+      "rss_vsz_kib": "357632 495734512"
+    },
+    {
+      "elapsed_seconds": 156.35580066603143,
+      "rss_vsz_kib": "265296 495734512"
+    },
+    {
+      "elapsed_seconds": 161.41772287501954,
+      "rss_vsz_kib": "141488 495734512"
+    },
+    {
+      "elapsed_seconds": 166.53467904101126,
+      "rss_vsz_kib": "158512 495734512"
+    },
+    {
+      "elapsed_seconds": 171.5900159580051,
+      "rss_vsz_kib": "123648 495734512"
+    },
+    {
+      "elapsed_seconds": 176.65577516600024,
+      "rss_vsz_kib": "84448 495734512"
+    },
+    {
+      "elapsed_seconds": 181.7135346250143,
+      "rss_vsz_kib": "89744 495734512"
+    },
+    {
+      "elapsed_seconds": 186.92626266600564,
+      "rss_vsz_kib": "91632 495734512"
+    },
+    {
+      "elapsed_seconds": 191.98756754101487,
+      "rss_vsz_kib": "90896 495734512"
+    },
+    {
+      "elapsed_seconds": 198.07859325001482,
+      "rss_vsz_kib": "109344 495734512"
+    },
+    {
+      "elapsed_seconds": 203.17693670804147,
+      "rss_vsz_kib": "107984 495734512"
+    },
+    {
+      "elapsed_seconds": 208.2205084580346,
+      "rss_vsz_kib": "111632 495734512"
+    },
+    {
+      "elapsed_seconds": 213.26103583304211,
+      "rss_vsz_kib": "113856 495734512"
+    },
+    {
+      "elapsed_seconds": 218.33176545798779,
+      "rss_vsz_kib": "108304 495734512"
+    },
+    {
+      "elapsed_seconds": 223.33748225000454,
+      "rss_vsz_kib": "113408 495734512"
+    },
+    {
+      "elapsed_seconds": 228.38800483301748,
+      "rss_vsz_kib": "116032 495734512"
+    },
+    {
+      "elapsed_seconds": 233.43322070798604,
+      "rss_vsz_kib": "116880 495734512"
+    },
+    {
+      "elapsed_seconds": 238.45015375001822,
+      "rss_vsz_kib": "117024 495734512"
+    },
+    {
+      "elapsed_seconds": 243.50698066601763,
+      "rss_vsz_kib": "118528 495734512"
+    },
+    {
+      "elapsed_seconds": 248.55304800003069,
+      "rss_vsz_kib": "117104 495734512"
+    },
+    {
+      "elapsed_seconds": 253.58060133300023,
+      "rss_vsz_kib": "120960 495734512"
+    },
+    {
+      "elapsed_seconds": 258.6251495000324,
+      "rss_vsz_kib": "117008 495734512"
+    },
+    {
+      "elapsed_seconds": 263.6555769999977,
+      "rss_vsz_kib": "114592 495734512"
+    },
+    {
+      "elapsed_seconds": 268.67112062498927,
+      "rss_vsz_kib": "117056 495734512"
+    },
+    {
+      "elapsed_seconds": 273.6838186660316,
+      "rss_vsz_kib": "114912 495734512"
+    },
+    {
+      "elapsed_seconds": 278.7367640410084,
+      "rss_vsz_kib": "125344 495734512"
+    },
+    {
+      "elapsed_seconds": 283.79081500001485,
+      "rss_vsz_kib": "127216 495734512"
+    },
+    {
+      "elapsed_seconds": 288.8160031660227,
+      "rss_vsz_kib": "129360 495734512"
+    },
+    {
+      "elapsed_seconds": 293.83443650003755,
+      "rss_vsz_kib": "117680 495734512"
+    },
+    {
+      "elapsed_seconds": 298.9402517910348,
+      "rss_vsz_kib": "114976 495734512"
+    },
+    {
+      "elapsed_seconds": 304.0086855000118,
+      "rss_vsz_kib": "120032 495734512"
+    },
+    {
+      "elapsed_seconds": 309.04567533300724,
+      "rss_vsz_kib": "121216 495734512"
+    },
+    {
+      "elapsed_seconds": 314.07266729103867,
+      "rss_vsz_kib": "118928 495734512"
+    },
+    {
+      "elapsed_seconds": 319.17996595799923,
+      "rss_vsz_kib": "122432 495734512"
+    },
+    {
+      "elapsed_seconds": 324.22733558301115,
+      "rss_vsz_kib": "119264 495734512"
+    },
+    {
+      "elapsed_seconds": 329.33793762500864,
+      "rss_vsz_kib": "116336 495734512"
+    },
+    {
+      "elapsed_seconds": 334.40095620800275,
+      "rss_vsz_kib": "112064 495734512"
+    },
+    {
+      "elapsed_seconds": 339.52650791598717,
+      "rss_vsz_kib": "105120 495734512"
+    },
+    {
+      "elapsed_seconds": 344.5968267500284,
+      "rss_vsz_kib": "108192 495734512"
+    },
+    {
+      "elapsed_seconds": 349.6446947910008,
+      "rss_vsz_kib": "103872 495734512"
+    },
+    {
+      "elapsed_seconds": 354.6879103750107,
+      "rss_vsz_kib": "87088 495734512"
+    },
+    {
+      "elapsed_seconds": 359.7284167500329,
+      "rss_vsz_kib": "108720 495734512"
+    },
+    {
+      "elapsed_seconds": 364.77931875002105,
+      "rss_vsz_kib": "113376 495734512"
+    },
+    {
+      "elapsed_seconds": 369.83335308299866,
+      "rss_vsz_kib": "104608 495734512"
+    },
+    {
+      "elapsed_seconds": 374.89652879099594,
+      "rss_vsz_kib": "109472 495734512"
+    },
+    {
+      "elapsed_seconds": 379.9669383330038,
+      "rss_vsz_kib": "116560 495734512"
+    },
+    {
+      "elapsed_seconds": 385.15713725000387,
+      "rss_vsz_kib": "112896 495734512"
+    },
+    {
+      "elapsed_seconds": 390.1806851250003,
+      "rss_vsz_kib": "112512 495734512"
+    },
+    {
+      "elapsed_seconds": 395.20342745800735,
+      "rss_vsz_kib": "116928 495734512"
+    },
+    {
+      "elapsed_seconds": 400.2991753750248,
+      "rss_vsz_kib": "114512 495734512"
+    },
+    {
+      "elapsed_seconds": 405.3342516660341,
+      "rss_vsz_kib": "117424 495734512"
+    },
+    {
+      "elapsed_seconds": 410.37263133301167,
+      "rss_vsz_kib": "118464 495734512"
+    },
+    {
+      "elapsed_seconds": 415.44596445799107,
+      "rss_vsz_kib": "117504 495734512"
+    },
+    {
+      "elapsed_seconds": 420.4522260830272,
+      "rss_vsz_kib": "117584 495734512"
+    },
+    {
+      "elapsed_seconds": 425.5342271660338,
+      "rss_vsz_kib": "112720 495734512"
+    },
+    {
+      "elapsed_seconds": 430.59833962499397,
+      "rss_vsz_kib": "108416 495734512"
+    },
+    {
+      "elapsed_seconds": 435.7542320000357,
+      "rss_vsz_kib": "105344 495734512"
+    },
+    {
+      "elapsed_seconds": 440.7981818750268,
+      "rss_vsz_kib": "107856 495734512"
+    },
+    {
+      "elapsed_seconds": 445.87971654103603,
+      "rss_vsz_kib": "112992 495734512"
+    },
+    {
+      "elapsed_seconds": 451.060426208016,
+      "rss_vsz_kib": "105872 495734512"
+    },
+    {
+      "elapsed_seconds": 456.14824100001715,
+      "rss_vsz_kib": "104432 495734512"
+    },
+    {
+      "elapsed_seconds": 461.15939341601916,
+      "rss_vsz_kib": "103424 495734512"
+    },
+    {
+      "elapsed_seconds": 466.2252787910402,
+      "rss_vsz_kib": "97536 495734512"
+    },
+    {
+      "elapsed_seconds": 471.3411770000239,
+      "rss_vsz_kib": "107632 495734512"
+    },
+    {
+      "elapsed_seconds": 476.3995228750282,
+      "rss_vsz_kib": "116288 495734512"
+    },
+    {
+      "elapsed_seconds": 481.4907524160226,
+      "rss_vsz_kib": "114128 495734512"
+    },
+    {
+      "elapsed_seconds": 486.5538219999871,
+      "rss_vsz_kib": "117104 495734512"
+    },
+    {
+      "elapsed_seconds": 491.59369087498635,
+      "rss_vsz_kib": "107840 495734512"
+    },
+    {
+      "elapsed_seconds": 496.65765520802233,
+      "rss_vsz_kib": "110560 495734512"
+    },
+    {
+      "elapsed_seconds": 501.66234991600504,
+      "rss_vsz_kib": "110688 495734512"
+    },
+    {
+      "elapsed_seconds": 506.7285685830284,
+      "rss_vsz_kib": "120144 495734512"
+    },
+    {
+      "elapsed_seconds": 511.8095967079862,
+      "rss_vsz_kib": "107824 495734512"
+    },
+    {
+      "elapsed_seconds": 516.9015874580364,
+      "rss_vsz_kib": "109760 495734512"
+    },
+    {
+      "elapsed_seconds": 521.9410282500321,
+      "rss_vsz_kib": "107872 495734512"
+    },
+    {
+      "elapsed_seconds": 526.9991118750186,
+      "rss_vsz_kib": "113344 495734512"
+    },
+    {
+      "elapsed_seconds": 532.1429800830083,
+      "rss_vsz_kib": "104912 495734512"
+    },
+    {
+      "elapsed_seconds": 537.1984684580239,
+      "rss_vsz_kib": "113520 495734512"
+    },
+    {
+      "elapsed_seconds": 542.2649232500116,
+      "rss_vsz_kib": "107920 495734512"
+    },
+    {
+      "elapsed_seconds": 547.3845079159946,
+      "rss_vsz_kib": "107152 495734512"
+    },
+    {
+      "elapsed_seconds": 552.500140374992,
+      "rss_vsz_kib": "111152 495734512"
+    },
+    {
+      "elapsed_seconds": 557.5953817500267,
+      "rss_vsz_kib": "112944 495734512"
+    },
+    {
+      "elapsed_seconds": 562.612584291026,
+      "rss_vsz_kib": "112128 495734512"
+    },
+    {
+      "elapsed_seconds": 567.6620371250319,
+      "rss_vsz_kib": "108992 495734512"
+    },
+    {
+      "elapsed_seconds": 572.7243863330223,
+      "rss_vsz_kib": "114016 495734512"
+    },
+    {
+      "elapsed_seconds": 577.8396953750052,
+      "rss_vsz_kib": "118336 495734512"
+    },
+    {
+      "elapsed_seconds": 582.8912773749908,
+      "rss_vsz_kib": "115840 495734512"
+    },
+    {
+      "elapsed_seconds": 587.9808634159854,
+      "rss_vsz_kib": "118720 495734512"
+    },
+    {
+      "elapsed_seconds": 593.0190825830214,
+      "rss_vsz_kib": "147776 495734512"
+    },
+    {
+      "elapsed_seconds": 598.0350790410303,
+      "rss_vsz_kib": "134816 495734512"
+    },
+    {
+      "elapsed_seconds": 603.0570324159926,
+      "rss_vsz_kib": "129120 495734512"
+    },
+    {
+      "elapsed_seconds": 608.1100825830363,
+      "rss_vsz_kib": "130928 495734512"
+    },
+    {
+      "elapsed_seconds": 613.1413054160075,
+      "rss_vsz_kib": "126464 495734512"
+    },
+    {
+      "elapsed_seconds": 618.2084399579908,
+      "rss_vsz_kib": "116832 495734512"
+    },
+    {
+      "elapsed_seconds": 623.2903569579939,
+      "rss_vsz_kib": "108352 495734512"
+    },
+    {
+      "elapsed_seconds": 628.314589666028,
+      "rss_vsz_kib": "121088 495734512"
+    },
+    {
+      "elapsed_seconds": 633.363902290992,
+      "rss_vsz_kib": "109840 495734512"
+    },
+    {
+      "elapsed_seconds": 638.4264139159932,
+      "rss_vsz_kib": "110048 495734512"
+    },
+    {
+      "elapsed_seconds": 643.4554014580208,
+      "rss_vsz_kib": "114864 495734512"
+    },
+    {
+      "elapsed_seconds": 648.4681042080047,
+      "rss_vsz_kib": "108752 495734512"
+    },
+    {
+      "elapsed_seconds": 653.5104338329984,
+      "rss_vsz_kib": "111696 495734512"
+    },
+    {
+      "elapsed_seconds": 658.5174647500389,
+      "rss_vsz_kib": "118192 495734512"
+    },
+    {
+      "elapsed_seconds": 663.5613970410195,
+      "rss_vsz_kib": "118320 495734512"
+    },
+    {
+      "elapsed_seconds": 668.599277625035,
+      "rss_vsz_kib": "123184 495734512"
+    },
+    {
+      "elapsed_seconds": 673.6290249580052,
+      "rss_vsz_kib": "120224 495734512"
+    },
+    {
+      "elapsed_seconds": 678.6372517080163,
+      "rss_vsz_kib": "126144 495734512"
+    },
+    {
+      "elapsed_seconds": 683.6468950830167,
+      "rss_vsz_kib": "116784 495734512"
+    },
+    {
+      "elapsed_seconds": 688.6843039999949,
+      "rss_vsz_kib": "124624 495734512"
+    },
+    {
+      "elapsed_seconds": 693.7324766659876,
+      "rss_vsz_kib": "118944 495734512"
+    },
+    {
+      "elapsed_seconds": 698.7745538330055,
+      "rss_vsz_kib": "122128 495734512"
+    },
+    {
+      "elapsed_seconds": 703.8928169159917,
+      "rss_vsz_kib": "126624 495734512"
+    },
+    {
+      "elapsed_seconds": 708.9105437910184,
+      "rss_vsz_kib": "131408 495734512"
+    },
+    {
+      "elapsed_seconds": 713.9459929160075,
+      "rss_vsz_kib": "133760 495734512"
+    },
+    {
+      "elapsed_seconds": 718.9524293330032,
+      "rss_vsz_kib": "141312 495734512"
+    }
+  ],
+  "early_stop_reason": null,
+  "full_serial_bytes_inspected": 29542267,
+  "serial_health_failure": null,
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": true,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY96_READY": true,
+    "FX3_OSD_FRAME_TARGET_VALID": true,
+    "FX3_GPE_COMPACTION_BOUND": true,
+    "FX3_GPE_DRAW_INTERVAL": true,
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": true,
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": true,
+    "FX3_KEY96_POLL": true,
+    "FX3_KEY96_THREAD_BEGIN": true,
+    "FX3_PANEL_CONFIG_V2_COMMIT": true,
+    "FX3_PROC97_STATUS_BEGIN": true,
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": true,
+    "FX3_DATE98_KERNEL_OBSERVE_READY": true,
+    "FX3_DATE99_WORKER_READY": true,
+    "FX3_DATE99_CONSUMER_BOUND": true,
+    "FX3_SYNC100_BACKEND_BOUND": true,
+    "FX3_FILE100_OBSERVER_READY": true,
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": true,
+    "FX3_BACKUP_INSMOD_RC=0": true,
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": true,
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": true,
+    "FX3_LDEC103_SELFTEST_RC=0": true,
+    "FX3_GPE104_LIB_BIND": true,
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": true,
+    "FX3_FILE103_READY_CONFIRMED": true
+  },
+  "marker_evidence": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": "literal",
+    "FX3_PRESET_CONTEXT_BOUND": "literal",
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": "literal",
+    "FX3_AP89_UUD_DECISION": "literal",
+    "FX3_AP89_SCREEN_CREATE": "literal",
+    "FX3_AP_IM_ENDMAPS_": "literal",
+    "registration_origin=malloc_parent_v1": "literal",
+    "FX3_GPE_RESOURCE_BOUND": "literal",
+    "FX3_GPE_RESOURCE_REGISTER": "literal",
+    "FX3_GPE_SCOPE": "literal",
+    "FX3_RM_BOUND": "literal",
+    "FX3_RM_FRONT_TRANSFER": "literal",
+    "FX3_RM_REPLY_TRANSFER": "literal",
+    "FX3_RM_NATIVE_FREE": "literal",
+    "FX3_MEDIA_SELFTEST_PASS": "literal",
+    "FX3_MEDIA_BOUND module=D": "literal",
+    "FX3_MEDIA_FRONT": "literal",
+    "FRONT_FULL_BODY": "literal",
+    "FX3_MEDIA_START_BRANCH": "literal",
+    "FX3_MEDIA_NOTIFY": "literal",
+    "FX3_KEY96_READY": "literal",
+    "FX3_OSD_FRAME_TARGET_VALID": "literal",
+    "FX3_GPE_COMPACTION_BOUND": "literal",
+    "FX3_GPE_DRAW_INTERVAL": "literal",
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": "literal",
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": "literal",
+    "FX3_KEY96_POLL": "literal",
+    "FX3_KEY96_THREAD_BEGIN": "literal",
+    "FX3_PANEL_CONFIG_V2_COMMIT": "literal",
+    "FX3_PROC97_STATUS_BEGIN": "literal",
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": "literal",
+    "FX3_DATE98_KERNEL_OBSERVE_READY": "literal",
+    "FX3_DATE99_WORKER_READY": "literal",
+    "FX3_DATE99_CONSUMER_BOUND": "literal",
+    "FX3_SYNC100_BACKEND_BOUND": "literal",
+    "FX3_FILE100_OBSERVER_READY": "literal",
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": "literal",
+    "FX3_BACKUP_INSMOD_RC=0": "literal",
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": "literal",
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": "literal",
+    "FX3_LDEC103_SELFTEST_RC=0": "literal",
+    "FX3_GPE104_LIB_BIND": "literal",
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": "literal",
+    "FX3_FILE103_READY_CONFIRMED": "literal"
+  },
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": true,
+    "quit_sent": true,
+    "serial_bytes_before_cleanup": 29510583,
+    "restore103": {
+      "passed": true,
+      "reason": "guest_acknowledged_and_original_bytes_verified",
+      "timeout_seconds": 20,
+      "elapsed_seconds": 1.5519534170161933,
+      "request_bytes": 8,
+      "request_issued": true,
+      "existing_request_reused": false,
+      "request_physical": "0x41d400030",
+      "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "requires_ack_and_original_bytes_after_request": true,
+      "already_original_without_pending_request_never_resumed": false,
+      "original_guest_code_written_by_host": false,
+      "guest_left_stopped": true,
+      "exception": null,
+      "attempts": [
+        {
+          "attempt": 0,
+          "elapsed_seconds": 0.00421504199039191,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-000-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-000-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 0,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "ba34098b369c016f6e971c7c9d2f02109c74ee0960f05578584ae0cd66e9d9a6"
+        },
+        {
+          "attempt": 1,
+          "elapsed_seconds": 0.262309167010244,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-001-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-001-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 2,
+          "elapsed_seconds": 0.5210632919915952,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-002-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-002-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 3,
+          "elapsed_seconds": 0.7789547920110635,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-003-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-003-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 4,
+          "elapsed_seconds": 1.0368597090127878,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-004-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-004-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 5,
+          "elapsed_seconds": 1.2943674590205774,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-005-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-005-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 6,
+          "elapsed_seconds": 1.5517432499909773,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-006-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/restore103-006-api16.bin",
+          "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+          "api16_original": true,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 1,
+          "header_SHA256": "e8668d6dda28642898c97841bc9ae5d653e42b7924dc2a7675e5c6d6bb2e1cd6"
+        }
+      ]
+    },
+    "native_unbind_return": 0
+  },
+  "lifecycle_pass": true,
+  "health_pass": true,
+  "requested_exit_phase": null,
+  "requested_exit_phase_hit": false,
+  "key_steps": 4,
+  "step_captures": [
+    {
+      "sequence": 1284,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1284,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x1bccbc6c7c350e55",
+      "sha256": "221beb3a6724311c13632bc90a43758bc577c3f55ae89289b4487b44c77eaa36",
+      "PNG_sha256": "abc20e41bb450786b3f3edd6a66c79cff80ce2b264e3e0230592eda1050a72e5",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 292916.75044875,
+      "committed_slot": 3,
+      "native_identity": {
+        "FB": "0x7f64001160",
+        "bitmap": "0x7f5c047550",
+        "entry": "0x7f64001178",
+        "allocation": "0x64001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x8e09d7f5ffd3b3ea",
+        "bits_cpu_VA": "0x7ef6e29100",
+        "map_begin": "0x7ef6e29000",
+        "map_end": "0x7ef6ec0000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f64001200",
+        "epoch": 1,
+        "identity": "0xffffffc11d8a5c00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f9844ea48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 1,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/trial-step-01-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/trial-step-01-key-1ab.png",
+      "raw_sha256": "221beb3a6724311c13632bc90a43758bc577c3f55ae89289b4487b44c77eaa36",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1284,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1310,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 1285,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x4e8d182294bfcec",
+      "sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 292940.568180791,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f64001160",
+        "bitmap": "0x7f5c047780",
+        "entry": "0x7f64001198",
+        "allocation": "0x64001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x8e09d7f5ffd3b3ea",
+        "bits_cpu_VA": "0x7ef6d92100",
+        "map_begin": "0x7ef6d92000",
+        "map_end": "0x7ef6e29000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 2,
+      "key": "0x15",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/trial-step-02-key-015.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/trial-step-02-key-015.png",
+      "raw_sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1310,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1310,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 1285,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x4e8d182294bfcec",
+      "sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 292940.568180791,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f64001160",
+        "bitmap": "0x7f5c047780",
+        "entry": "0x7f64001198",
+        "allocation": "0x64001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x8e09d7f5ffd3b3ea",
+        "bits_cpu_VA": "0x7ef6d92100",
+        "map_begin": "0x7ef6d92000",
+        "map_end": "0x7ef6e29000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 3,
+      "key": "0x15",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/trial-step-03-key-015.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/trial-step-03-key-015.png",
+      "raw_sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1310,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1310,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 1285,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x4e8d182294bfcec",
+      "sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 292940.568180791,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f64001160",
+        "bitmap": "0x7f5c047780",
+        "entry": "0x7f64001198",
+        "allocation": "0x64001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x8e09d7f5ffd3b3ea",
+        "bits_cpu_VA": "0x7ef6d92100",
+        "map_begin": "0x7ef6d92000",
+        "map_end": "0x7ef6e29000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 4,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/trial-step-04-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/trial-step-04-key-030.png",
+      "raw_sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1310,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    }
+  ],
+  "standby_ready": true,
+  "menu_verified": false,
+  "visual_acceptance_separate_from_health": true,
+  "render_valid_at_end": false,
+  "black_after_ready": [
+    {
+      "sequence": 1314,
+      "pixel_source_sequence": 1311,
+      "host_monotonic": 293349.5816135
+    }
+  ],
+  "render_observation_ok": false,
+  "browser_visual_acceptance": null,
+  "physical_device_operations": 0,
+  "remote_network_connections": 0,
+  "HTTP_loopback_only": true,
+  "scope": "TRY2 original FX3 menu software model with improved icon and focus presentation; no camera, live view, or exact compositor claim"
+}

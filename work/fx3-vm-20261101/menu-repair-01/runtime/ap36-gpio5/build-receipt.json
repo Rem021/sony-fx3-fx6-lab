@@ -1,0 +1,22 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap35-bt-error/candidate35.json",
+  "base_sha256": "06112d915516623991505a9766d80ca0374eea56f9b3c86753be33ad3bcce7fc",
+  "helper": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v7.so",
+  "helper_sha256": "8a57a90595ea176201b5792a0b2e83c4fc3ce6b24a0360ece92399fdb21dde8a",
+  "helper_source_sha256": "7c6850b4351a218f089421ffd11befc7695f7b77eb07734c115c9f8341778e73",
+  "entries": 1112,
+  "changes": [
+    "add one explicitly-enabled software HDMI registration helper",
+    "init preload/environment",
+    "DTB chosen initrd-end matches actualcpio"
+  ],
+  "retained": "all AP32 archive members unchanged except init; original firmware files/metadata retained",
+  "cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap36-gpio5/guest.cpio",
+    "sha256": "0f84b3e05dcfadaa91bb167f67f6c17bbcbeca85f180a7c7ec6a43722d616389"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap36-gpio5/guest.dtb",
+    "sha256": "4ca097afe5c93bc477cf60f2d6968f0efacc7dc27ed07a76edecd974934cb6fe"
+  }
+}

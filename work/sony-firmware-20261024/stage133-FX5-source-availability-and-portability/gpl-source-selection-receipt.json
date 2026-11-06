@@ -1,0 +1,1001 @@
+{
+  "scope": "Official model-associated GPL source only; selected arm64 platform sources are not proof of exact shipping board/config",
+  "model": "ILME-FX5",
+  "download_page": "https://oss.sony.net/Products/Linux/B2B/ILME-FX5.html",
+  "kernel_source_version": "5.15.179",
+  "archives": [
+    {
+      "archive": "gpl-archives/cemmc-init.tar.gz",
+      "archive_sha256": "16b07a4b638c0fd8dcf846a2ffb3672825bf9f84415513ba09dbc74d5a93b4c0",
+      "archive_member_count": 18,
+      "selected_regular_sources": [
+        {
+          "member": "cemmc-init/.gitignore",
+          "path": "gpl-selection/cemmc-init/.gitignore",
+          "bytes": 55,
+          "sha256": "57ad647abffce2ac6ea32bf417d79975ee5173ee57c747f68025cde1f5498ff8"
+        },
+        {
+          "member": "cemmc-init/Makefile",
+          "path": "gpl-selection/cemmc-init/Makefile",
+          "bytes": 4667,
+          "sha256": "6ece884f1941181bca429d0e84c94139fb7578f42697b325f2875a7cdf596567"
+        },
+        {
+          "member": "cemmc-init/driver/Makefile",
+          "path": "gpl-selection/cemmc-init/driver/Makefile",
+          "bytes": 4356,
+          "sha256": "1f214040fe7b340e6d6424ccb4d6cd0b7e19f505c81a7ac4d7199c49fb14ded0"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_cmd.c",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_cmd.c",
+          "bytes": 3696,
+          "sha256": "92ff7eea4dc779ff81a2cb05f1ddc333749f2f51139dcca0cba5c6c18aaf6e02"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_config.h",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_config.h",
+          "bytes": 426,
+          "sha256": "fe21439b426465d07350a0f82e991ae29daa9deb2e839bd92437de55c8c7f51c"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_driver.c",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_driver.c",
+          "bytes": 6129,
+          "sha256": "6ad75844cad2141b0dc0eed2c70f600d0726feefaabef7e84ec66099bff7cf25"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_cmd.h",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_cmd.h",
+          "bytes": 904,
+          "sha256": "d309b253f2117140831015464cf23a9db3a3e8d5effa16fb97f44d640fbd9266"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_external.h",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_external.h",
+          "bytes": 1767,
+          "sha256": "012d74ff33da4a8e9e594c58a8fdf10840387ec0daa2fbeb19b221c662aa2cf6"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_core.c",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_core.c",
+          "bytes": 3186,
+          "sha256": "01889c39a17f994f7a2fca8e871b44bf8af08520cb3a41e82ce92b4e20b1976a"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/Makefile",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/Makefile",
+          "bytes": 4645,
+          "sha256": "ab76dcfdc3947066c919fb9f8551dbb3c2bb879157fdee0edc88a8324d867bc5"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init.c",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init.c",
+          "bytes": 2780,
+          "sha256": "61f029560fce79bb3e9794bd144aa43072fb4bd7b9438242dd81080727715f4d"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_core.h",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_core.h",
+          "bytes": 985,
+          "sha256": "63d25e9c9949f926e338dea1f7296e3d50229b1ee4ba457be041b393ab75df91"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_print.h",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_print.h",
+          "bytes": 1733,
+          "sha256": "d53dfbea90d440ac5466c9d77c15e8b3be8bc445e002c5b7b9a7220d8f45ddee"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_internal.h",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_internal.h",
+          "bytes": 582,
+          "sha256": "cc977383f8e1f3c328545e262d25ce6dcd65bf383fbfec2ec3039a21e540268d"
+        },
+        {
+          "member": "cemmc-init/driver/crypt_emmc_init/crypt_emmc_init.h",
+          "path": "gpl-selection/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init.h",
+          "bytes": 1574,
+          "sha256": "84c5922bc585a769e6cd14f6bca8937f0fd5c908a81cc220fb2251676f720e46"
+        }
+      ],
+      "archive_CXD_path_names": []
+    },
+    {
+      "archive": "gpl-archives/cryptoram.tar.gz",
+      "archive_sha256": "b75689c2773fc7fa4613b52ba653f5330d4bbd5c20478c632670f9938d63d9a6",
+      "archive_member_count": 44,
+      "selected_regular_sources": [
+        {
+          "member": "cryptoram/driver/crypto_ram_shash.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_shash.c",
+          "bytes": 26183,
+          "sha256": "586e3de31aa8bd76fca8463afe2e9d34adcbc238958f1b7ef9395ea6077b8653"
+        },
+        {
+          "member": "cryptoram/driver/lld/pfdep/pfdep.c",
+          "path": "gpl-selection/cryptoram/driver/lld/pfdep/pfdep.c",
+          "bytes": 990,
+          "sha256": "d9bc668d36fcf3465a1b53804a2ac4c7c312838f6ea021533a7da3eddd2697a1"
+        },
+        {
+          "member": "cryptoram/driver/lld/pfdep/pfdep.h",
+          "path": "gpl-selection/cryptoram/driver/lld/pfdep/pfdep.h",
+          "bytes": 7139,
+          "sha256": "8fcc796141b0f98d4f1631a0dc0d3cbbafaa45a5164e10cddd85fbd0573babde"
+        },
+        {
+          "member": "cryptoram/driver/crypto_cdev.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_cdev.h",
+          "bytes": 711,
+          "sha256": "287629de151f2eef21c7373e2a5eb1d3832d56023c9c4094aeface0eaa38e473"
+        },
+        {
+          "member": "cryptoram/driver/crypto_shash_req.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_shash_req.h",
+          "bytes": 416,
+          "sha256": "1c7af67782028dc07420dde6ec52b493459033ed08914537367657711aa0e3ae"
+        },
+        {
+          "member": "cryptoram/driver/crypto_handle.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_handle.c",
+          "bytes": 40356,
+          "sha256": "efa53a8a75ddf463905381fe13b0172ff5f27fbf3e7d38225f4378a4ec469f13"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_algs.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_algs.c",
+          "bytes": 2492,
+          "sha256": "5ab747d91509d606452bc7a03e030487fa4fbb353bf1ded40d1f2fb2d0f49a65"
+        },
+        {
+          "member": "cryptoram/driver/crypto_skcipher_req.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_skcipher_req.h",
+          "bytes": 428,
+          "sha256": "fb01a67264337225a8deaf3a6f93f0a9d5185b89f63afbf2a6c8268b5a53ed09"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_core.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_core.h",
+          "bytes": 3827,
+          "sha256": "fc41e1ff32e5048499ac1e3989f5713b386ac0056de7a929250a9ff3ebe51a20"
+        },
+        {
+          "member": "cryptoram/driver/crypto_skcipher_req.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_skcipher_req.c",
+          "bytes": 3204,
+          "sha256": "9bcdbe86f7663779eaef8d2a5de830e5fd406e7026468601696a02e880b572aa"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_aead.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_aead.c",
+          "bytes": 21905,
+          "sha256": "4e20de53f9b4b4eae1c8d52a36e5f99088780bc779132098d6c0d9c2626d73ca"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_skcipher.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_skcipher.c",
+          "bytes": 15599,
+          "sha256": "fe284c77c8d1e8eff88dceb458919bbd72ef52fd4bc9e5d2174e4e3462c901e1"
+        },
+        {
+          "member": "cryptoram/driver/crypto_if_driver.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_if_driver.c",
+          "bytes": 7171,
+          "sha256": "4630b6453272d4502548340f4b82aa0daa443cc665ccdb1f5b1e6deaee26e3dd"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_aead.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_aead.h",
+          "bytes": 634,
+          "sha256": "c3572cf630779317de277aaf75504c1c72634b3093daf9a28dc2cdb105f50414"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ioctl.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_ioctl.h",
+          "bytes": 369,
+          "sha256": "d9b4da984cc024b6aacc466b8c267e6879317b287676930afe752aeb09b5633a"
+        },
+        {
+          "member": "cryptoram/driver/crypto_handle.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_handle.h",
+          "bytes": 3199,
+          "sha256": "f95b1b27d9757a40e3a7a1fb074506b1bdf1f630df1fa9b8e49022db9ed1db0d"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ioctl.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_ioctl.c",
+          "bytes": 10391,
+          "sha256": "cb815569bc422fde03dc723bceba6b88f10888557b4d61bca1447f34cea11903"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_skcipher.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_skcipher.h",
+          "bytes": 658,
+          "sha256": "373e26b283ed97c77f86ca2edb688a0b15eadcbb5ca1932924f9998ef349488f"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_shash.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_shash.h",
+          "bytes": 616,
+          "sha256": "be9e93515b0239e9e54fab51437773fce933a550ff816d10872eea81c234bef9"
+        },
+        {
+          "member": "cryptoram/driver/crypto_shash_req.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_shash_req.c",
+          "bytes": 2644,
+          "sha256": "8ca50453304619b1148772bb20576413252cb7bccf4e5440ea94ac6c21abff35"
+        },
+        {
+          "member": "cryptoram/driver/crypto_aead_req.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_aead_req.c",
+          "bytes": 3971,
+          "sha256": "db217d8672b3c9d4ad8f068d96f927961a627ee9de939e5ff2c887fd2395b14a"
+        },
+        {
+          "member": "cryptoram/driver/crypto_aead_req.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_aead_req.h",
+          "bytes": 412,
+          "sha256": "8af2bda9175fcd9d95d9fc8b38cf8565dab19727096366c755fa0ddbbb802da0"
+        },
+        {
+          "member": "cryptoram/driver/crypto_api_internal.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_api_internal.h",
+          "bytes": 1146,
+          "sha256": "7685911f3f78287a38b667be91e1949e7aab7deea082c001f909abf617b73f51"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_algs.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_algs.h",
+          "bytes": 2725,
+          "sha256": "a6a5f5865fe66e0e66d9d6deceb7719e89bb34d896ec721b518d8c62785f60d0"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_core.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_core.c",
+          "bytes": 9779,
+          "sha256": "a663dd1927dd5e05a2d2d5f8d773047d736bb754b2c1b488fcd98dd51a493103"
+        },
+        {
+          "member": "cryptoram/driver/crypto_ram_print.h",
+          "path": "gpl-selection/cryptoram/driver/crypto_ram_print.h",
+          "bytes": 896,
+          "sha256": "685ec827af04fe467f3730f61bb215bd1ebb5d4c3cbfd22f45efc8cb13dbe374"
+        },
+        {
+          "member": "cryptoram/driver/crypto_cdev.c",
+          "path": "gpl-selection/cryptoram/driver/crypto_cdev.c",
+          "bytes": 2146,
+          "sha256": "e9db4b929fa8d55e178d510dc4f9632f16d9d594f766e3524db3367895e6782a"
+        },
+        {
+          "member": "cryptoram/export/crypto_ram.h",
+          "path": "gpl-selection/cryptoram/export/crypto_ram.h",
+          "bytes": 1008,
+          "sha256": "22551e0939d570554bc2b3c1e3827da4aa6a52a7d1adcc6bb0a80a02677d68e6"
+        },
+        {
+          "member": "cryptoram/export/crypto_param.h",
+          "path": "gpl-selection/cryptoram/export/crypto_param.h",
+          "bytes": 2641,
+          "sha256": "373240e33e906a05d06999248230e430b17f04d62a5a6c53c7b68b4494eed769"
+        },
+        {
+          "member": "cryptoram/userspace/include/do_ioctl.h",
+          "path": "gpl-selection/cryptoram/userspace/include/do_ioctl.h",
+          "bytes": 360,
+          "sha256": "c0126c5a8081c0c12c57c313698482b6cd77178cf4f9e4190dec71f77afd1c4b"
+        },
+        {
+          "member": "cryptoram/userspace/include/crypto_ioctl_cmd.h",
+          "path": "gpl-selection/cryptoram/userspace/include/crypto_ioctl_cmd.h",
+          "bytes": 2435,
+          "sha256": "690c4ee70253c658941975fbe2272fd560398497a6941de39bcd4ba96d4b272b"
+        },
+        {
+          "member": "cryptoram/userspace/include/crypto_type.h",
+          "path": "gpl-selection/cryptoram/userspace/include/crypto_type.h",
+          "bytes": 435,
+          "sha256": "064cbc882da6188bebd884a56a59532ea5c9c9b4655428b24dc880de56721ba6"
+        },
+        {
+          "member": "cryptoram/userspace/include/crypto_config.h",
+          "path": "gpl-selection/cryptoram/userspace/include/crypto_config.h",
+          "bytes": 441,
+          "sha256": "dde98f2a9ab777e293efd1f84ce73dff940d62b8a8a42b666a67063cd29e7c32"
+        },
+        {
+          "member": "cryptoram/userspace/include/sdebug.h",
+          "path": "gpl-selection/cryptoram/userspace/include/sdebug.h",
+          "bytes": 1590,
+          "sha256": "5a3ad4af99807e176a3de20991b4df38abc375be4846cbce3fa7e5c010b6bec3"
+        },
+        {
+          "member": "cryptoram/userspace/src/do_ioctl.c",
+          "path": "gpl-selection/cryptoram/userspace/src/do_ioctl.c",
+          "bytes": 886,
+          "sha256": "dd5573be1f104b7ddb7eb7e83ed933676d95b8a4da70f31d2cb347424cdea224"
+        },
+        {
+          "member": "cryptoram/userspace/src/crypto_ram.c",
+          "path": "gpl-selection/cryptoram/userspace/src/crypto_ram.c",
+          "bytes": 12341,
+          "sha256": "bb1bfd9edc394df815b437ab7f37239ecf064f42a5c82d68d8d6bfc08ef29e58"
+        }
+      ],
+      "archive_CXD_path_names": []
+    },
+    {
+      "archive": "gpl-archives/ldec.tar.gz",
+      "archive_sha256": "10170f675b0452b79e72d55d41c100d0acbc9bebb7b3339997a358e87e0c1e7b",
+      "archive_member_count": 10,
+      "selected_regular_sources": [
+        {
+          "member": "ldec/driver/src/ldec_debug.h",
+          "path": "gpl-selection/ldec/driver/src/ldec_debug.h",
+          "bytes": 2117,
+          "sha256": "f1adf620f120f70255e34ab950a69b531e178788c935763af5ff7d371115adbc"
+        },
+        {
+          "member": "ldec/driver/src/ldec_drv.h",
+          "path": "gpl-selection/ldec/driver/src/ldec_drv.h",
+          "bytes": 4631,
+          "sha256": "c6a9d42c363230219213bb63add1d8b591226bae9b11ae751278cce7cee9a7a9"
+        },
+        {
+          "member": "ldec/driver/src/ldec_drv.c",
+          "path": "gpl-selection/ldec/driver/src/ldec_drv.c",
+          "bytes": 86744,
+          "sha256": "8baf1351b6e3a19198ca03874c27272a4f995890ec312a7e893158ad3001a8f1"
+        },
+        {
+          "member": "ldec/driver/src/ldec_reg.h",
+          "path": "gpl-selection/ldec/driver/src/ldec_reg.h",
+          "bytes": 5462,
+          "sha256": "77ad5d7ef7c88ac1180da35774f3318144011fa6fcf6fe07fe0793bec286dde2"
+        },
+        {
+          "member": "ldec/driver/src/ldec_driver.h",
+          "path": "gpl-selection/ldec/driver/src/ldec_driver.h",
+          "bytes": 1378,
+          "sha256": "044e299e38f48b0bc9e907100bd388155a149559140bd91991430da3e3af763d"
+        },
+        {
+          "member": "ldec/driver/src/Makefile",
+          "path": "gpl-selection/ldec/driver/src/Makefile",
+          "bytes": 1825,
+          "sha256": "00a4345f9a024066c5ac42818a3433ebae1042bc4374e077c407108f9b9a0d61"
+        },
+        {
+          "member": "ldec/driver/src/ldec_hw.h",
+          "path": "gpl-selection/ldec/driver/src/ldec_hw.h",
+          "bytes": 5292,
+          "sha256": "bcbc39926bf9eb1ed2d3680e5e816d969064708cd81067e1a9d25f6c99d9218c"
+        }
+      ],
+      "archive_CXD_path_names": []
+    },
+    {
+      "archive": "gpl-archives/linux-kernel.tar.gz",
+      "archive_sha256": "1e1cf32816e841462bd1d0f4e93c4897a44d0a9b95641387c74cafb6d6f44190",
+      "archive_member_count": 64942,
+      "selected_regular_sources": [
+        {
+          "member": "linux-kernel/arch/arm64/configs/cxd90201_ice_nfs_defconfig",
+          "path": "gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_ice_nfs_defconfig",
+          "bytes": 106234,
+          "sha256": "3a571a8717a94ab5d0112155af4e7d9c4e94fb56ec7e2287f65d4c2a8074c7ac"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/configs/cxd90201_set_defconfig",
+          "path": "gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_set_defconfig",
+          "bytes": 104325,
+          "sha256": "bfeee3c51d60cd9635d0b94a7a939ce2db850599c99b6be487f6085db14f7498"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/configs/cxd90201_ipv4_set_defconfig",
+          "path": "gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_ipv4_set_defconfig",
+          "bytes": 104918,
+          "sha256": "2ea88d331f40723022447c9587acd2eaa4da8b65bfb49eee02be932098781dcd"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/configs/cxd90xxx_ice_set_defconfig",
+          "path": "gpl-selection/linux-kernel/arch/arm64/configs/cxd90xxx_ice_set_defconfig",
+          "bytes": 105046,
+          "sha256": "aca0ec96c1d1fa0ee5759f7a9fe2de92a1b02fd93c6cad46b374a70bdbc2c979"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/configs/cxd90201_ipv4_set2_defconfig",
+          "path": "gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_ipv4_set2_defconfig",
+          "bytes": 104939,
+          "sha256": "4a5c380dad4fc005ed696d40246272afa91635015513a62d5d045600947ae28d"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/configs/cxd90201_nfs_defconfig",
+          "path": "gpl-selection/linux-kernel/arch/arm64/configs/cxd90201_nfs_defconfig",
+          "bytes": 106279,
+          "sha256": "e849d187be302c5f2b529974b0992464f7c5a02c80ef8506691d0dce3c7beee4"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_pcie3-ep.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_pcie3-ep.dts",
+          "bytes": 1822,
+          "sha256": "a4bbee2d740489f291dd7850d05bbe1a457edd8e7fa5f5d461793293694d2786"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep_0dma.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep_0dma.dts",
+          "bytes": 1787,
+          "sha256": "040bf8bac7a2c3d379e7e59935fdca37172b0320d3e343c4ec7c20228fcb1da8"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_8G.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_8G.dts",
+          "bytes": 1587,
+          "sha256": "6bc057f141443c5b1cd218fac38bed96293498863304d83484eac7a07f7aacfe"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep_0dma.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep_0dma.dts",
+          "bytes": 1781,
+          "sha256": "8917920270357e84f09156f452af0b7fa2057c2b849d17f70973b07ef9db9941"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/qemu.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/qemu.dts",
+          "bytes": 3211,
+          "sha256": "ca381ce630b4676029d7d07b843781c0a1108230ae9fb6181de7821276b35991"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/spi0-slave.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spi0-slave.dtsi",
+          "bytes": 426,
+          "sha256": "513e5e0ca8556ec7a608ef9689e306110f900096fd7e4ed4efc56168bd43842d"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/i2c.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/i2c.dtsi",
+          "bytes": 2578,
+          "sha256": "04e09fe3f243042a52a7765f0858283525e7ae43f1e2ab908a438a5546a14092"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_noUSB20.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_noUSB20.dts",
+          "bytes": 1618,
+          "sha256": "5732fcff06588ac0e0cf7ff14050b68655b286437c1fcf5b98eff016371cf95d"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/spidev.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spidev.dtsi",
+          "bytes": 499,
+          "sha256": "4de85657989d536064516a3edfb20668104788104a1a39c2758064f1651f64a4"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/memmap-6G.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-6G.dtsi",
+          "bytes": 1412,
+          "sha256": "acae11f706e21fbaa237a9e4dd55ddb2374a1737a882ac11ef5cbc69cb18441e"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/spitest.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spitest.dtsi",
+          "bytes": 958,
+          "sha256": "46b65058e41e5b9274d07e53f5b114ee06943bcc4a0921ba934839a83a165d4b"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts.old",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts.old",
+          "bytes": 1006,
+          "sha256": "636d9a486448e76b1537e7469bb8e4a98ca55a12e003b8010d2647d5190318ac"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/usb64.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/usb64.dtsi",
+          "bytes": 2018,
+          "sha256": "f1b0153d2830a2a9955ce522753478818149f8af8fb666cb9df538c860d412d8"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/fpga2.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fpga2.dts",
+          "bytes": 4618,
+          "sha256": "1096f35a89eae4f030c4c0d06c571433e4550856640554508bdeec2490da0d62"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/fpga6.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fpga6.dts",
+          "bytes": 4050,
+          "sha256": "9060db9d277a097185e25281b2c163a187db2a8edb053c0e430beaaad0e4d306"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_8G+usb.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_8G+usb.dts",
+          "bytes": 1590,
+          "sha256": "6537e6c8ec0523844d539c9c2b4633324dc8f6b215087a5c7a9a0e0b0e94b3b7"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/memmap-8G.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-8G.dtsi",
+          "bytes": 1412,
+          "sha256": "a80d09ea6f02b100c8beb2156f36c3c67ebc8e83aabf7e9db21dfc1a607f70ed"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_pcie4-ep.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_pcie4-ep.dts",
+          "bytes": 1822,
+          "sha256": "fb08b2ea9ae3728ad2f28c83d3e9f61ececeb1cbd3256ee81bbea380e7b98ca0"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx.dtsi",
+          "bytes": 40080,
+          "sha256": "884a7262505d0b053d61f3791df2486d7f61a2d02d791d558ea5962caa56e05a"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/memmap-3G.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-3G.dtsi",
+          "bytes": 1412,
+          "sha256": "ea1f9fa30a2e7264013b655f6411a122936b2c17ee11863e86d664381169efb8"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/memmap-4G.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-4G.dtsi",
+          "bytes": 1412,
+          "sha256": "071fa1beed55d360d05b0ff5b56db45d856aa068649968db86ed8135f4851b1c"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_6G.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_6G.dts",
+          "bytes": 1917,
+          "sha256": "9189a1d4eba4baaa6c2a31691672791b8a36daf4317aad37d76135039df8d60e"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/Makefile",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/Makefile",
+          "bytes": 1008,
+          "sha256": "e5b7ac3b95d5fa4227dae7a5b7b31b7adfe1d9cdf570515681fe3a1052a06b19"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep.dts",
+          "bytes": 1723,
+          "sha256": "732034357f4b33dd871002959606e982c04e8883a3cae23abbd1e6a63ed48983"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/spi.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spi.dtsi",
+          "bytes": 1490,
+          "sha256": "c4e2668dd2a42e9dd6985240fc8839c120406564e7ddd287f63bf6d37cb3bd1d"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_3G+usb.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_3G+usb.dts",
+          "bytes": 1590,
+          "sha256": "faf48e68f42478b2a9253821b3fa71a8b7c6dd19f17b6164eee128f64e877948"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep.dts",
+          "bytes": 1723,
+          "sha256": "81159b763480b084c1649efbd09f3ff18e1c9f82560f7309959f9b2913ed57d1"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts",
+          "bytes": 1104,
+          "sha256": "357ebffd8ee5db332e64f1dca6d232797fa0b3b19fd48355c5f8050e5a499eeb"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/spi0-master.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/spi0-master.dtsi",
+          "bytes": 428,
+          "sha256": "07d3774fc9881dc6b38faac05169b6913600e684a86ea9e02c1fcd6559498028"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/usb-disable.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/usb-disable.dtsi",
+          "bytes": 279,
+          "sha256": "321ee9985f8661505b5b9dd36f8bca5b5bc41acb3d694c628d3be1e81c2a94b1"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/qemu-gicv2.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/qemu-gicv2.dts",
+          "bytes": 3274,
+          "sha256": "784afefe2e852b57a803c5615e7ca5b5b3bceff5a4503ccfaf97193be37b666d"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_8G.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_8G.dts",
+          "bytes": 1618,
+          "sha256": "928943dafa18373b232f90343f0640e97c97e12b019824448d43be22b0b6ddf7"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_3G.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_3G.dts",
+          "bytes": 1618,
+          "sha256": "cc59378f49d3672ed5e551a12debc0d3120fb7e720b0298ddaa89615964b1fb0"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_8G.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_8G.dts",
+          "bytes": 1700,
+          "sha256": "9e60230003adf90e606445d01562fb8c37eefc05a57346ac703f7799c5faa9bf"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/fpga.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/fpga.dts",
+          "bytes": 4472,
+          "sha256": "e9fc0620c4ab0ea141b621a146d36601fd34b962ef8d128c7d431c8329948730"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/disable-USB20.dtsi",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/disable-USB20.dtsi",
+          "bytes": 65,
+          "sha256": "7cf305bc4c7d47d5a8c6b44881d5124524396a0afdcffd5f04ce46670d01a7d2"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep_4dma.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep_4dma.dts",
+          "bytes": 1787,
+          "sha256": "d0fc1b86ae73f0d4b8c5cb82f53c9af53c7a0eb309c3d0a6d697d8065ec8478d"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep_4dma.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep_4dma.dts",
+          "bytes": 1781,
+          "sha256": "b5e3ed15eebbc695cd46f2a7b8330069633bd735ebe91d0a053e5737e2d996d4"
+        },
+        {
+          "member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set.dts",
+          "path": "gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set.dts",
+          "bytes": 1914,
+          "sha256": "47cdfd96eceb71a05ac46b2d59d8595e20d87fc957de394d5d610bb3d6d114b6"
+        },
+        {
+          "member": "linux-kernel/Makefile",
+          "path": "gpl-selection/linux-kernel/Makefile",
+          "bytes": 72421,
+          "sha256": "3049e43f316da546a7d3be2a79311c7ef0d330488073fb14206b119adf39af95"
+        }
+      ],
+      "archive_CXD_path_names": [
+        "linux-kernel/arch/arm64/configs/cxd90201_ice_nfs_defconfig",
+        "linux-kernel/arch/arm64/configs/cxd90201_set_defconfig",
+        "linux-kernel/arch/arm64/configs/cxd90201_ipv4_set_defconfig",
+        "linux-kernel/arch/arm64/configs/cxd90xxx_ice_set_defconfig",
+        "linux-kernel/arch/arm64/configs/cxd90201_ipv4_set2_defconfig",
+        "linux-kernel/arch/arm64/configs/cxd90201_nfs_defconfig",
+        "linux-kernel/arch/arm64/boot/dts/cxd",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_pcie3-ep.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep_0dma.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_8G.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep_0dma.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/qemu.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/spi0-slave.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/i2c.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_noUSB20.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/spidev.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/memmap-6G.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/spitest.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts.old",
+        "linux-kernel/arch/arm64/boot/dts/cxd/usb64.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/fpga2.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/fpga6.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_8G+usb.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/memmap-8G.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_pcie4-ep.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/memmap-3G.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/memmap-4G.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_6G.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/Makefile",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/spi.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_3G+usb.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/spi0-master.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/usb-disable.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/qemu-gicv2.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_8G.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx_set_3G.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_nfs_8G.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/fpga.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/disable-USB20.dtsi",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie4-ep_4dma.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set_pcie3-ep_4dma.dts",
+        "linux-kernel/arch/arm64/boot/dts/cxd/cxd90201_set.dts",
+        "linux-kernel/include/dt-bindings/reset/cxd,lin-resets.h",
+        "linux-kernel/include/dt-bindings/clock/cxd,lin-clock.h",
+        "linux-kernel/include/uapi/linux/cxd-adrs_conv.h",
+        "linux-kernel/include/linux/cxd_timer.h",
+        "linux-kernel/Documentation/devicetree/bindings/media/spi/sony-cxd2880.txt",
+        "linux-kernel/fs/lockd/svcxdr.h",
+        "linux-kernel/drivers/usb/dwc3/dwc3-cxd.h",
+        "linux-kernel/drivers/usb/dwc3/dwc3-cxd-suppl.c",
+        "linux-kernel/drivers/usb/dwc3/dwc3-cxd.c",
+        "linux-kernel/drivers/usb/dwc3/dwc3-cxd-suppl.h",
+        "linux-kernel/drivers/usb/dwc2/dwc2-cxd.c",
+        "linux-kernel/drivers/usb/dwc2/dwc2-cxd.h",
+        "linux-kernel/drivers/usb/dwc2/dwc2-cxd-suppl.c",
+        "linux-kernel/drivers/usb/dwc2/dwc2-cxd-suppl.h",
+        "linux-kernel/drivers/usb/cxd",
+        "linux-kernel/drivers/usb/cxd/Makefile",
+        "linux-kernel/drivers/usb/cxd/Kconfig",
+        "linux-kernel/drivers/usb/cxd/usb2_smmu.h",
+        "linux-kernel/drivers/usb/cxd/usb2_smmu.c",
+        "linux-kernel/drivers/usb/cxd/sdebug.h",
+        "linux-kernel/drivers/soc/cxd",
+        "linux-kernel/drivers/soc/cxd/sleep.S",
+        "linux-kernel/drivers/soc/cxd/include",
+        "linux-kernel/drivers/soc/cxd/include/debug-8250.S",
+        "linux-kernel/drivers/soc/cxd/include/head_init.h",
+        "linux-kernel/drivers/soc/cxd/include/bootram.h",
+        "linux-kernel/drivers/soc/cxd/include/debug-macro.S",
+        "linux-kernel/drivers/soc/cxd/include/uart.h",
+        "linux-kernel/drivers/soc/cxd/include/debug-pl011.S",
+        "linux-kernel/drivers/soc/cxd/pm_core.c",
+        "linux-kernel/drivers/soc/cxd/mmap.c",
+        "linux-kernel/drivers/soc/cxd/Kbuild.include",
+        "linux-kernel/drivers/soc/cxd/debug.S",
+        "linux-kernel/drivers/soc/cxd/resume.S",
+        "linux-kernel/drivers/soc/cxd/params.c",
+        "linux-kernel/drivers/soc/cxd/Makefile",
+        "linux-kernel/drivers/soc/cxd/udif",
+        "linux-kernel/drivers/soc/cxd/udif/timestamp.c",
+        "linux-kernel/drivers/soc/cxd/udif/dma-mapping.c",
+        "linux-kernel/drivers/soc/cxd/udif/clock.c",
+        "linux-kernel/drivers/soc/cxd/udif/Makefile",
+        "linux-kernel/drivers/soc/cxd/udif/devno.c",
+        "linux-kernel/drivers/soc/cxd/udif/platform.c",
+        "linux-kernel/drivers/soc/cxd/udif/cache.c",
+        "linux-kernel/drivers/soc/cxd/udif/reset.c",
+        "linux-kernel/drivers/soc/cxd/head.S",
+        "linux-kernel/drivers/soc/cxd/Kconfig",
+        "linux-kernel/drivers/soc/cxd/timer.S",
+        "linux-kernel/drivers/soc/cxd/adrs_conv.c",
+        "linux-kernel/drivers/soc/cxd/export",
+        "linux-kernel/drivers/soc/cxd/export/mach",
+        "linux-kernel/drivers/soc/cxd/export/mach/gic_export.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/platform.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/dw_axi_dmac.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/noncache.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/uart_addr.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/regs-scu.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/regs-octrl.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/pcie_export.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/pm_export.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/udif",
+        "linux-kernel/drivers/soc/cxd/export/mach/udif/timer.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/udif/platform.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/udif/reset.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/udif/clock.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/udif/cache.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/udif/io.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/udif/devno.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/regs-gpio.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/dma32.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/moduleparam.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/regs-clk.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/errind.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/irqs.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/regs-srst.h",
+        "linux-kernel/drivers/soc/cxd/export/mach/pm.h",
+        "linux-kernel/drivers/soc/cxd/gpio.c",
+        "linux-kernel/drivers/soc/cxd/boot.S",
+        "linux-kernel/drivers/soc/cxd/gic.c",
+        "linux-kernel/drivers/soc/cxd/error.c",
+        "linux-kernel/drivers/soc/cxd/warm.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2820r_c.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2841er.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2841er_priv.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2820r_priv.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2841er.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_io.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_driver_version.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt_mon.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt_mon.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_dvbt2.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_devio_spi.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_top.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_common.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt2.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_io.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_integ.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/Makefile",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_mon.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt2_mon.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_devio_spi.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/Kconfig",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_spi_device.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_dvbt.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_spi.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_common.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt2_mon.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_integ.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_spi_device.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt2.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_mon.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_dtv.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2099.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2820r.h",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2099.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2820r_t2.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2820r_t.c",
+        "linux-kernel/drivers/media/dvb-frontends/cxd2820r_core.c",
+        "linux-kernel/drivers/media/spi/cxd2880-spi.c",
+        "linux-kernel/drivers/misc/cxd",
+        "linux-kernel/drivers/misc/cxd/gpio",
+        "linux-kernel/drivers/misc/cxd/gpio/Makefile",
+        "linux-kernel/drivers/misc/cxd/gpio/Kconfig",
+        "linux-kernel/drivers/misc/cxd/gpio/gpio-sn.h",
+        "linux-kernel/drivers/misc/cxd/gpio/gpio-sn.c",
+        "linux-kernel/drivers/misc/cxd/Makefile",
+        "linux-kernel/drivers/misc/cxd/pcie",
+        "linux-kernel/drivers/misc/cxd/pcie/aspm.c",
+        "linux-kernel/drivers/misc/cxd/pcie/prsnt.c",
+        "linux-kernel/drivers/misc/cxd/pcie/aximon.c",
+        "linux-kernel/drivers/misc/cxd/pcie/log.c",
+        "linux-kernel/drivers/misc/cxd/pcie/ltssm.c",
+        "linux-kernel/drivers/misc/cxd/pcie/proc.c",
+        "linux-kernel/drivers/misc/cxd/pcie/link_speed.c",
+        "linux-kernel/drivers/misc/cxd/pcie/module.c",
+        "linux-kernel/drivers/misc/cxd/pcie/host.c",
+        "linux-kernel/drivers/misc/cxd/pcie/Makefile",
+        "linux-kernel/drivers/misc/cxd/pcie/Kconfig",
+        "linux-kernel/drivers/misc/cxd/pcie/lock.c",
+        "linux-kernel/drivers/misc/cxd/pcie/internal.h",
+        "linux-kernel/drivers/misc/cxd/pcie/access.c",
+        "linux-kernel/drivers/misc/cxd/pcie/root_ctrl.c",
+        "linux-kernel/drivers/misc/cxd/pcie/link.c",
+        "linux-kernel/drivers/misc/cxd/pcie/misc.c",
+        "linux-kernel/drivers/misc/cxd/pcie/link_width.c",
+        "linux-kernel/drivers/misc/cxd/wdt",
+        "linux-kernel/drivers/misc/cxd/wdt/wdt.h",
+        "linux-kernel/drivers/misc/cxd/wdt/arm_sp805.c",
+        "linux-kernel/drivers/misc/cxd/wdt/dw_apb_wdt.c",
+        "linux-kernel/drivers/misc/cxd/wdt/Makefile",
+        "linux-kernel/drivers/misc/cxd/wdt/wdt_core.c",
+        "linux-kernel/drivers/misc/cxd/wdt/Kconfig",
+        "linux-kernel/drivers/misc/cxd/hwtimer",
+        "linux-kernel/drivers/misc/cxd/hwtimer/Makefile",
+        "linux-kernel/drivers/misc/cxd/hwtimer/Kconfig",
+        "linux-kernel/drivers/misc/cxd/hwtimer/hwtimer.c",
+        "linux-kernel/drivers/misc/cxd/Kconfig",
+        "linux-kernel/drivers/misc/cxd/gpioint",
+        "linux-kernel/drivers/misc/cxd/gpioint/gpioint.c",
+        "linux-kernel/drivers/misc/cxd/gpioint/Makefile",
+        "linux-kernel/drivers/misc/cxd/gpioint/Kconfig",
+        "linux-kernel/drivers/misc/cxd/dma",
+        "linux-kernel/drivers/misc/cxd/dma/log.c",
+        "linux-kernel/drivers/misc/cxd/dma/dw_axi_dmac.h",
+        "linux-kernel/drivers/misc/cxd/dma/proc.c",
+        "linux-kernel/drivers/misc/cxd/dma/cdev.c",
+        "linux-kernel/drivers/misc/cxd/dma/module.c",
+        "linux-kernel/drivers/misc/cxd/dma/Makefile",
+        "linux-kernel/drivers/misc/cxd/dma/dw_axi_dmac.c",
+        "linux-kernel/drivers/misc/cxd/dma/Kconfig",
+        "linux-kernel/drivers/misc/cxd/dma/config.h",
+        "linux-kernel/drivers/misc/cxd/dma/dma_core.c",
+        "linux-kernel/drivers/misc/cxd/dma/internal.h",
+        "linux-kernel/drivers/misc/cxd/dt",
+        "linux-kernel/drivers/misc/cxd/dt/dt_node_en_ctrl.c",
+        "linux-kernel/drivers/misc/cxd/dt/Makefile",
+        "linux-kernel/drivers/misc/cxd/dt/dt_node_en_ctrl.h",
+        "linux-kernel/drivers/misc/cxd/dt/Kconfig",
+        "linux-kernel/drivers/misc/cxd/cpuint",
+        "linux-kernel/drivers/misc/cxd/cpuint/cpuint.c",
+        "linux-kernel/drivers/misc/cxd/cpuint/Makefile",
+        "linux-kernel/drivers/misc/cxd/cpuint/Kconfig",
+        "linux-kernel/drivers/misc/cxd/subsystem",
+        "linux-kernel/drivers/misc/cxd/subsystem/Makefile",
+        "linux-kernel/drivers/misc/cxd/subsystem/Kconfig",
+        "linux-kernel/drivers/misc/cxd/subsystem/subsystem.c",
+        "linux-kernel/drivers/misc/cxd/pciedma",
+        "linux-kernel/drivers/misc/cxd/pciedma/dwc_pcie.h",
+        "linux-kernel/drivers/misc/cxd/pciedma/log.c",
+        "linux-kernel/drivers/misc/cxd/pciedma/proc.c",
+        "linux-kernel/drivers/misc/cxd/pciedma/cdev.c",
+        "linux-kernel/drivers/misc/cxd/pciedma/module.c",
+        "linux-kernel/drivers/misc/cxd/pciedma/dwc_pcie.c",
+        "linux-kernel/drivers/misc/cxd/pciedma/Makefile",
+        "linux-kernel/drivers/misc/cxd/pciedma/connect.c",
+        "linux-kernel/drivers/misc/cxd/pciedma/Kconfig",
+        "linux-kernel/drivers/misc/cxd/pciedma/config.h",
+        "linux-kernel/drivers/misc/cxd/pciedma/dma_core.c",
+        "linux-kernel/drivers/misc/cxd/pciedma/internal.h",
+        "linux-kernel/scripts/dtc/include-prefixes/dt-bindings/reset/cxd,lin-resets.h",
+        "linux-kernel/scripts/dtc/include-prefixes/dt-bindings/clock/cxd,lin-clock.h",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_nfs_pcie3-ep.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_pcie4-ep_0dma.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_8G.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_pcie3-ep_0dma.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/qemu.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/spi0-slave.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/i2c.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_noUSB20.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/spidev.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/memmap-6G.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/spitest.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/fvp.dts.old",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/usb64.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/fpga2.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/fpga6.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90xxx_set_8G+usb.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/memmap-8G.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_nfs_pcie4-ep.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90xxx.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/memmap-3G.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/memmap-4G.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_6G.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/Makefile",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_pcie4-ep.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/spi.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90xxx_set_3G+usb.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_pcie3-ep.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/fvp.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/spi0-master.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/usb-disable.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/qemu-gicv2.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90xxx_set_8G.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90xxx_set_3G.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_nfs_8G.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/fpga.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/disable-USB20.dtsi",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_pcie4-ep_4dma.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set_pcie3-ep_4dma.dts",
+        "linux-kernel/scripts/dtc/include-prefixes/arm64/cxd/cxd90201_set.dts"
+      ]
+    },
+    {
+      "archive": "gpl-archives/sio.tar.gz",
+      "archive_sha256": "379207674b4ccd3f63e6b7069c4a1936278ac1738a4fe9b2fa23f5c7fde0edd7",
+      "archive_member_count": 8,
+      "selected_regular_sources": [
+        {
+          "member": "sio/driver/src/pbl_sio.h",
+          "path": "gpl-selection/sio/driver/src/pbl_sio.h",
+          "bytes": 3827,
+          "sha256": "8dd469c4b940d1699d48bdda33fc1ec0aa997778e64b728394ddf6a3c9341b3f"
+        },
+        {
+          "member": "sio/driver/src/sio.h",
+          "path": "gpl-selection/sio/driver/src/sio.h",
+          "bytes": 1420,
+          "sha256": "54a6170d97e6b4532342a357b4042c0ca64f9810fec8769c8bcd3385999bf046"
+        },
+        {
+          "member": "sio/driver/src/sio_lin.c",
+          "path": "gpl-selection/sio/driver/src/sio_lin.c",
+          "bytes": 43714,
+          "sha256": "68bb6b6112c43ce598e4eeaedf1fcb18e394ef7c64cab7971445fae0b3a2e36e"
+        },
+        {
+          "member": "sio/driver/src/Makefile",
+          "path": "gpl-selection/sio/driver/src/Makefile",
+          "bytes": 401,
+          "sha256": "75e5e18ee079c4848c081e1772dd4fa1305996fa98a2da5707895f9ee7152c52"
+        },
+        {
+          "member": "sio/driver/src/sdebug.h",
+          "path": "gpl-selection/sio/driver/src/sdebug.h",
+          "bytes": 485,
+          "sha256": "3cb578b07932c12d9b19e9b9566c3da5344a19c344f92f9307a3feda4a4df5f0"
+        }
+      ],
+      "archive_CXD_path_names": []
+    }
+  ],
+  "copied_regular_source_bytes": 1197677,
+  "nonregular_archive_entries_not_extracted": true,
+  "code_built_or_executed": false,
+  "whole_device_firmware_image_obtained": false,
+  "actual_SoC_ID_bootloader_security_storage_geometry_or_camera_compatibility_proven": false
+}

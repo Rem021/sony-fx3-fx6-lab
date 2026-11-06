@@ -1,0 +1,75 @@
+004ec038 push.w     {r4, r5, r6, r7, r8, sb, lr}
+004ec03c sub        sp, #0x2c
+004ec03e ldr        r6, [r0]
+004ec040 movs       r4, #0
+004ec042 mov.w      lr, #0x10
+004ec046 ldmdb      r6, {r5, r6}
+004ec04a str        r4, [sp, #0x14]
+004ec04c str        r4, [sp, #0x18]
+004ec04e ldr        r7, [r0, r5]
+004ec050 add        r5, r0
+004ec052 str        r4, [sp, #0x1c]
+004ec054 ldr        r7, [r7, #-0x4]
+004ec058 str        r4, [sp, #0x20]
+004ec05a cmp        r6, r7
+004ec05c str.w      lr, [sp, #0x24]
+004ec060 beq        #0x4ec06a
+004ec062 movs       r0, #0
+004ec064 add        sp, #0x2c
+004ec066 pop.w      {r4, r5, r6, r7, r8, sb, pc}
+004ec06a ldr.w      lr, [r6]
+004ec06e mov        r4, r3
+004ec070 mov        r8, r1
+004ec072 mov        sb, r0
+004ec074 add        r1, sp, #0x14
+004ec076 str.w      sb, [sp, #8]
+004ec07a str        r1, [sp, #0xc]
+004ec07c mov        r3, r2
+004ec07e str.w      r8, [sp, #4]
+004ec082 mov        r7, r2
+004ec084 str        r5, [sp]
+004ec086 mov        r0, r6
+004ec088 movs       r2, #6
+004ec08a mov        r1, r4
+004ec08c ldr.w      r5, [lr, #0x1c]
+004ec090 blx        r5
+004ec092 ldr        r0, [sp, #0x14]
+004ec094 cmp        r0, #0
+004ec096 beq        #0x4ec062
+004ec098 ldr        r1, [sp, #0x20]
+004ec09a and        r3, r1, #6
+004ec09e cmp        r3, #6
+004ec0a0 beq        #0x4ec064
+004ec0a2 ldr        r2, [sp, #0x1c]
+004ec0a4 ldr        r3, [sp, #0x18]
+004ec0a6 ands       r3, r2
+004ec0a8 and        r3, r3, #6
+004ec0ac cmp        r3, #6
+004ec0ae beq        #0x4ec064
+004ec0b0 and        r2, r2, #5
+004ec0b4 cmp        r2, #4
+004ec0b6 beq        #0x4ec062
+004ec0b8 cmp        r1, #0
+004ec0ba bne        #0x4ec062
+004ec0bc cmp        r4, #0
+004ec0be blt        #0x4ec0c8
+004ec0c0 add        r4, r0
+004ec0c2 cmp        sb, r4
+004ec0c4 bne        #0x4ec062
+004ec0c6 b          #0x4ec064
+004ec0c8 adds       r3, r4, #2
+004ec0ca beq        #0x4ec062
+004ec0cc ldr        r5, [r7]
+004ec0ce mov        r2, r0
+004ec0d0 str.w      sb, [sp]
+004ec0d4 mov        r1, r4
+004ec0d6 mov        r3, r8
+004ec0d8 mov        r0, r7
+004ec0da ldr        r4, [r5, #0x20]
+004ec0dc blx        r4
+004ec0de and        r0, r0, #6
+004ec0e2 cmp        r0, #6
+004ec0e4 bne        #0x4ec062
+004ec0e6 ldr        r0, [sp, #0x14]
+004ec0e8 b          #0x4ec064
+004ec0ea nop        

@@ -1,0 +1,90 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap81skd-b9850378",
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "inputs_unchanged": true,
+  "missing_markers": [],
+  "im_alive_last_snapshot": true,
+  "fatal": [],
+  "boot_tasks": [
+    {
+      "task": "license",
+      "created": true,
+      "handle": 0,
+      "business_entry_tids": [
+        323
+      ],
+      "natural_completion_count": 1,
+      "completion_function_returns": [],
+      "state": "business_entered"
+    },
+    {
+      "task": "volume",
+      "created": true,
+      "handle": 1,
+      "business_entry_tids": [
+        324
+      ],
+      "natural_completion_count": 1,
+      "completion_function_returns": [
+        0
+      ],
+      "state": "completed_native_enqueue"
+    },
+    {
+      "task": "beep",
+      "created": true,
+      "handle": 2,
+      "business_entry_tids": [
+        325
+      ],
+      "natural_completion_count": 1,
+      "completion_function_returns": [
+        0
+      ],
+      "state": "completed_native_enqueue"
+    },
+    {
+      "task": "get-func",
+      "created": true,
+      "handle": 3,
+      "business_entry_tids": [
+        326
+      ],
+      "natural_completion_count": 1,
+      "completion_function_returns": [
+        0
+      ],
+      "state": "completed_native_enqueue"
+    }
+  ],
+  "barrier_evidence": {
+    "entry_count": 1,
+    "entry_parameters": [
+      {
+        "x1": 1,
+        "x2": 3,
+        "x3": 2,
+        "x4": 0
+      }
+    ],
+    "tokens": [
+      1,
+      3,
+      2,
+      0
+    ],
+    "post_remaining": [
+      3,
+      2,
+      1,
+      0
+    ],
+    "return_values": [
+      0
+    ]
+  },
+  "barrier_passed": false
+}
+{'0': 1, '1': 0, '2': 1, '3': 1, '4': 495, '5': 495, '6': 493, '7': 2, '8': 2, '9': 11283, '10': 466, '11': 495, '12': 5, '13': 1, '14': 1, '15': 1, '16': 1, '17': 1, '18': 1, '19': 1, '20': 1, '21': 5, '22': 1, '23': 4, '24': 4, '25': 1, '26': 1, '27': 1, '28': 1, '29': 1, '30': 5, '31': 1, '32': 1, '33': 1, '34': 0, '35': 1, '36': 4, '37': 4, '38': 4, '39': 1, '40': 495, '41': 1, '42': 1, '43': 1, '44': 2, '45': 1, '46': 1, '47': 1, '48': 2, '49': 2, '50': 2, '51': 1, '52': 0, '53': 0, '54': 0, '55': 0, '56': 0, '57': 0, '58': 0, '59': 0, '60': 0, '61': 0, '62': 0, '63': 0}
+{'peak_all': 10817, 'peak_gate': 332, 'field_samples': 12244, 'hist_0': 0, 'hist_1': 2, 'hist_2': 6, 'hist_3': 69, 'hist_4': 453, 'hist_5': 11714, 'gate_hist_0': 0, 'gate_hist_1': 0, 'gate_hist_2': 2, 'gate_hist_3': 20, 'gate_hist_4': 125, 'gate_hist_5': 348, 'system_false': 0, 'backlog_skip': 493, 'time_skip': 0, 'time_pass': 2, 'dequeue_total': 495, 'timer_dequeue': 466, 'a12_nonzero': 0, 'a13_nonzero': 0, 'last_object': 546669457024, 'last_a18': 10816, 'last_a12': 0, 'last_a13': 0, 'first_ns': 8992359008, 'last_ns': 233316585008, 'mirror_skip': 0, 'selftest': 1, 'bound': 1}

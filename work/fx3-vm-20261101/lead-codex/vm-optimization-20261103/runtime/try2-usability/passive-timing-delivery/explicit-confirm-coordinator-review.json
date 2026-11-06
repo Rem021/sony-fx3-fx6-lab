@@ -1,0 +1,14 @@
+{
+  "status": "accepted_offline_for_one_bounded_runtime",
+  "verified_delivery_files": 45,
+  "verified_sources": 4,
+  "verified_dependencies": 3,
+  "source_freeze_sha256": "8c751f05ab82a94ee06c7c0154ba48967bc7909a6100fd1a77cc9f022c23285a",
+  "delivery_sha256": "b0f7d8e107ec5758227792bfb76d91ac33f8acfc640f83c044f8772fe6d4a49f",
+  "fixture_passed_cases": 13,
+  "runtime_verified": false,
+  "cleanup_verified_from_receipt": true,
+  "operation_clarification": "Capture before identity, screenshot, after identity sequentially in one tool call, then inspect image. Require before/after shownSHA and content generation equal, each consistent with its current frame and render_valid. Sequence may advance monotonically if SHA and generation stay identical: duplicate native commits are not different visual content. Any SHA/generation change, including ABA with new generation, requires new visual inspection or End. Original PAGE latest-frame/confirmation checks unchanged. CLI receives firmware PNG SHA, never whole-page screenshot SHA.",
+  "reason": "Frozen OPERATION additionally requires identical sequence; this would reject harmless identical-content native publications and is stricter than source PAGE/CLI semantics. Coordinator clarification changes no executable or deadline.",
+  "updated_utc": "2026-11-04T21:02:15.594022+00:00"
+}

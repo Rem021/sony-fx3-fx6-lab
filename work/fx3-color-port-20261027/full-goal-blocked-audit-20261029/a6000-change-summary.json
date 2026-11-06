@@ -1,0 +1,121 @@
+{
+  "base": "0c5857abc2b986e93ade5e5947563a2f5f235e09",
+  "head": "8a28f96bde389f1d4c24a2be3503a120eebbc927",
+  "status": "ahead",
+  "total_commits": 3,
+  "commits": [
+    {
+      "sha": "69fede9713b062b9194f33fb4102d0858fb0ac6d",
+      "message": "docs: E26-R9 BootROM RAM execution feasibility"
+    },
+    {
+      "sha": "6b46897f8158c4ec6e39694d772f8cb16b3a91e7",
+      "message": "E26-R9: BootROM RAM execution feasibility"
+    },
+    {
+      "sha": "8a28f96bde389f1d4c24a2be3503a120eebbc927",
+      "message": "feat(recovery): documentar investigaci\u00f3n E26-R10 del USB Charger 054c:0994\n\nIdentificar que Darwin (FM3) genera el dispositivo USB Charger\n054c:0994 cuando la camara esta apagada, mediante el descriptor\nUSB embebido en darwin_core.bin (VID 0x054c, PID 0x0994, clase\nHID, EP1 IN interrupt, cadenas 'Sony' y 'USB Charger') validado\ncontra lsusb -v con script offline y 4 pruebas unitarias.\n\nConcluir que NO hay ruta de recuperacion demostrada via USB\nCharger: solo informe Input de 1 byte (sin Output ni Feature, sin\ncanal host->dispositivo), no se localiza manejador SETEP ni\npeticiones vendor-specific de Sony, no existe cadena desde USB\nCharger hasta escritura de RAM, salto a ejecucion o activacion de\nUpdater Mode. El modulo DWN de Darwin (tabla de salto de 20\npunteros) se registra como pista futura no demostrada.\n\nDecisi\u00f3n de cierre: Opcion B \u2014 abandonar provisionalmente la ruta\nUSB Charger y concentrar en BootROM UART de R9 (cadena\ndemostrada estaticamente y en emulacion).\n\nResponde Q1-Q10 del E26-R10. Incluye actualizacion de\nPENDIENTES, STATE, CURRENT, PROGRESS, CORRECTIONS, INDEX,\nOPEN-QUESTIONS y indices de conocimiento."
+    }
+  ],
+  "files": [
+    {
+      "path": "analysis/e26-recovery/r10-usb-descriptor-parse.py",
+      "status": "added",
+      "changes": 244
+    },
+    {
+      "path": "analysis/e26-recovery/r8-uart-parser.py",
+      "status": "modified",
+      "changes": 3
+    },
+    {
+      "path": "analysis/e26-recovery/r9-crc32-check.py",
+      "status": "added",
+      "changes": 37
+    },
+    {
+      "path": "analysis/e26-recovery/r9-uart-protocol.py",
+      "status": "added",
+      "changes": 339
+    },
+    {
+      "path": "analysis/e26-recovery/r9-unicorn-ramjump.py",
+      "status": "added",
+      "changes": 88
+    },
+    {
+      "path": "docs/CORRECTIONS.md",
+      "status": "modified",
+      "changes": 420
+    },
+    {
+      "path": "docs/INDEX.md",
+      "status": "modified",
+      "changes": 4
+    },
+    {
+      "path": "docs/OPEN-QUESTIONS.md",
+      "status": "modified",
+      "changes": 375
+    },
+    {
+      "path": "docs/PENDIENTES.md",
+      "status": "modified",
+      "changes": 6
+    },
+    {
+      "path": "docs/STATE.md",
+      "status": "modified",
+      "changes": 6
+    },
+    {
+      "path": "docs/capture/e26-r10-usb-charger-recovery.md",
+      "status": "added",
+      "changes": 404
+    },
+    {
+      "path": "docs/capture/e26-r9-bootrom-ram-execution.md",
+      "status": "added",
+      "changes": 490
+    },
+    {
+      "path": "knowledge/CURRENT.md",
+      "status": "modified",
+      "changes": 6
+    },
+    {
+      "path": "knowledge/PROGRESS.md",
+      "status": "modified",
+      "changes": 13
+    },
+    {
+      "path": "knowledge/audit/estado.json",
+      "status": "modified",
+      "changes": 177
+    },
+    {
+      "path": "knowledge/audit/memoria.json",
+      "status": "modified",
+      "changes": 34
+    },
+    {
+      "path": "tests/test_e26_r10_usb_charger.py",
+      "status": "added",
+      "changes": 75
+    },
+    {
+      "path": "tests/test_e26_r9_uart_protocol.py",
+      "status": "added",
+      "changes": 150
+    },
+    {
+      "path": "tests/test_e26_r9_unicorn_ramjump.py",
+      "status": "added",
+      "changes": 65
+    }
+  ],
+  "transport": {
+    "method": "urllib",
+    "HTTP_status": 200
+  }
+}

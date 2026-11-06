@@ -1,0 +1,108 @@
+--- v23/run_trial_v22_navigation_review.py
++++ v24/run_trial_v22_navigation_review.py
+@@ -82,13 +82,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = HERE / 'STATE-v23.json'
++    path = HERE / 'STATE-v24.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = HERE / 'STATE-v23.json.tmp'
++    temp = HERE / 'STATE-v24.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -120,10 +120,13 @@
+     ap.add_argument('--port', type=int, default=8765, help='127.0.0.1 本地端口，默认8765')
+     ap.add_argument('--max-minutes', type=int, default=60, help='会话上限，1..120分钟；默认60分钟')
+     ap.add_argument('--max-steps', type=int, default=4096, help='会话按键上限，32..4096；默认4096')
++    ap.add_argument('--launch-wait-seconds', type=int, default=180, help='浏览器启动前握手上限，30..600秒')
+     ap.add_argument('--internal-hoststep', action='store_true', help='内部逐键文件门；不启动网页服务，不构成浏览器验收')
+     ap.add_argument('--exit-at-phase', choices=['pre-bind', 'bound-before-first-frame'], help='有界退出边界验证')
+     ns = ap.parse_args()
+-    if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 120 or not 32 <= ns.max_steps <= 4096:
++    if ns.internal_hoststep:
++        ap.error('v24 浏览器就绪门不允许内部逐键模式绕过')
++    if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 120 or not 32 <= ns.max_steps <= 4096 or not 30 <= ns.launch_wait_seconds <= 600:
+         ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
+     if not valid_command(1, 0x1ab, 100, 0, 0, ns.max_steps) or not valid_command(32, 0x30, 100, 31, 0, ns.max_steps):
+         raise RuntimeError('InputGate capacity contract rejected before QEMU startup')
+@@ -133,7 +136,7 @@
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2navreview-internal-v23' if ns.internal_hoststep else 'try2navreview-web-v23'
++    ns.label = 'try2navreview-internal-v24' if ns.internal_hoststep else 'try2navreview-web-v24'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+@@ -201,17 +204,7 @@
+     if not cpio_report['safe_to_unpack']:
+         raise RuntimeError('CPIO unpack/order or original ELF identity gate failed: ' + str(audit_path))
+     locks = []
+-    # Also take the baseline lock to coordinate any manual use of the shared runtime.
+-    for path, mode in [(FROZEN / '.run.lock', 'rb'), (ROOT / '.run.lock', 'a+b')]:
+-        lock = path.open(mode)
+-        try:
+-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+-        except BlockingIOError:
+-            lock.close()
+-            for held in locks:
+-                fcntl.flock(held, fcntl.LOCK_UN); held.close()
+-            raise RuntimeError('已有 FX3 试用或验证正在运行，请等待其结束后重试。不会抢锁或停止其他会话。')
+-        locks.append(lock)
++    # The browser handshake below must complete before either runtime lock or QEMU.
+     label = ''.join(c for c in ns.label if c.isalnum() or c in '-_')[:32]
+     (OUT / 'runs').mkdir(exist_ok=True)
+     run = OUT / 'runs' / (label + '-' + uuid.uuid4().hex[:8])
+@@ -291,6 +284,8 @@
+         resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+ 
+     trial = TrialState(run, ns.seconds, ns.max_steps)
++    if not ns.internal_hoststep:
++        trial.update(phase='awaiting_launch', message='浏览器已连接后，请点击“开始本轮模拟器”；此时尚未启动 guest。')
+     server = web_thread = None
+     qmp = None
+     input_gate = None
+@@ -319,8 +314,29 @@
+         try:
+             if not ns.internal_hoststep:
+                 server, web_thread = start_server(trial, ns.port)
++                print('启动前确认网址:', trial.url, flush=True)
++                handshake_deadline = time.monotonic() + ns.launch_wait_seconds
++                while not trial.launch_event.is_set() and not trial.stop.is_set() and time.monotonic() < handshake_deadline:
++                    time.sleep(.05)
++                if trial.stop.is_set():
++                    raise RuntimeError('browser_cancelled_before_guest_launch')
++                if not trial.launch_event.is_set():
++                    raise RuntimeError('browser_launch_handshake_timeout_no_guest_spawn')
++            for path, mode in [(FROZEN / '.run.lock', 'rb'), (ROOT / '.run.lock', 'a+b')]:
++                lock = path.open(mode)
++                try:
++                    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++                except BlockingIOError:
++                    lock.close()
++                    raise RuntimeError('已有 FX3 试用或验证占用运行锁；本轮未启动 guest，也未抢锁。')
++                locks.append(lock)
++            if trial.stop.is_set():
++                raise RuntimeError('browser_cancelled_before_guest_launch')
++            trial.update(phase='starting', launch_status='starting', message='运行锁已取得，正在启动模拟器。')
++            start = time.monotonic()
+             p = subprocess.Popen(args, cwd=run, env=env, stdout=stdout, stderr=stderr,
+                                  start_new_session=True, preexec_fn=limits)
++            trial.update(launch_status='running')
+             checkpoint({'phase': 'TRY2_RUNNING_LOCAL_INTERACTIVE', 'current_candidate': str(candidate_path),
+                         'current_candidate_sha256': digest(candidate_path), 'current_run': str(run),
+                         'fixed_inputs': [{'path': str(p), 'sha256': h} for p, h in checks],
+@@ -801,6 +817,7 @@
+                 'next_minimal_command': {**terminal, 'argv': [sys.executable, str(Path(__file__)), '--port', str(ns.port)]}})
+     final_message = terminal['status']
+     trial.update(phase='finished', busy=False, result={'health_pass': health_pass, 'qemu_exit': receipt['qemu_exit'],
++                                                    'duration_seconds': receipt['duration_seconds'],
+                                                     'API16_restored': shutdown.get('API16_restored')},
+                  message=final_message,
+                  error=trial.error or early_stop_reason or log_monitor.failure or error)

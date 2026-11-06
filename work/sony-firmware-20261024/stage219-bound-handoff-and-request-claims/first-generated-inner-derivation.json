@@ -1,0 +1,19 @@
+{
+  "source": "outputs/fx3-recovery-adapter/native/fx3_boot_reader.c",
+  "source_sha256": "06af135abf4e04ccb7cbc0727d4275ed4faf892fce6175f394a93aa7ce0aaaf5",
+  "derived": "inner_boot_reader.c",
+  "derived_sha256": "4d39f6139828296fdcbb5c415f79b9fe5f32509c2e3924aa3d5154527ba139de",
+  "ordered_changes": [
+    {
+      "offset_in_previous": 9438,
+      "before": "__attribute__((visibility(\"default\"))) int fx3_boot_read_window(void)",
+      "after": "static int fx3_inner_boot_read_window(const u8 expected_request[128])"
+    },
+    {
+      "offset_in_previous": 10817,
+      "before": "    hash(req,128,req_sha);",
+      "after": "    if(!expected_request||!equal(req,expected_request,128))goto done;\n    hash(req,128,req_sha);"
+    }
+  ],
+  "all_other_bytes_preserved": true
+}

@@ -1,0 +1,1479 @@
+{
+  "created_utc": "2026-11-04T17:53:51.702495+00:00",
+  "duration_seconds": 312.49726079101674,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/candidate.json",
+  "candidate_sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518",
+  "models_identical_to_frozen_AP101_r4": false,
+  "authority": "task_ee5eb31bb981_offline_candidate",
+  "observer_source_snapshot": [
+    {
+      "name": "run_trial_v25_diag_r3.py",
+      "sha256": "9b70b1281c130e909deb0ae7091cb8738c44f304d847db2162a4a21635ae2ba0"
+    },
+    {
+      "name": "terminal_status_v23.py",
+      "sha256": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75"
+    },
+    {
+      "name": "pending_visual_v20.py",
+      "sha256": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "gate_input_usability.py",
+      "sha256": "3c612905bb53861e8a3804aaa0696ba14d376646b37f52894b0c1ad7ed508104"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_web_v22_navigation_review.py",
+      "sha256": "1425d8f7c29724909fe9a8f29d3e591d73655ae313bf0d8695641fe1de0575eb"
+    },
+    {
+      "name": "trial_ring_cached.py",
+      "sha256": "9309794feded60291d6748bd4d19ab98a909e7ba73c91233a2ffb983551f9e11"
+    },
+    {
+      "name": "trial_log_v4_mss.py",
+      "sha256": "4d57629fc8bf1c8d158bfcf101915b9edd626f7bfb11c55fc78fe634ef7d6645"
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    },
+    {
+      "name": "quiesced_diag_readback.py",
+      "sha256": "51b2507730a5a7515333c0611022bf4a8c29d9a43663db8dd6e385db007ca6cb"
+    },
+    {
+      "name": "parse_v25_diag_r3.py",
+      "sha256": "c232254a1991894e8a6a0446ee7a516ba7491211bfcf894852b56008345dcb9a"
+    },
+    {
+      "name": "qmp_line_transport.py",
+      "sha256": "2686ee46ff1ce06b12650f4cb3c86ebe9d64fdeafc9e6ce8176a64c4b5ded0c3"
+    },
+    {
+      "name": "procdiag_readback.py",
+      "sha256": "0f6d479e7a1072f45ede37562bde66f22bea9c682886345a6b36f38ba92312f4"
+    },
+    {
+      "name": "runtime_resource_guard.py",
+      "sha256": "6bb095d299b695818708360c355d6c3b4f6a7eff0112e03474b474b180051680"
+    },
+    {
+      "name": "startup_qmp_v1.py",
+      "sha256": "efba2c336e063e18208f21df6e3bf9ae462abb1fef5ed0ec618f009004b67c74"
+    },
+    {
+      "name": "host_exception_clock.py",
+      "sha256": "5f133dd0c8f6d17b19cab87616b1efe725445829d75447ac0de71ceb99a083dc"
+    },
+    {
+      "name": "optional_paused_snapshots.py",
+      "sha256": "15fbc3b50b1871b815b13c05b8275922f561ea2683c64c0d9a2e81c611d451a9"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f",
+  "maximum_seconds": 600,
+  "maximum_steps": 32,
+  "diagnostic_actual_step_limit": null,
+  "visual_outcomes": [
+    {
+      "step": 1,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 244,
+      "before_png_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "observed_sequence": 247,
+      "observed_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "ack_host_monotonic": 398609.099947,
+      "decision_host_monotonic": 398610.156937333,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 2,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 1618,
+      "before_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "observed_sequence": 1626,
+      "observed_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "ack_host_monotonic": 398715.346661791,
+      "decision_host_monotonic": 398717.182057541,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 3,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 1856,
+      "before_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "observed_sequence": 1870,
+      "observed_png_sha256": "74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808",
+      "ack_host_monotonic": 398732.516549916,
+      "decision_host_monotonic": 398733.523075666,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 4,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 2127,
+      "before_png_sha256": "74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808",
+      "observed_sequence": 2139,
+      "observed_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "ack_host_monotonic": 398749.894885958,
+      "decision_host_monotonic": 398752.030445375,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 5,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 2420,
+      "before_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "observed_sequence": 2426,
+      "observed_png_sha256": "5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7",
+      "ack_host_monotonic": 398769.890341375,
+      "decision_host_monotonic": 398772.652287666,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 6,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 2779,
+      "before_png_sha256": "5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7",
+      "observed_sequence": 2783,
+      "observed_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "ack_host_monotonic": 398794.909530666,
+      "decision_host_monotonic": 398796.529213208,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 7,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 3111,
+      "before_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "observed_sequence": 3123,
+      "observed_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "ack_host_monotonic": 398816.499716208,
+      "decision_host_monotonic": 398817.526159083,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    }
+  ],
+  "visual_state_at_end": "user_confirmed",
+  "stop_cause": "end_trial_button",
+  "internal_hoststep_mode": false,
+  "HTTP_key_source_used": true,
+  "qemu_pid": 13102,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+      "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.cpio",
+      "sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/candidate.json",
+      "sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.7928909580223262,
+      "rss_vsz_kib": "934928 495718016"
+    },
+    {
+      "elapsed_seconds": 5.83950654102955,
+      "rss_vsz_kib": "1444016 495718016"
+    },
+    {
+      "elapsed_seconds": 10.877006750029977,
+      "rss_vsz_kib": "1246512 495718016"
+    },
+    {
+      "elapsed_seconds": 15.923964208050165,
+      "rss_vsz_kib": "1271856 495718016"
+    },
+    {
+      "elapsed_seconds": 20.97879120800644,
+      "rss_vsz_kib": "1340480 495718016"
+    },
+    {
+      "elapsed_seconds": 26.003512000024784,
+      "rss_vsz_kib": "1292000 495726208"
+    },
+    {
+      "elapsed_seconds": 31.0587200410082,
+      "rss_vsz_kib": "1382944 495726208"
+    },
+    {
+      "elapsed_seconds": 36.06559391604969,
+      "rss_vsz_kib": "1437696 495726208"
+    },
+    {
+      "elapsed_seconds": 41.124442625034135,
+      "rss_vsz_kib": "1467376 495742592"
+    },
+    {
+      "elapsed_seconds": 46.19490375003079,
+      "rss_vsz_kib": "1415808 495742592"
+    },
+    {
+      "elapsed_seconds": 51.221683708019555,
+      "rss_vsz_kib": "1341168 495742592"
+    },
+    {
+      "elapsed_seconds": 56.25416045804741,
+      "rss_vsz_kib": "1298176 495742592"
+    },
+    {
+      "elapsed_seconds": 61.358328041038476,
+      "rss_vsz_kib": "1291440 495742592"
+    },
+    {
+      "elapsed_seconds": 66.37225791602395,
+      "rss_vsz_kib": "1282512 495742592"
+    },
+    {
+      "elapsed_seconds": 71.38954508304596,
+      "rss_vsz_kib": "1293216 495742592"
+    },
+    {
+      "elapsed_seconds": 76.42345516604837,
+      "rss_vsz_kib": "1294960 495742592"
+    },
+    {
+      "elapsed_seconds": 81.47266104101436,
+      "rss_vsz_kib": "1295552 495742592"
+    },
+    {
+      "elapsed_seconds": 86.52951654104982,
+      "rss_vsz_kib": "1295408 495742592"
+    },
+    {
+      "elapsed_seconds": 91.57225166604621,
+      "rss_vsz_kib": "1287392 495742592"
+    },
+    {
+      "elapsed_seconds": 96.60501829104032,
+      "rss_vsz_kib": "1287648 495742592"
+    },
+    {
+      "elapsed_seconds": 101.63298516604118,
+      "rss_vsz_kib": "1287696 495742592"
+    },
+    {
+      "elapsed_seconds": 106.68936912500067,
+      "rss_vsz_kib": "1288048 495742592"
+    },
+    {
+      "elapsed_seconds": 111.74222508299863,
+      "rss_vsz_kib": "1288192 495742592"
+    },
+    {
+      "elapsed_seconds": 116.7831327500171,
+      "rss_vsz_kib": "1288400 495742592"
+    },
+    {
+      "elapsed_seconds": 121.82103408302646,
+      "rss_vsz_kib": "1288464 495742592"
+    },
+    {
+      "elapsed_seconds": 126.8312738329987,
+      "rss_vsz_kib": "617056 495742592"
+    },
+    {
+      "elapsed_seconds": 131.8757794580306,
+      "rss_vsz_kib": "617312 495742592"
+    },
+    {
+      "elapsed_seconds": 136.93290845805313,
+      "rss_vsz_kib": "612704 495742592"
+    },
+    {
+      "elapsed_seconds": 141.95738850004273,
+      "rss_vsz_kib": "578096 495742592"
+    },
+    {
+      "elapsed_seconds": 146.97994004102657,
+      "rss_vsz_kib": "571984 495742592"
+    },
+    {
+      "elapsed_seconds": 152.05132775002858,
+      "rss_vsz_kib": "567312 495742592"
+    },
+    {
+      "elapsed_seconds": 157.0817132080556,
+      "rss_vsz_kib": "567408 495742592"
+    },
+    {
+      "elapsed_seconds": 162.15813654102385,
+      "rss_vsz_kib": "548144 495742592"
+    },
+    {
+      "elapsed_seconds": 167.1759573330055,
+      "rss_vsz_kib": "548480 495742592"
+    },
+    {
+      "elapsed_seconds": 172.26796641602414,
+      "rss_vsz_kib": "548544 495742592"
+    },
+    {
+      "elapsed_seconds": 177.27487250004197,
+      "rss_vsz_kib": "552736 495742592"
+    },
+    {
+      "elapsed_seconds": 182.33495858300012,
+      "rss_vsz_kib": "552816 495742592"
+    },
+    {
+      "elapsed_seconds": 187.37172929104418,
+      "rss_vsz_kib": "552576 495742592"
+    },
+    {
+      "elapsed_seconds": 192.38950812502299,
+      "rss_vsz_kib": "552640 495742592"
+    },
+    {
+      "elapsed_seconds": 197.42354045802495,
+      "rss_vsz_kib": "551744 495742592"
+    },
+    {
+      "elapsed_seconds": 202.4804755000514,
+      "rss_vsz_kib": "468704 495742592"
+    },
+    {
+      "elapsed_seconds": 207.48891337501118,
+      "rss_vsz_kib": "333120 495742592"
+    },
+    {
+      "elapsed_seconds": 212.54231475002598,
+      "rss_vsz_kib": "315328 495742592"
+    },
+    {
+      "elapsed_seconds": 217.57525804103352,
+      "rss_vsz_kib": "315392 495742592"
+    },
+    {
+      "elapsed_seconds": 222.59542200004216,
+      "rss_vsz_kib": "315456 495742592"
+    },
+    {
+      "elapsed_seconds": 227.612375583034,
+      "rss_vsz_kib": "310000 495742592"
+    },
+    {
+      "elapsed_seconds": 232.66279950004537,
+      "rss_vsz_kib": "315936 495742592"
+    },
+    {
+      "elapsed_seconds": 237.7187565000495,
+      "rss_vsz_kib": "316208 495742592"
+    },
+    {
+      "elapsed_seconds": 242.73169116600184,
+      "rss_vsz_kib": "316224 495742592"
+    },
+    {
+      "elapsed_seconds": 247.74338645802345,
+      "rss_vsz_kib": "316240 495742592"
+    },
+    {
+      "elapsed_seconds": 252.76136670802953,
+      "rss_vsz_kib": "316352 495742592"
+    },
+    {
+      "elapsed_seconds": 257.8261982500553,
+      "rss_vsz_kib": "316576 495742592"
+    },
+    {
+      "elapsed_seconds": 262.8645216660225,
+      "rss_vsz_kib": "303936 495742592"
+    },
+    {
+      "elapsed_seconds": 267.8815684580477,
+      "rss_vsz_kib": "303968 495742592"
+    },
+    {
+      "elapsed_seconds": 272.9174448749982,
+      "rss_vsz_kib": "303984 495742592"
+    },
+    {
+      "elapsed_seconds": 277.96894383302424,
+      "rss_vsz_kib": "306160 495742592"
+    },
+    {
+      "elapsed_seconds": 282.999384958006,
+      "rss_vsz_kib": "308432 495742592"
+    },
+    {
+      "elapsed_seconds": 288.0781185410451,
+      "rss_vsz_kib": "308448 495742592"
+    },
+    {
+      "elapsed_seconds": 293.0965097080334,
+      "rss_vsz_kib": "308560 495742592"
+    },
+    {
+      "elapsed_seconds": 298.12018962501315,
+      "rss_vsz_kib": "308624 495742592"
+    },
+    {
+      "elapsed_seconds": 303.2555777080124,
+      "rss_vsz_kib": "308736 495742592"
+    },
+    {
+      "elapsed_seconds": 308.2872617079993,
+      "rss_vsz_kib": "308752 495742592"
+    }
+  ],
+  "early_stop_reason": null,
+  "full_serial_bytes_inspected": 30132948,
+  "serial_health_failure": null,
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": true,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY96_READY": true,
+    "FX3_OSD_FRAME_TARGET_VALID": true,
+    "FX3_GPE_COMPACTION_BOUND": true,
+    "FX3_GPE_DRAW_INTERVAL": true,
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": true,
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": true,
+    "FX3_KEY96_POLL": true,
+    "FX3_KEY96_THREAD_BEGIN": true,
+    "FX3_PANEL_CONFIG_V2_COMMIT": true,
+    "FX3_PROC97_STATUS_BEGIN": true,
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": true,
+    "FX3_DATE98_KERNEL_OBSERVE_READY": true,
+    "FX3_DATE99_WORKER_READY": true,
+    "FX3_DATE99_CONSUMER_BOUND": true,
+    "FX3_SYNC100_BACKEND_BOUND": true,
+    "FX3_FILE100_OBSERVER_READY": true,
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": true,
+    "FX3_BACKUP_INSMOD_RC=0": true,
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": true,
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": true,
+    "FX3_LDEC103_SELFTEST_RC=0": true,
+    "FX3_GPE104_LIB_BIND": true,
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": true,
+    "FX3_FILE103_READY_CONFIRMED": true,
+    "FX3_POWER_OBSERVER_BOUND": true,
+    "FX3_MSS_OBSERVER_BOUND": true
+  },
+  "marker_evidence": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": {
+      "method": "literal",
+      "marker": "FX3_GPE_EARLY_THREAD_GATE gpe=0"
+    },
+    "FX3_PRESET_CONTEXT_BOUND": {
+      "method": "literal",
+      "marker": "FX3_PRESET_CONTEXT_BOUND"
+    },
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_PRESET_CONTEXT_SELFTEST_PASS"
+    },
+    "FX3_AP89_UUD_DECISION": {
+      "method": "literal",
+      "marker": "FX3_AP89_UUD_DECISION"
+    },
+    "FX3_AP89_SCREEN_CREATE": {
+      "method": "literal",
+      "marker": "FX3_AP89_SCREEN_CREATE"
+    },
+    "FX3_AP_IM_ENDMAPS_": {
+      "method": "literal",
+      "marker": "FX3_AP_IM_ENDMAPS_"
+    },
+    "registration_origin=malloc_parent_v1": {
+      "method": "literal",
+      "marker": "registration_origin=malloc_parent_v1"
+    },
+    "FX3_GPE_RESOURCE_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_RESOURCE_BOUND"
+    },
+    "FX3_GPE_RESOURCE_REGISTER": {
+      "method": "literal",
+      "marker": "FX3_GPE_RESOURCE_REGISTER"
+    },
+    "FX3_GPE_SCOPE": {
+      "method": "literal",
+      "marker": "FX3_GPE_SCOPE"
+    },
+    "FX3_RM_BOUND": {
+      "method": "literal",
+      "marker": "FX3_RM_BOUND"
+    },
+    "FX3_RM_FRONT_TRANSFER": {
+      "method": "literal",
+      "marker": "FX3_RM_FRONT_TRANSFER"
+    },
+    "FX3_RM_REPLY_TRANSFER": {
+      "method": "literal",
+      "marker": "FX3_RM_REPLY_TRANSFER"
+    },
+    "FX3_RM_NATIVE_FREE": {
+      "method": "literal",
+      "marker": "FX3_RM_NATIVE_FREE"
+    },
+    "FX3_MEDIA_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_SELFTEST_PASS"
+    },
+    "FX3_MEDIA_BOUND module=D": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_BOUND module=D"
+    },
+    "FX3_MEDIA_FRONT": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_FRONT"
+    },
+    "FRONT_FULL_BODY": {
+      "method": "literal",
+      "marker": "FRONT_FULL_BODY"
+    },
+    "FX3_MEDIA_START_BRANCH": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_START_BRANCH"
+    },
+    "FX3_MEDIA_NOTIFY": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_NOTIFY"
+    },
+    "FX3_KEY96_READY": {
+      "method": "literal",
+      "marker": "FX3_KEY96_READY"
+    },
+    "FX3_OSD_FRAME_TARGET_VALID": {
+      "method": "literal",
+      "marker": "FX3_OSD_FRAME_TARGET_VALID"
+    },
+    "FX3_GPE_COMPACTION_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_COMPACTION_BOUND"
+    },
+    "FX3_GPE_DRAW_INTERVAL": {
+      "method": "literal",
+      "marker": "FX3_GPE_DRAW_INTERVAL"
+    },
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_SCREEN_AUTHORITY_BOUND"
+    },
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": {
+      "method": "literal",
+      "marker": "FX3_AP_SNAPSHOT_DMM_SKIPPED"
+    },
+    "FX3_KEY96_POLL": {
+      "method": "literal",
+      "marker": "FX3_KEY96_POLL"
+    },
+    "FX3_KEY96_THREAD_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_KEY96_THREAD_BEGIN"
+    },
+    "FX3_PANEL_CONFIG_V2_COMMIT": {
+      "method": "literal",
+      "marker": "FX3_PANEL_CONFIG_V2_COMMIT"
+    },
+    "FX3_PROC97_STATUS_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_PROC97_STATUS_BEGIN"
+    },
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_PROC97_ALL_THREAD_STAT_BEGIN"
+    },
+    "FX3_DATE98_KERNEL_OBSERVE_READY": {
+      "method": "literal",
+      "marker": "FX3_DATE98_KERNEL_OBSERVE_READY"
+    },
+    "FX3_DATE99_WORKER_READY": {
+      "method": "literal",
+      "marker": "FX3_DATE99_WORKER_READY"
+    },
+    "FX3_DATE99_CONSUMER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_DATE99_CONSUMER_BOUND"
+    },
+    "FX3_SYNC100_BACKEND_BOUND": {
+      "method": "literal",
+      "marker": "FX3_SYNC100_BACKEND_BOUND"
+    },
+    "FX3_FILE100_OBSERVER_READY": {
+      "method": "literal",
+      "marker": "FX3_FILE100_OBSERVER_READY"
+    },
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN"
+    },
+    "FX3_BACKUP_INSMOD_RC=0": {
+      "method": "literal",
+      "marker": "FX3_BACKUP_INSMOD_RC=0"
+    },
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0"
+    },
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS"
+    },
+    "FX3_LDEC103_SELFTEST_RC=0": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_SELFTEST_RC=0"
+    },
+    "FX3_GPE104_LIB_BIND": {
+      "method": "literal",
+      "marker": "FX3_GPE104_LIB_BIND"
+    },
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": {
+      "method": "literal",
+      "marker": "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0"
+    },
+    "FX3_FILE103_READY_CONFIRMED": {
+      "method": "literal",
+      "marker": "FX3_FILE103_READY_CONFIRMED"
+    },
+    "FX3_POWER_OBSERVER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_POWER_OBSERVER_BOUND"
+    },
+    "FX3_MSS_OBSERVER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_MSS_OBSERVER_BOUND"
+    }
+  },
+  "date99_raw_serial_evidence": {
+    "literal_consumer_bound": {
+      "serial_byte_range": [
+        81031,
+        81056
+      ],
+      "raw": "FX3_DATE99_CONSUMER_BOUND"
+    },
+    "worker": {
+      "serial_byte_range": [
+        81214,
+        81315
+      ],
+      "raw": "FX3_DATE99_WORKER_READY serialized=1 native_OSAL_waitable_thread=1 synthetic_cp_clock=1 original_CP=0"
+    },
+    "registered_branch": {
+      "serial_byte_range": [
+        81332,
+        81449
+      ],
+      "raw": "FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=0x909005c5 original_other_destinations_unchanged=1"
+    },
+    "owner_result_zero": {
+      "serial_byte_range": [
+        81466,
+        81623
+      ],
+      "raw": "FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+    },
+    "accept": {
+      "serial_byte_range": [
+        93950,
+        94077
+      ],
+      "raw": "FX3_DATE99_ACCEPT transaction=1 reason=4 source=0x809005c5 original_request_queue_owned=1 deferred_worker=1 no_reentrant_wait=1"
+    },
+    "clock_commit": {
+      "serial_byte_range": [
+        94948,
+        95226
+      ],
+      "raw": "FX3_DATE99_CLOCK_COMMIT transaction=1 generation=1 reason=4 valid_UTC=1 AP_type=0 UTC_base_ms=1609426800001 mono_basis_ns=2578255992 now_ns=2578604992 RTT_ns=698000 readback_UTC_ms=1609426800001 software_clock_advances=1 synthetic_cp_clock=1 original_CP=0 physical_RTC_written=0"
+    },
+    "retired": {
+      "serial_byte_range": [
+        95324,
+        95460
+      ],
+      "raw": "FX3_DATE99_RETIRED transaction=1 reason=4 result=0 native_request_free=0 type4_sent=0 generation=1 original_owner_destination=0x909005c5"
+    },
+    "reject": null,
+    "literal_present": true,
+    "semantic_evidence": {
+      "method": "literal",
+      "marker": "FX3_DATE99_CONSUMER_BOUND"
+    }
+  },
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": true,
+    "quit_sent": true,
+    "pre_cleanup_query_status": {
+      "return": {
+        "status": "running",
+        "running": true
+      },
+      "id": 1239
+    },
+    "diag_snapshot": {
+      "consistent": true,
+      "paused_proven": true,
+      "readback_complete": true,
+      "parse_valid": true,
+      "method": "QMP stop acknowledged; query-status running=false,status=paused; full pmemsave while paused",
+      "query_status": {
+        "status": "paused",
+        "running": false
+      },
+      "bytes": 16777216,
+      "sha256": "5924633f7e82b32c073048522ddceaa9ad890d20e342108302c85f33ff481451",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/osd-ring-final.bin",
+      "parse_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/osd-ring-final-diag.json",
+      "dropped_busy_writer_events": 0,
+      "invalid_or_torn_slots": []
+    },
+    "optional_snapshots": {
+      "attempted": true,
+      "paused_reproved": true,
+      "budget_seconds": 10.0,
+      "items": [
+        {
+          "name": "ui-gate-counters.bin",
+          "address": 17678991360,
+          "expected_bytes": 65536,
+          "sha256": "d98638a0558a3b289e22c2d48b0560a3315b0f417f26b259afa4101ab478c96d",
+          "bytes": 65536,
+          "status": "complete"
+        },
+        {
+          "name": "adf-muted-ram.bin",
+          "address": 17676894208,
+          "expected_bytes": 65536,
+          "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31",
+          "bytes": 65536,
+          "status": "complete"
+        },
+        {
+          "name": "ap101-control-final.bin",
+          "address": 17682137088,
+          "expected_bytes": 256,
+          "sha256": "e5bf23b3cb7ee96512ff72a6922c02b7403141ec1684d4d78821602abccdc2f6",
+          "bytes": 256,
+          "status": "complete"
+        },
+        {
+          "name": "backup-after-shutdown.bin",
+          "address": 17246978048,
+          "expected_bytes": 2232320,
+          "sha256": "4033ea160b5cf1781ce56c51439dfd65f71b4696dafcf4b911ec27b9b4cd5408",
+          "bytes": 2232320,
+          "status": "complete"
+        },
+        {
+          "name": "backup-reserved-ram.bin",
+          "address": 17246978048,
+          "expected_bytes": 2232320,
+          "sha256": "4033ea160b5cf1781ce56c51439dfd65f71b4696dafcf4b911ec27b9b4cd5408",
+          "bytes": 2232320,
+          "status": "complete"
+        },
+        {
+          "name": "capid-reserved-ram.bin",
+          "address": 17674797056,
+          "expected_bytes": 65536,
+          "sha256": "2bde59e9a95f1dea99311cea8330e866b17ce3654158dbbbe226c9ef13df57e1",
+          "bytes": 65536,
+          "status": "complete"
+        },
+        {
+          "name": "date98-trace-final.bin",
+          "address": 17682141184,
+          "expected_bytes": 24576,
+          "sha256": "de676bae28a480011d3d012db14bef539324e62a841a9627863c689bea168af3",
+          "bytes": 24576,
+          "status": "complete"
+        },
+        {
+          "name": "date99-clock-final.bin",
+          "address": 17682169856,
+          "expected_bytes": 4096,
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "bytes": 4096,
+          "status": "complete"
+        },
+        {
+          "name": "dmm-virtual-ram.bin",
+          "address": 17675845632,
+          "expected_bytes": 1048576,
+          "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58",
+          "bytes": 1048576,
+          "status": "complete"
+        },
+        {
+          "name": "face-dmm-reserved-ram.bin",
+          "address": 17680039936,
+          "expected_bytes": 589824,
+          "sha256": "250480ecefa3655c774b6a4e5d4eb16675ee4f181c2285c25020fac6e3aaf3b5",
+          "bytes": 589824,
+          "status": "complete"
+        }
+      ],
+      "errors": [],
+      "query_status": {
+        "return": {
+          "status": "paused",
+          "running": false
+        },
+        "id": 1243
+      }
+    },
+    "serial_bytes_before_cleanup": 30110612,
+    "restore103": {
+      "passed": true,
+      "reason": "guest_acknowledged_and_original_bytes_verified",
+      "timeout_seconds": 20,
+      "elapsed_seconds": 1.3034670840133913,
+      "request_bytes": 8,
+      "request_issued": true,
+      "existing_request_reused": false,
+      "request_physical": "0x41d400030",
+      "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "requires_ack_and_original_bytes_after_request": true,
+      "already_original_without_pending_request_never_resumed": false,
+      "original_guest_code_written_by_host": false,
+      "guest_left_stopped": true,
+      "exception": null,
+      "attempts": [
+        {
+          "attempt": 0,
+          "elapsed_seconds": 0.00178416701965034,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-000-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-000-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 0,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "698a2aceeb3c0289fe296274b8f5c3c70fd00b23cec80902b9a3e383c965e6fe"
+        },
+        {
+          "attempt": 1,
+          "elapsed_seconds": 0.25980495900148526,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-001-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-001-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "99cd7e357d6e74d70c85497738cf3badb1bd048e6fccc3c34cf73c93c03457ea"
+        },
+        {
+          "attempt": 2,
+          "elapsed_seconds": 0.5239329999894835,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-002-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-002-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "99cd7e357d6e74d70c85497738cf3badb1bd048e6fccc3c34cf73c93c03457ea"
+        },
+        {
+          "attempt": 3,
+          "elapsed_seconds": 0.7851013750187121,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-003-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-003-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "99cd7e357d6e74d70c85497738cf3badb1bd048e6fccc3c34cf73c93c03457ea"
+        },
+        {
+          "attempt": 4,
+          "elapsed_seconds": 1.050209334003739,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-004-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-004-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "99cd7e357d6e74d70c85497738cf3badb1bd048e6fccc3c34cf73c93c03457ea"
+        },
+        {
+          "attempt": 5,
+          "elapsed_seconds": 1.3032810839940794,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-005-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/restore103-005-api16.bin",
+          "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+          "api16_original": true,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 1,
+          "header_SHA256": "b518c3c6a7e3769b6f8208bf95738990bacca31f6e51b7a40b998379f01085e5"
+        }
+      ]
+    },
+    "native_unbind_return": 0
+  },
+  "lifecycle_pass": true,
+  "diagnostic_readback_pass": true,
+  "protocol_pass": true,
+  "render_pass": true,
+  "black_frame_semantics": "unknown; an all-zero committed panel cannot satisfy this visual trial",
+  "native_shutdown_after_ready": false,
+  "native_shutdown_original_lines": [],
+  "native_shutdown_count_at_ready": 0,
+  "native_model_power_off_after_ready": false,
+  "native_model_power_off_original_lines": [],
+  "native_model_power_off_count_at_ready": 0,
+  "health_pass": true,
+  "requested_exit_phase": null,
+  "requested_exit_phase_hit": false,
+  "key_steps": 7,
+  "step_captures": [
+    {
+      "sequence": 247,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 246,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x19abb616faf34124",
+      "sha256": "139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086",
+      "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 398609.098302208,
+      "committed_slot": 6,
+      "native_identity": {
+        "FB": "0x7f78001160",
+        "bitmap": "0x7f7002aee0",
+        "entry": "0x7f78001178",
+        "allocation": "0x78001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x2886048",
+        "config_hash": "0xe906745a2323b45f",
+        "bits_cpu_VA": "0x7f0571a100",
+        "map_begin": "0x7f0571a000",
+        "map_end": "0x7f057b1000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f78001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e579c00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f999c7a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 1,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-01-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-01-key-1ab.png",
+      "raw_sha256": "139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 247,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1626,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 1625,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x5062f6e199bb547d",
+      "sha256": "8a3407f4d0a8b52bbcd8cba8bf4ab6fc594073aea79994e86cecf63bc4551a49",
+      "PNG_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 398717.174846,
+      "committed_slot": 1,
+      "native_identity": {
+        "FB": "0x7f78001160",
+        "bitmap": "0x7f7002aee0",
+        "entry": "0x7f78001178",
+        "allocation": "0x78001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x2886048",
+        "config_hash": "0x4e7fff0dba120c2c",
+        "bits_cpu_VA": "0x7f0571a100",
+        "map_begin": "0x7f0571a000",
+        "map_end": "0x7f057b1000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f78001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e579c00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f999c7a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 2,
+      "key": "0x3",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-02-key-003.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-02-key-003.png",
+      "raw_sha256": "8a3407f4d0a8b52bbcd8cba8bf4ab6fc594073aea79994e86cecf63bc4551a49",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1626,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1870,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 1864,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xee1797db8b1d0ca3",
+      "sha256": "105d750fe6e83c87579c25f1c9588dc8260c616dc5aa6b85aa8283280633fe09",
+      "PNG_sha256": "74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 398733.401304125,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f78001160",
+        "bitmap": "0x7f7002b110",
+        "entry": "0x7f78001198",
+        "allocation": "0x78001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x2886048",
+        "config_hash": "0xd89f3183a76505b6",
+        "bits_cpu_VA": "0x7f05683100",
+        "map_begin": "0x7f05683000",
+        "map_end": "0x7f0571a000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 3,
+      "key": "0x1f8",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-03-key-1f8.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-03-key-1f8.png",
+      "raw_sha256": "105d750fe6e83c87579c25f1c9588dc8260c616dc5aa6b85aa8283280633fe09",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1870,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2139,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 2138,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x5062f6e199bb547d",
+      "sha256": "8a3407f4d0a8b52bbcd8cba8bf4ab6fc594073aea79994e86cecf63bc4551a49",
+      "PNG_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 398752.022507916,
+      "committed_slot": 2,
+      "native_identity": {
+        "FB": "0x7f78001160",
+        "bitmap": "0x7f7002aee0",
+        "entry": "0x7f78001178",
+        "allocation": "0x78001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x2886048",
+        "config_hash": "0x25af432a62d9d241",
+        "bits_cpu_VA": "0x7f0571a100",
+        "map_begin": "0x7f0571a000",
+        "map_end": "0x7f057b1000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f78001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e579c00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f999c7a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 4,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-04-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-04-key-1ab.png",
+      "raw_sha256": "8a3407f4d0a8b52bbcd8cba8bf4ab6fc594073aea79994e86cecf63bc4551a49",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2139,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2426,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 2426,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xe730bff26c29e501",
+      "sha256": "fb83d8f662195e98c08ed71dc0a92a5beba2545ca092d55578e561a0f68440cb",
+      "PNG_sha256": "5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 398772.646954,
+      "committed_slot": 1,
+      "native_identity": {
+        "FB": "0x7f78001160",
+        "bitmap": "0x7f7002b110",
+        "entry": "0x7f78001198",
+        "allocation": "0x78001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x2886048",
+        "config_hash": "0x44ca9831c32728be",
+        "bits_cpu_VA": "0x7f05683100",
+        "map_begin": "0x7f05683000",
+        "map_end": "0x7f0571a000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 5,
+      "key": "0x1ac",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-05-key-1ac.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-05-key-1ac.png",
+      "raw_sha256": "fb83d8f662195e98c08ed71dc0a92a5beba2545ca092d55578e561a0f68440cb",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2426,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2783,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 2783,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x5062f6e199bb547d",
+      "sha256": "8a3407f4d0a8b52bbcd8cba8bf4ab6fc594073aea79994e86cecf63bc4551a49",
+      "PNG_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 398796.512485125,
+      "committed_slot": 6,
+      "native_identity": {
+        "FB": "0x7f78001160",
+        "bitmap": "0x7f7002aee0",
+        "entry": "0x7f78001178",
+        "allocation": "0x78001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x2886048",
+        "config_hash": "0x5bc8dede4ee12004",
+        "bits_cpu_VA": "0x7f0571a100",
+        "map_begin": "0x7f0571a000",
+        "map_end": "0x7f057b1000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f78001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e579c00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f999c7a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 6,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-06-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-06-key-1ab.png",
+      "raw_sha256": "8a3407f4d0a8b52bbcd8cba8bf4ab6fc594073aea79994e86cecf63bc4551a49",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2783,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 3123,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 3121,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x19abb616faf34124",
+      "sha256": "139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086",
+      "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 398817.397262333,
+      "committed_slot": 2,
+      "native_identity": {
+        "FB": "0x7f78001160",
+        "bitmap": "0x7f7002b110",
+        "entry": "0x7f78001198",
+        "allocation": "0x78001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x2886048",
+        "config_hash": "0x62f01fb95d3dcbe7",
+        "bits_cpu_VA": "0x7f05683100",
+        "map_begin": "0x7f05683000",
+        "map_end": "0x7f0571a000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 7,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-07-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-814c425f/trial-step-07-key-1ab.png",
+      "raw_sha256": "139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 3123,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    }
+  ],
+  "standby_ready": true,
+  "menu_verified": false,
+  "visual_acceptance_separate_from_health": true,
+  "render_valid_at_end": true,
+  "black_after_ready": [],
+  "render_observation_ok": true,
+  "browser_visual_acceptance": null,
+  "physical_device_operations": 0,
+  "remote_network_connections": 0,
+  "HTTP_loopback_only": true,
+  "scope": "TRY2 original FX3 menu software model with improved icon and focus presentation; no camera, live view, or exact compositor claim"
+}

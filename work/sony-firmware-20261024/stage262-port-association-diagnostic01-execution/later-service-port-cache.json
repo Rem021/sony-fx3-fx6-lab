@@ -1,0 +1,38 @@
+{
+  "observed_utc": "2026-11-01T06:54:03.867987+00:00",
+  "scope": "ordinary-user SERVICE IORegistry metadata only, no USB interface or command",
+  "returncode": 0,
+  "observed": {
+    "uid": 501,
+    "candidate_count": 1,
+    "registryID": 4295926235,
+    "physical_port_registryID": 4294968654,
+    "logical_port_registryID": 4294969719,
+    "anchor_available": true,
+    "USB_interface_opened": false,
+    "serial_selected": false
+  },
+  "compile_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01/port_anchor.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage262-port-association-diagnostic01-execution/cached_service_port_probe.c",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01",
+    "-framework",
+    "IOKit",
+    "-framework",
+    "CoreFoundation",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage262-port-association-diagnostic01-execution/cached-service-port-probe"
+  ],
+  "source_sha256": "ad10832c611b99058f7a48de3ce1eee2b5d274e11de87dacbe629034ac2edeaf",
+  "port_anchor_source_sha256": "926bd1035e4782b505371ea7b934d47ab6e85d06ef45e24d7794cfccd12984fa",
+  "binary_sha256": "87adff2b9278e9927dd05e6cac25cad8a0974d07d65848bf6ee8b6c8dab22e9b",
+  "root_helper_or_camera_command": false
+}

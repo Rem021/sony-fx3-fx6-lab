@@ -1,0 +1,312 @@
+
+Data_getAdrs
+00005988 e50300aa mov      x5, x0
+0000598c 81020034 cbz      w1, #0x59dc
+00005990 3f040071 cmp      w1, #1
+00005994 21020054 b.ne     #0x59d8
+00005998 fd7bbfa9 stp      x29, x30, [sp, #-0x10]!
+0000599c fd030091 mov      x29, sp
+000059a0 00044329 ldp      w0, w1, [x0, #0x18]
+000059a4 0000018b add      x0, x0, x1
+000059a8 00fc3f91 add      x0, x0, #0xfff
+000059ac 00cc7492 and      x0, x0, #0xfffffffffffff000
+000059b0 a500008b add      x5, x5, x0
+000059b4 e00305aa mov      x0, x5
+000059b8 00000094 bl       #0x59b8 ; [{"type": 283, "symbol": "Data_GetFormatRevision", "value": 19584, "section": 2, "addend": 0}]
+000059bc 001c0053 uxtb     w0, w0
+000059c0 1f0c0071 cmp      w0, #3
+000059c4 a5809f9a csel     x5, x5, xzr, hi
+000059c8 e00305aa mov      x0, x5
+000059cc fd7bc1a8 ldp      x29, x30, [sp], #0x10
+000059d0 c0035fd6 ret      
+000059d4 1f2003d5 nop      
+000059d8 050080d2 mov      x5, #0
+000059dc e00305aa mov      x0, x5
+000059e0 c0035fd6 ret      
+
+Data_getSize
+000059e8 e50300aa mov      x5, x0
+000059ec 21030034 cbz      w1, #0x5a50
+000059f0 3f040071 cmp      w1, #1
+000059f4 21020054 b.ne     #0x5a38
+000059f8 fd7bbfa9 stp      x29, x30, [sp, #-0x10]!
+000059fc fd030091 mov      x29, sp
+00005a00 00044329 ldp      w0, w1, [x0, #0x18]
+00005a04 0000018b add      x0, x0, x1
+00005a08 00fc3f91 add      x0, x0, #0xfff
+00005a0c 00cc7492 and      x0, x0, #0xfffffffffffff000
+00005a10 a500008b add      x5, x5, x0
+00005a14 e00305aa mov      x0, x5
+00005a18 00000094 bl       #0x5a18 ; [{"type": 283, "symbol": "Data_GetFormatRevision", "value": 19584, "section": 2, "addend": 0}]
+00005a1c 001c0053 uxtb     w0, w0
+00005a20 1f0c0071 cmp      w0, #3
+00005a24 e9000054 b.ls     #0x5a40
+00005a28 a0044329 ldp      w0, w1, [x5, #0x18]
+00005a2c fd7bc1a8 ldp      x29, x30, [sp], #0x10
+00005a30 0000010b add      w0, w0, w1
+00005a34 c0035fd6 ret      
+00005a38 00008012 mov      w0, #-1
+00005a3c c0035fd6 ret      
+00005a40 00008012 mov      w0, #-1
+00005a44 fd7bc1a8 ldp      x29, x30, [sp], #0x10
+00005a48 c0035fd6 ret      
+00005a4c 1f2003d5 nop      
+00005a50 00044329 ldp      w0, w1, [x0, #0x18]
+00005a54 0000010b add      w0, w0, w1
+00005a58 c0035fd6 ret      
+
+Data_SearchId
+00004ef8 03030058 ldr      x3, #0x4f58
+00004efc 013c0012 and      w1, w0, #0xffff
+00004f00 007c1053 lsr      w0, w0, #0x10
+00004f04 620040f9 ldr      x2, [x3]
+00004f08 421040b9 ldr      w2, [x2, #0x10]
+00004f0c 1f00026b cmp      w0, w2
+00004f10 02020054 b.hs     #0x4f50
+00004f14 620440f9 ldr      x2, [x3, #8]
+00004f18 c4008052 mov      w4, #6
+00004f1c 007ca49b umull    x0, w0, w4
+00004f20 45686078 ldrh     w5, [x2, x0]
+00004f24 4000008b add      x0, x2, x0
+00004f28 3f00056b cmp      w1, w5
+00004f2c 22010054 b.hs     #0x4f50
+00004f30 022040b8 ldur     w2, [x0, #2]
+00004f34 600840f9 ldr      x0, [x3, #0x10]
+00004f38 2100020b add      w1, w1, w2
+00004f3c 2000a49b umaddl   x0, w1, w4, x0
+00004f40 012040b8 ldur     w1, [x0, #2]
+00004f44 3f040031 cmn      w1, #1
+00004f48 00109f9a csel     x0, x0, xzr, ne
+00004f4c c0035fd6 ret      
+00004f50 000080d2 mov      x0, #0
+00004f54 c0035fd6 ret      
+
+Data_GetHeader
+000057d8 80000058 ldr      x0, #0x57e8
+000057dc 000040f9 ldr      x0, [x0]
+000057e0 c0035fd6 ret      
+
+backupfile_init
+00006540 fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+00006544 042080d2 mov      x4, #0x100
+00006548 020080d2 mov      x2, #0
+0000654c fd030091 mov      x29, sp
+00006550 a3030191 add      x3, x29, #0x40
+00006554 f55b02a9 stp      x21, x22, [sp, #0x20]
+00006558 f35301a9 stp      x19, x20, [sp, #0x10]
+0000655c f503012a mov      w21, w1
+00006560 f60300aa mov      x22, x0
+00006564 bf1b00f9 str      xzr, [x29, #0x30]
+00006568 648c1ff8 str      x4, [x3, #-8]!
+0000656c e10303aa mov      x1, x3
+00006570 00000094 bl       #0x6570 ; [{"type": 283, "symbol": "backupfile_load_file", "value": 25200, "section": 2, "addend": 0}]
+00006574 400400b4 cbz      x0, #0x65fc
+00006578 f40300aa mov      x20, x0
+0000657c 00000094 bl       #0x657c ; [{"type": 283, "symbol": "Data_GetCookie", "value": 22688, "section": 2, "addend": 0}]
+00006580 e1f30132 mov      w1, #-0x55555556
+00006584 1f00016b cmp      w0, w1
+00006588 a1030054 b.ne     #0x65fc
+0000658c 800240b9 ldr      w0, [x20]
+00006590 00000094 bl       #0x6590 ; [{"type": 283, "symbol": "arch_p32_to_p64", "value": 0, "section": "SHN_UNDEF", "addend": 0}]
+00006594 00000094 bl       #0x6594 ; [{"type": 283, "symbol": "arch_phys_to_cache", "value": 0, "section": "SHN_UNDEF", "addend": 0}]
+00006598 f30300aa mov      x19, x0
+0000659c e00314aa mov      x0, x20
+000065a0 00000094 bl       #0x65a0 ; [{"type": 283, "symbol": "vfree", "value": 0, "section": "SHN_UNDEF", "addend": 0}]
+000065a4 d30200b4 cbz      x19, #0x65fc
+000065a8 bf060071 cmp      w21, #1
+000065ac e0010054 b.eq     #0x65e8
+000065b0 e00313aa mov      x0, x19
+000065b4 00000094 bl       #0x65b4 ; [{"type": 283, "symbol": "Data_init", "value": 19808, "section": 2, "addend": 0}]
+000065b8 20020035 cbnz     w0, #0x65fc
+000065bc e00313aa mov      x0, x19
+000065c0 00000094 bl       #0x65c0 ; [{"type": 283, "symbol": "Data_GetCookie", "value": 22688, "section": 2, "addend": 0}]
+000065c4 e1f30132 mov      w1, #-0x55555556
+000065c8 1f00016b cmp      w0, w1
+000065cc 81010054 b.ne     #0x65fc
+000065d0 e00313aa mov      x0, x19
+000065d4 f35341a9 ldp      x19, x20, [sp, #0x10]
+000065d8 f55b42a9 ldp      x21, x22, [sp, #0x20]
+000065dc fd7bc4a8 ldp      x29, x30, [sp], #0x40
+000065e0 c0035fd6 ret      
+000065e4 1f2003d5 nop      
+000065e8 e20313aa mov      x2, x19
+000065ec a1c30091 add      x1, x29, #0x30
+000065f0 e00316aa mov      x0, x22
+000065f4 00000094 bl       #0x65f4 ; [{"type": 283, "symbol": "backupfile_load_file", "value": 25200, "section": 2, "addend": 0}]
+000065f8 c0fdffb5 cbnz     x0, #0x65b0
+000065fc 130080d2 mov      x19, #0
+00006600 e00313aa mov      x0, x19
+00006604 f35341a9 ldp      x19, x20, [sp, #0x10]
+00006608 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0000660c fd7bc4a8 ldp      x29, x30, [sp], #0x40
+00006610 c0035fd6 ret      
+
+backup_sync_msg
+000040e8 fd7bb7a9 stp      x29, x30, [sp, #-0x90]!
+000040ec fd030091 mov      x29, sp
+000040f0 f71b00f9 str      x23, [sp, #0x30]
+000040f4 f703022a mov      w23, w2
+000040f8 e2038012 mov      w2, #-0x20
+000040fc f55b02a9 stp      x21, x22, [sp, #0x20]
+00004100 f503012a mov      w21, w1
+00004104 f60300aa mov      x22, x0
+00004108 a41707a9 stp      x4, x5, [x29, #0x70]
+0000410c a1230191 add      x1, x29, #0x48
+00004110 a4430291 add      x4, x29, #0x90
+00004114 a26b00b9 str      w2, [x29, #0x68]
+00004118 e003152a mov      w0, w21
+0000411c a2c30191 add      x2, x29, #0x70
+00004120 f35301a9 stp      x19, x20, [sp, #0x10]
+00004124 f303032a mov      w19, w3
+00004128 a23300f9 str      x2, [x29, #0x60]
+0000412c 23008052 mov      w3, #1
+00004130 020e8052 mov      w2, #0x70
+00004134 bf6f00b9 str      wzr, [x29, #0x6c]
+00004138 a61f08a9 stp      x6, x7, [x29, #0x80]
+0000413c a41305a9 stp      x4, x4, [x29, #0x50]
+00004140 00000094 bl       #0x4140 ; [{"type": 283, "symbol": "osal_valloc_msg_wait", "value": 0, "section": "SHN_UNDEF", "addend": 0}]
+00004144 e0070035 cbnz     w0, #0x4240
+00004148 b42740f9 ldr      x20, [x29, #0x48]
+0000414c 7f020071 cmp      w19, #0
+00004150 977e0029 stp      w23, wzr, [x20]
+00004154 930a00b9 str      w19, [x20, #8]
+00004158 957e0229 stp      w21, wzr, [x20, #0x10]
+0000415c 9f0e00f9 str      xzr, [x20, #0x18]
+00004160 ed030054 b.le     #0x41dc
+00004164 62060051 sub      w2, w19, #1
+00004168 a56b40b9 ldr      w5, [x29, #0x68]
+0000416c 42140091 add      x2, x2, #5
+00004170 80820091 add      x0, x20, #0x20
+00004174 a41f45a9 ldp      x4, x7, [x29, #0x50]
+00004178 820e028b add      x2, x20, x2, lsl #3
+0000417c 06008052 mov      w6, #0
+00004180 03008052 mov      w3, #0
+00004184 883c0091 add      x8, x4, #0xf
+00004188 a500f837 tbnz     w5, #0x1f, #0x419c
+0000418c e10304aa mov      x1, x4
+00004190 26008052 mov      w6, #1
+00004194 04f17d92 and      x4, x8, #0xfffffffffffffff8
+00004198 0a000014 b        #0x41c0
+0000419c a3200011 add      w3, w5, #8
+000041a0 7f000071 cmp      w3, #0
+000041a4 cd060054 b.le     #0x427c
+000041a8 883c0091 add      x8, x4, #0xf
+000041ac 26008052 mov      w6, #1
+000041b0 e10304aa mov      x1, x4
+000041b4 e503032a mov      w5, w3
+000041b8 04f17d92 and      x4, x8, #0xfffffffffffffff8
+000041bc e303062a mov      w3, w6
+000041c0 210040f9 ldr      x1, [x1]
+000041c4 018400f8 str      x1, [x0], #8
+000041c8 1f0002eb cmp      x0, x2
+000041cc c1fdff54 b.ne     #0x4184
+000041d0 23050035 cbnz     w3, #0x4274
+000041d4 46000034 cbz      w6, #0x41dc
+000041d8 a42b00f9 str      x4, [x29, #0x50]
+000041dc a12740f9 ldr      x1, [x29, #0x48]
+000041e0 e003152a mov      w0, w21
+000041e4 00000094 bl       #0x41e4 ; [{"type": 283, "symbol": "osal_snd_sync_msg", "value": 0, "section": "SHN_UNDEF", "addend": 0}]
+000041e8 c0010035 cbnz     w0, #0x4220
+000041ec 800640b9 ldr      w0, [x20, #4]
+000041f0 c00200b9 str      w0, [x22]
+000041f4 a12740f9 ldr      x1, [x29, #0x48]
+000041f8 a0298052 mov      w0, #0x14d
+000041fc c007a072 movk     w0, #0x3e, lsl #16
+00004200 00000094 bl       #0x4200 ; [{"type": 283, "symbol": "osal_free_msg", "value": 0, "section": "SHN_UNDEF", "addend": 0}]
+00004204 f71b40f9 ldr      x23, [sp, #0x30]
+00004208 f35341a9 ldp      x19, x20, [sp, #0x10]
+0000420c 00008052 mov      w0, #0
+00004210 f55b42a9 ldp      x21, x22, [sp, #0x20]
+00004214 fd7bc9a8 ldp      x29, x30, [sp], #0x90
+00004218 c0035fd6 ret      
+0000421c 1f2003d5 nop      
+00004220 81030058 ldr      x1, #0x4290
+00004224 e303002a mov      w3, w0
+00004228 05008052 mov      w5, #0
+0000422c 04008052 mov      w4, #0
+00004230 22008052 mov      w2, #1
+00004234 c00f8012 mov      w0, #-0x7f
+00004238 00000094 bl       #0x4238 ; [{"type": 283, "symbol": "backup_logrec", "value": 48584, "section": 2, "addend": 0}]
+0000423c eeffff17 b        #0x41f4
+00004240 81020058 ldr      x1, #0x4290
+00004244 e303002a mov      w3, w0
+00004248 05008052 mov      w5, #0
+0000424c 04008052 mov      w4, #0
+00004250 02008052 mov      w2, #0
+00004254 c00f8012 mov      w0, #-0x7f
+00004258 00000094 bl       #0x4258 ; [{"type": 283, "symbol": "backup_logrec", "value": 48584, "section": 2, "addend": 0}]
+0000425c f71b40f9 ldr      x23, [sp, #0x30]
+00004260 f35341a9 ldp      x19, x20, [sp, #0x10]
+00004264 00008052 mov      w0, #0
+00004268 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0000426c fd7bc9a8 ldp      x29, x30, [sp], #0x90
+00004270 c0035fd6 ret      
+00004274 a56b00b9 str      w5, [x29, #0x68]
+00004278 d7ffff17 b        #0x41d4
+0000427c e1c0258b add      x1, x7, w5, sxtw
+00004280 e503032a mov      w5, w3
+00004284 23008052 mov      w3, #1
+00004288 ceffff17 b        #0x41c0
+
+load_selected_whole_file
+00006618 fd7bbda9 stp      x29, x30, [sp, #-0x30]!
+0000661c fd030091 mov      x29, sp
+00006620 f35301a9 stp      x19, x20, [sp, #0x10]
+00006624 f51300f9 str      x21, [sp, #0x20]
+00006628 f50300aa mov      x21, x0
+0000662c 00000094 bl       #0x662c ; [{"type": 283, "symbol": "backupfile_init", "value": 25920, "section": 2, "addend": 0}]
+00006630 13030058 ldr      x19, #0x6690
+00006634 34030058 ldr      x20, #0x6698
+00006638 600200f9 str      x0, [x19]
+0000663c 200100b4 cbz      x0, #0x6660
+00006640 e00315aa mov      x0, x21
+00006644 e10314aa mov      x1, x20
+00006648 00000094 bl       #0x6648 ; [{"type": 283, "symbol": "backupfile_get_file_datasize", "value": 25768, "section": 2, "addend": 0}]
+0000664c a0000035 cbnz     w0, #0x6660
+00006650 f35341a9 ldp      x19, x20, [sp, #0x10]
+00006654 f51340f9 ldr      x21, [sp, #0x20]
+00006658 fd7bc3a8 ldp      x29, x30, [sp], #0x30
+0000665c c0035fd6 ret      
+00006660 01020058 ldr      x1, #0x66a0
+00006664 c00f8012 mov      w0, #-0x7f
+00006668 05008052 mov      w5, #0
+0000666c 04008052 mov      w4, #0
+00006670 03008052 mov      w3, #0
+00006674 02008052 mov      w2, #0
+00006678 7f0200f9 str      xzr, [x19]
+0000667c 9f0200f9 str      xzr, [x20]
+00006680 00000094 bl       #0x6680 ; [{"type": 283, "symbol": "backup_logrec", "value": 48584, "section": 2, "addend": 0}]
+00006684 80008012 mov      w0, #-5
+00006688 f2ffff17 b        #0x6650
+0000668c 1f2003d5 nop      
+00006690 00000000 udf      #0 ; [{"type": 257, "symbol": "Backup_bin_start", "value": 32, "section": 32, "addend": 0}]
+00006694 00000000 udf      #0
+00006698 00000000 udf      #0 ; [{"type": 257, "symbol": "Backup_bin_size", "value": 24, "section": 32, "addend": 0}]
+0000669c 00000000 udf      #0
+000066a0 00000000 udf      #0 ; [{"type": 257, "symbol": ".rodata.str1.8", "value": 0, "section": 15, "addend": 1848}]
+000066a4 00000000 udf      #0
+
+LITERAL RELOCATIONS
+0x4dd8 [{"type": 257, "symbol": ".bss", "value": 0, "section": 32, "addend": 40}]
+0x4de0 [{"type": 257, "symbol": ".rodata.str1.8", "value": 0, "section": 15, "addend": 1272}]
+0x4f58 [{"type": 257, "symbol": ".bss", "value": 0, "section": 32, "addend": 40}]
+0x53a0 [{"type": 257, "symbol": ".bss", "value": 0, "section": 32, "addend": 40}]
+0x59b8 [{"type": 283, "symbol": "Data_GetFormatRevision", "value": 19584, "section": 2, "addend": 0}]
+0x5a18 [{"type": 283, "symbol": "Data_GetFormatRevision", "value": 19584, "section": 2, "addend": 0}]
+0x662c [{"type": 283, "symbol": "backupfile_init", "value": 25920, "section": 2, "addend": 0}]
+0x6648 [{"type": 283, "symbol": "backupfile_get_file_datasize", "value": 25768, "section": 2, "addend": 0}]
+0x6680 [{"type": 283, "symbol": "backup_logrec", "value": 48584, "section": 2, "addend": 0}]
+0x6690 [{"type": 257, "symbol": "Backup_bin_start", "value": 32, "section": 32, "addend": 0}]
+0x6698 [{"type": 257, "symbol": "Backup_bin_size", "value": 24, "section": 32, "addend": 0}]
+0x66a0 [{"type": 257, "symbol": ".rodata.str1.8", "value": 0, "section": 15, "addend": 1848}]
+0x7984 [{"type": 283, "symbol": "backup_logrec", "value": 48584, "section": 2, "addend": 0}]
+0x79b0 [{"type": 283, "symbol": "backup_logrec", "value": 48584, "section": 2, "addend": 0}]
+0x79d0 [{"type": 257, "symbol": ".text", "value": 0, "section": 2, "addend": 29928}]
+0x79d8 [{"type": 257, "symbol": ".bss", "value": 0, "section": 32, "addend": 400}]
+0x79e0 [{"type": 257, "symbol": ".rodata.str1.8", "value": 0, "section": 15, "addend": 2112}]
+0x79e8 [{"type": 257, "symbol": ".text", "value": 0, "section": 2, "addend": 29616}]
+0x7fc8 [{"type": 257, "symbol": ".rodata", "value": 0, "section": 12, "addend": 168}]
+0x7fd0 [{"type": 257, "symbol": ".rodata.str1.8", "value": 0, "section": 15, "addend": 2176}]
+0x7fd8 [{"type": 257, "symbol": ".rodata.str1.8", "value": 0, "section": 15, "addend": 2192}]
+0x7fe0 [{"type": 257, "symbol": ".rodata.str1.8", "value": 0, "section": 15, "addend": 2216}]
+0x7fe8 [{"type": 257, "symbol": ".rodata.str1.8", "value": 0, "section": 15, "addend": 2232}]

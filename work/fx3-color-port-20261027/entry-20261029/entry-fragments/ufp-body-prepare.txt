@@ -1,0 +1,39 @@
+00002728 sub        sp, sp, #0x310
+0000272c mov        x2, #0x100
+00002730 mov        w1, #0
+00002734 stp        x29, x30, [sp, #-0x20]!
+00002738 mov        x29, sp
+0000273c str        x19, [sp, #0x10]
+00002740 add        x19, x29, #0x28
+00002744 mov        x0, x19
+00002748 bl         #0x1380 ; memset
+0000274c adrp       x4, #0x3000
+00002750 adrp       x3, #0x15000
+00002754 adrp       x2, #0x3000
+00002758 add        x4, x4, #0xdf1 ; literal 'BODYDATA.DAT'
+0000275c add        x3, x3, #0x218
+00002760 add        x2, x2, #0xe2d ; literal '%s/%s'
+00002764 mov        x0, x19
+00002768 mov        x1, #0xff
+0000276c bl         #0x14c0 ; snprintf
+00002770 mov        x1, x19
+00002774 add        x0, x29, #0x128
+00002778 bl         #0x1410 ; udtr_get_firm_info_inmedia
+0000277c uxth       w0, w0
+00002780 cbnz       w0, #0x27b4
+00002784 adrp       x0, #0x15000
+00002788 ldr        w1, [x29, #0x150]
+0000278c str        w1, [x0, #0x208]
+00002790 adrp       x0, #0x15000
+00002794 ldr        w1, [x29, #0x154]
+00002798 str        w1, [x0, #0x20c]
+0000279c adrp       x0, #0x15000
+000027a0 ldrh       w1, [x29, #0x14c]
+000027a4 strh       w1, [x0, #0x210]
+000027a8 bl         #0x26e8
+000027ac bl         #0x1330 ; udtr_conv_stat2err
+000027b0 uxth       w0, w0
+000027b4 ldr        x19, [sp, #0x10]
+000027b8 ldp        x29, x30, [sp], #0x20
+000027bc add        sp, sp, #0x310
+000027c0 ret        

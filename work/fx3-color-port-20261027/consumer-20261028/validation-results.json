@@ -1,0 +1,30 @@
+[
+  {
+    "script": "ec_mode_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_EC_MODE_AND_CALLER_GATE mode records 19 transition/dispatcher cases 9728\n",
+    "stderr": "",
+    "created_utc": "2026-10-28T08:55:26.067712+00:00"
+  },
+  {
+    "script": "cp_message_check_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_CP_SETTER_AND_COMPARATOR base bytes 256 original instructions 16386\n",
+    "stderr": "",
+    "created_utc": "2026-10-28T08:55:26.313470+00:00"
+  },
+  {
+    "script": "metadata_consumer_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_METADATA_CONSUMERS_NEW_VALUE_FALLBACK paired cases 600 new base 12 outputs [100, 4]\n",
+    "stderr": "",
+    "created_utc": "2026-10-28T08:55:26.582322+00:00"
+  },
+  {
+    "script": "static_inventory.py",
+    "exit_code": 0,
+    "stdout": "PASS_PINNED_STATIC_CANDIDATE_INVENTORY field/global candidates 194 233 reviewed slices 18\n",
+    "stderr": "",
+    "created_utc": "2026-10-28T08:55:28.301138+00:00"
+  }
+]

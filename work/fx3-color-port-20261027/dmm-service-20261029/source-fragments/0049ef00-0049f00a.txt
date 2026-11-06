@@ -1,0 +1,90 @@
+0049ef00 push         {r4, r5, r6, r7, lr}
+0049ef02 add          r7, sp, #0xc
+0049ef04 push.w       {r8, sb, sl, fp}
+0049ef08 sub          sp, #4
+0049ef0a mov          r6, r1
+0049ef0c movw         sb, #0xfc00
+0049ef10 mov          r4, r2
+0049ef12 mov          r8, r3
+0049ef14 mov          r5, r0
+0049ef16 cmp          r6, #0
+0049ef18 movt         sb, #0xffff
+0049ef1c it           ne
+0049ef1e cmpne        r4, #0
+0049ef20 beq          #0x49f000
+0049ef22 movw         r0, #0x7fff
+0049ef26 tst          r5, r0
+0049ef28 beq          #0x49efc0
+0049ef2a lsls         r0, r5, #0x10
+0049ef2c bmi          #0x49f000
+0049ef2e movs         r0, #0
+0049ef30 movs         r1, #0
+0049ef32 mov.w        fp, #0
+0049ef36 bl           #0x49eaf8
+0049ef3a mov          sl, r0
+0049ef3c add.w        r0, sb, #1
+0049ef40 cmp.w        sl, #0
+0049ef44 beq          #0x49efe4
+0049ef46 movw         r1, #0xf940
+0049ef4a str          r0, [sp]
+0049ef4c uxth         r0, r5
+0049ef4e strd         fp, fp, [sl]
+0049ef52 strd         fp, fp, [sl, #8]
+0049ef56 strd         fp, fp, [sl, #0x10]
+0049ef5a strd         fp, fp, [sl, #0x18]
+0049ef5e movt         r1, #0x147
+0049ef62 add.w        r5, r1, #8
+0049ef66 ldrex        r1, [r5]
+0049ef6a adds         r1, #1
+0049ef6c strex        r2, r1, [r5]
+0049ef70 cmp          r2, #0
+0049ef72 bne          #0x49ef66
+0049ef74 movw         r1, #0x74e3
+0049ef78 movt         r1, #0xa8
+0049ef7c str.w        r1, [sl, #8]
+0049ef80 strd         r4, r8, [sl, #0x14]
+0049ef84 str.w        sl, [r6]
+0049ef88 bl           #0xa87248
+0049ef8c mov          r4, r0
+0049ef8e cbz          r4, #0x49efe8
+0049ef90 ldr          r0, [r4, #0x1c]
+0049ef92 bl           #0xa8708a
+0049ef96 ldr          r0, [r4, #0x14]
+0049ef98 cbnz         r0, #0x49efae
+0049ef9a ldrb.w       r0, [sl, #0xd]
+0049ef9e mov.w        sb, #0
+0049efa2 orr          r0, r0, #1
+0049efa6 strb.w       r0, [sl, #0xd]
+0049efaa str.w        sl, [r4, #0x14]
+0049efae ldr          r0, [r4, #0x1c]
+0049efb0 bl           #0xa870e6
+0049efb4 cmp.w        sb, #0
+0049efb8 bne          #0x49efec
+0049efba mov.w        sb, #0
+0049efbe b            #0x49f000
+0049efc0 movw         r0, #0xf980
+0049efc4 movt         r0, #0x147
+0049efc8 ldr          r0, [r0]
+0049efca ldrb         r0, [r0, #0x17]
+0049efcc cbz          r0, #0x49f000
+0049efce movw         r0, #0xfe03
+0049efd2 adr          r1, #0x38
+0049efd4 movw         r2, #0x385
+0049efd8 movt         r0, #0xe0
+0049efdc blx          #0x53fa30
+0049efe0 .byte        0x8b, 0xba
+0049efe2 b            #0x49f000
+0049efe4 mov          sb, r0
+0049efe6 b            #0x49f000
+0049efe8 ldr.w        sb, [sp]
+0049efec ldrex        r0, [r5]
+0049eff0 subs         r0, #1
+0049eff2 strex        r1, r0, [r5]
+0049eff6 cmp          r1, #0
+0049eff8 bne          #0x49efec
+0049effa mov          r0, sl
+0049effc bl           #0x49ec54
+0049f000 mov          r0, sb
+0049f002 add          sp, #4
+0049f004 pop.w        {r8, sb, sl, fp}
+0049f008 pop          {r4, r5, r6, r7, pc}

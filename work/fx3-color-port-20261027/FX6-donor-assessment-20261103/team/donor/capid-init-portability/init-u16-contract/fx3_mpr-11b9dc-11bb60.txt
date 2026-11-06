@@ -1,0 +1,103 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000011b964 <_ZNSt11__copy_moveILb0ELb1ESt26random_access_iterator_tagE8__copy_mIN3mpr16MovieEncodeTable8MetaInfoEEEPT_PKS6_S9_S7_>:
+  11b9dc: a9b67bfd     	stp	x29, x30, [sp, #-0xa0]!
+  11b9e0: d2800001     	mov	x1, #0x0                // =0
+  11b9e4: 910003fd     	mov	x29, sp
+  11b9e8: a90153f3     	stp	x19, x20, [sp, #0x10]
+  11b9ec: aa0003f3     	mov	x19, x0
+  11b9f0: f0000ee0     	adrp	x0, 0x2fa000
+  11b9f4: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  11b9f8: a90363f7     	stp	x23, x24, [sp, #0x30]
+  11b9fc: 910143b4     	add	x20, x29, #0x50
+  11ba00: f941d000     	ldr	x0, [x0, #0x3a0]
+  11ba04: 91004000     	add	x0, x0, #0x10
+  11ba08: f9000260     	str	x0, [x19]
+  11ba0c: d0000ee0     	adrp	x0, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+  11ba10: f941bc00     	ldr	x0, [x0, #0x378]
+  11ba14: 91004000     	add	x0, x0, #0x10
+  11ba18: f9002a60     	str	x0, [x19, #0x50]
+  11ba1c: 91016260     	add	x0, x19, #0x58
+  11ba20: f90023f9     	str	x25, [sp, #0x40]
+  11ba24: 97fd8957     	bl	0x7df80 <pthread_mutex_init@plt>
+  11ba28: 91022260     	add	x0, x19, #0x88
+  11ba2c: d2800001     	mov	x1, #0x0                // =0
+  11ba30: 97fd8504     	bl	0x7ce40 <pthread_cond_init@plt>
+  11ba34: a9057fbf     	stp	xzr, xzr, [x29, #0x50]
+  11ba38: aa1403e0     	mov	x0, x20
+  11ba3c: d2800001     	mov	x1, #0x0                // =0
+  11ba40: a9067fbf     	stp	xzr, xzr, [x29, #0x60]
+  11ba44: a9077fbf     	stp	xzr, xzr, [x29, #0x70]
+  11ba48: a9087fbf     	stp	xzr, xzr, [x29, #0x80]
+  11ba4c: a9097fbf     	stp	xzr, xzr, [x29, #0x90]
+  11ba50: 97fffdcf     	bl	0x11b18c <_ZN16XavcsMovieWriter22GetParameterSetPerInfoEjN3mpr10StreamTypeEhPNS_9PpsInfo_tEbN10libXavcMp416ParameterSetTypeEmjPS4_PNS0_7DmacLibERKNS0_5Codec14BufferAreaInfoEPN10MovieError12MovieError_tE+0x5ac>
+  11ba54: 9102e260     	add	x0, x19, #0xb8
+  11ba58: f9005e7f     	str	xzr, [x19, #0xb8]
+  11ba5c: d2800001     	mov	x1, #0x0                // =0
+  11ba60: f900041f     	str	xzr, [x0, #0x8]
+  11ba64: a90cfe7f     	stp	xzr, xzr, [x19, #0xc8]
+  11ba68: a90dfe7f     	stp	xzr, xzr, [x19, #0xd8]
+  11ba6c: a90efe7f     	stp	xzr, xzr, [x19, #0xe8]
+  11ba70: a90ffe7f     	stp	xzr, xzr, [x19, #0xf8]
+  11ba74: 97fffdc6     	bl	0x11b18c <_ZN16XavcsMovieWriter22GetParameterSetPerInfoEjN3mpr10StreamTypeEhPNS_9PpsInfo_tEbN10libXavcMp416ParameterSetTypeEmjPS4_PNS0_7DmacLibERKNS0_5Codec14BufferAreaInfoEPN10MovieError12MovieError_tE+0x5ac>
+  11ba78: f9402ba0     	ldr	x0, [x29, #0x50]
+  11ba7c: b4000220     	cbz	x0, 0x11bac0 <_ZNSt11__copy_moveILb0ELb1ESt26random_access_iterator_tagE8__copy_mIN3mpr16MovieEncodeTable8MetaInfoEEEPT_PKS6_S9_S7_+0x15c>
+  11ba80: 91032276     	add	x22, x19, #0xc8
+  11ba84: 91004281     	add	x1, x20, #0x10
+  11ba88: aa1603e0     	mov	x0, x22
+  11ba8c: 9103a275     	add	x21, x19, #0xe8
+  11ba90: 97ffffca     	bl	0x11b9b8 <_ZNSt11__copy_moveILb0ELb1ESt26random_access_iterator_tagE8__copy_mIN3mpr16MovieEncodeTable8MetaInfoEEEPT_PKS6_S9_S7_+0x54>
+  11ba94: 9100c281     	add	x1, x20, #0x30
+  11ba98: aa1503e0     	mov	x0, x21
+  11ba9c: 97ffffc7     	bl	0x11b9b8 <_ZNSt11__copy_moveILb0ELb1ESt26random_access_iterator_tagE8__copy_mIN3mpr16MovieEncodeTable8MetaInfoEEEPT_PKS6_S9_S7_+0x54>
+  11baa0: f9405e60     	ldr	x0, [x19, #0xb8]
+  11baa4: f9402ba1     	ldr	x1, [x29, #0x50]
+  11baa8: f9002ba0     	str	x0, [x29, #0x50]
+  11baac: f9005e61     	str	x1, [x19, #0xb8]
+  11bab0: f9406260     	ldr	x0, [x19, #0xc0]
+  11bab4: f9402fa1     	ldr	x1, [x29, #0x58]
+  11bab8: f9002fa0     	str	x0, [x29, #0x58]
+  11babc: f9006261     	str	x1, [x19, #0xc0]
+  11bac0: aa1403e0     	mov	x0, x20
+  11bac4: 52800098     	mov	w24, #0x4               // =4
+  11bac8: 52846217     	mov	w23, #0x2310            // =8976
+  11bacc: 912fe276     	add	x22, x19, #0xbf8
+  11bad0: 97fff630     	bl	0x119390 <_ZN16XavcsMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0xe8>
+  11bad4: 91110260     	add	x0, x19, #0x440
+  11bad8: 97feb73c     	bl	0xc97c8 <_ZN3mpr15IsFatFileSystemEj+0xb0>
+  11badc: 9118e260     	add	x0, x19, #0x638
+  11bae0: 97feb73a     	bl	0xc97c8 <_ZN3mpr15IsFatFileSystemEj+0xb0>
+  11bae4: 3931e27f     	strb	wzr, [x19, #0xc78]
+  11bae8: 9131e260     	add	x0, x19, #0xc78
+  11baec: d2858303     	mov	x3, #0x2c18             // =11288
+  11baf0: f9063660     	str	x0, [x19, #0xc68]
+  11baf4: 91326260     	add	x0, x19, #0xc98
+  11baf8: f9064660     	str	x0, [x19, #0xc88]
+  11bafc: 9132e260     	add	x0, x19, #0xcb8
+  11bb00: f9065660     	str	x0, [x19, #0xca8]
+  11bb04: 8b030260     	add	x0, x19, x3
+  11bb08: d2858002     	mov	x2, #0x2c00             // =11264
+  11bb0c: 3932627f     	strb	wzr, [x19, #0xc98]
+  11bb10: 3932e27f     	strb	wzr, [x19, #0xcb8]
+  11bb14: 52800001     	mov	w1, #0x0                // =0
+  11bb18: f905fe7f     	str	xzr, [x19, #0xbf8]
+  11bb1c: 8b020275     	add	x21, x19, x2
+  11bb20: f906027f     	str	xzr, [x19, #0xc00]
+  11bb24: f906067f     	str	xzr, [x19, #0xc08]
+  11bb28: f9063a7f     	str	xzr, [x19, #0xc70]
+  11bb2c: f9064a7f     	str	xzr, [x19, #0xc90]
+  11bb30: f9065a7f     	str	xzr, [x19, #0xcb0]
+  11bb34: 97fd838f     	bl	0x7c970 <_ZN3mpr6thread10normalLockC1ENS1_9MutexTypeE@plt>
+  11bb38: 390042bf     	strb	wzr, [x21, #0x10]
+  11bb3c: 52802000     	mov	w0, #0x100              // =256
+  11bb40: 52800101     	mov	w1, #0x8                // =8
+  11bb44: b92c167f     	str	wzr, [x19, #0x2c14]
+  11bb48: 7900a7a0     	strh	w0, [x29, #0x52]
+  11bb4c: aa1403e0     	mov	x0, x20
+  11bb50: 390153b8     	strb	w24, [x29, #0x54]
+  11bb54: 7900a3b7     	strh	w23, [x29, #0x50]
+  11bb58: 390157bf     	strb	wzr, [x29, #0x55]
+  11bb5c: 39015bbf     	strb	wzr, [x29, #0x56]

@@ -1,0 +1,37 @@
+{
+  "observed_utc": "2026-10-29T11:50:55.690545+00:00",
+  "05_receipt_files": [
+    {
+      "name": "relay-stdout.txt",
+      "uid": 0,
+      "mode": "0o600",
+      "bytes": 586,
+      "reader_uid": 501,
+      "open_succeeded_without_read": false,
+      "errno": 13,
+      "error": "Permission denied"
+    },
+    {
+      "name": "relay-stderr.txt",
+      "uid": 0,
+      "mode": "0o600",
+      "bytes": 0,
+      "reader_uid": 501,
+      "open_succeeded_without_read": false,
+      "errno": 13,
+      "error": "Permission denied"
+    }
+  ],
+  "existing172_stdout_channel": {
+    "result_path": "/private/tmp/fx3-host-audit-20261028-01/terminal-root.json",
+    "file_uid": 501,
+    "file_mode": "0o600",
+    "reported_process_uid": 0,
+    "reported_process_euid": 0,
+    "actual_privileged_run_was_prior172_not_new_execution": true
+  },
+  "source_difference": "173 root bootstrap redirects helper output inside root shell, creating root0600 files.171/172 redirects only sudo stdout in outer user shell, yielding user501/0600 result.",
+  "new_root_or_device_execution": false,
+  "file_permissions_changed": false,
+  "original_UNKNOWN_preserved": true
+}

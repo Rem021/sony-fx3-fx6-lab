@@ -1,0 +1,85 @@
+{
+  "sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-dmm-model.c",
+      "sha256": "1d30ca817dd3e51c1c3af6d3090bab5e282c1cf1e0ab77e0de8fcd397e8a389e"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v37.c",
+      "sha256": "187ea41dab078f061e10744bf453d58cd9edd3c2afba9c1b02a97ed2e323ea32"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap82-uud-second-pin-graph/candidate82.json",
+      "sha256": "d6ec1529ea14028978a82a0a613b6d96ee194c85086a9cab15b78991096c188b"
+    }
+  ],
+  "slots": [
+    {
+      "unit": "0x1d9",
+      "handle_first_generation": "0x8408",
+      "remote_index": 8,
+      "AP_backing": "0x41dd00000",
+      "CP_wire": "0x1dd00000",
+      "advertised_size": "0x64000",
+      "reserved_stride": "0x70000"
+    },
+    {
+      "unit": "0x1da",
+      "handle_first_generation": "0x8409",
+      "remote_index": 9,
+      "AP_backing": "0x41dd70000",
+      "CP_wire": "0x1dd70000",
+      "advertised_size": "0xc800",
+      "reserved_stride": "0x10000"
+    },
+    {
+      "unit": "0x1db",
+      "handle_first_generation": "0x840a",
+      "remote_index": 10,
+      "AP_backing": "0x41dd80000",
+      "CP_wire": "0x1dd80000",
+      "advertised_size": "0xd100",
+      "reserved_stride": "0x10000"
+    }
+  ],
+  "templates": {
+    "0x1d9": {
+      "8020_option0_corr0": "20800000000000000000000008840000d90100000000000000000000000000000000000000000000",
+      "8020_option1_corr0_optional": "20800000000000000100000008840000d9010000000000000000d01d000000000040060000000000",
+      "802a_corr0": "2a80000000000000010000000884000000000000000000000000d01d000000000040060000000000",
+      "8023_option0_corr0": "23800000000000000000000008840000000000000000000000000000000000000000000000000000",
+      "notes": "40B. 8020 option0 has zero segment count/address/size; 802a exposes retained extent even when allocated with opens0. Copy actual correlation, route reply to original source, unique lease and no duplicate completion."
+    },
+    "0x1da": {
+      "8020_option0_corr0": "20800000000000000000000009840000da0100000000000000000000000000000000000000000000",
+      "8020_option1_corr0_optional": "20800000000000000100000009840000da010000000000000000d71d0000000000c8000000000000",
+      "802a_corr0": "2a80000000000000010000000984000000000000000000000000d71d0000000000c8000000000000",
+      "8023_option0_corr0": "23800000000000000000000009840000000000000000000000000000000000000000000000000000",
+      "notes": "40B. 8020 option0 has zero segment count/address/size; 802a exposes retained extent even when allocated with opens0. Copy actual correlation, route reply to original source, unique lease and no duplicate completion."
+    },
+    "0x1db": {
+      "8020_option0_corr0": "2080000000000000000000000a840000db0100000000000000000000000000000000000000000000",
+      "8020_option1_corr0_optional": "2080000000000000010000000a840000db010000000000000000d81d0000000000d1000000000000",
+      "802a_corr0": "2a80000000000000010000000a84000000000000000000000000d81d0000000000d1000000000000",
+      "8023_option0_corr0": "2380000000000000000000000a840000000000000000000000000000000000000000000000000000",
+      "notes": "40B. 8020 option0 has zero segment count/address/size; 802a exposes retained extent even when allocated with opens0. Copy actual correlation, route reply to original source, unique lease and no duplicate completion."
+    }
+  },
+  "validation": {
+    "instruction_checks": 24,
+    "configurations_checked": 2,
+    "proposal_slots_checked": 3
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "schema": "fx3-stage183-research-provenance/1",
+  "recorded_utc": "2026-10-29T14:55:42.862854+00:00",
+  "report_complete_notes_and_prior_report": [
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/research_notes/FX3 请求处理 独立启动/usb-main-dependency.md",
+      "bytes": 14714,
+      "sha256": "d3d6f4bea6f3bb272707495cfdfe322968417b3000598a69408fc77d63cf6686"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/research_notes/FX3 请求处理 独立启动/queue-consumer.md",
+      "bytes": 13208,
+      "sha256": "d4d12f4e73c963d6f77c61f82a49e4fe246f1d1def44ea91aa06c1ee79e48b58"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/research_notes/FX3 请求处理 独立启动/early-selector.md",
+      "bytes": 15094,
+      "sha256": "2141c5d5f9a27588af46107694989593fa91e14a970d01a031a1419886faf89a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/reports/FX3 请求处理 独立启动.md",
+      "bytes": 7374,
+      "sha256": "47e0d858c7ef12a2f1b28501062a607aaab44e04f73bb8317cd88bcc64d9e08b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/reports/FX3 恢复启动 版本准入.md",
+      "bytes": 7809,
+      "sha256": "80254c6801b57db9cbc266e43b77fc19d6fc7f989a1a3133851d695f9445bd52"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/final-receipt.json",
+      "bytes": 177930,
+      "sha256": "874847808039f583b5bfce9874da4b95d5a0c8b65e68d8dded5bb79c49f1db0f"
+    }
+  ],
+  "source_manifest_paths": [
+    "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/source-manifest.json",
+    "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/early-selector/early-selector-evidence.json",
+    "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/manifest.json",
+    "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/ap-topology.json",
+    "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/static-dependency-closure.json"
+  ],
+  "source_records_rehashed": [
+    {
+      "logical_path": "/kmod/osal_uipc.ko",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/evidence/boot-request/originals/kmod/osal_uipc.ko",
+      "bytes": 76168,
+      "sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38"
+    },
+    {
+      "logical_path": "/lib/libosal_uipc.so",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/evidence/boot-request/originals/lib/libosal_uipc.so",
+      "bytes": 43752,
+      "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3"
+    },
+    {
+      "logical_path": "/kmod/liro.ko",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha15/kmod/liro.ko",
+      "bytes": 121488,
+      "sha256": "b4bd80cc614751e0092ee19e89cb90632db580bc01f23f1a1df23544e9b10186"
+    },
+    {
+      "logical_path": "/nflasha3/av-cam.bin",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+      "bytes": 13348560,
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/vendor-dispatch-review.json",
+      "bytes": 69998,
+      "sha256": "076caa5d1f40753340e48a1fbf457e5a15ddcb983ce4c3f850ee0f7f93c350d2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/callback-bridge-review.json",
+      "bytes": 187823,
+      "sha256": "a553402fbff770b09568f1a3c193507f50eba3ff1c245bda4a962110c650cc50"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage148-initial-MSC-handler-inventory/dynamic-NIN-route-review.json",
+      "bytes": 51865,
+      "sha256": "47f5a65627f799d7d483d6229eb72f1810488398c75356bb72affe899a4eca0a"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage149-normal-cooperator-and-NIN-checkpoint/normal-cooperator-static.json",
+      "bytes": 146708,
+      "sha256": "70fe03e7015b5fd12a4c914cc436ff8002b635394c18037c907cb69687518eba"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "bytes": 101888,
+      "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/evidence/boot-request/originals/kmod/upm.ko",
+      "bytes": 453896,
+      "sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+      "bytes": 5218304,
+      "sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+      "bytes": 479846400,
+      "sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5"
+    }
+  ],
+  "source_records_rehashed_count": 12,
+  "usb_evidence_members_rehashed": 51,
+  "complete_notes_before_synthesis": true,
+  "local_links_checked": 166,
+  "synthesis_uses_completed_notes_and_existing_evidence_only": true,
+  "tools_and_scope": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/queue-consumer/scope.json",
+  "registrar_installs_test_runs_firmware_execution_or_device_operations": 0,
+  "scope": "Configured NOR static VA, kernel section offsets and ELF link VA are not observed runtime PC. Conditional early mode consumption and independent sen topology do not prove recovery. Queue0x376 real business recipient remains unresolved."
+}

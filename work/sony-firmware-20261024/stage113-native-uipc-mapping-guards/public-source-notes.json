@@ -1,0 +1,10 @@
+{
+  "checked_date": "2026-10-27",
+  "primary_source": "https://docs.kernel.org/core-api/mm-api.html#c.remap_pfn_range",
+  "observation": "Generic Linux documentation describes remapping kernel physical page frames into a user VMA, requiring the relevant MM lock; zero indicates success.",
+  "scope": "Generic function contract, not Sony mapping success, task ABI or rescue evidence.",
+  "extra_reference_fetch": {
+    "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/arch/arm64/include/asm/uaccess.h",
+    "result": "web fetch429; not relied on for range semantics. Original Sony instructions and explicit last-byte controls used."
+  }
+}

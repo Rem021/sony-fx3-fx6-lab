@@ -1,0 +1,65 @@
+# File offsets authoritative; display VA tentative, no firmware execution.
+0xfe049000 [file+0x0] c12f0058 ldr      x1, #0xfe0495f8
+0xfe049004 [file+0x4] 01c018d5 msr      vbar_el1, x1
+0xfe049008 [file+0x8] 01c01cd5 msr      vbar_el2, x1
+0xfe04900c [file+0xc] 01c01ed5 msr      vbar_el3, x1
+0xfe049010 [file+0x10] 239080d2 mov      x3, #0x481
+0xfe049014 [file+0x14] 03111ed5 msr      scr_el3, x3
+0xfe049018 [file+0x18] 660e80d2 mov      x6, #0x73
+0xfe04901c [file+0x1c] 25103ed5 mrs      x5, actlr_el3
+0xfe049020 [file+0x20] 050006aa orr      x5, x0, x6
+0xfe049024 [file+0x24] 25101ed5 msr      actlr_el3, x5
+0xfe049028 [file+0x28] c52e0058 ldr      x5, #0xfe049600
+0xfe04902c [file+0x2c] 05e01bd5 msr      cntfrq_el0, x5
+0xfe049030 [file+0x30] 45b039d5 mrs      x5, s3_1_c11_c0_2
+0xfe049034 [file+0x34] a50040b2 orr      x5, x5, #1
+0xfe049038 [file+0x38] a5007bb2 orr      x5, x5, #0x20
+0xfe04903c [file+0x3c] 45b019d5 msr      s3_1_c11_c0_2, x5
+0xfe049040 [file+0x40] 02113cd5 mrs      x2, hcr_el2
+0xfe049044 [file+0x44] e20361b3 bfc      x2, #0x1f, #1
+0xfe049048 [file+0x48] 02111cd5 msr      hcr_el2, x2
+0xfe04904c [file+0x4c] 1f211cd5 msr      vttbr_el2, xzr
+0xfe049050 [file+0x50] a00038d5 mrs      x0, mpidr_el1
+0xfe049054 [file+0x54] a0001cd5 msr      vmpidr_el2, x0
+0xfe049058 [file+0x58] 000038d5 mrs      x0, midr_el1
+0xfe04905c [file+0x5c] 00001cd5 msr      vpidr_el2, x0
+0xfe049060 [file+0x60] 5f111ed5 msr      cptr_el3, xzr
+0xfe049064 [file+0x64] 5f111cd5 msr      cptr_el2, xzr
+0xfe049068 [file+0x68] 0006a0d2 mov      x0, #0x300000
+0xfe04906c [file+0x6c] 401018d5 msr      cpacr_el1, x0
+0xfe049070 [file+0x70] 0000a8d2 mov      x0, #0x40000000
+0xfe049074 [file+0x74] 00531cd5 msr      fpexc32_el2, x0
+0xfe049078 [file+0x78] 9f1010d5 msr      oslar_el1, xzr
+0xfe04907c [file+0x7c] 9f1310d5 msr      osdlr_el1, xzr
+0xfe049080 [file+0x80] 20133ed5 mrs      x0, mdcr_el3
+0xfe049084 [file+0x84] 00f47092 and      x0, x0, #0xffffffffffff3fff
+0xfe049088 [file+0x88] 20131ed5 msr      mdcr_el3, x0
+0xfe04908c [file+0x8c] 000080d2 mov      x0, #0
+0xfe049090 [file+0x90] 00101ed5 msr      sctlr_el3, x0
+0xfe049094 [file+0x94] 00101cd5 msr      sctlr_el2, x0
+0xfe049098 [file+0x98] 001018d5 msr      sctlr_el1, x0
+0xfe04909c [file+0x9c] 38020094 bl       #0xfe04997c
+0xfe0490a0 [file+0xa0] f30300aa mov      x19, x0
+0xfe0490a4 [file+0xa4] 202b0058 ldr      x0, #0xfe049608
+0xfe0490a8 [file+0xa8] 004013cb sub      x0, x0, x19, lsl #16
+0xfe0490ac [file+0xac] 1f000091 mov      sp, x0
+0xfe0490b0 [file+0xb0] 010738d5 mrs      x1, id_aa64mmfr0_el1
+0xfe0490b4 [file+0xb4] 610b0058 ldr      x1, #0xfe049220
+0xfe0490b8 [file+0xb8] 01201ed5 msr      ttbr0_el3, x1
+0xfe0490bc [file+0xbc] 81e89fd2 mov      x1, #0xff44
+0xfe0490c0 [file+0xc0] 8100a0f2 movk     x1, #4, lsl #16
+0xfe0490c4 [file+0xc4] 01a21ed5 msr      mair_el3, x1
+0xfe0490c8 [file+0xc8] 412a0058 ldr      x1, #0xfe049610
+0xfe0490cc [file+0xcc] 41201ed5 msr      tcr_el3, x1
+0xfe0490d0 [file+0xd0] df3f03d5 isb      
+0xfe0490d4 [file+0xd4] f31c00b5 cbnz     x19, #0xfe049470
+0xfe0490d8 [file+0xd8] 150a0058 ldr      x21, #0xfe049218
+0xfe0490dc [file+0xdc] e00315aa mov      x0, x21
+0xfe0490e0 [file+0xe0] 010084d2 mov      x1, #0x2000
+0xfe0490e4 [file+0xe4] 2b020094 bl       #0xfe049990
+0xfe0490e8 [file+0xe8] 000a0058 ldr      x0, #0xfe049228
+0xfe0490ec [file+0xec] 0101a0d2 mov      x1, #0x80000
+0xfe0490f0 [file+0xf0] 28020094 bl       #0xfe049990
+0xfe0490f4 [file+0xf4] 030880d2 mov      x3, #0x40
+0xfe0490f8 [file+0xf8] 020080d2 mov      x2, #0
+0xfe0490fc [file+0xfc] 61090058 ldr      x1, #0xfe049228

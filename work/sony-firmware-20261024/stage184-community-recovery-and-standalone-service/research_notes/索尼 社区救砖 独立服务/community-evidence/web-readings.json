@@ -1,0 +1,36 @@
+{
+  "checked_date": "2026-10-29",
+  "read_via": "web search/open/find, not downloads or executed attachments",
+  "sources": [
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE/issues/715",
+      "kind": "firsthand issue plus own success followup",
+      "finding": "FX3A 2.02 normal MSC to serviceshell/PAL; not classic FX3 or recovery"
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1jwp86i/602_firmware_update_bricked_fx3/",
+      "kind": "firsthand failure plus edited repair result",
+      "finding": "classic FX3 4 to 6.02 SD update failure; owner says motherboard replacement"
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1fqgexj/in_need_of_the_fx3_ver_600_dat_update_file/",
+      "kind": "firsthand repair comment and quoted success from another post",
+      "finding": "Shaolin_Wolf reports return at5.00 after mainboard replacement; TheSilentPhotog success original comment not located"
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1hu6qui/fx3_firmware_update_failed_camera_wont_turn_on/",
+      "kind": "firsthand failed update, no recovery outcome in read thread",
+      "finding": "update utility still detects otherwise unresponsive camera"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/dino2048/zv-e10-toolkit/bd2b4ac03af71bd397f8b88162db1ec1671e222a/bootrom/host/restore_rescue.py",
+      "kind": "full primary source read through web",
+      "finding": "16 named user partitions only; excludes boot0/1/PT; explicit readback"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/dino2048/zv-e10-toolkit/bd2b4ac03af71bd397f8b88162db1ec1671e222a/CONTRIBUTING.md",
+      "kind": "primary maintainer validation publication boundary",
+      "finding": "hardware logs not public in this tree; cleanup does not claim new hardware session"
+    }
+  ]
+}

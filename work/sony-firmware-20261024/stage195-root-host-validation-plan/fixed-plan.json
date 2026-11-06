@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-29T20:40:44.464570+00:00",
+  "grant_id": "fx3-host-root-20261029-01",
+  "scope": "HOST_ONLY",
+  "expected_console_uid": 501,
+  "expected_helper_uid": 0,
+  "maximum_helper_invocations": 2,
+  "invocations": [
+    "trial",
+    "readback"
+  ],
+  "nonces": [
+    "13055d37f20b6b7ccf24be23afdb55cf",
+    "f3f0d1a513e96fc1a9ab0e2382d5a4fb"
+  ],
+  "root_helper_sha256": "fb150a18a4efc9d827f293b912aa56c21e14488670817256c12b39c1356c32cb",
+  "terminal_command_sha256": "53fe00f8da91fe4d7cf6f3bc883247f242bff28cc02bc5038f57761c9870026f",
+  "job_directory": "/private/tmp/fx3-host-root-20261029-01",
+  "root_base": "/private/var/root/fx3-host-validation",
+  "root_grant_directory": "/private/var/root/fx3-host-validation/fx3-host-root-20261029-01",
+  "root_helper_path": "/private/var/root/fx3-host-validation/fx3-host-root-20261029-01/helper",
+  "root_new_files": {
+    "helper": "0500",
+    "trial.once": "0400",
+    "readback.once": "0400",
+    "host-only.journal": "0600",
+    "host-result.bin": "0600"
+  },
+  "camera_USB_driver_auth_firmware_operations": 0,
+  "privacy_or_audit_permission_changes": false,
+  "automatic_retry_or_kill": false,
+  "approved_or_executed": false,
+  "persistence_scope": "fsync and checksum/current protected readback; no sudden-power-loss, APFS-crash or camera-recovery proof"
+}

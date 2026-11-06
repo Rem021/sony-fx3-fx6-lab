@@ -1,0 +1,16 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-skd-hw-unavailable.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-skd-hw-unavailable"
+  ],
+  "exit": 0,
+  "stdout": "SKD_HW_UNAVAILABLE_PASS exact_tuple_caller_fd_only/MAP_FAILED_ENODEV/no_ROM_key/adjacent_tuple_fd_caller_regions_forward/errno_preserved\n",
+  "stderr": "FX3_SKD_HW_UNAVAILABLE caller=0x123400645ec relative=0x645ec map_call=0x645e8 offset=0xffffb000 length=0x1000 protection=1 flags=1 fd=6 errno=19 skd_hardware_available=0 key_material_fabricated=0 other_regions_unchanged=1\n",
+  "source_sha256": "e38d775ac2bc50bbeff3c90456efd7504710752d4d3db2bbb1314613e9e6faa1"
+}

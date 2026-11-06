@@ -1,0 +1,5 @@
+00400f68 adrp       x0, #0x411000
+00400f6c ldr        x0, [x0, #0xfe0]
+00400f70 cbz        x0, #0x400f78
+00400f74 b          #0x400bb0 ; __gmon_start__
+00400f78 ret        

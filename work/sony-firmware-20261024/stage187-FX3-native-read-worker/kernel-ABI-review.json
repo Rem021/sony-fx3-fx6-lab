@@ -1,0 +1,46 @@
+{
+  "references": [
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/asm-generic/stat.h",
+      "path": "work/sony-firmware-20261024/stage187-FX3-native-read-worker/kernel-reference/stat.h",
+      "sha256": "74e2cb8db164bb66642ec84ca2eedfdb2420fb53dd6b626d25bdb920a3f92498",
+      "bytes": 2570
+    },
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/asm-generic/statfs.h",
+      "path": "work/sony-firmware-20261024/stage187-FX3-native-read-worker/kernel-reference/statfs.h",
+      "sha256": "92cacf84630a02af2349202df8300364ef724f021d32907b45223ec3507a60cb",
+      "bytes": 1791
+    },
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/asm-generic/unistd.h",
+      "path": "work/sony-firmware-20261024/stage187-FX3-native-read-worker/kernel-reference/unistd.h",
+      "sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "bytes": 30186
+    }
+  ],
+  "verified_syscall_numbers": {
+    "ioctl": 29,
+    "mkdirat": 34,
+    "openat": 56,
+    "close": 57,
+    "read": 63,
+    "write": 64,
+    "pread64": 67,
+    "fsync": 82,
+    "clock_gettime": 113,
+    "geteuid": 175,
+    "fstatfs": 44,
+    "fstat": 80
+  },
+  "layout_checked_statfs_word_indexes": {
+    "f_type": 0,
+    "f_bsize": 1,
+    "f_bavail": 4,
+    "f_frsize": 9,
+    "f_flags": 10
+  },
+  "original_FX3_BLKGETSIZE_evidence": "stage161-bounded-read-import-inventory/original-read-route-review.json",
+  "actual_Sony_kernel_support_tested": false,
+  "new_camera_operations": 0
+}

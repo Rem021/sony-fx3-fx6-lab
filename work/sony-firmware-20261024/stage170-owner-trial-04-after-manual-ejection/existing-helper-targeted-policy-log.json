@@ -1,0 +1,55 @@
+{
+  "created_utc": "2026-10-28T13:55:46.431731+00:00",
+  "argv": [
+    "/usr/bin/log",
+    "show",
+    "--style",
+    "json",
+    "--start",
+    "2026-10-28 06:49:02",
+    "--end",
+    "2026-10-28 06:50:03",
+    "--predicate",
+    "(subsystem == \"com.apple.TCC\" OR subsystem CONTAINS[c] \"usb\") AND (eventMessage CONTAINS \"12230\" OR eventMessage CONTAINS \"fx3-702-msc-owner-20261028-04\")"
+  ],
+  "returncode": 0,
+  "stderr": "",
+  "messages": [
+    {
+      "timestamp": "2026-10-28 06:49:04.896463-0700",
+      "processID": 450,
+      "subsystem": "com.apple.TCC",
+      "category": "access",
+      "eventMessage": "AUTHREQ_ATTRIBUTION: msgID=548.1533, attribution={accessing={TCCDProcess: identifier=owner-native-helper, pid=12230, auid=0, euid=0, binary_path=/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-04/helper}, requesting={TCCDProcess: identifier=com.apple.syspolicyd, pid=548, auid=0, euid=0, binary_path=/usr/libexec/syspolicyd}, },"
+    },
+    {
+      "timestamp": "2026-10-28 06:49:04.897709-0700",
+      "processID": 450,
+      "subsystem": "com.apple.TCC",
+      "category": "access",
+      "eventMessage": "AUTHREQ_SUBJECT: msgID=548.1533, subject=/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-04/helper,"
+    },
+    {
+      "timestamp": "2026-10-28 06:49:04.898210-0700",
+      "processID": 450,
+      "subsystem": "com.apple.TCC",
+      "category": "access",
+      "eventMessage": "-[TCCDAccessIdentity staticCode]: static code for: identifier /private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-04/helper, type: 1: 0x757aa62400 at /private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-04/helper"
+    },
+    {
+      "timestamp": "2026-10-28 06:49:04.954709-0700",
+      "processID": 450,
+      "subsystem": "com.apple.TCC",
+      "category": "access",
+      "eventMessage": "FORWARD: to=com.apple.tccd/0, request: {\n\tTCCD_MSG_MESSAGE_OPTION_USAGE_STRING_POLICY_AUTHORIZED_BY_FORWARDER_KEY=true\n\tservice=\"kTCCServiceSystemPolicyRemovableVolumes\"\n\tTCCD_MSG_SPI_VERSION=2 (0x2)\n\tfunction=\"TCCAccessRequest\"\n\tTCCD_MSG_MESSAGE_OPTION_REQUEST_RECORD_UPGRADE_POLICY_POLICY_KEY=1 (0x1)\n\tTCCD_MSG_REQUEST_TYPE_KEY=0 (0x0)\n\tTCCD_MSG_MESSAGE_OPTION_REQUEST_PROMPT_RIGHTS_MASK_KEY=5 (0x5)\n\tTCC_MSG_REQUEST_AUTHORIZATION_SUBJECT_CREDENTIAL_DICTIONARY_KEY={\n\t\tTCCD_MSG_CREDENTIAL_AUTHENTICATOR_TYPE_KEY=1 (0x1)\n\t\tTCCD_MSG_CREDENTIAL_AUTHENTICATOR_AUDIT_TOKEN_KEY={pid:12230, auid:-1, euid:0}\n\t}\n\tTCCD_MSG_MESSAGE_OPTION_REQUEST_USAGE_STRING_POLICY_KEY=2 (0x2)\n\tTCCD_MSG_MESSAGE_OPTION_REQUEST_PROMPT_POLICY_KEY=0 (0x0)\n\tTCCD_MSG_ID=\"8096.20\"\n}"
+    },
+    {
+      "timestamp": "2026-10-28 06:49:04.954785-0700",
+      "processID": 450,
+      "subsystem": "com.apple.TCC",
+      "category": "access",
+      "eventMessage": "one instance of XPC forwardMessage error: Connection invalid. (service=kTCCServiceSystemPolicyRemovableVolumes, requestor=com.apple.sandboxd, target_pid=12230, target_id=owner-native-helper, auid=0)"
+    }
+  ],
+  "scope": "existing TCC/USB subsystem messages explicitly naming the completed helper PID or fixed grant; no database or privacy changes"
+}

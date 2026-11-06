@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/deadline_cli.py",
+    "dispose",
+    "--session",
+    "fx3-deadline-operator-r21-b83358633d9e-ccf2a6e7",
+    "--url",
+    "http://127.0.0.1:51442/",
+    "--launch-id",
+    "bb9c2485-fe65-40d5-92d5-db1d5365fd86"
+  ],
+  "start": {
+    "UTC": "2026-11-04T23:42:36.734868+00:00",
+    "host_ns": 419442266727208
+  },
+  "end": {
+    "UTC": "2026-11-04T23:42:36.788490+00:00",
+    "host_ns": 419442320358166
+  },
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/deadline_cli.py\", line 56, in <module>\n    print(json.dumps(operate(a.session, a.url, a.launch_id, a.action, a.nonce),\n                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/deadline_cli.py\", line 39, in operate\n    result = json.loads(browser(session, ['eval', '--stdin'], code))\n                        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/deadline_cli.py\", line 16, in browser\n    raise RuntimeError(p.stdout + p.stderr)\nRuntimeError: ✗ Evaluation error: Error: deadline_refused: cancel exact nonce before dispose\n    at fail (<anonymous>:6:35)\n    at Object.dispose (<anonymous>:122:49)\n    at <anonymous>:7:30\n    at <anonymous>:8:11\n\n"
+}

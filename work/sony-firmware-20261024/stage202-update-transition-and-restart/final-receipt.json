@@ -1,0 +1,325 @@
+{
+  "schema": "fx3-stage202-restart-route-v1",
+  "created_utc": "2026-10-29T22:43:19.205563+00:00",
+  "previous_manifest_sha256": "08c7bc10dbc875003a24c4996665f276a219d119ab86218cda30564fdd528b4b",
+  "previous_members_reverified": 61,
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/CurrentFirmware-SwitchModeToUpdater.txt",
+      "bytes": 3228,
+      "sha256": "325d727958802d3f86a66e5ff0aa1ac0d81ab9780aa81c9d0f9fd1f8f997a4a6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/README.md",
+      "bytes": 6907,
+      "sha256": "7957399176c0e691f5bc95ba7ed1f5d1a2c8345adbc5c606277d8e0b434c480a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/UPM-receive-and-off-dispatch.txt",
+      "bytes": 4462,
+      "sha256": "6f1fdd1cbb9f30c076c3c649e5bb33189943a6510d0d9c9d9bb5d0bdd11949d5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/UPM-request-to-state-machine.txt",
+      "bytes": 12707,
+      "sha256": "82484b8b3b908d454f29fc5db10b8fe2df01392ba350ae3b4ff41d71ae248398"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/UPM-restart-request-locators.txt",
+      "bytes": 5946,
+      "sha256": "525a3061ec94227b31e4e9d541bab4ddb7f37aabbfa8357af4f0c4a275c31be0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/analysis-corrections.json",
+      "bytes": 894,
+      "sha256": "4efc299454d5f70bee17e00b731814f5f17d6d38292a9ce466f9a002e80af607"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/goal-status-after.json",
+      "bytes": 384613,
+      "sha256": "9fc64f7ba24c6cc3ae999658972d1096250f1b1ab3ecd4dd55995f95d9b3534c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/goal-status-before.json",
+      "bytes": 382410,
+      "sha256": "13b7c9be8bf6300fde963b0160fff642a31fbe80ab34c3e5a0afb7b735cafc47"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/historical/2.04/us_reboot.sh",
+      "bytes": 230,
+      "sha256": "9307a9f79e2814589202cc0f41e5ba531d0ca993f0471ea791ffba5da5b51c4f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/historical/2.05/ud_pd_firmup.elf",
+      "bytes": 14432,
+      "sha256": "92dbb8b08bde699414df31be995bf48cc23022b506e7dec04018f3f099e018ef"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/historical/2.05/ud_reboot.elf",
+      "bytes": 14432,
+      "sha256": "314725816b8a251500eb38b001ab8bd8449f6560753db4090658086331586d7a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/historical/2.05/us_reboot.sh",
+      "bytes": 230,
+      "sha256": "9307a9f79e2814589202cc0f41e5ba531d0ca993f0471ea791ffba5da5b51c4f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/historical-reboot-helpers.json",
+      "bytes": 6927,
+      "sha256": "b7d5393e322d09eacc5dc84f09231f5bc344a6d7fb75c379fe53e30ae3c22863"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/historical-reboot-main-locator.txt",
+      "bytes": 20003,
+      "sha256": "b40494ec5f4f69d746e10cf878a6fd0df574491948f1b4082703e9da621401ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/historical-reboot-scripts.json",
+      "bytes": 1031,
+      "sha256": "f3fd675e13ebd9696e1cf67f0db81816ed58b65ab965ab85b4905df6d41bb772"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/implementation-review.json",
+      "bytes": 1872,
+      "sha256": "d2fe941eccb0178edc25089846704692a145200752220e988b62f6d62e6f8b7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/kernel-reset-loop-locators.json",
+      "bytes": 3949,
+      "sha256": "94ae69a4e32c0d0aab35a4f70eb140f07eb266ce934bc2aa1b5583d13131b5dd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/libObj-mode-forward.txt",
+      "bytes": 1307,
+      "sha256": "8d01193cacb0959efa7a988c8ccc6f4de2292c76608d9e96db2fd4152c6379a6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/libObj-restart-callers.txt",
+      "bytes": 5985,
+      "sha256": "47864b7891fa85c82353735fdbc089cac0fac7afedace5920a37d61656662578"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/libObj-restart-message.txt",
+      "bytes": 4974,
+      "sha256": "e92d7aef8293dc36c65d8cda0583a9a7de9811adf2dca14fc77bc8a25d91821e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/libObj-restart-string-xrefs.json",
+      "bytes": 1741,
+      "sha256": "9bc83cb0e9c2fc14aec01caed75db27394276eeec2abb78e4bfe8848c7ffe96e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/libObj-sync-request-context.txt",
+      "bytes": 12856,
+      "sha256": "21cbfa1403ef00e46eb8a80406aa8dd9cfef007d64444b39c72a1e20c57c7d20"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/native-goal-observed.json",
+      "bytes": 384,
+      "sha256": "82cbaa8bdfdfcdabab9d70a746b87b2c70e37cc6150b934b7fc6fcc067f1db75"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/originals/bin/sndcmd.elf",
+      "bytes": 10296,
+      "sha256": "26bb59566651e5fa93657cbbc8e18288ef49bb74e95526e4785837dba01b23c3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/originals/kmod/upm.ko",
+      "bytes": 453896,
+      "sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/originals/lib/libupdatercorecommon.so",
+      "bytes": 64520,
+      "sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/originals/lib/libupdaterufp.so",
+      "bytes": 22768,
+      "sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/AP-cold-request.txt",
+      "bytes": 1107,
+      "sha256": "c36f65a0073707dfc1ffc900c5f2fea449f77e012d4b9d5969ce7f978fe9fedf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/AP-hot-request.txt",
+      "bytes": 1109,
+      "sha256": "31cceb5d1ff5025ee293ab2d5d2ce8d069255ae8bcb868d899729a07495e6ee2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/AP-power-message.txt",
+      "bytes": 1816,
+      "sha256": "d9ca2799ea40388284d603f413dae097d75ba553dcbef9b2e2ca67d57159f887"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/Core-switch-updater.txt",
+      "bytes": 4065,
+      "sha256": "7d4ee2a241147b6447225692de69118d5fb21e054f8a3c626de503408861b170"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/SEN604-command-table.txt",
+      "bytes": 103,
+      "sha256": "672a86c806197792ce1678202e4204f81577c035e3609fac6b971443d1c51371"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/SEN604-command5.txt",
+      "bytes": 114,
+      "sha256": "114c8a08778c60f9ccb85abe47cc39583b6caec5b986aff586c3c7dcc969c058"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/SEN604-dispatch.txt",
+      "bytes": 1574,
+      "sha256": "6a35c2dd6c6dd18dec773ca17501d53fdcc3383159f93af864dcd9f9f6e45671"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/SEN604-reboot-wrapper.txt",
+      "bytes": 854,
+      "sha256": "543894d46046de78bc19c2819d12e89917a5ba7909e4056e1eda7322afa411e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/UPM-active-off-state.txt",
+      "bytes": 17506,
+      "sha256": "78498f425fea98c02e8091d3f9fdcd734ea8b1724e037b5d896a1a6a6199f2b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/UPM-off-api.txt",
+      "bytes": 4409,
+      "sha256": "4f19a1c6c92088d23131705a4537622f7d9d86af19ff1d9776218875f6d71795"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/UPM-queue21-thread.txt",
+      "bytes": 1831,
+      "sha256": "9aeb2e278836dcaca9a17ef54e99185143ea3460a470dc45978119c65784bd0d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/UPM-state-dispatch.txt",
+      "bytes": 3908,
+      "sha256": "0436bceb9081bc4889630ba54eb022c6eeac2e1d6cfe085f8ed2b33ea7afe22e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/old-reboot-SIO-write.txt",
+      "bytes": 840,
+      "sha256": "1a2f7191622547807f56e70415354c279e4fd3d707f785ae30843c350c9235d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/old-reboot-entry.txt",
+      "bytes": 437,
+      "sha256": "94766a3cd2d51e4de3598be4dd95125df75bb5c55bdfb7ad852cb8a34a8f105b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/old-reboot-frame11-3.txt",
+      "bytes": 859,
+      "sha256": "2b4c6de4426ec9036be29ba6da306f74addc2ddc3695a797cd36274400e0123e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/old-reboot-main-pointer.txt",
+      "bytes": 31,
+      "sha256": "cc884eba86008e972b51f29dbee67509031467902cbed6da27916afeff0d2f85"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/old-reboot-power-selector.txt",
+      "bytes": 416,
+      "sha256": "164d4df5941d8b6c577872d10eadda5f544038e8d8a5c4863e17c67197eddbfa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/pins/old-reboot-power-table.txt",
+      "bytes": 43,
+      "sha256": "a186e148f7af903b0c02c49ad79e6c08be2b1a436475ef97bafc662fddcdb1c4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/prove_restart_routes.py",
+      "bytes": 10048,
+      "sha256": "bdeff2258d86169ef3b47f07d6688c599e98d08aa6dd2594a52a706718712e70"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/readme-after.md",
+      "bytes": 86478,
+      "sha256": "14390b97732abdf3b6073ef0f17032b2cee1de23a3a083b264ad307df04b1379"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/readme-before.md",
+      "bytes": 86154,
+      "sha256": "f36e34e19d584b210cfb94efe1e26c2442d6bfe75cc6b266b2ee9bf0a538136e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/readme-rebased-before.md",
+      "bytes": 86154,
+      "sha256": "f36e34e19d584b210cfb94efe1e26c2442d6bfe75cc6b266b2ee9bf0a538136e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/reboot-script-availability.json",
+      "bytes": 1121,
+      "sha256": "67802f8934164717cbab9bafd51504ab43afa436c2ad9da8b0e75c27969ca5b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/restart-locators.json",
+      "bytes": 10846,
+      "sha256": "fffa5d4e92dee083ab009e6d6527606af68d8953e2404621c3abe9a610bc6f1f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/restart-route-proof.json",
+      "bytes": 14838,
+      "sha256": "a0a15066ca965dc9e03c0b85bc94ab0a84d93b4f30553d4d6cfc6b95d7de4672"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/scan_update_restart.py",
+      "bytes": 2307,
+      "sha256": "c793c85014f155c0b14539d0714423bd33e9c9f100023af0102a7c2a618e8890"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/seal_stage.py",
+      "bytes": 11993,
+      "sha256": "76fbbb14dca246fcc47af4cede914708639d130dbbe337b57d76a0b001064e89"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/source-capture.json",
+      "bytes": 1036,
+      "sha256": "da1328d6ae97b71fe631772578703e69dd763950a415f8a561d4ca83f074fabb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/update-service-command-locators.json",
+      "bytes": 1456,
+      "sha256": "4b63f99ed46cacc6c15fbc284a174b38caa7b1db173d08824cc281a45e7e1e0e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/upstream-current-state.json",
+      "bytes": 643,
+      "sha256": "d5605eb108f2d22f5f022b9b06ff00ef96ea5b1c6fdf4c196e5065879829021e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/vendor-reference/linux-kernel/drivers/udif/mach-cxd900xx/pm_core.c",
+      "bytes": 10713,
+      "sha256": "e780e2a97348fc630de1c7d9b1bca5ce64d573c882ec9019405cea7bbf8135dd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/vendor-source-restart-locators.json",
+      "bytes": 847,
+      "sha256": "eb04ca18fbd092c37db375588393a3550906f0f88ef287e2e05eaba42f2027ab"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/verification-receipt.json",
+      "bytes": 697,
+      "sha256": "fddbf5d6035b951480b33c80c2f2c73d71bd99f1b1f2dc72ddf22c3a7baaaf7f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage202-update-transition-and-restart/web-source-review.json",
+      "bytes": 1565,
+      "sha256": "ee9fd5f06ffd91cb62377ed7d3a7a0d2c89922590ea0a980ce3e89efa911e726"
+    }
+  ],
+  "member_count": 61,
+  "mutable_heads_not_manifest_members": true,
+  "goal_before_sha256": "13b7c9be8bf6300fde963b0160fff642a31fbe80ab34c3e5a0afb7b735cafc47",
+  "goal_after_sha256": "9fc64f7ba24c6cc3ae999658972d1096250f1b1ab3ecd4dd55995f95d9b3534c",
+  "host01_bundle_sha256_unchanged": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0",
+  "new_approval_granted": false,
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "native_goal_observed": "active",
+  "native_goal_status_changed_by_assistant": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

@@ -1,0 +1,52 @@
+{
+  "active_source_pins": {
+    "bootstrap.c": "24ee7638c1ba37741c12cfc1d61a2e3f731078dda49f1a7a549390b74628f3b4",
+    "child_exec.inc": "fc3d760eec628d9cad27e75a426080750322bb59bccc00525bc6416bfe7860ba",
+    "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+    "parent_ipc.inc": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044",
+    "receive_result.inc": "5fd1a5be577ac9c2aa7d88a0eedf55d3c291b0003fd7ae0cae06fe87ef125cb5"
+  },
+  "references": [
+    {
+      "path": "work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/runs-final/keeper-built/worker.elf",
+      "bytes": 262144,
+      "sha256": "93bcd77751550c7079a38dfe532272ecf71d849f906c4b05d5515267fa888581"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/runs-final/worker-built/worker.elf",
+      "bytes": 262144,
+      "sha256": "349115672da2bc494e073472446004ee476c77ecc716756351cfe50a395b66e7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/core_support.inc",
+      "bytes": 5754,
+      "sha256": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d"
+    }
+  ],
+  "failed_runs": [
+    {
+      "run": "runs-first",
+      "tests": 6,
+      "failures": 4,
+      "errors": 0,
+      "receipt_sha256": "677389ecfe15f2054fefc5206fd2163fd34ae110b905574ae0d68776f8142880"
+    },
+    {
+      "run": "runs-clock-fixed",
+      "tests": 6,
+      "failures": 4,
+      "errors": 0,
+      "receipt_sha256": "c83bb483dce3941b38302a08c11e60b564d52d1891b9c3fd84343149fdcb0a3c"
+    },
+    {
+      "run": "runs-FD-fixed",
+      "tests": 6,
+      "failures": 1,
+      "errors": 0,
+      "receipt_sha256": "759b00dc7c0408acafd3b2814d879b6299c52fb15a8dd31d0d23bf6e8f641831"
+    }
+  ],
+  "model_fixes": "shared monotonic target clock, no inherited descriptor reuse, fixture namespaces disambiguated; no C guard relaxation",
+  "code_fixes": "duplicate enum removal, explicit volatile iovec stores, owner collision remains HELD without probing unowned FD",
+  "original_Sony_code_executed": false
+}

@@ -1,0 +1,317 @@
+{
+  "source_sha256": "61a53457be8c1e38f1cf75992ede374356943ef47c8f9e3e9c024b78431cb376",
+  "serializer_entry": "0x46dd0",
+  "fx3_original_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "fx3_descriptor": "MLUT_MTX_A_REG_VENICE_LMX0_SLOG3_SGAMUT3_ACES",
+  "fx3_payload_file_offset": 12671864,
+  "fx3_payload_sha256": "8bf68ec1d8aca8933b385052f12bac564f2d920383aeab461be88b21b3349ed8",
+  "fx3_four_control_words": [
+    1,
+    0,
+    0,
+    0
+  ],
+  "cases": [
+    {
+      "input_signed": [
+        [
+          75487,
+          -7714,
+          -2237
+        ],
+        [
+          -2656,
+          79077,
+          -10885
+        ],
+        [
+          -807,
+          475,
+          65868
+        ]
+      ],
+      "encoded_hex": [
+        [
+          "000126DF",
+          "0007E1DE",
+          "0007F743"
+        ],
+        [
+          "0007F5A0",
+          "000134E5",
+          "0007D57B"
+        ],
+        [
+          "0007FCD9",
+          "000001DB",
+          "0001014C"
+        ]
+      ],
+      "output_hex_bytes": [
+        [
+          "DF",
+          "26",
+          "01",
+          "00"
+        ],
+        [
+          "DE",
+          "E1",
+          "07",
+          "00"
+        ],
+        [
+          "43",
+          "F7",
+          "07",
+          "00"
+        ],
+        [
+          "A0",
+          "F5",
+          "07",
+          "00"
+        ],
+        [
+          "E5",
+          "34",
+          "01",
+          "00"
+        ],
+        [
+          "7B",
+          "D5",
+          "07",
+          "00"
+        ],
+        [
+          "D9",
+          "FC",
+          "07",
+          "00"
+        ],
+        [
+          "DB",
+          "01",
+          "00",
+          "00"
+        ],
+        [
+          "4C",
+          "01",
+          "01",
+          "00"
+        ]
+      ],
+      "original_instruction_steps": 959,
+      "imports": {
+        "__ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC1ERKS5_mmRKS4_": 36
+      },
+      "bytes_hex": "df260100dee1070043f70700a0f50700e53401007bd50700d9fc0700db0100004c010100",
+      "case": "original-fx3-venice"
+    },
+    {
+      "input_signed": [
+        [
+          65536,
+          0,
+          0
+        ],
+        [
+          0,
+          65536,
+          0
+        ],
+        [
+          0,
+          0,
+          65536
+        ]
+      ],
+      "encoded_hex": [
+        [
+          "00010000",
+          "00000000",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "00010000",
+          "00000000"
+        ],
+        [
+          "00000000",
+          "00000000",
+          "00010000"
+        ]
+      ],
+      "output_hex_bytes": [
+        [
+          "00",
+          "00",
+          "01",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "00",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "00",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "00",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "01",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "00",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "00",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "00",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "01",
+          "00"
+        ]
+      ],
+      "original_instruction_steps": 959,
+      "imports": {
+        "__ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC1ERKS5_mmRKS4_": 36
+      },
+      "bytes_hex": "000001000000000000000000000000000000010000000000000000000000000000000100",
+      "case": "identity"
+    },
+    {
+      "input_signed": [
+        [
+          -262144,
+          262143,
+          -1
+        ],
+        [
+          0,
+          1,
+          -65536
+        ],
+        [
+          65536,
+          -131072,
+          131071
+        ]
+      ],
+      "encoded_hex": [
+        [
+          "00040000",
+          "0003FFFF",
+          "0007FFFF"
+        ],
+        [
+          "00000000",
+          "00000001",
+          "00070000"
+        ],
+        [
+          "00010000",
+          "00060000",
+          "0001FFFF"
+        ]
+      ],
+      "output_hex_bytes": [
+        [
+          "00",
+          "00",
+          "04",
+          "00"
+        ],
+        [
+          "FF",
+          "FF",
+          "03",
+          "00"
+        ],
+        [
+          "FF",
+          "FF",
+          "07",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "00",
+          "00"
+        ],
+        [
+          "01",
+          "00",
+          "00",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "07",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "01",
+          "00"
+        ],
+        [
+          "00",
+          "00",
+          "06",
+          "00"
+        ],
+        [
+          "FF",
+          "FF",
+          "01",
+          "00"
+        ]
+      ],
+      "original_instruction_steps": 959,
+      "imports": {
+        "__ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEC1ERKS5_mmRKS4_": 36
+      },
+      "bytes_hex": "00000400ffff0300ffff07000000000001000000000007000000010000000600ffff0100",
+      "case": "signed19-edges"
+    }
+  ],
+  "all_nine_existing_coefficient_words_match": true,
+  "limits": [
+    "Signed-negative to 19-bit hex preparation follows statically observed Basic_Info::dec2hexa_keta; that formatter was not executed here.",
+    "The original LMX_data2byte substring selection, loop indices and stores were executed; short-string substring construction is a host shim.",
+    "Only nine coefficient words match. FX3 control words, descriptors, stage routing, register addresses and sensor/ISP behavior are not a VENICE camera ABI.",
+    "No changed firmware or camera writes were produced."
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "run": "ap94r2diag-4f9de767",
+  "serial_sha256": "c4155665e79e2428997c5bd1d5c7921e6fb7a6635f952acc269614598c9e8888",
+  "records": [
+    {
+      "LF_line": 1743,
+      "text": "FX3_IOCTL_PASS seq=216 fd=3 request=0xffffffff8000000b argument=0x7f7cb8e250 result=0 errno=0 caller=0x7f83931f64"
+    },
+    {
+      "LF_line": 1744,
+      "text": "FX3_UIPC_PASS seq=216 op=11 arg0=0x3e014d arg1=0x7f80e8d058 outer_read=16 outer_errno=0 outer=4d013e007f00000058d0e8807f000000 arg1_read=-1 arg1_errno=0 arg1_raw= body_pointer=0x0 body_read=-1 body_errno=0 body_head= result=0 errno=0 body_proc_errno=0 body_direct=0 body_map=0x0 body_map_length=0x0 body_epoch=0"
+    },
+    {
+      "LF_line": 1745,
+      "text": "FX3_IOCTL_PASS seq=217 fd=3 request=0xffffffff8000000b argument=0x7fd09f4020 result=0 errno=1020 caller=0x7f83931f64"
+    },
+    {
+      "LF_line": 1746,
+      "text": "FX3_UIPC_PASS seq=217 op=11 arg0=0x8f013a arg1=0x7f80ca5fd8 outer_read=16 outer_errno=0 outer=3a018f007f000000d85fca807f000000 arg1_read=-1 arg1_errno=0 arg1_raw= body_pointer=0x0 body_read=-1 body_errno=0 body_head= result=0 errno=1020 body_proc_errno=0 body_direct=0 body_map=0x0 body_map_length=0x0 body_epoch=0"
+    },
+    {
+      "LF_line": 1747,
+      "text": "FX3_IOCTL_PASS seq=218 fd=3 request=0xffffffff8000000a argument=0x7f7cb8e2c0 result=0 errno=0 caller=0x7f83931ee0"
+    },
+    {
+      "LF_line": 1748,
+      "text": "FX3_IOCTL_PASS seq=219 fd=3 request=0xffffffff8000000c argument=0x7fd09f40d0 result=0 errno=1020 caller=0x7f83931ff8"
+    },
+    {
+      "LF_line": 1749,
+      "text": "FX3_UIPC_PASS seq=218 op=10 arg0=0x3e014d arg1=0x7f7cb8e2b0 outer_read=16 outer_errno=0 outer=4d013e0000000000b0e2b87c7f000000 arg1_read=-1 arg1_errno=0 arg1_raw= body_pointer=0x0 body_read=-1 body_errno=0 body_head= result=0 errno=0 body_proc_errno=0 body_direct=0 body_map=0x0 body_map_length=0x0 body_epoch=0"
+    },
+    {
+      "LF_line": 1750,
+      "text": "FX3_UIPC_PASS seq=219 op=12 arg0=0x0 arg1=0x7fd09f40c0 outer_read=16 outer_errno=0 outer=0000000000000000c0409fd07f000000 arg1_read=-1 arg1_errno=0 arg1_raw= body_pointer=0x0 body_read=-1 body_errno=0 body_head= result=0 errno=1020 body_proc_errno=0 body_direct=0 body_map=0x0 body_map_length=0x0 body_epoch=0"
+    },
+    {
+      "LF_line": 63194,
+      "text": "FX3_GPE_CHILD_REGISTER parent=0x7f44691b70 parent_epoch=3 logical=0x7ecfde44c0 phys=0x4109364c0 bytes=0x780 align=0x40 child_epoch=27 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 63199,
+      "text": "FX3_GPE_SCOPE seq=216 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x8c source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=0 native_count_after=0 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=none"
+    },
+    {
+      "LF_line": 63200,
+      "text": "FX3_GPE_DRAW_INTERVAL seq=216 offscreen_child=1 destination_parent=0x7f44691b70 destination_parent_epoch=3 destination_uhdl=0x30303030 destination_child_epoch=27 destination_child_phys=0x4109364c0 destination_child_bytes=0x780 source_parent=0 source_parent_epoch=0 source_uhdl=0 source_child_epoch=0 source_child_phys=0 source_child_bytes=0 dst_span=0x740 src_span=0 same_parent=0 raster_mode=replace approx_stretch=none approx_blend=0 compaction_entry_during_draw=0 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 63203,
+      "text": "FX3_GPE_CHILD_REGISTER parent=0x7f44691b70 parent_epoch=3 logical=0x7ecfde4c80 phys=0x410936c80 bytes=0x7400 align=0x40 child_epoch=28 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 63205,
+      "text": "FX3_GPE_CMD op=FillRect seq=216 async=0 fmt=0 w=32 h=29 dst_phys=0x4109364c0 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0"
+    },
+    {
+      "LF_line": 63206,
+      "text": "FX3_GPE_RAW_PARAMS op=FillRect seq=216 read=1 len=56 raw_hex=c0649310040000000000000000000000200000001d0000002000000000000000ffffffff00ff000000000000000000000000000000000000"
+    },
+    {
+      "LF_line": 63208,
+      "text": "FX3_GPE_SCOPE seq=217 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x8c source_object=0x7f44691b70 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=7 native_count_after=7 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1"
+    },
+    {
+      "LF_line": 63209,
+      "text": "FX3_GPE_DRAW_INTERVAL seq=217 offscreen_child=1 destination_parent=0x7f44691b70 destination_parent_epoch=3 destination_uhdl=0x30303030 destination_child_epoch=28 destination_child_phys=0x410936c80 destination_child_bytes=0x7400 source_parent=0x7f44691b70 source_parent_epoch=3 source_uhdl=0x30303030 source_child_epoch=27 source_child_phys=0x4109364c0 source_child_bytes=0x780 dst_span=0x73e8 src_span=0x73a same_parent=1 raster_mode=replace approx_stretch=nearest_v1 approx_blend=0 compaction_entry_during_draw=0 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 63212,
+      "text": "FX3_GPE_CMD op=BitBlit seq=217 async=0 fmt=0 w=29 h=29 dst_phys=0x410936c80 src_phys=0x4109364c0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0"
+    },
+    {
+      "LF_line": 63213,
+      "text": "FX3_GPE_RAW_PARAMS op=BitBlit seq=217 read=1 len=144 raw_hex=806c931004000000000000000000000074000000740000000000000000000000740000007400000000000000000000008000000000000000c06493100400000000000000000000001d0000001d00000000000000000000002000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "LF_line": 63247,
+      "text": "FX3_GPE_SCOPE seq=218 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x8c source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=0 native_count_after=0 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=none"
+    },
+    {
+      "LF_line": 63248,
+      "text": "FX3_GPE_DRAW_INTERVAL seq=218 offscreen_child=1 destination_parent=0x7f44691b70 destination_parent_epoch=3 destination_uhdl=0x30303030 destination_child_epoch=29 destination_child_phys=0x41093e0c0 destination_child_bytes=0x780 source_parent=0 source_parent_epoch=0 source_uhdl=0 source_child_epoch=0 source_child_phys=0 source_child_bytes=0 dst_span=0x740 src_span=0 same_parent=0 raster_mode=replace approx_stretch=none approx_blend=0 compaction_entry_during_draw=0 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 63251,
+      "text": "FX3_GPE_CMD op=FillRect seq=218 async=0 fmt=0 w=32 h=29 dst_phys=0x41093e0c0 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0"
+    },
+    {
+      "LF_line": 63253,
+      "text": "FX3_GPE_RAW_PARAMS op=FillRect seq=218 read=1 len=56 raw_hex=c0e09310040000000000000000000000200000001d0000002000000000000000ffffffff00ff000000000000000000000000000000000000"
+    },
+    {
+      "LF_line": 63259,
+      "text": "FX3_GPE_SCOPE seq=219 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x8c source_object=0x7f44691b70 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=8 native_count_after=8 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1"
+    },
+    {
+      "LF_line": 63260,
+      "text": "FX3_GPE_DRAW_INTERVAL seq=219 offscreen_child=1 destination_parent=0x7f44691b70 destination_parent_epoch=3 destination_uhdl=0x30303030 destination_child_epoch=30 destination_child_phys=0x41093e880 destination_child_bytes=0x7400 source_parent=0x7f44691b70 source_parent_epoch=3 source_uhdl=0x30303030 source_child_epoch=29 source_child_phys=0x41093e0c0 source_child_bytes=0x780 dst_span=0x73e8 src_span=0x73a same_parent=1 raster_mode=replace approx_stretch=nearest_v1 approx_blend=0 compaction_entry_during_draw=0 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 63262,
+      "text": "FX3_GPE_CMD op=BitBlit seq=219 async=0 fmt=0 w=29 h=29 dst_phys=0x41093e880 src_phys=0x41093e0c0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0"
+    },
+    {
+      "LF_line": 63263,
+      "text": "FX3_GPE_RAW_PARAMS op=BitBlit seq=219 read=1 len=144 raw_hex=80e8931004000000000000000000000074000000740000000000000000000000740000007400000000000000000000008000000000000000c0e093100400000000000000000000001d0000001d00000000000000000000002000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "LF_line": 109061,
+      "text": "FX3_GPE_CHILD_REGISTER parent=0x7f44691b70 parent_epoch=3 logical=0x7ecfde44c0 phys=0x4109364c0 bytes=0x1200 align=0x40 child_epoch=41 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 110737,
+      "text": "FX3_GPE_CHILD_REGISTER parent=0x7f44691b70 parent_epoch=3 logical=0x7ecfdedcc0 phys=0x41093fcc0 bytes=0x780 align=0x40 child_epoch=67 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 110756,
+      "text": "FX3_GPE_CHILD_REGISTER parent=0x7f44691b70 parent_epoch=3 logical=0x7ecfdf58c0 phys=0x4109478c0 bytes=0x1900 align=0x40 child_epoch=69 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 110767,
+      "text": "FX3_GPE_CHILD_REGISTER parent=0x7f44691b70 parent_epoch=3 logical=0x7ecfdf7200 phys=0x410949200 bytes=0x6580 align=0x40 child_epoch=70 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 110772,
+      "text": "FX3_GPE_REJECT_DETAIL seq=402 op=1 stage=plan reason=2 errno=0 screen_fail_code=0 screen_path=none screen_read_n=1029 screen_read_result=0 screen_read_errno=0 decision_unchanged=1 no_retry=1"
+    },
+    {
+      "LF_line": 110773,
+      "text": "FX3_GPE_REJECT_PARENT seq=402 role=destination object=0x7f44691b70 epoch=3 native_open=0 expected_identity=0xffffffc11e269280 expected_type=0 expected_uhdl=0x30303030 expected_logical=0x7ecfdd2000 expected_phys=0x410924000 expected_bytes=0x340000 expected_vptr=0x7f66408a48 reread_result=112 reread_errno=0 raw70=488a40667f000000cafefeed20626f648092261ec1ffffff0100000000000000100000000d0000006d704d656d6f7279486561703200000000000000000000003030303030303030f07f40667f00000000100000000000000020ddcf7e00000000409210040000000000340000000000 extra_read_only=1"
+    },
+    {
+      "LF_line": 110774,
+      "text": "FX3_GPE_REJECT_PARENT seq=402 role=source object=0x7f44691b70 epoch=3 native_open=0 expected_identity=0xffffffc11e269280 expected_type=0 expected_uhdl=0x30303030 expected_logical=0x7ecfdd2000 expected_phys=0x410924000 expected_bytes=0x340000 expected_vptr=0x7f66408a48 reread_result=112 reread_errno=0 raw70=488a40667f000000cafefeed20626f648092261ec1ffffff0100000000000000100000000d0000006d704d656d6f7279486561703200000000000000000000003030303030303030f07f40667f00000000100000000000000020ddcf7e00000000409210040000000000340000000000 extra_read_only=1"
+    },
+    {
+      "LF_line": 110775,
+      "text": "FX3_GPE_CMD op=BitBlit seq=402 async=0 fmt=0 w=49 h=49 dst_phys=0x410949200 src_phys=0x4109478c0 flags=0 result=5 reason=2 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0"
+    },
+    {
+      "LF_line": 110776,
+      "text": "FX3_GPE_RAW_PARAMS op=BitBlit seq=402 read=1 len=144 raw_hex=0092941004000000000000000000000067000000740000000000000000000000670000007400000000000000000000007000000000000000c0789410040000000000000000000000310000003100000000000000000000004000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "LF_line": 110832,
+      "text": "FX3_GPE_CHILD_REGISTER parent=0x7f44691b70 parent_epoch=3 logical=0x7ecfdedcc0 phys=0x41093fcc0 bytes=0x1900 align=0x40 child_epoch=73 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 110846,
+      "text": "FX3_GPE_CHILD_REGISTER parent=0x7f44691b70 parent_epoch=3 logical=0x7ecfdef600 phys=0x410941600 bytes=0x6580 align=0x40 child_epoch=74 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1"
+    },
+    {
+      "LF_line": 110851,
+      "text": "FX3_GPE_REJECT_DETAIL seq=406 op=1 stage=plan reason=2 errno=0 screen_fail_code=0 screen_path=none screen_read_n=1029 screen_read_result=0 screen_read_errno=0 decision_unchanged=1 no_retry=1"
+    },
+    {
+      "LF_line": 110852,
+      "text": "FX3_GPE_REJECT_PARENT seq=406 role=destination object=0x7f44691b70 epoch=3 native_open=0 expected_identity=0xffffffc11e269280 expected_type=0 expected_uhdl=0x30303030 expected_logical=0x7ecfdd2000 expected_phys=0x410924000 expected_bytes=0x340000 expected_vptr=0x7f66408a48 reread_result=112 reread_errno=0 raw70=488a40667f000000cafefeed20626f648092261ec1ffffff0100000000000000100000000d0000006d704d656d6f7279486561703200000000000000000000003030303030303030f07f40667f00000000100000000000000020ddcf7e00000000409210040000000000340000000000 extra_read_only=1"
+    },
+    {
+      "LF_line": 110853,
+      "text": "FX3_GPE_REJECT_PARENT seq=406 role=source object=0x7f44691b70 epoch=3 native_open=0 expected_identity=0xffffffc11e269280 expected_type=0 expected_uhdl=0x30303030 expected_logical=0x7ecfdd2000 expected_phys=0x410924000 expected_bytes=0x340000 expected_vptr=0x7f66408a48 reread_result=112 reread_errno=0 raw70=488a40667f000000cafefeed20626f648092261ec1ffffff0100000000000000100000000d0000006d704d656d6f7279486561703200000000000000000000003030303030303030f07f40667f00000000100000000000000020ddcf7e00000000409210040000000000340000000000 extra_read_only=1"
+    },
+    {
+      "LF_line": 110854,
+      "text": "FX3_GPE_CMD op=BitBlit seq=406 async=0 fmt=0 w=49 h=49 dst_phys=0x410941600 src_phys=0x41093fcc0 flags=0 result=5 reason=2 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0"
+    },
+    {
+      "LF_line": 110855,
+      "text": "FX3_GPE_RAW_PARAMS op=BitBlit seq=406 read=1 len=144 raw_hex=0016941004000000000000000000000067000000740000000000000000000000670000007400000000000000000000007000000000000000c0fc9310040000000000000000000000310000003100000000000000000000004000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "scope": "captured guest raw requests/parent reads/child allocations only; not new sampler authorization",
+  "authority": "msg_fd22adc6ac57,msg_49124d89bac2"
+}

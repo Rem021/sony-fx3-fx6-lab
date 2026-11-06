@@ -1,0 +1,42 @@
+{
+  "grant_id": "fx3-host-cleanup-20261101-04",
+  "maximum_root_program_invocations": 1,
+  "authorized": false,
+  "physical_precondition": "all camera-side USB data cables physically unplugged and remain unplugged; healthy battery UI/menu confirmed",
+  "helper_identity": {
+    "uid": 0,
+    "pid": 37860,
+    "sec": 1793546568,
+    "usec": 487337,
+    "path": "/private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-04/helper",
+    "image_sha256": ""
+  },
+  "helper_image_sha256": "32ad51d0d111b0318f28d6e92fe0df5d0c018f256683ad35624043a8f476150c",
+  "helper_signal": "SIGKILL(9) once with exact kernel audit PID/version",
+  "observer_identity": {
+    "uid": 501,
+    "pid": 36633,
+    "sec": 1793546063,
+    "usec": 372013,
+    "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+    "image_sha256": "104402c76823baa218defcdb2a96c2e3d94302dd12cabf0db3c1f39cd620cb64"
+  },
+  "observer_image_sha256": "104402c76823baa218defcdb2a96c2e3d94302dd12cabf0db3c1f39cd620cb64",
+  "observer_signal": "SIGTERM(15) once only after helper confirmed gone if still alive; if already exited (observed==0), record observer_absent=1 without signaling",
+  "no_PID_only_signal_fallback": true,
+  "root_program_sha256": "db39253a9e1edc3a6c759264afd78d55c251d842b4b3fbf4b6f51a18d0fdfb27",
+  "job": "/private/tmp/fx3-host-cleanup-20261101-04",
+  "root_private_directory": "/private/var/root/fx3-host-cleanup-20261101-04",
+  "root_guard_read_only": "/private/var/root/fx3-owner-trials/global-fx3-owner.journal",
+  "global_guard_not_modified": true,
+  "original_trial_stays_UNKNOWN": true,
+  "USB_or_camera_commands": 0,
+  "firmware_write": false,
+  "privacy_permission_changes": false,
+  "automatic_retry": false,
+  "Terminal_opened": false,
+  "admin_verification_requested": false,
+  "new_trial_authorized": false,
+  "source_actual_runtime_review": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage280-service-access-communication04-execution/actual-runtime-review.json",
+  "source_physical_disconnect": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage280-service-access-communication04-execution/physical-disconnect.json"
+}

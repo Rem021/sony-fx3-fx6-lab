@@ -1,0 +1,61 @@
+{
+  "scope": "Generic official package and extracted program files; not a physical camera backup",
+  "checked_utc": "2026-10-25T06:53:08.160866+00:00",
+  "files": [
+    {
+      "kind": "official_firmware",
+      "path": "work/sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+      "exists": true,
+      "size": 811876768
+    },
+    {
+      "kind": "decrypted_fdat",
+      "path": "work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+      "exists": true,
+      "size": 808704512
+    },
+    {
+      "kind": "appFw",
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "exists": true,
+      "size": 79015712
+    },
+    {
+      "kind": "cpapp",
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "exists": true,
+      "size": 15980568
+    },
+    {
+      "kind": "libJiritsu",
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libJiritsu.so",
+      "exists": true,
+      "size": 225200,
+      "sha256_verified_now": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9"
+    },
+    {
+      "kind": "sen",
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/bin/sen.elf",
+      "exists": true,
+      "size": 27240,
+      "sha256_verified_now": "9e3236666176b69746848edaac31e1e0ef00c4e80a9f062794ff62be2d605470"
+    },
+    {
+      "kind": "bootin",
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/bin/bootin.elf",
+      "exists": true,
+      "size": 23960,
+      "sha256_verified_now": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2"
+    }
+  ],
+  "task_files_with_backup_in_name": [],
+  "materials_not_proven": [
+    "actual body firmware fingerprint",
+    "body unique NVRAM/serial/calibration readback",
+    "full eMMC/bootloader or boot partition readback",
+    "known partial-write repair metadata for FX3",
+    "physically verified autonomous recovery entry",
+    "camera service authentication and privileges",
+    "trusted same-body original programs and settings recovery checkpoint"
+  ]
+}

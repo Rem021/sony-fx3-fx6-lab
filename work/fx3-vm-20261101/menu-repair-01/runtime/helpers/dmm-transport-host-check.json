@@ -1,0 +1,17 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-dmm-transport.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-dmm-transport"
+  ],
+  "compile_stderr": "",
+  "exit": -6,
+  "stdout": "",
+  "stderr": "Assertion failed: (!osal_snd_msg(0x9061003c,q)&&get(r+12,4)==0x8400&&get(r+24,4)==0x1d900000&&get(r+32,4)==0x80000&&last_free==q), function main, file check-dmm-transport.c, line 20.\n"
+}

@@ -1,0 +1,23 @@
+{
+  "primary_sources": [
+    {
+      "url": "https://man7.org/linux/man-pages/man5/proc_pid_cmdline.5.html",
+      "supported_fact": "NUL-separated arguments but process may change argv memory; not authentication"
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man5/proc_pid_exe.5.html",
+      "supported_fact": "kernel proc exe link opens backing executable; does not attest every mapped page"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/linux/magic.h",
+      "supported_fact": "PROC_SUPER_MAGIC0x9fa0"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/asm-generic/unistd.h",
+      "retrieval": "web timed out; immutable tag content fetched via GitHub contents API with blob hash checked",
+      "supported_fact": "getpid172 getppid173 getuid174 geteuid175 gettid178"
+    }
+  ],
+  "current_Sony_kernel_support_or_process_identity_measured": false,
+  "new_camera_operations": 0
+}

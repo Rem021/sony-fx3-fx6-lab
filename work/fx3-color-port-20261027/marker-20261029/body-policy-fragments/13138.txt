@@ -1,0 +1,51 @@
+00013138 stp        x29, x30, [sp, #-0x90]!
+0001313c cmp        x1, #0
+00013140 ccmp       x2, #0, #4, ne
+00013144 mov        x29, sp
+00013148 stp        x19, x20, [sp, #0x10]
+0001314c str        x21, [sp, #0x20]
+00013150 b.eq       #0x131ac
+00013154 ldr        x0, [x1, #0x20]
+00013158 mov        x20, x1
+0001315c cbz        x0, #0x131ac
+00013160 ldp        x0, x1, [x3]
+00013164 add        x19, x29, #0x60
+00013168 stp        x0, x1, [x29, #0x30]
+0001316c mov        x21, x2
+00013170 ldp        x0, x1, [x3, #0x10]
+00013174 stp        x0, x1, [x29, #0x40]
+00013178 add        x1, x29, #0x30
+0001317c ldr        x0, [x3, #0x20]
+00013180 str        x0, [x29, #0x50]
+00013184 mov        x0, x19
+00013188 bl         #0x10650 ; Updater::NewFirmwareFile::NewFirmwareFile
+0001318c ldr        x2, [x20, #0x20]
+00013190 mov        x1, x21
+00013194 mov        x0, x19
+00013198 bl         #0xfe70 ; Updater::BaseNewFirmwareFile::Extract
+0001319c ldr        x21, [sp, #0x20]
+000131a0 ldp        x19, x20, [sp, #0x10]
+000131a4 ldp        x29, x30, [sp], #0x90
+000131a8 ret        
+000131ac mov        w19, #0x1a
+000131b0 adrp       x2, #0x1b000
+000131b4 movk       w19, #3, lsl #16
+000131b8 adrp       x0, #0x1b000
+000131bc add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+000131c0 mov        w1, w19
+000131c4 add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+000131c8 mov        w3, #0x4c
+000131cc bl         #0x10930 ; printf
+000131d0 mov        x0, #0x10
+000131d4 bl         #0xfd80 ; __cxa_allocate_exception
+000131d8 str        w19, [x0, #8]
+000131dc adrp       x1, #0x31000
+000131e0 adrp       x2, #0x31000
+000131e4 strb       wzr, [x0, #0xc]
+000131e8 ldr        x1, [x1, #0xe30]
+000131ec ldr        x2, [x2, #0xe88]
+000131f0 add        x1, x1, #0x10
+000131f4 str        x1, [x0]
+000131f8 adrp       x1, #0x31000
+000131fc ldr        x1, [x1, #0xfc0]
+00013200 bl         #0x10700 ; __cxa_throw

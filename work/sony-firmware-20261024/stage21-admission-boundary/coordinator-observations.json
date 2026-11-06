@@ -1,0 +1,39 @@
+{
+  "schema": "fx3-stage21-coordinator-review/1",
+  "created_utc": "2026-10-25T20:05:06.731724+00:00",
+  "status": "PASS_ARTIFACT_AND_SCOPE_REVIEW",
+  "reviewer_role": "Coordinator; no independent CPU replay or actual device verification.",
+  "previous_goal_turn_classification": "progress",
+  "previous_stage_sealed_files_verified": 8,
+  "input_and_script_hashes_verified": true,
+  "bounded_phase_cases": 17,
+  "copied_original_pool_predicates": 3,
+  "captured_off_queue_markers": [
+    0,
+    2
+  ],
+  "off_queue_acceptance_is_scope_witness_not_actual_race_proof": true,
+  "direct_constructor_sites": 5,
+  "common_admission_direct_references": 1490,
+  "indirect_reachability_or_outer_ownership_verified": false,
+  "original_RET_trace_records_verified": 179,
+  "logging_or_backend_output_adapters": false,
+  "guest_marker_scope": "Existing stage18 marker reused only in two capture witnesses, no new marker or loadable patch export.",
+  "first_attempt": "Parser interface failure before phase cases; saved failed source and traceback, then used existing pp.Image leaf parser in a new output directory.",
+  "primary_source_checked": {
+    "date": "2026-10-25",
+    "url": "https://eel.is/c++draft/thread.condition.condvar",
+    "use": "Generic notification/predicate/lock reacquisition context only."
+  },
+  "unverified": [
+    "Real producer lifetime/admission gate and full indirect caller ownership",
+    "Complete task, mutex, registry, list hook, notification and shutdown/restart",
+    "All remaining patch consumers, shared epoch and model transitions",
+    "Same-body backup, restricted restore/readback, WBI/cold boot and independent recovery",
+    "MAIN hardware recording, A/V synchronization, long recording and thermal regression"
+  ],
+  "new_remote_attempts": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

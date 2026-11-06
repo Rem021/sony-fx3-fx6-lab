@@ -1,0 +1,43 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2dedd00: 910003fd     	mov	x29, sp
+ 2dedd04: b9400000     	ldr	w0, [x0]
+ 2dedd08: f9000bf3     	str	x19, [sp, #0x10]
+ 2dedd0c: aa0103f3     	mov	x19, x1
+ 2dedd10: 528401a1     	mov	w1, #0x200d             // =8205
+ 2dedd14: 7100041f     	cmp	w0, #0x1
+ 2dedd18: 790053bf     	strh	wzr, [x29, #0x28]
+ 2dedd1c: 790043a1     	strh	w1, [x29, #0x20]
+ 2dedd20: 528065a1     	mov	w1, #0x32d              // =813
+ 2dedd24: 790047a1     	strh	w1, [x29, #0x22]
+ 2dedd28: 52800141     	mov	w1, #0xa                // =10
+ 2dedd2c: 79004ba1     	strh	w1, [x29, #0x24]
+ 2dedd30: 128fffc1     	mov	w1, #-0x7fff            // =-32767
+ 2dedd34: 79004fa1     	strh	w1, [x29, #0x26]
+ 2dedd38: 54000041     	b.ne	0x2dedd40 <Application_System_Init+0x16fe1b0>
+ 2dedd3c: 3900a3a0     	strb	w0, [x29, #0x28]
+ 2dedd40: 3940a3a2     	ldrb	w2, [x29, #0x28]
+ 2dedd44: f0005bc1     	adrp	x1, 0x3968000
+ 2dedd48: 90005bc0     	adrp	x0, 0x3965000
+ 2dedd4c: 91108021     	add	x1, x1, #0x420
+ 2dedd50: 910ce800     	add	x0, x0, #0x33a
+ 2dedd54: 9405f83d     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 2dedd58: f9001bbf     	str	xzr, [x29, #0x30]
+ 2dedd5c: 9100c3a3     	add	x3, x29, #0x30
+ 2dedd60: 910083a1     	add	x1, x29, #0x20
+ 2dedd64: 5280e8e0     	mov	w0, #0x747              // =1863
+ 2dedd68: 52800184     	mov	w4, #0xc                // =12
+ 2dedd6c: 52800142     	mov	w2, #0xa                // =10
+ 2dedd70: 72b25080     	movk	w0, #0x9284, lsl #16
+ 2dedd74: b9003bbf     	str	wzr, [x29, #0x38]
+ 2dedd78: 97ffe4cc     	bl	0x2de70a8 <Application_System_Init+0x16f7518>
+ 2dedd7c: b9403ba0     	ldr	w0, [x29, #0x38]
+ 2dedd80: 97ffd9fd     	bl	0x2de4574 <Application_System_Init+0x16f49e4>
+ 2dedd84: b9000260     	str	w0, [x19]
+ 2dedd88: f9400bf3     	ldr	x19, [sp, #0x10]
+ 2dedd8c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+ 2dedd90: d65f03c0     	ret

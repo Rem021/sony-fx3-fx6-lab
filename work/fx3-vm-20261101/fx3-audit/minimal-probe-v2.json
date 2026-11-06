@@ -1,0 +1,31 @@
+{
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-minimal-original-userspace-v2.cpio.gz",
+  "sha256": "c704d71d6e6618b087d21c3a2a1a2bb562cb19085032a69f7ec43314302c4f4f",
+  "bytes": 920180,
+  "v1_status": "not executed; dependency audit found missing libcrypt; v2 contains both busybox DT_NEEDED dependencies",
+  "unmodified_original_members": [
+    {
+      "path": "bin/busybox",
+      "sha256": "c3297a7086efe9a001c39fa98d74d125992cf3225cf353ab6ff2238d827c7799",
+      "bytes": 423000
+    },
+    {
+      "path": "lib/ld-2.25.so",
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+      "bytes": 120616
+    },
+    {
+      "path": "lib/libc-2.25.so",
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "bytes": 1283936
+    },
+    {
+      "path": "lib/libcrypt-2.25.so",
+      "sha256": "5e8476cab62694f2b158f1806b794c8d32cbe2d89cfd410181118f5af8af27d8",
+      "bytes": 30864
+    }
+  ],
+  "custom_init": "#!/bin/busybox sh\necho FX3_ORIGINAL_BUSYBOX_REACHED\n/bin/busybox uname -a\n/bin/busybox echo FX3_VM_PROBE_END\nwhile true; do /bin/busybox sleep 1; done\n",
+  "no_original_init_or_updater": true,
+  "no_block_disk_or_real_device": true
+}

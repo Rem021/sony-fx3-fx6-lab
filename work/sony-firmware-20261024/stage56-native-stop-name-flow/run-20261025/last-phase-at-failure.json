@@ -1,0 +1,127 @@
+{
+  "label": "original std::string constructor from artificial short-name control",
+  "entry": "0x2428a4",
+  "reason": "unapproved execution 160897b0",
+  "stop_pc": "0x160897b0",
+  "return_u64": 285241368,
+  "SP_after": "0x1002ffc0",
+  "pcs": [
+    "0x2428a4",
+    "0x2428a8",
+    "0x2428ac",
+    "0x2428b0",
+    "0x2428b4",
+    "0x2428b8",
+    "0x2428bc",
+    "0x2428c0",
+    "0x2428c4",
+    "0x2428c8",
+    "0x2428cc",
+    "0x7c650",
+    "0x14078e40",
+    "0x14078e44",
+    "0x14078e48",
+    "0x14078e4c",
+    "0x14078e50",
+    "0x14078e54",
+    "0x14078e58",
+    "0x14078e5c",
+    "0x14078e60",
+    "0x14078e64",
+    "0x14078e68",
+    "0x14078e6c",
+    "0x14078e70",
+    "0x14078e74",
+    "0x14078e78",
+    "0x14078e7c",
+    "0x14078e80",
+    "0x14078e84",
+    "0x14078e88",
+    "0x14078e8c",
+    "0x2428d0",
+    "0x2428d4",
+    "0x2428d8",
+    "0x2428dc",
+    "0x2428fc",
+    "0x242900",
+    "0x242904",
+    "0x242908",
+    "0x7fd40",
+    "0x1611b3b8",
+    "0x1611b3bc",
+    "0x1611b3c0",
+    "0x1611b3c4",
+    "0x1611b3c8",
+    "0x1611b3d0",
+    "0x160897b0"
+  ],
+  "calls": [
+    {
+      "PLT": "0x7c650",
+      "symbol": "strlen",
+      "original_library_target": "0x14078e40",
+      "library_sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "partial_link_only_no_synthesized_return": true
+    },
+    {
+      "return_instruction": "0x14078e8c",
+      "return_x0": "0x7"
+    },
+    {
+      "PLT": "0x7fd40",
+      "symbol": "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE13_S_copy_charsEPcPKcS7_",
+      "original_library_target": "0x1611b3b8",
+      "library_sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+      "partial_link_only_no_synthesized_return": true
+    }
+  ],
+  "stores": [
+    {
+      "pc": "0x2428a4",
+      "address": "0x1002ffc0",
+      "size": 8,
+      "value": 0
+    },
+    {
+      "pc": "0x2428a4",
+      "address": "0x1002ffc8",
+      "size": 8,
+      "value": 301989888
+    },
+    {
+      "pc": "0x2428ac",
+      "address": "0x1002ffd0",
+      "size": 8,
+      "value": 0
+    },
+    {
+      "pc": "0x2428ac",
+      "address": "0x1002ffd8",
+      "size": 8,
+      "value": 0
+    },
+    {
+      "pc": "0x2428b8",
+      "address": "0x11007008",
+      "size": 8,
+      "value": 285241368
+    },
+    {
+      "pc": "0x2428bc",
+      "address": "0x1002ffe0",
+      "size": 8,
+      "value": 0
+    },
+    {
+      "pc": "0x2428d4",
+      "address": "0x1002fff8",
+      "size": 8,
+      "value": 7
+    }
+  ],
+  "input_state_reads": [],
+  "independent_function_entry_inputs": true,
+  "native_output_printf_allocator_PC_return_adapter": false,
+  "native_named_entries": [],
+  "original_runtime_functions_not_host_string_adapters": true
+}

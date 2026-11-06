@@ -1,0 +1,708 @@
+{
+  "clock_rules": {
+    "host_relative": "original FIRST-FRAME-CLOCK.start_monotonic; first-pixel stamp is host conversion/publication observation, not guest emission/compositor",
+    "qmp_relative": "journal elapsed_seconds since Popen; separate origin from FIRST-FRAME-CLOCK",
+    "guest_ns": "explicit clock_id=1 in serial; never substitute preceding printk bracket or host file mtime",
+    "timer": "original TIMER_ENTRY input_time in ms; retain as its own application domain; matching ~clock1 values does not establish a universal conversion",
+    "browser": "last saved poll only; first onload instant not logged"
+  },
+  "runs": {
+    "r26": {
+      "Start_POST": {
+        "HAR_entry_index": 33,
+        "request_start_UTC": "2026-11-05T02:37:11.968608Z",
+        "duration_ms": 0.7839999927394092,
+        "path": "start",
+        "HTTP_status": 202
+      },
+      "QMP_handshake_s": 0.06537679204484448,
+      "first_cont_Popen_relative_s": 0.13325658300891519,
+      "pre_AP_Backup_read_Popen_relative_s": 6.668259207974188,
+      "screen_transitions": [
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8/serial.log",
+          "byte_offset": 1956578,
+          "LF_line": 11613,
+          "fields": {
+            "clock_id": "1",
+            "ns": "27604530992",
+            "tid": "376",
+            "manager": "0x7ee7238470",
+            "id1": "0x407",
+            "id2": "0x2ae",
+            "id3": "0x407",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8/serial.log",
+          "byte_offset": 2405224,
+          "LF_line": 15365,
+          "fields": {
+            "clock_id": "1",
+            "ns": "31564978992",
+            "tid": "376",
+            "manager": "0x7ee7238470",
+            "id1": "0x2ae",
+            "id2": "0x2e1",
+            "id3": "0x2ae",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8/serial.log",
+          "byte_offset": 2510136,
+          "LF_line": 16027,
+          "fields": {
+            "clock_id": "1",
+            "ns": "32750922992",
+            "tid": "376",
+            "manager": "0x7ee7238470",
+            "id1": "0x2e1",
+            "id2": "0x2dd",
+            "id3": "0x2e1",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8/serial.log",
+          "byte_offset": 2569656,
+          "LF_line": 16844,
+          "fields": {
+            "clock_id": "1",
+            "ns": "33104344992",
+            "tid": "376",
+            "manager": "0x7ee7238470",
+            "id1": "0x2dd",
+            "id2": "0",
+            "id3": "0x2dd",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        }
+      ],
+      "first_timer": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8/serial.log",
+        "byte_offset": 2866699,
+        "LF_line": 22081,
+        "fields": {
+          "seq": "3",
+          "tid": "376",
+          "widget": "0x7edd809968",
+          "id_object": "0x7f5015f1b4",
+          "input_time": "36228",
+          "ui_update": "2",
+          "original": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_low16_1004": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8/serial.log",
+        "byte_offset": 2867397,
+        "LF_line": 22086,
+        "fields": {
+          "tid": "376",
+          "target": "0x8280074d",
+          "op": "4",
+          "tag1": "0x1004",
+          "tag2": "0",
+          "result": "0",
+          "independent_of_unique_lock": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_Fill": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8/serial.log",
+        "byte_offset": 2870137,
+        "LF_line": 22147,
+        "fields": {
+          "seq": "7",
+          "tid": "277",
+          "command": "0x7f501ab110",
+          "bitmap": "0x7f5002ac70",
+          "bitmap_read": "1",
+          "ui_update": "0",
+          "timer_depth": "0"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_guest_commit": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8/serial.log",
+        "byte_offset": 3031595,
+        "LF_line": 25184,
+        "fields": {
+          "clock_id": "1",
+          "ns": "37596066992",
+          "tid": "820",
+          "frame": "1",
+          "op": "0x1003",
+          "pixel_source_seq": "1",
+          "copied_GPE_last": "24",
+          "FB": "0x7f54001160",
+          "bitmap": "0x7f5002ac70",
+          "entry": "0x7f54001198",
+          "allocation": "0x54001340",
+          "token": "0x402",
+          "physical": "0x43feb5100",
+          "FBformat": "1",
+          "bitmapformat": "1",
+          "descriptor36": "03100000000000000204000001000000000000008002e001000000008002e00100000000",
+          "native_plane_role_unproven": "1",
+          "read_only_observation": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_host_pixels_relative_s": 38.97972108400427,
+      "frame_used_for_ready_capture_relative_s": 43.83588112500729,
+      "first_HTTP_frame": {
+        "HAR_entry_index": 130,
+        "request_start_UTC": "2026-11-05T02:37:51.07629696Z",
+        "duration_ms": 0.7050000563636423,
+        "path": "status",
+        "HTTP_status": 200,
+        "phase": "starting",
+        "ready": false,
+        "render_valid": true,
+        "busy": false,
+        "steps": 0,
+        "review_required": false,
+        "launch_status": "running",
+        "frame": {
+          "sequence": 1,
+          "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "host_monotonic": 429956.453130875,
+          "content_generation": 1
+        }
+      },
+      "first_HTTP_ready": {
+        "HAR_entry_index": 154,
+        "request_start_UTC": "2026-11-05T02:37:55.986264832Z",
+        "duration_ms": 0.7899999704062939,
+        "path": "status",
+        "HTTP_status": 200,
+        "phase": "ready",
+        "ready": true,
+        "render_valid": true,
+        "busy": false,
+        "steps": 0,
+        "review_required": false,
+        "launch_status": "running",
+        "frame": {
+          "sequence": 27,
+          "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "host_monotonic": 429961.309290916,
+          "content_generation": 7
+        }
+      },
+      "first_frame_GET": {
+        "HAR_entry_index": 131,
+        "request_start_UTC": "2026-11-05T02:37:51.077924096Z",
+        "duration_ms": 0.540999981906265,
+        "path": "frame.png",
+        "HTTP_status": 200
+      },
+      "saved_browser_poll": {
+        "argv": [
+          "agent-browser",
+          "--session",
+          "fx3-deadline-r26-49f0c1c3663b",
+          "eval",
+          "--stdin"
+        ],
+        "start": {
+          "UTC": "2026-11-05T02:37:56.070716+00:00",
+          "host_ns": 429961583842666
+        },
+        "end": {
+          "UTC": "2026-11-05T02:37:56.078027+00:00",
+          "host_ns": 429961591145958
+        },
+        "returncode": 0,
+        "stdout": "{\n  \"error\": null,\n  \"finished\": false,\n  \"loaded\": true,\n  \"phase\": \"ready\",\n  \"ready\": true\n}\n",
+        "stderr": ""
+      },
+      "pass_or_failure_relative_s": 44.17368725000415,
+      "Stop_POST": {
+        "HAR_entry_index": 410,
+        "request_start_UTC": "2026-11-05T02:38:31.933128192Z",
+        "duration_ms": 0.7360000111870468,
+        "path": "stop",
+        "HTTP_status": 202
+      },
+      "render_at_end": {
+        "standby_ready": true,
+        "render_pass": true,
+        "render_valid_at_end": true,
+        "render_observation_ok": true
+      }
+    },
+    "r26b": {
+      "Start_POST": {
+        "HAR_entry_index": 18,
+        "request_start_UTC": "2026-11-05T02:59:23.89239808Z",
+        "duration_ms": 0.6909999900311232,
+        "path": "start",
+        "HTTP_status": 202
+      },
+      "QMP_handshake_s": 0.12210641702404246,
+      "first_cont_Popen_relative_s": 0.1918417499982752,
+      "pre_AP_Backup_read_Popen_relative_s": 6.777827457990497,
+      "screen_transitions": [
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842/serial.log",
+          "byte_offset": 1941413,
+          "LF_line": 11442,
+          "fields": {
+            "clock_id": "1",
+            "ns": "27156464000",
+            "tid": "367",
+            "manager": "0x7edecc6470",
+            "id1": "0x407",
+            "id2": "0x2ae",
+            "id3": "0x407",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842/serial.log",
+          "byte_offset": 2376446,
+          "LF_line": 14739,
+          "fields": {
+            "clock_id": "1",
+            "ns": "30980215008",
+            "tid": "367",
+            "manager": "0x7edecc6470",
+            "id1": "0x2ae",
+            "id2": "0x2e1",
+            "id3": "0x2ae",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842/serial.log",
+          "byte_offset": 2498376,
+          "LF_line": 15880,
+          "fields": {
+            "clock_id": "1",
+            "ns": "32250667008",
+            "tid": "367",
+            "manager": "0x7edecc6470",
+            "id1": "0x2e1",
+            "id2": "0x2dd",
+            "id3": "0x2e1",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842/serial.log",
+          "byte_offset": 2503193,
+          "LF_line": 15912,
+          "fields": {
+            "clock_id": "1",
+            "ns": "32329151008",
+            "tid": "367",
+            "manager": "0x7edecc6470",
+            "id1": "0x2dd",
+            "id2": "0",
+            "id3": "0x2dd",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        }
+      ],
+      "first_timer": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842/serial.log",
+        "byte_offset": 2866334,
+        "LF_line": 22263,
+        "fields": {
+          "seq": "3",
+          "tid": "367",
+          "widget": "0x7ee3953968",
+          "id_object": "0x7f500c5b64",
+          "input_time": "35951",
+          "ui_update": "2",
+          "original": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_low16_1004": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842/serial.log",
+        "byte_offset": 2867489,
+        "LF_line": 22278,
+        "fields": {
+          "tid": "367",
+          "target": "0x8280074d",
+          "op": "4",
+          "tag1": "0x1004",
+          "tag2": "0",
+          "result": "0",
+          "independent_of_unique_lock": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_Fill": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842/serial.log",
+        "byte_offset": 2870784,
+        "LF_line": 22348,
+        "fields": {
+          "seq": "7",
+          "tid": "276",
+          "command": "0x7f500d31d0",
+          "bitmap": "0x7f5002aa50",
+          "bitmap_read": "1",
+          "ui_update": "0",
+          "timer_depth": "0"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_guest_commit": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842/serial.log",
+        "byte_offset": 3040214,
+        "LF_line": 25642,
+        "fields": {
+          "clock_id": "1",
+          "ns": "37361997008",
+          "tid": "826",
+          "frame": "1",
+          "op": "0x1003",
+          "pixel_source_seq": "1",
+          "copied_GPE_last": "24",
+          "FB": "0x7f54001160",
+          "bitmap": "0x7f5002aa50",
+          "entry": "0x7f54001198",
+          "allocation": "0x54001340",
+          "token": "0x402",
+          "physical": "0x43feb5100",
+          "FBformat": "1",
+          "bitmapformat": "1",
+          "descriptor36": "03100000000000000204000001000000000000008002e001000000008002e00100000000",
+          "native_plane_role_unproven": "1",
+          "read_only_observation": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_host_pixels_relative_s": 38.84130133304279,
+      "frame_used_for_ready_capture_relative_s": 43.180709875014145,
+      "first_HTTP_frame": {
+        "HAR_entry_index": 115,
+        "request_start_UTC": "2026-11-05T03:00:02.87136896Z",
+        "duration_ms": 0.6929999775104224,
+        "path": "status",
+        "HTTP_status": 200,
+        "phase": "starting",
+        "ready": false,
+        "render_valid": true,
+        "busy": false,
+        "steps": 0,
+        "review_required": false,
+        "launch_status": "running",
+        "frame": {
+          "sequence": 3,
+          "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "host_monotonic": 431288.236322791,
+          "content_generation": 1
+        }
+      },
+      "first_HTTP_ready": {
+        "HAR_entry_index": 140,
+        "request_start_UTC": "2026-11-05T03:00:07.326180096Z",
+        "duration_ms": 0.8789999573752285,
+        "path": "status",
+        "HTTP_status": 200,
+        "phase": "ready",
+        "ready": true,
+        "render_valid": true,
+        "busy": false,
+        "steps": 0,
+        "review_required": false,
+        "launch_status": "running",
+        "frame": {
+          "sequence": 29,
+          "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+          "host_monotonic": 431292.575731333,
+          "content_generation": 8
+        }
+      },
+      "first_frame_GET": {
+        "HAR_entry_index": 116,
+        "request_start_UTC": "2026-11-05T03:00:02.872828928Z",
+        "duration_ms": 0.49400004231184724,
+        "path": "frame.png",
+        "HTTP_status": 200
+      },
+      "saved_browser_poll": {
+        "argv": [
+          "agent-browser",
+          "--session",
+          "fx3-deadline-r26b-93b3e243da6f",
+          "eval",
+          "--stdin"
+        ],
+        "start": {
+          "UTC": "2026-11-05T03:00:07.912404+00:00",
+          "host_ns": 431293424067833
+        },
+        "end": {
+          "UTC": "2026-11-05T03:00:07.919984+00:00",
+          "host_ns": 431293431643500
+        },
+        "returncode": 0,
+        "stdout": "{\n  \"error\": null,\n  \"finished\": false,\n  \"loaded\": true,\n  \"phase\": \"ready\",\n  \"ready\": true\n}\n",
+        "stderr": ""
+      },
+      "pass_or_failure_relative_s": 44.088575792033225,
+      "Stop_POST": {
+        "HAR_entry_index": 472,
+        "request_start_UTC": "2026-11-05T03:01:01.565656832Z",
+        "duration_ms": 0.8730000379160047,
+        "path": "stop",
+        "HTTP_status": 202
+      },
+      "render_at_end": {
+        "standby_ready": true,
+        "render_pass": true,
+        "render_valid_at_end": true,
+        "render_observation_ok": true
+      }
+    },
+    "r28": {
+      "Start_POST": {
+        "HAR_entry_index": 11,
+        "request_start_UTC": "2026-11-05T03:48:00.77292288Z",
+        "duration_ms": 1.1709999802187085,
+        "path": "start",
+        "HTTP_status": 202
+      },
+      "QMP_handshake_s": 0.6528085409663618,
+      "first_cont_Popen_relative_s": 0.9530132080544718,
+      "pre_AP_Backup_read_Popen_relative_s": 16.794286166026723,
+      "screen_transitions": [
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939/serial.log",
+          "byte_offset": 2261211,
+          "LF_line": 17504,
+          "fields": {
+            "clock_id": "1",
+            "ns": "83836416000",
+            "tid": "542",
+            "manager": "0x7ee08c3470",
+            "id1": "0x407",
+            "id2": "0x2ae",
+            "id3": "0x407",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939/serial.log",
+          "byte_offset": 2957469,
+          "LF_line": 23570,
+          "fields": {
+            "clock_id": "1",
+            "ns": "101377596000",
+            "tid": "542",
+            "manager": "0x7ee08c3470",
+            "id1": "0x2ae",
+            "id2": "0x2e1",
+            "id3": "0x2ae",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939/serial.log",
+          "byte_offset": 3231399,
+          "LF_line": 25898,
+          "fields": {
+            "clock_id": "1",
+            "ns": "115856116000",
+            "tid": "542",
+            "manager": "0x7ee08c3470",
+            "id1": "0x2e1",
+            "id2": "0x2dd",
+            "id3": "0x2e1",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        },
+        {
+          "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939/serial.log",
+          "byte_offset": 3241793,
+          "LF_line": 25965,
+          "fields": {
+            "clock_id": "1",
+            "ns": "116120070000",
+            "tid": "542",
+            "manager": "0x7ee08c3470",
+            "id1": "0x2dd",
+            "id2": "0",
+            "id3": "0x2dd",
+            "three_reference_args_one_call": "1",
+            "creation_not_yet_complete": "1"
+          },
+          "before_original_cleanup_serial_boundary": true
+        }
+      ],
+      "first_timer": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939/serial.log",
+        "byte_offset": 4915799,
+        "LF_line": 45907,
+        "fields": {
+          "seq": "3",
+          "tid": "542",
+          "widget": "0x7ed65e8968",
+          "id_object": "0x7f500ae3c4",
+          "input_time": "172015",
+          "ui_update": "2",
+          "original": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_low16_1004": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939/serial.log",
+        "byte_offset": 4916498,
+        "LF_line": 45912,
+        "fields": {
+          "tid": "542",
+          "target": "0x8280074d",
+          "op": "4",
+          "tag1": "0x21004",
+          "tag2": "0",
+          "result": "0",
+          "independent_of_unique_lock": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_Fill": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939/serial.log",
+        "byte_offset": 4917965,
+        "LF_line": 45921,
+        "fields": {
+          "seq": "7",
+          "tid": "294",
+          "command": "0x7f501857e0",
+          "bitmap": "0x7f5000c2a0",
+          "bitmap_read": "1",
+          "ui_update": "0",
+          "timer_depth": "0"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_guest_commit": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939/serial.log",
+        "byte_offset": 5038071,
+        "LF_line": 47728,
+        "fields": {
+          "clock_id": "1",
+          "ns": "173139890000",
+          "tid": "1604",
+          "frame": "1",
+          "op": "0x1003",
+          "pixel_source_seq": "1",
+          "copied_GPE_last": "23",
+          "FB": "0x7f4c001160",
+          "bitmap": "0x7f5000c2a0",
+          "entry": "0x7f4c001198",
+          "allocation": "0x4c001340",
+          "token": "0x402",
+          "physical": "0x43feb5100",
+          "FBformat": "1",
+          "bitmapformat": "1",
+          "descriptor36": "03100000000000000204000001000000000000008002e001000000008002e00100000000",
+          "native_plane_role_unproven": "1",
+          "read_only_observation": "1"
+        },
+        "before_original_cleanup_serial_boundary": true
+      },
+      "first_host_pixels_relative_s": 180.5440207499778,
+      "frame_used_for_ready_capture_relative_s": null,
+      "first_HTTP_frame": {
+        "HAR_entry_index": 446,
+        "request_start_UTC": "2026-11-05T03:51:01.60269696Z",
+        "duration_ms": 0.7889999350421131,
+        "path": "status",
+        "HTTP_status": 200,
+        "phase": "stopping",
+        "ready": false,
+        "render_valid": true,
+        "busy": false,
+        "steps": 0,
+        "review_required": false,
+        "launch_status": "running",
+        "frame": {
+          "sequence": 1,
+          "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+          "host_monotonic": 434346.781459375,
+          "content_generation": 1
+        }
+      },
+      "first_HTTP_ready": null,
+      "first_frame_GET": {
+        "HAR_entry_index": 447,
+        "request_start_UTC": "2026-11-05T03:51:01.605372928Z",
+        "duration_ms": 0.5910000324994326,
+        "path": "frame.png",
+        "HTTP_status": 200
+      },
+      "saved_browser_poll": {
+        "argv": [
+          "agent-browser",
+          "--session",
+          "fx3-deadline-r28-cb12b6256797",
+          "eval",
+          "--stdin"
+        ],
+        "start": {
+          "UTC": "2026-11-05T03:51:00.041559+00:00",
+          "host_ns": 434345543413250
+        },
+        "end": {
+          "UTC": "2026-11-05T03:51:00.049856+00:00",
+          "host_ns": 434345551710000
+        },
+        "returncode": 0,
+        "stdout": "{\n  \"error\": null,\n  \"finished\": false,\n  \"loaded\": false,\n  \"phase\": \"starting\",\n  \"ready\": false\n}\n",
+        "stderr": ""
+      },
+      "pass_or_failure_relative_s": 180.32201229099883,
+      "Stop_POST": {
+        "HAR_entry_index": 444,
+        "request_start_UTC": "2026-11-05T03:51:01.115731968Z",
+        "duration_ms": 0.9090000231973827,
+        "path": "stop",
+        "HTTP_status": 202
+      },
+      "render_at_end": {
+        "standby_ready": false,
+        "render_pass": false,
+        "render_valid_at_end": true,
+        "render_observation_ok": false
+      }
+    }
+  },
+  "r28_end_boundary": {
+    "last_observed_zero_header_host_monotonic": 434346.478554125,
+    "first_observed_positive_header_host_monotonic": 434346.715256791,
+    "End_tool_start_host_monotonic": 434346.606129583,
+    "first_pixel_publication_host_monotonic": 434346.781459375,
+    "claim": "The header observations straddle End; exact guest commit relative to End is unknown; no assertion that End caused rendering",
+    "additional_input": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-vm-cb12b6256797/End-original-button-process.json"
+  }
+}

@@ -1,0 +1,25 @@
+(lldb) process connect connect://127.0.0.1:1234
+Process 1 stopped
+* thread #1, stop reason = signal SIGTRAP
+       frame #0: 0xffffff8008081400 
+->  0xffffff8008081400: b      0xffffff800808140c
+    0xffffff8008081404: mrs    x30, TPIDRRO_EL0
+    0xffffff8008081408: msr    TPIDRRO_EL0, xzr
+    0xffffff800808140c: sub    sp, sp, #0x140
+Target 0: (No executable module.) stopped.
+(lldb) watchpoint set expression -w read -s 8 -- 0x7ecc814250
+Watchpoint created: Watchpoint 1: addr = 0x7ecc814250 size = 8 state = enabled type = r
+    watchpoint spec = '0x7ecc814250'
+    watchpoint resources:
+       #0: addr = 0x7ecc814250 size = 8
+(lldb) continue
+Process 1 resuming
+Process 1 stopped
+* thread #4, stop reason = signal SIGINT
+       frame #0: 0xffffff8008097988 
+Target 0: (No executable module.) stopped.
+(lldb) bt
+* thread #4, stop reason = signal SIGINT
+   * frame #0: 0xffffff8008097988 
+(lldb) detach
+error: Detach failed: Sending disconnect packet failed.

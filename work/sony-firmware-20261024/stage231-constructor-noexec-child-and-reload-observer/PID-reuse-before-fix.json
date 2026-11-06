@@ -1,0 +1,64 @@
+{
+  "schema": "fx3-reload-observer-foreign-clone-PID-reuse-counterexample-v1",
+  "old_binary_sha256": "b1aa3243f519354ced9107a4524bf04e83784a8a392edd3ee836fdaf347af131",
+  "old_binary_path": "runs-final/built/parent-module.so",
+  "old_wait_options": "0x80000001",
+  "old_private_DONE_from_original_child": true,
+  "new_same_PID_clone_child_created_by_other_im_thread": true,
+  "new_child_exit_status": 0,
+  "old_observer_return": [
+    3,
+    0
+  ],
+  "unsafe_original_child_identity_attribution": true,
+  "model_summary": {
+    "foreign_clone_PID_reuse_injected": true,
+    "clones": [
+      {
+        "flags": 0,
+        "shared_VM": false,
+        "shared_FD_table": false,
+        "shared_sighand": false,
+        "parent_mask": 18446744073709289215,
+        "child_mask": 18446744073709289215,
+        "child_pid": 7001
+      }
+    ],
+    "waits": [
+      {
+        "pid": 7001,
+        "options": 2147483649,
+        "returned": 7001,
+        "status": 0
+      }
+    ],
+    "reaper": [],
+    "child_exit": 0,
+    "child_alive": false,
+    "parent_mask": 1024,
+    "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+    "child_signal_ops": 124,
+    "new_original_signal_handlers_executed": false,
+    "exec_attempts": [],
+    "source_accesses": [],
+    "borrowed_FDs_unchanged": true,
+    "rights_all_closed": true,
+    "child_FDs_before_GRANT": [
+      [
+        17
+      ]
+    ],
+    "kernel_exit_closes": [
+      []
+    ],
+    "files": {
+      "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddb1aa3243f519354ced9107a4524bf04e83784a8a392edd3ee836fdaf347af13100ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005b52775c",
+      "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddb1aa3243f519354ced9107a4524bf04e83784a8a392edd3ee836fdaf347af13100ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003c27637d",
+      "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000010000000010000000900000000000000dc07000000000000ca9d5ec7fe172aa79818c0b4951cf542a8b86295042e64216b0efa62693e24e5bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb1aa3243f519354ced9107a4524bf04e83784a8a392edd3ee836fdaf347af1310900000000000000da0700000000000000ca9a3b0000000000f2c8c7d10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001aeff1e3",
+      "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddb1aa3243f519354ced9107a4524bf04e83784a8a392edd3ee836fdaf347af13100ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005b52775c",
+      "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000030000000000000041010000591b000007000000090300000000000081e0e8e1194db58b3ef9767262d726ca872baa9c77938a8d27dd9f0826ac2e9aca9d5ec7fe172aa79818c0b4951cf542a8b86295042e64216b0efa62693e24e5bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc3e47ffbc7fdc760c33f17ce879369cefb8094d8dd479b25c9fdc1e3299cbd0700000000591b000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002d446e6"
+    }
+  },
+  "model_sha256": "75382d5666b2735602e395a0560893dd61d6ed15a1714752f1425cd6972bff58",
+  "original_code_or_camera_operations": 0
+}

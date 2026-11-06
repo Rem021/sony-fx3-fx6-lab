@@ -1,0 +1,209 @@
+{
+  "created_utc": "2026-11-01T10:27:19.311650+00:00",
+  "duration_seconds": 12.254272500009392,
+  "status": "ORIGINAL_USERLAND_REACHED",
+  "scope": "original kernel plus original BusyBox/loader/libc/libcrypt; custom init only prints uname and sleeps; seven unsupported hardware initcalls disabled",
+  "profile": "minimal-linux",
+  "manifest_sha256": "72b01632e63f490733c3fdd8196d45800c4cb057f0b746f9fc2097e1a3ca37ea",
+  "inputs_unchanged": true,
+  "required_markers": {
+    "FX3_ORIGINAL_BUSYBOX_REACHED": true,
+    "4.9.337-scel+": true,
+    "FX3_VM_PROBE_END": true
+  },
+  "guest_exception_markers": [],
+  "qemu_exit": 0,
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.06335799999942537,
+      "rss_vsz_kib": "59872 492122784"
+    },
+    {
+      "elapsed_seconds": 0.3226332909980556,
+      "rss_vsz_kib": "101712 492122784"
+    },
+    {
+      "elapsed_seconds": 0.5801433750020806,
+      "rss_vsz_kib": "110768 492122784"
+    },
+    {
+      "elapsed_seconds": 0.8420337499992456,
+      "rss_vsz_kib": "113264 492122784"
+    },
+    {
+      "elapsed_seconds": 1.1015908749977825,
+      "rss_vsz_kib": "116784 492122784"
+    },
+    {
+      "elapsed_seconds": 1.3632970409962581,
+      "rss_vsz_kib": "122816 492122784"
+    },
+    {
+      "elapsed_seconds": 1.6291547080036253,
+      "rss_vsz_kib": "122816 492122784"
+    },
+    {
+      "elapsed_seconds": 1.8901310000073863,
+      "rss_vsz_kib": "122816 492122784"
+    },
+    {
+      "elapsed_seconds": 2.150599291009712,
+      "rss_vsz_kib": "122816 492122784"
+    },
+    {
+      "elapsed_seconds": 2.414348833000986,
+      "rss_vsz_kib": "122832 492122784"
+    },
+    {
+      "elapsed_seconds": 2.6751915000058943,
+      "rss_vsz_kib": "122832 492122784"
+    },
+    {
+      "elapsed_seconds": 2.9390123750054045,
+      "rss_vsz_kib": "122832 492122784"
+    },
+    {
+      "elapsed_seconds": 3.203797875001328,
+      "rss_vsz_kib": "122832 492122784"
+    },
+    {
+      "elapsed_seconds": 3.4670771660021273,
+      "rss_vsz_kib": "122896 492122784"
+    },
+    {
+      "elapsed_seconds": 3.7283957909967285,
+      "rss_vsz_kib": "122896 492122784"
+    },
+    {
+      "elapsed_seconds": 3.9890475410065847,
+      "rss_vsz_kib": "122896 492122784"
+    },
+    {
+      "elapsed_seconds": 4.251206957997056,
+      "rss_vsz_kib": "122896 492122784"
+    },
+    {
+      "elapsed_seconds": 4.5104144159995485,
+      "rss_vsz_kib": "122896 492122784"
+    },
+    {
+      "elapsed_seconds": 4.771030083007645,
+      "rss_vsz_kib": "122896 492122784"
+    },
+    {
+      "elapsed_seconds": 5.0303343330015196,
+      "rss_vsz_kib": "122896 492122784"
+    },
+    {
+      "elapsed_seconds": 5.293339958006982,
+      "rss_vsz_kib": "122896 492122784"
+    },
+    {
+      "elapsed_seconds": 5.557950500005973,
+      "rss_vsz_kib": "122912 492122784"
+    },
+    {
+      "elapsed_seconds": 5.821904666008777,
+      "rss_vsz_kib": "122912 492122784"
+    },
+    {
+      "elapsed_seconds": 6.087072541005909,
+      "rss_vsz_kib": "122912 492122784"
+    },
+    {
+      "elapsed_seconds": 6.3530387909995625,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 6.6183997909975005,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 6.881869625009131,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 7.14379420800833,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 7.409351291003986,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 7.674132540996652,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 7.936127624998335,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 8.198573208006565,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 8.46375004100264,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 8.727556458004983,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 8.991529749997426,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 9.25406441600353,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 9.514584958000341,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 9.777777916009654,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 10.038283041008981,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 10.299427083009505,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 10.563600708002923,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 10.825223207997624,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 11.087391958004446,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 11.352464416006114,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 11.618105957997614,
+      "rss_vsz_kib": "122944 492122784"
+    },
+    {
+      "elapsed_seconds": 11.882181833003415,
+      "rss_vsz_kib": "122944 492122784"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/a-51f783eb",
+  "source_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "qemu_runtime_sha256": "f9b5957bf2c4965fa14fd536a7fa29c65944124faab72665c7086636e1108b44",
+  "physical_devices_disks_network_or_firmware_writes": 0,
+  "menu_or_capture_verified": false,
+  "process_reaped": true
+}

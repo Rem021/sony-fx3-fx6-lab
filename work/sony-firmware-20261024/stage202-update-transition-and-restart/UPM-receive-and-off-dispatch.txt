@@ -1,0 +1,132 @@
+RANGE 0x0 0xb0
+00000000 stp     x29, x30, [sp, #-0x30]!
+00000004 mov     x29, sp
+00000008 str     x19, [sp, #0x10]
+0000000c mov     w19, #0x863
+00000010 movk    w19, #0x8092, lsl #16
+00000014 add     x1, x29, #0x20
+00000018 mov     w0, #0x863
+0000001c mov     w2, #-1
+00000020 movk    w0, #0x8092, lsl #16
+00000024 bl      #0x24 ; ('osal_rcv_msg_tmo', 'SHN_UNDEF', '0x0')
+00000028 mov     w6, w0
+0000002c add     x4, x29, #0x28
+00000030 mov     w5, #8
+00000034 mov     w3, #0x199
+00000038 mov     w2, #0x13
+0000003c mov     w1, #2
+00000040 mov     w0, #0
+00000044 cbz     w6, #0x58
+00000048 stp     w19, w6, [x29, #0x28]
+0000004c bl      #0x4c ; ('upm_blog_writeonce', 2, '0x0')
+00000050 b       #0x14
+00000054 nop     
+00000058 ldr     x0, [x29, #0x20]
+0000005c bl      #0x5c ; ('k_upm_set_boot_factor', 2, '0x0')
+00000060 ldr     x1, [x29, #0x20]
+00000064 mov     w0, w19
+00000068 bl      #0x68 ; ('osal_free_msg', 'SHN_UNDEF', '0x0')
+0000006c b       #0x14
+00000070 stp     x29, x30, [sp, #-0x50]!
+00000074 mov     x29, sp
+00000078 stp     x19, x20, [sp, #0x10]
+0000007c mov     w20, #0x865
+00000080 mov     w19, #0x4220
+00000084 stp     x21, x22, [sp, #0x20]
+00000088 stp     x23, x24, [sp, #0x30]
+0000008c movk    w20, #0x8092, lsl #16
+00000090 movk    w19, #0x8092, lsl #16
+00000094 add     x1, x29, #0x40
+00000098 mov     w0, #0x865
+0000009c mov     w2, #-1
+000000a0 movk    w0, #0x8092, lsl #16
+000000a4 bl      #0xa4 ; ('osal_rcv_msg_tmo', 'SHN_UNDEF', '0x0')
+000000a8 mov     w6, w0
+000000ac add     x1, x29, #0x48
+RANGE 0x360 0x420
+00000360 ldr     x0, [x29, #0x20]
+00000364 bl      #0x364 ; ('k_upm_api_antishake_power_exclusion_comp', 2, '0x0')
+00000368 ldr     x1, [x29, #0x20]
+0000036c mov     w0, w19
+00000370 bl      #0x370 ; ('osal_free_msg', 'SHN_UNDEF', '0x0')
+00000374 b       #0x31c
+00000378 stp     x29, x30, [sp, #-0x30]!
+0000037c mov     x29, sp
+00000380 stp     x19, x20, [sp, #0x10]
+00000384 mov     w20, #0x21
+00000388 movk    w20, #0x8092, lsl #16
+0000038c add     x1, x29, #0x20
+00000390 mov     w0, #0x21
+00000394 mov     w2, #-1
+00000398 movk    w0, #0x8092, lsl #16
+0000039c bl      #0x39c ; ('osal_rcv_msg_tmo', 'SHN_UNDEF', '0x0')
+000003a0 mov     w6, w0
+000003a4 add     x4, x29, #0x28
+000003a8 mov     w5, #8
+000003ac mov     w3, #0x192
+000003b0 mov     w2, #0x13
+000003b4 mov     w1, #2
+000003b8 mov     w0, #0
+000003bc cbz     w6, #0x3d0
+000003c0 stp     w20, w6, [x29, #0x28]
+000003c4 bl      #0x3c4 ; ('upm_blog_writeonce', 2, '0x0')
+000003c8 b       #0x38c
+000003cc nop     
+000003d0 ldr     x19, [x29, #0x20]
+000003d4 mov     x0, x19
+000003d8 bl      #0x3d8 ; ('osal_get_msg_src', 'SHN_UNDEF', '0x0')
+000003dc mov     w1, w0
+000003e0 mov     x0, x19
+000003e4 bl      #0x3e4 ; ('k_upm_api_off_factor_async', 2, '0x0')
+000003e8 ldr     x1, [x29, #0x20]
+000003ec mov     w0, w20
+000003f0 bl      #0x3f0 ; ('osal_free_msg', 'SHN_UNDEF', '0x0')
+000003f4 b       #0x38c
+000003f8 stp     x29, x30, [sp, #-0x70]!
+000003fc mov     x29, sp
+00000400 stp     x21, x22, [sp, #0x20]
+00000404 mov     w22, #0
+00000408 str     x23, [sp, #0x30]
+0000040c ldr     x21, #0x4d8
+00000410 ldr     x23, #0x4e0
+00000414 stp     x19, x20, [sp, #0x10]
+00000418 add     x19, x29, #0x48
+0000041c mov     x20, #0
+RANGE 0x683c 0x68d0
+0000683c nop     
+00006840 mov     x4, x20
+00006844 mov     w5, #4
+00006848 mov     w3, #0x12f
+0000684c mov     w2, #0xc
+00006850 mov     w1, #2
+00006854 mov     w0, #0
+00006858 bl      #0x6858 ; ('upm_blog_writeonce', 2, '0x0')
+0000685c mov     w0, #0xbb
+00006860 mov     w1, #-1
+00006864 movk    w0, #0x92, lsl #16
+00006868 bl      #0x6868 ; ('osal_wai_sem_tmo', 'SHN_UNDEF', '0x0')
+0000686c mov     w0, #0xbb
+00006870 movk    w0, #0x92, lsl #16
+00006874 bl      #0x6874 ; ('osal_sig_sem', 'SHN_UNDEF', '0x0')
+00006878 ldr     w0, [x20, #4]
+0000687c cmp     w0, #0x99
+00006880 b.eq    #0x6af8
+00006884 mov     w1, w19
+00006888 mov     x0, x20
+0000688c bl      #0x688c ; ('add_off_factor', 2, '0x0')
+00006890 mov     w0, #0x1c4
+00006894 mov     w1, #-1
+00006898 movk    w0, #0x92, lsl #16
+0000689c bl      #0x689c ; ('osal_wai_sem_tmo', 'SHN_UNDEF', '0x0')
+000068a0 ldr     x19, #0x6b10
+000068a4 ldp     x2, x3, [x20]
+000068a8 add     x0, x19, #0xa8
+000068ac stp     x2, x3, [x19, #0x30]
+000068b0 ldr     x1, [x19]
+000068b4 ldp     x4, x5, [x20]
+000068b8 cmp     x1, x0
+000068bc stp     x4, x5, [x19, #0x40]
+000068c0 b.eq    #0x6ae8
+000068c4 stp     x2, x3, [x0]
+000068c8 str     x0, [x19]
+000068cc bl      #0x5380

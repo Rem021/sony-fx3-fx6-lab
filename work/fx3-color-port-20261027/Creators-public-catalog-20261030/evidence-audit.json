@@ -1,0 +1,219 @@
+{
+  "created_utc": "2026-10-30T13:36:06.794883+00:00",
+  "status": "PASS_PUBLIC_CATALOG_EVIDENCE_NOT_FLASH_READINESS",
+  "source_commit": "c25814716a15afca997e0abf0a661974c5021669",
+  "source_archive_sha256": "f2481199ea1a8fa50eff8e0e3b5299f908fe5e99fb253b9c96461b3c92184017",
+  "source_members_verified_against_archive": 19,
+  "third_party_source_executed": false,
+  "anonymous_metadata_requests_verified": 12,
+  "list_requests": 10,
+  "info_requests": 2,
+  "positive_control_results": [
+    {
+      "receipt": "control-queries/a7iv-en_US/receipt.json",
+      "item": {
+        "modelName": "ILCE-7M4",
+        "currentVersion": "6.01",
+        "firmwareVersion": "6.02",
+        "firmwareID": "963",
+        "firmwareSize": 757480856
+      }
+    },
+    {
+      "receipt": "control-queries/a7iv-us_en/receipt.json",
+      "item": {
+        "modelName": "ILCE-7M4",
+        "currentVersion": "6.01",
+        "firmwareVersion": "6.02",
+        "firmwareID": "963",
+        "firmwareSize": 757480856
+      }
+    },
+    {
+      "receipt": "control-queries/fx3-en_US/receipt.json",
+      "item": {
+        "modelName": "ILME-FX3",
+        "currentVersion": "7.00",
+        "firmwareVersion": "7.02",
+        "firmwareID": "953",
+        "firmwareSize": 811876768
+      }
+    },
+    {
+      "receipt": "control-queries/fx3-us_en/receipt.json",
+      "item": {
+        "modelName": "ILME-FX3",
+        "currentVersion": "7.00",
+        "firmwareVersion": "7.02",
+        "firmwareID": "953",
+        "firmwareSize": 811876768
+      }
+    }
+  ],
+  "empty_FX5_family_results": [
+    {
+      "receipt": "anonymous-list-query/receipt.json",
+      "item": {
+        "modelName": "ILME-FX5",
+        "currentVersion": "0.00",
+        "firmwareVersion": "",
+        "firmwareID": "",
+        "firmwareSize": 0
+      },
+      "query_language": "en_US"
+    },
+    {
+      "receipt": "control-queries/fx5-en_US/receipt.json",
+      "item": {
+        "modelName": "ILME-FX5",
+        "currentVersion": "1.00",
+        "firmwareVersion": "",
+        "firmwareID": "",
+        "firmwareSize": 0
+      },
+      "query_language": "en_US"
+    },
+    {
+      "receipt": "control-queries/fx5-us_en/receipt.json",
+      "item": {
+        "modelName": "ILME-FX5",
+        "currentVersion": "1.00",
+        "firmwareVersion": "",
+        "firmwareID": "",
+        "firmwareSize": 0
+      },
+      "query_language": "us_en"
+    },
+    {
+      "receipt": "known-info-and-model-variants/fx5-jp_ja/receipt.json",
+      "item": {
+        "modelName": "ILME-FX5",
+        "currentVersion": "1.00",
+        "firmwareVersion": "",
+        "firmwareID": "",
+        "firmwareSize": 0
+      },
+      "query_language": "jp_ja"
+    },
+    {
+      "receipt": "known-info-and-model-variants/fx5b-jp_ja/receipt.json",
+      "item": {
+        "modelName": "ILME-FX5B",
+        "currentVersion": "1.00",
+        "firmwareVersion": "",
+        "firmwareID": "",
+        "firmwareSize": 0
+      },
+      "query_language": "jp_ja"
+    },
+    {
+      "receipt": "known-info-and-model-variants/fx5b-us_en/receipt.json",
+      "item": {
+        "modelName": "ILME-FX5B",
+        "currentVersion": "1.00",
+        "firmwareVersion": "",
+        "firmwareID": "",
+        "firmwareSize": 0
+      },
+      "query_language": "us_en"
+    }
+  ],
+  "known_info_results": [
+    {
+      "receipt": "known-info-and-model-variants/a7iv-known-info/receipt.json",
+      "method": "GET",
+      "request": null,
+      "response": {
+        "updateURL": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/UUD_INFO/963/en-am.html",
+        "eulaURL": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/EULA_INFO/en_EULA_US.html",
+        "fwURL": "https://support.d-imaging.sony.co.jp/download/NEX/YE19b5b7b3/BODYDATA.DAT?fm=ux_US"
+      },
+      "http_status": 200,
+      "response_sha256": "8a1d3c90b269f22ded6f8d77208d4fd2ae9264271ac4ddf006be5b8c9c4fd4e2"
+    },
+    {
+      "receipt": "known-info-and-model-variants/fx3-known-info/receipt.json",
+      "method": "GET",
+      "request": null,
+      "response": {
+        "updateURL": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/UUD_INFO/953/en-am.html",
+        "eulaURL": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/EULA_INFO/en_EULA_US.html",
+        "fwURL": "https://support.d-imaging.sony.co.jp/download/NEX/ey8d8a84ee/BODYDATA.DAT?fm=ux_US"
+      },
+      "http_status": 200,
+      "response_sha256": "8045a8a32e46acc8f747536f113e6c065f97ff3e3fa11e62de2f0c3634414ddd"
+    }
+  ],
+  "official_documents_verified": 4,
+  "known_FX3_prefix_bytes": 64,
+  "whole_remote_binary_identity_proved": false,
+  "response_envelope_date_warning": "2023-01-24T00:00:00Z is an API envelope field, not evidence of firmware publication date; observation time is each HTTP receipt.",
+  "zero_version_warning": "The initial synthetic 0.00 batch omitted both positive controls; its FX5 empty result alone is not a sufficient negative control. Singleton real-version controls succeeded.",
+  "negative_scope": "Only these public endpoint/model/version/language inputs on this date; not global absence, not confirmation FX5 is supported by consumer Creators App, and not a complete installed-firmware dump.",
+  "prior_blocked_stage_integrity": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/full-goal-blocked-audit-20261030/final-receipt.json",
+    "sha256": "df44ff5140abebb1ba6fff66c15a842378f3bcc5207e0ae22420a6237133589d",
+    "verified_members": 9
+  },
+  "prior_readiness_sha256": "ee6ec70fdfa67589c4e9bad8ff7a277f3e18acbafb466b774504d1b8509c8990",
+  "requirements_preserved": [
+    {
+      "id": "FX5_full_private_donor",
+      "status": "missing",
+      "proof_required": "Complete readable private system/menu payload and dependencies"
+    },
+    {
+      "id": "VENICE_complete_ISP_color_chain",
+      "status": "incomplete",
+      "proof_required": "Readable private inner plus full realtime ISP/sensor calibration/data-domain mapping"
+    },
+    {
+      "id": "RAM_chip_and_DMM_runtime",
+      "status": "incomplete",
+      "proof_required": "Normal hardware initialization and actual buffers/capacity/payload linked to allocation"
+    },
+    {
+      "id": "CMOS_RAW_and_calibration",
+      "status": "unproven",
+      "proof_required": "Reachable original acquisition and actual RAW samples/domain validation"
+    },
+    {
+      "id": "professional_menu_and_MAIN_recording",
+      "status": "incomplete",
+      "proof_required": "Whole professional UI/control route and target recording output"
+    },
+    {
+      "id": "exact_modified_target_firmware",
+      "status": "missing",
+      "proof_required": "Concrete classic FX3 target package carrying the requested full change"
+    },
+    {
+      "id": "classic_FX3_7_02_modified_package_admission",
+      "status": "unproven",
+      "proof_required": "Reproducible acceptance evidence for modified whole package, not original signature/repacking"
+    },
+    {
+      "id": "normal_boot_support_and_independent_recovery",
+      "status": "unproven",
+      "proof_required": "Target compatibility and independent recovery evidence sufficient for readiness"
+    },
+    {
+      "id": "stop_before_actual_flash",
+      "status": "preserved",
+      "proof_required": "No target flashing; not a substitute for earlier requirements"
+    }
+  ],
+  "research_progress": "A functioning anonymous catalogue -> info -> binary URL route is now reproducible with positive controls; no FX5 private payload obtained.",
+  "readiness_change": "none",
+  "goal_complete": false,
+  "historical_blocked_count_reused": false,
+  "resumed_goal_turn_with_same_full_readiness_blocker": 1,
+  "persistent_goal_status": "active",
+  "modified_package_produced": false,
+  "flashable_package_produced": false,
+  "new_VENICE_private_ISP_recovered": false,
+  "device_actions": 0,
+  "native_Sony_programs_executed": 0,
+  "private_signing_key_work": false,
+  "other_owner_files_written_or_processes_operated": false
+}

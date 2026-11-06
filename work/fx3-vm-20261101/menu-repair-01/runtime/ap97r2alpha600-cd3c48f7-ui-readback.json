@@ -1,0 +1,256 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7",
+  "recorded_utc": "2026-11-02T19:27:35.545103+00:00",
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap97-r2-const-alpha-date-observe/candidate.json",
+  "standby_pixels_verified": true,
+  "menu_open_pixels_verified": true,
+  "menu_navigation_verified": true,
+  "PictureProfile_subpage_verified": true,
+  "full_render_fidelity_unproven": true,
+  "sensor_capture_unproven": true,
+  "date_persistence_verified": false,
+  "backup_raw_liveRAM": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/backup-after-setup.bin",
+    "sha256": "57982207d1a30964e2eb24764329b92267cca03d097839b5c6934e5b930edcd0",
+    "bytes": 2232320,
+    "actual_key_bytes": {
+      "language02cf0000": 0,
+      "force02cf0014": 1,
+      "force01070140": 1,
+      "date02cf01b4": 0
+    },
+    "force_both_zero": false,
+    "validated_storage_file": false
+  },
+  "observations": [
+    {
+      "step": 0,
+      "sent_key": "无",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-phaseA-before-SETUP.png",
+      "PNG_sha256": "1fd7822fe461064f331cd9abe25fdccdf807e406fe507286fbc703ac9aa886a2",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-phaseA-before-SETUP.json",
+      "viewed_by_worker": true,
+      "observed_after": "Language，English/日本語/Français/Deutsch/Italiano；English为首项。",
+      "next_reason": "ENTER确认English。",
+      "ring_match": true,
+      "native_sequence": 54
+    },
+    {
+      "step": 1,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-01-key-1ac.png",
+      "PNG_sha256": "ccee0fd4b835a727a401114ae4c0e5c4947d3b7a0a3d8ad0a4622d733c304207",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-01-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "Creators App手机初始化提示；底部删除/C4 Set on the camera。",
+      "next_reason": "DELETE/C4按屏幕提示进入本机设置。",
+      "ring_match": true,
+      "native_sequence": 376
+    },
+    {
+      "step": 2,
+      "sent_key": "DELETE/C4",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-02-key-1f8.png",
+      "PNG_sha256": "727ddf3ccb87bc2b9b4689a26bc9ab7fc8b9e2a980a1b0b40be2610960f41cf3",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-02-key-1f8.json",
+      "viewed_by_worker": true,
+      "observed_after": "Set Area/Date/Time，Enter/Cancel。",
+      "next_reason": "ENTER进入区域设置。",
+      "ring_match": true,
+      "native_sequence": 554
+    },
+    {
+      "step": 3,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-03-key-1ac.png",
+      "PNG_sha256": "727ddf3ccb87bc2b9b4689a26bc9ab7fc8b9e2a980a1b0b40be2610960f41cf3",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-03-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "早期帧仍为上页（与step2 SHA一致）；area-late补图实见Tokyo/Seoul、GMT+9与OK。",
+      "next_reason": "看完补图后ENTER确认区域。",
+      "ring_match": true,
+      "native_sequence": 698
+    },
+    {
+      "step": 4,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-04-key-1ac.png",
+      "PNG_sha256": "a26fe0e13a556da52c568f60a3a870a4a1bed394d65da4ae5ec90142d7b3f136",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-04-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "Date Format：Y-M-D/M(English)-D-Y/M-D-Y/D-M-Y。",
+      "next_reason": "ENTER确认当前格式。",
+      "ring_match": true,
+      "native_sequence": 967
+    },
+    {
+      "step": 5,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-05-key-1ac.png",
+      "PNG_sha256": "e1d162cd069c72d82173a50c485f1e9faf0ec79ad8c1b10e16e6afa50d70f310",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-05-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "Date/Time：2021-1-1 12:00:00 AM，OK。",
+      "next_reason": "ENTER提交日期；事务成功需单独证据。",
+      "ring_match": true,
+      "native_sequence": 1103
+    },
+    {
+      "step": 6,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-06-key-1ac.png",
+      "PNG_sha256": "b6c80e39e22eec9dceccff2bb807223b7030b75cf8276381fad905bbbbce38c1",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-06-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "Auto Power OFF Temp High说明，Set now/Set later。",
+      "next_reason": "DOWN选择Set later。",
+      "ring_match": true,
+      "native_sequence": 1355
+    },
+    {
+      "step": 7,
+      "sent_key": "DOWN",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-07-key-030.png",
+      "PNG_sha256": "b6c80e39e22eec9dceccff2bb807223b7030b75cf8276381fad905bbbbce38c1",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-07-key-030.json",
+      "viewed_by_worker": true,
+      "observed_after": "同温度提示；PNG和set-later-late均与step6 SHA一致，无可辨高亮。",
+      "next_reason": "DOWN已原生接收，ENTER确认，通过下一页验证选择。",
+      "ring_match": true,
+      "native_sequence": 1623
+    },
+    {
+      "step": 8,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-08-key-1ac.png",
+      "PNG_sha256": "4a07f0fa77c79c90094565fde697b5ad74420df2189fe97016580f2acf156438",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-08-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "HOME设置提示，Set now/Set later。",
+      "next_reason": "ENTER确认当前项并继续。",
+      "ring_match": true,
+      "native_sequence": 2210
+    },
+    {
+      "step": 9,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-09-key-1ac.png",
+      "PNG_sha256": "3857934fecb018592234b07337aa6f2f765af605e0cd21ae2cf8d400d020753d",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-09-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "Creators App图片传输/遥控拍摄说明，MENU地球Smartphone Connection路径。",
+      "next_reason": "ENTER关闭说明。",
+      "ring_match": true,
+      "native_sequence": 2472
+    },
+    {
+      "step": 10,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-10-key-1ac.png",
+      "PNG_sha256": "b453508e2429388868980c57d1771e59eb2ba7198628c83775e47cb0a58c0118",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-10-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "实际拍摄待机OSD：HD59.94p、+0.0、---；无传感器画面，standby-before-menu复核一致。",
+      "next_reason": "MENU打开菜单，之前先只读保存原RAM。",
+      "ring_match": true,
+      "native_sequence": 2686
+    },
+    {
+      "step": 11,
+      "sent_key": "MENU",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-11-key-1ab.png",
+      "PNG_sha256": "49de396f610fdf52a6bd8ae9ab3213ee214558f41b064fed9ae96eb4fb573562",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-11-key-1ab.json",
+      "viewed_by_worker": true,
+      "observed_after": "Main > Rec Frame Rate，2/59，Main1/Main2、59.94p、ISO100、PP11，底部Page/帮助/MENU Close。",
+      "next_reason": "DOWN浏览下一条目。",
+      "ring_match": true,
+      "native_sequence": 3010
+    },
+    {
+      "step": 12,
+      "sent_key": "DOWN",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-12-key-030.png",
+      "PNG_sha256": "4a3b9cd1914b620ca6fd3a53ffc7c1af2612d32fd9193352d5994ec3fecc307f",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-12-key-030.json",
+      "viewed_by_worker": true,
+      "observed_after": "标题变为Main > Main1 > Av Auto/Manual Switch，2/59；网格、59.94p、ISO100、PP11。",
+      "next_reason": "第二次DOWN继续浏览。",
+      "ring_match": true,
+      "native_sequence": 3358
+    },
+    {
+      "step": 13,
+      "sent_key": "DOWN",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-13-key-030.png",
+      "PNG_sha256": "75c3ce0d49d975eefe00c917ac4b967d804aeeeabb1e78af2c33e3c75a0385dc",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-13-key-030.json",
+      "viewed_by_worker": true,
+      "observed_after": "标题变为Main > White Balance，2/59，白平衡图标。",
+      "next_reason": "RIGHT验证横向切换。",
+      "ring_match": true,
+      "native_sequence": 3588
+    },
+    {
+      "step": 14,
+      "sent_key": "RIGHT",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-14-key-1af.png",
+      "PNG_sha256": "bbb0faff9c0c01301c1e917745eda8e18cc2faf53d8767367284d220ac91ba28",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-14-key-1af.json",
+      "viewed_by_worker": true,
+      "observed_after": "标题变为Main > Main1 > Picture Profile，2/59，PP11保持。",
+      "next_reason": "ENTER打开Picture Profile页面。",
+      "ring_match": true,
+      "native_sequence": 3846
+    },
+    {
+      "step": 15,
+      "sent_key": "ENTER",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-15-key-1ac.png",
+      "PNG_sha256": "bacdec183d2ae94ac1c1e6e2be825bc15d82b751e34248dfd7c879afe5e44d33",
+      "readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-step-15-key-1ac.json",
+      "viewed_by_worker": true,
+      "observed_after": "Picture Profile页面，橙色PP11，MENU Cancel和圆键OK；picture-profile-late复核一致。",
+      "next_reason": "不再改设置，保持页面等600秒收尾。",
+      "ring_match": true,
+      "native_sequence": 4079
+    }
+  ],
+  "extra_readbacks": [
+    {
+      "label": "area-late",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-area-late.png",
+      "sha256": "a2938934d8d895e8b3d173c28612f112c468dc11c789dc98606e092f4c1efb57",
+      "viewed_by_worker": true,
+      "ring_match": true,
+      "native_sequence": 759
+    },
+    {
+      "label": "set-later-late",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-set-later-late.png",
+      "sha256": "b6c80e39e22eec9dceccff2bb807223b7030b75cf8276381fad905bbbbce38c1",
+      "viewed_by_worker": true,
+      "ring_match": true,
+      "native_sequence": 1757
+    },
+    {
+      "label": "standby-before-menu",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-standby-before-menu.png",
+      "sha256": "b453508e2429388868980c57d1771e59eb2ba7198628c83775e47cb0a58c0118",
+      "viewed_by_worker": true,
+      "ring_match": true,
+      "native_sequence": 2824
+    },
+    {
+      "label": "picture-profile-late",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap97r2alpha600-cd3c48f7/ap97r2-picture-profile-late.png",
+      "sha256": "bacdec183d2ae94ac1c1e6e2be825bc15d82b751e34248dfd7c879afe5e44d33",
+      "viewed_by_worker": true,
+      "ring_match": true,
+      "native_sequence": 4639
+    }
+  ],
+  "run_review": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap97r2alpha600-cd3c48f7-review-v4.json",
+  "full_window_finished": true,
+  "source_authority": "msg_155b0cf9b5b7"
+}

@@ -1,0 +1,920 @@
+{
+  "source_sha256": "9afdcb214058ff1d8be8c6a8b0bb72e861a1b0d92b7504310ac06b4ed56d92d7",
+  "elf_type": "ET_REL",
+  "functions": [
+    {
+      "function": "extcmd_ioctl",
+      "section": ".text",
+      "offset": "0xda0",
+      "bytes": 4292,
+      "sha256": "d3013ac5efb14880def4d36a13a7c281e9220aedacc34811d51635db034df71b",
+      "relocations": [
+        {
+          "offset": "0xe30",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0xe38",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0xe64",
+          "type": 283,
+          "symbol": "list_get_node",
+          "addend": 0
+        },
+        {
+          "offset": "0xe78",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0xe84",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0xe94",
+          "type": 283,
+          "symbol": "test_and_set_bit_req_flag_kernel",
+          "addend": 0
+        },
+        {
+          "offset": "0xeb8",
+          "type": 283,
+          "symbol": "synchronize_wait_event",
+          "addend": 0
+        },
+        {
+          "offset": "0xec8",
+          "type": 283,
+          "symbol": "clear_bit_req_flag",
+          "addend": 0
+        },
+        {
+          "offset": "0xef8",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0xf18",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0xf60",
+          "type": 283,
+          "symbol": "extcmd_user_access_ok",
+          "addend": 0
+        },
+        {
+          "offset": "0xf88",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0xf90",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0xfbc",
+          "type": 283,
+          "symbol": "list_get_node",
+          "addend": 0
+        },
+        {
+          "offset": "0xfd0",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0xfdc",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0xfec",
+          "type": 283,
+          "symbol": "test_and_set_bit_req_flag_kernel",
+          "addend": 0
+        },
+        {
+          "offset": "0x1010",
+          "type": 283,
+          "symbol": "synchronize_wait_event",
+          "addend": 0
+        },
+        {
+          "offset": "0x1020",
+          "type": 283,
+          "symbol": "clear_bit_req_flag",
+          "addend": 0
+        },
+        {
+          "offset": "0x1050",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1070",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0x107c",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1080",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0x1088",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1094",
+          "type": 283,
+          "symbol": "extcmd_user_access_ok",
+          "addend": 0
+        },
+        {
+          "offset": "0x10d8",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x10fc",
+          "type": 283,
+          "symbol": "extcmd_user_access_ok",
+          "addend": 0
+        },
+        {
+          "offset": "0x1140",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1164",
+          "type": 283,
+          "symbol": "extcmd_user_access_ok",
+          "addend": 0
+        },
+        {
+          "offset": "0x117c",
+          "type": 283,
+          "symbol": "list_get_node",
+          "addend": 0
+        },
+        {
+          "offset": "0x1194",
+          "type": 283,
+          "symbol": "set_bit",
+          "addend": 0
+        },
+        {
+          "offset": "0x11a0",
+          "type": 283,
+          "symbol": "set_bit",
+          "addend": 0
+        },
+        {
+          "offset": "0x11b4",
+          "type": 283,
+          "symbol": "__wake_up",
+          "addend": 0
+        },
+        {
+          "offset": "0x11b8",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0x11c0",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0x11cc",
+          "type": 283,
+          "symbol": "extcmd_mem_free",
+          "addend": 0
+        },
+        {
+          "offset": "0x11d4",
+          "type": 283,
+          "symbol": "list_delete_node",
+          "addend": 0
+        },
+        {
+          "offset": "0x11e0",
+          "type": 283,
+          "symbol": "extcmd_mem_free",
+          "addend": 0
+        },
+        {
+          "offset": "0x11e4",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0x11ec",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1204",
+          "type": 283,
+          "symbol": "extcmd_user_access_ok",
+          "addend": 0
+        },
+        {
+          "offset": "0x1248",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1278",
+          "type": 283,
+          "symbol": "get_inquiry_state",
+          "addend": 0
+        },
+        {
+          "offset": "0x12e0",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x12f4",
+          "type": 283,
+          "symbol": "synchronize_wake_up_event_all_node",
+          "addend": 0
+        },
+        {
+          "offset": "0x136c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1398",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x13c0",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x13f0",
+          "type": 283,
+          "symbol": "synchronize_wake_up_event",
+          "addend": 0
+        },
+        {
+          "offset": "0x1410",
+          "type": 283,
+          "symbol": "synchronize_wake_up_event",
+          "addend": 0
+        },
+        {
+          "offset": "0x1430",
+          "type": 283,
+          "symbol": "__arch_copy_from_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x1458",
+          "type": 283,
+          "symbol": "list_get_node",
+          "addend": 0
+        },
+        {
+          "offset": "0x1470",
+          "type": 283,
+          "symbol": "test_and_set_bit_req_flag_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x1488",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1570",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1580",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1598",
+          "type": 283,
+          "symbol": "__arch_copy_to_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x15b8",
+          "type": 283,
+          "symbol": "__arch_copy_from_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x15d8",
+          "type": 283,
+          "symbol": "list_get_node",
+          "addend": 0
+        },
+        {
+          "offset": "0x15f8",
+          "type": 283,
+          "symbol": "synchronize_wake_up_cancel_event",
+          "addend": 0
+        },
+        {
+          "offset": "0x1618",
+          "type": 283,
+          "symbol": "__arch_copy_from_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x1640",
+          "type": 283,
+          "symbol": "list_get_node",
+          "addend": 0
+        },
+        {
+          "offset": "0x1658",
+          "type": 283,
+          "symbol": "test_and_set_bit_req_flag_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x1670",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1764",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1774",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x178c",
+          "type": 283,
+          "symbol": "__arch_copy_from_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x17b0",
+          "type": 283,
+          "symbol": "__arch_copy_from_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x17c4",
+          "type": 283,
+          "symbol": "extcmd_mem_alloc",
+          "addend": 0
+        },
+        {
+          "offset": "0x17dc",
+          "type": 283,
+          "symbol": "__init_waitqueue_head",
+          "addend": 0
+        },
+        {
+          "offset": "0x17e4",
+          "type": 283,
+          "symbol": "extcmd_mem_alloc",
+          "addend": 0
+        },
+        {
+          "offset": "0x1840",
+          "type": 283,
+          "symbol": "__mutex_init",
+          "addend": 0
+        },
+        {
+          "offset": "0x1844",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0x1854",
+          "type": 283,
+          "symbol": "__mutex_init",
+          "addend": 0
+        },
+        {
+          "offset": "0x185c",
+          "type": 283,
+          "symbol": "list_append_node",
+          "addend": 0
+        },
+        {
+          "offset": "0x1870",
+          "type": 283,
+          "symbol": "extcmd_mem_free",
+          "addend": 0
+        },
+        {
+          "offset": "0x187c",
+          "type": 283,
+          "symbol": "extcmd_mem_free",
+          "addend": 0
+        },
+        {
+          "offset": "0x188c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x18a0",
+          "type": 283,
+          "symbol": "enable_inquiry_state",
+          "addend": 0
+        },
+        {
+          "offset": "0x18b8",
+          "type": 283,
+          "symbol": "synchronize_wait_event",
+          "addend": 0
+        },
+        {
+          "offset": "0x18c8",
+          "type": 283,
+          "symbol": "disable_inquiry_state",
+          "addend": 0
+        },
+        {
+          "offset": "0x18d4",
+          "type": 283,
+          "symbol": "clear_bit_req_flag",
+          "addend": 0
+        },
+        {
+          "offset": "0x18f4",
+          "type": 283,
+          "symbol": "enable_inquiry_state",
+          "addend": 0
+        },
+        {
+          "offset": "0x190c",
+          "type": 283,
+          "symbol": "synchronize_wait_event",
+          "addend": 0
+        },
+        {
+          "offset": "0x191c",
+          "type": 283,
+          "symbol": "disable_inquiry_state",
+          "addend": 0
+        },
+        {
+          "offset": "0x1928",
+          "type": 283,
+          "symbol": "clear_bit_req_flag",
+          "addend": 0
+        },
+        {
+          "offset": "0x194c",
+          "type": 283,
+          "symbol": "__arch_copy_to_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x195c",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1970",
+          "type": 283,
+          "symbol": "synchronize_wake_up_event",
+          "addend": 0
+        },
+        {
+          "offset": "0x1988",
+          "type": 283,
+          "symbol": "__arch_copy_to_user",
+          "addend": 0
+        },
+        {
+          "offset": "0x1998",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x19ac",
+          "type": 283,
+          "symbol": "synchronize_wake_up_event",
+          "addend": 0
+        },
+        {
+          "offset": "0x19c4",
+          "type": 283,
+          "symbol": "cancel_disable",
+          "addend": 0
+        },
+        {
+          "offset": "0x19e4",
+          "type": 283,
+          "symbol": "get_send_data_len",
+          "addend": 0
+        },
+        {
+          "offset": "0x19f8",
+          "type": 283,
+          "symbol": "get_recv_data_len",
+          "addend": 0
+        },
+        {
+          "offset": "0x1a18",
+          "type": 283,
+          "symbol": "memset",
+          "addend": 0
+        },
+        {
+          "offset": "0x1a38",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1a4c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1a5c",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1a74",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1a8c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1a94",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0x1a9c",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1adc",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1ae0",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0x1ae8",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1b2c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1b48",
+          "type": 283,
+          "symbol": "memset",
+          "addend": 0
+        },
+        {
+          "offset": "0x1b60",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1b74",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1b8c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1ba4",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1bb8",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1bec",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1c30",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1c38",
+          "type": 283,
+          "symbol": "get_extcmd_this",
+          "addend": 0
+        },
+        {
+          "offset": "0x1c40",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1c58",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1c78",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1c8c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1c9c",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x1cb8",
+          "type": 283,
+          "symbol": "memset",
+          "addend": 0
+        },
+        {
+          "offset": "0x1cd4",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1cec",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1d08",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1d28",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1d3c",
+          "type": 283,
+          "symbol": "extcmd_mem_free",
+          "addend": 0
+        },
+        {
+          "offset": "0x1d4c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1d68",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1d84",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1da4",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1dbc",
+          "type": 283,
+          "symbol": "memset",
+          "addend": 0
+        },
+        {
+          "offset": "0x1dd8",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1df4",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1e20",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1e3c",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        },
+        {
+          "offset": "0x1e58",
+          "type": 283,
+          "symbol": "memset",
+          "addend": 0
+        }
+      ],
+      "disassembly": "entry-fragments/usb_extcmd.ko-extcmd_ioctl.txt"
+    },
+    {
+      "function": "extcmd_user_access_ok",
+      "section": ".text",
+      "offset": "0xd30",
+      "bytes": 112,
+      "sha256": "a3d4ce69bb04f780b8d44e182dd7b1e4f5dc0d9264e6c6f56a68eac06a44ef13",
+      "relocations": [],
+      "disassembly": "entry-fragments/usb_extcmd.ko-extcmd_user_access_ok.txt"
+    },
+    {
+      "function": "extcmd_open",
+      "section": ".text",
+      "offset": "0xc90",
+      "bytes": 84,
+      "sha256": "62a444ced03280de873de87776e47468de4cf6fd4d91aac75a4bd0c7ebcba98e",
+      "relocations": [
+        {
+          "offset": "0xca4",
+          "type": 283,
+          "symbol": "extcmd_mem_alloc",
+          "addend": 0
+        },
+        {
+          "offset": "0xcd8",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        }
+      ],
+      "disassembly": "entry-fragments/usb_extcmd.ko-extcmd_open.txt"
+    },
+    {
+      "function": "list_get_node",
+      "section": ".text",
+      "offset": "0x550",
+      "bytes": 156,
+      "sha256": "179176ff5b24006666671c859cb6e2c608b522ac8c1ae9190797d35275262134",
+      "relocations": [
+        {
+          "offset": "0x574",
+          "type": 283,
+          "symbol": "mutex_lock",
+          "addend": 0
+        },
+        {
+          "offset": "0x5b8",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        },
+        {
+          "offset": "0x5d4",
+          "type": 283,
+          "symbol": "mutex_unlock",
+          "addend": 0
+        }
+      ],
+      "disassembly": "entry-fragments/usb_extcmd.ko-list_get_node.txt"
+    },
+    {
+      "function": "extcmd_create_this",
+      "section": ".text",
+      "offset": "0xd0",
+      "bytes": 128,
+      "sha256": "a9cd37a0fd2276fa2c2ec521a7829ae3a68b89b1e0fe176d4e8346b0a373788e",
+      "relocations": [
+        {
+          "offset": "0x104",
+          "type": 283,
+          "symbol": "extcmd_mem_alloc",
+          "addend": 0
+        },
+        {
+          "offset": "0x148",
+          "type": 283,
+          "symbol": "printk",
+          "addend": 0
+        }
+      ],
+      "disassembly": "entry-fragments/usb_extcmd.ko-extcmd_create_this.txt"
+    }
+  ],
+  "scope": "Static ET_REL instructions and relocation annotations only. Section offsets are not live kernel addresses. user_access_ok examines user memory bounds; its name does not imply device or firmware authentication. Native kernel/ioctl/USB calls are never executed."
+}

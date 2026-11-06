@@ -1,0 +1,183 @@
+{
+  "created_utc": "2026-10-27T09:25:09.767878+00:00",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "instructions": [
+    {
+      "VA": "0x8007a2b4",
+      "word_hex": "0c0050a2",
+      "instruction": "sb $s0, 0xc($s2)",
+      "meaning": "original manager mode-byte store during owner allocation"
+    },
+    {
+      "VA": "0x8007a2c4",
+      "word_hex": "87bc040c",
+      "instruction": "jal 0x8012f21c",
+      "meaning": "actual owner constructor call"
+    },
+    {
+      "VA": "0x8007a2d0",
+      "word_hex": "100054ae",
+      "instruction": "sw $s4, 0x10($s2)",
+      "meaning": "native returned owner pointer store"
+    },
+    {
+      "VA": "0x8012f224",
+      "word_hex": "040080ac",
+      "instruction": "sw $zero, 4($a0)",
+      "meaning": "native owner dispatch index zero"
+    },
+    {
+      "VA": "0x8012f270",
+      "word_hex": "16ce070c",
+      "instruction": "jal 0x801f3858",
+      "meaning": "native embedded parameter constructor call"
+    },
+    {
+      "VA": "0x8012f29c",
+      "word_hex": "800000a2",
+      "instruction": "sb $zero, 0x80($s0)",
+      "meaning": "native single-byte owner80 initialization"
+    },
+    {
+      "VA": "0x8012f2a0",
+      "word_hex": "980000ae",
+      "instruction": "sw $zero, 0x98($s0)",
+      "meaning": "native owner98 initialization"
+    },
+    {
+      "VA": "0x801f3868",
+      "word_hex": "000082a0",
+      "instruction": "sb $v0, ($a0)",
+      "meaning": "native embedded first-byte ff default"
+    },
+    {
+      "VA": "0x801378fc",
+      "word_hex": "1000a427",
+      "instruction": "addiu $a0, $sp, 0x10",
+      "meaning": "earlier initializer original caller selects stack buffer"
+    },
+    {
+      "VA": "0x80137920",
+      "word_hex": "bcd4040c",
+      "instruction": "jal 0x801352f0",
+      "meaning": "earlier1352f0 used on temporary parameter buffer"
+    },
+    {
+      "VA": "0x80135324",
+      "word_hex": "040080a0",
+      "instruction": "sb $zero, 4($a0)",
+      "meaning": "earlier initializer writes byte4, not whole owner dispatch index"
+    },
+    {
+      "VA": "0x80135328",
+      "word_hex": "050083a0",
+      "instruction": "sb $v1, 5($a0)",
+      "meaning": "earlier initializer writes byte5=1"
+    },
+    {
+      "VA": "0x8013532c",
+      "word_hex": "060083a0",
+      "instruction": "sb $v1, 6($a0)",
+      "meaning": "earlier initializer writes byte6=1"
+    },
+    {
+      "VA": "0x80135300",
+      "word_hex": "070083a0",
+      "instruction": "sb $v1, 7($a0)",
+      "meaning": "earlier initializer writes byte7=1"
+    },
+    {
+      "VA": "0x8007af58",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "resumed original selected mode virtual call"
+    },
+    {
+      "VA": "0x80143f50",
+      "word_hex": "100083ac",
+      "instruction": "sw $v1, 0x10($a0)",
+      "meaning": "native control-object local flag store"
+    },
+    {
+      "VA": "0x80134d50",
+      "word_hex": "0400848c",
+      "instruction": "lw $a0, 4($a0)",
+      "meaning": "native constructed owner index read"
+    },
+    {
+      "VA": "0x80134da8",
+      "word_hex": "09f86000",
+      "instruction": "jalr $v1",
+      "meaning": "actual original table-based owner handler call"
+    },
+    {
+      "VA": "0x8012f7e4",
+      "word_hex": "1000a9a3",
+      "instruction": "sb $t1, 0x10($sp)",
+      "meaning": "native one-byte scratch flag store"
+    },
+    {
+      "VA": "0x8012f81c",
+      "word_hex": "1000a28f",
+      "instruction": "lw $v0, 0x10($sp)",
+      "meaning": "native entire scratch word load retains high padding"
+    },
+    {
+      "VA": "0x8012f824",
+      "word_hex": "800002ae",
+      "instruction": "sw $v0, 0x80($s0)",
+      "meaning": "native owner history flag-word store"
+    },
+    {
+      "VA": "0x8012f828",
+      "word_hex": "840003ae",
+      "instruction": "sw $v1, 0x84($s0)",
+      "meaning": "native payload28 to owner84"
+    },
+    {
+      "VA": "0x8012f82c",
+      "word_hex": "880005ae",
+      "instruction": "sw $a1, 0x88($s0)",
+      "meaning": "native payload2c to owner88"
+    },
+    {
+      "VA": "0x8012f830",
+      "word_hex": "8c0006ae",
+      "instruction": "sw $a2, 0x8c($s0)",
+      "meaning": "native payload30 to owner8c"
+    },
+    {
+      "VA": "0x8012f84c",
+      "word_hex": "80f04280",
+      "instruction": "lb $v0, -0xf80($v0)",
+      "meaning": "unexecuted first trace-global read"
+    },
+    {
+      "VA": "0x8012f880",
+      "word_hex": "ac00428c",
+      "instruction": "lw $v0, 0xac($v0)",
+      "meaning": "unexecuted later trace timing MMIO read"
+    },
+    {
+      "VA": "0x8012f910",
+      "word_hex": "64c5040c",
+      "instruction": "jal 0x80131590",
+      "meaning": "unexecuted later original mode/geometry classification call"
+    }
+  ],
+  "mode_table_pair0": {
+    "file_offset": "0x2480c4",
+    "function": "0x8012f7dc",
+    "adjustment_word": 0
+  },
+  "role_correction": {
+    "earlier_label": "1352f0 owner-default initializer",
+    "corrected_scope": "Local parameter-structure initializer; original137920 uses a stack temporary. It is not proof of the complete GOP owner constructor.",
+    "actual_owner_constructor": "12f21c called by original manager7a2c4 after nativef2c allocation",
+    "earlier_initializer_if_applied_at_owner_base_word4": "0x01010100",
+    "actual_new_owner_native_word4": "0x0",
+    "earlier_bounded_instruction_results_retained": true,
+    "normal_runtime_claims_not_promoted": true
+  },
+  "actual_message_production_trace_hardware_mode_return_MAIN_or_recovery_proven": false
+}

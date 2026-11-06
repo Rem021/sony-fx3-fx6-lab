@@ -1,0 +1,86 @@
+{
+  "schema": "fx3-stage55-native-mux-identity/1",
+  "created_utc": "2026-10-26T05:27:58.679581+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/README.md",
+      "bytes": 6453,
+      "sha256": "47ad29d7e404cc395857cd372308eb0678f685d5cc094456d3a44f4d45a48b88"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/coordinator-observations.json",
+      "bytes": 1158,
+      "sha256": "491ce02f4837e2f06613016c3b2e60e62e7d977a44e996ab52ce67f2253265bc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/finalize_stage55.py",
+      "bytes": 16914,
+      "sha256": "be8bd61f3b1899f1d8cbde047a22f72ff22e9f0d29c8f7d93f5798f5ff8767bc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/goal-status-after.json",
+      "bytes": 136482,
+      "sha256": "92afadcce9c33539656eeda4c327e502afcae9116813a768d215c214031142d2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/goal-status-before.json",
+      "bytes": 131726,
+      "sha256": "c956cccfcab36f9443456bc80e9a4300f35c6c6b71679d9ac3f87cbae64af659"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/mux_identity.py",
+      "bytes": 14118,
+      "sha256": "f634bbf2ac96883e04a320fd9a2644b0c3c70d2a665d3048b451e82d92906c7e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/run-20261025/executed-source.py",
+      "bytes": 14118,
+      "sha256": "f634bbf2ac96883e04a320fd9a2644b0c3c70d2a665d3048b451e82d92906c7e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/run-20261025/mux-identity-results.json",
+      "bytes": 280192,
+      "sha256": "0f253c7648a6905f41521b702725d48975773f691f7bf6e563de1ad563a2edf0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/run-20261025/source-receipt.json",
+      "bytes": 507,
+      "sha256": "4c536c971f94e806f426e36502f6d6c2cf27df1b3d091efa1aff38425103a5c1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/scope-refinement.json",
+      "bytes": 6154,
+      "sha256": "8dfe10ac22c0b7367a883a9bf7405be83379930da776d9a76960f95c7e6e9398"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage55-native-mux-identity/summary.json",
+      "bytes": 1250,
+      "sha256": "b8b6107e5dca4507b733c68a695ecdef2540f92ede75798ce44c3c3c6c35fa8a"
+    }
+  ],
+  "previous_manifest_sha256": "c19cee953e4977dee1a2f1825e07dfb491e8bbc965ef5a6e488ff3deb4db939f",
+  "scope": "36 bounded original fragments: original video/audio initialization/full metadata conversion, profile-level conversion and format classification with original-default-pair tree fixtures. Native16M metadata; HD fallback97 actual effect unresolved. No full writer/MP4/Start/Hal/hardware/recovery.",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage55-native-mux-identity/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage55-native-mux-identity/goal-status-after.json",
+    "before_sha256": "c956cccfcab36f9443456bc80e9a4300f35c6c6b71679d9ac3f87cbae64af659",
+    "after_sha256": "92afadcce9c33539656eeda4c327e502afcae9116813a768d215c214031142d2",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-25 FX3 原封装元数据与HD分类](<work/sony-firmware-20261024/stage55-native-mux-identity/README.md>)：36段原执行生成HD29.97/raw16000元数据；原分类默认97、UHD对照命中，实际用途仍待追，质量桥接/完整启动/硬件与恢复仍待验收。",
+  "readme_index_before_sha256": "16c1e03d43c843ab0e23171d0b0e957744a6621af04ec2c57ae0cf9fdb021149",
+  "readme_index_after_sha256": "fb3c71f5506dedeef7b311ccb1a9d5ea293040ab7c20467a5d8ee80c33b980d2",
+  "operations": {
+    "original_MPR_code_unchanged": true,
+    "writer_state_map_header_and_nodes_are_fixtures": true,
+    "native_output_printf_allocator_PC_return_adapter": false,
+    "new_loadable_camera_module": false,
+    "HD_fallback_is_actual_mux_failure_claimed": false,
+    "UU_Windows_camera_interfaces_auth_modes_drivers_files_modules_WBI_flash": false,
+    "real_hardware_recording_backup_restore_or_independent_recovery": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

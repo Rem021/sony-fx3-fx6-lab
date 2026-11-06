@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "selector_negative_count": 17,
+  "actual_prepare": {
+    "status": "prepared_only_no_process_started",
+    "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/run-inputs/preflight-926a20c9ff87",
+    "config": {
+      "candidate_source_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner",
+      "runner_profile": "r41-entry-timing-r42",
+      "session": "fx3-deadline-r42-offline-926a20c9ff87",
+      "frozen_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration",
+      "task_id": "task_926a20c9ff87",
+      "dispatch_id": "ctx_d991d9f90265",
+      "scripted_navigation": true,
+      "visual_review_at_click": false,
+      "scope": "one future explicitly authorized VM; 8 steps/10 attempts/2 unqueued recoveries",
+      "plan_sha": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+      "steps": [
+        {
+          "step": 1,
+          "key": 427,
+          "target": "完整Setup > Area/Date，橙色Area/Date/Time Setting"
+        },
+        {
+          "step": 2,
+          "key": 3,
+          "target": "UP到Language English"
+        },
+        {
+          "step": 3,
+          "key": 504,
+          "target": "C4语言帮助"
+        },
+        {
+          "step": 4,
+          "key": 427,
+          "target": "MENU返回Language"
+        },
+        {
+          "step": 5,
+          "key": 428,
+          "target": "OK查看English语言列表但不改值"
+        },
+        {
+          "step": 6,
+          "key": 427,
+          "target": "MENU取消"
+        },
+        {
+          "step": 7,
+          "key": 427,
+          "target": "MENU关闭到待机"
+        },
+        {
+          "step": 8,
+          "key": 427,
+          "target": "MENU重开完整菜单"
+        }
+      ]
+    }
+  },
+  "import_modules": 40,
+  "source_count": 43,
+  "core_count": 38,
+  "no_target_main_called": true,
+  "no_VM": true,
+  "no_browser": true,
+  "no_service": true,
+  "no_QMP": true,
+  "no_deployment": true,
+  "historical_tests_reused_not_rerun": [
+    "r39 cleanup40/boundaries6/Node5; coordinator accepted",
+    "r41 actual-source host5/parser18/ELF/cost; coordinator accepted"
+  ]
+}

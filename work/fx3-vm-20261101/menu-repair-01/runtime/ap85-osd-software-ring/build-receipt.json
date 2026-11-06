@@ -1,0 +1,128 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap84a-four-core-native-cpuset-r2/candidate84a-r2.json",
+  "base_sha256": "a33b5ed6146d1459b999880c2f9c0ca3db1952fd9c785ab61fddfecfee37c5fe",
+  "CPIO_changed": [
+    "init",
+    "simulation/fx3-gpe-observe-v7.so",
+    "simulation/fx3-capid-v1.so"
+  ],
+  "CPIO_added": [
+    "simulation/fx3-osd-headless-v1.so"
+  ],
+  "helper_sha256": {
+    "fx3-capid-v42.so": "16f48ec88fe311052c50f11f15300603de1d1b7eb36a7a9262f73fbeb10c677a",
+    "fx3-gpe-observe-v14-guard-v1.so": "d3c7b45327046d3aae54885987dd354e846ae12839df767db38499dd2f0371b3",
+    "fx3-osd-headless-v1.so": "1df48ee5d1d5685be59a416037cfc7a031768cf584ad7fdb9d712c2506316763"
+  },
+  "ring_reservation": {
+    "address": "0x41e000000",
+    "bytes": 16777216,
+    "slots": 8,
+    "stride": "0x180000",
+    "header": "0x10000",
+    "nonoverlap_checked_ranges": [
+      [
+        "0x404000000",
+        "0x221000"
+      ],
+      [
+        "0x41d800000",
+        "0x10000"
+      ],
+      [
+        "0x41d900000",
+        "0x100000"
+      ],
+      [
+        "0x41da00000",
+        "0x10000"
+      ],
+      [
+        "0x41db00000",
+        "0x60000"
+      ],
+      [
+        "0x41dc00000",
+        "0x10000"
+      ],
+      [
+        "0x41dd00000",
+        "0x90000"
+      ],
+      [
+        "0x400000000",
+        "0x1000"
+      ],
+      [
+        "0x400020000",
+        "0x60000"
+      ],
+      [
+        "0x401000000",
+        "0x1000000"
+      ],
+      [
+        "0x403e00000",
+        "0x200000"
+      ],
+      [
+        "0x404000000",
+        "0x600000"
+      ],
+      [
+        "0x405000000",
+        "0x1000000"
+      ],
+      [
+        "0x410000000",
+        "0x200000"
+      ],
+      [
+        "0x410200000",
+        "0x9e00000"
+      ],
+      [
+        "0x420000000",
+        "0x4000000"
+      ],
+      [
+        "0x424000000",
+        "0xc400000"
+      ],
+      [
+        "0x430400000",
+        "0xcfc00000"
+      ],
+      [
+        "0x41d800000",
+        "0x10000"
+      ],
+      [
+        "0x41d900000",
+        "0x100000"
+      ],
+      [
+        "0x41da00000",
+        "0x10000"
+      ],
+      [
+        "0x41db00000",
+        "0x60000"
+      ],
+      [
+        "0x41dc00000",
+        "0x10000"
+      ],
+      [
+        "0x41dd00000",
+        "0x90000"
+      ]
+    ]
+  },
+  "DTB_changes": [
+    "memreserve ring",
+    "native memrsv bootarg ring",
+    "initrd end"
+  ],
+  "original_sources_modified": false
+}

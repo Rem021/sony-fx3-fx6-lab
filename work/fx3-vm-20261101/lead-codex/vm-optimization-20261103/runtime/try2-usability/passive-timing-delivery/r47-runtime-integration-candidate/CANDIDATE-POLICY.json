@@ -1,0 +1,75 @@
+{
+  "schema": "fx3-r47-candidate-policy-v1",
+  "name": "r47-runtime-integration-candidate",
+  "offline_only": true,
+  "enabled_for_real_run": false,
+  "profile": "r47-runtime-integration-60s",
+  "label": "v47runtime-n64-r47",
+  "approved_host": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r47-runtime-integration-candidate",
+  "candidate_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r47-runtime-integration-candidate",
+  "boundaries": {
+    "VM": false,
+    "browser": false,
+    "server": false,
+    "QMP": false,
+    "guest": false,
+    "deployment": false,
+    "firmware_write": false,
+    "CPIO_write": false,
+    "fixed_platform_change": false,
+    "runtime_policy_change": false,
+    "FX6_implementation": false
+  },
+  "preserved": {
+    "whole_step_deadline_seconds": 60,
+    "native_input_deadline_seconds": 12,
+    "snapshot_ttl_seconds": 20,
+    "API16_restore_seconds": 20,
+    "startup_seconds": 180,
+    "total_run_minutes": 8,
+    "accepted_keys": 8,
+    "explicit_attempts": 10,
+    "attributed_unqueued_recoveries": 2,
+    "recoveries_per_step": 1
+  },
+  "source_core": {
+    "source_members": 44,
+    "core_members": 39,
+    "base_page_new_member": "trial_web_v22_navigation_review.py",
+    "not_hardcoded_43_38": true
+  },
+  "old_frozen_root_read_only": true,
+  "new_profile_self_bound": true,
+  "page_binding": {
+    "canonical_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "full_PAGE_sha256": "551cbd919f61858ba8542a3a46d7eab3894162c915038d92d5a16317bc3c719b",
+    "all_executed_hash_sites_updated": true,
+    "runtime_string_replacement_fake_page": false
+  },
+  "package": {
+    "reuse_r42_candidate": "857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806",
+    "reuse_r42_cpio": "59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63",
+    "copied_or_written": false
+  },
+  "r45": {
+    "failed": true,
+    "cleanup": "unknown",
+    "step8": "not_posted",
+    "one_run_consumed": true,
+    "new_vm_authorized": false
+  },
+  "future_run_requires": [
+    "explicit coordinator/user authorization and a fresh Orca dispatch",
+    "fresh single VM/Start only; r45 run already consumed",
+    "no auto retry or deadline extension",
+    "use FUTURE-SINGLE-TEST-COMMAND.md after authorization; current file is a draft and must not be run"
+  ],
+  "human_chain": {
+    "independent_observation": true,
+    "actual_image_view": true,
+    "cancel": true,
+    "review": true,
+    "new_nonce": true,
+    "not_claimed_by_offline_tests": true
+  }
+}

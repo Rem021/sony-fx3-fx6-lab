@@ -1,0 +1,420 @@
+{
+  "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/docs/en/changelog.md",
+  "sha": "b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d",
+  "sha256": "9710463d642dfe1c13e685b7aab13891b9121e31bb7c3afb8d7cf3577bda1623",
+  "bytes": 61602,
+  "matches": [
+    {
+      "line": 13,
+      "text": "\n## 3.0.3 — USB recovery and sound workflow fixes — 2026-10-23\n\n- All desktop sound controls now work from the current selection/body: volume up/down/reset and conversion remain host-only; On/Off use fresh switch transactions; Restore original sound rebuilds only the supported AP sound-loader inverse from current bytes, preserves the switch and looks, and removes the boot call before its reader prerequisites. It no longer searches completed installation records or sends the user to full factory recovery. Sound verification reads currently loaded sound code/resources without a saved installation job. Optional listening/recovery statements can be recorded without an audition job. Stale staging is handled by the same current-request cleanup used by Save/Audition; no old pending task is an eligibility gate."
+    },
+    {
+      "line": 15,
+      "text": "\n- All desktop sound controls now work from the current selection/body: volume up/down/reset and conversion remain host-only; On/Off use fresh switch transactions; Restore original sound rebuilds only the supported AP sound-loader inverse from current bytes, preserves the switch and looks, and removes the boot call before its reader prerequisites. It no longer searches completed installation records or sends the user to full factory recovery. Sound verification reads currently loaded sound code/resources without a saved installation job. Optional listening/recovery statements can be recorded without an audition job. Stale staging is handled by the same current-request cleanup used by Save/Audition; no old pending task is an eligibility gate.\n- Sound Save/Audition now replace the current selection without old-task, audition-report, recovery-confirmation or boot-ID prerequisites. Save ignores the old RAM audition lease; Audition archives/replaces that fixed temporary marker and registers the current bytes without releasing stale CP handles. Stale sound staging files are archived and cleared from the current namespace; actual execution-entry occupancy and process locking still prevent concurrent execution. The old reconnect-proof gate and its popup were removed from these actions.\n- Limit the restored one-second end-packet read to direct CP unit READ40 requests, before a subsequent WRITE41. File and settings-snapshot reads retain the v2 no-eager-read path that completed all 72 reads in 9.75 s on the affected Windows camera. Nonempty CP lookahead is buffered. The captured v2 metadata trace also replays against this scoped implementation: 143 requests and 8,520 USB reads with matching lengths/order; payload contents were synthetic because raw camera bytes were not exported."
+    },
+    {
+      "line": 16,
+      "text": "- All desktop sound controls now work from the current selection/body: volume up/down/reset and conversion remain host-only; On/Off use fresh switch transactions; Restore original sound rebuilds only the supported AP sound-loader inverse from current bytes, preserves the switch and looks, and removes the boot call before its reader prerequisites. It no longer searches completed installation records or sends the user to full factory recovery. Sound verification reads currently loaded sound code/resources without a saved installation job. Optional listening/recovery statements can be recorded without an audition job. Stale staging is handled by the same current-request cleanup used by Save/Audition; no old pending task is an eligibility gate.\n- Sound Save/Audition now replace the current selection without old-task, audition-report, recovery-confirmation or boot-ID prerequisites. Save ignores the old RAM audition lease; Audition archives/replaces that fixed temporary marker and registers the current bytes without releasing stale CP handles. Stale sound staging files are archived and cleared from the current namespace; actual execution-entry occupancy and process locking still prevent concurrent execution. The old reconnect-proof gate and its popup were removed from these actions.\n- Limit the restored one-second end-packet read to direct CP unit READ40 requests, before a subsequent WRITE41. File and settings-snapshot reads retain the v2 no-eager-read path that completed all 72 reads in 9.75 s on the affected Windows camera. Nonempty CP lookahead is buffered. The captured v2 metadata trace also replays against this scoped implementation: 143 requests and 8,520 USB reads with matching lengths/order; payload contents were synthetic because raw camera bytes were not exported.\n- The owner confirmed factory recovery works with cp-restore.2; its local transaction reached LOADED after the fresh-boot check. This is one-body physical evidence for recovery. The experimental OUT-fragmentation change remains withdrawn. The recipient has not yet physically tested this scoped revision."
+    },
+    {
+      "line": 18,
+      "text": "- Limit the restored one-second end-packet read to direct CP unit READ40 requests, before a subsequent WRITE41. File and settings-snapshot reads retain the v2 no-eager-read path that completed all 72 reads in 9.75 s on the affected Windows camera. Nonempty CP lookahead is buffered. The captured v2 metadata trace also replays against this scoped implementation: 143 requests and 8,520 USB reads with matching lengths/order; payload contents were synthetic because raw camera bytes were not exported.\n- The owner confirmed factory recovery works with cp-restore.2; its local transaction reached LOADED after the fresh-boot check. This is one-body physical evidence for recovery. The experimental OUT-fragmentation change remains withdrawn. The recipient has not yet physically tested this scoped revision.\n- Regressed the reported Arabic-horizontal and Croatian-vertical resource sizes (161,360 and 119,160 bytes), including the 132-byte first extension and subsequent renaming, against the real ARM64 worker with synthetic contents. All output bytes matched the host planner. This does not establish filesystem corruption or repair pre-existing damage; the submitted report contains sizes and a replacement result, without the failed files for byte comparison.\n"
+    },
+    {
+      "line": 19,
+      "text": "- The owner confirmed factory recovery works with cp-restore.2; its local transaction reached LOADED after the fresh-boot check. This is one-body physical evidence for recovery. The experimental OUT-fragmentation change remains withdrawn. The recipient has not yet physically tested this scoped revision.\n- Regressed the reported Arabic-horizontal and Croatian-vertical resource sizes (161,360 and 119,160 bytes), including the 132-byte first extension and subsequent renaming, against the real ARM64 worker with synthetic contents. All output bytes matched the host planner. This does not establish filesystem corruption or repair pre-existing damage; the submitted report contains sizes and a replacement result, without the failed files for byte comparison.\n\n### Earlier fixes in this release"
+    },
+    {
+      "line": 27,
+      "text": "- Old sound task records never block a new sound button. Save, Audition and On re-read the connected body for the current selection; Off, Restore original sound and Verify archive an unresolved earlier operation and keep using the recorded switch/installation; Off adopts the current switch state when its record stopped part-way. Listening confirmations only archive the old record. Every camera action still reconciles only accounted sound files and stops, with power-cycle guidance, on unaccounted camera workers; nothing is replayed.\n- A read-only USB session whose channel failed (for example \"Wrong senser sequence\" while reading names) now returns the camera from service mode `0336` with a fresh start/stop, so a battery pull is no longer needed. Sessions that sent any write (temporary files, CP/AP writes, settings save) and recovery sessions never do this. The log also names the camera file that was being read when the channel failed.\n- Sound candidate: replace the shared mechanical/electronic capture-sound routing with a per-capture electronic-flag gate. Mechanical and electronic-front-curtain selector paths choose the native silent mode; ordinary electronic captures keep Sony's counter/skip/defer policy. One-click installation automatically repairs an already-enabled legacy patch without enabling a previously off feature. Save/overwrite folds the selector upgrade into its existing program-write transaction, including an unchanged audio payload with an existing boot hook; no separate On/restore step or sound-page UI change is needed. The desktop Off switch keeps mechanical playback muted while custom audio remains installed. Factory recovery includes the exact stock inverse. Windows/macOS share the implementation. Native-fragment and installer fault tests are offline evidence; physical playback/boot acceptance is pending, and no package has been replaced.\n- Shared desktop USB transport: receive the payload length declared by each Senser header, consuming zero-length USB transfers during normal reads instead of issuing an extra read after every aligned chunk. This avoids swallowing a final end-packet timeout or discarding nonempty data as a terminator. Keep the existing overall deadline, reject short/mismatched headers with expected/actual fields, stop the channel after an exchange fails, and reject short command writes without replay. Recovery, looks and sound use this same Windows/macOS transport; the separate legacy CLI transport is unchanged. Offline regression and captured-length replay pass. The affected Windows camera completed the v2 read-only retest: all 72 reads in 9.75 seconds, without sequence mismatches. This is read-only evidence; physical write behavior remains unverified."
+    },
+    {
+      "line": 28,
+      "text": "- A read-only USB session whose channel failed (for example \"Wrong senser sequence\" while reading names) now returns the camera from service mode `0336` with a fresh start/stop, so a battery pull is no longer needed. Sessions that sent any write (temporary files, CP/AP writes, settings save) and recovery sessions never do this. The log also names the camera file that was being read when the channel failed.\n- Sound candidate: replace the shared mechanical/electronic capture-sound routing with a per-capture electronic-flag gate. Mechanical and electronic-front-curtain selector paths choose the native silent mode; ordinary electronic captures keep Sony's counter/skip/defer policy. One-click installation automatically repairs an already-enabled legacy patch without enabling a previously off feature. Save/overwrite folds the selector upgrade into its existing program-write transaction, including an unchanged audio payload with an existing boot hook; no separate On/restore step or sound-page UI change is needed. The desktop Off switch keeps mechanical playback muted while custom audio remains installed. Factory recovery includes the exact stock inverse. Windows/macOS share the implementation. Native-fragment and installer fault tests are offline evidence; physical playback/boot acceptance is pending, and no package has been replaced.\n- Shared desktop USB transport: receive the payload length declared by each Senser header, consuming zero-length USB transfers during normal reads instead of issuing an extra read after every aligned chunk. This avoids swallowing a final end-packet timeout or discarding nonempty data as a terminator. Keep the existing overall deadline, reject short/mismatched headers with expected/actual fields, stop the channel after an exchange fails, and reject short command writes without replay. Recovery, looks and sound use this same Windows/macOS transport; the separate legacy CLI transport is unchanged. Offline regression and captured-length replay pass. The affected Windows camera completed the v2 read-only retest: all 72 reads in 9.75 seconds, without sequence mismatches. This is read-only evidence; physical write behavior remains unverified.\n- Sound Save and Audition now start a fresh replacement of the current selection, archive stale host task pointers, and read the current body rather than reuse old enable evidence. One request shares one USB session. Completed, owned sound reports and lease markers are reconciled without replaying old workers; unaccounted camera workers get detailed cold-reconnect guidance followed by retrying the same button. No restore-original or listening-confirmation prerequisite was added. Original jobs and backups remain available."
+    },
+    {
+      "line": 29,
+      "text": "- Sound candidate: replace the shared mechanical/electronic capture-sound routing with a per-capture electronic-flag gate. Mechanical and electronic-front-curtain selector paths choose the native silent mode; ordinary electronic captures keep Sony's counter/skip/defer policy. One-click installation automatically repairs an already-enabled legacy patch without enabling a previously off feature. Save/overwrite folds the selector upgrade into its existing program-write transaction, including an unchanged audio payload with an existing boot hook; no separate On/restore step or sound-page UI change is needed. The desktop Off switch keeps mechanical playback muted while custom audio remains installed. Factory recovery includes the exact stock inverse. Windows/macOS share the implementation. Native-fragment and installer fault tests are offline evidence; physical playback/boot acceptance is pending, and no package has been replaced.\n- Shared desktop USB transport: receive the payload length declared by each Senser header, consuming zero-length USB transfers during normal reads instead of issuing an extra read after every aligned chunk. This avoids swallowing a final end-packet timeout or discarding nonempty data as a terminator. Keep the existing overall deadline, reject short/mismatched headers with expected/actual fields, stop the channel after an exchange fails, and reject short command writes without replay. Recovery, looks and sound use this same Windows/macOS transport; the separate legacy CLI transport is unchanged. Offline regression and captured-length replay pass. The affected Windows camera completed the v2 read-only retest: all 72 reads in 9.75 seconds, without sequence mismatches. This is read-only evidence; physical write behavior remains unverified.\n- Sound Save and Audition now start a fresh replacement of the current selection, archive stale host task pointers, and read the current body rather than reuse old enable evidence. One request shares one USB session. Completed, owned sound reports and lease markers are reconciled without replaying old workers; unaccounted camera workers get detailed cold-reconnect guidance followed by retrying the same button. No restore-original or listening-confirmation prerequisite was added. Original jobs and backups remain available.\n- Persistent audio publication can replace captured stale temporary files and repair files-only interrupted installs. The inactive audio is read back before publishing its CSV; an already-installed boot hook stays unchanged for a resource replacement. Sound planning uses fixed byte windows without executing Unicorn/JIT, addressing the 3.0.0 macOS arm64 crash in `libunicorn.2.dylib` supplied in the October 23 sound-crash bundle. Developer emulation remains separate. Targeted offline regressions cover these changes; physical Mac/camera acceptance is still required."
+    },
+    {
+      "line": 37,
+      "text": "- Continue completed-program installations stopped by this old array check in a fresh settings-only transaction. Require the existing successful program/name readback and native cleanup records, then confirm current programs and names still match the original plan. Only settings and reload preparation can run; this path cannot write program or name resources. Diagnostics retain public look values and targets while excluding firmware, serials and calibration.\n- Fix ST resets that changed the backup settings while the running AP model still held BW or another old base. Direct LUT installation, selected-slot reset and factory recovery now synchronize selected bases through the native menu's locking, backing-value and notification sequence before completing setting readback. LUT programs are not written if synchronization fails. Unselected bases and the current selection are preserved; Windows and macOS share this backend.\n- On the owner's C2, slot 4 reproduced backup ST / live BW. Both the original menu setter and the integrated worker restored the ST icon and color preview without rebooting or writing firmware programs; the owner confirmed both. Repeated application made no further model change. Offline coverage includes all 63 nonempty combinations of six custom slots and restoration/failure paths; physical coverage remains one body and slot 4.\n"
+    },
+    {
+      "line": 38,
+      "text": "- Fix ST resets that changed the backup settings while the running AP model still held BW or another old base. Direct LUT installation, selected-slot reset and factory recovery now synchronize selected bases through the native menu's locking, backing-value and notification sequence before completing setting readback. LUT programs are not written if synchronization fails. Unselected bases and the current selection are preserved; Windows and macOS share this backend.\n- On the owner's C2, slot 4 reproduced backup ST / live BW. Both the original menu setter and the integrated worker restored the ST icon and color preview without rebooting or writing firmware programs; the owner confirmed both. Repeated application made no further model change. Offline coverage includes all 63 nonempty combinations of six custom slots and restoration/failure paths; physical coverage remains one body and slot 4.\n\n## 3.0.2 — bug-fix release — 2026-10-22"
+    },
+    {
+      "line": 44,
+      "text": "\n- One-click factory restore now first removes name backups that earlier project jobs left in `/usr/share/app` (`.a7c2-lut-<16 hex>-<resource>.original/.stage` and `.a7c2-checkpoint-...`). Unfinished jobs of older versions could leave whole sets of 68 resource copies, more than 60 MB on one field camera, so name writes and restores failed with ENOSPC. A separate mode-5 build of the names worker lists the folder, matches only exact project names (never this restore's own prefix, never non-regular files) and removes them before the name preflight; the normal restore build rejects that mode. Other tools' files are kept. Emulated only; actual camera cleanup awaits confirmation on an affected body.\n- A lone report left by the read-only camera probe (`a7c2.probe.result`) no longer blocks every later job with \"Existing temporary state needs recovery\". It is recorded and removed only when no other project worker file or preload exists. A camera still in service mode (`0336`) now gets a Chinese message asking for a battery-out power cycle.\n- Fix the Windows plugin installation failure in report (49): reuse an identical complete ExifTool payload, including companion files; stage changed payloads at a new path instead of overwriting an executable that may be running or read-only. Plugin-only failures resume on the computer without repeating camera work, including the older `NEEDS_REVIEW` record once its saved loaded-state proof is present."
+    },
+    {
+      "line": 45,
+      "text": "- One-click factory restore now first removes name backups that earlier project jobs left in `/usr/share/app` (`.a7c2-lut-<16 hex>-<resource>.original/.stage` and `.a7c2-checkpoint-...`). Unfinished jobs of older versions could leave whole sets of 68 resource copies, more than 60 MB on one field camera, so name writes and restores failed with ENOSPC. A separate mode-5 build of the names worker lists the folder, matches only exact project names (never this restore's own prefix, never non-regular files) and removes them before the name preflight; the normal restore build rejects that mode. Other tools' files are kept. Emulated only; actual camera cleanup awaits confirmation on an affected body.\n- A lone report left by the read-only camera probe (`a7c2.probe.result`) no longer blocks every later job with \"Existing temporary state needs recovery\". It is recorded and removed only when no other project worker file or preload exists. A camera still in service mode (`0336`) now gets a Chinese message asking for a battery-out power cycle.\n- Fix the Windows plugin installation failure in report (49): reuse an identical complete ExifTool payload, including companion files; stage changed payloads at a new path instead of overwriting an executable that may be running or read-only. Plugin-only failures resume on the computer without repeating camera work, including the older `NEEDS_REVIEW` record once its saved loaded-state proof is present.\n- Save and read back selected LUT slots as ST in RAM and persistent settings before their first program write, for single-slot and combined installs. Leave unselected slots unchanged; enable FL23 bindings and vertical settings at their existing final stage. A failed ST save stops before LUT program writes."
+    },
+    {
+      "line": 46,
+      "text": "- A lone report left by the read-only camera probe (`a7c2.probe.result`) no longer blocks every later job with \"Existing temporary state needs recovery\". It is recorded and removed only when no other project worker file or preload exists. A camera still in service mode (`0336`) now gets a Chinese message asking for a battery-out power cycle.\n- Fix the Windows plugin installation failure in report (49): reuse an identical complete ExifTool payload, including companion files; stage changed payloads at a new path instead of overwriting an executable that may be running or read-only. Plugin-only failures resume on the computer without repeating camera work, including the older `NEEDS_REVIEW` record once its saved loaded-state proof is present.\n- Save and read back selected LUT slots as ST in RAM and persistent settings before their first program write, for single-slot and combined installs. Leave unselected slots unchanged; enable FL23 bindings and vertical settings at their existing final stage. A failed ST save stops before LUT program writes.\n- Factory restore now saves the six custom bases and current Creative Look selection as ST before removing program support. Restore AP before CP. Previously a name restoration failure after program writes could leave saved FL2/FL3 recipes on stock programs; offline fault injection reproduces that state. Fresh, name-only and general continuation paths use the same early AP save, leaving CP calibration and color units for their existing restoration step. Actual post-restore camera behavior still needs affected-body confirmation."
+    },
+    {
+      "line": 47,
+      "text": "- Fix the Windows plugin installation failure in report (49): reuse an identical complete ExifTool payload, including companion files; stage changed payloads at a new path instead of overwriting an executable that may be running or read-only. Plugin-only failures resume on the computer without repeating camera work, including the older `NEEDS_REVIEW` record once its saved loaded-state proof is present.\n- Save and read back selected LUT slots as ST in RAM and persistent settings before their first program write, for single-slot and combined installs. Leave unselected slots unchanged; enable FL23 bindings and vertical settings at their existing final stage. A failed ST save stops before LUT program writes.\n- Factory restore now saves the six custom bases and current Creative Look selection as ST before removing program support. Restore AP before CP. Previously a name restoration failure after program writes could leave saved FL2/FL3 recipes on stock programs; offline fault injection reproduces that state. Fresh, name-only and general continuation paths use the same early AP save, leaving CP calibration and color units for their existing restoration step. Actual post-restore camera behavior still needs affected-body confirmation.\n- Improve post-reload mismatch diagnostics after report (46): record the program name, expected/actual lengths and first differing offset, and distinguish a target that already differs from the captured bytes from a later inconsistent read. Reuse existing reads; export no firmware or calibration bytes. The 3.0.0 report shows an earlier successful write/readback and a `LOADED` child, but lacks offsets, so its cause cannot be established from that bundle alone."
+    },
+    {
+      "line": 48,
+      "text": "- Save and read back selected LUT slots as ST in RAM and persistent settings before their first program write, for single-slot and combined installs. Leave unselected slots unchanged; enable FL23 bindings and vertical settings at their existing final stage. A failed ST save stops before LUT program writes.\n- Factory restore now saves the six custom bases and current Creative Look selection as ST before removing program support. Restore AP before CP. Previously a name restoration failure after program writes could leave saved FL2/FL3 recipes on stock programs; offline fault injection reproduces that state. Fresh, name-only and general continuation paths use the same early AP save, leaving CP calibration and color units for their existing restoration step. Actual post-restore camera behavior still needs affected-body confirmation.\n- Improve post-reload mismatch diagnostics after report (46): record the program name, expected/actual lengths and first differing offset, and distinguish a target that already differs from the captured bytes from a later inconsistent read. Reuse existing reads; export no firmware or calibration bytes. The 3.0.0 report shows an earlier successful write/readback and a `LOADED` child, but lacks offsets, so its cause cannot be established from that bundle alone.\n- Fix enabling/re-enabling FL23 after native custom looks were installed: update the active relocated gamma table as well as the original table. Preserve all six custom LUTs, native slot parameters and body calibration. Re-enabling also repairs the stale copied table left by earlier versions. This shared planner serves Windows and macOS."
+    },
+    {
+      "line": 60,
+      "text": "- Out-of-space name restoration is a known multi-pass case. Each replaced name file stays allocated while the running camera maps it, so a body with little free `/usr` space may stop part-way (e.g. 37/68). The message now gives the progress. After a full power-cycle, clicking restore again continues with the remaining files from current bytes.\n- Shutter sound: a failed conversion now shows the backend's own reason instead of a generic \"see log\" error. A silent selection (common at the start of a file) is explained with its start and length. Audition checks for a converted clip before asking for the Mac password or opening USB. An audition that stopped before the native worker releases its workspace lock. The default clip length is now 0.5 s instead of 0.15 s, so a clip taken from the start of a file is less likely to be silent.\n- One-click install continues after a USB error that follows completed names. In a field case all 68 names were committed and cleaned up, then \"Wrong senser sequence\" came before the first program stage, and every retry stopped with \"Unknown operation after name commit\". It now re-verifies every name and the original program windows, then installs the programs; anything that ran after the names still stops.\n- Windows: the first one-click install on a computer suggests preparing drivers on the connection page first. Driver or connection failures point to the manual Zadig steps, which the READMEs now describe in full for both USB identities. The connection page has an \"Install with Zadig\" button beside the automatic driver install that shows these steps and opens the Zadig download page."
+    },
+    {
+      "line": 62,
+      "text": "- One-click install continues after a USB error that follows completed names. In a field case all 68 names were committed and cleaned up, then \"Wrong senser sequence\" came before the first program stage, and every retry stopped with \"Unknown operation after name commit\". It now re-verifies every name and the original program windows, then installs the programs; anything that ran after the names still stops.\n- Windows: the first one-click install on a computer suggests preparing drivers on the connection page first. Driver or connection failures point to the manual Zadig steps, which the READMEs now describe in full for both USB identities. The connection page has an \"Install with Zadig\" button beside the automatic driver install that shows these steps and opens the Zadig download page.\n- macOS: SciPy 1.16 for the new dynamic loader; lenient USB-only `ioreg` parsing.\n- Jobs resumed from earlier previews may rely on their service-serial body binding."
+    },
+    {
+      "line": 70,
+      "text": "- Integrated the portrait .5 work: Fn and submenu frames, the four Creative Look gauge backgrounds now drawn horizontally, and the withdrawal of the .4 shared-panel change (fresh plans keep Sony's original options; existing .4 installs restore the original 20 bytes). The owner confirmed the landscape UI is back to normal. Known: the portrait Creative Look selection border is still thick and the orange gauge pointer orientation is not yet corrected.\n- Windows driver detection reads present Sony USB devices through SetupAPI instead of PowerShell; a failed query is no longer reported as a missing camera.\n- USB stability check: the clock starts after the service connection is ready, reaching the round cap before the minimum duration is reported as incomplete rather than passed, and a slow read only fails below 2 MB/s (USB 1.1, hub or poor cable) instead of after a fixed 20 s.\n- The publication check binds the desktop runtime's native workers to their manifest and to the identical published FL23 workers."
+    },
+    {
+      "line": 83,
+      "text": "- Combine portrait enable/disable and four Fn/submenu frame corrections into two repeatable operations. Disable saves OFF and turns the running display OFF before restoring references and removing aliases; no intermediate reboot or additional button.\n- Append 15,676 bytes across two existing image banks, including recovery records, instead of copying full banks. Edit 15 portrait-only data references; retain original landscape images and executable code. Three shared gauge images remain unchanged.\n- Keep byte readback and resumable current-byte planning, without a separate native image-size query. Retain any still-mapped appended tail during removal. Offline tests and native compilation pass; actual new-image recognition, placement and camera navigation await manual acceptance.\n"
+    },
+    {
+      "line": 88,
+      "text": "\n- Integrate Claude's preserved service cooldown/bounce retry and senser end-packet fixes from `b651a6c` and `38a9195`. Apply the same transport to Windows and macOS: 30-second re-entry cooldown, 20-second service discovery, up to three attempts when service never appeared and MSC returned, and a one-second optional chunk-end wait. Authentication, payload-read and non-timeout errors remain failures; no firmware write is replayed.\n- Prepare the Windows service driver after its USB identity is observed. If 0336 appeared but its interface cannot open, report that interface problem rather than authenticating again. Retain late-empty-packet rejection by the next response parser.\n- Extract the shared action catalog and look/sound adapters from the worker, retaining existing action names, arguments, job states and user data paths. Document the backend contract for a later frontend replacement. Frontend appearance and README rewriting are separate work."
+    },
+    {
+      "line": 105,
+      "text": "- Retain preview.10.21 sound-volume controls and shared portrait-image aliases. No portrait separator rework, full portrait-bank copies, or experimental resource compression.\n- Reproduce the exact previous failure using the owner's GR III Hard Monotone DCP. The default three-pass conversion now completes with final optimizer convergence; a separate fresh conversion through the packaged Windows EXE also completes with a reduced fitting budget and records its nonconvergence. Nineteen focused tests and seven packaged startup pages pass. Numerical prediction is not physical color validation.\n\n## Desktop preview.10.21 — Windows test package — 2026-10-21"
+    },
+    {
+      "line": 107,
+      "text": "\n## Desktop preview.10.21 — Windows test package — 2026-10-21\n\n- Add offline sound volume controls: decrease/increase by 3 dB and reset to the converted volume. Always re-encode from the unchanged selected PCM, retaining matched native audio and preview. Limit peak amplitude to avoid clipping; adjustment does not require USB, a backup, or completion of an older camera task."
+    },
+    {
+      "line": 110,
+      "text": "- Add offline sound volume controls: decrease/increase by 3 dB and reset to the converted volume. Always re-encode from the unchanged selected PCM, retaining matched native audio and preview. Limit peak amplitude to avoid clipping; adjustment does not require USB, a backup, or completion of an older camera task.\n- Retain the integrated driver preparation, built-in recovery, FL23, mixed selected-slot A7Look writes/resets, standalone DCP/CUBE conversion, optional Lightroom plugin, repeatable shutter-sound actions, and optional read-only USB stability sample.\n- Vertical Display retains the earlier shared-image aliases and persistent switch. Exclude the Fn/submenu separator rework, full portrait-bank copies and experimental resource compression from this package.\n- Validation is offline and includes the packaged executable; no physical camera acceptance is implied."
+    },
+    {
+      "line": 114,
+      "text": "\n## Desktop preview.10.20 — Mac Terminal USB test build — 2026-10-21\n\n- Integrate the reviewed Terminal sudo launcher: explicit camera operations open Terminal for the user's password, while the GUI stays unprivileged. Preserve the shared installation/recovery engines and user data paths; retain the actual worker outcome."
+    },
+    {
+      "line": 116,
+      "text": "\n- Integrate the reviewed Terminal sudo launcher: explicit camera operations open Terminal for the user's password, while the GUI stays unprivileged. Preserve the shared installation/recovery engines and user data paths; retain the actual worker outcome.\n- Enable libusb debug logging in the administrator process and include it in existing authorization stderr/support logs. Detect a worker that exits without a terminal exit marker instead of waiting forever. Keep shell quoting and native no-USB authorization checks.\n- This test branch excludes the portrait Fn/submenu line-bank rework. Vertical Display uses the earlier resource aliases; it does not create full portrait-bank copies. Resource compression and audio-volume controls are not part of this build."
+    },
+    {
+      "line": 121,
+      "text": "\n## Desktop preview.10.19 — portrait resource I/O correction — 2026-10-21\n\n- Fix the portrait-copy worker treating short reads/writes and every negative syscall return as generic EIO (-5). Complete partial transfers with updated offsets, retry bounded EINTR results, and retain original negative error codes. The old user's -5 report does not establish its underlying errno."
+    },
+    {
+      "line": 126,
+      "text": "- Support exports now include the actual persistent vertical child transaction, which was previously missing when the request pointed to the parent folder. Preserve precise native errors and progress without including programs or calibration.\n- Fault simulations cover short/interrupted reads and writes, capacity errors, full-disk writes, atomic rename rollback, legacy aliases and corrected resources. No physical camera I/O was performed for this correction. Actual recipient re-test remains necessary.\n\n## Desktop preview.10.18 — repeatable actions and optional USB sample — 2026-10-21"
+    },
+    {
+      "line": 128,
+      "text": "\n## Desktop preview.10.18 — repeatable actions and optional USB sample — 2026-10-21\n\n- Keep the button named **Enable Vertical Display** while retaining in-place upgrades. FL23 and selected looks continue to re-plan from fresh state; identical content does not need another write."
+    },
+    {
+      "line": 131,
+      "text": "- Keep the button named **Enable Vertical Display** while retaining in-place upgrades. FL23 and selected looks continue to re-plan from fresh state; identical content does not need another write.\n- Native sound ON/OFF now use fresh byte-based direct plans, without requiring a previous sound job or restoration. Replacing a saved custom sound keeps the existing boot hook and writes a complete inactive audio file before atomically publishing its CSV reference. Same audio is not rewritten. No manual original-sound recovery is required. Final cold reload remains necessary for a changed loaded sound.\n- Add **Check USB connection stability (read-only)** to the connection page: three bulk reads of a fixed graphic bank, byte comparison without hashes, first-error stop, detailed round/error report included in support ZIPs. This optional sample never writes firmware/settings or executes a native worker, and is not a guarantee against later disconnects or a new installation gate.\n- Strengthen offline tests and the packaged self-test to forbid physical USB enumeration unless explicitly replaced with a simulated camera. Native sound-update tests cover alternating slots and failures before/after CSV publication. Physical acceptance of the new overwrite workflow and portrait rendering remains outstanding."
+    },
+    {
+      "line": 133,
+      "text": "- Add **Check USB connection stability (read-only)** to the connection page: three bulk reads of a fixed graphic bank, byte comparison without hashes, first-error stop, detailed round/error report included in support ZIPs. This optional sample never writes firmware/settings or executes a native worker, and is not a guarantee against later disconnects or a new installation gate.\n- Strengthen offline tests and the packaged self-test to forbid physical USB enumeration unless explicitly replaced with a simulated camera. Native sound-update tests cover alternating slots and failures before/after CSV publication. Physical acceptance of the new overwrite workflow and portrait rendering remains outstanding.\n\n## Desktop preview.10.17 — portrait Fn / submenu line geometry — 2026-10-21"
+    },
+    {
+      "line": 135,
+      "text": "\n## Desktop preview.10.17 — portrait Fn / submenu line geometry — 2026-10-21\n\n- Replace the landscape fallback for seven portrait-only Fn grid, submenu frame and scale assets. Fn rows use the native 480-pixel portrait geometry; submenu dividers use their native orientation and dimensions. The corresponding A7C II landscape rasters were compared equal to the A1 II reference; generated portrait visible pixels match its original portrait geometry offline."
+    },
+    {
+      "line": 139,
+      "text": "- Derive two corrected portrait banks from the connected body's original graphics, retaining every unrelated record/index/payload. Do not modify original landscape banks, application code, color tables or recipes. The third bank retains its original alias.\n- Existing installations can use **Enable Vertical Display** without disabling first. Files are completely verified before atomic replacement; OFF and factory recovery also recognize/remove these exact corrected files. Unknown resource files are preserved. Added native syscall tests cover fresh install, legacy upgrade, repeat install, removal and rollback after space/sync/rename failures.\n- Offline geometry, native transactions and host workflow tests passed. No camera I/O was performed; actual portrait menus, both grip directions and loaded rendering remain manual acceptance checks.\n"
+    },
+    {
+      "line": 142,
+      "text": "\n## Desktop preview.10.16 — shared built-in recovery — 2026-10-21\n\n- Fix diagnostic (25): Save Custom Sound creates its workspace and automatically prepares/adopts electronic-sound support before saving the converted clip. No manual On/Attach prerequisite. With no converted clip it requests conversion without camera I/O; a missing dependency stops before enabling support. All writes share the final cold-reload instructions."
+    },
+    {
+      "line": 145,
+      "text": "- Fix diagnostic (25): Save Custom Sound creates its workspace and automatically prepares/adopts electronic-sound support before saving the converted clip. No manual On/Attach prerequisite. With no converted clip it requests conversion without camera I/O; a missing dependency stops before enabling support. All writes share the final cold-reload instructions.\n- Change the common Windows/Mac recovery backend, beyond preview.10.15's retry instructions: privately archive inert project worker/request/report files, clear their shared namespace, then capture current camera programs/settings/names and build a new reset against the bundled original reference. Missing or incomplete old reports do not require an old LUT job. Never execute old work files.\n- Failed GUI restores now use a fresh built-in reset plan instead of requiring the old worker binaries, source reference, ancestor directories or attempted-write windows. Saved body identity may reconnect an existing service session. Already-written recovery still requires a final cold-start verification.\n- Retain an active-loader/concurrent-operation stop and exact fresh byte preflight/readback. Archive failures never delete camera work files. Preserve calibration and all settings outside the declared project reset scope; do not add firmware hash gates or full body backups."
+    },
+    {
+      "line": 146,
+      "text": "- Change the common Windows/Mac recovery backend, beyond preview.10.15's retry instructions: privately archive inert project worker/request/report files, clear their shared namespace, then capture current camera programs/settings/names and build a new reset against the bundled original reference. Missing or incomplete old reports do not require an old LUT job. Never execute old work files.\n- Failed GUI restores now use a fresh built-in reset plan instead of requiring the old worker binaries, source reference, ancestor directories or attempted-write windows. Saved body identity may reconnect an existing service session. Already-written recovery still requires a final cold-start verification.\n- Retain an active-loader/concurrent-operation stop and exact fresh byte preflight/readback. Archive failures never delete camera work files. Preserve calibration and all settings outside the declared project reset scope; do not add firmware hash gates or full body backups.\n- Focused offline recovery, dispatch and GUI cases passed, including both OS paths and partial/missing/stale reports. Recipient camera recovery remains unverified."
+    },
+    {
+      "line": 147,
+      "text": "- Failed GUI restores now use a fresh built-in reset plan instead of requiring the old worker binaries, source reference, ancestor directories or attempted-write windows. Saved body identity may reconnect an existing service session. Already-written recovery still requires a final cold-start verification.\n- Retain an active-loader/concurrent-operation stop and exact fresh byte preflight/readback. Archive failures never delete camera work files. Preserve calibration and all settings outside the declared project reset scope; do not add firmware hash gates or full body backups.\n- Focused offline recovery, dispatch and GUI cases passed, including both OS paths and partial/missing/stale reports. Recipient camera recovery remains unverified.\n"
+    },
+    {
+      "line": 148,
+      "text": "- Retain an active-loader/concurrent-operation stop and exact fresh byte preflight/readback. Archive failures never delete camera work files. Preserve calibration and all settings outside the declared project reset scope; do not add firmware hash gates or full body backups.\n- Focused offline recovery, dispatch and GUI cases passed, including both OS paths and partial/missing/stale reports. Recipient camera recovery remains unverified.\n\n## Desktop preview.10.15 — recovery pre-write retry guidance — 2026-10-21"
+    },
+    {
+      "line": 150,
+      "text": "\n## Desktop preview.10.15 — recovery pre-write retry guidance — 2026-10-21\n\n- Handle diagnostic (21)'s shared temporary-name conflict during a fresh factory reset. When all workers in this attempt were read-only and completed cleanup, show explicit cold-restart instructions and a \"retry recovery; not written yet\" button instead of an unexplained exception or a completion message."
+    },
+    {
+      "line": 152,
+      "text": "\n- Handle diagnostic (21)'s shared temporary-name conflict during a fresh factory reset. When all workers in this attempt were read-only and completed cleanup, show explicit cold-restart instructions and a \"retry recovery; not written yet\" button instead of an unexplained exception or a completion message.\n- Retry creates a fresh plan from the current camera state without requiring an older LUT job. Keep the failed record; do not overwrite or delete unknown camera files. Started writes, unfinished workers, active plugins and resumed transactions retain their distinct recovery handling.\n- Add this existing-state startup case to native package checks. Offline UI/recovery cases passed; clearing the recipient camera's temporary state by a cold restart remains a physical test."
+    },
+    {
+      "line": 153,
+      "text": "- Handle diagnostic (21)'s shared temporary-name conflict during a fresh factory reset. When all workers in this attempt were read-only and completed cleanup, show explicit cold-restart instructions and a \"retry recovery; not written yet\" button instead of an unexplained exception or a completion message.\n- Retry creates a fresh plan from the current camera state without requiring an older LUT job. Keep the failed record; do not overwrite or delete unknown camera files. Started writes, unfinished workers, active plugins and resumed transactions retain their distinct recovery handling.\n- Add this existing-state startup case to native package checks. Offline UI/recovery cases passed; clearing the recipient camera's temporary state by a cold restart remains a physical test.\n"
+    },
+    {
+      "line": 154,
+      "text": "- Retry creates a fresh plan from the current camera state without requiring an older LUT job. Keep the failed record; do not overwrite or delete unknown camera files. Started writes, unfinished workers, active plugins and resumed transactions retain their distinct recovery handling.\n- Add this existing-state startup case to native package checks. Offline UI/recovery cases passed; clearing the recipient camera's temporary state by a cold restart remains a physical test.\n\n## Desktop preview.10.14 — Mac / standalone DCP integration — 2026-10-21"
+    },
+    {
+      "line": 156,
+      "text": "\n## Desktop preview.10.14 — Mac / standalone DCP integration — 2026-10-21\n\n- Integrate the reviewed Mac connection sequence and the existing-record startup fix with standalone offline DCP conversion. Windows and Mac retain the same camera install/recovery engines; Mac-specific changes cover authorization and USB ownership only."
+    },
+    {
+      "line": 158,
+      "text": "\n- Integrate the reviewed Mac connection sequence and the existing-record startup fix with standalone offline DCP conversion. Windows and Mac retain the same camera install/recovery engines; Mac-specific changes cover authorization and USB ownership only.\n- Correct whole-disk identity handling when diskutil omits ParentWholeDisk. Preserve stable no-card connections instead of requiring SD media before service access. Only camera-associated disks are unmounted, without forcing.\n- Add DCP/CUBE contracts to native CI and real reduced-budget Astia fitting to packaged offline checks, alongside the six bundled source-profile evaluations. These checks do not establish physical USB recovery or photo color fidelity."
+    },
+    {
+      "line": 160,
+      "text": "- Correct whole-disk identity handling when diskutil omits ParentWholeDisk. Preserve stable no-card connections instead of requiring SD media before service access. Only camera-associated disks are unmounted, without forcing.\n- Add DCP/CUBE contracts to native CI and real reduced-budget Astia fitting to packaged offline checks, alongside the six bundled source-profile evaluations. These checks do not establish physical USB recovery or photo color fidelity.\n- The separate Windows diagnostic (20) interrupted-write continuation remains unresolved and is not claimed fixed by this integration.\n"
+    },
+    {
+      "line": 163,
+      "text": "\n## Desktop preview.10.12 — standalone DCP conversion — 2026-10-21\n\n- DCP conversion evaluates LookTable / tone locally and fits the supported native stages. No Lightroom, rendering plugin, Node runtime, renderer configuration or network is required. The separate LrC profile-plugin installer remains optional."
+    },
+    {
+      "line": 171,
+      "text": "\n## Desktop preview.10.10 — 2026-10-21\n\n- Fix macOS USB capture failing at `detach_kernel_driver(0)` with access denied. Explicit camera actions request macOS administrator authorization before backend execution; the normal-user GUI remains unprivileged. Passwords are handled only by the system dialog."
+    },
+    {
+      "line": 175,
+      "text": "- Retain exactly the existing Windows/desktop restoration backend and workflow. The Mac adapter changes only authorization/USB host access, preserves the login user's data paths and returns generated files to that account. It does not adopt a different reference-repository firmware/restoration implementation.\n- A connection failure with no identity/native journal now says restoration has not started, rather than presenting an unfinished write. Keep actual interrupted-write evidence and recovery verification intact.\n- 40 focused offline cases passed. Native Apple Silicon CI passed AppleScript compilation and actual packaged privileged-worker execution through CI sudo: euid 0, original user HOME/data paths and returned ownership were verified without USB. Packaged offline/GUI, ExifTool, signature and DMG checks also passed. This does not validate the recipient's interactive authorization or physical camera connection; those remain recipient tests.\n"
+    },
+    {
+      "line": 179,
+      "text": "\n## Desktop preview.10.9 — 2026-10-21\n\n- Cancel Intel macOS packaging at the owner’s request. Keep Windows x64 and macOS Apple Silicon ARM64 only; remove the Intel CI target and dependency override."
+    },
+    {
+      "line": 188,
+      "text": "\n## Desktop preview.10.8 — 2026-10-21\n\n- Rename Home continuation to “继续安装” (Continue installation). The post-restart dialog and persistent status explicitly tell users to reconnect USB and click it. Standalone look instructions no longer direct users to a removed verification button."
+    },
+    {
+      "line": 191,
+      "text": "- Rename Home continuation to “继续安装” (Continue installation). The post-restart dialog and persistent status explicitly tell users to reconnect USB and click it. Standalone look instructions no longer direct users to a removed verification button.\n- Verified factory recovery clears active one-click / FL23 / look continuation pointers and the look editor, restoring a fresh Home state. Keep diagnostic evidence and pending recovery until its completion check succeeds.\n- Add visible LUT guidance in the compiler/import page plus a bilingual format guide: direct GUI CUBE input is Sony ST / sRGB and output is sRGB, not S-Log3. Explain Log bridging, 3D CUBE structure, DCP rendering and approximation limits.\n- Add separate ARM64 / Intel native Mac APP/DMG builds and CI asset import/export. Exclude Windows helpers, use fresh DMG staging and verify signatures/container structure. Targeted Mac storage unmount and interface capture draw on MDHan's adapter; preserve service-first admission."
+    },
+    {
+      "line": 197,
+      "text": "\n## Desktop preview.10.7 — 2026-10-21\n\n- Simplify workflow: no historical recovery-verification check at one-click startup. Custom looks perform checks/write/full readback through Apply, without a separate verification button or a post-write editor lock. Sound on/off and repeated completed auditions no longer require a recovery record. One-click installation retains one final combined check after all selected camera changes and restart; recovery retains its own mandatory completion check."
+    },
+    {
+      "line": 199,
+      "text": "\n- Simplify workflow: no historical recovery-verification check at one-click startup. Custom looks perform checks/write/full readback through Apply, without a separate verification button or a post-write editor lock. Sound on/off and repeated completed auditions no longer require a recovery record. One-click installation retains one final combined check after all selected camera changes and restart; recovery retains its own mandatory completion check.\n- After these workflow changes, use focused checks only (50 relevant cases); defer the next full regression to formal release. The earlier 334/20 result below predates the last workflow simplification.\n"
+    },
+    {
+      "line": 203,
+      "text": "- Fix direct upgrade from the project's published v2-era FL23 helper/curve table. Reproduce its `cpapp-b.bin + 0x138832` conflict using the original 2.01 programs and published patch list; migrate both reviewed old windows while preserving unrelated code and LUTs.\n- Continue can re-plan an accounted read-only failure in a fresh child without reinstalling drivers. Preserve failed jobs and unknown native outcomes. Diagnostic exports now include original child-stage/error summaries without program or calibration snapshots.\n- Show a startup notice explaining the camera's “Check the connected device” message during tool connection/driver switching, and distinguish it from actual tool errors.\n- Recovery remains at 70% with “not complete; restart and verify” until loaded-state verification passes. Update the main button and restart dialog accordingly; keep physical acceptance separate."
+    },
+    {
+      "line": 205,
+      "text": "- Show a startup notice explaining the camera's “Check the connected device” message during tool connection/driver switching, and distinguish it from actual tool errors.\n- Recovery remains at 70% with “not complete; restart and verify” until loaded-state verification passes. Update the main button and restart dialog accordingly; keep physical acceptance separate.\n- 334 tests passed / 20 skipped. Full offline one-click plans passed for stock, published old FL23 and old FL23 with LUTs; recovery/startup dialogs were rendered and inspected. No camera operations were performed for this update. The external reports lack actual source bytes/child state, so their exact original states still require recipient validation.\n"
+    },
+    {
+      "line": 206,
+      "text": "- Recovery remains at 70% with “not complete; restart and verify” until loaded-state verification passes. Update the main button and restart dialog accordingly; keep physical acceptance separate.\n- 334 tests passed / 20 skipped. Full offline one-click plans passed for stock, published old FL23 and old FL23 with LUTs; recovery/startup dialogs were rendered and inspected. No camera operations were performed for this update. The external reports lack actual source bytes/child state, so their exact original states still require recipient validation.\n\n## Desktop preview.10.6 — 2026-10-21"
+    },
+    {
+      "line": 208,
+      "text": "\n## Desktop preview.10.6 — 2026-10-21\n\n- Save converted audio directly. Audition, listening confirmation and cold-recovery records are optional; cold reload is requested after actual write/readback."
+    },
+    {
+      "line": 210,
+      "text": "\n- Save converted audio directly. Audition, listening confirmation and cold-recovery records are optional; cold reload is requested after actual write/readback.\n- Bundle the missing Unicorn Python package/native DLL, pin the build dependency and execute a real ARM64 instruction in frozen self-test. Resolve compiler/emulator dependencies before creating a write intent.\n- Automatically retire a failed host preparation with no native invocation, preserving its evidence and starting a new job. Unknown native writes are not replayed."
+    },
+    {
+      "line": 212,
+      "text": "- Bundle the missing Unicorn Python package/native DLL, pin the build dependency and execute a real ARM64 instruction in frozen self-test. Resolve compiler/emulator dependencies before creating a write intent.\n- Automatically retire a failed host preparation with no native invocation, preserving its evidence and starting a new job. Unknown native writes are not replayed.\n- 156 related cases passed. The packaged EXE used the owner's local program backup/current payload to verify valid/missing/oversized CSV, exact inverse and compile five native workers without camera I/O. Physical persistent installation remains owner-operated validation.\n"
+    },
+    {
+      "line": 215,
+      "text": "\n## Desktop preview.10.5 — 2026-10-21\n\n- Successful audition now opens instructions to unplug USB while keeping the camera powered, test an electronic exposure, reconnect and confirm, then cold-recover before saving."
+    },
+    {
+      "line": 218,
+      "text": "- Successful audition now opens instructions to unplug USB while keeping the camera powered, test an electronic exposure, reconnect and confirm, then cold-recover before saving.\n- Missing audition/listening/recovery steps return a guided waiting state instead of a `Cold-recover` exception. Show the appropriate dialog, do not report installation complete, create a write job or accept owner checks automatically.\n- 151 related regressions passed, including exactly-once dialogs after worker exit. Both dialogs were rendered and inspected. The packaged EXE handled saving from a copy of the owner's current state with no camera I/O; physical persistent installation remains owner-operated acceptance.\n"
+    },
+    {
+      "line": 221,
+      "text": "\n## Desktop preview.10.4 — 2026-10-21\n\n- Replace an exact owned marker from a completed prior registration before audition, fixing pre-allocation `-17 / EEXIST` without manual file cleanup. Archive the marker; never release an old CP address that may be stale after reboot. Cold power-off reclaims leased temporary buffers."
+    },
+    {
+      "line": 227,
+      "text": "\n## Desktop preview.10.3 — 2026-10-21\n\n- Fix legacy sound jobs being routed through LUT USB-descriptor binding, producing “Legacy job has no stable USB body binding”. Sound sessions retain their original Sony service body identity for normal USB, existing service sessions and re-enumeration waiting."
+    },
+    {
+      "line": 233,
+      "text": "\n## Desktop preview.10.2 — 2026-10-21\n\n- Release the active binding of a failed sound-enable job only when its read-only checks and temporary cleanup completed without any write invocation. Retain original evidence; unknown outcomes remain blocked."
+    },
+    {
+      "line": 235,
+      "text": "\n- Release the active binding of a failed sound-enable job only when its read-only checks and temporary cleanup completed without any write invocation. Retain original evidence; unknown outcomes remain blocked.\n- Audition can freshly adopt already-enabled sound support without writing the permanent switch. If disabled, it specifically asks the user to enable and cold-reload first.\n- Sound sessions now use USB re-enumeration waiting and body-bound attachment to an existing service endpoint between preflight and apply."
+    },
+    {
+      "line": 238,
+      "text": "- Sound sessions now use USB re-enumeration waiting and body-bound attachment to an existing service endpoint between preflight and apply.\n- 77 audio-related offline tests passed; the owner's old failed job passed read-only classification. No camera operations were performed; physical audition acceptance remains pending.\n\n## Desktop preview.10.1 — 2026-10-21"
+    },
+    {
+      "line": 240,
+      "text": "\n## Desktop preview.10.1 — 2026-10-21\n\n- Decouple audio conversion from camera jobs. Each conversion gets a fresh offline job; unresolved enable/audition/install records no longer block conversion. No prior camera enable or backup is needed."
+    },
+    {
+      "line": 244,
+      "text": "- Store the selected conversion separately, preserving camera transaction state. Audition/install retain their own checks and accepted-payload binding.\n- Remove partial outputs after failure/cancellation, preserving source files and the previous successful candidate. Conversion errors no longer imply unknown camera writes.\n- 62 audio cases passed. The packaged EXE converted the owner's selected source/parameters successfully with the old camera record and source bytes unchanged.\n"
+    },
+    {
+      "line": 247,
+      "text": "\n## Desktop preview.10 — 2026-10-21\n\n- Replace the custom-look page with an incremental operation list. No slots are selected initially; new items default to Restore ST. Slot, action, file and optional name share one item, supporting mixed batches."
+    },
+    {
+      "line": 251,
+      "text": "- Compose imports/resets into one plan and full readback, preserving omitted slots, calibration, FL23, sound and Vertical Display. Support legacy layouts and clear restored-slot RAW profile mappings.\n- Restore/lock pending plans, retain actual returned workspaces and clear completed lists. Proven pre-write failures can be edited/retried; unknown writes are not replayed.\n- Fix Home's stale new-install label after entering reload wait.\n- Include the missing `wave` module. Real EXE WAV/MP3 import passed; frozen self-test now converts generated mono WAV, stereo WAV and stereo MP3."
+    },
+    {
+      "line": 255,
+      "text": "\n## Desktop preview.9.2 — 2026-10-21\n\n- Audit two full stock → import → cold verification → restore cycles. New recovery does not require a physical-photo checkbox; historical jobs are not replayed."
+    },
+    {
+      "line": 257,
+      "text": "\n- Audit two full stock → import → cold verification → restore cycles. New recovery does not require a physical-photo checkbox; historical jobs are not replayed.\n- Recover child completion when the parent lost its result, using fresh read-only evidence. Handle unstarted resource dispatch, ready resource checkpoints and nested program children; preserve unknown nonempty children instead of replaying writes.\n- Mark an already-original, read-only-verified no-op as finished immediately. Restore missing completed-step bookkeeping after parent interruption."
+    },
+    {
+      "line": 261,
+      "text": "\n## Desktop preview.9.1 — 2026-10-21\n\n- Fix Restore being redirected to verification of an old `LOADED` recovery with an already verified read-only mount. Later feature installation then caused a program mismatch instead of starting a new restore."
+    },
+    {
+      "line": 263,
+      "text": "\n- Fix Restore being redirected to verification of an old `LOADED` recovery with an already verified read-only mount. Later feature installation then caused a program mismatch instead of starting a new restore.\n- Completed device verification exits automatic continuation. Restore now creates a fresh current-state plan; awaiting reload, unverified read-only state and unknown writes still take precedence. Physical acceptance remains separate and old evidence is preserved.\n- 78 related offline tests passed, plus local-only discovery against the owner's existing records. No new camera I/O."
+    },
+    {
+      "line": 267,
+      "text": "\n## Desktop preview.9 — 2026-10-21\n\n- Include the saved native Vertical Display switch in new combined FL23/look/sound plans. Install and fully read back its three resources before saving ON, then load all selected features at the final cold restart; remove the separate session-only final step."
+    },
+    {
+      "line": 271,
+      "text": "- Verify stored, Backup-RAM and native running values plus resources after reload. Stop on mismatch instead of faking persistence with a temporary RAM enable.\n- The Vertical Display page saves ON/OFF. Disable and factory recovery save OFF before turning off runtime display and removing resources. Older jobs retain their plan without silently adding new writes.\n- Retain preview.8.1 completion dialogs, archived errors and local result viewing. Persistence has offline validation only; no owner-camera write/cold-restart acceptance has occurred for this new path.\n"
+    },
+    {
+      "line": 274,
+      "text": "\n## Desktop preview.8.1 — 2026-10-21\n\n- Show a final guided-setup completion dialog with selected looks/features, unselected sound and the current-run-only Vertical Display scope. Add a local-only previous-result button on Home."
+    },
+    {
+      "line": 277,
+      "text": "- Show a final guided-setup completion dialog with selected looks/features, unselected sound and the current-run-only Vertical Display scope. Add a local-only previous-result button on Home.\n- Archive resolved errors while keeping failed child transactions and full logs. Print a short result summary; new errors remain fully reported.\n- The owner manually completed the resource reload, combined program write/readback and final loaded-state check: `COMPLETE` / `LOADED`. Vertical Display reported running `ON`, saved `OFF`; sound was unselected. Physical shooting, video color and long-term stability still require acceptance.\n"
+    },
+    {
+      "line": 280,
+      "text": "\n## Desktop preview.8 — 2026-10-21\n\n- Handle fully committed names followed by read-only remount `EBUSY / -16`: verify all names and untouched programs, prepare reload and request explicit power removal. Verify a new boot and read-only mount before remaining program writes; do not rewrite names/drivers. The program installer's read-only prerequisite stays intact."
+    },
+    {
+      "line": 284,
+      "text": "- Distinguish name-stage pause from program completion. Wait if reload was incomplete; skip extra power removal if the mount already recovered. Verification of names alone cannot mark the program installed.\n- Preserve failed jobs and remove only exact completed temporary artifacts. Missing/partial reports, changed bytes and failed rollback/cleanup remain stopped.\n- Integrate main PR #6: native FL23 photo/movie curve routing and missing-USB-device handling. Synchronize desktop curve assets and support edited-byte upgrades from prior curves while preserving LUT hooks/slots, without firmware provenance hash gates.\n- Live read-only checks on the owner's body verified all 68 target names/original program windows, a writable mount and image mode 2. Complete continuation and video appearance still require physical acceptance; offline passing tests are not installation evidence."
+    },
+    {
+      "line": 288,
+      "text": "\n## Desktop preview.7 — 2026-10-21\n\n- Add six-slot batch import on the normal Creative Looks page, defaulting to NC/CC/NN/Astia/GR Positive/GR Negative. Empty fields preserve slots; optional titles and individual ST reset remain."
+    },
+    {
+      "line": 293,
+      "text": "- Show bindings/skipped installation for both USB identities. Retain WinUSB/libusbK/libusb0 without reinstall/elevation; reuse the fresh service scan and bound installer waiting to 180 seconds with original errors retained.\n- Fix approximately 9 MB of simultaneous name staging causing `phase=3/status=-28`. Byte-based writes replace files atomically one at a time, preserve original data/index information for rollback and reserve rollback space. Native fault tests cover writes, renames and synchronization.\n- Preserve errno, staging/commit counts, rollback, cleanup and read-only results. Continue can review an older zero-commit ENOSPC, remove exact completed temporary artifacts and use a new transaction; failed evidence remains intact. Unknown outcomes stay stopped.\n- Offline passing results do not establish physical preview/color/stability acceptance. This update does not automatically reflash the camera."
+    },
+    {
+      "line": 294,
+      "text": "- Fix approximately 9 MB of simultaneous name staging causing `phase=3/status=-28`. Byte-based writes replace files atomically one at a time, preserve original data/index information for rollback and reserve rollback space. Native fault tests cover writes, renames and synchronization.\n- Preserve errno, staging/commit counts, rollback, cleanup and read-only results. Continue can review an older zero-commit ENOSPC, remove exact completed temporary artifacts and use a new transaction; failed evidence remains intact. Unknown outcomes stay stopped.\n- Offline passing results do not establish physical preview/color/stability acceptance. This update does not automatically reflash the camera.\n"
+    },
+    {
+      "line": 297,
+      "text": "\n## Desktop preview.6 — 2026-10-21\n\n- Home setup now installs six built-in looks by default: NC, CC, NN, Astia, GR Positive Film and GR Negative Film in custom slots 1–6. No per-slot file selection is required; custom-file mode remains available."
+    },
+    {
+      "line": 302,
+      "text": "- Show a completion dialog with USB removal, access-light waiting, shutdown, battery removal for at least one minute, restart and loaded-state verification. Add detailed confirmation text and a reusable help button.\n- Fix installation progress incorrectly labeled as restoration. Explain that enabling FL23 after factory recovery is a new change requiring restart; verification does not flash again.\n- Move standalone FL23 loaded-state checks into collapsed optional diagnostics. After the restart and camera checks, reconnecting to the computer is not required for use.\n- Standalone FL23 enable/disable finishes at 100% after writing and complete readback. Release the UI controls immediately; power removal loads the finished change and is not a pending computer-side installation step."
+    },
+    {
+      "line": 305,
+      "text": "- Standalone FL23 enable/disable finishes at 100% after writing and complete readback. Release the UI controls immediately; power removal loads the finished change and is not a pending computer-side installation step.\n- All successful cold-reload paths show detailed guidance, including sound toggles/persistence/restoration, post-audition cleanup and historical recovery. Temporary audition and adoption of enabled sound do not request restart. Failed/unknown outcomes do not tell users to unplug. Rename misleading “validation only complete” progress to “pre-write checks passed.”\n- No camera writes in this update; the new complete installer still needs manual physical acceptance.\n"
+    },
+    {
+      "line": 308,
+      "text": "\n## Desktop preview.5 — 2026-10-21\n\n- Add guided home installation: driver preparation, composed FL23/selected A7Look/native-sound writes and complete readback; continue with the same button after cold reload for loaded-state checks, sound-tool adoption, optional Lightroom plugin and session-only Vertical Display. Unselected slots remain; unknown writes are not replayed."
+    },
+    {
+      "line": 316,
+      "text": "- Enumerate all Sony USB identities/interfaces without installing drivers for unknown PIDs. The reported `054C:0D68` remains unidentified; this body used normal/service `0E8A`/`0336`.\n- Expand individual/repeated six-slot imports, selective reset, mixed-slot preservation, interruption/mount cleanup and guided workflow tests. **The owner's factory recovery passed new-boot, complete readback, loaded-state and read-only mount verification; new one-click installation/every feature have not all passed physical shooting acceptance.** Development branch/local test bundle only.\n\n## Desktop preview.4 — 2026-10-21"
+    },
+    {
+      "line": 318,
+      "text": "\n## Desktop preview.4 — 2026-10-21\n\n- Unify factory recovery: discover unfinished transactions, ignore later attempts stopped before writes, and verify loaded state after completed recovery."
+    },
+    {
+      "line": 320,
+      "text": "\n- Unify factory recovery: discover unfinished transactions, ignore later attempts stopped before writes, and verify loaded state after completed recovery.\n- Re-plan remaining program windows, names, settings and reload preparation from current bytes, preserving prior evidence and skipping matching content.\n- Recover a complete native report directly from the camera after host download failure. Account for execution/cleanup/read-only mount before removing exact temporary contents; delete the result last so cleanup interruption remains recoverable."
+    },
+    {
+      "line": 322,
+      "text": "- Re-plan remaining program windows, names, settings and reload preparation from current bytes, preserving prior evidence and skipping matching content.\n- Recover a complete native report directly from the camera after host download failure. Account for execution/cleanup/read-only mount before removing exact temporary contents; delete the result last so cleanup interruption remains recoverable.\n- 92 offline cases passed; 9 skipped without private fixtures. Coverage includes name ENOSPC/I/O errors, partial programs/names, settings interruption, missing results, foreign temporary files, multiple bodies, repeated clicks and missing temporary state with an unconfirmed outcome. The owner's actual saved report was parsed and simulated offline. Manual camera continuation remains pending.\n"
+    },
+    {
+      "line": 325,
+      "text": "\n## Desktop preview.3.1 — 2026-10-21\n\n- The main factory-recovery button recognizes the selected accounted name-space failure and, after write confirmation, dispatches continuation. A later failed full attempt does not hide the original source; completed continuations are not replayed."
+    },
+    {
+      "line": 327,
+      "text": "\n- The main factory-recovery button recognizes the selected accounted name-space failure and, after write confirmation, dispatches continuation. A later failed full attempt does not hide the original source; completed continuations are not replayed.\n\n## Desktop preview.3 — 2026-10-21"
+    },
+    {
+      "line": 329,
+      "text": "\n## Desktop preview.3 — 2026-10-21\n\n- Fix factory-name ENOSPC from staging all 68 resources: reconstruct and atomically replace one file at a time; check capacity before program writes."
+    },
+    {
+      "line": 332,
+      "text": "- Fix factory-name ENOSPC from staging all 68 resources: reconstruct and atomically replace one file at a time; check capacity before program writes.\n- Add explicit continuation for accounted name-space failures: validate completed program bytes and the failed report; continue names/settings/reload preparation without program replay, preserving the failed transaction.\n- Compiled ARM64 offline tests cover the original failure, 68 resources, space/inode limits, write/rename/fsync faults and mapped old inodes. Manual camera acceptance remains pending. Development branch only.\n"
+    },
+    {
+      "line": 333,
+      "text": "- Add explicit continuation for accounted name-space failures: validate completed program bytes and the failed report; continue names/settings/reload preparation without program replay, preserving the failed transaction.\n- Compiled ARM64 offline tests cover the original failure, 68 resources, space/inode limits, write/rename/fsync faults and mapped old inodes. Manual camera acceptance remains pending. Development branch only.\n\n## Desktop development preview — 2026-10-21"
+    },
+    {
+      "line": 335,
+      "text": "\n## Desktop development preview — 2026-10-21\n\n**preview.2:** direct FL23 enable/removal and custom-slot import/ST-default reset no longer require complete backups. Factory functionality restoration uses included original 2.01 project regions, preserving body calibration without old backups or a full firmware download. Former recipes are not recovered. New flows have offline validation only and await manual physical acceptance."
+    },
+    {
+      "line": 342,
+      "text": "- Added manual camera driver removal with package export and Windows native-driver rebinding; no automatic system restart.\n- Fixed rejection of Zadig/libusbK INF files using `USB\\%DeviceID%` references; elevated worker failures now preserve the original error.\n- Replaced the desktop battery field with per-operation power confirmation; stream administrator progress, retain raw Windows output and recover the finished GUI state.\n- Added same-body automatic initial-checkpoint selection alongside manual complete recovery and independent LUT slot restoration."
+    },
+    {
+      "line": 344,
+      "text": "- Replaced the desktop battery field with per-operation power confirmation; stream administrator progress, retain raw Windows output and recover the finished GUI state.\n- Added same-body automatic initial-checkpoint selection alongside manual complete recovery and independent LUT slot restoration.\n- Connected FL23, A7Look import/compiler/LrC plugin installation, session-only Vertical Display and custom electronic shutter sound workflows.\n- Retained the unchanged-name no-op fix and restored the byte-window native installer interface needed by recovery."
+    },
+    {
+      "line": 346,
+      "text": "- Connected FL23, A7Look import/compiler/LrC plugin installation, session-only Vertical Display and custom electronic shutter sound workflows.\n- Retained the unchanged-name no-op fix and restored the byte-window native installer interface needed by recovery.\n\nDevelopment branch only. Packaged offline checks and physical camera acceptance are separate; this is not a new formal Release. [Desktop guide](../../README.md)."
+    },
+    {
+      "line": 353,
+      "text": "\n- **Independent Recovery:** restore the selected complete checkpoint or original FL23 backup2 without the original workspace or any LUT job. The tool saves a compressed copy of the current state, restores programs, project names/settings, and fully reads back the result. Recovery instructions.\n- **Separate responsibilities:** FL23 installs/verifies; LUT imports/restores individual slots; Recovery performs complete rollback. FL23's restore command and desktop button have been removed.\n- **Both installation orders:** FL23 → LUT and LUT → FL23 preserve each other's changes. Verification accepts the expected later changes."
+    },
+    {
+      "line": 354,
+      "text": "- **Independent Recovery:** restore the selected complete checkpoint or original FL23 backup2 without the original workspace or any LUT job. The tool saves a compressed copy of the current state, restores programs, project names/settings, and fully reads back the result. Recovery instructions.\n- **Separate responsibilities:** FL23 installs/verifies; LUT imports/restores individual slots; Recovery performs complete rollback. FL23's restore command and desktop button have been removed.\n- **Both installation orders:** FL23 → LUT and LUT → FL23 preserve each other's changes. Verification accepts the expected later changes.\n- **Smaller LUT backups:** share a compressed foundation and record the selected slot's pre-write state. Later imports retain changed data instead of repeated complete copies. Keep the shared storage directories with the jobs/backups."
+    },
+    {
+      "line": 360,
+      "text": "- **USB connection:** authenticate directly instead of blocking on storage `02/04/01` or application-query Busy. Confirm the USB model and bind the service backup's four-byte AP serial (`0x00E70003`) using the original hex-text digest, retaining existing backups. No separate USB-fix tool is required; Windows device drivers are still required.\n- **Failure explanations:** integrated LUT job diagnostics explain native-name transaction failures from saved evidence without reopening USB or blindly repeating a write.\n\n**Validation:** offline suites passed: 131 LUT cases (35 skipped without private fixtures), 22 FL23 cases and 46 host/USB cases, including nine service-first connection/failure cases. Historical real backup data reproduces its original body binding. Separately, 7 real-file order/slot cases and 44 native-name syscall/failure cases passed. This release update did not operate a camera; the user's reported service-route installation is separate evidence. Physical complete Recovery and Mac USB remain untested. Evidence and limits."
+    },
+    {
+      "line": 362,
+      "text": "\n**Validation:** offline suites passed: 131 LUT cases (35 skipped without private fixtures), 22 FL23 cases and 46 host/USB cases, including nine service-first connection/failure cases. Historical real backup data reproduces its original body binding. Separately, 7 real-file order/slot cases and 44 native-name syscall/failure cases passed. This release update did not operate a camera; the user's reported service-route installation is separate evidence. Physical complete Recovery and Mac USB remain untested. Evidence and limits.\n\nThese fixes are included in `main` and the updated v2.2-preview.1 commit/release, as authorized by the owner. Existing v2.1/v1.0 releases remain available. ZIP and single-file tools are in the [preview release](https://github.com/QAQLeonard/a7c2-fl23-research/releases/tag/v2.2-preview.1)."
+    }
+  ]
+}

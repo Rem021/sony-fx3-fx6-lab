@@ -1,0 +1,18 @@
+{
+  "schema": "fx6-hybrid-fx6kernel-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-ap-candidate/guest-three-entry.cpio",
+  "source_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel.cpio",
+  "output_sha256": "1cc4f88e77d97c1905ed3018564ff89c38451fc94506ebf0d2da7812709fbdeb",
+  "fixed_bytes": 453184500,
+  "output_bytes": 453184500,
+  "target": {
+    "name": "simulation/fx3-cp-backup-reset-v1.ko",
+    "old_bytes": 190648,
+    "old_sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca",
+    "new_bytes": 66552,
+    "new_sha256": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa"
+  },
+  "replaced_member_count": 1,
+  "scope": "Only the named CPIO member payload/header size changed; all other member bytes copied; trailing padding zeros to fixed length."
+}

@@ -1,0 +1,38 @@
+{
+  "timestamp_utc": "2026-11-05T17:36:54.392184+00:00",
+  "status": "offline_candidate_returned_for_correction_not_runtime_ready",
+  "task": "task_e0f4f68af4d4",
+  "dispatch": "ctx_1ffa7ba88ade",
+  "candidate_manifest_sha256": "e145f8c6f7fc0088ee36c3398649027c6eb8dcfcbee14e6ea2b98dbfad4f9fbb",
+  "VM_started": false,
+  "VM_authorized": false,
+  "independent_checks": {
+    "invalid_checksum_packet": "+$OK#00 accepted as OK",
+    "absent_checksum_packet": "+$OK# accepted as OK",
+    "duplicate_T05_thread": "T05thread:1;thread:2; accepted as thread 2",
+    "truncated_map": "all appFw mapping row ends changed to start+1, still accepted",
+    "historical_timing": {
+      "epoch5_map_end_line": 8950,
+      "model_assert_lines": [
+        11688,
+        11738
+      ],
+      "meaning": "historical map precedes assertions; does not guarantee live arming before reads"
+    },
+    "identity_reads_for_current_ELF": 104
+  },
+  "required_fixes": [
+    "complete offline execution adapter and lifecycle integration, keep launch disabled pending specific approval",
+    "RSP framing/checksum/fragmentation and strict stop parsing with transport tests",
+    "distinguish QEMU CPU thread from guest OS TID; use explicit TLS/frame/code identity; report unknown guest TID",
+    "enforce local full hashes, current-run map coverage/perms/epoch and identity/data/time budgets",
+    "track possibly-installed breakpoints before send; preserve uncertainty on lost acknowledgement; stopped cleanup",
+    "fresh owned output paths, old serial never reused for output",
+    "audit inherited API16 cleanup contract and do not silently remove existing restoration"
+  ],
+  "references": [
+    "https://www.qemu.org/docs/master/system/gdb.html",
+    "https://sourceware.org/gdb/current/onlinedocs/gdb.html/Packets.html"
+  ],
+  "next": "DeepSeek offline fixes and complete adapter or precise documented incompatibility; no repeated broad static searches"
+}

@@ -1,0 +1,54 @@
+{
+  "state": "STATIC_CANDIDATE_DO_NOT_DEPLOY",
+  "candidate_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-ap-candidate/guest-three-entry.cpio",
+  "candidate_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "candidate_bytes": 453184500,
+  "source_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-entry-candidate/guest-two-entry.cpio",
+  "source_sha256": "ff2f927de24b801d334ce9111fb486fb2af85d24c509ab20c43eda0a69ffdc40",
+  "exact_three_member_allowlist": [
+    {
+      "name": "usr/bin/bootin.elf",
+      "fx3_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "candidate_sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+      "fx3_bytes": 23960,
+      "candidate_bytes": 23960
+    },
+    {
+      "name": "usr/bin/im.elf",
+      "fx3_sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+      "candidate_sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+      "fx3_bytes": 40920,
+      "candidate_bytes": 40920
+    },
+    {
+      "name": "usr/lib/appFw.so",
+      "fx3_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "candidate_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "fx3_bytes": 79015712,
+      "candidate_bytes": 50520424
+    }
+  ],
+  "historical_20_ELF_gate_exact_rejections": [
+    "usr/bin/bootin.elf",
+    "usr/bin/im.elf"
+  ],
+  "all_other_member_header_payload_and_order_fixed": true,
+  "frozen_platform_sha256": {
+    "qemu_binary": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+    "fx3_kernel": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "fx3_dtb_full_binary": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+    "software_guest_cpio": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+    "english_generation4_backup": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+  },
+  "frozen_dtb_initrd_range": {
+    "linux,initrd-start": "0x440000000",
+    "linux,initrd-end": "0x45b030bf4"
+  },
+  "runtime_unknowns": [
+    "47 immediate relocation symbols and actual global link-map order",
+    "FX3 diagnostic guards 48/60 word mismatch with FX6 AP",
+    "182 unresolved delayed imports plus 15 FX6-libmpr-only candidates",
+    "first natural FX6 AP IPC, hardware and user-visible behavior"
+  ],
+  "runtime_policy": "Only existing runtime owner may schedule one read-only load observation; no guest changes or guard bypass."
+}

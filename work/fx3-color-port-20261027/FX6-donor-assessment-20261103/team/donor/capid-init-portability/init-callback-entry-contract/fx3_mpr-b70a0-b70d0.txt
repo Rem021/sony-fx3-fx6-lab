@@ -1,0 +1,20 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b6844 <_ZN3mpr4InitERKNS_11initInParamE>:
+   b70a0: 97ff24c8     	bl	0x803c0 <_ZN3mpr13IntegEditInitEv@plt>
+   b70a4: 97ff29bb     	bl	0x81790 <_ZN3mpr14IntegEventInitEv@plt>
+   b70a8: 97ff205e     	bl	0x7f220 <_ZN3mpr6dbgcmd4initEv@plt>
+   b70ac: 97ff1ca1     	bl	0x7e330 <_ZN3mpr3dbg4initEv@plt>
+   b70b0: 17fffe00     	b	0xb68b0 <_ZN3mpr4InitERKNS_11initInParamE+0x6c>
+   b70b4: 9101e3a0     	add	x0, x29, #0x78
+   b70b8: a9007c1f     	stp	xzr, xzr, [x0]
+   b70bc: 910223a0     	add	x0, x29, #0x88
+   b70c0: a9007c1f     	stp	xzr, xzr, [x0]
+   b70c4: 17ffff64     	b	0xb6e54 <_ZN3mpr4InitERKNS_11initInParamE+0x610>
+
+00000000000b70c8 <_ZNSt17_Function_handlerIFbtEN4sidb11ValueChangeItEEE9_M_invokeERKSt9_Any_dataOt>:
+   b70c8: 79400002     	ldrh	w2, [x0]
+   b70cc: 79400021     	ldrh	w1, [x1]

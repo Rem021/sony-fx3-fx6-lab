@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-11-01T11:25:31.552608+00:00",
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-ioctl-trace.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v7.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v7.so"
+  ],
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "source_sha256": "5ddc542d670f69f6637c6fcee6ee2dc521d1762bca886e9df4da6f8efad2335f",
+  "explicit_original_glibc": true,
+  "bundled_libc_linked": false,
+  "observation": "Adds MREMAP_FIXED target-range conservative pre-invalidation to v6. Own libc API lifetime observation is not claimed to catch raw syscall remapping. Original operations/results/errno unchanged; v5/v6 unrun and preserved.",
+  "output_sha256": "b7001d8a61b7f8c0152557f689659f8af35c53d17a34e791f182efdde7b1d3da"
+}

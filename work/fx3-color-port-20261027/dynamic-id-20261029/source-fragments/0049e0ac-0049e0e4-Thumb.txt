@@ -1,0 +1,21 @@
+0049e0ac push       {r7, lr}
+0049e0ae mov        r7, sp
+0049e0b0 movw       r1, #0xbd00
+0049e0b4 movt       r1, #0x100
+0049e0b8 str        r0, [r1]
+0049e0ba blx        #0x52c474
+0049e0be cbz        r0, #0x49e0ca
+0049e0c0 movs       r0, #0x41
+0049e0c2 movs       r1, #1
+0049e0c4 blx        #0x523874
+0049e0c8 b          #0x49e0d2
+0049e0ca movs       r0, #0x41
+0049e0cc movs       r1, #1
+0049e0ce blx        #0x52362c
+0049e0d2 mov        r2, r0
+0049e0d4 cbz        r2, #0x49e0e2
+0049e0d6 adr        r0, #0xc
+0049e0d8 adr        r1, #0x38
+0049e0da pop.w      {r7, lr}
+0049e0de b.w        #0x521f80
+0049e0e2 pop        {r7, pc}

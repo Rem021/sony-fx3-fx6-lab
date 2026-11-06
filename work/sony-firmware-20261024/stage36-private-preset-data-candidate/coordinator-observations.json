@@ -1,0 +1,59 @@
+{
+  "schema": "fx3-stage36-coordinator-review/1",
+  "created_utc": "2026-10-25T23:38:58.949846+00:00",
+  "status": "PASS_PRIVATE_DATA_NATIVE_PACKING_AND_RESELECTION_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent source-byte/structural/hash review; no independent implementation replay or camera verification.",
+  "previous_stage35_sealed_files_verified": 9,
+  "source_instruction_records_checked": 694,
+  "additional_next_consumer_instruction_records_checked": 113,
+  "bounded_executions": 18,
+  "original_record_sha256": "f5cb9ba1652bdad279e55ed0d61d43b0581c19bec9ad18983f9c31959cffbf71",
+  "candidate_record_sha256": "e47e1065ad438f83f86854ec93abc044b0edf05450b2315560a143bd50b6e3ac",
+  "changed_record_bytes": [
+    "0xb0",
+    "0xb1",
+    "0xb2"
+  ],
+  "changed_partial_parameter_bytes": [
+    "0x2d",
+    "0x2e",
+    "0x2f"
+  ],
+  "candidate_native_packed_target": 16000000,
+  "preserved_trace": 25999360,
+  "preserved_CPB": 26000000,
+  "source_global_record_and_second_owner_unchanged": true,
+  "host_fixture_mutations_are_not_native_MAIN_writer": [
+    {
+      "address": "0x1110e000",
+      "bytes": 8,
+      "old": "0xffffffc0013c5798",
+      "new": "0x1110e010",
+      "role": "Explicit guest-fixture pointer input, not executed firmware hook."
+    },
+    {
+      "address": "0x1110e0c0",
+      "bytes": 4,
+      "old": 382783,
+      "new": 249999,
+      "role": "Explicit guest-fixture candidate field, not actual HAL output."
+    }
+  ],
+  "native_original_selector_resets_new_default_but_old_packet_and_copy_remain": true,
+  "partial_parameter_block_not_whole_valid_firmware_command": true,
+  "guest_stores_only_stack_and_fixture": true,
+  "original_image_unchanged": true,
+  "native_output_or_diagnostic_adapters": false,
+  "unverified": [
+    "Native scoped writer/ABI/guard/state/config-epoch/admission/publication and complete reference lifetime",
+    "Upstream native MAIN FF quality/profile alignment,16M metadata/query/cache/mux/time estimate",
+    "Complete constructor/buffers/parameter object/header/HAL submission, all errors/completions and actual encoder feedback",
+    "Physical Open/Start, actual media/HEVC/bitrate/audio/timebase/sync/long-run/thermal/regression",
+    "Healthy same-body backup, native safe points/drain/restricted restore/readback, WBI/cold boot and independent recovery"
+  ],
+  "native_MAIN_writer_implemented": false,
+  "camera_or_remote_access_attempted": false,
+  "authorization_unchanged": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

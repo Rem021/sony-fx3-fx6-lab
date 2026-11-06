@@ -1,0 +1,83 @@
+{
+  "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap25boot-3a6a7940",
+  "serial_sha256": "9d0b71fb92ac9036e0032eb270ce70230c21188fbe10a9fb9ec6080ace701cfd",
+  "missing_receiver_sends": [
+    {
+      "seq": "289",
+      "op": "5",
+      "arg0": "0x80924127",
+      "body_head": "11019200000001007777777700040000",
+      "result": "-1",
+      "errno": "1020"
+    },
+    {
+      "seq": "648",
+      "op": "5",
+      "arg0": "0x80924127",
+      "body_head": "11019200000001007777777700040000",
+      "result": "-1",
+      "errno": "1020"
+    },
+    {
+      "seq": "1113",
+      "op": "5",
+      "arg0": "0x80924127",
+      "body_head": "11019200040000000000140000000000",
+      "result": "-1",
+      "errno": "1020"
+    },
+    {
+      "seq": "1440",
+      "op": "5",
+      "arg0": "0x80924127",
+      "body_head": "11019200000000007777777700000000",
+      "result": "-1",
+      "errno": "1020"
+    },
+    {
+      "seq": "1498",
+      "op": "5",
+      "arg0": "0x80924127",
+      "body_head": "110192000000000077777777a5a5a5a5",
+      "result": "-1",
+      "errno": "1020"
+    },
+    {
+      "seq": "1648",
+      "op": "5",
+      "arg0": "0x80924127",
+      "body_head": "110192000000000077777777a5a5a5a5",
+      "result": "-1",
+      "errno": "1020"
+    },
+    {
+      "seq": "1907",
+      "op": "5",
+      "arg0": "0x80924127",
+      "body_head": "110192000000000077777777a5a5a5a5",
+      "result": "-1",
+      "errno": "1020"
+    },
+    {
+      "seq": "4756",
+      "op": "5",
+      "arg0": "0x819e0580",
+      "body_head": "000000000000000052e0a10051e0a100",
+      "result": "-1",
+      "errno": "1020"
+    },
+    {
+      "seq": "4846",
+      "op": "5",
+      "arg0": "0x80924127",
+      "body_head": "110192000300cc000000000000000000",
+      "result": "-1",
+      "errno": "1020"
+    }
+  ],
+  "limit": "sequence bound8192 reached; not a full-startup negative proof",
+  "raw_errno_policy": "errno only classified when return-1",
+  "appFw_mapped": true,
+  "gpe_request_count": 0,
+  "original_upm_binding": "upm-boot-endpoint-proof.json"
+}

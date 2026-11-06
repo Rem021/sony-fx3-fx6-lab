@@ -1,0 +1,52 @@
+{
+  "created_utc": "2026-10-26T04:25:43.327634+00:00",
+  "status": "PASS_BOUNDED_ORIGINAL_FRAME_LIFETIME_AND_TAG_GEOMETRY_SOURCE",
+  "original_fragments": 193,
+  "original_stop_reasons": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 7,
+    "returned": 180,
+    "boundary: before_unexecuted_diagnostic": 2,
+    "boundary: before_unbound_runtime_notification": 1,
+    "boundary: after_original_tag_getter_and_record_validity_store": 3
+  },
+  "queue_zero_with40active_slots": true,
+  "queue40with_zero_active_slots": true,
+  "native_reborrow_clears_old_record": true,
+  "index_only_control_is_not_actual_late_callback_proof": true,
+  "notification_not_faked_and_queue_not_decremented_at_boundary": true,
+  "original_tag_copy48bytes_and_native_validity_store": true,
+  "geometry_tag_cases": [
+    {
+      "name": "declared_geometry_tag",
+      "record_valid_byte": 1,
+      "record_geometry_u16": [
+        1920,
+        1080
+      ],
+      "record_format_byte36": 5
+    },
+    {
+      "name": "different_tag_key",
+      "record_valid_byte": 0,
+      "record_geometry_u16": [
+        0,
+        0
+      ],
+      "record_format_byte36": 0
+    },
+    {
+      "name": "no_tag_root",
+      "record_valid_byte": 0,
+      "record_geometry_u16": [
+        0,
+        0
+      ],
+      "record_format_byte36": 0
+    }
+  ],
+  "full_event_fill_current_MAIN_hardware_or_recovery": false,
+  "first_attempt_boundary_failure_preserved": true,
+  "proof_sha256": "f88be30929a0bed79a29a8c093cce9163f96acb827290ff66aabd77a6c1057e9",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

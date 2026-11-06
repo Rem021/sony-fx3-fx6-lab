@@ -1,0 +1,85 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b58f4 <_ZN3mpr7PowerOnERKNS_14powerOnInParamE>:
+   b58f4: d14007ff     	sub	sp, sp, #0x1, lsl #12   // =0x1000
+   b58f8: 52800181     	mov	w1, #0xc                // =12
+   b58fc: d11803ff     	sub	sp, sp, #0x600
+   b5900: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+   b5904: 910003fd     	mov	x29, sp
+   b5908: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b590c: 90001233     	adrp	x19, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b5910: f90013f5     	str	x21, [sp, #0x20]
+   b5914: aa0003f5     	mov	x21, x0
+   b5918: 97ffff75     	bl	0xb56ec <_ZN3mpr11PowerOnMainEPv+0xf4>
+   b591c: 910143b4     	add	x20, x29, #0x50
+   b5920: aa1503e0     	mov	x0, x21
+   b5924: 97ff2213     	bl	0x7e170 <_ZNK3mpr14powerOnInParam8DbgPrintEv@plt>
+   b5928: f9420e60     	ldr	x0, [x19, #0x418]
+   b592c: 97ff1b31     	bl	0x7c5f0 <pthread_mutex_lock@plt>
+   b5930: 390153bf     	strb	wzr, [x29, #0x54]
+   b5934: 910183a0     	add	x0, x29, #0x60
+   b5938: d282b802     	mov	x2, #0x15c0             // =5568
+   b593c: 52800001     	mov	w1, #0x0                // =0
+   b5940: b9005bbf     	str	wzr, [x29, #0x58]
+   b5944: 97ff1f5b     	bl	0x7d6b0 <memset@plt>
+   b5948: b90053bf     	str	wzr, [x29, #0x50]
+   b594c: b94006a0     	ldr	w0, [x21, #0x4]
+   b5950: b91623a0     	str	w0, [x29, #0x1620]
+   b5954: b0001220     	adrp	x0, 0x2fa000
+   b5958: f946f000     	ldr	x0, [x0, #0xde0]
+   b595c: f90b17a0     	str	x0, [x29, #0x1628]
+   b5960: aa1403e0     	mov	x0, x20
+   b5964: 97ff7a5b     	bl	0x942d0 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0x1dc>
+   b5968: 529fffe0     	mov	w0, #0xffff             // =65535
+   b596c: 97ff1b75     	bl	0x7c740 <_ZN3mpr35InitCheckLastWriteDataFinishedParamEj@plt>
+   b5970: 9100ffa0     	add	x0, x29, #0x3f
+   b5974: 97ff32c7     	bl	0x82490 <_ZN3mpr8capidtbl24GetResumeCapIdTblCreatedEPb@plt>
+   b5978: 3940ffa0     	ldrb	w0, [x29, #0x3f]
+   b597c: 34000100     	cbz	w0, 0xb599c <_ZN3mpr7PowerOnERKNS_14powerOnInParamE+0xa8>
+   b5980: 97ff36d4     	bl	0x834d0 <_ZN3mpr8capidtbl28CheckResumeBackupInfoChangedEv@plt>
+   b5984: 72001c1f     	tst	w0, #0xff
+   b5988: 54000500     	b.eq	0xb5a28 <_ZN3mpr7PowerOnERKNS_14powerOnInParamE+0x134>
+   b598c: d2800000     	mov	x0, #0x0                // =0
+   b5990: 97ff2d40     	bl	0x80e90 <_ZN3mpr8capidtbl14RemakeCapIdTblEPN9DefStruct9LocalTimeE@plt>
+   b5994: d2800000     	mov	x0, #0x0                // =0
+   b5998: 9401e557     	bl	0x12eef4 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x1cc>
+   b599c: 910103b4     	add	x20, x29, #0x40
+   b59a0: 528000c2     	mov	w2, #0x6                // =6
+   b59a4: aa1403e1     	mov	x1, x20
+   b59a8: 52a014a0     	mov	w0, #0xa50000           // =10813440
+   b59ac: 97ff2f45     	bl	0x816c0 <Backup_nread@plt>
+   b59b0: 37f801e0     	tbnz	w0, #0x1f, 0xb59ec <_ZN3mpr7PowerOnERKNS_14powerOnInParamE+0xf8>
+   b59b4: b0001220     	adrp	x0, 0x2fa000
+   b59b8: f9440400     	ldr	x0, [x0, #0x808]
+   b59bc: f9400000     	ldr	x0, [x0]
+   b59c0: b4000080     	cbz	x0, 0xb59d0 <_ZN3mpr7PowerOnERKNS_14powerOnInParamE+0xdc>
+   b59c4: aa1403e1     	mov	x1, x20
+   b59c8: 528000c2     	mov	w2, #0x6                // =6
+   b59cc: 97ff210d     	bl	0x7de00 <_ZN3mpr4UMID15SetDeviceNodeIDEPKhj@plt>
+   b59d0: b0001220     	adrp	x0, 0x2fa000
+   b59d4: f941fc00     	ldr	x0, [x0, #0x3f8]
+   b59d8: f9400000     	ldr	x0, [x0]
+   b59dc: b4000080     	cbz	x0, 0xb59ec <_ZN3mpr7PowerOnERKNS_14powerOnInParamE+0xf8>
+   b59e0: aa1403e1     	mov	x1, x20
+   b59e4: 528000c2     	mov	w2, #0x6                // =6
+   b59e8: 97ff1e76     	bl	0x7d3c0 <_ZN3mpr16UniversalGroupId15SetDeviceNodeIDEPKhj@plt>
+   b59ec: 97ff2209     	bl	0x7e210 <_ZN3mpr14InitImagerInfoEv@plt>
+   b59f0: f9420e60     	ldr	x0, [x19, #0x418]
+   b59f4: 97ff1faf     	bl	0x7d8b0 <pthread_mutex_unlock@plt>
+   b59f8: 52800ae0     	mov	w0, #0x57               // =87
+   b59fc: 52800101     	mov	w1, #0x8                // =8
+   b5a00: 29097fa0     	stp	w0, wzr, [x29, #0x48]
+   b5a04: 910123a0     	add	x0, x29, #0x48
+   b5a08: 97ffff39     	bl	0xb56ec <_ZN3mpr11PowerOnMainEPv+0xf4>
+   b5a0c: f94013f5     	ldr	x21, [sp, #0x20]
+   b5a10: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   b5a14: 52800000     	mov	w0, #0x0                // =0
+   b5a18: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+   b5a1c: 914007ff     	add	sp, sp, #0x1, lsl #12   // =0x1000
+   b5a20: 911803ff     	add	sp, sp, #0x600
+   b5a24: d65f03c0     	ret
+   b5a28: 97ff35f6     	bl	0x83200 <_ZN3mpr8capidtbl18ResumeCapIdTblSyncEv@plt>
+   b5a2c: 17ffffda     	b	0xb5994 <_ZN3mpr7PowerOnERKNS_14powerOnInParamE+0xa0>

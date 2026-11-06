@@ -1,0 +1,20 @@
+--- initial/combined_build.py
++++ reviewed/combined_build.py
+@@ -15,7 +15,7 @@
+ FLAGS={'.text':6,'.rodata':2,'.init_array':3,'.dynamic':3,'.bss':3,'.dynsym':2,'.dynstr':2,'.hash':2,'.rela.dyn':2,'.shstrtab':0}
+ TYPES={'.text':1,'.rodata':1,'.init_array':14,'.dynamic':6,'.bss':8,'.dynsym':11,'.dynstr':3,'.hash':5,'.rela.dyn':4,'.shstrtab':3}
+ # Filled from the reviewed source, not inferred from a supplied object.
+-MODULE_SHA='748eadc2592a947b3acc166cf55d9b44bbc330342c5481901d3a18e284da30d7'
++MODULE_SHA='478d6322a44fb0a68ae0ae6f598aa024c8ad3894e4bb7af0802640dfbee420a4'
+ DYNAMIC_TAGS=(4,5,6,10,11,7,8,9,25,27,0)
+ 
+ RELOCATIONS={**L.RELOCATIONS,285:'LDST32_ABS_LO12_NC'}
+@@ -209,7 +209,7 @@
+         camera_transfer_or_launch_backend=False,camera_operations=0,**FALSE_FLAGS)
+ 
+ 
+-SOURCE_PINS={'combined.c': '748eadc2592a947b3acc166cf55d9b44bbc330342c5481901d3a18e284da30d7', 'core_support.inc': '17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d', 'parent_ipc.inc': '2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044'}
++SOURCE_PINS={'combined.c': '478d6322a44fb0a68ae0ae6f598aa024c8ad3894e4bb7af0802640dfbee420a4', 'core_support.inc': '17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d', 'parent_ipc.inc': '2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044'}
+ 
+ CONFIG_AT=4096;NORM_AT=4352
+ WORKER_SHA='c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ec'

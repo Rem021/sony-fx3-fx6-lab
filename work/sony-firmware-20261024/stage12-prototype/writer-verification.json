@@ -1,0 +1,497 @@
+{
+  "schema": "fx3-stage12-writer-verification-v1",
+  "created_utc": "2026-10-25T17:12:00.487114+00:00",
+  "scope": "Writer read-only hash, source-boundary and link review only; no new web research, CPU emulation or device interaction.",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "checks": {
+    "preexisting_stage12_JSON_parsed": 22,
+    "approval_bound_artifacts_match": 9,
+    "sealed_original_profile_artifacts_match": 4,
+    "replay_entry_hash_match": true,
+    "profile_originals_dependencies_match": true,
+    "recorded_profile_counts": {
+      "legitimate_HS_stock_vs_prototype": 19,
+      "builder_negative_and_other_format": 8,
+      "setter_controls": 8,
+      "target_chain": 1
+    },
+    "recorded_logging_sites": 24,
+    "recorded_MSC_local_checks": 43,
+    "cached_API_libraries": [
+      "setupapi.dll",
+      "cfgmgr32.dll"
+    ],
+    "cached_device_open_or_IOCTL_declarations": false,
+    "x64_detail_cbSize8_offset4": true,
+    "DryRun_exits_before_Add_Type": true,
+    "wrapper_compiles_only_cached_source": true,
+    "handoff_files": 4,
+    "handoff_copies_identical": true,
+    "handoff_active_source": false,
+    "stage11_immutable_files_match": 29,
+    "before_matches_stage11_after": true,
+    "central_matches_after": true,
+    "objective_requirement_ids_text_and_authorization_preserved": true,
+    "requirements": 16,
+    "goal_complete": false,
+    "persistent_write_release": false,
+    "README_exactly_one_entry_added_verified_against_prior_hash": true,
+    "local_links_existing_or_reserved_final": 109,
+    "report_Chinese_character_count": 1957
+  },
+  "links": [
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/goal-status-after.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/source-receipt.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/review-summary.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/profile-results.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/reproduction-entry.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/source-receipt.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline-verification.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/approval-packet.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/windows-cache-handoff/TASK.txt"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/windows-cache-handoff/sha256-manifest.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/final-receipt.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/goal-status-after.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "reports/索尼 FX3 定点原型与查询准备.md",
+      "to": "work/sony-firmware-20261024/stage11-model/builder/typed-key-evidence.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline-verification.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Review-Fx3Msc.ps1"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Review-Fx3Msc.ps1"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Fx3CachedAssociations.cs"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Review-Fx3Msc.ps1"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Review-Fx3Msc.ps1"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline-verification.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Fx3CachedAssociations.cs"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Fx3OneInquiry.cs"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/layout_fixture.c"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Fx3OneInquiry.cs"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Fx3OneInquiry.cs"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline-verification.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/approval-packet.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline_verify.py"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/approval-packet.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/primary-source-receipt.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/approval-packet.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Fx3OneInquiry.cs"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/msc-probe/approval-packet.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile_prototype.py"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "research_notes/索尼 FX3 目标模式与模型门禁/typed_builder.md"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/candidate-constraints.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/hd420-16m-chain.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/source-receipt.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile_prototype.py"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/source-receipt.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/source-receipt.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/candidate-constraints.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/probe_selector_consumers.py"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/source-receipt.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/builder/typed-key-evidence.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/selector-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/selector-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage10-mainpath/main/actual-main-setter-static.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/builder/typed-key-evidence.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json"
+    },
+    {
+      "from": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "to": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json"
+    }
+  ],
+  "URL_encoded_local_targets_decoded": true,
+  "reserved_final_receipt": "work/sony-firmware-20261024/stage12-prototype/final-receipt.json",
+  "postwrite_check": "Require every local target and final manifest hash to exist/match after receipt creation; this verification does not embed final receipt hash.",
+  "source_originals_current": [
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so",
+      "bytes": 3517008,
+      "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c"
+    }
+  ],
+  "writer_CPU_replay_or_new_camera_access": false,
+  "CSharp_PowerShell_Windows_compiled_or_run": false
+}

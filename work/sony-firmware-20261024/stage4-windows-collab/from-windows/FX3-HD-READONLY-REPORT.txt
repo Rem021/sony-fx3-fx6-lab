@@ -1,0 +1,40 @@
+FX3 7.02 只读协作检查：MAIN 1080p 29.97 HEVC
+日期：2026-10-25（Asia/Shanghai）
+任务文件：C:\Users\owo\Documents\Codex\2026-10-16\rea-2\outputs\FX3-READONLY-TASK.txt
+新输出目录：C:\Users\owo\Documents\Codex\2026-10-16\rea-2\outputs\fx3-readonly-collaboration-20261025T085826Z
+
+已验证的事实
+1. Windows 11 专业版 10.0.26200，64位；i7-14700KF，20核28线程；Python 3.12.14 AMD64。项目已有 Unicorn 2.1.4、Capstone 5.0.9、pyelftools 0.33，可离线运行，无安装。
+2. 按 Sony VID054C 过滤查询缓存 PnP，只发现 PID0DF2 的 DualSense Edge 控制器相关4个节点。未枚举到相机。仅做枚举，没有相机接口打开、驱动访问测试或认证服务访问。机身7.02仍是用户报告。
+3. appFw.so、libmpr.so、cpapp-b.bin 的 SHA-256 与 Mac 提供的三份7.02基线逐项一致，详见 baseline-hashes.json。
+4. 修正旧证据的含义：0x2e68048 的两个直接调用点 0x2e6a1f0 和 0x2e6a8f8，分别属于 mpr_GetMovieRecStatus 与 mpr_GetMovieRemain。旧4K30转换候选不能当作真正录制 setter 补丁。
+5. 真正普通设置桥是 appFw.so ELF VA0x2e6e5d8，原始日志名与签名明确为 mpr_SetMovieRecParam；0x2e6f7bc/0x2e6f9b0 调用 PLT0x15944f0，绑定 mpr::SetMovieRecParam（libmpr.so 0xf0ff0）。
+6. 执行该桥中原始选择指令片段（不是整段有状态 setter）：输入格式 in+0x14=8、色彩 in+0x1c=0/1、质量 in+0x18=8、帧率 in+0x10=15，生成 movieRecParam+0x170=VPC1/3、+0x174=14（50M）、+0x178=3（30000/1001）。原厂 HS4K 格式6选择VPC5/7；该选择表没有主录制HD HEVC的6/8分支。
+7. 对照原始 VPC 表：6是1920x1080 HEVC 4:2:0 10bit，8是相同尺寸HEVC 4:2:2 10bit的表项。表项存在不等于整条路径支持。
+8. 只向仿真中下游主参数结构提供VPC6/8，保留帧率3；未改指令、ELF或固件文件。原 SetEncOpenParam（0xd13f8）生成宽1920/高1080、codec15、frame3、NTSC1；50M/16M/9M质量输入分别转为编码器枚举52/22/188。VPC6的色彩/深度字段0/1有效；VPC8为254/254，不能认定有效参数包。
+9. 原 GetCodecInfoForCodec（0xcd40c）对HEVC StreamType0主流返回15，对StreamType1代理返回18，已作独立原始指令对照。没有把代理路径称作MAIN录制。
+10. MP4参数构建函数0x115fec能够填出1920x1080、录制和播放时间基30000/1001、coding5、profile1/2、chroma1/2。VPC6/8的30M/50M输入经 ConvertVPCToLevel（0x115e78）进入 Conv ERROR，写入默认枚举5后继续返回；16M/9M分支不报该错，分别输出原枚举level5/4。VPC6的16M/9M再经原MPF转换表得到45/43；VPC8的相应组合找不到表项，保留默认17。枚举不直接等同于标准H.265 level数值；0x18字段、0x1c标志等含义尚未完整确认。
+11. 无效格式13、色彩2、质量0/27及帧率99的普通选择输入进入原断言；基础MPR检查也拒绝无效帧率12/质量255。基础检查接受VPC6/8只说明枚举有效，不说明硬件可录。
+12. 共148个有边界的独立离线调用（含预期拒绝），23项一致性观察符合预期；7个Ghidra入口字节与原文件匹配，51个受保护旧文件逐项哈希不变。
+
+判断与未解决项
+- VPC6、16M、4:2:0 10bit是较具体的后续离线候选：人工设置普通桥输入quality2，原指令生成VQuality6/帧率3；只在合成下游输入把VPC1替换为6，编码参数及MP4/MPF转换能走完且不触发已观察到的错误。9M也有下游参数证据，但它与普通桥质量输入的连接没有证明。原厂普通设置桥仍不选择VPC6；16M/9M能否从实际界面和主录制状态到达尚未证明。
+- 30M/50M有MP4 level转换报错。VPC8还有编码器色彩/深度254和MPF默认17问题。
+- 这些结果是局部参数和拒绝分支证据，不证明物理编码、可用菜单或安装安全，也不是可刷补丁。未提出新的指令补丁偏移，未生成可刷镜像。
+- 上游模型/菜单如何填写普通 setter 输入尚未追完；整段普通 setter、运行时状态、代理真正关闭、硬件资源与编码器能力、码流VPS/SPS/PPS、hvcC及sample entry、GOP、时间戳/音画同步、持续录制和安装/签名均未验证。
+- CP二进制本轮仅核对哈希，没有执行或解读为编码器支持证明。
+- 全程无相机命令、读写、认证/服务切换、驱动/安全修改、启动/WBI变化、上传、联网或软件安装。Ghidra新项目和用户缓存只写在本新输出目录内。
+
+证据入口（均在新目录）
+host-inventory.json；baseline-hashes.json；offline-tool-readiness.json
+function-binding-evidence.json；app-actual-setter.c.txt；mpr-hd-obstacles.c.txt
+hd-main-emulation.json；hd-main-candidate-scope.json；mp4-parameter-emulation.json
+delivery-verification.json；preservation-before.json；preservation-after.json
+仿真脚本：emulate_hd_main.py；emulate_mp4_parameters.py
+旧4K30脚本和candidate-plan的绝对路径：existing-4k30-paths.json
+
+C:\Users\owo\Documents\Codex\2026-10-16\rea-2\work\fx3_native.py
+C:\Users\owo\Documents\Codex\2026-10-16\rea-2\work\emulate_h265_converter.py
+C:\Users\owo\Documents\Codex\2026-10-16\rea-2\work\emulate_mpr_downstream.py
+C:\Users\owo\Documents\Codex\2026-10-16\rea-2\work\emulate_encoder_packet.py
+C:\Users\owo\Documents\Codex\2026-10-16\rea-2\outputs\h265-path-research\candidate-plan.json

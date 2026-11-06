@@ -1,0 +1,16 @@
+00003160 stp        x29, x30, [sp, #-0x20]!
+00003164 mov        w0, #0x4222
+00003168 movk       w0, #0x8092, lsl #16
+0000316c mov        x29, sp
+00003170 str        x19, [sp, #0x10]
+00003174 ldr        x19, #0x31a0
+00003178 ldr        x1, [x19, #0x30]
+0000317c bl         #0x317c ; [{"symbol": "osal_unreg_msg_queue_cb", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00003180 ldr        x1, [x19, #0x38]
+00003184 mov        w0, #0x44ab
+00003188 movk       w0, #0x8092, lsl #16
+0000318c bl         #0x318c ; [{"symbol": "osal_unreg_msg_queue_cb", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00003190 ldr        x19, [sp, #0x10]
+00003194 mov        w0, #0
+00003198 ldp        x29, x30, [sp], #0x20
+0000319c ret        

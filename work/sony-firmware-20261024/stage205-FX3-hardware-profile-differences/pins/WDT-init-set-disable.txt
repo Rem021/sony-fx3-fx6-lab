@@ -1,0 +1,25 @@
+000064ea ff22 movs     r2, #0xff
+000064ec 0421 movs     r1, #4
+000064ee 3148 ldr      r0, [pc, #0xc4]
+000064f0 32f0c5b8 b.w      #0x3867e
+000064f4 70b5 push     {r4, r5, r6, lr}
+000064f6 0546 mov      r5, r0
+000064f8 0c46 mov      r4, r1
+000064fa 0920 movs     r0, #9
+000064fc fef722f8 bl       #0x4544
+00006500 0cb1 cbz      r4, #0x6506
+00006502 2c48 ldr      r0, [pc, #0xb0]
+00006504 4455 strb     r4, [r0, r5]
+00006506 bde87040 pop.w    {r4, r5, r6, lr}
+0000650a 0920 movs     r0, #9
+0000650c fef71cb8 b.w      #0x4548
+00006510 10b5 push     {r4, lr}
+00006512 0446 mov      r4, r0
+00006514 0920 movs     r0, #9
+00006516 fef715f8 bl       #0x4544
+0000651a 2649 ldr      r1, [pc, #0x98]
+0000651c ff20 movs     r0, #0xff
+0000651e 0855 strb     r0, [r1, r4]
+00006520 bde81040 pop.w    {r4, lr}
+00006524 0920 movs     r0, #9
+00006526 fef70fb8 b.w      #0x4548

@@ -1,0 +1,80 @@
+{
+  "status": "PASS_USER_INTERNAL_STAGING_NOT_ADMIN_OR_USB_ACCEPTANCE",
+  "checks": 12,
+  "cases": [
+    {
+      "name": "actual_internal_exclusive_copy_hash_and_permissions",
+      "receipt": {
+        "path": "/private/tmp/fx3-owner-stage166-fixture-la90drw9/good/source-helper",
+        "sha256": "3e92d53d3537247fe4a1ab8c2eec65f7d98289b768037a011653b17f6dafceec",
+        "bytes": 37640,
+        "uid": 501,
+        "directory_mode": "0700",
+        "file_mode": "0500",
+        "exclusive_no_follow_copy": true,
+        "native_executed": false
+      }
+    },
+    {
+      "name": "wrong_digest_no_private_executable",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "symlink_source_rejected",
+      "rejected": "OSError",
+      "destination_not_created": true
+    },
+    {
+      "name": "existing_destination_not_overwritten",
+      "rejected": "FileExistsError",
+      "destination_not_created": false
+    },
+    {
+      "name": "symlink_destination_not_followed",
+      "rejected": "FileExistsError",
+      "destination_not_created": false
+    },
+    {
+      "name": "nonprivate_directory_rejected",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "symlink_directory_rejected",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "internal_source_fixture_executes_with_external_alias_unavailable_and_cwd_root",
+      "helper_pid": 94137,
+      "actual_cwd": "/",
+      "helper_terminal_verified": true,
+      "status": "PROVIDER_OBSERVATION_COMPLETED",
+      "fixture_not_IOKit_or_root": true
+    },
+    {
+      "name": "reviewed_admin_source_has_only_internal_paths_and_postcopy_hash",
+      "admin_executed": false
+    },
+    {
+      "name": "old_grant_cannot_launch_new_candidate",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "old_consumed_claim_preserved",
+      "sha256": "ae3e6eb503d37a659267794e9468872da5b052bf27fc683af4d664ceacecd07f"
+    },
+    {
+      "name": "consumed_second_claim_preserved",
+      "sha256": "3bce6825fce44860b7b49e49e7d02f1ef1ce0784da52b3a232136e49b0fc3e44"
+    }
+  ],
+  "retained_fixture_private_directory": "/private/tmp/fx3-owner-stage166-fixture-la90drw9",
+  "root_or_native_IOKit_execution": false,
+  "administrator_prompt_requested": false,
+  "device_operations": 0,
+  "script_sha256": "037d7299a35d99b7e8f06481048c56be90e4c6e4af02b4a7c3ef93c14a4193e5",
+  "bootstrap_sha256": "a74e4b299f1b02aeb65bc89038be5276a2cfd72cfff3e8f5a0a6ee6e9b37a2f4"
+}

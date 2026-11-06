@@ -1,0 +1,14 @@
+{
+  "status": "PASS_NO_QEMU_STATEFUL_TRANSPORT",
+  "fixture": "actual QMP/RSP classes over socketpair; no QEMU/guest",
+  "cases": [
+    "actual_QMP_greeting_capabilities_id_match",
+    "actual_QMP_missing_capabilities_rejected",
+    "actual_QMP_greeting_bounded_no_response",
+    "actual_RSP_addressless_c_immediate_T05",
+    "actual_RSP_continue_no_response_bounded"
+  ],
+  "count": 5,
+  "qmp_sha256": "e8f1bbea213da79dde738ac27162ce6aa9b5007cdb4f8fddce14d1fa070f4712",
+  "rsp_sha256": "08acd868bef78ff9959228588e1eb7ba6aff6c833f775ce36e167dae87a84572"
+}

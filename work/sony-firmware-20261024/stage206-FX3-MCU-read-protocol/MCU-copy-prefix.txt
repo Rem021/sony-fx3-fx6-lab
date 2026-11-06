@@ -1,0 +1,15 @@
+000385f2 032a cmp      r2, #3
+000385f4 40f23180 bls.w    #0x3865a
+000385f8 10f0030c ands     ip, r0, #3
+000385fc 00f01580 beq.w    #0x3862a
+00038600 11f8013b ldrb     r3, [r1], #1
+00038604 bcf1020f cmp.w    ip, #2
+00038608 6244 add      r2, ip
+0003860a 98bf it       ls
+0003860c 11f801cb ldrbls   ip, [r1], #1
+00038610 00f8013b strb     r3, [r0], #1
+00038614 38bf it       lo
+00038616 11f8013b ldrblo   r3, [r1], #1
+0003861a a2f10402 sub.w    r2, r2, #4
+0003861e 98bf it       ls
+00038620 00f8 .byte    0x00, 0xf8

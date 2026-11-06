@@ -1,0 +1,118 @@
+--- a/r35_package_selection.py
++++ b/r35_package_selection.py
+@@ -3,13 +3,13 @@
+ import hashlib,json
+ HOST=Path(__file__).resolve().parent
+ DEL=HOST.parent
+-APPROVED_HOST=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r44-review-budget-candidate')
++APPROVED_HOST=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r47-runtime-integration-candidate')
+ PACKAGE=DEL/'r42-command-timing-package'
+ CANDIDATE_SHA='857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806'
+ CPIO_SHA='59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63'
+ CPIO_BYTES=453213884
+-PROFILE='r44-review-budget-60s'
+-LABEL='v44review-n64-r44'
++PROFILE='r47-runtime-integration-60s'
++LABEL='v47runtime-n64-r47'
+ PINS={'r30-startup-observation-candidate/SHA256SUMS':'e04a86e60d0b311d57df50a6060064f6f57e02a33d3c04c015922e6a37749a49','r30-startup-observation-candidate/SOURCE-FREEZE.json':'10265a99fd1a74dc23d85477c82f078485863b92ed664e12132e0a9cf41ce717','r30-startup-observation-candidate/CORE-SOURCE-FREEZE.json':'3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9','r35-existing-log-observation-candidate/SHA256SUMS':'c7aee1bf7a35320e3c8d08eec03214957832008197741feb971433f19c524a71','r35-existing-log-observation-candidate/SOURCE-FREEZE.json':'dd4f8a2045220a045c32b8a0a686227f08e4e8c2edc7adca8964a12ddedc66e4','r36-fixed-slot-package/SHA256SUMS':'9a06c51caa6bc3517bedb9db06a72452fe4a12156ed3838034821caf151ecf03'}
+ PINS.update({'r37-diagnostic-runner-candidate/SHA256SUMS':'ede0cfdc07066faf00d98e6934e5125dc10d598f8e228d8364ca0cf6fab1155c','r37-diagnostic-runner-candidate/SOURCE-FREEZE.json':'861b26c5aefbe393a5e58e1015914e517f0bb9e928c6f5e572a9f56816084ca9','r37-diagnostic-runner-candidate/CORE-SOURCE-FREEZE.json':'7752a6fd7cdb74def7a3cfa9659ed6a1a4f6ab23708a5aaaed5f345e7c46f303'})
+ PINS.update({'r39-cleanup-evidence-candidate/SHA256SUMS': '7a3f5006d6b693207ab0ef58daac919a56668da0d95e9863888389cac059a8f5', 'r39-cleanup-evidence-candidate/SOURCE-FREEZE.json': '3f4d9894d2bfdd1bf15f2c01132006c78f8331220f8e8da1bcee4adcbd37ff43', 'r39-cleanup-evidence-candidate/CORE-SOURCE-FREEZE.json': '642149dac737315d19dc6910804538eec6df79a43261527c06fcaf23d374bd50', 'r41-command-entry-timing-candidate/SHA256SUMS': '785759f29c2f8985854852b0d64a190d8f8c3e86cf9f8048eed5158c491221df', 'r41-command-entry-timing-candidate/SOURCE-FREEZE.json': '0f34af0ecfc72c9264c0a13e0e279424ce7eec38bd5e8e127b05b9b1f6537f15', 'r42-command-timing-package/ARCHIVE-DIFF.json': 'a9d5787b0cda916896f214982092113743786ad40fb2a557ae8b47b158ac524b', 'r42-command-timing-package/source-index.json': '589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a'})
+--- a/PAGE-IDENTITY.json
++++ b/PAGE-IDENTITY.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "fx3-r24-page-identity-v1",
+-  "canonical_script_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+-  "PAGE_sha256": "f2c0eb2d4282ff53403f29b7650403f336b6ffd74c71c05390676193af962ff7",
++  "canonical_script_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
++  "PAGE_sha256": "551cbd919f61858ba8542a3a46d7eab3894162c915038d92d5a16317bc3c719b",
+   "original_PAGE_is_new_version": true
+ }
+--- a/operator-helpers/deadline.js
++++ b/operator-helpers/deadline.js
+@@ -2,7 +2,7 @@
+   'use strict';
+   const DEADLINE_MS = 60_000;
+   const KEY = '__fx3InteractionDeadlineV1';
+-  const SCRIPT_SHA = '852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b';
++  const SCRIPT_SHA = 'f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf';
+   const fail = message => { throw new Error('deadline_refused: ' + message); };
+   if (!config || Object.keys(config).sort().join(',') !== 'expectedLaunchId,expectedURL') fail('config');
+   const expected = new URL(config.expectedURL);
+--- a/operator-helpers/recovery_cancel.js
++++ b/operator-helpers/recovery_cancel.js
+@@ -1,7 +1,7 @@
+ (async function explicitRecoveryCancel(c){
+  'use strict';
+  const originalDocument=document,originalOrigin=performance.timeOrigin;
+- const PAGE_SHA='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b';
++ const PAGE_SHA='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf';
+  const hash=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+  let cancel_invoked=false;
+  const fail=reason=>({status:'refused',reason,cancel_invoked,performance_ms:performance.now()});
+--- a/operator-helpers/recovery_readonly.js
++++ b/operator-helpers/recovery_readonly.js
+@@ -6,7 +6,7 @@
+  try{const response=await fetch('/api/status',{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('status_http');fresh=await response.json();}catch(_){return {qualified:false,reason:'fresh_status_unknown',performance_ms:performance.now()};}finally{clearTimeout(timer);}
+  // Everything below is one synchronous browser job, not screenshot/server/guest atomicity.
+  const fail=reason=>({qualified:false,reason,performance_ms:performance.now()});
+- if(!c||document!==doc||performance.timeOrigin!==origin||location.href!==c.url||window.top!==window||document.title!=='FX3 固件菜单试用'||scripts.length!==1||script.src||script.textContent!==text||hash!=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b')return fail('document_or_PAGE_identity');
++ if(!c||document!==doc||performance.timeOrigin!==origin||location.href!==c.url||window.top!==window||document.title!=='FX3 固件菜单试用'||scripts.length!==1||script.src||script.textContent!==text||hash!=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf')return fail('document_or_PAGE_identity');
+  const a=window.fx3KeyAttemptOutcome?.(),h=window.__fx3InteractionDeadlineV1?.status?.(),s=lastStatus,b=c.binding;
+  if(!fresh||fresh.phase!=='ready'||!fresh.ready||fresh.busy||fresh.review_required||fresh.error||fresh.review_protocol_unknown||!fresh.render_valid||fresh.launch_request_id!==c.launch_id||fresh.steps!==b?.base_step)return fail('fresh_server_lifecycle');
+  if(!a||!b||!h||!s||document!==attemptDocument||origin!==a.document_time_origin||origin!==b.document_time_origin||
+--- a/operator-helpers/planned_navigation_click.py
++++ b/operator-helpers/planned_navigation_click.py
+@@ -6,7 +6,7 @@
+ from urllib.parse import urlsplit
+ from planned_prerequisite import PLAN_SHA,plan,prerequisite
+ HERE=Path(__file__).resolve().parent
+-PAGE_SHA='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b'
++PAGE_SHA='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf'
+ KEYS=(3,48,21,431,428,427,504)
+ IDENTITY_CHECKS=set('document_unchanged time_origin_unchanged exact_url top_level one_inline_script script_unchanged_during_digest page_fingerprint launch_identity prerequisite_document'.split())
+ PREFLIGHT_CHECKS=set('status_present phase_ready server_ready server_no_error server_not_busy server_no_review steps_under_eight page_not_busy page_not_ending page_not_finished delivery_known review_known review_not_awaiting no_awaiting_step no_render_fault frame_loaded plan_matches plan_step_matches server_step_matches previous_confirm_matches alarm_document_matches alarm_nonce_matches alarm_armed alarm_due_in_future key_exists key_enabled'.split())
+--- a/runtime-wrapper/untimed_image.py
++++ b/runtime-wrapper/untimed_image.py
+@@ -2,7 +2,7 @@
+ from common import *
+ def snapshot(name,out,step):
+  c=identity();out=Path(out);out.mkdir()
+- code=r'''(async()=>{const c=CONFIG,s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||lastStatus.steps!==c.step||!lastStatus.ready||lastStatus.phase!=='ready'||lastStatus.error||!frameLoadedFor(lastStatus)||busy||ending||finished||renderFault||deliveryUnknown||reviewUnknown||window.__fx3InteractionDeadlineV1.status().current?.state==='armed')throw Error('untimed_current_image_identity');return {step:lastStatus.steps,sha:shownSHA,gen:displayedGeneration,seq:displayed,origin:performance.timeOrigin,frame:lastStatus.frame,attempt:fx3KeyAttemptOutcome(),performance_ms:performance.now()};})()'''.replace('CONFIG',json.dumps({**c,'step':step}))
++ code=r'''(async()=>{const c=CONFIG,s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||lastStatus.steps!==c.step||!lastStatus.ready||lastStatus.phase!=='ready'||lastStatus.error||!frameLoadedFor(lastStatus)||busy||ending||finished||renderFault||deliveryUnknown||reviewUnknown||window.__fx3InteractionDeadlineV1.status().current?.state==='armed')throw Error('untimed_current_image_identity');return {step:lastStatus.steps,sha:shownSHA,gen:displayedGeneration,seq:displayed,origin:performance.timeOrigin,frame:lastStatus.frame,attempt:fx3KeyAttemptOutcome(),performance_ms:performance.now()};})()'''.replace('CONFIG',json.dumps({**c,'step':step}))
+  before=ev(name+'-before',code);browser(name+'-screenshot',['screenshot',str(out/'current.png')]);after=ev(name+'-after',code)
+  assert all(before[x]==after[x] for x in ('step','sha','gen','origin')) and after['seq']>=before['seq']
+  p=out/'current.png';assert p.is_file() and not p.is_symlink() and p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+--- a/runtime-wrapper/later_capture.py
++++ b/runtime-wrapper/later_capture.py
+@@ -2,7 +2,7 @@
+ import sys
+ from common import *
+ def current_guard(c):
+- return r'''(async()=>{const c=CONFIG,s=[...document.scripts];const d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');const a=fx3KeyAttemptOutcome();if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||a?.attempt_id!==c.attempt_id||a.alarm_nonce!==c.nonce||a.expected_step!==c.step||a.outcome!=='accepted')throw Error('r21_current_attempt_identity');return a;})()'''.replace('CONFIG',json.dumps(c))
++ return r'''(async()=>{const c=CONFIG,s=[...document.scripts];const d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');const a=fx3KeyAttemptOutcome();if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||a?.attempt_id!==c.attempt_id||a.alarm_nonce!==c.nonce||a.expected_step!==c.step||a.outcome!=='accepted')throw Error('r21_current_attempt_identity');return a;})()'''.replace('CONFIG',json.dumps(c))
+ def main():
+  c=json.loads(Path(sys.argv[1]).read_text());out=Path(sys.argv[2]);out.mkdir()
+  ev(c['prefix']+'-identity-before',current_guard(c))
+--- a/runtime-wrapper/launch_prepare.py
++++ b/runtime-wrapper/launch_prepare.py
+@@ -42,7 +42,7 @@
+  browser('browser-open',['open',url]);browser('viewport',['set','viewport','1280','1200']);browser('HAR-start',['network','har','start'])
+  browser('await-start-enabled',['wait','--fn','!!lastStatus&&lastStatus.browser_ready&&!startButton.disabled'])
+  v=ev('PAGE-before-Start',r'''(async()=>{const s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');return {canonical_sha:await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;')),lastStatus,viewport:[innerWidth,innerHeight]};})()''')
+- assert v['canonical_sha']=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b' and v['lastStatus']['phase']=='awaiting_launch' and v['viewport']==[1280,1200]
++ assert v['canonical_sha']=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf' and v['lastStatus']['phase']=='awaiting_launch' and v['viewport']==[1280,1200]
+  tabs=json.loads(browser('owned-tab-prestart',['tab','--json']))['data']['tabs'];assert len(tabs)==1 and tabs[0]['url']==url
+  assert read('ledger.json')=={'attempts':[],'recoveries':[]}
+  browser('prestart-screenshot',['screenshot',str(HERE/'prestart.png')]);write('PRESTART-READY.json',{'passed':True,'scripted_navigation':True,'visual_review_at_click':False,'plan_sha':CFG['plan_sha'],'standby_review_command':['python3','-B',str(SOURCE/'operate.py'),'standby_review','代理实际看合格待机图后填判断'],'actual_cli_steps':[{'step':x['step'],'planned_click_command':['python3','-B',str(SOURCE/'operate.py'),'click',str(x['step']),x['target']],'confirm_command':['python3','-B',str(SOURCE/'operate.py'),'confirm','代理实际审阅本步新截图后确认 '+x['target']]} for x in CFG['steps']],'bindings':'one exclusive step-N-attempt-N dir / new nonce generated before arm; helper CLI arguments fully wired from runtime.json','cancel_command':['python3','-B',str(SOURCE/'operate.py'),'recovery_cancel','仅取消同nonce未入队alarm'],'end_command':['python3','-B',str(SOURCE/'cleanup.py')],'tab':tabs[0],**stamp()})
+--- a/return-tools/return_adapter.py
++++ b/return-tools/return_adapter.py
+@@ -9,7 +9,7 @@
+ from cleanup_evidence import failure_status
+ OPERATE=FROZEN/'runtime-wrapper/operate.py'
+ OPERATE_SHA='e0aca5336e631ed3ec4cf3e888178f1351e05551ee1a208bcf9c9a59f4f39e5e'
+-CORE_FREEZE_SHA='b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1'
++CORE_FREEZE_SHA='c87cb75380013efd940a653da015d2116b8caf159db4a818ac377546b9349dc2'
+ VOLUME='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ MAX_SUMMARY_BYTES=4096
+ ACTIONS={'click':3,'observe':2,'pin':2,'confirm':2,'standby_review':2,'recovery_review':2,'recovery_cancel':2,'reject':2}

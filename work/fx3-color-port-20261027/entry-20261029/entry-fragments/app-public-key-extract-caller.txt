@@ -1,0 +1,128 @@
+02de2540 b          #0x2f6eae8
+02de2544 stp        x29, x30, [sp, #-0x20]!
+02de2548 mov        x29, sp
+02de254c stp        x19, x20, [sp, #0x10]
+02de2550 mov        x19, x0
+02de2554 mov        x20, x1
+02de2558 mov        w0, #0x25
+02de255c mov        w1, #8
+02de2560 bl         #0x2f6ea24
+02de2564 mov        x1, x20
+02de2568 mov        x0, x19
+02de256c bl         #0x2e10344
+02de2570 ldp        x19, x20, [sp, #0x10]
+02de2574 mov        w1, #8
+02de2578 ldp        x29, x30, [sp], #0x20
+02de257c mov        w0, #0x25
+02de2580 b          #0x2f6eae8
+02de2584 stp        x29, x30, [sp, #-0x20]!
+02de2588 mov        x29, sp
+02de258c stp        x19, x20, [sp, #0x10]
+02de2590 mov        x19, x0
+02de2594 mov        x20, x1
+02de2598 mov        w0, #0x25
+02de259c mov        w1, #9
+02de25a0 bl         #0x2f6ea24
+02de25a4 mov        x1, x20
+02de25a8 mov        x0, x19
+02de25ac bl         #0x2e103ec
+02de25b0 ldp        x19, x20, [sp, #0x10]
+02de25b4 mov        w1, #9
+02de25b8 ldp        x29, x30, [sp], #0x20
+02de25bc mov        w0, #0x25
+02de25c0 b          #0x2f6eae8
+02de25c4 stp        x29, x30, [sp, #-0x20]!
+02de25c8 mov        x29, sp
+02de25cc stp        x19, x20, [sp, #0x10]
+02de25d0 mov        x19, x0
+02de25d4 mov        x20, x1
+02de25d8 mov        w0, #0x25
+02de25dc mov        w1, #0xa
+02de25e0 bl         #0x2f6ea24
+02de25e4 mov        x1, x20
+02de25e8 mov        x0, x19
+02de25ec bl         #0x2e104b4
+02de25f0 ldp        x19, x20, [sp, #0x10]
+02de25f4 mov        w1, #0xa
+02de25f8 ldp        x29, x30, [sp], #0x20
+02de25fc mov        w0, #0x25
+02de2600 b          #0x2f6eae8
+02de2604 stp        x29, x30, [sp, #-0x20]!
+02de2608 mov        x29, sp
+02de260c stp        x19, x20, [sp, #0x10]
+02de2610 mov        x19, x0
+02de2614 mov        x20, x1
+02de2618 mov        w0, #0x25
+02de261c mov        w1, #0xb
+02de2620 bl         #0x2f6ea24
+02de2624 mov        x1, x20
+02de2628 mov        x0, x19
+02de262c bl         #0x2e10584
+02de2630 ldp        x19, x20, [sp, #0x10]
+02de2634 mov        w1, #0xb
+02de2638 ldp        x29, x30, [sp], #0x20
+02de263c mov        w0, #0x25
+02de2640 b          #0x2f6eae8
+02de2644 stp        x29, x30, [sp, #-0x20]!
+02de2648 mov        x29, sp
+02de264c stp        x19, x20, [sp, #0x10]
+02de2650 mov        x19, x0
+02de2654 mov        x20, x1
+02de2658 mov        w0, #0x25
+02de265c mov        w1, #0xc
+02de2660 bl         #0x2f6ea24
+02de2664 mov        x1, x20
+02de2668 mov        x0, x19
+02de266c bl         #0x2e10624
+02de2670 ldp        x19, x20, [sp, #0x10]
+02de2674 mov        w1, #0xc
+02de2678 ldp        x29, x30, [sp], #0x20
+02de267c mov        w0, #0x25
+02de2680 b          #0x2f6eae8
+02de2684 stp        x29, x30, [sp, #-0x10]!
+02de2688 mov        w1, #0
+02de268c mov        w0, #0x26
+02de2690 mov        x29, sp
+02de2694 bl         #0x2f6ea24
+02de2698 bl         #0x2ea9eb4
+02de269c ldp        x29, x30, [sp], #0x10
+02de26a0 mov        w1, #0
+02de26a4 mov        w0, #0x26
+02de26a8 b          #0x2f6eae8
+02de26ac stp        x29, x30, [sp, #-0x10]!
+02de26b0 mov        w1, #1
+02de26b4 mov        w0, #0x26
+02de26b8 mov        x29, sp
+02de26bc bl         #0x2f6ea24
+02de26c0 bl         #0x2ea9ee4
+02de26c4 ldp        x29, x30, [sp], #0x10
+02de26c8 mov        w1, #1
+02de26cc mov        w0, #0x26
+02de26d0 b          #0x2f6eae8
+02de26d4 stp        x29, x30, [sp, #-0x10]!
+02de26d8 mov        w1, #3
+02de26dc mov        w0, #0x26
+02de26e0 mov        x29, sp
+02de26e4 bl         #0x2f6ea24
+02de26e8 bl         #0x2ea9f14
+02de26ec ldp        x29, x30, [sp], #0x10
+02de26f0 mov        w1, #3
+02de26f4 mov        w0, #0x26
+02de26f8 b          #0x2f6eae8
+02de26fc stp        x29, x30, [sp, #-0x10]!
+02de2700 mov        w1, #2
+02de2704 mov        w0, #0x26
+02de2708 mov        x29, sp
+02de270c bl         #0x2f6ea24
+02de2710 bl         #0x2ea9f18
+02de2714 ldp        x29, x30, [sp], #0x10
+02de2718 mov        w1, #2
+02de271c mov        w0, #0x26
+02de2720 b          #0x2f6eae8
+02de2724 stp        x29, x30, [sp, #-0x20]!
+02de2728 mov        x29, sp
+02de272c stp        x19, x20, [sp, #0x10]
+02de2730 mov        x19, x0
+02de2734 mov        x20, x1
+02de2738 mov        w0, #0x26
+02de273c mov        w1, #4

@@ -1,0 +1,88 @@
+{
+  "runs": [
+    {
+      "run": "ap56surface-1da18185",
+      "seconds": 75,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "draw_evidence": [
+        "FX3_SURFACE_PROBE bound=1 handle=0x403 rc=2 first=0 second=0 bytes=0 pixels_written=0"
+      ],
+      "serial_sha256": "13626bf2d2f50570cd0f4a5505b7a8d8a015320c07d7f573ded784ca12320556"
+    },
+    {
+      "run": "ap57uniform-d4dd4e69",
+      "seconds": 90,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "draw_evidence": [],
+      "serial_sha256": "72e54a89cc79e1b9e407b8c12702149a7d2d765771e7ea37cf5d206bfdd757ae"
+    },
+    {
+      "run": "ap58uniform-0eb11d48",
+      "seconds": 85,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "draw_evidence": [
+        "FX3_GPE_REQUEST op=fill n=0 gpe=0 core=0 sequence=0 source=0 read=56 raw=0051eb3f04000000000000000000000080020000e001000080020000000000000000000000ff010000000000000000000000000000000000 result=5 completed=0 pixels_written=0 reason=allocation_lease_and_FX3_layout_pending",
+        "FX3_GPE_REQUEST op=flush n=1 gpe=0 core=0 sequence=1 source=0x808261c0 read=24 raw=000000000000000000000000000000000000000000000000 result=5 completed=0 pixels_written=0 reason=allocation_lease_and_FX3_layout_pending"
+      ],
+      "serial_sha256": "d9c3d3bc5132e8b99d725fe90e5baec8cbd240ad64696c58ceda88ee7f8ee4ad"
+    },
+    {
+      "run": "ap59uniform-fb7cd65e",
+      "seconds": 75,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "draw_evidence": [],
+      "serial_sha256": "9cc0cd63062ac5fa78a81dcc370f5d682219d77ed098b8826ab8c7e73d871592"
+    },
+    {
+      "run": "ap60entries-5611350a",
+      "seconds": 85,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "draw_evidence": [
+        "FX3_GPE_WORKER_ENTRIES count=3 prefix_verified=16 direct_and_PLT_calls=1 originalFIFO=1",
+        "FX3_GPE_UNIFORM_DONE sequence=0 address=0x43feb5100 bytes=614400 rows=480 value=0 fills=1 result=0 pixels_written=1 physical_engine=0 lifetime=original_FIFO_pending_completion",
+        "FX3_GPE_UNIFORM_FLUSH sequence=1 source=0x808261c0 fills=1 status=0 native_SendDrawComp=1 physical_engine=0"
+      ],
+      "serial_sha256": "df6e008177d0ffaf8243852d7b231642f6fd2a2d75093f4ec440007e4f050cf0"
+    },
+    {
+      "run": "ap61next-8db30dad",
+      "seconds": 80,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "draw_evidence": [
+        "FX3_GPE_WORKER_ENTRIES count=3 prefix_verified=16 direct_and_PLT_calls=1 originalFIFO=1"
+      ],
+      "serial_sha256": "ab29ecff084d094cd78a63ccec2ee676d03d7f48a382ae0feb2e2dde4dba1618"
+    }
+  ],
+  "scope": "AP60 realCPU uniformfill and nativeSendDrawComp; QMPreadback. Other runs no successfulraster. No originalmenu or physicalcamera acceptance."
+}

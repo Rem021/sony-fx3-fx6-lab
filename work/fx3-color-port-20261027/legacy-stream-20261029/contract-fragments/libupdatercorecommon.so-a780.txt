@@ -1,0 +1,48 @@
+0000a780 stp        x29, x30, [sp, #-0x40]!
+0000a784 mov        x29, sp
+0000a788 stp        x19, x20, [sp, #0x10]
+0000a78c mov        x20, x0
+0000a790 ldr        x0, [x0, #0x4b0]
+0000a794 stp        x21, x22, [sp, #0x20]
+0000a798 tst        x0, #0xf
+0000a79c b.eq       #0xa7f8
+0000a7a0 mov        w19, #2
+0000a7a4 adrp       x2, #0xc000
+0000a7a8 movk       w19, #3, lsl #16
+0000a7ac adrp       x0, #0xc000
+0000a7b0 add        x2, x2, #0x514 ; literal 'DecryptorModule.cpp'
+0000a7b4 mov        w1, w19
+0000a7b8 add        x0, x0, #0x20a ; literal 'UdrAPI,%d,%s:%d,""""\n'
+0000a7bc mov        w3, #0x50
+0000a7c0 bl         #0x81e0 ; printf
+0000a7c4 mov        x0, #0x10
+0000a7c8 bl         #0x7b70 ; __cxa_allocate_exception
+0000a7cc str        w19, [x0, #8]
+0000a7d0 adrp       x1, #0x1e000
+0000a7d4 adrp       x2, #0x1e000
+0000a7d8 strb       wzr, [x0, #0xc]
+0000a7dc ldr        x1, [x1, #0xf20]
+0000a7e0 ldr        x2, [x2, #0xf40]
+0000a7e4 add        x1, x1, #0x10
+0000a7e8 str        x1, [x0]
+0000a7ec adrp       x1, #0x1e000
+0000a7f0 ldr        x1, [x1, #0xfc8]
+0000a7f4 bl         #0x8100 ; __cxa_throw
+0000a7f8 add        x21, x20, #0xb0
+0000a7fc add        x22, x29, #0x30
+0000a800 mov        x19, x21
+0000a804 ldr        x1, [x20, #0x4b0]
+0000a808 sub        w0, w19, w21
+0000a80c cmp        x0, x1
+0000a810 b.hs       #0xa830
+0000a814 ldp        x0, x1, [x19]
+0000a818 stp        x0, x1, [x29, #0x30]
+0000a81c mov        x0, x22
+0000a820 bl         #0x8140 ; Dec_Scramble
+0000a824 ldp        x0, x1, [x29, #0x30]
+0000a828 stp        x0, x1, [x19], #0x10
+0000a82c b          #0xa804
+0000a830 ldp        x19, x20, [sp, #0x10]
+0000a834 ldp        x21, x22, [sp, #0x20]
+0000a838 ldp        x29, x30, [sp], #0x40
+0000a83c ret        

@@ -1,0 +1,80 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/regular-files/usr/kmod/grm_ma.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000011e0 <ma_list_add>:
+    11e0: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    11e4: 910003fd     	mov	x29, sp
+    11e8: 58000705     	ldr	x5, 0x12c8 <ma_list_add+0xe8>
+    11ec: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    11f0: 2a0203f6     	mov	w22, w2
+    11f4: a90363f7     	stp	x23, x24, [sp, #0x30]
+    11f8: 2a0003f8     	mov	w24, w0
+    11fc: a90153f3     	stp	x19, x20, [sp, #0x10]
+    1200: aa0103f7     	mov	x23, x1
+    1204: aa0303f4     	mov	x20, x3
+    1208: 53001c95     	uxtb	w21, w4
+    120c: b94000a0     	ldr	w0, [x5]
+    1210: 34000440     	cbz	w0, 0x1298 <ma_list_add+0xb8>
+    1214: 580005e0     	ldr	x0, 0x12d0 <ma_list_add+0xf0>
+    1218: 52801802     	mov	w2, #0xc0               // =192
+    121c: 72a04802     	movk	w2, #0x240, lsl #16
+    1220: 52800a01     	mov	w1, #0x50               // =80
+    1224: 94000000     	bl	0x1224 <ma_list_add+0x44>
+		0000000000001224:  R_AARCH64_CALL26	__udif_kmalloc
+    1228: aa0003f3     	mov	x19, x0
+    122c: b40004d3     	cbz	x19, 0x12c4 <ma_list_add+0xe4>
+    1230: 52800020     	mov	w0, #0x1                // =1
+    1234: 39012275     	strb	w21, [x19, #0x48]
+    1238: b9000278     	str	w24, [x19]
+    123c: 9100e261     	add	x1, x19, #0x38
+    1240: 79000a60     	strh	w0, [x19, #0x4]
+    1244: aa1303e0     	mov	x0, x19
+    1248: f9000a77     	str	x23, [x19, #0x10]
+    124c: b9001a76     	str	w22, [x19, #0x18]
+    1250: b9000a7f     	str	wzr, [x19, #0x8]
+    1254: a9400e82     	ldp	x2, x3, [x20]
+    1258: a9000c22     	stp	x2, x3, [x1]
+    125c: 94000000     	bl	0x125c <ma_list_add+0x7c>
+		000000000000125c:  R_AARCH64_CALL26	ma_create_mspace_wrapper
+    1260: 58000401     	ldr	x1, 0x12e0 <ma_list_add+0x100>
+    1264: 9100a260     	add	x0, x19, #0x28
+    1268: f9001660     	str	x0, [x19, #0x28]
+    126c: f9400022     	ldr	x2, [x1]
+    1270: f9000020     	str	x0, [x1]
+    1274: f9000440     	str	x0, [x2, #0x8]
+    1278: aa1303e0     	mov	x0, x19
+    127c: a9028662     	stp	x2, x1, [x19, #0x28]
+    1280: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    1284: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    1288: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    128c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    1290: d65f03c0     	ret
+    1294: d503201f     	nop
+    1298: 58000200     	ldr	x0, 0x12d8 <ma_list_add+0xf8>
+    129c: 52801801     	mov	w1, #0xc0               // =192
+    12a0: 72a04801     	movk	w1, #0x240, lsl #16
+    12a4: f9401c00     	ldr	x0, [x0, #0x38]
+    12a8: 94000000     	bl	0x12a8 <ma_list_add+0xc8>
+		00000000000012a8:  R_AARCH64_CALL26	kmem_cache_alloc
+    12ac: aa0003f3     	mov	x19, x0
+    12b0: 52801802     	mov	w2, #0xc0               // =192
+    12b4: d2800a01     	mov	x1, #0x50               // =80
+    12b8: 72a04802     	movk	w2, #0x240, lsl #16
+    12bc: 94000000     	bl	0x12bc <ma_list_add+0xdc>
+		00000000000012bc:  R_AARCH64_CALL26	kmalloc_add_trace
+    12c0: 17ffffdb     	b	0x122c <ma_list_add+0x4c>
+    12c4: d4210000     	brk	#0x800
+    12c8: 00 00 00 00  	.word	0x00000000
+		00000000000012c8:  R_AARCH64_ABS64	udif_km_debug
+    12cc: 00 00 00 00  	.word	0x00000000
+    12d0: 00 00 00 00  	.word	0x00000000
+		00000000000012d0:  R_AARCH64_ABS64	.rodata.str1.8+0xa8
+    12d4: 00 00 00 00  	.word	0x00000000
+    12d8: 00 00 00 00  	.word	0x00000000
+		00000000000012d8:  R_AARCH64_ABS64	kmalloc_caches
+    12dc: 00 00 00 00  	.word	0x00000000
+    12e0: 00 00 00 00  	.word	0x00000000
+		00000000000012e0:  R_AARCH64_ABS64	.data+0xb8
+    12e4: 00 00 00 00  	.word	0x00000000

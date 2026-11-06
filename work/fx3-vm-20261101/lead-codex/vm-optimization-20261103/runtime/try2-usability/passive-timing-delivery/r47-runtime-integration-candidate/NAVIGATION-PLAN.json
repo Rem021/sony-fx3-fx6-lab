@@ -1,0 +1,55 @@
+{
+  "schema": "fx3-scripted-navigation-plan-v1",
+  "scripted_navigation": true,
+  "visual_review_at_click": false,
+  "steps": [
+    {
+      "step": 1,
+      "key": 427,
+      "target": "完整Setup > Area/Date，橙色Area/Date/Time Setting"
+    },
+    {
+      "step": 2,
+      "key": 3,
+      "target": "UP到Language English"
+    },
+    {
+      "step": 3,
+      "key": 504,
+      "target": "C4语言帮助"
+    },
+    {
+      "step": 4,
+      "key": 427,
+      "target": "MENU返回Language"
+    },
+    {
+      "step": 5,
+      "key": 428,
+      "target": "OK查看English语言列表但不改值"
+    },
+    {
+      "step": 6,
+      "key": 427,
+      "target": "MENU取消"
+    },
+    {
+      "step": 7,
+      "key": 427,
+      "target": "MENU关闭到待机"
+    },
+    {
+      "step": 8,
+      "key": 427,
+      "target": "MENU重开完整菜单"
+    }
+  ],
+  "runtime_budget": {
+    "minutes": 8,
+    "accepted_keys": 8,
+    "explicit_attempts": 10,
+    "attributed_unqueued_recoveries": 2,
+    "recoveries_per_step": 1
+  },
+  "key_effect_requires_separate_post_visual_review": true
+}

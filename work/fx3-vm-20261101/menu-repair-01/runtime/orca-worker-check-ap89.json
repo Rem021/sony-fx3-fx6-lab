@@ -1,0 +1,2686 @@
+{
+  "id": "a59c9fc1-4b9c-4390-b456-32e2d5268b82",
+  "ok": true,
+  "result": {
+    "workers": [
+      {
+        "dispatchId": "ctx_ce13f7e527a9",
+        "taskId": "task_83f13edf512d",
+        "runId": "run_46113644da79",
+        "workerState": "ready",
+        "dispatchStatus": "dispatched",
+        "agentTerminalHandle": "structworker_10af4468-8068-47bf-8f3b-ad88bf5b4496",
+        "terminalState": "active",
+        "resource": {
+          "id": "wtr_f72dc6fed841",
+          "ownershipState": "owned",
+          "releaseState": "not_requested",
+          "retainedReason": null,
+          "terminalHandle": "structworker_10af4468-8068-47bf-8f3b-ad88bf5b4496",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:d69ad7e4-b0af-4622-9f85-c876e01e7617",
+          "originDispatchId": "ctx_ce13f7e527a9",
+          "ownerDispatchId": "ctx_ce13f7e527a9",
+          "releaseRequestedAt": null,
+          "releaseCompletedAt": null,
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": null,
+            "status": null
+          }
+        },
+        "projection": {
+          "id": "ctx_ce13f7e527a9",
+          "dispatchId": "ctx_ce13f7e527a9",
+          "taskId": "task_83f13edf512d",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "ready",
+            "dispatch": "dispatched",
+            "detail": "input_accepted",
+            "activity": "unknown"
+          },
+          "outcome": "in_progress",
+          "liveness": {
+            "verdict": "unverifiable",
+            "reason": "missing_status"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "owned"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "unverifiable"
+            ],
+            "requiresAction": true
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_305c4eb6b7c0",
+        "taskId": "task_b114c6379485",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_4610423f-34d9-43f4-9621-8f9e32bd0a6c",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_f1357ad67808",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_4610423f-34d9-43f4-9621-8f9e32bd0a6c",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:413f35f3-6e52-4c6c-b58f-df05fcc10648",
+          "originDispatchId": "ctx_305c4eb6b7c0",
+          "ownerDispatchId": "ctx_305c4eb6b7c0",
+          "releaseRequestedAt": "2026-11-02 13:13:21",
+          "releaseCompletedAt": "2026-11-02 13:13:21",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_305c4eb6b7c0",
+          "dispatchId": "ctx_305c4eb6b7c0",
+          "taskId": "task_b114c6379485",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_72ec51d6fbc0",
+        "taskId": "task_89921d4c17c9",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_1cfb9e74-8f02-4a74-b604-c224d7b1e71b",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_dd6567548314",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_1cfb9e74-8f02-4a74-b604-c224d7b1e71b",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:60c6480d-bf78-42cd-8ac0-7be2ac9515f0",
+          "originDispatchId": "ctx_72ec51d6fbc0",
+          "ownerDispatchId": "ctx_72ec51d6fbc0",
+          "releaseRequestedAt": "2026-11-02 12:21:30",
+          "releaseCompletedAt": "2026-11-02 12:21:30",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_72ec51d6fbc0",
+          "dispatchId": "ctx_72ec51d6fbc0",
+          "taskId": "task_89921d4c17c9",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_169b0712bdff",
+        "taskId": "task_0f55b6c3b942",
+        "runId": "run_46113644da79",
+        "workerState": "failed",
+        "dispatchStatus": "failed",
+        "agentTerminalHandle": "structworker_8e3e4744-709d-4b00-b304-67a2607a66c9",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_d0239b8a6d9a",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_8e3e4744-709d-4b00-b304-67a2607a66c9",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:769f09f0-7719-4266-9f49-3005896714b0",
+          "originDispatchId": "ctx_169b0712bdff",
+          "ownerDispatchId": "ctx_169b0712bdff",
+          "releaseRequestedAt": "2026-11-02 11:12:39",
+          "releaseCompletedAt": "2026-11-02 11:12:40",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_169b0712bdff",
+          "dispatchId": "ctx_169b0712bdff",
+          "taskId": "task_0f55b6c3b942",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "failed",
+            "dispatch": "failed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "failed",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "failure"
+            ],
+            "requiresAction": true
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_1c64da6d0e8a",
+        "taskId": "task_9081f659546f",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_35456f27-70fe-4587-bb21-0bbb2d7dc471",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_baa65c1a53f7",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_35456f27-70fe-4587-bb21-0bbb2d7dc471",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:c2d7a2f0-4b64-43be-a28f-f2cb35f5b2af",
+          "originDispatchId": "ctx_1c64da6d0e8a",
+          "ownerDispatchId": "ctx_1c64da6d0e8a",
+          "releaseRequestedAt": "2026-11-02 11:05:01",
+          "releaseCompletedAt": "2026-11-02 11:05:01",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_1c64da6d0e8a",
+          "dispatchId": "ctx_1c64da6d0e8a",
+          "taskId": "task_9081f659546f",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_c42a57f14248",
+        "taskId": "task_d1023cf9193d",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_8435236b-c36e-4ff7-b158-b4fe2fe91cdc",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_5b52e5162d7f",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_8435236b-c36e-4ff7-b158-b4fe2fe91cdc",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:7dc8aa2b-dd75-4e74-ac1a-027f2b7f519a",
+          "originDispatchId": "ctx_c42a57f14248",
+          "ownerDispatchId": "ctx_c42a57f14248",
+          "releaseRequestedAt": "2026-11-02 10:01:04",
+          "releaseCompletedAt": "2026-11-02 10:01:04",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_c42a57f14248",
+          "dispatchId": "ctx_c42a57f14248",
+          "taskId": "task_d1023cf9193d",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_601eb6e02304",
+        "taskId": "task_1c7787dbbc12",
+        "runId": "run_46113644da79",
+        "workerState": "failed",
+        "dispatchStatus": "failed",
+        "agentTerminalHandle": "structworker_86dc6f91-226f-43ac-a939-a44612f5689d",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_f3a88db700f3",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_86dc6f91-226f-43ac-a939-a44612f5689d",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:a2221ddd-b53e-4a7f-a181-8a50c0264762",
+          "originDispatchId": "ctx_601eb6e02304",
+          "ownerDispatchId": "ctx_601eb6e02304",
+          "releaseRequestedAt": "2026-11-02 10:06:10",
+          "releaseCompletedAt": "2026-11-02 10:06:10",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_601eb6e02304",
+          "dispatchId": "ctx_601eb6e02304",
+          "taskId": "task_1c7787dbbc12",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "failed",
+            "dispatch": "failed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "failed",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "failure"
+            ],
+            "requiresAction": true
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_64175dc5266b",
+        "taskId": "task_06cebaf0d385",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_2a4a0fd1-5bb0-4de3-8adb-974b80dd3e7a",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_516955651a0c",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_2a4a0fd1-5bb0-4de3-8adb-974b80dd3e7a",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:f4b040d4-9f8c-4283-b614-f62b7722f755",
+          "originDispatchId": "ctx_64175dc5266b",
+          "ownerDispatchId": "ctx_64175dc5266b",
+          "releaseRequestedAt": "2026-11-02 09:48:21",
+          "releaseCompletedAt": "2026-11-02 09:48:21",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_64175dc5266b",
+          "dispatchId": "ctx_64175dc5266b",
+          "taskId": "task_06cebaf0d385",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_3a1f848c8711",
+        "taskId": "task_61abe7ececf2",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_33d78fc5-2cc8-4477-a75e-993795d1cc90",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_f24fdd133540",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_33d78fc5-2cc8-4477-a75e-993795d1cc90",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:21e6ae73-f73e-4a9a-ab64-5069c3409bf9",
+          "originDispatchId": "ctx_3a1f848c8711",
+          "ownerDispatchId": "ctx_3a1f848c8711",
+          "releaseRequestedAt": "2026-11-02 09:02:31",
+          "releaseCompletedAt": "2026-11-02 09:02:31",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_3a1f848c8711",
+          "dispatchId": "ctx_3a1f848c8711",
+          "taskId": "task_61abe7ececf2",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_7a1a6fd84f43",
+        "taskId": "task_da2c7f3136ef",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_7fb16ce4-29f2-42db-a028-d91bdaa5d1e5",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_68a0bb028899",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_7fb16ce4-29f2-42db-a028-d91bdaa5d1e5",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:76a4ca31-57e7-4b7d-88fe-6274e4c9ef63",
+          "originDispatchId": "ctx_7a1a6fd84f43",
+          "ownerDispatchId": "ctx_7a1a6fd84f43",
+          "releaseRequestedAt": "2026-11-02 08:55:08",
+          "releaseCompletedAt": "2026-11-02 08:55:08",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_7a1a6fd84f43",
+          "dispatchId": "ctx_7a1a6fd84f43",
+          "taskId": "task_da2c7f3136ef",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_73882a1df6c3",
+        "taskId": "task_d4cf046a2810",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_114783a5-b40b-4d01-b3bf-0c86d0e57db7",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_22e958897692",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_114783a5-b40b-4d01-b3bf-0c86d0e57db7",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:89a9eff5-cc22-45ca-a746-25b1ca539c2e",
+          "originDispatchId": "ctx_73882a1df6c3",
+          "ownerDispatchId": "ctx_73882a1df6c3",
+          "releaseRequestedAt": "2026-11-02 08:42:49",
+          "releaseCompletedAt": "2026-11-02 08:42:49",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_73882a1df6c3",
+          "dispatchId": "ctx_73882a1df6c3",
+          "taskId": "task_d4cf046a2810",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_402816fb2f82",
+        "taskId": "task_4d514948ef41",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_5fc2ca1c-f2aa-42d6-8823-1afbc4def258",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_040bb26fefc6",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_5fc2ca1c-f2aa-42d6-8823-1afbc4def258",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:7f358fbd-b848-4872-a06f-efe448589ee8",
+          "originDispatchId": "ctx_402816fb2f82",
+          "ownerDispatchId": "ctx_402816fb2f82",
+          "releaseRequestedAt": "2026-11-02 08:39:53",
+          "releaseCompletedAt": "2026-11-02 08:39:53",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_402816fb2f82",
+          "dispatchId": "ctx_402816fb2f82",
+          "taskId": "task_4d514948ef41",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_316c62162e4d",
+        "taskId": "task_0730c22734de",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_a69f9046-e164-460a-8f23-817a8d3dac3e",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_3181524c458d",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_a69f9046-e164-460a-8f23-817a8d3dac3e",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:bd9bf11d-57e0-47c1-9667-c49853cebf72",
+          "originDispatchId": "ctx_316c62162e4d",
+          "ownerDispatchId": "ctx_316c62162e4d",
+          "releaseRequestedAt": "2026-11-02 08:00:50",
+          "releaseCompletedAt": "2026-11-02 08:00:50",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_316c62162e4d",
+          "dispatchId": "ctx_316c62162e4d",
+          "taskId": "task_0730c22734de",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_e3c7c0771ce3",
+        "taskId": "task_cd86fa36c2e9",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_50906b53-f346-4572-b55e-8c34cfccd840",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_07afb7e25951",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_50906b53-f346-4572-b55e-8c34cfccd840",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:497ae36f-058d-405a-8989-95b1091ba1eb",
+          "originDispatchId": "ctx_e3c7c0771ce3",
+          "ownerDispatchId": "ctx_e3c7c0771ce3",
+          "releaseRequestedAt": "2026-11-02 07:34:24",
+          "releaseCompletedAt": "2026-11-02 07:34:24",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_e3c7c0771ce3",
+          "dispatchId": "ctx_e3c7c0771ce3",
+          "taskId": "task_cd86fa36c2e9",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_1d3ae7081d1b",
+        "taskId": "task_e6b4b31fa3bc",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_f812a83f-ae35-4909-b56f-fcb9abefa49d",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_4a468d7df00b",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_f812a83f-ae35-4909-b56f-fcb9abefa49d",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:f2546d10-e799-4381-9526-4e4ddb6bfb89",
+          "originDispatchId": "ctx_1d3ae7081d1b",
+          "ownerDispatchId": "ctx_1d3ae7081d1b",
+          "releaseRequestedAt": "2026-11-02 06:43:32",
+          "releaseCompletedAt": "2026-11-02 06:43:32",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_1d3ae7081d1b",
+          "dispatchId": "ctx_1d3ae7081d1b",
+          "taskId": "task_e6b4b31fa3bc",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_a0c2f7681957",
+        "taskId": "task_3722d8d6fd50",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_23831837-f09a-4a3a-a310-455704b04abd",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_6c41e2d09e0f",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_23831837-f09a-4a3a-a310-455704b04abd",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:30fe7afe-8eb8-441d-82d2-e94661902436",
+          "originDispatchId": "ctx_a0c2f7681957",
+          "ownerDispatchId": "ctx_a0c2f7681957",
+          "releaseRequestedAt": "2026-11-02 06:53:45",
+          "releaseCompletedAt": "2026-11-02 06:53:45",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_a0c2f7681957",
+          "dispatchId": "ctx_a0c2f7681957",
+          "taskId": "task_3722d8d6fd50",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_997198dcffd5",
+        "taskId": "task_80189b0e4211",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_0e27b796-e905-46f5-aa31-af0c06163bf9",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_968441253804",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_0e27b796-e905-46f5-aa31-af0c06163bf9",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:62fe3c3c-c1a4-4688-9dfd-d5252d7711b5",
+          "originDispatchId": "ctx_997198dcffd5",
+          "ownerDispatchId": "ctx_997198dcffd5",
+          "releaseRequestedAt": "2026-11-02 06:18:13",
+          "releaseCompletedAt": "2026-11-02 06:18:13",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_997198dcffd5",
+          "dispatchId": "ctx_997198dcffd5",
+          "taskId": "task_80189b0e4211",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_c88d587b1ee0",
+        "taskId": "task_6b0129ba9871",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_1984b50f-32e1-4895-80d1-22bd64371762",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_ff3da9bb3589",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_1984b50f-32e1-4895-80d1-22bd64371762",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:dfc22a0a-2543-43c4-99dc-58d7f5d256ff",
+          "originDispatchId": "ctx_c88d587b1ee0",
+          "ownerDispatchId": "ctx_c88d587b1ee0",
+          "releaseRequestedAt": "2026-11-02 05:45:34",
+          "releaseCompletedAt": "2026-11-02 05:45:34",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_c88d587b1ee0",
+          "dispatchId": "ctx_c88d587b1ee0",
+          "taskId": "task_6b0129ba9871",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_6b478b72d2d4",
+        "taskId": "task_10e81cc091ba",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_522981f5-924e-4a3a-bf66-5c50ecddc723",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_e5f4706b6385",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_522981f5-924e-4a3a-bf66-5c50ecddc723",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:b402238f-0ee4-42af-a647-facbec57aa6d",
+          "originDispatchId": "ctx_6b478b72d2d4",
+          "ownerDispatchId": "ctx_6b478b72d2d4",
+          "releaseRequestedAt": "2026-11-02 05:41:12",
+          "releaseCompletedAt": "2026-11-02 05:41:13",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_6b478b72d2d4",
+          "dispatchId": "ctx_6b478b72d2d4",
+          "taskId": "task_10e81cc091ba",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_f666b5f4336f",
+        "taskId": "task_500248bf9d86",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_2f27e4fc-d555-479f-8b26-d963511cf617",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_f20072a6075e",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_2f27e4fc-d555-479f-8b26-d963511cf617",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:0398b795-09f6-4a6d-88ba-5df17a0266e9",
+          "originDispatchId": "ctx_f666b5f4336f",
+          "ownerDispatchId": "ctx_f666b5f4336f",
+          "releaseRequestedAt": "2026-11-02 05:17:38",
+          "releaseCompletedAt": "2026-11-02 05:17:39",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_f666b5f4336f",
+          "dispatchId": "ctx_f666b5f4336f",
+          "taskId": "task_500248bf9d86",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_521e1fca0b64",
+        "taskId": "task_8fca8cbbfd13",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_ab24c239-af72-4ff3-8eb8-07f3e9607a34",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_0669310eddb2",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_ab24c239-af72-4ff3-8eb8-07f3e9607a34",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:d11f3658-d3f1-4c16-9aba-52227d047a5b",
+          "originDispatchId": "ctx_521e1fca0b64",
+          "ownerDispatchId": "ctx_521e1fca0b64",
+          "releaseRequestedAt": "2026-11-02 04:56:09",
+          "releaseCompletedAt": "2026-11-02 04:56:09",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_521e1fca0b64",
+          "dispatchId": "ctx_521e1fca0b64",
+          "taskId": "task_8fca8cbbfd13",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_101518269e28",
+        "taskId": "task_ccbc0cf79dfb",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_72146ad4-ea76-42d5-b9c6-86a99580c780",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_dbb3aee25992",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_72146ad4-ea76-42d5-b9c6-86a99580c780",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:b5db3126-207f-43d3-a108-6a38b7cd4156",
+          "originDispatchId": "ctx_101518269e28",
+          "ownerDispatchId": "ctx_101518269e28",
+          "releaseRequestedAt": "2026-11-02 04:33:09",
+          "releaseCompletedAt": "2026-11-02 04:33:10",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_101518269e28",
+          "dispatchId": "ctx_101518269e28",
+          "taskId": "task_ccbc0cf79dfb",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_581a9448035a",
+        "taskId": "task_a4d5328af759",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_2ba79fe5-2186-45cd-b69a-534c4bf9e3ba",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_8ad0dad89817",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_2ba79fe5-2186-45cd-b69a-534c4bf9e3ba",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:a9b471b8-871c-4c22-b122-71799d6caec2",
+          "originDispatchId": "ctx_581a9448035a",
+          "ownerDispatchId": "ctx_581a9448035a",
+          "releaseRequestedAt": "2026-11-02 04:18:00",
+          "releaseCompletedAt": "2026-11-02 04:18:00",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_581a9448035a",
+          "dispatchId": "ctx_581a9448035a",
+          "taskId": "task_a4d5328af759",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_58dbdf3919e9",
+        "taskId": "task_cef8eab75ac4",
+        "runId": "run_46113644da79",
+        "workerState": "failed",
+        "dispatchStatus": "failed",
+        "agentTerminalHandle": "structworker_2cb0ed34-9e76-4334-a7b1-a9f24770cd33",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_4052795c1e70",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_2cb0ed34-9e76-4334-a7b1-a9f24770cd33",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:57afcd10-3b7c-4132-9788-590f73236835",
+          "originDispatchId": "ctx_58dbdf3919e9",
+          "ownerDispatchId": "ctx_58dbdf3919e9",
+          "releaseRequestedAt": "2026-11-02 04:11:44",
+          "releaseCompletedAt": "2026-11-02 04:11:44",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_58dbdf3919e9",
+          "dispatchId": "ctx_58dbdf3919e9",
+          "taskId": "task_cef8eab75ac4",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "failed",
+            "dispatch": "failed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "failed",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "failure"
+            ],
+            "requiresAction": true
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_760cf08292c6",
+        "taskId": "task_8284766cf990",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_9f32118c-abbb-463b-ade3-06916a5884c5",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_caef968914a1",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_9f32118c-abbb-463b-ade3-06916a5884c5",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:809a28ce-b074-43e3-be3b-ec11fba92d29",
+          "originDispatchId": "ctx_760cf08292c6",
+          "ownerDispatchId": "ctx_760cf08292c6",
+          "releaseRequestedAt": "2026-11-02 03:58:28",
+          "releaseCompletedAt": "2026-11-02 03:58:28",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_760cf08292c6",
+          "dispatchId": "ctx_760cf08292c6",
+          "taskId": "task_8284766cf990",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_74e26658e728",
+        "taskId": "task_723cf58f2491",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_5b527c9e-6456-4e67-ba81-082652fa0d41",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_1b795669a867",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_5b527c9e-6456-4e67-ba81-082652fa0d41",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:503f3928-ec87-4e6c-b521-4a28d966c7c5",
+          "originDispatchId": "ctx_74e26658e728",
+          "ownerDispatchId": "ctx_74e26658e728",
+          "releaseRequestedAt": "2026-11-02 03:54:41",
+          "releaseCompletedAt": "2026-11-02 03:54:42",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_74e26658e728",
+          "dispatchId": "ctx_74e26658e728",
+          "taskId": "task_723cf58f2491",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_ee4f6943c8d7",
+        "taskId": "task_bf4f4211be76",
+        "runId": "run_46113644da79",
+        "workerState": "ready",
+        "dispatchStatus": "dispatched",
+        "agentTerminalHandle": "structworker_8ec49f7c-a55d-4d20-81d3-da2d6872c8aa",
+        "terminalState": "retained",
+        "resource": {
+          "id": "wtr_97e2ee8d576c",
+          "ownershipState": "user_owned",
+          "releaseState": "retained",
+          "retainedReason": "user_takeover",
+          "terminalHandle": "structworker_8ec49f7c-a55d-4d20-81d3-da2d6872c8aa",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:6cbe29fd-fb24-4199-bba8-b8ad99383477",
+          "originDispatchId": "ctx_ee4f6943c8d7",
+          "ownerDispatchId": "ctx_ee4f6943c8d7",
+          "releaseRequestedAt": null,
+          "releaseCompletedAt": null,
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": null,
+            "status": null
+          }
+        },
+        "projection": {
+          "id": "ctx_ee4f6943c8d7",
+          "dispatchId": "ctx_ee4f6943c8d7",
+          "taskId": "task_bf4f4211be76",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "ready",
+            "dispatch": "dispatched",
+            "detail": "input_accepted",
+            "activity": "unknown"
+          },
+          "outcome": "in_progress",
+          "liveness": {
+            "verdict": "unverifiable",
+            "reason": "missing_status"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "user_owned"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "unverifiable"
+            ],
+            "requiresAction": true
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_1560beb6d2cc",
+        "taskId": "task_121821a1cf34",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_b87d45bc-3587-4849-bc50-ae7980ab0e7e",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_85483e5e12e6",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_b87d45bc-3587-4849-bc50-ae7980ab0e7e",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:09e6b13c-b70a-4c72-ac63-d1c7e5f0d3ae",
+          "originDispatchId": "ctx_1560beb6d2cc",
+          "ownerDispatchId": "ctx_1560beb6d2cc",
+          "releaseRequestedAt": "2026-11-02 03:44:28",
+          "releaseCompletedAt": "2026-11-02 03:44:29",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_1560beb6d2cc",
+          "dispatchId": "ctx_1560beb6d2cc",
+          "taskId": "task_121821a1cf34",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_f63116d79130",
+        "taskId": "task_e755de273107",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_1f867b65-ee9d-457d-9dfc-b513291592a2",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_5a9630e1b8dd",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_1f867b65-ee9d-457d-9dfc-b513291592a2",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:61e164ac-008c-4e7f-a75f-1ab024764e36",
+          "originDispatchId": "ctx_f63116d79130",
+          "ownerDispatchId": "ctx_f63116d79130",
+          "releaseRequestedAt": "2026-11-02 03:36:26",
+          "releaseCompletedAt": "2026-11-02 03:36:26",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_f63116d79130",
+          "dispatchId": "ctx_f63116d79130",
+          "taskId": "task_e755de273107",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_cb612ba90361",
+        "taskId": "task_d179eba8a01a",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_f2e464b1-766f-4996-9ce9-5a035a27e95e",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_039ed501f88d",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_f2e464b1-766f-4996-9ce9-5a035a27e95e",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:28da3572-1f2f-4d2d-af2f-cc579abc1e19",
+          "originDispatchId": "ctx_cb612ba90361",
+          "ownerDispatchId": "ctx_cb612ba90361",
+          "releaseRequestedAt": "2026-11-02 03:35:26",
+          "releaseCompletedAt": "2026-11-02 03:35:26",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_cb612ba90361",
+          "dispatchId": "ctx_cb612ba90361",
+          "taskId": "task_d179eba8a01a",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_5cca1466ac78",
+        "taskId": "task_cae92f1211e6",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_9684bb51-0136-4a82-8134-1a7a59289e54",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_608125504d8b",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_9684bb51-0136-4a82-8134-1a7a59289e54",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:6339200d-17f5-4d7b-9e7d-d4fbaf61bf8a",
+          "originDispatchId": "ctx_5cca1466ac78",
+          "ownerDispatchId": "ctx_5cca1466ac78",
+          "releaseRequestedAt": "2026-11-02 03:33:53",
+          "releaseCompletedAt": "2026-11-02 03:33:53",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_5cca1466ac78",
+          "dispatchId": "ctx_5cca1466ac78",
+          "taskId": "task_cae92f1211e6",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_39f07beec32f",
+        "taskId": "task_536da2a06548",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_c3304232-79cb-4569-8657-db04ba0593c9",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_895e0d1a9531",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_c3304232-79cb-4569-8657-db04ba0593c9",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:a8fb79fd-640d-4096-99a5-076d923d8899",
+          "originDispatchId": "ctx_39f07beec32f",
+          "ownerDispatchId": "ctx_39f07beec32f",
+          "releaseRequestedAt": "2026-11-02 03:27:09",
+          "releaseCompletedAt": "2026-11-02 03:27:10",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_39f07beec32f",
+          "dispatchId": "ctx_39f07beec32f",
+          "taskId": "task_536da2a06548",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_21c1e16d80d7",
+        "taskId": "task_90c054d1fbde",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_88893959-ca55-4d57-83e7-4edcea2d6e75",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_fec27a0940c6",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_88893959-ca55-4d57-83e7-4edcea2d6e75",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:d8a8e795-a43c-4fcf-975d-25d07b15973c",
+          "originDispatchId": "ctx_21c1e16d80d7",
+          "ownerDispatchId": "ctx_21c1e16d80d7",
+          "releaseRequestedAt": "2026-11-02 03:18:28",
+          "releaseCompletedAt": "2026-11-02 03:18:29",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_21c1e16d80d7",
+          "dispatchId": "ctx_21c1e16d80d7",
+          "taskId": "task_90c054d1fbde",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_d877f4cf5498",
+        "taskId": "task_f6dab166bb8a",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_a0b686e8-bdf0-4e1d-b505-9e728e8a0102",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_e96f6c8cbe29",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_a0b686e8-bdf0-4e1d-b505-9e728e8a0102",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:a1cd98cf-3e0a-4d55-8c29-aaf6edd83dc6",
+          "originDispatchId": "ctx_d877f4cf5498",
+          "ownerDispatchId": "ctx_d877f4cf5498",
+          "releaseRequestedAt": "2026-11-02 03:20:23",
+          "releaseCompletedAt": "2026-11-02 03:20:23",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_d877f4cf5498",
+          "dispatchId": "ctx_d877f4cf5498",
+          "taskId": "task_f6dab166bb8a",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      },
+      {
+        "dispatchId": "ctx_1a2c7f156a59",
+        "taskId": "task_ed3b5922013f",
+        "runId": "run_46113644da79",
+        "workerState": "succeeded",
+        "dispatchStatus": "completed",
+        "agentTerminalHandle": "structworker_690345de-e470-42c8-bf68-0e96595e77da",
+        "terminalState": "released",
+        "resource": {
+          "id": "wtr_30c6d4a4998a",
+          "ownershipState": "released",
+          "releaseState": "released",
+          "retainedReason": null,
+          "terminalHandle": "structworker_690345de-e470-42c8-bf68-0e96595e77da",
+          "worktreeId": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+          "endpointId": "2e662262-bca7-44d1-b7f9-0fd1018e793b",
+          "endpointIncarnation": "structured:4b466c26-c07a-4d1e-bd2f-94fe86991fe1",
+          "originDispatchId": "ctx_1a2c7f156a59",
+          "ownerDispatchId": "ctx_1a2c7f156a59",
+          "releaseRequestedAt": "2026-11-02 03:20:00",
+          "releaseCompletedAt": "2026-11-02 03:20:00",
+          "releaseError": null,
+          "recoveryAttemptCount": 0,
+          "lastRecoveryAt": null,
+          "archive": {
+            "source": "transcript",
+            "status": "captured"
+          }
+        },
+        "projection": {
+          "id": "ctx_1a2c7f156a59",
+          "dispatchId": "ctx_1a2c7f156a59",
+          "taskId": "task_ed3b5922013f",
+          "runId": "run_46113644da79",
+          "role": "worker",
+          "parent": null,
+          "provider": null,
+          "host": {
+            "kind": "local",
+            "id": "local"
+          },
+          "workspace": {
+            "id": "3a0322f4-f7ac-4feb-bd18-5c4fddb66fae::/Volumes/KAFU2T/AI/Projects/Mac::workspace:033512d4-46a1-40b1-bb3a-3eb39c298577",
+            "kind": "folder_or_worktree"
+          },
+          "stage": {
+            "worker": "succeeded",
+            "dispatch": "completed",
+            "detail": "settled",
+            "activity": "unknown"
+          },
+          "outcome": "succeeded",
+          "liveness": {
+            "verdict": "exited",
+            "source": "resource_release"
+          },
+          "evidence": {
+            "durable": true,
+            "liveStatus": "unavailable",
+            "lastObservedAt": null
+          },
+          "resource": {
+            "state": "released"
+          },
+          "nextAction": {
+            "kind": "none",
+            "argv": []
+          },
+          "attention": {
+            "categories": [
+              "root_completion"
+            ],
+            "requiresAction": false
+          }
+        }
+      }
+    ],
+    "counts": {
+      "active": 1,
+      "retained": 1,
+      "released": 33
+    },
+    "page": {
+      "limit": 100,
+      "total": 35,
+      "hasMore": false,
+      "nextCursor": null
+    },
+    "scope": {
+      "run": "run_46113644da79",
+      "source": "flag"
+    }
+  },
+  "_meta": {
+    "runtimeId": "2e662262-bca7-44d1-b7f9-0fd1018e793b"
+  }
+}

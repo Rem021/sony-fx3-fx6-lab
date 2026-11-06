@@ -1,0 +1,22 @@
+{
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-original-im-entry-probe.cpio",
+  "bytes": 8694800,
+  "sha256": "916e5b041dbb338b916b99479225da3f9d1e5955d019c085b3f48607b20e770a",
+  "source_loader_cpio_sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+  "original_elfs_unchanged": 20,
+  "executable_command": [
+    "/usr/bin/im.elf",
+    "target=qemu"
+  ],
+  "child_protocol": "Original busybox shell stops before exec. Guest parent optionally enables original-kernel syscall tracing for that PID, resumes, waits2s then terminates. Host QMP lifetime remains independently bounded.",
+  "guest_standard_filesystems": [
+    "proc",
+    "sysfs",
+    "debugfs"
+  ],
+  "host_files_disks_usb_network_exposed": false,
+  "original_init_updater_service_loader_included": false,
+  "contains_updater_jiritsu_preload_worker": false,
+  "custom_init": "#!/bin/busybox sh\necho FX3_AP_ENTRY_PROBE_BEGIN\n/bin/busybox uname -a\n/bin/busybox mount -t proc proc /proc\n/bin/busybox mount -t sysfs sysfs /sys\n/bin/busybox mount -t debugfs debugfs /sys/kernel/debug\ntr=/sys/kernel/debug/tracing\n/bin/busybox sh -c 'kill -STOP $$; exec /usr/bin/im.elf target=qemu' </dev/null &\nap_pid=$!\necho FX3_AP_ENTRY_EXEC_PID=$ap_pid\n/bin/busybox sleep 1\nif [ -d \"$tr/events/syscalls\" ]; then\n echo 0 > \"$tr/tracing_on\"\n echo > \"$tr/trace\"\n for ev in sys_enter_openat sys_exit_openat sys_enter_open sys_exit_open sys_enter_ioctl sys_exit_ioctl; do\n  if [ -d \"$tr/events/syscalls/$ev\" ]; then\n   echo \"common_pid == $ap_pid\" > \"$tr/events/syscalls/$ev/filter\"\n   echo 1 > \"$tr/events/syscalls/$ev/enable\"\n  fi\n done\n echo 1 > \"$tr/tracing_on\"\n echo FX3_AP_SYSCALL_TRACE_ENABLED\nelse\n echo FX3_AP_SYSCALL_TRACE_UNAVAILABLE\nfi\nkill -CONT $ap_pid\n/bin/busybox sleep 2\nif kill -0 $ap_pid 2>/dev/null; then\n echo FX3_AP_STILL_ALIVE_AT_BOUND\n /bin/busybox cat /proc/$ap_pid/maps\n /bin/busybox cat /proc/$ap_pid/wchan\n kill -TERM $ap_pid\n /bin/busybox sleep 1\n kill -KILL $ap_pid 2>/dev/null\nelse\n echo FX3_AP_EXITED_BEFORE_BOUND\nfi\nwait $ap_pid\nrc=$?\necho FX3_AP_WAIT_RC=$rc\nif [ -d \"$tr/events/syscalls\" ]; then\n echo 0 > \"$tr/tracing_on\"\n echo FX3_AP_SYSCALL_TRACE_BEGIN\n /bin/busybox cat \"$tr/trace\"\n echo FX3_AP_SYSCALL_TRACE_END\nfi\necho FX3_AP_ENTRY_PROBE_END\nwhile true; do /bin/busybox sleep 1; done\n",
+  "scope": "Separate AP entry investigation only; does not change successful core/loader profiles or claim UI/capture."
+}

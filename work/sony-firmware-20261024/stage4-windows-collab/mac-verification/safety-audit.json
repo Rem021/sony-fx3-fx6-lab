@@ -1,0 +1,80 @@
+{
+  "executed_received_sources": [],
+  "reviewed_core_sources": [
+    "fx3_native.py",
+    "emulate_h265_converter.py",
+    "emulate_mpr_downstream.py",
+    "emulate_encoder_packet.py"
+  ],
+  "executed_adaptation": "offline_verify.py",
+  "ELF_native_execution": false,
+  "hardware_access": false,
+  "guest_host_forwarding": false,
+  "guest_writable_regions": [
+    "0x10000000+0x40000 synthetic stack",
+    "0x11000000+0x10000 synthetic scratch"
+  ],
+  "guest_ELF_writes": false,
+  "instruction_budget": 20000,
+  "timeout_microseconds": 1000000,
+  "packet_whitelist": [
+    {
+      "name": "_ZN3mpr19GetCodecAudioFormatEjj",
+      "va": 849852,
+      "size": 200
+    },
+    {
+      "name": "_ZN3mpr24ConvertVideoCodecToCodecEN9DefStruct10VideoCodecENS0_12GopStructureE",
+      "va": 850052,
+      "size": 256
+    },
+    {
+      "name": "_ZN3mpr15GetAudioBitrateENS_14AudioParamCombE",
+      "va": 856888,
+      "size": 192
+    },
+    {
+      "name": "_ZN3mpr5pconv24ConvertFrameRateForCodecEN9DefStruct9FrameRateEPNS_11FramePerSecEPhS5_",
+      "va": 2886916,
+      "size": 228
+    },
+    {
+      "name": "_ZN3mpr21GetAudioOutputChannelEh",
+      "va": 850308,
+      "size": 172
+    },
+    {
+      "name": "_ZN3mpr35ConvertPictureQualityDefStructToMprEj",
+      "va": 853848,
+      "size": 168
+    },
+    {
+      "name": "_ZN3mpr14GetVideoAspectENS_14VideoParamCombE",
+      "va": 855324,
+      "size": 196
+    },
+    {
+      "name": "_ZN3mpr32ConvertVideoAspectForAspectRatioEN9DefStruct11VideoAspectE",
+      "va": 854016,
+      "size": 168
+    },
+    {
+      "name": "_ZN3mpr15GetChromaFormatENS_14VideoParamCombE",
+      "va": 856496,
+      "size": 196
+    },
+    {
+      "name": "_ZN3mpr14GetVideoBitLenENS_14VideoParamCombE",
+      "va": 856692,
+      "size": 196
+    }
+  ],
+  "stubs": {
+    "0xc8c70": "MPR log returns 0",
+    "0x2a4e798": "normal movie mode query returns 0",
+    "0x2e68010": "exact original app constant bitrate map lookup adapter",
+    "0x2f6fe3c": "stop at firmware assertion"
+  },
+  "execution_result": "exit0; all ten expected verification checks true; HD422 invalid254 is an expected negative result",
+  "dependencies": "Fixed official-PyPI binary wheels installed only into task-local .venv, retained for reproducibility; no third-party source clones/downloaded reference repositories"
+}

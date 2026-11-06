@@ -1,0 +1,34 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-preset-context-v3-date97.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-preset-context-v3-date97.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-display-probes-v1.S",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-preset-context-v3-date97.so"
+  ],
+  "exit": 0,
+  "authority": "msg_155b0cf9b5b7",
+  "source_sha256": "aaa86e43de243bb16d05bd58561e2c7da09e9d11c63d55f0566b059fce8865e6",
+  "output_sha256": "5e764073d2c11eb745da3f3b4045b54175a1a0878e1c8f08762e339e8b11e8dd",
+  "original_source_sha256": "0419c4d13478b9572101d0303582fdbc6b540ea88457e67f5a382b52fa8b9aba",
+  "changed_scope": "8 original instruction verified passive observations plus original sync request before/after capture; preserve GPR/SIMD/NZCV/errno; no model/Backup writes",
+  "extra_sources": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-date-observe97r2.h": "ebb37d167f34ce9f71b96043a8bdde714b19b5bd4229aea31f314643a89e2771",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-display-probes-v1.S": "1e48fbdf1f8f91040344e3c558c7317d6a5a9a9910f83d8f0d827d91daa6d9dc",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap97r2-date-observer-original-points.json": "5efb61cf7b50518612da5c1086795836c1c0697a72f4620506b722cb3b88ebd3"
+  }
+}

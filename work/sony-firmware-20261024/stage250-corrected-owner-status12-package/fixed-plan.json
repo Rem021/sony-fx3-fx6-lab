@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "created_utc": "2026-10-31T05:46:27.006443+00:00",
+  "grant_id": "fx3-702-owner-status-20261030-12",
+  "scope": "MSC_OWNER_STATUS_ONLY",
+  "authorized": false,
+  "executed": false,
+  "maximum_helper_invocations": 1,
+  "nonce": "f102158c65aca3bea4269073885b4539",
+  "target": {
+    "VID": 1356,
+    "PID": 3489,
+    "locationID": 17825792,
+    "location_hex": "0x01100000",
+    "registryID": 4295003368,
+    "model": "ILME-FX3"
+  },
+  "privacy_key_source": "fixed-material.json; root-private cached-serial HMAC consistency only",
+  "expected_console_uid": 501,
+  "expected_helper_uid": 0,
+  "job": "/private/tmp/fx3-702-owner-status-20261030-12",
+  "root_base": "/private/var/root/fx3-owner-trials",
+  "root_grant_directory": "/private/var/root/fx3-owner-trials/fx3-702-owner-status-20261030-12",
+  "helper_sha256": "93d05504640623f56074bf120052c82fdfd3f21629cc83207e5e0b97380d65dc",
+  "permit_sha256": "ea720be58e4ef93163e4d49215e3545e48d388945d6f20b2f463e20d57618cff",
+  "permit_bytes": 96,
+  "terminal_command_sha256": "99460d2cf8a773c48c940e866f2ae6027ea1342c91890eb5a1ea19391df966bc",
+  "host_control_ops": [
+    "OBSERVE",
+    "STATUS",
+    "END"
+  ],
+  "Sony_control_bulk_file_firmware_commands": 0,
+  "usb_capture_and_return": true,
+  "may_temporarily_disconnect_storage_driver": true,
+  "camera_all_volumes_must_be_manually_ejected": true,
+  "keep_current_port_and_MSC": true,
+  "work_budget_ms": 20000,
+  "final_observation_budget_ms": 30000,
+  "blocking_calls_not_forcibly_interruptible": true,
+  "auto_retry_reset_kill_or_mode_fallback": false,
+  "privacy_permission_changes": false,
+  "root_helper_new_files": [
+    "helper:0500",
+    "permit.bin:0400",
+    "entry.once:0400"
+  ],
+  "shared_global_guard": "/private/var/root/fx3-owner-trials/global-fx3-owner.journal",
+  "does_not_authorize_authentication_module_upload_backup_restore_recording_or_flash": true
+}

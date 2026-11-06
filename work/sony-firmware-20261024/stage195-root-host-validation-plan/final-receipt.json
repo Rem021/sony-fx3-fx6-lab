@@ -1,0 +1,2532 @@
+{
+  "schema": "fx3-stage195-root-host-validation-plan-v1",
+  "created_utc": "2026-10-29T20:50:54.992119+00:00",
+  "previous_manifest_sha256": "ae0a501a38b5e8cf6d18ef5455a256ae52823c90ad1fe403d0aac13105f8f9fc",
+  "previous_manifest_members_reverified": 505,
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/README.md",
+      "bytes": 4494,
+      "sha256": "e293aed9aa9075f860a65f2a17b783435f81c449a24d1a018bea84d83d6bf9e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/RootHostValidation.command.txt",
+      "bytes": 1724,
+      "sha256": "53fe00f8da91fe4d7cf6f3bc883247f242bff28cc02bc5038f57761c9870026f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/approval-boundary-initial-failure.json",
+      "bytes": 183,
+      "sha256": "ea4040849ef6b1fde0f66af8a862c765082fd9c9e3b03af31d58a0c81fe97cf8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/approval-boundary-results.json",
+      "bytes": 732,
+      "sha256": "684ad2736fb810d36011b2cbae4a6b832d5150b420ca28282dad36d110b84e4e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/approval-bundle.json",
+      "bytes": 4790,
+      "sha256": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/entry-ipc.dylib",
+      "bytes": 37072,
+      "sha256": "2206ed49cbd2ef784549bc409479060515c21b5c614df7b08f2e6b74239c1ae5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/entry-ipc.dylib.dSYM/Contents/Info.plist",
+      "bytes": 644,
+      "sha256": "2aafe58014288ccc12c8ee156a064ba81d55289ee162feb574928842807773aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/entry-ipc.dylib.dSYM/Contents/Resources/DWARF/entry-ipc.dylib",
+      "bytes": 26560,
+      "sha256": "dff9f92e22401e770ea74298ae5e0fdb985488d726127c5a1eec1cfb3fea63d0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/entry-ipc.dylib.dSYM/Contents/Resources/Relocations/aarch64/entry-ipc.dylib.yml",
+      "bytes": 206,
+      "sha256": "ebb6730f6521f66e68902950bf568ac0f277aa7a91b48c052bb33f13ab45a8a6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/host-fixture-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/host-fixture-helper.dSYM/Contents/Info.plist",
+      "bytes": 648,
+      "sha256": "b864e5f20a4a066ca39b2c4922a8ad078598cfbe97c0a40ce2b89041adbb48dc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/host-fixture-helper.dSYM/Contents/Resources/DWARF/host-fixture-helper",
+      "bytes": 102472,
+      "sha256": "b6a36502b225390c75894eb1b4d234fe09ff00530be477550a095baf179ecc64"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/host-fixture-helper.dSYM/Contents/Resources/Relocations/aarch64/host-fixture-helper.yml",
+      "bytes": 210,
+      "sha256": "4c42045a18a03de081ebb593da1c3485c2738b3e720ab289b64658d363a71720"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/root-host-helper",
+      "bytes": 59600,
+      "sha256": "fb150a18a4efc9d827f293b912aa56c21e14488670817256c12b39c1356c32cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/root-host-helper.dSYM/Contents/Info.plist",
+      "bytes": 645,
+      "sha256": "32ea4718b4505fcfca7c88cc23f590db9a851f8182f273eca54973e98e44e3b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/root-host-helper.dSYM/Contents/Resources/DWARF/root-host-helper",
+      "bytes": 75292,
+      "sha256": "f116c42bc33af87b6b6b25d09ad2977f804071f09b3f92d66ff0c10d2f116a6a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/root-host-helper.dSYM/Contents/Resources/Relocations/aarch64/root-host-helper.yml",
+      "bytes": 207,
+      "sha256": "007de7294c27eb9fa1040f03c2090605f217f4015ea97535fc682a71ee0337de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/build-receipt.json",
+      "bytes": 10591,
+      "sha256": "6e1b3534cfc44ac4e8da64a03b840492d975bd894bca82af63a03757a20203db"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/build_host.py",
+      "bytes": 2763,
+      "sha256": "68cf4f70bea64f573e777340f42df5c4b67c4eb6596dee9c79ad7eaaae6b4883"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/controller_ipc.py",
+      "bytes": 6191,
+      "sha256": "97964b26aaaa7da8b84c8ff2443177dec7c22f49e789d432b6482f645c2bec46"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/entry_shared.h",
+      "bytes": 1542,
+      "sha256": "e1e0e36943297f26c3e8be260025a13213e78aa07e128cf154f9f9e906cfff76"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/entry_support.c",
+      "bytes": 5210,
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/first-README.md",
+      "bytes": 4473,
+      "sha256": "32060a001ac9b7d113dbe4c6670358942789776a66f9c98ffb0670d83d932f4e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/first-approval-bundle.json",
+      "bytes": 4764,
+      "sha256": "7bab1b24a089e3ae20d1219d6dbf8d97ae72b0acad70a2573357496f7f8199ef"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/first-host-test-results.json",
+      "bytes": 2863,
+      "sha256": "a16532db34084dbd3c79272dae1f157bc124ddeba788d3ab31cfcd28141aa2d5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/first-passing-python-sources.zip",
+      "bytes": 13708,
+      "sha256": "d1df6cce3fe85bbd15b279bcd32e3434fac5871a2acdf33b16deb3b60934efaa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/first-sample-context.json",
+      "bytes": 813,
+      "sha256": "bd2e9f46456d2176721475f87a0c37e9e00ba011b9eaaef71db7e6f7d63ebb17"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/first-sample-host-query.bin",
+      "bytes": 384,
+      "sha256": "b78d0a3b25eb76bc5cf036bfd513a3204e752f094d3eff20176480bffdba753d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/first-sample-host-trial.bin",
+      "bytes": 256,
+      "sha256": "869c64c3974fd760a47dbf3cc81a9aab08255fef616c406705a255162f5eee85"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/first-test_approval_boundary.py",
+      "bytes": 3358,
+      "sha256": "8a8f0ae306a84a7087270bc6280f3da1f3b85ceed15464f02528b77fff5de839"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/fixed-plan.json",
+      "bytes": 1343,
+      "sha256": "497039b64d1f4915ad6abf72f868138e53bf7a3307539568454c5c7ad3ba2d8c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/frame_io.c",
+      "bytes": 2864,
+      "sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/frame_io.h",
+      "bytes": 369,
+      "sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/global_guard.c",
+      "bytes": 4515,
+      "sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/global_guard.h",
+      "bytes": 625,
+      "sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/goal-status-after.json",
+      "bytes": 367767,
+      "sha256": "90168e82476b24f157e1056f50959c7bef788ffd460751f1c92e3a4703516008"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/goal-status-before.json",
+      "bytes": 365434,
+      "sha256": "ce3db94fec3a37273f6e22da3c5e4d335d6656e118bc3ccfb05009e3bf21b055"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/helper_hello.c",
+      "bytes": 2595,
+      "sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/helper_hello.h",
+      "bytes": 173,
+      "sha256": "818c425c531a630658ecdb42919733f74d7e76be70c300264b755f6c6c1f1fcf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host-test-results.json",
+      "bytes": 2867,
+      "sha256": "0b70b8f15bfee7087d71866ce5d1ea30e054fbe0bdfeef07bca6f1581d3aa73d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_login.c",
+      "bytes": 1837,
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_login.h",
+      "bytes": 533,
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_plan.py",
+      "bytes": 4817,
+      "sha256": "c1ae8254fca4c2d15de2bada4742c7167eb9e3f86e649f518e72a983168bc3de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_records.py",
+      "bytes": 3118,
+      "sha256": "a7c2007a0b793d932654df84343ea06b849fff8c030370f1290e0d3c8a14a815"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_supervisor.py",
+      "bytes": 11191,
+      "sha256": "8253ef4047e24ec0c3354f522b2cf7cd3c5faeccd0aa428f1d87ad2187a348f2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_target.h",
+      "bytes": 546,
+      "sha256": "b181856c8425512188a8478661b00c62a3394bdc1350264e1c9dac4161e0e58e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_transport.c",
+      "bytes": 6216,
+      "sha256": "393749d0348df3220ee563da404ba61f9148455d8073de61187a3278e7e5d303"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_transport.h",
+      "bytes": 868,
+      "sha256": "e94e5d8bd968c4477ea7886630129d1df4e353cb55438f18c3ccf3ea7cde15a6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_trial.c",
+      "bytes": 10538,
+      "sha256": "4cc8d42ea871a47c4ad98ff135b482c9e1d1c09921e2ff633c0ba44d4a697172"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/implementation-review.json",
+      "bytes": 1659,
+      "sha256": "e7987de603c3655d07fcaebcb5d7d4079b3d39138ef574bfe854c496389d13fd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/make_plan.py",
+      "bytes": 2850,
+      "sha256": "9e6a80e8f381b69ca4481a8cb32e1d5ec8da83a419f53ddf6f484265b12a6b01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/native-goal-observed.json",
+      "bytes": 442,
+      "sha256": "b497414ff755fe7ef392554ac53aabee27872cb3fdde7001776f1c93f380f270"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/owner_ipc.c",
+      "bytes": 3175,
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/owner_trial.h",
+      "bytes": 2432,
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/primary-source-review.json",
+      "bytes": 996,
+      "sha256": "0ad0d0d94c3a3888283fba32d825c4c8cc903a365fad0daa3b616c8f18ccc81b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/readme-after.md",
+      "bytes": 82067,
+      "sha256": "bcc4ca5adefc54ea6483032310249e220943b0c1f4d13ef255f537f4890fe158"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/readme-before.md",
+      "bytes": 81341,
+      "sha256": "3c1c9f1ae7802c4ed922491f41d3fcaedae8a2eec5d12dab542df1561ae2e201"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/readme-rebased-before.md",
+      "bytes": 81726,
+      "sha256": "62fdd63441b1ca3f4b9af7043ce6bdd106304201207a3d4c13572551db58e3f4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/receipt_receiver.py",
+      "bytes": 11394,
+      "sha256": "824f8644d7466445b2e81984d7e26ac3e909a1604d26d2387dbfcc7698a4a41e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/root-body-render-only.sh.txt",
+      "bytes": 1306,
+      "sha256": "81a7aca28f28d2883faf427af14c48a5e4cb81c811545b1456e790675dddc5c2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/run_approved_host.py",
+      "bytes": 1651,
+      "sha256": "2201b868c0c6dbc7f2beb0d749a43f2b283ee71786c422bf33df7f3bbefd8cf3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/Fixture.command",
+      "bytes": 2488,
+      "sha256": "84ca755568f450476055519b7031087fdfa5d4cc9cc712ed36ef20d5e252320d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "feba50059b1bc40d2edaa879a107637aa4c445eadbf544c17e3996787b3c39f7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "e0ca9c7eb37d9697a394a53d51cac2f122ccc55edcb222355510e262c51fbaed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/protected/readback.once",
+      "bytes": 16,
+      "sha256": "10742b728fa99cd5edf79f03950ddfe5ebe7514c190ad841ae2098a86253f9ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/protected/trial.once",
+      "bytes": 16,
+      "sha256": "27548d8d07f605eae578a24cb2bae8076d58baf348396e9f640eb25bfe6c0cea"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/query.bin",
+      "bytes": 4096,
+      "sha256": "170bb983159fd6a206686c59e8861f73de1b408e256b35759f67d6a13025078a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "0e78162a1e934cbbce9083caf6e35829debbd404a8d1391ce0ae1ac0fdc6a2ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "884c2b57f8f9ee663eeb921fb16aa38441317242339c54b57eb79935b0d5a840"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/readback-live-record.json",
+      "bytes": 936,
+      "sha256": "c5abfc6ce1cc0d32e77527f28ce7a9fbfd5970ba65f5a4a7aa6739c337e7c6cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "9281abd32e7b47d7f8d461511957545bfbc1ec76096be0e5cd58a7a697d09f4b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "d55560d46221650ae781d5b80e46174a881613ee399c00f47f30d81bab580d32"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "e0ca9c7eb37d9697a394a53d51cac2f122ccc55edcb222355510e262c51fbaed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/trial-live-record.json",
+      "bytes": 46,
+      "sha256": "a60e48b03d43363e04dea512d21dc0dd892447a30d0fe71ab55a9afec0502c1d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/03ff6bebc30cf452/trial.bin",
+      "bytes": 4096,
+      "sha256": "17c5a44cc82391af41720c8583fc6e4ebc437cc975696523cd2f15d3b5eaeb5f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/Fixture.command",
+      "bytes": 2488,
+      "sha256": "c35e514c006dbb43153d18f0592af519cc2043d3965c6966b74ce9673fae15ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "a4823ab4e5e1beb97475b5e8cf99c84bf3b4f25adbe381c3bf45efd6666b6a74"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "73a7abe1b174e57eeb3792b065e193a0e29a71331c6467ff826c15c0c6666b78"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/protected/readback.once",
+      "bytes": 16,
+      "sha256": "2e963a0d8e8a30b60dea9a7728b63a2e96610f13f0c6f85ccfe586fd9041da70"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/protected/second-host-result.bin",
+      "bytes": 256,
+      "sha256": "73a7abe1b174e57eeb3792b065e193a0e29a71331c6467ff826c15c0c6666b78"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/protected/trial.once",
+      "bytes": 16,
+      "sha256": "15f30891ea2b66f14124ab1c859a5a8789a9951db95de454982d99dced9303f5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/query.bin",
+      "bytes": 4096,
+      "sha256": "123d712bf3de60526fcab7d9716844ecb92d6de2a0103a735606dfa42fc8479a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "b8e40a8148f691b2a6428c1c322716e3077732a3a31c260a08b5b49db087419f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "bdd629fd9023d86c7e6d5f44a6261d40a344a8f88231c29120bdbc9f9c646cbc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/trial-kernel.json",
+      "bytes": 407,
+      "sha256": "59c432b537ccc73a297a8b038b4ff8f8bed71dc47de826b1878e0a021f50128f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "73a7abe1b174e57eeb3792b065e193a0e29a71331c6467ff826c15c0c6666b78"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/trial-live-record.json",
+      "bytes": 569,
+      "sha256": "215f1af1f6097db3a911b004e6e87440cefe5eadaab333aa5d2f85977ef446d2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/160610b12c2a425f/trial.bin",
+      "bytes": 4096,
+      "sha256": "da95646822d00407d2dc8142402201a3cdfbb3a74d150ee3cd5dfd5c21c06a3f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/Fixture.command",
+      "bytes": 2488,
+      "sha256": "dc09074303ddb0e4a740d27288184b134ac08540100bc71b513f6804910b2b05"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "f86fddd2ab4254ea8ba65658a73302230d70e070d1cabccdae5477a5e91ad311"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/protected/original-host-result.bin",
+      "bytes": 256,
+      "sha256": "91fe7a31e6f5b94c3ecddea727714a0423bc4fdc028c54be86db2d5726e69054"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/protected/readback.once",
+      "bytes": 16,
+      "sha256": "68ec9d4bd2375a0fe82b911abb67494762f2facd57b136ffe708e9b6153f62b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/protected/trial.once",
+      "bytes": 16,
+      "sha256": "af1c67ae6772acce3666006a088fbb302752df074c14ca1c52081943737f4641"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/query.bin",
+      "bytes": 4096,
+      "sha256": "e19df635269839bbc7fa7a71717564b873db5e9913828170b7e813625e97e830"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "0131ea0ed5f091414cdf14b863b714d925eaf0fe2eebacf7f3b40cef13638386"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "f9714d1280a332529842937f5f36f3fa69f387b8e12aef48fd732848199e5caf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "c6918369e04a8b31a1f9923fc1d9245558cc9553333a9758494257823949c183"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "91fe7a31e6f5b94c3ecddea727714a0423bc4fdc028c54be86db2d5726e69054"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "17c91bb84497fef7ef991772dd865c8a1e3f91b9f17a6abd086c01f1c05c00c1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/trial.bin",
+      "bytes": 4096,
+      "sha256": "345996a7b2aec4732ae3b78998dac61f00a00ced1a82ecca8ba911ba91ac59cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/Fixture.command",
+      "bytes": 2488,
+      "sha256": "57b7519e25d6aef3a2fdf49b20c9bc9f5dc8416c1bbe3bc740809c1ee8cbc72d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/query.bin",
+      "bytes": 4096,
+      "sha256": "6326871974c52d6d075e63717ea7fbaf354471c4fb2328ab433b0e472bf72146"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ba18a2743eb3d30994d88740e266dc54bed52ee36e52943b0d182d62663cfcdc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/relay-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/224cb2aae4525656/trial.bin",
+      "bytes": 4096,
+      "sha256": "159c63f66012f1c565bfaf1fc9069b59f2065d1fcfaa1d17dbcca2687d74f0e2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/Fixture.command",
+      "bytes": 2488,
+      "sha256": "9faf20e78de1c5fc2f4667166f64527d129043dc7467dc825b5af4d7fabb9b71"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/protected/trial.once",
+      "bytes": 16,
+      "sha256": "579f7a8abf647df12e0bbee0ef21491150541c8f443e17aff8e52f8b1b7aff6a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/query.bin",
+      "bytes": 4096,
+      "sha256": "fd5979d99fd814dad10334291ed3c9e96ab49f0eab586aca9bcf48563cd0d7d9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/relay-marker.json",
+      "bytes": 41,
+      "sha256": "9bb90347f8fc1b1431a2e73adf90b2a8a6aeff5d16557301e72a18494faa81dc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/relay-stdout.txt",
+      "bytes": 28,
+      "sha256": "a3c56ab2118166ab632bf02f342cc4a13476ce83415ac16411d27bc689dd84a7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/trial-error.json",
+      "bytes": 126,
+      "sha256": "fafbfaffebefd246cff655f6c828fc8ae4d72cdcbfd6114988f46d9a3d991824"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/26f4fec74b76e9c0/trial.bin",
+      "bytes": 4096,
+      "sha256": "4dbce454f40583d94c9db4f9c0339cef374dc860466730d37987039f329d9603"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/Fixture.command",
+      "bytes": 2488,
+      "sha256": "089fda1aef50c61b13eeb6e2be102610507fb9763fcd00df38b1888921a6ee4b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "92f60230cf84bdb88914400532ead0ae3f26ccf5b491b603993fb06de432ab83"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "869c64c3974fd760a47dbf3cc81a9aab08255fef616c406705a255162f5eee85"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/protected/readback.once",
+      "bytes": 16,
+      "sha256": "bddf329f211bc1ae6c2e6eabc66a5f8b06b261ba6821fd6460e21a9e50e7249e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/protected/trial.once",
+      "bytes": 16,
+      "sha256": "1b6c838d70ff091ba62831dd2b7b35b3496cbac11e273b6ef8892ef2f5b40a59"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/query.bin",
+      "bytes": 4096,
+      "sha256": "ed6145b5c695838263d37b5c53ba8ecf6df272cfe1e0529c9a934046c885a2fa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "1f7cdcc852715b075267c5c027d0dc8bf90b701b29546574de22fc552fe76b75"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "b78d0a3b25eb76bc5cf036bfd513a3204e752f094d3eff20176480bffdba753d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/readback-live-record.json",
+      "bytes": 936,
+      "sha256": "b66279e617e8be47e81fcb08b4be0060b869bc5c6658dfd3a4fe18d9977f7ec2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "14c8c744edf1a136d05807b9769f0ee05ad6241c505acaea8e997978c8685bf5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "26538042f42f77e9d6b41be938c1ff49c3c3bb677c53222df8e9b026c6d805cf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "869c64c3974fd760a47dbf3cc81a9aab08255fef616c406705a255162f5eee85"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "f12fa520b5e0b327d42f2c256f3653364cb7e6d6c12516cfc50531330590a1b0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2b4e4f2a63d448c3/trial.bin",
+      "bytes": 4096,
+      "sha256": "f1031213eab31af66ec26a1519521576338c6017a2bb34980129fd90ef1c124c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/Fixture.command",
+      "bytes": 2488,
+      "sha256": "c42369919d5761a1c35d634c342ec223951a054b4dfd3b85451e5b7776b29574"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "0eaada8b7e0789e7718d67b9f48a970e629b02aa38ca7c09dc5e2931c049ca75"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/protected/readback.once",
+      "bytes": 16,
+      "sha256": "6baa41e81ec28acd1f5c2eb13e233fb70ab6a144bfcfe05c260b09bf8d7fd697"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/protected/retained-original.bin",
+      "bytes": 256,
+      "sha256": "b24d2227fa68ba804239795e272ba07bccd5de566be81dc5e59b49c38f484fb7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/protected/trial.once",
+      "bytes": 16,
+      "sha256": "7b13dbbf1237723dd55d87891a86827d56f2e38edfea9110066c63c241675422"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/query.bin",
+      "bytes": 4096,
+      "sha256": "940fb14de4cb9e7d039a08c7c92186adea292e05f0d6c7100cdb9d1170e8b174"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "d2e861d46d198de3a07c65fa636606be4d49fbd07d02e62c734192e69e241c8a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "1cef953746a487b7c4359ff5cc399119a3f9532a594abee08809510294fc5b0f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "3567c1571c7f66c402e725c469fe5c0485773c7deab8dab15819558925a246ef"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "b24d2227fa68ba804239795e272ba07bccd5de566be81dc5e59b49c38f484fb7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "db25640e1714c21e787d7dfd3ebf2c02bf1d5c63c594c13ffec1384b6c04e5b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/2ca5c263eab97fe7/trial.bin",
+      "bytes": 4096,
+      "sha256": "11bb5e2045a971dec64523c07c65929d9da89329b3dff206a440d1a80d40b658"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/Fixture.command",
+      "bytes": 2488,
+      "sha256": "14ee2b788711e8cfe3ba2370913df5aa8721c559dd7f4787e30a94729121478e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "e5f3274d5ff8f499c88d2cec864b36e02f0ae0f53897896a9a366a515e2785ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "73affecac7ea5a439e738d1f94d03c1442ad3117f507e814c8e11bbe0747b0f4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/protected/readback.once",
+      "bytes": 16,
+      "sha256": "216f888999abfdbf96d8a9d0b2722da6b9fad5808f0f1afc034061f3f284685f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/protected/trial.once",
+      "bytes": 16,
+      "sha256": "843369b233bc3384581b1c3a8a510b8ad1d3c641229dab72ab40ba0784bf4490"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/query.bin",
+      "bytes": 4096,
+      "sha256": "ac9f27dc61b9e40a29748bc1937812acf66aa6cfe55a5ff35fa9da1ddf30914d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "03b6dfc073523be4e2968c2cd2c96e8c92334534ed33b84b587cb93b9b0ec828"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "e785407947e92d884e8d3712291c46bf6fc6eb1d095280996d4f254c6dc7cc7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "ba120f25253bb76f25985b39e444e8f4438a6964de4a588b7e7341539a2a50d3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "73affecac7ea5a439e738d1f94d03c1442ad3117f507e814c8e11bbe0747b0f4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "49d31d414155986c17e243b7979946c35a53b2632ad094d401f85685e18a9303"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3c096f360d915c15/trial.bin",
+      "bytes": 4096,
+      "sha256": "71d0e0fa5977be0ed89ef8af22afb7c300fe21f29e13cdbd46b9c854bf95eff5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/Fixture.command",
+      "bytes": 2488,
+      "sha256": "17b6da2f23cea4b4ee103d2953b7b6cbbe31768ee29aaf23583fc7a41fcaa9a3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "ee06e2edb6a5ef04335789738de824aa0c142f7b5138fc343a6f4059da89bb3a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "5e91907e9c0fb74f1cfc56c13921106242905b8f0cf221965af789cb45c23336"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/protected/readback.once",
+      "bytes": 16,
+      "sha256": "8d43dece444b1d570af562b879a3c57c76188219e4af636e881189ed8a9efa1d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/protected/trial.once",
+      "bytes": 16,
+      "sha256": "b7ec0ade20df37668c2b4ffeef28aa6db79aa9877fe7164e7945bbd2512d93e2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/query.bin",
+      "bytes": 4096,
+      "sha256": "d29d98b4caf4cb2d2d6d67c3ae3f5862e1b5f6b5c3211a82ae29ed9cb2fcbaca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "0b677cb43b1a9d6ea2dbac588d436050e9b6b161ce99a02de014234d3122cf42"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "54f88af14a3826ed7252bf764134f869e57ec0f8495bc1c00942b9edce7e1b2d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "36a3976ba46ca95668411ab2c936a4c110345941c08e367e510787c7e5936c94"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "dfde612731178e7d9555edde7c2e0d330a29bd857a1244aaea5c6425206568ef"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "82720a39d31c7b3c97f2b712f723b18d9bd90507d2e8df06f1748f96fa777b15"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/3e2df3817dada838/trial.bin",
+      "bytes": 4096,
+      "sha256": "9d7f7011e43d7aabefb4e281a406c6954985da6b3c4034e2160faa7e27da20c0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/Fixture.command",
+      "bytes": 2488,
+      "sha256": "8736f3db63560ad30046cc3f24cb372a3d2936b3faef31e8882e393b3a50d423"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "2da55f4894a50d2db4f2db1aa3636bf2c0698ac9df9f71aec077a90fad148f0a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "4813686de315082cb3f51913e3ce681fb5dcba37fad4ad545f3a870e9c0c784e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/protected/readback.once",
+      "bytes": 16,
+      "sha256": "4eb1b008684a37623f0c4f875fc244c9f85f69b07d90ba0c0cf080dce88f5fa2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/protected/second-host-result.bin",
+      "bytes": 256,
+      "sha256": "4813686de315082cb3f51913e3ce681fb5dcba37fad4ad545f3a870e9c0c784e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/protected/trial.once",
+      "bytes": 16,
+      "sha256": "97050a7a1c3e8a4285827de1fd939fed754627bf70605b2c4be9c42ce64355fd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/query.bin",
+      "bytes": 4096,
+      "sha256": "de00f8c05f486dfaea0280d5ec70af4670c2f4d4ffe621ed9711c0440843b0a1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "fc8c6aa01e5ebce4c2015e9177561554d183c83e817cbe58d757e84bd5e2b167"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "ead7715e3f81e3fe37dfb936b95ccd35977cffa7b361545852fb99a317375f36"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "a56cecfabadc578e445a349ff8a13ab758248f5d65174c24cd5662d5456917a7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "4813686de315082cb3f51913e3ce681fb5dcba37fad4ad545f3a870e9c0c784e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "8d831faa2e724015c9a29eac6eea9dd759cb1a15ac01032bc310f72a1a2c787c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/49a514de55916850/trial.bin",
+      "bytes": 4096,
+      "sha256": "637e48d6b88e755e3db03ffbda55b8262d438a060b52e3937a719c79d180fabe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/Fixture.command",
+      "bytes": 2488,
+      "sha256": "65666dfa271b419c816eb69729f9aa4a4c63d6141955278157150358ab244dc4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "ab179352e662da540147eca5f2a2eb5830765dd19eceac5dfdb59145070e622f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "65c079cbab67a183012aeeedb73223268fea751a43b269468bad047510a0a228"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/protected/readback.once",
+      "bytes": 16,
+      "sha256": "9c49ad6347c32ba85a7b5f8352cf0b1e9663373f0b3c7018a05788b5a0af0330"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/protected/trial.once",
+      "bytes": 16,
+      "sha256": "18a4052807de2a6b1c3ff7c78bcedc590da28d616c9afd50e52a52f4dd9e7aaf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/query.bin",
+      "bytes": 4096,
+      "sha256": "6093fdd33bfab14172c9d81f764581ce96c518a69bc75338bfd643bc18be3178"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "58b362ba075977166ffe92897c7cf53e36a78b2300b0749f8e847870f072d531"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "69d2d4d0bd5357f7a797137ab2a34d407010c7bdce75d38c368df9c4b0f9b829"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/readback-live-record.json",
+      "bytes": 935,
+      "sha256": "eef27175954d3f75e67974fc499377d103848a7458d3105321e30c7580801a30"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "d9afabf34a41e615e00962c38dc447c61542471072952defecbfa6d48724f3c3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/trial-kernel.json",
+      "bytes": 408,
+      "sha256": "67b9a2d6fbafdbe6c5cdc84c4506bc190594ec34c5160f29931911b7e43f4729"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "65c079cbab67a183012aeeedb73223268fea751a43b269468bad047510a0a228"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/trial-live-record.json",
+      "bytes": 46,
+      "sha256": "a60e48b03d43363e04dea512d21dc0dd892447a30d0fe71ab55a9afec0502c1d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4b9e6277013c5e09/trial.bin",
+      "bytes": 4096,
+      "sha256": "43c667a5e2278dee0d15f1e897e862550c23724a32b3d9b41ff9e0072a95bea3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/Fixture.command",
+      "bytes": 2488,
+      "sha256": "76c40cf7e2dcbe405b5ff69cfe51aca56f76a74fb7d6187fc3e0f7c004aec3be"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/entry-replay-stderr.txt",
+      "bytes": 41,
+      "sha256": "192f63d3fbff9ec9310febabefb412f7283971a4d1374347978568d7a92301cc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "19809023e3aa25f47a8aaf3237c5f98f16cf633b45789f99334c0f64848c05ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "858724da936d147951bd8c070d04ce738535d82b00ae71ec2c461c01faf8eb25"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/protected/readback.once",
+      "bytes": 16,
+      "sha256": "1b0a63aaebde6e99ec4cea7daccbf6a730b55212c72349df2100b0f858872b0c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/protected/trial.once",
+      "bytes": 16,
+      "sha256": "5c6ba061623b3836e7d64a03416a8a4ad548e0f2205853e3edaa2e7e07a823ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/query.bin",
+      "bytes": 4096,
+      "sha256": "92658fa24e8ca9cd32b7926dc9be99dbabdb682241d7cfd81fd1bc655edb696e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "8d54c4e7cca50942878939f0889ac70341a5ce9fcb437ddd350e32b875793d79"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "8fb9bbae061f1ed86394f0a589194455f713aacb08794c74f7df1e6e21406bfd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/readback-live-record.json",
+      "bytes": 936,
+      "sha256": "dc2e28dcbf6ac197c29ce2ed2b6f00d0b578e9a9bbc75146f1f2283b9a74aa24"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "3a061373a5fbec9c8d2a3eb1ce437372da67e2fec9e418efbad2c6fe565cc672"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "3d0d229008781663027771222a035b8def66b09386290bb9850fb78e6b68af76"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "858724da936d147951bd8c070d04ce738535d82b00ae71ec2c461c01faf8eb25"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "08d1fe61a427191202a6df80dda47a72720bbfa8fdee0125992774bef9c280a7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/4ed67642b6436ab0/trial.bin",
+      "bytes": 4096,
+      "sha256": "7e954cf90e48729a0c7ad760784ad1cb908c7e98297edfc332406a3acc9c1831"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/Fixture.command",
+      "bytes": 2488,
+      "sha256": "2b86ab33366a83b0edfd119f35477c9d85db60c8170c54cc23e7fdef681718f9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "e9d7272dd7c3ed64cfc42efa6c7ef6fc734a02b434e9a91016d63a0b93f9b2f3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "1f5663b2d65171d36d36ace99f34681b87cafb73691b47ec75ca548dad1b6ef4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/protected/readback.once",
+      "bytes": 16,
+      "sha256": "87a3bd79b3197d9be0c4dc358557bbd1d3484087177931d3ae22e1820f1b8f05"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/protected/trial.once",
+      "bytes": 16,
+      "sha256": "9a2dada0e1d4dc5fde3732e9fef4a3985a8b343777bfb26754179bf0f27cd84e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/query.bin",
+      "bytes": 4096,
+      "sha256": "1dd9cb75821c5dfd3e9926188668f0b7f23adcb1448080dd3ec2bfb7afdee0ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "856eb09877c32058bb786558d491bf84325f36adf6752785675412ead468aa3f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "5109af18b2baa880c9e7d7fb81d2e123a9484bfc45659e51d4e71fcf55d91a86"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/readback-live-record.json",
+      "bytes": 936,
+      "sha256": "b0ddb68c1f253c5a7376c3eb05016c44aabb4e44d432b825b0f2d6b34f3bbb54"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "7270957db53934a7d937629d573c102b8a265ccbf7784730116d88e43f81e4e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "af7e8866d3968c2d27f82789aef142fcf3bf72f90cdc4c45ea4b8f2748205cb9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "1f5663b2d65171d36d36ace99f34681b87cafb73691b47ec75ca548dad1b6ef4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "2727fdf7e32106fa21409351dd179c6a5a06a5f205ca475d534d5a4813d5b99a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/5a8a97b53e92c8a4/trial.bin",
+      "bytes": 4096,
+      "sha256": "9faf4331d2c59145803e38d4a7f6f9c48727255f33337d05930e2e28b8d94b4a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/Fixture.command",
+      "bytes": 2488,
+      "sha256": "4b5ed8772356b99bffd432c5feb97753607ca59467f6e3bbd4e5de0419f43d58"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "d7b80b551362aa1db6157b028be18f8e26157b53b3624a6b9880be473975a54d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/protected/host-result.bin",
+      "bytes": 255,
+      "sha256": "3bbae463638e543869b7771cdd63b556f2749b5f53a84b607962b69754e9440f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/protected/readback.once",
+      "bytes": 16,
+      "sha256": "107e419710db2dd42821c9c4e102c7906166abab29b9dda9c08fa61f15d00d81"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/protected/trial.once",
+      "bytes": 16,
+      "sha256": "1f97df599fb8f3bbdc69286254eb14d1e8a90251b869b2e23545f705491528c6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/query.bin",
+      "bytes": 4096,
+      "sha256": "2575b056decf343ffe942c89e0c397583bc6c8d4ffef4d5034881ffc296b3ce6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "3f5ace992e8990e7d49570f77f0eca2ceebfc363f4d17495ce5cb3bf4cb61a34"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "c319fea18938c038a7da2fc52aaa074eee88b92a99c312bd0cbf72af17fbd70e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "4c000f378bce35983c8a892702c9a2e72ae00c3435e441c76d4d7e2ca5eabbce"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "0de48d759ec1c5738c7231657caff4d055a305309c179304c43083b11f4806ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "8ac7648c6ae39fcb148951d4b5ddee8f1822d4f4ad0301743aa66c94024043f1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6342822bfcb3bdd3/trial.bin",
+      "bytes": 4096,
+      "sha256": "3dc5b85a38b86fcdc1c6d257a67650c450dcf7c68acf44161b2ee847d17fc5b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/Fixture.command",
+      "bytes": 2488,
+      "sha256": "32f9fe145042a24c42fac907efa788f98c2e7cb81afb4427e5487dc4b11f73af"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "bb8791dedcf9b4a0b3e9a96d7101694c8607d309450b3bf6868ae284e4fc4826"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "9aaf81f251efc2e74d3810b82bb58fa56eb8e910de03369d9abf3455cb56c7db"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/protected/readback.once",
+      "bytes": 16,
+      "sha256": "b77f7ac8f7e11c01d28a5960209292c4f7a53391cb3e52960990553020650e83"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/protected/trial.once",
+      "bytes": 16,
+      "sha256": "5abdd4be167b2da60acd81eecdb69b93187275c4eefd5e5a69ad8dbda1437559"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/query.bin",
+      "bytes": 4096,
+      "sha256": "1dfed9b5d7a22c0d68000ee44bf0ed853c60c5c9a16ed51a86bc803c88e26df4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "3c30dbdb9a17095fbf9e022b6ad42bf857f766f634be14085faa93f7fcd7f8d9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "c991431b03b3fd9c00c5cb054e8b75ebe646a78fbf78e39ae7cd66e639248aeb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/trial-kernel.json",
+      "bytes": 408,
+      "sha256": "8c1be976e6a23e549cf83dde3c99b1ef1c8ed5e52c6539e75d55d7fc6c749cb0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "5289b45ea36abbd500b671ec4a9ef026f0cf82dd703793967010fcb89db12302"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/trial-live-record.json",
+      "bytes": 570,
+      "sha256": "fdbabcf9c1e11bc471f0638354441eec1c539a20eb2e13c9abb5401db0a0469d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/69335107ab90e8d8/trial.bin",
+      "bytes": 4096,
+      "sha256": "1b168e36cebffb0affdc4ae520b3216409efcee47c49b291e459a1598cdc63ef"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/Fixture.command",
+      "bytes": 2488,
+      "sha256": "b5e70bb06a40f8d203c6895e2124a32be20304b9bf35915effb459413d20fb02"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "3f53b80a74d6bb3ef0bc2aaf5274dabdf60dc11fe2e0f31ab63611c281d5b000"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/protected/readback.once",
+      "bytes": 16,
+      "sha256": "e655f59ce8faf79656bb7feed1773bee0f4481973895df1002c09665bc02556b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/protected/retained-original.bin",
+      "bytes": 256,
+      "sha256": "51b8a4fa4886d785925b659ac8cd0b3fd049e91f702d9cdc3615f982429b79b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/protected/trial.once",
+      "bytes": 16,
+      "sha256": "a0233d77a3787faaa4d2751196ec8163b78b14da8dad00e5ba2254476ec0262b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/query.bin",
+      "bytes": 4096,
+      "sha256": "050f2836abf3ee265908c3067d63907339884606f8c45932d251d70e4c1b92d5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "46ed355d928edd30dbc309b102cc5f2a0c7f9067284fbc8bc5db303f35066a5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "97c014e572aaa8500bd1dcfd603e06134d2bf3792965baa6e8032106b500b95b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "7a7ca2a657ee3fa658db328664f0ef781315266e791459d9db34bb7eb41763d7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "51b8a4fa4886d785925b659ac8cd0b3fd049e91f702d9cdc3615f982429b79b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "d4433224fc80d99ec0ab8d36a014dd9fcdf210ff74b3912566736cf1b55dbc94"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/6d085d26ccbe5fb4/trial.bin",
+      "bytes": 4096,
+      "sha256": "406dc3a9bc03be3029a116f6cb3148cac26ef37a22ba1584d11efd4fe5aa4ddd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/Fixture.command",
+      "bytes": 2488,
+      "sha256": "165d4c79361ff7c96696a3f436e9267d0d78f03fcbbb68eaa4a40e997c45fc5b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "ea0ef53721e6ae91492a676cf7886f4d8464e6ca432734bb68cb52d5cca23faf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/protected/original-host-result.bin",
+      "bytes": 256,
+      "sha256": "c0f3dcc385ea106154b7fbe4782cf34b3b48bf69f1d0fd621200dfb8c92e0a20"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/protected/readback.once",
+      "bytes": 16,
+      "sha256": "c5a51a03d179e4e20367f033be236c4da176a1171b606a98a931f85fd482a066"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/protected/trial.once",
+      "bytes": 16,
+      "sha256": "149a43ee1865eedeb72b1cd34a0e9364247ee0f5b1e88a1408d87212813ac9ee"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/query.bin",
+      "bytes": 4096,
+      "sha256": "bd8d0e8ef91a049541b9bcc28e7875ec842544d9af36682057725bbc9331cffc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "0dda33f9ed0ceb953b5cb14be9543aa1c79aa21485e05947976ed68e4b68385b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "77f16195af5222c858a2d51dfe932700a60d8c6db214860a4018bd163e0637e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "d53381649fa8869734a77b7a576f44806b4b256004b02a5ca086177d398ea38c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "c0f3dcc385ea106154b7fbe4782cf34b3b48bf69f1d0fd621200dfb8c92e0a20"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "12f82f949baec4588336ec1bea4f9e201b703ec00b69bca0a51557feeff515f5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/trial.bin",
+      "bytes": 4096,
+      "sha256": "c9f2a16564f17768deb62a7e8be3b0de48e8ba6231023deb87285e11e17aa074"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/Fixture.command",
+      "bytes": 2488,
+      "sha256": "fe41864427ebeb27e86b73a00ad4ef0ef253ad262f8e9386e32bcf18cdaecc59"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/query.bin",
+      "bytes": 4096,
+      "sha256": "6b89892576524cd6b2db8a4d20d95526ea90827cb6b94a519bd4cc5e9f60940c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ba18a2743eb3d30994d88740e266dc54bed52ee36e52943b0d182d62663cfcdc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/relay-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/852bce8f19268296/trial.bin",
+      "bytes": 4096,
+      "sha256": "28ea9bf24c733a1b1015ef08e5880e153f3308304639cdc840c02a87b5fc9228"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/Fixture.command",
+      "bytes": 2488,
+      "sha256": "133e438b3bf4ca7abb97754509c5be45be012f5b54dfec83f9c75ee8aaeab82f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/protected/trial.once",
+      "bytes": 16,
+      "sha256": "845893c37d3f2d3781a25cca91f2ddf5c5b24350ea48440e29b44b50e516d97d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/query.bin",
+      "bytes": 4096,
+      "sha256": "ed3e49da715c4501be25bd230d20655cd79781382a1d0d4c1eb3538555914613"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/relay-marker.json",
+      "bytes": 41,
+      "sha256": "9bb90347f8fc1b1431a2e73adf90b2a8a6aeff5d16557301e72a18494faa81dc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/relay-stdout.txt",
+      "bytes": 28,
+      "sha256": "a3c56ab2118166ab632bf02f342cc4a13476ce83415ac16411d27bc689dd84a7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/trial-error.json",
+      "bytes": 128,
+      "sha256": "7858a4f5b4a51b3bee8dc12ef2be48766e3bf0ff09c5c98dcee44772dd6d7118"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/86e0b1ea1ba6d375/trial.bin",
+      "bytes": 4096,
+      "sha256": "e168df8f707168e204f2a69f3d73dc98a3aa26e891dd47b8cf8f21d174662467"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/Fixture.command",
+      "bytes": 2488,
+      "sha256": "928a8721e0d7c134c6e48f040985aabdd06e0433727b26b70f36abf8b631108b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "1f17f1ad583d74991212abfa17b0f0eb59def672c1ca51687b85bab0d5a3315c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "3a9ac7c41b620a7251f2390a75c37e22f4b1202897cf3778ca86a9fab7725607"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/protected/readback.once",
+      "bytes": 16,
+      "sha256": "91d2c78b9f5ec023264915ef57824908b519986452c18129dbd2ee6022ba92b8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/protected/trial.once",
+      "bytes": 16,
+      "sha256": "23d9bb51c892d79fad82d993c78e15ab8f945ba8dbbe595f035551f0b073d908"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/query.bin",
+      "bytes": 4096,
+      "sha256": "e691ea6c9eda943d530fd94d8af0bc8824ce1afe4db6fe048db8dfba4cf56c12"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "c48e521fcff9a65590cfa92dc75d93b64b0654578e545520f080cc658d702a4b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "53c3440d6ed189f3c1db5479a5d36e162bea9c7ed684eaa79a3af9730c21c2f1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/readback-live-record.json",
+      "bytes": 936,
+      "sha256": "df2fe7415295676dbe00f7d424d336ea9f7cffd8768d6fa9c262a98533199c72"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "6c93f72b4087873d0ee531e3bcf809709b0d63d88ccedc89cfd20e900946a6c0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "4cd55bf345674cc2c198c3131cc750940635cad70b1076726b3b9970db0b3b3c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "3a9ac7c41b620a7251f2390a75c37e22f4b1202897cf3778ca86a9fab7725607"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "68df3cfc5466a49727c34f7cfe5f1546ab9c0bbd6a0a57d1897d0cc4465ea5e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/aa57acc31a637dc1/trial.bin",
+      "bytes": 4096,
+      "sha256": "6f103ebaed267a6bb281d0c509b8f090bee03efc3c6597fe47e35a59c5d76331"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/Fixture.command",
+      "bytes": 2488,
+      "sha256": "db7bed206895827d5aee163bda7f9746bd5303843c83cb067e104719ff969e91"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "4bcb062d0558c8db2337ed42184256fc45bf26b90fe13c15e9cdcff7b29376cc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/protected/host-result.bin",
+      "bytes": 255,
+      "sha256": "06837439537e058544f14868ce83906b8beeee3d87251cbe4b9ef0374f3b1b0f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/protected/readback.once",
+      "bytes": 16,
+      "sha256": "79d9d07f5384f2f9d5161e51971600b919ac729d91711d56ad5616b77da09e08"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/protected/trial.once",
+      "bytes": 16,
+      "sha256": "91c2e8703e3eb2dc9c916c89356a1871a508fd67ae4402bdc30010f44b981993"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/query.bin",
+      "bytes": 4096,
+      "sha256": "437c06cd1fe621c56fc3c273034ba2b5642a8d01a78eaa27f46e5a5b17b32cc5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "58575305fce6974663ca2fdd484da21b8014a3616cf93c7e9b16cec77142c331"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "948c8850ffeed01dccd1b02471de96f13171d31bd4bd10313e9fbe17d51050bf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "0856fb1da74740a4ebbc15b06c0221b7c6856c37a3e57ab8095a5ba350ab0a8e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "c6f3d276acb9984555aedf748310524dd38fb9e579ed8575465a88608ce36084"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "61d207a2ef36689537c997465274feccc1066df4e8605c3fad36712ae2670637"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/dafc817146c418ad/trial.bin",
+      "bytes": 4096,
+      "sha256": "95922439c3c85d58aee8899a8ce23c835a408937985024e6081e143b4ec73518"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/Fixture.command",
+      "bytes": 2488,
+      "sha256": "ec22205551ca488d81ade08606df21a8507a4e575e0cdf9ff7f8e05031894af2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/entry-replay-stderr.txt",
+      "bytes": 41,
+      "sha256": "192f63d3fbff9ec9310febabefb412f7283971a4d1374347978568d7a92301cc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "b4beac607933e486aeb14a77a473615bce3709e396f690199ee7156aede4d5b6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "f3aa8795c045b6edc5b536cee23f6953b515b792c03843b0c099c3324e72ef83"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/protected/readback.once",
+      "bytes": 16,
+      "sha256": "6fb9f9b8694d5d9404b0cc3e47e628b4f7f7d28c4c73a69cd4d2f1e5c6f1e81d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/protected/trial.once",
+      "bytes": 16,
+      "sha256": "3aa457f1abe013f9ab4ef93f57755bbc85cf0e05fda11bf3628a14bedb22cf48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/query.bin",
+      "bytes": 4096,
+      "sha256": "29233a826b76d0861b9bff4dbc6747c1ce227b8ee6dd2fa11b9dbefca684f902"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "9dd784ed4a9b7c92824cfc8986e5ab7fa53dbafe22cc18cce5ebb91293c8d7ca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "89c7a6336a34b8ba74402afbb7272c6194a3425247215afb6272ee19d4f2e910"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/readback-live-record.json",
+      "bytes": 936,
+      "sha256": "0a753cc904967bd27723d3004c876102d55f95a9ecdd3eee2bea88d6b9c513af"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "e9cd23ced4d4d5ac8ccfadad85d2c1e9db86960ffbaabd9549e5a581dec868ce"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "817df75c405fb1b80d55a4485e2ba7e2263cdfde62d1a2087146daad104ea671"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "f3aa8795c045b6edc5b536cee23f6953b515b792c03843b0c099c3324e72ef83"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "424b2439f1222251f5f2269a67aeb5d5ad705213e68158633f2009c4b29f78d9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/e4d861eba70bf794/trial.bin",
+      "bytes": 4096,
+      "sha256": "3fae16de45688d45e45e98899d56db80850f0b765bb69391e77fdf82bc5d4059"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/Fixture.command",
+      "bytes": 2488,
+      "sha256": "161ab783706da477d586a248a70e6854aeec5efb6cd801aab2e451e5438803f2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "a74a8aef031b1959f70dccae69d33490a641103cd42a3b18a243dc56b183c2b6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "cb2397c330a1999e5f089ce6450bb9110978d4dac4a0af4d38359e97f8dfaf9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/protected/readback.once",
+      "bytes": 16,
+      "sha256": "da50bad8735cf43b16db8526edc72fd6d58fcc607fb44d74f073fb902d17c7cd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/protected/trial.once",
+      "bytes": 16,
+      "sha256": "13273f973a2ee831194c200b6a3e8553013d37876bb35da9e51a07ee37cfa702"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/query.bin",
+      "bytes": 4096,
+      "sha256": "6ef379568512aa95aba938f969b424b6bd87f6a45209435de386aea673e480e3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/readback-error.json",
+      "bytes": 103,
+      "sha256": "5048b274e2adf569fd3a2e137f7ca7e9cca7500ad8b9a322b837a783817266e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/readback-kernel.json",
+      "bytes": 409,
+      "sha256": "fd9d275559cb4cc39884d44278b69fa87a008135f10b1ec5754e7c4ecc40f6a6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/relay-marker.json",
+      "bytes": 41,
+      "sha256": "ccf496cf927466603fbd4698771144e5316eba9e900bbfd6b75fa4d7b1dbcd51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/relay-stdout.txt",
+      "bytes": 410,
+      "sha256": "72bef1b660f3793a37f93f9aa41daa88e9f1e92e2fdc0492ac9f32a48a9c9e00"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/trial-kernel.json",
+      "bytes": 409,
+      "sha256": "6fc7028ae418573ce9c2ee4ae4925ce9613e7b56de2a0cc6df6f743b2797a2b3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "cb2397c330a1999e5f089ce6450bb9110978d4dac4a0af4d38359e97f8dfaf9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "9cd167f1d761b90b8822d4088600f196351adfb99ec8d1510268709b76e1671e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/ff5d511fb39b96e9/trial.bin",
+      "bytes": 4096,
+      "sha256": "952877d9c5c9e6c07c8b60b5bf4d23fd53408b47da5117bba73b2e1becf8d73d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/Fixture.command",
+      "bytes": 2880,
+      "sha256": "633e25c130fc99e0753a48619935f4af44b82d71706dc554d21e6483b73fb3ea"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "6b4aea2211506870f98a7dd6b261785373c35f9226765efcc9d8f6a4c825037f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "c0cd8c484ff9629797db9ed6e946329358f2827f3ab4d2e3f7bb23c149e5ca6d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/protected/readback.once",
+      "bytes": 16,
+      "sha256": "f402272e1a7d16bd06aaf455a02f4e31832bb340fda1d796754c0a800b6b35e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/protected/trial.once",
+      "bytes": 16,
+      "sha256": "6010405ba78bbb81f0b740d20c40e8a8b3aba3807597790e3733d8ad4ef7cb4f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/query.bin",
+      "bytes": 4096,
+      "sha256": "5ce9845e446802457165d0e36159c6c9b741a9f8a70458b61cd2a9e331fd48d1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/readback-kernel.json",
+      "bytes": 416,
+      "sha256": "91e51b3c30d1f61637d06a920d2f26b4bf81c19b55d3301bb0ff21e9d2d0674d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "102358528f56f5d7b55d0951d3e37dc08a38ec9194136b3e904a385f5681cf69"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/readback-live-record.json",
+      "bytes": 936,
+      "sha256": "3dbc620f0bfe703454f1fba6848264a546e3b9fac773ab6d098f4207e33a91f3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "5e9a6da8b38cc1b31ed3d43a1c82e42dd08a08c4a73347c616d76deb32c56439"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/trial-kernel.json",
+      "bytes": 416,
+      "sha256": "e842bbe8ca10887faa13b26d229ba42391020db8e60d7fbdf555b7c7013d11a6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "c0cd8c484ff9629797db9ed6e946329358f2827f3ab4d2e3f7bb23c149e5ca6d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "3d6a62528908a9f3b1ee79d5c9408c0d58a747872a778d3d2f643fd0bc62eaaf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal 738f64/trial.bin",
+      "bytes": 4096,
+      "sha256": "769aa0ffb679917835f7727d7428732e5b45edc0d6ca594962b40c0fb14c890b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/Fixture.command",
+      "bytes": 2880,
+      "sha256": "7de325fa1fb3f7a8011888ac5e48629d6e08da11216e4e36c07f6990f3ec1c15"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/launcher-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/launcher-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/protected/helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/protected/host-only.journal",
+      "bytes": 512,
+      "sha256": "4e5d7c86b45008736cd94820eb252197539f6b89fa8dba721e4555630c89362a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/protected/host-result.bin",
+      "bytes": 256,
+      "sha256": "c8e32fffeeed3b2e824b8b1492ca6251c9fc750092435e443b9ed9d5a733fcb6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/protected/readback.once",
+      "bytes": 16,
+      "sha256": "a8046d01decb269ca134397ec64959874a8ad6367a75b8218b49ecea5e395f0e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/protected/trial.once",
+      "bytes": 16,
+      "sha256": "59a1f9980c5520357bf85c81ebb02dd5d46751b88ed6bae3cfcf784960ae78a6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/query.bin",
+      "bytes": 4096,
+      "sha256": "3bcd10429af89e707759d8676e425b80e8df357796cbe3552ee9d7c10e1691cf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/readback-kernel.json",
+      "bytes": 416,
+      "sha256": "1e095f1899a2491f13eaff80aa73c904b1cf421152c519feced851e53e80779f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/readback-live-record.bin",
+      "bytes": 384,
+      "sha256": "06880e5f1ef7639bd94705a2c4e19160293acbf05f090b637c60d5f060777333"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/readback-live-record.json",
+      "bytes": 936,
+      "sha256": "2fbdf94cca37268438d38eba8501ecdbd9b3baf4adb649647bd16006bdb904fb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/relay-marker.json",
+      "bytes": 40,
+      "sha256": "cf7c75a554742833def85e94842645cbe7bf8c6100e08771930baeccd1c62d48"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/relay-stdout.txt",
+      "bytes": 751,
+      "sha256": "473629e3cfff2da15e299ce21579a7561e1abc82ca95169c4592c2a77dc34ac9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/source-helper",
+      "bytes": 121600,
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/trial-kernel.json",
+      "bytes": 416,
+      "sha256": "4101625bc35dbdbe8faffbc6a540b98d52889460ea5d5ee1f01b303d18184f8e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/trial-live-record.bin",
+      "bytes": 256,
+      "sha256": "c8e32fffeeed3b2e824b8b1492ca6251c9fc750092435e443b9ed9d5a733fcb6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/trial-live-record.json",
+      "bytes": 571,
+      "sha256": "2806b4c8bdbe7690391e0a28cf0faccc503cf5f68dd51cad49c6dbfe900a7324"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/quote ' $literal ae0320/trial.bin",
+      "bytes": 4096,
+      "sha256": "5e2514de107e6c91a4d7a1a2b154966f41552160f12f9ff0374853a53115539f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/sample-context.json",
+      "bytes": 813,
+      "sha256": "9708550753dcdebd8ffc0dfbd932b5fbaaa0b69676aac5b1fa81a76119e31a97"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/sample-host-query.bin",
+      "bytes": 384,
+      "sha256": "5109af18b2baa880c9e7d7fb81d2e123a9484bfc45659e51d4e71fcf55d91a86"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/sample-host-trial.bin",
+      "bytes": 256,
+      "sha256": "1f5663b2d65171d36d36ace99f34681b87cafb73691b47ec75ca548dad1b6ef4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/seal_review.py",
+      "bytes": 13224,
+      "sha256": "3de7813a02cb984d18bbbec729e6527ef1b87f27a20470ec82823012fddfa2ac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/source-before.json",
+      "bytes": 3069,
+      "sha256": "b674d0f74b406534f6265567f8005748184354226e2078a330b15295277d940d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/test_approval_boundary.py",
+      "bytes": 3392,
+      "sha256": "127cc7806cbafd01e1137d33e1495470d938588575b3281fe191710d1c2b9f8b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/test_host.py",
+      "bytes": 9167,
+      "sha256": "54ff7bbd66947f19ba9bdce1a4687317e3dd421c590008724084d520de252695"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/verification-receipt.json",
+      "bytes": 2620,
+      "sha256": "1a7a09abe8f245c43bbe5fc273eab41a5e9233b730364a4e0dbf22dcebb93e01"
+    }
+  ],
+  "member_count": 500,
+  "excluded": [
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/protected/host-result.bin",
+      "link_text": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/1b4cbf8cd66be0a4/protected/original-host-result.bin",
+      "not_followed": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/protected/host-result.bin",
+      "link_text": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/runs/70d7b009143cf63e/protected/original-host-result.bin",
+      "not_followed": true
+    }
+  ],
+  "mutable_heads_not_manifest_members": true,
+  "goal_before_sha256": "ce3db94fec3a37273f6e22da3c5e4d335d6656e118bc3ccfb05009e3bf21b055",
+  "goal_after_sha256": "90168e82476b24f157e1056f50959c7bef788ffd460751f1c92e3a4703516008",
+  "local_checks": 17,
+  "approval_bundle_sha256": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0",
+  "root_candidate_executed": false,
+  "new_root_or_device_operations": 0,
+  "native_goal_observed": "active",
+  "native_goal_status_changed_by_assistant": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

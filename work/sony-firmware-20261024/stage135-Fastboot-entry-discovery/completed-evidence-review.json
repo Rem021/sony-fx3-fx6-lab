@@ -1,0 +1,58 @@
+{
+  "status": "PASS_REQUESTED_STANDARD_FASTBOOT_DISCOVERY_NOT_MODE_ENTRY_OR_RECOVERY",
+  "created_utc": "2026-10-27T19:56:02.073190+00:00",
+  "previous_manifest_members_verified": 16,
+  "FX3_roots_pre_post": [
+    1,
+    1
+  ],
+  "FX3_interfaces_pre_post": [
+    "08/06/50",
+    "08/06/50"
+  ],
+  "actual_official_host_fastboot_executed": true,
+  "actual_host_listed_devices": 0,
+  "cache_receipts_describe_only_their_own_collector_operations": true,
+  "network_denied_for_fastboot_process": true,
+  "camera_mode_entry_or_partition_commands": 0,
+  "Sony_A7IV_source_built_loaded_or_executed": false,
+  "system_install_or_driver_changes": false,
+  "explicit_authorization_delta_only": true,
+  "all16_requirements_unchanged": true,
+  "stage75_backend_and_stage117_frontend_pins": [
+    {
+      "path": "work/sony-firmware-20261024/stage75-private-preset-storage/resource_alias.c",
+      "bytes": 7493,
+      "sha256": "69d8dc8eb8f4ca03c71918fd07b51070749e2f7a561e4e3fb23cab2a7cf5d150"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage75-private-preset-storage/run-20261026/resource_alias.a64.o",
+      "bytes": 4384,
+      "sha256": "88fa4d56540eb579e1b5ebd401aaf5ce4346a675be856765ffedced288718a87"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage75-private-preset-storage/channel_adapter.c",
+      "bytes": 2140,
+      "sha256": "100c9d097660c3bfdcba8a5101bd81890fdee2722ebb1605169c04104e24f7f4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage75-private-preset-storage/run-20261026/channel_adapter.a64.o",
+      "bytes": 2144,
+      "sha256": "0f67a495ef93841234cacf6f9565a018e983fe08e82dd1075ce961f44cae65b5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage117-native-audio-proxy-admission/scoped_frontend.a64.o",
+      "bytes": 1920,
+      "sha256": "673da2d23b9c0736a36ebc515258a9e94ebe5018c355afaf81ffd40ce923b407"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage117-native-audio-proxy-admission/scoped_frontend.c",
+      "bytes": 3152,
+      "sha256": "264c95ec3fb63e5c6843cf6cfa557f8e9ad7f5acceb1b03333b2701d507e3d5a"
+    }
+  ],
+  "canonical_equals_after": true,
+  "same_agent_review_not_independent_engine_or_recovery_test": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

@@ -1,0 +1,11 @@
+(lldb) process connect connect://127.0.0.1:1234
+Process 1 stopped
+* thread #1, stop reason = signal SIGTRAP
+       frame #0: 0xffffff8008097988 
+->  0xffffff8008097988: ret    
+    0xffffff800809798c: nop    
+    0xffffff8008097990: mrs    x2, TPIDR_EL0
+    0xffffff8008097994: mrs    x3, TPIDRRO_EL0
+Target 0: (No executable module.) stopped.
+(lldb) hbreak *0x7f7f6f79c8
+error: 'hbreak' is not a valid command.

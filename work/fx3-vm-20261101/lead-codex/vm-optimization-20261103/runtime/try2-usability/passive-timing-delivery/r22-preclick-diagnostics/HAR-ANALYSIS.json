@@ -1,0 +1,534 @@
+{
+  "source_HAR_sha256": "78def18291911015b40b9724af82a1c0b0ea09cb5547f2d2332673ea56fa7c91",
+  "scope": "server status GET observations only; request-start polling brackets approximate response/server timing, not exact publish or eval-time DOM",
+  "ready_status_samples": 22,
+  "generation_runs": 13,
+  "observed_generation_changes": 12,
+  "generations": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "distinct_SHA": [
+    "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+    "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4"
+  ],
+  "first_observed_new_generation_intervals_ms": [
+    403.926016,
+    405.153792,
+    1618.827264,
+    810.665728,
+    406.057216,
+    1236.0448,
+    406.081024,
+    404.154112,
+    1250.623744,
+    405.473024,
+    405.595136,
+    405.305088
+  ],
+  "interval_summary_ms": {
+    "min": 403.926016,
+    "median": 405.82617600000003,
+    "max": 1618.827264
+  },
+  "observed_generation_lifetime_bounds": [
+    {
+      "generation": 9,
+      "observed_same_generation_span_ms": 0.0,
+      "poll_bracket_lifetime_upper_ms_approx": 809.079808
+    },
+    {
+      "generation": 10,
+      "observed_same_generation_span_ms": 1214.217984,
+      "poll_bracket_lifetime_upper_ms_approx": 2023.981056
+    },
+    {
+      "generation": 11,
+      "observed_same_generation_span_ms": 405.846784,
+      "poll_bracket_lifetime_upper_ms_approx": 1215.275008
+    },
+    {
+      "generation": 12,
+      "observed_same_generation_span_ms": 0.0,
+      "poll_bracket_lifetime_upper_ms_approx": 810.87616
+    },
+    {
+      "generation": 13,
+      "observed_same_generation_span_ms": 831.694848,
+      "poll_bracket_lifetime_upper_ms_approx": 1642.102016
+    },
+    {
+      "generation": 14,
+      "observed_same_generation_span_ms": 0.0,
+      "poll_bracket_lifetime_upper_ms_approx": 810.430976
+    },
+    {
+      "generation": 15,
+      "observed_same_generation_span_ms": 0.0,
+      "poll_bracket_lifetime_upper_ms_approx": 810.235136
+    },
+    {
+      "generation": 16,
+      "observed_same_generation_span_ms": 809.004032,
+      "poll_bracket_lifetime_upper_ms_approx": 1654.777856
+    },
+    {
+      "generation": 17,
+      "observed_same_generation_span_ms": 0.0,
+      "poll_bracket_lifetime_upper_ms_approx": 847.092736
+    },
+    {
+      "generation": 18,
+      "observed_same_generation_span_ms": 0.0,
+      "poll_bracket_lifetime_upper_ms_approx": 811.06816
+    },
+    {
+      "generation": 19,
+      "observed_same_generation_span_ms": 0.0,
+      "poll_bracket_lifetime_upper_ms_approx": 810.900224
+    }
+  ],
+  "review_to_reservation_seconds": 8.256791792,
+  "reviewed_identity": {
+    "step": 0,
+    "sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+    "gen": 9,
+    "seq": 38
+  },
+  "rows": [
+    {
+      "entry_index": 160,
+      "start_UTC": "2026-11-05T00:17:22.337860096Z",
+      "start_ns": 1793837842337860096,
+      "duration_ms": 0.6850000259056688,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 8,
+      "sequence": 35,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421527.553712625
+    },
+    {
+      "entry_index": 163,
+      "start_UTC": "2026-11-05T00:17:22.741786112Z",
+      "start_ns": 1793837842741786112,
+      "duration_ms": 0.7889999954476952,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 9,
+      "sequence": 38,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421528.046187416
+    },
+    {
+      "entry_index": 166,
+      "start_UTC": "2026-11-05T00:17:23.146939904Z",
+      "start_ns": 1793837843146939904,
+      "duration_ms": 0.7769999856352806,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 10,
+      "sequence": 44,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421528.569560833
+    },
+    {
+      "entry_index": 169,
+      "start_UTC": "2026-11-05T00:17:23.55300224Z",
+      "start_ns": 1793837843553002240,
+      "duration_ms": 0.7160000128746034,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 10,
+      "sequence": 45,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421529.080431375
+    },
+    {
+      "entry_index": 170,
+      "start_UTC": "2026-11-05T00:17:23.95707008Z",
+      "start_ns": 1793837843957070080,
+      "duration_ms": 0.8530000308118761,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 10,
+      "sequence": 45,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421529.080431375
+    },
+    {
+      "entry_index": 171,
+      "start_UTC": "2026-11-05T00:17:24.361157888Z",
+      "start_ns": 1793837844361157888,
+      "duration_ms": 0.9640000433325768,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 10,
+      "sequence": 46,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421529.546463708
+    },
+    {
+      "entry_index": 172,
+      "start_UTC": "2026-11-05T00:17:24.765767168Z",
+      "start_ns": 1793837844765767168,
+      "duration_ms": 0.7489999981559814,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 11,
+      "sequence": 47,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421530.044428958
+    },
+    {
+      "entry_index": 175,
+      "start_UTC": "2026-11-05T00:17:25.171613952Z",
+      "start_ns": 1793837845171613952,
+      "duration_ms": 1.221000030811876,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 11,
+      "sequence": 51,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421530.520150583
+    },
+    {
+      "entry_index": 176,
+      "start_UTC": "2026-11-05T00:17:25.576432896Z",
+      "start_ns": 1793837845576432896,
+      "duration_ms": 0.7100000003539026,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 12,
+      "sequence": 57,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421531.0093645
+    },
+    {
+      "entry_index": 179,
+      "start_UTC": "2026-11-05T00:17:25.982490112Z",
+      "start_ns": 1793837845982490112,
+      "duration_ms": 0.6649999954476953,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 13,
+      "sequence": 64,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421531.487555208
+    },
+    {
+      "entry_index": 182,
+      "start_UTC": "2026-11-05T00:17:26.38788096Z",
+      "start_ns": 1793837846387880960,
+      "duration_ms": 23.410999976214022,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 13,
+      "sequence": 64,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421531.487555208
+    },
+    {
+      "entry_index": 183,
+      "start_UTC": "2026-11-05T00:17:26.81418496Z",
+      "start_ns": 1793837846814184960,
+      "duration_ms": 0.7059999649897217,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 13,
+      "sequence": 74,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421531.941943916
+    },
+    {
+      "entry_index": 184,
+      "start_UTC": "2026-11-05T00:17:27.218534912Z",
+      "start_ns": 1793837847218534912,
+      "duration_ms": 0.7570000182911754,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 14,
+      "sequence": 77,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421532.470818333
+    },
+    {
+      "entry_index": 187,
+      "start_UTC": "2026-11-05T00:17:27.624615936Z",
+      "start_ns": 1793837847624615936,
+      "duration_ms": 0.8030000259056687,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 15,
+      "sequence": 83,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421532.94475025
+    },
+    {
+      "entry_index": 190,
+      "start_UTC": "2026-11-05T00:17:28.028770048Z",
+      "start_ns": 1793837848028770048,
+      "duration_ms": 0.6759999748021364,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 16,
+      "sequence": 93,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421533.433967125
+    },
+    {
+      "entry_index": 193,
+      "start_UTC": "2026-11-05T00:17:28.43423104Z",
+      "start_ns": 1793837848434231040,
+      "duration_ms": 0.7490000384263695,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 16,
+      "sequence": 101,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421533.941945666
+    },
+    {
+      "entry_index": 194,
+      "start_UTC": "2026-11-05T00:17:28.83777408Z",
+      "start_ns": 1793837848837774080,
+      "duration_ms": 38.28600004764647,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 16,
+      "sequence": 101,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421533.941945666
+    },
+    {
+      "entry_index": 195,
+      "start_UTC": "2026-11-05T00:17:29.279393792Z",
+      "start_ns": 1793837849279393792,
+      "duration_ms": 0.7469999981559814,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 17,
+      "sequence": 109,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421534.426601208
+    },
+    {
+      "entry_index": 198,
+      "start_UTC": "2026-11-05T00:17:29.684866816Z",
+      "start_ns": 1793837849684866816,
+      "duration_ms": 1.0180000231973827,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 18,
+      "sequence": 118,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421534.909400833
+    },
+    {
+      "entry_index": 201,
+      "start_UTC": "2026-11-05T00:17:30.090461952Z",
+      "start_ns": 1793837850090461952,
+      "duration_ms": 0.8169999775104224,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 19,
+      "sequence": 126,
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "frame_host_monotonic": 421535.391834333
+    },
+    {
+      "entry_index": 204,
+      "start_UTC": "2026-11-05T00:17:30.49576704Z",
+      "start_ns": 1793837850495767040,
+      "duration_ms": 0.7909999372400343,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 20,
+      "sequence": 136,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421535.923107416
+    },
+    {
+      "entry_index": 207,
+      "start_UTC": "2026-11-05T00:17:30.901103872Z",
+      "start_ns": 1793837850901103872,
+      "duration_ms": 0.6889999649897217,
+      "phase": "ready",
+      "ready": true,
+      "steps": 0,
+      "busy": false,
+      "review_required": false,
+      "generation": 20,
+      "sequence": 146,
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "frame_host_monotonic": 421536.38399525
+    }
+  ],
+  "changes": [
+    {
+      "from_generation": 8,
+      "to_generation": 9,
+      "last_old_status_start_UTC": "2026-11-05T00:17:22.337860096Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:22.741786112Z",
+      "poll_bracket_ms": 403.926016
+    },
+    {
+      "from_generation": 9,
+      "to_generation": 10,
+      "last_old_status_start_UTC": "2026-11-05T00:17:22.741786112Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:23.146939904Z",
+      "poll_bracket_ms": 405.153792
+    },
+    {
+      "from_generation": 10,
+      "to_generation": 11,
+      "last_old_status_start_UTC": "2026-11-05T00:17:24.361157888Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:24.765767168Z",
+      "poll_bracket_ms": 404.60928
+    },
+    {
+      "from_generation": 11,
+      "to_generation": 12,
+      "last_old_status_start_UTC": "2026-11-05T00:17:25.171613952Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:25.576432896Z",
+      "poll_bracket_ms": 404.818944
+    },
+    {
+      "from_generation": 12,
+      "to_generation": 13,
+      "last_old_status_start_UTC": "2026-11-05T00:17:25.576432896Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:25.982490112Z",
+      "poll_bracket_ms": 406.057216
+    },
+    {
+      "from_generation": 13,
+      "to_generation": 14,
+      "last_old_status_start_UTC": "2026-11-05T00:17:26.81418496Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:27.218534912Z",
+      "poll_bracket_ms": 404.349952
+    },
+    {
+      "from_generation": 14,
+      "to_generation": 15,
+      "last_old_status_start_UTC": "2026-11-05T00:17:27.218534912Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:27.624615936Z",
+      "poll_bracket_ms": 406.081024
+    },
+    {
+      "from_generation": 15,
+      "to_generation": 16,
+      "last_old_status_start_UTC": "2026-11-05T00:17:27.624615936Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:28.028770048Z",
+      "poll_bracket_ms": 404.154112
+    },
+    {
+      "from_generation": 16,
+      "to_generation": 17,
+      "last_old_status_start_UTC": "2026-11-05T00:17:28.83777408Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:29.279393792Z",
+      "poll_bracket_ms": 441.619712
+    },
+    {
+      "from_generation": 17,
+      "to_generation": 18,
+      "last_old_status_start_UTC": "2026-11-05T00:17:29.279393792Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:29.684866816Z",
+      "poll_bracket_ms": 405.473024
+    },
+    {
+      "from_generation": 18,
+      "to_generation": 19,
+      "last_old_status_start_UTC": "2026-11-05T00:17:29.684866816Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:30.090461952Z",
+      "poll_bracket_ms": 405.595136
+    },
+    {
+      "from_generation": 19,
+      "to_generation": 20,
+      "last_old_status_start_UTC": "2026-11-05T00:17:30.090461952Z",
+      "first_new_status_start_UTC": "2026-11-05T00:17:30.49576704Z",
+      "poll_bracket_ms": 405.305088
+    }
+  ],
+  "cannot_determine": [
+    "exact generation publish times",
+    "unobserved intermediate generations",
+    "eval-time DOM fields",
+    "original failing predicate",
+    "model receive/review completion time"
+  ]
+}

@@ -1,0 +1,1172 @@
+[
+  {
+    "va": "0x3248",
+    "asm": "stp x29, x30, [sp, #-0x70]!",
+    "reloc": null
+  },
+  {
+    "va": "0x324c",
+    "asm": "and w4, w0, #0x7fff",
+    "reloc": null
+  },
+  {
+    "va": "0x3250",
+    "asm": "cmp w4, #0x3f",
+    "reloc": null
+  },
+  {
+    "va": "0x3254",
+    "asm": "mov x29, sp",
+    "reloc": null
+  },
+  {
+    "va": "0x3258",
+    "asm": "stp x19, x20, [sp, #0x10]",
+    "reloc": null
+  },
+  {
+    "va": "0x325c",
+    "asm": "mov x19, x1",
+    "reloc": null
+  },
+  {
+    "va": "0x3260",
+    "asm": "stp x23, x24, [sp, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x3264",
+    "asm": "mov w20, w2",
+    "reloc": null
+  },
+  {
+    "va": "0x3268",
+    "asm": "str x27, [sp, #0x50]",
+    "reloc": null
+  },
+  {
+    "va": "0x326c",
+    "asm": "mov w24, w0",
+    "reloc": null
+  },
+  {
+    "va": "0x3270",
+    "asm": "stp x21, x22, [sp, #0x20]",
+    "reloc": null
+  },
+  {
+    "va": "0x3274",
+    "asm": "mov w27, w3",
+    "reloc": null
+  },
+  {
+    "va": "0x3278",
+    "asm": "stp x25, x26, [sp, #0x40]",
+    "reloc": null
+  },
+  {
+    "va": "0x327c",
+    "asm": "b.hi #0x33b8",
+    "reloc": null
+  },
+  {
+    "va": "0x3280",
+    "asm": "ldr x0, #0x3518",
+    "reloc": null
+  },
+  {
+    "va": "0x3284",
+    "asm": "ubfiz x1, x4, #3, #0xf",
+    "reloc": null
+  },
+  {
+    "va": "0x3288",
+    "asm": "add x0, x0, x1",
+    "reloc": null
+  },
+  {
+    "va": "0x328c",
+    "asm": "ldr x21, [x0, #0x10]",
+    "reloc": null
+  },
+  {
+    "va": "0x3290",
+    "asm": "cbz x21, #0x33c8",
+    "reloc": null
+  },
+  {
+    "va": "0x3294",
+    "asm": "lsr w22, w24, #0x1f",
+    "reloc": null
+  },
+  {
+    "va": "0x3298",
+    "asm": "tbnz w24, #0x1f, #0x3470",
+    "reloc": null
+  },
+  {
+    "va": "0x329c",
+    "asm": "ldrb w0, [x21]",
+    "reloc": null
+  },
+  {
+    "va": "0x32a0",
+    "asm": "tbnz w0, #3, #0x33f8",
+    "reloc": null
+  },
+  {
+    "va": "0x32a4",
+    "asm": "mov w26, w20",
+    "reloc": null
+  },
+  {
+    "va": "0x32a8",
+    "asm": "mov w23, #0x5b",
+    "reloc": null
+  },
+  {
+    "va": "0x32ac",
+    "asm": "str wzr, [x29, #0x6c]",
+    "reloc": null
+  },
+  {
+    "va": "0x32b0",
+    "asm": "ldrb w0, [x21]",
+    "reloc": null
+  },
+  {
+    "va": "0x32b4",
+    "asm": "add w20, w20, #3",
+    "reloc": null
+  },
+  {
+    "va": "0x32b8",
+    "asm": "and w20, w20, #0xfffffffc",
+    "reloc": null
+  },
+  {
+    "va": "0x32bc",
+    "asm": "add w23, w20, w23",
+    "reloc": null
+  },
+  {
+    "va": "0x32c0",
+    "asm": "and w25, w23, #0xffffffc0",
+    "reloc": null
+  },
+  {
+    "va": "0x32c4",
+    "asm": "tbnz w0, #3, #0x32d0",
+    "reloc": null
+  },
+  {
+    "va": "0x32c8",
+    "asm": "ldr x0, [x21, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x32cc",
+    "asm": "cbnz x0, #0x3420",
+    "reloc": null
+  },
+  {
+    "va": "0x32d0",
+    "asm": "cmp w25, #0x40",
+    "reloc": null
+  },
+  {
+    "va": "0x32d4",
+    "asm": "b.eq #0x3508",
+    "reloc": null
+  },
+  {
+    "va": "0x32d8",
+    "asm": "ldr x0, #0x3540",
+    "reloc": null
+  },
+  {
+    "va": "0x32dc",
+    "asm": "add x3, x29, #0x6c",
+    "reloc": null
+  },
+  {
+    "va": "0x32e0",
+    "asm": "mov w2, w27",
+    "reloc": null
+  },
+  {
+    "va": "0x32e4",
+    "asm": "mov w1, w25",
+    "reloc": null
+  },
+  {
+    "va": "0x32e8",
+    "asm": "bl #0x32e8",
+    "reloc": "vpool_alloc"
+  },
+  {
+    "va": "0x32ec",
+    "asm": "cbz x0, #0x3434",
+    "reloc": null
+  },
+  {
+    "va": "0x32f0",
+    "asm": "cmp w24, #0",
+    "reloc": null
+  },
+  {
+    "va": "0x32f4",
+    "asm": "add x1, x0, #0x28",
+    "reloc": null
+  },
+  {
+    "va": "0x32f8",
+    "asm": "csel x0, x1, x0, lt",
+    "reloc": null
+  },
+  {
+    "va": "0x32fc",
+    "asm": "mov w2, #0x55555555",
+    "reloc": null
+  },
+  {
+    "va": "0x3300",
+    "asm": "asr w23, w23, #6",
+    "reloc": null
+  },
+  {
+    "va": "0x3304",
+    "asm": "cmp w25, #0x40",
+    "reloc": null
+  },
+  {
+    "va": "0x3308",
+    "asm": "add x20, x0, x20",
+    "reloc": null
+  },
+  {
+    "va": "0x330c",
+    "asm": "csel w23, w23, wzr, ne",
+    "reloc": null
+  },
+  {
+    "va": "0x3310",
+    "asm": "ldrb w1, [x0, #9]",
+    "reloc": null
+  },
+  {
+    "va": "0x3314",
+    "asm": "mov w3, #0x77777777",
+    "reloc": null
+  },
+  {
+    "va": "0x3318",
+    "asm": "stp w26, w2, [x0, #0x10]",
+    "reloc": null
+  },
+  {
+    "va": "0x331c",
+    "asm": "add x2, x21, #2",
+    "reloc": null
+  },
+  {
+    "va": "0x3320",
+    "asm": "bfi w1, w22, #6, #1",
+    "reloc": null
+  },
+  {
+    "va": "0x3324",
+    "asm": "strb w23, [x0, #8]",
+    "reloc": null
+  },
+  {
+    "va": "0x3328",
+    "asm": "strb w1, [x0, #9]",
+    "reloc": null
+  },
+  {
+    "va": "0x332c",
+    "asm": "str w3, [x20, #0x18]",
+    "reloc": null
+  },
+  {
+    "va": "0x3330",
+    "asm": "ldxrh w1, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x3334",
+    "asm": "sxth w1, w1",
+    "reloc": null
+  },
+  {
+    "va": "0x3338",
+    "asm": "add w1, w1, #1",
+    "reloc": null
+  },
+  {
+    "va": "0x333c",
+    "asm": "stxrh w3, w1, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x3340",
+    "asm": "cbnz w3, #0x3330",
+    "reloc": null
+  },
+  {
+    "va": "0x3344",
+    "asm": "ldr w1, [x29, #0x6c]",
+    "reloc": null
+  },
+  {
+    "va": "0x3348",
+    "asm": "cbz w1, #0x3364",
+    "reloc": null
+  },
+  {
+    "va": "0x334c",
+    "asm": "add x2, x21, #1",
+    "reloc": null
+  },
+  {
+    "va": "0x3350",
+    "asm": "ldxrb w1, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x3354",
+    "asm": "uxtb w1, w1",
+    "reloc": null
+  },
+  {
+    "va": "0x3358",
+    "asm": "orr w1, w1, #1",
+    "reloc": null
+  },
+  {
+    "va": "0x335c",
+    "asm": "stxrb w3, w1, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x3360",
+    "asm": "cbnz w3, #0x3350",
+    "reloc": null
+  },
+  {
+    "va": "0x3364",
+    "asm": "cbz x0, #0x344c",
+    "reloc": null
+  },
+  {
+    "va": "0x3368",
+    "asm": "ldrb w1, [x0, #9]",
+    "reloc": null
+  },
+  {
+    "va": "0x336c",
+    "asm": "mov w2, #1",
+    "reloc": null
+  },
+  {
+    "va": "0x3370",
+    "asm": "mov w4, #0xa5a5",
+    "reloc": null
+  },
+  {
+    "va": "0x3374",
+    "asm": "add x3, x0, #0x18",
+    "reloc": null
+  },
+  {
+    "va": "0x3378",
+    "asm": "movk w4, #0xa5a5, lsl #16",
+    "reloc": null
+  },
+  {
+    "va": "0x337c",
+    "asm": "bfxil w1, w2, #0, #6",
+    "reloc": null
+  },
+  {
+    "va": "0x3380",
+    "asm": "and w1, w1, #0x7f",
+    "reloc": null
+  },
+  {
+    "va": "0x3384",
+    "asm": "strh w2, [x0, #0xa]",
+    "reloc": null
+  },
+  {
+    "va": "0x3388",
+    "asm": "strb w1, [x0, #9]",
+    "reloc": null
+  },
+  {
+    "va": "0x338c",
+    "asm": "str w4, [x0, #0xc]",
+    "reloc": null
+  },
+  {
+    "va": "0x3390",
+    "asm": "mov w0, #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3394",
+    "asm": "str x3, [x19]",
+    "reloc": null
+  },
+  {
+    "va": "0x3398",
+    "asm": "ldp x19, x20, [sp, #0x10]",
+    "reloc": null
+  },
+  {
+    "va": "0x339c",
+    "asm": "ldp x21, x22, [sp, #0x20]",
+    "reloc": null
+  },
+  {
+    "va": "0x33a0",
+    "asm": "ldp x23, x24, [sp, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x33a4",
+    "asm": "ldp x25, x26, [sp, #0x40]",
+    "reloc": null
+  },
+  {
+    "va": "0x33a8",
+    "asm": "ldr x27, [sp, #0x50]",
+    "reloc": null
+  },
+  {
+    "va": "0x33ac",
+    "asm": "ldp x29, x30, [sp], #0x70",
+    "reloc": null
+  },
+  {
+    "va": "0x33b0",
+    "asm": "ret ",
+    "reloc": null
+  },
+  {
+    "va": "0x33b4",
+    "asm": "nop ",
+    "reloc": null
+  },
+  {
+    "va": "0x33b8",
+    "asm": "mov w0, w4",
+    "reloc": null
+  },
+  {
+    "va": "0x33bc",
+    "asm": "bl #0x2938",
+    "reloc": null
+  },
+  {
+    "va": "0x33c0",
+    "asm": "mov x21, x0",
+    "reloc": null
+  },
+  {
+    "va": "0x33c4",
+    "asm": "cbnz x0, #0x3294",
+    "reloc": null
+  },
+  {
+    "va": "0x33c8",
+    "asm": "mov w0, w4",
+    "reloc": null
+  },
+  {
+    "va": "0x33cc",
+    "asm": "lsr w22, w24, #0x1f",
+    "reloc": null
+  },
+  {
+    "va": "0x33d0",
+    "asm": "bl #0x2ee8",
+    "reloc": null
+  },
+  {
+    "va": "0x33d4",
+    "asm": "mov x21, x0",
+    "reloc": null
+  },
+  {
+    "va": "0x33d8",
+    "asm": "cbnz x0, #0x3298",
+    "reloc": null
+  },
+  {
+    "va": "0x33dc",
+    "asm": "ldr x1, #0x3520",
+    "reloc": null
+  },
+  {
+    "va": "0x33e0",
+    "asm": "mov w2, w24",
+    "reloc": null
+  },
+  {
+    "va": "0x33e4",
+    "asm": "ldr x0, #0x3528",
+    "reloc": null
+  },
+  {
+    "va": "0x33e8",
+    "asm": "bl #0x33e8",
+    "reloc": "printk"
+  },
+  {
+    "va": "0x33ec",
+    "asm": "mov w0, #-0x3ff",
+    "reloc": null
+  },
+  {
+    "va": "0x33f0",
+    "asm": "b #0x3398",
+    "reloc": null
+  },
+  {
+    "va": "0x33f4",
+    "asm": "nop ",
+    "reloc": null
+  },
+  {
+    "va": "0x33f8",
+    "asm": "ldr x0, [x21, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x33fc",
+    "asm": "cbz x0, #0x3488",
+    "reloc": null
+  },
+  {
+    "va": "0x3400",
+    "asm": "str wzr, [x29, #0x6c]",
+    "reloc": null
+  },
+  {
+    "va": "0x3404",
+    "asm": "mov w26, w20",
+    "reloc": null
+  },
+  {
+    "va": "0x3408",
+    "asm": "add w20, w20, #3",
+    "reloc": null
+  },
+  {
+    "va": "0x340c",
+    "asm": "ldrb w1, [x21]",
+    "reloc": null
+  },
+  {
+    "va": "0x3410",
+    "asm": "and w20, w20, #0xfffffffc",
+    "reloc": null
+  },
+  {
+    "va": "0x3414",
+    "asm": "add w23, w20, #0x5b",
+    "reloc": null
+  },
+  {
+    "va": "0x3418",
+    "asm": "and w25, w23, #0xffffffc0",
+    "reloc": null
+  },
+  {
+    "va": "0x341c",
+    "asm": "tbnz w1, #3, #0x32d0",
+    "reloc": null
+  },
+  {
+    "va": "0x3420",
+    "asm": "mov w2, w27",
+    "reloc": null
+  },
+  {
+    "va": "0x3424",
+    "asm": "add x3, x29, #0x6c",
+    "reloc": null
+  },
+  {
+    "va": "0x3428",
+    "asm": "mov w1, w25",
+    "reloc": null
+  },
+  {
+    "va": "0x342c",
+    "asm": "bl #0x342c",
+    "reloc": "vpool_alloc"
+  },
+  {
+    "va": "0x3430",
+    "asm": "cbnz x0, #0x32f0",
+    "reloc": null
+  },
+  {
+    "va": "0x3434",
+    "asm": "add x2, x21, #1",
+    "reloc": null
+  },
+  {
+    "va": "0x3438",
+    "asm": "ldxrb w0, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x343c",
+    "asm": "uxtb w0, w0",
+    "reloc": null
+  },
+  {
+    "va": "0x3440",
+    "asm": "orr w0, w0, #2",
+    "reloc": null
+  },
+  {
+    "va": "0x3444",
+    "asm": "stxrb w1, w0, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x3448",
+    "asm": "cbnz w1, #0x3438",
+    "reloc": null
+  },
+  {
+    "va": "0x344c",
+    "asm": "ldp x19, x20, [sp, #0x10]",
+    "reloc": null
+  },
+  {
+    "va": "0x3450",
+    "asm": "mov w0, #-0x3ff",
+    "reloc": null
+  },
+  {
+    "va": "0x3454",
+    "asm": "ldp x21, x22, [sp, #0x20]",
+    "reloc": null
+  },
+  {
+    "va": "0x3458",
+    "asm": "ldp x23, x24, [sp, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x345c",
+    "asm": "ldp x25, x26, [sp, #0x40]",
+    "reloc": null
+  },
+  {
+    "va": "0x3460",
+    "asm": "ldr x27, [sp, #0x50]",
+    "reloc": null
+  },
+  {
+    "va": "0x3464",
+    "asm": "ldp x29, x30, [sp], #0x70",
+    "reloc": null
+  },
+  {
+    "va": "0x3468",
+    "asm": "ret ",
+    "reloc": null
+  },
+  {
+    "va": "0x346c",
+    "asm": "nop ",
+    "reloc": null
+  },
+  {
+    "va": "0x3470",
+    "asm": "tst x24, #0x70000000",
+    "reloc": null
+  },
+  {
+    "va": "0x3474",
+    "asm": "b.ne #0x34b8",
+    "reloc": null
+  },
+  {
+    "va": "0x3478",
+    "asm": "ldrb w0, [x21]",
+    "reloc": null
+  },
+  {
+    "va": "0x347c",
+    "asm": "tbz w0, #3, #0x34b8",
+    "reloc": null
+  },
+  {
+    "va": "0x3480",
+    "asm": "ldr x0, [x21, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x3484",
+    "asm": "cbnz x0, #0x34b8",
+    "reloc": null
+  },
+  {
+    "va": "0x3488",
+    "asm": "ldr x1, #0x3520",
+    "reloc": null
+  },
+  {
+    "va": "0x348c",
+    "asm": "mov w3, w20",
+    "reloc": null
+  },
+  {
+    "va": "0x3490",
+    "asm": "ldr x0, #0x3530",
+    "reloc": null
+  },
+  {
+    "va": "0x3494",
+    "asm": "mov w2, w24",
+    "reloc": null
+  },
+  {
+    "va": "0x3498",
+    "asm": "bl #0x3498",
+    "reloc": "printk"
+  },
+  {
+    "va": "0x349c",
+    "asm": "bl #0x349c",
+    "reloc": "print_task_info"
+  },
+  {
+    "va": "0x34a0",
+    "asm": "ldr x1, #0x3538",
+    "reloc": null
+  },
+  {
+    "va": "0x34a4",
+    "asm": "mov w0, #-0x3fa",
+    "reloc": null
+  },
+  {
+    "va": "0x34a8",
+    "asm": "ldr x1, [x1]",
+    "reloc": null
+  },
+  {
+    "va": "0x34ac",
+    "asm": "ldrb w1, [x1, #0x17]",
+    "reloc": null
+  },
+  {
+    "va": "0x34b0",
+    "asm": "cbz w1, #0x3398",
+    "reloc": null
+  },
+  {
+    "va": "0x34b4",
+    "asm": "brk #0x800",
+    "reloc": null
+  },
+  {
+    "va": "0x34b8",
+    "asm": "str wzr, [x29, #0x6c]",
+    "reloc": null
+  },
+  {
+    "va": "0x34bc",
+    "asm": "mov w26, w20",
+    "reloc": null
+  },
+  {
+    "va": "0x34c0",
+    "asm": "cbnz w20, #0x34e8",
+    "reloc": null
+  },
+  {
+    "va": "0x34c4",
+    "asm": "ldrb w0, [x21]",
+    "reloc": null
+  },
+  {
+    "va": "0x34c8",
+    "asm": "tbnz w0, #3, #0x34f0",
+    "reloc": null
+  },
+  {
+    "va": "0x34cc",
+    "asm": "ldr x0, [x21, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x34d0",
+    "asm": "cbz x0, #0x34f0",
+    "reloc": null
+  },
+  {
+    "va": "0x34d4",
+    "asm": "mov w26, #4",
+    "reloc": null
+  },
+  {
+    "va": "0x34d8",
+    "asm": "mov w25, #0x80",
+    "reloc": null
+  },
+  {
+    "va": "0x34dc",
+    "asm": "mov w23, #0x87",
+    "reloc": null
+  },
+  {
+    "va": "0x34e0",
+    "asm": "mov w20, w26",
+    "reloc": null
+  },
+  {
+    "va": "0x34e4",
+    "asm": "b #0x3420",
+    "reloc": null
+  },
+  {
+    "va": "0x34e8",
+    "asm": "mov w23, #0x83",
+    "reloc": null
+  },
+  {
+    "va": "0x34ec",
+    "asm": "b #0x32b0",
+    "reloc": null
+  },
+  {
+    "va": "0x34f0",
+    "asm": "mov w26, #4",
+    "reloc": null
+  },
+  {
+    "va": "0x34f4",
+    "asm": "mov w25, #0x80",
+    "reloc": null
+  },
+  {
+    "va": "0x34f8",
+    "asm": "mov w23, #0x87",
+    "reloc": null
+  },
+  {
+    "va": "0x34fc",
+    "asm": "mov w20, w26",
+    "reloc": null
+  },
+  {
+    "va": "0x3500",
+    "asm": "b #0x32d8",
+    "reloc": null
+  },
+  {
+    "va": "0x3504",
+    "asm": "nop ",
+    "reloc": null
+  },
+  {
+    "va": "0x3508",
+    "asm": "add x1, x29, #0x6c",
+    "reloc": null
+  },
+  {
+    "va": "0x350c",
+    "asm": "mov w0, w27",
+    "reloc": null
+  },
+  {
+    "va": "0x3510",
+    "asm": "bl #0x3510",
+    "reloc": "alloc_fblock"
+  },
+  {
+    "va": "0x3514",
+    "asm": "b #0x32ec",
+    "reloc": null
+  },
+  {
+    "va": "0x3518",
+    "asm": "udf #0",
+    "reloc": ""
+  },
+  {
+    "va": "0x351c",
+    "asm": "udf #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3520",
+    "asm": "udf #0",
+    "reloc": ""
+  },
+  {
+    "va": "0x3524",
+    "asm": "udf #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3528",
+    "asm": "udf #0",
+    "reloc": ""
+  },
+  {
+    "va": "0x352c",
+    "asm": "udf #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3530",
+    "asm": "udf #0",
+    "reloc": ""
+  },
+  {
+    "va": "0x3534",
+    "asm": "udf #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3538",
+    "asm": "udf #0",
+    "reloc": "uipc_opt"
+  },
+  {
+    "va": "0x353c",
+    "asm": "udf #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3540",
+    "asm": "udf #0",
+    "reloc": "vpool"
+  },
+  {
+    "va": "0x3544",
+    "asm": "udf #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3548",
+    "asm": "stp x29, x30, [sp, #-0x10]!",
+    "reloc": null
+  },
+  {
+    "va": "0x354c",
+    "asm": "mov x1, #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3550",
+    "asm": "mov w0, #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3554",
+    "asm": "mov x29, sp",
+    "reloc": null
+  },
+  {
+    "va": "0x3558",
+    "asm": "bl #0x3558",
+    "reloc": "alloc_fblock"
+  },
+  {
+    "va": "0x355c",
+    "asm": "cbz x0, #0x3588",
+    "reloc": null
+  },
+  {
+    "va": "0x3560",
+    "asm": "ldr x2, #0x3590",
+    "reloc": null
+  },
+  {
+    "va": "0x3564",
+    "asm": "stp xzr, xzr, [x0]",
+    "reloc": null
+  },
+  {
+    "va": "0x3568",
+    "asm": "add x2, x2, #0x448",
+    "reloc": null
+  },
+  {
+    "va": "0x356c",
+    "asm": "stp xzr, xzr, [x0, #0x10]",
+    "reloc": null
+  },
+  {
+    "va": "0x3570",
+    "asm": "stp xzr, xzr, [x0, #0x20]",
+    "reloc": null
+  },
+  {
+    "va": "0x3574",
+    "asm": "str xzr, [x0, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x3578",
+    "asm": "ldxr w1, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x357c",
+    "asm": "add w1, w1, #1",
+    "reloc": null
+  },
+  {
+    "va": "0x3580",
+    "asm": "stxr w3, w1, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x3584",
+    "asm": "cbnz w3, #0x3578",
+    "reloc": null
+  },
+  {
+    "va": "0x3588",
+    "asm": "ldp x29, x30, [sp], #0x10",
+    "reloc": null
+  },
+  {
+    "va": "0x358c",
+    "asm": "ret ",
+    "reloc": null
+  },
+  {
+    "va": "0x3590",
+    "asm": "udf #0",
+    "reloc": ""
+  },
+  {
+    "va": "0x3594",
+    "asm": "udf #0",
+    "reloc": null
+  },
+  {
+    "va": "0x3598",
+    "asm": "cbz x0, #0x35b0",
+    "reloc": null
+  },
+  {
+    "va": "0x359c",
+    "asm": "stp x29, x30, [sp, #-0x10]!",
+    "reloc": null
+  },
+  {
+    "va": "0x35a0",
+    "asm": "mov x29, sp",
+    "reloc": null
+  },
+  {
+    "va": "0x35a4",
+    "asm": "bl #0x2cc8",
+    "reloc": null
+  },
+  {
+    "va": "0x35a8",
+    "asm": "ldp x29, x30, [sp], #0x10",
+    "reloc": null
+  },
+  {
+    "va": "0x35ac",
+    "asm": "ret ",
+    "reloc": null
+  },
+  {
+    "va": "0x35b0",
+    "asm": "ret ",
+    "reloc": null
+  },
+  {
+    "va": "0x35b4",
+    "asm": "nop ",
+    "reloc": null
+  },
+  {
+    "va": "0x35b8",
+    "asm": "stp x29, x30, [sp, #-0x40]!",
+    "reloc": null
+  },
+  {
+    "va": "0x35bc",
+    "asm": "mov x29, sp",
+    "reloc": null
+  },
+  {
+    "va": "0x35c0",
+    "asm": "stp x19, x20, [sp, #0x10]",
+    "reloc": null
+  },
+  {
+    "va": "0x35c4",
+    "asm": "stp x21, x22, [sp, #0x20]",
+    "reloc": null
+  },
+  {
+    "va": "0x35c8",
+    "asm": "stp x23, x24, [sp, #0x30]",
+    "reloc": null
+  },
+  {
+    "va": "0x35cc",
+    "asm": "ldr x20, [x2]",
+    "reloc": null
+  },
+  {
+    "va": "0x35d0",
+    "asm": "cbz x20, #0x3678",
+    "reloc": null
+  },
+  {
+    "va": "0x35d4",
+    "asm": "mov x24, x2",
+    "reloc": null
+  },
+  {
+    "va": "0x35d8",
+    "asm": "mov x23, x1",
+    "reloc": null
+  },
+  {
+    "va": "0x35dc",
+    "asm": "mov x22, x0",
+    "reloc": null
+  },
+  {
+    "va": "0x35e0",
+    "asm": "add x19, x1, #0xa",
+    "reloc": null
+  },
+  {
+    "va": "0x35e4",
+    "asm": "ldrb w0, [x20, #0x19]",
+    "reloc": null
+  },
+  {
+    "va": "0x35e8",
+    "asm": "tbnz w0, #1, #0x36c8",
+    "reloc": null
+  },
+  {
+    "va": "0x35ec",
+    "asm": "tbz w0, #2, #0x36a0",
+    "reloc": null
+  }
+]

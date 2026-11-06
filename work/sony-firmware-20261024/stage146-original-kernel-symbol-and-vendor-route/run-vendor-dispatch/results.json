@@ -1,0 +1,294 @@
+{
+  "status": "PASS_ORIGINAL_702_VENDOR_ARM_PLUS_ORIGINAL_SEN_CALLBACK_WITH_DECLARED_BRIDGES_NOT_USB_OR_KERNEL_RUNTIME",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "original_module_sha256": "1a7294dd9d3babde3f1e8cc2ac4aa12f54356f61995993bbc18ace095ed0cbf2",
+  "cases": [
+    {
+      "name": "start_all_THRU",
+      "events": [
+        {
+          "bridge": "usb_gadgetcore_stop_other_driver",
+          "return": 0
+        },
+        {
+          "bridge": "usb_event_add_queue",
+          "command": 0,
+          "return": 0,
+          "real_queue_admission_proven": false
+        },
+        {
+          "bridge": "usb_ep_set_halt",
+          "return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 1
+      },
+      "halt_bridge_calls": 1,
+      "queue_attempts": 1,
+      "internal_ep0_flag_after": 1,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 8,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "stop_all_THRU",
+      "events": [
+        {
+          "bridge": "usb_gadgetcore_stop_other_driver",
+          "return": 0
+        },
+        {
+          "bridge": "usb_event_add_queue",
+          "command": 1,
+          "return": 0,
+          "real_queue_admission_proven": false
+        },
+        {
+          "bridge": "usb_ep_set_halt",
+          "return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 1
+      },
+      "halt_bridge_calls": 1,
+      "queue_attempts": 1,
+      "internal_ep0_flag_after": 1,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 8,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "event_enqueue_failure_still_THRU",
+      "events": [
+        {
+          "bridge": "usb_gadgetcore_stop_other_driver",
+          "return": 0
+        },
+        {
+          "bridge": "usb_event_add_queue",
+          "command": 0,
+          "return": -12,
+          "real_queue_admission_proven": false
+        },
+        {
+          "bridge": "usb_ep_set_halt",
+          "return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 1
+      },
+      "halt_bridge_calls": 1,
+      "queue_attempts": 1,
+      "internal_ep0_flag_after": 1,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 8,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "stop_other_driver_failure_no_queue",
+      "events": [
+        {
+          "bridge": "usb_gadgetcore_stop_other_driver",
+          "return": -5
+        },
+        {
+          "bridge": "module_printk"
+        },
+        {
+          "bridge": "usb_ep_set_halt",
+          "return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 1
+      },
+      "halt_bridge_calls": 1,
+      "queue_attempts": 0,
+      "internal_ep0_flag_after": 1,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 7,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "unmatched_setup_no_queue",
+      "events": [
+        {
+          "bridge": "usb_ep_set_halt",
+          "return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 1
+      },
+      "halt_bridge_calls": 1,
+      "queue_attempts": 0,
+      "internal_ep0_flag_after": 1,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 7,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "later_handler_zero_after_SEN_queue",
+      "events": [
+        {
+          "bridge": "usb_gadgetcore_stop_other_driver",
+          "return": 0
+        },
+        {
+          "bridge": "usb_event_add_queue",
+          "command": 0,
+          "return": 0,
+          "real_queue_admission_proven": false
+        },
+        {
+          "own_callback_fixture_return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 1
+      },
+      "halt_bridge_calls": 0,
+      "queue_attempts": 1,
+      "internal_ep0_flag_after": 0,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 9,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "later_handler_zero_after_failed_queue",
+      "events": [
+        {
+          "bridge": "usb_gadgetcore_stop_other_driver",
+          "return": 0
+        },
+        {
+          "bridge": "usb_event_add_queue",
+          "command": 0,
+          "return": -12,
+          "real_queue_admission_proven": false
+        },
+        {
+          "own_callback_fixture_return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 1
+      },
+      "halt_bridge_calls": 0,
+      "queue_attempts": 1,
+      "internal_ep0_flag_after": 0,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 9,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "earlier_STALL_skips_SEN",
+      "events": [
+        {
+          "own_callback_fixture_return": 1
+        },
+        {
+          "bridge": "usb_ep_set_halt",
+          "return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 0
+      },
+      "halt_bridge_calls": 1,
+      "queue_attempts": 0,
+      "internal_ep0_flag_after": 1,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 0,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "earlier_zero_skips_SEN",
+      "events": [
+        {
+          "own_callback_fixture_return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 0
+      },
+      "halt_bridge_calls": 0,
+      "queue_attempts": 0,
+      "internal_ep0_flag_after": 0,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 1,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "empty_driver_list",
+      "events": [
+        {
+          "bridge": "usb_ep_set_halt",
+          "return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 0
+      },
+      "halt_bridge_calls": 1,
+      "queue_attempts": 0,
+      "internal_ep0_flag_after": 1,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 0,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    },
+    {
+      "name": "missing_SEN_commands",
+      "events": [
+        {
+          "bridge": "module_printk"
+        },
+        {
+          "bridge": "usb_ep_set_halt",
+          "return": 0
+        }
+      ],
+      "entries": {
+        "kernel_vendor_arm": 1,
+        "original_SEN_callback": 1
+      },
+      "halt_bridge_calls": 1,
+      "queue_attempts": 0,
+      "internal_ep0_flag_after": 1,
+      "kernel_status_register_w19": 0,
+      "guest_write_count": 7,
+      "write_bounds_input_immutability_and_SP_frame_checked": true,
+      "kernel_thread_prologue_queue_dequeue_scheduler_IRQ_driver_stop_and_hardware_not_executed": true
+    }
+  ],
+  "case_count": 11,
+  "original_kernel_vendor_arm_entries": 11,
+  "original_module_callback_entries": 8,
+  "guest_entry_is_inside_thread_after_synthetic_argument_and_lock_setup": true,
+  "no_running_kernel_thread_registration_order_real_queue_or_physical_USB_proof": true,
+  "test_sha256": "b474df6705b143c5842b86fbd2ee331a938ffc9ac5ab2c553254f2159c9a2c69",
+  "new_host_USB_or_camera_operations": 0
+}

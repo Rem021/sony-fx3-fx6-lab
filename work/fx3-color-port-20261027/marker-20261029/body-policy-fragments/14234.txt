@@ -1,0 +1,134 @@
+00014234 stp        x29, x30, [sp, #-0x190]!
+00014238 cmp        x1, #0
+0001423c ccmp       x2, #0, #4, ne
+00014240 mov        x29, sp
+00014244 stp        x19, x20, [sp, #0x10]
+00014248 stp        x21, x22, [sp, #0x20]
+0001424c stp        x23, x24, [sp, #0x30]
+00014250 stp        x25, x26, [sp, #0x40]
+00014254 str        x27, [sp, #0x50]
+00014258 b.eq       #0x1426c
+0001425c mov        x22, x0
+00014260 ldr        x0, [x1, #0x20]
+00014264 mov        x21, x1
+00014268 cbnz       x0, #0x143b0
+0001426c mov        w19, #0x1a
+00014270 mov        w3, #0xad
+00014274 movk       w19, #3, lsl #16
+00014278 b          #0x143d4
+0001427c add        x20, x29, #0x98
+00014280 mov        x0, x20
+00014284 bl         #0x10580 ; Updater::StringHandler::StringHandler
+00014288 ldr        x0, [x19]
+0001428c bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00014290 add        x24, x0, #7
+00014294 ldr        x0, [x19]
+00014298 bl         #0xfec0 ; Updater::StringHandler::GetSize
+0001429c sub        x2, x0, #7
+000142a0 mov        x1, x24
+000142a4 mov        x0, x20
+000142a8 bl         #0x100a0 ; Updater::StringHandler::SetString
+000142ac ldrb       w24, [x19, #0x20]
+000142b0 add        x0, x29, #0xb8
+000142b4 ldr        x27, [x19]
+000142b8 ldp        x26, x25, [x19, #0x10]
+000142bc strb       w24, [x29, #0xd8]
+000142c0 stp        x26, x25, [x29, #0xc8]
+000142c4 add        x19, x29, #0x130
+000142c8 stp        x27, x20, [x29, #0xb8]
+000142cc ldp        x0, x1, [x0]
+000142d0 stp        x0, x1, [x29, #0x60]
+000142d4 add        x0, x29, #0xc8
+000142d8 ldp        x0, x1, [x0]
+000142dc stp        x0, x1, [x29, #0x70]
+000142e0 add        x1, x29, #0x60
+000142e4 ldr        x0, [x29, #0xd8]
+000142e8 str        x0, [x29, #0x80]
+000142ec mov        x0, x19
+000142f0 bl         #0x10370 ; Updater::NewFirmwareImageFile::NewFirmwareImageFile
+000142f4 stp        x27, x20, [x29, #0xe0]
+000142f8 add        x0, x29, #0x108
+000142fc add        x1, x29, #0x168
+00014300 ldp        x4, x5, [x29, #0xe0]
+00014304 stp        x26, x25, [x29, #0xf0]
+00014308 stp        x4, x5, [x0]
+0001430c add        x0, x29, #0x118
+00014310 stp        x4, x5, [x1]
+00014314 add        x1, x29, #0x178
+00014318 ldp        x2, x3, [x29, #0xf0]
+0001431c strb       w24, [x29, #0x100]
+00014320 stp        x2, x3, [x0]
+00014324 ldr        x0, [x29, #0x100]
+00014328 stp        x2, x3, [x1]
+0001432c str        x0, [x29, #0x128]
+00014330 str        x0, [x29, #0x188]
+00014334 adrp       x0, #0x31000
+00014338 ldr        x0, [x0, #0xef8]
+0001433c add        x0, x0, #0x10
+00014340 str        x0, [x29, #0x160]
+00014344 ldr        x0, [x22]
+00014348 ldr        x1, [x0, #0x30]
+0001434c mov        x0, x22
+00014350 blr        x1
+00014354 tst        w0, #0xff
+00014358 b.eq       #0x14394
+0001435c adrp       x2, #0x1b000
+00014360 adrp       x0, #0x1b000
+00014364 add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+00014368 add        x0, x0, #0xbb3 ; literal 'UdrAPI,%d,%s:%d,""UpdaterExtract Skip""\n'
+0001436c mov        w3, #0xc0
+00014370 mov        w1, #0
+00014374 bl         #0x10930 ; printf
+00014378 add        x0, x29, #0x160
+0001437c ldr        x1, [x0]
+00014380 ldr        x2, [x21, #0x20]
+00014384 ldr        x3, [x1]
+00014388 mov        x1, x23
+0001438c blr        x3
+00014390 b          #0x14420
+00014394 mov        x0, x19
+00014398 b          #0x1437c
+0001439c mov        x19, x0
+000143a0 mov        x0, x20
+000143a4 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+000143a8 mov        x0, x19
+000143ac bl         #0x107a0 ; _Unwind_Resume
+000143b0 ldr        x0, [x3]
+000143b4 mov        x23, x2
+000143b8 mov        x19, x3
+000143bc bl         #0xfec0 ; Updater::StringHandler::GetSize
+000143c0 cmp        x0, #6
+000143c4 b.hi       #0x1427c
+000143c8 mov        w19, #0x1a
+000143cc mov        w3, #0xb0
+000143d0 movk       w19, #3, lsl #16
+000143d4 adrp       x2, #0x1b000
+000143d8 adrp       x0, #0x1b000
+000143dc add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+000143e0 mov        w1, w19
+000143e4 add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+000143e8 bl         #0x10930 ; printf
+000143ec mov        x0, #0x10
+000143f0 bl         #0xfd80 ; __cxa_allocate_exception
+000143f4 str        w19, [x0, #8]
+000143f8 adrp       x1, #0x31000
+000143fc adrp       x2, #0x31000
+00014400 strb       wzr, [x0, #0xc]
+00014404 ldr        x1, [x1, #0xe30]
+00014408 ldr        x2, [x2, #0xe88]
+0001440c add        x1, x1, #0x10
+00014410 str        x1, [x0]
+00014414 adrp       x1, #0x31000
+00014418 ldr        x1, [x1, #0xfc0]
+0001441c bl         #0x10700 ; __cxa_throw
+00014420 mov        w19, w0
+00014424 mov        x0, x20
+00014428 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+0001442c ldr        x27, [sp, #0x50]
+00014430 mov        w0, w19
+00014434 ldp        x19, x20, [sp, #0x10]
+00014438 ldp        x21, x22, [sp, #0x20]
+0001443c ldp        x23, x24, [sp, #0x30]
+00014440 ldp        x25, x26, [sp, #0x40]
+00014444 ldp        x29, x30, [sp], #0x190
+00014448 ret        

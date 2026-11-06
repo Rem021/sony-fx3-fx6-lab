@@ -1,0 +1,7 @@
+{
+  "stage": "before any evidence output or device operation",
+  "incorrect_expectation": "sys_mount tail branch at0x7730 directly names libc mount",
+  "actual_PLT_symbol": "_ZN11CFileAccess5mountEPKcS1_S1_mPKv",
+  "effect": "audit stopped; inspect wrapper and selection_mount before rerun",
+  "camera_operations": 0
+}

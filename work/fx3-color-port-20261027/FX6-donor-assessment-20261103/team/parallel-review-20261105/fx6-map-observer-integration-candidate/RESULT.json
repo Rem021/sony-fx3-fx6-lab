@@ -1,0 +1,78 @@
+{
+  "schema": "fx6-map-observer-integration-result-v3",
+  "task": "task_bb14b0c979a1",
+  "dispatch": "ctx_4010383815e7",
+  "status": "OFFLINE_INTEGRATION_CANDIDATE_BUILT_NOT_RUN",
+  "target_run": false,
+  "vm": false,
+  "deployed": false,
+  "cpio_installed": false,
+  "target_elf": {
+    "path": "work/fx3-map-snapshot-aarch64",
+    "sha256": "9df5a10a2d22f49e5a2313bcbb0f829cefc26c51cb7e629e5f259a4808c9fed2",
+    "bytes": 122264,
+    "machine": "AArch64",
+    "static": true,
+    "pt_interp": false,
+    "pt_dynamic": false
+  },
+  "new_cpio": {
+    "path": "work/fx6-map-observer-grmreal46.cpio",
+    "sha256": "9d4f255b0a3995b0e056e210ae4d27c8129e2c853b35904a688b6ffe149529ae",
+    "bytes": 453306948,
+    "original_count": 1157,
+    "new_count": 1158,
+    "unchanged_members": 1156,
+    "only_expected_changes": true,
+    "actual_reparse_ok": true,
+    "tail_padding_bytes": 25746348
+  },
+  "host": {
+    "entry": "run_map_observer.py",
+    "provider": "framed_provider.py",
+    "live_adapter": "live_runner.py",
+    "default_disabled": true,
+    "new_token": "APPROVE_FX6_FRAMED_MAP_OBSERVER_20261106",
+    "strict_success": true,
+    "mapping_wait": true,
+    "full_baseline_verify": true,
+    "actual_hostrunner_e2e": true,
+    "fake_tests": 10,
+    "e2e_tests": 1
+  },
+  "config_invariance": {
+    "schema": "fx6-map-integration-config-invariance-v2",
+    "original_cpio": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal46.cpio",
+    "original_cpio_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+    "original_init_sha256": "642ce1c6c66764c1c5c5212b056cab96a29ac1f0b21c76a265f43d71fbd43913",
+    "new_cpio": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/fx6-map-observer-grmreal46.cpio",
+    "new_cpio_sha256": "9d4f255b0a3995b0e056e210ae4d27c8129e2c853b35904a688b6ffe149529ae",
+    "new_cpio_bytes": 453306948,
+    "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "dtb_sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+    "qemu_sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+    "command_sha256": "6bedb7f0a0d4077667b35b221cd1922ae9037d8782c8b2983698ba9b54776dbe",
+    "platform_unchanged": true,
+    "cpio_only_two_members_changed": true,
+    "member_count_original": 1157,
+    "member_count_new": 1158,
+    "tail_padding_bytes": 25746348,
+    "actual_reparse_ok": true
+  },
+  "tests": {
+    "host": {
+      "status": "PASS_OFFLINE_FAKE",
+      "count": 10,
+      "sha256": "764e39d9205ba3b6003d285a3451da6a3af6463c7e0df8b545c66b4c99f028aa"
+    },
+    "e2e": {
+      "status": "PASS_OFFLINE_ACTUAL_HOSTRUNNER",
+      "count": 1,
+      "sha256": "3f0ed4c7cde3be654df7d6589abe399477250e06b476f9102dd2a2257f01bad2"
+    }
+  },
+  "snapshot_manifest_self": "37fd52ce867607b3340aa76c4d4931e0bdce4fa00f07ddb79f6003c03cccb61a",
+  "parser_manifest_self": "54daf6166cffc81296ad4c60315e39c7f19f70674f1b6569574358afcabf0263",
+  "note": "offline static ELF/CPIO/provider/actual HostRunner E2E; no target ELF execution or VM; no boot/menu/two-key claim",
+  "report": "REPORT.md"
+}

@@ -1,0 +1,18 @@
+_ZN7Updater17SDDecryptorModule5IsEndEv
+000093d4 stp       x29, x30, [sp, #-0x20]!
+000093d8 mov       x29, sp
+000093dc str       x19, [sp, #0x10]
+000093e0 mov       x19, x0
+000093e4 ldr       x0, [x0, #0x48]
+000093e8 ldr       x1, [x0]
+000093ec ldr       x1, [x1, #0x30]
+000093f0 blr       x1
+000093f4 uxtb      w0, w0
+000093f8 cbnz      w0, #0x940c
+000093fc ldr       x0, [x19, #0x538]
+00009400 ldr       x1, [x19, #0x60]
+00009404 cmp       x1, x0
+00009408 cset      w0, eq
+0000940c ldr       x19, [sp, #0x10]
+00009410 ldp       x29, x30, [sp], #0x20
+00009414 ret       

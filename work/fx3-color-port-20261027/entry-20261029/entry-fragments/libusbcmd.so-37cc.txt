@@ -1,0 +1,65 @@
+000037cc stp        x29, x30, [sp, #-0x60]!
+000037d0 mov        x29, sp
+000037d4 stp        x21, x22, [sp, #0x20]
+000037d8 add        x22, x29, #0x48
+000037dc stp        x23, x24, [sp, #0x30]
+000037e0 mov        w24, #0xeb02
+000037e4 ldp        x21, x23, [x1, #0x10]
+000037e8 stp        x19, x20, [sp, #0x10]
+000037ec mov        x20, x0
+000037f0 movk       w24, #0xc018, lsl #16
+000037f4 mov        x2, x21
+000037f8 mov        x1, x22
+000037fc mov        x0, x20
+00003800 bl         #0x2c20 ; usbcmd_t::PackParamDriver
+00003804 ldr        w1, [x20, #0x94]
+00003808 mov        x3, x22
+0000380c mov        w2, w24
+00003810 mov        x0, x20
+00003814 bl         #0x2a60 ; usbcmd_t::IoctlDriver
+00003818 cmp        w0, #0x20
+0000381c mov        w19, w0
+00003820 b.eq       #0x37f4
+00003824 cbz        w0, #0x38bc
+00003828 cmp        w0, #0x3e
+0000382c mov        w22, #-9
+00003830 b.eq       #0x3844
+00003834 cmp        w0, #0x7d
+00003838 mov        w22, #-8
+0000383c mov        w0, #-6
+00003840 csel       w22, w22, w0, eq
+00003844 mov        w4, w19
+00003848 mov        w3, #0x38c
+0000384c mov        w2, #0xa
+00003850 mov        w1, #1
+00003854 mov        w0, #0x36
+00003858 stp        wzr, wzr, [x21, #8]
+0000385c mov        w19, w22
+00003860 bl         #0x2aa0 ; usbcmd_trace_out
+00003864 mov        x0, x20
+00003868 mov        w1, #2
+0000386c add        x22, x20, #0x58
+00003870 bl         #0x28e0 ; usbcmd_t::ClearRequest
+00003874 mov        x1, x22
+00003878 mov        w0, #1
+0000387c bl         #0x2a80 ; pthread_setcancelstate
+00003880 mov        w4, w19
+00003884 mov        x2, x21
+00003888 mov        x0, x20
+0000388c mov        x3, #0x20
+00003890 mov        w1, #3
+00003894 blr        x23
+00003898 mov        x1, x22
+0000389c mov        w0, #0
+000038a0 bl         #0x2a80 ; pthread_setcancelstate
+000038a4 mov        w0, #0
+000038a8 ldp        x19, x20, [sp, #0x10]
+000038ac ldp        x21, x22, [sp, #0x20]
+000038b0 ldp        x23, x24, [sp, #0x30]
+000038b4 ldp        x29, x30, [sp], #0x60
+000038b8 ret        
+000038bc ldr        w0, [x29, #0x54]
+000038c0 str        w0, [x21, #0xc]
+000038c4 ldr        w0, [x29, #0x50]
+000038c8 str        w0, [x21, #8]
+000038cc b          #0x3864

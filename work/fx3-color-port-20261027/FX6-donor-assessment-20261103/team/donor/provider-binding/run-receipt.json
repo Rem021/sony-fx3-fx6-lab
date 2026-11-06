@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "original_and_prior_pins_checked": 13,
+  "source_sha256": {
+    "analyze.py": "b74fbf9a8821e90419a7f93d6ea215cf962a8929615692fa0b1d2d020a93befe",
+    "replay.py": "7312f5f7937cb0cc6d93cf4e37c401ec415629fb49bb0fa721a73bd34edda7e9",
+    "adapter.py": "7fe747d3aff8c61d4d4dc2ca327ad148c268ae77f97dacbb940bd50ff817868e",
+    "verify.py": "c27e033e74d55cb0028d2ded395a423ef4e981e55f7793e64d0459bd3e913f3f",
+    "prepare.sh": "de8046eac59a166e36f2ae7ff8b83fac7f0212a6fb3833520512e9073dc03ade"
+  },
+  "output_sha256": {
+    "binding-evidence.json": "228f01a8c4abb892cce69ef18428bda96940992bb8ba2eb1acb1efaaa52ca68b",
+    "provider-replay.json": "c086ccdf2d4f7eb214d5756f1acda571d08a2358ca4800826dcc79add20f010a",
+    "adapter-receipt.json": "125b2c407436dfbceebd879f41f9ffc2fc46b0de40299c1af5b30ae8e639e377"
+  },
+  "cases": [
+    {
+      "model": "FX6_6.01",
+      "provider_status": 4,
+      "provider_word": "0x30",
+      "stop": "0x2a74e4",
+      "builder_count": 70,
+      "mode_instructions": 31,
+      "dispatch_instructions": 219
+    },
+    {
+      "model": "FX6_6.01",
+      "provider_status": 4,
+      "provider_word": "0x31",
+      "stop": "0x2a74e4",
+      "builder_count": 84,
+      "mode_instructions": 31,
+      "dispatch_instructions": 79
+    },
+    {
+      "model": "FX6_6.01",
+      "provider_status": 0,
+      "provider_word": "0x30",
+      "stop": "0x2a65f8",
+      "builder_count": null,
+      "mode_instructions": 18,
+      "dispatch_instructions": 21
+    },
+    {
+      "model": "FX3_7.02",
+      "provider_status": 4,
+      "provider_word": "0x30",
+      "stop": "0x2c4300",
+      "builder_count": 70,
+      "mode_instructions": 31,
+      "dispatch_instructions": 219
+    },
+    {
+      "model": "FX3_7.02",
+      "provider_status": 4,
+      "provider_word": "0x31",
+      "stop": "0x2c4300",
+      "builder_count": 84,
+      "mode_instructions": 31,
+      "dispatch_instructions": 79
+    },
+    {
+      "model": "FX3_7.02",
+      "provider_status": 0,
+      "provider_word": "0x30",
+      "stop": "0x2c3420",
+      "builder_count": null,
+      "mode_instructions": 18,
+      "dispatch_instructions": 21
+    }
+  ],
+  "negative_adapter_cases": 5,
+  "evidence_scope": "static original byte decode and isolated CPU replay with explicit synthetic provider; no natural selector, kernel provider implementation, DMA, VM or camera proof"
+}

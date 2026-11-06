@@ -1,0 +1,10 @@
+{
+  "reason": "Native compilation and export inspection succeeded; receipt generation failed because installed Apple SDK header contains a non-UTF8 copyright byte",
+  "source_hashes": {
+    "owner_trial.h": "7caa2ae5ec8d4759374bca0e916389de77e2688f4ec09abb41abd94c35012943",
+    "owner_core.c": "2e5715c305ac6bdcb8a9ef7411b63094c0890910ade9d3995d62d30218b6bef1",
+    "owner_iokit.c": "47cadfc4db97852602bd1de6e6565476aa4ba2ca8feacbc7d01c4611037f35e7"
+  },
+  "fix": "Decode header text with explicit Latin1 fallback while preserving raw byte SHA",
+  "native_candidate_loaded": false
+}

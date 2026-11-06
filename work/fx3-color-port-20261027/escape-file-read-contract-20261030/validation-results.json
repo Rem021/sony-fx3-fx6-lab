@@ -1,0 +1,265 @@
+{
+  "status": "PASS_SCOPED_FILE_READ_AND_RETURN_CONTRACT",
+  "instruction_checks": [
+    {
+      "VA": "0xfe059e30",
+      "bytes": "ec000094",
+      "instruction": "bl #0xfe05a1e0"
+    },
+    {
+      "VA": "0xfe059e34",
+      "bytes": "f403002a",
+      "instruction": "mov w20, w0"
+    },
+    {
+      "VA": "0xfe059e40",
+      "bytes": "e103142a",
+      "instruction": "mov w1, w20"
+    },
+    {
+      "VA": "0xfe059e44",
+      "bytes": "0c020094",
+      "instruction": "bl #0xfe05a674"
+    },
+    {
+      "VA": "0xfe059e48",
+      "bytes": "f503002a",
+      "instruction": "mov w21, w0"
+    },
+    {
+      "VA": "0xfe059e4c",
+      "bytes": "c001f836",
+      "instruction": "tbz w0, #0x1f, #0xfe059e84"
+    },
+    {
+      "VA": "0xfe059e88",
+      "bytes": "e003142a",
+      "instruction": "mov w0, w20"
+    },
+    {
+      "VA": "0xfe059e80",
+      "bytes": "f4328012",
+      "instruction": "mov w20, #-0x198"
+    },
+    {
+      "VA": "0xfe052298",
+      "bytes": "e21e0094",
+      "instruction": "bl #0xfe059e20"
+    },
+    {
+      "VA": "0xfe05229c",
+      "bytes": "047c4093",
+      "instruction": "sxtw x4, w0"
+    },
+    {
+      "VA": "0xfe0522a0",
+      "bytes": "e0071f32",
+      "instruction": "mov w0, #6"
+    },
+    {
+      "VA": "0xfe0522b0",
+      "bytes": "a00c0094",
+      "instruction": "bl #0xfe055530"
+    },
+    {
+      "VA": "0xfe0522b8",
+      "bytes": "7b070011",
+      "instruction": "add w27, w27, #1"
+    },
+    {
+      "VA": "0xfe0522bc",
+      "bytes": "9f021b6b",
+      "instruction": "cmp w20, w27"
+    },
+    {
+      "VA": "0xfe0522d4",
+      "bytes": "e0031f2a",
+      "instruction": "mov w0, wzr"
+    },
+    {
+      "VA": "0xfe05a65c",
+      "bytes": "886a4039",
+      "instruction": "ldrb w8, [x20, #0x1a]"
+    },
+    {
+      "VA": "0xfe05a664",
+      "bytes": "951e40b9",
+      "instruction": "ldr w21, [x20, #0x1c]"
+    },
+    {
+      "VA": "0xfe05a66c",
+      "bytes": "e8560329",
+      "instruction": "stp w8, w21, [x23, #0x18]"
+    },
+    {
+      "VA": "0xfe04e4d0",
+      "bytes": "a1290094",
+      "instruction": "bl #0xfe058b54"
+    },
+    {
+      "VA": "0xfe04e51c",
+      "bytes": "8e290094",
+      "instruction": "bl #0xfe058b54"
+    },
+    {
+      "VA": "0xfe04e55c",
+      "bytes": "e20318aa",
+      "instruction": "mov x2, x24"
+    },
+    {
+      "VA": "0xfe04e560",
+      "bytes": "b9f3ff97",
+      "instruction": "bl #0xfe04b444"
+    }
+  ],
+  "direct_call_checks": [
+    {
+      "function": "wrapper",
+      "original_direct_calls": [
+        {
+          "VA": "0xfe059e30",
+          "target": "#0xfe05a1e0"
+        },
+        {
+          "VA": "0xfe059e44",
+          "target": "#0xfe05a674"
+        },
+        {
+          "VA": "0xfe059e60",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe059e7c",
+          "target": "#0xfe055530"
+        }
+      ],
+      "no_direct_memset_call": true,
+      "scope": "Direct call targets only; not proof of absence of earlier whole-boot memory initialization."
+    },
+    {
+      "function": "file_read",
+      "original_direct_calls": [
+        {
+          "VA": "0xfe05a7cc",
+          "target": "#0xfe04e424"
+        },
+        {
+          "VA": "0xfe05a804",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe05a844",
+          "target": "#0xfe055530"
+        }
+      ],
+      "no_direct_memset_call": true,
+      "scope": "Direct call targets only; not proof of absence of earlier whole-boot memory initialization."
+    },
+    {
+      "function": "cluster_read",
+      "original_direct_calls": [
+        {
+          "VA": "0xfe04e47c",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe04e494",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe04e4d0",
+          "target": "#0xfe058b54"
+        },
+        {
+          "VA": "0xfe04e51c",
+          "target": "#0xfe058b54"
+        },
+        {
+          "VA": "0xfe04e544",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe04e560",
+          "target": "#0xfe04b444"
+        }
+      ],
+      "no_direct_memset_call": true,
+      "scope": "Direct call targets only; not proof of absence of earlier whole-boot memory initialization."
+    },
+    {
+      "function": "escape_loader",
+      "original_direct_calls": [
+        {
+          "VA": "0xfe052114",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe052164",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe052178",
+          "target": "#0xfe05b2b8"
+        },
+        {
+          "VA": "0xfe0521ec",
+          "target": "#0xfe059e94"
+        },
+        {
+          "VA": "0xfe052208",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe05221c",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe052254",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe052274",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe052298",
+          "target": "#0xfe059e20"
+        },
+        {
+          "VA": "0xfe0522b0",
+          "target": "#0xfe055530"
+        },
+        {
+          "VA": "0xfe0522f4",
+          "target": "#0xfe055530"
+        }
+      ],
+      "no_direct_memset_call": true,
+      "scope": "Direct call targets only; not proof of absence of earlier whole-boot memory initialization."
+    }
+  ],
+  "original_root_lookup_fragments": 8,
+  "original_ctype_initializer_executed": true,
+  "ctype_helper_substitutions": 0,
+  "p8_files_found": 4,
+  "p8_root_names_returning_minus408": 4,
+  "nested_sabin_path_not_guest_tested": true,
+  "DmmCfg_full_sector_read_request": {
+    "start_sector": 224,
+    "sectors": 84,
+    "bytes": 43008
+  },
+  "DmmCfg_tail_read_request": {
+    "sector": 308,
+    "sectors": 1
+  },
+  "original_tail_copy_bytes": 312,
+  "original_file_read_or_device_block_io_executed": false,
+  "slot_tail_bytes_unchanged_in_independent_copy_fragment": 59080,
+  "static_short_read_equality_check_present": false,
+  "static_selected_file_error_aggregation_present": false,
+  "any_prior_whole_boot_zeroing_proved": false,
+  "actual_source_RAM_complete": false,
+  "complete_FX3_target_boot_RAW_full_ISP_or_flashable_modified_package_proved": false,
+  "goal_complete": false
+}

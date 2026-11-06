@@ -1,0 +1,27 @@
+{
+  "schema": "camera-free-host-login-audit/1",
+  "grant_id": "fx3-host-audit-20261028-01",
+  "purpose": "self-only user versus sudo/root login/audit context; no USB library, no protected volume access or privacy changes",
+  "files": [
+    {
+      "path": "host_login_probe.c",
+      "sha256": "d361567c1398eec5eb02f1c40fb5fe841e7bc101be43d7e0955e4644a99741bd"
+    },
+    {
+      "path": "artifacts/host-login-probe",
+      "sha256": "86ee5e828e78b1ecf41e040567c86f57449fa9e17a055e92354bfd23f3fd03c5"
+    },
+    {
+      "path": "HostLoginAudit.command",
+      "sha256": "d9a104993ca454b7017b25ac7fd7dd0715a2825c7227b787d594139f24cdb131"
+    },
+    {
+      "path": "root-bootstrap-example.sh",
+      "sha256": "15f9a2ef3b4d6837fb2a255463c708c2cce1f5b095e6885edc20fbac8bb00516"
+    },
+    {
+      "path": "prepare_launch.py",
+      "sha256": "17c6376d0487013f3530dc687f314aaa1a160dac708b54f969e0b938a5075446"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+正式规格：仅协调员正式派发本文件后，授权以下唯一一次真实VM/Start；未派发前不得执行。
+FX3｜r31启动观测候选：完整真实八步验证
+根=/Volumes/KAFU2T/AI/Projects/Mac；TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery；CAND=DEL/r30-startup-observation-candidate。
+目标仍是固定FX3平台原生完整八步菜单及资源回收。r26b 1accepted/0pin/0confirm失败保留。r28离线10项定向检查与实际模型单组18.2588s仅fixture；不视为真实固件、稳定性或8步成功。当前部署r10。
+正式派发后只授权一次VM/一次Start：首个合格待机≤180秒，总≤8分钟，8accepted/10显式attempt/2归因未入队恢复且每步最多一次。只使用本task独占新DEL/r31-vm-本task短id目录和自有唯一browser session。不得改候选源码、平台、输入门、20秒alarm、部署或历史。无FX6、相机/USB/SD/刷写或另派操作代理。
+固定平台4×cortex-a35/5120MiB/MTTCG/noicount；kernel da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c、DTB 5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b、N64 CPIO aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9、QEMU bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d不变。先核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B、runner/QEMU互斥、outputs/fx3-vm/.run.lock与menu-repair-01/runtime/.run.lock空闲，不抢占或删锁。
+先读CAND最终README/REPORT/运行准备说明、prepare_run与wrapper，核本正式spec附列pins、最终source freeze和实际运行器、页面、reader、monitor、startup_observation、operator/return-tools依赖import路径。执行CAND prepare_run/preflight，仅写新task目录，FX3_NAV_RUN_DIR始终指它。既有固定r21/r24/r25/r26/r27输入只读前后hash保持，必要依赖采用实际preflight，不重跑全部离线矩阵。不得写旧runtime自然输出。
+runner沿用已验证flags：run_trial_r24_review_snapshot.py --port 0 --max-minutes 8 --max-steps 32 --snapshot-tail --gate-publish-interval 64 --pre-input-snapshot-step 2。32仅既有ready机制；计划仍8accepted。实际argv与N64/QEMU路径留证。
+Start前完成实际Node工具预载：CAND/return-tools/short_tool.mjs的bind(本task绝对runDir)函数存globalThis，独立下一工具确认函数存在；展示一张明确标历史样本的已有PNG以核工具可用，不能当当前待机。源适配必须绑定CAND新operate/core freeze，不得误用r26旧适配。不用模块内Map跨调用持久性假设。初始化时准备正确FX3_NAV_RUN_DIR原cleanup调用和持久runner会话。
+每个明确动作一次Node调用，使用预载函数、简短摘要与本次实际PNG；若通过functions转发初始yield10000ms/max_output1000，避免1000ms提前yield引入额外往返；真yield时只能wait同cell，绝不重发。原120s工具等待上限仅供失败cleanup，不扩20秒alarm。不得解析截断屏幕stdout、读取旧current-return兜底或自动补回包。Node绑定/展示/回包未知则下一明确调用原cleanup/End，不重发原动作。完整当前child原文及所有UUID目录保留。
+Start后实际查看当前新合格待机图，再独立standby_review。每步独立click只发送一次原PAGE按键。r28仅首次未固定截图按原arm+5000ms最早取样，后续observe和未入队恢复不重复该等待；这是取图安排，不是语义完成。必须实际查看完整browser observation，若合法过渡仍未完成，只能在原剩余20秒内另一次明确observe（最多3含首图），否则End。不得自动按SHA/稳定帧判通过或延长计时。
+完整目标图实际看过后，另一次明确pin返回新精确固定PNG；必须重新实际看固定PNG，再独立confirm。固定图语义不符/不确定、unknown、到期、身份变化或确认失败立即reject/End，不repin、不借恢复重发。原20秒从arm覆盖native、取图、工具、模型审阅至confirm/End；arm到confirm/End期间不发进度、诊断、协调消息或执行无关工具。
+固定8步：1 MENU完整Setup>Area/Date且橙色Area/Date/Time Setting；2 UP到Language English；3 C4语言帮助；4 MENU返回Language；5 OK查看English列表不改语言；6 MENU取消列表；7 MENU关闭到待机；8 MENU重开完整菜单。每步固定图实际语义+独立confirm才通过；8accepted不是8通过。
+原PAGE明确not_posted或精确requestID拒绝未入队且回qualified_recovery_observation时，仅沿冻结链实际看取消前图→独立recovery_cancel→实际看取消后新图→独立recovery_review→新nonce独立planned click。每步最多1、总≤2；unknown/无归因/已接收不得恢复重发。恢复图无下一键许可或postkey确认。
+完成或任一失败立即原End；API16原字节000b00b4fd7bbba9fd030091f35301a9与guest ACK/20秒预算、QMP quit ACK、exit/reap、runner/QEMU/browser PID absent、双锁free、端口closed、网页finalACK逐项留证。全部HTTP、native down/up/done、PNG、明确图像判断、所有run/launch/document/timeOrigin/step/attempt/nonce/snapshot/confirm身份、拒绝导出原字节（含零）、原argv/import及前后hash保存。每步截图browser区间、Node/工具时刻与实际20秒事件保存；模型收图/思考/调度无法分离的时间仍unknown。v5tail非事务，不当终态。
+REPORT/RESULT/SHA：完整8步与资源清理均通过方可passed，否则failed/partial并准确注明步骤。没有第二次Start授权。禁止部署；不泛化60分钟/4096键/全部菜单/录像/实机/FX6。不得写协调ledger。
+
+本轮新增观测验收：当前候选来自r30，原r28启动失败保持。除既有完整菜单与回收证据外，保留原生startup-observation.json及receipt中的写入/错误状态。验证其schema、容量上限、header读取计数/请求id/拒绝原因、真实serial字节offset、首次marker收到时刻、原ready谓词真/假/not_evaluated及startup/cleanup边界。guest时钟、host收到时间和browserloaded分别表述；回放fixture时间不能当真实时间。失败也必须保存所有观测，记录未写出/截断/缺失，不能补造。若End后首帧出现，绝不回填startup成功。观测文件错误本身不改变原cleanup或原健康语义，但本轮诊断交付不完整应单独列未通过。
+已复核r30的43项离线测试、结构等价、实际prepare/preflight及导入绑定；协调端独立核验100项交付、41项生产源、36项core、94项消费原件。94项按真实采样时间分组，不能声称全在任务开始前采样。底层backlog未修复，候选只新增宿主观测。运行前后核对以下已验摘要：
+SHA256SUMS=e04a86e60d0b311d57df50a6060064f6f57e02a33d3c04c015922e6a37749a49
+REPORT.md=8a567f6e806cfaadd11f28cc76e99344a02c3b7b3268ef01a1feb3392bbe08d4
+RUN-TEMPLATE.md=cec2014584f92db22070e6a063f67abedd957edabf5264829ae0e4e05efaad56
+README.md=c473d77e0498c8e8ac15e9432a9c24d6531ca0fa1fd3f8bddb822eb68af96365
+SOURCE-FREEZE.json=10265a99fd1a74dc23d85477c82f078485863b92ed664e12132e0a9cf41ce717
+CORE-SOURCE-FREEZE.json=3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9
+当前FX6执行受阻，FX3本轮仅占用独占诊断窗口；不得与其他虚拟机抢占双锁。如发现共享资源占用，先报状态，不停止他人进程。成功或失败均不自动第二Start，不部署。

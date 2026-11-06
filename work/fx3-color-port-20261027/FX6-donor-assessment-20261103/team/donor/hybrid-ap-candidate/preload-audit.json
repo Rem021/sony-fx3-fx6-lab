@@ -1,0 +1,277 @@
+{
+  "status": "STATIC_HELPER_AND_FX6_AP_GUARD_AUDIT",
+  "candidate_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "contract_receipt_sha256": "88998c30feb50977b453f4416f2b28b433513eec9d8a9240c9c6d2fa918d914a",
+  "preloads": [
+    {
+      "index": 0,
+      "guest": "/simulation/fx3-skd-hw-unavailable-v1.so",
+      "guest_sha256": "9f714d6123f1b220101ec7c240e33dd2b02a94c6d6011f77891a28e452367084",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-skd-hw-unavailable-v1.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-skd-hw-unavailable-v1.c",
+      "source_sha256": "2d0a30d5a1e56ca3cd1956c7c24af51d07ffd660832e635ff8d9ffb2a03669e8",
+      "source_lines": "5-14",
+      "static_binding_risk": "functional mmap ENODEV exact /dev/mem site; other calls delegate",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 1,
+      "guest": "/simulation/fx3-capid-v1.so",
+      "guest_sha256": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.c",
+      "source_sha256": "8d65d6907c38e0f6767f7127e74de29e703e927aa0dc0be08deb9081d36bb7e7",
+      "source_lines": "40-55,604-705",
+      "static_binding_risk": "functional IPC/virtual CAPID; missing native OSAL exits 126; unknown request may fail",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 2,
+      "guest": "/simulation/fx3-osd-headless-v5.so",
+      "guest_sha256": "816bbf9019ff422c2e24ca5a601a41dc144fa82e7baf39a563d638a55a841dbb",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-osd-headless-v7-observe102.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-osd-headless-v7-observe102.c",
+      "source_sha256": "24234cb7a54c37e93f2b5d63e1bd7faba7b7cf225f60e62e1233f3032469dad2",
+      "source_lines": "20,38,69-85",
+      "static_binding_risk": "software ring/OSD owner; environment and queue gates; no AP text patch found",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 3,
+      "guest": "/simulation/fx3-osd-lifetime-v2.so",
+      "guest_sha256": "267629249407e7d3f319647330d45a0db73c5be0fae3b6fa302594b044f8f468",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/fx3-osd-lifetime-v3.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/fx3-osd-lifetime-v3.c",
+      "source_sha256": "6719d72da84b37c73936d5a2dcaede956c9eb93ea2eaf00df4d4e446f4ba8453",
+      "source_lines": "19-31",
+      "static_binding_risk": "OSAL lifetime observer; missing native next returns -1021; no AP text patch found",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 4,
+      "guest": "/simulation/fx3-preset-context-v2-screen.so",
+      "guest_sha256": "eb55680196806fb86958d632c6aed939eae91aa1ef928690a4a7d21d6a76c170",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-preset-context-v6-save102.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-preset-context-v6-save102.c",
+      "source_sha256": "32bb3b5ae43ddab667c655941784daf028f26ce4c9ce6cca7e91268c4bb72663",
+      "source_lines": "43-47",
+      "static_binding_risk": "AP 48-word preflight before AP text writes; FX6 mismatch point 0",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 5,
+      "guest": "/simulation/fx3-timecode-capture-v1.so",
+      "guest_sha256": "ec31fbc7197235bfad20795f2980ab78a002f1761a5b8c94da0b7e0b4636bd94",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-timecode-capture-v1.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-timecode-capture-v1.c",
+      "source_sha256": "d9b78e20ac89f4a2d81d63195a12241abfbd58f95b8fd18cbf68d383e9c2da22",
+      "source_lines": "1-2",
+      "static_binding_risk": "OSAL send observer; no AP text patch found",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 6,
+      "guest": "/simulation/fx3-hdmi-registration-v1.so",
+      "guest_sha256": "756a79fe1ed104208287b31ec99ad9282723b479ff4e8b0e5cfaaecaac9e1987",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-hdmi-registration-v3.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-hdmi-registration-v3.c",
+      "source_sha256": "4a94ce7016e11df90128bf709e4b90453cad8e34cd7ceca166c9c0fd456a0c2d",
+      "source_lines": "35-55,68-96",
+      "static_binding_risk": "HDMI software registration; missing native functions exit 126; conditional reply",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 7,
+      "guest": "/simulation/fx3-gpe-observe-v7.so",
+      "guest_sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-observe-v26-perf.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-observe-v26-perf.c",
+      "source_sha256": "06f6d2968f55b2579b950df2a4954f3976fa9f624a5c6a987e27b253b475e1f9",
+      "source_lines": "42-70,302-323,400-421",
+      "static_binding_risk": "AP init patch requires RVA 0x16efb90 and 16-byte prefix; libgpe/libObj patches have own guards; native thread gate may exit 126",
+      "source_to_binary_rebuild_proven": true
+    },
+    {
+      "index": 8,
+      "guest": "/simulation/signal-observe-v2.so",
+      "guest_sha256": "4e4d9b6a87354c7308c5f8a18b08d9f02c354e3cc6a1e9388d4fb8a12dc11695",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/signal-observe-v2.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/signal-observe-v2.c",
+      "source_sha256": "bdd3e88fb17bd63621e0102d86544a1ac3d7c79f0362c049236cc45bd2d0259c",
+      "source_lines": "11-19",
+      "static_binding_risk": "signal/abort observer; native lookup failure exits 126",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 9,
+      "guest": "/simulation/ioctl-trace.so",
+      "guest_sha256": "f2799333d67b4b118634e273f50f7d48106a228c1c40132075d923f040ca0b74",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v12.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v12.c",
+      "source_sha256": "ccf1f7234bbe169aa00516560bc477e0877514f12a6552b6b615b9100f1b2fb6",
+      "source_lines": "140-145,230-235",
+      "static_binding_risk": "ioctl/mmap/OSAL trace; unresolved native ioctl or mmap exits 126",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 10,
+      "guest": "/simulation/fx3-icrypt-observe-v1.so",
+      "guest_sha256": "2a62c7977f5b16825d01421598d58ec611b3e3c1a0d091ef75ac35944638b3ff",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-icrypt-observe-v1.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-icrypt-observe-v1.c",
+      "source_sha256": "7c182774fd4ecaac152f1e7165321877e09b3346c346381f2d26bfa5e894a399",
+      "source_lines": "5-19",
+      "static_binding_risk": "ICrypt and dlopen observer; missing native lookup exits 126",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 11,
+      "guest": "/simulation/fx3-timer-observe-v1.so",
+      "guest_sha256": "3b828ba31352492ab4bd4b76857ece4b30cef5241bb8ed0223fb75f9b7153b1b",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-timer-observe-v3.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-timer-observe-v3.c",
+      "source_sha256": "1b3135edb19e8d7577d3b0a3f361ccb807f90fa67f054045bfe305dbaa0cd85d",
+      "source_lines": "47-66",
+      "static_binding_risk": "AP and libObj text patch only after four 16-byte prefixes; FX6 AP first prefix mismatch",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 12,
+      "guest": "/simulation/fx3-ui-gate-v1.so",
+      "guest_sha256": "54eeed923a6412cd2c6743f6e8c968d1ede71b92aa79aca4575868ebccc4a9ec",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ui-gate-v11.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ui-gate-v11.c",
+      "source_sha256": "bb6650761764f2990650243b9e81ef7f4434c165faef8701afa1033cb961261c",
+      "source_lines": "103-114",
+      "static_binding_risk": "AP 60-word preflight before AP text writes; FX6 mismatch point 0",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 13,
+      "guest": "/usr/lib/libInfraCrypt.so",
+      "guest_sha256": "d3140522c90c0d1e5d75dca06f0f18f58b628d8f8dd6b29b808aaf205cfd842b",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libInfraCrypt.so",
+      "source": null,
+      "source_sha256": null,
+      "source_lines": "n/a",
+      "static_binding_risk": "original Sony library preloaded; no helper source, AP behavior not proven",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 14,
+      "guest": "/simulation/fx3-backup-return-v1.so",
+      "guest_sha256": "68e13aafa30376e96804e3d2e73d3e760f466a96090ae17055ecab129561f8e9",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-return-v5-save102.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-return-v5-save102.c",
+      "source_sha256": "d50fe6f67a4346cc51ab8bb1fdbc22da19ad6a996bc56d08865df4669406d7d5",
+      "source_lines": "4-9",
+      "static_binding_risk": "Backup wrappers delegate native; missing next may trap; no AP text patch found",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 15,
+      "guest": "/simulation/fx3-rm-empty-provider-v3-setup.so",
+      "guest_sha256": "6acb0e52e610cb0d13721f38fcf1c7c27b0e5a48e687d7a4feda5fde9f9bcd14",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-rm-empty-provider-v8-long-use.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-rm-empty-provider-v8-long-use.c",
+      "source_sha256": "ebe58c4f01fd53d265fac597a6bcde7f3e12df922b69035e11dc9a3d40ff9160",
+      "source_lines": "24-30",
+      "static_binding_risk": "functional synthetic RM queue provider on MediaDetect dlopen; native queue/ABI gates; no AP text patch found",
+      "source_to_binary_rebuild_proven": false
+    },
+    {
+      "index": 16,
+      "guest": "/simulation/fx3-media-observe-v3-uipc.so",
+      "guest_sha256": "179c74c396af95e920da7549e4ce4f8c6f9cb1bcc5ea8edf6800ff5040abeb44",
+      "matching_local_binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v4-near-gap.so",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v4-near-gap.c",
+      "source_sha256": "9a0f649bce77ea12514f893b5d031eb0ac324422c5cfe1d9bf1c42c9018dc2e1",
+      "source_lines": "110-130",
+      "static_binding_risk": "AP parameter getter code 10x20-byte guard before sampling, no AP text write; D/M text patches have word preflight",
+      "source_to_binary_rebuild_proven": false
+    }
+  ],
+  "preload_count": 17,
+  "ap_guard_original_byte_checks": [
+    {
+      "name": "timer_first_AP_prefix",
+      "VA": "0x176fb4c",
+      "file_offset": "0x176fb4c",
+      "expected": "fd7bbaa9fd030091f51300f9f50300aa",
+      "FX6_actual": "f35301a9f30300aaf55b02a9031cf697",
+      "equal": false
+    },
+    {
+      "name": "media_first_getter",
+      "VA": "0x293c010",
+      "file_offset": "0x292c010",
+      "expected": "00c7029000e014910004449100f02891c0035fd6",
+      "FX6_actual": "0500000002000000020000000900000001000000",
+      "equal": false
+    },
+    {
+      "name": "gpe_AP_init",
+      "FX3_expected_RVA": "0x16efb90",
+      "FX6_export_RVA": "0xc0b044",
+      "FX6_export_file_offset": "0xc0b044",
+      "entry_RVA_equal": false,
+      "text_write_before_guard": false
+    }
+  ],
+  "prior_pinned_guard_reuse": [
+    {
+      "name": "preset48",
+      "source_sha256": "32bb3b5ae43ddab667c655941784daf028f26ce4c9ce6cca7e91268c4bb72663",
+      "count": 48,
+      "matches": {
+        "fx3": 48,
+        "fx6": 0
+      },
+      "first_fx6_mismatch": {
+        "index": 0,
+        "va": "0x2dca610",
+        "expected": "0xa9bb7bfd",
+        "fx3": {
+          "file_offset": "0x2dca610",
+          "actual": "0xa9bb7bfd",
+          "match": true
+        },
+        "fx6": {
+          "file_offset": "0x2dba610",
+          "actual": "0x255",
+          "match": false
+        }
+      }
+    },
+    {
+      "name": "ui60",
+      "source_sha256": "bb6650761764f2990650243b9e81ef7f4434c165faef8701afa1033cb961261c",
+      "count": 60,
+      "matches": {
+        "fx3": 60,
+        "fx6": 2
+      },
+      "first_fx6_mismatch": {
+        "index": 0,
+        "va": "0x16f2220",
+        "expected": "0xd10cc3ff",
+        "fx3": {
+          "file_offset": "0x16f2220",
+          "actual": "0xd10cc3ff",
+          "match": true
+        },
+        "fx6": {
+          "file_offset": "0x16f2220",
+          "actual": "0xf9400bf3",
+          "match": false
+        }
+      }
+    }
+  ],
+  "limits": [
+    "source to binary rebuild not proven for 16 of 17 entries",
+    "source scan cannot prove all possible computed writes absent",
+    "functional IPC/OSD/RM behavior with FX6 AP unobserved",
+    "no guest or device execution this turn"
+  ]
+}

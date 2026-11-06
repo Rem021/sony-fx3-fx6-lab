@@ -1,0 +1,17 @@
+# 唯一已授权运行：原断言重现，断点未设置
+
+运行目录 [`runs/ap-ro-f58ad0fb/`](runs/ap-ro-f58ad0fb/) 保存原始命令、PID、串口、stdout/stderr、源快照、API16 字节和 [`receipt.json`](runs/ap-ro-f58ad0fb/receipt.json)。当时 runner SHA `3ab71a99353a683952b1ed90aa90f0de669fec9332a635768bc1fc2252b8980a`、probe SHA `6f05af0aa9b0d99fd7e46deaabdad6498a5804e3e848850492292fb657dbce73`，均有独立拷贝在 run 内；此后**只在新目录源码**修正映射入口，没有覆盖这次 run。串口 SHA `19117b7c967fef4220177380beea201f7e3d465a46cecd19761b4d4b37b93688`，回执 SHA `86a61ae96f6ceac95a11267f6445821392deb8cf97b29b18f53437fdcae4f9d4`。
+
+28.879747 秒停止，`stop=first_health_fault`，原 `infra_wrapper_bb_procam_chaplin_base.cpp:1075` 断言出现于串口字节 1884262；目标 10B 请求在 1884126，仍为 `0d202d030a0001800000`。该轮解析器要求迟到的 `FX3_AP_IM_PROCESS` 完整双镜像 maps；断言前串口无此标记，因此 `probe_stage=null`、**没有连 GDB、没有插入任何 Z1、没有读取 CAPID 模型或 AP w0**。本轮只重现首断言，不能据此填 `-1021` 或证明队列/owner/初始化状态。输入 SHA 未变、QEMU PID 60708 `exit=0` 且已回收，owner PID 60705 不在，双锁 free，零键。原 API16 从 16B 跳板 `5000005800021fd6bcfc4d0080ffffff` 经既有 8B 软件 observer 请求与客体确认恢复成 `000b00b4fd7bbba9fd030091f35301a9`；[`restore103-receipt.json`](runs/ap-ro-f58ad0fb/restore103-receipt.json) 保留六次原字读取与最终 ack。此正常收尾不是相机/CP 功能验收。
+
+## 原日志提供的更早映射与严格缺口
+
+固定三入口 CPIO 内 `/init` SHA `8ad0be3aec240977060e25ba1193ad80f6ef596ffe47392e3d5b5b79c0ee4a05`，本目录只读摘出 [`init-frozen.sh`](init-frozen.sh) 便于审阅。其 348–351 行通过 `pidof im.elf`、`cat /proc/uptime /proc/$im_pid/maps` 打印 `FX3_AP_EARLY_MAPS_<pid>_<轮>_BEGIN/END`；323–327 行并行 `IM_ENDMAPS` **只 grep `/usr/bin/im.elf`**，所以两种输出交错不会引入其他进程的 CAPID/AP VMA 行。当前 run 的 PID237 五轮完整早期块字节范围分别为 `[218302,248858)`、`[452351,504539)`、`[708001,763745)`、`[962475,1036707)`、`[1249565,1324732)`，起始 guest uptime 15.39、16.65、17.97、19.34、20.84 秒。每轮 CAPID 7 条同 inode 3790 的映射与其原 ELF 全部 PT_LOAD 匹配，bias 均为 `0x7f816d4000`；每轮 **AP VMA 行为零**，其加载晚于这些快照。现行独立 [`mapping-failure-audit.json`](mapping-failure-audit.json) 逐块给 byte range、PID、inode、bias、原始来源 SHA。
+
+同一固定 CAPID helper 源 VA 无关的 `profile_stack()` 在本地 C 源 447–455 行用 `/proc/self/mem` 读调用帧、对 LR 调 `dladdr`，再打印 `lr` 和相对 AP 基址；该 C 源 SHA `8d65d6907c38e0f6767f7127e74de29e703e927aa0dc0be08deb9081d36bb7e7`，与客体 `.so` 的源二进制同一性仍仅以固定 helper 版本/日志格式及既有原字审查关联，不充当运行读回。当前串口首次 11 帧 AP 栈位于 `[1525005,1526993)`，后五次 AP 栈亦得相同 `dladdr` 基址 `0x7ed2a91000`；最后目标线程 TID437 的七帧在 `[1882895,1884059)`，先于请求 `[1884126,… )`，其第 0 帧 `LR=0x7ed4b807a0, relative=0x20ef7a0`，减得同一基址。**字节先后只证明输出顺序，不保证下一次宿主轮询总能赶上**。旧 run PID239 的后期 `/proc/maps` 正例用于验证 PT_LOAD 解析器，不代替新运行 ASLR。
+
+## 两阶段 host-only 修正版，尚未运行
+
+[`two_phase_identity.py`](two_phase_identity.py) 与新版 [`readonly_probe.py`](readonly_probe.py)、[`run_once.py`](run_once.py) 已实现：第一阶段仅在同一 PID 的**完整早期** `/proc/maps` 有 `im.elf` 与 CAPID 全 PT_LOAD/inode 校验时，允许按动态 CAPID bias 插 `Z1`，不先猜 AP；第二阶段实际 CAPID 停顿后，先验当前 vCPU `T05thread`、PC/原字、原请求和同 TID/TLS/源 QID，再从这次请求对应的完整 `dladdr` 栈取得 AP bias，并在**该 vCPU 当前地址空间**逐字读取固定 FX6 AP 和 CAPID 的 ELF64 AArch64 头、全部 PHDR、AP 四处及 CAPID 四处原指令。还要求保存 LR 指向 AP 返回 VA 的有界 frame-pointer 链；全通过之后才读 CAPID `model+0x18`/owner，设 AP 返回断点并验证相同 TLS、AP frame、指针和 10B 后读 `w0`。缺 AP 栈、混 PID/base、错 ELF 头/PHDR/原字、TLS/帧链不符，均停止为 unknown。这里 AP 的 `/proc` VMA 在固定 init 早期不存在；**当前 vCPU 的 ELF/PHDR/代码读回是后置身份条件，不能称已观察 AP VMA。**
+
+新 [`host-tests.json`](host-tests.json) 有 13 项 `PASS_NO_QEMU`，包括本轮原日志早期快照正例、截断/混 PID、`dladdr` 混基址/错 TID/源、当前 CPU ELF 头/PHDR/代码错字节、RSP 分包/校验/异步/超时、错 CPU/PC、TLS/帧链拒绝、断点移除失败不恢复执行。[`audit.json`](audit.json) 重新核固定平台/CPIO/34 argv 仅索引 20/31 允许差异。以上均为静态/主机模拟证据；第二阶段尚无 VM 命中或读回。下一次须由协调端另分唯一窗口，原件/固定 FX3 平台/init/helpers/Backup 不动，只跑一次新版零键观察。首 CAP 断点能否赶在目标前设置，以及实际模型、owner、w0，必须等该次回执，不从本轮日志推断成功。

@@ -1,0 +1,212 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+  "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "scope": "host static and raw-encoding verification; no original/guest/device execution",
+  "independent_branch_graph_matches": true,
+  "normal_return_signed32_from_raw_MOVN": -408,
+  "FAT_open_proof_limit": "all ordinary returns; does not force callees to return or rule out runtime code replacement/other processors",
+  "GPIO_leaf": {
+    "configured_entry": "0xfe0542cc",
+    "MMIO_configuration_base": "0xf102e008",
+    "writes_before_sample": [
+      "0xf102e008",
+      "0xf102e024"
+    ],
+    "sample_address": "0xf102e010",
+    "sample_bit": 1,
+    "normal_result": "(sample_word >> 1) & 1",
+    "shared_word_store": "0xfe053308",
+    "shared_word_address": "0xfe170028",
+    "root_board_pin_or_user_button_mapping_proven": false
+  },
+  "sequence_table": [
+    {
+      "offset": "0x18870",
+      "target": "0xfe0529a8",
+      "flags": "0x0",
+      "name": "GPIO Init      "
+    },
+    {
+      "offset": "0x18890",
+      "target": "0xfe0532b4",
+      "flags": "0x0",
+      "name": "DBG/UPD SW Read"
+    },
+    {
+      "offset": "0x188b0",
+      "target": "0xfe052970",
+      "flags": "0x0",
+      "name": "Init InfSec    "
+    },
+    {
+      "offset": "0x188d0",
+      "target": "0xfe0533f4",
+      "flags": "0x0",
+      "name": "Init SPI       "
+    },
+    {
+      "offset": "0x188f0",
+      "target": "0xfe05331c",
+      "flags": "0x1",
+      "name": "SPI 1st        "
+    },
+    {
+      "offset": "0x18910",
+      "target": "0xfe052ff8",
+      "flags": "0x0",
+      "name": "Init OSPI-NOR  "
+    },
+    {
+      "offset": "0x18930",
+      "target": "0xfe052c88",
+      "flags": "0x0",
+      "name": "Setup PCIe     "
+    },
+    {
+      "offset": "0x18950",
+      "target": "0xfe05346c",
+      "flags": "0x0",
+      "name": "Wake DDR       "
+    },
+    {
+      "offset": "0x18970",
+      "target": "0xfe052bb8",
+      "flags": "0x0",
+      "name": "PCIe Clear Sig "
+    },
+    {
+      "offset": "0x18990",
+      "target": "0xfe052f54",
+      "flags": "0x8000",
+      "name": "Ld Config MEM:1"
+    },
+    {
+      "offset": "0x189b0",
+      "target": "0xfe052be4",
+      "flags": "0x1",
+      "name": "PCIE sns state "
+    },
+    {
+      "offset": "0x189d0",
+      "target": "0xfe051c50",
+      "flags": "0x0",
+      "name": "check_sus_e    "
+    },
+    {
+      "offset": "0x189f0",
+      "target": "0xfe051fd8",
+      "flags": "0x8000",
+      "name": "Copy BM/BF     "
+    },
+    {
+      "offset": "0x18a10",
+      "target": "0xfe052b68",
+      "flags": "0x8000",
+      "name": "DDR Log Init   "
+    },
+    {
+      "offset": "0x18a30",
+      "target": "0x0",
+      "flags": "0x8000",
+      "name": "end[Common]tbl "
+    }
+  ],
+  "literal_strings": {
+    "0xfe05f654": "LDR:UPDATE_MIRA  [%d-%d][0x%08X]:%d\n",
+    "0xfe05edab": "\\updater\\mode"
+  },
+  "selected_original_ranges": [
+    {
+      "label": "gpio-update-mira",
+      "start": "0xfe0542cc",
+      "end_exclusive": "0xfe05431c",
+      "bytes": 80,
+      "sha256": "e8cc1a236aa51c588619ad4329c7564b4fc71b614e6b20391f7d0d45f8098841",
+      "instruction_count": 20,
+      "prefix_only": false
+    },
+    {
+      "label": "sample-to-shared-word",
+      "start": "0xfe0532b4",
+      "end_exclusive": "0xfe05331c",
+      "bytes": 104,
+      "sha256": "527398b34a59c8fbb9be3bb15f4d53ccd219468c75f30b0fc1dfcfb9ae1d44d9",
+      "instruction_count": 26,
+      "prefix_only": false
+    },
+    {
+      "label": "mode-check-and-cache",
+      "start": "0xfe053c78",
+      "end_exclusive": "0xfe053d20",
+      "bytes": 168,
+      "sha256": "4f96b1a72a10a275071e62e823af686c21d44abac4592424d8c9b5694e12e8ed",
+      "instruction_count": 42,
+      "prefix_only": false
+    },
+    {
+      "label": "sequence-executor",
+      "start": "0xfe05b67c",
+      "end_exclusive": "0xfe05b870",
+      "bytes": 500,
+      "sha256": "cacb57e6ed2f8757492c31f0d1d0aa71ef092c5b67f6e2dc79c069195240b6a1",
+      "instruction_count": 125,
+      "prefix_only": false
+    },
+    {
+      "label": "spi-choice",
+      "start": "0xfe054ae4",
+      "end_exclusive": "0xfe054c48",
+      "bytes": 356,
+      "sha256": "33fa206d0f454f5ccb581861e0ab58f5418e70d12186f5635fa03a9ca7de355a",
+      "instruction_count": 89,
+      "prefix_only": false
+    },
+    {
+      "label": "spi-choice-call-gate",
+      "start": "0xfe05b268",
+      "end_exclusive": "0xfe05b2d0",
+      "bytes": 104,
+      "sha256": "13dc9aa551717c3f97961c1414dc1a484ddd5ad82ef2d132c0a84e69a7db25c6",
+      "instruction_count": 26,
+      "prefix_only": false
+    },
+    {
+      "label": "startup-main",
+      "start": "0xfe059f34",
+      "end_exclusive": "0xfe05a08c",
+      "bytes": 344,
+      "sha256": "18a02333cd708d02f477517e2ba362e07c56678ea1d6a965dc963bc0946bf2de",
+      "instruction_count": 86,
+      "prefix_only": false
+    },
+    {
+      "label": "spi-init-sequence-step",
+      "start": "0xfe0533f4",
+      "end_exclusive": "0xfe053444",
+      "bytes": 80,
+      "sha256": "5ee8f50b5a41c2047231073cf6ae0451db7f0b007065715bfa14917cc593d088",
+      "instruction_count": 20,
+      "prefix_only": false
+    },
+    {
+      "label": "first-spi-input",
+      "start": "0xfe05c03c",
+      "end_exclusive": "0xfe05c22c",
+      "bytes": 496,
+      "sha256": "52f723c24db28f962882e493554f637c95bda3851bc75169e1b161fa24c2aff0",
+      "instruction_count": 124,
+      "prefix_only": false
+    },
+    {
+      "label": "spi-mode-predicate-prefix",
+      "start": "0xfe054c88",
+      "end_exclusive": "0xfe054d5c",
+      "bytes": 212,
+      "sha256": "87644842a73e7dc17218cb1e9112cf8a9a6f6ed0b2706e0d60c388753e50d824",
+      "instruction_count": 53,
+      "prefix_only": true
+    }
+  ],
+  "whole_boot_or_recovery_entry_proven": false,
+  "source_unchanged_after": true
+}

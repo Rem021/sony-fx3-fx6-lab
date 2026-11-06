@@ -1,0 +1,48 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 16f1d08: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+ 16f1d0c: 910003fd     	mov	x29, sp
+ 16f1d10: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 16f1d14: aa0003f6     	mov	x22, x0
+ 16f1d18: f9400020     	ldr	x0, [x1]
+ 16f1d1c: aa0103f5     	mov	x21, x1
+ 16f1d20: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 16f1d24: aa0203f4     	mov	x20, x2
+ 16f1d28: 91002053     	add	x19, x2, #0x8
+ 16f1d2c: f9001bf7     	str	x23, [sp, #0x30]
+ 16f1d30: 97fa871c     	bl	0x15939a0 <osal_get_msg_src@plt>
+ 16f1d34: 52802501     	mov	w1, #0x128              // =296
+ 16f1d38: 72a01061     	movk	w1, #0x83, lsl #16
+ 16f1d3c: 6b01001f     	cmp	w0, w1
+ 16f1d40: f94002a1     	ldr	x1, [x21]
+ 16f1d44: 54000821     	b.ne	0x16f1e48 <Application_System_Init+0x22b8>
+ 16f1d48: b9400020     	ldr	w0, [x1]
+ 16f1d4c: 7145401f     	cmp	w0, #0x150, lsl #12     // =0x150000
+ 16f1d50: 54000301     	b.ne	0x16f1db0 <Application_System_Init+0x2220>
+ 16f1d54: 912882d7     	add	x23, x22, #0xa20
+ 16f1d58: aa1703e0     	mov	x0, x23
+ 16f1d5c: 97ffedfe     	bl	0x16ed554 <.text+0x158ed4>
+ 16f1d60: b94a1ac0     	ldr	w0, [x22, #0xa18]
+ 16f1d64: 51000400     	sub	w0, w0, #0x1
+ 16f1d68: b90a1ac0     	str	w0, [x22, #0xa18]
+ 16f1d6c: d0018520     	adrp	x0, 0x4797000
+ 16f1d70: f9421400     	ldr	x0, [x0, #0x428]
+ 16f1d74: b4000060     	cbz	x0, 0x16f1d80 <Application_System_Init+0x21f0>
+ 16f1d78: aa1703e0     	mov	x0, x23
+ 16f1d7c: 97fa88ad     	bl	0x1594030 <pthread_mutex_unlock@plt>
+ 16f1d80: 528000a0     	mov	w0, #0x5                // =5
+ 16f1d84: b9000280     	str	w0, [x20]
+ 16f1d88: f94002a0     	ldr	x0, [x21]
+ 16f1d8c: a9400c02     	ldp	x2, x3, [x0]
+ 16f1d90: a9000e62     	stp	x2, x3, [x19]
+ 16f1d94: b9401000     	ldr	w0, [x0, #0x10]
+ 16f1d98: b9001260     	str	w0, [x19, #0x10]
+ 16f1d9c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 16f1da0: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 16f1da4: f9401bf7     	ldr	x23, [sp, #0x30]
+ 16f1da8: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+ 16f1dac: d65f03c0     	ret

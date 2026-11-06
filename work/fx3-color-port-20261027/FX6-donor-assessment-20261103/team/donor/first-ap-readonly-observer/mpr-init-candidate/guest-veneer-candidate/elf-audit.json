@@ -1,0 +1,54 @@
+{
+  "status": "ELF_STATIC_AUDITED_NOT_LOADED",
+  "patched_ap_sha256": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1",
+  "bridge_sha256": "b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b",
+  "bridge_undefined_versioned": [
+    {
+      "name": "dladdr",
+      "version": "GLIBC_2.17"
+    },
+    {
+      "name": "dlopen",
+      "version": "GLIBC_2.17"
+    },
+    {
+      "name": "dlsym",
+      "version": "GLIBC_2.17"
+    },
+    {
+      "name": "open",
+      "version": "GLIBC_2.17"
+    },
+    {
+      "name": "read",
+      "version": "GLIBC_2.17"
+    },
+    {
+      "name": "close",
+      "version": "GLIBC_2.17"
+    }
+  ],
+  "bridge_needed": [
+    "libdl.so.2",
+    "libc.so.6"
+  ],
+  "bridge_jump_slots": [
+    "close",
+    "dladdr",
+    "dlopen",
+    "dlsym",
+    "open",
+    "read"
+  ],
+  "bridge_relocation_types": {
+    "R_AARCH64_JUMP_SLOT": 6,
+    "R_AARCH64_RELATIVE": 70
+  },
+  "unique_guest_slot_exports": 57,
+  "ap_two_changed_jump_slots": {
+    "0x2ef1368": "fx6diag_mpr_init",
+    "0x2ef2670": "fx6diag_mpr_enterrec"
+  },
+  "ap_new_needed": "libfx6diag.so",
+  "runtime_resolution_proven": false
+}

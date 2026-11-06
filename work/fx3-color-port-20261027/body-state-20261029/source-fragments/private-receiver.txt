@@ -1,0 +1,66 @@
+00013de8 stp        x29, x30, [sp, #-0x110]!
+00013dec mov        w0, #0x8f7
+00013df0 mov        w4, #0x15a
+00013df4 mov        w3, #1
+00013df8 mov        x29, sp
+00013dfc movk       w4, #0x92, lsl #16
+00013e00 add        x1, x29, #0x40
+00013e04 mov        w2, #0x10
+00013e08 movk       w0, #0x9287, lsl #16
+00013e0c stp        x21, x22, [sp, #0x20]
+00013e10 mov        w21, #0x871
+00013e14 stp        x19, x20, [sp, #0x10]
+00013e18 mov        w20, #0xbb
+00013e1c stp        w4, w3, [x29, #0x40]
+00013e20 movk       w21, #0x8092, lsl #16
+00013e24 stp        wzr, wzr, [x29, #0x48]
+00013e28 bl         #0x13e28 ; [{"symbol": "upm_notify_wrapper_async", "addend": 0, "type": 283, "section": 2}]
+00013e2c ldr        x22, #0x13ee8
+00013e30 movk       w20, #0x92, lsl #16
+00013e34 add        x1, x29, #0x30
+00013e38 mov        w0, #0x871
+00013e3c mov        w2, #-1
+00013e40 movk       w0, #0x8092, lsl #16
+00013e44 bl         #0x13e44 ; [{"symbol": "osal_rcv_msg_tmo", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00013e48 mov        w6, w0
+00013e4c mov        x2, #0xd0
+00013e50 add        x0, x29, #0x40
+00013e54 add        x4, x29, #0x38
+00013e58 mov        w5, #8
+00013e5c mov        w3, #0x18c
+00013e60 mov        w1, #2
+00013e64 cbz        w6, #0x13e90
+00013e68 mov        w2, #0x12
+00013e6c mov        w0, #0
+00013e70 stp        w21, w6, [x29, #0x38]
+00013e74 bl         #0x13e74 ; [{"symbol": "upm_blog_writeonce", "addend": 0, "type": 283, "section": 2}]
+00013e78 mov        w0, w20
+00013e7c mov        w1, #-1
+00013e80 bl         #0x13e80 ; [{"symbol": "osal_wai_sem_tmo", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00013e84 mov        w0, w20
+00013e88 bl         #0x13e88 ; [{"symbol": "osal_sig_sem", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00013e8c b          #0x13e34
+00013e90 ldr        x19, [x29, #0x30]
+00013e94 mov        x1, x19
+00013e98 bl         #0x13e98 ; [{"symbol": "memcpy", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00013e9c mov        x0, x19
+00013ea0 bl         #0x13ea0 ; [{"symbol": "osal_get_msg_src", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00013ea4 str        w0, [x29, #0x44]
+00013ea8 ldr        x1, [x29, #0x30]
+00013eac mov        w0, w21
+00013eb0 bl         #0x13eb0 ; [{"symbol": "osal_free_msg", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00013eb4 ldr        w0, [x29, #0x40]
+00013eb8 cmp        w0, #7
+00013ebc b.eq       #0x13ed8
+00013ec0 b.hi       #0x13e34
+00013ec4 ldr        x1, [x22, w0, uxtw #3]
+00013ec8 add        x0, x29, #0x40
+00013ecc cbz        x1, #0x13e34
+00013ed0 blr        x1
+00013ed4 b          #0x13e34
+00013ed8 ldp        x19, x20, [sp, #0x10]
+00013edc ldp        x21, x22, [sp, #0x20]
+00013ee0 ldp        x29, x30, [sp], #0x110
+00013ee4 ret        
+00013ee8 udf        #0 ; [{"symbol": "", "addend": 2512, "type": 257, "section": 12}]
+00013eec udf        #0

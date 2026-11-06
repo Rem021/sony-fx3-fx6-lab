@@ -1,0 +1,427 @@
+{
+  "source_image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "regular_inodes_scanned": 797,
+  "records": [
+    {
+      "path": "/kmod/wlan.ko",
+      "inode": 70948,
+      "bytes": 6866904,
+      "sha256": "c27b0e07dc02a7da9c06ec07ed5e91ce8bc98a3895da0cdc7d19cb05d39abd1b",
+      "strings": [],
+      "symbols": [
+        {
+          "name": "limUpdateChannelSwitch",
+          "value": "0xe8a58",
+          "bytes": 400,
+          "section": 2
+        },
+        {
+          "name": "limUpdateStaRunTimeHTSwitchChnlParams",
+          "value": "0xeb340",
+          "bytes": 444,
+          "section": 2
+        }
+      ]
+    },
+    {
+      "path": "/lib/libimobiledevice.so.6",
+      "inode": 95177,
+      "bytes": 126760,
+      "sha256": "7f406385de51a343cba0e7f1656ec44e05d9830ff6bdfcc2cfcd4d0312087f8d",
+      "strings": [
+        {
+          "file_offset": "0x1cf70",
+          "text": "Reboot"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "restored_reboot",
+          "value": "0x158e8",
+          "bytes": 192,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/netconf/dhcpcd_wired_dns_4.conf",
+      "inode": 95182,
+      "bytes": 1247,
+      "sha256": "70ecb1cd2e611026e5d1452a01cb1f0332e74ce9659fe05bf9b512e5bf624bce",
+      "strings": [
+        {
+          "file_offset": "0x4d5",
+          "text": "reboot 60"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "path": "/lib/netconf/dhcpcd_wired_dns.conf",
+      "inode": 95187,
+      "bytes": 1217,
+      "sha256": "ad6bdee7324ed989736694a6b31c113e835acae1c8507e46e091fdee04ce85dd",
+      "strings": [
+        {
+          "file_offset": "0x4b5",
+          "text": "reboot 60"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "path": "/lib/libNetCommon.so",
+      "inode": 95228,
+      "bytes": 130736,
+      "sha256": "e7d366ddbb7b0525ec7cdf809f5cb5e36b7d12a76af5e424461f4034ac6f39a0",
+      "strings": [],
+      "symbols": [
+        {
+          "name": "wlanWatcher_checkAndRebootSet",
+          "value": "0xc8ac",
+          "bytes": 96,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libObj.so",
+      "inode": 95248,
+      "bytes": 2876600,
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "strings": [
+        {
+          "file_offset": "0x1d476a",
+          "text": "reboot cold"
+        },
+        {
+          "file_offset": "0x1d4e58",
+          "text": "reboot hot"
+        },
+        {
+          "file_offset": "0x1dc94d",
+          "text": "/usr/bin/us_reboot.sh"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "udtr_senser_exit",
+          "value": "0xee1a4",
+          "bytes": 148,
+          "section": 10
+        },
+        {
+          "name": "udtr_senser_init",
+          "value": "0xee0b0",
+          "bytes": 244,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libcryptfileinputupdaterapi.so",
+      "inode": 95250,
+      "bytes": 27072,
+      "sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "strings": [],
+      "symbols": [
+        {
+          "name": "_ZN7Updater10BaseModule5ResetEv",
+          "value": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater26CommonUpdaterManagerStatus5ResetEv",
+          "value": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule11resetModuleEv",
+          "value": "0x41b0",
+          "bytes": 4,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libimobiledevice.so.6.0.0",
+      "inode": 95273,
+      "bytes": 126760,
+      "sha256": "7f406385de51a343cba0e7f1656ec44e05d9830ff6bdfcc2cfcd4d0312087f8d",
+      "strings": [
+        {
+          "file_offset": "0x1cf70",
+          "text": "Reboot"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "restored_reboot",
+          "value": "0x158e8",
+          "bytes": 192,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "bytes": 22768,
+      "sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "strings": [
+        {
+          "file_offset": "0x3d5b",
+          "text": "UUNUUZ/usr/bin/up.sh"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "udtr_ufp_init",
+          "value": "0x3344",
+          "bytes": 640,
+          "section": 10
+        },
+        {
+          "name": "udtr_ufp_exit",
+          "value": "0x35c4",
+          "bytes": 240,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libupdatercorecommon.so",
+      "inode": 95315,
+      "bytes": 64520,
+      "sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "strings": [],
+      "symbols": [
+        {
+          "name": "_ZN7Updater10BaseModule5ResetEv",
+          "value": "0xa070",
+          "bytes": 56,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater12BaseFirmware5ResetEv",
+          "value": "0xb004",
+          "bytes": 148,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater15CurrentFirmware19SwitchModeToUpdaterEv",
+          "value": "0xb6cc",
+          "bytes": 372,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater15CurrentFirmware26SwitchModeToMsCryptUpdaterEv",
+          "value": "0xbe80",
+          "bytes": 420,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater20BaseBodyLoaderModule11resetModuleEv",
+          "value": "0x8f7c",
+          "bytes": 8,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater15CurrentFirmware30SwitchModeToVersionSkipUpdaterEv",
+          "value": "0xb8b8",
+          "bytes": 420,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater20BaseBodyLoaderModule14FirmwareHeader5ResetEv",
+          "value": "0x8f34",
+          "bytes": 72,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule11resetModuleEv",
+          "value": "0xa69c",
+          "bytes": 4,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater26CommonUpdaterManagerStatus5ResetEv",
+          "value": "0xb258",
+          "bytes": 44,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libimobiledevice.so",
+      "inode": 95366,
+      "bytes": 126760,
+      "sha256": "7f406385de51a343cba0e7f1656ec44e05d9830ff6bdfcc2cfcd4d0312087f8d",
+      "strings": [
+        {
+          "file_offset": "0x1cf70",
+          "text": "Reboot"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "restored_reboot",
+          "value": "0x158e8",
+          "bytes": 192,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libInfraOptionInstall.so",
+      "inode": 95563,
+      "bytes": 235688,
+      "sha256": "62f2b8a3a0e533a6c80dfd8e2d78ddcaca8ec000c6187bfcf914b9de1a6a8256",
+      "strings": [],
+      "symbols": [
+        {
+          "name": "_ZN15OptionInstaller7Command12check_rebootEv",
+          "value": "0xfdc4",
+          "bytes": 124,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libupdatercommon.so",
+      "inode": 95566,
+      "bytes": 56032,
+      "sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "strings": [],
+      "symbols": [
+        {
+          "name": "_ZN7Updater10RingBuffer5ResetEv",
+          "value": "0x9574",
+          "bytes": 112,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libfileinputupdaterapi.so",
+      "inode": 95570,
+      "bytes": 27232,
+      "sha256": "9465744b62326e1e8409c3ba6f6e26c3e7a647090cbb3e591f01669ec1d0ae38",
+      "strings": [],
+      "symbols": [
+        {
+          "name": "_ZN7Updater20BaseBodyLoaderModule11resetModuleEv",
+          "value": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater10BaseModule5ResetEv",
+          "value": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater12BaseFirmware5ResetEv",
+          "value": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater26CommonUpdaterManagerStatus5ResetEv",
+          "value": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater23FileInputUpdaterManager29resetFirmwareWithoutExceptionEv",
+          "value": "0x4070",
+          "bytes": 48,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libInfraOptionInstallUSB.so",
+      "inode": 95584,
+      "bytes": 10248,
+      "sha256": "d80f984a0db8349f107e12b1761f6893cf2bd2e4e51c386f43930240a7cac982",
+      "strings": [],
+      "symbols": [
+        {
+          "name": "_ZN15OptionInstaller7Command12check_rebootEv",
+          "value": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ]
+    },
+    {
+      "path": "/sbin/dhcpcd",
+      "inode": 60724,
+      "bytes": 1262664,
+      "sha256": "57970b6ad79d9813b15bdb580cde3294a0ba178d1b345a96dd1712c8d38043b2",
+      "strings": [
+        {
+          "file_offset": "0x32478",
+          "text": "reboot"
+        },
+        {
+          "file_offset": "0x33718",
+          "text": "REBOOT"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "reconf_reboot.isra.8",
+          "value": "0x406a78",
+          "bytes": 328,
+          "section": 12
+        },
+        {
+          "name": "dhcp_reboot_newopts",
+          "value": "0x41be48",
+          "bytes": 100,
+          "section": 12
+        },
+        {
+          "name": "dhcp6_reboot",
+          "value": "0x42b1c0",
+          "bytes": 60,
+          "section": 12
+        }
+      ]
+    },
+    {
+      "path": "/share/app/string_english_g.uxc",
+      "inode": 42516,
+      "bytes": 69600,
+      "sha256": "a4a15a548f7e0b79315a3fcb5dd8506dd2671c6366d62a6795b2b2ca1d222f4a",
+      "strings": [
+        {
+          "file_offset": "0x9c76",
+          "text": "Reboot to complete installation."
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "path": "/share/app/string_indonesia_g.uxc",
+      "inode": 42530,
+      "bytes": 67896,
+      "sha256": "7b151000a0687aa97df085fec03eb5e4b19e5a1520d1b25cb2327cca757fafbf",
+      "strings": [
+        {
+          "file_offset": "0x9869",
+          "text": "Reboot untuk menyelesaikan instalasi."
+        }
+      ],
+      "symbols": []
+    }
+  ],
+  "scope": "locators only; references do not prove actual calls or cold recovery",
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

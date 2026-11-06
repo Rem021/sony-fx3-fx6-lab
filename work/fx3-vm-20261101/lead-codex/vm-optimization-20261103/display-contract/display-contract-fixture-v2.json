@@ -1,0 +1,108 @@
+{
+  "schema_version": "2.0.0",
+  "generated_by": "verify_display_contract_v2.py",
+  "osd_display_contract_fixture": {
+    "static_bounds_cases": {
+      "evidence_tier": "STATIC_ORIGINAL_CODE",
+      "cases": [
+        {
+          "check": "0x1000 hide_count > 16 rejected",
+          "av_cam_instruction": "0xffffffc0012ee420: cmp w8, #0x10; b.hi 0xffffffc0012ee470",
+          "passed": true
+        },
+        {
+          "check": "0x1001 widget_id w >= 256 rejected",
+          "av_cam_instruction": "0xffffffc0012ee314: cmp x8, #0x100; b.hs 0xffffffc0012ee39c",
+          "passed": true
+        },
+        {
+          "check": "FrameBuffer::swap (0xf33d0) non-atomic ldp/stp swaps fb+0x60 and fb+0x68",
+          "libobj_instruction": "0xf33ec ldp x0,x1,[x19,#0x60]; 0xf33f0 stp x1,x0,[x19,#0x60]",
+          "passed": true
+        }
+      ]
+    },
+    "runtime_trace_replay_cases": {
+      "evidence_tier": "RUNTIME_LOG_MEASURED",
+      "note": "Tokens 0x401 (0x43ae96100) and 0x402 (0x43feb5100) are measured from try2-70588c4c and try2gapinternal-47e2924a.",
+      "positive_replays": {
+        "user_try2_70588c4c_replay": {
+          "frame_372": {
+            "op": "0x1005",
+            "token": "0x401",
+            "reply": "0x6005"
+          },
+          "frame_373": {
+            "op": "0x1003",
+            "token": "0x402",
+            "phys": "0x43feb5100",
+            "all_zero": true,
+            "reply": "0x6003"
+          },
+          "frame_378": {
+            "op": "0x1005",
+            "token": "0x402",
+            "reply": "0x6005"
+          }
+        },
+        "internal_47e2924a_replay": {
+          "frame_1310": {
+            "op": "0x1005",
+            "token": "0x402",
+            "reply": "0x6005"
+          },
+          "frame_1311": {
+            "op": "0x1003",
+            "token": "0x401",
+            "phys": "0x43ae96100",
+            "all_zero": true,
+            "reply": "0x6003"
+          },
+          "frame_1314": {
+            "op": "0x1005",
+            "token": "0x401",
+            "reply": "0x6005"
+          }
+        }
+      }
+    },
+    "synthetic_model_assumption_cases": {
+      "evidence_tier": "MODEL_ASSUMPTION",
+      "cases": [
+        {
+          "assumption": "OsdTransModel.recv_1001 checks attr_count <= 16",
+          "rationale": "Defensive bound in Python fixture; av-cam.bin 0x2ee370 copies attr_count u32 words into the 88B slot without an explicit cmp w8, #0x10 before the loop."
+        },
+        {
+          "assumption": "OsdTransModel.recv_1003 requires pending_sub_op == 0x1003",
+          "rationale": "Abstracts av-cam.bin WaitAndExecuteUpdateExec (0x2ef014) synchronous queue receive into a single-threaded state check."
+        }
+      ]
+    }
+  },
+  "upm_mss_contract_fixture": {
+    "evidence_tier": "STATIC_ORIGINAL_CODE",
+    "verified_invariants": [
+      {
+        "invariant": "Special 20B message 0100150001000000050000000000000000000000 at 0x16f12ec is App::got_display_update_event(const ds_display_update_event&) -> QID 0x005503e0",
+        "direct_upm_mss_reset": false
+      },
+      {
+        "invariant": "All 16B payload words sent by appFw.so 0x2eaf294 to QID 0x80924220 are present in registers at 0x2eaf294 entry: [w1=cmd, w6=src, w2=word2, w3=word3] stored via 0x2eaf2fc stp w22,w24,[x8]; 0x2eaf300 stp w21,w20,[x8,#8]",
+        "verified": true
+      },
+      {
+        "invariant": "upm.ko .text+0x23f0..0x2400 rewrites 0x00920206 (MSS_fakey_start/stop) in-place to 0x00920204 and executes the full timer reload path",
+        "verified": true
+      },
+      {
+        "invariant": "upm.ko .text+0x2598 -> 0x2310 -> 0x2468..0x2490 starts a fresh full-duration timer when 0x00920202 (MSS_del_stopper) empties stopper_list while status==1",
+        "verified": true
+      },
+      {
+        "invariant": "upm.ko k_mss_timer_cb (.text+0x1670) chains to the next un-expired request via k_mss_find_min_request (.text+0x1558) -> k_mss_start_timer_nr (.text+0x1008) for (next_req->timeout_sec - elapsed_sec)",
+        "verified": true
+      }
+    ]
+  }
+}

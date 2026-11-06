@@ -1,0 +1,38 @@
+00008c90 stp        x29, x30, [sp, #-0x30]!
+00008c94 mov        w1, #0
+00008c98 mov        x29, sp
+00008c9c stp        x19, x20, [sp, #0x10]
+00008ca0 mov        x19, x0
+00008ca4 mov        x20, x0
+00008ca8 str        x21, [sp, #0x20]
+00008cac bl         #0x7320 ; Updater::Xml::DomNode::DomNode
+00008cb0 adrp       x0, #0x20000
+00008cb4 adrp       x1, #0xc000
+00008cb8 add        x1, x1, #0xf7e
+00008cbc ldr        x0, [x0, #0xf60]
+00008cc0 add        x0, x0, #0x10
+00008cc4 str        x0, [x20], #0x58
+00008cc8 adrp       x0, #0x20000
+00008ccc strb       wzr, [x19, #0x6c]
+00008cd0 strb       wzr, [x19, #0x50]
+00008cd4 ldr        x0, [x0, #0xf80]
+00008cd8 str        wzr, [x19, #0x54]
+00008cdc str        x0, [x19, #0x58]
+00008ce0 mov        w0, #-1
+00008ce4 stp        w0, w0, [x19, #0x64]
+00008ce8 mov        w0, #4
+00008cec str        w0, [x19, #0x60]
+00008cf0 mov        x0, x20
+00008cf4 bl         #0x7880 ; Updater::Xml::TiXmlString::operator=
+00008cf8 stp        wzr, wzr, [x19, #0x64]
+00008cfc ldr        x21, [sp, #0x20]
+00008d00 ldp        x19, x20, [sp, #0x10]
+00008d04 ldp        x29, x30, [sp], #0x30
+00008d08 ret        
+00008d0c mov        x21, x0
+00008d10 mov        x0, x20
+00008d14 bl         #0x7560 ; Updater::Xml::TiXmlString::quit
+00008d18 mov        x0, x19
+00008d1c bl         #0x7470 ; Updater::Xml::DomNode::~DomNode
+00008d20 mov        x0, x21
+00008d24 bl         #0x7800 ; _Unwind_Resume

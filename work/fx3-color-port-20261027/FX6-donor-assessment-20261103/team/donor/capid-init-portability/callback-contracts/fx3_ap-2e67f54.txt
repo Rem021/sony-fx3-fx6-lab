@@ -1,0 +1,47 @@
+ 2e67f54: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+ 2e67f58: 52807c83     	mov	w3, #0x3e4              // =996
+ 2e67f5c: 910003fd     	mov	x29, sp
+ 2e67f60: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e67f64: f00057f4     	adrp	x20, 0x3966000
+ 2e67f68: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 2e67f6c: aa0003f6     	mov	x22, x0
+ 2e67f70: b0005955     	adrp	x21, 0x3990000
+ 2e67f74: d0004980     	adrp	x0, 0x3799000
+ 2e67f78: 91351e81     	add	x1, x20, #0xd47
+ 2e67f7c: 913942a2     	add	x2, x21, #0xe50
+ 2e67f80: 91203c00     	add	x0, x0, #0x80f
+ 2e67f84: 910143b3     	add	x19, x29, #0x50
+ 2e67f88: 94041fe1     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e67f8c: 90034120     	adrp	x0, 0x968b000
+ 2e67f90: 912a0000     	add	x0, x0, #0xa80
+ 2e67f94: f9001ba0     	str	x0, [x29, #0x30]
+ 2e67f98: 97a2156f     	bl	0x16ed554 <.text+0x158ed4>
+ 2e67f9c: b94002c0     	ldr	w0, [x22]
+ 2e67fa0: b81e8e60     	str	w0, [x19, #-0x18]!
+ 2e67fa4: 90034120     	adrp	x0, 0x968b000
+ 2e67fa8: 91048000     	add	x0, x0, #0x120
+ 2e67fac: aa1303e1     	mov	x1, x19
+ 2e67fb0: 97ffffac     	bl	0x2e67e60 <Application_System_Init+0x17782d0>
+ 2e67fb4: b4000160     	cbz	x0, 0x2e67fe0 <Application_System_Init+0x1778450>
+ 2e67fb8: f9400800     	ldr	x0, [x0, #0x10]
+ 2e67fbc: b9400ac1     	ldr	w1, [x22, #0x8]
+ 2e67fc0: b9000801     	str	w1, [x0, #0x8]
+ 2e67fc4: f9400001     	ldr	x1, [x0]
+ 2e67fc8: aa1303e0     	mov	x0, x19
+ 2e67fcc: 97ffc02f     	bl	0x2e58088 <Application_System_Init+0x17684f8>
+ 2e67fd0: aa1303e0     	mov	x0, x19
+ 2e67fd4: 97f593a4     	bl	0x2bcce64 <Application_System_Init+0x14dd2d4>
+ 2e67fd8: aa1303e0     	mov	x0, x19
+ 2e67fdc: 97f59455     	bl	0x2bcd130 <Application_System_Init+0x14dd5a0>
+ 2e67fe0: 9100c3a0     	add	x0, x29, #0x30
+ 2e67fe4: 97e341ee     	bl	0x273879c <Application_System_Init+0x1048c0c>
+ 2e67fe8: b0005560     	adrp	x0, 0x3914000
+ 2e67fec: 913942a2     	add	x2, x21, #0xe50
+ 2e67ff0: 91351e81     	add	x1, x20, #0xd47
+ 2e67ff4: 9107a800     	add	x0, x0, #0x1ea
+ 2e67ff8: 52807e43     	mov	w3, #0x3f2              // =1010
+ 2e67ffc: 94041fc4     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e68000: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2e68004: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2e68008: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+ 2e6800c: d65f03c0     	ret

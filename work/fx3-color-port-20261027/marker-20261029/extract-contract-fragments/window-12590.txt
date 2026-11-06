@@ -1,0 +1,60 @@
+00012590 ldr        x0, [x29, #0x80]
+00012594 bl         #0xfb80 ; Updater::UpdaterBody::StopFlag::GetFlag
+00012598 tst        w0, #0xff
+0001259c b.ne       #0x12688
+000125a0 ldr        x1, [x29, #0x70]
+000125a4 mov        x0, x20
+000125a8 bl         #0x10070 ; Updater::PackedFileHeader::Parse
+000125ac cbnz       w0, #0x12698
+000125b0 ldr        x0, [x29, #0x1c8]
+000125b4 ldr        w28, [x29, #0x298]
+000125b8 ldr        x1, [x0]
+000125bc ldr        x1, [x1, #0x28]
+000125c0 blr        x1
+000125c4 cmp        w0, w28
+000125c8 b.ne       #0x125e4
+000125cc mov        x0, x24
+000125d0 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+000125d4 mov        x28, x0
+000125d8 add        x0, x20, #8
+000125dc bl         #0xffd0 ; Updater::StringHandler::GetCharString
+000125e0 b          #0x12628
+000125e4 ldr        x0, [x29, #0x1c8]
+000125e8 ldr        x1, [x0]
+000125ec ldr        x2, [x1, #0x20]
+000125f0 mov        x1, x22
+000125f4 blr        x2
+000125f8 add        x1, x20, #8
+000125fc mov        w0, w28
+00012600 bl         #0x10590 ; Updater::KeyTagFactory::GetKeyTag
+00012604 mov        x1, x0
+00012608 mov        x0, x22
+0001260c bl         #0x107c0 ; Updater::BodyInformation::SetCurrentKeyTag
+00012610 ldr        x0, [x29, #0x1c8]
+00012614 ldr        x1, [x0]
+00012618 ldr        x2, [x1, #0x10]
+0001261c mov        x1, x22
+00012620 blr        x2
+00012624 b          #0x125cc
+00012628 mov        x3, x0
+0001262c ldr        x2, [x29, #0x68]
+00012630 ldr        x0, [x29, #0x88]
+00012634 mov        x1, x28
+00012638 bl         #0x10850 ; Updater::StringHandler::SetString
+0001263c ldrb       w0, [x29, #0x3bc]
+00012640 add        x1, x20, #8
+00012644 str        x1, [x29, #0x138]
+00012648 strb       w0, [x29, #0x158]
+0001264c ldr        x1, [x29, #0x88]
+00012650 ldr        x0, [x29, #0x1c8]
+00012654 str        x1, [x29, #0x140]
+00012658 add        x1, x20, #0x28
+0001265c str        x1, [x29, #0x148]
+00012660 add        x1, x20, #0x50
+00012664 str        x1, [x29, #0x150]
+00012668 ldr        x1, [x0]
+0001266c ldr        x3, [x29, #0x60]
+00012670 ldr        x2, [x29, #0x70]
+00012674 ldr        x4, [x1, #0x18]
+00012678 mov        x1, x22
+0001267c blr        x4

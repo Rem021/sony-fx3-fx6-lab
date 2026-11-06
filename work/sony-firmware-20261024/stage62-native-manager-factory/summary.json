@@ -1,0 +1,34 @@
+{
+  "created_utc": "2026-10-26T11:44:56.384373+00:00",
+  "status": "PASS_NATIVE_MANAGER_FACTORY_QUEUES_TO_PROVIDER_BOUNDARY",
+  "bounded_fragments": 21,
+  "stop_counts": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 3,
+    "returned": 12,
+    "boundary: before_original_buffer_channel_preparation": 3,
+    "boundary: before_original_unexecuted_resource_provider": 3
+  },
+  "per_case_native_manager_clear_calls": 25,
+  "per_case_common_proxy_ctors": [
+    6,
+    2
+  ],
+  "per_case_native_bindings": 8,
+  "per_case_native_queues_initial": [
+    8,
+    6,
+    2,
+    6
+  ],
+  "per_case_after_MAIN_ids_slots_nodes": [
+    7,
+    5,
+    5
+  ],
+  "outside_object_arena_checks": 9,
+  "OSAL_imports_and_provider_definitions_static": 4,
+  "provider_executed": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "proof_sha256": "0b6de78c797db7e3db1c6bf58b85eee7fd75534f5d7b601155e0eb87f8668136"
+}

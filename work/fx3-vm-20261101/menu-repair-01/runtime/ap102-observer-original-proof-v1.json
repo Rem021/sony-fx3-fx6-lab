@@ -1,0 +1,312 @@
+{
+  "authority": [
+    "msg_451e29d2c9b9",
+    "msg_7eb2cdbf663a",
+    "msg_2c7707dd92c8"
+  ],
+  "inputs": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/backup.ko",
+      "sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d"
+    }
+  ],
+  "AP_points": [
+    {
+      "va": "0x2b22c80",
+      "raw": "e0264fb9",
+      "asm": "ldr w0, [x23, #0xf24]",
+      "id": 110,
+      "label": "idle_f24_load",
+      "word": 3108972256
+    },
+    {
+      "va": "0x2b22c88",
+      "raw": "93010035",
+      "asm": "cbnz w19, #0x2b22cb8",
+      "id": 111,
+      "label": "idle_dirty_test",
+      "word": 889192851
+    },
+    {
+      "va": "0x2b22cbc",
+      "raw": "80feff35",
+      "asm": "cbnz w0, #0x2b22c8c",
+      "id": 112,
+      "label": "product_gate_actual_return",
+      "word": 905969280
+    },
+    {
+      "va": "0x2b22cc0",
+      "raw": "64720e94",
+      "asm": "bl #0x2ebf650",
+      "symbol": "",
+      "id": 113,
+      "label": "idle_original_sync_call",
+      "word": 2483974756
+    },
+    {
+      "va": "0x2b22d9c",
+      "raw": "f303142a",
+      "asm": "mov w19, w20",
+      "id": 114,
+      "label": "dirty_assignment",
+      "word": 705954803
+    },
+    {
+      "va": "0x2a69974",
+      "raw": "fd7bbda9",
+      "asm": "stp x29, x30, [sp, #-0x30]!",
+      "id": 115,
+      "label": "language_callback",
+      "word": 2847767549
+    },
+    {
+      "va": "0x2ab90a4",
+      "raw": "fd7bbea9",
+      "asm": "stp x29, x30, [sp, #-0x20]!",
+      "id": 116,
+      "label": "language_enqueue",
+      "word": 2847833085
+    },
+    {
+      "va": "0x2b23754",
+      "raw": "fc730e94",
+      "asm": "bl #0x2ec0744",
+      "symbol": "",
+      "id": 117,
+      "label": "language_daemon_consume",
+      "word": 2483975164
+    },
+    {
+      "va": "0x2ec0794",
+      "raw": "f35341a9",
+      "asm": "ldp x19, x20, [sp, #0x10]",
+      "id": 118,
+      "label": "language_native_write_return",
+      "word": 2839630835
+    },
+    {
+      "va": "0x2b22b80",
+      "raw": "fcbea997",
+      "asm": "bl #0x1592770",
+      "symbol": "pthread_cond_timedwait",
+      "id": 119,
+      "label": "idle_cond_wait",
+      "word": 2544484092
+    },
+    {
+      "va": "0x2b22b84",
+      "raw": "9bbfa997",
+      "asm": "bl #0x15929f0",
+      "symbol": "_ZNSt6chrono3_V212system_clock3nowEv",
+      "id": 120,
+      "label": "idle_cond_wait_return",
+      "word": 2544484251
+    },
+    {
+      "va": "0x2b22cc8",
+      "raw": "a0a340b9",
+      "asm": "ldr w0, [x29, #0xa0]",
+      "id": 121,
+      "label": "daemon_work_dispatch",
+      "word": 3108021152
+    }
+  ],
+  "kernel_points": [
+    {
+      "va": "0x2ea0",
+      "raw": "fd7bbda9",
+      "asm": "stp x29, x30, [sp, #-0x30]!",
+      "offset": 11936,
+      "label": "Backup_sync_subsystem_entry",
+      "relocated_call": false
+    },
+    {
+      "va": "0x2ca0",
+      "raw": "fd7bbea9",
+      "asm": "stp x29, x30, [sp, #-0x20]!",
+      "offset": 11424,
+      "label": "sync_subsystem_mp_entry",
+      "relocated_call": false
+    },
+    {
+      "va": "0x3f0",
+      "raw": "fd7bb6a9",
+      "asm": "stp x29, x30, [sp, #-0xa0]!",
+      "offset": 1008,
+      "label": "local_merge_entry",
+      "relocated_call": false
+    },
+    {
+      "va": "0x42c",
+      "raw": "401200b4",
+      "asm": "cbz x0, #0x674",
+      "offset": 1068,
+      "label": "malloc_actual_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x438",
+      "raw": "1f440071",
+      "asm": "cmp w0, #0x11",
+      "offset": 1080,
+      "label": "cache_type_actual_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x448",
+      "raw": "f30300aa",
+      "asm": "mov x19, x0",
+      "offset": 1096,
+      "label": "physical_to_VA_actual_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x464",
+      "raw": "000f00b4",
+      "asm": "cbz x0, #0x644",
+      "offset": 1124,
+      "label": "old_file_load_actual_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x614",
+      "raw": "a07b00b9",
+      "asm": "str w0, [x29, #0x78]",
+      "offset": 1556,
+      "label": "local_file_save_actual_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x5fc",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 1532,
+      "label": "local_merge_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x8fd8",
+      "raw": "fd7bbaa9",
+      "asm": "stp x29, x30, [sp, #-0x60]!",
+      "offset": 36824,
+      "label": "DMM_malloc_entry",
+      "relocated_call": false
+    },
+    {
+      "va": "0x90b4",
+      "raw": "00000094",
+      "asm": "bl #0x90b4",
+      "relocation": {
+        "symbol": "osal_snd_msg",
+        "section": "SHN_UNDEF",
+        "value": "0x0",
+        "addend": 0,
+        "type": 283
+      },
+      "offset": 37044,
+      "label": "DMM_send_original_request",
+      "relocated_call": true
+    },
+    {
+      "va": "0x90b8",
+      "raw": "000a0035",
+      "asm": "cbnz w0, #0x91f8",
+      "offset": 37048,
+      "label": "DMM_send_actual_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x90e0",
+      "raw": "00000094",
+      "asm": "bl #0x90e0",
+      "relocation": {
+        "symbol": "osal_rcv_msg_tmo",
+        "section": "SHN_UNDEF",
+        "value": "0x0",
+        "addend": 0,
+        "type": 283
+      },
+      "offset": 37088,
+      "label": "DMM_receive_original_args",
+      "relocated_call": true
+    },
+    {
+      "va": "0x90e4",
+      "raw": "f303002a",
+      "asm": "mov w19, w0",
+      "offset": 37092,
+      "label": "DMM_receive_actual_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x9034",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 36916,
+      "label": "DMM_malloc_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x91d0",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 37328,
+      "label": "DMM_malloc_alt_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x6a88",
+      "raw": "fd7bbaa9",
+      "asm": "stp x29, x30, [sp, #-0x60]!",
+      "offset": 27272,
+      "label": "backupfile_save_file_entry",
+      "relocated_call": false
+    },
+    {
+      "va": "0x6c2c",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 27692,
+      "label": "backupfile_save_file_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x6c88",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 27784,
+      "label": "backupfile_save_file_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x6cc8",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 27848,
+      "label": "backupfile_save_file_return",
+      "relocated_call": false
+    },
+    {
+      "va": "0x6d20",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 27936,
+      "label": "backupfile_save_file_return",
+      "relocated_call": false
+    }
+  ],
+  "kernel_observation": "QEMU TCG Z1 CPU breakpoints, no guest text patch; exact original instructions stepped and breakpoints removed before cleanup",
+  "runtime_module_base": "must read actual /sys/module/backup/sections/.text; not fixed VA",
+  "not_added": [
+    "device replies",
+    "flush",
+    "setters",
+    "DMM allocation",
+    "parameter writes"
+  ]
+}

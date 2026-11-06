@@ -1,0 +1,40 @@
+0xfe058adc [file+0xfadc] f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+0xfe058ae0 [file+0xfae0] 13609852 mov      w19, #0xc300
+0xfe058ae4 [file+0xfae4] d3c4bf72 movk     w19, #0xfe26, lsl #16
+0xfe058ae8 [file+0xfae8] 480000d0 adrp     x8, #0xfe062000
+0xfe058aec [file+0xfaec] 7f0200f9 str      xzr, [x19]
+0xfe058af0 [file+0xfaf0] 7f0a00b9 str      wzr, [x19, #8]
+0xfe058af4 [file+0xfaf4] 1ff102f9 str      xzr, [x8, #0x5e0]
+0xfe058af8 [file+0xfaf8] 67ffff97 bl       #0xfe058894
+0xfe058afc [file+0xfafc] 090040b9 ldr      w9, [x0]
+0xfe058b00 [file+0xfb00] 4a688952 mov      w10, #0x4b42
+0xfe058b04 [file+0xfb04] 6a4aa872 movk     w10, #0x4253, lsl #16
+0xfe058b08 [file+0xfb08] e80300aa mov      x8, x0
+0xfe058b0c [file+0xfb0c] 3f010a6b cmp      w9, w10
+0xfe058b10 [file+0xfb10] 61010054 b.ne     #0xfe058b3c
+0xfe058b14 [file+0xfb14] 410000d0 adrp     x1, #0xfe062000
+0xfe058b18 [file+0xfb18] a0028052 mov      w0, #0x15
+0xfe058b1c [file+0xfb1c] e8031e32 mov      w8, #4
+0xfe058b20 [file+0xfb20] 21300091 add      x1, x1, #0xc
+0xfe058b24 [file+0xfb24] 200aa072 movk     w0, #0x51, lsl #16
+0xfe058b28 [file+0xfb28] 680200b9 str      w8, [x19]
+0xfe058b2c [file+0xfb2c] 14000094 bl       #0xfe058b7c
+0xfe058b30 [file+0xfb30] e0031f2a mov      w0, wzr
+0xfe058b34 [file+0xfb34] f37bc1a8 ldp      x19, x30, [sp], #0x10
+0xfe058b38 [file+0xfb38] c0035fd6 ret      
+0xfe058b3c [file+0xfb3c] 210000f0 adrp     x1, #0xfe05f000
+0xfe058b40 [file+0xfb40] 21c41d91 add      x1, x1, #0x771
+0xfe058b44 [file+0xfb44] e0070032 mov      w0, #3
+0xfe058b48 [file+0xfb48] e203082a mov      w2, w8
+0xfe058b4c [file+0xfb4c] 9af5ff97 bl       #0xfe0561b4
+0xfe058b50 [file+0xfb50] 40328012 mov      w0, #-0x193
+0xfe058b54 [file+0xfb54] f37bc1a8 ldp      x19, x30, [sp], #0x10
+0xfe058b58 [file+0xfb58] c0035fd6 ret      
+0xfe058b5c [file+0xfb5c] 88609852 mov      w8, #0xc304
+0xfe058b60 [file+0xfb60] c8c4bf72 movk     w8, #0xfe26, lsl #16
+0xfe058b64 [file+0xfb64] 000140b9 ldr      w0, [x8]
+0xfe058b68 [file+0xfb68] c0035fd6 ret      
+0xfe058b6c [file+0xfb6c] 08619852 mov      w8, #0xc308
+0xfe058b70 [file+0xfb70] c8c4bf72 movk     w8, #0xfe26, lsl #16
+0xfe058b74 [file+0xfb74] 000140b9 ldr      w0, [x8]
+0xfe058b78 [file+0xfb78] c0035fd6 ret      

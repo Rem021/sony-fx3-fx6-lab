@@ -1,0 +1,35 @@
+{
+  "created_utc": "2026-10-28T13:01:44.575968+00:00",
+  "scope": "existing own and launchd processes only; separate API results; no root or device calls",
+  "checks": [
+    {
+      "pid": 90665,
+      "info_return": 0,
+      "info_errno": 0,
+      "info_errno_name": "Undefined error: 0",
+      "uid": 501,
+      "birth_sec": 1793192504,
+      "birth_usec": 531453,
+      "path_return": 0,
+      "path_errno": 0,
+      "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+      "sysctl_exists_return": 1,
+      "sysctl_errno": 0
+    },
+    {
+      "pid": 1,
+      "info_return": -1,
+      "info_errno": 1,
+      "info_errno_name": "Operation not permitted",
+      "uid": null,
+      "birth_sec": null,
+      "birth_usec": null,
+      "path_return": 0,
+      "path_errno": 0,
+      "path": "/sbin/launchd",
+      "sysctl_exists_return": 1,
+      "sysctl_errno": 0
+    }
+  ],
+  "not_historical_helper_identity_proof": true
+}

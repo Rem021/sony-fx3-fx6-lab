@@ -1,0 +1,390 @@
+{
+  "run": "runs/ap16stacks-db115528",
+  "serial_sha256": "127e66ac0bc20c6e5c7a30cc8d42d91460d9b5037d84fe185807ba1f2b1fcc2b",
+  "sample1_threads": [
+    {
+      "tid": "155",
+      "name": "im.elf",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7febf1c480 0x7f88435160",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff80080885f0>] do_signal+0xb8/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "156",
+      "name": "uipc_proxy_0",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f879b24d0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "157",
+      "name": "uipc_proxy_1",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f871b24d0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "158",
+      "name": "uipc_proxy_2",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f869b24d0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "159",
+      "name": "ULOGIOD_MAIN",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f861986f0 0x7f87d0d474",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff80080885f0>] do_signal+0xb8/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "160",
+      "name": "ULOGIOD_CB",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f8517e410 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "161",
+      "name": "icdt_u_rcv",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f8597e440 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae6ac>] get_signal+0x1cc/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "162",
+      "name": "uipc_proxy_3",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f8497e4d0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "163",
+      "name": "BkDmn_Mngr",
+      "state": "D (disk sleep)",
+      "syscall": "-1 0x7f7fffe8a0 0x7f841586e4",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080c5ba4>] stop_all_threads_timeout+0x154/0x2d8",
+        "[<ffffff80081dcb08>] do_coredump+0xc8/0xcd8",
+        "[<ffffff80080ae790>] get_signal+0x2b0/0x640",
+        "[<ffffff8008088b54>] do_signal+0x61c/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "164",
+      "name": "InfraOnDmdLdr",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f7f7fe1d0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "165",
+      "name": "ACCESSLOG_MAIN",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f7effe410 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "166",
+      "name": "mwf_monitor_inp",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f7e1af8b0 0x7f8843e7f8",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "167",
+      "name": "im.elf",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f6bffe860 0x7f8843aadc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff80080885f0>] do_signal+0xb8/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "168",
+      "name": "I-InputMain",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f6b7fe620 0x7f87d10500",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff80080885f0>] do_signal+0xb8/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "169",
+      "name": "I-InputRepeat",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f6affe500 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "170",
+      "name": "I-InputRecv",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f6a7fe3a0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "174",
+      "name": "THREAD_INFRA0",
+      "state": "R (running)",
+      "syscall": "running",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80004c2364>] osal_rcv_msg_tmo+0x1cc/0x328 [osal_uipc]",
+        "[<ffffff80005114f8>] 0xffffff80005114f8",
+        "[<ffffff8000511618>] ma_dmm_open_impl+0x58/0xa0 [grm_ma]",
+        "[<ffffff8000511124>] 0xffffff8000511124",
+        "[<ffffff80004c08f0>] uipc_oom+0x88/0xce0 [osal_uipc]",
+        "[<ffffff80004c2094>] __osal_snd_sync_msg+0x17c/0x260 [osal_uipc]",
+        "[<ffffff80004bf350>] osal_unlock+0x1170/0x22b0 [osal_uipc]",
+        "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+        "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+        "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+        "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+        "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "175",
+      "name": "THREAD_INFRA1",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f687fe000 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "176",
+      "name": "THREAD_INFRA2",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f63ffdcc0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "177",
+      "name": "grm_result",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f637fe800 0x7f8843aadc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff80080885f0>] do_signal+0xb8/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "178",
+      "name": "ExternalOSDIF",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f62ffe3e0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "180",
+      "name": "InfraGetVersion",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f61ffe3f0 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "181",
+      "name": "InfraAudioDecod",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f617fe220 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "182",
+      "name": "InfraAvEffector",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f60ffe220 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    },
+    {
+      "tid": "183",
+      "name": "InfraDecoder",
+      "state": "T (stopped)",
+      "syscall": "-1 0x7f607fe220 0x7f87d0ccbc",
+      "stack": [
+        "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+        "[<ffffff80080ad694>] do_signal_stop+0x14c/0x228",
+        "[<ffffff80080ae918>] get_signal+0x438/0x640",
+        "[<ffffff8008088598>] do_signal+0x60/0x908",
+        "[<ffffff80080891a8>] do_notify_resume+0x88/0x98",
+        "[<ffffff80080825dc>] work_pending+0x8/0x10",
+        "[<ffffffffffffffff>] 0xffffffffffffffff"
+      ]
+    }
+  ],
+  "conclusion": "main stopped is not all threads stopped; THREAD_INFRA0 executes original grm_ma ma_dmm_open_impl with missing original DMM; SIGSTOP causal origin not yet conclusively traced"
+}

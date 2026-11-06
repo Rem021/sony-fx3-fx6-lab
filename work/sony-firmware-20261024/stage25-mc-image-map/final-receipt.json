@@ -1,0 +1,105 @@
+{
+  "schema": "fx3-stage25-mc-image-map/1",
+  "created_utc": "2026-10-25T21:18:37.977487+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/README.md",
+      "bytes": 7692,
+      "sha256": "043533f363619ed486210a33e68b98cf0178cb76169565824d1d271bc29735a0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/coordinator-observations.json",
+      "bytes": 1869,
+      "sha256": "c5ec2b19ba43008cc8acf1330a476a2dba7a006c24f4356e374a5c3b5f2670b9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/goal-status-after.json",
+      "bytes": 36517,
+      "sha256": "5a5f90bc2c1ee66fa26fd5903f4aae495e5106ac1519525e50e9d4eacc29cb78"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/goal-status-before.json",
+      "bytes": 34875,
+      "sha256": "79275521c9b0c56186b3a986a971d8067fd2fe77786755b03ee0a20726f9aedb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/mc_image_map.py",
+      "bytes": 16642,
+      "sha256": "4913247619915a8c231ae28cf631bd240dc02dbbe6abc2acbbfcb5541f193ec3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-20261025/attempt-failure.json",
+      "bytes": 812,
+      "sha256": "431fcaf1b1241a311f7aca93cb69d0df333767b239d47855ac4c92bb16c09b4d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-20261025/attempt-source.py",
+      "bytes": 16367,
+      "sha256": "2ea7fe2914c5e905aa13067818008b2743e505b2a378254641112f45f6d7806d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-corrected-20261025/mc-image-map-results.json",
+      "bytes": 145754,
+      "sha256": "6e50a0e0467c0d275721b197e0073957e72261bc3b7394f5211467e65c1bca4f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-corrected-20261025/source-receipt.json",
+      "bytes": 1562,
+      "sha256": "f57f85df6e1ca6afd8e690137947580c9de0517b67d27d774fe852aa7ae6a093"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-corrected-20261025/source-version.py",
+      "bytes": 16466,
+      "sha256": "fe38a7165d7caddf01c72d900aacdf4b0895a840f0b7c57118edf8ddf97ba15c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-corrected-20261025/summary.json",
+      "bytes": 653,
+      "sha256": "153d50cd665f888b5c90bb2cfaa3bdb8f767024f96059d110c455944fa7a07b5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-reviewed-20261025/mc-image-map-results.json",
+      "bytes": 145347,
+      "sha256": "13112f91db7e09a8319f8077e1ec6fa2af63676de5933f0e805dd8a41e226597"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-reviewed-20261025/source-receipt.json",
+      "bytes": 1562,
+      "sha256": "8ba7d6196fdd59a9945156e154a55b6419da4dd79dab6fabe484c68bb6b23c8b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/run-reviewed-20261025/summary.json",
+      "bytes": 653,
+      "sha256": "153d50cd665f888b5c90bb2cfaa3bdb8f767024f96059d110c455944fa7a07b5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/supersession.json",
+      "bytes": 587,
+      "sha256": "b863d36e0319f87100c4544f6cb7a6d964faa654a70cc3c15c0a46080fd74c6c"
+    }
+  ],
+  "previous_manifest_sha256": "e123a4bca1ed9ab845966898e2338e0a355c80bd7b9dc295bfffabf4cd4d55c7",
+  "effective_run": "run-reviewed-20261025",
+  "scope": "Static raw-image model and code/data references; no actual runtime map, registered MAIN receiver, format acceptance or recovery.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage25-mc-image-map/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage25-mc-image-map/goal-status-after.json",
+    "before_sha256": "79275521c9b0c56186b3a986a971d8067fd2fe77786755b03ee0a20726f9aedb",
+    "after_sha256": "5a5f90bc2c1ee66fa26fd5903f4aae495e5106ac1519525e50e9d4eacc29cb78",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "native_or_guest_firmware_executed": false,
+    "user_requested_local_Orca_check": 1,
+    "outgoing_messages_or_lifecycle_mutations": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 编码映像与地址模型](<work/sony-firmware-20261024/stage25-mc-image-map/README.md>)：在av-cam核对编码类、MC标识与局部地址引用；CPapp仅建部分候选映射，Imola日志分支为通道哨兵比较，实际MC接收、格式接受和恢复仍未验证。"
+}

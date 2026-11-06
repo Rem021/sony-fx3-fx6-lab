@@ -1,0 +1,156 @@
+{
+  "schema": "fx3-r44-candidate-policy-v1",
+  "status": "offline_candidate_only_not_activated",
+  "candidate_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r44-review-budget-candidate",
+  "base_input": {
+    "r42_runner": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner",
+    "r42_source43_sha256": "6f8d7e926ae6a1387c42cb43f8e4c95ca74e3c51572a8dac1bee783868a89652",
+    "r42_core38_sha256": "0760035499c8362eef3ee24c819d3b8f6cbed3bf156bf4ee8b09adc187b1ba68"
+  },
+  "profile": "r44-review-budget-60s",
+  "label": "v44review-n64-r44",
+  "run_dir_prefix": "v44review-n64-r44-",
+  "whole_step_operator_deadline_ms": 60000,
+  "previous_whole_step_operator_deadline_ms": 20000,
+  "changed_code_data_files": [
+    {
+      "path": "runtime-wrapper/cleanup.py",
+      "old_sha256": "c78adb93f1ca9be9bf4080d5bdda41c9376ce80bfc1bbce34c32a3431d7aaabc",
+      "new_sha256": "7c567bd53ad86b7d55db4b84640e018e80443328e53a7576b4e025c9073ea3e8",
+      "reason": "End alarm classification budget 20000 -> 60000"
+    },
+    {
+      "path": "runtime-wrapper/operate.py",
+      "old_sha256": "7c95d7ce2fa724e4172b5a6294c7a45f7393a48b765d3d58743ca74d692d0e64",
+      "new_sha256": "e0aca5336e631ed3ec4cf3e888178f1351e05551ee1a208bcf9c9a59f4f39e5e",
+      "reason": "arm assertion deadline_ms == 60000"
+    },
+    {
+      "path": "operator-helpers/deadline.js",
+      "old_sha256": "63b2d2890dde8c19b50ff0a8970f6e996ea3fd4a1ee594424bfbb32b97c774b0",
+      "new_sha256": "cfe09ab87d14de6f5597b1ced23f3a52dafacdce0ee3ed126514d55f9be454f4",
+      "reason": "whole-step DEADLINE_MS 20_000 -> 60_000"
+    },
+    {
+      "path": "operator-helpers/planned_navigation_click.js",
+      "old_sha256": "4ae5ec1f9862e9a8e563a2ec3638b5fa2bf60eb4a2f4f48751cb4a44bf6fad37",
+      "new_sha256": "6e120517b1c785bb3eb277268908801465dd55dc0bda5901cfaa2be4fc7175e0",
+      "reason": "pre-click alarm_document_matches budget 20000 -> 60000 (comment updated)"
+    },
+    {
+      "path": "operator-helpers/recovery_cancel.js",
+      "old_sha256": "808bfb68ccae4e8bb77ed7efd5967e0c4009c5018a50bcf73dc32c0a9adbb1a2",
+      "new_sha256": "bdb3548b3221c6f74a7c7df2ea2cbf33e443d7238c96d4fcb89e4943b592f623",
+      "reason": "deadline status and cancel elapsed guards 20000 -> 60000"
+    },
+    {
+      "path": "operator-helpers/recovery_readonly.js",
+      "old_sha256": "2393d6804603d25df539fff0b9138c33fd6723dfc55c3882f3e2ada9419ee0b7",
+      "new_sha256": "93cb7af2378265b041a7dda7bdfbaa206a58b46dfbb980e50dd1d78b23e1fb59",
+      "reason": "alarm and cancelled-receipt identity budget 20000 -> 60000"
+    },
+    {
+      "path": "operator-helpers/snapshot_confirm.js",
+      "old_sha256": "6214f0b8a03d678fc14fc28a595e7a0060586cc5d8f3115160dc083735d84432",
+      "new_sha256": "167aa78440b9f30e0b60796a167299a6117647f42bbc020330886cda97d07146",
+      "reason": "confirm alarm identity budget 20000 -> 60000"
+    },
+    {
+      "path": "operator-helpers/snapshot_read.js",
+      "old_sha256": "e097be61d8f7309f1fae74959b6513d1625358176f5a0cd5709e41472408f5a8",
+      "new_sha256": "1d042133c6a2e24d128cc7ed95d7f760a7c29a4cecf4ac0a99ea2ae54ec1c225",
+      "reason": "alarm identity deadline_ms 20000 -> 60000"
+    },
+    {
+      "path": "prepare_run.py",
+      "old_sha256": "668520e7047cf8cf3ab064e218f53c9e26c87d7201443f16b3d8c3f2002a2d0b",
+      "new_sha256": "0611ab27cd7ecaa215fe52abedaaad2884fe61bfe4f7746510793d91496e8fd1",
+      "reason": "run label/scope text mentions candidate 60s; no timer behavior"
+    },
+    {
+      "path": "operator-helpers/recovery_observation.py",
+      "old_sha256": "6562effaf376d062a859ad9350a71b42ab6712c6eb89aedc6902f43c56e35caf",
+      "new_sha256": "a4c0532a4df678468a0c96260198e591d734e013fea43eb69bd5666a0b6a2457",
+      "reason": "recovery observation alarm_budget_ms 20000 -> 60000; label alarm_60s_browser_identity"
+    },
+    {
+      "path": "operator-helpers/postkey_read.js",
+      "old_sha256": "36dfd004040ed2d9be219f31ab73d2e39d7a853774bbf9d61ed1581beb5dd681",
+      "new_sha256": "f47a618a2687ab06880812f20a1d9695bbe6c14326f97c974dab2ca80713f57d",
+      "reason": "post-key alarm identity budget 20000 -> 60000"
+    },
+    {
+      "path": "return-tools/return_adapter.py",
+      "old_sha256": "55e65a8cc5b363f326b6a365d666965b8846c34c4bbb582c56e33be8a664502f",
+      "new_sha256": "ce5faeadc6a7fdc53472d7102cc5111c32d007704c9ed6513d9b6535957313e2",
+      "reason": "self-freeze OPERATE_SHA/CORE_FREEZE_SHA updated to candidate hashes; no behavior change"
+    },
+    {
+      "path": "r35_package_selection.py",
+      "old_sha256": "33e7115877732c3c6ff52c59f9281e24f46dd168149afd2f0979b35a57e39a23",
+      "new_sha256": "2b98bcbdb49765dbfc0ae405e2cb8695e78951e65978f05952bf7ffc371915a6",
+      "reason": "candidate profile/label/APPROVED_HOST and r42 input pins"
+    }
+  ],
+  "changed_code_data_count": 13,
+  "core_manifest_entry": {
+    "path": "CORE-SOURCE-FREEZE.json",
+    "old": "0760035499c8362eef3ee24c819d3b8f6cbed3bf156bf4ee8b09adc187b1ba68",
+    "new": "b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1"
+  },
+  "unchanged_source_entries": 29,
+  "candidate_source43_sha256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+  "candidate_core38_sha256": "b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1",
+  "package": {
+    "root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package",
+    "reused": true,
+    "new_package": false,
+    "candidate_sha256": "857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806",
+    "cpio_sha256": "59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63",
+    "cpio_bytes": 453213884,
+    "load_address": "0x440000000",
+    "dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+  },
+  "page_identity": {
+    "PAGE_sha256": "f2c0eb2d4282ff53403f29b7650403f336b6ffd74c71c05390676193af962ff7",
+    "canonical_script_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+    "changed": false
+  },
+  "preserved": {
+    "run_trial_r24_review_snapshot.py": "1f8cf2b78f3a56e2f38ab561ff1a7a3c072d984878a02be9b6afedf68a4fcd28",
+    "trial_web_r24_review_snapshot.py": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+    "review_page_r24.js": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
+    "confirm_page_r24.js": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
+    "PAGE-IDENTITY.json": "7f4b2f3a3f9c86fdb3193a2177135955f3aa000a135e819eba08493c0cf41a0a",
+    "NAVIGATION-PLAN.json": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+    "runtime-wrapper/start_and_wait.py": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+    "native_input_deadline_error": {
+      "sha256_whole_runner": "1f8cf2b78f3a56e2f38ab561ff1a7a3c072d984878a02be9b6afedf68a4fcd28",
+      "threshold_seconds": 12,
+      "call_sites": 1,
+      "byte_identical_to_r42": true
+    },
+    "snapshot_ttl_seconds": 20.0,
+    "api16_restore_timeout_seconds": 20,
+    "startup_limit_seconds": 180,
+    "total_run_minutes": 8,
+    "max_steps_capacity": 32,
+    "accepted_keys": 8,
+    "explicit_attempts": 10,
+    "attributed_unqueued_recoveries": 2,
+    "recoveries_per_step": 1,
+    "first_observation_not_before_arm_ms": 5000,
+    "observations_per_attempt_max": 3,
+    "page_canonical_script_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+    "cleanup": "original End first; one kernel-lock cleanup owner; already-cleaned idempotent; dispose only after valid non-armed classification",
+    "identity": "strict nonce/document/launch/PAGE identity; no auto pin, confirm, semantic pass, or merged human review"
+  },
+  "activation_rule": "requires explicit user approval after coordinator review; this candidate is isolated and never edits the active run entry",
+  "VM": false,
+  "browser": false,
+  "server": false,
+  "QMP": false,
+  "guest_execution": false,
+  "deployment": false,
+  "firmware_write": false
+}

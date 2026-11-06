@@ -1,0 +1,525 @@
+# work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so
+# SHA256 6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9
+# VA [0x1a2f0, 0x1ab18) raw slice SHA256 e0c63dd675d183c5cf985030ede59ce67fe47b5c1a275da5e9a40f623da29314
+   1a2f0: a9a57bfd     	stp	x29, x30, [sp, #-0x1b0]!
+   1a2f4: 910003fd     	mov	x29, sp
+   1a2f8: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   1a2fc: aa0103f6     	mov	x22, x1
+   1a300: f9400001     	ldr	x1, [x0]
+   1a304: a90153f3     	stp	x19, x20, [sp, #0x10]
+   1a308: aa0003f3     	mov	x19, x0
+   1a30c: a90363f7     	stp	x23, x24, [sp, #0x30]
+   1a310: a9046bf9     	stp	x25, x26, [sp, #0x40]
+   1a314: f9403021     	ldr	x1, [x1, #0x60]
+   1a318: a90573fb     	stp	x27, x28, [sp, #0x50]
+   1a31c: d63f0020     	blr	x1
+   1a320: 72001c1f     	tst	w0, #0xff
+   1a324: 54003d41     	b.ne	0x1aacc <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x7dc>
+   1a328: 910603b4     	add	x20, x29, #0x180
+   1a32c: b000001c     	adrp	x28, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a330: aa1403e0     	mov	x0, x20
+   1a334: 97ffd737     	bl	0x10010 <Updater::MountPoint::MountPoint()@plt>
+   1a338: 912dbb81     	add	x1, x28, #0xb6e
+   1a33c: aa1403e0     	mov	x0, x20
+   1a340: 97ffd718     	bl	0xffa0 <Updater::MountPoint::Initialize(char const*)@plt>
+   1a344: 394002c0     	ldrb	w0, [x22]
+   1a348: b0000017     	adrp	x23, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a34c: 910563b5     	add	x21, x29, #0x158
+   1a350: 9104c3bb     	add	x27, x29, #0x130
+   1a354: 910423ba     	add	x26, x29, #0x108
+   1a358: 34002720     	cbz	w0, 0x1a83c <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x54c>
+   1a35c: d0000018     	adrp	x24, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a360: aa1403e0     	mov	x0, x20
+   1a364: 9111eb01     	add	x1, x24, #0x47a
+   1a368: 52808202     	mov	w2, #0x410              // =1040
+   1a36c: 97ffd659     	bl	0xfcd0 <Updater::MountPoint::Mount(char const*, unsigned int)@plt>
+   1a370: 72001c1f     	tst	w0, #0xff
+   1a374: 54000361     	b.ne	0x1a3e0 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0xf0>
+   1a378: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a37c: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a380: 528001c1     	mov	w1, #0xe                // =14
+   1a384: 9111eb04     	add	x4, x24, #0x47a
+   1a388: 910dd442     	add	x2, x2, #0x375
+   1a38c: 91220400     	add	x0, x0, #0x881
+   1a390: 52801d83     	mov	w3, #0xec               // =236
+   1a394: 72a00061     	movk	w1, #0x3, lsl #16
+   1a398: 97ffd966     	bl	0x10930 <printf@plt>
+   1a39c: d2800200     	mov	x0, #0x10               // =16
+   1a3a0: 97ffd678     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a3a4: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a3a8: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a3ac: f9471821     	ldr	x1, [x1, #0xe30]
+   1a3b0: f9474442     	ldr	x2, [x2, #0xe88]
+   1a3b4: 91004021     	add	x1, x1, #0x10
+   1a3b8: f9000001     	str	x1, [x0]
+   1a3bc: 528001c1     	mov	w1, #0xe                // =14
+   1a3c0: 72a00061     	movk	w1, #0x3, lsl #16
+   1a3c4: b9000801     	str	w1, [x0, #0x8]
+   1a3c8: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a3cc: 3900301f     	strb	wzr, [x0, #0xc]
+   1a3d0: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a3d4: 97ffd8cb     	bl	0x10700 <__cxa_throw@plt>
+   1a3d8: aa0003f3     	mov	x19, x0
+   1a3dc: 1400007a     	b	0x1a5c4 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x2d4>
+   1a3e0: f9400260     	ldr	x0, [x19]
+   1a3e4: f9402c01     	ldr	x1, [x0, #0x58]
+   1a3e8: aa1303e0     	mov	x0, x19
+   1a3ec: d63f0020     	blr	x1
+   1a3f0: 72001c1f     	tst	w0, #0xff
+   1a3f4: 540001e1     	b.ne	0x1a430 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x140>
+   1a3f8: aa1403e0     	mov	x0, x20
+   1a3fc: 97ffd835     	bl	0x104d0 <Updater::MountPoint::Umount()@plt>
+   1a400: 72001c1f     	tst	w0, #0xff
+   1a404: 54000401     	b.ne	0x1a484 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x194>
+   1a408: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a40c: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a410: 528001e1     	mov	w1, #0xf                // =15
+   1a414: 912dbb84     	add	x4, x28, #0xb6e
+   1a418: 910dd442     	add	x2, x2, #0x375
+   1a41c: 91220400     	add	x0, x0, #0x881
+   1a420: 52801e83     	mov	w3, #0xf4               // =244
+   1a424: 72a00061     	movk	w1, #0x3, lsl #16
+   1a428: 97ffd942     	bl	0x10930 <printf@plt>
+   1a42c: 14000007     	b	0x1a448 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x158>
+   1a430: f9400260     	ldr	x0, [x19]
+   1a434: 29418ac1     	ldp	w1, w2, [x22, #0xc]
+   1a438: f9402803     	ldr	x3, [x0, #0x50]
+   1a43c: aa1303e0     	mov	x0, x19
+   1a440: d63f0060     	blr	x3
+   1a444: 17ffffed     	b	0x1a3f8 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x108>
+   1a448: d2800200     	mov	x0, #0x10               // =16
+   1a44c: 97ffd64d     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a450: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a454: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a458: f9471821     	ldr	x1, [x1, #0xe30]
+   1a45c: f9474442     	ldr	x2, [x2, #0xe88]
+   1a460: 91004021     	add	x1, x1, #0x10
+   1a464: f9000001     	str	x1, [x0]
+   1a468: 528001e1     	mov	w1, #0xf                // =15
+   1a46c: 72a00061     	movk	w1, #0x3, lsl #16
+   1a470: b9000801     	str	w1, [x0, #0x8]
+   1a474: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a478: 3900301f     	strb	wzr, [x0, #0xc]
+   1a47c: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a480: 97ffd8a0     	bl	0x10700 <__cxa_throw@plt>
+   1a484: 394002c0     	ldrb	w0, [x22]
+   1a488: 34001da0     	cbz	w0, 0x1a83c <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x54c>
+   1a48c: 91217ee1     	add	x1, x23, #0x85f
+   1a490: aa1403e0     	mov	x0, x20
+   1a494: 52808202     	mov	w2, #0x410              // =1040
+   1a498: 97ffd60e     	bl	0xfcd0 <Updater::MountPoint::Mount(char const*, unsigned int)@plt>
+   1a49c: 72001c1f     	tst	w0, #0xff
+   1a4a0: 54000321     	b.ne	0x1a504 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x214>
+   1a4a4: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a4a8: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a4ac: 528001c1     	mov	w1, #0xe                // =14
+   1a4b0: 91217ee4     	add	x4, x23, #0x85f
+   1a4b4: 910dd442     	add	x2, x2, #0x375
+   1a4b8: 91220400     	add	x0, x0, #0x881
+   1a4bc: 52801f63     	mov	w3, #0xfb               // =251
+   1a4c0: 72a00061     	movk	w1, #0x3, lsl #16
+   1a4c4: 97ffd91b     	bl	0x10930 <printf@plt>
+   1a4c8: d2800200     	mov	x0, #0x10               // =16
+   1a4cc: 97ffd62d     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a4d0: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a4d4: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a4d8: f9471821     	ldr	x1, [x1, #0xe30]
+   1a4dc: f9474442     	ldr	x2, [x2, #0xe88]
+   1a4e0: 91004021     	add	x1, x1, #0x10
+   1a4e4: f9000001     	str	x1, [x0]
+   1a4e8: 528001c1     	mov	w1, #0xe                // =14
+   1a4ec: 72a00061     	movk	w1, #0x3, lsl #16
+   1a4f0: b9000801     	str	w1, [x0, #0x8]
+   1a4f4: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a4f8: 3900301f     	strb	wzr, [x0, #0xc]
+   1a4fc: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a500: 97ffd880     	bl	0x10700 <__cxa_throw@plt>
+   1a504: aa1503e0     	mov	x0, x21
+   1a508: 97ffd81e     	bl	0x10580 <Updater::StringHandler::StringHandler()@plt>
+   1a50c: b0000003     	adrp	x3, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a510: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a514: 912cb863     	add	x3, x3, #0xb2e
+   1a518: 91128042     	add	x2, x2, #0x4a0
+   1a51c: 912dbb81     	add	x1, x28, #0xb6e
+   1a520: aa1503e0     	mov	x0, x21
+   1a524: 97ffd8cb     	bl	0x10850 <Updater::StringHandler::SetString(char const*, char const*, char const*)@plt>
+   1a528: aa1503e0     	mov	x0, x21
+   1a52c: 97ffd749     	bl	0x10250 <Updater::DirectoryHandler::Create(Updater::StringHandler const&)@plt>
+   1a530: f9400262     	ldr	x2, [x19]
+   1a534: 294082c1     	ldp	w1, w0, [x22, #0x4]
+   1a538: f9402042     	ldr	x2, [x2, #0x40]
+   1a53c: 2a012001     	orr	w1, w0, w1, lsl #8
+   1a540: aa1303e0     	mov	x0, x19
+   1a544: d63f0040     	blr	x2
+   1a548: aa1403e0     	mov	x0, x20
+   1a54c: 97ffd7e1     	bl	0x104d0 <Updater::MountPoint::Umount()@plt>
+   1a550: 72001c1f     	tst	w0, #0xff
+   1a554: 54000401     	b.ne	0x1a5d4 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x2e4>
+   1a558: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a55c: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a560: 528001e1     	mov	w1, #0xf                // =15
+   1a564: 912dbb84     	add	x4, x28, #0xb6e
+   1a568: 910dd442     	add	x2, x2, #0x375
+   1a56c: 91220400     	add	x0, x0, #0x881
+   1a570: 528020e3     	mov	w3, #0x107              // =263
+   1a574: 72a00061     	movk	w1, #0x3, lsl #16
+   1a578: 97ffd8ee     	bl	0x10930 <printf@plt>
+   1a57c: d2800200     	mov	x0, #0x10               // =16
+   1a580: 97ffd600     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a584: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a588: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a58c: f9471821     	ldr	x1, [x1, #0xe30]
+   1a590: f9474442     	ldr	x2, [x2, #0xe88]
+   1a594: 91004021     	add	x1, x1, #0x10
+   1a598: f9000001     	str	x1, [x0]
+   1a59c: 528001e1     	mov	w1, #0xf                // =15
+   1a5a0: 72a00061     	movk	w1, #0x3, lsl #16
+   1a5a4: b9000801     	str	w1, [x0, #0x8]
+   1a5a8: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a5ac: 3900301f     	strb	wzr, [x0, #0xc]
+   1a5b0: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a5b4: 97ffd853     	bl	0x10700 <__cxa_throw@plt>
+   1a5b8: aa0003f3     	mov	x19, x0
+   1a5bc: aa1503e0     	mov	x0, x21
+   1a5c0: 97ffd86c     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   1a5c4: aa1403e0     	mov	x0, x20
+   1a5c8: 97ffd57a     	bl	0xfbb0 <Updater::MountPoint::~MountPoint()@plt>
+   1a5cc: aa1303e0     	mov	x0, x19
+   1a5d0: 97ffd874     	bl	0x107a0 <_Unwind_Resume@plt>
+   1a5d4: b9400a60     	ldr	w0, [x19, #0x8]
+   1a5d8: 51000c00     	sub	w0, w0, #0x3
+   1a5dc: 721e781f     	tst	w0, #0xfffffffd
+   1a5e0: 54000680     	b.eq	0x1a6b0 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x3c0>
+   1a5e4: f9400260     	ldr	x0, [x19]
+   1a5e8: 910403a3     	add	x3, x29, #0x100
+   1a5ec: 3904c3bf     	strb	wzr, [x29, #0x130]
+   1a5f0: aa1b03e1     	mov	x1, x27
+   1a5f4: f9401802     	ldr	x2, [x0, #0x30]
+   1a5f8: aa1303e0     	mov	x0, x19
+   1a5fc: 2906fc7f     	stp	wzr, wzr, [x3, #0x34]
+   1a600: 2907fc7f     	stp	wzr, wzr, [x3, #0x3c]
+   1a604: b90147bf     	str	wzr, [x29, #0x144]
+   1a608: d63f0040     	blr	x2
+   1a60c: 3944c3a0     	ldrb	w0, [x29, #0x130]
+   1a610: 34000220     	cbz	w0, 0x1a654 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x364>
+   1a614: b94006c0     	ldr	w0, [x22, #0x4]
+   1a618: b94137a1     	ldr	w1, [x29, #0x134]
+   1a61c: 6b00003f     	cmp	w1, w0
+   1a620: 540001a1     	b.ne	0x1a654 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x364>
+   1a624: b9400ac0     	ldr	w0, [x22, #0x8]
+   1a628: b9413ba1     	ldr	w1, [x29, #0x138]
+   1a62c: 6b00003f     	cmp	w1, w0
+   1a630: 54000121     	b.ne	0x1a654 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x364>
+   1a634: b9400ec0     	ldr	w0, [x22, #0xc]
+   1a638: b9413fa1     	ldr	w1, [x29, #0x13c]
+   1a63c: 6b00003f     	cmp	w1, w0
+   1a640: 540000a1     	b.ne	0x1a654 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x364>
+   1a644: b94012c0     	ldr	w0, [x22, #0x10]
+   1a648: b94143a1     	ldr	w1, [x29, #0x140]
+   1a64c: 6b00003f     	cmp	w1, w0
+   1a650: 54000f20     	b.eq	0x1a834 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x544>
+   1a654: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a658: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a65c: 52800081     	mov	w1, #0x4                // =4
+   1a660: 910dd442     	add	x2, x2, #0x375
+   1a664: 9118b800     	add	x0, x0, #0x62e
+   1a668: 52802203     	mov	w3, #0x110              // =272
+   1a66c: 72a00061     	movk	w1, #0x3, lsl #16
+   1a670: 97ffd8b0     	bl	0x10930 <printf@plt>
+   1a674: d2800200     	mov	x0, #0x10               // =16
+   1a678: 97ffd5c2     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a67c: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a680: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a684: f9471821     	ldr	x1, [x1, #0xe30]
+   1a688: f9474442     	ldr	x2, [x2, #0xe88]
+   1a68c: 91004021     	add	x1, x1, #0x10
+   1a690: f9000001     	str	x1, [x0]
+   1a694: 52800081     	mov	w1, #0x4                // =4
+   1a698: 72a00061     	movk	w1, #0x3, lsl #16
+   1a69c: b9000801     	str	w1, [x0, #0x8]
+   1a6a0: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a6a4: 3900301f     	strb	wzr, [x0, #0xc]
+   1a6a8: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a6ac: 97ffd815     	bl	0x10700 <__cxa_throw@plt>
+   1a6b0: 91217ee1     	add	x1, x23, #0x85f
+   1a6b4: aa1403e0     	mov	x0, x20
+   1a6b8: 52808202     	mov	w2, #0x410              // =1040
+   1a6bc: 97ffd585     	bl	0xfcd0 <Updater::MountPoint::Mount(char const*, unsigned int)@plt>
+   1a6c0: 72001c1f     	tst	w0, #0xff
+   1a6c4: 54000321     	b.ne	0x1a728 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x438>
+   1a6c8: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a6cc: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a6d0: 528001c1     	mov	w1, #0xe                // =14
+   1a6d4: 91217ee4     	add	x4, x23, #0x85f
+   1a6d8: 910dd442     	add	x2, x2, #0x375
+   1a6dc: 91220400     	add	x0, x0, #0x881
+   1a6e0: 52802283     	mov	w3, #0x114              // =276
+   1a6e4: 72a00061     	movk	w1, #0x3, lsl #16
+   1a6e8: 97ffd892     	bl	0x10930 <printf@plt>
+   1a6ec: d2800200     	mov	x0, #0x10               // =16
+   1a6f0: 97ffd5a4     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a6f4: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a6f8: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a6fc: f9471821     	ldr	x1, [x1, #0xe30]
+   1a700: f9474442     	ldr	x2, [x2, #0xe88]
+   1a704: 91004021     	add	x1, x1, #0x10
+   1a708: f9000001     	str	x1, [x0]
+   1a70c: 528001c1     	mov	w1, #0xe                // =14
+   1a710: 72a00061     	movk	w1, #0x3, lsl #16
+   1a714: b9000801     	str	w1, [x0, #0x8]
+   1a718: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a71c: 3900301f     	strb	wzr, [x0, #0xc]
+   1a720: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a724: 97ffd7f7     	bl	0x10700 <__cxa_throw@plt>
+   1a728: f9400260     	ldr	x0, [x19]
+   1a72c: aa1b03e2     	mov	x2, x27
+   1a730: aa1a03e1     	mov	x1, x26
+   1a734: f9401c03     	ldr	x3, [x0, #0x38]
+   1a738: aa1303e0     	mov	x0, x19
+   1a73c: b9010bbf     	str	wzr, [x29, #0x108]
+   1a740: b90133bf     	str	wzr, [x29, #0x130]
+   1a744: d63f0060     	blr	x3
+   1a748: aa1403e0     	mov	x0, x20
+   1a74c: 97ffd761     	bl	0x104d0 <Updater::MountPoint::Umount()@plt>
+   1a750: 72001c1f     	tst	w0, #0xff
+   1a754: 54000321     	b.ne	0x1a7b8 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x4c8>
+   1a758: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a75c: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a760: 528001e1     	mov	w1, #0xf                // =15
+   1a764: 912dbb84     	add	x4, x28, #0xb6e
+   1a768: 910dd442     	add	x2, x2, #0x375
+   1a76c: 91220400     	add	x0, x0, #0x881
+   1a770: 52802323     	mov	w3, #0x119              // =281
+   1a774: 72a00061     	movk	w1, #0x3, lsl #16
+   1a778: 97ffd86e     	bl	0x10930 <printf@plt>
+   1a77c: d2800200     	mov	x0, #0x10               // =16
+   1a780: 97ffd580     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a784: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a788: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a78c: f9471821     	ldr	x1, [x1, #0xe30]
+   1a790: f9474442     	ldr	x2, [x2, #0xe88]
+   1a794: 91004021     	add	x1, x1, #0x10
+   1a798: f9000001     	str	x1, [x0]
+   1a79c: 528001e1     	mov	w1, #0xf                // =15
+   1a7a0: 72a00061     	movk	w1, #0x3, lsl #16
+   1a7a4: b9000801     	str	w1, [x0, #0x8]
+   1a7a8: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a7ac: 3900301f     	strb	wzr, [x0, #0xc]
+   1a7b0: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a7b4: 97ffd7d3     	bl	0x10700 <__cxa_throw@plt>
+   1a7b8: b94006c1     	ldr	w1, [x22, #0x4]
+   1a7bc: b9410ba0     	ldr	w0, [x29, #0x108]
+   1a7c0: 6b00003f     	cmp	w1, w0
+   1a7c4: 540000a1     	b.ne	0x1a7d8 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x4e8>
+   1a7c8: b9400ac1     	ldr	w1, [x22, #0x8]
+   1a7cc: b94133a0     	ldr	w0, [x29, #0x130]
+   1a7d0: 6b00003f     	cmp	w1, w0
+   1a7d4: 54000300     	b.eq	0x1a834 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x544>
+   1a7d8: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a7dc: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a7e0: 52800081     	mov	w1, #0x4                // =4
+   1a7e4: 910dd442     	add	x2, x2, #0x375
+   1a7e8: 9118b800     	add	x0, x0, #0x62e
+   1a7ec: 52802383     	mov	w3, #0x11c              // =284
+   1a7f0: 72a00061     	movk	w1, #0x3, lsl #16
+   1a7f4: 97ffd84f     	bl	0x10930 <printf@plt>
+   1a7f8: d2800200     	mov	x0, #0x10               // =16
+   1a7fc: 97ffd561     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a800: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a804: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a808: f9471821     	ldr	x1, [x1, #0xe30]
+   1a80c: f9474442     	ldr	x2, [x2, #0xe88]
+   1a810: 91004021     	add	x1, x1, #0x10
+   1a814: f9000001     	str	x1, [x0]
+   1a818: 52800081     	mov	w1, #0x4                // =4
+   1a81c: 72a00061     	movk	w1, #0x3, lsl #16
+   1a820: b9000801     	str	w1, [x0, #0x8]
+   1a824: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a828: 3900301f     	strb	wzr, [x0, #0xc]
+   1a82c: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a830: 97ffd7b4     	bl	0x10700 <__cxa_throw@plt>
+   1a834: aa1503e0     	mov	x0, x21
+   1a838: 97ffd7ce     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   1a83c: 91217ee1     	add	x1, x23, #0x85f
+   1a840: aa1403e0     	mov	x0, x20
+   1a844: 52808202     	mov	w2, #0x410              // =1040
+   1a848: 97ffd522     	bl	0xfcd0 <Updater::MountPoint::Mount(char const*, unsigned int)@plt>
+   1a84c: 72001c1f     	tst	w0, #0xff
+   1a850: 54000321     	b.ne	0x1a8b4 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x5c4>
+   1a854: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a858: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a85c: 528001c1     	mov	w1, #0xe                // =14
+   1a860: 91217ee4     	add	x4, x23, #0x85f
+   1a864: 910dd442     	add	x2, x2, #0x375
+   1a868: 91220400     	add	x0, x0, #0x881
+   1a86c: 52802483     	mov	w3, #0x124              // =292
+   1a870: 72a00061     	movk	w1, #0x3, lsl #16
+   1a874: 97ffd82f     	bl	0x10930 <printf@plt>
+   1a878: d2800200     	mov	x0, #0x10               // =16
+   1a87c: 97ffd541     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1a880: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a884: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a888: f9471821     	ldr	x1, [x1, #0xe30]
+   1a88c: f9474442     	ldr	x2, [x2, #0xe88]
+   1a890: 91004021     	add	x1, x1, #0x10
+   1a894: f9000001     	str	x1, [x0]
+   1a898: 528001c1     	mov	w1, #0xe                // =14
+   1a89c: 72a00061     	movk	w1, #0x3, lsl #16
+   1a8a0: b9000801     	str	w1, [x0, #0x8]
+   1a8a4: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1a8a8: 3900301f     	strb	wzr, [x0, #0xc]
+   1a8ac: f947e021     	ldr	x1, [x1, #0xfc0]
+   1a8b0: 97ffd794     	bl	0x10700 <__cxa_throw@plt>
+   1a8b4: 9101a3b6     	add	x22, x29, #0x68
+   1a8b8: 912dbb81     	add	x1, x28, #0xb6e
+   1a8bc: aa1603e0     	mov	x0, x22
+   1a8c0: 97ffd584     	bl	0xfed0 <Updater::Mode1FlagFile::Mode1FlagFile(char const*)@plt>
+   1a8c4: aa1603e0     	mov	x0, x22
+   1a8c8: 97ffd5f2     	bl	0x10090 <Updater::BaseFlagFile::IsValid()@plt>
+   1a8cc: 72001c1f     	tst	w0, #0xff
+   1a8d0: 540000c1     	b.ne	0x1a8e8 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x5f8>
+   1a8d4: 910243b7     	add	x23, x29, #0x90
+   1a8d8: 912dbb81     	add	x1, x28, #0xb6e
+   1a8dc: aa1703e0     	mov	x0, x23
+   1a8e0: 97ffd640     	bl	0x101e0 <Updater::Mode2FlagFile::Mode2FlagFile(char const*)@plt>
+   1a8e4: 14000004     	b	0x1a8f4 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x604>
+   1a8e8: aa1603e0     	mov	x0, x22
+   1a8ec: 97ffd4f1     	bl	0xfcb0 <Updater::BaseFlagFile::Delete()@plt>
+   1a8f0: 17fffff9     	b	0x1a8d4 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x5e4>
+   1a8f4: aa1703e0     	mov	x0, x23
+   1a8f8: 97ffd5e6     	bl	0x10090 <Updater::BaseFlagFile::IsValid()@plt>
+   1a8fc: 72001c1f     	tst	w0, #0xff
+   1a900: 540000c1     	b.ne	0x1a918 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x628>
+   1a904: 9102e3b8     	add	x24, x29, #0xb8
+   1a908: 912dbb81     	add	x1, x28, #0xb6e
+   1a90c: aa1803e0     	mov	x0, x24
+   1a910: 97ffd648     	bl	0x10230 <Updater::Mode3FlagFile::Mode3FlagFile(char const*)@plt>
+   1a914: 14000004     	b	0x1a924 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x634>
+   1a918: aa1703e0     	mov	x0, x23
+   1a91c: 97ffd4e5     	bl	0xfcb0 <Updater::BaseFlagFile::Delete()@plt>
+   1a920: 17fffff9     	b	0x1a904 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x614>
+   1a924: aa1803e0     	mov	x0, x24
+   1a928: 97ffd5da     	bl	0x10090 <Updater::BaseFlagFile::IsValid()@plt>
+   1a92c: 72001c1f     	tst	w0, #0xff
+   1a930: 540000c1     	b.ne	0x1a948 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x658>
+   1a934: 910383b9     	add	x25, x29, #0xe0
+   1a938: 912dbb81     	add	x1, x28, #0xb6e
+   1a93c: aa1903e0     	mov	x0, x25
+   1a940: 97ffd664     	bl	0x102d0 <Updater::Mode5FlagFile::Mode5FlagFile(char const*)@plt>
+   1a944: 14000004     	b	0x1a954 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x664>
+   1a948: aa1803e0     	mov	x0, x24
+   1a94c: 97ffd4d9     	bl	0xfcb0 <Updater::BaseFlagFile::Delete()@plt>
+   1a950: 17fffff9     	b	0x1a934 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x644>
+   1a954: aa1903e0     	mov	x0, x25
+   1a958: 97ffd5ce     	bl	0x10090 <Updater::BaseFlagFile::IsValid()@plt>
+   1a95c: 72001c1f     	tst	w0, #0xff
+   1a960: 540000a1     	b.ne	0x1a974 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x684>
+   1a964: 912dbb81     	add	x1, x28, #0xb6e
+   1a968: aa1a03e0     	mov	x0, x26
+   1a96c: 97ffd635     	bl	0x10240 <Updater::Mode6FlagFile::Mode6FlagFile(char const*)@plt>
+   1a970: 14000004     	b	0x1a980 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x690>
+   1a974: aa1903e0     	mov	x0, x25
+   1a978: 97ffd4ce     	bl	0xfcb0 <Updater::BaseFlagFile::Delete()@plt>
+   1a97c: 17fffffa     	b	0x1a964 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x674>
+   1a980: aa1a03e0     	mov	x0, x26
+   1a984: 97ffd5c3     	bl	0x10090 <Updater::BaseFlagFile::IsValid()@plt>
+   1a988: 72001c1f     	tst	w0, #0xff
+   1a98c: 540000a1     	b.ne	0x1a9a0 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x6b0>
+   1a990: 912dbb81     	add	x1, x28, #0xb6e
+   1a994: aa1b03e0     	mov	x0, x27
+   1a998: 97ffd5ce     	bl	0x100d0 <Updater::CompleteFlagFile::CompleteFlagFile(char const*)@plt>
+   1a99c: 14000009     	b	0x1a9c0 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x6d0>
+   1a9a0: aa1a03e0     	mov	x0, x26
+   1a9a4: 97ffd4c3     	bl	0xfcb0 <Updater::BaseFlagFile::Delete()@plt>
+   1a9a8: f9400260     	ldr	x0, [x19]
+   1a9ac: 52800021     	mov	w1, #0x1                // =1
+   1a9b0: f9401402     	ldr	x2, [x0, #0x28]
+   1a9b4: aa1303e0     	mov	x0, x19
+   1a9b8: d63f0040     	blr	x2
+   1a9bc: 17fffff5     	b	0x1a990 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x6a0>
+   1a9c0: aa1b03e0     	mov	x0, x27
+   1a9c4: 97ffd78f     	bl	0x10800 <Updater::BaseFlagFile::Create()@plt>
+   1a9c8: 912dbb81     	add	x1, x28, #0xb6e
+   1a9cc: aa1503e0     	mov	x0, x21
+   1a9d0: 97ffd6f8     	bl	0x105b0 <Updater::ModeFlagFile::ModeFlagFile(char const*)@plt>
+   1a9d4: aa1503e0     	mov	x0, x21
+   1a9d8: 97ffd4b6     	bl	0xfcb0 <Updater::BaseFlagFile::Delete()@plt>
+   1a9dc: aa1403e0     	mov	x0, x20
+   1a9e0: 97ffd6bc     	bl	0x104d0 <Updater::MountPoint::Umount()@plt>
+   1a9e4: 72001c1f     	tst	w0, #0xff
+   1a9e8: 54000521     	b.ne	0x1aa8c <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x79c>
+   1a9ec: d0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   1a9f0: b0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   1a9f4: 528001e1     	mov	w1, #0xf                // =15
+   1a9f8: 912dbb84     	add	x4, x28, #0xb6e
+   1a9fc: 910dd442     	add	x2, x2, #0x375
+   1aa00: 91220400     	add	x0, x0, #0x881
+   1aa04: 52802863     	mov	w3, #0x143              // =323
+   1aa08: 72a00061     	movk	w1, #0x3, lsl #16
+   1aa0c: 97ffd7c9     	bl	0x10930 <printf@plt>
+   1aa10: d2800200     	mov	x0, #0x10               // =16
+   1aa14: 97ffd4db     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   1aa18: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1aa1c: f00000a2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1aa20: f9471821     	ldr	x1, [x1, #0xe30]
+   1aa24: f9474442     	ldr	x2, [x2, #0xe88]
+   1aa28: 91004021     	add	x1, x1, #0x10
+   1aa2c: f9000001     	str	x1, [x0]
+   1aa30: 528001e1     	mov	w1, #0xf                // =15
+   1aa34: 72a00061     	movk	w1, #0x3, lsl #16
+   1aa38: b9000801     	str	w1, [x0, #0x8]
+   1aa3c: f00000a1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   1aa40: 3900301f     	strb	wzr, [x0, #0xc]
+   1aa44: f947e021     	ldr	x1, [x1, #0xfc0]
+   1aa48: 97ffd72e     	bl	0x10700 <__cxa_throw@plt>
+   1aa4c: aa0003f3     	mov	x19, x0
+   1aa50: aa1503e0     	mov	x0, x21
+   1aa54: 97ffd4df     	bl	0xfdd0 <Updater::ModeFlagFile::~ModeFlagFile()@plt>
+   1aa58: aa1b03e0     	mov	x0, x27
+   1aa5c: 97ffd461     	bl	0xfbe0 <Updater::CompleteFlagFile::~CompleteFlagFile()@plt>
+   1aa60: aa1a03e0     	mov	x0, x26
+   1aa64: 97ffd627     	bl	0x10300 <Updater::Mode6FlagFile::~Mode6FlagFile()@plt>
+   1aa68: aa1903e0     	mov	x0, x25
+   1aa6c: 97ffd5b1     	bl	0x10130 <Updater::Mode5FlagFile::~Mode5FlagFile()@plt>
+   1aa70: aa1803e0     	mov	x0, x24
+   1aa74: 97ffd6e7     	bl	0x10610 <Updater::Mode3FlagFile::~Mode3FlagFile()@plt>
+   1aa78: aa1703e0     	mov	x0, x23
+   1aa7c: 97ffd4a9     	bl	0xfd20 <Updater::Mode2FlagFile::~Mode2FlagFile()@plt>
+   1aa80: aa1603e0     	mov	x0, x22
+   1aa84: 97ffd7a3     	bl	0x10910 <Updater::Mode1FlagFile::~Mode1FlagFile()@plt>
+   1aa88: 17fffecf     	b	0x1a5c4 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x2d4>
+   1aa8c: aa1503e0     	mov	x0, x21
+   1aa90: 97ffd4d0     	bl	0xfdd0 <Updater::ModeFlagFile::~ModeFlagFile()@plt>
+   1aa94: aa1b03e0     	mov	x0, x27
+   1aa98: 97ffd452     	bl	0xfbe0 <Updater::CompleteFlagFile::~CompleteFlagFile()@plt>
+   1aa9c: aa1a03e0     	mov	x0, x26
+   1aaa0: 97ffd618     	bl	0x10300 <Updater::Mode6FlagFile::~Mode6FlagFile()@plt>
+   1aaa4: aa1903e0     	mov	x0, x25
+   1aaa8: 97ffd5a2     	bl	0x10130 <Updater::Mode5FlagFile::~Mode5FlagFile()@plt>
+   1aaac: aa1803e0     	mov	x0, x24
+   1aab0: 97ffd6d8     	bl	0x10610 <Updater::Mode3FlagFile::~Mode3FlagFile()@plt>
+   1aab4: aa1703e0     	mov	x0, x23
+   1aab8: 97ffd49a     	bl	0xfd20 <Updater::Mode2FlagFile::~Mode2FlagFile()@plt>
+   1aabc: aa1603e0     	mov	x0, x22
+   1aac0: 97ffd794     	bl	0x10910 <Updater::Mode1FlagFile::~Mode1FlagFile()@plt>
+   1aac4: aa1403e0     	mov	x0, x20
+   1aac8: 97ffd43a     	bl	0xfbb0 <Updater::MountPoint::~MountPoint()@plt>
+   1aacc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   1aad0: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   1aad4: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   1aad8: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+   1aadc: a94573fb     	ldp	x27, x28, [sp, #0x50]
+   1aae0: a8db7bfd     	ldp	x29, x30, [sp], #0x1b0
+   1aae4: d65f03c0     	ret
+   1aae8: aa0003f3     	mov	x19, x0
+   1aaec: 17ffffdb     	b	0x1aa58 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x768>
+   1aaf0: aa0003f3     	mov	x19, x0
+   1aaf4: 17ffffdb     	b	0x1aa60 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x770>
+   1aaf8: aa0003f3     	mov	x19, x0
+   1aafc: 17ffffdb     	b	0x1aa68 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x778>
+   1ab00: aa0003f3     	mov	x19, x0
+   1ab04: 17ffffdb     	b	0x1aa70 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x780>
+   1ab08: aa0003f3     	mov	x19, x0
+   1ab0c: 17ffffdb     	b	0x1aa78 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x788>
+   1ab10: aa0003f3     	mov	x19, x0
+   1ab14: 17ffffdb     	b	0x1aa80 <Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)+0x790>

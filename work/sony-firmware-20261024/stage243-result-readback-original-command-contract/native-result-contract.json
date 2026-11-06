@@ -1,0 +1,521 @@
+{
+  "status": "STATIC_RESULT_READ_ROUTE_WITH_MOUNT_SHARED_PATH_AND_UNCHECKED_RETURNS_NOT_RELEASED",
+  "original_source": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+  "original_source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+  "complete_functions": 12,
+  "instruction_checks": 56,
+  "checks": [
+    {
+      "pc": 35284,
+      "word": "1ffc0771",
+      "asm": "cmp w0, #0x1ff",
+      "PLT": null
+    },
+    {
+      "pc": 35288,
+      "word": "09010054",
+      "asm": "b.ls #0x89f8",
+      "PLT": null
+    },
+    {
+      "pc": 35360,
+      "word": "80feff35",
+      "asm": "cbnz w0, #0x89f0",
+      "PLT": null
+    },
+    {
+      "pc": 35400,
+      "word": "60e603f9",
+      "asm": "str x0, [x19, #0x7c8]",
+      "PLT": null
+    },
+    {
+      "pc": 35448,
+      "word": "1f700171",
+      "asm": "cmp w0, #0x5c",
+      "PLT": null
+    },
+    {
+      "pc": 35456,
+      "word": "65682138",
+      "asm": "strb w5, [x3, x1]",
+      "PLT": null
+    },
+    {
+      "pc": 35468,
+      "word": "5fb00071",
+      "asm": "cmp w2, #0x2c",
+      "PLT": null
+    },
+    {
+      "pc": 37724,
+      "word": "15e443f9",
+      "asm": "ldr x21, [x0, #0x7c8]",
+      "PLT": null
+    },
+    {
+      "pc": 37760,
+      "word": "c0010034",
+      "asm": "cbz w0, #0x93b8",
+      "PLT": null
+    },
+    {
+      "pc": 40664,
+      "word": "61a24039",
+      "asm": "ldrb w1, [x19, #0x28]",
+      "PLT": null
+    },
+    {
+      "pc": 40672,
+      "word": "80020054",
+      "asm": "b.eq #0x9f30",
+      "PLT": null
+    },
+    {
+      "pc": 40680,
+      "word": "3ffc0371",
+      "asm": "cmp w1, #0xff",
+      "PLT": null
+    },
+    {
+      "pc": 40780,
+      "word": "60aa4039",
+      "asm": "ldrb w0, [x19, #0x2a]",
+      "PLT": null
+    },
+    {
+      "pc": 40792,
+      "word": "60a64039",
+      "asm": "ldrb w0, [x19, #0x29]",
+      "PLT": null
+    },
+    {
+      "pc": 41008,
+      "word": "1f000c71",
+      "asm": "cmp w0, #0x300",
+      "PLT": null
+    },
+    {
+      "pc": 41012,
+      "word": "81050054",
+      "asm": "b.ne #0xa0e4",
+      "PLT": null
+    },
+    {
+      "pc": 41252,
+      "word": "b76749f9",
+      "asm": "ldr x23, [x29, #0x12c8]",
+      "PLT": null
+    },
+    {
+      "pc": 41332,
+      "word": "02008052",
+      "asm": "mov w2, #0",
+      "PLT": null
+    },
+    {
+      "pc": 41472,
+      "word": "ff02186b",
+      "asm": "cmp w23, w24",
+      "PLT": null
+    },
+    {
+      "pc": 41512,
+      "word": "c0000054",
+      "asm": "b.eq #0xa240",
+      "PLT": null
+    },
+    {
+      "pc": 40924,
+      "word": "800200b9",
+      "asm": "str w0, [x20]",
+      "PLT": null
+    },
+    {
+      "pc": 40940,
+      "word": "7fe603f9",
+      "asm": "str xzr, [x19, #0x7c8]",
+      "PLT": null
+    },
+    {
+      "pc": 40960,
+      "word": "00008052",
+      "asm": "mov w0, #0",
+      "PLT": null
+    },
+    {
+      "pc": 39180,
+      "word": "e00000b5",
+      "asm": "cbnz x0, #0x9928",
+      "PLT": null
+    },
+    {
+      "pc": 39212,
+      "word": "6cffff17",
+      "asm": "b #0x96dc",
+      "PLT": null
+    },
+    {
+      "pc": 38620,
+      "word": "14008052",
+      "asm": "mov w20, #0",
+      "PLT": null
+    },
+    {
+      "pc": 38648,
+      "word": "b41e00b9",
+      "asm": "str w20, [x21, #0x1c]",
+      "PLT": null
+    },
+    {
+      "pc": 38656,
+      "word": "e003132a",
+      "asm": "mov w0, w19",
+      "PLT": null
+    },
+    {
+      "pc": 60288,
+      "word": "a00a0035",
+      "asm": "cbnz w0, #0xecd4",
+      "PLT": null
+    },
+    {
+      "pc": 60660,
+      "word": "e103142a",
+      "asm": "mov w1, w20",
+      "PLT": null
+    },
+    {
+      "pc": 64268,
+      "word": "800b0035",
+      "asm": "cbnz w0, #0xfc7c",
+      "PLT": null
+    },
+    {
+      "pc": 45380,
+      "word": "00200051",
+      "asm": "sub w0, w0, #8",
+      "PLT": null
+    },
+    {
+      "pc": 45384,
+      "word": "1f240071",
+      "asm": "cmp w0, #9",
+      "PLT": null
+    },
+    {
+      "pc": 45404,
+      "word": "61000010",
+      "asm": "adr x1, #0xb168",
+      "PLT": null
+    },
+    {
+      "pc": 44076,
+      "word": "00180051",
+      "asm": "sub w0, w0, #6",
+      "PLT": null
+    },
+    {
+      "pc": 44080,
+      "word": "1f280071",
+      "asm": "cmp w0, #0xa",
+      "PLT": null
+    },
+    {
+      "pc": 44100,
+      "word": "61000010",
+      "asm": "adr x1, #0xac50",
+      "PLT": null
+    },
+    {
+      "pc": 37752,
+      "word": "d6f3ff97",
+      "asm": "bl #0x62d0",
+      "PLT": "strncmp"
+    },
+    {
+      "pc": 37832,
+      "word": "22f4ff97",
+      "asm": "bl #0x6450",
+      "PLT": "snprintf"
+    },
+    {
+      "pc": 40728,
+      "word": "16efff97",
+      "asm": "bl #0x5b70",
+      "PLT": "sys_mount"
+    },
+    {
+      "pc": 40804,
+      "word": "0bf2ff97",
+      "asm": "bl #0x6790",
+      "PLT": "get_access_filename"
+    },
+    {
+      "pc": 41196,
+      "word": "29f0ff97",
+      "asm": "bl #0x6190",
+      "PLT": "_ZN11CFileAccess4statEPKcP13tag_FILE_INFO"
+    },
+    {
+      "pc": 41292,
+      "word": "1df0ff97",
+      "asm": "bl #0x61c0",
+      "PLT": "_ZN6DmmMgr9dmm_allocEj"
+    },
+    {
+      "pc": 41336,
+      "word": "62eeff97",
+      "asm": "bl #0x5b00",
+      "PLT": "_ZN11CFileAccess4openEPKci"
+    },
+    {
+      "pc": 41432,
+      "word": "02f0ff97",
+      "asm": "bl #0x61e0",
+      "PLT": "_ZN11CFileAccess4readEPvm"
+    },
+    {
+      "pc": 41460,
+      "word": "8befff97",
+      "asm": "bl #0x6020",
+      "PLT": "_ZN11CFileAccess5fsyncEv"
+    },
+    {
+      "pc": 41468,
+      "word": "a5efff97",
+      "asm": "bl #0x6090",
+      "PLT": "_ZN11CFileAccess5closeEv"
+    },
+    {
+      "pc": 40936,
+      "word": "96efff97",
+      "asm": "bl #0x5e40",
+      "PLT": "free"
+    },
+    {
+      "pc": 40948,
+      "word": "27f0ff97",
+      "asm": "bl #0x6090",
+      "PLT": "_ZN11CFileAccess5closeEv"
+    },
+    {
+      "pc": 39176,
+      "word": "06f2ff97",
+      "asm": "bl #0x6120",
+      "PLT": "dlopen"
+    },
+    {
+      "pc": 39208,
+      "word": "32f2ff97",
+      "asm": "bl #0x61f0",
+      "PLT": "dlclose"
+    },
+    {
+      "pc": 38652,
+      "word": "65f2ff97",
+      "asm": "bl #0x6090",
+      "PLT": "_ZN11CFileAccess5closeEv"
+    },
+    {
+      "pc": 60672,
+      "word": "00dcff97",
+      "asm": "bl #0x5d00",
+      "PLT": "open"
+    },
+    {
+      "pc": 44212,
+      "word": "c7ecff97",
+      "asm": "bl #0x5fd0",
+      "PLT": "adj_cmd_set_file_path"
+    },
+    {
+      "pc": 44228,
+      "word": "afecff97",
+      "asm": "bl #0x5f80",
+      "PLT": "adj_cmd_set_file2"
+    },
+    {
+      "pc": 45580,
+      "word": "79eaff97",
+      "asm": "bl #0x5bf0",
+      "PLT": "adj_cmd_get_file2"
+    }
+  ],
+  "literal_checks": [
+    {
+      "VA": 200215,
+      "value": "/tmp/jiritsu",
+      "bytes": "2f746d702f6a69726974737500"
+    },
+    {
+      "VA": 200233,
+      "value": "/dev/nflasha6",
+      "bytes": "2f6465762f6e666c617368613600"
+    },
+    {
+      "VA": 201589,
+      "value": "/mnt",
+      "bytes": "2f6d6e7400"
+    },
+    {
+      "VA": 73175,
+      "value": "%s",
+      "bytes": "257300"
+    },
+    {
+      "VA": 73086,
+      "value": "%s/%s",
+      "bytes": "25732f257300"
+    },
+    {
+      "VA": 206822,
+      "value": "%s%s",
+      "bytes": "2573257300"
+    }
+  ],
+  "jump_tables": [
+    {
+      "VA": 72468,
+      "bytes": "001003030303140303171b",
+      "sha256": "b4a59d7c7a600f9901cf974e179a07d8f423e322c0773ce4be334741a8834efb",
+      "rows": [
+        {
+          "command": 6,
+          "signed_index": 0,
+          "target": 44112
+        },
+        {
+          "command": 7,
+          "signed_index": 16,
+          "target": 44176
+        },
+        {
+          "command": 8,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 9,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 10,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 11,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 12,
+          "signed_index": 20,
+          "target": 44192
+        },
+        {
+          "command": 13,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 14,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 15,
+          "signed_index": 23,
+          "target": 44204
+        },
+        {
+          "command": 16,
+          "signed_index": 27,
+          "target": 44220
+        }
+      ]
+    },
+    {
+      "VA": 72480,
+      "bytes": "003d161d3d3d3d3d3d24",
+      "sha256": "f2f610dfc94982684605510f35ac6bcac22aed68c0f5aa19e3edfea1ff11425f",
+      "rows": [
+        {
+          "command": 8,
+          "signed_index": 0,
+          "target": 45416
+        },
+        {
+          "command": 9,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 10,
+          "signed_index": 22,
+          "target": 45504
+        },
+        {
+          "command": 11,
+          "signed_index": 29,
+          "target": 45532
+        },
+        {
+          "command": 12,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 13,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 14,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 15,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 16,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 17,
+          "signed_index": 36,
+          "target": 45560
+        }
+      ]
+    }
+  ],
+  "own_fixed_candidate_path": "/tmp/jiritsu/../../tmp_wbshd/fx3-plan-preparation-v1/entry.local-result-v1.bin",
+  "proposed_resolved_RAM_target": "/tmp_wbshd/fx3-plan-preparation-v1/entry.local-result-v1.bin",
+  "dot_components_accepted_by_checked_character_filter_but_actual_mount_namespace_resolution_unverified": true,
+  "operation0_selectorFF_mode0_distinct_from_operationFF_cache": true,
+  "operation0_calls_mount_helper_before_file_access": true,
+  "operation1_media_mount_not_selected_by_candidate": true,
+  "specific_selector3_pending_log_flush_not_selected_but_other_logging_and_auth_side_effects_not_excluded": true,
+  "file_size_is_whole_file_DMM_allocation_not_host_limited_device_allocation": true,
+  "normal_mode0_native_body_is_4byte_status_plus_file_bytes": true,
+  "getter_fsync_close_and_setter_dlclose_returns_not_checked_by_native_business_status": true,
+  "setter_zero_status_does_not_describe_our_constructor_state": true,
+  "selected_path_cell": 288712,
+  "path_selection_and_read_are_separate_and_GET_frees_shared_cell": true,
+  "native_category_registration_DMM_session_actual_auth_selected_path_exclusivity_and_wire_reply_unverified": true,
+  "public_inner_envelope_reference": {
+    "path": "work/sony-firmware-20261024/stage230-constructor-child-entry-portability/reference/chocotan--report--2026-10-18-libjit-exec--scripts--libjit_requests.py",
+    "sha256": "e964afdaea18cdf5bd709dfa895db844591ef7ab90b86430f7211cef8189bf06",
+    "url": "https://github.com/chocotan/a7c2-re/blob/2f66a0cd9732dd7900582e0213b5adb7761c4d1e/report/2026-10-18-libjit-exec/scripts/libjit_requests.py",
+    "AST_only_not_imported": true
+  },
+  "original_Sony_or_downloaded_code_executed": false,
+  "new_device_USB_cache_admin_auth_upload_or_firmware_operations": 0,
+  "first_flash_released": false
+}

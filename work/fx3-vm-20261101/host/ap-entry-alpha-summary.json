@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-11-01T10:38:15.082248+00:00",
+  "scope": "One separate alpha exec attempt of original im.elf target=qemu, not a default package profile",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/p12-im-entry",
+  "qemu_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+  "source_inputs_unchanged_after_run": true,
+  "host_wall_observation_seconds": 12,
+  "guest_AP_bound_seconds": 2,
+  "observed_markers": [
+    "FX3_AP_ENTRY_PROBE_BEGIN",
+    "FX3_AP_ENTRY_EXEC_PID=102",
+    "FX3_AP_SYSCALL_TRACE_UNAVAILABLE",
+    "open /dev/uipc error: : No such file or directory",
+    "im.elf(pid:102): some one called exit()",
+    "FX3_AP_EXITED_BEFORE_BOUND",
+    "FX3_AP_WAIT_RC=133",
+    "FX3_AP_ENTRY_PROBE_END"
+  ],
+  "observed_blocking_resource": "/dev/uipc missing from minimal guest; first reported blocker, not exhaustive syscall trace",
+  "guest_wait_rc": 133,
+  "rc_cause": "not independently identified; do not infer ABI incompatibility",
+  "syscall_trace_available": false,
+  "main_reached": "not proven; original exec/ELF startup attempt and native error observed",
+  "menu_verified": false,
+  "kernel_exception_observed": false,
+  "qemu_process_reaped": true,
+  "default_runtime_profiles_changed": false,
+  "raw_logs": {
+    "host-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "printk-ring.bin": "7a90946bb0fcb007124d46ddcabe57fa39a73c27e4c593eff1e1c2891973bcc4",
+    "printk-decoded.json": "d13814ce8b7f8f95fd55c76fc73194621c0466239708fc091daa6ea764cd4aa4",
+    "printk-decoded.txt": "4eeca64a198b97303110c33c133e24ed84649ee46e7e2c8f7728b458fe9b7087",
+    "qmp.json": "cbac6d7e317a9486a80fce8d647c32c730353736e3d1321a51c93e99cffb6b4f",
+    "host-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "serial.log": "66cdd4bd423609171c64a1a3201532a58c0ee1237c2368bf6b092c1b83f569f7",
+    "command.json": "8da77ceec92480e4efd6f3c06997f77a313a93cd636585e41ca6adfda49f0134",
+    "printk-pointers.bin": "044c643b258224b047b38b75546f814af52abc6cbecb4dca37ddc2ad957e012b",
+    "instruction.log": "18c152d41bbc26604dad5282f0d043bc33e18e32f8dba9c8f91828184d5975af",
+    "printk-indices.bin": "0c1e70497f4294dcdc169c97fd42e17f34a9c505df81f6ba5c72995fe84b63ba",
+    "receipt.json": "35595a64e56ebb4acbe200b3297b28f3a4890d424cb4953a4b625dea38ca808d"
+  },
+  "no_new_simulation_fix_round_after_this": true
+}

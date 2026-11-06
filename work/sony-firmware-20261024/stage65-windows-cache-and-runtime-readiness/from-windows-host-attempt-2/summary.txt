@@ -1,0 +1,25 @@
+task_state=STOPPED_WITH_ERROR
+directory_status=PASS; host-local C: system NTFS volume; target and all ancestors ordinary directories with no reparse/network/camera-storage path
+manifest_hash_status=PASS
+manifest_sha256=443dc5851f9fe097f0ab3a0f4c64c7fb2536651318081965ef3b557360f83c1e
+payload_hash_status=PASS; all three file sizes and complete SHA256 values matched
+manifest_destination_paths_status=PASS
+complete_source_review_status=PASS; only SetupAPI/cfgmgr32 cached metadata APIs; no device open or command submission
+compile_status=NOT_RUN
+dry_run_status=NOT_RUN
+cached_associations_status=NOT_RUN
+candidate_count=UNKNOWN
+binding_status=UNKNOWN
+driver_status=UNKNOWN; previous Microsoft signed USBSTOR 10.0.26100.9444 cache not revalidated in this attempt
+Review-Fx3Msc.ps1 SHA256=7e9df2455522aede99c7dc32d987ae1421d1ea2739701089e474f3b2680e19c0
+Fx3CachedAssociations.cs SHA256=f14e6907e0e1077b3d92b38764c9aa66014563a781b4b732d8339bd4bcf0be2d
+TASK.txt SHA256=614f58d197821c3a2c71f4ef2f623d5f0d94598d091ff700315006c92a5cb773
+private_json_sha256=NOT_CREATED
+result_path=NOT_CREATED
+summary_path=C:\Users\owo\Documents\Codex\2026-10-16\rea-2\outputs\fx3-cache-associations-20261026T144834Z\summary.txt
+error=functions.exec orchestration parser: SyntaxError: Unexpected identifier '$ErrorActionPreference'
+error_path=C:\Users\owo\Documents\Codex\2026-10-16\rea-2\outputs\fx3-cache-associations-20261026T144834Z\orchestration.error.txt
+failure_stage=host orchestration JavaScript parsing, before any fresh PowerShell compile/DryRun/collection process was launched
+retry_performed=false
+camera_device_handles=0; camera_commands=0; hardware_validation=NOT_PERFORMED
+elevation=false; execution_policy_changed=false; software_or_driver_installation=false

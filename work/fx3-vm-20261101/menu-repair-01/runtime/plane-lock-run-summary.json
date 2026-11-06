@@ -1,0 +1,74 @@
+{
+  "runs": [
+    {
+      "run": "ap54trace-3de8c54e",
+      "requested_seconds": 60,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "guest_exception_markers": [],
+      "missing_markers": [],
+      "plane_commits": [
+        "FX3_VDF_PLANE_COMMIT command=0x147 completion=0x1147 source=0x81cf61c0 raw_status=0x590000 records=24 bank=0 committed=1 pending_f024=1 lease=15 request_free=0 pixels=0 active_output=0 original_CP=0"
+      ],
+      "plane_native_free": [
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x147 lease=15 result=0"
+      ],
+      "gpe_calls": [
+        "FX3_GPE_REQUEST op=fill n=0 gpe=0 core=0 sequence=0 source=0 read=56 raw=0051eb3f04000000000000000000000080020000e001000080020000000000000000000000ff010000000000000000000000000000000000 result=5 completed=0 pixels_written=0 reason=allocation_lease_and_FX3_layout_pending",
+        "FX3_GPE_REQUEST op=flush n=1 gpe=0 core=0 sequence=1 source=0x808261c0 read=24 raw=000000000000000000000000000000000000000000000000 result=5 completed=0 pixels_written=0 reason=allocation_lease_and_FX3_layout_pending"
+      ],
+      "app_init_return": [
+        "FX3_APP_INIT_RETURN tid=283 result=0x7f6469fc50 errno=0 original_delegated=1"
+      ],
+      "menu_verified": false,
+      "serial_sha256": "e1c27d969a436d6bca88c6e2ec7620e3a9ab645e2ee3a09681079b453975820b"
+    },
+    {
+      "run": "ap53long-4c0b7971",
+      "requested_seconds": 110,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "guest_exception_markers": [],
+      "missing_markers": [
+        "FX3_VDF_CONFIG_COMMIT command=0x14c",
+        "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=776",
+        "FX3_VDF_PLANE_COMMIT"
+      ],
+      "plane_commits": [],
+      "plane_native_free": [],
+      "gpe_calls": [],
+      "app_init_return": [
+        "FX3_APP_INIT_RETURN tid=283 result=0x7f6466ad50 errno=0 original_delegated=1"
+      ],
+      "menu_verified": false,
+      "serial_sha256": "58e541d7ac41d6e1785c263566f92157e016234d1c1c86aeda96c33a8645edeb"
+    },
+    {
+      "run": "ap55futex-0cc9b8df",
+      "requested_seconds": 70,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "inputs_unchanged": true,
+      "host_observer_error": null,
+      "guest_exception_markers": [],
+      "missing_markers": [],
+      "plane_commits": [
+        "FX3_VDF_PLANE_COMMIT command=0x147 completion=0x1147 source=0x81cf61c0 raw_status=0x590000 records=24 bank=0 committed=1 pending_f024=1 lease=15 request_free=0 pixels=0 active_output=0 original_CP=0"
+      ],
+      "plane_native_free": [
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x147 lease=15 result=0"
+      ],
+      "gpe_calls": [],
+      "app_init_return": [
+        "FX3_APP_INIT_RETURN tid=283 result=0x7f7466a7e0 errno=0 original_delegated=1"
+      ],
+      "menu_verified": false,
+      "serial_sha256": "c8fb3b50b73fd2c6a5a2ae3c1528984381d23360542ca899982f44ed0965a685"
+    }
+  ],
+  "conclusion": "AP54 first fill/flush observed, no pixels. AP53long spin stall at osal_free_msg; AP55 blocking futex all required markers and native147free0, no GPE call observed in this run. Not UI acceptance."
+}

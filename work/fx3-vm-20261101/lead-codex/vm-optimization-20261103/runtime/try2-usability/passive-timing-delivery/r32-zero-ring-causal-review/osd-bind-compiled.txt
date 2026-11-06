@@ -1,0 +1,144 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/build/fx3-osd-headless-v25-r3.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000013f2c <observer_bind>:
+   13f2c: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+   13f30: a9015ffc     	stp	x28, x23, [sp, #0x10]
+   13f34: a90257f6     	stp	x22, x21, [sp, #0x20]
+   13f38: a9034ff4     	stp	x20, x19, [sp, #0x30]
+   13f3c: 910003fd     	mov	x29, sp
+   13f40: d14007ff     	sub	sp, sp, #0x1, lsl #12   // =0x1000
+   13f44: 90000135     	adrp	x21, 0x37000 <usleep+0x37000>
+   13f48: 397402a8     	ldrb	w8, [x21, #0xd00]
+   13f4c: 36000068     	tbz	w8, #0x0, 0x13f58 <observer_bind+0x2c>
+   13f50: 2a1f03e0     	mov	w0, wzr
+   13f54: 1400006c     	b	0x14104 <observer_bind+0x1d8>
+   13f58: 52801580     	mov	w0, #0xac               // =172
+   13f5c: 94000d9d     	bl	0x175d0 <syscall@plt>
+   13f60: 90000136     	adrp	x22, 0x37000 <usleep+0x37000>
+   13f64: 52801821     	mov	w1, #0xc1               // =193
+   13f68: 52803002     	mov	w2, #0x180              // =384
+   13f6c: f906a2c0     	str	x0, [x22, #0xd40]
+   13f70: b0ffff60     	adrp	x0, 0x0 <usleep>
+   13f74: 91316000     	add	x0, x0, #0xc58
+   13f78: 72a00041     	movk	w1, #0x2, lsl #16
+   13f7c: 94000dbd     	bl	0x17670 <open@plt>
+   13f80: 37f80c00     	tbnz	w0, #0x1f, 0x14100 <observer_bind+0x1d4>
+   13f84: f946a2c2     	ldr	x2, [x22, #0xd40]
+   13f88: d0ffff61     	adrp	x1, 0x1000 <usleep+0x1000>
+   13f8c: 910e8421     	add	x1, x1, #0x3a1
+   13f90: 2a0003f3     	mov	w19, w0
+   13f94: 94000da7     	bl	0x17630 <dprintf@plt>
+   13f98: 2a1303e0     	mov	w0, w19
+   13f9c: 94000db9     	bl	0x17680 <close@plt>
+   13fa0: 910003e0     	mov	x0, sp
+   13fa4: 2a1f03e1     	mov	w1, wzr
+   13fa8: 52820002     	mov	w2, #0x1000             // =4096
+   13fac: 94000db9     	bl	0x17690 <memset@plt>
+   13fb0: b0ffff60     	adrp	x0, 0x0 <usleep>
+   13fb4: 9136f000     	add	x0, x0, #0xdbc
+   13fb8: 2a1f03e1     	mov	w1, wzr
+   13fbc: 94000dad     	bl	0x17670 <open@plt>
+   13fc0: 37f809c0     	tbnz	w0, #0x1f, 0x140f8 <observer_bind+0x1cc>
+   13fc4: 910003e1     	mov	x1, sp
+   13fc8: 5281ffe2     	mov	w2, #0xfff              // =4095
+   13fcc: 2a0003f3     	mov	w19, w0
+   13fd0: 94000db4     	bl	0x176a0 <read@plt>
+   13fd4: aa0003f4     	mov	x20, x0
+   13fd8: 2a1303e0     	mov	w0, w19
+   13fdc: 94000da9     	bl	0x17680 <close@plt>
+   13fe0: f100069f     	cmp	x20, #0x1
+   13fe4: 540008ab     	b.lt	0x140f8 <observer_bind+0x1cc>
+   13fe8: b0ffff61     	adrp	x1, 0x0 <usleep>
+   13fec: 9138f821     	add	x1, x1, #0xe3e
+   13ff0: 910003e0     	mov	x0, sp
+   13ff4: 94000daf     	bl	0x176b0 <strstr@plt>
+   13ff8: b4000800     	cbz	x0, 0x140f8 <observer_bind+0x1cc>
+   13ffc: b0ffff60     	adrp	x0, 0x0 <usleep>
+   14000: 91322800     	add	x0, x0, #0xc8a
+   14004: 2a1f03e1     	mov	w1, wzr
+   14008: 94000d9a     	bl	0x17670 <open@plt>
+   1400c: f0000108     	adrp	x8, 0x37000 <usleep+0x37000>
+   14010: b9098900     	str	w0, [x8, #0x988]
+   14014: 37f80880     	tbnz	w0, #0x1f, 0x14124 <observer_bind+0x1f8>
+   14018: 90ffff60     	adrp	x0, 0x0 <usleep>
+   1401c: 91320400     	add	x0, x0, #0xc81
+   14020: 52800041     	mov	w1, #0x2                // =2
+   14024: 94000d93     	bl	0x17670 <open@plt>
+   14028: 37f807a0     	tbnz	w0, #0x1f, 0x1411c <observer_bind+0x1f0>
+   1402c: 2a0003f3     	mov	w19, w0
+   14030: d2a3c005     	mov	x5, #0x1e000000         // =503316480
+   14034: aa1f03e0     	mov	x0, xzr
+   14038: 52a02001     	mov	w1, #0x1000000          // =16777216
+   1403c: 52800062     	mov	w2, #0x3                // =3
+   14040: 52800023     	mov	w3, #0x1                // =1
+   14044: 2a1303e4     	mov	w4, w19
+   14048: f2c00085     	movk	x5, #0x4, lsl #32
+   1404c: 52800037     	mov	w23, #0x1               // =1
+   14050: 94000d9c     	bl	0x176c0 <mmap@plt>
+   14054: aa0003f4     	mov	x20, x0
+   14058: 2a1303e0     	mov	w0, w19
+   1405c: 94000d89     	bl	0x17680 <close@plt>
+   14060: b100069f     	cmn	x20, #0x1
+   14064: 540005c0     	b.eq	0x1411c <observer_bind+0x1f0>
+   14068: f0000108     	adrp	x8, 0x37000 <usleep+0x37000>
+   1406c: 91008280     	add	x0, x20, #0x20
+   14070: 2a1f03e1     	mov	w1, wzr
+   14074: 321b4be2     	mov	w2, #0xffffe0           // =16777184
+   14078: f9069914     	str	x20, [x8, #0xd30]
+   1407c: 94000d85     	bl	0x17690 <memset@plt>
+   14080: 90ffff68     	adrp	x8, 0x0 <usleep>
+   14084: f946a2d3     	ldr	x19, [x22, #0xd40]
+   14088: 90ffff60     	adrp	x0, 0x0 <usleep>
+   1408c: 913a4800     	add	x0, x0, #0xe92
+   14090: 3dc2b100     	ldr	q0, [x8, #0xac0]
+   14094: f0000108     	adrp	x8, 0x37000 <usleep+0x37000>
+   14098: f905e517     	str	x23, [x8, #0xbc8]
+   1409c: 90ffff68     	adrp	x8, 0x0 <usleep>
+   140a0: 3d800280     	str	q0, [x20]
+   140a4: 3dc2bd00     	ldr	q0, [x8, #0xaf0]
+   140a8: 90ffff68     	adrp	x8, 0x0 <usleep>
+   140ac: a9015e93     	stp	x19, x23, [x20, #0x10]
+   140b0: 3c858280     	stur	q0, [x20, #0x58]
+   140b4: 3dc2b900     	ldr	q0, [x8, #0xae0]
+   140b8: 52a00028     	mov	w8, #0x10000            // =65536
+   140bc: f9003688     	str	x8, [x20, #0x68]
+   140c0: 52802008     	mov	w8, #0x100              // =256
+   140c4: f9100e88     	str	x8, [x20, #0x2018]
+   140c8: 52800c08     	mov	w8, #0x60               // =96
+   140cc: 3d880280     	str	q0, [x20, #0x2000]
+   140d0: f9101288     	str	x8, [x20, #0x2020]
+   140d4: 393402b7     	strb	w23, [x21, #0xd00]
+   140d8: 94000d42     	bl	0x175e0 <getenv@plt>
+   140dc: b4000280     	cbz	x0, 0x1412c <observer_bind+0x200>
+   140e0: 90ffff61     	adrp	x1, 0x0 <usleep>
+   140e4: 913b9821     	add	x1, x1, #0xee6
+   140e8: 94000d42     	bl	0x175f0 <strcmp@plt>
+   140ec: 7100001f     	cmp	w0, #0x0
+   140f0: 1a9f17e5     	cset	w5, eq
+   140f4: 1400000f     	b	0x14130 <observer_bind+0x204>
+   140f8: 12800020     	mov	w0, #-0x2               // =-2
+   140fc: 14000002     	b	0x14104 <observer_bind+0x1d8>
+   14100: 12800000     	mov	w0, #-0x1               // =-1
+   14104: 914007ff     	add	sp, sp, #0x1, lsl #12   // =0x1000
+   14108: a9434ff4     	ldp	x20, x19, [sp, #0x30]
+   1410c: a94257f6     	ldp	x22, x21, [sp, #0x20]
+   14110: a9415ffc     	ldp	x28, x23, [sp, #0x10]
+   14114: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+   14118: d65f03c0     	ret
+   1411c: 12800060     	mov	w0, #-0x4               // =-4
+   14120: 17fffff9     	b	0x14104 <observer_bind+0x1d8>
+   14124: 12800040     	mov	w0, #-0x3               // =-3
+   14128: 17fffff7     	b	0x14104 <observer_bind+0x1d8>
+   1412c: 2a1f03e5     	mov	w5, wzr
+   14130: d2a3c003     	mov	x3, #0x1e000000         // =503316480
+   14134: b0ffff61     	adrp	x1, 0x1000 <usleep+0x1000>
+   14138: 9109dc21     	add	x1, x1, #0x277
+   1413c: 52800040     	mov	w0, #0x2                // =2
+   14140: aa1303e2     	mov	x2, x19
+   14144: f2c00083     	movk	x3, #0x4, lsl #32
+   14148: 52a02004     	mov	w4, #0x1000000          // =16777216
+   1414c: 94000d39     	bl	0x17630 <dprintf@plt>
+   14150: 17ffff80     	b	0x13f50 <observer_bind+0x24>

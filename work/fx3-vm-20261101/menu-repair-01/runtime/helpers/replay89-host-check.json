@@ -1,0 +1,17 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-replay89.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-replay89"
+  ],
+  "exit": 0,
+  "stdout": "REPLAY89_PASS sha256_empty_abc_padding_and_fullsnapshot/sourceSHA_guard/fixedrange2bank_header/fullcopy_remapSHA/actualrollback/sourceimmutable/partialreads/shortfile_noRAMwrite\n",
+  "stderr": "",
+  "source_sha256_before_after": "38cf44637c44d3f47d7b8541dddf7ecc443e262f40dec3aec59f7b94d5b8b38f",
+  "native_seed_sha256_unchanged": "bf3a9d851f9853fd80953be165f2e4d77770314a85465bc7698ebad438d0e7a2"
+}

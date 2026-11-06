@@ -1,0 +1,6 @@
+from pathlib import Path
+import argparse,json,hashlib,datetime
+p=argparse.ArgumentParser();p.add_argument('run');p.add_argument('step',type=int);p.add_argument('key');p.add_argument('png');p.add_argument('description');p.add_argument('reason');a=p.parse_args();R=Path(__file__).resolve().parent;run=Path(a.run).resolve();assert run.parent==R/'runs' and not (run/'receipt.json').exists();png=run/a.png;assert png.is_file();assert int(a.key,0) in {3,0x30,0x15,0x1af,0x1ac,0x1ab,0x1f8};assert 1<=a.step<=30
+if a.step==1:assert (run/'ap95-phaseA.json').exists()
+else:assert any(x['step']==a.step-1 for x in json.loads((run/'ap95-step-readbacks.json').read_text()))
+item={'step':a.step,'key':a.key,'hold_ms':100,'observed_page':a.description,'reason':a.reason,'authorization':'msg_8162589b2b22','observed_png':str(png),'observed_png_sha256':hashlib.sha256(png.read_bytes()).hexdigest(),'viewed_by_worker':True,'decision_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()};f=R/(run.name+'-visual-decisions.json');ledger=json.loads(f.read_text()) if f.exists() else [];assert len(ledger)==a.step-1;ledger.append(item);f.write_text(json.dumps(ledger,ensure_ascii=False,indent=2)+'\n');temp=run/'ap95-next-key.tmp';temp.write_text(json.dumps(item,ensure_ascii=False,indent=2)+'\n');temp.replace(run/'ap95-next-key.json');print('APPROVED',a.step,a.key,a.png)

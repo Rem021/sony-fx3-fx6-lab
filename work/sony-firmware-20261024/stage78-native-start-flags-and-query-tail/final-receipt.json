@@ -1,0 +1,94 @@
+{
+  "schema": "fx3-stage78-native-start-flags-and-query-tail/1",
+  "created_utc": "2026-10-27T04:37:30.086442+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/README.md",
+      "bytes": 5164,
+      "sha256": "ff8793c57e5590a321b53f521ae6c6e059efd268458719c36de81a720d3ecc05"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/completed-evidence-review.json",
+      "bytes": 919,
+      "sha256": "0727245a5fe50084dc98a6b1d10e48f6f2a5d96e4e9cd9e8a1a9a7c7ecbc6e19"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/coordinator-observations.json",
+      "bytes": 757,
+      "sha256": "d8a9b8d71ed8b5f7ed63211e45675aefa0bcb5cc69500d03ca5f226d4a0ca7c7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/goal-status-after.json",
+      "bytes": 238377,
+      "sha256": "cd5ab86c7befa89e5bad58c07debb452d863e8d9ac69a75c672d84a42c2f6bde"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/goal-status-before.json",
+      "bytes": 236029,
+      "sha256": "fa544d5ba82ec07c1d7ece6dfae8aa7b3bf335552ca1fbc7f4221882a5e0708b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/original-start-chain.json",
+      "bytes": 29813,
+      "sha256": "7659886e9c8831acd1eb5b57cee3f5e4532a1dbe2a71c79ba7e035d13322595f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/review_and_seal.py",
+      "bytes": 12097,
+      "sha256": "b2e33954f49422ecb53638e6f8e8296ba10f2ecd5e05f82c95a1837343580025"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/run-20261026/executed-source.py",
+      "bytes": 14223,
+      "sha256": "4fde8d4cae8125293397b59775a99e18ab47b6024ef31e906f0e02214fe11978"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/run-20261026/start-flags-results.json",
+      "bytes": 34802480,
+      "sha256": "29b062f3b18ba4015f876b34085c5bf8ab8121211adcc4f7b4242ab188c7b3a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/start_flags.py",
+      "bytes": 14223,
+      "sha256": "4fde8d4cae8125293397b59775a99e18ab47b6024ef31e906f0e02214fe11978"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/summary.json",
+      "bytes": 919,
+      "sha256": "0727245a5fe50084dc98a6b1d10e48f6f2a5d96e4e9cd9e8a1a9a7c7ecbc6e19"
+    }
+  ],
+  "previous_manifest_sha256": "44971a4749e8838b4f7a1edb5b289ae836bc612f4141f80cee24f4cba624e0c4",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "fa544d5ba82ec07c1d7ece6dfae8aa7b3bf335552ca1fbc7f4221882a5e0708b",
+    "after_sha256": "cd5ab86c7befa89e5bad58c07debb452d863e8d9ac69a75c672d84a42c2f6bde"
+  },
+  "readme_index_entry": "- [2026-10-26 FX3 原启动参数与QoS尾字段](<work/sony-firmware-20261024/stage78-native-start-flags-and-query-tail/README.md>)：原登记查询接完整参数准备，区分16M预置与可选20M块，8例44段；完整Start/硬件优先级/主录/恢复未证，仅Mac。",
+  "readme_index_before_sha256": "3449857ff4b5e124ad1bca941fa7ef309111c64c190c8cbe35357b7cc2e4432b",
+  "readme_index_after_sha256": "01a3a7d1ca7916c822b5de3ff72142e37184aa077aded55af65933986dc379bd",
+  "operations": {
+    "created_utc": "2026-10-27T04:37:30.086442+00:00",
+    "status": "PASS_NATIVE_QUERY_TO_COMPLETE_START_FLAGS_HELPER_ONLY",
+    "prior_sealed_files_verified": 18,
+    "bounded_fragments": 44,
+    "settings_cases": 8,
+    "native_owner_lookup_and_16M_query": true,
+    "complete_original246274_and248d64_returned": true,
+    "optional20M_generated_while_selected_preset_remains16M": true,
+    "native_pending_settings_clear_path_executed_not_retry_safety_proven": true,
+    "query_tail_preserved_and_copied": [
+      8008,
+      240000
+    ],
+    "static_Start_copies_separate128_and448_blocks_not_an_observed_override": true,
+    "full_Start_legal_reentrancy_concurrency_shared_lock_hardware_recording_or_recovery_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false,
+    "reviewer_scope": "Same agent source/trace/byte review; no independent implementation or physical replay."
+  },
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

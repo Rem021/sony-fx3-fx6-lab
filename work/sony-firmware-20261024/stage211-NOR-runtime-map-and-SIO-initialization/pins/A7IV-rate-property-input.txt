@@ -1,0 +1,7 @@
+fe0535c4 a10000f0 adrp     x1, #0xfe06a000
+fe0535c8 80058052 mov      w0, #0x2c
+fe0535cc 21d02491 add      x1, x1, #0x934
+fe0535d0 200aa072 movk     w0, #0x51, lsl #16
+fe0535d4 391f0094 bl       #0xfe05b2b8
+fe0535d8 2010f837 tbnz     w0, #0x1f, #0xfe0537dc
+fe0535dc b30000f0 adrp     x19, #0xfe06a000

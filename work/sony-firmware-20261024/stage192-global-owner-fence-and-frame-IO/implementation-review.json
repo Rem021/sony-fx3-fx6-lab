@@ -1,0 +1,29 @@
+{
+  "status": "OFFLINE_FENCE_AND_PRIVATE_FRAME_IMPLEMENTED_NOT_RELEASED",
+  "native_candidate_identifier": "fx3-702-global-owner-channel-20261029-08",
+  "native_candidate_released_or_executed": false,
+  "new_administrator_or_camera_operations": 0,
+  "fence_scope": "cooperating controller helpers using the same protected journal; does not block independent Sony/third-party tools",
+  "fence_decision": "OWNED or UNKNOWN tail never clears merely because a PID died; only this owner clean/no-call result appends CLEAN",
+  "journal_integrity": "SHA256 chain detects damaged/reordered records; not a signature against an administrator who controls the host",
+  "frame_scope": "privileged helper copies4096B then uses pread/pwrite; no user-backed mmap; invalid envelope requests stop and never authorizes pending-call cleanup",
+  "root_cross_UID_and_protected_root_files_tested": false,
+  "test_counts": {
+    "integration": 38,
+    "journal": 18,
+    "total": 56,
+    "prior_wire55_not_rerun": true,
+    "primary_integration_Job_count": 43,
+    "additional_orphan_owner_job": 1,
+    "additional_replay_execution": 1
+  },
+  "remaining": [
+    "fixed bootstrap/Terminal/user supervisor still need migration to the new entry and fence contract",
+    "authenticated final-result delivery still needs a completion record over the verified channel; shared progress/file alone is insufficient",
+    "root-to-UID501 local handshake and protected root journal behavior require separate concrete authorization/test",
+    "native entry remains0 and observe-only; no real Sony authentication, SERVICE profile, mode transition or file/partition read",
+    "actual same-body p1, guarded ET_DYN, clean boot/WBI and independent rescue remain unproven"
+  ],
+  "goal_complete": false,
+  "persistent_write_release": false
+}

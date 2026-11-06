@@ -1,0 +1,820 @@
+{
+  "created_utc": "2026-10-30T17:12:57.953686+00:00",
+  "source_copies": [
+    {
+      "path": "Applications/AXSM/AXSMDriveUtilityListener.app/Contents/MacOS/libAxsMemContorlLib.dylib",
+      "mode_octal": "0o100755",
+      "inode": 8,
+      "links": 1,
+      "bytes": 489936,
+      "cpio_header_offset": 5706,
+      "data_offset": 5872,
+      "type": "file",
+      "sha256": "7fb0b957cb4d85907511019ac48ea99c962bce39085d5c1e14c6386a4f311575",
+      "saved_path": "payload-files/AXSMDriveUtilityListener.pkg/Applications/AXSM/AXSMDriveUtilityListener.app/Contents/MacOS/libAxsMemContorlLib.dylib"
+    },
+    {
+      "path": "Applications/AXSM/AXSMDriveUtility.app/Contents/MacOS/libAxsMemContorlLib.dylib",
+      "mode_octal": "0o100755",
+      "inode": 9,
+      "links": 1,
+      "bytes": 489936,
+      "cpio_header_offset": 2104966,
+      "data_offset": 2105124,
+      "type": "file",
+      "sha256": "a5fe60af34fff1bc434cc033769377c1e4f4027ec620df7edd5574d7753ac424",
+      "saved_path": "payload-files/AXSMDriveUtility.pkg/Applications/AXSM/AXSMDriveUtility.app/Contents/MacOS/libAxsMemContorlLib.dylib"
+    }
+  ],
+  "same_named_library_whole_files_equal": false,
+  "selected_source": "payload-files/AXSMDriveUtility.pkg/Applications/AXSM/AXSMDriveUtility.app/Contents/MacOS/libAxsMemContorlLib.dylib",
+  "source_sha256": "a5fe60af34fff1bc434cc033769377c1e4f4027ec620df7edd5574d7753ac424",
+  "ARM64_slice_offset": 245760,
+  "ARM64_slice_bytes": 244176,
+  "ARM64_slice_sha256": "a8bdabbea57b1ce3e8a139558a3610643e2b1d4a72acd6eaf93d5cbb4d16e665",
+  "own_MachO_helper": "donor-20261028/macho_static.py",
+  "own_helper_sha256": "7292eb2fa4543915998a9ee1fcddf484d0a6c2dbe23d73952c4b91626e189080",
+  "function_boundaries": "Original LC_FUNCTION_STARTS, not arbitrary fixed instruction windows",
+  "functions": [
+    {
+      "name": "__Z13checkFileModePKcPhi",
+      "VA": "0x1dbc",
+      "bytes": 996,
+      "sha256": "9eb19498952e925bbee2972c53137158d09feab3881c6bfce5332aced71da70d",
+      "raw": "reader-spans/0x1dbc.bin",
+      "listing": "reader-spans/0x1dbc.txt",
+      "direct_calls": [
+        {
+          "VA": "0x1e20",
+          "target_VA": "0x16740",
+          "symbol": "__ZNSt3__18ios_base4initEPv"
+        },
+        {
+          "VA": "0x1e4c",
+          "target_VA": "0xc694",
+          "symbol": "__ZNSt3__113basic_filebufIcNS_11char_traitsIcEEEC2Ev"
+        },
+        {
+          "VA": "0x1e5c",
+          "target_VA": "0xc564",
+          "symbol": "__ZNSt3__113basic_filebufIcNS_11char_traitsIcEEE4openEPKcj"
+        },
+        {
+          "VA": "0x1e7c",
+          "target_VA": "0x1674c",
+          "symbol": "__ZNSt3__18ios_base5clearEj"
+        },
+        {
+          "VA": "0x1ecc",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x1f00",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x1f18",
+          "target_VA": "0x16698",
+          "symbol": "__ZNSt3__113basic_istreamIcNS_11char_traitsIcEEE4readEPcl"
+        },
+        {
+          "VA": "0x1f24",
+          "target_VA": "0xb7d8",
+          "symbol": "__ZNSt3__113basic_filebufIcNS_11char_traitsIcEEE5closeEv"
+        },
+        {
+          "VA": "0x1f44",
+          "target_VA": "0x1674c",
+          "symbol": "__ZNSt3__18ios_base5clearEj"
+        },
+        {
+          "VA": "0x1f7c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x1f98",
+          "target_VA": "0xb764",
+          "symbol": "__ZNSt3__113basic_filebufIcNS_11char_traitsIcEEED2Ev"
+        },
+        {
+          "VA": "0x1fac",
+          "target_VA": "0x166c8",
+          "symbol": "__ZNSt3__113basic_istreamIcNS_11char_traitsIcEEED2Ev"
+        },
+        {
+          "VA": "0x1fb4",
+          "target_VA": "0x16758",
+          "symbol": "__ZNSt3__19basic_iosIcNS_11char_traitsIcEEED2Ev"
+        },
+        {
+          "VA": "0x2048",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x2130",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x2138",
+          "target_VA": "0x16818",
+          "symbol": "___stack_chk_fail"
+        },
+        {
+          "VA": "0x2168",
+          "target_VA": "0x16ec",
+          "symbol": "__ZNSt3__114basic_ifstreamIcNS_11char_traitsIcEEED1Ev"
+        },
+        {
+          "VA": "0x2178",
+          "target_VA": "0xb764",
+          "symbol": "__ZNSt3__113basic_filebufIcNS_11char_traitsIcEEED2Ev"
+        },
+        {
+          "VA": "0x218c",
+          "target_VA": "0x166c8",
+          "symbol": "__ZNSt3__113basic_istreamIcNS_11char_traitsIcEEED2Ev"
+        },
+        {
+          "VA": "0x2194",
+          "target_VA": "0x16758",
+          "symbol": "__ZNSt3__19basic_iosIcNS_11char_traitsIcEEED2Ev"
+        },
+        {
+          "VA": "0x219c",
+          "target_VA": "0x165a8",
+          "symbol": "__Unwind_Resume"
+        }
+      ]
+    },
+    {
+      "name": "__Z19MemFirmwareUpdateExPNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPchP15_AXS_ERROR_INFOji",
+      "VA": "0x2d90",
+      "bytes": 1152,
+      "sha256": "b391fb8d593c842079442e809c56f288863b1588a1b8c95554887cea57652e1e",
+      "raw": "reader-spans/0x2d90.bin",
+      "listing": "reader-spans/0x2d90.txt",
+      "direct_calls": [
+        {
+          "VA": "0x2dfc",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x2e0c",
+          "target_VA": "0x168a8",
+          "symbol": "_fopen"
+        },
+        {
+          "VA": "0x2e20",
+          "target_VA": "0x168cc",
+          "symbol": "_fseek"
+        },
+        {
+          "VA": "0x2e2c",
+          "target_VA": "0x168f0",
+          "symbol": "_ftell"
+        },
+        {
+          "VA": "0x2e4c",
+          "target_VA": "0xe5b8",
+          "symbol": "__ZN14AxsMemoryDriveC1EPNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEj"
+        },
+        {
+          "VA": "0x2e5c",
+          "target_VA": "0xf52c",
+          "symbol": "__ZN14AxsMemoryDrive18ExecuteChangeLevelEiP25_ATA_RESPONSE_INFORMATION"
+        },
+        {
+          "VA": "0x2ec0",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x2ed0",
+          "target_VA": "0x168cc",
+          "symbol": "_fseek"
+        },
+        {
+          "VA": "0x2f58",
+          "target_VA": "0xee90",
+          "symbol": "__ZN14AxsMemoryDrive22ExecuteSMARTLogCommandEhhPtjP25_ATA_RESPONSE_INFORMATION"
+        },
+        {
+          "VA": "0x2fa0",
+          "target_VA": "0x168b4",
+          "symbol": "_fread"
+        },
+        {
+          "VA": "0x2fa8",
+          "target_VA": "0x16884",
+          "symbol": "_ferror"
+        },
+        {
+          "VA": "0x2fc8",
+          "target_VA": "0xee90",
+          "symbol": "__ZN14AxsMemoryDrive22ExecuteSMARTLogCommandEhhPtjP25_ATA_RESPONSE_INFORMATION"
+        },
+        {
+          "VA": "0x3004",
+          "target_VA": "0xee90",
+          "symbol": "__ZN14AxsMemoryDrive22ExecuteSMARTLogCommandEhhPtjP25_ATA_RESPONSE_INFORMATION"
+        },
+        {
+          "VA": "0x307c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x30a0",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x30d4",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x3100",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x313c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x3148",
+          "target_VA": "0x16878",
+          "symbol": "_fclose"
+        },
+        {
+          "VA": "0x3158",
+          "target_VA": "0xf52c",
+          "symbol": "__ZN14AxsMemoryDrive18ExecuteChangeLevelEiP25_ATA_RESPONSE_INFORMATION"
+        },
+        {
+          "VA": "0x3164",
+          "target_VA": "0x1031c",
+          "symbol": "__ZN14AxsMemoryDrive15LoadEjectMediumEi"
+        },
+        {
+          "VA": "0x3190",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x3198",
+          "target_VA": "0xe6a0",
+          "symbol": "__ZN14AxsMemoryDriveD1Ev"
+        },
+        {
+          "VA": "0x31e8",
+          "target_VA": "0x16818",
+          "symbol": "___stack_chk_fail"
+        },
+        {
+          "VA": "0x3204",
+          "target_VA": "0xe6a0",
+          "symbol": "__ZN14AxsMemoryDriveD1Ev"
+        },
+        {
+          "VA": "0x320c",
+          "target_VA": "0x165a8",
+          "symbol": "__Unwind_Resume"
+        }
+      ]
+    },
+    {
+      "name": "__ZN13AXSMemControl16R5FirmwareUpdateEPNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEPcj",
+      "VA": "0x6c14",
+      "bytes": 968,
+      "sha256": "2bbd1aabaec28d72093842eab9d77a3f3e063d9b85d1d28b01765eabf07a1aad",
+      "raw": "reader-spans/0x6c14.bin",
+      "listing": "reader-spans/0x6c14.txt",
+      "direct_calls": [
+        {
+          "VA": "0x6c48",
+          "target_VA": "0x16794",
+          "symbol": "__Znam"
+        },
+        {
+          "VA": "0x6c78",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6c98",
+          "target_VA": "0xe5b8",
+          "symbol": "__ZN14AxsMemoryDriveC1EPNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEj"
+        },
+        {
+          "VA": "0x6ca4",
+          "target_VA": "0x16680",
+          "symbol": "__ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEaSERKS5_"
+        },
+        {
+          "VA": "0x6cc8",
+          "target_VA": "0x16ad0",
+          "symbol": "_strrchr"
+        },
+        {
+          "VA": "0x6cd4",
+          "target_VA": "0x16620",
+          "symbol": "__ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE6appendEPKc"
+        },
+        {
+          "VA": "0x6ce4",
+          "target_VA": "0x168a8",
+          "symbol": "_fopen"
+        },
+        {
+          "VA": "0x6d0c",
+          "target_VA": "0x168a8",
+          "symbol": "_fopen"
+        },
+        {
+          "VA": "0x6d20",
+          "target_VA": "0xf1d0",
+          "symbol": "__ZN14AxsMemoryDrive19ExecutePreventAllowEb"
+        },
+        {
+          "VA": "0x6d44",
+          "target_VA": "0x168b4",
+          "symbol": "_fread"
+        },
+        {
+          "VA": "0x6d68",
+          "target_VA": "0x16908",
+          "symbol": "_fwrite"
+        },
+        {
+          "VA": "0x6d7c",
+          "target_VA": "0x6fdc",
+          "symbol": "__ZN13AXSMemControl15IsMediaInjectedEPNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEj"
+        },
+        {
+          "VA": "0x6db8",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6de4",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6e18",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6e4c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6e78",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6eac",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6ed8",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6f08",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6f10",
+          "target_VA": "0x16878",
+          "symbol": "_fclose"
+        },
+        {
+          "VA": "0x6f18",
+          "target_VA": "0x16878",
+          "symbol": "_fclose"
+        },
+        {
+          "VA": "0x6f24",
+          "target_VA": "0xf1d0",
+          "symbol": "__ZN14AxsMemoryDrive19ExecutePreventAllowEb"
+        },
+        {
+          "VA": "0x6f2c",
+          "target_VA": "0xf090",
+          "symbol": "__ZN14AxsMemoryDrive17ExecuteFlushCacheEv"
+        },
+        {
+          "VA": "0x6f58",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x6f60",
+          "target_VA": "0xe6a0",
+          "symbol": "__ZN14AxsMemoryDriveD1Ev"
+        },
+        {
+          "VA": "0x6f68",
+          "target_VA": "0x1677c",
+          "symbol": "__ZdaPv"
+        },
+        {
+          "VA": "0x6f78",
+          "target_VA": "0x16788",
+          "symbol": "__ZdlPv"
+        },
+        {
+          "VA": "0x6fb0",
+          "target_VA": "0xe6a0",
+          "symbol": "__ZN14AxsMemoryDriveD1Ev"
+        },
+        {
+          "VA": "0x6fc0",
+          "target_VA": "0x1677c",
+          "symbol": "__ZdaPv"
+        },
+        {
+          "VA": "0x6fd0",
+          "target_VA": "0x16788",
+          "symbol": "__ZdlPv"
+        },
+        {
+          "VA": "0x6fd8",
+          "target_VA": "0x165a8",
+          "symbol": "__Unwind_Resume"
+        }
+      ]
+    },
+    {
+      "name": "__ZN13AXSMemControl19CheckNewMemFirmwareERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEER20AXS_MEM_FW_FILE_INFO",
+      "VA": "0x948c",
+      "bytes": 1920,
+      "sha256": "cd52e5b7378dd515b3463ed40ff6ed998d67e78802e7e9b369129f30f291744d",
+      "raw": "reader-spans/0x948c.bin",
+      "listing": "reader-spans/0x948c.txt",
+      "direct_calls": [
+        {
+          "VA": "0x94e4",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9518",
+          "target_VA": "0x15c44",
+          "symbol": "__ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE25__init_copy_ctor_externalEPKcm"
+        },
+        {
+          "VA": "0x9524",
+          "target_VA": "0x13af8",
+          "symbol": "__ZN5boost10filesystem6detail15path_algorithms12extension_v3ERKNS0_4pathE"
+        },
+        {
+          "VA": "0x9588",
+          "target_VA": "0x16788",
+          "symbol": "__ZdlPv"
+        },
+        {
+          "VA": "0x95a8",
+          "target_VA": "0x168a8",
+          "symbol": "_fopen"
+        },
+        {
+          "VA": "0x95c4",
+          "target_VA": "0x168b4",
+          "symbol": "_fread"
+        },
+        {
+          "VA": "0x960c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x963c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9644",
+          "target_VA": "0x16788",
+          "symbol": "__ZdlPv"
+        },
+        {
+          "VA": "0x9684",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x96b4",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x96c4",
+          "target_VA": "0x16788",
+          "symbol": "__ZdlPv"
+        },
+        {
+          "VA": "0x9738",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9764",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x97c8",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x97d4",
+          "target_VA": "0xe6a4",
+          "symbol": "__Z8TRUNCATEPh"
+        },
+        {
+          "VA": "0x9830",
+          "target_VA": "0x9c0c",
+          "symbol": "__Z7SPRINTFILm5EEiRAT__cPKcz"
+        },
+        {
+          "VA": "0x9860",
+          "target_VA": "0x9c3c",
+          "symbol": "__Z7SPRINTFILm3EEiRAT__cPKcz"
+        },
+        {
+          "VA": "0x9870",
+          "target_VA": "0x168cc",
+          "symbol": "_fseek"
+        },
+        {
+          "VA": "0x9878",
+          "target_VA": "0x168f0",
+          "symbol": "_ftell"
+        },
+        {
+          "VA": "0x9890",
+          "target_VA": "0x9c6c",
+          "symbol": "__ZN13AXSMemControl13getOffsetSizeIN20AXS_MEM_FW_FILE_INFOUt_EEEvPKhlRT_"
+        },
+        {
+          "VA": "0x98e0",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x990c",
+          "target_VA": "0x9cbc",
+          "symbol": "__ZN13AXSMemControl13getOffsetSizeIN20AXS_MEM_FW_FILE_INFOUt0_EEEvPKhlRT_"
+        },
+        {
+          "VA": "0x995c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9990",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x99c0",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9a08",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9a38",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9a40",
+          "target_VA": "0x16878",
+          "symbol": "_fclose"
+        },
+        {
+          "VA": "0x9a84",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9ab4",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9b84",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9bb4",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9bc0",
+          "target_VA": "0x16818",
+          "symbol": "___stack_chk_fail"
+        },
+        {
+          "VA": "0x9bd8",
+          "target_VA": "0x16878",
+          "symbol": "_fclose"
+        },
+        {
+          "VA": "0x9c00",
+          "target_VA": "0x16788",
+          "symbol": "__ZdlPv"
+        },
+        {
+          "VA": "0x9c08",
+          "target_VA": "0x165a8",
+          "symbol": "__Unwind_Resume"
+        }
+      ]
+    },
+    {
+      "name": "__ZN13AXSMemControl21ReadDriveFirmwareFileERKNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEER20AXS_DRV_FW_FILE_INFO",
+      "VA": "0x9d0c",
+      "bytes": 892,
+      "sha256": "b9452a23c054e4b25ea0547e0631512b67a66d22720a2eb5d940717dc7687987",
+      "raw": "reader-spans/0x9d0c.bin",
+      "listing": "reader-spans/0x9d0c.txt",
+      "direct_calls": [
+        {
+          "VA": "0x9d60",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9d84",
+          "target_VA": "0x168a8",
+          "symbol": "_fopen"
+        },
+        {
+          "VA": "0x9da0",
+          "target_VA": "0x168b4",
+          "symbol": "_fread"
+        },
+        {
+          "VA": "0x9de8",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9e38",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9e5c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9e8c",
+          "target_VA": "0xe6a4",
+          "symbol": "__Z8TRUNCATEPh"
+        },
+        {
+          "VA": "0x9ee8",
+          "target_VA": "0xa088",
+          "symbol": "__Z7SPRINTFILm6EEiRAT__cPKcz"
+        },
+        {
+          "VA": "0x9f18",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9f8c",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9fb8",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0x9fc4",
+          "target_VA": "0x16878",
+          "symbol": "_fclose"
+        },
+        {
+          "VA": "0xa038",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0xa064",
+          "target_VA": "0x165c0",
+          "symbol": "__ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z"
+        },
+        {
+          "VA": "0xa06c",
+          "target_VA": "0x16818",
+          "symbol": "___stack_chk_fail"
+        },
+        {
+          "VA": "0xa07c",
+          "target_VA": "0x16878",
+          "symbol": "_fclose"
+        },
+        {
+          "VA": "0xa084",
+          "target_VA": "0x165a8",
+          "symbol": "__Unwind_Resume"
+        }
+      ]
+    }
+  ],
+  "selected_original_cstrings": [
+    {
+      "VA": "0x1d25b",
+      "text": "AXS-AR1 HEADER"
+    },
+    {
+      "VA": "0x1d367",
+      "text": "int waitFlashUpdate(uint8_t *, uint8_t *, int, std::string *, int, unsigned int)"
+    },
+    {
+      "VA": "0x1d4d6",
+      "text": "bool MemFirmwareUpdateEx(std::string *, char *, uint8_t, PAXS_ERROR_INFO, unsigned int, int)"
+    },
+    {
+      "VA": "0x1d87a",
+      "text": "bool AXSMemControl::MemFirmwareUpdate(std::string *, char *, uint8_t, PAXS_ERROR_INFO, unsigned int, uint32_t, uint32_t, bool *)"
+    },
+    {
+      "VA": "0x1da56",
+      "text": "bool AXSMemControl::R5FirmwareRemove(std::string *, unsigned int)"
+    },
+    {
+      "VA": "0x1daa2",
+      "text": "bool AXSMemControl::R5FirmwareUpdate(std::string *, char *, unsigned int)"
+    },
+    {
+      "VA": "0x1ddfe",
+      "text": "AXS-AR1"
+    },
+    {
+      "VA": "0x1de06",
+      "text": "AXS-AR3"
+    },
+    {
+      "VA": "0x1de12",
+      "text": "bool AXSMemControl::AR1DriveFirmwareUpdate(std::string *, int64_t, int, const TCHAR *, unsigned int)"
+    },
+    {
+      "VA": "0x1de77",
+      "text": "bool AXSMemControl::AR1DriveVerInfoUpdate(std::string *, const TCHAR *, unsigned int)"
+    },
+    {
+      "VA": "0x1df93",
+      "text": "CheckNewMemFirmwareStatus AXSMemControl::CheckNewMemFirmware(const std::string &, AXS_MEM_FW_FILE_INFO &)"
+    },
+    {
+      "VA": "0x1dffd",
+      "text": ".ascr"
+    },
+    {
+      "VA": "0x1e011",
+      "text": "bool AXSMemControl::ReadDriveFirmwareFile(const std::string &, AXS_DRV_FW_FILE_INFO &)"
+    },
+    {
+      "VA": "0x1e170",
+      "text": "bool AXSMemControl::GetMediaFirmwareVersion(std::string *, AXSMediaInformation *, PAXS_ERROR_INFO, unsigned int)"
+    },
+    {
+      "VA": "0x1e1e1",
+      "text": "bool AXSMemControl::GetAR1DriveMediaFirmwareVersion(std::string *, AXSDriveInformation *, AXSMediaInformation *, PAXS_ERROR_INFO, unsigned int)"
+    }
+  ],
+  "vendor_code_executed": false,
+  "device_actions": 0,
+  "modified_firmware_created": false
+}

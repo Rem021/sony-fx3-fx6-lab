@@ -1,0 +1,1 @@
+Step 2: reviewed immutable Setup > Area/Date menu PNG SHA 60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292, orange focus on Area/Date/Time Setting and English visible. Choose one LEFT to move focus toward categories without changing a setting; compare receive/AP/OSD timing with MENU. Any stale frame request must cause no guest write.

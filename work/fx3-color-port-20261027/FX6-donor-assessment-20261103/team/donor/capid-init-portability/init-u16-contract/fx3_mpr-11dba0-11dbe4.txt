@@ -1,0 +1,23 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000011cf84 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj>:
+  11dba0: 912803b7     	add	x23, x29, #0xa00
+  11dba4: 97fd7f43     	bl	0x7d8b0 <pthread_mutex_unlock@plt>
+  11dba8: 3925c3bf     	strb	wzr, [x29, #0x970]
+  11dbac: 912983a0     	add	x0, x29, #0xa60
+  11dbb0: 912403b2     	add	x18, x29, #0x900
+  11dbb4: 912653a2     	add	x2, x29, #0x994
+  11dbb8: 912643a1     	add	x1, x29, #0x990
+  11dbbc: a9007c1f     	stp	xzr, xzr, [x0]
+  11dbc0: 12800000     	mov	w0, #-0x1               // =-1
+  11dbc4: 3925c7a0     	strb	w0, [x29, #0x971]
+  11dbc8: b9455f20     	ldr	w0, [x25, #0x55c]
+  11dbcc: 2910fe5f     	stp	wzr, wzr, [x18, #0x84]
+  11dbd0: 2911fe5f     	stp	wzr, wzr, [x18, #0x8c]
+  11dbd4: b90997bf     	str	wzr, [x29, #0x994]
+  11dbd8: f904ebbf     	str	xzr, [x29, #0x9d0]
+  11dbdc: f9053bbf     	str	xzr, [x29, #0xa70]
+  11dbe0: 97fd8f68     	bl	0x81980 <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_@plt>

@@ -1,0 +1,94 @@
+_ZN7Updater21SignatureVerification15VerifySignatureENS_13verify_info_tEPKc
+0000abf0 stp       x29, x30, [sp, #-0x50]!
+0000abf4 mov       x29, sp
+0000abf8 stp       x19, x20, [sp, #0x10]
+0000abfc mov       x19, x1
+0000ac00 mov       x1, x2
+0000ac04 stp       x21, x22, [sp, #0x20]
+0000ac08 mov       x20, x2
+0000ac0c bl        #0x7610 ; _ZN7Updater21SignatureVerification9verifyKeyEPKc
+0000ac10 cbz       w0, #0xac6c
+0000ac14 mov       w19, #2
+0000ac18 adrp      x2, #0xb000
+0000ac1c movk      w19, #3, lsl #16
+0000ac20 adrp      x0, #0xb000
+0000ac24 add       x2, x2, #0x6ed
+0000ac28 mov       w1, w19
+0000ac2c add       x0, x0, #0x69a
+0000ac30 mov       w3, #0x29
+0000ac34 bl        #0x7910 ; printf
+0000ac38 mov       x0, #0x10
+0000ac3c bl        #0x71a0 ; __cxa_allocate_exception
+0000ac40 str       w19, [x0, #8]
+0000ac44 adrp      x1, #0x1d000
+0000ac48 adrp      x2, #0x1d000
+0000ac4c strb      wzr, [x0, #0xc]
+0000ac50 ldr       x1, [x1, #0xf50]
+0000ac54 ldr       x2, [x2, #0xf70]
+0000ac58 add       x1, x1, #0x10
+0000ac5c str       x1, [x0]
+0000ac60 adrp      x1, #0x1d000
+0000ac64 ldr       x1, [x1, #0xfc8]
+0000ac68 bl        #0x77b0 ; __cxa_throw
+0000ac6c adrp      x1, #0xb000
+0000ac70 mov       x0, x20
+0000ac74 add       x1, x1, #0x6b9
+0000ac78 bl        #0x7630 ; fopen
+0000ac7c mov       x21, x0
+0000ac80 cbnz      x0, #0xaca8
+0000ac84 mov       w19, #5
+0000ac88 adrp      x2, #0xb000
+0000ac8c movk      w19, #3, lsl #16
+0000ac90 adrp      x0, #0xb000
+0000ac94 mov       w3, #0x2e
+0000ac98 add       x2, x2, #0x6ed
+0000ac9c mov       w1, w19
+0000aca0 add       x0, x0, #0x707
+0000aca4 b         #0xac34
+0000aca8 mov       x3, #0
+0000acac mov       x2, #0
+0000acb0 mov       x1, #0
+0000acb4 bl        #0x7920 ; PEM_read_RSA_PUBKEY
+0000acb8 mov       x20, x0
+0000acbc cbnz      x0, #0xace4
+0000acc0 mov       w19, #2
+0000acc4 adrp      x2, #0xb000
+0000acc8 movk      w19, #3, lsl #16
+0000accc adrp      x0, #0xb000
+0000acd0 mov       w3, #0x33
+0000acd4 add       x2, x2, #0x6ed
+0000acd8 mov       w1, w19
+0000acdc add       x0, x0, #0x6bc
+0000ace0 b         #0xac34
+0000ace4 add       x22, x29, #0x30
+0000ace8 ldr       w1, [x19, #8]
+0000acec ldr       x0, [x19]
+0000acf0 mov       x2, x22
+0000acf4 bl        #0x76d0 ; SHA256
+0000acf8 ldr       w4, [x19, #0x18]
+0000acfc mov       x5, x20
+0000ad00 ldr       x3, [x19, #0x10]
+0000ad04 mov       x1, x22
+0000ad08 mov       w2, #0x20
+0000ad0c mov       w0, #0x2a0
+0000ad10 bl        #0x7310 ; RSA_verify
+0000ad14 cmp       w0, #1
+0000ad18 b.eq      #0xad40
+0000ad1c mov       w19, #2
+0000ad20 adrp      x2, #0xb000
+0000ad24 movk      w19, #3, lsl #16
+0000ad28 adrp      x0, #0xb000
+0000ad2c mov       w3, #0x41
+0000ad30 add       x2, x2, #0x6ed
+0000ad34 mov       w1, w19
+0000ad38 add       x0, x0, #0x748
+0000ad3c b         #0xac34
+0000ad40 mov       x0, x20
+0000ad44 bl        #0x78c0 ; RSA_free
+0000ad48 mov       x0, x21
+0000ad4c bl        #0x7190 ; fclose
+0000ad50 mov       w0, #0
+0000ad54 ldp       x19, x20, [sp, #0x10]
+0000ad58 ldp       x21, x22, [sp, #0x20]
+0000ad5c ldp       x29, x30, [sp], #0x50
+0000ad60 ret       

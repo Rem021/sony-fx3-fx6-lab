@@ -1,0 +1,99 @@
+{
+  "schema": "fx3-stage86-vui-mode-original-frame/1",
+  "created_utc": "2026-10-27T06:25:41.217280+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/README.md",
+      "bytes": 5200,
+      "sha256": "2ba1255e5dd16e2f13f431dcdc10b81a4cdce8f144c86cbce422829182379226"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/attempt-mode-reference-20261026/executed-source.py",
+      "bytes": 13413,
+      "sha256": "0bdc16797e6431e1cd2381440369065ff77576da7b3831ce31bc5cb537be1544"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/attempt-mode-reference-20261026/failure.json",
+      "bytes": 256,
+      "sha256": "972361edad9141f1aad4b40bc7826fb97ac28a9587e03f89b659fdfcee722865"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/attempt-mode-reference-diagnostic-20261026/executed-source.py",
+      "bytes": 13558,
+      "sha256": "f73a2b1182c1ba5f005c43393b628ff70e5c4021ff891917d156c5251b3cc666"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/attempt-mode-reference-diagnostic-20261026/failure.json",
+      "bytes": 451,
+      "sha256": "4dc6d704569ee151bf5f98f390ff1459a68f53d6b81e268c90f48c1584121f56"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/completed-evidence-review.json",
+      "bytes": 952,
+      "sha256": "fcfe15af977e0054e5613af644a7477df13f09d6e72ace64cf725da0eca78df8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/goal-status-after.json",
+      "bytes": 259725,
+      "sha256": "027e50ec81e69175ddaac1d3beefb76c73af5bd47872b936eb176eb2ec4d9a21"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/goal-status-before.json",
+      "bytes": 257675,
+      "sha256": "e7a70d26dc374ecac76d5e08d21b07cb8aee3ca9ec64100eb552f3c0fbcc017c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/next-consumer-static.json",
+      "bytes": 2986,
+      "sha256": "5f50780d7701f0910ba5880bd04172b4d2ed7533df80be9821c0e0470018d370"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/review_and_seal.py",
+      "bytes": 14406,
+      "sha256": "8df76e626730298ac4e59f0360a86b0f87647e2f6e07e48ecb41e57d2c29a0d1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/run-20261026/executed-source.py",
+      "bytes": 14307,
+      "sha256": "23100b1520b5ca6bad2d45bd0dc77261b2b9e98abb8798da1a9017560878e51a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/run-20261026/vui-mode-results.json",
+      "bytes": 1194518,
+      "sha256": "62ee4147891003dd8ba6963d68d1bb474a0131ea70e63ae87fa7f72f502b604b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/vui_mode.py",
+      "bytes": 14307,
+      "sha256": "23100b1520b5ca6bad2d45bd0dc77261b2b9e98abb8798da1a9017560878e51a"
+    }
+  ],
+  "previous_manifest_sha256": "e931f46b42e9c5e149a58708597f1344fadff451944da4742f296e6a6f22d584",
+  "operations": {
+    "status": "PASS_NATIVE_VUI_FLAG_REAL_CALLER_AND_PRESERVED_MODE_FRAME",
+    "created_utc": "2026-10-27T06:25:41.217280+00:00",
+    "prior_sealed_files_verified": 14,
+    "formal_cases": 14,
+    "formal_bounded_phases": 154,
+    "complete_VUI_leaf_and_original_caller_prologue_produce_mode_flag": true,
+    "native_mode_frame_kept_across_explicit_address_gap_and_returns_to_original_caller": true,
+    "mode90_91_old_seed_dependencies_removed_remaining_GOP_bytes": 5,
+    "input_enum0_reference_corrected_from_original_signed_address_ROM_tables": true,
+    "frame4da_to_remaining_bit1_is_static_candidate_not_execution": true,
+    "GOP_gate_still_clear_full_address_timing_MAIN_hardware_or_recovery": false,
+    "review_scope": "Same-agent whole-region, original-frame, signed-ROM-table and paired-input/output review; no independent emulator or camera acceptance.",
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "e7a70d26dc374ecac76d5e08d21b07cb8aee3ca9ec64100eb552f3c0fbcc017c",
+    "after_sha256": "027e50ec81e69175ddaac1d3beefb76c73af5bd47872b936eb176eb2ec4d9a21"
+  },
+  "readme_index_before_sha256": "405dc33a6348647e8c15fd155922124e06f0843f71e16d61557015a4a2e7c76f",
+  "readme_index_after_sha256": "68a75ce0a5b740973d00bb98426aa18e9ce7d948e2aa6695d541a8ca3303138b",
+  "readme_index_entry": "- [2026-10-26 FX3 VUI标志与模式转换原帧](<work/sony-firmware-20261024/stage86-hevc-vui-mode-conversion/README.md>)：原VUI→caller/JAL→保留原帧转换，14例154阶段；GOP块旧值依赖7降5、gate仍0。frame4da覆盖仅静态，非硬件或恢复，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

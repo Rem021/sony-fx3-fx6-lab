@@ -1,0 +1,165 @@
+{
+  "cases": [
+    {
+      "case": "old-selection-preserved",
+      "argv": [],
+      "root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3",
+      "label": "v25diag-web-r6"
+    },
+    {
+      "case": "old-selection-preserved",
+      "argv": [
+        "--review-procdiag-r4e"
+      ],
+      "root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r4-postmortem-host/vmopt-20261104-v25-procdiag-r4e",
+      "label": "v25procdiag-web-r6"
+    },
+    {
+      "case": "old-selection-preserved",
+      "argv": [
+        "--snapshot-tail",
+        "--gate-publish-interval",
+        "1"
+      ],
+      "root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N1",
+      "label": "v25gate-n1-r17"
+    },
+    {
+      "case": "old-selection-preserved",
+      "argv": [
+        "--snapshot-tail",
+        "--gate-publish-interval",
+        "64"
+      ],
+      "root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64",
+      "label": "v25gate-n64-r17"
+    },
+    {
+      "case": "old-selection-preserved",
+      "argv": [
+        "--snapshot-tail"
+      ],
+      "root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3",
+      "label": "v25diag-web-r6"
+    },
+    {
+      "case": "invalid-args-before-any-process",
+      "argv": [
+        "--r35-diagnostic-package"
+      ]
+    },
+    {
+      "case": "invalid-args-before-any-process",
+      "argv": [
+        "--r35-diagnostic-package",
+        "--snapshot-tail"
+      ]
+    },
+    {
+      "case": "invalid-args-before-any-process",
+      "argv": [
+        "--r35-diagnostic-package",
+        "--snapshot-tail",
+        "--gate-publish-interval",
+        "1"
+      ]
+    },
+    {
+      "case": "invalid-args-before-any-process",
+      "argv": [
+        "--snapshot-tail",
+        "--gate-publish-interval",
+        "64",
+        "--r35-diagnostic-package",
+        "--review-procdiag-r4e"
+      ]
+    },
+    {
+      "case": "invalid-args-before-any-process",
+      "argv": [
+        "--snapshot-tail",
+        "--gate-publish-interval",
+        "64",
+        "--r35-diagnostic-package",
+        "--internal-hoststep"
+      ]
+    },
+    {
+      "case": "invalid-args-before-any-process",
+      "argv": [
+        "--snapshot-tail",
+        "--gate-publish-interval",
+        "64",
+        "--r35-diagnostic-package",
+        "--candidate",
+        "/tmp/unreviewed"
+      ]
+    },
+    {
+      "case": "invalid-args-before-any-process",
+      "argv": [
+        "--snapshot-tail",
+        "--gate-publish-interval",
+        "64",
+        "--r35-diagnostic-package",
+        "--unknown-package"
+      ]
+    },
+    {
+      "case": "actual-package-verified",
+      "selection": {
+        "profile": "r35-diagnostic-r36-n64",
+        "package_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package",
+        "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/candidate.json",
+        "candidate_sha256": "0bf214178ab8e60d1ac7755e1d1b2fcc0d2c325ff8473abd50402f09ab81fab4",
+        "initrd": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/guest.cpio",
+        "initrd_sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff",
+        "initrd_bytes": 453213884,
+        "load_address": "0x440000000",
+        "dtb": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+        "dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+        "label": "v35diag-n64-r36-r37",
+        "provenance_manifest_pins": {
+          "r30-startup-observation-candidate/SHA256SUMS": "e04a86e60d0b311d57df50a6060064f6f57e02a33d3c04c015922e6a37749a49",
+          "r30-startup-observation-candidate/SOURCE-FREEZE.json": "10265a99fd1a74dc23d85477c82f078485863b92ed664e12132e0a9cf41ce717",
+          "r30-startup-observation-candidate/CORE-SOURCE-FREEZE.json": "3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9",
+          "r35-existing-log-observation-candidate/SHA256SUMS": "c7aee1bf7a35320e3c8d08eec03214957832008197741feb971433f19c524a71",
+          "r35-existing-log-observation-candidate/SOURCE-FREEZE.json": "dd4f8a2045220a045c32b8a0a686227f08e4e8c2edc7adca8964a12ddedc66e4",
+          "r36-fixed-slot-package/SHA256SUMS": "9a06c51caa6bc3517bedb9db06a72452fe4a12156ed3838034821caf151ecf03"
+        },
+        "scope": "selection only; no VM authority; original runner admission still required"
+      }
+    },
+    {
+      "case": "injected-manifest-identity-rejection",
+      "zero_processes": true
+    },
+    {
+      "case": "injected-cpio-identity-rejection",
+      "zero_processes": true
+    },
+    {
+      "case": "injected-r36-freeze-identity-rejection",
+      "zero_processes": true
+    },
+    {
+      "case": "CPIO-size-rejection"
+    },
+    {
+      "case": "fixed-r36-member-missing-no-N64-fallback",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/candidate.json"
+    },
+    {
+      "case": "fixed-r36-member-missing-no-N64-fallback",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/guest.cpio"
+    },
+    {
+      "case": "output-boundary-and-symlink-rejection"
+    },
+    {
+      "case": "actual-argv-constructor-platform-identical-only-loader-path-changed"
+    }
+  ],
+  "count": 21,
+  "no_process_or_service_started_by_selection_tests": true
+}

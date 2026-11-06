@@ -1,0 +1,336 @@
+{
+  "schema": "fx3-stage214-AP-boot-transfer-capacity-v1",
+  "created_utc": "2026-10-30T04:44:46.639527+00:00",
+  "previous_manifest_sha256": "ac310d1710a0d2be0eb6b1d2bc5733d9de0a4488a0839cc0b1e28386be60ebaf",
+  "previous_members_reverified": 61,
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/AP-boot-read-candidate-refinement.json",
+      "bytes": 809,
+      "sha256": "4749b40d07ccf0c5a8ac713611eaa02565d3352b02830a6b146d7a95a52dd300"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/AP-transfer-and-capacity-proof.json",
+      "bytes": 20520,
+      "sha256": "f8a8d15c4869e913b6d23c13e17936f1281f4003e062bce145aae1b15832f8f6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/GPL/drivers/mmc/core/mmc.c",
+      "bytes": 57768,
+      "sha256": "592b166f9567b59aece3d5a974f997f9b7cffd55e314c06209487c7d641be9ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/GPL/include/linux/mmc/mmc.h",
+      "bytes": 16748,
+      "sha256": "91355a61057b5519cb1c2bb81345ca3ebb27f16483b5ab41e66958f9874e3eb3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/GPL-MMC-source-capture.json",
+      "bytes": 981,
+      "sha256": "0241213b5161e0db1749910999bb722ffbb3e2b60372335467145fb12ae93a49"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/README.md",
+      "bytes": 6368,
+      "sha256": "e7b496296a619ff5cc7ce505143e74563a21d703f673718041e598c919a609cc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/access-switch-source-derived-examples.json",
+      "bytes": 2859,
+      "sha256": "bee3f9e182de5e7d87ea2e32e8f6726471dc0cf20be4f9cf1b7a131400cfca12"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/emmc_crypt_dma_enable.txt",
+      "bytes": 656,
+      "sha256": "bbd5a4f53959911bb6c06011897939b326ddc4186f4bed0506882d5109b14e09"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/goal-status-after.json",
+      "bytes": 423609,
+      "sha256": "ab029de3e951c61a07ee5898d494424e228679cbad4b89255e5659bcf2c06802"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/goal-status-before.json",
+      "bytes": 419296,
+      "sha256": "9de7b9ed210969bcab21fd909aa9d8eeb989830396d44a0758986bea3ff9206d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/implementation-review.json",
+      "bytes": 1139,
+      "sha256": "0a9e07d1afe7cfa43e258aeeff69c035f046e93dc16db9765a2efa450f8dca08"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/locate_transfer.py",
+      "bytes": 1842,
+      "sha256": "19020d51d52dbb3a6c5c1f95ed370bfd22f4bb5604fb04601145977e424ba589"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/manual-continuation-receipt.json",
+      "bytes": 892,
+      "sha256": "69aa289ca536bb2692e2696114e66c007b95297d272181bbee78077174431cae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/native-goal-observed.json",
+      "bytes": 385,
+      "sha256": "2f0e483ec7616ad16f47ada65ae51e49d8fecc18743eab366d4cdeadd3a99935"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/native-goal-recheck.json",
+      "bytes": 385,
+      "sha256": "91430d500457e6fff194a9b0980ac99c61bca040d86d06ad05c577adeefa1a62"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/CMD6_argument_builder.bin",
+      "bytes": 136,
+      "sha256": "a5345d72f21f041050ce2aa893ef5ead26262354a9389fd104441874c8b7c64d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/CMD6_set_bits_wrapper.bin",
+      "bytes": 40,
+      "sha256": "371226d8c8e09c3487c9ae65f9ba600ffedbcb18645986afb0505e0cfb324464"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/EXT_CSD_CMD8_request.bin",
+      "bytes": 236,
+      "sha256": "75b8cc7eeff305972d228f856989b27a472ad6c8fd758962ac699e6a56d9cc75"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/EXT_CSD_cache_owner.bin",
+      "bytes": 40,
+      "sha256": "ab3b6998cada6bfbeb539acc7b0660bde3de39c9a75ce333607f1e4010a51c7e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/VA_to_host_data_call.bin",
+      "bytes": 28,
+      "sha256": "8fb42174bc116989e7548091065089c6352b843b545081e2f13bf686def314f7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/boot_capacity_getter.bin",
+      "bytes": 24,
+      "sha256": "0e6e8aeabbc74a3e597dee8f2ac494820ba99090d6860eeb90cab5a6fc266b21"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/boot_configuration_failure_panic.bin",
+      "bytes": 16,
+      "sha256": "d165bcebff990c90febaee0519c9e92731d9dfbe8940313f7e0c86da1d3e6982"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/boot_configuration_upper_bits_guard.bin",
+      "bytes": 56,
+      "sha256": "55a898883bd731f77e04c4ddc062f458b68d176e1338fd4ca45befe817ca5f91"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/boot_multiplier_copy.bin",
+      "bytes": 32,
+      "sha256": "3ec35a9cfede3b9627a1575ff03ab8e3e138b1b5eae8e7ea68e7512834cdd7a8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/executor_ops_data_call.bin",
+      "bytes": 36,
+      "sha256": "a7f7b3e746429db36e0ffffe9eb0f8b9abb2338f5f503523a4fccf958ec3e8e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/host_ops_data_pointer.bin",
+      "bytes": 104,
+      "sha256": "39f37f8d1931b3bdf767e7510dd69509fbf23af1f7654933d0a4d291cbdd4418"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/host_ops_initialization.bin",
+      "bytes": 40,
+      "sha256": "6f1cda5e42630fe58a2d66d2fecf224a77538b39f4fbe842f0b58bb27f7e5f45"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/host_optional_context_install.bin",
+      "bytes": 28,
+      "sha256": "698da7dba84c9a67ffe4a9ac8a270472b78dee2e6d985d14f90caa850ce8ea64"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/multi_read_request_context.bin",
+      "bytes": 28,
+      "sha256": "8c726e78f3b1352fce82f4dfca1637c3764fadbe82e102c492006b01afd37ef3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/optional_callback_reset_skip.bin",
+      "bytes": 32,
+      "sha256": "0277088d132262bd0eea731345821b15ce181b2ee4e8ff6d5a1a7d31f9c8a75d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/optional_callback_transfer_skip.bin",
+      "bytes": 36,
+      "sha256": "4af447942f8360337819b8663f9f91acbfe33f1a99aed114335bce34de69cbd0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/optional_callback_wait_skip.bin",
+      "bytes": 32,
+      "sha256": "5087bfc77f41a5401a661eb9def165fcffcdd6aae47f59b404eeb9842aba402b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/partition_switch_clear_previous.bin",
+      "bytes": 52,
+      "sha256": "5b74662068ffb292b873ed6055a8a067a1ec17dd1d1141ca1c2a620328c4c42c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/partition_switch_set_retry_and_panic.bin",
+      "bytes": 224,
+      "sha256": "27a7ca2421c0ef054477e324ec12fb849203e452d937e2b4eea56be3907c1f37"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/partition_type_jump_table.bin",
+      "bytes": 10,
+      "sha256": "a252819d8c200ddb12dc9aa0f73cc8b7920c87f734b72410c2be8ec05dac9152"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/partition_type_to_access.bin",
+      "bytes": 104,
+      "sha256": "8f269cdaf8a607a459cb1d66813461d6b652ac8d363003db23efb94bb1ca6411"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/sequence_ops_data_pointer.bin",
+      "bytes": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/sequence_optional_argument.bin",
+      "bytes": 24,
+      "sha256": "5f46659b2cdc94f429a0a9440110405028d926812bd133ac87e926b780f3c6d1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/single_read_request_context.bin",
+      "bytes": 40,
+      "sha256": "09b03d07ab5e1b93f63decd191ebe9ac5b60748b0785b34d8295ee073dcabd79"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/prove_transfer.py",
+      "bytes": 10563,
+      "sha256": "5972123168c84252ee39211993f674ef2d0e5c015ae9e02eb19426698d8e8057"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/readme-after.md",
+      "bytes": 90948,
+      "sha256": "b1fbc3cd6ba19f211025be266c33c30c6bda9558401c6adf830997086f219766"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/readme-before.md",
+      "bytes": 90241,
+      "sha256": "6ae564cc6b437c79d8e71a92773be40de4d232dbe37ea352bf1e4fee7c2af88a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/readme-rebased-before.md",
+      "bytes": 90583,
+      "sha256": "f7d8c645cecccae92fbd852204477394937e71d6bc4b90921af5d601c576c6af"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/sdhci_dma_map.txt",
+      "bytes": 10922,
+      "sha256": "d93ee9bbfc524255d28008b6e0dcc4d124e02ed295350d3e479edae03cbecb82"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/sdhci_emmc_exec_cmd.txt",
+      "bytes": 50564,
+      "sha256": "49c1ef518f640f49eff8947fea17007dfa51399fae2361498532eeaf5e8f9bf8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/sdhci_emmc_exec_data_cmd.txt",
+      "bytes": 2715,
+      "sha256": "a339204cb61667709baa1b15b9669299538ea9859a00cc903b1487f4f88a4938"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/seal_stage.py",
+      "bytes": 12174,
+      "sha256": "a11c845ab047df6ae1449a8172cb636f1b51d263b988677104cb6e7f9485f7b9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/state-dc-store-locator.json",
+      "bytes": 225,
+      "sha256": "18f4d1e3dd92f0260bb73a632569ed2f353271edf371e69b572a02fbd7af2850"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0x10ec0-locator.txt",
+      "bytes": 12183,
+      "sha256": "0d955b64c7f05b801ace51ea72164d211e2e8884fc3d88a3ed395f76d8d1625f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xd110-locator.txt",
+      "bytes": 1659,
+      "sha256": "6fe7862c3e5ed617cfe5cf61338949e304223fcb981697961be532736ceb6000"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xde68-locator.txt",
+      "bytes": 3519,
+      "sha256": "921f1551dc04cfcca3ad5032e39491c66c8fa36676a8dd752df4469ccc023cd5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xe9e8-locator.txt",
+      "bytes": 4663,
+      "sha256": "4ccc47fd42411bf6861c8b7692d4b3e1154e00d1e793e9714489a1d80ed3eb8c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xeb88-locator.txt",
+      "bytes": 1483,
+      "sha256": "0434376a30b72ab5980c9c964d1020814644a8d8f314d02fd597a905c3e3cfbb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xec10-locator.txt",
+      "bytes": 1537,
+      "sha256": "9fab49c30423d4e4c0c5b5d89d31064595dc4845a9c7aa474569b418a5ba9291"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xecc0-locator.txt",
+      "bytes": 2263,
+      "sha256": "e4cdc5103fb5649fc4948dcd84a6616b29c19b14e449756612eef6497a5ec234"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xf058-locator.txt",
+      "bytes": 1400,
+      "sha256": "d439536ea7731e33880e2a9d5806e6afd84b7db9ce6e18aba00b756d39c4d0c7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xf1b0-locator.txt",
+      "bytes": 1313,
+      "sha256": "4843824600b62f752589a4b76e1dda367403327d71d287a1b445736075788ff8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/text-0xf618-locator.txt",
+      "bytes": 4394,
+      "sha256": "ea8fbe2bc11944bd55b3a21b52a584f6a7f695293b507df0a9da677a3601362c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/va_emmc_exec_emmc_data_cmd.txt",
+      "bytes": 2303,
+      "sha256": "150928265719b1c6d2bb767f9c767eec367ae1676b07275bec2b76a9cceccce1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/va_emmc_init.txt",
+      "bytes": 3493,
+      "sha256": "acdc7b7defdcc95620a617517efcc3cbf554fda9200ef73e98984b170a1c35d9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/va_emmc_plat_init.txt",
+      "bytes": 244,
+      "sha256": "a3edc48fd328115662a2463d13d2e7f88ddcf98ef520f974ea66c0eb10981431"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/verification-receipt.json",
+      "bytes": 1084,
+      "sha256": "f5926683f23320fa21b883b90b78cbb16e690669706c4be1f248aac42aeda046"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/web-source-review.json",
+      "bytes": 1271,
+      "sha256": "22eb60e0d9a32689577d612e08015bdf88e1a9feaa77680524dd99154c910b7f"
+    }
+  ],
+  "member_count": 63,
+  "goal_before_sha256": "9de7b9ed210969bcab21fd909aa9d8eeb989830396d44a0758986bea3ff9206d",
+  "goal_after_sha256": "ab029de3e951c61a07ee5898d494424e228679cbad4b89255e5659bcf2c06802",
+  "mutable_heads_not_manifest_members": true,
+  "root01_bundle_sha256_unchanged": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0",
+  "new_approval_granted": false,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "native_goal_observed": "blocked",
+  "manual_continue_request_processed": true,
+  "native_goal_status_changed_by_assistant": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

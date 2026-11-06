@@ -1,0 +1,104 @@
+{
+  "status": "HOST_LOCAL_FILES_ONLY",
+  "source": [
+    {
+      "path": "fx3_recovery/__init__.py",
+      "sha256": "4f8744cde953e71770966dd0f8f68cd83f025e964621b18fd8c998c71a6cb3cf",
+      "imports": []
+    },
+    {
+      "path": "fx3_recovery/__main__.py",
+      "sha256": "67d0c949b315af78c08960224b75e5703886178d1dda12a755882dd7958c764f",
+      "imports": [
+        ".capture",
+        ".engine",
+        ".fat",
+        ".files",
+        "argparse",
+        "json"
+      ]
+    },
+    {
+      "path": "fx3_recovery/capture.py",
+      "sha256": "7660b8adb472cc4de170c2ca039b8df7709fcd1a39289a7c81010fe1fca7e159",
+      "imports": [
+        ".fat",
+        ".files",
+        "dataclasses",
+        "hashlib",
+        "json",
+        "math",
+        "os",
+        "pathlib",
+        "re",
+        "secrets",
+        "stat",
+        "time",
+        "zlib"
+      ]
+    },
+    {
+      "path": "fx3_recovery/engine.py",
+      "sha256": "8a0eba48de3439a927dfbd3d35e857e1f50c639b7d34150480f454147e5312ed",
+      "imports": [
+        ".fat",
+        ".files",
+        ".profiles",
+        ".squash",
+        "hashlib",
+        "json",
+        "re",
+        "struct",
+        "zlib"
+      ]
+    },
+    {
+      "path": "fx3_recovery/fat.py",
+      "sha256": "8ea3c9f11178475393bf2e6946e0ec9d1b1aa89ffecff05085eae3ce17144642",
+      "imports": [
+        ".files",
+        "struct"
+      ]
+    },
+    {
+      "path": "fx3_recovery/files.py",
+      "sha256": "200e867ed94949706f33255cf6b3d5ec86a5e137921b18d23090c772755d6c34",
+      "imports": [
+        "json",
+        "os",
+        "pathlib",
+        "plistlib",
+        "stat",
+        "subprocess"
+      ]
+    },
+    {
+      "path": "fx3_recovery/profiles.py",
+      "sha256": "dd25cd336b9effa7fff8c01e2ae5e48ee440e63636a6e26eb46cf928fbe52ecd",
+      "imports": [
+        ".files",
+        "hashlib"
+      ]
+    },
+    {
+      "path": "fx3_recovery/squash.py",
+      "sha256": "23dabb17066c9626a523d5146276c6d7c480b862dcc970b0319b9d8566c43c6a",
+      "imports": [
+        "functools",
+        "math",
+        "stat",
+        "struct",
+        "zlib"
+      ]
+    }
+  ],
+  "new_camera_operations": 0,
+  "transport_plugin_loader": false,
+  "real_camera_provider_present": false,
+  "A7CII_preload_worker_imported": false,
+  "expected_profile_bytes": 25100288,
+  "main_chunk_reads": 383,
+  "source_full_fingerprints": 2,
+  "production_timeout_behavior": "advisory before/after blocking calls; no forced interruption or duplicate calls",
+  "no_native_goal_update": true
+}

@@ -1,0 +1,29 @@
+{
+  "design": "FIXTURE-only live source arbiter; no target backend or persistent resume",
+  "reference": {
+    "path": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/global_guard.c",
+    "sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526",
+    "reused_principles": ["kernel lock release or dead PID is not clean completion", "hold unknown across ownership loss", "release decisions use original live private result"],
+    "source_ported_byte_for_byte": false,
+    "Mac_C_CommonCrypto_is_target_Linux_compatible": false
+  },
+  "states": ["IDLE", "RUNNING", "HELD_UNKNOWN", "CLOSED"],
+  "allowed_automatic_reuse": "original live owner only, after private bound completion, real normal child exit, clean EOF, decoded synthetic bytes, unchanged fence and valid deadline",
+  "persisted_fence_parsed_as_completion": false,
+  "existing_owner_directory_or_partial_fence_allows_new_owner": false,
+  "target_entry_currently_forces_this_owner": false,
+  "upstream_interface_sources_reviewed_date": "2026-10-30",
+  "sources": [
+    {
+      "url": "https://man7.org/linux/man-pages/man2/flock.2.html",
+      "publisher": "Linux man-pages project",
+      "limited_support": "flock ownership follows open file descriptions and may be released when all related descriptors close; this alone is not a source-return or hardware-recovery receipt"
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man2/fsync.2.html",
+      "publisher": "Linux man-pages project",
+      "limited_support": "file and containing-directory synchronization have distinct requirements; synchronization documentation does not prove target RAM survives reset, authenticates a record, or provides a restart checkpoint"
+    }
+  ],
+  "next_target_work": "own Linux ARM64 live owner/worker state machine with enforced entry, bounded inherited private completion and UNKNOWN on liveness/completion loss; fake-kernel verification before any device action"
+}

@@ -1,0 +1,211 @@
+{
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "source_probe": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/p02",
+  "symbols": [
+    {
+      "index": 19455,
+      "type": "t",
+      "name": "do_pte",
+      "address": 18446743524092831236,
+      "file_offset": 4351492,
+      "compressed_offset": 230935,
+      "compressed_next": 230940
+    },
+    {
+      "index": 19456,
+      "type": "t",
+      "name": "skip_pte",
+      "address": 18446743524092831272,
+      "file_offset": 4351528,
+      "compressed_offset": 230940,
+      "compressed_next": 230947
+    },
+    {
+      "index": 19457,
+      "type": "t",
+      "name": "__idmap_kpti_secondary",
+      "address": 18446743524092831288,
+      "file_offset": 4351544,
+      "compressed_offset": 230947,
+      "compressed_next": 230959
+    },
+    {
+      "index": 19458,
+      "type": "T",
+      "name": "__cpu_setup",
+      "address": 18446743524092831360,
+      "file_offset": 4351616,
+      "compressed_offset": 230959,
+      "compressed_next": 230966
+    },
+    {
+      "index": 19459,
+      "type": "T",
+      "name": "cxd900xx_init",
+      "address": 18446743524092831488,
+      "file_offset": 4351744,
+      "compressed_offset": 230966,
+      "compressed_next": 230976
+    },
+    {
+      "index": 19460,
+      "type": "t",
+      "name": "__secondary_vector",
+      "address": 18446743524092831552,
+      "file_offset": 4351808,
+      "compressed_offset": 230976,
+      "compressed_next": 230986
+    },
+    {
+      "index": 19461,
+      "type": "T",
+      "name": "cxd900xx_smp_init",
+      "address": 18446743524092831568,
+      "file_offset": 4351824,
+      "compressed_offset": 230986,
+      "compressed_next": 230999
+    },
+    {
+      "index": 19462,
+      "type": "T",
+      "name": "cxd900xx_secondary_init",
+      "address": 18446743524092831632,
+      "file_offset": 4351888,
+      "compressed_offset": 230999,
+      "compressed_next": 231014
+    },
+    {
+      "index": 19463,
+      "type": "T",
+      "name": "cxd90057_resume_profile",
+      "address": 18446743524092831680,
+      "file_offset": 4351936,
+      "compressed_offset": 231014,
+      "compressed_next": 231032
+    }
+  ],
+  "original_instructions": [
+    {
+      "offset": "0x426750",
+      "bytes": "80ffff10",
+      "mnemonic": "adr",
+      "op_str": "x0, #0x426740"
+    },
+    {
+      "offset": "0x426754",
+      "bytes": "051840a9",
+      "mnemonic": "ldp",
+      "op_str": "x5, x6, [x0]"
+    },
+    {
+      "offset": "0x426758",
+      "bytes": "000005cb",
+      "mnemonic": "sub",
+      "op_str": "x0, x0, x5"
+    },
+    {
+      "offset": "0x42675c",
+      "bytes": "c600008b",
+      "mnemonic": "add",
+      "op_str": "x6, x6, x0"
+    },
+    {
+      "offset": "0x426760",
+      "bytes": "85020058",
+      "mnemonic": "ldr",
+      "op_str": "x5, #0x4267b0"
+    },
+    {
+      "offset": "0x426764",
+      "bytes": "a61000b9",
+      "mnemonic": "str",
+      "op_str": "w6, [x5, #0x10]"
+    },
+    {
+      "offset": "0x426768",
+      "bytes": "a61400b9",
+      "mnemonic": "str",
+      "op_str": "w6, [x5, #0x14]"
+    },
+    {
+      "offset": "0x42676c",
+      "bytes": "a61800b9",
+      "mnemonic": "str",
+      "op_str": "w6, [x5, #0x18]"
+    },
+    {
+      "offset": "0x426770",
+      "bytes": "bf740039",
+      "mnemonic": "strb",
+      "op_str": "wzr, [x5, #0x1d]"
+    },
+    {
+      "offset": "0x426774",
+      "bytes": "bf780039",
+      "mnemonic": "strb",
+      "op_str": "wzr, [x5, #0x1e]"
+    },
+    {
+      "offset": "0x426778",
+      "bytes": "bf7c0039",
+      "mnemonic": "strb",
+      "op_str": "wzr, [x5, #0x1f]"
+    },
+    {
+      "offset": "0x42677c",
+      "bytes": "9f3f03d5",
+      "mnemonic": "dsb",
+      "op_str": "sy"
+    },
+    {
+      "offset": "0x426780",
+      "bytes": "9f2003d5",
+      "mnemonic": "sev",
+      "op_str": ""
+    },
+    {
+      "offset": "0x426784",
+      "bytes": "c0035fd6",
+      "mnemonic": "ret",
+      "op_str": ""
+    },
+    {
+      "offset": "0x426788",
+      "bytes": "1f2003d5",
+      "mnemonic": "nop",
+      "op_str": ""
+    },
+    {
+      "offset": "0x42678c",
+      "bytes": "1f2003d5",
+      "mnemonic": "nop",
+      "op_str": ""
+    },
+    {
+      "offset": "0x426790",
+      "bytes": "45010058",
+      "mnemonic": "ldr",
+      "op_str": "x5, #0x4267b8"
+    },
+    {
+      "offset": "0x426794",
+      "bytes": "a00038d5",
+      "mnemonic": "mrs",
+      "op_str": "x0, mpidr_el1"
+    }
+  ],
+  "observed_registers": {
+    "x5": "0xfe005000",
+    "x6": "0x400800b0",
+    "pc_after_probe": "0x200",
+    "PSTATE": "EL1h"
+  },
+  "last_reported_faulting_instruction": {
+    "file_offset": "0x426764",
+    "runtime_pc": "0x404a6764",
+    "instruction": "str w6,[x5,#0x10]",
+    "address_from_observed_x5": "0xfe005010"
+  },
+  "interpretation": "Original Sony head writes a secondary boot entry into the ESRAM window; stock virt has no mapped backing at that physical location. The trace then enters VBAR+0x200 and zero instructions; no banner/userspace. Exact ESR syndrome was not captured, so mark faulting-store attribution as strongly supported candidate rather than exhaustive fault proof.",
+  "next_minimal_difference": "Add only guest ESRAM 16MiB RAM backing at 0xfe000000 in QEMU machine, preserve original Image and DTB/initrd, then compare whether execution passes this original store. No kernel byte patch."
+}

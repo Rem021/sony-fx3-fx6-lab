@@ -1,0 +1,13 @@
+0001a248 stp        x29, x30, [sp, #-0x20]!
+0001a24c mov        x29, sp
+0001a250 str        x19, [sp, #0x10]
+0001a254 mov        x19, x0
+0001a258 ldr        x0, #0x1a280
+0001a25c bl         #0x1a25c ; [{"symbol": "printk", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+0001a260 ldr        x0, #0x1a288
+0001a264 bl         #0x1a264 ; [{"symbol": "printk", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+0001a268 add        x0, x19, #0xc0
+0001a26c bl         #0x1a26c ; [{"symbol": "k_upm_dump_power_status", "addend": 0, "type": 283, "section": 2}]
+0001a270 ldr        x19, [sp, #0x10]
+0001a274 ldp        x29, x30, [sp], #0x20
+0001a278 ret        

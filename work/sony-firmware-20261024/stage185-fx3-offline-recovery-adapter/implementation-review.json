@@ -1,0 +1,44 @@
+{
+  "tests": 13,
+  "tests_source_matches_current": true,
+  "production_imports": {
+    "__init__.py": [],
+    "__main__.py": [
+      "argparse",
+      "json"
+    ],
+    "engine.py": [
+      "hashlib",
+      "json",
+      "re",
+      "struct",
+      "zlib"
+    ],
+    "fat.py": [
+      "struct"
+    ],
+    "files.py": [
+      "json",
+      "os",
+      "pathlib",
+      "plistlib",
+      "stat",
+      "subprocess"
+    ],
+    "profiles.py": [
+      "hashlib"
+    ],
+    "squash.py": [
+      "functools",
+      "math",
+      "stat",
+      "struct",
+      "zlib"
+    ]
+  },
+  "only_host_process": "diskutil target-volume identity query in files.check_volume",
+  "Sony_or_community_runtime_executed": false,
+  "native_device_backend_present": false,
+  "current_7_02_body_tested": false,
+  "review_type": "same-agent local source and artifact verification"
+}

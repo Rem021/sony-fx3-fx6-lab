@@ -1,0 +1,81 @@
+{
+  "status": "BUILT_AND_INDEPENDENTLY_STATIC_VERIFIED_NOT_RUN",
+  "candidate_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "source_sha256": "ff2f927de24b801d334ce9111fb486fb2af85d24c509ab20c43eda0a69ffdc40",
+  "fx3_baseline_cpio_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+  "bytes": 453184500,
+  "members": 1140,
+  "trailer_end": 424689212,
+  "post_trailer_zero_bytes": 28495288,
+  "AP_delta": {
+    "name": "usr/lib/appFw.so",
+    "source_offset": 62762896,
+    "candidate_offset": 62762896,
+    "source_size": 79015712,
+    "candidate_size": 50520424,
+    "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "candidate_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+  },
+  "expected_exact_identity_exceptions": [
+    {
+      "name": "usr/bin/bootin.elf",
+      "fx3_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "candidate_sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+      "fx3_bytes": 23960,
+      "candidate_bytes": 23960
+    },
+    {
+      "name": "usr/bin/im.elf",
+      "fx3_sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+      "candidate_sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+      "fx3_bytes": 40920,
+      "candidate_bytes": 40920
+    },
+    {
+      "name": "usr/lib/appFw.so",
+      "fx3_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "candidate_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "fx3_bytes": 79015712,
+      "candidate_bytes": 50520424
+    }
+  ],
+  "other_members_header_and_payload_equal": true,
+  "original_identity_cpio_sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+  "original_identity_elf_count": 20,
+  "original_identity_gate_rejections": [
+    "usr/bin/bootin.elf",
+    "usr/bin/im.elf"
+  ],
+  "parent_order_errors": [],
+  "shifted_member_count": 741,
+  "first_shifted_member": "usr/lib/dataflowInfraFramework.so",
+  "bsdtar_names_equal": true,
+  "frozen_artifacts": {
+    "qemu_binary": {
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+      "bytes": 36163584
+    },
+    "fx3_kernel": {
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "bytes": 6610952
+    },
+    "fx3_dtb_full_binary": {
+      "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+      "bytes": 10355
+    },
+    "software_guest_cpio": {
+      "sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+      "bytes": 453184500
+    },
+    "english_generation4_backup": {
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+      "bytes": 2229740
+    }
+  },
+  "frozen_initrd_load": "0x440000000",
+  "dtb_chosen": {
+    "linux,initrd-start": "0x440000000",
+    "linux,initrd-end": "0x45b030bf4"
+  },
+  "qemu_started": false
+}

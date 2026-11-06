@@ -1,0 +1,47 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap41-capid-storage/guest.dtb",
+    "sha256": "b3f7003ad6f87e1cc0e81f2885fe161a17612e53c9fe0ad565dc391debd1e431"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap41-capid-storage/guest.cpio",
+    "sha256": "06bf25c643f32a86087a6c6624115956f7b6ff4c68b71d237307d8dabb150fb6"
+  },
+  "required_markers": [
+    "FX3_CPUSET_READY",
+    "FX3_BACKUP_INSMOD_RC=0",
+    "FX3_ULOGIO_INSMOD_RC=0",
+    "FX3_AP_NATURAL_BOOTIN_BEGIN",
+    "FX3_UTIMER_RC=0",
+    "FX3_STREAM_RC=0",
+    "FX3_STREAM2_RC=0",
+    "FX3_DMM_RC=0",
+    "FX3_GRM_MA_RC=0",
+    "FX3_GPE_BOUND count=5",
+    "FX3_POWER_SEED_RC=0",
+    "FX3_UPM_RC=0",
+    "FX3_UDATE_RC=0",
+    "FX3_DATE_CLOCK_RC=0",
+    "FX3_HDMI_REG_COMMIT",
+    "FX3_HDMI_REG_NATIVE_FREE",
+    "FX3_HDMI_REG_COMMIT",
+    "FX3_HDMI_REG_NATIVE_FREE",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_CP_VERSION_UNAVAILABLE",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_KIKILOG_RC=0",
+    "FX3_CAPID_BIND",
+    "FX3_CAPID_COMMIT"
+  ],
+  "scope": "Original FX3 natural boot with original UIPC/Backup/timer/DMM/UPM/date/GPIO5/nativeBusPower/Kikilog. Explicit virtual HDMI registration, empty Bluetooth records, CP control unsupported, GPE request-capture diagnostics. CAPID storage-only profile with exclusive41d800000/64KiB reservation, native messages/leases and rollback. No originalCP/capture/realdevices or UI acceptance.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true
+}

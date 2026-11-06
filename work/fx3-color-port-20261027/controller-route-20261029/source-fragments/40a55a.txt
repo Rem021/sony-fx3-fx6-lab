@@ -1,0 +1,19 @@
+0040a55a movw       r0, #0x1210
+0040a55e addw       r1, sb, #0x8e4
+0040a562 mov        r2, fp
+0040a564 mov        r3, r6
+0040a566 add        r0, sb
+0040a568 str        r0, [sp, #0x38]
+0040a56a ldr        r0, [r0]
+0040a56c strd       r5, r8, [sp]
+0040a570 str        r5, [sp, #8]
+0040a572 ldr        r5, [sp, #0x44]
+0040a574 strd       r5, sl, [sp, #0xc]
+0040a578 str        r1, [sp, #0x14]
+0040a57a add        r1, sp, #0xc8
+0040a57c str        r1, [sp, #0x18]
+0040a57e movs       r1, #3
+0040a580 bl         #0x3c7574
+0040a584 cmp        r0, #0
+0040a586 mov        r0, r5
+0040a588 beq.w      #0x40ae78

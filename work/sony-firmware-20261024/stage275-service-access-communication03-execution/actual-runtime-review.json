@@ -1,0 +1,574 @@
+{
+  "recorded_utc": "2026-11-01T11:35:40.223875+00:00",
+  "status": "HELD_AFTER_SERVICE_READ0_12B_HEADER_RETURN",
+  "grant_id": "fx3-702-service-access-communication-20261101-03",
+  "approval_bundle_sha256": "c4719618f3c4c78cd78c4401384ae713c6b2dc5a08f911b07dfd01d31486db62",
+  "original_live_observer_pid": 12633,
+  "exec_session_id": 22872,
+  "helper_identity": {
+    "uid": 0,
+    "pid": 29141,
+    "sec": 1793532602,
+    "usec": 162350,
+    "path": "/private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-03/helper",
+    "image_sha256": ""
+  },
+  "observer_identity": {
+    "uid": 501,
+    "pid": 12633,
+    "sec": 1793531837,
+    "usec": 535029,
+    "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+    "image_sha256": "104402c76823baa218defcdb2a96c2e3d94302dd12cabf0db3c1f39cd620cb64"
+  },
+  "live_self_image": {
+    "image_sha256": "b9f424d9993698f2793f0e6a8c5e306c13cdb9fc92928d980eb2cca558b41944",
+    "kernel_peer_and_self_image_checked": true
+  },
+  "observation_provenance": "original live observer session22872 reported 81 frames and OWNER_RETAINED; saved reparse checks consistency only",
+  "saved_flow_replay_is_not_new_live_origin_proof": true,
+  "private_receipt": {
+    "phase": "HELD",
+    "native_return": 4,
+    "global_guard_result": 0,
+    "frame_io_failed": false,
+    "owner_ran": true,
+    "result": {
+      "abi": 4,
+      "status": 2,
+      "event_count": 18,
+      "capture_attempted": 1,
+      "claim_attempted": 1,
+      "interface_claimed": 1,
+      "clock_invalid": 0,
+      "cleanup_error": 0,
+      "active_call_pending": 0,
+      "persistent_camera_or_vendor_commands": 1,
+      "owner_retained": 1,
+      "session_state": 0,
+      "wire_pending": 0,
+      "vendor_attempted": 1
+    },
+    "result_sha256": "bf163784d5662b6b7dffcd3ded3d3b199b87e338b45880d4a5aa4dd7da621cd5",
+    "record_sha256": "c66d63c61408508cb97d3129d1043a077b530be5106d8cc8d8838d6b09970e46",
+    "transport_peer_verified": true,
+    "physical_camera_acceptance": false,
+    "manual_recovery": {
+      "schema": 1,
+      "stage": 2,
+      "prior_tail_hash": "0b5d6100b038eb4eb5c530b5977afe31d5fc6c35bff901ebd662aa8ec0332ac8",
+      "recovered_hash": "9529d56dad445f0ff9e547ccc26c7f492f3c8d99c481a0dd875914df0cdfe408",
+      "source_node": 4296064081,
+      "physical_port": 4294968654,
+      "location": 17825792,
+      "before_count": 7
+    }
+  },
+  "flow_frames": 81,
+  "MSC_exchanges_out": 7,
+  "MSC_exchanges_in": 7,
+  "SERVICE_acquisition": {
+    "step": 114,
+    "name": "pipe_4",
+    "raw_return": 0,
+    "device_open_disposition": 1,
+    "device_open_raw": 0
+  },
+  "SERVICE_node": 4296090359,
+  "shared_device_open_fallback_actually_used": false,
+  "previous_conflict_cause_still_unproven": true,
+  "SERVICE_exchanges_out": 7,
+  "SERVICE_exchanges_in": 7,
+  "SERVICE_auth_protocol_checks_passed_inferred_from_read0_entry": true,
+  "cryptographic_device_identity_not_proven": true,
+  "read0_fixed_write_returned": true,
+  "response_header_read_returned": true,
+  "response_header_count": 12,
+  "response_header_native_raw": 0,
+  "raw_response_header_saved": false,
+  "exact_semantic_failure_code_not_serialized": true,
+  "header_shape_or_post_read_validation_failure_inferred": true,
+  "exact_different_header_field_unproven": true,
+  "SERVICE_body_bytes": 0,
+  "SERVICE_STOP_attempted": false,
+  "SERVICE_objects_disposed": false,
+  "normal_USB_return_proven": false,
+  "pending_native_call": null,
+  "wire_pending": 0,
+  "retained_actors_still_present": {
+    "29141": {
+      "uid": 0,
+      "pid": 29141,
+      "sec": 1793532602,
+      "usec": 162350,
+      "path": "/private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-03/helper",
+      "image_sha256": ""
+    },
+    "12633": {
+      "uid": 501,
+      "pid": 12633,
+      "sec": 1793531837,
+      "usec": 535029,
+      "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+      "image_sha256": "104402c76823baa218defcdb2a96c2e3d94302dd12cabf0db3c1f39cd620cb64"
+    }
+  },
+  "user_reports_initial_screen_normal_shooting": true,
+  "OFF_cache_receipt": "OFF-cache-observation.json",
+  "physical_recovery": {
+    "recorded_utc": "2026-11-01T11:35:40.223875+00:00",
+    "user_statement": "全部USB已拔下并保持断开，拍摄界面和菜单正常",
+    "all_camera_side_USB_physically_disconnected_user_confirmed": true,
+    "remain_disconnected": true,
+    "battery_shooting_UI_and_menu_normal_user_confirmed": true,
+    "sony_current_cache_nodes": [],
+    "cached_metadata_only": true,
+    "active_USB_requests": 0
+  },
+  "helper_killed_or_reset": false,
+  "automatic_retry": false,
+  "firmware_write": false,
+  "module_upload": false,
+  "evidence": [
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/verified-helper.json",
+      "bytes": 336,
+      "sha256": "0fe45158389d133e5b7284f89c630f703786bba8395136005e6b2190cda0645b"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/observer-identity.json",
+      "bytes": 336,
+      "sha256": "1cb3d71d525e500af26b395529597df8d353184c1732b16ed1e43772fc26539c"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/live-self-image.bin",
+      "bytes": 160,
+      "sha256": "78d96d280a5feac9348a141dd2bda88254354785ee534348a9ee864f0ed7d5f8"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/live-self-image.json",
+      "bytes": 135,
+      "sha256": "3bc7dc2fa3bef1575044f86d4f2e17cc7ac9db09fbf3300e01ca2dbccd3083c2"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/received-final-record.bin",
+      "bytes": 1024,
+      "sha256": "c66d63c61408508cb97d3129d1043a077b530be5106d8cc8d8838d6b09970e46"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/private-record.json",
+      "bytes": 1101,
+      "sha256": "fbf82e17b2ece718021054f30396c5c4c6edb8ba3ed3f731b6cc2c909180b430"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/unresolved-summary.json",
+      "bytes": 373,
+      "sha256": "142f7f3996bd9af06d3573ada9196c2cfe3307e92b31236b7852210a373b600b"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0000.bin",
+      "bytes": 672,
+      "sha256": "4335ef899e4200c386481876d81414de0e59f006bdf09d864ba7d61e24cf2a59"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0001.bin",
+      "bytes": 672,
+      "sha256": "4b15a2634bbfaa4e841a8c51782461f35cab5dd379404c139ab91310fe84088c"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0002.bin",
+      "bytes": 672,
+      "sha256": "21e40ad9c7443cf6469717ba9445ffe24711e7859013823d95a12fc689172825"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0003.bin",
+      "bytes": 672,
+      "sha256": "2bd9c57f0b71627f7fc4959804d84918a126e1889264c2bb81eb6b50a82390da"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0004.bin",
+      "bytes": 672,
+      "sha256": "1e302bf4a87a75ba63682653c0f65215e2ffa11105fbaf8126789ccc702c4c67"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0005.bin",
+      "bytes": 672,
+      "sha256": "0ab48cbaa9928e8c1013636c974c7bc0480471ef749f26c488783e3890672e67"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0006.bin",
+      "bytes": 672,
+      "sha256": "810c67929f0a87f6f9b71129272cc65dbbd239bb4ed5a393855521b23e08e36c"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0007.bin",
+      "bytes": 672,
+      "sha256": "a95da1e7b571958bce50a91680a9f13da3eaf8d304892dc26161f6ae7cc92580"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0008.bin",
+      "bytes": 672,
+      "sha256": "ef64d938f537dcc9a92bb3e72d534935cc3445c53b1d853411ac75720e8209f2"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0009.bin",
+      "bytes": 672,
+      "sha256": "4d56cd036099160883b913270db16c6e5abf4eea017613df5eee53aeb0165511"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0010.bin",
+      "bytes": 672,
+      "sha256": "56ccc5690eb81f75736bae9760a5e651c747b7a765368e86439b2bdfb69cf15f"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0011.bin",
+      "bytes": 672,
+      "sha256": "b65df30ba3578f3636b12afed0c550c869309590fed8ddbf1bd13f708e61c7f1"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0012.bin",
+      "bytes": 672,
+      "sha256": "b086fee71d5122f3702409acf39be607ab15d8f72279d26ee1ac1f77d92e4238"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0013.bin",
+      "bytes": 672,
+      "sha256": "6dda6636417dfb0fb27b67ea737f1fdbd6d4bfce35c1bbaf4fdc88b2ad2a95c0"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0014.bin",
+      "bytes": 672,
+      "sha256": "b2452c6f3028ec8136352307e959b72bc68a30273fbf326e0739cd6a01b97ad5"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0015.bin",
+      "bytes": 672,
+      "sha256": "8218bdcdceea24df95f89adf2a216f67eae0d6155fc0b2da6b3b0dd2d277d972"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0016.bin",
+      "bytes": 672,
+      "sha256": "73c36b3ce40413c37cb9ba3ab05948785b3036b040b3d03fa0d36ffb2e10dce2"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0017.bin",
+      "bytes": 672,
+      "sha256": "5ce9a5704a5a165b6a77d9014d451bcf4c22131a1a5a09cdb3049c135552ce28"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0018.bin",
+      "bytes": 672,
+      "sha256": "1ed63345a2063feac9f39c3c09cb9f8fc0389e9f80110b525f28b1aa7e1e530a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0019.bin",
+      "bytes": 672,
+      "sha256": "5c33f4562533a6e817b27c818b4ec2799b145f7738aa0cdba69a5fbaf02b030b"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0020.bin",
+      "bytes": 672,
+      "sha256": "d680ca94cc57211ef80ebd4ee40779b64ea4408307d49cc04033a4cbd63ba688"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0021.bin",
+      "bytes": 672,
+      "sha256": "e31603501ac764e669fe3070b13352c44f8140103a490a4be4ff41438dd63dc2"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0022.bin",
+      "bytes": 672,
+      "sha256": "5b8eb33add7fcc567f3d01d47c4774644d73dd57acd08ddb1cf2277ac2a71332"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0023.bin",
+      "bytes": 672,
+      "sha256": "789aab009ca96770aa3e1f2c5476da151b2d12bce196c6a7c49145cdd0ce02a0"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0024.bin",
+      "bytes": 672,
+      "sha256": "0be19a765939bffac6c374bb587468e4f9e246ec39be86a935b2a758d2d57419"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0025.bin",
+      "bytes": 672,
+      "sha256": "5cab2e1a547f21ed934adb840deeb18f46f866f7be07220c2f85bc16030a874d"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0026.bin",
+      "bytes": 672,
+      "sha256": "6b814d2d5b9a5cfffc29c3951ebf4d389b26c85e790a910bbdf0d40e5c469ed5"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0027.bin",
+      "bytes": 672,
+      "sha256": "6ed226eb688f5d4505be8ca0017299baaa6e92629f354b60641fc9d5a672368c"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0028.bin",
+      "bytes": 672,
+      "sha256": "a9902413eedb3796ccd6666a8cd607280a3dbe62dcea8dc5267a3b858935b56c"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0029.bin",
+      "bytes": 672,
+      "sha256": "d2ea67bc7af3b505fe171cffe715fdd290f0bad390e733b2050319b78667578f"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0030.bin",
+      "bytes": 672,
+      "sha256": "93eda442fd1d6671f43d6a8c74d3936e5b2e63da58bfd0a2c40854c7435c0ae6"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0031.bin",
+      "bytes": 672,
+      "sha256": "c3671c6348f47a40e77e6d5779fd6cf9b4ec08c84f5927e09b0024083c7a5d14"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0032.bin",
+      "bytes": 672,
+      "sha256": "6653c5d9ba1b445d58eff47d1a3c6ec4c18d157df41cc00a490c25039e878cf3"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0033.bin",
+      "bytes": 672,
+      "sha256": "951083c3d3d8163af9614dcc3251ff4ac511ebe169d7f9728bf8153fe896eaeb"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0034.bin",
+      "bytes": 672,
+      "sha256": "84d42d3023d5e890258f7946b8ec5aa1b8ed28b8633cb1a4485c3fcc411fd70a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0035.bin",
+      "bytes": 672,
+      "sha256": "06930f07d5c75b11525c20c65024b7f7ab8dfa623f4b01367d4439c234939de5"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0036.bin",
+      "bytes": 672,
+      "sha256": "4e10fac8e055fd36cfcfc07bef420a502ee193b05159f32d5073c4d7f555406a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0037.bin",
+      "bytes": 672,
+      "sha256": "daf0b854a24f9784dbca23da7b43c582e23c810ea38bf6f592e5a48c238087f5"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0038.bin",
+      "bytes": 672,
+      "sha256": "01b916c4eb8f93b5f4dae6f215106d6aed5cc91f42f51d107b6929fec1c64732"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0039.bin",
+      "bytes": 672,
+      "sha256": "60bc650a21cbd32341570b67448cce3f2a3f871a08be20416d473702d51a94fe"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0040.bin",
+      "bytes": 672,
+      "sha256": "679997b0297bfab18d9896d1442c9f9c1174a8677986722ae049842d3b77c796"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0041.bin",
+      "bytes": 672,
+      "sha256": "b1153afae12d4840402918ed62b7a2042e4b9efdadc7cd702f47fe129a74bd85"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0042.bin",
+      "bytes": 672,
+      "sha256": "f146062a25c12bac049592001f4a6b45a450945c6b3e85e5b1a577a97778280f"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0043.bin",
+      "bytes": 672,
+      "sha256": "6ddbada4d0e5a5b8b7b9662be77f208088569f900708479bc0c6943229249529"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0044.bin",
+      "bytes": 672,
+      "sha256": "f1f5156c7fcfa92ecbf271c7e384937af6771243a7b6999088110470fb702455"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0045.bin",
+      "bytes": 672,
+      "sha256": "59f2b5cc65a9c9c5540fcf00610da76f5bdb11258ae4f526d798a9f2c09ff076"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0046.bin",
+      "bytes": 672,
+      "sha256": "52049273bc10e550a594ecc354b225f6f442e475b95c3139362cb0bee7837630"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0047.bin",
+      "bytes": 672,
+      "sha256": "92e912d3ac4adbe8de0f2acbec1e7cd7caabf48f0f0dd4d48f417c0b195dd8b1"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0048.bin",
+      "bytes": 672,
+      "sha256": "600fd38169b1561f6ad720e5b1e9f8e986923ad83a72240a2b54bf713e0615b2"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0049.bin",
+      "bytes": 672,
+      "sha256": "f867c864426992a3440527c61f8049481c4ce90bb3ad2d0c4d519c47881f0808"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0050.bin",
+      "bytes": 672,
+      "sha256": "7c5a4ac20f3e39c0ae9ee2969a6178ecc20c2b289488ad79acc8aa614cdaaf91"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0051.bin",
+      "bytes": 672,
+      "sha256": "113b961d7180b007c462761b5206b3cf0611406d516fa46cf637b91e8a967daf"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0052.bin",
+      "bytes": 672,
+      "sha256": "825db296bd8ba40a6f0288ece78c1ae217632213d0e161f9a416f7cfd8b82f59"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0053.bin",
+      "bytes": 672,
+      "sha256": "44c029a920e77e0975786c90db27d9b93793945efaa2ddd9e97a97f7fd8045d5"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0054.bin",
+      "bytes": 672,
+      "sha256": "4eb7baff33a15574b1532be313d99878caa508367a9aa637ad57d2ef194637e9"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0055.bin",
+      "bytes": 672,
+      "sha256": "460422c44fcd4234730c61152c5bf827fc5e42c5c5dd64e97d1f90ee1764adc9"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0056.bin",
+      "bytes": 672,
+      "sha256": "7abc275ab12a387287954ad2d3edb8174b6c79893acc570e210d40eab464b747"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0057.bin",
+      "bytes": 672,
+      "sha256": "4780c6792ecc51823b808a749ed79bd655fb1c9e0f12f24500d627b290112d77"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0058.bin",
+      "bytes": 672,
+      "sha256": "3200a684670064c81f74e26aca5727f2cdb8270e738216b41fdd98010b9be612"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0059.bin",
+      "bytes": 672,
+      "sha256": "c249e83dbcfd82018d16d35e36cda9a28ab52ce5d4f30a62b36bf64367a3f404"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0060.bin",
+      "bytes": 672,
+      "sha256": "03a1fd28d558343906579f1e4cb78c896fda9feea4dcdb4276072bf8b0f4b9a7"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0061.bin",
+      "bytes": 672,
+      "sha256": "7694169f09090161c12f45493efc986454247a35977cd761bb94b78125496109"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0062.bin",
+      "bytes": 672,
+      "sha256": "237ab1d7c95ce25ba3b885030c78b0edf5929f883a23dd32495e685362825ca0"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0063.bin",
+      "bytes": 672,
+      "sha256": "1d0073661c9962a3a6a812cac9f010c9abb258164b04cbb4f5afc219dde29caf"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0064.bin",
+      "bytes": 672,
+      "sha256": "694adce77c54b9b9b3cc1870eda6d18d705bf026fa1a31c2b3a358a95c25902f"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0065.bin",
+      "bytes": 672,
+      "sha256": "9e0d6bc533f138a422bcdd198285a84974452121baa6bdc96b1279eecd7f1958"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0066.bin",
+      "bytes": 672,
+      "sha256": "2d5ab30ce4a4adbd345932ba5e2ffe4af50fd9df3b263295dc9d9d95054f0763"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0067.bin",
+      "bytes": 672,
+      "sha256": "ea70cdf3bf29da59b0b41ba46188ba37f45a6f515574fedbfe9a5a24aa1018cd"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0068.bin",
+      "bytes": 672,
+      "sha256": "65977c6eeb786d2129d0a576434e6c163d106d743feec7fea8283fe597752aec"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0069.bin",
+      "bytes": 672,
+      "sha256": "659e947c4d8da6a4b0d84454e42ab15ab085374da1c34248215680e3ce28a226"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0070.bin",
+      "bytes": 672,
+      "sha256": "a33aeddaf8ad5ed3469815de8bf484dc6cd51665031a0096a73da4dfa5ccd755"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0071.bin",
+      "bytes": 672,
+      "sha256": "cc068a893a7aba4c8fc6b7b5d8516c27645469a269f2f1884dd22ab7e900a004"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0072.bin",
+      "bytes": 672,
+      "sha256": "0d787e8a41ef17fd1db1f7e1c6bb4107ddfdaca7e65437494fc4046931965d82"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0073.bin",
+      "bytes": 672,
+      "sha256": "c0f9afa6a647b45a92faba87f624de714054a44e8a68d16149a2b7ea3e35b535"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0074.bin",
+      "bytes": 672,
+      "sha256": "a516fce3d09bb26331fa8aeddd164079647ce3ed73b3443ff952dea937aaf22a"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0075.bin",
+      "bytes": 672,
+      "sha256": "e30034630656e1082e1a41dadc4e750427e3ce786353b678f75ad4c489fde548"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0076.bin",
+      "bytes": 672,
+      "sha256": "13162186a3e415df0fee0259d2efcfa8b3ee2900426939c74455109ee412dd15"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0077.bin",
+      "bytes": 672,
+      "sha256": "0498c681910807cd0cf069786cc8a312d1c1064790d4163bb0dc1631100448b2"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0078.bin",
+      "bytes": 672,
+      "sha256": "dd1cb7228e7a15fb63d0443b263a9732a6b1e42ab0b82bf027c2e66c94815dad"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0079.bin",
+      "bytes": 672,
+      "sha256": "a02eac31497b9d79734d2be7327d42886d202017045542ad9722870930306296"
+    },
+    {
+      "path": "/private/tmp/fx3-702-service-access-communication-20261101-03/flow-0080.bin",
+      "bytes": 672,
+      "sha256": "7a1260a2f76dbd280251246a64fc750dde49d304efb8fb8526cccdf76d394927"
+    }
+  ]
+}

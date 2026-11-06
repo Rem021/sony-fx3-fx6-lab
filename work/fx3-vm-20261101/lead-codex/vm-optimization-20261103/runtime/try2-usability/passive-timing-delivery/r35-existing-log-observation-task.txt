@@ -1,0 +1,20 @@
+r35正式任务：离线实现首次publication/bind观测候选，普通BSS记录并复用现有日志；无VM授权。
+
+目标是推进FX3零首帧根因定位及后续可靠菜单修复；FX6仍为主线，但被执行提供方拒绝的FX6实现不在本任务内，不重试/改写/重路由该候选。本诊断步骤不替代整体修复/FX6开机验收。
+
+r34已正式分析交付succeeded(msg_9c12540f2219)，93项协调哈希复核通过，SHA256SUMS cea73a0f0c9fd2d07568085ec8c6713de297f41f6fc1e86dfea086507545e846；GPE UI parent可达性仍unknown，7000–77ff没有存储准入。r33实现failed不改变。本任务更换诊断输出方法，不要求继续逆向全部DMM、不修改GPE/DMM或平台来凑独占性。
+
+输入：r35-existing-log-observation-design-draft.txt（设计审查依据）；r35-existing-log-opportunities/的脚本及opportunities.json（四轮严格原格式完整行305/328/305/306，仅历史输出机会，不保证未来时机）；r32已验证123原输入及REPORT；r33和r34封存；r30宿主观测候选与r16 guest-N64实际helper绑定。原UI源v25-r15-snapshot-tail/fx3-ui-gate-v15.c，原OSD源v25-menu-osd-diagnostic-r3/src/fx3-osd-headless-v25-r3.c。先验证最终源/编译成员链及实际preload同进程关系。只构建必要helper/离线解析器，不复制完整runtime或既有CPIO；不导入/运行runner。
+
+正式设计约束：
+- 首次eligible publication尝试、原hsend rc、observer_bind入口及原失败/成功分支，独立保存在OSD helper普通BSS，避免ring为null时v25_diag早退丢失证据。资格严格复用原消息副本/schema；不读取已移交消息、不重复native调用。包含明确初始化/已记录/未完成/丢弃及版本身份，不能将未观测解释为无事件。first record不冒充所有事件。
+- 原appFw probe不扩容、不新增任何物理预留/映射、不使用UI7000空隙，不改原ring/header/magic/ready、native控制流/返回/errno/NZCV/SIMD/栈/尾调用身份、alloc/send/consume次数或既有锁政策。不提前bind、不重试/补ACK、不修改计数、定时器或阈值。
+- 如跨helper导出，仅明确自有C ABI的只读版本化snapshot函数；初始化阶段解析绑定，失败unknown；热路径不dlsym/malloc/新增系统调用。稳定PID/模块实例/初始化状态和source身份必须可检查，不用地址相等冒充完整身份。跨进程与重载不合并记录。普通RAM有界try-claim、无等待/循环重试、无UC原子。新增每观测点最多1clock（优先0）及4次64位原子记账；整条wrapper/既有UI回调最坏累计开销必须单列并实测，不隐藏在被调函数中。无法满足约束先报告，不扩大预算。
+- 选用一个已有UI日志出口，优先v15第145行FX3_UI_GATE_SAMPLE。原输出条件、次数、位置、原字段和值保持；只在原选中日志调用中追加摘要，不能额外调用日志或增加每消息I/O。每条新增<=256B，每运行累计新增<=2048B，明确格式、预算扣减、并发与溢出语义。按关键状态变化输出，不在事件发生前耗尽所有额度；无现成日志机会时unknown，不强制新增输出兜底。新增格式化/输出字节成本必须如实测量，不能宣称零扰动或仅凭dprintf调用次数推断系统调用次数不变。
+- 解析器只做独立离线数据读出，不改r30串口消费/ready/门控；严格完整记录、身份一致、版本和字段范围，截断/交织/跨chunk/End分界均可unknown。它证明截至某个原日志点的观测，不证明精确End状态。输出状态必须分开：尚无导出、collector未就绪、已捕获尝试但返回未知、原send失败、bind未发生/失败/成功、截断/争用/预算耗尽；不凭缺少token断言未发生。
+
+交付执行：先完成有限布局/生命周期/日志时机及成本方案审查；若可满足以上合同，在全新r35-existing-log-observation-candidate隔离实现最少必要helper源码与离线解析器，交叉编译只生成该目录产物，不建/启动guest。测试要真实针对候选：原调用次数与rc/errno等价，首次各失败/成功分支，zero-ring仍可记账，early publication/初始化顺序、并发/递归/丢失/乱序/重载、原日志条件不变、256/2048B最坏预算、跨chunk/行截断/End截止、负身份/版本、无出口时unknown；记录成本和限制。保持原已部署r10不变，任何后续VM需单独调度与配置差异审查。若候选不可完成，准确报告失败原因，不能把设计或host模型当实现成功。
+
+固定4×A35/5120MiB/MTTCG/noicount，QEMU/kernel/DTB/原CPIO、180秒/20秒、PAGE/server/视觉pin/confirm/recovery/退出策略全部不变。禁止VM/Start/浏览器/服务/QMP/guest命令/设备/刷写；禁止修改原件/冻结材料/协调ledger/项目README/部署入口，禁止代发新任务。
+
+项目/输出根：/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate。先核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。必要技术输入before/after、完整源码差分、实际交叉编译/host验证回执、ABI与控制流审查、预算统计、明确未验项、SHA清单。共享README非运行冻结。最终worker_done区分候选实现、host测试、交叉编译、未执行VM。任何修改设计导致增加I/O次数/物理映射或改变核心语义，先给协调端具体问题，不自行扩大。

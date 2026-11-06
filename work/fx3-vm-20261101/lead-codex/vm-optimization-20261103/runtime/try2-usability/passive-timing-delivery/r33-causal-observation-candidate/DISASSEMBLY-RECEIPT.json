@@ -1,0 +1,65 @@
+[
+  {
+    "argv": [
+      "/usr/bin/xcrun",
+      "llvm-objdump",
+      "--disassemble-symbols=resource_lookup,object_fields,map26_get,observe_resource_open,resource_add",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v26-perf-ap105.so"
+    ],
+    "exit": 0,
+    "stdout": "compiled-fx3-gpe-observe-v26-perf-ap105.so.txt",
+    "stdout_sha256": "6de11902e80032a454bef9c3b9457d2db1221ed3f4f7ed85a05c8ea783f38cd9",
+    "stderr": "compiled-fx3-gpe-observe-v26-perf-ap105.so.stderr"
+  },
+  {
+    "argv": [
+      "/usr/bin/xcrun",
+      "llvm-objdump",
+      "--disassemble-symbols=fx3_pin_snapshot,fx3_panel_config_snapshot",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/actual-fx3-capid-v1.so"
+    ],
+    "exit": 0,
+    "stdout": "compiled-actual-fx3-capid-v1.so.txt",
+    "stdout_sha256": "93a2924157702285e53a7a9730b2caf6dced06ef335fde3251e0a97ca47db207",
+    "stderr": "compiled-actual-fx3-capid-v1.so.stderr"
+  },
+  {
+    "argv": [
+      "/usr/bin/xcrun",
+      "llvm-objdump",
+      "--disassemble-symbols=bind",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/actual-fx3-ui-gate-v1.so"
+    ],
+    "exit": 0,
+    "stdout": "compiled-actual-fx3-ui-gate-v1.so.txt",
+    "stdout_sha256": "dd17985c341ef1290f0f0193b488e56ab5de6502a150b2394b429c0f8d8d4bee",
+    "stderr": "compiled-actual-fx3-ui-gate-v1.so.stderr",
+    "symbol_missing": true
+  },
+  {
+    "argv": [
+      "/usr/bin/xcrun",
+      "llvm-objdump",
+      "--disassemble-symbols=bind",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15-n64.so"
+    ],
+    "exit": 0,
+    "stdout": "compiled-ui-raw-bind.txt",
+    "stdout_sha256": "29fb0b73b4e4e5294aabe77615294d7e4f231a86e3f1d7da2e44a42ff15920ea",
+    "stderr": "compiled-ui-raw-bind.stderr",
+    "symbol_missing": true
+  },
+  {
+    "argv": [
+      "/usr/bin/xcrun",
+      "llvm-objdump",
+      "--disassemble-symbols=dlopen",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/actual-fx3-ui-gate-v1.so"
+    ],
+    "exit": 0,
+    "stdout": "compiled-ui-dlopen.txt",
+    "stdout_sha256": "f94af2f1a988fab1b20c73c5e6d7ee1e1a69e09a4de1c685470250841592e7f8",
+    "stderr": "compiled-ui-dlopen.stderr",
+    "symbol_missing": false
+  }
+]

@@ -1,0 +1,52 @@
+{
+  "status": "PASS_ORIGINAL_702_SYMBOL_AND_VENDOR_CONDITIONAL_BOUNDARIES_NOT_RUNTIME_READY",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "symbol_count": 41269,
+  "original_export_pair_crosschecks": 6089,
+  "sampled_original_name_expansion_guest_calls": 1007,
+  "original_vendor_arm_cases": 11,
+  "original_module_callback_entries": 8,
+  "command4_vendor_arm": {
+    "jump_table_offset": "0x46f728",
+    "arm_file_offset": "0x2e7548",
+    "guest_entry_before_switch": "0x2e7524"
+  },
+  "queue_attempt_can_precede_original_kernel_halt_request": true,
+  "queue_failure_can_coexist_with_no_halt_and_internal_zero_after_later_callback": true,
+  "w19_is_internal_helper_or_handled_result_not_host_USB_success": true,
+  "actual_702_instructions_replace_700_reference_only_for_these_bounded_branches": true,
+  "not_proven": [
+    "kernel thread startup/locks/IRQ/scheduler",
+    "actual driver registration order or ownership",
+    "real event queue admission/delivery/completion",
+    "USB controller halt or host wire return",
+    "initial MSC authentication verifier",
+    "service entry/exit, healthy backup or unbrick"
+  ],
+  "explicit_guest_bridges": [
+    "memcmp",
+    "stop_other_driver return fixture",
+    "event_add_queue return fixture",
+    "printk",
+    "IRQ lock/unlock helpers",
+    "usb_ep_set_halt",
+    "other-driver callback returns"
+  ],
+  "source_reference_page": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+  "reference_archive_sha256": "bb2d9cc676fef6aaf2f8f6703c4e041c133da0e7101b5afd33800eaf7c156d0f",
+  "reference_source_files": [
+    {
+      "path": "work/official-reference/linux-kernel/kernel/kallsyms.c",
+      "bytes": 16070,
+      "sha256": "6319b85d5eedbd3b491d4224eeaa164e9e5f06ca7b87c64bafbea154d0cee952"
+    },
+    {
+      "path": "work/official-reference/linux-kernel/scripts/kallsyms.c",
+      "bytes": 19056,
+      "sha256": "a292041fcad2f1ea4e74eafbdf2b6c05beb6c0726910c816e9dffb083dd26fe4"
+    }
+  ],
+  "new_host_USB_camera_or_driver_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

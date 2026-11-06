@@ -1,0 +1,6 @@
+FX3 r27 操作链耗时可行性及离线优化。背景：r26b唯一真实VM已formal failed，完整菜单出现但原20秒到期早于pin。不要再启动VM。项目根/外盘规则照旧，任何写入前验证卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。
+只在 passive-timing-delivery/r27-operator-latency-preparation 新目录写产物；所有封存候选/部署/平台/ledger只读。输入同目录r26b-vm-93b3e243da6f（SHA256SUMS 6a80d33a2040a385c0291e5e1e648cd7a16fddf627de4f0d53ce5c212ca0e6ad）、r26-vm-49f0c1c3663b、r26-tool-return-preparation、r26-postkey-observation-candidate。
+目标先算完整 click→实际观察→显式pin→实际重新看固定PNG→独立confirm 在原20秒约束下的可行预算。r26b调用间隔9.709404125和9.03171625秒，pin入口21.472289秒；即使去掉一次observe也不能忽略随后confirm。区分child耗时、工具返回等待、模型/调度未知。不要靠微小代码提速宣称已解决模型调用耗时。
+检查工具模板yield_time_ms=1000造成额外wait的可能成本、重复长代码/摘要和每次导入成本，允许在新目录做最小离线prototype/工具模板，不改原20秒、PAGE、runtime、输入门、独立看图/固定/确认语义，不自动pin/confirm/语义判断、不重发、不用SHA代替看图。不更改模型/运行政策。无需重跑既有全部矩阵。
+如能形成候选，必须用实际Node图像工具做离线真实多调用演练（历史PNG明确标历史），每张回到模型实际看图后下一独立调用；不能脚本sleep假充模型延迟。允许最多两组，记录host边界和无法测量项；只证明工具链，不称固件或20秒VM通过。先完成报告再决定是否有必要新VM；本任务没有VM/Start/服务/部署授权。若20秒内仍无合理余量，直接给出不可行的测量结论及最小后续选择，不凑成功、不重复相同失败实验。
+交付README/REPORT、测量JSON、可复用短模板（若有效）、SHA256SUMS；历史输入前后hash同一且无新VM资源。任务成功指完成诚实可行性评估，不要求编造性能改善。用worker_done交付。

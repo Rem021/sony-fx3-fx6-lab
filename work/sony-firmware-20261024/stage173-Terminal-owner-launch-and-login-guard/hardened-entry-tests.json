@@ -1,0 +1,371 @@
+{
+  "status": "PASS_HARDENED_FIXTURE_LAUNCH_NOT_ROOT_OR_USB_ACCEPTANCE",
+  "checks": 13,
+  "cases": [
+    {
+      "name": "actual_staging_hash_kernel_identity_ACK_and_terminal_receipt",
+      "result": {
+        "status": "PROVIDER_OBSERVATION_COMPLETED",
+        "helper_terminal_verified": true,
+        "helper_identity": {
+          "pid": 2243,
+          "uid": 501,
+          "birth_sec": 1793272757,
+          "birth_usec": 723893,
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/runs/hardened-entry-tests/normal/staged-grant/helper"
+        },
+        "relay_returncode": 0,
+        "native": {
+          "status_code": 0,
+          "capture_attempted": true,
+          "claim_attempted": true,
+          "interface_claimed_in_this_trial": true,
+          "cleanup_error": false,
+          "clock_invalid": false,
+          "active_native_call_phase": 0,
+          "events": [
+            {
+              "phase": 1,
+              "raw_return": 0
+            },
+            {
+              "phase": 2,
+              "raw_return": 0
+            },
+            {
+              "phase": 3,
+              "raw_return": 0
+            },
+            {
+              "phase": 4,
+              "raw_return": 0
+            },
+            {
+              "phase": 5,
+              "raw_return": 0
+            },
+            {
+              "phase": 6,
+              "raw_return": 0
+            },
+            {
+              "phase": 7,
+              "raw_return": 0
+            },
+            {
+              "phase": 8,
+              "raw_return": 0
+            },
+            {
+              "phase": 9,
+              "raw_return": 0
+            },
+            {
+              "phase": 10,
+              "raw_return": 0
+            },
+            {
+              "phase": 11,
+              "raw_return": 0
+            },
+            {
+              "phase": 12,
+              "raw_return": 0
+            }
+          ],
+          "same_camera_firmware_or_HEVC_recording_proven": false,
+          "native_driver_return_independently_proven": false
+        },
+        "receipt": {
+          "schema": 2,
+          "grant_id": "fx3-702-msc-owner-20261029-05",
+          "mode": "fixture",
+          "nonce": "a8c8e0d6f983e82d50417ffa60ec44b7",
+          "pid": 2243,
+          "birth_sec": 1793272757,
+          "birth_usec": 723893,
+          "native_return": 0,
+          "result_sha256": "4e691b47cd8d239357738f5e5116802115523bd44096fbcd0b0195c7796f8599",
+          "physical_camera_acceptance": false,
+          "fixture_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "restarted_or_killed": false,
+        "physical_acceptance": false
+      }
+    },
+    {
+      "name": "new_frame_cannot_reuse_staging_grant",
+      "relay_returncode": 1
+    },
+    {
+      "name": "direct_C_replay_with_new_frame_denied_before_provider",
+      "exit": 67
+    },
+    {
+      "name": "copied_executable_digest_mismatch_never_executed",
+      "exit": 78
+    },
+    {
+      "name": "unacknowledged_helper_times_out_without_any_provider",
+      "result": {
+        "status": "PROVIDER_DENIED",
+        "helper_terminal_verified": true,
+        "helper_identity": {
+          "pid": 2290,
+          "uid": 501,
+          "birth_sec": 1793272758,
+          "birth_usec": 289516,
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/runs/hardened-entry-tests/no-ACK/staged-grant/helper"
+        },
+        "relay_returncode": 0,
+        "native": {
+          "status_code": 3,
+          "capture_attempted": false,
+          "claim_attempted": false,
+          "interface_claimed_in_this_trial": false,
+          "cleanup_error": false,
+          "clock_invalid": false,
+          "active_native_call_phase": 0,
+          "events": [],
+          "same_camera_firmware_or_HEVC_recording_proven": false,
+          "native_driver_return_independently_proven": false
+        },
+        "receipt": {
+          "schema": 2,
+          "grant_id": "fx3-702-msc-owner-20261029-05",
+          "mode": "fixture",
+          "nonce": "24cbd36cafd1c11580410bbd7a4ea6c6",
+          "pid": 2290,
+          "birth_sec": 1793272758,
+          "birth_usec": 289516,
+          "native_return": 3,
+          "result_sha256": "dbfa27f15c5e6d42bf8a2b943a36218178a01a32be19bce74f109681b3aaae4f",
+          "physical_camera_acceptance": false,
+          "fixture_calls": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "restarted_or_killed": false,
+        "physical_acceptance": false
+      }
+    },
+    {
+      "name": "wrong_helper_path_withholds_ACK_and_requests_stop",
+      "native_started": false
+    },
+    {
+      "name": "wrong_body_denied_after_ACK_before_userclient",
+      "result": {
+        "status": "UNKNOWN_PROVIDER_STATE",
+        "helper_terminal_verified": true,
+        "helper_identity": {
+          "pid": 2382,
+          "uid": 501,
+          "birth_sec": 1793272760,
+          "birth_usec": 670831,
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/runs/hardened-entry-tests/wrong-body/staged-grant/helper"
+        },
+        "relay_returncode": 0,
+        "native": {
+          "status_code": 2,
+          "capture_attempted": false,
+          "claim_attempted": false,
+          "interface_claimed_in_this_trial": false,
+          "cleanup_error": false,
+          "clock_invalid": false,
+          "active_native_call_phase": 0,
+          "events": [
+            {
+              "phase": 1,
+              "raw_return": 0
+            }
+          ],
+          "same_camera_firmware_or_HEVC_recording_proven": false,
+          "native_driver_return_independently_proven": false
+        },
+        "receipt": {
+          "schema": 2,
+          "grant_id": "fx3-702-msc-owner-20261029-05",
+          "mode": "fixture",
+          "nonce": "77e4ee88f8dc1f2fa7764e5b13b151fc",
+          "pid": 2382,
+          "birth_sec": 1793272760,
+          "birth_usec": 670831,
+          "native_return": 2,
+          "result_sha256": "358a90e1e723e5f109916627c31a10969fda5e8d6e8c9b1fef37eb68bfbca6f2",
+          "physical_camera_acceptance": false,
+          "fixture_calls": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "restarted_or_killed": false,
+        "physical_acceptance": false
+      }
+    },
+    {
+      "name": "watchdog_deadline_sets_stop_pending_helper_stays_alive",
+      "state": {
+        "status": "HELPER_RUNNING",
+        "verified_helper_alive": true,
+        "relay_alive": true,
+        "verified_by": "current kernel PID, UID, birth and executable path",
+        "native_started": true,
+        "native_function_completed": false,
+        "parent_ack_sent": true,
+        "active_native_call_phase": 4,
+        "final_deadline_passed": true,
+        "restarted_or_killed": false,
+        "physical_acceptance": false
+      },
+      "pid": 2404
+    },
+    {
+      "name": "pending_call_returns_then_single_cleanup_without_retry",
+      "result": {
+        "status": "UNKNOWN_PROVIDER_STATE",
+        "helper_terminal_verified": true,
+        "helper_identity": {
+          "pid": 2404,
+          "uid": 501,
+          "birth_sec": 1793272761,
+          "birth_usec": 2955,
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/runs/hardened-entry-tests/pending-past-deadline/staged-grant/helper"
+        },
+        "relay_returncode": 0,
+        "native": {
+          "status_code": 2,
+          "capture_attempted": true,
+          "claim_attempted": false,
+          "interface_claimed_in_this_trial": false,
+          "cleanup_error": false,
+          "clock_invalid": false,
+          "active_native_call_phase": 0,
+          "events": [
+            {
+              "phase": 1,
+              "raw_return": 0
+            },
+            {
+              "phase": 2,
+              "raw_return": 0
+            },
+            {
+              "phase": 3,
+              "raw_return": 0
+            },
+            {
+              "phase": 4,
+              "raw_return": 0
+            },
+            {
+              "phase": 10,
+              "raw_return": 0
+            },
+            {
+              "phase": 11,
+              "raw_return": 0
+            }
+          ],
+          "same_camera_firmware_or_HEVC_recording_proven": false,
+          "native_driver_return_independently_proven": false
+        },
+        "receipt": {
+          "schema": 2,
+          "grant_id": "fx3-702-msc-owner-20261029-05",
+          "mode": "fixture",
+          "nonce": "77fac8433836628e4313363459671fa9",
+          "pid": 2404,
+          "birth_sec": 1793272761,
+          "birth_usec": 2955,
+          "native_return": 2,
+          "result_sha256": "0f0ac16043a7d55940a605dee58d3c5e2e334ed93dc1fab2e843c38adbf16f4f",
+          "physical_camera_acceptance": false,
+          "fixture_calls": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        "restarted_or_killed": false,
+        "physical_acceptance": false
+      }
+    },
+    {
+      "name": "diagnostic_storage_failure_keeps_pending_worker_observed",
+      "state": {
+        "status": "HELPER_OBSERVATION_ERROR_UNRESOLVED",
+        "relay_alive": true,
+        "verified_helper_alive": false,
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "observation_log_error": "injected diagnostic storage failure"
+      }
+    },
+    {
+      "name": "transient_metadata_failure_not_exit_or_restart",
+      "terminal": "PROVIDER_OBSERVATION_COMPLETED"
+    },
+    {
+      "name": "exit_zero_wrong_receipt_keeps_provider_state_unknown",
+      "state": {
+        "status": "UNKNOWN_TERMINAL_RECEIPT_MISMATCH",
+        "helper_terminal_verified": true,
+        "restarted_or_killed": false,
+        "physical_acceptance": false
+      }
+    },
+    {
+      "name": "current_live_authority_denied_before_prompt_frame_or_cache",
+      "reason": "new fixed Terminal/sudo camera launch lacks its own explicit authorization"
+    }
+  ],
+  "fixture_jobs": 9,
+  "additional_fixture_processes": 1,
+  "all_fixture_relays_terminal": true,
+  "root_or_native_IOKit_helper_or_administrator_prompt_executed": false,
+  "new_camera_operations": 0
+}

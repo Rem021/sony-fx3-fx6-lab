@@ -1,0 +1,48 @@
+{
+  "schema": "fx3-r42-coordinator-review-v1",
+  "status": "offline_package_runner_accepted_for_one_separately_dispatched_measurement",
+  "worker_done": "msg_c78458e17537",
+  "reviewed_UTC": "2026-11-05T09:43:35.768968+00:00",
+  "manifests_verified": {
+    "r42-command-timing-package": {
+      "entries": 30,
+      "SHA256": "510fd563f4195a0ebfe6cdc086d0b21e9196e3c05a65c6c9c80fd58c47d403f7"
+    },
+    "r42-command-timing-runner": {
+      "entries": 84,
+      "SHA256": "542db740cba61c98e20bfd17324476031c570cf9286906abf4c0cd98e8f29a15"
+    }
+  },
+  "independent_archive_check": {
+    "outside_slot_bytes_compared": 452936900,
+    "outside_equal": true,
+    "slot_offset": 451447396,
+    "slot_bytes": 276984,
+    "body_bytes": 129600,
+    "zero_tail_bytes": 147384,
+    "body_exact_r41": true,
+    "CPIO_SHA256": "59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63"
+  },
+  "reviewed_diff": "r39-to-r42.diff: selector package/path/hash/profile and label bindings, preflight receipt labels, runner help string, adapter core digest; no PAGE/action/cleanup logic changes shown",
+  "worker_checks_reviewed": [
+    "1141entries including trailer structure equal and one changed member",
+    "17selector negative cases plus actual positive",
+    "guarded prepare and40module import",
+    "planned argv only initrd path differs; plan not runtime argv",
+    "122necessary input pins consistent per worker;99external23current artifacts, no independent full122rehash"
+  ],
+  "evidence_hashes": {
+    "r42-command-timing-package/ARCHIVE-DIFF.json": "a9d5787b0cda916896f214982092113743786ad40fb2a557ae8b47b158ac524b",
+    "r42-command-timing-package/SOURCE-BINDING.json": "31fd8413858e08e4e5fad8f988c527a84c74fa00b3c6b53b1789b7c05d51cf8e",
+    "r42-command-timing-package/source-index.json": "589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a",
+    "r42-command-timing-runner/EQUIVALENCE.json": "e8f24fcb2856abfdc8a8b84a694a38b23928263ff71d72b95d06ca27602cbd58",
+    "r42-command-timing-runner/HOST-CHECKS.json": "298d55085b8a9e7e779c0bf4c3e0dbd8fe381b9265c74b40c44bedb4532aaee4",
+    "r42-command-timing-runner/SOURCE-FREEZE.json": "6f8d7e926ae6a1387c42cb43f8e4c95ca74e3c51572a8dac1bee783868a89652",
+    "r42-command-timing-runner/CORE-SOURCE-FREEZE.json": "0760035499c8362eef3ee24c819d3b8f6cbed3bf156bf4ee8b09adc187b1ba68"
+  },
+  "limits": [
+    "No VM, guest load, menu interaction, speedup, stability or FX6 boot proved.",
+    "APFS case-collision recovery reviewed; source-index restored to prior hash, candidate/archive unaffected.",
+    "r38 failed outcome preserved."
+  ]
+}

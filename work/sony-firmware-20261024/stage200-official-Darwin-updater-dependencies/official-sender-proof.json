@@ -1,0 +1,210 @@
+{
+  "official_sender": {
+    "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+    "packet_address": "0x44f140",
+    "first_bytes": [
+      17,
+      4
+    ],
+    "frame_bytes": 128,
+    "CRC_offset": 126,
+    "called_transport": "0x401544",
+    "dependencies": [
+      "camera Linux SIO device",
+      "UdtrGpio provider",
+      "Backup service",
+      "dynamic runtime libraries"
+    ],
+    "actual_device_execution_or_current_p1_identity": false
+  },
+  "reference_SIO_contract": {
+    "module_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+    "request": "0x40046740",
+    "argument_copy_bytes": 32,
+    "tx_pointer_offset": 0,
+    "rx_pointer_offset": 8,
+    "length_offset": 16,
+    "helper_length": 128,
+    "driver_positive_clamp": 256,
+    "selected_copy_success_return": 128,
+    "scope": "selected status0/copy-complete path, not physical completion proof or all module errors"
+  },
+  "historical_module_identity": {
+    "v204_sha256": "1c1f8fbf89dafd1a68c8835bb7317535bc9f72dad779e6bcea843ac9107b0fb5",
+    "v205_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+    "different_bytes_only_within_build_id_note": true,
+    "changed_bytes": 20,
+    "note_range": [
+      64,
+      100
+    ],
+    "normalized_sha256": "1b4569067c7b721990686b8b3ff739c2892439e52fada25801689e1f147a6b6a",
+    "actual_current_p1_module_verified": false
+  },
+  "historical_init_result_limit": {
+    "source_sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad",
+    "conditional_path": [
+      "last w19 status0",
+      "response state byte !=4",
+      "timer comparison no longer within budget",
+      "ordinary close/ABI returns"
+    ],
+    "local_return": 0,
+    "target_state4_not_implied_by_exit0": true,
+    "script_sha256": "190a3ff1bf248bb5204c1290a7ecb89f9723d660a37b331ba09e0f19c36a7492",
+    "script_ordinary_shell_sequence": "does not check helper status; echo OK then explicit exit0",
+    "script_or_helper_executed": false
+  },
+  "MCU_CRC_limit": {
+    "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+    "routine": "0xbda4",
+    "peripheral_base": "0x40039000",
+    "hardware_result_equivalence_to_AP_software_CRC_verified": false,
+    "no_guessed_hardware_model_executed": true
+  },
+  "selected_original_ranges": [
+    {
+      "name": "official-frame-template",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "address_kind": "ELF_VA",
+      "start": "0x400df8",
+      "end_exclusive": "0x400e40",
+      "bytes": 72,
+      "sha256": "72d3f1322a293170014049b678afb228f5cb05a222a520981755b2a433da715c"
+    },
+    {
+      "name": "official-SIO-wrapper",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "address_kind": "ELF_VA",
+      "start": "0x401544",
+      "end_exclusive": "0x401670",
+      "bytes": 300,
+      "sha256": "cba938b929bb8dc884f96ed0873993a17ed984cf9c05bafdd5bb8ff3914e5626"
+    },
+    {
+      "name": "official-device-init",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "address_kind": "ELF_VA",
+      "start": "0x4012c8",
+      "end_exclusive": "0x401400",
+      "bytes": 312,
+      "sha256": "026089596d11e9c6bb174b615d3a1632fb884b7d007666d7d3f31d37a9868076"
+    },
+    {
+      "name": "official-state-wait",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "address_kind": "ELF_VA",
+      "start": "0x400e48",
+      "end_exclusive": "0x400ec0",
+      "bytes": 120,
+      "sha256": "c01770bba904e00e8b3adfbe4c2cd81685cc760202dff388571dad812512e84a"
+    },
+    {
+      "name": "official-CRC-software",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "address_kind": "ELF_VA",
+      "start": "0x4014f8",
+      "end_exclusive": "0x401544",
+      "bytes": 76,
+      "sha256": "2979b88719caf8c6df69b43255ad8cab018c3f06226fcdc48df50c93f88a82c5"
+    },
+    {
+      "name": "reference-init-frame",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/bin/ud_darwin_init.elf",
+      "source_sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad",
+      "address_kind": "ELF_VA",
+      "start": "0x401068",
+      "end_exclusive": "0x4010a4",
+      "bytes": 60,
+      "sha256": "b77c29fd44f7a4242f7b297f4900108027dddfcf338c7ac989c3d0da893bc078"
+    },
+    {
+      "name": "reference-init-timeout-result",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/bin/ud_darwin_init.elf",
+      "source_sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad",
+      "address_kind": "ELF_VA",
+      "start": "0x400f80",
+      "end_exclusive": "0x400fe8",
+      "bytes": 104,
+      "sha256": "490b6e67b86abb3cd3ff340d767fa6d31ef57b10891bd1e7040c1dbcd2b85313"
+    },
+    {
+      "name": "reference-GPIO-prefix",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/bin/ud_darwin_init.elf",
+      "source_sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad",
+      "address_kind": "ELF_VA",
+      "start": "0x400c4c",
+      "end_exclusive": "0x400d10",
+      "bytes": 196,
+      "sha256": "7a470dca5d6455ad8e59102981c34b94f3b85d0cc7b2269550a872a6c88d73bd"
+    },
+    {
+      "name": "reference-SIO-configuration",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/bin/ud_darwin_init.elf",
+      "source_sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad",
+      "address_kind": "ELF_VA",
+      "start": "0x400d38",
+      "end_exclusive": "0x400e58",
+      "bytes": 288,
+      "sha256": "4026614fb9132d9e5922b8dcffd6a272e4fec646f4338bee047738bcd6f710ec"
+    },
+    {
+      "name": "reference-sio-dispatch",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/kmod/sio.ko",
+      "source_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+      "address_kind": "text_section_offset",
+      "start": "0x1200",
+      "end_exclusive": "0x12e0",
+      "bytes": 224,
+      "sha256": "958804b4657494fbfe9edb96f12652f420865caba30d25337aae1a24c15dcafc"
+    },
+    {
+      "name": "reference-sio-length",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/kmod/sio.ko",
+      "source_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+      "address_kind": "text_section_offset",
+      "start": "0x1370",
+      "end_exclusive": "0x139c",
+      "bytes": 44,
+      "sha256": "bc2f5f8d1bec8ba37c65c23b320e0d067f81c7b01cfb6e991ab9eac31ac8a2cb"
+    },
+    {
+      "name": "reference-sio-submit",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/kmod/sio.ko",
+      "source_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+      "address_kind": "text_section_offset",
+      "start": "0x1458",
+      "end_exclusive": "0x1494",
+      "bytes": 60,
+      "sha256": "19a306902af96bb25006c8e4523a9c4dfde486198a2104315b85bd3f887c463c"
+    },
+    {
+      "name": "reference-sio-success",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/kmod/sio.ko",
+      "source_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+      "address_kind": "text_section_offset",
+      "start": "0x1648",
+      "end_exclusive": "0x16c4",
+      "bytes": 124,
+      "sha256": "96fbb1df43b0699b6d2402e3329a6580f266bf1a032dd84a264a7d318736fa64"
+    },
+    {
+      "name": "MCU-CRC-peripheral",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "address_kind": "source_layout_VA",
+      "start": "0xbda4",
+      "end_exclusive": "0xbdcc",
+      "bytes": 40,
+      "sha256": "a652d8e2a8ee079c0af242620e5960a99ebd533689d800d8ee9db2f81b12d27a"
+    }
+  ],
+  "source_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "AP_p1_bootstrap_or_independent_restore_proven": false
+}

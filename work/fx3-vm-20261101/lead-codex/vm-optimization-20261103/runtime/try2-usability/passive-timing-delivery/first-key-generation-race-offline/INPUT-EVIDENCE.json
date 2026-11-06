@@ -1,0 +1,51 @@
+{
+  "scope": "read-only historical input; no live VM",
+  "inputs": {
+    "current_run_index": {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-bdd09f6b/MENU8-409-EVIDENCE.json",
+      "sha256": "fd4e01de5fb079464aca5e638b1aa4160eb6f81eca68a7426fe75d414e92b1fe"
+    },
+    "current_http": {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-bdd09f6b/MENU8-HTTP-key.json",
+      "sha256": "97a810bbc80c921b9d70dd6b4e35473ebb9be928757137622b3887ba319453da"
+    },
+    "current_capture": {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-bdd09f6b/operator-step-01/capture/capture-result.json",
+      "sha256": "aaaddbf49c2684bdadeb974e1d88a16794d8a9101c1439a524673783430d7213"
+    },
+    "current_timeline": {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-bdd09f6b/operator-step-01/timeline.json",
+      "sha256": "5a4bf2512b3790cc20ab84409822e5833e2c4b522c30ca546c6ff135d68a3d0d"
+    },
+    "previous_http": {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-b6209581/INTERACTION-key-http-immediate.json",
+      "sha256": "92479a9ab70b5429a782d7aa6d969d5cfc3015dea10060fd26bd9b9505d3c20f"
+    },
+    "previous_browser_after": {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r6-b6209581/INTERACTION-01-browser-state.json",
+      "sha256": "0044b79f624f15ef180522816762ff81f3ade3afc0fbafe45e750b644bd64e67"
+    },
+    "r12_source": {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r12-confirmation-progress/trial_web_v22_navigation_review.py",
+      "sha256": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb"
+    }
+  },
+  "current": {
+    "key": 427,
+    "observed_sequence": 212,
+    "http": 409,
+    "native_down_up_done": 0,
+    "export_212_host_monotonic": 413415.143619833,
+    "export_221_host_monotonic": 413415.672432791,
+    "click_enter_host_monotonic": 413415.692086,
+    "export_221_precedes_click_ms": 19.653,
+    "reject_handler_locked_frame_snapshot": "not_recorded",
+    "post_rejection_snapshot": "page lastStatus/displayed seq212 generation27 SHA e0140ea1...; not a handler snapshot"
+  },
+  "previous": {
+    "observed_sequence": 196,
+    "http": 409,
+    "native_down_up_done": 0,
+    "frame196_gen30_to_frame200_gen31": "reported in r11; not handler snapshot"
+  }
+}

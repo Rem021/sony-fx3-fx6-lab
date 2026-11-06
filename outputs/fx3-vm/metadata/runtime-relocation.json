@@ -1,0 +1,75 @@
+[
+  {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64",
+    "source_sha256": "80b85a9b071eddd389928ece56cf1e7fae6dcae0187c116858e7716198903d19",
+    "output": "bin/qemu-system-aarch64",
+    "output_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+    "bytes": 35732432,
+    "changes": [
+      {
+        "old": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/glib/2.90.1/lib/libglib-2.0.0.dylib",
+        "new": "@loader_path/../lib/libglib-2.0.0.dylib"
+      }
+    ],
+    "entitlements": null,
+    "otool_final": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64:\n\t/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.12)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.1.8)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n\t@loader_path/../lib/libglib-2.0.0.dylib (compatibility version 9001.0.0, current version 9001.1.0)\n",
+    "after_relative_link_before_rpath_removal_sha256": "f9b5957bf2c4965fa14fd536a7fa29c65944124faab72665c7086636e1108b44",
+    "removed_LC_RPATH": [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/glib/2.90.1/lib",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/gettext/1.0/lib"
+    ]
+  },
+  {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/glib/2.90.1/lib/libglib-2.0.0.dylib",
+    "source_sha256": "4c421219186a028b62bbf575d24b809af6ae5b665c146d5cc4b4f2d696a6d9e8",
+    "output": "lib/libglib-2.0.0.dylib",
+    "output_sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2",
+    "bytes": 1354928,
+    "changes": [
+      {
+        "old": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/glib/2.90.1/lib/libglib-2.0.0.dylib",
+        "new": "@loader_path/libglib-2.0.0.dylib"
+      },
+      {
+        "old": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/gettext/1.0/lib/libintl.8.dylib",
+        "new": "@loader_path/libintl.8.dylib"
+      },
+      {
+        "old": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/pcre2/10.49/lib/libpcre2-8.0.dylib",
+        "new": "@loader_path/libpcre2-8.0.dylib"
+      }
+    ],
+    "entitlements": null,
+    "otool_final": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib:\n\t@loader_path/libglib-2.0.0.dylib (compatibility version 9001.0.0, current version 9001.1.0)\n\t/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)\n\t@loader_path/libintl.8.dylib (compatibility version 13.0.0, current version 13.6.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n\t@loader_path/libpcre2-8.0.dylib (compatibility version 17.0.0, current version 17.1.0)\n\t/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 5027.0.69)\n\t/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (compatibility version 1.0.0, current version 1226.0.0)\n\t/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)\n"
+  },
+  {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/pcre2/10.49/lib/libpcre2-8.0.dylib",
+    "source_sha256": "177d90395804dfbe4a61ecc228b678e642bf7f0427d5e02a1462520a39128f00",
+    "output": "lib/libpcre2-8.0.dylib",
+    "output_sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110",
+    "bytes": 570784,
+    "changes": [
+      {
+        "old": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/pcre2/10.49/lib/libpcre2-8.0.dylib",
+        "new": "@loader_path/libpcre2-8.0.dylib"
+      }
+    ],
+    "entitlements": null,
+    "otool_final": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib:\n\t@loader_path/libpcre2-8.0.dylib (compatibility version 17.0.0, current version 17.1.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/gettext/1.0/lib/libintl.8.dylib",
+    "source_sha256": "d82f25404931e6578e70b132def063a4ee5476cc5e3cc8eafb0e51fbea543d8a",
+    "output": "lib/libintl.8.dylib",
+    "output_sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8",
+    "bytes": 210848,
+    "changes": [
+      {
+        "old": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/gettext/1.0/lib/libintl.8.dylib",
+        "new": "@loader_path/libintl.8.dylib"
+      }
+    ],
+    "entitlements": null,
+    "otool_final": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib:\n\t@loader_path/libintl.8.dylib (compatibility version 13.0.0, current version 13.6.0)\n\t/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.69)\n\t/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (compatibility version 1.0.0, current version 1226.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  }
+]

@@ -1,0 +1,36 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-observe-v26-perf.c
++++ r41/src/fx3-gpe-observe-v26-perf.c
+@@ -187,10 +187,11 @@
+ #include "fx3-gpe-command-wait102-v1.h"
+ #include "fx3-complete104-observe-v1.h"
+ static int command(unsigned op,int g,int c,unsigned seq,unsigned src,const void *p){
++ int entry_errno41=*__errno_location();U entry_ns41=gpe102_now();*__errno_location()=entry_errno41;
+  unsigned char raw[144]={0};unsigned len=op==0?56:op==1?144:24;
+  int readable=p&&pread(process_mem,raw,len,(long)p)==len;struct tex102_sample texture102={0};
+  const char*stage="entry";int reason=GPE_INVALID,result=5,locked=0,life_held=0;void *area=(void *)-1,*source_area=(void*)-1;U source_bytes=0,source_page=0,destination_map_bytes=0;struct gpe_plan plan;unsigned source_cached26=0,destination_cached26=0;
+- if(gpe102_take(&command_lock,seq,op)){marker(op,seq,raw,readable,5,GPE_BUSY);gpe104_command_return(seq,op,src,5);return 5;}locked=1;
++ if(gpe102_take(&command_lock,seq,op)){marker(op,seq,raw,readable,5,GPE_BUSY);gpe104_command_return(seq,op,src,5,entry_ns41);return 5;}locked=1;
+  if(!readable||g||c)goto done;
+  unsigned ao=op==0?38:op==1?121:0,fo=op==0?40:op==1?128:8;
+  U cb=load64(raw+fo),arg=load64(raw+fo+8);
+@@ -281,7 +282,7 @@
+  marker(op,seq,raw,readable,result,reason);
+  if(locked)__atomic_clear(&command_lock,__ATOMIC_RELEASE);
+  tex102_emit(&texture102);
+- gpe104_command_return(seq,op,src,result);
++ gpe104_command_return(seq,op,src,result,entry_ns41);
+  /* Nonzero is returned to original Main, which alone sends failure status. */
+  return result;
+ }
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-complete104-observe-v1.h
++++ r41/src/fx3-complete104-observe-v1.h
+@@ -27,7 +27,7 @@
+  dprintf(2,"FX3_GPE104_DYNAMIC_RETURN tid=%ld tpidr=%#lx event=%lu ns=%lu flags=%#x module=%#x QID=%#x QID_available=%u result=%d errno=%d caller=%#lx owner_from_separate_kernel_probe=1 no_stat_msgq=1 no_extra_dynamic_id=1\n",tid,tp,id,gpe102_now(),flags,module,q,!!available,result,after,caller);
+  *__errno_location()=after;return result;
+ }
+-static void gpe104_command_return(unsigned seq,unsigned op,unsigned source,int result){
++static void gpe104_command_return(unsigned seq,unsigned op,unsigned source,int result,U entry_ns41){
+  int saved=*__errno_location();long tid=syscall(178);U tp=gpe104_thread_pointer();
+- dprintf(2,"FX3_GPE104_CMD_RETURN tid=%ld tpidr=%#lx ns=%lu seq=%u op=%u completion_source=%#x result=%d errno=%d call_path=adapter_return_to_original_Main unchanged=1\n",tid,tp,gpe102_now(),seq,op,source,result,saved);*__errno_location()=saved;
++ dprintf(2,"FX3_GPE104_CMD_RETURN tid=%ld tpidr=%#lx ns=%lu seq=%u op=%u completion_source=%#x result=%d errno=%d call_path=adapter_return_to_original_Main unchanged=1 entry_ns=%lu\n",tid,tp,gpe102_now(),seq,op,source,result,saved,entry_ns41);*__errno_location()=saved;
+ }

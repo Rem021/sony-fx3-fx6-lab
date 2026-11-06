@@ -1,0 +1,175 @@
+{
+  "result": 11,
+  "fault": null,
+  "root_pid": 321,
+  "root_tid": 777,
+  "original_mask": 1024,
+  "final_mask": 1024,
+  "clones": [
+    {
+      "parent": 321,
+      "child": 5001,
+      "role": "collector",
+      "flags": 17,
+      "parent_mask": 18446744073709289215,
+      "private_VM_files_sighand": true,
+      "resume_pc": 1342326692,
+      "old_file_image_removed_before_first_child_instruction": true
+    },
+    {
+      "parent": 5001,
+      "child": 7002,
+      "role": "worker",
+      "flags": 0,
+      "parent_mask": 18446744073709289215,
+      "private_VM_files_sighand": true,
+      "resume_pc": 1342318524,
+      "old_file_image_removed_before_first_child_instruction": false
+    }
+  ],
+  "masks": [
+    {
+      "role": "caller",
+      "before": 1024,
+      "after": 18446744073709289215
+    },
+    {
+      "role": "caller",
+      "before": 18446744073709289215,
+      "after": 1024
+    }
+  ],
+  "mappings": [
+    {
+      "event": "anonymous_RW",
+      "raw": 1342181376,
+      "bytes": 327680,
+      "aligned": 1342242816
+    },
+    {
+      "event": "protect",
+      "address": 1342181376,
+      "bytes": 327680,
+      "permissions": 0
+    },
+    {
+      "event": "protect",
+      "address": 1342242816,
+      "bytes": 65536,
+      "permissions": 1
+    },
+    {
+      "event": "protect",
+      "address": 1342308352,
+      "bytes": 65536,
+      "permissions": 5
+    },
+    {
+      "event": "protect",
+      "address": 1342373888,
+      "bytes": 65536,
+      "permissions": 1
+    },
+    {
+      "event": "protect",
+      "address": 1342439424,
+      "bytes": 65536,
+      "permissions": 3
+    },
+    {
+      "event": "unmap_parent_copy",
+      "address": 1342181376,
+      "bytes": 327680
+    }
+  ],
+  "root_remaining_new_FDs": [],
+  "root_remaining_anonymous": [],
+  "borrowed_FDs_unchanged": true,
+  "messages": [
+    {
+      "sender": 5001,
+      "role": "collector",
+      "type": 3,
+      "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+      "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+      "issued": 1000000000,
+      "expires": 61000000000,
+      "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+    },
+    {
+      "sender": 321,
+      "role": "caller",
+      "type": 4,
+      "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+      "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+      "issued": 1000000000,
+      "expires": 61000000000,
+      "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+    },
+    {
+      "sender": 5001,
+      "role": "collector",
+      "type": 1,
+      "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+      "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+      "issued": 1000000000,
+      "expires": 61000000000,
+      "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+    },
+    {
+      "sender": 7002,
+      "role": "worker",
+      "type": 2,
+      "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+      "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+      "issued": 1000000000,
+      "expires": 61000000000,
+      "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+    }
+  ],
+  "received": [
+    {
+      "receiver": 321,
+      "fd": 4,
+      "object_pid": 5001
+    }
+  ],
+  "waits": [
+    {
+      "caller": 5001,
+      "pid": -1,
+      "flags": 1073741825,
+      "returned": -10,
+      "status": null
+    },
+    {
+      "caller": 5001,
+      "pid": 7002,
+      "flags": 2684354561,
+      "returned": 0,
+      "status": null
+    },
+    {
+      "caller": 5001,
+      "pid": 7002,
+      "flags": 2684354561,
+      "returned": 7002,
+      "status": 0
+    }
+  ],
+  "reaper": [
+    {
+      "reason": "saved parent mask restored after sentinel or cleanup",
+      "pid": 5001,
+      "status": 10752,
+      "only_fake_Sony_reaper_semantics": true
+    }
+  ],
+  "collector_status": 10752,
+  "collector_reaped": true,
+  "worker_status": 0,
+  "root_sleeps": 3,
+  "source_accesses": [],
+  "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+  "errors": []
+}

@@ -1,0 +1,44 @@
+{
+  "status": "PASS_HOST_SOFTWARE_SEMANTIC_MODELS",
+  "byte_state_cases": 4608,
+  "input_states": "0,FFFF and16 individual bit basis states",
+  "input_bytes_each_case": "all256",
+  "full126B_vectors": [
+    {
+      "input_bytes": 126,
+      "input_sha256": "ebc47d1683f1e8b6d506bf43f07f93e64fcb54ea8310a90211336139a80e706a",
+      "CRC": 32465,
+      "sealed_frame_sha256": "d5f5d2e8860731faeb2e472a3395a56b6ea64284c79f8f2a1da4da8df7321a85"
+    },
+    {
+      "input_bytes": 126,
+      "input_sha256": "63ef3c06e0c90c11e4169763292ae43e94412853dcb821186ef1e26323786b9d",
+      "CRC": 25458,
+      "sealed_frame_sha256": "e5a12383a26ff74b9e6485d3f168bcbf2f6c6cb8eaeea0bd71b2f7987b44d501"
+    },
+    {
+      "input_bytes": 126,
+      "input_sha256": "5dda7cb7c2282a55676f8ad5c448092f4a9ebd65338b07ed224fcd7b6c73f5ef",
+      "CRC": 26620,
+      "sealed_frame_sha256": "c298d9df2a0106809d800653dae243dc2455a81078ac8d95d6fea88147264270"
+    },
+    {
+      "input_bytes": 126,
+      "input_sha256": "111f0318eed5dce720baaf45e0b0928aa6b0f08652d34b43bc60b3fac99e20fd",
+      "CRC": 249,
+      "sealed_frame_sha256": "0570802845d75e48062577717674fff0cbbe154536abaa6d36fbf82dba4b4575"
+    },
+    {
+      "input_bytes": 126,
+      "input_sha256": "6d53a952eb7d23f73e846e46a9a7a993ef2e5a694c95e5a36ac0add31fa9ebdb",
+      "CRC": 30849,
+      "sealed_frame_sha256": "dc9706356c6c5040bddb782898d2af39f24eca7ffe1b210f1f63cfe7df40e5ef"
+    }
+  ],
+  "model_source_relation": "models transcribe pinned official AP ARM64 bit recurrence and public C xor recurrence; not execution of either program",
+  "proves_MCU_hardware_CRC_or_transport": false,
+  "strict_reply_freshness_proven": false,
+  "actual_device_packets_sent": 0,
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

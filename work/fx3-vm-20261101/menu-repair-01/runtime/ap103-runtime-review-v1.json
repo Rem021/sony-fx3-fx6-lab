@@ -1,0 +1,88 @@
+{
+  "runs": [
+    {
+      "duration_seconds": 3.066313249990344,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "inputs_unchanged": true,
+      "early_stop_reason": "AP103 software device or real ioctl selftest failed",
+      "host_observer_error": null,
+      "guest_exception_markers": [],
+      "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103v1ldec600-17a3b482",
+      "restored_API16_hex": null,
+      "API16_matches_original": false,
+      "receipt_SHA256": "cefd82ae51012fa35b1152bbea69a9e6ff5c7e298166fc10588af25a24c7f229",
+      "PID_absent": true,
+      "kernel_records": 0,
+      "breakpoints_removed": true,
+      "all_original_words_unchanged": true,
+      "pause_seconds": 0
+    },
+    {
+      "duration_seconds": 452.6936790829641,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "inputs_unchanged": true,
+      "early_stop_reason": null,
+      "host_observer_error": "RuntimeError('Invalid AP102 read-only state request')",
+      "guest_exception_markers": [],
+      "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103r2ldec600-a7c9c32d",
+      "restored_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "API16_matches_original": true,
+      "receipt_SHA256": "ec0b6c08ccb855c273e089bc7b81cde89987bd6027c842adca72dc3337478b46",
+      "PID_absent": true,
+      "kernel_records": 35,
+      "breakpoints_removed": true,
+      "all_original_words_unchanged": true,
+      "pause_seconds": 0.147578003059607
+    },
+    {
+      "duration_seconds": 278.2546475419658,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "inputs_unchanged": true,
+      "early_stop_reason": "AP95 per-step QMP readback failed",
+      "host_observer_error": null,
+      "guest_exception_markers": [],
+      "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103v3ldec600-4ad191d2",
+      "restored_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "API16_matches_original": true,
+      "receipt_SHA256": "381038830825a5af49818c16794e31738f45d394eee5674dbf626c076c23c426",
+      "PID_absent": true,
+      "kernel_records": 52,
+      "breakpoints_removed": true,
+      "all_original_words_unchanged": true,
+      "pause_seconds": 0.20757645409321412
+    },
+    {
+      "duration_seconds": 151.445355792006,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "inputs_unchanged": true,
+      "early_stop_reason": "AP90 first new GPE rejection; quiesce and review without further changes",
+      "host_observer_error": null,
+      "guest_exception_markers": [],
+      "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103v4ldec600-71ce5752",
+      "restored_API16_hex": "5000005800021fd6bcfc4d0080ffffff",
+      "API16_matches_original": false,
+      "receipt_SHA256": "5810c84011c7ae25629a7e846cd209908ab5619a148405ad01715a34132dcd93",
+      "PID_absent": true,
+      "kernel_records": 51,
+      "breakpoints_removed": true,
+      "all_original_words_unchanged": true,
+      "pause_seconds": 0.0828507881378755
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "released": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "released": true
+    }
+  ],
+  "overall_health_pass": false,
+  "reason": "AP103 full600 and save stages incomplete; fourth run native GPE delivery failure and API restore readback differs"
+}

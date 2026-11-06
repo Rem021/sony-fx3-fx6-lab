@@ -1,0 +1,133 @@
+{
+  "reader_source": "work/sony-firmware-20261024/stage2/extraction/read_filesystems.py",
+  "reader_source_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "packages": [
+    {
+      "version": "2.04",
+      "source": "original-update-engine/2.04/nflasha1",
+      "metadata": {
+        "kind": "FAT12",
+        "sector_size": 512,
+        "sectors_per_cluster": 32,
+        "root_offset": 33280,
+        "data_offset": 49664,
+        "cluster_count": 1179
+      },
+      "files": [
+        {
+          "path": "/boot",
+          "cluster": 3,
+          "size": 0,
+          "attributes": 16,
+          "type": 16384
+        },
+        {
+          "path": "/boot/initrd.img",
+          "cluster": 4,
+          "size": 9097216,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/boot/vmlinux.bin",
+          "cluster": 560,
+          "size": 6582280,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/boot/cxd90057.dtb",
+          "cluster": 962,
+          "size": 17131,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/boot/kemco.txt",
+          "cluster": 964,
+          "size": 934,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/boot/loadaddr.txt",
+          "cluster": 965,
+          "size": 48,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/p1chksum",
+          "cluster": 966,
+          "size": 105,
+          "attributes": 32,
+          "type": 32768
+        }
+      ]
+    },
+    {
+      "version": "2.05",
+      "source": "original-update-engine/2.05/nflasha1",
+      "metadata": {
+        "kind": "FAT12",
+        "sector_size": 512,
+        "sectors_per_cluster": 32,
+        "root_offset": 33280,
+        "data_offset": 49664,
+        "cluster_count": 1179
+      },
+      "files": [
+        {
+          "path": "/boot",
+          "cluster": 3,
+          "size": 0,
+          "attributes": 16,
+          "type": 16384
+        },
+        {
+          "path": "/boot/initrd.img",
+          "cluster": 4,
+          "size": 9097216,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/boot/vmlinux.bin",
+          "cluster": 560,
+          "size": 6582280,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/boot/cxd90057.dtb",
+          "cluster": 962,
+          "size": 17131,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/boot/kemco.txt",
+          "cluster": 964,
+          "size": 934,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/boot/loadaddr.txt",
+          "cluster": 965,
+          "size": 48,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/p1chksum",
+          "cluster": 966,
+          "size": 105,
+          "attributes": 32,
+          "type": 32768
+        }
+      ]
+    }
+  ],
+  "scope": "Original FAT12 static directory inventory only, no mount, execution or partition modification"
+}

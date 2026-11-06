@@ -1,0 +1,18 @@
+{
+  "checked_utc": "2026-10-29T19:58:32.984113+00:00",
+  "sources": [
+    {
+      "url": "https://github.com/apple-oss-distributions/xnu/blob/main/bsd/kern/uipc_usrreq.c",
+      "access": "web rendered Apple primary source; main not pinned as current OS implementation",
+      "relevant": "LOCAL_PEERPID refuses disconnected unp_conn; supports observed ENOTCONN race"
+    },
+    {
+      "url": "https://github.com/apple/darwin-xnu/blob/main/bsd/sys/socket.h",
+      "access": "web search primary header",
+      "relevant": "SO_NOSIGPIPE and MSG_DONTWAIT definitions; local build SDK remains authoritative for this build"
+    }
+  ],
+  "API_source_download": "Python HTTPS API fetch failed SSL EOF; no source file or commit digest was obtained; not represented as a fetched/pinned revision",
+  "local_observation": "first integration failed after peer exit; fixed with live pre-owner ACK barrier; failed artifact and sources retained",
+  "camera_or_root_test": false
+}

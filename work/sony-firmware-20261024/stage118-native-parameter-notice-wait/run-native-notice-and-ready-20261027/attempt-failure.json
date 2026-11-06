@@ -1,0 +1,3142 @@
+{
+  "status": "FAILED_NO_PASSING_RESULT",
+  "created_utc": "2026-10-27T16:07:47.035520+00:00",
+  "source": "work/sony-firmware-20261024/stage118-native-parameter-notice-wait/notice_wait.py",
+  "source_sha256": "2929aa770c0190c8e5502451a0efe1e14c388f6a612c6fb7a42402ea1ba543ef",
+  "registration_cases": [
+    {
+      "seed": 165,
+      "existing_key": 4100,
+      "incoming_key": 4100,
+      "incoming_value": "0x11004200",
+      "existing_value": "0x11004000",
+      "outcome": "existing_node_and_value_retained_before_unknown_lifecycle",
+      "events": [
+        {
+          "label": "original registration helper before allocating a node",
+          "entry": "0x2e6e540",
+          "reason": "boundary: before_original_new",
+          "stop_pc": "0x1593ca0",
+          "pcs": [
+            "0x2e6e540",
+            "0x2e6e544",
+            "0x2e6e548",
+            "0x2e6e54c",
+            "0x2e6e550",
+            "0x2e6e554",
+            "0x2e6e558",
+            "0x1593ca0"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e540",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e540",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e548",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e548",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent allocated-node input; original key copy and bucket lookup",
+          "entry": "0x2e6e55c",
+          "reason": "boundary: before_original_delete",
+          "stop_pc": "0x1591d30",
+          "pcs": [
+            "0x2e6e55c",
+            "0x2e6e560",
+            "0x2e6e564",
+            "0x2e6e568",
+            "0x2e6e56c",
+            "0x2e6e570",
+            "0x2e6e574",
+            "0x2e6e578",
+            "0x2e6e57c",
+            "0x2e6e580",
+            "0x2e6e584",
+            "0x2e6e588",
+            "0x2e56ce4",
+            "0x2e56ce8",
+            "0x2e56cec",
+            "0x2e56cf0",
+            "0x2e56cf4",
+            "0x2e56cf8",
+            "0x2e56cfc",
+            "0x2e56d00",
+            "0x2e56d04",
+            "0x2e56d34",
+            "0x2e6e58c",
+            "0x2e6e590",
+            "0x2e6e594",
+            "0x2e6e598",
+            "0x2e6e59c",
+            "0x1591d30"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e568",
+              "address": "0x11003100",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e56c",
+              "address": "0x11003108",
+              "size": 8,
+              "value": 4100
+            },
+            {
+              "pc": "0x2e6e56c",
+              "address": "0x11003110",
+              "size": 8,
+              "value": 285229568
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e56d34",
+              "return_x0": "0x11001010"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-delete frame; original duplicate-key return",
+          "entry": "0x2e6e5a0",
+          "reason": "returned",
+          "stop_pc": "0x12000000",
+          "pcs": [
+            "0x2e6e5a0",
+            "0x2e6e5a4",
+            "0x2e6e5a8",
+            "0x2e6e5ac",
+            "0x2e6e5b0",
+            "0x2e6e5b4",
+            "0x12000000"
+          ],
+          "stores": [],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e6e5b4",
+              "return_x0": "0x11003000"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_new_delete_registry_publish_serialization_or_epoch_proven": false
+    },
+    {
+      "seed": 165,
+      "existing_key": null,
+      "incoming_key": 4100,
+      "incoming_value": "0x11004200",
+      "existing_value": "0x11004000",
+      "outcome": "missing_key_requests_insertion_not_executed",
+      "events": [
+        {
+          "label": "original registration helper before allocating a node",
+          "entry": "0x2e6e540",
+          "reason": "boundary: before_original_new",
+          "stop_pc": "0x1593ca0",
+          "pcs": [
+            "0x2e6e540",
+            "0x2e6e544",
+            "0x2e6e548",
+            "0x2e6e54c",
+            "0x2e6e550",
+            "0x2e6e554",
+            "0x2e6e558",
+            "0x1593ca0"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e540",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e540",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e548",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e548",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent allocated-node input; original key copy and bucket lookup",
+          "entry": "0x2e6e55c",
+          "reason": "boundary: before_original_registry_insert",
+          "stop_pc": "0x2e6c634",
+          "pcs": [
+            "0x2e6e55c",
+            "0x2e6e560",
+            "0x2e6e564",
+            "0x2e6e568",
+            "0x2e6e56c",
+            "0x2e6e570",
+            "0x2e6e574",
+            "0x2e6e578",
+            "0x2e6e57c",
+            "0x2e6e580",
+            "0x2e6e584",
+            "0x2e6e588",
+            "0x2e56ce4",
+            "0x2e56ce8",
+            "0x2e56cec",
+            "0x2e56cf0",
+            "0x2e56d34",
+            "0x2e6e58c",
+            "0x2e6e5b8",
+            "0x2e6e5bc",
+            "0x2e6e5c0",
+            "0x2e6e5c4",
+            "0x2e6e5c8",
+            "0x2e6c634"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e568",
+              "address": "0x11003100",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e56c",
+              "address": "0x11003108",
+              "size": 8,
+              "value": 4100
+            },
+            {
+              "pc": "0x2e6e56c",
+              "address": "0x11003110",
+              "size": 8,
+              "value": 285229568
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e56d34",
+              "return_x0": "0x0"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_new_delete_registry_publish_serialization_or_epoch_proven": false
+    },
+    {
+      "seed": 165,
+      "existing_key": 4101,
+      "incoming_key": 4100,
+      "incoming_value": "0x11004200",
+      "existing_value": "0x11004000",
+      "outcome": "missing_key_requests_insertion_not_executed",
+      "events": [
+        {
+          "label": "original registration helper before allocating a node",
+          "entry": "0x2e6e540",
+          "reason": "boundary: before_original_new",
+          "stop_pc": "0x1593ca0",
+          "pcs": [
+            "0x2e6e540",
+            "0x2e6e544",
+            "0x2e6e548",
+            "0x2e6e54c",
+            "0x2e6e550",
+            "0x2e6e554",
+            "0x2e6e558",
+            "0x1593ca0"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e540",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e540",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e548",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e548",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent allocated-node input; original key copy and bucket lookup",
+          "entry": "0x2e6e55c",
+          "reason": "boundary: before_original_registry_insert",
+          "stop_pc": "0x2e6c634",
+          "pcs": [
+            "0x2e6e55c",
+            "0x2e6e560",
+            "0x2e6e564",
+            "0x2e6e568",
+            "0x2e6e56c",
+            "0x2e6e570",
+            "0x2e6e574",
+            "0x2e6e578",
+            "0x2e6e57c",
+            "0x2e6e580",
+            "0x2e6e584",
+            "0x2e6e588",
+            "0x2e56ce4",
+            "0x2e56ce8",
+            "0x2e56cec",
+            "0x2e56cf0",
+            "0x2e56cf4",
+            "0x2e56cf8",
+            "0x2e56cfc",
+            "0x2e56d00",
+            "0x2e56d04",
+            "0x2e56d08",
+            "0x2e56d0c",
+            "0x2e56d30",
+            "0x2e56d34",
+            "0x2e6e58c",
+            "0x2e6e5b8",
+            "0x2e6e5bc",
+            "0x2e6e5c0",
+            "0x2e6e5c4",
+            "0x2e6e5c8",
+            "0x2e6c634"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e568",
+              "address": "0x11003100",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e56c",
+              "address": "0x11003108",
+              "size": 8,
+              "value": 4100
+            },
+            {
+              "pc": "0x2e6e56c",
+              "address": "0x11003110",
+              "size": 8,
+              "value": 285229568
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e56d34",
+              "return_x0": "0x0"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_new_delete_registry_publish_serialization_or_epoch_proven": false
+    }
+  ],
+  "notice_cases": [
+    {
+      "seed": 165,
+      "matching_registry_key": true,
+      "notice_key": 4100,
+      "notice_result_word8": 0,
+      "opaque_word4_not_claimed_epoch": 4369,
+      "alternate_registered_model_pointer": false,
+      "registered_value": "0x11004000",
+      "registered_promise": "0x11005000",
+      "result": "registered_promise_moved_before_unexecuted_fulfillment",
+      "events": [
+        {
+          "label": "original LoadMovieFinishedParam callback prologue before log",
+          "entry": "0x2e6e478",
+          "reason": "boundary: before_original_app_logger",
+          "stop_pc": "0x2f6ff0c",
+          "pcs": [
+            "0x2e6e478",
+            "0x2e6e47c",
+            "0x2e6e480",
+            "0x2e6e484",
+            "0x2e6e488",
+            "0x2e6e48c",
+            "0x2e6e490",
+            "0x2e6e494",
+            "0x2e6e498",
+            "0x2e6e49c",
+            "0x2e6e4a0",
+            "0x2e6e4a4",
+            "0x2e6e4a8",
+            "0x2e6e4ac",
+            "0x2f6ff0c"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-log callback reaches registry mutex",
+          "entry": "0x2e6e4b0",
+          "reason": "boundary: before_registry_mutex_lock",
+          "stop_pc": "0x16ed554",
+          "pcs": [
+            "0x2e6e4b0",
+            "0x2e6e4b4",
+            "0x2e6e4b8",
+            "0x2e6e4bc",
+            "0x16ed554"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4b8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 157858432
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-lock callback looks up event key and moves registered promise",
+          "entry": "0x2e6e4c0",
+          "reason": "boundary: before_original_promise_fulfillment",
+          "stop_pc": "0x2bcce64",
+          "pcs": [
+            "0x2e6e4c0",
+            "0x2e6e4c4",
+            "0x2e6e4c8",
+            "0x2e57a90",
+            "0x2e57a94",
+            "0x2e57a98",
+            "0x2e57a9c",
+            "0x2e57aa0",
+            "0x2e57aa4",
+            "0x2e57aa8",
+            "0x2e57aac",
+            "0x2e57ab0",
+            "0x2e57ab4",
+            "0x2e57ab8",
+            "0x2e57abc",
+            "0x2e57ac0",
+            "0x2e57ac4",
+            "0x2e57ac8",
+            "0x2e57acc",
+            "0x2e57ad0",
+            "0x2e57ad4",
+            "0x2e57ad8",
+            "0x2e57af8",
+            "0x2e6e4cc",
+            "0x2e6e4d0",
+            "0x2e6e4d4",
+            "0x2e6e4d8",
+            "0x2e6e4dc",
+            "0x2e6e4e0",
+            "0x2e6e4e4",
+            "0x2e6c7a0",
+            "0x2e6c7a4",
+            "0x2e6c7a8",
+            "0x2e6c7ac",
+            "0x2e6c7b0",
+            "0x2e6c7b4",
+            "0x2e6c7b8",
+            "0x2e6c7bc",
+            "0x2e6c7c0",
+            "0x2e6c7c4",
+            "0x2e6c7c8",
+            "0x2e6c7cc",
+            "0x2e6c7d0",
+            "0x2e56ce4",
+            "0x2e56ce8",
+            "0x2e56cec",
+            "0x2e56cf0",
+            "0x2e56cf4",
+            "0x2e56cf8",
+            "0x2e56cfc",
+            "0x2e56d00",
+            "0x2e56d04",
+            "0x2e56d34",
+            "0x2e6c7d4",
+            "0x2e6c7d8",
+            "0x2e6c7dc",
+            "0x2e6c810",
+            "0x2e6c814",
+            "0x2e6c818",
+            "0x2e6c81c",
+            "0x2e6c820",
+            "0x2e6e4e8",
+            "0x2e6e4ec",
+            "0x2e6e4f0",
+            "0x2e6e4f4",
+            "0x2e6e4f8",
+            "0x2e6e4fc",
+            "0x2e58088",
+            "0x2e5808c",
+            "0x2e58090",
+            "0x2e58094",
+            "0x2e58098",
+            "0x2e5809c",
+            "0x2e580a0",
+            "0x2e580a4",
+            "0x2e580a8",
+            "0x2e580ac",
+            "0x2e6e500",
+            "0x2e6e504",
+            "0x2bcce64"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4dc",
+              "address": "0x1001ffe8",
+              "size": 4,
+              "value": 4100
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff80",
+              "size": 8,
+              "value": 268566448
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff88",
+              "size": 8,
+              "value": 48686312
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff90",
+              "size": 8,
+              "value": 268566504
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff98",
+              "size": 8,
+              "value": 60186624
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa0",
+              "size": 8,
+              "value": 60362752
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa8",
+              "size": 8,
+              "value": 285249536
+            },
+            {
+              "pc": "0x2e6e4f0",
+              "address": "0x11004008",
+              "size": 4,
+              "value": 0
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 285237248
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58094",
+              "address": "0x11005008",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58098",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 285238272
+            },
+            {
+              "pc": "0x2e580a0",
+              "address": "0x11005000",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a4",
+              "address": "0x11005010",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a8",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 285245440
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e57af8",
+              "return_x0": "0x1"
+            },
+            {
+              "return_instruction": "0x2e56d34",
+              "return_x0": "0x968b130"
+            },
+            {
+              "return_instruction": "0x2e6c820",
+              "return_x0": "0x11003010"
+            },
+            {
+              "return_instruction": "0x2e580ac",
+              "return_x0": "0x1001ffe8"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "complete_registry_erase_or_actual_fulfillment_encoder_configuration_identity_proven": false
+    },
+    {
+      "seed": 165,
+      "matching_registry_key": true,
+      "notice_key": 4100,
+      "notice_result_word8": 0,
+      "opaque_word4_not_claimed_epoch": 8738,
+      "alternate_registered_model_pointer": false,
+      "registered_value": "0x11004000",
+      "registered_promise": "0x11005000",
+      "result": "registered_promise_moved_before_unexecuted_fulfillment",
+      "events": [
+        {
+          "label": "original LoadMovieFinishedParam callback prologue before log",
+          "entry": "0x2e6e478",
+          "reason": "boundary: before_original_app_logger",
+          "stop_pc": "0x2f6ff0c",
+          "pcs": [
+            "0x2e6e478",
+            "0x2e6e47c",
+            "0x2e6e480",
+            "0x2e6e484",
+            "0x2e6e488",
+            "0x2e6e48c",
+            "0x2e6e490",
+            "0x2e6e494",
+            "0x2e6e498",
+            "0x2e6e49c",
+            "0x2e6e4a0",
+            "0x2e6e4a4",
+            "0x2e6e4a8",
+            "0x2e6e4ac",
+            "0x2f6ff0c"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-log callback reaches registry mutex",
+          "entry": "0x2e6e4b0",
+          "reason": "boundary: before_registry_mutex_lock",
+          "stop_pc": "0x16ed554",
+          "pcs": [
+            "0x2e6e4b0",
+            "0x2e6e4b4",
+            "0x2e6e4b8",
+            "0x2e6e4bc",
+            "0x16ed554"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4b8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 157858432
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-lock callback looks up event key and moves registered promise",
+          "entry": "0x2e6e4c0",
+          "reason": "boundary: before_original_promise_fulfillment",
+          "stop_pc": "0x2bcce64",
+          "pcs": [
+            "0x2e6e4c0",
+            "0x2e6e4c4",
+            "0x2e6e4c8",
+            "0x2e57a90",
+            "0x2e57a94",
+            "0x2e57a98",
+            "0x2e57a9c",
+            "0x2e57aa0",
+            "0x2e57aa4",
+            "0x2e57aa8",
+            "0x2e57aac",
+            "0x2e57ab0",
+            "0x2e57ab4",
+            "0x2e57ab8",
+            "0x2e57abc",
+            "0x2e57ac0",
+            "0x2e57ac4",
+            "0x2e57ac8",
+            "0x2e57acc",
+            "0x2e57ad0",
+            "0x2e57ad4",
+            "0x2e57ad8",
+            "0x2e57af8",
+            "0x2e6e4cc",
+            "0x2e6e4d0",
+            "0x2e6e4d4",
+            "0x2e6e4d8",
+            "0x2e6e4dc",
+            "0x2e6e4e0",
+            "0x2e6e4e4",
+            "0x2e6c7a0",
+            "0x2e6c7a4",
+            "0x2e6c7a8",
+            "0x2e6c7ac",
+            "0x2e6c7b0",
+            "0x2e6c7b4",
+            "0x2e6c7b8",
+            "0x2e6c7bc",
+            "0x2e6c7c0",
+            "0x2e6c7c4",
+            "0x2e6c7c8",
+            "0x2e6c7cc",
+            "0x2e6c7d0",
+            "0x2e56ce4",
+            "0x2e56ce8",
+            "0x2e56cec",
+            "0x2e56cf0",
+            "0x2e56cf4",
+            "0x2e56cf8",
+            "0x2e56cfc",
+            "0x2e56d00",
+            "0x2e56d04",
+            "0x2e56d34",
+            "0x2e6c7d4",
+            "0x2e6c7d8",
+            "0x2e6c7dc",
+            "0x2e6c810",
+            "0x2e6c814",
+            "0x2e6c818",
+            "0x2e6c81c",
+            "0x2e6c820",
+            "0x2e6e4e8",
+            "0x2e6e4ec",
+            "0x2e6e4f0",
+            "0x2e6e4f4",
+            "0x2e6e4f8",
+            "0x2e6e4fc",
+            "0x2e58088",
+            "0x2e5808c",
+            "0x2e58090",
+            "0x2e58094",
+            "0x2e58098",
+            "0x2e5809c",
+            "0x2e580a0",
+            "0x2e580a4",
+            "0x2e580a8",
+            "0x2e580ac",
+            "0x2e6e500",
+            "0x2e6e504",
+            "0x2bcce64"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4dc",
+              "address": "0x1001ffe8",
+              "size": 4,
+              "value": 4100
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff80",
+              "size": 8,
+              "value": 268566448
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff88",
+              "size": 8,
+              "value": 48686312
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff90",
+              "size": 8,
+              "value": 268566504
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff98",
+              "size": 8,
+              "value": 60186624
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa0",
+              "size": 8,
+              "value": 60362752
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa8",
+              "size": 8,
+              "value": 285249536
+            },
+            {
+              "pc": "0x2e6e4f0",
+              "address": "0x11004008",
+              "size": 4,
+              "value": 0
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 285237248
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58094",
+              "address": "0x11005008",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58098",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 285238272
+            },
+            {
+              "pc": "0x2e580a0",
+              "address": "0x11005000",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a4",
+              "address": "0x11005010",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a8",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 285245440
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e57af8",
+              "return_x0": "0x1"
+            },
+            {
+              "return_instruction": "0x2e56d34",
+              "return_x0": "0x968b130"
+            },
+            {
+              "return_instruction": "0x2e6c820",
+              "return_x0": "0x11003010"
+            },
+            {
+              "return_instruction": "0x2e580ac",
+              "return_x0": "0x1001ffe8"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "complete_registry_erase_or_actual_fulfillment_encoder_configuration_identity_proven": false
+    },
+    {
+      "seed": 165,
+      "matching_registry_key": true,
+      "notice_key": 4100,
+      "notice_result_word8": 7,
+      "opaque_word4_not_claimed_epoch": 4369,
+      "alternate_registered_model_pointer": false,
+      "registered_value": "0x11004000",
+      "registered_promise": "0x11005000",
+      "result": "registered_promise_moved_before_unexecuted_fulfillment",
+      "events": [
+        {
+          "label": "original LoadMovieFinishedParam callback prologue before log",
+          "entry": "0x2e6e478",
+          "reason": "boundary: before_original_app_logger",
+          "stop_pc": "0x2f6ff0c",
+          "pcs": [
+            "0x2e6e478",
+            "0x2e6e47c",
+            "0x2e6e480",
+            "0x2e6e484",
+            "0x2e6e488",
+            "0x2e6e48c",
+            "0x2e6e490",
+            "0x2e6e494",
+            "0x2e6e498",
+            "0x2e6e49c",
+            "0x2e6e4a0",
+            "0x2e6e4a4",
+            "0x2e6e4a8",
+            "0x2e6e4ac",
+            "0x2f6ff0c"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-log callback reaches registry mutex",
+          "entry": "0x2e6e4b0",
+          "reason": "boundary: before_registry_mutex_lock",
+          "stop_pc": "0x16ed554",
+          "pcs": [
+            "0x2e6e4b0",
+            "0x2e6e4b4",
+            "0x2e6e4b8",
+            "0x2e6e4bc",
+            "0x16ed554"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4b8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 157858432
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-lock callback looks up event key and moves registered promise",
+          "entry": "0x2e6e4c0",
+          "reason": "boundary: before_original_promise_fulfillment",
+          "stop_pc": "0x2bcce64",
+          "pcs": [
+            "0x2e6e4c0",
+            "0x2e6e4c4",
+            "0x2e6e4c8",
+            "0x2e57a90",
+            "0x2e57a94",
+            "0x2e57a98",
+            "0x2e57a9c",
+            "0x2e57aa0",
+            "0x2e57aa4",
+            "0x2e57aa8",
+            "0x2e57aac",
+            "0x2e57ab0",
+            "0x2e57ab4",
+            "0x2e57ab8",
+            "0x2e57abc",
+            "0x2e57ac0",
+            "0x2e57ac4",
+            "0x2e57ac8",
+            "0x2e57acc",
+            "0x2e57ad0",
+            "0x2e57ad4",
+            "0x2e57ad8",
+            "0x2e57af8",
+            "0x2e6e4cc",
+            "0x2e6e4d0",
+            "0x2e6e4d4",
+            "0x2e6e4d8",
+            "0x2e6e4dc",
+            "0x2e6e4e0",
+            "0x2e6e4e4",
+            "0x2e6c7a0",
+            "0x2e6c7a4",
+            "0x2e6c7a8",
+            "0x2e6c7ac",
+            "0x2e6c7b0",
+            "0x2e6c7b4",
+            "0x2e6c7b8",
+            "0x2e6c7bc",
+            "0x2e6c7c0",
+            "0x2e6c7c4",
+            "0x2e6c7c8",
+            "0x2e6c7cc",
+            "0x2e6c7d0",
+            "0x2e56ce4",
+            "0x2e56ce8",
+            "0x2e56cec",
+            "0x2e56cf0",
+            "0x2e56cf4",
+            "0x2e56cf8",
+            "0x2e56cfc",
+            "0x2e56d00",
+            "0x2e56d04",
+            "0x2e56d34",
+            "0x2e6c7d4",
+            "0x2e6c7d8",
+            "0x2e6c7dc",
+            "0x2e6c810",
+            "0x2e6c814",
+            "0x2e6c818",
+            "0x2e6c81c",
+            "0x2e6c820",
+            "0x2e6e4e8",
+            "0x2e6e4ec",
+            "0x2e6e4f0",
+            "0x2e6e4f4",
+            "0x2e6e4f8",
+            "0x2e6e4fc",
+            "0x2e58088",
+            "0x2e5808c",
+            "0x2e58090",
+            "0x2e58094",
+            "0x2e58098",
+            "0x2e5809c",
+            "0x2e580a0",
+            "0x2e580a4",
+            "0x2e580a8",
+            "0x2e580ac",
+            "0x2e6e500",
+            "0x2e6e504",
+            "0x2bcce64"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4dc",
+              "address": "0x1001ffe8",
+              "size": 4,
+              "value": 4100
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff80",
+              "size": 8,
+              "value": 268566448
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff88",
+              "size": 8,
+              "value": 48686312
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff90",
+              "size": 8,
+              "value": 268566504
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff98",
+              "size": 8,
+              "value": 60186624
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa0",
+              "size": 8,
+              "value": 60362752
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa8",
+              "size": 8,
+              "value": 285249536
+            },
+            {
+              "pc": "0x2e6e4f0",
+              "address": "0x11004008",
+              "size": 4,
+              "value": 7
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 285237248
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58094",
+              "address": "0x11005008",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58098",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 285238272
+            },
+            {
+              "pc": "0x2e580a0",
+              "address": "0x11005000",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a4",
+              "address": "0x11005010",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a8",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 285245440
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e57af8",
+              "return_x0": "0x1"
+            },
+            {
+              "return_instruction": "0x2e56d34",
+              "return_x0": "0x968b130"
+            },
+            {
+              "return_instruction": "0x2e6c820",
+              "return_x0": "0x11003010"
+            },
+            {
+              "return_instruction": "0x2e580ac",
+              "return_x0": "0x1001ffe8"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "complete_registry_erase_or_actual_fulfillment_encoder_configuration_identity_proven": false
+    },
+    {
+      "seed": 165,
+      "matching_registry_key": true,
+      "notice_key": 4100,
+      "notice_result_word8": 7,
+      "opaque_word4_not_claimed_epoch": 8738,
+      "alternate_registered_model_pointer": false,
+      "registered_value": "0x11004000",
+      "registered_promise": "0x11005000",
+      "result": "registered_promise_moved_before_unexecuted_fulfillment",
+      "events": [
+        {
+          "label": "original LoadMovieFinishedParam callback prologue before log",
+          "entry": "0x2e6e478",
+          "reason": "boundary: before_original_app_logger",
+          "stop_pc": "0x2f6ff0c",
+          "pcs": [
+            "0x2e6e478",
+            "0x2e6e47c",
+            "0x2e6e480",
+            "0x2e6e484",
+            "0x2e6e488",
+            "0x2e6e48c",
+            "0x2e6e490",
+            "0x2e6e494",
+            "0x2e6e498",
+            "0x2e6e49c",
+            "0x2e6e4a0",
+            "0x2e6e4a4",
+            "0x2e6e4a8",
+            "0x2e6e4ac",
+            "0x2f6ff0c"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-log callback reaches registry mutex",
+          "entry": "0x2e6e4b0",
+          "reason": "boundary: before_registry_mutex_lock",
+          "stop_pc": "0x16ed554",
+          "pcs": [
+            "0x2e6e4b0",
+            "0x2e6e4b4",
+            "0x2e6e4b8",
+            "0x2e6e4bc",
+            "0x16ed554"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4b8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 157858432
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-lock callback looks up event key and moves registered promise",
+          "entry": "0x2e6e4c0",
+          "reason": "boundary: before_original_promise_fulfillment",
+          "stop_pc": "0x2bcce64",
+          "pcs": [
+            "0x2e6e4c0",
+            "0x2e6e4c4",
+            "0x2e6e4c8",
+            "0x2e57a90",
+            "0x2e57a94",
+            "0x2e57a98",
+            "0x2e57a9c",
+            "0x2e57aa0",
+            "0x2e57aa4",
+            "0x2e57aa8",
+            "0x2e57aac",
+            "0x2e57ab0",
+            "0x2e57ab4",
+            "0x2e57ab8",
+            "0x2e57abc",
+            "0x2e57ac0",
+            "0x2e57ac4",
+            "0x2e57ac8",
+            "0x2e57acc",
+            "0x2e57ad0",
+            "0x2e57ad4",
+            "0x2e57ad8",
+            "0x2e57af8",
+            "0x2e6e4cc",
+            "0x2e6e4d0",
+            "0x2e6e4d4",
+            "0x2e6e4d8",
+            "0x2e6e4dc",
+            "0x2e6e4e0",
+            "0x2e6e4e4",
+            "0x2e6c7a0",
+            "0x2e6c7a4",
+            "0x2e6c7a8",
+            "0x2e6c7ac",
+            "0x2e6c7b0",
+            "0x2e6c7b4",
+            "0x2e6c7b8",
+            "0x2e6c7bc",
+            "0x2e6c7c0",
+            "0x2e6c7c4",
+            "0x2e6c7c8",
+            "0x2e6c7cc",
+            "0x2e6c7d0",
+            "0x2e56ce4",
+            "0x2e56ce8",
+            "0x2e56cec",
+            "0x2e56cf0",
+            "0x2e56cf4",
+            "0x2e56cf8",
+            "0x2e56cfc",
+            "0x2e56d00",
+            "0x2e56d04",
+            "0x2e56d34",
+            "0x2e6c7d4",
+            "0x2e6c7d8",
+            "0x2e6c7dc",
+            "0x2e6c810",
+            "0x2e6c814",
+            "0x2e6c818",
+            "0x2e6c81c",
+            "0x2e6c820",
+            "0x2e6e4e8",
+            "0x2e6e4ec",
+            "0x2e6e4f0",
+            "0x2e6e4f4",
+            "0x2e6e4f8",
+            "0x2e6e4fc",
+            "0x2e58088",
+            "0x2e5808c",
+            "0x2e58090",
+            "0x2e58094",
+            "0x2e58098",
+            "0x2e5809c",
+            "0x2e580a0",
+            "0x2e580a4",
+            "0x2e580a8",
+            "0x2e580ac",
+            "0x2e6e500",
+            "0x2e6e504",
+            "0x2bcce64"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4dc",
+              "address": "0x1001ffe8",
+              "size": 4,
+              "value": 4100
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff80",
+              "size": 8,
+              "value": 268566448
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff88",
+              "size": 8,
+              "value": 48686312
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff90",
+              "size": 8,
+              "value": 268566504
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff98",
+              "size": 8,
+              "value": 60186624
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa0",
+              "size": 8,
+              "value": 60362752
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa8",
+              "size": 8,
+              "value": 285249536
+            },
+            {
+              "pc": "0x2e6e4f0",
+              "address": "0x11004008",
+              "size": 4,
+              "value": 7
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 285237248
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58094",
+              "address": "0x11005008",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58098",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 285238272
+            },
+            {
+              "pc": "0x2e580a0",
+              "address": "0x11005000",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a4",
+              "address": "0x11005010",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a8",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 285245440
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e57af8",
+              "return_x0": "0x1"
+            },
+            {
+              "return_instruction": "0x2e56d34",
+              "return_x0": "0x968b130"
+            },
+            {
+              "return_instruction": "0x2e6c820",
+              "return_x0": "0x11003010"
+            },
+            {
+              "return_instruction": "0x2e580ac",
+              "return_x0": "0x1001ffe8"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "complete_registry_erase_or_actual_fulfillment_encoder_configuration_identity_proven": false
+    },
+    {
+      "seed": 165,
+      "matching_registry_key": true,
+      "notice_key": 4100,
+      "notice_result_word8": 0,
+      "opaque_word4_not_claimed_epoch": 4369,
+      "alternate_registered_model_pointer": true,
+      "registered_value": "0x11004200",
+      "registered_promise": "0x11005200",
+      "result": "registered_promise_moved_before_unexecuted_fulfillment",
+      "events": [
+        {
+          "label": "original LoadMovieFinishedParam callback prologue before log",
+          "entry": "0x2e6e478",
+          "reason": "boundary: before_original_app_logger",
+          "stop_pc": "0x2f6ff0c",
+          "pcs": [
+            "0x2e6e478",
+            "0x2e6e47c",
+            "0x2e6e480",
+            "0x2e6e484",
+            "0x2e6e488",
+            "0x2e6e48c",
+            "0x2e6e490",
+            "0x2e6e494",
+            "0x2e6e498",
+            "0x2e6e49c",
+            "0x2e6e4a0",
+            "0x2e6e4a4",
+            "0x2e6e4a8",
+            "0x2e6e4ac",
+            "0x2f6ff0c"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-log callback reaches registry mutex",
+          "entry": "0x2e6e4b0",
+          "reason": "boundary: before_registry_mutex_lock",
+          "stop_pc": "0x16ed554",
+          "pcs": [
+            "0x2e6e4b0",
+            "0x2e6e4b4",
+            "0x2e6e4b8",
+            "0x2e6e4bc",
+            "0x16ed554"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4b8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 157858432
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-lock callback looks up event key and moves registered promise",
+          "entry": "0x2e6e4c0",
+          "reason": "boundary: before_original_promise_fulfillment",
+          "stop_pc": "0x2bcce64",
+          "pcs": [
+            "0x2e6e4c0",
+            "0x2e6e4c4",
+            "0x2e6e4c8",
+            "0x2e57a90",
+            "0x2e57a94",
+            "0x2e57a98",
+            "0x2e57a9c",
+            "0x2e57aa0",
+            "0x2e57aa4",
+            "0x2e57aa8",
+            "0x2e57aac",
+            "0x2e57ab0",
+            "0x2e57ab4",
+            "0x2e57ab8",
+            "0x2e57abc",
+            "0x2e57ac0",
+            "0x2e57ac4",
+            "0x2e57ac8",
+            "0x2e57acc",
+            "0x2e57ad0",
+            "0x2e57ad4",
+            "0x2e57ad8",
+            "0x2e57af8",
+            "0x2e6e4cc",
+            "0x2e6e4d0",
+            "0x2e6e4d4",
+            "0x2e6e4d8",
+            "0x2e6e4dc",
+            "0x2e6e4e0",
+            "0x2e6e4e4",
+            "0x2e6c7a0",
+            "0x2e6c7a4",
+            "0x2e6c7a8",
+            "0x2e6c7ac",
+            "0x2e6c7b0",
+            "0x2e6c7b4",
+            "0x2e6c7b8",
+            "0x2e6c7bc",
+            "0x2e6c7c0",
+            "0x2e6c7c4",
+            "0x2e6c7c8",
+            "0x2e6c7cc",
+            "0x2e6c7d0",
+            "0x2e56ce4",
+            "0x2e56ce8",
+            "0x2e56cec",
+            "0x2e56cf0",
+            "0x2e56cf4",
+            "0x2e56cf8",
+            "0x2e56cfc",
+            "0x2e56d00",
+            "0x2e56d04",
+            "0x2e56d34",
+            "0x2e6c7d4",
+            "0x2e6c7d8",
+            "0x2e6c7dc",
+            "0x2e6c810",
+            "0x2e6c814",
+            "0x2e6c818",
+            "0x2e6c81c",
+            "0x2e6c820",
+            "0x2e6e4e8",
+            "0x2e6e4ec",
+            "0x2e6e4f0",
+            "0x2e6e4f4",
+            "0x2e6e4f8",
+            "0x2e6e4fc",
+            "0x2e58088",
+            "0x2e5808c",
+            "0x2e58090",
+            "0x2e58094",
+            "0x2e58098",
+            "0x2e5809c",
+            "0x2e580a0",
+            "0x2e580a4",
+            "0x2e580a8",
+            "0x2e580ac",
+            "0x2e6e500",
+            "0x2e6e504",
+            "0x2bcce64"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4dc",
+              "address": "0x1001ffe8",
+              "size": 4,
+              "value": 4100
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff80",
+              "size": 8,
+              "value": 268566448
+            },
+            {
+              "pc": "0x2e6c7a0",
+              "address": "0x1001ff88",
+              "size": 8,
+              "value": 48686312
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff90",
+              "size": 8,
+              "value": 268566504
+            },
+            {
+              "pc": "0x2e6c7ac",
+              "address": "0x1001ff98",
+              "size": 8,
+              "value": 60186624
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa0",
+              "size": 8,
+              "value": 60362752
+            },
+            {
+              "pc": "0x2e6c7b0",
+              "address": "0x1001ffa8",
+              "size": 8,
+              "value": 285249536
+            },
+            {
+              "pc": "0x2e6e4f0",
+              "address": "0x11004208",
+              "size": 4,
+              "value": 0
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 285237760
+            },
+            {
+              "pc": "0x2e5808c",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58094",
+              "address": "0x11005208",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e58098",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 285238528
+            },
+            {
+              "pc": "0x2e580a0",
+              "address": "0x11005200",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a4",
+              "address": "0x11005210",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e580a8",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 285245696
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e57af8",
+              "return_x0": "0x1"
+            },
+            {
+              "return_instruction": "0x2e56d34",
+              "return_x0": "0x968b130"
+            },
+            {
+              "return_instruction": "0x2e6c820",
+              "return_x0": "0x11003010"
+            },
+            {
+              "return_instruction": "0x2e580ac",
+              "return_x0": "0x1001ffe8"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "complete_registry_erase_or_actual_fulfillment_encoder_configuration_identity_proven": false
+    },
+    {
+      "seed": 165,
+      "matching_registry_key": false,
+      "notice_key": 4100,
+      "notice_result_word8": 0,
+      "opaque_word4_not_claimed_epoch": 4369,
+      "alternate_registered_model_pointer": false,
+      "registered_value": "0x11004000",
+      "registered_promise": "0x11005000",
+      "result": "no_matching_key_no_promise_move",
+      "events": [
+        {
+          "label": "original LoadMovieFinishedParam callback prologue before log",
+          "entry": "0x2e6e478",
+          "reason": "boundary: before_original_app_logger",
+          "stop_pc": "0x2f6ff0c",
+          "pcs": [
+            "0x2e6e478",
+            "0x2e6e47c",
+            "0x2e6e480",
+            "0x2e6e484",
+            "0x2e6e488",
+            "0x2e6e48c",
+            "0x2e6e490",
+            "0x2e6e494",
+            "0x2e6e498",
+            "0x2e6e49c",
+            "0x2e6e4a0",
+            "0x2e6e4a4",
+            "0x2e6e4a8",
+            "0x2e6e4ac",
+            "0x2f6ff0c"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e478",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e484",
+              "address": "0x1001ffc8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2e6e48c",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-log callback reaches registry mutex",
+          "entry": "0x2e6e4b0",
+          "reason": "boundary: before_registry_mutex_lock",
+          "stop_pc": "0x16ed554",
+          "pcs": [
+            "0x2e6e4b0",
+            "0x2e6e4b4",
+            "0x2e6e4b8",
+            "0x2e6e4bc",
+            "0x16ed554"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6e4b8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 157858432
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-lock callback looks up event key and moves registered promise",
+          "entry": "0x2e6e4c0",
+          "reason": "boundary: before_registry_mutex_unlock_wrapper",
+          "stop_pc": "0x273879c",
+          "pcs": [
+            "0x2e6e4c0",
+            "0x2e6e4c4",
+            "0x2e6e4c8",
+            "0x2e57a90",
+            "0x2e57a94",
+            "0x2e57a98",
+            "0x2e57a9c",
+            "0x2e57aa0",
+            "0x2e57aa4",
+            "0x2e57aa8",
+            "0x2e57aac",
+            "0x2e57ab0",
+            "0x2e57ab4",
+            "0x2e57ab8",
+            "0x2e57abc",
+            "0x2e57ac0",
+            "0x2e57ac4",
+            "0x2e57ac8",
+            "0x2e57acc",
+            "0x2e57af4",
+            "0x2e57ad4",
+            "0x2e57ad8",
+            "0x2e57af8",
+            "0x2e6e4cc",
+            "0x2e6e510",
+            "0x2e6e514",
+            "0x273879c"
+          ],
+          "stores": [],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2e57af8",
+              "return_x0": "0x0"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "complete_registry_erase_or_actual_fulfillment_encoder_configuration_identity_proven": false
+    }
+  ],
+  "wait_cases": [
+    {
+      "seed": 165,
+      "declared_ready_word": 0,
+      "outcome": "unready_marks_waiter_before_futex",
+      "events": [
+        {
+          "label": "original future wait entry before unknown virtual call",
+          "entry": "0x2bccc0c",
+          "reason": "boundary: before_original_future_virtual_call",
+          "stop_pc": "0x2bccc28",
+          "pcs": [
+            "0x2bccc0c",
+            "0x2bccc10",
+            "0x2bccc14",
+            "0x2bccc18",
+            "0x2bccc1c",
+            "0x2bccc20",
+            "0x2bccc24",
+            "0x2bccc28"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bccc0c",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bccc0c",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2bccc14",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 855644416
+            },
+            {
+              "pc": "0x2bccc14",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 855646208
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-vcall frame; original ready test or futex-wait preparation",
+          "entry": "0x2bccc2c",
+          "reason": "boundary: before_original_futex_wait",
+          "stop_pc": "0x15940a0",
+          "pcs": [
+            "0x2bccc2c",
+            "0x2bccc30",
+            "0x2bccc34",
+            "0x2bccc38",
+            "0x2bccc3c",
+            "0x2bccc40",
+            "0x2bccc44",
+            "0x2bccc48",
+            "0x2bccc4c",
+            "0x2bccc50",
+            "0x2bccc54",
+            "0x2bccc58",
+            "0x2bccc5c",
+            "0x2bccc60",
+            "0x2bccc64",
+            "0x15940a0"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bccc44",
+              "address": "0x11006010",
+              "size": 4,
+              "value": 2147483648
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_thread_wait_wake_vcall_or_codec_Open_Start_proven": false
+    },
+    {
+      "seed": 165,
+      "declared_ready_word": 1,
+      "outcome": "ready_returns_result_pointer",
+      "events": [
+        {
+          "label": "original future wait entry before unknown virtual call",
+          "entry": "0x2bccc0c",
+          "reason": "boundary: before_original_future_virtual_call",
+          "stop_pc": "0x2bccc28",
+          "pcs": [
+            "0x2bccc0c",
+            "0x2bccc10",
+            "0x2bccc14",
+            "0x2bccc18",
+            "0x2bccc1c",
+            "0x2bccc20",
+            "0x2bccc24",
+            "0x2bccc28"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bccc0c",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bccc0c",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2bccc14",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 855644416
+            },
+            {
+              "pc": "0x2bccc14",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 855646208
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-vcall frame; original ready test or futex-wait preparation",
+          "entry": "0x2bccc2c",
+          "reason": "returned",
+          "stop_pc": "0x12000000",
+          "pcs": [
+            "0x2bccc2c",
+            "0x2bccc30",
+            "0x2bccc34",
+            "0x2bccc38",
+            "0x2bccc88",
+            "0x2bccc8c",
+            "0x2bccc90",
+            "0x2bccc94",
+            "0x12000000"
+          ],
+          "stores": [],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2bccc94",
+              "return_x0": "0x11008000"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_thread_wait_wake_vcall_or_codec_Open_Start_proven": false
+    },
+    {
+      "seed": 165,
+      "declared_ready_word": 2147483649,
+      "outcome": "ready_returns_result_pointer",
+      "events": [
+        {
+          "label": "original future wait entry before unknown virtual call",
+          "entry": "0x2bccc0c",
+          "reason": "boundary: before_original_future_virtual_call",
+          "stop_pc": "0x2bccc28",
+          "pcs": [
+            "0x2bccc0c",
+            "0x2bccc10",
+            "0x2bccc14",
+            "0x2bccc18",
+            "0x2bccc1c",
+            "0x2bccc20",
+            "0x2bccc24",
+            "0x2bccc28"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bccc0c",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bccc0c",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2bccc14",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 855644416
+            },
+            {
+              "pc": "0x2bccc14",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 855646208
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-vcall frame; original ready test or futex-wait preparation",
+          "entry": "0x2bccc2c",
+          "reason": "returned",
+          "stop_pc": "0x12000000",
+          "pcs": [
+            "0x2bccc2c",
+            "0x2bccc30",
+            "0x2bccc34",
+            "0x2bccc38",
+            "0x2bccc88",
+            "0x2bccc8c",
+            "0x2bccc90",
+            "0x2bccc94",
+            "0x12000000"
+          ],
+          "stores": [],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2bccc94",
+              "return_x0": "0x11008000"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_thread_wait_wake_vcall_or_codec_Open_Start_proven": false
+    }
+  ],
+  "fulfill_cases": [
+    {
+      "seed": 165,
+      "declared_waiting_word": 0,
+      "independent_post_once_success_byte": 1,
+      "events": [
+        {
+          "label": "original promise fulfillment prefix before unbound TLS dispatch",
+          "entry": "0x2bcce64",
+          "reason": "boundary: before_original_fulfillment_TLS_dispatch",
+          "stop_pc": "0x2bccee0",
+          "pcs": [
+            "0x2bcce64",
+            "0x2bcce68",
+            "0x2bcce6c",
+            "0x2bcce70",
+            "0x2bcce74",
+            "0x2bcce78",
+            "0x2bcce7c",
+            "0x2bcce80",
+            "0x2bcce84",
+            "0x2bcce88",
+            "0x2bcce8c",
+            "0x2bcce90",
+            "0x2bcce94",
+            "0x2bcce98",
+            "0x2bcce9c",
+            "0x2bccea0",
+            "0x2bccea4",
+            "0x2bccea8",
+            "0x2bcceac",
+            "0x2bcceb0",
+            "0x2bcceb4",
+            "0x2bcceb8",
+            "0x2bccebc",
+            "0x2bccec0",
+            "0x2bccec4",
+            "0x2bccec8",
+            "0x2bccecc",
+            "0x2bcced0",
+            "0x2bcced4",
+            "0x2bcced8",
+            "0x2bccedc",
+            "0x2bccee0"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bcce64",
+              "address": "0x1001ff70",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce64",
+              "address": "0x1001ff78",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2bcce6c",
+              "address": "0x1001ff80",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce6c",
+              "address": "0x1001ff88",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce7c",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce7c",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 285233152
+            },
+            {
+              "pc": "0x2bcce84",
+              "address": "0x1001ff97",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce88",
+              "address": "0x1001ffa0",
+              "size": 8,
+              "value": 268566464
+            },
+            {
+              "pc": "0x2bcce88",
+              "address": "0x1001ffa8",
+              "size": 8,
+              "value": 285237248
+            },
+            {
+              "pc": "0x2bcce90",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 45928996
+            },
+            {
+              "pc": "0x2bcce9c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 45927204
+            },
+            {
+              "pc": "0x2bccea8",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 45928648
+            },
+            {
+              "pc": "0x2bcceb0",
+              "address": "0x1001ff98",
+              "size": 8,
+              "value": 268566423
+            },
+            {
+              "pc": "0x2bcceb8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 268566448
+            },
+            {
+              "pc": "0x2bccec0",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 268566440
+            },
+            {
+              "pc": "0x2bccec8",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 268566432
+            },
+            {
+              "pc": "0x2bcced0",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 268566424
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-once status flag; original ready store or error branch",
+          "entry": "0x2bccf34",
+          "reason": "boundary: after_original_ready_store_before_cleanup",
+          "stop_pc": "0x2bccf58",
+          "pcs": [
+            "0x2bccf34",
+            "0x2bccf38",
+            "0x2bccf3c",
+            "0x2bccf40",
+            "0x2bccf44",
+            "0x2bccf48",
+            "0x2bccf4c",
+            "0x2bccf50",
+            "0x2bccf58"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bccf48",
+              "address": "0x11006010",
+              "size": 4,
+              "value": 1
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_TLS_call_once_provider_callback_notify_or_cleanup_proven": false
+    },
+    {
+      "seed": 165,
+      "declared_waiting_word": 2147483648,
+      "independent_post_once_success_byte": 1,
+      "events": [
+        {
+          "label": "original promise fulfillment prefix before unbound TLS dispatch",
+          "entry": "0x2bcce64",
+          "reason": "boundary: before_original_fulfillment_TLS_dispatch",
+          "stop_pc": "0x2bccee0",
+          "pcs": [
+            "0x2bcce64",
+            "0x2bcce68",
+            "0x2bcce6c",
+            "0x2bcce70",
+            "0x2bcce74",
+            "0x2bcce78",
+            "0x2bcce7c",
+            "0x2bcce80",
+            "0x2bcce84",
+            "0x2bcce88",
+            "0x2bcce8c",
+            "0x2bcce90",
+            "0x2bcce94",
+            "0x2bcce98",
+            "0x2bcce9c",
+            "0x2bccea0",
+            "0x2bccea4",
+            "0x2bccea8",
+            "0x2bcceac",
+            "0x2bcceb0",
+            "0x2bcceb4",
+            "0x2bcceb8",
+            "0x2bccebc",
+            "0x2bccec0",
+            "0x2bccec4",
+            "0x2bccec8",
+            "0x2bccecc",
+            "0x2bcced0",
+            "0x2bcced4",
+            "0x2bcced8",
+            "0x2bccedc",
+            "0x2bccee0"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bcce64",
+              "address": "0x1001ff70",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce64",
+              "address": "0x1001ff78",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2bcce6c",
+              "address": "0x1001ff80",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce6c",
+              "address": "0x1001ff88",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce7c",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce7c",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 285233152
+            },
+            {
+              "pc": "0x2bcce84",
+              "address": "0x1001ff97",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce88",
+              "address": "0x1001ffa0",
+              "size": 8,
+              "value": 268566464
+            },
+            {
+              "pc": "0x2bcce88",
+              "address": "0x1001ffa8",
+              "size": 8,
+              "value": 285237248
+            },
+            {
+              "pc": "0x2bcce90",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 45928996
+            },
+            {
+              "pc": "0x2bcce9c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 45927204
+            },
+            {
+              "pc": "0x2bccea8",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 45928648
+            },
+            {
+              "pc": "0x2bcceb0",
+              "address": "0x1001ff98",
+              "size": 8,
+              "value": 268566423
+            },
+            {
+              "pc": "0x2bcceb8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 268566448
+            },
+            {
+              "pc": "0x2bccec0",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 268566440
+            },
+            {
+              "pc": "0x2bccec8",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 268566432
+            },
+            {
+              "pc": "0x2bcced0",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 268566424
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-once status flag; original ready store or error branch",
+          "entry": "0x2bccf34",
+          "reason": "boundary: before_original_futex_notify",
+          "stop_pc": "0x1594560",
+          "pcs": [
+            "0x2bccf34",
+            "0x2bccf38",
+            "0x2bccf3c",
+            "0x2bccf40",
+            "0x2bccf44",
+            "0x2bccf48",
+            "0x2bccf4c",
+            "0x2bccf50",
+            "0x2bccf54",
+            "0x1594560"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bccf48",
+              "address": "0x11006010",
+              "size": 4,
+              "value": 1
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_TLS_call_once_provider_callback_notify_or_cleanup_proven": false
+    },
+    {
+      "seed": 165,
+      "declared_waiting_word": 0,
+      "independent_post_once_success_byte": 0,
+      "events": [
+        {
+          "label": "original promise fulfillment prefix before unbound TLS dispatch",
+          "entry": "0x2bcce64",
+          "reason": "boundary: before_original_fulfillment_TLS_dispatch",
+          "stop_pc": "0x2bccee0",
+          "pcs": [
+            "0x2bcce64",
+            "0x2bcce68",
+            "0x2bcce6c",
+            "0x2bcce70",
+            "0x2bcce74",
+            "0x2bcce78",
+            "0x2bcce7c",
+            "0x2bcce80",
+            "0x2bcce84",
+            "0x2bcce88",
+            "0x2bcce8c",
+            "0x2bcce90",
+            "0x2bcce94",
+            "0x2bcce98",
+            "0x2bcce9c",
+            "0x2bccea0",
+            "0x2bccea4",
+            "0x2bccea8",
+            "0x2bcceac",
+            "0x2bcceb0",
+            "0x2bcceb4",
+            "0x2bcceb8",
+            "0x2bccebc",
+            "0x2bccec0",
+            "0x2bccec4",
+            "0x2bccec8",
+            "0x2bccecc",
+            "0x2bcced0",
+            "0x2bcced4",
+            "0x2bcced8",
+            "0x2bccedc",
+            "0x2bccee0"
+          ],
+          "stores": [
+            {
+              "pc": "0x2bcce64",
+              "address": "0x1001ff70",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce64",
+              "address": "0x1001ff78",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x2bcce6c",
+              "address": "0x1001ff80",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce6c",
+              "address": "0x1001ff88",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce7c",
+              "address": "0x1001ffb8",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce7c",
+              "address": "0x1001ffc0",
+              "size": 8,
+              "value": 285233152
+            },
+            {
+              "pc": "0x2bcce84",
+              "address": "0x1001ff97",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0x2bcce88",
+              "address": "0x1001ffa0",
+              "size": 8,
+              "value": 268566464
+            },
+            {
+              "pc": "0x2bcce88",
+              "address": "0x1001ffa8",
+              "size": 8,
+              "value": 285237248
+            },
+            {
+              "pc": "0x2bcce90",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 45928996
+            },
+            {
+              "pc": "0x2bcce9c",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 45927204
+            },
+            {
+              "pc": "0x2bccea8",
+              "address": "0x1001ffb0",
+              "size": 8,
+              "value": 45928648
+            },
+            {
+              "pc": "0x2bcceb0",
+              "address": "0x1001ff98",
+              "size": 8,
+              "value": 268566423
+            },
+            {
+              "pc": "0x2bcceb8",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 268566448
+            },
+            {
+              "pc": "0x2bccec0",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 268566440
+            },
+            {
+              "pc": "0x2bccec8",
+              "address": "0x1001fff0",
+              "size": 8,
+              "value": 268566432
+            },
+            {
+              "pc": "0x2bcced0",
+              "address": "0x1001fff8",
+              "size": 8,
+              "value": 268566424
+            }
+          ],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        },
+        {
+          "label": "independent post-once status flag; original ready store or error branch",
+          "entry": "0x2bccf34",
+          "reason": "boundary: before_original_future_error",
+          "stop_pc": "0x1593840",
+          "pcs": [
+            "0x2bccf34",
+            "0x2bccf38",
+            "0x2bccf6c",
+            "0x2bccf70",
+            "0x1593840"
+          ],
+          "stores": [],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_TLS_call_once_provider_callback_notify_or_cleanup_proven": false
+    }
+  ],
+  "branch_cases": [
+    {
+      "seed": 165,
+      "declared_input5f": 0,
+      "events": [
+        {
+          "label": "independent original app parameter-save branch selection",
+          "entry": "0x2e6f754",
+          "reason": "boundary: before_original_SetMovieRecParam",
+          "stop_pc": "0x15944f0",
+          "pcs": [
+            "0x2e6f754",
+            "0x2e6f758",
+            "0x2e6f9ac",
+            "0x2e6f9b0",
+            "0x15944f0"
+          ],
+          "stores": [],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "flag_not_proven_idle_or_recording_state": true
+    },
+    {
+      "seed": 165,
+      "declared_input5f": 1,
+      "events": [
+        {
+          "label": "independent original app parameter-save branch selection",
+          "entry": "0x2e6f754",
+          "reason": "boundary: before_original_promise_constructor",
+          "stop_pc": "0x2bccdc8",
+          "pcs": [
+            "0x2e6f754",
+            "0x2e6f758",
+            "0x2e6f75c",
+            "0x2e6f760",
+            "0x2bccdc8"
+          ],
+          "stores": [],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "flag_not_proven_idle_or_recording_state": true
+    },
+    {
+      "seed": 165,
+      "declared_input5f": 2,
+      "events": [
+        {
+          "label": "independent original app parameter-save branch selection",
+          "entry": "0x2e6f754",
+          "reason": "boundary: before_original_promise_constructor",
+          "stop_pc": "0x2bccdc8",
+          "pcs": [
+            "0x2e6f754",
+            "0x2e6f758",
+            "0x2e6f75c",
+            "0x2e6f760",
+            "0x2bccdc8"
+          ],
+          "stores": [],
+          "original_returns_and_bindings": [],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "flag_not_proven_idle_or_recording_state": true
+    }
+  ],
+  "post_Set_cases": [
+    {
+      "seed": 165,
+      "declared_raw_Set_status": 0,
+      "independent_model_status": 0,
+      "events": [
+        {
+          "label": "independent original post-Set/error-conversion frame: result write before optional wait",
+          "entry": "0x2e6f7c8",
+          "reason": "boundary: before_original_future_virtual_call",
+          "stop_pc": "0x2bccc28",
+          "pcs": [
+            "0x2e6f7c8",
+            "0x2e6f7cc",
+            "0x2e6f7d0",
+            "0x2e6f7d4",
+            "0x2e6f7d8",
+            "0x2e2a924",
+            "0x2e2a928",
+            "0x2e2a92c",
+            "0x2e2a930",
+            "0x2e2a934",
+            "0x2bcd208",
+            "0x2bcd20c",
+            "0x2bcd220",
+            "0x2e2a938",
+            "0x2e2a93c",
+            "0x2e2a940",
+            "0x2e2a944",
+            "0x2bccc0c",
+            "0x2bccc10",
+            "0x2bccc14",
+            "0x2bccc18",
+            "0x2bccc1c",
+            "0x2bccc20",
+            "0x2bccc24",
+            "0x2bccc28"
+          ],
+          "stores": [
+            {
+              "pc": "0x2e6f7cc",
+              "address": "0x11009800",
+              "size": 4,
+              "value": 0
+            },
+            {
+              "pc": "0x2e2a924",
+              "address": "0x1001f5e0",
+              "size": 8,
+              "value": 268563984
+            },
+            {
+              "pc": "0x2e2a924",
+              "address": "0x1001f5e8",
+              "size": 8,
+              "value": 48691164
+            },
+            {
+              "pc": "0x2e2a92c",
+              "address": "0x1001f5f0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bccc0c",
+              "address": "0x1001f5e0",
+              "size": 8,
+              "value": 268563984
+            },
+            {
+              "pc": "0x2bccc0c",
+              "address": "0x1001f5e8",
+              "size": 8,
+              "value": 48691164
+            },
+            {
+              "pc": "0x2bccc14",
+              "address": "0x1001f5f0",
+              "size": 8,
+              "value": 0
+            },
+            {
+              "pc": "0x2bccc14",
+              "address": "0x1001f5f8",
+              "size": 8,
+              "value": 0
+            }
+          ],
+          "original_returns_and_bindings": [
+            {
+              "return_instruction": "0x2bcd220",
+              "return_x0": "0x11006000"
+            }
+          ],
+          "stack_outside_declared_b00_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "whole_mapped_APP_and_libc_unchanged": true,
+          "saved_registers_checked_on_return": false,
+          "actual_logs_runtime_state_or_success_return_adapters": false
+        }
+      ],
+      "actual_Set_conversion_return_or_original_app_completion_proven": false
+    }
+  ],
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "Windows_UU_camera_operations": false,
+  "actual_async_transaction_config_epoch_or_MAIN_recording_recovery_proven": false,
+  "error": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage118-native-parameter-notice-wait/notice_wait.py\", line 185, in run\n    for raw in (0,7):j['post_Set_cases'].append(post_set(seed,raw))\n                                                ~~~~~~~~^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage118-native-parameter-notice-wait/notice_wait.py\", line 156, in post_set\n    e=m.phase('independent original post-Set/error-conversion frame: result write before optional wait',0x2e6f7c8,\n        outputs=[(OUT,OUT+4)],sp=SP-0xa00,x29=fp,x30=pp.STOP,x0=0 if raw_status==0 else 44,\n        x19=raw_status,x25=PROMISE)\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage117-native-audio-proxy-admission/audio_proxy.py\", line 47, in phase\n    assert self.reason=='returned' or self.reason and self.reason.startswith('boundary: '),self.reason\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: unapproved execution 2e6f7e0\n"
+}

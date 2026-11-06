@@ -1,0 +1,30 @@
+{
+  "date_utc": "2026-11-02T09:38:24.872769+00:00",
+  "qemu_version": "11.1.2",
+  "official_references": [
+    {
+      "url": "https://www.qemu.org/docs/master/devel/multi-thread-tcg.html",
+      "facts": "One host thread per vCPU; icount forces single-threaded TCG"
+    },
+    {
+      "url": "https://www.qemu.org/docs/master/system/arm/virt.html",
+      "facts": "cortex-a35 supported; GICv2 max8 CPUs"
+    },
+    {
+      "url": "https://www.qemu.org/docs/master/system/invocation.html",
+      "facts": "icount shift0 alignoff sleepoff options"
+    }
+  ],
+  "local_pinned_source_sha256": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/hw/arm/virt.c": "735bbedd978a44b6e87e4377cc4580590d28f1637b0826c99d7d377627a46d17",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/accel/tcg/tcg-all.c": "7ad8dcc2528e459abaf98787670d3674c570c689de6d9936fdaf761abcd43627",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/target/arm/cpu.c": "770dcec4a22de97a7c61ae724eff7f080b1faa9283490d10ccd3c3a56dd53453"
+  },
+  "kernel_image_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "native_core_count": 4,
+  "native_cpu_model": "arm,cortex-a35",
+  "kernel_IKCFG_available": false,
+  "hardware_topology_source": "Original setting/cxd90057.dtb, not a count inferred from QEMU CPUinfo",
+  "kernel_support_source": "Unmodified kernel AP83b serial NR_CPUS=4; current nr_cpu_ids1 from one-node virtualDTB",
+  "combined_multi_icount": "Pinned tcg-all.c setter explicitly error_setg No MTTCG when icount is enabled; no need to run incompatible combination"
+}

@@ -1,0 +1,265 @@
+{
+  "guest_path": "/usr/lib/appFw.so",
+  "local_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+  "bytes": 79015712,
+  "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "dynsym_total": 803,
+  "defined_total": 3,
+  "source_exact_matches": [
+    {
+      "name": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    }
+  ],
+  "selected_dynsym": [
+    {
+      "name": "osal_set_msg_src",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 2,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "GRM_bitmapGetSize",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN35C_DataflowInfra_Entry_ImageSizeInfo19SetData_TargetSizeXEt",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZNK3MWF6Struct7GetSizeEv",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN35C_DataflowInfra_Entry_ImageSizeInfo19SetData_TargetSizeYEt",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_snd_msg",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 2,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "GRM_screenGetOnBitmap",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "GRM_bitmapReadLockBits",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_valloc_msg_wait",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 2,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIjLNS_5Param4TypeE38EE7GetSizeEv",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_free_msg",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 2,
+      "defined": false,
+      "section_index": 0
+    }
+  ],
+  "selected_relocations": [
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cc290",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_set_msg_src"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cc308",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cc5e8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapGetSize"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cc700",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN35C_DataflowInfra_Entry_ImageSizeInfo19SetData_TargetSizeXEt"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cc758",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF6Struct7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cc818",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN35C_DataflowInfra_Entry_ImageSizeInfo19SetData_TargetSizeYEt"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47ccb18",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_snd_msg"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47ccdd8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cce18",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_screenGetOnBitmap"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cd040",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cd2e0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapReadLockBits"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cd420",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_valloc_msg_wait"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cd4a8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIjLNS_5Param4TypeE38EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x47cd578",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_free_msg"
+    }
+  ]
+}

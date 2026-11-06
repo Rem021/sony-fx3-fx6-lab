@@ -1,0 +1,21 @@
+{
+  "status": "WBI_SOURCE_LAYOUT_REVALIDATED_NO_INDEPENDENT_AP_BOOTLOADER_RECOVERED",
+  "findings": [
+    "stage9 map reverified:1399 metadata-XOR checks,82 zero-fill records, original ordering retained, no sorted physical overlap",
+    "resume64 and Image-header64 match current package kernel; whole compared span still has673 differing bytes",
+    "all declared physical destinations are above16GiB address base; none covers configured NOR address; tested exact loader copies/35 anchors absent",
+    "script tbl address and actual module-param/consumer relocation bind record1379 to eMMC handoff data",
+    "261632-byte trailer has2298 nonzero bytes and is retained as not fully interpreted"
+  ],
+  "limits": [
+    "reference GPL is7.00, not exact7.02 source or producer identity",
+    "metadata XOR and stock-source hashes do not establish executable data checksums, safe boot or flash acceptance",
+    "sample absence excludes only identical tested sequences; changed/other early code is not ruled out",
+    "no current-body boot0/p1 backup, independent entry/inverse restore, cold boot or target MAIN recording acceptance"
+  ],
+  "root01": "195 specific reply pending; no repeated question and fixed job absent",
+  "original_or_guest_executions": 0,
+  "root_or_device_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

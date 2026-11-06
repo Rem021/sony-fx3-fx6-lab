@@ -1,0 +1,376 @@
+{
+  "created_utc": "2026-11-02T11:43:50.748468+00:00",
+  "duration_seconds": 7.302582042000722,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap86b-native-osd-sys400-display/candidate86b.json",
+  "candidate_sha256": "a4a4cb805f68a2e6d6fe7f6322023bb5ca21a44c82e20e0969c144eca20bdfda",
+  "observer_source_snapshot": [
+    {
+      "name": "run_combined_candidate86b.py",
+      "sha256": "42714f7504abf561e95ad111dd90b0e5adb717a63b5580dabd027588f0fcae2a"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring85_v3.py",
+      "sha256": "f9392cae4a7cbfecbae84cdd7cf3602fd98ad2d9d31f5766b8871fa46e12e1f1"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap86bnative-37785e4e",
+  "requested_seconds": 300,
+  "qemu_pid": 21483,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap86b-native-osd-sys400-display/guest.dtb",
+      "sha256": "75da320fe4607d6868c41c1c9dd1c483d14ae8b4a87a6a05c5f212c6c3346b5f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap86b-native-osd-sys400-display/guest.cpio",
+      "sha256": "5ffd07a56a5d2e51a7f7b2d9e10226e8c54cbec2162568db9e377f184fe7cc11"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap86b-native-osd-sys400-display/candidate86b.json",
+      "sha256": "a4a4cb805f68a2e6d6fe7f6322023bb5ca21a44c82e20e0969c144eca20bdfda"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.25173124999855645,
+      "rss_vsz_kib": "944752 495712112"
+    },
+    {
+      "elapsed_seconds": 0.5179438340128399,
+      "rss_vsz_kib": "1102848 495712112"
+    },
+    {
+      "elapsed_seconds": 0.7899604169942904,
+      "rss_vsz_kib": "1104544 495712112"
+    },
+    {
+      "elapsed_seconds": 1.0482395839935634,
+      "rss_vsz_kib": "1110160 495712112"
+    },
+    {
+      "elapsed_seconds": 1.320285083987983,
+      "rss_vsz_kib": "1136672 495712112"
+    },
+    {
+      "elapsed_seconds": 1.5832206670020241,
+      "rss_vsz_kib": "945104 495712112"
+    },
+    {
+      "elapsed_seconds": 1.8435526250104886,
+      "rss_vsz_kib": "1359952 495712112"
+    },
+    {
+      "elapsed_seconds": 2.1097822920128237,
+      "rss_vsz_kib": "1382672 495712112"
+    },
+    {
+      "elapsed_seconds": 2.3763534589961637,
+      "rss_vsz_kib": "1394256 495712112"
+    },
+    {
+      "elapsed_seconds": 2.6518379999906756,
+      "rss_vsz_kib": "1387856 495712112"
+    },
+    {
+      "elapsed_seconds": 2.9164045419893228,
+      "rss_vsz_kib": "1285568 495712112"
+    },
+    {
+      "elapsed_seconds": 3.185703499999363,
+      "rss_vsz_kib": "1264416 495712112"
+    },
+    {
+      "elapsed_seconds": 3.4546378339873627,
+      "rss_vsz_kib": "1264416 495712112"
+    },
+    {
+      "elapsed_seconds": 3.7223713749845047,
+      "rss_vsz_kib": "1264416 495712112"
+    },
+    {
+      "elapsed_seconds": 3.9768470840062946,
+      "rss_vsz_kib": "1264576 495712112"
+    },
+    {
+      "elapsed_seconds": 4.2408780840050895,
+      "rss_vsz_kib": "1264576 495712112"
+    },
+    {
+      "elapsed_seconds": 4.5093418339965865,
+      "rss_vsz_kib": "1264576 495712112"
+    },
+    {
+      "elapsed_seconds": 4.790963959007058,
+      "rss_vsz_kib": "1264608 495712112"
+    },
+    {
+      "elapsed_seconds": 5.053065584012074,
+      "rss_vsz_kib": "1281632 495712112"
+    },
+    {
+      "elapsed_seconds": 5.311057584010996,
+      "rss_vsz_kib": "1271888 495712112"
+    },
+    {
+      "elapsed_seconds": 5.567651291989023,
+      "rss_vsz_kib": "1174208 495712112"
+    },
+    {
+      "elapsed_seconds": 5.829162459005602,
+      "rss_vsz_kib": "1142672 495712112"
+    },
+    {
+      "elapsed_seconds": 6.0906414999917615,
+      "rss_vsz_kib": "1092160 495712112"
+    },
+    {
+      "elapsed_seconds": 6.355812416994013,
+      "rss_vsz_kib": "1094672 495712112"
+    },
+    {
+      "elapsed_seconds": 6.621149209007854,
+      "rss_vsz_kib": "1083760 495712112"
+    }
+  ],
+  "printk_ring_decode": {
+    "exit": 0,
+    "stdout": "records 911 first 0 next 69060\n",
+    "stderr": ""
+  },
+  "read_only_guest_memory_snapshots": [
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-reserved-ram.bin",
+      "scope": "Quiesced original Backup RAM only; not persistence/API acceptance",
+      "present": true,
+      "actual_bytes": 2232320,
+      "sha256": "8d2c2cafbe5e9ab76c5278e946220ca05257ce4a2edad837b6bac99b38ceaef0"
+    },
+    {
+      "address": 17674797056,
+      "size": 65536,
+      "name": "capid-reserved-ram.bin",
+      "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17675845632,
+      "size": 1048576,
+      "name": "dmm-virtual-ram.bin",
+      "scope": "Quiesced explicit virtual two-slot DMM backing only; no originalCP/capture acceptance",
+      "present": true,
+      "actual_bytes": 1048576,
+      "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58"
+    },
+    {
+      "address": 17676894208,
+      "size": 65536,
+      "name": "adf-muted-ram.bin",
+      "scope": "Explicit muted software backing; original_sound=0",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17678991360,
+      "size": 65536,
+      "name": "ui-gate-counters.bin",
+      "scope": "Observer-only counters and boot records, double-bank published snapshot; no behavior model",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17680039936,
+      "size": 589824,
+      "name": "face-dmm-reserved-ram.bin",
+      "scope": "Independent virtual face-registration byte storage; actual local-to-remote copy; no recognition/physical camera acceptance",
+      "present": true,
+      "actual_bytes": 589824,
+      "sha256": "250480ecefa3655c774b6a4e5d4eb16675ee4f181c2285c25020fac6e3aaf3b5"
+    },
+    {
+      "address": 17683185664,
+      "size": 16777216,
+      "name": "osd-ring-final.bin",
+      "scope": "Software OSD snapshot ring; no CP panel/compositor acceptance",
+      "present": true,
+      "actual_bytes": 16777216,
+      "sha256": "080acf35a507ac9849cfcba47dc2ad83e01b75663a516279c8b9d243b719643e"
+    }
+  ],
+  "guest_exception_markers": [
+    "Unhandled fault:"
+  ],
+  "markers": {
+    "FX3_CPUSET_READY": true,
+    "FX3_BACKUP_INSMOD_RC=0": true,
+    "FX3_ULOGIO_INSMOD_RC=0": true,
+    "FX3_AP_NATURAL_BOOTIN_BEGIN": true,
+    "FX3_UTIMER_RC=0": true,
+    "FX3_STREAM_RC=0": true,
+    "FX3_STREAM2_RC=0": true,
+    "FX3_DMM_RC=0": true,
+    "FX3_GRM_MA_RC=0": true,
+    "FX3_GPE_BOUND count=5": true,
+    "FX3_POWER_SEED_RC=0": true,
+    "FX3_UPM_RC=0": true,
+    "FX3_UDATE_RC=0": true,
+    "FX3_DATE_CLOCK_RC=0": true,
+    "FX3_HDMI_REG_COMMIT": false,
+    "FX3_HDMI_REG_NATIVE_FREE": false,
+    "FX3_BT_EMPTY_RECORDS_BEGIN": true,
+    "FX3_CP_VERSION_UNAVAILABLE": false,
+    "FX3_KIKILOG_RC=0": true,
+    "FX3_CAPID_BIND": false,
+    "FX3_CAPID_COMMIT": false,
+    "FX3_HDMI_AUDIO_COMMIT": false,
+    "FX3_HDMI_PHOTO_COMMIT": false,
+    "FX3_PROVIDER_REQUEST destination=0x9061003c": false,
+    "FX3_REMOTE_DMM_BIND": false,
+    "FX3_REMOTE_DMM_COMMIT": false,
+    "FX3_DISPLAY_INFO_COMMIT": false,
+    "FX3_VDF_CONFIG_COMMIT command=0x14c": false,
+    "FX3_VDF_CONFIG_COMMIT command=0x13d": false,
+    "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=776": false,
+    "FX3_VDF_PLANE_COMMIT": false,
+    "FX3_CEC_POWER_COMMIT": false,
+    "FX3_HDMI_TC_COMMIT": false,
+    "FX3_MONITOR_LUT_COMMIT": false,
+    "FX3_RELEASE_INHIBIT_COMMIT": false,
+    "FX3_LCD_BRIGHTNESS_COMMIT": false,
+    "FX3_OSD_ONOFF_ACCEPT": false,
+    "FX3_ICRYPT_HAS": false,
+    "FX3_ADF_MUTED_BIND": false,
+    "FX3_ADF_MUTED_COMMIT": false,
+    "FX3_ADF_BEEP_COMMIT": false,
+    "FX3_ADF_FILE_BIND": false,
+    "FX3_ICDT_MUTED_COMMIT": false,
+    "FX3_ICDT_COMPLETION_CONSUMED": false,
+    "FX3_TIMER_BOUND": false,
+    "FX3_TIMER_OBSERVER_END": false,
+    "FX3_UIPC_OBSERVER_END": false,
+    "FX3_ICDT_SYNC_CAPTURE": false,
+    "FX3_UI_GATE_SELFTEST_PASS": false,
+    "FX3_UI_GATE_BOUND": false,
+    "FX3_BOOT_REPLY_BOUND": true,
+    "FX3_TIMECODE_COMMIT": false,
+    "FX3_TIMECODE_REPLY_CONSUMED": false,
+    "FX3_BOOT_TAIL_BOUND": true,
+    "FX3_BOOT_TAIL_COMMIT": false,
+    "FX3_BOOT_TAIL_CONSUMED": false,
+    "FX3_PIN_GRAPH_BOUND": true,
+    "FX3_PIN_GRAPH_REGISTER": false,
+    "FX3_PIN_COMMIT": false,
+    "FX3_PIN_CONSUMED": false,
+    "FX3_ADF_PATH_COMMIT": false,
+    "FX3_ADF_PATH_CONSUMED": false,
+    "FX3_DIGITAL_COMMIT": false,
+    "FX3_DIGITAL_CONSUMED": false,
+    "FX3_PANEL_CONSUMER_APPLIED": false,
+    "FX3_PANEL_CONFIG_COMMIT": false,
+    "FX3_PANEL_CONFIG_CONSUMED": false,
+    "FX3_SKD_HW_UNAVAILABLE": true,
+    "FX3_SKD_DATA_ENCRYPTION_STATUS": false,
+    "FX3_SKD_DATA_ENCRYPTION_RETURN": false,
+    "FX3_SKD_ACCESS_AUTH_RETURN": false,
+    "FX3_UUD_BACKUP_COMPARE": false,
+    "FX3_UUD_PARAM144_STORE": false,
+    "FX3_UUD_BACKUP_WRITE_RETURN": false,
+    "FX3_UUD_FACE_RETURN": false,
+    "FX3_PIN_GRAPH2_QMP_SNAPSHOT": false,
+    "FX3_FACE_DMM_BIND": false,
+    "FX3_FACE_DMM_COMMIT": false,
+    "FX3_FACE_DMM_CONSUMED": false,
+    "FX3_GPE_CMD": false,
+    "FX3_NATIVE_CPUSET_POLICY_RC=0,0,0": true,
+    "FX3_CPU_ONLINE_SNAPSHOT": false,
+    "FX3_PEAKING_COMMIT": false,
+    "FX3_PEAKING_CONSUMED": false,
+    "FX3_OSD_HEADLESS_BOUND": false,
+    "FX3_OSD_HEADLESS_ACK": false,
+    "FX3_OSD_NATIVE_SIGNAL": false,
+    "FX3_OSD_DRAW_WAIT_RETURN": false,
+    "FX3_AP_IM_ENDMAPS_": false,
+    "FX3_OSAL_UIPC_BSS=0x": true,
+    "FX3_OSD_LIFE_ALLOC_BEGIN": false,
+    "FX3_OSD_LIFE_ALLOC_RETURN": false,
+    "FX3_OSD_LIFE_SEND": false,
+    "FX3_DISPLAY_SELFTEST_PASS": false,
+    "FX3_DISPLAY_BOUND": false,
+    "FX3_DISPLAY_PANEL": false,
+    "FX3_DISPLAY_CACHE": false,
+    "FX3_DISPLAY_WIDGET": false,
+    "FX3_DISPLAY_GRM_DIRTY": false,
+    "FX3_SYS_TCMODE_COMMIT": false,
+    "FX3_SYS_TCMODE_CONSUMED": false,
+    "FX3_DISPLAY_SYS400_RUN_RETURN": false,
+    "FX3_DISPLAY_SYS400_COMPLETION_RETURN": false,
+    "FX3_DISPLAY_SYS400_QUEUE_CONTINUE": false,
+    "FX3_OSD_OWNER_START": false,
+    "FX3_OSD_OWNER_CURRENT": false,
+    "FX3_OSD_OWNER_FREE": false,
+    "FX3_OSD_LIFE_USER_FREE": false
+  },
+  "guest_warning_lines": [],
+  "menu_verified": false,
+  "classification": "OBSERVATION_ONLY_REVIEW_GUEST_LOGS",
+  "physical_devices_host_disks_network": 0,
+  "early_stop_reason": "new guest fatal marker; quiesce snapshot quit immediately",
+  "receipt_scope": "AP86B combines audited exact SYS0400 mode0/status0 software configuration acceptance (counter backend pending); explicitly authorized missing CP receiver for all native messages on74D/84D/84E, original native receive/free, GUI frozen no reply, unknown fullraw/count/free no effect, exact current send-lease prevents stale ACK; same AP85 ring/read leases/GPE guard/native8B completion. Lifetime observer afterheadless includes76c8BACK/40Blocal, active-allocation and exactpair deadlines. Independent23point full-register passive display/cache/category270/direction243/d22/Widget/resource/GRM/sequence completion observer; no input/hinge/parameter changes, no original function/getter/observer calls added. Originalkernel/fourA35/MTTCG/nativecpusets and previousmodels unchanged; no menu/physicalCP/EVF/panel/camera acceptance."
+}

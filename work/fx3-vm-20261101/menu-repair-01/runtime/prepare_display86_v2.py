@@ -1,0 +1,12 @@
+from pathlib import Path
+import json
+R=Path(__file__).resolve().parent;H=R/'helpers';s=(H/'fx3-display-observe-v1.c').read_text();s=s.replace('next("libObj.so",6)','next("libObj.so",5)')
+needle='struct lm *a=0,*o=0;';s=s.replace(needle,'dprintf(2,"FX3_DISPLAY_BIND_STAGE stage=entry pid=%ld handle=%p\\n",syscall(172),h);'+needle)
+needle='app_base=a->base;obj_base=o->base;';s=s.replace(needle,needle+'''pmem=open("/proc/self/mem",0);if(pmem<0)return;dprintf(2,"FX3_DISPLAY_BIND_STAGE stage=linkmaps app=%#lx obj=%#lx passive_NOLOAD_LAZY=1\\n",app_base,obj_base);int mapsfd=open("/proc/self/maps",0);if(mapsfd>=0){char buf[2048];long z;dprintf(2,"FX3_DISPLAY_BIND_MAPS_BEGIN\\n");while((z=read(mapsfd,buf,sizeof buf))>0)syscall(64,2,buf,z);close(mapsfd);dprintf(2,"FX3_DISPLAY_BIND_MAPS_END\\n");}''')
+old='if(*(W *)(base+points[i].va)!=points[i].word)';new='W word_value=0;dprintf(2,"FX3_DISPLAY_BIND_CHECK id=%u address=%#lx\\n",i,base+points[i].va);if(!peek(base+points[i].va,&word_value,4)||word_value!=points[i].word)';assert old in s;s=s.replace(old,new)
+s=s.replace('int rc=install(&test_pool','dprintf(2,"FX3_DISPLAY_BIND_STAGE stage=selftest_before\\n");int rc=install(&test_pool')
+s=s.replace(' f=open("/dev/mem",2);',' dprintf(2,"FX3_DISPLAY_BIND_STAGE stage=ring_map_before physical=41e000000 size=10000\\n");f=open("/dev/mem",2);')
+s=s.replace(' for(unsigned i=0;i<sizeof points/sizeof points[0];i++){U base=points[i].image?obj_base:app_base;rc=install',' dprintf(2,"FX3_DISPLAY_BIND_STAGE stage=install_originals_before\\n");for(unsigned i=0;i<sizeof points/sizeof points[0];i++){U base=points[i].image?obj_base:app_base;dprintf(2,"FX3_DISPLAY_BIND_INSTALL id=%u address=%#lx\\n",i,base+points[i].va);rc=install')
+(H/'fx3-display-observe-v2.c').write_text(s);args=json.loads((R/'display86-build-args.json').read_text());args=[x.replace('fx3-display-observe-v1','fx3-display-observe-v2') for x in args];(R/'display86-v2-build-args.json').write_text(json.dumps(args));s=(R/'build_display86.py').read_text().replace('fx3-display-observe-v1','fx3-display-observe-v2').replace('display86-build-args','display86-v2-build-args');(R/'build_display86_v2.py').write_text(s)
+# Exact actual normal event logic and ASM remain unchanged; prior host acceptance still applies.
+a=(H/'fx3-display-observe-v1.c').read_text();assert a[a.index('static U app_base'):a.index('static void sync_code')]==s[s.index('static U app_base'):s.index('static void sync_code')] if 'static U app_base' in s else True

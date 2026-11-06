@@ -1,0 +1,58 @@
+_ZN7Updater10RingBuffer14readFromBufferEPhm
+00009b48 stp       x29, x30, [sp, #-0x50]!
+00009b4c mov       x29, sp
+00009b50 stp       x19, x20, [sp, #0x10]
+00009b54 mov       x20, x2
+00009b58 stp       x21, x22, [sp, #0x20]
+00009b5c str       x23, [sp, #0x30]
+00009b60 cbz       x2, #0x9c04
+00009b64 ldr       x21, [x0, #8]
+00009b68 mov       x19, x0
+00009b6c ldr       x2, [x0, #0x18]
+00009b70 sub       x3, x2, x21
+00009b74 ldr       x21, [x0, #0x10]
+00009b78 sub       x21, x21, x3
+00009b7c cmp       x20, x21
+00009b80 b.hs      #0x9b9c
+00009b84 mov       x3, x20
+00009b88 bl        #0x6d40 ; _ZN7Updater10RingBuffer10memoryCopyEPhPKhm
+00009b8c ldr       x0, [x19, #0x18]
+00009b90 add       x0, x0, x20
+00009b94 str       x0, [x19, #0x18]
+00009b98 b         #0x9bd8
+00009b9c b.ls      #0x9c1c
+00009ba0 mov       x3, x21
+00009ba4 mov       x22, x1
+00009ba8 sub       x23, x20, x21
+00009bac bl        #0x6d40 ; _ZN7Updater10RingBuffer10memoryCopyEPhPKhm
+00009bb0 cmp       x22, #0
+00009bb4 add       x1, x22, x21
+00009bb8 ldr       x2, [x19, #8]
+00009bbc mov       x3, x23
+00009bc0 csel      x1, x1, x22, ne
+00009bc4 mov       x0, x19
+00009bc8 bl        #0x6d40 ; _ZN7Updater10RingBuffer10memoryCopyEPhPKhm
+00009bcc ldr       x3, [x19, #8]
+00009bd0 add       x3, x3, x23
+00009bd4 str       x3, [x19, #0x18]
+00009bd8 add       x0, x19, #0x38
+00009bdc add       x21, x29, #0x50
+00009be0 str       x0, [x21, #-8]!
+00009be4 bl        #0x6a90 ; pthread_mutex_lock
+00009be8 ldr       x0, [x19, #0x28]
+00009bec sub       x0, x0, x20
+00009bf0 str       x0, [x19, #0x28]
+00009bf4 add       x0, x19, #0x68
+00009bf8 bl        #0x6c60 ; pthread_cond_broadcast
+00009bfc mov       x0, x21
+00009c00 bl        #0x956c
+00009c04 mov       x0, x20
+00009c08 ldr       x23, [sp, #0x30]
+00009c0c ldp       x19, x20, [sp, #0x10]
+00009c10 ldp       x21, x22, [sp, #0x20]
+00009c14 ldp       x29, x30, [sp], #0x50
+00009c18 ret       
+00009c1c mov       x3, x20
+00009c20 bl        #0x6d40 ; _ZN7Updater10RingBuffer10memoryCopyEPhPKhm
+00009c24 ldr       x0, [x19, #8]
+00009c28 b         #0x9b94

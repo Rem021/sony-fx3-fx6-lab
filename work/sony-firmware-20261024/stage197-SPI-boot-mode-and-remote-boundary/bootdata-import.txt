@@ -1,0 +1,33 @@
+# Exact original configured VA; ordinary-call-return CFG; not runtime PC. No execution.
+0xfe059198 [file+0x10198] fe0f1ff8 str      x30, [sp, #-0x10]!
+0xfe05919c [file+0x1019c] 080440b9 ldr      w8, [x0, #4]
+0xfe0591a0 [file+0x101a0] 49000090 adrp     x9, #0xfe061000
+0xfe0591a4 [file+0x101a4] 29a11691 add      x9, x9, #0x5a8
+0xfe0591a8 [file+0x101a8] 280500b9 str      w8, [x9, #4]
+0xfe0591ac [file+0x101ac] 080840b9 ldr      w8, [x0, #8]
+0xfe0591b0 [file+0x101b0] 280900b9 str      w8, [x9, #8]
+0xfe0591b4 [file+0x101b4] 080c40b9 ldr      w8, [x0, #0xc]
+0xfe0591b8 [file+0x101b8] 280d00b9 str      w8, [x9, #0xc]
+0xfe0591bc [file+0x101bc] 081040b9 ldr      w8, [x0, #0x10]
+0xfe0591c0 [file+0x101c0] 281100b9 str      w8, [x9, #0x10]
+0xfe0591c4 [file+0x101c4] 081440b9 ldr      w8, [x0, #0x14]
+0xfe0591c8 [file+0x101c8] 281500b9 str      w8, [x9, #0x14]
+0xfe0591cc [file+0x101cc] 081840b9 ldr      w8, [x0, #0x18]
+0xfe0591d0 [file+0x101d0] 281900b9 str      w8, [x9, #0x18]
+0xfe0591d4 [file+0x101d4] 081c40b9 ldr      w8, [x0, #0x1c]
+0xfe0591d8 [file+0x101d8] 281d00b9 str      w8, [x9, #0x1c]
+0xfe0591dc [file+0x101dc] 082040b9 ldr      w8, [x0, #0x20]
+0xfe0591e0 [file+0x101e0] 282100b9 str      w8, [x9, #0x20]
+0xfe0591e4 [file+0x101e4] 082440b9 ldr      w8, [x0, #0x24]
+0xfe0591e8 [file+0x101e8] 282500b9 str      w8, [x9, #0x24]
+0xfe0591ec [file+0x101ec] 082c40b9 ldr      w8, [x0, #0x2c]
+0xfe0591f0 [file+0x101f0] 490000d0 adrp     x9, #0xfe063000
+0xfe0591f4 [file+0x101f4] 289908b9 str      w8, [x9, #0x898]
+0xfe0591f8 [file+0x101f8] 082840b9 ldr      w8, [x0, #0x28]
+0xfe0591fc [file+0x101fc] 490000d0 adrp     x9, #0xfe063000
+0xfe059200 [file+0x10200] 289d08b9 str      w8, [x9, #0x89c]
+0xfe059204 [file+0x10204] 003040b9 ldr      w0, [x0, #0x30]
+0xfe059208 [file+0x10208] 2aebff97 bl       #0xfe053eb0
+0xfe05920c [file+0x1020c] e0031f2a mov      w0, wzr
+0xfe059210 [file+0x10210] fe0741f8 ldr      x30, [sp], #0x10
+0xfe059214 [file+0x10214] c0035fd6 ret      

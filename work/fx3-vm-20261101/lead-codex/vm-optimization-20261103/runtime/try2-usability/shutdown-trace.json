@@ -1,0 +1,330 @@
+{
+  "user_try2_70588c4c": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-70588c4c",
+    "first_original_shutdown_serial_byte": 17840149,
+    "first_original_shutdown": "open screen: scr7001_1005 -> scr0039_shutdown",
+    "screen_name_source": "reports/2026-11-01-fx3-vm-resumed-repair/ap87-uud-queue-first-screen.md:44",
+    "serial_order_not_host_or_guest_elapsed_time": true,
+    "evidence": {
+      "screen_open": {
+        "count_total": 1,
+        "last_before_shutdown": null,
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            17840149,
+            17840194
+          ],
+          "raw": "open screen: scr7001_1005 -> scr0039_shutdown"
+        }
+      },
+      "model_power_off": {
+        "count_total": 1,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            17774589,
+            17774763
+          ],
+          "raw": "FX3_BOOT_QUEUE_SEND tid=379 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1"
+        },
+        "first_after_shutdown": null
+      },
+      "ap89_id2": {
+        "count_total": 1,
+        "last_before_shutdown": null,
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            17841710,
+            17841847
+          ],
+          "raw": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7efe475490 id1=0x289 id2=0x2af id3=0x289 three_reference_args_one_call=1 creation_not_yet_complete=1"
+        }
+      },
+      "controller_return": {
+        "count_total": 1,
+        "last_before_shutdown": null,
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            17843538,
+            17843720
+          ],
+          "raw": "FX3_AP89_SCREEN_CREATE phase=controller_init_return screen_id=0x2af controller=0x7f06e080e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1"
+        }
+      },
+      "presenter_return": {
+        "count_total": 1,
+        "last_before_shutdown": null,
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            17843898,
+            17844093
+          ],
+          "raw": "FX3_AP89_SCREEN_CREATE phase=presenter_factory_return screen_id=0x2af controller=0x7f06e080e0 presenter_return=0x7f065e80e0 native_point=0x218fff4 native_call_returned=1 visible_pixels_unproven=1"
+        }
+      },
+      "power_seed": {
+        "count_total": 1,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            89221,
+            89283
+          ],
+          "raw": "POWER_ON_RECORD_OK mode=2 boot_type=1 old_type=1 eecap=1 bis=1"
+        },
+        "first_after_shutdown": null
+      },
+      "upm_init": {
+        "count_total": 1,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            93329,
+            93341
+          ],
+          "raw": "FX3_UPM_RC=0"
+        },
+        "first_after_shutdown": null
+      },
+      "media_notify": {
+        "count_total": 2,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            2009395,
+            2009522
+          ],
+          "raw": "FX3_MEDIA_NOTIFY eid=32 tid=432 mediaID=0x1010 destination=0x1cfe09b status=0 hold=0 RemoveCnt=1 extra16=0 native=1 synthetic=0"
+        },
+        "first_after_shutdown": null
+      },
+      "key_down": {
+        "count_total": 10,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            9063503,
+            9063591
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=10 key=0x30 status=1 from_type=1 source=0x410025 native_result=0"
+        },
+        "first_after_shutdown": null
+      },
+      "key_up": {
+        "count_total": 10,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            9101134,
+            9101222
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=10 key=0x30 status=0 from_type=1 source=0x410025 native_result=0"
+        },
+        "first_after_shutdown": null
+      },
+      "timer_snapshot": {
+        "count_total": 9443,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            17773523,
+            17773694
+          ],
+          "raw": "FX3_TIMER_SNAPSHOT tid=773 bound=1 patch_mask=0xf timer_entry=55 id_compare=55 info=55 table=55 config=8 config_target=8 fill=125 event_seq=353 original_memory_read_only=1"
+        },
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            17841214,
+            17841385
+          ],
+          "raw": "FX3_TIMER_SNAPSHOT tid=374 bound=1 patch_mask=0xf timer_entry=55 id_compare=55 info=55 table=55 config=8 config_target=8 fill=125 event_seq=353 original_memory_read_only=1"
+        }
+      },
+      "ui_gate_timer": {
+        "count_total": 87,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            16959122,
+            16959334
+          ],
+          "raw": "FX3_UI_GATE_SAMPLE id=11 n=19000 tid=374 pc=0x16f217c object=0x7efe474d80 a18=31 a12=0 a13=0 r0=0 decision_a18=31 elapsed=0 old_time=0 new_time=0 message=0x7fadb95e18 type=0x150000 source=0x830128 observed_only=1"
+        },
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            18092908,
+            18093118
+          ],
+          "raw": "FX3_UI_GATE_SAMPLE id=11 n=20000 tid=374 pc=0x16f217c object=0x7efe474d80 a18=8 a12=0 a13=0 r0=0 decision_a18=7 elapsed=0 old_time=0 new_time=0 message=0x7fadba2dd8 type=0x150000 source=0x830128 observed_only=1"
+        }
+      },
+      "deadline_or_reject": {
+        "count_total": 0,
+        "last_before_shutdown": null,
+        "first_after_shutdown": null
+      }
+    }
+  },
+  "internal_47e2924a": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a",
+    "first_original_shutdown_serial_byte": 23494893,
+    "first_original_shutdown": "open screen: scr7001_1003 -> scr0039_shutdown",
+    "screen_name_source": "reports/2026-11-01-fx3-vm-resumed-repair/ap87-uud-queue-first-screen.md:44",
+    "serial_order_not_host_or_guest_elapsed_time": true,
+    "evidence": {
+      "screen_open": {
+        "count_total": 1,
+        "last_before_shutdown": null,
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            23494893,
+            23494938
+          ],
+          "raw": "open screen: scr7001_1003 -> scr0039_shutdown"
+        }
+      },
+      "model_power_off": {
+        "count_total": 1,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            21730929,
+            21731172
+          ],
+          "raw": "FX3_BOOT_QUEUE_SEND tid=379 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1[14929.935125] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1022"
+        },
+        "first_after_shutdown": null
+      },
+      "ap89_id2": {
+        "count_total": 1,
+        "last_before_shutdown": null,
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            23498556,
+            23498693
+          ],
+          "raw": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ef7ebe490 id1=0x275 id2=0x2af id3=0x275 three_reference_args_one_call=1 creation_not_yet_complete=1"
+        }
+      },
+      "controller_return": {
+        "count_total": 1,
+        "last_before_shutdown": null,
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            23508568,
+            23508750
+          ],
+          "raw": "FX3_AP89_SCREEN_CREATE phase=controller_init_return screen_id=0x2af controller=0x7ef18e90e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1"
+        }
+      },
+      "presenter_return": {
+        "count_total": 1,
+        "last_before_shutdown": null,
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            23508972,
+            23509167
+          ],
+          "raw": "FX3_AP89_SCREEN_CREATE phase=presenter_factory_return screen_id=0x2af controller=0x7ef18e90e0 presenter_return=0x7ef10c90e0 native_point=0x218fff4 native_call_returned=1 visible_pixels_unproven=1"
+        }
+      },
+      "power_seed": {
+        "count_total": 1,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            89221,
+            89283
+          ],
+          "raw": "POWER_ON_RECORD_OK mode=2 boot_type=1 old_type=1 eecap=1 bis=1"
+        },
+        "first_after_shutdown": null
+      },
+      "upm_init": {
+        "count_total": 1,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            93329,
+            93341
+          ],
+          "raw": "FX3_UPM_RC=0"
+        },
+        "first_after_shutdown": null
+      },
+      "media_notify": {
+        "count_total": 2,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            2002845,
+            2002972
+          ],
+          "raw": "FX3_MEDIA_NOTIFY eid=32 tid=432 mediaID=0x1010 destination=0x1cfe09b status=0 hold=0 RemoveCnt=1 extra16=0 native=1 synthetic=0"
+        },
+        "first_after_shutdown": null
+      },
+      "key_down": {
+        "count_total": 4,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            14727895,
+            14727983
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0"
+        },
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            24653534,
+            24653621
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=2 key=0x15 status=1 from_type=1 source=0x410025 native_result=0"
+        }
+      },
+      "key_up": {
+        "count_total": 4,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            14734936,
+            14735024
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0"
+        },
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            24678888,
+            24678975
+          ],
+          "raw": "FX3_KEY_INPUT_RECV step=2 key=0x15 status=0 from_type=1 source=0x410025 native_result=0"
+        }
+      },
+      "timer_snapshot": {
+        "count_total": 5587,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            18450576,
+            18450752
+          ],
+          "raw": "FX3_TIMER_SNAPSHOT tid=771 bound=1 patch_mask=0xf timer_entry=663 id_compare=663 info=663 table=663 config=3 config_target=3 fill=195 event_seq=2850 original_memory_read_only=1"
+        },
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            23497881,
+            23498057
+          ],
+          "raw": "FX3_TIMER_SNAPSHOT tid=376 bound=1 patch_mask=0xf timer_entry=663 id_compare=663 info=663 table=663 config=3 config_target=3 fill=195 event_seq=2850 original_memory_read_only=1"
+        }
+      },
+      "ui_gate_timer": {
+        "count_total": 78,
+        "last_before_shutdown": {
+          "serial_byte_range": [
+            22932059,
+            22932275
+          ],
+          "raw": "FX3_UI_GATE_SAMPLE id=11 n=20000 tid=376 pc=0x16f217c object=0x7ef7ebdd80 a18=3860 a12=0 a13=0 r0=0 decision_a18=3859 elapsed=0 old_time=0 new_time=0 message=0x7f9d8138d8 type=0x150000 source=0x830128 observed_only=1"
+        },
+        "first_after_shutdown": {
+          "serial_byte_range": [
+            23689349,
+            23689565
+          ],
+          "raw": "FX3_UI_GATE_SAMPLE id=11 n=21000 tid=376 pc=0x16f217c object=0x7ef7ebdd80 a18=5037 a12=0 a13=0 r0=0 decision_a18=5036 elapsed=0 old_time=0 new_time=0 message=0x7f9d8186d8 type=0x150000 source=0x830128 observed_only=1"
+        }
+      },
+      "deadline_or_reject": {
+        "count_total": 0,
+        "last_before_shutdown": null,
+        "first_after_shutdown": null
+      }
+    }
+  }
+}

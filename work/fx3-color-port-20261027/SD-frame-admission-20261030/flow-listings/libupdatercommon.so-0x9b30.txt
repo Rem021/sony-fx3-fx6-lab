@@ -1,0 +1,7 @@
+_ZN7Updater10RingBuffer10memoryCopyEPhPKhm
+00009b30 mov       x0, x1
+00009b34 mov       x1, x2
+00009b38 mov       x2, x3
+00009b3c cbz       x0, #0x9b44
+00009b40 b         #0x6a50
+00009b44 ret       

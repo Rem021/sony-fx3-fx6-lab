@@ -1,0 +1,59 @@
+00002f48 sub        sp, sp, #0x310
+00002f4c mov        x2, #0x100
+00002f50 mov        w1, #0
+00002f54 stp        x29, x30, [sp, #-0x20]!
+00002f58 mov        x29, sp
+00002f5c str        x19, [sp, #0x10]
+00002f60 add        x19, x29, #0x28
+00002f64 mov        x0, x19
+00002f68 bl         #0x1380 ; memset
+00002f6c str        wzr, [x29, #0x24]
+00002f70 adrp       x4, #0x3000
+00002f74 adrp       x3, #0x15000
+00002f78 adrp       x2, #0x3000
+00002f7c add        x4, x4, #0xda7 ; literal 'LENSDATA.DAT'
+00002f80 add        x3, x3, #0x218
+00002f84 add        x2, x2, #0xe2d ; literal '%s/%s'
+00002f88 mov        x0, x19
+00002f8c mov        x1, #0xff
+00002f90 bl         #0x14c0 ; snprintf
+00002f94 mov        x1, x19
+00002f98 add        x0, x29, #0x128
+00002f9c bl         #0x1410 ; udtr_get_firm_info_inmedia
+00002fa0 uxth       w0, w0
+00002fa4 cbnz       w0, #0x2fdc
+00002fa8 adrp       x1, #0x15000
+00002fac ldr        w0, [x29, #0x150]
+00002fb0 ldr        w2, [x29, #0x154]
+00002fb4 str        w0, [x1, #0x208]
+00002fb8 adrp       x1, #0x15000
+00002fbc and        w0, w0, #0xff0000
+00002fc0 cmp        w0, #0xa00, lsl #12
+00002fc4 str        w2, [x1, #0x20c]
+00002fc8 adrp       x1, #0x15000
+00002fcc ldrh       w2, [x29, #0x14c]
+00002fd0 strh       w2, [x1, #0x210]
+00002fd4 b.eq       #0x2fec
+00002fd8 mov        w0, #2
+00002fdc ldr        x19, [sp, #0x10]
+00002fe0 ldp        x29, x30, [sp], #0x20
+00002fe4 add        sp, sp, #0x310
+00002fe8 ret        
+00002fec adrp       x0, #0x15000
+00002ff0 mov        w1, #1
+00002ff4 str        w1, [x0, #0x1f4]
+00002ff8 mov        w0, #3
+00002ffc bl         #0x1928
+00003000 cbnz       w0, #0x2fd8
+00003004 add        x0, x29, #0x24
+00003008 bl         #0x184c
+0000300c cbnz       w0, #0x2fd8
+00003010 ldr        w0, [x29, #0x24]
+00003014 cmp        w0, #1
+00003018 b.ne       #0x3024
+0000301c adrp       x1, #0x25000
+00003020 str        w0, [x1, #0x2b8]
+00003024 bl         #0x26e8
+00003028 bl         #0x1330 ; udtr_conv_stat2err
+0000302c uxth       w0, w0
+00003030 b          #0x2fdc

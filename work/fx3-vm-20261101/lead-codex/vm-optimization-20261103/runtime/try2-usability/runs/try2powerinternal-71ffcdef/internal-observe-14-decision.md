@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/internal-preview-14.png using image tool. Setup left Power Setting Option orange focus; Sound Option next, no selection changed Next: DOWN to Sound Option for another distinct Setup page

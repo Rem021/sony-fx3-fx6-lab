@@ -1,0 +1,75 @@
+{
+  "inventories": [
+    {
+      "image": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha3.img",
+      "image_sha256": "ca5a8c80a1883c4a72c2f40018e3d40ab43e28ff0bf6a1d89f17d0680c607568",
+      "entries_including_directories": 10,
+      "matches": [
+        {
+          "metadata": {
+            "path": "/bonobo.bin",
+            "cluster": 818,
+            "size": 172144,
+            "attributes": 32,
+            "type": 32768
+          },
+          "sha256": "4b0b293386b7a265a2d65debceb25d6201c1a40be8b0166f7f8703780467b08b"
+        },
+        {
+          "metadata": {
+            "path": "/sabin/idt_cam.bin",
+            "cluster": 1158,
+            "size": 167312,
+            "attributes": 32,
+            "type": 32768
+          },
+          "sha256": "8c16cc02232135a813618fd1b61b2740b9279bbab7872fe8cd84187b40caaef3"
+        }
+      ]
+    },
+    {
+      "image": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+      "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+      "entries_including_directories": 153,
+      "matches": []
+    },
+    {
+      "image": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha8.img",
+      "image_sha256": "3c751e784fe6790a4b455990d7c6e144c33cf51c643cf3bf9523f8a3bd5a6a2b",
+      "entries_including_directories": 10,
+      "matches": []
+    },
+    {
+      "image": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entries_including_directories": 915,
+      "matches": []
+    }
+  ],
+  "coverage": {
+    "envelope_bytes": 19865088,
+    "declared_slot_bytes": 15302096,
+    "unlisted_gap_bytes": 4562992,
+    "gaps": [
+      {
+        "start": "0x808cb0000",
+        "end_exclusive": "0x808eb0000",
+        "bytes": 2097152
+      },
+      {
+        "start": "0x808f1ddd0",
+        "end_exclusive": "0x809108000",
+        "bytes": 2007600
+      },
+      {
+        "start": "0x809979000",
+        "end_exclusive": "0x8099e8e00",
+        "bytes": 458240
+      }
+    ],
+    "original_p8_file_bytes": 2011742,
+    "byte_coverage_is_projection_not_observed_RAM": true,
+    "no_substitution_between_partition3_and_partition8": true,
+    "missing_names_search_scope": "Parsed file names in original p3/p7/p8/p15 only; no whole-package, compressed-content or real-body absence claim."
+  }
+}

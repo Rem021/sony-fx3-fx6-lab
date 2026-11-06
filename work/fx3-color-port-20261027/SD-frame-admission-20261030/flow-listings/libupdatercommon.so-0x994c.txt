@@ -1,0 +1,99 @@
+_ZN7Updater10RingBuffer9WriteDataEPKhmb
+0000994c stp       x29, x30, [sp, #-0x70]!
+00009950 mov       x29, sp
+00009954 stp       x19, x20, [sp, #0x10]
+00009958 mov       x19, x0
+0000995c add       x0, x0, #0xc8
+00009960 stp       x23, x24, [sp, #0x30]
+00009964 stp       x21, x22, [sp, #0x20]
+00009968 mov       x24, x2
+0000996c stp       x25, x26, [sp, #0x40]
+00009970 add       x23, x19, #0x38
+00009974 stp       x27, x28, [sp, #0x50]
+00009978 mov       x26, x1
+0000997c uxtb      w27, w3
+00009980 str       x0, [x29, #0x60]
+00009984 bl        #0x6a90 ; pthread_mutex_lock
+00009988 add       x21, x29, #0x70
+0000998c mov       x0, x23
+00009990 str       x23, [x21, #-8]!
+00009994 bl        #0x6a90 ; pthread_mutex_lock
+00009998 ldrb      w0, [x19, #0x31]
+0000999c tst       w0, #0xff
+000099a0 b.eq      #0x99d8
+000099a4 mov       x0, x21
+000099a8 mov       x20, #0
+000099ac bl        #0x956c
+000099b0 add       x0, x29, #0x60
+000099b4 bl        #0x956c
+000099b8 mov       x0, x20
+000099bc ldp       x19, x20, [sp, #0x10]
+000099c0 ldp       x21, x22, [sp, #0x20]
+000099c4 ldp       x23, x24, [sp, #0x30]
+000099c8 ldp       x25, x26, [sp, #0x40]
+000099cc ldp       x27, x28, [sp, #0x50]
+000099d0 ldp       x29, x30, [sp], #0x70
+000099d4 ret       
+000099d8 mov       x0, x19
+000099dc bl        #0x6ef0 ; _ZN7Updater10RingBuffer26getEmptySizeWithoutLockingEv
+000099e0 mov       x20, x0
+000099e4 mov       x0, x21
+000099e8 bl        #0x956c
+000099ec cmp       x20, x24
+000099f0 b.lo      #0x9a10
+000099f4 mov       w3, w27
+000099f8 mov       x2, x24
+000099fc mov       x1, x26
+00009a00 mov       x0, x19
+00009a04 bl        #0x6cc0 ; _ZN7Updater10RingBuffer13writeToBufferEPKhmb
+00009a08 mov       x20, x0
+00009a0c b         #0x99b0
+00009a10 ldr       x25, [x19, #0x10]
+00009a14 add       x28, x19, #0x68
+00009a18 mov       x20, #0
+00009a1c lsr       x25, x25, #1
+00009a20 cmp       x20, x24
+00009a24 b.hs      #0x99b0
+00009a28 sub       x22, x24, x20
+00009a2c mov       x0, x23
+00009a30 cmp       x22, x25
+00009a34 str       x23, [x29, #0x68]
+00009a38 csel      x22, x22, x25, ls
+00009a3c bl        #0x6a90 ; pthread_mutex_lock
+00009a40 ldrb      w0, [x19, #0x31]
+00009a44 tst       w0, #0xff
+00009a48 b.eq      #0x9a58
+00009a4c mov       x0, x21
+00009a50 bl        #0x956c
+00009a54 b         #0x99b0
+00009a58 mov       x0, x19
+00009a5c bl        #0x6ef0 ; _ZN7Updater10RingBuffer26getEmptySizeWithoutLockingEv
+00009a60 cmp       x0, x22
+00009a64 b.hs      #0x9a78
+00009a68 mov       x1, x23
+00009a6c mov       x0, x28
+00009a70 bl        #0x6f60 ; pthread_cond_wait
+00009a74 b         #0x9a40
+00009a78 mov       x0, x21
+00009a7c bl        #0x956c
+00009a80 mov       w3, #0
+00009a84 cbz       w27, #0x9a94
+00009a88 add       x0, x20, x22
+00009a8c cmp       x0, x24
+00009a90 cset      w3, eq
+00009a94 mov       x2, x22
+00009a98 add       x1, x26, x20
+00009a9c mov       x0, x19
+00009aa0 bl        #0x6cc0 ; _ZN7Updater10RingBuffer13writeToBufferEPKhmb
+00009aa4 add       x20, x20, x0
+00009aa8 b         #0x9a20
+00009aac mov       x19, x0
+00009ab0 mov       x0, x21
+00009ab4 bl        #0x956c
+00009ab8 add       x0, x29, #0x60
+00009abc bl        #0x956c
+00009ac0 mov       x0, x19
+00009ac4 bl        #0x6f40 ; _Unwind_Resume
+00009ac8 b         #0x9aac
+00009acc mov       x19, x0
+00009ad0 b         #0x9ab8

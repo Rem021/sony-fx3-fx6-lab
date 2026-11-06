@@ -1,0 +1,26 @@
+fe04d51c a8000090 adrp     x8, #0xfe061000
+fe04d520 085147f9 ldr      x8, [x8, #0xea0]
+fe04d524 091140b9 ldr      w9, [x8, #0x10]
+fe04d528 087c1053 lsr      w8, w0, #0x10
+fe04d52c 1f01096b cmp      w8, w9
+fe04d530 62020054 b.hs     #0xfe04d57c
+fe04d534 a9000090 adrp     x9, #0xfe061000
+fe04d538 2a5547f9 ldr      x10, [x9, #0xea8]
+fe04d53c e9071f32 mov      w9, #6
+fe04d540 0b7da99b umull    x11, w8, w9
+fe04d544 4c696b78 ldrh     w12, [x10, x11]
+fe04d548 0b3c0012 and      w11, w0, #0xffff
+fe04d54c 7f010c6b cmp      w11, w12
+fe04d550 62010054 b.hs     #0xfe04d57c
+fe04d554 0829099b madd     x8, x8, x9, x10
+fe04d558 ac000090 adrp     x12, #0xfe061000
+fe04d55c 082140b8 ldur     w8, [x8, #2]
+fe04d560 8a4d47f9 ldr      x10, [x12, #0xe98]
+fe04d564 08010b0b add      w8, w8, w11
+fe04d568 0029a99b umaddl   x0, w8, w9, x10
+fe04d56c 082040b8 ldur     w8, [x0, #2]
+fe04d570 1f050031 cmn      w8, #1
+fe04d574 40000054 b.eq     #0xfe04d57c
+fe04d578 c0035fd6 ret      
+fe04d57c e0031faa mov      x0, xzr
+fe04d580 c0035fd6 ret      

@@ -1,0 +1,8 @@
+ 212952c: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!
+ 2129530: d2800080     	mov	x0, #0x4                // =4
+ 2129534: 910003fd     	mov	x29, sp
+ 2129538: 97e5162a     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 212953c: 528002c1     	mov	w1, #0x16               // =22
+ 2129540: b9000001     	str	w1, [x0]
+ 2129544: a8c17bfd     	ldp	x29, x30, [sp], #0x10
+ 2129548: 17e517d9     	b	0x1a6f4ac <Application_System_Init+0xe64468>

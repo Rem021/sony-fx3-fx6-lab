@@ -1,0 +1,42 @@
+{
+  "time": "2026-11-06T04:42:32.810610+00:00",
+  "task": "task_1d00f0259893",
+  "dispatch": "ctx_3519d1808b98",
+  "manifest": {
+    "count": 41,
+    "all_match": true,
+    "sha256": "e2511746221d8ed22812a9ea55122a4aec8a1c0182237058afe5569e24dd5b3f"
+  },
+  "status": "built_candidate_rejected_for_runtime_pending_integration_fixes",
+  "independent_probes": [
+    {
+      "probe": "native compile of actual target_io fmt function",
+      "format": "starttime=%llu digest=%016llx",
+      "inputs": [
+        "1234",
+        "0x123456789abcdef0"
+      ],
+      "actual": "starttime=0u digest=0000000000000000x"
+    },
+    {
+      "probe": "actual CLI with injected failed runner receipt",
+      "actual_exit_code": 0,
+      "expected": "nonzero"
+    }
+  ],
+  "code_findings": [
+    "mapping callback calls select once immediately after boot instead of waiting within deadline",
+    "verify_artifacts override omits fixed baseline and QEMU/kernel/DTB hashes",
+    "TARGET_BYTES assigned from current file size rather than immutable expected size",
+    "three fake tests do not exercise actual HostRunner integration or target output shim"
+  ],
+  "cpio_tail_check": {
+    "old_trailer_end": 427438152,
+    "old_tail_bytes": 25746348,
+    "old_tail_all_zero": true,
+    "new_tail_bytes": 0,
+    "note": "not an appended archive; removed zero padding should be reported or preserved; member verification should reparse actual output"
+  },
+  "VM_started": false,
+  "new_run_authorized": false
+}

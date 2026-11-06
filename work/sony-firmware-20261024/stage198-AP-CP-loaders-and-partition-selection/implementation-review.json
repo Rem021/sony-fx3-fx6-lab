@@ -1,0 +1,22 @@
+{
+  "status": "SPI_FIXED_CP_ENTRY_VERIFIED_AP_RECOVERY_STILL_MISSING",
+  "new_evidence": [
+    "current7.02 p8 loader_spi.bin39184B extracted and source-hashed; four handoff slices bind fixed x0=0x108000 through relative branch/tail branch into ELR_EL3 and ERET",
+    "SCR0x30/SPSR0x13 plus same-package cpapp-b load0x108000 support CP/TOPPERS-side handoff interpretation, not an AP p1/p3 recovery proof",
+    "current7.02 DGU/MIS/tomco and full-FDAT darwin_core original captured as separate components; sender/controller identities unresolved",
+    "historical2.05 p1 directory and AP load0x400080000 kept explicitly historical; currentp1/boot0 not obtained",
+    "p5 original hash and WBI2 signature rechecked only; not promoted to a full parsed recovery image"
+  ],
+  "limitations": [
+    "SPI display VA tentative; source offsets, constants and relative branch checks are authoritative, no runtime PC claim",
+    "ordinary return of preceding sequence/log/cache calls assumed; no whole-device path reachability or all callee effects proved",
+    "no claim that whole loader_spi never participates in p1/p3 logic; the observed fixed handoff is insufficient to establish it",
+    "Darwin tentative0/0x4000 mappings not established, not rejected for every possible transformed/runtime layout",
+    "A7IV boot0 parser is an acquisition lead only, no FX3 key/format/payload compatibility inferred"
+  ],
+  "pending_root01": "same195bundle, no specific reply, no job created, no administrator launch or repeated question",
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

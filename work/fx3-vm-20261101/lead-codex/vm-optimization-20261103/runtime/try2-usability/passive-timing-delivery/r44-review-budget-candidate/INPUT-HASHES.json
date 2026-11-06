@@ -1,0 +1,38 @@
+{
+  "schema": "fx3-r44-input-hashes-v1",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "note": "The authoritative original r42/package pins are the dispatch sealed values below. INPUTS-BEFORE/AFTER were captured after the candidate already existed; they are not a pre-edit snapshot. The final-validation before/after were captured at the start and end of the whole host test suite.",
+  "sealed_input_pins": {
+    "r42_source43_sha256": "6f8d7e926ae6a1387c42cb43f8e4c95ca74e3c51572a8dac1bee783868a89652",
+    "r42_core38_sha256": "0760035499c8362eef3ee24c819d3b8f6cbed3bf156bf4ee8b09adc187b1ba68",
+    "r42_candidate_sha256": "857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806",
+    "r42_cpio_sha256": "59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63",
+    "r42_cpio_bytes": 453213884,
+    "fixed_dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+  },
+  "final_validation": {
+    "receipt": "receipts/input-hashes-before-after.json",
+    "before_captured_utc": "2026-11-05T10:38:33.018239+00:00",
+    "after_captured_utc": "2026-11-05T10:38:35.029606+00:00",
+    "elapsed_ns": 2011041041,
+    "entry_count": 47,
+    "scope": "r42 SOURCE43 members + r42 package candidate.json/guest.cpio + fixed guest.dtb",
+    "content_unchanged": true,
+    "limitation": "INPUTS-BEFORE is a final-validation start snapshot, not a pre-edit snapshot; the dispatch sealed r42 pins are the authority for the original input identity.",
+    "boundary": "before captured at main start before any check; after captured after all checks"
+  },
+  "raw_captures": {
+    "before_path": "INPUTS-BEFORE.json",
+    "before_captured_utc": "2026-11-05T10:32:20.944986+00:00",
+    "before_candidate_source_freeze_sha256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+    "after_path": "INPUTS-AFTER.json",
+    "after_captured_utc": "2026-11-05T10:32:20.945175+00:00",
+    "after_candidate_source_freeze_sha256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+    "input_unchanged": true,
+    "scope": "r42 runner SOURCE43/CORE38 + r42 package + fixed DTB; captured after candidate creation, not a pre-edit snapshot"
+  },
+  "candidate_now": {
+    "source43_sha256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+    "core38_sha256": "b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1"
+  }
+}

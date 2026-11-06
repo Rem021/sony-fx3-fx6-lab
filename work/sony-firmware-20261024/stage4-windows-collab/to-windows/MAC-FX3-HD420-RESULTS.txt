@@ -1,0 +1,45 @@
+Mac 独立复核已完成。请先读以下结果，避免重复已完成的矩阵；优先继续普通 model setter 到主录 SetMovieRecParam / Start 的字段绑定，检查 HD420 VPC6 Frame3 VQuality6 是否能沿实际设置路径保持一致。遵守原 FX3-READONLY-TASK.txt 的全部只读边界。后续结果仍只写本次 collab 新子目录，保留旧文件。请最终用12行以内中文回执，给出结果目录和可供UU传输的 ZIP（不含固件二进制、私密标识或凭据）。
+
+FX3 7.02 Mac 独立离线复核（2026-10-25）
+
+结果：Windows 回传的 4K30 内存候选 80 例全部复现；用户真正关心的 HD29.97 HEVC 4:2:0 10bit 16M 已进一步证实能由原固件的参数构造函数生成一致的 Open 数据包。尚无实际 encoder 接受、录像文件或安全可刷包。HD 4:2:2 的相同尝试存在明确的低层字段缺口。
+
+一、来源与审计
+回传 ZIP SHA256 785c3b3fdb5e879dd7acda3b782001f09e3dce8210c71d6104ce141d77ba4865，43 个常规文件，2,082,686 B 解压量，CRC 正常，无特殊项/符号链接/路径穿越；内部文件清单哈希全部相符。三份 Mac 官方提取输入 appFw.so / libmpr.so / cpapp-b.bin 的 SHA 与 Windows 来源一致，详见 source-receipt.json。20 个 app/mpr 反编译入口的原始字节重新匹配，见 entry-provenance-check.json。
+审核了 fx3_native.py、emulate_h265_converter.py、emulate_mpr_downstream.py、emulate_encoder_packet.py；其核心是函数片段 CPU 仿真。原脚本依赖 Windows 布局，且导入就会跑矩阵并写报告，故未直接执行。PowerShell、Java/Ghidra 启动器和报告生成器均未运行。received-source 为用户回传证据原样存档，不是执行入口。
+独立 offline_verify.py 使用固定真实源 SHA、明确纯函数白名单、ELF guest 只读、仅允许 guest 写合成栈和参数区；无 syscall/设备/网络/MMIO 转发。每例 20,000 指令、1,000,000 微秒；未知执行/PLT/内存及 SVC/HVC/SMC 停止。包构造只允许10个明确本地转换函数，不采用原脚本较宽的按符号前缀白名单。MPR 唯一替身为日志函数0xc8c70返回0。app 转换器另固定普通录像查询、以原始常量表替代未初始化C++容器、在断言入口停止。比特率、尺寸、codec、帧率、色度/位深均由原 MPR 指令生成，未由替身填充。
+
+二、HD420 用户目标的真实函数链
+GetVideoParamComb @0xc9e84：实参 [codec1, resolution2, color0, bitDepth1, gop0] 返回VPC6。
+CheckMovieRecParam @0xcc4d4：参数区+0x170 = [VPC6, VQuality6, Frame3] 返回0；无效Frame12或Quality255返回3。
+GetVideoBitrate @0x2c0ce0：输入VQuality6返回16000（与既有100M返回100000的尺度一致）。
+GetCodecInfoForCodec @0xcd40c：VPC6/StreamType0返回15；StreamType1返回18。因此主/代理的codec选择存在区别；本次packet调用的是主SetEncOpenParam，而非代理packet函数。
+ConvertFrameRateToNumerAndDenom @0x2c0de8：Frame3输出30000/1001。
+ConvertVPCToLevel @0x115e78：VPC6/Quality6/Frame3返回并写level枚举5。
+SetEncOpenParam @0xd13f8：零填充的合成输入仅+0x764写 [6,6,3,0]，目标区初值全零，真实函数594条指令后返回；输出 1920×1080、codec15、frame3、NTSC1、API质量22、色度0、位深1。后两个枚举与正常UHD420路径一致。输入VQuality和API质量使用不同枚举，不能把6和22视为不一致；真实 ConvertPictureQualityDefStructToMpr @0xd0758 的6→22已复核。
+全部实参、原始0x98字节包、每个本地PLT调用入口/实参、RET的x0和packet逐次guest写入PC在 hd420-16m-chain.json。宿主只写合成输入字段，未手工写任何输出字段。
+
+三、控制及负面发现
+UHD420与UHD422（VPC5/7，Frame3，VQuality12）作为正控制均生成3840×2160、codec15、API质量49，色度/位深分别0/1与2/1。80例app原版/内存候选的reason、VPC、Frame、VQuality逐项与Windows报告一致；候选byte仅改Unicorn内存，原文件未改变。该app helper的真实录像setter/start入口仍未闭合；查询转换器成功不等于主录像入口改变。
+HD422（VPC8）虽有通用组合表条目，基础校验也返回0，但真实GetChromaFormat @0xd11b0、GetVideoBitLen @0xd1274都返回254；SetEncOpenParam把254/254原样写入色度/位深字段。原始指令位图0x168c、0x16fc排除VPC8，用stdlib直接读ELF也复核一致。因此不能说HD422已经打通，更不能用“函数返回”代替有效包。
+app原常量表16→VQuality6，但MPR GetVQuality @0xc9c04输入16返回255。12→2→12000和100→12→100000的交叉控制支持“输入Mbps、反向输出kbps”的尺度，16M缺口不是简单把位/秒与千位/秒混用。本次只能确认该反向helper没有覆盖16，不能确定设计原因，也未证明实际模型setter必然调用它；直接app常量映射与GetVideoBitrate(VQ6)=16000均存在。
+HD100M的metadata函数写出fallback level5后去printf提示路径，隔离白名单在那里停止。不能把这条受限执行解释为函数拒绝、崩溃或相机不支持。16M目标路径无此外部调用。
+
+四、未完成层次
+1. 相机设置模型的真实setter到实际Start入口及 coherent menu/model 更新；
+2. 原硬件encoder是否接受Open/Start包；
+3. 真正HEVC文件、VPS/SPS/PPS、GOP、时戳、音频、连续录像和温度；
+4. 签名/更新包重建、机型匹配、安装与经过实测的救砖通路。
+本次没有执行EncOpen/EncStart，没有生成视频，没有相机/USB交互，没有固件或刷机包输出。这些结果不能支持在用户在用机身刷入。
+
+五、复现
+完整CPU复现（依赖仅位于本目录，wheel SHA和官方PyPI来源见 package-provenance.json / requirements.lock）：
+  .venv/bin/python offline_verify.py
+只复核来源/收据（stdlib，不重跑CPU）：
+  python3 verify_receipts.py
+重建隔离环境：
+  python3 -m venv .venv
+  .venv/bin/python -m pip install --no-index --no-deps --require-hashes --find-links wheels -r requirements.lock
+官方工具资料：https://www.unicorn-engine.org/docs/tutorial.html
+固定发行：https://pypi.org/project/unicorn/2.1.4/ 、https://pypi.org/project/pyelftools/0.33/ 、https://pypi.org/project/capstone/5.0.9/
+原始Windows证据、初次假设失败结果和所有来源收据均保留。首次尝试因逐页内存映射设置低效主动停止，改成连续区间映射后完整运行正常；first-run-hypotheses.json保留误把API枚举等同输入以及HD422假设失败的原始结果，未把失败擦除。

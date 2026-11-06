@@ -1,0 +1,20 @@
+000144a8 cmp        w0, #0x17
+000144ac b.hi       #0x144f0
+000144b0 stp        x29, x30, [sp, #-0xe0]!
+000144b4 mov        x4, x1
+000144b8 mov        w3, w0
+000144bc mov        w0, #0x871
+000144c0 mov        x29, sp
+000144c4 mov        w5, #1
+000144c8 add        x1, x29, #0x10
+000144cc mov        w2, #0xd0
+000144d0 movk       w0, #0x8092, lsl #16
+000144d4 str        w5, [x29, #0x10]
+000144d8 str        w3, [x29, #0x18]
+000144dc str        x4, [x29, #0x20]
+000144e0 bl         #0x144e0 ; [{"symbol": "upm_notify_wrapper_async", "addend": 0, "type": 283, "section": 2}]
+000144e4 ldp        x29, x30, [sp], #0xe0
+000144e8 ret        
+000144ec nop        
+000144f0 mov        w0, #-0x400
+000144f4 ret        

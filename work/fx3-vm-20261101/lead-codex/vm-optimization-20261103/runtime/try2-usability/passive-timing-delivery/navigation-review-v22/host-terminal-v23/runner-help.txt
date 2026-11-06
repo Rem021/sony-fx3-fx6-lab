@@ -1,0 +1,18 @@
+usage: run_trial_v22_navigation_review.py [-h] [--port PORT]
+                                          [--max-minutes MAX_MINUTES]
+                                          [--max-steps MAX_STEPS]
+                                          [--internal-hoststep]
+                                          [--exit-at-phase {pre-bind,bound-before-first-frame}]
+
+FX3 固件菜单本机试用
+
+options:
+  -h, --help            show this help message and exit
+  --port PORT           127.0.0.1 本地端口，默认8765
+  --max-minutes MAX_MINUTES
+                        会话上限，1..120分钟；默认60分钟
+  --max-steps MAX_STEPS
+                        会话按键上限，32..4096；默认4096
+  --internal-hoststep   内部逐键文件门；不启动网页服务，不构成浏览器验收
+  --exit-at-phase {pre-bind,bound-before-first-frame}
+                        有界退出边界验证

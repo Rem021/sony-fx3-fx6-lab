@@ -1,0 +1,798 @@
+{
+  "schema": "fx6-framed-map-observation-result-v1",
+  "task": "task_442d30198774",
+  "dispatch": "ctx_f1fed7ed32e7",
+  "status": "ONE_START_USED_OBSERVATION_FAILED_HOST_CLEAN_NOT_BOOT_MENU",
+  "generated_utc": "2026-11-06T08:47:49.462896+00:00",
+  "run_id": "fx6-framed-map-20261106T083817Z",
+  "run_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/run",
+  "evidence_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z",
+  "report": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/REPORT.md",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "volume_uuid_expected": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "starts_max": 1,
+  "starts_used_before": 0,
+  "starts_used": 1,
+  "keys_max": 0,
+  "keys_injected": 0,
+  "observation_seconds_max": 150,
+  "launch_to_cleanup_seconds_max": 180,
+  "within_observation_limit": true,
+  "within_launch_cleanup_limit": true,
+  "no_second_start": true,
+  "automatic_retry": false,
+  "deployed": false,
+  "authorization": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-framed-map-approval-20261106T083425Z.json",
+    "sha256_original": "f5c7bb754544a6093178d43b4e8632ea5e85c08e6fb5e0c9e726801104b01589",
+    "sha256_current": "f5c7bb754544a6093178d43b4e8632ea5e85c08e6fb5e0c9e726801104b01589",
+    "file_unchanged": true,
+    "preserved_copy": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/authorization.json",
+    "user_exact": "批准新诊断包一次观察",
+    "starts_used_in_file": 0,
+    "status_in_file": "authorized_once_pending_execution",
+    "consumption_record": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/approval-consumption.json",
+    "note": "approval JSON left as issued; consumption is recorded in launch-allowance.json / approval-consumption.json"
+  },
+  "plan": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-framed-map-observation-run-plan.json",
+    "sha256": "3e23cf6c2021592333af96a717f34b019d15bd8115e17911d7b8eb68f96912b8",
+    "file_unchanged": true
+  },
+  "manifest": {
+    "candidate": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/SHA256SUMS",
+      "sha256": "59d83b282ce5e614377d7655176c16eddba4e900f841426c3891de89a5c9317e",
+      "expected": "59d83b282ce5e614377d7655176c16eddba4e900f841426c3891de89a5c9317e",
+      "count": 59,
+      "all_match_after": true,
+      "unchanged": true
+    },
+    "r6": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-read-observer-candidate/SHA256SUMS",
+      "sha256": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49",
+      "expected": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49",
+      "count": 337,
+      "all_match_after": true,
+      "unchanged": true
+    }
+  },
+  "pinned_inputs": {
+    "before": {
+      "baseline": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+        "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+        "expected_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669"
+      },
+      "qemu": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+        "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+        "expected_sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+      },
+      "kernel": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+        "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+        "expected_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+      },
+      "dtb": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+        "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+        "expected_sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7"
+      },
+      "old_cpio_3a08": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal46.cpio",
+        "sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+        "expected_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b"
+      },
+      "appfw": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/grm-fbinit/appFw-future-skip.so",
+        "sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+        "expected_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be"
+      },
+      "new_cpio": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/fx6-map-observer-grmreal46.cpio",
+        "sha256": "9d4f255b0a3995b0e056e210ae4d27c8129e2c853b35904a688b6ffe149529ae",
+        "expected_sha256": "9d4f255b0a3995b0e056e210ae4d27c8129e2c853b35904a688b6ffe149529ae"
+      },
+      "target_elf": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/fx3-map-snapshot-aarch64",
+        "sha256": "9df5a10a2d22f49e5a2313bcbb0f829cefc26c51cb7e629e5f259a4808c9fed2",
+        "expected_sha256": "9df5a10a2d22f49e5a2313bcbb0f829cefc26c51cb7e629e5f259a4808c9fed2"
+      },
+      "init_patched": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/init.patched",
+        "sha256": "6c0c8dd76360cd12917a84827ab0353fa0c3fefe1d42f2ad9721377cea06df79",
+        "expected_sha256": "6c0c8dd76360cd12917a84827ab0353fa0c3fefe1d42f2ad9721377cea06df79"
+      },
+      "approval": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-framed-map-approval-20261106T083425Z.json",
+        "sha256": "f5c7bb754544a6093178d43b4e8632ea5e85c08e6fb5e0c9e726801104b01589",
+        "expected_sha256": null
+      },
+      "plan": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-framed-map-observation-run-plan.json",
+        "sha256": "3e23cf6c2021592333af96a717f34b019d15bd8115e17911d7b8eb68f96912b8",
+        "expected_sha256": null
+      },
+      "candidate_sha256sums": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/SHA256SUMS",
+        "sha256": "59d83b282ce5e614377d7655176c16eddba4e900f841426c3891de89a5c9317e",
+        "expected_sha256": "59d83b282ce5e614377d7655176c16eddba4e900f841426c3891de89a5c9317e"
+      },
+      "r6_sha256sums": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-read-observer-candidate/SHA256SUMS",
+        "sha256": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49",
+        "expected_sha256": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49"
+      }
+    },
+    "after": {
+      "baseline": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+        "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+        "bytes": 4545,
+        "expected_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+        "expected_match": true,
+        "before_match": true
+      },
+      "qemu": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+        "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+        "bytes": 36163584,
+        "expected_sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+        "expected_match": true,
+        "before_match": true
+      },
+      "kernel": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+        "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+        "bytes": 6610952,
+        "expected_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+        "expected_match": true,
+        "before_match": true
+      },
+      "dtb": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+        "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+        "bytes": 10355,
+        "expected_sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+        "expected_match": true,
+        "before_match": true
+      },
+      "old_cpio_3a08": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal46.cpio",
+        "sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+        "bytes": 453184500,
+        "expected_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+        "expected_match": true,
+        "before_match": true
+      },
+      "appfw": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/grm-fbinit/appFw-future-skip.so",
+        "sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+        "bytes": 50520424,
+        "expected_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+        "expected_match": true,
+        "before_match": true
+      },
+      "new_cpio": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/fx6-map-observer-grmreal46.cpio",
+        "sha256": "9d4f255b0a3995b0e056e210ae4d27c8129e2c853b35904a688b6ffe149529ae",
+        "bytes": 453306948,
+        "expected_sha256": "9d4f255b0a3995b0e056e210ae4d27c8129e2c853b35904a688b6ffe149529ae",
+        "expected_match": true,
+        "before_match": true
+      },
+      "target_elf": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/fx3-map-snapshot-aarch64",
+        "sha256": "9df5a10a2d22f49e5a2313bcbb0f829cefc26c51cb7e629e5f259a4808c9fed2",
+        "bytes": 122264,
+        "expected_sha256": "9df5a10a2d22f49e5a2313bcbb0f829cefc26c51cb7e629e5f259a4808c9fed2",
+        "expected_match": true,
+        "before_match": true
+      },
+      "init_patched": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/init.patched",
+        "sha256": "6c0c8dd76360cd12917a84827ab0353fa0c3fefe1d42f2ad9721377cea06df79",
+        "bytes": 21239,
+        "expected_sha256": "6c0c8dd76360cd12917a84827ab0353fa0c3fefe1d42f2ad9721377cea06df79",
+        "expected_match": true,
+        "before_match": true
+      },
+      "approval": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-framed-map-approval-20261106T083425Z.json",
+        "sha256": "f5c7bb754544a6093178d43b4e8632ea5e85c08e6fb5e0c9e726801104b01589",
+        "bytes": 1206,
+        "expected_sha256": null,
+        "expected_match": true,
+        "before_match": true
+      },
+      "plan": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-framed-map-observation-run-plan.json",
+        "sha256": "3e23cf6c2021592333af96a717f34b019d15bd8115e17911d7b8eb68f96912b8",
+        "bytes": 2411,
+        "expected_sha256": null,
+        "expected_match": true,
+        "before_match": true
+      },
+      "candidate_sha256sums": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/SHA256SUMS",
+        "sha256": "59d83b282ce5e614377d7655176c16eddba4e900f841426c3891de89a5c9317e",
+        "bytes": 5496,
+        "expected_sha256": "59d83b282ce5e614377d7655176c16eddba4e900f841426c3891de89a5c9317e",
+        "expected_match": true,
+        "before_match": true
+      },
+      "r6_sha256sums": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-read-observer-candidate/SHA256SUMS",
+        "sha256": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49",
+        "bytes": 39607,
+        "expected_sha256": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49",
+        "expected_match": true,
+        "before_match": true
+      }
+    },
+    "unchanged": true,
+    "baseline_binding_verify_artifacts_ok": true,
+    "baseline_binding_result": {
+      "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+      "app_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+      "target_cpio_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+      "artifacts": 5
+    },
+    "baseline_binding_error": null
+  },
+  "argv": {
+    "length": 34,
+    "expected_length": 34,
+    "diff_indexes": [
+      20,
+      31
+    ],
+    "diff_count": 2,
+    "serial_arg": "file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/run/serial.log",
+    "initrd_arg": "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/fx6-map-observer-grmreal46.cpio,addr=0x440000000,force-raw=on",
+    "old_serial": "file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/serial.log",
+    "env": {
+      "FX3_VM_ESRAM_RAM": "1",
+      "FX3_VM_HIGH_DDR": "1",
+      "FX3_VM_SONY_TIMER": "1",
+      "FX3_VM_SCU_REQUEST": "1",
+      "FX3_VM_GPIO_BANK5": "1"
+    },
+    "policy": "one start; zero keys; private output; no guest writes by observer",
+    "same_platform_params": [
+      "virt,gic-version=2,secure=off",
+      "tcg,thread=multi",
+      "cortex-a35",
+      "4",
+      "5120"
+    ]
+  },
+  "timing": {
+    "cli_pid": 23055,
+    "qemu_pid": 23106,
+    "qemu_ppid": 23055,
+    "start_utc": "2026-11-06T08:40:15.988197+00:00",
+    "end_utc": "2026-11-06T08:40:53.073802+00:00",
+    "cli_wall_seconds": 37.086,
+    "cli_exit": 1,
+    "qemu_first_seen_utc": "2026-11-06T08:40:19.346415+00:00",
+    "qemu_last_seen_utc": "2026-11-06T08:40:52.142328+00:00",
+    "qemu_visible_seconds_upper": 32.796,
+    "qemu_sightings": 131,
+    "qemu_present_after_cli": false,
+    "qemu_fallback_cleanup": {
+      "attempted": false,
+      "initial": [],
+      "actions": []
+    },
+    "lsof_locks_first": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME\nPython  23055 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock\nPython  23055 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock\n",
+    "lsof_locks_final": ""
+  },
+  "receipt": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/run/receipt.json",
+    "sha256": "a1a2ad2fc15fcc0d005ad0eaf4d4cca53d68ce6fb8e7494394ccbbff95c556a6",
+    "status": "error",
+    "error": "ProtocolError('collector ERROR: FX3MS1 ERROR pid=237 starttime=1490 seq=1 reason=short_read_more_data')",
+    "records_count": 0,
+    "records": [],
+    "two_keys_observed": false,
+    "host_cleanup_complete": true,
+    "clean": false,
+    "guest_restore_status": "unknown_not_attempted",
+    "boot_menu_passed": false,
+    "locks_released": true,
+    "qemu_exit": 0,
+    "input_unchanged_after": true,
+    "verification_failed": false,
+    "postflight_error": null,
+    "checks": {
+      "serial_sha256_matches_receipt": true,
+      "command_sha256_matches_receipt": true,
+      "target_cpio_sha256": true,
+      "appfw_sha256": true,
+      "preflight_target_cpio": true,
+      "preflight_appfw": true,
+      "postflight_input_unchanged": true,
+      "postflight_error_none": true,
+      "verification_failed_false": true,
+      "input_unchanged_after": true,
+      "cleanup_qemu_reaped": true,
+      "cleanup_qemu_exit_zero": true,
+      "cleanup_lock_released": true,
+      "cleanup_stop_confirmed": true,
+      "cleanup_breakpoints_all_removed": true,
+      "cleanup_breakpoints_residual_empty": true,
+      "host_cleanup_complete": true,
+      "two_keys_observed": false,
+      "guest_restore_status": true,
+      "boot_menu_passed_false": true
+    },
+    "consistency_ok": true
+  },
+  "cli": {
+    "stdout": {
+      "status": "FAILED",
+      "two_keys_observed": false,
+      "host_cleanup_complete": true,
+      "input_unchanged_after": true,
+      "postflight_error": null,
+      "verification_failed": false,
+      "guest_restore_status": "unknown_not_attempted",
+      "boot_menu_passed": false,
+      "receipt": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/run/receipt.json"
+    },
+    "stderr": "",
+    "exit": 1
+  },
+  "framed_maps": {
+    "observed": false,
+    "complete_frame_count": 0,
+    "error_frame_count": 1,
+    "begin_count": 0,
+    "data_count": 0,
+    "end_count": 0,
+    "collector_error": {
+      "pid": 237,
+      "starttime": 1490,
+      "seq": 1,
+      "reason": "short_read_more_data",
+      "line": "FX3MS1 ERROR pid=237 starttime=1490 seq=1 reason=short_read_more_data",
+      "line_number": 12761,
+      "line_number_lf": 12761,
+      "line_number_bytes_splitlines": 12763,
+      "line_number_text_splitlines": 12763,
+      "line_terminator": "CRLF",
+      "byte_offset": 2022599,
+      "complete_newline_terminated": true
+    },
+    "maps_payload_bytes": 0,
+    "appfw_rows": 0,
+    "decoded": {
+      "status": "REJECTED",
+      "error_type": "ProtocolError",
+      "error": "collector ERROR: FX3MS1 ERROR pid=237 starttime=1490 seq=1 reason=short_read_more_data"
+    },
+    "framed_provider": {
+      "status": "REJECTED",
+      "error_type": "ProtocolError",
+      "error": "collector ERROR: FX3MS1 ERROR pid=237 starttime=1490 seq=1 reason=short_read_more_data"
+    },
+    "appfw_elf_identity_verified": false,
+    "elf_identity_checks_reached": false,
+    "target_helper_executed_guest_evidence": true,
+    "target_helper_execution_result": "FX3MS1 ERROR short_read_more_data",
+    "target_helper_static": {
+      "sha256": "9df5a10a2d22f49e5a2313bcbb0f829cefc26c51cb7e629e5f259a4808c9fed2",
+      "bytes": 122264,
+      "e_type": 2,
+      "e_machine": 183,
+      "e_entry": "0x210ab0",
+      "pt_interp": false,
+      "pt_dynamic": false
+    },
+    "file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/frame-analysis.json"
+  },
+  "two_keys": {
+    "observed": false,
+    "records": [],
+    "records_count": 0,
+    "error": "ProtocolError('collector ERROR: FX3MS1 ERROR pid=237 starttime=1490 seq=1 reason=short_read_more_data')",
+    "mapping_not_armed": true,
+    "note": "mapping provider failed before QMP stop/RSP arm; no entry/return values exist"
+  },
+  "serial": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/run/serial.log",
+    "sha256": "6a397851b49ce874c8acccb3b1c6d72ee6ed6ab1d10e87b43d394ed0f220571a",
+    "bytes": 2026572,
+    "newline_count": 12849,
+    "lf_line_count": 12849,
+    "splitlines_count": 12851,
+    "bytes_splitlines_count": 12851,
+    "ends_with_newline": true,
+    "fx3ms1_line_count": 1,
+    "markers": {
+      "FX3_AP_EARLY_MAPS": 10,
+      "FX3_AP_IM_ENDMAPS": 28,
+      "assert at": 2,
+      "Kernel panic": 0,
+      "Internal error": 0,
+      "FX3MS1": 1
+    }
+  },
+  "serial_faults": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/serial-faults.json",
+    "exit": 1,
+    "exit_note": "1 means asserts detected; it is a scan result, not a run failure",
+    "stdout": "{\"status\": \"asserts_detected\", \"asserts\": 2, \"fatal\": 0, \"exit_code\": 1, \"output\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/serial-faults.json\"}",
+    "stderr": "",
+    "status": "asserts_detected",
+    "line_terminated": true,
+    "capture_complete": null,
+    "lines": 12851,
+    "sha256": "6a397851b49ce874c8acccb3b1c6d72ee6ed6ab1d10e87b43d394ed0f220571a",
+    "bytes": 2026572,
+    "assert_count": 2,
+    "kernel_fault_count": 0,
+    "fault_marker_count": 2,
+    "fault_markers": [
+      "assert at model_api.cpp:3147",
+      "assert at model_api.cpp:3176"
+    ],
+    "screen_markers": {
+      "FX3_AP89_SCREEN_CREATE": 0,
+      "FX3_AP89_UUD_DECISION": 0,
+      "FX3_MENU": 0
+    }
+  },
+  "cleanup": {
+    "host_cleanup_complete": true,
+    "stop_confirmed": true,
+    "breakpoints": {
+      "all_removed": true,
+      "residual": []
+    },
+    "breakpoints_armed": false,
+    "breakpoints_residual": [],
+    "inherited": "not_attempted_stop_only",
+    "guest_restore_status": "unknown_not_attempted",
+    "qemu_reaped": true,
+    "qemu_exit": 0,
+    "lock_released_receipt": true,
+    "our_lock_released_independently": true,
+    "locks_available_now": false,
+    "lock_holders_now": [
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      },
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      }
+    ],
+    "external_lock_holders": [
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      },
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      }
+    ],
+    "own_processes_absent_now": true,
+    "other_runs_present_at_postrun": true,
+    "processes_absent_now": true,
+    "sockets": {
+      "q": false,
+      "g": false
+    },
+    "sockets_absent": true,
+    "clean_flag": false,
+    "cleanup_errors": [],
+    "preserved_external_observation": {
+      "schema": "fx6-framed-map-external-run-observation-v1",
+      "observed_utc": "2026-11-06T08:44:19.446875+00:00",
+      "note": "different run observed while collecting postrun evidence; not ours and not touched",
+      "other_qemu_processes": [
+        {
+          "pid": 24648,
+          "ppid": 24645,
+          "stat": "Ss",
+          "command": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb -machine virt,gic-version=2,secure=off -accel tcg,thread=multi -cpu cortex-a35 -smp 4 -m 5120 -display none -nodefaults -nic none -no-reboot -monitor none -serial file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-0cbb3d0f/serial.log -qmp unix:q,server=on,wait=off -chardev socket,path=g,server=on,wait=off,id=keygate93 -gdb chardev:keygate93 -S -kernel /Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal62.cpio,addr=0x440000000,force-raw=on -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb,addr=0x400002000,force-raw=on -s"
+        }
+      ],
+      "external_qemu_pids": [
+        24648
+      ],
+      "external_lock_holders": [
+        {
+          "pid": 24645,
+          "raw": "Python  24645 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock"
+        },
+        {
+          "pid": 24645,
+          "raw": "Python  24645 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock"
+        }
+      ],
+      "external_lock_holder_pids": [
+        24645
+      ],
+      "lsof_after_run": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME\nPython  24645 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock\nPython  24645 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock\n",
+      "our_cli_pid": 23055,
+      "our_qemu_pid": 23106,
+      "our_receipt_lock_released": true,
+      "conclusion": "our run released its locks; the observed holders were a different run and were not touched"
+    }
+  },
+  "processes": {
+    "cli_pid": 23055,
+    "qemu_pid": 23106,
+    "cli_present_now": false,
+    "qemu_present_now": false,
+    "own_qemu_processes": [],
+    "other_qemu_processes": [
+      {
+        "pid": 26889,
+        "ppid": 26883,
+        "stat": "Ss",
+        "command": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb -machine virt,gic-version=2,secure=off -accel tcg,thread=multi -cpu cortex-a35 -smp 4 -m 5120 -display none -nodefaults -nic none -no-reboot -monitor none -serial file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-3855152a/serial.log -qmp unix:q,server=on,wait=off -chardev socket,path=g,server=on,wait=off,id=keygate93 -gdb chardev:keygate93 -S -kernel /Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal64.cpio,addr=0x440000000,force-raw=on -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb,addr=0x400002000,force-raw=on"
+      }
+    ],
+    "own_observer_processes": [],
+    "other_observer_processes": [],
+    "own_processes_absent_now": true,
+    "other_runs_present_at_postrun": true,
+    "processes_absent_now": true,
+    "not_ours_note": "other_qemu_processes/other_observer_processes are different runs; they were observed only and not touched",
+    "ps_final_matches": [],
+    "ps_final_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/ps-final.txt",
+    "ps_first_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/ps-first.txt"
+  },
+  "locks": {
+    "paths": [
+      "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock"
+    ],
+    "lsof_during_run": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME\nPython  23055 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock\nPython  23055 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock\n",
+    "lsof_after_run": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME\nPython  26883 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock\nPython  26883 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock\n",
+    "holders_after_run": [
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      },
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      }
+    ],
+    "external_holders_after_run": [
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      },
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      }
+    ],
+    "external_qemu_pids": [
+      26889
+    ],
+    "probe_after_run": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "exists": true,
+        "free": false
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "exists": true,
+        "free": false
+      }
+    ],
+    "available_after_run": false,
+    "no_holders_after_run": false,
+    "receipt_lock_released": true,
+    "our_lock_holder_seen_after_run": false,
+    "our_lock_released_independently": true,
+    "external_run_holds_locks": true,
+    "note": "locks_available_after_run reflects the final postrun pass. external-run-observation.json preserves an earlier pass where a different run held both locks; that run was not touched. Our receipt lock_released=true and our CLI pid is absent.",
+    "preserved_external_observation": {
+      "schema": "fx6-framed-map-external-run-observation-v1",
+      "observed_utc": "2026-11-06T08:44:19.446875+00:00",
+      "note": "different run observed while collecting postrun evidence; not ours and not touched",
+      "other_qemu_processes": [
+        {
+          "pid": 24648,
+          "ppid": 24645,
+          "stat": "Ss",
+          "command": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb -machine virt,gic-version=2,secure=off -accel tcg,thread=multi -cpu cortex-a35 -smp 4 -m 5120 -display none -nodefaults -nic none -no-reboot -monitor none -serial file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-0cbb3d0f/serial.log -qmp unix:q,server=on,wait=off -chardev socket,path=g,server=on,wait=off,id=keygate93 -gdb chardev:keygate93 -S -kernel /Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal62.cpio,addr=0x440000000,force-raw=on -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb,addr=0x400002000,force-raw=on -s"
+        }
+      ],
+      "external_qemu_pids": [
+        24648
+      ],
+      "external_lock_holders": [
+        {
+          "pid": 24645,
+          "raw": "Python  24645 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock"
+        },
+        {
+          "pid": 24645,
+          "raw": "Python  24645 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock"
+        }
+      ],
+      "external_lock_holder_pids": [
+        24645
+      ],
+      "lsof_after_run": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME\nPython  24645 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock\nPython  24645 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock\n",
+      "our_cli_pid": 23055,
+      "our_qemu_pid": 23106,
+      "our_receipt_lock_released": true,
+      "conclusion": "our run released its locks; the observed holders were a different run and were not touched"
+    }
+  },
+  "external_runs_observed_at_postrun": {
+    "final_pass_other_qemu_processes": [
+      {
+        "pid": 26889,
+        "ppid": 26883,
+        "stat": "Ss",
+        "command": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb -machine virt,gic-version=2,secure=off -accel tcg,thread=multi -cpu cortex-a35 -smp 4 -m 5120 -display none -nodefaults -nic none -no-reboot -monitor none -serial file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-3855152a/serial.log -qmp unix:q,server=on,wait=off -chardev socket,path=g,server=on,wait=off,id=keygate93 -gdb chardev:keygate93 -S -kernel /Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal64.cpio,addr=0x440000000,force-raw=on -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb,addr=0x400002000,force-raw=on"
+      }
+    ],
+    "final_pass_external_lock_holders": [
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      },
+      {
+        "pid": 26883,
+        "raw": "Python  26883 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "process": {
+          "pid": 26883,
+          "ppid": 26882,
+          "stat": "S",
+          "command": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B run_gpecap13_once.py --run --seconds 60"
+        },
+        "is_ours": false
+      }
+    ],
+    "preserved_earlier_observation": {
+      "schema": "fx6-framed-map-external-run-observation-v1",
+      "observed_utc": "2026-11-06T08:44:19.446875+00:00",
+      "note": "different run observed while collecting postrun evidence; not ours and not touched",
+      "other_qemu_processes": [
+        {
+          "pid": 24648,
+          "ppid": 24645,
+          "stat": "Ss",
+          "command": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb -machine virt,gic-version=2,secure=off -accel tcg,thread=multi -cpu cortex-a35 -smp 4 -m 5120 -display none -nodefaults -nic none -no-reboot -monitor none -serial file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-0cbb3d0f/serial.log -qmp unix:q,server=on,wait=off -chardev socket,path=g,server=on,wait=off,id=keygate93 -gdb chardev:keygate93 -S -kernel /Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal62.cpio,addr=0x440000000,force-raw=on -device loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb,addr=0x400002000,force-raw=on -s"
+        }
+      ],
+      "external_qemu_pids": [
+        24648
+      ],
+      "external_lock_holders": [
+        {
+          "pid": 24645,
+          "raw": "Python  24645 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock"
+        },
+        {
+          "pid": 24645,
+          "raw": "Python  24645 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock"
+        }
+      ],
+      "external_lock_holder_pids": [
+        24645
+      ],
+      "lsof_after_run": "COMMAND   PID USER   FD   TYPE DEVICE SIZE/OFF     NODE NAME\nPython  24645 kafu    3r   REG   1,34        0 13733025 /Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock\nPython  24645 kafu    4r   REG   1,34        0 13739990 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock\n",
+      "our_cli_pid": 23055,
+      "our_qemu_pid": 23106,
+      "our_receipt_lock_released": true,
+      "conclusion": "our run released its locks; the observed holders were a different run and were not touched"
+    },
+    "preserved_holder_pids": [
+      24645
+    ],
+    "preserved_qemu_pids": [
+      24648
+    ],
+    "touched": false,
+    "note": "a different run was observed during evidence collection; it is not ours and was not touched"
+  },
+  "launch_allowance": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z/launch-allowance.json",
+    "sha256": "c0217c27dc48167e5dd594a8743cb0f83cc78712418ea5d19c965510e36564a8",
+    "starts_used": 1,
+    "starts_max": 1,
+    "keys_max": 0,
+    "status": "ONE_START_USED_OBSERVATION_FAILED_HOST_CLEAN",
+    "busy_lock_consumes_start": false,
+    "no_second_start": true,
+    "automatic_retry": false
+  },
+  "documentation_discrepancy": {
+    "target_elf_entry_actual": "0x210ab0",
+    "target_elf_entry_in_accepted_REPORT": "0x210a80",
+    "matches": false,
+    "note": "ELF/CPIO hashes match the accepted manifest; the accepted REPORT.md entry text is stale. The runtime helper error path does not depend on this textual field."
+  },
+  "limits": [
+    "One authorized start was used; observation failed before any framed map, arm or two-key stop; no retry and no second start.",
+    "The guest executed the diagnostic helper but it returned FX3MS1 ERROR reason=short_read_more_data; no BEGIN/DATA/END payload exists, so framed-map completeness and appFw ELF identity were not observed.",
+    "No two-key entry/return values exist; actual TLS/Sysregs and the two-key read path were not exercised.",
+    "Host cleanup is independently verified for our run (QEMU 23106 exit 0/reaped, receipt lock_released=true, our PID absent, no residual breakpoints); external lock occupancy observed at postrun is a different run and was not touched. Guest restore was not attempted (unknown_not_attempted) and boot/menu is false.",
+    "Serial fault scan only reports marker visibility (2 asserts, 0 kernel fault markers); it is not boot/menu acceptance.",
+    "The accepted REPORT.md says target helper entry 0x210a80 while the manifest-bound ELF entry is 0x210ab0; hashes/CPIO member match, so this is a documentation discrepancy, not an input drift.",
+    "The earlier host fake E2E used a fixture TLS reader; this live run did not reach a key stop, so actual Sysregs/TLS is not verified.",
+    "target_io write retries have no independent write deadline and rely on the existing HostRunner lifecycle; this run failed before the write path, and cleanup needed no action beyond the owned QEMU 23106 (exit 0, reaped).",
+    "Different-run lock occupancy was observed during postrun evidence collection (earlier: holder PIDs 24645, QEMU 24648; this pass: holder PIDs 26883, QEMU 26889). None were ours and none were touched; our own release is proven by the receipt and our absent PID."
+  ],
+  "note": "single approved framed-map observation; collector-side short-read error; no retry; no deployment; no boot/menu claim"
+}

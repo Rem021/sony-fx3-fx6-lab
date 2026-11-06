@@ -1,0 +1,148 @@
+{
+  "schema": "fx3-poweroff-native-events-readonly-v1",
+  "appFw_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "event_name_table": {
+    "0x10004": {
+      "row_va": "0x41716b0",
+      "string_va": "0x3c3da4a",
+      "name": "MODEL_MEDIA_EJECTED_INITIAL_SLOT1"
+    },
+    "0x10005": {
+      "row_va": "0x41716c0",
+      "string_va": "0x3c3da6c",
+      "name": "MODEL_MEDIA_EJECTED_INITIAL_SLOT2"
+    },
+    "0x3002c": {
+      "row_va": "0x41719e0",
+      "string_va": "0x3c3e077",
+      "name": "MODEL_POWER_OFF"
+    },
+    "0x30172": {
+      "row_va": "0x4172e40",
+      "string_va": "0x3c40ef2",
+      "name": "MODEL_BATTERY_REMAIN_CHANGED"
+    },
+    "0x30173": {
+      "row_va": "0x4172e50",
+      "string_va": "0x3c40f0f",
+      "name": "MODEL_SUB_BATTERY_REMAIN_CHANGED"
+    }
+  },
+  "runs": {
+    "user_try2": {
+      "serial_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-70588c4c/serial.log",
+      "serial_sha256": "6a025dca9a6144a7695d01099fce1fe62cbe77586f063cdc93bb699dcf256402",
+      "uud_decision_byte": 2371210,
+      "uud_decision": "FX3_AP89_UUD_DECISION native_update_return=0 mode143=1 option145=0 native_branch_follows=2380320 forced=0",
+      "native_events": [
+        {
+          "serial_byte": 2054553,
+          "tid": 379,
+          "event": "0x10005",
+          "name": "MODEL_MEDIA_EJECTED_INITIAL_SLOT2",
+          "raw28": "05000100000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2054984,
+          "tid": 379,
+          "event": "0x10004",
+          "name": "MODEL_MEDIA_EJECTED_INITIAL_SLOT1",
+          "raw28": "04000100000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2065594,
+          "tid": 379,
+          "event": "0x30172",
+          "name": "MODEL_BATTERY_REMAIN_CHANGED",
+          "raw28": "72010300000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2066566,
+          "tid": 379,
+          "event": "0x30173",
+          "name": "MODEL_SUB_BATTERY_REMAIN_CHANGED",
+          "raw28": "73010300000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2123914,
+          "tid": 379,
+          "event": "0x30172",
+          "name": "MODEL_BATTERY_REMAIN_CHANGED",
+          "raw28": "72010300000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2137647,
+          "tid": 379,
+          "event": "0x30173",
+          "name": "MODEL_SUB_BATTERY_REMAIN_CHANGED",
+          "raw28": "73010300000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 17774589,
+          "tid": 379,
+          "event": "0x3002c",
+          "name": "MODEL_POWER_OFF",
+          "raw28": "2c000300000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    "internal_v2": {
+      "serial_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/serial.log",
+      "serial_sha256": "8157737391d2d8e3acf46790312826b0084539bda82e2bbe228bc1f1d6f1d16b",
+      "uud_decision_byte": 2363209,
+      "uud_decision": "FX3_AP89_UUD_DECISION native_update_return=0 mode143=1 option145=0 native_branch_follows=2380320 forced=0",
+      "native_events": [
+        {
+          "serial_byte": 2047347,
+          "tid": 379,
+          "event": "0x10005",
+          "name": "MODEL_MEDIA_EJECTED_INITIAL_SLOT2",
+          "raw28": "05000100000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2047643,
+          "tid": 379,
+          "event": "0x10004",
+          "name": "MODEL_MEDIA_EJECTED_INITIAL_SLOT1",
+          "raw28": "04000100000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2056456,
+          "tid": 379,
+          "event": "0x30172",
+          "name": "MODEL_BATTERY_REMAIN_CHANGED",
+          "raw28": "72010300000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2058255,
+          "tid": 379,
+          "event": "0x30173",
+          "name": "MODEL_SUB_BATTERY_REMAIN_CHANGED",
+          "raw28": "73010300000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2059970,
+          "tid": 379,
+          "event": "0x30172",
+          "name": "MODEL_BATTERY_REMAIN_CHANGED",
+          "raw28": "72010300000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 2075165,
+          "tid": 379,
+          "event": "0x30173",
+          "name": "MODEL_SUB_BATTERY_REMAIN_CHANGED",
+          "raw28": "73010300000000000000000000000000000000000000000000000000"
+        },
+        {
+          "serial_byte": 21730929,
+          "tid": 379,
+          "event": "0x3002c",
+          "name": "MODEL_POWER_OFF",
+          "raw28": "2c000300000000000000000000000000000000000000000000000000"
+        }
+      ]
+    }
+  },
+  "inference_limit": "Serial byte order is emission order, not elapsed time or source-causation; native 28B event payload here has zero fields after ID. Both runs have AP89 UUD return 0, unlike old AP87 UUD return 1. No UPM notification payload, power factor/type, or actual setting readback is captured."
+}

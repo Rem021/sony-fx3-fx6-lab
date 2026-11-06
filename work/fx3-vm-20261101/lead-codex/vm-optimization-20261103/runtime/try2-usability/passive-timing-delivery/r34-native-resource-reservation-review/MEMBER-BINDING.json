@@ -1,0 +1,39 @@
+{
+  "cpio_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+  "member_count": 1140,
+  "selected": [
+    {
+      "member": "setting/DmmCfg.bin",
+      "header_offset": 7126468,
+      "data_offset": 7126600,
+      "bytes": 66796,
+      "sha256": "48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1",
+      "extracted": false
+    },
+    {
+      "member": "usr/kmod/dmm.ko",
+      "header_offset": 50129384,
+      "data_offset": 50129512,
+      "bytes": 118336,
+      "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "extracted": true
+    },
+    {
+      "member": "usr/kmod/grm_ma.ko",
+      "header_offset": 50401688,
+      "data_offset": 50401820,
+      "bytes": 36592,
+      "sha256": "6b579c7632bb90a6fe8c97d037abe24f5eb6b840823aa3a0ac8fdbed61ceee12",
+      "extracted": false
+    },
+    {
+      "member": "usr/lib/libObj.so",
+      "header_offset": 169543808,
+      "data_offset": 169543936,
+      "bytes": 2876600,
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "extracted": true
+    }
+  ],
+  "scope": "Only libObj.so and dmm.ko extracted; config and MA compared in-place without guest execution"
+}

@@ -1,0 +1,190 @@
+{
+  "schema": "fx3-minimal-msc-review-packet/1",
+  "prepared_utc": "2026-10-25T16:56:44.402498+00:00",
+  "state": "REVIEWABLE_PREPARATION_ONLY_NOT_READY",
+  "volume_uuid_verified_before_writes": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "current_authorization_scope": "Windows cached PnP inventory only; no active device action performed or enabled",
+  "binding_missing": true,
+  "active_entry_disabled": true,
+  "active_build_symbol_defined": false,
+  "ready_to_run": false,
+  "active_execution_command": null,
+  "user_approved_active_execution": false,
+  "default_command": "& .\\Review-Fx3Msc.ps1 -Mode DryRun",
+  "next_cached_only_command_for_coordinator_review": "& .\\Review-Fx3Msc.ps1 -Mode CachedAssociations -OutputFile .\\fx3-cached-associations.private.json",
+  "cached_mode_compiles_only": [
+    "Fx3CachedAssociations.cs"
+  ],
+  "cached_mode_device_open_functions_present": false,
+  "cached_mode_sources": [
+    "present GUID_DEVINTERFACE_DISK interfaces / SetupAPI metadata",
+    "CM_Get_Parent cached devnode ancestry",
+    "cached devnode hardware IDs, service, bus description, status",
+    "Win32_PnPSignedDriver filtered to VID_054C&PID_0DA1, exact hashed USB parent match"
+  ],
+  "cached_mode_host_output_precondition": "Existing verified Windows host-local task directory; plain new JSON beside reviewed package, never card/device/network paths",
+  "private_path_handling": "Interface path remains local private metadata; no separately requested SerialNumber; no raw instance IDs printed",
+  "known_target_cache": {
+    "captured_utc": "2026-10-25T09:54:17.7315333Z",
+    "usb_vid": "054C",
+    "usb_pid": "0DA1",
+    "bus_description": "ILME-FX3",
+    "usb_service": "USBSTOR",
+    "driver_provider": "Microsoft",
+    "driver_version": "10.0.26100.9444",
+    "driver_signed": true,
+    "disk_interface_path": null,
+    "usb_parent_identity_hash": null,
+    "disk_node_identity_hash": null,
+    "adapter_alignment_mask": null,
+    "body_program_sha256": null
+  },
+  "proposed_single_application_command": {
+    "cdb_hex": "12 00 00 00 60 00",
+    "cdb_length": 6,
+    "evpd": false,
+    "page_code": 0,
+    "allocation_length": 96,
+    "direction": "SCSI_IOCTL_DATA_IN=1",
+    "attempts": 1,
+    "retries": 0,
+    "explicit_sense_commands": 0,
+    "sense_info_length": 0,
+    "sense_info_offset": 0,
+    "timeout_field_seconds": 3,
+    "ioctl": "IOCTL_SCSI_PASS_THROUGH",
+    "ioctl_hex": "0x0004D004",
+    "packet_bytes": 160,
+    "header_bytes": 56,
+    "data_offset": 64,
+    "overlapped": false
+  },
+  "proposed_future_handle": {
+    "path_source": "Exact original SetupAPI disk class interface, unique ancestry-proven target only; no PhysicalDrive path or fallback",
+    "desired_access": "GENERIC_READ|GENERIC_WRITE (0xC0000000)",
+    "share_mode": "FILE_SHARE_READ|FILE_SHARE_WRITE (3)",
+    "creation_disposition": "OPEN_EXISTING (3)",
+    "flags": 0,
+    "token": "current process token only",
+    "automatic_elevation": false,
+    "administrator_membership_requirement": false,
+    "access_denied": "stop immediately; do not retry or request privilege expansion"
+  },
+  "prohibited_operations": [
+    "TEST UNIT READY",
+    "explicit REQUEST SENSE",
+    "Sony ExtCMD / INIT / auth",
+    "USB mode switching",
+    "driver install/rebind",
+    "privilege/ACL changes",
+    "automatic retries/rescue/reset/clear-halt",
+    "volume enumeration or storage content/media/file reads",
+    "native camera code execution",
+    "settings/firmware/program/WBI writes"
+  ],
+  "expected_cached_output": {
+    "stdout": [
+      "CACHED_ASSOCIATION_CANDIDATE_COUNT=n",
+      "STATE=INACTIVE; NO_DEVICE_HANDLES; NO_SCSI_COMMANDS",
+      "PRIVATE_OUTPUT_SHA256=<sha256>"
+    ],
+    "json": {
+      "active_probe_ready": false,
+      "binding_status": [
+        "MISSING",
+        "AMBIGUOUS",
+        "INCOMPLETE",
+        "UNIQUE_CACHED_CANDIDATE"
+      ],
+      "adapter_alignment_mask": null,
+      "cached_usb_driver_facts": "hash-bound parent match count/provider/version/signed; no raw instance ID"
+    }
+  },
+  "expected_future_inquiry_result": [
+    "one CreateFile status / exact Win32 error",
+    "one DeviceIoControl status / exact Win32 error",
+    "GOOD ScsiStatus only",
+    "actual transfer length 36..96, complete packet bounds",
+    "Vendor(8), Product(16), Revision(4) ASCII fields; no implicit second query",
+    "optional raw response retained only in a private host receipt"
+  ],
+  "fail_closed_conditions": [
+    "no / multiple matching disk interface candidates",
+    "wrong class / VID / PID / model / service or inactive/problem node",
+    "missing or broken cached parent ancestry / cyclic or overlong ancestry",
+    "missing original SetupAPI path or any PhysicalDrive path",
+    "driver cache absent / ambiguous / unreviewed / changed",
+    "unknown / invalid / incompatible adapter alignment",
+    "missing final source-and-binding approval / binding stale >5min or changed immediately before open",
+    "existing-token CreateFile access denied or any open failure",
+    "IOCTL error / non-GOOD SCSI status / short or malformed response"
+  ],
+  "not_proven": [
+    "C# and PowerShell compilation/runtime on Windows",
+    "actual cached disk path/per-body identity/LUN uniqueness",
+    "adapter alignment mask",
+    "CreateFile access under current token",
+    "actual INQUIRY response",
+    "firmware 7.02 full program hash / HD HEVC capability / recovery"
+  ],
+  "important_limits": [
+    "3-second TimeOutValue is not a guaranteed whole-call wall-clock bound; no asynchronous cancellation path is enabled",
+    "one application CDB does not prove Windows class/port/USB stack emits no autosense, independent background command, recovery or protocol-level retransmission",
+    "strict single-wire-command requirement is unverified and therefore not ready"
+  ],
+  "offline_validation": {
+    "passed_checks": 43,
+    "windows_or_camera_calls": 0,
+    "msvc_x64_target_clang_static_asserts": "PASS",
+    "csharp_or_powershell_compiled": false,
+    "selectors": "synthetic reference model; not C# runtime execution"
+  },
+  "final_active_approval_gate": "After cached association review, driver/alignment/stack-scope closure and Windows compile-only validation, prepare a NEW packet with real private binding hash and final source hashes; then seek specific user approval before any CreateFile. This packet is preparation, not approval.",
+  "artifact_hashes": [
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Fx3CachedAssociations.cs",
+      "bytes": 13209,
+      "sha256": "f14e6907e0e1077b3d92b38764c9aa66014563a781b4b732d8339bd4bcf0be2d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Fx3OneInquiry.cs",
+      "bytes": 7811,
+      "sha256": "8ed7dad044d64168f85140ac2f317fcee4c130e79a2f10845fa2fa78dcee4edc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/msc-probe/Review-Fx3Msc.ps1",
+      "bytes": 4869,
+      "sha256": "7e9df2455522aede99c7dc32d987ae1421d1ea2739701089e474f3b2680e19c0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/msc-probe/layout_fixture.c",
+      "bytes": 1812,
+      "sha256": "c9d73d69ac4e5cea30eb85e3eb1c376901d8680eae2a194085f6ee46d8ef8000"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline_verify.py",
+      "bytes": 8365,
+      "sha256": "c17ad08e336ca4b3cc41d160fd453e8f8ecc280874c0661066d67f8a4fde2d88"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline-verification.json",
+      "bytes": 3083,
+      "sha256": "7933cdaf4b5d505e9ff314967d650e1b43be66decab96ca73a3d0e474bfb1edf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/msc-probe/primary-source-receipt.json",
+      "bytes": 6548,
+      "sha256": "053d8cbdebef292a8b5b974685250ae3e613ce90132eb54d6d8cc5d583f39155"
+    },
+    {
+      "path": "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md",
+      "bytes": 14926,
+      "sha256": "0b970ff92438573006ccd6ff5d06bc1cb5b6fa874f34e6c8648ca90b3aafa2e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json",
+      "bytes": 1866,
+      "sha256": "01b5b580eb4378a40c8e9ea751be9201ccca8a52e8efe8a415015c6fc93ff415"
+    }
+  ]
+}

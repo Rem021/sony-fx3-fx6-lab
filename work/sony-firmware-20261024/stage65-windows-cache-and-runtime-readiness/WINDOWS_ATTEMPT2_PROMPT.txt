@@ -1,0 +1,25 @@
+FX3_CACHE_ATTEMPT2: correct only the host dispatch syntax and continue the already authorized cached-only workflow.
+
+Mac has retrieved summary.txt, stop-receipt.json, preflight-verification.json and orchestration.error.txt. They confirm the first failure was functions.exec JavaScript parsing before process launch: Unexpected identifier '$ErrorActionPreference'. Compile, DryRun and Collect all started=false; no private JSON was created; zero device handles/commands. Preserve every first-attempt receipt and all four unchanged input files. This is the first actual metadata collection, not a retry of Collect.
+
+Use this existing verified host-local working directory:
+C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-cache-associations-20261026T144834Z
+
+Recheck the four input hashes against the same pinned manifest (manifest SHA256 443dc5851f9fe097f0ab3a0f4c64c7fb2536651318081965ef3b557360f83c1e), plain host-local directory and absence of fx3-cached-associations.private.json. Reuse your already completed source review, and do not change the sources.
+
+Dispatch the following three SHORT commands separately with the structured exec_command cmd/workdir fields. They contain no PowerShell backtick characters; if functions.exec wraps them in a JavaScript String.raw template, do not add nested templates, PowerShell here-strings or another quoting layer. Do not prefix a long custom orchestration wrapper. Inspect each exit status before the next command. Never use execution-policy bypass, elevation or installs.
+
+1. Compile only in a fresh x64 process. Require exit 0 and COMPILE_ONLY_X64_ABI_OK. No Collect call:
+& 'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe' -NoProfile -Command "try { Add-Type -Path './Fx3CachedAssociations.cs' -ErrorAction Stop; [Fx3ReviewOnly.CachedAssociations]::AssertX64Layout(); 'COMPILE_ONLY_X64_ABI_OK' } catch { throw }"
+
+2. Default inactive path in a separate fresh process. Require exit 0, INACTIVE, zero handles and zero SCSI:
+& 'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe' -NoProfile -File './Review-Fx3Msc.ps1' -Mode DryRun
+
+3. Only after both pass, collect cached PnP associations ONCE in a separate fresh process:
+& 'C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe' -NoProfile -File './Review-Fx3Msc.ps1' -Mode CachedAssociations -OutputFile './fx3-cached-associations.private.json'
+
+Any new validation, dispatch, compile, DryRun or collection error: stop and retain it; no automatic retry. Missing/ambiguous/incomplete cached binding is an acceptable result, not a reason for active probing.
+
+Create new summary-attempt2.txt and new logs/receipt names in this directory without overwriting the first summary or other files. Include exit statuses, input hashes, compile/DryRun results, candidate count/binding/driver status, private JSON SHA256 and result path. Do not paste raw interface paths, device instance identifiers or serials into chat; the private JSON stays local.
+
+Camera authorization remains cached PnP only. No device interface handle, INQUIRY/SCSI/USB/Sony command, card/media read, authentication, mode change, driver change, camera filesystem access, native module, WBI or flash. Do not run any old active probe code.

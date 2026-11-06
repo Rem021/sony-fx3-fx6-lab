@@ -1,0 +1,76 @@
+{
+  "status": "REFERENCE_PUBLIC_BKSB_AND_CURRENT_PROPERTY_LIST_BOUND",
+  "reference_source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+  "reference_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+  "block_address": "0xfe048800",
+  "block_bytes": 2048,
+  "block_sha256": "43e420ec11292ea9a18af60344c9a2fbb67b0a828eac5ed135b19e40112465e7",
+  "properties": 66,
+  "all_property_bounds_checked": true,
+  "selected": [
+    {
+      "ID": "0x51002c",
+      "table_address": "0xfe048880",
+      "value_address": "0xfe048b48",
+      "offset_in_block": 840,
+      "bytes": 4,
+      "value_u32": 3
+    },
+    {
+      "ID": "0xf900d4",
+      "table_address": "0xfe0488c8",
+      "value_address": "0xfe048b60",
+      "offset_in_block": 864,
+      "bytes": 4,
+      "value_u32": 0
+    },
+    {
+      "ID": "0xf90148",
+      "table_address": "0xfe0488d4",
+      "value_address": "0xfe048b64",
+      "offset_in_block": 868,
+      "bytes": 4,
+      "value_u32": 4294967295
+    },
+    {
+      "ID": "0xf900b1",
+      "table_address": "0xfe0488e0",
+      "value_address": "0xfe048b68",
+      "offset_in_block": 872,
+      "bytes": 4,
+      "value_u32": 4
+    },
+    {
+      "ID": "0xf9013c",
+      "table_address": "0xfe0488ec",
+      "value_address": "0xfe048b6c",
+      "offset_in_block": 876,
+      "bytes": 4,
+      "value_u32": 4294967295
+    },
+    {
+      "ID": "0xf9006d",
+      "table_address": "0xfe0488f8",
+      "value_address": "0xfe048b70",
+      "offset_in_block": 880,
+      "bytes": 4,
+      "value_u32": 2
+    },
+    {
+      "ID": "0xf9010d",
+      "table_address": "0xfe048904",
+      "value_address": "0xfe048b74",
+      "offset_in_block": 884,
+      "bytes": 4,
+      "value_u32": 4294967295
+    }
+  ],
+  "current_list": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/LdrBkupList.txt",
+  "current_list_sha256": "ae537183ecce42fbe9589c01f7ee4a19929fa2fc1cb09e48eda9ef2ab6f5dd88",
+  "current_list_count": 65,
+  "rate_ID_in_current_list": true,
+  "reference_BKSB_is_not_same_body_backup": true,
+  "current_FX3_BKSB_acquired": false,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

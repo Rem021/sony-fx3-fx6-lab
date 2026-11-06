@@ -1,0 +1,36 @@
+[
+  {
+    "line": 607295,
+    "guest_user_ns": 1220214193008,
+    "text": "FX3_GPE104_DYNAMIC_RETURN tid=274 tpidr=0x7f527ff740 event=1439 ns=1220214193008 flags=0x2a module=0x82 QID=0x808261c0 QID_available=1 result=0 errno=0 caller=0x7f7c2293b4 owner_from_separate_kernel_probe=1 no_stat_msgq=1 no_extra_dynamic_id=1"
+  },
+  {
+    "line": 608053,
+    "guest_user_ns": 1225848214000,
+    "text": "FX3_GPE104_COMPLETE_ENTER tid=275 tpidr=0x7f51fff740 event=1440 ns=1225848214000 seq=7545 op=4 async=0 completion_source=0x808261c0 status=0 bytes=4 call_path=adapter_explicit_SendDrawComp real_function=0x7f7c22c888 unchanged=1"
+  },
+  {
+    "line": 608054,
+    "guest_user_ns": 1225865192000,
+    "text": "FX3_GPE104_COMPLETE_RETURN tid=275 tpidr=0x7f51fff740 event=1440 ns=1225865192000 seq=7545 completion_source=0x808261c0 result=1 errno=0 real_function_returned=1 unchanged=1"
+  },
+  {
+    "line": 608057,
+    "guest_user_ns": 1225870836000,
+    "text": "FX3_GPE104_CMD_RETURN tid=275 tpidr=0x7f51fff740 ns=1225870836000 seq=7545 op=4 completion_source=0x808261c0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+  },
+  {
+    "line": 608063,
+    "guest_user_ns": 1225919092000,
+    "text": "FX3_GPE104_DYNAMIC_ENTER tid=274 tpidr=0x7f527ff740 event=1441 ns=1225919092000 flags=0x4a module=0 argument=0x808261c0 caller=0x7f7c229420 native_call_follows=1"
+  },
+  {
+    "line": 608071,
+    "kernel_printk_raw": "38320.919593] [K]**UIPC ERROR** free_dynamic_msgq_id: QID[808261c0] M=1 C=0 S=0 A=1"
+  },
+  {
+    "line": 608087,
+    "guest_user_ns": 1226152875008,
+    "text": "FX3_GPE104_DYNAMIC_RETURN tid=274 tpidr=0x7f527ff740 event=1441 ns=1226152875008 flags=0x4a module=0 QID=0x808261c0 QID_available=1 result=0 errno=1022 caller=0x7f7c229420 owner_from_separate_kernel_probe=1 no_stat_msgq=1 no_extra_dynamic_id=1"
+  }
+]

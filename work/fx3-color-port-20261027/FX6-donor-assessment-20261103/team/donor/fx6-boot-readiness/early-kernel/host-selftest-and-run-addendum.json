@@ -1,0 +1,30 @@
+{
+  "status": "PASS_HOST_ONLY",
+  "af_unix_relative_socket": {
+    "absolute_path_utf8_bytes": 157,
+    "received": "host-only",
+    "cwd_restored": true,
+    "qemu_started": false,
+    "runtime_locks_acquired": false
+  },
+  "existing_run_addendum": {
+    "run_receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-9581d529/run-receipt.json",
+    "run_receipt_sha256": "18890489ebb215641b43213b380d7eb06367ffb5861a020f1d5254395910b921",
+    "serial_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-9581d529/serial.log",
+    "serial_sha256": "24b010d7d6aafb4fa84d5c34dec3b9d73bd93d88f40e9c8a0f2c23f01da005b3",
+    "old_receipt_linux_version_marker": false,
+    "corrected_full_serial_linux_version_line": "[    0.112468] Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u24-002) (gcc version 6.4.0 (20240928 (Sony CE Linux 14.0.2.0)) ) #1 SMP PREEMPT Wed Aug 5 15:24:28 JST 2026",
+    "first_line": "[    0.085312] Booting Linux on physical CPU 0x0",
+    "classification": "FX6 original kernel early printk on unchanged FX3 platform; no init/AP/AV/CP proof",
+    "original_receipt_modified": false
+  },
+  "init_boundary_parser_baseline": {
+    "historical_fx3_serial_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/serial.log",
+    "sha256": "8157737391d2d8e3acf46790312826b0084539bda82e2bbe228bc1f1d6f1d16b",
+    "actual_complete_init_line": "FX3_DEVTMPFS_RC=0",
+    "actual_rc": 0,
+    "actual_first_original_module_line": "FX3_INSMOD_RC_/kmod/devno.ko=0",
+    "fx6_early_run_init_line": null,
+    "Freeing_unused_kernel_memory_is_not_init_success": true
+  }
+}

@@ -1,0 +1,6 @@
+000008c0 adrp       x2, #0x10000
+000008c4 adrp       x0, #0x10000
+000008c8 mov        w1, #0x80
+000008cc ldr        x2, [x2, #0xfc8]
+000008d0 ldr        x0, [x0, #0xfb8]
+000008d4 b          #0x790 ; AES_set_decrypt_key

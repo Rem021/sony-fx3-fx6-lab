@@ -1,0 +1,31 @@
+{
+  "status": "offline_integration_complete_runtime_pending",
+  "supersedes": "INTEGRATION-PENDING.json",
+  "changed_from_r15": [
+    "run_trial_v25_diag_r3.py",
+    "snapshot_tail_v15.py",
+    "test_snapshot_tail_actual.py"
+  ],
+  "added_source": "test_fixed_slot_selection.py",
+  "guest_delivery_files_verified": 39,
+  "host_tests": 17,
+  "guest_variants": {
+    "N1": {
+      "candidate_sha256": "ce047a951a5e7af08d19312d4e9d6440080e159c857e41edf90ce66607a31563",
+      "cpio_sha256": "77081424fa73f9737434b7d0c5d2f6dc2b21215ffcc9cb3a95281dac9d4b521c",
+      "outside_slot_bytes_equal": true,
+      "platform_fields_equal": true,
+      "complete_receipt_sha256": "d4d248614c59e693763358700fdcbbab24bd71e1afa784abd7f6c382a0a12688"
+    },
+    "N64": {
+      "candidate_sha256": "96666a719b1a4cf576e4d2d7ec461e10f5ce1143650450719e5273d75d970672",
+      "cpio_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+      "outside_slot_bytes_equal": true,
+      "platform_fields_equal": true,
+      "complete_receipt_sha256": "e63d79eedd6816375dea92ecf15e2d4296a44a3e30a980ab5802097af36289b5"
+    }
+  },
+  "VM_started": false,
+  "deployed": false,
+  "platform_unchanged": true
+}

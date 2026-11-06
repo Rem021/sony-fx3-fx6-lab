@@ -1,0 +1,30 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000012b3dc <_ZN3mpr4InitERKNS_11initInParamE>:
+  12bca0: 97ff1e64     	bl	0xf3630 <_ZN3mpr3log4initEv@plt>
+  12bca4: 97ff27f3     	bl	0xf5c70 <_ZN3mpr5Codec4InitEv@plt>
+  12bca8: 94027be1     	bl	0x1cac2c <_ZN3mpr8datasize4initEv+0xc0>
+  12bcac: 97ff611c     	bl	0x10411c <.text+0xde0c>
+  12bcb0: 94026cef     	bl	0x1c706c <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x86c>
+  12bcb4: 94025315     	bl	0x1c0908 <_ZN10XavcsNamer9GetRemainEPKcbPtN3mpr10NamingModeE+0x3e44>
+  12bcb8: d2a48000     	mov	x0, #0x24000000         // =603979776
+  12bcbc: 52800002     	mov	w2, #0x0                // =0
+  12bcc0: d2bb8001     	mov	x1, #0xdc000000         // =3690987520
+  12bcc4: f2c00080     	movk	x0, #0x4, lsl #32
+  12bcc8: 942e3c87     	bl	0xcbaee4 <_ZN3mpr4dmac7memcpy2EPvS1_j+0x22c>
+  12bccc: 52800500     	mov	w0, #0x28               // =40
+  12bcd0: 72a01f40     	movk	w0, #0xfa, lsl #16
+  12bcd4: 97ff1337     	bl	0xf09b0 <Backup_read_8Byte@plt>
+  12bcd8: aa0003f4     	mov	x20, x0
+  12bcdc: 52800ba0     	mov	w0, #0x5d               // =93
+  12bce0: 72a01f40     	movk	w0, #0xfa, lsl #16
+  12bce4: 97ff1333     	bl	0xf09b0 <Backup_read_8Byte@plt>
+  12bce8: aa0003e1     	mov	x1, x0
+  12bcec: aa1403e0     	mov	x0, x20
+  12bcf0: 97ff1b50     	bl	0xf2a30 <_ZN3mpr6memory4initEmm@plt>
+  12bcf4: 97ff0647     	bl	0xed610 <_ZN3mpr4dmac11init_memcpyEv@plt>
+  12bcf8: 942cbbfd     	bl	0xc5acec <_ZN9NRTERRCNV10ConvToMPR2Ei+0x16b64>
+  12bcfc: b9426a60     	ldr	w0, [x19, #0x268]

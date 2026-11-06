@@ -1,0 +1,8 @@
+00017c74 adrp       x2, #0x31000
+00017c78 stp        xzr, xzr, [x0, #0x10]
+00017c7c stp        xzr, xzr, [x0, #0x20]
+00017c80 str        w1, [x0, #0x30]
+00017c84 ldr        x2, [x2, #0xfa8]
+00017c88 add        x2, x2, #0x10
+00017c8c stp        x2, xzr, [x0]
+00017c90 ret        

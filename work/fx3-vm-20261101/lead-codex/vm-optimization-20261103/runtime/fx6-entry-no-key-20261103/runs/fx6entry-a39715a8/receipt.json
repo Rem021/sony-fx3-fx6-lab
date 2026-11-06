@@ -1,0 +1,189 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8",
+  "created_utc": "2026-11-03T16:45:28.696548+00:00",
+  "duration_seconds": 32.3797534579644,
+  "stop_cause": "bounded_entry_evidence",
+  "host_error": null,
+  "qemu_pid": 31748,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_pins": {
+    "baseline": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+    "source": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+    "candidate": "ff2f927de24b801d334ce9111fb486fb2af85d24c509ab20c43eda0a69ffdc40",
+    "old_cpio": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+  },
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free": true
+    }
+  ],
+  "serial": {
+    "available": true,
+    "bytes": 1972058,
+    "sha256": "caecd00446ad09840606d63d199978683787ebf0fe276476ffac12e36f41a23c",
+    "first": {
+      "verify": {
+        "byte_range": [
+          84965,
+          84990
+        ],
+        "raw": "FX3_TRACE_ABI_VERIFY_RC=0"
+      },
+      "list": {
+        "byte_range": [
+          86523,
+          86546
+        ],
+        "raw": "FX3_TRACE_ABI_LIST_RC=0"
+      },
+      "true": {
+        "byte_range": [
+          86548,
+          86571
+        ],
+        "raw": "FX3_TRACE_ABI_TRUE_RC=0"
+      },
+      "not_ready": null,
+      "natural_bootin": {
+        "byte_range": [
+          97249,
+          97276
+        ],
+        "raw": "FX3_AP_NATURAL_BOOTIN_BEGIN"
+      },
+      "im_map": {
+        "byte_range": [
+          224848,
+          224936
+        ],
+        "raw": "00400000-00409000 r-xp 00000000 00:02 1277                               /usr/bin/im.elf"
+      },
+      "ipc_send": {
+        "byte_range": [
+          1930901,
+          1931075
+        ],
+        "raw": "FX3_BOOT_QUEUE_SEND tid=241 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1"
+      }
+    },
+    "im_process_label_count": 0,
+    "synthetic_key_count": 0,
+    "first_boot_ipc_is_send_only": true
+  },
+  "serial_health_failure": null,
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": true,
+    "quit_sent": true,
+    "guest_stopped": true,
+    "restore": {
+      "passed": true,
+      "reason": "guest_acknowledged_and_original_bytes_verified",
+      "timeout_seconds": 20,
+      "elapsed_seconds": 1.311517708003521,
+      "request_bytes": 8,
+      "request_issued": true,
+      "existing_request_reused": false,
+      "request_physical": "0x41d400030",
+      "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "requires_ack_and_original_bytes_after_request": true,
+      "already_original_without_pending_request_never_resumed": false,
+      "original_guest_code_written_by_host": false,
+      "guest_left_stopped": true,
+      "exception": null,
+      "attempts": [
+        {
+          "attempt": 0,
+          "elapsed_seconds": 0.012657792016398162,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-000-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-000-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 0,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "a3d4cb85a4a2ea84eb93ae12c4cc1210c1709cb8ed3d19d4410b463edf2bf381"
+        },
+        {
+          "attempt": 1,
+          "elapsed_seconds": 0.2663055420271121,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-001-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-001-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "586a067d17e5acd53c466734cbbceb553e2a6e8f29ac86365d80ae1b6ae8fd15"
+        },
+        {
+          "attempt": 2,
+          "elapsed_seconds": 0.5289939169888385,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-002-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-002-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "586a067d17e5acd53c466734cbbceb553e2a6e8f29ac86365d80ae1b6ae8fd15"
+        },
+        {
+          "attempt": 3,
+          "elapsed_seconds": 0.7884439580375329,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-003-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-003-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "586a067d17e5acd53c466734cbbceb553e2a6e8f29ac86365d80ae1b6ae8fd15"
+        },
+        {
+          "attempt": 4,
+          "elapsed_seconds": 1.0515114170266315,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-004-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-004-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "586a067d17e5acd53c466734cbbceb553e2a6e8f29ac86365d80ae1b6ae8fd15"
+        },
+        {
+          "attempt": 5,
+          "elapsed_seconds": 1.3112768330029212,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-005-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8/restore103-005-api16.bin",
+          "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+          "api16_original": true,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 1,
+          "header_SHA256": "a78a0b065f36da17d0908b40ce99c9ac06df9922df8d4d9ceeea87734bc65abf"
+        }
+      ]
+    }
+  },
+  "key_steps": 0,
+  "synthetic_events": 0,
+  "fx3_platform_unchanged": true,
+  "fx6_system_or_menu_proven": false,
+  "im_PT_LOAD_new_logic_proven": false
+}

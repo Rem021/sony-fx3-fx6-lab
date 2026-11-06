@@ -1,0 +1,29 @@
+{
+  "reviewed_utc": "2026-11-03T17:32:56.713697+00:00",
+  "status": "PASS_FIXED_PLATFORM_FIRST_ASSERT_EVIDENCE",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-ap-candidate/runs/fx6ap-bb7588e5",
+  "argv_changed_indices": [
+    20,
+    31
+  ],
+  "hashes": {
+    "qemu_binary": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+    "fx3_kernel": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "fx3_dtb_full_binary": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+    "software_guest_cpio": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+    "english_generation4_backup": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+    "candidate": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+    "serial": "7fd297d60c72a1211fa44a0103ae69fabec0c72c422be6c34519c2636db3a43f"
+  },
+  "raw_ranges_verified": 9,
+  "duration_seconds": 42.73381970799528,
+  "observed_assert": {
+    "line": 15598,
+    "kind": "real_fault_or_unproven_guard",
+    "text": "assert at infra_wrapper_bb_procam_chaplin_base.cpp:1075"
+  },
+  "cleanup_receipt_and_saved_original_bytes_verified": true,
+  "live_process_or_lock_rechecked": false,
+  "FX6_menu_or_complete_AP_ABI_proven": false,
+  "request_reply_causality_proven": false
+}

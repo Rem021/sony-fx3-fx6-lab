@@ -1,0 +1,212 @@
+{
+  "status": "PASS_FIXED_INIT_ORDER_AND_CONDITIONAL_HELPER_BLOCK_STATIC_ONLY",
+  "sources": {
+    "cpio_audit": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/cpio-audit.json",
+      "sha256": "cc0b3c5b1925aa4bb0cb14aab275f2831833c7378490ca5408789f3824eb4847"
+    },
+    "owner_init_review": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx6-init-boundary-fixed-platform-review.json",
+      "sha256": "63b04f21d58cf90f1add79bd705b8fde56dcd52eb9c4424ce945b713a4b73a42"
+    },
+    "init_run_receipt": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-306428ab/run-receipt.json",
+      "sha256": "9c3e04bc3a6b62c57ea411b781c3093321d4b0543eb7c12e039bc4cf3daa204f"
+    },
+    "init_run_serial": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-306428ab/serial.log",
+      "sha256": "69eea39535b90eeb4e02584a2256bd6ecca5218314c5f61fadf95c288a50a978"
+    },
+    "liro_closure": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/liro-closure.json",
+      "sha256": "e2c617cdd786c3536eeaca8090ac59b8367abf2e98af8281fa82b9dfbb5cf7a6"
+    },
+    "module_vs_kernel_abi": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/fx3-modules-vs-fx6-kernel.json",
+      "sha256": "3cd9122713905ae3c883375c1a22164058504a78ebc7d5af0404cab00fac0fdc"
+    },
+    "cp_helper_build": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-v5-native101-build.json",
+      "sha256": "d9a14d32fd284e9deb9253c159d2c91e61f3568141426b72085e70eda47570e4"
+    },
+    "cp_helper_module_unit": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-v5-native101-module-unit.c",
+      "sha256": "8ba37b03b9e2775ae4784a643ec19bc319d4a8eb81dc56b14616940879a3ba13"
+    },
+    "cp_helper_ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-v5-native101.ko",
+      "sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca"
+    },
+    "cp_helper_source": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-v5-native101.c",
+      "sha256": "b0de532abb5c688f360f46d862abe1c8c1b2114f8448b5e3a91573cd9987b4c0"
+    },
+    "cp_helper_sync_header": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-sync101-v1.h",
+      "sha256": "6f2116440d17db50f7c35b57f7ab967ce304318a431649a76885c096bd87ee96"
+    }
+  },
+  "actual_fx6_image_with_fixed_fx3_init": {
+    "line": "FX3_DEVTMPFS_RC=0",
+    "rc": 0,
+    "first_module_rc_observed": null,
+    "scope": "unchanged FX3 CPIO /init only"
+  },
+  "reviewed_init_line_interval": [
+    1,
+    88
+  ],
+  "reviewed_later_init_line_interval": [
+    114,
+    118
+  ],
+  "first_original_insmod_script_line": 74,
+  "first_simulation_insmod_script_line": 89,
+  "absolute_hex_literals_in_init_lines_1_to_76": 0,
+  "first_module_sequence": [
+    {
+      "guest_path": "/kmod/devno.ko",
+      "sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "fixed_cpio_member": true,
+      "original_init_module_file_offset": null,
+      "FX6_export_name_coverage_for_imports": true,
+      "runtime_load_on_FX6_kernel": "UNTESTED"
+    },
+    {
+      "guest_path": "/usr/kmod/osal_utm.ko",
+      "sha256": "f6679c6481adaa0cffb5e27dbf949f5d8168ca4200f4cb245e900544977b5f1c",
+      "fixed_cpio_member": true,
+      "original_init_module_file_offset": 1648,
+      "FX6_export_name_coverage_for_imports": true,
+      "runtime_load_on_FX6_kernel": "UNTESTED"
+    },
+    {
+      "guest_path": "/usr/kmod/osal_uipc.ko",
+      "sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+      "fixed_cpio_member": true,
+      "original_init_module_file_offset": 28808,
+      "FX6_export_name_coverage_for_imports": true,
+      "runtime_load_on_FX6_kernel": "UNTESTED"
+    }
+  ],
+  "later_simulation_helpers": {
+    "simulation/fx3-ldec-soft103-v1.ko": {
+      "sha256": "dec6285407341319bfe6239a47e434f08b920ec23c6af960d2653c1d061c02df",
+      "scheduled_after_first_module_gate": true,
+      "elf_type": 1,
+      "machine": 183,
+      "undefined_symbols": [
+        "__arch_copy_from_user",
+        "arch_p32_to_p64",
+        "arch_phys_to_va",
+        "arch_va_to_phys",
+        "printk",
+        "udif_cdev_register",
+        "udif_cdev_unregister",
+        "udif_devnodes",
+        "vfree",
+        "vmalloc"
+      ],
+      "fx6_kernel_export_name_missing": [],
+      "module_export_candidates": [
+        "udif_devnodes"
+      ],
+      "has___versions": false,
+      "local_build_output_byte_match": true
+    },
+    "simulation/fx3-cp-backup-reset-v1.ko": {
+      "sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca",
+      "scheduled_after_first_module_gate": true,
+      "elf_type": 1,
+      "machine": 183,
+      "undefined_symbols": [
+        "arch_phys_to_va",
+        "kallsyms_lookup_name",
+        "osal_create_waitable_thread",
+        "osal_dynamic_id",
+        "osal_free_msg",
+        "osal_get_msg_src",
+        "osal_msg_size",
+        "osal_rcv_msg_tmo",
+        "osal_reg_public",
+        "osal_set_msg_src",
+        "osal_sig_sem",
+        "osal_snd_msg",
+        "osal_unreg_public",
+        "osal_valloc_msg_wait",
+        "osal_wai_sem_tmo",
+        "osal_wait_thread_exit",
+        "printk",
+        "probe_kernel_read",
+        "vfree",
+        "vmalloc"
+      ],
+      "fx6_kernel_export_name_missing": [],
+      "module_export_candidates": [
+        "osal_create_waitable_thread",
+        "osal_dynamic_id",
+        "osal_free_msg",
+        "osal_get_msg_src",
+        "osal_msg_size",
+        "osal_rcv_msg_tmo",
+        "osal_reg_public",
+        "osal_set_msg_src",
+        "osal_sig_sem",
+        "osal_snd_msg",
+        "osal_unreg_public",
+        "osal_valloc_msg_wait",
+        "osal_wai_sem_tmo",
+        "osal_wait_thread_exit"
+      ],
+      "has___versions": false,
+      "local_v1_build_output_byte_match": false,
+      "local_v5_build_output_byte_match": true
+    },
+    "simulation/fx3-file100-observer-v2": {
+      "sha256": "044d08549217523c645035e02ae74b1e76b73db17a61d13b0ff4ecd05a3987e0",
+      "scheduled_after_first_module_gate": true,
+      "local_binary_byte_match": true
+    }
+  },
+  "first_proven_conditional_software_block_if_reached": {
+    "status": "PROVEN_CONDITIONAL_SOFTWARE_REFUSAL_IF_INIT_REACHES_LINE_115_AND_LOOKUP_RETURNS_FX6_LINK_ADDRESS",
+    "guest_init_line": 115,
+    "guest_module_path": "/simulation/fx3-cp-backup-reset-v1.ko",
+    "module_sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca",
+    "module_matches_compiled_local_v5": true,
+    "compiled_source_includes_sync_header": true,
+    "init_module_calls_sync100_start_and_returns_error": true,
+    "compiled_et_rel_guard": {
+      "text_section_file_offset": 64,
+      "text_offset_interval": [
+        "0x46c",
+        "0x4d0"
+      ],
+      "file_offset_interval": [
+        "0x4ac",
+        "0x510"
+      ],
+      "raw_sha256": "f6300113b90b236b0c8417f8d6cc257e7de448d24f8db6c9f889a590e5bad4cb",
+      "lookup_call_relocation": "R_AARCH64_CALL26 kallsyms_lookup_name at .text+0x484",
+      "compare_instruction": ".text+0x4c0 cmp x8,x20",
+      "failure_branch_instruction": ".text+0x4cc b.ne .text+0x748",
+      "return_minus_7_instruction": ".text+0x7a8 mov w0,#-7"
+    },
+    "lookup_symbol": "pcidma_transfer_async",
+    "hardcoded_fx3_address": "0xffffff80083220c8",
+    "fx6_image_linked_export_address": "0xffffff8008322f70",
+    "source_guard_line": 92,
+    "source_fail_return": -7,
+    "source_native_fallback_hardcoded_fx3_targets": [
+      "0xffffff8008322228",
+      "0xffffff80083220d8"
+    ],
+    "runtime_reached": false,
+    "runtime_lookup_address_observed": false,
+    "scope": "static original-CPIO-member byte identity plus pinned build/source, compiled guard and FX6 original linked export; runtime still stopped before first insmod"
+  },
+  "first_unverified_compatibility_boundary": "original /kmod/devno.ko insmod return under FX6 kernel; next original osal_utm/osal_uipc before line89 synthetic ldec",
+  "first_module_stop_condition": "complete FX3_INSMOD_RC_/kmod/devno.ko=<integer> line; kernel fault or CPUSET_NOT_READY first; AP/simulation guard fallback",
+  "new_guest_or_platform_changes": 0,
+  "host_polling_is_exact_CPU_breakpoint": false
+}

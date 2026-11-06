@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/recovery_tools.py",
+    "cancel",
+    "--session",
+    "fx3-deadline-operator-r21-b83358633d9e-ccf2a6e7",
+    "--url",
+    "http://127.0.0.1:51442/",
+    "--launch-id",
+    "bb9c2485-fe65-40d5-92d5-db1d5365fd86",
+    "--nonce",
+    "68a8332d-5712-481c-a333-03e298cd8a4f",
+    "--binding",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/binding-A.json",
+    "--out",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/recovery-cancel",
+    "--review",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/recovery-review/review-result.json",
+    "--target",
+    "亲看拒绝提示与当前 NO CARD 图；仅清除未入队旧 alarm，不批准画面或发键",
+    "--ledger",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/ledger.json"
+  ],
+  "start": {
+    "UTC": "2026-11-04T23:42:23.403199+00:00",
+    "host_ns": 419428935092208
+  },
+  "end": {
+    "UTC": "2026-11-04T23:42:23.501255+00:00",
+    "host_ns": 419429033149416
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"status\": \"cancelled_unqueued_alarm_only\",\n  \"scope\": \"explicit_unqueued_alarm_cleanup_only\",\n  \"session\": \"fx3-deadline-operator-r21-b83358633d9e-ccf2a6e7\",\n  \"tab\": null,\n  \"binding\": {\n    \"attempt_id\": \"c75de8c6-2738-41ff-998b-a35c8cce19da\",\n    \"document_time_origin\": 1793835724436,\n    \"launch_request_id\": \"bb9c2485-fe65-40d5-92d5-db1d5365fd86\",\n    \"key\": 427,\n    \"base_step\": 0,\n    \"expected_step\": 1,\n    \"PNG_sha256\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\",\n    \"content_generation\": 1,\n    \"sequence\": 211,\n    \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\"\n  },\n  \"review\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/recovery-review/review-result.json\",\n  \"target\": \"亲看拒绝提示与当前 NO CARD 图；仅清除未入队旧 alarm，不批准画面或发键\",\n  \"host_start_ns\": 419428982980833,\n  \"guest_keys_sent\": 0,\n  \"confirm_calls\": 0,\n  \"new_alarm_calls\": 0,\n  \"eval_may_have_started\": true,\n  \"browser_result\": {\n    \"alarm_cancel_receipt\": {\n      \"current\": {\n        \"armed_ms\": 10655.100000023842,\n        \"cancelled_ms\": 19022.200000047684,\n        \"deadline_ms\": 20000,\n        \"due_ms\": 30655.10000002384,\n        \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\",\n        \"state\": \"cancelled\"\n      },\n      \"deadline_ms\": 20000,\n      \"documentTimeOrigin\": 1793835724436,\n      \"events\": [\n        {\n          \"event\": \"installed\",\n          \"performance_ms\": 936.100000023842,\n          \"script_SHA256\": \"f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab\",\n          \"wall_UTC\": \"2026-11-04T23:42:05.371Z\"\n        },\n        {\n          \"due_ms\": 30655.10000002384,\n          \"event\": \"armed\",\n          \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\",\n          \"performance_ms\": 10655.200000047684,\n          \"wall_UTC\": \"2026-11-04T23:42:15.091Z\"\n        },\n        {\n          \"elapsed_ms\": 8367.100000023842,\n          \"event\": \"cancelled\",\n          \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\",\n          \"performance_ms\": 19022.200000047684,\n          \"wall_UTC\": \"2026-11-04T23:42:23.458Z\"\n        }\n      ],\n      \"expectedLaunchId\": \"bb9c2485-fe65-40d5-92d5-db1d5365fd86\",\n      \"expectedURL\": \"http://127.0.0.1:51442/\",\n      \"sealed\": false,\n      \"version\": 1\n    },\n    \"attempt_id\": \"c75de8c6-2738-41ff-998b-a35c8cce19da\",\n    \"cancel_invoked\": true,\n    \"current_frame\": {\n      \"generation\": 2,\n      \"sequence\": 212,\n      \"sha\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\"\n    },\n    \"due_ms\": 30655.10000002384,\n    \"elapsed_ms\": 8367.100000023842,\n    \"historical_review_not_current\": false,\n    \"no_confirm_visual\": true,\n    \"no_guest_key\": true,\n    \"no_visual_approval\": true,\n    \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\",\n    \"old_review\": {\n      \"generation\": 2,\n      \"sha\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\"\n    },\n    \"performance_ms\": 19022.30000001192,\n    \"server_atomic_permission\": false,\n    \"status\": \"cancelled_unqueued_alarm_only\"\n  },\n  \"alarm_cleanup_status\": \"confirmed_cancelled\",\n  \"current_screenshot_path\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/recovery-cancel/current-after-cancel.png\",\n  \"current_screenshot_sha256\": \"d1fd8dd6c74c43fee2e3fc94bb5e1a1dc1cc26ab0c0d88aaeef4bbf3bc79752e\",\n  \"current_screenshot_status\": \"delivered_requires_separate_operator_review\",\n  \"host_end_ns\": 419429026301833\n}\n",
+  "stderr": ""
+}

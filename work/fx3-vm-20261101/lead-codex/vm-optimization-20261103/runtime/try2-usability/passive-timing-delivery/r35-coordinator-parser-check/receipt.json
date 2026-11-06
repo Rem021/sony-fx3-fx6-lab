@@ -1,0 +1,83 @@
+{
+  "time": "2026-11-05T06:36:20.971103+00:00",
+  "scope": "host CLI malformed-input regression only; no firmware execution or runtime acceptance",
+  "source": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/parse_r35.py",
+  "source_sha_before": "03313c7c83d0951a77500c9b2aeb27e41e85d197a846a00bf72d8d1fc28be393",
+  "source_sha_after": "03313c7c83d0951a77500c9b2aeb27e41e85d197a846a00bf72d8d1fc28be393",
+  "stable_source": true,
+  "cases": [
+    {
+      "case": "unterminated",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/parse_r35.py",
+        "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-coordinator-parser-check/unterminated.log",
+        "--run-id",
+        "coordinator-host-fixture-unterminated",
+        "--end-byte",
+        "22000"
+      ],
+      "input_sha256": "db02b791d9c36f97f56b41e6bb54ea026f87195f4d95ba09fd1a979d34f91980",
+      "exit": 0,
+      "stderr": "",
+      "parsed": {
+        "scope": "as_of_each_complete_original_log_only_not_End_state",
+        "records": [],
+        "unknown": [
+          {
+            "offset": 0,
+            "reason": "overlong_line"
+          },
+          {
+            "offset": 22000,
+            "reason": "partial_line_at_End"
+          }
+        ],
+        "overall": "no_complete_export_unknown",
+        "host_run_id": "coordinator-host-fixture-unterminated",
+        "serial_sha256": "db02b791d9c36f97f56b41e6bb54ea026f87195f4d95ba09fd1a979d34f91980",
+        "end_byte": 22000,
+        "identity_scope": "caller supplied single host run; wire PID/init instances are not global runID"
+      },
+      "passed": true
+    },
+    {
+      "case": "complete_then_partial",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/parse_r35.py",
+        "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-coordinator-parser-check/complete_then_partial.log",
+        "--run-id",
+        "coordinator-host-fixture-complete_then_partial",
+        "--end-byte",
+        "22013"
+      ],
+      "input_sha256": "587249a0133985060b139352ad57a7aa05d130ed12ddeefdbb52bd714b8d8193",
+      "exit": 0,
+      "stderr": "",
+      "parsed": {
+        "scope": "as_of_each_complete_original_log_only_not_End_state",
+        "records": [],
+        "unknown": [
+          {
+            "offset": 0,
+            "reason": "overlong_line"
+          },
+          {
+            "offset": 22001,
+            "reason": "partial_line_at_End"
+          }
+        ],
+        "overall": "no_complete_export_unknown",
+        "host_run_id": "coordinator-host-fixture-complete_then_partial",
+        "serial_sha256": "587249a0133985060b139352ad57a7aa05d130ed12ddeefdbb52bd714b8d8193",
+        "end_byte": 22013,
+        "identity_scope": "caller supplied single host run; wire PID/init instances are not global runID"
+      },
+      "passed": true
+    }
+  ],
+  "passed": true
+}

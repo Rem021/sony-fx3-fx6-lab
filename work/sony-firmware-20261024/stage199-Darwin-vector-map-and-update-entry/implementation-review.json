@@ -1,0 +1,22 @@
+{
+  "status": "FX3_DARWIN_CONDITIONAL_UPDATE_ROUTE_LOCATED_NOT_AP_RECOVERY",
+  "new_facts": [
+    "source-map0x4200 coherent with distinct FX3 reset/fault vectors, raw BL4674 and pool/BX43fd",
+    "original InitCom selected Cmd11/sub4 arm returns0/output4 after successful internal receive and matching CRC",
+    "local producer conditionally constructs [0,4] for SVC11/selector0; Seton consumer returns2 and next table selects state5",
+    "Upd-main writes MCU request4/zero then vector argument0 loads MSP/PSP from0 and PC from4, outside current core source map"
+  ],
+  "critical_limits": [
+    "ordinary ABI returns and callee-saved state assumed, selected paths only, no Sony/guest execution",
+    "SVC delivery, whole-device reachability and external sender/physical SIO still unresolved",
+    "Darwin vector target is distinct from AP eMMC boot0 and CP fixed handoff; no p1/p3/USB/Fastboot/independent rescue proof",
+    "corrupt-core fallback, same-body currentp1/boot0, actual inverse write and MAIN HD HEVC recording unverified",
+    "A6000 incident is a source-reported failure with open cause/recovery, not an FX3 diagnosis or ready recovery method"
+  ],
+  "pending_root01": "same195 bundle; no specific response, fixed job absent, no launch or repeated question",
+  "selected_source_slices": 19,
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

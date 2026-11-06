@@ -1,0 +1,27 @@
+{
+  "initial_parent_builds": [
+    "build-parent",
+    "build-parent-current"
+  ],
+  "relative_expiry_v1_sources": [
+    "parent_receiver.c.pre-expiry-v2",
+    "collector-ack.c.pre-expiry-v2"
+  ],
+  "absolute_expiry_v2_builds": [
+    "build-parent-v2",
+    "build-collector-v2"
+  ],
+  "CTRUNC_unknown_parent_build": "build-parent-v3",
+  "no_CTRUNC_header_failure_parent_build": "build-parent-v4",
+  "initial_model_clock_error": "first-model-error.json",
+  "initial_model_snapshot": "model_receiver.pre-clock-fix.py",
+  "initial_failed_formal_run": "runs-receiver-v2/receipt.json",
+  "v2_run_failed_only_on_summary_key_and_foreign_boundary_fixture": true,
+  "prior_pass_with_CTRUNC_case": "runs-receiver-final/receipt.json",
+  "prior_pass_with_header_fault": "runs-receiver-v3/receipt.json",
+  "final_pass": "runs-receiver-v4/receipt.json",
+  "version2_uses_fixed_synthetic_absolute_expiry_not_live_plan": true,
+  "final_verified_run": "runs-receiver-verified/receipt.json",
+  "prior_41case_pass": "runs-receiver-v4/receipt.json",
+  "foreign_origin_ordering_refined": "A killed and reaped before distinct B becomes active; B has different start tick; assumed inherited endpoint; not a swap of genuine SCM_RIGHTS or two live same-PID tasks"
+}

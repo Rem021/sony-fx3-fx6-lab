@@ -1,0 +1,18 @@
+{
+  "result": "PASS_PINNED_HOST_STATIC_AND_BYTE_FIXTURES",
+  "scope": "no_new_vm_no_guest_execution_no_device",
+  "original_instruction_count": 91,
+  "host_tests": 5,
+  "test_output": "test_movie_core_auto_requires_zero_and_rejects_native_call (test_adapter.AdapterTests.test_movie_core_auto_requires_zero_and_rejects_native_call) ... ok\ntest_movie_core_write_is_parsed_but_not_callable (test_adapter.AdapterTests.test_movie_core_write_is_parsed_but_not_callable) ... ok\ntest_negative_lengths_types_ids_and_nonzero_result (test_adapter.AdapterTests.test_negative_lengths_types_ids_and_nonzero_result) ... ok\ntest_poweron_reuses_pinned_contract (test_adapter.AdapterTests.test_poweron_reuses_pinned_contract) ... ok\ntest_timer_reuses_pinned_record_subset (test_adapter.AdapterTests.test_timer_reuses_pinned_record_subset) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.002s\n\nOK\n",
+  "files_sha256": {
+    "adapter.py": "8b78e1abcf8c453a7959bbe4be60d32e69667ee5c2e4a0b0d3cb2cd78f0dc1a0",
+    "audit.py": "fd1acb505c9253473f852b871f24fe2950d9dcde7a94820193dc1093e468810c",
+    "test_adapter.py": "b80ecd34f92c7dda217e6c231d4f38cde9a26e6855e825f21d30e266aa3b7bb6",
+    "seal.py": "918d887a8e6baaf6a6c651623f030b7e28fcaeb7021f80ed97e1825fb77646da",
+    "README.md": "49c2a430555ffcee273445f42434cbee30a2aa0f6a9210b361be5efc0cc0f96b",
+    "evidence.json": "572a1a052ecd3d0d775329605efb7f0bd9485d7d874a85c437804d91aeeaa95b"
+  },
+  "prior_vm_run_consumed": "mpr-ro-b22ccc48",
+  "natural_movie_events_observed": false,
+  "native_movie_callback_adapter_ready": false
+}

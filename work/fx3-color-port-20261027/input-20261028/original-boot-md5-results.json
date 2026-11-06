@@ -1,0 +1,36 @@
+{
+  "status": "PASS_ORIGINAL_BOOT_MEMBER_CHECKSUMS",
+  "packages": [
+    {
+      "version": "2.04",
+      "checks": [
+        {
+          "path": "/boot/vmlinux.bin",
+          "md5": "17f578cdd78a500c6f47e235cb908626",
+          "matches_original_manifest": true
+        },
+        {
+          "path": "/boot/initrd.img",
+          "md5": "a42c4e24ba6baaee6f7f196ec08fe474",
+          "matches_original_manifest": true
+        }
+      ]
+    },
+    {
+      "version": "2.05",
+      "checks": [
+        {
+          "path": "/boot/vmlinux.bin",
+          "md5": "a08d2b8ad7a58051405e043280748454",
+          "matches_original_manifest": true
+        },
+        {
+          "path": "/boot/initrd.img",
+          "md5": "20d7063510f3efc3e2181fb9b72a99d9",
+          "matches_original_manifest": true
+        }
+      ]
+    }
+  ],
+  "scope": "Legacy original p1chksum integrity records only; MD5 checks do not replace the separate verified RSA-2048/SHA-256 package signatures."
+}

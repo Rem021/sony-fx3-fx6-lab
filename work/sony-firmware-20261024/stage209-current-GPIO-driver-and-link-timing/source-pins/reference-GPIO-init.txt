@@ -1,0 +1,13 @@
+void darwin_init(void)
+{
+    /* Idle high BEFORE handing the pad to the GPIO block, so switching the
+     * mux cannot present a spurious falling edge. */
+    write32(XCS_SET,      BIT(XCS_BIT));
+    write32(XCS_DIR_SET,  BIT(XCS_BIT));
+    write32(XCS_FUNC_SET, BIT(XCS_BIT));
+
+    /* Hand the clock and data pads back to the SIO block. */
+    write32(XCS_FUNC_CLR, SIO_PINS);
+    dsb();
+}
+

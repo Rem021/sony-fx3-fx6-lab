@@ -1,0 +1,4 @@
+{
+  "passing_result": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage106-native-MPR-Open-fields/mpr_open.py\", line 210, in main\n    classified=[classify(blob,p) for p in produced]\n                ~~~~~~~~^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage106-native-MPR-Open-fields/mpr_open.py\", line 186, in classify\n    assert decoded['coding']['original_name']==('AVC_MP4' if vpc==1 else 'HEVC_MP4')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

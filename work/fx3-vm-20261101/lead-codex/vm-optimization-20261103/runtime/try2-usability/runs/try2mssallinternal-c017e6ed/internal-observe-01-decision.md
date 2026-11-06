@@ -1,0 +1,1 @@
+Viewed runs/try2mssallinternal-c017e6ed/view-step-01-seq-240-2914275caea5.png using image tool; frozen_sequence=240 current_sequence=655 exact_PNG_SHA256=2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e. English待机，NO CARD橙字，底栏可辨；所看冻结PNG与当前提交像素哈希一致 Next: MENU打开Setup，仅比较原MSS同队列活动，不改设置

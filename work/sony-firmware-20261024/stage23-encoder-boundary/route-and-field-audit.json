@@ -1,0 +1,381 @@
+{
+  "schema": "fx3-stage23-route-and-field-audit/1",
+  "created_utc": "2026-10-25T20:34:20.882482+00:00",
+  "original_image_after_extraction_sha256_verified": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "original_AV_library_sha256": "87a2246084567abca0e43228b5289bc728839a13ab4251e92828ea4c463e3c26",
+  "matched_core_video_fields": [
+    "video_codec_66",
+    "width",
+    "height",
+    "codec_FramePerSec_enum_80",
+    "progressive_flag_81",
+    "mpr_quality_82",
+    "chroma_94",
+    "bitdepth_95"
+  ],
+  "sixteen_bit_field_differences": {
+    "0x28": {
+      "MAIN": 1200,
+      "proxy": 300
+    },
+    "0x38": {
+      "MAIN": 1200,
+      "proxy": 600
+    },
+    "0x48": {
+      "MAIN": 768,
+      "proxy": 235
+    }
+  },
+  "raw_byte7f_in_zero_flag_fixture": {
+    "MAIN": 0,
+    "proxy": 2
+  },
+  "byte7f_provenance": "MAIN uses exec+0x760: zero produces0, nonzero2. Proxy builder writes2. Do not generalize zero-fixture difference to all modes.",
+  "outer_identity_binding": [
+    "GetCodecInfoForCodec(vpc,stream) -> enqueue MAIN exec+0x77c",
+    "ExecEncOpen loads exec+0x77c into Codec::EncOpen FileFormat argument",
+    "CreateMessage stores that argument at PayloadMpr+0x1c",
+    "ReceiveCommand requests GetMsg(out+8,0x30), making the corresponding MPR_CMD position0x24 under the explicit transport-copy precondition"
+  ],
+  "transport_copy_or_physical_address_resolution_actually_executed": false,
+  "single_or_dual_open_source": "ExecEncOpen branches on exec+0x760. Zero uses SetEncOpenParam then EncOpen; nonzero builds MAIN and proxy packets and calls EncOpen2. Actual proxy recording is not tested here.",
+  "packet65_correction": {
+    "legacy_field": "file_format_65",
+    "correct_source": "GetCodecAudioFormat return",
+    "MAIN_store": "0xd1508",
+    "proxy_store": "0xd1780",
+    "not_outer_Codec_FileFormat": true
+  },
+  "AV_debug_GOT_binding": [
+    {
+      "type": 1025,
+      "symbol": "avbizPrintLevel",
+      "addend": 0
+    }
+  ],
+  "debug_fixture_scope": "Imported read-only debug-level input explicitly bound to scratch0; positive1 stops at original logger PLT. No AV logging return/output adapter.",
+  "static_regions": [
+    {
+      "name": "dual_stream_EncOpen2_caller",
+      "start": "0xd1c84",
+      "end_exclusive": "0xd1cf4",
+      "instructions": [
+        {
+          "va": "0xd1c84",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20"
+        },
+        {
+          "va": "0xd1c88",
+          "bytes": "022680d2",
+          "asm": "mov x2, #0x130"
+        },
+        {
+          "va": "0xd1c8c",
+          "bytes": "01008052",
+          "asm": "mov w1, #0"
+        },
+        {
+          "va": "0xd1c90",
+          "bytes": "88aefe97",
+          "asm": "bl #0x7d6b0"
+        },
+        {
+          "va": "0xd1c94",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0xd1c98",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19"
+        },
+        {
+          "va": "0xd1c9c",
+          "bytes": "59bdfe97",
+          "asm": "bl #0x81200"
+        },
+        {
+          "va": "0xd1ca0",
+          "bytes": "81620291",
+          "asm": "add x1, x20, #0x98"
+        },
+        {
+          "va": "0xd1ca4",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19"
+        },
+        {
+          "va": "0xd1ca8",
+          "bytes": "02a9fe97",
+          "asm": "bl #0x7c0b0"
+        },
+        {
+          "va": "0xd1cac",
+          "bytes": "03048052",
+          "asm": "mov w3, #0x20"
+        },
+        {
+          "va": "0xd1cb0",
+          "bytes": "627e47b9",
+          "asm": "ldr w2, [x19, #0x77c]"
+        },
+        {
+          "va": "0xd1cb4",
+          "bytes": "649a47b9",
+          "asm": "ldr w4, [x19, #0x798]"
+        },
+        {
+          "va": "0xd1cb8",
+          "bytes": "e50317aa",
+          "asm": "mov x5, x23"
+        },
+        {
+          "va": "0xd1cbc",
+          "bytes": "e103032a",
+          "asm": "mov w1, w3"
+        },
+        {
+          "va": "0xd1cc0",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20"
+        },
+        {
+          "va": "0xd1cc4",
+          "bytes": "7fb5fe97",
+          "asm": "bl #0x7f2c0"
+        },
+        {
+          "va": "0xd1cc8",
+          "bytes": "f603002a",
+          "asm": "mov w22, w0"
+        },
+        {
+          "va": "0xd1ccc",
+          "bytes": "40010034",
+          "asm": "cbz w0, #0xd1cf4"
+        },
+        {
+          "va": "0xd1cd0",
+          "bytes": "60008052",
+          "asm": "mov w0, #3"
+        },
+        {
+          "va": "0xd1cd4",
+          "bytes": "bf570139",
+          "asm": "strb wzr, [x29, #0x55]"
+        },
+        {
+          "va": "0xd1cd8",
+          "bytes": "bf5b0139",
+          "asm": "strb wzr, [x29, #0x56]"
+        },
+        {
+          "va": "0xd1cdc",
+          "bytes": "a0530139",
+          "asm": "strb w0, [x29, #0x54]"
+        },
+        {
+          "va": "0xd1ce0",
+          "bytes": "00228452",
+          "asm": "mov w0, #0x2110"
+        },
+        {
+          "va": "0xd1ce4",
+          "bytes": "bf5f0139",
+          "asm": "strb wzr, [x29, #0x57]"
+        },
+        {
+          "va": "0xd1ce8",
+          "bytes": "a0a30079",
+          "asm": "strh w0, [x29, #0x50]"
+        },
+        {
+          "va": "0xd1cec",
+          "bytes": "204b8052",
+          "asm": "mov w0, #0x259"
+        },
+        {
+          "va": "0xd1cf0",
+          "bytes": "beffff17",
+          "asm": "b #0xd1be8"
+        }
+      ]
+    },
+    {
+      "name": "MAIN_sizes",
+      "start": "0xd1494",
+      "end_exclusive": "0xd14bc",
+      "instructions": [
+        {
+          "va": "0xd1494",
+          "bytes": "806241f9",
+          "asm": "ldr x0, [x20, #0x2c0]"
+        },
+        {
+          "va": "0xd1498",
+          "bytes": "611a00f9",
+          "asm": "str x1, [x19, #0x30]"
+        },
+        {
+          "va": "0xd149c",
+          "bytes": "601200f9",
+          "asm": "str x0, [x19, #0x20]"
+        },
+        {
+          "va": "0xd14a0",
+          "bytes": "00968052",
+          "asm": "mov w0, #0x4b0"
+        },
+        {
+          "va": "0xd14a4",
+          "bytes": "60520079",
+          "asm": "strh w0, [x19, #0x28]"
+        },
+        {
+          "va": "0xd14a8",
+          "bytes": "60720079",
+          "asm": "strh w0, [x19, #0x38]"
+        },
+        {
+          "va": "0xd14ac",
+          "bytes": "803240f9",
+          "asm": "ldr x0, [x20, #0x60]"
+        },
+        {
+          "va": "0xd14b0",
+          "bytes": "602200f9",
+          "asm": "str x0, [x19, #0x40]"
+        },
+        {
+          "va": "0xd14b4",
+          "bytes": "00608052",
+          "asm": "mov w0, #0x300"
+        },
+        {
+          "va": "0xd14b8",
+          "bytes": "60920079",
+          "asm": "strh w0, [x19, #0x48]"
+        }
+      ]
+    },
+    {
+      "name": "proxy_sizes",
+      "start": "0xd1704",
+      "end_exclusive": "0xd1734",
+      "instructions": [
+        {
+          "va": "0xd1704",
+          "bytes": "806242f9",
+          "asm": "ldr x0, [x20, #0x4c0]"
+        },
+        {
+          "va": "0xd1708",
+          "bytes": "601200f9",
+          "asm": "str x0, [x19, #0x20]"
+        },
+        {
+          "va": "0xd170c",
+          "bytes": "80258052",
+          "asm": "mov w0, #0x12c"
+        },
+        {
+          "va": "0xd1710",
+          "bytes": "60520079",
+          "asm": "strh w0, [x19, #0x28]"
+        },
+        {
+          "va": "0xd1714",
+          "bytes": "80d241f9",
+          "asm": "ldr x0, [x20, #0x3a0]"
+        },
+        {
+          "va": "0xd1718",
+          "bytes": "601a00f9",
+          "asm": "str x0, [x19, #0x30]"
+        },
+        {
+          "va": "0xd171c",
+          "bytes": "004b8052",
+          "asm": "mov w0, #0x258"
+        },
+        {
+          "va": "0xd1720",
+          "bytes": "60720079",
+          "asm": "strh w0, [x19, #0x38]"
+        },
+        {
+          "va": "0xd1724",
+          "bytes": "80e241f9",
+          "asm": "ldr x0, [x20, #0x3c0]"
+        },
+        {
+          "va": "0xd1728",
+          "bytes": "602200f9",
+          "asm": "str x0, [x19, #0x40]"
+        },
+        {
+          "va": "0xd172c",
+          "bytes": "601d8052",
+          "asm": "mov w0, #0xeb"
+        },
+        {
+          "va": "0xd1730",
+          "bytes": "60920079",
+          "asm": "strh w0, [x19, #0x48]"
+        }
+      ]
+    },
+    {
+      "name": "MAIN_raw7f_from_dual_flag",
+      "start": "0xd1584",
+      "end_exclusive": "0xd1598",
+      "instructions": [
+        {
+          "va": "0xd1584",
+          "bytes": "80825d39",
+          "asm": "ldrb w0, [x20, #0x760]"
+        },
+        {
+          "va": "0xd1588",
+          "bytes": "1f000071",
+          "asm": "cmp w0, #0"
+        },
+        {
+          "va": "0xd158c",
+          "bytes": "40008052",
+          "asm": "mov w0, #2"
+        },
+        {
+          "va": "0xd1590",
+          "bytes": "e003801a",
+          "asm": "csel w0, wzr, w0, eq"
+        },
+        {
+          "va": "0xd1594",
+          "bytes": "60fe0139",
+          "asm": "strb w0, [x19, #0x7f]"
+        }
+      ]
+    },
+    {
+      "name": "proxy_raw7f_constant",
+      "start": "0xd17fc",
+      "end_exclusive": "0xd1804",
+      "instructions": [
+        {
+          "va": "0xd17fc",
+          "bytes": "40008052",
+          "asm": "mov w0, #2"
+        },
+        {
+          "va": "0xd1800",
+          "bytes": "60fe0139",
+          "asm": "strb w0, [x19, #0x7f]"
+        }
+      ]
+    }
+  ],
+  "scope": "Static bindings and review of passing bounded fragments. No full message transport, native resource state, format capability, actual recording or recovery."
+}

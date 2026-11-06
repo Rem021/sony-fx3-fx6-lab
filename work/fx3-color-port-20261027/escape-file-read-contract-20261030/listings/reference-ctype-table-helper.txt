@@ -1,0 +1,15 @@
+0xfe062f0c: f57bbfa9 stp x21, x30, [sp, #-0x10]!
+0xfe062f10: 410100b4 cbz x1, #0xfe062f38
+0xfe062f14: 20004039 ldrb w0, [x1]
+0xfe062f18: 00010034 cbz w0, #0xfe062f38
+0xfe062f1c: 200000f0 adrp x0, #0xfe069000
+0xfe062f20: 00500091 add x0, x0, #0x14
+0xfe062f24: e4a5ff97 bl #0xfe04c6b4
+0xfe062f28: 80000034 cbz w0, #0xfe062f38
+0xfe062f2c: 000080d2 mov x0, #0
+0xfe062f30: f57bc1a8 ldp x21, x30, [sp], #0x10
+0xfe062f34: c0035fd6 ret 
+0xfe062f38: 200000f0 adrp x0, #0xfe069000
+0xfe062f3c: 00700091 add x0, x0, #0x1c
+0xfe062f40: f57bc1a8 ldp x21, x30, [sp], #0x10
+0xfe062f44: c0035fd6 ret 

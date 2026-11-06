@@ -1,0 +1,36 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2e7797c: 97fe6f6b     	bl	0x2e13728 <Application_System_Init+0x1723b98>
+ 2e77980: aa1803e0     	mov	x0, x24
+ 2e77984: d280a402     	mov	x2, #0x520              // =1312
+ 2e77988: 52800001     	mov	w1, #0x0                // =0
+ 2e7798c: 979c6861     	bl	0x1591b10 <memset@plt>
+ 2e77990: f9006bb6     	str	x22, [x29, #0xd0]
+ 2e77994: 912a0260     	add	x0, x19, #0xa80
+ 2e77998: f9004ba0     	str	x0, [x29, #0x90]
+ 2e7799c: 97a1d6ee     	bl	0x16ed554 <.text+0x158ed4>
+ 2e779a0: f9005bb8     	str	x24, [x29, #0xb0]
+ 2e779a4: 528204c0     	mov	w0, #0x1026             // =4134
+ 2e779a8: aa1b03e1     	mov	x1, x27
+ 2e779ac: 910243b8     	add	x24, x29, #0x90
+ 2e779b0: b900aba0     	str	w0, [x29, #0xa8]
+ 2e779b4: 91048340     	add	x0, x26, #0x120
+ 2e779b8: 97ffdae2     	bl	0x2e6e540 <Application_System_Init+0x177e9b0>
+ 2e779bc: aa1803e0     	mov	x0, x24
+ 2e779c0: 97e30377     	bl	0x273879c <Application_System_Init+0x1048c0c>
+ 2e779c4: b900b3bf     	str	wzr, [x29, #0xb0]
+ 2e779c8: 52800ac0     	mov	w0, #0x56               // =86
+ 2e779cc: b900aba0     	str	w0, [x29, #0xa8]
+ 2e779d0: b9400320     	ldr	w0, [x25]
+ 2e779d4: b900afa0     	str	w0, [x29, #0xac]
+ 2e779d8: b9400720     	ldr	w0, [x25, #0x4]
+ 2e779dc: 340000a0     	cbz	w0, 0x2e779f0 <Application_System_Init+0x1787e60>
+ 2e779e0: 7100041f     	cmp	w0, #0x1
+ 2e779e4: 52801fe1     	mov	w1, #0xff               // =255
+ 2e779e8: 1a810000     	csel	w0, w0, w1, eq
+ 2e779ec: b900b3a0     	str	w0, [x29, #0xb0]
+ 2e779f0: aa1b03e0     	mov	x0, x27

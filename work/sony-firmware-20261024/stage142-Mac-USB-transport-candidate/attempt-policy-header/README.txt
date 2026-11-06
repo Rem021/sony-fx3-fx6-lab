@@ -1,0 +1,1 @@
+Initial policy shim compile failed because the official header already defines libusb_le16_to_cpu. Remove the redundant fixture macro; keep strict compiler warnings. No real libusb load or device I/O occurred.

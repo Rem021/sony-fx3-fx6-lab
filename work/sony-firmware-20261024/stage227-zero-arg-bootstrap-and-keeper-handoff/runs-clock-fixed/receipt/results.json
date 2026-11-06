@@ -1,0 +1,2308 @@
+{
+  "Sony_loader_or_Linux_kernel_executed": false,
+  "all_model_threads_terminal": true,
+  "build": {
+    "actual_Sony_loader_acceptance_verified": false,
+    "actual_body_or_loaded_driver_identity_verified": false,
+    "actual_child_launch_or_wait4_verified": false,
+    "actual_target_global_namespace_or_IPC_verified": false,
+    "build_argv": [
+      "/usr/bin/xcrun",
+      "clang",
+      "-target",
+      "aarch64-linux-gnu",
+      "-std=c11",
+      "-O2",
+      "-fPIC",
+      "-fvisibility=hidden",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-fno-stack-protector",
+      "-fno-unwind-tables",
+      "-fno-asynchronous-unwind-tables",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/bootstrap.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/runs-clock-fixed/built/module.o"
+    ],
+    "bytes": 262936,
+    "camera_identity_verified": false,
+    "camera_operations": 0,
+    "camera_transfer_or_launch_backend": false,
+    "child_identity_guard_implemented": false,
+    "constructor_effect_authenticated_by_metadata": false,
+    "controlled_raw_clone_exec_and_preexec_hash_implemented": true,
+    "dynamic_tags": [
+      [
+        4,
+        132232
+      ],
+      [
+        5,
+        132112
+      ],
+      [
+        6,
+        132160
+      ],
+      [
+        10,
+        41
+      ],
+      [
+        11,
+        24
+      ],
+      [
+        7,
+        132256
+      ],
+      [
+        8,
+        24
+      ],
+      [
+        9,
+        24
+      ],
+      [
+        25,
+        196608
+      ],
+      [
+        27,
+        8
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "exclusive_authority_or_full_loaded_image_attested": false,
+    "exports": {
+      "fx3_bootstrap_status": {
+        "bytes": 48,
+        "va": 70740
+      },
+      "fx3_bootstrap_step": {
+        "bytes": 5176,
+        "va": 65564
+      }
+    },
+    "flashable": false,
+    "global_session_directory_and_private_live_state_implemented": true,
+    "hardware_validated": false,
+    "has_DT_NEEDED_or_imports": false,
+    "independent_recovery_proven": false,
+    "init_array": [
+      196608
+    ],
+    "initialization_behavior_verified_by_inspector": false,
+    "initializer_bytes": 28,
+    "initializer_code_sha256": "313c6c58b414fb79fe2c5a12e9c0d7dfa913f484213d1323e2625e0fd2261542",
+    "initializer_symbol": "fx3_module_init",
+    "initializer_va": 65536,
+    "link_relocations": [
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 65540,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262144
+      },
+      {
+        "after": 4177527049,
+        "before": 4177527049,
+        "file_offset": 65556,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262144
+      },
+      {
+        "after": 2415919511,
+        "before": 2415919127,
+        "file_offset": 65600,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262152
+      },
+      {
+        "after": 2432705271,
+        "before": 2432697079,
+        "file_offset": 65604,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262152
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 65640,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262144
+      },
+      {
+        "after": 4181721352,
+        "before": 4181721352,
+        "file_offset": 65648,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262144
+      },
+      {
+        "after": 2415919508,
+        "before": 2415919124,
+        "file_offset": 65668,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 3107984000,
+        "before": 3107979904,
+        "file_offset": 65672,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 65688,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262164
+      },
+      {
+        "after": 3107984648,
+        "before": 3107979528,
+        "file_offset": 65692,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262164
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 65860,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262164
+      },
+      {
+        "after": 2432717064,
+        "before": 2432696584,
+        "file_offset": 65864,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262164
+      },
+      {
+        "after": 2415919233,
+        "before": 2415919105,
+        "file_offset": 65904,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131392
+      },
+      {
+        "after": 2433024033,
+        "before": 2432696353,
+        "file_offset": 65908,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131392
+      },
+      {
+        "after": 2415919509,
+        "before": 2415919125,
+        "file_offset": 66184,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 2432713397,
+        "before": 2432697013,
+        "file_offset": 66188,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66284,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262164
+      },
+      {
+        "after": 2432717064,
+        "before": 2432696584,
+        "file_offset": 66288,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262164
+      },
+      {
+        "after": 2415919507,
+        "before": 2415919123,
+        "file_offset": 66324,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262216
+      },
+      {
+        "after": 4181730912,
+        "before": 4181721696,
+        "file_offset": 66332,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262216
+      },
+      {
+        "after": 4181730912,
+        "before": 4181721696,
+        "file_offset": 66344,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262216
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66372,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262368
+      },
+      {
+        "after": 4181750024,
+        "before": 4181721352,
+        "file_offset": 66380,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262368
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66392,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262376
+      },
+      {
+        "after": 4181751048,
+        "before": 4181721352,
+        "file_offset": 66400,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262376
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66412,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262384
+      },
+      {
+        "after": 3108040968,
+        "before": 3107979528,
+        "file_offset": 66420,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262384
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66432,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262388
+      },
+      {
+        "after": 3108041992,
+        "before": 3107979528,
+        "file_offset": 66440,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262388
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66452,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262392
+      },
+      {
+        "after": 3108043016,
+        "before": 3107979528,
+        "file_offset": 66460,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262392
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66472,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262400
+      },
+      {
+        "after": 4181754120,
+        "before": 4181721352,
+        "file_offset": 66480,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262400
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66492,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262416
+      },
+      {
+        "after": 4181756168,
+        "before": 4181721352,
+        "file_offset": 66500,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262416
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66512,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262456
+      },
+      {
+        "after": 4181761288,
+        "before": 4181721352,
+        "file_offset": 66520,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262456
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66532,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262464
+      },
+      {
+        "after": 4181762312,
+        "before": 4181721352,
+        "file_offset": 66540,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262464
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66552,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262472
+      },
+      {
+        "after": 4181763336,
+        "before": 4181721352,
+        "file_offset": 66560,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262472
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66572,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262480
+      },
+      {
+        "after": 4181764360,
+        "before": 4181721352,
+        "file_offset": 66580,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262480
+      },
+      {
+        "after": 2415919514,
+        "before": 2415919130,
+        "file_offset": 66684,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262232
+      },
+      {
+        "after": 2415919511,
+        "before": 2415919127,
+        "file_offset": 66688,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262152
+      },
+      {
+        "after": 2432705271,
+        "before": 2432697079,
+        "file_offset": 66692,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262152
+      },
+      {
+        "after": 4181733193,
+        "before": 4181721929,
+        "file_offset": 66696,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262232
+      },
+      {
+        "after": 2415919241,
+        "before": 2415919113,
+        "file_offset": 66732,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131072
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 66736,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262224
+      },
+      {
+        "after": 2432778504,
+        "before": 2432696584,
+        "file_offset": 66740,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262224
+      },
+      {
+        "after": 4248830241,
+        "before": 4248830241,
+        "file_offset": 66744,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131072
+      },
+      {
+        "after": 2415919241,
+        "before": 2415919113,
+        "file_offset": 66748,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131080
+      },
+      {
+        "after": 4248831264,
+        "before": 4248830240,
+        "file_offset": 66884,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131080
+      },
+      {
+        "after": 2415919498,
+        "before": 2415919114,
+        "file_offset": 66996,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262544
+      },
+      {
+        "after": 2433106250,
+        "before": 2432696650,
+        "file_offset": 67000,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262544
+      },
+      {
+        "after": 2415919242,
+        "before": 2415919114,
+        "file_offset": 67028,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131200
+      },
+      {
+        "after": 2415919241,
+        "before": 2415919113,
+        "file_offset": 67040,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131216
+      },
+      {
+        "after": 1036002593,
+        "before": 1035993377,
+        "file_offset": 67052,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131216
+      },
+      {
+        "after": 1036001600,
+        "before": 1035993408,
+        "file_offset": 67060,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131200
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 67092,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 2432712968,
+        "before": 2432696584,
+        "file_offset": 67096,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 2415919233,
+        "before": 2415919105,
+        "file_offset": 67228,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131483
+      },
+      {
+        "after": 2433117217,
+        "before": 2432696353,
+        "file_offset": 67232,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131483
+      },
+      {
+        "after": 2415919509,
+        "before": 2415919125,
+        "file_offset": 67408,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262496
+      },
+      {
+        "after": 2433057461,
+        "before": 2432697013,
+        "file_offset": 67412,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262496
+      },
+      {
+        "after": 2415919233,
+        "before": 2415919105,
+        "file_offset": 67572,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131403
+      },
+      {
+        "after": 2433035297,
+        "before": 2432696353,
+        "file_offset": 67576,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131403
+      },
+      {
+        "after": 2415919234,
+        "before": 2415919106,
+        "file_offset": 67580,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131592
+      },
+      {
+        "after": 2433228866,
+        "before": 2432696386,
+        "file_offset": 67584,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131592
+      },
+      {
+        "after": 2415919233,
+        "before": 2415919105,
+        "file_offset": 67608,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131427
+      },
+      {
+        "after": 2433059873,
+        "before": 2432696353,
+        "file_offset": 67612,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131427
+      },
+      {
+        "after": 2415919234,
+        "before": 2415919106,
+        "file_offset": 67616,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131657
+      },
+      {
+        "after": 2433295426,
+        "before": 2432696386,
+        "file_offset": 67620,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131657
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 67700,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 2432712968,
+        "before": 2432696584,
+        "file_offset": 67704,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 2415919511,
+        "before": 2415919127,
+        "file_offset": 67784,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262152
+      },
+      {
+        "after": 2432705271,
+        "before": 2432697079,
+        "file_offset": 67788,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262152
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 67808,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262184
+      },
+      {
+        "after": 3107989768,
+        "before": 3107979528,
+        "file_offset": 67812,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262184
+      },
+      {
+        "after": 2415919241,
+        "before": 2415919113,
+        "file_offset": 67864,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131200
+      },
+      {
+        "after": 2415919242,
+        "before": 2415919114,
+        "file_offset": 67868,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131216
+      },
+      {
+        "after": 1036001568,
+        "before": 1035993376,
+        "file_offset": 67876,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131200
+      },
+      {
+        "after": 1036002625,
+        "before": 1035993409,
+        "file_offset": 67880,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131216
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 67988,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262172
+      },
+      {
+        "after": 3107986696,
+        "before": 3107979528,
+        "file_offset": 67992,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262172
+      },
+      {
+        "after": 2415919240,
+        "before": 2415919112,
+        "file_offset": 68028,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131120
+      },
+      {
+        "after": 4248836354,
+        "before": 4248830210,
+        "file_offset": 68036,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131120
+      },
+      {
+        "after": 2415919240,
+        "before": 2415919112,
+        "file_offset": 68040,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131112
+      },
+      {
+        "after": 4248835330,
+        "before": 4248830210,
+        "file_offset": 68060,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131112
+      },
+      {
+        "after": 2415919497,
+        "before": 2415919113,
+        "file_offset": 68124,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262176
+      },
+      {
+        "after": 2432729385,
+        "before": 2432696617,
+        "file_offset": 68128,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262176
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 68184,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262200
+      },
+      {
+        "after": 4181728520,
+        "before": 4181721352,
+        "file_offset": 68188,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262200
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 68248,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262176
+      },
+      {
+        "after": 3107987720,
+        "before": 3107979528,
+        "file_offset": 68252,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262176
+      },
+      {
+        "after": 2415919497,
+        "before": 2415919113,
+        "file_offset": 68312,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262184
+      },
+      {
+        "after": 2432737577,
+        "before": 2432696617,
+        "file_offset": 68316,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262184
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 68360,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262216
+      },
+      {
+        "after": 4181730560,
+        "before": 4181721344,
+        "file_offset": 68372,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262216
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 68412,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 264084
+      },
+      {
+        "after": 3108476168,
+        "before": 3107979528,
+        "file_offset": 68420,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 264084
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 68440,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262228
+      },
+      {
+        "after": 3108001048,
+        "before": 3107979544,
+        "file_offset": 68448,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262228
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 68464,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262200
+      },
+      {
+        "after": 3107993864,
+        "before": 3107979528,
+        "file_offset": 68472,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262200
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 68536,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262608
+      },
+      {
+        "after": 2433171720,
+        "before": 2432696584,
+        "file_offset": 68540,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262608
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 68800,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262224
+      },
+      {
+        "after": 3108000008,
+        "before": 3107979528,
+        "file_offset": 68804,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262224
+      },
+      {
+        "after": 2415919497,
+        "before": 2415919113,
+        "file_offset": 68816,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 264096
+      },
+      {
+        "after": 2434695465,
+        "before": 2432696617,
+        "file_offset": 68820,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 264096
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 69168,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262528
+      },
+      {
+        "after": 2433089800,
+        "before": 2432696584,
+        "file_offset": 69172,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262528
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 69204,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 264128
+      },
+      {
+        "after": 2434728200,
+        "before": 2432696584,
+        "file_offset": 69208,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 264128
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 69244,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262168
+      },
+      {
+        "after": 2432721160,
+        "before": 2432696584,
+        "file_offset": 69248,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262168
+      },
+      {
+        "after": 3103789696,
+        "before": 3103785600,
+        "file_offset": 69268,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 2415919240,
+        "before": 2415919112,
+        "file_offset": 69420,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131128
+      },
+      {
+        "after": 4248837376,
+        "before": 4248830208,
+        "file_offset": 69424,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131128
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 69428,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262168
+      },
+      {
+        "after": 4244638976,
+        "before": 4244635904,
+        "file_offset": 69432,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262168
+      },
+      {
+        "after": 2415919496,
+        "before": 2415919112,
+        "file_offset": 69444,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 2432712968,
+        "before": 2432696584,
+        "file_offset": 69448,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 2415919241,
+        "before": 2415919113,
+        "file_offset": 69480,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131088
+      },
+      {
+        "after": 4248832289,
+        "before": 4248830241,
+        "file_offset": 69492,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131088
+      },
+      {
+        "after": 2415919241,
+        "before": 2415919113,
+        "file_offset": 69496,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131096
+      },
+      {
+        "after": 4248833312,
+        "before": 4248830240,
+        "file_offset": 69508,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131096
+      },
+      {
+        "after": 4026532211,
+        "before": 2415919123,
+        "file_offset": 69632,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262200
+      },
+      {
+        "after": 2432754291,
+        "before": 2432696947,
+        "file_offset": 69636,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262200
+      },
+      {
+        "after": 4026531945,
+        "before": 2415919113,
+        "file_offset": 69656,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131104
+      },
+      {
+        "after": 4248834336,
+        "before": 4248830240,
+        "file_offset": 69664,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131104
+      },
+      {
+        "after": 4181733195,
+        "before": 4181721931,
+        "file_offset": 69784,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262232
+      },
+      {
+        "after": 4026532201,
+        "before": 2415919113,
+        "file_offset": 69800,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262608
+      },
+      {
+        "after": 2433171753,
+        "before": 2432696617,
+        "file_offset": 69804,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262608
+      },
+      {
+        "after": 4026531948,
+        "before": 2415919116,
+        "file_offset": 70024,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131232
+      },
+      {
+        "after": 4026531947,
+        "before": 2415919115,
+        "file_offset": 70036,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131248
+      },
+      {
+        "after": 1036003712,
+        "before": 1035993472,
+        "file_offset": 70040,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131232
+      },
+      {
+        "after": 1036004705,
+        "before": 1035993441,
+        "file_offset": 70048,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131248
+      },
+      {
+        "after": 4026532201,
+        "before": 2415919113,
+        "file_offset": 70184,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 264348
+      },
+      {
+        "after": 2434953513,
+        "before": 2432696617,
+        "file_offset": 70188,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 264348
+      },
+      {
+        "after": 4026532202,
+        "before": 2415919114,
+        "file_offset": 70432,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262208
+      },
+      {
+        "after": 2432762186,
+        "before": 2432696650,
+        "file_offset": 70436,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262208
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 70524,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262168
+      },
+      {
+        "after": 3103791369,
+        "before": 3103785225,
+        "file_offset": 70528,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262168
+      },
+      {
+        "after": 4026532215,
+        "before": 2415919127,
+        "file_offset": 70552,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262152
+      },
+      {
+        "after": 2432705271,
+        "before": 2432697079,
+        "file_offset": 70556,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262152
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 70624,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 2432712968,
+        "before": 2432696584,
+        "file_offset": 70628,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 4026532213,
+        "before": 2415919125,
+        "file_offset": 70656,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 2432713397,
+        "before": 2432697013,
+        "file_offset": 70660,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 70744,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262144
+      },
+      {
+        "after": 4026532201,
+        "before": 2415919113,
+        "file_offset": 70748,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 4181721352,
+        "before": 4181721352,
+        "file_offset": 70756,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262144
+      },
+      {
+        "after": 3107983657,
+        "before": 3107979561,
+        "file_offset": 70760,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 4026531937,
+        "before": 2415919105,
+        "file_offset": 70796,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131451
+      },
+      {
+        "after": 2433084449,
+        "before": 2432696353,
+        "file_offset": 70800,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131451
+      },
+      {
+        "after": 4026531944,
+        "before": 2415919112,
+        "file_offset": 71052,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131264
+      },
+      {
+        "after": 4026531946,
+        "before": 2415919114,
+        "file_offset": 71056,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131280
+      },
+      {
+        "after": 1036005632,
+        "before": 1035993344,
+        "file_offset": 71064,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131264
+      },
+      {
+        "after": 1036006721,
+        "before": 1035993409,
+        "file_offset": 71072,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131280
+      },
+      {
+        "after": 4026532201,
+        "before": 2415919113,
+        "file_offset": 71244,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262240
+      },
+      {
+        "after": 4181733673,
+        "before": 4181721385,
+        "file_offset": 71252,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262240
+      },
+      {
+        "after": 4026532201,
+        "before": 2415919113,
+        "file_offset": 71264,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262248
+      },
+      {
+        "after": 2432803113,
+        "before": 2432696617,
+        "file_offset": 71268,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262248
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 71324,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262272
+      },
+      {
+        "after": 2432827656,
+        "before": 2432696584,
+        "file_offset": 71328,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262272
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 71368,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262328
+      },
+      {
+        "after": 4181744904,
+        "before": 4181721352,
+        "file_offset": 71376,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262328
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 71388,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262336
+      },
+      {
+        "after": 4181745928,
+        "before": 4181721352,
+        "file_offset": 71396,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262336
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 71408,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262344
+      },
+      {
+        "after": 4181746952,
+        "before": 4181721352,
+        "file_offset": 71416,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262344
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 71428,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262352
+      },
+      {
+        "after": 4181747976,
+        "before": 4181721352,
+        "file_offset": 71436,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262352
+      },
+      {
+        "after": 4026531937,
+        "before": 2415919105,
+        "file_offset": 71496,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131722
+      },
+      {
+        "after": 2433361953,
+        "before": 2432696353,
+        "file_offset": 71500,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131722
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 71560,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262240
+      },
+      {
+        "after": 2432794888,
+        "before": 2432696584,
+        "file_offset": 71564,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262240
+      },
+      {
+        "after": 4026531944,
+        "before": 2415919112,
+        "file_offset": 72092,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131296
+      },
+      {
+        "after": 4026531946,
+        "before": 2415919114,
+        "file_offset": 72096,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131312
+      },
+      {
+        "after": 1036007680,
+        "before": 1035993344,
+        "file_offset": 72104,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131296
+      },
+      {
+        "after": 1036008769,
+        "before": 1035993409,
+        "file_offset": 72112,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131312
+      },
+      {
+        "after": 4026531937,
+        "before": 2415919105,
+        "file_offset": 72428,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131509
+      },
+      {
+        "after": 2433143841,
+        "before": 2432696353,
+        "file_offset": 72432,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131509
+      },
+      {
+        "after": 4026532201,
+        "before": 2415919113,
+        "file_offset": 72512,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262164
+      },
+      {
+        "after": 2432717097,
+        "before": 2432696617,
+        "file_offset": 72516,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262164
+      },
+      {
+        "after": 4026532211,
+        "before": 2415919123,
+        "file_offset": 72584,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262216
+      },
+      {
+        "after": 2432770675,
+        "before": 2432696947,
+        "file_offset": 72588,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262216
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 72620,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262384
+      },
+      {
+        "after": 3108040968,
+        "before": 3107979528,
+        "file_offset": 72624,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262384
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 72656,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262392
+      },
+      {
+        "after": 3108043016,
+        "before": 3107979528,
+        "file_offset": 72660,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262392
+      },
+      {
+        "after": 4026532213,
+        "before": 2415919125,
+        "file_offset": 72668,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262216
+      },
+      {
+        "after": 4026531937,
+        "before": 2415919105,
+        "file_offset": 72676,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131532
+      },
+      {
+        "after": 2433167393,
+        "before": 2432696353,
+        "file_offset": 72680,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131532
+      },
+      {
+        "after": 4181730976,
+        "before": 4181721760,
+        "file_offset": 72684,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262216
+      },
+      {
+        "after": 4026531944,
+        "before": 2415919112,
+        "file_offset": 72712,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131136
+      },
+      {
+        "after": 4248838401,
+        "before": 4248830209,
+        "file_offset": 72720,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131136
+      },
+      {
+        "after": 4026531944,
+        "before": 2415919112,
+        "file_offset": 72724,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131144
+      },
+      {
+        "after": 4248839424,
+        "before": 4248830208,
+        "file_offset": 72776,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131144
+      },
+      {
+        "after": 4026532200,
+        "before": 2415919112,
+        "file_offset": 72788,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262192
+      },
+      {
+        "after": 2432745736,
+        "before": 2432696584,
+        "file_offset": 72792,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262192
+      },
+      {
+        "after": 4181730976,
+        "before": 4181721760,
+        "file_offset": 72928,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262216
+      },
+      {
+        "after": 4026531937,
+        "before": 2415919105,
+        "file_offset": 73180,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131575
+      },
+      {
+        "after": 2433211425,
+        "before": 2432696353,
+        "file_offset": 73184,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131575
+      },
+      {
+        "after": 3489661034,
+        "before": 2415919114,
+        "file_offset": 74776,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131152
+      },
+      {
+        "after": 3489661035,
+        "before": 2415919115,
+        "file_offset": 74780,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131160
+      },
+      {
+        "after": 4248840512,
+        "before": 4248830272,
+        "file_offset": 74788,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131152
+      },
+      {
+        "after": 4248841569,
+        "before": 4248830305,
+        "file_offset": 74792,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131160
+      },
+      {
+        "after": 3489661032,
+        "before": 2415919112,
+        "file_offset": 74856,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131550
+      },
+      {
+        "after": 2433186056,
+        "before": 2432696584,
+        "file_offset": 74860,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131550
+      },
+      {
+        "after": 3489661034,
+        "before": 2415919114,
+        "file_offset": 74864,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131566
+      },
+      {
+        "after": 2433202506,
+        "before": 2432696650,
+        "file_offset": 74868,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131566
+      },
+      {
+        "after": 3489661289,
+        "before": 2415919113,
+        "file_offset": 74960,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262208
+      },
+      {
+        "after": 4181729568,
+        "before": 4181721376,
+        "file_offset": 74972,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262208
+      },
+      {
+        "after": 4181729568,
+        "before": 4181721376,
+        "file_offset": 75092,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262208
+      },
+      {
+        "after": 4181729568,
+        "before": 4181721376,
+        "file_offset": 75172,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262208
+      },
+      {
+        "after": 3489661288,
+        "before": 2415919112,
+        "file_offset": 75232,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262192
+      },
+      {
+        "after": 3107991816,
+        "before": 3107979528,
+        "file_offset": 75244,
+        "kind": "LDST32_ABS_LO12_NC",
+        "target": 262192
+      },
+      {
+        "after": 4181729568,
+        "before": 4181721376,
+        "file_offset": 75276,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 262208
+      },
+      {
+        "after": 3489661034,
+        "before": 2415919114,
+        "file_offset": 76396,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131466
+      },
+      {
+        "after": 2433100106,
+        "before": 2432696650,
+        "file_offset": 76400,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131466
+      },
+      {
+        "after": 3489661041,
+        "before": 2415919121,
+        "file_offset": 76772,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131788
+      },
+      {
+        "after": 2433430065,
+        "before": 2432696881,
+        "file_offset": 76776,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131788
+      },
+      {
+        "after": 3489661299,
+        "before": 2415919123,
+        "file_offset": 77044,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262496
+      },
+      {
+        "after": 2433057395,
+        "before": 2432696947,
+        "file_offset": 77048,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262496
+      },
+      {
+        "after": 3489661032,
+        "before": 2415919112,
+        "file_offset": 77056,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131176
+      },
+      {
+        "after": 4248843521,
+        "before": 4248830209,
+        "file_offset": 77064,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131176
+      },
+      {
+        "after": 3489661032,
+        "before": 2415919112,
+        "file_offset": 77068,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131168
+      },
+      {
+        "after": 4248842498,
+        "before": 4248830210,
+        "file_offset": 77080,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131168
+      },
+      {
+        "after": 3489661288,
+        "before": 2415919112,
+        "file_offset": 77248,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262512
+      },
+      {
+        "after": 2433073416,
+        "before": 2432696584,
+        "file_offset": 77252,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262512
+      },
+      {
+        "after": 3489661280,
+        "before": 2415919104,
+        "file_offset": 77368,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262608
+      },
+      {
+        "after": 2433171456,
+        "before": 2432696320,
+        "file_offset": 77372,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262608
+      },
+      {
+        "after": 3489661025,
+        "before": 2415919105,
+        "file_offset": 77376,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131592
+      },
+      {
+        "after": 2433228833,
+        "before": 2432696353,
+        "file_offset": 77380,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131592
+      },
+      {
+        "after": 3489661300,
+        "before": 2415919124,
+        "file_offset": 77392,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262640
+      },
+      {
+        "after": 2433204884,
+        "before": 2432696980,
+        "file_offset": 77396,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262640
+      },
+      {
+        "after": 3489661025,
+        "before": 2415919105,
+        "file_offset": 77400,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131657
+      },
+      {
+        "after": 2433295393,
+        "before": 2432696353,
+        "file_offset": 77404,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 131657
+      },
+      {
+        "after": 3489661288,
+        "before": 2415919112,
+        "file_offset": 77556,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262696
+      },
+      {
+        "after": 2433261832,
+        "before": 2432696584,
+        "file_offset": 77560,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262696
+      },
+      {
+        "after": 3489661303,
+        "before": 2415919127,
+        "file_offset": 77628,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262160
+      },
+      {
+        "after": 2432713463,
+        "before": 2432697079,
+        "file_offset": 77632,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262160
+      },
+      {
+        "after": 3489661288,
+        "before": 2415919112,
+        "file_offset": 77676,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262528
+      },
+      {
+        "after": 2433089800,
+        "before": 2432696584,
+        "file_offset": 77680,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262528
+      },
+      {
+        "after": 3489661033,
+        "before": 2415919113,
+        "file_offset": 77684,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131184
+      },
+      {
+        "after": 3489661032,
+        "before": 2415919112,
+        "file_offset": 77692,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131192
+      },
+      {
+        "after": 4248844584,
+        "before": 4248830248,
+        "file_offset": 77696,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131184
+      },
+      {
+        "after": 4248845577,
+        "before": 4248830217,
+        "file_offset": 77700,
+        "kind": "LDST64_ABS_LO12_NC",
+        "target": 131192
+      },
+      {
+        "after": 3489661043,
+        "before": 2415919123,
+        "file_offset": 77708,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 132044
+      },
+      {
+        "after": 2433692275,
+        "before": 2432696947,
+        "file_offset": 77712,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 132044
+      },
+      {
+        "after": 2952790377,
+        "before": 2415919113,
+        "file_offset": 78184,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262792
+      },
+      {
+        "after": 2433360169,
+        "before": 2432696617,
+        "file_offset": 78188,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262792
+      },
+      {
+        "after": 2952790376,
+        "before": 2415919112,
+        "file_offset": 78248,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262224
+      },
+      {
+        "after": 2432778504,
+        "before": 2432696584,
+        "file_offset": 78252,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262224
+      },
+      {
+        "after": 2952790121,
+        "before": 2415919113,
+        "file_offset": 78276,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131328
+      },
+      {
+        "after": 1036009760,
+        "before": 1035993376,
+        "file_offset": 78288,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131328
+      },
+      {
+        "after": 2952790121,
+        "before": 2415919113,
+        "file_offset": 78292,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131344
+      },
+      {
+        "after": 1036010785,
+        "before": 1035993377,
+        "file_offset": 78300,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131344
+      },
+      {
+        "after": 2952790120,
+        "before": 2415919112,
+        "file_offset": 78436,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131360
+      },
+      {
+        "after": 2952790122,
+        "before": 2415919114,
+        "file_offset": 78440,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 131376
+      },
+      {
+        "after": 1036011776,
+        "before": 1035993344,
+        "file_offset": 78448,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131360
+      },
+      {
+        "after": 1036012865,
+        "before": 1035993409,
+        "file_offset": 78452,
+        "kind": "LDST128_ABS_LO12_NC",
+        "target": 131376
+      },
+      {
+        "after": 2952790376,
+        "before": 2415919112,
+        "file_offset": 78736,
+        "kind": "ADR_PREL_PG_HI21",
+        "target": 262200
+      },
+      {
+        "after": 2432753928,
+        "before": 2432696584,
+        "file_offset": 78740,
+        "kind": "ADD_ABS_LO12_NC",
+        "target": 262200
+      }
+    ],
+    "object_sha256": "11b12686b9bd76061d55a3957a63e164cd1f2673afcaa882a2a99bbf0fd13113",
+    "persistent_restart_completion_reconstruction": false,
+    "role": "own zero-argument bootstrap factory bridge",
+    "runtime_relocations": [
+      {
+        "addend": 65536,
+        "offset": 196608,
+        "symbol": 0,
+        "type": 1027
+      }
+    ],
+    "schema": "fx3-restricted-own-ET_DYN-v1",
+    "segments": [
+      {
+        "filesz": 65536,
+        "flags": 4,
+        "memsz": 65536,
+        "offset": 0,
+        "va": 0
+      },
+      {
+        "filesz": 13816,
+        "flags": 5,
+        "memsz": 13816,
+        "offset": 65536,
+        "va": 65536
+      },
+      {
+        "filesz": 1208,
+        "flags": 4,
+        "memsz": 1208,
+        "offset": 131072,
+        "va": 131072
+      },
+      {
+        "filesz": 65536,
+        "flags": 6,
+        "memsz": 65536,
+        "offset": 196608,
+        "va": 196608
+      },
+      {
+        "filesz": 0,
+        "flags": 6,
+        "memsz": 2432,
+        "offset": 262144,
+        "va": 262144
+      }
+    ],
+    "sha256": "96939f5ac7cfb64da3866c710cf511e13515f806415a9ab37beab80c1d3940eb",
+    "source_initializer_calls_worker_or_syscall": false,
+    "source_pins": {
+      "bootstrap.c": "24ee7638c1ba37741c12cfc1d61a2e3f731078dda49f1a7a549390b74628f3b4",
+      "child_exec.inc": "fc3d760eec628d9cad27e75a426080750322bb59bccc00525bc6416bfe7860ba",
+      "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+      "parent_ipc.inc": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044",
+      "receive_result.inc": "5fd1a5be577ac9c2aa7d88a0eedf55d3c291b0003fd7ae0cae06fe87ef125cb5"
+    }
+  },
+  "cases": [
+    {
+      "clones": [
+        {
+          "child_pid": 7001,
+          "flags": 17
+        }
+      ],
+      "constructor_syscalls": 0,
+      "im_reaper": [],
+      "keeper_exit_status": 0,
+      "keeper_return": 0,
+      "name": "startup",
+      "parent_FD_flags_unchanged": true,
+      "parent_errors": [],
+      "results": [
+        {
+          "actual_keeper_exit_observed": false,
+          "child_pid": 0,
+          "hand": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "job_sha256": "da241fe14e861bc67271c8817188033661c1db9c3d29e86025573bbc2bc2409d",
+          "keeper_pid": 7001,
+          "keeper_sha256": "93bcd77751550c7079a38dfe532272ecf71d849f906c4b05d5515267fa888581",
+          "operation": 2,
+          "reason": 0,
+          "sequence": 1,
+          "state": 0
+        }
+      ],
+      "sent_jobs": 1,
+      "source_reads": [],
+      "state": 3,
+      "waits": [
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": false,
+          "pid": 7001,
+          "returned": 0,
+          "status": null
+        },
+        {
+          "child_finished": true,
+          "pid": 7001,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "worker_returns": [],
+      "zero_argument_calls_use_poisoned_x0_x7": true
+    },
+    {
+      "clones": [],
+      "constructor_syscalls": 0,
+      "im_reaper": [],
+      "keeper_exit_status": null,
+      "keeper_return": null,
+      "name": "bad-plan",
+      "parent_FD_flags_unchanged": true,
+      "parent_errors": [],
+      "results": [],
+      "sent_jobs": 0,
+      "source_reads": [],
+      "state": 4,
+      "waits": [],
+      "worker_returns": [],
+      "zero_argument_calls_use_poisoned_x0_x7": true
+    },
+    {
+      "clones": [],
+      "constructor_syscalls": 0,
+      "im_reaper": [],
+      "keeper_exit_status": null,
+      "keeper_return": null,
+      "name": "missing-plan",
+      "parent_FD_flags_unchanged": true,
+      "parent_errors": [],
+      "results": [],
+      "sent_jobs": 0,
+      "source_reads": [],
+      "state": 4,
+      "waits": [],
+      "worker_returns": [],
+      "zero_argument_calls_use_poisoned_x0_x7": true
+    },
+    {
+      "clones": [],
+      "constructor_syscalls": 0,
+      "im_reaper": [],
+      "keeper_exit_status": null,
+      "keeper_return": null,
+      "name": "image-byte",
+      "parent_FD_flags_unchanged": true,
+      "parent_errors": [],
+      "results": [],
+      "sent_jobs": 0,
+      "source_reads": [],
+      "state": 4,
+      "waits": [],
+      "worker_returns": [],
+      "zero_argument_calls_use_poisoned_x0_x7": true
+    },
+    {
+      "clones": [],
+      "constructor_syscalls": 0,
+      "im_reaper": [],
+      "keeper_exit_status": null,
+      "keeper_return": null,
+      "name": "non-main-thread",
+      "parent_FD_flags_unchanged": true,
+      "parent_errors": [],
+      "results": [],
+      "sent_jobs": 0,
+      "source_reads": [],
+      "state": 4,
+      "waits": [],
+      "worker_returns": [],
+      "zero_argument_calls_use_poisoned_x0_x7": true
+    }
+  ],
+  "details": [
+    {
+      "test": "test_02_one_job_from_module_through_keeper_and_worker (__main__.Tests.test_02_one_job_from_module_through_keeper_and_worker)",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/test_bootstrap.py\", line 32, in test_02_one_job_from_module_through_keeper_and_worker\n    k,g=self.make('one-job');self.assertEqual(g.step(),1,g.errors);state=self.drive(g);self.assertEqual(state,3,k.link.errors);self.record('one-job',k,g,state);self.assertEqual([len(l.child.source_reads) for l in k.keepers[0].links],[2]);self.assertEqual(len(k.received_results),2)\n                                                                                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 2 != 3 : []\n"
+    },
+    {
+      "test": "test_04_FINISH_state0_and_keeper_exit89_is_held (__main__.Tests.test_04_FINISH_state0_and_keeper_exit89_is_held)",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/test_bootstrap.py\", line 37, in test_04_FINISH_state0_and_keeper_exit89_is_held\n    k,g=self.make('keeper-close',fault='keeper-close');self.assertEqual(g.step(),1,g.errors);state=self.drive(g);self.assertEqual(state,2);self.record('keeper-close',k,g,state);self.assertEqual(k.received_results[-1]['operation'],2);self.assertEqual(k.received_results[-1]['state'],0);self.assertEqual(k.link.child_return,89)\n                                                                                                                                           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/test_bootstrap.py\", line 24, in record\n    self.assertTrue(k.link.thread is None or not k.link.thread.is_alive());self.assertEqual(g.errors,[]);self.assertEqual(k.errors,[]);self.assertEqual(k.link.errors,[])\n                                                                                                                                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: ['AssertionError([\\'Traceback (most recent[3775 chars]'])'] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n'AssertionError([\\'Traceback (most recent call last):\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/keeper_model.py\", line 296, in interrupt\\\\n    else:value=self.kernel.special(u,nr,args,self)\\\\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/bootstrap_model.py\", line 134, in special\\\\n    k=LinkedWorker(self,self.link,self.image_fd,self.root_fd,self.child_socket);g=L.CloneGuest(guest,k);self.links.append(self.link);self.link.start_child(k,g);return self.next_child\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/keeper_model.py\", line 152, in __init__\\\\n    super().__init__(parent,link,image,root,socket);self.parent_image_fd=parent.role_image;self.fds[self.parent_image_fd][\\\\\\'kind\\\\\\']=\\\\\\'parent-image-v2\\\\\\';self.parent=parent.keeper\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/launch_model.py\", line 126, in __init__\\\\n    super().__init__(parent.namespace.name+\\\\\\'-spawned-\\\\\\'+str(link.child_pid),parent.source,parent.profiles,parent.parent,parent.shared,link,parent.image,parent.total,roles=(image,root,socket))\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/static_model.py\", line 17, in __init__\\\\n    super().__init__(name,source,profiles,im,im,shared,link.request,nonce=link.nonce,fault=fault,total=total,pid=link.child_pid)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage221-private-IPC-entry-gate/test_ipc_gate.py\", line 27, in __init__\\\\n    super().__init__(name,source,profiles,busy,parent,shared,req,nonce,oldfault,total,pid)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage219-bound-handoff-and-request-claims/test_handoff.py\", line 23, in __init__\\\\n    super().__init__(name,source,profiles,busybox,parent,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage218-fixed-shell-process-filter/test_process_filter.py\", line 21, in __init__\\\\n    super().__init__(name,source,B.request(\\\\\\'b\\\\\\'*32,\\\\\\'boot0\\\\\\',0),profiles,B.UNIT,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter/tests/test_boot_worker.py\", line 36, in __init__\\\\n    super().__init__(name,source,request,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter/tests/test_worker.py\", line 47, in __init__\\\\n    self.root=RUN/name;self.root.mkdir(mode=0o700)\\\\n                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^\\\\n  File \"/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 1011, in mkdir\\\\n    os.mkdir(self, mode)\\\\n    ~~~~~~~~^^^^^^^^^^^^\\\\nFileExistsError: [Errno 17] File exists: \\\\\\'/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/runs-clock-fixed/fx3-boot-owner-session-v1-spawned-9001\\\\\\'\\\\n\\'])'\n\nDiff is 4098 characters long. Set self.maxDiff to None to see it.\n"
+    },
+    {
+      "test": "test_05_reference_im_reaper_still_blocks_outer_exit_proof (__main__.Tests.test_05_reference_im_reaper_still_blocks_outer_exit_proof)",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/test_bootstrap.py\", line 39, in test_05_reference_im_reaper_still_blocks_outer_exit_proof\n    k,g=self.make('outer-reaper',fault='outer-reaper');self.assertEqual(g.step(),1,g.errors);state=self.drive(g);self.assertEqual(state,2);self.record('outer-reaper',k,g,state);self.assertEqual(k.link.child_return,0);self.assertTrue(k.reaper);self.assertTrue(any(x['returned']==-10 for x in k.waits))\n                                                                                                                                           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/test_bootstrap.py\", line 24, in record\n    self.assertTrue(k.link.thread is None or not k.link.thread.is_alive());self.assertEqual(g.errors,[]);self.assertEqual(k.errors,[]);self.assertEqual(k.link.errors,[])\n                                                                                                                                       ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^\nAssertionError: Lists differ: ['AssertionError([\\'Traceback (most recent[3775 chars]'])'] != []\n\nFirst list contains 1 additional elements.\nFirst extra element 0:\n'AssertionError([\\'Traceback (most recent call last):\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/keeper_model.py\", line 296, in interrupt\\\\n    else:value=self.kernel.special(u,nr,args,self)\\\\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/bootstrap_model.py\", line 134, in special\\\\n    k=LinkedWorker(self,self.link,self.image_fd,self.root_fd,self.child_socket);g=L.CloneGuest(guest,k);self.links.append(self.link);self.link.start_child(k,g);return self.next_child\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/keeper_model.py\", line 152, in __init__\\\\n    super().__init__(parent,link,image,root,socket);self.parent_image_fd=parent.role_image;self.fds[self.parent_image_fd][\\\\\\'kind\\\\\\']=\\\\\\'parent-image-v2\\\\\\';self.parent=parent.keeper\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/launch_model.py\", line 126, in __init__\\\\n    super().__init__(parent.namespace.name+\\\\\\'-spawned-\\\\\\'+str(link.child_pid),parent.source,parent.profiles,parent.parent,parent.shared,link,parent.image,parent.total,roles=(image,root,socket))\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/static_model.py\", line 17, in __init__\\\\n    super().__init__(name,source,profiles,im,im,shared,link.request,nonce=link.nonce,fault=fault,total=total,pid=link.child_pid)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage221-private-IPC-entry-gate/test_ipc_gate.py\", line 27, in __init__\\\\n    super().__init__(name,source,profiles,busy,parent,shared,req,nonce,oldfault,total,pid)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage219-bound-handoff-and-request-claims/test_handoff.py\", line 23, in __init__\\\\n    super().__init__(name,source,profiles,busybox,parent,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage218-fixed-shell-process-filter/test_process_filter.py\", line 21, in __init__\\\\n    super().__init__(name,source,B.request(\\\\\\'b\\\\\\'*32,\\\\\\'boot0\\\\\\',0),profiles,B.UNIT,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter/tests/test_boot_worker.py\", line 36, in __init__\\\\n    super().__init__(name,source,request,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter/tests/test_worker.py\", line 47, in __init__\\\\n    self.root=RUN/name;self.root.mkdir(mode=0o700)\\\\n                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^\\\\n  File \"/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 1011, in mkdir\\\\n    os.mkdir(self, mode)\\\\n    ~~~~~~~~^^^^^^^^^^^^\\\\nFileExistsError: [Errno 17] File exists: \\\\\\'/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/runs-clock-fixed/fx3-boot-owner-session-v1-spawned-9001\\\\\\'\\\\n\\'])'\n\nDiff is 4098 characters long. Set self.maxDiff to None to see it.\n"
+    },
+    {
+      "test": "test_06_four_windows_serialized_by_same_module_and_keeper (__main__.Tests.test_06_four_windows_serialized_by_same_module_and_keeper)",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/test_bootstrap.py\", line 43, in test_06_four_windows_serialized_by_same_module_and_keeper\n    reqs=[B.request('e'*32,'boot1',i,0 if i==0 else B.MAX_BOOT) for i in range(4)];k,g=self.make('full',requests=reqs);self.assertEqual(g.step(),1,g.errors);state=self.drive(g);self.assertEqual(state,3,k.link.errors);self.record('full',k,g,state)\n                                                                                                                                                                                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 2 != 3 : ['AssertionError([\\'Traceback (most recent call last):\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/keeper_model.py\", line 296, in interrupt\\\\n    else:value=self.kernel.special(u,nr,args,self)\\\\n               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/bootstrap_model.py\", line 134, in special\\\\n    k=LinkedWorker(self,self.link,self.image_fd,self.root_fd,self.child_socket);g=L.CloneGuest(guest,k);self.links.append(self.link);self.link.start_child(k,g);return self.next_child\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/keeper_model.py\", line 152, in __init__\\\\n    super().__init__(parent,link,image,root,socket);self.parent_image_fd=parent.role_image;self.fds[self.parent_image_fd][\\\\\\'kind\\\\\\']=\\\\\\'parent-image-v2\\\\\\';self.parent=parent.keeper\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/launch_model.py\", line 126, in __init__\\\\n    super().__init__(parent.namespace.name+\\\\\\'-spawned-\\\\\\'+str(link.child_pid),parent.source,parent.profiles,parent.parent,parent.shared,link,parent.image,parent.total,roles=(image,root,socket))\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/static_model.py\", line 17, in __init__\\\\n    super().__init__(name,source,profiles,im,im,shared,link.request,nonce=link.nonce,fault=fault,total=total,pid=link.child_pid)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage221-private-IPC-entry-gate/test_ipc_gate.py\", line 27, in __init__\\\\n    super().__init__(name,source,profiles,busy,parent,shared,req,nonce,oldfault,total,pid)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage219-bound-handoff-and-request-claims/test_handoff.py\", line 23, in __init__\\\\n    super().__init__(name,source,profiles,busybox,parent,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage218-fixed-shell-process-filter/test_process_filter.py\", line 21, in __init__\\\\n    super().__init__(name,source,B.request(\\\\\\'b\\\\\\'*32,\\\\\\'boot0\\\\\\',0),profiles,B.UNIT,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter/tests/test_boot_worker.py\", line 36, in __init__\\\\n    super().__init__(name,source,request,fault)\\\\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\\\\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter/tests/test_worker.py\", line 47, in __init__\\\\n    self.root=RUN/name;self.root.mkdir(mode=0o700)\\\\n                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^\\\\n  File \"/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 1011, in mkdir\\\\n    os.mkdir(self, mode)\\\\n    ~~~~~~~~^^^^^^^^^^^^\\\\nFileExistsError: [Errno 17] File exists: \\\\\\'/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage227-zero-arg-bootstrap-and-keeper-handoff/runs-clock-fixed/fx3-boot-owner-session-v1-spawned-9001\\\\\\'\\\\n\\'])']\n"
+    }
+  ],
+  "errors": 0,
+  "failures": 4,
+  "flashable": false,
+  "hardware_validated": false,
+  "independent_recovery_proven": false,
+  "new_camera_operations": 0,
+  "own_three_program_ARM64_chain_executed": true,
+  "real_dispatcher_or_native_load_auth_upload_or_camera_recovery_verified": false,
+  "schema": "fx3-noarg-bootstrap-keeper-handoff-model-v1",
+  "source_hashes": {
+    "bootstrap.c": "24ee7638c1ba37741c12cfc1d61a2e3f731078dda49f1a7a549390b74628f3b4",
+    "bootstrap_model.py": "af280fde3fce5206d62c3e154e8629de9d9825c05447261515cc9c98068b09c0",
+    "child_exec.inc": "fc3d760eec628d9cad27e75a426080750322bb59bccc00525bc6416bfe7860ba",
+    "dynparent.py": "770a2b5492ae81179a33e5bae276b4d91abd82ad57401c15d67ebaf57dd74f56",
+    "parent_ipc.inc": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044",
+    "receive_result.inc": "5fd1a5be577ac9c2aa7d88a0eedf55d3c291b0003fd7ae0cae06fe87ef125cb5",
+    "test_bootstrap.py": "a7f8e21c94c1fe246b082e9729152285cd7a90c48e69db79013c26419352761a"
+  },
+  "status": "FAIL",
+  "tests_run": 6
+}

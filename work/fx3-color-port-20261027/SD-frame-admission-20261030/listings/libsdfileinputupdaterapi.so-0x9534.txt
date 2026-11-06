@@ -1,0 +1,34 @@
+_ZN7Updater17SDDecryptorModuleC2Ev
+00009534 stp       x29, x30, [sp, #-0x20]!
+00009538 mov       x29, sp
+0000953c stp       x19, x20, [sp, #0x10]
+00009540 mov       x19, x0
+00009544 bl        #0x76a0 ; _ZN7Updater18UFPDecryptorModuleC2Ev
+00009548 adrp      x0, #0x1d000
+0000954c mov       x1, #0
+00009550 str       xzr, [x19, #0x538]
+00009554 str       xzr, [x19, #0x540]
+00009558 ldr       x0, [x0, #0xf90]
+0000955c str       xzr, [x19, #0x558]
+00009560 add       x0, x0, #0x10
+00009564 str       x0, [x19]
+00009568 add       x0, x19, #0x560
+0000956c bl        #0x72f0 ; pthread_mutex_init
+00009570 add       x0, x19, #0x590
+00009574 mov       x1, #0
+00009578 bl        #0x7140 ; pthread_cond_init
+0000957c add       x0, x19, #0xb0
+00009580 mov       x2, #0x400
+00009584 mov       w1, #0xff
+00009588 bl        #0x7230 ; memset
+0000958c bl        #0x7620 ; Dec_ScrambleInit
+00009590 bl        #0x7240 ; SKData_Init
+00009594 b         #0x95ac
+00009598 mov       x20, x0
+0000959c mov       x0, x19
+000095a0 bl        #0x7860 ; _ZN7Updater18UFPDecryptorModuleD2Ev
+000095a4 mov       x0, x20
+000095a8 bl        #0x7830 ; _Unwind_Resume
+000095ac ldp       x19, x20, [sp, #0x10]
+000095b0 ldp       x29, x30, [sp], #0x20
+000095b4 ret       

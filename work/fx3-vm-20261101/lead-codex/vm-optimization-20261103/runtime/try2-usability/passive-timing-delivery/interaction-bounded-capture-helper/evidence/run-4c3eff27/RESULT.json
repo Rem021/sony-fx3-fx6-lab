@@ -1,0 +1,212 @@
+{
+  "scope": "offline real r17 PAGE/TrialState + dedicated Chrome; no QEMU",
+  "session": "fx3-deadline-bounded-07edd579",
+  "pinned_inputs": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r17-tail-receipt/trial_web_v22_navigation_review.py": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-deadline-helper/deadline.js": "93af6b5ce6eb3f736eeed38320c990c6a05701cb6c883493589dadaf4bb57916",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-c33f8c46/trial-final.png": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292"
+  },
+  "cases": {
+    "transition-target": {
+      "capture": {
+        "status": "no_qualified_screenshot",
+        "scope": "first_MENU_reference_only",
+        "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "session": "fx3-deadline-bounded-07edd579",
+        "url": "http://127.0.0.1:60114/",
+        "launch_id": "6108ecb9-b4e9-4b40-a936-6694a3a4eb59",
+        "alarm_nonce": "67a5fb27-37bf-46e4-9eaf-6f1a24e59c54",
+        "step": 1,
+        "host_started_UTC": "2026-11-04T21:16:39.576770+00:00",
+        "host_monotonic_started": 410685.123282625,
+        "screenshot_attempted": true,
+        "guest_keys_sent": 0,
+        "confirm_calls": 0,
+        "alarm_mutations": 0,
+        "timeline": [
+          {
+            "stage": "initial_receipt_write_enter",
+            "UTC": "2026-11-04T21:16:39.576788+00:00",
+            "monotonic": 410685.123294833
+          },
+          {
+            "stage": "initial_receipt_write_exit",
+            "UTC": "2026-11-04T21:16:39.577050+00:00",
+            "monotonic": 410685.123556833
+          },
+          {
+            "stage": "tab_preflight_enter",
+            "UTC": "2026-11-04T21:16:39.577054+00:00",
+            "monotonic": 410685.123559416
+          },
+          {
+            "stage": "tab_preflight_exit",
+            "UTC": "2026-11-04T21:16:39.583265+00:00",
+            "monotonic": 410685.129775708
+          },
+          {
+            "stage": "before_eval_enter",
+            "UTC": "2026-11-04T21:16:39.583310+00:00",
+            "monotonic": 410685.129817791
+          },
+          {
+            "stage": "before_eval_exit",
+            "UTC": "2026-11-04T21:16:40.358373+00:00",
+            "monotonic": 410685.904893458
+          },
+          {
+            "stage": "screenshot_enter",
+            "UTC": "2026-11-04T21:16:40.358531+00:00",
+            "monotonic": 410685.905036541
+          },
+          {
+            "stage": "screenshot_exit",
+            "UTC": "2026-11-04T21:16:40.453656+00:00",
+            "monotonic": 410686.000176083
+          },
+          {
+            "stage": "after_eval_enter",
+            "UTC": "2026-11-04T21:16:40.454601+00:00",
+            "monotonic": 410686.001104958
+          },
+          {
+            "stage": "after_eval_exit",
+            "UTC": "2026-11-04T21:16:40.463645+00:00",
+            "monotonic": 410686.010153416
+          },
+          {
+            "stage": "final_receipt_write_enter",
+            "UTC": "2026-11-04T21:16:40.463718+00:00",
+            "monotonic": 410686.010220625
+          },
+          {
+            "stage": "final_receipt_write_exit",
+            "UTC": "2026-11-04T21:16:40.464072+00:00",
+            "monotonic": 410686.010574791
+          }
+        ],
+        "tab_id": null,
+        "before_eval": {
+          "before": {
+            "content_generation": 2,
+            "document_time_origin": 1793826996608.2,
+            "due_ms": 22966.89999997616,
+            "frame_generation": 2,
+            "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "frame_sequence": 33,
+            "launch_id": "6108ecb9-b4e9-4b40-a936-6694a3a4eb59",
+            "performance_ms": 3747.199999988079,
+            "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "remaining_ms": 19219.69999998808,
+            "review_step": 1,
+            "sequence": 33,
+            "step": 1,
+            "wall_UTC": "2026-11-04T21:16:40.355Z"
+          },
+          "confirm_reserve_ms": 8000,
+          "events": [
+            {
+              "kind": "invoked",
+              "performance_ms": 2987.599999964237,
+              "wall_UTC": "2026-11-04T21:16:39.595Z"
+            },
+            {
+              "generation": 2,
+              "kind": "reference_loaded",
+              "performance_ms": 3747.300000011921,
+              "sequence": 33,
+              "wall_UTC": "2026-11-04T21:16:40.355Z"
+            }
+          ],
+          "reference_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "status": "ready_for_screenshot",
+          "waited_ms": 759.7000000476837
+        },
+        "screenshot_file_sha256": "91f7d06a1f9aa309ab4b31364c067e0f9082bf233ad12c5275865e00bb7877e4",
+        "screenshot_file_bytes": 151646,
+        "after_eval": {
+          "alarm_due_ms": 22966.89999997616,
+          "alarm_nonce": "67a5fb27-37bf-46e4-9eaf-6f1a24e59c54",
+          "alarm_state": "armed",
+          "content_generation": 2,
+          "document_time_origin": 1793826996608.2,
+          "error": null,
+          "frame_generation": 2,
+          "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "frame_sequence": 33,
+          "image_complete": true,
+          "image_width": 640,
+          "input_received": true,
+          "launch_id": "6108ecb9-b4e9-4b40-a936-6694a3a4eb59",
+          "location": "http://127.0.0.1:60114/",
+          "performance_ms": 3854,
+          "phase": "ready",
+          "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "qualified": false,
+          "remaining_ms": 19112.89999997616,
+          "render_valid": true,
+          "review_required": true,
+          "review_step": 1,
+          "sequence": 33,
+          "step": 1,
+          "wall_UTC": "2026-11-04T21:16:40.462Z"
+        },
+        "reason": "post_screenshot_identity_or_reserve_changed",
+        "host_finished_UTC": "2026-11-04T21:16:40.463705+00:00",
+        "host_monotonic_finished": 410686.01021225,
+        "host_elapsed_ms": 886.93
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 2966.899999976158,
+            "deadline_ms": 20000,
+            "due_ms": 22966.89999997616,
+            "nonce": "67a5fb27-37bf-46e4-9eaf-6f1a24e59c54",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793826996608.2,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 2959.599999964237,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T21:16:39.567Z"
+            },
+            {
+              "due_ms": 22966.89999997616,
+              "event": "armed",
+              "nonce": "67a5fb27-37bf-46e4-9eaf-6f1a24e59c54",
+              "performance_ms": 2967,
+              "wall_UTC": "2026-11-04T21:16:39.575Z"
+            }
+          ],
+          "expectedLaunchId": "6108ecb9-b4e9-4b40-a936-6694a3a4eb59",
+          "expectedURL": "http://127.0.0.1:60114/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayed": 33,
+        "displayedGeneration": 2,
+        "frame": {
+          "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "all_zero_pixels": false,
+          "content_generation": 2,
+          "height": 640,
+          "sequence": 33,
+          "width": 960
+        },
+        "pendingConfirm": null,
+        "phase": "ready",
+        "reviewAwaiting": false,
+        "shownSHA": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292"
+      },
+      "key_count": 0,
+      "confirm_count": 0
+    }
+  },
+  "evidence_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-bounded-capture-helper/evidence/run-4c3eff27",
+  "passed": false,
+  "error": "AssertionError({'status': 'no_qualified_screenshot', 'scope': 'first_MENU_reference_only', 'reference_png_sha256': '60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292', 'session': 'fx3-deadline-bounded-07edd579', 'url': 'http://127.0.0.1:60114/', 'launch_id': '6108ecb9-b4e9-4b40-a936-6694a3a4eb59', 'alarm_nonce': '67a5fb27-37bf-46e4-9eaf-6f1a24e59c54', 'step': 1, 'host_started_UTC': '2026-11-04T21:16:39.576770+00:00', 'host_monotonic_started': 410685.123282625, 'screenshot_attempted': True, 'guest_keys_sent': 0, 'confirm_calls': 0, 'alarm_mutations': 0, 'timeline': [{'stage': 'initial_receipt_write_enter', 'UTC': '2026-11-04T21:16:39.576788+00:00', 'monotonic': 410685.123294833}, {'stage': 'initial_receipt_write_exit', 'UTC': '2026-11-04T21:16:39.577050+00:00', 'monotonic': 410685.123556833}, {'stage': 'tab_preflight_enter', 'UTC': '2026-11-04T21:16:39.577054+00:00', 'monotonic': 410685.123559416}, {'stage': 'tab_preflight_exit', 'UTC': '2026-11-04T21:16:39.583265+00:00', 'monotonic': 410685.129775708}, {'stage': 'before_eval_enter', 'UTC': '2026-11-04T21:16:39.583310+00:00', 'monotonic': 410685.129817791}, {'stage': 'before_eval_exit', 'UTC': '2026-11-04T21:16:40.358373+00:00', 'monotonic': 410685.904893458}, {'stage': 'screenshot_enter', 'UTC': '2026-11-04T21:16:40.358531+00:00', 'monotonic': 410685.905036541}, {'stage': 'screenshot_exit', 'UTC': '2026-11-04T21:16:40.453656+00:00', 'monotonic': 410686.000176083}, {'stage': 'after_eval_enter', 'UTC': '2026-11-04T21:16:40.454601+00:00', 'monotonic': 410686.001104958}, {'stage': 'after_eval_exit', 'UTC': '2026-11-04T21:16:40.463645+00:00', 'monotonic': 410686.010153416}, {'stage': 'final_receipt_write_enter', 'UTC': '2026-11-04T21:16:40.463718+00:00', 'monotonic': 410686.010220625}, {'stage': 'final_receipt_write_exit', 'UTC': '2026-11-04T21:16:40.464072+00:00', 'monotonic': 410686.010574791}], 'tab_id': None, 'before_eval': {'before': {'content_generation': 2, 'document_time_origin': 1793826996608.2, 'due_ms': 22966.89999997616, 'frame_generation': 2, 'frame_png_sha256': '60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292', 'frame_sequence': 33, 'launch_id': '6108ecb9-b4e9-4b40-a936-6694a3a4eb59', 'performance_ms': 3747.199999988079, 'png_sha256': '60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292', 'remaining_ms': 19219.69999998808, 'review_step': 1, 'sequence': 33, 'step': 1, 'wall_UTC': '2026-11-04T21:16:40.355Z'}, 'confirm_reserve_ms': 8000, 'events': [{'kind': 'invoked', 'performance_ms': 2987.599999964237, 'wall_UTC': '2026-11-04T21:16:39.595Z'}, {'generation': 2, 'kind': 'reference_loaded', 'performance_ms': 3747.300000011921, 'sequence': 33, 'wall_UTC': '2026-11-04T21:16:40.355Z'}], 'reference_sha': '60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292', 'status': 'ready_for_screenshot', 'waited_ms': 759.7000000476837}, 'screenshot_file_sha256': '91f7d06a1f9aa309ab4b31364c067e0f9082bf233ad12c5275865e00bb7877e4', 'screenshot_file_bytes': 151646, 'after_eval': {'alarm_due_ms': 22966.89999997616, 'alarm_nonce': '67a5fb27-37bf-46e4-9eaf-6f1a24e59c54', 'alarm_state': 'armed', 'content_generation': 2, 'document_time_origin': 1793826996608.2, 'error': None, 'frame_generation': 2, 'frame_png_sha256': '60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292', 'frame_sequence': 33, 'image_complete': True, 'image_width': 640, 'input_received': True, 'launch_id': '6108ecb9-b4e9-4b40-a936-6694a3a4eb59', 'location': 'http://127.0.0.1:60114/', 'performance_ms': 3854, 'phase': 'ready', 'png_sha256': '60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292', 'qualified': False, 'remaining_ms': 19112.89999997616, 'render_valid': True, 'review_required': True, 'review_step': 1, 'sequence': 33, 'step': 1, 'wall_UTC': '2026-11-04T21:16:40.462Z'}, 'reason': 'post_screenshot_identity_or_reserve_changed', 'host_finished_UTC': '2026-11-04T21:16:40.463705+00:00', 'host_monotonic_finished': 410686.01021225, 'host_elapsed_ms': 886.93})"
+}

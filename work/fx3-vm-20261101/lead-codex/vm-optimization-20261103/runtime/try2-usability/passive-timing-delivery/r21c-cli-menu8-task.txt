@@ -1,0 +1,27 @@
+FX3｜r21/N64 实际CLI入口修复与唯一一次八键验收（新独立任务）
+
+上一任务 task_a9195ba9b134 / ctx_03724bb404e1 已正式failed，worker_done msg_9c19b0e02cbd。准备88项和run97项已由协调员独立核验全匹配，REPORT SHA256 5f98585fd510820130f2c474c4b079263c322b0d4cb26a9d042e9592bcd25cd6。旧run29e7c98f零arm/零键且安全结束。约43.233秒合格待机，不沿用先前粗略54秒说法。保留旧源/证据，不覆盖失败结论。
+
+本任务授权：在全新 DEL/r21c-cli-menu8-<本task短id> 目录派生必要本地wrapper，完成针对性纯host修复验证后，满足下述条件即可自主运行唯一一次新的真实VM，无需再问用户或协调员许可。旧r21 runtime/helper、PAGE、kernel、DTB、QEMU、N64 CPIO与已部署r10均不得改。本任务没有部署权限、没有FX6/物理相机/USB/SD操作。
+
+根=/Volumes/KAFU2T/AI/Projects/Mac；TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery。沿用原 DEL/r21-vm-menu8-task.txt 全部真实VM8步语义、预算、操作和回收约束，以下新任务修正优先。只读该文件与上轮REPORT及必要操作源，无需遍读历史。
+
+本地修复范围：
+1. operate.py 和 later_capture.py 各自直接 import sys；不能仅在common或测试调用方导入。保留已审的图像来源绑定、capture_identity 返回 generation/sequence/step 和真实异常入口End逻辑。
+2. cleanup.py 对 deadline.status.current 为 null（从未arm的有效状态）明确处理，消除 None.get。严格区分合法null、非armed合法对象、armed对象和malformed/获取失败；不得把unknown或malformed默认为可dispose/取消。仍先原End；armed不强制取消；无论读状态失败都应保留HAR并关闭自有浏览器。清理最终PID/port不能仅用过早采样冒充终态，复用原有有界等待和最终复核。
+3. 审查同批wrapper直接CLI入口和所有实际后续参数，不做泛化重构。若发现同源直接启动阻塞可在新目录修复并记录最小差分。
+
+启动前必要验证（不运行browser fixture、不启动guest）：
+- 必须执行这两个模块的真实 __main__ 路径和参数解析，不能只import后调用函数。允许用独立子进程 runpy.run_path(...,run_name='__main__') 注入严格无浏览器/guest副作用的依赖替身，须证明读取的是本任务实际源且未注入sys到被测模块globals。对operate覆盖click/confirm/recovery_cancel分派；对later_capture覆盖argv配置读取到只读捕图分派；参数与实际VM命令一致。外部操作替身记录调用，不连接browser/HTTP/QEMU。说明是CLI接线测试，不是runtime证明。
+- cleanup至少覆盖current=null、armed及malformed/异常，检查End优先、unknown不dispose、HAR和自有browser关闭仍执行。避免重跑已通过145项集成fixture。
+- 全部参数/路径/冻结/测试在Start前完成，失败不得用guest试错。冻结新本地源后真实运行中不再编辑。
+
+允许沿用的明确运行输出例外 msg_82796ff62714：冻结r21目录只允许三个非清单运行文件 preflight-aaf006610b0d2b6e.json、STATE-v24.json.tmp、STATE-v25-r3.json 自然生成/更新。它们现在可能已存在，记录运行前后原字节/hash，并复制到本轮run证据；不得删旧输出、改HERE或原manifest。其它写入仅新准备目录和runner新run。
+
+运行前仍查目标卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B、实际进程和双锁空闲；不得抢占。r21冻结源码40项、交付145项、固定输入14项及实际QEMU从argv核前后。
+固定实际命令 python3 -B DEL/v25-r21-recovery-integration/run_trial_v25_diag_r3.py --port 0 --max-minutes 8 --max-steps 32 --snapshot-tail --gate-publish-interval 64 --pre-input-snapshot-step 2。
+4cortex-a35/5120MiB/MTTCG/noicount，原kernel/DTB及N64输入不变，使用实际qemu-gpio5-bf4d46481998b8fb；独占一个自有browser会话/tab，1280x1200。一个Start，首帧180秒；8 accepted、10显式attempt、全轮2恢复每step最多1，原20秒逐键窗口不延长。恢复仅允许完整归因未入队状态，保留server SHA/gen门和新图亲看新nonce规则；不自动重发。异常/语义不符/unknown即End，无第二次VM。
+
+准备测试通过、尚未Start且无armed timer时发简短status（目录/hash/CLI验证结果），可以随后按既定条件启动，不必等回复。arm至cancel/End之间优先看图和下一操作，不插协调/报告调用。
+
+结果交付REPORT、RESULT、实际argv、前后hash、逐键真实HTTP/ACK/画面/确认/时钟、完整原End(API16、QMP quit ACK/exit/reap、双锁、PID/port、网页finalACK、自有browser关闭)、SHA清单。未达8步即报告failed或partial，纯host修复与真实VM菜单证据分开。禁止另派代理、修改协调ledger或已部署入口。

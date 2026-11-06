@@ -1,0 +1,63 @@
+{
+  "created_utc": "2026-11-02T13:40:52.661512+00:00",
+  "run": "ap88capture-a957c31e",
+  "receipt_sha256": "5b959570b970e47dd49cb1a76174fb4e6c77b4f6ffccb43b83445d43e00a69eb",
+  "duration_seconds": 3.0629040409985464,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "host_observer_error": null,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "fatal_markers": [],
+  "missing_markers_combined_serial_and_printk": [
+    "FX3_BACKUP_CP_PUBLIC_OWNER",
+    "FX3_BACKUP_CP_INSMOD_RC=0",
+    "FX3_BACKUP_CP_CAPTURE serial=1",
+    "FX3_BACKUP_CP_RAW serial=1",
+    "FX3_BACKUP_CP_CAPTURE_DONE",
+    "FX3_SYS_UUD_COMMIT",
+    "FX3_SYS_UUD_CONSUMED",
+    "FX3_AP_IM_ENDMAPS_"
+  ],
+  "receipt_serial_only_missing": [
+    "FX3_BACKUP_CP_PUBLIC_OWNER",
+    "FX3_BACKUP_CP_INSMOD_RC=0",
+    "FX3_BACKUP_CP_CAPTURE serial=1",
+    "FX3_BACKUP_CP_RAW serial=1",
+    "FX3_BACKUP_CP_CAPTURE_DONE",
+    "FX3_SYS_UUD_COMMIT",
+    "FX3_SYS_UUD_CONSUMED",
+    "FX3_AP_IM_ENDMAPS_"
+  ],
+  "marker_evidence_scope": "Rawserial flags retained; kernelprintkring independentlyrecovers interleavedkernelmarkers, neverrewritesreceipt",
+  "im_alive_last_complete_maps": null,
+  "im_complete_maps_samples": 0,
+  "CP_kernel_records": [],
+  "native_reset_API_records": [],
+  "screen_records": [],
+  "native_power_event_records": [],
+  "GPE_records": [],
+  "backup_snapshot": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap88capture-a957c31e/backup-after-shutdown.bin",
+    "exists": true,
+    "scope": "QuiescedreservedRAM; filenamealone isnotshutdowncompletion",
+    "bytes": 2232320,
+    "sha256": "031e423ac232a066e4fb2f7dce16725a29d822f0417ded7a974ef50fd79c2105",
+    "CP_second_bank_sha256": "0ac677ce4088938faa3bf8bf4cf8080a7263975cce9ac73a1a3f2e601f721499",
+    "CP_second_bank_matches_pinned_seed": false
+  },
+  "timeline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88capture-a957c31e-post11a-requests.json",
+  "original_menu_verified": false,
+  "AP89_boot_executed": false,
+  "early_stop_reason": "AP86B explicit diagnostic/rejection gate; stop for review; no further protocol changes"
+}

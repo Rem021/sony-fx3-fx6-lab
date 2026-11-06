@@ -1,0 +1,7 @@
+{
+  "status": "PARSER_ASSERTION_RETAINED",
+  "script_sha256": "62d0c5dabe5e716e4df0f3ace32939e7f4fffd5e93c9bd37fffbb4a1ac9eed73",
+  "failure": "Original last getter load and store are separated by two independent instructions; parser had assumed immediate adjacency.",
+  "action": "Check intervening register writes and next call before accepting the actual store; no adapter or expected guest-output write.",
+  "camera_actions": false
+}

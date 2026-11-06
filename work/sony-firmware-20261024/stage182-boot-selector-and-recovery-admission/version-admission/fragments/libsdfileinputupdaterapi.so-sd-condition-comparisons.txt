@@ -1,0 +1,25 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0x9fd4, 0xa02c) raw slice SHA256 c682372d0f3e655ed3e4726e4595b306fc53274bcd72ac71b73c6f8f4e359848
+    9fd4: b9400422     	ldr	w2, [x1, #0x4]
+    9fd8: 52800000     	mov	w0, #0x0                // =0
+    9fdc: b9401c23     	ldr	w3, [x1, #0x1c]
+    9fe0: 6b02007f     	cmp	w3, w2
+    9fe4: 540000e3     	b.lo	0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    9fe8: 52800020     	mov	w0, #0x1                // =1
+    9fec: 540000a1     	b.ne	0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    9ff0: b9400820     	ldr	w0, [x1, #0x8]
+    9ff4: b9402022     	ldr	w2, [x1, #0x20]
+    9ff8: 6b00005f     	cmp	w2, w0
+    9ffc: 1a9f97e0     	cset	w0, hi
+    a000: d65f03c0     	ret
+    a004: b9400c20     	ldr	w0, [x1, #0xc]
+    a008: b9402422     	ldr	w2, [x1, #0x24]
+    a00c: 6b00005f     	cmp	w2, w0
+    a010: 1a9f17e0     	cset	w0, eq
+    a014: d65f03c0     	ret
+    a018: b9401020     	ldr	w0, [x1, #0x10]
+    a01c: b9402822     	ldr	w2, [x1, #0x28]
+    a020: 6b00005f     	cmp	w2, w0
+    a024: 1a9f17e0     	cset	w0, eq
+    a028: d65f03c0     	ret

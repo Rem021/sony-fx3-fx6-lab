@@ -1,0 +1,416 @@
+{
+  "app_source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "ufp_source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+  "cases": [
+    {
+      "mode": 0,
+      "fixture": {},
+      "typed_result": 0,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 3
+        },
+        {
+          "operation": "process_launch_record_only",
+          "program": "/usr/bin/up.sh",
+          "argv": [
+            "/usr/bin/up.sh",
+            "user",
+            null
+          ],
+          "declared_result": 0
+        },
+        {
+          "operation": "post_2094"
+        }
+      ],
+      "instructions": 221,
+      "case": "mode0"
+    },
+    {
+      "mode": 1,
+      "fixture": {},
+      "typed_result": 0,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 9
+        },
+        {
+          "operation": "prepare_body",
+          "declared_result": 0
+        },
+        {
+          "operation": "Backup_write",
+          "declared_result": 1
+        },
+        {
+          "operation": "Backup_sync_subsystem"
+        },
+        {
+          "operation": "process_launch_record_only",
+          "program": "/usr/bin/up.sh",
+          "argv": [
+            "/usr/bin/up.sh",
+            "ms",
+            null
+          ],
+          "declared_result": 0
+        },
+        {
+          "operation": "post_1f64"
+        },
+        {
+          "operation": "post_1ffc"
+        },
+        {
+          "operation": "post_2094"
+        }
+      ],
+      "instructions": 238,
+      "case": "mode1"
+    },
+    {
+      "mode": 2,
+      "fixture": {},
+      "typed_result": 0,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 12
+        },
+        {
+          "operation": "prepare_lens",
+          "declared_result": 0
+        },
+        {
+          "operation": "legacy_extract",
+          "declared_result": 0
+        }
+      ],
+      "instructions": 211,
+      "case": "mode2"
+    },
+    {
+      "mode": 0,
+      "fixture": {
+        "version_skip": 1
+      },
+      "typed_result": 0,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 3
+        },
+        {
+          "operation": "process_launch_record_only",
+          "program": "/usr/bin/up.sh",
+          "argv": [
+            "/usr/bin/up.sh",
+            "ver",
+            null
+          ],
+          "declared_result": 0
+        },
+        {
+          "operation": "post_2094"
+        }
+      ],
+      "instructions": 219,
+      "case": "mode0_version_skip"
+    },
+    {
+      "mode": 1,
+      "fixture": {
+        "prepare_body": 2
+      },
+      "typed_result": 2,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 9
+        },
+        {
+          "operation": "prepare_body",
+          "declared_result": 2
+        }
+      ],
+      "instructions": 223,
+      "case": "body_preparation_failure"
+    },
+    {
+      "mode": 1,
+      "fixture": {
+        "backup_write": 0
+      },
+      "typed_result": 2,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 9
+        },
+        {
+          "operation": "prepare_body",
+          "declared_result": 0
+        },
+        {
+          "operation": "Backup_write",
+          "declared_result": 0
+        }
+      ],
+      "instructions": 235,
+      "case": "backup_write_failure"
+    },
+    {
+      "mode": 2,
+      "fixture": {
+        "prepare_lens": 2
+      },
+      "typed_result": 2,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 12
+        },
+        {
+          "operation": "prepare_lens",
+          "declared_result": 2
+        }
+      ],
+      "instructions": 228,
+      "case": "lens_preparation_failure"
+    },
+    {
+      "mode": 2,
+      "fixture": {
+        "legacy_extract": 2
+      },
+      "typed_result": 2,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 12
+        },
+        {
+          "operation": "prepare_lens",
+          "declared_result": 0
+        },
+        {
+          "operation": "legacy_extract",
+          "declared_result": 2
+        }
+      ],
+      "instructions": 233,
+      "case": "lens_extract_failure"
+    },
+    {
+      "mode": 1,
+      "fixture": {
+        "stm_system": -1
+      },
+      "typed_result": 0,
+      "events": [
+        {
+          "operation": "declared_source_id",
+          "value": "0x1234"
+        },
+        {
+          "operation": "mock_registration",
+          "request_words": [
+            9699361,
+            285,
+            3,
+            4660
+          ]
+        },
+        {
+          "operation": "declared_source_id",
+          "value": "0x80870257"
+        },
+        {
+          "operation": "original_ufp_dispatch",
+          "service": "0x4b0233",
+          "command": 9
+        },
+        {
+          "operation": "prepare_body",
+          "declared_result": 0
+        },
+        {
+          "operation": "Backup_write",
+          "declared_result": 1
+        },
+        {
+          "operation": "Backup_sync_subsystem"
+        },
+        {
+          "operation": "process_launch_record_only",
+          "program": "/usr/bin/up.sh",
+          "argv": [
+            "/usr/bin/up.sh",
+            "ms",
+            null
+          ],
+          "declared_result": -1
+        },
+        {
+          "operation": "post_1f64"
+        },
+        {
+          "operation": "post_1ffc"
+        },
+        {
+          "operation": "post_2094"
+        }
+      ],
+      "instructions": 238,
+      "case": "process_failure_not_propagated"
+    }
+  ],
+  "scope": "Original app execute_update, original common RPC packing/copying, and original UFP callback run in a single bounded synthetic guest. Registration response, preparation results, backups, process requests and follow-up actions are explicit fixtures; no original file parser, auth server, shell, dlopen, reboot, USB or camera execution. Passing typed result is not update admission."
+}

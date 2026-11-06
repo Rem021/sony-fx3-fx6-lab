@@ -1,0 +1,141 @@
+{
+  "schema": "fx3-presence-crosscheck-nodes/1",
+  "task_tag": "FX3_PRESENCE_CROSSCHECK_20261026",
+  "captured_utc": "2026-10-26T17:15:31.4415345Z",
+  "source": "Single server-filtered Win32_PnPEntity cached metadata query",
+  "max_nodes": 16,
+  "returned_related_nodes": 4,
+  "limit_reached": false,
+  "counts": {
+    "explicit_current_sony_camera_model_nodes": 3,
+    "explicit_historical_sony_camera_model_nodes": 0,
+    "prior_identity_matched_current_usb_root_nodes": 1,
+    "current_camera_related_nodes": 4,
+    "historical_camera_related_nodes": 0,
+    "non_camera_sony_nodes": 0,
+    "unresolved_sony_usb_storage_nodes": 0
+  },
+  "count_interpretation": "Device-node counts only; physical camera count UNKNOWN. CIM historical count applies only to this returned set.",
+  "physical_camera_count": "UNKNOWN",
+  "instance_hash_algorithm": "SHA256(UTF8(ToUpperInvariant(instanceID)))",
+  "prior_fx3_root_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+  "prior_hash_reference_public_path": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-native-pnp-20261026T160454Z/public/node-relations.json",
+  "prior_root_seen_in_current_cim": true,
+  "prior_identity_matched_usb_nodes": [
+    {
+      "node_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "identity_basis": "Exact current instance-ID hash equals previously identified FX3 USB root hash; not a VID/PID assumption",
+      "name": "USB 大容量存储设备",
+      "description": "USB 大容量存储设备",
+      "present": true,
+      "status": "OK",
+      "config_manager_error_code": 0,
+      "service": "USBSTOR",
+      "class_guid": "{36fc9e60-c465-11cf-8056-444553540000}",
+      "pnp_class": "USB",
+      "hardware_ids": [
+        "USB\\VID_054C&PID_0DA1&REV_0200",
+        "USB\\VID_054C&PID_0DA1"
+      ],
+      "actual_vid": "054C",
+      "actual_pid": "0DA1",
+      "current_model_field": "UNKNOWN: this CIM row has a generic USB storage description",
+      "same_as_old_fx3_root": true
+    }
+  ],
+  "explicit_model_camera_nodes": [
+    {
+      "node_sha256": "c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172",
+      "name": "Sony DSC USB Device",
+      "description": "磁盘驱动器",
+      "model_classification": "explicit ILME-FX3 or Sony digital-camera model metadata",
+      "present": true,
+      "status": "OK",
+      "config_manager_error_code": 0,
+      "service": "disk",
+      "class_guid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+      "pnp_class": "DiskDrive",
+      "hardware_ids": [
+        "USBSTOR\\DiskSony____DSC_____________1.00",
+        "USBSTOR\\DiskSony____DSC_____________",
+        "USBSTOR\\DiskSony____",
+        "USBSTOR\\Sony____DSC_____________1",
+        "Sony____DSC_____________1",
+        "USBSTOR\\GenDisk",
+        "GenDisk"
+      ],
+      "vid": "UNKNOWN",
+      "pid": "UNKNOWN",
+      "same_as_old_fx3_root": false
+    },
+    {
+      "node_sha256": "ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b",
+      "name": "Sony DSC USB Device",
+      "description": "磁盘驱动器",
+      "model_classification": "explicit ILME-FX3 or Sony digital-camera model metadata",
+      "present": true,
+      "status": "OK",
+      "config_manager_error_code": 0,
+      "service": "disk",
+      "class_guid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+      "pnp_class": "DiskDrive",
+      "hardware_ids": [
+        "USBSTOR\\DiskSony____DSC_____________1.00",
+        "USBSTOR\\DiskSony____DSC_____________",
+        "USBSTOR\\DiskSony____",
+        "USBSTOR\\Sony____DSC_____________1",
+        "Sony____DSC_____________1",
+        "USBSTOR\\GenDisk",
+        "GenDisk"
+      ],
+      "vid": "UNKNOWN",
+      "pid": "UNKNOWN",
+      "same_as_old_fx3_root": false
+    },
+    {
+      "node_sha256": "4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c",
+      "name": "Sony DSC USB Device",
+      "description": "磁盘驱动器",
+      "model_classification": "explicit ILME-FX3 or Sony digital-camera model metadata",
+      "present": true,
+      "status": "OK",
+      "config_manager_error_code": 0,
+      "service": "disk",
+      "class_guid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+      "pnp_class": "DiskDrive",
+      "hardware_ids": [
+        "USBSTOR\\DiskSony____DSC_____________1.00",
+        "USBSTOR\\DiskSony____DSC_____________",
+        "USBSTOR\\DiskSony____",
+        "USBSTOR\\Sony____DSC_____________1",
+        "Sony____DSC_____________1",
+        "USBSTOR\\GenDisk",
+        "GenDisk"
+      ],
+      "vid": "UNKNOWN",
+      "pid": "UNKNOWN",
+      "same_as_old_fx3_root": false
+    }
+  ],
+  "current_parent_child_relations": "UNKNOWN; not collected this run",
+  "current_disk_interface_guid": "UNKNOWN; not collected this run",
+  "started_status": "UNKNOWN; CIM Status OK not treated as DN_STARTED",
+  "interface_enable_state": "UNKNOWN",
+  "driver_inf": "UNKNOWN",
+  "driver_provider": "UNKNOWN",
+  "driver_version": "UNKNOWN",
+  "reported_signer": "UNKNOWN",
+  "followup_gate": {
+    "unique_explicit_current_camera_node": false,
+    "reason": "Three current Sony DSC model nodes were returned",
+    "pnputil_queries_issued": 0
+  },
+  "binding_status": "NOT_UNIQUE_CURRENT_MODEL_NODE_SET",
+  "camera_protocol_validation": "NOT_PERFORMED",
+  "notes": [
+    "Actual current VID/PID for the exact prior-root identity is 054C:0DA1 from this CIM row.",
+    "Current root model text is generic USB mass storage; ILME-FX3 is a prior identity reference, not a newly read body model/firmware.",
+    "This snapshot has a later observation time than the earlier PnPUtil no-match snapshot; the reason for differing observations is UNKNOWN.",
+    "HardwareIDs are non-unique cached model identifiers; raw instance IDs remain private."
+  ]
+}

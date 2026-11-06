@@ -1,0 +1,860 @@
+{
+  "schema": "fx3-stage168-claim-substep-diagnostics/1",
+  "created_utc": "2026-10-28T13:33:16.404165+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "previous_manifest_sha256": "1660b6a94a12195d1ddf6e9909591d16547bff107d842d605ebb50d7ecdd77e7",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/README.md",
+      "bytes": 3769,
+      "sha256": "2437ecc0c88729764d9531239f7b3c33439af72632408c3637fe2c11c702e64a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/admin-source-example.applescript",
+      "bytes": 934,
+      "sha256": "8a15463f6fd658190dc11a3a9acf4190d0acf6ba83a0fae95a389ec08bc3d4ea"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/artifacts/admin-source-example.scpt",
+      "bytes": 2240,
+      "sha256": "4e6bce1e9d39535e043d7c65d78205a01102f013e22feee7cdd96b585a4b3f22"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/artifacts/entry-ipc.dylib",
+      "bytes": 35008,
+      "sha256": "e29aef7cbab574a78d739ad0a7b10be2c47ddb4a6c8447b1113bb13244b2b030"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/artifacts/owner-fixture-helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/artifacts/owner-native-helper",
+      "bytes": 56064,
+      "sha256": "661e679e725a6b5cc9431c63b747fb1d15412b05856663461bb856c232b00651"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/artifacts/test-claim-trace",
+      "bytes": 33744,
+      "sha256": "21e76e6f66845bd0a5553f70623ad09271fff22b24eb9d9cfa494a19b9cdf59b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/build-executed.py",
+      "bytes": 3444,
+      "sha256": "be59e0667fde180bbbf26b913a611730a24877732f6f54d2d635981c855e1273"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/build_helpers.py",
+      "bytes": 3444,
+      "sha256": "be59e0667fde180bbbf26b913a611730a24877732f6f54d2d635981c855e1273"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/cache_observer.py",
+      "bytes": 6355,
+      "sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/candidate-plan.json",
+      "bytes": 2499,
+      "sha256": "ac0d30d63b2f270fa1cfbd014ebfda5ff9a7e4b9fce806bac49c188b75432e7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/claim-substep-map.json",
+      "bytes": 840,
+      "sha256": "4337453147fdd9c5a628210d722aa1ff321414b65c0b874e408673d5216b2864"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/claim-trace-function.inc",
+      "bytes": 480,
+      "sha256": "bada15bcb70e055101c1c27703f1afd08c48ab2f1149c22e8fd492e107de9da8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/claim-trace-memory-tests.json",
+      "bytes": 946,
+      "sha256": "d5a48760c9a72dcf45dca373f92006e651c1a9bbbf50f3d5a1663ac2afd97b96"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/entry-test-executed.py",
+      "bytes": 8649,
+      "sha256": "d8117bb612286fcdd52f642f6e172b4700d7017f79c406133ce07eee776b0cbc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/entry_binding.py",
+      "bytes": 7314,
+      "sha256": "2748a25a6488112f3139a3ac169e298ee0d972b51616e3bfbd5cb939b95aaef7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/entry_shared.h",
+      "bytes": 1542,
+      "sha256": "43d4be1b325bcc5a8940054e9d6e8f917c72022537b34458f094398e26616948"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/entry_support.c",
+      "bytes": 3773,
+      "sha256": "00dff89176cbe9073f102aebeefb354a770316c5e3a866e93ac2aece8b4d296c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/entry_target.h",
+      "bytes": 699,
+      "sha256": "5e71157b7f97558ce7d1ea0481f6dbb5cd1edd04442cf5dd2088d2129fbe2aff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/fixture_orphan_parent.py",
+      "bytes": 701,
+      "sha256": "64c85bf710b95549895de5cca6de9f47ef110211426f1d9d976356eceb96dbde"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/goal-status-after.json",
+      "bytes": 321397,
+      "sha256": "e0c6dcbbee5561192cf8931ed8c677d521a87aac9ac10a6a95d8b1e39dcc66e1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/goal-status-before.json",
+      "bytes": 320582,
+      "sha256": "47f27f2bd15616697f6692c3035aa623a541d4adf5105248518956a9455e35f3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/hardened-entry-tests.json",
+      "bytes": 10863,
+      "sha256": "e11be0d72d06069078792739858f83ebb130273b2628df76cb9009d51525f73f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/helper-build-receipt.json",
+      "bytes": 6302,
+      "sha256": "afd142e80e8e88046008d2d01b7ff774fbecd35e3bbe2699f68e09d8173d3d66"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/internal-stage-tests.json",
+      "bytes": 2720,
+      "sha256": "fd3d9c647934340ccc64eeac664e74e90c301c949b2aee4d49a7e0422499e439"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/launch_policy.py",
+      "bytes": 6393,
+      "sha256": "031241bb6204eb8382da51e8612ff7f4cf77ad61c032de52149c5020f2d69f4b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/local-source-and-runtime-review.json",
+      "bytes": 4178,
+      "sha256": "325f44a9343de243c06dc5cacb8b49fa939f6f6f307a2e7ee571796c4a975b4e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/observer-supervisor-tested.py",
+      "bytes": 15591,
+      "sha256": "7f9642d723811d7570089fd2cd9d49c7430bd1178b5d5601e57935952652b1bb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/observer-test-executed.py",
+      "bytes": 4800,
+      "sha256": "8fcae106ac44445695c86add47038ee2989d807806ca062ec5673e1372324ee5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/owner_binding.py",
+      "bytes": 4094,
+      "sha256": "b8f5e4170ef40e38c9d05c09909a99204b49baab476de1b1e4beeed2ed6d8a6f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/owner_core.c",
+      "bytes": 6356,
+      "sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/owner_entry_main.c",
+      "bytes": 9572,
+      "sha256": "c9d7b7cbec73f4d6388a85fe9f727cea1ef6718a748fd4d4abd24a1e3c9571b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/owner_fixture.c",
+      "bytes": 4513,
+      "sha256": "aba073e7df59e076df15568789a5de697f2b73dd95bcd525985e33582eb26e55"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/owner_iokit.c",
+      "bytes": 11979,
+      "sha256": "7b33b03256f3c226ade7049c10a9e3f42790b9240d8291a60fbd600170f34fae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/owner_ipc.c",
+      "bytes": 3000,
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/owner_supervisor.py",
+      "bytes": 15591,
+      "sha256": "7f9642d723811d7570089fd2cd9d49c7430bd1178b5d5601e57935952652b1bb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/owner_trial.h",
+      "bytes": 2225,
+      "sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/provider-trace-derivation.json",
+      "bytes": 3554,
+      "sha256": "6059dc6e5d8b04f3e005456f48745b43a84a91e0ebf8e9171739ed5eb4422644"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/readme-after.md",
+      "bytes": 60708,
+      "sha256": "8d392248eb34da402eaa1e59f49c9677f81f07467850167688f57f4c083198f0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/readme-before.md",
+      "bytes": 60422,
+      "sha256": "a3972b42113350197c1148b12d202b02ae65c7163590e6ecfb812af15183941e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/readme-rebased-before.md",
+      "bytes": 60422,
+      "sha256": "a3972b42113350197c1148b12d202b02ae65c7163590e6ecfb812af15183941e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/recorded-observer-tests.json",
+      "bytes": 4519,
+      "sha256": "96c0f2de65ea950fb2ab872233c0b1a53f85e1055b961338d66314b4b51e93d1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/release-bundle.json",
+      "bytes": 2935,
+      "sha256": "0bfe5210a392dd0b57752e8e5d67e23f2597a34f24e7609b8bad37b80dd0ca72"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/root-bootstrap-example.sh",
+      "bytes": 768,
+      "sha256": "39950eb85289dca054a458d13d4f7d1c51b598edc1e6958b2e7483238009c3de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/bad-copied-hash/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/bad-copied-hash/relay-process.json",
+      "bytes": 1851,
+      "sha256": "bf07a8eef69716c17f403f0afd444a6ad5d35872c08e509acab49a007618019b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/bad-copied-hash/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/bad-copied-hash/relay-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/bad-copied-hash/shared.bin",
+      "bytes": 4096,
+      "sha256": "40de3367995e1c01df135a3f10e4e59dc9ce2b43a184f94ecbbe7aa2981d2176"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/bad-copied-hash/spec.json",
+      "bytes": 425,
+      "sha256": "e7cec68759a47d17075b2e87dbfc2ed26a24f5078c41eea8075ecf7ef54c4fe3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/bad-copied-hash/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/direct-replay/shared.bin",
+      "bytes": 4096,
+      "sha256": "601d1c8b77f5a9bd1afac181e896329986f76ac83943c961684a3c4e2c46abf4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/observation-error-01.json",
+      "bytes": 296,
+      "sha256": "5be06d94b2bdd56d2f6b08fd03268b7d310166369cb60f7718e29d6e3241e29a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/relay-process.json",
+      "bytes": 1875,
+      "sha256": "dd009b315bad2d549e454551854a2d3e81df07f6fa8ea1d4b9aa992f5e95c6b0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "df96f20d0cd7ded4b6745a8c7c36d66cc9e12a9a635c0246f76168651741dac9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/shared.bin",
+      "bytes": 4096,
+      "sha256": "fd01a09e725393c922bb4e24c1863174ea31330d08a7372e6864b3a3633774a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/spec.json",
+      "bytes": 428,
+      "sha256": "e02d7bd9fa2563bb0ead2021dd9138a403058654998e182f140f01b18f22c5de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "c38a9b3135f8ea3dc56e3c565efd214ef7630b05264182590fb6b5de98f2f627"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/supervisor-result.json",
+      "bytes": 2093,
+      "sha256": "94854645f902ae3e91cdc41d2dfba6e422ea378262262bf30ee4e8bd416954ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/metadata-transient/verified-helper.json",
+      "bytes": 380,
+      "sha256": "885ed3ad92b4470a5e4281a7e46da67fd3557c2f1d409e381c262b69accbd016"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/new-frame-same-grant/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/new-frame-same-grant/relay-process.json",
+      "bytes": 1793,
+      "sha256": "edf4ba93332c0b78f9f77772e9c06a746f6ce2e0416fb2daca999a872e80a352"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/new-frame-same-grant/relay-stderr.txt",
+      "bytes": 161,
+      "sha256": "b1962c6d13316c7b316aeed8d1f2b5f35e0e04dab7ec38c9f324c6e88d264b26"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/new-frame-same-grant/relay-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/new-frame-same-grant/shared.bin",
+      "bytes": 4096,
+      "sha256": "51adf6034c3501b7e27f74eb89765f8a9d320ce98e8d303f12569907a879ce5a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/new-frame-same-grant/spec.json",
+      "bytes": 416,
+      "sha256": "a8d942d3d530ede578ec575e57cee6fdcda0a0fd6d4124de3b1ccb06b1f18e08"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/relay-process.json",
+      "bytes": 1779,
+      "sha256": "57a58a167039e8be851667bc698a354a271c0351c52582817b6f9d3f04a485eb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "901cb8a8ecba81a0524325dc558715ea1362da7c582cd53f041d8854a05801e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/shared.bin",
+      "bytes": 4096,
+      "sha256": "89714f3f05cb278465b54ab93ff33045beb38c88bc62a9580a808f3b4ef69457"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/spec.json",
+      "bytes": 416,
+      "sha256": "2d411805ee19e897be2e2439e693a762a51a01851a84093aa625556619f00320"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "19b78173d7d0045722e73b68dde4db67fd1559ba04ed68cfbe20aa54831b451a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/supervisor-result.json",
+      "bytes": 1330,
+      "sha256": "c7ffbfd2aa5eab42c774e0661fa684fb873c6a7228e76faeb73810c7e36a85e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/no-ACK/verified-helper.json",
+      "bytes": 368,
+      "sha256": "6c171cd4fac923065083753d466c3245a1befed4db24aec46e5222ce7aa7af0e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/relay-process.json",
+      "bytes": 1779,
+      "sha256": "13799ccbd05331c760de995c4eb2fe4e33699cbcf6aff5874a919ee7a46de604"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "44285c307fd486a30ed4c3a6fb4419e4fe2b4c4a6c83642be2c8df32cd8700e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/shared.bin",
+      "bytes": 4096,
+      "sha256": "8362e9581d9d628a262ad890f0ce142f7f32b93854889acbe67924829fda3abd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/spec.json",
+      "bytes": 416,
+      "sha256": "ed50dbffdfdc255aa12ab3990aae52cc626d390e6877f9c0fe6e182c9ee42307"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "ce6f6ef7080ec81a91edae7973d0ecc0156ea576480cae811828f8a783080d8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/supervisor-result.json",
+      "bytes": 2081,
+      "sha256": "4d6fbbedde1a3d041dc6efe99305de75a8aa6aad09c370e345a5964b332d878f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/normal/verified-helper.json",
+      "bytes": 368,
+      "sha256": "d567f23c144cb8d52cfa8b3830b69e94d7eb279d16b5f7acfc8cf1ebb3b9b9ca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/relay-process.json",
+      "bytes": 1899,
+      "sha256": "d6ae29504b15c7773ef0c3c89fc433a3b164a5c54cb77181d4f206adbab84dc8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "4860623089b28ac272dfe609669ebb48e3c69694c5b32b5006df821a13e7a122"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/shared.bin",
+      "bytes": 4096,
+      "sha256": "95966135f920ef0e8a85156db47eb3e0e6cf5bb4cabb94543c955f68ebb2f949"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/spec.json",
+      "bytes": 431,
+      "sha256": "f7e762b008bcc1a428195b7806626251a1636ff4bf75dd403668aae8006cd184"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "5121c658f7bb88d0d4403b96805215b0844761edfb1eb12126097d164192461e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/stop-request.json",
+      "bytes": 122,
+      "sha256": "0be4e35d8937a6eec09582135280e169178e23cd9ef197172e6e4ba42241d498"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/supervisor-result.json",
+      "bytes": 1723,
+      "sha256": "439cd525d0bf2589524671d144795b4e8da5f20fbcb2ea69a4b723be7da10136"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/pending-past-deadline/verified-helper.json",
+      "bytes": 383,
+      "sha256": "962e024ff8383883b8ea61ddf7b6690027178076a8bf2fb1418eb3278c4df0ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/relay-process.json",
+      "bytes": 1811,
+      "sha256": "90ea899013fc2f890db1362c447365c4ef3382fd61efd2ff9c7716e461e49591"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "29d5f6b12d2e8021f8935d7fb80d69f4e1390e43c06a11236567fb3ff1c9775f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/shared.bin",
+      "bytes": 4096,
+      "sha256": "57e7437f9ea61741735aca3437a6925669f1f54996eb545d3773e122c473a99b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/spec.json",
+      "bytes": 420,
+      "sha256": "331b803e066f03df3b8236d92eef92a71c943767ab5cec3d6230290269038d5d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "ac2c422218eeaa41c233b12d901e0bef6e717df3bdd57adb43044d4e200c74b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/supervisor-result.json",
+      "bytes": 1406,
+      "sha256": "f73d859bdc74618710a679f7a933d6e7815b516d9d8d4f963c66d5af73d6b9ca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-body/verified-helper.json",
+      "bytes": 372,
+      "sha256": "0876445288a5b25253e6f3ec2461f440f7b6237cfef3b33a22580bf7451ae28a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/relay-process.json",
+      "bytes": 1899,
+      "sha256": "96b52b02c3516470cb2e0f801339d5d061ea40e1519906c086a6ac809130a753"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "e5424e6aa523cbf485f906469d5bd9d30da5b61d7db572ccc4dbf289940159b3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/shared.bin",
+      "bytes": 4096,
+      "sha256": "02af15920f1188816b7a9eeda8a7ec16b14d8310f1f3bf94f916ed500358eb4d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/spec.json",
+      "bytes": 295,
+      "sha256": "f4bb9bafc40944b63fef18934273a758c9318b165fd5b9a34fd82b5a0c568d2e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "9e950fa433cfac3581a4b1bdc5ece1b5125df38f841192748e4b71fd305e4276"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-controller-path/stop-request.json",
+      "bytes": 122,
+      "sha256": "34a342605c3a1bb0d7a3b0f8fb6c3d5eb5e857ed2839373ec8ccdbbc9d2f2e49"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/relay-process.json",
+      "bytes": 1835,
+      "sha256": "50c52be65c3dcffb62075c4438a17dcbcef6fcc020fa83d82c748215877a3ef9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/relay-stdout.txt",
+      "bytes": 379,
+      "sha256": "6a7dbd1edff3e466633d1557716a5a7daf5f0dc87ad987a3672d06591f48722b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/shared.bin",
+      "bytes": 4096,
+      "sha256": "172fbce01ec8f4d02c395d44e6eb8ba80fd85531bac39d47d52da263cd9b418f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/spec.json",
+      "bytes": 423,
+      "sha256": "1965d7b6d35f595ff47c5a397597f2fe95f5b2619249f684d1bca28f980c7b67"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "b93495ab590f3886201f49872c13d9ed3cc9dffa78d0b4a5edf330fa1d7f90c5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/hardened-entry-tests/wrong-receipt/verified-helper.json",
+      "bytes": 375,
+      "sha256": "75d36f3ba41389bf5c60f04d61e68efdb1abdfcc25a7855da763cd65419d9e62"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/fixture-source-unavailable",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/observation-error-01.json",
+      "bytes": 317,
+      "sha256": "6e74189ade35e2f631cd172b690dbc2aa3dcef1604d171520b9751f9879266ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/relay-process.json",
+      "bytes": 1849,
+      "sha256": "09e8561f4b22b090a57364c05041297fcbc06e1073dc5c410e2c3c6704a04a02"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "c9d03227633e13d85ea194423494d688542a22266a1064095b9b2d8a63437d2c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/shared.bin",
+      "bytes": 4096,
+      "sha256": "94ed2c537715657f3283d65af25dc08c8430b3e7ffb070a792870cd343910646"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/spec.json",
+      "bytes": 432,
+      "sha256": "b8a14d3dc8ab22ab7c19d6b77f948e2f95954b358e25695796eda85acf77187d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "04aa0fd9d516f4863964eea4880d67efc55405a12241c90d8599c7ce45ce999d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/supervisor-result.json",
+      "bytes": 2097,
+      "sha256": "1d2a3a84459d62b1d5b3f67ddf3de4f474d21f82d6e58fa94e186b7dbca5007b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/internal-stage-tests/internal-source-launch/verified-helper.json",
+      "bytes": 384,
+      "sha256": "fd559d7d1efde78e24f64b9f35770bd6f077e2d799422494c99c83ea1a8f7584"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/parent-departure.json",
+      "bytes": 98,
+      "sha256": "e922b36305046e4fdddf904312b111256769c7a78f2ef0ee150d1786b4f65b2b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/relay-process.json",
+      "bytes": 1875,
+      "sha256": "8f63bf78a9b8c099cf9e5495531cedf4c0f676c7bf2ab33b51116b69b17f04f7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "e598a4db5f499dd6b0011ec27ace73daaca98040f3f019c66a7754ebc04fa646"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/shared.bin",
+      "bytes": 4096,
+      "sha256": "29bd841991b73cf4103c904627a6bad2fbdcf9020d14aac389f8c195b05ecfdf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/spec.json",
+      "bytes": 428,
+      "sha256": "34d1e6fb40ed63ead2e31029e96c9b6385d2d33dd5ac737768db0bb54e8ada9c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "959438588ddfc3fa5e226dce6c7e847d13c8cba943af315b54574949b8575a1d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/departed-parent/verified-helper.json",
+      "bytes": 380,
+      "sha256": "8351a71a7d3ac214e602a3a35b34b1d2428acc935cdc8ddcc0b2f0343635745c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/parent-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/parent-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/physical-grant-attempt.claim",
+      "bytes": 48,
+      "sha256": "6975f49f03d7dd4f651a68689156a6ac044254dc22df6f3419ef9280e4a09d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/relay-process.json",
+      "bytes": 1891,
+      "sha256": "b4d5b79092ca6140cc1f0f84bbe21c0f6552a06cc1a0c7ce30cf71767913ca82"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/relay-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/relay-stdout.txt",
+      "bytes": 348,
+      "sha256": "f4366fcd07fa47fdc822c602fab23721fea042da1b79569075e601e1bd0e91cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/shared.bin",
+      "bytes": 4096,
+      "sha256": "f8920d40e284b9396c19adc98deacf9e18a4443dc1481ee18a4b5c804b67218c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/spec.json",
+      "bytes": 430,
+      "sha256": "f2f5d112b767dae650e6ce57a13a0c818c4e5a620d55af8adfff3c9998179abc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/staged-grant/entry.once",
+      "bytes": 45,
+      "sha256": "e4f17228e72f7b15643b1fd61398633409edd484a87ea4f521c912eda44ca3fd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/staged-grant/helper",
+      "bytes": 37640,
+      "sha256": "22b9fa40b956bdac09ea9de6ff93a40f3b7e2965db4d6243aa34298691624f8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/supervisor-result.json",
+      "bytes": 2095,
+      "sha256": "6728a115ec0ea7796dce2da89df43cad68bc4c840a2662dc5d80ea7f96b36936"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/runs/recorded-observer-tests/same-live-process/verified-helper.json",
+      "bytes": 349,
+      "sha256": "5c84cef915353c28ec6828210a4035219df75540e9c9678bfb9988666dc94f7a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/source-derivation.json",
+      "bytes": 2475,
+      "sha256": "4374004e382e5a005cfb0b145ef7a06b03c6651dd253cf6b11a0dc60964b6485"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/supervisor-tested.py",
+      "bytes": 15591,
+      "sha256": "7f9642d723811d7570089fd2cd9d49c7430bd1178b5d5601e57935952652b1bb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/test_claim_trace.c",
+      "bytes": 1608,
+      "sha256": "99954efff3fc1d221778785b27989d41ffaab66bcd18f31541026d0acf1b6f68"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/test_hardened_entry.py",
+      "bytes": 8649,
+      "sha256": "d8117bb612286fcdd52f642f6e172b4700d7017f79c406133ce07eee776b0cbc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/test_internal_stage.py",
+      "bytes": 6872,
+      "sha256": "7ce228c084353d227b8a9fcbf383a24e44baa18b0c32d96370bc93b091020243"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage168-claim-substep-diagnostics/test_recorded_observer.py",
+      "bytes": 4800,
+      "sha256": "8fcae106ac44445695c86add47038ee2989d807806ca062ec5673e1372324ee5"
+    }
+  ],
+  "member_count": 167,
+  "canonical_after_sha256": "e0c6dcbbee5561192cf8931ed8c677d521a87aac9ac10a6a95d8b1e39dcc66e1",
+  "mutable_heads_excluded": true,
+  "current_host_checks": 34,
+  "new_grant_authorized": false,
+  "new_grant_released": false,
+  "new_root_or_active_camera_executed": false,
+  "same_underlying_device_call_parameters_order": true,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "allowed_goal_keys_changed": [
+    "latest_stage",
+    "latest_stage_evidence",
+    "next_safe_offline_actions",
+    "prepared_first_device_trial",
+    "updated_utc"
+  ]
+}

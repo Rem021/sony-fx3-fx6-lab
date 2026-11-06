@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-23-key-030.png using image tool. Shooting>File 7/59 orange focus; Write Serial Number and File Settings listed Next: DOWN to Shooting Mode category; do not enter serial-number or file settings

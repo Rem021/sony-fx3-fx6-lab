@@ -1,0 +1,7 @@
+00004e4a 7e21 movs     r1, #0x7e
+00004e4c 2046 mov      r0, r4
+00004e4e 06f0a9ff bl       #0xbda4
+00004e52 04f87e0f strb     r0, [r4, #0x7e]!
+00004e56 000a lsrs     r0, r0, #8
+00004e58 6070 strb     r0, [r4, #1]
+00004e5a f8bd pop      {r3, r4, r5, r6, r7, pc}

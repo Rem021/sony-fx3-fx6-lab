@@ -1,0 +1,74 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000012ed28 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE>:
+  12f4a8: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+  12f4ac: d291c722     	mov	x2, #0x8e39             // =36409
+  12f4b0: f2a71c62     	movk	x2, #0x38e3, lsl #16
+  12f4b4: 910003fd     	mov	x29, sp
+  12f4b8: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  12f4bc: aa0003f6     	mov	x22, x0
+  12f4c0: f9400400     	ldr	x0, [x0, #0x8]
+  12f4c4: f2dc71c2     	movk	x2, #0xe38e, lsl #32
+  12f4c8: f90023f9     	str	x25, [sp, #0x40]
+  12f4cc: aa0103f9     	mov	x25, x1
+  12f4d0: f94002c1     	ldr	x1, [x22]
+  12f4d4: f2f1c702     	movk	x2, #0x8e38, lsl #48
+  12f4d8: a90153f3     	stp	x19, x20, [sp, #0x10]
+  12f4dc: cb010000     	sub	x0, x0, x1
+  12f4e0: d298e381     	mov	x1, #0xc71c             // =50972
+  12f4e4: f2a38e21     	movk	x1, #0x1c71, lsl #16
+  12f4e8: a90363f7     	stp	x23, x24, [sp, #0x30]
+  12f4ec: f2ce38e1     	movk	x1, #0x71c7, lsl #32
+  12f4f0: aa0203f7     	mov	x23, x2
+  12f4f4: 9342fc00     	asr	x0, x0, #2
+  12f4f8: f2e0e381     	movk	x1, #0x71c, lsl #48
+  12f4fc: 9b027c00     	mul	x0, x0, x2
+  12f500: f100001f     	cmp	x0, #0x0
+  12f504: 9a9f1413     	csinc	x19, x0, xzr, ne
+  12f508: 8b130013     	add	x19, x0, x19
+  12f50c: eb13001f     	cmp	x0, x19
+  12f510: fa419262     	ccmp	x19, x1, #0x2, ls
+  12f514: 540004c9     	b.ls	0x12f5ac <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x884>
+  12f518: aa0103f3     	mov	x19, x1
+  12f51c: d2800480     	mov	x0, #0x24               // =36
+  12f520: 9b007e60     	mul	x0, x19, x0
+  12f524: 97fd3fff     	bl	0x7f520 <_Znwm@plt>
+  12f528: aa0003f5     	mov	x21, x0
+  12f52c: a94052d8     	ldp	x24, x20, [x22]
+  12f530: cb180294     	sub	x20, x20, x24
+  12f534: ab1402a2     	adds	x2, x21, x20
+  12f538: 540000e0     	b.eq	0x12f554 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x82c>
+  12f53c: a9400720     	ldp	x0, x1, [x25]
+  12f540: a9000440     	stp	x0, x1, [x2]
+  12f544: a9410720     	ldp	x0, x1, [x25, #0x10]
+  12f548: a9010440     	stp	x0, x1, [x2, #0x10]
+  12f54c: b9402320     	ldr	w0, [x25, #0x20]
+  12f550: b9002040     	str	w0, [x2, #0x20]
+  12f554: 9342fe82     	asr	x2, x20, #2
+  12f558: 9b177c42     	mul	x2, x2, x23
+  12f55c: b40000a2     	cbz	x2, 0x12f570 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x848>
+  12f560: aa1403e2     	mov	x2, x20
+  12f564: aa1803e1     	mov	x1, x24
+  12f568: aa1503e0     	mov	x0, x21
+  12f56c: 97fd4415     	bl	0x805c0 <memmove@plt>
+  12f570: 91009294     	add	x20, x20, #0x24
+  12f574: 8b1402b4     	add	x20, x21, x20
+  12f578: b4000078     	cbz	x24, 0x12f584 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x85c>
+  12f57c: aa1803e0     	mov	x0, x24
+  12f580: 97fd3f04     	bl	0x7f190 <_ZdlPv@plt>
+  12f584: d2800480     	mov	x0, #0x24               // =36
+  12f588: a90052d5     	stp	x21, x20, [x22]
+  12f58c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+  12f590: 9b005673     	madd	x19, x19, x0, x21
+  12f594: f94023f9     	ldr	x25, [sp, #0x40]
+  12f598: f9000ad3     	str	x19, [x22, #0x10]
+  12f59c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  12f5a0: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  12f5a4: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+  12f5a8: d65f03c0     	ret
+  12f5ac: d2800015     	mov	x21, #0x0               // =0
+  12f5b0: b4fffbf3     	cbz	x19, 0x12f52c <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x804>
+  12f5b4: 17ffffda     	b	0x12f51c <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x7f4>

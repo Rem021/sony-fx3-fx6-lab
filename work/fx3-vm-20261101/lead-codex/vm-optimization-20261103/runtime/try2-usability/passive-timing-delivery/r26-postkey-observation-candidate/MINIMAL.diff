@@ -1,0 +1,271 @@
+--- r25/runtime-wrapper/common.py
++++ r26/runtime-wrapper/common.py
+@@ -46,7 +46,7 @@
+ 
+ def browser(name,args,source=None,timeout=20):return run(name,['agent-browser','--session',CFG['session'],*args],source,timeout)
+ def ev(name,source):return json.loads(browser(name,['eval','--stdin'],source))
+-def helper(name,file,args,watch=False):return json.loads(run(name,['python3',str((CANDIDATE_OPS if file in ('planned_navigation_click.py','review_snapshot_cli.py','deadline_cli.py','recovery_tools.py') else OPS)/file),*args],watch=watch))
++def helper(name,file,args,watch=False):return json.loads(run(name,['python3',str((CANDIDATE_OPS if file in ('planned_navigation_click.py','review_snapshot_cli.py','deadline_cli.py','recovery_tools.py','postkey_observation.py') else OPS)/file),*args],watch=watch))
+ def identity():return read('runtime.json')
+ def dl(name,action,nonce=None):
+  c=identity();a=[action,'--session',CFG['session'],'--url',c['url'],'--launch-id',c['launch_id']]
+--- r25/runtime-wrapper/operate.py
++++ r26/runtime-wrapper/operate.py
+@@ -6,6 +6,7 @@
+ from review_snapshot_cli import validate_capture
+ from later_capture import current_guard
+ from recovery_guard import pending,click_guard,durable_pending
++import postkey_flow as flow
+ 
+ def savepath(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+ def argbase(c,nonce):return ['--session',CFG['session'],'--url',c['url'],'--launch-id',c['launch_id'],'--nonce',nonce]
+@@ -25,6 +26,8 @@
+ 
+ def _run_action(action):
+  c=identity()
++ if (HERE/'POSTKEY-TERMINAL.json').exists():raise ValueError('r26_run_terminal_no_further_action')
++ if action=='reject':raise ValueError('operator_explicit_semantic_rejection: '+sys.argv[2])
+  if action=='standby_review':
+   target=sys.argv[2];assert target.strip()
+   cap_path=HERE/'initial-standby/capture-result.json';cap=json.loads(cap_path.read_text())
+@@ -46,6 +49,9 @@
+   if recovery:
+    recovery.update(status='consumed_by_explicit_new_click',next_nonce=nonce,next_attempt_number=attempt,**stamp());durable_pending(recovery)
+   arm=dl(prefix+'-arm','arm',nonce);assert arm['deadline_ms']==20000 and arm['current']['state']=='armed' and arm['current']['nonce']==nonce
++  # Bind the actual document/run before the single original key invocation.
++  binding=ev(prefix+'-postkey-document-binding','(()=>{if(location.href!=='+json.dumps(c['url'])+'||lastStatus.launch_request_id!=='+json.dumps(c['launch_id'])+'||performance.timeOrigin!=='+json.dumps(prior['document_time_origin'])+'||!lastStatus.run_incarnation)throw Error("postkey_binding");return {document_id:reviewDocumentId,document_time_origin:performance.timeOrigin,run_incarnation:lastStatus.run_incarnation}})()')
++  a['postkey_binding']=binding;savepath(folder/'identity.json',a);write('current-attempt.json',a)
+   r=helper(prefix+'-click','planned_navigation_click.py',['--session',CFG['session'],'--url',c['url'],'--launch',c['launch_id'],'--nonce',nonce,'--plan-sha',PLAN_SHA,'--step',str(step),'--prerequisite-path',str(prior_path),'--ledger',str(HERE/'ledger.json'),'--receipt',str(folder/'click-receipt.json')],watch=True)
+   assert r['status']=='click_invoked'
+   aid=r['result']['attempt_id'];a['attempt_id']=aid;savepath(folder/'identity.json',a);write('current-attempt.json',a)
+@@ -58,6 +64,12 @@
+    a['recovery_capture_sha256']=sha(out/'observation-result.json');savepath(folder/'identity.json',a);write('current-attempt.json',a)
+    value={'observation_path':str(out/'observation-result.json'),'observation_sha256':a['recovery_capture_sha256'],'input_permission':False,'status':r['status'],'screenshot_path':str(p),'screenshot_sha256':sha(p),'step':step,'attempt':attempt};write('current-return.json',value);return value
+   assert outcome['outcome']=='accepted',outcome
++  flow.initialize(a,c);value=flow.observe(a);write('current-return.json',value);return value
++ if action=='observe':
++  a=read('current-attempt.json');value=flow.observe(a,sys.argv[2]);write('current-return.json',value);return value
++ if action=='pin':
++  target=sys.argv[2];a=read('current-attempt.json');folder=Path(a['path']);step=a['step'];nonce=a['nonce'];aid=a['attempt_id'];prefix=folder.name
++  flow.before_pin(a,target)
+   out=folder/'capture';cfg={'url':c['url'],'launch_id':c['launch_id'],'nonce':nonce,'step':step,'attempt_id':aid,'prefix':prefix};savepath(folder/'capture-config.json',cfg)
+   args=['capture','--session',CFG['session'],'--url',c['url'],'--launch',c['launch_id'],'--nonce',nonce,'--step',str(step),'--attempt',aid,'--out',str(out)]
+   if step==1:args+=['--reference-sha','60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292']
+@@ -65,10 +77,10 @@
+   assert result['status']=='qualified_review_snapshot'
+   valid=validate_capture(out/'capture-result.json',step,aid,nonce,c['launch_id'])
+   assert Path(valid['screenshot_path']).stat().st_mtime_ns>=a['host_wall_ns']
+-  valid.update(attempt_number=attempt,**stamp());savepath(folder/'validated-image-return.json',valid);write('current-return.json',valid);return valid
++  valid.update(attempt_number=a['attempt_number'],**stamp());savepath(folder/'validated-image-return.json',valid);flow.pinned(a,folder/'validated-image-return.json');write('current-return.json',valid);return valid
+  if action=='confirm':
+   target=sys.argv[2];a=read('current-attempt.json');folder=Path(a['path']);cap=json.loads((folder/'validated-image-return.json').read_text());assert cap['status']=='qualified_review_snapshot' and cap['attempt_id']==a['attempt_id'] and cap['nonce']==a['nonce'] and cap['snapshot']['step']==a['step']==cap['step'];step=a['step']
+-  assert target.strip()
++  assert target.strip();flow.before_confirm(a,folder/'validated-image-return.json')
+   savepath(folder/'visual-judgement.json',{'target':target,'semantic_passed':True,'source':'operation_agent_explicit_screenshot_review','model_received_at':'unknown','model_review_completed_at':'unknown',**stamp()})
+   ev(folder.name+'-confirm-current-attempt',current_guard({**c,'step':step,'nonce':a['nonce'],'attempt_id':a['attempt_id']}))
+   r=helper(folder.name+'-confirm','review_snapshot_cli.py',['confirm','--session',CFG['session'],'--url',c['url'],'--launch',c['launch_id'],'--nonce',a['nonce'],'--step',str(step),'--attempt',a['attempt_id'],'--capture-path',str(folder/'validated-image-return.json'),'--target',target,'--receipt',str(folder/'explicit-confirm-receipt.json')]);assert r['status']=='confirmed_and_cancelled'
+@@ -76,7 +88,7 @@
+   for key in ('snapshot_id','run_incarnation','launch_id','document_id','step','attempt_id','pin_request_id','observed_sequence','content_generation','PNG_sha256'):assert expected[key]==snap[key]
+   assert r['launch_id']==c['launch_id'] and r['alarm_nonce']==a['nonce'] and r['step']==step
+   write('step-%02d-confirm.json'%step,r)
+-  prerequisite_record(step,folder/'validated-image-return.json',target,folder/'explicit-confirm-receipt.json')
++  prerequisite_record(step,folder/'validated-image-return.json',target,folder/'explicit-confirm-receipt.json');flow.confirmed(a)
+   return {'status':r['status'],'step':step,'elapsed_ms':r['browser_result']['cancelled']['events'][-1].get('elapsed_ms')}
+  if action=='recovery_cancel':
+   a=read('current-attempt.json');folder=Path(a['path']);out=folder/'recovery-cancel';target=sys.argv[2]
+@@ -92,6 +104,7 @@
+   event('operator_tool_'+action+'_entry');v=_run_action(action);event('operator_tool_'+action+'_return_prepared',**v);print(json.dumps(v,ensure_ascii=False));return v
+  except BaseException as e:
+   # Same actual guard shape as validated r21b; End before subsequent analysis.
++  flow.terminal()
+   write('FAILURE.json',{'action':action,'error':repr(e),**stamp()})
+   try:write('FAILURE-CLEANUP-DISPATCH.json',failcleanup())
+   except BaseException as ce:write('FAILURE-CLEANUP-ERROR.json',{'error':repr(ce)})
+--- r25/runtime-wrapper/preflight.py
++++ r26/runtime-wrapper/preflight.py
+@@ -8,6 +8,9 @@
+  def group(label,pairs):
+   groups[label]=[{'path':str(p),'expected':h,'actual':sha(p),'match':sha(p)==h} for p,h in pairs];assert all(r['match'] for r in groups[label])
+  group('pins',[(FROZEN/'SHA256SUMS','dcbbb11fc1942a480b8624e53d769e29b93fec3c884401811cc0599fea3b02ef'),(FROZEN/'SOURCE-FREEZE.json','31ee6b1d00fecfc5ac53e874b144230d2430208277c295d74c4a804fbe1135ec')])
++ group('r25_manifest',[(SOURCE.parent.parent/'r25-recovery-observation-candidate/SHA256SUMS','c2d44926c77b0d102075c697e7812385f1782bc6ace67b9aaa7fe11ad83023e7')])
++ r25=SOURCE.parent.parent/'r25-recovery-observation-candidate'
++ group('r25_delivery594',[(r25/f,h) for h,f in (line.split('  ',1) for line in (r25/'SHA256SUMS').read_text().splitlines())])
+  group('r24_manifest',[(SOURCE.parent.parent/'r24-review-snapshot-candidate/SHA256SUMS','51dd439d251efb5887ca1843f44b2c7137b30acdc14a6fc2389995620c29d36a')])
+  r24=SOURCE.parent.parent/'r24-review-snapshot-candidate'
+  group('r24_delivery151',[(r24/f,h) for h,f in (line.split('  ',1) for line in (r24/'SHA256SUMS').read_text().splitlines())])
+@@ -23,7 +26,7 @@
+  # r24 runner checkpoints/preflight output go into FX3_NAV_RUN_DIR; original runtime has no output exception.
+  write('OUTPUT-BOUNDARY-BEFORE.json',{'original_runtime_writes_allowed':[],'candidate_run_outputs':['preflight-*.json','STATE-v25-r3.json','STATE-v24.json.tmp']})
+  for p in SOURCE.glob('*.py'):ast.parse(p.read_text())
+- for f in ('recovery_tools.py','deadline_cli.py','review_snapshot_cli.py'):
++ for f in ('recovery_tools.py','deadline_cli.py','review_snapshot_cli.py','postkey_observation.py'):
+   run('parser-'+f,['python3','-B',str(CANDIDATE_OPS/f),'--help'])
+  run('parser-planned-navigation',['python3','-B',str(CANDIDATE_OPS/'planned_navigation_click.py'),'--help'])
+  write('PREFLIGHT-RESULT.json',{'passed':True,'scope':'pinned input and CLI parser preparation only; no browser or guest',**stamp()})
+--- r25/prepare_run.py
++++ r26/prepare_run.py
+@@ -26,7 +26,10 @@
+  commands={name:['python3','-B',str(wrapper/name)] for name in ('preflight.py','launch_prepare.py','start_and_wait.py','cleanup.py','audit_after.py')}
+  commands['standby_review']=['python3','-B',str(wrapper/'operate.py'),'standby_review','实际看图后填入待机语义判断']
+  commands['steps']=[{'planned_click':['python3','-B',str(wrapper/'operate.py'),'click',str(s['step']),s['target']],
+-                     'confirm_after_actual_image_review':['python3','-B',str(wrapper/'operate.py'),'confirm','实际看本步新图后填入语义判断：'+s['target']]} for s in plan['steps']]
++                     'pin_after_actual_observation_review':['python3','-B',str(wrapper/'operate.py'),'pin','实际看上一张观察图已完整后的明确选择：'+s['target']],
++                     'confirm_after_actual_fixed_image_review':['python3','-B',str(wrapper/'operate.py'),'confirm','实际看本步新图后填入语义判断：'+s['target']]} for s in plan['steps']]
++ commands['reject']=['python3','-B',str(wrapper/'operate.py'),'reject','实际观察/固定图语义不符或不确定，立即原End']
++ commands['observe']=['python3','-B',str(wrapper/'operate.py'),'observe','实际看上一观察仍为正常过渡，明确再次观察；最多3次含首图，原20s不重置']
+  commands['recovery_cancel']=['python3','-B',str(wrapper/'operate.py'),'recovery_cancel','实际看归因未入队新图后的判断']
+  commands['recovery_review']=['python3','-B',str(wrapper/'operate.py'),'recovery_review','实际看cancel后新图后的判断']
+  put('CLI-TEMPLATES.json',{'env':{'FX3_NAV_RUN_DIR':str(out)},'commands':commands,'warning':'templates only; no command executed by prepare_run'})
+--- /dev/null
++++ r26/operator-helpers/postkey_observation.py
+@@ -0,0 +1,51 @@
++"""One reserved read-only unpinned postkey PNG export; no pin/confirm/key/timer mutation."""
++import argparse,base64,hashlib,json,os,time,subprocess
++from pathlib import Path
++from review_snapshot_cli import PAGE_SHA,check
++STATUS='qualified_unpinned_postkey_observation'
++def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
++def save(p,v):
++ with Path(p).open('w') as f:f.write(json.dumps(v,ensure_ascii=False,indent=2)+'\n');f.flush();os.fsync(f.fileno())
++def validate(path,expected_sha,binding):
++ p=Path(path)
++ if p.is_symlink() or not p.is_file() or sha(p)!=expected_sha:raise ValueError('r26_observation_receipt_hash')
++ v=json.loads(p.read_text());image=Path(v['screenshot_path'])
++ if (v.get('schema')!='fx3-postkey-observation-r26-v1' or v.get('status')!=STATUS or v.get('binding')!=binding or v.get('snapshot_pinned') is not False or v.get('postkey_confirmation') is not False or v.get('input_permission') is not False or v.get('firmware_generation') is not None or image!=p.parent/'observation.png' or image.is_symlink() or not image.is_file() or not image.read_bytes().startswith(b'\x89PNG\r\n\x1a\n') or v.get('source',{}).get('method')!='agent-browser screenshot' or sha(image)!=v['screenshot_sha256'] or image.stat().st_size!=v['byte_length']):raise ValueError('r26_observation_not_fixed_capture_or_image_mismatch')
++ return v
++
++def capture(session,binding,reservation,out):
++ reservation=Path(reservation);res=json.loads(reservation.read_text())
++ if res.get('status')!='reserved_unknown' or res.get('binding')!=binding or not 1<=res.get('observation_number',0)<=3:raise ValueError('r26_one_reserved_observation')
++ res.update(status='eval_started_unknown',host_ns=time.monotonic_ns());save(reservation,res)
++ out=Path(out);out.mkdir();record={'schema':'fx3-postkey-observation-r26-v1','status':'unknown','host_start_ns':time.monotonic_ns(),'binding':binding,'reservation_id':res['reservation_id'],'guest_keys_sent':0,'pin_calls':0,'confirm_calls':0,'alarm_mutations':0,'snapshot_pinned':False,'postkey_confirmation':False,'input_permission':False,'firmware_generation':None}
++ def browser(name,args,source=None):
++  p=subprocess.run(['agent-browser','--session',session,*args],input=source,text=True,capture_output=True,timeout=15)
++  save(out/(name+'.process.json'),{'returncode':p.returncode,'stdout':p.stdout[:16000],'stderr':p.stderr[:2000]})
++  if p.returncode:raise RuntimeError('r26 '+name+' unknown: '+p.stderr[:500])
++  return p.stdout
++ def tabs(name):
++  rows=json.loads(browser(name,['tab','--json']))['data']['tabs']
++  if len(rows)!=1 or rows[0]['url']!=binding['url']:raise ValueError('r26_unique_owned_tab_URL')
++  return rows
++ def read(name,action):
++  code=Path(__file__).with_name('postkey_read.js').read_text()+'('+json.dumps({**binding,'page_sha':PAGE_SHA,'action':action})+')'
++  return json.loads(browser(name,['eval','--stdin'],code))
++ try:
++  check(session,binding['url'])
++  record['tabs_before']=tabs('tabs-before');before=read('before','observe');record['before']=before
++  image=out/'observation.png';browser('actual-screenshot',['screenshot',str(image)])
++  record['tabs_after_screenshot']=tabs('tabs-after-screenshot');after=read('after','after');record['after']=after
++  record['tabs_after']=tabs('tabs-after')
++  for key in ('document_id','origin','run_incarnation'):
++   if before[key]!=after[key]:raise ValueError('r26_screenshot_identity_changed')
++  if before['qualified'] is not True or after['qualified'] is not True or before['alarm_identity_json']!=after['alarm_identity_json'] or after['performance_ms']<before['performance_ms']:raise ValueError('r26_screenshot_alarm_or_lifecycle_changed')
++  if image.is_symlink() or not image.is_file() or not image.read_bytes().startswith(b'\x89PNG\r\n\x1a\n') or image.stat().st_size>16*1024*1024:raise ValueError('r26_real_screenshot_png')
++  record.update(status=STATUS,screenshot_path=str(image),screenshot_sha256=sha(image),byte_length=image.stat().st_size,source={'method':'agent-browser screenshot','session':session,'url':binding['url'],'scope':'historical browser capture between two lifecycle observations; no single firmware generation or pixel causality'},actual_semantic_review='pending separate operator call')
++ except BaseException as e:record.update(status='unknown',error_kind=type(e).__name__,reason=str(e)[:700])
++ record['host_end_ns']=time.monotonic_ns();save(out/'observation-result.json',record)
++ res.update(status=record['status'],receipt_path=str(out/'observation-result.json'),receipt_sha256=sha(out/'observation-result.json'));save(reservation,res)
++ return record
++if __name__=='__main__':
++ p=argparse.ArgumentParser(description=__doc__)
++ for k in ('session','binding','reservation','out'):p.add_argument('--'+k,required=True)
++ a=p.parse_args();r=capture(a.session,json.loads(Path(a.binding).read_text()),a.reservation,a.out);print(json.dumps(r,ensure_ascii=False));raise SystemExit(0 if r['status']==STATUS else 2)
+--- /dev/null
++++ r26/operator-helpers/postkey_read.js
+@@ -0,0 +1,27 @@
++(async c=>{
++ const doc=document,origin=performance.timeOrigin,scripts=[...document.scripts],script=scripts[0],text=script?.textContent;
++ const hash=text===undefined?null:[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))))].map(x=>x.toString(16).padStart(2,'0')).join('');
++ function local(){
++  const h=window.__fx3InteractionDeadlineV1?.status?.(),a=fx3KeyAttemptOutcome(),s=lastStatus;
++  if(document!==doc||performance.timeOrigin!==origin||origin!==c.document_time_origin||location.href!==c.url||window.top!==window||scripts.length!==1||script.src||document.scripts.length!==1||document.scripts[0]!==script||script.textContent!==text||hash!==c.page_sha||reviewDocumentId!==c.document_id||
++   s?.launch_request_id!==c.launch_id||s.run_incarnation!==c.run_incarnation||(s.steps!==c.step&&!(s.steps===c.step-1&&awaitingStep===c.step))||s.phase!=='ready'||s.error||s.review_protocol_unknown||
++   a?.attempt_id!==c.attempt_id||a.document_time_origin!==origin||a.launch_request_id!==c.launch_id||a.expected_step!==c.step||a.alarm_nonce!==c.nonce||a.outcome!=='accepted'||
++   h?.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedURL!==c.url||h.expectedLaunchId!==c.launch_id||h.documentTimeOrigin!==origin||h.current?.nonce!==c.nonce||h.current.state!=='armed'||h.current.due_ms!==a.alarm_due_ms||h.current.due_ms!==h.current.armed_ms+20000||performance.now()>=h.current.due_ms||
++   reviewProtocolUnknown||reviewTerminated||reviewPinPending||reviewSnapshot||s.review_snapshot_present||reviewLastAck||ending||finished||deliveryUnknown||reviewUnknown||reviewAwaiting||renderFault)throw Error('r26_postkey_identity_lifecycle_or_existing_pin:'+JSON.stringify({step:s?.steps,expected_step:c.step,awaiting_step:awaitingStep,document_match:reviewDocumentId===c.document_id,origin_match:origin===c.document_time_origin,launch_match:s?.launch_request_id===c.launch_id,run_match:s?.run_incarnation===c.run_incarnation,attempt_match:a?.attempt_id===c.attempt_id,nonce_match:a?.alarm_nonce===c.nonce,alarm_state:h?.current?.state,alarm_due_exact:h?.current?.due_ms===h?.current?.armed_ms+20000,pinned:!!reviewSnapshot,last_ack:!!reviewLastAck,unknown:!!(deliveryUnknown||reviewUnknown||reviewProtocolUnknown),ending,finished}));
++  return {h,a,s};
++ }
++ async function fresh(){
++  local();const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),1000);let value;
++  try{const response=await fetch('/api/status',{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('status_http');value=await response.json();}finally{clearTimeout(timer);}
++  const {h,s}=local();
++  if(value.launch_request_id!==c.launch_id||value.run_incarnation!==c.run_incarnation||(value.steps!==c.step&&!(value.steps===c.step-1&&value.busy&&!value.review_required))||value.phase!=='ready'||value.error||value.review_protocol_unknown||value.review_snapshot_present||!value.render_valid)throw Error('r26_fresh_identity_lifecycle');
++  const ready=value.review_required&&value.input_received&&value.review_step===c.step&&!value.busy&&s.review_required&&s.input_received&&s.review_step===c.step&&!s.busy&&!busy&&awaitingStep===null&&s.render_valid&&frameLoadedFor(s)&&image.complete&&image.naturalWidth>0;
++  return {h,ready,server:{run_incarnation:value.run_incarnation,launch_id:value.launch_request_id,step:value.steps,review_step:value.review_step,review_required:value.review_required,input_received:value.input_received,busy:value.busy,phase:value.phase,render_valid:value.render_valid},performance_ms:performance.now()};
++ }
++ let before=await fresh();const until=Math.min(performance.now()+6000,before.h.current.due_ms);
++ while(c.action!=='after'&&!before.ready&&performance.now()<until){await new Promise(r=>setTimeout(r,25));before=await fresh();}
++ if(!before.ready)throw Error('r26_native_review_phase_not_ready');
++ return {qualified:true,document_id:reviewDocumentId,origin,run_incarnation:c.run_incarnation,binding:c,
++  phase:before.server,displayed_frame:{sequence:displayed,content_generation:displayedGeneration,PNG_sha256:shownSHA},
++  before,alarm_identity_json:JSON.stringify(before.h),performance_ms:performance.now()};
++})
+--- /dev/null
++++ r26/runtime-wrapper/postkey_flow.py
+@@ -0,0 +1,66 @@
++"""Durable per-attempt observe/pin/confirm flow; historical observations never grant input."""
++from common import *
++from postkey_observation import validate,STATUS
++from review_snapshot_cli import evaluate,PAGE_SHA
++import uuid
++
++def persist(path,v):
++ with path.open('w') as f:f.write(json.dumps(v,ensure_ascii=False,indent=2)+'\n');f.flush();os.fsync(f.fileno())
++def location(a):return Path(a['path'])/'postkey-flow.json'
++def initialize(a,c):
++ b={**a['postkey_binding'],'url':c['url'],'launch_id':c['launch_id'],'step':a['step'],'attempt_id':a['attempt_id'],'nonce':a['nonce']}
++ v={'schema':'fx3-postkey-flow-r26-v1','status':'unfixed','binding':b,'observations':[],'pin_attempted':False};p=location(a)
++ with p.open('x') as f:f.write(json.dumps(v,indent=2)+'\n');f.flush();os.fsync(f.fileno())
++ return v
++
++def current(a,allowed):
++ p=location(a);v=json.loads(p.read_text());b=v['binding'];c=identity()
++ if v['status'] not in allowed or b['attempt_id']!=a['attempt_id'] or b['nonce']!=a['nonce'] or b['step']!=a['step'] or b['launch_id']!=c['launch_id'] or b['url']!=c['url'] or any(b.get(k)!=a['postkey_binding'][k] for k in ('document_id','document_time_origin','run_incarnation')):raise ValueError('r26_flow_terminal_or_identity')
++ return v
++
++def latest(v):
++ x=v['observations'][-1]
++ if x['status']!=STATUS:raise ValueError('r26_previous_observation_unknown')
++ return validate(x['receipt_path'],x['receipt_sha256'],v['binding'])
++
++def observe(a,judgement=None):
++ v=current(a,('unfixed',));p=location(a)
++ if v['pin_attempted'] or len(v['observations'])>=3:raise ValueError('r26_three_observations_or_already_pinned')
++ if v['observations']:
++  latest(v)
++  if not judgement or not judgement.strip():raise ValueError('r26_explicit_prior_transition_review_required')
++ n=len(v['observations'])+1;folder=Path(a['path']);reservation=folder/('observation-%d-reservation.json'%n);out=folder/('observation-%d'%n)
++ x={'status':'reserved_unknown','reservation_id':str(uuid.uuid4()),'observation_number':n,'binding':v['binding'],'previous_observation_judgement':judgement,**stamp()};persist(reservation,x)
++ v['observations'].append(x);v['status']='observation_reserved_unknown';persist(p,v)
++ bp=folder/'postkey-binding.json'
++ if not bp.exists():persist(bp,v['binding'])
++ result=helper(folder.name+'-observe-%d'%n,'postkey_observation.py',['--session',CFG['session'],'--binding',str(bp),'--reservation',str(reservation),'--out',str(out)])
++ if result['status']!=STATUS:raise ValueError('r26_observation_unknown')
++ x.update(status=STATUS,receipt_path=str(out/'observation-result.json'),receipt_sha256=sha(out/'observation-result.json'))
++ validate(x['receipt_path'],x['receipt_sha256'],v['binding']);v['status']='unfixed';persist(p,v)
++ return {**result,'observation_number':n,'observations_remaining':3-n,'receipt_path':x['receipt_path'],'receipt_sha256':x['receipt_sha256']}
++
++def before_pin(a,target):
++ v=current(a,('unfixed',));latest(v)
++ if not target.strip() or v['pin_attempted']:raise ValueError('r26_explicit_pin_review_required')
++ # Current identity/phase check, never a current pixel comparison to a historical observation.
++ result=evaluate(CFG['session'],'postkey_read.js',{**v['binding'],'page_sha':PAGE_SHA,'action':'guard'})
++ if result.get('qualified') is not True:raise ValueError('r26_pin_current_identity')
++ v.update(status='pin_reserved_unknown',pin_attempted=True,selection_target=target,selection_review_source='operation_agent_explicit_previous_observation_review',**stamp());persist(location(a),v)
++
++def pinned(a,capture_path):
++ v=current(a,('pin_reserved_unknown',));v.update(status='pinned',capture_path=str(capture_path),capture_sha256=sha(capture_path));persist(location(a),v)
++def before_confirm(a,capture_path):
++ v=current(a,('pinned',))
++ if str(capture_path)!=v['capture_path'] or sha(capture_path)!=v['capture_sha256']:raise ValueError('r26_exact_pinned_capture_required')
++ v['status']='confirm_reserved_unknown';persist(location(a),v)
++def confirmed(a):
++ v=current(a,('confirm_reserved_unknown',));v['status']='confirmed';persist(location(a),v)
++def terminal():
++ latch=HERE/'POSTKEY-TERMINAL.json'
++ if not latch.exists():persist(latch,{'status':'terminal_End_required',**stamp()})
++ try:
++  a=read('current-attempt.json');p=location(a)
++  if p.exists():
++   v=json.loads(p.read_text());v['status']='terminal';persist(p,v)
++ except BaseException:pass

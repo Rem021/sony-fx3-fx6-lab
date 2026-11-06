@@ -1,0 +1,37 @@
+{
+  "schema": "fx3-offline-profile-domain-contract/1",
+  "status": "SPEC_ONLY_UNDEPLOYABLE",
+  "logical_target_MAIN_core": [
+    6,
+    6,
+    3
+  ],
+  "logical_target_nominal_query": 16000,
+  "native_MAIN_quality6_API22_resource4_FH": true,
+  "native_MAIN_quality8_API24_resource6_FF_nominal25000": true,
+  "do_not_globally_replace_MAIN_quality6_with8_to_force_resource_match": true,
+  "existing_stage75_strategy": "A bounded temporary resource-matching view may map FH to FF while retaining the source descriptor. Existing guest-only writer separately targets16M; real scope, lifecycle and consumer coverage remain unproved.",
+  "new_generic_type_source": {
+    "entry": "libmpr+0xc9e84",
+    "declared_typed_inputs": [
+      1,
+      2,
+      0,
+      1,
+      0
+    ],
+    "native_output": 6,
+    "actual_FX3_application_MAIN_callsite_binding_proven": false
+  },
+  "future_frontend_requirements": [
+    "exact target selector and callsite",
+    "same full MovieRecParam audio/proxy/media state",
+    "trusted configuration epoch and synchronization",
+    "model/query/cache/mux identity16M",
+    "temporary FF resource view plus actual16M encoder application and readback"
+  ],
+  "hardware_file_audio_longrun_backup_restore_and_independent_rescue_required": true,
+  "prototype_changed": false,
+  "camera_or_persistent_use_permitted": false,
+  "goal_complete": false
+}

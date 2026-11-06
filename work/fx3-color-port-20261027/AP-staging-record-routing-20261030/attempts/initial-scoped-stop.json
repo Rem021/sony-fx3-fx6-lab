@@ -1,0 +1,7 @@
+{
+  "status": "STOPPED_BEFORE_UNLISTED_ORIGINAL_INSTRUCTION",
+  "PC": "0xfe04cd30",
+  "entry": "0xfe05b2b8",
+  "cause": "Original Data_GetDataPt continues through FE04CD54; initial code allow-list ended at FE04CD30. No unknown read or device access occurred.",
+  "review": "Read original FE04CD20..FE04CD54; extend only that pure address arithmetic function, preserving all memory guards."
+}

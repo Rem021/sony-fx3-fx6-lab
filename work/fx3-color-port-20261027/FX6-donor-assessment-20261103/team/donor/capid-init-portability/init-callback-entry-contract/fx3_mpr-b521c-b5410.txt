@@ -1,0 +1,131 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b521c <_ZN3mpr14IntegEventMainEPv>:
+   b521c: a9b97bfd     	stp	x29, x30, [sp, #-0x70]!
+   b5220: 910003fd     	mov	x29, sp
+   b5224: a90363f7     	stp	x23, x24, [sp, #0x30]
+   b5228: 90001238     	adrp	x24, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b522c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   b5230: b0001236     	adrp	x22, 0x2fa000
+   b5234: f90023f9     	str	x25, [sp, #0x40]
+   b5238: d2800015     	mov	x21, #0x0               // =0
+   b523c: f946ff17     	ldr	x23, [x24, #0xdf8]
+   b5240: f9466ad9     	ldr	x25, [x22, #0xcd0]
+   b5244: 910022f7     	add	x23, x23, #0x8
+   b5248: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b524c: b90053bf     	str	wzr, [x29, #0x50]
+   b5250: 52800013     	mov	w19, #0x0               // =0
+   b5254: f9002fbf     	str	xzr, [x29, #0x58]
+   b5258: b9400320     	ldr	w0, [x25]
+   b525c: 34000460     	cbz	w0, 0xb52e8 <_ZN3mpr14IntegEventMainEPv+0xcc>
+   b5260: 7100041f     	cmp	w0, #0x1
+   b5264: 54ffffc1     	b.ne	0xb525c <_ZN3mpr14IntegEventMainEPv+0x40>
+   b5268: 2a1303e3     	mov	w3, w19
+   b526c: 910163a2     	add	x2, x29, #0x58
+   b5270: 910153a1     	add	x1, x29, #0x54
+   b5274: 910143a0     	add	x0, x29, #0x50
+   b5278: 97ff2de2     	bl	0x80a00 <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj@plt>
+   b527c: 72001c1f     	tst	w0, #0xff
+   b5280: 54fffec0     	b.eq	0xb5258 <_ZN3mpr14IntegEventMainEPv+0x3c>
+   b5284: b94053a0     	ldr	w0, [x29, #0x50]
+   b5288: 7100041f     	cmp	w0, #0x1
+   b528c: 54000081     	b.ne	0xb529c <_ZN3mpr14IntegEventMainEPv+0x80>
+   b5290: b94057a0     	ldr	w0, [x29, #0x54]
+   b5294: f9402fa1     	ldr	x1, [x29, #0x58]
+   b5298: 97ff3542     	bl	0x827a0 <_ZN3mpr14SendIssueEventENS_5EVTIDEm@plt>
+   b529c: 910183a1     	add	x1, x29, #0x60
+   b52a0: 52800000     	mov	w0, #0x0                // =0
+   b52a4: 97ff2727     	bl	0x7ef40 <clock_gettime@plt>
+   b52a8: f94037b4     	ldr	x20, [x29, #0x68]
+   b52ac: d2807d00     	mov	x0, #0x3e8              // =1000
+   b52b0: d2884801     	mov	x1, #0x4240             // =16960
+   b52b4: f2a001e1     	movk	x1, #0xf, lsl #16
+   b52b8: 9ac00e80     	sdiv	x0, x20, x0
+   b52bc: f94033b4     	ldr	x20, [x29, #0x60]
+   b52c0: 9b010294     	madd	x20, x20, x1, x0
+   b52c4: d290d3e0     	mov	x0, #0x869f             // =34463
+   b52c8: f2a00020     	movk	x0, #0x1, lsl #16
+   b52cc: cb150281     	sub	x1, x20, x21
+   b52d0: eb00003f     	cmp	x1, x0
+   b52d4: 54000488     	b.hi	0xb5364 <_ZN3mpr14IntegEventMainEPv+0x148>
+   b52d8: 4b1402b3     	sub	w19, w21, w20
+   b52dc: 11406273     	add	w19, w19, #0x18, lsl #12 // =0x18000
+   b52e0: 111a8273     	add	w19, w19, #0x6a0
+   b52e4: 17ffffdd     	b	0xb5258 <_ZN3mpr14IntegEventMainEPv+0x3c>
+   b52e8: 910163a2     	add	x2, x29, #0x58
+   b52ec: 910153a1     	add	x1, x29, #0x54
+   b52f0: 910143a0     	add	x0, x29, #0x50
+   b52f4: 52800003     	mov	w3, #0x0                // =0
+   b52f8: 97ff2dc2     	bl	0x80a00 <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj@plt>
+   b52fc: 72001c1f     	tst	w0, #0xff
+   b5300: 54fffac0     	b.eq	0xb5258 <_ZN3mpr14IntegEventMainEPv+0x3c>
+   b5304: b94053a0     	ldr	w0, [x29, #0x50]
+   b5308: 340000e0     	cbz	w0, 0xb5324 <_ZN3mpr14IntegEventMainEPv+0x108>
+   b530c: 7100041f     	cmp	w0, #0x1
+   b5310: 54fffa41     	b.ne	0xb5258 <_ZN3mpr14IntegEventMainEPv+0x3c>
+   b5314: b94057a0     	ldr	w0, [x29, #0x54]
+   b5318: f9402fa1     	ldr	x1, [x29, #0x58]
+   b531c: 97ff3521     	bl	0x827a0 <_ZN3mpr14SendIssueEventENS_5EVTIDEm@plt>
+   b5320: 17ffffce     	b	0xb5258 <_ZN3mpr14IntegEventMainEPv+0x3c>
+   b5324: f9466ac0     	ldr	x0, [x22, #0xcd0]
+   b5328: 52800021     	mov	w1, #0x1                // =1
+   b532c: b9000001     	str	w1, [x0]
+   b5330: 910183a1     	add	x1, x29, #0x60
+   b5334: 52800000     	mov	w0, #0x0                // =0
+   b5338: 97ff2702     	bl	0x7ef40 <clock_gettime@plt>
+   b533c: f94037b5     	ldr	x21, [x29, #0x68]
+   b5340: d2807d00     	mov	x0, #0x3e8              // =1000
+   b5344: d2884801     	mov	x1, #0x4240             // =16960
+   b5348: f2a001e1     	movk	x1, #0xf, lsl #16
+   b534c: 9ac00ea0     	sdiv	x0, x21, x0
+   b5350: f94033b5     	ldr	x21, [x29, #0x60]
+   b5354: 9b0102b5     	madd	x21, x21, x1, x0
+   b5358: 5290d413     	mov	w19, #0x86a0            // =34464
+   b535c: 72a00033     	movk	w19, #0x1, lsl #16
+   b5360: 17ffffbe     	b	0xb5258 <_ZN3mpr14IntegEventMainEPv+0x3c>
+   b5364: d2800780     	mov	x0, #0x3c               // =60
+   b5368: 97ff318e     	bl	0x819a0 <malloc@plt>
+   b536c: aa0003f3     	mov	x19, x0
+   b5370: a9007c1f     	stp	xzr, xzr, [x0]
+   b5374: a9017c1f     	stp	xzr, xzr, [x0, #0x10]
+   b5378: a9027c1f     	stp	xzr, xzr, [x0, #0x20]
+   b537c: aa1703e0     	mov	x0, x23
+   b5380: f9001a7f     	str	xzr, [x19, #0x30]
+   b5384: b9003a7f     	str	wzr, [x19, #0x38]
+   b5388: 97ff1c9a     	bl	0x7c5f0 <pthread_mutex_lock@plt>
+   b538c: aa1303e0     	mov	x0, x19
+   b5390: 52800001     	mov	w1, #0x0                // =0
+   b5394: 97ff2093     	bl	0x7d5e0 <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb@plt>
+   b5398: 39401260     	ldrb	w0, [x19, #0x4]
+   b539c: 350000c0     	cbnz	w0, 0xb53b4 <_ZN3mpr14IntegEventMainEPv+0x198>
+   b53a0: 39405260     	ldrb	w0, [x19, #0x14]
+   b53a4: 35000080     	cbnz	w0, 0xb53b4 <_ZN3mpr14IntegEventMainEPv+0x198>
+   b53a8: 39409260     	ldrb	w0, [x19, #0x24]
+   b53ac: 35000040     	cbnz	w0, 0xb53b4 <_ZN3mpr14IntegEventMainEPv+0x198>
+   b53b0: 3940c260     	ldrb	w0, [x19, #0x30]
+   b53b4: 90001221     	adrp	x1, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b53b8: f9457c21     	ldr	x1, [x1, #0xaf8]
+   b53bc: 39400022     	ldrb	w2, [x1]
+   b53c0: 3900003f     	strb	wzr, [x1]
+   b53c4: b0001221     	adrp	x1, 0x2fa000
+   b53c8: 7100005f     	cmp	w2, #0x0
+   b53cc: 1a820000     	csel	w0, w0, w2, eq
+   b53d0: f945d421     	ldr	x1, [x1, #0xba8]
+   b53d4: 39400021     	ldrb	w1, [x1]
+   b53d8: 35000061     	cbnz	w1, 0xb53e4 <_ZN3mpr14IntegEventMainEPv+0x1c8>
+   b53dc: f9466ac1     	ldr	x1, [x22, #0xcd0]
+   b53e0: b900003f     	str	wzr, [x1]
+   b53e4: 34000100     	cbz	w0, 0xb5404 <_ZN3mpr14IntegEventMainEPv+0x1e8>
+   b53e8: aa1303e1     	mov	x1, x19
+   b53ec: 52820440     	mov	w0, #0x1022             // =4130
+   b53f0: 97ff34ec     	bl	0x827a0 <_ZN3mpr14SendIssueEventENS_5EVTIDEm@plt>
+   b53f4: f946ff00     	ldr	x0, [x24, #0xdf8]
+   b53f8: aa1403f5     	mov	x21, x20
+   b53fc: 97ff2ebd     	bl	0x80ef0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+   b5400: 17ffffd6     	b	0xb5358 <_ZN3mpr14IntegEventMainEPv+0x13c>
+   b5404: aa1303e0     	mov	x0, x19
+   b5408: 97ff208a     	bl	0x7d630 <free@plt>
+   b540c: 17fffffa     	b	0xb53f4 <_ZN3mpr14IntegEventMainEPv+0x1d8>

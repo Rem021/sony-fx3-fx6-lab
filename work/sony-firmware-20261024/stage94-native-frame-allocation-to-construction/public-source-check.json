@@ -1,0 +1,28 @@
+{
+  "checked_date_local": "2026-10-27",
+  "method": "Read primary GitHub issue body/comments and pull-request conversation with web tool; no attachments downloaded or executed.",
+  "sources": [
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31",
+      "state_observed": "Open",
+      "observations": [
+        "Issue opened Oct23; multiple users report a post-modification startup failure with a repeating indicator pattern.",
+        "An Oct25 commenter reports entering the system through movie mode and then using the project restore feature; another commenter replies on Oct26 that it worked.",
+        "This is a user-reported application-mode recovery on A7CII, not independently verified flash restoration, a confirmed root cause, or an FX3 recovery test."
+      ],
+      "scope_not_promoted": ["FX3 7.02", "ZV-E1", "independent failure-mode access", "boot-chain corruption", "same-body healthy backup and raw readback"],
+      "repair_cost_or_chip_programming_claims_not_verified": true
+    },
+    {
+      "url": "https://github.com/ma1co/fwtool.py/pull/52",
+      "state_observed": "Open",
+      "observations": [
+        "The author's reported tested device list includes ILME-FX3 for firmware unpacking support.",
+        "Unpacking evidence does not establish safe repacking, signing, flashing, or recovery."
+      ]
+    }
+  ],
+  "camera_operations": false,
+  "new_flash_or_recovery_authority": false,
+  "goal_complete": false
+}

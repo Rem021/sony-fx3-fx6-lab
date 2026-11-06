@@ -1,0 +1,100 @@
+02e10170 adrp       x2, #0x3973000
+02e10174 cset       w0, eq
+02e10178 adrp       x1, #0x3966000
+02e1017c stp        w0, wzr, [x19]
+02e10180 adrp       x0, #0x3973000
+02e10184 ldr        x19, [sp, #0x10]
+02e10188 add        x2, x2, #0x990
+02e1018c ldp        x29, x30, [sp], #0x20
+02e10190 add        x1, x1, #0xd47
+02e10194 add        x0, x0, #0x8be
+02e10198 mov        w3, #0x42
+02e1019c b          #0x2f6ff0c
+02e101a0 stp        x29, x30, [sp, #-0x20]!
+02e101a4 mov        x29, sp
+02e101a8 ldr        w0, [x0]
+02e101ac str        x19, [sp, #0x10]
+02e101b0 mov        x19, x1
+02e101b4 bl         #0x2e10048
+02e101b8 bl         #0x1593670 ; iCrypt_HasPublicKey
+02e101bc uxtb       w4, w0
+02e101c0 cmp        w4, #0
+02e101c4 adrp       x2, #0x3973000
+02e101c8 cset       w0, eq
+02e101cc adrp       x1, #0x3966000
+02e101d0 stp        w0, wzr, [x19]
+02e101d4 adrp       x0, #0x3973000
+02e101d8 ldr        x19, [sp, #0x10]
+02e101dc add        x2, x2, #0x980
+02e101e0 ldp        x29, x30, [sp], #0x20
+02e101e4 add        x1, x1, #0xd47
+02e101e8 add        x0, x0, #0x8be
+02e101ec mov        w3, #0x56
+02e101f0 b          #0x2f6ff0c
+02e101f4 stp        x29, x30, [sp, #-0x30]!
+02e101f8 mov        x29, sp
+02e101fc ldr        w0, [x0]
+02e10200 stp        x19, x20, [sp, #0x10]
+02e10204 mov        x19, x1
+02e10208 stp        x21, x22, [sp, #0x20]
+02e1020c bl         #0x2e10048
+02e10210 bl         #0x1593a10 ; iCrypt_DeletePrivateKey
+02e10214 mov        w22, w0
+02e10218 cmp        w0, #0
+02e1021c mov        w0, #0xb
+02e10220 movk       w0, #0x8000, lsl #16
+02e10224 ccmp       w22, w0, #4, ne
+02e10228 b.ne       #0x2e10240
+02e1022c str        wzr, [x19]
+02e10230 ldp        x21, x22, [sp, #0x20]
+02e10234 ldp        x19, x20, [sp, #0x10]
+02e10238 ldp        x29, x30, [sp], #0x30
+02e1023c ret        
+02e10240 mov        w0, #2
+02e10244 adrp       x21, #0x3973000
+02e10248 adrp       x20, #0x3966000
+02e1024c add        x21, x21, #0x9e8
+02e10250 str        w0, [x19]
+02e10254 adrp       x19, #0x391d000
+02e10258 add        x20, x20, #0xd47
+02e1025c add        x19, x19, #0x510
+02e10260 mov        w4, w22
+02e10264 mov        x2, x21
+02e10268 mov        x1, x20
+02e1026c mov        x0, x19
+02e10270 mov        w3, #0x68
+02e10274 bl         #0x2f6fe3c
+02e10278 mov        w4, w22
+02e1027c mov        x2, x21
+02e10280 mov        x1, x20
+02e10284 mov        x0, x19
+02e10288 ldp        x21, x22, [sp, #0x20]
+02e1028c mov        w3, #0x68
+02e10290 ldp        x19, x20, [sp, #0x10]
+02e10294 ldp        x29, x30, [sp], #0x30
+02e10298 b          #0x2f6be48
+02e1029c stp        x29, x30, [sp, #-0x30]!
+02e102a0 mov        x29, sp
+02e102a4 ldr        w0, [x0]
+02e102a8 stp        x19, x20, [sp, #0x10]
+02e102ac mov        x19, x1
+02e102b0 stp        x21, x22, [sp, #0x20]
+02e102b4 bl         #0x2e10048
+02e102b8 bl         #0x1593e60 ; iCrypt_DeletePublicKey
+02e102bc mov        w22, w0
+02e102c0 cmp        w0, #0
+02e102c4 mov        w0, #0xd
+02e102c8 movk       w0, #0x8000, lsl #16
+02e102cc ccmp       w22, w0, #4, ne
+02e102d0 b.ne       #0x2e102e8
+02e102d4 str        wzr, [x19]
+02e102d8 ldp        x21, x22, [sp, #0x20]
+02e102dc ldp        x19, x20, [sp, #0x10]
+02e102e0 ldp        x29, x30, [sp], #0x30
+02e102e4 ret        
+02e102e8 mov        w0, #2
+02e102ec adrp       x21, #0x3973000
+02e102f0 adrp       x20, #0x3966000
+02e102f4 add        x21, x21, #0x9b8
+02e102f8 str        w0, [x19]
+02e102fc adrp       x19, #0x391d000

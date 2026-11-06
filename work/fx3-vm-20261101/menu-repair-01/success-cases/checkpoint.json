@@ -1,0 +1,39 @@
+{
+  "created_utc": "2026-11-01T11:45:50.236912+00:00",
+  "phase": "SUCCESSFUL_ORIGINAL_MENU_SOURCE_EXTRACTED_RUNTIME_IN_PROGRESS",
+  "upstream_commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "notes": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/research_notes/FX3 原厂菜单运行 修复/success-cases.md",
+  "notes_sha256": "ceffe5319e394f6eb7e74464caaa20f680165edd03210586d6cb914508002abd",
+  "machine_contract": "successful-path-contract.json",
+  "reference_sources_kept_for_runtime": true,
+  "immediate_handoffs": [
+    "original IPC sequence, devtmpfs, conditional UDIF set",
+    "guest ABI and build flags",
+    "4MHz Sony timer model path/IRQ caveats",
+    "original BusPower_Init/InfraAvbbc_Init and dlsym timing",
+    "public kernel sender and per-sender GOT semantics; old echo forbidden"
+  ],
+  "current_dependency": "unique host validates FX3 actual op/SID, original timer, helpers and original AP; source branch does not execute VM",
+  "next_evidence_needed": [
+    "FX3 original sync request SID/category/command",
+    "original service callback registration and return",
+    "original UI/OSD consumer and rendered frame"
+  ],
+  "new_external_messages_or_camera_actions": 0,
+  "do_not_repeat": "Pinned sources locally verified. No second QEMU archive download. Keep current reference source until actual menu acceptance or explicit cleanup window.",
+  "current_focus": "preserve original IMDB type dispatch; logical names are not automatically standalone ELF dependencies; unique host continues actual startup",
+  "stable_contract": "backup-3e014d-contract-v2.json",
+  "source_inventory": "current-source-inventory.json",
+  "source_count": 40,
+  "source_bytes": 1195517,
+  "latest_actual_destinations_research": {
+    "0x008f013a": "named by pinned code as ulogio; upstream original load command and setting seed exact; no stream-dependency proof",
+    "0x003e014d": "stable v1 candidate; FX3 registration/callback/selector pending independent original-owner verification",
+    "0x0094016a": "original owner reports im self-service registration/callback; existing-instance probe is unconfirmed"
+  },
+  "settings_contract": "settings-virtual-data-contract-v1.json",
+  "same_model_seed_receipt": "fx3-public-seed-source-receipt.json",
+  "entry_filter_contract": "imdb-entry-filter-contract-v2.json",
+  "IMDB_name_contract": "imdb-logical-name-contract-v1.json",
+  "active_support": "Await next precise runtime op/SID/loader result; fixed references kept, no duplicate QEMU fetch and no unique-host runtime operation from source researcher"
+}

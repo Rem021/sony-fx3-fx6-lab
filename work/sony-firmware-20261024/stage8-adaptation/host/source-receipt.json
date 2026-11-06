@@ -1,0 +1,84 @@
+{
+  "fetched_utc": "2026-10-25T10:39:51.576706+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "sources": [
+    {
+      "name": "pmca-generic.py",
+      "repo": "ma1co/Sony-PMCA-RE",
+      "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+      "source_path": "pmca/usb/driver/generic/__init__.py",
+      "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/driver/generic/__init__.py",
+      "bytes": 6767,
+      "sha256": "24cda5b97dcd7e5ff4c6af0e0a8d66900688ef2ba09dc0fb53c42ab6b8c69123",
+      "raw_reference_removed": true
+    },
+    {
+      "name": "pmca-winmsc.py",
+      "repo": "ma1co/Sony-PMCA-RE",
+      "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+      "source_path": "pmca/usb/driver/windows/msc.py",
+      "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/driver/windows/msc.py",
+      "bytes": 4552,
+      "sha256": "ab35dbe0f216116060ddadb8477f10fa6bf5b1b43eb67caaad6b2fa3b8860ed2",
+      "raw_reference_removed": true
+    },
+    {
+      "name": "pmca-sony.py",
+      "repo": "ma1co/Sony-PMCA-RE",
+      "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+      "source_path": "pmca/usb/sony.py",
+      "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/sony.py",
+      "bytes": 36033,
+      "sha256": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e",
+      "raw_reference_removed": true
+    },
+    {
+      "name": "pmca-usb.py",
+      "repo": "ma1co/Sony-PMCA-RE",
+      "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+      "source_path": "pmca/usb/__init__.py",
+      "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/__init__.py",
+      "bytes": 4101,
+      "sha256": "db2fd3d0dfa2e6f315a14291be8951a5092875e8e5858183cabf2cec46a0fcda",
+      "raw_reference_removed": true
+    },
+    {
+      "name": "a7-transport.py",
+      "repo": "QAQLeonard/a7c2-fl23-research",
+      "commit": "b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d",
+      "source_path": "src/camera_runtime/transport.py",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/camera_runtime/transport.py",
+      "bytes": 23438,
+      "sha256": "52f2c34f4b5c5d2361a7a5869320fec3711b753299a74fd814a87129d1a9d10a",
+      "raw_reference_removed": true
+    },
+    {
+      "name": "a7-usbidentity.py",
+      "repo": "QAQLeonard/a7c2-fl23-research",
+      "commit": "b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d",
+      "source_path": "src/looks/looktool/usbidentity.py",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/looks/looktool/usbidentity.py",
+      "bytes": 1336,
+      "sha256": "382e3d6294c9ee5d872dae95559746afb2ec83aa1163315fe39d7a6abcb5353d",
+      "raw_reference_removed": true
+    }
+  ],
+  "verified_upstream_refs": {
+    "pmca": {
+      "repo": "ma1co/Sony-PMCA-RE",
+      "ref": "master",
+      "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0"
+    },
+    "a7c2": {
+      "repo": "QAQLeonard/a7c2-fl23-research",
+      "ref": "main",
+      "commit": "b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d"
+    }
+  },
+  "official_api_source": {
+    "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntddscsi/ni-ntddscsi-ioctl_scsi_pass_through_direct",
+    "page_updated": "2021-05-18",
+    "access_date": "2026-10-25"
+  },
+  "conclusion": "static source analysis only; no camera USB UI driver operation or third-party code execution"
+}

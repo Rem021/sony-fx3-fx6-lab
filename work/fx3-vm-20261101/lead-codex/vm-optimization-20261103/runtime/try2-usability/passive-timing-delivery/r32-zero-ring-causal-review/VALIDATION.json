@@ -1,0 +1,19 @@
+{
+  "outcome": "read_only_review_complete_causal_fix_not_supported",
+  "bounded_record_cut_regression": true,
+  "four_window_main_statistics_unchanged_after_boundary_fix": true,
+  "input_count": 123,
+  "all_pinned_inputs_unchanged": true,
+  "no_native_key_receive_in_comparison_prefixes": true,
+  "no_VM_Start_browser_service_QMP_or_device": true,
+  "window_limits": {
+    "r31": "host-consumed pre-finally prefix, partial final record excluded",
+    "r28": "strict pre-End cutoff unavailable; pre-timer program/log order only",
+    "r26_r26b": "pre-first-commit, no native key receive"
+  },
+  "decisions": {
+    "direct_behavior_fix": "none sufficiently justified",
+    "next_design": "independent first-publication/bind witnesses plus same-root per-stage bounded accounting; not implemented"
+  },
+  "process_cleanup": "Only foreground Python/rg/llvm-objdump read-only analysis commands used; no owned service, VM, browser, port or QMP session created"
+}

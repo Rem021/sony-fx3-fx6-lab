@@ -1,0 +1,34 @@
+{
+  "run": "ap61next-8db30dad",
+  "destination": "0x909c015b",
+  "raw": "000001010c00010001000000",
+  "source": "0x81cf61c0",
+  "caller": "/usr/lib/appFw.so+0x2de7264",
+  "imdb_record": {
+    "index": 170,
+    "original_va": "0x1fe08",
+    "raw_hex": "02000020ff000000ffffff7f5b010000e6be000000000000ffbe00000000000018bf00000000000095cb00000000000095cb00000000000095cb00000000000095cb000000000000",
+    "kind": "0x20000002",
+    "order": 255,
+    "target_mask": "0x7fffffff",
+    "field12": "0x15b",
+    "qemu_selected": true,
+    "strings_by_pointer_slot": {
+      "2": "libInfraCameraProfile.so",
+      "3": "infra_cameraProfile_init",
+      "4": "infra_cameraProfile_exit",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": ""
+    }
+  },
+  "original_projected_file_present": false,
+  "notes": [
+    "IMDB service15b names libInfraCameraProfile/infra_cameraProfile_init; missingprojectedfile; no nativeinit observed",
+    "Common appFw send wrapper identified, not highlevel caller; no fabricated response orenablement",
+    "No evidence yet that this sole missing service is causal for missing UI"
+  ],
+  "status": "SUPERSEDED_SID_TO_IMDB_ASSOCIATION",
+  "correction": "FullSID909c015b is CEC from same-model CP RTTI and AP SET_POWER strings; low15b isnotIMDBmoduleID. Originalrequestwaits indefinitely in genericosal_rcv_msg_tmo. See cec-power-original-proof.json."
+}

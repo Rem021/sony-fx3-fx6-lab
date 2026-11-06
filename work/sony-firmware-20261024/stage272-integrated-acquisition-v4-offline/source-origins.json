@@ -1,0 +1,491 @@
+{
+  "sources": [
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/build.py",
+      "source_sha256": "cf92df0452a41cacbd73cf592e6723345b6155cebc76b2d01c31a463d4be4e1d",
+      "target": "build.py",
+      "target_sha256": "cf92df0452a41cacbd73cf592e6723345b6155cebc76b2d01c31a463d4be4e1d",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/cached_port_probe.c",
+      "source_sha256": "615ab3333feec1897b9882c078b8bab36e550a53cd25bba91427194b1bd06b66",
+      "target": "cached_port_probe.c",
+      "target_sha256": "615ab3333feec1897b9882c078b8bab36e550a53cd25bba91427194b1bd06b66",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/controller_ipc.py",
+      "source_sha256": "9e1fab981f093e33e7ac24bcec1d6426699b386aa6bdf68062d2421c368b88c6",
+      "target": "controller_ipc.py",
+      "target_sha256": "9e1fab981f093e33e7ac24bcec1d6426699b386aa6bdf68062d2421c368b88c6",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/derived_profile_fixture.h",
+      "source_sha256": "70407bb51be3836540fc36eb6ba53dbf09c7574a78abf84bab3931465c4ee06f",
+      "target": "derived_profile_fixture.h",
+      "target_sha256": "70407bb51be3836540fc36eb6ba53dbf09c7574a78abf84bab3931465c4ee06f",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/descriptor_policy.c",
+      "source_sha256": "1b954d64782ca51e77855089e070b99b6b555ffc2bcf47e85f0cac17aee0e7f1",
+      "target": "descriptor_policy.c",
+      "target_sha256": "1b954d64782ca51e77855089e070b99b6b555ffc2bcf47e85f0cac17aee0e7f1",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/descriptor_policy.h",
+      "source_sha256": "1c12bdfe98029a907a48b695083d3568cc84dd7959d54ca92598ac2eb2052e75",
+      "target": "descriptor_policy.h",
+      "target_sha256": "1c12bdfe98029a907a48b695083d3568cc84dd7959d54ca92598ac2eb2052e75",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/descriptor_unit.c",
+      "source_sha256": "de2739e56cb4668141655d22eafa7929de58fc24f7339011efc0ccd55d59c926",
+      "target": "descriptor_unit.c",
+      "target_sha256": "de2739e56cb4668141655d22eafa7929de58fc24f7339011efc0ccd55d59c926",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/entry_shared.h",
+      "source_sha256": "6770a7a58f1d5b30fc7b8c869b1ec79120a8297d1debddabdeea5435cc382753",
+      "target": "entry_shared.h",
+      "target_sha256": "87d576cb1839e9231f86ff74901f29e67ed295e17f75d27c69dc3620c7296302",
+      "changed_from_source": true
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/entry_support.c",
+      "source_sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360",
+      "target": "entry_support.c",
+      "target_sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/entry_target.h",
+      "source_sha256": "503fe5d12c57669e68be607f6fb97db99a8807b86b647dd993f4125d93aed9b7",
+      "target": "entry_target.h",
+      "target_sha256": "bcbf9620a867fdaf7a74cc23a9356eb1a69d3cee1bac56377d945ffb960ef285",
+      "changed_from_source": true
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/fake_iokit.c",
+      "source_sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19",
+      "target": "fake_iokit.c",
+      "target_sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/fixed_launch.py",
+      "source_sha256": "f8ec6c406aed925b3cfbe87b930bd09d2cbcc20106fd827f3688de7c394bb965",
+      "target": "fixed_launch.py",
+      "target_sha256": "f8ec6c406aed925b3cfbe87b930bd09d2cbcc20106fd827f3688de7c394bb965",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/flow_fixture.c",
+      "source_sha256": "3d91770ebc070895f3fcafd59544127e48a02f8ed393b15f26776c7367b1d025",
+      "target": "flow_fixture.c",
+      "target_sha256": "6c146774ad3cdc5492010de5dcc004a98e2f7b582a8e84136335d095111ed014",
+      "changed_from_source": true
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage271-SERVICE-acquisition-evidence/flow_journal.c",
+      "source_sha256": "ad0d973ef860cd2e62c23e33a13d3524b175123a0c169c2fba3b4be64d870548",
+      "target": "flow_journal.c",
+      "target_sha256": "ad0d973ef860cd2e62c23e33a13d3524b175123a0c169c2fba3b4be64d870548",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/flow_native.inc",
+      "source_sha256": "f0b85a9128d3651aa733f6edaa77c0f5d55850861ee64789ddf279d08be112df",
+      "target": "flow_native.inc",
+      "target_sha256": "f0b85a9128d3651aa733f6edaa77c0f5d55850861ee64789ddf279d08be112df",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage271-SERVICE-acquisition-evidence/flow_receiver.py",
+      "source_sha256": "0833873a31e92314bab72b2de34e8763675ebf8841a45cd4e876d7261fe0e789",
+      "target": "flow_receiver.py",
+      "target_sha256": "0833873a31e92314bab72b2de34e8763675ebf8841a45cd4e876d7261fe0e789",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/frame_io.c",
+      "source_sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f",
+      "target": "frame_io.c",
+      "target_sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/frame_io.h",
+      "source_sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a",
+      "target": "frame_io.h",
+      "target_sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/global_guard.c",
+      "source_sha256": "b8c1e75240aa7b27c39a9c2c1ddbd71f5aac163f74f5ceb678dc6315b616bfce",
+      "target": "global_guard.c",
+      "target_sha256": "b8c1e75240aa7b27c39a9c2c1ddbd71f5aac163f74f5ceb678dc6315b616bfce",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/global_guard.h",
+      "source_sha256": "5ae1addb1c793287cdc142f532747313a3851814c3174f9a2eeea0e8ba020311",
+      "target": "global_guard.h",
+      "target_sha256": "5ae1addb1c793287cdc142f532747313a3851814c3174f9a2eeea0e8ba020311",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/helper_hello.c",
+      "source_sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719",
+      "target": "helper_hello.c",
+      "target_sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/helper_hello.h",
+      "source_sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e",
+      "target": "helper_hello.h",
+      "target_sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/host_login.c",
+      "source_sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834",
+      "target": "host_login.c",
+      "target_sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/host_login.h",
+      "source_sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0",
+      "target": "host_login.h",
+      "target_sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/host_transport.c",
+      "source_sha256": "f23869555886de838de5048685b9f326ba94a6439896a0bc90e8df1e4a29f95c",
+      "target": "host_transport.c",
+      "target_sha256": "f23869555886de838de5048685b9f326ba94a6439896a0bc90e8df1e4a29f95c",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/host_transport.h",
+      "source_sha256": "49b1e885a7e2b97706d59a52a50118b79790ba89472fe37550e01705836cb919",
+      "target": "host_transport.h",
+      "target_sha256": "49b1e885a7e2b97706d59a52a50118b79790ba89472fe37550e01705836cb919",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/idle_held.c",
+      "source_sha256": "3cbf43dd727c1fc93bf94bf1caffd24601e0282476666386c010f0447164ae92",
+      "target": "idle_held.c",
+      "target_sha256": "3cbf43dd727c1fc93bf94bf1caffd24601e0282476666386c010f0447164ae92",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/idle_held.h",
+      "source_sha256": "764f7f01cb15f8f73965f1245387a75efb0af82fc74204d58bbb9f28af26d861",
+      "target": "idle_held.h",
+      "target_sha256": "764f7f01cb15f8f73965f1245387a75efb0af82fc74204d58bbb9f28af26d861",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/iokit_adapter.c",
+      "source_sha256": "2c381ed2607b16f8292ddeb7665ccdc53a22b2b9b30f06bba6ecbfe79b2ceb34",
+      "target": "iokit_adapter.c",
+      "target_sha256": "2c381ed2607b16f8292ddeb7665ccdc53a22b2b9b30f06bba6ecbfe79b2ceb34",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/iokit_adapter.h",
+      "source_sha256": "6ae4ef0aaacb7df5017b6cbb0e37c0605304282a5920ef2f4e68d5738bf22bc8",
+      "target": "iokit_adapter.h",
+      "target_sha256": "6ae4ef0aaacb7df5017b6cbb0e37c0605304282a5920ef2f4e68d5738bf22bc8",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/iokit_wire.c",
+      "source_sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94",
+      "target": "iokit_wire.c",
+      "target_sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/iokit_wire.h",
+      "source_sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b",
+      "target": "iokit_wire.h",
+      "target_sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/manual_recovery_binding.h",
+      "source_sha256": "0900af42160539b4b8bfeaf05a232dc7bc88b257500d30e6a8667cf228bd3793",
+      "target": "manual_recovery_binding.h",
+      "target_sha256": "0900af42160539b4b8bfeaf05a232dc7bc88b257500d30e6a8667cf228bd3793",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/native_recovery_cache.c",
+      "source_sha256": "17709ab0fb58b6a97569512eb36336bf75544e8bbabc487f63df563ab018e6b6",
+      "target": "native_recovery_cache.c",
+      "target_sha256": "17709ab0fb58b6a97569512eb36336bf75544e8bbabc487f63df563ab018e6b6",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/native_recovery_cache.h",
+      "source_sha256": "d44311cabd2db20e34141634d445996965da244eaf7e802732808c2d414d6a3f",
+      "target": "native_recovery_cache.h",
+      "target_sha256": "d44311cabd2db20e34141634d445996965da244eaf7e802732808c2d414d6a3f",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/native_session.c",
+      "source_sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1",
+      "target": "native_session.c",
+      "target_sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/native_session.h",
+      "source_sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f",
+      "target": "native_session.h",
+      "target_sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_channel.c",
+      "source_sha256": "1f7706a24149671b6b10f8a71467037176228f1073c011f6e4209cbde8598519",
+      "target": "owner_channel.c",
+      "target_sha256": "1f7706a24149671b6b10f8a71467037176228f1073c011f6e4209cbde8598519",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_channel.h",
+      "source_sha256": "e5b9af14aea46dac8eff94a40acfc5edc22305799e44e4204558a8f592a668a0",
+      "target": "owner_channel.h",
+      "target_sha256": "e5b9af14aea46dac8eff94a40acfc5edc22305799e44e4204558a8f592a668a0",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_core.c",
+      "source_sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d",
+      "target": "owner_core.c",
+      "target_sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_entry_main.c",
+      "source_sha256": "1a47d3ce04e53b5f90bc2b9443381e488c2e63d8ebb516a4e1ad29c0485f68e7",
+      "target": "owner_entry_main.c",
+      "target_sha256": "1a47d3ce04e53b5f90bc2b9443381e488c2e63d8ebb516a4e1ad29c0485f68e7",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_fixture.c",
+      "source_sha256": "400b0ad41457324da0da5766e27427a0716ce766155a268b08ebdc384f204da6",
+      "target": "owner_fixture.c",
+      "target_sha256": "400b0ad41457324da0da5766e27427a0716ce766155a268b08ebdc384f204da6",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_iokit.c",
+      "source_sha256": "fe7744b535915d690347f3b1c2762d77f5169ae4d0cf79382ebeb762514aae35",
+      "target": "owner_iokit.c",
+      "target_sha256": "fe7744b535915d690347f3b1c2762d77f5169ae4d0cf79382ebeb762514aae35",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_ipc.c",
+      "source_sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2",
+      "target": "owner_ipc.c",
+      "target_sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_receipt.c",
+      "source_sha256": "a0be822633205d930d1b2258eeafbe6dd6cb3ede7be083f80bba04d768be93ca",
+      "target": "owner_receipt.c",
+      "target_sha256": "a0be822633205d930d1b2258eeafbe6dd6cb3ede7be083f80bba04d768be93ca",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_receipt.h",
+      "source_sha256": "151c3552e357e5457ac1a4770400f84a16ccdd72cac0f5f1ebd79b7e82dc990e",
+      "target": "owner_receipt.h",
+      "target_sha256": "151c3552e357e5457ac1a4770400f84a16ccdd72cac0f5f1ebd79b7e82dc990e",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/owner_trial.h",
+      "source_sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be",
+      "target": "owner_trial.h",
+      "target_sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/permit_unit.c",
+      "source_sha256": "de112dfceeb3397e39aeb44f5ea3c1d9d13c1ba46278c72e09327814aa703576",
+      "target": "permit_unit.c",
+      "target_sha256": "de112dfceeb3397e39aeb44f5ea3c1d9d13c1ba46278c72e09327814aa703576",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/port_anchor.c",
+      "source_sha256": "926bd1035e4782b505371ea7b934d47ab6e85d06ef45e24d7794cfccd12984fa",
+      "target": "port_anchor.c",
+      "target_sha256": "926bd1035e4782b505371ea7b934d47ab6e85d06ef45e24d7794cfccd12984fa",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/port_anchor.h",
+      "source_sha256": "a95919691814f7e3fc8efd431867f1fd03a6fdc27a2dcbd71d2c17ccb3580c6d",
+      "target": "port_anchor.h",
+      "target_sha256": "a95919691814f7e3fc8efd431867f1fd03a6fdc27a2dcbd71d2c17ccb3580c6d",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/public_material.h",
+      "source_sha256": "27710f438e5fc28ed48bb3f1e62a4d6f44d4e1c2ff5aa1dfd8d41e075c64594d",
+      "target": "public_material.h",
+      "target_sha256": "27710f438e5fc28ed48bb3f1e62a4d6f44d4e1c2ff5aa1dfd8d41e075c64594d",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/receipt_receiver.py",
+      "source_sha256": "05a5782866c01145467a97879356996ae7b3963921de9770007786359cc1ccd8",
+      "target": "receipt_receiver.py",
+      "target_sha256": "4fb26507a074327042757e79ecfd9f5d713f358d1761f20566ab20af7f8cc33d",
+      "changed_from_source": true
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/recovery_fixture.c",
+      "source_sha256": "a0b61371364e0cd0f6c186bfb0e63344850931159d6e985662fe99be74d6ae82",
+      "target": "recovery_fixture.c",
+      "target_sha256": "a0b61371364e0cd0f6c186bfb0e63344850931159d6e985662fe99be74d6ae82",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/recovery_fixture.h",
+      "source_sha256": "7eb250eeaf5f60db748bcba4e762987055ea301db8b170ae960c4d0c1e6b7e4b",
+      "target": "recovery_fixture.h",
+      "target_sha256": "7eb250eeaf5f60db748bcba4e762987055ea301db8b170ae960c4d0c1e6b7e4b",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/recovery_seed.c",
+      "source_sha256": "a8244165c4e02ee37944245016bcbb96f79c4a76e792281897184771acad14e1",
+      "target": "recovery_seed.c",
+      "target_sha256": "a8244165c4e02ee37944245016bcbb96f79c4a76e792281897184771acad14e1",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/service_flow.c",
+      "source_sha256": "5de22bcb43dd593ad4e497b0e3ab3a00cc0174597082878c165aa272cffec63f",
+      "target": "service_flow.c",
+      "target_sha256": "5de22bcb43dd593ad4e497b0e3ab3a00cc0174597082878c165aa272cffec63f",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/service_flow.h",
+      "source_sha256": "a6a60ae4d462a5cebc05eefda8a3f2b5c6f31ca16c9915ae56284559d30c45f0",
+      "target": "service_flow.h",
+      "target_sha256": "a6a60ae4d462a5cebc05eefda8a3f2b5c6f31ca16c9915ae56284559d30c45f0",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/service_profile.h",
+      "source_sha256": "abbe66a20426b70c3503276cd60811d45333e113e0e91f108a2757947e56b42b",
+      "target": "service_profile.h",
+      "target_sha256": "abbe66a20426b70c3503276cd60811d45333e113e0e91f108a2757947e56b42b",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/status_permit.c",
+      "source_sha256": "204f84aa2d6512d8649fa478cb4fa87804f2c8758422fc61698af3f1686f4be9",
+      "target": "status_permit.c",
+      "target_sha256": "204f84aa2d6512d8649fa478cb4fa87804f2c8758422fc61698af3f1686f4be9",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/status_permit.h",
+      "source_sha256": "c9728b63c77e3e8ab35bfb13ccb7343a2cb494130c709e47ad1525cba73033ce",
+      "target": "status_permit.h",
+      "target_sha256": "c9728b63c77e3e8ab35bfb13ccb7343a2cb494130c709e47ad1525cba73033ce",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/stream.c",
+      "source_sha256": "1221dc5adfe86f012e4ea15b2b117b3d3f9ab3e0af67ec82b23b8a81d2f58849",
+      "target": "stream.c",
+      "target_sha256": "1221dc5adfe86f012e4ea15b2b117b3d3f9ab3e0af67ec82b23b8a81d2f58849",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/stream.h",
+      "source_sha256": "6ad0fc7cee4807c89c1249f8b57144e435b5a7be6ba75d17954ea11c2bf65e78",
+      "target": "stream.h",
+      "target_sha256": "6ad0fc7cee4807c89c1249f8b57144e435b5a7be6ba75d17954ea11c2bf65e78",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/supervisor.py",
+      "source_sha256": "ff90122c7396b2102050906b77013eba7fa2581bf62f82564d0860a14735a962",
+      "target": "supervisor.py",
+      "target_sha256": "999879f0eb0d72c2a2f47f05eabb4ebde5e998dffe402cf166ff42508222a9f2",
+      "changed_from_source": true
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/target_binding.h",
+      "source_sha256": "fdf090d100fc138412a88aa65db9b06fed678ab128daf9f97a67ba4594672562",
+      "target": "target_binding.h",
+      "target_sha256": "fdf090d100fc138412a88aa65db9b06fed678ab128daf9f97a67ba4594672562",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/test_manual_entry.py",
+      "source_sha256": "1e5131e3ba89eeb244270389c8298c65bcfb9881bef416b8837b382a2ad73c0a",
+      "target": "test_manual_entry.py",
+      "target_sha256": "1e5131e3ba89eeb244270389c8298c65bcfb9881bef416b8837b382a2ad73c0a",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/transition_identity.c",
+      "source_sha256": "2d504dd4594a0d40805787dacab972733571948c047ca02e7ff974ff5df343f0",
+      "target": "transition_identity.c",
+      "target_sha256": "2d504dd4594a0d40805787dacab972733571948c047ca02e7ff974ff5df343f0",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/transition_identity.h",
+      "source_sha256": "b642f9a9413cec1180eb2f994f723765e14e9269f740caea01388563d482aec0",
+      "target": "transition_identity.h",
+      "target_sha256": "b642f9a9413cec1180eb2f994f723765e14e9269f740caea01388563d482aec0",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/transition_limits.h",
+      "source_sha256": "77366e1830422e1292a9ffc56878800d72bf15a9497e3a6019f285c72f8f3617",
+      "target": "transition_limits.h",
+      "target_sha256": "77366e1830422e1292a9ffc56878800d72bf15a9497e3a6019f285c72f8f3617",
+      "changed_from_source": false
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage267-integrated-manual-recovery-entry/transition_unit.c",
+      "source_sha256": "68ffb240f80062f127d23f1275f3b9f78d2d4e533b5a9d1dbd1a4ec8251d291f",
+      "target": "transition_unit.c",
+      "target_sha256": "68ffb240f80062f127d23f1275f3b9f78d2d4e533b5a9d1dbd1a4ec8251d291f",
+      "changed_from_source": false
+    }
+  ],
+  "generation_note": "Final textual assertion expected an unused word; all intended edits completed. Inspected exact native denial guard and compiled closed candidate; no staging or device action.",
+  "native_released": false,
+  "target_unbound": true,
+  "new_camera_trial_package": false
+}

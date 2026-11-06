@@ -1,0 +1,28 @@
+{
+  "status": "PASS_OFFLINE_CACHE_SANITIZATION_AND_PARENT_CHILD_SCOPE",
+  "source_sha256": "ed7094e03e1fbad280080ac852a15e8aa571a8011d2033a397648ff6f5374647",
+  "checks": [
+    "Sony VID filter",
+    "serial and private properties omitted",
+    "parent/child index paths preserved",
+    "interface class retained",
+    "empty result supported",
+    "malformed/root/child shapes rejected"
+  ],
+  "rejections": [
+    {
+      "case": "malformed",
+      "error": "invalid_cache_plist"
+    },
+    {
+      "case": "wrong_root",
+      "error": "invalid_cache_root"
+    },
+    {
+      "case": "wrong_child_shape",
+      "error": "invalid_children"
+    }
+  ],
+  "ioreg_diskutil_camera_or_other_host_query_executed_by_self_test": false,
+  "live_device_acceptance": false
+}

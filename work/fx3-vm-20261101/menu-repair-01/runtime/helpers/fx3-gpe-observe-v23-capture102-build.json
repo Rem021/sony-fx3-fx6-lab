@@ -1,0 +1,42 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx/compat",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-gpe-observe-v23-capture102.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v23-capture102.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-backend-v8.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-compaction-v1.S",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v23-capture102.so"
+  ],
+  "exit": 0,
+  "source_sha256": "9ebaa4fd1b6446b778666a72c27ca838e4ac4d34acc9e3dc8ea4b42e8f60323c",
+  "output_sha256": "cc3f9248b5c1f683ef0f717dd5fabb94222ef1604a33841f4b17eb4a20acf6bd",
+  "base_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v22-tile101.c",
+  "base_sha256": "623fe8707ed54e6ef5c6d4674857ee4e1a12751f82d65be0cd384dbf0d8684a7",
+  "authority": [
+    "msg_7eb2cdbf663a",
+    "msg_2c7707dd92c8"
+  ],
+  "observation_only": true,
+  "backend_v8_source_unchanged": "b2fcf092426c4919f5c74a130447348d7e08edcb34302faaa470802f625fd220",
+  "backend_v8_header_unchanged": "924ebf92972a53a1c3ea77f20211e19339d239f3333bd2dad66a578b023f2ba2"
+}

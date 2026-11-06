@@ -1,0 +1,23 @@
+{
+  "created_utc": "2026-10-28T13:00:56.087139+00:00",
+  "scope": "existing own process and launchd metadata only; no process created, no signals, no camera access",
+  "checks": [
+    {
+      "pid": 89684,
+      "identity": {
+        "pid": 89684,
+        "uid": 501,
+        "birth_sec": 1793192456,
+        "birth_usec": 19125,
+        "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python"
+      },
+      "read_success": true
+    },
+    {
+      "pid": 1,
+      "read_success": false,
+      "error": "process metadata unavailable; not proof of exit"
+    }
+  ],
+  "not_historical_helper_identity_proof": true
+}

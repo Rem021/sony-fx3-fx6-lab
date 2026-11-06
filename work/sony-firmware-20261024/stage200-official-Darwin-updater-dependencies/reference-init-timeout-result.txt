@@ -1,0 +1,27 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x400f80 e0031a2a mov      w0, w26
+0x400f84 d6c20291 add      x22, x22, #0xb0
+0x400f88 eafeff97 bl       #0x400b30
+0x400f8c c0064039 ldrb     w0, [x22, #1]
+0x400f90 1f100071 cmp      w0, #4
+0x400f94 00010054 b.eq     #0x400fb4
+0x400f98 e00319aa mov      x0, x25
+0x400f9c a9000094 bl       #0x401240
+0x400fa0 a13740f9 ldr      x1, [x29, #0x68]
+0x400fa4 a04340f9 ldr      x0, [x29, #0x80]
+0x400fa8 000001cb sub      x0, x0, x1
+0x400fac 1f001beb cmp      x0, x27
+0x400fb0 49f5ff54 b.ls     #0x400e58
+0x400fb4 d3f9ff35 cbnz     w19, #0x400eec
+0x400fb8 80ba41b9 ldr      w0, [x20, #0x1b8]
+0x400fbc edfeff97 bl       #0x400b70
+0x400fc0 a0da40f9 ldr      x0, [x21, #0x1b0]
+0x400fc4 e7feff97 bl       #0x400b60
+0x400fc8 e003132a mov      w0, w19
+0x400fcc f35341a9 ldp      x19, x20, [sp, #0x10]
+0x400fd0 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x400fd4 f76343a9 ldp      x23, x24, [sp, #0x30]
+0x400fd8 f96b44a9 ldp      x25, x26, [sp, #0x40]
+0x400fdc fb7345a9 ldp      x27, x28, [sp, #0x50]
+0x400fe0 fd7bc9a8 ldp      x29, x30, [sp], #0x90
+0x400fe4 c0035fd6 ret      

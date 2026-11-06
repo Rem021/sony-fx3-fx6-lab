@@ -1,0 +1,477 @@
+{
+  "input": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+  "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "machine": "ELF64 AArch64 ET_DYN",
+  "address_basis": "module-relative virtual addresses, not camera runtime addresses",
+  "main_file_format_enum": [
+    "FILE_FORMAT_XAVC_S_4K_NG",
+    "FILE_FORMAT_XAVC_S_HD_NG",
+    "FILE_FORMAT_XAVC_S",
+    "FILE_FORMAT_AVCHD",
+    "FILE_FORMAT_MP4",
+    "FILE_FORMAT_XAVC_HS_8K",
+    "FILE_FOMRAT_XAVC_HS_4K",
+    "FILE_FOMRAT_XAVC_S_4K",
+    "FILE_FOMRAT_XAVC_S_HD",
+    "FILE_FOMRAT_XAVC_SI_4K",
+    "FILE_FOMRAT_XAVC_SI_HD",
+    "FILE_FOMRAT_XAVC_SI_DCI_4K",
+    "FILE_FOMRAT_INVALID",
+    "PRM_ALL"
+  ],
+  "has_hs_hd_main_enum": false,
+  "main_converter_file_routes": [
+    {
+      "enum": 5,
+      "label": "FILE_FORMAT_XAVC_HS_8K",
+      "converter_target": "0x2e68fec"
+    },
+    {
+      "enum": 6,
+      "label": "FILE_FOMRAT_XAVC_HS_4K",
+      "converter_target": "0x2e69198"
+    },
+    {
+      "enum": 7,
+      "label": "FILE_FOMRAT_XAVC_S_4K",
+      "converter_target": "0x2e693cc"
+    },
+    {
+      "enum": 8,
+      "label": "FILE_FOMRAT_XAVC_S_HD",
+      "converter_target": "0x2e695e8"
+    },
+    {
+      "enum": 9,
+      "label": "FILE_FOMRAT_XAVC_SI_4K",
+      "converter_target": "0x2e697ec"
+    },
+    {
+      "enum": 10,
+      "label": "FILE_FOMRAT_XAVC_SI_HD",
+      "converter_target": "0x2e699cc"
+    },
+    {
+      "enum": 11,
+      "label": "FILE_FOMRAT_XAVC_SI_DCI_4K",
+      "converter_target": "0x2e69bb8"
+    }
+  ],
+  "hs4k_frame_enum": [
+    "REC_FRAME_RATE_60P",
+    "REC_FRAME_RATE_50P",
+    "REC_FRAME_RATE_30P",
+    "REC_FRAME_RATE_25P",
+    "REC_FRAME_RATE_24P",
+    "REC_FRAME_RATE_120P",
+    "REC_FRAME_RATE_100P",
+    "REC_FRAME_RATE_24_00P",
+    "REC_FRAME_RATE_INVALID",
+    "PRM_ALL"
+  ],
+  "hs4k_converter_routes": [
+    {
+      "enum": 0,
+      "label": "REC_FRAME_RATE_60P",
+      "jump_byte": "0x53",
+      "table_va": "0x39895ac",
+      "target": "0x2e69304",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 1,
+      "label": "REC_FRAME_RATE_50P",
+      "jump_byte": "0x53",
+      "table_va": "0x39895ad",
+      "target": "0x2e69304",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 2,
+      "label": "REC_FRAME_RATE_30P",
+      "jump_byte": "0xa",
+      "table_va": "0x39895ae",
+      "target": "0x2e691e0",
+      "route": "assert/notify_model_system_error",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 3,
+      "label": "REC_FRAME_RATE_25P",
+      "jump_byte": "0xa",
+      "table_va": "0x39895af",
+      "target": "0x2e691e0",
+      "route": "assert/notify_model_system_error",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 4,
+      "label": "REC_FRAME_RATE_24P",
+      "jump_byte": "0x51",
+      "table_va": "0x39895b0",
+      "target": "0x2e692fc",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 5,
+      "label": "REC_FRAME_RATE_120P",
+      "jump_byte": "0x0",
+      "table_va": "0x39895b1",
+      "target": "0x2e691b8",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 6,
+      "label": "REC_FRAME_RATE_100P",
+      "jump_byte": "0x0",
+      "table_va": "0x39895b2",
+      "target": "0x2e691b8",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    }
+  ],
+  "vpc_formatter": [
+    {
+      "value": 0,
+      "formatter_case": "0x2e5409c",
+      "label": "VPC_AVC_3840x2160_420_8BIT_LONG"
+    },
+    {
+      "value": 1,
+      "formatter_case": "0x2e540a8",
+      "label": "VPC_AVC_1920x1080_420_8BIT_LONG"
+    },
+    {
+      "value": 2,
+      "formatter_case": "0x2e540b4",
+      "label": "VPC_AVC_3840x2160_422_10BIT_LONG"
+    },
+    {
+      "value": 3,
+      "formatter_case": "0x2e540c0",
+      "label": "VPC_AVC_1920x1080_422_10BIT_LONG"
+    },
+    {
+      "value": 4,
+      "formatter_case": "0x2e540cc",
+      "label": "VPC_HEVC_7680x4320_420_10BIT_LONG"
+    },
+    {
+      "value": 5,
+      "formatter_case": "0x2e540d8",
+      "label": "VPC_HEVC_3840x2160_420_10BIT_LONG"
+    },
+    {
+      "value": 6,
+      "formatter_case": "0x2e540e4",
+      "label": "VPC_HEVC_1920x1080_420_10BIT_LONG"
+    },
+    {
+      "value": 7,
+      "formatter_case": "0x2e540f0",
+      "label": "VPC_HEVC_3840x2160_422_10BIT_LONG"
+    },
+    {
+      "value": 8,
+      "formatter_case": "0x2e540fc",
+      "label": "VPC_HEVC_1920x1080_422_10BIT_LONG"
+    },
+    {
+      "value": 9,
+      "formatter_case": "0x2e54108",
+      "label": "VPC_AVC_3840x2160_422_10BIT_INTRA"
+    },
+    {
+      "value": 10,
+      "formatter_case": "0x2e54114",
+      "label": "VPC_AVC_1920x1080_422_10BIT_INTRA"
+    },
+    {
+      "value": 11,
+      "formatter_case": "0x2e54120",
+      "label": "VPC_AVC_1280x720_420_8BIT_LONG"
+    }
+  ],
+  "independent_frame_rate_formatter": [
+    {
+      "value": 1,
+      "formatter_case": "0x2e541ac",
+      "label": "FRAME_RATE_24P"
+    },
+    {
+      "value": 2,
+      "formatter_case": "0x2e541a0",
+      "label": "FRAME_RATE_25P"
+    },
+    {
+      "value": 3,
+      "formatter_case": "0x2e54194",
+      "label": "FRAME_RATE_29_97P"
+    },
+    {
+      "value": 4,
+      "formatter_case": "0x2e541b8",
+      "label": "INVALID_PARAM!!!!!"
+    },
+    {
+      "value": 5,
+      "formatter_case": "0x2e54188",
+      "label": "FRAME_RATE_50P"
+    },
+    {
+      "value": 6,
+      "formatter_case": "0x2e541b8",
+      "label": "INVALID_PARAM!!!!!"
+    },
+    {
+      "value": 7,
+      "formatter_case": "0x2e5417c",
+      "label": "FRAME_RATE_59_94P"
+    },
+    {
+      "value": 8,
+      "formatter_case": "0x2e54170",
+      "label": "FRAME_RATE_100P"
+    },
+    {
+      "value": 9,
+      "formatter_case": "0x2e54160",
+      "label": "FRAME_RATE_119_88P"
+    }
+  ],
+  "selected_instruction_bytes": [
+    {
+      "va": "0x2e69198",
+      "length": 36,
+      "purpose": "converter HS4K dispatch",
+      "bytes": "df1a0071280200540059009000b0169100487638610000102088208b00001fd6a0ab40b9"
+    },
+    {
+      "va": "0x2e691e0",
+      "length": 140,
+      "purpose": "converter failure branch",
+      "bytes": "145900d0f80800f094ba279118b33b91e10314aae00318aa82e48352335900d0974900b073620c910d1b0494f7861891e10313aae00317aa091b0494e10314aae00318aa82e48352080b0494e10313aae00317aa050b0494e00800f0e10314aa00f03b9182e483525ea59c97e00800f0e10313aa00343c915aa59c9700d490522000a07217a79c9752580194"
+    },
+    {
+      "va": "0x2e50c58",
+      "length": 32,
+      "purpose": "proxy enable and frame pass-through",
+      "bytes": "200080528000003960008052c30000b9e00000b920008052400000b9e1040034"
+    },
+    {
+      "va": "0x2e50d10",
+      "length": 12,
+      "purpose": "proxy VPC=6 assignment",
+      "bytes": "c0008052a00000b91f0f0071"
+    },
+    {
+      "va": "0x2e6a8f8",
+      "length": 84,
+      "purpose": "GetMovieRemain converter then proxy call",
+      "bytes": "d4f5ff97604641b984720091614a41b98362009162620591e3a2ff97b58700b980e20091624241b9613e41b987c20091e00700f980d20091e00300f986b20091a37340b985a20091603a41b984820091aa98ff97"
+    },
+    {
+      "va": "0x2ebf404",
+      "length": 32,
+      "purpose": "assert notification imports __assert_fail",
+      "bytes": "235700d0215700d0c04600d063202a9121e02991005c1a91c203805210539b97"
+    },
+    {
+      "va": "0x2bdf97c",
+      "length": 36,
+      "purpose": "named SetMovieRecParam builder slow/quick dispatch; not normal record proof",
+      "bytes": "7f1b007148050054806a00900050109100487b38610000102088208b00001fd680028052"
+    },
+    {
+      "va": "0x2be3230",
+      "length": 12,
+      "purpose": "format builder tail call",
+      "bytes": "f35341a9fd7bc3a877f0ff17"
+    }
+  ],
+  "assert_import": {
+    "plt": "0x1594060",
+    "symbol": "__assert_fail"
+  },
+  "actual_setter": {
+    "plt": "0x15944f0",
+    "symbol": "mpr::SetMovieRecParam(mpr::movieRecParam const&)",
+    "calls": [
+      "0x2e6f7bc",
+      "0x2e6f9b0"
+    ],
+    "format_builder_candidate": "0x2bdf414",
+    "normal_record_mapping": "not fully reconstructed; do not substitute query-converter route for encoder acceptance"
+  },
+  "proxy_conversion": {
+    "entry": "0x2e50bf0",
+    "vpc_420_hevc": 6,
+    "vpc_write": "0x2e50d10..0x2e50d14",
+    "frame_passthrough": "str w3,[x6] at 0x2e50c64",
+    "direct_callers": [
+      "0x2e6a948",
+      "0x2e6f0a0"
+    ],
+    "scope": "helper used by query and actual setter wrapper; no camera recording tested"
+  },
+  "not_performed": [
+    "firmware execution",
+    "patch generation",
+    "repack",
+    "camera connection",
+    "write",
+    "boot/record/recovery validation"
+  ],
+  "mpr": {
+    "input": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so",
+    "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+    "table_symbol": "mpr::g_videoParamComb",
+    "video_param_comb_table_rows": [
+      {
+        "vpc": 5,
+        "table_va": "0x2cb180",
+        "codec": 1,
+        "packed_resolution": "0x8700f00",
+        "width": 3840,
+        "height": 2160,
+        "color_format_enum": 0,
+        "bit_depth_enum": 1,
+        "gop_enum": 0,
+        "selector_stream0_result": 15,
+        "selector_stream1_result": 18
+      },
+      {
+        "vpc": 6,
+        "table_va": "0x2cb198",
+        "codec": 1,
+        "packed_resolution": "0x4380780",
+        "width": 1920,
+        "height": 1080,
+        "color_format_enum": 0,
+        "bit_depth_enum": 1,
+        "gop_enum": 0,
+        "selector_stream0_result": 15,
+        "selector_stream1_result": 18
+      },
+      {
+        "vpc": 7,
+        "table_va": "0x2cb1b0",
+        "codec": 1,
+        "packed_resolution": "0x8700f00",
+        "width": 3840,
+        "height": 2160,
+        "color_format_enum": 1,
+        "bit_depth_enum": 1,
+        "gop_enum": 0,
+        "selector_stream0_result": 15,
+        "selector_stream1_result": 18
+      },
+      {
+        "vpc": 8,
+        "table_va": "0x2cb1c8",
+        "codec": 1,
+        "packed_resolution": "0x4380780",
+        "width": 1920,
+        "height": 1080,
+        "color_format_enum": 1,
+        "bit_depth_enum": 1,
+        "gop_enum": 0,
+        "selector_stream0_result": 15,
+        "selector_stream1_result": 18
+      }
+    ],
+    "get_video_param_comb": {
+      "function": "0xc9e84",
+      "hd_branch": "0xc9fa8..0xc9fc8",
+      "input_fields": [
+        "VideoCodec",
+        "VideoResolution",
+        "ColorFormat",
+        "VideoBitDepth",
+        "GopStructure"
+      ],
+      "hd_hevc_420_tuple": [
+        1,
+        2,
+        0,
+        1,
+        0
+      ],
+      "hd_hevc_420_vpc": 6,
+      "hd_hevc_422_tuple": [
+        1,
+        2,
+        1,
+        1,
+        0
+      ],
+      "hd_hevc_422_vpc": 8,
+      "frame_rate_argument": false
+    },
+    "get_codec_info_for_codec": {
+      "function": "0xcd40c",
+      "inputs": [
+        "VideoParamComb",
+        "StreamType"
+      ],
+      "hevc_stream0_codec_id": 15,
+      "hevc_stream1_codec_id": 18,
+      "resolution_or_fps_check_in_hevc_selector": false
+    },
+    "encoder_command_callers": {
+      "function": "mpr::EnqueueExecEncOpen(mpr::MovieRecInfo&)",
+      "main_call": "0xd6748",
+      "main_stream_type": 0,
+      "proxy_call": "0xd6784",
+      "proxy_stream_type": 1,
+      "main_vpc_field": "MovieRecInfo+0x1c8",
+      "proxy_vpc_field": "MovieRecInfo+0x1f0",
+      "other_callers_file": "libmpr-codec-callers.json"
+    },
+    "hd_writer_profile": {
+      "function": "XavcsMovieWriter::ConvertVPCToLevel",
+      "entry": "0x115e78",
+      "vpc6_and8_target": "0x115fb4",
+      "known_quality6_level": 5,
+      "known_quality26_frame3_level": 4,
+      "scope": "static MP4 level selection; caller-level stream acceptance and actual mux not tested"
+    },
+    "selected_bytes": [
+      {
+        "purpose": "GetVideoParamComb HEVC HD branch",
+        "va": "0xc9f60",
+        "length": 108,
+        "bytes": "bf040071a001805261fbff543f100071a10000549f0000716008417a4008407ad4ffff173f0c0071010100549f000071a10080526008417ac2f9ff344008417ae1008052cbffff173f08007141f9ff549f000071c10080526008417aa2f8ff344008417a01018052c2ffff17"
+      },
+      {
+        "purpose": "GetCodecInfoForCodec stream selection",
+        "va": "0xcd45c",
+        "length": 156,
+        "bytes": "60110090010380d2737e019b002045f90100138b006873b8211440b92003003593028052a10000359f02007120028052b30080527302801a6000805281018052b33b00b9a0d3003900228452bfd70039a0630079e0898052bfdb0039a0670079e00315aabfdf0039ebedff97f51340f9e003132af35341a9fd7bc4a8c0035fd61f0400711300805281fdff549f02007140028052f3018052e7ffff17"
+      },
+      {
+        "purpose": "EnqueueExecEncOpen main and proxy calls",
+        "va": "0xd673c",
+        "length": 80,
+        "bytes": "614240b9a1730f7901008052a29cfe97a0bf07b961f641b960f241b9a1c707b961fa41b9a0c307b9a1cb07b9610642b9a1cf07b9610a42b9a1d307b9614640b9a1ab0f7921008052939cfe97a0db07b9"
+      },
+      {
+        "purpose": "SetMovieRecParam entry",
+        "va": "0xf0ff0",
+        "length": 80,
+        "bytes": "ff4307d1023880d201008052fd7bbca9fd030091f35301a9f40300aaa0430191f55b02a9f71b00f9b323019155100090d61400f0a331fe9700028052e10314aaa23780d2a04b00b9a0430191652afe97"
+      },
+      {
+        "purpose": "HD HEVC MP4 level branch",
+        "va": "0x115fb4",
+        "length": 52,
+        "bytes": "5f180071a00000545f680071a0000054a0008052c3ffff17a0008052beffff177f0c0071a1008052800080520090811ab9ffff17"
+      }
+    ],
+    "interpretation": "Static software representation and encoder-command construction only; no execution, complete profile acceptance or camera validation"
+  }
+}

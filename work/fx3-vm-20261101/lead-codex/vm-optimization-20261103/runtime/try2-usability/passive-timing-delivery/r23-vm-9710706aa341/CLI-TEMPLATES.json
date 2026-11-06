@@ -1,0 +1,192 @@
+{
+  "env": {
+    "FX3_NAV_RUN_DIR": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341"
+  },
+  "commands": {
+    "preflight.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/preflight.py"
+    ],
+    "launch_prepare.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/launch_prepare.py"
+    ],
+    "start_and_wait.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/start_and_wait.py"
+    ],
+    "cleanup.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/cleanup.py"
+    ],
+    "audit_after.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/audit_after.py"
+    ],
+    "standby_review": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+      "standby_review",
+      "实际看图后填入待机语义判断"
+    ],
+    "steps": [
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "click",
+          "1",
+          "完整Setup > Area/Date，橙色Area/Date/Time Setting"
+        ],
+        "confirm_after_actual_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：完整Setup > Area/Date，橙色Area/Date/Time Setting"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "click",
+          "2",
+          "UP到Language English"
+        ],
+        "confirm_after_actual_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：UP到Language English"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "click",
+          "3",
+          "C4语言帮助"
+        ],
+        "confirm_after_actual_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：C4语言帮助"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "click",
+          "4",
+          "MENU返回Language"
+        ],
+        "confirm_after_actual_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：MENU返回Language"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "click",
+          "5",
+          "OK查看English语言列表但不改值"
+        ],
+        "confirm_after_actual_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：OK查看English语言列表但不改值"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "click",
+          "6",
+          "MENU取消"
+        ],
+        "confirm_after_actual_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：MENU取消"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "click",
+          "7",
+          "MENU关闭到待机"
+        ],
+        "confirm_after_actual_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：MENU关闭到待机"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "click",
+          "8",
+          "MENU重开完整菜单"
+        ],
+        "confirm_after_actual_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：MENU重开完整菜单"
+        ]
+      }
+    ],
+    "recovery_cancel": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+      "recovery_cancel",
+      "实际看归因未入队新图后的判断"
+    ],
+    "recovery_review": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/runtime-wrapper/operate.py",
+      "recovery_review",
+      "实际看cancel后新图后的判断"
+    ]
+  },
+  "warning": "templates only; no command executed by prepare_run"
+}

@@ -1,0 +1,31 @@
+{
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v2.so",
+  "sha256": "e1fd40773d8eb98ea6a57bb7ec5161eb37c3ce1eae8faa028f5d6f842976d35d",
+  "elf": "ELF64 little endian AArch64 shared",
+  "DT_NEEDED": [
+    "libc.so.6",
+    "libdl.so.2"
+  ],
+  "undefined_dynamic_symbols": [
+    "dlsym",
+    "__errno_location",
+    "snprintf",
+    "readlink",
+    "getpid",
+    "process_vm_readv",
+    "dprintf",
+    "_exit"
+  ],
+  "version_requirements": [
+    {
+      "library": "libc.so.6",
+      "version": "GLIBC_2.17"
+    },
+    {
+      "library": "libdl.so.2",
+      "version": "GLIBC_2.17"
+    }
+  ],
+  "no_outline_atomic_helpers": true,
+  "static_build_validation_only": "Original guest ld and transparent functional run still required"
+}

@@ -1,0 +1,133 @@
+--- r39/runtime-wrapper/preflight.py
++++ r42/runtime-wrapper/preflight.py
+@@ -7,7 +7,7 @@
+  root=Path('/Volumes/KAFU2T/AI/Projects/Mac');groups={}
+  def group(label,pairs):
+   groups[label]=[{'path':str(p),'expected':h,'actual':sha(p),'match':sha(p)==h} for p,h in pairs];assert all(r['match'] for r in groups[label])
+- group('r39_local_core',[(SOURCE.parent/f,h) for f,h in json.loads((SOURCE.parent/'CORE-SOURCE-FREEZE.json').read_text()).items()])
++ group('r42_local_core',[(SOURCE.parent/f,h) for f,h in json.loads((SOURCE.parent/'CORE-SOURCE-FREEZE.json').read_text()).items()])
+  group('pins',[(FROZEN/'SHA256SUMS','dcbbb11fc1942a480b8624e53d769e29b93fec3c884401811cc0599fea3b02ef'),(FROZEN/'SOURCE-FREEZE.json','31ee6b1d00fecfc5ac53e874b144230d2430208277c295d74c4a804fbe1135ec')])
+  group('r25_manifest',[(SOURCE.parent.parent/'r25-recovery-observation-candidate/SHA256SUMS','c2d44926c77b0d102075c697e7812385f1782bc6ace67b9aaa7fe11ad83023e7')])
+  r25=SOURCE.parent.parent/'r25-recovery-observation-candidate'
+@@ -39,14 +39,14 @@
+ def audit(event,args):
+  if event in ('subprocess.Popen','os.system','os.fork','os.posix_spawn','socket.__new__'):raise RuntimeError('forbidden import side effect: '+event)
+ sys.addaudithook(audit)
+-g=runpy.run_path(str(r/'run_trial_r24_review_snapshot.py'),run_name='r39_import_only')
++g=runpy.run_path(str(r/'run_trial_r24_review_snapshot.py'),run_name='r42_import_only')
+ mods={name:str(Path(sys.modules[name].__file__).resolve()) for name in ('startup_observation','trial_ring_cached','trial_log_v4_mss','qmp_line_transport','gate_input_usability','runtime_resource_guard','trial_web_r24_review_snapshot')}
+ for name in ('startup_observation','trial_ring_cached','trial_log_v4_mss','trial_web_r24_review_snapshot'):assert Path(mods[name]).parent==r
+ for name in ('qmp_line_transport','gate_input_usability','runtime_resource_guard'):assert Path(mods[name]).parent==r.parent/'v25-r21-recovery-integration'
+ assert Path(sys.modules['r35_package_selection'].__file__).resolve()==r/'r35_package_selection.py'
+ assert g['ACTIVE_GUARD'] is None and g['ACTIVE_STARTUP_OBSERVATION'] is None
+ print(json.dumps({'mode':'import_only_main_not_called','modules':mods,'run_dir':os.environ['FX3_NAV_RUN_DIR']}))'''
+- binding=json.loads(run('r39-import-only',['python3','-B','-c',code,str(SOURCE.parent)]))
++ binding=json.loads(run('r42-import-only',['python3','-B','-c',code,str(SOURCE.parent)]))
+  write('ACTUAL-DEPENDENCY-BINDING.json',binding)
+  write('PREFLIGHT-RESULT.json',{'passed':True,'scope':'pinned input and CLI parser preparation only; no browser or guest',**stamp()})
+  print(json.dumps({'passed':True}))
+--- r39/run_trial_r24_review_snapshot.py
++++ r42/run_trial_r24_review_snapshot.py
+@@ -155,7 +155,7 @@
+                     help='仅审阅版：End原读回后显式有界诊断尾段，默认关闭；要求guest快照协议v5')
+     ap.add_argument('--gate-publish-interval', type=int, choices=(1, 64), default=None,
+                     help='内部对照：固定FX3平台，选择已封存N1/N64诊断辅助；须同时启用snapshot-tail')
+-    ap.add_argument("--r35-diagnostic-package", action="store_true", help="仅另行授权时选择固定r36包；须snapshot-tail/N64")
++    ap.add_argument("--r35-diagnostic-package", action="store_true", help="仅另行授权时选择固定r42 command入口计时包；须snapshot-tail/N64")
+     ns = ap.parse_args()
+     try:r35_options(ns)
+     except ValueError as e:ap.error(str(e))
+--- r39/return-tools/return_adapter.py
++++ r42/return-tools/return_adapter.py
+@@ -9,7 +9,7 @@
+ from cleanup_evidence import failure_status
+ OPERATE=FROZEN/'runtime-wrapper/operate.py'
+ OPERATE_SHA='7c95d7ce2fa724e4172b5a6294c7a45f7393a48b765d3d58743ca74d692d0e64'
+-CORE_FREEZE_SHA='642149dac737315d19dc6910804538eec6df79a43261527c06fcaf23d374bd50'
++CORE_FREEZE_SHA='0760035499c8362eef3ee24c819d3b8f6cbed3bf156bf4ee8b09adc187b1ba68'
+ VOLUME='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ MAX_SUMMARY_BYTES=4096
+ ACTIONS={'click':3,'observe':2,'pin':2,'confirm':2,'standby_review':2,'recovery_review':2,'recovery_cancel':2,'reject':2}
+--- r39/CORE-SOURCE-FREEZE.json
++++ r42/CORE-SOURCE-FREEZE.json
+@@ -6,7 +6,7 @@
+   "runtime-wrapper/later_capture.py": "ca6c1b2b64ef9ff3672d39d112b598062a1ff8c613d2ee8f7daa5dedbff01f8f",
+   "runtime-wrapper/launch_prepare.py": "110c2fb6a4df630ce4fcb3564a52aeb5bb157a3d4c148fcc18d57ce7e9fc579f",
+   "runtime-wrapper/operate.py": "7c95d7ce2fa724e4172b5a6294c7a45f7393a48b765d3d58743ca74d692d0e64",
+-  "runtime-wrapper/preflight.py": "4b1948a20a4b5b45f7844985261acda432d513e82ffdeecd4febdb81a11cf702",
++  "runtime-wrapper/preflight.py": "43d61dc7fadc68c60dd1ea5c831e2e2a0b775a84cd483eca897a54a11201286f",
+   "runtime-wrapper/start_and_wait.py": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+   "runtime-wrapper/untimed_image.py": "b400adf1aff0d599950a76908d3dd18bd8396d7ffaf7f3c8716b973de7286d34",
+   "operator-helpers/deadline.js": "63b2d2890dde8c19b50ff0a8970f6e996ea3fd4a1ee594424bfbb32b97c774b0",
+@@ -20,7 +20,7 @@
+   "operator-helpers/review_snapshot_cli.py": "8f5d72f61a75e6aeab3834364ae7edb2065de42a9f1452d17e19a3ddf2792f58",
+   "operator-helpers/snapshot_confirm.js": "6214f0b8a03d678fc14fc28a595e7a0060586cc5d8f3115160dc083735d84432",
+   "operator-helpers/snapshot_read.js": "e097be61d8f7309f1fae74959b6513d1625358176f5a0cd5709e41472408f5a8",
+-  "run_trial_r24_review_snapshot.py": "ab7f8220c5bbe32d5bdd04b5d54f0832967f24c7cc05cbb7385795e909d4950c",
++  "run_trial_r24_review_snapshot.py": "1f8cf2b78f3a56e2f38ab561ff1a7a3c072d984878a02be9b6afedf68a4fcd28",
+   "trial_web_r24_review_snapshot.py": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+   "review_page_r24.js": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
+   "confirm_page_r24.js": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
+@@ -35,6 +35,6 @@
+   "startup_observation.py": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda",
+   "trial_ring_cached.py": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
+   "trial_log_v4_mss.py": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5",
+-  "r35_package_selection.py": "7e11daf765c0a90faf5796faf15a3dd79440289d94fd3cba4f0de41daa48ab34",
++  "r35_package_selection.py": "33e7115877732c3c6ff52c59f9281e24f46dd168149afd2f0979b35a57e39a23",
+   "runtime-wrapper/cleanup_evidence.py": "a293ab051ca2f744bb8189e708a1a3bcc1360b252d63253141198e78d2dd2a5d"
+ }
+--- r39/r35_package_selection.py
++++ r42/r35_package_selection.py
+@@ -1,26 +1,27 @@
+-"""Fixed r36 selector/identity checks only. No launch, QMP, browser or logging."""
++"""Fixed r42 command-entry-timing selector/identity checks only. No launch, QMP, browser or logging."""
+ from pathlib import Path
+ import hashlib,json
+ HOST=Path(__file__).resolve().parent
+ DEL=HOST.parent
+-APPROVED_HOST=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate')
+-PACKAGE=DEL/'r36-fixed-slot-package'
+-CANDIDATE_SHA='0bf214178ab8e60d1ac7755e1d1b2fcc0d2c325ff8473abd50402f09ab81fab4'
+-CPIO_SHA='49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff'
++APPROVED_HOST=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner')
++PACKAGE=DEL/'r42-command-timing-package'
++CANDIDATE_SHA='857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806'
++CPIO_SHA='59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63'
+ CPIO_BYTES=453213884
+-PROFILE='r35-diagnostic-r36-n64-r39'
+-LABEL='v35diag-n64-r36-r39'
++PROFILE='r41-entry-timing-r42'
++LABEL='v41timing-n64-r42'
+ PINS={'r30-startup-observation-candidate/SHA256SUMS':'e04a86e60d0b311d57df50a6060064f6f57e02a33d3c04c015922e6a37749a49','r30-startup-observation-candidate/SOURCE-FREEZE.json':'10265a99fd1a74dc23d85477c82f078485863b92ed664e12132e0a9cf41ce717','r30-startup-observation-candidate/CORE-SOURCE-FREEZE.json':'3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9','r35-existing-log-observation-candidate/SHA256SUMS':'c7aee1bf7a35320e3c8d08eec03214957832008197741feb971433f19c524a71','r35-existing-log-observation-candidate/SOURCE-FREEZE.json':'dd4f8a2045220a045c32b8a0a686227f08e4e8c2edc7adca8964a12ddedc66e4','r36-fixed-slot-package/SHA256SUMS':'9a06c51caa6bc3517bedb9db06a72452fe4a12156ed3838034821caf151ecf03'}
+ PINS.update({'r37-diagnostic-runner-candidate/SHA256SUMS':'ede0cfdc07066faf00d98e6934e5125dc10d598f8e228d8364ca0cf6fab1155c','r37-diagnostic-runner-candidate/SOURCE-FREEZE.json':'861b26c5aefbe393a5e58e1015914e517f0bb9e928c6f5e572a9f56816084ca9','r37-diagnostic-runner-candidate/CORE-SOURCE-FREEZE.json':'7752a6fd7cdb74def7a3cfa9659ed6a1a4f6ab23708a5aaaed5f345e7c46f303'})
++PINS.update({'r39-cleanup-evidence-candidate/SHA256SUMS': '7a3f5006d6b693207ab0ef58daac919a56668da0d95e9863888389cac059a8f5', 'r39-cleanup-evidence-candidate/SOURCE-FREEZE.json': '3f4d9894d2bfdd1bf15f2c01132006c78f8331220f8e8da1bcee4adcbd37ff43', 'r39-cleanup-evidence-candidate/CORE-SOURCE-FREEZE.json': '642149dac737315d19dc6910804538eec6df79a43261527c06fcaf23d374bd50', 'r41-command-entry-timing-candidate/SHA256SUMS': '785759f29c2f8985854852b0d64a190d8f8c3e86cf9f8048eed5158c491221df', 'r41-command-entry-timing-candidate/SOURCE-FREEZE.json': '0f34af0ecfc72c9264c0a13e0e279424ce7eec38bd5e8e127b05b9b1f6537f15', 'r42-command-timing-package/ARCHIVE-DIFF.json': 'a9d5787b0cda916896f214982092113743786ad40fb2a557ae8b47b158ac524b', 'r42-command-timing-package/source-index.json': '589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a'})
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def exact_regular(path):
+  p=Path(path)
+- if not p.is_absolute() or not p.is_file() or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r39 regular exact path required: '+str(p))
++ if not p.is_absolute() or not p.is_file() or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r42 regular exact path required: '+str(p))
+  return p
+ def output_root(path):
+  p=Path(path)
+- if HOST!=APPROVED_HOST or not p.is_absolute() or p.parent!=HOST/'run-inputs' or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r39 exclusive run-inputs boundary required')
++ if HOST!=APPROVED_HOST or not p.is_absolute() or p.parent!=HOST/'run-inputs' or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r42 exclusive run-inputs boundary required')
+  return p
+ def options(ns):
+  if ns.r35_diagnostic_package and (not ns.snapshot_tail or ns.gate_publish_interval!=64 or ns.review_procdiag_r4e or ns.internal_hoststep):raise ValueError('r35 package requires snapshot-tail/N64; procdiag/N1/internal forbidden')
+@@ -29,12 +30,12 @@
+  groups={}
+  for rel,h in PINS.items():
+   p=exact_regular(DEL/rel)
+-  if sha(p)!=h:raise ValueError('r39 frozen input identity changed: '+rel)
++  if sha(p)!=h:raise ValueError('r42 frozen input identity changed: '+rel)
+   groups[rel]=h
+  p=exact_regular(PACKAGE/'candidate.json')
+- if sha(p)!=CANDIDATE_SHA:raise ValueError('r36 manifest identity changed')
++ if sha(p)!=CANDIDATE_SHA:raise ValueError('r42 manifest identity changed')
+  c=json.loads(p.read_text());initrd=exact_regular(c['initrd']['path'])
+- if initrd!=PACKAGE/'guest.cpio' or c['initrd']['sha256']!=CPIO_SHA or initrd.stat().st_size!=CPIO_BYTES or sha(initrd)!=CPIO_SHA:raise ValueError('r36 CPIO path/size/hash changed')
++ if initrd!=PACKAGE/'guest.cpio' or c['initrd']['sha256']!=CPIO_SHA or initrd.stat().st_size!=CPIO_BYTES or sha(initrd)!=CPIO_SHA:raise ValueError('r42 CPIO path/size/hash changed')
+  dtb=exact_regular(c['dtb']['path']);expected_dtb=DEL/'v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb'
+  if dtb!=expected_dtb or c['dtb']['sha256']!='5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b' or sha(dtb)!=c['dtb']['sha256']:raise ValueError('fixed DTB changed')
+  if c['memory_mib']!=5120 or c['initrd_load_address']!='0x440000000':raise ValueError('fixed platform profile changed')

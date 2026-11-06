@@ -1,0 +1,208 @@
+{
+  "source_receipts": {
+    "sony": {
+      "url": "https://raw.githubusercontent.com/ampas/aces-dev/v1.3/transforms/ctl/idt/vendorSupplied/sony/IDT.Sony.SLog3_SGamut3.ctl",
+      "read_via": "web",
+      "provider": "Sony Electronics Corp., Academy source repository"
+    },
+    "venice": {
+      "url": "https://github.com/aces-aswf/aces-core/blob/v1.3/transforms/ctl/idt/vendorSupplied/sony/IDT.Sony.Venice_SLog3_SGamut3.ctl",
+      "read_via": "GitHub contents API",
+      "api_url": "https://api.github.com/repos/aces-aswf/aces-core/contents/transforms/ctl/idt/vendorSupplied/sony/IDT.Sony.Venice_SLog3_SGamut3.ctl?ref=v1.3",
+      "git_blob_sha": "a464ffa21b03ae09b7442a872e315f33457f4a10",
+      "provider": "Sony Electronics Corp., Academy source repository"
+    },
+    "utilities": {
+      "url": "https://raw.githubusercontent.com/aces-aswf/aces-core/v1.3/transforms/ctl/lib/ACESlib.Utilities_Color.ctl",
+      "read_via": "web",
+      "sections": [
+        "AP0",
+        "AP1"
+      ]
+    }
+  },
+  "primaries": {
+    "AP0": [
+      [
+        0.7347,
+        0.2653
+      ],
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.0001,
+        -0.077
+      ],
+      [
+        0.32168,
+        0.33767
+      ]
+    ],
+    "AP1": [
+      [
+        0.713,
+        0.293
+      ],
+      [
+        0.165,
+        0.83
+      ],
+      [
+        0.128,
+        0.044
+      ],
+      [
+        0.32168,
+        0.33767
+      ]
+    ]
+  },
+  "AP0_to_AP1": [
+    [
+      1.4514393161456656,
+      -0.23651074689374024,
+      -0.21492856925192538
+    ],
+    [
+      -0.07655377339602054,
+      1.1762296998335726,
+      -0.09967592643755216
+    ],
+    [
+      0.00831614842569772,
+      -0.006032449791021028,
+      0.9977163013653233
+    ]
+  ],
+  "recovered_matrix": [
+    [
+      1.1518402099609375,
+      -0.117706298828125,
+      -0.0341339111328125
+    ],
+    [
+      -0.04052734375,
+      1.2066192626953125,
+      -0.1660919189453125
+    ],
+    [
+      -0.0123138427734375,
+      0.0072479248046875,
+      1.00506591796875
+    ]
+  ],
+  "comparisons": {
+    "sony": {
+      "sg3_to_ap0": [
+        [
+          0.7529825954,
+          0.1433702162,
+          0.1036471884
+        ],
+        [
+          0.0217076974,
+          1.0153188355,
+          -0.0370265329
+        ],
+        [
+          -0.0094160528,
+          0.0033704179,
+          1.0060456349
+        ]
+      ],
+      "expected_ap1": [
+        [
+          1.0897982183678516,
+          -0.03276504665943143,
+          -0.05703317170842027
+        ],
+        [
+          -0.03117186679629409,
+          1.18293668854616,
+          -0.151764821749866
+        ],
+        [
+          -0.0032635849424072793,
+          -0.0015698510180446362,
+          1.004833435960452
+        ]
+      ],
+      "differences_q16_units": [
+        [
+          4065.983961044476,
+          -5566.709902127502,
+          1500.7259410830306
+        ],
+        [
+          -613.1205376380706,
+          1552.0611794388533,
+          -938.940641800782
+        ],
+        [
+          -593.1176972143966,
+          577.8817563185733,
+          15.235940895814565
+        ]
+      ],
+      "maximum_absolute_q16_difference": 5566.709902127502
+    },
+    "venice": {
+      "sg3_to_ap0": [
+        [
+          0.7933297411,
+          0.0890786256,
+          0.1175916333
+        ],
+        [
+          0.0155810585,
+          1.0327123069,
+          -0.0482933654
+        ],
+        [
+          -0.0188647478,
+          0.0127694121,
+          1.0060953358
+        ]
+      ],
+      "expected_ap1": [
+        [
+          1.1518394623709243,
+          -0.11769985108005794,
+          -0.034139611312359236
+        ],
+        [
+          -0.04052512025197293,
+          1.2066147788596815,
+          -0.16608965861767633
+        ],
+        [
+          -0.012318210476789888,
+          0.007251256543124615,
+          1.005066954033437
+        ]
+      ],
+      "differences_q16_units": [
+        [
+          0.04899405910691712,
+          -0.4225596173228041,
+          0.373566966774888
+        ],
+        [
+          -0.14571916670183782,
+          0.29385265191376675,
+          -0.14813283196417615
+        ],
+        [
+          0.286241806902126,
+          -0.2183488102147635,
+          -0.06789953532279469
+        ]
+      ],
+      "maximum_absolute_q16_difference": 0.4225596173228041
+    }
+  },
+  "nine_coefficients_equal_after_Q16_rounding": true,
+  "scope": "Published Sony vendor input matrix plus Academy AP0-to-AP1 math. Does not identify sensor calibration or prove hardware application."
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "fx3-stage46-recovery-adaptation-gaps/1",
+  "created_utc": "2026-10-26T01:53:50.564621+00:00",
+  "target": {
+    "model": "ILME-FX3",
+    "user_menu_firmware": "7.02",
+    "confirmed_cached_MSC": "054C:0DA1",
+    "actual_live_program_hashes_backup_service_endpoint_and_WBI_backend": "not_observed"
+  },
+  "current_authorization": {
+    "scope": "Windows_cached_PnP_inventory_only",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": false,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false
+  },
+  "automatic_device_actions": [],
+  "usable_principles": [
+    "Fresh current-byte plan with narrow target scope",
+    "Same-body and current-session attribution",
+    "Preserve native unknown outcomes; do not infer completion from empty temporary state",
+    "Per-batch byte precondition and complete-byte readback",
+    "Distinct on-disk restoration, loaded state, code exit and physical acceptance"
+  ],
+  "not_portable_as_is": [
+    "ILCE-7CM2/2.01 admission and normal0E8A/service0336 assumptions",
+    "A7C II app/CP offsets and6 AP runtime spans",
+    "Property groups/defaults and built-in factory2.01 regions",
+    "/dev/nflasha15 mount gate and*wbi4 backend gate",
+    "A7C II-only mode-specific startup workaround"
+  ],
+  "required_FX3_work": [
+    {
+      "id": "R1",
+      "work": "Complete current-session identity/protocol/exit plan and normal-parent USB cached association. Active access requires separate authorization.",
+      "status": "incomplete"
+    },
+    {
+      "id": "R2",
+      "work": "Capture and authenticate healthy same-body originals for every proposed affected file/setting plus dependencies. Official samples are not same-body originals; A7C II two-program/name inventory does not cover an FX3 av-cam candidate.",
+      "status": "missing"
+    },
+    {
+      "id": "R3",
+      "work": "Bind actual worker/ABI/path/owner/epoch/locks and all consumers/code exits, with restricted exact-byte restoration and readback.",
+      "status": "missing"
+    },
+    {
+      "id": "R4",
+      "work": "Verify current WBI backend/retained-image semantics, effective loaded state, physical cold start and unchanged modes.",
+      "status": "missing"
+    },
+    {
+      "id": "R5",
+      "work": "Demonstrate an independent recoverable entry/fault envelope before relying on recovery for persistent changes; do not induce a brick.",
+      "status": "missing"
+    },
+    {
+      "id": "R6",
+      "work": "Verify real HD29.97 HEVC42010~16M MAIN, audio/timestamps/mux/query/cache consistency, long recording and temperature.",
+      "status": "missing"
+    }
+  ],
+  "fault_envelope": [
+    {
+      "fault": "Host interruption with working service and exact transaction evidence",
+      "potential": "Account and re-plan fresh known bytes; FX3 not yet implemented or demonstrated."
+    },
+    {
+      "fault": "Some complete write windows old and some target",
+      "potential": "Known-window algorithm can recognize this fixture; not a complete device rollback or power-loss guarantee."
+    },
+    {
+      "fault": "Unexpected mixed bytes inside one window",
+      "potential": "Original inspected host gate rejects; manual evidence review/new FX3 repair plan needed."
+    },
+    {
+      "fault": "Mode-specific app failure with another boot path still working",
+      "potential": "A7C II user report only; no FX3 fallback established."
+    },
+    {
+      "fault": "No working service/kernel/loader or boot/storage corruption",
+      "potential": "Audited software has no demonstrated independent recovery path; current Mac/Windows alone are not rescue evidence."
+    }
+  ],
+  "camera_or_remote_operation": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

@@ -1,0 +1,100 @@
+{
+  "worker_source_sha256": "22d6e613fb2c33861eac93653c7148e34ad22dd3b5b14ac0d4c75d5b903efb29",
+  "production_syscall_allowlist": [
+    29,
+    34,
+    44,
+    56,
+    57,
+    63,
+    64,
+    67,
+    80,
+    82,
+    113,
+    175
+  ],
+  "no_constructor_preload_unlink_or_source_write": true,
+  "signed_statfs_available_blocks_negative_rejected": true,
+  "source_path": "/dev/cnflasha1",
+  "write_target": "new files relative to validated tmpfs directory only",
+  "imports": {
+    "fx3_recovery/__init__.py": [],
+    "fx3_recovery/__main__.py": [
+      ".capture",
+      ".engine",
+      ".fat",
+      ".files",
+      ".worker",
+      "argparse",
+      "json"
+    ],
+    "fx3_recovery/capture.py": [
+      ".fat",
+      ".files",
+      "dataclasses",
+      "hashlib",
+      "json",
+      "math",
+      "os",
+      "pathlib",
+      "re",
+      "secrets",
+      "stat",
+      "time",
+      "zlib"
+    ],
+    "fx3_recovery/engine.py": [
+      ".fat",
+      ".files",
+      ".profiles",
+      ".squash",
+      "hashlib",
+      "json",
+      "re",
+      "struct",
+      "zlib"
+    ],
+    "fx3_recovery/fat.py": [
+      ".files",
+      "struct"
+    ],
+    "fx3_recovery/files.py": [
+      "json",
+      "os",
+      "pathlib",
+      "plistlib",
+      "stat",
+      "subprocess"
+    ],
+    "fx3_recovery/profiles.py": [
+      ".files",
+      "hashlib"
+    ],
+    "fx3_recovery/squash.py": [
+      "functools",
+      "math",
+      "stat",
+      "struct",
+      "zlib"
+    ],
+    "fx3_recovery/worker.py": [
+      ".capture",
+      ".files",
+      "hashlib",
+      "pathlib",
+      "struct",
+      "zlib"
+    ]
+  },
+  "python_native_loader_or_USB_factory": false,
+  "native_object_executed_or_linked": false,
+  "new_camera_operations": 0,
+  "remaining": [
+    "actual Sony kernel ABI/support validation",
+    "linking and explicit temporary process launch",
+    "service identity and delivery",
+    "normal return and independent rescue",
+    "p1 is not complete eMMC backup"
+  ]
+}

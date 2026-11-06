@@ -1,0 +1,80 @@
+{
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "MIS_sha256": "4cd3e9bc3a0a4aec4793bff77e7ca4dccdba8637212cd632cdc5ecbe550daf98",
+  "strict_original_boot_caller": {
+    "entry": "0xfe056024",
+    "arguments": [],
+    "original_instructions": 11,
+    "boundary": {
+      "reason": "unmapped_external_state",
+      "PC": "0xfe0587b0",
+      "address": "0xfe040090",
+      "bytes": 4
+    },
+    "registers": [
+      "0x2",
+      "0x0",
+      "0x0",
+      "0x0"
+    ],
+    "original_return_samples": [],
+    "original_calls": [
+      {
+        "PC": "0xfe05602c",
+        "instruction": "bl #0xfe058794"
+      }
+    ],
+    "nonstack_writes": 0,
+    "boot_information_supplied": false,
+    "DGU_entry_executed": false,
+    "diagnostic_or_other_function_return_replaced": false
+  },
+  "explicit_original_MIS_reader_prefix": {
+    "entry": "0xfe055d14",
+    "arguments": [
+      "0x10",
+      "0xfe040800",
+      "0xfe080000"
+    ],
+    "original_instructions": 99,
+    "boundary": {
+      "reason": "before_original_diagnostic_call",
+      "PC": "0xfe0561b4",
+      "caller_return": "0xfe055dd8"
+    },
+    "registers": [
+      "0x6",
+      "0xfe05f501",
+      "0xfe080123",
+      "0x44"
+    ],
+    "original_return_samples": [
+      {
+        "PC": "0xfe055d44",
+        "original_comparison_return": "0x0"
+      }
+    ],
+    "original_calls": [
+      {
+        "PC": "0xfe055d40",
+        "instruction": "bl #0xfe04b364"
+      },
+      {
+        "PC": "0xfe055dd4",
+        "instruction": "bl #0xfe0561b4"
+      }
+    ],
+    "nonstack_writes": 0,
+    "boot_information_supplied": false,
+    "DGU_entry_executed": false,
+    "diagnostic_or_other_function_return_replaced": false
+  },
+  "explicit_case_scope": "Independent direct function call using original MIS bytes at its declared base and pformat DGU load address as explicit arguments. It does not supply actual boot-table values or prove that the real caller reaches this state.",
+  "physical_state_or_block_data_supplied": false,
+  "hardware_CPU_operations_executed": 0,
+  "native_Sony_programs_executed": 0,
+  "device_actions": 0,
+  "full_boot_completed": false,
+  "memory_initialization_or_ISP_or_RAW_completed": false,
+  "flashable_package_produced": false
+}

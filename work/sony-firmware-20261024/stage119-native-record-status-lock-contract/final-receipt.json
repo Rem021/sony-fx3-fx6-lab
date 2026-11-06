@@ -1,0 +1,94 @@
+{
+  "schema": "fx3-stage119-record-status-lock-contract/1",
+  "created_utc": "2026-10-27T16:19:36.424397+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/README.md",
+      "bytes": 5232,
+      "sha256": "73d962c290f8cb346607c632dd84221bff040bf48b9eda75b000188e51909758"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/completed-evidence-review.json",
+      "bytes": 491,
+      "sha256": "230dd9be94c7bdade9230b42a5640e09116def764f28e569d4712db951082626"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/diagnostic-contract.json",
+      "bytes": 1917,
+      "sha256": "6eeeba66f53c26785b14a31964561f0900840a2dc59982442cc929254fb25efb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/goal-status-after.json",
+      "bytes": 374972,
+      "sha256": "6c47bfcf5ade908728baa79890319eaa9bf13f8b53a24c5c1dd0ce52693f1f6d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/goal-status-before.json",
+      "bytes": 371293,
+      "sha256": "ba901005769cce8fe596a9be3ad856ac00ed4c58f067c4b09ea38af3f6b50356"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/public-source-notes.json",
+      "bytes": 758,
+      "sha256": "6428de8450c09dae9b2a1f7e2d65151c0e73d31666e4da8e14282ea438f9848b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/record_status.py",
+      "bytes": 10993,
+      "sha256": "6572ee13e7df6fb9032a3d0e33cde4665ab270b467c9901fee26b8279378120b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/review_and_seal.py",
+      "bytes": 14348,
+      "sha256": "388324fcc81306c09bd329df4500b1a7e7cd41c354e4faa5f2c5774979585b80"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/run-native-status-lock-20261027/executed-source.py",
+      "bytes": 10993,
+      "sha256": "6572ee13e7df6fb9032a3d0e33cde4665ab270b467c9901fee26b8279378120b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/run-native-status-lock-20261027/record-status-results.json",
+      "bytes": 198497,
+      "sha256": "8fbe641185b3ab8e3483bd6df3f05b082f21ef24a30d163d10ca598b40ff1f72"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage119-native-record-status-lock-contract/source-and-scope-audit.json",
+      "bytes": 39149,
+      "sha256": "3cccf45b1ed57322110e3c1eb2db4a70e281bb7d19ed3217f1ffcb20b08159bd"
+    }
+  ],
+  "previous_manifest_sha256": "f98c16ef575633a342571398fc5d48fa584c8051aaa3a0f87de900601f22d027",
+  "operations": {
+    "status": "PASS_NATIVE_RECORD_STATUS_COPY_LOCK_CONTRACT_NOT_LIVE_IDLE_OR_EPOCH",
+    "created_utc": "2026-10-27T16:19:36.424397+00:00",
+    "previous_manifest_members_verified": 12,
+    "cases": 30,
+    "bounded_phases": 50,
+    "same_agent_review_not_independent_engine": true,
+    "formal_source_matches_executed_copy": true,
+    "stage117_frontend_and_stage75_backend_unchanged": true,
+    "actual_camera_Windows_UU_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "ba901005769cce8fe596a9be3ad856ac00ed4c58f067c4b09ea38af3f6b50356",
+    "after_sha256": "6c47bfcf5ade908728baa79890319eaa9bf13f8b53a24c5c1dd0ce52693f1f6d"
+  },
+  "readme_index_before_sha256": "4a6ce777f395acef8bab7ce7424e98ab9f45cfe01ba4aaf0f83e3b0688ca0517",
+  "readme_index_after_sha256": "bce7abbba2fb1c2c4161c590a83dbea2d28ce072f33d9b698cd94759f6426cb1",
+  "readme_index_entry": "- [2026-10-27 FX3 录制状态与锁配对](<work/sony-firmware-20261024/stage119-native-record-status-lock-contract/README.md>)：30例50个原片段区分状态读取/更新事务和参数锁，定位Set/Start/Stop共用API互斥锁候选；实际空闲/代次/编码恢复未验。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

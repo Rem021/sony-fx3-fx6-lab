@@ -1,0 +1,520 @@
+{
+  "created_utc": "2026-10-30T11:37:35.461946+00:00",
+  "previous_receipt_sha256": "6bd744f39317d8a8761f74e7a86093a460a46397ac6e236d33670e21bf767ff7",
+  "previous_files_reverified": 21,
+  "AP_reference": {
+    "sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+    "model": "A7 IV v2.00; not current FX3 AP boot"
+  },
+  "original_FX3_p8": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha8.img",
+    "sha256": "3c751e784fe6790a4b455990d7c6e144c33cf51c643cf3bf9523f8a3bd5a6a2b",
+    "BPB": {
+      "kind": "FAT12",
+      "sector_size": 512,
+      "sectors_per_cluster": 32,
+      "root_offset": 49152,
+      "data_offset": 65536,
+      "cluster_count": 1366
+    },
+    "BPB_sector_sha256": "fb4cd13d68fcb4215d16e30598b0fa80ff33b59207c9f183beed845816392147",
+    "root_directory_sha256": "7f40f7aae2c7a8c932d891058e8c6b46d6cbddc26a3684267c0837244a1385e8",
+    "FAT_copy0_sha256": "6520814d29207d24cc118a85759517f903d6fc3fcf2c2005cbbc6ec1cdc7dfb9"
+  },
+  "fixture": "Original FX3 p8 BPB, FAT and root bytes mapped into declared RAM locations. Partition index 8 comes from the default class5 descriptor; actual mounting/selection is not asserted.",
+  "root_lookup_fragments": [
+    {
+      "name": "DmmCfg.bin",
+      "ctype_initializer": {
+        "entry": "0xfe04a0e8",
+        "boundary": {
+          "reason": "before_original_initializer_epilogue",
+          "PC": "0xfe04a104"
+        },
+        "instructions": 15,
+        "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+        "reached_entries": [],
+        "X0": "0xfe06901d",
+        "X1": "0x0",
+        "X2": "0xd00d0002",
+        "X3": "0xd00d0003",
+        "RAM_write_operations": 3,
+        "BK4_global_writes": []
+      },
+      "query_fragment": {
+        "entry": "0xfe05a354",
+        "boundary": {
+          "reason": "before_original_query_epilogue",
+          "PC": "0xfe05a640"
+        },
+        "instructions": 539,
+        "trace_sha256": "861609679c6de47aca5157fe0a3313d95b03de36b95d95a75a4d33b273e9142b",
+        "reached_entries": [],
+        "X0": "0xa938",
+        "X1": "0x10050006b",
+        "X2": "0x0",
+        "X3": "0x0",
+        "RAM_write_operations": 65,
+        "BK4_global_writes": []
+      },
+      "returned_size_or_error": 43320,
+      "file_metadata": {
+        "cluster": 5,
+        "remaining_bytes": 43320
+      }
+    },
+    {
+      "name": "cpImg.dat",
+      "ctype_initializer": {
+        "entry": "0xfe04a0e8",
+        "boundary": {
+          "reason": "before_original_initializer_epilogue",
+          "PC": "0xfe04a104"
+        },
+        "instructions": 15,
+        "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+        "reached_entries": [],
+        "X0": "0xfe06901d",
+        "X1": "0x0",
+        "X2": "0xd00d0002",
+        "X3": "0xd00d0003",
+        "RAM_write_operations": 3,
+        "BK4_global_writes": []
+      },
+      "query_fragment": {
+        "entry": "0xfe05a354",
+        "boundary": {
+          "reason": "before_original_query_epilogue",
+          "PC": "0xfe05a640"
+        },
+        "instructions": 737,
+        "trace_sha256": "a318ff130ccb09e0a0570c05eb5d74c08cf18d99b4f5ed98adba55596d3a3270",
+        "reached_entries": [],
+        "X0": "0x1b0cc0",
+        "X1": "0x10050016b",
+        "X2": "0x0",
+        "X3": "0x0",
+        "RAM_write_operations": 60,
+        "BK4_global_writes": []
+      },
+      "returned_size_or_error": 1772736,
+      "file_metadata": {
+        "cluster": 29,
+        "remaining_bytes": 1772736
+      }
+    },
+    {
+      "name": "OldAmtCL.bin",
+      "ctype_initializer": {
+        "entry": "0xfe04a0e8",
+        "boundary": {
+          "reason": "before_original_initializer_epilogue",
+          "PC": "0xfe04a104"
+        },
+        "instructions": 15,
+        "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+        "reached_entries": [],
+        "X0": "0xfe06901d",
+        "X1": "0x0",
+        "X2": "0xd00d0002",
+        "X3": "0xd00d0003",
+        "RAM_write_operations": 3,
+        "BK4_global_writes": []
+      },
+      "query_fragment": {
+        "entry": "0xfe05a354",
+        "boundary": {
+          "reason": "before_original_query_epilogue",
+          "PC": "0xfe05a640"
+        },
+        "instructions": 720,
+        "trace_sha256": "3c8c77c9a7e728c4038caeaa440d51941154b31174741016737e0781371e1d21",
+        "reached_entries": [],
+        "X0": "0x277e6",
+        "X1": "0x1005000eb",
+        "X2": "0x0",
+        "X3": "0x0",
+        "RAM_write_operations": 75,
+        "BK4_global_writes": []
+      },
+      "returned_size_or_error": 161766,
+      "file_metadata": {
+        "cluster": 16,
+        "remaining_bytes": 161766
+      }
+    },
+    {
+      "name": "SysSound.bin",
+      "ctype_initializer": {
+        "entry": "0xfe04a0e8",
+        "boundary": {
+          "reason": "before_original_initializer_epilogue",
+          "PC": "0xfe04a104"
+        },
+        "instructions": 15,
+        "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+        "reached_entries": [],
+        "X0": "0xfe06901d",
+        "X1": "0x0",
+        "X2": "0xd00d0002",
+        "X3": "0xd00d0003",
+        "RAM_write_operations": 3,
+        "BK4_global_writes": []
+      },
+      "query_fragment": {
+        "entry": "0xfe05a354",
+        "boundary": {
+          "reason": "before_original_query_epilogue",
+          "PC": "0xfe05a640"
+        },
+        "instructions": 782,
+        "trace_sha256": "c00bb0a40e69ce3107b28608c11f7c595759d700c2b0da8f84c86df8e11b2277",
+        "reached_entries": [],
+        "X0": "0x8480",
+        "X1": "0x10050012b",
+        "X2": "0x0",
+        "X3": "0x0",
+        "RAM_write_operations": 75,
+        "BK4_global_writes": []
+      },
+      "returned_size_or_error": 33920,
+      "file_metadata": {
+        "cluster": 26,
+        "remaining_bytes": 33920
+      }
+    },
+    {
+      "name": "bonobo.bin",
+      "ctype_initializer": {
+        "entry": "0xfe04a0e8",
+        "boundary": {
+          "reason": "before_original_initializer_epilogue",
+          "PC": "0xfe04a104"
+        },
+        "instructions": 15,
+        "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+        "reached_entries": [],
+        "X0": "0xfe06901d",
+        "X1": "0x0",
+        "X2": "0xd00d0002",
+        "X3": "0xd00d0003",
+        "RAM_write_operations": 3,
+        "BK4_global_writes": []
+      },
+      "query_fragment": {
+        "entry": "0xfe05a354",
+        "boundary": {
+          "reason": "before_original_query_epilogue",
+          "PC": "0xfe05a640"
+        },
+        "instructions": 1041,
+        "trace_sha256": "f4b7e8ccee77a3b849e8b475e39884057b8334b995fe4c512a399c9501f2d58b",
+        "reached_entries": [],
+        "X0": "0xfffffe68",
+        "X1": "0x54",
+        "X2": "0x7",
+        "X3": "0x4f4e4f42",
+        "RAM_write_operations": 63,
+        "BK4_global_writes": []
+      },
+      "returned_size_or_error": -408,
+      "file_metadata": null
+    },
+    {
+      "name": "defdet.bin",
+      "ctype_initializer": {
+        "entry": "0xfe04a0e8",
+        "boundary": {
+          "reason": "before_original_initializer_epilogue",
+          "PC": "0xfe04a104"
+        },
+        "instructions": 15,
+        "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+        "reached_entries": [],
+        "X0": "0xfe06901d",
+        "X1": "0x0",
+        "X2": "0xd00d0002",
+        "X3": "0xd00d0003",
+        "RAM_write_operations": 3,
+        "BK4_global_writes": []
+      },
+      "query_fragment": {
+        "entry": "0xfe05a354",
+        "boundary": {
+          "reason": "before_original_query_epilogue",
+          "PC": "0xfe05a640"
+        },
+        "instructions": 1041,
+        "trace_sha256": "c71e7552190674d22d9578ce9fa8b0efb1c1a49910c4e2ca309e666cd294ed66",
+        "reached_entries": [],
+        "X0": "0xfffffe68",
+        "X1": "0x54",
+        "X2": "0x7",
+        "X3": "0x44464544",
+        "RAM_write_operations": 63,
+        "BK4_global_writes": []
+      },
+      "returned_size_or_error": -408,
+      "file_metadata": null
+    },
+    {
+      "name": "psd.bin",
+      "ctype_initializer": {
+        "entry": "0xfe04a0e8",
+        "boundary": {
+          "reason": "before_original_initializer_epilogue",
+          "PC": "0xfe04a104"
+        },
+        "instructions": 15,
+        "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+        "reached_entries": [],
+        "X0": "0xfe06901d",
+        "X1": "0x0",
+        "X2": "0xd00d0002",
+        "X3": "0xd00d0003",
+        "RAM_write_operations": 3,
+        "BK4_global_writes": []
+      },
+      "query_fragment": {
+        "entry": "0xfe05a354",
+        "boundary": {
+          "reason": "before_original_query_epilogue",
+          "PC": "0xfe05a640"
+        },
+        "instructions": 926,
+        "trace_sha256": "2ab7403ea6cf4eb2997532b41565511ae6c0df8aab83846a66271ec787163d6b",
+        "reached_entries": [],
+        "X0": "0xfffffe68",
+        "X1": "0x54",
+        "X2": "0x7",
+        "X3": "0x20445350",
+        "RAM_write_operations": 48,
+        "BK4_global_writes": []
+      },
+      "returned_size_or_error": -408,
+      "file_metadata": null
+    },
+    {
+      "name": "lensfile.bin",
+      "ctype_initializer": {
+        "entry": "0xfe04a0e8",
+        "boundary": {
+          "reason": "before_original_initializer_epilogue",
+          "PC": "0xfe04a104"
+        },
+        "instructions": 15,
+        "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+        "reached_entries": [],
+        "X0": "0xfe06901d",
+        "X1": "0x0",
+        "X2": "0xd00d0002",
+        "X3": "0xd00d0003",
+        "RAM_write_operations": 3,
+        "BK4_global_writes": []
+      },
+      "query_fragment": {
+        "entry": "0xfe05a354",
+        "boundary": {
+          "reason": "before_original_query_epilogue",
+          "PC": "0xfe05a640"
+        },
+        "instructions": 1110,
+        "trace_sha256": "5696bd31425f6ea32ab2ce8dea88dce096c5d0ad1a152f95211e742cb1534796",
+        "reached_entries": [],
+        "X0": "0xfffffe68",
+        "X1": "0x54",
+        "X2": "0x7",
+        "X3": "0x534e454c",
+        "RAM_write_operations": 73,
+        "BK4_global_writes": []
+      },
+      "returned_size_or_error": -408,
+      "file_metadata": null
+    }
+  ],
+  "DmmCfg_lookup_for_read": {
+    "name": "DmmCfg.bin",
+    "ctype_initializer": {
+      "entry": "0xfe04a0e8",
+      "boundary": {
+        "reason": "before_original_initializer_epilogue",
+        "PC": "0xfe04a104"
+      },
+      "instructions": 15,
+      "trace_sha256": "f18541fd032cd778726eb14a4124c80e616de75ec93e1318c48a354b3b0b3ef2",
+      "reached_entries": [],
+      "X0": "0xfe06901d",
+      "X1": "0x0",
+      "X2": "0xd00d0002",
+      "X3": "0xd00d0003",
+      "RAM_write_operations": 3,
+      "BK4_global_writes": []
+    },
+    "query_fragment": {
+      "entry": "0xfe05a354",
+      "boundary": {
+        "reason": "before_original_query_epilogue",
+        "PC": "0xfe05a640"
+      },
+      "instructions": 539,
+      "trace_sha256": "861609679c6de47aca5157fe0a3313d95b03de36b95d95a75a4d33b273e9142b",
+      "reached_entries": [],
+      "X0": "0xa938",
+      "X1": "0x10050006b",
+      "X2": "0x0",
+      "X3": "0x0",
+      "RAM_write_operations": 65,
+      "BK4_global_writes": []
+    },
+    "returned_size_or_error": 43320,
+    "file_metadata": {
+      "cluster": 5,
+      "remaining_bytes": 43320
+    }
+  },
+  "DmmCfg_original_read_prefix": {
+    "entry": "0xfe05a674",
+    "boundary": {
+      "reason": "before_original_block_dispatch",
+      "PC": "0xfe058b54"
+    },
+    "instructions": 143,
+    "trace_sha256": "e4c55fa38a0f148ec639a65cb9096241d2d35a42f00478d239ab6f10b2be4e94",
+    "reached_entries": [],
+    "X0": "0x8",
+    "X1": "0x4132d8e00",
+    "X2": "0xe0",
+    "X3": "0x54",
+    "RAM_write_operations": 24,
+    "BK4_global_writes": []
+  },
+  "DmmCfg_after_full_sector_read_independent_fragment": {
+    "entry": "0xfe04e4f4",
+    "boundary": {
+      "reason": "before_original_block_dispatch",
+      "PC": "0xfe058b54"
+    },
+    "instructions": 11,
+    "trace_sha256": "446cfd32d4a2fdc9260215635f795564b3d4a5923b1ae65f0da6112813c769cd",
+    "reached_entries": [],
+    "X0": "0x8",
+    "X1": "0xfe06bf00",
+    "X2": "0x134",
+    "X3": "0x1",
+    "RAM_write_operations": 0,
+    "BK4_global_writes": []
+  },
+  "DmmCfg_after_tail_sector_read_independent_fragment": {
+    "result": {
+      "entry": "0xfe04e54c",
+      "boundary": {
+        "reason": "before_original_cluster_read_epilogue",
+        "PC": "0xfe04e568"
+      },
+      "instructions": 214,
+      "trace_sha256": "7c8f863ddd15da7dbb695bedd20c4b77ca7153fc346bf7fd93565e3c68ca89fe",
+      "reached_entries": [
+        "0xfe04b444",
+        "0xfe04c170"
+      ],
+      "X0": "0x4132e3600",
+      "X1": "0xfe06c038",
+      "X2": "0xffffffffffffffff",
+      "X3": "0x333a3031",
+      "RAM_write_operations": 81,
+      "BK4_global_writes": []
+    },
+    "sector": 308,
+    "original_sector_sha256": "189a1ed39352d33b1ad36ad0a4144974f26eba1751ee8b26498f963264527bd9",
+    "output_bytes_written": 312,
+    "original_final_file_bytes_sha256": "3498b13dc86969ba12f42a17649ce833fb0b1f9e5f4127873d8e4ca6dee733a7",
+    "slot_bytes": 102400,
+    "slot_tail_bytes": 59080,
+    "slot_tail_sentinel_unchanged": true,
+    "whole_file_read_executed": false,
+    "actual_tail_read_reply_supplied": false
+  },
+  "static_contract": {
+    "file_load_queries_then_requests_file_size": true,
+    "slot_capacity_passed_to_wrapper": false,
+    "read_count_equality_checked_by_wrapper": false,
+    "nonnegative_read_count_returns_prior_query_size": true,
+    "wrapper_open_failure_status": -408,
+    "wrapper_read_failure_propagated_after_diagnostic": true,
+    "escape_loader_selected_file_result_only_logged": true,
+    "escape_loader_post_file_call_has_no_result_branch": true,
+    "escape_loader_ordinary_tail_sets_zero": true,
+    "these_selected_file_routines_zero_fill_slot_tail": false,
+    "any_prior_whole_boot_staging_initialization_proved": false
+  },
+  "source_windows": [
+    {
+      "label": "reference-escape-loader-whole",
+      "begin": "0xfe0520d4",
+      "end_exclusive": "0xfe05231c",
+      "original_bytes_sha256": "1c5a3d89c7270e487b94f5c137033d4c7fe9c13696c81b6e5e8b69ec4a69e9d6",
+      "listing": "listings/reference-escape-loader-whole.txt"
+    },
+    {
+      "label": "reference-file-load-wrapper",
+      "begin": "0xfe059e20",
+      "end_exclusive": "0xfe059e94",
+      "original_bytes_sha256": "9d9a6a6d332b268697e5134e728d3442124798aa0143a4d8c9d485ad03eb9e90",
+      "listing": "listings/reference-file-load-wrapper.txt"
+    },
+    {
+      "label": "reference-FAT-file-read",
+      "begin": "0xfe05a674",
+      "end_exclusive": "0xfe05a84c",
+      "original_bytes_sha256": "2fd6cbf668bb6cf505ab93e51ba420d352b5a788be6ef32e8deb24d35f3962d1",
+      "listing": "listings/reference-FAT-file-read.txt"
+    },
+    {
+      "label": "reference-FAT-cluster-read",
+      "begin": "0xfe04e424",
+      "end_exclusive": "0xfe04e580",
+      "original_bytes_sha256": "5f8838d4be5af2e07f95ac2f04d1682b740b4683b39ee8a64a45330b06929ddc",
+      "listing": "listings/reference-FAT-cluster-read.txt"
+    },
+    {
+      "label": "reference-FAT-root-lookup",
+      "begin": "0xfe05a354",
+      "end_exclusive": "0xfe05a3b4",
+      "original_bytes_sha256": "bd20bcb316edae9daf70a01a5f8e005a97a429619fc42f37f8eedc0d42017796",
+      "listing": "listings/reference-FAT-root-lookup.txt"
+    },
+    {
+      "label": "reference-FAT-open-result",
+      "begin": "0xfe05a610",
+      "end_exclusive": "0xfe05a674",
+      "original_bytes_sha256": "3e87ec36cfdd78dfb7545b3097f1bad2a55aea41062a354c22845e7fd3725c67",
+      "listing": "listings/reference-FAT-open-result.txt"
+    },
+    {
+      "label": "reference-ctype-init-fragment",
+      "begin": "0xfe04a0e8",
+      "end_exclusive": "0xfe04a104",
+      "original_bytes_sha256": "37214f02392f5d758518b52b3cb14944cf3f2a22114ce1f2d83bea8bed8dc503",
+      "listing": "listings/reference-ctype-init-fragment.txt"
+    },
+    {
+      "label": "reference-ctype-table-helper",
+      "begin": "0xfe062f0c",
+      "end_exclusive": "0xfe062f48",
+      "original_bytes_sha256": "3c699ef38fed9a2e11197414d3e24598b4346bf013fdba27baaa33c69243b780",
+      "listing": "listings/reference-ctype-table-helper.txt"
+    }
+  ],
+  "boundaries": {
+    "physical_actions": 0,
+    "native_Sony_tools_run": false,
+    "original_file_block_io_executed": false,
+    "block_helper_success_returns_supplied": false,
+    "ctype_helper_substituted": false,
+    "originals_modified": false,
+    "other_owner_files_written": false,
+    "FX3_AP_boot_or_current_Backup_obtained": false,
+    "CMOS_RAW_full_ISP_or_flashable_modified_firmware_produced": false,
+    "goal_complete": false
+  }
+}

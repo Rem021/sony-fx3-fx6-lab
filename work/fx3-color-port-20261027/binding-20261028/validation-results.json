@@ -1,0 +1,42 @@
+[
+  {
+    "script": "resource_binding_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_GRAPH_TO_BROKER_TO_OWNER_TO_RESOLVER selector cases 250 acquisitions 7 instructions 20919\n",
+    "stderr": "",
+    "stdout_sha256": "9a6c744e698ca84ca29985aec986dd04283297bf48f81870d6d24cf48d3eca2e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "script": "caller_binding_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_CALLER_SLOT_ALLOCATION_TO_ORIGINAL_COLOR_SDK cases 14 original instructions 28374\n",
+    "stderr": "",
+    "stdout_sha256": "a17efbc96b2175caa5f5a766374aa37806fb00691d59852a923cf2ffb5a335eb",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "script": "context_binding_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_CONTEXT_PRODUCER_TO_ALLOCATOR_TO_COLOR_SDK context cases 80 composed 30 no VFX 3 original instructions 65341\n",
+    "stderr": "",
+    "stdout_sha256": "3e475fabecce58ba56ec3326aa98cf31cd9f8acc72a092d999e75f960e39beda",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "script": "owner_boundaries_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_OWNER_AVAILABILITY_AND_GENERATION_BOUNDARIES availability 112 allocations 56 original instructions 11262\n",
+    "stderr": "",
+    "stdout_sha256": "5e5b411a92cf8914aafb581fc50362356c9c67a5596ee95a0b685dc86245e77a",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "script": "static_inventory.py",
+    "exit_code": 0,
+    "stdout": "PASS_PINNED_CONTEXT_AND_RESOURCE_BINDING_INVENTORY source slices 33 node rows 250\n",
+    "stderr": "",
+    "stdout_sha256": "621512ca8a6d0d72a88805b9ded815640091abb5e66fc9b3d00e9a8017a874f5",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

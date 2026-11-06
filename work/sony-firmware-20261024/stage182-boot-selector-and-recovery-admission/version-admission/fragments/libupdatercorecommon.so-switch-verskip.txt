@@ -1,0 +1,108 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so
+# SHA256 b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74
+# VA [0xc59c, 0xc740) raw slice SHA256 301139bc622969292e4e7c51af51202887433c3602c4460c299769769e2c524d
+    c59c: a9b57bfd     	stp	x29, x30, [sp, #-0xb0]!
+    c5a0: 910003fd     	mov	x29, sp
+    c5a4: a90153f3     	stp	x19, x20, [sp, #0x10]
+    c5a8: 910203b4     	add	x20, x29, #0x80
+    c5ac: aa1403e0     	mov	x0, x20
+    c5b0: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    c5b4: b0000013     	adrp	x19, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    c5b8: 97fff062     	bl	0x8740 <Updater::MountPoint::MountPoint()@plt>
+    c5bc: 9128a661     	add	x1, x19, #0xa29
+    c5c0: aa1403e0     	mov	x0, x20
+    c5c4: 97fff03f     	bl	0x86c0 <Updater::MountPoint::Initialize(char const*)@plt>
+    c5c8: b0000015     	adrp	x21, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    c5cc: aa1403e0     	mov	x0, x20
+    c5d0: 91291aa1     	add	x1, x21, #0xa46
+    c5d4: 52808202     	mov	w2, #0x410              // =1040
+    c5d8: 97ffefc6     	bl	0x84f0 <Updater::MountPoint::Mount(char const*, unsigned int)@plt>
+    c5dc: 72001c1f     	tst	w0, #0xff
+    c5e0: 54000361     	b.ne	0xc64c <Updater::CurrentFirmware::SwitchModeToVersionSkipUpdater()+0xb0>
+    c5e4: b0000002     	adrp	x2, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    c5e8: b0000000     	adrp	x0, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    c5ec: 528001c1     	mov	w1, #0xe                // =14
+    c5f0: 91291aa4     	add	x4, x21, #0xa46
+    c5f4: 91285442     	add	x2, x2, #0xa15
+    c5f8: 91295000     	add	x0, x0, #0xa54
+    c5fc: 52800b83     	mov	w3, #0x5c               // =92
+    c600: 72a00061     	movk	w1, #0x3, lsl #16
+    c604: 97fff1bb     	bl	0x8cf0 <printf@plt>
+    c608: d2800200     	mov	x0, #0x10               // =16
+    c60c: 97ffefe1     	bl	0x8590 <__cxa_allocate_exception@plt>
+    c610: 900000a1     	adrp	x1, 0x20000
+    c614: 900000a2     	adrp	x2, 0x20000
+    c618: f9478821     	ldr	x1, [x1, #0xf10]
+    c61c: f9479842     	ldr	x2, [x2, #0xf30]
+    c620: 91004021     	add	x1, x1, #0x10
+    c624: f9000001     	str	x1, [x0]
+    c628: 528001c1     	mov	w1, #0xe                // =14
+    c62c: 72a00061     	movk	w1, #0x3, lsl #16
+    c630: b9000801     	str	w1, [x0, #0x8]
+    c634: 900000a1     	adrp	x1, 0x20000
+    c638: 3900301f     	strb	wzr, [x0, #0xc]
+    c63c: f947e421     	ldr	x1, [x1, #0xfc8]
+    c640: 97fff168     	bl	0x8be0 <__cxa_throw@plt>
+    c644: aa0003f3     	mov	x19, x0
+    c648: 1400002e     	b	0xc700 <Updater::CurrentFirmware::SwitchModeToVersionSkipUpdater()+0x164>
+    c64c: 9100c3b5     	add	x21, x29, #0x30
+    c650: 9128a661     	add	x1, x19, #0xa29
+    c654: aa1503e0     	mov	x0, x21
+    c658: 97fff12e     	bl	0x8b10 <Updater::ModeFlagFile::ModeFlagFile(char const*)@plt>
+    c65c: 910163b6     	add	x22, x29, #0x58
+    c660: 9128a661     	add	x1, x19, #0xa29
+    c664: aa1603e0     	mov	x0, x22
+    c668: 97fff08e     	bl	0x88a0 <Updater::Mode6FlagFile::Mode6FlagFile(char const*)@plt>
+    c66c: aa1503e0     	mov	x0, x21
+    c670: 97fff17c     	bl	0x8c60 <Updater::BaseFlagFile::Create()@plt>
+    c674: aa1603e0     	mov	x0, x22
+    c678: 97fff17a     	bl	0x8c60 <Updater::BaseFlagFile::Create()@plt>
+    c67c: aa1403e0     	mov	x0, x20
+    c680: 97fff104     	bl	0x8a90 <Updater::MountPoint::Umount()@plt>
+    c684: 72001c1f     	tst	w0, #0xff
+    c688: 54000441     	b.ne	0xc710 <Updater::CurrentFirmware::SwitchModeToVersionSkipUpdater()+0x174>
+    c68c: b0000002     	adrp	x2, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    c690: b0000000     	adrp	x0, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    c694: 528001e1     	mov	w1, #0xf                // =15
+    c698: 9128a664     	add	x4, x19, #0xa29
+    c69c: 91285442     	add	x2, x2, #0xa15
+    c6a0: 91295000     	add	x0, x0, #0xa54
+    c6a4: 52800c63     	mov	w3, #0x63               // =99
+    c6a8: 72a00061     	movk	w1, #0x3, lsl #16
+    c6ac: 97fff191     	bl	0x8cf0 <printf@plt>
+    c6b0: d2800200     	mov	x0, #0x10               // =16
+    c6b4: 97ffefb7     	bl	0x8590 <__cxa_allocate_exception@plt>
+    c6b8: 900000a1     	adrp	x1, 0x20000
+    c6bc: 900000a2     	adrp	x2, 0x20000
+    c6c0: f9478821     	ldr	x1, [x1, #0xf10]
+    c6c4: f9479842     	ldr	x2, [x2, #0xf30]
+    c6c8: 91004021     	add	x1, x1, #0x10
+    c6cc: f9000001     	str	x1, [x0]
+    c6d0: 528001e1     	mov	w1, #0xf                // =15
+    c6d4: 72a00061     	movk	w1, #0x3, lsl #16
+    c6d8: b9000801     	str	w1, [x0, #0x8]
+    c6dc: 900000a1     	adrp	x1, 0x20000
+    c6e0: 3900301f     	strb	wzr, [x0, #0xc]
+    c6e4: f947e421     	ldr	x1, [x1, #0xfc8]
+    c6e8: 97fff13e     	bl	0x8be0 <__cxa_throw@plt>
+    c6ec: aa0003f3     	mov	x19, x0
+    c6f0: aa1603e0     	mov	x0, x22
+    c6f4: 97fff08b     	bl	0x8920 <Updater::Mode6FlagFile::~Mode6FlagFile()@plt>
+    c6f8: aa1503e0     	mov	x0, x21
+    c6fc: 97ffefb5     	bl	0x85d0 <Updater::ModeFlagFile::~ModeFlagFile()@plt>
+    c700: aa1403e0     	mov	x0, x20
+    c704: 97ffef47     	bl	0x8420 <Updater::MountPoint::~MountPoint()@plt>
+    c708: aa1303e0     	mov	x0, x19
+    c70c: 97fff149     	bl	0x8c30 <_Unwind_Resume@plt>
+    c710: aa1603e0     	mov	x0, x22
+    c714: 97fff083     	bl	0x8920 <Updater::Mode6FlagFile::~Mode6FlagFile()@plt>
+    c718: aa1503e0     	mov	x0, x21
+    c71c: 97ffefad     	bl	0x85d0 <Updater::ModeFlagFile::~ModeFlagFile()@plt>
+    c720: aa1403e0     	mov	x0, x20
+    c724: 97ffef3f     	bl	0x8420 <Updater::MountPoint::~MountPoint()@plt>
+    c728: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    c72c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    c730: a8cb7bfd     	ldp	x29, x30, [sp], #0xb0
+    c734: d65f03c0     	ret
+    c738: aa0003f3     	mov	x19, x0
+    c73c: 17ffffef     	b	0xc6f8 <Updater::CurrentFirmware::SwitchModeToVersionSkipUpdater()+0x15c>

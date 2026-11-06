@@ -1,0 +1,120 @@
+{
+  "source_sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+  "allowed_image_write_interval": [
+    "0xa88bd0",
+    "0xab4020"
+  ],
+  "original_code_ranges": [
+    [
+      "0x29f508",
+      "0x2a5964"
+    ],
+    [
+      "0xd80",
+      "0x1060"
+    ]
+  ],
+  "positive": {
+    "patches_guest_ram_only": [
+      {
+        "kind": "guard",
+        "offset": "0xa88bc0",
+        "bytes_hex": "c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7"
+      },
+      {
+        "kind": "guard",
+        "offset": "0xab4020",
+        "bytes_hex": "c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7"
+      }
+    ],
+    "stubs": [],
+    "budget": 500000,
+    "returned_to_stop": true,
+    "stop_pc": "0x60000000",
+    "error": null,
+    "violations": [],
+    "instruction_count": 55395,
+    "original_memcpy_calls": 1166,
+    "target_copy_calls": 1,
+    "image_write_events": 30316,
+    "canary_preserved": [
+      true,
+      true
+    ],
+    "stack_pointer_preserved": true,
+    "target_equals_guest_source": true,
+    "target_equals_unpatched_original_source": true,
+    "target_sha256": "c71132ca5729ac58144003fb1830441bfecd8c2ac0f5f820be3e2ea70f3ed94f"
+  },
+  "negative_source_mutation": {
+    "patches_guest_ram_only": [
+      {
+        "kind": "guard",
+        "offset": "0xa88bc0",
+        "bytes_hex": "c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7"
+      },
+      {
+        "kind": "guard",
+        "offset": "0xab4020",
+        "bytes_hex": "c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7"
+      },
+      {
+        "kind": "negative_source_mutation",
+        "offset": "0xb8322c",
+        "before": "4d",
+        "after": "4e"
+      }
+    ],
+    "stubs": [],
+    "budget": 500000,
+    "returned_to_stop": true,
+    "stop_pc": "0x60000000",
+    "error": null,
+    "violations": [],
+    "instruction_count": 55395,
+    "original_memcpy_calls": 1166,
+    "target_copy_calls": 1,
+    "image_write_events": 30316,
+    "canary_preserved": [
+      true,
+      true
+    ],
+    "stack_pointer_preserved": true,
+    "target_equals_guest_source": true,
+    "target_equals_unpatched_original_source": false,
+    "target_sha256": "7179fa50a9348f8ec937e071ae79dfbbaefef649202c4eaa66b3625d823c96cf"
+  },
+  "negative_budget_exhaustion": {
+    "patches_guest_ram_only": [
+      {
+        "kind": "guard",
+        "offset": "0xa88bc0",
+        "bytes_hex": "c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7"
+      },
+      {
+        "kind": "guard",
+        "offset": "0xab4020",
+        "bytes_hex": "c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7"
+      }
+    ],
+    "stubs": [],
+    "budget": 1000,
+    "returned_to_stop": false,
+    "stop_pc": "0xffffffc001000ed8",
+    "error": null,
+    "violations": [],
+    "instruction_count": 1000,
+    "original_memcpy_calls": 21,
+    "target_copy_calls": 0,
+    "image_write_events": 538,
+    "canary_preserved": [
+      true,
+      true
+    ],
+    "stack_pointer_preserved": false,
+    "target_equals_guest_source": false,
+    "target_equals_unpatched_original_source": false,
+    "target_sha256": "85ada57e1f601e962d705f389285adb4e74f450bc00672240dfef7399d82457f"
+  },
+  "scope": "all execution in Unicorn CPU RAM; guest canary/source mutations listed, no on-disk patch, no stub, no hardware/VM"
+}

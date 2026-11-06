@@ -1,0 +1,74 @@
+004a0398 lsls       r0, r6, #0x1e
+004a039a bpl        #0x4a038e
+004a039c cmp        r5, #0
+004a039e beq        #0x4a038e
+004a03a0 ands       sb, r6, #0x10
+004a03a4 bne        #0x4a03be
+004a03a6 lsls       r0, r6, #0x1d
+004a03a8 movw       r8, #0x5580
+004a03ac movw       r0, #0x55c0
+004a03b0 movt       r8, #0xee
+004a03b4 movt       r0, #0xee
+004a03b8 it         pl
+004a03ba movpl      r8, r0
+004a03bc b          #0x4a03c6
+004a03be movw       r8, #0x5540
+004a03c2 movt       r8, #0xee
+004a03c6 mov        r0, r8
+004a03c8 bl         #0xa8708a
+004a03cc lsls       r0, r6, #0x19
+004a03ce str        r5, [sp, #0x20]
+004a03d0 bmi        #0x4a046a
+004a03d2 mov.w      r0, #0x8000
+004a03d6 cmp.w      sb, #0
+004a03da str.w      r8, [sp, #0x28]
+004a03de and.w      ip, r0, r6, lsl #14
+004a03e2 bne.w      #0x4a058a
+004a03e6 ldr.w      r0, [r8, #0xc]
+004a03ea cmp        r0, #0x20
+004a03ec blo.w      #0x4a0712
+004a03f0 eor        r1, ip, #0x8000
+004a03f4 str        r1, [sp, #0x14]
+004a03f6 orr.w      r1, r1, sl, lsl #16
+004a03fa str        r1, [sp, #0x18]
+004a03fc lsl.w      r1, sl, #0x10
+004a0400 str        r1, [sp, #0x10]
+004a0402 movs       r1, #0
+004a0404 str        r1, [sp, #0x1c]
+004a0406 ldr        r1, [sp, #0x28]
+004a0408 ldr        r2, [sp, #0x1c]
+004a040a ldr        r1, [r1, #0x10]
+004a040c ldr.w      r8, [r1, r2, lsl #2]
+004a0410 adds.w     r1, r8, #1
+004a0414 beq        #0x4a045e
+004a0416 lsls       r0, r2, #5
+004a0418 str        r0, [sp, #0x24]
+004a041a ldr        r0, [sp, #0x28]
+004a041c ldr        r1, [sp, #0x24]
+004a041e ldr        r0, [r0, #8]
+004a0420 add        r0, r1
+004a0422 mvn.w      r1, r8
+004a0426 clz        r1, r1
+004a042a rsb.w      sb, r1, #0x1f
+004a042e add.w      r4, r0, sb
+004a0432 mov        r0, r4
+004a0434 bl         #0xa87248
+004a0438 mov        r5, r0
+004a043a cmp        r5, #0
+004a043c beq.w      #0x4a0712
+004a0440 ldrh       r0, [r5, #2]
+004a0442 cmp        r0, #0
+004a0444 beq.w      #0x4a0608
+004a0448 movs       r0, #1
+004a044a lsl.w      r0, r0, sb
+004a044e orr.w      r8, r8, r0
+004a0452 adds.w     r0, r8, #1
+004a0456 bne        #0x4a041a
+004a0458 ldr        r0, [sp, #0x28]
+004a045a ldr        r2, [sp, #0x1c]
+004a045c ldr        r0, [r0, #0xc]
+004a045e adds       r2, #1
+004a0460 cmp.w      r2, r0, lsr #5
+004a0464 str        r2, [sp, #0x1c]
+004a0466 blo        #0x4a0406
+004a0468 b          #0x4a0712

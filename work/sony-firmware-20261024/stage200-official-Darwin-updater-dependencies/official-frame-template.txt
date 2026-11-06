@@ -1,0 +1,19 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x400df8 770200f0 adrp     x23, #0x44f000
+0x400dfc 021080d2 mov      x2, #0x80
+0x400e00 f6020591 add      x22, x23, #0x140
+0x400e04 01008052 mov      w1, #0
+0x400e08 e00316aa mov      x0, x22
+0x400e0c f86f98d2 mov      x24, #0xc37f
+0x400e10 3839a0f2 movk     x24, #0x1c9, lsl #16
+0x400e14 43ffff97 bl       #0x400b20
+0x400e18 20028052 mov      w0, #0x11
+0x400e1c e0020539 strb     w0, [x23, #0x140]
+0x400e20 80008052 mov      w0, #4
+0x400e24 170000b0 adrp     x23, #0x401000
+0x400e28 c0060039 strb     w0, [x22, #1]
+0x400e2c a0e30191 add      x0, x29, #0x78
+0x400e30 160000b0 adrp     x22, #0x401000
+0x400e34 f7663291 add      x23, x23, #0xc99
+0x400e38 d6822591 add      x22, x22, #0x960
+0x400e3c 0b010094 bl       #0x401268

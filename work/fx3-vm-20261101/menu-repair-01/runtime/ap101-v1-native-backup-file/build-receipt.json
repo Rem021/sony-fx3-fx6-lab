@@ -1,0 +1,36 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap100-v1-touch-backup-sync/candidate.json",
+  "base_sha256": "46bb22e5615f10d368a52827c46edbd1515755a32e3d332b68875d6df3350b6a",
+  "changed_member_bodies": [
+    "init",
+    "setting/Backup.bin"
+  ],
+  "removed_simulation_members": [
+    "simulation/fx3-backup-replay-v1",
+    "simulation/ap89-backup-ram.bin"
+  ],
+  "all_other_members_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "source_file_SHA_and_checksums": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap100v1sync600-8d0d69c0/Backup-native-file-before-menu.bin",
+    "sha256": "552fd5f8b422f855aecbe0c3918b56f83f60fb76ea9a3b6fc7a0291c26035d9e",
+    "bytes": 2229740,
+    "native_bank_checks": [
+      {
+        "file_offset": 0,
+        "bytes": 857900,
+        "checksum": 25879493,
+        "checksum_valid": true,
+        "sha256": "85285ba42c9f2260baf478a13e1c1caed8eb75aa363ff1bcff26f86ba6e17851"
+      },
+      {
+        "file_offset": 860160,
+        "bytes": 1369580,
+        "checksum": 155466674,
+        "checksum_valid": true,
+        "sha256": "b76c2f6c8caf62aa4dd11d0466575f38e12e9b6288d2d003ce326ce5530212e8"
+      }
+    ]
+  },
+  "authority": "msg_ebab9bedf83a"
+}

@@ -1,0 +1,101 @@
+{
+  "status": "failed",
+  "partial_result": "7/8 semantic steps passed; step8 immutable snapshot shows standby, later final menu does not retroactively pass",
+  "task_id": "task_616a0bf15777",
+  "dispatch_id": "ctx_dad8bd29ff95",
+  "data_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r25-vm-616a0bf15777",
+  "native_run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-bd4c1126",
+  "VM_count": 1,
+  "Start_POST_count": 1,
+  "accepted_keys": 8,
+  "explicit_attempts": 8,
+  "separate_confirmations": 7,
+  "attributed_unqueued_recoveries": 0,
+  "recovery_observation_validation": "not exercised in this real run; no unqueued outcome",
+  "first_qualified_standby_seconds": 44.03204995801207,
+  "first_qualified_standby_limit_seconds": 180,
+  "runner_duration_seconds": 164.07477820897475,
+  "total_budget_seconds": 480,
+  "scripted_navigation": true,
+  "visual_review_at_click": false,
+  "all_returned_initial_and_postkey_PNGs_actually_viewed": true,
+  "model_received_at": "unknown",
+  "model_review_completed_at": "unknown",
+  "failed_step": 8,
+  "step8_confirm_invoked": false,
+  "step8_End_within_alarm_upper_seconds": 4.217160875,
+  "cleanup_passed": true,
+  "API16": {
+    "hex": "000b00b4fd7bbba9fd030091f35301a9",
+    "guest_ACK_restore_seen": 1,
+    "seconds": 1.57110083400039,
+    "budget_seconds": 20,
+    "bytes_verified": true
+  },
+  "QMP_quit_request": {
+    "execute": "quit",
+    "id": 677
+  },
+  "QMP_quit_ack": {
+    "return": {},
+    "id": 677
+  },
+  "qemu_exit": 0,
+  "qemu_reaped": true,
+  "runner_QEMU_browser_PID_absent": true,
+  "both_locks_free": true,
+  "port_closed": true,
+  "web_final_ACK": true,
+  "browser_closed": true,
+  "rejection_export": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-bd4c1126/web-key-rejections.json",
+    "bytes": 304,
+    "sha256": "b40f2c25aacd2b1581701aa08e2fcb51c810cc9073af49c0241a349b4f19fa7c",
+    "total": 0
+  },
+  "input_counts_before_after_identical": {
+    "pins": 2,
+    "r24_manifest": 1,
+    "r24_delivery151": 151,
+    "source40": 40,
+    "delivery145": 145,
+    "fixed14": 14,
+    "qemu": 1
+  },
+  "r25_delivery_matches": 594,
+  "production_sources_match": 30,
+  "sealed_pins_after": {
+    "SHA256SUMS": "c2d44926c77b0d102075c697e7812385f1782bc6ace67b9aaa7fe11ad83023e7",
+    "REPORT.md": "d18e9fb8c7ca716b5ce78c677639e5987ba0c71ff147306a63e7ff5c6cc1bf0e",
+    "CANDIDATE-SOURCE-FREEZE.json": "15948aabd5090c3c7e32012a6d79cf9b6dc30fb6d9d0812e59fb0a0041d0b2ad",
+    "CONTRACT.md": "7736b12e9826caa553e1af2fdf4e8af295b67b4eab7047691d6c29abe9b711cd"
+  },
+  "imports_before_after_identical": true,
+  "snapshot_tail_is_end_state": false,
+  "snapshot_tail_post_snapshot_event_counts": "unknown",
+  "source_modified": false,
+  "deployment_modified": false,
+  "default_deployment": "r10 retained as authorized; no deployment write performed",
+  "physical_device_or_FX6_operations": false,
+  "remaining": [
+    "step8 semantic confirmation not achieved",
+    "r25 recovery chain not exercised by this real run",
+    "no further VM authorization in this dispatch"
+  ],
+  "evidence": [
+    "STEP-EVIDENCE.json",
+    "STEP8-TIMELINE.json",
+    "HTTP-POST-ORIGINAL-BODIES.json",
+    "HTTP-REQUESTS-SUMMARY.json",
+    "traffic.har",
+    "NATIVE-KEY-ORIGINAL-LINES.bin",
+    "NATIVE-KEY-ORIGINAL-OFFSETS.json",
+    "INDEPENDENT-CLEANUP.json",
+    "INPUTS-BEFORE.json",
+    "INPUTS-AFTER.json",
+    "SEALED-DELIVERY-BEFORE.json",
+    "SEALED-DELIVERY-AFTER.json",
+    "ACTUAL-IMPORT-BEFORE.json",
+    "ACTUAL-IMPORT-AFTER.json"
+  ]
+}

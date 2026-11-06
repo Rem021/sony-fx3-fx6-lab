@@ -1,0 +1,796 @@
+{
+  "created_utc": "2026-10-30T13:42:04.961877+00:00",
+  "official_model_page": "https://oss.sony.net/Products/Linux/B2B/ILME-FX5.html",
+  "archive": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-archives/linux-kernel.tar.gz",
+  "archive_url": "https://prodgpl.blob.core.windows.net/download/B2B/20260731_ILME-FX5/linux-kernel.tar.gz",
+  "archive_sha256": "1e1cf32816e841462bd1d0f4e93c4897a44d0a9b95641387c74cafb6d6f44190",
+  "archive_bytes": 151522353,
+  "archive_entries_scanned": 64942,
+  "selected_sources": [
+    {
+      "member": "linux-kernel/arch/arm64/mm/mmu.c",
+      "path": "sources/arch/arm64/mm/mmu.c",
+      "bytes": 49820,
+      "sha256": "18ed9f70cd5409918799ed90d37873eb2c06246608befeb62952cd8fb6b59edb"
+    },
+    {
+      "member": "linux-kernel/arch/arm64/mm/init.c",
+      "path": "sources/arch/arm64/mm/init.c",
+      "bytes": 15543,
+      "sha256": "a7427c08f1e0b41727e831c0257317cf92077280d620ec198b9bea17c183e580"
+    },
+    {
+      "member": "linux-kernel/arch/arm64/mm/ioremap.c",
+      "path": "sources/arch/arm64/mm/ioremap.c",
+      "bytes": 2643,
+      "sha256": "b80d9ab257a74f07b6bc64810bfed56010b6f826ba40acddba3f664d21e9890b"
+    },
+    {
+      "member": "linux-kernel/arch/arm64/kernel/setup.c",
+      "path": "sources/arch/arm64/kernel/setup.c",
+      "bytes": 11920,
+      "sha256": "be9f5ecd508e07d83f5d0e106ba7cd4539780ae7497b95f7f503860fed76a45c"
+    },
+    {
+      "member": "linux-kernel/arch/arm64/kernel/head.S",
+      "path": "sources/arch/arm64/kernel/head.S",
+      "bytes": 26312,
+      "sha256": "d436ecb0dadb62f81ad3de3c633edf3aa9e71df2755893cf74c158812b973c30"
+    },
+    {
+      "member": "linux-kernel/include/dt-bindings/arm/memtype.h",
+      "path": "sources/include/dt-bindings/arm/memtype.h",
+      "bytes": 1667,
+      "sha256": "f0eb955b6585f833b5deb773b675811990d31e92d5781d7a096c99413dd59097"
+    },
+    {
+      "member": "linux-kernel/include/linux/dma-direct.h",
+      "path": "sources/include/linux/dma-direct.h",
+      "bytes": 3681,
+      "sha256": "6866892fc73e0d81493d31309f2be8f6c3c3511987d7d0370f1f4c65b7c405a3"
+    },
+    {
+      "member": "linux-kernel/drivers/of/address.c",
+      "path": "sources/drivers/of/address.c",
+      "bytes": 28934,
+      "sha256": "d37b92422c9e22f095f94a059e84163e455d92a5c9578b15392e937946860820"
+    },
+    {
+      "member": "linux-kernel/drivers/of/fdt.c",
+      "path": "sources/drivers/of/fdt.c",
+      "bytes": 34871,
+      "sha256": "b33edc43e2645f71df26986d65437b72e721cba0390fad3b5381274af2ffc5be"
+    },
+    {
+      "member": "linux-kernel/drivers/of/of_reserved_mem.c",
+      "path": "sources/drivers/of/of_reserved_mem.c",
+      "bytes": 11558,
+      "sha256": "a9bbdae2e3e835e4074582bbb6ef4e1f9cad1899536b53c8a42dcee6034b4f41"
+    }
+  ],
+  "filename_candidates_not_yet_captured_or_read": [
+    {
+      "member": "linux-kernel/arch/arm/mach-omap2/iomap.h",
+      "bytes": 10273
+    },
+    {
+      "member": "linux-kernel/arch/arm/mm/iomap.c",
+      "bytes": 917
+    },
+    {
+      "member": "linux-kernel/arch/arm/mach-tegra/iomap.h",
+      "bytes": 3437
+    },
+    {
+      "member": "linux-kernel/arch/arm/mach-omap1/iomap.h",
+      "bytes": 1528
+    },
+    {
+      "member": "linux-kernel/arch/arm64/mm/iomap.c",
+      "bytes": 544
+    },
+    {
+      "member": "linux-kernel/include/dt-bindings/reset/cxd,lin-resets.h",
+      "bytes": 6211
+    },
+    {
+      "member": "linux-kernel/include/dt-bindings/clock/cxd,lin-clock.h",
+      "bytes": 10621
+    },
+    {
+      "member": "linux-kernel/include/uapi/linux/cxd-adrs_conv.h",
+      "bytes": 871
+    },
+    {
+      "member": "linux-kernel/include/asm-generic/iomap.h",
+      "bytes": 4019
+    },
+    {
+      "member": "linux-kernel/include/asm-generic/pci_iomap.h",
+      "bytes": 1920
+    },
+    {
+      "member": "linux-kernel/include/linux/iomap.h",
+      "bytes": 12198
+    },
+    {
+      "member": "linux-kernel/include/linux/cxd_timer.h",
+      "bytes": 1952
+    },
+    {
+      "member": "linux-kernel/fs/xfs/xfs_iomap.h",
+      "bytes": 1280
+    },
+    {
+      "member": "linux-kernel/fs/xfs/xfs_iomap.c",
+      "bytes": 36082
+    },
+    {
+      "member": "linux-kernel/fs/iomap/direct-io.c",
+      "bytes": 19131
+    },
+    {
+      "member": "linux-kernel/fs/iomap/swapfile.c",
+      "bytes": 5689
+    },
+    {
+      "member": "linux-kernel/fs/iomap/seek.c",
+      "bytes": 2400
+    },
+    {
+      "member": "linux-kernel/fs/iomap/iter.c",
+      "bytes": 2407
+    },
+    {
+      "member": "linux-kernel/fs/iomap/fiemap.c",
+      "bytes": 2809
+    },
+    {
+      "member": "linux-kernel/fs/iomap/trace.h",
+      "bytes": 5329
+    },
+    {
+      "member": "linux-kernel/fs/iomap/buffered-io.c",
+      "bytes": 42223
+    },
+    {
+      "member": "linux-kernel/fs/iomap/trace.c",
+      "bytes": 263
+    },
+    {
+      "member": "linux-kernel/fs/lockd/svcxdr.h",
+      "bytes": 2898
+    },
+    {
+      "member": "linux-kernel/drivers/usb/dwc3/dwc3-cxd.h",
+      "bytes": 1302
+    },
+    {
+      "member": "linux-kernel/drivers/usb/dwc3/dwc3-cxd-suppl.c",
+      "bytes": 7987
+    },
+    {
+      "member": "linux-kernel/drivers/usb/dwc3/dwc3-cxd.c",
+      "bytes": 15887
+    },
+    {
+      "member": "linux-kernel/drivers/usb/dwc3/dwc3-cxd-suppl.h",
+      "bytes": 253
+    },
+    {
+      "member": "linux-kernel/drivers/usb/dwc2/dwc2-cxd.c",
+      "bytes": 15268
+    },
+    {
+      "member": "linux-kernel/drivers/usb/dwc2/dwc2-cxd.h",
+      "bytes": 2141
+    },
+    {
+      "member": "linux-kernel/drivers/usb/dwc2/dwc2-cxd-suppl.c",
+      "bytes": 3495
+    },
+    {
+      "member": "linux-kernel/drivers/usb/dwc2/dwc2-cxd-suppl.h",
+      "bytes": 252
+    },
+    {
+      "member": "linux-kernel/drivers/usb/cxd/usb2_smmu.h",
+      "bytes": 776
+    },
+    {
+      "member": "linux-kernel/drivers/usb/cxd/usb2_smmu.c",
+      "bytes": 38511
+    },
+    {
+      "member": "linux-kernel/drivers/usb/cxd/sdebug.h",
+      "bytes": 493
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/sleep.S",
+      "bytes": 3105
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/include/debug-8250.S",
+      "bytes": 1605
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/include/head_init.h",
+      "bytes": 3655
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/include/bootram.h",
+      "bytes": 1579
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/include/debug-macro.S",
+      "bytes": 693
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/include/uart.h",
+      "bytes": 3212
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/include/debug-pl011.S",
+      "bytes": 1299
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/pm_core.c",
+      "bytes": 9274
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/mmap.c",
+      "bytes": 3117
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/debug.S",
+      "bytes": 2363
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/resume.S",
+      "bytes": 2785
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/params.c",
+      "bytes": 4697
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/udif/timestamp.c",
+      "bytes": 2945
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/udif/dma-mapping.c",
+      "bytes": 2088
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/udif/clock.c",
+      "bytes": 4314
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/udif/devno.c",
+      "bytes": 63
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/udif/platform.c",
+      "bytes": 25052
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/udif/cache.c",
+      "bytes": 1685
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/udif/reset.c",
+      "bytes": 2753
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/head.S",
+      "bytes": 2415
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/timer.S",
+      "bytes": 1674
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/adrs_conv.c",
+      "bytes": 9311
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/gic_export.h",
+      "bytes": 2862
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/platform.h",
+      "bytes": 4934
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/dw_axi_dmac.h",
+      "bytes": 722
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/noncache.h",
+      "bytes": 5696
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/uart_addr.h",
+      "bytes": 2041
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/regs-scu.h",
+      "bytes": 1465
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/regs-octrl.h",
+      "bytes": 1644
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/pcie_export.h",
+      "bytes": 2402
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/pm_export.h",
+      "bytes": 1587
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/udif/timer.h",
+      "bytes": 1770
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/udif/platform.h",
+      "bytes": 2531
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/udif/reset.h",
+      "bytes": 756
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/udif/clock.h",
+      "bytes": 2376
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/udif/cache.h",
+      "bytes": 1491
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/udif/io.h",
+      "bytes": 1558
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/udif/devno.h",
+      "bytes": 3759
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/regs-gpio.h",
+      "bytes": 1559
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/dma32.h",
+      "bytes": 681
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/moduleparam.h",
+      "bytes": 1790
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/regs-clk.h",
+      "bytes": 2603
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/errind.h",
+      "bytes": 1758
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/irqs.h",
+      "bytes": 2249
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/regs-srst.h",
+      "bytes": 2750
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/export/mach/pm.h",
+      "bytes": 1907
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/gpio.c",
+      "bytes": 2242
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/boot.S",
+      "bytes": 7685
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/gic.c",
+      "bytes": 2652
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/error.c",
+      "bytes": 13188
+    },
+    {
+      "member": "linux-kernel/drivers/soc/cxd/warm.c",
+      "bytes": 3467
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2820r_c.c",
+      "bytes": 7410
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2841er.c",
+      "bytes": 122652
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2841er_priv.h",
+      "bytes": 794
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2820r_priv.h",
+      "bytes": 3018
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2841er.h",
+      "bytes": 1613
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_io.h",
+      "bytes": 1276
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_driver_version.h",
+      "bytes": 346
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt_mon.c",
+      "bytes": 15953
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt_mon.h",
+      "bytes": 2043
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_dvbt2.h",
+      "bytes": 10361
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd.c",
+      "bytes": 77019
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_devio_spi.c",
+      "bytes": 2596
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_top.c",
+      "bytes": 46682
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_common.h",
+      "bytes": 434
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt2.h",
+      "bytes": 1698
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_io.c",
+      "bytes": 1256
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880.h",
+      "bytes": 747
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_integ.c",
+      "bytes": 1353
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_mon.h",
+      "bytes": 758
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt2_mon.c",
+      "bytes": 39660
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_devio_spi.h",
+      "bytes": 499
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_spi_device.h",
+      "bytes": 635
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt.h",
+      "bytes": 1115
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd.h",
+      "bytes": 10389
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_dvbt.h",
+      "bytes": 1619
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_spi.h",
+      "bytes": 713
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_common.c",
+      "bytes": 493
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt2_mon.h",
+      "bytes": 3658
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_integ.h",
+      "bytes": 648
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_spi_device.c",
+      "bytes": 2266
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt2.c",
+      "bytes": 27431
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_mon.c",
+      "bytes": 3054
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_tnrdmd_dvbt.c",
+      "bytes": 21576
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2880/cxd2880_dtv.h",
+      "bytes": 592
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2099.h",
+      "bytes": 842
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2820r.h",
+      "bytes": 3129
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2099.c",
+      "bytes": 14675
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2820r_t2.c",
+      "bytes": 9360
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2820r_t.c",
+      "bytes": 9088
+    },
+    {
+      "member": "linux-kernel/drivers/media/dvb-frontends/cxd2820r_core.c",
+      "bytes": 18240
+    },
+    {
+      "member": "linux-kernel/drivers/media/spi/cxd2880-spi.c",
+      "bytes": 15206
+    },
+    {
+      "member": "linux-kernel/drivers/nvmem/rmem.c",
+      "bytes": 2477
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/gpio/gpio-sn.h",
+      "bytes": 9453
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/gpio/gpio-sn.c",
+      "bytes": 24616
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/aspm.c",
+      "bytes": 3570
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/prsnt.c",
+      "bytes": 4801
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/aximon.c",
+      "bytes": 4926
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/log.c",
+      "bytes": 1539
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/ltssm.c",
+      "bytes": 7813
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/proc.c",
+      "bytes": 7461
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/link_speed.c",
+      "bytes": 3371
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/module.c",
+      "bytes": 2068
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/host.c",
+      "bytes": 1910
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/lock.c",
+      "bytes": 2484
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/internal.h",
+      "bytes": 2855
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/access.c",
+      "bytes": 3562
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/root_ctrl.c",
+      "bytes": 2737
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/link.c",
+      "bytes": 5122
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/misc.c",
+      "bytes": 7618
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pcie/link_width.c",
+      "bytes": 4571
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/wdt/wdt.h",
+      "bytes": 1711
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/wdt/arm_sp805.c",
+      "bytes": 4269
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/wdt/dw_apb_wdt.c",
+      "bytes": 4229
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/wdt/wdt_core.c",
+      "bytes": 10082
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/hwtimer/hwtimer.c",
+      "bytes": 15645
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/gpioint/gpioint.c",
+      "bytes": 2092
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/log.c",
+      "bytes": 1832
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/dw_axi_dmac.h",
+      "bytes": 2021
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/proc.c",
+      "bytes": 3107
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/cdev.c",
+      "bytes": 3132
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/module.c",
+      "bytes": 5368
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/dw_axi_dmac.c",
+      "bytes": 10284
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/config.h",
+      "bytes": 1474
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/dma_core.c",
+      "bytes": 4775
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dma/internal.h",
+      "bytes": 4371
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dt/dt_node_en_ctrl.c",
+      "bytes": 4571
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/dt/dt_node_en_ctrl.h",
+      "bytes": 510
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/cpuint/cpuint.c",
+      "bytes": 3472
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/subsystem/subsystem.c",
+      "bytes": 3027
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/dwc_pcie.h",
+      "bytes": 1530
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/log.c",
+      "bytes": 1971
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/proc.c",
+      "bytes": 3872
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/cdev.c",
+      "bytes": 3240
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/module.c",
+      "bytes": 4863
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/dwc_pcie.c",
+      "bytes": 2142
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/connect.c",
+      "bytes": 2665
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/config.h",
+      "bytes": 1493
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/dma_core.c",
+      "bytes": 3677
+    },
+    {
+      "member": "linux-kernel/drivers/misc/cxd/pciedma/internal.h",
+      "bytes": 5067
+    },
+    {
+      "member": "linux-kernel/lib/pci_iomap.c",
+      "bytes": 5823
+    },
+    {
+      "member": "linux-kernel/lib/iomap.c",
+      "bytes": 9365
+    },
+    {
+      "member": "linux-kernel/lib/iomap_copy.c",
+      "bytes": 2226
+    },
+    {
+      "member": "linux-kernel/scripts/dtc/include-prefixes/dt-bindings/reset/cxd,lin-resets.h",
+      "bytes": 6211
+    },
+    {
+      "member": "linux-kernel/scripts/dtc/include-prefixes/dt-bindings/clock/cxd,lin-clock.h",
+      "bytes": 10621
+    },
+    {
+      "member": "linux-kernel/tools/testing/nvdimm/test/iomap.c",
+      "bytes": 10380
+    }
+  ],
+  "download_repeated": false,
+  "third_party_source_built_or_executed": false,
+  "device_actions": 0
+}

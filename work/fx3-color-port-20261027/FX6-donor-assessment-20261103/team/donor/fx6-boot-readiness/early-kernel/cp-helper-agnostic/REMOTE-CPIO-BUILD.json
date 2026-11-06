@@ -1,0 +1,18 @@
+{
+  "schema": "fx6-hybrid-remote-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal3.cpio",
+  "source_sha256": "f7fd2c4f8d4e87d36015fba44cb4655a1764eb506c8b475c2c5bb9a92fefefcd",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal5.cpio",
+  "output_sha256": "9805be22612a45d35f109a1256896be5c6ef906cdf9797d87899ffc54dd4dd81",
+  "fixed_bytes": 453184500,
+  "output_bytes": 453184500,
+  "target": {
+    "name": "usr/lib/libInfraAppRemoteBoard.so",
+    "old_bytes": 10456,
+    "old_sha256": "effacf8c81dafeacfb348fa62b5b82ab5b719c4da75419e82a80e19289f3fd74",
+    "new_bytes": 10448,
+    "new_sha256": "c7d666093b42713eecf601ddacbfa879b255d0f953a9e77929eb12b916e6b0a6"
+  },
+  "replaced_member_count": 1,
+  "scope": "Only the named CPIO member payload/header size changed; all other member bytes copied; trailing padding zeros to fixed length."
+}

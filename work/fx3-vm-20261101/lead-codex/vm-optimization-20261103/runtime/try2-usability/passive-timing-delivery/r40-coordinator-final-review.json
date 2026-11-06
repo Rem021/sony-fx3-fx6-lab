@@ -1,0 +1,56 @@
+{
+  "status": "revised_offline_timing_decomposition_accepted_with_limits",
+  "reviewed_utc": "2026-11-05T08:32:19.818276+00:00",
+  "initial_worker_done": "msg_c30953d670b0",
+  "revision_delivery_message": "msg_73fd8dc45294",
+  "rejected_worker_done": "msg_262059a97168",
+  "lifecycle_issue": "ctx_cfdec0f4dcdf failed readiness/unknown assignee; actual original worker delivered revision; no replay needed",
+  "original_manifest_entries_verified": 11,
+  "original_manifest_sha256": "c16edd8920f742b4bc5980f9f99a4f132474614f1dcbc5516b43d3749799660a",
+  "revision_manifest_entries_verified": 14,
+  "revision_manifest_sha256": "a1c07a4750b680afe160673a9aa2f44590fd96e641376c4be3883562d526d994",
+  "report_sha256": "b4c80ebaf05981830019776ae9e07488d08c0fa98c64dd42d43358c7a3c07b00",
+  "results_sha256": "825586d98d49d9edf600519f84a64cfe3b1bef2644ecb6b0e7d27644f1b7d7de",
+  "independent_raw_serial_recalculation": {
+    "MENU_down_receive_ns": 60641588000,
+    "MENU_down_byte_offset": 5215585,
+    "MENU_up_receive_ns": 60791491008,
+    "MENU_up_byte_offset": 5225308,
+    "frame200_logged_after_commit_ns": 70286425008,
+    "frame200_byte_offset": 6209624,
+    "up_to_frame200_log_ns": 9494934000,
+    "down_to_frame200_log_ns": 9644837008,
+    "completion_point_segments_ns": [
+      1896632000,
+      2032370000,
+      1574648992,
+      1259971008,
+      754654992,
+      1813599008,
+      163058000
+    ],
+    "dynamic_pairs": 329,
+    "dynamic_max_ns": 21273008,
+    "complete_pairs": 38,
+    "complete_max_ns": 104066000
+  },
+  "visual_review": {
+    "artifact": "r38 observation-2 historical PNG",
+    "actual_image_viewed": true,
+    "visible": "Setup > Area/Date 45/59, Language English, orange Area/Date/Time Setting, NTSC/PAL Selector, MENU Close",
+    "not_pin_or_confirm": true
+  },
+  "review_corrections_resolved": [
+    "observe+pin merge removed as outside contract",
+    "no calibrated guest-to-host conversion",
+    "gaps are missing completion records, not absence of executing commands"
+  ],
+  "limits": [
+    "logging samples after ring publication; no exact first-render or CPU-time claim",
+    "clock domain sources reviewed; no cross-clock subtraction accepted",
+    "38 input before/after hashes are worker evidence; coordinator verified delivered manifests and primary raw log arithmetic",
+    "browser publication delay and exact image delivery/model scheduling split remain unknown",
+    "r38 remains failed; no new VM or deployment; FX6 not booted"
+  ],
+  "next_step": "minimal isolated command-entry timing appended to existing return record, no new physical reservation or full profiler integration"
+}

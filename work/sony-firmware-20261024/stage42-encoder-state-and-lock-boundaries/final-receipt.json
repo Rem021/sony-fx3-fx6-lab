@@ -1,0 +1,82 @@
+{
+  "schema": "fx3-stage42-encoder-state-and-lock-boundaries/1",
+  "created_utc": "2026-10-26T00:54:57.387213+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/README.md",
+      "bytes": 6098,
+      "sha256": "0e4d5c86f046c91281c8093b843ff03ecb44492f31f95f2798eab0c7eb154dfb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/coordinator-observations.json",
+      "bytes": 1423,
+      "sha256": "63b5cc9fbcc6d47143d1046b1aa41459cb27da4d3355b84805d5d0fdd77303c9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/encoder_state.py",
+      "bytes": 14098,
+      "sha256": "fe339617bd55e9592bedfb7a5f0da7e94577452db0e8f122a59009483e3ec21a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/goal-status-after.json",
+      "bytes": 78963,
+      "sha256": "49318399c28f63231565ff44c475205918d507e5945e470c2e1a396d2b89770b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/goal-status-before.json",
+      "bytes": 76296,
+      "sha256": "509785c815aad1ef5a584e056c4f9c2964ca92a4f2ffa93303aa85717aa01ec4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/next-state-drain-anchors.json",
+      "bytes": 2679,
+      "sha256": "02da392ff4bd9464d5fc12fe6b166a939cc88610bee946c1bd4677ae935308ac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/run-20261025/encoder-state-results.json",
+      "bytes": 584062,
+      "sha256": "2658320151fdb4e731f02748780bc00c54a1e834b15e8db7822c0044689c4782"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/run-20261025/executed-source.py",
+      "bytes": 14098,
+      "sha256": "fe339617bd55e9592bedfb7a5f0da7e94577452db0e8f122a59009483e3ec21a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/run-20261025/source-receipt.json",
+      "bytes": 979,
+      "sha256": "9e4445793e2887ffde844554819c95bbb418239c8dbcfe2c88c3b7c5d9cac326"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/run-20261025/summary.json",
+      "bytes": 717,
+      "sha256": "cf53639b7f6b4dcf6b915aafa4527d9c57dca7fd1aeafecd2eea1d611111901b"
+    }
+  ],
+  "previous_manifest_sha256": "1763489123b8381c6971de92661e965ad0e9517b292dc7993b6750c42c16fff9",
+  "scope": "62 original fragments/1compiled guest call,16state/21event names,32selectors,15state/3lock controls. Upper STOP data can queue after local four-buffer return; wrapper true not complete migration. Real construction/drain/full actions/runtime locks/epoch/HAL/physical recovery unbound.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/goal-status-after.json",
+    "before_sha256": "509785c815aad1ef5a584e056c4f9c2964ca92a4f2ffa93303aa85717aa01ec4",
+    "after_sha256": "49318399c28f63231565ff44c475205918d507e5945e470c2e1a396d2b89770b",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_and_compiled_code": true,
+    "original_image_RX_unchanged": true,
+    "runtime_or_diagnostic_output_adapters": false,
+    "actual_runtime_lock_wait_or_release_executed": false,
+    "actual_state_constructor_functor_drain_full_actions_epoch_Hal_verified": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "hardware_main_media_same_body_backup_restore_WBI_coldboot_or_rescue_verified": false,
+    "camera_loadable_module_or_device_firmware_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 编码状态事件与锁边界](<work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/README.md>)：本地参数归还后上层STOP仍可排队，包装真不等于READY/IDLE；原状态/事件名已绑定，真实锁/出队/硬件与恢复未验收。"
+}

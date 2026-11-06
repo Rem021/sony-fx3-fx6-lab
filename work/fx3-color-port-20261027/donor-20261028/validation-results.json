@@ -1,0 +1,42 @@
+{
+  "common_guest_change_reverification": [
+    {
+      "script": "art_matrix_guest.py",
+      "script_sha256": "b7c936df29f90ce609bca38a99a8c79bd2d95f8fa5ee6152178b4a80074b3c63",
+      "exit": 0,
+      "stdout": "{\"matrix_cases\": 138, \"register_cases\": 10, \"all_exact\": true, \"fx3_existing_matrix_same\": true}\n",
+      "stderr": ""
+    },
+    {
+      "script": "art_dispatch_guest.py",
+      "script_sha256": "a970b20756d9b81c23ca9b439bf87a60b80b37d03c0b047681752abcb95b72cf",
+      "exit": 0,
+      "stdout": "{\"cases\": 72, \"selected\": 38, \"ignored\": 34, \"exact_dispatch\": true}\n",
+      "stderr": ""
+    },
+    {
+      "script": "compare_matrix_serialization.py",
+      "script_sha256": "41fc83d48200ca2d6131894a664ab33d744b5713a6dd4b110210f548860ea3a6",
+      "exit": 0,
+      "stdout": "{\"cases\": 3, \"fx3_existing_words_matched\": 9, \"bytes\": 36, \"native_library_loaded\": false, \"camera_actions\": 0}\n",
+      "stderr": ""
+    }
+  ],
+  "existing_result_checks": {
+    "static_functions": 44,
+    "quantizer_cases": 138,
+    "register_label_cases": 10,
+    "dispatch_cases": 72,
+    "serialization_cases": 3,
+    "matching_fx3_words": 9,
+    "footer_versions": 3,
+    "loader_scan_files": 83
+  },
+  "source_worktree_after": {
+    "head": "28f74ffe76ee845ec7b51cf4ae5229a56688a4bd",
+    "branch": "codex/venice-color-fidelity",
+    "status": [
+      "?? work/venice-component-contract-2026-10-27/"
+    ]
+  }
+}

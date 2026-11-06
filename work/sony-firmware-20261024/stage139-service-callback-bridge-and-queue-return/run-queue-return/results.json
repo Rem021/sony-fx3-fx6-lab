@@ -1,0 +1,816 @@
+{
+  "status": "PASS_ORIGINAL_QUEUE_RETURN_COUNTEREXAMPLES_IN_DECLARED_GUEST_FIXTURES_NOT_DEVICE_EXIT",
+  "execution_source_sha256": "3ff7aace1da7f55f1a2c2f87fad827b3d566b43451ce46d3e1863b59d8fd15ee",
+  "helper_source_sha256": "0624aeebe32a8b0902d7cff818fe713d09bc47bffbe15c88e1ed3fcbb1a8795e",
+  "original_image_sha256": "6caefd0677ee01cc6cdd54555f4422b03a86d12304c60f5372de18315bdd4396",
+  "original_function_pins": [
+    {
+      "name": "_ZN4CUsb7requestEP8CUSB_MES",
+      "VA": "0xf354",
+      "bytes": 184,
+      "sha256": "12f755968bf9ff4f079d3d31ee6d372f242548c406ad1ed83a486dd693559ee2"
+    },
+    {
+      "name": "_ZN4CUsb8que_pushEPS_P8CUSB_MES",
+      "VA": "0xf2cc",
+      "bytes": 136,
+      "sha256": "61c9c9603c94291cd7b4a65c5dc51e06bb2cbad1492ec77274ccadaf2c6cce22"
+    }
+  ],
+  "guest_instruction_bytes_unchanged": true,
+  "PLT_bridge": "Only original queue target redirected to its original entry; log/mutex/cond APIs are declared synthetic return fixtures.",
+  "cases": [
+    {
+      "fixture": {
+        "id": "empty_enqueue",
+        "head": 0,
+        "tail": 0,
+        "expected_return": 0,
+        "accepted": true,
+        "new_tail": 1
+      },
+      "original_request_return": 0,
+      "original_queue_function_entered": true,
+      "ring_copy_observed": true,
+      "head_after": 0,
+      "tail_after": 1,
+      "signal_calls": 1,
+      "synthetic_external_call_returns": {
+        "lock": 0,
+        "unlock": 0,
+        "signal": 0
+      },
+      "calls": [
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_lock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "_ZN4CUsb8que_pushEPS_P8CUSB_MES",
+          "x0": "0x40001000"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_cond_signal",
+          "x0": "0x400010a0"
+        },
+        {
+          "name": "pthread_mutex_unlock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        }
+      ],
+      "executed_instructions_and_bridge_hooks": 75,
+      "guest_writes": [
+        {
+          "address": "0x5000efd0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efd8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000eff0",
+          "bytes": 8
+        },
+        {
+          "address": "0x40002008",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003000",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003008",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003010",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003018",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003020",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003028",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003030",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003038",
+          "bytes": 8
+        },
+        {
+          "address": "0x40001029",
+          "bytes": 1
+        }
+      ],
+      "guards_callee_saved_SP_and_LR_return_verified": true
+    },
+    {
+      "fixture": {
+        "id": "full_but_request_returns0",
+        "head": 1,
+        "tail": 0,
+        "expected_return": 0,
+        "accepted": false,
+        "new_tail": 0
+      },
+      "original_request_return": 0,
+      "original_queue_function_entered": true,
+      "ring_copy_observed": false,
+      "head_after": 1,
+      "tail_after": 0,
+      "signal_calls": 0,
+      "synthetic_external_call_returns": {
+        "lock": 0,
+        "unlock": 0,
+        "signal": 0
+      },
+      "calls": [
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_lock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "_ZN4CUsb8que_pushEPS_P8CUSB_MES",
+          "x0": "0x40001000"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_unlock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        }
+      ],
+      "executed_instructions_and_bridge_hooks": 63,
+      "guest_writes": [
+        {
+          "address": "0x5000efd0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efd8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000eff0",
+          "bytes": 8
+        },
+        {
+          "address": "0x40002008",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efc0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efc8",
+          "bytes": 8
+        }
+      ],
+      "guards_callee_saved_SP_and_LR_return_verified": true
+    },
+    {
+      "fixture": {
+        "id": "wrap_enqueue",
+        "head": 2,
+        "tail": 3,
+        "expected_return": 0,
+        "accepted": true,
+        "new_tail": 0
+      },
+      "original_request_return": 0,
+      "original_queue_function_entered": true,
+      "ring_copy_observed": true,
+      "head_after": 2,
+      "tail_after": 0,
+      "signal_calls": 1,
+      "synthetic_external_call_returns": {
+        "lock": 0,
+        "unlock": 0,
+        "signal": 0
+      },
+      "calls": [
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_lock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "_ZN4CUsb8que_pushEPS_P8CUSB_MES",
+          "x0": "0x40001000"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_cond_signal",
+          "x0": "0x400010a0"
+        },
+        {
+          "name": "pthread_mutex_unlock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        }
+      ],
+      "executed_instructions_and_bridge_hooks": 75,
+      "guest_writes": [
+        {
+          "address": "0x5000efd0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efd8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000eff0",
+          "bytes": 8
+        },
+        {
+          "address": "0x40002008",
+          "bytes": 8
+        },
+        {
+          "address": "0x400030c0",
+          "bytes": 8
+        },
+        {
+          "address": "0x400030c8",
+          "bytes": 8
+        },
+        {
+          "address": "0x400030d0",
+          "bytes": 8
+        },
+        {
+          "address": "0x400030d8",
+          "bytes": 8
+        },
+        {
+          "address": "0x400030e0",
+          "bytes": 8
+        },
+        {
+          "address": "0x400030e8",
+          "bytes": 8
+        },
+        {
+          "address": "0x400030f0",
+          "bytes": 8
+        },
+        {
+          "address": "0x400030f8",
+          "bytes": 8
+        },
+        {
+          "address": "0x40001029",
+          "bytes": 1
+        }
+      ],
+      "guards_callee_saved_SP_and_LR_return_verified": true
+    },
+    {
+      "fixture": {
+        "id": "wrap_full_but_request_returns0",
+        "head": 0,
+        "tail": 3,
+        "expected_return": 0,
+        "accepted": false,
+        "new_tail": 3
+      },
+      "original_request_return": 0,
+      "original_queue_function_entered": true,
+      "ring_copy_observed": false,
+      "head_after": 0,
+      "tail_after": 3,
+      "signal_calls": 0,
+      "synthetic_external_call_returns": {
+        "lock": 0,
+        "unlock": 0,
+        "signal": 0
+      },
+      "calls": [
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_lock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "_ZN4CUsb8que_pushEPS_P8CUSB_MES",
+          "x0": "0x40001000"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_unlock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        }
+      ],
+      "executed_instructions_and_bridge_hooks": 63,
+      "guest_writes": [
+        {
+          "address": "0x5000efd0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efd8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000eff0",
+          "bytes": 8
+        },
+        {
+          "address": "0x40002008",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efc0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efc8",
+          "bytes": 8
+        }
+      ],
+      "guards_callee_saved_SP_and_LR_return_verified": true
+    },
+    {
+      "fixture": {
+        "id": "mutex_lock_failure",
+        "head": 0,
+        "tail": 0,
+        "lock": 13,
+        "expected_return": 5,
+        "accepted": false,
+        "new_tail": 0
+      },
+      "original_request_return": 5,
+      "original_queue_function_entered": false,
+      "ring_copy_observed": false,
+      "head_after": 0,
+      "tail_after": 0,
+      "signal_calls": 0,
+      "synthetic_external_call_returns": {
+        "lock": 13,
+        "unlock": 0,
+        "signal": 0
+      },
+      "calls": [
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_lock",
+          "x0": "0x40001070"
+        }
+      ],
+      "executed_instructions_and_bridge_hooks": 24,
+      "guest_writes": [
+        {
+          "address": "0x5000efd0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efd8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000eff0",
+          "bytes": 8
+        },
+        {
+          "address": "0x40002008",
+          "bytes": 8
+        }
+      ],
+      "guards_callee_saved_SP_and_LR_return_verified": true
+    },
+    {
+      "fixture": {
+        "id": "unlock_failure_after_enqueue",
+        "head": 0,
+        "tail": 0,
+        "unlock": 1,
+        "expected_return": 5,
+        "accepted": true,
+        "new_tail": 1
+      },
+      "original_request_return": 5,
+      "original_queue_function_entered": true,
+      "ring_copy_observed": true,
+      "head_after": 0,
+      "tail_after": 1,
+      "signal_calls": 1,
+      "synthetic_external_call_returns": {
+        "lock": 0,
+        "unlock": 1,
+        "signal": 0
+      },
+      "calls": [
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_lock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "_ZN4CUsb8que_pushEPS_P8CUSB_MES",
+          "x0": "0x40001000"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_cond_signal",
+          "x0": "0x400010a0"
+        },
+        {
+          "name": "pthread_mutex_unlock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        }
+      ],
+      "executed_instructions_and_bridge_hooks": 74,
+      "guest_writes": [
+        {
+          "address": "0x5000efd0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efd8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000eff0",
+          "bytes": 8
+        },
+        {
+          "address": "0x40002008",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003000",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003008",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003010",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003018",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003020",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003028",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003030",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003038",
+          "bytes": 8
+        },
+        {
+          "address": "0x40001029",
+          "bytes": 1
+        }
+      ],
+      "guards_callee_saved_SP_and_LR_return_verified": true
+    },
+    {
+      "fixture": {
+        "id": "signal_failure_after_enqueue",
+        "head": 0,
+        "tail": 0,
+        "signal": 22,
+        "expected_return": 0,
+        "accepted": true,
+        "new_tail": 1
+      },
+      "original_request_return": 0,
+      "original_queue_function_entered": true,
+      "ring_copy_observed": true,
+      "head_after": 0,
+      "tail_after": 1,
+      "signal_calls": 1,
+      "synthetic_external_call_returns": {
+        "lock": 0,
+        "unlock": 0,
+        "signal": 22
+      },
+      "calls": [
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_lock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "_ZN4CUsb8que_pushEPS_P8CUSB_MES",
+          "x0": "0x40001000"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_cond_signal",
+          "x0": "0x400010a0"
+        },
+        {
+          "name": "pthread_mutex_unlock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        }
+      ],
+      "executed_instructions_and_bridge_hooks": 75,
+      "guest_writes": [
+        {
+          "address": "0x5000efd0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efd8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000eff0",
+          "bytes": 8
+        },
+        {
+          "address": "0x40002008",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003000",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003008",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003010",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003018",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003020",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003028",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003030",
+          "bytes": 8
+        },
+        {
+          "address": "0x40003038",
+          "bytes": 8
+        },
+        {
+          "address": "0x40001029",
+          "bytes": 1
+        }
+      ],
+      "guards_callee_saved_SP_and_LR_return_verified": true
+    },
+    {
+      "fixture": {
+        "id": "full_and_unlock_failure",
+        "head": 1,
+        "tail": 0,
+        "unlock": 1,
+        "expected_return": 5,
+        "accepted": false,
+        "new_tail": 0
+      },
+      "original_request_return": 5,
+      "original_queue_function_entered": true,
+      "ring_copy_observed": false,
+      "head_after": 1,
+      "tail_after": 0,
+      "signal_calls": 0,
+      "synthetic_external_call_returns": {
+        "lock": 0,
+        "unlock": 1,
+        "signal": 0
+      },
+      "calls": [
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_lock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "_ZN4CUsb8que_pushEPS_P8CUSB_MES",
+          "x0": "0x40001000"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        },
+        {
+          "name": "pthread_mutex_unlock",
+          "x0": "0x40001070"
+        },
+        {
+          "name": "usb_trace_out",
+          "x0": "0x22"
+        }
+      ],
+      "executed_instructions_and_bridge_hooks": 62,
+      "guest_writes": [
+        {
+          "address": "0x5000efd0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efd8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efe8",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000eff0",
+          "bytes": 8
+        },
+        {
+          "address": "0x40002008",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efc0",
+          "bytes": 8
+        },
+        {
+          "address": "0x5000efc8",
+          "bytes": 8
+        }
+      ],
+      "guards_callee_saved_SP_and_LR_return_verified": true
+    }
+  ],
+  "case_count": 8,
+  "original_function_entries": 15,
+  "proved_counterexamples_within_fixture": {
+    "return0_but_full_no_enqueue": [
+      "full_but_request_returns0",
+      "wrap_full_but_request_returns0"
+    ],
+    "return5_after_message_enqueued": [
+      "unlock_failure_after_enqueue"
+    ],
+    "return0_with_cond_signal_failure": [
+      "signal_failure_after_enqueue"
+    ]
+  },
+  "actual_queue_capacity_mutex_conditions_concurrent_delivery_or_USB_not_measured": true,
+  "guest_original_AArch64_executed": true,
+  "Sony_native_host_or_camera_code_driver_or_module_execution": false,
+  "camera_or_driver_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

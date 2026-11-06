@@ -1,0 +1,18 @@
+{
+  "reviewed_utc_date": "2026-10-30",
+  "references": [
+    {
+      "url": "https://man7.org/linux/man-pages/man2/open.2.html",
+      "source": "Linux man-pages maintainers",
+      "supports": "O_CREAT requires the creation mode argument. Requested creation permissions can be altered by umask and default ACL behavior. This does not measure the target camera's libc, mode register, umask or filesystem."
+    },
+    {
+      "url": "https://github.com/ARM-software/abi-aa/blob/2025Q1/aapcs64/aapcs64.rst",
+      "source": "Arm AAPCS64 2025Q1 section6.1.1 and6.8",
+      "supports": "Integer and pointer parameters use argument registers beginning at x0. x2 is not a callee-saved register. A value before a distinct external call does not establish the required mode argument afterward."
+    }
+  ],
+  "webpages_are_authorization": false,
+  "actual_target_runtime_verified": false,
+  "whole_web_source_captured_or_hashed": false
+}

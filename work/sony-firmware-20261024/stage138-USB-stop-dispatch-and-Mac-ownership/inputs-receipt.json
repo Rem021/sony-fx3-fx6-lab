@@ -1,0 +1,188 @@
+{
+  "created_utc": "2026-10-27T20:29:23.054551+00:00",
+  "official_FX3_GPL_reference": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+  "kernel_archive_sha256": "bb2d9cc676fef6aaf2f8f6703c4e041c133da0e7101b5afd33800eaf7c156d0f",
+  "reference_not_asserted_exact_runtime_build": true,
+  "source_image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "source_reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "selected_kernel_sources": [
+    {
+      "member": "linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_main.c",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_main.c",
+      "bytes": 39580,
+      "sha256": "5376599c43d023fec6d1b1e419d378a649b92145a8b927c24ba3c83562f9cf7b",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_main.h",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_main.h",
+      "bytes": 4643,
+      "sha256": "6b8c127d51f8db8a59c0e19cc124c8c9fbbc169d4f4ea49609b5ece1480922f7",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_ldisc.c",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_ldisc.c",
+      "bytes": 39340,
+      "sha256": "8df5bf192f04db4e100d7077e4796da73a2e9d86e5dbe6f81e9264e1aff0594a",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_ldisc.h",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_ldisc.h",
+      "bytes": 4826,
+      "sha256": "f1200fef8cd6da2b72441aa2dfcd0b71399754f884955fcb0b27efbbbce26182",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_conf.h",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_conf.h",
+      "bytes": 1896,
+      "sha256": "b5a3721317f5b5f9d1b715d0fce2a7b4eedc9074d2b8312be27f5e1e41b0334d",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_fifo.c",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_fifo.c",
+      "bytes": 8003,
+      "sha256": "9e29eb8cddddadcc33c4ebd9694fe6bdb1f0a5ca2cf2add6717ed1464b53bc5e",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_fifo.h",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/drivers/usb/gadget/specific_gadget/usbg_sen/usbg_sen_fifo.h",
+      "bytes": 2689,
+      "sha256": "1fa7d31d681413ef2806cf014572e1f59adf65e3d84d644cdf1123a8aebb685b",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/include/uapi/linux/usb/specific_gadget/usbg_sen.h",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/include/uapi/linux/usb/specific_gadget/usbg_sen.h",
+      "bytes": 2103,
+      "sha256": "fdccea6b555d37bcbdbff629aade1bffc79a1f508401026ba06fee1ed73d2c64",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/include/uapi/linux/usb/specific_gadget/usbg_std.h",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/include/uapi/linux/usb/specific_gadget/usbg_std.h",
+      "bytes": 1552,
+      "sha256": "bb7e62f72fb1e075ba34a79d270dd0ea6d4b54559a41e4621e804585c60e88fe",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/include/uapi/linux/usb/specific_gadget/usbg_type.h",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/include/uapi/linux/usb/specific_gadget/usbg_type.h",
+      "bytes": 3799,
+      "sha256": "839abcbf6a550f798b133d14b0ff9201da9dba84d561b78ea90bcc1ead1b6853",
+      "read_as_data_only": true
+    },
+    {
+      "member": "linux-kernel/include/uapi/linux/usb/specific_gadget/usb_putpid_config.h",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/official-kernel-reference/linux-kernel/include/uapi/linux/usb/specific_gadget/usb_putpid_config.h",
+      "bytes": 1786,
+      "sha256": "34d8e6854e4d0758492b9223d3edc9e9e4823a7e96c14b7f075c7ea31b68b77a",
+      "read_as_data_only": true
+    }
+  ],
+  "original_modules": [
+    {
+      "image_entry": {
+        "path": "/kmod/usb_beets.ko",
+        "inode": 70854,
+        "mode": "0o100755",
+        "size": 113648,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/original-components/kmod/usb_beets.ko",
+      "bytes": 113648,
+      "sha256": "827a4b0aa9383632f482a1ec58eb61fef8eab584ccedc30ffa83c11b18d55985",
+      "loaded_or_executed": false
+    },
+    {
+      "image_entry": {
+        "path": "/kmod/usbg_sen.ko",
+        "inode": 70862,
+        "mode": "0o100644",
+        "size": 58080,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/original-components/kmod/usbg_sen.ko",
+      "bytes": 58080,
+      "sha256": "1a7294dd9d3babde3f1e8cc2ac4aa12f54356f61995993bbc18ace095ed0cbf2",
+      "loaded_or_executed": false
+    }
+  ],
+  "fixed_upstream_sources": [
+    {
+      "source_url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/driver/generic/__init__.py",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/upstream/pmca-generic.py",
+      "bytes": 6767,
+      "sha256": "24cda5b97dcd7e5ff4c6af0e0a8d66900688ef2ba09dc0fb53c42ab6b8c69123",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "6767",
+        "ETag": "\"d3106a4ffba4b39169412576e2f0a9d17defa22cc2ce179d5652699259022749\"",
+        "Last-Modified": null
+      },
+      "executed_or_imported": false
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/driver/generic/libusb.py",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/upstream/pmca-libusb.py",
+      "bytes": 3027,
+      "sha256": "1c80cfaa0692cf308bd086edc9a9bad3691804b50182993c1dd960c932daa1df",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "3027",
+        "ETag": "\"73d45be68e9540c2478685b024471cb0bb663c49cb768a1704565b4a345b4037\"",
+        "Last-Modified": null
+      },
+      "executed_or_imported": false
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/__init__.py",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/upstream/pmca-usb-base.py",
+      "bytes": 4101,
+      "sha256": "db2fd3d0dfa2e6f315a14291be8951a5092875e8e5858183cabf2cec46a0fcda",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "4101",
+        "ETag": "\"ea613c691e9a7575865f844b2addccb6a4e0ed5938e8b40b5961f67350556cf9\"",
+        "Last-Modified": null
+      },
+      "executed_or_imported": false
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/libusb/libusb/v1.0.30/libusb/os/darwin_usb.c",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/upstream/darwin_usb-v1.0.30.c",
+      "bytes": 113765,
+      "sha256": "290b9913eba18e0f9f9fa0de75c59bec0daa4ccd02740a96fd8479d20da06557",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "113765",
+        "ETag": "\"605312feb858cee617ab4b8550c2cf0caf58d63dabd1e9ab01881d39572f491c\"",
+        "Last-Modified": null
+      },
+      "executed_or_imported": false
+    },
+    {
+      "source_url": "https://raw.githubusercontent.com/libusb/libusb/v1.0.30/ChangeLog",
+      "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/upstream/libusb-v1.0.30-ChangeLog.txt",
+      "bytes": 16579,
+      "sha256": "ecee0210a149d40e4b9b1e46fd2a19672a5b3fb52cf6c40956aa5dbe4da57538",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "16579",
+        "ETag": "\"ce7a71597e70fa61ba378d5cd6bbe5d8ace5f739f630efa8f5c4e0f7cb2aa02b\"",
+        "Last-Modified": null
+      },
+      "executed_or_imported": false
+    }
+  ],
+  "camera_or_Windows_or_downloaded_code_execution": false,
+  "known_Homebrew_libusb_cellars_found": [],
+  "research_venv_PyUSB_or_libusb1_installed": false,
+  "host_inventory_scope_not_global_absence_proof": true
+}

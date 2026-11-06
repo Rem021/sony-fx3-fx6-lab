@@ -1,0 +1,268 @@
+{
+  "proof_sha256": "056321bffc676924ec012739342f9ca8c6c81e9a0cae8cc5d458f03b06d47a73",
+  "instruction_count": 3181,
+  "contract": {
+    "327": {
+      "legacy": "2004/0201/40B/0001 same body offsets +8..+35; tail zero",
+      "reply": "0d2027130c00018000000000",
+      "legacy_reply": "042001820c00010000000000",
+      "AP_construct": "0x2dee8b8..0x2dee98c",
+      "CP_bridge": "0x1abf98..0x1abfba ->0x1b17b4; reply0x5ca1c6",
+      "CP_execute": "0x5b00c2 ->0x5b01f6 ->0x18693c ->0x1869e0",
+      "behavior": "Store descriptor in 20-slot table; physical range translation via 4 map descriptors at0xb54eb0, no sound-data loads/header/format/CRC validation. Kind already present with equal descriptor succeeds (0x5b0266 return3); changed descriptor returns status0xe004. Bad register operation returns0xe004. Unregister searches kind, missing kind also status0. Full table returns without completion at0x186958 (not synthetic success).",
+      "zero_content": "No failure status induced by zero backing in this registration path; bytes are not read. Address outside map logs and stores local address0 but still status0 at0x1869aa..0x1869ce. Silent model must instead validate its own backing ownership/ranges.",
+      "minimal": "Save descriptor by kind, validate boot values and backing lifetime; return status0 once to exact source. No playback."
+    },
+    "32a": {
+      "legacy": "2004/0204/12B/0001, +8 volume_u8,+9 kind_u8,+10..11zero",
+      "reply": "0d202a130c00018000000000",
+      "legacy_reply": "042004820c00010000000000",
+      "AP_construct": "0x2dee990..0x2deea04",
+      "CP_bridge": "0x1ac010 ->0x1b1d08; reply0x5ca2bc",
+      "CP_execute": "0x5b0606 ->0x186c24 ->0x186c98",
+      "behavior": "volume<8 saved per kind (kind0 all); kind missing still succeeds; volume>=8 helper returns0xe002, caller normalizes any error to status0xe002. No physical buffer access.",
+      "zero_content": "No content dependency or content error status",
+      "minimal": "Save per-kind volume in0..7; return status0 once to exact source. No playback."
+    }
+  },
+  "normal_sequence": [
+    {
+      "index": 0,
+      "kind": 1,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x23c",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": 256,
+      "offset": 0,
+      "constructor_call_VA": "0x2b61ae0",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da00000",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 1,
+      "kind": 2,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x23d",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": 2944,
+      "offset": 256,
+      "constructor_call_VA": "0x2b61b14",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da00100",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 2,
+      "kind": 3,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x23e",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": 2944,
+      "offset": 3200,
+      "constructor_call_VA": "0x2b61b48",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da00c80",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 3,
+      "kind": 8,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x23f",
+      "cont_length": 1824,
+      "cont_first_length": 1248,
+      "size": 5568,
+      "offset": 25472,
+      "constructor_call_VA": "0x2b61b7c",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da06380",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 4,
+      "kind": 7,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x240",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": 2880,
+      "offset": 22592,
+      "constructor_call_VA": "0x2b61bb0",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da05840",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 5,
+      "kind": 9,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x241",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": 2880,
+      "offset": 31040,
+      "constructor_call_VA": "0x2b61be4",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da07940",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 6,
+      "kind": 4,
+      "priority": 3,
+      "volume_source": "sequence_boot+0x242",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": 3712,
+      "offset": 6144,
+      "constructor_call_VA": "0x2b61c18",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da01800",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 7,
+      "kind": 5,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x243",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": 3456,
+      "offset": 9856,
+      "constructor_call_VA": "0x2b61c4c",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da02680",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 8,
+      "kind": 6,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x244",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": 9280,
+      "offset": 13312,
+      "constructor_call_VA": "0x2b61c88",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "physical": "0x41da03400",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 9,
+      "kind": 10,
+      "priority": 4,
+      "volume_source": "sequence_boot+0x246",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": "fread returned byte count at 0x2b60f58..0x2b60f68 ->0x2b6134c..0x2b61350",
+      "offset": 0,
+      "constructor_call_VA": "0x2b61cc0",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "file": "/usr/share/avsystemsound/Dslr_Emnt_High_SelfTimer_RemoteRelease.bin",
+      "physical": "remote DMM returned phys64 at AP 0x2b61354",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 10,
+      "kind": 11,
+      "priority": 4,
+      "volume_source": "sequence_boot+0x245",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": "fread returned byte count at 0x2b60f58..0x2b60f68 ->0x2b6134c..0x2b61350",
+      "offset": 0,
+      "constructor_call_VA": "0x2b61cf8",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "file": "/usr/share/avsystemsound/Dslr_Emnt_High_SelfTimer_2sec.bin",
+      "physical": "remote DMM returned phys64 at AP 0x2b61354",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 11,
+      "kind": 12,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x247",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": "fread returned byte count at 0x2b60f58..0x2b60f68 ->0x2b6134c..0x2b61350",
+      "offset": 0,
+      "constructor_call_VA": "0x2b61d30",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "file": "/usr/share/avsystemsound/Dslr_Emnt_High_Startup.bin",
+      "physical": "remote DMM returned phys64 at AP 0x2b61354",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    },
+    {
+      "index": 12,
+      "kind": 13,
+      "priority": 6,
+      "volume_source": "sequence_boot+0x248",
+      "cont_length": 0,
+      "cont_first_length": 0,
+      "size": "fread returned byte count at 0x2b60f58..0x2b60f68 ->0x2b6134c..0x2b61350",
+      "offset": 0,
+      "constructor_call_VA": "0x2b61d68",
+      "wait": true,
+      "commands": [
+        "0x327/40B",
+        "0x32a/10B"
+      ],
+      "file": "/usr/share/avsystemsound/Dslr_Emnt_High_Shutdown.bin",
+      "physical": "remote DMM returned phys64 at AP 0x2b61354",
+      "register_predicate": "0 only if sequence_boot+0x1e4==1 AND index==6, otherwise1; AP0x2b61378..0x2b6139c"
+    }
+  ]
+}

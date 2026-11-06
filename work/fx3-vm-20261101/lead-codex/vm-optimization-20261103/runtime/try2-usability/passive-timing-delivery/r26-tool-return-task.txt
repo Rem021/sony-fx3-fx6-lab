@@ -1,0 +1,7 @@
+FX3｜r26操作工具返回通路修正（仅离线，小范围）
+目标：真实r26任务task_49f0c1c3663b首个click返回完整大JSON在exec输出截断后解析失败，多一次读图/调用间隙耗尽原20s。修正工具展示通路，不改已封存r26候选、PAGE/server/runner/固件/平台/超时/操作语义。
+根=/Volumes/KAFU2T/AI/Projects/Mac；DEL=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery。唯一写范围DEL/r26-tool-return-preparation。先核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B；r26 candidate 1277项清单SHA9f6c4c047f8dc2bbb253d880b174a09e7701448bc645554b93fea1bac0d52fd2只读。真实失败任务尚在别的操作代理封存，只读且不触其浏览器/端口/状态/文件。无VM/Start/部署/实体设备授权。
+交付一个最小、实际可用的工具调用适配方法，优先少量代码而非重建测试体系：每次只执行操作agent此刻明确给出的一个原operate.py动作，不预测/循环/重试/自动pin或confirm；原进程完整stdout/stderr保存到当前task独立新文件，执行成功后从该次完整文件解析结构化结果，绝不解析exec可能截断的屏幕文本，也不能在失败时取旧current-return.json冒充本次成功。stdout只输出精简且有界的status、step/attempt（适用时）、本次receipt/path和实际PNG路径+SHA或确认结果。观察和固定图的schema/作用必须保持区分。错误非零/异常/JSON无效不读旧结果、不展示旧图、不追加动作；调用原既有End路径的责任必须清楚，原20s alarm仍兜底，不能以transport失败重发。
+提供操作代理当前工具可直接使用的单次调用示例：同一次顶层工具返回简短结果与对应实际PNG（如functions脚本先await exec，再按成功摘要中已校验路径await view_image并image输出；若操作代理是另一工具组合，应实测其支持能力并给准确示例）。展示图片后必须真正让模型看图，下一调用才可pin/confirm；严禁把审阅并进脚本或用hash判语义。若不可同调用展示需如实说明，不能伪称成功。
+仅做针对性离线验证：用复制到新目录的r26实际长观察JSON+PNG和旧合格固定PNG回执作为历史回放样本（明确不是新运行/原生/语义证明），让假child输出同样大JSON，验证极小exec输出上限仍能读精简结构并通过实际image工具显示；确认与非零退出、截断/非法JSON、陈旧current-return残留至少各一例不误用旧图。模拟child必须显式测试专用，不可进入真实动作路径；生产命令始终定位原冻结operate.py，不能允许任意shell注入。
+无需重跑r26的16/15矩阵或重新导入912大清单；只核用到的源/样本前后hash并记录封存r26 manifest pin保持。不创建一套新runtime、不更改候选freeze。输出简短README、适配源码（必要时）、验证回执及源码hash，正式worker_done；禁止自行接着启动VM。本轮目标仅消除已证实的结果截断/图片返回失败，后续真实八步由协调端另派。

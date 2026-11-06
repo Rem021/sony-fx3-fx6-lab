@@ -1,0 +1,28 @@
+--- r11/trial_web_v22_navigation_review.py
++++ r12/trial_web_v22_navigation_review.py
+@@ -283,8 +283,7 @@
+  return !!p&&!!c&&s.phase==='ready'&&!s.review_required&&s.steps===p.step&&
+    c.request_id===p.request_id&&c.step===p.step&&c.observed_sequence===p.observed_sequence&&
+    c.content_generation===p.content_generation&&c.PNG_sha256===p.PNG_sha256&&
+-   c.guest_input_written===false&&!!s.frame&&s.frame.content_generation===p.content_generation&&
+-   s.frame.PNG_sha256===p.PNG_sha256;
++   c.guest_input_written===false;
+ }
+ function presentFeedback(s){
+  // Native failure and terminal state outrank a previous, local 4xx refusal.
+@@ -427,8 +426,13 @@
+       ack.content_generation!==confirmation.content_generation||
+       ack.PNG_sha256!==confirmation.PNG_sha256||ack.guest_input_written!==false)
+      throw Error('画面确认回执不完整。');
+-   if(explicitRejection?.kind==='confirm')explicitRejection=null;
+-   presentFeedback(lastStatus);
++   // This receipt confirms the historical image only. The next key still needs
++   // a fresh, fully loaded frame accepted by enableKeys and the server gate.
++   if(pendingConfirm===confirmation){
++     reviewAwaiting=false;reviewUnknown=false;pendingConfirm=null;
++     if(explicitRejection?.kind==='confirm')explicitRejection=null;
++     presentFeedback(lastStatus);
++   }
+  }catch(e){
+    if(pendingConfirm===confirmation){
+      if(e.deliveryUnknown===false){

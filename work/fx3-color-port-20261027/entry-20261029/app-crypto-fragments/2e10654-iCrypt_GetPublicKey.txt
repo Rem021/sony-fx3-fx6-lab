@@ -1,0 +1,100 @@
+02e105b4 ldp        x21, x22, [sp, #0x20]
+02e105b8 ldp        x19, x20, [sp, #0x10]
+02e105bc ldp        x29, x30, [sp], #0x30
+02e105c0 ret        
+02e105c4 mov        w22, w0
+02e105c8 mov        w0, #2
+02e105cc adrp       x21, #0x3973000
+02e105d0 adrp       x20, #0x3966000
+02e105d4 str        w0, [x19]
+02e105d8 adrp       x19, #0x391d000
+02e105dc add        x21, x21, #0xa20
+02e105e0 add        x20, x20, #0xd47
+02e105e4 add        x19, x19, #0x510
+02e105e8 mov        w4, w22
+02e105ec mov        x2, x21
+02e105f0 mov        x1, x20
+02e105f4 mov        x0, x19
+02e105f8 mov        w3, #0xd6
+02e105fc bl         #0x2f6fe3c
+02e10600 mov        w4, w22
+02e10604 mov        x2, x21
+02e10608 mov        x1, x20
+02e1060c mov        x0, x19
+02e10610 ldp        x21, x22, [sp, #0x20]
+02e10614 mov        w3, #0xd6
+02e10618 ldp        x19, x20, [sp, #0x10]
+02e1061c ldp        x29, x30, [sp], #0x30
+02e10620 b          #0x2f6be48
+02e10624 stp        x29, x30, [sp, #-0x40]!
+02e10628 mov        x29, sp
+02e1062c stp        x19, x20, [sp, #0x10]
+02e10630 add        x20, x29, #0x40
+02e10634 ldr        w0, [x0]
+02e10638 mov        x19, x1
+02e1063c stp        x21, x22, [sp, #0x20]
+02e10640 str        xzr, [x20, #-8]!
+02e10644 str        xzr, [x29, #0x30]
+02e10648 bl         #0x2e10048
+02e1064c mov        x2, x20
+02e10650 add        x1, x29, #0x30
+02e10654 bl         #0x1591ca0 ; iCrypt_GetPublicKey
+02e10658 adrp       x2, #0x3973000
+02e1065c adrp       x1, #0x3966000
+02e10660 cbnz       w0, #0x2e10698
+02e10664 adrp       x0, #0x3973000
+02e10668 add        x2, x2, #0x970
+02e1066c ldp        x4, x5, [x29, #0x30]
+02e10670 add        x1, x1, #0xd47
+02e10674 add        x0, x0, #0x8da
+02e10678 mov        w3, #0xe9
+02e1067c stp        x4, x5, [x19]
+02e10680 str        wzr, [x19, #0x10]
+02e10684 bl         #0x2f6ff0c
+02e10688 ldp        x19, x20, [sp, #0x10]
+02e1068c ldp        x21, x22, [sp, #0x20]
+02e10690 ldp        x29, x30, [sp], #0x40
+02e10694 ret        
+02e10698 mov        w22, w0
+02e1069c mov        w0, #2
+02e106a0 adrp       x21, #0x391d000
+02e106a4 add        x20, x2, #0x970
+02e106a8 add        x21, x21, #0x510
+02e106ac str        w0, [x19, #0x10]
+02e106b0 stp        xzr, xzr, [x19]
+02e106b4 add        x19, x1, #0xd47
+02e106b8 mov        w4, w22
+02e106bc mov        x2, x20
+02e106c0 mov        x1, x19
+02e106c4 mov        x0, x21
+02e106c8 mov        w3, #0xf0
+02e106cc bl         #0x2f6fe3c
+02e106d0 mov        w4, w22
+02e106d4 mov        x2, x20
+02e106d8 mov        x1, x19
+02e106dc mov        x0, x21
+02e106e0 mov        w3, #0xf0
+02e106e4 bl         #0x2f6be48
+02e106e8 b          #0x2e10688
+02e106ec ldr        w3, [x0]
+02e106f0 ldr        w2, [x1]
+02e106f4 cmp        w3, w2
+02e106f8 b.ne       #0x2e10738
+02e106fc ldr        w4, [x0, #4]
+02e10700 mov        w2, #0
+02e10704 ldr        w3, [x1, #4]
+02e10708 cmp        w4, w3
+02e1070c b.ne       #0x2e10730
+02e10710 ldr        w4, [x0, #8]
+02e10714 ldr        w3, [x1, #8]
+02e10718 cmp        w4, w3
+02e1071c b.ne       #0x2e10730
+02e10720 ldr        w2, [x0, #0xc]
+02e10724 ldr        w0, [x1, #0xc]
+02e10728 cmp        w2, w0
+02e1072c cset       w2, eq
+02e10730 mov        w0, w2
+02e10734 ret        
+02e10738 mov        w2, #0
+02e1073c b          #0x2e10730
+02e10740 ldrb       w1, [x0, #0x1e]

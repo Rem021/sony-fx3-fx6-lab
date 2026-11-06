@@ -1,0 +1,2 @@
+#include "fx3-ldec-soft103-v1.c"
+__asm__(".section .modinfo,\"a\"\n.asciz \"license=GPL\"\n.asciz \"author=FX3 VM compatibility model\"\n.asciz \"depends=devno\"\n.asciz \"vermagic=4.9.337-scel+ SMP preempt mod_unload aarch64\"\n.section .gnu.linkonce.this_module,\"aw\"\n.balign 64\n.global __this_module\n.type __this_module,%object\n__this_module:\n.zero 24\n.asciz \"fx3_ldec_soft103_v1\"\n.zero 0x158-(.-__this_module)\n.quad init_module\n.zero 0x2b8-(.-__this_module)\n.quad cleanup_module\n.zero 0x300-(.-__this_module)\n.size __this_module, .-__this_module\n");

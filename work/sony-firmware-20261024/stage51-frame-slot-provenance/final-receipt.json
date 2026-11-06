@@ -1,0 +1,86 @@
+{
+  "schema": "fx3-stage51-frame-slot-provenance/1",
+  "created_utc": "2026-10-26T04:07:29.167478+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/README.md",
+      "bytes": 6523,
+      "sha256": "eab843597bc0732749c648443707a1e2f1a9a10402f0c09111e0e970fae23aad"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/coordinator-observations.json",
+      "bytes": 1374,
+      "sha256": "bffe8ba2be8274a590d6f782f9208ee62f2dd415ee71b9f44fcf6f7ff266343c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/finalize_stage51.py",
+      "bytes": 14868,
+      "sha256": "8fab19571104a4eaea225853dae99f769f04a36a1579adc94797b5aa7752fa97"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/frame_slots.py",
+      "bytes": 15957,
+      "sha256": "618f82c0dae081d1f3ed3aa5ed160dfb2e2b87602863e999ea60d4494abdd35c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/goal-status-after.json",
+      "bytes": 116597,
+      "sha256": "83213af80e00a7ce047d3f7b02022a5bc79efe7834c7efea3363fe07abaee2d0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/goal-status-before.json",
+      "bytes": 111861,
+      "sha256": "bbc055ab0b045a97148dd83a877f480628d9675b0064c3699e70fcf825887bc4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/run-20261025/executed-source.py",
+      "bytes": 15957,
+      "sha256": "618f82c0dae081d1f3ed3aa5ed160dfb2e2b87602863e999ea60d4494abdd35c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/run-20261025/frame-slot-results.json",
+      "bytes": 4500796,
+      "sha256": "dcff677f0cf2aa8f225cd4d8496c60ba88209d4146918a256fc0f69830f070cd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/run-20261025/source-receipt.json",
+      "bytes": 503,
+      "sha256": "1d72f94e382bd69bfda4d17bbb34dd5510e5afd23400d9b7d46ae9425ed6fa8a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/scope-corrections.json",
+      "bytes": 7050,
+      "sha256": "d3e75e42866dedcffc75729e4f7ec0bd453fa2f2801bc617a1704bc5a4d0dd07"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage51-frame-slot-provenance/summary.json",
+      "bytes": 1253,
+      "sha256": "c95100fc1bceae0a702cbbcab12f1bfd4c03b9fa012fb5f7a11a2b0bb341d145"
+    }
+  ],
+  "previous_manifest_sha256": "d69cc8a9d4e8b21759716588af80880f6ac0cc22152b0997ac265aea3a6ceedc",
+  "scope": "62original fragments:40slot initialization/allocation/clear/capacity and actual getters, partial Start/picture message framing/receiver branches and bounded complete flag helper. Frame-slot namespace and4old table aliases corrected. No actual frame fill/return/current MAIN owner/fullStart/HAL/hardware/recovery proof.",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage51-frame-slot-provenance/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage51-frame-slot-provenance/goal-status-after.json",
+    "before_sha256": "bbc055ab0b045a97148dd83a877f480628d9675b0064c3699e70fcf825887bc4",
+    "after_sha256": "83213af80e00a7ce047d3f7b02022a5bc79efe7834c7efea3363fe07abaee2d0",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-25 FX3 帧槽来源与两类事件](<work/sony-firmware-20261024/stage51-frame-slot-provenance/README.md>)：原40帧槽分配/清零及Start/逐帧包、标志准备62段验证，索引不当编码通道；更正旧表4项越界枚举，真实填充/归还/完整启动、硬件与恢复仍待验收。",
+  "readme_index_before_sha256": "cfbb6fa0af56c9d0cde686ab26ecc3459abdc4e97f1736b291a27a9499a8d751",
+  "readme_index_after_sha256": "a7e7281e4d372bd6aa78206e43e8db38baa112635a2f043960770fb652223f8a",
+  "operations": {
+    "original_guest_code_unchanged": true,
+    "map_node_pool_and_object_links_are_explicit_fixtures": true,
+    "native_output_PC_return_log_lock_or_Hal_adapter": false,
+    "partial_metadata_not_ready_to_submit": true,
+    "new_loadable_camera_module": false,
+    "UU_Windows_camera_interfaces_auth_modes_drivers_media_module_WBI_flash": false,
+    "real_hardware_recording_backup_restore_or_independent_recovery": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

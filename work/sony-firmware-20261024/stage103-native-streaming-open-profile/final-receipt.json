@@ -1,0 +1,96 @@
+{
+  "schema": "fx3-stage103-streaming-Open-profile/1",
+  "created_utc": "2026-10-27T11:25:54.420766+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/README.md",
+      "bytes": 5829,
+      "sha256": "7f9e371dfd791a8ebeb880058e39abed2c6bb0b5d19659faa9a1e723712bd142"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/completed-evidence-review.json",
+      "bytes": 619,
+      "sha256": "847596362ec9c29b48726fefcc490f55a4273bfe83f06cf7a24426293ffa6a9f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/goal-status-after.json",
+      "bytes": 311969,
+      "sha256": "f07ecefdc8ff9e3b21864a49f6732e5c8973461b48f363955c2ed8268bab7da3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/goal-status-before.json",
+      "bytes": 309059,
+      "sha256": "7ac643804ab102a83f52cc8366ecf9086bffe4027ac6037b67b2c08ba70bd9c0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/open_profile.py",
+      "bytes": 9689,
+      "sha256": "3332dc7764d7f81ee7bb6081bdcc7140094b1b7ffcfdd41466635883185f27e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/review_and_seal.py",
+      "bytes": 13499,
+      "sha256": "479aee9283c7e0d04382685fd66b8686b86bf864af8f51c596b68f52f600e195"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/run-initial-20261027/attempt-failure.json",
+      "bytes": 712,
+      "sha256": "360d07990b67decec4386bb4c97509d3c1f77a34f5dfddbdc1ed080387abcafc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/run-initial-20261027/executed-source.py",
+      "bytes": 9358,
+      "sha256": "e48e880f6c85d02554fa2989eb44275d24d2c5b4ac5f64a8efb13e26d944bc9d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/run-native-frame-corrected-20261027/executed-source.py",
+      "bytes": 9689,
+      "sha256": "3332dc7764d7f81ee7bb6081bdcc7140094b1b7ffcfdd41466635883185f27e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/run-native-frame-corrected-20261027/open-profile-results.json",
+      "bytes": 355954,
+      "sha256": "deaa44cdfb1adc582e00d040a304b698c4e38da4332415fd57943c797a1e2a43"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage103-native-streaming-open-profile/source-and-scope-audit.json",
+      "bytes": 54596,
+      "sha256": "986a635deea759fa02cd21e6e001d46373898106ef6c2538c046ad96afd4cac9"
+    }
+  ],
+  "previous_manifest_sha256": "4098a2dc80d5681415a1e35f36fef4ca2489bf61d2f0eb389e402f0eedd6596b",
+  "operations": {
+    "status": "PASS_ORIGINAL_STREAMING_OPEN_FIELDS_CLASSIFY_AS_STREAMING_420_8_NOT_TARGET_MAIN_420_10",
+    "created_utc": "2026-10-27T11:25:54.420766+00:00",
+    "prior_sealed_files_checked": 10,
+    "producer_profiles": 10,
+    "native_classifications": 10,
+    "bounded_phases": 150,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "declared_profile_4208_classification_not_actual_stream_depth": true,
+    "whole_Open_transport_instance_MAIN_or_recovery_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "7ac643804ab102a83f52cc8366ecf9086bffe4027ac6037b67b2c08ba70bd9c0",
+    "after_sha256": "f07ecefdc8ff9e3b21864a49f6732e5c8973461b48f363955c2ed8268bab7da3"
+  },
+  "readme_index_before_sha256": "883bcf4c664942ade2c5d1e1e11a1e25b3fcaa34b145b91ddf9d75576de2b4a3",
+  "readme_index_after_sha256": "072d24d5a145fa861c2e238687ae56c026fa4952df14fb4f8380b5f302845d1c",
+  "readme_index_entry": "- [2026-10-27 FX3 推流Open与目标MAIN差别](<work/sony-firmware-20261024/stage103-native-streaming-open-profile/README.md>)：原HD29.97分支识别STREAMING_HEVC_BSF/QT18M/4208；10源配置/150阶段，帧率预期已校正。相同HEVC模块类别不是MAIN实例证明，实录/恢复仍未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

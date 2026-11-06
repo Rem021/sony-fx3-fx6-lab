@@ -1,0 +1,92 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 1d6d134: a9b77bfd     	stp	x29, x30, [sp, #-0x90]!
+ 1d6d138: 910003fd     	mov	x29, sp
+ 1d6d13c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 1d6d140: 9101c3a2     	add	x2, x29, #0x70
+ 1d6d144: f9400013     	ldr	x19, [x0]
+ 1d6d148: 910143b4     	add	x20, x29, #0x50
+ 1d6d14c: a90483bf     	stp	xzr, x0, [x29, #0x48]
+ 1d6d150: b0008be0     	adrp	x0, 0x2eea000
+ 1d6d154: 39009fbf     	strb	wzr, [x29, #0x27]
+ 1d6d158: a9034fb4     	stp	x20, x19, [x29, #0x30]
+ 1d6d15c: f945b400     	ldr	x0, [x0, #0xb68]
+ 1d6d160: f90037a0     	str	x0, [x29, #0x68]
+ 1d6d164: 90008be0     	adrp	x0, 0x2ee9000
+ 1d6d168: f9462800     	ldr	x0, [x0, #0xc50]
+ 1d6d16c: f90033a0     	str	x0, [x29, #0x60]
+ 1d6d170: b0008bc0     	adrp	x0, 0x2ee6000
+ 1d6d174: f944b000     	ldr	x0, [x0, #0x960]
+ 1d6d178: f90023a0     	str	x0, [x29, #0x40]
+ 1d6d17c: 91009fa0     	add	x0, x29, #0x27
+ 1d6d180: f90017a0     	str	x0, [x29, #0x28]
+ 1d6d184: 910103a0     	add	x0, x29, #0x40
+ 1d6d188: f9003ba0     	str	x0, [x29, #0x70]
+ 1d6d18c: 9100e3a0     	add	x0, x29, #0x38
+ 1d6d190: f9003fa0     	str	x0, [x29, #0x78]
+ 1d6d194: 9100c3a0     	add	x0, x29, #0x30
+ 1d6d198: f90043a0     	str	x0, [x29, #0x80]
+ 1d6d19c: 9100a3a0     	add	x0, x29, #0x28
+ 1d6d1a0: f90047a0     	str	x0, [x29, #0x88]
+ 1d6d1a4: b0008c20     	adrp	x0, 0x2ef2000
+ 1d6d1a8: f9450001     	ldr	x1, [x0, #0xa00]
+ 1d6d1ac: 91280000     	add	x0, x0, #0xa00
+ 1d6d1b0: d63f0020     	blr	x1
+ 1d6d1b4: d53bd041     	mrs	x1, TPIDR_EL0
+ 1d6d1b8: f8206822     	str	x2, [x1, x0]
+ 1d6d1bc: b0008c20     	adrp	x0, 0x2ef2000
+ 1d6d1c0: f944f802     	ldr	x2, [x0, #0x9f0]
+ 1d6d1c4: 9127c000     	add	x0, x0, #0x9f0
+ 1d6d1c8: d63f0040     	blr	x2
+ 1d6d1cc: f0008be2     	adrp	x2, 0x2eec000
+ 1d6d1d0: f9459c42     	ldr	x2, [x2, #0xb38]
+ 1d6d1d4: f8206822     	str	x2, [x1, x0]
+ 1d6d1d8: 90008be0     	adrp	x0, 0x2ee9000
+ 1d6d1dc: f9433800     	ldr	x0, [x0, #0x670]
+ 1d6d1e0: b40000e0     	cbz	x0, 0x1d6d1fc <Application_System_Init+0x11621b8>
+ 1d6d1e4: 90008ba1     	adrp	x1, 0x2ee1000
+ 1d6d1e8: 91006260     	add	x0, x19, #0x18
+ 1d6d1ec: f944a821     	ldr	x1, [x1, #0x950]
+ 1d6d1f0: 97b6ae10     	bl	0xb18a30 <pthread_once@plt>
+ 1d6d1f4: 34000080     	cbz	w0, 0x1d6d204 <Application_System_Init+0x11621c0>
+ 1d6d1f8: 97b6a93a     	bl	0xb176e0 <_ZSt20__throw_system_errori@plt>
+ 1d6d1fc: 12800000     	mov	w0, #-0x1               // =-1
+ 1d6d200: 17fffffe     	b	0x1d6d1f8 <Application_System_Init+0x11621b4>
+ 1d6d204: 39409fa0     	ldrb	w0, [x29, #0x27]
+ 1d6d208: 340001a0     	cbz	w0, 0x1d6d23c <Application_System_Init+0x11621f8>
+ 1d6d20c: 91004260     	add	x0, x19, #0x10
+ 1d6d210: 52800022     	mov	w2, #0x1                // =1
+ 1d6d214: 885f7c01     	ldxr	w1, [x0]
+ 1d6d218: 8803fc02     	stlxr	w3, w2, [x0]
+ 1d6d21c: 35ffffc3     	cbnz	w3, 0x1d6d214 <Application_System_Init+0x11621d0>
+ 1d6d220: 36f80041     	tbz	w1, #0x1f, 0x1d6d228 <Application_System_Init+0x11621e4>
+ 1d6d224: 97b6a797     	bl	0xb17080 <_ZNSt28__atomic_futex_unsigned_base19_M_futex_notify_allEPj@plt>
+ 1d6d228: f94033a3     	ldr	x3, [x29, #0x60]
+ 1d6d22c: b50000c3     	cbnz	x3, 0x1d6d244 <Application_System_Init+0x1162200>
+ 1d6d230: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 1d6d234: a8c97bfd     	ldp	x29, x30, [sp], #0x90
+ 1d6d238: d65f03c0     	ret
+ 1d6d23c: 52800040     	mov	w0, #0x2                // =2
+ 1d6d240: 97b6ac88     	bl	0xb18460 <_ZSt20__throw_future_errori@plt>
+ 1d6d244: aa1403e1     	mov	x1, x20
+ 1d6d248: aa1403e0     	mov	x0, x20
+ 1d6d24c: 52800062     	mov	w2, #0x3                // =3
+ 1d6d250: d63f0060     	blr	x3
+ 1d6d254: 17fffff7     	b	0x1d6d230 <Application_System_Init+0x11621ec>
+ 1d6d258: d11103ff     	sub	sp, sp, #0x440
+ 1d6d25c: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+ 1d6d260: 910003fd     	mov	x29, sp
+ 1d6d264: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 1d6d268: 910a23b3     	add	x19, x29, #0x288
+ 1d6d26c: 9101c3b4     	add	x20, x29, #0x70
+ 1d6d270: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 1d6d274: aa1303e1     	mov	x1, x19
+ 1d6d278: aa0003f6     	mov	x22, x0
+ 1d6d27c: aa1403e0     	mov	x0, x20
+ 1d6d280: a90363f7     	stp	x23, x24, [sp, #0x30]
+ 1d6d284: a9046bf9     	stp	x25, x26, [sp, #0x40]
+ 1d6d288: 910046d8     	add	x24, x22, #0x11

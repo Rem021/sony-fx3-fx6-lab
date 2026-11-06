@@ -1,0 +1,19 @@
+{
+  "recorded_utc": "2026-10-27T03:31:45.651230+00:00",
+  "status": "CONFIRMED_OLD_GUEST_CALLER_UNSAFE_QUARANTINED",
+  "affected_stage": "stage69-native-16M-callpath",
+  "old_container_bytes": 24,
+  "original_write_span_bytes": 52,
+  "actual_written_bytes": 50,
+  "outside_old_container_bytes": 26,
+  "saved_return_address_and_register_slots_corrupted": true,
+  "why_prior_boundary_was_insufficient": "Old checks read only24-byte prefix and paused inside the channel before adapter unwind. Correct numeric prefix/alignment did not prove saved frame safety.",
+  "numeric_prefix_scope_retained": "Original trace/target/CPB bytes were actually observed; old adapter cannot support safe call/return/deployment claims.",
+  "original_only_stages70_to73": "Compiled adapter mapped inert and never entered; original-only observations retain their own bounded scopes.",
+  "old_artifacts_modified_or_deleted": false,
+  "old_camera_use_permitted": false,
+  "new_prototype": "56-byte guest-only result container, observed52-byte write span covered; saved slots unchanged in two target cases.",
+  "new_object_sha256": "0f67a495ef93841234cacf6f9565a018e983fe08e82dd1075ce961f44cae65b5",
+  "new_camera_use_permitted": false,
+  "result": "work/sony-firmware-20261024/stage74-rate-result-ABI-fix/run-20261026/rate-ABI-results.json"
+}

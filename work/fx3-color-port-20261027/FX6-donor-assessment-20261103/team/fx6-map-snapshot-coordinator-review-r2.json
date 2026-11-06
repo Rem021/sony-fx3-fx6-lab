@@ -1,0 +1,25 @@
+{
+  "time": "2026-11-06T04:28:47.878389+00:00",
+  "status": "core_protocol_fixes_present_two_remaining_gaps_before_offline_integration",
+  "manifest_checks": [
+    {
+      "name": "parser",
+      "count": 44,
+      "sha256": "54daf6166cffc81296ad4c60315e39c7f19f70674f1b6569574358afcabf0263",
+      "all_match": true
+    },
+    {
+      "name": "snapshot",
+      "count": 46,
+      "sha256": "3134606ccb45bff75b4d0753bcaa97636bd1f7f189c96f193d0da261be1aedc9",
+      "all_match": true
+    }
+  ],
+  "independent_probes": [
+    "8192-byte DATA with cap1 and no END rejected only as missing END; data limit not enforced while buffering",
+    "5000-digit DATA index raises bare ValueError, not ProtocolError"
+  ],
+  "code_gap": "run_test implements separate control flow; FX3_TEST_EINTR and FX3_TEST_EXTRA return canned failure instead of exercising real read/probe path",
+  "next_scope": "fix and prepare isolated offline AArch64 collector/CPIO/host integration candidate; no VM permission",
+  "prior_run_start_allowance_remaining": 0
+}

@@ -1,0 +1,18 @@
+FX3_CONNECTED_CACHE_20261026T163821Z
+用户刚确认“已接好，保持 MSC”。继续仅查询 Windows 缓存元数据，取得一份新的连接状态快照。上一轮已完成，不重做旧任务、不覆盖任何旧结果。
+
+沿用已核对的 C:/Users/owo/Documents/Codex/2026-10-16/rea-2。复核本机系统C盘普通目录且无reparse/网络/相机存储重定向后，新建 outputs/fx3-connected-pnp-20261026T163821Z/{private,public}；已有则停止。已验证的PnPUtil语法和安全范围直接复用，不重新搜索网页或审查全仓库，不运行旧PS1，不生成/执行探针、不修改执行策略、不提权。
+
+普通用户查询，从以下一条开始，原输出重定向到private并记录时间及退出码：
+C:/Windows/System32/pnputil.exe /enum-devices /connected /deviceid "USB\VID_054C&PID_0DA1" /deviceids /relations /services /stack /drivers /interfaces /properties
+
+若确有唯一当前ILME-FX3根节点，只按它的新输出查询：
+1. /enum-devicetree <实际根节点ID> /connected /services /stack /drivers /interfaces
+2. 对本次关系中当前相连的磁盘子节点，分别 /enum-devices /connected /instanceid <实际子节点ID> /deviceids /relations /services /stack /drivers /interfaces /properties
+总计最多16个相关节点，禁止其他设备枚举、硬件scan/refresh、重新连接、自动重试。若0或多根节点，或查询错误，保存已得证据并停止相应分支。
+
+核对当前Present/Started/问题状态、USB→USBSTOR磁盘的父子关系、磁盘接口GUID 53f56307-b6bf-11d0-94f2-00a0c91efb8b及启用状态、服务/堆栈/驱动INF版本与报告签名者。若有多个当前磁盘接口，如实计数，不随意选择一个。可保留缓存中确有的Address/UINumber等数值字段以研究接口区分；缺失则UNKNOWN，不能猜LUN或读取介质。
+
+原实例ID、序列号、容器ID、接口路径与原始输出留在Windows本机private。public仅输出summary.txt、receipt.json、nodes.json、commands.json、private-sha256.json；节点ID用SHA256(UTF8(ToUpperInvariant(instanceID)))，关系按同一摘要表达；保留非敏感型号/VID/PID、数量、状态、接口GUID及驱动字段。报告路径字符串在JSON解析后使用正常单个反斜杠，或统一用正斜杠。直接用文件编辑工具写报告，避免把整份JSON塞进长命令导致os error206。只计算新输出的哈希，不必重复旧13文件的全量盘点；保持旧文件不变。
+
+禁止打开设备/磁盘/卷/相机接口、CreateFile/DeviceIoControl、INQUIRY/SCSI/PTP/认证、模式或驱动变更、读卡/素材/相机文件、模块/WBI/刷写。PnPUtil接口字符串只作系统元数据，不访问。最后简洁报告根节点与当前磁盘候选数量、绑定是否唯一、关键驱动状态、public完整路径；本轮不是相机协议或硬件验证，不申请扩大权限。

@@ -1,0 +1,206 @@
+{
+  "candidate_string_contexts": [
+    {
+      "path": "/kmod/mcmn_drv.ko",
+      "bytes": 253216,
+      "sha256": "da4596fe04a1c932fac6c9b160c031bfb817e85caf3e77c6219d2f013a8d9b22",
+      "strings": [
+        {
+          "file_offset": "0x1cbde",
+          "text": "[MCMND][INSMEDIA-MIRA_CETUS][ERR] line = %d, ret = %08X"
+        },
+        {
+          "file_offset": "0x1cc16",
+          "text": "[MCMND][INSMEDIA-MIRA_CETUS][ERR] ERROR ioremap for SD WP/SD CD/MS INS."
+        },
+        {
+          "file_offset": "0x1cc96",
+          "text": "[MCMND][MEDIAPWR-MIRA_CETUS][ERR] line = %d, ret = %08X"
+        },
+        {
+          "file_offset": "0x1cd27",
+          "text": "[MCMND][MEDIAPORT-MIRA_CETUS][ERR] line = %d, ret = %08X"
+        },
+        {
+          "file_offset": "0x1d0c6",
+          "text": "[MCMND][MEDIACLK-MIRA_CETUS][ERR] line = %d, ret = %08X"
+        },
+        {
+          "file_offset": "0x1d162",
+          "text": "[MCMND][PCIE-MIRA_CETUS][ERR] line = %d, ret = %08X"
+        }
+      ]
+    },
+    {
+      "path": "/lib/libSysDef.so",
+      "bytes": 6041280,
+      "sha256": "4e325aab1534ee490c7184fa6ec1c54bacecc0c84fef03ca3a4d6eda56d7580d",
+      "strings": [
+        {
+          "file_offset": "0x1bff4",
+          "text": "SysDef  MIRA_CETUS2: Dec 25 2025, 08:08:52"
+        },
+        {
+          "file_offset": "0x1c02a",
+          "text": "DefInh  ver. 0.21  MIRA_CETUS2: Dec 25 2025, 08:08:52"
+        },
+        {
+          "file_offset": "0x1c060",
+          "text": "DefRsrc ver. 0.21  MIRA_CETUS2: Dec 25 2025, 08:08:52"
+        }
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "strings": [
+        {
+          "file_offset": "0x3917f37",
+          "text": "%s%s(%d) Send CETUS dmm_alloc_and_open[beep_idx:%d]"
+        },
+        {
+          "file_offset": "0x3917fa4",
+          "text": "%s%s(%d) Success CETUS dmm_alloc_and_open[beep_idx:%d]"
+        },
+        {
+          "file_offset": "0x3917ffb",
+          "text": "%s%s(%d) Failuer CETUS dmm_alloc_and_open[beep_idx:%d]"
+        },
+        {
+          "file_offset": "0x393b159",
+          "text": "%s%s(%d) Success CETUS dmm_close_and_free[beep_idx:%d, hdl:%08x]"
+        },
+        {
+          "file_offset": "0x393b19a",
+          "text": "%s%s(%d) Failuer CETUS dmm_close_and_free[beep_idx:%d, hdl:%08x]"
+        }
+      ]
+    },
+    {
+      "path": "/kmod/wlan.ko",
+      "bytes": 6866904,
+      "sha256": "c27b0e07dc02a7da9c06ec07ed5e91ce8bc98a3895da0cdc7d19cb05d39abd1b",
+      "strings": [
+        {
+          "file_offset": "0x36bbf1",
+          "text": "COEX_MWS_CP_ESCAPE"
+        }
+      ]
+    }
+  ],
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "source_fragments": [
+    {
+      "VA": "0xfe052ee8",
+      "end_exclusive": "0xfe052fc0",
+      "bytes": 216,
+      "original_bytes_sha256": "93fe114844231b88ae0dbbf613a4b107fc8c92883187c56959d0df478829a3de",
+      "listing": "source-fragments/fe052ee8-fe052fc0.txt"
+    },
+    {
+      "VA": "0xfe05a1b4",
+      "end_exclusive": "0xfe05a370",
+      "bytes": 444,
+      "original_bytes_sha256": "edce90c1237f7b31f7ead3c05a69115d0d252796bb10f24ec8b2771e3d6dc386",
+      "listing": "source-fragments/fe05a1b4-fe05a370.txt"
+    },
+    {
+      "VA": "0xfe05a56c",
+      "end_exclusive": "0xfe05a648",
+      "bytes": 220,
+      "original_bytes_sha256": "a9ebed20e87c7cbc35b6ac46f4b6aeec9c76ff5e11ba65a6423d13540a756e82",
+      "listing": "source-fragments/fe05a56c-fe05a648.txt"
+    },
+    {
+      "VA": "0xfe05881c",
+      "end_exclusive": "0xfe058894",
+      "bytes": 120,
+      "original_bytes_sha256": "0fe974c4000dc3e4a1220c0b5e7876940f41b12bf1f6ca70a14e3649dd0c669e",
+      "listing": "source-fragments/fe05881c-fe058894.txt"
+    },
+    {
+      "VA": "0xfe04fab0",
+      "end_exclusive": "0xfe04fd28",
+      "bytes": 632,
+      "original_bytes_sha256": "2674a23007f2860663ab28974b3cee96a291c8908af51eaaea94a68cab34e12d",
+      "listing": "source-fragments/fe04fab0-fe04fd28.txt"
+    },
+    {
+      "VA": "0xfe05863c",
+      "end_exclusive": "0xfe058690",
+      "bytes": 84,
+      "original_bytes_sha256": "8dad5314df175cfa71686dfacd692c50a662023dedecab2619bcfce1aba72769",
+      "listing": "source-fragments/fe05863c-fe058690.txt"
+    }
+  ],
+  "original_bulk_load_strings": [
+    {
+      "VA": "0xfe05fda0",
+      "text": "NOR_W:CPAPP-B.BIN Load size Err at %s()"
+    },
+    {
+      "VA": "0xfe05fdc8",
+      "text": "NOR_E:OSPI-NOR MIS Load size Err at %s()"
+    },
+    {
+      "VA": "0xfe05fe54",
+      "text": "ospi_load_cp_app_b"
+    },
+    {
+      "VA": "0xfe05fe67",
+      "text": "ospi_load_cp_app_b_pre"
+    }
+  ],
+  "original_bulk_contract": {
+    "caller_first": "0xfe052f24 ->0xfe05a1b4",
+    "caller_pre": "0xfe052f90 ->0xfe05a2b4",
+    "slot_index": 5,
+    "boot_info_base": "0xfe040000",
+    "entry_stride": "0x40",
+    "slot5_fields": [
+      "0xfe040140",
+      "0xfe040144",
+      "0xfe040150"
+    ],
+    "source_field_scale": "The original code shifts the first two u32 values left9 before byte-offset/length arithmetic.",
+    "pre_length": "0x500000",
+    "remaining_offset": "0x500000",
+    "remaining_length": "u32 count<<9 minus0x500000, with a separate original fallback branch",
+    "read_wrapper": "0xfe05a56c",
+    "lower_reader": "0xfe04fab0",
+    "lower_reader_source_bound": "W1>>26 must be0",
+    "lower_reader_length_bound": "W2 must be <=0x4000000",
+    "memory_mapped_branch_source_base": "0xd0000000",
+    "metadata_values_supplied": false,
+    "block_read_success_obtained": false,
+    "scope": "Original code/log labels and arithmetic. No actual slot values, packed flash contents or proof of DmmCfg coverage."
+  },
+  "reused_kernel_navigation": {
+    "catalog": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/work/kernel-symbol-catalog.json",
+    "catalog_bytes": 6681945,
+    "catalog_sha256": "b37c6b7d4315f65234cd6b64c3be4a3d7c6e0d2cca66204e27cb5c575000a51e",
+    "prior_manifest": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/final-receipt.json",
+    "prior_manifest_sha256": "8f8c1ab7f4cb8f0ac05aceb0fb748992d21cbaa894ef5b00521060b1435fbf4a",
+    "symbol_count": 41269,
+    "first_symbol": {
+      "index": 0,
+      "type": "t",
+      "name": "_head",
+      "address": 18446743524088479744,
+      "file_offset": 0,
+      "compressed_offset": 0,
+      "compressed_next": 5
+    },
+    "scope": "Existing original recovery reused read only for navigation; old main/guest/device tools are not run and old validation is not counted as a new run."
+  },
+  "interpretation": {
+    "sender_located": false,
+    "source_names_alone_prove_sender": false,
+    "WLAN_CP_ESCAPE_is_COEX_token": true,
+    "appFw_CETUS_strings_are_beep_DMM_calls": true,
+    "full_AP_or_boot_source_absence_proved": false,
+    "normal_DMM_population_proved": false
+  },
+  "scope": "Read-only source context and strict prefix bounds. Bounded negative searches do not prove global sender absence or complete firmware understanding. No native/device action, keys, port or signed modified package."
+}

@@ -1,0 +1,36 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu
+# SHA256 c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00
+# VA [0x405824, 0x4058a8) raw slice SHA256 f23380e535b93fb103043b6dce507c854d46096d347d0c716245e1207f8f307e
+  405824: d0000002     	adrp	x2, 0x407000 <vtable for BaseQueue+0xe80>
+  405828: 3900201f     	strb	wzr, [x0, #0x8]
+  40582c: 3900a01f     	strb	wzr, [x0, #0x28]
+  405830: 3900a41f     	strb	wzr, [x0, #0x29]
+  405834: f945ac42     	ldr	x2, [x2, #0xb58]
+  405838: 3900a81f     	strb	wzr, [x0, #0x2a]
+  40583c: f9000002     	str	x2, [x0]
+  405840: a9017c1f     	stp	xzr, xzr, [x0, #0x10]
+  405844: f900101f     	str	xzr, [x0, #0x20]
+  405848: b4000301     	cbz	x1, 0x4058a8 <BaseQueue::~BaseQueue()+0x2cc4>
+  40584c: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+  405850: 910003fd     	mov	x29, sp
+  405854: a90153f3     	stp	x19, x20, [sp, #0x10]
+  405858: aa0103f4     	mov	x20, x1
+  40585c: f0000001     	adrp	x1, 0x408000 <vtable for BaseQueue+0x1e80>
+  405860: aa0003f3     	mov	x19, x0
+  405864: 910a4421     	add	x1, x1, #0x291
+  405868: aa1403e0     	mov	x0, x20
+  40586c: 97fff295     	bl	0x4022c0 <strcmp@plt>
+  405870: 350000c0     	cbnz	w0, 0x405888 <BaseQueue::~BaseQueue()+0x2ca4>
+  405874: 52800020     	mov	w0, #0x1                // =1
+  405878: 3900a260     	strb	w0, [x19, #0x28]
+  40587c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  405880: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+  405884: d65f03c0     	ret
+  405888: f0000001     	adrp	x1, 0x408000 <vtable for BaseQueue+0x1e80>
+  40588c: aa1403e0     	mov	x0, x20
+  405890: 910a5021     	add	x1, x1, #0x294
+  405894: 97fff28b     	bl	0x4022c0 <strcmp@plt>
+  405898: 35ffff20     	cbnz	w0, 0x40587c <BaseQueue::~BaseQueue()+0x2c98>
+  40589c: 52800020     	mov	w0, #0x1                // =1
+  4058a0: 3900a660     	strb	w0, [x19, #0x29]
+  4058a4: 17fffff6     	b	0x40587c <BaseQueue::~BaseQueue()+0x2c98>

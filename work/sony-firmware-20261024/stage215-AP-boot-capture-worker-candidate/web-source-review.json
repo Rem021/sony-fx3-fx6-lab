@@ -1,0 +1,26 @@
+{
+  "reviewed_utc": "2026-10-30T05:25:22.994069+00:00",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/linux/fs.h",
+      "primary": true,
+      "retrieval": "web open succeeded",
+      "supported_fact": "BLKGETSIZE returns size /512 with long pointer; no new ioctl introduced",
+      "line": 177,
+      "applicability": "standard UAPI only, not physical Sony support"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/asm-generic/stat.h",
+      "primary": true,
+      "retrieval": "web fetch timed out",
+      "used_as_retrieved_evidence": false
+    }
+  ],
+  "reused_valid_bound_evidence": [
+    "stage213 official current-p3 module captures and devno mapping",
+    "stage214 current driver dataflow, EXT_CSD226 capacity, access selection and panic paths",
+    "stage187/188 current own ABI and fake-syscall fixtures"
+  ],
+  "new_public_camera_success_or_recovery_claims": false,
+  "no_global_absence_conclusion_from_failed_fetch": true
+}

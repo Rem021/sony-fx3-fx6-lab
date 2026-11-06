@@ -1,0 +1,124 @@
+{
+  "passed": true,
+  "scope": "offline Chrome fixture, no VM or real operator semantic review",
+  "cases": {
+    "wrong_attempt_nonce_PAGE_no_cancel": {
+      "attempt": {
+        "cancel_invoked": false,
+        "performance_ms": 3717.599999964237,
+        "reason": "review_receipt",
+        "status": "refused"
+      },
+      "nonce": {
+        "cancel_invoked": false,
+        "performance_ms": 3729.5,
+        "reason": "review_receipt",
+        "status": "refused"
+      },
+      "PAGE": {
+        "cancel_invoked": false,
+        "performance_ms": 3738.199999988079,
+        "reason": "PAGE_fingerprint",
+        "status": "refused"
+      }
+    },
+    "old_alarm_cancelled_cannot_repeat": {
+      "result": {
+        "cancel_invoked": false,
+        "performance_ms": 3805.199999988079,
+        "reason": "attempt_alarm_binding",
+        "status": "refused"
+      }
+    },
+    "historical_review_B_current_A_cancel_only": {
+      "result": {
+        "alarm_cancel_receipt": {
+          "current": {
+            "armed_ms": 3091,
+            "cancelled_ms": 3761.5,
+            "deadline_ms": 20000,
+            "due_ms": 23091,
+            "nonce": "9b586c5d-a6b7-478b-8dc3-d284f7844bd6",
+            "state": "cancelled"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793834970552.9,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3084.2999999523163,
+              "script_SHA256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+              "wall_UTC": "2026-11-04T23:29:33.636Z"
+            },
+            {
+              "due_ms": 23091,
+              "event": "armed",
+              "nonce": "9b586c5d-a6b7-478b-8dc3-d284f7844bd6",
+              "performance_ms": 3091,
+              "wall_UTC": "2026-11-04T23:29:33.643Z"
+            },
+            {
+              "elapsed_ms": 670.5,
+              "event": "cancelled",
+              "nonce": "9b586c5d-a6b7-478b-8dc3-d284f7844bd6",
+              "performance_ms": 3761.5,
+              "wall_UTC": "2026-11-04T23:29:34.314Z"
+            }
+          ],
+          "expectedLaunchId": "eea7f7c4-95bf-4c92-835e-6f2e97a4a6b6",
+          "expectedURL": "http://127.0.0.1:49641/",
+          "sealed": false,
+          "version": 1
+        },
+        "attempt_id": "afd941b2-8fc8-403b-bf92-d08538b7e63b",
+        "cancel_invoked": true,
+        "current_frame": {
+          "generation": 3,
+          "sequence": 3,
+          "sha": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9"
+        },
+        "due_ms": 23091,
+        "elapsed_ms": 670.5,
+        "historical_review_not_current": true,
+        "no_confirm_visual": true,
+        "no_guest_key": true,
+        "no_visual_approval": true,
+        "nonce": "9b586c5d-a6b7-478b-8dc3-d284f7844bd6",
+        "old_review": {
+          "generation": 2,
+          "sha": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1"
+        },
+        "performance_ms": 3761.5,
+        "server_atomic_permission": false,
+        "status": "cancelled_unqueued_alarm_only"
+      },
+      "key_posts": 1,
+      "confirm_posts": 0,
+      "guest_steps": 0
+    },
+    "separate_explicit_new_click": {
+      "key_posts": 2,
+      "confirm_posts": 0,
+      "pending": 1,
+      "receipt": {
+        "status": "click_invoked",
+        "session": "fx3-deadline-r21-a4796200",
+        "tab": null,
+        "target": "fixture operator separately reviewed current A",
+        "key": 427,
+        "host_start_ns": 418659914705416,
+        "eval_may_have_started": true,
+        "guest_keys_sent_directly_by_cli": 0,
+        "result": {
+          "attempt_id": "609caa87-7922-4995-928e-858f867e9ed2",
+          "base_step": 0,
+          "clicked_generation": 3,
+          "clicked_sha": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "server_atomic_permission": false,
+          "step": 1
+        },
+        "host_end_ns": 418659921612291
+      }
+    }
+  }
+}

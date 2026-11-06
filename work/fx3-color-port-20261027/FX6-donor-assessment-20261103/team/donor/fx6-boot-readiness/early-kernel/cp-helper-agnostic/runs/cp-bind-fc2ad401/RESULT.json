@@ -1,0 +1,40 @@
+{
+  "schema": "fx6-cp-helper-agnostic-run-result-v1",
+  "outcome": "cp_helper_bound_ap_bootin_started",
+  "goal_complete": false,
+  "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-fc2ad401",
+  "one_VM_one_Start": true,
+  "vm": {
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "locks_released": true,
+    "elapsed_seconds": 18.25742212496698
+  },
+  "cp_bind": {
+    "fx6_api": "0xffffff8008322f70",
+    "fallback_zero": "0xffffff80083230d0",
+    "fallback_nonzero": "0xffffff8008322f80",
+    "backend_bound": true,
+    "module_init_returned_zero": true,
+    "raw_cp_insmod_rc0_present": true,
+    "strict_parser_cp_rc": null
+  },
+  "ap": {
+    "natural_bootin_begin": true,
+    "ap_launch_pid": "227",
+    "ap_initialized": false,
+    "menu": false
+  },
+  "stop": {
+    "reason": "ap_guard_observed_stop",
+    "by_design": true,
+    "note": "runner intentionally stops at first AP guard; no AP serial after this point"
+  },
+  "hashes": {
+    "serial_sha256": "cd7f42b0f1e15670b0e4b47bf8276477c5c1fd520b933dd457087725e4dce800",
+    "receipt_sha256": "0612635e002a5aa1fbb39c1d40eda90fdb2550d2835c1aa202d7225e25a165a8",
+    "command_sha256": "f78aa271f6ccd1337a2567f38f69c9d00f921c8ed05ef14ac99cb8ce101468e7"
+  },
+  "next": "authorize a second single VM run with a longer window that does not stop at AP guard; observe AP init/menu or timeout",
+  "created_utc": "2026-11-05T13:04:58.151564+00:00"
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "UTC_request_start": "2026-11-05T02:37:11.968608Z",
+    "duration_ms": 0.7839999927394092,
+    "endpoint": "start",
+    "request_body_text": "{\"request_id\":\"b4c2e9c5-356d-4581-b72d-b23ef4c3dbfd\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"request_id\": \"b4c2e9c5-356d-4581-b72d-b23ef4c3dbfd\", \"guest_spawned_by_http\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:38:12.010253824Z",
+    "duration_ms": 0.7549999971352518,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":427,\"observed_sequence\":218,\"request_id\":\"543e9e62-f65f-4b30-8d0f-40fc1e71ef6e\",\"document_id\":\"554d0c1b-b766-450c-aac0-8efe2573c6be\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 1, \"key\": \"0x1ab\", \"request_id\": \"543e9e62-f65f-4b30-8d0f-40fc1e71ef6e\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:38:31.933128192Z",
+    "duration_ms": 0.7360000111870468,
+    "endpoint": "stop",
+    "request_body_text": "{}",
+    "status": 202,
+    "response_body_text": "{\"stopping\": true}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:38:34.643719936Z",
+    "duration_ms": 1.1490000022388995,
+    "endpoint": "final-ack",
+    "request_body_text": "{\"receipt_id\":\"Ws4qW9c-nV1AuYoxnQ-PBA\"}",
+    "status": 200,
+    "response_body_text": "{\"acknowledged\": true}"
+  }
+]

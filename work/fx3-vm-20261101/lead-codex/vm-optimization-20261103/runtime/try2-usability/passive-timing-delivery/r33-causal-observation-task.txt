@@ -1,0 +1,17 @@
+r33 离线因果观测候选正式任务（仅离线，无VM授权）
+
+目标：补齐r32实际发现的诊断盲点，用可审计的少量记录区分首次publication未发生、原send失败、bind未进入/失败/成功，以及同root生产、发送、消费推进不平衡。它是独立FX3可靠性支线，FX6仍优先；不得通过本任务改FX6受拒绝候选或更改固定FX3硬件来运行FX6。
+
+输入：r32-zero-ring-causal-review/REPORT.md、NEXT-OBSERVATION.md及所pin123项；r30-startup-observation-candidate；r16 guest-N64及其精确实际成员。r32已由协调端验收，正式消息msg_5fd8d5717d7a，20项清单SHA 0ec870b20ee771479075273fbd345462f4b1783dd84934a079cea75c4a3c4186，123项输入复核一致。只写新r33-causal-observation-candidate目录。所有原件/已部署r10/旧候选只读。
+
+首先验证可实施性：完整审计现有UI64KiB reserve的所有已装入writer、实际导出路径、初始化/清零生命周期与跨模块映射。0x7000–0x77ff只是待证候选空隙，绝不能假定可用。明确谁初始化、谁写、进程/模块/运行身份及首次bind早于记录区就绪时如何报告unknown；任何潜在覆盖或身份不明即停止生成运行候选并报告具体冲突。不新增硬件保留区/内存大小/DTB/QEMU选项。
+
+最小增量：独立于OSD ring保存eligible publication尝试、原delegate rc、bind入口和原失败/成功分支、mmap结果与写magic后值；不得强制bind、补ACK或重试。以原已证root/来源/类型记录有限生产/alloc/send/consume阶段统计，明确前置STR意向与实际已提交之间的界限；消息指针需代数和有限生命周期，不能把地址相等直接当身份相同。若全阶段关联必须改变未证的原ABI/尾调用身份，则优先报告不可安全实施的具体点，不做推测性替代。不得把诊断改变成计数回滚、丢弃/合并消息或改门限/定时器。
+
+开销：以r32预算为硬上限，额外导出<=2KiB，每hook最多一次clock_gettime、4次64位原子记账、一次有界try-claim；无循环等待、malloc、每消息新增I/O。有限I/O耗时样本需说明测量本身增加的调用开销，不假称零成本。无法满足时缩减观测字段并显式记录缺口，不修改运行准入。跨线程记录须有可验证完整性/版本/丢弃标志，允许unknown，禁止事务一致性夸大。
+
+必须保留：固定4×A35/5120MiB/MTTCG/noicount及QEMU/kernel/DTB；原固件控制流、返回值、alloc/send/consume次数、锁/errno/NZCV/SIMD/栈身份、原180秒/20秒、ready条件、PAGE/server、pin/confirm/recovery及退出清理。复用现有serial读取和End暂停读回，不新增QMP/暂停/guest命令。候选软件差异需逐项清单；不改变FX6对照基线。
+
+离线验证：实际源码/编译成员绑定、全writer布局、首次publication所有结果与bind各失败分支、zero-ring、未初始化记录区、进程/root变化、地址复用、事件漏/乱序、并发drop/覆盖、计数回绕、摘要截断及跨chunk/End边界。检查原调用次数/rc/原门表达式不变；有界成本和字节预算实测；不能用host fixture宣称guest无额外时序影响。不得执行VM、浏览器、服务、QMP或硬件。若可以安全构建，仅交付隔离候选、源码差异、宿主测试、交叉编译回执、输入前后hash、完整清单、运行前审查说明。任何下一次VM须单独调度。
+
+项目根为/Volumes/KAFU2T/AI/Projects/Mac，输出根为上述passive-timing-delivery/r33-causal-observation-candidate。请先核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。布局审计结果先status报告；若不能安全容纳/实现，应交付具体失败证据与缺失项，不扩大范围。最终用worker_done报告：离线候选若未完成则不得把报告本身当候选成功，区分实现/host验证/交叉编译与未执行的VM。不得写协调ledger、既有交付清单或部署入口。

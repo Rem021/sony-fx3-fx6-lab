@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-16-key-030.png using image tool. Setup>External Output 57/59 orange category focus; HDMI options visible Next: DOWN to Setup Option; browse distinct page without selecting HDMI settings

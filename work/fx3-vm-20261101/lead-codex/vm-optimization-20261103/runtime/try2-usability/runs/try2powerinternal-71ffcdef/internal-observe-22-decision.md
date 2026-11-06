@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/internal-preview-22.png using image tool. Shooting>Image Quality/Rec 4/59 orange category; File Format/Movie Settings/FPS listed Next: DOWN to Media for distinct Shooting page read-only navigation; no recording format or parameter selected

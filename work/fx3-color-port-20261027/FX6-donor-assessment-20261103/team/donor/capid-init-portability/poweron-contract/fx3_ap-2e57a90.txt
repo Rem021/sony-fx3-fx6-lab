@@ -1,0 +1,54 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2e57a90: 2a0003e5     	mov	w5, w0
+ 2e57a94: 900341a0     	adrp	x0, 0x968b000
+ 2e57a98: 91048001     	add	x1, x0, #0x120
+ 2e57a9c: f9409000     	ldr	x0, [x0, #0x120]
+ 2e57aa0: f9400422     	ldr	x2, [x1, #0x8]
+ 2e57aa4: 2a0503e1     	mov	w1, w5
+ 2e57aa8: 9ac20823     	udiv	x3, x1, x2
+ 2e57aac: 9b028463     	msub	x3, x3, x2, x1
+ 2e57ab0: f8637800     	ldr	x0, [x0, x3, lsl #3]
+ 2e57ab4: b4000240     	cbz	x0, 0x2e57afc <Application_System_Init+0x1767f6c>
+ 2e57ab8: f9400001     	ldr	x1, [x0]
+ 2e57abc: d2800000     	mov	x0, #0x0                // =0
+ 2e57ac0: b40001c1     	cbz	x1, 0x2e57af8 <Application_System_Init+0x1767f68>
+ 2e57ac4: b9400824     	ldr	w4, [x1, #0x8]
+ 2e57ac8: 6b0400bf     	cmp	w5, w4
+ 2e57acc: 54000141     	b.ne	0x2e57af4 <Application_System_Init+0x1767f64>
+ 2e57ad0: 91000400     	add	x0, x0, #0x1
+ 2e57ad4: f9400021     	ldr	x1, [x1]
+ 2e57ad8: b4000101     	cbz	x1, 0x2e57af8 <Application_System_Init+0x1767f68>
+ 2e57adc: b9400826     	ldr	w6, [x1, #0x8]
+ 2e57ae0: 9ac208c4     	udiv	x4, x6, x2
+ 2e57ae4: 9b029884     	msub	x4, x4, x2, x6
+ 2e57ae8: eb04007f     	cmp	x3, x4
+ 2e57aec: 54000061     	b.ne	0x2e57af8 <Application_System_Init+0x1767f68>
+ 2e57af0: 17fffff5     	b	0x2e57ac4 <Application_System_Init+0x1767f34>
+ 2e57af4: b4ffff00     	cbz	x0, 0x2e57ad4 <Application_System_Init+0x1767f44>
+ 2e57af8: d65f03c0     	ret
+ 2e57afc: d2800000     	mov	x0, #0x0                // =0
+ 2e57b00: 17fffffe     	b	0x2e57af8 <Application_System_Init+0x1767f68>
+ 2e57b04: 39417003     	ldrb	w3, [x0, #0x5c]
+ 2e57b08: 34000703     	cbz	w3, 0x2e57be8 <Application_System_Init+0x1768058>
+ 2e57b0c: b9407803     	ldr	w3, [x0, #0x78]
+ 2e57b10: 71002c7f     	cmp	w3, #0xb
+ 2e57b14: 54000648     	b.hi	0x2e57bdc <Application_System_Init+0x176804c>
+ 2e57b18: d0005980     	adrp	x0, 0x3989000
+ 2e57b1c: 910ef000     	add	x0, x0, #0x3bc
+ 2e57b20: 38634800     	ldrb	w0, [x0, w3, uxtw]
+ 2e57b24: 10000063     	adr	x3, 0x2e57b30 <Application_System_Init+0x1767fa0>
+ 2e57b28: 8b208860     	add	x0, x3, w0, sxtb #2
+ 2e57b2c: d61f0000     	br	x0
+ 2e57b30: b900003f     	str	wzr, [x1]
+ 2e57b34: 52800300     	mov	w0, #0x18               // =24
+ 2e57b38: b9000040     	str	w0, [x2]
+ 2e57b3c: d65f03c0     	ret
+ 2e57b40: 52800020     	mov	w0, #0x1                // =1
+ 2e57b44: b9000020     	str	w0, [x1]
+ 2e57b48: 17fffffb     	b	0x2e57b34 <Application_System_Init+0x1767fa4>
+ 2e57b4c: 52800040     	mov	w0, #0x2                // =2

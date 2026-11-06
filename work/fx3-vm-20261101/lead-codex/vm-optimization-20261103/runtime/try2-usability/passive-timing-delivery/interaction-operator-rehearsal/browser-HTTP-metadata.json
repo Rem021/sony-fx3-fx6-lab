@@ -1,0 +1,1310 @@
+{
+  "success": true,
+  "data": {
+    "lifecycle": {
+      "effectiveLaunch": {
+        "browserLaunched": true,
+        "engine": "chrome",
+        "launchHash": 11677035664275010974
+      },
+      "launched": false,
+      "relaunchedBrowser": false,
+      "restartedBackground": false,
+      "restoreStatus": "not_configured",
+      "reused": true,
+      "saveStatus": "not_attempted"
+    },
+    "requests": [
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.2",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "546",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:44 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827664537,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Content-Type": "application/json",
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "X-Trial-Token": "[REDACTED]",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "POST",
+        "mimeType": "application/json",
+        "postData": "{}",
+        "requestId": "94849.3",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "23",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:44 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827664537,
+        "url": "http://127.0.0.1:62277/api/browser-ready"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.5",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "545",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:44 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827667507,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.6",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "545",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:45 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827667507,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.7",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "545",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:45 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827667507,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.8",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "545",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:46 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827667508,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.9",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "545",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:46 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827667508,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.10",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "545",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:46 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827667508,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.11",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "545",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:47 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827667508,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Content-Type": "application/json",
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "X-Trial-Token": "[REDACTED]",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "POST",
+        "mimeType": "application/json",
+        "postData": "{\"request_id\":\"13cb80fa-2e76-45d3-a862-a0a00c7836d0\"}",
+        "requestId": "94849.12",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "104",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:47 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 202,
+        "timestamp": 1793827667532,
+        "url": "http://127.0.0.1:62277/api/start"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.13",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:47 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827667774,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.16",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:48 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827668276,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.17",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:48 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827668677,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.18",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:48 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827669076,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.19",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:49 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827669475,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.20",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:49 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827669874,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.21",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:50 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827670276,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.22",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:50 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827670676,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.23",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:51 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827671075,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.24",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:51 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827671475,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.25",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:51 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827671876,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.26",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:52 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827672276,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.27",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:52 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827672674,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.28",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:53 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827673075,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.29",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:53 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827673475,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.30",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:53 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827673976,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.31",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:54 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827674376,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.32",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:54 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827674776,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.33",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:55 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827675176,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.34",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:55 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827675574,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.35",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:55 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827675976,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.36",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:56 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827676376,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.37",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:56 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827676775,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.38",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:57 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827677176,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.39",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:57 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827677576,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.40",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "741",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:57 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827677976,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Content-Type": "application/json",
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "X-Trial-Token": "[REDACTED]",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "POST",
+        "mimeType": "application/json",
+        "postData": "{\"key\":427,\"observed_sequence\":212}",
+        "requestId": "94849.41",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "50",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:58 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 202,
+        "timestamp": 1793827678076,
+        "url": "http://127.0.0.1:62277/api/key"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.42",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:58 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827678376,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.43",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:58 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827678775,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.44",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:59 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827679175,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.45",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:59 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827679575,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.46",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:27:59 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827679975,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.47",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:28:00 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827680376,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.48",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:28:00 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827680774,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.49",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:28:01 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827681276,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.50",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "844",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:28:01 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827681643,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Content-Type": "application/json",
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "X-Trial-Token": "[REDACTED]",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "POST",
+        "mimeType": "application/json",
+        "postData": "{}",
+        "requestId": "94849.51",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "18",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:28:01 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 202,
+        "timestamp": 1793827681676,
+        "url": "http://127.0.0.1:62277/api/stop"
+      },
+      {
+        "headers": {
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "GET",
+        "mimeType": "application/json",
+        "requestId": "94849.52",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "799",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:28:01 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827682075,
+        "url": "http://127.0.0.1:62277/api/status"
+      },
+      {
+        "headers": {
+          "Content-Type": "application/json",
+          "Referer": "",
+          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+          "X-Trial-Token": "[REDACTED]",
+          "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": "\"macOS\""
+        },
+        "method": "POST",
+        "mimeType": "application/json",
+        "postData": "{\"receipt_id\":\"XldfxAzgg2eH2f02LrSTwg\"}",
+        "requestId": "94849.53",
+        "resourceType": "Fetch",
+        "responseHeaders": {
+          "Cache-Control": "no-store",
+          "Content-Length": "22",
+          "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+          "Content-Type": "application/json; charset=utf-8",
+          "Date": "Wed, 04 Nov 2026 21:28:01 GMT",
+          "Referrer-Policy": "no-referrer",
+          "Server": "BaseHTTP/0.6 Python/3.14.6",
+          "X-Content-Type-Options": "nosniff"
+        },
+        "status": 200,
+        "timestamp": 1793827682075,
+        "url": "http://127.0.0.1:62277/api/final-ack"
+      }
+    ]
+  },
+  "error": null
+}

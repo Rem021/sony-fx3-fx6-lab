@@ -1,0 +1,65 @@
+{
+  "source_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+  "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+  "source_bytes": 243000,
+  "source_layout_base": "0x4200",
+  "base_source": "A6000 public finding used as hypothesis; verified here against distinct FX3 bytes and raw Thumb branch/pool fields",
+  "first16_vector_words": [
+    "0x200026d0",
+    "0x45f9",
+    "0x4601",
+    "0x4615",
+    "0x461f",
+    "0x4629",
+    "0x4633",
+    "0x6eab",
+    "0x6eab",
+    "0x6eab",
+    "0x6eab",
+    "0x4559",
+    "0x6eab",
+    "0x6eab",
+    "0x4583",
+    "0x6eab"
+  ],
+  "reset_entry": "0x45f9",
+  "reset_file_offset": "0x3f8",
+  "raw_BL_target": "0x4674",
+  "reset_LDR_pool": "0x4670",
+  "runtime_branch_pointer": "0x43fd",
+  "fault_vector_source_matches": true,
+  "selected_ranges": [
+    {
+      "name": "reset-and-fault-entries",
+      "start": "0x45f8",
+      "end_exclusive": "0x463c",
+      "bytes": 68,
+      "sha256": "1215dd6396d8d8d188997d0dce04c8a3a3501b0aa4cd00814cfa380a877d15a1"
+    },
+    {
+      "name": "reset-runtime-target",
+      "start": "0x43fc",
+      "end_exclusive": "0x4430",
+      "bytes": 52,
+      "sha256": "a6f93292853a25b1e945530fb1522fcd06fb086770dffe42148fe6ef690b1f82"
+    },
+    {
+      "name": "early-init-prefix",
+      "start": "0x4674",
+      "end_exclusive": "0x46cc",
+      "bytes": 88,
+      "sha256": "2f6d89f2cb8fd879e3f8ab93b46ff4f9387d71e8e2d69f18fff6bc8456c7f6f4"
+    },
+    {
+      "name": "common-IRQ-entry-prefix",
+      "start": "0x6eaa",
+      "end_exclusive": "0x6ee0",
+      "bytes": 54,
+      "sha256": "f4e5447ecb7a23b26aea24c1b804f3d8c686e0a9ef6893b573404aa870435d05"
+    }
+  ],
+  "scope": "self-consistent source-layout mapping; not physical MCU identity, verified boot trace, independent bootloader or recovery reachability",
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "source_unchanged": true
+}

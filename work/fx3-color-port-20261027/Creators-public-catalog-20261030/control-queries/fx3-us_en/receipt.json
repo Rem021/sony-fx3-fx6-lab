@@ -1,0 +1,50 @@
+{
+  "case": "fx3-us_en",
+  "request": {
+    "locale": "pmm",
+    "language": "us_en",
+    "ModelList": [
+      {
+        "modelName": "ILME-FX3",
+        "currentVersion": "7.00"
+      }
+    ]
+  },
+  "synthetic_input": true,
+  "method": "POST",
+  "url": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/api/firmwarelist_api.php",
+  "request_headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "User-Agent": "FirmwareCatalogResearch/1.0",
+    "Accept": "application/json"
+  },
+  "started_utc": "2026-10-30T13:31:34.819684+00:00",
+  "request_sha256": "14ef8e31b6c7979a337b2c8097a0901c02a2e455e3f6558cd86ac04f407eacbe",
+  "authentication": "none; no cookies or credentials",
+  "device_operations": 0,
+  "http_status": 200,
+  "response_bytes": 286,
+  "response_sha256": "7d48d11c6d2c22f48e3cbc990323101772994ac59a3b8c809f599b4e2c3a623c",
+  "final_url": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/api/firmwarelist_api.php",
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Content-Length": "286",
+    "Date": "Fri, 30 Oct 2026 13:31:36 GMT",
+    "Server": "Apache"
+  },
+  "parsed_response": {
+    "version": "1.00",
+    "date": "2023-01-24T00:00:00Z",
+    "firmwareInfoAPI": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/api/firmwareInfo_api.php",
+    "firmwareList": [
+      {
+        "modelName": "ILME-FX3",
+        "currentVersion": "7.00",
+        "firmwareVersion": "7.02",
+        "firmwareID": "953",
+        "firmwareSize": 811876768
+      }
+    ]
+  },
+  "finished_utc": "2026-10-30T13:31:36.164280+00:00"
+}

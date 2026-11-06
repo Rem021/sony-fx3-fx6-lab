@@ -1,0 +1,65 @@
+{
+  "status": "PASS_SOURCE_BINDINGS_AND_OFFLINE_RECEIPTS",
+  "original_guest_cases": 30,
+  "original_ARM64_instructions_run_in_Unicorn": true,
+  "real_Linux_loader_kernel_USB_or_camera_run": false,
+  "PLT_symbols_independently_reconciled": 14,
+  "only_fixed_FIFO_full_path_literal_owner_identified_in_AP": [
+    "/lib/libsencore.so"
+  ],
+  "tool_0_4_source_and_archive_unchanged": true,
+  "prior_47_tool_tests_not_rerun_or_counted_as_new_tests": true,
+  "files": [
+    {
+      "path": "audit_dispatch.py",
+      "bytes": 7163,
+      "sha256": "4740b5683ee5ab6e8f67ac63211229a952f78f6c97d14ebc76d689dc36aa2883"
+    },
+    {
+      "path": "dispatch-guest-results.json",
+      "bytes": 446055,
+      "sha256": "afe74d8c03e38cd909610912d29dd599738b89c7f338ec86889cffb35fd92187"
+    },
+    {
+      "path": "audit_fixed_loader.py",
+      "bytes": 7424,
+      "sha256": "cfefa25b1328925fb5dc36608b190c356c286d45f782c0767eefe0d59c782776"
+    },
+    {
+      "path": "fixed-loader-prefix-results.json",
+      "bytes": 31728,
+      "sha256": "21f79736e9822abe75b307e4c1655c799e0c0e2fecda5f7231b66a45245531eb"
+    },
+    {
+      "path": "audit_fifo_and_client.py",
+      "bytes": 5193,
+      "sha256": "64514be616d35dabed8d20111f3c44eb81b0006cef5ca6164ab1b8ff7fdead51"
+    },
+    {
+      "path": "fifo-route-review.json",
+      "bytes": 11352,
+      "sha256": "e57f7c777814313cc731310f88c9105f8a8c48d34ec25b46b17d3829059c818f"
+    },
+    {
+      "path": "public-client-review.json",
+      "bytes": 1196,
+      "sha256": "654ed33f1b93acc639171617800ba853764eb2f83863f3ccf536ffd5faf00a5c"
+    },
+    {
+      "path": "pmca-sony-source.txt",
+      "bytes": 36033,
+      "sha256": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e"
+    },
+    {
+      "path": "AP-terminal-inventory.json",
+      "bytes": 27275,
+      "sha256": "0d698027e3f5af0458fe0c558336e900f8c304aa8677feae76605ddfc4983b65"
+    },
+    {
+      "path": "verify_receipts.py",
+      "bytes": 5033,
+      "sha256": "21b73bb72137d1dab238c6fb466dcb5d1465332753f484469ffa025307d2292a"
+    }
+  ],
+  "new_camera_operations": 0
+}

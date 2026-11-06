@@ -1,0 +1,75 @@
+{
+  "schema": "fx3-stage35-hevc-preset-defaults/1",
+  "created_utc": "2026-10-25T23:27:29.784600+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/README.md",
+      "bytes": 6403,
+      "sha256": "8b00fd2c714ff4d5f966c5cc8f7e5de25c57a49b5fd2a7e01a0cbdb56a8516e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/coordinator-observations.json",
+      "bytes": 3036,
+      "sha256": "823f3867e7337b6c19c025c74ecc8240a0ddaafb70012ac78ecfad984c6792d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/goal-status-after.json",
+      "bytes": 58568,
+      "sha256": "74b7de7eefd012add493511b207525642cb9c336290090cb8390ed968afb62d3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/goal-status-before.json",
+      "bytes": 56090,
+      "sha256": "e66ef2d9cb28611a954488958a57d7b76658f390b166f75b32d0f0ab9100137e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/next-application-anchors.json",
+      "bytes": 46631,
+      "sha256": "ddc6e4af667aa86854f2ab606df84f7bd5913e35b830f51c9abc029a6d42d43d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/preset_defaults.py",
+      "bytes": 13010,
+      "sha256": "e2b4a3fde16ba3884955878dfe6fca1004f563569e83e4673a803bfc14e32aae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/run-20261025/preset-default-results.json",
+      "bytes": 990799,
+      "sha256": "ee2d5f0721e6e1f3a68569c6a66ea89317a20a25e9eeedbb4e581ffb1a7688c2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/run-20261025/source-receipt.json",
+      "bytes": 783,
+      "sha256": "743afe4fd4ecd9e771a4aaadcee18ce6693222226f6fb07c3398bba391bcea97"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/run-20261025/summary.json",
+      "bytes": 1090,
+      "sha256": "7db3e6543b2704b7387acbd1d5f2c40cab3275f0dbe26070861152e9a8a95a3c"
+    }
+  ],
+  "previous_manifest_sha256": "cafe34fad1bb82ae1a6d0415945085d12e94bbae355ce3fbffcc51c8ff689d73",
+  "scope": "18 original bounded executions,316 original preset records. FF native static default is24498176, not16M; no whole constructor/current HAL/recording/recovery.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/goal-status-after.json",
+    "before_sha256": "e66ef2d9cb28611a954488958a57d7b76658f390b166f75b32d0f0ab9100137e",
+    "after_sha256": "74b7de7eefd012add493511b207525642cb9c336290090cb8390ed968afb62d3",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "native_output_adapters": false,
+    "synthetic_Hal_records": false,
+    "actual_buffer_channel_Hal_recording_or_restore": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 HEVC 预置默认值](<work/sony-firmware-20261024/stage35-hevc-preset-defaults/README.md>)：原FF MAIN预置解码target24498176，代理FH才是16000000；绑定静态预置来源，默认查询不能当实际码率回读，硬件与恢复仍未验证。"
+}

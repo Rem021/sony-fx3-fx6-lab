@@ -1,0 +1,183 @@
+{
+  "AP105": {
+    "scope": "Same guest user monotonic ns: successful dynamic QID return to explicit SendDrawComp return, conservative bound, not direct ReceiveDrawComp entry",
+    "pairs": 182,
+    "max_ms": 2839.466,
+    "p95_ms": 1097.889008,
+    "over_5000_ms": [],
+    "top10": [
+      {
+        "qid": "0x808261c1",
+        "seq": 1108,
+        "receive_return_ns": 589519022000,
+        "completion_return_ns": 592358488000,
+        "upper_bound_ms": 2839.466
+      },
+      {
+        "qid": "0x808261c1",
+        "seq": 319,
+        "receive_return_ns": 246749044000,
+        "completion_return_ns": 248773228000,
+        "upper_bound_ms": 2024.184
+      },
+      {
+        "qid": "0x808261c1",
+        "seq": 6153,
+        "receive_return_ns": 903338214000,
+        "completion_return_ns": 905012940000,
+        "upper_bound_ms": 1674.726
+      },
+      {
+        "qid": "0x808261c1",
+        "seq": 6819,
+        "receive_return_ns": 1069716510992,
+        "completion_return_ns": 1071263704000,
+        "upper_bound_ms": 1547.193008
+      },
+      {
+        "qid": "0x808261c2",
+        "seq": 7069,
+        "receive_return_ns": 1119123784000,
+        "completion_return_ns": 1120657722992,
+        "upper_bound_ms": 1533.938992
+      },
+      {
+        "qid": "0x808261c1",
+        "seq": 1414,
+        "receive_return_ns": 656882018000,
+        "completion_return_ns": 658390666000,
+        "upper_bound_ms": 1508.648
+      },
+      {
+        "qid": "0x808261c1",
+        "seq": 955,
+        "receive_return_ns": 527632252992,
+        "completion_return_ns": 528988230992,
+        "upper_bound_ms": 1355.978
+      },
+      {
+        "qid": "0x808261c2",
+        "seq": 1261,
+        "receive_return_ns": 654214048992,
+        "completion_return_ns": 655438200000,
+        "upper_bound_ms": 1224.151008
+      },
+      {
+        "qid": "0x808261c2",
+        "seq": 6375,
+        "receive_return_ns": 964232760992,
+        "completion_return_ns": 965435854992,
+        "upper_bound_ms": 1203.094
+      },
+      {
+        "qid": "0x808261c2",
+        "seq": 7753,
+        "receive_return_ns": 1135352070000,
+        "completion_return_ns": 1136527058000,
+        "upper_bound_ms": 1174.988
+      }
+    ],
+    "unmatched_completion_count": 0,
+    "pending_receives": 140,
+    "unfetched_count": 0,
+    "gpe_cmd_count": 8226
+  },
+  "AP104": {
+    "scope": "Same guest user monotonic ns: successful dynamic QID return to explicit SendDrawComp return, conservative bound, not direct ReceiveDrawComp entry",
+    "pairs": 78,
+    "max_ms": 50011.503008,
+    "p95_ms": 1798.382,
+    "over_5000_ms": [
+      {
+        "qid": "0x808261c0",
+        "seq": 1207,
+        "receive_return_ns": 350103662992,
+        "completion_return_ns": 400115166000,
+        "upper_bound_ms": 50011.503008
+      }
+    ],
+    "top10": [
+      {
+        "qid": "0x808261c0",
+        "seq": 1207,
+        "receive_return_ns": 350103662992,
+        "completion_return_ns": 400115166000,
+        "upper_bound_ms": 50011.503008
+      },
+      {
+        "qid": "0x808261c0",
+        "seq": 317,
+        "receive_return_ns": 209823982000,
+        "completion_return_ns": 213591410992,
+        "upper_bound_ms": 3767.428992
+      },
+      {
+        "qid": "0x808261c0",
+        "seq": 503,
+        "receive_return_ns": 228772446992,
+        "completion_return_ns": 231264170992,
+        "upper_bound_ms": 2491.724
+      },
+      {
+        "qid": "0x808261c0",
+        "seq": 410,
+        "receive_return_ns": 221398718992,
+        "completion_return_ns": 223833554992,
+        "upper_bound_ms": 2434.836
+      },
+      {
+        "qid": "0x808261c2",
+        "seq": 975,
+        "receive_return_ns": 332925510992,
+        "completion_return_ns": 334723892992,
+        "upper_bound_ms": 1798.382
+      },
+      {
+        "qid": "0x808261c0",
+        "seq": 1054,
+        "receive_return_ns": 336845426000,
+        "completion_return_ns": 338585666000,
+        "upper_bound_ms": 1740.24
+      },
+      {
+        "qid": "0x808261c0",
+        "seq": 637,
+        "receive_return_ns": 252828216000,
+        "completion_return_ns": 254562432992,
+        "upper_bound_ms": 1734.216992
+      },
+      {
+        "qid": "0x808261c0",
+        "seq": 696,
+        "receive_return_ns": 264470846000,
+        "completion_return_ns": 266153688000,
+        "upper_bound_ms": 1682.842
+      },
+      {
+        "qid": "0x808261c0",
+        "seq": 568,
+        "receive_return_ns": 248763096000,
+        "completion_return_ns": 250445508000,
+        "upper_bound_ms": 1682.412
+      },
+      {
+        "qid": "0x808261c0",
+        "seq": 905,
+        "receive_return_ns": 316158458000,
+        "completion_return_ns": 317632156000,
+        "upper_bound_ms": 1473.698
+      }
+    ],
+    "unmatched_completion_count": 0,
+    "pending_receives": 140,
+    "unfetched_count": 2,
+    "gpe_cmd_count": 1208
+  },
+  "comparison_scope": "Same parser, guest user monotonic ns, dynamic QID success return -> explicit completion return; different runs and draw workloads; AP104 417s failure vs AP105 1200s healthy; exact same drawing interval not aligned",
+  "unknown": [
+    "ReceiveDrawComp direct entry/return",
+    "backend-only CPU time",
+    "FIFO depth and pending IDs ownership",
+    "matched same exact workload duration"
+  ]
+}

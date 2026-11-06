@@ -1,0 +1,38 @@
+00ab8e9a movw         r0, #0x8d88
+00ab8e9e movt         r0, #0x13f
+00ab8ea2 ldr          r0, [r0]
+00ab8ea4 bx           lr
+00ab8ea6 movw         r0, #0x8d8c
+00ab8eaa movt         r0, #0x13f
+00ab8eae ldr          r0, [r0]
+00ab8eb0 bx           lr
+00ab8eb2 mov          r2, r0
+00ab8eb4 mov.w        r0, #-1
+00ab8eb8 lsrs         r3, r2, #8
+00ab8eba cmp          r3, #8
+00ab8ebc it           ls
+00ab8ebe cmpls        r1, #0xc7
+00ab8ec0 bhi          #0xab8ed6
+00ab8ec2 movw         r0, #0xb968
+00ab8ec6 mov.w        r3, #0x320
+00ab8eca movt         r0, #0x1db
+00ab8ece mla          r0, r2, r3, r0
+00ab8ed2 ldr.w        r0, [r0, r1, lsl #2]
+00ab8ed6 bx           lr
+00ab8ed8 cmp.w        r0, #0x400
+00ab8edc bls          #0xab8ee4
+00ab8ede mov.w        r0, #-1
+00ab8ee2 bx           lr
+00ab8ee4 movw         r1, #0xd968
+00ab8ee8 movt         r1, #0x1f7
+00ab8eec ldrh.w       r0, [r1, r0, lsl #1]
+00ab8ef0 bx           lr
+00ab8ef2 lsrs         r1, r0, #8
+00ab8ef4 cmp          r1, #8
+00ab8ef6 bls          #0xab8efc
+00ab8ef8 movs         r0, #0
+00ab8efa bx           lr
+00ab8efc movw         r1, #0xe16a
+00ab8f00 movt         r1, #0x1f7
+00ab8f04 ldrh.w       r0, [r1, r0, lsl #1]
+00ab8f08 bx           lr

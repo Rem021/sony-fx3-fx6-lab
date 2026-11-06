@@ -1,0 +1,26 @@
+{
+  "status": "HOST_ONLY_ROOT_TRIAL_AND_READBACK_CONCRETE_UNAPPROVED",
+  "host_grant_id": "fx3-host-root-20261029-01",
+  "approval_bundle_sha256": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0",
+  "root_helper_sha256": "fb150a18a4efc9d827f293b912aa56c21e14488670817256c12b39c1356c32cb",
+  "local_checks": 17,
+  "host_flow_checks": 15,
+  "approval_layout_checks": 2,
+  "root_candidate_executed": false,
+  "root_or_device_operations": 0,
+  "no_IOKit_USB_owner_firmware_backend_linked": true,
+  "maximum_helper_invocations_if_approved": 2,
+  "scope": "self/process/login metadata, fixed private files, AF_UNIX and64B RAM checksum only; separate host-only journal",
+  "actual_root_cross_UID_or_root_protected_files_validated": false,
+  "persistence_limit": "current checksum-validated archive/readback; fsync does not prove sudden-power-loss durability or camera recovery",
+  "context_loss_test": "first-stage live proof cleared in same unprivileged observer process; not actual Orca restart",
+  "approval_limit": "new exact bundle +HOST_ONLY+2invocations required before staging/open/sudo; old grants denied; no automatic retries or device grant",
+  "device_candidate10_unchanged_and_closed": true,
+  "remaining": [
+    "user-specific single host-only root approval and actual cross-UID/self-image/protected readback receipt",
+    "new independent camera trial scope and final source/bundle release; consumed05 and unapproved06-10 cannot substitute",
+    "same-body currentp1, constrained launch, real backup restore/independent recovery and target MAIN HD HEVC recording"
+  ],
+  "goal_complete": false,
+  "persistent_write_release": false
+}

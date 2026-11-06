@@ -1,0 +1,65 @@
+{
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "input": {
+    "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+    "size": 79015712,
+    "sha256_after": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "expected_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+  },
+  "execution": {
+    "static_only": true,
+    "bounded_guest": false,
+    "native_firmware_execution": false,
+    "camera_USB_GUI_auth_files_driver_module_WBI_or_write": false
+  },
+  "external_sources": [
+    {
+      "url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000868278.html",
+      "checked_date": "2026-10-25",
+      "scope": "Ver.2 or later official guide"
+    },
+    {
+      "url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000882045.html",
+      "checked_date": "2026-10-25",
+      "scope": "Ver.2 or later official guide"
+    }
+  ],
+  "third_party_raw_downloads": [],
+  "artifacts": [
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/capabilities/getter-call-index.json",
+      "size": 9389,
+      "sha256": "b7e1a28a4bab62ebeefa685681e51c27072aeaccb61f092dc76b1f35ba90b1ad"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json",
+      "size": 140396,
+      "sha256": "aac17bfb765382190c59758c5dce6224c9661d537d05295e1ddcdf9c2f08194b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/capabilities/candidate-constraints.json",
+      "size": 5033,
+      "sha256": "9d269596fc32f84448450160514f0bb10f71410af85549256344dd132f6355aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/capabilities/probe_capabilities.py",
+      "size": 5393,
+      "sha256": "15d99de6b103ea4d8d15de809f1b66246f78163517c9794b867aac3651ce49c6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/capabilities/probe-run-summary.json",
+      "size": 19444,
+      "sha256": "8c022649b81b130bcc3f28a93f80e160343b36de1f112ae2940169f240bd6f42"
+    },
+    {
+      "path": "research_notes/索尼 FX3 目标模式与模型门禁/capabilities.md",
+      "size": 10457,
+      "sha256": "895ff73966105915f59a7dff6a540d09c06490ed8dddd3e95b0f59d79a883272"
+    }
+  ],
+  "verification": {
+    "all_json_parse": true,
+    "input_hash_unchanged": true,
+    "address_strings_module_relative": true
+  }
+}

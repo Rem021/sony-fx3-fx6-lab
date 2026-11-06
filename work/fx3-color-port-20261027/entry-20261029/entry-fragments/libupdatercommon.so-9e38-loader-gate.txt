@@ -1,0 +1,36 @@
+00009e38 stp        x29, x30, [sp, #-0x20]!
+00009e3c mov        x29, sp
+00009e40 str        x19, [sp, #0x10]
+00009e44 mov        x19, x0
+00009e48 mov        x0, x1
+00009e4c mov        w1, w2
+00009e50 bl         #0x6c20 ; dlopen
+00009e54 str        x0, [x19, #8]
+00009e58 cbnz       x0, #0x9ebc
+00009e5c bl         #0x6ba0 ; dlerror
+00009e60 mov        w19, #0x19
+00009e64 mov        x4, x0
+00009e68 movk       w19, #3, lsl #16
+00009e6c adrp       x2, #0xa000
+00009e70 adrp       x0, #0xa000
+00009e74 add        x2, x2, #0x8df ; literal 'DllHandler.cpp'
+00009e78 mov        w1, w19
+00009e7c add        x0, x0, #0x536 ; literal 'UdrAPI,%d,%s:%d,""%s""\n'
+00009e80 mov        w3, #0x1d
+00009e84 bl         #0x6fd0 ; printf
+00009e88 mov        x0, #0x10
+00009e8c bl         #0x6b20 ; __cxa_allocate_exception
+00009e90 str        w19, [x0, #8]
+00009e94 adrp       x1, #0x1c000
+00009e98 adrp       x2, #0x1c000
+00009e9c strb       wzr, [x0, #0xc]
+00009ea0 ldr        x1, [x1, #0xf18]
+00009ea4 ldr        x2, [x2, #0xf40]
+00009ea8 add        x1, x1, #0x10
+00009eac str        x1, [x0]
+00009eb0 adrp       x1, #0x1c000
+00009eb4 ldr        x1, [x1, #0xfd0]
+00009eb8 bl         #0x6f10 ; __cxa_throw
+00009ebc ldr        x19, [sp, #0x10]
+00009ec0 ldp        x29, x30, [sp], #0x20
+00009ec4 ret        

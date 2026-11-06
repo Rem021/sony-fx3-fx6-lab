@@ -1,0 +1,28 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-fx3-gpe-observe-v10.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v10.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v10.so"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "source_sha256": "a2e1664080354d65c8c90cc0ad862b8849bc83e41fb7ddeaec9c8f8ba346f3a6",
+  "output_sha256": "c053778d22ef939ddbd19fdc07977d963d052ed06a51965510b9aa1c80da22ef",
+  "core_sha256": "bc9a1c52614a2c1043f4880c307aa8b7c2e508541e76ca2ce3303efbb884a6bc",
+  "scope": "FX3 exact liveDMM545/43feb5000/140000 originalFIFO uniformoverwrite subset; no callbacks/blit/blend, native SendDrawComp only after CPU writes; no independent allocator pin claimed"
+}

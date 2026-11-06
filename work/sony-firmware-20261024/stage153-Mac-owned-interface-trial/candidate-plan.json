@@ -1,0 +1,51 @@
+{
+  "created_utc": "2026-10-28T07:22:25.072136+00:00",
+  "phase": "OFFLINE_NATIVE_CANDIDATE_NOT_RELEASED",
+  "target": {
+    "VID": 1356,
+    "PID": 3489,
+    "locationID": 34603008,
+    "model": "ILME-FX3",
+    "firmware": "7.02",
+    "firmware_source": "prior user version-page confirmation; not active runtime hash"
+  },
+  "native_candidate_sha256": "c313aa2ca54142a5148c4742b9f1ab6dc6385fe1bebeb04f3870e46d2e191735",
+  "candidate_operations": [
+    "IORegistry and Disk Arbitration metadata only before active steps",
+    "selected device user client",
+    "explicit USBDeviceOpenSeize after all-volume unmounted check",
+    "capture mask then close/non-Seize reopen",
+    "fresh same-connection and driver-absent check",
+    "interface0 exclusive open and endpoint metadata",
+    "one interface release",
+    "one release-mask return attempt",
+    "device close and cached post-observation"
+  ],
+  "excluded_explicit_APIs": [
+    "Sony vendor commands and authentication",
+    "bulk/control payload transfers",
+    "camera files or card contents",
+    "module execution",
+    "firmware/settings/partition/boot writes",
+    "SetConfiguration, ResetDevice, suspend or alternate selection",
+    "automatic unmount, driver installation or privilege escalation"
+  ],
+  "runtime_unknowns": [
+    "IOKit internal bus activity and persistent camera-side side effects unmeasured",
+    "MSC capture exclusion and actual Seize behavior not tested",
+    "in-flight native call cannot currently be safely supervised",
+    "all volumes cannot yet be held against concurrent automount",
+    "no independent actual driver-return receipt"
+  ],
+  "missing_before_live_release": [
+    "separate-process supervisor with shared in-flight observation",
+    "single-use entry and immutable build/target receipts",
+    "cooperative stop and timeout/worker-death handling without blind kill/reset",
+    "independent resource/driver/lifetime review",
+    "explicit new device/Seize/capture/release/driver authorization and administrator verification"
+  ],
+  "current_authorization_expanded": false,
+  "Mac_owner_trial_released": false,
+  "new_device_operations": 0,
+  "original16_requirements_and_HEVC_MAIN_goal_unchanged": true
+}

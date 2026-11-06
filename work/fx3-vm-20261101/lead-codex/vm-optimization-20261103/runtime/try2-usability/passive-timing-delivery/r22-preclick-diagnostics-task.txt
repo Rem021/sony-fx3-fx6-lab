@@ -1,0 +1,29 @@
+FX3｜r22 点击前拒绝归因与动态画面流程评估（独立离线实现，无VM）
+
+项目根 /Volumes/KAFU2T/AI/Projects/Mac。TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery。写入前核目标卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。你只写新建 DEL/r22-preclick-diagnostics；不编辑任何旧目录、冻结清单、部署入口或协调ledger。不要另派代理。主root非Git，不复制整仓/整runtime。
+
+目标是实际可交互FX3原固件菜单，先解决连续真实VM都卡在first-click工具层而缺具体失败谓词的问题。仅实现和验证必要宿主候选，不新VM、不新guest、不触碰物理相机/USB/SD/FX6。保留FX3平台QEMU/kernel/DTB/CPU/内存/时钟及r21原PAGE/server gate全部不变。
+
+当前事实：
+- 冻结 r21在DEL/v25-r21-recovery-integration（operator-helpers/operator_click.py,deadline.js,recovery_tools.py等）。PAGE canonical SHA f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab，冻结清单145项；只读。
+- 当前收尾worker ctx_08d29caf3254 正在整理 DEL/r21c-cli-menu8-024b06c9361a 和 TRY/runs/v25gate-n64-r17-fb894841；你不得编辑这些文件、不等待/干扰它的报告。直接读已存在HAR、snapshot、源码足够。
+- r21c实际__main__/sys修复、17纯host用例已通过，实际VM显示待机，第一次arm后 operator_click.py 合并if抛 operator_click_preflight，reservation unknown，无b.click返回/无key POST，无恢复/重启，已原End回收。
+- initial-standby/capture-result reviewed gen9 seq38 SHA2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e；snapshot返回准备host_ns421528400576541，到click reservation421536657368333约8.256791792s。
+- HAR 00:17:30.901103872Z附近status ready steps0 busyfalse review_requiredfalse gen20 seq146 SHAe0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4；此前两个SHA反复交替。该HAR不证明eval瞬间DOM状态，也不证明具体哪个if失败。
+- 不重复旧盲跑。旧失败结论保留。
+
+交付一：最小派生的 operator_click 诊断候选和必要支持文件。
+1. 将原合并前置if拆成有名条件，保留每个现有准入条件及原key可用检查；失败时返回结构化 preflight_not_clicked（仅当控制流确定尚未调用b.click），含failed_checks及同一同步片段捕获的page/document/launch、phase、ready/busy/review、steps、loaded/shown SHA+gen、reviewed SHA+gen、nonce/due/now等必要字段。不要输出token/私密网页数据。
+2. 脚本digest await前后的状态不能混作原子证据。完成await后在一个无await同步片段快照判定字段、记录decision并决定是否调用原DOM click。说明只对该浏览器JS执行片段一致，绝非server/guest原子准入。页身份变更、异常、eval回包丢失、b.click之后任意异常仍unknown，不能推断未送达。
+3. 原allowed路径仍只调用原PAGE按钮一次；无直接POST、自动重试/延迟点击、新nonce、改计时20s、取消timer或关闭server SHA/gen gate。严格区分known preflight no-click与unknown，不自动把这次原失败回溯改known。
+4. 原持久reservation-before-eval和fsync保留，Python回执可保存新的类型。现有生产/冻结ledger/recovery不修改；诊断候选遇到no-click仍结束，不在本任务实现恢复/重发。本任务目的是获得下一步可靠依据，不把诊断当用户体验已修。
+
+交付二：与上述差分相称的针对性验证。
+可在新目录复用r21已有fake backend/原PAGE构建一次离线测试服务与自有browser session，必须标明fixture。场景包含审阅gen/SHA过期、render not loaded、busy/review、nonce/due错误、匹配允许一次click，断言拒绝0keyPOST/0click、允许只1且仍server gate，未知回包不当known。必要host注入覆盖transport异常。无需重跑整个145项集成回归，无真人看图声明。最简有意义方式即可，避免追加大批无关矩阵。结束自有服务/浏览器并核PID/port，保留原始回执。
+
+交付三：动态待机画面的实用性评估（短报告，不另起泛研究）。
+用已有r21c HAR量化generation改变间隔与8.26s review-to-click；判断当前严格同generation的跨工具审阅在该数据下是否有可用窗口。提出一个能真正改善连续菜单的具体下一步，不把“加诊断”当最终优化，不靠增加VM次数碰运气。不默认去除视觉审阅、禁用server gate、改固件动画、暂停guest或放宽20秒。若必须改变宿主审阅/点击契约，明确哪条是测试自定约束、什么证据可替代、风险与最小验证，不在本任务擅自实现该契约变更。已有DEL/input-context-review说明framebuffer hash/step/ready不足以证明原生input context，须阅读其中短REPORT避免重复错误；不能将两张待机图同义视为普遍按键安全证明。
+
+实现依据：已查MDN JavaScript execution model https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Execution_model ，同步job run-to-completion不覆盖await分隔的jobs，也不覆盖server/guest。引用原文含义即可，无需大规模重新调研。
+
+交付简明REPORT、候选源最小diff、前后原输入hash、原始针对性测试回执、SHA256SUMS。明确offline candidate passed/failed与runtime/menu仍待验。固定文件无改动；不部署，不启动VM。不占用原收尾worker目录。

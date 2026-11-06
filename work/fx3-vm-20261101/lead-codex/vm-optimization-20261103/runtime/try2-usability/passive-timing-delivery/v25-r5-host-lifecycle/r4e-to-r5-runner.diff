@@ -1,0 +1,182 @@
+--- ../v25-r4-postmortem-host/run_trial_v25_diag_r3.py	2026-11-04 06:36:53
++++ run_trial_v25_diag_r3.py	2026-11-04 07:04:13
+@@ -34,6 +34,7 @@
+ from quiesced_diag_readback import capture as capture_quiesced_diag, capture_optional_vcpus
+ from procdiag_readback import capture as capture_optional_guest_tasks
+ from qmp_line_transport import QmpLineTransport
++from runtime_resource_guard import RuntimeResourceGuard
+ 
+ ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
+ OUT = Path(__file__).resolve().parents[2]
+@@ -41,6 +42,7 @@
+ BASE = ROOT.parent
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+ VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
++ACTIVE_GUARD = None
+ 
+ 
+ def digest(path):
+@@ -121,6 +123,7 @@
+ 
+ 
+ def main():
++    global ACTIVE_GUARD
+     ap = argparse.ArgumentParser(description='FX3 固件菜单本机试用')
+     ap.add_argument('--port', type=int, default=8765, help='127.0.0.1 本地端口，默认8765')
+     ap.add_argument('--max-minutes', type=int, default=60, help='会话上限，1..120分钟；默认60分钟')
+@@ -139,14 +142,14 @@
+         raise RuntimeError('InputGate capacity contract rejected before QEMU startup')
+     # Host-only candidate pins the already frozen guest manifest and payload.
+     frozen_guest = HERE.parent/'v25-menu-osd-diagnostic-r3'/'vmopt-20261104-v25-menu-osd-diagnostic-r3'
+-    review_guest = HERE/'vmopt-20261104-v25-procdiag-r4e'
++    review_guest = HERE.parent/'v25-r4-postmortem-host'/'vmopt-20261104-v25-procdiag-r4e'
+     ns.candidate = (review_guest if ns.review_procdiag_r4e else frozen_guest)/'candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'v25procdiag-web-r4e' if ns.review_procdiag_r4e else 'v25diag-web-r4'
++    ns.label = 'v25procdiag-web-r5' if ns.review_procdiag_r4e else 'v25diag-web-r5'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+@@ -223,10 +226,12 @@
+     run = OUT / 'runs' / (label + '-' + uuid.uuid4().hex[:8])
+     run.mkdir()
+     run.chmod(0o700)
++    guard = RuntimeResourceGuard(run)
++    ACTIVE_GUARD = guard
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -287,7 +292,6 @@
+     phase_exit_hit = False
+     shutdown_count_at_ready = 0
+     power_off_count_at_ready = 0
+-    previous_cwd = Path.cwd()
+     start = time.monotonic()
+     started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+ 
+@@ -342,12 +346,14 @@
+                     lock.close()
+                     raise RuntimeError('已有 FX3 试用或验证占用运行锁；本轮未启动 guest，也未抢锁。')
+                 locks.append(lock)
++                guard.add_lock(lock)
+             if trial.stop.is_set():
+                 raise RuntimeError('browser_cancelled_before_guest_launch')
+             trial.update(phase='starting', launch_status='starting', message='运行锁已取得，正在启动模拟器。')
+             start = time.monotonic()
+             p = subprocess.Popen(args, cwd=run, env=env, stdout=stdout, stderr=stderr,
+                                  start_new_session=True, preexec_fn=limits)
++            guard.set_process(p)
+             trial.update(launch_status='running')
+             checkpoint({'phase': 'TRY2_RUNNING_LOCAL_INTERACTIVE', 'current_candidate': str(candidate_path),
+                         'current_candidate_sha256': digest(candidate_path), 'current_run': str(run),
+@@ -363,16 +369,15 @@
+                 time.sleep(.05)
+             if p.poll() is not None:
+                 raise RuntimeError('QEMU startup exited; inspect host-stderr.log')
+-            os.chdir(run)
+             s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+             s.settimeout(3)
+-            s.connect('q')
+-            os.chdir(previous_cwd)
++            s.connect(guard.alias.path('q'))
+             transport = QmpLineTransport(s, journal, started=start)
+             journal.append({'greeting': transport.read_json()})
+ 
+             def qmp(cmd, arguments=None, *, timeout=None):
+                 return transport.command(cmd, arguments, timeout=timeout)
++            guard.set_qmp(qmp)
+ 
+             qmp('qmp_capabilities')
+             for optional_name, optional_arguments in (
+@@ -387,7 +392,9 @@
+                         raise  # a possibly partial send forbids further commands
+             qmp('cont')
+             ring_reader = TrialRingReader(run, qmp, trial)
+-            input_gate = InputGate(run, delete_key=0x1f8, max_steps=ns.max_steps)
++            input_gate = InputGate(run, delete_key=0x1f8, max_steps=ns.max_steps,
++                                   socket_path=guard.alias.path('g'))
++            guard.set_input_gate(input_gate)
+             (run/'trial-session.json').write_text(json.dumps({
+                 'url': trial.url, 'run': str(run), 'observer_pid': os.getpid(), 'qemu_pid': p.pid,
+                 'authority': 'TRY2 usability', 'max_seconds': ns.seconds, 'max_steps': ns.max_steps,
+@@ -689,7 +696,6 @@
+             stop_cause = 'host_error'
+             trial.fail(error)
+         finally:
+-            os.chdir(previous_cwd)
+             trial.update(ready=False, phase='stopping', message='正在恢复原 API、退出模拟器并回收资源…')
+             trial.stop.set()
+             if p is not None and p.poll() is None and qmp is not None:
+@@ -754,11 +760,13 @@
+                 except subprocess.TimeoutExpired:
+                     pass
+             if p is not None and p.poll() is None:
+-                os.killpg(p.pid, signal.SIGTERM)
++                try: os.killpg(p.pid, signal.SIGTERM)
++                except ProcessLookupError: pass
+                 try:
+                     p.wait(timeout=3)
+                 except subprocess.TimeoutExpired:
+-                    os.killpg(p.pid, signal.SIGKILL)
++                    try: os.killpg(p.pid, signal.SIGKILL)
++                    except ProcessLookupError: pass
+                     p.wait(timeout=3)
+             for stream in (s, input_gate.sock if input_gate else None):
+                 if stream is not None:
+@@ -869,9 +877,44 @@
+     return 0 if health_pass else 2
+ 
+ 
+-if __name__ == '__main__':
++def execute_runner(main_func=main, *, guard_retry_seconds=5, reap_wait=3):
++    """Exit only after the registered QEMU child is waited and locks are released.
++
++    A persistent wait/signal error keeps this process alive as the lock owner;
++    operators can inspect resource-guard-pending.json and intervene externally.
++    """
++    global ACTIVE_GUARD
++    code = 2
++    uncaught = None
+     try:
+-        sys.exit(main())
++        code = main_func()
+     except Exception as exc:
++        uncaught = {'type': type(exc).__name__, 'message': str(exc),
++                    'traceback': __import__('traceback').format_exc(),
++                    'cwd_at_failure': None}
++        try: uncaught['cwd_at_failure'] = os.getcwd()
++        except OSError as cwd_exc: uncaught['cwd_error'] = repr(cwd_exc)
++        if ACTIVE_GUARD is not None:
++            try: ACTIVE_GUARD._safe_write('runner-uncaught-error.json', uncaught)
++            except Exception as receipt_exc:
++                print('Uncaught-error receipt failure:', repr(receipt_exc), file=sys.stderr, flush=True)
+         print('Stopped:', exc, file=sys.stderr)
+-        sys.exit(2)
++    finally:
++        if ACTIVE_GUARD is not None:
++            reason = 'uncaught:' + uncaught['type'] if uncaught else 'normal_runner_exit'
++            first = True
++            while not ACTIVE_GUARD.closed:
++                try:
++                    ACTIVE_GUARD.finalize(reason=reason, diagnostics=first, reap_wait=reap_wait)
++                except Exception as guard_exc:
++                    print('Resource guard failure, retaining process and locks:', repr(guard_exc), file=sys.stderr, flush=True)
++                    code = 2
++                first = False
++                if not ACTIVE_GUARD.closed:
++                    print('Cleanup pending: QEMU reap unconfirmed; runner retains locks.', file=sys.stderr, flush=True)
++                    time.sleep(guard_retry_seconds)
++    return code
++
++
++if __name__ == '__main__':
++    sys.exit(execute_runner())

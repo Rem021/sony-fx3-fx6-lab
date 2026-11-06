@@ -1,0 +1,36 @@
+0044d710 push       {r4, r5, r6, r7, lr}
+0044d712 add        r7, sp, #0xc
+0044d714 push.w     {r8, sb, sl, fp}
+0044d718 sub        sp, #0x34
+0044d71a mov        r5, r1
+0044d71c ldr        r1, [r7, #8]
+0044d71e mov        r4, r0
+0044d720 movs       r0, #2
+0044d722 mov        r6, r2
+0044d724 mov        r8, r3
+0044d726 str        r0, [sp, #0x2c]
+0044d728 add        r0, sp, #0x2c
+0044d72a adds       r2, r0, #4
+0044d72c movs       r0, #0x2a
+0044d72e bl         #0x4a032c
+0044d732 cbz        r0, #0x44d750
+0044d734 movs       r0, #0
+0044d736 str        r0, [sp, #0x30]
+0044d738 movw       r0, #0xcda4
+0044d73c mov        r1, r4
+0044d73e mov        r2, r5
+0044d740 mov        r3, r6
+0044d742 movt       r0, #0xd8
+0044d746 bl         #0x9e6684
+0044d74a mov.w      r4, #-1
+0044d74e b          #0x44d8d2
+0044d750 ldr        r1, [sp, #0x30]
+0044d752 cmp        r1, #0
+0044d754 beq        #0x44d738
+0044d756 movs       r2, #0x3c
+0044d758 add        r0, sp, #0x10
+0044d75a movs       r3, #0xd8
+0044d75c movt       r2, #0x61
+0044d760 bl         #0x57b7be
+0044d764 ldr        r0, [sp, #0x10]
+0044d766 cbz        r0, #0x44d79a

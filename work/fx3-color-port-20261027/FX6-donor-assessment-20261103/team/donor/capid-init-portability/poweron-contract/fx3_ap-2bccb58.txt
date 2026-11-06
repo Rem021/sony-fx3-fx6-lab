@@ -1,0 +1,14 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2bccb58: d65f03c0     	ret
+ 2bccb5c: 17a71475     	b	0x1591d30 <_ZdlPv@plt>
+ 2bccb60: d2800601     	mov	x1, #0x30               // =48
+ 2bccb64: 17a7193f     	b	0x1593060 <_ZdlPvm@plt>
+ 2bccb68: d000d9a1     	adrp	x1, 0x4702000
+ 2bccb6c: f9453821     	ldr	x1, [x1, #0xa70]
+ 2bccb70: 91004021     	add	x1, x1, #0x10
+ 2bccb74: f9000001     	str	x1, [x0]

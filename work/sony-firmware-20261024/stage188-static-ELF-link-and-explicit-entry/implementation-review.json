@@ -1,0 +1,115 @@
+{
+  "status": "SOURCE_PINNED_STATIC_BUILD_AND_EXPLICIT_FAKE_KERNEL_GUEST",
+  "imports": {
+    "fx3_recovery/__init__.py": [],
+    "fx3_recovery/__main__.py": [
+      ".capture",
+      ".elflink",
+      ".engine",
+      ".fat",
+      ".files",
+      ".worker",
+      "argparse",
+      "json"
+    ],
+    "fx3_recovery/capture.py": [
+      ".fat",
+      ".files",
+      "dataclasses",
+      "hashlib",
+      "json",
+      "math",
+      "os",
+      "pathlib",
+      "re",
+      "secrets",
+      "stat",
+      "time",
+      "zlib"
+    ],
+    "fx3_recovery/elflink.py": [
+      ".capture",
+      ".files",
+      "hashlib",
+      "pathlib",
+      "struct",
+      "subprocess"
+    ],
+    "fx3_recovery/engine.py": [
+      ".fat",
+      ".files",
+      ".profiles",
+      ".squash",
+      "hashlib",
+      "json",
+      "re",
+      "struct",
+      "zlib"
+    ],
+    "fx3_recovery/fat.py": [
+      ".files",
+      "struct"
+    ],
+    "fx3_recovery/files.py": [
+      "json",
+      "os",
+      "pathlib",
+      "plistlib",
+      "stat",
+      "subprocess"
+    ],
+    "fx3_recovery/profiles.py": [
+      ".files",
+      "hashlib"
+    ],
+    "fx3_recovery/squash.py": [
+      "functools",
+      "math",
+      "stat",
+      "struct",
+      "zlib"
+    ],
+    "fx3_recovery/worker.py": [
+      ".capture",
+      ".files",
+      "hashlib",
+      "pathlib",
+      "struct",
+      "zlib"
+    ]
+  },
+  "production_target_loader_or_camera_factory": false,
+  "compiler_commands_only": "xcrun clang, fixed flags and source pins; no target execution in CLI",
+  "worker_source_sha256": "22d6e613fb2c33861eac93653c7148e34ad22dd3b5b14ac0d4c75d5b903efb29",
+  "ELF_sha256": "c3a7b81d95d1d537d1f97bdab9eb0117f55bdeaee9b232d1f561d3d58040e2fd",
+  "ELF_bytes": 20480,
+  "relocations": 59,
+  "relocation_kinds": [
+    275,
+    277,
+    286,
+    299,
+    283
+  ],
+  "ELF_program_permissions": [
+    "R",
+    "RX",
+    "R",
+    "RW",
+    "GNU_STACK_RW"
+  ],
+  "static_no_interp_no_imports": true,
+  "AArch64_guest_scenarios": 11,
+  "complete_guest_windows": 3,
+  "instruction_execution_scope": "own program instructions in Unicorn2.1.4; kernel, UID, clock, devices and filesystem properties are explicit fixtures",
+  "exit_syscall": {
+    "number": 93,
+    "source_path": "work/sony-firmware-20261024/stage187-FX3-native-read-worker/kernel-reference/unistd.h",
+    "sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6"
+  },
+  "ARM_ABI_source": "https://github.com/ARM-software/abi-aa/blob/main/aaelf64/aaelf64.rst",
+  "actual_Linux_or_Sony_kernel_booted": false,
+  "new_camera_or_USB_operations": 0,
+  "hardware_validated": false,
+  "flashable": false
+}

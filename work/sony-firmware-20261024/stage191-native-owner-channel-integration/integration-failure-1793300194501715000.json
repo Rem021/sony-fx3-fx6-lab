@@ -1,0 +1,88 @@
+{
+  "results": [
+    {
+      "name": "observe_end_real_peer",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.6250649169669487
+    },
+    {
+      "name": "fragmented_stream",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06329170800745487
+    },
+    {
+      "name": "reversed_pipe_map",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.050863291951827705
+    },
+    {
+      "name": "without_storage_driver",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.04828058398561552
+    },
+    {
+      "name": "nonce_mismatch",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.052052333019673824
+    },
+    {
+      "name": "generation_mismatch",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05111579201184213
+    },
+    {
+      "name": "zero_id",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05050974996993318
+    },
+    {
+      "name": "expired_deadline",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05083637498319149
+    },
+    {
+      "name": "bad_stream_size_0",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.056353542022407055
+    },
+    {
+      "name": "bad_stream_size_571",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05015987501246855
+    },
+    {
+      "name": "bad_stream_size_573",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.051654750015586615
+    },
+    {
+      "name": "bad_stream_size_4294967295",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.0532988749910146
+    },
+    {
+      "name": "SCM_RIGHTS_rejected_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05088137503480539
+    },
+    {
+      "name": "truncated_SCM_RIGHTS_rejected_closed",
+      "status": "FAIL",
+      "error": "AssertionError({'schema': 2, 'grant_id': 'fx3-702-native-owner-channel-20261029-07', 'mode': 'fixture', 'nonce': '6d1a226b6f6c4efa01e160020417ff14', 'pid': 29935, 'birth_sec': 1793300194, 'birth_usec': 446367, 'native_return': 1, 'result_sha256': '5410309261d5711d95929edf70710178287acb161bd6b726467e649ed06ad96c', 'physical_camera_acceptance': False, 'fixture_calls': [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1], 'wire_calls': [0, 0, 0], 'fd_count_before': 3, 'fd_count_after': 19})",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 132, in case\n    try:fn();results.append({'name':name,'status':'PASS','processes':Job.serial-before,'seconds':time.monotonic()-start})\n        ~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 216, in <lambda>\n    case('truncated_SCM_RIGHTS_rejected_closed',lambda:rights(32))\n                                                       ~~~~~~^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 153, in rights\n    r=j.finish(1);assert r['wire_calls']==[0,0,0]\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 100, in finish\n    assert self.record['fd_count_before']==self.record['fd_count_after'],self.record\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'schema': 2, 'grant_id': 'fx3-702-native-owner-channel-20261029-07', 'mode': 'fixture', 'nonce': '6d1a226b6f6c4efa01e160020417ff14', 'pid': 29935, 'birth_sec': 1793300194, 'birth_usec': 446367, 'native_return': 1, 'result_sha256': '5410309261d5711d95929edf70710178287acb161bd6b726467e649ed06ad96c', 'physical_camera_acceptance': False, 'fixture_calls': [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1], 'wire_calls': [0, 0, 0], 'fd_count_before': 3, 'fd_count_after': 19}\n"
+    }
+  ]
+}

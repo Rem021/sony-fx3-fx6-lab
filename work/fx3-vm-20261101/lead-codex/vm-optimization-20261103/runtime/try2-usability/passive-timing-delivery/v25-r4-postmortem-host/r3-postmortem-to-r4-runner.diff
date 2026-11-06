@@ -1,0 +1,207 @@
+--- ../v25-r3-postmortem-host/run_trial_v25_diag_r3.py	2026-11-04 05:51:36
++++ run_trial_v25_diag_r3.py	2026-11-04 06:36:53
+@@ -31,7 +31,9 @@
+ from file_readback100 import capture as capture_native_file
+ from restore_api103_v2 import restore_native_api
+ from terminal_status_v23 import terminal_summary
+-from quiesced_diag_readback import capture as capture_quiesced_diag
++from quiesced_diag_readback import capture as capture_quiesced_diag, capture_optional_vcpus
++from procdiag_readback import capture as capture_optional_guest_tasks
++from qmp_line_transport import QmpLineTransport
+ 
+ ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
+ OUT = Path(__file__).resolve().parents[2]
+@@ -126,6 +128,8 @@
+     ap.add_argument('--launch-wait-seconds', type=int, default=180, help='浏览器启动前握手上限，30..600秒')
+     ap.add_argument('--internal-hoststep', action='store_true', help='内部逐键文件门；不启动网页服务，不构成浏览器验收')
+     ap.add_argument('--exit-at-phase', choices=['pre-bind', 'bound-before-first-frame'], help='有界退出边界验证')
++    ap.add_argument('--review-procdiag-r4e', action='store_true',
++                    help='仅经另行批准时使用隔离只读/proc诊断CPIO；默认固定r3 guest')
+     ns = ap.parse_args()
+     if ns.internal_hoststep:
+         ap.error('v24 浏览器就绪门不允许内部逐键模式绕过')
+@@ -135,20 +139,24 @@
+         raise RuntimeError('InputGate capacity contract rejected before QEMU startup')
+     # Host-only candidate pins the already frozen guest manifest and payload.
+     frozen_guest = HERE.parent/'v25-menu-osd-diagnostic-r3'/'vmopt-20261104-v25-menu-osd-diagnostic-r3'
+-    ns.candidate = frozen_guest/'candidate.json'
++    review_guest = HERE/'vmopt-20261104-v25-procdiag-r4e'
++    ns.candidate = (review_guest if ns.review_procdiag_r4e else frozen_guest)/'candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'v25diag-internal-r3' if ns.internal_hoststep else 'v25diag-web-r3'
++    ns.label = 'v25procdiag-web-r4e' if ns.review_procdiag_r4e else 'v25diag-web-r4'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(frozen_guest):
++    selected_root = review_guest if ns.review_procdiag_r4e else frozen_guest
++    if not candidate_path.is_relative_to(selected_root):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+-    if digest(candidate_path) != 'a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518':
++    pinned_manifest_sha = ('ced1644fbcecc542c3d90f16be2a461876e7f3af92ff639c793742f090136d22'
++                           if ns.review_procdiag_r4e else 'a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518')
++    if digest(candidate_path) != pinned_manifest_sha:
+         raise RuntimeError('TRY2 manifest identity changed')
+     candidate = json.loads(candidate_path.read_text())
+     if candidate.get('try2_contract', {}).get('ready_before_CP_binding') is not True:
+@@ -164,7 +172,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(frozen_guest) or not initrd.resolve().is_relative_to(frozen_guest):
++    if not dtb.resolve().is_relative_to(frozen_guest) or not initrd.resolve().is_relative_to(selected_root):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+@@ -218,7 +226,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -279,7 +287,6 @@
+     phase_exit_hit = False
+     shutdown_count_at_ready = 0
+     power_off_count_at_ready = 0
+-    seq = 0
+     previous_cwd = Path.cwd()
+     start = time.monotonic()
+     started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+@@ -295,7 +302,7 @@
+     qmp = None
+     input_gate = None
+     ring_reader = None
+-    s = f = None
++    s = transport = None
+     native_file_reads = []
+     step_captures = []
+     visual_records = []
+@@ -361,29 +368,23 @@
+             s.settimeout(3)
+             s.connect('q')
+             os.chdir(previous_cwd)
+-            f = s.makefile('rb')
+-            journal.append({'greeting': json.loads(f.readline())})
++            transport = QmpLineTransport(s, journal, started=start)
++            journal.append({'greeting': transport.read_json()})
+ 
+-            def qmp(cmd, arguments=None):
+-                nonlocal seq
+-                seq += 1
+-                req = {'execute': cmd, 'id': seq}
+-                if arguments is not None:
+-                    req['arguments'] = arguments
+-                journal.append({'request': req, 'elapsed_seconds': time.monotonic() - start})
+-                s.sendall((json.dumps(req) + '\n').encode())
+-                while True:
+-                    raw = f.readline()
+-                    if not raw:
+-                        raise RuntimeError('QMP stream ended')
+-                    resp = json.loads(raw)
+-                    journal.append({'response': resp})
+-                    if resp.get('id') == seq:
+-                        return resp
++            def qmp(cmd, arguments=None, *, timeout=None):
++                return transport.command(cmd, arguments, timeout=timeout)
+ 
+             qmp('qmp_capabilities')
+-            qmp('human-monitor-command', {'command-line': 'info registers'})
+-            qmp('query-cpus-fast')
++            for optional_name, optional_arguments in (
++                    ('human-monitor-command', {'command-line': 'info registers'}),
++                    ('query-cpus-fast', None)):
++                try:
++                    response = qmp(optional_name, optional_arguments, timeout=2)
++                    journal.append({'startup_optional': optional_name, 'response': response})
++                except Exception as exc:
++                    journal.append({'startup_optional': optional_name, 'error': repr(exc)})
++                    if transport.send_unknown:
++                        raise  # a possibly partial send forbids further commands
+             qmp('cont')
+             ring_reader = TrialRingReader(run, qmp, trial)
+             input_gate = InputGate(run, delete_key=0x1f8, max_steps=ns.max_steps)
+@@ -695,25 +696,42 @@
+                 # Cleanup runs for HTTP end, Ctrl-C, timeout, and observation errors alike.
+                 shutdown['attempted'] = True
+                 try:
+-                    s.settimeout(30)
+-                    shutdown['diag_snapshot'] = capture_quiesced_diag(
+-                        qmp, run, capture_cpus=bool(early_stop_reason))
+-                    s.settimeout(3)
+-                    if ring_reader is not None:
+-                        ring_reader.poll(final=True)
+-                        if ring_reader.current_record:
+-                            ring_reader.evidence('final')
+-                        ring_reader.save()
+-                    for snapshot in snapshots:
+-                        if snapshot['name'] == 'osd-ring-final.bin':
+-                            continue
+-                        qmp('human-monitor-command', {'command-line': 'pmemsave '+hex(snapshot['address'])+' '+hex(snapshot['size'])+' "'+str(run/snapshot['name'])+'"'})
+-                    shutdown['serial_bytes_before_cleanup'] = (run/'serial.log').stat().st_size
++                    transport.set_default_timeout(30)
++                    shutdown['diag_snapshot'] = capture_quiesced_diag(qmp, run)
+                 except Exception as exc:
+                     shutdown['snapshot_error'] = repr(exc)
+                     shutdown.setdefault('diag_snapshot', {'consistent': False, 'error': repr(exc)})
+-                    if s is not None:
+-                        s.settimeout(3)
++                finally:
++                    transport.set_default_timeout(3)
++                if shutdown.get('diag_snapshot', {}).get('consistent'):
++                    # Every optional observation has its own failure boundary.
++                    # A failed frame/vCPU/task read must not hide the core ring
++                    # or prevent native API restoration and QEMU reap.
++                    try:
++                        if ring_reader is not None:
++                            ring_reader.poll(final=True)
++                            if ring_reader.current_record:
++                                ring_reader.evidence('final')
++                            ring_reader.save()
++                    except Exception as exc:
++                        shutdown['fault_frame_error'] = repr(exc)
++                    if early_stop_reason:
++                        shutdown['fault_guest_tasks'] = capture_optional_guest_tasks(qmp, run)
++                        shutdown['fault_vcpu_snapshot'] = capture_optional_vcpus(qmp, run)
++                    shutdown['optional_snapshot_errors'] = []
++                    for snapshot in snapshots:
++                        if snapshot['name'] == 'osd-ring-final.bin':
++                            continue
++                        try:
++                            response = qmp('human-monitor-command', {'command-line': 'pmemsave '+hex(snapshot['address'])+' '+hex(snapshot['size'])+' "'+str(run/snapshot['name'])+'"'})
++                            if 'error' in response or 'return' not in response:
++                                raise RuntimeError('QMP pmemsave error: ' + repr(response))
++                        except Exception as exc:
++                            shutdown['optional_snapshot_errors'].append({'name': snapshot['name'], 'error': repr(exc)})
++                    try:
++                        shutdown['serial_bytes_before_cleanup'] = (run/'serial.log').stat().st_size
++                    except Exception as exc:
++                        shutdown['serial_stat_error'] = repr(exc)
+                 try:
+                     log_monitor.poll()
+                     if 'FX3_FILE100_OBSERVER_READY' in '\n'.join(log_monitor.selected):
+@@ -742,7 +760,7 @@
+                 except subprocess.TimeoutExpired:
+                     os.killpg(p.pid, signal.SIGKILL)
+                     p.wait(timeout=3)
+-            for stream in (f, s, input_gate.sock if input_gate else None):
++            for stream in (s, input_gate.sock if input_gate else None):
+                 if stream is not None:
+                     try:
+                         stream.close()
+@@ -785,7 +803,7 @@
+     health_pass = bool(health_pass and diagnostic_readback_pass)
+     receipt = {'created_utc': started, 'duration_seconds': time.monotonic()-start,
+                'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+-               'models_identical_to_frozen_AP101_r4': False, 'authority': 'task_981cfd88e8cd_offline_candidate',
++               'models_identical_to_frozen_AP101_r4': False, 'authority': 'task_ee5eb31bb981_offline_candidate',
+                'observer_source_snapshot': observer_sources, 'run': str(run),
+                'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps,
+                'diagnostic_actual_step_limit': 12 if ns.internal_hoststep else None,

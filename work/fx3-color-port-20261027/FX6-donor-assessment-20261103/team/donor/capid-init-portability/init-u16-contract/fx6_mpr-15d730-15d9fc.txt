@@ -1,0 +1,185 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000015d730 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_>:
+  15d730: d106c3ff     	sub	sp, sp, #0x1b0
+  15d734: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+  15d738: 910003fd     	mov	x29, sp
+  15d73c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  15d740: aa0003f5     	mov	x21, x0
+  15d744: 52800020     	mov	w0, #0x1                // =1
+  15d748: a90153f3     	stp	x19, x20, [sp, #0x10]
+  15d74c: 910163b4     	add	x20, x29, #0x58
+  15d750: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  15d754: 390173a0     	strb	w0, [x29, #0x5c]
+  15d758: 52842200     	mov	w0, #0x2110             // =8464
+  15d75c: 2a0103fa     	mov	w26, w1
+  15d760: 290c07b5     	stp	w21, w1, [x29, #0x60]
+  15d764: 7900b3a0     	strh	w0, [x29, #0x58]
+  15d768: 5280e400     	mov	w0, #0x720              // =1824
+  15d76c: 52800301     	mov	w1, #0x18               // =24
+  15d770: d0007999     	adrp	x25, 0x108f000
+  15d774: 7900b7a0     	strh	w0, [x29, #0x5a]
+  15d778: aa1403e0     	mov	x0, x20
+  15d77c: a90363f7     	stp	x23, x24, [sp, #0x30]
+  15d780: 2a0203f6     	mov	w22, w2
+  15d784: aa0303f3     	mov	x19, x3
+  15d788: 2a0403f7     	mov	w23, w4
+  15d78c: aa0503f8     	mov	x24, x5
+  15d790: 290d7fa2     	stp	w2, wzr, [x29, #0x68]
+  15d794: 97ff9553     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  15d798: f947ef20     	ldr	x0, [x25, #0xfd8]
+  15d79c: 97fe5fa1     	bl	0xf5620 <_ZN3mpr6thread10normalLock4lockEv@plt>
+  15d7a0: 12a80000     	mov	w0, #-0x40000001        // =-1073741825
+  15d7a4: 0b00035a     	add	w26, w26, w0
+  15d7a8: 71003b5f     	cmp	w26, #0xe
+  15d7ac: 540001e8     	b.hi	0x15d7e8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xb8>
+  15d7b0: 90005b60     	adrp	x0, 0xcc9000 <_ZN3mpr16g_videoParamCombE+0x1c8>
+  15d7b4: 912d3000     	add	x0, x0, #0xb4c
+  15d7b8: 787a5800     	ldrh	w0, [x0, w26, uxtw #1]
+  15d7bc: 10000061     	adr	x1, 0x15d7c8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0x98>
+  15d7c0: 8b20a820     	add	x0, x1, w0, sxth #2
+  15d7c4: d61f0000     	br	x0
+  15d7c8: 52800021     	mov	w1, #0x1                // =1
+  15d7cc: aa1803e5     	mov	x5, x24
+  15d7d0: 2a1703e4     	mov	w4, w23
+  15d7d4: aa1303e3     	mov	x3, x19
+  15d7d8: 2a1603e2     	mov	w2, w22
+  15d7dc: aa1503e0     	mov	x0, x21
+  15d7e0: 72a80001     	movk	w1, #0x4000, lsl #16
+  15d7e4: 97fe5467     	bl	0xf2980 <_ZN3mpr20RecvWriterEvtStopCmpEmjiPvjS0_@plt>
+  15d7e8: f947ef20     	ldr	x0, [x25, #0xfd8]
+  15d7ec: 97fe3cad     	bl	0xecaa0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+  15d7f0: 390177bf     	strb	wzr, [x29, #0x5d]
+  15d7f4: 52800080     	mov	w0, #0x4                // =4
+  15d7f8: 52800101     	mov	w1, #0x8                // =8
+  15d7fc: 39017bbf     	strb	wzr, [x29, #0x5e]
+  15d800: 390173a0     	strb	w0, [x29, #0x5c]
+  15d804: 52842200     	mov	w0, #0x2110             // =8464
+  15d808: 39017fbf     	strb	wzr, [x29, #0x5f]
+  15d80c: 7900b3a0     	strh	w0, [x29, #0x58]
+  15d810: 5280e5e0     	mov	w0, #0x72f              // =1839
+  15d814: 7900b7a0     	strh	w0, [x29, #0x5a]
+  15d818: aa1403e0     	mov	x0, x20
+  15d81c: 97ff9531     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  15d820: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  15d824: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  15d828: a94363f7     	ldp	x23, x24, [sp, #0x30]
+  15d82c: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+  15d830: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+  15d834: 9106c3ff     	add	sp, sp, #0x1b0
+  15d838: d65f03c0     	ret
+  15d83c: b9400260     	ldr	w0, [x19]
+  15d840: 940191de     	bl	0x1c1fb8 <_ZN11MovieRemain9GetRemainEN3mpr21getMovieRemainInParamERjS2_+0x490>
+  15d844: 72001c1f     	tst	w0, #0xff
+  15d848: 540002c1     	b.ne	0x15d8a0 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0x170>
+  15d84c: 52800080     	mov	w0, #0x4                // =4
+  15d850: 52800101     	mov	w1, #0x8                // =8
+  15d854: 390177bf     	strb	wzr, [x29, #0x5d]
+  15d858: 390173a0     	strb	w0, [x29, #0x5c]
+  15d85c: 52842200     	mov	w0, #0x2110             // =8464
+  15d860: 39017bbf     	strb	wzr, [x29, #0x5e]
+  15d864: 7900b3a0     	strh	w0, [x29, #0x58]
+  15d868: 5280e460     	mov	w0, #0x723              // =1827
+  15d86c: 39017fbf     	strb	wzr, [x29, #0x5f]
+  15d870: 7900b7a0     	strh	w0, [x29, #0x5a]
+  15d874: aa1403e0     	mov	x0, x20
+  15d878: 97ff951a     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  15d87c: aa1803e5     	mov	x5, x24
+  15d880: 2a1703e4     	mov	w4, w23
+  15d884: aa1303e3     	mov	x3, x19
+  15d888: 2a1603e2     	mov	w2, w22
+  15d88c: 52800061     	mov	w1, #0x3                // =3
+  15d890: aa1503e0     	mov	x0, x21
+  15d894: 72a80001     	movk	w1, #0x4000, lsl #16
+  15d898: 97fe5a7a     	bl	0xf4280 <_ZN3mpr38RecvWriterEvtNeedDivideCmpInternalStopEmjiPvjS0_@plt>
+  15d89c: 17ffffd3     	b	0x15d7e8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xb8>
+  15d8a0: aa1803e5     	mov	x5, x24
+  15d8a4: 2a1703e4     	mov	w4, w23
+  15d8a8: aa1303e3     	mov	x3, x19
+  15d8ac: 2a1603e2     	mov	w2, w22
+  15d8b0: 52800061     	mov	w1, #0x3                // =3
+  15d8b4: aa1503e0     	mov	x0, x21
+  15d8b8: 72a80001     	movk	w1, #0x4000, lsl #16
+  15d8bc: 97fe5045     	bl	0xf19d0 <_ZN3mpr26RecvWriterEvtNeedDivideCmpEmjiPvjS0_@plt>
+  15d8c0: 17ffffca     	b	0x15d7e8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xb8>
+  15d8c4: aa1803e5     	mov	x5, x24
+  15d8c8: 2a1703e4     	mov	w4, w23
+  15d8cc: aa1303e3     	mov	x3, x19
+  15d8d0: 2a1603e2     	mov	w2, w22
+  15d8d4: 528000a1     	mov	w1, #0x5                // =5
+  15d8d8: aa1503e0     	mov	x0, x21
+  15d8dc: 72a80001     	movk	w1, #0x4000, lsl #16
+  15d8e0: 97fe5e64     	bl	0xf5270 <_ZN3mpr32RecvWriterEvtReachRecordableTimeEmjiPvjS0_@plt>
+  15d8e4: 17ffffc1     	b	0x15d7e8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xb8>
+  15d8e8: b9400261     	ldr	w1, [x19]
+  15d8ec: 12800000     	mov	w0, #-0x1               // =-1
+  15d8f0: 71000c3f     	cmp	w1, #0x3
+  15d8f4: 540000c8     	b.hi	0x15d90c <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0x1dc>
+  15d8f8: b0007980     	adrp	x0, 0x108e000
+  15d8fc: d3797c21     	ubfiz	x1, x1, #7, #32
+  15d900: f9429400     	ldr	x0, [x0, #0x528]
+  15d904: 8b010000     	add	x0, x0, x1
+  15d908: b9407c00     	ldr	w0, [x0, #0x7c]
+  15d90c: 91042a62     	add	x2, x19, #0x10a
+  15d910: 91001261     	add	x1, x19, #0x4
+  15d914: 97fe5783     	bl	0xf3720 <_ZN3mpr17NotifyRecClipNameEjRA262_cRA32_h@plt>
+  15d918: 17ffffb4     	b	0x15d7e8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xb8>
+  15d91c: b0007995     	adrp	x21, 0x108e000
+  15d920: f94386b5     	ldr	x21, [x21, #0x708]
+  15d924: b9427eb6     	ldr	w22, [x21, #0x27c]
+  15d928: 710022df     	cmp	w22, #0x8
+  15d92c: 54000361     	b.ne	0x15d998 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0x268>
+  15d930: aa1403e0     	mov	x0, x20
+  15d934: d2803482     	mov	x2, #0x1a4              // =420
+  15d938: 52800001     	mov	w1, #0x0                // =0
+  15d93c: 97fe4469     	bl	0xeeae0 <memset@plt>
+  15d940: 91046280     	add	x0, x20, #0x118
+  15d944: 97fe46c7     	bl	0xef460 <_ZN3mpr8ClipNameC1Ev@plt>
+  15d948: b9400260     	ldr	w0, [x19]
+  15d94c: aa1403e3     	mov	x3, x20
+  15d950: b942d6a1     	ldr	w1, [x21, #0x2d4]
+  15d954: 910b62a2     	add	x2, x21, #0x2d8
+  15d958: 97fe5a0a     	bl	0xf4180 <_ZN3mpr16GetClipNameParamEjjPNS_13ClipNameParamES1_@plt>
+  15d95c: 34000380     	cbz	w0, 0x15d9cc <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0x29c>
+  15d960: 52800080     	mov	w0, #0x4                // =4
+  15d964: 2a1603e1     	mov	w1, w22
+  15d968: 390157bf     	strb	wzr, [x29, #0x55]
+  15d96c: 390153a0     	strb	w0, [x29, #0x54]
+  15d970: 52842200     	mov	w0, #0x2110             // =8464
+  15d974: 39015bbf     	strb	wzr, [x29, #0x56]
+  15d978: 7900a3a0     	strh	w0, [x29, #0x50]
+  15d97c: 5280e440     	mov	w0, #0x722              // =1826
+  15d980: 39015fbf     	strb	wzr, [x29, #0x57]
+  15d984: 7900a7a0     	strh	w0, [x29, #0x52]
+  15d988: 910143a0     	add	x0, x29, #0x50
+  15d98c: 97ff94d5     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  15d990: 91046280     	add	x0, x20, #0x118
+  15d994: 97fe4387     	bl	0xee7b0 <_ZN3mpr8ClipNameD1Ev@plt>
+  15d998: b9400261     	ldr	w1, [x19]
+  15d99c: 12800000     	mov	w0, #-0x1               // =-1
+  15d9a0: 71000c3f     	cmp	w1, #0x3
+  15d9a4: 540000c8     	b.hi	0x15d9bc <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0x28c>
+  15d9a8: b0007980     	adrp	x0, 0x108e000
+  15d9ac: d3797c21     	ubfiz	x1, x1, #7, #32
+  15d9b0: f9429400     	ldr	x0, [x0, #0x528]
+  15d9b4: 8b010000     	add	x0, x0, x1
+  15d9b8: b9407c00     	ldr	w0, [x0, #0x7c]
+  15d9bc: 39442a62     	ldrb	w2, [x19, #0x10a]
+  15d9c0: 91001261     	add	x1, x19, #0x4
+  15d9c4: 97fe5397     	bl	0xf2820 <_ZN3mpr18NotifyNextClipNameEjRA262_cb@plt>
+  15d9c8: 17ffff88     	b	0x15d7e8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xb8>
+  15d9cc: aa1403e0     	mov	x0, x20
+  15d9d0: 97fe3f84     	bl	0xed7e0 <_ZN10libXavcMxf24SetLastSlotClipNameParamEPN3mpr13ClipNameParamE@plt>
+  15d9d4: 17ffffef     	b	0x15d990 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0x260>
+  15d9d8: aa1803e5     	mov	x5, x24
+  15d9dc: 2a1703e4     	mov	w4, w23
+  15d9e0: aa1303e3     	mov	x3, x19
+  15d9e4: 2a1603e2     	mov	w2, w22
+  15d9e8: 528001e1     	mov	w1, #0xf                // =15
+  15d9ec: aa1503e0     	mov	x0, x21
+  15d9f0: 72a80001     	movk	w1, #0x4000, lsl #16
+  15d9f4: 97fe4e0f     	bl	0xf1230 <_ZN3mpr21RecvWriterEvtPauseCmpEmjiPvjS0_@plt>
+  15d9f8: 17ffff7c     	b	0x15d7e8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xb8>

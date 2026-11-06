@@ -1,0 +1,289 @@
+__Z19MemFirmwareUpdateExPNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEEPchP15_AXS_ERROR_INFOji
+00002d90 stp       x28, x27, [sp, #-0x60]!
+00002d94 stp       x26, x25, [sp, #0x10]
+00002d98 stp       x24, x23, [sp, #0x20]
+00002d9c stp       x22, x21, [sp, #0x30]
+00002da0 stp       x20, x19, [sp, #0x40]
+00002da4 stp       x29, x30, [sp, #0x50]
+00002da8 add       x29, sp, #0x50
+00002dac sub       sp, sp, #0x2a0
+00002db0 mov       x21, x5
+00002db4 mov       x22, x4
+00002db8 mov       x20, x2
+00002dbc mov       x19, x1
+00002dc0 mov       x23, x0
+00002dc4 adrp      x8, #0x20000
+00002dc8 ldr       x8, [x8, #0x70]
+00002dcc ldr       x8, [x8]
+00002dd0 stur      x8, [x29, #-0x60]
+00002dd4 adrp      x3, #0x17000
+00002dd8 add       x3, x3, #0xf90
+00002ddc adrp      x4, #0x1d000
+00002de0 add       x4, x4, #0x4d6
+00002de4 adrp      x6, #0x18000
+00002de8 add       x6, x6, #0xd14
+00002dec mov       w0, #2
+00002df0 mov       w1, #1
+00002df4 mov       w2, #2
+00002df8 mov       w5, #0x526
+00002dfc bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00002e00 adrp      x1, #0x1d000
+00002e04 add       x1, x1, #0x533
+00002e08 mov       x0, x19
+00002e0c bl        #0x168a8 ; _fopen
+00002e10 cbz       x0, #0x304c
+00002e14 mov       x19, x0
+00002e18 mov       x1, #0
+00002e1c mov       w2, #2
+00002e20 bl        #0x168cc ; _fseek
+00002e24 cbnz      w21, #0x2e40
+00002e28 mov       x0, x19
+00002e2c bl        #0x168f0 ; _ftell
+00002e30 adds      x8, x0, #0x1ff
+00002e34 add       x9, x0, #0x3fe
+00002e38 csel      x8, x9, x8, lt
+00002e3c lsr       x21, x8, #9
+00002e40 add       x0, sp, #0x20
+00002e44 mov       x1, x23
+00002e48 mov       x2, x22
+00002e4c bl        #0xe5b8 ; __ZN14AxsMemoryDriveC1EPNSt3__112basic_stringIcNS0_11char_traitsIcEENS0_9allocatorIcEEEEj
+00002e50 add       x0, sp, #0x20
+00002e54 add       x2, sp, #0x82
+00002e58 mov       w1, #3
+00002e5c bl        #0xf52c ; __ZN14AxsMemoryDrive18ExecuteChangeLevelEiP25_ATA_RESPONSE_INFORMATION
+00002e60 cbz       w0, #0x30ac
+00002e64 mov       w22, #0
+00002e68 add       x8, sp, #0x90
+00002e6c add       x27, x8, #2
+00002e70 mov       w8, #1
+00002e74 adrp      x24, #0x17000
+00002e78 add       x24, x24, #0xf90
+00002e7c adrp      x25, #0x1d000
+00002e80 add       x25, x25, #0x4d6
+00002e84 adrp      x23, #0x19000
+00002e88 add       x23, x23, #0xa4
+00002e8c adrp      x9, #0x19000
+00002e90 add       x9, x9, #0x340
+00002e94 str       x9, [sp, #0x10]
+00002e98 str       w20, [sp, #0x1c]
+00002e9c mov       x28, x8
+00002ea0 str       x22, [sp]
+00002ea4 mov       w0, #1
+00002ea8 mov       w1, #2
+00002eac mov       w2, #2
+00002eb0 mov       x3, x24
+00002eb4 mov       x4, x25
+00002eb8 mov       w5, #0x555
+00002ebc mov       x6, x23
+00002ec0 bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00002ec4 mov       x0, x19
+00002ec8 mov       x1, #0
+00002ecc mov       w2, #0
+00002ed0 bl        #0x168cc ; _fseek
+00002ed4 movi      v0.2d, #0000000000000000
+00002ed8 stp       q0, q0, [x27]
+00002edc stp       q0, q0, [x27, #0x20]
+00002ee0 stp       q0, q0, [x27, #0x40]
+00002ee4 stp       q0, q0, [x27, #0x60]
+00002ee8 stp       q0, q0, [x27, #0x80]
+00002eec stp       q0, q0, [x27, #0xa0]
+00002ef0 stp       q0, q0, [x27, #0xc0]
+00002ef4 stp       q0, q0, [x27, #0xe0]
+00002ef8 stp       q0, q0, [x27, #0x100]
+00002efc stp       q0, q0, [x27, #0x120]
+00002f00 stp       q0, q0, [x27, #0x140]
+00002f04 stp       q0, q0, [x27, #0x160]
+00002f08 stp       q0, q0, [x27, #0x180]
+00002f0c stp       q0, q0, [x27, #0x1a0]
+00002f10 stp       q0, q0, [x27, #0x1c0]
+00002f14 str       q0, [x27, #0x1e0]
+00002f18 add       x8, x27, #0x1ee
+00002f1c str       q0, [x8]
+00002f20 mov       w8, #0x46
+00002f24 strh      w8, [sp, #0x90]
+00002f28 mov       w8, #0x8d
+00002f2c strh      w8, [sp, #0x96]
+00002f30 strh      w20, [sp, #0x9a]
+00002f34 mov       w8, #0xa0
+00002f38 orr       w8, w22, w8
+00002f3c strh      w21, [sp, #0xa0]
+00002f40 add       x0, sp, #0x20
+00002f44 and       w2, w8, #0xff
+00002f48 add       x3, sp, #0x90
+00002f4c add       x5, sp, #0x82
+00002f50 mov       w1, #0xd6
+00002f54 mov       w4, #0x200
+00002f58 bl        #0xee90 ; __ZN14AxsMemoryDrive22ExecuteSMARTLogCommandEhhPtjP25_ATA_RESPONSE_INFORMATION
+00002f5c ldrb      w8, [sp, #0x85]
+00002f60 tst       w8, #0xff
+00002f64 csel      w8, wzr, w0, ne
+00002f68 cmp       w8, #1
+00002f6c b.ne      #0x31d8
+00002f70 mov       x20, x23
+00002f74 mov       x23, x25
+00002f78 mov       x25, x24
+00002f7c cmp       w21, #1
+00002f80 b.lt      #0x2fe4
+00002f84 mov       w8, #-0x58
+00002f88 orr       w26, w22, w8
+00002f8c mov       x24, x21
+00002f90 add       x0, sp, #0x90
+00002f94 mov       w1, #1
+00002f98 mov       w2, #0x200
+00002f9c mov       x3, x19
+00002fa0 bl        #0x168b4 ; _fread
+00002fa4 mov       x0, x19
+00002fa8 bl        #0x16884 ; _ferror
+00002fac cbnz      w0, #0x3140
+00002fb0 add       x0, sp, #0x20
+00002fb4 and       w2, w26, #0xff
+00002fb8 add       x3, sp, #0x90
+00002fbc add       x5, sp, #0x82
+00002fc0 mov       w1, #0xd6
+00002fc4 mov       w4, #0x200
+00002fc8 bl        #0xee90 ; __ZN14AxsMemoryDrive22ExecuteSMARTLogCommandEhhPtjP25_ATA_RESPONSE_INFORMATION
+00002fcc ldrb      w8, [sp, #0x85]
+00002fd0 tst       w8, #0xff
+00002fd4 csel      w8, wzr, w0, ne
+00002fd8 tbz       w8, #0, #0x310c
+00002fdc subs      w24, w24, #1
+00002fe0 b.ne      #0x2f90
+00002fe4 mov       w8, #0xa4
+00002fe8 orr       w8, w22, w8
+00002fec add       x0, sp, #0x20
+00002ff0 and       w2, w8, #0xff
+00002ff4 add       x3, sp, #0x90
+00002ff8 add       x5, sp, #0x82
+00002ffc mov       w1, #0xd5
+00003000 mov       w4, #0x200
+00003004 bl        #0xee90 ; __ZN14AxsMemoryDrive22ExecuteSMARTLogCommandEhhPtjP25_ATA_RESPONSE_INFORMATION
+00003008 mov       x24, x25
+0000300c mov       x25, x23
+00003010 mov       x23, x20
+00003014 ldr       w20, [sp, #0x1c]
+00003018 ldrb      w8, [sp, #0x85]
+0000301c tst       w8, #0xff
+00003020 csel      w8, wzr, w0, ne
+00003024 mov       w5, #0x590
+00003028 cmp       w8, #1
+0000302c b.ne      #0x311c
+00003030 ldrh      w8, [sp, #0x96]
+00003034 cmp       w8, #0x100
+00003038 b.hs      #0x311c
+0000303c mov       w8, #0
+00003040 mov       w22, #1
+00003044 tbnz      w28, #0, #0x2e9c
+00003048 b         #0x3144
+0000304c adrp      x19, #0x17000
+00003050 add       x19, x19, #0xf90
+00003054 adrp      x20, #0x1d000
+00003058 add       x20, x20, #0x4d6
+0000305c adrp      x6, #0x18000
+00003060 add       x6, x6, #0xfe8
+00003064 mov       w0, #1
+00003068 mov       w1, #4
+0000306c mov       w2, #2
+00003070 mov       x3, x19
+00003074 mov       x4, x20
+00003078 mov       w5, #0x52d
+0000307c bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00003080 adrp      x6, #0x18000
+00003084 add       x6, x6, #0xe3c
+00003088 mov       w0, #2
+0000308c mov       w1, #1
+00003090 mov       w2, #2
+00003094 mov       x3, x19
+00003098 mov       x4, x20
+0000309c mov       w5, #0x52e
+000030a0 bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+000030a4 mov       w22, #0
+000030a8 b         #0x319c
+000030ac adrp      x3, #0x17000
+000030b0 add       x3, x3, #0xf90
+000030b4 adrp      x4, #0x1d000
+000030b8 add       x4, x4, #0x4d6
+000030bc adrp      x6, #0x19000
+000030c0 add       x6, x6, #0x2c
+000030c4 mov       w0, #1
+000030c8 mov       w1, #4
+000030cc mov       w2, #2
+000030d0 mov       w5, #0x54c
+000030d4 bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+000030d8 adrp      x3, #0x17000
+000030dc add       x3, x3, #0xf90
+000030e0 adrp      x4, #0x1d000
+000030e4 add       x4, x4, #0x4d6
+000030e8 adrp      x6, #0x18000
+000030ec add       x6, x6, #0xe3c
+000030f0 mov       w0, #2
+000030f4 mov       w1, #1
+000030f8 mov       w2, #2
+000030fc mov       w5, #0x54d
+00003100 bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00003104 mov       w22, #0
+00003108 b         #0x3194
+0000310c mov       w5, #0x57d
+00003110 adrp      x8, #0x19000
+00003114 add       x8, x8, #0x204
+00003118 str       x8, [sp, #0x10]
+0000311c adrp      x3, #0x17000
+00003120 add       x3, x3, #0xf90
+00003124 adrp      x4, #0x1d000
+00003128 add       x4, x4, #0x4d6
+0000312c mov       w0, #1
+00003130 mov       w1, #4
+00003134 mov       w2, #2
+00003138 ldr       x6, [sp, #0x10]
+0000313c bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00003140 mov       w22, #0
+00003144 mov       x0, x19
+00003148 bl        #0x16878 ; _fclose
+0000314c add       x0, sp, #0x20
+00003150 add       x2, sp, #0x82
+00003154 mov       w1, #0
+00003158 bl        #0xf52c ; __ZN14AxsMemoryDrive18ExecuteChangeLevelEiP25_ATA_RESPONSE_INFORMATION
+0000315c add       x0, sp, #0x20
+00003160 mov       w1, #0
+00003164 bl        #0x1031c ; __ZN14AxsMemoryDrive15LoadEjectMediumEi
+00003168 adrp      x3, #0x17000
+0000316c add       x3, x3, #0xf90
+00003170 adrp      x4, #0x1d000
+00003174 add       x4, x4, #0x4d6
+00003178 adrp      x6, #0x18000
+0000317c add       x6, x6, #0xe3c
+00003180 mov       w0, #2
+00003184 mov       w1, #1
+00003188 mov       w2, #2
+0000318c mov       w5, #0x5a2
+00003190 bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00003194 add       x0, sp, #0x20
+00003198 bl        #0xe6a0 ; __ZN14AxsMemoryDriveD1Ev
+0000319c ldur      x8, [x29, #-0x60]
+000031a0 adrp      x9, #0x20000
+000031a4 ldr       x9, [x9, #0x70]
+000031a8 ldr       x9, [x9]
+000031ac cmp       x9, x8
+000031b0 b.ne      #0x31e8
+000031b4 mov       x0, x22
+000031b8 add       sp, sp, #0x2a0
+000031bc ldp       x29, x30, [sp, #0x50]
+000031c0 ldp       x20, x19, [sp, #0x40]
+000031c4 ldp       x22, x21, [sp, #0x30]
+000031c8 ldp       x24, x23, [sp, #0x20]
+000031cc ldp       x26, x25, [sp, #0x10]
+000031d0 ldp       x28, x27, [sp], #0x60
+000031d4 ret       
+000031d8 mov       w5, #0x569
+000031dc adrp      x8, #0x19000
+000031e0 add       x8, x8, #0x100
+000031e4 b         #0x3118
+000031e8 bl        #0x16818 ; ___stack_chk_fail
+000031ec mov       x19, x0
+000031f0 b         #0x3208
+000031f4 b         #0x31fc
+000031f8 b         #0x31fc
+000031fc mov       x19, x0
+00003200 add       x0, sp, #0x20
+00003204 bl        #0xe6a0 ; __ZN14AxsMemoryDriveD1Ev
+00003208 mov       x0, x19
+0000320c bl        #0x165a8 ; __Unwind_Resume

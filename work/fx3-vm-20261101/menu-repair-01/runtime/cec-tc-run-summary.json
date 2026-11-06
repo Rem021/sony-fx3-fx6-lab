@@ -1,0 +1,76 @@
+{
+  "runs": [
+    {
+      "run": "ap62stack-66a538bb",
+      "seconds": 75,
+      "exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "commits_and_frees": [],
+      "gpe": [
+        "FX3_GPE_UNIFORM_DONE sequence=0 address=0x43feb5100 bytes=614400 rows=480 value=0 fills=1 result=0 pixels_written=1 physical_engine=0 lifetime=original_FIFO_pending_completion",
+        "FX3_GPE_UNIFORM_FLUSH sequence=1 source=0x808261c0 fills=1 status=0 native_SendDrawComp=1 physical_engine=0"
+      ],
+      "serial_sha256": "b6c3593b0bced2d1ee3d6132c829c870ea753193b65c94494b29582cd57f21d9"
+    },
+    {
+      "run": "ap63cec-77413a1b",
+      "seconds": 80,
+      "exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "commits_and_frees": [
+        "FX3_CEC_POWER_COMMIT command=0x101 completion=0x8101 source=0x81cf61c0 power=1 generation=1 lease=16 request_free=0 hpd=0 wire_messages=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x101 lease=16 result=0"
+      ],
+      "gpe": [
+        "FX3_GPE_UNIFORM_DONE sequence=0 address=0x43feb5100 bytes=614400 rows=480 value=0 fills=1 result=0 pixels_written=1 physical_engine=0 lifetime=original_FIFO_pending_completion",
+        "FX3_GPE_UNIFORM_FLUSH sequence=1 source=0x808261c0 fills=1 status=0 native_SendDrawComp=1 physical_engine=0"
+      ],
+      "serial_sha256": "a3c8279caf3e323fe7f07d57e1208d3de3dfd411ce8a401e6825c22559cf5660"
+    },
+    {
+      "run": "ap64tc-e0ed5826",
+      "seconds": 80,
+      "exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "commits_and_frees": [
+        "FX3_CEC_POWER_COMMIT command=0x101 completion=0x8101 source=0x81cf61c1 power=1 generation=1 lease=16 request_free=0 hpd=0 wire_messages=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf61c1 command=0x101 lease=16 result=0",
+        "FX3_HDMI_TC_COMMIT command=0x109 completion=0x8109 source=0x81cf61c1 tc_output=0 updates=1 lease=17 request_free=0 active_output=0 hardware_frames=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf61c1 command=0x109 lease=17 result=0"
+      ],
+      "gpe": [],
+      "serial_sha256": "d55043587fd08de1681016e5f260bafcf5adef616841bfcb3d358179c751b69a"
+    },
+    {
+      "run": "ap65vdf161-e83cf01f",
+      "seconds": 80,
+      "exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "commits_and_frees": [
+        "FX3_CEC_POWER_COMMIT command=0x101 completion=0x8101 source=0x81cf61c0 power=1 generation=1 lease=16 request_free=0 hpd=0 wire_messages=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x101 lease=16 result=0",
+        "FX3_HDMI_TC_COMMIT command=0x109 completion=0x8109 source=0x81cf61c0 tc_output=0 updates=1 lease=17 request_free=0 active_output=0 hardware_frames=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x109 lease=17 result=0"
+      ],
+      "gpe": [],
+      "serial_sha256": "0c43617a0d4cdacce9d6324fe833bb63f82e774c96213b1f2416a9293c926835"
+    }
+  ],
+  "correction": "909c015b is originalCEC, notIMDBCameraProfile. CECandTC shadows areexplicitsoftware only; nohardwarewire orfullUI."
+}

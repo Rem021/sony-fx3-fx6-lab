@@ -1,0 +1,393 @@
+{
+  "status": "STATIC_COMMON_RESOURCES_AND_TARGET_MCU_FIELDS_BOUND_NOT_A_RUNNABLE_FX3_PAYLOAD",
+  "payload_commit": "e85e137fc3b88b7cb26e69faa9f1304184678ff7",
+  "resource_comparisons": [
+    {
+      "resource": "SCU",
+      "address": "0xf1388000",
+      "comparison": "MATCH_7_02_PACKAGE_DTB",
+      "node": "/soc/scu@F1388000",
+      "actual_hardware_verified": false
+    },
+    {
+      "resource": "USB_PHY",
+      "address": "0xf1080000",
+      "comparison": "MATCH_7_02_PACKAGE_DTB",
+      "node": "/soc/usbs",
+      "actual_hardware_verified": false
+    },
+    {
+      "resource": "DWC3",
+      "address": "0xf10c0000",
+      "comparison": "MATCH_7_02_PACKAGE_DTB",
+      "node": "/soc/usbs/usb@0",
+      "actual_hardware_verified": false
+    },
+    {
+      "resource": "SPACC",
+      "address": "0xf7fc0000",
+      "comparison": "MATCH_7_02_PACKAGE_DTB",
+      "node": "/soc/spacc@F7FC0000",
+      "actual_hardware_verified": false
+    },
+    {
+      "resource": "SPI0",
+      "address": "0xf1017000",
+      "comparison": "MATCH_7_02_PACKAGE_DTB",
+      "node": "/soc/spi0@F1017000",
+      "actual_hardware_verified": false
+    },
+    {
+      "resource": "eMMC",
+      "address": "0xf10d6000",
+      "comparison": "MATCH_7_00_GPL_PLATFORM_ONLY",
+      "exact7_02_DTB_reg_available": false,
+      "actual_hardware_verified": false
+    },
+    {
+      "resource": "TIMER0",
+      "address": "0xf1042000",
+      "comparison": "MATCH_7_00_GPL_REFERENCE_ONLY",
+      "actual_hardware_verified": false
+    },
+    {
+      "resource": "SIO0",
+      "address": "0xf1005000",
+      "comparison": "MATCH_7_00_GPL_REFERENCE_ONLY",
+      "actual_hardware_verified": false
+    },
+    {
+      "resource": "GPIO_formula_base",
+      "address": "0xf101d000",
+      "comparison": "MATCH_7_00_GPL_REFERENCE_ONLY",
+      "actual_hardware_verified": false
+    }
+  ],
+  "USB_clock_bindings": [
+    {
+      "id": 16,
+      "name": "usb_refclk",
+      "source_gate_bit": 12,
+      "register_bank_offset": 0,
+      "reference_only": true
+    },
+    {
+      "id": 17,
+      "name": "usb_apb_clk",
+      "source_gate_bit": 13,
+      "register_bank_offset": 0,
+      "reference_only": true
+    },
+    {
+      "id": 18,
+      "name": "usb_axi_clk",
+      "source_gate_bit": 14,
+      "register_bank_offset": 0,
+      "reference_only": true
+    },
+    {
+      "id": 19,
+      "name": "usb_sus_clk",
+      "source_gate_bit": 15,
+      "register_bank_offset": 0,
+      "reference_only": true
+    }
+  ],
+  "USB_clock_gate_mask": "0xf000",
+  "USB_reset_ids": [
+    11,
+    10,
+    9,
+    8
+  ],
+  "USB_reset_mask": "0xf00",
+  "SRAM_layout": {
+    "code_stack_start": "0xfe020000",
+    "code_stack_end_exclusive": "0xfe030000",
+    "DMA_start": "0xfe100000",
+    "DMA_end_exclusive": "0xfe200000",
+    "falls_in_reference_16MiB_address_window": true,
+    "actual_usable_SRAM_capacity_proven": false,
+    "full_DDR_training_is_not_a_reference_link_layout_prerequisite": true
+  },
+  "package_DTB_declared_DDR_bytes": 8589934592,
+  "actual_body_DDR_capacity_inferred": false,
+  "normal_main_contains_explicit_Darwin_counter_feed": false,
+  "main_Darwin_write_block_callers": [
+    {
+      "file": "darwin.c",
+      "line": 242,
+      "text": "int darwin_write_block(u32 off, const u8 *buf, u32 len)"
+    }
+  ],
+  "target_MCU_counter_fields_bound": true,
+  "unresolved": [
+    "FX3 AP/CP ROM hashes and ROM_LED_INIT function atFFFF0784 are not identified on current body",
+    "BootROM entry wiring, GPIO/serial timing and required RP2040 bridge remain unvalidated/unavailable",
+    "SIO channel0, GPIO port4 bit2 XCS and4MHz timer are reference assumptions without FX3 board/runtime binding",
+    "Cetus reset/boot strap and uploaded CP monitor must be adapted; main calls bring_up before USB and eMMC",
+    "Darwin counters/reload addresses match static FX3 code, but read command16, framing/pins, live counters, timer cadence and keepalive are not proven",
+    "raw/cleartext partition mapping, encryption, same-body boot0/p1 and inverse restore still require target evidence",
+    "reference transfer code exposes write/execute/reset operations; no FX3 upload or first hardware test is authorized by this comparison"
+  ],
+  "source_line_pins": [
+    {
+      "label": "SCU_BASE",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/scu.h",
+      "source_sha256": "13c8a4bbba35f835bdd389129453e0fd325752ef0a4e5e9b0aa71c04ea1189ee",
+      "line_start": 16,
+      "line_end_inclusive": 16,
+      "bytes": 42,
+      "selected_sha256": "d6f66800e940cabff70a428c93544d7b7503a86e50347a2d1254537cfa31e036"
+    },
+    {
+      "label": "USB_SS_BASE",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/usb_phy.h",
+      "source_sha256": "e3c1fa7970f0bcfa4898dfad2084c4b3ef7b36c5431465f0b72a4cdefe8648de",
+      "line_start": 12,
+      "line_end_inclusive": 12,
+      "bytes": 42,
+      "selected_sha256": "118e5ec6dc5405bfdebe756e5326f140cb3de78b908d9385a3e0395c677e7107"
+    },
+    {
+      "label": "DWC3_BASE",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/dwc3_regs.h",
+      "source_sha256": "8c3485481c08494445bde21fc0859dd8c41630ce64448be069fd865cb71fec25",
+      "line_start": 11,
+      "line_end_inclusive": 11,
+      "bytes": 46,
+      "selected_sha256": "051b5c1986b885ab071e707d6eb223ac43bfb9ea1508a7bfb007a2fbd871cbdc"
+    },
+    {
+      "label": "SPACC_BASE",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/spacc.h",
+      "source_sha256": "0786ce0b6dc9cb8352613a89350e2a6cb50a307775b83602d522697c0eda1fe4",
+      "line_start": 24,
+      "line_end_inclusive": 24,
+      "bytes": 46,
+      "selected_sha256": "4608693dd0068fd0c534c3faaa67fe309244accbd7949e35f2221e2a70b503eb"
+    },
+    {
+      "label": "SPI0_BASE",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/cetus.c",
+      "source_sha256": "9e505446ea6e7c0f86c117044ad81d46fe07288c4ec2590bf2e801395f9332bd",
+      "line_start": 9,
+      "line_end_inclusive": 9,
+      "bytes": 38,
+      "selected_sha256": "a97fdad1c65788184192db71913446ca52849c7062c7519bcb6833ae065f415a"
+    },
+    {
+      "label": "SDHCI_BASE",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/sdhci.h",
+      "source_sha256": "00fbf2c9b7f84d5351afb010eb7019e86b11d0dc15dd11114e21c53b89368c98",
+      "line_start": 17,
+      "line_end_inclusive": 17,
+      "bytes": 46,
+      "selected_sha256": "48b7166e7009a1e21bc15b5cc5e0382f44b01e57e7c87dc25ec7f57b682346eb"
+    },
+    {
+      "label": "EMMC0_IO_BASE",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/platform.c",
+      "source_sha256": "5cdcdbeb56a5f1a0c6fff9f954884a779e2651740adcae6c6c22e3ab4b66c482",
+      "line_start": 173,
+      "line_end_inclusive": 173,
+      "bytes": 34,
+      "selected_sha256": "9e479729cf7304b49f6ccf3b98b269afcbd0cb82d0780d14a111cff436389379"
+    },
+    {
+      "label": "TIMER0_BASE",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/timer.h",
+      "source_sha256": "a8960cd36c294e5b90cbb97b26ef9c2ab4da2d6962ea16d3f2fbfe107d519be9",
+      "line_start": 15,
+      "line_end_inclusive": 15,
+      "bytes": 38,
+      "selected_sha256": "032761cc963db4038ec97de3e202ddfbb48b8705caaa72238f20174d8cd1de39"
+    },
+    {
+      "label": "TIMER0",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/include/mach/platform.h",
+      "source_sha256": "a34b127dfd8e3adfb67890a676f3df5cfb885e73d5977d4306f2c288c95875f8",
+      "line_start": 63,
+      "line_end_inclusive": 63,
+      "bytes": 61,
+      "selected_sha256": "307d8405607f5ac8c6ebd0e2af505f8d15392e86fad0dbf362aed17239cebe3e"
+    },
+    {
+      "label": "SIO0",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/platform.c",
+      "source_sha256": "5cdcdbeb56a5f1a0c6fff9f954884a779e2651740adcae6c6c22e3ab4b66c482",
+      "line_start": 217,
+      "line_end_inclusive": 217,
+      "bytes": 59,
+      "selected_sha256": "320d1ceae788b74a4d69732ce096d41c91e64a4adbab501fe4d23d5609f271cb"
+    },
+    {
+      "label": "GPIO_formula_base",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/include/mach/platform.h",
+      "source_sha256": "a34b127dfd8e3adfb67890a676f3df5cfb885e73d5977d4306f2c288c95875f8",
+      "line_start": 67,
+      "line_end_inclusive": 67,
+      "bytes": 55,
+      "selected_sha256": "8027876f119bb7771fd933cc00d2dfc725460c4616d2de0c51954f60fd29070f"
+    },
+    {
+      "label": "CXD_CLK_GATE_USB_REF_CLK",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/include/dt-bindings/clock/cxd-900xx-clk.h",
+      "source_sha256": "4b03a1d7aef0363dae9ed69c6f8538f0c09d74bf7ecc4ba3c3093613968446eb",
+      "line_start": 43,
+      "line_end_inclusive": 43,
+      "bytes": 43,
+      "selected_sha256": "27f717cd70f0a2aef04e30f514fbc4ed553c48d7bb0490e23e0adfd0b42e2ea2"
+    },
+    {
+      "label": "CXD_CLK_GATE_USB_REF_CLK bit",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/clk/cxd/clk-cxd-900xx.c",
+      "source_sha256": "e08b50424fea1042b14cd4e636773faa8a552f3715158667552afe646254e394",
+      "line_start": 98,
+      "line_end_inclusive": 98,
+      "bytes": 76,
+      "selected_sha256": "461ad720465af43ec743166e036d153859fd4376910d1829a2cb72be0fc0c3c2"
+    },
+    {
+      "label": "CXD_CLK_GATE_USB_PCLK",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/include/dt-bindings/clock/cxd-900xx-clk.h",
+      "source_sha256": "4b03a1d7aef0363dae9ed69c6f8538f0c09d74bf7ecc4ba3c3093613968446eb",
+      "line_start": 44,
+      "line_end_inclusive": 44,
+      "bytes": 43,
+      "selected_sha256": "60a41c85ccecc0ed907cd5ff783896ee22f3d657bda1b0f333e5423488d6003f"
+    },
+    {
+      "label": "CXD_CLK_GATE_USB_PCLK bit",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/clk/cxd/clk-cxd-900xx.c",
+      "source_sha256": "e08b50424fea1042b14cd4e636773faa8a552f3715158667552afe646254e394",
+      "line_start": 99,
+      "line_end_inclusive": 99,
+      "bytes": 72,
+      "selected_sha256": "d26d2a026239eff36a11a7dbdfeb00efe1a1cc619e721f1c2aa883bbc2b8c430"
+    },
+    {
+      "label": "CXD_CLK_GATE_USB_ACLK",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/include/dt-bindings/clock/cxd-900xx-clk.h",
+      "source_sha256": "4b03a1d7aef0363dae9ed69c6f8538f0c09d74bf7ecc4ba3c3093613968446eb",
+      "line_start": 45,
+      "line_end_inclusive": 45,
+      "bytes": 43,
+      "selected_sha256": "77698b40c57344d6cf8c60d0689625436a7d2407a513f36802ed77e7381ddd0c"
+    },
+    {
+      "label": "CXD_CLK_GATE_USB_ACLK bit",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/clk/cxd/clk-cxd-900xx.c",
+      "source_sha256": "e08b50424fea1042b14cd4e636773faa8a552f3715158667552afe646254e394",
+      "line_start": 100,
+      "line_end_inclusive": 100,
+      "bytes": 73,
+      "selected_sha256": "829f0c7462f40388aefa91cce31a3ca6f06f032fecfe269138a9d77773440541"
+    },
+    {
+      "label": "CXD_CLK_GATE_USB_SUS_CLK",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/include/dt-bindings/clock/cxd-900xx-clk.h",
+      "source_sha256": "4b03a1d7aef0363dae9ed69c6f8538f0c09d74bf7ecc4ba3c3093613968446eb",
+      "line_start": 46,
+      "line_end_inclusive": 46,
+      "bytes": 43,
+      "selected_sha256": "7419373f2da4048dbb42095628440ed35083a93eb472184b775ecc8dce7a787b"
+    },
+    {
+      "label": "CXD_CLK_GATE_USB_SUS_CLK bit",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/clk/cxd/clk-cxd-900xx.c",
+      "source_sha256": "e08b50424fea1042b14cd4e636773faa8a552f3715158667552afe646254e394",
+      "line_start": 101,
+      "line_end_inclusive": 101,
+      "bytes": 78,
+      "selected_sha256": "cd339d1a1d163749f26f97ae954fa072f755923374cb8eecf049a4684c8f7457"
+    },
+    {
+      "label": "reset assert offset",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/reset/reset-cxd900xx.c",
+      "source_sha256": "0caa00ea0cd5ed99c6510c8048e9b1c071b474892e79307c8234939f714da1c6",
+      "line_start": 47,
+      "line_end_inclusive": 47,
+      "bytes": 78,
+      "selected_sha256": "cab29d26cfa9250c4a0c69ad213e585d456d71a0834324ac358c7405d642286a"
+    },
+    {
+      "label": "reset deassert offset",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/reset/reset-cxd900xx.c",
+      "source_sha256": "0caa00ea0cd5ed99c6510c8048e9b1c071b474892e79307c8234939f714da1c6",
+      "line_start": 62,
+      "line_end_inclusive": 62,
+      "bytes": 77,
+      "selected_sha256": "a63e8edd6678a2caaea7f6bf7cb36ad0c05de699714ff9f263fd2e92aa722abc"
+    },
+    {
+      "label": "AP code/stack region",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/fastboot.ld",
+      "source_sha256": "ea0e88b7b118931a56769ea070f7c89c65b1426357feaa46c0cae494d369fbed",
+      "line_start": 21,
+      "line_end_inclusive": 21,
+      "bytes": 52,
+      "selected_sha256": "c9db7148cb02b7ac7c05da301c9b2a3bc90998ea24d77a95a8e5e3a35c1ce7ad"
+    },
+    {
+      "label": "USB DMA region",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/fastboot.ld",
+      "source_sha256": "ea0e88b7b118931a56769ea070f7c89c65b1426357feaa46c0cae494d369fbed",
+      "line_start": 22,
+      "line_end_inclusive": 22,
+      "bytes": 51,
+      "selected_sha256": "58f8e290ac038fe490007780413a67611763ecbac593b1147f821dc2c7a10968"
+    },
+    {
+      "label": "ESRAM reference base",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/include/mach/platform.h",
+      "source_sha256": "a34b127dfd8e3adfb67890a676f3df5cfb885e73d5977d4306f2c288c95875f8",
+      "line_start": 97,
+      "line_end_inclusive": 97,
+      "bytes": 43,
+      "selected_sha256": "6fe361ac8042c4cefff9efe3fba9a63e59a874c0e969e0479b71da569e47e7ba"
+    },
+    {
+      "label": "ESRAM reference window",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/include/mach/platform.h",
+      "source_sha256": "a34b127dfd8e3adfb67890a676f3df5cfb885e73d5977d4306f2c288c95875f8",
+      "line_start": 98,
+      "line_end_inclusive": 98,
+      "bytes": 35,
+      "selected_sha256": "5285dea76f3ce40e4f92cfad3e4277e8929a2f5febe1074dc9c3b6378a5d4778"
+    },
+    {
+      "label": "SRAM design comment",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/dwc3.c",
+      "source_sha256": "114391cbcca73107751e48da3858f5d82b46ffe2c81f4c9e6a500cb77d9343c2",
+      "line_start": 21,
+      "line_end_inclusive": 21,
+      "bytes": 77,
+      "selected_sha256": "f8622616994f7acac2cec8e72906090cff2fca5849a74d013ce8aebaa161ff35"
+    },
+    {
+      "label": "staged transfer limit",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/fastboot.c",
+      "source_sha256": "b0627eac91911ec8c7de268d005f1842f915da757510fa20cbae51f436c72dda",
+      "line_start": 36,
+      "line_end_inclusive": 36,
+      "bytes": 35,
+      "selected_sha256": "4d72edfca1a31b1fb7328220ccb0873106b34a79fdfe27b2dc697b0047a278c7"
+    },
+    {
+      "label": "normal-start Darwin operation",
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/main.c",
+      "source_sha256": "d52c0a9f926917e6eb5b3ebcb1f28ac4d776b476c53bb9e6adff2e6ecf254ad6",
+      "line_start": 32,
+      "line_end_inclusive": 32,
+      "bytes": 19,
+      "selected_sha256": "48af63b02460b3ff26bcf08a57b94914702a49fa37bf427dc8dbd3bd26ac809d"
+    }
+  ],
+  "source7_00_GPL_is_not_exact7_02_build": true,
+  "firmware_or_guest_executed": false,
+  "root_or_device_operations": 0,
+  "target_payload_compiled_uploaded_or_run": false,
+  "persistent_write_release": false,
+  "goal_complete": false
+}

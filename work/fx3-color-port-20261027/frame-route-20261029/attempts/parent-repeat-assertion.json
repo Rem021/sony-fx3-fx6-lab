@@ -1,0 +1,8 @@
+{
+  "operation": "Read-only exploratory call of existing Guest.bind_current_object twice without release",
+  "observed": "The first call allocated owner 0x80000001 with empty mask. The second call triggered the parent wrapper assertion requiring return 1.",
+  "scope": "The actual second R0 was not captured before that isolated interpreter exited; no successful reuse was claimed.",
+  "follow_up": "New bounded trace records the returned code and mask without requiring allocation success, preserving the original non-success path.",
+  "device_actions": 0,
+  "sealed_files_modified": false
+}

@@ -1,0 +1,125 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so",
+  "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "reviewed_readme_sha256": "cb328ad84d3e5687b6b84c4206738bffc0f3c1f363a7274dde414a46bdee403b",
+  "table_rows_checked": 43,
+  "mismatches": [
+    {
+      "va": "0x2eaf2a0",
+      "readme_word": "a9025bf5",
+      "actual_word": "12807ff4"
+    },
+    {
+      "va": "0x2eaf2a4",
+      "readme_word": "a90363f7",
+      "actual_word": "a9025bf5"
+    },
+    {
+      "va": "0x2eaf2a8",
+      "readme_word": "a9046bf9",
+      "actual_word": "a90363f7"
+    },
+    {
+      "va": "0x2eaf2ac",
+      "readme_word": "d000e6a0",
+      "actual_word": "a9046bf9"
+    },
+    {
+      "va": "0x2eaf2b0",
+      "readme_word": "f9467c14",
+      "actual_word": "34000480"
+    },
+    {
+      "va": "0x2eaf2c4",
+      "readme_word": "f9400280",
+      "actual_word": "52800023"
+    },
+    {
+      "va": "0x2eaf2c8",
+      "readme_word": "f9002ba0",
+      "actual_word": "52800202"
+    },
+    {
+      "va": "0x2eaf2dc",
+      "readme_word": "979b9169",
+      "actual_word": "979b9391"
+    },
+    {
+      "va": "0x2eaf2e0",
+      "readme_word": "7100001f",
+      "actual_word": "2a0003f4"
+    },
+    {
+      "va": "0x2eaf2e4",
+      "readme_word": "54000360",
+      "actual_word": "350002e0"
+    },
+    {
+      "va": "0x2eaf2f0",
+      "readme_word": "979b8ffc",
+      "actual_word": "979b8ac4"
+    },
+    {
+      "va": "0x2eaf30c",
+      "readme_word": "540001c1",
+      "actual_word": "fa400a64"
+    },
+    {
+      "va": "0x2eaf310",
+      "readme_word": "f9402fa0",
+      "actual_word": "2a0003f4"
+    },
+    {
+      "va": "0x2eaf314",
+      "readme_word": "b40001b3",
+      "actual_word": "54000100"
+    },
+    {
+      "va": "0x2eaf318",
+      "readme_word": "b9400018",
+      "actual_word": "f9402fa0"
+    },
+    {
+      "va": "0x2eaf31c",
+      "readme_word": "b9000278",
+      "actual_word": "b9400001"
+    },
+    {
+      "va": "0x2eaf320",
+      "readme_word": "b9400418",
+      "actual_word": "b9000261"
+    },
+    {
+      "va": "0x2eaf324",
+      "readme_word": "b9000678",
+      "actual_word": "b9400401"
+    },
+    {
+      "va": "0x2eaf328",
+      "readme_word": "b9400818",
+      "actual_word": "b9000661"
+    },
+    {
+      "va": "0x2eaf32c",
+      "readme_word": "b9000a78",
+      "actual_word": "29410001"
+    },
+    {
+      "va": "0x2eaf330",
+      "readme_word": "b9400c18",
+      "actual_word": "29010261"
+    },
+    {
+      "va": "0x2eaf334",
+      "readme_word": "b9000e78",
+      "actual_word": "f9402fa1"
+    },
+    {
+      "va": "0x2eaf338",
+      "readme_word": "2a1f03f4",
+      "actual_word": "2a1503e0"
+    }
+  ],
+  "result": "REJECT_README_V3_INSTRUCTION_TABLE",
+  "scope": "README instruction words only; script assertions and other sections need distinct review"
+}

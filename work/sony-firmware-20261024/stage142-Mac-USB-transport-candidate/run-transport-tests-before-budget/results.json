@@ -1,0 +1,697 @@
+{
+  "status": "PASS_MAC_DESCRIPTOR_ABI_AND_PRIVATE_POLICY_FIXTURES_NOT_REAL_USB_INITIALIZATION",
+  "transport_sha256": "0d555b4fcfc17db8001f18340874710cdd15fad28750fceca176061bd41525df",
+  "test_sha256": "7be2b0c5bf38bb7880c6338f638e749660bc78e440c23f8053eb7e01ae29434a",
+  "C_ctypes_layout": {
+    "device_size": 18,
+    "endpoint_size": 32,
+    "interface_desc_size": 40,
+    "interface_size": 16,
+    "config_size": 40,
+    "endpoint_extra": 16,
+    "interface_endpoint": 16,
+    "config_interface": 16
+  },
+  "descriptor_scenarios": [
+    {
+      "scenario": 0,
+      "accepted": true,
+      "error": null,
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": {
+        "VID": 1356,
+        "PID": 3489,
+        "USB_BCD": 768,
+        "configuration": 1,
+        "total_length": 32,
+        "interfaces": [
+          {
+            "interface": 0,
+            "alternate": 0,
+            "class": 8,
+            "subclass": 6,
+            "protocol": 80,
+            "endpoints": [
+              {
+                "descriptor_order": 0,
+                "address": 1,
+                "direction": "OUT",
+                "transfer_type": 2,
+                "max_packet_size": 512
+              },
+              {
+                "descriptor_order": 1,
+                "address": 129,
+                "direction": "IN",
+                "transfer_type": 2,
+                "max_packet_size": 512
+              }
+            ]
+          }
+        ],
+        "authentication_or_service_endpoint_roles_proven": false,
+        "only_selected_target": true,
+        "no_serial_strings_requested_or_stored": true,
+        "device_or_interface_open_claim_driver_change_vendor_auth_or_media_operation": false,
+        "descriptor_query_is_active_standard_USB_read_not_IORegistry_only": true,
+        "actual_recording_authentication_backup_or_recovery_proven": false
+      }
+    },
+    {
+      "scenario": 1,
+      "accepted": false,
+      "error": "enumeration failed",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 2,
+      "accepted": false,
+      "error": "exactly one selected device required",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 3,
+      "accepted": false,
+      "error": "exactly one selected device required",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 4,
+      "accepted": false,
+      "error": "descriptor differs from selected FX3 profile",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 5,
+      "accepted": false,
+      "error": "active configuration unavailable",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 6,
+      "accepted": false,
+      "error": "missing configuration descriptor",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 7,
+      "accepted": false,
+      "error": "invalid configuration shape",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 8,
+      "accepted": false,
+      "error": "invalid configuration shape",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 9,
+      "accepted": false,
+      "error": "invalid alternate-setting array",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 10,
+      "accepted": false,
+      "error": "invalid alternate-setting array",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 11,
+      "accepted": false,
+      "error": "invalid interface descriptor",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 12,
+      "accepted": false,
+      "error": "missing endpoint array",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 13,
+      "accepted": false,
+      "error": "invalid or duplicate endpoint address",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 14,
+      "accepted": false,
+      "error": "invalid endpoint descriptor",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 15,
+      "accepted": false,
+      "error": "invalid configuration shape",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 16,
+      "accepted": false,
+      "error": "invalid interface descriptor",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 17,
+      "accepted": false,
+      "error": "invalid extra descriptor bounds",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 18,
+      "accepted": false,
+      "error": "USB context not established; no default-context cleanup attempted",
+      "ABI_call_counts": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "report": null
+    },
+    {
+      "scenario": 19,
+      "accepted": false,
+      "error": "USB context not established; no default-context cleanup attempted",
+      "ABI_call_counts": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "report": null
+    },
+    {
+      "scenario": 20,
+      "accepted": false,
+      "error": "private target selector rejected",
+      "ABI_call_counts": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "report": null
+    },
+    {
+      "scenario": 21,
+      "accepted": false,
+      "error": "descriptor differs from selected FX3 profile",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 22,
+      "accepted": false,
+      "error": "invalid extra descriptor bounds",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 23,
+      "accepted": false,
+      "error": "invalid endpoint descriptor",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 24,
+      "accepted": false,
+      "error": "invalid or duplicate endpoint address",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 25,
+      "accepted": true,
+      "error": null,
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": {
+        "VID": 1356,
+        "PID": 822,
+        "USB_BCD": 768,
+        "configuration": 1,
+        "total_length": 46,
+        "interfaces": [
+          {
+            "interface": 0,
+            "alternate": 0,
+            "class": 255,
+            "subclass": 0,
+            "protocol": 0,
+            "endpoints": [
+              {
+                "descriptor_order": 0,
+                "address": 1,
+                "direction": "OUT",
+                "transfer_type": 2,
+                "max_packet_size": 512
+              },
+              {
+                "descriptor_order": 1,
+                "address": 129,
+                "direction": "IN",
+                "transfer_type": 2,
+                "max_packet_size": 512
+              },
+              {
+                "descriptor_order": 2,
+                "address": 2,
+                "direction": "OUT",
+                "transfer_type": 2,
+                "max_packet_size": 512
+              },
+              {
+                "descriptor_order": 3,
+                "address": 130,
+                "direction": "IN",
+                "transfer_type": 2,
+                "max_packet_size": 512
+              }
+            ]
+          }
+        ],
+        "authentication_or_service_endpoint_roles_proven": false,
+        "only_selected_target": true,
+        "no_serial_strings_requested_or_stored": true,
+        "device_or_interface_open_claim_driver_change_vendor_auth_or_media_operation": false,
+        "descriptor_query_is_active_standard_USB_read_not_IORegistry_only": true,
+        "actual_recording_authentication_backup_or_recovery_proven": false
+      }
+    },
+    {
+      "scenario": 26,
+      "accepted": false,
+      "error": "device descriptor unavailable",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 27,
+      "accepted": false,
+      "error": "exactly one selected device required",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 28,
+      "accepted": false,
+      "error": "invalid alternate-setting array",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 29,
+      "accepted": false,
+      "error": "invalid extra descriptor bounds",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 30,
+      "accepted": false,
+      "error": "invalid extra descriptor bounds",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 31,
+      "accepted": false,
+      "error": "configuration total length too small",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "report": null
+    },
+    {
+      "scenario": 32,
+      "accepted": false,
+      "error": "active configuration unavailable",
+      "ABI_call_counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "report": null
+    }
+  ],
+  "descriptor_scenario_count": 33,
+  "gate_cases": [
+    "current authority rejects before CDLL",
+    "mismatched location rejected before CDLL"
+  ],
+  "private_source_policy_cases": [
+    {
+      "scenario": 0,
+      "return": 0,
+      "standard_descriptor_read_calls": 0
+    },
+    {
+      "scenario": 1,
+      "return": -5,
+      "standard_descriptor_read_calls": 0
+    },
+    {
+      "scenario": 2,
+      "return": -5,
+      "standard_descriptor_read_calls": 0
+    },
+    {
+      "scenario": 3,
+      "return": -5,
+      "standard_descriptor_read_calls": 0
+    },
+    {
+      "scenario": 4,
+      "return": 0,
+      "standard_descriptor_read_calls": 1
+    },
+    {
+      "scenario": 5,
+      "return": 0,
+      "standard_descriptor_read_calls": 1
+    },
+    {
+      "scenario": 6,
+      "return": -1,
+      "standard_descriptor_read_calls": 1
+    },
+    {
+      "scenario": 7,
+      "return": -6,
+      "standard_descriptor_read_calls": 0
+    },
+    {
+      "scenario": 8,
+      "return": -2,
+      "standard_descriptor_read_calls": 0
+    },
+    {
+      "scenario": 9,
+      "return": 0,
+      "standard_descriptor_read_calls": 1
+    }
+  ],
+  "exact_cache_and_predicate_functions_compiled_with_mock_IOKit": true,
+  "guard_precedes_native_device_user_client_creation": true,
+  "fixture_dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/artifacts/fake-libusb.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/artifacts/fake-libusb.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+  "real_private_libusb_loaded_or_initialized": false,
+  "camera_or_driver_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

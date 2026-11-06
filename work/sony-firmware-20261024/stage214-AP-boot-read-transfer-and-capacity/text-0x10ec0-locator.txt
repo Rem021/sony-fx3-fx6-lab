@@ -1,0 +1,272 @@
+00010ec0: fd7bb2a9 stp x29, x30, [sp, #-0xe0]!
+00010ec4: fd030091 mov x29, sp
+00010ec8: f55b02a9 stp x21, x22, [sp, #0x20]
+00010ecc: f50302aa mov x21, x2
+00010ed0: d61e0058 ldr x22, #0x112a8
+00010ed4: fb7305a9 stp x27, x28, [sp, #0x50]
+00010ed8: fb0300aa mov x27, x0
+00010edc: 60581753 lsl w0, w3, #9
+00010ee0: f76303a9 stp x23, x24, [sp, #0x30]
+00010ee4: f35301a9 stp x19, x20, [sp, #0x10]
+00010ee8: f70301aa mov x23, x1
+00010eec: f403032a mov w20, w3
+00010ef0: d8a21191 add x24, x22, #0x468
+00010ef4: f96b04a9 stp x25, x26, [sp, #0x40]
+00010ef8: a43b00f9 str x4, [x29, #0x70]
+00010efc: bf030f29 stp wzr, w0, [x29, #0x78]
+00010f00: 73008052 mov w19, #3
+00010f04: e00315aa mov x0, x21
+00010f08: 00000094 bl #0x10f08 ; {'section': '.text', 'offset': 69384, 'type': 283, 'symbol': 'al_sg_total_size', 'symbol_section': '.text', 'symbol_value': 29816, 'addend': 0}
+00010f0c: 1f2040f2 tst x0, #0x1ff
+00010f10: e103002a mov w1, w0
+00010f14: 810c0054 b.ne #0x110a4
+00010f18: e06340b2 mov x0, #0x1ffffff
+00010f1c: 3f0000eb cmp x1, x0
+00010f20: 88120054 b.hi #0x11170
+00010f24: 21fc49d3 lsr x1, x1, #9
+00010f28: 3f0400f1 cmp x1, #1
+00010f2c: e00b0054 b.eq #0x110a8
+00010f30: 3a3c0053 uxth w26, w1
+00010f34: 79f30691 add x25, x27, #0x1bc
+00010f38: e2031a2a mov w2, w26
+00010f3c: e10319aa mov x1, x25
+00010f40: e0031baa mov x0, x27
+00010f44: 03008052 mov w3, #0
+00010f48: 7ef6ff97 bl #0xe940
+00010f4c: fc03002a mov w28, w0
+00010f50: a014f837 tbnz w0, #0x1f, #0x111e4
+00010f54: 60a740f9 ldr x0, [x27, #0x148]
+00010f58: 650b40f9 ldr x5, [x27, #0x10]
+00010f5c: e0120037 tbnz w0, #0, #0x111b8
+00010f60: 41028052 mov w1, #0x12
+00010f64: 604341b9 ldr w0, [x27, #0x140]
+00010f68: ba230179 strh w26, [x29, #0x90]
+00010f6c: e30305aa mov x3, x5
+00010f70: a1630239 strb w1, [x29, #0x98]
+00010f74: 1f000071 cmp w0, #0
+00010f78: a17f40b9 ldr w1, [x29, #0x7c]
+00010f7c: 20008052 mov w0, #1
+00010f80: bfb300b9 str wzr, [x29, #0xb0]
+00010f84: e20319aa mov x2, x25
+00010f88: 8112811a csel w1, w20, w1, ne
+00010f8c: a08b00b9 str w0, [x29, #0x88]
+00010f90: a1831329 stp w1, w0, [x29, #0x9c]
+00010f94: a1230291 add x1, x29, #0x88
+00010f98: a15700f9 str x1, [x29, #0xa8]
+00010f9c: 01408052 mov w1, #0x200
+00010fa0: bf7f1b29 stp wzr, wzr, [x29, #0xd8]
+00010fa4: a18f00b9 str w1, [x29, #0x8c]
+00010fa8: a10040f9 ldr x1, [x5]
+00010fac: 200c00b9 str w0, [x1, #0xc]
+00010fb0: a1630291 add x1, x29, #0x98
+00010fb4: a00040f9 ldr x0, [x5]
+00010fb8: 150000f9 str x21, [x0]
+00010fbc: e0031baa mov x0, x27
+00010fc0: a40040f9 ldr x4, [x5]
+00010fc4: 940800b9 str w20, [x4, #8]
+00010fc8: a40040f9 ldr x4, [x5]
+00010fcc: a53b40f9 ldr x5, [x29, #0x70]
+00010fd0: 850800f9 str x5, [x4, #0x10]
+00010fd4: a5f3ff97 bl #0xde68
+00010fd8: fc03002a mov w28, w0
+00010fdc: c011f837 tbnz w0, #0x1f, #0x11214
+00010fe0: 608341b9 ldr w0, [x27, #0x180]
+00010fe4: 1f040031 cmn w0, #1
+00010fe8: 60000054 b.eq #0x10ff4
+00010fec: 00040011 add w0, w0, #1
+00010ff0: 608301b9 str w0, [x27, #0x180]
+00010ff4: e10317aa mov x1, x23
+00010ff8: e0031baa mov x0, x27
+00010ffc: 19fdff97 bl #0x10460
+00011000: fc03002a mov w28, w0
+00011004: 6001f837 tbnz w0, #0x1f, #0x11030
+00011008: 1c008052 mov w28, #0
+0001100c: e0031c2a mov w0, w28
+00011010: f35341a9 ldp x19, x20, [sp, #0x10]
+00011014: f55b42a9 ldp x21, x22, [sp, #0x20]
+00011018: f76343a9 ldp x23, x24, [sp, #0x30]
+0001101c: f96b44a9 ldp x25, x26, [sp, #0x40]
+00011020: fb7345a9 ldp x27, x28, [sp, #0x50]
+00011024: fd7bcea8 ldp x29, x30, [sp], #0xe0
+00011028: c0035fd6 ret 
+0001102c: 1f2003d5 nop 
+00011030: 1fb80131 cmn w0, #0x6e
+00011034: 200a0054 b.eq #0x11178
+00011038: e403002a mov w4, w0
+0001103c: a1130058 ldr x1, #0x112b0
+00011040: c0140058 ldr x0, #0x112d8
+00011044: e30318aa mov x3, x24
+00011048: 62ca8252 mov w2, #0x1653
+0001104c: f90316aa mov x25, x22
+00011050: fa0301aa mov x26, x1
+00011054: 00000094 bl #0x11054 ; {'section': '.text', 'offset': 69716, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00011058: e10317aa mov x1, x23
+0001105c: e0031baa mov x0, x27
+00011060: 02008052 mov w2, #0
+00011064: fdfeff97 bl #0x10c58
+00011068: c00ef837 tbnz w0, #0x1f, #0x11240
+0001106c: 600b42b9 ldr w0, [x27, #0x208]
+00011070: 600f0034 cbz w0, #0x1125c
+00011074: 73060071 subs w19, w19, #1
+00011078: 400a0054 b.eq #0x111c0
+0001107c: 60a741b9 ldr w0, [x27, #0x1a4]
+00011080: 1f040031 cmn w0, #1
+00011084: 00f4ff54 b.eq #0x10f04
+00011088: 00040011 add w0, w0, #1
+0001108c: 60a701b9 str w0, [x27, #0x1a4]
+00011090: e00315aa mov x0, x21
+00011094: 00000094 bl #0x11094 ; {'section': '.text', 'offset': 69780, 'type': 283, 'symbol': 'al_sg_total_size', 'symbol_section': '.text', 'symbol_value': 29816, 'addend': 0}
+00011098: 1f2040f2 tst x0, #0x1ff
+0001109c: e103002a mov w1, w0
+000110a0: c0f3ff54 b.eq #0x10f18
+000110a4: 000021d4 brk #0x800
+000110a8: 60a740f9 ldr x0, [x27, #0x148]
+000110ac: 7af30691 add x26, x27, #0x1bc
+000110b0: 790b40f9 ldr x25, [x27, #0x10]
+000110b4: 60090037 tbnz w0, #0, #0x111e0
+000110b8: 600b42b9 ldr w0, [x27, #0x208]
+000110bc: 20070035 cbnz w0, #0x111a0
+000110c0: 604341b9 ldr w0, [x27, #0x140]
+000110c4: 25008052 mov w5, #1
+000110c8: bfb300b9 str wzr, [x29, #0xb0]
+000110cc: e2031aaa mov x2, x26
+000110d0: 1f000071 cmp w0, #0
+000110d4: 20028052 mov w0, #0x11
+000110d8: a5230179 strh w5, [x29, #0x90]
+000110dc: e30319aa mov x3, x25
+000110e0: a0630239 strb w0, [x29, #0x98]
+000110e4: 00408052 mov w0, #0x200
+000110e8: a5a300b9 str w5, [x29, #0xa0]
+000110ec: a1630291 add x1, x29, #0x98
+000110f0: a5031129 stp w5, w0, [x29, #0x88]
+000110f4: a07f40b9 ldr w0, [x29, #0x7c]
+000110f8: bf7f1b29 stp wzr, wzr, [x29, #0xd8]
+000110fc: 8012801a csel w0, w20, w0, ne
+00011100: a09f00b9 str w0, [x29, #0x9c]
+00011104: a0230291 add x0, x29, #0x88
+00011108: a05700f9 str x0, [x29, #0xa8]
+0001110c: e0031baa mov x0, x27
+00011110: 270340f9 ldr x7, [x25]
+00011114: e50c00b9 str w5, [x7, #0xc]
+00011118: 250340f9 ldr x5, [x25]
+0001111c: b50000f9 str x21, [x5]
+00011120: 250340f9 ldr x5, [x25]
+00011124: b40800b9 str w20, [x5, #8]
+00011128: a53b40f9 ldr x5, [x29, #0x70]
+0001112c: 240340f9 ldr x4, [x25]
+00011130: 850800f9 str x5, [x4, #0x10]
+00011134: 4df3ff97 bl #0xde68
+00011138: fc03002a mov w28, w0
+0001113c: 20f5ff36 tbz w0, #0x1f, #0x10fe0
+00011140: 400b0058 ldr x0, #0x112a8
+00011144: e4031c2a mov w4, w28
+00011148: e20300aa mov x2, x0
+0001114c: f90300aa mov x25, x0
+00011150: 000b0058 ldr x0, #0x112b0
+00011154: 43a01191 add x3, x2, #0x468
+00011158: 02c48252 mov w2, #0x1620
+0001115c: e10300aa mov x1, x0
+00011160: fa0300aa mov x26, x0
+00011164: a00a0058 ldr x0, #0x112b8
+00011168: 00000094 bl #0x11168 ; {'section': '.text', 'offset': 69992, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0001116c: bbffff17 b #0x11058
+00011170: 000021d4 brk #0x800
+00011174: 1f2003d5 nop 
+00011178: c0090058 ldr x0, #0x112b0
+0001117c: e2c98252 mov w2, #0x164f
+00011180: 44090058 ldr x4, #0x112a8
+00011184: e10300aa mov x1, x0
+00011188: fa0300aa mov x26, x0
+0001118c: 630b0058 ldr x3, #0x112f8
+00011190: f90304aa mov x25, x4
+00011194: e0090058 ldr x0, #0x112d0
+00011198: 00000094 bl #0x11198 ; {'section': '.text', 'offset': 70040, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0001119c: afffff17 b #0x11058
+000111a0: 76f4ff97 bl #0xe378
+000111a4: e0f8ff36 tbz w0, #0x1f, #0x110c0
+000111a8: 600340f9 ldr x0, [x27]
+000111ac: 61230891 add x1, x27, #0x208
+000111b0: c4f5ff97 bl #0xe8c0
+000111b4: c3ffff17 b #0x110c0
+000111b8: 000021d4 brk #0x800
+000111bc: 1f2003d5 nop 
+000111c0: a07b40b9 ldr w0, [x29, #0x78]
+000111c4: 40f2ff35 cbnz w0, #0x1100c
+000111c8: 600340f9 ldr x0, [x27]
+000111cc: 61230891 add x1, x27, #0x208
+000111d0: bcf5ff97 bl #0xe8c0
+000111d4: 20008052 mov w0, #1
+000111d8: a07b00b9 str w0, [x29, #0x78]
+000111dc: 49ffff17 b #0x10f00
+000111e0: 000021d4 brk #0x800
+000111e4: 20060058 ldr x0, #0x112a8
+000111e8: e4031c2a mov w4, w28
+000111ec: e20300aa mov x2, x0
+000111f0: f90300aa mov x25, x0
+000111f4: e0050058 ldr x0, #0x112b0
+000111f8: 43a01191 add x3, x2, #0x468
+000111fc: 22c68252 mov w2, #0x1631
+00011200: e10300aa mov x1, x0
+00011204: fa0300aa mov x26, x0
+00011208: c0050058 ldr x0, #0x112c0
+0001120c: 00000094 bl #0x1120c ; {'section': '.text', 'offset': 70156, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00011210: 97ffff17 b #0x1106c
+00011214: e0040058 ldr x0, #0x112b0
+00011218: e4031c2a mov w4, w28
+0001121c: 65040058 ldr x5, #0x112a8
+00011220: 22c88252 mov w2, #0x1641
+00011224: e10300aa mov x1, x0
+00011228: fa0300aa mov x26, x0
+0001122c: 63060058 ldr x3, #0x112f8
+00011230: f90305aa mov x25, x5
+00011234: a0040058 ldr x0, #0x112c8
+00011238: 00000094 bl #0x11238 ; {'section': '.text', 'offset': 70200, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0001123c: 87ffff17 b #0x11058
+00011240: e403002a mov w4, w0
+00011244: e0040058 ldr x0, #0x112e0
+00011248: 23a31191 add x3, x25, #0x468
+0001124c: e1031aaa mov x1, x26
+00011250: a2cb8252 mov w2, #0x165d
+00011254: 00000094 bl #0x11254 ; {'section': '.text', 'offset': 70228, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00011258: 85ffff17 b #0x1106c
+0001125c: 25e31191 add x5, x25, #0x478
+00011260: 40040058 ldr x0, #0x112e8
+00011264: e4031c2a mov w4, w28
+00011268: e30305aa mov x3, x5
+0001126c: e1031aaa mov x1, x26
+00011270: 22068352 mov w2, #0x1831
+00011274: a53700f9 str x5, [x29, #0x68]
+00011278: 00000094 bl #0x11278 ; {'section': '.text', 'offset': 70264, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0001127c: a53740f9 ldr x5, [x29, #0x68]
+00011280: 84008052 mov w4, #4
+00011284: 60030058 ldr x0, #0x112f0
+00011288: e1031aaa mov x1, x26
+0001128c: e30305aa mov x3, x5
+00011290: 8400134b sub w4, w4, w19
+00011294: 62068352 mov w2, #0x1833
+00011298: 65008052 mov w5, #3
+0001129c: 00000094 bl #0x1129c ; {'section': '.text', 'offset': 70300, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+000112a0: 75ffff17 b #0x11074
+000112a4: 1f2003d5 nop 
+000112a8: 00000000 udf #0 ; {'section': '.text', 'offset': 70312, 'type': 257, 'symbol': '', 'symbol_section': '.rodata', 'symbol_value': 0, 'addend': 3584}
+000112ac: 00000000 udf #0
+000112b0: 00000000 udf #0 ; {'section': '.text', 'offset': 70320, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 17280}
+000112b4: 00000000 udf #0
+000112b8: 00000000 udf #0 ; {'section': '.text', 'offset': 70328, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 26152}
+000112bc: 00000000 udf #0
+000112c0: 00000000 udf #0 ; {'section': '.text', 'offset': 70336, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 26232}
+000112c4: 00000000 udf #0
+000112c8: 00000000 udf #0 ; {'section': '.text', 'offset': 70344, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 26312}
+000112cc: 00000000 udf #0
+000112d0: 00000000 udf #0 ; {'section': '.text', 'offset': 70352, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 26400}
+000112d4: 00000000 udf #0
+000112d8: 00000000 udf #0 ; {'section': '.text', 'offset': 70360, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 25344}
+000112dc: 00000000 udf #0
+000112e0: 00000000 udf #0 ; {'section': '.text', 'offset': 70368, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 26480}
+000112e4: 00000000 udf #0
+000112e8: 00000000 udf #0 ; {'section': '.text', 'offset': 70376, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 26552}
+000112ec: 00000000 udf #0
+000112f0: 00000000 udf #0 ; {'section': '.text', 'offset': 70384, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 26616}
+000112f4: 00000000 udf #0
+000112f8: 00000000 udf #0 ; {'section': '.text', 'offset': 70392, 'type': 257, 'symbol': '', 'symbol_section': '.rodata', 'symbol_value': 0, 'addend': 4712}
+000112fc: 00000000 udf #0

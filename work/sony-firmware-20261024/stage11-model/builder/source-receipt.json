@@ -1,0 +1,130 @@
+{
+  "created_utc": "2026-10-25T16:30:30.135733+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "source": {
+    "appFw.so": {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    "libmpr.so": {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so",
+      "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c"
+    }
+  },
+  "scope": "one focused typed builder selection pass; fixed local official extraction",
+  "execution": {
+    "bounded_guest_function_emulation": true,
+    "original_guest_instructions_executed": true,
+    "synthetic_model_cells": true,
+    "complete_model_sequence_executed": false,
+    "constructor_executed": false,
+    "stubs": [],
+    "full_setter_or_app_executed": false,
+    "camera_native_execution": false,
+    "USB_or_GUI": false,
+    "auth_mode_driver_upload_WBI_flash": false,
+    "syscall_MMIO_forwarding": false,
+    "persistent_camera_write": false,
+    "original_firmware_modified": false,
+    "patch_or_payload_output": false
+  },
+  "checks": {
+    "builder_cases": 9,
+    "frame_alias_cases": 7,
+    "quality_alias_cases": 8,
+    "all_passed": true,
+    "stage10_receipt_files_revalidated_unchanged": 11
+  },
+  "new_downloads": 0,
+  "third_party_code_executed_this_round": false,
+  "dependencies": [
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/verify_setter_conversion.py",
+      "sha256": "a54b9662dd1737004f67b52b9d05088fc01f85ebb470ac446cc3cb34bfcb22ab"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/audit_main_path.py",
+      "sha256": "5535a0557b8af37d7050c2ca98596b419b4fbf97c3975695adc1eb2fc67f9ce7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/offline_verify.py",
+      "sha256": "8d467c2db8d6fa7186110fdd976dd919918eb140eba40eed0c6cf27d232ebc9d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json",
+      "sha256": "aac17bfb765382190c59758c5dce6224c9661d537d05295e1ddcdf9c2f08194b"
+    }
+  ],
+  "files": [
+    {
+      "path": "research_notes/\u7d22\u5c3c FX3 \u76ee\u6807\u6a21\u5f0f\u4e0e\u6a21\u578b\u95e8\u7981/typed_builder.md",
+      "bytes": 13523,
+      "sha256": "71c3cf624b922ac249fe09db3a9c18100177ff142571e40dcbae0707a1c719b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/accessor-key-wrappers.json",
+      "bytes": 24620,
+      "sha256": "1d09dc6431f12dd514041cfef8e381d6e79cf8243880c98466957f812d10c180"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/audit_typed_builder.py",
+      "bytes": 2911,
+      "sha256": "7c6d5ab4b7503ce4165df551727f6e6f681cb2b191d37e0cea9974f6398508ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/builder-disassembly.txt",
+      "bytes": 132625,
+      "sha256": "96501512496d6debea05ec2755cba6b990a15b0a6caeefe0edcb55e143f9df38"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/builder-static.json",
+      "bytes": 364892,
+      "sha256": "6df5df6a8a24e6bf8316fd45b7441825dbbafcde8b9399e65d0c62288ccb4ec7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/model-leaf-accessors.json",
+      "bytes": 76133,
+      "sha256": "2adf9951ca42310e5322ca300a4bdc6e3796e776df03237fd01d6d5edff81895"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/model-strings.json",
+      "bytes": 951195,
+      "sha256": "4cb0072315ac803e709e9fd2ee48c024d821ee266ed838861c8b56b14892aaac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/quality-dispatch-callers.json",
+      "bytes": 90541,
+      "sha256": "932edb26b8d939831ddd734d2ffc9b704842dfd262970800014d8a55e5742523"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/selection-tables.json",
+      "bytes": 2021,
+      "sha256": "d65aa4fcff535fcd2f1f0252eef9394ea9708da97b7fc1363809cdf7f56fbb15"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/trace_accessor_keys.py",
+      "bytes": 1667,
+      "sha256": "e622832ec96262c525f31b9e2171096a35d8ba2cc6ec885761f8b81a4b2b6e42"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/trace_quality_dispatch.py",
+      "bytes": 899,
+      "sha256": "6701fe70a5186a9a9959350df528da3bca3d784a3959374336e7e3a5a841b99c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/typed-key-evidence.json",
+      "bytes": 52035,
+      "sha256": "e01828be818a6dfbcb2f8b10b706d8653426ed1d3e19cf450c1a71c687efd823"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/typed-selection-results.json",
+      "bytes": 134825,
+      "sha256": "3c0dbc0613df4480c50300edb0222b1dba1785c7eb85cb716dd021e4d43b58b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage11-model/builder/verify_typed_selection.py",
+      "bytes": 7280,
+      "sha256": "12928dc6c8261bd9a9e5351d50844110451fcb865d62fc298e5ff910e1c291db"
+    }
+  ]
+}

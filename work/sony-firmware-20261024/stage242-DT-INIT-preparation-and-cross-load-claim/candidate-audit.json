@@ -1,0 +1,141 @@
+{
+  "status": "OWN_DYNAMIC_ENTRY_PLAN2_IPC4_CLAIM_SCOPED_PASS_NOT_DEVICE_ADMISSION",
+  "tests": 9,
+  "model_cases": 44,
+  "bytes": 262144,
+  "full_file_sha256": "e6fc7398b05939c40150471c216ddef2e0a15c9cf01d6c0d83ccebd6218807ff",
+  "immutable_image_id": "a8c31d7c901092c5ab8495a99e04ad9407419bd2eb91e9c30403c9a1de458706",
+  "dynamic": {
+    "tags": [
+      [
+        4,
+        8192
+      ],
+      [
+        5,
+        8232
+      ],
+      [
+        6,
+        8208
+      ],
+      [
+        10,
+        1
+      ],
+      [
+        11,
+        24
+      ],
+      [
+        12,
+        84092
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "DT_INIT": 84092,
+    "no_DT_NEEDED_or_dynamic_exports_or_runtime_relocations": true,
+    "actual_loader_executed": false
+  },
+  "malformed_dynamic_rejections": [
+    "NEEDED-tag",
+    "other-init",
+    "symbol-table-byte"
+  ],
+  "link_relocations": 215,
+  "uniform_rebase_arithmetic_checks": 1075,
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage230-constructor-child-entry-portability/reference/glibc-2.25-dl-init.c",
+      "sha256": "c2be0cc3bf2b5a5b50cdd03eb889402109ffd87643f6c6a3001d139b5ff7e421",
+      "first_line": 53,
+      "last_line": 74,
+      "range_sha256": "5139c4db767654c7cfd686d0c7f4e729d4cddcecfd7ffd0ba1ed5e298c0e1853",
+      "required_tokens": [
+        "DL_CALL_DT_INIT",
+        "l->l_addr + l->l_info[DT_INIT]->d_un.d_ptr",
+        "argc, argv, env",
+        "DT_INIT_ARRAY"
+      ],
+      "url": "https://github.com/bminor/glibc/blob/glibc-2.25/elf/dl-init.c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/namei.c",
+      "sha256": "b20efdbcba11a32df2d93418be58c6b0c6b1abeb3ea55f114ec47de7c505dfa8",
+      "first_line": 3602,
+      "last_line": 3610,
+      "range_sha256": "e8df0dd7207574ab8e5e33916552f789d3079dec1471c44a3030b582680a776b",
+      "required_tokens": [
+        "LOOKUP_CREATE | LOOKUP_EXCL",
+        "inode_lock_nested",
+        "-EEXIST",
+        "d_is_positive"
+      ],
+      "url": "https://github.com/torvalds/linux/blob/v4.9/fs/namei.c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/namei.c",
+      "sha256": "b20efdbcba11a32df2d93418be58c6b0c6b1abeb3ea55f114ec47de7c505dfa8",
+      "first_line": 3649,
+      "last_line": 3663,
+      "range_sha256": "11c018b3145162e975d1db7c0926ecf72bf0b6ea1f104a2b0c1e4016285ba123",
+      "required_tokens": [
+        "done_path_create",
+        "inode_unlock",
+        "user_path_create",
+        "filename_create"
+      ],
+      "url": "https://github.com/torvalds/linux/blob/v4.9/fs/namei.c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/namei.c",
+      "sha256": "b20efdbcba11a32df2d93418be58c6b0c6b1abeb3ea55f114ec47de7c505dfa8",
+      "first_line": 3785,
+      "last_line": 3811,
+      "range_sha256": "26c30ff6ebb8a50392fcfad906c4a93f1c131b6d989f49ad918aaf8eaf3b7133",
+      "required_tokens": [
+        "SYSCALL_DEFINE3(mkdirat",
+        "user_path_create",
+        "vfs_mkdir",
+        "done_path_create"
+      ],
+      "url": "https://github.com/torvalds/linux/blob/v4.9/fs/namei.c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/unistd.h",
+      "sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "first_line": 121,
+      "last_line": 124,
+      "range_sha256": "a011af525e1437800dff9ac6fe4fee53f5039a893500fecce16489c9058edbf6",
+      "required_tokens": [
+        "__NR_mkdirat 34",
+        "sys_mkdirat"
+      ],
+      "url": "https://github.com/torvalds/linux/blob/v4.9/include/uapi/asm-generic/unistd.h"
+    }
+  ],
+  "test_source_hashes": {
+    "front.c": "e1401d4778bee0d6d820a11f8fd6f8274de2ce23172bc5c365f36d82077da9bd",
+    "bridge.c": "39d83c0529aea244ed994c2324219444bd833655693a2aaf11dfb261b4e01320",
+    "parent.c": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5",
+    "collector.c": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b",
+    "bridge_job.h": "35e828dc77038c1f504196ace8f86a0dbcecc2d62b6c1c6a05d145fa85a96292",
+    "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+    "parent_ipc.inc": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044",
+    "sha_impl.inc": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4",
+    "entry_build.py": "6e7074de428a1517ecb36a07abc73851a8fec28e50a9df13aca965fb6beff345",
+    "model_entry.py": "72364e430127ee0fed8fc177ee5a9f19afd675b1e2570b2f4a7aa2a4db301dba",
+    "test_entry.py": "4c88bcdfd0b1c747308e55a34e7bdd3cabc3203737eba5637386e03853adbcfb"
+  },
+  "actual_Linux_mkdir_namespace_or_glibc_Sony_loader_executed_or_verified": false,
+  "original_im_bytes_read_and_hashed_not_executed": true,
+  "global_claim_proof_conditional_on_shared_writable_tmpfs_same_root_namespace_and_no_external_removal": true,
+  "full_file_digest_binding_is_integrity_not_authenticated_request": true,
+  "no_device_USB_cache_admin_auth_upload_driver_card_or_firmware_operation": true,
+  "full_boot_capture_host_completion_independent_AP_restore_and_MAIN_HEVC_verified": false,
+  "first_flash_released": false,
+  "probe_deployable": false
+}

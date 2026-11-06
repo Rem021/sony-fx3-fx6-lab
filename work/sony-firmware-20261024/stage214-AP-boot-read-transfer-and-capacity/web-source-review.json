@@ -1,0 +1,25 @@
+{
+  "sources": [
+    {
+      "url": "https://github.com/torvalds/linux/blob/v4.9/include/linux/mmc/mmc.h",
+      "live_read_and_EXT_CSD_BOOT_MULT_find": true,
+      "supports": "EXT_CSD_BOOT_MULT226,PART_CONFIG179,SET_BITS1,CLEAR_BITS2 standard identifiers",
+      "does_not_prove": "FX3 runtime register values, current-body driver identity or actual recovery"
+    },
+    {
+      "url": "https://github.com/torvalds/linux/blob/v4.9/drivers/mmc/core/mmc.c",
+      "live_page_read": true,
+      "page_text_boot_size_find_returned_no_match": true,
+      "formula_evidence": "Sony pinned GPL copy reextracted locally shows part_size=ext_csd[EXT_CSD_BOOT_MULT]<<17; did not infer formula from failed webpage find"
+    },
+    {
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+      "valid_prior_source_result_reused": true,
+      "local_pinned_archive_SHA256": "bb2d9cc676fef6aaf2f8f6703c4e041c133da0e7101b5afd33800eaf7c156d0f",
+      "supports": "GPL register and command-mode definitions, not proprietary7.02 module source"
+    }
+  ],
+  "proprietary_path_evidence": "Original current7.02 emmc.ko, not a community statement or source-only model",
+  "claims_limited_to_selected_static_paths": true,
+  "actual_hardware_acceptance_claimed": false
+}

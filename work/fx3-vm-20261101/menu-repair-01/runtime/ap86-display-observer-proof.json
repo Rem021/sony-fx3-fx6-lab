@@ -1,0 +1,132 @@
+{
+  "sources": {
+    "ap": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    "obj": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so",
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae"
+    }
+  },
+  "points": {
+    "ap:28254cc": {
+      "raw": "fd7bb9a9",
+      "asm": "stp x29, x30, [sp, #-0x70]!"
+    },
+    "ap:2825634": {
+      "raw": "f51340f9",
+      "asm": "ldr x21, [sp, #0x20]"
+    },
+    "ap:2823890": {
+      "raw": "fd7bb6a9",
+      "asm": "stp x29, x30, [sp, #-0xa0]!"
+    },
+    "ap:2823bf8": {
+      "raw": "c0035fd6",
+      "asm": "ret "
+    },
+    "ap:27ed854": {
+      "raw": "bf0a0071",
+      "asm": "cmp w21, #2"
+    },
+    "ap:27ed888": {
+      "raw": "fb3dff97",
+      "asm": "bl #0x27bd074"
+    },
+    "ap:27ed88c": {
+      "raw": "e00313aa",
+      "asm": "mov x0, x19"
+    },
+    "ap:16f19e4": {
+      "raw": "ff86fa97",
+      "asm": "bl #0x15935e0"
+    },
+    "ap:2dcadd0": {
+      "raw": "fd7bbca9",
+      "asm": "stp x29, x30, [sp, #-0x40]!"
+    },
+    "ap:2dcae40": {
+      "raw": "20020035",
+      "asm": "cbnz w0, #0x2dcae84"
+    },
+    "ap:2dcae80": {
+      "raw": "c0035fd6",
+      "asm": "ret "
+    },
+    "ap:2bd76fc": {
+      "raw": "e003182a",
+      "asm": "mov w0, w24"
+    },
+    "ap:2bd7750": {
+      "raw": "e00314aa",
+      "asm": "mov x0, x20"
+    },
+    "ap:2bd7758": {
+      "raw": "800240f9",
+      "asm": "ldr x0, [x20]"
+    },
+    "ap:2bd7780": {
+      "raw": "a002008b",
+      "asm": "add x0, x21, x0"
+    },
+    "obj:c9c08": {
+      "raw": "fd7bbea9",
+      "asm": "stp x29, x30, [sp, #-0x20]!"
+    },
+    "obj:c9c48": {
+      "raw": "f35341a9",
+      "asm": "ldp x19, x20, [sp, #0x10]"
+    },
+    "obj:1771f4": {
+      "raw": "fd7bbca9",
+      "asm": "stp x29, x30, [sp, #-0x40]!"
+    },
+    "obj:17723c": {
+      "raw": "1f1c0072",
+      "asm": "tst w0, #0xff"
+    },
+    "obj:1719c4": {
+      "raw": "003440f9",
+      "asm": "ldr x0, [x0, #0x68]"
+    },
+    "obj:16223c": {
+      "raw": "fd7bbea9",
+      "asm": "stp x29, x30, [sp, #-0x20]!"
+    },
+    "obj:16ea5c": {
+      "raw": "afe6fe97",
+      "asm": "bl #0x128518"
+    },
+    "obj:16ea60": {
+      "raw": "e0030034",
+      "asm": "cbz w0, #0x16eadc"
+    }
+  },
+  "audits": {
+    "display": {
+      "sha256": "6068fc05ca9d232bae58cbf9058a6080238af128dc6dc2faf18a704c82fa0230",
+      "shape": "<class 'list'>",
+      "keys": 39
+    },
+    "sys400": {
+      "sha256": "b8f52a227bbb01396cd56ed7e8673132fc99173d733e928d7081b8ea0d0efff3",
+      "shape": "<class 'dict'>",
+      "keys": [
+        "AP",
+        "CP"
+      ]
+    }
+  },
+  "model_getter": {
+    "raw": "e08601d001a880b940c500b000803391007861b8c0035fd6",
+    "asm": [
+      "adrp x0, #0x47ce000",
+      "ldrsw x1, [x0, #0xa8]",
+      "adrp x0, #0x2f99000",
+      "add x0, x0, #0xce0",
+      "ldr w0, [x0, x1, lsl #2]",
+      "ret "
+    ]
+  }
+}

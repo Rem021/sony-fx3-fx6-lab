@@ -1,0 +1,19 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000119be0 <_ZNSt12_Vector_baseIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EED2Ev>:
+  119bf0: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+  119bf4: 910003fd     	mov	x29, sp
+  119bf8: a90153f3     	stp	x19, x20, [sp, #0x10]
+  119bfc: aa0003f3     	mov	x19, x0
+  119c00: f90013f5     	str	x21, [sp, #0x20]
+  119c04: 9100e3b4     	add	x20, x29, #0x38
+  119c08: b9404801     	ldr	w1, [x0, #0x48]
+  119c0c: 35000061     	cbnz	w1, 0x119c18 <_ZNSt12_Vector_baseIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EED2Ev+0x38>
+  119c10: b9406800     	ldr	w0, [x0, #0x68]
+  119c14: 340002c0     	cbz	w0, 0x119c6c <_ZNSt12_Vector_baseIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EED2Ev+0x8c>
+  119c18: b9406a62     	ldr	w2, [x19, #0x68]
+  119c1c: f9400a60     	ldr	x0, [x19, #0x10]
+  119c20: 97fff661     	bl	0x1175a4 <_ZN16XavcsMovieWriter8DataCopyERSt6vectorIN3mpr5Codec14BufferAreaInfoESaIS3_EEPNS1_7DmacLibERKS3_Ph+0x118>

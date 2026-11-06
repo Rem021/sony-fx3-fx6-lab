@@ -1,0 +1,280 @@
+{
+  "status": "STOCK_VERSION3_REJECTED_BY_OLD_COMPONENT_ACCEPTED_BY_CORRECTED_COMPONENT",
+  "created_utc": "2026-11-01T11:55:34.102757+00:00",
+  "builds": {
+    "before": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-I",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/history/stream.before.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/transition_identity.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/unit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/read0-before"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "sha256": "918580ed82ec5352ad0ddff95cf0ec9fa7d4e8ce2bcf569d582798bd1514bdad",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/read0-before:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "candidate": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-I",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/transition_identity.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/unit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/read0-candidate"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "sha256": "ec6103568859afd07cb0a7fd3d1f9d5be26b2cff9b97ed9a4851832f46fb1feb",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/read0-candidate:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    }
+  },
+  "rows": [
+    {
+      "source": "before",
+      "version": 0,
+      "variant": 0,
+      "result": {
+        "version": 0,
+        "variant": 0,
+        "rc": 0,
+        "bytes": 88,
+        "reply_valid": 1,
+        "writes": 1,
+        "body_calls": 4,
+        "body_total": 88,
+        "STOP_calls": 1,
+        "STOP_rc": 0,
+        "opaque_hmac": "79f59ca1cee69cce8695129bb3a482a6cb84f38889865b313db0f6e04c885b99"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "before",
+      "version": 3,
+      "variant": 0,
+      "result": {
+        "version": 3,
+        "variant": 0,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 3,
+      "variant": 0,
+      "result": {
+        "version": 3,
+        "variant": 0,
+        "rc": 0,
+        "bytes": 88,
+        "reply_valid": 1,
+        "writes": 1,
+        "body_calls": 4,
+        "body_total": 88,
+        "STOP_calls": 1,
+        "STOP_rc": 0,
+        "opaque_hmac": "79f59ca1cee69cce8695129bb3a482a6cb84f38889865b313db0f6e04c885b99"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 3,
+      "variant": 1,
+      "result": {
+        "version": 3,
+        "variant": 1,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 3,
+      "variant": 2,
+      "result": {
+        "version": 3,
+        "variant": 2,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 3,
+      "variant": 3,
+      "result": {
+        "version": 3,
+        "variant": 3,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 3,
+      "variant": 4,
+      "result": {
+        "version": 3,
+        "variant": 4,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 3,
+      "variant": 5,
+      "result": {
+        "version": 3,
+        "variant": 5,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 3,
+      "variant": 6,
+      "result": {
+        "version": 3,
+        "variant": 6,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 3,
+      "variant": 7,
+      "result": {
+        "version": 3,
+        "variant": 7,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    },
+    {
+      "source": "candidate",
+      "version": 0,
+      "variant": 0,
+      "result": {
+        "version": 0,
+        "variant": 0,
+        "rc": 7,
+        "bytes": 0,
+        "reply_valid": 0,
+        "writes": 1,
+        "body_calls": 0,
+        "body_total": 0,
+        "STOP_calls": 0,
+        "STOP_rc": -1,
+        "opaque_hmac": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "all_device_and_auth_state_artificial": true
+    }
+  ],
+  "Python_codec_check_pass": true,
+  "actual_request_bytes_unchanged": true,
+  "response_body_limit_still_88": true,
+  "only_response_version_field_changed": true,
+  "native_production_helper_built_or_executed": false,
+  "full_live_controller_integrated": false,
+  "new_live_package_ready": false,
+  "actual_root_journal_modified": false,
+  "new_admin_or_USB_operations": 0,
+  "real_camera_header_or_read0_success_proven": false,
+  "error_exit_STOP_policy_unchanged": true
+}

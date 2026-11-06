@@ -1,0 +1,9 @@
+0038dddc push       {r4, r5, r6, r7, lr}
+0038ddde add        r7, sp, #0xc
+0038dde0 push.w     {r8, sb, sl, fp}
+0038dde4 sub        sp, #0x3c
+0038dde6 mov        r4, r0
+0038dde8 ldr        r1, [r4]
+0038ddea cmp        r1, #4
+0038ddec bhi        #0x38de34
+0038ddee tbb        [pc, r1]

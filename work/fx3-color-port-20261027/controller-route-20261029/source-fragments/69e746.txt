@@ -1,0 +1,27 @@
+0069e746 push       {r4, r5, r7, lr}
+0069e748 add        r7, sp, #8
+0069e74a sub        sp, #8
+0069e74c mov        r5, r3
+0069e74e movs       r3, #0
+0069e750 str        r3, [sp, #4]
+0069e752 ldr        r3, [r7, #0x10]
+0069e754 str        r3, [sp]
+0069e756 add        r3, sp, #4
+0069e758 bl         #0x23db58
+0069e75c mov        r4, r0
+0069e75e cbnz       r4, #0x69e77c
+0069e760 ldr        r0, [r7, #8]
+0069e762 cbz        r5, #0x69e768
+0069e764 ldr        r1, [sp, #4]
+0069e766 str        r1, [r5]
+0069e768 ldr        r5, [r7, #0xc]
+0069e76a cbz        r0, #0x69e772
+0069e76c ldr        r1, [sp, #4]
+0069e76e bl         #0x6c5d16
+0069e772 cbz        r5, #0x69e77c
+0069e774 ldr        r1, [sp, #4]
+0069e776 mov        r0, r5
+0069e778 bl         #0x6c5042
+0069e77c mov        r0, r4
+0069e77e add        sp, #8
+0069e780 pop        {r4, r5, r7, pc}

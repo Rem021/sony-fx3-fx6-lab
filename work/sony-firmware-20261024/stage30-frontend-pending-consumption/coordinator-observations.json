@@ -1,0 +1,35 @@
+{
+  "schema": "fx3-stage30-coordinator-review/1",
+  "created_utc": "2026-10-25T22:13:14.202036+00:00",
+  "status": "PASS_ARTIFACT_SOURCE_BYTE_AND_PENDING_LIFETIME_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent structural/source-byte/hash review, no independent replay or real camera verification.",
+  "prior_manifest_files_verified": {
+    "stage25-mc-image-map": 15,
+    "stage26-mc-open-routing": 11,
+    "stage28-main-frontend-binding": 8,
+    "stage29-main-frontend-open": 11
+  },
+  "raw_instruction_records_checked": 443,
+  "scenarios": 7,
+  "bounded_phases_including_constructed_input_fragments": 18,
+  "real_queue_output_retained_across_phases": true,
+  "transition_to_state2_or8_is_explicit_fixture_not_executed_configuration": true,
+  "frontend_count0_lower_pending1_confirmed_within_guest": true,
+  "state8_flag_difference_is_order_observation_not_bug_claim": true,
+  "SET_REC_FORMAT_receiver_payload_is_untyped_fixture": true,
+  "common_handle_binding_not_live_merge_or_support": true,
+  "new_receiver_anchors_are_static_only": true,
+  "native_output_adapters": false,
+  "guest_writes_only_stack_and_fixture": true,
+  "unverified": [
+    "Actual configuration transition/entry hooks and task hook; completed lower event/functor consumption and full parameter/buffer ownership",
+    "Actual timing state, Open/SET_REC_FORMAT actions/merge/producer/order, resource/VCD and replies",
+    "OSAL registration/source identity/physical pointer transport and real initialized objects",
+    "Healthy same-body backup, safe-point/restore/readback, independent recovery and WBI/cold boot",
+    "Actual MAIN bitstream/container/audio/timebase/sync/long-run/thermal/regression"
+  ],
+  "camera_or_remote_access_attempted": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

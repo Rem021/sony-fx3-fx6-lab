@@ -1,0 +1,75 @@
+00ab9e28 push         {r4, r5, r7, lr}
+00ab9e2a add          r7, sp, #8
+00ab9e2c sub          sp, #4
+00ab9e2e strh.w       r0, [sp]
+00ab9e32 movw         r4, #0x3ff
+00ab9e36 ldrh.w       ip, [sp]
+00ab9e3a strh         r0, [r7, #-0xa]
+00ab9e3e ldrh         r0, [r7, #-0xa]
+00ab9e42 bfc          ip, #0xa, #0x16
+00ab9e46 cmp          ip, r4
+00ab9e48 bne          #0xab9e54
+00ab9e4a mvn          r0, #0x204
+00ab9e4e add.w        r0, r0, #0x100
+00ab9e52 b            #0xab9f10
+00ab9e54 movw         r4, #0x8fdc
+00ab9e58 movt         r4, #0x13f
+00ab9e5c ldr          r4, [r4]
+00ab9e5e add.w        ip, r4, ip, lsl #6
+00ab9e62 ldrb.w       r4, [ip, #0xb]
+00ab9e66 ubfx         r0, r0, #0xa, #5
+00ab9e6a cmp          r0, r4
+00ab9e6c bne          #0xab9e94
+00ab9e6e mov          lr, ip
+00ab9e70 movw         r0, #0xffff
+00ab9e74 ldrh         r4, [lr, #0xc]!
+00ab9e78 subs         r5, r4, #1
+00ab9e7a cmp          r5, #2
+00ab9e7c bhs          #0xab9e9a
+00ab9e7e cmp          r1, #2
+00ab9e80 blo          #0xab9ea8
+00ab9e82 cmp          r1, #4
+00ab9e84 beq          #0xab9ef4
+00ab9e86 movw         r5, #0x1001
+00ab9e8a cmp          r1, r5
+00ab9e8c beq          #0xab9ebc
+00ab9e8e movs         r1, #0
+00ab9e90 subs         r0, #3
+00ab9e92 b            #0xab9f0e
+00ab9e94 movw         r0, #0xfdfb
+00ab9e98 b            #0xab9f10
+00ab9e9a cmp          r4, #3
+00ab9e9c bne          #0xab9f0c
+00ab9e9e movw         r0, #0x1001
+00ab9ea2 cmp          r1, r0
+00ab9ea4 beq          #0xab9ebc
+00ab9ea6 b            #0xab9efc
+00ab9ea8 mov          r1, ip
+00ab9eaa ldrb         r4, [r1, #9]!
+00ab9eae adds         r4, #1
+00ab9eb0 cmp          r4, #0xff
+00ab9eb2 bhi          #0xab9f0c
+00ab9eb4 movs         r0, #2
+00ab9eb6 strh.w       r0, [lr]
+00ab9eba strb         r4, [r1]
+00ab9ebc ldrh.w       lr, [ip, #0xe]
+00ab9ec0 cmp.w        lr, #0
+00ab9ec4 strh.w       lr, [r3]
+00ab9ec8 beq          #0xab9ef0
+00ab9eca add.w        ip, ip, #0x10
+00ab9ece movs         r3, #0
+00ab9ed0 ldr.w        r5, [ip, r3, lsl #2]
+00ab9ed4 ldrd         r4, r1, [r5, #8]
+00ab9ed8 ldr          r0, [r5, #0x10]
+00ab9eda adds         r0, r0, r4
+00ab9edc str          r0, [r2]
+00ab9ede adc          r0, r1, #0
+00ab9ee2 adds         r3, #1
+00ab9ee4 str          r0, [r2, #4]
+00ab9ee6 ldr          r0, [r5, #0x14]
+00ab9ee8 str          r0, [r2, #8]
+00ab9eea adds         r2, #0x10
+00ab9eec cmp          r3, lr
+00ab9eee blo          #0xab9ed0
+00ab9ef0 movs         r0, #0
+00ab9ef2 b            #0xab9f10

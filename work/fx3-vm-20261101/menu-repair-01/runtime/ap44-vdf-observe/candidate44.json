@@ -1,0 +1,50 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap44-vdf-observe/guest.dtb",
+    "sha256": "e6246c2aaed4be2394ddb0cc374096af04406066d0ba2e8249e87470bc6226ea"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap44-vdf-observe/guest.cpio",
+    "sha256": "e49b128b25bd060b16bd84cdda63748c521f3f0fed42218f1a56f4b3870c2680"
+  },
+  "required_markers": [
+    "FX3_CPUSET_READY",
+    "FX3_BACKUP_INSMOD_RC=0",
+    "FX3_ULOGIO_INSMOD_RC=0",
+    "FX3_AP_NATURAL_BOOTIN_BEGIN",
+    "FX3_UTIMER_RC=0",
+    "FX3_STREAM_RC=0",
+    "FX3_STREAM2_RC=0",
+    "FX3_DMM_RC=0",
+    "FX3_GRM_MA_RC=0",
+    "FX3_GPE_BOUND count=5",
+    "FX3_POWER_SEED_RC=0",
+    "FX3_UPM_RC=0",
+    "FX3_UDATE_RC=0",
+    "FX3_DATE_CLOCK_RC=0",
+    "FX3_HDMI_REG_COMMIT",
+    "FX3_HDMI_REG_NATIVE_FREE",
+    "FX3_HDMI_REG_COMMIT",
+    "FX3_HDMI_REG_NATIVE_FREE",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_CP_VERSION_UNAVAILABLE",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_KIKILOG_RC=0",
+    "FX3_CAPID_BIND",
+    "FX3_CAPID_COMMIT",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_BT_EMPTY_RECORDS_BEGIN"
+  ],
+  "scope": "Original FX3 natural boot with original UIPC/Backup/timer/DMM/UPM/date/GPIO5/nativeBusPower/Kikilog. Explicit virtual HDMI registration, empty Bluetooth records, CP control unsupported, GPE request-capture diagnostics. CAPID storage-only profile with exclusive41d800000/64KiB reservation, native messages/leases and rollback. No originalCP/capture/realdevices or UI acceptance. CAPIDv2 PID guard covers live reply release; CPcontrol unsupportedv3 only exact8B from original libupdaterufp+1984. Explicit SA source-ranges-v1: FX3 immutable range records, bounded80byte translation; originalCP b850 consumer binding not proved. Passive VDF request bytes/caller observer, bounded16 events/128bytes, all original requests delegated; no VDF replies added.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true
+}

@@ -1,0 +1,272 @@
+_ZN7Updater17SDDecryptorModule13execWriteFirmEv
+000095b8 sub       sp, sp, #0xe0
+000095bc mov       w3, #0x40
+000095c0 mov       w1, #0
+000095c4 stp       x29, x30, [sp, #0x10]
+000095c8 add       x29, sp, #0x10
+000095cc stp       x19, x20, [sp, #0x20]
+000095d0 adrp      x20, #0xb000
+000095d4 mov       x19, x0
+000095d8 stp       x21, x22, [sp, #0x30]
+000095dc adrp      x0, #0xb000
+000095e0 add       x22, x20, #0x267
+000095e4 mov       x2, x22
+000095e8 add       x21, x29, #0xd0
+000095ec add       x0, x0, #0xa4
+000095f0 stp       x23, x24, [sp, #0x40]
+000095f4 stp       x25, x26, [sp, #0x50]
+000095f8 str       x27, [sp, #0x60]
+000095fc str       xzr, [x21, #-0x50]!
+00009600 bl        #0x7910 ; printf
+00009604 ldr       x0, [x19]
+00009608 ldr       x1, [x0, #0xa0]
+0000960c mov       x0, x19
+00009610 blr       x1
+00009614 adrp      x0, #0xb000
+00009618 mov       x2, x22
+0000961c add       x0, x0, #0xf4
+00009620 mov       w3, #0x42
+00009624 mov       w1, #0
+00009628 bl        #0x7910 ; printf
+0000962c ldr       x0, [x19, #0x48]
+00009630 ldr       x2, [x19, #0x540]
+00009634 ldr       x1, [x0]
+00009638 ldr       x3, [x1, #0x48]
+0000963c mov       x1, x21
+00009640 blr       x3
+00009644 mov       x21, x0
+00009648 mov       x4, x0
+0000964c adrp      x0, #0xb000
+00009650 mov       x2, x22
+00009654 add       x0, x0, #0x216
+00009658 mov       w1, #0
+0000965c mov       w3, #0x45
+00009660 add       x22, x29, #0x88
+00009664 bl        #0x7910 ; printf
+00009668 mov       x0, x22
+0000966c bl        #0x7590 ; _ZN7Updater21SignatureVerificationC1Ev
+00009670 sub       w1, w21, #0x100
+00009674 ldr       x0, [x29, #0x80]
+00009678 str       w1, [x29, #0x98]
+0000967c sub       x1, x21, #0x100
+00009680 str       x0, [x29, #0x90]
+00009684 add       x0, x0, x1
+00009688 str       x0, [x29, #0xa0]
+0000968c mov       w0, #0x100
+00009690 adrp      x2, #0xb000
+00009694 str       w0, [x29, #0xa8]
+00009698 add       x2, x2, #0x162
+0000969c ldp       x0, x1, [x29, #0x90]
+000096a0 stp       x0, x1, [x29, #0x60]
+000096a4 ldp       x0, x1, [x29, #0xa0]
+000096a8 stp       x0, x1, [x29, #0x70]
+000096ac add       x1, x29, #0x60
+000096b0 mov       x0, x22
+000096b4 bl        #0x7160 ; _ZN7Updater21SignatureVerification15VerifySignatureENS_13verify_info_tEPKc
+000096b8 mov       w23, w0
+000096bc cbz       w0, #0x972c
+000096c0 adrp      x0, #0xb000
+000096c4 mov       w1, #2
+000096c8 add       x2, x20, #0x267
+000096cc add       x0, x0, #0x17b
+000096d0 mov       w3, #0x50
+000096d4 movk      w1, #3, lsl #16
+000096d8 bl        #0x7910 ; printf
+000096dc mov       x0, #0x10
+000096e0 bl        #0x71a0 ; __cxa_allocate_exception
+000096e4 adrp      x1, #0x1d000
+000096e8 adrp      x2, #0x1d000
+000096ec ldr       x1, [x1, #0xf50]
+000096f0 ldr       x2, [x2, #0xf70]
+000096f4 add       x1, x1, #0x10
+000096f8 str       x1, [x0]
+000096fc mov       w1, #2
+00009700 movk      w1, #3, lsl #16
+00009704 str       w1, [x0, #8]
+00009708 adrp      x1, #0x1d000
+0000970c strb      wzr, [x0, #0xc]
+00009710 ldr       x1, [x1, #0xfc8]
+00009714 bl        #0x77b0 ; __cxa_throw
+00009718 mov       x19, x0
+0000971c mov       x0, x22
+00009720 bl        #0x7320 ; _ZN7Updater21SignatureVerificationD1Ev
+00009724 mov       x0, x19
+00009728 bl        #0x7830 ; _Unwind_Resume
+0000972c mov       x0, x22
+00009730 add       x26, x19, #0x548
+00009734 adrp      x25, #0xb000
+00009738 add       x24, x29, #0x90
+0000973c add       x25, x25, #0x1ad
+00009740 mov       x22, #0
+00009744 bl        #0x7320 ; _ZN7Updater21SignatureVerificationD1Ev
+00009748 mov       x27, #0x40
+0000974c ldr       x0, [x29, #0x80]
+00009750 sub       x1, x21, #0x110
+00009754 str       x1, [x19, #0x538]
+00009758 add       x0, x0, x1
+0000975c ldp       x0, x1, [x0]
+00009760 stp       xzr, xzr, [x29, #0x90]
+00009764 stp       x0, x1, [x26]
+00009768 stp       xzr, xzr, [x29, #0xa0]
+0000976c stp       xzr, xzr, [x29, #0xb0]
+00009770 stp       xzr, xzr, [x29, #0xc0]
+00009774 add       x1, x19, x22
+00009778 sxtw      x0, w23
+0000977c mov       x2, x25
+00009780 add       x22, x22, #1
+00009784 ldrb      w3, [x1, #0x548]
+00009788 sub       x1, x27, x0
+0000978c add       x0, x24, x0
+00009790 bl        #0x7520 ; snprintf
+00009794 add       w23, w23, w0
+00009798 cmp       x22, #0x10
+0000979c b.ne      #0x9774
+000097a0 add       x23, x20, #0x267
+000097a4 adrp      x0, #0xb000
+000097a8 mov       x4, x24
+000097ac mov       x2, x23
+000097b0 add       x0, x0, #0x1b3
+000097b4 mov       w3, #0x5c
+000097b8 mov       w1, #0
+000097bc bl        #0x7910 ; printf
+000097c0 adrp      x0, #0xa000
+000097c4 mov       x2, x23
+000097c8 add       x0, x0, #0xfdf
+000097cc mov       w3, #0x5f
+000097d0 mov       w1, #0
+000097d4 bl        #0x7910 ; printf
+000097d8 str       x22, [sp]
+000097dc mov       x7, x26
+000097e0 add       x5, x19, #0x558
+000097e4 add       x22, x19, #0x10
+000097e8 mov       x6, #0
+000097ec mov       x4, #0
+000097f0 mov       x3, #8
+000097f4 mov       x2, #0
+000097f8 mov       w1, #3
+000097fc mov       w0, #2
+00009800 bl        #0x9278
+00009804 mov       x0, x22
+00009808 bl        #0x7770 ; _ZN7Updater10BaseModule12ThreadStatus9IsRunningEv
+0000980c tst       w0, #0xff
+00009810 b.eq      #0x9974
+00009814 mov       x0, x19
+00009818 bl        #0x7530 ; _ZN7Updater15DecryptorModule10updateDataEv
+0000981c ldr       x0, [x19, #0x4b0]
+00009820 cmp       x0, #0x3ff
+00009824 b.hi      #0x994c
+00009828 ldr       x0, [x19, #0x48]
+0000982c ldr       x1, [x0]
+00009830 ldr       x1, [x1, #0x30]
+00009834 blr       x1
+00009838 tst       w0, #0xff
+0000983c b.eq      #0x994c
+00009840 mov       w21, #2
+00009844 ldr       x4, [x19, #0x4b0]
+00009848 movk      w21, #3, lsl #16
+0000984c adrp      x0, #0xb000
+00009850 add       x2, x20, #0x267
+00009854 mov       w1, w21
+00009858 add       x0, x0, #0x241
+0000985c mov       w3, #0x67
+00009860 bl        #0x7910 ; printf
+00009864 mov       x0, #0x10
+00009868 bl        #0x71a0 ; __cxa_allocate_exception
+0000986c mov       x2, x0
+00009870 adrp      x1, #0x1d000
+00009874 str       w21, [x0, #8]
+00009878 ldr       x1, [x1, #0xf50]
+0000987c add       x1, x1, #0x10
+00009880 str       x1, [x0]
+00009884 strb      wzr, [x2, #0xc]
+00009888 adrp      x1, #0x1d000
+0000988c adrp      x2, #0x1d000
+00009890 ldr       x1, [x1, #0xfc8]
+00009894 ldr       x2, [x2, #0xf70]
+00009898 bl        #0x77b0 ; __cxa_throw
+0000989c ldr       x0, [x19]
+000098a0 ldr       x1, [x0, #0x90]
+000098a4 mov       x0, x19
+000098a8 blr       x1
+000098ac mov       x0, x19
+000098b0 bl        #0x7050 ; _ZN7Updater15DecryptorModule9verifySumEv
+000098b4 mov       x0, x19
+000098b8 bl        #0x74c0 ; _ZN7Updater15DecryptorModule12getHdEndFlagEv
+000098bc uxtb      w23, w0
+000098c0 ldr       x0, [x19, #0x48]
+000098c4 ldr       x1, [x0]
+000098c8 ldr       x1, [x1, #0x30]
+000098cc blr       x1
+000098d0 uxtb      w0, w0
+000098d4 eor       w0, w0, #1
+000098d8 orr       w23, w23, w0
+000098dc cbnz      w23, #0x99dc
+000098e0 mov       w19, #2
+000098e4 adrp      x0, #0xa000
+000098e8 movk      w19, #3, lsl #16
+000098ec add       x2, x20, #0x267
+000098f0 mov       w1, w19
+000098f4 add       x0, x0, #0xf79
+000098f8 mov       w3, #0x75
+000098fc bl        #0x7910 ; printf
+00009900 mov       x0, #0x10
+00009904 bl        #0x71a0 ; __cxa_allocate_exception
+00009908 mov       x2, x0
+0000990c adrp      x1, #0x1d000
+00009910 str       w19, [x0, #8]
+00009914 ldr       x1, [x1, #0xf50]
+00009918 add       x1, x1, #0x10
+0000991c str       x1, [x0]
+00009920 b         #0x9884
+00009924 mov       x0, x19
+00009928 bl        #0x7180 ; _ZN7Updater15DecryptorModule7setDataEv
+0000992c ldr       x0, [x19]
+00009930 ldr       x1, [x0, #0x98]
+00009934 mov       x0, x19
+00009938 blr       x1
+0000993c tst       w0, #0xff
+00009940 b.eq      #0x9804
+00009944 str       x21, [x19, #0x60]
+00009948 b         #0x9974
+0000994c mov       x0, x22
+00009950 bl        #0x7770 ; _ZN7Updater10BaseModule12ThreadStatus9IsRunningEv
+00009954 tst       w0, #0xff
+00009958 b.ne      #0x989c
+0000995c mov       w3, #0x6c
+00009960 adrp      x0, #0xb000
+00009964 add       x2, x20, #0x267
+00009968 add       x0, x0, #0x5c
+0000996c mov       w1, #0
+00009970 bl        #0x7910 ; printf
+00009974 ldr       x2, [x19, #0x558]
+00009978 mov       x0, #1
+0000997c mov       x7, x24
+00009980 mov       x6, #0
+00009984 str       x0, [sp]
+00009988 mov       x5, #0
+0000998c mov       x4, #0
+00009990 mov       x3, #0
+00009994 mov       w1, #2
+00009998 mov       w0, #4
+0000999c strb      wzr, [x29, #0x90]
+000099a0 bl        #0x9278
+000099a4 adrp      x0, #0xb000
+000099a8 add       x2, x20, #0x267
+000099ac add       x0, x0, #0x1d
+000099b0 mov       w3, #0x85
+000099b4 mov       w1, #0
+000099b8 bl        #0x7910 ; printf
+000099bc mov       sp, x29
+000099c0 ldr       x27, [sp, #0x50]
+000099c4 ldp       x19, x20, [sp, #0x10]
+000099c8 ldp       x21, x22, [sp, #0x20]
+000099cc ldp       x23, x24, [sp, #0x30]
+000099d0 ldp       x25, x26, [sp, #0x40]
+000099d4 ldp       x29, x30, [sp], #0xd0
+000099d8 ret       
+000099dc mov       x0, x22
+000099e0 bl        #0x7770 ; _ZN7Updater10BaseModule12ThreadStatus9IsRunningEv
+000099e4 tst       w0, #0xff
+000099e8 b.ne      #0x9924
+000099ec mov       w3, #0x79
+000099f0 b         #0x9960

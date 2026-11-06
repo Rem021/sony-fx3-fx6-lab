@@ -1,0 +1,120 @@
+00003fcc stp        x29, x30, [sp, #-0x50]!
+00003fd0 mov        x29, sp
+00003fd4 stp        x19, x20, [sp, #0x10]
+00003fd8 mov        x19, x0
+00003fdc mov        x0, #0x18
+00003fe0 str        x23, [sp, #0x30]
+00003fe4 stp        x21, x22, [sp, #0x20]
+00003fe8 mov        w23, w1
+00003fec bl         #0x3700 ; operator new
+00003ff0 mov        x22, x0
+00003ff4 bl         #0x3750 ; Updater::MsCryptBufferManager::MsCryptBufferManager
+00003ff8 mov        x0, x22
+00003ffc str        x22, [x19, #0x30]
+00004000 bl         #0x37b0 ; Updater::CommonBufferManager::Initialize
+00004004 mov        x0, #0x10
+00004008 bl         #0x3700 ; operator new
+0000400c mov        x22, x0
+00004010 bl         #0x3590 ; Updater::FileInputFirmware::FileInputFirmware
+00004014 mov        x0, #0x158
+00004018 str        x22, [x19, #0x20]
+0000401c bl         #0x3700 ; operator new
+00004020 ldr        w1, [x19, #0x38]
+00004024 mov        w2, #1
+00004028 mov        x22, x0
+0000402c bl         #0x35a0 ; Updater::FileInputBodyLoaderModule::FileInputBodyLoaderModule
+00004030 mov        x0, #0x4b8
+00004034 str        x22, [x19, #0x28]
+00004038 bl         #0x3700 ; operator new
+0000403c mov        x22, x0
+00004040 bl         #0x3640 ; Updater::MsDecryptorModule::MsDecryptorModule
+00004044 ldr        x20, [x19, #0x28]
+00004048 ldr        x0, [x20]
+0000404c str        x22, [x19, #0x40]
+00004050 ldr        x22, [x0, #0x10]
+00004054 ldr        x0, [x19, #0x30]
+00004058 ldr        x1, [x0]
+0000405c ldr        x1, [x1, #0x20]
+00004060 blr        x1
+00004064 add        x21, x19, #0x10
+00004068 mov        x1, x0
+0000406c mov        x3, x21
+00004070 mov        x0, x20
+00004074 mov        x2, #0
+00004078 blr        x22
+0000407c ldr        x20, [x19, #0x40]
+00004080 ldr        x0, [x20]
+00004084 ldr        x22, [x0, #0x10]
+00004088 ldr        x0, [x19, #0x30]
+0000408c ldr        x1, [x0]
+00004090 ldr        x1, [x1, #0x20]
+00004094 blr        x1
+00004098 ldr        x2, [x19, #0x28]
+0000409c mov        x1, x0
+000040a0 mov        x3, x21
+000040a4 mov        x0, x20
+000040a8 blr        x22
+000040ac ldr        x0, [x19, #0x20]
+000040b0 ldr        x1, [x0]
+000040b4 ldr        x2, [x1, #0x10]
+000040b8 ldr        x1, [x19, #0x40]
+000040bc blr        x2
+000040c0 mov        w0, #0
+000040c4 str        w23, [x19, #0x48]
+000040c8 ldp        x19, x20, [sp, #0x10]
+000040cc ldp        x21, x22, [sp, #0x20]
+000040d0 ldr        x23, [sp, #0x30]
+000040d4 ldp        x29, x30, [sp], #0x50
+000040d8 ret        
+000040dc mov        x20, x0
+000040e0 mov        x21, x1
+000040e4 mov        x1, #0x18
+000040e8 mov        x0, x22
+000040ec bl         #0x3710 ; operator delete
+000040f0 mov        x0, x20
+000040f4 cmp        x21, #1
+000040f8 add        x19, x19, #8
+000040fc b.ne       #0x4158
+00004100 bl         #0x35f0 ; __cxa_begin_catch
+00004104 mov        x1, x0
+00004108 mov        x0, x19
+0000410c bl         #0x3810 ; Updater::FileInputUpdaterManager::blinkLED
+00004110 b          #0x414c
+00004114 mov        x21, x1
+00004118 mov        x20, x0
+0000411c mov        x1, #0x10
+00004120 b          #0x40e8
+00004124 mov        x21, x1
+00004128 mov        x20, x0
+0000412c mov        x1, #0x158
+00004130 b          #0x40e8
+00004134 mov        x21, x1
+00004138 mov        x20, x0
+0000413c mov        x1, #0x4b8
+00004140 b          #0x40e8
+00004144 mov        x21, x1
+00004148 b          #0x40f4
+0000414c bl         #0x37f0 ; __cxa_end_catch
+00004150 mov        w0, #4
+00004154 b          #0x40c8
+00004158 bl         #0x35f0 ; __cxa_begin_catch
+0000415c adrp       x0, #0x15000
+00004160 add        x1, x29, #0x40
+00004164 ldr        x0, [x0, #0xf80]
+00004168 add        x0, x0, #0x10
+0000416c str        x0, [x29, #0x40]
+00004170 mov        w0, #0x25
+00004174 movk       w0, #3, lsl #16
+00004178 str        w0, [x29, #0x48]
+0000417c mov        x0, x19
+00004180 strb       wzr, [x29, #0x4c]
+00004184 bl         #0x3810 ; Updater::FileInputUpdaterManager::blinkLED
+00004188 bl         #0x37f0 ; __cxa_end_catch
+0000418c b          #0x4150
+00004190 mov        x19, x0
+00004194 bl         #0x37f0 ; __cxa_end_catch
+00004198 mov        x0, x19
+0000419c bl         #0x3850 ; _Unwind_Resume
+000041a0 mov        x19, x0
+000041a4 bl         #0x37f0 ; __cxa_end_catch
+000041a8 b          #0x4198

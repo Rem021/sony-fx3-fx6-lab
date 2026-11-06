@@ -1,0 +1,33 @@
+{
+  "created_utc": "2026-10-28T08:24:46.900025+00:00",
+  "ABI": 2,
+  "state": "FIXTURE_SUPERVISOR_VERIFIED_NATIVE_IOKIT_UNRELEASED",
+  "native_candidate": {
+    "path": "artifacts/owner-iokit.dylib",
+    "sha256": "586c845ec1d6672018fb5b632e743b1cb56ed8b585d4fcd8d7c98b733de7c9b1",
+    "compiled_not_loaded": true
+  },
+  "verified": {
+    "C_core_checks": 35,
+    "isolated_checks": 14,
+    "current_fixture_jobs": 9,
+    "all_recorded_fixture_workers_terminal": 15,
+    "cooperative_stop_not_native_cancellation": true,
+    "clock_domain": "CLOCK_MONOTONIC",
+    "current_Popen_or_ps_incarnation_required": true
+  },
+  "missing_before_physical_trial": [
+    "live IOKit worker binding and administrator launch",
+    "one physical grant keyed to a fixed build/target and persistent single-use lease",
+    "independent before/after USB driver/media observations",
+    "all-volume unmount/automount race review",
+    "explicit new device/driver authorization and administrator verification"
+  ],
+  "forbidden": [
+    "Sony vendor authentication or module/file/firmware commands",
+    "automatic retry, reset, kill or reinterpretation of process death as recovery"
+  ],
+  "Mac_owner_trial_released": false,
+  "authorization_changed": false,
+  "new_device_operations": 0
+}

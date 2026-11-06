@@ -1,0 +1,42 @@
+{
+  "schema": "fx3-single-owner-trial-approval-plan/4",
+  "grant_id": "fx3-702-msc-owner-20261028-04",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "bundle_sha256": "0bfe5210a392dd0b57752e8e5d67e23f2597a34f24e7609b8bad37b80dd0ca72",
+  "native_sha256": "661e679e725a6b5cc9431c63b747fb1d15412b05856663461bb856c232b00651",
+  "authorized": false,
+  "released": false,
+  "purpose": "Pinpoint exact interface-claim API returning NoResources; does not promise a working interface or firmware modification.",
+  "native_operation_delta": "Only bounded result-memory events101-109; same underlying IOKit calls, arguments, order and no retries. Events remain in the existing SHA-checked result.",
+  "host_paths": {
+    "user_job": "/private/tmp/fx3-702-msc-owner-20261028-04",
+    "user_source": "/private/tmp/fx3-702-msc-owner-20261028-04/source-helper",
+    "root_job": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-04",
+    "root_helper": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-04/helper"
+  },
+  "preconditions": [
+    "Manual Finder ejection of all FX3 volumes; camera powered/USB connected/MSC",
+    "Unique current cached identity and port, no mounted target media",
+    "Exact fixed build verified; no prior/live worker;04 never consumed",
+    "Explicit approval of this new single04 attempt; user completes native administrator validation if requested"
+  ],
+  "scope": "One native USB ownership/return diagnostic; may temporarily interrupt storage; creates private internal source/frame and root-private program/one-shot records. No broader permissions or driver install.",
+  "forbidden": [
+    "Reuse consumed01/02/03",
+    "Sony authentication/service commands",
+    "Card or camera file access",
+    "Module/WBI/settings/firmware writes",
+    "Configuration/alternate-setting changes, USB reset, force kill, auto-unmount or retry"
+  ],
+  "postconditions": "Verify actual terminal helper and consistent receipt, then compare same-body/native/cache tags and complete baseline driver classes. If immediate cached association incomplete, a later cached-only observation may document convergence without overwriting original UNKNOWN; no new active device call.",
+  "failure_policy": "Any submitted attempt consumes04. Blocked call stays UNKNOWN with same worker; no kill/reset/retry.",
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "recovery_claim": false
+}

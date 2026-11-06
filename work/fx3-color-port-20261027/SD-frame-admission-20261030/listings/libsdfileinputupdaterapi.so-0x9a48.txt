@@ -1,0 +1,79 @@
+_ZN7Updater13BufferManager10InitializeEv
+00009a48 stp       x29, x30, [sp, #-0x40]!
+00009a4c mov       x29, sp
+00009a50 stp       x21, x22, [sp, #0x20]
+00009a54 mov       x22, x0
+00009a58 mov       w0, #0x1e
+00009a5c stp       x19, x20, [sp, #0x10]
+00009a60 stp       x23, x24, [sp, #0x30]
+00009a64 bl        #0x7790 ; sysconf
+00009a68 neg       x20, x0
+00009a6c and       w21, w20, #0x40000000
+00009a70 mov       x5, #0
+00009a74 mov       w4, #-1
+00009a78 mov       w3, #0x22
+00009a7c mov       w1, w21
+00009a80 mov       x23, x0
+00009a84 mov       w2, #3
+00009a88 mov       x0, #0
+00009a8c mov       x20, x21
+00009a90 bl        #0x7460 ; mmap
+00009a94 stp       x21, x0, [x22, #8]
+00009a98 mov       w2, w21
+00009a9c mov       w1, #0
+00009aa0 mov       x19, x0
+00009aa4 adrp      x21, #0x1d000
+00009aa8 bl        #0x7230 ; memset
+00009aac mov       x0, #0x30
+00009ab0 bl        #0x7480 ; _Znwm
+00009ab4 stp       xzr, x19, [x0, #0x10]
+00009ab8 ldr       x1, [x21, #0xf80]
+00009abc add       x19, x19, x23
+00009ac0 str       xzr, [x0, #0x28]
+00009ac4 add       x1, x1, #0x10
+00009ac8 str       x0, [x22, #0x20]
+00009acc stp       x1, xzr, [x0]
+00009ad0 mov       x1, #0x200
+00009ad4 str       x1, [x0, #0x20]
+00009ad8 mov       x0, #0x68
+00009adc bl        #0x7480 ; _Znwm
+00009ae0 mov       x23, x0
+00009ae4 bl        #0x7540 ; _ZN7Updater15FreeBufferQueueC1Ev
+00009ae8 ldr       x21, [x21, #0xf80]
+00009aec mov       x24, #0x80000
+00009af0 str       x23, [x22, #0x28]
+00009af4 add       x23, x19, #0x180, lsl #12
+00009af8 add       x21, x21, #0x10
+00009afc mov       x0, #0x30
+00009b00 bl        #0x7480 ; _Znwm
+00009b04 mov       x1, x0
+00009b08 ldr       x0, [x22, #0x28]
+00009b0c ldr       x2, [x0]
+00009b10 ldr       x2, [x2, #0x18]
+00009b14 stp       xzr, x19, [x1, #0x10]
+00009b18 add       x19, x19, #0x80, lsl #12
+00009b1c stp       x21, xzr, [x1]
+00009b20 stp       x24, x0, [x1, #0x20]
+00009b24 blr       x2
+00009b28 cmp       x19, x23
+00009b2c b.ne      #0x9afc
+00009b30 ldr       x0, [x22, #0x10]
+00009b34 sub       x0, x19, x0
+00009b38 sub       x20, x20, x0
+00009b3c mov       x0, #0x30
+00009b40 bl        #0x7480 ; _Znwm
+00009b44 stp       x21, xzr, [x0]
+00009b48 stp       xzr, x19, [x0, #0x10]
+00009b4c stp       x20, xzr, [x0, #0x20]
+00009b50 str       x0, [x22, #0x18]
+00009b54 ldp       x19, x20, [sp, #0x10]
+00009b58 ldp       x21, x22, [sp, #0x20]
+00009b5c ldp       x23, x24, [sp, #0x30]
+00009b60 ldp       x29, x30, [sp], #0x40
+00009b64 ret       
+00009b68 mov       x19, x0
+00009b6c mov       x0, x23
+00009b70 mov       x1, #0x68
+00009b74 bl        #0x74b0 ; _ZdlPvm
+00009b78 mov       x0, x19
+00009b7c bl        #0x7830 ; _Unwind_Resume

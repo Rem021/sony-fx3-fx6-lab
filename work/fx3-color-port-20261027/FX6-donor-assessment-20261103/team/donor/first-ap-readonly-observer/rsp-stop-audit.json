@@ -1,0 +1,50 @@
+{
+  "status": "HOST_ONLY_GDB_STOP_REPLY_GATE_IDENTIFIED_RUNTIME_HIT_UNPROVEN",
+  "inputs_sha256": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-c714785a/serial.log": "564eb0c28480197ca28d0b0031d1dbe6b93a05a855f8a9093d60ba62a69959c9",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-c714785a/receipt.json": "2149e6305235b35b50253197ebb99d815ddaa508681430cbad455fb52f477085",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-c714785a/readonly-observation.json": "0ad41b3b374060c59918ad9db5d534297096b9491a0949ff7c276d04afc261b3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-c714785a/observer-run_once.py": "928306a009abaaf596cd4f90fa515e66f991a8b41620ab1906ba8966554068e4",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-c714785a/observer-readonly_probe.py": "fec9ce951a078522b73766dbc7e0390563a5d1a581d9caa451b7c92de87b2a0c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-c714785a/observer-two_phase_identity.py": "d164c95a14e0d906083e6bbbd05facb4827cc1d4a59dbfc784830ebc2cd6de68",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/gdbstub/system.c": "196af474a5aacefab3394162b10537efcf9dbd55e2ec2fa291a0cbd71877352f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/gdbstub/gdbstub.c": "a03d5b7aa6a2188f4eebda464a6e6d7914dacfb0898136323c5c857c829cba6a"
+  },
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-c714785a",
+  "run_stop": "observation_budget_end",
+  "elapsed_seconds": 121.43290091701783,
+  "z1_inserted_address": 547998459696,
+  "z1_removed_reply": "OK",
+  "rsp_hit_records": 0,
+  "qmp_debug_state_before_cleanup": "not_recorded",
+  "serial_request_byte_offset": 1876269,
+  "serial_assert_byte_offset": 1876405,
+  "cap_current_CPU_ELF_PHD_code": "not_read",
+  "cap_model_initialized": "not_read",
+  "cap_owner": "not_read",
+  "AP_w0": "not_read",
+  "source_gate": {
+    "gdbstub_c_approx_lines": "997 run_cmd_parser copies allow_stop_reply; 2080/2091 c/C, 1476 vCont permit stop reply; 2336 gdb_read_byte initially clears it",
+    "system_c_approx_lines": "144 returns without packet if flag false; 211 emits T...thread only when allowed",
+    "frozen_runner": "Probe.arm and between hits use QMP cont; no GDB continue command"
+  },
+  "inference": "A T packet cannot be expected after QMP-only cont with allow_stop_reply false; installed Z1 and serial stall are not a recorded breakpoint hit.",
+  "cleanup": {
+    "api16_restored": true,
+    "original_api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+    "qemu_exit": 0,
+    "qemu_reaped": true,
+    "inputs_unchanged": true,
+    "locks": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "free": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "free": true
+      }
+    ]
+  },
+  "next_host_only_fix": "Use a bounded GDB resume packet after Z1 to set allow_stop_reply, with explicit ACK/async T05 handling and QMP debug cross-check; no guest writes. Requires separate review and VM authorization."
+}

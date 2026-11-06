@@ -1,0 +1,104 @@
+{
+  "created_utc": "2026-11-01T10:38:15.171229+00:00",
+  "files": [
+    {
+      "path": "COPYING-QEMU",
+      "bytes": 17880,
+      "sha256": "dd3ce02338c3a48abb6ba59b48809f7108a8bd242cb0cc8be90daafa30707c28"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4694,
+      "sha256": "d5c27c8e6de0a103928ad8d089936f9e4b12b879b3ce37c13968a2e9d6bbb1dc"
+    },
+    {
+      "path": "bin/qemu-system-aarch64",
+      "bytes": 35732432,
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "lib/libglib-2.0.0.dylib",
+      "bytes": 1354928,
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "lib/libintl.8.dylib",
+      "bytes": 210848,
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "lib/libpcre2-8.0.dylib",
+      "bytes": 570784,
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 4047,
+      "sha256": "284c7e6c1c1aa65fa83439c4a02598eff1074fb17a5a697a6bfecf72646b6165"
+    },
+    {
+      "path": "metadata/build-provenance.json",
+      "bytes": 3735,
+      "sha256": "2714f6b0ba29bef4aa0a4517c50e4f01ea76f3b5c9018ff51beeea874182dbdb"
+    },
+    {
+      "path": "metadata/final-runtime-validation.json",
+      "bytes": 3747,
+      "sha256": "f80f337b41db1a2b20cb27255d048af75d3e2c4098905f8cad916fb031a527b9"
+    },
+    {
+      "path": "metadata/rpath-removal.json",
+      "bytes": 597,
+      "sha256": "681970d5374c4b2d98809f5162c4769b67dafe32a4411f2aafeb08c9e3704259"
+    },
+    {
+      "path": "metadata/runtime-relocation-before-rpath-removal.json",
+      "bytes": 5120,
+      "sha256": "7d11aac540f0d829b7b67d1c35766e5c990f71d80526c0afdc4c8e12f1888664"
+    },
+    {
+      "path": "metadata/runtime-relocation.json",
+      "bytes": 5451,
+      "sha256": "4aa1f00a5a25ae9f7822e114f77f47fb40e2a0bd36293d454e664169e7fe7c66"
+    },
+    {
+      "path": "run_probe.py",
+      "bytes": 7196,
+      "sha256": "e878e9c859d4b2200228e15dfcb8bfbee4190ec1480a6677f4b33cc248a3fd4a"
+    },
+    {
+      "path": "share/fx3-minimal-original-userspace-v2.cpio",
+      "bytes": 1860580,
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "share/fx3-original-app-loader-probe.cpio",
+      "bytes": 8693220,
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "share/virt-minimal-linux-probe02.dtb",
+      "bytes": 8409,
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "share/virt-original-app-loader-probe01.dtb",
+      "bytes": 8409,
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "source-patches/fx3-esram-high-ddr.patch",
+      "bytes": 1180,
+      "sha256": "23052b0e06f3adc6a3500d22aad8ea51688a49fa6d09f0693fb435954d1fbba7"
+    },
+    {
+      "path": "启动FX3最小研究虚拟机.command",
+      "bytes": 169,
+      "sha256": "7c2d9f94ed1f010e050f54fa4f384147d5e17f9a9de0eb121ab2cae02af8d4b9"
+    }
+  ],
+  "runtime_frozen": true,
+  "runtime_qemu_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+  "default_profiles": "minimal-linux and app-loader passed; alpha is separate and blocked by missing /dev/uipc",
+  "task_qemu_processes_remaining": []
+}

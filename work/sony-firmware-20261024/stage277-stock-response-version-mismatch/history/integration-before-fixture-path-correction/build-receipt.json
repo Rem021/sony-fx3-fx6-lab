@@ -1,0 +1,400 @@
+{
+  "builds": {
+    "fixture": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-DFX3_ENTRY_FIXTURE",
+        "-DFX3_OWNER_CHANNEL_FIXTURE",
+        "-DFX3_IOKIT_WIRE_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_core.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_entry_main.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_channel.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/host_transport.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/iokit_wire.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/native_session.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_receipt.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/helper_hello.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/status_permit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/transition_identity.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/descriptor_policy.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/flow_journal.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/service_flow.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/idle_held.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_fixture.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/fake_iokit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/flow_fixture.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/recovery_fixture.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/service-fixture-helper"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/service-fixture-helper",
+      "sha256": "8d7add42efaa03388bad6ad54d4bde0e6d9f4518faa7d8a05274344032a41d02",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/service-fixture-helper:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "native": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_core.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_entry_main.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_channel.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/host_transport.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/iokit_wire.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/native_session.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_receipt.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/helper_hello.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/status_permit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/transition_identity.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/descriptor_policy.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/flow_journal.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/service_flow.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/idle_held.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_iokit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/iokit_adapter.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/port_anchor.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/host_login.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/native_recovery_cache.c",
+        "-framework",
+        "Security",
+        "-lbsm",
+        "-framework",
+        "IOKit",
+        "-framework",
+        "CoreFoundation",
+        "-framework",
+        "DiskArbitration",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/service-native-closed"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/service-native-closed",
+      "sha256": "995ba83374e4f71798b5aac25115b1352fa4a21efdd8d760e735302324c1be53",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/service-native-closed:\n\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.40.78)\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.1.8)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "ipc": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-dynamiclib",
+        "-DFX3_ENTRY_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/entry_support.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/entry-ipc.dylib"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/entry-ipc.dylib",
+      "sha256": "8e8e441b3271e5dbe3e2939112c4c9c2de42c8062c888d500e09d17cbafbb5f5",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/entry-ipc.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage277-stock-response-version-mismatch/artifacts/entry-ipc.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    }
+  },
+  "sources": [
+    {
+      "path": "cached_port_probe.c",
+      "sha256": "615ab3333feec1897b9882c078b8bab36e550a53cd25bba91427194b1bd06b66"
+    },
+    {
+      "path": "derived_profile_fixture.h",
+      "sha256": "70407bb51be3836540fc36eb6ba53dbf09c7574a78abf84bab3931465c4ee06f"
+    },
+    {
+      "path": "descriptor_policy.c",
+      "sha256": "1b954d64782ca51e77855089e070b99b6b555ffc2bcf47e85f0cac17aee0e7f1"
+    },
+    {
+      "path": "descriptor_policy.h",
+      "sha256": "1c12bdfe98029a907a48b695083d3568cc84dd7959d54ca92598ac2eb2052e75"
+    },
+    {
+      "path": "descriptor_unit.c",
+      "sha256": "de2739e56cb4668141655d22eafa7929de58fc24f7339011efc0ccd55d59c926"
+    },
+    {
+      "path": "device_access.h",
+      "sha256": "776f564919b2f5ab96d5b22af9d83da8ad55098ce5486ac9ff7d22572966a8ef"
+    },
+    {
+      "path": "entry_shared.h",
+      "sha256": "9e591da97c145c116faa4b810565a53585388df8064ade1c880fcd4d9dd895d5"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "entry_target.h",
+      "sha256": "af233378a630c7dcc785b47cfa18d345c2885b45502b7e33c736e9dfc53c7734"
+    },
+    {
+      "path": "fake_iokit.c",
+      "sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19"
+    },
+    {
+      "path": "flow_fixture.c",
+      "sha256": "d30dab29b7fdb245a2a32f795101ffc82495996347a53a6ae9f612ef48860c43"
+    },
+    {
+      "path": "flow_journal.c",
+      "sha256": "b920a8764f410ca5bad4d9a36b48247e52fe95d2cabcfe3522b65facd4951d29"
+    },
+    {
+      "path": "flow_native.inc",
+      "sha256": "f0b85a9128d3651aa733f6edaa77c0f5d55850861ee64789ddf279d08be112df"
+    },
+    {
+      "path": "frame_io.c",
+      "sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f"
+    },
+    {
+      "path": "frame_io.h",
+      "sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a"
+    },
+    {
+      "path": "global_guard.c",
+      "sha256": "b8c1e75240aa7b27c39a9c2c1ddbd71f5aac163f74f5ceb678dc6315b616bfce"
+    },
+    {
+      "path": "global_guard.h",
+      "sha256": "5ae1addb1c793287cdc142f532747313a3851814c3174f9a2eeea0e8ba020311"
+    },
+    {
+      "path": "helper_hello.c",
+      "sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719"
+    },
+    {
+      "path": "helper_hello.h",
+      "sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e"
+    },
+    {
+      "path": "host_login.c",
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "host_login.h",
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "host_transport.c",
+      "sha256": "f23869555886de838de5048685b9f326ba94a6439896a0bc90e8df1e4a29f95c"
+    },
+    {
+      "path": "host_transport.h",
+      "sha256": "49b1e885a7e2b97706d59a52a50118b79790ba89472fe37550e01705836cb919"
+    },
+    {
+      "path": "idle_held.c",
+      "sha256": "3cbf43dd727c1fc93bf94bf1caffd24601e0282476666386c010f0447164ae92"
+    },
+    {
+      "path": "idle_held.h",
+      "sha256": "764f7f01cb15f8f73965f1245387a75efb0af82fc74204d58bbb9f28af26d861"
+    },
+    {
+      "path": "iokit_adapter.c",
+      "sha256": "cf268381777e5e1d2f2837b88b5e088a4ed808347ee76403f17080d43c64d50d"
+    },
+    {
+      "path": "iokit_adapter.h",
+      "sha256": "6ae4ef0aaacb7df5017b6cbb0e37c0605304282a5920ef2f4e68d5738bf22bc8"
+    },
+    {
+      "path": "iokit_wire.c",
+      "sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94"
+    },
+    {
+      "path": "iokit_wire.h",
+      "sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b"
+    },
+    {
+      "path": "manual_recovery_binding.h",
+      "sha256": "0900af42160539b4b8bfeaf05a232dc7bc88b257500d30e6a8667cf228bd3793"
+    },
+    {
+      "path": "native_recovery_cache.c",
+      "sha256": "17709ab0fb58b6a97569512eb36336bf75544e8bbabc487f63df563ab018e6b6"
+    },
+    {
+      "path": "native_recovery_cache.h",
+      "sha256": "d44311cabd2db20e34141634d445996965da244eaf7e802732808c2d414d6a3f"
+    },
+    {
+      "path": "native_session.c",
+      "sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1"
+    },
+    {
+      "path": "native_session.h",
+      "sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f"
+    },
+    {
+      "path": "owner_channel.c",
+      "sha256": "1f7706a24149671b6b10f8a71467037176228f1073c011f6e4209cbde8598519"
+    },
+    {
+      "path": "owner_channel.h",
+      "sha256": "e5b9af14aea46dac8eff94a40acfc5edc22305799e44e4204558a8f592a668a0"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "1a47d3ce04e53b5f90bc2b9443381e488c2e63d8ebb516a4e1ad29c0485f68e7"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "400b0ad41457324da0da5766e27427a0716ce766155a268b08ebdc384f204da6"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "fe7744b535915d690347f3b1c2762d77f5169ae4d0cf79382ebeb762514aae35"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "owner_receipt.c",
+      "sha256": "a0be822633205d930d1b2258eeafbe6dd6cb3ede7be083f80bba04d768be93ca"
+    },
+    {
+      "path": "owner_receipt.h",
+      "sha256": "151c3552e357e5457ac1a4770400f84a16ccdd72cac0f5f1ebd79b7e82dc990e"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    },
+    {
+      "path": "permit_unit.c",
+      "sha256": "de112dfceeb3397e39aeb44f5ea3c1d9d13c1ba46278c72e09327814aa703576"
+    },
+    {
+      "path": "port_anchor.c",
+      "sha256": "926bd1035e4782b505371ea7b934d47ab6e85d06ef45e24d7794cfccd12984fa"
+    },
+    {
+      "path": "port_anchor.h",
+      "sha256": "a95919691814f7e3fc8efd431867f1fd03a6fdc27a2dcbd71d2c17ccb3580c6d"
+    },
+    {
+      "path": "public_material.h",
+      "sha256": "27710f438e5fc28ed48bb3f1e62a4d6f44d4e1c2ff5aa1dfd8d41e075c64594d"
+    },
+    {
+      "path": "recovery_fixture.c",
+      "sha256": "a0b61371364e0cd0f6c186bfb0e63344850931159d6e985662fe99be74d6ae82"
+    },
+    {
+      "path": "recovery_fixture.h",
+      "sha256": "7eb250eeaf5f60db748bcba4e762987055ea301db8b170ae960c4d0c1e6b7e4b"
+    },
+    {
+      "path": "recovery_seed.c",
+      "sha256": "a8244165c4e02ee37944245016bcbb96f79c4a76e792281897184771acad14e1"
+    },
+    {
+      "path": "service_flow.c",
+      "sha256": "5de22bcb43dd593ad4e497b0e3ab3a00cc0174597082878c165aa272cffec63f"
+    },
+    {
+      "path": "service_flow.h",
+      "sha256": "a6a60ae4d462a5cebc05eefda8a3f2b5c6f31ca16c9915ae56284559d30c45f0"
+    },
+    {
+      "path": "service_profile.h",
+      "sha256": "abbe66a20426b70c3503276cd60811d45333e113e0e91f108a2757947e56b42b"
+    },
+    {
+      "path": "status_permit.c",
+      "sha256": "204f84aa2d6512d8649fa478cb4fa87804f2c8758422fc61698af3f1686f4be9"
+    },
+    {
+      "path": "status_permit.h",
+      "sha256": "c9728b63c77e3e8ab35bfb13ccb7343a2cb494130c709e47ad1525cba73033ce"
+    },
+    {
+      "path": "stream.c",
+      "sha256": "860b0460e204d1237c32070924f89390204407441802aed28dc123d2d012a54e"
+    },
+    {
+      "path": "stream.h",
+      "sha256": "a552e2cd23ff0d9b8b5fba08583dcdb5b12d6df32db2864a8c2a8c8cc27dd395"
+    },
+    {
+      "path": "target_binding.h",
+      "sha256": "fdf090d100fc138412a88aa65db9b06fed678ab128daf9f97a67ba4594672562"
+    },
+    {
+      "path": "test_device_access.c",
+      "sha256": "707f6cd6a6e81d6172bb25fb5143cc263b5c16f4a230a3272d6868a45c6dcc16"
+    },
+    {
+      "path": "transition_identity.c",
+      "sha256": "2d504dd4594a0d40805787dacab972733571948c047ca02e7ff974ff5df343f0"
+    },
+    {
+      "path": "transition_identity.h",
+      "sha256": "b642f9a9413cec1180eb2f994f723765e14e9269f740caea01388563d482aec0"
+    },
+    {
+      "path": "transition_limits.h",
+      "sha256": "77366e1830422e1292a9ffc56878800d72bf15a9497e3a6019f285c72f8f3617"
+    },
+    {
+      "path": "transition_unit.c",
+      "sha256": "68ffb240f80062f127d23f1275f3b9f78d2d4e533b5a9d1dbd1a4ec8251d291f"
+    },
+    {
+      "path": "unit.c",
+      "sha256": "f1e6467931e894eea4a96cdd62aa72add4dee5afc1ce90a9b421dd88997bac8a"
+    }
+  ],
+  "native_build_released": false,
+  "native_helper_executed": false,
+  "new_root_or_USB_operations": 0
+}

@@ -1,0 +1,98 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so
+# SHA256 b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74
+# VA [0xc9d4, 0xcb50) raw slice SHA256 bd2de51bc0d5879474d9da5815a3498012d00c31a8da8f76bdb6b58fdd8bea8e
+    c9d4: a9b77bfd     	stp	x29, x30, [sp, #-0x90]!
+    c9d8: 910003fd     	mov	x29, sp
+    c9dc: a90153f3     	stp	x19, x20, [sp, #0x10]
+    c9e0: 910183b3     	add	x19, x29, #0x60
+    c9e4: aa1303e0     	mov	x0, x19
+    c9e8: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    c9ec: b0000014     	adrp	x20, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    c9f0: 97ffef54     	bl	0x8740 <Updater::MountPoint::MountPoint()@plt>
+    c9f4: 9128a681     	add	x1, x20, #0xa29
+    c9f8: aa1303e0     	mov	x0, x19
+    c9fc: 97ffef31     	bl	0x86c0 <Updater::MountPoint::Initialize(char const*)@plt>
+    ca00: b0000015     	adrp	x21, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    ca04: aa1303e0     	mov	x0, x19
+    ca08: 91291aa1     	add	x1, x21, #0xa46
+    ca0c: 52808002     	mov	w2, #0x400              // =1024
+    ca10: 97ffeeb8     	bl	0x84f0 <Updater::MountPoint::Mount(char const*, unsigned int)@plt>
+    ca14: 72001c1f     	tst	w0, #0xff
+    ca18: 54000361     	b.ne	0xca84 <Updater::CurrentFirmware::IsValid()+0xb0>
+    ca1c: b0000002     	adrp	x2, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    ca20: b0000000     	adrp	x0, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    ca24: 528001c1     	mov	w1, #0xe                // =14
+    ca28: 91291aa4     	add	x4, x21, #0xa46
+    ca2c: 91285442     	add	x2, x2, #0xa15
+    ca30: 91295000     	add	x0, x0, #0xa54
+    ca34: 52801103     	mov	w3, #0x88               // =136
+    ca38: 72a00061     	movk	w1, #0x3, lsl #16
+    ca3c: 97fff0ad     	bl	0x8cf0 <printf@plt>
+    ca40: d2800200     	mov	x0, #0x10               // =16
+    ca44: 97ffeed3     	bl	0x8590 <__cxa_allocate_exception@plt>
+    ca48: 900000a1     	adrp	x1, 0x20000
+    ca4c: 900000a2     	adrp	x2, 0x20000
+    ca50: f9478821     	ldr	x1, [x1, #0xf10]
+    ca54: f9479842     	ldr	x2, [x2, #0xf30]
+    ca58: 91004021     	add	x1, x1, #0x10
+    ca5c: f9000001     	str	x1, [x0]
+    ca60: 528001c1     	mov	w1, #0xe                // =14
+    ca64: 72a00061     	movk	w1, #0x3, lsl #16
+    ca68: b9000801     	str	w1, [x0, #0x8]
+    ca6c: 900000a1     	adrp	x1, 0x20000
+    ca70: 3900301f     	strb	wzr, [x0, #0xc]
+    ca74: f947e421     	ldr	x1, [x1, #0xfc8]
+    ca78: 97fff05a     	bl	0x8be0 <__cxa_throw@plt>
+    ca7c: aa0003f4     	mov	x20, x0
+    ca80: 14000027     	b	0xcb1c <Updater::CurrentFirmware::IsValid()+0x148>
+    ca84: 9100e3b5     	add	x21, x29, #0x38
+    ca88: 9128a681     	add	x1, x20, #0xa29
+    ca8c: aa1503e0     	mov	x0, x21
+    ca90: 97ffef44     	bl	0x87a0 <Updater::CompleteFlagFile::CompleteFlagFile(char const*)@plt>
+    ca94: aa1503e0     	mov	x0, x21
+    ca98: 97ffef3a     	bl	0x8780 <Updater::BaseFlagFile::IsValid()@plt>
+    ca9c: 2a0003f6     	mov	w22, w0
+    caa0: aa1303e0     	mov	x0, x19
+    caa4: 97ffeffb     	bl	0x8a90 <Updater::MountPoint::Umount()@plt>
+    caa8: 72001c1f     	tst	w0, #0xff
+    caac: 54000401     	b.ne	0xcb2c <Updater::CurrentFirmware::IsValid()+0x158>
+    cab0: b0000002     	adrp	x2, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    cab4: b0000000     	adrp	x0, 0xd000 <Updater::RVchk4PI::~RVchk4PI()+0x138>
+    cab8: 528001e1     	mov	w1, #0xf                // =15
+    cabc: 9128a684     	add	x4, x20, #0xa29
+    cac0: 91285442     	add	x2, x2, #0xa15
+    cac4: 91295000     	add	x0, x0, #0xa54
+    cac8: 528011c3     	mov	w3, #0x8e               // =142
+    cacc: 72a00061     	movk	w1, #0x3, lsl #16
+    cad0: 97fff088     	bl	0x8cf0 <printf@plt>
+    cad4: d2800200     	mov	x0, #0x10               // =16
+    cad8: 97ffeeae     	bl	0x8590 <__cxa_allocate_exception@plt>
+    cadc: 900000a1     	adrp	x1, 0x20000
+    cae0: 900000a2     	adrp	x2, 0x20000
+    cae4: f9478821     	ldr	x1, [x1, #0xf10]
+    cae8: f9479842     	ldr	x2, [x2, #0xf30]
+    caec: 91004021     	add	x1, x1, #0x10
+    caf0: f9000001     	str	x1, [x0]
+    caf4: 528001e1     	mov	w1, #0xf                // =15
+    caf8: 72a00061     	movk	w1, #0x3, lsl #16
+    cafc: b9000801     	str	w1, [x0, #0x8]
+    cb00: 900000a1     	adrp	x1, 0x20000
+    cb04: 3900301f     	strb	wzr, [x0, #0xc]
+    cb08: f947e421     	ldr	x1, [x1, #0xfc8]
+    cb0c: 97fff035     	bl	0x8be0 <__cxa_throw@plt>
+    cb10: aa0003f4     	mov	x20, x0
+    cb14: aa1503e0     	mov	x0, x21
+    cb18: 97ffee4a     	bl	0x8440 <Updater::CompleteFlagFile::~CompleteFlagFile()@plt>
+    cb1c: aa1303e0     	mov	x0, x19
+    cb20: 97ffee40     	bl	0x8420 <Updater::MountPoint::~MountPoint()@plt>
+    cb24: aa1403e0     	mov	x0, x20
+    cb28: 97fff042     	bl	0x8c30 <_Unwind_Resume@plt>
+    cb2c: aa1503e0     	mov	x0, x21
+    cb30: 97ffee44     	bl	0x8440 <Updater::CompleteFlagFile::~CompleteFlagFile()@plt>
+    cb34: aa1303e0     	mov	x0, x19
+    cb38: 97ffee3a     	bl	0x8420 <Updater::MountPoint::~MountPoint()@plt>
+    cb3c: 2a1603e0     	mov	w0, w22
+    cb40: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    cb44: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    cb48: a8c97bfd     	ldp	x29, x30, [sp], #0x90
+    cb4c: d65f03c0     	ret

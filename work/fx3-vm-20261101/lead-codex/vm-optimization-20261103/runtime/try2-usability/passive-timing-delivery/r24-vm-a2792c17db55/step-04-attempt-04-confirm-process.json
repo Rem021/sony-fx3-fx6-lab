@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-review-snapshot-candidate/operator-helpers/review_snapshot_cli.py",
+    "confirm",
+    "--session",
+    "fx3-deadline-r24-a2792c17db55",
+    "--url",
+    "http://127.0.0.1:49966/",
+    "--launch",
+    "c008fda8-6c61-441e-9664-92d451ffac28",
+    "--nonce",
+    "eb5b30b6-73c2-4714-9bfb-f371dc0b2736",
+    "--step",
+    "4",
+    "--attempt",
+    "d050b19d-e06b-455d-9dab-25d51a981894",
+    "--capture-path",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55/step-04-attempt-04/validated-image-return.json",
+    "--target",
+    "已亲看本步固定PNG：语言帮助关闭，返回完整Setup > Area/Date菜单，橙色Language与English可见，符合MENU返回Language。",
+    "--receipt",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55/step-04-attempt-04/explicit-confirm-receipt.json"
+  ],
+  "start": {
+    "UTC": "2026-11-05T01:38:15.248185+00:00",
+    "host_ns": 426380769608500
+  },
+  "end": {
+    "UTC": "2026-11-05T01:38:15.501364+00:00",
+    "host_ns": 426381022795583
+  },
+  "returncode": 0,
+  "stdout": "{\"status\": \"confirmed_and_cancelled\", \"receipt_schema\": \"fx3-r24-snapshot-confirm-v1\", \"launch_id\": \"c008fda8-6c61-441e-9664-92d451ffac28\", \"alarm_nonce\": \"eb5b30b6-73c2-4714-9bfb-f371dc0b2736\", \"step\": 4, \"attempt_id\": \"d050b19d-e06b-455d-9dab-25d51a981894\", \"reviewed_png_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"target\": \"已亲看本步固定PNG：语言帮助关闭，返回完整Setup > Area/Date菜单，橙色Language与English可见，符合MENU返回Language。\", \"retries\": 0, \"guest_keys_sent_by_helper\": 0, \"eval_may_have_started\": true, \"browser_result\": {\"cancelled\": {\"current\": {\"armed_ms\": 121269.5, \"cancelled_ms\": 127184.39999997616, \"deadline_ms\": 20000, \"due_ms\": 141269.5, \"nonce\": \"eb5b30b6-73c2-4714-9bfb-f371dc0b2736\", \"state\": \"cancelled\"}, \"deadline_ms\": 20000, \"documentTimeOrigin\": 1793842568306.2, \"events\": [{\"event\": \"installed\", \"performance_ms\": 16200.19999998808, \"script_SHA256\": \"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\", \"wall_UTC\": \"2026-11-05T01:36:24.506Z\"}, {\"due_ms\": 96044.5, \"event\": \"armed\", \"nonce\": \"88969fb8-e700-4498-a271-a6bbb2d48cf6\", \"performance_ms\": 76044.5, \"wall_UTC\": \"2026-11-05T01:37:24.350Z\"}, {\"elapsed_ms\": 11103.80000001192, \"event\": \"cancelled\", \"nonce\": \"88969fb8-e700-4498-a271-a6bbb2d48cf6\", \"performance_ms\": 87148.30000001192, \"wall_UTC\": \"2026-11-05T01:37:35.454Z\"}, {\"due_ms\": 114646.10000002384, \"event\": \"armed\", \"nonce\": \"4a2569f1-010b-45f0-9a27-c2c5a3ae1762\", \"performance_ms\": 94646.10000002384, \"wall_UTC\": \"2026-11-05T01:37:42.952Z\"}, {\"elapsed_ms\": 5601.5, \"event\": \"cancelled\", \"nonce\": \"4a2569f1-010b-45f0-9a27-c2c5a3ae1762\", \"performance_ms\": 100247.60000002384, \"wall_UTC\": \"2026-11-05T01:37:48.554Z\"}, {\"due_ms\": 126328.5, \"event\": \"armed\", \"nonce\": \"93615104-b6b9-4edd-8ff9-a0cb767fcfd9\", \"performance_ms\": 106328.60000002384, \"wall_UTC\": \"2026-11-05T01:37:54.635Z\"}, {\"elapsed_ms\": 6174.199999988079, \"event\": \"cancelled\", \"nonce\": \"93615104-b6b9-4edd-8ff9-a0cb767fcfd9\", \"performance_ms\": 112502.69999998808, \"wall_UTC\": \"2026-11-05T01:38:00.809Z\"}, {\"due_ms\": 141269.5, \"event\": \"armed\", \"nonce\": \"eb5b30b6-73c2-4714-9bfb-f371dc0b2736\", \"performance_ms\": 121269.5, \"wall_UTC\": \"2026-11-05T01:38:09.576Z\"}, {\"elapsed_ms\": 5914.899999976158, \"event\": \"cancelled\", \"nonce\": \"eb5b30b6-73c2-4714-9bfb-f371dc0b2736\", \"performance_ms\": 127184.39999997616, \"wall_UTC\": \"2026-11-05T01:38:15.490Z\"}], \"expectedLaunchId\": \"c008fda8-6c61-441e-9664-92d451ffac28\", \"expectedURL\": \"http://127.0.0.1:49966/\", \"sealed\": false, \"version\": 1}, \"click_invoked\": true, \"expected\": {\"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"attempt_id\": \"d050b19d-e06b-455d-9dab-25d51a981894\", \"content_generation\": 36, \"document_id\": \"1bad66ad-84ed-4c97-8b9f-5e3ea8224f04\", \"launch_id\": \"c008fda8-6c61-441e-9664-92d451ffac28\", \"observed_sequence\": 791, \"pin_request_id\": \"5a5a9f62-be06-479b-8c1d-5475d651ac30\", \"request_id\": \"80b7ea7d-830e-41e4-8266-e3660905cf36\", \"run_incarnation\": \"049f6bf0-a48b-43d7-80dd-2c3e22484a18\", \"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"d2c5a41c-a471-459c-81b0-9ae92f7f7699\", \"step\": 4}, \"guest_keys_sent\": 0, \"historical_snapshot\": {\"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"attempt_id\": \"d050b19d-e06b-455d-9dab-25d51a981894\", \"byte_length\": 29934, \"content_generation\": 36, \"document_id\": \"1bad66ad-84ed-4c97-8b9f-5e3ea8224f04\", \"launch_id\": \"c008fda8-6c61-441e-9664-92d451ffac28\", \"native_receive_floor_sequence\": 787, \"native_receive_observed_host_monotonic\": 426375.457783958, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\", \"observed_sequence\": 791, \"pin_request_id\": \"5a5a9f62-be06-479b-8c1d-5475d651ac30\", \"run_incarnation\": \"049f6bf0-a48b-43d7-80dd-2c3e22484a18\", \"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"d2c5a41c-a471-459c-81b0-9ae92f7f7699\", \"step\": 4}, \"receipt_schema\": \"fx3-r24-snapshot-confirm-v1\", \"status\": \"confirmed_and_cancelled\"}}\n",
+  "stderr": ""
+}

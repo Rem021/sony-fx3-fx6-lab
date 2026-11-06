@@ -1,0 +1,143 @@
+--- prior-save1800-runner.py
++++ vmopt-lifecycle-hostfix1800.py
+@@ -2,7 +2,7 @@
+ """AP103 software LDEC and native save diagnostic; AP102 observer transport retained."""
+ from pathlib import Path
+ import sys
+-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "menu-repair-01/runtime"))
++sys.path.insert(1, str(Path(__file__).resolve().parents[4] / "menu-repair-01/runtime"))
+ import argparse
+ import re
+ import datetime
+@@ -26,8 +26,10 @@
+ from gate_input105_v1 import InputGate,valid_command,KernelObserver
+ from file_readback100 import capture as capture_native_file
+ from restore_api103_v2 import restore_native_api
++from serial_snapshot import SerialSnapshot
++from guarded_reject import guarded_rejects
+ 
+-ROOT = Path(__file__).resolve().parents[3] / "menu-repair-01/runtime"
++ROOT = Path(__file__).resolve().parents[4] / "menu-repair-01/runtime"
+ OUT = Path(__file__).resolve().parent
+ BASE = ROOT.parent
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+@@ -75,8 +77,8 @@
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(BASE):
+-        raise RuntimeError('Candidate manifest must be in this menu-repair task')
++    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-lifecycle-v1'):
++        raise RuntimeError('Candidate manifest must be in this new lifecycle candidate')
+     candidate = json.loads(candidate_path.read_text())
+     native_seed=input_check(candidate['native_Backup_seed'])
+     input_check(candidate['ap102_contract']['original_proof'])
+@@ -92,8 +94,8 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(BASE) or not initrd.resolve().is_relative_to(BASE):
+-        raise RuntimeError('Candidate DTB/initrd must be in this task')
++    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-lifecycle-v1') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-lifecycle-v1'):
++        raise RuntimeError('Candidate DTB/initrd must be in this new lifecycle candidate')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+     snapshots = []
+@@ -149,8 +151,8 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','key_readback103_v1.py','gate_input101.py','file_readback100.py','trial_ring_v1.py','restore_api103_v2.py','gate_input105_v1.py']:
+-        shutil.copyfile((Path(__file__) if name == Path(__file__).name else ROOT / name), observer_dir / name)
++    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','key_readback103_v1.py','gate_input101.py','file_readback100.py','trial_ring_v1.py','restore_api103_v2.py','gate_input105_v1.py','serial_snapshot.py','guarded_reject.py']:
++        shutil.copyfile((Path(__file__) if name == Path(__file__).name else OUT / name if (OUT / name).exists() else ROOT / name), observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+     (run / 'cpio-audit.json').write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')
+     success_doc = BASE / 'success-cases/source/docs/tech/03-guest-environment.md'
+@@ -201,6 +203,7 @@
+     (run / 'command.json').write_text(json.dumps(command, ensure_ascii=False, indent=2) + '\n')
+     journal = []
+     samples = []
++    host_timing = []
+     error = None
+     early_stop_reason = None
+     p = None
+@@ -211,6 +214,7 @@
+     previous_cwd = Path.cwd()
+     start = time.monotonic()
+     started = datetime.datetime.now(datetime.timezone.utc).isoformat()
++    serial_reader = SerialSnapshot(run / 'serial.log')
+ 
+     def limits():
+         resource.setrlimit(resource.RLIMIT_FSIZE, (256 * 1024 * 1024, 256 * 1024 * 1024))
+@@ -256,14 +260,15 @@
+                 req = {'execute': cmd, 'id': seq}
+                 if arguments is not None:
+                     req['arguments'] = arguments
+-                journal.append({'request': req, 'elapsed_seconds': time.monotonic() - start})
++                qmp_start_ns = time.monotonic_ns()
++                journal.append({'request': req, 'elapsed_seconds': time.monotonic() - start, 'host_monotonic_ns': qmp_start_ns})
+                 s.sendall((json.dumps(req) + '\n').encode())
+                 while True:
+                     raw = f.readline()
+                     if not raw:
+                         raise RuntimeError('QMP stream ended')
+                     resp = json.loads(raw)
+-                    journal.append({'response': resp})
++                    journal.append({'response': resp, 'host_monotonic_ns': time.monotonic_ns(), 'request_duration_ns': time.monotonic_ns()-qmp_start_ns})
+                     if resp.get('id') == seq:
+                         return resp
+ 
+@@ -303,9 +308,14 @@
+                 if (run/'STOP_FOR_REVIEW').exists():
+                     early_stop_reason=(run/'STOP_FOR_REVIEW').read_text()
+                     break
+-                serial_now=(run/'serial.log').read_text(errors='replace')
++                serial_poll_start_ns=time.monotonic_ns()
++                bytes_before_poll=serial_reader.bytes_read
++                serial_now=serial_reader.poll()
++                serial_poll_done_ns=time.monotonic_ns()
+                 if 'unfetched'in serial_now or re.search(r'FX3_LIGHT104_ALLOC_RETURN[^\n]*result=-1018(?: |$)',serial_now):
+                     early_stop_reason='AP105 first observed native unfetched/alloc -1018; stop promptly; later guest calls may precede host UART observation';break
++                if 'free_dynamic_msgq_id:' in serial_now:
++                    early_stop_reason='Original kernel free_dynamic_msgq_id error; preserve first lifecycle fault';break
+                 uipc104=re.search(r'FX3_UIPC104_TEXT_BASE=(0x[0-9a-fA-F]+)',serial_now)
+                 if uipc104 and 'uipc'not in kernel_observer.module_bases:
+                     qmp('stop');kernel_observer.install_uipc(int(uipc104[1],16));qmp('cont')
+@@ -326,9 +336,12 @@
+                 ldec_live=serial_now.split('FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS',1)
+                 if len(ldec_live)==2 and re.search(r'FX3_LDEC103_IOCTL[^\n]*result=-[0-9]+',ldec_live[1]):
+                     early_stop_reason='AP103 actual resource ioctl rejected; capture blocker before further input';break
+-                if re.search(r'assert at|Assertion|exception monitor|FX3_SIGNAL_OBSERVE[^\n]*signal=6(?: |$)',serial_now,re.I):
++                guard_start_ns=time.monotonic_ns()
++                guard_assert, guard_rm = guarded_rejects(serial_now)
++                guard_done_ns=time.monotonic_ns()
++                if guard_assert:
+                     early_stop_reason='AP97 native assertion/abort/exception marker; stop before any further key';break
+-                if re.search(r'FX3_RM_[A-Z_]*REJECT|FX3_RM_UNKNOWN|unknown\s+key|invalid\s+from_type',serial_now,re.I):
++                if guard_rm:
+                     early_stop_reason='AP93 explicit RM/input rejection or new unsupported request; preserve evidence and escalate'
+                     break
+                 if 'FX3_MEDIA_INIT_TIMEOUT' in serial_now or re.search(r'FX3_MEDIA_NOTIFY [^\n]*status=1 ',serial_now):
+@@ -450,10 +463,13 @@
+                 if any(x in serial_now for x in ['Unhandled fault:','Entering exception monitor.','Kernel panic','symbol lookup error:']):
+                     early_stop_reason='new guest fatal marker; quiesce snapshot quit immediately'
+                     break
++                ps_start_ns=time.monotonic_ns()
+                 st = subprocess.run(['ps', '-o', 'rss=,vsz=', '-p', str(p.pid)],
+                                     capture_output=True, text=True)
++                ps_done_ns=time.monotonic_ns()
+                 samples.append({'elapsed_seconds': time.monotonic() - start,
+                                 'rss_vsz_kib': st.stdout.strip()})
++                host_timing.append({'host_monotonic_ns':serial_poll_start_ns,'serial_poll_ns':serial_poll_done_ns-serial_poll_start_ns,'serial_bytes_new':serial_reader.bytes_read-bytes_before_poll,'serial_bytes_retained':serial_reader.offset,'guarded_reject_ns':guard_done_ns-guard_start_ns,'ps_ns':ps_done_ns-ps_start_ns})
+                 if tracing and time.monotonic() - guest_start >= ns.trace_seconds:
+                     qmp('human-monitor-command', {'command-line': 'log none'})
+                     tracing = False
+@@ -528,6 +544,7 @@
+                     os.killpg(p.pid, signal.SIGKILL)
+                     p.wait(timeout=3)
+     (run / 'qmp.json').write_text(json.dumps(journal, ensure_ascii=False, indent=2) + '\n')
++    (run / 'host-timing.json').write_text(json.dumps({'clock':'host time.monotonic_ns','samples':host_timing,'serial_total_bytes_read':serial_reader.bytes_read}, separators=(',',':'))+'\n')
+     ring_decode = None
+     if all((run / n).is_file() for n in ['printk-pointers.bin', 'printk-indices.bin', 'printk-ring.bin']):
+         dec = subprocess.run([sys.executable, str(ROOT / 'decode_printk_ring.py'), str(run)],

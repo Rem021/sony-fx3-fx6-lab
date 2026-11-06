@@ -1,0 +1,36 @@
+ 2129824: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 2129828: 910003fd     	mov	x29, sp
+ 212982c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2129830: aa0003f4     	mov	x20, x0
+ 2129834: d2800480     	mov	x0, #0x24               // =36
+ 2129838: 97e5156a     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 212983c: aa0003f3     	mov	x19, x0
+ 2129840: a9007c1f     	stp	xzr, xzr, [x0]
+ 2129844: a9017c1f     	stp	xzr, xzr, [x0, #0x10]
+ 2129848: b900201f     	str	wzr, [x0, #0x20]
+ 212984c: 52801c40     	mov	w0, #0xe2               // =226
+ 2129850: b9000260     	str	w0, [x19]
+ 2129854: b9401680     	ldr	w0, [x20, #0x14]
+ 2129858: 97ffff69     	bl	0x21295fc <Application_System_Init+0x151e5b8>
+ 212985c: b9400681     	ldr	w1, [x20, #0x4]
+ 2129860: b9001660     	str	w0, [x19, #0x14]
+ 2129864: 7100183f     	cmp	w1, #0x6
+ 2129868: 540006a8     	b.hi	0x212993c <Application_System_Init+0x151e8f8>
+ 212986c: 900027c0     	adrp	x0, 0x2621000
+ 2129870: 912de000     	add	x0, x0, #0xb78
+ 2129874: 38614800     	ldrb	w0, [x0, w1, uxtw]
+ 2129878: 10000061     	adr	x1, 0x2129884 <Application_System_Init+0x151e840>
+ 212987c: 8b208820     	add	x0, x1, w0, sxtb #2
+ 2129880: d61f0000     	br	x0
+ 2129884: 29418680     	ldp	w0, w1, [x20, #0xc]
+ 2129888: b900067f     	str	wzr, [x19, #0x4]
+ 212988c: 29018660     	stp	w0, w1, [x19, #0xc]
+ 2129890: 52800c82     	mov	w2, #0x64               // =100
+ 2129894: 34000101     	cbz	w1, 0x21298b4 <Application_System_Init+0x151e870>
+ 2129898: 1b027c00     	mul	w0, w0, w2
+ 212989c: 1ac10800     	udiv	w0, w0, w1
+ 21298a0: b9000a60     	str	w0, [x19, #0x8]
+ 21298a4: aa1303e0     	mov	x0, x19
+ 21298a8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 21298ac: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 21298b0: 17e516ff     	b	0x1a6f4ac <Application_System_Init+0xe64468>

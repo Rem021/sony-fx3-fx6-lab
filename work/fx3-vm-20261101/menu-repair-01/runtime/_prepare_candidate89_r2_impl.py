@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,hashlib,struct,subprocess,plistlib,importlib.util
+R=Path(__file__).resolve().parent;H=R/'helpers';D=R/'ap89-r2-backup-helper-replay';assert not D.exists();assert plistlib.loads(subprocess.check_output(['diskutil','info','-plist','/Volumes/KAFU2T']))['VolumeUUID']=='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B';D.mkdir();base=R/'ap88b-r4-cp-backup-reset-context-only/candidate.json';v=json.loads(base.read_text());source=R/'runs/ap88cpr4-e71668cb/backup-after-shutdown.bin';backup=source.read_bytes();sha=lambda b:hashlib.sha256(b).hexdigest();expected='38cf44637c44d3f47d7b8541dddf7ecc443e262f40dec3aec59f7b94d5b8b38f';assert len(backup)==0x221000 and sha(backup)==expected;key=json.loads((R/'ap88-backup-final-keys.json').read_text());assert key['critical_for_AP89']['key02cf1841']==key['critical_for_AP89']['key02cf1842']==4 and key['critical_for_AP89']['CP_F1_F4_all_selected_at_defaults'];data=Path(v['initrd']['path']).read_bytes();entries=[];off=0;template=None
+while True:
+ f=[int(data[off+6+i*8:off+14+i*8],16) for i in range(13)];name=data[off+110:off+110+f[11]-1].decode();off=(off+110+f[11]+3)&~3;body=data[off:off+f[6]];off=(off+f[6]+3)&~3
+ if name=='TRAILER!!!':break
+ if name=='simulation/fx3-capid-v1.so':template=f
+ if name=='simulation/fx3-preset-context-v1.so':name='simulation/fx3-preset-context-v2-screen.so';body=(H/'fx3-preset-context-v2-screen.so').read_bytes()
+ if name=='init':
+  s=body.decode().replace('/simulation/fx3-preset-context-v1.so','/simulation/fx3-preset-context-v2-screen.so');needle=' echo FX3_AP_NATURAL_BOOTIN_BEGIN';assert needle in s
+  replay=''' echo FX3_AP89_BACKUP_REPLAY_BEGIN physical=0x404000000 bytes=0x221000 original_seed_load_finished=1 AP_not_started=1 raw_RAM_input=1 not_storage_file=1
+ /simulation/fx3-backup-replay-v1
+ replay_rc=$?
+ echo FX3_AP89_BACKUP_REPLAY_HELPER_RC=$replay_rc
+ if [ "$replay_rc" != 0 ]; then echo FX3_AP89_REPLAY_FAILED; while true; do /bin/busybox sleep 1; done; fi
+ echo FX3_AP89_HOST_READBACK_WINDOW_BEGIN bounded_seconds=5 AP_not_started=1
+ /bin/busybox sleep 5
+ echo FX3_AP89_HOST_READBACK_WINDOW_END
+''';s=s.replace(needle,replay+needle);body=s.encode();(D/'init-reviewed.sh').write_text(s)
+ entries.append((name,f,body))
+assert template;entries.append(('simulation/fx3-backup-replay-v1',template,(H/'fx3-backup-replay-v1').read_bytes()));entries.append(('simulation/ap89-backup-ram.bin',template,backup));out=bytearray()
+def add(name,f,body,ino):
+ f=f.copy();n=name.encode()+b'\0';f[0]=ino;f[6]=len(body);f[11]=len(n);out.extend(b'070701'+''.join(f'{x:08x}' for x in f).encode()+n);out.extend(b'\0'*(-len(out)%4));out.extend(body);out.extend(b'\0'*(-len(out)%4))
+for i,(n,f,b) in enumerate(entries,1):add(n,f,b,i)
+add('TRAILER!!!',[0]*13,b'',len(entries)+1);cp=D/'guest.cpio';cp.write_bytes(out);sp=importlib.util.spec_from_file_location('fdt',R.parents[1]/'fx3-audit/prepare_virt_dtb.py');m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);tree,p,res,meta=m.parse(Path(v['dtb']['path']).read_bytes());chosen=next(n for k,n in tree['items'] if k=='node' and n['name']=='chosen');chosen['items']=[(k,(q[0],struct.pack('>Q',0x440000000+len(out)))) if k=='prop' and q[0]=='linux,initrd-end' else (k,q) for k,q in chosen['items']];dt=D/'guest.dtb';dt.write_bytes(m.encode(tree,res,meta));v['dtb']={'path':str(dt),'sha256':sha(dt.read_bytes())};v['initrd']={'path':str(cp),'sha256':sha(out)};v['scope']='AP89 offline simulatedpowercycle: exactAP88r4protocolmodels/GPEv15; originalbackupmodule/seedloadpolicyuntouched. Afteroriginalmoduleandseed-dateclock initialization butbeforebootin, helperSHAvalidatesfrozenAP88liveRAMandremapsreadbackbeforehostQMPsnapshot toexistingreserved404000000/221000 andcompleteSHAreadback. No storedchecksumrewrites; notnativepersistedorfullshutdownclaim. Minimalpresetprovider adds4passiveUUD/screeninit/presenterreturnpoints only. NoObjdisplayDSO/noinjectedpowerorreadyevents.';v['backup_replay']={'source':str(source),'sha256':expected,'bytes':len(backup),'physical':'0x404000000','mechanism':'boundedguesthelperfixedSHA/twooriginalbankheaders/wholecopy/remapSHA/rollback;5sboundedpreAPhostQMPreadbackwindow','original_seed_unchanged':True,'unchanged_checksums_live_RAM':True};v['required_markers']=['FX3_AP89_BACKUP_REPLAY_VERIFIED','FX3_GPE_EARLY_THREAD_GATE gpe=0','FX3_PRESET_CONTEXT_BOUND','FX3_PRESET_CONTEXT_SELFTEST_PASS','FX3_AP89_UUD_DECISION','FX3_AP89_SCREEN_CREATE','FX3_AP_IM_ENDMAPS_'];(D/'candidate.json').write_text(json.dumps(v,indent=2)+'\n');(D/'build-receipt.json').write_text(json.dumps({'base':str(base),'base_sha256':sha(base.read_bytes()),'CPIO_changed':['init'],'CPIO_added':['simulation/fx3-backup-replay-v1','simulation/ap89-backup-ram.bin','simulation/fx3-preset-context-v2-screen.so'],'CPIO_removed':['simulation/fx3-preset-context-v1.so'],'protocol_and_GPE_helpers_unchanged_AP88r4':True,'original_seed_file_module_Save0_unchanged':True,'RAMsource':str(source),'RAMsource_sha256':expected,'RAMinput_condition':'critical1841=1842=4/date2/CP317+2defaultsverified; originalshutdowncompletionfalse','DTBonlyinitrdend':True},indent=2)+'\n');print(D/'candidate.json')

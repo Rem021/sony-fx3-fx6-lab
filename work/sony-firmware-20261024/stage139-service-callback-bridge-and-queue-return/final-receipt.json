@@ -1,0 +1,140 @@
+{
+  "schema": "fx3-stage139-callback-queue-return/1",
+  "created_utc": "2026-10-27T20:50:52.289858+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/README.md",
+      "bytes": 4539,
+      "sha256": "a50e20021329b6267fa1ec66eb4911675f645e9618fbda4a3692abd3f4d388be"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/audit_callback_bridge.py",
+      "bytes": 9150,
+      "sha256": "0624aeebe32a8b0902d7cff818fe713d09bc47bffbe15c88e1ed3fcbb1a8795e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/callback-bridge-review.json",
+      "bytes": 187823,
+      "sha256": "a553402fbff770b09568f1a3c193507f50eba3ff1c245bda4a962110c650cc50"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/completed-evidence-review.json",
+      "bytes": 2105,
+      "sha256": "30c8632e18a38d10ad6c6e8050d5973cac68d716b11aa1ffc39856ae695d9845"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/first-service-trial-contract.json",
+      "bytes": 3736,
+      "sha256": "1cfce845a01c815582c2466f0e6502f510308949e7ce0e6338ffbee25b5fdcb8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/goal-status-after.json",
+      "bytes": 444346,
+      "sha256": "f202465fb3dc5a8b4dc6fdc7e13cfe374b24287f7e041ea80b38bb3ed80c0cb9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/goal-status-before.json",
+      "bytes": 441572,
+      "sha256": "85fc59c4090fd003d6d03024ffd9575c6bc1bda82f075720e7a8761a03292bd2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/readme-after.md",
+      "bytes": 50389,
+      "sha256": "6058bfe2cd72b3c5b8c94ebd7cc688aa5a4ff313b67d5923734cc2b0872b289d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/readme-before.md",
+      "bytes": 50090,
+      "sha256": "3e354c9ffda9bf6595e6f4325140adff3a1045c28159d7b71063cb27642de94f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/review_and_seal.py",
+      "bytes": 10896,
+      "sha256": "71367160e14434316f5a01336e721fef1c2083cdda51349df31b5b89599ae90e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/run-queue-return/executed-source.py",
+      "bytes": 10432,
+      "sha256": "3ff7aace1da7f55f1a2c2f87fad827b3d566b43451ce46d3e1863b59d8fd15ee"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/run-queue-return/results.json",
+      "bytes": 18231,
+      "sha256": "36c0b510d558d9de1e8bd89f2569d33f9784b3419bd8575b86228ebb6a01f458"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage139-service-callback-bridge-and-queue-return/run_queue_return.py",
+      "bytes": 10432,
+      "sha256": "3ff7aace1da7f55f1a2c2f87fad827b3d566b43451ce46d3e1863b59d8fd15ee"
+    }
+  ],
+  "member_count": 13,
+  "previous_manifest_sha256": "c387c72cb1ed59ab08da9ad3287ac6e24b290221166b12198475a2b35c20a297",
+  "allowed_goal_keys_changed": [
+    "latest_stage",
+    "latest_stage_evidence",
+    "next_safe_offline_actions",
+    "prepared_first_device_trial",
+    "progress_audit",
+    "research_activity",
+    "updated_utc"
+  ],
+  "mutable_project_heads_not_manifest_members": true,
+  "mutable_progress": {
+    "before_sha256": "85fc59c4090fd003d6d03024ffd9575c6bc1bda82f075720e7a8761a03292bd2",
+    "after_sha256": "f202465fb3dc5a8b4dc6fdc7e13cfe374b24287f7e041ea80b38bb3ed80c0cb9",
+    "readme_before_sha256": "3e354c9ffda9bf6595e6f4325140adff3a1045c28159d7b71063cb27642de94f",
+    "readme_after_sha256": "6058bfe2cd72b3c5b8c94ebd7cc688aa5a4ff313b67d5923734cc2b0872b289d"
+  },
+  "operations": {
+    "status": "PASS_CALLBACK_BRIDGE_AND_GUEST_QUEUE_COUNTEREXAMPLES_NOT_LIVE_RELEASE",
+    "created_utc": "2026-10-27T20:50:52.289858+00:00",
+    "previous_manifest_members_verified": 33,
+    "static_original_functions": 18,
+    "local_original_spans": 3,
+    "checked_PLT_calls": 13,
+    "bounded_guest_cases": 8,
+    "original_guest_function_entries": 15,
+    "guest_original_execution_not_native_host_or_camera": true,
+    "new_device_or_driver_operations": 0,
+    "all16_requirements_authorization_and_user_constraints_unchanged": true,
+    "old_prepared_trial_and_source_evidence_preserved": true,
+    "stage75_backend_and_stage117_frontend_pins": [
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/resource_alias.c",
+        "bytes": 7493,
+        "sha256": "69d8dc8eb8f4ca03c71918fd07b51070749e2f7a561e4e3fb23cab2a7cf5d150"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/run-20261026/resource_alias.a64.o",
+        "bytes": 4384,
+        "sha256": "88fa4d56540eb579e1b5ebd401aaf5ce4346a675be856765ffedced288718a87"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/channel_adapter.c",
+        "bytes": 2140,
+        "sha256": "100c9d097660c3bfdcba8a5101bd81890fdee2722ebb1605169c04104e24f7f4"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/run-20261026/channel_adapter.a64.o",
+        "bytes": 2144,
+        "sha256": "0f67a495ef93841234cacf6f9565a018e983fe08e82dd1075ce961f44cae65b5"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage117-native-audio-proxy-admission/scoped_frontend.a64.o",
+        "bytes": 1920,
+        "sha256": "673da2d23b9c0736a36ebc515258a9e94ebe5018c355afaf81ffd40ce923b407"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage117-native-audio-proxy-admission/scoped_frontend.c",
+        "bytes": 3152,
+        "sha256": "264c95ec3fb63e5c6843cf6cfa557f8e9ad7f5acceb1b03333b2701d507e3d5a"
+      }
+    ],
+    "canonical_equals_after": true,
+    "same_agent_review_not_real_camera_acceptance": true,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

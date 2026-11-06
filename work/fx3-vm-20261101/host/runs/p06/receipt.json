@@ -1,0 +1,77 @@
+{
+  "created_utc": "2026-11-01T10:10:05.019941+00:00",
+  "duration_seconds": 3.2059864580078283,
+  "qemu_sha256": "1610a5f88bd15f23a796a675e7b0de75c7581da447ae26a4a78278f595190928",
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-probe01.dtb",
+      "sha256": "a8cd5a3ec6d43d8769fbe76eb4db14d18ff0df689af2388bcaf8e631d4c067e3"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-minimal-original-userspace-v2.cpio.gz",
+      "sha256": "c704d71d6e6618b087d21c3a2a1a2bb562cb19085032a69f7ec43314302c4f4f"
+    }
+  ],
+  "qemu_exit": 0,
+  "pid": 68580,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.11117729100806173,
+      "rss_vsz_kib": "58208 492123120"
+    },
+    {
+      "elapsed_seconds": 0.36761008300527465,
+      "rss_vsz_kib": "59024 492123120"
+    },
+    {
+      "elapsed_seconds": 0.6262334580096649,
+      "rss_vsz_kib": "59024 492123120"
+    },
+    {
+      "elapsed_seconds": 0.8855906250100816,
+      "rss_vsz_kib": "59024 492123120"
+    },
+    {
+      "elapsed_seconds": 1.1442947500036098,
+      "rss_vsz_kib": "59024 492123120"
+    },
+    {
+      "elapsed_seconds": 1.4001803749997634,
+      "rss_vsz_kib": "52560 492116640"
+    },
+    {
+      "elapsed_seconds": 1.658271666005021,
+      "rss_vsz_kib": "52560 492116640"
+    },
+    {
+      "elapsed_seconds": 1.9170596250041854,
+      "rss_vsz_kib": "52560 492116640"
+    },
+    {
+      "elapsed_seconds": 2.172017291013617,
+      "rss_vsz_kib": "52560 492116640"
+    },
+    {
+      "elapsed_seconds": 2.429771041002823,
+      "rss_vsz_kib": "52560 492116640"
+    },
+    {
+      "elapsed_seconds": 2.684851500001969,
+      "rss_vsz_kib": "52560 492116640"
+    },
+    {
+      "elapsed_seconds": 2.942389791001915,
+      "rss_vsz_kib": "52560 492116640"
+    }
+  ],
+  "guest_seconds_requested": 3,
+  "trace_limit_bytes": 16777216,
+  "physical_devices_disks_network_or_firmware_writes": 0,
+  "software_model": "4KiB zeroed SMP mailbox RAM at 0xfe005000 only; no MMIO stubs",
+  "original_kernel_modified": false,
+  "receipt_scope": "Stock virt model baseline executing original FX3 Image; no Sony hardware compatibility claim"
+}

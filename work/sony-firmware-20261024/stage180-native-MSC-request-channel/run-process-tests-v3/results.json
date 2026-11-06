@@ -1,0 +1,473 @@
+{
+  "status": "PASS_NATIVE_MSC_DISPATCH_AND_REAL_PROCESS_FIXTURES_NO_USB",
+  "cases": [
+    {
+      "name": "native-MSC-budget-grammar-and-single-STOP-family-2",
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          2,
+          7,
+          7
+        ],
+        "peer_alive": true,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    },
+    {
+      "name": "native-MSC-budget-grammar-and-single-STOP-family-8",
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          2,
+          7,
+          7
+        ],
+        "peer_alive": true,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    },
+    {
+      "name": "one-datagram-reject-short"
+    },
+    {
+      "name": "one-datagram-reject-oversized"
+    },
+    {
+      "name": "one-datagram-reject-bad-magic"
+    },
+    {
+      "name": "one-datagram-reject-bad-version"
+    },
+    {
+      "name": "foreign-generation"
+    },
+    {
+      "name": "wrong-session-nonce"
+    },
+    {
+      "name": "replayed-ID-cannot-resend-START"
+    },
+    {
+      "name": "pre-START-observation-cannot-arm-and-no-retry-after-denial"
+    },
+    {
+      "name": "native-grammar-refuses-skipped-or-nonzero-challenge-and-bad-length"
+    },
+    {
+      "name": "native-failure-no-retry-2-1",
+      "result": {
+        "id": 4,
+        "status": 5,
+        "flags": 5,
+        "exchanges": 1,
+        "requests": 4,
+        "pending": 0,
+        "bytes": 0,
+        "native": [
+          {
+            "abi": 1,
+            "status": 3,
+            "op": 2,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": -536854449,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_proof": 0
+          },
+          {
+            "abi": 0,
+            "status": 0,
+            "op": 0,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 0,
+            "returned": 0,
+            "raw": 0,
+            "buffer_ok": 0,
+            "owner_ok": 0,
+            "body_proof": 0
+          }
+        ]
+      },
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          1,
+          1,
+          0
+        ],
+        "peer_alive": true,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    },
+    {
+      "name": "native-failure-no-retry-2-2",
+      "result": {
+        "id": 4,
+        "status": 5,
+        "flags": 13,
+        "exchanges": 1,
+        "requests": 4,
+        "pending": 0,
+        "bytes": 0,
+        "native": [
+          {
+            "abi": 1,
+            "status": 4,
+            "op": 2,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": -536854447,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_proof": 0
+          },
+          {
+            "abi": 0,
+            "status": 0,
+            "op": 0,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 0,
+            "returned": 0,
+            "raw": 0,
+            "buffer_ok": 0,
+            "owner_ok": 0,
+            "body_proof": 0
+          }
+        ]
+      },
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          1,
+          1,
+          0
+        ],
+        "peer_alive": true,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    },
+    {
+      "name": "native-failure-no-retry-3-5",
+      "result": {
+        "id": 4,
+        "status": 5,
+        "flags": 5,
+        "exchanges": 1,
+        "requests": 4,
+        "pending": 0,
+        "bytes": 0,
+        "native": [
+          {
+            "abi": 1,
+            "status": 0,
+            "op": 2,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_proof": 0
+          },
+          {
+            "abi": 1,
+            "status": 7,
+            "op": 3,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 515,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_proof": 0
+          }
+        ]
+      },
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          1,
+          1,
+          1
+        ],
+        "peer_alive": true,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    },
+    {
+      "name": "native-failure-no-retry-3-6",
+      "result": {
+        "id": 4,
+        "status": 5,
+        "flags": 13,
+        "exchanges": 1,
+        "requests": 4,
+        "pending": 0,
+        "bytes": 0,
+        "native": [
+          {
+            "abi": 1,
+            "status": 0,
+            "op": 2,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_proof": 0
+          },
+          {
+            "abi": 1,
+            "status": 8,
+            "op": 3,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 517,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_proof": 0
+          }
+        ]
+      },
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          1,
+          1,
+          1
+        ],
+        "peer_alive": true,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    },
+    {
+      "name": "native-failure-no-retry-2-7",
+      "result": {
+        "id": 4,
+        "status": 5,
+        "flags": 13,
+        "exchanges": 1,
+        "requests": 4,
+        "pending": 0,
+        "bytes": 0,
+        "native": [
+          {
+            "abi": 1,
+            "status": 9,
+            "op": 2,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": 0,
+            "buffer_ok": 0,
+            "owner_ok": 1,
+            "body_proof": 0
+          },
+          {
+            "abi": 0,
+            "status": 0,
+            "op": 0,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 0,
+            "returned": 0,
+            "raw": 0,
+            "buffer_ok": 0,
+            "owner_ok": 0,
+            "body_proof": 0
+          }
+        ]
+      },
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          1,
+          1,
+          0
+        ],
+        "peer_alive": true,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    },
+    {
+      "name": "native-failure-no-retry-2-17",
+      "result": {
+        "id": 4,
+        "status": 5,
+        "flags": 13,
+        "exchanges": 1,
+        "requests": 4,
+        "pending": 0,
+        "bytes": 0,
+        "native": [
+          {
+            "abi": 1,
+            "status": 10,
+            "op": 2,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_proof": 0
+          },
+          {
+            "abi": 0,
+            "status": 0,
+            "op": 0,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 0,
+            "returned": 0,
+            "raw": 0,
+            "buffer_ok": 0,
+            "owner_ok": 0,
+            "body_proof": 0
+          }
+        ]
+      },
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          1,
+          1,
+          0
+        ],
+        "peer_alive": true,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    },
+    {
+      "name": "fresh-observation-admits-only-explicit-one-STOP"
+    },
+    {
+      "name": "real-child-remains-pending-until-explicit-fake-gate-release"
+    },
+    {
+      "name": "actual-controller-exit-sets-cancel-retains-pending-no-IN-or-automatic-STOP",
+      "result": {
+        "id": 4,
+        "status": 5,
+        "flags": 5,
+        "exchanges": 1,
+        "requests": 4,
+        "pending": 0,
+        "bytes": 0,
+        "native": [
+          {
+            "abi": 1,
+            "status": 17,
+            "op": 2,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 1000,
+            "returned": 1,
+            "raw": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_proof": 0
+          },
+          {
+            "abi": 0,
+            "status": 0,
+            "op": 0,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout": 0,
+            "returned": 0,
+            "raw": 0,
+            "buffer_ok": 0,
+            "owner_ok": 0,
+            "body_proof": 0
+          }
+        ]
+      },
+      "summary": {
+        "schema": 1,
+        "mode": "own-process-fixture",
+        "host_idle": true,
+        "native_pending": 0,
+        "calls": [
+          1,
+          1,
+          0
+        ],
+        "peer_alive": false,
+        "body_completion_proven": false,
+        "automatic_STOP": false
+      }
+    }
+  ],
+  "actual_root_or_USB_operations": 0,
+  "real_root_bootstrap_or_peer_credential_verification": false,
+  "case_count": 20,
+  "source_sha256": {
+    "native_session.c": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1",
+    "process_fixture.c": "e7d4e14ea7078681b293241a89fdb7bc6aad6981033595f84c658978d7d53ff6",
+    "native_session.h": "ce81b1e02f901323776114588989deb2938c65e9d99b0f02692bb8d1d57291d5",
+    "test_process_channel.py": "3f219e55885f6e7544d2a9347a33742f93f9dd42c2d875a11373207b2c198e6c"
+  }
+}

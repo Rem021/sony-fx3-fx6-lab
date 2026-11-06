@@ -1,0 +1,19 @@
+{
+  "aggregate_phase": "P_CLAIM=7",
+  "signed_return": -536870210,
+  "hex_return": "0xe00002be",
+  "name": "kIOReturnNoResources",
+  "exact_suboperation_not_recorded": true,
+  "possible_return_sites": [
+    "CreateInterfaceIterator",
+    "IOCreatePlugInInterfaceForService or null plugin",
+    "interface metadata getters",
+    "USBInterfaceOpen"
+  ],
+  "query_interface_failure_maps_to_different_unsupported_code": true,
+  "profile_fields_all_zero": true,
+  "GetPipeProperties_not_reached_if_profile_endpoints_zero_in_this_code": true,
+  "SDK_metadata_getters_documented_not_requiring_interface_open": true,
+  "post_return_plugin_metadata_present_not_capture_time_proof": true,
+  "no_unapproved_retry_or_SetConfiguration_allowed": true
+}

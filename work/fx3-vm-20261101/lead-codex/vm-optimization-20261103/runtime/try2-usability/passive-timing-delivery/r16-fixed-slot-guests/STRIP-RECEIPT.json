@@ -1,0 +1,88 @@
+{
+  "variants": [
+    {
+      "variant": "N1",
+      "raw_bytes": 66832,
+      "stripped_bytes": 22048,
+      "stripped_sha256": "da4eef557353223542cfab4d0e9f9b91a42a3c77a886f42f791867d0e2a45d92",
+      "alloc_section_count": 19,
+      "program_headers_equal": true,
+      "elf_header_changes": [
+        {
+          "field": "shoff",
+          "before": 64848,
+          "after": 20640
+        },
+        {
+          "field": "shnum",
+          "before": 31,
+          "after": 22
+        },
+        {
+          "field": "shstrndx",
+          "before": 29,
+          "after": 21
+        }
+      ],
+      "pt_load_differing_offsets": [
+        [
+          40,
+          41,
+          60,
+          62
+        ],
+        [],
+        [],
+        []
+      ],
+      "removed_static_sections": [
+        ".strtab",
+        ".symtab"
+      ]
+    },
+    {
+      "variant": "N64",
+      "raw_bytes": 66896,
+      "stripped_bytes": 22160,
+      "stripped_sha256": "3ea77f9bc94ca3f4c5edb863b20bbe1245ebde1d868e61243bf0b0d8cc3511b2",
+      "alloc_section_count": 19,
+      "program_headers_equal": true,
+      "elf_header_changes": [
+        {
+          "field": "shoff",
+          "before": 64912,
+          "after": 20752
+        },
+        {
+          "field": "shnum",
+          "before": 31,
+          "after": 22
+        },
+        {
+          "field": "shstrndx",
+          "before": 29,
+          "after": 21
+        }
+      ],
+      "pt_load_differing_offsets": [
+        [
+          40,
+          41,
+          60,
+          62
+        ],
+        [],
+        [],
+        []
+      ],
+      "removed_static_sections": [
+        ".strtab",
+        ".symtab"
+      ]
+    }
+  ],
+  "tool_sha256": "b5b9bf75763b193575a007074e6701d1a1541ba9d3658ae32a164fc350eca8bc",
+  "original_debug_ELFs_retained": true,
+  "no_VM": true,
+  "no_CPIO": true
+}

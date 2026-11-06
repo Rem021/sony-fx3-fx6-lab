@@ -1,0 +1,9 @@
+"""Read-only pinned current image outside an armed timer; no identity promotion."""
+from common import *
+def snapshot(name,out,step):
+ c=identity();out=Path(out);out.mkdir()
+ code=r'''(async()=>{const c=CONFIG,s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||lastStatus.steps!==c.step||!lastStatus.ready||lastStatus.phase!=='ready'||lastStatus.error||!frameLoadedFor(lastStatus)||busy||ending||finished||renderFault||deliveryUnknown||reviewUnknown||window.__fx3InteractionDeadlineV1.status().current?.state==='armed')throw Error('untimed_current_image_identity');return {step:lastStatus.steps,sha:shownSHA,gen:displayedGeneration,seq:displayed,origin:performance.timeOrigin,frame:lastStatus.frame,attempt:fx3KeyAttemptOutcome(),performance_ms:performance.now()};})()'''.replace('CONFIG',json.dumps({**c,'step':step}))
+ before=ev(name+'-before',code);browser(name+'-screenshot',['screenshot',str(out/'current.png')]);after=ev(name+'-after',code)
+ assert all(before[x]==after[x] for x in ('step','sha','gen','origin')) and after['seq']>=before['seq']
+ p=out/'current.png';assert p.is_file() and not p.is_symlink() and p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+ v={'status':'qualified_current_screenshot','screenshot_path':str(p),'screenshot_sha256':sha(p),'firmware':{k:before[k] for k in ('step','sha','gen','seq')},'before':before,'after':after,'actual_semantic_review':'pending next explicit operator call',**stamp()};(out/'capture-result.json').write_text(json.dumps(v,indent=2)+'\n');return v

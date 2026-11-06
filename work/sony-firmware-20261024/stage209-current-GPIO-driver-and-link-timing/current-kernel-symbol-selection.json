@@ -1,0 +1,426 @@
+{
+  "kernel_source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+  "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "parser_source": "work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/kernel_symbols.py",
+  "parser_sha256": "db8a1ebba52e8bfb85367e3d8450e1ef89224d0bb9e768bf656c6370600614a1",
+  "symbols_recovered": 41269,
+  "reparsed_matches_prior_catalog": true,
+  "selected": [
+    {
+      "index": 10971,
+      "type": "t",
+      "name": "quirk_chelsio_extend_vpd",
+      "address": 18446743524090813728,
+      "file_offset": 2333984,
+      "compressed_offset": 127070,
+      "compressed_next": 127088
+    },
+    {
+      "index": 10978,
+      "type": "t",
+      "name": "quirk_chelsio_T5_disable_root_port_attributes",
+      "address": 18446743524090814672,
+      "file_offset": 2334928,
+      "compressed_offset": 127171,
+      "compressed_next": 127199
+    },
+    {
+      "index": 11000,
+      "type": "t",
+      "name": "ich6_lpc_acpi_gpio",
+      "address": 18446743524090817344,
+      "file_offset": 2337600,
+      "compressed_offset": 127506,
+      "compressed_next": 127520
+    },
+    {
+      "index": 11024,
+      "type": "t",
+      "name": "reset_chelsio_generic_dev",
+      "address": 18446743524090821392,
+      "file_offset": 2341648,
+      "compressed_offset": 127970,
+      "compressed_next": 127985
+    },
+    {
+      "index": 11795,
+      "type": "t",
+      "name": "clk_gpio_gate_enable",
+      "address": 18446743524090966936,
+      "file_offset": 2487192,
+      "compressed_offset": 137232,
+      "compressed_next": 137244
+    },
+    {
+      "index": 11796,
+      "type": "t",
+      "name": "clk_gpio_gate_disable",
+      "address": 18446743524090966952,
+      "file_offset": 2487208,
+      "compressed_offset": 137244,
+      "compressed_next": 137256
+    },
+    {
+      "index": 11797,
+      "type": "t",
+      "name": "clk_gpio_gate_is_enabled",
+      "address": 18446743524090966960,
+      "file_offset": 2487216,
+      "compressed_offset": 137256,
+      "compressed_next": 137271
+    },
+    {
+      "index": 11798,
+      "type": "t",
+      "name": "clk_gpio_mux_get_parent",
+      "address": 18446743524090966976,
+      "file_offset": 2487232,
+      "compressed_offset": 137271,
+      "compressed_next": 137286
+    },
+    {
+      "index": 11799,
+      "type": "t",
+      "name": "clk_gpio_mux_set_parent",
+      "address": 18446743524090966992,
+      "file_offset": 2487248,
+      "compressed_offset": 137286,
+      "compressed_next": 137301
+    },
+    {
+      "index": 11800,
+      "type": "t",
+      "name": "gpio_clk_driver_probe",
+      "address": 18446743524090967008,
+      "file_offset": 2487264,
+      "compressed_offset": 137301,
+      "compressed_next": 137316
+    },
+    {
+      "index": 11801,
+      "type": "t",
+      "name": "clk_register_gpio.isra.0",
+      "address": 18446743524090967184,
+      "file_offset": 2487440,
+      "compressed_offset": 137316,
+      "compressed_next": 137328
+    },
+    {
+      "index": 11802,
+      "type": "T",
+      "name": "clk_hw_register_gpio_gate",
+      "address": 18446743524090967392,
+      "file_offset": 2487648,
+      "compressed_offset": 137328,
+      "compressed_next": 137341
+    },
+    {
+      "index": 11803,
+      "type": "T",
+      "name": "clk_register_gpio_gate",
+      "address": 18446743524090967416,
+      "file_offset": 2487672,
+      "compressed_offset": 137341,
+      "compressed_next": 137351
+    },
+    {
+      "index": 11804,
+      "type": "T",
+      "name": "clk_hw_register_gpio_mux",
+      "address": 18446743524090967456,
+      "file_offset": 2487712,
+      "compressed_offset": 137351,
+      "compressed_next": 137365
+    },
+    {
+      "index": 11805,
+      "type": "T",
+      "name": "clk_register_gpio_mux",
+      "address": 18446743524090967512,
+      "file_offset": 2487768,
+      "compressed_offset": 137365,
+      "compressed_next": 137376
+    },
+    {
+      "index": 12245,
+      "type": "t",
+      "name": "hw_gpio_set_mode_port",
+      "address": 18446743524091061536,
+      "file_offset": 2581792,
+      "compressed_offset": 142364,
+      "compressed_next": 142378
+    },
+    {
+      "index": 12246,
+      "type": "T",
+      "name": "gpio_set_data_bit",
+      "address": 18446743524091061968,
+      "file_offset": 2582224,
+      "compressed_offset": 142378,
+      "compressed_next": 142390
+    },
+    {
+      "index": 12247,
+      "type": "T",
+      "name": "gpio_set_data_port",
+      "address": 18446743524091062160,
+      "file_offset": 2582416,
+      "compressed_offset": 142390,
+      "compressed_next": 142402
+    },
+    {
+      "index": 12248,
+      "type": "T",
+      "name": "gpio_set_mode_bit",
+      "address": 18446743524091062392,
+      "file_offset": 2582648,
+      "compressed_offset": 142402,
+      "compressed_next": 142413
+    },
+    {
+      "index": 12249,
+      "type": "T",
+      "name": "gpio_set_mode_port",
+      "address": 18446743524091062576,
+      "file_offset": 2582832,
+      "compressed_offset": 142413,
+      "compressed_next": 142425
+    },
+    {
+      "index": 12250,
+      "type": "t",
+      "name": "gpio_close",
+      "address": 18446743524091062752,
+      "file_offset": 2583008,
+      "compressed_offset": 142425,
+      "compressed_next": 142433
+    },
+    {
+      "index": 12251,
+      "type": "t",
+      "name": "gpio_probe",
+      "address": 18446743524091062760,
+      "file_offset": 2583016,
+      "compressed_offset": 142433,
+      "compressed_next": 142442
+    },
+    {
+      "index": 12252,
+      "type": "t",
+      "name": "gpio_remove",
+      "address": 18446743524091062856,
+      "file_offset": 2583112,
+      "compressed_offset": 142442,
+      "compressed_next": 142451
+    },
+    {
+      "index": 12253,
+      "type": "t",
+      "name": "gpio_suspend",
+      "address": 18446743524091062864,
+      "file_offset": 2583120,
+      "compressed_offset": 142451,
+      "compressed_next": 142461
+    },
+    {
+      "index": 12254,
+      "type": "t",
+      "name": "gpio_resume",
+      "address": 18446743524091063144,
+      "file_offset": 2583400,
+      "compressed_offset": 142461,
+      "compressed_next": 142470
+    },
+    {
+      "index": 12255,
+      "type": "t",
+      "name": "gpio_exit",
+      "address": 18446743524091063472,
+      "file_offset": 2583728,
+      "compressed_offset": 142470,
+      "compressed_next": 142478
+    },
+    {
+      "index": 12256,
+      "type": "t",
+      "name": "gpio_write_proc",
+      "address": 18446743524091063528,
+      "file_offset": 2583784,
+      "compressed_offset": 142478,
+      "compressed_next": 142488
+    },
+    {
+      "index": 12257,
+      "type": "t",
+      "name": "gpio_read_proc",
+      "address": 18446743524091064000,
+      "file_offset": 2584256,
+      "compressed_offset": 142488,
+      "compressed_next": 142498
+    },
+    {
+      "index": 12258,
+      "type": "t",
+      "name": "hw_gpio_get_mode_bit",
+      "address": 18446743524091065200,
+      "file_offset": 2585456,
+      "compressed_offset": 142498,
+      "compressed_next": 142512
+    },
+    {
+      "index": 12259,
+      "type": "T",
+      "name": "gpio_get_mode_bit",
+      "address": 18446743524091065432,
+      "file_offset": 2585688,
+      "compressed_offset": 142512,
+      "compressed_next": 142524
+    },
+    {
+      "index": 12260,
+      "type": "t",
+      "name": "gpio_init",
+      "address": 18446743524091065616,
+      "file_offset": 2585872,
+      "compressed_offset": 142524,
+      "compressed_next": 142531
+    },
+    {
+      "index": 12261,
+      "type": "t",
+      "name": "hw_gpio_get_data_bit",
+      "address": 18446743524091065752,
+      "file_offset": 2586008,
+      "compressed_offset": 142531,
+      "compressed_next": 142546
+    },
+    {
+      "index": 12262,
+      "type": "T",
+      "name": "gpio_get_data_bit",
+      "address": 18446743524091065864,
+      "file_offset": 2586120,
+      "compressed_offset": 142546,
+      "compressed_next": 142559
+    },
+    {
+      "index": 12263,
+      "type": "t",
+      "name": "hw_gpio_get_data_port",
+      "address": 18446743524091065968,
+      "file_offset": 2586224,
+      "compressed_offset": 142559,
+      "compressed_next": 142574
+    },
+    {
+      "index": 12264,
+      "type": "T",
+      "name": "gpio_get_data_port",
+      "address": 18446743524091066064,
+      "file_offset": 2586320,
+      "compressed_offset": 142574,
+      "compressed_next": 142587
+    },
+    {
+      "index": 12265,
+      "type": "t",
+      "name": "gpio_ioctl",
+      "address": 18446743524091066168,
+      "file_offset": 2586424,
+      "compressed_offset": 142587,
+      "compressed_next": 142597
+    },
+    {
+      "index": 12266,
+      "type": "t",
+      "name": "gpio_open",
+      "address": 18446743524091066968,
+      "file_offset": 2587224,
+      "compressed_offset": 142597,
+      "compressed_next": 142605
+    },
+    {
+      "index": 14236,
+      "type": "t",
+      "name": "fusb_configure_gpio.constprop.11",
+      "address": 18446743524091443984,
+      "file_offset": 2964240,
+      "compressed_offset": 166596,
+      "compressed_next": 166615
+    },
+    {
+      "index": 14240,
+      "type": "T",
+      "name": "fusb_set_gpio_base",
+      "address": 18446743524091444864,
+      "file_offset": 2965120,
+      "compressed_offset": 166652,
+      "compressed_next": 166664
+    },
+    {
+      "index": 14241,
+      "type": "T",
+      "name": "fusb_setup_gpioint",
+      "address": 18446743524091444920,
+      "file_offset": 2965176,
+      "compressed_offset": 166664,
+      "compressed_next": 166675
+    },
+    {
+      "index": 14791,
+      "type": "T",
+      "name": "i2c_generic_gpio_recovery",
+      "address": 18446743524091576736,
+      "file_offset": 3096992,
+      "compressed_offset": 173937,
+      "compressed_next": 173957
+    },
+    {
+      "index": 15452,
+      "type": "T",
+      "name": "gpiopin_to_irq",
+      "address": 18446743524091736640,
+      "file_offset": 3256896,
+      "compressed_offset": 182388,
+      "compressed_next": 182397
+    },
+    {
+      "index": 35101,
+      "type": "t",
+      "name": "__boottime_gpio_clk_driver_init",
+      "address": 18446743524094547484,
+      "file_offset": 6067740,
+      "compressed_offset": 418557,
+      "compressed_next": 418572
+    },
+    {
+      "index": 35120,
+      "type": "t",
+      "name": "__boottime___udif_init_gpio",
+      "address": 18446743524094551048,
+      "file_offset": 6071304,
+      "compressed_offset": 418780,
+      "compressed_next": 418795
+    },
+    {
+      "index": 36071,
+      "type": "t",
+      "name": "__initcall___udif_init_gpio3",
+      "address": 18446743524094638776,
+      "file_offset": 6159032,
+      "compressed_offset": 430242,
+      "compressed_next": 430258
+    },
+    {
+      "index": 36257,
+      "type": "t",
+      "name": "__initcall_gpio_clk_driver_init6",
+      "address": 18446743524094640232,
+      "file_offset": 6160488,
+      "compressed_offset": 433153,
+      "compressed_next": 433170
+    }
+  ],
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

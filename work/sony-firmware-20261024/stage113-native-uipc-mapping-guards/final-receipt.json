@@ -1,0 +1,117 @@
+{
+  "schema": "fx3-stage113-uipc-mapping-guards/1",
+  "created_utc": "2026-10-27T14:41:47.075714+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/README.md",
+      "bytes": 6605,
+      "sha256": "ca399ef98c5dabf91894b3a516fd5630db95e01bb3142ce57fe400a2792bef81"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/completed-evidence-review.json",
+      "bytes": 725,
+      "sha256": "c39900f3e9793fef02d7835f2eb90076bfb4d6a306cf33716ef7baaf38779f7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/goal-status-after.json",
+      "bytes": 348813,
+      "sha256": "957e4fa343cef51af2a41e3e220a03a76af85a1e7af4c1d88f0ae59cdd8b645e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/goal-status-before.json",
+      "bytes": 345987,
+      "sha256": "73f41fbbbbe6e98e48df93f58cd5a93917d0637d869b47dd4689878aa8466bcf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/mapping_guards.py",
+      "bytes": 19593,
+      "sha256": "a9c70f76abb785b2bee611f488533b7579fd69af78d2c3dc217e64cdbb091ad3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/public-source-notes.json",
+      "bytes": 651,
+      "sha256": "2903a034bb68baec3abca4959a557821368581d4a3dd04266406af118b4db4f6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/review_and_seal.py",
+      "bytes": 14885,
+      "sha256": "191a0f4d56cac98a8d1a44b3a257df94cbe013f6e36bf41cf60d3833128a26bc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/run-inclusive-address-limit-20261027/executed-source.py",
+      "bytes": 19593,
+      "sha256": "a9c70f76abb785b2bee611f488533b7579fd69af78d2c3dc217e64cdbb091ad3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/run-inclusive-address-limit-20261027/mapping-guard-results.json",
+      "bytes": 194252,
+      "sha256": "4b7ff9a52a5a535249fdcc9a2466681002c442485dddb37139b066c467072c98"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/run-native-return-observer-20261027/attempt-failure.json",
+      "bytes": 55001,
+      "sha256": "56b6fa2de4e1c181a66822ce9ae7d4aeaa80fce27470b86e6fe6afefe6ccb68d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/run-native-return-observer-20261027/executed-source.py",
+      "bytes": 19256,
+      "sha256": "658e5d28e8a43bcfb33b11cf567db91246e25dbc4c25c33dd5b5e2b0ff9957de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/run-original-pointer-guards-20261027/attempt-failure.json",
+      "bytes": 22969,
+      "sha256": "065cb77599fcc04d6228eaa9152d6cb33e2e83a2f79d1200367d47b8314d8a6a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/run-original-pointer-guards-20261027/executed-source.py",
+      "bytes": 19175,
+      "sha256": "f523ee20645d59e960a4fe502e9cb3537000574a738794273f5dc111808ee047"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/source-and-scope-audit.json",
+      "bytes": 31565,
+      "sha256": "26909bd8d8d2e90ec06bdc7a743cbb64f058543a50f9ee7fad03eae35f684c60"
+    }
+  ],
+  "previous_manifest_sha256": "220d3d748e02bba4823cecebb63deea3826df5fd51c942a1ee1ee6bc0d21afc4",
+  "operations": {
+    "status": "PASS_ORIGINAL_DISPATCH_MAPPING_GUARDS_AND_DECLARED_AFFINE_POINTER_SLICES",
+    "created_utc": "2026-10-27T14:41:47.075714+00:00",
+    "previous_manifest_members_verified": 15,
+    "case_counts": {
+      "dispatch_cases": 30,
+      "allocation_entry_cases": 10,
+      "mapping_flows": 4,
+      "free_range_cases": 10,
+      "mmap_length_cases": 6,
+      "mmap_status_cases": 4
+    },
+    "bounded_phases": 112,
+    "local_ABS64_data_relocations": 21,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "original_executed_instruction_bytes_unchanged": true,
+    "actual_kernel_services_camera_or_Windows_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "73f41fbbbbe6e98e48df93f58cd5a93917d0637d869b47dd4689878aa8466bcf",
+    "after_sha256": "957e4fa343cef51af2a41e3e220a03a76af85a1e7af4c1d88f0ae59cdd8b645e"
+  },
+  "readme_index_before_sha256": "e5a765c93639852e089c8e0744fb88b5add804a31013600ecca18cfc34e03433",
+  "readme_index_after_sha256": "4325413ba55578922cda7397809a22ca4cb9177d9ef76d190983e7713dc77270",
+  "readme_index_entry": "- [2026-10-27 FX3 原UIPC映射与分发守卫](<work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/README.md>)：原操作分发/归属/2MiB映射限制及独立指针正反转换112阶段；真实映射、寿命、MAIN实录与恢复仍未验，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

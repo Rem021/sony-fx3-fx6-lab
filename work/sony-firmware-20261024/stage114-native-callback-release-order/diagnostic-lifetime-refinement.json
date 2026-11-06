@@ -1,0 +1,30 @@
+{
+  "schema": "fx3-guest-only-diagnostic-lifetime/1",
+  "status": "SPEC_ONLY_UNDEPLOYABLE",
+  "refines_stages": [
+    111,
+    112,
+    113
+  ],
+  "original_normal_callback_exit_requests_message_free": true,
+  "free_request_is_not_actual_success": true,
+  "original_message_pointer_must_not_escape_as_readable_lease": true,
+  "proposed_snapshot_rule": "Only copy needed bytes while a verified live message lease and readable extent exist, before the native free request; consumers get owned copies, not raw pointers.",
+  "reply_wire_bytes": 44,
+  "conditional_copy_storage_bytes": 48,
+  "four_extra_bytes_are_allocator_tail_under_stage112_conditions_not_wire_payload": true,
+  "raw98_parameter_body_ownership_is_a_separate_unproved_requirement": true,
+  "pending_callback_registration_node_is_not_message_storage": true,
+  "generic_free_return0_does_not_prove_last_reference_or_completed_pool_return": true,
+  "marker77777777_not_checked_in_executed_free_slice": true,
+  "runtime_proofs_still_needed": [
+    "actual client flags and callback ownership",
+    "real mapped readable extent",
+    "real reference/queue synchronization and owned snapshot allocation",
+    "actual free and independent backup/restore readback",
+    "real MAIN profile, hardware encoded file and long-run acceptance"
+  ],
+  "guest_prototype_changed": false,
+  "camera_or_persistent_use_permitted": false,
+  "goal_complete": false
+}

@@ -1,0 +1,281 @@
+{
+  "schema": "fx3-persistent-research-progress-v1",
+  "updated_utc": "2026-10-25T18:15:44.480111+00:00",
+  "objective": "持续实现经典Sony ILME-FX3 7.02可用的1920x1080、29.97fps（精确30.000fps单列）、HEVC420 10bit约16Mbps主录，并完成对应恢复、冷启动、实际成片、音画同步与长录验收。",
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "research_activity": "engineering_progress_within_offline_authorization",
+  "latest_stage": "stage15-private-activation",
+  "native_goal_state_not_modified": true,
+  "progress_audit": {
+    "classification": "progress",
+    "basis": [
+      "实现guest-only独立激活分支；19组原合法HS关闭时与stock一致、开启时实际得到目标参数，模型值未写。",
+      "17组合成模式对照中，原5个非法保留值问题在合法模型方案下返回stock结果；S&Q依赖仍未闭合。",
+      "8种开关快照出现5种不一致；固定开关而变更模式快照也产生5个不一致，明确整体配置所有权需求。"
+    ],
+    "completion_not_claimed": true
+  },
+  "authorization": {
+    "scope": "Windows_cached_PnP_inventory_only",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": false,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false
+  },
+  "requirements": [
+    {
+      "id": "G01",
+      "requirement": "经典ILME-FX3实机7.02身份与同机程序指纹",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage7-entry/menu-version-confirmation.json",
+        "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json"
+      ],
+      "remaining": "菜单7.02与MSC054C:0DA1已确认；尚无实机程序哈希和唯一机身绑定。"
+    },
+    {
+      "id": "G02",
+      "requirement": "主录规格1920x1080、HEVC420 10bit约16Mbps、29.97fps；精确30.000fps单列",
+      "status": "offline_functional_profile_parameter_chain_only",
+      "evidence": [
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/hd420-16m-chain.json",
+        "work/sony-firmware-20261024/stage11-model/builder/typed-selection-results.json",
+        "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+        "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/profile-results.json",
+        "work/sony-firmware-20261024/stage13-query-profile/run-20261025/query-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json"
+      ],
+      "remaining": "实验guest选择实际产出builder15/6/2/0→真实setter6/6/3→MAIN stream0 codec15、1920x1080/42010/APIquality22、raw16000、30000/1001。仅局部参数准备；硬件Open/Start、实际码流及精确30.000fps未建立。"
+    },
+    {
+      "id": "G03",
+      "requirement": "原厂固件来源、解包与离线程序完整性",
+      "status": "proven_within_official_sample_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/source-receipt.json",
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/entry-provenance-check.json"
+      ],
+      "remaining": "官方提取件的哈希不能代替用户机身实际原件或校准数据。"
+    },
+    {
+      "id": "G04",
+      "requirement": "服务接收、权限、文件处理与正常回复静态路径",
+      "status": "proven_within_static_normal_path_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/reply/final-reply-proof.json"
+      ],
+      "remaining": "当前pFunc、adjCodeLevel、队列初始化和真实USB可达性未观察；错误/加密路径未全面覆盖。"
+    },
+    {
+      "id": "G05",
+      "requirement": "真实认证、退出与USB完整传输",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "无实机主动访问；service PID/端点、短包/ZLP/timeout完成语义、认证权限与退出均待对应授权及验收。"
+    },
+    {
+      "id": "G06",
+      "requirement": "完整目标长度的候选回复重组",
+      "status": "proven_within_synthetic_bytes_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/host/offline-fixtures.json",
+        "work/sony-firmware-20261024/stage10-mainpath/host/source-receipt.json"
+      ],
+      "remaining": "31合成测试含79,015,712B/76段；无backend、真实文件、传输或备份。"
+    },
+    {
+      "id": "G07",
+      "requirement": "同机健康备份、来源绑定与完整内容真实性",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "未读取机身原件或完整backup；官方DAT和合成长度不能替代同机健康检查点。"
+    },
+    {
+      "id": "G08",
+      "requirement": "FX3专用最小模块加载、ABI及权限",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage8-adaptation/device/device-abi-audit.json",
+        "work/sony-firmware-20261024/stage9-protocol/jiritsu/command-handler-table.json"
+      ],
+      "remaining": "加载模型有静态依据；实际获准加载、syscall/权限/结构布局及正常退出未验收。"
+    },
+    {
+      "id": "G09",
+      "requirement": "当前WBI后端、失效流程与冷启动加载一致性",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage9-protocol/wbi/sysfs-attribute-audit.json",
+        "work/sony-firmware-20261024/stage9-protocol/wbi/sysfs-handler-disassembly.txt"
+      ],
+      "remaining": "原厂快照有接口和顺序语义；当前image_dev/模式及backend到介质、实际冷启动未证。 独立开关重设的guest实验不证明物理重启清除RAM，WBI恢复语义仍需验证。"
+    },
+    {
+      "id": "G10",
+      "requirement": "设置模型、菜单、查询与目标主录参数一致",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/main/main-path-summary.json",
+        "work/sony-firmware-20261024/stage10-mainpath/main/setter-conversion-results.json",
+        "work/sony-firmware-20261024/stage11-model/builder/typed-key-evidence.json",
+        "work/sony-firmware-20261024/stage11-model/builder/typed-selection-results.json",
+        "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json",
+        "work/sony-firmware-20261024/stage11-model/capabilities/candidate-constraints.json",
+        "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+        "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json",
+        "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json",
+        "work/sony-firmware-20261024/stage13-query-profile/run-20261025/query-results.json",
+        "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/model-lifecycle-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json"
+      ],
+      "remaining": "独立激活参数原型保留合法模型值并对齐局部builder/setter/query；尚无真实配置所有者、统一快照、录制空闲门禁、NTSC/PAL条件、菜单显示、完整通知或保存。异步快照负例已证不一致。"
+    },
+    {
+      "id": "G11",
+      "requirement": "硬件编码器实际接受Open与Start",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "纯参数包和转换块仿真不能证明硬件接受。"
+    },
+    {
+      "id": "G12",
+      "requirement": "实际主录文件规格、HEVC参数集、GOP、码率与图像内容",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "需主录而非仅代理的真实文件，检查尺寸、色度、位深、VPS/SPS/PPS、GOP、码率及画面完整性。"
+    },
+    {
+      "id": "G13",
+      "requirement": "实际音频、时间戳、音画同步与连续录制",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "需实际媒体的音轨、PTS/DTS、时间基与同步证据。"
+    },
+    {
+      "id": "G14",
+      "requirement": "冷启动与长录、温度及既有模式回归",
+      "status": "missing",
+      "evidence": [
+        "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/model-lifecycle-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json"
+      ],
+      "remaining": "合法模型+私有开关在5个此前错误的合成上下文返回stock，但固定开关时不同模式快照仍可不一致；6组S&Q依赖未闭合。仍缺实际转换顺序、冷启动、长录温度和模式回归。"
+    },
+    {
+      "id": "G15",
+      "requirement": "受限恢复器、原字节回读和对应故障范围",
+      "status": "missing",
+      "evidence": [
+        "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+        "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json",
+        "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/model-lifecycle-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json"
+      ],
+      "remaining": "合法模型方案降低局部非法设置回退问题；尚无真实同机原件、健康检查点、受限恢复器、私有状态生命周期/保存恢复顺序或原字节回读。停用guest开关不等于固件回退/救砖。"
+    },
+    {
+      "id": "G16",
+      "requirement": "故障时独立入口与维护边界",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage7-entry/firmware/focused-evidence.json"
+      ],
+      "remaining": "未证明主应用失效后冷启动服务可达；不以诱发主力机变砖取证，不借用A7CII救砖保证。"
+    }
+  ],
+  "next_safe_offline_actions": [
+    "追builder/setter/query及完整录制调用者的线程、配置所有者、通知和录制空闲边界，不能只给开关加原子读。",
+    "追NTSC/PAL内部模型语义和可用性，绑定29.97目标的系统前提；不把合法枚举笛卡尔积当作真实PAL上下文。",
+    "查独立状态内存分配、初始化、WBI快照与持久化；保留最终菜单、保存和实际冷启动要求。",
+    "追真实状态/剩余时间调用者与固定质量显示，完善同机健康备份及受限恢复顺序。",
+    "用户告知UU连接恢复后才交接缓存PnP包；主动相机接口、认证、模块或机身读写仍未授权。"
+  ],
+  "completion_rule": "所有用户目标要求必须有对应范围的可复核实际证据；静态分析、合成测试、报告或计划不能替代硬件主录与恢复验收。",
+  "latest_stage_evidence": {
+    "notes": [
+      "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md"
+    ],
+    "report": "reports/索尼 FX3 定点原型与查询准备.md",
+    "proof": [
+      "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+      "work/sony-firmware-20261024/stage12-prototype/profile/review-summary.json",
+      "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/profile-results.json",
+      "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/reproduction-entry.json",
+      "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json",
+      "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json",
+      "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline-verification.json",
+      "work/sony-firmware-20261024/stage12-prototype/msc-probe/approval-packet.json",
+      "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json",
+      "work/sony-firmware-20261024/stage12-prototype/msc-probe/windows-cache-handoff/sha256-manifest.json"
+    ],
+    "scope": "Bounded guest-only prototype in synthetic model context plus static consumer/source preparation; no full menu/sequence or device acceptance.",
+    "new_counts": {
+      "legitimate_HS_stock_vs_prototype": 19,
+      "builder_controls": 8,
+      "setter_controls": 8,
+      "target_chain": 1,
+      "logging_return_nonconsumption_sites": 24,
+      "MSC_local_static_synthetic_ABI_checks": 43
+    },
+    "coordinator_verification": "Python AST/boundary review and independent run of the same implementation in a separate directory, reported PASS in about4.3seconds. Root cached-wrapper/API and9hash review passed. Writer only read, hashed and checked links; no writer CPU replay or device access.",
+    "coordinator_observations": "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json",
+    "active_probe_state": {
+      "ready_to_run": false,
+      "binding_missing": true,
+      "active_entry_disabled": true,
+      "Windows_CSharp_PowerShell_compiled_or_run": false
+    },
+    "stage15_private_activation": {
+      "readme": "work/sony-firmware-20261024/stage15-private-activation/README.md",
+      "proof": [
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json"
+      ],
+      "summary": "work/sony-firmware-20261024/stage15-private-activation/run-20261025/summary.json",
+      "snapshot_summary": "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/summary.json",
+      "scope": "Guest-only consistent inputs and independent input-snapshot counterexamples; no actual scheduling, transitions, NTSC/PAL gating, persistence, camera or recovery.",
+      "real_activation_owner_or_sync_implemented": false,
+      "physical_goal_reduced_to_RAM_only": false,
+      "remote_deferred_by_user": true
+    }
+  },
+  "corrections_to_prior_stage": {
+    "stage10_frame13_control": {
+      "old_label": "HS420 59.94/100M",
+      "actual_setter_frame": 13,
+      "mpr_frame": 2,
+      "actual_rational": "25/1",
+      "target_frame15_to_mpr3": "30000/1001 confirmed",
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage11-model/builder/typed-selection-results.json"
+    }
+  },
+  "next_authorized_cached_metadata_action": {
+    "scope": "Windows cached PnP inventory only, unchanged prior authorization",
+    "prepared_handoff": "work/sony-firmware-20261024/stage12-prototype/msc-probe/windows-cache-handoff/sha256-manifest.json",
+    "action": "Verify existing Windows host/project, review and compile cached-only source, DryRun, collect unique disk-interface/USB-parent association metadata into new host-local private output. No camera/disk interface handle or SCSI command.",
+    "current_external_dependency": "UU app twice reported server/connection error and device offline; no file transfer or Windows task performed.",
+    "whole_goal_blocked": false,
+    "active_query_ready": false,
+    "active_query_permission_request": false
+  },
+  "external_dependencies": {
+    "Windows_cached_association_handoff": {
+      "status": "deferred_until_user_restores_connection",
+      "user_response": "稍后恢复连接",
+      "new_remote_attempts_this_stage": false,
+      "cached_only_authorization_unchanged": true,
+      "active_camera_authorization_granted": false
+    }
+  }
+}

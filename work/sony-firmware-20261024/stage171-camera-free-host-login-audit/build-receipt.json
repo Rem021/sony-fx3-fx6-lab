@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "xcrun",
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage171-camera-free-host-login-audit/host_login_probe.c",
+    "-framework",
+    "Security",
+    "-lbsm",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage171-camera-free-host-login-audit/artifacts/host-login-probe"
+  ],
+  "compiler_stderr": "",
+  "source_sha256": "d361567c1398eec5eb02f1c40fb5fe841e7bc101be43d7e0955e4644a99741bd",
+  "executable_sha256": "86ee5e828e78b1ecf41e040567c86f57449fa9e17a055e92354bfd23f3fd03c5",
+  "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage171-camera-free-host-login-audit/artifacts/host-login-probe:\n\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.0.55)\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+  "undefined_symbols": "_SessionGetInfo\n___chkstk_darwin\n___error\n___snprintf_chk\n___stack_chk_fail\n___stack_chk_guard\n___stderrp\n_bzero\n_close\n_fprintf\n_fsync\n_getaudit_addr\n_getauid\n_geteuid\n_getpid\n_getppid\n_getsid\n_getuid\n_lstat\n_memset\n_open\n_printf\n_proc_pidpath\n_puts\n_strcmp\n_write\n",
+  "root_or_camera_execution": false,
+  "protected_permission_changes": false
+}

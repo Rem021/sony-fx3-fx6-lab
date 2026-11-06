@@ -1,0 +1,27 @@
+{
+  "created_utc": "2026-10-30T14:01:55.044010+00:00",
+  "reviewed_scope": "Public source consumers and interval arithmetic, with explicitly separate AP/CP domains and source/runtime evidence.",
+  "reviewed_findings": [
+    "Identical public UDIF header is partial source compatibility only",
+    "FX3 and FX5 DMA32 ESRAM/DDR rules differ",
+    "Twenty original default spans are not twenty measured buffers",
+    "Cache helpers require actual MMU translation; no privileged instructions executed",
+    "Source cachetype2 checks endpoints only",
+    "mmap cache guard is disabled by default",
+    "SG map timing differs; not itself a defect claim",
+    "Device-tree sample size does not identify real RAM or RAW pool",
+    "FX3 7.00 public sources do not establish actual 7.02 binary binding"
+  ],
+  "initial_source_layout_probe": "Zero matches for mach-cxd90057 was retained; exact namespace from archive index then yielded eight sources.",
+  "source_collector_edits_after_capture": "Reduced metadata printing and moved namespace selection before the read loop; captured vendor files and formulae unchanged.",
+  "verification": {
+    "source_files": 44,
+    "source_literal_locations": 42,
+    "original_default_spans": 20,
+    "boundary_inputs": 9,
+    "prior_sealed_files_verified": 109
+  },
+  "execution_scope": "Only own Python/static analysis and volume metadata; no compiler, vendor source execution, device, cache/TLB, native Sony updater or private signing-key work.",
+  "goal_complete": false,
+  "modified_or_flashable_firmware_produced": false
+}

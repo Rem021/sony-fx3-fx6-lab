@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/controller_dispatch.py\", line 235, in main\n    cases.append(one(blob,metadata,seed,'base',0,False))\n                 ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/controller_dispatch.py\", line 191, in one\n    es.append(m.defaults());e,_=m.classify_and_build((120,68),1);es.append(e);es.append(m.prepare_geometry((120,68)))\n                                                                                        ~~~~~~~~~~~~~~~~~~^^^^^^^^^^\nTypeError: Guest.prepare_geometry() missing 1 required positional argument: 'mode'\n",
+  "completed_cases": 0
+}

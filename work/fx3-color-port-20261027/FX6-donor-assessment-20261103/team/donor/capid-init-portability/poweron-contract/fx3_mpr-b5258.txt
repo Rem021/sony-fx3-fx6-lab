@@ -1,0 +1,23 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b521c <_ZN3mpr14IntegEventMainEPv>:
+   b5258: b9400320     	ldr	w0, [x25]
+   b525c: 34000460     	cbz	w0, 0xb52e8 <_ZN3mpr14IntegEventMainEPv+0xcc>
+   b5260: 7100041f     	cmp	w0, #0x1
+   b5264: 54ffffc1     	b.ne	0xb525c <_ZN3mpr14IntegEventMainEPv+0x40>
+   b5268: 2a1303e3     	mov	w3, w19
+   b526c: 910163a2     	add	x2, x29, #0x58
+   b5270: 910153a1     	add	x1, x29, #0x54
+   b5274: 910143a0     	add	x0, x29, #0x50
+   b5278: 97ff2de2     	bl	0x80a00 <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj@plt>
+   b527c: 72001c1f     	tst	w0, #0xff
+   b5280: 54fffec0     	b.eq	0xb5258 <_ZN3mpr14IntegEventMainEPv+0x3c>
+   b5284: b94053a0     	ldr	w0, [x29, #0x50]
+   b5288: 7100041f     	cmp	w0, #0x1
+   b528c: 54000081     	b.ne	0xb529c <_ZN3mpr14IntegEventMainEPv+0x80>
+   b5290: b94057a0     	ldr	w0, [x29, #0x54]
+   b5294: f9402fa1     	ldr	x1, [x29, #0x58]
+   b5298: 97ff3542     	bl	0x827a0 <_ZN3mpr14SendIssueEventENS_5EVTIDEm@plt>

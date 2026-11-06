@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "mode": "cleanup-armed",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/cleanup.py",
+  "source_sha256": "8d60b8665c4738650475594f5f2d4a42dce1a3467cee2954631066b36dc98faa",
+  "actual_runpy_name": "__main__",
+  "argv": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/cleanup.py"
+  ],
+  "init_globals_supplied": false,
+  "dependency_common_exports_sys": false,
+  "browser_HTTP_QEMU_processes_started": 0,
+  "strict_external_doubles": true,
+  "trace": [
+    {
+      "kind": "event",
+      "name": "cleanup_entry_End_first"
+    },
+    {
+      "kind": "readonly_eval_double",
+      "name": "End-original-button"
+    },
+    {
+      "kind": "readonly_eval_double",
+      "name": "ended-state"
+    },
+    {
+      "kind": "browser_operation_double",
+      "name": "ended-page",
+      "args": [
+        "screenshot",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/cleanup-armed/ended-page.png"
+      ]
+    },
+    {
+      "kind": "deadline_operation_double",
+      "action": "status"
+    },
+    {
+      "kind": "browser_operation_double",
+      "name": "HAR-stop",
+      "args": [
+        "network",
+        "har",
+        "stop",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/cleanup-armed/traffic.har"
+      ]
+    },
+    {
+      "kind": "browser_operation_double",
+      "name": "browser-before-close",
+      "args": [
+        "session",
+        "info",
+        "--json"
+      ]
+    },
+    {
+      "kind": "browser_operation_double",
+      "name": "browser-close",
+      "args": [
+        "close"
+      ]
+    },
+    {
+      "kind": "browser_operation_double",
+      "name": "browser-after-close",
+      "args": [
+        "session",
+        "info",
+        "--json"
+      ]
+    },
+    {
+      "kind": "pid_probe_double",
+      "pid": 999999
+    },
+    {
+      "kind": "port_probe_double"
+    }
+  ]
+}

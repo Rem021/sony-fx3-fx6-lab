@@ -1,0 +1,121 @@
+{
+  "schema": "fx3-stage108-original-Dataflow-copy/1",
+  "created_utc": "2026-10-27T13:00:37.108744+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/README.md",
+      "bytes": 6164,
+      "sha256": "d320635b0676d25527054df69f5b09a1e25306296ec9fc79fa5eedfae5b52649"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/completed-evidence-review.json",
+      "bytes": 560,
+      "sha256": "79090d7e2dd6d134c1c3b01d3c7726ea788266000a0b9ed8464300510449c12f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/dataflow_copy.py",
+      "bytes": 18145,
+      "sha256": "ada7c728968ef3cc02029da2d0809355a78cb760cf839451c78849d6a193ad04"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/extraction-receipt.json",
+      "bytes": 838,
+      "sha256": "6e717b3283766cd7cd976b4d15909d52ada331ee04ac459051f0d0a48341ebd4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/goal-status-after.json",
+      "bytes": 329389,
+      "sha256": "be24124366273ac943281488ac7f5bdec09a49420308a27e7a85b19b407cbd60"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/goal-status-before.json",
+      "bytes": 324865,
+      "sha256": "642bdd63a653f756b5684e33e9899e5dea9c5298cd6bf7831c76db3e09238873"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/inputs/dataflowInfraFramework.so",
+      "bytes": 306496,
+      "sha256": "5d6a9be3ba359cffb1a1894bb667071e0f0e2fe2749b6c5e36ce8364e57eae2a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/inputs/libc-2.25.so",
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/libc-extraction-receipt.json",
+      "bytes": 872,
+      "sha256": "8dbb7fef030604cfe33e25cf34c8edb0dbff50c7a2e5a0cca29cb070aea936db"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/public-source-notes.json",
+      "bytes": 1890,
+      "sha256": "2babc75f49b458b2273648ed488cf2f93d7bae274f6931c3a10b82d9601866f6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/review_and_seal.py",
+      "bytes": 15374,
+      "sha256": "86a828d341d6a449e240ed05f7f2eaa1983938d95141cdf0ccea39a3a5d8bad5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/run-native-payload-and-header-20261027/dataflow-results.json",
+      "bytes": 223330,
+      "sha256": "211b6f554902849ff4de4277ea2ff2970e6b39bd37e205f5a13e343bc30dfee4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/run-native-payload-and-header-20261027/executed-source.py",
+      "bytes": 18145,
+      "sha256": "ada7c728968ef3cc02029da2d0809355a78cb760cf839451c78849d6a193ad04"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/run-original-libraries-20261027/dataflow-results.json",
+      "bytes": 193101,
+      "sha256": "caae191e34f76a6a78e25bc7a601fecef12437d7e73269315d9893c2017f4183"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/run-original-libraries-20261027/executed-source.py",
+      "bytes": 16076,
+      "sha256": "500b29d34f1a79780a1264aaebef6f9b356a14b872c136076b9a8d410b93f7fb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage108-original-Dataflow-copy/source-and-scope-audit.json",
+      "bytes": 70565,
+      "sha256": "ed1f716ccec559a870594c207e8c103c591e470413fb0966226e14f4b5975135"
+    }
+  ],
+  "previous_manifest_sha256": "a30d39b6f5d6f43700de1de54bd852881fcfa93d56ddf9b5e6da72d5b8e7dbf3",
+  "operations": {
+    "status": "PASS_ORIGINAL_DATAFLOW_COPY_CLEAR_AND_BOUNDED_AV_POINTER_USE_NOT_RUNTIME_TRANSPORT",
+    "created_utc": "2026-10-27T13:00:37.108744+00:00",
+    "prior_files_verified": 17,
+    "message_cases": 8,
+    "complete_header_AV_consumers": 4,
+    "native_raw98_copies": 4,
+    "bounded_phases": 64,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "original_source_images_libraries_and_code_rehashed": true,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "642bdd63a653f756b5684e33e9899e5dea9c5298cd6bf7831c76db3e09238873",
+    "after_sha256": "be24124366273ac943281488ac7f5bdec09a49420308a27e7a85b19b407cbd60"
+  },
+  "readme_index_before_sha256": "1db9918f285d1709102147a9dbc97733196a8478b715e218a309f63b41b8f88d",
+  "readme_index_after_sha256": "35618157f7771eb58b7cf9a06ce0a2a8278b8bb5d9c18eb45cd4aa24c1debe98",
+  "readme_index_entry": "- [2026-10-27 FX3 原消息库与参数复制](<work/sony-firmware-20261024/stage108-original-Dataflow-copy/README.md>)：同固件原memcpy/memset、Dataflow复制/清理、截断对照和AV虚拟指针消费64阶段；硬件与恢复未验收，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

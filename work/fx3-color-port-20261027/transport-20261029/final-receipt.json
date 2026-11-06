@@ -1,0 +1,191 @@
+{
+  "created_utc": "2026-10-29T10:40:55.124839+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "previous_donor_sealed_files_verified": 76,
+  "previous_donor_receipt_sha256": "7485ad09941dcc007b1fb787791710dd4936f5c03033998505b9074bda899709",
+  "previous_2213_older_files": "Verified during preceding donor seal; not rerun here; no writes to those checkpoints.",
+  "source_libraries": 4,
+  "unique_static_function_slices": 23,
+  "dynamic_symbol_function_records": 26,
+  "engine_elf_dependency_inventory": 70,
+  "verifier_contracts_checked": [
+    {
+      "library": "libupdaterapi.so",
+      "verifier": "0x13574",
+      "digest": "SHA256",
+      "rsa_digest_id": "0x2a0",
+      "digest_bytes": 32,
+      "code_sha256": "8453bc0ef0125056c2654f775f95a6c5c5eeef817b0f04f9eeaefb880116f462"
+    },
+    {
+      "library": "libuudfileinputupdaterapi.so",
+      "verifier": "0x97f4",
+      "digest": "SHA256",
+      "rsa_digest_id": "0x2a0",
+      "digest_bytes": 32,
+      "code_sha256": "ac5614b7a5d88713de340c79624ce05cbe7815e0ec5851403e3bd022d3c99584"
+    }
+  ],
+  "project_index_before_bytes": 63068,
+  "project_index_before_sha256": "8df2235f113a9e13863c9b436d9ed7c64c966af1953c4d81cf254cb0b242f863",
+  "project_index_prefix_unchanged": true,
+  "camera_usb_phone_actions": 0,
+  "sony_programs_executed": false,
+  "new_guest_execution": false,
+  "full_modified_firmware_emitted": false,
+  "flashable_package_produced": false,
+  "persistent_goal_status": "active",
+  "goal_completion_claimed": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5234,
+      "sha256": "c81a6d8b175e12452844b13a0af31aee124a4e87903753053423c04bc6d6cefe"
+    },
+    {
+      "path": "disassembly/libcryptfileinputupdaterapi.so-Updater-CryptFileInputUpdaterManager-verifyFile-3f88.txt",
+      "bytes": 2080,
+      "sha256": "96b50436d1283b836dc0e7a354adda8bff310799318c5df5c44b4265bd8bd23d"
+    },
+    {
+      "path": "disassembly/libcryptfileinputupdaterapi.so-non-virtual thunk to Updater-CryptFileInputUpdaterManager-verifyFile-4074.txt",
+      "bytes": 111,
+      "sha256": "08412ed978303cd3edf66a19e72f6dc560e6e0c61a6384fb480bba9384cb3a33"
+    },
+    {
+      "path": "disassembly/libfileinputupdaterapi.so-Updater-FileInputUpdaterManager-verifyFile-3dec.txt",
+      "bytes": 48,
+      "sha256": "2d36d16e956d454f214ca885f9e4155d90b22c13f42a58cae6e943cacf38eb88"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-GetUpdater-10960.txt",
+      "bytes": 1777,
+      "sha256": "4625b7f328e9ccc24720d6ad4764bd10d67259d73e472f8cd9a629b324a34f9f"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-DebugExBase-GetUpdaterMode-11fc4.txt",
+      "bytes": 54,
+      "sha256": "9eea7b669923da0314d05efc5587b7d16ec424b6a753164060ecddab5957e2c1"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-SignatureVerification-VerifySignature-13574.txt",
+      "bytes": 3118,
+      "sha256": "15253fddfdb98cb9e0b53c2d9cb56220b094519cee1a3e260c39c8807edc11eb"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-SignatureVerification-verifyKey-1332c.txt",
+      "bytes": 4890,
+      "sha256": "2b25aed0c9dcee1f400c4483ba1ea5549b4e303cb7775cd72984ffba03aff685"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-UFPDecryptorModule-12c74.txt",
+      "bytes": 1165,
+      "sha256": "675c63dacfaf1d61998a07057bfd063e338fcac5efd401d12417381216a142cc"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-WaitForFirmwareCopyCompletion-12c28.txt",
+      "bytes": 710,
+      "sha256": "010d291b237b4ff40c12e5ea9ae12e3e97105516e769fa9a1c010f2bcd61f96c"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-exec_chk_guard-12cf0.txt",
+      "bytes": 3800,
+      "sha256": "ea8db8849ea96dc6a2668e198933f60def3ec74c3b96f6406b02e6af02bc53ba"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-exec_write_firm-12ea8.txt",
+      "bytes": 9204,
+      "sha256": "fd7d00ba871035f375d753adccfd5a7d86cdadc43f189a3b31a96e15298e9ac9"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UFPDecryptorModule-execute-132cc.txt",
+      "bytes": 329,
+      "sha256": "567cba5081c0dc1f2ec239dd9e67299b24c325f9944a290a37966c2f98b7bbf7"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UpdaterManager-Initialize-10c24.txt",
+      "bytes": 6580,
+      "sha256": "46c178231a14f85fba59896bad20eb5fc380f581595ac904fc0039dacec9f762"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UpdaterManager-ReadyToSwitchMode-ff50.txt",
+      "bytes": 5665,
+      "sha256": "0c8264cfdff97770af8249a6fe05be0dd41a9c14424a3521801d0179cb30c0a7"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UpdaterManager-SwitchMode-101e8.txt",
+      "bytes": 6664,
+      "sha256": "652df81c7138d33a5bc2f0b609f7ba85b5dec4b13c43a23a29a96747039ebba8"
+    },
+    {
+      "path": "disassembly/libupdaterapi.so-Updater-UpdaterManager-SwitchModeMsCrypt-104f8.txt",
+      "bytes": 3522,
+      "sha256": "339a638fa1bb4e0b9867bdb22400ed324c17a29eb1b413fadf976472bc7661d6"
+    },
+    {
+      "path": "disassembly/libuudfileinputupdaterapi.so-Updater-SignatureVerification-VerifySignature-97f4.txt",
+      "bytes": 3102,
+      "sha256": "f0146a3a4e3b25dd433c29f684525e87d9623a105ad5317d87e53075a511a7a2"
+    },
+    {
+      "path": "disassembly/libuudfileinputupdaterapi.so-Updater-SignatureVerification-verifyKey-95ac.txt",
+      "bytes": 4870,
+      "sha256": "4b23dd6900c79ae84bf2bb171952178a6d84617f9a0bcd6f324da2adc466a06c"
+    },
+    {
+      "path": "disassembly/libuudfileinputupdaterapi.so-Updater-UFPDecryptorModule-UFPDecryptorModule-7d14.txt",
+      "bytes": 1164,
+      "sha256": "ae47793b2f21b8a18cfe244eac090343519541f9c683e57d741929648c226307"
+    },
+    {
+      "path": "disassembly/libuudfileinputupdaterapi.so-Updater-UFPDecryptorModule-WaitForFirmwareCopyCompletion-7cc8.txt",
+      "bytes": 710,
+      "sha256": "965c2bce53b7a8563a5561b5969d37c6f68ddf9c661d61202185110693b22b02"
+    },
+    {
+      "path": "disassembly/libuudfileinputupdaterapi.so-Updater-UFPDecryptorModule-exec_write_firm-7f48.txt",
+      "bytes": 9177,
+      "sha256": "455945c4a8d164506dca74db2d782be1d300407c9b190a5b584d718970b6d206"
+    },
+    {
+      "path": "disassembly/libuudfileinputupdaterapi.so-Updater-UUDFileDecryptorModule-UUDFileDecryptorModule-86f0.txt",
+      "bytes": 1257,
+      "sha256": "f74ea1b1747cbfac8fac03eb90807d2328121ebf7f1cf258f44aecc5a5f0a9c7"
+    },
+    {
+      "path": "disassembly/libuudfileinputupdaterapi.so-Updater-UUDFileDecryptorModule-execWriteFirm-8774.txt",
+      "bytes": 9353,
+      "sha256": "deaea823a11c52971fdea45943a87ecac32a93e411808fe52912dfe2e6c94367"
+    },
+    {
+      "path": "input-dependency-and-vtable-results.json",
+      "bytes": 37056,
+      "sha256": "082a424e0f19a6d6bb9371514624db075918c6709c5f725a707145bcffdfd638"
+    },
+    {
+      "path": "input-path-static-results.json",
+      "bytes": 57109,
+      "sha256": "0ef64439244ee887f1adce8b80ea9eb0442b6390872809386adef9f0a021e1d6"
+    },
+    {
+      "path": "inspect_input_graph.py",
+      "bytes": 5324,
+      "sha256": "833200fe9b576470bb999281ec4150ea3decfed6ea85183dbcb4fc493c886836"
+    },
+    {
+      "path": "inspect_input_paths.py",
+      "bytes": 4553,
+      "sha256": "8cb8390a5ad6d94dd66ac8ecb9bef62c7f22bfaab8bd8ab895ca850552e1f136"
+    },
+    {
+      "path": "validate_and_seal.py",
+      "bytes": 4921,
+      "sha256": "7c9816736768b8515df346a43f8a727aff63090a34008aed0bc8f743a54d172e"
+    },
+    {
+      "path": "verification-contract-review.json",
+      "bytes": 2078,
+      "sha256": "45cc29686e239d6c9f333070b9ec21ff9afe9878af83ab3c2dbadebd030e58e0"
+    }
+  ]
+}

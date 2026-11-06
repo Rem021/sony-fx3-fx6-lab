@@ -1,0 +1,29 @@
+000ed8cc fd7bbda9 stp      x29, x30, [sp, #-0x30]!
+000ed8d0 80070090 adrp     x0, #0x1dd000
+000ed8d4 00cc1c91 add      x0, x0, #0x733
+000ed8d8 03008052 mov      w3, #0
+000ed8dc fd030091 mov      x29, sp
+000ed8e0 42008052 mov      w2, #2
+000ed8e4 a1830091 add      x1, x29, #0x20
+000ed8e8 f30b00f9 str      x19, [sp, #0x10]
+000ed8ec a07f02a9 stp      x0, xzr, [x29, #0x20]
+000ed8f0 14a4fd97 bl       #0x56940 ; stm_system
+000ed8f4 f303002a mov      w19, w0
+000ed8f8 82a5fd97 bl       #0x56f00 ; __errno_location
+000ed8fc 010040b9 ldr      w1, [x0]
+000ed900 00008052 mov      w0, #0
+000ed904 3f280071 cmp      w1, #0xa
+000ed908 60010054 b.eq     #0xed934
+000ed90c 7f1a40f2 tst      x19, #0x7f
+000ed910 617e0813 asr      w1, w19, #8
+000ed914 61000054 b.ne     #0xed920
+000ed918 201c0072 ands     w0, w1, #0xff
+000ed91c c0000054 b.eq     #0xed934
+000ed920 80070090 adrp     x0, #0x1dd000
+000ed924 211c0053 uxtb     w1, w1
+000ed928 003c1d91 add      x0, x0, #0x74f
+000ed92c e9a8fd97 bl       #0x57cd0 ; printf
+000ed930 20008052 mov      w0, #1
+000ed934 f30b40f9 ldr      x19, [sp, #0x10]
+000ed938 fd7bc3a8 ldp      x29, x30, [sp], #0x30
+000ed93c c0035fd6 ret      

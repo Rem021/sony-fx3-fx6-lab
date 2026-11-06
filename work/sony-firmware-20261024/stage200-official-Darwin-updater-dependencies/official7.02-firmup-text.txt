@@ -1,0 +1,814 @@
+# Original ELF VA, every4B alignment includes possible data; locators only, not measured camera PC.
+0x400c30 000000b0 adrp     x0, #0x401000
+0x400c34 fd7bafa9 stp      x29, x30, [sp, #-0x110]!
+0x400c38 00802491 add      x0, x0, #0x920 ; source string candidate '/dev/sio'
+0x400c3c fd030091 mov      x29, sp
+0x400c40 f55b02a9 stp      x21, x22, [sp, #0x20]
+0x400c44 f50301aa mov      x21, x1
+0x400c48 010040f9 ldr      x1, [x0]
+0x400c4c 00204039 ldrb     w0, [x0, #8]
+0x400c50 a14300f9 str      x1, [x29, #0x80]
+0x400c54 a0230239 strb     w0, [x29, #0x88]
+0x400c58 801a8052 mov      w0, #0xd4
+0x400c5c 201fa072 movk     w0, #0xf9, lsl #16
+0x400c60 f35301a9 stp      x19, x20, [sp, #0x10]
+0x400c64 f96b04a9 stp      x25, x26, [sp, #0x40]
+0x400c68 740200f0 adrp     x20, #0x44f000
+0x400c6c f76303a9 stp      x23, x24, [sp, #0x30]
+0x400c70 fb7305a9 stp      x27, x28, [sp, #0x50]
+0x400c74 bf270239 strb     wzr, [x29, #0x89]
+0x400c78 bfe30079 strh     wzr, [x29, #0x70]
+0x400c7c d5ffff97 bl       #0x400bd0 ; import Backup_read_4Byte
+0x400c80 f303002a mov      w19, w0
+0x400c84 20168052 mov      w0, #0xb1
+0x400c88 201fa072 movk     w0, #0xf9, lsl #16
+0x400c8c d1ffff97 bl       #0x400bd0 ; import Backup_read_4Byte
+0x400c90 f903002a mov      w25, w0
+0x400c94 a00d8052 mov      w0, #0x6d
+0x400c98 201fa072 movk     w0, #0xf9, lsl #16
+0x400c9c cdffff97 bl       #0x400bd0 ; import Backup_read_4Byte
+0x400ca0 fa03002a mov      w26, w0
+0x400ca4 010000b0 adrp     x1, #0x401000
+0x400ca8 e203132a mov      w2, w19
+0x400cac 21583291 add      x1, x1, #0xc96
+0x400cb0 a0c30191 add      x0, x29, #0x70
+0x400cb4 bf7700b9 str      wzr, [x29, #0x74]
+0x400cb8 a2ffff97 bl       #0x400b40 ; import sprintf
+0x400cbc a1c30191 add      x1, x29, #0x70
+0x400cc0 a0030291 add      x0, x29, #0x80
+0x400cc4 d3ffff97 bl       #0x400c10 ; import strcat
+0x400cc8 e2031a2a mov      w2, w26
+0x400ccc e103192a mov      w1, w25
+0x400cd0 a0030291 add      x0, x29, #0x80
+0x400cd4 7d010094 bl       #0x4012c8
+0x400cd8 f303002a mov      w19, w0
+0x400cdc e0080034 cbz      w0, #0x400df8
+0x400ce0 e303002a mov      w3, w0
+0x400ce4 010000b0 adrp     x1, #0x401000
+0x400ce8 000000b0 adrp     x0, #0x401000
+0x400cec 21a02691 add      x1, x1, #0x9a8 ; source string candidate 'darwin_com_init'
+0x400cf0 00542791 add      x0, x0, #0x9d5 ; source string candidate '[UD_COM_PIC] %s:%d:device_initialize() failed, ERRMSG[%d]\n'
+0x400cf4 c2358052 mov      w2, #0x1ae
+0x400cf8 caffff97 bl       #0x400c20 ; import printf
+0x400cfc 600200f0 adrp     x0, #0x44f000
+0x400d00 760200f0 adrp     x22, #0x44f000
+0x400d04 00d041b9 ldr      w0, [x0, #0x1d0]
+0x400d08 aeffff97 bl       #0x400bc0 ; import close
+0x400d0c 600200f0 adrp     x0, #0x44f000
+0x400d10 00e440f9 ldr      x0, [x0, #0x1c8]
+0x400d14 a7ffff97 bl       #0x400bb0 ; import UdtrGpioClose
+0x400d18 80020391 add      x0, x20, #0xc0
+0x400d1c 740200f0 adrp     x20, #0x44f000
+0x400d20 1c084079 ldrh     w28, [x0, #4]
+0x400d24 1b684079 ldrh     w27, [x0, #0x34]
+0x400d28 030c4079 ldrh     w3, [x0, #6]
+0x400d2c e1031c2a mov      w1, w28
+0x400d30 046c4079 ldrh     w4, [x0, #0x36]
+0x400d34 000000b0 adrp     x0, #0x401000
+0x400d38 e2031b2a mov      w2, w27
+0x400d3c 00543491 add      x0, x0, #0xd15 ; source string candidate 'OLD version boo = %04x, boo_ex = %04x, core = %04x, core ex = %04x \n'
+0x400d40 a40f0d29 stp      w4, w3, [x29, #0x68]
+0x400d44 b7ffff97 bl       #0x400c20 ; import printf
+0x400d48 a00640f9 ldr      x0, [x21, #8]
+0x400d4c a1430291 add      x1, x29, #0x90
+0x400d50 e4020094 bl       #0x4018e0
+0x400d54 a06340f9 ldr      x0, [x29, #0xc0]
+0x400d58 01008052 mov      w1, #0
+0x400d5c c0c201b9 str      w0, [x22, #0x1c0]
+0x400d60 a00640f9 ldr      x0, [x21, #8]
+0x400d64 6bffff97 bl       #0x400b10 ; import open
+0x400d68 80ba00b9 str      w0, [x20, #0xb8]
+0x400d6c a00af836 tbz      w0, #0x1f, #0x400ec0
+0x400d70 010000b0 adrp     x1, #0x401000
+0x400d74 000000b0 adrp     x0, #0x401000
+0x400d78 a30640f9 ldr      x3, [x21, #8]
+0x400d7c 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x400d80 00683591 add      x0, x0, #0xd5a ; source string candidate '[UD_COM_PIC] %s:%d:%s cannot be opened.\n'
+0x400d84 42428052 mov      w2, #0x212
+0x400d88 a6ffff97 bl       #0x400c20 ; import printf
+0x400d8c 18008052 mov      w24, #0
+0x400d90 17008052 mov      w23, #0
+0x400d94 a00a40f9 ldr      x0, [x21, #0x10]
+0x400d98 a1430291 add      x1, x29, #0x90
+0x400d9c d1020094 bl       #0x4018e0
+0x400da0 a06340f9 ldr      x0, [x29, #0xc0]
+0x400da4 01008052 mov      w1, #0
+0x400da8 c0c201b9 str      w0, [x22, #0x1c0]
+0x400dac a00a40f9 ldr      x0, [x21, #0x10]
+0x400db0 58ffff97 bl       #0x400b10 ; import open
+0x400db4 80ba00b9 str      w0, [x20, #0xb8]
+0x400db8 c011f836 tbz      w0, #0x1f, #0x400ff0
+0x400dbc 010000b0 adrp     x1, #0x401000
+0x400dc0 000000b0 adrp     x0, #0x401000
+0x400dc4 a30a40f9 ldr      x3, [x21, #0x10]
+0x400dc8 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x400dcc 00683591 add      x0, x0, #0xd5a ; source string candidate '[UD_COM_PIC] %s:%d:%s cannot be opened.\n'
+0x400dd0 22488052 mov      w2, #0x241
+0x400dd4 93ffff97 bl       #0x400c20 ; import printf
+0x400dd8 e003132a mov      w0, w19
+0x400ddc f35341a9 ldp      x19, x20, [sp, #0x10]
+0x400de0 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x400de4 f76343a9 ldp      x23, x24, [sp, #0x30]
+0x400de8 f96b44a9 ldp      x25, x26, [sp, #0x40]
+0x400dec fb7345a9 ldp      x27, x28, [sp, #0x50]
+0x400df0 fd7bd1a8 ldp      x29, x30, [sp], #0x110
+0x400df4 c0035fd6 ret      
+0x400df8 770200f0 adrp     x23, #0x44f000
+0x400dfc 021080d2 mov      x2, #0x80
+0x400e00 f6020591 add      x22, x23, #0x140
+0x400e04 01008052 mov      w1, #0
+0x400e08 e00316aa mov      x0, x22
+0x400e0c f86f98d2 mov      x24, #0xc37f
+0x400e10 3839a0f2 movk     x24, #0x1c9, lsl #16
+0x400e14 43ffff97 bl       #0x400b20 ; import memset
+0x400e18 20028052 mov      w0, #0x11
+0x400e1c e0020539 strb     w0, [x23, #0x140]
+0x400e20 80008052 mov      w0, #4
+0x400e24 170000b0 adrp     x23, #0x401000
+0x400e28 c0060039 strb     w0, [x22, #1]
+0x400e2c a0e30191 add      x0, x29, #0x78
+0x400e30 160000b0 adrp     x22, #0x401000
+0x400e34 f7663291 add      x23, x23, #0xc99 ; source string candidate '[UD_COM_PIC] %s:%d:darwin_send_recv_data() failed, ERRMSG[%d]\n'
+0x400e38 d6822591 add      x22, x22, #0x960 ; source string candidate 'darwin_change_state'
+0x400e3c 0b010094 bl       #0x401268
+0x400e40 a03f40f9 ldr      x0, [x29, #0x78]
+0x400e44 a04b00f9 str      x0, [x29, #0x90]
+0x400e48 a13f40f9 ldr      x1, [x29, #0x78]
+0x400e4c a04b40f9 ldr      x0, [x29, #0x90]
+0x400e50 000001cb sub      x0, x0, x1
+0x400e54 1f0018eb cmp      x0, x24
+0x400e58 29010054 b.ls     #0x400e7c
+0x400e5c 13f5ff34 cbz      w19, #0x400cfc
+0x400e60 010000b0 adrp     x1, #0x401000
+0x400e64 000000b0 adrp     x0, #0x401000
+0x400e68 e303132a mov      w3, w19
+0x400e6c 82368052 mov      w2, #0x1b4
+0x400e70 21a02691 add      x1, x1, #0x9a8 ; source string candidate 'darwin_com_init'
+0x400e74 00603391 add      x0, x0, #0xcd8 ; source string candidate '[UD_COM_PIC] %s:%d:darwin_change_state() failed, ERRMSG[%d]\n'
+0x400e78 a0ffff17 b        #0x400cf8
+0x400e7c 007d8052 mov      w0, #0x3e8
+0x400e80 40ffff97 bl       #0x400b80 ; import usleep
+0x400e84 b0010094 bl       #0x401544
+0x400e88 f303002a mov      w19, w0
+0x400e8c c0000034 cbz      w0, #0x400ea4
+0x400e90 e303002a mov      w3, w0
+0x400e94 e10316aa mov      x1, x22
+0x400e98 e00317aa mov      x0, x23
+0x400e9c a2278052 mov      w2, #0x13d
+0x400ea0 60ffff97 bl       #0x400c20 ; import printf
+0x400ea4 80020391 add      x0, x20, #0xc0
+0x400ea8 00044039 ldrb     w0, [x0, #1]
+0x400eac 1f100071 cmp      w0, #4
+0x400eb0 60fdff54 b.eq     #0x400e5c
+0x400eb4 a0430291 add      x0, x29, #0x90
+0x400eb8 ec000094 bl       #0x401268
+0x400ebc e3ffff17 b        #0x400e48
+0x400ec0 810000f0 adrp     x1, #0x413000
+0x400ec4 22008052 mov      w2, #1
+0x400ec8 22c40239 strb     w2, [x1, #0xb1]
+0x400ecc 810000f0 adrp     x1, #0x413000
+0x400ed0 c2c281b9 ldrsw    x2, [x22, #0x1c0]
+0x400ed4 21e00291 add      x1, x1, #0xb8
+0x400ed8 16ffff97 bl       #0x400b30 ; import read
+0x400edc f303002a mov      w19, w0
+0x400ee0 c1c241b9 ldr      w1, [x22, #0x1c0]
+0x400ee4 1f00016b cmp      w0, w1
+0x400ee8 60010054 b.eq     #0x400f14
+0x400eec a30640f9 ldr      x3, [x21, #8]
+0x400ef0 010000b0 adrp     x1, #0x401000
+0x400ef4 000000b0 adrp     x0, #0x401000
+0x400ef8 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x400efc 000c3691 add      x0, x0, #0xd83 ; source string candidate '[UD_COM_PIC] %s:%d:%s cannot be read.\n'
+0x400f00 22438052 mov      w2, #0x219
+0x400f04 47ffff97 bl       #0x400c20 ; import printf
+0x400f08 80ba40b9 ldr      w0, [x20, #0xb8]
+0x400f0c 2dffff97 bl       #0x400bc0 ; import close
+0x400f10 9fffff17 b        #0x400d8c
+0x400f14 a1d30191 add      x1, x29, #0x74
+0x400f18 3a010094 bl       #0x401400
+0x400f1c 003c0053 uxth     w0, w0
+0x400f20 1f080071 cmp      w0, #2
+0x400f24 60030054 b.eq     #0x400f90
+0x400f28 1f0c0071 cmp      w0, #3
+0x400f2c e0030054 b.eq     #0x400fa8
+0x400f30 1f040071 cmp      w0, #1
+0x400f34 61040054 b.ne     #0x400fc0
+0x400f38 a27740b9 ldr      w2, [x29, #0x74]
+0x400f3c 000000b0 adrp     x0, #0x401000
+0x400f40 00a83691 add      x0, x0, #0xdaa ; source string candidate 'NEW boo version = %04x, boo ex version = %04x\n'
+0x400f44 583c0053 uxth     w24, w2
+0x400f48 417c1053 lsr      w1, w2, #0x10
+0x400f4c e203182a mov      w2, w24
+0x400f50 373c0053 uxth     w23, w1
+0x400f54 33ffff97 bl       #0x400c20 ; import printf
+0x400f58 ff020071 cmp      w23, #0
+0x400f5c 8013577a ccmp     w28, w23, #0, ne
+0x400f60 6003587a ccmp     w27, w24, #0, eq
+0x400f64 61030054 b.ne     #0x400fd0
+0x400f68 010000b0 adrp     x1, #0x401000
+0x400f6c 000000b0 adrp     x0, #0x401000
+0x400f70 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x400f74 00643791 add      x0, x0, #0xdd9 ; source string candidate '[UD_COM_PIC] %s:%d:Boo Firm-Up is not needed.\n'
+0x400f78 a2448052 mov      w2, #0x225
+0x400f7c 13008052 mov      w19, #0
+0x400f80 28ffff97 bl       #0x400c20 ; import printf
+0x400f84 80ba40b9 ldr      w0, [x20, #0xb8]
+0x400f88 0effff97 bl       #0x400bc0 ; import close
+0x400f8c 82ffff17 b        #0x400d94
+0x400f90 010000b0 adrp     x1, #0x401000
+0x400f94 000000b0 adrp     x0, #0x401000
+0x400f98 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x400f9c 00203891 add      x0, x0, #0xe08 ; source string candidate '[UD_COM_PIC] %s:%d:NEW version boo is not found.\n'
+0x400fa0 a2458052 mov      w2, #0x22d
+0x400fa4 1fffff97 bl       #0x400c20 ; import printf
+0x400fa8 010000b0 adrp     x1, #0x401000
+0x400fac 000000b0 adrp     x0, #0x401000
+0x400fb0 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x400fb4 00e83891 add      x0, x0, #0xe3a ; source string candidate '[UD_COM_PIC] %s:%d:NEW version boo is invalid.\n'
+0x400fb8 e2458052 mov      w2, #0x22f
+0x400fbc 19ffff97 bl       #0x400c20 ; import printf
+0x400fc0 80ba40b9 ldr      w0, [x20, #0xb8]
+0x400fc4 13008012 mov      w19, #-1
+0x400fc8 fefeff97 bl       #0x400bc0 ; import close
+0x400fcc 83ffff17 b        #0x400dd8
+0x400fd0 e2031a2a mov      w2, w26
+0x400fd4 e103192a mov      w1, w25
+0x400fd8 a0030291 add      x0, x29, #0x80
+0x400fdc a5010094 bl       #0x401670
+0x400fe0 f303002a mov      w19, w0
+0x400fe4 80ba40b9 ldr      w0, [x20, #0xb8]
+0x400fe8 f6feff97 bl       #0x400bc0 ; import close
+0x400fec 6affff17 b        #0x400d94
+0x400ff0 810000f0 adrp     x1, #0x413000
+0x400ff4 42008052 mov      w2, #2
+0x400ff8 22c40239 strb     w2, [x1, #0xb1]
+0x400ffc 810000f0 adrp     x1, #0x413000
+0x401000 c2c281b9 ldrsw    x2, [x22, #0x1c0]
+0x401004 21e00291 add      x1, x1, #0xb8
+0x401008 cafeff97 bl       #0x400b30 ; import read
+0x40100c f303002a mov      w19, w0
+0x401010 c1c241b9 ldr      w1, [x22, #0x1c0]
+0x401014 1f00016b cmp      w0, w1
+0x401018 60010054 b.eq     #0x401044
+0x40101c 01000090 adrp     x1, #0x401000
+0x401020 00000090 adrp     x0, #0x401000
+0x401024 a30a40f9 ldr      x3, [x21, #0x10]
+0x401028 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x40102c 000c3691 add      x0, x0, #0xd83 ; source string candidate '[UD_COM_PIC] %s:%d:%s cannot be read.\n'
+0x401030 02498052 mov      w2, #0x248
+0x401034 fbfeff97 bl       #0x400c20 ; import printf
+0x401038 80ba40b9 ldr      w0, [x20, #0xb8]
+0x40103c e1feff97 bl       #0x400bc0 ; import close
+0x401040 66ffff17 b        #0x400dd8
+0x401044 a1d30191 add      x1, x29, #0x74
+0x401048 ee000094 bl       #0x401400
+0x40104c 003c0053 uxth     w0, w0
+0x401050 1f080071 cmp      w0, #2
+0x401054 60040054 b.eq     #0x4010e0
+0x401058 1f0c0071 cmp      w0, #3
+0x40105c e0040054 b.eq     #0x4010f8
+0x401060 1f040071 cmp      w0, #1
+0x401064 e1faff54 b.ne     #0x400fc0
+0x401068 b37740b9 ldr      w19, [x29, #0x74]
+0x40106c 00000090 adrp     x0, #0x401000
+0x401070 00a83991 add      x0, x0, #0xe6a ; source string candidate 'NEW core version = %04x, core ex version = %04x\n'
+0x401074 623e0053 uxth     w2, w19
+0x401078 757e1053 lsr      w21, w19, #0x10
+0x40107c e103152a mov      w1, w21
+0x401080 e8feff97 bl       #0x400c20 ; import printf
+0x401084 ff020071 cmp      w23, #0
+0x401088 e0125c7a ccmp     w23, w28, #0, ne
+0x40108c 21040054 b.ne     #0x401110
+0x401090 b53e0053 uxth     w21, w21
+0x401094 bf020071 cmp      w21, #0
+0x401098 00135b7a ccmp     w24, w27, #0, ne
+0x40109c a1030054 b.ne     #0x401110
+0x4010a0 a06f40b9 ldr      w0, [x29, #0x6c]
+0x4010a4 733e0053 uxth     w19, w19
+0x4010a8 1f00156b cmp      w0, w21
+0x4010ac a06b40b9 ldr      w0, [x29, #0x68]
+0x4010b0 6002407a ccmp     w19, w0, #0, eq
+0x4010b4 e1020054 b.ne     #0x401110
+0x4010b8 01000090 adrp     x1, #0x401000
+0x4010bc 00000090 adrp     x0, #0x401000
+0x4010c0 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x4010c4 006c3a91 add      x0, x0, #0xe9b ; source string candidate '[UD_COM_PIC] %s:%d:Core Firm-Up is not needed.\n'
+0x4010c8 a24a8052 mov      w2, #0x255
+0x4010cc 13008052 mov      w19, #0
+0x4010d0 d4feff97 bl       #0x400c20 ; import printf
+0x4010d4 80ba40b9 ldr      w0, [x20, #0xb8]
+0x4010d8 bafeff97 bl       #0x400bc0 ; import close
+0x4010dc 3fffff17 b        #0x400dd8
+0x4010e0 01000090 adrp     x1, #0x401000
+0x4010e4 00000090 adrp     x0, #0x401000
+0x4010e8 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x4010ec 002c3b91 add      x0, x0, #0xecb ; source string candidate '[UD_COM_PIC] %s:%d:NEW version core is not found.\n'
+0x4010f0 a24b8052 mov      w2, #0x25d
+0x4010f4 cbfeff97 bl       #0x400c20 ; import printf
+0x4010f8 01000090 adrp     x1, #0x401000
+0x4010fc 00000090 adrp     x0, #0x401000
+0x401100 e24b8052 mov      w2, #0x25f
+0x401104 21402791 add      x1, x1, #0x9d0 ; source string candidate 'main'
+0x401108 00f83b91 add      x0, x0, #0xefe ; source string candidate '[UD_COM_PIC] %s:%d:NEW version core is invalid.\n'
+0x40110c acffff17 b        #0x400fbc
+0x401110 e2031a2a mov      w2, w26
+0x401114 e103192a mov      w1, w25
+0x401118 a0030291 add      x0, x29, #0x80
+0x40111c 55010094 bl       #0x401670
+0x401120 f303002a mov      w19, w0
+0x401124 c5ffff17 b        #0x401038
+0x401128 1d0080d2 mov      x29, #0
+0x40112c 1e0080d2 mov      x30, #0
+0x401130 e50300aa mov      x5, x0
+0x401134 e10340f9 ldr      x1, [sp]
+0x401138 e2230091 add      x2, sp, #8
+0x40113c e6030091 mov      x6, sp
+0x401140 c0000058 ldr      x0, #0x401158
+0x401144 e3000058 ldr      x3, #0x401160
+0x401148 04010058 ldr      x4, #0x401168
+0x40114c 89feff97 bl       #0x400b70 ; import __libc_start_main
+0x401150 a8feff97 bl       #0x400bf0 ; import abort
+0x401154 00000000 udf      #0
+0x40115c 00000000 udf      #0
+0x401164 00000000 udf      #0
+0x40116c 00000000 udf      #0
+0x401170 800000b0 adrp     x0, #0x412000
+0x401174 00f047f9 ldr      x0, [x0, #0xfe0]
+0x401178 400000b4 cbz      x0, #0x401180
+0x40117c a1feff17 b        #0x400c00 ; import __gmon_start__
+0x401180 c0035fd6 ret      
+0x401184 00000000 udf      #0
+0x401188 810000d0 adrp     x1, #0x413000
+0x40118c 800000d0 adrp     x0, #0x413000
+0x401190 21c00291 add      x1, x1, #0xb0
+0x401194 00c00291 add      x0, x0, #0xb0
+0x401198 211c0091 add      x1, x1, #7
+0x40119c 210000cb sub      x1, x1, x0
+0x4011a0 3f3800f1 cmp      x1, #0xe
+0x4011a4 a9000054 b.ls     #0x4011b8
+0x4011a8 01000090 adrp     x1, #0x401000
+0x4011ac 218444f9 ldr      x1, [x1, #0x908]
+0x4011b0 410000b4 cbz      x1, #0x4011b8
+0x4011b4 20001fd6 br       x1
+0x4011b8 c0035fd6 ret      
+0x4011bc 1f2003d5 nop      
+0x4011c0 810000d0 adrp     x1, #0x413000
+0x4011c4 800000d0 adrp     x0, #0x413000
+0x4011c8 21c00291 add      x1, x1, #0xb0
+0x4011cc 00c00291 add      x0, x0, #0xb0
+0x4011d0 210000cb sub      x1, x1, x0
+0x4011d4 21fc4393 asr      x1, x1, #3
+0x4011d8 21fc418b add      x1, x1, x1, lsr #63
+0x4011dc 21fc4193 asr      x1, x1, #1
+0x4011e0 c10000b4 cbz      x1, #0x4011f8
+0x4011e4 02000090 adrp     x2, #0x401000
+0x4011e8 428844f9 ldr      x2, [x2, #0x910]
+0x4011ec 620000b4 cbz      x2, #0x4011f8
+0x4011f0 40001fd6 br       x2
+0x4011f4 1f2003d5 nop      
+0x4011f8 c0035fd6 ret      
+0x4011fc 1f2003d5 nop      
+0x401200 fd7bbea9 stp      x29, x30, [sp, #-0x20]!
+0x401204 fd030091 mov      x29, sp
+0x401208 f30b00f9 str      x19, [sp, #0x10]
+0x40120c 930000d0 adrp     x19, #0x413000
+0x401210 60c24239 ldrb     w0, [x19, #0xb0]
+0x401214 80000035 cbnz     w0, #0x401224
+0x401218 dcffff97 bl       #0x401188
+0x40121c 20008052 mov      w0, #1
+0x401220 60c20239 strb     w0, [x19, #0xb0]
+0x401224 f30b40f9 ldr      x19, [sp, #0x10]
+0x401228 fd7bc2a8 ldp      x29, x30, [sp], #0x20
+0x40122c c0035fd6 ret      
+0x401230 800000b0 adrp     x0, #0x412000
+0x401234 00803591 add      x0, x0, #0xd60
+0x401238 010040f9 ldr      x1, [x0]
+0x40123c 610000b5 cbnz     x1, #0x401248
+0x401240 e0ffff17 b        #0x4011c0
+0x401244 1f2003d5 nop      
+0x401248 01000090 adrp     x1, #0x401000
+0x40124c 218c44f9 ldr      x1, [x1, #0x918]
+0x401250 81ffffb4 cbz      x1, #0x401240
+0x401254 fd7bbfa9 stp      x29, x30, [sp, #-0x10]!
+0x401258 fd030091 mov      x29, sp
+0x40125c 20003fd6 blr      x1
+0x401260 fd7bc1a8 ldp      x29, x30, [sp], #0x10
+0x401264 d7ffff17 b        #0x4011c0
+0x401268 c00200b4 cbz      x0, #0x4012c0
+0x40126c fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+0x401270 fd030091 mov      x29, sp
+0x401274 a1030191 add      x1, x29, #0x40
+0x401278 f30b00f9 str      x19, [sp, #0x10]
+0x40127c f30300aa mov      x19, x0
+0x401280 00048052 mov      w0, #0x20
+0x401284 bf7f02a9 stp      xzr, xzr, [x29, #0x20]
+0x401288 200c1eb8 str      w0, [x1, #-0x20]!
+0x40128c 40088052 mov      w0, #0x42
+0x401290 7f0200f9 str      xzr, [x19]
+0x401294 2012a072 movk     w0, #0x91, lsl #16
+0x401298 bf7f03a9 stp      xzr, xzr, [x29, #0x30]
+0x40129c 19feff97 bl       #0x400b00 ; import osal_snd_sync_direct
+0x4012a0 1f000071 cmp      w0, #0
+0x4012a4 a13740b9 ldr      w1, [x29, #0x34]
+0x4012a8 2000801a csel     w0, w1, w0, eq
+0x4012ac a11f40f9 ldr      x1, [x29, #0x38]
+0x4012b0 610200f9 str      x1, [x19]
+0x4012b4 f30b40f9 ldr      x19, [sp, #0x10]
+0x4012b8 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+0x4012bc c0035fd6 ret      
+0x4012c0 e07f8012 mov      w0, #-0x400
+0x4012c4 c0035fd6 ret      
+0x4012c8 fd7bbda9 stp      x29, x30, [sp, #-0x30]!
+0x4012cc fd030091 mov      x29, sp
+0x4012d0 f35301a9 stp      x19, x20, [sp, #0x10]
+0x4012d4 740200d0 adrp     x20, #0x44f000
+0x4012d8 f55b02a9 stp      x21, x22, [sp, #0x20]
+0x4012dc f503012a mov      w21, w1
+0x4012e0 41008052 mov      w1, #2
+0x4012e4 f30300aa mov      x19, x0
+0x4012e8 f603022a mov      w22, w2
+0x4012ec 09feff97 bl       #0x400b10 ; import open
+0x4012f0 80d201b9 str      w0, [x20, #0x1d0]
+0x4012f4 e001f836 tbz      w0, #0x1f, #0x401330
+0x4012f8 e403002a mov      w4, w0
+0x4012fc 01000090 adrp     x1, #0x401000
+0x401300 00000090 adrp     x0, #0x401000
+0x401304 e30313aa mov      x3, x19
+0x401308 21c02491 add      x1, x1, #0x930 ; source string candidate 'device_initialize'
+0x40130c 006c2e91 add      x0, x0, #0xb9b ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver open failed [%s], ERRMSG[%d]\n'
+0x401310 221a8052 mov      w2, #0xd1
+0x401314 13008012 mov      w19, #-1
+0x401318 42feff97 bl       #0x400c20 ; import printf
+0x40131c e003132a mov      w0, w19
+0x401320 f35341a9 ldp      x19, x20, [sp, #0x10]
+0x401324 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x401328 fd7bc3a8 ldp      x29, x30, [sp], #0x30
+0x40132c c0035fd6 ret      
+0x401330 41e88cd2 mov      x1, #0x6742
+0x401334 62028052 mov      w2, #0x13
+0x401338 8100a8f2 movk     x1, #0x4004, lsl #16
+0x40133c 05feff97 bl       #0x400b50 ; import ioctl
+0x401340 f303002a mov      w19, w0
+0x401344 80010034 cbz      w0, #0x401374
+0x401348 80d241b9 ldr      w0, [x20, #0x1d0]
+0x40134c 1dfeff97 bl       #0x400bc0 ; import close
+0x401350 10feff97 bl       #0x400b90 ; import __errno_location
+0x401354 030040b9 ldr      w3, [x0]
+0x401358 01000090 adrp     x1, #0x401000
+0x40135c 00000090 adrp     x0, #0x401000
+0x401360 21c02491 add      x1, x1, #0x930 ; source string candidate 'device_initialize'
+0x401364 005c2f91 add      x0, x0, #0xbd7 ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver ioctl(SIO_BAUD) failed, ERRMSG[%d]\n'
+0x401368 021b8052 mov      w2, #0xd8
+0x40136c 2dfeff97 bl       #0x400c20 ; import printf
+0x401370 ebffff17 b        #0x40131c
+0x401374 80d241b9 ldr      w0, [x20, #0x1d0]
+0x401378 21e88cd2 mov      x1, #0x6741
+0x40137c 02008252 mov      w2, #0x1000
+0x401380 8100a8f2 movk     x1, #0x4004, lsl #16
+0x401384 f3fdff97 bl       #0x400b50 ; import ioctl
+0x401388 f303002a mov      w19, w0
+0x40138c 60010034 cbz      w0, #0x4013b8
+0x401390 80d241b9 ldr      w0, [x20, #0x1d0]
+0x401394 0bfeff97 bl       #0x400bc0 ; import close
+0x401398 fefdff97 bl       #0x400b90 ; import __errno_location
+0x40139c 030040b9 ldr      w3, [x0]
+0x4013a0 01000090 adrp     x1, #0x401000
+0x4013a4 00000090 adrp     x0, #0x401000
+0x4013a8 c21b8052 mov      w2, #0xde
+0x4013ac 21c02491 add      x1, x1, #0x930 ; source string candidate 'device_initialize'
+0x4013b0 00643091 add      x0, x0, #0xc19 ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver ioctl(SIO_CONTROL) failed, ERRMSG[%d]\n'
+0x4013b4 eeffff17 b        #0x40136c
+0x4013b8 600200d0 adrp     x0, #0x44f000
+0x4013bc e203162a mov      w2, w22
+0x4013c0 e103152a mov      w1, w21
+0x4013c4 00200791 add      x0, x0, #0x1c8
+0x4013c8 43008052 mov      w3, #2
+0x4013cc f5fdff97 bl       #0x400ba0 ; import UdtrGpioOpen
+0x4013d0 f303002a mov      w19, w0
+0x4013d4 40faff34 cbz      w0, #0x40131c
+0x4013d8 80d241b9 ldr      w0, [x20, #0x1d0]
+0x4013dc f9fdff97 bl       #0x400bc0 ; import close
+0x4013e0 ecfdff97 bl       #0x400b90 ; import __errno_location
+0x4013e4 030040b9 ldr      w3, [x0]
+0x4013e8 01000090 adrp     x1, #0x401000
+0x4013ec 00000090 adrp     x0, #0x401000
+0x4013f0 a21c8052 mov      w2, #0xe5
+0x4013f4 21c02491 add      x1, x1, #0x930 ; source string candidate 'device_initialize'
+0x4013f8 00783191 add      x0, x0, #0xc5e ; source string candidate '[UD_COM_PIC] %s:%d:Gpio CS port open failed, ERRNO[%d]\n'
+0x4013fc dcffff17 b        #0x40136c
+0x401400 860000d0 adrp     x6, #0x413000
+0x401404 00080051 sub      w0, w0, #2
+0x401408 c6e00291 add      x6, x6, #0xb8
+0x40140c 040080d2 mov      x4, #0
+0x401410 ec0306aa mov      x12, x6
+0x401414 47008052 mov      w7, #2
+0x401418 030080d2 mov      x3, #0
+0x40141c 09008052 mov      w9, #0
+0x401420 4d018052 mov      w13, #0xa
+0x401424 eb7f40b2 mov      x11, #0xffffffff
+0x401428 6e008052 mov      w14, #3
+0x40142c 2f008052 mov      w15, #1
+0x401430 1f00046b cmp      w0, w4
+0x401434 8c000054 b.gt     #0x401444
+0x401438 e003072a mov      w0, w7
+0x40143c 230000b9 str      w3, [x1]
+0x401440 c0035fd6 ret      
+0x401444 82686638 ldrb     w2, [x4, x6]
+0x401448 5f580171 cmp      w2, #0x56
+0x40144c c1040054 b.ne     #0x4014e4
+0x401450 c200048b add      x2, x6, x4
+0x401454 45044039 ldrb     w5, [x2, #1]
+0x401458 bf140171 cmp      w5, #0x45
+0x40145c 41040054 b.ne     #0x4014e4
+0x401460 42084039 ldrb     w2, [x2, #2]
+0x401464 5f480171 cmp      w2, #0x52
+0x401468 e1030054 b.ne     #0x4014e4
+0x40146c 850c0011 add      w5, w4, #3
+0x401470 90480011 add      w16, w4, #0x12
+0x401474 020080d2 mov      x2, #0
+0x401478 030080d2 mov      x3, #0
+0x40147c a57c4093 sxtw     x5, w5
+0x401480 1f02056b cmp      w16, w5
+0x401484 0b030054 b.lt     #0x4014e4
+0x401488 a8686c38 ldrb     w8, [x5, x12]
+0x40148c 0ac10051 sub      w10, w8, #0x30
+0x401490 4a1d0053 uxtb     w10, w10
+0x401494 5f250071 cmp      w10, #9
+0x401498 a8000054 b.hi     #0x4014ac
+0x40149c 42200d1b madd     w2, w2, w13, w8
+0x4014a0 42c00051 sub      w2, w2, #0x30
+0x4014a4 a5040091 add      x5, x5, #1
+0x4014a8 f6ffff17 b        #0x401480
+0x4014ac 1fb90071 cmp      w8, #0x2e
+0x4014b0 e1000054 b.ne     #0x4014cc
+0x4014b4 5ffc0371 cmp      w2, #0xff
+0x4014b8 29050011 add      w9, w9, #1
+0x4014bc 88010054 b.hi     #0x4014ec
+0x4014c0 4320038b add      x3, x2, x3, lsl #8
+0x4014c4 020080d2 mov      x2, #0
+0x4014c8 f7ffff17 b        #0x4014a4
+0x4014cc 08010035 cbnz     w8, #0x4014ec
+0x4014d0 4320038b add      x3, x2, x3, lsl #8
+0x4014d4 3f0d0071 cmp      w9, #3
+0x4014d8 62004bfa ccmp     x3, x11, #2, eq
+0x4014dc e7918e1a csel     w7, w15, w14, ls
+0x4014e0 63908b9a csel     x3, x3, x11, ls
+0x4014e4 84040091 add      x4, x4, #1
+0x4014e8 d2ffff17 b        #0x401430
+0x4014ec 67008052 mov      w7, #3
+0x4014f0 e37f40b2 mov      x3, #0xffffffff
+0x4014f4 fcffff17 b        #0x4014e4
+0x4014f8 030080d2 mov      x3, #0
+0x4014fc e1ff9f52 mov      w1, #0xffff
+0x401500 26048252 mov      w6, #0x1021
+0x401504 04686338 ldrb     w4, [x0, x3]
+0x401508 02018052 mov      w2, #8
+0x40150c 257c0f53 lsr      w5, w1, #0xf
+0x401510 21381f53 ubfiz    w1, w1, #1, #0xf
+0x401514 bf1c446b cmp      w5, w4, lsr #7
+0x401518 40000054 b.eq     #0x401520
+0x40151c 2100064a eor      w1, w1, w6
+0x401520 42040051 sub      w2, w2, #1
+0x401524 84181f53 ubfiz    w4, w4, #1, #7
+0x401528 421c0053 uxtb     w2, w2
+0x40152c 02ffff35 cbnz     w2, #0x40150c
+0x401530 63040091 add      x3, x3, #1
+0x401534 7ff801f1 cmp      x3, #0x7e
+0x401538 61feff54 b.ne     #0x401504
+0x40153c e003012a mov      w0, w1
+0x401540 c0035fd6 ret      
+0x401544 fd7bbba9 stp      x29, x30, [sp, #-0x50]!
+0x401548 fd030091 mov      x29, sp
+0x40154c f35301a9 stp      x19, x20, [sp, #0x10]
+0x401550 740200d0 adrp     x20, #0x44f000
+0x401554 94020591 add      x20, x20, #0x140
+0x401558 f55b02a9 stp      x21, x22, [sp, #0x20]
+0x40155c e00314aa mov      x0, x20
+0x401560 760200d0 adrp     x22, #0x44f000
+0x401564 e5ffff97 bl       #0x4014f8
+0x401568 80fe0079 strh     w0, [x20, #0x7e]
+0x40156c c0e640f9 ldr      x0, [x22, #0x1c8]
+0x401570 01008052 mov      w1, #0
+0x401574 7bfdff97 bl       #0x400b60 ; import UdtrGpioWrite
+0x401578 20010034 cbz      w0, #0x40159c
+0x40157c f303002a mov      w19, w0
+0x401580 e303002a mov      w3, w0
+0x401584 021f8052 mov      w2, #0xf8
+0x401588 01000090 adrp     x1, #0x401000
+0x40158c 00000090 adrp     x0, #0x401000
+0x401590 21202591 add      x1, x1, #0x948 ; source string candidate 'darwin_send_recv_data'
+0x401594 00842b91 add      x0, x0, #0xae1 ; source string candidate '[UD_COM_PIC] %s:%d:GPIO write failed, ERRMSG[%d]\n'
+0x401598 17000014 b        #0x4015f4
+0x40159c 00108052 mov      w0, #0x80
+0x4015a0 a2c30091 add      x2, x29, #0x30
+0x4015a4 01e88cd2 mov      x1, #0x6740
+0x4015a8 750200d0 adrp     x21, #0x44f000
+0x4015ac a04300b9 str      w0, [x29, #0x40]
+0x4015b0 600200d0 adrp     x0, #0x44f000
+0x4015b4 8100a8f2 movk     x1, #0x4004, lsl #16
+0x4015b8 b41b00f9 str      x20, [x29, #0x30]
+0x4015bc b4020391 add      x20, x21, #0xc0
+0x4015c0 bf2700f9 str      xzr, [x29, #0x48]
+0x4015c4 00d041b9 ldr      w0, [x0, #0x1d0]
+0x4015c8 b41f00f9 str      x20, [x29, #0x38]
+0x4015cc 61fdff97 bl       #0x400b50 ; import ioctl
+0x4015d0 f303002a mov      w19, w0
+0x4015d4 c001f836 tbz      w0, #0x1f, #0x40160c
+0x4015d8 6efdff97 bl       #0x400b90 ; import __errno_location
+0x4015dc 030040b9 ldr      w3, [x0]
+0x4015e0 01000090 adrp     x1, #0x401000
+0x4015e4 00000090 adrp     x0, #0x401000
+0x4015e8 21202591 add      x1, x1, #0x948 ; source string candidate 'darwin_send_recv_data'
+0x4015ec 004c2c91 add      x0, x0, #0xb13 ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver write failed, ERRMSG[%d]\n'
+0x4015f0 62208052 mov      w2, #0x103
+0x4015f4 8bfdff97 bl       #0x400c20 ; import printf
+0x4015f8 e003132a mov      w0, w19
+0x4015fc f35341a9 ldp      x19, x20, [sp, #0x10]
+0x401600 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x401604 fd7bc5a8 ldp      x29, x30, [sp], #0x50
+0x401608 c0035fd6 ret      
+0x40160c c0e640f9 ldr      x0, [x22, #0x1c8]
+0x401610 21008052 mov      w1, #1
+0x401614 53fdff97 bl       #0x400b60 ; import UdtrGpioWrite
+0x401618 f303002a mov      w19, w0
+0x40161c 80000034 cbz      w0, #0x40162c
+0x401620 e303002a mov      w3, w0
+0x401624 22218052 mov      w2, #0x109
+0x401628 d8ffff17 b        #0x401588
+0x40162c e00314aa mov      x0, x20
+0x401630 b2ffff97 bl       #0x4014f8
+0x401634 81fe4079 ldrh     w1, [x20, #0x7e]
+0x401638 3f20206b cmp      w1, w0, uxth
+0x40163c 61010054 b.ne     #0x401668
+0x401640 a3024339 ldrb     w3, [x21, #0xc0]
+0x401644 7f400071 cmp      w3, #0x10
+0x401648 80fdff54 b.eq     #0x4015f8
+0x40164c 01000090 adrp     x1, #0x401000
+0x401650 00000090 adrp     x0, #0x401000
+0x401654 21202591 add      x1, x1, #0x948 ; source string candidate 'darwin_send_recv_data'
+0x401658 002c2d91 add      x0, x0, #0xb4b ; source string candidate '[UD_COM_PIC] %s:%d:com id error : com_id_fld = 0x%x, COM_ID_NOTIFY_REG = 0x%x \n'
+0x40165c 04028052 mov      w4, #0x10
+0x401660 e2228052 mov      w2, #0x117
+0x401664 6ffdff97 bl       #0x400c20 ; import printf
+0x401668 13008012 mov      w19, #-1
+0x40166c e3ffff17 b        #0x4015f8
+0x401670 fd7bbba9 stp      x29, x30, [sp, #-0x50]!
+0x401674 fd030091 mov      x29, sp
+0x401678 f35301a9 stp      x19, x20, [sp, #0x10]
+0x40167c f55b02a9 stp      x21, x22, [sp, #0x20]
+0x401680 f76303a9 stp      x23, x24, [sp, #0x30]
+0x401684 11ffff97 bl       #0x4012c8
+0x401688 f303002a mov      w19, w0
+0x40168c 80020034 cbz      w0, #0x4016dc
+0x401690 e303002a mov      w3, w0
+0x401694 01000090 adrp     x1, #0x401000
+0x401698 00000090 adrp     x0, #0x401000
+0x40169c 21e02691 add      x1, x1, #0x9b8 ; source string candidate 'darwin_com_firmup'
+0x4016a0 00542791 add      x0, x0, #0x9d5 ; source string candidate '[UD_COM_PIC] %s:%d:device_initialize() failed, ERRMSG[%d]\n'
+0x4016a4 e2388052 mov      w2, #0x1c7
+0x4016a8 5efdff97 bl       #0x400c20 ; import printf
+0x4016ac 600200d0 adrp     x0, #0x44f000
+0x4016b0 00d041b9 ldr      w0, [x0, #0x1d0]
+0x4016b4 43fdff97 bl       #0x400bc0 ; import close
+0x4016b8 600200d0 adrp     x0, #0x44f000
+0x4016bc 00e440f9 ldr      x0, [x0, #0x1c8]
+0x4016c0 3cfdff97 bl       #0x400bb0 ; import UdtrGpioClose
+0x4016c4 e003132a mov      w0, w19
+0x4016c8 f35341a9 ldp      x19, x20, [sp, #0x10]
+0x4016cc f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x4016d0 f76343a9 ldp      x23, x24, [sp, #0x30]
+0x4016d4 fd7bc5a8 ldp      x29, x30, [sp], #0x50
+0x4016d8 c0035fd6 ret      
+0x4016dc 740200d0 adrp     x20, #0x44f000
+0x4016e0 021080d2 mov      x2, #0x80
+0x4016e4 95020591 add      x21, x20, #0x140
+0x4016e8 01008052 mov      w1, #0
+0x4016ec e00315aa mov      x0, x21
+0x4016f0 f66f98d2 mov      x22, #0xc37f
+0x4016f4 3639a0f2 movk     x22, #0x1c9, lsl #16
+0x4016f8 0afdff97 bl       #0x400b20 ; import memset
+0x4016fc 80028052 mov      w0, #0x14
+0x401700 01000090 adrp     x1, #0x401000
+0x401704 21e02591 add      x1, x1, #0x978 ; source string candidate 'darwin_start_update'
+0x401708 80020539 strb     w0, [x20, #0x140]
+0x40170c 800000d0 adrp     x0, #0x413000
+0x401710 00c44239 ldrb     w0, [x0, #0xb1]
+0x401714 a0120039 strb     w0, [x21, #4]
+0x401718 600200d0 adrp     x0, #0x44f000
+0x40171c 02c041b9 ldr      w2, [x0, #0x1c0]
+0x401720 00000090 adrp     x0, #0x401000
+0x401724 00402891 add      x0, x0, #0xa10 ; source string candidate '%s : g_size = %d\n'
+0x401728 a25200b8 stur     w2, [x21, #5]
+0x40172c 750200d0 adrp     x21, #0x44f000
+0x401730 b5020391 add      x21, x21, #0xc0
+0x401734 3bfdff97 bl       #0x400c20 ; import printf
+0x401738 a0030191 add      x0, x29, #0x40
+0x40173c cbfeff97 bl       #0x401268
+0x401740 a0230191 add      x0, x29, #0x48
+0x401744 c9feff97 bl       #0x401268
+0x401748 a10344a9 ldp      x1, x0, [x29, #0x40]
+0x40174c 000001cb sub      x0, x0, x1
+0x401750 1f0016eb cmp      x0, x22
+0x401754 48010054 b.hi     #0x40177c
+0x401758 a0230191 add      x0, x29, #0x48
+0x40175c c3feff97 bl       #0x401268
+0x401760 007d8052 mov      w0, #0x3e8
+0x401764 07fdff97 bl       #0x400b80 ; import usleep
+0x401768 77ffff97 bl       #0x401544
+0x40176c f303002a mov      w19, w0
+0x401770 a0064039 ldrb     w0, [x21, #1]
+0x401774 1f140071 cmp      w0, #5
+0x401778 81feff54 b.ne     #0x401748
+0x40177c 13010034 cbz      w19, #0x40179c
+0x401780 01000090 adrp     x1, #0x401000
+0x401784 00000090 adrp     x0, #0x401000
+0x401788 e303132a mov      w3, w19
+0x40178c a2398052 mov      w2, #0x1cd
+0x401790 21e02691 add      x1, x1, #0x9b8 ; source string candidate 'darwin_com_firmup'
+0x401794 00882891 add      x0, x0, #0xa22 ; source string candidate '[UD_COM_PIC] %s:%d:darwin_start_update() failed, ERRMSG[%d]\n'
+0x401798 c4ffff17 b        #0x4016a8
+0x40179c 610200d0 adrp     x1, #0x44f000
+0x4017a0 20000391 add      x0, x1, #0xc0
+0x4017a4 f70301aa mov      x23, x1
+0x4017a8 22004339 ldrb     w2, [x1, #0xc0]
+0x4017ac 5f400071 cmp      w2, #0x10
+0x4017b0 00010054 b.eq     #0x4017d0
+0x4017b4 01000090 adrp     x1, #0x401000
+0x4017b8 00000090 adrp     x0, #0x401000
+0x4017bc 21402691 add      x1, x1, #0x990 ; source string candidate 'darwin_do_update'
+0x4017c0 007c2991 add      x0, x0, #0xa5f ; source string candidate '[UD_COM_PIC] %s:%d:error: com_id_fld is not COM_ID_NOTIFY_REG.\n'
+0x4017c4 c22e8052 mov      w2, #0x176
+0x4017c8 16fdff97 bl       #0x400c20 ; import printf
+0x4017cc b8ffff17 b        #0x4016ac
+0x4017d0 01044039 ldrb     w1, [x0, #1]
+0x4017d4 3f140071 cmp      w1, #5
+0x4017d8 e0000054 b.eq     #0x4017f4
+0x4017dc 01000090 adrp     x1, #0x401000
+0x4017e0 00000090 adrp     x0, #0x401000
+0x4017e4 422f8052 mov      w2, #0x17a
+0x4017e8 21402691 add      x1, x1, #0x990 ; source string candidate 'darwin_do_update'
+0x4017ec 007c2a91 add      x0, x0, #0xa9f ; source string candidate '[UD_COM_PIC] %s:%d:error: dwn_stat is not COM_DWN_STAT_UPDATING.\n'
+0x4017f0 f6ffff17 b        #0x4017c8
+0x4017f4 94020591 add      x20, x20, #0x140
+0x4017f8 960000d0 adrp     x22, #0x413000
+0x4017fc 13304039 ldrb     w19, [x0, #0xc]
+0x401800 981a0091 add      x24, x20, #6
+0x401804 150840b9 ldr      w21, [x0, #8]
+0x401808 d6e20291 add      x22, x22, #0xb8
+0x40180c 13f5ff34 cbz      w19, #0x4016ac
+0x401810 e00314aa mov      x0, x20
+0x401814 021080d2 mov      x2, #0x80
+0x401818 01008052 mov      w1, #0
+0x40181c c1fcff97 bl       #0x400b20 ; import memset
+0x401820 93160039 strb     w19, [x20, #5]
+0x401824 a0028052 mov      w0, #0x15
+0x401828 627e4093 sxtw     x2, w19
+0x40182c c1c2358b add      x1, x22, w21, sxtw
+0x401830 951200b8 stur     w21, [x20, #1]
+0x401834 80020039 strb     w0, [x20]
+0x401838 e00318aa mov      x0, x24
+0x40183c adfcff97 bl       #0x400af0 ; import memcpy
+0x401840 007d8052 mov      w0, #0x3e8
+0x401844 cffcff97 bl       #0x400b80 ; import usleep
+0x401848 3fffff97 bl       #0x401544
+0x40184c a0ffff35 cbnz     w0, #0x401840
+0x401850 e0020391 add      x0, x23, #0xc0
+0x401854 13304039 ldrb     w19, [x0, #0xc]
+0x401858 150840b9 ldr      w21, [x0, #8]
+0x40185c ecffff17 b        #0x40180c
+0x401860 fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+0x401864 fd030091 mov      x29, sp
+0x401868 f55b02a9 stp      x21, x22, [sp, #0x20]
+0x40186c 950000b0 adrp     x21, #0x412000
+0x401870 f35301a9 stp      x19, x20, [sp, #0x10]
+0x401874 940000b0 adrp     x20, #0x412000
+0x401878 b5423591 add      x21, x21, #0xd50
+0x40187c 94623591 add      x20, x20, #0xd58
+0x401880 940215cb sub      x20, x20, x21
+0x401884 f76303a9 stp      x23, x24, [sp, #0x30]
+0x401888 f60302aa mov      x22, x2
+0x40188c f803002a mov      w24, w0
+0x401890 f70301aa mov      x23, x1
+0x401894 89fcff97 bl       #0x400ab8
+0x401898 94fe4393 asr      x20, x20, #3
+0x40189c 540100b4 cbz      x20, #0x4018c4
+0x4018a0 130080d2 mov      x19, #0
+0x4018a4 a37a73f8 ldr      x3, [x21, x19, lsl #3]
+0x4018a8 e20316aa mov      x2, x22
+0x4018ac e10317aa mov      x1, x23
+0x4018b0 e003182a mov      w0, w24
+0x4018b4 73060091 add      x19, x19, #1
+0x4018b8 60003fd6 blr      x3
+0x4018bc 9f0213eb cmp      x20, x19
+0x4018c0 21ffff54 b.ne     #0x4018a4
+0x4018c4 f35341a9 ldp      x19, x20, [sp, #0x10]
+0x4018c8 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x4018cc f76343a9 ldp      x23, x24, [sp, #0x30]
+0x4018d0 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+0x4018d4 c0035fd6 ret      
+0x4018d8 c0035fd6 ret      
+0x4018dc 00000000 udf      #0
+0x4018e0 e20301aa mov      x2, x1
+0x4018e4 e10300aa mov      x1, x0
+0x4018e8 00008052 mov      w0, #0
+0x4018ec bdfcff17 b        #0x400be0 ; import __xstat

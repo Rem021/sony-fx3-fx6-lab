@@ -1,0 +1,34 @@
+[
+  {
+    "UTC_request_start": "2026-11-05T02:59:23.89239808Z",
+    "duration_ms": 0.6909999900311232,
+    "endpoint": "start",
+    "request_body_text": "{\"request_id\":\"5b87e185-06f5-4223-bfb5-ff4f10248ab2\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"request_id\": \"5b87e185-06f5-4223-bfb5-ff4f10248ab2\", \"guest_spawned_by_http\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T03:00:41.649241088Z",
+    "duration_ms": 0.6579999748021363,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":427,\"observed_sequence\":453,\"request_id\":\"08e326bb-fa82-46ea-9173-03ecd022e994\",\"document_id\":\"2c3413b4-6c01-41cf-9658-e8accc2fbf74\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 1, \"key\": \"0x1ab\", \"request_id\": \"08e326bb-fa82-46ea-9173-03ecd022e994\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T03:01:01.565656832Z",
+    "duration_ms": 0.8730000379160047,
+    "endpoint": "stop",
+    "request_body_text": "{}",
+    "status": 202,
+    "response_body_text": "{\"stopping\": true}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T03:01:04.751072Z",
+    "duration_ms": 0.7199999426566064,
+    "endpoint": "final-ack",
+    "request_body_text": "{\"receipt_id\":\"Bb6_roRrtrGgZeTXqQuOHQ\"}",
+    "status": 200,
+    "response_body_text": "{\"acknowledged\": true}"
+  }
+]

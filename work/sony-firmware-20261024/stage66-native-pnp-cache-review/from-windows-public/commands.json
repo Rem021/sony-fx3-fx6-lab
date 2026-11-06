@@ -1,0 +1,67 @@
+{
+  "commands": [
+    {
+      "id": "01-execution-policy",
+      "command_public": "Get-ExecutionPolicy -List",
+      "started_utc": "2026-10-26T16:08:26.765Z",
+      "finished_utc": "2026-10-26T16:08:27.041Z",
+      "exit_code": 0,
+      "stdout_private": "private/01-execution-policy.stdout.txt",
+      "stderr_private": "private/01-execution-policy.stderr.txt"
+    },
+    {
+      "id": "02-pnputil-help",
+      "command_public": "C:/Windows/System32/pnputil.exe /?",
+      "started_utc": "2026-10-26T16:08:37.464Z",
+      "finished_utc": "2026-10-26T16:08:37.690Z",
+      "exit_code": 0,
+      "stdout_private": "private/02-pnputil-help.stdout.txt",
+      "stderr_private": "private/02-pnputil-help.stderr.txt"
+    },
+    {
+      "id": "03-fx3-usb",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /deviceid \"USB\\VID_054C&PID_0DA1\" /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:10:03.773Z",
+      "finished_utc": "2026-10-26T16:10:04.019Z",
+      "exit_code": 0,
+      "stdout_private": "private/03-fx3-usb.stdout.txt",
+      "stderr_private": "private/03-fx3-usb.stderr.txt"
+    },
+    {
+      "id": "04-fx3-tree",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devicetree <NODE_SHA256:1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd> /services /stack /drivers /interfaces",
+      "started_utc": "2026-10-26T16:14:49.133Z",
+      "finished_utc": "2026-10-26T16:14:50.694Z",
+      "exit_code": 0,
+      "stdout_private": "private/04-fx3-tree.stdout.txt",
+      "stderr_private": "private/04-fx3-tree.stderr.txt"
+    },
+    {
+      "id": "05-fx3-disk1",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /instanceid <NODE_SHA256:c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172> /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:17:34.022Z",
+      "finished_utc": "2026-10-26T16:17:34.287Z",
+      "exit_code": 0,
+      "stdout_private": "private/05-fx3-disk1.stdout.txt",
+      "stderr_private": "private/05-fx3-disk1.stderr.txt"
+    },
+    {
+      "id": "06-fx3-disk2",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /instanceid <NODE_SHA256:ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b> /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:17:41.495Z",
+      "finished_utc": "2026-10-26T16:17:41.736Z",
+      "exit_code": 0,
+      "stdout_private": "private/06-fx3-disk2.stdout.txt",
+      "stderr_private": "private/06-fx3-disk2.stderr.txt"
+    },
+    {
+      "id": "07-fx3-disk3",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /instanceid <NODE_SHA256:4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c> /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:17:49.217Z",
+      "finished_utc": "2026-10-26T16:17:49.467Z",
+      "exit_code": 0,
+      "stdout_private": "private/07-fx3-disk3.stdout.txt",
+      "stderr_private": "private/07-fx3-disk3.stderr.txt"
+    }
+  ]
+}

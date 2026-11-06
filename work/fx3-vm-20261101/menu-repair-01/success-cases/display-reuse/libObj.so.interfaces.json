@@ -1,0 +1,835 @@
+{
+  "created_utc": "2026-11-01T11:53:03.168574+00:00",
+  "projection_manifest": "projection-manifest-v3.json",
+  "manifest_sha256": "04cd8b1b9ab204313b055b2bd37731cd1158864bb28f53318a137e67b1f298e0",
+  "guest_path": "/usr/lib/libObj.so",
+  "local_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so",
+  "bytes": 2876600,
+  "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+  "dynsym_total": 1005,
+  "defined_total": 525,
+  "sections": [
+    {
+      "name": "",
+      "type": 0,
+      "address": "0x0",
+      "offset": 0,
+      "bytes": 0
+    },
+    {
+      "name": ".gnu.hash",
+      "type": 1879048182,
+      "address": "0x190",
+      "offset": 400,
+      "bytes": 4704
+    },
+    {
+      "name": ".dynsym",
+      "type": 11,
+      "address": "0x13f0",
+      "offset": 5104,
+      "bytes": 24120
+    },
+    {
+      "name": ".dynstr",
+      "type": 3,
+      "address": "0x7228",
+      "offset": 29224,
+      "bytes": 34216
+    },
+    {
+      "name": ".gnu.version",
+      "type": 1879048191,
+      "address": "0xf7d0",
+      "offset": 63440,
+      "bytes": 2010
+    },
+    {
+      "name": ".gnu.version_r",
+      "type": 1879048190,
+      "address": "0xffb0",
+      "offset": 65456,
+      "bytes": 64
+    },
+    {
+      "name": ".rela.dyn",
+      "type": 4,
+      "address": "0xfff0",
+      "offset": 65520,
+      "bytes": 267168
+    },
+    {
+      "name": ".rela.plt",
+      "type": 4,
+      "address": "0x51390",
+      "offset": 332688,
+      "bytes": 16248
+    },
+    {
+      "name": ".init",
+      "type": 1,
+      "address": "0x55308",
+      "offset": 348936,
+      "bytes": 20
+    },
+    {
+      "name": ".plt",
+      "type": 1,
+      "address": "0x55320",
+      "offset": 348960,
+      "bytes": 10864
+    },
+    {
+      "name": ".text",
+      "type": 1,
+      "address": "0x57d90",
+      "offset": 359824,
+      "bytes": 1462488
+    },
+    {
+      "name": ".fini",
+      "type": 1,
+      "address": "0x1bce68",
+      "offset": 1822312,
+      "bytes": 16
+    },
+    {
+      "name": ".rodata",
+      "type": 1,
+      "address": "0x1bce78",
+      "offset": 1822328,
+      "bytes": 224500
+    },
+    {
+      "name": ".eh_frame_hdr",
+      "type": 1,
+      "address": "0x1f3b6c",
+      "offset": 2046828,
+      "bytes": 50260
+    },
+    {
+      "name": ".eh_frame",
+      "type": 1,
+      "address": "0x1fffc0",
+      "offset": 2097088,
+      "bytes": 246692
+    },
+    {
+      "name": ".gcc_except_table",
+      "type": 1,
+      "address": "0x23c364",
+      "offset": 2343780,
+      "bytes": 17009
+    },
+    {
+      "name": ".init_array",
+      "type": 14,
+      "address": "0x250aa8",
+      "offset": 2362024,
+      "bytes": 232
+    },
+    {
+      "name": ".fini_array",
+      "type": 15,
+      "address": "0x250b90",
+      "offset": 2362256,
+      "bytes": 8
+    },
+    {
+      "name": ".jcr",
+      "type": 1,
+      "address": "0x250b98",
+      "offset": 2362264,
+      "bytes": 8
+    },
+    {
+      "name": ".data.rel.ro",
+      "type": 1,
+      "address": "0x250ba0",
+      "offset": 2362272,
+      "bytes": 66888
+    },
+    {
+      "name": ".dynamic",
+      "type": 6,
+      "address": "0x2610e8",
+      "offset": 2429160,
+      "bytes": 608
+    },
+    {
+      "name": ".got",
+      "type": 1,
+      "address": "0x261348",
+      "offset": 2429768,
+      "bytes": 7328
+    },
+    {
+      "name": ".got.plt",
+      "type": 1,
+      "address": "0x262fe8",
+      "offset": 2437096,
+      "bytes": 5440
+    },
+    {
+      "name": ".data",
+      "type": 1,
+      "address": "0x264528",
+      "offset": 2442536,
+      "bytes": 432032
+    },
+    {
+      "name": ".bss",
+      "type": 8,
+      "address": "0x2cdcc8",
+      "offset": 2874568,
+      "bytes": 20328
+    },
+    {
+      "name": ".comment",
+      "type": 1,
+      "address": "0x0",
+      "offset": 2874568,
+      "bytes": 64
+    },
+    {
+      "name": ".shstrtab",
+      "type": 3,
+      "address": "0x0",
+      "offset": 2874632,
+      "bytes": 238
+    }
+  ],
+  "source_exact_matches": [
+    {
+      "name": "_ZN5mpgpe12GpermBitBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN27C_DataflowInfra_StdData_OSD25SetEntry_OsdImageSizeInfoEP34C_DataflowInfra_Entry_OsdImageSize",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 2,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN16DataflowInfraPin4SendEjjj",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 2,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv",
+      "value": "0x1771f4",
+      "size": 132,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv",
+      "value": "0x1749b0",
+      "size": 16,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv",
+      "value": "0x16ea10",
+      "size": 212,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    }
+  ],
+  "selected_dynsym": [
+    {
+      "name": "_ZN5mpgpe12GpermBitBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_wai_sem_tmo",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN5mpgpe11GpermFinishENS_3GpeENS_7IntCoreE",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN27C_DataflowInfra_StdData_OSD25SetEntry_OsdImageSizeInfoEP34C_DataflowInfra_Entry_OsdImageSize",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 2,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN16DataflowInfraPin4SendEjjj",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 2,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_sig_sem",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "GRM_gpermFillrect",
+      "value": "0x1017ac",
+      "size": 452,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapGetSubRectangle",
+      "value": "0xfb4ac",
+      "size": 48,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapRelease",
+      "value": "0xfb620",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapGetRowPixelCount",
+      "value": "0xfb790",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapWriteUnlockBits",
+      "value": "0xfb5f8",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "grm_init",
+      "value": "0xfee6c",
+      "size": 324,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapCreateFromPhys",
+      "value": "0xfb384",
+      "size": 200,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapGetFormat",
+      "value": "0xfb534",
+      "size": 48,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapGetSize",
+      "value": "0xfb520",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmPrepareUpdateYUV",
+      "value": "0xf3924",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapCreate",
+      "value": "0xfb1e8",
+      "size": 188,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapWriteLockBits",
+      "value": "0xfb5e4",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapGetRectangle",
+      "value": "0xfb47c",
+      "size": 48,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmSetScreenPreference",
+      "value": "0xf358c",
+      "size": 120,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK2ux6gfxeng14GraphicsEngine19getFramebufferWidthEv",
+      "value": "0x16d7a0",
+      "size": 4,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmLockSwap",
+      "value": "0xf3820",
+      "size": 28,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmTerminateYUV",
+      "value": "0xf3904",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_screenIsDirty",
+      "value": "0xf3718",
+      "size": 56,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_screenGetOnBitmap",
+      "value": "0xf377c",
+      "size": 44,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmRegisterDrawCompletionCb",
+      "value": "0xf3884",
+      "size": 52,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapCreateComposite",
+      "value": "0xfb44c",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "grm_res",
+      "value": "0xff170",
+      "size": 176,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmUpdateYUV",
+      "value": "0xf3934",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK2ux6gfxeng14GraphicsEngine20getFramebufferHeightEv",
+      "value": "0x16d7a4",
+      "size": 4,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "grm_sus",
+      "value": "0xff0dc",
+      "size": 148,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmFillrectYUV",
+      "value": "0xf393c",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv",
+      "value": "0x1771f4",
+      "size": 132,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmRectblitYUV",
+      "value": "0xf3944",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmInitializeYUV",
+      "value": "0xf38fc",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK2ux6wgtsys12WidgetSystem24getMousePosInFramebufferEhRsS2_",
+      "value": "0x175500",
+      "size": 40,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv",
+      "value": "0x1749b0",
+      "size": 16,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapGetPhysicalAddress",
+      "value": "0xfb594",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv",
+      "value": "0x16ea10",
+      "size": 212,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_gpermRectblit",
+      "value": "0x101970",
+      "size": 944,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_fbrmUnlockSwap",
+      "value": "0xf383c",
+      "size": 28,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapReadUnlockBits",
+      "value": "0xfb5d0",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "GRM_bitmapReadLockBits",
+      "value": "0xfb5bc",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    }
+  ],
+  "selected_relocations": [
+    {
+      "section": ".rela.plt",
+      "offset": "0x263180",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe12GpermBitBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263198",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x2631e8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_gpermRectblit"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263200",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapGetPhysicalAddress"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x2632d8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK2ux6gfxeng14GraphicsEngine20getFramebufferHeightEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x2632e8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263568",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_screenIsDirty"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263678",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapGetFormat"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263688",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe11GpermFinishENS_3GpeENS_7IntCoreE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x2636a8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_gpermFillrect"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263838",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x2638e0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapReadUnlockBits"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263908",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapWriteLockBits"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263a40",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapRelease"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263c18",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263c20",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN27C_DataflowInfra_StdData_OSD25SetEntry_OsdImageSizeInfoEP34C_DataflowInfra_Entry_OsdImageSize"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263c88",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK2ux6gfxeng14GraphicsEngine19getFramebufferWidthEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263cb8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263d70",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapGetRectangle"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263db0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapGetSubRectangle"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x263ed8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapReadLockBits"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x264310",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "GRM_bitmapWriteUnlockBits"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x264420",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN16DataflowInfraPin4SendEjjj"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x264438",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_sig_sem"
+    }
+  ]
+}

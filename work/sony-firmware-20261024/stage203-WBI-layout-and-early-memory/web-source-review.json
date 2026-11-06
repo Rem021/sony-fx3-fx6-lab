@@ -1,0 +1,21 @@
+{
+  "review_date": "2026-10-29",
+  "primary_sources": [
+    {
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+      "live_open_succeeded": true,
+      "observed": "Sony explicitly labels this distribution ILME-FX3 Ver.7.00 and offers linux-kernel.tar.gz.",
+      "use": "Reference WBI structure and checksum implementation, separately validated against saved official7.02 image bytes.",
+      "limit": "Not exact7.02 build identity, a complete firmware package, or a recovery procedure."
+    },
+    {
+      "url": "https://github.com/Erlla/sony-a7m4-custom-firmware/blob/main/methods/00-sd-recovery/README.md",
+      "live_open_succeeded": true,
+      "observed": "Maintainer limits SD recovery to ILCE-7M4 after working Fastboot entry and exact updater-initrd profile matching; earlier boot or updater damage can defeat it. RP2040/Multi entry is a separate prerequisite.",
+      "use": "Confirm the unresolved entry/updater prerequisites still apply when considering an FX3 adaptation.",
+      "limit": "A7 IV maintainer statement; no FX3 acceptance, no independent verification of reported historical device outcomes, and no exact current Git commit obtained from this page."
+    }
+  ],
+  "web_content_is_not_device_authorization": true,
+  "new_downloads_or_device_operations": 0
+}

@@ -1,0 +1,244 @@
+[
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/src/fx3-osd-headless-v25-r3.c",
+    "first_line": 26,
+    "last_line": 37,
+    "lines": [
+      "26: static U timing_ns(void){int saved=*__errno_location();struct timing_ts t={0};int rc=clock_gettime(1,&t);*__errno_location()=saved;return rc?0:(U)t.s*1000000000UL+t.n;}",
+      "27: /* Diagnostic-only, bounded tail in the unused 0x2000..0x8040 header area.",
+      "28:  * No guest control word, original call, timeout, or return value is changed. */",
+      "29: #define V25_DIAG_MAGIC 0x3147414944353256UL",
+      "30: #define V25_DIAG_RECORDS 256UL",
+      "31: #define V25_DIAG_WORDS 12UL",
+      "32: enum {V25_PRODUCE_ENTER=1,V25_PRODUCE_RETURN,V25_RECEIVE,V25_COMMIT,",
+      "33:       V25_WAIT_ENTER,V25_WAIT_RETURN,V25_SIGNAL_ENTER,V25_SIGNAL_RETURN};",
+      "34: static unsigned v25_diag_writer;",
+      "35: static U v25_diag(unsigned event,U committed,U source,U id,U op,long rc,U epoch,U token,U link){",
+      "36:  if(!ring)return 0;",
+      "37:  int saved=*__errno_location();"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/src/fx3-osd-headless-v25-r3.c",
+    "first_line": 73,
+    "last_line": 81,
+    "lines": [
+      "73: static void api(void){if(api_ready)return;hsend=dlsym((void *)-1,\"osal_snd_msg\");hfree=dlsym((void *)-1,\"osal_free_msg\");halloc=dlsym((void *)-1,\"osal_valloc_msg_wait\");hsize=dlsym((void *)-1,\"osal_msg_size\");hsource=dlsym((void *)-1,\"osal_get_msg_src\");hsetsource=dlsym((void *)-1,\"osal_set_msg_src\");hreceive=dlsym((void *)-1,\"osal_rcv_msg_tmo\");hwait=dlsym((void *)-1,\"osal_wai_sem_tmo\");hsignal=dlsym((void *)-1,\"osal_sig_sem\");api_ready=1;}",
+      "74: static void publish_status(void){if(!ring)return;U *w=(void *)ring;w[4]=hm.seq;w[7]=hm.duplicates;w[8]=hm.rejected;w[9]=hm.failed;w[14]=hm.stage;w[15]=hm.pending;if(queue_owner()){U *o=(void *)(ring+0x1000);o[0]=0x31524e574f44534fUL;o[1]=1;o[2]=owner;o[3]=ownership.serial;for(unsigned i=0;i<3;i++){o[4+i]=ownership.received[i];o[7+i]=ownership.freed[i];}o[10]=ownership.GUI;o[11]=ownership.unknown;o[12]=ownership.stale;o[13]=ownership.errors;o[14]=(U)owned_descriptor;o[15]=owned_queue;}__atomic_thread_fence(__ATOMIC_RELEASE);}",
+      "75: static int fail(const char *phase,int result){own_lock();hm.failed=1;publish_status();own_unlock();dprintf(2,\"FX3_OSD_HEADLESS_REJECT phase=%s result=%d no_ACK=1 original_unchanged=1\\n\",phase,result);return -1;}",
+      "76: static int extent(U physical,U span){char text[65536];int f=open(\"/proc/udm/dmm_extents\",0);if(f<0)return 0;long n=0,z;while(n<(long)sizeof text-1&&(z=read(f,text+n,sizeof text-1-n))>0)n+=z;close(f);if(n<=0||n>=(long)sizeof text-1)return 0;text[n]=0;char *p=text;while(*p){unsigned a,b,c,d,e,fv,g,h;U base,parent,offset,bytes;if(sscanf(p,\"%x %x %x %x %x %x %x %x %lx (%lx+%lx) %lx\",&a,&b,&c,&d,&e,&fv,&g,&h,&base,&parent,&offset,&bytes)==12&&d==0x545&&c==1&&g==3&&base==0x43feb5000UL&&bytes==0x140000UL&&physical>=base+0x100&&physical<base+bytes&&span<=base+bytes-physical)return 1;while(*p&&*p!='\\n')p++;if(*p)p++;}return 0;}",
+      "77: static int resolve_frame_api(void){if(frame_api_ready)return 0;void *h=dlopen(\"libObj.so\",6);struct ho_lm *lm=0;if(!h||dlinfo(h,2,&lm)||!lm||!lm->base)return -1;obase=lm->base;",
+      "78:  static const U offsets[]={0xf1174,0xf0c80,0xf0f04,0xeeebc,0xeec14,0xf2ab8};static const unsigned expected[]={0xa9ba7bfd,0xa9be7bfd,0xa9be7bfd,0xa9be7bfd,0xa9bd7bfd,0xa9be7bfd};for(unsigned j=0;j<6;j++){unsigned word=0;if(!peek(obase+offsets[j],&word,4)||word!=expected[j]){obase=0;return -2;}}",
+      "79:  bref=(void *)(obase+0xf0c80);bread=(void *)(obase+0xf1174);bunlock=(void *)(obase+0xf0f04);brelease=(void *)(obase+0xeeebc);bsize=(void *)(obase+0xeec14);",
+      "80:  void *g=dlopen(\"/simulation/fx3-gpe-observe-v7.so\",6);if(!g)return -3;raster_try=dlsym(g,\"fx3_gpe_snapshot_trylock\");raster_leave=dlsym(g,\"fx3_gpe_snapshot_unlock\");frame_acquire=dlsym(g,\"fx3_gpe_frame_target_acquire\");frame_recheck=dlsym(g,\"fx3_gpe_frame_target_recheck\");frame_release=dlsym(g,\"fx3_gpe_frame_target_release\");if(!raster_try||!raster_leave||!frame_acquire||!frame_recheck||!frame_release)return -4;frame_api_ready=1;return 0;}",
+      "81: static int observer_bind(void){if(observer_ready)return 0;owner=syscall(172);int f=open(\"/tmp/fx3-osd-headless.claim\",0x200c1,0600);if(f<0)return -1;dprintf(f,\"pid=%ld epoch=1 ring=41e000000 bytes=1000000 passive_shadow=1\\n\",owner);close(f);char cmd[4096]={0};f=open(\"/proc/cmdline\",0);long n=f<0?-1:read(f,cmd,sizeof cmd-1);if(f>=0)close(f);if(n<=0||!strstr(cmd,\"memrsv=0x01000000@0x41e000000:uc\"))return -2;pmem=open(\"/proc/self/mem\",0);if(pmem<0)return -3;f=open(\"/dev/mem\",2);void *p=f<0?(void *)-1:mmap(0,HO_RESERVE,3,1,f,HO_BASE);if(f>=0)close(f);if(p==(void *)-1)return -4;ring=p;memset(ring,0,HO_RESERVE);U *w=(void *)ring;hm.epoch=1;w[0]=HO_MAGIC;w[1]=2;w[2]=owner;w[3]=hm.epoch;w[11]=HO_SLOTS;w[12]=HO_SLOT_STRIDE;w[13]=HO_HEADER;U *diag=(U *)(ring+0x2000);diag[0]=V25_DIAG_MAGIC;diag[1]=2;diag[2]=0;diag[3]=V25_DIAG_RECORDS;diag[4]=V25_DIAG_WORDS*sizeof(U);diag[5]=0;observer_ready=1;dprintf(2,\"FX3_OSD_HEADLESS_BOUND pid=%ld ring=%#lx bytes=%#lx slots=8 passive_shadow=1 original_schema_unproven=1 queue_owner=%d native_receive_free=explicit_software_CP_endpoint v25_diag_offset=0x2000 records=256\\n\",owner,HO_BASE,HO_RESERVE,queue_owner());return 0;}"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/src/fx3-osd-headless-v25-r3.c",
+    "first_line": 111,
+    "last_line": 121,
+    "lines": [
+      "111: static void observe(unsigned dst,const unsigned char *p,unsigned n,unsigned src){if(!enabled()||!halloc||!hwait||!hsignal)return;",
+      "112:  if(queue_owner()){if(src!=HO_AP||dst!=HO_CONTROL||!qo_publication(dst,src,p,n))return;own_lock();if(!observer_ready&&observer_bind()){hm.failed=1;own_unlock();return;}if(!hreceive){hm.failed=1;own_unlock();return;}if(!worker_started){U t=0;if(pthread_create(&t,0,worker,0)){hm.failed=1;}else{pthread_detach(t);worker_started=1;dprintf(2,\"FX3_OSD_OWNER_START epoch=1 queues=74d,84d,84e native_receive_free=1 GUI_saved_no_reply=1 unknown_raw_count_free_no_effect=1 old_unmatched_no_ACK=1\\n\");}}own_unlock();return;}",
+      "113: ",
+      "114:  own_lock();if(observer_ready&&owner!=syscall(172)){own_unlock();return;}",
+      "115:  if(dst==HO_CONTROL&&src==0x9088076bU&&n>=2){unsigned op=ho_u16(p);unsigned offset=0,amount=0;if(op==0x1000&&n==80){offset=0;amount=80;}else if(op==0x1001&&n==96&&ho_u16(p+8)<256){offset=80+ho_u16(p+8)*96;amount=96;}else if(op==0x1004&&n==16){offset=80+256*96;amount=16;}if(amount){memcpy(configs+offset,p,amount);config_version++;}own_unlock();return;}",
+      "116:  if(src!=HO_AP){own_unlock();return;}if(!observer_ready&&observer_bind()){hm.failed=1;own_unlock();return;}int rc=0;",
+      "117:  if(dst==HO_CONTROL){rc=ho_control(&hm,src,p,n);if(!rc)hm.frame.config_hash=ho_hash(configs,sizeof configs);}",
+      "118:  else{rc=ho_publish(&hm,src,dst,p,n);if(!rc&&!worker_started){U tid=0;if(pthread_create(&tid,0,worker,0)){hm.failed=1;rc=-9;}else{pthread_detach(tid);worker_started=1;}}}",
+      "119:  publish_status();U seq=hm.seq+1;unsigned pending=hm.pending;own_unlock();if(1)dprintf(2,\"FX3_OSD_HEADLESS_PUBLISH frame=%lu destination=%#x source=%#x op=%x bytes=%u pending=%x result=%d duplicate=%d original_owned=unchanged\\n\",seq,dst,src,n>=2?ho_u16(p):0,n,pending,rc,rc==1);",
+      "120: }",
+      "121: int osal_snd_msg(unsigned dst,void *p){int saved=*__errno_location();if(!api_ready){own_lock();api();own_unlock();}if(!hsend)return -1021;unsigned char copy[96];unsigned n=0,src=0;int watch=enabled()&&p&&(dst==HO_CONTROL||dst==HO_PIXELS||dst==HO_META);if(watch&&hsize&&hsource){n=hsize(p);src=hsource(p);if(n>sizeof copy)watch=0;else memcpy(copy,p,n);}U owner_stamp=0;if(watch&&queue_owner()&&qo_publication(dst,src,copy,n)){own_lock();owner_stamp=qo_register(&ownership,dst,src,copy,n,(U)p,hm.seq+1);if(!owner_stamp){hm.failed=1;ownership.errors++;}own_unlock();}unsigned diag_op=watch&&src==HO_AP&&dst==HO_CONTROL&&n==12?ho_u32(copy+8):0;U diag_frame=0,diag_source=0,diag_epoch=0,diag_token=0,diag_enter=0;if(diag_op==0x1003||diag_op==0x1005){own_lock();diag_frame=hm.seq;diag_source=hm.source_seq;diag_epoch=hm.epoch;diag_token=hm.frame.token;own_unlock();diag_enter=v25_diag(V25_PRODUCE_ENTER,diag_frame,diag_source,dst,diag_op,0,diag_epoch,diag_token,src);}*__errno_location()=saved;int rc=hsend(dst,p);int after=*__errno_location();if(diag_enter)v25_diag(V25_PRODUCE_RETURN,diag_frame,diag_source,dst,diag_op,rc,diag_epoch,diag_token,diag_enter);if(owner_stamp){own_lock();if(qo_confirm(&ownership,dst,(U)p,owner_stamp,rc)){hm.failed=1;ownership.errors++;}publish_status();own_unlock();}if(!rc&&watch)observe(dst,copy,n,src);*__errno_location()=after;return rc;}"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-osd-core-v4-frame.h",
+    "first_line": 1,
+    "last_line": 14,
+    "lines": [
+      "1: #ifndef FX3_OSD_CORE_V4_FRAME_H",
+      "2: #define FX3_OSD_CORE_V4_FRAME_H",
+      "3: #define HO_AP 0x8288076cU",
+      "4: #define HO_CONTROL 0x8280074dU",
+      "5: #define HO_PIXELS 0x8280084dU",
+      "6: #define HO_META 0x8280084eU",
+      "7: #define HO_BASE 0x41e000000UL",
+      "8: #define HO_RESERVE 0x1000000UL",
+      "9: #define HO_HEADER 0x10000UL",
+      "10: #define HO_SLOTS 8UL",
+      "11: #define HO_SLOT_STRIDE 0x180000UL",
+      "12: #define HO_DATA 0x200UL",
+      "13: #define HO_MAX 0x12c000UL",
+      "14: #define HO_MAGIC 0x32474e495244534fUL"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-osd-owner-core-v1.h",
+    "first_line": 1,
+    "last_line": 12,
+    "lines": [
+      "1: #ifndef FX3_OSD_OWNER_CORE_V1",
+      "2: #define FX3_OSD_OWNER_CORE_V1",
+      "3: struct qo_lease{unsigned long pointer,stamp,sequence;unsigned destination,source,bytes,phase;unsigned char raw[96];};",
+      "4: struct qo_model{struct qo_lease leases[3];unsigned long serial,received[3],freed[3],unknown,stale,GUI,errors;};",
+      "5: static int qo_index(unsigned dst){return dst==HO_CONTROL?0:dst==HO_PIXELS?1:dst==HO_META?2:-1;}",
+      "6: static unsigned qo_publication(unsigned dst,unsigned src,const unsigned char *p,unsigned n){if(src!=HO_AP||n<8)return 0;unsigned op=ho_u16(p);for(unsigned j=2;j<8;j++)if(p[j])return 0;if(dst==HO_CONTROL&&op==0x1002&&n==12&&(ho_u32(p+8)==0x1003||ho_u32(p+8)==0x1005))return op;if(dst==HO_PIXELS&&op==0x1003&&n==36)return op;if(dst==HO_META&&op==0x1005&&n==8)return op;return 0;}",
+      "7: static unsigned long qo_register(struct qo_model *m,unsigned dst,unsigned src,const unsigned char *p,unsigned n,unsigned long pointer,unsigned long seq){int i=qo_index(dst);if(i<0||!pointer||n>96||!qo_publication(dst,src,p,n))return 0;if(m->leases[i].pointer){m->errors++;return 0;}struct qo_lease *q=m->leases+i;q->pointer=pointer;q->stamp=++m->serial;q->sequence=seq;q->destination=dst;q->source=src;q->bytes=n;q->phase=1;memcpy(q->raw,p,n);return q->stamp;}",
+      "8: static int qo_confirm(struct qo_model *m,unsigned dst,unsigned long p,unsigned long stamp,int result){int i=qo_index(dst);if(i<0)return -1;struct qo_lease *q=m->leases+i;if(q->pointer!=p||q->stamp!=stamp)return -1;q->phase=result?3:2;return 0;}",
+      "9: /* 1=send still in flight,0=current exact accepted publication,-1=old/foreign/failed. */",
+      "10: static int qo_match(const struct qo_model *m,unsigned dst,unsigned src,const unsigned char *p,unsigned n,unsigned long pointer,unsigned long seq){int i=qo_index(dst);if(i<0)return -1;const struct qo_lease *q=m->leases+i;if(q->pointer!=pointer||q->sequence!=seq||q->destination!=dst||q->source!=src||q->bytes!=n||n>96||memcmp(q->raw,p,n))return -1;return q->phase==1?1:q->phase==2?0:-1;}",
+      "11: /* Retire BEFORE native free, so immediate native pointer reuse cannot erase a new lease. */",
+      "12: static void qo_retire(struct qo_model *m,unsigned dst,unsigned long p){int i=qo_index(dst);if(i>=0&&m->leases[i].pointer==p)memset(m->leases+i,0,sizeof m->leases[i]);}"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+    "first_line": 6,
+    "last_line": 9,
+    "lines": [
+      "6: struct statistics{U count[64],peak_all,peak_gate,field_samples,hist[6],gate_hist[6],system_false,backlog_skip,time_skip,time_pass,dequeue_total,timer_dequeue,a12_nonzero,a13_nonzero,last_object,last_a18,last_a12,last_a13,first_ns,last_ns,mirror_skip,selftest,bound,object_mismatch,root_change;};",
+      "7: /* Atomics stay in ordinary process RAM.  No RMW is attempted on :uc /dev/mem. */",
+      "8: static struct statistics st;",
+      "9: static volatile U *ram;static unsigned char mirror_lock;static U mirror_serial,mirror_visit,mirror_published,app_base,root_object;static W (*message_source)(void *);static __thread W decision_a18;"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+    "first_line": 19,
+    "last_line": 23,
+    "lines": [
+      "19: #define SNAP_REQ_OFFSET 0x3000U",
+      "20: #define SNAP_ACK_OFFSET 0x3040U",
+      "21: #define SNAP_PAYLOAD_OFFSET 0x3100U",
+      "22: #define SNAP_ACK_BYTES 0xc0U",
+      "23: #define SNAP_PAYLOAD_BYTES 0x310U"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+    "first_line": 33,
+    "last_line": 35,
+    "lines": [
+      "33: static U now(void){struct ts t={0};return clock_gettime(7,&t)?0:(U)t.s*1000000000UL+t.n;}",
+      "34: static int publication_due(U visit){U done=load(&mirror_published);return FX3_GATE_PUBLISH_INTERVAL==1||(visit>done&&visit-done>=64);}",
+      "35: static void mirror(void){if(!ram)return;U visit=add(&mirror_visit,1);if(!publication_due(visit))return;if(__atomic_test_and_set(&mirror_lock,__ATOMIC_ACQUIRE)){add(&st.mirror_skip,1);return;}if(!publication_due(visit)){__atomic_clear(&mirror_lock,__ATOMIC_RELEASE);return;}U bank=ram[2]^1;volatile U *out=ram+0x100/8+bank*(0x1000/8);U *in=(U *)&st;for(U i=0;i<sizeof st/8;i++)out[i]=load(in+i);__asm__ volatile(\"dmb sy\":::\"memory\");ram[2]=bank;ram[3]=++mirror_serial;peak(&mirror_published,visit);__asm__ volatile(\"dmb sy\":::\"memory\");__atomic_clear(&mirror_lock,__ATOMIC_RELEASE);}"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+    "first_line": 134,
+    "last_line": 146,
+    "lines": [
+      "134:  if(id>=60){*__errno_location()=saved;return;}if(id>=12){U n=add(&st.count[id],1);boot_event(c,r,n);*__errno_location()=saved;return;}U n=add(&st.count[id],1),obj=c->objreg<31?r[c->objreg]:load(&root_object),a18=0,a12=0,a13=0,elapsed=0,msg=0,type=0,src=0;",
+      "135:  if((id==0||id==2)&&obj){U old=__atomic_exchange_n(&root_object,obj,__ATOMIC_RELAXED);if(old&&old!=obj)add(&st.root_change,1);if(ram&&load(&st.bound)&&old!=obj)snapshot_ready();}",
+      "136:  U active_root=load(&root_object);if(id!=0&&id!=2&&obj&&active_root&&obj!=active_root)add(&st.object_mismatch,1);",
+      "137:  if(obj){a18=__atomic_load_n((W *)(obj+0xa18),__ATOMIC_RELAXED);a12=__atomic_load_n((unsigned char *)(obj+0xa12),__ATOMIC_RELAXED);a13=__atomic_load_n((unsigned char *)(obj+0xa13),__ATOMIC_RELAXED);save(&st.last_object,obj);save(&st.last_a18,a18);save(&st.last_a12,a12);save(&st.last_a13,a13);if(a12)add(&st.a12_nonzero,1);if(a13)add(&st.a13_nonzero,1);}",
+      "138:  if(id==4&&!(r[0]&255))add(&st.system_false,1);",
+      "139:  if(id==5){decision_a18=(W)r[0];a18=decision_a18;peak(&st.peak_gate,a18);add(&st.gate_hist[bucket(a18)],1);}",
+      "140:  if(id==6&&!((W)r[0]))add(&st.backlog_skip,1);",
+      "141:  if(id==7){elapsed=r[0];if(elapsed<=r[1])add(&st.time_skip,1);else add(&st.time_pass,1);}",
+      "142:  if(id==9)a18=(W)r[3];if(id==10)a18=(W)r[0];",
+      "143:  if(id==5||id==9||id==10){peak(&st.peak_all,a18);add(&st.field_samples,1);add(&st.hist[bucket(a18)],1);}",
+      "144:  if(id==11){add(&st.dequeue_total,1);msg=*(U *)r[20];if(msg){type=*(W *)msg;if(message_source)src=message_source((void *)msg);if(type==0x150000&&src==0x830128)add(&st.timer_dequeue,1);}}",
+      "145:  if(n<=50||n%1000==0){save(&st.last_ns,now());dprintf(2,\"FX3_UI_GATE_SAMPLE id=%lu n=%lu tid=%ld pc=%#lx object=%#lx a18=%lu a12=%lu a13=%lu r0=%#lx decision_a18=%u elapsed=%lu old_time=%lu new_time=%lu message=%#lx type=%#lx source=%#lx observed_only=1\\n\",id,n,syscall(178),c->pc-app_base,obj,a18,a12,a13,r[0],decision_a18,elapsed,id==7?r[22]-r[0]:0,id==7?r[22]:0,msg,type,src);}",
+      "146:  mirror();snapshot_serve(id,0);*__errno_location()=saved;"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+    "first_line": 154,
+    "last_line": 163,
+    "lines": [
+      "154:  W original=*(W *)pc;if(original!=expected)return -2;if(allocate_pool(pool,pc)||pool->used+128>8192)return -3;unsigned char *p=pool->p+pool->used;long delta=(long)((U)p-pc);if(delta<=-(1L<<27)||delta>=(1L<<27))return -8;pool->used+=128;if(mprotect(pool->p,8192,7))return -4;memset(p,0,128);W *code=(void *)p;code[0]=0xa9bf47f0;code[1]=literal(16,4,32);code[2]=literal(17,8,40);code[3]=0xd61f0220;code[4]=0xa8c147f0;",
+      "155:  code[5]=original;code[6]=branch((U)p+24,pc+4);code[7]=0xd503201f;U context=(U)p+48,core=(U)fx3_gate_probe_core;memcpy(p+32,&context,8);memcpy(p+40,&core,8);struct ctx c={pc,(U)p+16,id,objreg};memcpy(p+48,&c,sizeof c);",
+      "156:  if((original&0x7e000000U)==0x34000000U){long imm=(original>>5)&0x7ffff;if(imm&(1<<18))imm-=1<<19;U target=pc+imm*4;code[5]=(original&0xff00001fU)|(2<<5);code[6]=branch((U)p+24,pc+4);code[7]=branch((U)p+28,target);}",
+      "157:  else if((original&0xfc000000U)==0x94000000U){long imm=original&0x3ffffff;if(imm&(1<<25))imm-=1<<26;U target=pc+imm*4,link=pc+4;code[5]=literal(30,20,80);code[6]=branch((U)p+24,target);memcpy(p+80,&link,8);}",
+      "158:  sync_code(p,128);if(mprotect(pool->p,8192,5))return -5;if(mprotect((void *)(pc&~4095UL),4096,7))return -6;*(W *)pc=branch(pc,(U)p);sync_code((void *)pc,4);if(mprotect((void *)(pc&~4095UL),4096,5))return -7;return 0;",
+      "159: }",
+      "160: static int bind_ram(void){int fd=open(\"/tmp/fx3-ui-gate.claim\",0x200c1,0600);if(fd<0)return -1;dprintf(fd,\"pid=%ld physical=41dc00000 bytes=10000 observer=1\\n\",syscall(172));close(fd);char cmd[4096]={0};fd=open(\"/proc/cmdline\",0);long n=fd<0?-1:read(fd,cmd,4095);if(fd>=0)close(fd);if(n<=0||!strstr(cmd,\"memrsv=0x00010000@0x41dc00000:uc\"))return -2;fd=open(\"/dev/mem\",2);void *p=fd<0?(void *)-1:mmap(0,0x10000,3,1,fd,0x41dc00000UL);if(fd>=0)close(fd);if(p==(void *)-1)return -3;memset(p,0,0x10000);ram=p;ram[0]=0x3145544147335846UL;ram[1]=2;ram[4]=syscall(172);return 0;}",
+      "161: static void bind(void *h){if(load(&st.bound))return;struct lm *a=0;if(dlinfo(h,2,&a)||!a)return;app_base=a->base;",
+      "162:  const U offsets[60]={0x16f2220,0x16f25e8,0x16f16bc,0x16f18b8,0x16f22cc,0x16f247c,0x16f2488,0x16f2600,0x16f2640,0x16f1a74,0x16f1d68,0x16f217c,0x2b63224,0x2b63900,0x2b66de4,0x2b66e04,0x2b67674,0x2b67678,0x2b60208,0x2dd0cb4,0x2dec7e4,0x2b634dc,0x2b6353c,0x2b63628,0x2b63678,0x2b63624,0x2b61efc,0x2b62438,0x2b61a90,0x2b5fae4,0x2b63538,0x2debbb4,0x285e42c,0x2c20d20,0x2aa2294,0x2b68374,0x2aa1668,0x2aa16ac,0x2aa2298,0x285e430,0x16f2698,0x2b6838c,0x2b6788c,0x2b67a44,0x2ebe188,0x2b5fc68,0x2b63718,0x2b637d4,0x2eaa0a4,0x2eaa0c0,0x2eaa0d8,0x2bcc544,0x2d11dd4,0x2d11e8c,0x27bec60,0x28272b8,0x28272d4,0x2c245f4,0x2d11e4c,0x28272d8};",
+      "163:  const W words[60]={0xd10cc3ff,0xd65f03c0,0xa9b87bfd,0xd65f03c0,0x72001c1f,0x7100081f,0x35000b20,0xeb01001f,0x97fffcd6,0xb90a1a63,0xb90a1ac0,0xaa1703e2,0xa9bc7bfd,0x91051ab6,0xb9006fa0,0xb9006ba0,0x97ffeeec,0xb90067a0,0xd10803ff,0xaa1403e1,0x97ffea31,0xa9bc7bfd,0xa9b77bfd,0x6b19001f,0x35fff876,0xd65f03c0,0xd11a43ff,0xd65f03c0,0xd101c3ff,0xa9bc7bfd,0xd65f03c0,0xa9b87bfd,0x94090f80,0xf900de60,0x97abc2a7,0x52800e20,0xa9be7bfd,0xa8c27bfd,0xf94002e0,0xaa1603e0,0x53001c15,0x97fce4b7,0xb8190f7f,0x9409e950,0xa9b47bfd,0xa9bc7bfd,0xa9b97bfd,0xa94153f3,0x34000240,0x910003bf,0xd65f03c0,0xd65f03c0,0xa9bb7bfd,0xd65f03c0,0xb9000320,0x6b00003f,0x941a62ca,0xb906e260,0x9403404e,0x97bb263e};const U regs[60]={0,31,0,31,20,20,20,20,0,19,22,25,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f,0x1f};"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.c",
+    "first_line": 604,
+    "last_line": 611,
+    "lines": [
+      "604: int osal_snd_msg(unsigned int dst,void *request){",
+      "605:  int saved=*__errno_location(),rc;enter();initialize();leave();",
+      "606:  profile_stack(dst,request,__builtin_frame_address(0));",
+      "607:  boot_tail_observe(dst,request,__builtin_frame_address(0),4);",
+      "608:  if(request&&msg_size(request)==28){unsigned tag;memcpy(&tag,request,4);if(tag==0x30386)dprintf(2,\"FX3_UUD_DELETE_FACE_EVENT_WIRE tid=%ld destination=%#x source=%#x bytes=28 original_natural_send_follows=1 synthetic=0\\n\",syscall(178),dst,source(request));}",
+      "609:  if(dst==0x5503e0&&request){unsigned int n=msg_size(request);if(n<=128){char raw[257];const char *digits=\"0123456789abcdef\";for(unsigned int i=0;i<n;i++){unsigned char c=((unsigned char *)request)[i];raw[2*i]=digits[c>>4];raw[2*i+1]=digits[c&15];}raw[n*2]=0;struct cap_dl_info ci={0};dladdr(__builtin_return_address(0),&ci);dprintf(2,\"FX3_BOOT_QUEUE_SEND tid=%ld bytes=%u source=%#x raw=%s caller_relative=%#lx passive=1 completion_not_assumed=1\\n\",syscall(178),n,source(request),raw,ci.base?(unsigned long)__builtin_return_address(0)-(unsigned long)ci.base:0);}}",
+      "610: ",
+      "611:  /* Validate original caller at the outermost interposer, outside model/loader locks."
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.c",
+    "first_line": 680,
+    "last_line": 683,
+    "lines": [
+      "680:  if(enabled&&dst==0x00930101&&sa&&!strcmp(sa,\"source-ranges-v1\")){int rc=sa_dispatch(request);leave();*__errno_location()=saved;return rc;}",
+      "681:  if(!enabled||(dst!=0x9004015e&&dst!=0x92850750)){leave();*__errno_location()=saved;return send_msg(dst,request);}",
+      "682:  if(!model.table&&!fault)reserve_table();",
+      "683:  if(process_owner!=syscall(172)){leave();*__errno_location()=saved;return -1021;}"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v12.c",
+    "first_line": 23,
+    "last_line": 52,
+    "lines": [
+      "23: static void send_stats(void){",
+      "24:  int saved=*__errno_location();if(__atomic_test_and_set(&stats_lock,__ATOMIC_ACQUIRE)){__atomic_add_fetch(&stats_drop,1,__ATOMIC_RELAXED);return;}",
+      "25:  char path[96];snprintf(path,sizeof path,\"/tmp/fx3-send-stats-%d\",getpid());int fd=open(path,0x20241,0600);",
+      "26:  if(fd>=0){dprintf(fd,\"FX3_UIPC_OBSERVER_END pid=%d seen=%lu emitted=%lu dedup=%lu capacity_drop=%lu lock_drop=%lu stats_write_drop=%lu capacity=256 snapshot=1\\n\",getpid(),__atomic_load_n(&send_seen,__ATOMIC_RELAXED),__atomic_load_n(&send_emitted,__ATOMIC_RELAXED),__atomic_load_n(&send_dedup,__ATOMIC_RELAXED),__atomic_load_n(&send_capacity_drop,__ATOMIC_RELAXED),__atomic_load_n(&send_lock_drop,__ATOMIC_RELAXED),__atomic_load_n(&stats_drop,__ATOMIC_RELAXED));close(fd);}",
+      "27:  __atomic_clear(&stats_lock,__ATOMIC_RELEASE);*__errno_location()=saved;",
+      "28: }",
+      "29: static void recv_begin(unsigned int target,void *caller){",
+      "30:  long tid=syscall(178);int emit=0;",
+      "31:  if(__atomic_test_and_set(&event_lock,__ATOMIC_ACQUIRE))return;",
+      "32:  unsigned int i;for(i=0;i<wait_count;i++)if(waits[i].tid==tid&&waits[i].target==target)break;",
+      "33:  if(i==wait_count&&wait_count<256){waits[i].tid=tid;waits[i].target=target;wait_count++;emit=1;}",
+      "34:  __atomic_clear(&event_lock,__ATOMIC_RELEASE);if(!emit)return;",
+      "35:  char path[80],name[17]={0};snprintf(path,sizeof path,\"/proc/self/task/%ld/comm\",tid);int fd=open(path,0);",
+      "36:  if(fd>=0){long n=pread(fd,name,16,0);close(fd);if(n>0&&name[n-1]=='\\n')name[n-1]=0;}",
+      "37:  dprintf(2,\"FX3_UIPC_RECV_BEGIN tid=%ld name=%s queue=%#x caller=%p original_wait_follows=1\\n\",tid,name,target,caller);",
+      "38: }",
+      "39: static void send_unique(unsigned int target,unsigned int op,const unsigned char *body,long n,int result,int error,void *caller){",
+      "40:  if(op<4||op>6||n!=16||target==0x8f013a||target==0x8f0139||target==0x8f0313||target==0x910040||target==0x910041||target==0x910042)return;",
+      "41:  __atomic_add_fetch(&send_seen,1,__ATOMIC_RELAXED);",
+      "42:  unsigned int first,second;__builtin_memcpy(&first,body,4);__builtin_memcpy(&second,body+4,4);int emit=0;",
+      "43:  if(target==0x8288076c||target==0x8280074d||target==0x8280084d){void (*snap)(void)=dlsym((void *)0,\"fx3_timer_snapshot\");if(snap)snap();}",
+      "44:  if(target==0x8288076c||target==0x8280074d||target==0x8280084d)dprintf(2,\"FX3_UI_WIRE tid=%ld target=%#x op=%u tag1=%#x tag2=%#x result=%d independent_of_unique_lock=1\\n\",syscall(178),target,op,first,second,result);",
+      "45:  if(__atomic_test_and_set(&event_lock,__ATOMIC_ACQUIRE)){__atomic_add_fetch(&send_lock_drop,1,__ATOMIC_RELAXED);send_stats();return;}",
+      "46:  unsigned int i;for(i=0;i<send_count;i++)if(sends[i].target==target&&sends[i].op==op&&sends[i].tag1==first&&sends[i].tag2==second)break;",
+      "47:  if(i<send_count)__atomic_add_fetch(&send_dedup,1,__ATOMIC_RELAXED);",
+      "48:  else if(send_count<256){sends[i].target=target;sends[i].op=op;sends[i].tag1=first;sends[i].tag2=second;send_count++;emit=1;__atomic_add_fetch(&send_emitted,1,__ATOMIC_RELAXED);}",
+      "49:  else __atomic_add_fetch(&send_capacity_drop,1,__ATOMIC_RELAXED);",
+      "50:  __atomic_clear(&event_lock,__ATOMIC_RELEASE);",
+      "51:  if(emit)dprintf(2,\"FX3_UIPC_SEND_UNIQUE tid=%ld target=%#x op=%u tag1=%#x tag2=%#x result=%d errno=%d caller=%p delegated=1\\n\",syscall(178),target,op,first,second,result,error,caller);",
+      "52:  send_stats();"
+    ]
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v12.c",
+    "first_line": 188,
+    "last_line": 196,
+    "lines": [
+      "188:             }",
+      "189:         }",
+      "190:     }",
+      "191:     if(is_uipc&&command==7&&outer_read==16)recv_begin(argument0,caller);",
+      "192:     *__errno_location() = entry_errno;",
+      "193:     int result = function(fd, request, argument);",
+      "194:     int saved_errno = *__errno_location();",
+      "195:     if(is_uipc)send_unique(argument0,command,message,message_read,result,saved_errno,caller);",
+      "196:     unsigned int sequence = __atomic_fetch_add(&ioctl_count, 1, __ATOMIC_RELAXED);"
+    ]
+  }
+]

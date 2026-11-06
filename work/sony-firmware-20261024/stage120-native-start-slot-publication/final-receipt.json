@@ -1,0 +1,105 @@
+{
+  "schema": "fx3-stage120-native-slot-publication/1",
+  "created_utc": "2026-10-27T16:29:48.790731+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/README.md",
+      "bytes": 4471,
+      "sha256": "d86f0a99e5fa3af271f5a4efd6c527bae42fbd5bf308357143c0e522b88c7916"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/completed-evidence-review.json",
+      "bytes": 525,
+      "sha256": "14af0afd32786ed8a9c4f2a9575523abc98cb3130cdb3790a3b1f477083e78cd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/diagnostic-contract.json",
+      "bytes": 3035,
+      "sha256": "d52673bc6cd7e29c8393156a330ceac3d26f7289c91747bbd1be7e04414e6827"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/goal-status-after.json",
+      "bytes": 379015,
+      "sha256": "b69b9c7c04b73b08a3c630a8d1586e0177c697a674971d2055cc9be413329b61"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/goal-status-before.json",
+      "bytes": 374972,
+      "sha256": "6c47bfcf5ade908728baa79890319eaa9bf13f8b53a24c5c1dd0ce52693f1f6d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/review_and_seal.py",
+      "bytes": 13691,
+      "sha256": "abc5761ed568db87534d502788d4dc4f542f5bd6873fdd74839ec8dcfd45645b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/run-native-slot-map-20261027/executed-source.py",
+      "bytes": 3494,
+      "sha256": "b3cefff5e4eb7359f796b3cd7d8ddbdd482013a98837c84ae5a0f358bc8bb4d3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/run-native-slot-map-20261027/slot-map-results.json",
+      "bytes": 24380,
+      "sha256": "ed1cecc88880eeaae8941aeffc5b97a68c8a752402507bf330f40cddca6bde9d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/run-native-slot-publication-20261027/executed-source.py",
+      "bytes": 7795,
+      "sha256": "a9a469d12ebd6bf309a6d7f3e08c9a69545e8edee4758c42ae1afe0a567b967f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/run-native-slot-publication-20261027/slot-publication-results.json",
+      "bytes": 267600,
+      "sha256": "99ec0083886def2345eb966a8699d7f2f6bb2c200d4d9d7dad6094e9a57be6a0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/slot_map.py",
+      "bytes": 3494,
+      "sha256": "b3cefff5e4eb7359f796b3cd7d8ddbdd482013a98837c84ae5a0f358bc8bb4d3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/slot_publication.py",
+      "bytes": 7795,
+      "sha256": "a9a469d12ebd6bf309a6d7f3e08c9a69545e8edee4758c42ae1afe0a567b967f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage120-native-start-slot-publication/source-and-scope-audit.json",
+      "bytes": 33922,
+      "sha256": "43e49e386f7ce819ff0a3fe23329f15f12f383aadda6a743fb56567380978fd9"
+    }
+  ],
+  "previous_manifest_sha256": "ec47dc9a30caf94e901b867e789cd471a785757f05e39e4ddf427910ce0d5b23",
+  "operations": {
+    "status": "PASS_NATIVE_SLOT_PUBLICATION_AND_LOOKUP_REGISTRATION_SIDE_EFFECT_SCOPE",
+    "created_utc": "2026-10-27T16:29:48.790731+00:00",
+    "previous_manifest_members_verified": 11,
+    "publication_cases": 8,
+    "map_cases": 10,
+    "bounded_phases": 62,
+    "formal_sources_match_executed_copies": true,
+    "same_agent_review_not_independent_engine": true,
+    "stage117_frontend_and_stage75_backend_unchanged": true,
+    "actual_camera_Windows_UU_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "6c47bfcf5ade908728baa79890319eaa9bf13f8b53a24c5c1dd0ce52693f1f6d",
+    "after_sha256": "b69b9c7c04b73b08a3c630a8d1586e0177c697a674971d2055cc9be413329b61"
+  },
+  "readme_index_before_sha256": "bce7abbba2fb1c2c4161c590a83dbea2d28ce072f33d9b698cd94759f6426cb1",
+  "readme_index_after_sha256": "8cc9b44cb7e57b910b097978bc09e173ef64cbf712431ca39ed544e6b214f137",
+  "readme_index_entry": "- [2026-10-27 FX3 槽位选择与状态来源](<work/sony-firmware-20261024/stage120-native-start-slot-publication/README.md>)：18例62片段确认状态字节早于本次编码排队、GetSlotID可登记映射；诊断排除副作用，真实编码/空闲及恢复未验。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

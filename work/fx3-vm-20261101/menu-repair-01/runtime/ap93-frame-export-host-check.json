@@ -1,0 +1,25 @@
+{
+  "tests": [
+    {
+      "test": "check-gpe93-frame-target",
+      "ASan_UBSan_exit": 0,
+      "log_sha256": "d72b5e248d3e75b8e765506991606b5f8707bf621c1e69b11f527de2e82728ef"
+    },
+    {
+      "test": "check-osd-core-v4-frame",
+      "ASan_UBSan_exit": 0,
+      "log_sha256": "48f94982c9de63767a1e81c14e121f724c844de8460a175d8308ee19ad45b621"
+    }
+  ],
+  "authority": "msg_91eda4ecac90",
+  "host_parser_test": {
+    "FB545_to_arbitrary_registered_native_target": true,
+    "zero_epoch_rejected": true,
+    "separate_mapping_and_descriptor_fields_no_overlap": true,
+    "QMP_physical_matches_native_committed_snapshot": true,
+    "mismatching_current_physical_pixels_rejected": true,
+    "no_physical_address_allowlist": true
+  },
+  "new_ring_format": "V2/header512/targettuple10words/descriptor180; avoids prior descriptor overlap of map_end/map_offset fields",
+  "legacy_backend_math_unchanged": true
+}

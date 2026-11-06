@@ -1,0 +1,52 @@
+{
+  "native_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-dynamiclib",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/stream.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c",
+    "-framework",
+    "IOKit",
+    "-framework",
+    "CoreFoundation",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-final/fx3-generation-stream.dylib"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "analyzer_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "--analyze",
+    "-std=c11",
+    "-Wno-deprecated-declarations",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter-analysis-final.plist"
+  ],
+  "analyzer_returncode": 0,
+  "analyzer_diagnostics": 0,
+  "native_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-final/fx3-generation-stream.dylib",
+  "native_sha256": "af72a8a714e4206b2b8c66c41b2cf67202b7a82ca2d00e50efea30731ab974ce",
+  "native_library_executed": false,
+  "unit_receipt": "unit-receipt-v5.json",
+  "unit_linked_sources_unchanged": true,
+  "source_hashes": {
+    "digest_vectors.h": "67664b519ba26de6ed01728c8a1b7d6fb9200b20fb6aea5c9d0b19a624a0a478",
+    "iokit_adapter.c": "2381b2ddb2c28cddd798145decb82d4bc17c6dfdf13f87eac8cc35bc51bf9f55",
+    "iokit_adapter.h": "2b885815c36f2c0f01561995c776d7958abe4e9e9ed307523bf363520265e65b",
+    "public_material.h": "27710f438e5fc28ed48bb3f1e62a4d6f44d4e1c2ff5aa1dfd8d41e075c64594d",
+    "stream.c": "88f0aeea80feb3c5666186c9ed575558cacdde18695f758ba649ecba0397e9b1",
+    "stream.h": "772f3e426359e789568f751002869e1ece8cdd4c9154ba69e1d70e7ef7b01c7b",
+    "unit.c": "24fd22f5af744ff0c57149d09febcc90ef0ff1ff63695ebabc6dcf0498a25b94"
+  },
+  "new_device_cache_root_or_USB_operations": 0
+}

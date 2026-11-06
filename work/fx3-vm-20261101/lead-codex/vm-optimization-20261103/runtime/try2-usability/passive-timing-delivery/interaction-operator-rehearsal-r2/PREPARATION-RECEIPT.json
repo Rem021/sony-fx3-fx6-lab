@@ -1,0 +1,77 @@
+{
+  "UTC": "2026-11-04T21:35:09.050018+00:00",
+  "state": "prepared_waiting_for_coordinator_dependency_release",
+  "local_fake_CLI_checks": {
+    "UTC": "2026-11-04T21:34:30.507735+00:00",
+    "scope": "five local fake subprocess output checks; zero browser/arm/key",
+    "passed": true,
+    "cases": [
+      {
+        "case": "nonzero_despite_qualified",
+        "fake_CLI_exit": 2,
+        "wrapper_exit": 2,
+        "result": {
+          "status": "capture_failed",
+          "reason": "bounded_CLI_nonzero_exit:2"
+        },
+        "passed": true
+      },
+      {
+        "case": "status_failure",
+        "fake_CLI_exit": 0,
+        "wrapper_exit": 2,
+        "result": {
+          "status": "capture_failed",
+          "reason": "bounded_CLI_not_qualified:fake_cli_error_for_local_validation"
+        },
+        "passed": true
+      },
+      {
+        "case": "missing_file",
+        "fake_CLI_exit": 0,
+        "wrapper_exit": 2,
+        "result": {
+          "status": "capture_failed",
+          "reason": "screenshot_missing_nonregular_or_symlink"
+        },
+        "passed": true
+      },
+      {
+        "case": "outside_directory",
+        "fake_CLI_exit": 0,
+        "wrapper_exit": 2,
+        "result": {
+          "status": "capture_failed",
+          "reason": "screenshot_not_in_this_new_exclusive_evidence_directory"
+        },
+        "passed": true
+      },
+      {
+        "case": "valid_current_file",
+        "fake_CLI_exit": 0,
+        "wrapper_exit": 0,
+        "result": {
+          "status": "qualified_screenshot_for_operator_review",
+          "validated_new_screenshot": true,
+          "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r2/wrapper-local-checks/valid_current_file/new-capture/menu-reference-page.png",
+          "screenshot_file_sha256": "2640059609118b695c139804676372eca75c30d30e5906775902d13e44f5356c",
+          "firmware_png_sha256": null
+        },
+        "passed": true
+      }
+    ]
+  },
+  "fixture_started": false,
+  "browser_started": false,
+  "arm_calls": 0,
+  "timed_fake_MENU_calls": 0,
+  "prepared_source_hashes": {
+    "capture_once.py": "24076da101b7bd1e0cbdb183a1effaf3ebbdc252607ca89882f962e682627d9b",
+    "capture_validation.py": "47b07bee46a89dd16553fe3b7d83984c8f4550c70e6b7ac8f0f638e6138dc4ca",
+    "confirm_once.py": "f3918183bf4c4b0390d74a1dac98366646fc0864dc7a07bde368771b4c45574b",
+    "dependency_gate.py": "659c7062814d784fe2ce31a44bcdc49da4c409db5fbaec52deb175d25ed02bad",
+    "fixture_server.py": "094a65dd9a13f85c2983fbec3f64b850fc77216aaaacf2547b25892ae1d0ed90",
+    "prepare.py": "4a09e4398fc830e8d1c95856bfeb5b066562b06d02b5a62aec679b8a72350704",
+    "test_failure_propagation.py": "dc79b3a24a27593d65c5f3c0b633868f1c9809369c14c534fba7125f1f7cf997"
+  }
+}

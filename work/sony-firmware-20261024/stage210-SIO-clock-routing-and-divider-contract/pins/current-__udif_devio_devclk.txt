@@ -1,0 +1,110 @@
+0031ae08 fd7bbda9 stp      x29, x30, [sp, #-0x30]!
+0031ae0c fd030091 mov      x29, sp
+0031ae10 f35301a9 stp      x19, x20, [sp, #0x10]
+0031ae14 f51300f9 str      x21, [sp, #0x20]
+0031ae18 400800b4 cbz      x0, #0x31af20
+0031ae1c f30300aa mov      x19, x0
+0031ae20 000c40f9 ldr      x0, [x0, #0x18]
+0031ae24 600600b4 cbz      x0, #0x31aef0
+0031ae28 601240f9 ldr      x0, [x19, #0x20]
+0031ae2c 200600b4 cbz      x0, #0x31aef0
+0031ae30 211c0053 uxtb     w1, w1
+0031ae34 3f040071 cmp      w1, #1
+0031ae38 08090054 b.hi     #0x31af58
+0031ae3c 21040034 cbz      w1, #0x31aec0
+0031ae40 601a40f9 ldr      x0, [x19, #0x30]
+0031ae44 421c0053 uxtb     w2, w2
+0031ae48 744640b9 ldr      w20, [x19, #0x44]
+0031ae4c 5400140a and      w20, w2, w20
+0031ae50 800800b4 cbz      x0, #0x31af60
+0031ae54 601e40f9 ldr      x0, [x19, #0x38]
+0031ae58 c00800b4 cbz      x0, #0x31af70
+0031ae5c 9f3e03d5 dsb      st
+0031ae60 62024829 ldp      w2, w0, [x19, #0x40]
+0031ae64 611e40f9 ldr      x1, [x19, #0x38]
+0031ae68 0020c21a lsl      w0, w0, w2
+0031ae6c 200000b9 str      w0, [x1]
+0031ae70 601a40f9 ldr      x0, [x19, #0x30]
+0031ae74 c00000b4 cbz      x0, #0x31ae8c
+0031ae78 9f3e03d5 dsb      st
+0031ae7c 624240b9 ldr      w2, [x19, #0x40]
+0031ae80 601a40f9 ldr      x0, [x19, #0x30]
+0031ae84 8222c21a lsl      w2, w20, w2
+0031ae88 020000b9 str      w2, [x0]
+0031ae8c 9f3e03d5 dsb      st
+0031ae90 622a40b9 ldr      w2, [x19, #0x28]
+0031ae94 20008052 mov      w0, #1
+0031ae98 610e40f9 ldr      x1, [x19, #0x18]
+0031ae9c 0020c21a lsl      w0, w0, w2
+0031aea0 200000b9 str      w0, [x1]
+0031aea4 13008052 mov      w19, #0
+0031aea8 f51340f9 ldr      x21, [sp, #0x20]
+0031aeac e003132a mov      w0, w19
+0031aeb0 f35341a9 ldp      x19, x20, [sp, #0x10]
+0031aeb4 fd7bc3a8 ldp      x29, x30, [sp], #0x30
+0031aeb8 c0035fd6 ret      
+0031aebc 1f2003d5 nop      
+0031aec0 9f3e03d5 dsb      st
+0031aec4 622a40b9 ldr      w2, [x19, #0x28]
+0031aec8 20008052 mov      w0, #1
+0031aecc 611240f9 ldr      x1, [x19, #0x20]
+0031aed0 0020c21a lsl      w0, w0, w2
+0031aed4 200000b9 str      w0, [x1]
+0031aed8 13008052 mov      w19, #0
+0031aedc e003132a mov      w0, w19
+0031aee0 f51340f9 ldr      x21, [sp, #0x20]
+0031aee4 f35341a9 ldp      x19, x20, [sp, #0x10]
+0031aee8 fd7bc3a8 ldp      x29, x30, [sp], #0x30
+0031aeec c0035fd6 ret      
+0031aef0 001900f0 adrp     x0, #0x63d000
+0031aef4 13008052 mov      w19, #0
+0031aef8 00204fb9 ldr      w0, [x0, #0xf20]
+0031aefc 00ffff34 cbz      w0, #0x31aedc
+0031af00 e10a00b0 adrp     x1, #0x477000
+0031af04 201200d0 adrp     x0, #0x560000
+0031af08 21400391 add      x1, x1, #0xd0
+0031af0c 00803291 add      x0, x0, #0xca0
+0031af10 21600091 add      x1, x1, #0x18
+0031af14 42088052 mov      w2, #0x42
+0031af18 cf050494 bl       #0x41c654
+0031af1c f0ffff17 b        #0x31aedc
+0031af20 001900f0 adrp     x0, #0x63d000
+0031af24 b3028012 mov      w19, #-0x16
+0031af28 00204fb9 ldr      w0, [x0, #0xf20]
+0031af2c 80fdff34 cbz      w0, #0x31aedc
+0031af30 e10a00b0 adrp     x1, #0x477000
+0031af34 231200d0 adrp     x3, #0x560000
+0031af38 21400391 add      x1, x1, #0xd0
+0031af3c 201200d0 adrp     x0, #0x560000
+0031af40 63c03091 add      x3, x3, #0xc30
+0031af44 21600091 add      x1, x1, #0x18
+0031af48 00003191 add      x0, x0, #0xc40
+0031af4c 02088052 mov      w2, #0x40
+0031af50 c1050494 bl       #0x41c654
+0031af54 e2ffff17 b        #0x31aedc
+0031af58 b3028012 mov      w19, #-0x16
+0031af5c e0ffff17 b        #0x31aedc
+0031af60 601e40f9 ldr      x0, [x19, #0x38]
+0031af64 40f9ffb4 cbz      x0, #0x31ae8c
+0031af68 bdffff17 b        #0x31ae5c
+0031af6c 1f2003d5 nop      
+0031af70 551c0090 adrp     x21, #0x6a2000
+0031af74 b5421b91 add      x21, x21, #0x6d0
+0031af78 e00315aa mov      x0, x21
+0031af7c 9b230494 bl       #0x423de8
+0031af80 631a40f9 ldr      x3, [x19, #0x30]
+0031af84 630040b9 ldr      w3, [x3]
+0031af88 9f3d03d5 dsb      ld
+0031af8c 640a4829 ldp      w4, w2, [x19, #0x40]
+0031af90 4220c41a lsl      w2, w2, w4
+0031af94 6300220a bic      w3, w3, w2
+0031af98 9f3e03d5 dsb      st
+0031af9c 8222c41a lsl      w2, w20, w4
+0031afa0 611a40f9 ldr      x1, [x19, #0x30]
+0031afa4 4200032a orr      w2, w2, w3
+0031afa8 220000b9 str      w2, [x1]
+0031afac e10300aa mov      x1, x0
+0031afb0 e00315aa mov      x0, x21
+0031afb4 39240494 bl       #0x424098
+0031afb8 b5ffff17 b        #0x31ae8c
+0031afbc 1f2003d5 nop      

@@ -1,0 +1,147 @@
+{
+  "status": "SAVED_SCM_NATIVE_AND_REFERENCE_CONTRACT_PASS_NOT_RUNTIME_ACCEPTANCE",
+  "checks": 44,
+  "check_names": [
+    "syscall 25 sys_fcntl",
+    "syscall 204 sys_getsockname",
+    "syscall 209 sys_getsockopt",
+    "syscall 211 sys_sendmsg",
+    "syscall 212 sys_recvmsg",
+    "0x330a60 cmp w0, #0xfd",
+    "0x330928 mov w1, #0x15",
+    "0x330d2c mov w24, #0x80000",
+    "0x330d38 ands w0, w0, #0x40000000",
+    "0x330d3c csel w0, w0, w24, eq",
+    "0x330f28 add x0, x0, #1",
+    "0x330f38 add w21, w21, #1",
+    "0x330f44 cmp w21, w23",
+    "0x330f4c b #0xffffff80083b0d88",
+    "0x330dd0 str w4, [x2]",
+    "0x330e70 str x1, [x4]",
+    "0x330eac cmp w25, w21",
+    "0x330eb0 b.le #0xffffff80083b0ec0",
+    "0x330eb8 orr w0, w0, #8",
+    "0x330d40 raw BL get_unused_fd_flags",
+    "0x330d40 bl #0xffffff80081aa730",
+    "0x330f40 raw BL fd_install",
+    "0x330f40 bl #0xffffff80081aa880",
+    "0x330ec4 raw BL __scm_destroy",
+    "0x330ec4 bl #0xffffff80083b0768",
+    "0x330920 raw BL task_active_pid_ns",
+    "0x330920 bl #0xffffff80080ba360",
+    "0x33092c raw BL ns_capable",
+    "0x33092c bl #0xffffff80080a9818",
+    "0x330aa4 raw BL fget_raw",
+    "0x330aa4 bl #0xffffff80081a9f98",
+    "complete next-symbol decode scm_detach_fds",
+    "complete next-symbol decode __scm_send",
+    "complete next-symbol decode unix_dgram_recvmsg",
+    "source include__net__scm.h:10",
+    "source net__core__scm.c:47",
+    "source net__core__scm.c:72",
+    "source net__core__scm.c:254",
+    "source net__core__scm.c:304",
+    "source include__net__scm.h:112",
+    "captured source-reference/net__core__scm.c",
+    "captured source-reference/include__net__scm.h",
+    "captured source-reference/net__unix__af_unix.c",
+    "all-installed/header-fault does not require CTRUNC in reference"
+  ],
+  "original_kernel": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "parser_sha256": "db8a1ebba52e8bfb85367e3d8450e1ef89224d0bb9e768bf656c6370600614a1",
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/include__net__scm.h",
+      "sha256": "401ffe1a9d631f63f127367c5b11cb5456ce7cbba591242cfd57277b6f301a7b",
+      "first_line": 10,
+      "last_line": 26,
+      "range_sha256": "a86f71c452099b4844b65348a413f5c554a0ea7ec782f4bd962f249361be025b",
+      "required_tokens": [
+        "SCM_MAX_FD\t253",
+        "struct file"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/net__core__scm.c",
+      "sha256": "8ff09a46141270cd10892e476d841b2a5a3f1ae4cf8399e6e2ce2526cf9485ac",
+      "first_line": 47,
+      "last_line": 65,
+      "range_sha256": "c9c1a832cd05466ecdf8f92627adf3b1ddc5cb70f87599e3cf4a7f6808e99055",
+      "required_tokens": [
+        "scm_check_creds",
+        "CAP_SYS_ADMIN",
+        "CAP_SETUID",
+        "CAP_SETGID"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/net__core__scm.c",
+      "sha256": "8ff09a46141270cd10892e476d841b2a5a3f1ae4cf8399e6e2ce2526cf9485ac",
+      "first_line": 72,
+      "last_line": 95,
+      "range_sha256": "1c8c1bfa1a58ea557039690633252efddd2cfd0777853fce8caaf432756c8209",
+      "required_tokens": [
+        "SCM_MAX_FD",
+        "count",
+        "max"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/net__core__scm.c",
+      "sha256": "8ff09a46141270cd10892e476d841b2a5a3f1ae4cf8399e6e2ce2526cf9485ac",
+      "first_line": 254,
+      "last_line": 302,
+      "range_sha256": "0e6bf3d83a8dbab9bd474e818477e4f3b91e887a83998c1a08470afe3703659f",
+      "required_tokens": [
+        "MSG_CMSG_CLOEXEC",
+        "O_CLOEXEC",
+        "fd_install(new_fd, get_file(fp[i]))"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/net__core__scm.c",
+      "sha256": "8ff09a46141270cd10892e476d841b2a5a3f1ae4cf8399e6e2ce2526cf9485ac",
+      "first_line": 304,
+      "last_line": 327,
+      "range_sha256": "7d6f92e80f36e38268890a4b4698e17c7a3e29147ee89370bdff840efcd4755e",
+      "required_tokens": [
+        "put_user(SOL_SOCKET",
+        "put_user(cmlen",
+        "i < fdnum",
+        "MSG_CTRUNC",
+        "__scm_destroy"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/include__net__scm.h",
+      "sha256": "401ffe1a9d631f63f127367c5b11cb5456ce7cbba591242cfd57277b6f301a7b",
+      "first_line": 112,
+      "last_line": 138,
+      "range_sha256": "461c8e465d09a30839f9007a2360a2e3886c18fe75fca400327f7813e445ee9c",
+      "required_tokens": [
+        "SOCK_PASSCRED",
+        "SCM_CREDENTIALS",
+        "scm_detach_fds"
+      ]
+    }
+  ],
+  "reference": "Linux v4.9.337, not rebuilt exact Sony source",
+  "rights_max": 253,
+  "SCM_RIGHTS_references_same_file": true,
+  "CLOEXEC_flag_path_bound": true,
+  "header_fault_without_CTRUNC_arithmetic_example": {
+    "fdnum": 1,
+    "fdmax": 1,
+    "installed_i": 1,
+    "cmsg_header_copy_failed": true,
+    "CTRUNC_condition": false,
+    "unidentified_installed_FDs_can_remain": true
+  },
+  "partial_delivery_error_is_not_proven_all_FDs_closed": true,
+  "CAP_SYS_ADMIN_sender_can_supply_other_PID_in_reference": true,
+  "SCM_credentials_alone_are_not_authentic_child_creation_proof": true,
+  "observed_target_capabilities_or_copy_faults": false,
+  "original_code_executed": false,
+  "new_device_operations": 0
+}

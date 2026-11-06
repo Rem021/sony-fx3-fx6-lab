@@ -1,0 +1,29 @@
+{
+  "created_utc": "2026-10-26T11:29:42.700197+00:00",
+  "status": "PASS_CONTIGUOUS_NATIVE_ROW_AND_CHANNEL_BOUNDARY",
+  "bounded_fragments": 30,
+  "stop_counts": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 5,
+    "returned": 16,
+    "boundary: before_original_buffer_channel_preparation": 4,
+    "boundary: before_unexecuted_channel_acquisition": 4,
+    "boundary: before_original_no_resource_row_error": 1
+  },
+  "native_rows": [
+    386,
+    386,
+    386,
+    431,
+    -1
+  ],
+  "native_muted_diagnostic_calls": 17,
+  "channel_manager_bound_or_acquisition_body_executed": false,
+  "independent_target_query_before_after": [
+    24498176,
+    16000000
+  ],
+  "actual_private_writer_hook": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "proof_sha256": "c9100b04cc06eac2538aaac2336d9169c8d0fdd072b90f9fd1af717019e6d930"
+}

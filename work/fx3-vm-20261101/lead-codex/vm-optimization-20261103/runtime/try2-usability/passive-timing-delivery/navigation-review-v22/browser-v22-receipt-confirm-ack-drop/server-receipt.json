@@ -1,0 +1,1116 @@
+{
+  "scenario": "confirm-ack-drop",
+  "url": "http://127.0.0.1:58227",
+  "scope": "HOST_BROWSER_FIXTURE_NO_GUEST",
+  "module_sha256": "6f1a3ae9017162a5941b98df5eb87a72c9b64a806f6e11a5b185ea2af1095e1a",
+  "images": [
+    {
+      "name": "internal-observe-01",
+      "sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4"
+    },
+    {
+      "name": "trial-step-01-key-1ab",
+      "sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+    },
+    {
+      "name": "internal-observe-02",
+      "sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292"
+    },
+    {
+      "name": "trial-step-02-key-015",
+      "sha256": "557376846b91022bcb8f7dba6131a559652bc43210e1572e287b23d41f2d5560"
+    },
+    {
+      "name": "internal-observe-03",
+      "sha256": "15cb5b958cf6c78c43758f3c5771ef91a90e4de9a1eb06059bb23f2dea1596fc"
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/",
+      "host_monotonic": 313888.866636375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "host_monotonic": 313888.867275625,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313889.034466916,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/frame.png",
+      "host_monotonic": 313889.172352541,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico",
+      "host_monotonic": 313889.191110625,
+      "fault": null,
+      "backend_status": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313889.584616875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313889.989969541,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313890.39585425,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313890.800299875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313891.206248458,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313891.613610583,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313892.018945125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313892.425396333,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313892.829821958,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313893.2357755,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313893.641882666,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313894.046024583,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313894.451686125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313894.85599975,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313895.263186208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313895.667800625,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313896.0778015,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/key",
+      "host_monotonic": 313896.303998125,
+      "fault": null,
+      "backend_status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313896.485275125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313896.901995875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/frame.png",
+      "host_monotonic": 313896.90529425,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313897.312812541,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313897.717612125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313898.12445375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313898.530498541,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313898.938456958,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313899.343195708,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313899.748842416,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313900.154208291,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313900.56840575,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313900.973529208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/frame.png",
+      "host_monotonic": 313900.976133041,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313901.38351675,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313901.814222291,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313902.226300208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313902.631865416,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313903.036747541,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313903.444174125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313903.849917916,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313904.256114375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313904.664113541,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313905.078790833,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313905.485683333,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313905.892053375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313906.299629958,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313906.70688375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313907.115107583,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313907.521345833,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313907.927978208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313908.334047291,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313908.763241625,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313909.170805125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313909.576477333,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313909.98263525,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313910.387373875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313910.800715291,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313911.209076916,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313911.613373375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313912.020438833,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313912.424336291,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313912.827714041,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313913.233990875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313913.640017791,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313914.045193375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313914.451091041,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313914.855691208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313915.261040375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313915.665895458,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313916.070862833,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313916.484110708,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313916.908284791,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313917.313648125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313917.719361666,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313918.129379958,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/confirm-visual",
+      "host_monotonic": 313918.154314,
+      "fault": "drop-accepted-confirmation-ack",
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313918.60654825,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313919.016624166,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313919.424134583,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313919.828324583,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313920.232560333,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313920.638605666,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313921.044000125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313921.449659791,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313921.8554035,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313922.262011541,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313922.6684015,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313923.077284791,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313923.484705958,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313923.891470583,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313924.29757375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313924.705066166,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313925.110977833,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313925.517140125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313925.921664125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313926.326612166,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313926.732808166,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313927.138238291,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313927.545627208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313927.954884208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313928.358935791,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313928.765621458,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313929.171329833,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313929.5773835,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313929.983210666,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313930.388326416,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313930.794178458,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313931.200781708,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313931.604614541,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313932.011696625,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313932.417807666,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313932.823728041,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313933.228090583,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313933.633239208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313934.039589291,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313934.446306125,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313934.851186916,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313935.257608083,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313935.6626675,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313936.067811375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313936.474440958,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313936.879802875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313937.286505166,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313937.69346225,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313938.099198875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313938.504026875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313938.910103083,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313939.316579416,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313939.7220005,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313940.126604875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313940.532204166,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313940.938633916,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313941.342793875,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313941.747909041,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313942.15209275,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313942.558212958,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313942.9655975,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313943.37560375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313943.7843375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313944.190590041,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313944.598145583,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313945.003898,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313945.411128375,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313945.819664041,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/stop",
+      "host_monotonic": 313945.998209541,
+      "fault": null,
+      "backend_status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313946.226272041,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "host_monotonic": 313946.631393208,
+      "fault": null,
+      "backend_status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/final-ack",
+      "host_monotonic": 313946.636054375,
+      "fault": null,
+      "backend_status": 200
+    }
+  ],
+  "stage": 2,
+  "steps": 1,
+  "phase": "finished",
+  "final_delivery": {
+    "acknowledged": true,
+    "wait_seconds": 0.3902595840045251,
+    "end_reason": "browser_ack",
+    "maximum_wait_seconds": 30.0,
+    "scope": "browser_receipt_delivery_only"
+  },
+  "confirmation_receipt": {
+    "request_id": "083f0c10-7194-4386-85f1-814bc69a4b2e",
+    "step": 1,
+    "observed_sequence": 2705,
+    "content_generation": 3,
+    "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+    "guest_input_written": false
+  },
+  "key_post_count": 1,
+  "confirm_post_count": 1,
+  "server_threads_reaped": true,
+  "no_qemu_or_guest_input": true
+}

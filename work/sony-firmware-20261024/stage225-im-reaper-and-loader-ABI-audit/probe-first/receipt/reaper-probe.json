@@ -1,0 +1,155 @@
+{
+  "Sony_im_handler_or_Linux_kernel_executed": false,
+  "all_fixture_threads_terminal": true,
+  "existing_source_tests_not_rerun": true,
+  "flashable": false,
+  "hardware_validated": false,
+  "independent_recovery_proven": false,
+  "model_wait_schedule_is_declared_not_camera_observation": true,
+  "new_camera_operations": 0,
+  "new_own_ARM64_schedules": 2,
+  "own_parent_child_ARM64_executed": true,
+  "probe_source_sha256": "1c44b812ce1495118ceb64baa3b46f8493b9c2f1cb153799ebb2fe5460e33ef4",
+  "records": [
+    {
+      "child_errors": [],
+      "child_packets": [
+        2,
+        4
+      ],
+      "child_return": 0,
+      "clones": [
+        {
+          "child_pid": 4321,
+          "child_stack": 0,
+          "flags": 17
+        }
+      ],
+      "model_reaper": [],
+      "name": "baseline",
+      "own_wait_returns": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4321
+      ],
+      "parent_errors": [],
+      "parent_module_sha256": "c3e1d45b55fb8c4c228e7fe4b78cbe702ef81fcd2406f882fe374310198c93dd",
+      "raw_exit_status": 0,
+      "source_reads": 2,
+      "state": 0
+    },
+    {
+      "child_errors": [],
+      "child_packets": [
+        2,
+        4
+      ],
+      "child_return": 0,
+      "clones": [
+        {
+          "child_pid": 4322,
+          "child_stack": 0,
+          "flags": 17
+        }
+      ],
+      "model_reaper": [
+        {
+          "operation": "modeled im waitpid(-1,status,WNOHANG)",
+          "options": 1,
+          "pid_argument": -1,
+          "returned": 4322,
+          "status": 0
+        }
+      ],
+      "name": "reaper-race",
+      "new_owner_cannot_reclaim": true,
+      "own_wait_returns": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -10
+      ],
+      "parent_errors": [],
+      "parent_module_sha256": "c3e1d45b55fb8c4c228e7fe4b78cbe702ef81fcd2406f882fe374310198c93dd",
+      "raw_exit_status": 0,
+      "same_owner_relaunch_denied_without_new_activity": true,
+      "source_reads": 2,
+      "state": 2
+    }
+  ],
+  "reused_helpers": {
+    "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/launch_model.py": "829fd35f87eba74a9dcf5cf09059fad92cd2d7d59b699a605b3ba559d4ca5c0e",
+    "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/test_launcher.py": "77c3c5e89e8b05b9b41ec8a267cfac69e69a6355fa488fd82af1d8748218a07d"
+  },
+  "schema": "fx3-im-reaper-schedule-counterexample-own224-v1",
+  "status": "COUNTEREXAMPLE_REPRODUCED_SAFE_HOLD_NO_AVAILABILITY_PROOF"
+}

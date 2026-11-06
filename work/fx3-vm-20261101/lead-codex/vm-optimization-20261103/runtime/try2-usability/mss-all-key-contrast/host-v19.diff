@@ -1,0 +1,58 @@
+--- run_trial_v17_mss_key_contrast.py
++++ run_trial_v19_mss_key_contrast_preinput_stop.py
+@@ -79,13 +79,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = Path(__file__).resolve().parent / 'STATE.json'
++    path = Path(__file__).resolve().parent / 'STATE-v19.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = Path(__file__).resolve().parent / 'STATE.json.tmp'
++    temp = Path(__file__).resolve().parent / 'STATE-v19.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -98,6 +98,17 @@
+         return '按键 12 秒内未得到原生 key-up 回执'
+     if not both_native_events:
+         return '按键 12 秒内原程序按下/抬起接收证据不完整，停止本轮；不会自动重发。'
++    return None
++
++
++def pre_input_stop_reason(monitor, standby_observed, shutdown_count_at_ready):
++    """Recheck newly appended native stop events before any guest write."""
++    if monitor.failure:
++        return monitor.failure
++    if monitor.native_power_off_events:
++        return 'native_model_power_off_observed: ' + monitor.native_power_off_events[-1]
++    if standby_observed and len(monitor.native_shutdown_events) > shutdown_count_at_ready:
++        return 'native_shutdown_after_ready_without_user_power_key: ' + monitor.native_shutdown_events[-1]
+     return None
+ 
+ 
+@@ -119,7 +130,7 @@
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2mssallinternal-keycontrast' if ns.internal_hoststep else 'disabled'
++    ns.label = 'try2mssallinternal-keycontrast-v19' if ns.internal_hoststep else 'disabled'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+@@ -554,8 +565,10 @@
+                 if proposed is not None and not trial.stop.is_set():
+                     # Inspect ALL bytes appended since this iteration began before any guest write.
+                     log_monitor.poll()
+-                    if log_monitor.failure:
+-                        early_stop_reason = log_monitor.failure
++                    pending_stop = pre_input_stop_reason(
++                        log_monitor, phaseA_capture is not None, shutdown_count_at_ready)
++                    if pending_stop:
++                        early_stop_reason = pending_stop
+                         trial.fail(early_stop_reason)
+                         break
+                     key = proposed['key']

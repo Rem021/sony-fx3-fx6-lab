@@ -1,0 +1,246 @@
+{
+  "status": "PASS_ORIGINAL_LSDA_SELECTED_ERROR_AND_CLOSE_FIELD_REVIEW_NOT_PHYSICAL_BACKUP_OR_RUNTIME_ACCEPTANCE",
+  "created_utc": "2026-10-28T10:35:58.355354+00:00",
+  "original_library_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+  "summary": [
+    {
+      "name": "normal",
+      "outer_return": 0,
+      "inner_status": "0x0",
+      "reply_length": 36,
+      "POSIX_close_calls": 1,
+      "POSIX_fsync_calls": 2,
+      "runtime_selections": 0,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": -1,
+          "open_flag": 0,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "short_read",
+      "outer_return": 0,
+      "inner_status": "0x1000000a",
+      "reply_length": 4,
+      "POSIX_close_calls": 1,
+      "POSIX_fsync_calls": 2,
+      "runtime_selections": 0,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": -1,
+          "open_flag": 0,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "read_error",
+      "outer_return": 0,
+      "inner_status": "0x1000000a",
+      "reply_length": 4,
+      "POSIX_close_calls": 1,
+      "POSIX_fsync_calls": 2,
+      "runtime_selections": 1,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": -1,
+          "open_flag": 0,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "open_error",
+      "outer_return": 0,
+      "inner_status": "0x10000008",
+      "reply_length": 4,
+      "POSIX_close_calls": 0,
+      "POSIX_fsync_calls": 0,
+      "runtime_selections": 1,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": -1,
+          "open_flag": 0,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "stat_error",
+      "outer_return": 0,
+      "inner_status": "0x10000006",
+      "reply_length": 4,
+      "POSIX_close_calls": 0,
+      "POSIX_fsync_calls": 0,
+      "runtime_selections": 1,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": -1,
+          "open_flag": 0,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "fsync_errors",
+      "outer_return": 0,
+      "inner_status": "0x0",
+      "reply_length": 36,
+      "POSIX_close_calls": 1,
+      "POSIX_fsync_calls": 2,
+      "runtime_selections": 2,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": -1,
+          "open_flag": 0,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "close_errors",
+      "outer_return": 0,
+      "inner_status": "0x0",
+      "reply_length": 36,
+      "POSIX_close_calls": 2,
+      "POSIX_fsync_calls": 3,
+      "runtime_selections": 2,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": 3,
+          "open_flag": 1,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "first_close_error_second_success",
+      "outer_return": 0,
+      "inner_status": "0x0",
+      "reply_length": 36,
+      "POSIX_close_calls": 2,
+      "POSIX_fsync_calls": 3,
+      "runtime_selections": 1,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": -1,
+          "open_flag": 0,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "read_and_close_errors",
+      "outer_return": 0,
+      "inner_status": "0x1000000a",
+      "reply_length": 4,
+      "POSIX_close_calls": 2,
+      "POSIX_fsync_calls": 3,
+      "runtime_selections": 3,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": 3,
+          "open_flag": 1,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "fsync_and_close_errors",
+      "outer_return": 0,
+      "inner_status": "0x0",
+      "reply_length": 36,
+      "POSIX_close_calls": 2,
+      "POSIX_fsync_calls": 3,
+      "runtime_selections": 5,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": 3,
+          "open_flag": 1,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "near4GiB_read_error_alias",
+      "outer_return": 0,
+      "inner_status": "0x0",
+      "reply_length": 3,
+      "POSIX_close_calls": 1,
+      "POSIX_fsync_calls": 2,
+      "runtime_selections": 1,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": -1,
+          "open_flag": 0,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    },
+    {
+      "name": "short_read_and_close_errors",
+      "outer_return": 0,
+      "inner_status": "0x1000000a",
+      "reply_length": 4,
+      "POSIX_close_calls": 2,
+      "POSIX_fsync_calls": 3,
+      "runtime_selections": 2,
+      "native_file_object_fields": [
+        {
+          "guest_address": "0x1002ef90",
+          "POSIX_fd_field": 3,
+          "open_flag": 1,
+          "fields_are_not_proof_of_actual_kernel_descriptor_liveness": true
+        }
+      ]
+    }
+  ],
+  "metadata_functions": 6,
+  "callsite_rows": 46,
+  "modeled_LSDA_selections": 19,
+  "original_instruction_entries": 5030,
+  "critical_findings": [
+    "Original FileAccessException RTTI selects filter1 in five methods; filter2 is std::exception, not catch-all.",
+    "Successful data reply can coexist with retained native open flag and two attempted closes for declared close failures.",
+    "Fsync errors may be consumed inside the method and not reflected in GET_FILE2 success status.",
+    "An exact data length and success word are not independent proof of file-handle cleanup or completed restoration.",
+    "The modeled runtime follows original LSDA and actual executed frame/CFI; it is not the Sony GCC unwinder, allocator, RTTI inheritance matching or exception destructor execution."
+  ],
+  "limitations": [
+    "POSIX system-call returns and DMM/mount/crypto remain declared own providers.",
+    "Native FD fields are application memory, not actual kernel descriptor liveness. Linux may already release an FD when close returns an error.",
+    "No actual FD reuse, cross-thread misclose, persistent leak or physical camera defect has been observed.",
+    "Near4GiB error alias is an offline metadata-selected counterexample, not an actual camera-file failure test.",
+    "Read/auth/mount/log side effects from130/134/136 remain; no backup or restore permission is added."
+  ],
+  "references": [
+    {
+      "url": "https://man7.org/linux/man-pages/man2/close.2.html",
+      "scope": "Linux failure/retry semantics only, not measured Sony kernel behavior"
+    },
+    {
+      "url": "https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html",
+      "scope": "Exception context/personality boundary, not actual runtime implementation"
+    },
+    {
+      "url": "https://github.com/gcc-mirror/gcc/tree/abaef5489e27672c45aa05f41ea7ed52f3fa2748",
+      "scope": "Upstream6.4 reference; Sony compiler comment6.4.0 does not prove identical runtime"
+    }
+  ],
+  "owner_trial_user_authorization_preserved": true,
+  "manual_eject_pending": true,
+  "new_root_or_active_USB_or_camera_file_operations": 0
+}

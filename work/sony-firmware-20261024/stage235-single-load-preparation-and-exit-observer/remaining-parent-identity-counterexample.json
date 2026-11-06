@@ -1,0 +1,128 @@
+{
+  "schema": "fx3-single-load-unresolved-parent-sharing-identity-v1",
+  "status": "CURRENT_COUNTEREXAMPLE_REPRODUCED_DO_NOT_RELEASE",
+  "current_binary_path": "work/sony-firmware-20261024/stage235-single-load-preparation-and-exit-observer/runs-integrated-verified/built/parent-module.so",
+  "current_binary_sha256": "96816df9bfbb816c0df312ae7281c5483e62142ea8227dbcfe4c63933e5a2e95",
+  "model_sha256": "e7493beb4de8c7d03cddcda8050026f6f6e47aa5358f61dff1b54d3bac38ed5f",
+  "script_sha256": "8decdf56d39b1cec6db95bb42b5b36ff95d6b9d0bb083c29fb9b4fb111447bfe",
+  "result": [
+    3,
+    0
+  ],
+  "original_own_child_exit": 68,
+  "reused_PID_foreign_exit": 0,
+  "current_false_complete": true,
+  "creator_signal_mask_still_blocked": true,
+  "requires_unverified_parent_sharing_or_thread_death_adoption_context": true,
+  "original_exit_reaped_by_explicit_external_WALL_model_input": true,
+  "current_camera_context_supporting_this_interleaving_measured": false,
+  "summary": {
+    "publications": [
+      {
+        "result": 0,
+        "published": true,
+        "dev": 9,
+        "ino": 2011
+      }
+    ],
+    "forbidden_syscalls": [],
+    "created_modes": [
+      {
+        "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+        "requested": 384,
+        "actual": 384,
+        "access": 2
+      },
+      {
+        "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+        "requested": 384,
+        "actual": 384,
+        "access": 2
+      }
+    ],
+    "remaining_new_FDs": [],
+    "files": {
+      "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+        "mode": 384,
+        "bytes": 256,
+        "sha256": "107680a6c2e732ce048a62df2cc2150697bc8c9093d55a02b374c555c9225f22",
+        "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb96816df9bfbb816c0df312ae7281c5483e62142ea8227dbcfe4c63933e5a2e95a1295e7679b8b507f162ca219b9366e478d442afda3a88a333f27b2261892c2996816df9bfbb816c0df312ae7281c5483e62142ea8227dbcfe4c63933e5a2e95e8cd9a3b00000000e825e2330e0000000e23be8279359e3e6a73b6893e7173337ef2a82a6f30a8ee67be3fa0fd91547b01000000000000000900000000000000db07000000000000000000000000000000000000000000000000000000000000000000000000000000000000ebbaf2cb",
+        "dev": 9,
+        "ino": 2012
+      },
+      "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+        "mode": 384,
+        "bytes": 256,
+        "sha256": "a1295e7679b8b507f162ca219b9366e478d442afda3a88a333f27b2261892c29",
+        "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd96816df9bfbb816c0df312ae7281c5483e62142ea8227dbcfe4c63933e5a2e95e8cd9a3b00000000e825e2330e0000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000696cceb6",
+        "dev": 9,
+        "ino": 2011
+      }
+    },
+    "clock_calls": 4,
+    "plan_mutated": false,
+    "worker_started": true,
+    "clones": [
+      {
+        "flags": 0,
+        "shared_VM": false,
+        "shared_FD_table": false,
+        "shared_sighand": false,
+        "parent_mask": 18446744073709289215,
+        "child_mask": 18446744073709289215,
+        "child_pid": 7001
+      }
+    ],
+    "waits": [
+      {
+        "pid": 7001,
+        "options": 2684354561,
+        "returned": 0,
+        "status": null
+      },
+      {
+        "pid": 7001,
+        "options": 2684354561,
+        "returned": 7001,
+        "status": 0
+      }
+    ],
+    "wait_subjects": [
+      {
+        "role": "own",
+        "mask": 18446744073709289215,
+        "tid": 777
+      },
+      {
+        "role": "foreign-parent-sharing",
+        "mask": 18446744073709289215,
+        "tid": 777
+      }
+    ],
+    "mask_events": [
+      {
+        "before": 1024,
+        "after": 18446744073709289215,
+        "result": 0
+      },
+      {
+        "before": 18446744073709289215,
+        "after": 1024,
+        "result": 0
+      }
+    ],
+    "final_parent_mask": 1024,
+    "creator_signal_events": [],
+    "own_child_exit": 68,
+    "own_child_alive": false,
+    "parent_sleeps": 1,
+    "source_accesses": [],
+    "exec_attempts": [],
+    "child_original_mapping_removed": true,
+    "single_result": "46583353494e474c454f555476310000010000000100000041010000591b0000000000000000000000000000000000009aed98f7af06a04efa88048d39f5c3fe632a741abf9d190697467ba527484413e6d8e093ea64682c6775ccb29523dfaf1c0bbff1e688fef4793b1b9a98728f61bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb96816df9bfbb816c0df312ae7281c5483e62142ea8227dbcfe4c63933e5a2e950100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c4f8a2ed"
+  },
+  "original_Sony_Linux_or_glibc_executed": false,
+  "new_device_operations": 0,
+  "must_not_release_this_candidate": true,
+  "first_flash_released": false
+}

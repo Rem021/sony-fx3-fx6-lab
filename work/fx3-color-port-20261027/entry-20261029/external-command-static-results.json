@@ -1,0 +1,1330 @@
+{
+  "fragments": [
+    {
+      "library": "libInfraExtCmdSvc.so",
+      "va": "0x3eec",
+      "label": "ExtCmdSvc::OsalSyncRcvMsgCb(void*, void*)",
+      "source_sha256": "6ed99a632f6646e3313241b8d1aaef5a584444f81cf721c013fc403887774134",
+      "bytes": 560,
+      "sha256": "0fbdb200201aeeefe4ad9b81a85b145e6892643c7954c1498080842c4ed5e299",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x3f04",
+          "target": "0x1f10",
+          "label": "osal_get_msg_src"
+        },
+        {
+          "site": "0x3f4c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3f5c",
+          "target": "0x4034",
+          "label": null
+        },
+        {
+          "site": "0x3f84",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3fa0",
+          "target": "0x1fc0",
+          "label": "ExtCmdSvc::IntrInitCmd(void*, DefInterExtCmdSvc::__extcmd_svc_inter_msg*)"
+        },
+        {
+          "site": "0x3fcc",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3fe4",
+          "target": "0x1dd0",
+          "label": "ExtCmdSvc::IntrOpenCmd(void*)"
+        },
+        {
+          "site": "0x4018",
+          "target": "0x20d0",
+          "label": "ExtCmdSvc::ReqTransferCmd(__extcmd_svc_msg*)"
+        },
+        {
+          "site": "0x4024",
+          "target": "0x1ff0",
+          "label": "ExtCmdSvc::AttachCmd(__extcmd_svc_msg*)"
+        },
+        {
+          "site": "0x4040",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x4050",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x4070",
+          "target": "0x20e0",
+          "label": "ExtCmdSvc::IntrActivatedEvt(void*, __extcmd_svc_msg*, unsigned int)"
+        },
+        {
+          "site": "0x4088",
+          "target": "0x2060",
+          "label": "ExtCmdSvc::IntrReqTransferCmp(__extcmd_svc_msg*)"
+        },
+        {
+          "site": "0x4098",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x40b4",
+          "target": "0x2080",
+          "label": "ExtCmdSvc::IntrRegistTransportCmd(__extcmd_svc_msg*, unsigned int)"
+        },
+        {
+          "site": "0x40c4",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x40e0",
+          "target": "0x1e70",
+          "label": "ExtCmdSvc::IntrFinalizeCmd(void*, DefInterExtCmdSvc::__extcmd_svc_inter_msg*)"
+        },
+        {
+          "site": "0x40f0",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x4108",
+          "target": "0x1dc0",
+          "label": "ExtCmdSvc::IntrCloseCmd(void*)"
+        },
+        {
+          "site": "0x4118",
+          "target": "0x4034",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libInfraExtCmdSvc.so-3eec.txt"
+    },
+    {
+      "library": "libInfraExtCmdSvc.so",
+      "va": "0x2c4c",
+      "label": "ExtCmdSvc::IntrInitCmd(void*, DefInterExtCmdSvc::__extcmd_svc_inter_msg*)",
+      "source_sha256": "6ed99a632f6646e3313241b8d1aaef5a584444f81cf721c013fc403887774134",
+      "bytes": 644,
+      "sha256": "22b3734ff600734df794fcbf45fff377e090536e17ce27235a720641c32cacfe",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x2c7c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2cc8",
+          "target": "0x22d8",
+          "label": null
+        },
+        {
+          "site": "0x2ce8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2cf0",
+          "target": "0x2d24",
+          "label": null
+        },
+        {
+          "site": "0x2d04",
+          "target": "0x1f20",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x2d1c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2d30",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2d34",
+          "target": "0x2c80",
+          "label": null
+        },
+        {
+          "site": "0x2d60",
+          "target": "0x1e80",
+          "label": "ExtCmdSvc::SndMsgToUpperSync(void*, void*, unsigned int)"
+        },
+        {
+          "site": "0x2d78",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2d88",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2d94",
+          "target": "0x2150",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x2da4",
+          "target": "0x2ce0",
+          "label": null
+        },
+        {
+          "site": "0x2db4",
+          "target": "0x1f50",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x2dbc",
+          "target": "0x2140",
+          "label": "ExtCmdSvc_PlugInCreate::ExtCmdSvc_PlugInCreate()"
+        },
+        {
+          "site": "0x2dd0",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x2de0",
+          "target": "0x2030",
+          "label": "ExtCmdSvc::RegistListPlugInCreate(DefInterExtCmdSvc::__list*, void*)"
+        },
+        {
+          "site": "0x2df8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2e08",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2e10",
+          "target": "0x1e50",
+          "label": "ExtCmdSvc_PlugInCreate::~ExtCmdSvc_PlugInCreate()"
+        },
+        {
+          "site": "0x2e1c",
+          "target": "0x1f60",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x2e28",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x2e34",
+          "target": "0x2150",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x2e44",
+          "target": "0x2ce0",
+          "label": null
+        },
+        {
+          "site": "0x2e50",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x2e5c",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x2e70",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x2e7c",
+          "target": "0x2150",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x2e8c",
+          "target": "0x2ce0",
+          "label": null
+        },
+        {
+          "site": "0x2ea0",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2eb0",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2eb4",
+          "target": "0x2e74",
+          "label": null
+        },
+        {
+          "site": "0x2ec4",
+          "target": "0x1f60",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x2ecc",
+          "target": "0x20b0",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "disassembly": "entry-fragments/libInfraExtCmdSvc.so-2c4c.txt"
+    },
+    {
+      "library": "libInfraExtCmdSvc.so",
+      "va": "0x2f6c",
+      "label": "ExtCmdSvc::AttachCmd(__extcmd_svc_msg*)",
+      "source_sha256": "6ed99a632f6646e3313241b8d1aaef5a584444f81cf721c013fc403887774134",
+      "bytes": 812,
+      "sha256": "71cee6563803696912dbab0c94e2f44cd58aa7c4802acb53397bfe40ccd1304a",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x2f9c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2fcc",
+          "target": "0x1f50",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x2fd4",
+          "target": "0x2010",
+          "label": "ExtCmdSvc_PlugIn::ExtCmdSvc_PlugIn()"
+        },
+        {
+          "site": "0x2fdc",
+          "target": "0x1f50",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x2fe4",
+          "target": "0x1fb0",
+          "label": "MWF::ObjLock::ObjLock()"
+        },
+        {
+          "site": "0x3024",
+          "target": "0x1f80",
+          "label": "ExtCmdSvc::ChangeState(ExtCmdSvc_PlugIn*, int)"
+        },
+        {
+          "site": "0x3034",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x3048",
+          "target": "0x20c0",
+          "label": "ExtCmdSvc::RegistListAt(DefInterExtCmdSvc::__list*, void*, unsigned short)"
+        },
+        {
+          "site": "0x3060",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3070",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3080",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x308c",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x30ac",
+          "target": "0x1e10",
+          "label": "ExtCmdSvc_PlugIn::~ExtCmdSvc_PlugIn()"
+        },
+        {
+          "site": "0x30b8",
+          "target": "0x1f60",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x30c4",
+          "target": "0x2fa0",
+          "label": null
+        },
+        {
+          "site": "0x30dc",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x30e8",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x3108",
+          "target": "0x1f20",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x3120",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3134",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3140",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x3154",
+          "target": "0x2fa0",
+          "label": null
+        },
+        {
+          "site": "0x3168",
+          "target": "0x1db0",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x318c",
+          "target": "0x1f90",
+          "label": "ExtCmdSvc::SndMsgToLowerSync(void*, void*, unsigned int)"
+        },
+        {
+          "site": "0x31a4",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x31b4",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x31c0",
+          "target": "0x312c",
+          "label": null
+        },
+        {
+          "site": "0x31c8",
+          "target": "0x2040",
+          "label": "malloc"
+        },
+        {
+          "site": "0x31e4",
+          "target": "0x2150",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x31f8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3208",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3220",
+          "target": "0x1fe0",
+          "label": "ExtCmdSvc::RegistListPrtcl(void*, DefInterExtCmdSvc::__list*, void*, unsigned int)"
+        },
+        {
+          "site": "0x323c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x324c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3254",
+          "target": "0x1eb0",
+          "label": "free"
+        },
+        {
+          "site": "0x3258",
+          "target": "0x3138",
+          "label": null
+        },
+        {
+          "site": "0x3264",
+          "target": "0x3138",
+          "label": null
+        },
+        {
+          "site": "0x3274",
+          "target": "0x1f60",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x327c",
+          "target": "0x20b0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x328c",
+          "target": "0x1f60",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x3294",
+          "target": "0x327c",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libInfraExtCmdSvc.so-2f6c.txt"
+    },
+    {
+      "library": "libInfraExtCmdSvc.so",
+      "va": "0x3298",
+      "label": "ExtCmdSvc::ReqTransferCmd(__extcmd_svc_msg*)",
+      "source_sha256": "6ed99a632f6646e3313241b8d1aaef5a584444f81cf721c013fc403887774134",
+      "bytes": 744,
+      "sha256": "9c167924374217b61fcc09b29e884c57dee239bd60b3d4a7b6da48dadfab6a47",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x32c0",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x32f8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3308",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3314",
+          "target": "0x3568",
+          "label": null
+        },
+        {
+          "site": "0x332c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3334",
+          "target": "0x3300",
+          "label": null
+        },
+        {
+          "site": "0x3344",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x3384",
+          "target": "0x1f20",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x339c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x33ac",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x33b8",
+          "target": "0x33e8",
+          "label": null
+        },
+        {
+          "site": "0x33dc",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x33ec",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x33f8",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x33fc",
+          "target": "0x330c",
+          "label": null
+        },
+        {
+          "site": "0x340c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3414",
+          "target": "0x33e4",
+          "label": null
+        },
+        {
+          "site": "0x3428",
+          "target": "0x1db0",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x3444",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x3454",
+          "target": "0x1f30",
+          "label": "ExtCmdSvc::GetPrtclHndlList(DefInterExtCmdSvc::__list*, unsigned int)"
+        },
+        {
+          "site": "0x3468",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3478",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3484",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x3490",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x3498",
+          "target": "0x3310",
+          "label": null
+        },
+        {
+          "site": "0x34ac",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x34c0",
+          "target": "0x1f90",
+          "label": "ExtCmdSvc::SndMsgToLowerSync(void*, void*, unsigned int)"
+        },
+        {
+          "site": "0x34d8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x34e8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x34f8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3504",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x3510",
+          "target": "0x2150",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x3524",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3534",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3544",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x3548",
+          "target": "0x3494",
+          "label": null
+        },
+        {
+          "site": "0x3558",
+          "target": "0x1f80",
+          "label": "ExtCmdSvc::ChangeState(ExtCmdSvc_PlugIn*, int)"
+        },
+        {
+          "site": "0x355c",
+          "target": "0x34fc",
+          "label": null
+        },
+        {
+          "site": "0x356c",
+          "target": "0x32c4",
+          "label": null
+        },
+        {
+          "site": "0x357c",
+          "target": "0x32c4",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libInfraExtCmdSvc.so-3298.txt"
+    },
+    {
+      "library": "libInfraExtCmdSvc.so",
+      "va": "0x292c",
+      "label": "ExtCmdSvc::IntrReqTransferCmp(__extcmd_svc_msg*)",
+      "source_sha256": "6ed99a632f6646e3313241b8d1aaef5a584444f81cf721c013fc403887774134",
+      "bytes": 800,
+      "sha256": "0659fcddd0e94bdfb97d94d1a1bc775ff4368071d6eb8480c9944b3a54612901",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x2954",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x295c",
+          "target": "0x29ac",
+          "label": null
+        },
+        {
+          "site": "0x2970",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x2980",
+          "target": "0x1e90",
+          "label": "ExtCmdSvc::GetHndlList(DefInterExtCmdSvc::__list*, void*)"
+        },
+        {
+          "site": "0x299c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x29a8",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x29d4",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x29ec",
+          "target": "0x1f20",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x2a04",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2a14",
+          "target": "0x2954",
+          "label": null
+        },
+        {
+          "site": "0x2a5c",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x2a8c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2a9c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2ab0",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x2abc",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x2ad0",
+          "target": "0x1e80",
+          "label": "ExtCmdSvc::SndMsgToUpperSync(void*, void*, unsigned int)"
+        },
+        {
+          "site": "0x2ae8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2af8",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2b04",
+          "target": "0x2150",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x2b20",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2b30",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2b3c",
+          "target": "0x1e40",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x2b64",
+          "target": "0x1f20",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x2b7c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2b8c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2b90",
+          "target": "0x29ac",
+          "label": null
+        },
+        {
+          "site": "0x2bb0",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2bc0",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2bd0",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2be0",
+          "target": "0x1f80",
+          "label": "ExtCmdSvc::ChangeState(ExtCmdSvc_PlugIn*, int)"
+        },
+        {
+          "site": "0x2be4",
+          "target": "0x2aa8",
+          "label": null
+        },
+        {
+          "site": "0x2bec",
+          "target": "0x2b98",
+          "label": null
+        },
+        {
+          "site": "0x2bf8",
+          "target": "0x2aa8",
+          "label": null
+        },
+        {
+          "site": "0x2c04",
+          "target": "0x1ec0",
+          "label": "osal_snd_msg"
+        },
+        {
+          "site": "0x2c1c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2c2c",
+          "target": "0x239c",
+          "label": null
+        },
+        {
+          "site": "0x2c38",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x2c44",
+          "target": "0x1ed0",
+          "label": "pthread_mutex_unlock"
+        },
+        {
+          "site": "0x2c48",
+          "target": "0x29ac",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libInfraExtCmdSvc.so-292c.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x3370",
+      "label": "usbcmd_t::Create(USBCMD_OP_CODE, USBCMD_FEATURE_ID, unsigned int, unsigned int, void (*)(void*, USBCMD_CALLBACK_ID, void*, unsigned long, int), __usbcmd_ops_t*)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 344,
+      "sha256": "6ecfd09cf55f0a97d1b9de43da8b457c7e93a52e67abbc203ce2300155efe6dd",
+      "literals": [
+        {
+          "site": "0x33dc",
+          "va": "0x4818",
+          "text": "/dev/usb/usb_extcmd"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x3398",
+          "target": "0x27c0",
+          "label": "usbcmd_t::MsgBoxCreate()"
+        },
+        {
+          "site": "0x33bc",
+          "target": "0x2aa0",
+          "label": "usbcmd_trace_out"
+        },
+        {
+          "site": "0x33e0",
+          "target": "0x2820",
+          "label": "open"
+        },
+        {
+          "site": "0x3404",
+          "target": "0x2aa0",
+          "label": "usbcmd_trace_out"
+        },
+        {
+          "site": "0x3410",
+          "target": "0x2af0",
+          "label": "usbcmd_t::MsgBoxDelete(_USBCMD_MBX_INFO*)"
+        },
+        {
+          "site": "0x3414",
+          "target": "0x33c0",
+          "label": null
+        },
+        {
+          "site": "0x3440",
+          "target": "0x2a60",
+          "label": "usbcmd_t::IoctlDriver(int, int, void*)"
+        },
+        {
+          "site": "0x3460",
+          "target": "0x2aa0",
+          "label": "usbcmd_trace_out"
+        },
+        {
+          "site": "0x3468",
+          "target": "0x2ab0",
+          "label": "close"
+        },
+        {
+          "site": "0x3474",
+          "target": "0x2af0",
+          "label": "usbcmd_t::MsgBoxDelete(_USBCMD_MBX_INFO*)"
+        },
+        {
+          "site": "0x3488",
+          "target": "0x33c0",
+          "label": null
+        },
+        {
+          "site": "0x34a4",
+          "target": "0x2a70",
+          "label": "usbcmd_t::ThreadCreate(_USBCMD_THREAD_INFO*)"
+        },
+        {
+          "site": "0x34b4",
+          "target": "0x2ab0",
+          "label": "close"
+        },
+        {
+          "site": "0x34c0",
+          "target": "0x2af0",
+          "label": "usbcmd_t::MsgBoxDelete(_USBCMD_MBX_INFO*)"
+        },
+        {
+          "site": "0x34c4",
+          "target": "0x33c0",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-3370.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x3308",
+      "label": "usbcmd_t::IoctlDriver(int, int, void*)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 104,
+      "sha256": "5763a6d48bac4351703d0c44ee1ce0993ff084540892909c7148e8254fea3f04",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x3334",
+          "target": "0x2930",
+          "label": "ioctl"
+        },
+        {
+          "site": "0x3340",
+          "target": "0x2a10",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x335c",
+          "target": "0x2aa0",
+          "label": "usbcmd_trace_out"
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-3308.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x4240",
+      "label": "UsbCmd_ExtCmdSvcWrap::AttachCmd(__extcmd_svc_msg*, unsigned int)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 156,
+      "sha256": "c39a3a96918f4a4e4a717642dbbff5a05d21ae59e7bc9a3b61b3b17a35491961",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x4260",
+          "target": "0x2970",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x4268",
+          "target": "0x2b00",
+          "label": "UsbCmd_ExtCmdSvcWrapUnit::UsbCmd_ExtCmdSvcWrapUnit()"
+        },
+        {
+          "site": "0x4294",
+          "target": "0x2c70",
+          "label": "UsbCmd_ExtCmdSvcWrap::Init(UsbCmd_ExtCmdSvcWrapUnit*, USBCMD_FEATURE_ID)"
+        },
+        {
+          "site": "0x42d0",
+          "target": "0x2990",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x42d8",
+          "target": "0x2bf0",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-4240.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x437c",
+      "label": "UsbCmd_ExtCmdSvcWrap::ReqTransferCmd(__extcmd_svc_msg*)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 172,
+      "sha256": "187e515294f6386709f63e69c817eddc56fee2132fb44f1c179e0f7a7e61eadf",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x4394",
+          "target": "0x4414",
+          "label": null
+        },
+        {
+          "site": "0x43b0",
+          "target": "0x2b20",
+          "label": "UsbCmd_ExtCmdSvcWrap::transInit(UsbCmd_ExtCmdSvcWrapUnit*, __extcmd_svc_msg*)"
+        },
+        {
+          "site": "0x43d0",
+          "target": "0x27f0",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x43e0",
+          "target": "0x2b80",
+          "label": "usbcmd_t::Send(usbcmd_data_param_t*, void (*)(void*, USBCMD_CALLBACK_ID, void*, unsigned long, int))"
+        },
+        {
+          "site": "0x43e4",
+          "target": "0x4404",
+          "label": null
+        },
+        {
+          "site": "0x43f0",
+          "target": "0x27f0",
+          "label": "pthread_mutex_lock"
+        },
+        {
+          "site": "0x4400",
+          "target": "0x2980",
+          "label": "usbcmd_t::Receive(usbcmd_data_param_t*, void (*)(void*, USBCMD_CALLBACK_ID, void*, unsigned long, int))"
+        },
+        {
+          "site": "0x4410",
+          "target": "0x2880",
+          "label": "pthread_mutex_unlock"
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-437c.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x448c",
+      "label": "UsbCmd_ExtCmdSvcWrap::ReqTransferCmp(_usbcmd_trans_param*, UsbCmd_ExtCmdSvcWrapUnit*)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 172,
+      "sha256": "e2731fa04a4d5d616228c3ab80d882fa9e2d94d3a660ec90c9e526f79a3d2352",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x44c0",
+          "target": "0x2900",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x4524",
+          "target": "0x2a00",
+          "label": "UsbCmd_ExtCmdSvcWrap::SndMsgToUpperSync(void*, unsigned int)"
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-448c.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x4700",
+      "label": "UsbCmd_ExtCmdSvcWrap::RegistTransportCmd()",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 88,
+      "sha256": "e4072432456aaa739995f04e2fc7ffee6e329b1b8339f6275b76fe346cda1ce0",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x4720",
+          "target": "0x2900",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x4748",
+          "target": "0x2a00",
+          "label": "UsbCmd_ExtCmdSvcWrap::SndMsgToUpperSync(void*, unsigned int)"
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-4700.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x41c0",
+      "label": "UsbCmd_ExtCmdSvcWrap::Init(UsbCmd_ExtCmdSvcWrapUnit*, USBCMD_FEATURE_ID)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 128,
+      "sha256": "ac03b6db0a7892446a47161eb32d200521c1587a268dfc75d3dacf0e20181dcc",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x420c",
+          "target": "0x29e0",
+          "label": "usbcmd_Create"
+        },
+        {
+          "site": "0x421c",
+          "target": "0x41dc",
+          "label": null
+        },
+        {
+          "site": "0x4220",
+          "target": "0x2950",
+          "label": "usbcmd_t::AllocDataParam()"
+        },
+        {
+          "site": "0x4230",
+          "target": "0x2c80",
+          "label": "usbcmd_Destroy"
+        },
+        {
+          "site": "0x423c",
+          "target": "0x41dc",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-41c0.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x42dc",
+      "label": "UsbCmd_ExtCmdSvcWrap::transInit(UsbCmd_ExtCmdSvcWrapUnit*, __extcmd_svc_msg*)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 160,
+      "sha256": "9d66cbf69b7c473a0d6dfd76db4c758c9765dea9bc27a75c071c2823535b24e3",
+      "literals": [],
+      "calls": [],
+      "disassembly": "entry-fragments/libusbcmd.so-42dc.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x36c8",
+      "label": "usbcmd_t::onSend(_USBCMD_MSG_DATA*)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 260,
+      "sha256": "2878e2a092e4aec92da18f832b73dbc94e1f57e74400882caf748115d7286b93",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x36fc",
+          "target": "0x2c20",
+          "label": "usbcmd_t::PackParamDriver(void*, usbcmd_data_param_t*)"
+        },
+        {
+          "site": "0x3710",
+          "target": "0x2a60",
+          "label": "usbcmd_t::IoctlDriver(int, int, void*)"
+        },
+        {
+          "site": "0x375c",
+          "target": "0x2aa0",
+          "label": "usbcmd_trace_out"
+        },
+        {
+          "site": "0x376c",
+          "target": "0x28e0",
+          "label": "usbcmd_t::ClearRequest(unsigned int)"
+        },
+        {
+          "site": "0x3778",
+          "target": "0x2a80",
+          "label": "pthread_setcancelstate"
+        },
+        {
+          "site": "0x379c",
+          "target": "0x2a80",
+          "label": "pthread_setcancelstate"
+        },
+        {
+          "site": "0x37c8",
+          "target": "0x3760",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-36c8.txt"
+    },
+    {
+      "library": "libusbcmd.so",
+      "va": "0x37cc",
+      "label": "usbcmd_t::onReceive(_USBCMD_MSG_DATA*)",
+      "source_sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "bytes": 260,
+      "sha256": "7b5af52b553a13333632075a4caf53e127b370ecaa426a2f7a574d6e753a27a6",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x3800",
+          "target": "0x2c20",
+          "label": "usbcmd_t::PackParamDriver(void*, usbcmd_data_param_t*)"
+        },
+        {
+          "site": "0x3814",
+          "target": "0x2a60",
+          "label": "usbcmd_t::IoctlDriver(int, int, void*)"
+        },
+        {
+          "site": "0x3860",
+          "target": "0x2aa0",
+          "label": "usbcmd_trace_out"
+        },
+        {
+          "site": "0x3870",
+          "target": "0x28e0",
+          "label": "usbcmd_t::ClearRequest(unsigned int)"
+        },
+        {
+          "site": "0x387c",
+          "target": "0x2a80",
+          "label": "pthread_setcancelstate"
+        },
+        {
+          "site": "0x38a0",
+          "target": "0x2a80",
+          "label": "pthread_setcancelstate"
+        },
+        {
+          "site": "0x38cc",
+          "target": "0x3864",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libusbcmd.so-37cc.txt"
+    }
+  ],
+  "scope": "Static source-file instructions only. UFP peer service 0x00e18246 is the external-command service; the USB wrapper creates opcode 0x7a with a supplied feature ID and opens /dev/usb/usb_extcmd. External USB mode, command sequencing, current kernel registration, authentication and camera admission are not proven."
+}

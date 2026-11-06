@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "mode": "operate-recovery_cancel",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/operate.py",
+  "source_sha256": "4db0b4bc56825bfef3599dc18a3ac27b2441a21aa8a5244273f14b64acfa2e52",
+  "actual_runpy_name": "__main__",
+  "argv": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/operate.py",
+    "recovery_cancel",
+    "亲看完整图；仅执行本次明确操作"
+  ],
+  "init_globals_supplied": false,
+  "dependency_common_exports_sys": false,
+  "browser_HTTP_QEMU_processes_started": 0,
+  "strict_external_doubles": true,
+  "trace": [
+    {
+      "kind": "event",
+      "name": "operator_tool_recovery_cancel_entry"
+    },
+    {
+      "kind": "helper_operation_double",
+      "file": "recovery_tools.py",
+      "args": [
+        "cancel",
+        "--session",
+        "fx3-deadline-r21c-024b06c9-073392e9",
+        "--url",
+        "http://127.0.0.1:32123/",
+        "--launch-id",
+        "11111111-1111-4111-8111-111111111111",
+        "--nonce",
+        "33333333-3333-4333-8333-333333333333",
+        "--binding",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-recovery_cancel/step-01-attempt-01/binding.json",
+        "--out",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-recovery_cancel/step-01-attempt-01/recovery-cancel",
+        "--review",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-recovery_cancel/step-01-attempt-01/recovery-review/review-result.json",
+        "--target",
+        "亲看完整图；仅执行本次明确操作",
+        "--ledger",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-recovery_cancel/ledger.json"
+      ]
+    },
+    {
+      "kind": "readonly_eval_double",
+      "name": "step-01-attempt-01-cancel-pinned-before"
+    },
+    {
+      "kind": "browser_operation_double",
+      "name": "step-01-attempt-01-cancel-pinned-screenshot",
+      "args": [
+        "screenshot",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/host-cli-cases/operate-recovery_cancel/step-01-attempt-01/cancel-pinned/current.png"
+      ]
+    },
+    {
+      "kind": "readonly_eval_double",
+      "name": "step-01-attempt-01-cancel-pinned-after"
+    },
+    {
+      "kind": "event",
+      "name": "operator_tool_recovery_cancel_return_prepared"
+    }
+  ]
+}

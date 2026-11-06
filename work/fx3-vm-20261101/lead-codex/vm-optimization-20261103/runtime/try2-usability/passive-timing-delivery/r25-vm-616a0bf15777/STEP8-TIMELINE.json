@@ -1,0 +1,114 @@
+{
+  "attempt_id": "11d4464c-3322-438e-adaf-9814edddf2b0",
+  "snapshot": {
+    "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+    "attempt_id": "11d4464c-3322-438e-adaf-9814edddf2b0",
+    "byte_length": 15457,
+    "content_generation": 76,
+    "document_id": "89d7e729-af87-490c-8699-aee6543c9f66",
+    "launch_id": "75987505-c13f-4384-8c78-36ed9d430ab2",
+    "native_receive_floor_sequence": 1481,
+    "native_receive_observed_host_monotonic": 428214.025169541,
+    "observation_scope": "new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim",
+    "observed_sequence": 1484,
+    "pin_request_id": "a0c02837-6772-4da3-91c1-06187789de16",
+    "run_incarnation": "3388c161-445c-4584-9944-e5c148f66337",
+    "schema": "fx3-review-snapshot-v1",
+    "snapshot_id": "f3dbad0f-e526-4136-b8cf-55159d80a061",
+    "step": 8
+  },
+  "native_ack_host_monotonic": 428214.025143,
+  "native_down_receive_guest_clock1_ns": 156166841008,
+  "native_up_receive_guest_clock1_ns": 156297670000,
+  "first_status_per_generation": [
+    {
+      "first_HAR_request_start_UTC": "2026-11-05T02:08:48.357359872Z",
+      "HTTP_duration_ms": 0.6660000406242906,
+      "phase": "ready",
+      "frame": {
+        "sequence": 1481,
+        "content_generation": 75,
+        "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+        "host_monotonic": 428213.681978791
+      },
+      "time_boundary": "HAR request start is not exact frame arrival/model review time"
+    },
+    {
+      "first_HAR_request_start_UTC": "2026-11-05T02:08:48.75932288Z",
+      "HTTP_duration_ms": 1.9600000335201622,
+      "phase": "ready",
+      "frame": {
+        "sequence": 1484,
+        "content_generation": 76,
+        "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+        "host_monotonic": 428214.154098583
+      },
+      "time_boundary": "HAR request start is not exact frame arrival/model review time"
+    },
+    {
+      "first_HAR_request_start_UTC": "2026-11-05T02:08:50.373473024Z",
+      "HTTP_duration_ms": 2.487000000864267,
+      "phase": "ready",
+      "frame": {
+        "sequence": 1485,
+        "content_generation": 77,
+        "PNG_sha256": "168a2787c26a0ec885b6ae816404991f6dcce5e770a0f904d66d6000229a265e",
+        "host_monotonic": 428215.888018375
+      },
+      "time_boundary": "HAR request start is not exact frame arrival/model review time"
+    },
+    {
+      "first_HAR_request_start_UTC": "2026-11-05T02:08:51.991635968Z",
+      "HTTP_duration_ms": 0.7730000335201621,
+      "phase": "ready",
+      "frame": {
+        "sequence": 1488,
+        "content_generation": 78,
+        "PNG_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+        "host_monotonic": 428217.2522695
+      },
+      "time_boundary": "HAR request start is not exact frame arrival/model review time"
+    }
+  ],
+  "pin_request": {
+    "UTC_request_start": "2026-11-05T02:08:49.604891904Z",
+    "duration_ms": 0.7270000482387841,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":8,\"attempt_id\":\"11d4464c-3322-438e-adaf-9814edddf2b0\",\"pin_request_id\":\"a0c02837-6772-4da3-91c1-06187789de16\",\"observed_sequence\":1484,\"content_generation\":76,\"PNG_sha256\":\"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"f3dbad0f-e526-4136-b8cf-55159d80a061\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 8, \"attempt_id\": \"11d4464c-3322-438e-adaf-9814edddf2b0\", \"pin_request_id\": \"a0c02837-6772-4da3-91c1-06187789de16\", \"observed_sequence\": 1484, \"content_generation\": 76, \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\", \"byte_length\": 15457, \"native_receive_floor_sequence\": 1481, \"native_receive_observed_host_monotonic\": 428214.025169541, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  "End_tool": {
+    "argv": [
+      "agent-browser",
+      "--session",
+      "fx3-deadline-r25-616a0bf15777",
+      "eval",
+      "--stdin"
+    ],
+    "start": {
+      "UTC": "2026-11-05T02:08:52.331858+00:00",
+      "host_ns": 428217847428708
+    },
+    "end": {
+      "UTC": "2026-11-05T02:08:52.339989+00:00",
+      "host_ns": 428217855562583
+    },
+    "returncode": 0,
+    "stdout": "{\n  \"End_invoked\": true\n}\n",
+    "stderr": ""
+  },
+  "stop_HTTP": {
+    "UTC_request_start": "2026-11-05T02:08:52.338141952Z",
+    "duration_ms": 0.7739999421462418,
+    "endpoint": "stop",
+    "request_body_text": "{}",
+    "status": 202,
+    "response_body_text": "{\"stopping\": true}"
+  },
+  "arm_tool_start_to_End_tool_return_upper_seconds": 4.217160875,
+  "final_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-bd4c1126/trial-final.png",
+  "final_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+  "actual_final_png_review": "End后实际查看为Setup > Area/Date 45/59完整菜单，Language橙色且English；不能替代选定的step8历史快照或补confirm。",
+  "inference": "固定pin早于本轮较晚完整菜单；不能据此确定所有异步绘制或下游处理的精确完成点。"
+}

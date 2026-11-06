@@ -1,0 +1,74 @@
+{
+  "created_utc": "2026-10-26T05:05:23.122803+00:00",
+  "status": "PASS_ORIGINAL_QUEUED_OPEN_NATIVE_MATCHER_INPUT_PROVENANCE",
+  "original_fragments": 24,
+  "native_Open_chain_case_events": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 8,
+    "returned": 4,
+    "boundary: before_unexecuted_diagnostic": 8
+  },
+  "whole_common_ctor_cases": 4,
+  "native_roles_and_rows": [
+    {
+      "label": "target_MAIN_FH",
+      "native_tail_words88_8c_90_94": [
+        1,
+        10,
+        25,
+        3284386755
+      ],
+      "independent_native_matcher_row": -1
+    },
+    {
+      "label": "artificial_MAIN_FF_quality24",
+      "native_tail_words88_8c_90_94": [
+        1,
+        10,
+        25,
+        3284386755
+      ],
+      "independent_native_matcher_row": 386
+    },
+    {
+      "label": "proxy_FH_control",
+      "native_tail_words88_8c_90_94": [
+        2,
+        10,
+        25,
+        3284386755
+      ],
+      "independent_native_matcher_row": -1
+    },
+    {
+      "label": "stock_UHD_QT150M_control",
+      "native_tail_words88_8c_90_94": [
+        1,
+        10,
+        25,
+        3284386755
+      ],
+      "independent_native_matcher_row": 431
+    }
+  ],
+  "original_quality_comparison": [
+    {
+      "DefStruct_VQuality": 6,
+      "original_API_quality": 22,
+      "GetVideoBitrate_raw": 16000
+    },
+    {
+      "DefStruct_VQuality": 8,
+      "original_API_quality": 24,
+      "GetVideoBitrate_raw": 25000
+    }
+  ],
+  "native_queue_allocation_ID_map_common_to_matcher_call_chain_verified": true,
+  "pending_queue0_but_native_stack_still_live": true,
+  "native_tail_replaces_arbitrary_MAIN_role2_assumption_with_role1": true,
+  "target_FH_quality_gap_resolved": false,
+  "upstream_FF_selection_or16M_consistency_proven": false,
+  "hardware_recording_or_recovery_proven": false,
+  "proof_sha256": "dfb7dd33e6f16a972359b6c880df9638dbdbf26565fc9d06bf83bbef6a899d77",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

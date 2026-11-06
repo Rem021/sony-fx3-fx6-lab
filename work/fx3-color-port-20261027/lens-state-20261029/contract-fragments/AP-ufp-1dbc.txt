@@ -1,0 +1,106 @@
+00001dbc adrp       x0, #0x15000
+00001dc0 stp        x29, x30, [sp, #-0x60]!
+00001dc4 mov        x29, sp
+00001dc8 ldr        w3, [x0, #0x1f4]
+00001dcc stp        x21, x22, [sp, #0x20]
+00001dd0 adrp       x21, #0x25000
+00001dd4 cmp        w3, #1
+00001dd8 stp        x19, x20, [sp, #0x10]
+00001ddc stp        x23, x24, [sp, #0x30]
+00001de0 str        x25, [sp, #0x40]
+00001de4 b.ne       #0x1ee0
+00001de8 add        x20, x29, #0x58
+00001dec adrp       x24, #0x25000
+00001df0 adrp       x23, #0x25000
+00001df4 mov        w0, #0x3d0
+00001df8 mov        x1, x20
+00001dfc mov        w2, #0x14
+00001e00 movk       w0, #0x9125, lsl #16
+00001e04 strh       wzr, [x24, #0x264]
+00001e08 str        wzr, [x21, #0x25c]
+00001e0c str        wzr, [x23, #0x260]
+00001e10 bl         #0x13e0 ; osal_valloc_msg_wait
+00001e14 cbnz       w0, #0x1e54
+00001e18 adrp       x19, #0x25000
+00001e1c ldr        x0, [x29, #0x58]
+00001e20 mov        x22, x19
+00001e24 ldr        w1, [x19, #0x258]
+00001e28 str        wzr, [x0]
+00001e2c bl         #0x1320 ; osal_set_msg_src
+00001e30 ldr        x1, [x29, #0x58]
+00001e34 mov        w0, #0x3d0
+00001e38 movk       w0, #0x9125, lsl #16
+00001e3c bl         #0x1390 ; osal_snd_msg
+00001e40 cbz        w0, #0x1e5c
+00001e44 ldr        x1, [x29, #0x58]
+00001e48 mov        w0, #0x3d0
+00001e4c movk       w0, #0x9125, lsl #16
+00001e50 bl         #0x15f0 ; osal_free_msg
+00001e54 mov        w0, #0x2000
+00001e58 b          #0x1ef8
+00001e5c ldr        w0, [x19, #0x258]
+00001e60 mov        x1, x20
+00001e64 mov        w2, #-1
+00001e68 bl         #0x13c0 ; osal_rcv_msg_tmo
+00001e6c cbnz       w0, #0x1e54
+00001e70 ldr        x1, [x29, #0x58]
+00001e74 ldr        w0, [x1]
+00001e78 cbz        w0, #0x1e84
+00001e7c ldr        w0, [x19, #0x258]
+00001e80 b          #0x1e50
+00001e84 ldr        w2, [x1, #4]
+00001e88 cmp        w2, #4
+00001e8c b.hi       #0x1f10
+00001e90 mov        x0, #1
+00001e94 lsl        x0, x0, x2
+00001e98 mov        x2, #0x1d
+00001e9c tst        x0, x2
+00001ea0 b.eq       #0x1f10
+00001ea4 ldrb       w0, [x1, #0xd]
+00001ea8 ldrb       w2, [x1, #0xc]
+00001eac strb       w0, [x1, #0xc]
+00001eb0 strb       w2, [x1, #0xd]
+00001eb4 ldr        w0, [x19, #0x258]
+00001eb8 ldur       w22, [x1, #0xa]
+00001ebc ldur       w20, [x1, #0xe]
+00001ec0 ldrh       w25, [x1, #8]
+00001ec4 rev        w22, w22
+00001ec8 rev        w20, w20
+00001ecc bl         #0x15f0 ; osal_free_msg
+00001ed0 cbnz       w0, #0x1e54
+00001ed4 strh       w25, [x24, #0x264]
+00001ed8 str        w22, [x21, #0x25c]
+00001edc str        w20, [x23, #0x260]
+00001ee0 adrp       x0, #0x15000
+00001ee4 ldr        w1, [x0, #0x208]
+00001ee8 ldr        w0, [x21, #0x25c]
+00001eec cmp        w1, w0
+00001ef0 b.eq       #0x1f18
+00001ef4 mov        w0, #0x140
+00001ef8 ldp        x19, x20, [sp, #0x10]
+00001efc ldp        x21, x22, [sp, #0x20]
+00001f00 ldp        x23, x24, [sp, #0x30]
+00001f04 ldr        x25, [sp, #0x40]
+00001f08 ldp        x29, x30, [sp], #0x60
+00001f0c ret        
+00001f10 ldr        w0, [x22, #0x258]
+00001f14 b          #0x1e50
+00001f18 adrp       x0, #0x15000
+00001f1c ldr        w2, [x0, #0x20c]
+00001f20 adrp       x0, #0x25000
+00001f24 ldr        w1, [x0, #0x260]
+00001f28 mov        w0, #0x141
+00001f2c cmp        w2, w1
+00001f30 b.ne       #0x1ef8
+00001f34 adrp       x0, #0x25000
+00001f38 ldr        w0, [x0, #0x2b8]
+00001f3c cmp        w0, #1
+00001f40 b.eq       #0x1ef8
+00001f44 adrp       x0, #0x15000
+00001f48 ldrh       w1, [x0, #0x210]
+00001f4c adrp       x0, #0x25000
+00001f50 ldrh       w0, [x0, #0x264]
+00001f54 cmp        w1, w0
+00001f58 mov        w0, #0x142
+00001f5c csinc      w0, w0, wzr, ls
+00001f60 b          #0x1ef8

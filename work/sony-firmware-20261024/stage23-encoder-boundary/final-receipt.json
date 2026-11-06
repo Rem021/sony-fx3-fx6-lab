@@ -1,0 +1,105 @@
+{
+  "schema": "fx3-stage23-encoder-boundary/1",
+  "created_utc": "2026-10-25T20:37:20.304023+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/README.md",
+      "bytes": 7989,
+      "sha256": "f5151aafd67067db092f750f2985aa17ce306ef835f50352e6934ae755626e7c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/coordinator-observations.json",
+      "bytes": 2075,
+      "sha256": "7f02abf73da143192ba8ccd004b27a2e9fd925887dfaa26fc733f80488ac5527"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/encoder_boundary.py",
+      "bytes": 17339,
+      "sha256": "bc4ec99f50fec3e17f11ee8262762eaee59aa46d8613af50ae34fd25244ee2cf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/extraction-receipt.json",
+      "bytes": 761,
+      "sha256": "08fe07891ded89a1bec6b1a8766c4c64cc689732e98eac412a57ecd91f55caf3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/goal-status-after.json",
+      "bytes": 33360,
+      "sha256": "f5763903829516d1291ecb79e2367a992a1cfced60a76d10a8cc261abb336942"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/goal-status-before.json",
+      "bytes": 30967,
+      "sha256": "f5c08fc12b92329c016edf261b848679d4df9dff231160eff3a0f0ab42fb7716"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/inputs/libInfraAvbbc.so",
+      "bytes": 1734632,
+      "sha256": "87a2246084567abca0e43228b5289bc728839a13ab4251e92828ea4c463e3c26"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/route-and-field-audit.json",
+      "bytes": 9635,
+      "sha256": "0261eff1428ff18771e1f15bde58633ebf441c4a5a213e66eccea2fc2fac9d9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/run-20261025/attempt-failure.json",
+      "bytes": 572,
+      "sha256": "d7af5fae4fcbd01507e20bb1b28c8d7e460707f20289629de77e7d177e447d47"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/run-20261025/attempt-source.py",
+      "bytes": 17119,
+      "sha256": "edb00ab3450e19f13e5caa7c7c3f24166074826bff3b508676ea998e90140cd3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/run-corrected-20261025/encoder-boundary-results.json",
+      "bytes": 554419,
+      "sha256": "9724c53d3cc64e32dd0c78617bce1e835e02e4066b8ec7f277636bc6b1962c5b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/run-corrected-20261025/source-receipt.json",
+      "bytes": 2914,
+      "sha256": "688e8d852566adc78a4410fa5db75fbb2dbb47eef79fe29641fa0f96d63e47ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/run-corrected-20261025/summary.json",
+      "bytes": 649,
+      "sha256": "1035e197048c0baa152d35b752e4b99c3e90e806ba6946a682f5b97c0893f653"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/run-linked-20261025/attempt-failure.json",
+      "bytes": 711,
+      "sha256": "4bbd5ffed6004b2c678b60c61723875032e41c44de5897a075e50924dfc0872d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage23-encoder-boundary/run-linked-20261025/attempt-source.py",
+      "bytes": 17132,
+      "sha256": "09a71d1610dddc4a5b6fc581e9eb8c071124e61b6299e8342b19153ab9a7ada8"
+    }
+  ],
+  "scope": "Pinned original helper/fragments and static source bindings; receiver transport gap and other native dependencies excluded. Synthetic zero buffer inputs, MPR diagnostic PC<-LR adapter, explicit AV debug input fixture. No hardware Open/Start, bitstream, live capability read, loader, restore or camera acceptance.",
+  "previous_manifest_sha256": "0e4154525c1b15d255a70cc4f380032e8f235dacdc355d62ee11df24f6e31554",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage23-encoder-boundary/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage23-encoder-boundary/goal-status-after.json",
+    "before_sha256": "f5c08fc12b92329c016edf261b848679d4df9dff231160eff3a0f0ab42fb7716",
+    "after_sha256": "f5763903829516d1291ecb79e2367a992a1cfced60a76d10a8cc261abb336942",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "original_library_read_only_extracted": true,
+    "bounded_guest_helpers_and_fragments": true,
+    "native_OSAL_lock_buffer_allocator_backup_or_hardware_operations": false,
+    "new_remote_attempts": false,
+    "Windows_task_dispatched_or_executed": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_flashable_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 MAIN与代理编码入口](<work/sony-firmware-20261024/stage23-encoder-boundary/README.md>)：原包与资源片段绑定MAIN/proxy外层身份15/18及单/双流分叉；核心视频参数一致，完整消息/能力校验和硬件Open/Start仍未验证。"
+}

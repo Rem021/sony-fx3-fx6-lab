@@ -1,0 +1,16 @@
+#define XCS_PORT        4u
+#define XCS_BIT         2u
+#define XCS_GPIO        (0xF101D000ull + 0x1000ull * XCS_PORT)
+#define XCS_DIR_SET     (XCS_GPIO + 0x04)
+#define XCS_FUNC_SET    (XCS_GPIO + 0x34)
+#define XCS_FUNC_CLR    (XCS_GPIO + 0x38)
+#define XCS_SET         (XCS_GPIO + 0x44)   /* idle high   */
+#define XCS_CLR         (XCS_GPIO + 0x48)   /* assert low  */
+
+/*
+ * The SIO clock and data pads share GPIO port 4 with XCS, and are left muxed
+ * to GPIO by both the bootrom and the loader's teardown. Clearing FUNC returns
+ * them to their hardware function; bit 2 is not in the mask because XCS is
+ * driven by us and stays GPIO.
+ */
+#define SIO_PINS        (BIT(0) | BIT(1) | BIT(3))

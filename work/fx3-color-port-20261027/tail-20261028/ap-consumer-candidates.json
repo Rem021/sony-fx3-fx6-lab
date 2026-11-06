@@ -1,0 +1,2763 @@
+{
+  "status": "PASS_ORIGINAL_AP_ELF_CONSUMER_CANDIDATE_INVENTORY",
+  "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "regular_files_read": 797,
+  "bytes_read": 435648400,
+  "elf_files": 532,
+  "candidates": [
+    {
+      "path": "/bin/ssh-keygen",
+      "inode": 80988,
+      "bytes": 416976,
+      "sha256": "c3aaf1e24721fa78308c7daadca29de29e6d3c384e632754422f155054373fa9",
+      "hits": [
+        {
+          "token": "RSA_public_decrypt",
+          "file_offsets": [
+            "0x2d15"
+          ]
+        },
+        {
+          "token": "cbc_decrypt",
+          "file_offsets": [
+            "0x64c16"
+          ]
+        }
+      ],
+      "needed": [
+        "libcrypto.so.3",
+        "libdl.so.2",
+        "libutil.so.1",
+        "libz.so.1",
+        "libcrypt.so.1",
+        "libresolv.so.2",
+        "libc.so.6"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "RSA_set_method",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_free",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_blinding_on",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_public_decrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_free",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_set_priv_enc",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_new",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get_ex_data",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_key",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_sign",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_set_finish",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_crt_params",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_dup",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_factors",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_get_finish",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set_ex_data",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_generate_key_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_set_priv_dec",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get_default_method",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_crt_params",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PEM_write_RSA_PUBKEY",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_factors",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_size",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_set1_name",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_key",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "pkcs11_rsa_private_decrypt",
+          "va": "0x28730",
+          "bytes": 8,
+          "section": 12
+        },
+        {
+          "name": "RSA_set_method@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_free@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_blinding_on@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_public_decrypt@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_free@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_set_priv_enc@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_new@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get_ex_data@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_key@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_sign@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_set_finish@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_crt_params@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_dup@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_factors@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_get_finish@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set_ex_data@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_generate_key_ex@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_meth_set_priv_dec@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get_default_method@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_crt_params@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PEM_write_RSA_PUBKEY@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_factors@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_size@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "blf_cbc_decrypt",
+          "va": "0x2fd00",
+          "bytes": 408,
+          "section": 12
+        },
+        {
+          "name": "blf_ecb_decrypt",
+          "va": "0x2fb68",
+          "bytes": 180,
+          "section": 12
+        },
+        {
+          "name": "RSA_meth_set1_name@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_key@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ]
+    },
+    {
+      "path": "/bin/openssl",
+      "inode": 81008,
+      "bytes": 2860040,
+      "sha256": "eb816737b775a6786a44410ded6e7b2279e79dc042c4f14dfeac6475c9e4175a",
+      "hits": [
+        {
+          "token": "EVP_DigestVerifyFinal",
+          "file_offsets": [
+            "0xe057",
+            "0x1bbaba"
+          ]
+        },
+        {
+          "token": "EVP_DigestVerify",
+          "file_offsets": [
+            "0x11518",
+            "0x1c1598"
+          ]
+        }
+      ],
+      "needed": [
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "EVP_DecryptUpdate",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_decrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_decrypt_set1_pkey_and_peer",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyInit",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PKCS7_decrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptFinal_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PKCS12_decrypt_skey",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerify",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyFinal",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PKCS8_decrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyInit_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptInit_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_PKEY_decrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_decrypt_set1_key",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyUpdate",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_decrypt_set1_password",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "i2d_RSA_PUBKEY_bio",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_PKEY_decrypt_init",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PEM_write_bio_RSA_PUBKEY",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_EncryptedData_decrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_sign_loop",
+          "va": "0x460278",
+          "bytes": 204,
+          "section": 12
+        },
+        {
+          "name": "RSA_verify_loop",
+          "va": "0x4604d8",
+          "bytes": 196,
+          "section": 12
+        },
+        {
+          "name": "decrypt",
+          "va": "0x4cad00",
+          "bytes": 4,
+          "section": 24
+        },
+        {
+          "name": "PEM_write_bio_RSA_PUBKEY@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyUpdate@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptInit_ex@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerify@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptFinal_ex@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_decrypt_set1_pkey_and_peer@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyInit@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptUpdate@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PKCS12_decrypt_skey@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_decrypt_set1_password@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_EncryptedData_decrypt@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "i2d_RSA_PUBKEY_bio@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_PKEY_decrypt@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PKCS7_decrypt@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyFinal@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_decrypt@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "CMS_decrypt_set1_key@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "PKCS8_decrypt@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_PKEY_decrypt_init@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyInit_ex@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ]
+    },
+    {
+      "path": "/lib/libInfraCrypt.so",
+      "inode": 95147,
+      "bytes": 22768,
+      "sha256": "d3140522c90c0d1e5d75dca06f0f18f58b628d8f8dd6b29b808aaf205cfd842b",
+      "hits": [
+        {
+          "token": "iCrypt_VerifyData",
+          "file_offsets": [
+            "0xe79"
+          ]
+        }
+      ],
+      "needed": [
+        "libInfraCryptCore.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "iCrypt_DecryptData",
+          "va": "0x1e34",
+          "bytes": 4,
+          "section": 10
+        },
+        {
+          "name": "iCrypt_VerifyData",
+          "va": "0x1e68",
+          "bytes": 4,
+          "section": 10
+        },
+        {
+          "name": "iCryptManager_decryptData",
+          "va": "0x2124",
+          "bytes": 144,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libbluetoothdefault.so",
+      "inode": 95165,
+      "bytes": 2126384,
+      "sha256": "cd5854a4fce37e4186c36c7cb5b1d5b0ca50e75813dde7f74b746c87c4e67d81",
+      "hits": [
+        {
+          "token": "cbc_decrypt",
+          "file_offsets": [
+            "0x39cab"
+          ]
+        }
+      ],
+      "needed": [
+        "libdl.so.2",
+        "libresolv.so.2",
+        "librt.so.1",
+        "libz.so.1",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "aes_cbc_decrypt",
+          "va": "0x191b5c",
+          "bytes": 148,
+          "section": 10
+        },
+        {
+          "name": "aes_decrypt_128",
+          "va": "0x191c9c",
+          "bytes": 168,
+          "section": 10
+        },
+        {
+          "name": "aes_decrypt_256",
+          "va": "0x191e08",
+          "bytes": 540,
+          "section": 10
+        },
+        {
+          "name": "aes_decrypt",
+          "va": "0x191ab0",
+          "bytes": 172,
+          "section": 10
+        },
+        {
+          "name": "BTM_BleVerifySignature",
+          "va": "0x130664",
+          "bytes": 316,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libcryptfileinputupdaterapi.so",
+      "inode": 95250,
+      "bytes": 27072,
+      "sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "hits": [
+        {
+          "token": "FDAT",
+          "file_offsets": [
+            "0x1473",
+            "0x45e2",
+            "0x45ff"
+          ]
+        }
+      ],
+      "needed": [
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libfileinputupdaterapi.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "_ZN7Updater15DecryptorModule7executeEv",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule14GetInformationEPN10UpdaterAPI22firmware_information_t11informationE",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZTIN7Updater15DecryptorModuleE",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModuleC2Ev",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule18getManagedThreadIDEv",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule12getHdEndFlagEv",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModuleD2Ev",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule7decryptEv",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN7Updater10CrcChecker6VerifyEPNS_11FileHandlerEj",
+          "va": "0x4408",
+          "bytes": 256,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater28CryptFileInputUpdaterManager10searchFDATEPNS_11FileHandlerE",
+          "va": "0x3bb8",
+          "bytes": 556,
+          "section": 10
+        },
+        {
+          "name": "_ZTSN7Updater17MsDecryptorModuleE",
+          "va": "0x4678",
+          "bytes": 30,
+          "section": 12
+        },
+        {
+          "name": "_ZN7Updater17MsDecryptorModuleC1Ev",
+          "va": "0x423c",
+          "bytes": 48,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule10stopModuleEv",
+          "va": "0x41b8",
+          "bytes": 4,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater17MsDecryptorModule5IsEndEv",
+          "va": "0x41f8",
+          "bytes": 68,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater17MsDecryptorModuleD0Ev",
+          "va": "0x41d0",
+          "bytes": 40,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater17MsDecryptorModuleC2Ev",
+          "va": "0x423c",
+          "bytes": 48,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater17MsDecryptorModuleD1Ev",
+          "va": "0x41bc",
+          "bytes": 20,
+          "section": 10
+        },
+        {
+          "name": "_ZTVN7Updater17MsDecryptorModuleE",
+          "va": "0x15bc8",
+          "bytes": 176,
+          "section": 19
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule11resetModuleEv",
+          "va": "0x41b0",
+          "bytes": 4,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule11startModuleEv",
+          "va": "0x41b4",
+          "bytes": 4,
+          "section": 10
+        },
+        {
+          "name": "_ZN7Updater17MsDecryptorModuleD2Ev",
+          "va": "0x41bc",
+          "bytes": 20,
+          "section": 10
+        },
+        {
+          "name": "_ZTIN7Updater17MsDecryptorModuleE",
+          "va": "0x15bb0",
+          "bytes": 24,
+          "section": 19
+        }
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "bytes": 22768,
+      "sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "hits": [
+        {
+          "token": "FDAT",
+          "file_offsets": [
+            "0x3e6f"
+          ]
+        },
+        {
+          "token": "BODYDATA.DAT",
+          "file_offsets": [
+            "0x3df1"
+          ]
+        }
+      ],
+      "needed": [
+        "libupdatertalk.so",
+        "libupdatermedia.so",
+        "libSTMcmdexecute.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "relevant_symbols": []
+    },
+    {
+      "path": "/lib/libmpr.so",
+      "inode": 95303,
+      "bytes": 3517008,
+      "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+      "hits": [
+        {
+          "token": "iCrypt_VerifyData",
+          "file_offsets": [
+            "0x3e55b"
+          ]
+        }
+      ],
+      "needed": [
+        "libexpat.so.1",
+        "libsecvlt.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "iCrypt_VerifyData",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "SKD_Verify",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN4C2PA10VerifyDataEPhmS0_mPN3mpr8libcrypt12offsetArea_tE",
+          "va": "0x2588a8",
+          "bytes": 4576,
+          "section": 10
+        },
+        {
+          "name": "_ZSt4swapISt15_Deque_iteratorIN3mpr5Codec10QueueParamERS3_PS3_EENSt9enable_ifIXsrSt6__and_IJSt21is_move_constructibleIT_ESt18is_move_assignableISA_EEE5valueEvE4typeERSA_SH_",
+          "va": "0x285acc",
+          "bytes": 36,
+          "section": 10
+        },
+        {
+          "name": "_ZSt4swapISt15_Deque_iteratorIN3mpr3log5seq_tERS3_PS3_EENSt9enable_ifIXsrSt6__and_IJSt21is_move_constructibleIT_ESt18is_move_assignableISA_EEE5valueEvE4typeERSA_SH_",
+          "va": "0x2bfffc",
+          "bytes": 36,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libssh2.so.1.0.1",
+      "inode": 95341,
+      "bytes": 216784,
+      "sha256": "5dc7ca0687907bc6f4b7938000a934a7fa8cd8122c31950c682e5147964cee0c",
+      "hits": [
+        {
+          "token": "EVP_DigestVerify",
+          "file_offsets": [
+            "0x36e7"
+          ]
+        },
+        {
+          "token": "RSA_verify",
+          "file_offsets": [
+            "0x35d6"
+          ]
+        }
+      ],
+      "needed": [
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libz.so.1",
+        "libc.so.6"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "RSA_set0_key",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerify",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_crt_params",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_size",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyInit",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_new",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_free",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_verify",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_key",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_factors",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_sign",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_factors",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ]
+    },
+    {
+      "path": "/lib/libcrypto.so.3",
+      "inode": 95562,
+      "bytes": 3615072,
+      "sha256": "893a37bd6f5a19069362e7c54c023ac9b93eb5d3c976dc45a82502fb4317a8d4",
+      "hits": [
+        {
+          "token": "AES_cbc_encrypt",
+          "file_offsets": [
+            "0x2a959"
+          ]
+        },
+        {
+          "token": "EVP_DigestVerifyFinal",
+          "file_offsets": [
+            "0x32324",
+            "0x2eb3c8"
+          ]
+        },
+        {
+          "token": "EVP_DigestVerify",
+          "file_offsets": [
+            "0x2bb08"
+          ]
+        },
+        {
+          "token": "RSA_verify",
+          "file_offsets": [
+            "0x3f9c2"
+          ]
+        },
+        {
+          "token": "RSA_public_decrypt",
+          "file_offsets": [
+            "0x3f283"
+          ]
+        }
+      ],
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "PEM_write_RSA_PUBKEY",
+          "va": "0x1ff178",
+          "bytes": 72,
+          "section": 11
+        },
+        {
+          "name": "RSA_print",
+          "va": "0x226258",
+          "bytes": 144,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_check_PKCS1_OAEP_mgf1",
+          "va": "0x2211e8",
+          "bytes": 1448,
+          "section": 11
+        },
+        {
+          "name": "EVP_PKEY_meth_get_decrypt",
+          "va": "0x1d4600",
+          "bytes": 28,
+          "section": 11
+        },
+        {
+          "name": "RSA_bits",
+          "va": "0x21dbd8",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_clear_flags",
+          "va": "0x21f8f0",
+          "bytes": 16,
+          "section": 11
+        },
+        {
+          "name": "EVP_DigestVerifyFinal",
+          "va": "0x1c9b70",
+          "bytes": 624,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_ccm128_decrypt",
+          "va": "0x1f32b0",
+          "bytes": 588,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_priv_enc",
+          "va": "0x2207f0",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_flags",
+          "va": "0x21dc48",
+          "bytes": 24,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_priv_enc",
+          "va": "0x2207e8",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set1_name",
+          "va": "0x2206e0",
+          "bytes": 164,
+          "section": 11
+        },
+        {
+          "name": "EVP_PKEY_meth_set_decrypt",
+          "va": "0x1d4488",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_add_PKCS1_PSS",
+          "va": "0x226c68",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "CMS_decrypt_set1_key",
+          "va": "0x133208",
+          "bytes": 484,
+          "section": 11
+        },
+        {
+          "name": "RSA_verify_PKCS1_PSS_mgf1",
+          "va": "0x2263a0",
+          "bytes": 1216,
+          "section": 11
+        },
+        {
+          "name": "AES_set_encrypt_key",
+          "va": "0xd0fe8",
+          "bytes": 1032,
+          "section": 11
+        },
+        {
+          "name": "RSA_test_flags",
+          "va": "0x21f900",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_size",
+          "va": "0x21dbe0",
+          "bytes": 40,
+          "section": 11
+        },
+        {
+          "name": "RSA_X931_generate_key_ex",
+          "va": "0x229780",
+          "bytes": 368,
+          "section": 11
+        },
+        {
+          "name": "AES_cfb1_encrypt",
+          "va": "0xd0fc8",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_sign",
+          "va": "0x220880",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_set0_key",
+          "va": "0x21f308",
+          "bytes": 172,
+          "section": 11
+        },
+        {
+          "name": "CMS_EncryptedData_decrypt",
+          "va": "0x1324e8",
+          "bytes": 284,
+          "section": 11
+        },
+        {
+          "name": "BF_decrypt",
+          "va": "0xf1fc8",
+          "bytes": 1036,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_multi_prime_crt_params",
+          "va": "0x21f7d8",
+          "bytes": 152,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_verify",
+          "va": "0x220890",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_generate_key_ex",
+          "va": "0x21e9c8",
+          "bytes": 36,
+          "section": 11
+        },
+        {
+          "name": "RSA_up_ref",
+          "va": "0x21f060",
+          "bytes": 32,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_finish",
+          "va": "0x220868",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "AES_options",
+          "va": "0xd2570",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_get_multi_prime_extra_count",
+          "va": "0x21f728",
+          "bytes": 32,
+          "section": 11
+        },
+        {
+          "name": "RSA_OAEP_PARAMS_it",
+          "va": "0x21c198",
+          "bytes": 16,
+          "section": 11
+        },
+        {
+          "name": "SRP_Verify_A_mod_N",
+          "va": "0x2396a0",
+          "bytes": 4,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_check_X931",
+          "va": "0x229260",
+          "bytes": 400,
+          "section": 11
+        },
+        {
+          "name": "RSA_PSS_PARAMS_dup",
+          "va": "0x21c170",
+          "bytes": 36,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_ocb128_decrypt",
+          "va": "0x1f71e0",
+          "bytes": 560,
+          "section": 11
+        },
+        {
+          "name": "PKCS8_decrypt_ex",
+          "va": "0x209f60",
+          "bytes": 112,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_multi_prime_keygen",
+          "va": "0x2208c0",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_add_PKCS1_type_1",
+          "va": "0x223a58",
+          "bytes": 196,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_add_PKCS1_type_2",
+          "va": "0x223ec8",
+          "bytes": 24,
+          "section": 11
+        },
+        {
+          "name": "SRP_Verify_B_mod_N",
+          "va": "0x2395f0",
+          "bytes": 172,
+          "section": 11
+        },
+        {
+          "name": "d2i_RSA_PUBKEY",
+          "va": "0x2723f8",
+          "bytes": 128,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_pub_dec",
+          "va": "0x2207d0",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_PSS_PARAMS_free",
+          "va": "0x21c148",
+          "bytes": 40,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_bn_mod_exp",
+          "va": "0x220838",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "PKCS12_decrypt_skey",
+          "va": "0x206ca0",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "i2d_RSA_PSS_PARAMS",
+          "va": "0x21c100",
+          "bytes": 48,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_ccm128_decrypt_ccm64",
+          "va": "0x1f3760",
+          "bytes": 520,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_pub_dec",
+          "va": "0x2207d8",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_add_PKCS1_OAEP",
+          "va": "0x221168",
+          "bytes": 64,
+          "section": 11
+        },
+        {
+          "name": "RSA_PSS_PARAMS_it",
+          "va": "0x21c0b0",
+          "bytes": 16,
+          "section": 11
+        },
+        {
+          "name": "RSA_public_encrypt",
+          "va": "0x21dc08",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_cts128_decrypt",
+          "va": "0x1f4908",
+          "bytes": 288,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_flags",
+          "va": "0x220788",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set0_app_data",
+          "va": "0x2207a8",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "EVP_DecryptFinal_ex",
+          "va": "0x1bd280",
+          "bytes": 920,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_dup",
+          "va": "0x220620",
+          "bytes": 180,
+          "section": 11
+        },
+        {
+          "name": "RSA_free",
+          "va": "0x21ed10",
+          "bytes": 256,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_init",
+          "va": "0x220848",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_public_decrypt",
+          "va": "0x21dc38",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_multi_prime_factors",
+          "va": "0x21f748",
+          "bytes": 104,
+          "section": 11
+        },
+        {
+          "name": "RSA_private_decrypt",
+          "va": "0x21dc28",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "d2i_RSA_PUBKEY_fp",
+          "va": "0x26e640",
+          "bytes": 28,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_gcm128_decrypt",
+          "va": "0x1f54e0",
+          "bytes": 904,
+          "section": 11
+        },
+        {
+          "name": "RSA_new",
+          "va": "0x21f038",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "d2i_RSA_PSS_PARAMS",
+          "va": "0x21c0c0",
+          "bytes": 64,
+          "section": 11
+        },
+        {
+          "name": "EVP_DigestVerifyInit_ex",
+          "va": "0x1c94d8",
+          "bytes": 64,
+          "section": 11
+        },
+        {
+          "name": "CMS_decrypt_set1_pkey_and_peer",
+          "va": "0x132ec8",
+          "bytes": 820,
+          "section": 11
+        },
+        {
+          "name": "RSA_verify",
+          "va": "0x227c08",
+          "bytes": 40,
+          "section": 11
+        },
+        {
+          "name": "EVP_VerifyFinal_ex",
+          "va": "0x1d0588",
+          "bytes": 412,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_keygen",
+          "va": "0x2208b0",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_check_PKCS1_type_1",
+          "va": "0x223b20",
+          "bytes": 568,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_check_PKCS1_type_2",
+          "va": "0x223ee0",
+          "bytes": 792,
+          "section": 11
+        },
+        {
+          "name": "EVP_DigestVerifyUpdate",
+          "va": "0x1c9648",
+          "bytes": 240,
+          "section": 11
+        },
+        {
+          "name": "DES_decrypt3",
+          "va": "0x142760",
+          "bytes": 268,
+          "section": 11
+        },
+        {
+          "name": "CMS_decrypt_set1_pkey",
+          "va": "0x133200",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "AES_ofb128_encrypt",
+          "va": "0xd2580",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "CMS_RecipientInfo_decrypt",
+          "va": "0x12a498",
+          "bytes": 1752,
+          "section": 11
+        },
+        {
+          "name": "RSA_X931_derive_ex",
+          "va": "0x229448",
+          "bytes": 824,
+          "section": 11
+        },
+        {
+          "name": "EVP_VerifyFinal",
+          "va": "0x1d0728",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "AES_cfb8_encrypt",
+          "va": "0xd0fd8",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "EVP_PKEY_decrypt_init_ex",
+          "va": "0x1a7b50",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "EVP_DecryptInit",
+          "va": "0x1bf088",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "PKCS12_item_decrypt_d2i_ex",
+          "va": "0x208188",
+          "bytes": 232,
+          "section": 11
+        },
+        {
+          "name": "PEM_write_bio_RSA_PUBKEY",
+          "va": "0x1ff130",
+          "bytes": 72,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_add_PKCS1_OAEP_mgf1",
+          "va": "0x2211a8",
+          "bytes": 64,
+          "section": 11
+        },
+        {
+          "name": "PEM_read_RSA_PUBKEY",
+          "va": "0x1ff108",
+          "bytes": 36,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_mod_exp",
+          "va": "0x220818",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "EVP_DecryptInit_ex",
+          "va": "0x1bf0a0",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_set_default_method",
+          "va": "0x2236c0",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "ERR_load_RSA_strings",
+          "va": "0x1a5708",
+          "bytes": 4,
+          "section": 11
+        },
+        {
+          "name": "AES_set_decrypt_key",
+          "va": "0xd13f0",
+          "bytes": 572,
+          "section": 11
+        },
+        {
+          "name": "RSA_sign_ASN1_OCTET_STRING",
+          "va": "0x226e00",
+          "bytes": 380,
+          "section": 11
+        },
+        {
+          "name": "i2d_RSA_PUBKEY_fp",
+          "va": "0x26e690",
+          "bytes": 20,
+          "section": 11
+        },
+        {
+          "name": "CAST_decrypt",
+          "va": "0x116918",
+          "bytes": 1124,
+          "section": 11
+        },
+        {
+          "name": "RSA_generate_key",
+          "va": "0x21df90",
+          "bytes": 268,
+          "section": 11
+        },
+        {
+          "name": "EVP_DecryptInit_ex2",
+          "va": "0x1bf010",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "i2d_RSA_OAEP_PARAMS",
+          "va": "0x21c1e8",
+          "bytes": 48,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_crt_params",
+          "va": "0x21f7b0",
+          "bytes": 40,
+          "section": 11
+        },
+        {
+          "name": "AES_cbc_encrypt",
+          "va": "0xd0f98",
+          "bytes": 28,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_add_none",
+          "va": "0x220b50",
+          "bytes": 160,
+          "section": 11
+        },
+        {
+          "name": "RSA_set_flags",
+          "va": "0x21f910",
+          "bytes": 16,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_d",
+          "va": "0x21f880",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_e",
+          "va": "0x21f878",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_get_ex_data",
+          "va": "0x21f098",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_mod_exp",
+          "va": "0x220820",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_n",
+          "va": "0x21f870",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_p",
+          "va": "0x21f888",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_q",
+          "va": "0x21f890",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "EVP_DigestVerify",
+          "va": "0x1c9de0",
+          "bytes": 228,
+          "section": 11
+        },
+        {
+          "name": "RSA_null_method",
+          "va": "0x2236f0",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_verify_PKCS1_PSS",
+          "va": "0x226860",
+          "bytes": 16,
+          "section": 11
+        },
+        {
+          "name": "RSA_set0_factors",
+          "va": "0x21f3b8",
+          "bytes": 164,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get0_name",
+          "va": "0x2206d8",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "Camellia_decrypt",
+          "va": "0x1162c0",
+          "bytes": 16,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_factors",
+          "va": "0x21f708",
+          "bytes": 28,
+          "section": 11
+        },
+        {
+          "name": "RSA_set_ex_data",
+          "va": "0x21f090",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_cbc128_decrypt",
+          "va": "0x1f2b50",
+          "bytes": 488,
+          "section": 11
+        },
+        {
+          "name": "RSA_get_version",
+          "va": "0x21f920",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_print_fp",
+          "va": "0x2262e8",
+          "bytes": 184,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_pub_enc",
+          "va": "0x2207b8",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "AES_encrypt",
+          "va": "0xd1630",
+          "bytes": 1080,
+          "section": 11
+        },
+        {
+          "name": "RSA_set0_crt_params",
+          "va": "0x21f460",
+          "bytes": 212,
+          "section": 11
+        },
+        {
+          "name": "AES_unwrap_key",
+          "va": "0xd25b0",
+          "bytes": 32,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_multi_prime_keygen",
+          "va": "0x2208c8",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_verify",
+          "va": "0x220898",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_free",
+          "va": "0x2205d0",
+          "bytes": 76,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_bn_mod_exp",
+          "va": "0x220830",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_pub_enc",
+          "va": "0x2207c0",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_security_bits",
+          "va": "0x21f290",
+          "bytes": 120,
+          "section": 11
+        },
+        {
+          "name": "AES_decrypt",
+          "va": "0xd1a68",
+          "bytes": 1036,
+          "section": 11
+        },
+        {
+          "name": "EVP_PKEY_decrypt_init",
+          "va": "0x1a7b40",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "EVP_DecryptUpdate",
+          "va": "0x1bce20",
+          "bytes": 1096,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_iqmp",
+          "va": "0x21f8a8",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "SEED_decrypt",
+          "va": "0x22b038",
+          "bytes": 3412,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_nistcts128_decrypt_block",
+          "va": "0x1f47c0",
+          "bytes": 328,
+          "section": 11
+        },
+        {
+          "name": "CMS_RecipientInfo_kari_decrypt",
+          "va": "0x12d070",
+          "bytes": 224,
+          "section": 11
+        },
+        {
+          "name": "RSA_X931_hash_id",
+          "va": "0x2293f0",
+          "bytes": 84,
+          "section": 11
+        },
+        {
+          "name": "RSA_set0_multi_prime_params",
+          "va": "0x21f538",
+          "bytes": 424,
+          "section": 11
+        },
+        {
+          "name": "i2d_RSA_PUBKEY",
+          "va": "0x272478",
+          "bytes": 188,
+          "section": 11
+        },
+        {
+          "name": "RSA_set_method",
+          "va": "0x21ecc0",
+          "bytes": 80,
+          "section": 11
+        },
+        {
+          "name": "AES_ecb_encrypt",
+          "va": "0xd1e78",
+          "bytes": 20,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_sign",
+          "va": "0x220878",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_key",
+          "va": "0x21f6e0",
+          "bytes": 40,
+          "section": 11
+        },
+        {
+          "name": "AES_wrap_key",
+          "va": "0xd2590",
+          "bytes": 32,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_priv_dec",
+          "va": "0x220808",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "EVP_PKEY_decrypt",
+          "va": "0x1a7498",
+          "bytes": 460,
+          "section": 11
+        },
+        {
+          "name": "PKCS12_decrypt_skey_ex",
+          "va": "0x206c98",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "PKCS12_item_decrypt_d2i",
+          "va": "0x208270",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_priv_dec",
+          "va": "0x220800",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_finish",
+          "va": "0x220860",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_setup_blinding",
+          "va": "0x21dc98",
+          "bytes": 652,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get0_app_data",
+          "va": "0x2207a0",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "AES_bi_ige_encrypt",
+          "va": "0xd2238",
+          "bytes": 824,
+          "section": 11
+        },
+        {
+          "name": "RSA_PSS_PARAMS_new",
+          "va": "0x21c130",
+          "bytes": 20,
+          "section": 11
+        },
+        {
+          "name": "EVP_DecryptFinal",
+          "va": "0x1bd630",
+          "bytes": 4,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_pss_params",
+          "va": "0x21f8b0",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "CMS_decrypt_set1_password",
+          "va": "0x1333f0",
+          "bytes": 260,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_dmp1",
+          "va": "0x21f898",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_cts128_decrypt_block",
+          "va": "0x1f4680",
+          "bytes": 320,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_dmq1",
+          "va": "0x21f8a0",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "PKCS8_decrypt",
+          "va": "0x209fd0",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_private_encrypt",
+          "va": "0x21dc18",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_get_method",
+          "va": "0x21ecb8",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_check_key_ex",
+          "va": "0x21dbc8",
+          "bytes": 4,
+          "section": 11
+        },
+        {
+          "name": "RSA_OAEP_PARAMS_free",
+          "va": "0x21c230",
+          "bytes": 40,
+          "section": 11
+        },
+        {
+          "name": "CMS_decrypt",
+          "va": "0x1334f8",
+          "bytes": 412,
+          "section": 11
+        },
+        {
+          "name": "RSA_blinding_on",
+          "va": "0x21df28",
+          "bytes": 104,
+          "section": 11
+        },
+        {
+          "name": "RSA_PKCS1_OpenSSL",
+          "va": "0x2236e0",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RC2_decrypt",
+          "va": "0x217a28",
+          "bytes": 328,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_init",
+          "va": "0x220850",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_add_X931",
+          "va": "0x229180",
+          "bytes": 220,
+          "section": 11
+        },
+        {
+          "name": "PEM_read_bio_RSA_PUBKEY",
+          "va": "0x1ff0e0",
+          "bytes": 36,
+          "section": 11
+        },
+        {
+          "name": "RSA_OAEP_PARAMS_new",
+          "va": "0x21c218",
+          "bytes": 20,
+          "section": 11
+        },
+        {
+          "name": "EVP_PKEY_decrypt_old",
+          "va": "0x1cbf10",
+          "bytes": 160,
+          "section": 11
+        },
+        {
+          "name": "AES_cfb128_encrypt",
+          "va": "0xd0fb8",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_check_PKCS1_OAEP",
+          "va": "0x221790",
+          "bytes": 36,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_set_flags",
+          "va": "0x220790",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_add_PKCS1_PSS_mgf1",
+          "va": "0x226870",
+          "bytes": 1012,
+          "section": 11
+        },
+        {
+          "name": "i2d_RSA_PUBKEY_bio",
+          "va": "0x26e788",
+          "bytes": 20,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_nistcts128_decrypt",
+          "va": "0x1f4a28",
+          "bytes": 280,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_new",
+          "va": "0x220518",
+          "bytes": 180,
+          "section": 11
+        },
+        {
+          "name": "RSA_pkey_ctx_ctrl",
+          "va": "0x21f930",
+          "bytes": 64,
+          "section": 11
+        },
+        {
+          "name": "d2i_RSA_OAEP_PARAMS",
+          "va": "0x21c1a8",
+          "bytes": 64,
+          "section": 11
+        },
+        {
+          "name": "PKCS7_decrypt",
+          "va": "0x2111b0",
+          "bytes": 900,
+          "section": 11
+        },
+        {
+          "name": "RSA_padding_check_none",
+          "va": "0x220bf0",
+          "bytes": 160,
+          "section": 11
+        },
+        {
+          "name": "CRYPTO_gcm128_decrypt_ctr32",
+          "va": "0x1f5b40",
+          "bytes": 720,
+          "section": 11
+        },
+        {
+          "name": "RSA_check_key",
+          "va": "0x21dbd0",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_get_default_method",
+          "va": "0x2236d0",
+          "bytes": 12,
+          "section": 11
+        },
+        {
+          "name": "RSA_verify_ASN1_OCTET_STRING",
+          "va": "0x226f80",
+          "bytes": 476,
+          "section": 11
+        },
+        {
+          "name": "RSA_new_method",
+          "va": "0x21f048",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_sign",
+          "va": "0x2275a0",
+          "bytes": 400,
+          "section": 11
+        },
+        {
+          "name": "PKCS7_signatureVerify",
+          "va": "0x20df98",
+          "bytes": 1120,
+          "section": 11
+        },
+        {
+          "name": "RSA_get0_engine",
+          "va": "0x21f928",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_meth_get_keygen",
+          "va": "0x2208a8",
+          "bytes": 8,
+          "section": 11
+        },
+        {
+          "name": "RSA_generate_multi_prime_key",
+          "va": "0x21e0e0",
+          "bytes": 2280,
+          "section": 11
+        },
+        {
+          "name": "RSA_blinding_off",
+          "va": "0x21dc60",
+          "bytes": 56,
+          "section": 11
+        },
+        {
+          "name": "AES_ige_encrypt",
+          "va": "0xd1e90",
+          "bytes": 936,
+          "section": 11
+        },
+        {
+          "name": "EVP_DigestVerifyInit",
+          "va": "0x1c9518",
+          "bytes": 60,
+          "section": 11
+        },
+        {
+          "name": "d2i_RSA_PUBKEY_bio",
+          "va": "0x26e738",
+          "bytes": 28,
+          "section": 11
+        },
+        {
+          "name": "PKCS7_dataVerify",
+          "va": "0x20e3f8",
+          "bytes": 572,
+          "section": 11
+        }
+      ]
+    },
+    {
+      "path": "/lib/libInfraOptionInstall.so",
+      "inode": 95563,
+      "bytes": 235688,
+      "sha256": "62f2b8a3a0e533a6c80dfd8e2d78ddcaca8ec000c6187bfcf914b9de1a6a8256",
+      "hits": [
+        {
+          "token": "EVP_DigestVerifyFinal",
+          "file_offsets": [
+            "0x763e"
+          ]
+        }
+      ],
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "EVP_DigestVerifyInit",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptInit_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptFinal_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "iCrypt_DecryptData",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptUpdate",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyFinal",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyUpdate",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "_ZN15OptionInstaller11CryptoTools11decrypt_aesEPvPKvmmS3_mS3_",
+          "va": "0x26fec",
+          "bytes": 604,
+          "section": 10
+        }
+      ]
+    },
+    {
+      "path": "/lib/libssl.so.3",
+      "inode": 95574,
+      "bytes": 574464,
+      "sha256": "27bc25f1e766877b72888dba67dc60fe4589c4a7b253c9324fce8c8ad1913f21",
+      "hits": [
+        {
+          "token": "EVP_DigestVerifyFinal",
+          "file_offsets": [
+            "0xc27b"
+          ]
+        },
+        {
+          "token": "EVP_DigestVerify",
+          "file_offsets": [
+            "0xc1cf"
+          ]
+        }
+      ],
+      "needed": [
+        "libcrypto.so.3",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "EVP_DigestVerifyInit_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptFinal",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_free",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerify",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_up_ref",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyFinal",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "SRP_Verify_A_mod_N",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptUpdate",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_PKEY_decrypt_init",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DigestVerifyUpdate",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "SRP_Verify_B_mod_N",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_DecryptInit_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "EVP_PKEY_decrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ]
+    },
+    {
+      "path": "/sbin/sshd",
+      "inode": 60728,
+      "bytes": 767408,
+      "sha256": "a6b871ef0da3990ea0d25d7996ee79c3bfc29385d4eb1670892814c0e1472534",
+      "hits": [
+        {
+          "token": "RSA_public_decrypt",
+          "file_offsets": [
+            "0x3796"
+          ]
+        },
+        {
+          "token": "cbc_decrypt",
+          "file_offsets": [
+            "0xb730f"
+          ]
+        }
+      ],
+      "needed": [
+        "libpam.so.0",
+        "libcrypto.so.3",
+        "libdl.so.2",
+        "libutil.so.1",
+        "libz.so.1",
+        "libcrypt.so.1",
+        "libresolv.so.2",
+        "libc.so.6"
+      ],
+      "relevant_symbols": [
+        {
+          "name": "RSA_set0_key",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_public_decrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "AES_encrypt",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "AES_set_encrypt_key",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_crt_params",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_size",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_generate_key_ex",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_new",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_crt_params",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_free",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_key",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_factors",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_sign",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_factors",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_blinding_on",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_key@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_public_decrypt@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "AES_encrypt@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "AES_set_encrypt_key@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_crt_params@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_size@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_generate_key_ex@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_new@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "blf_cbc_decrypt",
+          "va": "0x68580",
+          "bytes": 408,
+          "section": 12
+        },
+        {
+          "name": "RSA_get0_crt_params@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_free@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_key@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_get0_factors@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_sign@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_set0_factors@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "RSA_blinding_on@@OPENSSL_3.0.0",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "blf_ecb_decrypt",
+          "va": "0x683e8",
+          "bytes": 180,
+          "section": 12
+        }
+      ]
+    }
+  ],
+  "scope": "All regular AP filesystem files read without mounts. Presence/imports of crypto or FDAT identifiers are candidates, not proof of the update verification call chain. Protected/stripped code or other processors may not expose these names."
+}

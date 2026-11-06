@@ -1,0 +1,17 @@
+000041f8 stp        x29, x30, [sp, #-0x20]!
+000041fc mov        x29, sp
+00004200 str        x19, [sp, #0x10]
+00004204 mov        x19, x0
+00004208 ldr        x0, [x0, #0x48]
+0000420c ldr        x1, [x0]
+00004210 ldr        x1, [x1, #0x30]
+00004214 blr        x1
+00004218 tst        w0, #0xff
+0000421c b.ne       #0x4230
+00004220 mov        x0, x19
+00004224 ldr        x19, [sp, #0x10]
+00004228 ldp        x29, x30, [sp], #0x20
+0000422c b          #0x3730 ; Updater::DecryptorModule::getHdEndFlag
+00004230 ldr        x19, [sp, #0x10]
+00004234 ldp        x29, x30, [sp], #0x20
+00004238 ret        

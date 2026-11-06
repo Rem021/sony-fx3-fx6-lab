@@ -1,0 +1,684 @@
+{
+  "scope": "Offline fixed-file hashes, ELF symbol tables and bounded printable-string inventory only. No call-graph completeness, live hardware, sensor data or runtime support claim.",
+  "files": {
+    "av-cam": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+      "bytes": 13348560,
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "symbols": [],
+      "string_buckets": {
+        "DMM": {
+          "pattern": "GetDmm|SetMemTbl|STILLMP_BUF_RAW_UNPACKED",
+          "total": 0,
+          "first_matches": []
+        },
+        "still_RAW": {
+          "pattern": "StillMP_Sequence_.*RAW|ConfluenceRaw",
+          "total": 13,
+          "first_matches": [
+            {
+              "file_offset": "0x432a16",
+              "text": "[CAM_MP]: [%d] %s:Section_ConfluenceRaw_START[%d]"
+            },
+            {
+              "file_offset": "0x432a48",
+              "text": "StillMP_Sequence_CONFLUENCERAW_NONE"
+            },
+            {
+              "file_offset": "0x432a6c",
+              "text": "[CAM_MP]: [%d] %s:Section_ConfluenceRaw_END[%d]"
+            },
+            {
+              "file_offset": "0x432a9c",
+              "text": "StillMP_Sequence_CONFLUENCERAW_JOINSEQ_RAW"
+            },
+            {
+              "file_offset": "0x432e90",
+              "text": "StillMP_Sequence_ENTRY_JPG_IMPORT_EMB_SCN_THM_AND_BRANCH_RAW"
+            },
+            {
+              "file_offset": "0x432ecd",
+              "text": "StillMP_Sequence_ENTRY_JPG_IMPORT_MAIN_SCN_THM_AND_BRANCH_RAW"
+            },
+            {
+              "file_offset": "0x432f0b",
+              "text": "StillMP_Sequence_ENTRY_YC_IMPORT_MAIN_SCN_THM_AND_BRANCH_RAW"
+            },
+            {
+              "file_offset": "0x432fd3",
+              "text": "StillMP_Sequence_EXIT_WAIT_RAW_AND_STILLINFO"
+            },
+            {
+              "file_offset": "0x433030",
+              "text": "StillMP_Sequence_EXIT_WAIT_RAW_RSZENC_AND_STILLINFO"
+            },
+            {
+              "file_offset": "0x433109",
+              "text": "StillMP_Sequence_IMPORTANDSRW_PACKED_RAW_IMPORT"
+            },
+            {
+              "file_offset": "0x433139",
+              "text": "StillMP_Sequence_IMPORTANDSRW_UNPACKED_RAW_IMPORT"
+            },
+            {
+              "file_offset": "0x43316b",
+              "text": "StillMP_Sequence_IMPORTANDSRW_UNPACKED_RAW_IMPORT_AND_FILL"
+            },
+            {
+              "file_offset": "0x4331a6",
+              "text": "StillMP_Sequence_IMPORTANDSRW_UNPACKED_RAW_IMPORT_AND_DEV_AND_FILL"
+            }
+          ]
+        },
+        "HDMI_RAW": {
+          "pattern": "HDMI.*RAW|RAW.*HDMI|RAW_OUTPUT|RawOutput",
+          "total": 0,
+          "first_matches": []
+        },
+        "cinema_menu": {
+          "pattern": "CINE_EI|CINEEI|MOVIE_MAIN_MENU|MAIN_MENU.*MOVIE|BIG6",
+          "total": 4,
+          "first_matches": [
+            {
+              "file_offset": "0x454d85",
+              "text": "MLUT_LOOKNAME_SL3SG3C_TO_ICART_CINEEI"
+            },
+            {
+              "file_offset": "0x454efb",
+              "text": "MLUT_LOOKNAME_SL3SG3C_TO_USER_CINEEI"
+            },
+            {
+              "file_offset": "0x45506b",
+              "text": "MLUT_LOOKNAME_SL3SG3_TO_ICART_CINEEI"
+            },
+            {
+              "file_offset": "0x4550cb",
+              "text": "MLUT_LOOKNAME_SL3SG3_TO_USER_CINEEI"
+            }
+          ]
+        },
+        "sensor": {
+          "pattern": "CMOS|SENSOR.*READ|READ.*SENSOR|DEBAYER|DEMOSAIC",
+          "total": 0,
+          "first_matches": []
+        }
+      }
+    },
+    "libmpr": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so",
+      "bytes": 3517008,
+      "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+      "symbols": [
+        {
+          "name": "_ZN3mpr10DmmMemInfo9SetMemTblEjiPNS0_11BufferTableE",
+          "value": "0x2afb0c",
+          "size": 2128,
+          "defined": true,
+          "table_type": 11
+        },
+        {
+          "name": "_ZN3mpr12GetDmmModeIdERNS_12MovieRecInfoE",
+          "value": "0xcd5c4",
+          "size": 316,
+          "defined": true,
+          "table_type": 11
+        },
+        {
+          "name": "_ZN3mpr10DmmMemInfo13FreeDmmMemoryEij",
+          "value": "0x2af9ec",
+          "size": 108,
+          "defined": true,
+          "table_type": 11
+        },
+        {
+          "name": "_ZN3mpr10DmmMemInfo13GetDmmExtListEPNS0_21t_unitTypeConvertListEPjP10dmm_munmap",
+          "value": "0x2af498",
+          "size": 416,
+          "defined": true,
+          "table_type": 11
+        },
+        {
+          "name": "_ZN3mpr10Dmac330Lib11s_semaphoreE",
+          "value": "0x3d55f0",
+          "size": 120,
+          "defined": true,
+          "table_type": 11
+        },
+        {
+          "name": "_ZN3mpr10DmmMemInfo19UnitTypeTableSelectEi",
+          "value": "0x2af638",
+          "size": 472,
+          "defined": true,
+          "table_type": 11
+        },
+        {
+          "name": "_ZN3mpr10DmmMemInfo13FreeDmmMemoryEi",
+          "value": "0x2afa58",
+          "size": 64,
+          "defined": true,
+          "table_type": 11
+        }
+      ],
+      "string_buckets": {
+        "DMM": {
+          "pattern": "GetDmm|SetMemTbl|STILLMP_BUF_RAW_UNPACKED",
+          "total": 5,
+          "first_matches": [
+            {
+              "file_offset": "0x2c521",
+              "text": "_ZN3mpr12GetDmmModeIdERNS_12MovieRecInfoE"
+            },
+            {
+              "file_offset": "0x486c0",
+              "text": "_ZN3mpr10DmmMemInfo13GetDmmExtListEPNS0_21t_unitTypeConvertListEPjP10dmm_munmap"
+            },
+            {
+              "file_offset": "0x48892",
+              "text": "_ZN3mpr10DmmMemInfo9SetMemTblEjiPNS0_11BufferTableE"
+            },
+            {
+              "file_offset": "0x2cf03d",
+              "text": "app_dmm::alloc_and_open( app_dmm::STILLMP_BUF_RAW_UNPACKED, &dmm_raw, true )"
+            },
+            {
+              "file_offset": "0x2de348",
+              "text": "static uint32_t mpr::DmmMemInfo::GetDmmExtList(mpr::DmmMemInfo::t_unitTypeConvertList*, uint32_t*, dmm_munmap*)"
+            }
+          ]
+        },
+        "still_RAW": {
+          "pattern": "StillMP_Sequence_.*RAW|ConfluenceRaw",
+          "total": 0,
+          "first_matches": []
+        },
+        "HDMI_RAW": {
+          "pattern": "HDMI.*RAW|RAW.*HDMI|RAW_OUTPUT|RawOutput",
+          "total": 0,
+          "first_matches": []
+        },
+        "cinema_menu": {
+          "pattern": "CINE_EI|CINEEI|MOVIE_MAIN_MENU|MAIN_MENU.*MOVIE|BIG6",
+          "total": 0,
+          "first_matches": []
+        },
+        "sensor": {
+          "pattern": "CMOS|SENSOR.*READ|READ.*SENSOR|DEBAYER|DEMOSAIC",
+          "total": 0,
+          "first_matches": []
+        }
+      }
+    },
+    "appFw": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "symbols": [],
+      "string_buckets": {
+        "DMM": {
+          "pattern": "GetDmm|SetMemTbl|STILLMP_BUF_RAW_UNPACKED",
+          "total": 0,
+          "first_matches": []
+        },
+        "still_RAW": {
+          "pattern": "StillMP_Sequence_.*RAW|ConfluenceRaw",
+          "total": 0,
+          "first_matches": []
+        },
+        "HDMI_RAW": {
+          "pattern": "HDMI.*RAW|RAW.*HDMI|RAW_OUTPUT|RawOutput",
+          "total": 271,
+          "first_matches": [
+            {
+              "file_offset": "0x391b62a",
+              "text": "%s%s(%d) Send HDMI SET_DEFINITION(RAW)"
+            },
+            {
+              "file_offset": "0x391b651",
+              "text": "%s%s(%d) Success HDMI SET_DEFINITION(RAW)"
+            },
+            {
+              "file_offset": "0x391b67b",
+              "text": "%s%s(%d) Send HDMI SET_RESOLUTION(RAW)"
+            },
+            {
+              "file_offset": "0x391b6a2",
+              "text": "%s%s(%d) Failure HDMI SET_DEFINITION(RAW)"
+            },
+            {
+              "file_offset": "0x391b6f9",
+              "text": "%s%s(%d) Success HDMI SET_RESOLUTION(RAW)"
+            },
+            {
+              "file_offset": "0x391b723",
+              "text": "%s%s(%d) Send HDMI SET_OUTPUT_FRAME_RATE(RAW)"
+            },
+            {
+              "file_offset": "0x391b751",
+              "text": "%s%s(%d) Failure HDMI SET_RESOLUTION(RAW)"
+            },
+            {
+              "file_offset": "0x391b77b",
+              "text": "%s%s(%d) Success HDMI SET_OUTPUT_FRAME_RATE(RAW)"
+            },
+            {
+              "file_offset": "0x391b7ac",
+              "text": "%s%s(%d) Failure HDMI SET_OUTPUT_FRAME_RATE(RAW)"
+            },
+            {
+              "file_offset": "0x391ba85",
+              "text": "%s%s(%d) HDMI RAW Output: ON"
+            },
+            {
+              "file_offset": "0x391c190",
+              "text": "void model::sequence_change_hdmi_resolution::set_raw_output()"
+            },
+            {
+              "file_offset": "0x39374a0",
+              "text": "void model::sequence_mode_transition::common_set_hdmi_resolution_raw_rec()"
+            },
+            {
+              "file_offset": "0x39666cf",
+              "text": "infra_wrapper_bb::hdmi_set_output_frame_rate_for_raw_output():NoAction"
+            },
+            {
+              "file_offset": "0x3969c70",
+              "text": "hdmi_set_output_frame_rate_for_raw_output"
+            },
+            {
+              "file_offset": "0x396a788",
+              "text": "HDMI::OUTPUT_FRAME_RATE infra_wrapper_bb::detail::convert_hdmi_output_frame_rate(model::setting_raw_output_frame_rate_t)"
+            },
+            {
+              "file_offset": "0x399ba28",
+              "text": "to_remote_event_hdmi_output_raw"
+            },
+            {
+              "file_offset": "0x399caa0",
+              "text": "to_remote_event_hdmi_output_raw_setting"
+            },
+            {
+              "file_offset": "0x399dab0",
+              "text": "to_remote_event_hdmi_output_color_gamut_for_raw_out"
+            },
+            {
+              "file_offset": "0x39a7fd7",
+              "text": "PRM_raw_output_framerate_restriction"
+            },
+            {
+              "file_offset": "0x39a7ffc",
+              "text": "PRM_HAITA_raw_output_framerate_restriction_setting_different_set_for_s_q_mv"
+            },
+            {
+              "file_offset": "0x39a8b58",
+              "text": "PRM_setting_rec_media_during_hdmi_output_setting_raw_output_exposure_mode"
+            },
+            {
+              "file_offset": "0x39a8ba2",
+              "text": "PRM_setting_rec_media_during_hdmi_output_setting_raw_output_connect_with_raw_compatible_device_exposure_mode"
+            },
+            {
+              "file_offset": "0x39a8c0f",
+              "text": "PRM_hdmi_connect_state_connect_with_raw_compatible_device"
+            },
+            {
+              "file_offset": "0x39a8c49",
+              "text": "PRM_setting_raw_output_connect_with_raw_compatible_device_exposure_mode"
+            },
+            {
+              "file_offset": "0x39a8c91",
+              "text": "PRM_HAITA_setting_raw_output_connect_with_raw_compatible_device_exposure_mode_FEATURE_MANAGER_menu_item"
+            },
+            {
+              "file_offset": "0x39af49e",
+              "text": "PRM_setting_raw_output"
+            },
+            {
+              "file_offset": "0x39af4b5",
+              "text": "PRM_HAITA_setting_raw_output_setting_movie_rec_frame_rate"
+            },
+            {
+              "file_offset": "0x39af4ef",
+              "text": "PRM_setting_raw_output_frame_rate"
+            },
+            {
+              "file_offset": "0x39af511",
+              "text": "PRM_HAITA_setting_rec_media_during_hdmi_output_setting_menu_shooting_mode_setting_raw_output"
+            },
+            {
+              "file_offset": "0x39af56e",
+              "text": "PRM_HAITA_setting_raw_output_connect_with_raw_compatible_device"
+            }
+          ]
+        },
+        "cinema_menu": {
+          "pattern": "CINE_EI|CINEEI|MOVIE_MAIN_MENU|MAIN_MENU.*MOVIE|BIG6",
+          "total": 41,
+          "first_matches": [
+            {
+              "file_offset": "0x2fc80c8",
+              "text": "i_view_widget* s_allocate_tp_button_01_for_big6(char*, uint32_t&, const ds_view_widget_ctor_param&, const view_common_param_t&)"
+            },
+            {
+              "file_offset": "0x2fd4ae0",
+              "text": "26view_tp_button_01_for_big6"
+            },
+            {
+              "file_offset": "0x2fd4b5c",
+              "text": "view_tp_button_01_for_big6.cpp"
+            },
+            {
+              "file_offset": "0x2fd4c08",
+              "text": "libra::ResID view_tp_button_01_for_big6::get_resid_font_style()"
+            },
+            {
+              "file_offset": "0x2fd8ba5",
+              "text": "tp_button_01_for_big6"
+            },
+            {
+              "file_offset": "0x30641c8",
+              "text": "view_tp_button_01_for_big6::param_t* view_tp_button_01_for_big6::accessor::operator->()"
+            },
+            {
+              "file_offset": "0x310522d",
+              "text": "No56_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x31054a2",
+              "text": "No60_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x310a6b4",
+              "text": "No699_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x310cd58",
+              "text": "No67_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x310cf30",
+              "text": "No43_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x310cff1",
+              "text": "No57_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x310d0da",
+              "text": "No70_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x310d2e4",
+              "text": "No44_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x310d364",
+              "text": "No61_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x311970f",
+              "text": "No1148_CineEIBaseISO"
+            },
+            {
+              "file_offset": "0x31968c8",
+              "text": "void scr7286_0001_presenter::update_big6_item_iso_ei(int)"
+            },
+            {
+              "file_offset": "0x3196908",
+              "text": "view_tp_button_01_for_big6::fraction_t scr7286_0001_presenter::get_fraction_nd_filter_manual_set()"
+            },
+            {
+              "file_offset": "0x3196bb8",
+              "text": "view_tp_button_01_for_big6::param_t* view_tp_button_01_for_big6::accessor::operator->()"
+            },
+            {
+              "file_offset": "0x3a750e9",
+              "text": "VAL_setting_log_shooting_LOG_SHOOTING_CINE_EI_QUICK"
+            },
+            {
+              "file_offset": "0x3a7511d",
+              "text": "VAL_setting_log_shooting_LOG_SHOOTING_CINE_EI"
+            },
+            {
+              "file_offset": "0x3a751f8",
+              "text": "VAL_HAITA_setting_log_shooting_general_shooting_mode_LOG_SHOOTING_CINE_EI_QUICK"
+            },
+            {
+              "file_offset": "0x3a75248",
+              "text": "VAL_HAITA_setting_log_shooting_general_shooting_mode_LOG_SHOOTING_CINE_EI"
+            },
+            {
+              "file_offset": "0x3a752fd",
+              "text": "VAL_HAITA_setting_log_shooting_general_shooting_mode_LOG_SHOOTING_CINE_EI_QUICK_GENERAL_SHOOTING_MODE_MOVIE"
+            },
+            {
+              "file_offset": "0x3a75369",
+              "text": "VAL_HAITA_setting_log_shooting_general_shooting_mode_LOG_SHOOTING_CINE_EI_GENERAL_SHOOTING_MODE_MOVIE"
+            },
+            {
+              "file_offset": "0x3a75483",
+              "text": "VAL_HAITA_setting_log_shooting_system_mode_LOG_SHOOTING_CINE_EI_QUICK"
+            },
+            {
+              "file_offset": "0x3a754c9",
+              "text": "VAL_HAITA_setting_log_shooting_system_mode_LOG_SHOOTING_CINE_EI"
+            },
+            {
+              "file_offset": "0x3a755b6",
+              "text": "VAL_HAITA_setting_log_shooting_system_mode_LOG_SHOOTING_CINE_EI_QUICK_SYSTEM_MODE_REC_MOVIE"
+            },
+            {
+              "file_offset": "0x3a75612",
+              "text": "VAL_HAITA_setting_log_shooting_system_mode_LOG_SHOOTING_CINE_EI_SYSTEM_MODE_REC_MOVIE"
+            },
+            {
+              "file_offset": "0x3a756b3",
+              "text": "VAL_HAITA_setting_log_shooting_general_shooting_mode_exposure_mode_LOG_SHOOTING_CINE_EI_GENERAL_SHOOTING_MODE_MOVIE"
+            }
+          ]
+        },
+        "sensor": {
+          "pattern": "CMOS|SENSOR.*READ|READ.*SENSOR|DEBAYER|DEMOSAIC",
+          "total": 1,
+          "first_matches": [
+            {
+              "file_offset": "0x311a7cf",
+              "text": "No35_Imagersensorreadout"
+            }
+          ]
+        }
+      }
+    },
+    "dmm": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage128-DMM-provider-and-config/inputs/dmm.ko",
+      "bytes": 118336,
+      "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "symbols": [],
+      "string_buckets": {
+        "DMM": {
+          "pattern": "GetDmm|SetMemTbl|STILLMP_BUF_RAW_UNPACKED",
+          "total": 0,
+          "first_matches": []
+        },
+        "still_RAW": {
+          "pattern": "StillMP_Sequence_.*RAW|ConfluenceRaw",
+          "total": 0,
+          "first_matches": []
+        },
+        "HDMI_RAW": {
+          "pattern": "HDMI.*RAW|RAW.*HDMI|RAW_OUTPUT|RawOutput",
+          "total": 0,
+          "first_matches": []
+        },
+        "cinema_menu": {
+          "pattern": "CINE_EI|CINEEI|MOVIE_MAIN_MENU|MAIN_MENU.*MOVIE|BIG6",
+          "total": 0,
+          "first_matches": []
+        },
+        "sensor": {
+          "pattern": "CMOS|SENSOR.*READ|READ.*SENSOR|DEBAYER|DEMOSAIC",
+          "total": 0,
+          "first_matches": []
+        }
+      }
+    },
+    "AP_DmmCfg": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage129-AP-DMM-config-and-device-trial-plan/inputs/AP-DmmCfg.bin",
+      "bytes": 66796,
+      "sha256": "48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1",
+      "symbols": [],
+      "string_buckets": {
+        "DMM": {
+          "pattern": "GetDmm|SetMemTbl|STILLMP_BUF_RAW_UNPACKED",
+          "total": 0,
+          "first_matches": []
+        },
+        "still_RAW": {
+          "pattern": "StillMP_Sequence_.*RAW|ConfluenceRaw",
+          "total": 0,
+          "first_matches": []
+        },
+        "HDMI_RAW": {
+          "pattern": "HDMI.*RAW|RAW.*HDMI|RAW_OUTPUT|RawOutput",
+          "total": 0,
+          "first_matches": []
+        },
+        "cinema_menu": {
+          "pattern": "CINE_EI|CINEEI|MOVIE_MAIN_MENU|MAIN_MENU.*MOVIE|BIG6",
+          "total": 0,
+          "first_matches": []
+        },
+        "sensor": {
+          "pattern": "CMOS|SENSOR.*READ|READ.*SENSOR|DEBAYER|DEMOSAIC",
+          "total": 0,
+          "first_matches": []
+        }
+      }
+    }
+  },
+  "source_containers": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+      "sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+      "bytes": 811876768
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+      "sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+      "bytes": 808704512
+    }
+  ],
+  "existing_AP_image_inventory": {
+    "source_image": "work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+    "source_image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+    "regular_entries": 797,
+    "unique_ELF_inodes": 532,
+    "selected_records": [
+      {
+        "image_paths": [
+          "/kmod/dmm.ko"
+        ],
+        "inode": 70916,
+        "bytes": 118336,
+        "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+        "elf_type": "ET_REL",
+        "machine": "EM_AARCH64",
+        "symbol_tables": [
+          ".symtab"
+        ],
+        "needed": [],
+        "matching_symbols": [
+          {
+            "name": "dmm_senser_cmd_GetLogStopTrigUnitType",
+            "value": 17568,
+            "bytes": 12,
+            "section": 2,
+            "type": "STT_FUNC",
+            "table": ".symtab"
+          },
+          {
+            "name": "dmm_senser_cmd_UnReadyProcfs",
+            "value": 17504,
+            "bytes": 56,
+            "section": 2,
+            "type": "STT_FUNC",
+            "table": ".symtab"
+          },
+          {
+            "name": "dmm_senser_cmd_GetLogStopTiming",
+            "value": 17616,
+            "bytes": 12,
+            "section": 2,
+            "type": "STT_FUNC",
+            "table": ".symtab"
+          },
+          {
+            "name": "dmm_senser_cmd_GetLogStopMode",
+            "value": 17592,
+            "bytes": 12,
+            "section": 2,
+            "type": "STT_FUNC",
+            "table": ".symtab"
+          },
+          {
+            "name": "dmm_senser_cmd_ReadyProcfs",
+            "value": 17432,
+            "bytes": 52,
+            "section": 2,
+            "type": "STT_FUNC",
+            "table": ".symtab"
+          }
+        ]
+      },
+      {
+        "image_paths": [
+          "/lib/libmpr.so"
+        ],
+        "inode": 95303,
+        "bytes": 3517008,
+        "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+        "elf_type": "ET_DYN",
+        "machine": "EM_AARCH64",
+        "symbol_tables": [
+          ".dynsym"
+        ],
+        "needed": [
+          "libexpat.so.1",
+          "libsecvlt.so",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libdl.so.2",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ],
+        "matching_symbols": []
+      },
+      {
+        "image_paths": [
+          "/scenario/CAMERA_SCN_EXTERNAL_RAW_RECORD.so"
+        ],
+        "inode": 34425,
+        "bytes": 13856,
+        "sha256": "4ce5ae6a30f590b9da6eb313c8acf5b2dcd28927501854c99cd3a1bda75db6bc",
+        "elf_type": "ET_DYN",
+        "machine": "EM_AARCH64",
+        "symbol_tables": [
+          ".dynsym",
+          ".symtab"
+        ],
+        "needed": [
+          "libosal_uipc.so",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libdl.so.2",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ],
+        "matching_symbols": []
+      }
+    ]
+  }
+}

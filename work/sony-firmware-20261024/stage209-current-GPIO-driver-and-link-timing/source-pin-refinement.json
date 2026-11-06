@@ -1,0 +1,22 @@
+{
+  "reason": "Fixed manually chosen header lines84..104, which held API declarations. Exact GPIO_PORT declaration is selected by its delimiters before sealing; original incorrect slice retained.",
+  "original_row": {
+    "source": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/reference-source/linux-kernel/include/linux/gpio/gpio.h",
+    "source_sha256": "c249420e7a50e39363081fdab5da66cbc32a5e3f8a10e1b32fd29433c5eb6a36",
+    "start_line": 84,
+    "end_line_inclusive": 104,
+    "sha256": "92bdd57e5e561697c6249e2952170136a75cabb8a657534c0d2f335a0c3332b7",
+    "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/GPL-port-layout.txt"
+  },
+  "corrected_row": {
+    "source": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/reference-source/linux-kernel/include/linux/gpio/gpio.h",
+    "source_sha256": "c249420e7a50e39363081fdab5da66cbc32a5e3f8a10e1b32fd29433c5eb6a36",
+    "start_line": 74,
+    "end_line_inclusive": 83,
+    "sha256": "b6606b16d100d859708374cdee31e8ea1b11eae4b1653d12fdcf064a7b419b0a",
+    "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/GPL-port-layout.txt"
+  },
+  "original_pin_sha256": "92bdd57e5e561697c6249e2952170136a75cabb8a657534c0d2f335a0c3332b7",
+  "original_saved": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/review-before-layout-pin-correction/GPL-port-layout.txt",
+  "original_source_files_changed": false
+}

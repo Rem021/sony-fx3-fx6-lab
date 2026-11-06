@@ -1,0 +1,85 @@
+{
+  "schema": "fx3-stage90-native-metadata-copy-caller/1",
+  "created_utc": "2026-10-27T07:39:51.743935+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/README.md",
+      "bytes": 5102,
+      "sha256": "ddec6b4848d81f3ec896831ac39ffd9cec4c33aa39c755aee14fa454bc47c245"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/completed-evidence-review.json",
+      "bytes": 800,
+      "sha256": "437ef7bfb26ae29042b232a2773953da5fb455cd18ed8eb3a9cf239a37c741cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/goal-status-after.json",
+      "bytes": 269500,
+      "sha256": "e36c1da0421d3cec137ad468e42b823dfbf9a564b3c52cf0ef58bea647ac883b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/goal-status-before.json",
+      "bytes": 267272,
+      "sha256": "d1f82e9fce0114ef2bcaf52640754335aee13dd9fa54ebdc885412a6384dae60"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/metadata_source.py",
+      "bytes": 13746,
+      "sha256": "42c1a3aa7fadd0213336d99e21e17daee7e0c89f4e3b842c0b2de7ce4087d607"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/native-provenance-audit.json",
+      "bytes": 4773,
+      "sha256": "beabdef02a84e256739dbfbf41fda729cc985880225a629a205b9ddb0a72b810"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/orchestration-coordination.json",
+      "bytes": 638,
+      "sha256": "294a93580ff69b92e9429347d0ff9ee026f4430b5d8c002c4d8a1e9578a288a0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/review_and_seal.py",
+      "bytes": 14119,
+      "sha256": "0fdb276162c68a121843abdf4e87d81e3cdf628cf990f9708165fe27453dc729"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/run-initial-20261027/executed-source.py",
+      "bytes": 13746,
+      "sha256": "42c1a3aa7fadd0213336d99e21e17daee7e0c89f4e3b842c0b2de7ce4087d607"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/run-initial-20261027/metadata-source-results.json",
+      "bytes": 478819,
+      "sha256": "44b003c19332a6f4cdc5a3b7ccdb9ae624b84c54d6f2dd1e2084f8ad81c437aa"
+    }
+  ],
+  "previous_manifest_sha256": "957337948b6af99a3bcc7f8d20ec867c71851967c5b88a167d9b3ba1d78a5daf",
+  "operations": {
+    "status": "PASS_DISTINCT_METADATA_LAYOUT_REFERENCE_BOUNDARY_AND_ORIGINAL_CALLER",
+    "created_utc": "2026-10-27T07:39:51.743935+00:00",
+    "prior_sealed_files_verified": 15,
+    "contrast_cases": 4,
+    "raw_copy_cases": 8,
+    "caller_cases": 4,
+    "bounded_entries": 16,
+    "null_only_raw_copy_returns": 4,
+    "nonnull_reference_stops": 4,
+    "copied_nonnull_handle_never_consumed_after_unexecuted_reference_step": true,
+    "caller_owned_inputs_separate": true,
+    "review_scope": "Same-agent original instruction and stored-result review; exact whole-stack/page checks by harness. No independent CPU engine or camera acceptance.",
+    "actual_producer_refcounts_queues_MAIN_hardware_or_recovery": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "d1f82e9fce0114ef2bcaf52640754335aee13dd9fa54ebdc885412a6384dae60",
+    "after_sha256": "e36c1da0421d3cec137ad468e42b823dfbf9a564b3c52cf0ef58bea647ac883b"
+  },
+  "readme_index_before_sha256": "8b8016d7750901529c19b93f16a5e510e49aba02b16aae6da619548434ca8937",
+  "readme_index_after_sha256": "f48343f76123691ed745f74858e2c120e9e7f6d0976659abc24c0f2b77a84be0",
+  "readme_index_entry": "- [2026-10-27 FX3 元数据布局、引用边界与原调用者](<work/sony-firmware-20261024/stage90-native-metadata-copy-and-caller/README.md>)：区分候选A4部分位复制与raw8c完整句柄复制；16例，非空停GP引用前，分开caller写119/67→120/68或绑定帧。真实生产/队列/MAIN与硬件恢复未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

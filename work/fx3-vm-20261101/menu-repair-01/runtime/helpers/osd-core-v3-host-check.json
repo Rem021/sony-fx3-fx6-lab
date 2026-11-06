@@ -1,0 +1,15 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-core-v3.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-core-v3"
+  ],
+  "exit": 0,
+  "stdout": "OSD_CORE_PASS exact8B_ack/positive/duplicate_one_ack/11_bounds_zero_ack/copy_release_failure_noack/send_failure_poison/metadata_requires_retained_epoch/native_signal_identity\n",
+  "stderr": ""
+}

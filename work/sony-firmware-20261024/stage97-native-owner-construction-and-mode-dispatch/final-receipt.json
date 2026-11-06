@@ -1,0 +1,95 @@
+{
+  "schema": "fx3-stage97-native-owner-mode-dispatch/1",
+  "created_utc": "2026-10-27T09:25:09.767878+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/README.md",
+      "bytes": 6047,
+      "sha256": "fb8672ca010b8e61729b18ef940f5ec5ed61d163925a29ebad0db6e226cec38e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/attempt-correction.json",
+      "bytes": 2603,
+      "sha256": "4ebbd76197496c97ed41a405fc7d7bd0f28207502f0efa1533fc5adc36b83612"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/completed-evidence-review.json",
+      "bytes": 890,
+      "sha256": "46e9b41ad51d21ca212b2557d2d943c96939c444a15363aafa13224a50bce3e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/goal-status-after.json",
+      "bytes": 292220,
+      "sha256": "f0463b5d0e83151c89e8089e8d5420063a54ba007e869d9e6715ff0f706d3205"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/goal-status-before.json",
+      "bytes": 288454,
+      "sha256": "3f75b70e4871b3d4751aba858f2de55f8cb9db684794008889feec0f4a9f2793"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/native-provenance-and-role-correction.json",
+      "bytes": 5499,
+      "sha256": "5b2078219e4391b686aa7c9c8101e1aba680910a5f945f177521e8e4db21dabb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/owner_mode.py",
+      "bytes": 12283,
+      "sha256": "bddfbc16512a05663306f555dddfdd34a74e12bbb9b4207667ce5855e29f12ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/review_and_seal.py",
+      "bytes": 17867,
+      "sha256": "b512ca88d87b0f8e7ba1e39f4fbc9fc8aa12b03f2c5fb9afeaf4c00d31daeb81"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/run-corrected-resume-boundary-20261027/executed-source.py",
+      "bytes": 12283,
+      "sha256": "bddfbc16512a05663306f555dddfdd34a74e12bbb9b4207667ce5855e29f12ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/run-corrected-resume-boundary-20261027/owner-mode-results.json",
+      "bytes": 9129936,
+      "sha256": "c132f49031c16c9d901c069c2c9c85650f4a408a90e0f745f32bd2590dc821c6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/run-initial-20261027/executed-source.py",
+      "bytes": 12187,
+      "sha256": "a8c7ebdb2bb131c827d90c492810be7b2a8ed5d71f079e7c5414ccecee31896f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/run-initial-20261027/failed-attempt.json",
+      "bytes": 1295,
+      "sha256": "efeef080cae3f3727adc8eeba2a39807de2b1e219a03e16bac134453724a09b7"
+    }
+  ],
+  "previous_manifest_sha256": "cfa14417f6b910fc678ddb8b5952e5c6f6f58db96a8983f3c001c80a30787558",
+  "operations": {
+    "status": "PASS_ACTUAL_OWNER_ORIGIN_AND_CONTINUOUS_NATIVE_MODE_DISPATCH_WITH_ROLE_REFINEMENT",
+    "created_utc": "2026-10-27T09:25:09.767878+00:00",
+    "prior_sealed_files_verified": 9,
+    "cases": 12,
+    "formal_phases": 60,
+    "native_owner_allocations_and_complete_constructors": 12,
+    "total_native_heap_allocations": 60,
+    "continuous_selected_mode_and_ROM_table_dispatches": 12,
+    "local_control_flag_set_cases": 4,
+    "first_trace_global_stops": 12,
+    "preserved_failed_attempts": 1,
+    "earlier_owner_initializer_label_corrected": true,
+    "review_scope": "Same-agent source and saved-output review; native constructor snapshots, entire owner and block headers/links checked. Harness checks entire image/all regions/full stack. No independent engine or actual camera acceptance.",
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "3f75b70e4871b3d4751aba858f2de55f8cb9db684794008889feec0f4a9f2793",
+    "after_sha256": "f0463b5d0e83151c89e8089e8d5420063a54ba007e869d9e6715ff0f706d3205"
+  },
+  "readme_index_before_sha256": "e1adf605872781e12540ba182ab81c8340b1ee8ad95c6766396193e44e600d80",
+  "readme_index_after_sha256": "918e1091f5bec25c3dab1431b44d513eb647ded672ac010a2df3b7e180cf35cf",
+  "readme_index_entry": "- [2026-10-27 FX3 实际owner构造与原模式分派纠正](<work/sony-firmware-20261024/stage97-native-owner-construction-and-mode-dispatch/README.md>)：12场景60阶段；纠正1352f0完整owner称谓，原managerf2c申请/12f21c构造→ROM索引0模式处理及历史记录，停trace前；完整模式/MAIN硬件恢复未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

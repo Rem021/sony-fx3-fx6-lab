@@ -1,0 +1,24 @@
+{
+  "failure": "readback validation caught loop-local argv shadowing in original_ufp_argv_table metadata",
+  "incorrect_metadata": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+    "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+    "va": "0x151b8",
+    "bytes": 24,
+    "sha256": "c40d6f58636d755cc233283aa055c1412f9eb4dbc45563da6671c0a2d02dac3e",
+    "pointers": [
+      "0x3d70",
+      "0x3d85",
+      "0x0"
+    ],
+    "argv": [
+      "/usr/bin/crypter.elf"
+    ]
+  },
+  "original_guest_case_argv": [
+    "/usr/bin/crypter.elf",
+    "/tmp_updater/Firm.dat"
+  ],
+  "guest_file_chunk_result": 0,
+  "scope": "Only output metadata was overwritten by the no-filename loop variable; saved original guest case arguments remained correct. Correct before sealing."
+}

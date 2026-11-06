@@ -1,0 +1,299 @@
+{
+  "builds": {
+    "fixture": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-DFX3_ENTRY_FIXTURE",
+        "-DFX3_OWNER_CHANNEL_FIXTURE",
+        "-DFX3_IOKIT_WIRE_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_core.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_entry_main.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_channel.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/host_transport.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/iokit_wire.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/native_session.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_receipt.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/helper_hello.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/status_permit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/flow_journal.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/service_flow.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_fixture.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/fake_iokit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/flow_fixture.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/service-fixture-helper"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/service-fixture-helper",
+      "sha256": "2a505ff784f4d8e0cf7f9b2fa8b5b7a61bc6939998bdaa309d117ffacb04e287",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/service-fixture-helper:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "native": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_core.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_entry_main.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_channel.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/host_transport.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/iokit_wire.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/native_session.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_receipt.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/helper_hello.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/status_permit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/flow_journal.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/service_flow.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_iokit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/iokit_adapter.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/host_login.c",
+        "-framework",
+        "Security",
+        "-lbsm",
+        "-framework",
+        "IOKit",
+        "-framework",
+        "CoreFoundation",
+        "-framework",
+        "DiskArbitration",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/service-native-helper"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/service-native-helper",
+      "sha256": "0b7cc928ab10f5211076c111635f35b3323b5c49e4f277cf6323566dbed2d47c",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/service-native-helper:\n\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.40.78)\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.1.8)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "ipc": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-dynamiclib",
+        "-DFX3_ENTRY_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/entry_support.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/entry-ipc.dylib"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/entry-ipc.dylib",
+      "sha256": "b9ca045a3f637a9e6efc844d583b994434f7de38edb91a70b310a4c175a8e69f",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/entry-ipc.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage256-root-service-flow-and-private-receipts/artifacts-v4/entry-ipc.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    }
+  },
+  "sources": [
+    {
+      "path": "entry_shared.h",
+      "sha256": "5b57ce769520c2f5143426b0d83d4e7c7a55f7814f3f3359f6fee60a9e353ed1"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "entry_target.h",
+      "sha256": "4fcdaa368bbee9100c6bcc372e929c3372ae3c6daa0dcf201d7af3fdabbac3d9"
+    },
+    {
+      "path": "fake_iokit.c",
+      "sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19"
+    },
+    {
+      "path": "flow_fixture.c",
+      "sha256": "c2ff9e1b91cda88bb9506af148dc4df03bf7431d97fa8a1b19214b23a94c56ec"
+    },
+    {
+      "path": "flow_journal.c",
+      "sha256": "04cd8fabfcad6f09494841c34a4e2578cd94d5d51b6581d7091926ace8429eb7"
+    },
+    {
+      "path": "flow_native.inc",
+      "sha256": "80fa14e62237e3718bebc5a98e89d6a2f21c9c731c3c8f1ac057ecbdfedfb466"
+    },
+    {
+      "path": "frame_io.c",
+      "sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f"
+    },
+    {
+      "path": "frame_io.h",
+      "sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a"
+    },
+    {
+      "path": "global_guard.c",
+      "sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526"
+    },
+    {
+      "path": "global_guard.h",
+      "sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828"
+    },
+    {
+      "path": "helper_hello.c",
+      "sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719"
+    },
+    {
+      "path": "helper_hello.h",
+      "sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e"
+    },
+    {
+      "path": "host_login.c",
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "host_login.h",
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "host_transport.c",
+      "sha256": "f23869555886de838de5048685b9f326ba94a6439896a0bc90e8df1e4a29f95c"
+    },
+    {
+      "path": "host_transport.h",
+      "sha256": "757c0d5e834f853c41a9f7a09747403ca3670d97800d4d8bcc520e5747bb4889"
+    },
+    {
+      "path": "iokit_adapter.c",
+      "sha256": "918da9da045ea30d91da3a6284228528ea9811a4089bce77bd4bd0cab90d42a3"
+    },
+    {
+      "path": "iokit_adapter.h",
+      "sha256": "b7beef5edf7ea2ae0812297ca29f64f7d5eb2b2617ab0c30ba89bf5483900eb2"
+    },
+    {
+      "path": "iokit_wire.c",
+      "sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94"
+    },
+    {
+      "path": "iokit_wire.h",
+      "sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b"
+    },
+    {
+      "path": "native_session.c",
+      "sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1"
+    },
+    {
+      "path": "native_session.h",
+      "sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f"
+    },
+    {
+      "path": "owner_channel.c",
+      "sha256": "1f7706a24149671b6b10f8a71467037176228f1073c011f6e4209cbde8598519"
+    },
+    {
+      "path": "owner_channel.h",
+      "sha256": "19ba22cdaca7b1475000d294a9c46ff35fa9029e7597d1e61aaa49642bed7e32"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "c6e496d139a0c43b3b845f3918e975bd4dd95942a242e3f2519b4595a3a9e96b"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "d27d3e4b6ac91c51f77de799b08e014b4b0eca49ebe521306f49773a29c5ff3f"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "cbb974070105036e34622c3746c55f267f3a20e931c0f7a6f08c37fc7765ddde"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "owner_receipt.c",
+      "sha256": "484ecdf6343dcf1f6b30f133e35730f4a393874e4891e47bfed891d42995637b"
+    },
+    {
+      "path": "owner_receipt.h",
+      "sha256": "34af5854c5f933765778777d14a430cb3a98c0d60b7b7cb11ef1c1e94ceb294e"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    },
+    {
+      "path": "public_material.h",
+      "sha256": "27710f438e5fc28ed48bb3f1e62a4d6f44d4e1c2ff5aa1dfd8d41e075c64594d"
+    },
+    {
+      "path": "service_flow.c",
+      "sha256": "2c928c28a6a16243bb71106f0ca82d37170bf322887eafbccdb4904d58da270e"
+    },
+    {
+      "path": "service_flow.h",
+      "sha256": "9bd96c895ee08a06e04ea8a90eeba06f6184b4b78810bd652bbdde59be1bcf8f"
+    },
+    {
+      "path": "service_profile.h",
+      "sha256": "a5d65439cf3e9e808c7921f50801cb9d11fe4cd0ac05e2c67a78b0516c26218b"
+    },
+    {
+      "path": "status_permit.c",
+      "sha256": "d545019fe99a1c23e4197393ebd934cf95b72475f26147d8c1aa186192085e2a"
+    },
+    {
+      "path": "status_permit.h",
+      "sha256": "c9728b63c77e3e8ab35bfb13ccb7343a2cb494130c709e47ad1525cba73033ce"
+    },
+    {
+      "path": "stream.c",
+      "sha256": "3f249e33febe2a0b328609894adab6c1a65e701772f5d046c2f606fecd98e837"
+    },
+    {
+      "path": "stream.h",
+      "sha256": "b02ee7267c0a6b6ed72428a265abc2bb2b6805c3efbf6f769fc425b0f594f7bc"
+    },
+    {
+      "path": "target_binding.h",
+      "sha256": "0878d92782780e7b035151d512303c068eb656d577abc191161d3dff680d1780"
+    }
+  ],
+  "native_build_released": false,
+  "native_helper_executed": false,
+  "new_root_or_USB_operations": 0
+}

@@ -1,0 +1,43 @@
+diff -Naur busybox-1.29.3_orig/sysklogd/logger.c busybox-1.29.3/sysklogd/logger.c
+--- busybox-1.29.3_orig/sysklogd/logger.c	2018-10-09 10:40:29.224080401 +0530
++++ busybox-1.29.3/sysklogd/logger.c	2018-10-09 11:47:13.260202473 +0530
+@@ -115,7 +115,6 @@
+ 	if (opt & 0x1) /* -p */
+ 		i = pencode(str_p);
+ 
+-	argv += optind;
+ 	if (!argv[0]) {
+ 		while (fgets(strbuf, COMMON_BUFSIZE, stdin)) {
+ 			if (strbuf[0]
+@@ -127,15 +126,22 @@
+ 		}
+ 	} else {
+ 		char *message = NULL;
+-		int len = 0;
+-		int pos = 0;
+-		do {
+-			len += strlen(*argv) + 1;
+-			message = xrealloc(message, len + 1);
+-			sprintf(message + pos, " %s", *argv),
+-			pos = len;
+-		} while (*++argv);
+-		syslog(i, "%s", message + 1); /* skip leading " " */
++                int len = argc - optind; /* for NULL */
++                int opt = len;
++                int j;
++                argv += optind;
++                for (j = 0; j < opt; j++) {
++                     len += strlen(*argv);
++                     message = xrealloc(message, len);
++                     if(!j)
++                        message[0] = 0;
++                     else
++                        strcat(message, " ");
++                        strcat(message, *argv);
++                        argv++;
++               }
++               syslog(i, "%s", message); /* skip leading " " */
++
+ 	}
+ 
+ 	closelog();

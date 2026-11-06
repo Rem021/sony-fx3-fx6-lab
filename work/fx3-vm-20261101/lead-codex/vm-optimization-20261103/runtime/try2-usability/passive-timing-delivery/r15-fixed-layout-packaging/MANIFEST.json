@@ -1,0 +1,97 @@
+{
+  "schema": "fx3-fixed-layout-packaging-delivery/v1",
+  "date": "2026-11-04",
+  "scope": "offline packager and r14 volume samples; final r15 protocol not integrated",
+  "status": "offline_complete",
+  "real_cpio_generated": false,
+  "new_runnable_candidate_generated": false,
+  "vm_started": false,
+  "deployed": false,
+  "frozen_source": {
+    "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/candidate.json",
+    "candidate_sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518",
+    "archive_sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83",
+    "archive_size": 453213884,
+    "header_offset": 451339508,
+    "payload_offset": 451339648,
+    "slot_size": 58856,
+    "mode": 33261,
+    "member_sha256": "54eeed923a6412cd2c6743f6e8c968d1ede71b92aa79aca4575868ebccc4a9ec",
+    "dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+  },
+  "candidate_manifest_policy": {
+    "dtb": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+      "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+    },
+    "all_platform_fields_from_r3": true,
+    "permitted_changes": [
+      "initrd.path",
+      "initrd.sha256",
+      "added fixed_layout_diagnostic_contract"
+    ],
+    "initrd_end_unchanged": true
+  },
+  "samples": {
+    "N1": {
+      "raw_sha256": "71779256b68ccb97ff911bba30e84d906c5a6365575fbfb59f498f652a743993",
+      "stripped_sha256": "f95d91c1c5f3ca41303edf0df9fa25b574f0c70f903f163b8aaef36c36a4b1b4",
+      "padded_slot_sha256": "20abdb909082fd6abf1ceb16f6ea626cebb29f0dcd407b84179b875cefb81448",
+      "stripped_bytes": 20400,
+      "zero_padding_bytes": 38456,
+      "audit_passed": true,
+      "plan": "dry-run-N1/plan.json"
+    },
+    "N64": {
+      "raw_sha256": "ab9b9127805303c7936945cde6773b1defc457b2a2abfa204c606401f26c9871",
+      "stripped_sha256": "54092d471ade3a599adbd563e75cb4c140ccc34b8e7245f65aeeba42aa6aa1fc",
+      "padded_slot_sha256": "3bd77e615425bf095d7997d5b76decee98e43ed093327084c66588dd5d8e014c",
+      "stripped_bytes": 20576,
+      "zero_padding_bytes": 38280,
+      "audit_passed": true,
+      "plan": "dry-run-N64/plan.json"
+    }
+  },
+  "final_tests": {
+    "tests": 40,
+    "passed": true,
+    "result": "test-artifacts-review/RESULT.json",
+    "log": "TEST-REVIEW.log",
+    "synthetic_only": true
+  },
+  "method_adjustment": {
+    "authority": "Orca msg_b4a35376625d",
+    "objcopy_failed": "OBJCOPY-FAILED.json",
+    "approved_method": "original frozen build + -Wl,--strip-debug + changed output",
+    "static_symbol_sections_removed": [
+      ".symtab",
+      ".strtab"
+    ],
+    "debug_originals_retained": true,
+    "strip_all_forbidden": true
+  },
+  "next_step": "Wait for reviewed final r15 source/build/ELF/protocol hashes; then new dry-run plan and separately authorized explicit write",
+  "evidence": [
+    "INPUT-RECEIPT.json",
+    "STRIP-RECEIPT.json",
+    "samples/*-ELF-AUDIT.json",
+    "samples/*-build.json",
+    "dry-run-N*/index.json",
+    "dry-run-N*/plan.json",
+    "test-artifacts-review/RESULT.json"
+  ],
+  "incidental_cache_excluded_from_delivery": [
+    "__pycache__"
+  ],
+  "symlink_fixtures": "SYMLINK-FIXTURES.json",
+  "official_sources": [
+    {
+      "url": "https://www.kernel.org/doc/html/latest/driver-api/early-userspace/buffer-format.html",
+      "read_date": "2026-11-04"
+    },
+    {
+      "url": "https://gabi.xinuos.com/v42/elf/03-sheader.html",
+      "read_date": "2026-11-04"
+    }
+  ]
+}

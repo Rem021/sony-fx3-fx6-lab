@@ -1,0 +1,112 @@
+{
+  "recorded_utc": "2026-11-01T14:22:09.377796+00:00",
+  "status": "BOUNDED_TYPED_HEADER_FAILURE_LOCALIZATION_INTEGRATED_OFFLINE_NATIVE_CLOSED",
+  "protocol_flow_magic": "FX3FLOW6",
+  "protocol_flow_schema": 6,
+  "entry_schema": 10,
+  "entry_scope_magic": "0x53564338 (SVC8)",
+  "offline_grant_id": "fx3-offline-service-access-278",
+  "read0_header_reasons": {
+    "0": "not_evaluated",
+    "1": "ok",
+    "2": "short_count",
+    "3": "size_mismatch",
+    "4": "pfunc_mismatch",
+    "5": "version_mismatch",
+    "6": "sequence_mismatch",
+    "7": "flags_mismatch",
+    "8": "reserved_mismatch",
+    "9": "response_mismatch",
+    "10": "multiple_mismatch"
+  },
+  "read0_header_mask_bits": {
+    "0x01": "size",
+    "0x02": "pfunc",
+    "0x04": "version",
+    "0x08": "sequence",
+    "0x10": "flags",
+    "0x20": "reserved",
+    "0x40": "response"
+  },
+  "raw_header_or_auth_or_hasp_bytes_exported": false,
+  "body_limit_bytes_retained": 88,
+  "automatic_retry_enabled": false,
+  "source_delta_vs277": {
+    "audit_and_check.py": {
+      "before": "dabe76b90b9c0bc2dc579cd507ee93d68c7398bba1afff08ff2ed6b9a26fd18c",
+      "after": "ef7f8545a8caeafc4cebeb488a055129e6c85314394a529961ddcbe24a9260eb"
+    },
+    "bounded_hasp_read.py": {
+      "before": "912a6c5afd169d93664e3746483f9944d57c58aee7894b143902b38b23437702",
+      "after": "18406f15420f81d189e47b7aee1130ce75ff2fb789b0aaf221a6e08f0ffc560f"
+    },
+    "entry_shared.h": {
+      "before": "9e591da97c145c116faa4b810565a53585388df8064ade1c880fcd4d9dd895d5",
+      "after": "a9cbd48398b3e95ad0d5e07b8c29219e908c0c2c6269e3990a073ea0d42fcc45"
+    },
+    "entry_target.h": {
+      "before": "1372b7a89efab77eace697803a113eda0ada706755a9211bad4996a3169a21e1",
+      "after": "812128fb3c7bbe74a9c112f8abbc9dc199393e6706b84d5cb142a923565f99f5"
+    },
+    "flow_fixture.c": {
+      "before": "d30dab29b7fdb245a2a32f795101ffc82495996347a53a6ae9f612ef48860c43",
+      "after": "180aba982c82796027f013b554ddc72ccb461b7afaddd4f54a56a85966743aa3"
+    },
+    "flow_journal.c": {
+      "before": "b920a8764f410ca5bad4d9a36b48247e52fe95d2cabcfe3522b65facd4951d29",
+      "after": "d2aba3a0c9984920b02c846d054635c8d8c506334626d4d32fd8a31398aee19a"
+    },
+    "flow_receiver.py": {
+      "before": "418444f61ad95b0c7eb815024fc6db0d819f015cb4837036b210b3fdc34baca5",
+      "after": "ee00540aa4fe09f5a5fc53fb1421c12454d84d6c472b7dd82c7f4e882988cea1"
+    },
+    "receipt_receiver.py": {
+      "before": "0db48d9fa65439dc78c36225d0a7a9fc9db7ae978bd0636263845dabef2ab3d3",
+      "after": "5271131a00410a97fbb34270779371475089c7c9f8ae769fb8d2aa27850c6f11"
+    },
+    "stream.c": {
+      "before": "860b0460e204d1237c32070924f89390204407441802aed28dc123d2d012a54e",
+      "after": "57b2daa67afe81164446c81124ee789c9aa54881adc71a6a8b9a97042036cab6"
+    },
+    "stream.h": {
+      "before": "a552e2cd23ff0d9b8b5fba08583dcdb5b12d6df32db2864a8c2a8c8cc27dd395",
+      "after": "cdbd2f876c7ff1315890fa644d3a6210e00298e768a6de833235e1aed9a75878"
+    },
+    "supervisor.py": {
+      "before": "4a30ce0a096bb92e91a5df12d48ca5fb95320c4f8a7989e96ce65218759296e9",
+      "after": "f0bb378014cd1042457a3b97346e86771d5a83c67c075bcba49f1e6959e99068"
+    },
+    "test_acquisition_integration.py": {
+      "before": "50acc15ac30431081d239a44252b1bcc0317132cbbf4ead6e955df167781b5df",
+      "after": "23b70f63662dbece25461a18b0b0efefd70103d81ef45afb5f4c366eb36fc3ec"
+    },
+    "test_shared_access.py": {
+      "before": "93d980d0e12b03eba2d7266e65cefdb42958e357a119b7de458ee9f2544a181f",
+      "after": "b13946a093ed019c3498b55cc93836e52e1335c65a37e5c17bf264acf00aaae1"
+    },
+    "unit.c": {
+      "before": "f1e6467931e894eea4a96cdd62aa72add4dee5afc1ce90a9b421dd88997bac8a",
+      "after": "b8926ad3856cba4020c6d2596ec53f50b79b259af3cb4285de6b5efc00976e5f"
+    }
+  },
+  "new_sources_vs277": {
+    "test_header_localization.py": {
+      "before": null,
+      "after": "916e7f16cdf445da89e14977f2dc13d718ef4c6528d52ce4bbf21139754a11c8"
+    }
+  },
+  "component_unit_cases": 12,
+  "full_controller_process_groups": 8,
+  "acquisition_groups": 5,
+  "shared_access_groups": 4,
+  "header_localization_groups": 11,
+  "header_localization_helper_runs": 10,
+  "header_localization_forgery_rejections": 15,
+  "production_entry_closed": true,
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_admin_or_USB_operations": 0,
+  "new_live_fixed_package_ready": false,
+  "actual_read0_body_or_STOP_success_proven": false,
+  "safe_first_flash_accepted": false
+}

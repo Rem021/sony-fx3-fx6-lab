@@ -1,0 +1,29 @@
+{
+  "status": "REJECT_NO_MODE_CHANGE_MINIMAL_SENSER_PROPOSAL",
+  "milestone": 2,
+  "milestone_complete": false,
+  "new_feature_or_real_camera_acceptance": false,
+  "reason": "The very first START matches the saved FX3 Senser headers and enters a callback that calls stop_other_driver before trying to enqueue an event. Both START and STOP share this path; this proposal cannot meet a no-driver-state-change contract.",
+  "facts_reused_not_new_runtime_discovery": [
+    "stage138 configured headers and callback",
+    "stage145 error/side-effect boundary",
+    "stage146 saved kernel boundary"
+  ],
+  "inference": "Restricting later commands or omitting authentication digests does not remove the initial control-request effects.",
+  "protocol_codes2_8_are_reference_not_current_FX3_MSC_proof": true,
+  "exact_current_body_callback_registration_queue_completion_or_USB_wire_status_verified": false,
+  "current_host_backend_native_release": false,
+  "host_only_prerequisite": {
+    "plan": "stage195-root-host-validation-plan/README.md",
+    "fixed_bundle_sha256": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0",
+    "executed": false,
+    "scope": "host-only; no IOKit/USB/Sony backend",
+    "not_a_camera_approval": true,
+    "not_reapproved_or_requested_by_this_batch": true
+  },
+  "next_real_validation": "Host-side cross-UID identity and protected-receipt validation is prepared but remains unexecuted. Actual camera work would then need a separate fixed scope acknowledging possible driver/session effects and verified return handling.",
+  "stop_this_offline_branch": "Do not generate more scenarios for this same no-mode-change proposal. Reconsider only after new host/body evidence or a genuinely different bounded interface exists.",
+  "new_camera_USB_cache_admin_auth_or_firmware_operations": 0,
+  "previous_model_tests_repeated": 0,
+  "persistent_write_release": false
+}

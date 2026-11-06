@@ -1,0 +1,93 @@
+{
+  "schema": "fx3-stage16-system-snapshot/1",
+  "created_utc": "2026-10-25T18:31:11.747287+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/README.md",
+      "bytes": 7076,
+      "sha256": "4fd1e5d0be840e331f52ba43283056837826e8c5cfbd0bb2ab75a9aa07133ae2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/coordinator-observations.json",
+      "bytes": 620,
+      "sha256": "75190735819d34b7efb98e333c8adadb689f835773f51543b9c76192003b4382"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/goal-status-after.json",
+      "bytes": 19492,
+      "sha256": "36b3f3ccf7aeca9f0a9ef46a9b825a0117294f1e9da90d34657f004ef073cca3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/goal-status-before.json",
+      "bytes": 16111,
+      "sha256": "a6d37f49cabaa10517a258af9b8fb1ade9dfdf992c9d8847011cb9baac2fd24d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/run-20261025/attempt-failure.json",
+      "bytes": 613,
+      "sha256": "eaf1d500dcf6e0f2c1b715e63b04e6ba74d72d07569ce21df3f1d8b335ba4ac3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/run-20261025/attempt-source.py",
+      "bytes": 13348,
+      "sha256": "0ef86fba41ce4b0fb7bcb2e642a7158b3e61ff5fe865595387b5dfb37aa9b2ca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/source-receipt.json",
+      "bytes": 1622,
+      "sha256": "3990da9edb65aeafa30fa18c970f27d5e52f0e0deb120ab1b637129a40a2188e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/summary.json",
+      "bytes": 688,
+      "sha256": "6d1e6a5d5024f340e20a6a43f3e38995cd69944f74eb3927d406def026229f1c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/system-snapshot-results.json",
+      "bytes": 2151013,
+      "sha256": "1a5637ca755d0663de04b11e41e064e6d933b4b5dbf39dd236ecd4a411bacded"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/system_snapshot.py",
+      "bytes": 15519,
+      "sha256": "6bd7a6ed2543c0e2501b387fbcc5844a68fa2dd1a51d3c866b38d172857bbeb8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/wrapper-lock-scope.json",
+      "bytes": 18897,
+      "sha256": "426a7cef24beaf36606e9d9ee6b0bde6aba6436f03e35bbc7081b1ef29fd27ec"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/wrapper-lock-source-receipt.json",
+      "bytes": 637,
+      "sha256": "305a4974b5851f7a18e22c1c8eaf592e18b7f49b764378531f31256eca518171"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage16-system-snapshot/wrapper_lock_scope.py",
+      "bytes": 3010,
+      "sha256": "8ddb5ba5942c6f3b716f0b7388ee000b3075b1d5206cd1770527dd31e7c1bbb4"
+    }
+  ],
+  "scope": "Original marshalling, packet-field correction and static identified-mutex scope; no full API/device acceptance",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "a6d37f49cabaa10517a258af9b8fb1ade9dfdf992c9d8847011cb9baac2fd24d",
+    "after_sha256": "36b3f3ccf7aeca9f0a9ef46a9b825a0117294f1e9da90d34657f004ef073cca3",
+    "before_snapshot": "work/sony-firmware-20261024/stage16-system-snapshot/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage16-system-snapshot/goal-status-after.json",
+    "policy": "Canonical mutable, stage snapshots immutable."
+  },
+  "operations": {
+    "bounded_guest_function_emulation": true,
+    "new_remote_attempts": false,
+    "Windows_task_dispatched_or_executed": false,
+    "camera_interface_auth_driver_files_backup_backend_module_WBI_or_write": false,
+    "firmware_payload_or_patchfile_exported": false
+  },
+  "failed_expectation_retained_and_corrected": true,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 查询传参、锁范围与字段更正](<work/sony-firmware-20261024/stage16-system-snapshot/README.md>)：两处原调用者76次局部对照；包0x81更正为逐行标志，记录锁不覆盖查询，硬件主录及恢复仍待验收。"
+}

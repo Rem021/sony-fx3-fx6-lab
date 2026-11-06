@@ -1,0 +1,69 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review/libObj.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000f3944 <GRM_fbrmRectblitYUV>:
+   f96f4: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+   f96f8: 910003fd     	mov	x29, sp
+   f96fc: a90153f3     	stp	x19, x20, [sp, #0x10]
+   f9700: aa0003f3     	mov	x19, x0
+   f9704: b9403800     	ldr	w0, [x0, #0x38]
+   f9708: aa0103f4     	mov	x20, x1
+   f970c: f90013f5     	str	x21, [sp, #0x20]
+   f9710: aa0203f5     	mov	x21, x2
+   f9714: 3100041f     	cmn	w0, #0x1
+   f9718: 540002e1     	b.ne	0xf9774 <GRM_fbrmRectblitYUV+0x5e30>
+   f971c: b25e77e0     	mov	x0, #-0x400000000       // =-17179869184
+   f9720: 8b000020     	add	x0, x1, x0
+   f9724: b27f7fe1     	mov	x1, #0x1fffffffe        // =8589934590
+   f9728: eb01001f     	cmp	x0, x1
+   f972c: 54000109     	b.ls	0xf974c <GRM_fbrmRectblitYUV+0x5e08>
+   f9730: 929fffe0     	mov	x0, #-0x10000           // =-65536
+   f9734: b2406fe1     	mov	x1, #0xfffffff          // =268435455
+   f9738: f2a20000     	movk	x0, #0x1000, lsl #16
+   f973c: 8b000280     	add	x0, x20, x0
+   f9740: eb01001f     	cmp	x0, x1
+   f9744: 54000049     	b.ls	0xf974c <GRM_fbrmRectblitYUV+0x5e08>
+   f9748: 97fd77b6     	bl	0x57620 <abort@plt>
+   f974c: f9402262     	ldr	x2, [x19, #0x40]
+   f9750: f00006c0     	adrp	x0, 0x1d4000
+   f9754: 9133c000     	add	x0, x0, #0xcf0
+   f9758: b9403e61     	ldr	w1, [x19, #0x3c]
+   f975c: f100005f     	cmp	x2, #0x0
+   f9760: 9a820000     	csel	x0, x0, x2, eq
+   f9764: 97fd712b     	bl	0x55c10 <open@plt>
+   f9768: 3100041f     	cmn	w0, #0x1
+   f976c: b9003a60     	str	w0, [x19, #0x38]
+   f9770: 54fffec0     	b.eq	0xf9748 <GRM_fbrmRectblitYUV+0x5e04>
+   f9774: b40002f5     	cbz	x21, 0xf97d0 <GRM_fbrmRectblitYUV+0x5e8c>
+   f9778: f9400a60     	ldr	x0, [x19, #0x10]
+   f977c: b4000060     	cbz	x0, 0xf9788 <GRM_fbrmRectblitYUV+0x5e44>
+   f9780: aa1303e0     	mov	x0, x19
+   f9784: 97fffb49     	bl	0xf84a8 <GRM_fbrmRectblitYUV+0x4b64>
+   f9788: f9400661     	ldr	x1, [x19, #0x8]
+   f978c: 52800023     	mov	w3, #0x1                // =1
+   f9790: a901d674     	stp	x20, x21, [x19, #0x18]
+   f9794: 52800062     	mov	w2, #0x3                // =3
+   f9798: cb0103e5     	neg	x5, x1
+   f979c: b9403a64     	ldr	w4, [x19, #0x38]
+   f97a0: 8a1400a5     	and	x5, x5, x20
+   f97a4: d2800000     	mov	x0, #0x0                // =0
+   f97a8: cb050294     	sub	x20, x20, x5
+   f97ac: 8b1402b5     	add	x21, x21, x20
+   f97b0: eb15003f     	cmp	x1, x21
+   f97b4: 9a958021     	csel	x1, x1, x21, hi
+   f97b8: f9001a61     	str	x1, [x19, #0x30]
+   f97bc: 97fd74b1     	bl	0x56a80 <mmap@plt>
+   f97c0: b100041f     	cmn	x0, #0x1
+   f97c4: f9001660     	str	x0, [x19, #0x28]
+   f97c8: 540000e1     	b.ne	0xf97e4 <GRM_fbrmRectblitYUV+0x5ea0>
+   f97cc: f900167f     	str	xzr, [x19, #0x28]
+   f97d0: f9400a60     	ldr	x0, [x19, #0x10]
+   f97d4: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   f97d8: f94013f5     	ldr	x21, [sp, #0x20]
+   f97dc: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+   f97e0: d65f03c0     	ret
+   f97e4: 8b140014     	add	x20, x0, x20
+   f97e8: f9000a74     	str	x20, [x19, #0x10]
+   f97ec: 17fffff9     	b	0xf97d0 <GRM_fbrmRectblitYUV+0x5e8c>

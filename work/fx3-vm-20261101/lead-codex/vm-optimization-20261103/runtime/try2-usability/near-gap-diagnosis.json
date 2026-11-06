@@ -1,0 +1,18 @@
+{
+  "source_run": "try2internal-e37d1915",
+  "kernel": "4.9.337-scel+",
+  "media_mount_text_base": "0x7f6001d000",
+  "failed_point_relative": "0x9c98",
+  "failed_pc": "0x7f60026c98",
+  "map_lines": 692,
+  "free_holes_8k_within_120MiB": [
+    [
+      "0x7f60000000",
+      "0x7f60007000",
+      28672
+    ]
+  ],
+  "old_64k_hint_inside_any_hole": false,
+  "new_gap_candidate": "0x7f60000000",
+  "interpretation": "Original -3 is allocate_pool failure at first M point; map snapshot has one 28K hole; old hint lattice misses it. New nonfixed mmap exact hole hint is a testable repair, not yet guest validated."
+}

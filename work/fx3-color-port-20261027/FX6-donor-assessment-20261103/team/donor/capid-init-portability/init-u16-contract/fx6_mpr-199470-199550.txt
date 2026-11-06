@@ -1,0 +1,62 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000198314 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm>:
+  199470: f90493a0     	str	x0, [x29, #0x920]
+  199474: 97fd6853     	bl	0xf35c0 <_ZN3mpr5Codec29GetEncStatusVideoFrameCounterEv@plt>
+  199478: b940f7a1     	ldr	w1, [x29, #0xf4]
+  19947c: 35000521     	cbnz	w1, 0x199520 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x120c>
+  199480: b9449661     	ldr	w1, [x19, #0x494]
+  199484: 35003001     	cbnz	w1, 0x199a84 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x1770>
+  199488: 1e202118     	fcmpe	s8, #0.0
+  19948c: 54002fcd     	b.le	0x199a84 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x1770>
+  199490: 1e230001     	ucvtf	s1, w0
+  199494: 7940f262     	ldrh	w2, [x19, #0x78]
+  199498: 92800761     	mov	x1, #-0x3c              // =-60
+  19949c: 52800780     	mov	w0, #0x3c               // =60
+  1994a0: 9ba20400     	umaddl	x0, w0, w2, x1
+  1994a4: 1e281821     	fdiv	s1, s1, s8
+  1994a8: 9e230000     	ucvtf	s0, x0
+  1994ac: 1e202030     	fcmpe	s1, s0
+  1994b0: 54002eab     	b.lt	0x199a84 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x1770>
+  1994b4: f9408ba0     	ldr	x0, [x29, #0x110]
+  1994b8: 52800101     	mov	w1, #0x8                // =8
+  1994bc: 97ffa784     	bl	0x1832cc <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x27fc>
+  1994c0: 392c57bf     	strb	wzr, [x29, #0xb15]
+  1994c4: 52800060     	mov	w0, #0x3                // =3
+  1994c8: 52800181     	mov	w1, #0xc                // =12
+  1994cc: 392c5bbf     	strb	wzr, [x29, #0xb16]
+  1994d0: 392c53a0     	strb	w0, [x29, #0xb14]
+  1994d4: 52860000     	mov	w0, #0x3000             // =12288
+  1994d8: 392c5fbf     	strb	wzr, [x29, #0xb17]
+  1994dc: 791623a0     	strh	w0, [x29, #0xb10]
+  1994e0: 528030a0     	mov	w0, #0x185              // =389
+  1994e4: 791627a0     	strh	w0, [x29, #0xb12]
+  1994e8: b9448260     	ldr	w0, [x19, #0x480]
+  1994ec: b90b1ba0     	str	w0, [x29, #0xb18]
+  1994f0: aa1b03e0     	mov	x0, x27
+  1994f4: 97ffe974     	bl	0x193ac4 <_ZN14MxfMovieWriter15IsEditAvailableEN15BaseMovieWriter8EditTypeEN3mpr15EssenceMarkTypeE+0x1a0>
+  1994f8: a9490266     	ldp	x6, x0, [x19, #0x90]
+  1994fc: 528000a1     	mov	w1, #0x5                // =5
+  199500: f9405265     	ldr	x5, [x19, #0xa0]
+  199504: 52800004     	mov	w4, #0x0                // =0
+  199508: d2800003     	mov	x3, #0x0                // =0
+  19950c: 52800002     	mov	w2, #0x0                // =0
+  199510: 72a80001     	movk	w1, #0x4000, lsl #16
+  199514: d63f00c0     	blr	x6
+  199518: b940fba0     	ldr	w0, [x29, #0xf8]
+  19951c: b900f7a0     	str	w0, [x29, #0xf4]
+  199520: 34000676     	cbz	w22, 0x1995ec <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x12d8>
+  199524: aa1303e0     	mov	x0, x19
+  199528: 52800201     	mov	w1, #0x10               // =16
+  19952c: 97fff1f7     	bl	0x195d08 <_ZN14MxfMovieWriter15checkNeedDivideEjN9DefStruct9FrameRateEN3mpr14VideoParamCombE+0x46c>
+  199530: 17ffffa4     	b	0x1993c0 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x10ac>
+  199534: b940ffa0     	ldr	w0, [x29, #0xfc]
+  199538: 3901c27f     	strb	wzr, [x19, #0x70]
+  19953c: b9011fbf     	str	wzr, [x29, #0x11c]
+  199540: 35fff740     	cbnz	w0, 0x199428 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x1114>
+  199544: 52800061     	mov	w1, #0x3                // =3
+  199548: b9448260     	ldr	w0, [x19, #0x480]
+  19954c: 392c57bf     	strb	wzr, [x29, #0xb15]

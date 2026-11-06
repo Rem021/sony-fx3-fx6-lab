@@ -1,0 +1,17 @@
+{
+  "status": "PASS_FINAL_RECEIPT_HTTP_FIXTURE",
+  "checks": [
+    "baseline reproduced: late stop regresses finished to stopping",
+    "unfinished session cannot expose or accept final receipt",
+    "final status remains reachable after old two-second close window",
+    "unauthenticated or mismatched receipt cannot close delivery wait",
+    "late or repeated stop leaves terminal result unchanged",
+    "matching acknowledgement ends wait promptly without converting failure to success",
+    "closed browser expires bounded grace without false acknowledgement",
+    "local exit shortens wait while preserving terminal phase and unacknowledged truth",
+    "grace outside zero-to-thirty seconds rejected"
+  ],
+  "web_candidate_sha256": "1722f4b669b2d8445a2d1987054028630ffc0bda25103f67fc1d3d87c972f4a9",
+  "server_threads_reaped": true,
+  "scope": "Actual loopback HTTP and bounded host thread; no browser rendering or guest execution"
+}

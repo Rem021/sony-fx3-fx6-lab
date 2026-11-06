@@ -1,0 +1,16 @@
+{
+  "source": "work/sony-firmware-20261024/stage37-compiled-scoped-writer/scoped_writer.c",
+  "source_sha256": "3cf29025f2a0565e4f4c5bbb7eac577ada4367afe1b9699e2393d63751c2d660",
+  "transformations": [
+    "new prototype magic",
+    "exact original136byte FH descriptor guard",
+    "new separate152byte matcher view with quality6 only; original descriptor unchanged"
+  ],
+  "expected_descriptor_hex": "0000000002000000800738040000000000000000f90057800e000000000000000000000002000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000",
+  "outputs": {
+    "resource_alias.c": "932dc3b8b679ba42a93de18c3e300cbeaeb8eaad878a282399d184cf4bd62cda",
+    "expected_ff.inc": "ab461c0ae9bfa8986ab08d5635a0bab0e5ecadd9a501b13f686ad721b425e41e",
+    "expected_hd16m.inc": "8855f2edc32fa773413b890817831d21af6a5b29a7f0e65142dc1fe87563823a"
+  },
+  "camera_hook_or_real_epoch_binding": false
+}

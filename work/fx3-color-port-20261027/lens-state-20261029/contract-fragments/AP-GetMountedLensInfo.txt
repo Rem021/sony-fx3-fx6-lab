@@ -1,0 +1,175 @@
+00001c68 stp        x29, x30, [sp, #-0x50]!
+00001c6c mov        x29, sp
+00001c70 stp        x21, x22, [sp, #0x20]
+00001c74 mov        w22, #-1
+00001c78 stp        x19, x20, [sp, #0x10]
+00001c7c stp        x23, x24, [sp, #0x30]
+00001c80 str        xzr, [x29, #0x48]
+00001c84 cbz        x1, #0x1da4
+00001c88 mov        x20, x1
+00001c8c mov        x23, x0
+00001c90 mov        w2, #0
+00001c94 mov        w1, #4
+00001c98 mov        w0, #0
+00001c9c bl         #0x15b8
+00001ca0 mov        x0, x20
+00001ca4 mov        x2, #0x2000
+00001ca8 mov        w1, #0
+00001cac bl         #0x12b0 ; memset
+00001cb0 mov        w0, #0x1ff0
+00001cb4 str        w0, [x20]
+00001cb8 ldrh       w0, [x23, #0x20]
+00001cbc strb       w0, [x20, #4]
+00001cc0 ldrb       w0, [x23, #0x21]
+00001cc4 strb       wzr, [x20, #7]
+00001cc8 strb       w0, [x20, #5]
+00001ccc mov        w0, #1
+00001cd0 strb       w0, [x20, #6]
+00001cd4 mov        x0, #8
+00001cd8 strb       wzr, [x20, x0]
+00001cdc add        x0, x0, #1
+00001ce0 cmp        x0, #0x10
+00001ce4 b.ne       #0x1cd8
+00001ce8 add        x24, x29, #0x48
+00001cec mov        w0, #0x3d0
+00001cf0 mov        x1, x24
+00001cf4 mov        w2, #0xc
+00001cf8 mov        w3, #1
+00001cfc movk       w0, #0x9125, lsl #16
+00001d00 bl         #0x12f0 ; osal_valloc_msg_wait
+00001d04 mov        w2, #0x329
+00001d08 cbnz       w0, #0x1d94
+00001d0c ldr        x21, [x29, #0x48]
+00001d10 mov        w19, #1
+00001d14 mov        w2, #0x3d0
+00001d18 mov        x0, x23
+00001d1c mov        x1, x21
+00001d20 movk       w2, #0x9125, lsl #16
+00001d24 str        w19, [x21]
+00001d28 bl         #0x1310 ; LensCommunicator::SndSyncMsg
+00001d2c mov        w22, w0
+00001d30 mov        w2, #0x33b
+00001d34 cbnz       w0, #0x1e70
+00001d38 ldr        w19, [x21, #4]
+00001d3c cmp        w19, #4
+00001d40 b.hi       #0x1e34
+00001d44 adrp       x0, #0x2000
+00001d48 add        x0, x0, #0x2b8
+00001d4c ldrb       w0, [x0, w19, uxtw]
+00001d50 adr        x1, #0x1d5c
+00001d54 add        x0, x1, w0, sxtb #2
+00001d58 br         x0
+00001d5c ldr        w0, [x21, #8]
+00001d60 cbnz       w0, #0x1dbc
+00001d64 ldr        x1, [x29, #0x48]
+00001d68 mov        w0, #0x3d0
+00001d6c movk       w0, #0x9125, lsl #16
+00001d70 bl         #0x1430 ; osal_free_msg
+00001d74 mov        w0, #0x3d0
+00001d78 mov        x1, x24
+00001d7c mov        w3, #1
+00001d80 mov        w2, #0x14
+00001d84 movk       w0, #0x9125, lsl #16
+00001d88 bl         #0x12f0 ; osal_valloc_msg_wait
+00001d8c cbz        w0, #0x1e4c
+00001d90 mov        w2, #0x376
+00001d94 mov        w1, #1
+00001d98 mov        w0, #2
+00001d9c bl         #0x15b8
+00001da0 mov        w22, #-5
+00001da4 mov        w0, w22
+00001da8 ldp        x19, x20, [sp, #0x10]
+00001dac ldp        x21, x22, [sp, #0x20]
+00001db0 ldp        x23, x24, [sp, #0x30]
+00001db4 ldp        x29, x30, [sp], #0x50
+00001db8 ret        
+00001dbc mov        w2, #0x351
+00001dc0 mov        w1, #1
+00001dc4 mov        w0, #2
+00001dc8 mov        w19, #3
+00001dcc bl         #0x15b8
+00001dd0 b          #0x1de8
+00001dd4 mov        w2, #0x358
+00001dd8 mov        w1, #1
+00001ddc mov        w0, #2
+00001de0 mov        w19, #1
+00001de4 bl         #0x15b8
+00001de8 mov        x21, #0
+00001dec str        w19, [x20, #0x10]
+00001df0 cbnz       w19, #0x1f10
+00001df4 ldr        x0, [x21, #8]
+00001df8 stur       x0, [x20, #0x14]
+00001dfc ldrh       w0, [x21, #0x10]
+00001e00 strh       w0, [x20, #0x1c]
+00001e04 ldr        x1, [x29, #0x48]
+00001e08 mov        w0, #0x3d0
+00001e0c movk       w0, #0x9125, lsl #16
+00001e10 bl         #0x1430 ; osal_free_msg
+00001e14 b          #0x1da4
+00001e18 mov        w2, #0x35d
+00001e1c mov        w1, #1
+00001e20 mov        w0, #2
+00001e24 bl         #0x15b8
+00001e28 b          #0x1de8
+00001e2c mov        w2, #0x362
+00001e30 b          #0x1dc0
+00001e34 mov        w2, #0x367
+00001e38 mov        w1, #1
+00001e3c mov        w0, #2
+00001e40 mov        w19, #4
+00001e44 bl         #0x15b8
+00001e48 b          #0x1de8
+00001e4c ldr        x21, [x29, #0x48]
+00001e50 mov        w2, #0x3d0
+00001e54 mov        x0, x23
+00001e58 movk       w2, #0x9125, lsl #16
+00001e5c mov        x1, x21
+00001e60 str        wzr, [x21]
+00001e64 bl         #0x1310 ; LensCommunicator::SndSyncMsg
+00001e68 cbz        w0, #0x1e90
+00001e6c mov        w2, #0x381
+00001e70 mov        w1, #1
+00001e74 mov        w0, #2
+00001e78 bl         #0x15b8
+00001e7c ldr        x1, [x29, #0x48]
+00001e80 mov        w0, #0x3d0
+00001e84 movk       w0, #0x9125, lsl #16
+00001e88 bl         #0x1430 ; osal_free_msg
+00001e8c b          #0x1da0
+00001e90 ldr        w19, [x21, #4]
+00001e94 cmp        w19, #4
+00001e98 b.hi       #0x1ef8
+00001e9c adrp       x0, #0x2000
+00001ea0 add        x0, x0, #0x2c0
+00001ea4 ldrb       w0, [x0, w19, uxtw]
+00001ea8 adr        x1, #0x1eb4
+00001eac add        x0, x1, w0, sxtb #2
+00001eb0 br         x0
+00001eb4 mov        w2, #0x395
+00001eb8 mov        w1, #1
+00001ebc mov        w0, #2
+00001ec0 mov        w19, #1
+00001ec4 bl         #0x15b8
+00001ec8 b          #0x1dec
+00001ecc mov        w2, #0x39a
+00001ed0 mov        w1, #1
+00001ed4 mov        w0, #2
+00001ed8 bl         #0x15b8
+00001edc b          #0x1dec
+00001ee0 mov        w2, #0x39f
+00001ee4 mov        w1, #1
+00001ee8 mov        w0, #2
+00001eec mov        w19, #3
+00001ef0 bl         #0x15b8
+00001ef4 b          #0x1dec
+00001ef8 mov        w2, #0x3a4
+00001efc mov        w1, #1
+00001f00 mov        w0, #2
+00001f04 mov        w19, #4
+00001f08 bl         #0x15b8
+00001f0c b          #0x1dec
+00001f10 mov        w2, #0x3c0
+00001f14 mov        w1, #1
+00001f18 mov        w0, #2
+00001f1c bl         #0x15b8
+00001f20 b          #0x1e04

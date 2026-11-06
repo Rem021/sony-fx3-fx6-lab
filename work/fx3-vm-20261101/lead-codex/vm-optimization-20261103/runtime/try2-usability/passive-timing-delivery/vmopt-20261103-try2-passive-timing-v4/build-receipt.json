@@ -1,0 +1,38 @@
+{
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/vmopt-20261103-try2-passive-timing-v4/candidate.json",
+  "candidate_sha256": "90adc5fda97a4b26293e4763da1ed3d5eec22eaf2f0115292c1b720c5049e9aa",
+  "base_candidate_sha256": "2382063eacb5f185e8553c2596be2c644654efe7234adc1e4578f7464ab99a05",
+  "initrd_sha256": "e0f05f36e7da388d452508ba0d2cc85c2ae43e1884757632ef752b807849fd76",
+  "dtb_sha256": "ffcc274affaefd49186c1bfd1f227485dbf6703985add3610d1b5ab4f6db5fd8",
+  "changed_members": [
+    {
+      "member": "simulation/fx3-osd-headless-v5.so",
+      "old_sha256": "816bbf9019ff422c2e24ca5a601a41dc144fa82e7baf39a563d638a55a841dbb",
+      "new_sha256": "8023300a7b02e69cb1ea39c1489214cabce403cc3cab39058ac00bf06cd2a636",
+      "old_size": 97584,
+      "new_size": 99232
+    },
+    {
+      "member": "simulation/fx3-preset-context-v2-screen.so",
+      "old_sha256": "eb55680196806fb86958d632c6aed939eae91aa1ef928690a4a7d21d6a76c170",
+      "new_sha256": "52ed3b5b2cdadc46e1c78c596a60d06a3fd865bb9bb5420a0bb5f2492df12392",
+      "old_size": 55040,
+      "new_size": 56136
+    },
+    {
+      "member": "simulation/fx3-rm-empty-provider-v3-setup.so",
+      "old_sha256": "6acb0e52e610cb0d13721f38fcf1c7c27b0e5a48e687d7a4feda5fde9f9bcd14",
+      "new_sha256": "ff38874e128d517147b1712588bf68d24412dae781a390eaa8bd7d230c3c1707",
+      "old_size": 56520,
+      "new_size": 57600
+    }
+  ],
+  "other_member_payloads_and_modes_unchanged": true,
+  "member_count": 1140,
+  "initrd_end_old": "0x45b0349a4",
+  "initrd_end_new": "0x45b035894",
+  "dtb_only_initrd_end_changed": true,
+  "seed_sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+  "QEMU_started": false,
+  "guest_validated": false
+}

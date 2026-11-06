@@ -1,0 +1,78 @@
+0053ffec push       {r4, lr}
+0053fff0 sub        sp, sp, #8
+0053fff4 bl         #0x52c4a8
+0053fff8 cmp        r0, #0
+0053fffc beq        #0x54000c
+00540000 mov        r0, #0
+00540004 str        r0, [sp, #4]
+00540008 b          #0x540070
+0054000c bl         #0x52c474
+00540010 cmp        r0, #1
+00540014 bne        #0x540020
+00540018 bl         #0x52c07c
+0054001c b          #0x540024
+00540020 bl         #0x52c028
+00540024 mov        r2, r0
+00540028 mov        r0, #1
+0054002c cmp        r2, #0
+00540030 str        r0, [sp, #4]
+00540034 beq        #0x540070
+00540038 mov        r0, #0x134
+0054003c add        r1, sp, #4
+00540040 str        r0, [sp]
+00540044 movw       r0, #0x493e
+00540048 add        r4, pc, #0xd4
+0054004c movt       r0, #0xe2
+00540050 mov        r3, r4
+00540054 bl         #0x53fa30
+00540058 movw       r0, #0xfe03
+0054005c mov        r1, r4
+00540060 mov        r2, #0x134
+00540064 movt       r0, #0xe0
+00540068 bl         #0x53fa30
+0054006c .byte      0x7b, 0x00, 0x00, 0xe1
+00540070 mrc        p15, #0, r0, c0, c0, #5
+00540074 movw       r1, #0xcbe4
+00540078 and        r0, r0, #0xf
+0054007c movt       r1, #0x13f
+00540080 ldr        r2, [r1, r0, lsl #2]
+00540084 cmp        r2, #0
+00540088 beq        #0x540098
+0054008c subs       r2, r2, #1
+00540090 str        r2, [r1, r0, lsl #2]
+00540094 bne        #0x5400a8
+00540098 movw       r1, #0xcbf4
+0054009c movt       r1, #0x13f
+005400a0 ldr        r0, [r1, r0, lsl #2]
+005400a4 bl         #0x549108
+005400a8 ldr        r0, [sp, #4]
+005400ac cmp        r0, #1
+005400b0 bne        #0x540118
+005400b4 mov        r0, #0
+005400b8 str        r0, [sp, #4]
+005400bc bl         #0x52c474
+005400c0 cmp        r0, #1
+005400c4 bne        #0x5400d0
+005400c8 bl         #0x52c13c
+005400cc b          #0x5400d4
+005400d0 bl         #0x52c0d0
+005400d4 mov        r2, r0
+005400d8 cmp        r2, #0
+005400dc beq        #0x540118
+005400e0 movw       r0, #0x142
+005400e4 add        r1, sp, #4
+005400e8 str        r0, [sp]
+005400ec movw       r0, #0x496b
+005400f0 add        r4, pc, #0x2c
+005400f4 movt       r0, #0xe2
+005400f8 mov        r3, r4
+005400fc bl         #0x53fa30
+00540100 movw       r0, #0xfe03
+00540104 mov        r1, r4
+00540108 movw       r2, #0x142
+0054010c movt       r0, #0xe0
+00540110 bl         #0x53fa30
+00540114 .byte      0x7b, 0x00, 0x00, 0xe1
+00540118 mov        r0, #0
+0054011c add        sp, sp, #8
+00540120 pop        {r4, pc}

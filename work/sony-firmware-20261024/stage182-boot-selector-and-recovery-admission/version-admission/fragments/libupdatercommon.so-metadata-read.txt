@@ -1,0 +1,127 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so
+# SHA256 537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797
+# VA [0x72a4, 0x7494) raw slice SHA256 483e712ff79653b9b163acba57fe3fc8efcd1ce5bdf9ff7b24d581dab72c191a
+    72a4: d2800040     	mov	x0, #0x2                // =2
+    72a8: d65f03c0     	ret
+    72ac: d2800080     	mov	x0, #0x4                // =4
+    72b0: d65f03c0     	ret
+    72b4: a9b77bfd     	stp	x29, x30, [sp, #-0x90]!
+    72b8: 91002000     	add	x0, x0, #0x8
+    72bc: 910003fd     	mov	x29, sp
+    72c0: 97fffe60     	bl	0x6c40 <Updater::StringHandler::GetCharString() const@plt>
+    72c4: 910043a1     	add	x1, x29, #0x10
+    72c8: 94000c88     	bl	0xa4e8 <Updater::AccessoryFile::~AccessoryFile()+0x2c>
+    72cc: 7100001f     	cmp	w0, #0x0
+    72d0: 1a9f17e0     	cset	w0, eq
+    72d4: a8c97bfd     	ldp	x29, x30, [sp], #0x90
+    72d8: d65f03c0     	ret
+    72dc: a9b37bfd     	stp	x29, x30, [sp, #-0xd0]!
+    72e0: 910003fd     	mov	x29, sp
+    72e4: a90153f3     	stp	x19, x20, [sp, #0x10]
+    72e8: 91002013     	add	x19, x0, #0x8
+    72ec: aa0003f4     	mov	x20, x0
+    72f0: aa1303e0     	mov	x0, x19
+    72f4: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    72f8: f9001bf7     	str	x23, [sp, #0x30]
+    72fc: 97fffe51     	bl	0x6c40 <Updater::StringHandler::GetCharString() const@plt>
+    7300: 910143a1     	add	x1, x29, #0x50
+    7304: 94000c79     	bl	0xa4e8 <Updater::AccessoryFile::~AccessoryFile()+0x2c>
+    7308: 34000340     	cbz	w0, 0x7370 <Updater::BaseFirmwareInformationFile::GetValue() const+0x94>
+    730c: aa1303e0     	mov	x0, x19
+    7310: 52800093     	mov	w19, #0x4               // =4
+    7314: 72a00073     	movk	w19, #0x3, lsl #16
+    7318: 97fffe4a     	bl	0x6c40 <Updater::StringHandler::GetCharString() const@plt>
+    731c: aa0003e4     	mov	x4, x0
+    7320: 528004c3     	mov	w3, #0x26               // =38
+    7324: f0000002     	adrp	x2, 0xa000 <Updater::DllHandler::Close()+0x6c>
+    7328: f0000000     	adrp	x0, 0xa000 <Updater::DllHandler::Close()+0x6c>
+    732c: 91176842     	add	x2, x2, #0x5da
+    7330: 2a1303e1     	mov	w1, w19
+    7334: 9114d800     	add	x0, x0, #0x536
+    7338: 97ffff26     	bl	0x6fd0 <printf@plt>
+    733c: d2800200     	mov	x0, #0x10               // =16
+    7340: 97fffdf8     	bl	0x6b20 <__cxa_allocate_exception@plt>
+    7344: b9000813     	str	w19, [x0, #0x8]
+    7348: b00000a1     	adrp	x1, 0x1c000
+    734c: b00000a2     	adrp	x2, 0x1c000
+    7350: 3900301f     	strb	wzr, [x0, #0xc]
+    7354: f9478c21     	ldr	x1, [x1, #0xf18]
+    7358: f947a042     	ldr	x2, [x2, #0xf40]
+    735c: 91004021     	add	x1, x1, #0x10
+    7360: f9000001     	str	x1, [x0]
+    7364: b00000a1     	adrp	x1, 0x1c000
+    7368: f947e821     	ldr	x1, [x1, #0xfd0]
+    736c: 97fffee9     	bl	0x6f10 <__cxa_throw@plt>
+    7370: f9400280     	ldr	x0, [x20]
+    7374: f9401401     	ldr	x1, [x0, #0x28]
+    7378: aa1403e0     	mov	x0, x20
+    737c: d63f0020     	blr	x1
+    7380: aa0003f5     	mov	x21, x0
+    7384: f94043a0     	ldr	x0, [x29, #0x80]
+    7388: b7f80060     	tbnz	x0, #0x3f, 0x7394 <Updater::BaseFirmwareInformationFile::GetValue() const+0xb8>
+    738c: eb0002bf     	cmp	x21, x0
+    7390: 54000100     	b.eq	0x73b0 <Updater::BaseFirmwareInformationFile::GetValue() const+0xd4>
+    7394: aa1303e0     	mov	x0, x19
+    7398: 52800093     	mov	w19, #0x4               // =4
+    739c: 72a00073     	movk	w19, #0x3, lsl #16
+    73a0: 97fffe28     	bl	0x6c40 <Updater::StringHandler::GetCharString() const@plt>
+    73a4: aa0003e4     	mov	x4, x0
+    73a8: 52800563     	mov	w3, #0x2b               // =43
+    73ac: 17ffffde     	b	0x7324 <Updater::BaseFirmwareInformationFile::GetValue() const+0x48>
+    73b0: aa1303e0     	mov	x0, x19
+    73b4: 97fffe23     	bl	0x6c40 <Updater::StringHandler::GetCharString() const@plt>
+    73b8: 52800001     	mov	w1, #0x0                // =0
+    73bc: 97fffdd1     	bl	0x6b00 <open@plt>
+    73c0: 3100041f     	cmn	w0, #0x1
+    73c4: 2a0003f7     	mov	w23, w0
+    73c8: 54000101     	b.ne	0x73e8 <Updater::BaseFirmwareInformationFile::GetValue() const+0x10c>
+    73cc: aa1303e0     	mov	x0, x19
+    73d0: 52800093     	mov	w19, #0x4               // =4
+    73d4: 72a00073     	movk	w19, #0x3, lsl #16
+    73d8: 97fffe1a     	bl	0x6c40 <Updater::StringHandler::GetCharString() const@plt>
+    73dc: aa0003e4     	mov	x4, x0
+    73e0: 52800603     	mov	w3, #0x30               // =48
+    73e4: 17ffffd0     	b	0x7324 <Updater::BaseFirmwareInformationFile::GetValue() const+0x48>
+    73e8: 910343b4     	add	x20, x29, #0xd0
+    73ec: aa1503e2     	mov	x2, x21
+    73f0: b8178e9f     	str	wzr, [x20, #-0x88]!
+    73f4: aa1403e1     	mov	x1, x20
+    73f8: 97fffdfe     	bl	0x6bf0 <read@plt>
+    73fc: f100001f     	cmp	x0, #0x0
+    7400: fa55a000     	ccmp	x0, x21, #0x0, ge
+    7404: 54000161     	b.ne	0x7430 <Updater::BaseFirmwareInformationFile::GetValue() const+0x154>
+    7408: d2800000     	mov	x0, #0x0                // =0
+    740c: 52800016     	mov	w22, #0x0               // =0
+    7410: eb15001f     	cmp	x0, x21
+    7414: 54000200     	b.eq	0x7454 <Updater::BaseFirmwareInformationFile::GetValue() const+0x178>
+    7418: 38606a81     	ldrb	w1, [x20, x0]
+    741c: 531d7002     	lsl	w2, w0, #3
+    7420: 91000400     	add	x0, x0, #0x1
+    7424: 1ac22021     	lsl	w1, w1, w2
+    7428: 2a0102d6     	orr	w22, w22, w1
+    742c: 17fffff9     	b	0x7410 <Updater::BaseFirmwareInformationFile::GetValue() const+0x134>
+    7430: 2a1703e0     	mov	w0, w23
+    7434: 97fffe83     	bl	0x6e40 <close@plt>
+    7438: aa1303e0     	mov	x0, x19
+    743c: 52800093     	mov	w19, #0x4               // =4
+    7440: 72a00073     	movk	w19, #0x3, lsl #16
+    7444: 97fffdff     	bl	0x6c40 <Updater::StringHandler::GetCharString() const@plt>
+    7448: aa0003e4     	mov	x4, x0
+    744c: 52800723     	mov	w3, #0x39               // =57
+    7450: 17ffffb5     	b	0x7324 <Updater::BaseFirmwareInformationFile::GetValue() const+0x48>
+    7454: 2a1703e0     	mov	w0, w23
+    7458: 97fffe7a     	bl	0x6e40 <close@plt>
+    745c: 34000100     	cbz	w0, 0x747c <Updater::BaseFirmwareInformationFile::GetValue() const+0x1a0>
+    7460: aa1303e0     	mov	x0, x19
+    7464: 52800093     	mov	w19, #0x4               // =4
+    7468: 72a00073     	movk	w19, #0x3, lsl #16
+    746c: 97fffdf5     	bl	0x6c40 <Updater::StringHandler::GetCharString() const@plt>
+    7470: aa0003e4     	mov	x4, x0
+    7474: 52800823     	mov	w3, #0x41               // =65
+    7478: 17ffffab     	b	0x7324 <Updater::BaseFirmwareInformationFile::GetValue() const+0x48>
+    747c: 2a1603e0     	mov	w0, w22
+    7480: f9401bf7     	ldr	x23, [sp, #0x30]
+    7484: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    7488: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    748c: a8cd7bfd     	ldp	x29, x30, [sp], #0xd0
+    7490: d65f03c0     	ret

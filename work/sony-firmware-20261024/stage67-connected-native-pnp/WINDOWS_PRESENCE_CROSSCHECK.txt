@@ -1,0 +1,10 @@
+FX3_PRESENCE_CROSSCHECK_20261026
+已收到上一份精确054C:0DA1 /connected筛选为0的结果。用户确认相机已开机接好MSC，因此先交叉核对系统缓存的型号/厂商，不重复上一条查询，不推断相机未连接。旧五件public结果保持原样。
+
+在已核对的本机普通C盘项目内，新建 outputs/fx3-presence-crosscheck-20261026T165500Z/{private,public}，存在则停。复核无reparse/网络/相机存储重定向。
+
+只用Windows自带CIM/PnP缓存查询一次Sony USB或明确FX3/DSC型号的节点。可用Win32_PnPEntity的服务端WQL筛选 PNPDeviceID以USB\VID_054C开头，或Name/Description含ILME-FX3或Sony DSC；注意WQL反斜杠转义，沿用已验证缓存查询方法。最多16条相关节点，原标识只保存private；非相机Sony设备只记录计数，不公开名称/标识。保留Present、Status、ConfigManagerErrorCode、Service、ClassGuid、HardwareID及实际VID/PID，字段缺失标UNKNOWN。区分当前与历史记录，不凭旧VID/PID固定认定设备。
+
+若这次缓存确有唯一当前ILME-FX3/明确Sony数码相机节点，允许用PnPUtil /enum-devices /connected /instanceid <该实际节点>及其/enum-devicetree /connected补同样的父子/接口/驱动元数据，最多16个相关节点；不要打开接口。若相机0个或不唯一，保留结果并停止，不枚举其他厂商设备、不scan/refresh、不自动重试、不重启或重连、不改权限/策略/驱动。
+
+public写summary.txt、receipt.json、nodes.json、commands.json、private-sha256.json，直接文件工具写，路径用正斜杠；标识用同一uppercase UTF8 SHA256，原始实例ID/序列/接口路径留Windows私有目录。所有相机接口/句柄、SCSI/INQUIRY/PTP/认证、切模式、卡/素材/相机文件、模块/WBI/刷写仍禁止。无需重新搜索网页或审查全仓库。最后给出当前/历史相机计数、实际VID/PID、与旧根节点摘要是否同一、public路径及未确定项；不得把命令退出0当相机存在证明。

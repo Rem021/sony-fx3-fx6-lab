@@ -1,0 +1,24 @@
+{
+  "input": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-high-gicd-probe01.dtb",
+  "input_sha256": "73e5d84a90adf42df9ae58c200fde389a620e2e195c51e3efb3c917984243d12",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-minimal-linux-probe01.dtb",
+  "output_sha256": "9c4560f2d53b3d93b1fe23d2ab7e91e589be7aebb5d6e7d613ea3b8a4b3dc19d",
+  "bytes": 8289,
+  "only_changed_properties": [
+    [
+      "/chosen",
+      "bootargs"
+    ],
+    [
+      "/chosen",
+      "linux,initrd-end"
+    ]
+  ],
+  "bootargs": "console=ttyAMA0 earlycon=pl011,0x09000000 rdinit=/init init=/init nokaslr ignore_loglevel loglevel=8 panic=-1 initcall_debug initcall_blacklist=__boottime___udif_init_udif_hwtimer,__boottime___udif_init_udif_wdt,__boottime___udif_init_udif_fusb_otg",
+  "initrd_start": "0x408000000",
+  "initrd_end": "0x4081c63e4",
+  "reserve_map_unchanged": true,
+  "nodes_before": 58,
+  "nodes_after": 58,
+  "original_fx3_kernel_changed": false
+}

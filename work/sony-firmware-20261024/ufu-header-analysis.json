@@ -1,0 +1,288 @@
+{
+  "timestamp_utc": "2026-10-25T05:52:01.683150+00:00",
+  "method": "first FDAT block decryption only; no full package CRC or signature verification",
+  "source_commit": "3955d7890fc38daf942bb52827599bfe35de4a14",
+  "constants_source": "https://raw.githubusercontent.com/DavidBuchanan314/fwtool.py/3955d7890fc38daf942bb52827599bfe35de4a14/fwtool/sony/constants.py",
+  "constants_source_sha256": "f9ff02a3889b587cd5bad5f4362fb73fee2f8f3591fc3ed6003eb8ac92d0622a",
+  "packages": {
+    "fx3-7.02": {
+      "source_url": "https://support.d-imaging.sony.co.jp/download/NEX/ey8d8a84ee/BODYDATA.DAT?fm=jp",
+      "total_package_bytes": 811876768,
+      "prefix_sha256": "3d8fd877c97d5afb224db78a860b5f6ed5752d121b0a7ab02d0d6fb4ab5710a7",
+      "chunks": [
+        {
+          "header_offset": 8,
+          "type": "DATV",
+          "size": 4,
+          "payload_offset": 16
+        },
+        {
+          "header_offset": 20,
+          "type": "PROV",
+          "size": 4,
+          "payload_offset": 28
+        },
+        {
+          "header_offset": 32,
+          "type": "UDID",
+          "size": 84,
+          "payload_offset": 40
+        },
+        {
+          "header_offset": 124,
+          "type": "FDAT",
+          "size": 811876624,
+          "payload_offset": 132
+        }
+      ],
+      "usb_descriptors": [
+        {
+          "vid": "0x54c",
+          "pid": "0x448",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0x47d",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xd15",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xd16",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xd19",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xd1a",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xda0",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xda1",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xf4b",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0x3e2",
+          "mode": 2
+        }
+      ],
+      "fdat_payload_offset": 132,
+      "fdat_payload_size": 811876624,
+      "crypter": "key_cxd90057_k8",
+      "tail_receipt": {
+        "status": 206,
+        "url": "https://di.update.sony.net/NEX/ey8d8a84ee/BODYDATA.DAT",
+        "headers": {
+          "Accept-Ranges": "bytes",
+          "Server": "AkamaiNetStorage",
+          "Last-Modified": "Fri, 13 Mar 2026 04:51:21 GMT",
+          "ETag": "\"8848b779654290ff82f2c845e1a048e6:1773623737.338931\"",
+          "Date": "Sun, 25 Oct 2026 05:52:03 GMT",
+          "Content-Range": "bytes 811876484-811876767/811876768",
+          "Content-Length": "284",
+          "Connection": "close",
+          "Content-Type": "application/octet-stream"
+        },
+        "sha256": "b686980706d337e5daa4dce73d1cfe2204f07e337701fd373aba7ba21d9e4751"
+      },
+      "fdathdr": {
+        "magic": "UDTRFIRM",
+        "checksum": "0x3ec3b1e3",
+        "version_tag": "0100",
+        "mode_type": "U",
+        "luw_flag": "N",
+        "firmware_version": "7.02",
+        "model_id": "0x91030080",
+        "region_id": "0x0",
+        "firmware_offset": 1253888,
+        "firmware_size": 807450624,
+        "filesystem_count": 2,
+        "header_crc32_matches": true,
+        "first_block_checksum_matches": true,
+        "filesystems": [
+          {
+            "mode": "U",
+            "offset": 512,
+            "size": 1253376
+          },
+          {
+            "mode": "P",
+            "offset": 512,
+            "size": 0
+          }
+        ]
+      },
+      "full_package_downloaded": false,
+      "complete_firmware_decrypted": false,
+      "repacked_or_camera_written": false
+    },
+    "zve1-2.02": {
+      "source_url": "https://support.d-imaging.sony.co.jp/download/NEX/ng461782bf/BODYDATA.DAT?fm=jp",
+      "total_package_bytes": 1060230584,
+      "prefix_sha256": "eeee0fb3169fc649110ff601111c755a5923f62b969cf91718b54d012c2f8374",
+      "chunks": [
+        {
+          "header_offset": 8,
+          "type": "DATV",
+          "size": 4,
+          "payload_offset": 16
+        },
+        {
+          "header_offset": 20,
+          "type": "PROV",
+          "size": 4,
+          "payload_offset": 28
+        },
+        {
+          "header_offset": 32,
+          "type": "UDID",
+          "size": 108,
+          "payload_offset": 40
+        },
+        {
+          "header_offset": 148,
+          "type": "FDAT",
+          "size": 1060230416,
+          "payload_offset": 156
+        }
+      ],
+      "usb_descriptors": [
+        {
+          "vid": "0x54c",
+          "pid": "0x448",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0x47d",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xd15",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xd16",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xd19",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xd1a",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xda4",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xda5",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xe0a",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xe0e",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xe72",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0xe76",
+          "mode": 1
+        },
+        {
+          "vid": "0x54c",
+          "pid": "0x3e2",
+          "mode": 2
+        }
+      ],
+      "fdat_payload_offset": 156,
+      "fdat_payload_size": 1060230416,
+      "crypter": "key_cxd90057_k8",
+      "tail_receipt": {
+        "status": 206,
+        "url": "https://di.update.sony.net/NEX/ng461782bf/BODYDATA.DAT",
+        "headers": {
+          "Accept-Ranges": "bytes",
+          "Server": "AkamaiNetStorage",
+          "Last-Modified": "Fri, 07 Nov 2025 02:26:32 GMT",
+          "ETag": "\"2c2fd1dd365be37d15bc52f0211a8ad2:1762737270.641287\"",
+          "Date": "Sun, 25 Oct 2026 05:52:04 GMT",
+          "Content-Range": "bytes 1060230300-1060230583/1060230584",
+          "Content-Length": "284",
+          "Connection": "close",
+          "Content-Type": "application/octet-stream"
+        },
+        "sha256": "b95403d2b8a6f2a24e07e695ec0a448bc7788d55777c3e43fdaa142c79227a01"
+      },
+      "fdathdr": {
+        "magic": "UDTRFIRM",
+        "checksum": "0xf6a3caf4",
+        "version_tag": "0100",
+        "mode_type": "U",
+        "luw_flag": "N",
+        "firmware_version": "2.02",
+        "model_id": "0x20030000",
+        "region_id": "0x0",
+        "firmware_offset": 1253888,
+        "firmware_size": 1054834176,
+        "filesystem_count": 2,
+        "header_crc32_matches": true,
+        "first_block_checksum_matches": true,
+        "filesystems": [
+          {
+            "mode": "U",
+            "offset": 512,
+            "size": 1253376
+          },
+          {
+            "mode": "P",
+            "offset": 512,
+            "size": 0
+          }
+        ]
+      },
+      "full_package_downloaded": false,
+      "complete_firmware_decrypted": false,
+      "repacked_or_camera_written": false
+    }
+  }
+}

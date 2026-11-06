@@ -1,0 +1,208 @@
+0001335c stp        x29, x30, [sp, #-0x40]!
+00013360 mov        w2, #0x2f
+00013364 mov        x29, sp
+00013368 stp        x19, x20, [sp, #0x10]
+0001336c mov        x19, x1
+00013370 mov        w20, w0
+00013374 add        x1, x29, #0x40
+00013378 ldr        x0, [x19]
+0001337c ldr        x3, [x0, #0x50]
+00013380 mov        x0, x19
+00013384 str        x21, [sp, #0x20]
+00013388 str        wzr, [x1, #-4]!
+0001338c blr        x3
+00013390 tst        w0, #0xff
+00013394 b.eq       #0x133dc
+00013398 ldr        w21, [x29, #0x3c]
+0001339c add        w21, w21, #1
+000133a0 ldr        x0, [x19]
+000133a4 adrp       x2, #0x1b000
+000133a8 add        x2, x2, #0xaff ; literal 'appli'
+000133ac mov        x1, x21
+000133b0 ldr        x3, [x0, #0x38]
+000133b4 mov        x0, x19
+000133b8 blr        x3
+000133bc tst        w0, #0xff
+000133c0 b.eq       #0x13400
+000133c4 mov        x0, #0x10
+000133c8 bl         #0x10140 ; operator new
+000133cc mov        x19, x0
+000133d0 mov        w1, w20
+000133d4 bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+000133d8 b          #0x133ec
+000133dc mov        x0, x19
+000133e0 bl         #0xfec0 ; Updater::StringHandler::GetSize
+000133e4 mov        x21, x0
+000133e8 b          #0x133a0
+000133ec adrp       x0, #0x31000
+000133f0 ldr        x0, [x0, #0xf70]
+000133f4 add        x0, x0, #0x10
+000133f8 str        x0, [x19]
+000133fc b          #0x135e4
+00013400 ldr        x0, [x19]
+00013404 adrp       x2, #0x1b000
+00013408 add        x2, x2, #0xb05 ; literal 'config'
+0001340c mov        x1, x21
+00013410 ldr        x3, [x0, #0x38]
+00013414 mov        x0, x19
+00013418 blr        x3
+0001341c tst        w0, #0xff
+00013420 b.eq       #0x13444
+00013424 mov        x0, #0x10
+00013428 bl         #0x10140 ; operator new
+0001342c mov        x19, x0
+00013430 mov        w1, w20
+00013434 bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+00013438 adrp       x0, #0x31000
+0001343c ldr        x0, [x0, #0xed8]
+00013440 b          #0x133f4
+00013444 ldr        x0, [x19]
+00013448 adrp       x2, #0x1b000
+0001344c add        x2, x2, #0xb0c ; literal 'partconf_sum'
+00013450 mov        x1, x21
+00013454 ldr        x3, [x0, #0x38]
+00013458 mov        x0, x19
+0001345c blr        x3
+00013460 tst        w0, #0xff
+00013464 b.eq       #0x13488
+00013468 mov        x0, #0x10
+0001346c bl         #0x10140 ; operator new
+00013470 mov        x19, x0
+00013474 mov        w1, w20
+00013478 bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+0001347c adrp       x0, #0x31000
+00013480 ldr        x0, [x0, #0xe70]
+00013484 b          #0x133f4
+00013488 ldr        x0, [x19]
+0001348c adrp       x2, #0x1b000
+00013490 add        x2, x2, #0xb19 ; literal 'part_image'
+00013494 mov        x1, x21
+00013498 ldr        x3, [x0, #0x38]
+0001349c mov        x0, x19
+000134a0 blr        x3
+000134a4 tst        w0, #0xff
+000134a8 b.eq       #0x134cc
+000134ac mov        x0, #0x10
+000134b0 bl         #0x10140 ; operator new
+000134b4 mov        x19, x0
+000134b8 mov        w1, w20
+000134bc bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+000134c0 adrp       x0, #0x31000
+000134c4 ldr        x0, [x0, #0xe00]
+000134c8 b          #0x133f4
+000134cc ldr        x0, [x19]
+000134d0 adrp       x2, #0x1b000
+000134d4 add        x2, x2, #0xb24 ; literal 'appli_sum'
+000134d8 mov        x1, x21
+000134dc ldr        x3, [x0, #0x38]
+000134e0 mov        x0, x19
+000134e4 blr        x3
+000134e8 tst        w0, #0xff
+000134ec b.eq       #0x13510
+000134f0 mov        x0, #0x10
+000134f4 bl         #0x10140 ; operator new
+000134f8 mov        x19, x0
+000134fc mov        w1, w20
+00013500 bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+00013504 adrp       x0, #0x31000
+00013508 ldr        x0, [x0, #0xf38]
+0001350c b          #0x133f4
+00013510 ldr        x0, [x19]
+00013514 adrp       x2, #0x1b000
+00013518 add        x2, x2, #0xb2e ; literal 'updater'
+0001351c mov        x1, x21
+00013520 ldr        x3, [x0, #0x38]
+00013524 mov        x0, x19
+00013528 blr        x3
+0001352c tst        w0, #0xff
+00013530 b.eq       #0x13554
+00013534 mov        x0, #0x10
+00013538 bl         #0x10140 ; operator new
+0001353c mov        x19, x0
+00013540 mov        w1, w20
+00013544 bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+00013548 adrp       x0, #0x31000
+0001354c ldr        x0, [x0, #0xf40]
+00013550 b          #0x133f4
+00013554 ldr        x0, [x19]
+00013558 adrp       x2, #0x1b000
+0001355c add        x2, x2, #0xb36 ; literal 'updater_sum'
+00013560 mov        x1, x21
+00013564 ldr        x3, [x0, #0x38]
+00013568 mov        x0, x19
+0001356c blr        x3
+00013570 tst        w0, #0xff
+00013574 b.eq       #0x13598
+00013578 mov        x0, #0x10
+0001357c bl         #0x10140 ; operator new
+00013580 mov        x19, x0
+00013584 mov        w1, w20
+00013588 bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+0001358c adrp       x0, #0x31000
+00013590 ldr        x0, [x0, #0xe60]
+00013594 b          #0x133f4
+00013598 ldr        x0, [x19]
+0001359c adrp       x2, #0x1b000
+000135a0 add        x2, x2, #0x649 ; literal 'prfile'
+000135a4 mov        x1, x21
+000135a8 ldr        x3, [x0, #0x38]
+000135ac mov        x0, x19
+000135b0 blr        x3
+000135b4 tst        w0, #0xff
+000135b8 b.eq       #0x135f8
+000135bc mov        x0, #0x20
+000135c0 bl         #0x10140 ; operator new
+000135c4 mov        x19, x0
+000135c8 mov        w1, w20
+000135cc bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+000135d0 adrp       x0, #0x31000
+000135d4 str        xzr, [x19, #0x10]
+000135d8 ldr        x0, [x0, #0xf18]
+000135dc add        x0, x0, #0x10
+000135e0 str        x0, [x19]
+000135e4 mov        x0, x19
+000135e8 ldr        x21, [sp, #0x20]
+000135ec ldp        x19, x20, [sp, #0x10]
+000135f0 ldp        x29, x30, [sp], #0x40
+000135f4 ret        
+000135f8 ldr        x0, [x19]
+000135fc adrp       x2, #0x1b000
+00013600 add        x2, x2, #0xb42 ; literal 'backup'
+00013604 mov        x1, x21
+00013608 ldr        x3, [x0, #0x38]
+0001360c mov        x0, x19
+00013610 blr        x3
+00013614 tst        w0, #0xff
+00013618 mov        x0, #0x10
+0001361c b.eq       #0x1363c
+00013620 bl         #0x10140 ; operator new
+00013624 mov        x19, x0
+00013628 mov        w1, w20
+0001362c bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+00013630 adrp       x0, #0x31000
+00013634 ldr        x0, [x0, #0xf88]
+00013638 b          #0x133f4
+0001363c bl         #0x10140 ; operator new
+00013640 mov        x19, x0
+00013644 mov        w1, w20
+00013648 bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+0001364c adrp       x0, #0x31000
+00013650 ldr        x0, [x0, #0xef0]
+00013654 b          #0x133f4
+00013658 mov        x20, x0
+0001365c mov        x1, #0x10
+00013660 mov        x0, x19
+00013664 bl         #0x10190 ; operator delete
+00013668 mov        x0, x20
+0001366c bl         #0x107a0 ; _Unwind_Resume
+00013670 b          #0x13658
+00013674 b          #0x13658
+00013678 b          #0x13658
+0001367c b          #0x13658
+00013680 b          #0x13658
+00013684 b          #0x13658
+00013688 mov        x20, x0
+0001368c mov        x1, #0x20
+00013690 b          #0x13660
+00013694 b          #0x13658
+00013698 b          #0x13658

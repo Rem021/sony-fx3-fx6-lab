@@ -1,0 +1,83 @@
+{
+  "schema": "r36-offline-fixed-two-slot-package/v1",
+  "created_utc": "2026-11-05T07:05:00.691362+00:00",
+  "outcome": "succeeded",
+  "scope": "offline packaging only",
+  "candidate": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/candidate.json",
+    "sha256": "0bf214178ab8e60d1ac7755e1d1b2fcc0d2c325ff8473abd50402f09ab81fab4"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/guest.cpio",
+    "sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff",
+    "bytes": 453213884
+  },
+  "release_ELFs": {
+    "ui": {
+      "raw_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/raw/fx3-ui-r35.so",
+      "raw_sha256": "8fbad11e585a88ba55fc657785b6bc132bd12ee20ac3a31f23c603b1b1b322d1",
+      "raw_bytes": 72656,
+      "release_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/release/fx3-ui-r35.so",
+      "release_sha256": "87267da03bbc5f05b81aa559a4a1c713d1e7462bdb4602a571405dc048bba4fe",
+      "release_bytes": 23400,
+      "slot_bytes": 58856,
+      "zero_tail_bytes": 35456,
+      "audit_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/ui-ELF-AUDIT.json",
+      "removed_debug_sections": [
+        ".debug_abbrev",
+        ".debug_aranges",
+        ".debug_info",
+        ".debug_line",
+        ".debug_loc",
+        ".debug_ranges",
+        ".debug_str"
+      ],
+      "removed_static_sections": [
+        ".strtab",
+        ".symtab"
+      ]
+    },
+    "osd": {
+      "raw_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/raw/fx3-osd-r35.so",
+      "raw_sha256": "1a0761b8c73fb04502406686499ff01f3683bcc767ce1503fae3e6bbb996bf21",
+      "raw_bytes": 119544,
+      "release_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/release/fx3-osd-r35.so",
+      "release_sha256": "51685bf707f7c1947c81936de03a0694b2228228792e732ee177c788acd09837",
+      "release_bytes": 34960,
+      "slot_bytes": 109000,
+      "zero_tail_bytes": 74040,
+      "audit_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/osd-ELF-AUDIT.json",
+      "removed_debug_sections": [
+        ".debug_abbrev",
+        ".debug_info",
+        ".debug_line",
+        ".debug_loc",
+        ".debug_ranges",
+        ".debug_str"
+      ],
+      "removed_static_sections": [
+        ".strtab",
+        ".symtab"
+      ]
+    }
+  },
+  "source_candidate_sha256": "96666a719b1a4cf576e4d2d7ec461e10f5ce1143650450719e5273d75d970672",
+  "source_cpio_before_after_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+  "dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+  "source_member_count": 1140,
+  "changed_member_count": 2,
+  "all_other_archive_bytes_equal": true,
+  "host_rejection_tests_passed": 9,
+  "r35_final_input_gate": "coordinator_verified_msg_a9774da2cd5d",
+  "candidate_changed_top_level_fields": [
+    "initrd",
+    "r36_fixed_slot_diagnostic_contract"
+  ],
+  "CPU_memory_DTB_kernel_QEMU_time_input_ready_cleanup_policy_modified": false,
+  "target_loaded_or_executed": false,
+  "VM_started": false,
+  "runner_bound": false,
+  "deployed": false,
+  "next_gate": "separate new-candidate host-runner binding review, preserve ready/180s/20s/cleanup policy, then separate runtime authorization",
+  "checksum_scope": "All delivered regular files except SHA256SUMS itself and later HASH-CHECK.json; rebuildable cache/temp roots excluded and inventoried in WRITE-SCOPE.json"
+}

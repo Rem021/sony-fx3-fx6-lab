@@ -1,0 +1,266 @@
+{
+  "rows": [
+    {
+      "stage": "ap83b",
+      "label": "默认单核",
+      "run": "ap83bgpe14-f83e3fc5",
+      "requested_seconds": 300,
+      "receipt_total_seconds": 301.26928083298844,
+      "healthy": true,
+      "missing": [],
+      "im_alive_last_snapshot": true,
+      "cpu_profile": {
+        "smp": 1,
+        "tcg_thread": "default",
+        "icount_profile": null
+      },
+      "actual_UI_updates": 2,
+      "a18_peak": 12321,
+      "a18_last": 12320,
+      "backlog_skip": 530,
+      "dequeue": 532,
+      "timer_dequeue": 503,
+      "timer_production_probe_hits": 12824,
+      "time_pass": 2,
+      "time_skip": 0,
+      "GPE_count": 2,
+      "approx_blend_count": 0,
+      "physical_clear_sha256": "3630e065eb7b4540fbab11dbfd2619e8500f211b9c404380a1867fdc44b77c0c",
+      "nonuniform": false,
+      "AppFw_last_wait": null,
+      "real_proc_uptime_samples": null,
+      "sysfs_online": null,
+      "QMP_vCPU_counts": null
+    },
+    {
+      "stage": "ap84a",
+      "label": "四核/旧harness组",
+      "run": "ap84amttcg-953a9d56",
+      "requested_seconds": 300,
+      "receipt_total_seconds": 300.9181204579945,
+      "healthy": true,
+      "missing": [],
+      "im_alive_last_snapshot": true,
+      "cpu_profile": {
+        "smp": 4,
+        "tcg_thread": "multi",
+        "icount_profile": null
+      },
+      "actual_UI_updates": 2,
+      "a18_peak": 12320,
+      "a18_last": 12319,
+      "backlog_skip": 435,
+      "dequeue": 437,
+      "timer_dequeue": 405,
+      "timer_production_probe_hits": 12725,
+      "time_pass": 2,
+      "time_skip": 0,
+      "GPE_count": 2,
+      "approx_blend_count": 0,
+      "physical_clear_sha256": "3630e065eb7b4540fbab11dbfd2619e8500f211b9c404380a1867fdc44b77c0c",
+      "nonuniform": false,
+      "AppFw_last_wait": {
+        "tid": 307,
+        "allowed": "0-3",
+        "last_cpu": null,
+        "cgroup": null,
+        "syscall": "29 0x3 0xffffffff80000001 0x7ee5c9f870 0x2 0x7ee5ca1150 0x7ee5ca1258 0x7ee5c9f4c0 0x7f95ffbcbc",
+        "stack": [
+          "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+          "[<ffffff80004c439c>] osal_wai_sem_tmo+0x1e4/0x278 [osal_uipc]",
+          "[<ffffff80004bf4ac>] osal_unlock+0x12cc/0x22b0 [osal_uipc]",
+          "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+          "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+          "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+          "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+          "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+          "[<ffffffffffffffff>] 0xffffffffffffffff"
+        ]
+      },
+      "real_proc_uptime_samples": [
+        {
+          "sample": 1,
+          "guest_proc_uptime_seconds": 13.88,
+          "guest_idle_seconds": 34.05,
+          "host_elapsed_first_observed_seconds": 14.481474833009997,
+          "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+        },
+        {
+          "sample": 2,
+          "guest_proc_uptime_seconds": 26.34,
+          "guest_idle_seconds": 72.49,
+          "host_elapsed_first_observed_seconds": 27.48132987500867,
+          "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+        },
+        {
+          "sample": 3,
+          "guest_proc_uptime_seconds": 38.86,
+          "guest_idle_seconds": 119.76,
+          "host_elapsed_first_observed_seconds": 40.01077508300659,
+          "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+        }
+      ],
+      "sysfs_online": [],
+      "QMP_vCPU_counts": [
+        4,
+        4
+      ],
+      "early_observation_guest_seconds_per_host_second": 0.9784835367747038
+    },
+    {
+      "stage": "ap84ar2",
+      "label": "四核/原厂cpuset",
+      "run": "ap84ar2native-4b70eab2",
+      "requested_seconds": 300,
+      "receipt_total_seconds": 301.3284528749937,
+      "healthy": true,
+      "missing": [],
+      "im_alive_last_snapshot": true,
+      "cpu_profile": {
+        "smp": 4,
+        "tcg_thread": "multi",
+        "icount_profile": null
+      },
+      "actual_UI_updates": 2,
+      "a18_peak": 12319,
+      "a18_last": 12318,
+      "backlog_skip": 335,
+      "dequeue": 337,
+      "timer_dequeue": 306,
+      "timer_production_probe_hits": 12625,
+      "time_pass": 2,
+      "time_skip": 0,
+      "GPE_count": 2,
+      "approx_blend_count": 0,
+      "physical_clear_sha256": "3630e065eb7b4540fbab11dbfd2619e8500f211b9c404380a1867fdc44b77c0c",
+      "nonuniform": false,
+      "AppFw_last_wait": {
+        "tid": 308,
+        "allowed": "0-2",
+        "last_cpu": 0,
+        "cgroup": [
+          "1:cpuset:/cpu0_1_2_3rt"
+        ],
+        "syscall": "29 0x3 0xffffffff80000001 0x7ede123870 0x2 0x7ede125150 0x7ede125258 0x7ede1234c0 0x7f8e489cbc",
+        "stack": [
+          "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+          "[<ffffff80004c439c>] osal_wai_sem_tmo+0x1e4/0x278 [osal_uipc]",
+          "[<ffffff80004bf4ac>] osal_unlock+0x12cc/0x22b0 [osal_uipc]",
+          "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+          "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+          "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+          "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+          "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+          "[<ffffffffffffffff>] 0xffffffffffffffff"
+        ]
+      },
+      "real_proc_uptime_samples": [
+        {
+          "sample": 1,
+          "guest_proc_uptime_seconds": 13.9,
+          "guest_idle_seconds": 34.71,
+          "host_elapsed_first_observed_seconds": 14.308524749998469,
+          "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+        },
+        {
+          "sample": 2,
+          "guest_proc_uptime_seconds": 42.34,
+          "guest_idle_seconds": 121.86,
+          "host_elapsed_first_observed_seconds": 43.70214270800352,
+          "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+        }
+      ],
+      "sysfs_online": [
+        "0-3",
+        "0-3",
+        "0-3"
+      ],
+      "QMP_vCPU_counts": [
+        4,
+        4
+      ],
+      "early_observation_guest_seconds_per_host_second": 0.9675569724228065
+    },
+    {
+      "stage": "ap84b",
+      "label": "单核/icount0",
+      "run": "ap84bicount0-b2028788",
+      "requested_seconds": 300,
+      "receipt_total_seconds": 301.0827073340188,
+      "healthy": true,
+      "missing": [],
+      "im_alive_last_snapshot": true,
+      "cpu_profile": {
+        "smp": 1,
+        "tcg_thread": null,
+        "icount_profile": "shift=0,align=off,sleep=off"
+      },
+      "actual_UI_updates": 2,
+      "a18_peak": 12318,
+      "a18_last": 12317,
+      "backlog_skip": 532,
+      "dequeue": 535,
+      "timer_dequeue": 506,
+      "timer_production_probe_hits": 12824,
+      "time_pass": 2,
+      "time_skip": 1,
+      "GPE_count": 2,
+      "approx_blend_count": 0,
+      "physical_clear_sha256": "3630e065eb7b4540fbab11dbfd2619e8500f211b9c404380a1867fdc44b77c0c",
+      "nonuniform": false,
+      "AppFw_last_wait": {
+        "tid": 290,
+        "allowed": "0",
+        "last_cpu": null,
+        "cgroup": null,
+        "syscall": "29 0x3 0xffffffff80000001 0x7f501b5870 0x2 0x7f501b7150 0x7f501b7258 0x7f501b54c0 0x7fa4518cbc",
+        "stack": [
+          "[<ffffff80080879fc>] __switch_to+0x5c/0x80",
+          "[<ffffff80004c439c>] osal_wai_sem_tmo+0x1e4/0x278 [osal_uipc]",
+          "[<ffffff80004bf4ac>] osal_unlock+0x12cc/0x22b0 [osal_uipc]",
+          "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]",
+          "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0",
+          "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838",
+          "[<ffffff800819e954>] SyS_ioctl+0x44/0x80",
+          "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c",
+          "[<ffffffffffffffff>] 0xffffffffffffffff"
+        ]
+      },
+      "real_proc_uptime_samples": [
+        {
+          "sample": 1,
+          "guest_proc_uptime_seconds": 12.93,
+          "guest_idle_seconds": 9.47,
+          "host_elapsed_first_observed_seconds": 10.402295459003653,
+          "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+        },
+        {
+          "sample": 2,
+          "guest_proc_uptime_seconds": 23.25,
+          "guest_idle_seconds": 17.69,
+          "host_elapsed_first_observed_seconds": 17.62947204199736,
+          "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+        },
+        {
+          "sample": 3,
+          "guest_proc_uptime_seconds": 33.57,
+          "guest_idle_seconds": 27.66,
+          "host_elapsed_first_observed_seconds": 20.40263599998434,
+          "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+        }
+      ],
+      "sysfs_online": [],
+      "QMP_vCPU_counts": [
+        1,
+        1
+      ],
+      "early_observation_guest_seconds_per_host_second": 2.0639297147350875
+    }
+  ],
+  "all_UI_updates_two": true,
+  "all_only_clear_flush_GPE": true,
+  "all_same_black_clear_physical_hash": true,
+  "nonuniform_menu_seen": false,
+  "default_next_candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap84a-four-core-native-cpuset-r2/candidate84a-r2.json",
+  "clock_scope": "Uptime timing covers only first three native startup snapshots, polling delayed; not a whole300-second clock-rate benchmark. Gate counts are probes, not a lossless global timer-production trace. Logger load differs in native-cpuset r2. AppFw wait must be assessed with actual syscall/stack, not backlog alone."
+}

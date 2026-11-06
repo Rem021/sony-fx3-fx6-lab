@@ -1,0 +1,79 @@
+{
+  "input_sha256": "6ceaea432bc7c4645897c2f1272941b33b0c04115ec62ffa000b37faf3d8517d",
+  "output_sha256": "554ac78466cabb815dfc850ab0079e298e328d27e2a2f7bf90290121fd05b5f4",
+  "changes": [
+    {
+      "name": "libUsbBusPower.so",
+      "row_va": "0x1da50",
+      "file_offset": 55896,
+      "before_mask": "0xffffffbf",
+      "after_mask": "0xffffffb8"
+    },
+    {
+      "name": "libInfraUsbCmn.so",
+      "row_va": "0x1da98",
+      "file_offset": 55968,
+      "before_mask": "0x7fffffff",
+      "after_mask": "0x7ffffff8"
+    },
+    {
+      "name": "libsensapi.so",
+      "row_va": "0x1dae0",
+      "file_offset": 56040,
+      "before_mask": "0x7fffffff",
+      "after_mask": "0x7ffffff8"
+    },
+    {
+      "name": "libUsbControl.so",
+      "row_va": "0x1db28",
+      "file_offset": 56112,
+      "before_mask": "0xffffff9f",
+      "after_mask": "0xffffff98"
+    },
+    {
+      "name": "libBusPower.so",
+      "row_va": "0x1db70",
+      "file_offset": 56184,
+      "before_mask": "0xffffff9f",
+      "after_mask": "0xffffff98"
+    },
+    {
+      "name": "libInfraCrypt.so",
+      "row_va": "0x1e668",
+      "file_offset": 58992,
+      "before_mask": "0xffffff9f",
+      "after_mask": "0xffffff98"
+    },
+    {
+      "name": "libHotplug.so",
+      "row_va": "0x1e8f0",
+      "file_offset": 59640,
+      "before_mask": "0xffffff9f",
+      "after_mask": "0xffffff98"
+    },
+    {
+      "name": "libTetheringResource.so",
+      "row_va": "0x1f3a0",
+      "file_offset": 62376,
+      "before_mask": "0x7fffffff",
+      "after_mask": "0x7ffffff8"
+    },
+    {
+      "name": "libNetServiceTethering.so",
+      "row_va": "0x1f3e8",
+      "file_offset": 62448,
+      "before_mask": "0x7fffffff",
+      "after_mask": "0x7ffffff8"
+    },
+    {
+      "name": "libInfraMediaPwrMgr.so",
+      "row_va": "0x1f508",
+      "file_offset": 62736,
+      "before_mask": "0xffffff9f",
+      "after_mask": "0xffffff98"
+    }
+  ],
+  "changed_bytes": 10,
+  "policy_source": "chocotan/a7c2-qemu b3d7c1f prepare-assets.py; FX3 own row VAs, no A7C2 offsets",
+  "scope": "virtual platform service filter, not original firmware or physical-camera patch"
+}

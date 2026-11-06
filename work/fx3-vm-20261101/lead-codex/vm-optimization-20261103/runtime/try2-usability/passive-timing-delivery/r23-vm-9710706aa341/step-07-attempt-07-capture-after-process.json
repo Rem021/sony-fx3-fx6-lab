@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-r23-9710706aa341",
+    "eval",
+    "--stdin"
+  ],
+  "start": {
+    "UTC": "2026-11-05T00:57:25.894083+00:00",
+    "host_ns": 423931421428208
+  },
+  "end": {
+    "UTC": "2026-11-05T00:57:25.903353+00:00",
+    "host_ns": 423931430695958
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"UTC\": \"2026-11-05T00:57:25.902Z\",\n  \"checks\": {\n    \"armed\": true,\n    \"due\": true,\n    \"image\": true,\n    \"launch\": true,\n    \"margin\": true,\n    \"nonce\": true,\n    \"origin\": true,\n    \"phase\": true,\n    \"review\": true,\n    \"same_content\": true,\n    \"sequence\": true,\n    \"url\": true\n  },\n  \"content_generation\": 33,\n  \"due_token\": \"190350.69999998808\",\n  \"frame\": {\n    \"CP_composition_panel_acceptance\": false,\n    \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\",\n    \"QMP_read_only\": true,\n    \"all_zero_pixels\": false,\n    \"committed_slot\": 4,\n    \"content_generation\": 33,\n    \"epoch\": 1,\n    \"fnv64\": \"0x19abb616faf34124\",\n    \"guest_native_lease_released_before_ring_commit\": true,\n    \"height\": 480,\n    \"host_monotonic\": 423931.001743083,\n    \"native_bitmap_format\": 1,\n    \"native_format\": 0,\n    \"native_identity\": {\n      \"FB\": \"0x7f50001160\",\n      \"FB_format\": 1,\n      \"allocation\": \"0x50001200\",\n      \"bitmap\": \"0x7f4000c030\",\n      \"bits_cpu_VA\": \"0x7ee3e49100\",\n      \"config_hash\": \"0x18828311f19556\",\n      \"entry\": \"0x7f50001178\",\n      \"map_begin\": \"0x7ee3e49000\",\n      \"map_end\": \"0x7ee3ee0000\",\n      \"map_offset\": \"0x43ae96000\",\n      \"metadata_physical\": \"0x401\",\n      \"publish_sem\": \"0x288604a\"\n    },\n    \"nonuniform_pixels\": true,\n    \"physical\": \"0x43ae96100\",\n    \"pixel_source_sequence\": 1368,\n    \"registered_target\": {\n      \"captured_physical\": \"0x43ae96100\",\n      \"epoch\": 1,\n      \"identity\": \"0xffffffc11e7c4b80\",\n      \"kind\": 2,\n      \"native_token\": \"0x401\",\n      \"object\": \"0x7f50001200\",\n      \"parent_bytes\": 1310720,\n      \"parent_physical\": \"0x43ae96000\",\n      \"valid_during_native_read_lease_and_raster_lifecycle_guards\": true,\n      \"version\": 1,\n      \"vptr\": \"0x7f6bf80a48\"\n    },\n    \"sequence\": 1373,\n    \"sha256\": \"139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086\",\n    \"span\": 614400,\n    \"stride_pixels\": 640,\n    \"token\": \"0x401\",\n    \"update_id\": \"0x1005\",\n    \"width\": 640\n  },\n  \"performance_ms\": 172110,\n  \"qualified\": true,\n  \"remaining_ms\": 18240.69999998808,\n  \"sequence\": 1373,\n  \"shownSHA\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\"\n}\n",
+  "stderr": ""
+}

@@ -1,0 +1,92 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/trial_log_usability.py	2026-11-03 03:38:30
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/trial_log_v3_usability.py	2026-11-03 05:10:53
+@@ -23,6 +23,12 @@
+         self.overlap = ''
+         self.selected = []
+         self.markers = {m: False for m in markers}
++        self.marker_evidence = {m: {'method': 'not_observed'} for m in markers}
++        self.date99_semantic = {name: False for name in ('worker', 'date98', 'owner')}
++        self.date99_transactions = {'accept': set(), 'commit': {}, 'retired': {}}
++        self.date99_rejected = False
++        self.native_shutdown_events = []
++        self.native_power_off_events = []
+         self.failure = None
+ 
+     def poll(self):
+@@ -34,7 +40,43 @@
+             self.offset = f.tell()
+         text = self.overlap + chunk.decode(errors='replace')
+         for marker in self.markers:
+-            self.markers[marker] |= marker in text
++            if marker in text:
++                self.markers[marker] = True
++                self.marker_evidence[marker] = {'method': 'literal', 'marker': marker}
++        # Concurrent kernel printk and init-shell writes can splice the literal
++        # CONSUMER_BOUND line.  Require independent intact initialization and
++        # transaction receipts; never infer a bind from the worker alone.
++        self.date99_rejected |= bool(re.search(r'FX3_DATE99_REJECT', text))
++        if self.date99_rejected and self.marker_evidence.get('FX3_DATE99_CONSUMER_BOUND', {}).get('method') == 'semantic_after_interleaved_literal':
++            self.markers['FX3_DATE99_CONSUMER_BOUND'] = False
++            self.marker_evidence['FX3_DATE99_CONSUMER_BOUND'] = {'method': 'semantic_invalidated_by_reject'}
++        if 'FX3_DATE99_CONSUMER_BOUND' in self.markers and not self.markers['FX3_DATE99_CONSUMER_BOUND']:
++            evidence = {
++                'worker': 'FX3_DATE99_WORKER_READY serialized=1',
++                'date98': 'FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=',
++                'owner': 'FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0',
++            }
++            for name, value in evidence.items():
++                if value in text:
++                    self.date99_semantic[name] = True
++            for match in re.finditer(r'FX3_DATE99_ACCEPT transaction=(\d+) reason=(\d+) source=0x809005c5', text):
++                self.date99_transactions['accept'].add((int(match[1]), int(match[2])))
++            for match in re.finditer(r'FX3_DATE99_CLOCK_COMMIT transaction=(\d+) generation=(\d+) reason=(\d+) valid_UTC=1[^\n]*readback_UTC_ms=(-?\d+) software_clock_advances=1', text):
++                self.date99_transactions['commit'][(int(match[1]), int(match[3]))] = {'generation': int(match[2]), 'readback_UTC_ms': int(match[4])}
++            for match in re.finditer(r'FX3_DATE99_RETIRED transaction=(\d+) reason=(\d+) result=0 native_request_free=0[^\n]*generation=(\d+)', text):
++                self.date99_transactions['retired'][(int(match[1]), int(match[2]))] = int(match[3])
++            complete = [((tid, reason), commit) for (tid, reason), commit in self.date99_transactions['commit'].items()
++                        if (tid, reason) in self.date99_transactions['accept']
++                        and self.date99_transactions['retired'].get((tid, reason)) == commit['generation']]
++            if all(self.date99_semantic.values()) and complete and not self.date99_rejected:
++                transaction, commit = complete[0]
++                self.markers['FX3_DATE99_CONSUMER_BOUND'] = True
++                self.marker_evidence['FX3_DATE99_CONSUMER_BOUND'] = {
++                    'method': 'semantic_after_interleaved_literal', 'worker': evidence['worker'],
++                    'registered_branch': evidence['date98'], 'owner_result': evidence['owner'],
++                    'transaction': transaction[0], 'reason': transaction[1],
++                    'generation': commit['generation'], 'readback_UTC_ms': commit['readback_UTC_ms'],
++                    'retired_result': 0, 'native_request_free': 0}
+         if self.failure is None:
+             for pattern, label in FAILURES:
+                 match = re.search(pattern, text, re.I)
+@@ -44,5 +86,31 @@
+         self.overlap = text[-4096:]
+         lines = (self.partial + chunk.decode(errors='replace')).split('\n')
+         self.partial = lines.pop()
++        self.native_shutdown_events.extend(line.strip() for line in lines
++                                           if re.search(r'open screen: [^\r\n]* -> scr0039_shutdown', line))
++        self.native_power_off_events.extend(line.strip() for line in lines
++                                            if re.search(r'FX3_BOOT_QUEUE_SEND[^\r\n]*source=0x830128 raw=2c000300', line))
+         self.selected.extend(line for line in lines if KEEP.search(line))
+         return '\n'.join(self.selected)
++
++    def date99_raw_receipt(self):
++        """Source byte ranges, with a missing literal kept distinct from proof."""
++        data = self.path.read_bytes()
++        pats = {
++            'literal_consumer_bound': rb'FX3_DATE99_CONSUMER_BOUND',
++            'worker': rb'FX3_DATE99_WORKER_READY serialized=1[^\r\n]*',
++            'registered_branch': rb'FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=[^\r\n]*',
++            'owner_result_zero': rb'FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0[^\r\n]*',
++            'accept': rb'FX3_DATE99_ACCEPT transaction=1 reason=4 source=0x809005c5[^\r\n]*',
++            'clock_commit': rb'FX3_DATE99_CLOCK_COMMIT transaction=1 generation=1 reason=4 valid_UTC=1[^\r\n]*',
++            'retired': rb'FX3_DATE99_RETIRED transaction=1 reason=4 result=0 native_request_free=0[^\r\n]*',
++            'reject': rb'FX3_DATE99_REJECT[^\r\n]*',
++        }
++        out = {}
++        for name, pat in pats.items():
++            m = re.search(pat, data)
++            out[name] = None if m is None else {'serial_byte_range': [m.start(), m.end()],
++                                                  'raw': m[0].decode(errors='replace')}
++        out['literal_present'] = out['literal_consumer_bound'] is not None
++        out['semantic_evidence'] = self.marker_evidence.get('FX3_DATE99_CONSUMER_BOUND')
++        return out

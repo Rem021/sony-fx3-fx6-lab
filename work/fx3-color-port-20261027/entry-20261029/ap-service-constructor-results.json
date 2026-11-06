@@ -1,0 +1,2249 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+  "source_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "arm64_elf_files": 532,
+  "executable_section_bytes": 66283528,
+  "matches": [
+    {
+      "path": "/lib/libInfraRemote.so",
+      "inode": 95166,
+      "source_sha256": "75a15f15c0eac786ac6b73456d6d1ca5ecd9832d7962a1025ea8c78d75755b56",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xa42a8",
+      "last_instruction": "0xa42b8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xa42bc",
+          "target": "0x71c20",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "000a42a0 mov       w0, #4",
+        "000a42a4 bl        #0x709d0",
+        "000a42a8 mov       w0, #0x24e",
+        "000a42ac add       x1, x29, #0x38",
+        "000a42b0 mov       w3, #1",
+        "000a42b4 mov       w2, #0x24",
+        "000a42b8 movk      w0, #0x4b, lsl #16",
+        "000a42bc bl        #0x71c20",
+        "000a42c0 cbz       w0, #0xa42ec",
+        "000a42c4 mov       w2, w0",
+        "000a42c8 mov       w20, w0",
+        "000a42cc mov       w1, #0x734",
+        "000a42d0 mov       w0, #0x17",
+        "000a42d4 bl        #0xa357c",
+        "000a42d8 adrp      x1, #0xf8000",
+        "000a42dc mov       w2, w20",
+        "000a42e0 add       x1, x1, #0x1da",
+        "000a42e4 mov       w0, #1",
+        "000a42e8 bl        #0x709d0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraRemote.so",
+      "inode": 95166,
+      "source_sha256": "75a15f15c0eac786ac6b73456d6d1ca5ecd9832d7962a1025ea8c78d75755b56",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xa42fc",
+      "last_instruction": "0xa4300",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xa4304",
+          "target": "0x756c0",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "000a42f4 mov       x1, x20",
+        "000a42f8 str       w0, [x20]",
+        "000a42fc mov       w0, #0x24e",
+        "000a4300 movk      w0, #0x4b, lsl #16",
+        "000a4304 bl        #0x756c0",
+        "000a4308 mov       w21, w0",
+        "000a430c cbz       w0, #0xa4334",
+        "000a4310 mov       w2, w0",
+        "000a4314 mov       w1, #0x73c",
+        "000a4318 mov       w0, #0x17",
+        "000a431c bl        #0xa357c",
+        "000a4320 adrp      x1, #0xf8000",
+        "000a4324 mov       w2, w21",
+        "000a4328 add       x1, x1, #0x1fa",
+        "000a432c mov       w0, #1",
+        "000a4330 bl        #0x709d0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraRemote.so",
+      "inode": 95166,
+      "source_sha256": "75a15f15c0eac786ac6b73456d6d1ca5ecd9832d7962a1025ea8c78d75755b56",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xa4354",
+      "last_instruction": "0xa4358",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xa435c",
+          "target": "0x760e0",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000a434c bl        #0x735e0",
+        "000a4350 ldr       x1, [x29, #0x38]",
+        "000a4354 mov       w0, #0x24e",
+        "000a4358 movk      w0, #0x4b, lsl #16",
+        "000a435c bl        #0x760e0",
+        "000a4360 adrp      x1, #0xf8000",
+        "000a4364 add       x2, x19, #0x48",
+        "000a4368 add       x1, x1, #0xe93",
+        "000a436c mov       w0, #4",
+        "000a4370 bl        #0x709d0",
+        "000a4374 ldp       x19, x20, [sp, #0x10]",
+        "000a4378 ldp       x21, x22, [sp, #0x20]",
+        "000a437c ldp       x29, x30, [sp], #0x40",
+        "000a4380 ret       ",
+        "000a4384 stp       x29, x30, [sp, #-0x30]!",
+        "000a4388 mov       x29, sp"
+      ]
+    },
+    {
+      "path": "/lib/libInfraRemote.so",
+      "inode": 95166,
+      "source_sha256": "75a15f15c0eac786ac6b73456d6d1ca5ecd9832d7962a1025ea8c78d75755b56",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xa87f8",
+      "last_instruction": "0xa8808",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xa8824",
+          "target": "0x71c20",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "000a87f0 mov       x20, x0",
+        "000a87f4 str       x23, [sp, #0x30]",
+        "000a87f8 mov       w0, #0x24e",
+        "000a87fc mov       w23, w1",
+        "000a8800 add       x1, x29, #0x48",
+        "000a8804 stp       x21, x22, [sp, #0x20]",
+        "000a8808 movk      w0, #0x4b, lsl #16",
+        "000a880c mov       w22, w2",
+        "000a8810 mov       w2, #0x24",
+        "000a8814 strb      wzr, [x29, #0x44]",
+        "000a8818 adrp      x21, #0xf9000",
+        "000a881c str       wzr, [x29, #0x40]",
+        "000a8820 str       xzr, [x29, #0x48]",
+        "000a8824 bl        #0x71c20",
+        "000a8828 cbz       w0, #0xa887c",
+        "000a882c adrp      x1, #0xf8000",
+        "000a8830 mov       w5, w0",
+        "000a8834 add       x2, x21, #0x6e0",
+        "000a8838 add       x1, x1, #0xd08"
+      ]
+    },
+    {
+      "path": "/lib/libInfraRemote.so",
+      "inode": 95166,
+      "source_sha256": "75a15f15c0eac786ac6b73456d6d1ca5ecd9832d7962a1025ea8c78d75755b56",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xa8898",
+      "last_instruction": "0xa889c",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xa88a0",
+          "target": "0x756c0",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "000a8890 bl        #0x6fef0",
+        "000a8894 ldr       x1, [x29, #0x48]",
+        "000a8898 mov       w0, #0x24e",
+        "000a889c movk      w0, #0x4b, lsl #16",
+        "000a88a0 bl        #0x756c0",
+        "000a88a4 mov       w22, w0",
+        "000a88a8 cbz       w0, #0xa8918",
+        "000a88ac adrp      x1, #0xf8000",
+        "000a88b0 mov       w4, w0",
+        "000a88b4 add       x2, x21, #0x6e0",
+        "000a88b8 add       x1, x1, #0xd44",
+        "000a88bc mov       w3, #0x12bd",
+        "000a88c0 mov       w0, #1",
+        "000a88c4 mov       w19, #-1",
+        "000a88c8 bl        #0x709d0",
+        "000a88cc mov       w2, w22"
+      ]
+    },
+    {
+      "path": "/lib/libInfraRemote.so",
+      "inode": 95166,
+      "source_sha256": "75a15f15c0eac786ac6b73456d6d1ca5ecd9832d7962a1025ea8c78d75755b56",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xa88e0",
+      "last_instruction": "0xa88e4",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xa88e8",
+          "target": "0x760e0",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000a88d8 bl        #0xa357c",
+        "000a88dc ldr       x1, [x29, #0x48]",
+        "000a88e0 mov       w0, #0x24e",
+        "000a88e4 movk      w0, #0x4b, lsl #16",
+        "000a88e8 bl        #0x760e0",
+        "000a88ec mov       w20, w0",
+        "000a88f0 cbz       w0, #0xa8864",
+        "000a88f4 adrp      x1, #0xf8000",
+        "000a88f8 add       x2, x21, #0x6e0",
+        "000a88fc add       x1, x1, #0xe2c",
+        "000a8900 mov       w3, w20",
+        "000a8904 mov       w0, #1",
+        "000a8908 bl        #0x709d0",
+        "000a890c mov       w2, w20",
+        "000a8910 mov       w1, #0x12ee",
+        "000a8914 b         #0xa8858"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetoothLowEnergy.so",
+      "inode": 95196,
+      "source_sha256": "2d3d72bd08e1dd2bbff9d6af82af74d5d892f56faf103a6dbcf33be22609966a",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x55864",
+      "last_instruction": "0x55870",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x55874",
+          "target": "0x30820",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "0005585c b         #0x558b4",
+        "00055860 add       x1, x29, #0x38",
+        "00055864 mov       w0, #0x24e",
+        "00055868 mov       w3, #1",
+        "0005586c mov       w2, #0x24",
+        "00055870 movk      w0, #0x4b, lsl #16",
+        "00055874 bl        #0x30820",
+        "00055878 mov       w21, w0",
+        "0005587c cbz       w0, #0x558cc",
+        "00055880 adrp      x19, #0xa4000",
+        "00055884 mov       w2, #0x2d5",
+        "00055888 mov       w1, #5",
+        "0005588c ldr       x19, [x19, #0xc10]",
+        "00055890 ldr       x0, [x19]",
+        "00055894 bl        #0x32f50",
+        "00055898 ldr       x0, [x19]",
+        "0005589c mov       w2, w21",
+        "000558a0 mov       w1, #0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetoothLowEnergy.so",
+      "inode": 95196,
+      "source_sha256": "2d3d72bd08e1dd2bbff9d6af82af74d5d892f56faf103a6dbcf33be22609966a",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x558e8",
+      "last_instruction": "0x558ec",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x558f0",
+          "target": "0x329c0",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "000558e0 bl        #0x2f680",
+        "000558e4 ldr       x1, [x29, #0x38]",
+        "000558e8 mov       w0, #0x24e",
+        "000558ec movk      w0, #0x4b, lsl #16",
+        "000558f0 bl        #0x329c0",
+        "000558f4 mov       w22, w0",
+        "000558f8 cbz       w0, #0x55998",
+        "000558fc adrp      x20, #0xa4000",
+        "00055900 mov       w1, w19",
+        "00055904 mov       w2, #0x2e2",
+        "00055908 ldr       x20, [x20, #0xc10]",
+        "0005590c ldr       x0, [x20]",
+        "00055910 bl        #0x32f50",
+        "00055914 ldr       x0, [x20]",
+        "00055918 mov       w2, w22",
+        "0005591c mov       w1, #0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetoothLowEnergy.so",
+      "inode": 95196,
+      "source_sha256": "2d3d72bd08e1dd2bbff9d6af82af74d5d892f56faf103a6dbcf33be22609966a",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x55928",
+      "last_instruction": "0x5592c",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x55930",
+          "target": "0x32ff0",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "00055920 bl        #0x304c0",
+        "00055924 ldr       x1, [x29, #0x38]",
+        "00055928 mov       w0, #0x24e",
+        "0005592c movk      w0, #0x4b, lsl #16",
+        "00055930 bl        #0x32ff0",
+        "00055934 mov       w20, w0",
+        "00055938 cbz       w0, #0x55968",
+        "0005593c adrp      x19, #0xa4000",
+        "00055940 mov       w2, #0x2ef",
+        "00055944 mov       w1, #5",
+        "00055948 ldr       x19, [x19, #0xc10]",
+        "0005594c ldr       x0, [x19]",
+        "00055950 bl        #0x32f50",
+        "00055954 ldr       x0, [x19]",
+        "00055958 mov       w2, w20",
+        "0005595c mov       w1, #0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetoothLowEnergy.so",
+      "inode": 95196,
+      "source_sha256": "2d3d72bd08e1dd2bbff9d6af82af74d5d892f56faf103a6dbcf33be22609966a",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x670e8",
+      "last_instruction": "0x670f4",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x670f8",
+          "target": "0x30820",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "000670e0 b         #0x67138",
+        "000670e4 add       x1, x29, #0x38",
+        "000670e8 mov       w0, #0x24e",
+        "000670ec mov       w3, #1",
+        "000670f0 mov       w2, #0x24",
+        "000670f4 movk      w0, #0x4b, lsl #16",
+        "000670f8 bl        #0x30820",
+        "000670fc mov       w21, w0",
+        "00067100 cbz       w0, #0x67150",
+        "00067104 adrp      x19, #0xa4000",
+        "00067108 mov       w2, #0x47e",
+        "0006710c mov       w1, #8",
+        "00067110 ldr       x19, [x19, #0xc98]",
+        "00067114 ldr       x0, [x19]",
+        "00067118 bl        #0x32f50",
+        "0006711c ldr       x0, [x19]",
+        "00067120 mov       w2, w21",
+        "00067124 mov       w1, #0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetoothLowEnergy.so",
+      "inode": 95196,
+      "source_sha256": "2d3d72bd08e1dd2bbff9d6af82af74d5d892f56faf103a6dbcf33be22609966a",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x6716c",
+      "last_instruction": "0x67170",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x67174",
+          "target": "0x329c0",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "00067164 bl        #0x2f680",
+        "00067168 ldr       x1, [x29, #0x38]",
+        "0006716c mov       w0, #0x24e",
+        "00067170 movk      w0, #0x4b, lsl #16",
+        "00067174 bl        #0x329c0",
+        "00067178 mov       w22, w0",
+        "0006717c cbz       w0, #0x6721c",
+        "00067180 adrp      x20, #0xa4000",
+        "00067184 mov       w2, #0x48d",
+        "00067188 mov       w1, #8",
+        "0006718c ldr       x20, [x20, #0xc98]",
+        "00067190 ldr       x0, [x20]",
+        "00067194 bl        #0x32f50",
+        "00067198 ldr       x0, [x20]",
+        "0006719c mov       w2, w22",
+        "000671a0 mov       w1, #0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetoothLowEnergy.so",
+      "inode": 95196,
+      "source_sha256": "2d3d72bd08e1dd2bbff9d6af82af74d5d892f56faf103a6dbcf33be22609966a",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x671ac",
+      "last_instruction": "0x671b0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x671b4",
+          "target": "0x32ff0",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000671a4 bl        #0x304c0",
+        "000671a8 ldr       x1, [x29, #0x38]",
+        "000671ac mov       w0, #0x24e",
+        "000671b0 movk      w0, #0x4b, lsl #16",
+        "000671b4 bl        #0x32ff0",
+        "000671b8 mov       w20, w0",
+        "000671bc cbz       w0, #0x671ec",
+        "000671c0 adrp      x19, #0xa4000",
+        "000671c4 mov       w2, #0x499",
+        "000671c8 mov       w1, #8",
+        "000671cc ldr       x19, [x19, #0xc98]",
+        "000671d0 ldr       x0, [x19]",
+        "000671d4 bl        #0x32f50",
+        "000671d8 ldr       x0, [x19]",
+        "000671dc mov       w2, w20",
+        "000671e0 mov       w1, #0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetooth.so",
+      "inode": 95288,
+      "source_sha256": "e49bb8fbb723eef65d4b4e54788c39f57b1cd7ca72285bc02a726ada2ca8ef93",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xef9c",
+      "last_instruction": "0xefa8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xefac",
+          "target": "0xb150",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "0000ef94 b         #0xef50",
+        "0000ef98 add       x1, x29, #0x38",
+        "0000ef9c mov       w0, #0x24e",
+        "0000efa0 mov       w3, #1",
+        "0000efa4 mov       w2, #0x24",
+        "0000efa8 movk      w0, #0x4b, lsl #16",
+        "0000efac bl        #0xb150",
+        "0000efb0 mov       w20, w0",
+        "0000efb4 cbz       w0, #0xeff4",
+        "0000efb8 adrp      x19, #0x32000",
+        "0000efbc mov       w2, #0x100d",
+        "0000efc0 mov       w1, #1",
+        "0000efc4 ldr       x19, [x19, #0xe50]",
+        "0000efc8 ldr       x0, [x19]",
+        "0000efcc bl        #0xbb00",
+        "0000efd0 ldr       x0, [x19]",
+        "0000efd4 mov       w2, w20",
+        "0000efd8 mov       w1, #0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetooth.so",
+      "inode": 95288,
+      "source_sha256": "e49bb8fbb723eef65d4b4e54788c39f57b1cd7ca72285bc02a726ada2ca8ef93",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xf010",
+      "last_instruction": "0xf014",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xf018",
+          "target": "0xb990",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "0000f008 bl        #0xacf0",
+        "0000f00c ldr       x1, [x29, #0x38]",
+        "0000f010 mov       w0, #0x24e",
+        "0000f014 movk      w0, #0x4b, lsl #16",
+        "0000f018 bl        #0xb990",
+        "0000f01c mov       w21, w0",
+        "0000f020 cbnz      w0, #0xf090",
+        "0000f024 ldrh      w0, [x20, #6]",
+        "0000f028 ldrb      w1, [x20, #8]",
+        "0000f02c orr       w0, w1, w0, lsl #8",
+        "0000f030 strh      w0, [x22]",
+        "0000f034 ldr       x1, [x29, #0x38]",
+        "0000f038 mov       w0, #0x24e",
+        "0000f03c movk      w0, #0x4b, lsl #16",
+        "0000f040 bl        #0xbb40",
+        "0000f044 cbz       w0, #0xf064"
+      ]
+    },
+    {
+      "path": "/lib/libInfraBluetooth.so",
+      "inode": 95288,
+      "source_sha256": "e49bb8fbb723eef65d4b4e54788c39f57b1cd7ca72285bc02a726ada2ca8ef93",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xf038",
+      "last_instruction": "0xf03c",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xf040",
+          "target": "0xbb40",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "0000f030 strh      w0, [x22]",
+        "0000f034 ldr       x1, [x29, #0x38]",
+        "0000f038 mov       w0, #0x24e",
+        "0000f03c movk      w0, #0x4b, lsl #16",
+        "0000f040 bl        #0xbb40",
+        "0000f044 cbz       w0, #0xf064",
+        "0000f048 adrp      x0, #0x32000",
+        "0000f04c mov       w2, #0x102c",
+        "0000f050 mov       w1, #1",
+        "0000f054 mov       w19, #7",
+        "0000f058 ldr       x0, [x0, #0xe50]",
+        "0000f05c ldr       x0, [x0]",
+        "0000f060 bl        #0xbb00",
+        "0000f064 ldr       w1, [x29, #0x34]",
+        "0000f068 mov       w0, #0x11d",
+        "0000f06c bl        #0xb830"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 0,
+      "first_instruction": "0x172c",
+      "last_instruction": "0x1730",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x1734",
+          "target": "0x1390",
+          "symbol": "osal_snd_msg"
+        }
+      ],
+      "listing": [
+        "00001724 ret       ",
+        "00001728 str       w0, [x1]",
+        "0000172c mov       w0, #0x233",
+        "00001730 movk      w0, #0x4b, lsl #16",
+        "00001734 b         #0x1390",
+        "00001738 stp       x29, x30, [sp, #-0x40]!",
+        "0000173c mov       x29, sp",
+        "00001740 stp       x19, x20, [sp, #0x10]",
+        "00001744 mov       w19, #-0x400",
+        "00001748 str       x21, [sp, #0x20]",
+        "0000174c cbz       x0, #0x17b4",
+        "00001750 mov       x20, x0",
+        "00001754 add       x1, x29, #0x38",
+        "00001758 mov       w0, #0x4223",
+        "0000175c mov       w3, #1",
+        "00001760 mov       w2, #0x10"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 1,
+      "first_instruction": "0x1bb4",
+      "last_instruction": "0x1bb8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x1bbc",
+          "target": "0x1320",
+          "symbol": "osal_set_msg_src"
+        }
+      ],
+      "listing": [
+        "00001bac str       w0, [x19, #0x20]",
+        "00001bb0 mov       x0, x19",
+        "00001bb4 mov       w1, #0x8290",
+        "00001bb8 movk      w1, #0x4b, lsl #16",
+        "00001bbc bl        #0x1320",
+        "00001bc0 ldr       x1, [x29, #0x28]",
+        "00001bc4 mov       w0, #0x8246",
+        "00001bc8 movk      w0, #0xe1, lsl #16",
+        "00001bcc bl        #0x15a0",
+        "00001bd0 cbnz      w0, #0x1bf4",
+        "00001bd4 mov       w0, #1",
+        "00001bd8 ldr       w1, [x20]",
+        "00001bdc movk      w0, #0x2000, lsl #16",
+        "00001be0 cmp       w1, w0",
+        "00001be4 b.ne      #0x1bf4",
+        "00001be8 adrp      x0, #0x15000"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 1,
+      "first_instruction": "0x1c88",
+      "last_instruction": "0x1c8c",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x1c90",
+          "target": "0x1320",
+          "symbol": "osal_set_msg_src"
+        }
+      ],
+      "listing": [
+        "00001c80 ldr       w1, [x20]",
+        "00001c84 str       w1, [x0]",
+        "00001c88 mov       w1, #0x233",
+        "00001c8c movk      w1, #0x4b, lsl #16",
+        "00001c90 bl        #0x1320",
+        "00001c94 ldr       x1, [x29, #0x28]",
+        "00001c98 mov       w0, #0x257",
+        "00001c9c movk      w0, #0x8087, lsl #16",
+        "00001ca0 bl        #0x15a0",
+        "00001ca4 mov       w19, w0",
+        "00001ca8 mov       w0, #0x257",
+        "00001cac ldr       x1, [x29, #0x28]",
+        "00001cb0 movk      w0, #0x8087, lsl #16",
+        "00001cb4 cbz       w19, #0x1ccc",
+        "00001cb8 bl        #0x15f0",
+        "00001cbc mov       w0, w19"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 1,
+      "first_instruction": "0x20c4",
+      "last_instruction": "0x20c8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x20cc",
+          "target": "0x1320",
+          "symbol": "osal_set_msg_src"
+        }
+      ],
+      "listing": [
+        "000020bc cbnz      w0, #0x211c",
+        "000020c0 ldr       x0, [x29, #0x28]",
+        "000020c4 mov       w1, #0x233",
+        "000020c8 movk      w1, #0x4b, lsl #16",
+        "000020cc bl        #0x1320",
+        "000020d0 ldr       x1, [x29, #0x28]",
+        "000020d4 mov       w0, #0x141",
+        "000020d8 movk      w0, #0x92, lsl #16",
+        "000020dc str       w0, [x1]",
+        "000020e0 mov       w0, #0x14",
+        "000020e4 str       w0, [x1, #4]",
+        "000020e8 mov       w0, #0x1c",
+        "000020ec str       w0, [x1, #8]",
+        "000020f0 mov       w0, #0x20",
+        "000020f4 str       w0, [x1, #0xc]",
+        "000020f8 mov       w0, #0x21"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 0,
+      "first_instruction": "0x21f0",
+      "last_instruction": "0x2200",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2204",
+          "target": "0x13e0",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "000021e8 cbnz      w0, #0x2218",
+        "000021ec add       x21, x29, #0x50",
+        "000021f0 mov       w0, #0x233",
+        "000021f4 mov       x1, x21",
+        "000021f8 mov       w3, #1",
+        "000021fc mov       w2, #4",
+        "00002200 movk      w0, #0x4b, lsl #16",
+        "00002204 bl        #0x13e0",
+        "00002208 mov       w19, w0",
+        "0000220c cbz       w0, #0x222c",
+        "00002210 ldr       w0, [x29, #0x38]",
+        "00002214 bl        #0x1590",
+        "00002218 mov       w0, w19",
+        "0000221c ldr       x21, [sp, #0x20]",
+        "00002220 ldp       x19, x20, [sp, #0x10]",
+        "00002224 ldp       x29, x30, [sp], #0x80",
+        "00002228 ret       ",
+        "0000222c ldr       w0, [x20]",
+        "00002230 str       wzr, [x29, #0x4c]"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 0,
+      "first_instruction": "0x228c",
+      "last_instruction": "0x2294",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2298",
+          "target": "0x13c0",
+          "symbol": "osal_rcv_msg_tmo"
+        }
+      ],
+      "listing": [
+        "00002284 cbnz      w0, #0x22a8",
+        "00002288 mov       x1, x21",
+        "0000228c mov       w0, #0x233",
+        "00002290 mov       w2, #-1",
+        "00002294 movk      w0, #0x4b, lsl #16",
+        "00002298 bl        #0x13c0",
+        "0000229c mov       w19, w0",
+        "000022a0 ldr       x1, [x29, #0x50]",
+        "000022a4 cbz       w0, #0x22b8",
+        "000022a8 mov       w0, #0x233",
+        "000022ac movk      w0, #0x4b, lsl #16",
+        "000022b0 bl        #0x15f0",
+        "000022b4 b         #0x2210",
+        "000022b8 ldr       w19, [x1]",
+        "000022bc mov       w0, #0x233",
+        "000022c0 movk      w0, #0x4b, lsl #16",
+        "000022c4 cbnz      w19, #0x22b0"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 0,
+      "first_instruction": "0x22a8",
+      "last_instruction": "0x22ac",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x22b0",
+          "target": "0x15f0",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000022a0 ldr       x1, [x29, #0x50]",
+        "000022a4 cbz       w0, #0x22b8",
+        "000022a8 mov       w0, #0x233",
+        "000022ac movk      w0, #0x4b, lsl #16",
+        "000022b0 bl        #0x15f0",
+        "000022b4 b         #0x2210",
+        "000022b8 ldr       w19, [x1]",
+        "000022bc mov       w0, #0x233",
+        "000022c0 movk      w0, #0x4b, lsl #16",
+        "000022c4 cbnz      w19, #0x22b0",
+        "000022c8 bl        #0x15f0",
+        "000022cc ldr       w0, [x20]",
+        "000022d0 bl        #0x1590",
+        "000022d4 ldr       w0, [x29, #0x38]",
+        "000022d8 str       w0, [x20]",
+        "000022dc b         #0x2218"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 0,
+      "first_instruction": "0x22bc",
+      "last_instruction": "0x22c0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x22c8",
+          "target": "0x15f0",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000022b4 b         #0x2210",
+        "000022b8 ldr       w19, [x1]",
+        "000022bc mov       w0, #0x233",
+        "000022c0 movk      w0, #0x4b, lsl #16",
+        "000022c4 cbnz      w19, #0x22b0",
+        "000022c8 bl        #0x15f0",
+        "000022cc ldr       w0, [x20]",
+        "000022d0 bl        #0x1590",
+        "000022d4 ldr       w0, [x29, #0x38]",
+        "000022d8 str       w0, [x20]",
+        "000022dc b         #0x2218",
+        "000022e0 stp       x29, x30, [sp, #-0x170]!",
+        "000022e4 mov       x2, #0x100",
+        "000022e8 mov       w1, #0",
+        "000022ec mov       x29, sp",
+        "000022f0 stp       x19, x20, [sp, #0x10]"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 0,
+      "first_instruction": "0x282c",
+      "last_instruction": "0x2830",
+      "next_call_without_register_overwrite": [],
+      "listing": [
+        "00002824 str       xzr, [x29, #0xd8]",
+        "00002828 str       w0, [x29, #0x80]",
+        "0000282c mov       w0, #0x8290",
+        "00002830 movk      w0, #0x4b, lsl #16",
+        "00002834 str       w0, [x29, #0x88]",
+        "00002838 mov       w0, #0x10000",
+        "0000283c str       w0, [x29, #0x9c]",
+        "00002840 mov       w0, #0x200",
+        "00002844 str       w0, [x29, #0xa0]",
+        "00002848 add       x0, x29, #0x80",
+        "0000284c bl        #0x1b40",
+        "00002850 ldp       x19, x20, [sp, #0x10]",
+        "00002854 ldp       x21, x22, [sp, #0x20]",
+        "00002858 ldp       x23, x24, [sp, #0x30]",
+        "0000285c ldp       x25, x26, [sp, #0x40]",
+        "00002860 ldp       x29, x30, [sp], #0xe0"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 0,
+      "first_instruction": "0x2880",
+      "last_instruction": "0x2884",
+      "next_call_without_register_overwrite": [],
+      "listing": [
+        "00002878 str       xzr, [x29, #0xd8]",
+        "0000287c str       w0, [x29, #0x80]",
+        "00002880 mov       w0, #0x8290",
+        "00002884 movk      w0, #0x4b, lsl #16",
+        "00002888 str       w0, [x29, #0x88]",
+        "0000288c adrp      x0, #0x15000",
+        "00002890 ldr       x0, [x0, #0x1f8]",
+        "00002894 str       x0, [x29, #0x90]",
+        "00002898 adrp      x0, #0x15000",
+        "0000289c add       x0, x0, #0x238",
+        "000028a0 str       x0, [x29, #0xa0]",
+        "000028a4 mov       w0, #0x10000",
+        "000028a8 str       w0, [x29, #0xac]",
+        "000028ac b         #0x2848",
+        "000028b0 mov       w0, #2",
+        "000028b4 ldr       w2, [x21, #0x18]"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 0,
+      "first_instruction": "0x28c8",
+      "last_instruction": "0x28cc",
+      "next_call_without_register_overwrite": [],
+      "listing": [
+        "000028c0 str       xzr, [x29, #0xd8]",
+        "000028c4 str       w0, [x29, #0x80]",
+        "000028c8 mov       w0, #0x8290",
+        "000028cc movk      w0, #0x4b, lsl #16",
+        "000028d0 str       w0, [x29, #0x88]",
+        "000028d4 adrp      x0, #0x15000",
+        "000028d8 ldr       x0, [x0, #0x1f8]",
+        "000028dc str       x0, [x29, #0x90]",
+        "000028e0 adrp      x0, #0x15000",
+        "000028e4 add       x1, x0, #0x238",
+        "000028e8 mov       x20, x0",
+        "000028ec str       x1, [x29, #0xa0]",
+        "000028f0 cbnz      w2, #0x2e54",
+        "000028f4 ldrh      w2, [x1, #6]",
+        "000028f8 cmp       w2, #0x30",
+        "000028fc b.eq      #0x2c58"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 0,
+      "first_instruction": "0x338c",
+      "last_instruction": "0x3394",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x339c",
+          "target": "0x1570",
+          "symbol": "osal_reg_sync_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "00003384 add       x2, x2, #0x7c4",
+        "00003388 add       x1, x20, #0x2b0",
+        "0000338c mov       w0, #0x8290",
+        "00003390 mov       x3, #0",
+        "00003394 movk      w0, #0x4b, lsl #16",
+        "00003398 mov       x26, x20",
+        "0000339c bl        #0x1570",
+        "000033a0 mov       w19, w0",
+        "000033a4 cbnz      w0, #0x33e4",
+        "000033a8 adrp      x21, #0x25000",
+        "000033ac adrp      x2, #0x3000",
+        "000033b0 add       x2, x2, #0x34",
+        "000033b4 add       x1, x21, #0x298",
+        "000033b8 mov       w0, #0x233",
+        "000033bc mov       x3, #0",
+        "000033c0 movk      w0, #0x4b, lsl #16",
+        "000033c4 mov       x25, x21"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 0,
+      "first_instruction": "0x33b8",
+      "last_instruction": "0x33c0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x33c8",
+          "target": "0x1570",
+          "symbol": "osal_reg_sync_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "000033b0 add       x2, x2, #0x34",
+        "000033b4 add       x1, x21, #0x298",
+        "000033b8 mov       w0, #0x233",
+        "000033bc mov       x3, #0",
+        "000033c0 movk      w0, #0x4b, lsl #16",
+        "000033c4 mov       x25, x21",
+        "000033c8 bl        #0x1570",
+        "000033cc mov       w19, w0",
+        "000033d0 cbz       w0, #0x3400",
+        "000033d4 ldr       x1, [x20, #0x2b0]",
+        "000033d8 mov       w0, #0x8290",
+        "000033dc movk      w0, #0x4b, lsl #16",
+        "000033e0 bl        #0x1500",
+        "000033e4 mov       w0, w19",
+        "000033e8 ldp       x19, x20, [sp, #0x10]",
+        "000033ec ldp       x21, x22, [sp, #0x20]",
+        "000033f0 ldp       x23, x24, [sp, #0x30]"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 0,
+      "first_instruction": "0x33d8",
+      "last_instruction": "0x33dc",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x33e0",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "000033d0 cbz       w0, #0x3400",
+        "000033d4 ldr       x1, [x20, #0x2b0]",
+        "000033d8 mov       w0, #0x8290",
+        "000033dc movk      w0, #0x4b, lsl #16",
+        "000033e0 bl        #0x1500",
+        "000033e4 mov       w0, w19",
+        "000033e8 ldp       x19, x20, [sp, #0x10]",
+        "000033ec ldp       x21, x22, [sp, #0x20]",
+        "000033f0 ldp       x23, x24, [sp, #0x30]",
+        "000033f4 ldp       x25, x26, [sp, #0x40]",
+        "000033f8 ldp       x29, x30, [sp], #0x60",
+        "000033fc ret       ",
+        "00003400 adrp      x22, #0x25000",
+        "00003404 adrp      x2, #0x3000",
+        "00003408 add       x2, x2, #0x174",
+        "0000340c add       x1, x22, #0x2a8"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x3410",
+      "last_instruction": "0x3418",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x341c",
+          "target": "0x1570",
+          "symbol": "osal_reg_sync_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "00003408 add       x2, x2, #0x174",
+        "0000340c add       x1, x22, #0x2a8",
+        "00003410 mov       w0, #0x24e",
+        "00003414 mov       x3, #0",
+        "00003418 movk      w0, #0x4b, lsl #16",
+        "0000341c bl        #0x1570",
+        "00003420 mov       w19, w0",
+        "00003424 cbz       w0, #0x3444",
+        "00003428 ldr       x1, [x20, #0x2b0]",
+        "0000342c mov       w0, #0x8290",
+        "00003430 movk      w0, #0x4b, lsl #16",
+        "00003434 bl        #0x1500",
+        "00003438 ldr       x1, [x21, #0x298]",
+        "0000343c mov       w0, #0x233",
+        "00003440 b         #0x33dc",
+        "00003444 adrp      x21, #0x25000",
+        "00003448 adrp      x2, #0x2000"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 0,
+      "first_instruction": "0x342c",
+      "last_instruction": "0x3430",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x3434",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "00003424 cbz       w0, #0x3444",
+        "00003428 ldr       x1, [x20, #0x2b0]",
+        "0000342c mov       w0, #0x8290",
+        "00003430 movk      w0, #0x4b, lsl #16",
+        "00003434 bl        #0x1500",
+        "00003438 ldr       x1, [x21, #0x298]",
+        "0000343c mov       w0, #0x233",
+        "00003440 b         #0x33dc",
+        "00003444 adrp      x21, #0x25000",
+        "00003448 adrp      x2, #0x2000",
+        "0000344c add       x2, x2, #0xe6c",
+        "00003450 add       x1, x21, #0x2a0",
+        "00003454 mov       w0, #0x998",
+        "00003458 mov       x3, #0",
+        "0000345c movk      w0, #0x804b, lsl #16",
+        "00003460 bl        #0x1570"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x804b0998",
+      "register": 0,
+      "first_instruction": "0x3454",
+      "last_instruction": "0x345c",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x3460",
+          "target": "0x1570",
+          "symbol": "osal_reg_sync_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "0000344c add       x2, x2, #0xe6c",
+        "00003450 add       x1, x21, #0x2a0",
+        "00003454 mov       w0, #0x998",
+        "00003458 mov       x3, #0",
+        "0000345c movk      w0, #0x804b, lsl #16",
+        "00003460 bl        #0x1570",
+        "00003464 mov       w19, w0",
+        "00003468 cbnz      w0, #0x33e4",
+        "0000346c adrp      x20, #0x3000",
+        "00003470 adrp      x4, #0x3000",
+        "00003474 add       x24, x20, #0xe48",
+        "00003478 adrp      x2, #0x3000",
+        "0000347c adrp      x0, #0x3000",
+        "00003480 add       x4, x4, #0xe38",
+        "00003484 mov       x3, #1",
+        "00003488 add       x2, x2, #0xe43",
+        "0000348c mov       x1, x24"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 0,
+      "first_instruction": "0x34cc",
+      "last_instruction": "0x34d0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x34d4",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "000034c4 bl        #0x1550",
+        "000034c8 ldr       x1, [x26, #0x2b0]",
+        "000034cc mov       w0, #0x8290",
+        "000034d0 movk      w0, #0x4b, lsl #16",
+        "000034d4 bl        #0x1500",
+        "000034d8 ldr       x1, [x25, #0x298]",
+        "000034dc mov       w0, #0x233",
+        "000034e0 movk      w0, #0x4b, lsl #16",
+        "000034e4 bl        #0x1500",
+        "000034e8 ldr       x1, [x22, #0x2a8]",
+        "000034ec mov       w0, #0x24e",
+        "000034f0 movk      w0, #0x4b, lsl #16",
+        "000034f4 bl        #0x1500",
+        "000034f8 mov       w0, #0x998",
+        "000034fc ldr       x1, [x21, #0x2a0]",
+        "00003500 movk      w0, #0x804b, lsl #16"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 0,
+      "first_instruction": "0x34dc",
+      "last_instruction": "0x34e0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x34e4",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "000034d4 bl        #0x1500",
+        "000034d8 ldr       x1, [x25, #0x298]",
+        "000034dc mov       w0, #0x233",
+        "000034e0 movk      w0, #0x4b, lsl #16",
+        "000034e4 bl        #0x1500",
+        "000034e8 ldr       x1, [x22, #0x2a8]",
+        "000034ec mov       w0, #0x24e",
+        "000034f0 movk      w0, #0x4b, lsl #16",
+        "000034f4 bl        #0x1500",
+        "000034f8 mov       w0, #0x998",
+        "000034fc ldr       x1, [x21, #0x2a0]",
+        "00003500 movk      w0, #0x804b, lsl #16",
+        "00003504 b         #0x33e0",
+        "00003508 add       x1, x29, #0x58",
+        "0000350c mov       x2, #4",
+        "00003510 bl        #0x13d0"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x34ec",
+      "last_instruction": "0x34f0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x34f4",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "000034e4 bl        #0x1500",
+        "000034e8 ldr       x1, [x22, #0x2a8]",
+        "000034ec mov       w0, #0x24e",
+        "000034f0 movk      w0, #0x4b, lsl #16",
+        "000034f4 bl        #0x1500",
+        "000034f8 mov       w0, #0x998",
+        "000034fc ldr       x1, [x21, #0x2a0]",
+        "00003500 movk      w0, #0x804b, lsl #16",
+        "00003504 b         #0x33e0",
+        "00003508 add       x1, x29, #0x58",
+        "0000350c mov       x2, #4",
+        "00003510 bl        #0x13d0",
+        "00003514 mov       w19, w0",
+        "00003518 tbz       w0, #0x1f, #0x3530",
+        "0000351c mov       w0, w23",
+        "00003520 bl        #0x1540"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x804b0998",
+      "register": 0,
+      "first_instruction": "0x34f8",
+      "last_instruction": "0x3500",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x3504",
+          "target": "0x33e0",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "000034f0 movk      w0, #0x4b, lsl #16",
+        "000034f4 bl        #0x1500",
+        "000034f8 mov       w0, #0x998",
+        "000034fc ldr       x1, [x21, #0x2a0]",
+        "00003500 movk      w0, #0x804b, lsl #16",
+        "00003504 b         #0x33e0",
+        "00003508 add       x1, x29, #0x58",
+        "0000350c mov       x2, #4",
+        "00003510 bl        #0x13d0",
+        "00003514 mov       w19, w0",
+        "00003518 tbz       w0, #0x1f, #0x3530",
+        "0000351c mov       w0, w23",
+        "00003520 bl        #0x1540",
+        "00003524 mov       x0, x24",
+        "00003528 bl        #0x1550",
+        "0000352c b         #0x34c8",
+        "00003530 adrp      x0, #0x25000"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x804b0998",
+      "register": 0,
+      "first_instruction": "0x35f4",
+      "last_instruction": "0x35f8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x35fc",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "000035ec adrp      x0, #0x25000",
+        "000035f0 ldr       x1, [x0, #0x2a0]",
+        "000035f4 mov       w0, #0x998",
+        "000035f8 movk      w0, #0x804b, lsl #16",
+        "000035fc bl        #0x1500",
+        "00003600 adrp      x0, #0x25000",
+        "00003604 ldr       x1, [x0, #0x2a8]",
+        "00003608 mov       w0, #0x24e",
+        "0000360c movk      w0, #0x4b, lsl #16",
+        "00003610 bl        #0x1500",
+        "00003614 adrp      x0, #0x25000",
+        "00003618 ldr       x1, [x0, #0x298]",
+        "0000361c mov       w0, #0x233",
+        "00003620 movk      w0, #0x4b, lsl #16",
+        "00003624 bl        #0x1500",
+        "00003628 adrp      x0, #0x25000"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x3608",
+      "last_instruction": "0x360c",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x3610",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "00003600 adrp      x0, #0x25000",
+        "00003604 ldr       x1, [x0, #0x2a8]",
+        "00003608 mov       w0, #0x24e",
+        "0000360c movk      w0, #0x4b, lsl #16",
+        "00003610 bl        #0x1500",
+        "00003614 adrp      x0, #0x25000",
+        "00003618 ldr       x1, [x0, #0x298]",
+        "0000361c mov       w0, #0x233",
+        "00003620 movk      w0, #0x4b, lsl #16",
+        "00003624 bl        #0x1500",
+        "00003628 adrp      x0, #0x25000",
+        "0000362c ldr       x1, [x0, #0x2b0]",
+        "00003630 mov       w0, #0x8290",
+        "00003634 movk      w0, #0x4b, lsl #16",
+        "00003638 bl        #0x1500",
+        "0000363c mov       w20, w0"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 0,
+      "first_instruction": "0x361c",
+      "last_instruction": "0x3620",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x3624",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "00003614 adrp      x0, #0x25000",
+        "00003618 ldr       x1, [x0, #0x298]",
+        "0000361c mov       w0, #0x233",
+        "00003620 movk      w0, #0x4b, lsl #16",
+        "00003624 bl        #0x1500",
+        "00003628 adrp      x0, #0x25000",
+        "0000362c ldr       x1, [x0, #0x2b0]",
+        "00003630 mov       w0, #0x8290",
+        "00003634 movk      w0, #0x4b, lsl #16",
+        "00003638 bl        #0x1500",
+        "0000363c mov       w20, w0",
+        "00003640 ldr       w2, [x19, #0x258]",
+        "00003644 cbz       w2, #0x365c",
+        "00003648 mov       w2, w2",
+        "0000364c mov       w1, #0",
+        "00003650 mov       w0, #0x4a"
+      ]
+    },
+    {
+      "path": "/lib/libupdaterufp.so",
+      "inode": 95297,
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "section": ".text",
+      "value": "0x4b8290",
+      "register": 0,
+      "first_instruction": "0x3630",
+      "last_instruction": "0x3634",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x3638",
+          "target": "0x1500",
+          "symbol": "osal_unreg_msg_queue_cb"
+        }
+      ],
+      "listing": [
+        "00003628 adrp      x0, #0x25000",
+        "0000362c ldr       x1, [x0, #0x2b0]",
+        "00003630 mov       w0, #0x8290",
+        "00003634 movk      w0, #0x4b, lsl #16",
+        "00003638 bl        #0x1500",
+        "0000363c mov       w20, w0",
+        "00003640 ldr       w2, [x19, #0x258]",
+        "00003644 cbz       w2, #0x365c",
+        "00003648 mov       w2, w2",
+        "0000364c mov       w1, #0",
+        "00003650 mov       w0, #0x4a",
+        "00003654 bl        #0x14a0",
+        "00003658 str       wzr, [x19, #0x258]",
+        "0000365c adrp      x19, #0x15000",
+        "00003660 ldr       w0, [x19, #0x200]",
+        "00003664 cbz       w0, #0x3670"
+      ]
+    },
+    {
+      "path": "/lib/libmpr.so",
+      "inode": 95303,
+      "source_sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xb6d88",
+      "last_instruction": "0xb6d98",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xb6d9c",
+          "target": "0x7e350",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "000b6d80 ldr       w0, [x29, #0x7c]",
+        "000b6d84 cbnz      w0, #0xb6d4c",
+        "000b6d88 mov       w0, #0x24e",
+        "000b6d8c add       x1, x29, #0x60",
+        "000b6d90 mov       w3, #1",
+        "000b6d94 mov       w2, #0x24",
+        "000b6d98 movk      w0, #0x4b, lsl #16",
+        "000b6d9c bl        #0x7e350",
+        "000b6da0 cbnz      w0, #0xb6d4c",
+        "000b6da4 ldr       x20, [x29, #0x60]",
+        "000b6da8 mov       w0, #5",
+        "000b6dac stp       xzr, xzr, [x20]",
+        "000b6db0 stp       xzr, xzr, [x20, #0x10]",
+        "000b6db4 str       wzr, [x20, #0x20]",
+        "000b6db8 ldr       w1, [x29, #0x5c]",
+        "000b6dbc str       w0, [x20]",
+        "000b6dc0 ldr       x0, [x29, #0x60]",
+        "000b6dc4 bl        #0x7c010",
+        "000b6dc8 ldr       x1, [x29, #0x60]"
+      ]
+    },
+    {
+      "path": "/lib/libmpr.so",
+      "inode": 95303,
+      "source_sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xb6dcc",
+      "last_instruction": "0xb6dd0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xb6dd4",
+          "target": "0x827c0",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "000b6dc4 bl        #0x7c010",
+        "000b6dc8 ldr       x1, [x29, #0x60]",
+        "000b6dcc mov       w0, #0x24e",
+        "000b6dd0 movk      w0, #0x4b, lsl #16",
+        "000b6dd4 bl        #0x827c0",
+        "000b6dd8 cbnz      w0, #0xb6d4c",
+        "000b6ddc ldrh      w21, [x20, #6]",
+        "000b6de0 ldrh      w24, [x20, #8]",
+        "000b6de4 ldr       x1, [x29, #0x60]",
+        "000b6de8 cbz       x1, #0xb6df8",
+        "000b6dec mov       w0, #0x24e",
+        "000b6df0 movk      w0, #0x4b, lsl #16",
+        "000b6df4 bl        #0x83370",
+        "000b6df8 ldr       w4, [x29, #0x5c]",
+        "000b6dfc cbz       w4, #0xb6e30",
+        "000b6e00 add       x0, x29, #0x78"
+      ]
+    },
+    {
+      "path": "/lib/libmpr.so",
+      "inode": 95303,
+      "source_sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xb6dec",
+      "last_instruction": "0xb6df0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xb6df4",
+          "target": "0x83370",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000b6de4 ldr       x1, [x29, #0x60]",
+        "000b6de8 cbz       x1, #0xb6df8",
+        "000b6dec mov       w0, #0x24e",
+        "000b6df0 movk      w0, #0x4b, lsl #16",
+        "000b6df4 bl        #0x83370",
+        "000b6df8 ldr       w4, [x29, #0x5c]",
+        "000b6dfc cbz       w4, #0xb6e30",
+        "000b6e00 add       x0, x29, #0x78",
+        "000b6e04 mov       w2, w4",
+        "000b6e08 mov       x3, x0",
+        "000b6e0c mov       w1, #0x11d",
+        "000b6e10 stp       xzr, xzr, [x0]",
+        "000b6e14 mov       w0, #0x22",
+        "000b6e18 movk      w0, #0x94, lsl #16",
+        "000b6e1c bl        #0xb5628",
+        "000b6e20 ldr       w2, [x29, #0x5c]"
+      ]
+    },
+    {
+      "path": "/lib/libInfraCCPFStatic.so",
+      "inode": 95310,
+      "source_sha256": "b991137ce1e8b3246278a60cc3efc25af61fb3af64788b7fb780d90d10d0a5ce",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 20,
+      "first_instruction": "0x14494",
+      "last_instruction": "0x1449c",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x144a4",
+          "target": "0x8cd0",
+          "symbol": "osal_set_msg_src"
+        }
+      ],
+      "listing": [
+        "0001448c mov       w20, w0",
+        "00014490 cbnz      w0, #0x14500",
+        "00014494 mov       w20, #0x24e",
+        "00014498 ldr       x0, [x29, #0x38]",
+        "0001449c movk      w20, #0x4b, lsl #16",
+        "000144a0 mov       w1, w20",
+        "000144a4 bl        #0x8cd0",
+        "000144a8 ldr       x1, [x29, #0x38]",
+        "000144ac mov       w0, #3",
+        "000144b0 stp       w0, w20, [x1, #8]",
+        "000144b4 mov       w0, #0x16a",
+        "000144b8 stp       w22, w21, [x1]",
+        "000144bc movk      w0, #0x94, lsl #16",
+        "000144c0 bl        #0x9560",
+        "000144c4 cmp       w0, #0",
+        "000144c8 ccmp      x19, #0, #4, eq",
+        "000144cc mov       w20, w0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraCCPFStatic.so",
+      "inode": 95310,
+      "source_sha256": "b991137ce1e8b3246278a60cc3efc25af61fb3af64788b7fb780d90d10d0a5ce",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x147c0",
+      "last_instruction": "0x147c4",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x147c8",
+          "target": "0x9610",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000147b8 ldr       x1, [x29, #0x48]",
+        "000147bc cbz       x1, #0x147cc",
+        "000147c0 mov       w0, #0x24e",
+        "000147c4 movk      w0, #0x4b, lsl #16",
+        "000147c8 bl        #0x9610",
+        "000147cc mov       x2, x23",
+        "000147d0 mov       w0, #0x22",
+        "000147d4 mov       w1, #0x11d",
+        "000147d8 movk      w0, #0x94, lsl #16",
+        "000147dc stp       xzr, xzr, [x29, #0x50]",
+        "000147e0 bl        #0x14458",
+        "000147e4 mov       w20, w0",
+        "000147e8 cbnz      w0, #0x147f4",
+        "000147ec ldr       w20, [x29, #0x54]",
+        "000147f0 cbz       w20, #0x1483c",
+        "000147f4 adrp      x2, #0x18000"
+      ]
+    },
+    {
+      "path": "/lib/libInfraCCPFStatic.so",
+      "inode": 95310,
+      "source_sha256": "b991137ce1e8b3246278a60cc3efc25af61fb3af64788b7fb780d90d10d0a5ce",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x148cc",
+      "last_instruction": "0x148d8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x148dc",
+          "target": "0x8fe0",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "000148c4 b         #0x147ac",
+        "000148c8 add       x1, x29, #0x48",
+        "000148cc mov       w0, #0x24e",
+        "000148d0 mov       w3, #1",
+        "000148d4 mov       w2, #0x24",
+        "000148d8 movk      w0, #0x4b, lsl #16",
+        "000148dc bl        #0x8fe0",
+        "000148e0 mov       w19, w0",
+        "000148e4 cbz       w0, #0x14910",
+        "000148e8 adrp      x2, #0x18000",
+        "000148ec adrp      x1, #0x18000",
+        "000148f0 mov       w4, w0",
+        "000148f4 add       x2, x2, #0x898",
+        "000148f8 add       x1, x1, #0x636",
+        "000148fc mov       w3, #0xa8",
+        "00014900 mov       w0, #0",
+        "00014904 bl        #0x93c0",
+        "00014908 mov       w3, #0xa9"
+      ]
+    },
+    {
+      "path": "/lib/libInfraCCPFStatic.so",
+      "inode": 95310,
+      "source_sha256": "b991137ce1e8b3246278a60cc3efc25af61fb3af64788b7fb780d90d10d0a5ce",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x1493c",
+      "last_instruction": "0x14940",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x14944",
+          "target": "0x9560",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "00014934 bl        #0x8cd0",
+        "00014938 ldr       x1, [x29, #0x48]",
+        "0001493c mov       w0, #0x24e",
+        "00014940 movk      w0, #0x4b, lsl #16",
+        "00014944 bl        #0x9560",
+        "00014948 mov       w22, w0",
+        "0001494c cbz       w0, #0x1498c",
+        "00014950 adrp      x2, #0x18000",
+        "00014954 adrp      x1, #0x18000",
+        "00014958 mov       w4, w0",
+        "0001495c add       x2, x2, #0x898",
+        "00014960 add       x1, x1, #0x660",
+        "00014964 mov       w3, #0xb9",
+        "00014968 mov       w0, #0",
+        "0001496c bl        #0x93c0",
+        "00014970 mov       w2, w21"
+      ]
+    },
+    {
+      "path": "/lib/libInfraCCPF.so",
+      "inode": 95317,
+      "source_sha256": "16564b67fed0ac95482da418da300fbaea6004fce4f053c6b2a74a5a457fcf9d",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 20,
+      "first_instruction": "0xad768",
+      "last_instruction": "0xad770",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xad778",
+          "target": "0x5a540",
+          "symbol": "osal_set_msg_src"
+        }
+      ],
+      "listing": [
+        "000ad760 mov       w20, w0",
+        "000ad764 cbnz      w0, #0xad7d4",
+        "000ad768 mov       w20, #0x24e",
+        "000ad76c ldr       x0, [x29, #0x38]",
+        "000ad770 movk      w20, #0x4b, lsl #16",
+        "000ad774 mov       w1, w20",
+        "000ad778 bl        #0x5a540",
+        "000ad77c ldr       x1, [x29, #0x38]",
+        "000ad780 mov       w0, #3",
+        "000ad784 stp       w0, w20, [x1, #8]",
+        "000ad788 mov       w0, #0x16a",
+        "000ad78c stp       w22, w21, [x1]",
+        "000ad790 movk      w0, #0x94, lsl #16",
+        "000ad794 bl        #0x5fa20",
+        "000ad798 cmp       w0, #0",
+        "000ad79c ccmp      x19, #0, #4, eq",
+        "000ad7a0 mov       w20, w0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraCCPF.so",
+      "inode": 95317,
+      "source_sha256": "16564b67fed0ac95482da418da300fbaea6004fce4f053c6b2a74a5a457fcf9d",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xada94",
+      "last_instruction": "0xada98",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xada9c",
+          "target": "0x60350",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000ada8c ldr       x1, [x29, #0x48]",
+        "000ada90 cbz       x1, #0xadaa0",
+        "000ada94 mov       w0, #0x24e",
+        "000ada98 movk      w0, #0x4b, lsl #16",
+        "000ada9c bl        #0x60350",
+        "000adaa0 mov       x2, x23",
+        "000adaa4 mov       w0, #0x22",
+        "000adaa8 mov       w1, #0x11d",
+        "000adaac movk      w0, #0x94, lsl #16",
+        "000adab0 stp       xzr, xzr, [x29, #0x50]",
+        "000adab4 bl        #0xad72c",
+        "000adab8 mov       w20, w0",
+        "000adabc cbnz      w0, #0xadac8",
+        "000adac0 ldr       w20, [x29, #0x54]",
+        "000adac4 cbz       w20, #0xadb10",
+        "000adac8 adrp      x2, #0xfa000"
+      ]
+    },
+    {
+      "path": "/lib/libInfraCCPF.so",
+      "inode": 95317,
+      "source_sha256": "16564b67fed0ac95482da418da300fbaea6004fce4f053c6b2a74a5a457fcf9d",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xadba0",
+      "last_instruction": "0xadbac",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xadbb0",
+          "target": "0x5c140",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "000adb98 b         #0xada80",
+        "000adb9c add       x1, x29, #0x48",
+        "000adba0 mov       w0, #0x24e",
+        "000adba4 mov       w3, #1",
+        "000adba8 mov       w2, #0x24",
+        "000adbac movk      w0, #0x4b, lsl #16",
+        "000adbb0 bl        #0x5c140",
+        "000adbb4 mov       w19, w0",
+        "000adbb8 cbz       w0, #0xadbe4",
+        "000adbbc adrp      x2, #0xfa000",
+        "000adbc0 adrp      x1, #0xfa000",
+        "000adbc4 mov       w4, w0",
+        "000adbc8 add       x2, x2, #0xef0",
+        "000adbcc add       x1, x1, #0xc8e",
+        "000adbd0 mov       w3, #0xa8",
+        "000adbd4 mov       w0, #0",
+        "000adbd8 bl        #0x5e990",
+        "000adbdc mov       w3, #0xa9"
+      ]
+    },
+    {
+      "path": "/lib/libInfraCCPF.so",
+      "inode": 95317,
+      "source_sha256": "16564b67fed0ac95482da418da300fbaea6004fce4f053c6b2a74a5a457fcf9d",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0xadc10",
+      "last_instruction": "0xadc14",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0xadc18",
+          "target": "0x5fa20",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "000adc08 bl        #0x5a540",
+        "000adc0c ldr       x1, [x29, #0x48]",
+        "000adc10 mov       w0, #0x24e",
+        "000adc14 movk      w0, #0x4b, lsl #16",
+        "000adc18 bl        #0x5fa20",
+        "000adc1c mov       w22, w0",
+        "000adc20 cbz       w0, #0xadc60",
+        "000adc24 adrp      x2, #0xfa000",
+        "000adc28 adrp      x1, #0xfa000",
+        "000adc2c mov       w4, w0",
+        "000adc30 add       x2, x2, #0xef0",
+        "000adc34 add       x1, x1, #0xcb8",
+        "000adc38 mov       w3, #0xb9",
+        "000adc3c mov       w0, #0",
+        "000adc40 bl        #0x5e990",
+        "000adc44 mov       w2, w21"
+      ]
+    },
+    {
+      "path": "/lib/libInfraMtpServer.so",
+      "inode": 95384,
+      "source_sha256": "95bdf031ea623a065e920fa5ae875a9138006fc17c00f35075cd44ca46b329c9",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 19,
+      "first_instruction": "0x18240",
+      "last_instruction": "0x18244",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x18258",
+          "target": "0xfff0",
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ],
+      "listing": [
+        "00018238 mov       x29, sp",
+        "0001823c stp       x19, x20, [sp, #0x10]",
+        "00018240 mov       w19, #0x24e",
+        "00018244 movk      w19, #0x4b, lsl #16",
+        "00018248 str       x21, [sp, #0x20]",
+        "0001824c add       x1, x29, #0x38",
+        "00018250 mov       x21, x0",
+        "00018254 mov       w0, w19",
+        "00018258 bl        #0xfff0",
+        "0001825c ldr       x20, [x29, #0x38]",
+        "00018260 mov       w0, #5",
+        "00018264 mov       x1, x20",
+        "00018268 str       w0, [x20]",
+        "0001826c mov       w0, w19",
+        "00018270 bl        #0x10b80",
+        "00018274 ldrh      w3, [x20, #6]"
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 2,
+      "first_instruction": "0x2eae0ec",
+      "last_instruction": "0x2eae0f8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2eae11c",
+          "target": "0x2eacf18",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "02eae0e4 add       x0, x29, #0x48",
+        "02eae0e8 mov       w3, #0x257",
+        "02eae0ec mov       w2, #0x24e",
+        "02eae0f0 mov       w4, #1",
+        "02eae0f4 movk      w3, #0x8087, lsl #16",
+        "02eae0f8 movk      w2, #0x4b, lsl #16",
+        "02eae0fc stp       xzr, xzr, [x0]",
+        "02eae100 add       x0, x29, #0x58",
+        "02eae104 mov       x1, #0x24",
+        "02eae108 stp       xzr, xzr, [x0]",
+        "02eae10c mov       w0, #5",
+        "02eae110 str       wzr, [x29, #0x68]",
+        "02eae114 str       w0, [x29, #0x48]",
+        "02eae118 add       x0, x29, #0x48",
+        "02eae11c bl        #0x2eacf18",
+        "02eae120 cbnz      w0, #0x2eae230",
+        "02eae124 ldrh      w4, [x29, #0x4c]",
+        "02eae128 cbnz      w4, #0x2eae184"
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 2,
+      "first_instruction": "0x2eae2d8",
+      "last_instruction": "0x2eae2e4",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2eae308",
+          "target": "0x2eacf18",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "02eae2d0 add       x0, x29, #0x48",
+        "02eae2d4 mov       w3, #0x257",
+        "02eae2d8 mov       w2, #0x24e",
+        "02eae2dc mov       w4, #1",
+        "02eae2e0 movk      w3, #0x8087, lsl #16",
+        "02eae2e4 movk      w2, #0x4b, lsl #16",
+        "02eae2e8 stp       xzr, xzr, [x0]",
+        "02eae2ec add       x0, x29, #0x58",
+        "02eae2f0 mov       x1, #0x24",
+        "02eae2f4 stp       xzr, xzr, [x0]",
+        "02eae2f8 mov       w0, #7",
+        "02eae2fc str       wzr, [x29, #0x68]",
+        "02eae300 str       w0, [x29, #0x48]",
+        "02eae304 add       x0, x29, #0x48",
+        "02eae308 bl        #0x2eacf18",
+        "02eae30c cbnz      w0, #0x2eae460",
+        "02eae310 ldrh      w4, [x29, #0x4c]",
+        "02eae314 cbnz      w4, #0x2eae3b4"
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 2,
+      "first_instruction": "0x2eae504",
+      "last_instruction": "0x2eae510",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2eae534",
+          "target": "0x2eacf18",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "02eae4fc add       x0, x29, #0x48",
+        "02eae500 mov       w3, #0x257",
+        "02eae504 mov       w2, #0x24e",
+        "02eae508 mov       w4, #1",
+        "02eae50c movk      w3, #0x8087, lsl #16",
+        "02eae510 movk      w2, #0x4b, lsl #16",
+        "02eae514 stp       xzr, xzr, [x0]",
+        "02eae518 add       x0, x29, #0x58",
+        "02eae51c mov       x1, #0x24",
+        "02eae520 stp       xzr, xzr, [x0]",
+        "02eae524 mov       w0, #0xa",
+        "02eae528 str       wzr, [x29, #0x68]",
+        "02eae52c str       w0, [x29, #0x48]",
+        "02eae530 add       x0, x29, #0x48",
+        "02eae534 bl        #0x2eacf18",
+        "02eae538 cbnz      w0, #0x2eae648",
+        "02eae53c ldrh      w4, [x29, #0x4c]",
+        "02eae540 cbnz      w4, #0x2eae59c"
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 2,
+      "first_instruction": "0x2eae6ec",
+      "last_instruction": "0x2eae6f8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2eae71c",
+          "target": "0x2eacf18",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "02eae6e4 add       x0, x29, #0x48",
+        "02eae6e8 mov       w3, #0x257",
+        "02eae6ec mov       w2, #0x24e",
+        "02eae6f0 mov       w4, #1",
+        "02eae6f4 movk      w3, #0x8087, lsl #16",
+        "02eae6f8 movk      w2, #0x4b, lsl #16",
+        "02eae6fc stp       xzr, xzr, [x0]",
+        "02eae700 add       x0, x29, #0x58",
+        "02eae704 mov       x1, #0x24",
+        "02eae708 stp       xzr, xzr, [x0]",
+        "02eae70c mov       w0, #0xd",
+        "02eae710 str       wzr, [x29, #0x68]",
+        "02eae714 str       w0, [x29, #0x48]",
+        "02eae718 add       x0, x29, #0x48",
+        "02eae71c bl        #0x2eacf18",
+        "02eae720 cbnz      w0, #0x2eae830",
+        "02eae724 ldrh      w4, [x29, #0x4c]",
+        "02eae728 cbnz      w4, #0x2eae784"
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "section": ".text",
+      "value": "0x4b0233",
+      "register": 2,
+      "first_instruction": "0x2eae980",
+      "last_instruction": "0x2eae990",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2eae998",
+          "target": "0x2eacf18",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "02eae978 str       w0, [x29, #0x58]",
+        "02eae97c mov       w3, #0x257",
+        "02eae980 mov       w2, #0x233",
+        "02eae984 add       x0, x29, #0x58",
+        "02eae988 mov       w4, #1",
+        "02eae98c movk      w3, #0x8087, lsl #16",
+        "02eae990 movk      w2, #0x4b, lsl #16",
+        "02eae994 mov       x1, #8",
+        "02eae998 bl        #0x2eacf18",
+        "02eae99c mov       w22, w0",
+        "02eae9a0 cbnz      w0, #0x2eaea9c",
+        "02eae9a4 ldrh      w4, [x29, #0x5c]",
+        "02eae9a8 cbnz      w4, #0x2eae9f0",
+        "02eae9ac adrp      x0, #0x399f000",
+        "02eae9b0 add       x2, x19, #0xc18",
+        "02eae9b4 add       x1, x20, #0xd47",
+        "02eae9b8 add       x0, x0, #0x698",
+        "02eae9bc mov       w3, #0x1e1",
+        "02eae9c0 str       wzr, [x25]"
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "section": ".text",
+      "value": "0x804b0998",
+      "register": 2,
+      "first_instruction": "0x2eaeb4c",
+      "last_instruction": "0x2eaeb60",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2eaeb6c",
+          "target": "0x2eacf18",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "02eaeb44 mov       w3, #0x257",
+        "02eaeb48 movk      w0, #0x2000, lsl #16",
+        "02eaeb4c mov       w2, #0x998",
+        "02eaeb50 mov       w4, #1",
+        "02eaeb54 movk      w3, #0x8087, lsl #16",
+        "02eaeb58 str       w0, [x29, #0x40]",
+        "02eaeb5c mov       x0, x21",
+        "02eaeb60 movk      w2, #0x804b, lsl #16",
+        "02eaeb64 mov       x1, #0x20",
+        "02eaeb68 stp       xzr, xzr, [x29, #0x50]",
+        "02eaeb6c bl        #0x2eacf18",
+        "02eaeb70 cbnz      w0, #0x2eaebfc",
+        "02eaeb74 ldr       w4, [x29, #0x44]",
+        "02eaeb78 cbnz      w4, #0x2eaebc0",
+        "02eaeb7c add       x21, x21, #8",
+        "02eaeb80 mov       x0, x22",
+        "02eaeb84 mov       x1, x21",
+        "02eaeb88 mov       x2, #0x15",
+        "02eaeb8c bl        #0x1594140",
+        "02eaeb90 adrp      x0, #0x399f000"
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "section": ".text",
+      "value": "0x804b0998",
+      "register": 2,
+      "first_instruction": "0x2eaeca4",
+      "last_instruction": "0x2eaecb8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2eaecc4",
+          "target": "0x2eacf18",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "02eaec9c mov       w3, #0x257",
+        "02eaeca0 movk      w0, #0x2000, lsl #16",
+        "02eaeca4 mov       w2, #0x998",
+        "02eaeca8 mov       w4, #1",
+        "02eaecac movk      w3, #0x8087, lsl #16",
+        "02eaecb0 str       w0, [x29, #0x40]",
+        "02eaecb4 mov       x0, x21",
+        "02eaecb8 movk      w2, #0x804b, lsl #16",
+        "02eaecbc mov       x1, #0x20",
+        "02eaecc0 stp       xzr, xzr, [x29, #0x50]",
+        "02eaecc4 bl        #0x2eacf18",
+        "02eaecc8 cbnz      w0, #0x2eaed54",
+        "02eaeccc ldr       w4, [x29, #0x44]",
+        "02eaecd0 cbnz      w4, #0x2eaed18",
+        "02eaecd4 add       x21, x21, #8",
+        "02eaecd8 mov       x0, x22",
+        "02eaecdc mov       x1, x21",
+        "02eaece0 mov       x2, #0xe",
+        "02eaece4 bl        #0x1594140",
+        "02eaece8 adrp      x0, #0x399f000"
+      ]
+    },
+    {
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "section": ".text",
+      "value": "0x804b0998",
+      "register": 2,
+      "first_instruction": "0x2eaedf4",
+      "last_instruction": "0x2eaee08",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x2eaee14",
+          "target": "0x2eacf18",
+          "symbol": null
+        }
+      ],
+      "listing": [
+        "02eaedec mov       w0, #0x20000000",
+        "02eaedf0 mov       w3, #0x257",
+        "02eaedf4 mov       w2, #0x998",
+        "02eaedf8 mov       w4, #1",
+        "02eaedfc str       w0, [x29, #0x40]",
+        "02eaee00 add       x0, x29, #0x40",
+        "02eaee04 movk      w3, #0x8087, lsl #16",
+        "02eaee08 movk      w2, #0x804b, lsl #16",
+        "02eaee0c mov       x1, #0x20",
+        "02eaee10 stp       xzr, xzr, [x29, #0x50]",
+        "02eaee14 bl        #0x2eacf18",
+        "02eaee18 cbnz      w0, #0x2eaeec8",
+        "02eaee1c ldr       w4, [x29, #0x44]",
+        "02eaee20 cbnz      w4, #0x2eaee88",
+        "02eaee24 ldrh      w4, [x29, #0x48]",
+        "02eaee28 cmp       w4, #1",
+        "02eaee2c b.eq      #0x2eaee80",
+        "02eaee30 cbz       w4, #0x2eaee78",
+        "02eaee34 cmp       w4, #2",
+        "02eaee38 mov       w0, #8"
+      ]
+    },
+    {
+      "path": "/lib/libInfraOptionInstall.so",
+      "inode": 95563,
+      "source_sha256": "62f2b8a3a0e533a6c80dfd8e2d78ddcaca8ec000c6187bfcf914b9de1a6a8256",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x13378",
+      "last_instruction": "0x1337c",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x13380",
+          "target": "0xbbb0",
+          "symbol": "osal_snd_sync_msg"
+        }
+      ],
+      "listing": [
+        "00013370 bl        #0xa9b0",
+        "00013374 ldr       x1, [x29, #0x48]",
+        "00013378 mov       w0, #0x24e",
+        "0001337c movk      w0, #0x4b, lsl #16",
+        "00013380 bl        #0xbbb0",
+        "00013384 cbz       w0, #0x133f0",
+        "00013388 adrp      x19, #0x2c000",
+        "0001338c mov       w3, w0",
+        "00013390 add       x20, x19, #0xdd8",
+        "00013394 adrp      x0, #0x2c000",
+        "00013398 mov       x1, x20",
+        "0001339c add       x0, x0, #0x99a",
+        "000133a0 mov       w2, #0x35e",
+        "000133a4 bl        #0xadb0",
+        "000133a8 ldr       x1, [x29, #0x48]",
+        "000133ac mov       w0, #0x24e"
+      ]
+    },
+    {
+      "path": "/lib/libInfraOptionInstall.so",
+      "inode": 95563,
+      "source_sha256": "62f2b8a3a0e533a6c80dfd8e2d78ddcaca8ec000c6187bfcf914b9de1a6a8256",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x133ac",
+      "last_instruction": "0x133b0",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x133b4",
+          "target": "0xbe10",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000133a4 bl        #0xadb0",
+        "000133a8 ldr       x1, [x29, #0x48]",
+        "000133ac mov       w0, #0x24e",
+        "000133b0 movk      w0, #0x4b, lsl #16",
+        "000133b4 bl        #0xbe10",
+        "000133b8 cbz       w0, #0x133d4",
+        "000133bc mov       w3, w0",
+        "000133c0 adrp      x0, #0x2c000",
+        "000133c4 mov       x1, x20",
+        "000133c8 add       x0, x0, #0x9d1",
+        "000133cc mov       w2, #0x362",
+        "000133d0 bl        #0xadb0",
+        "000133d4 ldr       w0, [x22, #0x200]",
+        "000133d8 bl        #0x12e18",
+        "000133dc cbz       w0, #0x13280",
+        "000133e0 mov       w3, w0"
+      ]
+    },
+    {
+      "path": "/lib/libInfraOptionInstall.so",
+      "inode": 95563,
+      "source_sha256": "62f2b8a3a0e533a6c80dfd8e2d78ddcaca8ec000c6187bfcf914b9de1a6a8256",
+      "section": ".text",
+      "value": "0x4b024e",
+      "register": 0,
+      "first_instruction": "0x133f4",
+      "last_instruction": "0x133f8",
+      "next_call_without_register_overwrite": [
+        {
+          "site": "0x13404",
+          "target": "0xbe10",
+          "symbol": "osal_free_msg"
+        }
+      ],
+      "listing": [
+        "000133ec b         #0x1334c",
+        "000133f0 ldr       x1, [x29, #0x48]",
+        "000133f4 mov       w0, #0x24e",
+        "000133f8 movk      w0, #0x4b, lsl #16",
+        "000133fc ldrh      w21, [x20, #6]",
+        "00013400 ldrh      w20, [x20, #8]",
+        "00013404 bl        #0xbe10",
+        "00013408 cbz       w0, #0x13428",
+        "0001340c mov       w3, w0",
+        "00013410 adrp      x1, #0x2c000",
+        "00013414 adrp      x0, #0x2c000",
+        "00013418 add       x1, x1, #0xdd8",
+        "0001341c add       x0, x0, #0x9d1",
+        "00013420 mov       w2, #0x374",
+        "00013424 bl        #0xadb0",
+        "00013428 ldr       w0, [x22, #0x200]"
+      ]
+    }
+  ],
+  "scope": "Exact four MOV-wide ID constructions in executable sections, without intervening same-register writes or calls. The nearby call annotation is a candidate consumer, not complete request dataflow, authentication, whole-system coverage or live dispatch. Does not cover other construction styles or other processors. No binary execution/device access."
+}

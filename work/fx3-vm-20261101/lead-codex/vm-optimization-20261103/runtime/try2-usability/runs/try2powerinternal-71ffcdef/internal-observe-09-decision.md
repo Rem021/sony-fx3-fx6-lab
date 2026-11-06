@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/internal-preview-09.png using image tool. Setup>Display Option 52/59 orange category focus; Remain Shoot Display and Auto Review also visible Next: DOWN to next Setup category while leaving display values untouched; seek Power Setting Option

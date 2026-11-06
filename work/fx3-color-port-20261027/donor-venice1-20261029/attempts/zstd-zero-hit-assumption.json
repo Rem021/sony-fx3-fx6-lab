@@ -1,0 +1,8 @@
+{
+  "outcome": "pre-seal assertion failed because signatures included one zstd candidate",
+  "incorrect_expectation": "All listed magic arrays were expected to be empty; preliminary prose also overclaimed no zstd hit.",
+  "observed_zstd_offset": 84202917,
+  "correction": "Keep original probe unchanged; validate this candidate separately against Zstandard frame/block limits and correct the unsealed report and validator.",
+  "counted_as_passing_case": false,
+  "original_payload_changed": false
+}

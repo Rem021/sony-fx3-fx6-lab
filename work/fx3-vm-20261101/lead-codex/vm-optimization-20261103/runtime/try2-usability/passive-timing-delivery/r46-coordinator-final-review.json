@@ -1,0 +1,38 @@
+{
+  "reviewed_utc": "2026-11-05T11:55:28.736429+00:00",
+  "status": "offline_diagnosis_accepted_integration_not_yet_done",
+  "task": "task_27990ed36689",
+  "dispatch": "ctx_e7b74d45e799",
+  "worker_done": "msg_31aea9e02204",
+  "manifest_SHA256": "46fec31b6c727803e05937f38a23050dee70cae6bf01934e5545ec9201b8fa96",
+  "verified_entries": 32,
+  "hash_mismatches": 0,
+  "code_review": [
+    "armed close path vs certify whitelist and mandatory dispose contradiction confirmed",
+    "two PAGE recovery budget literals remain20000 with outer60000; isolated two-line patch preserves all other gates",
+    "certification candidate requires owned End/browser/native/resources; preserves unknown on incomplete evidence"
+  ],
+  "independent_HAR_review": {
+    "before": "11:28:11.680683008Z gen58 seq1886 SHAe014",
+    "preflight": "11:28:11.935694848Z gen59 seq1892 SHA2914",
+    "next_POST": "11:28:12.088363008Z /api/stop",
+    "verdict": "preflight frame differs; freshness rejection expected; no timeout explanation required"
+  },
+  "worker_tests_reviewed": {
+    "cleanup_mocked_native_and_resource_probe": 35,
+    "PAGE_fake_DOM": 5
+  },
+  "correction_to_worker_report": {
+    "first_cleanup": "4302ff41-653d-4ae5-9b79-f713120ab9e2 at11:28:12.079540Z",
+    "second_cleanup": "0687a34f-8dcd-4d62-b4a0-b1c0037830b1 at11:28:20.641615Z",
+    "note": "r46 REPORT reverses first/second; source invocation timestamps authoritative; no effect on diagnosed gate"
+  },
+  "r44_review_gap_acknowledged": "previous review did not exercise inherited PAGE recovery function; external helpers were60s while inherited PAGE still20s",
+  "limits": [
+    "r45 remains failed, cleanup unknown",
+    "not integrated into runnable pinned profile",
+    "no true VM/recovery/cleanup validation",
+    "native/resource probes in tests are mocks, not new runtime evidence"
+  ],
+  "next": "isolated offline integration and actual served PAGE plus helper binding test; no VM authorization"
+}

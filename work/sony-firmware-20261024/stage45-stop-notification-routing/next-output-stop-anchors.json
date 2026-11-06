@@ -1,0 +1,65 @@
+{
+  "schema": "fx3-stage45-next-output-stop-anchors/1",
+  "created_utc": "2026-10-26T01:36:33.841459+00:00",
+  "image_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "receiver": {
+    "entry": "0x1386f4",
+    "MID_table": "0x35c2a0",
+    "MID113_branch": "0x1388a0",
+    "separate_post_log_fragment": "0x1388dc",
+    "interface_event": "0x1c",
+    "virtual_call": "0x1389e8",
+    "outer_caller": "0x1348ec; receiver at0x134900 then another frontend at0x12f05c",
+    "real_queue_origin_channel_owner_and_epoch_unbound": true
+  },
+  "callbacks": {
+    "codec_vptr": "0x35bb68",
+    "codec_thunk": "0x134924",
+    "output_vptr": "0x35edb0",
+    "output_thunk": "0x14ff4c",
+    "output_dispatch": "0x14ff54",
+    "event1c_table": "0x35ec78 +(0x1c-10)*8 ->0x1500a4",
+    "upper_STOP_wrapper": "0x15391c",
+    "upper_STOP_process": "0x153938"
+  },
+  "output_state": {
+    "state_names": "0xbdb7a0",
+    "event_names": "0xbdb900",
+    "video_event18": "codec_stop_comp_v table0x363d48",
+    "audio_event19": "codec_stop_comp_a table0x364138",
+    "video_pending_flag": "state+b74",
+    "video_functor": "state+b68",
+    "owner_self": "state+b78",
+    "queue_count_write_read_slots": [
+      "state+d08",
+      "state+d0c",
+      "state+d10",
+      "state+d18"
+    ],
+    "queue_drain": "0x153aec..0x153b40",
+    "native_operator": "0x155f84",
+    "video_typed_body": "0x1560b4 ->0x153938",
+    "exit": "0x15693c ->0x156ad4 ->0x27d528",
+    "transition_log": "0x156390",
+    "entry": "0x156180",
+    "constructor": "0x155bd0",
+    "first_unexecuted_clear": "0x155f5c ->0x2f67c state+d18 len58",
+    "second_unexecuted_clear": "0x155f78 ->0x2f67c state+c len581",
+    "not_the_lower_IMOLA_state_object_or_lower_event18": true,
+    "one_byte_event_copy": "state+b80"
+  },
+  "other_packet_producer": {
+    "event": "resource_video_enc_stop_param_t",
+    "table": "0x37f868",
+    "state6_and10_action": "0x24c94c",
+    "independent_packet_fragment": "0x24c994",
+    "actual_send_unexecuted": "0x24ca70 ->0x27dab4"
+  },
+  "next_work": [
+    "Bind actual message queue ownership/routing/session/current epoch before treating input packet as current completion.",
+    "Execute legitimate output STOP actions/entry, A/V completion ordering and all pending drain/worker code exits with real runtime dependencies, not mocked logs/locks.",
+    "Follow lower ENC_INFRA_STOP_WAIT and upper output states separately; match seq_id allocation/reuse and parameter ownership to actual request.",
+    "Retain full input/init/HAL/model/query/cache/mux/main-media/audio/thermal/backup/restore/WBI/coldboot/independent rescue requirements."
+  ],
+  "camera_or_remote_access_attempted": false
+}

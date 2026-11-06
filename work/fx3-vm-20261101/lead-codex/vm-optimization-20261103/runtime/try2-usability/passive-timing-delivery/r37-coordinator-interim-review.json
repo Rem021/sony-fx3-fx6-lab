@@ -1,0 +1,294 @@
+{
+  "time": "2026-11-05T07:34:31.634626+00:00",
+  "status": "interim_independent_review_not_final_acceptance",
+  "task": "task_ad037a8848b5",
+  "dispatch": "ctx_f0cb9c6c63e5",
+  "runtime_started_by_coordinator": false,
+  "new_VM_authorized": false,
+  "frozen_sources": {
+    "SOURCE-FREEZE.json": {
+      "sha256": "861b26c5aefbe393a5e58e1015914e517f0bb9e928c6f5e572a9f56816084ca9",
+      "count": 42,
+      "verified_entries": {
+        "runtime-wrapper/audit_after.py": "507a3fad8dbee0f98a5005480c64e60792e9961290f74372fba429bfb7880e9e",
+        "runtime-wrapper/capture_validation.py": "4175dc76c6e97436a98e36901205851708b8a647caf5358b77f8cc4056a874a4",
+        "runtime-wrapper/cleanup.py": "8d60b8665c4738650475594f5f2d4a42dce1a3467cee2954631066b36dc98faa",
+        "runtime-wrapper/common.py": "2dbd1477d3bb0b243af7b2a182d9592a902bdeb964ff8ba878306c3ce4178c47",
+        "runtime-wrapper/later_capture.py": "ca6c1b2b64ef9ff3672d39d112b598062a1ff8c613d2ee8f7daa5dedbff01f8f",
+        "runtime-wrapper/launch_prepare.py": "110c2fb6a4df630ce4fcb3564a52aeb5bb157a3d4c148fcc18d57ce7e9fc579f",
+        "runtime-wrapper/operate.py": "97e41bc5687fd6c9397fcca639355624c70e368761e1e24ad4329a85d9408741",
+        "runtime-wrapper/preflight.py": "89caa17bd0e9434ec58fa19655998305b3f552bf3e6d1da2879a58a206fc9a8d",
+        "runtime-wrapper/start_and_wait.py": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+        "runtime-wrapper/untimed_image.py": "b400adf1aff0d599950a76908d3dd18bd8396d7ffaf7f3c8716b973de7286d34",
+        "operator-helpers/deadline.js": "63b2d2890dde8c19b50ff0a8970f6e996ea3fd4a1ee594424bfbb32b97c774b0",
+        "operator-helpers/deadline_cli.py": "602859489066aae51b732f594296445fa4d4dcfa3f9abd074b5ac6ca985bfcc4",
+        "operator-helpers/planned_navigation_click.js": "4ae5ec1f9862e9a8e563a2ec3638b5fa2bf60eb4a2f4f48751cb4a44bf6fad37",
+        "operator-helpers/planned_navigation_click.py": "65b373ca8f65660d8af85700554f0bf86ec7d76bd3cff15073ae53a511b7c65f",
+        "operator-helpers/planned_prerequisite.py": "55d22fa8fcab5c0ff388605911149c8edec1a0a4477f20156939b881960725af",
+        "operator-helpers/recovery_cancel.js": "808bfb68ccae4e8bb77ed7efd5967e0c4009c5018a50bcf73dc32c0a9adbb1a2",
+        "operator-helpers/recovery_readonly.js": "2393d6804603d25df539fff0b9138c33fd6723dfc55c3882f3e2ada9419ee0b7",
+        "operator-helpers/recovery_tools.py": "6c46f4025ded78da3433b8955cd8c2cb48680008db1f0fb9fbea9b23e0917740",
+        "operator-helpers/review_snapshot_cli.py": "8f5d72f61a75e6aeab3834364ae7edb2065de42a9f1452d17e19a3ddf2792f58",
+        "operator-helpers/snapshot_confirm.js": "6214f0b8a03d678fc14fc28a595e7a0060586cc5d8f3115160dc083735d84432",
+        "operator-helpers/snapshot_read.js": "e097be61d8f7309f1fae74959b6513d1625358176f5a0cd5709e41472408f5a8",
+        "run_trial_r24_review_snapshot.py": "ab7f8220c5bbe32d5bdd04b5d54f0832967f24c7cc05cbb7385795e909d4950c",
+        "trial_web_r24_review_snapshot.py": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+        "review_page_r24.js": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
+        "confirm_page_r24.js": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
+        "prepare_run.py": "668520e7047cf8cf3ab064e218f53c9e26c87d7201443f16b3d8c3f2002a2d0b",
+        "NAVIGATION-PLAN.json": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+        "PAGE-IDENTITY.json": "7f4b2f3a3f9c86fdb3193a2177135955f3aa000a135e819eba08493c0cf41a0a",
+        "operator-helpers/recovery_observation.py": "6562effaf376d062a859ad9350a71b42ab6712c6eb89aedc6902f43c56e35caf",
+        "runtime-wrapper/recovery_guard.py": "fff04d29c94aee963260ccd7cc09898319bc85eb53717fae52765a63f0510372",
+        "operator-helpers/postkey_observation.py": "40df03ab574deb81c7e3377a3f545b70dff0d9bc0992874617d4b466c045fd6e",
+        "operator-helpers/postkey_read.js": "36dfd004040ed2d9be219f31ab73d2e39d7a853774bbf9d61ed1581beb5dd681",
+        "runtime-wrapper/postkey_flow.py": "2af4e7b9318c2f51baa36188dc5ab395eea764c87b24ba9b82989cce53d0f278",
+        "startup_observation.py": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda",
+        "trial_ring_cached.py": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
+        "trial_log_v4_mss.py": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5",
+        "return-tools/return_adapter.py": "0b6c784a7929ff16803eb425db736bcb85cf493a313e46f69e09d89868d729d3",
+        "return-tools/short_tool.mjs": "a498998cdf4a7ec1b08b82f0dffeabddda51ad8f1338662ae3f4aebcbe6ed16d",
+        "return-tools/show_result.mjs": "64e7a2f2092a83b6a946e34a57c458fd4e37e55ab8a0ed64b3b3a9a8253b7272",
+        "return-tools/tool_call.mjs": "c90ba3ebc04aa296e386a5a085f811532dbebc6689f04ca8456647fbd6ec2500",
+        "CORE-SOURCE-FREEZE.json": "7752a6fd7cdb74def7a3cfa9659ed6a1a4f6ab23708a5aaaed5f345e7c46f303",
+        "r35_package_selection.py": "e28d8b14166a187b3644c04364390c8e9f89532f908855ed31912e2c7c285392"
+      }
+    },
+    "CORE-SOURCE-FREEZE.json": {
+      "sha256": "7752a6fd7cdb74def7a3cfa9659ed6a1a4f6ab23708a5aaaed5f345e7c46f303",
+      "count": 37,
+      "verified_entries": {
+        "runtime-wrapper/audit_after.py": "507a3fad8dbee0f98a5005480c64e60792e9961290f74372fba429bfb7880e9e",
+        "runtime-wrapper/capture_validation.py": "4175dc76c6e97436a98e36901205851708b8a647caf5358b77f8cc4056a874a4",
+        "runtime-wrapper/cleanup.py": "8d60b8665c4738650475594f5f2d4a42dce1a3467cee2954631066b36dc98faa",
+        "runtime-wrapper/common.py": "2dbd1477d3bb0b243af7b2a182d9592a902bdeb964ff8ba878306c3ce4178c47",
+        "runtime-wrapper/later_capture.py": "ca6c1b2b64ef9ff3672d39d112b598062a1ff8c613d2ee8f7daa5dedbff01f8f",
+        "runtime-wrapper/launch_prepare.py": "110c2fb6a4df630ce4fcb3564a52aeb5bb157a3d4c148fcc18d57ce7e9fc579f",
+        "runtime-wrapper/operate.py": "97e41bc5687fd6c9397fcca639355624c70e368761e1e24ad4329a85d9408741",
+        "runtime-wrapper/preflight.py": "89caa17bd0e9434ec58fa19655998305b3f552bf3e6d1da2879a58a206fc9a8d",
+        "runtime-wrapper/start_and_wait.py": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+        "runtime-wrapper/untimed_image.py": "b400adf1aff0d599950a76908d3dd18bd8396d7ffaf7f3c8716b973de7286d34",
+        "operator-helpers/deadline.js": "63b2d2890dde8c19b50ff0a8970f6e996ea3fd4a1ee594424bfbb32b97c774b0",
+        "operator-helpers/deadline_cli.py": "602859489066aae51b732f594296445fa4d4dcfa3f9abd074b5ac6ca985bfcc4",
+        "operator-helpers/planned_navigation_click.js": "4ae5ec1f9862e9a8e563a2ec3638b5fa2bf60eb4a2f4f48751cb4a44bf6fad37",
+        "operator-helpers/planned_navigation_click.py": "65b373ca8f65660d8af85700554f0bf86ec7d76bd3cff15073ae53a511b7c65f",
+        "operator-helpers/planned_prerequisite.py": "55d22fa8fcab5c0ff388605911149c8edec1a0a4477f20156939b881960725af",
+        "operator-helpers/recovery_cancel.js": "808bfb68ccae4e8bb77ed7efd5967e0c4009c5018a50bcf73dc32c0a9adbb1a2",
+        "operator-helpers/recovery_readonly.js": "2393d6804603d25df539fff0b9138c33fd6723dfc55c3882f3e2ada9419ee0b7",
+        "operator-helpers/recovery_tools.py": "6c46f4025ded78da3433b8955cd8c2cb48680008db1f0fb9fbea9b23e0917740",
+        "operator-helpers/review_snapshot_cli.py": "8f5d72f61a75e6aeab3834364ae7edb2065de42a9f1452d17e19a3ddf2792f58",
+        "operator-helpers/snapshot_confirm.js": "6214f0b8a03d678fc14fc28a595e7a0060586cc5d8f3115160dc083735d84432",
+        "operator-helpers/snapshot_read.js": "e097be61d8f7309f1fae74959b6513d1625358176f5a0cd5709e41472408f5a8",
+        "run_trial_r24_review_snapshot.py": "ab7f8220c5bbe32d5bdd04b5d54f0832967f24c7cc05cbb7385795e909d4950c",
+        "trial_web_r24_review_snapshot.py": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+        "review_page_r24.js": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
+        "confirm_page_r24.js": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
+        "prepare_run.py": "668520e7047cf8cf3ab064e218f53c9e26c87d7201443f16b3d8c3f2002a2d0b",
+        "NAVIGATION-PLAN.json": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+        "PAGE-IDENTITY.json": "7f4b2f3a3f9c86fdb3193a2177135955f3aa000a135e819eba08493c0cf41a0a",
+        "operator-helpers/recovery_observation.py": "6562effaf376d062a859ad9350a71b42ab6712c6eb89aedc6902f43c56e35caf",
+        "runtime-wrapper/recovery_guard.py": "fff04d29c94aee963260ccd7cc09898319bc85eb53717fae52765a63f0510372",
+        "operator-helpers/postkey_observation.py": "40df03ab574deb81c7e3377a3f545b70dff0d9bc0992874617d4b466c045fd6e",
+        "operator-helpers/postkey_read.js": "36dfd004040ed2d9be219f31ab73d2e39d7a853774bbf9d61ed1581beb5dd681",
+        "runtime-wrapper/postkey_flow.py": "2af4e7b9318c2f51baa36188dc5ab395eea764c87b24ba9b82989cce53d0f278",
+        "startup_observation.py": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda",
+        "trial_ring_cached.py": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
+        "trial_log_v4_mss.py": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5",
+        "r35_package_selection.py": "e28d8b14166a187b3644c04364390c8e9f89532f908855ed31912e2c7c285392"
+      }
+    }
+  },
+  "test_receipts": [
+    {
+      "case": "help-source-audit",
+      "test_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/check_help_sources.py",
+      "source_sha256": "6df0a6e33afa91eb49cf03717df2b76ba44504a640e8b3148a49b6e82cfb7d5c",
+      "reported_exit": 0,
+      "stdout_sha256": "d2892b913f541b4aaf1de182affbd8377fe87e26c80053c51ee58bb7d735ef5a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "actual-prepare-preflight-import",
+      "test_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/check_binding.py",
+      "source_sha256": "164bcffc7070b6c2b3dcffdc46887f044eb04a18374bf48eac91f0686f10c6fa",
+      "reported_exit": 0,
+      "stdout_sha256": "36a1002ddf1ffc96a391be7d2626ce1f4e2263fed27640a98b1e594bfdc1f662",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "selector-and-argv",
+      "test_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/test_selection.py",
+      "source_sha256": "720d467a3e12107647bc9691a4a7a36efc9cac3431d4f8ad3c3a66b59591814d",
+      "reported_exit": 0,
+      "stdout_sha256": "4f1d03327857f972c94694468fc173e47704e1ae484d0f15c1bc261b8de11242",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "source-equivalence",
+      "test_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/check_equivalence.py",
+      "source_sha256": "73700fdea94a7a471b2b2ccd208bb2dab2e5b4f85f976bdf55d467357a76e878",
+      "reported_exit": 0,
+      "stdout_sha256": "6f98758807d1b15121da8165bbec4bce4b26d15131056a9ab9bc3bd76f5239c1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "actual-negative-boundaries",
+      "test_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/test_boundaries.py",
+      "source_sha256": "de7cf571580d020c0f9a8a2b8d5d28c9878ff945da2571387276cd09ae7d9c9c",
+      "reported_exit": 0,
+      "stdout_sha256": "ce21c08cfa66a1ce407b13d1dc12afa4577057920c65b2b38d4b282e88498127",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "original-CPIO-admission",
+      "test_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/audit_original_cpio.py",
+      "source_sha256": "1b4eb52206544469d412f48f958d92eb9097f13e0fac2b4b62b8750c086dda5d",
+      "reported_exit": 0,
+      "stdout_sha256": "ca7dbb81b7525a69328d01b6462971bc9603439c6315d788071e56a8829ed0fc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "case": "Node-import-binding",
+      "test_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/check_node.mjs",
+      "source_sha256": "d5eb15b438c5644dba39387958bd536907090907f11a5799f270db854fe80581",
+      "reported_exit": 0,
+      "stdout_sha256": "68d65d15ee0d26dca766c69a2451eae11183103d30d321331b9bab53f9ac491f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "independent_AST": {
+    "runner_sha256": "ab7f8220c5bbe32d5bdd04b5d54f0832967f24c7cc05cbb7385795e909d4950c",
+    "all_non_main_functions_identical": [
+      "digest",
+      "classify_internal_review",
+      "input_check",
+      "checkpoint",
+      "native_input_deadline_error",
+      "pre_input_stop_reason",
+      "execute_runner"
+    ],
+    "main_from_journal_through_loop_and_cleanup_identical": true
+  },
+  "actual_imports_verified_current": {
+    "r35_package_selection": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/r35_package_selection.py",
+      "sha256": "e28d8b14166a187b3644c04364390c8e9f89532f908855ed31912e2c7c285392"
+    },
+    "cpio_audit": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    "osd_ring93_v4": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    "trial_ring_cached": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/trial_ring_cached.py",
+      "sha256": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716"
+    },
+    "startup_observation": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/startup_observation.py",
+      "sha256": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda"
+    },
+    "trial_web_r24_review_snapshot": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/trial_web_r24_review_snapshot.py",
+      "sha256": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2"
+    },
+    "pending_visual_v20": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/pending_visual_v20.py",
+      "sha256": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3"
+    },
+    "trial_log_v4_mss": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/trial_log_v4_mss.py",
+      "sha256": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5"
+    },
+    "trial_health_v2": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/trial_health_v2.py",
+      "sha256": "99bb8104dd63fbb8cff7b887447fe56baf468d972c325fa39da2091f4e0c5751"
+    },
+    "gate_input_usability": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/gate_input_usability.py",
+      "sha256": "3c612905bb53861e8a3804aaa0696ba14d376646b37f52894b0c1ad7ed508104"
+    },
+    "file_readback100": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    "restore_api103_v2": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    },
+    "terminal_status_v23": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/terminal_status_v23.py",
+      "sha256": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75"
+    },
+    "parse_v25_diag_r3": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/parse_v25_diag_r3.py",
+      "sha256": "c232254a1991894e8a6a0446ee7a516ba7491211bfcf894852b56008345dcb9a"
+    },
+    "quiesced_diag_readback": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/quiesced_diag_readback.py",
+      "sha256": "51b2507730a5a7515333c0611022bf4a8c29d9a43663db8dd6e385db007ca6cb"
+    },
+    "procdiag_readback": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/procdiag_readback.py",
+      "sha256": "0f6d479e7a1072f45ede37562bde66f22bea9c682886345a6b36f38ba92312f4"
+    },
+    "qmp_line_transport": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/qmp_line_transport.py",
+      "sha256": "2686ee46ff1ce06b12650f4cb3c86ebe9d64fdeafc9e6ce8176a64c4b5ded0c3"
+    },
+    "runtime_resource_guard": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/runtime_resource_guard.py",
+      "sha256": "6bb095d299b695818708360c355d6c3b4f6a7eff0112e03474b474b180051680"
+    },
+    "startup_qmp_v1": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/startup_qmp_v1.py",
+      "sha256": "efba2c336e063e18208f21df6e3bf9ae462abb1fef5ed0ec618f009004b67c74"
+    },
+    "optional_paused_snapshots": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/optional_paused_snapshots.py",
+      "sha256": "15fbc3b50b1871b815b13c05b8275922f561ea2683c64c0d9a2e81c611d451a9"
+    },
+    "pre_input_observation": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/pre_input_observation.py",
+      "sha256": "243f33e19c1362d3d1741ad60ac863cb5e5dd27fc9ab01dadd7f8f2fb829e50f"
+    },
+    "snapshot_tail_v15": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/snapshot_tail_v15.py",
+      "sha256": "659250b731d80e45d76be9c2f4d849b89d4c4153a741b92644164b59e2730aad"
+    },
+    "host_exception_clock": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/host_exception_clock.py",
+      "sha256": "5f133dd0c8f6d17b19cab87616b1efe725445829d75447ac0de71ceb99a083dc"
+    },
+    "web_rejection_receipt": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/web_rejection_receipt.py",
+      "sha256": "9aa387ff7a6eefd382388b5e3f14f5030e950233bd80482672e09a8e0893382a"
+    }
+  },
+  "worker_original_cpio_admission": {
+    "member_count": 1140,
+    "unpack_parent_order_errors": [],
+    "original_baseline_ELF_members": 20,
+    "baseline_ELF_changed_or_missing": [],
+    "baseline_cpio_sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+    "candidate_cpio_sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff",
+    "safe_to_unpack": true
+  },
+  "reviewed_artifact_hashes": {
+    "EQUIVALENCE.json": "f822657cd7c4362afa214aa2a61e73b580aff84f7c5e9977f9b8c84cd204741e",
+    "SELECTION-TESTS.json": "a6d32e7229e9ef3a6b97bc10bf8912e3ab1251fea26191bb78278d1827eded4a",
+    "BOUNDARY-TESTS.json": "e31c00098e3a4444dbbf09a619e015cea2981971ad39fc9a92052f1639b1f582",
+    "OFFLINE-CHECKS.json": "24d2b9e653896ff7a9dc44b65a9ab87e8e21b3f6476e9806ba8940138a40f595",
+    "ORIGINAL-CPIO-ADMISSION.json": "65e74c31d8ea2a32395e00cb12aa3d1df076b262494f618c098862647466dbde",
+    "INPUTS-AFTER.json": "51a01096e3f59c62c2eb9fbc542c5dcabcc3de65ac06248f2a2b23f5520323d0",
+    "EXECUTION-SCOPE.json": "3816ef4f7f6697c61a3bba55d57391206478b6e2029bc5211e97bd6266b55f13"
+  },
+  "limitations": [
+    "Final worker_done and final delivery manifest still pending",
+    "CPIO admission is worker executed; coordinator read source/result and input identity, not reexecuted here",
+    "1206-input after comparison is worker receipt, not all independently rehashed here",
+    "No guest/VM success inferred from host results"
+  ]
+}

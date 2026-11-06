@@ -1,0 +1,241 @@
+{
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "previous_receipt_sha256": "4a899628f47fe3ca66c66d0d00fa39637427fd43a14aac57bc781cb665330cb6",
+  "previous_files_verified": 27,
+  "source_fragments": [
+    {
+      "va": "0x49dbea",
+      "bytes": 48,
+      "sha256": "431b980d7f1d6d2d1c7c441b0a0eda8f4e971d0849008ec4ed7ac09fe286804f",
+      "listing": "source-fragments/0049dbea-0049dc1a.txt",
+      "scope": "Pinned original static window. Reply and configuration-query windows are not guest completion/response evidence."
+    },
+    {
+      "va": "0x49f80c",
+      "bytes": 204,
+      "sha256": "ea49128ba8932c6ccf32d918f0a7e821e37f12c9a1b5da9cecd16e6a9a6a1190",
+      "listing": "source-fragments/0049f80c-0049f8d8.txt",
+      "scope": "Pinned original static window. Reply and configuration-query windows are not guest completion/response evidence."
+    },
+    {
+      "va": "0x49fc4c",
+      "bytes": 420,
+      "sha256": "0c6f935f7f8599fc7451ea1efa9c0335764e516ca4dd27af8d882cebab7ea843",
+      "listing": "source-fragments/0049fc4c-0049fdf0.txt",
+      "scope": "Pinned original static window. Reply and configuration-query windows are not guest completion/response evidence."
+    },
+    {
+      "va": "0x4a0980",
+      "bytes": 366,
+      "sha256": "1fec23519c3b0ff4752f5c27a3e353751f8bdc1b901733c2959f1d6348eff946",
+      "listing": "source-fragments/004a0980-004a0aee.txt",
+      "scope": "Pinned original static window. Reply and configuration-query windows are not guest completion/response evidence."
+    },
+    {
+      "va": "0x44d710",
+      "bytes": 216,
+      "sha256": "40e90cd3a11cd7c37b94b8f9529e3968b558248465ab9e30f067befb3f672321",
+      "listing": "source-fragments/0044d710-0044d7e8.txt",
+      "scope": "Pinned original static window. Reply and configuration-query windows are not guest completion/response evidence."
+    },
+    {
+      "va": "0xa878d2",
+      "bytes": 6,
+      "sha256": "31b09f60674e9bd0bc4a9b40761a692cc1bebd5a9b642cc52526f7e3bdf7967d",
+      "listing": "source-fragments/00a878d2-00a878d8.txt",
+      "scope": "Pinned original static window. Reply and configuration-query windows are not guest completion/response evidence."
+    },
+    {
+      "va": "0x44d854",
+      "bytes": 94,
+      "sha256": "24ad48763410d7a10d6659f41e019636e7091552395ea738dd2a738967ef29c6",
+      "listing": "source-fragments/0044d854-0044d8b2.txt",
+      "scope": "Pinned original static window. Reply and configuration-query windows are not guest completion/response evidence."
+    },
+    {
+      "va": "0x4d7a84",
+      "bytes": 188,
+      "sha256": "d74f7dbe5b77a0e8ab061d1d295d7ea3a050f9e24c844ae8007c0065d8cfc604",
+      "listing": "source-fragments/004d7a84-004d7b40.txt",
+      "scope": "Pinned original static window. Reply and configuration-query windows are not guest completion/response evidence."
+    }
+  ],
+  "function_identity": {
+    "entry": "0x44d710",
+    "classification": "DmmWrapper AllocNew client path, inferred from original diagnostic literals and their call sites; not recovered exported symbols.",
+    "literals": [
+      {
+        "va": "0xd8cda4",
+        "bytes": 40,
+        "text": "AllocNew: ERR_OSAL_MSGQ! 0x%x, 0x%x, %d",
+        "sha256": "8e854c16c83b2e5aafc7bff5336e2e7a9b1f0c229503a848baa88717088af6f1",
+        "enclosing_literal": {
+          "va": "0xd8cd98",
+          "bytes": 52,
+          "text": "[DmmWrapper]AllocNew: ERR_OSAL_MSGQ! 0x%x, 0x%x, %d",
+          "sha256": "e9eb5da1198a418a4d6d1dda22defe260f51fac41a811e18e1eca94c691c5b62"
+        }
+      },
+      {
+        "va": "0xd8cdd8",
+        "bytes": 42,
+        "text": "AllocNew: ERR_OSAL_HANDLE! 0x%x, 0x%x, %d",
+        "sha256": "1d09bae35aa75826a9f16d4a96f76111f305ff6c898f676a7f08b169de0e4412",
+        "enclosing_literal": {
+          "va": "0xd8cdcc",
+          "bytes": 54,
+          "text": "[DmmWrapper]AllocNew: ERR_OSAL_HANDLE! 0x%x, 0x%x, %d",
+          "sha256": "22347adadadd1e0a748b8bb0b9b3bb2d8536e72cde4bf03057faee82f9969175"
+        }
+      },
+      {
+        "va": "0xd8ce0e",
+        "bytes": 48,
+        "text": "AllocNew: ERR_DMM_RET_CODE!: %d, 0x%x, 0x%x, %d",
+        "sha256": "575ad31f947a763cfe787272c02a9d9b10756005e4abca0cc7df2e0b55f47701",
+        "enclosing_literal": {
+          "va": "0xd8ce02",
+          "bytes": 60,
+          "text": "[DmmWrapper]AllocNew: ERR_DMM_RET_CODE!: %d, 0x%x, 0x%x, %d",
+          "sha256": "7497d84907eecbdfcd491979268a3615525fe8f9f5d4be3a1fe0c49e7bad2e49"
+        }
+      },
+      {
+        "va": "0xd8ce4a",
+        "bytes": 74,
+        "text": "AllocNew: ERR_DMM_DIFFERENT_COMP! msg_id %08x, my_id %08x, 0x%x, 0x%x, %d",
+        "sha256": "028200934e3b5c16e7a9ec28298448002c40e642334f34e6671759c1896640fd",
+        "enclosing_literal": {
+          "va": "0xd8ce3e",
+          "bytes": 86,
+          "text": "[DmmWrapper]AllocNew: ERR_DMM_DIFFERENT_COMP! msg_id %08x, my_id %08x, 0x%x, 0x%x, %d",
+          "sha256": "9ba8f10a520c1c89dea9a43a31a545b5f6fedcd8e0d490011b7d8951c777b337"
+        }
+      }
+    ]
+  },
+  "original_request_contract": {
+    "submission_entry": "0xa878ca",
+    "destination": "0x61003c",
+    "payload_bytes": 216,
+    "fields": [
+      {
+        "offset": "0x0",
+        "bytes": 2,
+        "value": "0x20"
+      },
+      {
+        "offset": "0x4",
+        "bytes": 4,
+        "value": "0x4af"
+      },
+      {
+        "offset": "0xc",
+        "bytes": 4,
+        "value": "0x0"
+      },
+      {
+        "offset": "0x14",
+        "bytes": 2,
+        "value": "0x55"
+      },
+      {
+        "offset": "0x16",
+        "bytes": 2,
+        "value": "0x1"
+      }
+    ],
+    "original_written_payload_bytes": 14,
+    "remaining_fixture_fill_bytes": 202,
+    "source_reply_ID": "Original osal_dynamic_id output, stored by original0xa878d2 in message header at payload-0xc."
+  },
+  "static_reply_requirements": {
+    "executed": false,
+    "source": "0x44d854..0x44d8b2",
+    "checks": [
+      "return from submission is zero",
+      "reply u16+2 is zero",
+      "reply u16+0 ==0x8020",
+      "reply u16+6 ==0x55",
+      "reply u32+0xc !=0xffffffff",
+      "when request r1==1: reply u16+8 !=0 and reply u32+0x20 !=0"
+    ],
+    "scope": "Original static acceptance checks only. No reply fields, successful service return or image/extent data supplied."
+  },
+  "unbound_candidates": {
+    "cp_literals": [
+      {
+        "va": "0x4d7b40",
+        "bytes": 25,
+        "text": "dmm_module_GetConfigData",
+        "sha256": "edd0c4bc440a89662a74e1307e6c192f530c3e77a05d368e2464d231b916a54c"
+      },
+      {
+        "va": "0x4dd7f0",
+        "bytes": 18,
+        "text": "SaDmmUnitAllocNew",
+        "sha256": "cc25d703f34507946a574196cdfccb1a4f8d45d8441e69298b610edb26f7aa31"
+      },
+      {
+        "va": "0xe1fdc9",
+        "bytes": 10,
+        "text": "dmm_alloc",
+        "sha256": "6fb27f4a1e87b843325bb2a44d810da1de46a20e520ba651c8ee2251e86cee70"
+      }
+    ],
+    "command_reference_window": {
+      "va": "0xff3c74",
+      "bytes": 24,
+      "sha256": "fe3b050a06d4ea860889580432982af04f88767a36ed9fbcfc0ff6687d2add19",
+      "words": [
+        "0xe1fdc9",
+        "0x4dcd21",
+        "0xe1fdd3",
+        "0x0",
+        "0xe1fdef",
+        "0x4dcd69"
+      ],
+      "scope": "Reference to debug command name, not normal queue registration or receiver proof."
+    },
+    "av_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+    "av_file_hints": [
+      {
+        "bytes": 50,
+        "text": "[MDT]; [ALLOC_INFO]: dmm.cpu_phys_addr = 0x%016lX",
+        "sha256": "2e8646dbc851dab911dff3f7d2eb599ee3ee71afb3b4d30e7643f9806d6e12df",
+        "file_offset": "0x426622",
+        "scope": "File offset only; AV load VA and queue/provider binding are not inferred."
+      },
+      {
+        "bytes": 37,
+        "text": "MSGID_DMM_ALLOC_UNIT_NEW Event Error",
+        "sha256": "1dbff91b6c926c2fc08cf6838fbba66a4dbbb2a95b271464027444815d3ff246",
+        "file_offset": "0x43f693",
+        "scope": "File offset only; AV load VA and queue/provider binding are not inferred."
+      }
+    ],
+    "string_inventories": [
+      {
+        "image": "CP",
+        "ASCII_DMM_or_AllocNew_strings": 395,
+        "scope": "String inventory/candidates only; not handlers, service identity or image compatibility."
+      },
+      {
+        "image": "AV",
+        "ASCII_DMM_or_AllocNew_strings": 235,
+        "scope": "String inventory/candidates only; not handlers, service identity or image compatibility."
+      }
+    ],
+    "scope": "Candidates for later receiver/configuration tracing only; no QID0x3c consumer or unit0x4af layout established."
+  },
+  "public_search": {
+    "local_date": "2026-10-29",
+    "queries": [
+      "\"DmmWrapper\" Sony",
+      "\"InfraBB_DataFlowInfraWrapper\""
+    ],
+    "result": "No Sony source identified; an unrelated NI instrument DMM wrapper result was excluded.",
+    "scope": "Not evidence that source/firmware is absent."
+  },
+  "scope": "Original client message allocation and request fields, with static reply prerequisites kept separate. No real send/receive, complete packet semantic specification, physical image buffers, main recording, whole donor pipeline or modified firmware admission."
+}

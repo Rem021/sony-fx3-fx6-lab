@@ -1,0 +1,162 @@
+00016880 stp        x29, x30, [sp, #-0x80]!
+00016884 mov        x29, sp
+00016888 stp        x19, x20, [sp, #0x10]
+0001688c mov        x20, x0
+00016890 ldr        x0, [x0, #0x10]
+00016894 add        x19, x29, #0x70
+00016898 stp        x21, x22, [sp, #0x20]
+0001689c stp        x23, x24, [sp, #0x30]
+000168a0 mov        x24, x1
+000168a4 str        x25, [sp, #0x40]
+000168a8 add        x23, x29, #0x5c
+000168ac bl         #0xffd0 ; Updater::StringHandler::GetCharString
+000168b0 mov        x21, x0
+000168b4 ldr        x0, [x20, #0x20]
+000168b8 ldr        w22, [x0, #0x10]
+000168bc mov        x0, x19
+000168c0 bl         #0x106c0 ; Updater::FileHandler::FileHandler
+000168c4 mov        x4, x23
+000168c8 mov        w3, w22
+000168cc mov        x1, x21
+000168d0 mov        x0, x19
+000168d4 mov        w2, #0xc1
+000168d8 bl         #0xff80 ; Updater::FileHandler::Open
+000168dc tst        w0, #0xff
+000168e0 b.ne       #0x16994
+000168e4 ldr        x0, [x20]
+000168e8 mov        x1, x21
+000168ec ldr        w2, [x29, #0x5c]
+000168f0 ldr        x3, [x0, #0x30]
+000168f4 mov        x0, x20
+000168f8 blr        x3
+000168fc mov        x4, x23
+00016900 mov        w3, w22
+00016904 mov        x1, x21
+00016908 mov        x0, x19
+0001690c mov        w2, #0xc1
+00016910 bl         #0xff80 ; Updater::FileHandler::Open
+00016914 tst        w0, #0xff
+00016918 b.ne       #0x16994
+0001691c adrp       x2, #0x1b000
+00016920 adrp       x0, #0x1b000
+00016924 ldr        w4, [x29, #0x5c]
+00016928 mov        w1, #5
+0001692c mov        x5, x21
+00016930 add        x2, x2, #0xe2e ; literal 'NewFirmwareFile.cpp'
+00016934 add        x0, x0, #0xe11 ; literal 'UdrAPI,%d,%s:%d,""%d:(%s)""\n'
+00016938 mov        w3, #0xfc
+0001693c movk       w1, #3, lsl #16
+00016940 bl         #0x10930 ; printf
+00016944 mov        x0, #0x10
+00016948 bl         #0xfd80 ; __cxa_allocate_exception
+0001694c adrp       x1, #0x31000
+00016950 adrp       x2, #0x31000
+00016954 ldr        x1, [x1, #0xe30]
+00016958 ldr        x2, [x2, #0xe88]
+0001695c add        x1, x1, #0x10
+00016960 str        x1, [x0]
+00016964 mov        w1, #5
+00016968 movk       w1, #3, lsl #16
+0001696c str        w1, [x0, #8]
+00016970 adrp       x1, #0x31000
+00016974 strb       wzr, [x0, #0xc]
+00016978 ldr        x1, [x1, #0xfc0]
+0001697c bl         #0x10700 ; __cxa_throw
+00016980 mov        x20, x0
+00016984 mov        x0, x19
+00016988 bl         #0x10820 ; Updater::FileHandler::~FileHandler
+0001698c mov        x0, x20
+00016990 bl         #0x107a0 ; _Unwind_Resume
+00016994 ldr        x0, [x20, #0x20]
+00016998 add        x23, x29, #0x80
+0001699c add        x25, x29, #0x68
+000169a0 str        xzr, [x23, #-0x20]!
+000169a4 ldr        x20, [x0, #0x30]
+000169a8 cmp        x20, #0
+000169ac csel       x20, x20, xzr, ge
+000169b0 cbz        x20, #0x16a98
+000169b4 mov        x2, x20
+000169b8 mov        x1, x23
+000169bc mov        x0, x24
+000169c0 bl         #0xfce0 ; Updater::PackedFirmwareBuffer::ReadDataWithoutCopy
+000169c4 mov        x22, x0
+000169c8 cbz        x0, #0x16a70
+000169cc ldr        x1, [x29, #0x60]
+000169d0 mov        x2, x0
+000169d4 mov        x3, x25
+000169d8 mov        x0, x19
+000169dc str        xzr, [x29, #0x68]
+000169e0 bl         #0x103f0 ; Updater::FileHandler::WriteAll
+000169e4 tst        w0, #0xff
+000169e8 b.ne       #0x16a54
+000169ec bl         #0x103d0 ; __errno_location
+000169f0 ldr        w4, [x0]
+000169f4 adrp       x2, #0x1b000
+000169f8 adrp       x0, #0x1b000
+000169fc mov        w1, #5
+00016a00 mov        x5, x21
+00016a04 add        x2, x2, #0xe2e ; literal 'NewFirmwareFile.cpp'
+00016a08 add        x0, x0, #0xe11 ; literal 'UdrAPI,%d,%s:%d,""%d:(%s)""\n'
+00016a0c mov        w3, #0x10a
+00016a10 movk       w1, #3, lsl #16
+00016a14 bl         #0x10930 ; printf
+00016a18 mov        x0, #0x10
+00016a1c bl         #0xfd80 ; __cxa_allocate_exception
+00016a20 adrp       x1, #0x31000
+00016a24 adrp       x2, #0x31000
+00016a28 ldr        x1, [x1, #0xe30]
+00016a2c ldr        x2, [x2, #0xe88]
+00016a30 add        x1, x1, #0x10
+00016a34 str        x1, [x0]
+00016a38 mov        w1, #5
+00016a3c movk       w1, #3, lsl #16
+00016a40 str        w1, [x0, #8]
+00016a44 adrp       x1, #0x31000
+00016a48 strb       wzr, [x0, #0xc]
+00016a4c ldr        x1, [x1, #0xfc0]
+00016a50 bl         #0x10700 ; __cxa_throw
+00016a54 mov        x1, x22
+00016a58 mov        x0, x24
+00016a5c bl         #0x108f0 ; Updater::PackedFirmwareBuffer::SkipBlock
+00016a60 tst        w0, #0xff
+00016a64 b.eq       #0x16a70
+00016a68 sub        x20, x20, x22
+00016a6c b          #0x169b0
+00016a70 mov        w20, #0
+00016a74 mov        x0, x19
+00016a78 bl         #0x10820 ; Updater::FileHandler::~FileHandler
+00016a7c ldr        x25, [sp, #0x40]
+00016a80 mov        w0, w20
+00016a84 ldp        x19, x20, [sp, #0x10]
+00016a88 ldp        x21, x22, [sp, #0x20]
+00016a8c ldp        x23, x24, [sp, #0x30]
+00016a90 ldp        x29, x30, [sp], #0x80
+00016a94 ret        
+00016a98 mov        x0, x19
+00016a9c bl         #0x10210 ; Updater::FileHandler::Close
+00016aa0 uxtb       w20, w0
+00016aa4 cbnz       w20, #0x16a74
+00016aa8 adrp       x2, #0x1b000
+00016aac adrp       x0, #0x1b000
+00016ab0 mov        w1, #5
+00016ab4 mov        x4, x21
+00016ab8 add        x2, x2, #0xe2e ; literal 'NewFirmwareFile.cpp'
+00016abc add        x0, x0, #0x881 ; literal 'UdrAPI,%d,%s:%d,""%s""\n'
+00016ac0 mov        w3, #0x112
+00016ac4 movk       w1, #3, lsl #16
+00016ac8 bl         #0x10930 ; printf
+00016acc mov        x0, #0x10
+00016ad0 bl         #0xfd80 ; __cxa_allocate_exception
+00016ad4 adrp       x1, #0x31000
+00016ad8 adrp       x2, #0x31000
+00016adc ldr        x1, [x1, #0xe30]
+00016ae0 ldr        x2, [x2, #0xe88]
+00016ae4 add        x1, x1, #0x10
+00016ae8 str        x1, [x0]
+00016aec mov        w1, #5
+00016af0 movk       w1, #3, lsl #16
+00016af4 str        w1, [x0, #8]
+00016af8 adrp       x1, #0x31000
+00016afc strb       wzr, [x0, #0xc]
+00016b00 ldr        x1, [x1, #0xfc0]
+00016b04 bl         #0x10700 ; __cxa_throw

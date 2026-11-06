@@ -1,0 +1,24 @@
+{
+  "schema": "fx6-hybrid-ux1024-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal10.cpio",
+  "source_sha256": "066425ae5fb2acb6beb59a9dc7cb6519c055f7eb4a8444a89bcd3d910fe61b5c",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal18.cpio",
+  "output_sha256": "c48f11cbd49264e55b7e1bd0416a5e2d71fb36a2374d8276ef7197916ccc985c",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 21168,
+    "new_bytes": 21195,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libgrm-fbinit8.so",
+      "bytes": 7552,
+      "sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80"
+    }
+  ],
+  "source_member_count": 1157
+}

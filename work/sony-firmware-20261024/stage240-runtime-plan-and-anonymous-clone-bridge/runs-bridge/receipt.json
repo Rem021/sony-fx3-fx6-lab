@@ -1,0 +1,2546 @@
+{
+  "status": "OWN_RUNTIME_PLAN_ANONYMOUS_CLONE_BRIDGE_SCOPED_PASS",
+  "tests": 8,
+  "failures": 0,
+  "errors": 0,
+  "details": [],
+  "cases": [
+    {
+      "name": "normal-321",
+      "summary": {
+        "result": 11,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          },
+          {
+            "sender": 7002,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 0
+          }
+        ],
+        "reaper": [
+          {
+            "reason": "saved parent mask restored after sentinel or cleanup",
+            "pid": 5001,
+            "status": 10752,
+            "only_fake_Sony_reaper_semantics": true
+          }
+        ],
+        "collector_status": 10752,
+        "collector_reaped": true,
+        "worker_status": 0,
+        "root_sleeps": 3,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "normal-9011",
+      "summary": {
+        "result": 11,
+        "fault": null,
+        "root_pid": 9011,
+        "root_tid": 9022,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 9011,
+            "child": 11001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 11001,
+            "child": 12001,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 11001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "659a296dbad2129da2c255f9fe81d25ea5579e8ba8d4e5d6b1e9d976549140a7",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 100000000000,
+            "expires": 160000000000,
+            "payload_sha256": "0980b9c9e35a4db709282ccd456834c090dae27aee26c5db301de255361c4540"
+          },
+          {
+            "sender": 9011,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "659a296dbad2129da2c255f9fe81d25ea5579e8ba8d4e5d6b1e9d976549140a7",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 100000000000,
+            "expires": 160000000000,
+            "payload_sha256": "b18e97874ace3a307a2608b9d4b4f520022aaa3d1ee3b6dba65f840953bfbcb0"
+          },
+          {
+            "sender": 11001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "659a296dbad2129da2c255f9fe81d25ea5579e8ba8d4e5d6b1e9d976549140a7",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 100000000000,
+            "expires": 160000000000,
+            "payload_sha256": "e0e4e40c1f12dc5731f28623164678d4fb9dc194dc22312dc074d05b8aefd4e8"
+          },
+          {
+            "sender": 12001,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "659a296dbad2129da2c255f9fe81d25ea5579e8ba8d4e5d6b1e9d976549140a7",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 100000000000,
+            "expires": 160000000000,
+            "payload_sha256": "a122a712bd71e60c875ed38febf7f71f4f44e4e37873a47dd6a6710eca9bd989"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 9011,
+            "fd": 4,
+            "object_pid": 11001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 11001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 11001,
+            "pid": 12001,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 11001,
+            "pid": 12001,
+            "flags": 2684354561,
+            "returned": 12001,
+            "status": 0
+          }
+        ],
+        "reaper": [
+          {
+            "reason": "saved parent mask restored after sentinel or cleanup",
+            "pid": 11001,
+            "status": 10752,
+            "only_fake_Sony_reaper_semantics": true
+          }
+        ],
+        "collector_status": 10752,
+        "collector_reaped": true,
+        "worker_status": 0,
+        "root_sleeps": 3,
+        "source_accesses": [],
+        "original_plan_sha": "659a296dbad2129da2c255f9fe81d25ea5579e8ba8d4e5d6b1e9d976549140a7",
+        "errors": []
+      }
+    },
+    {
+      "name": "normal-400",
+      "summary": {
+        "result": 11,
+        "fault": null,
+        "root_pid": 400,
+        "root_tid": 400,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 400,
+            "child": 410,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 410,
+            "child": 420,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 410,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "7ff614b3114a004a5afc5f4652adffe8e72faebe5240cad274fdde7f8b6f7b0b",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 900000000000,
+            "expires": 960000000000,
+            "payload_sha256": "03a6cc71749efab5f3f75e98ebae7f62286b57d6e04d235858a0a6ee6e23d21a"
+          },
+          {
+            "sender": 400,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "7ff614b3114a004a5afc5f4652adffe8e72faebe5240cad274fdde7f8b6f7b0b",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 900000000000,
+            "expires": 960000000000,
+            "payload_sha256": "3e6932e6a70564e636c96b7b844272858501b06ed47ad5aeaea491a311353ebd"
+          },
+          {
+            "sender": 410,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "7ff614b3114a004a5afc5f4652adffe8e72faebe5240cad274fdde7f8b6f7b0b",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 900000000000,
+            "expires": 960000000000,
+            "payload_sha256": "cab708ed834d5ac60c562579c34117a7b16b315aa33c202646d06497a41b31e2"
+          },
+          {
+            "sender": 420,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "7ff614b3114a004a5afc5f4652adffe8e72faebe5240cad274fdde7f8b6f7b0b",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 900000000000,
+            "expires": 960000000000,
+            "payload_sha256": "6a5fd89f519dd3c7372ca4f599167607ca18d0ff3dae189ab2d5eaf8ec083c04"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 400,
+            "fd": 4,
+            "object_pid": 410
+          }
+        ],
+        "waits": [
+          {
+            "caller": 410,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 410,
+            "pid": 420,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 410,
+            "pid": 420,
+            "flags": 2684354561,
+            "returned": 420,
+            "status": 0
+          }
+        ],
+        "reaper": [
+          {
+            "reason": "saved parent mask restored after sentinel or cleanup",
+            "pid": 410,
+            "status": 10752,
+            "only_fake_Sony_reaper_semantics": true
+          }
+        ],
+        "collector_status": 10752,
+        "collector_reaped": true,
+        "worker_status": 0,
+        "root_sleeps": 3,
+        "source_accesses": [],
+        "original_plan_sha": "7ff614b3114a004a5afc5f4652adffe8e72faebe5240cad274fdde7f8b6f7b0b",
+        "errors": []
+      }
+    },
+    {
+      "name": "mutate-caller-plan",
+      "summary": {
+        "result": 11,
+        "fault": "mutate-input-after-clone",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          },
+          {
+            "sender": 7002,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 0
+          }
+        ],
+        "reaper": [
+          {
+            "reason": "saved parent mask restored after sentinel or cleanup",
+            "pid": 5001,
+            "status": 10752,
+            "only_fake_Sony_reaper_semantics": true
+          }
+        ],
+        "collector_status": 10752,
+        "collector_reaped": true,
+        "worker_status": 0,
+        "root_sleeps": 3,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "bad-plan-CRC",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "fa12d7cdbad43564a7101d1f86fe62d91ed118a0fed1bf467702d3884cb58449",
+        "errors": []
+      }
+    },
+    {
+      "name": "bad-plan-image-SHA",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "ae18aa3d18360d388029073530d6ca1384ca9b3925a62034030bbc8bd2364c3f",
+        "errors": []
+      }
+    },
+    {
+      "name": "bad-plan-purpose",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "eaa70c4113e3fa597e6c84773bc58842159adfafaaf2e01ab7eb5954c3048ef1",
+        "errors": []
+      }
+    },
+    {
+      "name": "bad-plan-reserved",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "4aff27bb63eb776230dd2c00214417da46eece36c651e75204d4e6ac34d1265e",
+        "errors": []
+      }
+    },
+    {
+      "name": "bad-plan-flags",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "e665f16eaf9941dcf49188bf7871fe894bc0231c10783e31bdcb50bf4be19cbe",
+        "errors": []
+      }
+    },
+    {
+      "name": "expired",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "675d1aac344f0d714bd1c1c901fec7b0e81a7120042537ce2d01ce28078ef0e7",
+        "errors": []
+      }
+    },
+    {
+      "name": "future",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "177f4b76b4cfe0e88473d504c7318f3f9ea3cb89db9741363617ea32578f338c",
+        "errors": []
+      }
+    },
+    {
+      "name": "too-long",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "f762fd3ea796e48e6bcc6a1dd500e16593a455b6dc3b81ab5f3bd2d8d4178992",
+        "errors": []
+      }
+    },
+    {
+      "name": "mmap-error",
+      "summary": {
+        "result": 2,
+        "fault": "mmap-error",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "executable-protection-error",
+      "summary": {
+        "result": 2,
+        "fault": "executable-protection-error",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "expire-after-copy",
+      "summary": {
+        "result": 2,
+        "fault": "expire-after-copy",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "outer-clone-error",
+      "summary": {
+        "result": 2,
+        "fault": "outer-clone-error",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "not-root",
+      "summary": {
+        "result": 4,
+        "fault": "not-root",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [],
+        "masks": [],
+        "mappings": [],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [],
+        "received": [],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": null,
+        "worker_status": null,
+        "root_sleeps": 0,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "worker-close-error",
+      "summary": {
+        "result": 2,
+        "fault": "worker-close-error",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 15872
+          }
+        ],
+        "reaper": [
+          {
+            "reason": "saved parent mask restored after sentinel or cleanup",
+            "pid": 5001,
+            "status": 512,
+            "only_fake_Sony_reaper_semantics": true
+          }
+        ],
+        "collector_status": 512,
+        "collector_reaped": true,
+        "worker_status": 15872,
+        "root_sleeps": 2,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "worker-SIGKILL",
+      "summary": {
+        "result": 2,
+        "fault": "worker-SIGKILL",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          },
+          {
+            "sender": 7002,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 9
+          }
+        ],
+        "reaper": [
+          {
+            "reason": "saved parent mask restored after sentinel or cleanup",
+            "pid": 5001,
+            "status": 512,
+            "only_fake_Sony_reaper_semantics": true
+          }
+        ],
+        "collector_status": 512,
+        "collector_reaped": true,
+        "worker_status": 9,
+        "root_sleeps": 2,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "bad-HELLO",
+      "summary": {
+        "result": 2,
+        "fault": "bad-HELLO",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [],
+        "reaper": [],
+        "collector_status": null,
+        "collector_reaped": false,
+        "worker_status": null,
+        "root_sleeps": 1,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "early-other-thread-reap",
+      "summary": {
+        "result": 2,
+        "fault": "early-other-thread-reap",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          },
+          {
+            "sender": 7002,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 0
+          }
+        ],
+        "reaper": [
+          {
+            "reason": "explicit unblocked other Sony thread before observation",
+            "pid": 5001,
+            "status": 10752,
+            "only_fake_Sony_reaper_semantics": true
+          }
+        ],
+        "collector_status": 10752,
+        "collector_reaped": true,
+        "worker_status": 0,
+        "root_sleeps": 2,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "no-parent-reap",
+      "summary": {
+        "result": 2,
+        "fault": "no-parent-reap",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          },
+          {
+            "sender": 7002,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 0
+          }
+        ],
+        "reaper": [],
+        "collector_status": 10752,
+        "collector_reaped": false,
+        "worker_status": 0,
+        "root_sleeps": 101,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "baseline-SIGCHLD-blocked",
+      "summary": {
+        "result": 2,
+        "fault": "baseline-SIGCHLD-blocked",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 66560,
+        "final_mask": 66560,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 66560,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 66560
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          },
+          {
+            "sender": 7002,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 0
+          }
+        ],
+        "reaper": [],
+        "collector_status": 10752,
+        "collector_reaped": false,
+        "worker_status": 0,
+        "root_sleeps": 101,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "mask-restore-error",
+      "summary": {
+        "result": 2,
+        "fault": "mask-restore-error",
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 18446744073709289215,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          },
+          {
+            "sender": 7002,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 0
+          }
+        ],
+        "reaper": [],
+        "collector_status": 10752,
+        "collector_reaped": false,
+        "worker_status": 0,
+        "root_sleeps": 2,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    },
+    {
+      "name": "same-capsule-replay",
+      "summary": {
+        "result": 4,
+        "fault": null,
+        "root_pid": 321,
+        "root_tid": 777,
+        "original_mask": 1024,
+        "final_mask": 1024,
+        "clones": [
+          {
+            "parent": 321,
+            "child": 5001,
+            "role": "collector",
+            "flags": 17,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342326692,
+            "old_file_image_removed_before_first_child_instruction": true
+          },
+          {
+            "parent": 5001,
+            "child": 7002,
+            "role": "worker",
+            "flags": 0,
+            "parent_mask": 18446744073709289215,
+            "private_VM_files_sighand": true,
+            "resume_pc": 1342318524,
+            "old_file_image_removed_before_first_child_instruction": false
+          }
+        ],
+        "masks": [
+          {
+            "role": "caller",
+            "before": 1024,
+            "after": 18446744073709289215
+          },
+          {
+            "role": "caller",
+            "before": 18446744073709289215,
+            "after": 1024
+          }
+        ],
+        "mappings": [
+          {
+            "event": "anonymous_RW",
+            "raw": 1342181376,
+            "bytes": 327680,
+            "aligned": 1342242816
+          },
+          {
+            "event": "protect",
+            "address": 1342181376,
+            "bytes": 327680,
+            "permissions": 0
+          },
+          {
+            "event": "protect",
+            "address": 1342242816,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342308352,
+            "bytes": 65536,
+            "permissions": 5
+          },
+          {
+            "event": "protect",
+            "address": 1342373888,
+            "bytes": 65536,
+            "permissions": 1
+          },
+          {
+            "event": "protect",
+            "address": 1342439424,
+            "bytes": 65536,
+            "permissions": 3
+          },
+          {
+            "event": "unmap_parent_copy",
+            "address": 1342181376,
+            "bytes": 327680
+          }
+        ],
+        "root_remaining_new_FDs": [],
+        "root_remaining_anonymous": [],
+        "borrowed_FDs_unchanged": true,
+        "messages": [
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 3,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "d4eae47a4058e72cd4c8c480059cf5fe69a7413ea06de769acd24e2cbb357e31"
+          },
+          {
+            "sender": 321,
+            "role": "caller",
+            "type": 4,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "21c7ae91e1d6b612478cb6201012d1bb62b1029a988c7c30e62265829eb1d646"
+          },
+          {
+            "sender": 5001,
+            "role": "collector",
+            "type": 1,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "5c4be6c609e3b652af9c2ef4f550872a3ce2429ae608ca43e2730431ebb8bbc5"
+          },
+          {
+            "sender": 7002,
+            "role": "worker",
+            "type": 2,
+            "plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+            "image_sha": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+            "issued": 1000000000,
+            "expires": 61000000000,
+            "payload_sha256": "6b4f8bd12de95f936c48b54e984427ac8c2f7ff5f978ff06d35630c9488bd369"
+          }
+        ],
+        "received": [
+          {
+            "receiver": 321,
+            "fd": 4,
+            "object_pid": 5001
+          }
+        ],
+        "waits": [
+          {
+            "caller": 5001,
+            "pid": -1,
+            "flags": 1073741825,
+            "returned": -10,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 0,
+            "status": null
+          },
+          {
+            "caller": 5001,
+            "pid": 7002,
+            "flags": 2684354561,
+            "returned": 7002,
+            "status": 0
+          }
+        ],
+        "reaper": [
+          {
+            "reason": "saved parent mask restored after sentinel or cleanup",
+            "pid": 5001,
+            "status": 10752,
+            "only_fake_Sony_reaper_semantics": true
+          }
+        ],
+        "collector_status": 10752,
+        "collector_reaped": true,
+        "worker_status": 0,
+        "root_sleeps": 3,
+        "source_accesses": [],
+        "original_plan_sha": "a991aff905777a4fc6bdb00923b0a668c80c8c4cd0d8931edd6eef90925060e1",
+        "errors": []
+      }
+    }
+  ],
+  "source_hashes": {
+    "bridge.c": "e57c209764d0fb276ed6a88fa4c735e6a70d7843badab1feaa58238dd3e4a4a9",
+    "parent.c": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5",
+    "collector.c": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b",
+    "bridge_job.h": "bdce44720340a3cd4fd90e04942d07f86f2b1a557990a1d07762971da3da0c0a",
+    "sha_impl.inc": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4",
+    "bridge_build.py": "6c02ec06b94020e380a185141229f52c52d549e984c7c900aa2c6685ea6ec3f0",
+    "model_bridge.py": "ae53a9cc6bab91c1eae73f6ff1e6e5570a2e9bdb49402ecb23eaf4991348707a",
+    "test_bridge.py": "71e1edd9c186c5470a53421d13b9847dde2ba474ff470da3a858f7861afd3f9b"
+  },
+  "binary_sha256": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+  "only_own_ARM64_executed": true,
+  "actual_Linux_processes_or_threads_created": false,
+  "all_Linux_VFS_IPC_signal_clock_and_reaper_operations_are_explicit_fakes": true,
+  "original_Sony_Linux_glibc_or_driver_executed": false,
+  "new_device_operations": 0,
+  "nonce_profile_and_controller_values_still_synthetic_not_authorization": true,
+  "global_cross_reload_owner_or_exclusive_endpoint_origin_proven": false,
+  "Sony_loader_constructor_and_current_target_verified": false,
+  "full_boot_worker_integrated": false,
+  "USB_or_full_job_resource_completion_verified": false,
+  "probe_deployable": false,
+  "first_flash_released": false
+}

@@ -1,0 +1,81 @@
+{
+  "scope": "production AST pre-input branch plus actual incremental monitor; no QEMU and no guest key",
+  "historical_serial": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/serial.log",
+  "historical_serial_sha256": "cab0891be83fa46d2f16096ba2d7f354609289357d21b5e2d70fde2f4d594ada",
+  "historical_event_byte_ranges": {
+    "poweroff": [
+      40830395,
+      40830569
+    ],
+    "shutdown": [
+      40840672,
+      40840717
+    ]
+  },
+  "historical_race_occurrence_proven": false,
+  "cases": [
+    {
+      "case": "native_poweroff_between_polls",
+      "baseline": {
+        "would_reach_guest_write": true,
+        "errors": []
+      },
+      "candidate": {
+        "would_reach_guest_write": false,
+        "errors": [
+          "native_model_power_off_observed: FX3_BOOT_QUEUE_SEND tid=381 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1"
+        ]
+      }
+    },
+    {
+      "case": "native_shutdown_between_polls",
+      "baseline": {
+        "would_reach_guest_write": true,
+        "errors": []
+      },
+      "candidate": {
+        "would_reach_guest_write": false,
+        "errors": [
+          "native_shutdown_after_ready_without_user_power_key: open screen: scr0132_0001 -> scr0039_shutdown"
+        ]
+      }
+    },
+    {
+      "case": "known_boot_shutdown_unchanged",
+      "baseline": {
+        "would_reach_guest_write": true,
+        "errors": []
+      },
+      "candidate": {
+        "would_reach_guest_write": true,
+        "errors": []
+      }
+    },
+    {
+      "case": "ordinary_native_activity",
+      "baseline": {
+        "would_reach_guest_write": true,
+        "errors": []
+      },
+      "candidate": {
+        "would_reach_guest_write": true,
+        "errors": []
+      }
+    },
+    {
+      "case": "existing_fatal_guard",
+      "baseline": {
+        "would_reach_guest_write": false,
+        "errors": [
+          "设备或观察器合同拒绝: FX3_SYNC100_REJECT"
+        ]
+      },
+      "candidate": {
+        "would_reach_guest_write": false,
+        "errors": [
+          "设备或观察器合同拒绝: FX3_SYNC100_REJECT"
+        ]
+      }
+    }
+  ]
+}

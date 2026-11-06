@@ -1,0 +1,12 @@
+{
+  "checked_utc": "2026-10-27T03:30:38.167516+00:00",
+  "official_source": "https://github.com/ARM-software/abi-aa/blob/main/aapcs64/aapcs64.rst",
+  "observed_document_version": "2025Q4, issued2026-01-23",
+  "sections": [
+    "5.10.1 Aggregates",
+    "6.9 Result return"
+  ],
+  "paraphrase": "Caller reserves enough aligned result memory and passes its address inX8. Aggregate alignment/size rules do not alone identify a proprietary result type.",
+  "local_evidence_separate": "Original query writes50 bytes spanning52; our corrected compiled container is56 with alignment8. Sony exact source sizeof and trailing semantics remain unproven.",
+  "verbatim_source_text_saved": false
+}

@@ -1,0 +1,44 @@
+{
+  "status": "METADATA_RETURNED_NOT_AUTH_BACKUP_OR_RECOVERY",
+  "descriptors": {
+    "VID": 1356,
+    "PID": 3489,
+    "USB_BCD": 528,
+    "configuration": 1,
+    "total_length": 32,
+    "interfaces": [
+      {
+        "interface": 0,
+        "alternate": 0,
+        "class": 8,
+        "subclass": 6,
+        "protocol": 80,
+        "endpoints": [
+          {
+            "descriptor_order": 0,
+            "address": 129,
+            "direction": "IN",
+            "transfer_type": 2,
+            "max_packet_size": 512
+          },
+          {
+            "descriptor_order": 1,
+            "address": 2,
+            "direction": "OUT",
+            "transfer_type": 2,
+            "max_packet_size": 512
+          }
+        ]
+      }
+    ],
+    "authentication_or_service_endpoint_roles_proven": false,
+    "only_selected_target": true,
+    "no_serial_strings_requested_or_stored": true,
+    "device_or_interface_open_claim_driver_change_vendor_auth_or_media_operation": false,
+    "descriptor_query_is_active_standard_USB_read_not_IORegistry_only": true,
+    "actual_recording_authentication_backup_or_recovery_proven": false
+  },
+  "probe_id": "stage142-fx3-msc-descriptors-v1",
+  "created_utc": "2026-10-27T21:55:26.327534+00:00",
+  "same_body_firmware_version_driver_ownership_recording_or_recovery_proven": false
+}

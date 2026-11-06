@@ -1,0 +1,250 @@
+{
+  "CP_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "cases": [
+    {
+      "bank_index": 0,
+      "adapted_backup_mutex": false,
+      "original_record_sha256": "33789a7a4d648c9a0bd74bd332de395500bdf0f363839f1d770393a3a3191da5",
+      "initialization": {
+        "returned": true,
+        "raw_r0": "0x0",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_entry_lookup": {
+        "returned": true,
+        "raw_r0": "0x401e2e6",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_size_lookup": {
+        "returned": true,
+        "raw_r0": "0x8",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_data_lookup": {
+        "returned": true,
+        "raw_r0": "0x406d3e0",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_parameter_value": "0x4110c4000",
+      "DMM_source_prefix": {
+        "returned": false,
+        "raw_r0": "0xfb",
+        "boundary": {
+          "pc": "0x52ee34",
+          "operation": "before_original_backup_mutex",
+          "registers": [
+            "0xfb",
+            "0x10",
+            "0x0",
+            "0x0"
+          ],
+          "kernel_result_supplied": false,
+          "provider_reply_supplied": false
+        },
+        "file_offset": "0x0"
+      },
+      "original_query_returns": [],
+      "declared_mutex_adapters": [],
+      "sequential_file_adapter_calls": 0,
+      "original_instructions": 155,
+      "original_RAM_writes": 19
+    },
+    {
+      "bank_index": 0,
+      "adapted_backup_mutex": true,
+      "original_record_sha256": "33789a7a4d648c9a0bd74bd332de395500bdf0f363839f1d770393a3a3191da5",
+      "initialization": {
+        "returned": true,
+        "raw_r0": "0x0",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_entry_lookup": {
+        "returned": true,
+        "raw_r0": "0x401e2e6",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_size_lookup": {
+        "returned": true,
+        "raw_r0": "0x8",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_data_lookup": {
+        "returned": true,
+        "raw_r0": "0x406d3e0",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_parameter_value": "0x4110c4000",
+      "DMM_source_prefix": {
+        "returned": false,
+        "raw_r0": "0x110c4000",
+        "boundary": {
+          "pc": "0x1500c0",
+          "operation": "before_original_no_range_diagnostic",
+          "registers": [
+            "0x110c4000",
+            "0x4",
+            "0x4d7b40",
+            "0x3"
+          ],
+          "kernel_result_supplied": false,
+          "memory_attribute_result_supplied": false,
+          "provider_reply_supplied": false
+        },
+        "file_offset": "0x0"
+      },
+      "original_query_returns": [
+        {
+          "pc": "0x4d7a9c",
+          "value_low": "0x110c4000",
+          "value_high": "0x4"
+        }
+      ],
+      "declared_mutex_adapters": [
+        {
+          "pc": "0x52ee34",
+          "declared_return": 0,
+          "operation": "declared_backup_mutex_enter"
+        },
+        {
+          "pc": "0x52f17c",
+          "declared_return": 0,
+          "operation": "declared_backup_mutex_exit"
+        }
+      ],
+      "sequential_file_adapter_calls": 0,
+      "original_instructions": 305,
+      "original_RAM_writes": 19
+    },
+    {
+      "bank_index": 1,
+      "adapted_backup_mutex": false,
+      "original_record_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+      "initialization": {
+        "returned": true,
+        "raw_r0": "0x0",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_entry_lookup": {
+        "returned": true,
+        "raw_r0": "0x402a334",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_size_lookup": {
+        "returned": true,
+        "raw_r0": "0x8",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_data_lookup": {
+        "returned": true,
+        "raw_r0": "0x4065238",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_parameter_value": "0x809a08e00",
+      "DMM_source_prefix": {
+        "returned": false,
+        "raw_r0": "0xfb",
+        "boundary": {
+          "pc": "0x52ee34",
+          "operation": "before_original_backup_mutex",
+          "registers": [
+            "0xfb",
+            "0x10",
+            "0x0",
+            "0x0"
+          ],
+          "kernel_result_supplied": false,
+          "provider_reply_supplied": false
+        },
+        "file_offset": "0x0"
+      },
+      "original_query_returns": [],
+      "declared_mutex_adapters": [],
+      "sequential_file_adapter_calls": 0,
+      "original_instructions": 155,
+      "original_RAM_writes": 19
+    },
+    {
+      "bank_index": 1,
+      "adapted_backup_mutex": true,
+      "original_record_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+      "initialization": {
+        "returned": true,
+        "raw_r0": "0x0",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_entry_lookup": {
+        "returned": true,
+        "raw_r0": "0x402a334",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_size_lookup": {
+        "returned": true,
+        "raw_r0": "0x8",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_data_lookup": {
+        "returned": true,
+        "raw_r0": "0x4065238",
+        "boundary": null,
+        "file_offset": "0x0"
+      },
+      "original_parameter_value": "0x809a08e00",
+      "DMM_source_prefix": {
+        "returned": false,
+        "raw_r0": "0x9a08e00",
+        "boundary": {
+          "pc": "0x53894c",
+          "operation": "before_original_memory_attribute_validation",
+          "registers": [
+            "0x9a08e00",
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          "kernel_result_supplied": false,
+          "memory_attribute_result_supplied": false,
+          "provider_reply_supplied": false
+        },
+        "file_offset": "0x0"
+      },
+      "original_query_returns": [
+        {
+          "pc": "0x4d7a9c",
+          "value_low": "0x9a08e00",
+          "value_high": "0x8"
+        }
+      ],
+      "declared_mutex_adapters": [
+        {
+          "pc": "0x52ee34",
+          "declared_return": 0,
+          "operation": "declared_backup_mutex_enter"
+        },
+        {
+          "pc": "0x52f17c",
+          "declared_return": 0,
+          "operation": "declared_backup_mutex_exit"
+        }
+      ],
+      "sequential_file_adapter_calls": 0,
+      "original_instructions": 289,
+      "original_RAM_writes": 19
+    }
+  ],
+  "scope": "Original public BK4 records loaded as explicit RAM inputs and parsed by original CP initializer/helpers. Strict DMM path stops before backup mutex. Adapted mutex0 paths use original query and range code, stopping before no-range log or memory-attribute validation. No DmmCfg bytes loaded at candidate pointer, memory-attribute result, provider reply, physical allocation, normal bank selection, live state, native Sony program or device action."
+}

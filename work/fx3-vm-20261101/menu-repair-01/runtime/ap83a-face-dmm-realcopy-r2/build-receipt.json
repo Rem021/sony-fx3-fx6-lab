@@ -1,0 +1,19 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap83a-face-dmm-realcopy/candidate83a.json",
+  "base_sha256": "54482f5f7173b3366793e6fe7e9553e127225d2c7caee32db16fade959aece08",
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap83a-face-dmm-realcopy-r2/guest.cpio",
+    "sha256": "737ed28a93f73e515d5e91bca2dd7ba1442aca0bf9371fca0405d2cfe67432b0"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap83a-face-dmm-realcopy-r2/guest.dtb",
+    "sha256": "2f1911e4efa5b4a2555b17dbced3e40bd52d8d77c5b5a11f54d9828126c79b0c"
+  },
+  "helper_sha256": {
+    "fx3-capid-v39.so": "d4a19cc55d0ba3f2bf6ef9062b85d2beb12c0751f0810f81347bd3d9bfeb21ea",
+    "fx3-ui-gate-v11.so": "54eeed923a6412cd2c6743f6e8c968d1ede71b92aa79aca4575868ebccc4a9ec",
+    "fx3-gpe-observe-v13-trace-v1.so": "5aa907051c15fd67911a47bb51ff13e30be643ecfc36ffbf3d85aa307cfacb44"
+  },
+  "changes": "AP82 second pin topology9ab2518 UUD reset: capidv37 graph28pins/9owners/14edges with original22 indices+states retained, emptyqueues/noimagebuffers/noDMA/no sensor frames; exact new90050004 GET outerSID and current native replyqueue,9 extra packets. Gatev11 passive original Backup compare/write,desired144,mode input,face procedure return and graph v2 QMP. SKD guard and enum2 inherited unchanged. GPE v13 trace variant adds raw marker only, original unsupported blend/conversion behavior unchanged; logical PNG only; no Backup/parameter prewrites or synthetic tokens/input. AP83a independently reserved face-registration DMM1d9/1da/1db in41dd00000/90000, capidv38, native localDMM/full handles captured from original freed replies; ICDT actual local-to-remote byte copy/equality, no muted substitution, no recognition engine; AP82 pin/gate/GPEv13trace unchanged. AP83a-r2 v39 precise native24B allocate-only and40B local8024 capture, short-reply zero-extension is observer scratch only; original bytes/free unchanged; reused retired pin/panel pointers gated by exact owned message size. Actual ICDT byte copy inherited.",
+  "backup_seed_or_reserved_source_modified": false
+}

@@ -1,0 +1,11 @@
+{
+  "recorded_utc": "2026-10-25T22:03:41.900341+00:00",
+  "status": "preserved_failed_fixture_attempt",
+  "observed_PC": "0xffffffc00113bc64",
+  "invalid_guest_read": "0x0",
+  "missing_fixture_field": "EXT+8 context pointer",
+  "original_constructor_store": "0x1398c0 STP includes context at EXT+8",
+  "correction": "Seed the known original constructor field as an explicit partially constructed fixture; no firmware edits or output stub.",
+  "effective_run": "run-corrected-20261025",
+  "actual_camera_failure": false
+}

@@ -1,0 +1,131 @@
+{
+  "ABI": 3,
+  "fixture": {
+    "path": "artifacts/owner-fixture-helper",
+    "sha256": "0e903c9a52a57646342b6d150fb990eff83611326b5d4b7b78b83c4a4084a808",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-DFX3_APPROVED_JOB_ROOT=\"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/runs/\"",
+      "-DFX3_ENTRY_FIXTURE",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_ipc.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/entry_support.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_entry_main.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_fixture.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/owner-fixture-helper"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/owner-fixture-helper:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "native": {
+    "path": "artifacts/owner-native-helper",
+    "sha256": "69c1756640281aec4cc98b83c354c8f8ba754c06f045ab6ec89379588bd09796",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-DFX3_APPROVED_JOB_ROOT=\"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/runs/\"",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_ipc.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/entry_support.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_entry_main.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_iokit.c",
+      "-framework",
+      "IOKit",
+      "-framework",
+      "CoreFoundation",
+      "-framework",
+      "DiskArbitration",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/owner-native-helper"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/owner-native-helper:\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.63)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "ipc": {
+    "path": "artifacts/entry-ipc.dylib",
+    "sha256": "8a5f67c07648235eb326502ceceff5030ce14e55f557bebad58602d5809b742e",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-dynamiclib",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_ipc.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/entry_support.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/entry-ipc.dylib"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/entry-ipc.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/entry-ipc.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "sources": [
+    {
+      "path": "owner_trial.h",
+      "sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "236fe4c122372a13f8a5b3d4ae25bc4ccc1b7e14af47363fcde4e62e0a999afc"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "aba073e7df59e076df15568789a5de697f2b73dd95bcd525985e33582eb26e55"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "owner_binding.py",
+      "sha256": "b8f5e4170ef40e38c9d05c09909a99204b49baab476de1b1e4beeed2ed6d8a6f"
+    },
+    {
+      "path": "entry_shared.h",
+      "sha256": "a7a6703f358e125050b8ee6d41593c3f1f81f2ab7dc75a086d02e7a280bf84d6"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "2a7d66aa1afb97d6400a382ec3984c676d31f9ee1d548f9bafacd397a959a269"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "3cbe21a3da869124265be7b4481d309c9dd979e17785b7d2c54cce92115d0995"
+    },
+    {
+      "path": "admin_launch.applescript",
+      "sha256": "237ef186f73c0663b8f9d21246ad6d79fecf12efcac89b9db4ca90732b477623"
+    }
+  ],
+  "applescript_compile_argv": [
+    "osacompile",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/admin_launch.scpt",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/admin_launch.applescript"
+  ],
+  "applescript_compiled_not_executed": true,
+  "native_helper_executed_or_IOKit_loaded": false,
+  "administrator_prompt_requested": false,
+  "new_device_operations": 0
+}

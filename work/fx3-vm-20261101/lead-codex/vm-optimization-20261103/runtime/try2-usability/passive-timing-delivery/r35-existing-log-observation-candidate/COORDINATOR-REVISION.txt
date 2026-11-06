@@ -1,0 +1,6 @@
+Source: Orca msg_46c6a32261e9, reply to msg_43da4bffa559, received via orchestration check.
+同一r35离线任务；允许唯一热路径新增syscall为实际getpid/TGID(AArch64 syscall172)，仅诊断所有权检查，每collector记录点/快照入口最多1次，原选中UI日志回调最多2次(UI自身+跨模块)。报告完整wrapper最坏累计与成本。其他新增clock/syscall/dlsym/malloc仍禁止，无新增I/O/物理映射/VM授权。
+先查询真实TGID再触碰记录/丢弃/锁/预算；不同初始化owner拒绝且不得重置owner或额度，尤其CLONE_VM无CLONE_THREAD不得修改父BSS。同进程多线程允许；早期未知；不能把PID/时间戳单独当global runID。保留原UI claim/原hook绑定/host run合同；额外模块/重载不得重新输出累计预算。
+补不同TGID全部点拒绝且parent BSS不变、同TGID不同线程、libc fork失效、early unknown、native等价、额外实例/exec claim与预算不重置测试；注入模型与实际host fork分开。汇编核实际调用位置次数/无重试循环，宿主实测getpid及完整wrapper/回调，不给guest时序保证。
+摘要<=184B、最多7条<=1288B、整轮<=2048B不放宽。magic需真实load；旧严格解析器兼容边界要说明。固定平台与运行策略不变；FX6不在本实现。
+Coordinator primary references: https://man7.org/linux/man-pages/man2/getpid.2.html ; https://man7.org/linux/man-pages/man2/gettid.2.html (2026-11-04 PT). Interface references do not replace target ABI binding.

@@ -1,0 +1,18 @@
+{
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap11-filtered-c/virt-original-ap10.dtb",
+    "sha256": "04276559aaa0155cb6b5f949c11afefd7a4a22d68a0e8e93692f67c6907908a6"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap11-filtered-c/fx3-original-ap10.cpio",
+    "sha256": "397cd49fc58a6a5e6740d84854224a1308bc126902a265b4be35422a950aced4"
+  },
+  "required_markers": [
+    "FX3_CPUSET_READY",
+    "FX3_BACKUP_INSMOD_RC=0",
+    "FX3_ULOGIO_INSMOD_RC=0",
+    "FX3_AP_NATURAL_BOOTIN_BEGIN"
+  ],
+  "scope": "Natural original FX3 bootin target=qemu[space] dmode=3 with full original rootfs7/usr15/appli projection. File presence is not execution. Five original service modules only preloaded; explicit derived IMDB ten-service hardware filter. No manufactured menu/ACK, no physical devices/network/host disk. Original library idle init allowed; independent updater/Jiritsu workflow not invoked.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added."
+}

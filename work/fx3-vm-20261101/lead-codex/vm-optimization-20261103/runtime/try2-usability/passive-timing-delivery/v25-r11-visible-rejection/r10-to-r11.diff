@@ -1,0 +1,127 @@
+--- r10/trial_web_v22_navigation_review.py
++++ r11/trial_web_v22_navigation_review.py
+@@ -243,6 +243,7 @@
+ const token=__TOKEN__;
+ let displayed=0,shown=0,shownSHA='',displayedGeneration=0,busy=false,ending=false,finished=false;
+ let lastURL=null,renderFault=null,lastStatus=null,awaitingStep=null,deliveryUnknown=false,reviewAwaiting=false,reviewUnknown=false,pendingConfirm=null;
++let explicitRejection=null,uncertainDetail='';
+ const image=document.querySelector('#frame'),statusEl=document.querySelector('#status');
+ const err=document.querySelector('#error'),endButton=document.querySelector('#end'),startButton=document.querySelector('#start');
+ const failureSummary=document.querySelector('#failure-summary'),diagnostics=document.querySelector('#diagnostics');
+@@ -284,6 +285,34 @@
+    c.content_generation===p.content_generation&&c.PNG_sha256===p.PNG_sha256&&
+    c.guest_input_written===false&&!!s.frame&&s.frame.content_generation===p.content_generation&&
+    s.frame.PNG_sha256===p.PNG_sha256;
++}
++function presentFeedback(s){
++ // Native failure and terminal state outrank a previous, local 4xx refusal.
++ let summary='',detail='';
++ if(s.error){
++   detail=s.error;
++   summary=s.error.startsWith('native_model_power_off_observed')?
++     '原生省电关机：本轮已结束，健康检查未通过。':'检测到错误；请展开“诊断详情”查看原始回执。';
++ }else if(s.phase==='finished'||s.phase==='stopping'||ending){
++   // The authoritative lifecycle message is already in #status.
++ }else if(renderFault){
++   detail=renderFault;
++   summary='网页画面或状态读取失败；本轮暂停新按键，请查看诊断详情。';
++ }else if(launchUnknown){
++   detail='启动回执未知；只读状态仍未匹配本次请求，请等待或结束本轮。';
++   summary='启动请求结果未知，已暂停再次启动；请等待状态确认或结束本轮。';
++ }else if(deliveryUnknown||reviewUnknown){
++   detail=uncertainDetail;
++   summary=deliveryUnknown?
++     '按键是否送达尚未确认，已暂停新按键；请结束本轮后重新启动。':
++     '画面确认请求结果未知，已暂停新按键；请结束本轮后重新启动。';
++ }else if(explicitRejection){
++   detail=explicitRejection.detail;
++   summary=explicitRejection.kind==='key'?
++     '本次按键未被接收。请看最新画面，再由您决定是否重新按键；网页不会自动重发。':
++     '本次画面确认未被接收。请看最新画面，再由您决定是否重新确认；网页不会自动确认。';
++ }
++ diagnostics.hidden=!detail;err.textContent=detail;failureSummary.textContent=summary;
+ }
+ async function showFrame(s){
+  if(!s.frame)return;
+@@ -310,9 +339,6 @@
+  try{
+    const s=(await request('/api/status')).body;lastStatus=s;
+    statusEl.textContent=s.message+(s.visual_state==='visual_pending'?'（输入已接收，仍在观察画面）':'');
+-   diagnostics.hidden=!s.error;err.textContent=s.error||'';
+-   failureSummary.textContent=s.error?(s.error.startsWith('native_model_power_off_observed')?
+-     '原生省电关机：本轮已结束，健康检查未通过。':'检测到错误；请展开“诊断详情”查看原始回执。'):'';
+    reviewEl.textContent=s.review_required?'原生按键已接收，效果待您看图确认。请只在当前画面完整且符合预期时点继续；无需再按一次固件键。':'';
+    document.querySelector('#meta').textContent=s.phase==='finished'?
+      `按键 ${s.steps}/${s.max_steps} · 已结束${s.result&&Number.isFinite(s.result.duration_seconds)?` · 实际 ${Math.round(s.result.duration_seconds)} 秒`:''} · 最后提交帧 ${s.frame?s.frame.sequence:'无'}`:
+@@ -324,6 +350,7 @@
+    if(s.phase==='finished'){
+      if(!s.frame)document.querySelector('#placeholder').textContent='本轮已结束';
+      finished=true;disableKeys();endButton.disabled=true;
++     presentFeedback(s);
+      // Confirm delivery only after displaying the authoritative final status.
+      // A lost ACK never overrides that status or initiates another operation.
+      if(s.final_receipt_id)void post('/api/final-ack',{receipt_id:s.final_receipt_id}).catch(()=>{});
+@@ -341,20 +368,17 @@
+    startButton.disabled=s.phase!=='awaiting_launch'||!s.browser_ready||!!s.launch_request_id||
+      !!launchPending||launchUnknown||ending||!!renderFault;
+    if(launchUnknown){
+-     diagnostics.hidden=false;
+-     err.textContent='启动回执未知；只读状态仍未匹配本次请求，请等待或结束本轮。';
+-     failureSummary.textContent='启动请求结果未知，已暂停再次启动；请等待状态确认或结束本轮。';
++     // Kept locked until the matching launch request appears in status.
+    }
+    if(awaitingStep!==null&&!busy&&!deliveryUnknown&&s.steps>=awaitingStep&&!s.busy){
+      awaitingStep=null;deliveryUnknown=false;
+    }
+    if((reviewAwaiting||reviewUnknown)&&confirmationMatches(s,pendingConfirm)){
+      reviewAwaiting=false;reviewUnknown=false;pendingConfirm=null;
+-   }
+-   if(deliveryUnknown)failureSummary.textContent='按键是否送达尚未确认，已暂停新按键；请结束本轮后重新启动。';
+-   if(reviewUnknown)failureSummary.textContent='画面确认请求结果未知，已暂停新按键；请结束本轮后重新启动。';
++     if(explicitRejection?.kind==='confirm')explicitRejection=null;
++   }
+    if(s.frame&&(s.frame.sequence!==shown||s.frame.content_generation!==displayedGeneration))await showFrame(s);
+-   renderFault=null;enableKeys(s);
++   renderFault=null;enableKeys(s);presentFeedback(s);
+  }catch(e){
+    renderFault=e.message;disableKeys();err.textContent=renderFault;
+    diagnostics.hidden=false;failureSummary.textContent='网页画面或状态读取失败；本轮暂停新按键，请查看诊断详情。';
+@@ -370,11 +394,14 @@
+  try{
+    const ack=await post('/api/key',{key:Number(b.dataset.key),observed_sequence:displayed});
+    if(ack.accepted!==true||ack.next_step!==awaitingStep)throw Error('按键回执不完整，请等待状态确认。');
+-   err.textContent='';
++   if(explicitRejection?.kind==='key')explicitRejection=null;
++   presentFeedback(lastStatus);
+  }catch(e){
+-   if(e.deliveryUnknown===false){awaitingStep=null;deliveryUnknown=false;}
+-   else{deliveryUnknown=true;}
+-   err.textContent=e.message;
++   if(e.deliveryUnknown===false){
++     awaitingStep=null;deliveryUnknown=false;
++     explicitRejection={kind:'key',detail:e.message};
++   }else{deliveryUnknown=true;uncertainDetail=e.message;}
++   presentFeedback(lastStatus);
+  }finally{busy=false;}
+ });
+ startButton.onclick=async()=>{
+@@ -400,12 +427,15 @@
+       ack.content_generation!==confirmation.content_generation||
+       ack.PNG_sha256!==confirmation.PNG_sha256||ack.guest_input_written!==false)
+      throw Error('画面确认回执不完整。');
+-   err.textContent='';
++   if(explicitRejection?.kind==='confirm')explicitRejection=null;
++   presentFeedback(lastStatus);
+  }catch(e){
+    if(pendingConfirm===confirmation){
+-     if(e.deliveryUnknown===false){reviewAwaiting=false;pendingConfirm=null;}
+-     else reviewUnknown=true;
+-     err.textContent=e.message;
++     if(e.deliveryUnknown===false){
++       reviewAwaiting=false;pendingConfirm=null;
++       explicitRejection={kind:'confirm',detail:e.message};
++     }else{reviewUnknown=true;uncertainDetail=e.message;}
++     presentFeedback(lastStatus);
+    }
+  }
+ };

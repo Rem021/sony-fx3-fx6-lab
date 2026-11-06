@@ -1,0 +1,2669 @@
+{
+  "status": "PASS_ORIGINAL_EMBEDDED_RUNTIME_STATIC_EXTRACTION",
+  "source_sha256": "7d1fbd9a53794def916ca3ff2fc3a00f295268bb0f4ea7c07d0e8356d2840f9b",
+  "file_offset": "0x350438",
+  "bytes": 1838096,
+  "sha256": "bbe8392bc563ede56ea6984f888f44a1dbf736858f771c30716f5a9cb57a5bd1",
+  "length_field_va": "0x740438",
+  "loader_evidence": "DT_INIT writes original data at VA 0x350438 with original length at VA 0x740438 through imported fwrite, then uses dlopen and a relative entry offset 0x43310. This extraction reads the same original embedded span without performing those operations.",
+  "sections": [
+    {
+      "name": "",
+      "address": "0x0",
+      "offset": "0x0",
+      "bytes": 0
+    },
+    {
+      "name": ".note.gnu.build-id",
+      "address": "0x238",
+      "offset": "0x238",
+      "bytes": 36
+    },
+    {
+      "name": ".dynsym",
+      "address": "0x260",
+      "offset": "0x260",
+      "bytes": 7848
+    },
+    {
+      "name": ".dynstr",
+      "address": "0x2108",
+      "offset": "0x2108",
+      "bytes": 3595
+    },
+    {
+      "name": ".hash",
+      "address": "0x2f18",
+      "offset": "0x2f18",
+      "bytes": 2368
+    },
+    {
+      "name": ".gnu.version",
+      "address": "0x3858",
+      "offset": "0x3858",
+      "bytes": 654
+    },
+    {
+      "name": ".gnu.version_d",
+      "address": "0x3ae8",
+      "offset": "0x3ae8",
+      "bytes": 28
+    },
+    {
+      "name": ".gnu.version_r",
+      "address": "0x3b04",
+      "offset": "0x3b04",
+      "bytes": 256
+    },
+    {
+      "name": ".rela.dyn",
+      "address": "0x3c08",
+      "offset": "0x3c08",
+      "bytes": 86208
+    },
+    {
+      "name": ".rela.plt",
+      "address": "0x18cc8",
+      "offset": "0x18cc8",
+      "bytes": 6240
+    },
+    {
+      "name": ".init",
+      "address": "0x1a528",
+      "offset": "0x1a528",
+      "bytes": 20
+    },
+    {
+      "name": ".plt",
+      "address": "0x1a540",
+      "offset": "0x1a540",
+      "bytes": 4192
+    },
+    {
+      "name": ".text",
+      "address": "0x1b5a0",
+      "offset": "0x1b5a0",
+      "bytes": 1303272
+    },
+    {
+      "name": ".fini",
+      "address": "0x159888",
+      "offset": "0x159888",
+      "bytes": 16
+    },
+    {
+      "name": ".gcc_except_table",
+      "address": "0x159898",
+      "offset": "0x159898",
+      "bytes": 56168
+    },
+    {
+      "name": ".rodata",
+      "address": "0x167400",
+      "offset": "0x167400",
+      "bytes": 83867
+    },
+    {
+      "name": ".eh_frame",
+      "address": "0x17bba0",
+      "offset": "0x17bba0",
+      "bytes": 129980
+    },
+    {
+      "name": ".eh_frame_hdr",
+      "address": "0x19b75c",
+      "offset": "0x19b75c",
+      "bytes": 21540
+    },
+    {
+      "name": ".tbss",
+      "address": "0x1b7258",
+      "offset": "0x1a7258",
+      "bytes": 4112
+    },
+    {
+      "name": ".data.rel.ro.local",
+      "address": "0x1b7258",
+      "offset": "0x1a7258",
+      "bytes": 9272
+    },
+    {
+      "name": ".init_array",
+      "address": "0x1b9690",
+      "offset": "0x1a9690",
+      "bytes": 912
+    },
+    {
+      "name": ".fini_array",
+      "address": "0x1b9a20",
+      "offset": "0x1a9a20",
+      "bytes": 8
+    },
+    {
+      "name": ".jcr",
+      "address": "0x1b9a28",
+      "offset": "0x1a9a28",
+      "bytes": 8
+    },
+    {
+      "name": ".data.rel.ro",
+      "address": "0x1b9a30",
+      "offset": "0x1a9a30",
+      "bytes": 18904
+    },
+    {
+      "name": ".dynamic",
+      "address": "0x1be408",
+      "offset": "0x1ae408",
+      "bytes": 672
+    },
+    {
+      "name": ".got",
+      "address": "0x1be6a8",
+      "offset": "0x1ae6a8",
+      "bytes": 4368
+    },
+    {
+      "name": ".got.plt",
+      "address": "0x1bf7b8",
+      "offset": "0x1af7b8",
+      "bytes": 2120
+    },
+    {
+      "name": ".tm_clone_table",
+      "address": "0x1c0000",
+      "offset": "0x1b0000",
+      "bytes": 0
+    },
+    {
+      "name": ".data",
+      "address": "0x1c0000",
+      "offset": "0x1b0000",
+      "bytes": 66336
+    },
+    {
+      "name": ".bss",
+      "address": "0x1d0320",
+      "offset": "0x1c0320",
+      "bytes": 34912
+    },
+    {
+      "name": ".shstrtab",
+      "address": "0x0",
+      "offset": "0x1c0320",
+      "bytes": 300
+    }
+  ],
+  "symbols": [
+    {
+      "name": "__register_frame",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__deregister_frame",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__clear_cache",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__popcountdi2",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_Resume",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__lttf2",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__gttf2",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__trunctfdf2",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__floatunditf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__getf2",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__divtf3",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__multf3",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__extendsftf2",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__floatsitf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_DeleteException",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_GetIPInfo",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_GetLanguageSpecificData",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_SetIP",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_SetGR",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_GetTextRelBase",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_GetRegionStart",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_GetDataRelBase",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_Resume_or_Rethrow",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_Unwind_RaiseException",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "basename",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__strxfrm_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "bindtextdomain",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fopen64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wmemchr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__strftime_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "link",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__iswctype_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__wcsxfrm_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "setvbuf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "syscall",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__ctype_tolower_loc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__ctype_toupper_loc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "qsort",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "readdir64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strerror_r",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "gnu_dev_minor",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "rename",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "posix_fadvise64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wmemmove",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wcsncmp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fileno",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sendfile64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strncat",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__duplocale",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strtold_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getegid",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__memset_chk",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "ioctl",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wcsnrtombs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__ctype_b_loc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__xstat64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__nl_langinfo_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fstatfs64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__lxstat64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getgid",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "ftello64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strcasecmp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strcat",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__wcsftime_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getmntent",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wcscmp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getwc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strnlen",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "usleep",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fputs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fseeko64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__towlower_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fputc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__sigsetjmp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "poll",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "shutdown",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__fxstat64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wctob",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getsockopt",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mbsnrtowcs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__strcoll_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "putwc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "dgettext",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "chdir",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "utimensat",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__strtof_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strstr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "writev",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__towupper_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "ungetc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "calloc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getppid",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "truncate64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fdatasync",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "symlink",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__uselocale",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__wctype_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "localtime_r",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "statvfs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "printf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "chmod",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "inet_pton",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strdup",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "bind_textdomain_codeset",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__strtod_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "stdin",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_OBJECT",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__cxa_atexit",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "abort",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "btowc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "realloc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "putchar",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__stack_chk_fail",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "gettext",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__newlocale",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "puts",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "inet_ntop",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__freelocale",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mbsrtowcs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "ungetwc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "ftruncate64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wcrtomb",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "statvfs64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__longjmp_chk",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strrchr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mbrtowc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sprintf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "gnu_dev_major",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wmemcmp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wmemset",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "socket",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__wcscoll_l",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getpagesize",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fflush",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getenv",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "toupper",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sigaddset",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "shm_unlink",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sigemptyset",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_mutex_init",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fcntl",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_testcancel",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__memcpy_chk",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_cond_broadcast",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_unlink",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_setspecific",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "recv",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__pthread_key_create",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_key_create",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wmemcpy",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_detach",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_cond_destroy",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_getvalue",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "write",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_cond_wait",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_mutex_destroy",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_self",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "memcmp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "tolower",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "lseek64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_mutex_lock",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "time",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_cond_signal",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "connect",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "lseek",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_sigmask",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_mutex_timedlock",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "open64",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wait",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_once",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_cancel",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_create",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_join",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_key_delete",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_mutex_unlock",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_trywait",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_getschedparam",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_getspecific",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mprotect",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "free",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "memset",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "malloc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__cxa_finalize",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "send",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strlen",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "memcpy",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__sprintf_chk",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__stack_chk_guard",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_OBJECT",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__fprintf_chk",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "funlockfile",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "stderr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_OBJECT",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "flockfile",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "stdout",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_OBJECT",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_kill",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "signal",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mmap",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "munmap",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pthread_cond_timedwait",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "environ",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_OBJECT",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sigaction",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "exit",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strcmp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sscanf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "kill",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getpid",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fopen",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "perror",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getdelim",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "freeifaddrs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getifaddrs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "snprintf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strncmp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fgets",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "pclose",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fread",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "popen",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "access",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getuid",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "setenv",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strncpy",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fdopen",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "clock_gettime",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mkstemp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fclose",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fwrite",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "dlsym",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getdomainname",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "nanosleep",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__errno_location",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "localeconv",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "unlink",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "dlopen",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "close",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "dlclose",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "uname",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__snprintf_chk",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fscanf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "closedir",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "readdir",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "opendir",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_exit",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "system",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getnameinfo",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "gethostname",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "freeaddrinfo",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getaddrinfo",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sysconf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "dladdr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "statfs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "truncate",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fsync",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "open",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "memmove",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "rmdir",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "execvp",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "waitpid",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fork",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getcwd",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "utime",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "remove",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mkdir",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "dlerror",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "read",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "select",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "scanf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "putc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "tcsetattr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "tcgetattr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_IO_putc",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strchr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strtoll",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strtoull",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "isalpha",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "isspace",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getpgid",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "gmtime_r",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "gettimeofday",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_wait",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_timedwait",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_open",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "umask",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_init",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_close",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sem_post",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "shm_open",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strcpy",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "fchmod",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "ftruncate",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "posix_fallocate",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__fxstat",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strerror",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "shmdt",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strtol",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strtoul",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "vsnprintf",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sigismember",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sigpending",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "sched_yield",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "strftime",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "localtime",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mktime",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "gmtime",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "getrlimit",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__printf_chk",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__vsnprintf_chk",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "iconv_close",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "iconv",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "iconv_open",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "memchr",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "timegm",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__ctype_get_mb_cur_max",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "isxdigit",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "mbstowcs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wcstombs",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "setlocale",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "wcslen",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "realpath",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "readlink",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "__xstat",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "MainCPS",
+      "value": "0x43310",
+      "bytes": 5092,
+      "type": "STT_FUNC",
+      "shndx": 12
+    },
+    {
+      "name": "_Jv_RegisterClasses",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_NOTYPE",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_ITM_registerTMCloneTable",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_NOTYPE",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_ITM_deregisterTMCloneTable",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_NOTYPE",
+      "shndx": "SHN_UNDEF"
+    },
+    {
+      "name": "_fini",
+      "value": "0x159888",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": 13
+    },
+    {
+      "name": "_init",
+      "value": "0x1a528",
+      "bytes": 0,
+      "type": "STT_FUNC",
+      "shndx": 10
+    },
+    {
+      "name": "__gmon_start__",
+      "value": "0x0",
+      "bytes": 0,
+      "type": "STT_NOTYPE",
+      "shndx": "SHN_UNDEF"
+    }
+  ],
+  "dynamic": [
+    {
+      "tag": "DT_PLTGOT",
+      "value": "0x1bf7b8",
+      "name": null
+    },
+    {
+      "tag": "DT_PLTRELSZ",
+      "value": "0x1860",
+      "name": null
+    },
+    {
+      "tag": "DT_JMPREL",
+      "value": "0x18cc8",
+      "name": null
+    },
+    {
+      "tag": "DT_PLTREL",
+      "value": "0x7",
+      "name": null
+    },
+    {
+      "tag": "DT_RELA",
+      "value": "0x3c08",
+      "name": null
+    },
+    {
+      "tag": "DT_RELASZ",
+      "value": "0x150c0",
+      "name": null
+    },
+    {
+      "tag": "DT_RELAENT",
+      "value": "0x18",
+      "name": null
+    },
+    {
+      "tag": "DT_RELACOUNT",
+      "value": "0xdf6",
+      "name": null
+    },
+    {
+      "tag": "DT_TLSDESC_PLT",
+      "value": "0x1b580",
+      "name": null
+    },
+    {
+      "tag": "DT_TLSDESC_GOT",
+      "value": "0x1bee08",
+      "name": null
+    },
+    {
+      "tag": "DT_SYMTAB",
+      "value": "0x260",
+      "name": null
+    },
+    {
+      "tag": "DT_SYMENT",
+      "value": "0x18",
+      "name": null
+    },
+    {
+      "tag": "DT_STRTAB",
+      "value": "0x2108",
+      "name": null
+    },
+    {
+      "tag": "DT_STRSZ",
+      "value": "0xe0b",
+      "name": null
+    },
+    {
+      "tag": "DT_HASH",
+      "value": "0x2f18",
+      "name": null
+    },
+    {
+      "tag": "DT_NEEDED",
+      "value": "0x66c",
+      "name": "libpthread.so.0"
+    },
+    {
+      "tag": "DT_NEEDED",
+      "value": "0xa47",
+      "name": "libdl.so.2"
+    },
+    {
+      "tag": "DT_NEEDED",
+      "value": "0x642",
+      "name": "librt.so.1"
+    },
+    {
+      "tag": "DT_NEEDED",
+      "value": "0xe01",
+      "name": "libm.so.6"
+    },
+    {
+      "tag": "DT_NEEDED",
+      "value": "0x1eb",
+      "name": "libc.so.6"
+    },
+    {
+      "tag": "DT_NEEDED",
+      "value": "0x8f2",
+      "name": "ld-linux-aarch64.so.1"
+    },
+    {
+      "tag": "DT_NEEDED",
+      "value": "0x1c",
+      "name": "libgcc_s.so.1"
+    },
+    {
+      "tag": "DT_SONAME",
+      "value": "0x2a",
+      "name": null
+    },
+    {
+      "tag": "DT_INIT",
+      "value": "0x1a528",
+      "name": null
+    },
+    {
+      "tag": "DT_FINI",
+      "value": "0x159888",
+      "name": null
+    },
+    {
+      "tag": "DT_INIT_ARRAY",
+      "value": "0x1b9690",
+      "name": null
+    },
+    {
+      "tag": "DT_INIT_ARRAYSZ",
+      "value": "0x390",
+      "name": null
+    },
+    {
+      "tag": "DT_FINI_ARRAY",
+      "value": "0x1b9a20",
+      "name": null
+    },
+    {
+      "tag": "DT_FINI_ARRAYSZ",
+      "value": "0x8",
+      "name": null
+    },
+    {
+      "tag": "DT_FLAGS",
+      "value": "0x8",
+      "name": null
+    },
+    {
+      "tag": "DT_FLAGS_1",
+      "value": "0x1",
+      "name": null
+    },
+    {
+      "tag": "DT_VERSYM",
+      "value": "0x3858",
+      "name": null
+    },
+    {
+      "tag": "DT_VERDEF",
+      "value": "0x3ae8",
+      "name": null
+    },
+    {
+      "tag": "DT_VERDEFNUM",
+      "value": "0x1",
+      "name": null
+    },
+    {
+      "tag": "DT_VERNEED",
+      "value": "0x3b04",
+      "name": null
+    },
+    {
+      "tag": "DT_VERNEEDNUM",
+      "value": "0x6",
+      "name": null
+    },
+    {
+      "tag": "DT_NULL",
+      "value": "0x0",
+      "name": null
+    }
+  ],
+  "scope": "Static extraction only; no dlopen, Sony or Wibu code execution, unpacking, signature validation or firmware admission established."
+}

@@ -1,0 +1,44 @@
+{
+  "status": "INITIAL_FIXTURE_DID_NOT_REACH_RETURN",
+  "script_sha256": "d8cbdb5e8587c87accd14e4a0cd57b19523b22231a7d119d90591346ba89d842",
+  "result": {
+    "entry": "0xfe057fa0",
+    "arguments": [
+      "0x300000100"
+    ],
+    "boundary": {
+      "reason": "before_unknown_RAM_read",
+      "PC": "0xfe04a560",
+      "address": "0xfe061e18",
+      "bytes": 8
+    },
+    "registers": [
+      "0x0",
+      "0x2e",
+      "0x2e",
+      "0x5c"
+    ],
+    "original_instructions": 466,
+    "nonstack_RAM_writes": 12,
+    "first_trace": [
+      "0xfe057fa0",
+      "0xfe057fa4",
+      "0xfe057fa8",
+      "0xfe057fac",
+      "0xfe057fb0",
+      "0xfe057fb4",
+      "0xfe057fb8",
+      "0xfe057fbc",
+      "0xfe057fc0",
+      "0xfe057fc4",
+      "0xfe057fc8",
+      "0xfe057fcc",
+      "0xfe057fdc",
+      "0xfe057fe0",
+      "0xfe057fe4",
+      "0xfe057fe8"
+    ]
+  },
+  "not_a_Sony_file_read_success": true,
+  "device_actions": 0
+}

@@ -1,0 +1,40 @@
+0049eaf8 push       {r4, r5, r6, r7, lr}
+0049eafa add        r7, sp, #0xc
+0049eafc str        r8, [sp, #-0x4]!
+0049eb00 sub        sp, #0x18
+0049eb02 movw       r6, #0xbe00
+0049eb06 mov        r4, r0
+0049eb08 mov        r8, r1
+0049eb0a movt       r6, #0x100
+0049eb0e mov        r0, r6
+0049eb10 bl         #0xa8708a
+0049eb14 ldr        r5, [r6, #8]
+0049eb16 cbz        r5, #0x49eb2c
+0049eb18 ldr        r0, [r5]
+0049eb1a str        r0, [r6, #8]
+0049eb1c ldr        r0, [r6, #0x18]
+0049eb1e subs       r0, #0x40
+0049eb20 str        r0, [r6, #0x18]
+0049eb22 ldr        r1, [r6, #0x1c]
+0049eb24 cmp        r0, r1
+0049eb26 bge        #0x49ebfc
+0049eb28 str        r0, [r6, #0x1c]
+0049eb2a b          #0x49ebfc
+0049eb2c movs       r5, #0
+0049eb2e cmp        r4, #0
+0049eb30 str        r5, [sp, #0x10]
+0049eb32 strd       r5, r5, [sp, #8]
+0049eb36 beq        #0x49ebfc
+0049eb38 add.w      r1, r6, #0xc
+0049eb3c mov        r0, r1
+0049eb3e ldr        r1, [r0]
+0049eb40 cmp        r1, #0
+0049eb42 bne        #0x49eb3c
+0049eb44 movs       r1, #0
+0049eb46 str        r1, [sp, #8]
+0049eb48 add        r6, sp, #8
+0049eb4a str        r6, [r0]
+0049eb4c str        r1, [sp, #0x14]
+0049eb4e add        r0, sp, #0x14
+0049eb50 blx        #0x52bd1c
+0049eb54 cbz        r0, #0x49eb68

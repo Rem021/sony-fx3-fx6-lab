@@ -1,0 +1,127 @@
+{
+  "status": "FINITE_SOURCE_DERIVED_GRAPH_CHECKS_PASS_WITH_CODE_INTEGRITY_PRECONDITION",
+  "cases": [
+    {
+      "phase": "worker-alive",
+      "foreign_issuer": 321,
+      "clone_parent_flag": false,
+      "new_parent": 321,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": false
+    },
+    {
+      "phase": "worker-alive",
+      "foreign_issuer": 321,
+      "clone_parent_flag": true,
+      "new_parent": 1,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": false
+    },
+    {
+      "phase": "worker-alive",
+      "foreign_issuer": 9000,
+      "clone_parent_flag": false,
+      "new_parent": 9000,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": false
+    },
+    {
+      "phase": "worker-alive",
+      "foreign_issuer": 9000,
+      "clone_parent_flag": true,
+      "new_parent": 321,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": false
+    },
+    {
+      "phase": "worker-exited-not-reaped",
+      "foreign_issuer": 321,
+      "clone_parent_flag": false,
+      "new_parent": 321,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": false
+    },
+    {
+      "phase": "worker-exited-not-reaped",
+      "foreign_issuer": 321,
+      "clone_parent_flag": true,
+      "new_parent": 1,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": false
+    },
+    {
+      "phase": "worker-exited-not-reaped",
+      "foreign_issuer": 9000,
+      "clone_parent_flag": false,
+      "new_parent": 9000,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": false
+    },
+    {
+      "phase": "worker-exited-not-reaped",
+      "foreign_issuer": 9000,
+      "clone_parent_flag": true,
+      "new_parent": 321,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": false
+    },
+    {
+      "phase": "worker-reaped-number-reusable",
+      "foreign_issuer": 321,
+      "clone_parent_flag": false,
+      "new_parent": 321,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": true
+    },
+    {
+      "phase": "worker-reaped-number-reusable",
+      "foreign_issuer": 321,
+      "clone_parent_flag": true,
+      "new_parent": 1,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": true
+    },
+    {
+      "phase": "worker-reaped-number-reusable",
+      "foreign_issuer": 9000,
+      "clone_parent_flag": false,
+      "new_parent": 9000,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": true
+    },
+    {
+      "phase": "worker-reaped-number-reusable",
+      "foreign_issuer": 9000,
+      "clone_parent_flag": true,
+      "new_parent": 321,
+      "matches_collector_child_domain": false,
+      "same_numeric_worker_pid_allocatable": true
+    },
+    {
+      "event": "foreign parent dies",
+      "dead_parent": 321,
+      "adopted_by": 1,
+      "matches_collector_child_domain": false
+    },
+    {
+      "event": "foreign parent dies",
+      "dead_parent": 9000,
+      "adopted_by": 321,
+      "matches_collector_child_domain": false
+    }
+  ],
+  "code_integrity_boundary": {
+    "worker_issues_unexpected_CLONE_PARENT": true,
+    "extra_sibling_parent": 5001,
+    "extra_sibling_can_later_create_more_siblings": true,
+    "closed_domain_broken": true,
+    "old_worker_pid_can_eventually_be_reused_by_such_a_sibling": true,
+    "current_NOOP_source_or_trace_performs_this": false
+  },
+  "collector_single_thread_and_not_namespace_init_required": true,
+  "not_a_proof_of_actual_target_process_tree": true,
+  "real_outer_bootstrap_unverified": true,
+  "source_sha256": "aac2299cbc70c5169d5107fc22abc7e23ee6aac899e7aae65a85cb2287e01b2a",
+  "original_code_executed": false,
+  "new_device_operations": 0
+}

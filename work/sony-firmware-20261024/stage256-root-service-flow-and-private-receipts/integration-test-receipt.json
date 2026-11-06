@@ -1,0 +1,58 @@
+{
+  "status": "OWN_NATIVE_CHILD_IPC_AND_RAW_FLOW_RECEIPTS_PASS",
+  "checks": 5,
+  "rows": [
+    {
+      "case": "completed_nominal_child_recovered_not_replayed",
+      "status": "PASS",
+      "frames": 80,
+      "root_journal_equals_parent_raw": true,
+      "legacy_cleanup_callbacks": 0,
+      "helper_gone": true,
+      "global_camera_state": "UNKNOWN",
+      "directory": "runs/integration-normal-initial"
+    },
+    {
+      "case": "service_failure_retains_original_child_without_legacy_cleanup",
+      "status": "PASS",
+      "frames": 41,
+      "observed_status": "OWNER_RETAINED",
+      "service_OUT_attempts": 1,
+      "service_disposals": 0,
+      "driver_return_attempts": 0,
+      "native_completed": false,
+      "directory": "runs/service-write-stall"
+    },
+    {
+      "case": "wrong_helper_image_stops_before_owner_or_flow",
+      "status": "PASS",
+      "native_started": false,
+      "global_guard_created": false,
+      "directory": "runs/wrong-self-image"
+    },
+    {
+      "case": "new_flow_corruption_and_incomplete_result_rejected",
+      "status": "PASS",
+      "rejections": [
+        "nonce",
+        "helper_birth",
+        "sequence",
+        "previous_hash",
+        "unmatched_return",
+        "return_subject_changed",
+        "invented_proof_field",
+        "incomplete_success",
+        "completion_without_native_call_chain"
+      ]
+    },
+    {
+      "case": "old_scope_old_receipt_and_unreleased_native_factory_denied",
+      "status": "PASS",
+      "native_staged": false,
+      "native_executed": false
+    }
+  ],
+  "root_or_USB_operations": 0,
+  "actual_IOKit_native_executed": false,
+  "artificial_pipe_callbacks_only": true
+}

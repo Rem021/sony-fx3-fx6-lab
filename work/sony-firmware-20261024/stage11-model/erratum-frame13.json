@@ -1,0 +1,24 @@
+{
+  "schema": "fx3-stage11-frame-control-erratum-v1",
+  "created_utc": "2026-10-25T16:35:20.403859+00:00",
+  "old_label": "HS420 59.94/100M",
+  "actual_builder_or_setter_input_frame": 13,
+  "actual_MPR_FrameRate": 2,
+  "actual_rational": {
+    "numerator": 25,
+    "denominator": 1
+  },
+  "target_confirmed": {
+    "input_frame": 15,
+    "MPR_FrameRate": 3,
+    "numerator": 30000,
+    "denominator": 1001,
+    "exact_30_proved": false
+  },
+  "previous_constant_override_scope_observation_remains_valid": true,
+  "old_files_preserved": true,
+  "old_report": "reports/索尼 FX3 主录设置与回复链路.md",
+  "old_note": "research_notes/索尼 FX3 主录设置与回复链路/main_recording.md",
+  "old_input_evidence": "work/sony-firmware-20261024/stage10-mainpath/main/setter-conversion-results.json",
+  "new_rational_evidence": "work/sony-firmware-20261024/stage11-model/builder/typed-selection-results.json"
+}

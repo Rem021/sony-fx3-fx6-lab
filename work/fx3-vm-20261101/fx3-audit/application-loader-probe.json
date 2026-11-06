@@ -1,0 +1,748 @@
+{
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-original-app-loader-probe.cpio.gz",
+  "bytes": 3629759,
+  "sha256": "21009d54a4e60413ae1425baf6671e91820abb246d2f8bc45a5ccc1e0e16cd0e",
+  "original_elfs": [
+    {
+      "guest_path": "/bin/busybox",
+      "source_partition": 7,
+      "inode": 33,
+      "bytes": 423000,
+      "sha256": "c3297a7086efe9a001c39fa98d74d125992cf3225cf353ab6ff2238d827c7799",
+      "needed": [
+        "libcrypt.so.1",
+        "libc.so.6"
+      ],
+      "interpreter": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "guest_path": "/usr/bin/bootin.elf",
+      "source_partition": 15,
+      "inode": 80994,
+      "bytes": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "needed": [
+        "libbackup.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "interpreter": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "guest_path": "/usr/bin/im.elf",
+      "source_partition": 15,
+      "inode": 80972,
+      "bytes": 40920,
+      "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+      "needed": [
+        "libjemalloc_ds.so.2",
+        "libIMDB.so",
+        "libbackup.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libSTMcmdexecute.so",
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "interpreter": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "guest_path": "/lib/ld-2.25.so",
+      "source_partition": 7,
+      "inode": 97,
+      "bytes": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+      "needed": [],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/lib/libcrypt-2.25.so",
+      "source_partition": 7,
+      "inode": 103,
+      "bytes": 30864,
+      "sha256": "5e8476cab62694f2b158f1806b794c8d32cbe2d89cfd410181118f5af8af27d8",
+      "needed": [
+        "libc.so.6"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/lib/libc-2.25.so",
+      "source_partition": 7,
+      "inode": 92,
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "needed": [
+        "ld-linux-aarch64.so.1"
+      ],
+      "interpreter": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "guest_path": "/usr/lib/libbackup.so",
+      "source_partition": 15,
+      "inode": 95213,
+      "bytes": 14232,
+      "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/usr/lib/libosal_utm.so",
+      "source_partition": 15,
+      "inode": 95131,
+      "bytes": 10216,
+      "sha256": "d9510b4ce1d7e59a0f2e9b5be14624a4cece6f514879e8a6d23ce890a46d25eb",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/usr/lib/libosal_uipc.so",
+      "source_partition": 15,
+      "inode": 95132,
+      "bytes": 43752,
+      "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/lib/libpthread-2.25.so",
+      "source_partition": 7,
+      "inode": 95,
+      "bytes": 101888,
+      "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+      "needed": [
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "interpreter": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "guest_path": "/usr/lib/libstdc++.so.6.0.22",
+      "source_partition": 15,
+      "inode": 95361,
+      "bytes": 1549496,
+      "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+      "needed": [
+        "libm.so.6",
+        "libc.so.6",
+        "libgcc_s.so.1"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/lib/libm-2.25.so",
+      "source_partition": 7,
+      "inode": 91,
+      "bytes": 658000,
+      "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871",
+      "needed": [
+        "libc.so.6"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/lib/libdl-2.25.so",
+      "source_partition": 7,
+      "inode": 83,
+      "bytes": 10368,
+      "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+      "needed": [
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/usr/lib/libgcc_s.so.1",
+      "source_partition": 15,
+      "inode": 95546,
+      "bytes": 71920,
+      "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805",
+      "needed": [
+        "libc.so.6"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/lib/librt-2.25.so",
+      "source_partition": 7,
+      "inode": 100,
+      "bytes": 27448,
+      "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2",
+      "needed": [
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/usr/lib/libjemalloc_ds.so.2",
+      "source_partition": 15,
+      "inode": 95279,
+      "bytes": 5848,
+      "sha256": "2832f529913186277b242b3ae51391d0e24481b857f11a5690a20937f45ba564",
+      "needed": [
+        "libm.so.6",
+        "libstdc++.so.6",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/usr/lib/libIMDB.so",
+      "source_partition": 15,
+      "inode": 95209,
+      "bytes": 71536,
+      "sha256": "6ceaea432bc7c4645897c2f1272941b33b0c04115ec62ffa000b37faf3d8517d",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/lib/libSTMcmdexecute.so",
+      "source_partition": 7,
+      "inode": 82,
+      "bytes": 10120,
+      "sha256": "4bcde80b18a30b08c36d5ca1183b3c2fa5e357bb81530a8a9f39c5ec267d8a71",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/usr/lib/libssl.so.3",
+      "source_partition": 15,
+      "inode": 95574,
+      "bytes": 574464,
+      "sha256": "27bc25f1e766877b72888dba67dc60fe4589c4a7b253c9324fce8c8ad1913f21",
+      "needed": [
+        "libcrypto.so.3",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "interpreter": null
+    },
+    {
+      "guest_path": "/usr/lib/libcrypto.so.3",
+      "source_partition": 15,
+      "inode": 95562,
+      "bytes": 3615072,
+      "sha256": "893a37bd6f5a19069362e7c54c023ac9b93eb5d3c976dc45a82502fb4317a8d4",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "interpreter": null
+    }
+  ],
+  "dependency_edges": [
+    {
+      "from": "/bin/busybox",
+      "needed": "libcrypt.so.1",
+      "resolved_search": "/lib/libcrypt.so.1"
+    },
+    {
+      "from": "/bin/busybox",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libbackup.so",
+      "resolved_search": "/usr/lib/libbackup.so"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libosal_utm.so",
+      "resolved_search": "/usr/lib/libosal_utm.so"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libosal_uipc.so",
+      "resolved_search": "/usr/lib/libosal_uipc.so"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libstdc++.so.6",
+      "resolved_search": "/usr/lib/libstdc++.so.6"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libgcc_s.so.1",
+      "resolved_search": "/usr/lib/libgcc_s.so.1"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/bin/bootin.elf",
+      "needed": "librt.so.1",
+      "resolved_search": "/lib/librt.so.1"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libjemalloc_ds.so.2",
+      "resolved_search": "/usr/lib/libjemalloc_ds.so.2"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libIMDB.so",
+      "resolved_search": "/usr/lib/libIMDB.so"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libbackup.so",
+      "resolved_search": "/usr/lib/libbackup.so"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libosal_utm.so",
+      "resolved_search": "/usr/lib/libosal_utm.so"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libosal_uipc.so",
+      "resolved_search": "/usr/lib/libosal_uipc.so"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libSTMcmdexecute.so",
+      "resolved_search": "/lib/libSTMcmdexecute.so"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libssl.so.3",
+      "resolved_search": "/usr/lib/libssl.so.3"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libcrypto.so.3",
+      "resolved_search": "/usr/lib/libcrypto.so.3"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libstdc++.so.6",
+      "resolved_search": "/usr/lib/libstdc++.so.6"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libgcc_s.so.1",
+      "resolved_search": "/usr/lib/libgcc_s.so.1"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/bin/im.elf",
+      "needed": "librt.so.1",
+      "resolved_search": "/lib/librt.so.1"
+    },
+    {
+      "from": "/lib/libcrypt-2.25.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/lib/libc-2.25.so",
+      "needed": "ld-linux-aarch64.so.1",
+      "resolved_search": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "from": "/usr/lib/libbackup.so",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/lib/libbackup.so",
+      "needed": "libstdc++.so.6",
+      "resolved_search": "/usr/lib/libstdc++.so.6"
+    },
+    {
+      "from": "/usr/lib/libbackup.so",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/usr/lib/libbackup.so",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/lib/libbackup.so",
+      "needed": "libgcc_s.so.1",
+      "resolved_search": "/usr/lib/libgcc_s.so.1"
+    },
+    {
+      "from": "/usr/lib/libbackup.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/lib/libbackup.so",
+      "needed": "librt.so.1",
+      "resolved_search": "/lib/librt.so.1"
+    },
+    {
+      "from": "/usr/lib/libosal_utm.so",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/lib/libosal_utm.so",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/lib/libosal_utm.so",
+      "needed": "libstdc++.so.6",
+      "resolved_search": "/usr/lib/libstdc++.so.6"
+    },
+    {
+      "from": "/usr/lib/libosal_utm.so",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/usr/lib/libosal_utm.so",
+      "needed": "libgcc_s.so.1",
+      "resolved_search": "/usr/lib/libgcc_s.so.1"
+    },
+    {
+      "from": "/usr/lib/libosal_utm.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/lib/libosal_utm.so",
+      "needed": "librt.so.1",
+      "resolved_search": "/lib/librt.so.1"
+    },
+    {
+      "from": "/usr/lib/libosal_uipc.so",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/lib/libosal_uipc.so",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/lib/libosal_uipc.so",
+      "needed": "libstdc++.so.6",
+      "resolved_search": "/usr/lib/libstdc++.so.6"
+    },
+    {
+      "from": "/usr/lib/libosal_uipc.so",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/usr/lib/libosal_uipc.so",
+      "needed": "libgcc_s.so.1",
+      "resolved_search": "/usr/lib/libgcc_s.so.1"
+    },
+    {
+      "from": "/usr/lib/libosal_uipc.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/lib/libosal_uipc.so",
+      "needed": "librt.so.1",
+      "resolved_search": "/lib/librt.so.1"
+    },
+    {
+      "from": "/lib/libpthread-2.25.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/lib/libpthread-2.25.so",
+      "needed": "ld-linux-aarch64.so.1",
+      "resolved_search": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "from": "/usr/lib/libstdc++.so.6.0.22",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/usr/lib/libstdc++.so.6.0.22",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/lib/libstdc++.so.6.0.22",
+      "needed": "libgcc_s.so.1",
+      "resolved_search": "/usr/lib/libgcc_s.so.1"
+    },
+    {
+      "from": "/lib/libm-2.25.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/lib/libdl-2.25.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/lib/libdl-2.25.so",
+      "needed": "ld-linux-aarch64.so.1",
+      "resolved_search": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "from": "/usr/lib/libgcc_s.so.1",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/lib/librt-2.25.so",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/lib/librt-2.25.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/lib/librt-2.25.so",
+      "needed": "ld-linux-aarch64.so.1",
+      "resolved_search": "/lib/ld-linux-aarch64.so.1"
+    },
+    {
+      "from": "/usr/lib/libjemalloc_ds.so.2",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/usr/lib/libjemalloc_ds.so.2",
+      "needed": "libstdc++.so.6",
+      "resolved_search": "/usr/lib/libstdc++.so.6"
+    },
+    {
+      "from": "/usr/lib/libjemalloc_ds.so.2",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/lib/libjemalloc_ds.so.2",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/lib/libjemalloc_ds.so.2",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/lib/libIMDB.so",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/lib/libIMDB.so",
+      "needed": "libstdc++.so.6",
+      "resolved_search": "/usr/lib/libstdc++.so.6"
+    },
+    {
+      "from": "/usr/lib/libIMDB.so",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/usr/lib/libIMDB.so",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/lib/libIMDB.so",
+      "needed": "libgcc_s.so.1",
+      "resolved_search": "/usr/lib/libgcc_s.so.1"
+    },
+    {
+      "from": "/usr/lib/libIMDB.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/lib/libIMDB.so",
+      "needed": "librt.so.1",
+      "resolved_search": "/lib/librt.so.1"
+    },
+    {
+      "from": "/lib/libSTMcmdexecute.so",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/lib/libSTMcmdexecute.so",
+      "needed": "libstdc++.so.6",
+      "resolved_search": "/usr/lib/libstdc++.so.6"
+    },
+    {
+      "from": "/lib/libSTMcmdexecute.so",
+      "needed": "libm.so.6",
+      "resolved_search": "/lib/libm.so.6"
+    },
+    {
+      "from": "/lib/libSTMcmdexecute.so",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/lib/libSTMcmdexecute.so",
+      "needed": "libgcc_s.so.1",
+      "resolved_search": "/usr/lib/libgcc_s.so.1"
+    },
+    {
+      "from": "/lib/libSTMcmdexecute.so",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/lib/libSTMcmdexecute.so",
+      "needed": "librt.so.1",
+      "resolved_search": "/lib/librt.so.1"
+    },
+    {
+      "from": "/usr/lib/libssl.so.3",
+      "needed": "libcrypto.so.3",
+      "resolved_search": "/usr/lib/libcrypto.so.3"
+    },
+    {
+      "from": "/usr/lib/libssl.so.3",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/lib/libssl.so.3",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/lib/libssl.so.3",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    },
+    {
+      "from": "/usr/lib/libcrypto.so.3",
+      "needed": "libdl.so.2",
+      "resolved_search": "/lib/libdl.so.2"
+    },
+    {
+      "from": "/usr/lib/libcrypto.so.3",
+      "needed": "libpthread.so.0",
+      "resolved_search": "/lib/libpthread.so.0"
+    },
+    {
+      "from": "/usr/lib/libcrypto.so.3",
+      "needed": "libc.so.6",
+      "resolved_search": "/lib/libc.so.6"
+    }
+  ],
+  "guest_only_symlinks": [
+    "lib/ld-linux-aarch64.so.1",
+    "lib/libcrypt.so.1",
+    "lib/libc.so.6",
+    "lib/libpthread.so.0",
+    "usr/lib/libstdc++.so.6",
+    "lib/libm.so.6",
+    "lib/libdl.so.2",
+    "lib/librt.so.1"
+  ],
+  "custom_init": "#!/bin/busybox sh\necho FX3_ORIGINAL_BUSYBOX_REACHED\n/bin/busybox uname -a\nfor app in bootin im; do\n echo FX3_LD_VERIFY_BEGIN_$app\n /lib/ld-linux-aarch64.so.1 --verify /usr/bin/$app.elf\n rc=$?\n echo FX3_LD_VERIFY_RC_$app=$rc\n echo FX3_LD_LIST_BEGIN_$app\n /lib/ld-linux-aarch64.so.1 --library-path /lib:/usr/lib --list /usr/bin/$app.elf\n rc=$?\n echo FX3_LD_LIST_RC_$app=$rc\n done\necho FX3_APPLICATION_LOADER_PROBE_END\nwhile true; do /bin/busybox sleep 1; done\n",
+  "scope": "Execute original ld-linux --verify/--list only; application entrypoints/constructors/init/services/updater are not intentionally executed; no camera/USB or real blocks. Application main/UI success is not claimed."
+}

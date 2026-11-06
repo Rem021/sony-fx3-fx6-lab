@@ -1,0 +1,34 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-pic",
+    "-mcmodel=large",
+    "-mgeneral-regs-only",
+    "-mno-outline-atomics",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-unwind-tables",
+    "-O2",
+    "-nostdlib",
+    "-c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-v4-sync100-module-unit.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-v4-sync100.ko"
+  ],
+  "exit": 0,
+  "authority": [
+    "msg_db11d2266751",
+    "msg_e26a15170c50"
+  ],
+  "source_sha256": "9b54c93ecc97b1c0669f57ae31c610061a24aec2f618a435d3bc30d4a8ad60e2",
+  "output_sha256": "b5233129614072fbf8a2cbfec6b1bc1d30d00ab604b2ab1790f9348f49d488d8",
+  "headers": {
+    "fx3-cp-backup-reset-core-v2-sync100.h": "ffa767cec3bdd7f94fa9aaf985024535f550446a2cd8ec7524fd10dc63701e47",
+    "fx3-backup-sync100-v1.h": "6cba34206256fe3a1101dbeb6882ad8e3f77c0582ca0f20140d7e667c439efe6"
+  }
+}

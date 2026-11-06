@@ -1,0 +1,201 @@
+{
+  "status": "SAVED_NATIVE_AND_REFERENCE_CONTRACT_PASS_NOT_RUNTIME_ACCEPTANCE",
+  "checks": 53,
+  "check_names": [
+    "prctl number167 points to saved native implementation",
+    "0x32ea0 sub w19, w19, #1",
+    "0x32ec0 adrp x0, #0xffffff80084b7000",
+    "0x32ec4 add x0, x0, #0xd04",
+    "0x32ec8 ldrh w0, [x0, w19, uxtw #1]",
+    "0x32ecc adr x3, #0xffffff80080b2ed8",
+    "0x32ed0 add x0, x3, w0, sxth #2",
+    "prctl option 37 branch",
+    "prctl option 36 branch",
+    "0x33138 ldr x1, [x24, #0x580]",
+    "0x33140 ldrb w1, [x1, #0x70]",
+    "0x33144 and w1, w1, #1",
+    "0x33148 str w1, [x2]",
+    "0x1e404 add x0, x25, #0x3a0",
+    "0x1e408 str x0, [x25, #0x3a0]",
+    "0x1e40c str x0, [x0, #8]",
+    "0x1e86c mov w1, #0x80c0",
+    "0x1e870 movk w1, #0x240, lsl #16",
+    "0x1e880 str x0, [x25, #0x580]",
+    "0x1e88c mov w4, #1",
+    "0x1e89c str w4, [x26, #4]",
+    "0x1e9e0 ldrb w0, [x26, #0x70]",
+    "0x1e9f0 bfi w0, w3, #1, #1",
+    "0x1e9f8 strb w0, [x26, #0x70]",
+    "0x103bb0 and w20, w1, w3",
+    "0x103bf8 tbnz w20, #0xf, #0xffffff8008183c38",
+    "0x103c44 mov w1, #0",
+    "0x1f12c tst x28, #0x18000",
+    "0x1f130 b.eq #0xffffff800809f4e8",
+    "0x1f138 ldr x0, [x0, #0x390]",
+    "0x1f13c str x0, [x25, #0x390]",
+    "0x1f4ec str x0, [x25, #0x390]",
+    "0x1e87c raw call kmem_cache_alloc",
+    "0x1e87c bl #0xffffff8008183b98",
+    "0x103c48 raw call memset",
+    "0x103c48 bl #0xffffff8008270180",
+    "complete next-symbol decode copy_process.isra.9.part.10",
+    "complete next-symbol decode sys_prctl",
+    "complete next-symbol decode kmem_cache_alloc",
+    "source range fork.c:1341",
+    "source range fork.c:1569",
+    "source range fork.c:1771",
+    "source range exit.c:579",
+    "source range kernel__sys.c:2228",
+    "source range include__uapi__linux__prctl.h:157",
+    "source range include__linux__sched.h:703",
+    "source range fs__proc__array.c:180",
+    "source range fs__proc__array.c:280",
+    "source range include__linux__sched.h:3064",
+    "captured source kernel__sys.c",
+    "captured source include__linux__sched.h",
+    "captured source include__uapi__linux__prctl.h",
+    "captured source fs__proc__array.c"
+  ],
+  "original_kernel": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "parser_sha256": "db8a1ebba52e8bfb85367e3d8450e1ef89224d0bb9e768bf656c6370600614a1",
+  "prctl_dispatch_branches": [
+    {
+      "option": 37,
+      "table_offset": 4422988,
+      "signed_entry": 137,
+      "target": 209148
+    },
+    {
+      "option": 36,
+      "table_offset": 4422986,
+      "signed_entry": 202,
+      "target": 209408
+    }
+  ],
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/fork.c",
+      "sha256": "de56e1048e0003b451027d58ffd7c9cf986e5b61918372648fce2e5abbbc1efc",
+      "first_line": 1341,
+      "last_line": 1390,
+      "range_sha256": "5d5836374e0fe157e5e92ae2ad3012998c3a358416f3f87785df896113078f20",
+      "required_tokens": [
+        "CLONE_THREAD",
+        "kmem_cache_zalloc",
+        "sig->nr_threads = 1",
+        "has_child_subreaper"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/fork.c",
+      "sha256": "de56e1048e0003b451027d58ffd7c9cf986e5b61918372648fce2e5abbbc1efc",
+      "first_line": 1569,
+      "last_line": 1583,
+      "range_sha256": "214acab30a67ca8444dea0250aa40016613aa4541bbc37684efb1589f39ae311",
+      "required_tokens": [
+        "INIT_LIST_HEAD(&p->children)",
+        "INIT_LIST_HEAD(&p->sibling)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/fork.c",
+      "sha256": "de56e1048e0003b451027d58ffd7c9cf986e5b61918372648fce2e5abbbc1efc",
+      "first_line": 1771,
+      "last_line": 1784,
+      "range_sha256": "85f315e6e6f17a6f7e5fd153f53b2dedd2283003849df9770a9a80b6e889b718",
+      "required_tokens": [
+        "CLONE_PARENT|CLONE_THREAD",
+        "p->real_parent = current->real_parent",
+        "p->real_parent = current;"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/exit.c",
+      "sha256": "dcba4ee792baa2ae056900e8a895a9ba0f76d34f96ee6c4bc0b31d55722df17f",
+      "first_line": 579,
+      "last_line": 615,
+      "range_sha256": "b0e453eff26af18d623f5f0905228b47b42fef3d33e4f729167089972f951598",
+      "required_tokens": [
+        "find_alive_thread",
+        "is_child_subreaper",
+        "return child_reaper"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/kernel__sys.c",
+      "sha256": "000996d1dcbaaeda53f0a9708b137431a4e36d75f99b95700d6392bcc4ce481f",
+      "first_line": 2228,
+      "last_line": 2235,
+      "range_sha256": "6f6fe521b99d6a9620576e904cf38d1c6a52235b6141374b51558f1ea766ba58",
+      "required_tokens": [
+        "PR_GET_CHILD_SUBREAPER",
+        "put_user(me->signal->is_child_subreaper"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/include__uapi__linux__prctl.h",
+      "sha256": "1f3a74288abee6d84f1e2c3e350bbb46aee836b3686b93fdfcb9e3138cdba4c4",
+      "first_line": 157,
+      "last_line": 158,
+      "range_sha256": "533bf685724c062efd8307402a14a2a756da3eece225d9f3ba5cff9aa2d06d56",
+      "required_tokens": [
+        "PR_SET_CHILD_SUBREAPER\t36",
+        "PR_GET_CHILD_SUBREAPER\t37"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/include__linux__sched.h",
+      "sha256": "ad07b7421816d94e908bd3ac3b2596d49a84154ab1d7de1c8c4b8eb7a96551c0",
+      "first_line": 703,
+      "last_line": 714,
+      "range_sha256": "94ed4a6f3740ad3779ce36d11780908e387e2b2e62dbe4a1cf653a7cd3e2d74b",
+      "required_tokens": [
+        "is_child_subreaper:1",
+        "has_child_subreaper:1"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/fs__proc__array.c",
+      "sha256": "4f85c86135658bc4259d6954085ce1806ab9a586c8342a981ad20935e696953b",
+      "first_line": 180,
+      "last_line": 201,
+      "range_sha256": "7c051978f7c1359e46c52d1f79e2dbf7dc1f75fee4fb013e1ac775dab3aed7fe",
+      "required_tokens": [
+        "TracerPid:",
+        "Pid:",
+        "PPid:"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/fs__proc__array.c",
+      "sha256": "4f85c86135658bc4259d6954085ce1806ab9a586c8342a981ad20935e696953b",
+      "first_line": 280,
+      "last_line": 304,
+      "range_sha256": "09b58ddf0f98a14e106c27c35896303b6959594df4ca46dd85f28e9c94aebf22",
+      "required_tokens": [
+        "num_threads = get_nr_threads(p)",
+        "Threads:"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/include__linux__sched.h",
+      "sha256": "ad07b7421816d94e908bd3ac3b2596d49a84154ab1d7de1c8c4b8eb7a96551c0",
+      "first_line": 3064,
+      "last_line": 3068,
+      "range_sha256": "fb63b124a360f8b9f1843e0802eb53de500c9d72bf420eabb0d80aa41eebcbb3",
+      "required_tokens": [
+        "get_nr_threads",
+        "signal->nr_threads"
+      ]
+    }
+  ],
+  "reference": "Linux v4.9.337, not reconstructed exact Sony build",
+  "clone0_private_child_list_new_signal_and_non_subreaper_contract_supported": true,
+  "allocator_zeroing_path_identified_but_live_allowed_GFP_mask_unmeasured": true,
+  "own_core_also_queries_non_subreaper_and_rejects_failure": true,
+  "real_entry_creation_and_signal_mask_precondition_proven": false,
+  "collector_exit_binding_to_outer_service_parent_proven": false,
+  "original_kernel_or_Sony_code_executed": false,
+  "new_device_operations": 0
+}

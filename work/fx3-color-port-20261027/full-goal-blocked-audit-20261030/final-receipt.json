@@ -1,0 +1,75 @@
+{
+  "created_utc": "2026-10-30T12:29:25.390019+00:00",
+  "stage": "full-goal-blocked-audit-20261030",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 4040,
+      "sha256": "262d2a3717f8f0996f9533f0f5f95073f5a8defa37c3b429e873ad1af7a01ed8"
+    },
+    {
+      "path": "blocking-audit.json",
+      "bytes": 8086,
+      "sha256": "6289920e53e4bbb163a5e972464c1dcc45ef421555812012de9578c67c2e0f2e"
+    },
+    {
+      "path": "current-input-check.json",
+      "bytes": 1451,
+      "sha256": "3b9f213531fb9f1347860142e7574f14cd5c40239797f22f82ce58de57c16fd7"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 727,
+      "sha256": "3120e91052372b35ae6acd7fc0cb192761e87b97739c6e917dc063f8c04a9eae"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 431,
+      "sha256": "3e6e4c42bd57f9d477690a4dc65c632991762895974616f89a19e59708c5f458"
+    },
+    {
+      "path": "native-status-before.json",
+      "bytes": 634,
+      "sha256": "b09e78f65982a2f7913d0c3d76450f322f45613aac4eafa21fa4bf836ada5ffe"
+    },
+    {
+      "path": "status-readback.json",
+      "bytes": 635,
+      "sha256": "e22ff8b7df42c5c3bff0b376e49fe0b8c1a48c2b0ab348a17f05e43d20496e49"
+    },
+    {
+      "path": "status-transition.json",
+      "bytes": 635,
+      "sha256": "e22ff8b7df42c5c3bff0b376e49fe0b8c1a48c2b0ab348a17f05e43d20496e49"
+    },
+    {
+      "path": "verification-receipt.json",
+      "bytes": 661,
+      "sha256": "fa6d7ee227065fe460386378a5d2597f154017c7c14e1a5a3893a8ff421a45cf"
+    }
+  ],
+  "verification": {
+    "status": "PASS_BLOCKED_THRESHOLD_AND_NATIVE_STATUS_READBACK_NOT_GOAL",
+    "prior_stage_sealed_files_verified": {
+      "refresh01": 34,
+      "refresh02": 9
+    },
+    "current_public_repository_HEADs_unchanged": 4,
+    "latest_other_owner_report_sha_unchanged": true,
+    "same_genuine_blocker_consecutive_goal_turns": 3,
+    "historical_blocked_counter_not_reused": true,
+    "own_fetch_handle_confirmed_terminal": 70711,
+    "verified_wait": false,
+    "full_objective_preserved": true,
+    "functional_requirements_proved_complete": 0,
+    "goal_status_readback": "blocked",
+    "goal_complete": false,
+    "modified_or_flashable_firmware_produced": false,
+    "device_actions": 0
+  },
+  "same_impasse_consecutive_goal_turns": 3,
+  "native_goal_status": "blocked",
+  "goal_complete": false,
+  "device_actions": 0,
+  "modified_or_flashable_firmware_produced": false
+}

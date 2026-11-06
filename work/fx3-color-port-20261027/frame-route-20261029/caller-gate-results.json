@@ -1,0 +1,1612 @@
+{
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "cases": [
+    {
+      "case": "original_fresh_empty_mask",
+      "declared_mask_resource22": false,
+      "declared_record_mutation": null,
+      "declared_initial_latch": 0,
+      "producer": {
+        "raw_constructor_stage_pointer": "0x40fc09",
+        "raw_graph_argument": 0,
+        "constructor_argument_origin": "original caller fragment",
+        "declared_live_flag": 0,
+        "descriptor_sha256": "90ae5a2e5ce23455cd50b1d8d04ae31a240f281d56871c0a5771189f0d8b9145",
+        "original_constructor_writes": [
+          {
+            "offset": "0x0",
+            "bytes": 4,
+            "value": "0x9000",
+            "pc": "0x9d106e"
+          },
+          {
+            "offset": "0x4",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1072"
+          },
+          {
+            "offset": "0x5",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1076"
+          },
+          {
+            "offset": "0x6",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1078"
+          },
+          {
+            "offset": "0x8",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10ca"
+          },
+          {
+            "offset": "0x24",
+            "bytes": 4,
+            "value": "0x9b89eb",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x28",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x2c",
+            "bytes": 4,
+            "value": "0x40fc09",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x30",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x34",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10de"
+          },
+          {
+            "offset": "0xc",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10e0"
+          },
+          {
+            "offset": "0x20",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11f0"
+          },
+          {
+            "offset": "0x14",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11f4"
+          },
+          {
+            "offset": "0x18",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x1c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x64",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11fe"
+          },
+          {
+            "offset": "0x38",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d127a"
+          },
+          {
+            "offset": "0x48",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x4c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x3c",
+            "bytes": 4,
+            "value": "0x9d148d",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x40",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x44",
+            "bytes": 4,
+            "value": "0x40820d",
+            "pc": "0x9d12a0"
+          },
+          {
+            "offset": "0x5c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x60",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x50",
+            "bytes": 4,
+            "value": "0x9d1495",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x54",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x58",
+            "bytes": 4,
+            "value": "0x9d16a5",
+            "pc": "0x9d12ba"
+          },
+          {
+            "offset": "0x10",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140a"
+          },
+          {
+            "offset": "0x21",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140c"
+          },
+          {
+            "offset": "0x65",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d1410"
+          }
+        ],
+        "constructor_type_14": 2,
+        "vector_parameter_pointer": "0x51004de0",
+        "parameter_900": 0,
+        "parameter_908": 2,
+        "sync_fields_1210_1214_1218_121c": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "original_memcpy_calls": 2
+      },
+      "phases": [
+        {
+          "boundary": {
+            "operation": "before_next_image_helper",
+            "pc": "0x4285c4",
+            "native_call": false
+          },
+          "latch": 0,
+          "phase": {
+            "state": 1,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1,
+            "mlut_controller": 1
+          },
+          "instructions_total": 2438
+        },
+        {
+          "boundary": {
+            "operation": "before_next_image_helper",
+            "pc": "0x4285c4",
+            "native_call": false
+          },
+          "latch": 0,
+          "phase": {
+            "state": 2,
+            "look": 22,
+            "pending": 1,
+            "commands": 1
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1,
+            "mlut_controller": 1
+          },
+          "instructions_total": 3374
+        }
+      ],
+      "original_latch_writes": [],
+      "commands": [
+        [
+          0,
+          22,
+          0,
+          4384385,
+          44959834,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "case": "declared_mask_original_record",
+      "declared_mask_resource22": true,
+      "declared_record_mutation": null,
+      "declared_initial_latch": 0,
+      "producer": {
+        "raw_constructor_stage_pointer": "0x40fc09",
+        "raw_graph_argument": 0,
+        "constructor_argument_origin": "original caller fragment",
+        "declared_live_flag": 0,
+        "descriptor_sha256": "90ae5a2e5ce23455cd50b1d8d04ae31a240f281d56871c0a5771189f0d8b9145",
+        "original_constructor_writes": [
+          {
+            "offset": "0x0",
+            "bytes": 4,
+            "value": "0x9000",
+            "pc": "0x9d106e"
+          },
+          {
+            "offset": "0x4",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1072"
+          },
+          {
+            "offset": "0x5",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1076"
+          },
+          {
+            "offset": "0x6",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1078"
+          },
+          {
+            "offset": "0x8",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10ca"
+          },
+          {
+            "offset": "0x24",
+            "bytes": 4,
+            "value": "0x9b89eb",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x28",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x2c",
+            "bytes": 4,
+            "value": "0x40fc09",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x30",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x34",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10de"
+          },
+          {
+            "offset": "0xc",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10e0"
+          },
+          {
+            "offset": "0x20",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11f0"
+          },
+          {
+            "offset": "0x14",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11f4"
+          },
+          {
+            "offset": "0x18",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x1c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x64",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11fe"
+          },
+          {
+            "offset": "0x38",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d127a"
+          },
+          {
+            "offset": "0x48",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x4c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x3c",
+            "bytes": 4,
+            "value": "0x9d148d",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x40",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x44",
+            "bytes": 4,
+            "value": "0x40820d",
+            "pc": "0x9d12a0"
+          },
+          {
+            "offset": "0x5c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x60",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x50",
+            "bytes": 4,
+            "value": "0x9d1495",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x54",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x58",
+            "bytes": 4,
+            "value": "0x9d16a5",
+            "pc": "0x9d12ba"
+          },
+          {
+            "offset": "0x10",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140a"
+          },
+          {
+            "offset": "0x21",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140c"
+          },
+          {
+            "offset": "0x65",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d1410"
+          }
+        ],
+        "constructor_type_14": 2,
+        "vector_parameter_pointer": "0x51004de0",
+        "parameter_900": 0,
+        "parameter_908": 2,
+        "sync_fields_1210_1214_1218_121c": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "original_memcpy_calls": 2
+      },
+      "phases": [
+        {
+          "boundary": {
+            "operation": "before_next_image_helper",
+            "pc": "0x4285c4",
+            "native_call": false
+          },
+          "latch": 0,
+          "phase": {
+            "state": 1,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1,
+            "mlut_controller": 1
+          },
+          "instructions_total": 2444
+        },
+        {
+          "boundary": {
+            "operation": "before_next_image_helper",
+            "pc": "0x4285c4",
+            "native_call": false
+          },
+          "latch": 0,
+          "phase": {
+            "state": 2,
+            "look": 22,
+            "pending": 1,
+            "commands": 1
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1,
+            "mlut_controller": 1
+          },
+          "instructions_total": 3386
+        }
+      ],
+      "original_latch_writes": [],
+      "commands": [
+        [
+          0,
+          22,
+          0,
+          4384385,
+          44959834,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "case": "selected_word0_nonzero",
+      "declared_mask_resource22": true,
+      "declared_record_mutation": {
+        "offset": 0,
+        "value": 1
+      },
+      "declared_initial_latch": 0,
+      "producer": {
+        "raw_constructor_stage_pointer": "0x40fc09",
+        "raw_graph_argument": 0,
+        "constructor_argument_origin": "original caller fragment",
+        "declared_live_flag": 0,
+        "descriptor_sha256": "90ae5a2e5ce23455cd50b1d8d04ae31a240f281d56871c0a5771189f0d8b9145",
+        "original_constructor_writes": [
+          {
+            "offset": "0x0",
+            "bytes": 4,
+            "value": "0x9000",
+            "pc": "0x9d106e"
+          },
+          {
+            "offset": "0x4",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1072"
+          },
+          {
+            "offset": "0x5",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1076"
+          },
+          {
+            "offset": "0x6",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1078"
+          },
+          {
+            "offset": "0x8",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10ca"
+          },
+          {
+            "offset": "0x24",
+            "bytes": 4,
+            "value": "0x9b89eb",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x28",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x2c",
+            "bytes": 4,
+            "value": "0x40fc09",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x30",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x34",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10de"
+          },
+          {
+            "offset": "0xc",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10e0"
+          },
+          {
+            "offset": "0x20",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11f0"
+          },
+          {
+            "offset": "0x14",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11f4"
+          },
+          {
+            "offset": "0x18",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x1c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x64",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11fe"
+          },
+          {
+            "offset": "0x38",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d127a"
+          },
+          {
+            "offset": "0x48",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x4c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x3c",
+            "bytes": 4,
+            "value": "0x9d148d",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x40",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x44",
+            "bytes": 4,
+            "value": "0x40820d",
+            "pc": "0x9d12a0"
+          },
+          {
+            "offset": "0x5c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x60",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x50",
+            "bytes": 4,
+            "value": "0x9d1495",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x54",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x58",
+            "bytes": 4,
+            "value": "0x9d16a5",
+            "pc": "0x9d12ba"
+          },
+          {
+            "offset": "0x10",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140a"
+          },
+          {
+            "offset": "0x21",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140c"
+          },
+          {
+            "offset": "0x65",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d1410"
+          }
+        ],
+        "constructor_type_14": 2,
+        "vector_parameter_pointer": "0x51004de0",
+        "parameter_900": 0,
+        "parameter_908": 2,
+        "sync_fields_1210_1214_1218_121c": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "original_memcpy_calls": 2
+      },
+      "phases": [
+        {
+          "boundary": {
+            "operation": "before_object_virtual_dispatch",
+            "pc": "0x9d3558",
+            "native_call": false
+          },
+          "latch": 1,
+          "phase": {
+            "state": 0,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1
+          },
+          "instructions_total": 2071
+        }
+      ],
+      "original_latch_writes": [
+        {
+          "address": "0x5100120a",
+          "bytes": 1,
+          "value": "0x1",
+          "pc": "0x9d41c8"
+        }
+      ],
+      "commands": []
+    },
+    {
+      "case": "selected_byte5_zero",
+      "declared_mask_resource22": true,
+      "declared_record_mutation": {
+        "offset": 5,
+        "value": 0
+      },
+      "declared_initial_latch": 0,
+      "producer": {
+        "raw_constructor_stage_pointer": "0x40fc09",
+        "raw_graph_argument": 0,
+        "constructor_argument_origin": "original caller fragment",
+        "declared_live_flag": 0,
+        "descriptor_sha256": "90ae5a2e5ce23455cd50b1d8d04ae31a240f281d56871c0a5771189f0d8b9145",
+        "original_constructor_writes": [
+          {
+            "offset": "0x0",
+            "bytes": 4,
+            "value": "0x9000",
+            "pc": "0x9d106e"
+          },
+          {
+            "offset": "0x4",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1072"
+          },
+          {
+            "offset": "0x5",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1076"
+          },
+          {
+            "offset": "0x6",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1078"
+          },
+          {
+            "offset": "0x8",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10ca"
+          },
+          {
+            "offset": "0x24",
+            "bytes": 4,
+            "value": "0x9b89eb",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x28",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x2c",
+            "bytes": 4,
+            "value": "0x40fc09",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x30",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x34",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10de"
+          },
+          {
+            "offset": "0xc",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10e0"
+          },
+          {
+            "offset": "0x20",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11f0"
+          },
+          {
+            "offset": "0x14",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11f4"
+          },
+          {
+            "offset": "0x18",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x1c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x64",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11fe"
+          },
+          {
+            "offset": "0x38",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d127a"
+          },
+          {
+            "offset": "0x48",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x4c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x3c",
+            "bytes": 4,
+            "value": "0x9d148d",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x40",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x44",
+            "bytes": 4,
+            "value": "0x40820d",
+            "pc": "0x9d12a0"
+          },
+          {
+            "offset": "0x5c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x60",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x50",
+            "bytes": 4,
+            "value": "0x9d1495",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x54",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x58",
+            "bytes": 4,
+            "value": "0x9d16a5",
+            "pc": "0x9d12ba"
+          },
+          {
+            "offset": "0x10",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140a"
+          },
+          {
+            "offset": "0x21",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140c"
+          },
+          {
+            "offset": "0x65",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d1410"
+          }
+        ],
+        "constructor_type_14": 2,
+        "vector_parameter_pointer": "0x51004de0",
+        "parameter_900": 0,
+        "parameter_908": 2,
+        "sync_fields_1210_1214_1218_121c": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "original_memcpy_calls": 2
+      },
+      "phases": [
+        {
+          "boundary": {
+            "operation": "before_object_virtual_dispatch",
+            "pc": "0x9d3558",
+            "native_call": false
+          },
+          "latch": 1,
+          "phase": {
+            "state": 0,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1
+          },
+          "instructions_total": 2073
+        }
+      ],
+      "original_latch_writes": [
+        {
+          "address": "0x5100120a",
+          "bytes": 1,
+          "value": "0x1",
+          "pc": "0x9d41c8"
+        }
+      ],
+      "commands": []
+    },
+    {
+      "case": "selected_byte4_nonzero",
+      "declared_mask_resource22": true,
+      "declared_record_mutation": {
+        "offset": 4,
+        "value": 1
+      },
+      "declared_initial_latch": 0,
+      "producer": {
+        "raw_constructor_stage_pointer": "0x40fc09",
+        "raw_graph_argument": 0,
+        "constructor_argument_origin": "original caller fragment",
+        "declared_live_flag": 0,
+        "descriptor_sha256": "90ae5a2e5ce23455cd50b1d8d04ae31a240f281d56871c0a5771189f0d8b9145",
+        "original_constructor_writes": [
+          {
+            "offset": "0x0",
+            "bytes": 4,
+            "value": "0x9000",
+            "pc": "0x9d106e"
+          },
+          {
+            "offset": "0x4",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1072"
+          },
+          {
+            "offset": "0x5",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1076"
+          },
+          {
+            "offset": "0x6",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1078"
+          },
+          {
+            "offset": "0x8",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10ca"
+          },
+          {
+            "offset": "0x24",
+            "bytes": 4,
+            "value": "0x9b89eb",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x28",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x2c",
+            "bytes": 4,
+            "value": "0x40fc09",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x30",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x34",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10de"
+          },
+          {
+            "offset": "0xc",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10e0"
+          },
+          {
+            "offset": "0x20",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11f0"
+          },
+          {
+            "offset": "0x14",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11f4"
+          },
+          {
+            "offset": "0x18",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x1c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x64",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11fe"
+          },
+          {
+            "offset": "0x38",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d127a"
+          },
+          {
+            "offset": "0x48",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x4c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x3c",
+            "bytes": 4,
+            "value": "0x9d148d",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x40",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x44",
+            "bytes": 4,
+            "value": "0x40820d",
+            "pc": "0x9d12a0"
+          },
+          {
+            "offset": "0x5c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x60",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x50",
+            "bytes": 4,
+            "value": "0x9d1495",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x54",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x58",
+            "bytes": 4,
+            "value": "0x9d16a5",
+            "pc": "0x9d12ba"
+          },
+          {
+            "offset": "0x10",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140a"
+          },
+          {
+            "offset": "0x21",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140c"
+          },
+          {
+            "offset": "0x65",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d1410"
+          }
+        ],
+        "constructor_type_14": 2,
+        "vector_parameter_pointer": "0x51004de0",
+        "parameter_900": 0,
+        "parameter_908": 2,
+        "sync_fields_1210_1214_1218_121c": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "original_memcpy_calls": 2
+      },
+      "phases": [
+        {
+          "boundary": {
+            "operation": "before_object_virtual_dispatch",
+            "pc": "0x9d3558",
+            "native_call": false
+          },
+          "latch": 1,
+          "phase": {
+            "state": 0,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1
+          },
+          "instructions_total": 2075
+        }
+      ],
+      "original_latch_writes": [
+        {
+          "address": "0x5100120a",
+          "bytes": 1,
+          "value": "0x1",
+          "pc": "0x9d41c8"
+        }
+      ],
+      "commands": []
+    },
+    {
+      "case": "prelatched",
+      "declared_mask_resource22": true,
+      "declared_record_mutation": null,
+      "declared_initial_latch": 1,
+      "producer": {
+        "raw_constructor_stage_pointer": "0x40fc09",
+        "raw_graph_argument": 0,
+        "constructor_argument_origin": "original caller fragment",
+        "declared_live_flag": 0,
+        "descriptor_sha256": "90ae5a2e5ce23455cd50b1d8d04ae31a240f281d56871c0a5771189f0d8b9145",
+        "original_constructor_writes": [
+          {
+            "offset": "0x0",
+            "bytes": 4,
+            "value": "0x9000",
+            "pc": "0x9d106e"
+          },
+          {
+            "offset": "0x4",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1072"
+          },
+          {
+            "offset": "0x5",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1076"
+          },
+          {
+            "offset": "0x6",
+            "bytes": 1,
+            "value": "0x0",
+            "pc": "0x9d1078"
+          },
+          {
+            "offset": "0x8",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10ca"
+          },
+          {
+            "offset": "0x24",
+            "bytes": 4,
+            "value": "0x9b89eb",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x28",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10d4"
+          },
+          {
+            "offset": "0x2c",
+            "bytes": 4,
+            "value": "0x40fc09",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x30",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10da"
+          },
+          {
+            "offset": "0x34",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10de"
+          },
+          {
+            "offset": "0xc",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d10e0"
+          },
+          {
+            "offset": "0x20",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11f0"
+          },
+          {
+            "offset": "0x14",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11f4"
+          },
+          {
+            "offset": "0x18",
+            "bytes": 4,
+            "value": "0x2",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x1c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d11fa"
+          },
+          {
+            "offset": "0x64",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d11fe"
+          },
+          {
+            "offset": "0x38",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d127a"
+          },
+          {
+            "offset": "0x48",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x4c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d128c"
+          },
+          {
+            "offset": "0x3c",
+            "bytes": 4,
+            "value": "0x9d148d",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x40",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d1294"
+          },
+          {
+            "offset": "0x44",
+            "bytes": 4,
+            "value": "0x40820d",
+            "pc": "0x9d12a0"
+          },
+          {
+            "offset": "0x5c",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x60",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12a6"
+          },
+          {
+            "offset": "0x50",
+            "bytes": 4,
+            "value": "0x9d1495",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x54",
+            "bytes": 4,
+            "value": "0x0",
+            "pc": "0x9d12ae"
+          },
+          {
+            "offset": "0x58",
+            "bytes": 4,
+            "value": "0x9d16a5",
+            "pc": "0x9d12ba"
+          },
+          {
+            "offset": "0x10",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140a"
+          },
+          {
+            "offset": "0x21",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d140c"
+          },
+          {
+            "offset": "0x65",
+            "bytes": 1,
+            "value": "0x1",
+            "pc": "0x9d1410"
+          }
+        ],
+        "constructor_type_14": 2,
+        "vector_parameter_pointer": "0x51004de0",
+        "parameter_900": 0,
+        "parameter_908": 2,
+        "sync_fields_1210_1214_1218_121c": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "original_memcpy_calls": 2
+      },
+      "phases": [
+        {
+          "boundary": {
+            "operation": "before_object_virtual_dispatch",
+            "pc": "0x9d3558",
+            "native_call": false
+          },
+          "latch": 1,
+          "phase": {
+            "state": 0,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1
+          },
+          "instructions_total": 1921
+        }
+      ],
+      "original_latch_writes": [],
+      "commands": []
+    },
+    {
+      "case": "failure_latch_and_original_sync_clear",
+      "phases": [
+        {
+          "boundary": {
+            "operation": "before_object_virtual_dispatch",
+            "pc": "0x9d3558",
+            "native_call": false
+          },
+          "latch": 1,
+          "phase": {
+            "state": 0,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1
+          },
+          "instructions_total": 2075
+        },
+        {
+          "boundary": {
+            "operation": "before_object_virtual_dispatch",
+            "pc": "0x9d3558",
+            "native_call": false
+          },
+          "latch": 1,
+          "phase": {
+            "state": 0,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1
+          },
+          "instructions_total": 2091
+        },
+        {
+          "boundary": {
+            "operation": "before_next_image_helper",
+            "pc": "0x4285c4",
+            "native_call": false
+          },
+          "latch": 0,
+          "phase": {
+            "state": 1,
+            "look": 0,
+            "pending": 0,
+            "commands": 0
+          },
+          "entry_delta": {
+            "resource_gate": 1,
+            "resource_checker": 1,
+            "mlut_controller": 1
+          },
+          "instructions_total": 2691
+        }
+      ],
+      "original_latch_writes": [
+        {
+          "address": "0x5100120a",
+          "bytes": 1,
+          "value": "0x1",
+          "pc": "0x9d41c8"
+        },
+        {
+          "address": "0x5100120a",
+          "bytes": 1,
+          "value": "0x0",
+          "pc": "0x558be8"
+        }
+      ],
+      "scope": "Restore declared record byte, then execute original 72-byte clear fragment. After clear the mask is empty; no normal mask repopulation or complete sync lifecycle is claimed."
+    }
+  ],
+  "registration_cases": [
+    {
+      "operation": "before_original_dispatcher",
+      "pc": "0x44d438",
+      "dispatch_object_va": "0x13d7dd8",
+      "packet_pointer": "0x5000f01c",
+      "object_pointer": "0x51000000",
+      "raw_argument": 0,
+      "packet_words": [
+        "0x9d36c1",
+        "0x0",
+        "0x9d3455",
+        "0x0",
+        "0x0"
+      ],
+      "native_dispatch": false
+    }
+  ],
+  "source_spans": [
+    {
+      "file_offset": "0x8cb454",
+      "bytes": 54,
+      "sha256": "d0ffcc8ba8138626d5730ea67494168ad6fbe52b087feceaf7b5d6340e40545e"
+    },
+    {
+      "file_offset": "0x8cc1a8",
+      "bytes": 38,
+      "sha256": "cde0f11cf054f161b2d118869bdf30510a76aa55288be075e78549357e4c9c24"
+    },
+    {
+      "file_offset": "0x8c7bac",
+      "bytes": 46,
+      "sha256": "bfba804fa835287d24533fb509f128326bf2168fa297ef6639283a7c73d91aca"
+    },
+    {
+      "file_offset": "0x300236",
+      "bytes": 12,
+      "sha256": "ee6041a30783644129cb8552c9e049a5f36f2b386d0bf7923c0fe9f5ce2d6e6d"
+    },
+    {
+      "file_offset": "0x8cb266",
+      "bytes": 40,
+      "sha256": "687da3c839aa1567fc05fb0692add154c486d4401603af69f24c8ff85db9ce32"
+    },
+    {
+      "file_offset": "0x8cdf6c",
+      "bytes": 18,
+      "sha256": "83f967d5a982aebd782dbab7de20d1c8cd2b154651c8d433bb16217039ea0a7c"
+    }
+  ],
+  "scope": "Original MLUT caller prologue, resource gate, 71-entry checker, original pointer getter, controller and SDK execute up to the next image helper or before virtual object dispatch. Seven cases include explicit mask/record/latch fixtures; only the first retains the empty mask from the original fresh VFX allocation with the previous STP success stub. Another original fragment clears mask+latch. One registration record is built by original instructions and stops at the original dispatcher entry without queue/callback fabrication. Original hardware/OSAL/pre/EI/queue stubs and look22 fixture inherited from prior guest remain. The next image helper, real event arrival, full scene, buffers, MAIN pixels and firmware flashability are not established. No native target, hardware or device action."
+}

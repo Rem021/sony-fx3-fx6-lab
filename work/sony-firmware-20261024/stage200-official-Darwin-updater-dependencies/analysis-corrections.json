@@ -1,0 +1,10 @@
+{
+  "scope": "host-only unsealed analysis; no device/guest retries",
+  "corrections": [
+    "used actual SquashFS class after initial incorrect class-name import, before any source capture",
+    "rejected whole.text as complete code when literal-pool words stopped sequential decoding; all4B output now locator-only, selected14 code ranges separately checked",
+    "used existing project venv after plain Python lacked pyelftools; no dependency installation"
+  ],
+  "Sony_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

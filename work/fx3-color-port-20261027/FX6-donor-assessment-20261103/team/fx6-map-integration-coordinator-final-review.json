@@ -1,0 +1,56 @@
+{
+  "time": "2026-11-06T04:57:34.039848+00:00",
+  "task": "task_5ad5448aec1f",
+  "dispatch": "ctx_47bf56c93f00",
+  "status": "offline_candidate_accepted_for_bounded_trial_review_not_runtime_proven",
+  "manifest": {
+    "count": 59,
+    "all_match": true,
+    "sha256": "59d83b282ce5e614377d7655176c16eddba4e900f841426c3891de89a5c9317e"
+  },
+  "independent_checks": {
+    "actual_partial_line_then_append": "accepted actual framed provider after frontier completed",
+    "cpio_reparsed": true,
+    "old_members": 1157,
+    "new_members": 1158,
+    "changed": [
+      "init"
+    ],
+    "added": [
+      "simulation/fx3-map-snapshot"
+    ],
+    "removed": [],
+    "unchanged_content_and_header_members": 1156,
+    "old_and_new_zero_tail_bytes": 25746348,
+    "target_elf": {
+      "type": "ET_EXEC",
+      "machine": 183,
+      "bytes": 122264,
+      "sha256": "9df5a10a2d22f49e5a2313bcbb0f829cefc26c51cb7e629e5f259a4808c9fed2",
+      "PT_INTERP": false,
+      "PT_DYNAMIC": false
+    }
+  },
+  "cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/fx6-map-observer-grmreal46.cpio",
+    "sha256": "9d4f255b0a3995b0e056e210ae4d27c8129e2c853b35904a688b6ffe149529ae",
+    "bytes": 453306948
+  },
+  "worker_test_evidence": {
+    "host_tests": 10,
+    "actual_HostRunner_Observer_QMP_RSP_four_stop_test": 1,
+    "tls_reader": "fixture stub; not actual Sysregs in this E2E",
+    "target_execution": false
+  },
+  "limits": [
+    "Target Linux execution and live capture timing unproved",
+    "Original r6 has separate actual Sysregs implementation; new E2E stubs TLS",
+    "target_io write retry loop has no independent deadline; future owned QEMU is bounded by host lifecycle",
+    "Original mixed map logs remain source-unknown; no fallback",
+    "guest restore not attempted in proposed stop-only mode",
+    "Prior r6 start allowance consumed; no new runtime authorization"
+  ],
+  "boot_menu_passed": false,
+  "VM_started": false,
+  "run_plan": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-framed-map-observation-run-plan.json"
+}

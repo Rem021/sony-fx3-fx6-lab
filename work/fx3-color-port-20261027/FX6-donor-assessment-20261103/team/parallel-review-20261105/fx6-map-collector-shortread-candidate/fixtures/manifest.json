@@ -1,0 +1,43 @@
+{
+  "schema": "fx6-map-collector-shortread-fixtures-v1",
+  "source": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/fixtures/source-native-target-frame-fx3ms1.serial",
+    "sha256": "f9eb44e9de75cc64d271bcbb462bcb49fca214eae6ca1c620d77fe87fcd717ca",
+    "fx3ms1_pid": 239,
+    "fx3ms1_starttime": 777,
+    "fx3ms1_bytes": 10563,
+    "fx3ms1_maps_sha256": "715f83a3578e3eff9032ede50143387ee7d7359f12fed7e3f074cebd42908e9a"
+  },
+  "source_maps": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/fixtures/source-native-target-frame-fx3ms1.maps",
+    "sha256": "715f83a3578e3eff9032ede50143387ee7d7359f12fed7e3f074cebd42908e9a",
+    "bytes": 10563
+  },
+  "valid": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/fixtures/native-target-frame-v2.serial",
+    "sha256": "e76b4cb78a4f7f4813fa111bd34559df2735d0a1d010be75feb27064fdbfc138",
+    "bytes": 15928,
+    "pid": 239,
+    "starttime": 777,
+    "seq": 1,
+    "payload_bytes": 10563,
+    "lines": 105,
+    "read_count": 3,
+    "eintr_count": 2,
+    "read_attempts": 6,
+    "snapshot_atomic": false,
+    "maps_sha256": "715f83a3578e3eff9032ede50143387ee7d7359f12fed7e3f074cebd42908e9a",
+    "bias": "0x7efab5b000",
+    "appfw_rows": 4,
+    "imelf_rows": 6,
+    "frame_count": 1
+  },
+  "no_appfw": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/fixtures/no-appfw-v2.serial",
+    "sha256": "3db4e7085a0a45115128388c00bb2cf9dc4fd49a382488f395fefda709ce9396",
+    "bytes": 15388,
+    "payload_bytes": 10196,
+    "no_appfw_reject": "framed payload has no appFw rows"
+  },
+  "note": "host fixture only; source FX3MS1 frame was accepted offline; no target execution or VM"
+}

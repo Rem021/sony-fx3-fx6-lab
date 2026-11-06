@@ -1,0 +1,125 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu
+# SHA256 c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00
+# VA [0x405cd4, 0x405ebc) raw slice SHA256 c33b6b867b866d0e479e0a584cf0a6701a95ce163969a085342956bb457aa10a
+  405cd4: a9b97bfd     	stp	x29, x30, [sp, #-0x70]!
+  405cd8: 528010e3     	mov	w3, #0x87               // =135
+  405cdc: 52800001     	mov	w1, #0x0                // =0
+  405ce0: 910003fd     	mov	x29, sp
+  405ce4: a90153f3     	stp	x19, x20, [sp, #0x10]
+  405ce8: d0000014     	adrp	x20, 0x407000 <vtable for BaseQueue+0xe80>
+  405cec: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  405cf0: 91305e93     	add	x19, x20, #0xc17
+  405cf4: aa0003f6     	mov	x22, x0
+  405cf8: d0000000     	adrp	x0, 0x407000 <vtable for BaseQueue+0xe80>
+  405cfc: 910103a4     	add	x4, x29, #0x40
+  405d00: aa1303e2     	mov	x2, x19
+  405d04: 913c6400     	add	x0, x0, #0xf19
+  405d08: 390103bf     	strb	wzr, [x29, #0x40]
+  405d0c: 390163bf     	strb	wzr, [x29, #0x58]
+  405d10: 2908ffbf     	stp	wzr, wzr, [x29, #0x44]
+  405d14: 2909ffbf     	stp	wzr, wzr, [x29, #0x4c]
+  405d18: b90057bf     	str	wzr, [x29, #0x54]
+  405d1c: 290bffbf     	stp	wzr, wzr, [x29, #0x5c]
+  405d20: 290cffbf     	stp	wzr, wzr, [x29, #0x64]
+  405d24: b9006fbf     	str	wzr, [x29, #0x6c]
+  405d28: 97fff1b6     	bl	0x402400 <printf@plt>
+  405d2c: f9400ac0     	ldr	x0, [x22, #0x10]
+  405d30: f9400001     	ldr	x1, [x0]
+  405d34: f9401822     	ldr	x2, [x1, #0x30]
+  405d38: 910103a1     	add	x1, x29, #0x40
+  405d3c: d63f0040     	blr	x2
+  405d40: 2a0003f5     	mov	w21, w0
+  405d44: 2a0003e4     	mov	w4, w0
+  405d48: d0000000     	adrp	x0, 0x407000 <vtable for BaseQueue+0xe80>
+  405d4c: aa1303e2     	mov	x2, x19
+  405d50: 913d9000     	add	x0, x0, #0xf64
+  405d54: 52801123     	mov	w3, #0x89               // =137
+  405d58: 52800001     	mov	w1, #0x0                // =0
+  405d5c: 97fff1a9     	bl	0x402400 <printf@plt>
+  405d60: 340001b5     	cbz	w21, 0x405d94 <BaseQueue::~BaseQueue()+0x31b0>
+  405d64: d0000000     	adrp	x0, 0x407000 <vtable for BaseQueue+0xe80>
+  405d68: 528000e1     	mov	w1, #0x7                // =7
+  405d6c: 2a1503e4     	mov	w4, w21
+  405d70: aa1303e2     	mov	x2, x19
+  405d74: 913ef400     	add	x0, x0, #0xfbd
+  405d78: 52801183     	mov	w3, #0x8c               // =140
+  405d7c: 72a00081     	movk	w1, #0x4, lsl #16
+  405d80: 97fff1a0     	bl	0x402400 <printf@plt>
+  405d84: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  405d88: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  405d8c: a8c77bfd     	ldp	x29, x30, [sp], #0x70
+  405d90: d65f03c0     	ret
+  405d94: 394163a0     	ldrb	w0, [x29, #0x58]
+  405d98: 9100c3b5     	add	x21, x29, #0x30
+  405d9c: 34000060     	cbz	w0, 0x405da8 <BaseQueue::~BaseQueue()+0x31c4>
+  405da0: 394103a0     	ldrb	w0, [x29, #0x40]
+  405da4: 35000500     	cbnz	w0, 0x405e44 <BaseQueue::~BaseQueue()+0x3260>
+  405da8: 52802800     	mov	w0, #0x140              // =320
+  405dac: 52800073     	mov	w19, #0x3               // =3
+  405db0: b90033a0     	str	w0, [x29, #0x30]
+  405db4: 52802820     	mov	w0, #0x141              // =321
+  405db8: b90037a0     	str	w0, [x29, #0x34]
+  405dbc: 52802840     	mov	w0, #0x142              // =322
+  405dc0: b9003ba0     	str	w0, [x29, #0x38]
+  405dc4: 91305e94     	add	x20, x20, #0xc17
+  405dc8: f0000000     	adrp	x0, 0x408000 <vtable for BaseQueue+0x1e80>
+  405dcc: 2a1303e5     	mov	w5, w19
+  405dd0: aa1503e4     	mov	x4, x21
+  405dd4: aa1403e2     	mov	x2, x20
+  405dd8: 91001000     	add	x0, x0, #0x4
+  405ddc: 528015e3     	mov	w3, #0xaf               // =175
+  405de0: 52800001     	mov	w1, #0x0                // =0
+  405de4: 97fff187     	bl	0x402400 <printf@plt>
+  405de8: f9400ac0     	ldr	x0, [x22, #0x10]
+  405dec: 2a1303e2     	mov	w2, w19
+  405df0: f9400001     	ldr	x1, [x0]
+  405df4: f9401c23     	ldr	x3, [x1, #0x38]
+  405df8: aa1503e1     	mov	x1, x21
+  405dfc: d63f0060     	blr	x3
+  405e00: 2a0003f3     	mov	w19, w0
+  405e04: 2a0003e4     	mov	w4, w0
+  405e08: f0000000     	adrp	x0, 0x408000 <vtable for BaseQueue+0x1e80>
+  405e0c: aa1403e2     	mov	x2, x20
+  405e10: 91013800     	add	x0, x0, #0x4e
+  405e14: 52801623     	mov	w3, #0xb1               // =177
+  405e18: 52800001     	mov	w1, #0x0                // =0
+  405e1c: 97fff179     	bl	0x402400 <printf@plt>
+  405e20: 34fffb33     	cbz	w19, 0x405d84 <BaseQueue::~BaseQueue()+0x31a0>
+  405e24: 528000e1     	mov	w1, #0x7                // =7
+  405e28: f0000000     	adrp	x0, 0x408000 <vtable for BaseQueue+0x1e80>
+  405e2c: 2a1303e4     	mov	w4, w19
+  405e30: 52801683     	mov	w3, #0xb4               // =180
+  405e34: aa1403e2     	mov	x2, x20
+  405e38: 72a00081     	movk	w1, #0x4, lsl #16
+  405e3c: 91028800     	add	x0, x0, #0xa2
+  405e40: 17ffffd0     	b	0x405d80 <BaseQueue::~BaseQueue()+0x319c>
+  405e44: 910103a1     	add	x1, x29, #0x40
+  405e48: aa1603e0     	mov	x0, x22
+  405e4c: 52800013     	mov	w19, #0x0               // =0
+  405e50: 97ffff85     	bl	0x405c64 <BaseQueue::~BaseQueue()+0x3080>
+  405e54: 72001c1f     	tst	w0, #0xff
+  405e58: 54000081     	b.ne	0x405e68 <BaseQueue::~BaseQueue()+0x3284>
+  405e5c: 52802800     	mov	w0, #0x140              // =320
+  405e60: 52800033     	mov	w19, #0x1               // =1
+  405e64: b90033a0     	str	w0, [x29, #0x30]
+  405e68: 910103a1     	add	x1, x29, #0x40
+  405e6c: aa1603e0     	mov	x0, x22
+  405e70: 97ffff8b     	bl	0x405c9c <BaseQueue::~BaseQueue()+0x30b8>
+  405e74: 72001c1f     	tst	w0, #0xff
+  405e78: 54000081     	b.ne	0x405e88 <BaseQueue::~BaseQueue()+0x32a4>
+  405e7c: 52802820     	mov	w0, #0x141              // =321
+  405e80: b8335aa0     	str	w0, [x21, w19, uxtw #2]
+  405e84: 11000673     	add	w19, w19, #0x1
+  405e88: 910103a1     	add	x1, x29, #0x40
+  405e8c: aa1603e0     	mov	x0, x22
+  405e90: 97ffff31     	bl	0x405b54 <BaseQueue::~BaseQueue()+0x2f70>
+  405e94: 72001c1f     	tst	w0, #0xff
+  405e98: 540000a1     	b.ne	0x405eac <BaseQueue::~BaseQueue()+0x32c8>
+  405e9c: 52802840     	mov	w0, #0x142              // =322
+  405ea0: b8335aa0     	str	w0, [x21, w19, uxtw #2]
+  405ea4: 11000673     	add	w19, w19, #0x1
+  405ea8: 17ffffc7     	b	0x405dc4 <BaseQueue::~BaseQueue()+0x31e0>
+  405eac: 35fff8d3     	cbnz	w19, 0x405dc4 <BaseQueue::~BaseQueue()+0x31e0>
+  405eb0: 52800033     	mov	w19, #0x1               // =1
+  405eb4: b90033b3     	str	w19, [x29, #0x30]
+  405eb8: 17ffffc3     	b	0x405dc4 <BaseQueue::~BaseQueue()+0x31e0>

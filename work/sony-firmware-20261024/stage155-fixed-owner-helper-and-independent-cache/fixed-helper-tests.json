@@ -1,0 +1,130 @@
+{
+  "status": "PASS_FIXED_FIXTURE_EXECUTABLE_NOT_NATIVE_IOKIT_OR_ADMIN_ACCEPTANCE",
+  "checks": 13,
+  "cases": [
+    {
+      "name": "fixed_executable_normal",
+      "exit": 0,
+      "receipt": {
+        "schema": 1,
+        "mode": "fixture",
+        "nonce": "01f0ee2a96a47c4bdc266d6afcfc9109",
+        "pid": 66974,
+        "native_return": 0,
+        "result_sha256": "4e691b47cd8d239357738f5e5116802115523bd44096fbcd0b0195c7796f8599",
+        "physical_camera_acceptance": false,
+        "fixture_calls": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "name": "separate_process_replay_denied_without_overwriting_result",
+      "exit": 66
+    },
+    {
+      "name": "concurrent_replay_and_kernel_birth_identity",
+      "receipt": {
+        "schema": 1,
+        "mode": "fixture",
+        "nonce": "f9e39c027dc0a019dc9983539bc63d68",
+        "pid": 66977,
+        "native_return": 1,
+        "result_sha256": "14fbe669fde5e0024c06cbd1e1a15c7aa203e10fa2312303bb72d72cf300cc71",
+        "physical_camera_acceptance": false,
+        "fixture_calls": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "single_native_pid_preserved": true
+    },
+    {
+      "name": "preselected_body_mismatch_blocks_client_capture_and_claim",
+      "receipt": {
+        "schema": 1,
+        "mode": "fixture",
+        "nonce": "568f71b1117a20b2afe195918c62adcb",
+        "pid": 66979,
+        "native_return": 2,
+        "result_sha256": "358a90e1e723e5f109916627c31a10969fda5e8d6e8c9b1fef37eb68bfbca6f2",
+        "physical_camera_acceptance": false,
+        "fixture_calls": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "missing-body-tag",
+      "rejected_before_native_claim": true
+    },
+    {
+      "name": "missing-privacy-key",
+      "rejected_before_native_claim": true
+    },
+    {
+      "name": "wrong-mode",
+      "rejected_before_native_claim": true
+    },
+    {
+      "name": "wrong-owner",
+      "rejected_before_native_claim": true
+    },
+    {
+      "name": "wrong-nonce",
+      "rejected_before_native_claim": true
+    },
+    {
+      "name": "wrong-file-permissions",
+      "rejected_before_mapping_and_claim": true
+    },
+    {
+      "name": "final-symlink",
+      "rejected": true
+    },
+    {
+      "name": "hardlinked-frame",
+      "rejected": true
+    },
+    {
+      "name": "outside-reviewed-job-root",
+      "rejected": true
+    }
+  ],
+  "fixture_process_count": 14,
+  "all_fixture_processes_terminal": true,
+  "native_IOKit_helper_or_admin_script_executed": false,
+  "new_device_operations": 0
+}

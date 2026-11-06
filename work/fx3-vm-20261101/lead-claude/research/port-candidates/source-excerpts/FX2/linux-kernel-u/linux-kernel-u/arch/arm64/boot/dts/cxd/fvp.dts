@@ -1,0 +1,35 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS (GICv2 configuration)
+ */
+
+#include "../arm/foundation-v8.dtsi"
+
+/ {
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0x00000000 0x80000000 0 0x04000000>;
+	};
+
+	/* GICv2 */
+	gic: interrupt-controller@2c001000 {
+		compatible = "arm,cortex-a15-gic";
+		#interrupt-cells = <3>;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		interrupt-controller;
+		reg = <0x0 0x2c001000 0 0x1000>,
+		      <0x0 0x2c002000 0 0x1000>,
+		      <0x0 0x2c004000 0 0x2000>,
+		      <0x0 0x2c006000 0 0x2000>;
+		interrupts = <1 9 0xf04>;
+	};
+
+	chosen {
+		stdout-path = "serial0";
+		bootargs = "earlycon console=ttyAMA0,115200n8 root=/dev/ram0 rootfstype=ext2 rw noatime init=/sbin/init";
+		linux,initrd-start = <0x0 0x81000000>;
+		linux,initrd-end   = <0x0 0x81800000>;
+	};
+};

@@ -1,0 +1,19 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-pthread",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-boot-reply-transport.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-boot-reply-transport"
+  ],
+  "exit": 0,
+  "stdout": "AP78_BOOT_REPLY_PASS exact44B/replyid-source/padding/dynamicqueue/stackmask/replybytes/ownership/lease/dedup/rollback/allocfail/length/source/PID/325_80capabilities/8threads24000\n",
+  "stderr": "FX3_TIMECODE_COMMIT source=0x803061c0 destination=0x9059000e bytes=36 reply_source=0x9059000e request=0x102fa4420 padding=0000007f request_free=0 caller_mask=7 lease=1 software_ack=1 physical_timecode=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1205 lease=1 result=0\nFX3_TIMECODE_REPLY_CONSUMED destination=0x803061c0 lease=1 padding=0000007f result=0 request_key=0x102fa4420\nFX3_TIMECODE_COMMIT source=0x81aa8123 destination=0x9059000e bytes=36 reply_source=0x9059000e request=0x102fa4420 padding=ffffffff request_free=0 caller_mask=7 lease=2 software_ack=1 physical_timecode=0\nFX3_CAPID_NATIVE_FREE destination=0x81aa8123 command=0x1205 lease=2 result=0\nFX3_TIMECODE_REPLY_CONSUMED destination=0x81aa8123 lease=2 padding=ffffffff result=0 request_key=0x102fa4420\nFX3_TIMECODE_COMMIT source=0x803061c0 destination=0x9059000e bytes=36 reply_source=0x9059000e request=0x102fa4420 padding=0000007f request_free=0 caller_mask=7 lease=4 software_ack=1 physical_timecode=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1205 lease=4 result=0\nFX3_TIMECODE_REPLY_CONSUMED destination=0x803061c0 lease=4 padding=0000007f result=0 request_key=0x102fa4420\nFX3_ADF_GET_FUNC_COMMIT source=0x803061c0 bytes=28 capabilities=80x16 lowcut=80 request_free=0 lease=5 muted=1 original_sound=0 playback_supported=0 complementary_AP_flags_not_audio_support=1\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x325 lease=5 result=0\nFX3_ADF_GET_FUNC_CONSUMED destination=0x803061c0 lease=5 result=0\n",
+  "source_sha256": "30f64e8290f83889f93d3ba31ee90f9db861d27f6624e0eb50dfd4d6f56b9f81"
+}

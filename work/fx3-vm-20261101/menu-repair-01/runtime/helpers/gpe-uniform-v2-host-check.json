@@ -1,0 +1,15 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe-uniform-v2.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe-uniform-v2"
+  ],
+  "compile_stderr": "",
+  "exit": 0,
+  "stdout": "FX3_UNIFORM_PASS captured640x480/614400B guards, white packing, unsupported colours/callback/blend/range/stride rejected\n",
+  "stderr": ""
+}

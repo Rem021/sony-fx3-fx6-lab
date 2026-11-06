@@ -1,0 +1,185 @@
+{
+  "identity": {
+    "step": 1,
+    "key": 427,
+    "target": "完整Setup > Area/Date，橙色Area/Date/Time Setting",
+    "attempt_number": 1,
+    "nonce": "c527067f-07cb-4dbe-b5de-1adfa66bd832",
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-vm-49f0c1c3663b/step-01-attempt-01",
+    "scripted_action_target": "MENU完整Setup > Area/Date，橙色Area/Date/Time Setting",
+    "scripted_navigation": true,
+    "visual_review_at_click": false,
+    "plan_sha": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+    "host_wall_ns": 1793846291874465000,
+    "UTC": "2026-11-05T02:38:11.874468+00:00",
+    "host_ns": 429977387555666,
+    "postkey_binding": {
+      "document_id": "554d0c1b-b766-450c-aac0-8efe2573c6be",
+      "document_time_origin": 1793846218360.5,
+      "run_incarnation": "9bb295cb-055a-4b02-b5fb-03ef4b6d77e1"
+    },
+    "attempt_id": "543e9e62-f65f-4b30-8d0f-40fc1e71ef6e"
+  },
+  "native_ACK_observation": {
+    "step": 1,
+    "state": "visual_changed",
+    "input_received": true,
+    "visual_change_observed": true,
+    "before_sequence": 218,
+    "before_png_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+    "observed_sequence": 227,
+    "observed_png_sha256": "abc20e41bb450786b3f3edd6a66c79cff80ce2b264e3e0230592eda1050a72e5",
+    "ack_host_monotonic": 429977.923986083,
+    "decision_host_monotonic": 429980.457588708,
+    "downstream_handler_completed": "unknown",
+    "pixel_attribution": "observed_after_this_input_not_proven_caused"
+  },
+  "operator_events": [
+    {
+      "stage": "operator_tool_standby_review_entry",
+      "UTC": "2026-11-05T02:38:07.536130+00:00",
+      "host_ns": 429973049364083
+    },
+    {
+      "stage": "operator_tool_standby_review_return_prepared",
+      "UTC": "2026-11-05T02:38:07.537656+00:00",
+      "host_ns": 429973050746791
+    },
+    {
+      "stage": "operator_tool_click_entry",
+      "UTC": "2026-11-05T02:38:11.873175+00:00",
+      "host_ns": 429977386382375
+    },
+    {
+      "stage": "operator_tool_click_return_prepared",
+      "UTC": "2026-11-05T02:38:15.311783+00:00",
+      "host_ns": 429980824861208
+    },
+    {
+      "stage": "operator_tool_observe_entry",
+      "UTC": "2026-11-05T02:38:27.662477+00:00",
+      "host_ns": 429993175704416
+    },
+    {
+      "stage": "operator_tool_observe_return_prepared",
+      "UTC": "2026-11-05T02:38:27.830991+00:00",
+      "host_ns": 429993344039916
+    },
+    {
+      "stage": "operator_tool_pin_entry",
+      "UTC": "2026-11-05T02:38:33.543777+00:00",
+      "host_ns": 429999057030875
+    }
+  ],
+  "arm_tool": {
+    "argv": [
+      "python3",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/operator-helpers/deadline_cli.py",
+      "arm",
+      "--session",
+      "fx3-deadline-r26-49f0c1c3663b",
+      "--url",
+      "http://127.0.0.1:61254/",
+      "--launch-id",
+      "b4c2e9c5-356d-4581-b72d-b23ef4c3dbfd",
+      "--nonce",
+      "c527067f-07cb-4dbe-b5de-1adfa66bd832"
+    ],
+    "start": {
+      "UTC": "2026-11-05T02:38:11.874932+00:00",
+      "host_ns": 429977388014208
+    },
+    "end": {
+      "UTC": "2026-11-05T02:38:11.936795+00:00",
+      "host_ns": 429977449889916
+    },
+    "returncode": 0,
+    "stdout": "{\n  \"current\": {\n    \"armed_ms\": 73569.60000002384,\n    \"deadline_ms\": 20000,\n    \"due_ms\": 93569.60000002384,\n    \"nonce\": \"c527067f-07cb-4dbe-b5de-1adfa66bd832\",\n    \"state\": \"armed\"\n  },\n  \"deadline_ms\": 20000,\n  \"documentTimeOrigin\": 1793846218360.5,\n  \"events\": [\n    {\n      \"event\": \"installed\",\n      \"performance_ms\": 13966.900000035765,\n      \"script_SHA256\": \"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\",\n      \"wall_UTC\": \"2026-11-05T02:37:12.327Z\"\n    },\n    {\n      \"due_ms\": 93569.60000002384,\n      \"event\": \"armed\",\n      \"nonce\": \"c527067f-07cb-4dbe-b5de-1adfa66bd832\",\n      \"performance_ms\": 73569.60000002384,\n      \"wall_UTC\": \"2026-11-05T02:38:11.930Z\"\n    }\n  ],\n  \"expectedLaunchId\": \"b4c2e9c5-356d-4581-b72d-b23ef4c3dbfd\",\n  \"expectedURL\": \"http://127.0.0.1:61254/\",\n  \"sealed\": false,\n  \"version\": 1\n}\n",
+    "stderr": ""
+  },
+  "alarm_after_End": {
+    "current": {
+      "armed_ms": 73569.60000002384,
+      "deadline_ms": 20000,
+      "due_ms": 93569.60000002384,
+      "elapsed_ms": 20002.5,
+      "nonce": "c527067f-07cb-4dbe-b5de-1adfa66bd832",
+      "state": "expired"
+    },
+    "deadline_ms": 20000,
+    "documentTimeOrigin": 1793846218360.5,
+    "events": [
+      {
+        "event": "installed",
+        "performance_ms": 13966.900000035765,
+        "script_SHA256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+        "wall_UTC": "2026-11-05T02:37:12.327Z"
+      },
+      {
+        "due_ms": 93569.60000002384,
+        "event": "armed",
+        "nonce": "c527067f-07cb-4dbe-b5de-1adfa66bd832",
+        "performance_ms": 73569.60000002384,
+        "wall_UTC": "2026-11-05T02:38:11.930Z"
+      },
+      {
+        "elapsed_ms": 20002.5,
+        "event": "end_click",
+        "nonce": "c527067f-07cb-4dbe-b5de-1adfa66bd832",
+        "performance_ms": 93572.19999998808,
+        "wall_UTC": "2026-11-05T02:38:31.932Z"
+      }
+    ],
+    "expectedLaunchId": "b4c2e9c5-356d-4581-b72d-b23ef4c3dbfd",
+    "expectedURL": "http://127.0.0.1:61254/",
+    "sealed": true,
+    "version": 1
+  },
+  "intervals": {
+    "click_return_to_observe_entry_seconds": 12.350843208,
+    "observe_return_to_pin_entry_seconds": 5.712990959,
+    "boundary": "host tool invocation intervals; not exact model image receipt/review durations"
+  },
+  "pin_entry_after_arm_wall_seconds": 21.613777,
+  "automatic_End_HTTP": {
+    "UTC_request_start": "2026-11-05T02:38:31.933128192Z",
+    "duration_ms": 0.7360000111870468,
+    "endpoint": "stop",
+    "request_body_text": "{}",
+    "status": 202,
+    "response_body_text": "{\"stopping\": true}"
+  },
+  "cleanup_End_tool": {
+    "argv": [
+      "agent-browser",
+      "--session",
+      "fx3-deadline-r26-49f0c1c3663b",
+      "eval",
+      "--stdin"
+    ],
+    "start": {
+      "UTC": "2026-11-05T02:38:33.587250+00:00",
+      "host_ns": 429999100285458
+    },
+    "end": {
+      "UTC": "2026-11-05T02:38:33.593813+00:00",
+      "host_ns": 429999106856083
+    },
+    "returncode": 0,
+    "stdout": "{\n  \"End_invoked\": false,\n  \"ending\": true,\n  \"finished\": false\n}\n",
+    "stderr": ""
+  },
+  "failure": {
+    "action": "pin",
+    "error": "RuntimeError('owned browser operation failed')",
+    "UTC": "2026-11-05T02:38:33.553034+00:00",
+    "host_ns": 429999066070333
+  },
+  "snapshot_id": null,
+  "confirm_request_id": null,
+  "notes": [
+    "20秒alarm自动End，wrapper清理时原End按钮已处于ending；没有第二次stop POST",
+    "pin入口后的原始evaluate失败回执只有owned browser operation failed，原守卫具体子条件未被保存；alarm已经到期是独立确定事实",
+    "观察截图SHA只绑定截图字节，before/after帧不是精确截图固件generation"
+  ]
+}

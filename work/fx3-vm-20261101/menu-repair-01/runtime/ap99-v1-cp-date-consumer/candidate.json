@@ -1,0 +1,151 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap99-v1-cp-date-consumer/guest.dtb",
+    "sha256": "7c56d7a3f214180c0a12ed15cdabb93745cfa04e3fbb1cfc21bcc61d5ea54e79"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap99-v1-cp-date-consumer/guest.cpio",
+    "sha256": "be5c8d3b286c490e462c33b98672e5af15d206054cc153f2e0a6eeca367e7cdd"
+  },
+  "required_markers": [
+    "FX3_AP89_BACKUP_REPLAY_VERIFIED",
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0",
+    "FX3_PRESET_CONTEXT_BOUND",
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS",
+    "FX3_AP89_UUD_DECISION",
+    "FX3_AP89_SCREEN_CREATE",
+    "FX3_AP_IM_ENDMAPS_",
+    "registration_origin=malloc_parent_v1",
+    "FX3_GPE_RESOURCE_BOUND",
+    "FX3_GPE_RESOURCE_REGISTER",
+    "FX3_GPE_SCOPE",
+    "FX3_RM_BOUND",
+    "FX3_RM_FRONT_TRANSFER",
+    "FX3_RM_REPLY_TRANSFER",
+    "FX3_RM_NATIVE_FREE",
+    "FX3_MEDIA_SELFTEST_PASS",
+    "FX3_MEDIA_BOUND module=D",
+    "FX3_MEDIA_FRONT",
+    "FRONT_FULL_BODY",
+    "FX3_MEDIA_START_BRANCH",
+    "FX3_MEDIA_NOTIFY",
+    "FX3_KEY96_READY",
+    "FX3_OSD_FRAME_TARGET_VALID",
+    "FX3_GPE_COMPACTION_BOUND",
+    "FX3_GPE_DRAW_INTERVAL",
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND",
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED",
+    "FX3_KEY96_POLL",
+    "FX3_KEY96_THREAD_BEGIN",
+    "FX3_PANEL_CONFIG_V2_COMMIT",
+    "FX3_PROC97_STATUS_BEGIN",
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN",
+    "const_alpha=",
+    "FX3_DATE98_TRACE_BOUND",
+    "FX3_DATE98_KERNEL_OBSERVE_READY",
+    "FX3_DATE98_LIVE",
+    "FX3_DATE99_WORKER_READY",
+    "FX3_DATE99_CONSUMER_BOUND"
+  ],
+  "scope": "AP99: existing single CPpublicowner adds only native909005c5 ready44 capturedzero profile with actual source/reason. Deferred nativeOSAL waitableworker serializes actualAP type2 snapshot via fresh nativeAP-accounted dynamicreplyQ; explicit CPsource909005c5 separate. Validate originalAPstatus/date/timezone, commit/readback advancing softwareUTC+monobasis+TD/DST/halfRTT, then native type4 echo reason to actualAPsource. Reason4 no type4, unknown BYBOOT clock honestly preserved. Bounded8 livealloc leases, samepointerduplicate idempotent once, reject foreign source/size/queuefull, rollback onallocation/send/status failures, originalrequest freedonce tooriginaldestination. All other CPbackup destinations/models original behavior. No direct AP80900141 success or APclock/force/Backup writes. NativeBackup_write observer preserves actualbytes1 return and independently nativeBackup_read two keys aftermirrorwrite. Own CPclock/4phase rawtrace41df08000/1000; existing inputfirst4K andAP98trace untouched. AP99 v2 rawRAM snapshot onlystandby beforeMENU, requiresactualtwoforcebytes0; notvalidatedstoragefile.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true,
+  "backup_replay": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap95v6r3ui600-3715c225/backup-after-setup.bin",
+    "sha256": "191924ef39d996171ae06ab4ca85e249b655b16db6b68fd1e2ddea45efc60bdc",
+    "bytes": 2232320,
+    "physical": "0x404000000",
+    "mechanism": "boundedguesthelperfixedSHA/twooriginalbankheaders/wholecopy/remapSHA/rollback;5sboundedpreAPhostQMPreadbackwindow",
+    "original_seed_unchanged": true,
+    "unchanged_checksums_live_RAM": true
+  },
+  "input_gate": {
+    "physical": "0x41df00000",
+    "bytes": 65536,
+    "host_write_offset": 8,
+    "host_write_bytes": 12,
+    "magic": "0x3545594b334d5253",
+    "navigation_requires_host_visual_confirmation": true,
+    "no_predefined_sequence": true
+  },
+  "host_step_contract": {
+    "authority": "msg_fa0d4b6ae7b5",
+    "delete_key": "0x1f8",
+    "whitelist": [
+      "0x3",
+      "0x30",
+      "0x15",
+      "0x1af",
+      "0x1ac",
+      "0x1ab",
+      "0x1f8"
+    ],
+    "physical": "0x41df00008",
+    "bytes": 12,
+    "max_steps": 30,
+    "hold_ms": [
+      50,
+      200
+    ],
+    "audit_proof": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/audits/key-delete-c4/key-delete-proof.json",
+    "audit_sha256": "4ab624e2cc34b99fb21f2ee7996e7f070166ef928cbcb216dbd2b966a27c6020"
+  },
+  "input_diagnostics": {
+    "software_page": "0x41df00040",
+    "record_bytes": 104,
+    "each_poll_latest_counter_and_fields": true,
+    "serial_transition_and_1s_sample": true,
+    "native_receiver_queue_query_interval_seconds": 1,
+    "screen_gate_used": false,
+    "screen_correlates_original_open_log": true,
+    "thread_proc_independent_of_worker": true
+  },
+  "date_observer_contract": {
+    "authority": [
+      "msg_de25f58b89eb",
+      "msg_2c43f8a7ac82"
+    ],
+    "software_output": {
+      "physical": "0x41df01000",
+      "bytes": 24576,
+      "cap": 64,
+      "record_bytes": 320,
+      "native_request_reply_max_bytes": 64
+    },
+    "kernel_target": "0x909005c5",
+    "kernel_bytes": 44,
+    "user_target": "0x80900141",
+    "user_bytes": 32,
+    "reply_or_setter_added": false,
+    "after_return_conditional_not_required_marker": true,
+    "clock_initial_call_and_result": [
+      "0x2b72680",
+      "0x2b72684"
+    ]
+  },
+  "cp_date99_contract": {
+    "authority": "msg_fa0d4b6ae7b5",
+    "original_audit": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/audits/date-service-set/README.md",
+    "schema_proof": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/audits/date-service-set/date-set-proof.json",
+    "proof_sha256": "36d103136d8a7eb71266ce15247ca3ddf3e2c7c40820309784f70da29bc96e4c",
+    "clock_output_physical": "0x41df08000",
+    "bytes": 4096,
+    "clock_header_bytes": 256,
+    "trace_offset": 512,
+    "trace_capacity": 14,
+    "trace_record_bytes": 256,
+    "native_AP_queue_accounting": true,
+    "CP_source": "0x909005c5",
+    "clock_software_only": true,
+    "Backup_write_success_actual_bytes": 1,
+    "parameter_value_target": 0
+  }
+}

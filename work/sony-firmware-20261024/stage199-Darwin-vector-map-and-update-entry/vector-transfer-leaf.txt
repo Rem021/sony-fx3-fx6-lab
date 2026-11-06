@@ -1,0 +1,8 @@
+# Original FX3 core bytes under source map0x4200. No execution.
+0x45dc [file+0x3dc] 0168 ldr       r1, [r0]
+0x45de [file+0x3de] 81f30888 msr       msp, r1
+0x45e2 [file+0x3e2] 81f30988 msr       psp, r1
+0x45e6 [file+0x3e6] eff31481 mrs       r1, control
+0x45ea [file+0x3ea] 21f00201 bic       r1, r1, #2
+0x45ee [file+0x3ee] 81f31488 msr       control, r1
+0x45f2 [file+0x3f2] d0f804f0 ldr.w     pc, [r0, #4]

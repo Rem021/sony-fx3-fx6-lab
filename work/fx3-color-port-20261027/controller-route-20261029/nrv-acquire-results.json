@@ -1,0 +1,761 @@
+{
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "cases": [
+    {
+      "declared_context": 1,
+      "declared_kind": 3,
+      "declared_broker_arguments": [
+        1,
+        3,
+        "0x100",
+        0
+      ],
+      "declared_stack_arguments": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        "0x510010d0",
+        0
+      ],
+      "original_entries": [
+        {
+          "pc": "0x4056f4",
+          "registers": [
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x4"
+          ]
+        },
+        {
+          "pc": "0x44f004",
+          "registers": [
+            "0x117adf0",
+            "0x4af",
+            "0x1",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        }
+      ],
+      "unreplied_boundary": {
+        "pc": "0x4a032c",
+        "registers": [
+          "0x2a",
+          "0x5",
+          "0x5000ecf8",
+          "0x5000ed28"
+        ],
+        "input_word": "0x2",
+        "original_lr": "0x44d733",
+        "native_call": false,
+        "service_reply_supplied": false
+      },
+      "final_trace": [
+        {
+          "pc": "0x44f01c",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x44f01e",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44f020",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44f022",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d712",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d714",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d718",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71a",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71c",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71e",
+          "registers": [
+            "0x4af",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d720",
+          "registers": [
+            "0x4af",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d722",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d724",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d726",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d728",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72a",
+          "registers": [
+            "0x5000ecf4",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72c",
+          "registers": [
+            "0x5000ecf4",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72e",
+          "registers": [
+            "0x2a",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x4a032c",
+          "registers": [
+            "0x2a",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        }
+      ],
+      "instructions": 302,
+      "normal_controller_handle_produced": false,
+      "scope": "Declared free broker and acquisition arguments. Original graph/broker selects NRV_0 id4, then original allocation helper requests the first of two descriptors using key0x4af. No allocation/handle reply, normal controller, successful bundle acquisition or hardware result is supplied."
+    },
+    {
+      "declared_context": 5,
+      "declared_kind": 3,
+      "declared_broker_arguments": [
+        5,
+        3,
+        "0x100",
+        0
+      ],
+      "declared_stack_arguments": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        "0x510010d0",
+        0
+      ],
+      "original_entries": [
+        {
+          "pc": "0x4056f4",
+          "registers": [
+            "0x0",
+            "0x4",
+            "0x0",
+            "0x4"
+          ]
+        },
+        {
+          "pc": "0x44f004",
+          "registers": [
+            "0x117adf0",
+            "0x4af",
+            "0x1",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        }
+      ],
+      "unreplied_boundary": {
+        "pc": "0x4a032c",
+        "registers": [
+          "0x2a",
+          "0x5",
+          "0x5000ecf8",
+          "0x5000ed28"
+        ],
+        "input_word": "0x2",
+        "original_lr": "0x44d733",
+        "native_call": false,
+        "service_reply_supplied": false
+      },
+      "final_trace": [
+        {
+          "pc": "0x44f01c",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x44f01e",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44f020",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44f022",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d712",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d714",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d718",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71a",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71c",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71e",
+          "registers": [
+            "0x4af",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d720",
+          "registers": [
+            "0x4af",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d722",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d724",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d726",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d728",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72a",
+          "registers": [
+            "0x5000ecf4",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72c",
+          "registers": [
+            "0x5000ecf4",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72e",
+          "registers": [
+            "0x2a",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x4a032c",
+          "registers": [
+            "0x2a",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        }
+      ],
+      "instructions": 367,
+      "normal_controller_handle_produced": false,
+      "scope": "Declared free broker and acquisition arguments. Original graph/broker selects NRV_0 id4, then original allocation helper requests the first of two descriptors using key0x4af. No allocation/handle reply, normal controller, successful bundle acquisition or hardware result is supplied."
+    },
+    {
+      "declared_context": 7,
+      "declared_kind": 3,
+      "declared_broker_arguments": [
+        7,
+        3,
+        "0x100",
+        0
+      ],
+      "declared_stack_arguments": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        "0x510010d0",
+        0
+      ],
+      "original_entries": [
+        {
+          "pc": "0x4056f4",
+          "registers": [
+            "0x0",
+            "0x6",
+            "0x0",
+            "0x4"
+          ]
+        },
+        {
+          "pc": "0x44f004",
+          "registers": [
+            "0x117adf0",
+            "0x4af",
+            "0x1",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        }
+      ],
+      "unreplied_boundary": {
+        "pc": "0x4a032c",
+        "registers": [
+          "0x2a",
+          "0x5",
+          "0x5000ecf8",
+          "0x5000ed28"
+        ],
+        "input_word": "0x2",
+        "original_lr": "0x44d733",
+        "native_call": false,
+        "service_reply_supplied": false
+      },
+      "final_trace": [
+        {
+          "pc": "0x44f01c",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x44f01e",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44f020",
+          "registers": [
+            "0x5",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44f022",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d712",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d714",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d718",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71a",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71c",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d71e",
+          "registers": [
+            "0x4af",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d720",
+          "registers": [
+            "0x4af",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d722",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d724",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d726",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d728",
+          "registers": [
+            "0x2",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72a",
+          "registers": [
+            "0x5000ecf4",
+            "0x5",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72c",
+          "registers": [
+            "0x5000ecf4",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x44d72e",
+          "registers": [
+            "0x2a",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x4a032c",
+          "registers": [
+            "0x2a",
+            "0x5",
+            "0x5000ecf8",
+            "0x5000ed28"
+          ]
+        }
+      ],
+      "instructions": 401,
+      "normal_controller_handle_produced": false,
+      "scope": "Declared free broker and acquisition arguments. Original graph/broker selects NRV_0 id4, then original allocation helper requests the first of two descriptors using key0x4af. No allocation/handle reply, normal controller, successful bundle acquisition or hardware result is supplied."
+    }
+  ],
+  "source_spans": [
+    {
+      "va": "0x4056f4",
+      "bytes": 102,
+      "sha256": "d3a49ff945bbdf34623880bf3be68815419245995db90ebca3ea3e918f0e04a7"
+    },
+    {
+      "va": "0x44f004",
+      "bytes": 128,
+      "sha256": "0fa0027273ccc849dfe01cec7e0916771e716a74095a864942082d15ad64c0b6"
+    },
+    {
+      "va": "0x44d710",
+      "bytes": 34,
+      "sha256": "93d683e1ce1baa4722e4bd512a5b898a348c8523b2320d9595e9f76daf395435"
+    }
+  ],
+  "scope": "Three original NRV broker prefixes in RAM only, all stop at the same unreplied common handle operation. Does not establish normal runtime context selection, resource reply, controller construction, pixels, full donor chain or firmware admission."
+}

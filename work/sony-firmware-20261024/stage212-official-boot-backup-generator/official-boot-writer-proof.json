@@ -1,0 +1,613 @@
+{
+  "status": "STATIC_CURRENT_PACKAGE_BOOT_WRITER_CONTRACT",
+  "capture": "source-capture.json",
+  "ranges": [
+    {
+      "label": "bksb-main-options",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x400fd4",
+      "VA_end_exclusive": "0x4010b4",
+      "file_offset": 4052,
+      "bytes": 224,
+      "sha256": "3570498b6356ef7d24a1e3afde300619869a116063e59e20dc5139a2ee879569",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-main-options.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-main-options.txt",
+      "note": "-m writes output slot0 at frame+B0; -c slot1 at+B8, optional argument handling retained."
+    },
+    {
+      "label": "bksb-output-slot-record-selection",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x4011c0",
+      "VA_end_exclusive": "0x4011e4",
+      "file_offset": 4544,
+      "bytes": 36,
+      "sha256": "b92074d2484d200d38edc9fee3acab2a30028a2eeafb9c60b9dc2074661f6dfd",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-output-slot-record-selection.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-output-slot-record-selection.txt",
+      "note": "Loops output slots x24=0,1; skips null output paths."
+    },
+    {
+      "label": "bksb-selected-record-call",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x4012b4",
+      "VA_end_exclusive": "0x4012ec",
+      "file_offset": 4788,
+      "bytes": 56,
+      "sha256": "02b9ca9a89d92af23a0bca710957203d4dc28ac0587e86d70357f013006bb41d",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-selected-record-call.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-selected-record-call.txt",
+      "note": "Passes loaded Backup base and output index to402998; then Data_init4020E0."
+    },
+    {
+      "label": "bksb-record-selector",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x402998",
+      "VA_end_exclusive": "0x402a68",
+      "file_offset": 10648,
+      "bytes": 208,
+      "sha256": "a155f11a5875e2e9fd552dea2d2a2d6620e4649fb606f349b154290bdbcee238",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-record-selector.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-record-selector.txt",
+      "note": "index0 returns base; index1 advances by align_up(u32[18]+u32[1C],4096), checks next revision."
+    },
+    {
+      "label": "bksb-input-open-readonly",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x402d6c",
+      "VA_end_exclusive": "0x402e78",
+      "file_offset": 11628,
+      "bytes": 268,
+      "sha256": "c86da35d008c14e1e4c8e3e8d3876621c90df31b9d3e9e53ba1a5fc60372095b",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-input-open-readonly.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-input-open-readonly.txt",
+      "note": "Input open flags0, stat/allocate/read/close; this helper is static, not executed."
+    },
+    {
+      "label": "bksb-header-offset-sizing",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x4012ec",
+      "VA_end_exclusive": "0x4013e0",
+      "file_offset": 4844,
+      "bytes": 244,
+      "sha256": "aa073c897eb2a3c622674edd99838ffd4547031fd1b40613bc47b0b804cbc9fd",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-header-offset-sizing.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-header-offset-sizing.txt",
+      "note": "8+12*N first data offset; stores ID,offset,size; advances each size aligned4."
+    },
+    {
+      "label": "bksb-magic-table-write",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x4013e0",
+      "VA_end_exclusive": "0x401458",
+      "file_offset": 5088,
+      "bytes": 120,
+      "sha256": "e863e423b282cc46a7d2bfbe44c2537d6a106b31dc81b0f0d6af31b544293f70",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-magic-table-write.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-magic-table-write.txt",
+      "note": "fopen output; fwrite BKSB4, count4, N entries of12; checks counts."
+    },
+    {
+      "label": "bksb-data-offset-and-write",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x40146c",
+      "VA_end_exclusive": "0x401518",
+      "file_offset": 5228,
+      "bytes": 172,
+      "sha256": "a7fece3720e0073e8f6a66f29328d6b708688611b85eccf20836dc0605bb54e2",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-data-offset-and-write.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-data-offset-and-write.txt",
+      "note": "Read property, compare expected size and ftell, write property bytes."
+    },
+    {
+      "label": "bksb-data-padding",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x401560",
+      "VA_end_exclusive": "0x4015c4",
+      "file_offset": 5472,
+      "bytes": 100,
+      "sha256": "8064d089292c65b8f6c5fff3cdeab4834f217c5766ccd0f634faf8eb913bc5b0",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-data-padding.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-data-padding.txt",
+      "note": "Pads non4byte property lengths to4; not a full Backup or rescue package."
+    },
+    {
+      "label": "bksb-magic-constant",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "source_sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "VA_start": "0x40317b",
+      "VA_end_exclusive": "0x40317f",
+      "file_offset": 12667,
+      "bytes": 4,
+      "sha256": "6236591dbe292c374ac756fb738222138cb081ec9e10d7cbeac1a8e363159835",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-magic-constant.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-magic-constant.txt",
+      "note": "BKSB literal"
+    },
+    {
+      "label": "pformat-main-discard-write-return",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/pformat.elf",
+      "source_sha256": "3ce2a76f477e937369f8e5b6dde2cdcb838645b53492b9a184ee16bbed389e21",
+      "VA_start": "0x4093c4",
+      "VA_end_exclusive": "0x4093dc",
+      "file_offset": 37828,
+      "bytes": 24,
+      "sha256": "eb8c9719b9308b335e414199f96845cd7668538451d46481469e504b54966951",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-main-discard-write-return.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-main-discard-write-return.txt",
+      "note": "Sets w19=0; calls409D2C; branches4090DC without transferring helper return to w19."
+    },
+    {
+      "label": "pformat-main-return",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/pformat.elf",
+      "source_sha256": "3ce2a76f477e937369f8e5b6dde2cdcb838645b53492b9a184ee16bbed389e21",
+      "VA_start": "0x4090dc",
+      "VA_end_exclusive": "0x4090fc",
+      "file_offset": 37084,
+      "bytes": 32,
+      "sha256": "e771a4624ae546c64d23980c73e17654b1051723b691739266408962e935d1c4",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-main-return.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-main-return.txt",
+      "note": "Restores registers then returns w19; conditional selected write-call path discards helper status."
+    },
+    {
+      "label": "pformat-open-map-boot-device",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/pformat.elf",
+      "source_sha256": "3ce2a76f477e937369f8e5b6dde2cdcb838645b53492b9a184ee16bbed389e21",
+      "VA_start": "0x409d2c",
+      "VA_end_exclusive": "0x409dd8",
+      "file_offset": 40236,
+      "bytes": 172,
+      "sha256": "b1e483982860b1220958e8446c6a5cfabb0a7378dd6b3a2fa5e9b4f9436cb92f",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-open-map-boot-device.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-open-map-boot-device.txt",
+      "note": "open caller device flags0x101002; mmap length0x200000,prot3,flags1,offset0; returned errors distinct."
+    },
+    {
+      "label": "pformat-header-struct-writes",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/pformat.elf",
+      "source_sha256": "3ce2a76f477e937369f8e5b6dde2cdcb838645b53492b9a184ee16bbed389e21",
+      "VA_start": "0x409df8",
+      "VA_end_exclusive": "0x409e88",
+      "file_offset": 40440,
+      "bytes": 144,
+      "sha256": "06e95b0e4a065a5f5b4e50672e20cd1236a0df2fcca47438e055a57958188df2",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-header-struct-writes.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-header-struct-writes.txt",
+      "note": "Writes header/config-derived words to shared writable mapping; not a read-only probe."
+    },
+    {
+      "label": "pformat-component-copy",
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/pformat.elf",
+      "source_sha256": "3ce2a76f477e937369f8e5b6dde2cdcb838645b53492b9a184ee16bbed389e21",
+      "VA_start": "0x40a108",
+      "VA_end_exclusive": "0x40a168",
+      "file_offset": 41224,
+      "bytes": 96,
+      "sha256": "40b333123ec0dfb3708b670944e2c6c2f8be7a6b923fd6217518858953671cbd",
+      "raw": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-component-copy.bin",
+      "disassembly": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-component-copy.txt",
+      "note": "Selected component branch copies into mapping or calls encryption helper; config-derived sectors; readback not shown."
+    }
+  ],
+  "script_lines": [
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 9,
+      "text": "LOADER_TAR=loader_emmc.tar"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 20,
+      "text": "WRITE_TRAININGDATA_FLAG=$LOADER_EXTRACT_PATH/write_trainingdata"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 33,
+      "text": "    mount -t vfat $P2_DEV $P2_MNT_DIR $VFAT_MOUNT_OPTION_SYNC"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 34,
+      "text": "    cp /setting/Backup.bin $LOADER_EXTRACT_PATH/"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 35,
+      "text": "    umount $P2_MNT_DIR"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 36,
+      "text": "    bksb.elf $LOADER_EXTRACT_PATH/Backup.bin $LOADER_EXTRACT_PATH/LdrBkupList.txt -m $LOADER_EXTRACT_PATH/LdrBkup.bin"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 50,
+      "text": "    $PFORMAT_COMMAND /dev/nflashaB0"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 51,
+      "text": "    local retval=$?"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 66,
+      "text": "      ud_get_mem2file.elf ${DDRTRAIN_BIN} 0x403e21100 0x800"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "line": 73,
+      "text": "      dd if=${DDRTRAIN_BIN} of=/dev/nflashaB0 bs=512 count=4 seek=$SEC"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 7,
+      "text": "LOADER_TAR=loader_nor.tar"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 16,
+      "text": "PFORMAT_COMMAND=ud_nor_pformat.elf"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 19,
+      "text": "SPICOMBOOT_COMMAND=ud_spicom_boot.elf"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 23,
+      "text": "LSINUM_MIRA_CETUS=3"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 24,
+      "text": "CPFIRMUP_COMMAND=ud_cp_firmup.elf"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 49,
+      "text": "    mount -t vfat /dev/nflasha8 /cp $VFAT_MOUNT_OPTION_SYNC"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 52,
+      "text": "    cp /cp/loader_spi.bin $LOADER_EXTRACT_PATH/"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 55,
+      "text": "    umount /cp"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 57,
+      "text": "    if [ -f /tmp_updater/updater/update/backup/*/*/*.bin ]; then"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 59,
+      "text": "        cp /tmp_updater/updater/update/backup/*/*/*.bin $LOADER_EXTRACT_PATH/Backup.bin"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 62,
+      "text": "        mount -t vfat $P2_DEV $P2_MNT_DIR $VFAT_MOUNT_OPTION_SYNC"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 63,
+      "text": "        cp /setting/Backup.bin $LOADER_EXTRACT_PATH/"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 64,
+      "text": "        umount $P2_MNT_DIR"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 66,
+      "text": "    bksb.elf $LOADER_EXTRACT_PATH/Backup.bin $LOADER_EXTRACT_PATH/LdrBkupList.txt -c $LOADER_EXTRACT_PATH/LdrBkup.bin"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 72,
+      "text": "    echo \"Success make LdrBkup.bin\""
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 95,
+      "text": "    mount -t vfat /dev/nflasha8 /cp $VFAT_MOUNT_OPTION_SYNC"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 96,
+      "text": "    cp ./nor_ldr.img /cp"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 97,
+      "text": "    umount /cp"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 135,
+      "text": "        $CPFIRMUP_COMMAND -i"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 136,
+      "text": "        $CPFIRMUP_COMMAND -m $OSPI_MODE_OCTAL96"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 137,
+      "text": "        $CPFIRMUP_COMMAND -d 0"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 140,
+      "text": "        $CPFIRMUP_COMMAND -i"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 141,
+      "text": "        $CPFIRMUP_COMMAND -m $OSPI_MODE_SPI"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 149,
+      "text": "    $CPFIRMUP_COMMAND $3 $1 -a $2"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 168,
+      "text": "    $CPFIRMUP_COMMAND -e $5 -a $_SECADD -s $_SECSIZE"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 169,
+      "text": "    $CPFIRMUP_COMMAND $4 $1 -a $_ADD"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 181,
+      "text": "    $SPICOM_COMMAND d 0xfe040000 $LOADER_EXTRACT_PATH/nor_ldr.img"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 182,
+      "text": "    ENTRY=`cat pformat_config.txt | sed  -n '/loader_nor.bin/,/load/p' | sed -e 's/ //g' | sed -n '/load=/p' | sed -e 's/load=//g'`"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 183,
+      "text": "    $SPICOM_COMMAND d $ENTRY $LOADER_EXTRACT_PATH/loader_spi.bin"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 184,
+      "text": "    echo \"spi loader entry:$ENTRY\""
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 185,
+      "text": "    $SPICOM_COMMAND e $ENTRY"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 188,
+      "text": "    $CPFIRMUP_COMMAND -l"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 197,
+      "text": "    $CPFIRMUP_COMMAND -c"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 206,
+      "text": "        $CPFIRMUP_COMMAND -u /tmp_updater/updater/bodyfs/cp/tomco.txt -a 0x100000"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 207,
+      "text": "        $CPFIRMUP_COMMAND -u /tmp_updater/updater/bodyfs/cp/udtrcp.bin -a 0x108000"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 208,
+      "text": "        $CPFIRMUP_COMMAND -u $LOADER_EXTRACT_PATH//Backup.bin -a 0x4000000"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 210,
+      "text": "        $CPFIRMUP_COMMAND -j"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 214,
+      "text": "        $CPFIRMUP_COMMAND -t /tmp_updater/ddrtraining.dat -a 0x3e210fc -s $DDRT_LEN"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 224,
+      "text": "    $CPFIRMUP_COMMAND -i"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 236,
+      "text": "        $CPFIRMUP_COMMAND -m $OSPI_MODE_SPI"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 238,
+      "text": "        dd if=./nor_ldr.img of=./infomisc.dat bs=512 count=4"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 248,
+      "text": "        ADD=`get_start_address_from_pformat LdrBkup.bin`"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 249,
+      "text": "        OPT=`get_enc_opt_from_pformat LdrBkup.bin`"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 250,
+      "text": "        write_flash ./LdrBkup.bin $ADD $OPT"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 294,
+      "text": "if [ $LSINUM -eq $LSINUM_MIRA_CETUS ] ; then"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 296,
+      "text": "        BOOTEXT=$?"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 301,
+      "text": "\techo \"C_BOOT_EXT : $BOOTEXT\""
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 302,
+      "text": "\tif [ $BOOTEXT -eq $BOOT_NOR ] ; then"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 304,
+      "text": "\t\tBOOTDEVICE=$?"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 305,
+      "text": "\t\techo \"BOOT_DEVICE : $BOOTDEVICE\""
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "line": 306,
+      "text": "\t\tif [ $BOOTDEVICE -ne $MP_EMMC_CP_NONE ] ; then"
+    }
+  ],
+  "list_capture": {
+    "path": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/LdrBkupList.txt",
+    "bytes": 650,
+    "sha256": "ae537183ecce42fbe9589c01f7ee4a19929fa2fc1cb09e48eda9ef2ab6f5dd88",
+    "IDs": [
+      "0x510015",
+      "0x510000",
+      "0x510006",
+      "0x510025",
+      "0x510001",
+      "0x510024",
+      "0x51002f",
+      "0x51001c",
+      "0x510034",
+      "0x51002c",
+      "0x92003f",
+      "0x92004a",
+      "0x92004d",
+      "0x92004e",
+      "0x92005d",
+      "0xf900d4",
+      "0xf90148",
+      "0xf900b1",
+      "0xf9013c",
+      "0xf9006d",
+      "0xf9010d",
+      "0xf90385",
+      "0xf90386",
+      "0xf90387",
+      "0xf90388",
+      "0xf90449",
+      "0xf9044a",
+      "0xfa0033",
+      "0xfa0068",
+      "0xfa007f",
+      "0xfa0096",
+      "0xfa0006",
+      "0xfa003b",
+      "0xfa0024",
+      "0xfa0059",
+      "0x510038",
+      "0x51002d",
+      "0xf909bd",
+      "0xf909be",
+      "0xf909bf",
+      "0xf909c0",
+      "0xf909c1",
+      "0xf909c2",
+      "0xf909c3",
+      "0xf909c4",
+      "0xf909cf",
+      "0xf909d0",
+      "0xf909d1",
+      "0xf909d2",
+      "0xfa016d",
+      "0xfa016e",
+      "0xf90a9f",
+      "0xf90aa0",
+      "0xf909d5",
+      "0xf909d6",
+      "0xf909ad",
+      "0xf909ae",
+      "0xf90493",
+      "0xf90492",
+      "0x5d000b",
+      "0x5d000c",
+      "0x5d0011",
+      "0x5d0012",
+      "0xf90ad1",
+      "0xf90ad2"
+    ],
+    "config_path": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/pformat_config.txt",
+    "config_sha256": "21cd5b29dd165c322f5b00bb057802c377ff94af15f95881e150a32130302ece",
+    "role": "current package CP NOR list; AP loader_emmc list not acquired"
+  },
+  "findings": {
+    "m_selects_record": 0,
+    "c_selects_record": 1,
+    "second_record_advance": "align_up(data_offset@0x18 + data_bytes@0x1c,4096)",
+    "BKSB_header": "magic BKSB(4), little-endian count(4), count*(ID,offset,size) each12, data padded4",
+    "BKSB_is_subset_not_full_same_body_backup": true,
+    "AP_script_archive": "loader_emmc.tar",
+    "AP_script_device": "/dev/nflashaB0",
+    "AP_script_Backup_source": "/setting/Backup.bin from mounted P2; -m",
+    "AP_formatter_selected_path_maps_writable_shared_boot_window_bytes": 2097152,
+    "AP_formatter_selected_main_path_discards_writer_return": true,
+    "CP_script_archive": "loader_nor.tar",
+    "CP_script_Backup_option": "-c",
+    "CP_script_can_use_package_Backup_instead_of_installed_setting": true,
+    "CP_script_uses_SPI_then_CP_updater_for_NOR_route": true,
+    "current_NOR_is_not_independent_AP_boot_proof": true,
+    "actual_current_body_boot0_p1_or_healthy_Backup_available": false,
+    "AP_loader_emmc_archive_or_its_property_list_acquired": false,
+    "independent_AP_entry_or_same_body_restore_tested": false
+  },
+  "limits": [
+    "Static selected script and instruction paths; no actual boot selection or hardware population attestation.",
+    "Writable shared mapping length is not a claim every byte is written.",
+    "No AP loader archive/config: exact AP component footprint not inferred from CP config.",
+    "65-ID comparison uses CP list on public defaults; it does not invent an AP list or same-body BKSB.",
+    "A7IV public AP image and FX3 CP component share code patterns, not proof of interchangeable images."
+  ],
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "persistent_write_release": false
+}

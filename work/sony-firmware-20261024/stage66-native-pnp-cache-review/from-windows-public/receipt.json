@@ -1,0 +1,329 @@
+{
+  "schema": "fx3-native-pnp-public-receipt/1",
+  "task_state": "CACHED_ONLY_COMPLETE_NO_CURRENT_CONNECTED_CANDIDATE",
+  "task_tag": "FX3_NATIVE_PNP_20261026T160454Z",
+  "public_path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-native-pnp-20261026T160454Z\\public",
+  "private_path_local_only": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-native-pnp-20261026T160454Z\\private",
+  "preflight": {
+    "target": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-native-pnp-20261026T160454Z",
+    "created": true,
+    "system_volume": "C:",
+    "filesystem": "NTFS",
+    "ordinary_directory": true,
+    "ancestors_without_reparse": [
+      "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs",
+      "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2",
+      "C:\\Users\\owo\\Documents\\Codex\\2026-10-16",
+      "C:\\Users\\owo\\Documents\\Codex",
+      "C:\\Users\\owo\\Documents",
+      "C:\\Users\\owo",
+      "C:\\Users",
+      "C:\\"
+    ],
+    "private": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-native-pnp-20261026T160454Z\\private",
+    "public": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-native-pnp-20261026T160454Z\\public",
+    "captured_utc": "2026-10-26T16:07:15.9358259Z"
+  },
+  "documentation_url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/pnputil-command-syntax",
+  "commands": [
+    {
+      "id": "01-execution-policy",
+      "command_public": "Get-ExecutionPolicy -List",
+      "started_utc": "2026-10-26T16:08:26.765Z",
+      "finished_utc": "2026-10-26T16:08:27.041Z",
+      "exit_code": 0,
+      "stdout_private": "private/01-execution-policy.stdout.txt",
+      "stderr_private": "private/01-execution-policy.stderr.txt"
+    },
+    {
+      "id": "02-pnputil-help",
+      "command_public": "C:/Windows/System32/pnputil.exe /?",
+      "started_utc": "2026-10-26T16:08:37.464Z",
+      "finished_utc": "2026-10-26T16:08:37.690Z",
+      "exit_code": 0,
+      "stdout_private": "private/02-pnputil-help.stdout.txt",
+      "stderr_private": "private/02-pnputil-help.stderr.txt"
+    },
+    {
+      "id": "03-fx3-usb",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /deviceid \"USB\\VID_054C&PID_0DA1\" /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:10:03.773Z",
+      "finished_utc": "2026-10-26T16:10:04.019Z",
+      "exit_code": 0,
+      "stdout_private": "private/03-fx3-usb.stdout.txt",
+      "stderr_private": "private/03-fx3-usb.stderr.txt"
+    },
+    {
+      "id": "04-fx3-tree",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devicetree <NODE_SHA256:1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd> /services /stack /drivers /interfaces",
+      "started_utc": "2026-10-26T16:14:49.133Z",
+      "finished_utc": "2026-10-26T16:14:50.694Z",
+      "exit_code": 0,
+      "stdout_private": "private/04-fx3-tree.stdout.txt",
+      "stderr_private": "private/04-fx3-tree.stderr.txt"
+    },
+    {
+      "id": "05-fx3-disk1",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /instanceid <NODE_SHA256:c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172> /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:17:34.022Z",
+      "finished_utc": "2026-10-26T16:17:34.287Z",
+      "exit_code": 0,
+      "stdout_private": "private/05-fx3-disk1.stdout.txt",
+      "stderr_private": "private/05-fx3-disk1.stderr.txt"
+    },
+    {
+      "id": "06-fx3-disk2",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /instanceid <NODE_SHA256:ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b> /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:17:41.495Z",
+      "finished_utc": "2026-10-26T16:17:41.736Z",
+      "exit_code": 0,
+      "stdout_private": "private/06-fx3-disk2.stdout.txt",
+      "stderr_private": "private/06-fx3-disk2.stderr.txt"
+    },
+    {
+      "id": "07-fx3-disk3",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /instanceid <NODE_SHA256:4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c> /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:17:49.217Z",
+      "finished_utc": "2026-10-26T16:17:49.467Z",
+      "exit_code": 0,
+      "stdout_private": "private/07-fx3-disk3.stdout.txt",
+      "stderr_private": "private/07-fx3-disk3.stderr.txt"
+    }
+  ],
+  "observations": {
+    "schema": "fx3-native-pnp-sanitized-observations/1",
+    "scope": "This invocation's PnPUtil cached metadata only",
+    "raw_output_decoding": "Windows code page 936, raw files left unchanged",
+    "hash_algorithm": "SHA256(UTF8(instance_id.ToUpperInvariant()))",
+    "usb_root": {
+      "node_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "vid": "054C",
+      "pid": "0DA1",
+      "model": "ILME-FX3",
+      "matched_usb_root_count": 1,
+      "status": "Disconnected",
+      "signer_name": "Microsoft Windows",
+      "driver_status": "Best Ranked / Installed",
+      "properties": {
+        "DEVPKEY_Device_DeviceDesc": "USB 大容量存储设备",
+        "DEVPKEY_Device_Service": "USBSTOR",
+        "DEVPKEY_Device_Class": "USB",
+        "DEVPKEY_Device_ClassGuid": "{36fc9e60-c465-11cf-8056-444553540000}",
+        "DEVPKEY_Device_ConfigFlags": "0x00000000 (0)",
+        "DEVPKEY_Device_IsPresent": "FALSE",
+        "DEVPKEY_Device_HasProblem": "FALSE",
+        "DEVPKEY_Device_ProblemCode": "UNKNOWN",
+        "DEVPKEY_Device_DevNodeStatus": "UNKNOWN",
+        "DEVPKEY_Device_BusReportedDeviceDesc": "ILME-FX3",
+        "DEVPKEY_Device_DriverDate": "21/6/2006 0:00:00",
+        "DEVPKEY_Device_DriverVersion": "10.0.26100.9444",
+        "DEVPKEY_Device_DriverDesc": "USB Mass Storage Device",
+        "DEVPKEY_Device_DriverInfPath": "usbstor.inf",
+        "DEVPKEY_Device_DriverInfSection": "USBSTOR_BULK.NT",
+        "DEVPKEY_Device_DriverProvider": "Microsoft"
+      },
+      "disk_interface_guid_observed": false
+    },
+    "disk_nodes": [
+      {
+        "node_sha256": "c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172",
+        "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+        "parent_matches_fx3_usb_root": true,
+        "status": "Disconnected",
+        "driver_signer": "Microsoft Windows",
+        "driver_status": "Best Ranked / Installed",
+        "disk_interface_guid_observed": false,
+        "interface_statuses": [],
+        "interface_field_labels": [],
+        "properties": {
+          "DEVPKEY_Device_DeviceDesc": "磁盘驱动器",
+          "DEVPKEY_Device_Service": "disk",
+          "DEVPKEY_Device_Class": "DiskDrive",
+          "DEVPKEY_Device_ClassGuid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+          "DEVPKEY_Device_ConfigFlags": "0x00000000 (0)",
+          "DEVPKEY_Device_IsPresent": "FALSE",
+          "DEVPKEY_Device_HasProblem": "FALSE",
+          "DEVPKEY_Device_ProblemCode": "UNKNOWN",
+          "DEVPKEY_Device_DevNodeStatus": "UNKNOWN",
+          "DEVPKEY_Device_BusReportedDeviceDesc": "Sony DSC USB Device",
+          "DEVPKEY_Device_DriverDate": "21/6/2006 0:00:00",
+          "DEVPKEY_Device_DriverVersion": "10.0.26100.9711",
+          "DEVPKEY_Device_DriverDesc": "Disk drive",
+          "DEVPKEY_Device_DriverInfPath": "disk.inf",
+          "DEVPKEY_Device_DriverInfSection": "disk_install.NT",
+          "DEVPKEY_Device_DriverProvider": "Microsoft"
+        }
+      },
+      {
+        "node_sha256": "ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b",
+        "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+        "parent_matches_fx3_usb_root": true,
+        "status": "Disconnected",
+        "driver_signer": "Microsoft Windows",
+        "driver_status": "Best Ranked / Installed",
+        "disk_interface_guid_observed": false,
+        "interface_statuses": [],
+        "interface_field_labels": [],
+        "properties": {
+          "DEVPKEY_Device_DeviceDesc": "磁盘驱动器",
+          "DEVPKEY_Device_Service": "disk",
+          "DEVPKEY_Device_Class": "DiskDrive",
+          "DEVPKEY_Device_ClassGuid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+          "DEVPKEY_Device_ConfigFlags": "0x00000000 (0)",
+          "DEVPKEY_Device_IsPresent": "FALSE",
+          "DEVPKEY_Device_HasProblem": "FALSE",
+          "DEVPKEY_Device_ProblemCode": "UNKNOWN",
+          "DEVPKEY_Device_DevNodeStatus": "UNKNOWN",
+          "DEVPKEY_Device_BusReportedDeviceDesc": "Sony DSC USB Device",
+          "DEVPKEY_Device_DriverDate": "21/6/2006 0:00:00",
+          "DEVPKEY_Device_DriverVersion": "10.0.26100.9711",
+          "DEVPKEY_Device_DriverDesc": "Disk drive",
+          "DEVPKEY_Device_DriverInfPath": "disk.inf",
+          "DEVPKEY_Device_DriverInfSection": "disk_install.NT",
+          "DEVPKEY_Device_DriverProvider": "Microsoft"
+        }
+      },
+      {
+        "node_sha256": "4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c",
+        "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+        "parent_matches_fx3_usb_root": true,
+        "status": "Disconnected",
+        "driver_signer": "Microsoft Windows",
+        "driver_status": "Best Ranked / Installed",
+        "disk_interface_guid_observed": false,
+        "interface_statuses": [],
+        "interface_field_labels": [],
+        "properties": {
+          "DEVPKEY_Device_DeviceDesc": "磁盘驱动器",
+          "DEVPKEY_Device_Service": "disk",
+          "DEVPKEY_Device_Class": "DiskDrive",
+          "DEVPKEY_Device_ClassGuid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+          "DEVPKEY_Device_ConfigFlags": "0x00000000 (0)",
+          "DEVPKEY_Device_IsPresent": "FALSE",
+          "DEVPKEY_Device_HasProblem": "FALSE",
+          "DEVPKEY_Device_ProblemCode": "UNKNOWN",
+          "DEVPKEY_Device_DevNodeStatus": "UNKNOWN",
+          "DEVPKEY_Device_BusReportedDeviceDesc": "Sony DSC USB Device",
+          "DEVPKEY_Device_DriverDate": "21/6/2006 0:00:00",
+          "DEVPKEY_Device_DriverVersion": "10.0.26100.9711",
+          "DEVPKEY_Device_DriverDesc": "Disk drive",
+          "DEVPKEY_Device_DriverInfPath": "disk.inf",
+          "DEVPKEY_Device_DriverInfSection": "disk_install.NT",
+          "DEVPKEY_Device_DriverProvider": "Microsoft"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+        "child_sha256": "c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172",
+        "exact_parent_hash_matches_fx3": true,
+        "evidence": "Current /enum-devicetree output plus child's DEVPKEY_Device_Parent"
+      },
+      {
+        "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+        "child_sha256": "ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b",
+        "exact_parent_hash_matches_fx3": true,
+        "evidence": "Current /enum-devicetree output plus child's DEVPKEY_Device_Parent"
+      },
+      {
+        "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+        "child_sha256": "4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c",
+        "exact_parent_hash_matches_fx3": true,
+        "evidence": "Current /enum-devicetree output plus child's DEVPKEY_Device_Parent"
+      }
+    ],
+    "interfaces": [
+      {
+        "node_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+        "interface_class_guid": "a5dcbf10-6530-11d2-901f-00c04fb951ed",
+        "source_line": 7,
+        "state_tokens": [
+          "DISABLED"
+        ],
+        "enabled_state": "DISABLED",
+        "raw_path_exported": false
+      },
+      {
+        "node_sha256": "c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172",
+        "interface_class_guid": "53f56307-b6bf-11d0-94f2-00a0c91efb8b",
+        "source_line": 13,
+        "state_tokens": [
+          "DISABLED"
+        ],
+        "enabled_state": "DISABLED",
+        "raw_path_exported": false
+      },
+      {
+        "node_sha256": "ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b",
+        "interface_class_guid": "53f56307-b6bf-11d0-94f2-00a0c91efb8b",
+        "source_line": 19,
+        "state_tokens": [
+          "DISABLED"
+        ],
+        "enabled_state": "DISABLED",
+        "raw_path_exported": false
+      },
+      {
+        "node_sha256": "4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c",
+        "interface_class_guid": "53f56307-b6bf-11d0-94f2-00a0c91efb8b",
+        "source_line": 25,
+        "state_tokens": [
+          "DISABLED"
+        ],
+        "enabled_state": "DISABLED",
+        "raw_path_exported": false
+      }
+    ],
+    "traced_node_count": 4,
+    "max_authorized_node_count": 16,
+    "counts": {
+      "matched_usb_roots": 1,
+      "cached_disk_candidates": 3,
+      "current_connected_usb_roots": 0,
+      "current_connected_disk_candidates": 0
+    },
+    "binding_status": "MISSING_CURRENT_CONNECTED_CANDIDATE",
+    "cached_candidate_cardinality": "MULTIPLE_3",
+    "node_enable_status": "UNKNOWN: no current devnode status supplied",
+    "cached_has_problem": "FALSE for all four nodes",
+    "problem_codes": "UNKNOWN",
+    "camera_firmware_version": "UNKNOWN: not queried",
+    "hardware_validation": "NOT_PERFORMED"
+  },
+  "privacy": {
+    "raw_identifiers_only_in_private": true,
+    "public_instance_identifiers_are_uppercase_utf8_sha256": true,
+    "private_files_not_uploaded": true
+  },
+  "boundaries": {
+    "old_ps1_executed": false,
+    "new_probe_generated_or_run": false,
+    "pnp_scan_or_refresh": false,
+    "device_interface_handles_opened": 0,
+    "camera_commands": 0,
+    "card_or_media_reads": 0,
+    "authentication": false,
+    "mode_change": false,
+    "driver_or_permission_change": false,
+    "module_upload": false,
+    "WBI_or_flash": false,
+    "elevation_requested": false,
+    "execution_policy_changed": false
+  },
+  "scope_limitations": [
+    "Disconnected cached nodes are historical metadata, not current attached devices",
+    "Disk interface GUID and disabled state were reported in device-tree cache; per-node /enum-devices did not list a currently enabled interface",
+    "FALSE HasProblem does not replace missing problem codes or current devnode enable state",
+    "Reported driver signer comes from PnPUtil cached driver metadata"
+  ],
+  "automatic_retries": 0,
+  "private_file_manifest": "private-file-sha256.json",
+  "protected_old_materials": "protected-files-before.json",
+  "report_generation_error": {
+    "time_recorded_utc": "2026-10-26T16:23:30.624Z",
+    "message": "CreateProcess rejected the oversized host report-writing command: filename or extension too long (os error 206). No process was started.",
+    "resolution": "Public data files written using the filesystem editing tool. No PnPUtil query repeated.",
+    "native_query_exit_codes_affected": false
+  }
+}

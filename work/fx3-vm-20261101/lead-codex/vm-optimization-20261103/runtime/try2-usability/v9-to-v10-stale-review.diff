@@ -1,0 +1,96 @@
+--- run_trial_v9_power_observe.py
++++ run_trial_v10_stale_review.py
+@@ -39,6 +39,35 @@
+ def digest(path):
+     with path.open('rb') as f:
+         return hashlib.file_digest(f, 'sha256').hexdigest()
++
++
++def classify_internal_review(request, observed, frame, run_id, next_step,
++                             current_png_sha, observed_png_sha, rejected):
++    """Reject a stale visual decision without consuming a guest input step."""
++    if (request.get('mode') != 'internal-hoststep-v1' or request.get('key') not in KEYS
++            or request.get('hold_ms') != 100
++            or not isinstance(request.get('observed_page'), str) or not request['observed_page'].strip()
++            or not isinstance(request.get('reason'), str) or not request['reason'].strip()):
++        raise RuntimeError('内部逐键请求格式、白名单或100ms合同无效')
++    if request.get('run_id') != run_id:
++        return 'stale', 'wrong_run_id'
++    if request.get('step') != next_step:
++        return 'stale', 'step_out_of_sequence'
++    identity = (next_step, request.get('observed_sequence'), request.get('observed_png_sha256'))
++    if identity in rejected:
++        return 'stale', 'previously_rejected_visual_identity'
++    if observed is None:
++        return 'stale', 'observed_frame_missing'
++    if (request.get('observed_sequence') != observed.get('sequence')
++            or request.get('observed_png_sha256') != observed.get('PNG_sha256')):
++        return 'stale', 'observed_frame_replaced'
++    if observed_png_sha != observed.get('PNG_sha256'):
++        raise RuntimeError('已审阅PNG的文件字节与记录哈希不符')
++    if (frame is None or observed['sequence'] > frame['sequence']
++            or observed['PNG_sha256'] != frame['PNG_sha256']
++            or current_png_sha != frame['PNG_sha256']):
++        return 'stale', 'current_committed_frame_changed'
++    return 'accept', None
+ 
+ 
+ def input_check(item):
+@@ -324,6 +353,7 @@
+             last_screen_count = 0
+             last_screen_observed_at = guest_start
+             host_step = 0
++            rejected_visual_identities = set()
+             current_command = None
+             up_seen = {}
+             last_ring_poll = 0
+@@ -468,21 +498,34 @@
+                         frame = ring_reader.current_record
+                         observed_path = run/('internal-observe-%02d.json' % (host_step+1))
+                         observed = json.loads(observed_path.read_text()) if observed_path.is_file() else None
+-                        if (request.get('mode') != 'internal-hoststep-v1' or request.get('step') != host_step+1
+-                                or request.get('key') not in KEYS or request.get('hold_ms') != 100
+-                                or not isinstance(request.get('observed_page'), str) or not request['observed_page'].strip()
+-                                or not isinstance(request.get('reason'), str) or not request['reason'].strip()
+-                                or observed is None or request.get('observed_sequence') != observed['sequence']
+-                                or observed['sequence'] > frame['sequence']
+-                                or request.get('observed_png_sha256') != observed['PNG_sha256']
+-                                or observed['PNG_sha256'] != frame['PNG_sha256']
+-                                or digest(run/'trial-frame.png') != frame['PNG_sha256']):
+-                            raise RuntimeError('内部逐键请求与当前已提交PNG/顺序/白名单不符')
+-                        request_path.rename(run/('internal-step-%02d-request.json' % (host_step+1)))
+-                        proposed = {'key': request['key'], 'label': KEYS[request['key']],
+-                                    'observed_frame': dict(observed), 'observed_page': request['observed_page'],
+-                                    'reason': request['reason'], 'requested_monotonic': time.monotonic(),
+-                                    'source': 'internal_hoststep_file'}
++                        reviewed_png = run/('internal-observe-%02d.png' % (host_step+1))
++                        status, stale_reason = classify_internal_review(
++                            request, observed, frame, run.name, host_step+1,
++                            digest(run/'trial-frame.png'), digest(reviewed_png) if reviewed_png.is_file() else None,
++                            rejected_visual_identities)
++                        if status == 'stale':
++                            rejected_visual_identities.add((request.get('step'), request.get('observed_sequence'),
++                                                            request.get('observed_png_sha256')))
++                            suffix = uuid.uuid4().hex[:8]
++                            stale_base = 'internal-stale-%02d-%s' % (host_step+1, suffix)
++                            request_path.rename(run/(stale_base+'-request.json'))
++                            shutil.copy2(run/'trial-frame.png', run/(stale_base+'-current.png'))
++                            (run/(stale_base+'-current.json')).write_text(json.dumps(frame, ensure_ascii=False, indent=2)+'\n')
++                            (run/(stale_base+'.json')).write_text(json.dumps({
++                                'status':'stale_no_guest_write', 'reason':stale_reason,
++                                'run_id':run.name, 'next_step_unchanged':host_step+1,
++                                'sent_steps_unchanged':host_step,
++                                'current_png':str(run/(stale_base+'-current.png')),
++                                'current_png_sha256':frame['PNG_sha256'] if frame else None,
++                                'new_human_review_required':True,
++                                'old_request_never_auto_retried':True}, ensure_ascii=False, indent=2)+'\n')
++                            trial.update(message='看图后画面已变化；旧请求未发键，请查看新的PNG再决定。')
++                        else:
++                            request_path.rename(run/('internal-step-%02d-request.json' % (host_step+1)))
++                            proposed = {'key': request['key'], 'label': KEYS[request['key']],
++                                        'observed_frame': dict(observed), 'observed_page': request['observed_page'],
++                                        'reason': request['reason'], 'requested_monotonic': time.monotonic(),
++                                        'source': 'internal_hoststep_file'}
+                 if proposed is not None and not trial.stop.is_set():
+                     # Inspect ALL bytes appended since this iteration began before any guest write.
+                     log_monitor.poll()

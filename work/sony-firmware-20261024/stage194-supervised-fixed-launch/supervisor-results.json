@@ -1,0 +1,101 @@
+{
+  "status": "PASS_FIXED_LAUNCH_SUPERVISOR",
+  "tests_run": 16,
+  "results": [
+    {
+      "name": "full_launch",
+      "status": "PASS",
+      "seconds": 0.31790120800724253
+    },
+    {
+      "name": "relay_not_owner",
+      "status": "PASS",
+      "seconds": 0.5769300829852
+    },
+    {
+      "name": "observation_timeout_same_pending_owner",
+      "status": "PASS",
+      "seconds": 0.5505685420357622
+    },
+    {
+      "name": "retained_and_cross_instance_fence",
+      "status": "PASS",
+      "seconds": 0.628635499975644
+    },
+    {
+      "name": "install_digest_failure_and_forged_relay",
+      "status": "PASS",
+      "seconds": 0.17294399999082088
+    },
+    {
+      "name": "wrong_expected_helper_digest",
+      "status": "PASS",
+      "seconds": 0.29027154203504324
+    },
+    {
+      "name": "source_hazards",
+      "status": "PASS",
+      "seconds": 0.003079958027228713
+    },
+    {
+      "name": "one_attempt_wrapper",
+      "status": "PASS",
+      "seconds": 0.3222314160084352
+    },
+    {
+      "name": "native_render_only",
+      "status": "PASS",
+      "seconds": 0.008737542026210576
+    },
+    {
+      "name": "recorded_file_not_live_authentication",
+      "status": "PASS",
+      "seconds": 0.3083517079940066
+    },
+    {
+      "name": "public_report_truncation_while_claim_pending",
+      "status": "PASS",
+      "seconds": 0.5017646250198595
+    },
+    {
+      "name": "hello_ack_timeout_no_owner",
+      "status": "PASS",
+      "seconds": 1.3025467499974184
+    },
+    {
+      "name": "stop_between_hello_and_ack",
+      "status": "PASS",
+      "seconds": 0.29398041701642796
+    },
+    {
+      "name": "corrupted_self_image_hello_no_ack",
+      "status": "PASS",
+      "seconds": 1.3263259580126032
+    },
+    {
+      "name": "hello_identity_and_deferred_root_hash_models",
+      "status": "PASS",
+      "seconds": 0.00024987501092255116
+    },
+    {
+      "name": "quoted_shell_paths",
+      "status": "PASS",
+      "seconds": 0.36731920804595575
+    }
+  ],
+  "native_helper_executed": false,
+  "root_or_administrator_operations": 0,
+  "real_device_operations": 0,
+  "root_cross_UID_tested": false,
+  "root0500_deferred_digest_is_policy_model_only": true,
+  "fake_vendor_START_only_in_marked_nonIOKit_fixture": true,
+  "observation_timeout_does_not_restart": true,
+  "test_source_sha256": "3b9259d6422c132a566ec29f61a2c85087520e8064e22406573821256155366b",
+  "python_sources": {
+    "supervisor.py": "23364117b2f00b7cff1d2bada38b4614bb787bb28beae446d5e95ce1a2abe1e5",
+    "controller_ipc.py": "25014a0432135f32b918e8466cf758072723a921ce620a01f717e0daea5d329c",
+    "fixed_launch.py": "dcbedd1fe345001c76046f28787bd5b74332c3ec254c9a7671bcdf779650ac1f",
+    "receipt_receiver.py": "88e77424e5351994c23d3ebf0232275a2e28e0ea4deec4a22a1ebd269dcc659b"
+  },
+  "build_receipt_sha256": "f81338c7b4549c0d92d1c14aff059217066a2a0308c1deffdd1d966dddbd11f4"
+}

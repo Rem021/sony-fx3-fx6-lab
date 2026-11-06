@@ -1,0 +1,7 @@
+{
+  "status": "DUPLICATE_COPY_ASSUMPTION_RETAINED",
+  "script_sha256": "3baab707b3c72c3210c939e8c1feeed5dd30a153005eac8d2eb04bcb2d993dc1",
+  "failure": "Original constructor reads/stores the same getter and destination twice at offsets3c8and458; the unique-destination assertion was too restrictive.",
+  "action": "Retain both original calls and assert repeated destination has identical getter/model-cell binding, rather than deduplicating executed code.",
+  "camera_actions": false
+}

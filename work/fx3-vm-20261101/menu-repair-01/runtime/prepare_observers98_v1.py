@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,hashlib,subprocess,plistlib,re
+R=Path(__file__).resolve().parent;H=R/'helpers';assert plistlib.loads(subprocess.check_output(['diskutil','info','-plist','/Volumes/KAFU2T']))['VolumeUUID']=='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+proof=json.loads((R/'ap98-date-extra-original-points.json').read_text());raw={int(x['va'],16):int.from_bytes(bytes.fromhex(x['raw']),'little') for xs in proof['points'].values() for x in xs}
+extra=[0x2d7e618,0x2d7e6f0,0x2f72354,0x2f72494,0x2f72498,0x2f724a0,0x2f724b4,0x2b725c8,0x2b72680,0x2b72684,0x2b721b4,0x2b72520,0x2b7250c,0x2b72988,0x2b7298c]
+s=(H/'fx3-preset-context-v3-date97.c').read_text().replace('fx3-date-observe97r2.h','fx3-date-observe98-v1.h').replace('if(id>=80&&id<=87)date97_point','if(id>=80&&id<=102)date98_point')
+s=s.replace('U addresses[14]={','U addresses[29]={').replace('app_base+0x2ebfd70};W words[14]={','app_base+0x2ebfd70,'+','.join('app_base+'+hex(a) for a in extra)+'};W words[29]={').replace('0xaa1303e1};U ids[14]={','0xaa1303e1,'+','.join(hex(raw[a]) for a in extra)+'};U ids[29]={').replace('80,81,82,83,84,85,86,87};','80,81,82,83,84,85,86,87,'+','.join(str(i) for i in range(88,103))+'};').replace('i<14','i<29').replace('points=14 passive_date_force_backup=8','points=29 passive_date_force_backup=23 AP98_clock_initial_entry_call_return=1')
+s=s.replace('int osal_snd_sync_msg(W dst,void *request){', 'int osal_snd_sync_msg(W dst,void *request){').replace('return date97_sync(fn,sizefn,dst,request);','return date98_sync(fn,sizefn,dst,request,(U)__builtin_return_address(0));')
+needle='if(id==32){W ids[3]';assert needle in s;s=s.replace(needle,'if(id==32){date98_model("native_screen_open",32,c->pc-app_base);W ids[3]')
+assert 'date97_' not in s and 'i<14' not in s and 'app_base+0x2b72684' in s
+p=H/'fx3-preset-context-v4-date98.c';assert not p.exists();p.write_text(s)
+s=(H/'fx3-cp-backup-reset-v1.c').read_text();needle='static B *backing';s=s.replace(needle,'#include "fx3-date98-trace-core-v1.h"\n'+needle,1)
+needle='static int cp_reset_send(W dst,void*message){W n=message?osal_msg_size(message):0;';assert needle in s
+obs='''static void date98_kernel_capture(W dst,void *message,W n){B raw[44];cp_copy(raw,message,44);char text[89];const char *h="0123456789abcdef";for(W i=0;i<44;i++){text[i*2]=h[raw[i]>>4];text[i*2+1]=h[raw[i]&15];}text[88]=0;B *page=arch_phys_to_va(DATE98_PHYS);B *r=page&&d98_init(page,DATE98_SPAN)?d98_begin(page,2,0,0,dst,n,(U)message,(U)__builtin_return_address(0),raw,1,3,0,0):0;printk("FX3_DATE98_CP_DISPATCH destination=%#x source=%#x pointer=%p bytes=44 raw=%s no_reply=1 no_free=1 original_absent_route_return=0 unchanged=1\\n",dst,osal_get_msg_src(message),message,text);d98_end(r,0,0,0,0,0,0,0,0);}
+'''
+s=s.replace(needle,obs+needle+'if(dst==0x909005c5U&&message&&n==44)date98_kernel_capture(dst,message,n);')
+p=H/'fx3-cp-backup-reset-v2-date98.c';assert not p.exists();p.write_text(s)
+p=H/'fx3-cp-backup-reset-v2-date98-module-unit.c';assert not p.exists();p.write_text((H/'fx3-cp-backup-reset-v1-module-unit.c').read_text().replace('fx3-cp-backup-reset-v1.c','fx3-cp-backup-reset-v2-date98.c').replace('fx3_cp_backup_reset_v1','fx3_cp_backup_date98_v2'))
+for old,new,source in [('fx3-preset-context-v3-date97','fx3-preset-context-v4-date98','c'),('fx3-cp-backup-reset-v1','fx3-cp-backup-reset-v2-date98','c')]:
+ b=json.loads((H/(old+'-build.json')).read_text());args=[a.replace(old,new) for a in b['args']];p=subprocess.run(args,capture_output=True,text=True);(H/(new+'-build.log')).write_text(p.stdout+p.stderr);assert p.returncode==0,p.stderr;out=Path(args[-1]);receipt={'args':args,'exit':0,'authority':['msg_de25f58b89eb','msg_2c43f8a7ac82'],'source_sha256':sha(H/(new+'.c')),'output_sha256':sha(out),'scope':'AP98 passive logging/own software output only; no original params/replies/message ownership/CP reset algorithm changed','extra_original_point_proof':str(R/'ap98-date-extra-original-points.json'),'original_point_sha256':sha(R/'ap98-date-extra-original-points.json'),'trace_core_sha256':sha(H/'fx3-date98-trace-core-v1.h')};(H/(new+'-build.json')).write_text(json.dumps(receipt,indent=2)+'\n')
+print('AP98_NEW_OBSERVERS_CROSS_BUILD_PASS 29points/user32/kernel44/own_trace_software_page_only')

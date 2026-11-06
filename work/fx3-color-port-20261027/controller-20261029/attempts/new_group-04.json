@@ -1,0 +1,63 @@
+{
+  "case": "new_group",
+  "error": "AssertionError(('outside selected original XML/config/string text', '0x10012be0'))",
+  "pc": "0x10012be0",
+  "steps": 364326,
+  "system_requests": [
+    {
+      "command": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE=6; /tmp_updater/updater/bodyfs/bin/startupdate.sh",
+      "pc": "0x100104b0",
+      "native_execution": false,
+      "role": "startup_result_fixture",
+      "fixture_wait_status": 0
+    }
+  ],
+  "fs_events": [
+    {
+      "operation": "RAM directory create",
+      "path": "/tmp_updater/updater/update"
+    }
+  ],
+  "stat_events": [
+    {
+      "adapter": "RAM existence-only stat",
+      "path": "/tmp_updater/UFP",
+      "exists": false
+    },
+    {
+      "adapter": "RAM existence-only stat",
+      "path": "/root/IAMUPDATER",
+      "exists": false
+    },
+    {
+      "adapter": "RAM existence-only stat",
+      "path": "/tmp_updater/updater/bodyfs/bin/startupdate.sh",
+      "exists": true
+    }
+  ],
+  "ring_events": [
+    {
+      "operation": "RAM ring peek",
+      "offset": 0,
+      "requested": 512,
+      "returned": 512
+    }
+  ],
+  "controller_entries": [
+    {
+      "entry": "Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)",
+      "pc": "0x100122a4",
+      "stream_position": 0
+    },
+    {
+      "entry": "Updater::PackedFileHeader::Parse(Updater::PackedFirmwareBuffer*)",
+      "pc": "0x10011eb8",
+      "stream_position": 0
+    },
+    {
+      "entry": "Updater::KeyTagFactory::GetKeyTag(unsigned int, Updater::StringHandler const&)",
+      "pc": "0x1001335c",
+      "stream_position": 0
+    }
+  ]
+}

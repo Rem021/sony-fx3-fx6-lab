@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checks": [
+    "4444 channels/endian/row padding",
+    ">4GiB dump offset",
+    "8888 source-over 128",
+    "negative placement clipping",
+    "ARGB permutation",
+    "transparent and opaque",
+    "PNG decompression"
+  ],
+  "negative_cases": 5,
+  "physical_guest_frame": false
+}

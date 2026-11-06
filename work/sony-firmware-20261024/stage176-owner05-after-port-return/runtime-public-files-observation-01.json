@@ -1,0 +1,179 @@
+{
+  "observed_utc": "2026-10-29T11:47:08.078608+00:00",
+  "initial_strict_metadata_assertion_stopped_without_changes": true,
+  "job_files": {
+    "source-stage-receipt.json": {
+      "exists": true,
+      "bytes": 300,
+      "uid": 501,
+      "mode": "0o600",
+      "sha256": "d66b8f81d63768177f5aaea4108effc626436aa87193ec1238da7da4176d1d7c",
+      "result": {
+        "path": "/private/tmp/fx3-702-msc-owner-20261029-05/source-helper",
+        "sha256": "fa7b5da122b67f25349551edb1870fbe93dd870c7043721cb0a46e735346625d",
+        "bytes": 56352,
+        "uid": 501,
+        "directory_mode": "0700",
+        "file_mode": "0500",
+        "exclusive_no_follow_copy": true,
+        "native_executed": false
+      }
+    },
+    "cache-before.json": {
+      "exists": true,
+      "bytes": 1145,
+      "uid": 501,
+      "mode": "0o600",
+      "sha256": "92c42ebcbca748573056d781805f800a1479b047d4513b5718ee62a2c767fb1b",
+      "result": {
+        "selected_count": 1,
+        "selected": [
+          {
+            "VID": 1356,
+            "PID": 3489,
+            "locationID": 34603008,
+            "model_matches": true,
+            "body_tag": "db2e05bd93670c81b799ef8d9318f0c9a46715bae773802a2ebdd8065f3eddc0",
+            "cached_identity_usable": true,
+            "MSC_interface0_observed": true,
+            "interfaces": [
+              {
+                "bInterfaceNumber": 0,
+                "bInterfaceClass": 8,
+                "bInterfaceSubClass": 6,
+                "bInterfaceProtocol": 80
+              },
+              {
+                "bInterfaceProtocol": 80
+              }
+            ],
+            "storage_driver_classes": [
+              "IOBlockStorageDriver",
+              "IOSCSILogicalUnitNub",
+              "IOSCSIPeripheralDeviceType00",
+              "IOUSBMassStorageDriver",
+              "IOUSBMassStorageDriverNub",
+              "IOUSBMassStorageInterfaceNub"
+            ]
+          }
+        ],
+        "cached_only": true,
+        "raw_tree_serial_or_privacy_key_saved": false,
+        "same_program_firmware_health_or_recording_proven": false,
+        "created_utc": "2026-10-29T11:46:07.292486+00:00",
+        "collector_sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971",
+        "no_USB_library_or_camera_protocol_called": true
+      }
+    },
+    "spec.json": {
+      "exists": true,
+      "bytes": 335,
+      "uid": 501,
+      "mode": "0o600",
+      "sha256": "cd84bfea2a0a1e79567c8657448c76c4f8af40f6ca56857a09375dd80c640de6",
+      "result": {
+        "schema": 2,
+        "grant_id": "fx3-702-msc-owner-20261029-05",
+        "mode": "live",
+        "nonce": "f94eae5e0bdacc3a6c0595d23e23d337",
+        "expected_path": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261029-05/helper",
+        "expected_uid": 0,
+        "clock_domain": "CLOCK_MONOTONIC",
+        "created_utc": "2026-10-29T11:46:07.303479+00:00"
+      }
+    },
+    "launch-review.json": {
+      "exists": true,
+      "bytes": 314,
+      "uid": 501,
+      "mode": "0o600",
+      "sha256": "6f3bfbb273253283fdfff13a70a4a8801896d7538d97a6223e4399fcbcbebf4e",
+      "result": {
+        "native_sha256": "fa7b5da122b67f25349551edb1870fbe93dd870c7043721cb0a46e735346625d",
+        "grant_id": "fx3-702-msc-owner-20261029-05",
+        "script_sha256": "de99d91700b3e91b1544184a75fc80bd2c2447a2cc2fbd5b444da64f4469ac85",
+        "bootstrap_sha256": "77b7702bed3721c05366cb9cdff6b38013f0a6eb671a5738afd9fdd372015103"
+      }
+    },
+    "relay-process.json": {
+      "exists": true,
+      "bytes": 278,
+      "uid": 501,
+      "mode": "0o600",
+      "sha256": "92016628f97394d901b5e5339f1cba054a434c8efe8fc60c5387548d3ee14e9c",
+      "result": {
+        "pid": 34883,
+        "nonce": "f94eae5e0bdacc3a6c0595d23e23d337",
+        "role": "Terminal launch request only; not helper/command lifetime evidence",
+        "argv": [
+          "/usr/bin/open",
+          "-a",
+          "Terminal",
+          "/private/tmp/fx3-702-msc-owner-20261029-05/OwnerTrial.command"
+        ]
+      }
+    },
+    "terminal-command-result.json": {
+      "exists": true,
+      "bytes": 114,
+      "uid": 501,
+      "mode": "0o600",
+      "sha256": "6591c24dd990b07b44ff1f6da304d42bd7e167a7afba970a8ba4d541d7400fb5",
+      "result": {
+        "schema": 1,
+        "grant_id": "fx3-702-msc-owner-20261029-05",
+        "nonce": "f94eae5e0bdacc3a6c0595d23e23d337",
+        "returncode": 0
+      }
+    },
+    "verified-helper.json": {
+      "exists": true,
+      "bytes": 291,
+      "uid": 501,
+      "mode": "0o600",
+      "sha256": "efe030a30fd6e4b6b67a3f70df6e9bee4ffc6ae3a3aff613c6fbc8bb240a96d1",
+      "result": {
+        "nonce": "f94eae5e0bdacc3a6c0595d23e23d337",
+        "grant_id": "fx3-702-msc-owner-20261029-05",
+        "identity": {
+          "pid": 34992,
+          "uid": 0,
+          "birth_sec": 1793274379,
+          "birth_usec": 807510,
+          "path": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261029-05/helper"
+        }
+      }
+    },
+    "supervisor-result.json": {
+      "exists": false
+    },
+    "relay-stdout.txt": {
+      "exists": true,
+      "bytes": 586,
+      "uid": 0,
+      "mode": "0o600",
+      "content_not_read": "owner_or_mode_outside_user_read_gate"
+    },
+    "relay-stderr.txt": {
+      "exists": true,
+      "bytes": 0,
+      "uid": 0,
+      "mode": "0o600",
+      "content_not_read": "owner_or_mode_outside_user_read_gate"
+    },
+    "terminal-open-stdout.txt": {
+      "exists": true,
+      "bytes": 0,
+      "uid": 501,
+      "mode": "0o644",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "terminal-open-stderr.txt": {
+      "exists": true,
+      "bytes": 0,
+      "uid": 501,
+      "mode": "0o644",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

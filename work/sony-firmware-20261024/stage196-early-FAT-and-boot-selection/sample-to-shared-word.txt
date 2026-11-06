@@ -1,0 +1,27 @@
+# Analyst label; exact original configured VA, not runtime PC. No execution.
+0xfe0532b4 [file+0xa2b4] f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+0xfe0532b8 [file+0xa2b8] f30300aa mov      x19, x0
+0xfe0532bc [file+0xa2bc] 1f3802b9 str      wzr, [x0, #0x238]
+0xfe0532c0 [file+0xa2c0] d2030094 bl       #0xfe054208
+0xfe0532c4 [file+0xa2c4] 68e24839 ldrb     w8, [x19, #0x238]
+0xfe0532c8 [file+0xa2c8] 08000033 bfxil    w8, w0, #0, #1
+0xfe0532cc [file+0xa2cc] 68e20839 strb     w8, [x19, #0x238]
+0xfe0532d0 [file+0xa2d0] b8030094 bl       #0xfe0541b0
+0xfe0532d4 [file+0xa2d4] 68e24839 ldrb     w8, [x19, #0x238]
+0xfe0532d8 [file+0xa2d8] 09000012 and      w9, w0, #1
+0xfe0532dc [file+0xa2dc] 08791d12 and      w8, w8, #0xfffffffb
+0xfe0532e0 [file+0xa2e0] 0809092a orr      w8, w8, w9, lsl #2
+0xfe0532e4 [file+0xa2e4] 68e20839 strb     w8, [x19, #0x238]
+0xfe0532e8 [file+0xa2e8] f9030094 bl       #0xfe0542cc
+0xfe0532ec [file+0xa2ec] 68e24839 ldrb     w8, [x19, #0x238]
+0xfe0532f0 [file+0xa2f0] 09000012 and      w9, w0, #1
+0xfe0532f4 [file+0xa2f4] 0a058052 mov      w10, #0x28
+0xfe0532f8 [file+0xa2f8] eac2bf72 movk     w10, #0xfe17, lsl #16
+0xfe0532fc [file+0xa2fc] 08791e12 and      w8, w8, #0xfffffffd
+0xfe053300 [file+0xa300] 0805092a orr      w8, w8, w9, lsl #1
+0xfe053304 [file+0xa304] 68e20839 strb     w8, [x19, #0x238]
+0xfe053308 [file+0xa308] 490100b9 str      w9, [x10]
+0xfe05330c [file+0xa30c] 7fba01b9 str      wzr, [x19, #0x1b8]
+0xfe053310 [file+0xa310] e0031f2a mov      w0, wzr
+0xfe053314 [file+0xa314] f37bc1a8 ldp      x19, x30, [sp], #0x10
+0xfe053318 [file+0xa318] c0035fd6 ret      

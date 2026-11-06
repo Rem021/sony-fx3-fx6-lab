@@ -1,0 +1,46 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap91-synthetic-keys/guest.dtb",
+    "sha256": "9be39adcb3eb990d0dcdf7363cdbdefe0191913e4f6c0e0984eee414b7de9e14"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap91-synthetic-keys/guest.cpio",
+    "sha256": "9da29ac66edd1c7beca0c27d41c3b2e8d033fe6a3fe31b7cdecfcd34e5bc4af6"
+  },
+  "required_markers": [
+    "FX3_AP89_BACKUP_REPLAY_VERIFIED",
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0",
+    "FX3_PRESET_CONTEXT_BOUND",
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS",
+    "FX3_AP89_UUD_DECISION",
+    "FX3_AP89_SCREEN_CREATE",
+    "FX3_AP_IM_ENDMAPS_",
+    "registration_origin=malloc_parent_v1",
+    "FX3_GPE_RESOURCE_BOUND",
+    "FX3_GPE_RESOURCE_REGISTER",
+    "FX3_GPE_SCOPE",
+    "FX3_SYNTH_KEY_ARM",
+    "FX3_KEY_INPUT_RECV",
+    "FX3_SYNTH_KEY_SCRIPT_DONE"
+  ],
+  "scope": "AP91 explicitsyntheticphysicalkeys scriptintheexistingimprocess: originalOSAL20B/source410025/dst807a0020; waitnative2c7open+5s/nativeinputreceiver/keytable, ENTER/MENU/DOWN/DOWN/RIGHT/MENU down100msup/gap4s. OriginalCPkeydetection=0; passivephysical/internal/event/cacheobservations, screenobserverexportonly; GPEv16r2/Backup/CPmodelsunchangedAP90. PerstepquiescedQMPreadbackat+2shostafterupmarker; nativeinputandvisiblemenuresultsseparate.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true,
+  "backup_replay": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap88cpr4-e71668cb/backup-after-shutdown.bin",
+    "sha256": "38cf44637c44d3f47d7b8541dddf7ecc443e262f40dec3aec59f7b94d5b8b38f",
+    "bytes": 2232320,
+    "physical": "0x404000000",
+    "mechanism": "boundedguesthelperfixedSHA/twooriginalbankheaders/wholecopy/remapSHA/rollback;5sboundedpreAPhostQMPreadbackwindow",
+    "original_seed_unchanged": true,
+    "unchanged_checksums_live_RAM": true
+  }
+}

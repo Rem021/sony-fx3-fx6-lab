@@ -1,0 +1,151 @@
+{
+  "status": "ORIGINAL_LOADER_PRELOAD_ERROR_CONSUMER_RETURNS_NORMALLY_IN_BOUNDED_FIXTURES",
+  "root_image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+  "loader_sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+  "original_do_preload": {
+    "VA": "0xb00",
+    "bytes": 148,
+    "sha256": "bec3d939b68c7bc481b8f5453b42cf7e9ba2c1b996c21f2b24720f5f0939dfa7",
+    "original_instructions": [
+      "00000b00 stp x29, x30, [sp, #-0x70]!",
+      "00000b04 adrp x3, #0",
+      "00000b08 add x3, x3, #0xee8",
+      "00000b0c mov w5, #0x4000000",
+      "00000b10 mov x29, sp",
+      "00000b14 stp x19, x20, [sp, #0x10]",
+      "00000b18 adrp x19, #0x2c000",
+      "00000b1c stp x21, x22, [sp, #0x20]",
+      "00000b20 mov x20, x0",
+      "00000b24 add x4, x29, #0x50",
+      "00000b28 str x1, [x29, #0x58]",
+      "00000b2c add x19, x19, #0x38",
+      "00000b30 mov x22, x2",
+      "00000b34 add x0, x29, #0x40",
+      "00000b38 add x2, x29, #0x3f",
+      "00000b3c add x1, x29, #0x48",
+      "00000b40 stp xzr, x20, [x29, #0x48]",
+      "00000b44 ldr w21, [x19, #8]",
+      "00000b48 str w5, [x29, #0x60]",
+      "00000b4c bl #0xad0",
+      "00000b50 ldr x4, [x29, #0x48]",
+      "00000b54 cbz x4, #0xb78",
+      "00000b58 adrp x1, #0x17000",
+      "00000b5c mov x3, x22",
+      "00000b60 mov x2, x20",
+      "00000b64 add x1, x1, #0xbd0",
+      "00000b68 mov w0, #2",
+      "00000b6c bl #0xe530",
+      "00000b70 mov w0, #0",
+      "00000b74 b #0xb84",
+      "00000b78 ldr w0, [x19, #8]",
+      "00000b7c cmp w0, w21",
+      "00000b80 cset w0, ne",
+      "00000b84 ldp x19, x20, [sp, #0x10]",
+      "00000b88 ldp x21, x22, [sp, #0x20]",
+      "00000b8c ldp x29, x30, [sp], #0x70",
+      "00000b90 ret "
+    ],
+    "direct_caller_VAs": [
+      "0x3ab0",
+      "0x3bbc",
+      "0x3c14"
+    ]
+  },
+  "startup_files": [
+    {
+      "path": "/sbin/initrc/fstab.root",
+      "inode": 131,
+      "sha256": "c77d93236b89349bcc24853756f960bb49411e922c9430ede70b5b2cb8b6a4b2",
+      "text": "/dev/nflasha7\t/rootfs\text2\tro,nodiratime,noatime,sync\t0\t0\n"
+    },
+    {
+      "path": "/sbin/initrc/fstab.ext",
+      "inode": 129,
+      "sha256": "a77bdfb7bf15d3a1240bdefc4edb4469672f3258d6d8dba7dd4164e3fd2d51c3",
+      "text": "/dev/nflasha10\t/etc\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha10\t/var\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n"
+    },
+    {
+      "path": "/sbin/init2",
+      "inode": 139,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb",
+      "text": "#!/bin/busybox sh\n\nINITRC_DIR=/sbin/initrc\nDEFAULT_MODE=3\nKMSG=/dev/kmsg\nBOOT_TIME=/proc/snsc_boot_time\nMODE_FILE=/setting/mode/dmode\nSEN_FILE=/setting/sen/smode\nFSTAB=$INITRC_DIR/fstab\nFSTAB_EXT=$INITRC_DIR/fstab.ext\n\nsetup_bis()\n{\n    UPM_BOOTMODE=`cat /proc/udm/upm_bootmode`\n    echo \"upm_bootmode = $UPM_BOOTMODE\" > $KMSG\n    echo \"upm_bootmode = $UPM_BOOTMODE\" > $BOOT_TIME\n\n    [ \"$UPM_BOOTMODE\" != \"BIS\" ] && return 1\n\n    SSBIPROF_MNTSRC=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 1`\n    SSBIPROF_MNTTGT=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 2`\n    SSBIPROF_MNTOPT=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 4`\n\n    busybox umount $SSBIPROF_MNTTGT\n    /sbin/mkdosfs -f 1 -s 32 $SSBIPROF_MNTSRC\n    busybox mount $SSBIPROF_MNTSRC $SSBIPROF_MNTTGT -o $SSBIPROF_MNTOPT\n\n    return 0\n}\n\nsetup_senser()\n{\n    [ -r $SEN_FILE ] || return 1\n\n#   echo $SEN_FILE found.\n    SEN_STR=`cat $SEN_FILE`\n    if   [ \"$SEN_STR\" == \"UU\" ] ; then\n        /usr/bin/sen.elf &\n    fi\n\n    return 0\n}\n\nbusybox mount -t sysfs none /sys\nbusybox mount -t debugfs none /sys/kernel/debug\nbusybox mount -a -T $FSTAB\n\n[ -r $FSTAB_EXT ] && busybox mount -a -T $FSTAB_EXT\n\nmount -t tmpfs none /tmp_wbshd\n\nMODE=\"$DEFAULT_MODE\"\n[ -r $MODE_FILE ] && MODE=`cat $MODE_FILE`\n\nif [ \"$MODE\" != \"0\" ] ; then\n    ### set_mindrv()\n    echo set > /proc/udm/drivers\n\n    [ -r $INITRC_DIR/setup_shielding ] && . $INITRC_DIR/setup_shielding\n    [ -r $INITRC_DIR/insmod_drv2     ] && . $INITRC_DIR/insmod_drv2\n\n    setup_bis || setup_senser\n\n    /usr/bin/bootin.elf &\nfi\n\n[ -r $INITRC_DIR/setup_console ] && . $INITRC_DIR/setup_console\n\nwhile true\ndo\n    ash --login\ndone\n"
+    }
+  ],
+  "cases": [
+    {
+      "scenario": "ENOENT",
+      "instructions": 37,
+      "diagnostics": [
+        {
+          "format_VA": "0x17bd0",
+          "from": "/etc/ld.so.preload",
+          "fixture_error": "fixture: No such file or directory"
+        }
+      ],
+      "catch_fixture_calls": 1,
+      "normal_return": true,
+      "return_w0": 0
+    },
+    {
+      "scenario": "ENOEXEC",
+      "instructions": 37,
+      "diagnostics": [
+        {
+          "format_VA": "0x17bd0",
+          "from": "/etc/ld.so.preload",
+          "fixture_error": "fixture: invalid ELF header"
+        }
+      ],
+      "catch_fixture_calls": 1,
+      "normal_return": true,
+      "return_w0": 0
+    },
+    {
+      "scenario": "EACCES",
+      "instructions": 37,
+      "diagnostics": [
+        {
+          "format_VA": "0x17bd0",
+          "from": "/etc/ld.so.preload",
+          "fixture_error": "fixture: Permission denied"
+        }
+      ],
+      "catch_fixture_calls": 1,
+      "normal_return": true,
+      "return_w0": 0
+    },
+    {
+      "scenario": "success_new",
+      "instructions": 31,
+      "diagnostics": [],
+      "catch_fixture_calls": 1,
+      "normal_return": true,
+      "return_w0": 1
+    },
+    {
+      "scenario": "success_duplicate",
+      "instructions": 31,
+      "diagnostics": [],
+      "catch_fixture_calls": 1,
+      "normal_return": true,
+      "return_w0": 0
+    }
+  ],
+  "upstream_reference": {
+    "url": "https://raw.githubusercontent.com/bminor/glibc/glibc-2.25/elf/rtld.c",
+    "sha256": "909759872684237c9d8c93bfa71acd1bfd50f44aa68175c71e59692d3cda3aa3",
+    "use": "Source comparison only; original Sony loader bytes, not upstream rebuild, were emulated."
+  },
+  "proven_local_behavior": "Given a caught missing/invalid/permission-error result, original helper emits a warning and returns0 rather than terminating. Newly loaded returns1; duplicate returns0.",
+  "recovery_inference": "If actual boot follows these files, tmp_wbshd is recreated as tmpfs while etc preload may persist. A missing volatile library then has a nonfatal caught-error consumer. This supports designing a fallback, but is NOT a cold-boot, constructor-failure or brick-recovery test.",
+  "not_proven": [
+    "actual rootfs/mount/boot path on current body",
+    "real missing-file lookup and exception catch",
+    "complete ld.so startup",
+    "module ELF acceptance or constructor execution",
+    "crashing/hanging constructor recovery",
+    "p1 writeback or independent rescue"
+  ],
+  "original_instructions_replaced": false,
+  "real_filesystem_kernel_loader_or_camera_operations": 0
+}

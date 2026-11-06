@@ -1,0 +1,86 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/uipc04-3dab0077",
+  "status": "TRANSPARENT_HELPER_ABI_AND_ORIGINAL_IOCTLS_PASSED_MEMORY_OBSERVER_UNAVAILABLE",
+  "abi_markers": {
+    "FX3_TRACE_ABI_VERIFY_RC=0": true,
+    "FX3_TRACE_ABI_LIST_RC=0": true,
+    "FX3_TRACE_ABI_TRUE_RC=0": true
+  },
+  "ioctl_op_return_errno_counts": [
+    {
+      "op": 1,
+      "return": 0,
+      "errno": 1020,
+      "count": 4
+    },
+    {
+      "op": 10,
+      "return": 0,
+      "errno": 0,
+      "count": 5
+    },
+    {
+      "op": 10,
+      "return": 0,
+      "errno": 1020,
+      "count": 41
+    },
+    {
+      "op": 11,
+      "return": 0,
+      "errno": 1020,
+      "count": 45
+    },
+    {
+      "op": 12,
+      "return": 0,
+      "errno": 1020,
+      "count": 1
+    },
+    {
+      "op": 13,
+      "return": 0,
+      "errno": 0,
+      "count": 5
+    },
+    {
+      "op": 16,
+      "return": 0,
+      "errno": 0,
+      "count": 1
+    },
+    {
+      "op": 2,
+      "return": 0,
+      "errno": 1020,
+      "count": 4
+    },
+    {
+      "op": 4,
+      "return": 0,
+      "errno": 1020,
+      "count": 1
+    },
+    {
+      "op": 5,
+      "return": -1,
+      "errno": 1020,
+      "count": 45
+    },
+    {
+      "op": 8,
+      "return": 0,
+      "errno": 1020,
+      "count": 4
+    }
+  ],
+  "outer_record_read_success_count": 0,
+  "unread_zero_fields": "Not interpreted as any actual destination ID",
+  "mmap_2MiB_actual_success": true,
+  "inputs_unchanged": true,
+  "process_reaped": true,
+  "guest_exception_markers": [],
+  "menu_verified": false,
+  "source_of_missing_memory_syscall": "Original owner independently bound sys_process_vm_readv/writev weak symbols to sys_ni_syscall; proof forthcoming in original-uipc",
+  "serial_sha256": "dabb37014729705eee43eb120054ca2e26e0a542e1fa050a476119efa66988b9"
+}

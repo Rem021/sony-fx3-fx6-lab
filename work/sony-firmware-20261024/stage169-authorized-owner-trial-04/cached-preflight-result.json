@@ -1,0 +1,63 @@
+{
+  "created_utc": "2026-10-28T13:37:40.899520+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "verified_checkpoint_members": 167,
+  "cached_identity": {
+    "selected_count": 1,
+    "selected": [
+      {
+        "VID": 1356,
+        "PID": 3489,
+        "locationID": 34603008,
+        "model_matches": true,
+        "body_tag": "5e3de951f4105d5de4bd884df5246a03f37107b0a8fdd8c33e899789d06c5478",
+        "cached_identity_usable": true,
+        "MSC_interface0_observed": true,
+        "interfaces": [
+          {
+            "bInterfaceNumber": 0,
+            "bInterfaceClass": 8,
+            "bInterfaceSubClass": 6,
+            "bInterfaceProtocol": 80
+          },
+          {
+            "bInterfaceProtocol": 80
+          }
+        ],
+        "storage_driver_classes": [
+          "IOBlockStorageDriver",
+          "IOSCSILogicalUnitNub",
+          "IOSCSIPeripheralDeviceType00",
+          "IOUSBMassStorageDriver",
+          "IOUSBMassStorageDriverNub",
+          "IOUSBMassStorageInterfaceNub"
+        ]
+      }
+    ],
+    "cached_only": true,
+    "raw_tree_serial_or_privacy_key_saved": false,
+    "same_program_firmware_health_or_recording_proven": false
+  },
+  "target_media": [
+    {
+      "BSD_Name": "disk10",
+      "whole": true,
+      "size": 67108864
+    },
+    {
+      "BSD_Name": "disk10s1",
+      "whole": false,
+      "size": 67108352
+    }
+  ],
+  "target_mounted_volumes": [
+    {
+      "device": "disk10s1",
+      "mount_point": "/Volumes/PMHOME"
+    }
+  ],
+  "existing_owner_processes": [],
+  "new_claim_and_job_absent": true,
+  "single_attempt_release_preconditions_met": false,
+  "active_USB_operations": 0
+}

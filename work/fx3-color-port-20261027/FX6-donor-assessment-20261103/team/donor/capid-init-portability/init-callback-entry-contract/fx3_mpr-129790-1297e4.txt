@@ -1,0 +1,27 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000012594c <_ZN10XavcsNamer9GetRemainEPKcbPtN3mpr10NamingModeE>:
+  129790: b0001406     	adrp	x6, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  129794: b0001405     	adrp	x5, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  129798: b0001404     	adrp	x4, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  12979c: b0001403     	adrp	x3, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  1297a0: b0001402     	adrp	x2, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  1297a4: 913b20c6     	add	x6, x6, #0xec8
+  1297a8: 913aa0a5     	add	x5, x5, #0xea8
+  1297ac: 9136a084     	add	x4, x4, #0xda8
+  1297b0: 91374063     	add	x3, x3, #0xdd0
+  1297b4: 91372042     	add	x2, x2, #0xdc8
+  1297b8: d2800000     	mov	x0, #0x0                // =0
+  1297bc: d37df001     	lsl	x1, x0, #3
+  1297c0: 3822681f     	strb	wzr, [x0, x2]
+  1297c4: 91000400     	add	x0, x0, #0x1
+  1297c8: f100101f     	cmp	x0, #0x4
+  1297cc: f826683f     	str	xzr, [x1, x6]
+  1297d0: f825683f     	str	xzr, [x1, x5]
+  1297d4: f824683f     	str	xzr, [x1, x4]
+  1297d8: f823683f     	str	xzr, [x1, x3]
+  1297dc: 54ffff01     	b.ne	0x1297bc <_ZN10XavcsNamer9GetRemainEPKcbPtN3mpr10NamingModeE+0x3e70>
+  1297e0: d65f03c0     	ret

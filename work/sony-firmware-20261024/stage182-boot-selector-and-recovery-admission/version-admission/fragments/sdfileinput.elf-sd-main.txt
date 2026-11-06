@@ -1,0 +1,94 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sdfileinput.elf
+# SHA256 19a505750d18bee713e9794dd203219c4201ce2ef4c950b2187415878d09f67e
+# VA [0x400970, 0x400adc) raw slice SHA256 c482f50eeef101b8e42549feb62507bf594a81590d9480b3e4c0cec3c756748f
+  400970: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+  400974: 910003fd     	mov	x29, sp
+  400978: 9100a3a0     	add	x0, x29, #0x28
+  40097c: a90153f3     	stp	x19, x20, [sp, #0x10]
+  400980: 3900f3bf     	strb	wzr, [x29, #0x3c]
+  400984: a9007c1f     	stp	xzr, xzr, [x0]
+  400988: b9003bbf     	str	wzr, [x29, #0x38]
+  40098c: 97ffffe5     	bl	0x400920 <GetSDFileInputModeUpdater@plt>
+  400990: b5000160     	cbnz	x0, 0x4009bc <.text+0x4c>
+  400994: d0000080     	adrp	x0, 0x412000
+  400998: 52800034     	mov	w20, #0x1               // =1
+  40099c: f9402801     	ldr	x1, [x0, #0x50]
+  4009a0: 90000000     	adrp	x0, 0x400000
+  4009a4: 91334000     	add	x0, x0, #0xcd0
+  4009a8: 97ffffd6     	bl	0x400900 <fputs@plt>
+  4009ac: 2a1403e0     	mov	w0, w20
+  4009b0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  4009b4: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+  4009b8: d65f03c0     	ret
+  4009bc: aa0003f3     	mov	x19, x0
+  4009c0: 9100a3a1     	add	x1, x29, #0x28
+  4009c4: 52800040     	mov	w0, #0x2                // =2
+  4009c8: 72a00960     	movk	w0, #0x4b, lsl #16
+  4009cc: 97ffffdd     	bl	0x400940 <Backup_read@plt>
+  4009d0: 7100001f     	cmp	w0, #0x0
+  4009d4: 5400016c     	b.gt	0x400a00 <.text+0x90>
+  4009d8: 2a0003e2     	mov	w2, w0
+  4009dc: d0000080     	adrp	x0, 0x412000
+  4009e0: 90000001     	adrp	x1, 0x400000
+  4009e4: 91340c21     	add	x1, x1, #0xd03
+  4009e8: f9402800     	ldr	x0, [x0, #0x50]
+  4009ec: 97ffffc9     	bl	0x400910 <fprintf@plt>
+  4009f0: 52800034     	mov	w20, #0x1               // =1
+  4009f4: aa1303e0     	mov	x0, x19
+  4009f8: 97ffffbe     	bl	0x4008f0 <ReleaseSDFileInputUpdater@plt>
+  4009fc: 17ffffec     	b	0x4009ac <.text+0x3c>
+  400a00: f9400260     	ldr	x0, [x19]
+  400a04: 90000002     	adrp	x2, 0x400000
+  400a08: 9134ac42     	add	x2, x2, #0xd2b
+  400a0c: 9100a3a1     	add	x1, x29, #0x28
+  400a10: f9400803     	ldr	x3, [x0, #0x10]
+  400a14: aa1303e0     	mov	x0, x19
+  400a18: d63f0060     	blr	x3
+  400a1c: 340000e0     	cbz	w0, 0x400a38 <.text+0xc8>
+  400a20: d0000080     	adrp	x0, 0x412000
+  400a24: f9402801     	ldr	x1, [x0, #0x50]
+  400a28: 90000000     	adrp	x0, 0x400000
+  400a2c: 9134e000     	add	x0, x0, #0xd38
+  400a30: 97ffffb4     	bl	0x400900 <fputs@plt>
+  400a34: 17ffffef     	b	0x4009f0 <.text+0x80>
+  400a38: f9400260     	ldr	x0, [x19]
+  400a3c: f9401001     	ldr	x1, [x0, #0x20]
+  400a40: aa1303e0     	mov	x0, x19
+  400a44: d63f0020     	blr	x1
+  400a48: 340000c0     	cbz	w0, 0x400a60 <.text+0xf0>
+  400a4c: d0000080     	adrp	x0, 0x412000
+  400a50: f9402801     	ldr	x1, [x0, #0x50]
+  400a54: 90000000     	adrp	x0, 0x400000
+  400a58: 91357000     	add	x0, x0, #0xd5c
+  400a5c: 17fffff5     	b	0x400a30 <.text+0xc0>
+  400a60: f9400260     	ldr	x0, [x19]
+  400a64: f9401801     	ldr	x1, [x0, #0x30]
+  400a68: aa1303e0     	mov	x0, x19
+  400a6c: d63f0020     	blr	x1
+  400a70: 340000c0     	cbz	w0, 0x400a88 <.text+0x118>
+  400a74: d0000080     	adrp	x0, 0x412000
+  400a78: f9402801     	ldr	x1, [x0, #0x50]
+  400a7c: 90000000     	adrp	x0, 0x400000
+  400a80: 91361400     	add	x0, x0, #0xd85
+  400a84: 17ffffeb     	b	0x400a30 <.text+0xc0>
+  400a88: f9400260     	ldr	x0, [x19]
+  400a8c: f9401401     	ldr	x1, [x0, #0x28]
+  400a90: aa1303e0     	mov	x0, x19
+  400a94: d63f0020     	blr	x1
+  400a98: 340000c0     	cbz	w0, 0x400ab0 <.text+0x140>
+  400a9c: d0000080     	adrp	x0, 0x412000
+  400aa0: f9402801     	ldr	x1, [x0, #0x50]
+  400aa4: 90000000     	adrp	x0, 0x400000
+  400aa8: 9136c400     	add	x0, x0, #0xdb1
+  400aac: 17ffffe1     	b	0x400a30 <.text+0xc0>
+  400ab0: f9400260     	ldr	x0, [x19]
+  400ab4: 52800014     	mov	w20, #0x0               // =0
+  400ab8: f9400c01     	ldr	x1, [x0, #0x18]
+  400abc: aa1303e0     	mov	x0, x19
+  400ac0: d63f0020     	blr	x1
+  400ac4: 34fff980     	cbz	w0, 0x4009f4 <.text+0x84>
+  400ac8: d0000080     	adrp	x0, 0x412000
+  400acc: f9402801     	ldr	x1, [x0, #0x50]
+  400ad0: 90000000     	adrp	x0, 0x400000
+  400ad4: 91375c00     	add	x0, x0, #0xdd7
+  400ad8: 17ffffd6     	b	0x400a30 <.text+0xc0>

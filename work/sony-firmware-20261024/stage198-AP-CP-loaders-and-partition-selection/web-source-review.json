@@ -1,0 +1,27 @@
+{
+  "observation_date": "2026-10-29",
+  "sources": [
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/main/scripts/parse_emmc_boot0.py",
+      "observed": "reads separate A7IV eMMC boot0 and BootROM files; parses EXBL information fields; extracts next boot stage",
+      "use": "specific source-acquisition direction only; no FX3 format, key, offset or payload compatibility inferred",
+      "code_downloaded_or_executed": false
+    },
+    {
+      "url": "https://github.com/torvalds/linux/blob/master/arch/arm64/include/asm/ptrace.h",
+      "observed": "PSR_AA32_MODE_SVC constant0x00000013",
+      "use": "interpretation of observed original SPSR value; not physical camera execution proof"
+    },
+    {
+      "url": "https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Learn%20the%20Architecture/Exception%20model.pdf",
+      "observed": "ERET restores execution state from SPSR_ELx and program counter from ELR_ELx; execution-state compatibility required",
+      "use": "architectural explanation of raw code only"
+    }
+  ],
+  "failed_fetches": [
+    "https://github.com/DavidBuchanan314/ILCE-7M4-RE/tree/main/emmc_boot"
+  ],
+  "latest_commit_identity_verified": false,
+  "FX3_boot0_obtained": false,
+  "device_or_administrator_operations": 0
+}

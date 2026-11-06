@@ -1,0 +1,2492 @@
+{
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "images": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+      "bytes": 5218304,
+      "sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+      "filesystem": {
+        "kind": "ext2",
+        "block_size": 1024,
+        "inode_size": 128,
+        "inodes": 1280,
+        "incompat": 2
+      },
+      "entries": 153,
+      "modules": 4
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+      "bytes": 479846400,
+      "sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "filesystem": {
+        "kind": "ext2",
+        "block_size": 1024,
+        "inode_size": 128,
+        "inodes": 117392,
+        "incompat": 2
+      },
+      "entries": 915,
+      "modules": 122
+    }
+  ],
+  "files": [
+    {
+      "partition": 7,
+      "path": "/bin/busybox",
+      "original_inode": 33,
+      "mode": "0o100755",
+      "bytes": 423000,
+      "sha256": "c3297a7086efe9a001c39fa98d74d125992cf3225cf353ab6ff2238d827c7799",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/bin/busybox",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 2,
+      "machine": 183,
+      "entry": "0x4069a0",
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libcrypt.so.1",
+        "libc.so.6"
+      ]
+    },
+    {
+      "partition": 7,
+      "path": "/lib/ld-2.25.so",
+      "original_inode": 97,
+      "mode": "0o100777",
+      "bytes": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/lib/ld-2.25.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0xd00",
+      "interpreter": null,
+      "needed": []
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libc-2.25.so",
+      "original_inode": 92,
+      "mode": "0o100777",
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/lib/libc-2.25.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0x1fb38",
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "ld-linux-aarch64.so.1"
+      ]
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libdl-2.25.so",
+      "original_inode": 83,
+      "mode": "0o100777",
+      "bytes": 10368,
+      "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/lib/libdl-2.25.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0xe50",
+      "interpreter": null,
+      "needed": [
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ]
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libm-2.25.so",
+      "original_inode": 91,
+      "mode": "0o100777",
+      "bytes": 658000,
+      "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/lib/libm-2.25.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0x5be0",
+      "interpreter": null,
+      "needed": [
+        "libc.so.6"
+      ]
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libpthread-2.25.so",
+      "original_inode": 95,
+      "mode": "0o100777",
+      "bytes": 101888,
+      "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/lib/libpthread-2.25.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0x5c10",
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ]
+    },
+    {
+      "partition": 7,
+      "path": "/lib/librt-2.25.so",
+      "original_inode": 100,
+      "mode": "0o100777",
+      "bytes": 27448,
+      "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/lib/librt-2.25.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0x1d80",
+      "interpreter": null,
+      "needed": [
+        "libpthread.so.0",
+        "libc.so.6",
+        "ld-linux-aarch64.so.1"
+      ]
+    },
+    {
+      "partition": 7,
+      "path": "/root/chassis",
+      "original_inode": 113,
+      "mode": "0o100644",
+      "bytes": 18,
+      "sha256": "7880368a5b3a8efe7e19337e225fc1248dca9e8f1f96eb111823eb66588417e1",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/root/chassis",
+      "elf": false
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/init",
+      "original_inode": 144,
+      "mode": "0o100755",
+      "bytes": 735,
+      "sha256": "c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/init",
+      "elf": false
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/init2",
+      "original_inode": 139,
+      "mode": "0o100755",
+      "bytes": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/init2",
+      "elf": false
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/initrc/fstab",
+      "original_inode": 132,
+      "mode": "0o100644",
+      "bytes": 1085,
+      "sha256": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/initrc/fstab",
+      "elf": false
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/initrc/fstab.root",
+      "original_inode": 131,
+      "mode": "0o100644",
+      "bytes": 58,
+      "sha256": "c77d93236b89349bcc24853756f960bb49411e922c9430ede70b5b2cb8b6a4b2",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/initrc/fstab.root",
+      "elf": false
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/initrc/insmod_drv1",
+      "original_inode": 125,
+      "mode": "0o100644",
+      "bytes": 152,
+      "sha256": "22f29d06d7776fe5e8362c17049beabfd3e3bebffd222e51276e3704d483a591",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/initrc/insmod_drv1",
+      "elf": false
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/initrc/insmod_drv2",
+      "original_inode": 127,
+      "mode": "0o100644",
+      "bytes": 1298,
+      "sha256": "19757bdd450061f861e2da44a6a93be2525668e3f7edc64e5a99a25bde56564e",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/initrc/insmod_drv2",
+      "elf": false
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/initrc/setup_nflash",
+      "original_inode": 133,
+      "mode": "0o100644",
+      "bytes": 375,
+      "sha256": "055cb3db7a40084aef8aaa89a7357921b514bf0af89690f920b608d9f3734cdc",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/initrc/setup_nflash",
+      "elf": false
+    },
+    {
+      "partition": 15,
+      "path": "/bin/bootin.elf",
+      "original_inode": 80994,
+      "mode": "0o100555",
+      "bytes": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/bootin.elf",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 2,
+      "machine": 183,
+      "entry": "0x4018f8",
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libbackup.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ]
+    },
+    {
+      "partition": 15,
+      "path": "/bin/im.elf",
+      "original_inode": 80972,
+      "mode": "0o100555",
+      "bytes": 40920,
+      "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/im.elf",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 2,
+      "machine": 183,
+      "entry": "0x402b30",
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "needed": [
+        "libjemalloc_ds.so.2",
+        "libIMDB.so",
+        "libbackup.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libSTMcmdexecute.so",
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ]
+    },
+    {
+      "partition": 15,
+      "path": "/lib/appFw.so",
+      "original_inode": 95387,
+      "mode": "0o100555",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0x1594680",
+      "interpreter": null,
+      "needed": [
+        "libNetCommon.so",
+        "libGOConnectionManager.so",
+        "AdjChkConfig.so",
+        "libqrencode.so",
+        "libInfraSKD.so",
+        "libCertificateManager.so",
+        "libssl.so.3",
+        "libpng.so.16",
+        "libjsoncpp.so.24",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ]
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libObj.so",
+      "original_inode": 95248,
+      "mode": "0o100555",
+      "bytes": 2876600,
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/libObj.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0x57d90",
+      "interpreter": null,
+      "needed": [
+        "dataflowInfraFramework.so",
+        "libpng.so.16",
+        "libInfraUsbCmn.so",
+        "libsencore.so",
+        "libUsbControl.so",
+        "libBackupManager.so",
+        "libInfraMediaCommon.so",
+        "libgcc_s.so.1",
+        "libc.so.6"
+      ]
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libosal_uipc.so",
+      "original_inode": 95132,
+      "mode": "0o100555",
+      "bytes": 43752,
+      "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/libosal_uipc.so",
+      "elf": true,
+      "class": 64,
+      "endianness": "little",
+      "type": 3,
+      "machine": 183,
+      "entry": "0x28b0",
+      "interpreter": null,
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ]
+    }
+  ],
+  "symlinks": [
+    {
+      "partition": 7,
+      "path": "/bin/cp",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/touch",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/pwd",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/login",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/true",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/rmdir",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/mkdir",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/echo",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/fgrep",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/chown",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/egrep",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/rm",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/sleep",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/ln",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/tar",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/dmesg",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/grep",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/sed",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/mount",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/chgrp",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/mv",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/ping",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/zcat",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/cpio",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/ls",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/umount",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/gunzip",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/dd",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/false",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/gzip",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/sh",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/usleep",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/ash",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/ping6",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/mknod",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/sync",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/kill",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/date",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/uname",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/pidof",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/chmod",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/bin/mktemp",
+      "target": "busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libutil.so.1",
+      "target": "libutil-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libnss_nis.so.2",
+      "target": "libnss_nis-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libdl.so.2",
+      "target": "libdl-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libnsl.so.1",
+      "target": "libnsl-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libnss_files.so.2",
+      "target": "libnss_files-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libm.so.6",
+      "target": "libm-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libpthread.so.0",
+      "target": "libpthread-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/ld-linux-aarch64.so.1",
+      "target": "ld-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libcrypt.so.1",
+      "target": "libcrypt-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libc.so.6",
+      "target": "libc-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libnss_dns.so.2",
+      "target": "libnss_dns-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/librt.so.1",
+      "target": "librt-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libresolv.so.2",
+      "target": "libresolv-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/lib/libanl.so.1",
+      "target": "libanl-2.25.so"
+    },
+    {
+      "partition": 7,
+      "path": "/network",
+      "target": "cert"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/lsmod",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/ifconfig",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/freeramdisk",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/route",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/insmod",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/getty",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/halt",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/rmmod",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/pivot_root",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/swapon",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/swapoff",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/poweroff",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 7,
+      "path": "/sbin/reboot",
+      "target": "../bin/busybox"
+    },
+    {
+      "partition": 15,
+      "path": "/bin/mkfifo",
+      "target": "../../bin/busybox"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpam_misc.so.0",
+      "target": "libpam_misc.so.0.82.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-3.so",
+      "target": "libnl-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libssp.so.0",
+      "target": "libssp.so.0.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libncurses.so",
+      "target": "libncurses.so.6"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-route-3.so.200",
+      "target": "libnl-route-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libevent-2.1.so.6",
+      "target": "libevent-2.1.so.6.0.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libcrypt.so",
+      "target": "../../lib/libcrypt.so.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpcap.so.1",
+      "target": "libpcap.so.1.8.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpcre.so.1",
+      "target": "libpcre.so.1.2.12"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libcrypto.so.3.0",
+      "target": "libcrypto.so.3"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpng.so.16",
+      "target": "libpng.so.16.37"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libexpat.so.1",
+      "target": "libexpat.so.1.6.11"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-genl-3.so",
+      "target": "libnl-genl-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libz.so",
+      "target": "libz.so.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnss_files.so",
+      "target": "../../lib/libnss_files.so.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnss_dns.so",
+      "target": "../../lib/libnss_dns.so.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpng.so",
+      "target": "libpng.so.16.37"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libtirpc.so.3",
+      "target": "libtirpc.so.3.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libexpat.so",
+      "target": "libexpat.so.1.6.11"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libcom_err.so",
+      "target": "libcom_err.so.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-nf-3.so",
+      "target": "libnl-nf-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpopt.so.0",
+      "target": "libpopt.so.0.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-genl-3.so.200",
+      "target": "libnl-genl-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libiw.so",
+      "target": "libiw.so.30"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libssl.so.3.0",
+      "target": "libssl.so.3"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libopus.so",
+      "target": "libopus.so.0.8.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libusb.so",
+      "target": "libusb-0.1.so.4.4.4"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libgobject-2.0.so.0",
+      "target": "libgobject-2.0.so.0.6400.6"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libprocps.so",
+      "target": "libprocps.so.6.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libSoundTouch.so.1",
+      "target": "libSoundTouch.so.1.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libopus.so.0",
+      "target": "libopus.so.0.8.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpam.so.0",
+      "target": "libpam.so.0.84.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libcom_err.so.2",
+      "target": "libcom_err.so.2.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-cli-3.so",
+      "target": "libnl-cli-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libblkid.so",
+      "target": "libblkid.so.1.1.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpcap.so.1.8",
+      "target": "libpcap.so.1.8.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libuuid.so",
+      "target": "libuuid.so.1.3.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libffi.so",
+      "target": "libffi.so.6.0.4"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libstdc++.so.6",
+      "target": "libstdc++.so.6.0.22"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libe2p.so",
+      "target": "libe2p.so.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-nf-3.so.200",
+      "target": "libnl-nf-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libcurl.so.4",
+      "target": "libcurl.so.4.8.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libglib-2.0.so.0",
+      "target": "libglib-2.0.so.0.6400.6"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libcrypto.so",
+      "target": "libcrypto.so.3"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libmount.so",
+      "target": "libmount.so.1.1.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libSoundTouch.so",
+      "target": "libSoundTouch.so.1.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libgmodule-2.0.so.0",
+      "target": "libgmodule-2.0.so.0.6400.6"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libssh2.so.1",
+      "target": "libssh2.so.1.0.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libncurses.so.6",
+      "target": "libncurses.so.6.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libgmodule-2.0.so",
+      "target": "libgmodule-2.0.so.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libgobject-2.0.so",
+      "target": "libgobject-2.0.so.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libe2p.so.2",
+      "target": "libe2p.so.2.3"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libblkid.so.1",
+      "target": "libblkid.so.1.1.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libjemalloc_ds.so",
+      "target": "libjemalloc_ds.so.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libcurl.so",
+      "target": "libcurl.so.4.8.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libjemalloc.so",
+      "target": "libjemalloc.so.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libuuid.so.1",
+      "target": "libuuid.so.1.3.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnss_nis.so",
+      "target": "../../lib/libnss_nis.so.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libssl.so",
+      "target": "libssl.so.3"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libusb-1.0.so",
+      "target": "libusb-1.0.so.0.1.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-route-3.so",
+      "target": "libnl-route-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libgio-2.0.so.0",
+      "target": "libgio-2.0.so.0.6400.6"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libz.so.1",
+      "target": "libz.so.1.2.11"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libgio-2.0.so",
+      "target": "libgio-2.0.so.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libssp.so",
+      "target": "libssp.so.0.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpcap.so",
+      "target": "libpcap.so.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/librt.so",
+      "target": "../../lib/librt.so.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libglib-2.0.so",
+      "target": "libglib-2.0.so.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libanl.so",
+      "target": "../../lib/libanl.so.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libusb-1.0.so.0",
+      "target": "libusb-1.0.so.0.1.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libffi.so.6",
+      "target": "libffi.so.6.0.4"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libprocps.so.6",
+      "target": "libprocps.so.6.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libresolv.so",
+      "target": "../../lib/libresolv.so.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libevent.so",
+      "target": "libevent-2.1.so.6.0.2"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libstdc++.so",
+      "target": "libstdc++.so.6.0.22"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libssh2.so",
+      "target": "libssh2.so.1.0.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnsl.so",
+      "target": "../../lib/libnsl.so.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpcre.so",
+      "target": "libpcre.so.1.2.12"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-3.so.200",
+      "target": "libnl-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libpopt.so",
+      "target": "libpopt.so.0.0.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libgcc_s.so",
+      "target": "libgcc_s.so.1"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libusb-0.1.so.4",
+      "target": "libusb-0.1.so.4.4.4"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libnl-cli-3.so.200",
+      "target": "libnl-cli-3.so.200.20.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libmount.so.1",
+      "target": "libmount.so.1.1.0"
+    },
+    {
+      "partition": 15,
+      "path": "/lib/libtirpc.so",
+      "target": "libtirpc.so.3.0.0"
+    }
+  ],
+  "scope": "Read-only existing original partition members; no mount or original init/updater execution",
+  "kernel": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "bytes": 6610952,
+    "text_offset": "0x80000",
+    "image_size": "0x6af000",
+    "flags": "0xa",
+    "linux_banner": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025\n"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/originals/7.02-setting-cxd90057.dtb",
+    "sha256": "c5735ad9c6da8c48fb24eeee0bb743d07c486a47d5db19bef13b5eaea24ad280",
+    "bytes": 16875,
+    "header": {
+      "totalsize": 16875,
+      "version": 17,
+      "boot_cpuid_phys": 0
+    },
+    "memreserve": [],
+    "selected_properties": [
+      {
+        "node": "/",
+        "property": "compatible",
+        "hex": "6378642c637864393030353700",
+        "text": "cxd,cxd90057"
+      },
+      {
+        "node": "/",
+        "property": "model",
+        "hex": "435844393030353700",
+        "text": "CXD90057"
+      },
+      {
+        "node": "/memory@400000000",
+        "property": "device_type",
+        "hex": "6d656d6f727900",
+        "text": "memory"
+      },
+      {
+        "node": "/memory@400000000",
+        "property": "reg",
+        "hex": "00000004000000000000000200000000",
+        "cells": [
+          "0x4",
+          "0x0",
+          "0x2",
+          "0x0"
+        ]
+      },
+      {
+        "node": "/soc",
+        "property": "compatible",
+        "hex": "73696d706c652d62757300",
+        "text": "simple-bus"
+      },
+      {
+        "node": "/soc/spi0@F1017000",
+        "property": "compatible",
+        "hex": "61726d2c706c3032320061726d2c7072696d6563656c6c00",
+        "text": "arm,pl022 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3032",
+          "0x32006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/spi0@F1017000/spidev@0",
+        "property": "compatible",
+        "hex": "736f6e792c637864393030353700",
+        "text": "sony,cxd90057"
+      },
+      {
+        "node": "/soc/spi1@F1018000",
+        "property": "compatible",
+        "hex": "61726d2c706c3032320061726d2c7072696d6563656c6c00",
+        "text": "arm,pl022 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3032",
+          "0x32006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/spi1@F1018000/spidev@0",
+        "property": "compatible",
+        "hex": "736f6e792c637864393030353700",
+        "text": "sony,cxd90057"
+      },
+      {
+        "node": "/soc/spi2@F1019000",
+        "property": "compatible",
+        "hex": "61726d2c706c3032320061726d2c7072696d6563656c6c00",
+        "text": "arm,pl022 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3032",
+          "0x32006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/spi2@F1019000/spidev@0",
+        "property": "compatible",
+        "hex": "736f6e792c637864393030353700",
+        "text": "sony,cxd90057"
+      },
+      {
+        "node": "/soc/spi3@F101A000",
+        "property": "compatible",
+        "hex": "61726d2c706c3032320061726d2c7072696d6563656c6c00",
+        "text": "arm,pl022 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3032",
+          "0x32006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/spi3@F101A000/spidev@0",
+        "property": "compatible",
+        "hex": "736f6e792c637864393030353700",
+        "text": "sony,cxd90057"
+      },
+      {
+        "node": "/soc/spi4@F101B000",
+        "property": "compatible",
+        "hex": "61726d2c706c3032320061726d2c7072696d6563656c6c00",
+        "text": "arm,pl022 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3032",
+          "0x32006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/spi4@F101B000/spidev@0",
+        "property": "compatible",
+        "hex": "736f6e792c637864393030353700",
+        "text": "sony,cxd90057"
+      },
+      {
+        "node": "/soc/scu@F1388000",
+        "property": "compatible",
+        "hex": "63786439303078782c73637500737973636f6e0073696d706c652d6d666400",
+        "text": "cxd900xx,scu | syscon | simple-mfd"
+      },
+      {
+        "node": "/soc/scu@F1388000/clock-controller@0",
+        "property": "compatible",
+        "hex": "6378642c39303078782d636c6f636b00",
+        "text": "cxd,900xx-clock",
+        "cells": [
+          "0x6378642c",
+          "0x39303078",
+          "0x782d636c",
+          "0x6f636b00"
+        ]
+      },
+      {
+        "node": "/soc/scu@F1388000/rst@300",
+        "property": "compatible",
+        "hex": "63786439303078782c726573657400",
+        "text": "cxd900xx,reset"
+      },
+      {
+        "node": "/soc/apb_pclk",
+        "property": "compatible",
+        "hex": "66697865642d636c6f636b00",
+        "text": "fixed-clock",
+        "cells": [
+          "0x66697865",
+          "0x642d636c",
+          "0x6f636b00"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1000000",
+        "property": "compatible",
+        "hex": "61726d2c706c3031310061726d2c7072696d6563656c6c00",
+        "text": "arm,pl011 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3031",
+          "0x31006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1000000",
+        "property": "reg",
+        "hex": "00000000f10000000000000000001000",
+        "cells": [
+          "0x0",
+          "0xf1000000",
+          "0x0",
+          "0x1000"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1000000",
+        "property": "interrupts",
+        "hex": "00000000000000da00000004",
+        "cells": [
+          "0x0",
+          "0xda",
+          "0x4"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1000000",
+        "property": "clocks",
+        "hex": "00000002000000320000000200000032",
+        "cells": [
+          "0x2",
+          "0x32",
+          "0x2",
+          "0x32"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1000000",
+        "property": "clock-names",
+        "hex": "75617274636c6b006170625f70636c6b00",
+        "text": "uartclk | apb_pclk"
+      },
+      {
+        "node": "/soc/serial@f1001000",
+        "property": "compatible",
+        "hex": "61726d2c706c3031310061726d2c7072696d6563656c6c00",
+        "text": "arm,pl011 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3031",
+          "0x31006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1001000",
+        "property": "reg",
+        "hex": "00000000f10010000000000000001000",
+        "cells": [
+          "0x0",
+          "0xf1001000",
+          "0x0",
+          "0x1000"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1001000",
+        "property": "interrupts",
+        "hex": "00000000000000db00000004",
+        "cells": [
+          "0x0",
+          "0xdb",
+          "0x4"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1001000",
+        "property": "clocks",
+        "hex": "00000002000000330000000200000033",
+        "cells": [
+          "0x2",
+          "0x33",
+          "0x2",
+          "0x33"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1001000",
+        "property": "clock-names",
+        "hex": "75617274636c6b006170625f70636c6b00",
+        "text": "uartclk | apb_pclk"
+      },
+      {
+        "node": "/soc/serial@f1001000",
+        "property": "assigned-clocks",
+        "hex": "0000000200000058",
+        "cells": [
+          "0x2",
+          "0x58"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1001000",
+        "property": "assigned-clock-parents",
+        "hex": "000000020000000a",
+        "cells": [
+          "0x2",
+          "0xa"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1002000",
+        "property": "compatible",
+        "hex": "61726d2c706c3031310061726d2c7072696d6563656c6c00",
+        "text": "arm,pl011 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3031",
+          "0x31006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1002000",
+        "property": "reg",
+        "hex": "00000000f10020000000000000001000",
+        "cells": [
+          "0x0",
+          "0xf1002000",
+          "0x0",
+          "0x1000"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1002000",
+        "property": "interrupts",
+        "hex": "00000000000000dc00000004",
+        "cells": [
+          "0x0",
+          "0xdc",
+          "0x4"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1002000",
+        "property": "clocks",
+        "hex": "00000002000000340000000200000034",
+        "cells": [
+          "0x2",
+          "0x34",
+          "0x2",
+          "0x34"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1002000",
+        "property": "clock-names",
+        "hex": "75617274636c6b006170625f70636c6b00",
+        "text": "uartclk | apb_pclk"
+      },
+      {
+        "node": "/soc/serial@f1002000",
+        "property": "assigned-clocks",
+        "hex": "0000000200000059",
+        "cells": [
+          "0x2",
+          "0x59"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1002000",
+        "property": "assigned-clock-parents",
+        "hex": "000000020000000a",
+        "cells": [
+          "0x2",
+          "0xa"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1003000",
+        "property": "compatible",
+        "hex": "61726d2c706c3031310061726d2c7072696d6563656c6c00",
+        "text": "arm,pl011 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3031",
+          "0x31006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1003000",
+        "property": "reg",
+        "hex": "00000000f10030000000000000001000",
+        "cells": [
+          "0x0",
+          "0xf1003000",
+          "0x0",
+          "0x1000"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1003000",
+        "property": "interrupts",
+        "hex": "00000000000000dd00000004",
+        "cells": [
+          "0x0",
+          "0xdd",
+          "0x4"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1003000",
+        "property": "clocks",
+        "hex": "00000002000000350000000200000035",
+        "cells": [
+          "0x2",
+          "0x35",
+          "0x2",
+          "0x35"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1003000",
+        "property": "clock-names",
+        "hex": "75617274636c6b006170625f70636c6b00",
+        "text": "uartclk | apb_pclk"
+      },
+      {
+        "node": "/soc/serial@f1003000",
+        "property": "assigned-clocks",
+        "hex": "000000020000005a",
+        "cells": [
+          "0x2",
+          "0x5a"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1003000",
+        "property": "assigned-clock-parents",
+        "hex": "000000020000000a",
+        "cells": [
+          "0x2",
+          "0xa"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1004000",
+        "property": "compatible",
+        "hex": "61726d2c706c3031310061726d2c7072696d6563656c6c00",
+        "text": "arm,pl011 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3031",
+          "0x31006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1004000",
+        "property": "reg",
+        "hex": "00000000f10040000000000000001000",
+        "cells": [
+          "0x0",
+          "0xf1004000",
+          "0x0",
+          "0x1000"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1004000",
+        "property": "interrupts",
+        "hex": "00000000000000de00000004",
+        "cells": [
+          "0x0",
+          "0xde",
+          "0x4"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1004000",
+        "property": "clocks",
+        "hex": "00000002000000360000000200000036",
+        "cells": [
+          "0x2",
+          "0x36",
+          "0x2",
+          "0x36"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1004000",
+        "property": "clock-names",
+        "hex": "75617274636c6b006170625f70636c6b00",
+        "text": "uartclk | apb_pclk"
+      },
+      {
+        "node": "/soc/serial@f1004000",
+        "property": "assigned-clocks",
+        "hex": "000000020000005b",
+        "cells": [
+          "0x2",
+          "0x5b"
+        ]
+      },
+      {
+        "node": "/soc/serial@f1004000",
+        "property": "assigned-clock-parents",
+        "hex": "000000020000000a",
+        "cells": [
+          "0x2",
+          "0xa"
+        ]
+      },
+      {
+        "node": "/soc/i2c0",
+        "property": "compatible",
+        "hex": "736e70732c64657369676e776172652d69326300",
+        "text": "snps,designware-i2c",
+        "cells": [
+          "0x736e7073",
+          "0x2c646573",
+          "0x69676e77",
+          "0x6172652d",
+          "0x69326300"
+        ]
+      },
+      {
+        "node": "/soc/i2c1",
+        "property": "compatible",
+        "hex": "736e70732c64657369676e776172652d69326300",
+        "text": "snps,designware-i2c",
+        "cells": [
+          "0x736e7073",
+          "0x2c646573",
+          "0x69676e77",
+          "0x6172652d",
+          "0x69326300"
+        ]
+      },
+      {
+        "node": "/soc/fusb_otg",
+        "property": "compatible",
+        "hex": "6c696e75782c657874636f6e2d667573625f6f746700",
+        "text": "linux,extcon-fusb_otg"
+      },
+      {
+        "node": "/soc/fusb_dwc3regs",
+        "property": "compatible",
+        "hex": "736e70732c667573625f647763337265677300",
+        "text": "snps,fusb_dwc3regs"
+      },
+      {
+        "node": "/soc/pcie_i",
+        "property": "compatible",
+        "hex": "736e70732c64772d7063696500",
+        "text": "snps,dw-pcie"
+      },
+      {
+        "node": "/soc/pcie_i/interrupt-controller",
+        "property": "interrupt-controller",
+        "hex": "",
+        "cells": []
+      },
+      {
+        "node": "/soc/pcie_i/interrupt-controller",
+        "property": "#address-cells",
+        "hex": "00000000",
+        "text": "",
+        "cells": [
+          "0x0"
+        ]
+      },
+      {
+        "node": "/soc/pcie_i/interrupt-controller",
+        "property": "#interrupt-cells",
+        "hex": "00000001",
+        "cells": [
+          "0x1"
+        ]
+      },
+      {
+        "node": "/soc/pcie_i/interrupt-controller",
+        "property": "linux,phandle",
+        "hex": "00000005",
+        "cells": [
+          "0x5"
+        ]
+      },
+      {
+        "node": "/soc/pcie_i/interrupt-controller",
+        "property": "phandle",
+        "hex": "00000005",
+        "cells": [
+          "0x5"
+        ]
+      },
+      {
+        "node": "/soc/pcie_i_ep",
+        "property": "compatible",
+        "hex": "63786439303078782d706369652d657000",
+        "text": "cxd900xx-pcie-ep"
+      },
+      {
+        "node": "/soc/pcie_m0",
+        "property": "compatible",
+        "hex": "736e70732c64772d7063696500",
+        "text": "snps,dw-pcie"
+      },
+      {
+        "node": "/soc/pcie_m0/interrupt-controller",
+        "property": "interrupt-controller",
+        "hex": "",
+        "cells": []
+      },
+      {
+        "node": "/soc/pcie_m0/interrupt-controller",
+        "property": "#address-cells",
+        "hex": "00000000",
+        "text": "",
+        "cells": [
+          "0x0"
+        ]
+      },
+      {
+        "node": "/soc/pcie_m0/interrupt-controller",
+        "property": "#interrupt-cells",
+        "hex": "00000001",
+        "cells": [
+          "0x1"
+        ]
+      },
+      {
+        "node": "/soc/pcie_m0_ep",
+        "property": "compatible",
+        "hex": "63786439303078782d706369652d657000",
+        "text": "cxd900xx-pcie-ep"
+      },
+      {
+        "node": "/soc/pcie_m1",
+        "property": "compatible",
+        "hex": "736e70732c64772d7063696500",
+        "text": "snps,dw-pcie"
+      },
+      {
+        "node": "/soc/pcie_m1/interrupt-controller",
+        "property": "interrupt-controller",
+        "hex": "",
+        "cells": []
+      },
+      {
+        "node": "/soc/pcie_m1/interrupt-controller",
+        "property": "#address-cells",
+        "hex": "00000000",
+        "text": "",
+        "cells": [
+          "0x0"
+        ]
+      },
+      {
+        "node": "/soc/pcie_m1/interrupt-controller",
+        "property": "#interrupt-cells",
+        "hex": "00000001",
+        "cells": [
+          "0x1"
+        ]
+      },
+      {
+        "node": "/soc/pcie_m1_ep",
+        "property": "compatible",
+        "hex": "63786439303078782d706369652d657000",
+        "text": "cxd900xx-pcie-ep"
+      },
+      {
+        "node": "/soc/pcie_c",
+        "property": "compatible",
+        "hex": "736e70732c64772d7063696500",
+        "text": "snps,dw-pcie"
+      },
+      {
+        "node": "/soc/pcie_c/interrupt-controller",
+        "property": "interrupt-controller",
+        "hex": "",
+        "cells": []
+      },
+      {
+        "node": "/soc/pcie_c/interrupt-controller",
+        "property": "#address-cells",
+        "hex": "00000000",
+        "text": "",
+        "cells": [
+          "0x0"
+        ]
+      },
+      {
+        "node": "/soc/pcie_c/interrupt-controller",
+        "property": "#interrupt-cells",
+        "hex": "00000001",
+        "cells": [
+          "0x1"
+        ]
+      },
+      {
+        "node": "/soc/pcie_c/interrupt-controller",
+        "property": "linux,phandle",
+        "hex": "00000007",
+        "cells": [
+          "0x7"
+        ]
+      },
+      {
+        "node": "/soc/pcie_c/interrupt-controller",
+        "property": "phandle",
+        "hex": "00000007",
+        "cells": [
+          "0x7"
+        ]
+      },
+      {
+        "node": "/soc/pcie_c_ep",
+        "property": "compatible",
+        "hex": "63786439303078782d706369652d657000",
+        "text": "cxd900xx-pcie-ep"
+      },
+      {
+        "node": "/soc/pcie_n",
+        "property": "compatible",
+        "hex": "736e70732c64772d7063696500",
+        "text": "snps,dw-pcie"
+      },
+      {
+        "node": "/soc/pcie_n/interrupt-controller",
+        "property": "interrupt-controller",
+        "hex": "",
+        "cells": []
+      },
+      {
+        "node": "/soc/pcie_n/interrupt-controller",
+        "property": "#address-cells",
+        "hex": "00000000",
+        "text": "",
+        "cells": [
+          "0x0"
+        ]
+      },
+      {
+        "node": "/soc/pcie_n/interrupt-controller",
+        "property": "#interrupt-cells",
+        "hex": "00000001",
+        "cells": [
+          "0x1"
+        ]
+      },
+      {
+        "node": "/soc/pcie_n/interrupt-controller",
+        "property": "linux,phandle",
+        "hex": "00000008",
+        "cells": [
+          "0x8"
+        ]
+      },
+      {
+        "node": "/soc/pcie_n/interrupt-controller",
+        "property": "phandle",
+        "hex": "00000008",
+        "cells": [
+          "0x8"
+        ]
+      },
+      {
+        "node": "/soc/pcie_n_ep",
+        "property": "compatible",
+        "hex": "63786439303078782d706369652d657000",
+        "text": "cxd900xx-pcie-ep"
+      },
+      {
+        "node": "/soc/emmc0",
+        "property": "compatible",
+        "hex": "61726173616e2c736468636900",
+        "text": "arasan,sdhci"
+      },
+      {
+        "node": "/soc/fec",
+        "property": "compatible",
+        "hex": "6465762c66656300",
+        "text": "dev,fec",
+        "cells": [
+          "0x6465762c",
+          "0x66656300"
+        ]
+      },
+      {
+        "node": "/soc/spacc@F7FC0000",
+        "property": "compatible",
+        "hex": "736e70732c64657369676e776172652d656c706d656d00",
+        "text": "snps,designware-elpmem"
+      },
+      {
+        "node": "/soc/mdma@F1056000",
+        "property": "compatible",
+        "hex": "61726d2c706c3333300061726d2c7072696d6563656c6c00",
+        "text": "arm,pl330 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3333",
+          "0x30006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/mdma@F1057000",
+        "property": "compatible",
+        "hex": "61726d2c706c3333300061726d2c7072696d6563656c6c00",
+        "text": "arm,pl330 | arm,primecell",
+        "cells": [
+          "0x61726d2c",
+          "0x706c3333",
+          "0x30006172",
+          "0x6d2c7072",
+          "0x696d6563",
+          "0x656c6c00"
+        ]
+      },
+      {
+        "node": "/soc/usbs",
+        "property": "compatible",
+        "hex": "637864636869702c6477633300",
+        "text": "cxdchip,dwc3"
+      },
+      {
+        "node": "/soc/usbs/usb@0",
+        "property": "compatible",
+        "hex": "736e70732c6477633300",
+        "text": "snps,dwc3"
+      },
+      {
+        "node": "/cpus",
+        "property": "#address-cells",
+        "hex": "00000002",
+        "cells": [
+          "0x2"
+        ]
+      },
+      {
+        "node": "/cpus",
+        "property": "#size-cells",
+        "hex": "00000000",
+        "text": "",
+        "cells": [
+          "0x0"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@0",
+        "property": "device_type",
+        "hex": "63707500",
+        "text": "cpu",
+        "cells": [
+          "0x63707500"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@0",
+        "property": "compatible",
+        "hex": "61726d2c636f727465782d6133350061726d2c61726d763800",
+        "text": "arm,cortex-a35 | arm,armv8"
+      },
+      {
+        "node": "/cpus/cpu@0",
+        "property": "reg",
+        "hex": "0000000000000000",
+        "text": "",
+        "cells": [
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@0",
+        "property": "next-level-cache",
+        "hex": "0000000b",
+        "cells": [
+          "0xb"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@0",
+        "property": "enable-method",
+        "hex": "7370696e2d7461626c6500",
+        "text": "spin-table"
+      },
+      {
+        "node": "/cpus/cpu@0",
+        "property": "cpu-release-addr",
+        "hex": "0000000000000000",
+        "text": "",
+        "cells": [
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@1",
+        "property": "device_type",
+        "hex": "63707500",
+        "text": "cpu",
+        "cells": [
+          "0x63707500"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@1",
+        "property": "compatible",
+        "hex": "61726d2c636f727465782d6133350061726d2c61726d763800",
+        "text": "arm,cortex-a35 | arm,armv8"
+      },
+      {
+        "node": "/cpus/cpu@1",
+        "property": "reg",
+        "hex": "0000000000000001",
+        "cells": [
+          "0x0",
+          "0x1"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@1",
+        "property": "next-level-cache",
+        "hex": "0000000b",
+        "cells": [
+          "0xb"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@1",
+        "property": "enable-method",
+        "hex": "7370696e2d7461626c6500",
+        "text": "spin-table"
+      },
+      {
+        "node": "/cpus/cpu@1",
+        "property": "cpu-release-addr",
+        "hex": "0000000000000000",
+        "text": "",
+        "cells": [
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@2",
+        "property": "device_type",
+        "hex": "63707500",
+        "text": "cpu",
+        "cells": [
+          "0x63707500"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@2",
+        "property": "compatible",
+        "hex": "61726d2c636f727465782d6133350061726d2c61726d763800",
+        "text": "arm,cortex-a35 | arm,armv8"
+      },
+      {
+        "node": "/cpus/cpu@2",
+        "property": "reg",
+        "hex": "0000000000000002",
+        "cells": [
+          "0x0",
+          "0x2"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@2",
+        "property": "next-level-cache",
+        "hex": "0000000b",
+        "cells": [
+          "0xb"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@2",
+        "property": "enable-method",
+        "hex": "7370696e2d7461626c6500",
+        "text": "spin-table"
+      },
+      {
+        "node": "/cpus/cpu@2",
+        "property": "cpu-release-addr",
+        "hex": "0000000000000000",
+        "text": "",
+        "cells": [
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@3",
+        "property": "device_type",
+        "hex": "63707500",
+        "text": "cpu",
+        "cells": [
+          "0x63707500"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@3",
+        "property": "compatible",
+        "hex": "61726d2c636f727465782d6133350061726d2c61726d763800",
+        "text": "arm,cortex-a35 | arm,armv8"
+      },
+      {
+        "node": "/cpus/cpu@3",
+        "property": "reg",
+        "hex": "0000000000000003",
+        "cells": [
+          "0x0",
+          "0x3"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@3",
+        "property": "next-level-cache",
+        "hex": "0000000b",
+        "cells": [
+          "0xb"
+        ]
+      },
+      {
+        "node": "/cpus/cpu@3",
+        "property": "enable-method",
+        "hex": "7370696e2d7461626c6500",
+        "text": "spin-table"
+      },
+      {
+        "node": "/cpus/cpu@3",
+        "property": "cpu-release-addr",
+        "hex": "0000000000000000",
+        "text": "",
+        "cells": [
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "node": "/cpus/l2-cache",
+        "property": "compatible",
+        "hex": "636163686500",
+        "text": "cache"
+      },
+      {
+        "node": "/cpus/l2-cache",
+        "property": "linux,phandle",
+        "hex": "0000000b",
+        "cells": [
+          "0xb"
+        ]
+      },
+      {
+        "node": "/cpus/l2-cache",
+        "property": "phandle",
+        "hex": "0000000b",
+        "cells": [
+          "0xb"
+        ]
+      },
+      {
+        "node": "/interrupt-controller@f13A0000",
+        "property": "compatible",
+        "hex": "61726d2c6769632d34303000",
+        "text": "arm,gic-400",
+        "cells": [
+          "0x61726d2c",
+          "0x6769632d",
+          "0x34303000"
+        ]
+      },
+      {
+        "node": "/interrupt-controller@f13A0000",
+        "property": "#interrupt-cells",
+        "hex": "00000003",
+        "cells": [
+          "0x3"
+        ]
+      },
+      {
+        "node": "/interrupt-controller@f13A0000",
+        "property": "interrupt-controller",
+        "hex": "",
+        "cells": []
+      },
+      {
+        "node": "/interrupt-controller@f13A0000",
+        "property": "linear-map",
+        "hex": "",
+        "cells": []
+      },
+      {
+        "node": "/interrupt-controller@f13A0000",
+        "property": "reg",
+        "hex": "00000000f13a1000000000000000100000000000f13a2000000000000000200000000000f13a4000000000000000200000000000f13a60000000000000002000",
+        "cells": [
+          "0x0",
+          "0xf13a1000",
+          "0x0",
+          "0x1000",
+          "0x0",
+          "0xf13a2000",
+          "0x0",
+          "0x2000",
+          "0x0",
+          "0xf13a4000",
+          "0x0",
+          "0x2000",
+          "0x0",
+          "0xf13a6000",
+          "0x0",
+          "0x2000"
+        ]
+      },
+      {
+        "node": "/interrupt-controller@f13A0000",
+        "property": "interrupts",
+        "hex": "000000010000000900000308",
+        "cells": [
+          "0x1",
+          "0x9",
+          "0x308"
+        ]
+      },
+      {
+        "node": "/interrupt-controller@f13A0000",
+        "property": "linux,phandle",
+        "hex": "00000001",
+        "cells": [
+          "0x1"
+        ]
+      },
+      {
+        "node": "/interrupt-controller@f13A0000",
+        "property": "phandle",
+        "hex": "00000001",
+        "cells": [
+          "0x1"
+        ]
+      },
+      {
+        "node": "/pmu",
+        "property": "compatible",
+        "hex": "61726d2c61726d76382d706d75763300",
+        "text": "arm,armv8-pmuv3",
+        "cells": [
+          "0x61726d2c",
+          "0x61726d76",
+          "0x382d706d",
+          "0x75763300"
+        ]
+      },
+      {
+        "node": "/timer",
+        "property": "compatible",
+        "hex": "61726d2c61726d76382d74696d657200",
+        "text": "arm,armv8-timer",
+        "cells": [
+          "0x61726d2c",
+          "0x61726d76",
+          "0x382d7469",
+          "0x6d657200"
+        ]
+      },
+      {
+        "node": "/timer",
+        "property": "interrupt-parent",
+        "hex": "00000001",
+        "cells": [
+          "0x1"
+        ]
+      },
+      {
+        "node": "/timer",
+        "property": "interrupts",
+        "hex": "000000010000000d00000308000000010000000e00000308000000010000000b00000308000000010000000a00000308",
+        "cells": [
+          "0x1",
+          "0xd",
+          "0x308",
+          "0x1",
+          "0xe",
+          "0x308",
+          "0x1",
+          "0xb",
+          "0x308",
+          "0x1",
+          "0xa",
+          "0x308"
+        ]
+      },
+      {
+        "node": "/timer",
+        "property": "clock-frequency",
+        "hex": "001e8480",
+        "cells": [
+          "0x1e8480"
+        ]
+      },
+      {
+        "node": "/chosen",
+        "property": "stdout-path",
+        "hex": "73657269616c303a3436303830306e3800",
+        "text": "serial0:460800n8"
+      }
+    ]
+  },
+  "probe_initramfs": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-minimal-original-userspace.cpio.gz",
+    "bytes": 905167,
+    "sha256": "4b65cb8709ebb08a80f31c2f1c2f04787d5b07a5dc1286a207bf937a4d453993",
+    "custom_init": "#!/bin/busybox sh\necho FX3_ORIGINAL_BUSYBOX_REACHED\n/bin/busybox uname -a\n/bin/busybox echo FX3_VM_PROBE_END\nwhile true; do /bin/busybox sleep 1; done\n",
+    "members": [
+      {
+        "path": "bin",
+        "mode": "0o40755",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "lib",
+        "mode": "0o40755",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "dev",
+        "mode": "0o40755",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "proc",
+        "mode": "0o40755",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "sys",
+        "mode": "0o40755",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "bin/busybox",
+        "mode": "0o100755",
+        "bytes": 423000,
+        "sha256": "c3297a7086efe9a001c39fa98d74d125992cf3225cf353ab6ff2238d827c7799"
+      },
+      {
+        "path": "lib/libc-2.25.so",
+        "mode": "0o100755",
+        "bytes": 1283936,
+        "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+      },
+      {
+        "path": "lib/ld-2.25.so",
+        "mode": "0o100755",
+        "bytes": 120616,
+        "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+      },
+      {
+        "path": "lib/ld-linux-aarch64.so.1",
+        "mode": "0o120777",
+        "bytes": 10,
+        "sha256": "c4d8ce90c4e8d0aac6bd8545e39dd098049cfa702dba2dd788bdccec0e24c616"
+      },
+      {
+        "path": "lib/libc.so.6",
+        "mode": "0o120777",
+        "bytes": 12,
+        "sha256": "e453935786dc5cbb3c2b341c0853e19a34c69018625d9fc618413dfce851f3b2"
+      },
+      {
+        "path": "bin/sh",
+        "mode": "0o120777",
+        "bytes": 7,
+        "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91"
+      },
+      {
+        "path": "init",
+        "mode": "0o100755",
+        "bytes": 151,
+        "sha256": "e22e06a701c7de47d833e55ebf5000098928895da7b5a606093124030c301984"
+      },
+      {
+        "path": "dev/console",
+        "mode": "0o20600",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "not_full_sony_init": true
+  }
+}

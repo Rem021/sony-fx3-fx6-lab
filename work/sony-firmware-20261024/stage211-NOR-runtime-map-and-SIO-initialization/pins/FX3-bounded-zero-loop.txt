@@ -1,0 +1,7 @@
+fe04c750 00008052 mov      w0, #0
+fe04c754 03000014 b        #0xfe04c760
+fe04c758 204400b8 str      w0, [x1], #4
+fe04c75c 421000d1 sub      x2, x2, #4
+fe04c760 5f0000f1 cmp      x2, #0
+fe04c764 a1ffff54 b.ne     #0xfe04c758
+fe04c768 c0035fd6 ret      

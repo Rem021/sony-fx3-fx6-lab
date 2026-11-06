@@ -1,0 +1,23 @@
+{
+  "inputs": {
+    "parent_receiver.c": {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/parent_receiver.c",
+      "sha256": "82d224b92f4f19ac02f8d421fb7751fadd8a8afc6f925c8da17413b07e3f6771"
+    },
+    "collector-ack.c": {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/collector-ack.c",
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    }
+  },
+  "outputs": {
+    "parent.c": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5",
+    "collector.c": "175c95310663f7b2388d7ac9a0a0bc668af86044ca332a71dfc8f7659bea345e"
+  },
+  "own_sources_only": true,
+  "changes": [
+    "runtime job and packetv3",
+    "runtime caller/FD/expiry",
+    "parent restores saved mask only after exact sentinel",
+    "explicit channel handoff ownership"
+  ]
+}

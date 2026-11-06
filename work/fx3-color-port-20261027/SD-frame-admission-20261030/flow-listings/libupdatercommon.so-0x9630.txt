@@ -1,0 +1,16 @@
+_ZN7Updater10RingBuffer11GetDataSizeEv
+00009630 stp       x29, x30, [sp, #-0x30]!
+00009634 mov       x29, sp
+00009638 stp       x19, x20, [sp, #0x10]
+0000963c add       x19, x29, #0x30
+00009640 mov       x20, x0
+00009644 add       x0, x0, #0x38
+00009648 str       x0, [x19, #-8]!
+0000964c bl        #0x6a90 ; pthread_mutex_lock
+00009650 ldr       x20, [x20, #0x28]
+00009654 mov       x0, x19
+00009658 bl        #0x956c
+0000965c mov       x0, x20
+00009660 ldp       x19, x20, [sp, #0x10]
+00009664 ldp       x29, x30, [sp], #0x30
+00009668 ret       

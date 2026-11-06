@@ -1,0 +1,37 @@
+{
+  "checked_utc": "2026-11-05T04:32:47.496001+00:00",
+  "status": "formal_offline_delivery_accepted_runtime_unverified",
+  "source_manifests": {
+    "SOURCE-FREEZE.json": {
+      "sha256": "10265a99fd1a74dc23d85477c82f078485863b92ed664e12132e0a9cf41ce717",
+      "entries": 41,
+      "mismatches": []
+    },
+    "CORE-SOURCE-FREEZE.json": {
+      "sha256": "3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9",
+      "entries": 36,
+      "mismatches": []
+    }
+  },
+  "actual_import_binding_sha256": "17753bb5ae1906bf800a651d3954f62bf75015f23d2bcde617a8090f55736de7",
+  "actual_import_binding": {
+    "mode": "import_only_main_not_called",
+    "modules": {
+      "startup_observation": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/startup_observation.py",
+      "trial_ring_cached": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/trial_ring_cached.py",
+      "trial_log_v4_mss": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/trial_log_v4_mss.py",
+      "qmp_line_transport": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/qmp_line_transport.py",
+      "gate_input_usability": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/gate_input_usability.py",
+      "runtime_resource_guard": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/runtime_resource_guard.py",
+      "trial_web_r24_review_snapshot": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/trial_web_r24_review_snapshot.py"
+    },
+    "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/evidence/prepared-6540dfe4e72f"
+  },
+  "offline_case_count": 43,
+  "scope": "Source hashes and recorded import-only binding independently checked; source/behavior review and offline receipt inspection performed. No rerun of VM or full test matrix. Final report/manifest and worker_done pending.",
+  "formal_message": "msg_9a548bd620a0",
+  "delivery_items_verified": 100,
+  "original_inputs_verified": 94,
+  "manifest_sha256": "e04a86e60d0b311d57df50a6060064f6f57e02a33d3c04c015922e6a37749a49",
+  "accepted_utc": "2026-11-05T04:39:51.436113+00:00"
+}

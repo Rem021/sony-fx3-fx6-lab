@@ -1,0 +1,26 @@
+00003308 stp        x29, x30, [sp, #-0x20]!
+0000330c cmp        w1, #0
+00003310 ccmp       x3, #0, #4, ne
+00003314 mov        x29, sp
+00003318 stp        x19, x20, [sp, #0x10]
+0000331c mov        w19, #-5
+00003320 b.eq       #0x3360
+00003324 mov        w20, w2
+00003328 mov        w0, w1
+0000332c mov        x2, x3
+00003330 sxtw       x1, w20
+00003334 bl         #0x2930 ; ioctl
+00003338 mov        w19, w0
+0000333c cbz        w0, #0x3360
+00003340 bl         #0x2a10 ; __errno_location
+00003344 ldr        w19, [x0]
+00003348 uxtb       w3, w20
+0000334c mov        w2, #0xb
+00003350 mov        w4, w19
+00003354 mov        w1, #1
+00003358 mov        w0, #0x36
+0000335c bl         #0x2aa0 ; usbcmd_trace_out
+00003360 mov        w0, w19
+00003364 ldp        x19, x20, [sp, #0x10]
+00003368 ldp        x29, x30, [sp], #0x20
+0000336c ret        

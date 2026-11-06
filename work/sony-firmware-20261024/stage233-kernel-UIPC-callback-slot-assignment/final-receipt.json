@@ -1,0 +1,108 @@
+{
+  "schema": "fx3-stage233-kernel-receiver-assignment-seal-v1",
+  "created_utc": "2026-10-30T17:45:02.046477+00:00",
+  "previous_manifest_sha256": "be6c85c68c441c6370eb175fa894c3c12288a523ec75f4f6b4c25e2b29bcd22c",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/README.md",
+      "bytes": 4731,
+      "sha256": "3bd8e60e058bff825bf0c6f46fe167d23110a15d0192147ebc9a3f02e2b14301"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/audit_kernel.py",
+      "bytes": 7452,
+      "sha256": "89fd027fe8f2c6ac47bb577eeea941d9aa1b47f1f93866caaecc587fb5c464be"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/check_receiver_schedules.py",
+      "bytes": 3909,
+      "sha256": "e1932d7bf85f4571628aeb30eece2ac211d41b49a9cce062e6d476a57d567d89"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/goal-status-after.json",
+      "bytes": 500736,
+      "sha256": "57c09006f93cf6c15733fe17a1502d9f2dc8c6d70ecc84b85154db8613b35779"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/goal-status-before.json",
+      "bytes": 496137,
+      "sha256": "dfa51481edce7726983032fd7d062ff9fdc139ddc748684acddbbbc01429bea1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/kernel-assignment-audit-final.json",
+      "bytes": 94331,
+      "sha256": "d2488fb31c0e14ad508a31f41823f116d1d2ed30b6ffa5d4c21038737c42306f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/kernel-assignment-audit.json",
+      "bytes": 79429,
+      "sha256": "950ac65de016cffd6a03c93f52c6a2749a14dd9d687fb8c6cf84e6d766f73582"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/native-goal-observed.json",
+      "bytes": 384,
+      "sha256": "703ba1015f7b06d265bc413b2b627bb726efaab05bfac7fa47ce56c4184894a1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/readme-after.md",
+      "bytes": 106472,
+      "sha256": "c3478a04da86e72555255fb5577e71521e4886ab6c5d6be4fea40ebc516274ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/readme-before.md",
+      "bytes": 105613,
+      "sha256": "36cb7cf48e578ed03d15a0788f88f5588b3de576307cfb2ec580a54c8fc6053d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/readme-rebased-before.md",
+      "bytes": 106066,
+      "sha256": "9b82037700a4266ce7a4cc88e702cc7e20a5ed97efe9792ccd88736aadc78271"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/receiver-schedule-results.json",
+      "bytes": 17352,
+      "sha256": "539cc4c35099fea4b12754c01472ab66cdf6a94101778b050bd78bf1c32d554e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/seal_stage.py",
+      "bytes": 12277,
+      "sha256": "ee09cbe84020c23454f49c0fac91fd26eb07a43d8b9aa5909937edc2c1c3dfd1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/source-rebinding.json",
+      "bytes": 490,
+      "sha256": "ed36973b0f3c9d03a49e8bdb551581c046e295a5796042cae0116d844c0b6b12"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage233-kernel-UIPC-callback-slot-assignment/verification-receipt.json",
+      "bytes": 1506,
+      "sha256": "6e5121ea661ab634fc9fe4cd08c70343a72797f0b347900e4e1b973e6430bbde"
+    }
+  ],
+  "member_count": 15,
+  "mutable_heads_not_manifest_members": true,
+  "goal_before_sha256": "dfa51481edce7726983032fd7d062ff9fdc139ddc748684acddbbbc01429bea1",
+  "goal_after_sha256": "57c09006f93cf6c15733fe17a1502d9f2dc8c6d70ecc84b85154db8613b35779",
+  "status": "KERNEL_SHARED_CALLBACK_FIFO_AND_TASK_SLOTS_PINNED_231_GUARD_PRESERVED",
+  "original_kernel_module": 1,
+  "explicit_static_slices": 5,
+  "manual_instruction_checks": 54,
+  "dispatch_entries": 17,
+  "supported_receiver_slots": 4,
+  "conditional_receiver_schedules": 16,
+  "same_slot_observed": 4,
+  "cross_slot_HELD48": 12,
+  "actual_current_receiver_count_or_scheduler_measured": false,
+  "original_Sony_glibc_Linux_driver_or_public_camera_code_executed": false,
+  "new_device_USB_cache_admin_auth_upload_or_firmware_writes": 0,
+  "current231_binary_and_guards_unchanged": true,
+  "plan_preparer_implemented": false,
+  "probe_deployable": false,
+  "actual_device_backup_or_recovery_verified": false,
+  "all16_requirements_and_authorizations_unchanged": true,
+  "formal23_sources_release04_05_unchanged": true,
+  "root195_pending_unlaunched": true,
+  "previous_goal_turn_classification": "progress:232 sealed writer/path/receive-thread contract evidence",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

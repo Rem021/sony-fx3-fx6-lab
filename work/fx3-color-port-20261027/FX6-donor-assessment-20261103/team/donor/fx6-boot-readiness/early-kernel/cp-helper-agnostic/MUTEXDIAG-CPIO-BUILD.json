@@ -1,0 +1,24 @@
+{
+  "schema": "fx6-hybrid-mutexdiag-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal21.cpio",
+  "source_sha256": "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal37.cpio",
+  "output_sha256": "e03087540226b92db8a57c8be67fed1e1a1371881c46c332091e0ed5db29ab47",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 21195,
+    "new_bytes": 21220,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libmutexdiag.so",
+      "bytes": 4624,
+      "sha256": "35df7d9103cb44db73f872f4e7546429f8954da65f89cc21f4ec318cb14d17e4"
+    }
+  ],
+  "source_member_count": 1158
+}

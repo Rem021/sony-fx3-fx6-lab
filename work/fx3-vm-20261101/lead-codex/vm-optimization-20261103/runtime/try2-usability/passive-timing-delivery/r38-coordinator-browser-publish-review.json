@@ -1,0 +1,90 @@
+{
+  "schema": "fx3-coordinator-browser-publish-review-v1",
+  "created_UTC": "2026-11-05T08:43:57.561887+00:00",
+  "status": "read_only_cause_unresolved",
+  "input_SHA256": {
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/trial_ring_cached.py": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/trial_web_r24_review_snapshot.py": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/trial_web_v22_navigation_review.py": "1459d5b7afd792e291e51f54fd37e6730335c34d39ebf0988a9eba6384d0d521",
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/r38-vm-29076c7ba60e/step-01-attempt-01/observation-1/observation-result.json": "16e573c77993c9b172042297d6884bffae0d2395ec9dc07c2893daf51781f8c9",
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/r38-vm-29076c7ba60e/traffic.har": "e9b17bfb810db496762ee39fe19862df3a66070a30f57433394d78e612c97462",
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v35diag-n64-r36-r37-4d245250/osd-ring-readback.json": "b522ed06963de28e57b4efcde5989fef959248201f96970eda5ec3bd034ecd57"
+  },
+  "facts": [
+    {
+      "source": "r37/trial_ring_cached.py:136-159",
+      "finding": "host_monotonic sampled after pixel conversion and PNG encoding, BEFORE three temp-file writes/replaces and state.publish; not HTTP-visible publication timestamp."
+    },
+    {
+      "source": "v25-r21-recovery-integration/trial_web_v22_navigation_review.py:387-462",
+      "finding": "tick awaits status, then frame blob fetch and image.onload when content changes; next tick scheduled 400ms after completion. This is not a strict 400ms display-latency upper bound."
+    },
+    {
+      "source": "v25-r21-recovery-integration/trial_web_v22_navigation_review.py:329,638",
+      "finding": "request uses cache no-store; HTTP reply uses Cache-Control no-store. Source does not support claiming browser HTTP cache as established cause."
+    },
+    {
+      "source": "r37/trial_web_r24_review_snapshot.py:143-174",
+      "finding": "r24 inherits refresh/render loop and adjusts review/lifecycle handling; no replacement refresh interval in this PAGE construction."
+    }
+  ],
+  "retained_frames": [
+    {
+      "sequence": 197,
+      "host_monotonic": 448261.915593958,
+      "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "pixel_source_sequence": 196
+    },
+    {
+      "sequence": 198,
+      "host_monotonic": 448265.9496995,
+      "PNG_sha256": "abc20e41bb450786b3f3edd6a66c79cff80ce2b264e3e0230592eda1050a72e5",
+      "pixel_source_sequence": 198
+    },
+    {
+      "sequence": 199,
+      "host_monotonic": 448268.713218125,
+      "PNG_sha256": "e3be36326011c3ca84cd3d69283dd53ec5833efb775bc32ce574d4e2850257fd",
+      "pixel_source_sequence": 199
+    },
+    {
+      "sequence": 200,
+      "host_monotonic": 448271.059008875,
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "pixel_source_sequence": 200
+    }
+  ],
+  "first_observation": {
+    "before": {
+      "performance_ms": 99015.70000004768,
+      "displayed_frame": {
+        "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+        "content_generation": 31,
+        "sequence": 197
+      }
+    },
+    "after": {
+      "performance_ms": 99093.20000004768,
+      "displayed_frame": {
+        "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+        "content_generation": 31,
+        "sequence": 197
+      }
+    }
+  },
+  "HAR_entries": 0,
+  "unknowns": [
+    "No timestamp of state.publish completion for frame198, nor actual status response/frame response/image load timings retained.",
+    "Cannot partition host file-write time, publication lock wait, tick phase, HTTP transfer, image decode or browser scheduling.",
+    "Host monotonic and browser performance clocks are not calibrated by this review; do not directly subtract them.",
+    "400ms polling may contribute to a short stale display; this does not explain or prove the source of the 9.495s guest-domain key-up to frame200 log interval."
+  ],
+  "decision": "Do not reduce polling interval or reorder publication/file writes from this evidence. Prioritize r41 command-entry/return timing. If a later authorized VM still needs browser attribution, retain HAR and explicit host publish/browser fetch/load timestamps in their own clock domains before tuning.",
+  "changes": {
+    "source": false,
+    "VM_started": false,
+    "deployed": false,
+    "FX3_configuration": false,
+    "FX6_boot_proved": false
+  }
+}

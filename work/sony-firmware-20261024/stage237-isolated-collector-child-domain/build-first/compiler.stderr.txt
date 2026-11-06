@@ -1,0 +1,7 @@
+/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage237-isolated-collector-child-domain/build-first/collector.c:28:3: error: misleading indentation; statement is not part of the previous 'for' [-Werror,-Wmisleading-indentation]
+   28 |  }return 0;
+      |   ^
+/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage237-isolated-collector-child-domain/build-first/collector.c:24:2: note: previous statement is here
+   24 |  for(u32 i=0;i+size<n;i++)if((i==0||s[i-1]=='\n')&&eq(s+i,(const u8 *)key,size)){
+      |  ^
+1 error generated.

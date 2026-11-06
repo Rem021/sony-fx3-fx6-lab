@@ -1,0 +1,54 @@
+fe052ee8 f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+fe052eec 08e04839 ldrb     w8, [x0, #0x238]
+fe052ef0 f30300aa mov      x19, x0
+fe052ef4 88001037 tbnz     w8, #2, #0xfe052f04
+fe052ef8 68d64739 ldrb     w8, [x19, #0x1f5]
+fe052efc 1f090071 cmp      w8, #2
+fe052f00 21010054 b.ne     #0xfe052f24
+fe052f04 61000090 adrp     x1, #0xfe05e000
+fe052f08 21d41291 add      x1, x1, #0x4b5
+fe052f0c e0031f32 mov      w0, #2
+fe052f10 a90c0094 bl       #0xfe0561b4
+fe052f14 e0031f2a mov      w0, wzr
+fe052f18 7fba01b9 str      wzr, [x19, #0x1b8]
+fe052f1c f37bc1a8 ldp      x19, x30, [sp], #0x10
+fe052f20 c0035fd6 ret      
+fe052f24 a41c0094 bl       #0xfe05a1b4
+fe052f28 e803002a mov      w8, w0
+fe052f2c 60ba01b9 str      w0, [x19, #0x1b8]
+fe052f30 e0000034 cbz      w0, #0xfe052f4c
+fe052f34 61000090 adrp     x1, #0xfe05e000
+fe052f38 21a41f91 add      x1, x1, #0x7e9
+fe052f3c e0070032 mov      w0, #3
+fe052f40 e203082a mov      w2, w8
+fe052f44 9c0c0094 bl       #0xfe0561b4
+fe052f48 60ba41b9 ldr      w0, [x19, #0x1b8]
+fe052f4c f37bc1a8 ldp      x19, x30, [sp], #0x10
+fe052f50 c0035fd6 ret      
+fe052f54 f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+fe052f58 08e04839 ldrb     w8, [x0, #0x238]
+fe052f5c f30300aa mov      x19, x0
+fe052f60 88001037 tbnz     w8, #2, #0xfe052f70
+fe052f64 68d64739 ldrb     w8, [x19, #0x1f5]
+fe052f68 1f090071 cmp      w8, #2
+fe052f6c 21010054 b.ne     #0xfe052f90
+fe052f70 61000090 adrp     x1, #0xfe05e000
+fe052f74 21d41291 add      x1, x1, #0x4b5
+fe052f78 e0031f32 mov      w0, #2
+fe052f7c 8e0c0094 bl       #0xfe0561b4
+fe052f80 e0031f2a mov      w0, wzr
+fe052f84 7fba01b9 str      wzr, [x19, #0x1b8]
+fe052f88 f37bc1a8 ldp      x19, x30, [sp], #0x10
+fe052f8c c0035fd6 ret      
+fe052f90 c91c0094 bl       #0xfe05a2b4
+fe052f94 e803002a mov      w8, w0
+fe052f98 60ba01b9 str      w0, [x19, #0x1b8]
+fe052f9c e0000034 cbz      w0, #0xfe052fb8
+fe052fa0 61000090 adrp     x1, #0xfe05e000
+fe052fa4 21a41f91 add      x1, x1, #0x7e9
+fe052fa8 e0070032 mov      w0, #3
+fe052fac e203082a mov      w2, w8
+fe052fb0 810c0094 bl       #0xfe0561b4
+fe052fb4 60ba41b9 ldr      w0, [x19, #0x1b8]
+fe052fb8 f37bc1a8 ldp      x19, x30, [sp], #0x10
+fe052fbc c0035fd6 ret      

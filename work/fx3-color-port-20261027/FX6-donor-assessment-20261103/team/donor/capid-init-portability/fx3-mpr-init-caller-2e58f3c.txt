@@ -1,0 +1,66 @@
+
+work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2e58e9c: b94002a0     	ldr	w0, [x21]
+ 2e58ea0: b9020ba0     	str	w0, [x29, #0x208]
+ 2e58ea4: 34000061     	cbz	w1, 0x2e58eb0 <Application_System_Init+0x1769320>
+ 2e58ea8: 52800021     	mov	w1, #0x1                // =1
+ 2e58eac: b90223a1     	str	w1, [x29, #0x220]
+ 2e58eb0: b94022a1     	ldr	w1, [x21, #0x20]
+ 2e58eb4: 340000a1     	cbz	w1, 0x2e58ec8 <Application_System_Init+0x1769338>
+ 2e58eb8: 7100043f     	cmp	w1, #0x1
+ 2e58ebc: 52801fe2     	mov	w2, #0xff               // =255
+ 2e58ec0: 1a820021     	csel	w1, w1, w2, eq
+ 2e58ec4: b9022fa1     	str	w1, [x29, #0x22c]
+ 2e58ec8: b84192a2     	ldur	w2, [x21, #0x19]
+ 2e58ecc: 9107b2c1     	add	x1, x22, #0x1ec
+ 2e58ed0: d37e7c00     	ubfiz	x0, x0, #2, #32
+ 2e58ed4: b90227a2     	str	w2, [x29, #0x224]
+ 2e58ed8: 91001000     	add	x0, x0, #0x4
+ 2e58edc: b841b2a2     	ldur	w2, [x21, #0x1b]
+ 2e58ee0: b8002022     	stur	w2, [x1, #0x2]
+ 2e58ee4: 52806181     	mov	w1, #0x30c              // =780
+ 2e58ee8: 790457a1     	strh	w1, [x29, #0x22a]
+ 2e58eec: d2800001     	mov	x1, #0x0                // =0
+ 2e58ef0: 91001021     	add	x1, x1, #0x4
+ 2e58ef4: eb01001f     	cmp	x0, x1
+ 2e58ef8: 540000a0     	b.eq	0x2e58f0c <Application_System_Init+0x176937c>
+ 2e58efc: 8b0102c2     	add	x2, x22, x1
+ 2e58f00: b8616aa3     	ldr	w3, [x21, x1]
+ 2e58f04: b901d043     	str	w3, [x2, #0x1d0]
+ 2e58f08: 17fffffa     	b	0x2e58ef0 <Application_System_Init+0x1769360>
+ 2e58f0c: b9420fa4     	ldr	w4, [x29, #0x20c]
+ 2e58f10: 912b8294     	add	x20, x20, #0xae0
+ 2e58f14: b94213a5     	ldr	w5, [x29, #0x210]
+ 2e58f18: 91351e73     	add	x19, x19, #0xd47
+ 2e58f1c: b94217a6     	ldr	w6, [x29, #0x214]
+ 2e58f20: f0005980     	adrp	x0, 0x398b000
+ 2e58f24: aa1403e2     	mov	x2, x20
+ 2e58f28: aa1303e1     	mov	x1, x19
+ 2e58f2c: 9118ec00     	add	x0, x0, #0x63b
+ 2e58f30: 528132a3     	mov	w3, #0x995              // =2453
+ 2e58f34: 94045bf6     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e58f38: aa1603e0     	mov	x0, x22
+ 2e58f3c: 979ce2c1     	bl	0x1591a40 <_ZN3mpr4InitERKNS_11initInParamE@plt>
+ 2e58f40: 900055e0     	adrp	x0, 0x3914000
+ 2e58f44: aa1403e2     	mov	x2, x20
+ 2e58f48: aa1303e1     	mov	x1, x19
+ 2e58f4c: 9107a800     	add	x0, x0, #0x1ea
+ 2e58f50: 52813303     	mov	w3, #0x998              // =2456
+ 2e58f54: 94045bee     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e58f58: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2e58f5c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2e58f60: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 2e58f64: 910803ff     	add	sp, sp, #0x200
+ 2e58f68: d65f03c0     	ret
+ 2e58f6c: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 2e58f70: b0004a00     	adrp	x0, 0x3799000
+ 2e58f74: 91203c00     	add	x0, x0, #0x80f
+ 2e58f78: 52816423     	mov	w3, #0xb21              // =2849
+ 2e58f7c: 910003fd     	mov	x29, sp
+ 2e58f80: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e58f84: b00059b4     	adrp	x20, 0x398d000
+ 2e58f88: d0005873     	adrp	x19, 0x3966000

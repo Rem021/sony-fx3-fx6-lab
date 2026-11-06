@@ -1,0 +1,149 @@
+{
+  "status": "PASS_PINNED_STATIC_CANDIDATE_INVENTORY",
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "field_candidates": 194,
+  "global_candidates": 233,
+  "reviewed_bindings": [
+    {
+      "source_field": "capture +0x794",
+      "consumer": "MonitoringBaseCurveMeta",
+      "load": "0x1cdbca",
+      "call": "0x1cdbde",
+      "output": "+0x234",
+      "named_log": "0x1ce158",
+      "classification": "metadata"
+    },
+    {
+      "source_field": "capture +0x794",
+      "consumer": "MonitoringCharacteristicsMeta",
+      "load": "0x1cdc34",
+      "call": "0x1cdc48",
+      "output": "+0x23c",
+      "named_log": "0x1ce1a4",
+      "classification": "metadata"
+    },
+    {
+      "source_field": "capture +0x794",
+      "consumer": "EC_Ref conditional base 10 path",
+      "load": "0x1d6ca4",
+      "source_string": "EC_Ref.cpp @ file0x1d6e10",
+      "classification": "exposure reference"
+    }
+  ],
+  "source_spans": [
+    {
+      "file_start": "0x1c1fac",
+      "file_end_exclusive": "0x1c1fda",
+      "sha256": "c7f3ce7ed328a74c2de46b7e826940e4109cad309bb5a565ae0b904ebe1ce0a7",
+      "disassembly": "disassembly/cp-001c1fac-001c1fda.txt"
+    },
+    {
+      "file_start": "0x1c36ae",
+      "file_end_exclusive": "0x1c36ec",
+      "sha256": "1c2b5002e90000df668fc82c7245d9f17ec25769517ccf886ab3a2a5028bcf60",
+      "disassembly": "disassembly/cp-001c36ae-001c36ec.txt"
+    },
+    {
+      "file_start": "0x1cb8a8",
+      "file_end_exclusive": "0x1cb934",
+      "sha256": "9fc9865d95d0e26bac6b227aa0cadacd3e10ae0f10f3ec52b04588ecaa8386c5",
+      "disassembly": "disassembly/cp-001cb8a8-001cb934.txt"
+    },
+    {
+      "file_start": "0x1cd5d0",
+      "file_end_exclusive": "0x1cd5e4",
+      "sha256": "fa9d4566300316052b7158c9526ae997a8900badf28fa82d73e8f703023cd4c7",
+      "disassembly": "disassembly/cp-001cd5d0-001cd5e4.txt"
+    },
+    {
+      "file_start": "0x1cdbb2",
+      "file_end_exclusive": "0x1cdc5a",
+      "sha256": "2df405a0997aeed3aa4d1539bc70139412546b50f0a583c5b24eb08525db950e",
+      "disassembly": "disassembly/cp-001cdbb2-001cdc5a.txt"
+    },
+    {
+      "file_start": "0x1ce148",
+      "file_end_exclusive": "0x1ce1b4",
+      "sha256": "d065556df4f9b52d5b2fec73e03c87fadf4d95ee4def8f58f0cd0225a2e74af2",
+      "disassembly": "disassembly/cp-001ce148-001ce1b4.txt"
+    },
+    {
+      "file_start": "0x1cfbf4",
+      "file_end_exclusive": "0x1cfc5c",
+      "sha256": "2a71bc1f7098095f4ee06ec7b4780cc83d8f4578f032123fa2a405b480411b76",
+      "disassembly": "disassembly/cp-001cfbf4-001cfc5c.txt"
+    },
+    {
+      "file_start": "0x66b256",
+      "file_end_exclusive": "0x66b2b4",
+      "sha256": "8aab76caf7a794253067d1ddd8f2bf3b38ed71d17238969feb736b65b0154f79",
+      "disassembly": "disassembly/cp-0066b256-0066b2b4.txt"
+    },
+    {
+      "file_start": "0x1d6ca4",
+      "file_end_exclusive": "0x1d6cc2",
+      "sha256": "46537b0784f9c724c974eb19b8cc997db3b1c8719863ec5178293db1114a5a36",
+      "disassembly": "disassembly/cp-001d6ca4-001d6cc2.txt"
+    },
+    {
+      "file_start": "0x1f605c",
+      "file_end_exclusive": "0x1f60f8",
+      "sha256": "56e99f9817369b5ac6491dd65724c595db2182308fa49667162db12763a3ba12",
+      "disassembly": "disassembly/cp-001f605c-001f60f8.txt"
+    },
+    {
+      "file_start": "0x689c38",
+      "file_end_exclusive": "0x689c42",
+      "sha256": "ae9a53a05c4a4bf2ba0857edfcb926d946059a1e9d2eeb52054b076b743f8296",
+      "disassembly": "disassembly/cp-00689c38-00689c42.txt"
+    },
+    {
+      "file_start": "0x689f9c",
+      "file_end_exclusive": "0x68a002",
+      "sha256": "897db6417c9f9af12975611a81bbed7d1f4fb914d507f67b3aa231b0f01216eb",
+      "disassembly": "disassembly/cp-00689f9c-0068a002.txt"
+    },
+    {
+      "file_start": "0x6593b8",
+      "file_end_exclusive": "0x6593e8",
+      "sha256": "6d5dd2a41b0fed1c27c01c1c5a0702a7ac8cb57f649bbad0bd6ff48c9fa645f5",
+      "disassembly": "disassembly/cp-006593b8-006593e8.txt"
+    },
+    {
+      "file_start": "0x665b50",
+      "file_end_exclusive": "0x665b6c",
+      "sha256": "4d12562c3449f7c22f03803ec29c761e2ac11014a0cf9b1966f7380f5b911180",
+      "disassembly": "disassembly/cp-00665b50-00665b6c.txt"
+    },
+    {
+      "file_start": "0x65cc14",
+      "file_end_exclusive": "0x65cc22",
+      "sha256": "072b7cbb31116b0428463aacfdc979cea64de92d933cbfdc2924d7b1a016770e",
+      "disassembly": "disassembly/cp-0065cc14-0065cc22.txt"
+    },
+    {
+      "file_start": "0x6721a0",
+      "file_end_exclusive": "0x6721f4",
+      "sha256": "e98c92f3264ccf88cb0cc2fece80c50c7ecccb9d3f6d0ce562038c714a373843",
+      "disassembly": "disassembly/cp-006721a0-006721f4.txt"
+    },
+    {
+      "file_start": "0x1d560c",
+      "file_end_exclusive": "0x1d565a",
+      "sha256": "27361505d2a10e325b616ac58bcd1529e05a0a379fb45b306fad3c4925c3c0b2",
+      "disassembly": "disassembly/cp-001d560c-001d565a.txt"
+    },
+    {
+      "file_start": "0x672004",
+      "file_end_exclusive": "0x672062",
+      "sha256": "cbbbe70e4ebe24c9caff9fc9cdabbb912f803e43057740a94bd4f34227504fb0",
+      "disassembly": "disassembly/cp-00672004-00672062.txt"
+    }
+  ],
+  "limitations": [
+    "Halfword scanning is candidate generation and does not establish instruction boundaries in all code/data.",
+    "MOVW/MOVT pairing can include intervening register clobbers; pairs require local review.",
+    "Matching an immediate structure offset alone does not establish object identity.",
+    "Selected metadata/EC reference consumers do not enumerate all image-processing consumers."
+  ]
+}

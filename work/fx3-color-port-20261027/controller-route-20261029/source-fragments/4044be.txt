@@ -1,0 +1,9 @@
+004044be ldr.w      r0, [sb]
+004044c2 add        r1, sp, #0xa0
+004044c4 movs       r2, #1
+004044c6 str        r1, [sp]
+004044c8 mov        r1, r6
+004044ca bl         #0x4056f4
+004044ce cmp        r0, #0
+004044d0 bne.w      #0x4046c0
+004044d4 b.w        #0x404dfe

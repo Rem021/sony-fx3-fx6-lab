@@ -1,0 +1,47 @@
+{
+  "created_utc": "2026-10-27T04:19:43.887318+00:00",
+  "target_model": "ILME-FX3",
+  "target_firmware": "7.02",
+  "candidates": [
+    {
+      "method": "A7CII Tools3.0.3/app factory restore",
+      "supported_source_model": "ILCE-7CM2/2.01",
+      "kind": "application/session-dependent scoped restoration",
+      "FX3_supported": false,
+      "independent_of_installed_application_and_service_mode_proven": false
+    },
+    {
+      "method": "A7CII movie/P workaround",
+      "supported_source_model": "A7CII self-reported cases",
+      "kind": "surviving shooting-mode boot path",
+      "FX3_supported": false,
+      "evidence_quality": "community reports, one additional confirmation observed2026-10-26; not independent replication"
+    },
+    {
+      "method": "A6700 Pico/RAM read Fastboot",
+      "supported_source_model": "ILCE-6700/2.00",
+      "kind": "hardware cold-start RAM code plus partial-scope backup",
+      "FX3_supported": false,
+      "full_restore_proven_by_source": false,
+      "current_cached_PnP_authorization_includes_RAM_injection": false
+    },
+    {
+      "method": "A7IV bootrom/RAM Fastboot",
+      "supported_source_model": "ILCE-7M4",
+      "kind": "other-model author research; boot0 crypto handling explicitly excluded",
+      "FX3_supported": false,
+      "FX3_ROM_entry_RAM_storage_map_crypto_and_same_body_restore_proven": false
+    }
+  ],
+  "required_before_any_FX3_independent_recovery_claim": [
+    "FX3-specific boot entry and identity; payload and memory/storage map verification",
+    "Same-body healthy originals and mapped backup ranges with authenticated format/geometry",
+    "Bounded FX3 restore writer, verification and documented failure coverage",
+    "Healthy-body nondestructive independent-entry validation and authorized hardware workflow"
+  ],
+  "existing_Mac_and_Windows_alone_prove_rescue": false,
+  "source_reference_numbers_not_FX3_constants": true,
+  "unknown_actual_USB_HID_identity_not_a_recovery_protocol_proof": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

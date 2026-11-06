@@ -1,0 +1,78 @@
+{
+  "status": "SHIPPED_INIT_ARGUMENT_AND_DRIVER_SLOT_MATCH_WBI_SECTION1379",
+  "source_module": "work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/originals/p3-initrd/kmod/emmc.ko",
+  "module_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+  "script": "work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/originals/p3-initrd/sbin/initrc/insmod_drv1",
+  "script_sha256": "22f29d06d7776fe5e8362c17049beabfd3e3bebffd222e51276e3704d483a591",
+  "tbl_argument": "0xffffffc003e00000",
+  "parameter_descriptor": "0x28",
+  "parameter_storage": ".bss+0x528",
+  "consumer_base": ".bss+0x1b8",
+  "consumer_field_offset": "0x370",
+  "WBI_section": 1379,
+  "WBI_physical": "0x403e00000",
+  "WBI_stored_bytes": 139264,
+  "WBI_stored_sha256": "62faf0f40d0d98a0c56927ed02e053b30f845c1d382cd76e952f6196c977dd83",
+  "source_consumer": "emmc_blk_plat_init checks supplied pointer, tests metadata fields, and passes selected fields into emmc_seq_init/set_cid/set_csd",
+  "independent_bootloader_code_recovered": false,
+  "same_body_partition_backup": false,
+  "full_handoff_format_or_partition_geometry_decoded": false,
+  "selected_module_ranges": [
+    {
+      "source": "work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/originals/p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "start": "0x488",
+      "end_exclusive": "0x4b4",
+      "bytes": 44,
+      "sha256": "2b6e473943a12a1746f83b8a811c41b9ea91281e6b2d2a13e498a987e9207c42",
+      "data_not_code": false,
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/pins/tbl-base.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/originals/p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "start": "0x530",
+      "end_exclusive": "0x58c",
+      "bytes": 92,
+      "sha256": "4b6b393a4e81d8a487d17f9a42f9b3fd7c9a1b81233b34965c161bc6c50ffe6b",
+      "data_not_code": false,
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/pins/tbl-field-consumer.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/originals/p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "start": "0x824",
+      "end_exclusive": "0x84c",
+      "bytes": 40,
+      "sha256": "96534d4e7485ffb2cd1510148de11f319727e97633bacdac700ffeda15a48869",
+      "data_not_code": false,
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/pins/tbl-validation-tail.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/originals/p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "start": "0x928",
+      "end_exclusive": "0x930",
+      "bytes": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "data_not_code": true,
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/pins/tbl-base-relocation.txt"
+    }
+  ],
+  "proof_checks": [
+    "exact init argument matches WBI virtual start",
+    "module-param name and ulong ops identified through actual section relocations",
+    "param storage.bss528 equals init literal.bss1b8 plus load370",
+    "record1379 is stored data, not zero-fill"
+  ],
+  "limits": [
+    "static address and consumer match only, not observed runtime pointer or validated contents on current body",
+    "full record includes additional data not decoded; not reclassified as whole boot0/p1 image or partition table"
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

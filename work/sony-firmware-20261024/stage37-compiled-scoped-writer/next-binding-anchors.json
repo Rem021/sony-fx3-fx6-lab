@@ -1,0 +1,59 @@
+{
+  "schema": "fx3-stage37-next-binding-anchors/1",
+  "created_utc": "2026-10-25T23:55:20.080551+00:00",
+  "image_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "compiled_guest_prototype": {
+    "entry": "fx3_candidate",
+    "control_bytes": 296,
+    "assumptions": "Caller owns live aligned object/control/session/epoch. Sequential trusted completion is a fixture, never Sony ABI or real generation.",
+    "source": "work/sony-firmware-20261024/stage37-compiled-scoped-writer/scoped_writer.c",
+    "native_camera_hook_bound": false
+  },
+  "source_anchors": [
+    {
+      "offset": "0x21e26c",
+      "role": "Original descriptor copy prefix; actual runtime clear and object construction still outside exercised region."
+    },
+    {
+      "offset": "0x21edc8",
+      "role": "Original matched-row marshalling and preset selection caller; state/log/buffer/channel prerequisites remain unexecuted."
+    },
+    {
+      "offset": "0x2261a4",
+      "role": "Original preset selector writes common+e000; must share real synchronization/lifetime with prototype to prevent bypass."
+    },
+    {
+      "offset": "0x221fd0",
+      "role": "Original packer reads selected pointer and builds target/trace/CPB fields; producer and prepared output are separate dependencies."
+    },
+    {
+      "offset": "0x22211c",
+      "role": "Next unexecuted fields; full parameter object, allocation, publication and HAL dependencies must be closed before whole-request claim."
+    },
+    {
+      "offset": "0x225b7c",
+      "role": "Selected-record default decoder, not real encoder/HAL or bitstream feedback."
+    }
+  ],
+  "required_bindings": [
+    "Actual object identity and original-byte/runtime mapping validation, session registration, trusted current configuration epoch and recording-idle admission.",
+    "Caller ABI, installation/removal sites, shared synchronization with all original selector/configuration writers/readers; prototype atomics alone do not synchronize Sony consumers.",
+    "Register before dependent parameter publication; transfer ownership through every copy/queue/cache/HAL edge; trusted completion and cancellation for every failure route.",
+    "Closed admission plus drained producers/prepared packets and actual consumers; separate code-entry prevention, in-flight code exit and native instruction publication/readback before unload.",
+    "Unify upstream FF quality/model and16M identity, query/cache/mux/time estimate; complete original parameter object/header/HAL and actual output acceptance.",
+    "Same-body healthy backup, restricted restore/readback, WBI/cold boot and independent rescue; preserve physical completion gates."
+  ],
+  "design_references": [
+    {
+      "url": "https://llvm.org/docs/Atomics.html",
+      "checked_date": "2026-10-25",
+      "scope": "Acquire/Release pairing only; no evidence of Sony synchronization integration."
+    },
+    {
+      "url": "https://docs.kernel.org/RCU/whatisRCU.html",
+      "checked_date": "2026-10-25",
+      "scope": "Removal/reclamation principle only; no claim Sony uses RCU or that prototype can reclaim code."
+    }
+  ],
+  "camera_or_remote_access_attempted": false
+}

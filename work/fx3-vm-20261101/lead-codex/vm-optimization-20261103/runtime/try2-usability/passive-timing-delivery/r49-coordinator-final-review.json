@@ -1,0 +1,35 @@
+{
+  "reviewed_at": "2026-11-05T16:01:55.893321+00:00",
+  "status": "offline_diagnosis_accepted_with_design_wording_caveat",
+  "task": "task_1570d1fe8f1b",
+  "correction_task": "task_62a16490c98b",
+  "manifest_sha256": "169b8aa37fcde909d62cc4877f9673a70e8adba457fe2ac0f55bc4acbd767e04",
+  "manifest_count": 61,
+  "manifest_mismatches": [],
+  "native_serial_and_parser_hashes_independently_verified": true,
+  "boundaries": {
+    "first_qualified": 3490401,
+    "first_cleanup": 6077228,
+    "after_cleanup": 6260972
+  },
+  "parser_counts": {
+    "startup": {
+      "records": 84,
+      "known_duration": 76,
+      "known_gaps": 67,
+      "malformed_or_interleaved": 8
+    },
+    "precleanup_cumulative_including_startup": {
+      "records": 211,
+      "known_duration": 190,
+      "known_gaps": 168,
+      "malformed_or_interleaved": 21
+    }
+  },
+  "accepted_finding": "PAGE freshness rejected changed SHA/generation; no api/key POST; sequence difference is observed but not a direct PAGE gate",
+  "time_mapping": "HAR wall clock to browser timeOrigin approximate, not same monotonic; change bounded by old observation and fresh read",
+  "design_caveat": "DESIGN still contains unsupported only-design wording despite correction summary; do not treat this as exclusive solution or evidence that stabilization improves admission. Offline candidate preparation is authorized, runtime is not.",
+  "no_new_runtime": true,
+  "menu_acceptance": false,
+  "fx6_acceptance": false
+}

@@ -1,0 +1,1170 @@
+{
+  "path": "work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+  "sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+  "functions": [
+    {
+      "va": "0x12228",
+      "bytes": 104,
+      "sha256": "8bdf648aa87b912886b7300673ddd1b30d4b69b2ae660fb85161f32fe612a101",
+      "label": "GetBody",
+      "calls": [
+        {
+          "site": "0x12248",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x1225c",
+          "target": "0xfc70",
+          "label": "Updater::UpdaterBody::UpdaterBody(bool, Updater::UPDATER_ACTION_MODE, UpdaterAPI::firmware_information_t::information&)"
+        },
+        {
+          "site": "0x12260",
+          "target": "0x1227c",
+          "label": null
+        },
+        {
+          "site": "0x12270",
+          "target": "0x10190",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x12278",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "disassembly": "disassembly/libupdaterbody.so-12228.txt"
+    },
+    {
+      "va": "0x121d8",
+      "bytes": 80,
+      "sha256": "339b7e5cde7eaa4d95276d9fe295c2d2b5edf20f19eddc6999721e6b92cf5956",
+      "label": "Updater::UpdaterBody::UpdaterBody(bool, Updater::UPDATER_ACTION_MODE, UpdaterAPI::firmware_information_t::information&)",
+      "calls": [
+        {
+          "site": "0x12208",
+          "target": "0xfe80",
+          "label": "Updater::UpdaterBody::StopFlag::StopFlag()"
+        }
+      ],
+      "disassembly": "disassembly/libupdaterbody.so-121d8.txt"
+    },
+    {
+      "va": "0x122a4",
+      "bytes": 2036,
+      "sha256": "dae25a95a046ce568e728745b329b5c7b95326fc0da4ca90cf32c494d9d168a4",
+      "label": "Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)",
+      "calls": [
+        {
+          "site": "0x122dc",
+          "target": "0x10380",
+          "label": "time"
+        },
+        {
+          "site": "0x12308",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x12324",
+          "target": "0xfbc0",
+          "label": "strstr"
+        },
+        {
+          "site": "0x12330",
+          "target": "0xfc00",
+          "label": "puts"
+        },
+        {
+          "site": "0x12358",
+          "target": "0x12314",
+          "label": null
+        },
+        {
+          "site": "0x12364",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x12374",
+          "target": "0x104e0",
+          "label": "Updater::StringHandler::SetString(char const*)"
+        },
+        {
+          "site": "0x1237c",
+          "target": "0x10250",
+          "label": "Updater::DirectoryHandler::Create(Updater::StringHandler const&)"
+        },
+        {
+          "site": "0x1239c",
+          "target": "0x10490",
+          "label": "Updater::FlagFirmwareInformationHandler::FlagFirmwareInformationHandler(Updater::UPDATER_ACTION_MODE)"
+        },
+        {
+          "site": "0x123ac",
+          "target": "0xfe40",
+          "label": "Updater::XmlConfigHandler::XmlConfigHandler(Updater::UPDATER_ACTION_MODE)"
+        },
+        {
+          "site": "0x123bc",
+          "target": "0x10480",
+          "label": "Updater::MountEntryHandler::MountEntryHandler(Updater::UPDATER_ACTION_MODE)"
+        },
+        {
+          "site": "0x123c8",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x123d4",
+          "target": "0x10080",
+          "label": "Updater::PackedFileHeader::PackedFileHeader()"
+        },
+        {
+          "site": "0x123e4",
+          "target": "0x1b4c8",
+          "label": null
+        },
+        {
+          "site": "0x12418",
+          "target": "0x10020",
+          "label": "mount"
+        },
+        {
+          "site": "0x12428",
+          "target": "0x10400",
+          "label": "Updater::BackupIF::GetBackupType(char const*, char*)"
+        },
+        {
+          "site": "0x12450",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x12458",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x1248c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x12494",
+          "target": "0x129b4",
+          "label": null
+        },
+        {
+          "site": "0x1249c",
+          "target": "0x10500",
+          "label": "umount"
+        },
+        {
+          "site": "0x124a4",
+          "target": "0x10830",
+          "label": "Updater::FlagFirmwareInformationHandler::StartUpdate()"
+        },
+        {
+          "site": "0x124ac",
+          "target": "0xfee0",
+          "label": "Updater::BuildInPlugin::StartUpdate(Updater::UPDATER_ACTION_MODE)"
+        },
+        {
+          "site": "0x124b8",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x124c8",
+          "target": "0x104e0",
+          "label": "Updater::StringHandler::SetString(char const*)"
+        },
+        {
+          "site": "0x124d4",
+          "target": "0xfc10",
+          "label": "Updater::XmlConfigHandler::Initialize(Updater::CallbackInterface*)"
+        },
+        {
+          "site": "0x124e0",
+          "target": "0xfb60",
+          "label": "Updater::XmlConfigHandler::LoadConfig(Updater::StringHandler const&)"
+        },
+        {
+          "site": "0x12504",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x1250c",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x12540",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x12548",
+          "target": "0x129ac",
+          "label": null
+        },
+        {
+          "site": "0x12568",
+          "target": "0xfd50",
+          "label": "Updater::BodyInformation::BodyInformation(Updater::StringHandler const&, Updater::CallbackInterface*, Updater::FlagFirmwareInformationHandler*, Updater::XmlConfigHandler*, Updater::MountEntryHandler*)"
+        },
+        {
+          "site": "0x12594",
+          "target": "0xfb80",
+          "label": "Updater::UpdaterBody::StopFlag::GetFlag()"
+        },
+        {
+          "site": "0x125a8",
+          "target": "0x10070",
+          "label": "Updater::PackedFileHeader::Parse(Updater::PackedFirmwareBuffer*)"
+        },
+        {
+          "site": "0x125d0",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x125dc",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x125e0",
+          "target": "0x12628",
+          "label": null
+        },
+        {
+          "site": "0x12600",
+          "target": "0x10590",
+          "label": "Updater::KeyTagFactory::GetKeyTag(unsigned int, Updater::StringHandler const&)"
+        },
+        {
+          "site": "0x1260c",
+          "target": "0x107c0",
+          "label": "Updater::BodyInformation::SetCurrentKeyTag(Updater::BaseKeyTag*)"
+        },
+        {
+          "site": "0x12624",
+          "target": "0x125cc",
+          "label": null
+        },
+        {
+          "site": "0x12638",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x12690",
+          "target": "0xfb80",
+          "label": "Updater::UpdaterBody::StopFlag::GetFlag()"
+        },
+        {
+          "site": "0x12694",
+          "target": "0x1275c",
+          "label": null
+        },
+        {
+          "site": "0x126c8",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x126cc",
+          "target": "0x1268c",
+          "label": null
+        },
+        {
+          "site": "0x126f0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x126f8",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x1272c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x12744",
+          "target": "0xfd30",
+          "label": "__cxa_begin_catch"
+        },
+        {
+          "site": "0x12754",
+          "target": "0x10310",
+          "label": "Updater::XmlConfigHandler::Join(bool)"
+        },
+        {
+          "site": "0x12758",
+          "target": "0x12968",
+          "label": null
+        },
+        {
+          "site": "0x12780",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x12788",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x127bc",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x127c8",
+          "target": "0xfb80",
+          "label": "Updater::UpdaterBody::StopFlag::GetFlag()"
+        },
+        {
+          "site": "0x127dc",
+          "target": "0x10070",
+          "label": "Updater::PackedFileHeader::Parse(Updater::PackedFirmwareBuffer*)"
+        },
+        {
+          "site": "0x12808",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x12810",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x12844",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x1284c",
+          "target": "0xffc0",
+          "label": "Updater::PackedFirmwareBuffer::SkipCurrentBlock()"
+        },
+        {
+          "site": "0x12874",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x1287c",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x128b0",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x128bc",
+          "target": "0x10310",
+          "label": "Updater::XmlConfigHandler::Join(bool)"
+        },
+        {
+          "site": "0x128c4",
+          "target": "0xfb80",
+          "label": "Updater::UpdaterBody::StopFlag::GetFlag()"
+        },
+        {
+          "site": "0x128d8",
+          "target": "0x10570",
+          "label": "Updater::BodyInformation::~BodyInformation()"
+        },
+        {
+          "site": "0x128e0",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x128e8",
+          "target": "0x101b0",
+          "label": "Updater::PackedFileHeader::~PackedFileHeader()"
+        },
+        {
+          "site": "0x128f0",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x128f8",
+          "target": "0x10030",
+          "label": "Updater::MountEntryHandler::~MountEntryHandler()"
+        },
+        {
+          "site": "0x12900",
+          "target": "0x100e0",
+          "label": "Updater::XmlConfigHandler::~XmlConfigHandler()"
+        },
+        {
+          "site": "0x12908",
+          "target": "0x10600",
+          "label": "Updater::FlagFirmwareInformationHandler::~FlagFirmwareInformationHandler()"
+        },
+        {
+          "site": "0x12910",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x12918",
+          "target": "0x120dc",
+          "label": null
+        },
+        {
+          "site": "0x12944",
+          "target": "0xfd00",
+          "label": "Updater::XmlConfigHandler::HasError()"
+        },
+        {
+          "site": "0x12954",
+          "target": "0x103e0",
+          "label": "Updater::BuildInPlugin::EndUpdate(Updater::UPDATER_ACTION_MODE)"
+        },
+        {
+          "site": "0x12960",
+          "target": "0x10520",
+          "label": "Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)"
+        },
+        {
+          "site": "0x12964",
+          "target": "0x128d4",
+          "label": null
+        },
+        {
+          "site": "0x1296c",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x12998",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x129a0",
+          "target": "0x10660",
+          "label": "__cxa_end_catch"
+        },
+        {
+          "site": "0x129a8",
+          "target": "0x10570",
+          "label": "Updater::BodyInformation::~BodyInformation()"
+        },
+        {
+          "site": "0x129b0",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x129b8",
+          "target": "0x101b0",
+          "label": "Updater::PackedFileHeader::~PackedFileHeader()"
+        },
+        {
+          "site": "0x129c0",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x129c8",
+          "target": "0x10030",
+          "label": "Updater::MountEntryHandler::~MountEntryHandler()"
+        },
+        {
+          "site": "0x129d4",
+          "target": "0x100e0",
+          "label": "Updater::XmlConfigHandler::~XmlConfigHandler()"
+        },
+        {
+          "site": "0x129dc",
+          "target": "0x10600",
+          "label": "Updater::FlagFirmwareInformationHandler::~FlagFirmwareInformationHandler()"
+        },
+        {
+          "site": "0x129e4",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x129ec",
+          "target": "0x120dc",
+          "label": null
+        },
+        {
+          "site": "0x129f4",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x129f8",
+          "target": "0xfd30",
+          "label": "__cxa_begin_catch"
+        },
+        {
+          "site": "0x12a04",
+          "target": "0x10310",
+          "label": "Updater::XmlConfigHandler::Join(bool)"
+        },
+        {
+          "site": "0x12a20",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x12a28",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x12a50",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x12a58",
+          "target": "0x10660",
+          "label": "__cxa_end_catch"
+        },
+        {
+          "site": "0x12a5c",
+          "target": "0x129a4",
+          "label": null
+        },
+        {
+          "site": "0x12a64",
+          "target": "0x129a4",
+          "label": null
+        },
+        {
+          "site": "0x12a6c",
+          "target": "0x129bc",
+          "label": null
+        },
+        {
+          "site": "0x12a74",
+          "target": "0x129c4",
+          "label": null
+        },
+        {
+          "site": "0x12a7c",
+          "target": "0x129cc",
+          "label": null
+        },
+        {
+          "site": "0x12a84",
+          "target": "0x129d8",
+          "label": null
+        },
+        {
+          "site": "0x12a8c",
+          "target": "0x129e0",
+          "label": null
+        },
+        {
+          "site": "0x12a94",
+          "target": "0x129e8",
+          "label": null
+        }
+      ],
+      "disassembly": "disassembly/libupdaterbody.so-122a4.txt"
+    },
+    {
+      "va": "0x1335c",
+      "bytes": 832,
+      "sha256": "5e0ffb8eae759f9057131aa8ebd2ee4d624ec7f5394d2f3e9b3f99a12d044e49",
+      "label": "Updater::KeyTagFactory::GetKeyTag(unsigned int, Updater::StringHandler const&)",
+      "calls": [
+        {
+          "site": "0x133c8",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x133d4",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x133d8",
+          "target": "0x133ec",
+          "label": null
+        },
+        {
+          "site": "0x133e0",
+          "target": "0xfec0",
+          "label": "Updater::StringHandler::GetSize() const"
+        },
+        {
+          "site": "0x133e8",
+          "target": "0x133a0",
+          "label": null
+        },
+        {
+          "site": "0x133fc",
+          "target": "0x135e4",
+          "label": null
+        },
+        {
+          "site": "0x13428",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x13434",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x13440",
+          "target": "0x133f4",
+          "label": null
+        },
+        {
+          "site": "0x1346c",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x13478",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x13484",
+          "target": "0x133f4",
+          "label": null
+        },
+        {
+          "site": "0x134b0",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x134bc",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x134c8",
+          "target": "0x133f4",
+          "label": null
+        },
+        {
+          "site": "0x134f4",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x13500",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x1350c",
+          "target": "0x133f4",
+          "label": null
+        },
+        {
+          "site": "0x13538",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x13544",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x13550",
+          "target": "0x133f4",
+          "label": null
+        },
+        {
+          "site": "0x1357c",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x13588",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x13594",
+          "target": "0x133f4",
+          "label": null
+        },
+        {
+          "site": "0x135c0",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x135cc",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x13620",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x1362c",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x13638",
+          "target": "0x133f4",
+          "label": null
+        },
+        {
+          "site": "0x1363c",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x13648",
+          "target": "0x10920",
+          "label": "Updater::BaseKeyTag::BaseKeyTag(int)"
+        },
+        {
+          "site": "0x13654",
+          "target": "0x133f4",
+          "label": null
+        },
+        {
+          "site": "0x13664",
+          "target": "0x10190",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x1366c",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x13670",
+          "target": "0x13658",
+          "label": null
+        },
+        {
+          "site": "0x13674",
+          "target": "0x13658",
+          "label": null
+        },
+        {
+          "site": "0x13678",
+          "target": "0x13658",
+          "label": null
+        },
+        {
+          "site": "0x1367c",
+          "target": "0x13658",
+          "label": null
+        },
+        {
+          "site": "0x13680",
+          "target": "0x13658",
+          "label": null
+        },
+        {
+          "site": "0x13684",
+          "target": "0x13658",
+          "label": null
+        },
+        {
+          "site": "0x13690",
+          "target": "0x13660",
+          "label": null
+        },
+        {
+          "site": "0x13694",
+          "target": "0x13658",
+          "label": null
+        },
+        {
+          "site": "0x13698",
+          "target": "0x13658",
+          "label": null
+        }
+      ],
+      "disassembly": "disassembly/libupdaterbody.so-1335c.txt"
+    },
+    {
+      "va": "0x1369c",
+      "bytes": 128,
+      "sha256": "656e49c2139d1fc2aaf547279b11546f58c8d12c840d574462a179fab299913e",
+      "label": "Updater::BaseKeyTag::isUpdaterSkip()",
+      "calls": [
+        {
+          "site": "0x136b0",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x136d0",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x136d8",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x136dc",
+          "target": "0x136f4",
+          "label": null
+        },
+        {
+          "site": "0x136e8",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x136f0",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x136f8",
+          "target": "0x1b4c8",
+          "label": null
+        },
+        {
+          "site": "0x13704",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        }
+      ],
+      "disassembly": "disassembly/libupdaterbody.so-1369c.txt"
+    },
+    {
+      "va": "0x18e28",
+      "bytes": 540,
+      "sha256": "b73062c28bf37cccf52682e125e1f55126843c1c83f959ac4646d3b9c382d9b8",
+      "label": "Updater::Plugin::Execute(Updater::UPDATER_ACTION_MODE, Updater::Xml::DomNode const*)",
+      "calls": [
+        {
+          "site": "0x18e58",
+          "target": "0x18fcc",
+          "label": null
+        },
+        {
+          "site": "0x18e6c",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x18e80",
+          "target": "0x18fcc",
+          "label": null
+        },
+        {
+          "site": "0x18ea8",
+          "target": "0x18fcc",
+          "label": null
+        },
+        {
+          "site": "0x18ebc",
+          "target": "0x10530",
+          "label": "strcmp"
+        },
+        {
+          "site": "0x18ed0",
+          "target": "0x105e0",
+          "label": "Updater::DllPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+        },
+        {
+          "site": "0x18efc",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x18f30",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18f38",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18f58",
+          "target": "0x18fa4",
+          "label": null
+        },
+        {
+          "site": "0x18f60",
+          "target": "0x101c0",
+          "label": "Updater::ShellPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+        },
+        {
+          "site": "0x18f64",
+          "target": "0x18ed4",
+          "label": null
+        },
+        {
+          "site": "0x18f78",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18f80",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18fac",
+          "target": "0x19014",
+          "label": null
+        },
+        {
+          "site": "0x18fe0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18fe8",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x19014",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x1902c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x19030",
+          "target": "0x18f34",
+          "label": null
+        }
+      ],
+      "disassembly": "disassembly/libupdaterbody.so-18e28.txt"
+    },
+    {
+      "va": "0x187a4",
+      "bytes": 864,
+      "sha256": "d7f6348ed9a81a579c006aa670fde027029d4cc7dc60b9d3619178ea08dac6c8",
+      "label": "Updater::ShellPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)",
+      "calls": [
+        {
+          "site": "0x187e0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x187e8",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18814",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18838",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x18860",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x1886c",
+          "target": "0x1887c",
+          "label": null
+        },
+        {
+          "site": "0x1888c",
+          "target": "0x10530",
+          "label": "strcmp"
+        },
+        {
+          "site": "0x188a0",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x188c8",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x188d0",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18904",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x1890c",
+          "target": "0x18a48",
+          "label": null
+        },
+        {
+          "site": "0x18934",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x18940",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x18954",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18968",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x18970",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18974",
+          "target": "0x104b0",
+          "label": "system"
+        },
+        {
+          "site": "0x18978",
+          "target": "0x189a0",
+          "label": null
+        },
+        {
+          "site": "0x18980",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18998",
+          "target": "0x103c0",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x1899c",
+          "target": "0x1896c",
+          "label": null
+        },
+        {
+          "site": "0x189a4",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x189d0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x189d4",
+          "target": "0x18acc",
+          "label": null
+        },
+        {
+          "site": "0x189fc",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18a04",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18a38",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18a44",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18a4c",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18a54",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x18a68",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18a8c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18a94",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18ac8",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18ad4",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18adc",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18b00",
+          "target": "0x187cc",
+          "label": null
+        }
+      ],
+      "disassembly": "disassembly/libupdaterbody.so-187a4.txt"
+    }
+  ],
+  "scope": "Original embedded updater library static factory, execution, key-tag and plugin functions. No library loading, plugin execution, original script execution or device write."
+}

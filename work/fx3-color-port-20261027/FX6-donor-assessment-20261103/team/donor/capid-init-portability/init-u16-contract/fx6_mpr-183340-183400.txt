@@ -1,0 +1,54 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000180ad0 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE>:
+  183340: f000d217     	adrp	x23, 0x1bc6000 <_ZN3mpr42gb_ignoreClipNameParamFromExceptMonitorCmdE+0xea40>
+  183344: 912402e0     	add	x0, x23, #0x900
+  183348: 97fdc8b6     	bl	0xf5620 <_ZN3mpr6thread10normalLock4lockEv@plt>
+  18334c: 39400262     	ldrb	w2, [x19]
+  183350: 52800061     	mov	w1, #0x3                // =3
+  183354: b9400660     	ldr	w0, [x19, #0x4]
+  183358: 350002c2     	cbnz	w2, 0x1833b0 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x28e0>
+  18335c: 390113a1     	strb	w1, [x29, #0x44]
+  183360: 52846241     	mov	w1, #0x2312             // =8978
+  183364: b9004ba0     	str	w0, [x29, #0x48]
+  183368: aa1503e0     	mov	x0, x21
+  18336c: 790083a1     	strh	w1, [x29, #0x40]
+  183370: 52800a41     	mov	w1, #0x52               // =82
+  183374: 52800016     	mov	w22, #0x0               // =0
+  183378: d2800015     	mov	x21, #0x0               // =0
+  18337c: 790087a1     	strh	w1, [x29, #0x42]
+  183380: 52800181     	mov	w1, #0xc                // =12
+  183384: 390117bf     	strb	wzr, [x29, #0x45]
+  183388: 39011bbf     	strb	wzr, [x29, #0x46]
+  18338c: 39011fbf     	strb	wzr, [x29, #0x47]
+  183390: 97ffff0c     	bl	0x182fc0 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x24f0>
+  183394: 912402e0     	add	x0, x23, #0x900
+  183398: 97fda5c2     	bl	0xecaa0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+  18339c: b4fffc95     	cbz	x21, 0x18332c <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x285c>
+  1833a0: 2a1403e1     	mov	w1, w20
+  1833a4: 2a1603e0     	mov	w0, w22
+  1833a8: d63f02a0     	blr	x21
+  1833ac: 17ffffe0     	b	0x18332c <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x285c>
+  1833b0: 390113a1     	strb	w1, [x29, #0x44]
+  1833b4: 52846241     	mov	w1, #0x2312             // =8978
+  1833b8: b9004ba0     	str	w0, [x29, #0x48]
+  1833bc: aa1503e0     	mov	x0, x21
+  1833c0: 790083a1     	strh	w1, [x29, #0x40]
+  1833c4: 52800a61     	mov	w1, #0x53               // =83
+  1833c8: b9000a74     	str	w20, [x19, #0x8]
+  1833cc: 52800016     	mov	w22, #0x0               // =0
+  1833d0: 790087a1     	strh	w1, [x29, #0x42]
+  1833d4: 52800181     	mov	w1, #0xc                // =12
+  1833d8: 390117bf     	strb	wzr, [x29, #0x45]
+  1833dc: 39011bbf     	strb	wzr, [x29, #0x46]
+  1833e0: 39011fbf     	strb	wzr, [x29, #0x47]
+  1833e4: 97fffef7     	bl	0x182fc0 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x24f0>
+  1833e8: f9400a75     	ldr	x21, [x19, #0x10]
+  1833ec: b4fffd55     	cbz	x21, 0x183394 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x28c4>
+  1833f0: b9400676     	ldr	w22, [x19, #0x4]
+  1833f4: f9000a7f     	str	xzr, [x19, #0x10]
+  1833f8: 17ffffe7     	b	0x183394 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x28c4>
+  1833fc: d65f03c0     	ret

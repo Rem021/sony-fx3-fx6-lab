@@ -1,0 +1,198 @@
+{
+  "created_utc": "2026-10-27T08:46:08.634647+00:00",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "instructions": [
+    {
+      "VA": "0x8005d49c",
+      "word_hex": "c0a290af",
+      "instruction": "sw $s0, -0x5d40($gp)",
+      "meaning": "executed native runtime registry binding"
+    },
+    {
+      "VA": "0x8005d304",
+      "word_hex": "00009abc",
+      "instruction": "cache 0x1a, ($a0)",
+      "meaning": "unexecuted CACHE boundary"
+    },
+    {
+      "VA": "0x8005d988",
+      "word_hex": "c0a2888f",
+      "instruction": "lw $t0, -0x5d40($gp)",
+      "meaning": "executed native type registration store"
+    },
+    {
+      "VA": "0x8005ef78",
+      "word_hex": "c0a2828f",
+      "instruction": "lw $v0, -0x5d40($gp)",
+      "meaning": "executed native registry global read"
+    },
+    {
+      "VA": "0x8005ef98",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "executed dispatch through original fixed-pool vtable"
+    },
+    {
+      "VA": "0x80060034",
+      "word_hex": "1c0004a6",
+      "instruction": "sh $a0, 0x1c($s0)",
+      "meaning": "executed native free-count store"
+    },
+    {
+      "VA": "0x8006003c",
+      "word_hex": "180002ae",
+      "instruction": "sw $v0, 0x18($s0)",
+      "meaning": "executed native free-list head store"
+    },
+    {
+      "VA": "0x80060730",
+      "word_hex": "080043a0",
+      "instruction": "sb $v1, 8($v0)",
+      "meaning": "executed initial native reference-byte store"
+    },
+    {
+      "VA": "0x80143fc0",
+      "word_hex": "c4a28987",
+      "instruction": "lh $t1, -0x5d3c($gp)",
+      "meaning": "unexecuted GP lock-ID read"
+    },
+    {
+      "VA": "0x80143fdc",
+      "word_hex": "1000a2a3",
+      "instruction": "sb $v0, 0x10($sp)",
+      "meaning": "executed original parent descriptor first store"
+    },
+    {
+      "VA": "0x80143ff4",
+      "word_hex": "2000a0af",
+      "instruction": "sw $zero, 0x20($sp)",
+      "meaning": "executed original empty frame-handle slot"
+    },
+    {
+      "VA": "0x80143ff8",
+      "word_hex": "3000a9a7",
+      "instruction": "sh $t1, 0x30($sp)",
+      "meaning": "unexecuted lock-ID save"
+    },
+    {
+      "VA": "0x80143ffc",
+      "word_hex": "26000070",
+      "instruction": "not decoded by this MIPS decoder",
+      "meaning": "unexecuted interrupt-control encoded word"
+    },
+    {
+      "VA": "0x80144074",
+      "word_hex": "05000424",
+      "instruction": "addiu $a0, $zero, 5",
+      "meaning": "executed allocation type5"
+    },
+    {
+      "VA": "0x80144078",
+      "word_hex": "f0040524",
+      "instruction": "addiu $a1, $zero, 0x4f0",
+      "meaning": "executed allocation size4f0"
+    },
+    {
+      "VA": "0x8014407c",
+      "word_hex": "cf7b010c",
+      "instruction": "jal 0x8005ef3c",
+      "meaning": "executed native allocator call"
+    },
+    {
+      "VA": "0x80144088",
+      "word_hex": "000082ae",
+      "instruction": "sw $v0, ($s4)",
+      "meaning": "executed original parent handle store"
+    },
+    {
+      "VA": "0x80144090",
+      "word_hex": "3000a587",
+      "instruction": "lh $a1, 0x30($sp)",
+      "meaning": "unexecuted IRQ-release boundary"
+    },
+    {
+      "VA": "0x801440c8",
+      "word_hex": "9a000016",
+      "instruction": "bnez $s0, 0x80144334",
+      "meaning": "original native status branch after IRQ gap"
+    },
+    {
+      "VA": "0x801440d0",
+      "word_hex": "2000a28f",
+      "instruction": "lw $v0, 0x20($sp)",
+      "meaning": "executed native handle physical load"
+    },
+    {
+      "VA": "0x8014411c",
+      "word_hex": "54e1070c",
+      "instruction": "jal 0x801f8550",
+      "meaning": "executed original frame-constructor call"
+    },
+    {
+      "VA": "0x80144124",
+      "word_hex": "50002292",
+      "instruction": "lbu $v0, 0x50($s1)",
+      "meaning": "native constructor return checkpoint"
+    },
+    {
+      "VA": "0x801f8740",
+      "word_hex": "c80400ae",
+      "instruction": "sw $zero, 0x4c8($s0)",
+      "meaning": "native new-frame parameter-handle initialization"
+    },
+    {
+      "VA": "0x80131c1c",
+      "word_hex": "0000b2ae",
+      "instruction": "sw $s2, ($s5)",
+      "meaning": "executed new parameter pointer assignment"
+    },
+    {
+      "VA": "0x80131c20",
+      "word_hex": "c4a28487",
+      "instruction": "lh $a0, -0x5d3c($gp)",
+      "meaning": "unexecuted GP/reference increment boundary"
+    },
+    {
+      "VA": "0x801441e4",
+      "word_hex": "3800628c",
+      "instruction": "lw $v0, 0x38($v1)",
+      "meaning": "unexecuted external virtual lookup"
+    },
+    {
+      "VA": "0x80144334",
+      "word_hex": "399f010c",
+      "instruction": "jal 0x80067ce4",
+      "meaning": "unexecuted exhausted-pool diagnostic boundary"
+    }
+  ],
+  "ROM_descriptors": [
+    {
+      "type": 4,
+      "file_offset": "0x2132c0",
+      "words": [
+        4,
+        12763456,
+        65536,
+        128
+      ],
+      "block_bytes": 512
+    },
+    {
+      "type": 5,
+      "file_offset": "0x2132d0",
+      "words": [
+        5,
+        12828992,
+        161792,
+        128
+      ],
+      "block_bytes": 1264
+    }
+  ],
+  "original_vtable_allocation_slot_VA": "0x8023c30c",
+  "original_vtable_allocation_target": "0x800606d0",
+  "native_frame_address_is_from_original_type5_returned_handle": true,
+  "raw_reference_and_metadata48_are_declared": true,
+  "new_parameter_reference_or_IRQ_proven": false,
+  "actual_MAIN_encoder_video_or_independent_recovery_proven": false
+}

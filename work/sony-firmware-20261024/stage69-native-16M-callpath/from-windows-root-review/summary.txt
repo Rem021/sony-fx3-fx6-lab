@@ -1,0 +1,24 @@
+FX3 Current USB Root Cache Clarification
+task_state=CACHED_ROOT_CHECK_COMPLETE_NO_CURRENT_PNPUTIL_MATCH
+observed_start_utc=2026-10-26T17:50:01.622Z
+observed_end_utc=2026-10-26T17:50:01.877Z
+observed_start_Asia_Shanghai=2026-10-27 01:50:01.622 +08:00
+observed_end_Asia_Shanghai=2026-10-27 01:50:01.877 +08:00
+
+本轮正确按USB级根节点判断唯一性，未因3个磁盘节点而判定USB根不唯一。
+保存的CIM结果中满足Present=True、Status=OK、错误码0、Service=USBSTOR、实际VID/PID054C:0DA1及旧根摘要相等的USB根节点恰好1个。
+CIM选择依据的观察时间=2026-10-26T17:15:31.4415345Z
+source_root_sha256=1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd
+same_as_old_fx3_root=true（指所选CIM实例身份，不表示本次PnPUtil已找到该节点）。
+
+本次仅对该实际实例ID执行1条PnPUtil /enum-devices /connected /instanceid查询，退出码0、stderr为空；原输出明确报告未找到设备，当前匹配根数量0。
+因新PnPUtil结果没有当前根节点，按必要条件不满足即停止，设备树与磁盘分支NOT_RUN；未重试、未重新连接或scan/refresh，也未重跑CIM或旧/deviceid精确硬件ID筛选。
+当前磁盘候选数、绑定、父子关系、接口GUID/启用状态、Present/Started/问题码、服务/堆栈/驱动INF/版本/签名者、Address/UINumber均UNKNOWN。
+UNKNOWN字段不使用旧CIM或旧PnPUtil结果补齐。退出码0不作为相机存在或协议可用证明。不同时间、不同缓存查询观察不一致的原因未确定。
+
+已复核新目录位于本机系统C盘NTFS普通目录，各级无reparse/网络/相机存储重定向；普通用户令牌无提权。
+所有原始实例ID和原始输出仅在本机private。public使用uppercase UTF8 SHA256，包含新私有文件哈希和公开文件哈希清单（清单不包含自身）。
+旧报告保持原样，未重新计算旧材料文件哈希。
+camera_device_handles=0；camera_commands=0；card_media_reads=0；authentication=false；mode_driver_policy_change=false；module_upload=false；WBI_or_flash=false；hardware_validation=NOT_PERFORMED。
+
+public_path=C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-current-root-cache-20261026T172200Z/public

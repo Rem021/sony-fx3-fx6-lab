@@ -1,0 +1,63 @@
+{
+  "archive_url": "https://prodgpl.blob.core.windows.net/download/B2B/20260731_ILME-FX5/cemmc-init.tar.gz",
+  "reused_archive_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-archives/cemmc-init.tar.gz",
+  "archive_sha256_reverified": "16b07a4b638c0fd8dcf846a2ffb3672825bf9f84415513ba09dbc74d5a93b4c0",
+  "files": [
+    {
+      "path": "source-excerpts/FX5/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init.c",
+      "sha256": "61f029560fce79bb3e9794bd144aa43072fb4bd7b9438242dd81080727715f4d",
+      "matches": [
+        {
+          "line": 57,
+          "text": "ret = crypt_emmc_init_tee_cmd_init(teedev, &cmd_init);"
+        },
+        {
+          "line": 63,
+          "text": "eMMC_CRYPT_KEY_SET();"
+        }
+      ]
+    },
+    {
+      "path": "source-excerpts/FX5/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_cmd.c",
+      "sha256": "92ff7eea4dc779ff81a2cb05f1ddc333749f2f51139dcca0cba5c6c18aaf6e02",
+      "matches": [
+        {
+          "line": 17,
+          "text": "int crypt_emmc_init_tee_cmd_init(struct crypt_emmc_init_teedev *teedev,"
+        },
+        {
+          "line": 38,
+          "text": "invoke_err = tee_client_invoke_func(teedev->ctx, &inv_arg, param);"
+        },
+        {
+          "line": 90,
+          "text": "invoke_err = tee_client_invoke_func(teedev->ctx, &inv_arg, param);"
+        }
+      ]
+    },
+    {
+      "path": "source-excerpts/FX5/cemmc-init/driver/crypt_emmc_init/crypt_emmc_init_tee_core.c",
+      "sha256": "01889c39a17f994f7a2fca8e871b44bf8af08520cb3a41e82ce92b4e20b1976a",
+      "matches": [
+        {
+          "line": 37,
+          "text": "teedev->ctx = tee_client_open_context("
+        },
+        {
+          "line": 40,
+          "text": "crypt_emmc_pr_err(\"tee_client_open_context failed\\n\");"
+        },
+        {
+          "line": 48,
+          "text": "ret = tee_client_open_session(teedev->ctx, &sess_arg, NULL);"
+        },
+        {
+          "line": 50,
+          "text": "crypt_emmc_pr_err(\"tee_client_open_session failed, err: %x\\n\","
+        }
+      ]
+    }
+  ],
+  "scope": "Existing local GPL source re-read only; support code presence, not actual body encryption/key state.",
+  "downloaded_this_turn": false
+}

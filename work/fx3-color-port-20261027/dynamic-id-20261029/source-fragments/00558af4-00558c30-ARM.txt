@@ -1,0 +1,79 @@
+00558af4 mov        r2, r1
+00558af8 mov        r1, #0
+00558afc b          #0x558b00
+00558b00 and        r3, r1, #0xff
+00558b04 mov        r1, r2
+00558b08 cmp        r1, #4
+00558b0c mov        ip, r0
+00558b10 blt        #0x558c10
+00558b14 ands       r2, ip, #3
+00558b18 bne        #0x558bf0
+00558b1c orr        r3, r3, r3, lsl #8
+00558b20 tst        ip, #4
+00558b24 orr        r3, r3, r3, lsl #16
+00558b28 subne      r1, r1, #4
+00558b2c strne      r3, [ip], #4
+00558b30 cmp        r1, #0x10
+00558b34 blt        #0x558bc4
+00558b38 mov        r2, r3
+00558b3c cmp        r1, #0x80
+00558b40 blt        #0x558b94
+00558b44 subs       r1, r1, #0x80
+00558b48 strdge     r2, r3, [ip], #8
+00558b4c strdge     r2, r3, [ip], #8
+00558b50 strdge     r2, r3, [ip], #8
+00558b54 strdge     r2, r3, [ip], #8
+00558b58 strdge     r2, r3, [ip], #8
+00558b5c strdge     r2, r3, [ip], #8
+00558b60 strdge     r2, r3, [ip], #8
+00558b64 strdge     r2, r3, [ip], #8
+00558b68 strdge     r2, r3, [ip], #8
+00558b6c strdge     r2, r3, [ip], #8
+00558b70 strdge     r2, r3, [ip], #8
+00558b74 strdge     r2, r3, [ip], #8
+00558b78 strdge     r2, r3, [ip], #8
+00558b7c strdge     r2, r3, [ip], #8
+00558b80 strdge     r2, r3, [ip], #8
+00558b84 strdge     r2, r3, [ip], #8
+00558b88 bgt        #0x558b44
+00558b8c bxeq       lr
+00558b90 add        r1, r1, #0x80
+00558b94 subs       r1, r1, #0x20
+00558b98 strdge     r2, r3, [ip], #8
+00558b9c strdge     r2, r3, [ip], #8
+00558ba0 strdge     r2, r3, [ip], #8
+00558ba4 strdge     r2, r3, [ip], #8
+00558ba8 bgt        #0x558b94
+00558bac bxeq       lr
+00558bb0 adds       r1, r1, #0x10
+00558bb4 strdge     r2, r3, [ip], #8
+00558bb8 strdge     r2, r3, [ip], #8
+00558bbc bxeq       lr
+00558bc0 addlt      r1, r1, #0x10
+00558bc4 subs       r1, r1, #4
+00558bc8 strge      r3, [ip], #4
+00558bcc bgt        #0x558bc4
+00558bd0 bxeq       lr
+00558bd4 adds       r1, r1, #4
+00558bd8 bxeq       lr
+00558bdc cmp        r1, #2
+00558be0 strb       r3, [ip], #1
+00558be4 strbge     r3, [ip], #1
+00558be8 strbgt     r3, [ip]
+00558bec bx         lr
+00558bf0 rsb        r2, r2, #4
+00558bf4 strb       r3, [ip], #1
+00558bf8 cmp        r2, #2
+00558bfc strbge     r3, [ip], #1
+00558c00 sub        r1, r1, r2
+00558c04 strbgt     r3, [ip], #1
+00558c08 cmp        r1, #4
+00558c0c bge        #0x558b1c
+00558c10 cmp        r1, #0
+00558c14 bxeq       lr
+00558c18 strb       r3, [ip], #1
+00558c1c cmp        r1, #2
+00558c20 strbge     r3, [ip], #1
+00558c24 strbgt     r3, [ip]
+00558c28 bx         lr
+00558c2c cmp        r2, #0

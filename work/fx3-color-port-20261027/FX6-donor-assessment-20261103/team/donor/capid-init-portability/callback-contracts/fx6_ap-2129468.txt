@@ -1,0 +1,13 @@
+ 2129468: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 212946c: 910003fd     	mov	x29, sp
+ 2129470: f9000bf3     	str	x19, [sp, #0x10]
+ 2129474: aa0003f3     	mov	x19, x0
+ 2129478: d2800100     	mov	x0, #0x8                // =8
+ 212947c: 97e51659     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 2129480: 528000e2     	mov	w2, #0x7                // =7
+ 2129484: b9000002     	str	w2, [x0]
+ 2129488: b9401262     	ldr	w2, [x19, #0x10]
+ 212948c: f9400bf3     	ldr	x19, [sp, #0x10]
+ 2129490: b9000402     	str	w2, [x0, #0x4]
+ 2129494: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 2129498: 17e51805     	b	0x1a6f4ac <Application_System_Init+0xe64468>

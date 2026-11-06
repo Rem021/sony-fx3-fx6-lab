@@ -1,0 +1,31 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-rm-empty-provider-v2.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-rm-empty-provider-v2.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-rm-empty-provider-v2.so"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "source_sha256": "488750285c431966ce2794503d3c42f99aab3f52e11fd18ede25e05da7a4e06a",
+  "included_sources": {
+    "fx3-rm-empty-core-v2.h": "02ab1c2cd26a66a7e24e1244e3873e507fd7647fb917a3fe3cf0df8bea9398f6",
+    "fx3-rm-key-gate-v1.inc": "66d037f8715f3c466705d23e61c19a5f086b4afcd7cbaf6b0d486db86d925357",
+    "fx3-synth-key-core-v1.h": "d54c86178f98db46f1c57ef8392b6e9ace59b65bf4bed93d60769bb87db96594"
+  },
+  "output_sha256": "49922ef89792b41c05f5ff7274593f4b137493182a864b2bda20229ccd0b12ee"
+}

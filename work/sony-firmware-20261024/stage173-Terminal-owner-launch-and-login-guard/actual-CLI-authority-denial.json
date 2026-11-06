@@ -1,0 +1,20 @@
+{
+  "runs": [
+    {
+      "argv_mode": [],
+      "returncode": 0,
+      "stdout": "{\"state\": \"PLAN_ONLY\", \"grant_id\": \"fx3-702-msc-owner-20261029-05\", \"new_device_operations\": 0}\n",
+      "stderr": ""
+    },
+    {
+      "argv_mode": [
+        "--run-live"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/owner_supervisor.py\", line 264, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/owner_supervisor.py\", line 246, in main\n    job=Job.start_live()\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/owner_supervisor.py\", line 103, in start_live\n    P.live_authority(goal) # Before a frame, cache query, process or prompt.\n    ~~~~~~~~~~~~~~~~^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/launch_policy.py\", line 87, in live_authority\n    raise B.Rejected('new fixed Terminal/sudo camera launch lacks its own explicit authorization')\nowner_binding.Rejected: new fixed Terminal/sudo camera launch lacks its own explicit authorization\n"
+    }
+  ],
+  "new_grant_and_job_absent": true,
+  "Terminal_or_sudo_or_camera_executed": false
+}

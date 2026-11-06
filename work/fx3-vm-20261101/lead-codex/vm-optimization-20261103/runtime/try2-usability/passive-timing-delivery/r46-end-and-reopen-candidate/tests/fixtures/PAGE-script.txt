@@ -1,0 +1,379 @@
+
+const token=__TOKEN__;
+let displayed=0,shown=0,shownSHA='',displayedGeneration=0,busy=false,ending=false,finished=false;
+let lastURL=null,renderFault=null,lastStatus=null,awaitingStep=null,deliveryUnknown=false,reviewAwaiting=false,reviewUnknown=false,pendingConfirm=null;
+let explicitRejection=null,uncertainDetail='';
+const attemptDocumentTimeOrigin=performance.timeOrigin,attemptDocument=document;let currentKeyAttempt=null;
+const image=document.querySelector('#frame'),statusEl=document.querySelector('#status');
+const err=document.querySelector('#error'),endButton=document.querySelector('#end'),startButton=document.querySelector('#start');
+const failureSummary=document.querySelector('#failure-summary'),diagnostics=document.querySelector('#diagnostics');
+let launchPending=null,launchUnknown=false,browserReadySent=false;
+const confirmButton=document.querySelector('#confirm'),reviewEl=document.querySelector('#review');
+const keys=[...document.querySelectorAll('.key')];
+// r24 explicitly separates one immutable review copy from the continuously published live image.
+const reviewDocumentId=crypto.randomUUID().toLowerCase();
+const pinButton=document.querySelector('#pin-review'),reviewImage=document.querySelector('#review-frame'),reviewLabel=document.querySelector('#snapshot-label');
+let reviewSnapshot=null,reviewBytes=null,reviewImageURL=null,reviewSnapshotLoaded=false,reviewPinPending=false;
+let reviewEpoch=0,reviewProtocolUnknown=false,reviewTerminated=false,reviewLastAck=null;
+const reviewIdentityKeys=['snapshot_id','run_incarnation','launch_id','document_id','step','attempt_id','pin_request_id','observed_sequence','content_generation','PNG_sha256'];
+function invalidateReview(reason,unknown=false){
+ const a=currentKeyAttempt;
+ reviewEpoch++;reviewSnapshot=null;reviewBytes=null;reviewSnapshotLoaded=false;reviewLastAck=null;
+ if(reviewImageURL){URL.revokeObjectURL(reviewImageURL);reviewImageURL=null;}reviewImage.removeAttribute('src');
+ reviewLabel.textContent='固定审阅对象已失效：'+reason;pinButton.disabled=confirmButton.disabled=true;
+ if(unknown)reviewProtocolUnknown=true;
+ if(['End','stopping','finished'].includes(reason))reviewTerminated=true;
+ if(unknown&&a)void post('/api/review-abort',{document_id:reviewDocumentId,attempt_id:a.attempt_id}).catch(()=>{});
+}
+function canPinReview(s){
+ const a=currentKeyAttempt;
+ return !!s&&!!a&&a.outcome==='accepted'&&a.expected_step===s.steps&&s.review_step===s.steps&&
+  s.phase==='ready'&&s.review_required&&s.input_received&&!s.error&&!s.busy&&!busy&&!ending&&!finished&&
+  !reviewProtocolUnknown&&!reviewTerminated&&!reviewPinPending&&!reviewSnapshot&&
+  !renderFault&&!deliveryUnknown&&!reviewUnknown&&!reviewAwaiting&&awaitingStep===null&&
+  frameLoadedFor(s)&&image.complete&&image.naturalWidth>0;
+}
+function canConfirmSnapshot(s){
+ const r=reviewSnapshot,a=currentKeyAttempt;
+ return !!s&&!!r&&!!a&&reviewSnapshotLoaded&&reviewImage.complete&&reviewImage.naturalWidth>0&&
+  s.phase==='ready'&&!s.error&&!s.busy&&s.review_required&&s.input_received&&s.steps===r.step&&s.review_step===r.step&&
+  a.attempt_id===r.attempt_id&&a.expected_step===r.step&&a.outcome==='accepted'&&
+  r.document_id===reviewDocumentId&&r.launch_id===s.launch_request_id&&
+  !busy&&!ending&&!finished&&!renderFault&&!deliveryUnknown&&!reviewUnknown&&!reviewAwaiting&&
+  !reviewProtocolUnknown&&!reviewTerminated&&awaitingStep===null&&pendingConfirm===null;
+}
+function reviewAsyncCurrent(epoch,attempt,step){
+ return epoch===reviewEpoch&&!reviewProtocolUnknown&&!reviewTerminated&&!ending&&!finished&&
+  !lastStatus?.error&&lastStatus?.phase==='ready'&&lastStatus.steps===step&&
+  currentKeyAttempt?.attempt_id===attempt&&currentKeyAttempt.outcome==='accepted';
+}
+Object.defineProperty(window,'fx3ReviewSnapshotState',{value:(includeBytes=false)=>{
+ let png_base64=null;
+ if(includeBytes&&reviewBytes){let str='';for(const b of reviewBytes)str+=String.fromCharCode(b);png_base64=btoa(str);}
+ return {schema:'fx3-review-page-state-v1',document_id:reviewDocumentId,epoch:reviewEpoch,
+  protocol_unknown:reviewProtocolUnknown,terminated:reviewTerminated,pin_pending:reviewPinPending,
+  loaded:reviewSnapshotLoaded,snapshot:reviewSnapshot&&structuredClone(reviewSnapshot),
+  last_ack:reviewLastAck&&structuredClone(reviewLastAck),png_base64};
+},writable:false,configurable:false});
+pinButton.onclick=async()=>{
+ if(!canPinReview(lastStatus))return;
+ const a=currentKeyAttempt,epoch=reviewEpoch,step=a.expected_step;
+ const expected={launch_id:lastStatus.launch_request_id,document_id:reviewDocumentId,step,
+  attempt_id:a.attempt_id,pin_request_id:crypto.randomUUID().toLowerCase(),
+  observed_sequence:displayed,content_generation:displayedGeneration,PNG_sha256:shownSHA};
+ reviewPinPending=true;pinButton.disabled=true;
+ try{
+  const ack=await post('/api/review-snapshot',expected);
+  if(!reviewAsyncCurrent(epoch,a.attempt_id,step))return;
+  if(ack.schema!=='fx3-review-snapshot-v1'||!ack.snapshot_id||!ack.run_incarnation||
+     Object.keys(expected).some(k=>ack[k]!==expected[k]))throw Error('snapshot_identity_mismatch');
+  const u='/review-snapshot.png?snapshot_id='+encodeURIComponent(ack.snapshot_id)+'&document_id='+encodeURIComponent(reviewDocumentId);
+  const {body}=await request(u,{headers:{'X-Trial-Token':token}},'arrayBuffer');
+  const bytes=new Uint8Array(body);
+  const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(x=>x.toString(16).padStart(2,'0')).join('');
+  if(bytes.byteLength!==ack.byte_length||hash!==ack.PNG_sha256)throw Error('snapshot_bytes_mismatch');
+  if(!reviewAsyncCurrent(epoch,a.attempt_id,step))return;
+  const objectURL=URL.createObjectURL(new Blob([bytes],{type:'image/png'}));
+  await new Promise((resolve,reject)=>{let timer=setTimeout(()=>reject(Error('snapshot_image_timeout')),8000);
+   reviewImage.onload=()=>{clearTimeout(timer);resolve();};reviewImage.onerror=()=>{clearTimeout(timer);reject(Error('snapshot_decode'));};reviewImage.src=objectURL;});
+  if(!reviewAsyncCurrent(epoch,a.attempt_id,step)){URL.revokeObjectURL(objectURL);return;}
+  reviewImageURL=objectURL;reviewBytes=bytes;reviewSnapshot=Object.freeze({...ack});reviewSnapshotLoaded=true;
+  reviewLabel.textContent=`固定副本：第${step}步 · generation ${ack.content_generation} · sequence ${ack.observed_sequence}；确认仅针对本副本，实时画面继续更新。`;
+ }catch(e){if(epoch===reviewEpoch)invalidateReview('snapshot_pin_or_load_unknown',true);}
+ finally{reviewPinPending=false;enableKeys(lastStatus);}
+};
+
+
+// Bound fetch AND body consumption. A lost mutation response is never retried.
+async function request(path,options={},bodyKind='json'){
+ const controller=new AbortController();let timer;
+ const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{
+   const error=new Error('连接超时；操作结果需要重新确认。');
+   error.deliveryUnknown=true;reject(error);controller.abort();
+ },8000);});
+ try{return await Promise.race([deadline,(async()=>{
+   const response=await fetch(path,{cache:'no-store',...options,signal:controller.signal});
+   if(!response.ok){
+     // Only explicit server rejections prove a mutation was rejected.
+     const body=await response.json();const error=new Error(body.error||'操作未完成');
+     error.deliveryUnknown=response.status>=500;error.serverResponse=body;error.httpStatus=response.status;throw error;
+   }
+   const body=await response[bodyKind]();return {response,body};
+ })()]);}finally{clearTimeout(timer);}
+}
+async function post(path,body){return (await request(path,{method:'POST',
+ headers:{'Content-Type':'application/json','X-Trial-Token':token},body:JSON.stringify(body)})).body;}
+function disableKeys(){keys.forEach(b=>b.disabled=true);confirmButton.disabled=true;startButton.disabled=true;}
+function lockVisualControls(){keys.forEach(b=>b.disabled=true);pinButton.disabled=true;confirmButton.disabled=!canConfirmSnapshot(lastStatus);}
+function frameLoadedFor(s){
+ return !!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&
+   displayedGeneration===s.frame.content_generation&&s.render_valid&&!renderFault;
+}
+function enableKeys(s){
+ const visual=frameLoadedFor(s);
+ keys.forEach(b=>b.disabled=!s.ready||busy||ending||awaitingStep!==null||deliveryUnknown||reviewAwaiting||reviewUnknown||!visual||reviewProtocolUnknown||reviewTerminated);
+ pinButton.disabled=!canPinReview(s);
+ confirmButton.disabled=!canConfirmSnapshot(s);
+}
+function confirmationMatches(s,p){
+ const c=s.review_confirmation;
+ if(p?.schema!=='fx3-review-snapshot-v1'||!c||['snapshot_id','run_incarnation','launch_id','document_id','attempt_id','pin_request_id'].some(k=>c[k]!==p[k]))return false;
+ return !!p&&!!c&&s.phase==='ready'&&!s.review_required&&s.steps===p.step&&
+   c.request_id===p.request_id&&c.step===p.step&&c.observed_sequence===p.observed_sequence&&
+   c.content_generation===p.content_generation&&c.PNG_sha256===p.PNG_sha256&&
+   c.guest_input_written===false;
+}
+function presentFeedback(s){
+ // Native failure and terminal state outrank a previous, local 4xx refusal.
+ let summary='',detail='';
+ if(s.error){
+   detail=s.error;
+   summary=s.error.startsWith('native_model_power_off_observed')?
+     '原生省电关机：本轮已结束，健康检查未通过。':'检测到错误；请展开“诊断详情”查看原始回执。';
+ }else if(s.phase==='finished'||s.phase==='stopping'||ending){
+   // The authoritative lifecycle message is already in #status.
+ }else if(renderFault){
+   detail=renderFault;
+   summary='网页画面或状态读取失败；本轮暂停新按键，请查看诊断详情。';
+ }else if(launchUnknown){
+   detail='启动回执未知；只读状态仍未匹配本次请求，请等待或结束本轮。';
+   summary='启动请求结果未知，已暂停再次启动；请等待状态确认或结束本轮。';
+ }else if(deliveryUnknown||reviewUnknown){
+   detail=uncertainDetail;
+   summary=deliveryUnknown?
+     '按键是否送达尚未确认，已暂停新按键；请结束本轮后重新启动。':
+     '画面确认请求结果未知，已暂停新按键；请结束本轮后重新启动。';
+ }else if(explicitRejection){
+   detail=explicitRejection.detail;
+   summary=explicitRejection.kind==='key'?
+     '本次按键未被接收。请看最新画面，再由您决定是否重新按键；网页不会自动重发。':
+     '本次画面确认未被接收。请看最新画面，再由您决定是否重新确认；网页不会自动确认。';
+ }
+ diagnostics.hidden=!detail;err.textContent=detail;failureSummary.textContent=summary;
+}
+async function showFrame(s){
+ if(!s.frame)return;
+ if(s.frame.PNG_sha256===shownSHA&&s.frame.content_generation===displayedGeneration){displayed=shown=s.frame.sequence;return;}
+ const {response,body}=await request('/frame.png',{},'blob');
+ const seq=Number(response.headers.get('X-Frame-Sequence')),sha=response.headers.get('X-Frame-PNG-SHA256');
+ const generation=Number(response.headers.get('X-Frame-Content-Generation'));
+ if(!Number.isSafeInteger(seq)||seq<=0||!sha||!Number.isSafeInteger(generation)||generation<=0)throw Error('画面身份缺失');
+ const u=URL.createObjectURL(body);
+ try{await new Promise((resolve,reject)=>{
+   const timer=setTimeout(()=>settle(Error('画面加载超时，请结束试用或重新连接。')),8000);
+   let done=false;
+   function settle(error){if(done)return;done=true;clearTimeout(timer);image.onload=image.onerror=null;
+     if(error)reject(error);else resolve();}
+   image.onload=()=>settle();image.onerror=()=>settle(Error('画面解码失败。'));
+   image.src=u;
+ });}catch(e){URL.revokeObjectURL(u);throw e;}
+ document.querySelector('#placeholder').hidden=true;
+ displayed=shown=seq;shownSHA=sha;displayedGeneration=generation;
+ if(lastURL)URL.revokeObjectURL(lastURL);lastURL=u;
+}
+async function tick(){
+ if(finished)return;
+ try{
+   const s=(await request('/api/status')).body;if(reviewTerminated&&!['stopping','finished'].includes(s.phase)){disableKeys();return;}lastStatus=s;
+   if(s.error||s.review_protocol_unknown)invalidateReview('server_error_or_unknown',true);
+   if(s.review_required&&reviewSnapshot&&s.review_step!==reviewSnapshot.step)invalidateReview('review_step_changed',true);
+   statusEl.textContent=s.message+(s.visual_state==='visual_pending'?'（输入已接收，仍在观察画面）':'');
+   reviewEl.textContent=s.review_required?'原生按键已接收；请保存并实际审阅下方固定副本，再独立确认本步。实时画面继续更新。':'';
+   document.querySelector('#meta').textContent=s.phase==='finished'?
+     `按键 ${s.steps}/${s.max_steps} · 已结束${s.result&&Number.isFinite(s.result.duration_seconds)?` · 实际 ${Math.round(s.result.duration_seconds)} 秒`:''} · 最后提交帧 ${s.frame?s.frame.sequence:'无'}`:
+     `按键 ${s.steps}/${s.max_steps} · 剩余 ${Math.ceil(s.remaining_seconds/60)} 分钟 · 提交帧 ${s.frame?s.frame.sequence:'等待中'}`;
+   document.querySelector('#events').replaceChildren(...s.events.map(e=>{
+     const li=document.createElement('li');li.textContent=e;return li;
+   }));
+   // A final server receipt remains authoritative even if its last image is unavailable.
+   if(s.phase==='finished'){
+     if(!s.frame)document.querySelector('#placeholder').textContent='本轮已结束';
+     invalidateReview('finished');finished=true;disableKeys();endButton.disabled=true;
+     presentFeedback(s);
+     // Confirm delivery only after displaying the authoritative final status.
+     // A lost ACK never overrides that status or initiates another operation.
+     if(s.final_receipt_id)void post('/api/final-ack',{receipt_id:s.final_receipt_id}).catch(()=>{});
+     return;
+   }
+   if(s.phase==='stopping'){invalidateReview('stopping');ending=true;disableKeys();}
+   if(s.phase==='awaiting_launch'&&!browserReadySent){
+     browserReadySent=true;
+     try{await post('/api/browser-ready',{});}catch(e){browserReadySent=false;}
+   }
+   if(launchPending&&s.launch_request_id===launchPending&&
+      ['accepted','starting','running'].includes(s.launch_status)){
+     launchUnknown=false;launchPending=null;
+   }
+   startButton.disabled=s.phase!=='awaiting_launch'||!s.browser_ready||!!s.launch_request_id||
+     !!launchPending||launchUnknown||ending||!!renderFault;
+   if(launchUnknown){
+     // Kept locked until the matching launch request appears in status.
+   }
+   if(awaitingStep!==null&&!busy&&!deliveryUnknown&&s.steps>=awaitingStep&&!s.busy){
+     awaitingStep=null;deliveryUnknown=false;
+   }
+   if(false){ // r24: only the explicit mutation response may complete this confirm; unknown stays sticky
+     reviewAwaiting=false;reviewUnknown=false;pendingConfirm=null;
+     if(explicitRejection?.kind==='confirm')explicitRejection=null;
+   }
+   // A fresh status may arrive while the previous image is still displayed.
+   // Lock controls before the asynchronous image load; never post the old view.
+   if(!frameLoadedFor(s))lockVisualControls();
+   if(s.frame&&(s.frame.sequence!==shown||s.frame.content_generation!==displayedGeneration))await showFrame(s);
+   renderFault=null;enableKeys(s);presentFeedback(s);
+ }catch(e){
+   invalidateReview('read_or_render_unknown',true);renderFault=e.message;disableKeys();err.textContent=renderFault;
+   diagnostics.hidden=false;failureSummary.textContent='网页画面或状态读取失败；本轮暂停新按键，请查看诊断详情。';
+   if(ending){
+     statusEl.textContent='结束状态尚未确认，请查看启动终端；必要时在终端按 Ctrl-C。';
+     endButton.disabled=false;
+   }
+ }finally{if(!finished)setTimeout(tick,400);}
+}
+function keyAttemptOutcome(){return currentKeyAttempt?structuredClone(currentKeyAttempt):null;}
+Object.defineProperty(window,'fx3KeyAttemptOutcome',{value:keyAttemptOutcome,writable:false,configurable:false});
+function setAttempt(id,outcome,extra={}){
+ if(!currentKeyAttempt||currentKeyAttempt.attempt_id!==id)return false;
+ Object.assign(currentKeyAttempt,{outcome,...extra,updated_monotonic_ms:performance.now()});if(outcome==='delivery_unknown')invalidateReview('input_unknown',true);return true;
+}
+function keyAttemptRecoveryEligibility(binding){
+ const a=currentKeyAttempt,s=lastStatus;
+ const deny=reason=>({eligible:false,reason});
+ let h;try{h=window.__fx3InteractionDeadlineV1?.status?.();}
+ catch(_){return deny('alarm_status_unavailable');}
+ if(!a||!binding||typeof binding!=='object')return deny('no_attributed_attempt');
+ if(a.attempt_id!==binding.attempt_id||a.document_time_origin!==binding.document_time_origin||
+    a.launch_request_id!==binding.launch_request_id||a.key!==binding.key||
+    a.base_step!==binding.base_step||a.expected_step!==binding.expected_step||
+    a.frame.PNG_sha256!==binding.PNG_sha256||a.frame.content_generation!==binding.content_generation||
+    a.frame.sequence!==binding.sequence||a.alarm_nonce!==binding.nonce||!a.alarm_nonce)
+   return deny('binding_mismatch');
+ if(document!==attemptDocument||performance.timeOrigin!==a.document_time_origin||
+    !h||h.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedURL!==location.href||
+    h.current?.state!=='armed'||h.current.nonce!==binding.nonce||
+    h.expectedLaunchId!==a.launch_request_id||h.documentTimeOrigin!==a.document_time_origin||
+    !Number.isFinite(h.current.armed_ms)||!Number.isFinite(h.current.due_ms)||
+    h.current.due_ms!==h.current.armed_ms+20000||
+    h.current.due_ms!==a.alarm_due_ms||performance.now()>=h.current.due_ms)return deny('document_or_alarm_mismatch');
+ if(!['not_posted','explicit_rejected_unqueued'].includes(a.outcome)||
+    (a.outcome==='not_posted'&&a.mutation_called)||
+    (a.outcome==='explicit_rejected_unqueued'&&(!a.mutation_called||a.server_request_id!==a.attempt_id)))
+   return deny('attempt_not_proven_unqueued');
+ if(!s||s.launch_request_id!==a.launch_request_id||s.steps!==a.base_step||
+    s.phase!=='ready'||!s.ready||s.error||s.busy||s.review_required||
+    ending||finished||busy||awaitingStep!==null||deliveryUnknown||reviewUnknown||
+    reviewAwaiting||renderFault||!frameLoadedFor(s))return deny('current_state_not_ready');
+ return {eligible:true,reason:'attributed_unqueued_local_snapshot_only',attempt_id:a.attempt_id,
+   snapshot_monotonic_ms:performance.now(),server_atomic_permission:false};
+}
+Object.defineProperty(window,'fx3KeyAttemptRecoveryEligibility',{value:keyAttemptRecoveryEligibility,writable:false,configurable:false});
+keys.forEach(b=>b.onclick=async()=>{
+ if(b.disabled||busy||ending||renderFault||awaitingStep!==null||!lastStatus||reviewProtocolUnknown||reviewTerminated)return;
+ invalidateReview('new_input');
+ // One explicit handler-admitted click, fixed before the first await.
+ let alarmAtClick=null;try{alarmAtClick=window.__fx3InteractionDeadlineV1?.status?.()||null;}catch(_){}
+ const a={attempt_id:crypto.randomUUID().toLowerCase(),document_time_origin:attemptDocumentTimeOrigin,
+   launch_request_id:lastStatus.launch_request_id||null,
+   key:Number(b.dataset.key),base_step:lastStatus.steps,expected_step:lastStatus.steps+1,
+   frame:{sequence:displayed,PNG_sha256:shownSHA,content_generation:displayedGeneration},
+   alarm_nonce:alarmAtClick?.current?.nonce||null,alarm_due_ms:alarmAtClick?.current?.due_ms||null,
+   outcome:'preflight',mutation_called:false,created_monotonic_ms:performance.now()};
+ currentKeyAttempt=a;
+ if(!frameLoadedFor(lastStatus)){
+   setAttempt(a.attempt_id,'not_posted',{reason:'click_frame_not_loaded'});
+   lockVisualControls();
+   explicitRejection={kind:'key',detail:'浏览器尚未显示最新画面；本次未发送按键。请看新图后自行决定。'};
+   presentFeedback(lastStatus);return;
+ }
+ busy=true;disableKeys();
+ const clickedStep=a.base_step,clickedSHA=a.frame.PNG_sha256,clickedGeneration=a.frame.content_generation;
+ let preflight;
+ try{preflight=(await request('/api/status')).body;
+   if(currentKeyAttempt!==a)return;
+   if(!preflight||typeof preflight!=='object'||!preflight.frame||typeof preflight.frame!=='object')
+     throw Error('按键前状态格式无效');
+ }
+ catch(e){if(currentKeyAttempt!==a)return;
+   setAttempt(a.attempt_id,'not_posted',{reason:'preflight_get_failed'});
+   renderFault='按键前状态读取失败；本次未发送按键。请等待状态刷新并看最新画面。';
+   busy=false;disableKeys();presentFeedback(lastStatus);return;
+ }
+ if(ending||finished||deliveryUnknown||reviewUnknown||renderFault||
+    awaitingStep!==null||reviewAwaiting||preflight.phase!=='ready'||
+    !preflight.ready||preflight.busy||preflight.review_required||
+    preflight.steps!==clickedStep||!frameLoadedFor(preflight)||
+    preflight.frame.PNG_sha256!==clickedSHA||preflight.frame.content_generation!==clickedGeneration||
+    shownSHA!==clickedSHA||displayedGeneration!==clickedGeneration||
+    !lastStatus||!frameLoadedFor(lastStatus)||lastStatus.steps!==clickedStep||
+    lastStatus.frame.PNG_sha256!==clickedSHA||lastStatus.frame.content_generation!==clickedGeneration){
+   setAttempt(a.attempt_id,'not_posted',{reason:'preflight_identity_or_lifecycle_changed'});
+   busy=false;lockVisualControls();
+   if(!ending&&!finished){
+     explicitRejection={kind:'key',detail:'按键前画面或状态已变化；本次未发送按键。请看最新画面后自行决定。'};
+     presentFeedback(lastStatus||preflight);
+   }return;
+ }
+ awaitingStep=clickedStep+1;
+ setAttempt(a.attempt_id,'post_in_flight',{mutation_called:true,observed_sequence:displayed});
+ try{
+   const ack=await post('/api/key',{key:a.key,observed_sequence:displayed,request_id:a.attempt_id,document_id:reviewDocumentId});
+   if(currentKeyAttempt!==a)return;
+   if(ack.accepted!==true||ack.next_step!==awaitingStep||ack.request_id!==a.attempt_id)
+     throw Error('按键回执不完整，请等待状态确认。');
+   setAttempt(a.attempt_id,'accepted',{server_request_id:ack.request_id,accepted_next_step:ack.next_step});
+   if(explicitRejection?.kind==='key')explicitRejection=null;
+   presentFeedback(lastStatus);
+ }catch(e){
+   if(currentKeyAttempt!==a)return;
+   const matching=e.deliveryUnknown===false&&e.httpStatus>=400&&e.httpStatus<500&&
+     e.serverResponse?.request_id===a.attempt_id&&e.serverResponse?.accepted===false&&
+     e.serverResponse?.enqueued===false;
+   setAttempt(a.attempt_id,matching?'explicit_rejected_unqueued':'delivery_unknown',
+     {server_request_id:matching?e.serverResponse.request_id:null,http_status:e.httpStatus||null});
+   if(matching){awaitingStep=null;deliveryUnknown=false;
+     explicitRejection={kind:'key',detail:e.message};
+   }else{deliveryUnknown=true;uncertainDetail=e.message;}
+   presentFeedback(lastStatus);
+ }finally{if(currentKeyAttempt===a)busy=false;}
+});
+
+startButton.onclick=async()=>{
+ if(startButton.disabled||!lastStatus||lastStatus.phase!=='awaiting_launch')return;
+ const id=crypto.randomUUID().toLowerCase();launchPending=id;startButton.disabled=true;
+ try{const ack=await post('/api/start',{request_id:id});
+   if(ack.accepted!==true||ack.request_id!==id||ack.guest_spawned_by_http!==false)throw Error('启动回执不完整。');
+ }catch(e){if(launchPending===id){
+   launchUnknown=true;diagnostics.hidden=false;err.textContent=e.message;
+   failureSummary.textContent='启动请求结果未知，已暂停再次启动；请等待状态确认或结束本轮。';
+ }}
+};
+confirmButton.onclick=async()=>{
+ if(!canConfirmSnapshot(lastStatus))return;
+ const snapshot=reviewSnapshot,epoch=reviewEpoch;
+ const confirmation={schema:'fx3-review-snapshot-v1',request_id:crypto.randomUUID().toLowerCase()};
+ for(const k of reviewIdentityKeys)confirmation[k]=snapshot[k];
+ pendingConfirm=confirmation;reviewAwaiting=true;disableKeys();pinButton.disabled=true;
+ try{
+  const ack=await post('/api/confirm-visual',confirmation);
+  if(!reviewAsyncCurrent(epoch,snapshot.attempt_id,snapshot.step))return;
+  if(ack.confirmed!==true||ack.schema!=='fx3-review-snapshot-v1'||ack.request_id!==confirmation.request_id||
+     ack.guest_input_written!==false||reviewIdentityKeys.some(k=>ack[k]!==confirmation[k]))throw Error('snapshot_confirm_receipt_mismatch');
+  if(pendingConfirm===confirmation){
+   reviewLastAck=Object.freeze({...ack});reviewAwaiting=false;reviewUnknown=false;pendingConfirm=null;
+   reviewLabel.textContent='已确认该固定副本；下一键仍需新的明确动作并通过实时输入门。';
+   if(explicitRejection?.kind==='confirm')explicitRejection=null;
+  }
+ }catch(e){
+  if(epoch===reviewEpoch){reviewUnknown=true;uncertainDetail='指定快照确认结果未知；请结束本轮，不会重发。';invalidateReview('confirm_unknown',true);}
+ }finally{if(lastStatus)enableKeys(lastStatus);}
+};
+
+endButton.onclick=async()=>{
+ if(finished||endButton.disabled)return;
+ invalidateReview('End');ending=true;disableKeys();endButton.disabled=true;
+ statusEl.textContent='正在结束试用并等待资源回收确认…';
+ try{await post('/api/stop',{});}
+ catch(e){err.textContent=e.message;endButton.disabled=false;
+   statusEl.textContent='结束请求未确认，请查看启动终端；必要时在终端按 Ctrl-C。';}
+};
+tick();

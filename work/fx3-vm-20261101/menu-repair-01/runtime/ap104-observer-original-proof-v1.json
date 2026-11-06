@@ -1,0 +1,189 @@
+{
+  "authority": "msg_b94a0dacc3e4",
+  "audit": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/audits/gpe-completion-unfetched/unfetched-proof.json",
+    "sha256": "3a4f2a1a02ec8f86ba704cf82cba47a5c37e0767e05345731632f046e922aa55"
+  },
+  "inputs": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-modules/osal_uipc.ko",
+      "sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libgpe.so",
+      "sha256": "363879687bd43a69734187eb28f721ce6080209a95c62b04c833a4a117f12464"
+    }
+  ],
+  "uipc_points": [
+    {
+      "va": "0x5b4c",
+      "raw": "601800f9",
+      "asm": "str x0, [x3, #0x30]",
+      "offset": 23372,
+      "label": "dynamic_owner_claim",
+      "module": "uipc",
+      "queue_register": 3,
+      "token_register": 0,
+      "relocated_call": false
+    },
+    {
+      "va": "0x59b0",
+      "raw": "ff1a00f9",
+      "asm": "str xzr, [x23, #0x30]",
+      "offset": 22960,
+      "label": "dynamic_owner_release",
+      "module": "uipc",
+      "queue_register": 23,
+      "token_register": null,
+      "relocated_call": false
+    },
+    {
+      "va": "0x5c80",
+      "raw": "ff1a00f9",
+      "asm": "str xzr, [x23, #0x30]",
+      "offset": 23680,
+      "label": "dynamic_owner_pending_release",
+      "module": "uipc",
+      "queue_register": 23,
+      "token_register": null,
+      "relocated_call": false
+    },
+    {
+      "va": "0x3480",
+      "raw": "a01a40f9",
+      "asm": "ldr x0, [x21, #0x30]",
+      "offset": 13440,
+      "label": "completion_alloc_owner_read",
+      "module": "uipc",
+      "queue_register": 21,
+      "token_register": null,
+      "relocated_call": false
+    },
+    {
+      "va": "0x34a4",
+      "raw": "207f8012",
+      "asm": "mov w0, #-0x3fa",
+      "offset": 13476,
+      "label": "first_unfetched_return",
+      "module": "uipc",
+      "queue_register": 21,
+      "token_register": null,
+      "relocated_call": false
+    }
+  ],
+  "user_gpe_points": [
+    {
+      "va": "0xa110",
+      "raw": "fd7bbea9",
+      "asm": "stp x29, x30, [sp, #-0x20]!",
+      "offset": 41232,
+      "label": "original_Main_SyncCallback_enter",
+      "module": "gpe",
+      "relocated_call": false
+    },
+    {
+      "va": "0xa154",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 41300,
+      "label": "original_Main_SyncCallback_return",
+      "module": "gpe",
+      "relocated_call": false
+    },
+    {
+      "va": "0xd888",
+      "raw": "e30301aa",
+      "asm": "mov x3, x1",
+      "offset": 55432,
+      "label": "original_SendDrawComp_enter",
+      "module": "gpe",
+      "relocated_call": false
+    },
+    {
+      "va": "0xd714",
+      "raw": "c0035fd6",
+      "asm": "ret",
+      "offset": 55060,
+      "label": "original_shared_Send_return",
+      "module": "gpe",
+      "relocated_call": false
+    }
+  ],
+  "current_task": {
+    "register": "SP_EL0",
+    "pid_offset": 904,
+    "comm_offset": 1336,
+    "comm_bytes": 16,
+    "original_print_task_info": [
+      {
+        "va": "0x2490",
+        "raw": "fd7bbfa9",
+        "asm": "stp x29, x30, [sp, #-0x10]!"
+      },
+      {
+        "va": "0x2494",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2498",
+        "raw": "024138d5",
+        "asm": "mrs x2, sp_el0"
+      },
+      {
+        "va": "0x249c",
+        "raw": "004138d5",
+        "asm": "mrs x0, sp_el0"
+      },
+      {
+        "va": "0x24a0",
+        "raw": "01010058",
+        "asm": "ldr x1, #0x24c0"
+      },
+      {
+        "va": "0x24a4",
+        "raw": "42e01491",
+        "asm": "add x2, x2, #0x538"
+      },
+      {
+        "va": "0x24a8",
+        "raw": "038843b9",
+        "asm": "ldr w3, [x0, #0x388]"
+      },
+      {
+        "va": "0x24ac",
+        "raw": "e0000058",
+        "asm": "ldr x0, #0x24c8"
+      },
+      {
+        "va": "0x24b0",
+        "raw": "00000094",
+        "asm": "bl #0x24b0",
+        "relocation": {
+          "symbol": "printk",
+          "section": "SHN_UNDEF",
+          "value": "0x0",
+          "addend": 0,
+          "type": 283
+        }
+      },
+      {
+        "va": "0x24b4",
+        "raw": "fd7bc1a8",
+        "asm": "ldp x29, x30, [sp], #0x10"
+      },
+      {
+        "va": "0x24b8",
+        "raw": "c0035fd6",
+        "asm": "ret"
+      }
+    ]
+  },
+  "queue_layout": {
+    "flags_offset": 0,
+    "count_offset": 2,
+    "owner_offset": 48,
+    "bytes": 64
+  },
+  "scope": "QEMU TCG CPU breakpoint table only; before/after exact original owner store, no writes to original memory or registers; user wrappers preserve calls/results/errno"
+}

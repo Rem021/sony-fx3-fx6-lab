@@ -1,0 +1,211 @@
+{
+  "commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "source_of_truth": "selected-source-receipt.json verified_git_blob",
+  "records": [
+    {
+      "file": "runtime/analysis/bodydata-launch.py",
+      "line": 121,
+      "text": "    if (info.model, info.version, info.region, info.isAccessory) != (0x20030014, '2.01', 0, False):"
+    },
+    {
+      "file": "runtime/analysis/prepare-assets.py",
+      "line": 55,
+      "text": "SKIP = {'libUsbBusPower.so', 'libInfraUsbCmn.so', 'libsensapi.so',"
+    },
+    {
+      "file": "runtime/analysis/prepare-assets.py",
+      "line": 151,
+      "text": "    for va in range(0x1db20, 0x21d80, 0x48):"
+    },
+    {
+      "file": "runtime/analysis/prepare-assets.py",
+      "line": 232,
+      "text": "    if (model, region, header[32:34]) != (0x20030014, 0, b'\\x01\\x02'):"
+    },
+    {
+      "file": "runtime/analysis/prepare-assets.py",
+      "line": 455,
+      "text": "        provenance = {'header_sha256': HEADER_SHA, 'model': '0x20030014', 'region': 0,"
+    },
+    {
+      "file": "runtime/analysis/prepare-assets.py",
+      "line": 470,
+      "text": "                                    'include_default': True, 'clear_mask': 7, 'va_start': '0x1db20', 'va_end': '0x21d80', 'stride': 72, 'services': sorted(SKIP)},"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 86,
+      "text": "  timer_environment=(--setenv QEMU_SONY_TIMERS 1)"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 211,
+      "text": "  cmdline+=' initcall_debug initcall_blacklist=__boottime___udif_init_udif_hwtimer,__boottime___udif_init_udif_wdt,__boottime___udif_init_udif_fusb_otg,__boottime___udif_init_udif_pcie,__boottime___udif_init_udif_ddrc,__boottime___udif_init_pcidma,__boottime_sony_usb_init'"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 214,
+      "text": "    cmdline=\"${cmdline/,__boottime___udif_init_udif_fusb_otg/}\""
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 217,
+      "text": "    cmdline=\"${cmdline/__boottime___udif_init_udif_hwtimer,/}\""
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 223,
+      "text": "    cmdline=\"${cmdline/,__boottime___udif_init_pcidma/}\""
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 224,
+      "text": "    cmdline=\"${cmdline/,__boottime___udif_init_udif_pcie/}\""
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 273,
+      "text": "    start = 0x440000000"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 358,
+      "text": "        b'device_type': b'iomap\\0', b'phys': struct.pack('>Q', 0xf1042000),"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 401,
+      "text": "  memory_config=24576"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 402,
+      "text": "  loader_args=(-device loader,file=/out/virt.dtb,addr=0x400002000"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 403,
+      "text": "               -device loader,file=/kernel.img,addr=0x400080000,force-raw=on"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 404,
+      "text": "               -device loader,file=/initrd.img,addr=0x440000000,force-raw=on"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 405,
+      "text": "               -device loader,addr=0x400080000,cpu-num=0)"
+    },
+    {
+      "file": "runtime/analysis/qemu-kernel-probe.sh",
+      "line": 470,
+      "text": "      -machine virt,secure=off,gic-version=2 -cpu cortex-a35 -smp \"$cpu_count\" -m \"$memory_config\" \\"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 671,
+      "text": "   HONEST_ROUTE records. appFw resolves osal_snd_msg through *its own* GOT slot at VA 0x5bc1d70,"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 683,
+      "text": "        unsigned long slot_va = observe_appfw_base + 0x5bc1d70UL;"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 1409,
+      "text": "    unsigned char *stub = (unsigned char *)(base + 0x165fe30UL);"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 9760,
+      "text": "        record(\"FUNCTIONAL_MPR_UNSUPPORTED \",\"canonical-codec-request-not-implemented physical_ASIC_verified=0 capture_verified=0\");"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 10992,
+      "text": "   would arrive through one of them. appFw's osal_snd_msg@plt loads the GOT slot at VA 0x5bc1d70. */"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 11013,
+      "text": "    *(unsigned long *)(base + 0x5bc1d70UL) = (unsigned long)observe_send_async;"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 11014,
+      "text": "    record(\"ASYNC_SEND_ARMED \", \"appFw osal_snd_msg GOT slot 0x5bc1d70\");"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 11350,
+      "text": "        record(\"GPE_SOFTWARE_UNSUPPORTED \", \"deferred non-null callback is not implemented\");"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "line": 11355,
+      "text": "            record(\"GPE_SOFTWARE_UNSUPPORTED \", \"BitBlit outside supported copy or opt-in sprite subset\");"
+    },
+    {
+      "file": "build-qemu.sh",
+      "line": 125,
+      "text": "    \"$1/configure\" --target-list=aarch64-softmmu,aarch64-linux-user \\"
+    },
+    {
+      "file": "build-qemu.sh",
+      "line": 126,
+      "text": "      --without-default-features --enable-tcg --enable-gtk --enable-sdl --enable-pixman \\"
+    },
+    {
+      "file": "build-qemu.sh",
+      "line": 127,
+      "text": "      --enable-seccomp --enable-fdt=internal --disable-opengl --disable-download \\"
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 8,
+      "text": "+       reference the CXD900xx GIC at its real addresses (0xf13a1000/0xf13a2000)."
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 10,
+      "text": "+    if (g_getenv(\"QEMU_SONY_TIMERS\")) {"
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 15,
+      "text": "+        memory_region_add_subregion_overlap(mem, 0xf13a1000, dist_alias, 1);"
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 20,
+      "text": "+        memory_region_add_subregion_overlap(mem, 0xf13a2000, cpu_alias, 1);"
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 29,
+      "text": "+    /* Local Sony experiment: the CXD900xx debug UART lives at 0xf1000000; the WBI"
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 31,
+      "text": "+    if (!secure && uart == VIRT_UART0 && g_getenv(\"QEMU_SONY_TIMERS\")) {"
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 35,
+      "text": "+        memory_region_add_subregion_overlap(mem, 0xf1000000, uart_alias, 1);"
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 45,
+      "text": "+    if (g_getenv(\"QEMU_SONY_TIMERS\")) {"
+    },
+    {
+      "file": "source/qemu-sony-native.patch",
+      "line": 50,
+      "text": "+            memory_region_add_subregion_overlap(sysmem, 0xf1042000 + i * 0x1000,"
+    }
+  ]
+}

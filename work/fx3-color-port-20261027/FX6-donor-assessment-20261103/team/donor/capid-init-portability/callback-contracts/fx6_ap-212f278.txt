@@ -1,0 +1,25 @@
+ 212f278: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 212f27c: 910003fd     	mov	x29, sp
+ 212f280: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 212f284: aa0003f4     	mov	x20, x0
+ 212f288: d2800280     	mov	x0, #0x14               // =20
+ 212f28c: 97e4fed5     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 212f290: aa0003f3     	mov	x19, x0
+ 212f294: 52800800     	mov	w0, #0x40               // =64
+ 212f298: b9401681     	ldr	w1, [x20, #0x14]
+ 212f29c: b9000260     	str	w0, [x19]
+ 212f2a0: f9400680     	ldr	x0, [x20, #0x8]
+ 212f2a4: 97ffffe9     	bl	0x212f248 <Application_System_Init+0x1524204>
+ 212f2a8: b9000e60     	str	w0, [x19, #0xc]
+ 212f2ac: b9401280     	ldr	w0, [x20, #0x10]
+ 212f2b0: b9000660     	str	w0, [x19, #0x4]
+ 212f2b4: b9401680     	ldr	w0, [x20, #0x14]
+ 212f2b8: b9000a60     	str	w0, [x19, #0x8]
+ 212f2bc: b9401a80     	ldr	w0, [x20, #0x18]
+ 212f2c0: 7100001f     	cmp	w0, #0x0
+ 212f2c4: 1a9f07e0     	cset	w0, ne
+ 212f2c8: b9001260     	str	w0, [x19, #0x10]
+ 212f2cc: aa1303e0     	mov	x0, x19
+ 212f2d0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 212f2d4: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 212f2d8: 17e50075     	b	0x1a6f4ac <Application_System_Init+0xe64468>

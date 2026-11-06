@@ -1,0 +1,24 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap80b2-digital-notify/candidate80b2.json",
+  "base_sha256": "8be402b242a8c41154fb2a12bc387645fe9ba187ef3b33327824a65e0585e257",
+  "changes": [
+    "AP80b2 base immutable; capid v35 replaced by v36 exact enum2 virtual-panel-config independent consumer/readback and native reply lease",
+    "gate v7 replaced by v9; passive single-task barrier entry2b63718/common return2b637d4;128 boot records; panel config snapshot at original run_i return",
+    "init FX3_PANEL_CONFIG=captured-enum2-consumer-v1; DTB initrd-end adjusted; no new RAM regions"
+  ],
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap80c-enum2-panel-config/guest.cpio",
+    "sha256": "fc00afc6d76bf0b8d5160d022d08319f79852f7b134cefba0f45b1d6c60fbe60"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap80c-enum2-panel-config/guest.dtb",
+    "sha256": "ba6c14f6cd90059bcaec63a047489314d6b815344f5a3adb248cb9a3ea1dddce"
+  },
+  "helpers": {
+    "fx3-capid-v36.c": "4637705441ed07d50262a73faaab9032df317f02cc5e9a3bd8fa9d6c5c281e0c",
+    "fx3-capid-v36.so": "1c8f5d9daefbc1be0a10ad54ca142ba23d8877744a6bd039e7e0e2e2623df9f3",
+    "fx3-panel-config-core-v1.c": "5963010afb80fa35f9b32f56d11ab481e76edb7416925e1ddc41df26569ea55c",
+    "fx3-ui-gate-v9.c": "73d6bda5b7c870e5512cda693929ea39426294c65a764022423df3929ffa091e",
+    "fx3-ui-gate-v9.so": "6453fe24de31fdaa47b0f5bbc55f5c6fd324b1f88c1192c534f4d903eee617f9"
+  }
+}

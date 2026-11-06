@@ -1,0 +1,30 @@
+{
+  "source_image": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/initrd.img",
+  "source_sha256": "5ba4076f0f0765d57767736c824b12ed345a38cbb6541d61546570a4470c9f52",
+  "files": [
+    {
+      "path_in_image": "/kmod/emmc.ko",
+      "inode": 71,
+      "bytes": 341024,
+      "sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko"
+    },
+    {
+      "path_in_image": "/kmod/crypt-emmc.ko",
+      "inode": 72,
+      "bytes": 14592,
+      "sha256": "521589c8eac8b851f1cab29f95f449c7bbaf31639a01331d3bf0ca8866b488b8",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/crypt-emmc.ko"
+    },
+    {
+      "path_in_image": "/sbin/initrc/setup_nflash",
+      "inode": 133,
+      "bytes": 375,
+      "sha256": "055cb3db7a40084aef8aaa89a7357921b514bf0af89690f920b608d9f3734cdc",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/sbin/initrc/setup_nflash"
+    }
+  ],
+  "source": "official7.02 main p3 initrd; not actual installed current-body p1",
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

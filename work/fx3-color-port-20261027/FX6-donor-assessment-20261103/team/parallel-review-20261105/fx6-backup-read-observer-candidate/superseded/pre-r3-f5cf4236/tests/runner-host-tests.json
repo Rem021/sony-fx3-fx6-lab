@@ -1,0 +1,18 @@
+{
+  "status": "PASS_NO_QEMU_FAKE_RUNNER",
+  "fixture": "fake launcher/QMP/RSP/locks/process/map/TLS; no VM",
+  "cases": [
+    "full_runner_normal_two_keys_clean",
+    "observed_callback_false_not_clean",
+    "false_inherited_and_wait_timeout_not_clean_lock_retained",
+    "qmp_stop_exception_fallback_no_clean",
+    "no_current_map_unknown",
+    "no_hit_deadline_unknown",
+    "inherited_callback_timeout_not_clean",
+    "qmp_quit_failure_not_clean",
+    "lock_release_failure_not_clean",
+    "partial_launch_failure_cleanup"
+  ],
+  "count": 10,
+  "runner_sha256": "faa74c0fd249174b8cff6769bd4e3818738013e4789c816a8fcfbd423446ec22"
+}

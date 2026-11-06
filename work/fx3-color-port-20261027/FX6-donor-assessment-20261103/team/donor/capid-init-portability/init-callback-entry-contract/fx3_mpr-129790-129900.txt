@@ -1,0 +1,98 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000012594c <_ZN10XavcsNamer9GetRemainEPKcbPtN3mpr10NamingModeE>:
+  129790: b0001406     	adrp	x6, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  129794: b0001405     	adrp	x5, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  129798: b0001404     	adrp	x4, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  12979c: b0001403     	adrp	x3, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  1297a0: b0001402     	adrp	x2, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  1297a4: 913b20c6     	add	x6, x6, #0xec8
+  1297a8: 913aa0a5     	add	x5, x5, #0xea8
+  1297ac: 9136a084     	add	x4, x4, #0xda8
+  1297b0: 91374063     	add	x3, x3, #0xdd0
+  1297b4: 91372042     	add	x2, x2, #0xdc8
+  1297b8: d2800000     	mov	x0, #0x0                // =0
+  1297bc: d37df001     	lsl	x1, x0, #3
+  1297c0: 3822681f     	strb	wzr, [x0, x2]
+  1297c4: 91000400     	add	x0, x0, #0x1
+  1297c8: f100101f     	cmp	x0, #0x4
+  1297cc: f826683f     	str	xzr, [x1, x6]
+  1297d0: f825683f     	str	xzr, [x1, x5]
+  1297d4: f824683f     	str	xzr, [x1, x4]
+  1297d8: f823683f     	str	xzr, [x1, x3]
+  1297dc: 54ffff01     	b.ne	0x1297bc <_ZN10XavcsNamer9GetRemainEPKcbPtN3mpr10NamingModeE+0x3e70>
+  1297e0: d65f03c0     	ret
+  1297e4: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  1297e8: 910003fd     	mov	x29, sp
+  1297ec: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1297f0: b0001414     	adrp	x20, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  1297f4: 913ba294     	add	x20, x20, #0xee8
+  1297f8: f90013f5     	str	x21, [sp, #0x20]
+  1297fc: 2a0003f5     	mov	w21, w0
+  129800: aa1403e0     	mov	x0, x20
+  129804: aa0103f3     	mov	x19, x1
+  129808: 97fd51e6     	bl	0x7dfa0 <_ZN3mpr6thread10normalLock4lockEv@plt>
+  12980c: b0001402     	adrp	x2, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  129810: 2a1503e0     	mov	w0, w21
+  129814: 913b2042     	add	x2, x2, #0xec8
+  129818: f8607841     	ldr	x1, [x2, x0, lsl #3]
+  12981c: ab010273     	adds	x19, x19, x1
+  129820: 9a9f5273     	csel	x19, x19, xzr, pl
+  129824: f8207853     	str	x19, [x2, x0, lsl #3]
+  129828: aa1403e0     	mov	x0, x20
+  12982c: 97fd5db1     	bl	0x80ef0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+  129830: f94013f5     	ldr	x21, [sp, #0x20]
+  129834: 52800000     	mov	w0, #0x0                // =0
+  129838: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  12983c: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  129840: d65f03c0     	ret
+  129844: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  129848: 910003fd     	mov	x29, sp
+  12984c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  129850: b0001415     	adrp	x21, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  129854: 913ba2b5     	add	x21, x21, #0xee8
+  129858: a90153f3     	stp	x19, x20, [sp, #0x10]
+  12985c: 2a0003f4     	mov	w20, w0
+  129860: aa1503e0     	mov	x0, x21
+  129864: aa0203f6     	mov	x22, x2
+  129868: aa0103f3     	mov	x19, x1
+  12986c: 97fd51cd     	bl	0x7dfa0 <_ZN3mpr6thread10normalLock4lockEv@plt>
+  129870: b0001403     	adrp	x3, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  129874: 2a1403e0     	mov	w0, w20
+  129878: 913b2063     	add	x3, x3, #0xec8
+  12987c: f8607861     	ldr	x1, [x3, x0, lsl #3]
+  129880: ab010273     	adds	x19, x19, x1
+  129884: b0001401     	adrp	x1, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  129888: 9136a021     	add	x1, x1, #0xda8
+  12988c: 9a9f5273     	csel	x19, x19, xzr, pl
+  129890: f8207873     	str	x19, [x3, x0, lsl #3]
+  129894: f8207836     	str	x22, [x1, x0, lsl #3]
+  129898: aa1503e0     	mov	x0, x21
+  12989c: 97fd5d95     	bl	0x80ef0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+  1298a0: 52800000     	mov	w0, #0x0                // =0
+  1298a4: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  1298a8: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  1298ac: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  1298b0: d65f03c0     	ret
+  1298b4: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  1298b8: 910003fd     	mov	x29, sp
+  1298bc: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1298c0: b0001414     	adrp	x20, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  1298c4: 913ba294     	add	x20, x20, #0xee8
+  1298c8: f90013f5     	str	x21, [sp, #0x20]
+  1298cc: 2a0003f5     	mov	w21, w0
+  1298d0: aa1403e0     	mov	x0, x20
+  1298d4: aa0103f3     	mov	x19, x1
+  1298d8: 97fd51b2     	bl	0x7dfa0 <_ZN3mpr6thread10normalLock4lockEv@plt>
+  1298dc: b0001402     	adrp	x2, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  1298e0: 2a1503e0     	mov	w0, w21
+  1298e4: 913aa042     	add	x2, x2, #0xea8
+  1298e8: f8607841     	ldr	x1, [x2, x0, lsl #3]
+  1298ec: ab010273     	adds	x19, x19, x1
+  1298f0: 9a9f5273     	csel	x19, x19, xzr, pl
+  1298f4: f8207853     	str	x19, [x2, x0, lsl #3]
+  1298f8: aa1403e0     	mov	x0, x20
+  1298fc: 97fd5d7d     	bl	0x80ef0 <_ZN3mpr6thread10normalLock6unlockEv@plt>

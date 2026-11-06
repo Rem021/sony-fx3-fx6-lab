@@ -1,0 +1,14 @@
+{
+  "time": "2026-11-06T09:06:58.141858+00:00",
+  "candidate_manifest": "209fdf5012633ac3a96adbb65732f652e48912de1931839fc9ec157a58a0ffc5",
+  "candidate_entries_verified": 47,
+  "corrected_run_entries_verified": 40,
+  "runtime_authorized": false,
+  "boot_menu_passed": false,
+  "findings": [
+    "Clock failure returns 0; collector accepts missing clock and backwards clock as elapsed 0, deadline not fail-closed",
+    "Additional prearm verify_live_identity uses raw RSP before Observer BudgetRSP; aggregate read budget needs accounting",
+    "ADMISSION blocked is documentation only: valid CLI token routes real runner without admission check"
+  ],
+  "next": "offline correction and read-only feasibility analysis of paused mapping evidence"
+}

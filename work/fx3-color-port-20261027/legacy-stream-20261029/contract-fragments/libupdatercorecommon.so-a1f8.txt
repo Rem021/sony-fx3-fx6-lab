@@ -1,0 +1,3 @@
+0000a1f8 strb       wzr, [x0, #0x30]
+0000a1fc mov        x1, #0
+0000a200 b          #0x7c20 ; pthread_mutex_init

@@ -1,0 +1,154 @@
+{
+  "status": "PASS_ORIGINAL_FDAT_RSA2048_SHA256_VERIFICATION",
+  "key_path": "engine-rootfs/2.05/etc/VerificationKey.pem",
+  "pem_sha256": "8281413b5607446939613e07d020b2c7d8ee2371349099de56bc8288f7be0a43",
+  "public_key_der_sha256": "be79b3323d7d92dff52175fc6d12825d73cfc68c32e4fcbca5c7d36fc04bdf10",
+  "modulus_bits": 2048,
+  "public_exponent": 65537,
+  "official_key_identical_in_both_initrds": true,
+  "key_file_sha1_comparison_first_nul_index": -1,
+  "packages": [
+    {
+      "name": "fx3-7.02-BODYDATA.DAT",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+      "source_sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+      "fdat_offset": 132,
+      "fdat_bytes": 811876624,
+      "ciphertext_body_bytes": 811876352,
+      "iv_bytes": 16,
+      "signature_bytes": 256,
+      "signature_sha256": "9b6e3702a3c9dbb98df9b6d7e1e8f4f5c67930aa8973b32d416e5616f7cc33c2",
+      "original_signature_output": "original-signatures/fx3-7.02-BODYDATA.rsa2048-signature.bin",
+      "signature_less_than_modulus": true,
+      "pkcs1_v1_5_padding_valid": true,
+      "sha256_digest_info_valid": true,
+      "digest_info_sha256": "f9853ad0a15f1b7ec03888866ed0cbbcd3b55030567cfb3bd1bd759a4fea0696",
+      "coverage_matches": [
+        "ciphertext_body_then_iv"
+      ],
+      "candidate_hashes": {
+        "ciphertext_body": "6e1f6422276746185d3a51c767e1b1172f68c5df141ac9172ed4f7c9efb15bbb",
+        "iv_then_ciphertext_body": "e9bdb44d28f77880b931baac229df8ad040676f25b53eff27b6f45c6d1fda3bd",
+        "ufu_prefix_ciphertext_iv": "6ebb7fe84a5677f030d2b3b7adeabe7a41395a01f219e247503312099ea97d18",
+        "ciphertext_body_then_iv": "f9853ad0a15f1b7ec03888866ed0cbbcd3b55030567cfb3bd1bd759a4fea0696"
+      },
+      "in_memory_single_byte_mutations": [
+        {
+          "ciphertext_offset": 0,
+          "retained_signature_accepts": false,
+          "changed_sha256": "c3287122c78095b698449dc8408363d29006d70c8e7307f7d0e17e258dd0f29f"
+        },
+        {
+          "ciphertext_offset": 12345678,
+          "retained_signature_accepts": false,
+          "changed_sha256": "6921c60ba524613d52a48b5ad3a5967b0fb2c9bb668b06516b5c9ee46314a7f9"
+        },
+        {
+          "ciphertext_offset": 811876351,
+          "retained_signature_accepts": false,
+          "changed_sha256": "ae9b8152e3a8fe93d368946e5aeaa894872d95995660d66547d65b9d5392dc0c"
+        },
+        {
+          "iv_offset": 0,
+          "retained_signature_accepts": false,
+          "changed_sha256": "1dcb6e023d9022925aa6cdf049ddd4ed4209637039fdd6a72b997f8851ae542e"
+        }
+      ]
+    },
+    {
+      "name": "FirmwareA1Data_ILMEFX3V204.dat",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA1Data_ILMEFX3V204.dat",
+      "source_sha256": "774982ecfbeae1cd9d822a2da6599cc390438ae4012b3f9ba8c43e75ec4e9068",
+      "fdat_offset": 124,
+      "fdat_bytes": 779108624,
+      "ciphertext_body_bytes": 779108352,
+      "iv_bytes": 16,
+      "signature_bytes": 256,
+      "signature_sha256": "3ffa9938f78fc71539cc3f2f26876f018c0f7eaedacd02790a302dd7f14cf049",
+      "original_signature_output": "original-signatures/FirmwareA1Data_ILMEFX3V204.rsa2048-signature.bin",
+      "signature_less_than_modulus": true,
+      "pkcs1_v1_5_padding_valid": true,
+      "sha256_digest_info_valid": true,
+      "digest_info_sha256": "7a2251df3664daa5f831a92597573d8260c6a3021e4604e83fc41b59053896d5",
+      "coverage_matches": [
+        "ciphertext_body_then_iv"
+      ],
+      "candidate_hashes": {
+        "ciphertext_body": "c85fe0882543a1efb61baf7eac9f38926659b6ac5235943cbdc2e073162ee760",
+        "iv_then_ciphertext_body": "33da5913d847458d01345d286ea1cdc59f675b608463897e8b461152800d1e69",
+        "ufu_prefix_ciphertext_iv": "281d6bd5c373374c29a101247317c5752963fc359cbeba32afbc3bc51b699551",
+        "ciphertext_body_then_iv": "7a2251df3664daa5f831a92597573d8260c6a3021e4604e83fc41b59053896d5"
+      },
+      "in_memory_single_byte_mutations": [
+        {
+          "ciphertext_offset": 0,
+          "retained_signature_accepts": false,
+          "changed_sha256": "bf1388d3283d308fb0cd1433b4c7b6afb109cd7a4c7ab169f93b15969f19566b"
+        },
+        {
+          "ciphertext_offset": 12345678,
+          "retained_signature_accepts": false,
+          "changed_sha256": "c42fdd35286d749635b3f0aa6da560b42c1a78e3d049ef2b3ee6b995f252f058"
+        },
+        {
+          "ciphertext_offset": 779108351,
+          "retained_signature_accepts": false,
+          "changed_sha256": "44a36190a861efe0b3976c57b1dafd5c3c8d886a3977b23b69d72992fcedc8ac"
+        },
+        {
+          "iv_offset": 0,
+          "retained_signature_accepts": false,
+          "changed_sha256": "003fabf1d614a4ebe57b6a1021547e5f510fc154e0d828b7b4433a6859d81ed8"
+        }
+      ]
+    },
+    {
+      "name": "FirmwareA2Data_ILMEFX3V205.dat",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA2Data_ILMEFX3V205.dat",
+      "source_sha256": "dc411c1e1ea77e1c8614d6045a345d85553e46f60ec9105e6236299a3620740a",
+      "fdat_offset": 124,
+      "fdat_bytes": 756423952,
+      "ciphertext_body_bytes": 756423680,
+      "iv_bytes": 16,
+      "signature_bytes": 256,
+      "signature_sha256": "2471ae0d7360a94694058d0eff95643f760d8e7651c5c2a63dfb9843cb406673",
+      "original_signature_output": "original-signatures/FirmwareA2Data_ILMEFX3V205.rsa2048-signature.bin",
+      "signature_less_than_modulus": true,
+      "pkcs1_v1_5_padding_valid": true,
+      "sha256_digest_info_valid": true,
+      "digest_info_sha256": "8da89b907feca39a45217aaff921aa3c8ef9f9da21941648db085404b5e81f3d",
+      "coverage_matches": [
+        "ciphertext_body_then_iv"
+      ],
+      "candidate_hashes": {
+        "ciphertext_body": "43a0d41cd7180b5ae17b1073aa0530ceeb4be4ad0b423a12df32ca914c51eea2",
+        "iv_then_ciphertext_body": "74b5c9e53fea20e88e51ef1ffa5923496f29559d19286856e0cb3c3548bd923b",
+        "ufu_prefix_ciphertext_iv": "d0d3a64f1929b2c45d40465b312cae905a3cece7b106dcd8555ea0baa78b9bac",
+        "ciphertext_body_then_iv": "8da89b907feca39a45217aaff921aa3c8ef9f9da21941648db085404b5e81f3d"
+      },
+      "in_memory_single_byte_mutations": [
+        {
+          "ciphertext_offset": 0,
+          "retained_signature_accepts": false,
+          "changed_sha256": "cfcdbbe22eaa2d63614a93a06b4b8b81089f1a5e7a8d8fa9f9624e79fb71ead5"
+        },
+        {
+          "ciphertext_offset": 12345678,
+          "retained_signature_accepts": false,
+          "changed_sha256": "d515b08bb8bc35328164794aceac7c7b693c7e0d423ab3f9f1c9065f6652d97b"
+        },
+        {
+          "ciphertext_offset": 756423679,
+          "retained_signature_accepts": false,
+          "changed_sha256": "641536dbdc29bf6dfbfbff576db664c2a991d4b70cc405d12b2df90c95566e09"
+        },
+        {
+          "iv_offset": 0,
+          "retained_signature_accepts": false,
+          "changed_sha256": "caa8e23e94c63503d5cf07e4f301882f30cbfa8396fade3489d019f9eab08fce"
+        }
+      ]
+    }
+  ],
+  "scope": "Official embedded public key only. Original signatures and precise candidate coverage tested; changed bytes remain in memory and no full modified package is emitted. Does not execute actual key-trust OSAL service, complete updater, boot or recovery, and does not establish signing capability."
+}

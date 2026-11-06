@@ -1,0 +1,54 @@
+{
+  "created_utc": "2026-10-28T13:15:29.161055+00:00",
+  "user_statement": "允许按第166轮方案试一次",
+  "exact_plan": "work/sony-firmware-20261024/stage166-cross-uid-kernel-identity/candidate-plan.json",
+  "grant_id": "fx3-702-msc-owner-20261028-03",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "bundle_sha256": "ababb876b9f57187f9faab6fe3d75d601a2a7c75483919c3a2d670ac1118f569",
+  "native_sha256": "bcbdf155ae928c88d909166b5598c66757402c4be93041706e1ac21e1a63d441",
+  "authorized_single_attempt": true,
+  "runtime_release": true,
+  "previous_authorization_preserved": {
+    "scope": "Windows_and_Mac_cached_USB_metadata_plus_explicit_standard_Fastboot_identification_and_single_fixed_Mac_USB_ownership_trial",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": true,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false,
+    "Mac_cached_USB_metadata_authorized": true,
+    "Fastboot_identification_enumeration_authorized": true,
+    "Fastboot_mode_entry_test_requested": true,
+    "Fastboot_mode_entry_procedure_validated": false,
+    "Fastboot_image_boot_download_or_partition_write_authorized": false,
+    "Mac_active_USB_descriptor_read_authorized": false,
+    "Mac_active_USB_descriptor_target": {
+      "locationID": 34603008,
+      "VID": 1356,
+      "PID": 3489
+    },
+    "Mac_descriptor_probe_one_shot_id": "stage142-fx3-msc-descriptors-v1",
+    "Mac_descriptor_probe_authorization_consumed": true,
+    "driver_change_scope": "Only fixed approved grant fx3-702-msc-owner-20261028-02; no other driver operations; old01 remains consumed.",
+    "Mac_owner_trial_authorized": true,
+    "Mac_owner_trial_admin_launch_authorized": true,
+    "Mac_owner_trial_target": {
+      "locationID": 34603008,
+      "VID": 1356,
+      "PID": 3489,
+      "model": "ILME-FX3",
+      "firmware": "7.02"
+    },
+    "Mac_owner_trial_grant_id": "fx3-702-msc-owner-20261028-02",
+    "Mac_owner_trial_bundle_sha256": "e36a8777d113300bf32cc5dd0721e69836bc7eea97648a01e0ce1b8b78b5d183"
+  },
+  "old01_02_not_reused": true,
+  "persistent_write_release": false
+}

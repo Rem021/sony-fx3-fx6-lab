@@ -1,0 +1,81 @@
+{
+  "status": "PASS_ORIGINAL_702_RANDOM_READER_MATCHES_KNOWN_PLAINTEXT",
+  "offsets": [
+    0,
+    1,
+    508,
+    511,
+    512,
+    1019,
+    1020,
+    1021,
+    65535,
+    1253888,
+    403000000,
+    808702464,
+    808704511
+  ],
+  "source": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+    "source_sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+    "outer_crc32": "0x92be8c5f",
+    "outer_crc32_matches": true,
+    "chunks": [
+      {
+        "type": "DATV",
+        "offset": 16,
+        "bytes": 4
+      },
+      {
+        "type": "PROV",
+        "offset": 28,
+        "bytes": 4
+      },
+      {
+        "type": "UDID",
+        "offset": 40,
+        "bytes": 84
+      },
+      {
+        "type": "FDAT",
+        "offset": 132,
+        "bytes": 811876624
+      },
+      {
+        "type": "DEND",
+        "offset": 811876764,
+        "bytes": 4
+      }
+    ],
+    "key_name": "key_cxd90057_k8",
+    "blocks": 792848,
+    "plaintext_bytes": 808704512,
+    "header": {
+      "magic": "UDTRFIRM",
+      "firmware_version": "7.02",
+      "model_id": "0x91030080",
+      "region_id": "0x0",
+      "firmware_offset": 1253888,
+      "firmware_size": 807450624,
+      "filesystem_count": 2,
+      "header_crc32_matches": true,
+      "filesystems": [
+        {
+          "mode": "U",
+          "offset": 512,
+          "size": 1253376
+        },
+        {
+          "mode": "P",
+          "offset": 512,
+          "size": 0
+        }
+      ]
+    },
+    "unique_blocks_checked": 16,
+    "all_plaintext_blocks_checked": false,
+    "tail_bytes": 272,
+    "tail_sha256": "4eef5a1f11f23ff6437242bc1ae555bf0c4c636af7da963a5eaa2b075da97b51",
+    "scope": "Read-only decryption and structural checks, not complete camera admission, signature, execution or boot verification."
+  }
+}

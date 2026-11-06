@@ -1,0 +1,49 @@
+--- a/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/vmopt-20261103-run_candidate105-save1800.py
++++ b/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/vmopt-20261103-run_candidate105-save1800.py
+@@ -30,6 +30,33 @@
+ ROOT = Path(__file__).resolve().parents[3] / "menu-repair-01/runtime"
+ OUT = Path(__file__).resolve().parent
+ BASE = ROOT.parent
++
++ASSERT = re.compile(r'assert at|Assertion|exception monitor|FX3_SIGNAL_OBSERVE[^\n]*signal=6(?: |$)', re.I)
++RM = re.compile(r'FX3_RM_[A-Z_]*REJECT|FX3_RM_UNKNOWN|unknown\s+key|invalid\s+from_type', re.I)
++ASSERT_FOLDED = re.compile(r'assert at|assertion|exception monitor|fx3_signal_observe[^\n]*signal=6(?: |$)')
++RM_FOLDED = re.compile(r'fx3_rm_[a-z_]*reject|fx3_rm_unknown|unknown\s+key|invalid\s+from_type')
++SPECIAL = 'İıſK'
++
++
++def _possible(folded, prefixes, pattern):
++    for prefix in prefixes:
++        pos = folded.find(prefix)
++        while pos >= 0:
++            if pattern.match(folded, pos):
++                return True
++            pos = folded.find(prefix, pos + 1)
++    return False
++
++
++def guarded_rejects(text):
++    folded = text.casefold()
++    special = any(char in text for char in SPECIAL)
++    maybe_assert = special or _possible(folded, ('assert', 'exception', 'fx3_signal_observe'), ASSERT_FOLDED)
++    assert_reject = bool(ASSERT.search(text)) if maybe_assert else False
++    maybe_rm = special or _possible(folded, ('fx3_rm_', 'unknown', 'invalid'), RM_FOLDED)
++    rm_reject = bool(RM.search(text)) if maybe_rm else False
++    return assert_reject, rm_reject
++
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+ VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ 
+@@ -326,9 +353,10 @@
+                 ldec_live=serial_now.split('FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS',1)
+                 if len(ldec_live)==2 and re.search(r'FX3_LDEC103_IOCTL[^\n]*result=-[0-9]+',ldec_live[1]):
+                     early_stop_reason='AP103 actual resource ioctl rejected; capture blocker before further input';break
+-                if re.search(r'assert at|Assertion|exception monitor|FX3_SIGNAL_OBSERVE[^\n]*signal=6(?: |$)',serial_now,re.I):
++                guard_assert, guard_rm = guarded_rejects(serial_now)
++                if guard_assert:
+                     early_stop_reason='AP97 native assertion/abort/exception marker; stop before any further key';break
+-                if re.search(r'FX3_RM_[A-Z_]*REJECT|FX3_RM_UNKNOWN|unknown\s+key|invalid\s+from_type',serial_now,re.I):
++                if guard_rm:
+                     early_stop_reason='AP93 explicit RM/input rejection or new unsupported request; preserve evidence and escalate'
+                     break
+                 if 'FX3_MEDIA_INIT_TIMEOUT' in serial_now or re.search(r'FX3_MEDIA_NOTIFY [^\n]*status=1 ',serial_now):

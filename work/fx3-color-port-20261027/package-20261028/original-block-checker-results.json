@@ -1,0 +1,236 @@
+{
+  "status": "PASS_ORIGINAL_AP_BLOCK_CHECKER_WITH_EXPLICIT_THROW_BOUNDARY",
+  "source_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+  "source_library": "libraries/libupdatercorecommon.so",
+  "helper_span": [
+    "0xa8a0",
+    "0xa9c0"
+  ],
+  "cases": [
+    {
+      "label": "official_plain_block",
+      "block": 0,
+      "accepted": true,
+      "size": 1020,
+      "end": 0,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 22913
+      }
+    },
+    {
+      "label": "checksum_corruption",
+      "block": 0,
+      "accepted": false,
+      "result": {
+        "returned": false,
+        "exception": {
+          "code": "0x30002",
+          "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+        },
+        "instructions": 3117,
+        "x0": 1342185472
+      }
+    },
+    {
+      "label": "official_plain_block",
+      "block": 1,
+      "accepted": true,
+      "size": 1020,
+      "end": 0,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 28099
+      }
+    },
+    {
+      "label": "checksum_corruption",
+      "block": 1,
+      "accepted": false,
+      "result": {
+        "returned": false,
+        "exception": {
+          "code": "0x30002",
+          "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+        },
+        "instructions": 3117,
+        "x0": 1342185472
+      }
+    },
+    {
+      "label": "official_plain_block",
+      "block": 256,
+      "accepted": true,
+      "size": 1020,
+      "end": 0,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 28341
+      }
+    },
+    {
+      "label": "checksum_corruption",
+      "block": 256,
+      "accepted": false,
+      "result": {
+        "returned": false,
+        "exception": {
+          "code": "0x30002",
+          "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+        },
+        "instructions": 3117,
+        "x0": 1342185472
+      }
+    },
+    {
+      "label": "official_plain_block",
+      "block": 396424,
+      "accepted": true,
+      "size": 1020,
+      "end": 0,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 38004
+      }
+    },
+    {
+      "label": "checksum_corruption",
+      "block": 396424,
+      "accepted": false,
+      "result": {
+        "returned": false,
+        "exception": {
+          "code": "0x30002",
+          "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+        },
+        "instructions": 3117,
+        "x0": 1342185472
+      }
+    },
+    {
+      "label": "official_plain_block",
+      "block": 792846,
+      "accepted": true,
+      "size": 1020,
+      "end": 0,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 4422
+      }
+    },
+    {
+      "label": "checksum_corruption",
+      "block": 792846,
+      "accepted": false,
+      "result": {
+        "returned": false,
+        "exception": {
+          "code": "0x30002",
+          "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+        },
+        "instructions": 3117,
+        "x0": 1342185472
+      }
+    },
+    {
+      "label": "official_plain_block",
+      "block": 792847,
+      "accepted": true,
+      "size": 572,
+      "end": 1,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 33116
+      }
+    },
+    {
+      "label": "checksum_corruption",
+      "block": 792847,
+      "accepted": false,
+      "result": {
+        "returned": false,
+        "exception": {
+          "code": "0x30002",
+          "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+        },
+        "instructions": 3117,
+        "x0": 1342185472
+      }
+    },
+    {
+      "label": "isolated_size_and_reserved_bits",
+      "flags_raw": "0x0",
+      "accepted": false,
+      "result": {
+        "returned": false,
+        "exception": {
+          "code": "0x30002",
+          "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+        },
+        "instructions": 35,
+        "x0": 1342185472
+      }
+    },
+    {
+      "label": "isolated_size_and_reserved_bits",
+      "flags_raw": "0x3fd",
+      "accepted": false,
+      "result": {
+        "returned": false,
+        "exception": {
+          "code": "0x30002",
+          "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+        },
+        "instructions": 35,
+        "x0": 1342185472
+      }
+    },
+    {
+      "label": "isolated_size_and_reserved_bits",
+      "flags_raw": "0x1001",
+      "accepted": true,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 3587
+      }
+    },
+    {
+      "label": "isolated_size_and_reserved_bits",
+      "flags_raw": "0x2001",
+      "accepted": true,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 7683
+      }
+    },
+    {
+      "label": "isolated_size_and_reserved_bits",
+      "flags_raw": "0x4001",
+      "accepted": true,
+      "result": {
+        "returned": true,
+        "exception": null,
+        "instructions": 3096,
+        "x0": 15875
+      }
+    }
+  ],
+  "original_instructions": 46672,
+  "scope": "Original AP helper only: size getter masks 0x0fff, end getter tests bit 15, checksum includes all other header bits. This helper accepting reserved bits is not whole update admission. No CBC decrypt, tail verification, exception unwinding, hardware or camera execution."
+}

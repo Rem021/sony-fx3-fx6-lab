@@ -1,0 +1,168 @@
+{
+  "scope": "FX3 v25-r3 offline diagnostic and runner candidate only",
+  "QEMU_started": false,
+  "guest_validated": false,
+  "preferred_changed": false,
+  "files": [
+    {
+      "path": "src/fx3-osd-headless-v25-r3.c",
+      "bytes": 28816,
+      "sha256": "1c4d2b420a40d006d22d2e60510df18d6dbbd7c51cd219735f1252f17c5956eb"
+    },
+    {
+      "path": "src/r2-to-r3.diff",
+      "bytes": 5871,
+      "sha256": "15bb4371c5f48e069db3140bed22a63bb936b21f7a5e4b03e668c08ae1a4fb48"
+    },
+    {
+      "path": "build/fx3-osd-headless-v25-r3.so",
+      "bytes": 109000,
+      "sha256": "67155b38fbbe23c3b6273c64ce8fc4676e59ad98da4a30a238508c26d9b5fba8"
+    },
+    {
+      "path": "build/compile-r3.command.json",
+      "bytes": 1197,
+      "sha256": "c9fef203ae0356d621f88f62d1c1919361de532e25b6e553d27bf2b08f07146a"
+    },
+    {
+      "path": "build/compile-r3.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "build_v25_candidate_r3.py",
+      "bytes": 2667,
+      "sha256": "fbb2026ecbe47cbdb017f235eeb5b91ac06811376e3554f8b0dd69481c488e52"
+    },
+    {
+      "path": "parse_v25_diag_r3.py",
+      "bytes": 4855,
+      "sha256": "c232254a1991894e8a6a0446ee7a516ba7491211bfcf894852b56008345dcb9a"
+    },
+    {
+      "path": "quiesced_diag_readback.py",
+      "bytes": 1937,
+      "sha256": "d832239386d2975d8c55940f0ef05baf733fa5cff6e674fc77a9a4626e21eb90"
+    },
+    {
+      "path": "run_trial_v25_diag_r3.py",
+      "bytes": 57507,
+      "sha256": "1a3af0b8fb6be5c79bf4e58548e622fec03263281badf147e0cff67dae7d3429"
+    },
+    {
+      "path": "v24-to-v25-r3-runner.diff",
+      "bytes": 8533,
+      "sha256": "2cf67e3477442f8d7c245a79aed1f6cfad6a971a9088625e82aa9833de4d87fd"
+    },
+    {
+      "path": "test_diag_concurrency.c",
+      "bytes": 2330,
+      "sha256": "72c6a2c265272c60460d5af876f0b503fcf5613f7a37a89ec14553647feb531d"
+    },
+    {
+      "path": "test_parse_v25_diag_r3.py",
+      "bytes": 2501,
+      "sha256": "27b6b97d4f5d734d8a67a07cee43722e889c9265a0f39d51a5dac702472bffde"
+    },
+    {
+      "path": "test_quiesced_diag_readback.py",
+      "bytes": 1934,
+      "sha256": "d4a9025852eded814bd05f0f170df6e669163d37b8bbf49b4085017de93eca34"
+    },
+    {
+      "path": "verify_v25_r3.py",
+      "bytes": 3513,
+      "sha256": "484051536779906b637cf6e65e15dc3075d5aeba9f7b431b01385d03be686033"
+    },
+    {
+      "path": "verification-r3.json",
+      "bytes": 854,
+      "sha256": "bba7c06944b42bdfbe8f7adbbe23041f4d0af8c7ffdeacc5ffe9a53afd86a5f3"
+    },
+    {
+      "path": "vmopt-20261104-v25-menu-osd-diagnostic-r3/candidate.json",
+      "bytes": 23307,
+      "sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518"
+    },
+    {
+      "path": "vmopt-20261104-v25-menu-osd-diagnostic-r3/build-receipt.json",
+      "bytes": 1499,
+      "sha256": "e37b3412351d7e97d3278a381f54ea536ff1c65cc0dc391310da52e963710808"
+    },
+    {
+      "path": "vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.cpio",
+      "bytes": 453213884,
+      "sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83"
+    },
+    {
+      "path": "vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+      "bytes": 10355,
+      "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+    },
+    {
+      "path": "trial_web_v22_navigation_review.py",
+      "bytes": 31373,
+      "sha256": "3cf9544f08fbdf62dee46420170f5fb85dfae1c656b8a24c062c7b055d64fde1"
+    },
+    {
+      "path": "trial_ring_cached.py",
+      "bytes": 7077,
+      "sha256": "9309794feded60291d6748bd4d19ab98a909e7ba73c91233a2ffb983551f9e11"
+    },
+    {
+      "path": "terminal_status_v23.py",
+      "bytes": 1050,
+      "sha256": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75"
+    },
+    {
+      "path": "pending_visual_v20.py",
+      "bytes": 1993,
+      "sha256": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3"
+    },
+    {
+      "path": "cpio_audit.py",
+      "bytes": 2575,
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "path": "decode_printk_ring.py",
+      "bytes": 1702,
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "path": "osd_ring93_v4.py",
+      "bytes": 6190,
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "path": "gate_input_usability.py",
+      "bytes": 4138,
+      "sha256": "a491ad53babf720830d5bda45ecf6467b018cd79dae7247ebcce45bd854f37f6"
+    },
+    {
+      "path": "file_readback100.py",
+      "bytes": 1341,
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "path": "trial_log_v4_mss.py",
+      "bytes": 8348,
+      "sha256": "4d57629fc8bf1c8d158bfcf101915b9edd626f7bfb11c55fc78fe634ef7d6645"
+    },
+    {
+      "path": "trial_health_v2.py",
+      "bytes": 498,
+      "sha256": "99bb8104dd63fbb8cff7b887447fe56baf468d972c325fa39da2091f4e0c5751"
+    },
+    {
+      "path": "restore_api103_v2.py",
+      "bytes": 3680,
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    }
+  ],
+  "report": {
+    "path": "REPORT.md",
+    "bytes": 5343,
+    "sha256": "8e7c56f88d115966ff747f2b563bb450ecb2a6dc7de79f1b62c02fc8bc5ea020"
+  }
+}

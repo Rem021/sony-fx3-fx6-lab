@@ -1,0 +1,10 @@
+# Original configured VA only. No execution.
+0xfe051fd8 [file+0x8fd8] f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+0xfe051fdc [file+0x8fdc] f30300aa mov      x19, x0
+0xfe051fe0 [file+0x8fe0] b5060094 bl       #0xfe053ab4
+0xfe051fe4 [file+0x8fe4] 60b601b9 str      w0, [x19, #0x1b4]
+0xfe051fe8 [file+0x8fe8] 60a20191 add      x0, x19, #0x68
+0xfe051fec [file+0x8fec] 491c0094 bl       #0xfe059110
+0xfe051ff0 [file+0x8ff0] 60ba01b9 str      w0, [x19, #0x1b8]
+0xfe051ff4 [file+0x8ff4] f37bc1a8 ldp      x19, x30, [sp], #0x10
+0xfe051ff8 [file+0x8ff8] c0035fd6 ret      

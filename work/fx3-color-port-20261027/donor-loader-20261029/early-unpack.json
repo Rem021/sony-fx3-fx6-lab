@@ -1,0 +1,86 @@
+{
+  "source_zip_bytes": 170041914,
+  "source_zip_sha256": "c6f5a3ad1a71234af265430b50ef87b29c8c7bba16d5c2e8edd4fb58d47f00d7",
+  "ZIP_CRC_all_pass": true,
+  "zip_members": [
+    {
+      "path": "MPC-3610_V201/MPC-3610_UpdateManual.pdf",
+      "bytes": 249465,
+      "compressed_bytes": 233357,
+      "crc32": "f7d0cc1a",
+      "scope": "CRC and metadata only; PDF contents not processed."
+    },
+    {
+      "path": "MPC-3610_V201/MPC-3610_V2.00_ReleaseNote.pdf",
+      "bytes": 148577,
+      "compressed_bytes": 133650,
+      "crc32": "2e44e7f6",
+      "scope": "CRC and metadata only; PDF contents not processed."
+    },
+    {
+      "path": "MPC-3610_V201/MPC-3610_V201_firmware_SSB.bin",
+      "bytes": 169625600,
+      "compressed_bytes": 169673810,
+      "crc32": "a3f508ff",
+      "sha256": "67e63286fa84f9e2b13412237492d222ac027f51b68c102b1c9c4103dcf0c0c5",
+      "extracted_as": "originals/MPC-3610_V201_firmware_SSB.bin"
+    },
+    {
+      "path": "MPC-3610_V201/MPC-3610_V201_firmware_SSB.md5",
+      "bytes": 87,
+      "compressed_bytes": 84,
+      "crc32": "20a45bf5",
+      "sha256": "3181c93d37302be291afe6b4b4c0fd9887ce96bf0c9eb66e57cee87d2eba9519",
+      "extracted_as": "originals/MPC-3610_V201_firmware_SSB.md5"
+    },
+    {
+      "path": "MPC-3610_V201/Readme.txt",
+      "bytes": 377,
+      "compressed_bytes": 221,
+      "crc32": "06d5fe84",
+      "sha256": "41a42c6ee27dafef8f85c70afe7a215c220350380e34825c0c623d4ad474b32f",
+      "extracted_as": "originals/Readme.txt"
+    }
+  ],
+  "firmware_bytes": 169625600,
+  "firmware_sha256": "67e63286fa84f9e2b13412237492d222ac027f51b68c102b1c9c4103dcf0c0c5",
+  "MD5_same_package_matches": true,
+  "md5_file_text": "a1b016f818437dcc83d8cdc0f9eee249  MPC-3610_V201_2_2018-08-09_14-13-51_firmware_SSB.bin\n",
+  "outer_format": "uncompressed tar",
+  "tar_members": [
+    {
+      "path": "property.xml",
+      "bytes": 136,
+      "type": "0",
+      "header_offset": 0,
+      "data_offset": 512,
+      "sha256": "3aa81a54f3d1d41111088130f468866599afdaf825b6d9318df963b1789e366f",
+      "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<property>\n  <PackageType>multiproduct</PackageType>\n  <ProductID>VENICE</ProductID>\n</property>\n"
+    },
+    {
+      "path": "VENICE",
+      "bytes": 0,
+      "type": "5",
+      "header_offset": 1024,
+      "data_offset": 1536
+    },
+    {
+      "path": "VENICE/DATA23213",
+      "bytes": 169621368,
+      "type": "0",
+      "header_offset": 1536,
+      "data_offset": 2048,
+      "sha256": "498d047ca2f6f11d54c502a399e2c5a9f4740e6fae4913eba1aaaf486349c785"
+    },
+    {
+      "path": "VENICE/property.xml",
+      "bytes": 233,
+      "type": "0",
+      "header_offset": 169623552,
+      "data_offset": 169624064,
+      "sha256": "b85c1227f08a4f781cdd0730db4efbe1f022421fa192b885cd1fe4bc9749d4a3",
+      "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<BinaryPackProperty>\n  <PackageType>multiversion</PackageType>\n  <ProductID>VENICE</ProductID>\n  <ProductCodeVersion href=\"VER201\" enctype=\"type3\">201</ProductCodeVersion>\n</BinaryPackProperty>\n"
+    }
+  ],
+  "scope": "Only ZIP and tar are unpacked; private payload has not been decoded. No program/updater/firmware executed or device accessed."
+}

@@ -1,0 +1,650 @@
+[
+  {
+    "offset": "0x1623",
+    "value": "TaZ`8?"
+  },
+  {
+    "offset": "0x5baa",
+    "value": "@yiV@"
+  },
+  {
+    "offset": "0x5bf2",
+    "value": "@yiV@"
+  },
+  {
+    "offset": "0x5d66",
+    "value": "@yiV@"
+  },
+  {
+    "offset": "0x6012",
+    "value": "@yjV@"
+  },
+  {
+    "offset": "0x605a",
+    "value": "@yiV@"
+  },
+  {
+    "offset": "0x60be",
+    "value": "@yiV@"
+  },
+  {
+    "offset": "0x796c",
+    "value": "0123456789ABCDEF@0X"
+  },
+  {
+    "offset": "0x7980",
+    "value": "0123456789abcdef@0x"
+  },
+  {
+    "offset": "0x8318",
+    "value": "LDR:ldr_jump_to_kernel addr=0x%lX"
+  },
+  {
+    "offset": "0x833b",
+    "value": "LDR_E:Load LBkup[%d]"
+  },
+  {
+    "offset": "0x8351",
+    "value": "LDR:PCIe matched. time = %d[us]"
+  },
+  {
+    "offset": "0x8372",
+    "value": "LDR:PCIe unmatched. time = %d[us]"
+  },
+  {
+    "offset": "0x8395",
+    "value": "LDR:Wake DDR Done. time = %d[us]"
+  },
+  {
+    "offset": "0x83b7",
+    "value": "LDR_E:Wake DDR Fail. time = %d[us]"
+  },
+  {
+    "offset": "0x83db",
+    "value": "LDR:ldr_nor_init skip. time = %d[us]"
+  },
+  {
+    "offset": "0x8401",
+    "value": "LDR:PCIe send stand-by. time = %d[us]"
+  },
+  {
+    "offset": "0x8428",
+    "value": "LDR_E:wait for pcie_stm_comm_ready. time = %d[us]"
+  },
+  {
+    "offset": "0x845b",
+    "value": "LDR:wait for pcie_stm_comm_ready. time = %d[us]"
+  },
+  {
+    "offset": "0x848c",
+    "value": "LDR:pcie_stm_comm_ready. time = %d[us]"
+  },
+  {
+    "offset": "0x84b4",
+    "value": "LDR:COPY MIS TRNG DATA @0x%p -> @0x%p"
+  },
+  {
+    "offset": "0x84db",
+    "value": "SEQ:%s:%d"
+  },
+  {
+    "offset": "0x84e6",
+    "value": "LD3:%s done:%lu us"
+  },
+  {
+    "offset": "0x84fa",
+    "value": "LD3:%s cont:%lu us"
+  },
+  {
+    "offset": "0x850e",
+    "value": "software reset req"
+  },
+  {
+    "offset": "0x8523",
+    "value": "lshow"
+  },
+  {
+    "offset": "0x852b",
+    "value": "lshow ddr area=%d[%p] size=0x%lx"
+  },
+  {
+    "offset": "0x854e",
+    "value": "LDR:ldump addr:0x%p(size:0x%X,order:0x%X)"
+  },
+  {
+    "offset": "0x8579",
+    "value": "LDR:lset addr:0x%p(size:0x%X,data:0x%lX)"
+  },
+  {
+    "offset": "0x85a3",
+    "value": "LDR_W:size is out of range:0x%X"
+  },
+  {
+    "offset": "0x85c4",
+    "value": "LDR_W:invalid order:0x%X"
+  },
+  {
+    "offset": "0x85de",
+    "value": "LDR_W:invalid select_timer:0x%lX"
+  },
+  {
+    "offset": "0x8600",
+    "value": "continue"
+  },
+  {
+    "offset": "0x860e",
+    "value": "LDR_W:invalid address:0x%p"
+  },
+  {
+    "offset": "0x8630",
+    "value": "ldump"
+  },
+  {
+    "offset": "0x8637",
+    "value": "ltimer"
+  },
+  {
+    "offset": "0x863f",
+    "value": "LDR:ltimer wait_us=0x%x, %s"
+  },
+  {
+    "offset": "0x8662",
+    "value": "lshow"
+  },
+  {
+    "offset": "0x866a",
+    "value": "%lX: "
+  },
+  {
+    "offset": "0x8670",
+    "value": "%02X "
+  },
+  {
+    "offset": "0x8676",
+    "value": "%04X "
+  },
+  {
+    "offset": "0x867c",
+    "value": "%08X "
+  },
+  {
+    "offset": "0x868c",
+    "value": "ldump"
+  },
+  {
+    "offset": "0x8692",
+    "value": "slogic timer"
+  },
+  {
+    "offset": "0x869f",
+    "value": "generic timer"
+  },
+  {
+    "offset": "0x86ad",
+    "value": "ltimer"
+  },
+  {
+    "offset": "0x86b7",
+    "value": "lreset"
+  },
+  {
+    "offset": "0x86c3",
+    "value": "lshow"
+  },
+  {
+    "offset": "0x86c9",
+    "value": "DGU_E:MIS Ver check error."
+  },
+  {
+    "offset": "0x86e5",
+    "value": "DGU_E:MIS VerChk Err."
+  },
+  {
+    "offset": "0x86fc",
+    "value": "DGU:Done DGU, MIS 2Files."
+  },
+  {
+    "offset": "0x8717",
+    "value": "DGU:Done DGU, MIS 3Files."
+  },
+  {
+    "offset": "0x8732",
+    "value": "DGU:Done DGU, MIS %dfiles."
+  },
+  {
+    "offset": "0x874e",
+    "value": "DGU_E:Jump DGU[%lX(%d/%lX)]:%X"
+  },
+  {
+    "offset": "0x876e",
+    "value": "DGU:Jump DGU[%s]"
+  },
+  {
+    "offset": "0x8780",
+    "value": "DGU:MIS Ver:%s"
+  },
+  {
+    "offset": "0x8790",
+    "value": "DGU:Done DGU [%ld]us"
+  },
+  {
+    "offset": "0x87ab",
+    "value": "600002"
+  },
+  {
+    "offset": "0x87b2",
+    "value": "600003"
+  },
+  {
+    "offset": "0x87b9",
+    "value": "600004"
+  },
+  {
+    "offset": "0x87c0",
+    "value": "MIS_HEAD"
+  },
+  {
+    "offset": "0x87d3",
+    "value": "ERROR: Loader boot failed."
+  },
+  {
+    "offset": "0x87ef",
+    "value": "ERROR: Blinking LED[LDR2=%d LNG=%d SHT=%d]"
+  },
+  {
+    "offset": "0x881b",
+    "value": "SEQ_E:Assert Cetus error request. time = %d"
+  },
+  {
+    "offset": "0x8848",
+    "value": "INS_E:dgu_mis_info:Unknown"
+  },
+  {
+    "offset": "0x8864",
+    "value": "LBK_E:Inf LBK:%X"
+  },
+  {
+    "offset": "0x8876",
+    "value": "LBK_E:Read Bkup:%X"
+  },
+  {
+    "offset": "0x888a",
+    "value": "LBK_E:no entry:%X"
+  },
+  {
+    "offset": "0x889d",
+    "value": "LBK_E:no data:%d"
+  },
+  {
+    "offset": "0x88af",
+    "value": "LBK_E:No Bkup"
+  },
+  {
+    "offset": "0x88be",
+    "value": "PCI_E:Pcie user Initialize not passed. "
+  },
+  {
+    "offset": "0x88e7",
+    "value": "PCI:wait for stable PCIE core_clk, time = %d[us] >  %d[us]"
+  },
+  {
+    "offset": "0x8923",
+    "value": "PCI:wait for stable PCIE core_clk, time = %d[us] <= %d[us]"
+  },
+  {
+    "offset": "0x895f",
+    "value": "PCI:phy state: %d, data link state: %d, time = %lu[us]"
+  },
+  {
+    "offset": "0x8997",
+    "value": "PCI_E:Pcie device initialize fail. ercd: %d"
+  },
+  {
+    "offset": "0x89c4",
+    "value": "PCI_E:Pcie pre initialize fail. ercd: %d"
+  },
+  {
+    "offset": "0x89ee",
+    "value": "PCI_E:Pcie post initialize fail. ercd: %d"
+  },
+  {
+    "offset": "0x8a19",
+    "value": "PCI_W:PCIE PRSNT bit %d"
+  },
+  {
+    "offset": "0x8a32",
+    "value": "PCI_W:CLKREQ/RefClk bit %d"
+  },
+  {
+    "offset": "0x8a4e",
+    "value": "PCI_W:PCIE PRSNT port %d"
+  },
+  {
+    "offset": "0x8a68",
+    "value": "PCI_W:CLKREQ/RefClk port %d"
+  },
+  {
+    "offset": "0x8a85",
+    "value": "PCI:PERST4 p:%d b:%d"
+  },
+  {
+    "offset": "0x8a9b",
+    "value": "PCI:PCIE_PRSNT p:%d b:%d"
+  },
+  {
+    "offset": "0x8ab5",
+    "value": "PCI:CLKREQ/RefClk p:%d b:%d"
+  },
+  {
+    "offset": "0x8ad2",
+    "value": "LD3:PCIe LinkUp     done:%lu us"
+  },
+  {
+    "offset": "0x8af3",
+    "value": "LD3:PCIe Pre-Init   done:%lu us"
+  },
+  {
+    "offset": "0x8b14",
+    "value": "LD3:PCIe Init-Dev   done:%lu us"
+  },
+  {
+    "offset": "0x8b35",
+    "value": "LD3:PCIe Post-Init  done:%lu us"
+  },
+  {
+    "offset": "0x8b56",
+    "value": "PCIe load patch "
+  },
+  {
+    "offset": "0x8b67",
+    "value": "PCIe apply patch"
+  },
+  {
+    "offset": "0x8b78",
+    "value": "LDR:DDR Log Save Finished"
+  },
+  {
+    "offset": "0x8b93",
+    "value": "LDR:DDR Log Save Not Finished"
+  },
+  {
+    "offset": "0x8bb2",
+    "value": "LDR_E:buf NULL"
+  },
+  {
+    "offset": "0x8bc2",
+    "value": "LDR_E:error param: area_no=%d"
+  },
+  {
+    "offset": "0x8be1",
+    "value": "LDR_E:invalid area no = %lu"
+  },
+  {
+    "offset": "0x8bfe",
+    "value": "[PCIe] [INFO]mask : 0x%lx ==> Done!!"
+  },
+  {
+    "offset": "0x8c25",
+    "value": "[PCIe] [ERROR]can't get PHY base due to incorrect channel ID"
+  },
+  {
+    "offset": "0x8c64",
+    "value": "[PCIe] [ERROR]can't get controller base due to incorrect channel ID"
+  },
+  {
+    "offset": "0x8caa",
+    "value": "[PCIe] [INFO] Start to load FW, data count = %d DWORD"
+  },
+  {
+    "offset": "0x8ce2",
+    "value": "[PCIe] [ERROR]PHY base is NULL"
+  },
+  {
+    "offset": "0x8d03",
+    "value": "[PCIe] [ERROR]controller base is NULL"
+  },
+  {
+    "offset": "0x8d2b",
+    "value": "[PCIe] [ERROR]num-lanes %u: invalid value"
+  },
+  {
+    "offset": "0x8d57",
+    "value": "[PCIe] [INFO][Event] CfgWr Receive"
+  },
+  {
+    "offset": "0x8d7c",
+    "value": "[PCIe] [INFO][Event] Link Down"
+  },
+  {
+    "offset": "0x8d9d",
+    "value": "[PCIe] [INFO][Event] Link Up"
+  },
+  {
+    "offset": "0x8dbc",
+    "value": "[PCIe] [ERROR][ERROR]Invalid BAR number"
+  },
+  {
+    "offset": "0x8de6",
+    "value": "[PCIe] [INFO]Config BAR%d  with type:%s  "
+  },
+  {
+    "offset": "0x8e11",
+    "value": "%s:Enter(%d)"
+  },
+  {
+    "offset": "0x8e1f",
+    "value": "%s:Exit(%d)"
+  },
+  {
+    "offset": "0x8e2c",
+    "value": "[ERROR]Invalid BAR type"
+  },
+  {
+    "offset": "0x8e45",
+    "value": "read [0x%x] = 0x%x"
+  },
+  {
+    "offset": "0x8e59",
+    "value": "write[0x%x] = 0x%x"
+  },
+  {
+    "offset": "0x8e6d",
+    "value": "MEM32 "
+  },
+  {
+    "offset": "0x8e74",
+    "value": " MEM64 "
+  },
+  {
+    "offset": "0x8e7c",
+    "value": " I/O "
+  },
+  {
+    "offset": "0x8e82",
+    "value": " MEM32P "
+  },
+  {
+    "offset": "0x8e8b",
+    "value": "PCIe_I"
+  },
+  {
+    "offset": "0x8e92",
+    "value": " MEM64P"
+  },
+  {
+    "offset": "0x8e9a",
+    "value": "PCIe_EP_Config_BAR"
+  },
+  {
+    "offset": "0x8ead",
+    "value": "PCIe_EP_LTSSM_Enable_Disable"
+  },
+  {
+    "offset": "0x8eca",
+    "value": "PCIe_EP_PERST_Switch"
+  },
+  {
+    "offset": "0x8edf",
+    "value": "unknown"
+  },
+  {
+    "offset": "0x8ee7",
+    "value": "PCIe_EP_GetPhyStatus"
+  },
+  {
+    "offset": "0x8efc",
+    "value": "PCIe_EP_PreInit"
+  },
+  {
+    "offset": "0x8f0c",
+    "value": "PCIe_EP_PostInit"
+  },
+  {
+    "offset": "0x8f1d",
+    "value": "PCIe_EP_Get_Event"
+  },
+  {
+    "offset": "0x8f2f",
+    "value": "ISR_E:Lower EL using AArch32. Fiq handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x8f66",
+    "value": "ISR_E:Current EL with SPx. Fiq handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x8f9a",
+    "value": "ISR_E:Current EL with SP0. fiq handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x8fce",
+    "value": "ISR_E:Lower EL using AArch64. fiq handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x9005",
+    "value": "ISR_E:Current EL with SP0. Irq handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x9039",
+    "value": "ISR_E:Lower EL using AArch32. Irq handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x9070",
+    "value": "ISR_E:Lower EL using AArch64. Irq handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x90a7",
+    "value": "ISR_E:Current EL with SPx. Irq handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x90db",
+    "value": "ISR_E:Current EL with SP0. SError handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x9112",
+    "value": "ISR_E:Lower EL using AArch32. SError handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x914c",
+    "value": "ISR_E:Lower EL using AArch64. SError handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x9186",
+    "value": "ISR_E:Current EL with SPx. SError handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x91bd",
+    "value": "ISR_E:Current EL with SP0. Synchronous Abort handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x91ff",
+    "value": "ISR_E:Lower EL using AArch32. Synchronous Abort handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x9244",
+    "value": "ISR_E:Lower EL using AArch64. Synchronous Abort handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x9289",
+    "value": "ISR_E:Current EL with SPx. Synchronous Abort handler, esr 0x%08x"
+  },
+  {
+    "offset": "0x92cb",
+    "value": "ISR_E:LR:      %lx"
+  },
+  {
+    "offset": "0x92df",
+    "value": "ISR_E:ELR:     %lx"
+  },
+  {
+    "offset": "0x92f3",
+    "value": "ISR_E:x%-2d: %016lx x%-2d: %016lx"
+  },
+  {
+    "offset": "0x9341",
+    "value": "SPI Loader Ver.00.16 (May 21 2020 21:28:44)"
+  },
+  {
+    "offset": "0x93ad",
+    "value": "@@@@@@@@@AAAAA@@@@@@@@@@@@@@@@@@"
+  },
+  {
+    "offset": "0x93dd",
+    "value": "          "
+  },
+  {
+    "offset": "0x94b0",
+    "value": "LBK_LIST( 0x510015, 0x510000, 0x510006, 0x510025, 0x510001, 0x510024, 0x51002F, 0x51001C, 0x510034, 0x51002C, 0x92003F, 0x92004A, 0x92004D, 0x92004E, 0x92005D, 0xF900D4, 0xF90148, 0xF900B1, 0xF9013C, 0xF9006D, 0xF9010D, 0xF90385, 0xF90386, 0xF90387, 0xF90388, 0xF90449, 0xF9044A, 0xFA0033, 0xFA0068, 0xFA007F, 0xFA0096, 0xFA0006, 0xFA003B, 0xFA0024, 0xFA0059, 0x510038, 0x51002D, 0xF909BD, 0xF909BE, 0xF909BF, 0xF909C0, 0xF909C1, 0xF909C2, 0xF909C3, 0xF909C4, 0xF909CF, 0xF909D0, 0xF909D1, 0xF909D2, 0xFA016D, 0xFA016E, 0xF90A9F, 0xF90AA0, 0xF909D5, 0xF909D6, 0xF909AD, 0xF909AE, 0xF90493, 0xF90492, 0x5D000B, 0x5D000C, 0x5D0011, 0x5D0012, 0xF90AD1, 0xF90AD2 )"
+  },
+  {
+    "offset": "0x9758",
+    "value": "CM:ldr_common_ "
+  },
+  {
+    "offset": "0x9778",
+    "value": "Load LBkup     "
+  },
+  {
+    "offset": "0x9798",
+    "value": "Init DbgLv     "
+  },
+  {
+    "offset": "0x97b8",
+    "value": "Disp Ldr ver   "
+  },
+  {
+    "offset": "0x97d8",
+    "value": "CM:PCIe Setup  "
+  },
+  {
+    "offset": "0x97f8",
+    "value": "CM:ddr_wake    "
+  },
+  {
+    "offset": "0x9818",
+    "value": "CM:NOR Init    "
+  },
+  {
+    "offset": "0x9838",
+    "value": "PCIe Clear Sig "
+  },
+  {
+    "offset": "0x9858",
+    "value": "PCIE sns state "
+  },
+  {
+    "offset": "0x9878",
+    "value": "CM:EP Set STBY "
+  },
+  {
+    "offset": "0x9898",
+    "value": "Cpy TRNG data  "
+  },
+  {
+    "offset": "0x98b8",
+    "value": "CM:wait com fin"
+  },
+  {
+    "offset": "0x98d8",
+    "value": "end on seq tbl "
+  }
+]

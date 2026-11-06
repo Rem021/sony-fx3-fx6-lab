@@ -1,0 +1,801 @@
+
+/usr/lib/libsencore.so e55c..e660 bytes=e003012ac0035fd65f0c18712100805281ffff5402984039
+e55c: mov w0, w1 
+e560: ret  
+e564: cmp w2, #0x603 
+e568: mov w1, #1 
+e56c: b.ne #0xe55c 
+e570: ldrb w2, [x0, #0x26] 
+e574: cmp w2, #0xf 
+e578: b.ne #0xe55c 
+e57c: adrp x2, #0x6a000 
+e580: ldr x2, [x2, #0xee0] 
+e584: ldrb w2, [x2] 
+e588: cmp w2, #3 
+e58c: b.eq #0xe55c 
+e590: ldrb w2, [x0, #0x179] 
+e594: cmp w2, #0x83 
+e598: b.eq #0xe55c 
+e59c: ldrb w0, [x0, #0x28] 
+e5a0: cmp w0, #0 
+e5a4: cset w1, ne 
+e5a8: b #0xe55c 
+e5ac: mov w1, #0 
+e5b0: b #0xe55c 
+e5b4: stp x29, x30, [sp, #-0x20]! 
+e5b8: mov x29, sp 
+e5bc: str x19, [sp, #0x10] 
+e5c0: mov x19, x1 
+e5c4: ldr x1, [x2, #0x160] 
+e5c8: add x3, x1, #0x1c 
+e5cc: str x3, [x2, #0x170] 
+e5d0: mov x2, x19 
+e5d4: str w19, [x1, #0x18] 
+e5d8: mov x1, x0 
+e5dc: mov x0, x3 
+e5e0: bl #0x9f80 memcpy
+e5e4: mov x0, x19 
+e5e8: ldr x19, [sp, #0x10] 
+e5ec: ldp x29, x30, [sp], #0x20 
+e5f0: ret  
+e5f4: b #0xe5b4 
+e5f8: cbz x0, #0xe608 
+e5fc: ldr x1, [x0] 
+e600: ldr x1, [x1, #8] 
+e604: br x1 
+e608: ret  
+e60c: stp x29, x30, [sp, #-0x30]! 
+e610: mov w2, #0 
+e614: mov w1, #-0xfe 
+e618: mov x29, sp 
+e61c: stp x19, x20, [sp, #0x10] 
+e620: mov x19, x0 
+e624: adrp x0, #0x35000 
+e628: stp x21, x22, [sp, #0x20] 
+e62c: add x0, x0, #0xf72 
+e630: bl #0xa920 _Z15GetPluginModulePKcth
+e634: cbz x0, #0xe71c 
+e638: adrp x1, #0x35000 
+e63c: add x1, x1, #0xf7c 
+e640: bl #0xa200 dlsym
+e644: mov x20, x0 
+e648: cbz x0, #0xe6f0 
+e64c: adrp x1, #0x35000 
+e650: mov w0, #4 
+e654: add x1, x1, #0xf89 
+e658: bl #0xa960 _Z10cpp_logrechPKc
+e65c: ldr x0, [x19] 
+
+/usr/lib/libsencore.so 10700..107cc bytes=400980521be8ff9700008012d40000357f1a40f281000054
+10700: mov w0, #0x4a 
+10704: bl #0xa770 osal_dynamic_id
+10708: mov w0, #-1 
+1070c: cbnz w20, #0x10724 
+10710: tst x19, #0x7f 
+10714: b.ne #0x10724 
+10718: ubfx x19, x19, #8, #8 
+1071c: cmp w19, #0 
+10720: csetm w0, ne 
+10724: ldp x19, x20, [sp, #0x10] 
+10728: ldp x21, x22, [sp, #0x20] 
+1072c: ldp x23, x24, [sp, #0x30] 
+10730: ldp x29, x30, [sp], #0x40 
+10734: add sp, sp, #0x220 
+10738: ret  
+1073c: stp x29, x30, [sp, #-0x30]! 
+10740: mov x29, sp 
+10744: stp x19, x20, [sp, #0x10] 
+10748: mov x19, x0 
+1074c: str x21, [sp, #0x20] 
+10750: mov w20, w1 
+10754: uxtb w21, w2 
+10758: bl #0xa610 LoadSenserMode
+1075c: bl #0xa590 GetSenserMode
+10760: cbnz w0, #0x10780 
+10764: mov w2, w21 
+10768: mov w1, w20 
+1076c: mov x0, x19 
+10770: ldr x21, [sp, #0x20] 
+10774: ldp x19, x20, [sp, #0x10] 
+10778: ldp x29, x30, [sp], #0x30 
+1077c: b #0x1058c 
+10780: cmp w0, #1 
+10784: b.eq #0x1079c 
+10788: mov w0, #-1 
+1078c: ldp x19, x20, [sp, #0x10] 
+10790: ldr x21, [sp, #0x20] 
+10794: ldp x29, x30, [sp], #0x30 
+10798: ret  
+1079c: ldr x0, [x19] 
+107a0: mov w3, w21 
+107a4: mov w2, w20 
+107a8: mov x1, x19 
+107ac: bl #0xa5f0 stm_system
+107b0: tst x0, #0x7f 
+107b4: b.ne #0x10788 
+107b8: ubfx x0, x0, #8, #8 
+107bc: cmp w0, #0 
+107c0: csetm w0, ne 
+107c4: b #0x1078c 
+107c8: stp x29, x30, [sp, #-0xb0]! 
+
+/usr/lib/libsencore.so 10a40..10d48 bytes=c00f801283e6ff97e00313aa99e5ff97e303002a21020090
+10a40: mov w0, #-0x7f 
+10a44: bl #0xa450 _Z10cpp_logrechPKcj
+10a48: mov x0, x19 
+10a4c: bl #0xa0b0 strlen
+10a50: mov w3, w0 
+10a54: adrp x1, #0x54000 
+10a58: mov x2, x19 
+10a5c: add x1, x1, #0xbe4 
+10a60: mov w0, #-0x7f 
+10a64: bl #0xa9b0 _Z14cppdump_logrechPKcPhj
+10a68: mov w20, #-1 
+10a6c: add x0, x29, #0x48 
+10a70: bl #0xa780 _ZN8DeviceIo5closeEv
+10a74: ldr x23, [sp, #0x30] 
+10a78: mov w0, w20 
+10a7c: ldp x19, x20, [sp, #0x10] 
+10a80: ldp x21, x22, [sp, #0x20] 
+10a84: ldp x29, x30, [sp], #0x50 
+10a88: ret  
+10a8c: mov x0, x2 
+10a90: mov w1, #0 
+10a94: bl #0xa3d0 access
+10a98: cbnz w0, #0x10a30 
+10a9c: add x20, x29, #0x48 
+10aa0: mov w2, #0x1001 
+10aa4: mov x1, x19 
+10aa8: mov x0, x20 
+10aac: movk w2, #0x10, lsl #16 
+10ab0: bl #0xa120 _ZN8DeviceIo4openEPKci
+10ab4: b #0x10ce0 
+10ab8: mov x0, x20 
+10abc: mov w1, #0x1f8 
+10ac0: bl #0xa950 mkdir
+10ac4: cbz w0, #0x10a24 
+10ac8: bl #0xa8e0 __errno_location
+10acc: ldr w2, [x0] 
+10ad0: cmp w2, #0x11 
+10ad4: b.eq #0x10a24 
+10ad8: adrp x1, #0x54000 
+10adc: add x1, x1, #0xbc6 
+10ae0: b #0x10bc4 
+10ae4: mov x0, x2 
+10ae8: mov w1, #0 
+10aec: bl #0xa3d0 access
+10af0: cbnz w0, #0x10b14 
+10af4: add x20, x29, #0x48 
+10af8: mov w2, #0x1000 
+10afc: mov x1, x19 
+10b00: mov x0, x20 
+10b04: movk w2, #0x10, lsl #16 
+10b08: bl #0xa120 _ZN8DeviceIo4openEPKci
+10b0c: tst w0, #0xff 
+10b10: b.ne #0x10cfc 
+10b14: bl #0xa8e0 __errno_location
+10b18: ldr w2, [x0] 
+10b1c: adrp x1, #0x54000 
+10b20: add x1, x1, #0xc6e 
+10b24: b #0x10a40 
+10b28: mov x2, x0 
+10b2c: mov x1, x22 
+10b30: mov x0, x20 
+10b34: bl #0x9fa0 _ZNK8DeviceIo4readEPvm
+10b38: b #0x10a28 
+10b3c: mov x2, x19 
+10b40: b #0x10b2c 
+10b44: mov x0, x2 
+10b48: mov w1, #0 
+10b4c: bl #0xa3d0 access
+10b50: cmp w0, #0 
+10b54: csetm w20, ne 
+10b58: b #0x10a6c 
+10b5c: mov w1, #0 
+10b60: mov x0, x20 
+10b64: b #0x10b4c 
+10b68: mov x0, x2 
+10b6c: mov w1, #0 
+10b70: bl #0xa3d0 access
+10b74: cbnz w0, #0x10a28 
+10b78: mov x0, x19 
+10b7c: bl #0xa500 remove
+10b80: cbz w0, #0x10a24 
+10b84: bl #0xa8e0 __errno_location
+10b88: ldr w2, [x0] 
+10b8c: adrp x1, #0x54000 
+10b90: add x1, x1, #0xbed 
+10b94: b #0x10a40 
+10b98: mov x0, x20 
+10b9c: mov w1, #0 
+10ba0: bl #0xa3d0 access
+10ba4: cbnz w0, #0x10a28 
+10ba8: mov x0, x20 
+10bac: bl #0xae80 rmdir
+10bb0: cbz w0, #0x10a24 
+10bb4: bl #0xa8e0 __errno_location
+10bb8: ldr w2, [x0] 
+10bbc: adrp x1, #0x54000 
+10bc0: add x1, x1, #0xc0c 
+10bc4: mov w0, #-0x7f 
+10bc8: bl #0xa450 _Z10cpp_logrechPKcj
+10bcc: mov x0, x20 
+10bd0: bl #0xa0b0 strlen
+10bd4: mov w3, w0 
+10bd8: adrp x1, #0x54000 
+10bdc: mov x2, x20 
+10be0: add x1, x1, #0xbe9 
+10be4: b #0x10a60 
+10be8: mov x0, x2 
+10bec: mov w1, #0 
+10bf0: bl #0xa3d0 access
+10bf4: cbnz w0, #0x10c18 
+10bf8: add x20, x29, #0x48 
+10bfc: mov w2, #0x1000 
+10c00: mov x1, x19 
+10c04: mov x0, x20 
+10c08: movk w2, #0x10, lsl #16 
+10c0c: bl #0xa120 _ZN8DeviceIo4openEPKci
+10c10: tst w0, #0xff 
+10c14: b.ne #0x10d2c 
+10c18: bl #0xa8e0 __errno_location
+10c1c: ldr w2, [x0] 
+10c20: adrp x1, #0x54000 
+10c24: add x1, x1, #0xc8b 
+10c28: b #0x10a40 
+10c2c: add x1, x29, #0x47 
+10c30: mov x0, x2 
+10c34: bl #0xa9e0 fopen
+10c38: mov x23, x0 
+10c3c: mov x20, #0 
+10c40: cbnz x0, #0x10c58 
+10c44: bl #0xa8e0 __errno_location
+10c48: ldr w2, [x0] 
+10c4c: adrp x1, #0x54000 
+10c50: add x1, x1, #0xc2f 
+10c54: b #0x10a40 
+10c58: mov x0, x23 
+10c5c: bl #0xac00 fgetc
+10c60: strb w0, [x22, x20] 
+10c64: add x20, x20, #1 
+10c68: cmp w21, w20 
+10c6c: b.hi #0x10c58 
+10c70: mov x0, x23 
+10c74: bl #0xa1a0 fclose
+10c78: b #0x10a28 
+10c7c: add x1, x29, #0x47 
+10c80: mov x0, x2 
+10c84: bl #0xa9e0 fopen
+10c88: mov x21, x0 
+10c8c: mov w20, #0 
+10c90: cbz x0, #0x10c44 
+10c94: mov x0, x21 
+10c98: add w20, w20, #1 
+10c9c: bl #0xac00 fgetc
+10ca0: cmn w0, #1 
+10ca4: b.ne #0x10c94 
+10ca8: mov x0, x21 
+10cac: bl #0xa1a0 fclose
+10cb0: b #0x10a6c 
+10cb4: adrp x1, #0x54000 
+10cb8: mov w2, w0 
+10cbc: add x1, x1, #0xc4c 
+10cc0: mov w0, #-0x7f 
+10cc4: bl #0xa450 _Z10cpp_logrechPKcj
+10cc8: b #0x10a68 
+10ccc: mov x19, x0 
+10cd0: add x0, x29, #0x48 
+10cd4: bl #0xa780 _ZN8DeviceIo5closeEv
+10cd8: mov x0, x19 
+10cdc: bl #0xacf0 _Unwind_Resume
+10ce0: tst w0, #0xff 
+10ce4: b.eq #0x10a30 
+10ce8: mov w2, w21 
+10cec: mov x1, x22 
+10cf0: mov x0, x20 
+10cf4: bl #0x9f90 _ZNK8DeviceIo5writeEPKvm
+10cf8: b #0x10a18 
+10cfc: mov w2, w21 
+10d00: mov x0, x22 
+10d04: mov w1, #0 
+10d08: mov w19, w21 
+10d0c: bl #0xa260 memset
+10d10: mov x0, x20 
+10d14: bl #0xa820 _ZNK8DeviceIo4sizeEv
+10d18: cmp x19, x0 
+10d1c: b.ls #0x10b3c 
+10d20: mov x0, x20 
+10d24: bl #0xa820 _ZNK8DeviceIo4sizeEv
+10d28: b #0x10b28 
+10d2c: mov x0, x20 
+10d30: bl #0xa820 _ZNK8DeviceIo4sizeEv
+10d34: mov w20, w0 
+10d38: b #0x10a6c 
+10d3c: sub sp, sp, #0x410 
+10d40: adrp x3, #0x55000 
+10d44: adrp x2, #0x54000 
+
+/usr/lib/libsencore.so 11400..11484 bytes=14e4ff977f020039c00f8012c1ffff17b4c3003974aa4039
+11400: bl #0xa450 _Z10cpp_logrechPKcj
+11404: strb wzr, [x19] 
+11408: mov w0, #-0x7f 
+1140c: b #0x11310 
+11410: strb w20, [x29, #0x30] 
+11414: ldrb w20, [x19, #0x2a] 
+11418: cbz w20, #0x11428 
+1141c: mov w0, w20 
+11420: bl #0xa090 isalnum
+11424: cbz w0, #0x113f0 
+11428: adrp x0, #0x54000 
+1142c: mov w2, #0 
+11430: add x0, x0, #0xcdd 
+11434: mov w1, #3 
+11438: stp x0, x21, [x29, #0x38] 
+1143c: add x0, x29, #0x38 
+11440: strb w20, [x29, #0x31] 
+11444: str xzr, [x29, #0x48] 
+11448: bl #0x1073c 
+1144c: cbz w0, #0x11458 
+11450: ldrb w2, [x19, #0x29] 
+11454: b #0x113f4 
+11458: mov w0, #8 
+1145c: strb w0, [x19] 
+11460: mov w0, #1 
+11464: b #0x11310 
+11468: sub sp, sp, #0x420 
+1146c: adrp x3, #0x54000 
+11470: adrp x2, #0x16000 
+11474: add x3, x3, #0xd38 
+11478: add x2, x2, #0xa8b 
+1147c: stp x29, x30, [sp, #-0x60]! 
+11480: mov x29, sp 
+
+/usr/lib/libsencore.so 11898..119a0 bytes=46e4ff97000180526002003920008052abffff17ff0308d1
+11898: bl #0xa9b0 _Z14cppdump_logrechPKcPhj
+1189c: mov w0, #8 
+118a0: strb w0, [x19] 
+118a4: mov w0, #1 
+118a8: b #0x11754 
+118ac: sub sp, sp, #0x200 
+118b0: mov w1, #0x1002 
+118b4: movk w1, #0x10, lsl #16 
+118b8: stp x29, x30, [sp, #-0x30]! 
+118bc: mov x29, sp 
+118c0: stp x19, x20, [sp, #0x10] 
+118c4: mov x19, x0 
+118c8: stp x21, x22, [sp, #0x20] 
+118cc: adrp x21, #0x54000 
+118d0: strb wzr, [x0, #0x1c] 
+118d4: add x0, x21, #0xe28 
+118d8: bl #0xa140 open
+118dc: tbz w0, #0x1f, #0x11918 
+118e0: mov w0, #1 
+118e4: strb w0, [x19, #0x1c] 
+118e8: mov w0, #8 
+118ec: strb wzr, [x19, #4] 
+118f0: strb wzr, [x19, #5] 
+118f4: strb w0, [x19] 
+118f8: mov w0, #1 
+118fc: strh wzr, [x19, #6] 
+11900: strb w0, [x19, #1] 
+11904: mov w0, #1 
+11908: str wzr, [x19, #8] 
+1190c: str xzr, [x19, #0x10] 
+11910: str w0, [x19, #0x18] 
+11914: b #0x119d0 
+11918: add x20, x29, #0x30 
+1191c: mov w22, w0 
+11920: mov x0, x20 
+11924: mov x2, #0x200 
+11928: mov w1, #0 
+1192c: bl #0xa260 memset
+11930: ldrb w0, [x19, #0x28] 
+11934: cbnz w0, #0x11948 
+11938: adrp x0, #0x54000 
+1193c: add x0, x0, #0xe36 
+11940: ldr w0, [x0] 
+11944: str w0, [x29, #0x30] 
+11948: mov x1, x20 
+1194c: mov w0, w22 
+11950: mov x2, #0x200 
+11954: mov w20, #0 
+11958: bl #0xaa90 write
+1195c: cmp w0, #0x200 
+11960: b.eq #0x119a0 
+11964: mov w0, #1 
+11968: mov w20, #1 
+1196c: strb w0, [x19, #0x1c] 
+11970: bl #0xa8e0 __errno_location
+11974: ldr w2, [x0] 
+11978: adrp x1, #0x54000 
+1197c: mov w0, #-0x7f 
+11980: add x1, x1, #0xbc6 
+11984: bl #0xa450 _Z10cpp_logrechPKcj
+11988: adrp x1, #0x54000 
+1198c: add x2, x21, #0xe28 
+11990: add x1, x1, #0xbe4 
+11994: mov w3, #0xd 
+11998: mov w0, #-0x7f 
+1199c: bl #0xa9b0 _Z14cppdump_logrechPKcPhj
+
+/usr/lib/libsencore.so 11a90..11b88 bytes=fb7305a9b483059152e3ff971a0200f0e00315aa022080d2
+11a90: stp x27, x28, [sp, #0x50] 
+11a94: add x20, x29, #0x160 
+11a98: bl #0xa7e0 snprintf
+11a9c: adrp x26, #0x54000 
+11aa0: mov x0, x21 
+11aa4: mov x2, #0x100 
+11aa8: mov w1, #0 
+11aac: add x26, x26, #0xb10 
+11ab0: bl #0xa260 memset
+11ab4: mov x0, x20 
+11ab8: mov x2, #0x100 
+11abc: mov w1, #0 
+11ac0: bl #0xa260 memset
+11ac4: mov x1, x26 
+11ac8: mov x0, x21 
+11acc: mov w2, #0x100 
+11ad0: bl #0x10524 
+11ad4: mov w27, w0 
+11ad8: mov x1, x26 
+11adc: mov x0, x20 
+11ae0: mov w2, #0x100 
+11ae4: adrp x26, #0x54000 
+11ae8: add x26, x26, #0xb15 
+11aec: bl #0x10524 
+11af0: orr w27, w27, w0 
+11af4: mov x1, x26 
+11af8: mov x0, x21 
+11afc: mov w2, #0x100 
+11b00: bl #0x10524 
+11b04: mov w23, w0 
+11b08: mov x1, x26 
+11b0c: mov x0, x20 
+11b10: mov w2, #0x100 
+11b14: bl #0x10524 
+11b18: orr w23, w23, w0 
+11b1c: mov x1, x25 
+11b20: mov x0, x20 
+11b24: mov w2, #0x100 
+11b28: orr w23, w23, w27 
+11b2c: bl #0x10524 
+11b30: orr w0, w0, w23 
+11b34: cbz w0, #0x122fc 
+11b38: adrp x1, #0x54000 
+11b3c: add x1, x1, #0xcaf 
+11b40: mov w0, #-0x7f 
+11b44: bl #0xa960 _Z10cpp_logrechPKc
+11b48: b #0x11be8 
+11b4c: ldr w0, [x19, #0x28] 
+11b50: sub w1, w0, #0x11 
+11b54: cmn w1, #0x13 
+11b58: b.hi #0x11b74 
+11b5c: mov w0, #1 
+11b60: mov w1, #8 
+11b64: str w0, [x19, #0x1c] 
+11b68: strb w1, [x19] 
+11b6c: strb w0, [x19, #1] 
+11b70: b #0x11c04 
+11b74: ldrb w23, [x19] 
+11b78: cmp w23, #1 
+11b7c: b.eq #0x11ba4 
+11b80: cmp w23, #4 
+11b84: b.eq #0x11d2c 
+
+/usr/bin/sen.elf 402a60..402c40 bytes=fd7bbba9000000b000783a9101008052fd030091f30b00f9
+402a60: stp x29, x30, [sp, #-0x50]! 
+402a64: adrp x0, #0x403000 
+402a68: add x0, x0, #0xe9e 
+402a6c: mov w1, #0 
+402a70: mov x29, sp 
+402a74: str x19, [sp, #0x10] 
+402a78: adrp x19, #0x416000 
+402a7c: bl #0x4019b0 access
+402a80: cbnz w0, #0x402a90 
+402a84: adrp x0, #0x403000 
+402a88: add x0, x0, #0xed3 
+402a8c: b #0x402a98 
+402a90: adrp x0, #0x403000 
+402a94: add x0, x0, #0xec3 
+402a98: bl #0x402808 
+402a9c: str w0, [x19, #0x228] 
+402aa0: adrp x2, #0x403000 
+402aa4: adrp x1, #0x403000 
+402aa8: ldrb w0, [x19, #0x228] 
+402aac: add x2, x2, #0xee6 
+402ab0: add x1, x1, #0xea7 
+402ab4: bl #0x4028d0 
+402ab8: stp xzr, xzr, [x29, #0x30] 
+402abc: ldr w0, [x19, #0x228] 
+402ac0: stp xzr, xzr, [x29, #0x40] 
+402ac4: str w0, [x29, #0x20] 
+402ac8: mov w0, #-0x7c 
+402acc: strb w0, [x29, #0x30] 
+402ad0: mov w0, #1 
+402ad4: strb w0, [x29, #0x31] 
+402ad8: adrp x0, #0x403000 
+402adc: add x0, x0, #0xeb2 
+402ae0: str x0, [x29, #0x38] 
+402ae4: add x0, x29, #0x20 
+402ae8: str x0, [x29, #0x40] 
+402aec: mov w0, #4 
+402af0: str w0, [x29, #0x48] 
+402af4: add x0, x29, #0x30 
+402af8: bl #0x402468 
+402afc: ldr x19, [sp, #0x10] 
+402b00: ldp x29, x30, [sp], #0x50 
+402b04: ret  
+402b08: stp x29, x30, [sp, #-0x20]! 
+402b0c: mov w1, #0 
+402b10: mov x29, sp 
+402b14: str x19, [sp, #0x10] 
+402b18: uxtb w19, w0 
+402b1c: adrp x0, #0x403000 
+402b20: add x0, x0, #0xe9e 
+402b24: bl #0x4019b0 access
+402b28: cbz w0, #0x402b4c 
+402b2c: adrp x2, #0x403000 
+402b30: adrp x1, #0x403000 
+402b34: add x2, x2, #0xec3 
+402b38: add x1, x1, #0xef7 
+402b3c: mov w0, w19 
+402b40: ldr x19, [sp, #0x10] 
+402b44: ldp x29, x30, [sp], #0x20 
+402b48: b #0x4028d0 
+402b4c: adrp x2, #0x403000 
+402b50: adrp x1, #0x403000 
+402b54: add x2, x2, #0xed3 
+402b58: add x1, x1, #0xf02 
+402b5c: b #0x402b3c 
+402b60: adrp x0, #0x416000 
+402b64: ldr w0, [x0, #0x228] 
+402b68: ret  
+402b6c: adrp x0, #0x416000 
+402b70: str wzr, [x0, #0x228] 
+402b74: ret  
+402b78: adrp x1, #0x403000 
+402b7c: add x1, x1, #0xfc0 
+402b80: b #0x4039d4 
+402b84: stp x29, x30, [sp, #-0x20]! 
+402b88: mov x29, sp 
+402b8c: stp x19, x20, [sp, #0x10] 
+402b90: mov x20, x0 
+402b94: mov x19, x1 
+402b98: bl #0x402b78 
+402b9c: tst w0, #0xff 
+402ba0: b.eq #0x402bc8 
+402ba4: adrp x1, #0x403000 
+402ba8: mov x0, x20 
+402bac: add x1, x1, #0xf91 
+402bb0: bl #0x403a20 
+402bb4: mov x1, x0 
+402bb8: mov x0, x19 
+402bbc: ldp x19, x20, [sp, #0x10] 
+402bc0: ldp x29, x30, [sp], #0x20 
+402bc4: br x1 
+402bc8: mov w0, #0 
+402bcc: ldp x19, x20, [sp, #0x10] 
+402bd0: ldp x29, x30, [sp], #0x20 
+402bd4: ret  
+402bd8: stp x29, x30, [sp, #-0x30]! 
+402bdc: mov x29, sp 
+402be0: stp x19, x20, [sp, #0x10] 
+402be4: mov x19, x1 
+402be8: str x21, [sp, #0x20] 
+402bec: mov x20, x2 
+402bf0: mov x21, x0 
+402bf4: bl #0x402b78 
+402bf8: tst w0, #0xff 
+402bfc: b.eq #0x402c2c 
+402c00: adrp x1, #0x403000 
+402c04: mov x0, x21 
+402c08: add x1, x1, #0xfa7 
+402c0c: bl #0x403a20 
+402c10: ldr x21, [sp, #0x20] 
+402c14: mov x2, x0 
+402c18: mov x1, x20 
+402c1c: mov x0, x19 
+402c20: ldp x19, x20, [sp, #0x10] 
+402c24: ldp x29, x30, [sp], #0x30 
+402c28: br x2 
+402c2c: mov w0, #0 
+402c30: ldr x21, [sp, #0x20] 
+402c34: ldp x19, x20, [sp, #0x10] 
+402c38: ldp x29, x30, [sp], #0x30 
+402c3c: ret  
+
+/usr/bin/sen.elf 403140..403308 bytes=3f0000ebf50302aa81010054801640f9c00000b4831240f9
+403140: cmp x1, x0 
+403144: mov x21, x2 
+403148: b.ne #0x403178 
+40314c: ldr x0, [x20, #0x28] 
+403150: cbz x0, #0x403168 
+403154: ldr x3, [x20, #0x20] 
+403158: ldr w0, [x2] 
+40315c: ldr w1, [x3, #0x20] 
+403160: cmp w1, w0 
+403164: b.lt #0x40321c 
+403168: mov x1, x21 
+40316c: mov x0, x20 
+403170: bl #0x40308c 
+403174: b #0x40319c 
+403178: ldr w0, [x1, #0x20] 
+40317c: mov x19, x1 
+403180: ldr w22, [x2] 
+403184: cmp w22, w0 
+403188: b.ge #0x4031d4 
+40318c: ldr x0, [x20, #0x18] 
+403190: cmp x0, x1 
+403194: b.ne #0x4031ac 
+403198: mov x1, x0 
+40319c: ldp x19, x20, [sp, #0x10] 
+4031a0: ldp x21, x22, [sp, #0x20] 
+4031a4: ldp x29, x30, [sp], #0x30 
+4031a8: ret  
+4031ac: mov x0, x1 
+4031b0: bl #0x401ac0 _ZSt18_Rb_tree_decrementPSt18_Rb_tree_node_base
+4031b4: mov x1, x0 
+4031b8: ldr w0, [x0, #0x20] 
+4031bc: cmp w22, w0 
+4031c0: b.le #0x403168 
+4031c4: ldr x0, [x1, #0x18] 
+4031c8: cbz x0, #0x40319c 
+4031cc: mov x0, x19 
+4031d0: b #0x403198 
+4031d4: b.le #0x403210 
+4031d8: ldr x1, [x20, #0x20] 
+4031dc: mov x0, #0 
+4031e0: cmp x1, x19 
+4031e4: b.eq #0x40319c 
+4031e8: mov x0, x19 
+4031ec: bl #0x4019d0 _ZSt18_Rb_tree_incrementPSt18_Rb_tree_node_base
+4031f0: ldr w1, [x0, #0x20] 
+4031f4: cmp w22, w1 
+4031f8: b.ge #0x403168 
+4031fc: ldr x1, [x19, #0x18] 
+403200: cbnz x1, #0x403198 
+403204: mov x0, #0 
+403208: mov x1, x19 
+40320c: b #0x40319c 
+403210: mov x0, x1 
+403214: mov x1, #0 
+403218: b #0x40319c 
+40321c: mov x0, #0 
+403220: mov x1, x3 
+403224: b #0x40319c 
+403228: stp x29, x30, [sp, #-0x40]! 
+40322c: mov x29, sp 
+403230: stp x21, x22, [sp, #0x20] 
+403234: mov x22, x0 
+403238: ldr x0, [x1] 
+40323c: mov x21, x1 
+403240: stp x19, x20, [sp, #0x10] 
+403244: stp x23, x24, [sp, #0x30] 
+403248: ldr x1, [x0, #0x18] 
+40324c: mov x0, x21 
+403250: blr x1 
+403254: ldr w0, [x0] 
+403258: cmn w0, #1 
+40325c: b.ne #0x403300 
+403260: bl #0x401b50 sched_yield
+403264: bl #0x401bc0 abort
+403268: ldr x0, [x0, #0x18] 
+40326c: cbz x0, #0x403288 
+403270: ldr w1, [x0, #0x20] 
+403274: cmp w24, w1 
+403278: b.gt #0x403268 
+40327c: mov x19, x0 
+403280: ldr x0, [x0, #0x10] 
+403284: b #0x40326c 
+403288: cmp x23, x19 
+40328c: b.eq #0x403324 
+403290: ldr w0, [x19, #0x20] 
+403294: cmp w24, w0 
+403298: b.lt #0x403324 
+40329c: str x21, [x19, #0x28] 
+4032a0: ldp x23, x24, [sp, #0x30] 
+4032a4: ldp x19, x20, [sp, #0x10] 
+4032a8: ldp x21, x22, [sp, #0x20] 
+4032ac: ldp x29, x30, [sp], #0x40 
+4032b0: ret  
+4032b4: cmp x23, x1 
+4032b8: cset w4, eq 
+4032bc: cmp x0, #0 
+4032c0: cset w0, ne 
+4032c4: orr w0, w4, w0 
+4032c8: cbnz w0, #0x4032dc 
+4032cc: ldr w0, [x1, #0x20] 
+4032d0: ldr w2, [x20, #0x20] 
+4032d4: cmp w2, w0 
+4032d8: cset w0, lt 
+4032dc: mov x2, x1 
+4032e0: mov x3, x23 
+4032e4: mov x1, x20 
+4032e8: mov x19, x20 
+4032ec: bl #0x4018b0 _ZSt29_Rb_tree_insert_and_rebalancebPSt18_Rb_tree_node_baseS0_RS_
+4032f0: ldr x0, [x22, #0x28] 
+4032f4: add x0, x0, #1 
+4032f8: str x0, [x22, #0x28] 
+4032fc: b #0x40329c 
+403300: ldr x0, [x21] 
+403304: add x23, x22, #8 
+
+/usr/lib/libtestcmd_scn.so de0..f18 bytes=810000b021e447f981ffffb4fd7bbfa9fd03009120003fd6
+de0: adrp x1, #0x11000 
+de4: ldr x1, [x1, #0xfc8] 
+de8: cbz x1, #0xdd8 
+dec: stp x29, x30, [sp, #-0x10]! 
+df0: mov x29, sp 
+df4: blr x1 
+df8: ldp x29, x30, [sp], #0x10 
+dfc: b #0xd40 
+e00: stp x29, x30, [sp, #-0x40]! 
+e04: mov x1, #0x80 
+e08: mov x29, sp 
+e0c: stp x21, x22, [sp, #0x20] 
+e10: adrp x21, #0x1000 
+e14: stp x23, x24, [sp, #0x30] 
+e18: mov x22, x0 
+e1c: stp x19, x20, [sp, #0x10] 
+e20: add x21, x21, #0x1c4 
+e24: bl #0xcc0 strnlen
+e28: mov x19, x0 
+e2c: mov x0, x21 
+e30: mov x1, #0x80 
+e34: adrp x23, #0x1000 
+e38: add x23, x23, #0x1d3 
+e3c: bl #0xcc0 strnlen
+e40: add w19, w0, w19 
+e44: mov x0, x23 
+e48: mov x1, #0x80 
+e4c: bl #0xcc0 strnlen
+e50: add w19, w19, w0 
+e54: add w19, w19, #1 
+e58: sxtw x24, w19 
+e5c: mov x0, x24 
+e60: bl #0xc90 malloc
+e64: cbz x0, #0xeb4 
+e68: adrp x2, #0x1000 
+e6c: mov x5, x23 
+e70: mov x4, x22 
+e74: mov x3, x21 
+e78: add x2, x2, #0x1d7 
+e7c: mov x1, x24 
+e80: mov x20, x0 
+e84: bl #0xc70 snprintf
+e88: cmp w0, #0 
+e8c: ccmp w19, w0, #4, ge 
+e90: mov x0, x20 
+e94: b.le #0xeb0 
+e98: mov x0, x20 
+e9c: mov w1, #1 
+ea0: bl #0xc30 dlopen
+ea4: mov x19, x0 
+ea8: mov x0, x20 
+eac: cbnz x19, #0xebc 
+eb0: bl #0xbc0 free
+eb4: mov x0, #0 
+eb8: b #0xf28 
+ebc: bl #0xbc0 free
+ec0: bl #0xbe0 dlerror
+ec4: adrp x1, #0x1000 
+ec8: mov x0, x19 
+ecc: add x1, x1, #0x1de 
+ed0: bl #0xbb0 dlsym
+ed4: mov x20, x0 
+ed8: bl #0xbe0 dlerror
+edc: cbz x0, #0xeec 
+ee0: mov x0, x19 
+ee4: bl #0xc40 dlclose
+ee8: b #0xeb4 
+eec: mov x0, #0x40 
+ef0: bl #0xc90 malloc
+ef4: cbz x0, #0xf28 
+ef8: ldp x2, x3, [x22] 
+efc: add x1, x0, #0x30 
+f00: stp x2, x3, [x0] 
+f04: ldp x2, x3, [x22, #0x10] 
+f08: stp x19, x20, [x0, #0x20] 
+f0c: stp x2, x3, [x0, #0x10] 
+f10: adrp x2, #0x12000 
+f14: add x4, x2, #0xb8 

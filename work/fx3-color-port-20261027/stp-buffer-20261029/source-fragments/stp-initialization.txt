@@ -1,0 +1,39 @@
+00a47b88 push       {r4, r5, r6, r7, lr}
+00a47b8a add        r7, sp, #0xc
+00a47b8c str        fp, [sp, #-0x4]!
+00a47b90 sub        sp, #8
+00a47b92 movs       r0, #0x22
+00a47b94 movs       r1, #1
+00a47b96 bl         #0x474024
+00a47b9a mov        r4, sp
+00a47b9c movs       r5, #0x17
+00a47b9e movs       r6, #0
+00a47ba0 movs       r0, #0x22
+00a47ba2 mov        r1, r4
+00a47ba4 str        r5, [sp]
+00a47ba6 str        r6, [sp, #4]
+00a47ba8 bl         #0x473440
+00a47bac movs       r0, #0x23
+00a47bae movs       r1, #1
+00a47bb0 bl         #0x474024
+00a47bb4 movs       r0, #0x23
+00a47bb6 mov        r1, r4
+00a47bb8 strd       r5, r6, [sp]
+00a47bbc bl         #0x473440
+00a47bc0 movs       r0, #0x24
+00a47bc2 movs       r1, #1
+00a47bc4 bl         #0x474024
+00a47bc8 movs       r0, #0x24
+00a47bca mov        r1, r4
+00a47bcc strd       r5, r6, [sp]
+00a47bd0 bl         #0x473440
+00a47bd4 movs       r0, #0x25
+00a47bd6 movs       r1, #1
+00a47bd8 bl         #0x474024
+00a47bdc movs       r0, #0x25
+00a47bde mov        r1, r4
+00a47be0 strd       r5, r6, [sp]
+00a47be4 bl         #0x473440
+00a47be8 add        sp, #8
+00a47bea ldr        fp, [sp], #4
+00a47bee pop        {r4, r5, r6, r7, pc}

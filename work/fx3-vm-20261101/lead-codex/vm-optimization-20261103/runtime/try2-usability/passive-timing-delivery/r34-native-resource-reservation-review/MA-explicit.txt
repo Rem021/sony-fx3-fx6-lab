@@ -1,0 +1,44 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/regular-files/usr/kmod/grm_ma.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000000890 <ma_create_msp_impl>:
+     890: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+     894: aa0003e5     	mov	x5, x0
+     898: 91004403     	add	x3, x0, #0x11
+     89c: 529fffe0     	mov	w0, #0xffff             // =65535
+     8a0: 910003fd     	mov	x29, sp
+     8a4: f9000bf3     	str	x19, [sp, #0x10]
+     8a8: aa0103f3     	mov	x19, x1
+     8ac: 394040a4     	ldrb	w4, [x5, #0x10]
+     8b0: f94000a1     	ldr	x1, [x5]
+     8b4: b94008a2     	ldr	w2, [x5, #0x8]
+     8b8: 94000000     	bl	0x8b8 <ma_create_msp_impl+0x28>
+		00000000000008b8:  R_AARCH64_CALL26	ma_list_add
+     8bc: f100001f     	cmp	x0, #0x0
+     8c0: 5a9f13e1     	csetm	w1, eq
+     8c4: f9000660     	str	x0, [x19, #0x8]
+     8c8: b9000261     	str	w1, [x19]
+     8cc: 52800000     	mov	w0, #0x0                // =0
+     8d0: f9400bf3     	ldr	x19, [sp, #0x10]
+     8d4: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+     8d8: d65f03c0     	ret
+     8dc: d503201f     	nop
+
+00000000000008e0 <ma_release_msp_impl>:
+     8e0: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+     8e4: 910003fd     	mov	x29, sp
+     8e8: f9000bf3     	str	x19, [sp, #0x10]
+     8ec: aa0103f3     	mov	x19, x1
+     8f0: f9400000     	ldr	x0, [x0]
+     8f4: 94000000     	bl	0x8f4 <ma_release_msp_impl+0x14>
+		00000000000008f4:  R_AARCH64_CALL26	ma_list_release
+     8f8: 3100041f     	cmn	w0, #0x1
+     8fc: 12800102     	mov	w2, #-0x9               // =-9
+     900: 1a8213e2     	csel	w2, wzr, w2, ne
+     904: 29000262     	stp	w2, w0, [x19]
+     908: 52800000     	mov	w0, #0x0                // =0
+     90c: f9400bf3     	ldr	x19, [sp, #0x10]
+     910: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+     914: d65f03c0     	ret

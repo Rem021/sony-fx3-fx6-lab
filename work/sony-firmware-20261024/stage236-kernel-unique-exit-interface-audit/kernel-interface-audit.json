@@ -1,0 +1,385 @@
+{
+  "status": "STATIC_CHECKS_PASS_NOT_RUNTIME_ACCEPTANCE",
+  "checks": 99,
+  "check_names": [
+    "all decoded symbols equal sealed146 catalog",
+    "symbol count",
+    "official Image SHA",
+    "0x2740 adrp",
+    "0x2744 mov",
+    "0x2748 mov",
+    "0x2760 cmp",
+    "0x2764 b.hs",
+    "0x2790 ldr",
+    "0x2794 blr",
+    "sys_call_table address",
+    "normal pidfd_open number434 exceeds native291",
+    "no pidfd names in entire saved catalog",
+    "syscall 93 sys_exit",
+    "syscall 94 sys_exit_group",
+    "syscall 95 sys_waitid",
+    "syscall 96 sys_set_tid_address",
+    "syscall 98 sys_futex",
+    "syscall 99 sys_set_robust_list",
+    "syscall 100 sys_get_robust_list",
+    "syscall 220 sys_clone",
+    "syscall 260 sys_wait4",
+    "0x24964 cmp",
+    "0x24974 b.eq",
+    "0x24978 cmp",
+    "0x2497c b.eq",
+    "0x24980 cbz",
+    "0x24984 mov",
+    "0x24c74 raw BL encoding",
+    "0x24c74 BL find_get_pid",
+    "0x24c74 bl",
+    "0x24c94 raw BL encoding",
+    "0x24c94 BL do_wait",
+    "0x24c94 bl",
+    "0x24ca0 raw BL encoding",
+    "0x24ca0 BL put_pid",
+    "0x24ca0 bl",
+    "0x24c78 mov",
+    "0x24c8c stp",
+    "0x24c9c mov",
+    "0x3a518 ldxr",
+    "0x3a51c add",
+    "0x3a520 stxr",
+    "0x3a524 cbnz",
+    "0x2396c ldr",
+    "0x23978 ldr",
+    "0x2397c cmp",
+    "0x23980 b.eq",
+    "0x23984 mov",
+    "0x1e02c raw BL encoding",
+    "0x1e02c BL futex_exit_release",
+    "0x1e02c bl",
+    "0x1e038 raw BL encoding",
+    "0x1e038 BL mm_release",
+    "0x1e038 bl",
+    "0x1e05c raw BL encoding",
+    "0x1e05c BL futex_exec_release",
+    "0x1e05c bl",
+    "0x1e068 raw BL encoding",
+    "0x1e068 BL mm_release",
+    "0x1e068 bl",
+    "0x8ea28 raw BL encoding",
+    "0x8ea28 BL futex_cleanup",
+    "0x8ea28 bl",
+    "0x8e9c8 raw BL encoding",
+    "0x8e9c8 BL futex_cleanup",
+    "0x8e9c8 bl",
+    "0x2301c raw BL encoding",
+    "0x2301c BL exit_mm_release",
+    "0x2301c bl",
+    "0x23528 raw BL encoding",
+    "0x23528 BL exit_mm_release",
+    "0x23528 bl",
+    "0x23188 raw BL encoding",
+    "0x23188 BL exit_files",
+    "0x23188 bl",
+    "0x23544 raw BL encoding",
+    "0x23544 BL exit_files",
+    "0x23544 bl",
+    "0x2357c raw BL encoding",
+    "0x2357c BL exit_files",
+    "0x2357c bl",
+    "0x8e7c8 cmp",
+    "source pin futex.c",
+    "source pin fork.c",
+    "source pin exit.c",
+    "source pin futex.h",
+    "source pin pid.h",
+    "source pin pid.c",
+    "source range exit.c:955",
+    "source range exit.c:1510",
+    "source range exit.c:1631",
+    "source range exit.c:803",
+    "source range fork.c:1085",
+    "source range futex.c:3590",
+    "source range futex.c:3827",
+    "source range pid.h:76",
+    "source range pid.c:250",
+    "source range pid.c:486"
+  ],
+  "original_kernel": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "parser": "work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/kernel_symbols.py",
+  "parser_sha256": "db8a1ebba52e8bfb85367e3d8450e1ef89224d0bb9e768bf656c6370600614a1",
+  "catalog_symbols": 41269,
+  "syscall_table": [
+    {
+      "number": 93,
+      "name": "sys_exit",
+      "pointer": "0xffffff80080a4850",
+      "offset": 149584
+    },
+    {
+      "number": 94,
+      "name": "sys_exit_group",
+      "pointer": "0xffffff80080a4900",
+      "offset": 149760
+    },
+    {
+      "number": 95,
+      "name": "sys_waitid",
+      "pointer": "0xffffff80080a4938",
+      "offset": 149816
+    },
+    {
+      "number": 96,
+      "name": "sys_set_tid_address",
+      "pointer": "0xffffff800809f630",
+      "offset": 128560
+    },
+    {
+      "number": 98,
+      "name": "sys_futex",
+      "pointer": "0xffffff800810f5a0",
+      "offset": 587168
+    },
+    {
+      "number": 99,
+      "name": "sys_set_robust_list",
+      "pointer": "0xffffff800810e7b8",
+      "offset": 583608
+    },
+    {
+      "number": 100,
+      "name": "sys_get_robust_list",
+      "pointer": "0xffffff800810e7f0",
+      "offset": 583664
+    },
+    {
+      "number": 220,
+      "name": "sys_clone",
+      "pointer": "0xffffff800809fa98",
+      "offset": 129688
+    },
+    {
+      "number": 260,
+      "name": "sys_wait4",
+      "pointer": "0xffffff80080a4c28",
+      "offset": 150568
+    }
+  ],
+  "native_syscall_count": 291,
+  "standard_pidfd_open_434_is_out_of_dispatch_range": true,
+  "waitid_selector3_rejected_by_saved_native_code": true,
+  "absence_of_all_vendor_custom_equivalents_proven": false,
+  "blocking_wait_holds_one_struct_pid_reference_only_until_that_call_returns": true,
+  "repeated_WNOHANG_calls_do_not_keep_that_reference": true,
+  "selected_native_calls": [
+    {
+      "offset": 150644,
+      "raw_word": "0x94005619",
+      "target": "find_get_pid",
+      "target_offset": 238808
+    },
+    {
+      "offset": 150676,
+      "raw_word": "0x97fffe43",
+      "target": "do_wait",
+      "target_offset": 148896
+    },
+    {
+      "offset": 150688,
+      "raw_word": "0x940055b8",
+      "target": "put_pid",
+      "target_offset": 238464
+    },
+    {
+      "offset": 122924,
+      "raw_word": "0x9401c26f",
+      "target": "futex_exit_release",
+      "target_offset": 584168
+    },
+    {
+      "offset": 122936,
+      "raw_word": "0x97fffd18",
+      "target": "mm_release",
+      "target_offset": 119960
+    },
+    {
+      "offset": 122972,
+      "raw_word": "0x9401c24b",
+      "target": "futex_exec_release",
+      "target_offset": 584072
+    },
+    {
+      "offset": 122984,
+      "raw_word": "0x97fffd0c",
+      "target": "mm_release",
+      "target_offset": 119960
+    },
+    {
+      "offset": 584232,
+      "raw_word": "0x97fff894",
+      "target": "futex_cleanup",
+      "target_offset": 576632
+    },
+    {
+      "offset": 584136,
+      "raw_word": "0x97fff8ac",
+      "target": "futex_cleanup",
+      "target_offset": 576632
+    },
+    {
+      "offset": 143388,
+      "raw_word": "0x97ffebff",
+      "target": "exit_mm_release",
+      "target_offset": 122904
+    },
+    {
+      "offset": 144680,
+      "raw_word": "0x97ffeabc",
+      "target": "exit_mm_release",
+      "target_offset": 122904
+    },
+    {
+      "offset": 143752,
+      "raw_word": "0x94041ce0",
+      "target": "exit_files",
+      "target_offset": 1221896
+    },
+    {
+      "offset": 144708,
+      "raw_word": "0x94041bf1",
+      "target": "exit_files",
+      "target_offset": 1221896
+    },
+    {
+      "offset": 144764,
+      "raw_word": "0x94041be3",
+      "target": "exit_files",
+      "target_offset": 1221896
+    }
+  ],
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/exit.c",
+      "sha256": "dcba4ee792baa2ae056900e8a895a9ba0f76d34f96ee6c4bc0b31d55722df17f",
+      "first_line": 955,
+      "last_line": 966,
+      "range_sha256": "a835930c1bb92295c3b60352ede3c0922611c7bfbecf23c69c09a0fd2e5b41f2",
+      "required_tokens": [
+        "task->pids[type].pid",
+        "task_pid_type(p, wo->wo_type) == wo->wo_pid"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/exit.c",
+      "sha256": "dcba4ee792baa2ae056900e8a895a9ba0f76d34f96ee6c4bc0b31d55722df17f",
+      "first_line": 1510,
+      "last_line": 1565,
+      "range_sha256": "db6fc079bfa1827b4ff7695916a236c38940695a12363790cc1f3e48e6cfbcdf",
+      "required_tokens": [
+        "WNOHANG",
+        "schedule();",
+        "__WNOTHREAD"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/exit.c",
+      "sha256": "dcba4ee792baa2ae056900e8a895a9ba0f76d34f96ee6c4bc0b31d55722df17f",
+      "first_line": 1631,
+      "last_line": 1670,
+      "range_sha256": "01362995ad6c5d6d6fbeef2338c1ccccf56346b8dbfb64390c6097d1cf021258",
+      "required_tokens": [
+        "find_get_pid(upid)",
+        "ret = do_wait(&wo)",
+        "put_pid(pid)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/exit.c",
+      "sha256": "dcba4ee792baa2ae056900e8a895a9ba0f76d34f96ee6c4bc0b31d55722df17f",
+      "first_line": 803,
+      "last_line": 828,
+      "range_sha256": "6136ed787ba81ce6da94b5cd99ff6cd813372905879da947e963d81b9bea4497",
+      "required_tokens": [
+        "tsk->exit_code = code",
+        "exit_mm(tsk)",
+        "exit_files(tsk)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/fork.c",
+      "sha256": "de56e1048e0003b451027d58ffd7c9cf986e5b61918372648fce2e5abbbc1efc",
+      "first_line": 1085,
+      "last_line": 1130,
+      "range_sha256": "0ab998ea3aa1466a1d158ca9b8b4e0024994bf49fa9f594fe291ba9f72d56f9e",
+      "required_tokens": [
+        "mm_users) > 1",
+        "futex_exit_release(tsk)",
+        "futex_exec_release(tsk)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/futex.c",
+      "sha256": "cf3f8776427b7d1979b8cfc518fefaf7a13e7fe9121a97d56be4edb5dd9d4e94",
+      "first_line": 3590,
+      "last_line": 3655,
+      "range_sha256": "cee4637282baf3ca689e7daf952c3270295209a56f0e3fdb5f7267f669c9ac70",
+      "required_tokens": [
+        "FUTEX_OWNER_DIED",
+        "task_pid_vnr(curr)",
+        "cmpxchg_futex_value_locked"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/futex.c",
+      "sha256": "cf3f8776427b7d1979b8cfc518fefaf7a13e7fe9121a97d56be4edb5dd9d4e94",
+      "first_line": 3827,
+      "last_line": 3851,
+      "range_sha256": "bce137b4a6a9d8d115db746d6828bb67f7a8b3f38f0ae1330154caf9fbdcb231",
+      "required_tokens": [
+        "futex_exec_release",
+        "futex_exit_release",
+        "futex_cleanup(tsk)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/pid.h",
+      "sha256": "3d1b66853d9e6265c7b48286b16f30b160c937ea072856faba4bcda6b5ef4a59",
+      "first_line": 76,
+      "last_line": 85,
+      "range_sha256": "d08e98050d0e3ec0f1c301bcb8ae54c07349e5af94440d555ed01264b2d76052",
+      "required_tokens": [
+        "atomic_inc(&pid->count)",
+        "put_pid"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/pid.c",
+      "sha256": "cf379e38ae286607193ec48a882180a222c1009dd51eb2738d5a1a7e750923d6",
+      "first_line": 250,
+      "last_line": 299,
+      "range_sha256": "0513068fbb126d84c34103e5d032de34dd856f5d8ebb8a48e9b9b5d6869f997e",
+      "required_tokens": [
+        "free_pid",
+        "free_pidmap",
+        "call_rcu"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/pid.c",
+      "sha256": "cf379e38ae286607193ec48a882180a222c1009dd51eb2738d5a1a7e750923d6",
+      "first_line": 486,
+      "last_line": 501,
+      "range_sha256": "2a1edf6a559f90d3e2833fce9afcae4aed1fb895d5ba165156b82a11e10b30be",
+      "required_tokens": [
+        "find_get_pid",
+        "get_pid(find_vpid(nr))"
+      ]
+    }
+  ],
+  "stable_reference": "Linux v4.9.337; not proof of exact Sony source/configuration or live loaded Image",
+  "early_futex_cleanup_is_exact_exit_status_or_all_FDs_closed": false,
+  "clear_child_tid_not_guaranteed_for_private_single_user_mm": true,
+  "kernel_wait_entry_before_worker_release_barrier_implemented": false,
+  "pre_lookup_external_child_death_and_reaping_still_requires_solution": true,
+  "source_reads_only": true,
+  "original_kernel_or_Sony_code_executed": false,
+  "new_device_operations": 0
+}

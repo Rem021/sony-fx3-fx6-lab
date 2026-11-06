@@ -1,0 +1,82 @@
+{
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "original_record_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+  "checks": [
+    {
+      "name": "missing_parameter_FAFFFF",
+      "result": {
+        "entry": "0xfe04c7b4",
+        "arguments": [
+          "0xfaffff",
+          "0x300000000"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0xffffffff",
+          "0x300000000",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 27,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe04c7b4",
+          "0xfe04c7b8",
+          "0xfe04c7bc",
+          "0xfe04c7c0",
+          "0xfe04d51c",
+          "0xfe04d520",
+          "0xfe04d524",
+          "0xfe04d528",
+          "0xfe04d52c",
+          "0xfe04d530",
+          "0xfe04d534",
+          "0xfe04d538",
+          "0xfe04d53c",
+          "0xfe04d540",
+          "0xfe04d544",
+          "0xfe04d548"
+        ]
+      },
+      "entire_output_canary_unchanged": true
+    },
+    {
+      "name": "bad_BK4_signature_in_explicit_RAM_input",
+      "mutation_offset": 12,
+      "original_byte": 66,
+      "fixture_byte": 88,
+      "result": {
+        "entry": "0xfe04d63c",
+        "arguments": [
+          "0x100000000"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0xffffffff",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 8,
+        "nonstack_RAM_writes": 1,
+        "first_trace": [
+          "0xfe04d63c",
+          "0xfe04d640",
+          "0xfe04d644",
+          "0xfe04d648",
+          "0xfe04d64c",
+          "0xfe04d650",
+          "0xfe04d694",
+          "0xfe04d698"
+        ]
+      }
+    }
+  ],
+  "scope": "Original-code rejection paths only. Bad signature exists solely in isolated RAM input; official source files are untouched. No body data or physical/device execution."
+}

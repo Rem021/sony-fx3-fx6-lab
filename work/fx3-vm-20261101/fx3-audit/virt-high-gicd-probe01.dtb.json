@@ -1,0 +1,17 @@
+{
+  "input": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-high-probe01.dtb",
+  "input_sha256": "dd10ff33d86b8059b5c60e6c62927418f053165dfb3a2dda3f5a5342560f7c23",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-high-gicd-probe01.dtb",
+  "output_sha256": "73e5d84a90adf42df9ae58c200fde389a620e2e195c51e3efb3c917984243d12",
+  "bytes": 8149,
+  "unchanged_prior_properties": 231,
+  "added_node": "/fx3-qemu-gicd-fixed-va",
+  "device_type": "iomap",
+  "phys": "0x08000000",
+  "virt": "0xfffffffff13a1000",
+  "size": "0x1000",
+  "memtype": 1,
+  "nodes_before": 57,
+  "nodes_after": 58,
+  "scope": "Guest virtual-address mapping to actual existing QEMU GICD physical model; no new QEMU MMIO backend, no page-table forging and no kernel patch. Properties verified against original FX3 map_io consumer. Not claimed as original setting DTB node."
+}

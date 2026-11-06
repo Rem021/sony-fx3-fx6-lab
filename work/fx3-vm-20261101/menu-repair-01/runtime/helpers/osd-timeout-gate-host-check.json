@@ -1,0 +1,16 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-timeout-gate-v4.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-timeout-gate-v4"
+  ],
+  "exit": 0,
+  "stdout": "PAIR_TIMEOUT_GATE_PASS exact_pending_and_prior_seq/stale_timer_cannot_poison_new_batch/no_original_semaphore_or_ACK\n",
+  "stderr": "",
+  "helper_sha256": "fd547dc16b5be90fe5b06efd5830e6b1306f1e6b9af78b4ace71c4736351c234"
+}

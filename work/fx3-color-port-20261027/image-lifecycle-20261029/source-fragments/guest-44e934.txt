@@ -1,0 +1,14 @@
+0044e934 push       {r4, r5, r6, r7, lr}
+0044e936 add        r7, sp, #0xc
+0044e938 push.w     {r8, sb, sl}
+0044e93c sub        sp, #0x28
+0044e93e mov        r5, r0
+0044e940 movs       r0, #2
+0044e942 mov        r4, r1
+0044e944 mov        r1, r2
+0044e946 str        r0, [sp, #0x20]
+0044e948 add        r0, sp, #0x20
+0044e94a adds       r3, r0, #4
+0044e94c movs       r0, #0x2a
+0044e94e mov        r2, r3
+0044e950 bl         #0x4a032c

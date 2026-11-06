@@ -1,0 +1,8 @@
+{
+  "python_monotonic_ns": 324389334869250,
+  "C_CLOCK_MONOTONIC_via_Python_ns": 324384793026000,
+  "offset_ns": -4541843250,
+  "python_monotonic_implementation": "mach_absolute_time()",
+  "diagnosis": "Native C uses clock_gettime(CLOCK_MONOTONIC); do not use mach_absolute_time-based Python deadline values in that domain",
+  "camera_operations": 0
+}

@@ -1,0 +1,26 @@
+{
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/candidate07b.json",
+  "dtb_sha256": "263c7cbdd510cf39adb17d4984839a550c3e9c43a92f2d6ba5c62c2a10f12699",
+  "initrd_sha256": "11ca6aec44cce66a50fd2718e63d9ad6e011438c2cb666c7c23f437628f6cede",
+  "added_reserve_entries": [
+    {
+      "start": "0x404000000",
+      "size": "0x221000"
+    }
+  ],
+  "changed_existing_properties": [
+    [
+      "/chosen",
+      "linux,initrd-end"
+    ]
+  ],
+  "guest_seed_sha256": "bf3a9d851f9853fd80953be165f2e4d77770314a85465bc7698ebad438d0e7a2",
+  "guest_seed_bytes": 2229740,
+  "backup_physical_allocation": "Original header p32 0x04000000 → original arch conversion 0x404000000, reserved linear RAM; no no-map",
+  "initrd_start": "0x408000000",
+  "initrd_end": "0x408aac55c",
+  "reserve_within_2GiB_and_no_initrd_overlap": true,
+  "guest_seed_fits_reserved_space": true,
+  "cpio_parent_order_errors": [],
+  "status": "PREPARED_NOT_RUN"
+}

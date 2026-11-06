@@ -1,0 +1,16 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "helpers/check-backup-return88.c",
+    "-o",
+    "helpers/check-backup-return88"
+  ],
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "scope": "Native result/flag/errno forwarding andonceonly invocation"
+}

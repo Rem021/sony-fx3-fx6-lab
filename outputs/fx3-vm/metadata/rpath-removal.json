@@ -1,0 +1,11 @@
+{
+  "before_sha256": "f9b5957bf2c4965fa14fd536a7fa29c65944124faab72665c7086636e1108b44",
+  "after_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+  "removed": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/glib/2.90.1/lib",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/gettext/1.0/lib"
+  ],
+  "source_entitlements": null,
+  "final_entitlements": null,
+  "reason": "Remove unused absolute build-directory LC_RPATH; all non-system dylibs already use @loader_path. Final runtime probes will be repeated after this change."
+}

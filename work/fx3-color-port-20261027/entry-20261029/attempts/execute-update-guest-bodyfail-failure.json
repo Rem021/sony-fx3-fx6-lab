@@ -1,0 +1,80 @@
+{
+  "case": "bodyfail",
+  "error": "UcError()",
+  "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 13, in <module>\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/entry-20261029/execute_update_guest.py\", line 119, in run\n    u.emu_start(0x2eae880,STOP+8,count=10000)\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage4-windows-collab/mac-verification/.venv/lib/python3.14/site-packages/unicorn/unicorn_py3/unicorn.py\", line 766, in emu_start\n    raise UcError(status)\nunicorn.unicorn_py3.unicorn.UcError: Invalid memory read (UC_ERR_READ_UNMAPPED)\n",
+  "pc": "0x2eaea04",
+  "sp": "0x7000efa0",
+  "registers": {
+    "x0": "0x399f5ec",
+    "x1": "0x1",
+    "x2": "0x8",
+    "x3": "0x1",
+    "x4": "0x2",
+    "x5": "0x0",
+    "x6": "0x0",
+    "x7": "0x0"
+  },
+  "last_pc": [
+    "0x200030ac",
+    "0x200030b0",
+    "0x78000004",
+    "0x2eacfe8",
+    "0x2eacfec",
+    "0x2ead048",
+    "0x2ead04c",
+    "0x2ead050",
+    "0x2ead054",
+    "0x2ead058",
+    "0x1591c40",
+    "0x2ead05c",
+    "0x2ead060",
+    "0x2ead064",
+    "0x15943d0",
+    "0x2ead068",
+    "0x2ead06c",
+    "0x2eacfa8",
+    "0x2eacfac",
+    "0x2eacfb0",
+    "0x2eacfb4",
+    "0x2eacfb8",
+    "0x2eae99c",
+    "0x2eae9a0",
+    "0x2eae9a4",
+    "0x2eae9a8",
+    "0x2eae9f0",
+    "0x2eae9f4",
+    "0x2eae9f8",
+    "0x2eae9fc",
+    "0x2eaea00",
+    "0x2eaea04"
+  ],
+  "events": [
+    {
+      "operation": "declared_source_id",
+      "value": "0x1234"
+    },
+    {
+      "operation": "mock_registration",
+      "request_words": [
+        9699361,
+        285,
+        3,
+        4660
+      ]
+    },
+    {
+      "operation": "declared_source_id",
+      "value": "0x80870257"
+    },
+    {
+      "operation": "original_ufp_dispatch",
+      "service": "0x4b0233",
+      "command": 9
+    },
+    {
+      "operation": "prepare_body",
+      "declared_result": 2
+    }
+  ],
+  "steps": 192
+}

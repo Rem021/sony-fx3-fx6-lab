@@ -1,0 +1,36 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap32-app-wait/guest.dtb",
+    "sha256": "377ae7bb929733baedc72ecdeb9b55a188d406bdebadf93cc4d4031c55907460"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap32-app-wait/guest.cpio",
+    "sha256": "d8ccac3396bf8a752ff9f3dc190d32ebab2934ab99361ae9fb1fb53e2e983f44"
+  },
+  "required_markers": [
+    "FX3_CPUSET_READY",
+    "FX3_BACKUP_INSMOD_RC=0",
+    "FX3_ULOGIO_INSMOD_RC=0",
+    "FX3_AP_NATURAL_BOOTIN_BEGIN",
+    "FX3_UTIMER_RC=0",
+    "FX3_STREAM_RC=0",
+    "FX3_STREAM2_RC=0",
+    "FX3_DMM_RC=0",
+    "FX3_GRM_MA_RC=0",
+    "FX3_GPE_BOUND count=5",
+    "FX3_POWER_SEED_RC=0",
+    "FX3_UPM_RC=0",
+    "FX3_UDATE_RC=0",
+    "FX3_DATE_CLOCK_RC=0"
+  ],
+  "scope": "Natural original FX3 bootin target=qemu[space] dmode=3 with full original rootfs7/usr15/appli projection. File presence is not execution. Five original service modules only preloaded; explicit derived IMDB upstream ten-service filter plus FX3-only ResourceBluetooth exclusion after observed GPIO fault. No manufactured menu/ACK, no physical devices/network/host disk. Original library idle init allowed; independent updater/Jiritsu workflow not invoked. Timer-only QEMU; original hwtimer and utimer/stream/stream2/DMM startup profile. No CP or hardware compatibility claim. FX3 GPE diagnostic binding only: original command FIFO, five symbol-derived slots, unsupported workers return5 without writes/callbacks. No software raster acceptance. Experimental inferred SCU AP-only register bank,no CP ACK/no IRQ effects; original UPM reenabled,seedreadback and udate. Original hardware register semantics only partially characterized.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-scu-8ad02fc9cea66054",
+    "sha256": "8ad02fc9cea660546f3da9936e83e71b3bdeedcba414d626fd1914dda87dac28"
+  },
+  "timer_model": true,
+  "scu_request_model": true
+}

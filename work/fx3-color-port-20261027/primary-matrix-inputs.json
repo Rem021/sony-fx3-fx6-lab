@@ -1,0 +1,17 @@
+{
+  "provenance": "Numeric data transcribed from primary sources read during this turn; downloaded third-party source was not retained or executed.",
+  "primaries": {
+    "AP0": [[0.7347, 0.2653], [0.0, 1.0], [0.0001, -0.077], [0.32168, 0.33767]],
+    "AP1": [[0.713, 0.293], [0.165, 0.830], [0.128, 0.044], [0.32168, 0.33767]]
+  },
+  "sg3_to_ap0_column_vector": {
+    "sony": [[0.7529825954, 0.1433702162, 0.1036471884], [0.0217076974, 1.0153188355, -0.0370265329], [-0.0094160528, 0.0033704179, 1.0060456349]],
+    "venice": [[0.7933297411, 0.0890786256, 0.1175916333], [0.0155810585, 1.0327123069, -0.0482933654], [-0.0188647478, 0.0127694121, 1.0060953358]]
+  },
+  "sources": {
+    "sony": {"url": "https://raw.githubusercontent.com/ampas/aces-dev/v1.3/transforms/ctl/idt/vendorSupplied/sony/IDT.Sony.SLog3_SGamut3.ctl", "read_via": "web", "provider": "Sony Electronics Corp., Academy source repository"},
+    "venice": {"url": "https://github.com/aces-aswf/aces-core/blob/v1.3/transforms/ctl/idt/vendorSupplied/sony/IDT.Sony.Venice_SLog3_SGamut3.ctl", "read_via": "GitHub contents API", "api_url": "https://api.github.com/repos/aces-aswf/aces-core/contents/transforms/ctl/idt/vendorSupplied/sony/IDT.Sony.Venice_SLog3_SGamut3.ctl?ref=v1.3", "git_blob_sha": "a464ffa21b03ae09b7442a872e315f33457f4a10", "provider": "Sony Electronics Corp., Academy source repository"},
+    "utilities": {"url": "https://raw.githubusercontent.com/aces-aswf/aces-core/v1.3/transforms/ctl/lib/ACESlib.Utilities_Color.ctl", "read_via": "web", "sections": ["AP0", "AP1"]}
+  },
+  "access_limits": ["Direct local raw.githubusercontent.com connection refused.", "A subsequent optional three-file API refresh hit GitHub rate limit; comparison uses the primary-source numbers already read, and does not claim a complete downloaded source manifest."]
+}

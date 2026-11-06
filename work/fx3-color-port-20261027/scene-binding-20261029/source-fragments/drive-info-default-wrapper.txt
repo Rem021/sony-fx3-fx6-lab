@@ -1,0 +1,15 @@
+009d1442 push       {r7, lr}
+009d1444 mov        r7, sp
+009d1446 sub        sp, #0x10
+009d1448 movw       r3, #0x6105
+009d144c movs       r1, #0
+009d144e movs       r2, #1
+009d1450 strd       r1, r2, [sp]
+009d1454 strd       r1, r0, [sp, #8]
+009d1458 movt       r3, #0x41
+009d145c movs       r0, #1
+009d145e movs       r1, #0
+009d1460 movs       r2, #0
+009d1462 bl         #0x9d1038
+009d1466 add        sp, #0x10
+009d1468 pop        {r7, pc}

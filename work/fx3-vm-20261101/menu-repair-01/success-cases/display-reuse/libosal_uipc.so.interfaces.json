@@ -1,0 +1,118 @@
+{
+  "guest_path": "/usr/lib/libosal_uipc.so",
+  "local_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libosal_uipc.so",
+  "bytes": 43752,
+  "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+  "dynsym_total": 133,
+  "defined_total": 89,
+  "source_exact_matches": [],
+  "selected_dynsym": [
+    {
+      "name": "osal_free_msg",
+      "value": "0x6970",
+      "size": 360,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "u_osal_snd_msg",
+      "value": "0x3a10",
+      "size": 136,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "osal_valloc_msg_wait",
+      "value": "0x67b0",
+      "size": 448,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "osal_set_msg_src",
+      "value": "0x7e20",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "osal_snd_msg",
+      "value": "0x5e60",
+      "size": 684,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "u_osal_valloc_msg_wait",
+      "value": "0x3e98",
+      "size": 144,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "u_osal_free_msg",
+      "value": "0x3f28",
+      "size": 136,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    }
+  ],
+  "selected_relocations": [
+    {
+      "section": ".rela.plt",
+      "offset": "0x1a018",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "u_osal_snd_msg"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x1a020",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_set_msg_src"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x1a0c8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "u_osal_free_msg"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x1a110",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_valloc_msg_wait"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x1a1c8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "u_osal_valloc_msg_wait"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x1a2c0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_free_msg"
+    }
+  ]
+}

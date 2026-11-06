@@ -1,0 +1,105 @@
+{
+  "steps": [
+    {
+      "step": 1,
+      "receiver": [
+        "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=28265784000 wait_return_ns=59261339008 wait_enter_step=0 wait_return_step=1 tid=261 downstream_processing_unproven=1\r\n",
+        "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=59299226000 wait_return_ns=59396820000 wait_enter_step=1 wait_return_step=1 tid=261 downstream_processing_unproven=1\r\n"
+      ],
+      "sender": [
+        "FX3_SYNTH_KEY step=1 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=59265855008 host_gate=1\r\n",
+        "FX3_SYNTH_KEY step=1 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=59404365008 host_gate=1\r\n"
+      ],
+      "done": [
+        "FX3_KEY95_STEP_DONE step=1 key=0x1ab requested_hold_ms=100 measured_down_up_ns=136852000 elapsed_ns=152049008 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+      ]
+    },
+    {
+      "step": 2,
+      "receiver": [
+        "FX3_KEY_INPUT_RECV step=2 key=0x3 status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=59403343008 wait_return_ns=77751313008 wait_enter_step=1 wait_return_step=2 tid=261 downstream_processing_unproven=1\r\n",
+        "FX3_KEY_INPUT_RECV step=2 key=0x3 status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=77760990000 wait_return_ns=77867970000 wait_enter_step=2 wait_return_step=2 tid=261 downstream_processing_unproven=1\r\n"
+      ],
+      "sender": [
+        "FX3_SYNTH_KEY step=2 key=0x3 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=77761214000 host_gate=1\r\n",
+        "FX3_SYNTH_KEY step=2 key=0x3 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=77870043008 host_gate=1\r\n"
+      ],
+      "done": [
+        "FX3_KEY95_STEP_DONE step=2 key=0x3 requested_hold_ms=100 measured_down_up_ns=106510000 elapsed_ns=122195008 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+      ]
+    },
+    {
+      "step": 3,
+      "receiver": [
+        "FX3_KEY_INPUT_RECV step=3 key=0x1f8 status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=77877808000 wait_return_ns=89342079008 wait_enter_step=2 wait_return_step=3 tid=261 downstream_processing_unproven=1\r\n",
+        "FX3_KEY_INPUT_RECV step=3 key=0x1f8 status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=89354224000 wait_return_ns=89465394000 wait_enter_step=3 wait_return_step=3 tid=261 downstream_processing_unproven=1\r\n"
+      ],
+      "sender": [
+        "FX3_SYNTH_KEY step=3 key=0x1f8 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=89356741008 host_gate=1\r\n",
+        "FX3_SYNTH_KEY step=3 key=0x1f8 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=89467413008 host_gate=1\r\n"
+      ],
+      "done": [
+        "FX3_KEY95_STEP_DONE step=3 key=0x1f8 requested_hold_ms=100 measured_down_up_ns=108893008 elapsed_ns=130188992 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+      ]
+    },
+    {
+      "step": 4,
+      "receiver": [
+        "FX3_KEY_INPUT_RECV step=4 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=89477902000 wait_return_ns=104259855008 wait_enter_step=3 wait_return_step=4 tid=261 downstream_processing_unproven=1\r\n",
+        "FX3_KEY_INPUT_RECV step=4 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=104265336000 wait_return_ns=104395269008 wait_enter_step=4 wait_return_step=4 tid=261 downstream_processing_unproven=1\r\n"
+      ],
+      "sender": [
+        "FX3_SYNTH_KEY step=4 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=104284821008 host_gate=1\r\n",
+        "FX3_SYNTH_KEY step=4 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=104406211008 host_gate=1\r\n"
+      ],
+      "done": [
+        "FX3_KEY95_STEP_DONE step=4 key=0x1ab requested_hold_ms=100 measured_down_up_ns=119838000 elapsed_ns=150604000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+      ]
+    },
+    {
+      "step": 5,
+      "receiver": [
+        "FX3_KEY_INPUT_RECV step=5 key=0x1ac status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=104405339008 wait_return_ns=117230288000 wait_enter_step=4 wait_return_step=5 tid=261 downstream_processing_unproven=1\r\n",
+        "FX3_KEY_INPUT_RECV step=5 key=0x1ac status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=117239359008 wait_return_ns=117332657008 wait_enter_step=5 wait_return_step=5 tid=261 downstream_processing_unproven=1\r\n"
+      ],
+      "sender": [
+        "FX3_SYNTH_KEY step=5 key=0x1ac status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=117216919008 host_gate=1\r\n",
+        "FX3_SYNTH_KEY step=5 key=0x1ac status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=117329556000 host_gate=1\r\n"
+      ],
+      "done": [
+        "FX3_KEY95_STEP_DONE step=5 key=0x1ac requested_hold_ms=100 measured_down_up_ns=110594992 elapsed_ns=118100000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+      ]
+    },
+    {
+      "step": 6,
+      "receiver": [
+        "FX3_KEY_INPUT_RECV step=6 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=117342609008 wait_return_ns=131564117008 wait_enter_step=5 wait_return_step=6 tid=261 downstream_processing_unproven=1\r\n",
+        "FX3_KEY_INPUT_RECV step=6 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=131581650000 wait_return_ns=131681437008 wait_enter_step=6 wait_return_step=6 tid=261 downstream_processing_unproven=1\r\n"
+      ],
+      "sender": [
+        "FX3_SYNTH_KEY step=6 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=131564904000 host_gate=1\r\n",
+        "FX3_SYNTH_KEY step=6 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=131701086000 host_gate=1\r\n"
+      ],
+      "done": [
+        "FX3_KEY95_STEP_DONE step=6 key=0x1ab requested_hold_ms=100 measured_down_up_ns=133928000 elapsed_ns=149941008 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+      ]
+    },
+    {
+      "step": 7,
+      "receiver": [
+        "FX3_KEY_INPUT_RECV step=7 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=131700403008 wait_return_ns=143138451008 wait_enter_step=6 wait_return_step=7 tid=261 downstream_processing_unproven=1\r\n",
+        "FX3_KEY_INPUT_RECV step=7 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=143143882000 wait_return_ns=143216515008 wait_enter_step=7 wait_return_step=7 tid=261 downstream_processing_unproven=1\r\n"
+      ],
+      "sender": [
+        "FX3_SYNTH_KEY step=7 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=143101835008 host_gate=1\r\n",
+        "FX3_SYNTH_KEY step=7 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=143218631008 host_gate=1\r\n"
+      ],
+      "done": [
+        "FX3_KEY95_STEP_DONE step=7 key=0x1ab requested_hold_ms=100 measured_down_up_ns=115464000 elapsed_ns=135024000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+      ]
+    }
+  ],
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-3c01e985/serial.log",
+  "raw_original_extract": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55/NATIVE-ORIGINAL-LINES.bin",
+  "no_step_8_received": true
+}

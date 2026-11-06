@@ -1,0 +1,15 @@
+from pathlib import Path
+import re,json,collections
+R=Path(__file__).resolve().parent;r=R/'runs/ap96v1replaydiag-0f72a1e0';s=(r/'serial.log').read_text(errors='replace');lines=s.split('\n');assert_index=next(i for i,l in enumerate(lines) if 'assert at infra_wrapper_bb.cpp:870' in l);snapshots=[]
+for m in re.finditer(r'FX3_AP_SNAPSHOT_(\d+)_BEGIN(.*?)FX3_AP_SNAPSHOT_\1_END',s,re.S):
+ t=m[2];states=[]
+ for q in re.finditer(r'FX3_TASK_AFFINITY_(\d+)_BEGIN(.*?)FX3_TASK_AFFINITY_\1_END',t,re.S):
+  stat=re.search(r'(?m)^(\d+) \(([^\n]*)\) ([A-Za-z]) (.*)$',q[2]);states.append({'tid_label':int(q[1]),'stat_pid':int(stat[1]) if stat else None,'name':stat[2] if stat else None,'state':stat[3] if stat else None,'raw':stat[0] if stat else q[2][:350]})
+ process=[]
+ for pm in re.finditer(r'FX3_AP_IM_PROCESS=(\d+)',t):
+  z=t[pm.end():pm.end()+4000];rows=re.findall(r'(?m)^(?:Name|State|Tgid|Pid|PPid|Threads|TracerPid|SigPnd|ShdPnd|SigBlk|SigIgn|SigCgt):[^\n]*',z);process.append({'pid_label':int(pm[1]),'status_rows':rows[:15]})
+ lf=s[:m.start()].count('\n')+1;snapshots.append({'snapshot':int(m[1]),'LF_line':lf,'before_assert':lf<=assert_index,'process_status':process,'thread_stat_count':len(states),'thread_state_counts':dict(collections.Counter(x['state'] for x in states)),'stopped_count':sum(x['state'] in ['T','t'] for x in states),'thread_stats':states})
+fail=[]
+for side,selection in [('before',[i for i,l in enumerate(lines[:assert_index]) if re.search(r'ret = -102[12]',l)][-6:]),('after',[i for i,l in enumerate(lines) if i>=assert_index and re.search(r'ret = -102[12]',l)][:6])]:
+ for ix in selection:fail.append({'side':side,'LF_line':ix+1,'raw':lines[ix],'nearby_records':[{'LF_line':j+1,'text':lines[j]} for j in range(max(0,ix-16),min(len(lines),ix+12)) if any(k in lines[j] for k in ['FX3_PROFILE_','FX3_BOOT_TAIL_','FX3_UIPC_','FX3_SIGNAL_','assert','ret = -102'])]})
+thread=json.loads((R/(r.name+'-thread-live-readonly.json')).read_text());out={'run':str(r),'assert_LF_line':assert_index+1,'existing_full_snapshots':snapshots,'UIPC_failures_and_adjacent_target_stacks':fail,'key_thread_after_stop':thread['blocks'][-5:],'limitations':['Existing full-process snapshots all preceded the assertion; late key-thread observer is independent but covers one thread only.','No late guest command channel existed in this frozen run; no /proc process/all-thread post-stop capture was fabricated.','Adjacent UIPC target/frame records are time-neighbor evidence, not independently matched operation returns.'],'next_version':'AP97 init adds independent process status and all thread stat sampling through the full bounded window'};(R/(r.name+'-process-stop-evidence.json')).write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'snapshots':[{k:x[k] for k in ['snapshot','before_assert','thread_stat_count','thread_state_counts','stopped_count']} for x in snapshots],'UIPC_before_after':len(fail),'late_key_thread_state':'T/do_signal_stop','post_stop_all_process_capture':'not available'},indent=2))

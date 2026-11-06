@@ -1,0 +1,30 @@
+00003cd0 uxth       w1, w0
+00003cd4 cmp        w1, #0x103
+00003cd8 b.hi       #0x3d20
+00003cdc cmp        w1, #0x102
+00003ce0 b.hs       #0x3d00
+00003ce4 cmp        w1, #0x40
+00003ce8 mov        w0, #4
+00003cec b.eq       #0x3d44
+00003cf0 b.hi       #0x3d08
+00003cf4 cmp        w1, #1
+00003cf8 mov        w0, #0
+00003cfc b.eq       #0x3d44
+00003d00 mov        w0, #2
+00003d04 b          #0x3d44
+00003d08 cmp        w1, #0x100
+00003d0c mov        w0, #8
+00003d10 b.eq       #0x3d44
+00003d14 mov        w0, #9
+00003d18 cmp        w1, #0x101
+00003d1c b          #0x3cfc
+00003d20 cmp        w1, #0x140
+00003d24 mov        w0, #7
+00003d28 b.eq       #0x3d44
+00003d2c b.ls       #0x3d00
+00003d30 cmp        w1, #0x142
+00003d34 mov        w0, #5
+00003d38 b.eq       #0x3d44
+00003d3c mov        w0, #6
+00003d40 b.hs       #0x3d00
+00003d44 ret        

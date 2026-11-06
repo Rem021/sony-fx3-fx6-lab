@@ -1,0 +1,13 @@
+Index: rpm-4.4.2.1/popt/configure
+===================================================================
+--- rpm-4.4.2.1.orig/popt/configure
++++ rpm-4.4.2.1/popt/configure
+@@ -8638,7 +8638,7 @@ echo $ECHO_N "checking for $compiler opt
+       ;;
+ 
+     *)
+-      lt_prog_compiler_pic='-fPIC'
++      lt_prog_compiler_pic='-fpic'
+       ;;
+     esac
+   else

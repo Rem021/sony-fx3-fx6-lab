@@ -1,0 +1,23 @@
+  11faa8: 97fd8d5a     	bl	0x83010 <_ZN3mpr5Codec29GetEncStatusVideoFrameCounterEv@plt>
+  11faac: b940f7a1     	ldr	w1, [x29, #0xf4]
+  11fab0: 350004c1     	cbnz	w1, 0x11fb48 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2bc4>
+  11fab4: b9444721     	ldr	w1, [x25, #0x444]
+  11fab8: 35000481     	cbnz	w1, 0x11fb48 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2bc4>
+  11fabc: 1e202118     	fcmpe	s8, #0.0
+  11fac0: 5400044d     	b.le	0x11fb48 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2bc4>
+  11fac4: 1e230001     	ucvtf	s1, w0
+  11fac8: 79404b22     	ldrh	w2, [x25, #0x24]
+  11facc: 92800761     	mov	x1, #-0x3c              // =-60
+  11fad0: 52800780     	mov	w0, #0x3c               // =60
+  11fad4: 9ba20400     	umaddl	x0, w0, w2, x1
+  11fad8: 1e281821     	fdiv	s1, s1, s8
+  11fadc: 9e230000     	ucvtf	s0, x0
+  11fae0: 1e202030     	fcmpe	s1, s0
+  11fae4: 5400032b     	b.lt	0x11fb48 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2bc4>
+  11fae8: 52800060     	mov	w0, #0x3                // =3
+  11faec: 52800181     	mov	w1, #0xc                // =12
+  11faf0: 393e57bf     	strb	wzr, [x29, #0xf95]
+  11faf4: 393e53a0     	strb	w0, [x29, #0xf94]
+  11faf8: 52846200     	mov	w0, #0x2310             // =8976
+  11fafc: 393e5bbf     	strb	wzr, [x29, #0xf96]
+  11fb00: 791f23a0     	strh	w0, [x29, #0xf90]

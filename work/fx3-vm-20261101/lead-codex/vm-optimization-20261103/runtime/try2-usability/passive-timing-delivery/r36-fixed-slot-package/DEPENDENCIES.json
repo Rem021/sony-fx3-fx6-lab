@@ -1,0 +1,97 @@
+{
+  "scope": "offline archive path resolution only; no dynamic loader execution",
+  "init_sha256": "8ad0be3aec240977060e25ba1193ad80f6ef596ffe47392e3d5b5b79c0ee4a05",
+  "unchanged_launch_line": " FX3_TOUCH_PANEL=headless_touch_config FX3_RM_EMPTY=cache-replay-v1 FX3_MEDIA_OBSERVE=passive-v1 FX3_OSD_QUEUE_OWNER=native-receiver-v1 FX3_DISPLAY_OBSERVE=passive-v1 FX3_SYS_UUD=audited-run-preset-v1 FX3_SYS_TCMODE=headless-mode0-v1 FX3_OSD_LIFETIME=observe-v1 FX3_PEAKING=headless-config-v1 FX3_OSD_HEADLESS=software-ring-v1 FX3_CAPID_STORAGE=reserved-v1 FX3_BOOT_TAIL=audited-panel-hdmi-v1 FX3_HDMI_BOOT=disconnected-inactive-v1 FX3_SKD_HW=unavailable-rom-v1 FX3_PANEL_CONFIG=captured-enum2-consumer-v1 FX3_DIGITAL_LEVEL=disabled-sensor-op3-v1 FX3_BOOT_DEFERRED=muted-path3-v1 FX3_PIN_GRAPH=empty-owned-mode1-v1 FX3_BOOT_REPLY=timecode-getfunc-muted-v1 FX3_ADF_FILE=muted-user-v1 FX3_ADF_MUTED=silent-storage-v1 FX3_LCD_OSD=captured-v1 FX3_RELEASE_INHIBIT=idle-only-v1 FX3_MONITOR_LUT=inactive-identity-v1 FX3_CEC_POWER=software-disconnected-v1 FX3_HDMI_TC=inactive-disabled-v1 FX3_SA_ADDRESS=source-ranges-v1 FX3_VDF_OBSERVE=1 FX3_HDMI_AUDIO=inactive-format-v1 FX3_HDMI_PHOTO=inactive-preset-v1 FX3_REMOTE_DMM=two-slot-storage-v1 FX3_DISPLAY_INFO=software-640x480-v1 FX3_VDF_CONFIG=acceptance-shadow-v1 FX3_VDF_PLANE=double-cache-v1 FX3_HDMI_REGISTRATION=software-v1 FX3_CP_VERSION_TRANSPORT=unavailable-v1 LD_LIBRARY_PATH=/simulation:/usr/lib:/lib LD_PRELOAD=/simulation/fx3-skd-hw-unavailable-v1.so:/simulation/fx3-capid-v1.so:/simulation/fx3-osd-headless-v5.so:/simulation/fx3-osd-lifetime-v2.so:/simulation/fx3-preset-context-v2-screen.so:/simulation/fx3-timecode-capture-v1.so:/simulation/fx3-hdmi-registration-v1.so:/simulation/fx3-gpe-observe-v7.so:/simulation/signal-observe-v2.so:/simulation/ioctl-trace.so:/simulation/fx3-icrypt-observe-v1.so:/simulation/fx3-timer-observe-v1.so:/simulation/fx3-ui-gate-v1.so:/usr/lib/libInfraCrypt.so:/simulation/fx3-backup-return-v1.so:/simulation/fx3-rm-empty-provider-v3-setup.so:/simulation/fx3-media-observe-v3-uipc.so /usr/bin/bootin.elf 'target=qemu ' dmode=3 &",
+  "dynamic_needed_resolution": [
+    {
+      "helper": "ui",
+      "needed": "libc.so.6",
+      "archive_resolution_chain": [
+        {
+          "member": "lib/libc.so.6",
+          "mode": 41471,
+          "bytes": 12,
+          "sha256": "e453935786dc5cbb3c2b341c0853e19a34c69018625d9fc618413dfce851f3b2"
+        },
+        {
+          "member": "lib/libc-2.25.so",
+          "mode": 33261,
+          "bytes": 1283936,
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+        }
+      ]
+    },
+    {
+      "helper": "ui",
+      "needed": "libdl.so.2",
+      "archive_resolution_chain": [
+        {
+          "member": "lib/libdl.so.2",
+          "mode": 41471,
+          "bytes": 13,
+          "sha256": "77e7192a34b349e3efbb3ccb27a2616db3423b689eeea62cb70389168819a14f"
+        },
+        {
+          "member": "lib/libdl-2.25.so",
+          "mode": 33261,
+          "bytes": 10368,
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+        }
+      ]
+    },
+    {
+      "helper": "osd",
+      "needed": "libc.so.6",
+      "archive_resolution_chain": [
+        {
+          "member": "lib/libc.so.6",
+          "mode": 41471,
+          "bytes": 12,
+          "sha256": "e453935786dc5cbb3c2b341c0853e19a34c69018625d9fc618413dfce851f3b2"
+        },
+        {
+          "member": "lib/libc-2.25.so",
+          "mode": 33261,
+          "bytes": 1283936,
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+        }
+      ]
+    },
+    {
+      "helper": "osd",
+      "needed": "libdl.so.2",
+      "archive_resolution_chain": [
+        {
+          "member": "lib/libdl.so.2",
+          "mode": 41471,
+          "bytes": 13,
+          "sha256": "77e7192a34b349e3efbb3ccb27a2616db3423b689eeea62cb70389168819a14f"
+        },
+        {
+          "member": "lib/libdl-2.25.so",
+          "mode": 33261,
+          "bytes": 10368,
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+        }
+      ]
+    },
+    {
+      "helper": "osd",
+      "needed": "libpthread.so.0",
+      "archive_resolution_chain": [
+        {
+          "member": "lib/libpthread.so.0",
+          "mode": 41471,
+          "bytes": 18,
+          "sha256": "37179e4fafdeb4c8960bdb38b0fbdc62927dff72a3086f2fc1d38a3538b75a2c"
+        },
+        {
+          "member": "lib/libpthread-2.25.so",
+          "mode": 33261,
+          "bytes": 101888,
+          "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+        }
+      ]
+    }
+  ]
+}

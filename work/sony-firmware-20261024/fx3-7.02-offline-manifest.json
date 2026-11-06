@@ -1,0 +1,952 @@
+{
+  "timestamp_utc": "2026-10-25T05:53:31.265329+00:00",
+  "source_update": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+  "source_sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+  "tool_source_commit": "3955d7890fc38daf942bb52827599bfe35de4a14",
+  "constants_source": "https://raw.githubusercontent.com/DavidBuchanan314/fwtool.py/3955d7890fc38daf942bb52827599bfe35de4a14/fwtool/sony/constants.py",
+  "constants_source_sha256": "f9ff02a3889b587cd5bad5f4362fb73fee2f8f3591fc3ed6003eb8ac92d0622a",
+  "outer_crc32_matches": true,
+  "outer_crc32": "0x92be8c5f",
+  "decrypted_blocks": 792848,
+  "all_block_checksums_match": true,
+  "all_end_flags_match": true,
+  "decrypted_fdat_size": 808704512,
+  "decrypted_fdat_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "firmware_tar_offset": 1253888,
+  "firmware_tar_size": 807450624,
+  "firmware_tar_first512_sha256": "4b1209fb8be4aad55015aaf428433439d8186cc72c73011aad4d5476632b2d32",
+  "tar_members": [
+    {
+      "name": "0100_config",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 512
+    },
+    {
+      "name": "0100_config/big_backup.conf",
+      "size": 37,
+      "type": "0",
+      "data_offset_in_tar": 1024
+    },
+    {
+      "name": "0100_config/mount.conf",
+      "size": 1248,
+      "type": "0",
+      "data_offset_in_tar": 2048
+    },
+    {
+      "name": "0101_config_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 4096
+    },
+    {
+      "name": "0101_config_sum/config.sum",
+      "size": 155,
+      "type": "0",
+      "data_offset_in_tar": 4608
+    },
+    {
+      "name": "0110_backup",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 5632
+    },
+    {
+      "name": "0110_backup/MainDest.txt",
+      "size": 35,
+      "type": "0",
+      "data_offset_in_tar": 6144
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 7168
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 7680
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95900_ALLLANG.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 8192
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95900_E38.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 2238464
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95900_J1.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 4468736
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95900_KR2.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 6699008
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95900_UC2.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 8929280
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95901_AF1.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 11159552
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95901_ALLLANG.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 13389824
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95901_AP2.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 15620096
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95901_CEC.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 17850368
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95901_CN2.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 20080640
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95901_IN5.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 22310912
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 24541184
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95900_ALLLANG.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 24541696
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95900_E38.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 26771968
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95900_J1.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 29002240
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95900_KR2.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 31232512
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95900_UC2.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 33462784
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95901_AF1.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 35693056
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95901_ALLLANG.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 37923328
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95901_AP2.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 40153600
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95901_CEC.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 42383872
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95901_CN2.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 44614144
+    },
+    {
+      "name": "0110_backup/SYSIPSX-DSLR/ALCIN_HIBIKI2/CH95901_IN5.bin",
+      "size": 2229740,
+      "type": "0",
+      "data_offset_in_tar": 46844416
+    },
+    {
+      "name": "0111_backup_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49074688
+    },
+    {
+      "name": "0111_backup_sum/backup.sum",
+      "size": 2608,
+      "type": "0",
+      "data_offset_in_tar": 49075200
+    },
+    {
+      "name": "0300_partconf",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49078784
+    },
+    {
+      "name": "0300_partconf/partinf.conf",
+      "size": 3999,
+      "type": "0",
+      "data_offset_in_tar": 49079296
+    },
+    {
+      "name": "0301_partconf_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49083904
+    },
+    {
+      "name": "0301_partconf_sum/partconf.sum",
+      "size": 77,
+      "type": "0",
+      "data_offset_in_tar": 49084416
+    },
+    {
+      "name": "0600_gps",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49085440
+    },
+    {
+      "name": "0601_gps_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49085952
+    },
+    {
+      "name": "0630_ca",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49086464
+    },
+    {
+      "name": "0631_ca_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49086976
+    },
+    {
+      "name": "0640_darwin",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49087488
+    },
+    {
+      "name": "0640_darwin/darwin_core.bin",
+      "size": 243000,
+      "type": "0",
+      "data_offset_in_tar": 49088000
+    },
+    {
+      "name": "0641_darwin_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49331712
+    },
+    {
+      "name": "0641_darwin_sum/darwin.sum",
+      "size": 80,
+      "type": "0",
+      "data_offset_in_tar": 49332224
+    },
+    {
+      "name": "0650_prfile",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49333248
+    },
+    {
+      "name": "0650_prfile/PMBP",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49333760
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 49334272
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/BSD_ETC.txt",
+      "size": 27928,
+      "type": "0",
+      "data_offset_in_tar": 49334784
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/BTPROP.txt",
+      "size": 11358,
+      "type": "0",
+      "data_offset_in_tar": 49363456
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/CP_TOPRS.txt",
+      "size": 2563,
+      "type": "0",
+      "data_offset_in_tar": 49375744
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/EULA.pdf",
+      "size": 565995,
+      "type": "0",
+      "data_offset_in_tar": 49379328
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/GPL.txt",
+      "size": 53591,
+      "type": "0",
+      "data_offset_in_tar": 49946112
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/LGPL.txt",
+      "size": 26010,
+      "type": "0",
+      "data_offset_in_tar": 50000384
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/LGPLv2.txt",
+      "size": 25780,
+      "type": "0",
+      "data_offset_in_tar": 50027008
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/LGPLv2_1.txt",
+      "size": 27032,
+      "type": "0",
+      "data_offset_in_tar": 50053632
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/MPLv2.txt",
+      "size": 17099,
+      "type": "0",
+      "data_offset_in_tar": 50081280
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/WCNSSFLT.txt",
+      "size": 11591,
+      "type": "0",
+      "data_offset_in_tar": 50099200
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/WLDRVQCA.txt",
+      "size": 912,
+      "type": "0",
+      "data_offset_in_tar": 50111488
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/awsiot.txt",
+      "size": 1114,
+      "type": "0",
+      "data_offset_in_tar": 50113024
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/coreMQTT.txt",
+      "size": 1036,
+      "type": "0",
+      "data_offset_in_tar": 50115072
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/curl.txt",
+      "size": 1088,
+      "type": "0",
+      "data_offset_in_tar": 50117120
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/dhcp.txt",
+      "size": 16869,
+      "type": "0",
+      "data_offset_in_tar": 50119168
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/expat.txt",
+      "size": 1144,
+      "type": "0",
+      "data_offset_in_tar": 50136576
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/glibc.txt",
+      "size": 22359,
+      "type": "0",
+      "data_offset_in_tar": 50138624
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/iw.txt",
+      "size": 849,
+      "type": "0",
+      "data_offset_in_tar": 50161664
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/jemalloc.txt",
+      "size": 1709,
+      "type": "0",
+      "data_offset_in_tar": 50163200
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/jsmn.txt",
+      "size": 1136,
+      "type": "0",
+      "data_offset_in_tar": 50165760
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/jsoncpp.txt",
+      "size": 2723,
+      "type": "0",
+      "data_offset_in_tar": 50167808
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/kvspic.txt",
+      "size": 10215,
+      "type": "0",
+      "data_offset_in_tar": 50171392
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/libevent.txt",
+      "size": 3305,
+      "type": "0",
+      "data_offset_in_tar": 50182144
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/libffi.txt",
+      "size": 1132,
+      "type": "0",
+      "data_offset_in_tar": 50186240
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/libnl3.txt",
+      "size": 26530,
+      "type": "0",
+      "data_offset_in_tar": 50188288
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/libpcap.txt",
+      "size": 868,
+      "type": "0",
+      "data_offset_in_tar": 50215424
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/libpng.txt",
+      "size": 5345,
+      "type": "0",
+      "data_offset_in_tar": 50216960
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/libssh2.txt",
+      "size": 1960,
+      "type": "0",
+      "data_offset_in_tar": 50223104
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/libtirpc.txt",
+      "size": 1476,
+      "type": "0",
+      "data_offset_in_tar": 50225664
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/libuuid.txt",
+      "size": 1391,
+      "type": "0",
+      "data_offset_in_tar": 50227712
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/ncurses.txt",
+      "size": 1446,
+      "type": "0",
+      "data_offset_in_tar": 50229760
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/openssh.txt",
+      "size": 15190,
+      "type": "0",
+      "data_offset_in_tar": 50231808
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/openssl.txt",
+      "size": 10175,
+      "type": "0",
+      "data_offset_in_tar": 50247680
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/opus.txt",
+      "size": 1928,
+      "type": "0",
+      "data_offset_in_tar": 50258432
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/pcre.txt",
+      "size": 3182,
+      "type": "0",
+      "data_offset_in_tar": 50260992
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/popt.txt",
+      "size": 1277,
+      "type": "0",
+      "data_offset_in_tar": 50265088
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/producer.txt",
+      "size": 10215,
+      "type": "0",
+      "data_offset_in_tar": 50267136
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/protobuf.txt",
+      "size": 1732,
+      "type": "0",
+      "data_offset_in_tar": 50277888
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/readme.txt",
+      "size": 1452,
+      "type": "0",
+      "data_offset_in_tar": 50280448
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/sha-1.txt",
+      "size": 1745,
+      "type": "0",
+      "data_offset_in_tar": 50282496
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/tcpdump.txt",
+      "size": 873,
+      "type": "0",
+      "data_offset_in_tar": 50285056
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/usrsctp.txt",
+      "size": 1500,
+      "type": "0",
+      "data_offset_in_tar": 50286592
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/wbsocket.txt",
+      "size": 13171,
+      "type": "0",
+      "data_offset_in_tar": 50288640
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/webrtc.txt",
+      "size": 10255,
+      "type": "0",
+      "data_offset_in_tar": 50302464
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/wpasuppl.txt",
+      "size": 2351,
+      "type": "0",
+      "data_offset_in_tar": 50313728
+    },
+    {
+      "name": "0650_prfile/PMBP/LICENSE/zlib.txt",
+      "size": 1531,
+      "type": "0",
+      "data_offset_in_tar": 50316800
+    },
+    {
+      "name": "0651_prfile_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 50318848
+    },
+    {
+      "name": "0651_prfile_sum/prfile.sum",
+      "size": 4199,
+      "type": "0",
+      "data_offset_in_tar": 50319360
+    },
+    {
+      "name": "0700_part_image",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 50324480
+    },
+    {
+      "name": "0700_part_image/dev",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 50324992
+    },
+    {
+      "name": "0700_part_image/dev/nflasha15",
+      "size": 479846400,
+      "type": "0",
+      "data_offset_in_tar": 50325504
+    },
+    {
+      "name": "0700_part_image/dev/nflasha3",
+      "size": 31695872,
+      "type": "0",
+      "data_offset_in_tar": 530172416
+    },
+    {
+      "name": "0700_part_image/dev/nflasha5",
+      "size": 209112512,
+      "type": "0",
+      "data_offset_in_tar": 561868800
+    },
+    {
+      "name": "0700_part_image/dev/nflasha7",
+      "size": 5218304,
+      "type": "0",
+      "data_offset_in_tar": 770981888
+    },
+    {
+      "name": "0700_part_image/dev/nflasha8",
+      "size": 22450176,
+      "type": "0",
+      "data_offset_in_tar": 776200704
+    },
+    {
+      "name": "0701_part_image_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 798651392
+    },
+    {
+      "name": "0701_part_image_sum/part_image.sum",
+      "size": 454,
+      "type": "0",
+      "data_offset_in_tar": 798651904
+    },
+    {
+      "name": "0750_nor_loader",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 798652928
+    },
+    {
+      "name": "0750_nor_loader/loader_nor.tar",
+      "size": 112640,
+      "type": "0",
+      "data_offset_in_tar": 798653440
+    },
+    {
+      "name": "0751_nor_loader_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 798766592
+    },
+    {
+      "name": "0751_nor_loader_sum/nor_loader.sum",
+      "size": 79,
+      "type": "0",
+      "data_offset_in_tar": 798767104
+    },
+    {
+      "name": "0800_appli",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 798768128
+    },
+    {
+      "name": "0800_appli/lens",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 798768640
+    },
+    {
+      "name": "0800_appli/lens/lensfile.bin",
+      "size": 262592,
+      "type": "0",
+      "data_offset_in_tar": 798769152
+    },
+    {
+      "name": "0800_appli/setting",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 799032320
+    },
+    {
+      "name": "0800_appli/setting/DmmCfg.bin",
+      "size": 66796,
+      "type": "0",
+      "data_offset_in_tar": 799032832
+    },
+    {
+      "name": "0800_appli/setting/appfw_infra",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 799100416
+    },
+    {
+      "name": "0800_appli/setting/cxd90057.dtb",
+      "size": 16875,
+      "type": "0",
+      "data_offset_in_tar": 799100928
+    },
+    {
+      "name": "0800_appli/setting/development.txt",
+      "size": 0,
+      "type": "0",
+      "data_offset_in_tar": 799118336
+    },
+    {
+      "name": "0800_appli/setting/facedmy.bin",
+      "size": 51200,
+      "type": "0",
+      "data_offset_in_tar": 799118848
+    },
+    {
+      "name": "0800_appli/setting/kemco.txt",
+      "size": 1736,
+      "type": "0",
+      "data_offset_in_tar": 799170560
+    },
+    {
+      "name": "0800_appli/setting/ulogio.bin",
+      "size": 2784,
+      "type": "0",
+      "data_offset_in_tar": 799173120
+    },
+    {
+      "name": "0800_appli/tmp",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 799176704
+    },
+    {
+      "name": "0800_appli/tmp/config.spec",
+      "size": 0,
+      "type": "0",
+      "data_offset_in_tar": 799177216
+    },
+    {
+      "name": "0800_appli/tmp/hosts",
+      "size": 27,
+      "type": "0",
+      "data_offset_in_tar": 799177728
+    },
+    {
+      "name": "0800_appli/tmp/images",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 799178752
+    },
+    {
+      "name": "0800_appli/tmp/images/MYingHeiC-Big5-SJ_wIcon.ltt",
+      "size": 1150740,
+      "type": "0",
+      "data_offset_in_tar": 799179264
+    },
+    {
+      "name": "0800_appli/tmp/images/MYingHeiC-GB18030-SJ_wIcon.ltt",
+      "size": 2054740,
+      "type": "0",
+      "data_offset_in_tar": 800330752
+    },
+    {
+      "name": "0800_appli/tmp/images/Sony_DI_Icons.ttf",
+      "size": 624596,
+      "type": "0",
+      "data_offset_in_tar": 802386432
+    },
+    {
+      "name": "0800_appli/tmp/kikilog.dat",
+      "size": 4227072,
+      "type": "0",
+      "data_offset_in_tar": 803011584
+    },
+    {
+      "name": "0800_appli/tmp/log",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807239168
+    },
+    {
+      "name": "0800_appli/tmp/log/.gitkeep",
+      "size": 0,
+      "type": "0",
+      "data_offset_in_tar": 807239680
+    },
+    {
+      "name": "0800_appli/tmp/mtab",
+      "size": 0,
+      "type": "2",
+      "data_offset_in_tar": 807240192
+    },
+    {
+      "name": "0800_appli/tmp/nsswitch.conf",
+      "size": 280,
+      "type": "0",
+      "data_offset_in_tar": 807240704
+    },
+    {
+      "name": "0800_appli/tmp/pam.d",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807241728
+    },
+    {
+      "name": "0800_appli/tmp/pam.d/other",
+      "size": 127,
+      "type": "0",
+      "data_offset_in_tar": 807242240
+    },
+    {
+      "name": "0800_appli/tmp/pam.d/ssh",
+      "size": 453,
+      "type": "0",
+      "data_offset_in_tar": 807243264
+    },
+    {
+      "name": "0800_appli/tmp/passwd",
+      "size": 124,
+      "type": "0",
+      "data_offset_in_tar": 807244288
+    },
+    {
+      "name": "0800_appli/tmp/protocols",
+      "size": 2932,
+      "type": "0",
+      "data_offset_in_tar": 807245312
+    },
+    {
+      "name": "0800_appli/tmp/regroot.pem",
+      "size": 1188,
+      "type": "0",
+      "data_offset_in_tar": 807248896
+    },
+    {
+      "name": "0800_appli/tmp/run",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807250944
+    },
+    {
+      "name": "0800_appli/tmp/run/sshd",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807251456
+    },
+    {
+      "name": "0800_appli/tmp/run/sshd/.gitkeep",
+      "size": 0,
+      "type": "0",
+      "data_offset_in_tar": 807251968
+    },
+    {
+      "name": "0800_appli/tmp/services",
+      "size": 19183,
+      "type": "0",
+      "data_offset_in_tar": 807252480
+    },
+    {
+      "name": "0800_appli/tmp/ssh",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807272448
+    },
+    {
+      "name": "0800_appli/tmp/ssh/sshd_config",
+      "size": 3094,
+      "type": "0",
+      "data_offset_in_tar": 807272960
+    },
+    {
+      "name": "0800_appli/tmp/toprc",
+      "size": 617,
+      "type": "0",
+      "data_offset_in_tar": 807277056
+    },
+    {
+      "name": "0801_appli_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807278592
+    },
+    {
+      "name": "0801_appli_sum/appli.sum",
+      "size": 2820,
+      "type": "0",
+      "data_offset_in_tar": 807279104
+    },
+    {
+      "name": "1030_genlock",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807282688
+    },
+    {
+      "name": "1031_genlock_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807283200
+    },
+    {
+      "name": "1050_i2c",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807283712
+    },
+    {
+      "name": "1050_i2c/fw2_normal_app.cyacd",
+      "size": 159904,
+      "type": "0",
+      "data_offset_in_tar": 807284224
+    },
+    {
+      "name": "1050_i2c/fw2_normal_cfg.cyacd",
+      "size": 2724,
+      "type": "0",
+      "data_offset_in_tar": 807444992
+    },
+    {
+      "name": "1051_i2c_sum",
+      "size": 0,
+      "type": "5",
+      "data_offset_in_tar": 807448576
+    },
+    {
+      "name": "1051_i2c_sum/i2c.sum",
+      "size": 170,
+      "type": "0",
+      "data_offset_in_tar": 807449088
+    }
+  ],
+  "seconds": 22.58,
+  "scope": "complete official update FDAT decrypted and tar enumerated; embedded file systems not yet unpacked; no firmware executed/repacked/flashed; no camera connected"
+}

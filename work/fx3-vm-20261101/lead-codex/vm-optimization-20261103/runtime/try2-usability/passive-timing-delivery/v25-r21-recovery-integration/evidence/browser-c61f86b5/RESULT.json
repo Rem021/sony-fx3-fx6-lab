@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "scope": "offline real PAGE plus unchanged 20s deadline; no VM",
+  "cases": {
+    "local_no_POST_cancel": {
+      "status": "cancelled_unqueued_alarm_only",
+      "cancel_event": {
+        "elapsed_ms": 430.39999997615814,
+        "event": "cancelled",
+        "nonce": "808c9288-c958-483a-851c-e09952735f0d",
+        "performance_ms": 3346,
+        "wall_UTC": "2026-11-04T23:33:28.497Z"
+      },
+      "key_posts": 0,
+      "confirm_posts": 0
+    },
+    "accepted_refused": {
+      "status": "refused",
+      "key_posts": 1,
+      "cancel_count": 0
+    },
+    "post_in_flight_refused": {
+      "status": "refused",
+      "cancel_count": 0
+    },
+    "delivery_unknown_refused": {
+      "status": "refused",
+      "key_posts": 1,
+      "cancel_count": 0
+    },
+    "natural_20s_expired_refused": {
+      "status": "refused",
+      "armed_due_ms": 20048.900000035763,
+      "expired_due_ms": 20048.900000035763,
+      "elapsed_ms": 20002.599999964237,
+      "cancel_count": 0
+    }
+  }
+}

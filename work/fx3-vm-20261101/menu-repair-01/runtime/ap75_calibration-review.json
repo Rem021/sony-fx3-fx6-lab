@@ -1,0 +1,546 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap75timer1-125f0a33",
+  "stage": "AP75_CALIBRATION",
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "host_pid_absent": true,
+  "inputs_unchanged": true,
+  "missing_markers": [
+    "FX3_UI_CONFIG_DONE"
+  ],
+  "host_observer_error": null,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "released_verified": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "released_verified": true
+    }
+  ],
+  "snapshots": [
+    {
+      "turn": 1,
+      "complete": true,
+      "im_process": [
+        {
+          "line": 3854,
+          "text": "FX3_AP_IM_PROCESS=202"
+        },
+        {
+          "line": 3925,
+          "text": "00400000-00409000 r-xp 00000000 00:02 276                                /usr/bin/im.elf"
+        }
+      ]
+    },
+    {
+      "turn": 2,
+      "complete": true,
+      "im_process": [
+        {
+          "line": 13947,
+          "text": "FX3_AP_IM_PROCESS=202"
+        },
+        {
+          "line": 13997,
+          "text": "00400000-00409000 r-xp 00000000 00:02 276                                /usr/bin/im.elf"
+        }
+      ]
+    },
+    {
+      "turn": 3,
+      "complete": true,
+      "im_process": [
+        {
+          "line": 26479,
+          "text": "FX3_AP_IM_PROCESS=202"
+        },
+        {
+          "line": 26529,
+          "text": "00400000-00409000 r-xp 00000000 00:02 276                                /usr/bin/im.elf"
+        }
+      ]
+    }
+  ],
+  "im_alive_last_snapshot": true,
+  "symbol_errors": [],
+  "icrypt": [
+    {
+      "line": 16044,
+      "text": "FX3_ICRYPT_HAS api=iCrypt_HasPublicKey id=0x20300001 result=0 caller=0x7f3353e1bc original=1 init_called_by_observer=0"
+    },
+    {
+      "line": 16054,
+      "text": "FX3_ICRYPT_HAS api=iCrypt_HasPrivateKey id=0x20300001 result=0 caller=0x7f3353e168 original=1 init_called_by_observer=0"
+    },
+    {
+      "line": 16057,
+      "text": "FX3_ICRYPT_HAS api=iCrypt_HasPublicKey id=0x20300002 result=0 caller=0x7f3353e1bc original=1 init_called_by_observer=0"
+    },
+    {
+      "line": 16106,
+      "text": "FX3_ICRYPT_HAS api=iCrypt_HasPrivateKey id=0x20300002 result=0 caller=0x7f3353e168 original=1 init_called_by_observer=0"
+    },
+    {
+      "line": 16107,
+      "text": "FX3_ICRYPT_HAS api=iCrypt_HasPublicKey id=0x20300003 result=0 caller=0x7f3353e1bc original=1 init_called_by_observer=0"
+    },
+    {
+      "line": 16118,
+      "text": "FX3_ICRYPT_HAS api=iCrypt_HasPrivateKey id=0x20300003 result=0 caller=0x7f3353e168 original=1 init_called_by_observer=0"
+    }
+  ],
+  "imdb_crypt": [],
+  "adf": [
+    {
+      "line": 13686,
+      "text": "FX3_ADF_MUTED_COMMIT command=0x32e source=0x81cf61c2 status=0 bytes=12 physical=0 wire_volume=8 internal_volume=7 muted=1 original_sound=0 request_free=0 lease=27"
+    },
+    {
+      "line": 13714,
+      "text": "FX3_ADF_MUTED_BIND physical=0x41da00000 bytes=65536 muted=1 original_sound=0 playback_supported=0"
+    },
+    {
+      "line": 13716,
+      "text": "FX3_ADF_MUTED_COMMIT command=0x33d source=0x81cf61c3 status=0 bytes=24 physical=0x41da00000 wire_volume=8 internal_volume=7 muted=1 original_sound=0 request_free=0 lease=28[ 1662.728281] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1023"
+    }
+  ],
+  "gpe": [],
+  "uniform": [],
+  "post_11a_timeline": [
+    {
+      "line": 13036,
+      "text": "FX3_LCD_BRIGHTNESS_COMMIT command=0x11a completion=0x111a source=0x81cf61c0 selector=1 brightness=6 pending_hardware=1 updates=1 lease=21 request_free=0 software_backend=1 physical_complete=0"
+    },
+    {
+      "line": 13038,
+      "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x11a lease=21 result=0"
+    },
+    {
+      "line": 13044,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=491 target=0x5503e0 op=4 tag1=0x300f6 tag2=0 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13084,
+      "text": "FX3_PROVIDER_REQUEST destination=0x90040193 bytes=16 source=0x80020002 caller=0x7f3355dd40 raw=050037400900008012000000ffffffff dispatch_pending=1"
+    },
+    {
+      "line": 13134,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90040193 op=4 tag1=0x40370005 tag2=0x80000009 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13180,
+      "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf61c0 caller=0x7f33516550 raw=0d2029040a0001800000 dispatch_pending=1"
+    },
+    {
+      "line": 13182,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=491 target=0x92840747 op=4 tag1=0x429200d tag2=0x8001000a result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13199,
+      "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf6185 caller=0x7f33514884 raw=0d2000050a0001800100 dispatch_pending=1"
+    },
+    {
+      "line": 13201,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=491 target=0x92840747 op=4 tag1=0x500200d tag2=0x8001000a result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13338,
+      "text": "FX3_PROVIDER_REQUEST destination=0x90040193 bytes=16 source=0x80020002 caller=0x7f3355dd40 raw=05003d400a0000800080000001000000 dispatch_pending=1"
+    },
+    {
+      "line": 13340,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80020002 op=4 tag1=0x403d0001 tag2=0x8000000a result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13341,
+      "text": "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x8000000a updates=3 lease=22 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1"
+    },
+    {
+      "line": 13342,
+      "text": "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=22 result=0"
+    },
+    {
+      "line": 13355,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40220005 tag2=0x8000000b result=0 errno=1023 caller=0x7f85137a4c delegated=1[ 1642.235968] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1023"
+    },
+    {
+      "line": 13365,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40230005 tag2=0x8000000c result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13375,
+      "text": "FX3_PROVIDER_REQUEST destination=0x90040193 bytes=16 source=0x80020002 caller=0x7f3355dd40 raw=05003d400d0000800080000000000000 dispatch_pending=1"
+    },
+    {
+      "line": 13377,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80020002 op=4 tag1=0x403d0001 tag2=0x8000000d result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13378,
+      "text": "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0 token=0x8000000d updates=4 lease=23 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1"
+    },
+    {
+      "line": 13381,
+      "text": "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=23 result=0"
+    },
+    {
+      "line": 13390,
+      "text": "FX3_PROVIDER_REQUEST destination=0x90040193 bytes=16 source=0x80020002 caller=0x7f3355dd40 raw=050037400e00008004000000ffffffff dispatch_pending=1"
+    },
+    {
+      "line": 13394,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90040193 op=4 tag1=0x40370005 tag2=0x8000000e result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13404,
+      "text": "FX3_PROVIDER_REQUEST destination=0x90040193 bytes=16 source=0x80020002 caller=0x7f3355dd40 raw=05003d400f0000800080000001000000 dispatch_pending=1"
+    },
+    {
+      "line": 13406,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80020002 op=4 tag1=0x403d0001 tag2=0x8000000f result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13407,
+      "text": "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x8000000f updates=5 lease=24 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1"
+    },
+    {
+      "line": 13408,
+      "text": "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=24 result=0"
+    },
+    {
+      "line": 13418,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40230005 tag2=0x80000010 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13429,
+      "text": "FX3_PROVIDER_REQUEST destination=0x90040193 bytes=16 source=0x80020002 caller=0x7f3355dd40 raw=05003d40110000800080000000000000 dispatch_pending=1"
+    },
+    {
+      "line": 13431,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80020002 op=4 tag1=0x403d0001 tag2=0x80000011 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13432,
+      "text": "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0 token=0x80000011 updates=6 lease=25 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1"
+    },
+    {
+      "line": 13433,
+      "text": "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=25 result=0"
+    },
+    {
+      "line": 13442,
+      "text": "FX3_PROVIDER_REQUEST destination=0x90040193 bytes=16 source=0x80020002 caller=0x7f3355dd40 raw=05003740120000800d000000ffffffff dispatch_pending=1"
+    },
+    {
+      "line": 13444,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90040193 op=4 tag1=0x40370005 tag2=0x80000012 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13454,
+      "text": "FX3_PROVIDER_REQUEST destination=0x90040193 bytes=16 source=0x80020002 caller=0x7f3355dd40 raw=05003d40130000800080000001000000 dispatch_pending=1"
+    },
+    {
+      "line": 13456,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80020002 op=4 tag1=0x403d0001 tag2=0x80000013 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13457,
+      "text": "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x80000013 updates=7 lease=26 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1"
+    },
+    {
+      "line": 13458,
+      "text": "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=26 result=0"
+    },
+    {
+      "line": 13466,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40840005 tag2=0x80000014 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13473,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40840005 tag2=0x80000015 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13480,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40fb0005 tag2=0x80000016 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13488,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40840005 tag2=0x80000017 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13495,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40840005 tag2=0x80000018 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13503,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40fb0005 tag2=0x80000019 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13510,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x401c0005 tag2=0x8000001a result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13517,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40430005 tag2=0x8000001b result=0 errno=1023 caller=0x7f85137a4c delegated=1[ 1653.348875] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1023"
+    },
+    {
+      "line": 13525,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40700005 tag2=0x8000001c result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13532,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40840005 tag2=0x8000001d result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13540,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40840005 tag2=0x8000001e result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13547,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40fb0005 tag2=0x8000001f result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13555,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40840005 tag2=0x80000020 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13562,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40840005 tag2=0x80000021 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13570,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x90030001 op=4 tag1=0x40fb0005 tag2=0x80000022 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13624,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80920860 op=4 tag1=0x920112 tag2=0x7f result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13629,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=205 target=0x82380691 op=4 tag1=0x1 tag2=0x80920915 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13636,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x809243d8 op=5 tag1=0x920112 tag2=0 result=0 errno=1023 caller=0x7f85137af8 delegated=1"
+    },
+    {
+      "line": 13637,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80924223 op=5 tag1=0x920112 tag2=0 result=0 errno=1023 caller=0x7f85137af8 delegated=1"
+    },
+    {
+      "line": 13638,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x809245dc op=5 tag1=0x920112 tag2=0 result=0 errno=1023 caller=0x7f85137af8 delegated=1"
+    },
+    {
+      "line": 13639,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80924220 op=5 tag1=0x920118 tag2=0x2 result=0 errno=1023 caller=0x7f85137af8 delegated=1"
+    },
+    {
+      "line": 13640,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80924220 op=5 tag1=0x920118 tag2=0x1 result=0 errno=1023 caller=0x7f85137af8 delegated=1"
+    },
+    {
+      "line": 13641,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x80924220 op=5 tag1=0x920202 tag2=0x81cf6198 result=0 errno=1023 caller=0x7f85137af8 delegated=1"
+    },
+    {
+      "line": 13642,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x807d0035 op=4 tag1=0 tag2=0xc result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13643,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=479 target=0x9059000e op=4 tag1=0x81cf61c0 tag2=0xa0a0a0a0 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13656,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=383 target=0x81a00581 op=5 tag1=0x3 tag2=0 result=0 errno=0 caller=0x7f85137af8 delegated=1"
+    },
+    {
+      "line": 13659,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=553 target=0x5503e0 op=4 tag1=0xc000003 tag2=0 result=0 errno=0 caller=0x7f85137a4c delegated=1[ 1661.598437] [K]**UIPC ERROR** osal_snd_msg: No snd_msg registered. Skip snd to 0x83f"
+    },
+    {
+      "line": 13669,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=219 target=0x80924127 op=5 tag1=0x920111 tag2=0x7f result=0 errno=0 caller=0x7f85137af8 delegated=1"
+    },
+    {
+      "line": 13676,
+      "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf61c2 caller=0x7f33515264 raw=0d202e030a0001800800 dispatch_pending=1[ 1661.615281] [K]**UIPC ERROR** osal_snd_msg: No snd_msg registered. Skip snd to 0x83f"
+    },
+    {
+      "line": 13685,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=476 target=0x81cf61c2 op=4 tag1=0x132e200d tag2=0x8001000c result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13686,
+      "text": "FX3_ADF_MUTED_COMMIT command=0x32e source=0x81cf61c2 status=0 bytes=12 physical=0 wire_volume=8 internal_volume=7 muted=1 original_sound=0 request_free=0 lease=27"
+    },
+    {
+      "line": 13693,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=553 target=0x5503e0 op=4 tag1=0xc000004 tag2=0 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13704,
+      "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf61c2 command=0x32e lease=27 result=0"
+    },
+    {
+      "line": 13713,
+      "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=8 source=0x81cf61c3 caller=0x7f33515264 raw=0d203d0308000180 dispatch_pending=1"
+    },
+    {
+      "line": 13715,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=477 target=0x81cf61c3 op=4 tag1=0x133d200d tag2=0x80010018 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13716,
+      "text": "FX3_ADF_MUTED_COMMIT command=0x33d source=0x81cf61c3 status=0 bytes=24 physical=0x41da00000 wire_volume=8 internal_volume=7 muted=1 original_sound=0 request_free=0 lease=28[ 1662.728281] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1023"
+    },
+    {
+      "line": 13728,
+      "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf61c3 command=0x33d lease=28 result=0[ 1663.073656] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1023"
+    },
+    {
+      "line": 13743,
+      "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=40 source=0x81cf61c1 caller=0x7f33515264 raw=0d202703280001800000a01d04000000000100000106010000000000000000000000000000000000 dispatch_pending=1[ 1663.090031] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1023"
+    },
+    {
+      "line": 13768,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=477 target=0x92840747 op=4 tag1=0x327200d tag2=0x80010028 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13788,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=444 target=0x5503e0 op=4 tag1=0x30172 tag2=0 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13798,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=444 target=0x5503e0 op=4 tag1=0x30173 tag2=0 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13824,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=444 target=0x5503e0 op=4 tag1=0x10004 tag2=0 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13825,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=444 target=0x5503e0 op=4 tag1=0x10002 tag2=0 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13826,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=444 target=0x5503e0 op=4 tag1=0x10005 tag2=0 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 13830,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=444 target=0x5503e0 op=4 tag1=0x10003 tag2=0 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 16237,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=475 target=0x83310a20 op=4 tag1=0x880000a tag2=0x80000000 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 16240,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=475 target=0x811006e9 op=4 tag1=0x30610088 tag2=0x400002 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 16299,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=475 target=0x811006e9 op=4 tag1=0x30710088 tag2=0x400002 result=0 errno=1023 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 22000,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=383 target=0x92b4086f op=4 tag1=0x2300 tag2=0xffffff80 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 22698,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=383 target=0x92b4086f op=4 tag1=0x2300 tag2=0x920168 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 27553,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=383 target=0x92b4086f op=4 tag1=0x2300 tag2=0xffffffc1 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 39130,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=383 target=0x92b4086f op=4 tag1=0x2300 tag2=0xff0000ff result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 39134,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=383 target=0x92b4086f op=4 tag1=0x2300 tag2=0x2ff0100 result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    },
+    {
+      "line": 39141,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=383 target=0x92b4086f op=4 tag1=0x2300 tag2=0x7f result=0 errno=0 caller=0x7f85137a4c delegated=1"
+    }
+  ],
+  "timer_events": {
+    "FX3_TIMER_BOUND": [
+      {
+        "line": 10215,
+        "text": "FX3_TIMER_BOUND count=4 prefixes_verified=16 pc_relative_in_stolen=0 original_calls_preserved=1 app_base=0x7f3072e000 obj_base=0x7f63788000"
+      }
+    ],
+    "FX3_TIMER_ENTRY": [],
+    "FX3_TIMER_ID ": [],
+    "FX3_TIMER_INFO ": [],
+    "FX3_TIMER_TABLE": [],
+    "FX3_TIMER_RETURN": [],
+    "FX3_UI_CONFIG_ENTER": [],
+    "FX3_UI_CONFIG_RETURN": [],
+    "FX3_UI_CONFIG_DONE": [],
+    "FX3_UI_FILL_EXEC": [],
+    "FX3_UI_FILL_RETURN": [],
+    "FX3_UI_WIRE": [
+      {
+        "line": 12544,
+        "text": "FX3_UI_WIRE tid=441 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+      },
+      {
+        "line": 12546,
+        "text": "FX3_UI_WIRE tid=441 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+      },
+      {
+        "line": 12547,
+        "text": "FX3_UI_WIRE tid=441 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+      },
+      {
+        "line": 12548,
+        "text": "FX3_UI_WIRE tid=441 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+      },
+      {
+        "line": 12549,
+        "text": "FX3_UI_WIRE tid=441 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+      },
+      {
+        "line": 12550,
+        "text": "FX3_UI_WIRE tid=441 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+      }
+    ],
+    "FX3_GPE_CMD": []
+  },
+  "end_stats": {
+    "FX3_UIPC_OBSERVER_END/195": {
+      "line": 39240,
+      "pid": 195,
+      "seen": 5,
+      "emitted": 2,
+      "dedup": 3,
+      "capacity_drop": 0,
+      "lock_drop": 0,
+      "stats_write_drop": 0,
+      "capacity": 256,
+      "snapshot": 1
+    },
+    "FX3_UIPC_OBSERVER_END/202": {
+      "line": 39241,
+      "pid": 202,
+      "seen": 18973,
+      "emitted": 198,
+      "dedup": 18772,
+      "capacity_drop": 0,
+      "lock_drop": 3,
+      "stats_write_drop": 96,
+      "capacity": 256,
+      "snapshot": 1
+    }
+  },
+  "fatal": [],
+  "same_candidate_repeat_group": "AP75-instrument-calibration"
+}

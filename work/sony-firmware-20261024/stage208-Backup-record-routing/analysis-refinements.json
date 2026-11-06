@@ -1,0 +1,10 @@
+{
+  "status": "STATIC_DEFAULT_RECORD_ROLES_RESOLVED_AND_SELECTOR_LABEL_CORRECTED",
+  "previous_stage": "stage207-Backup-template-and-GPIO-config",
+  "resolved": "207 left both records unselected. Official module now binds local Data state to unshifted first-record base and CP transfer to aligned second record.",
+  "corrected": "207 described wrapper w2=4 as length4. Source message builder stores it as operation selector4, which the actual queue callback dispatches to Backup_read_4Byte. w3=1 is argument count.",
+  "previous_sealed_files_preserved": true,
+  "no_change_to_three_Backup_IDs_or_decoded_values": true,
+  "actual_body_values_obtained": false,
+  "root_or_device_operations": 0
+}

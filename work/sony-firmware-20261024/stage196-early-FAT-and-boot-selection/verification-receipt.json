@@ -1,0 +1,72 @@
+{
+  "status": "PASS_SOURCE_BOUND_STATIC_RECOVERY_REVIEW",
+  "created_utc": "2026-10-29T21:09:47.838450+00:00",
+  "previous_manifest_sha256": "a470b2cc945ac7cd83bf5876ef062e028f92cc51ad47dfff6d86c963938ef147",
+  "previous_manifest_members_reverified": 500,
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "FAT_open_instructions": 118,
+  "normal_return_signed32": -408,
+  "independent_raw_CFG_matches": true,
+  "selected_original_slices": 10,
+  "new_runtime_tests_or_guest_executions": 0,
+  "root_or_device_operations": 0,
+  "host01_bundle_sha256_unchanged": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0",
+  "new_approval_granted": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5438,
+      "sha256": "4e17a0254b103f34439cd5fe0d3a9ace16cdfb0e5075f6b23ac1e39862af8692"
+    },
+    {
+      "path": "analyze_boot.py",
+      "bytes": 4820,
+      "sha256": "1433cf6e82cb35c2165df5f8a6407eff14390bccf081bb24e5aab377d12ead7e"
+    },
+    {
+      "path": "prove_fat_cfg.py",
+      "bytes": 3991,
+      "sha256": "f9b9e02d05f999ab9530017f9d5dd9fdc26ff796c7fadeb241a34bdda250d386"
+    },
+    {
+      "path": "word_refs.py",
+      "bytes": 3030,
+      "sha256": "31f05af1901962d5470b93be677f1a2872276f23c23285eff2e732e1ebd5c26a"
+    },
+    {
+      "path": "verify_and_capture.py",
+      "bytes": 4942,
+      "sha256": "a1e98835d742477cd8f0038487ba835816a86b4ce5f518360c6aa78a8d64f8ba"
+    },
+    {
+      "path": "fat-open-normal-return-proof.json",
+      "bytes": 3400,
+      "sha256": "c870afce7a750e91d6b119a9eed695c7ff6b886ae6378dda7cef2b7b52db3143"
+    },
+    {
+      "path": "fat-open-cfg.json",
+      "bytes": 6287,
+      "sha256": "09dcff87b355e36baaa9d8d871f236da3a5950f0cb5e8e38b806d38771e56dc1"
+    },
+    {
+      "path": "selected-source-evidence.json",
+      "bytes": 5917,
+      "sha256": "8b8bbaad7083d9f44851b629f54fe7d98c3fe104cea33f1fa237c7d911286762"
+    },
+    {
+      "path": "source-review.json",
+      "bytes": 903,
+      "sha256": "3ecb3415f9c6fb6b3ee819e4698fe1fa4c1187b4ce24c148ec33ac297379b602"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 1308,
+      "sha256": "d2d47739fc4bce260e7ce2322c3d4c848765f047837121ac0be067dc165d1374"
+    },
+    {
+      "path": "native-goal-observed.json",
+      "bytes": 442,
+      "sha256": "165173b10b666c200c3dbf3c5bbb600537d9151a4f21287dae826afdbbcb41af"
+    }
+  ]
+}

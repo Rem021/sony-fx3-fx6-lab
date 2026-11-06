@@ -1,0 +1,681 @@
+{
+  "created_utc": "2026-10-30T13:51:05.469854+00:00",
+  "status": "PASS_STATIC_SOURCE_CONTRACT_NOT_RUNTIME_OR_FLASH",
+  "source_files_verified": 44,
+  "verified_prior_stages": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/AP-staging-record-routing-20261030/final-receipt.json",
+      "sha256": "6bd744f39317d8a8761f74e7a86093a460a46397ac6e236d33670e21bf767ff7",
+      "members_verified": 21
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/Creators-public-catalog-20261030/final-receipt.json",
+      "sha256": "1c888a0f6e88482614b4fec4d9478903018646a9fbd0eaa6a0033295af758464",
+      "members_verified": 88
+    }
+  ],
+  "public_memory_map_examples": [
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-3G.dtsi",
+      "sha256": "ea1f9fa30a2e7264013b655f6411a122936b2c17ee11863e86d664381169efb8",
+      "start": "0x200000000",
+      "size": "0xc0000000",
+      "end_exclusive": "0x2c0000000"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-4G.dtsi",
+      "sha256": "071fa1beed55d360d05b0ff5b56db45d856aa068649968db86ed8135f4851b1c",
+      "start": "0x200000000",
+      "size": "0x100000000",
+      "end_exclusive": "0x300000000"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-6G.dtsi",
+      "sha256": "acae11f706e21fbaa237a9e4dd55ddb2374a1737a882ac11ef5cbc69cb18441e",
+      "start": "0x200000000",
+      "size": "0x180000000",
+      "end_exclusive": "0x380000000"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-selection/linux-kernel/arch/arm64/boot/dts/cxd/memmap-8G.dtsi",
+      "sha256": "a80d09ea6f02b100c8beb2156f36c3c67ebc8e83aabf7e9db21dfc1a607f70ed",
+      "start": "0x200000000",
+      "size": "0x1fe000000",
+      "end_exclusive": "0x3fe000000"
+    }
+  ],
+  "source_facts": [
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/dma32.h",
+      "sha256": "c993710580e9b7de8129ba26ce3229934b8c3d44c7fdff505e4aa4576a378afd",
+      "literal": "0x200000000UL",
+      "lines": [
+        13,
+        15
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/dma32.h",
+      "sha256": "c993710580e9b7de8129ba26ce3229934b8c3d44c7fdff505e4aa4576a378afd",
+      "literal": "0x300000000UL",
+      "lines": [
+        14
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/dma32.h",
+      "sha256": "c993710580e9b7de8129ba26ce3229934b8c3d44c7fdff505e4aa4576a378afd",
+      "literal": "return (uint32_t)p64",
+      "lines": [
+        23
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/dma32.h",
+      "sha256": "c993710580e9b7de8129ba26ce3229934b8c3d44c7fdff505e4aa4576a378afd",
+      "literal": "return DMA32_P64(p32)",
+      "lines": [
+        29
+      ]
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/dma32.h",
+      "sha256": "e9e44c1df24297d0645f00ef0c0cc39c7505a84ae518ca0307ff2bf51684cd7d",
+      "literal": "0x0FE000000U",
+      "lines": [
+        14,
+        15
+      ]
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/dma32.h",
+      "sha256": "e9e44c1df24297d0645f00ef0c0cc39c7505a84ae518ca0307ff2bf51684cd7d",
+      "literal": "0x0FF000000U",
+      "lines": [
+        16
+      ]
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/dma32.h",
+      "sha256": "e9e44c1df24297d0645f00ef0c0cc39c7505a84ae518ca0307ff2bf51684cd7d",
+      "literal": "0x400000000UL",
+      "lines": [
+        18
+      ]
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/dma32.h",
+      "sha256": "e9e44c1df24297d0645f00ef0c0cc39c7505a84ae518ca0307ff2bf51684cd7d",
+      "literal": "return PHYS64_ERR",
+      "lines": [
+        42
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/adrs_conv.c",
+      "sha256": "4b17c5b5eac911a21d867fc78bcd28f37f63980d7c5643c7296dd21dc9631081",
+      "literal": "asm volatile(\"at s1e1r",
+      "lines": [
+        93
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/adrs_conv.c",
+      "sha256": "4b17c5b5eac911a21d867fc78bcd28f37f63980d7c5643c7296dd21dc9631081",
+      "literal": "read_sysreg(par_el1)",
+      "lines": [
+        95
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/adrs_conv.c",
+      "sha256": "4b17c5b5eac911a21d867fc78bcd28f37f63980d7c5643c7296dd21dc9631081",
+      "literal": "attr < 0 || ptmp != pa",
+      "lines": [
+        149
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/adrs_conv.c",
+      "sha256": "4b17c5b5eac911a21d867fc78bcd28f37f63980d7c5643c7296dd21dc9631081",
+      "literal": "attr < 0 || is_cache(attr)",
+      "lines": [
+        195,
+        243
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/adrs_conv.c",
+      "sha256": "4b17c5b5eac911a21d867fc78bcd28f37f63980d7c5643c7296dd21dc9631081",
+      "literal": "arch_phys_to_cachetype2",
+      "lines": [
+        318,
+        386
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/adrs_conv.c",
+      "sha256": "4b17c5b5eac911a21d867fc78bcd28f37f63980d7c5643c7296dd21dc9631081",
+      "literal": "ret2 = arch_phys_to_cachetype(pe)",
+      "lines": [
+        324
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/platform.h",
+      "sha256": "34119e4c5291146f97f251739c11579fa974a81138aa13c76ae17fe02f68fa82",
+      "literal": "DDR0_BASE\t\tUL(0x200000000)",
+      "lines": [
+        51
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/platform.h",
+      "sha256": "34119e4c5291146f97f251739c11579fa974a81138aa13c76ae17fe02f68fa82",
+      "literal": "DDR1_BASE\t\tUL(0x600000000)",
+      "lines": [
+        53
+      ]
+    },
+    {
+      "path": "sources/arch/arm64/mm/mmu.c",
+      "sha256": "18ed9f70cd5409918799ed90d37873eb2c06246608befeb62952cd8fb6b59edb",
+      "literal": "rmem_arm_add(rmem->base, rmem->size, memtype)",
+      "lines": [
+        632
+      ]
+    },
+    {
+      "path": "sources/arch/arm64/mm/mmu.c",
+      "sha256": "18ed9f70cd5409918799ed90d37873eb2c06246608befeb62952cd8fb6b59edb",
+      "literal": "\"arm,rmem\"",
+      "lines": [
+        616,
+        637
+      ]
+    },
+    {
+      "path": "sources/arch/arm64/mm/mmu.c",
+      "sha256": "18ed9f70cd5409918799ed90d37873eb2c06246608befeb62952cd8fb6b59edb",
+      "literal": "rmem_map_memblock(pgdp, start, end",
+      "lines": [
+        692
+      ]
+    },
+    {
+      "path": "sources/arch/arm64/mm/mmu.c",
+      "sha256": "18ed9f70cd5409918799ed90d37873eb2c06246608befeb62952cd8fb6b59edb",
+      "literal": "for_each_node_by_type(np, \"iomap\")",
+      "lines": [
+        1546
+      ]
+    },
+    {
+      "path": "sources/drivers/of/fdt.c",
+      "sha256": "b33edc43e2645f71df26986d65437b72e721cba0390fad3b5381274af2ffc5be",
+      "literal": "\"linux,usable-memory\"",
+      "lines": [
+        1105
+      ]
+    },
+    {
+      "path": "sources/drivers/of/fdt.c",
+      "sha256": "b33edc43e2645f71df26986d65437b72e721cba0390fad3b5381274af2ffc5be",
+      "literal": "early_init_dt_add_memory_arch(base, size)",
+      "lines": [
+        1126
+      ]
+    },
+    {
+      "path": "sources/drivers/of/fdt.c",
+      "sha256": "b33edc43e2645f71df26986d65437b72e721cba0390fad3b5381274af2ffc5be",
+      "literal": "fdt_init_reserved_mem()",
+      "lines": [
+        651
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/udif/cache.c",
+      "sha256": "a70355b2f54ced20a80c65719aab7b61c775296a944f028e654a2f7b4fd05e5e",
+      "literal": "UDIF_CACHE_INVALIDATE == dir",
+      "lines": [
+        34
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/udif/cache.c",
+      "sha256": "a70355b2f54ced20a80c65719aab7b61c775296a944f028e654a2f7b4fd05e5e",
+      "literal": "dcache_inval_poc",
+      "lines": [
+        35
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/udif/cache.c",
+      "sha256": "a70355b2f54ced20a80c65719aab7b61c775296a944f028e654a2f7b4fd05e5e",
+      "literal": "dcache_clean_poc",
+      "lines": [
+        37
+      ]
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/cache.c",
+      "sha256": "459d972d51165797f4b889c4e56647c02e9a3394c46d46eabe5070dcc90b67d4",
+      "literal": "__dma_map_area",
+      "lines": [
+        34
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/udif/dma-mapping.c",
+      "sha256": "6a3c04450a8ab3206ffe7af969b0c4b57c7c4b13a539e2f90eb0f8bc5c4305f0",
+      "literal": "sg_dma_address(sg) = sg_phys(sg)",
+      "lines": [
+        40
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/udif/dma-mapping.c",
+      "sha256": "6a3c04450a8ab3206ffe7af969b0c4b57c7c4b13a539e2f90eb0f8bc5c4305f0",
+      "literal": "__dma_map_area",
+      "lines": [
+        42
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/udif/dma-mapping.c",
+      "sha256": "6a3c04450a8ab3206ffe7af969b0c4b57c7c4b13a539e2f90eb0f8bc5c4305f0",
+      "literal": "__dma_unmap_area",
+      "lines": [
+        54
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/mmap.c",
+      "sha256": "3433478fe24aba2edeaf9b3507f0448f266c6046629bf9282f4a410a169ead11",
+      "literal": "if (!cxd90xxx_mmap_debug)",
+      "lines": [
+        74
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/mmap.c",
+      "sha256": "3433478fe24aba2edeaf9b3507f0448f266c6046629bf9282f4a410a169ead11",
+      "literal": "return 1;",
+      "lines": [
+        75,
+        88,
+        92,
+        97,
+        104
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/mmap.c",
+      "sha256": "3433478fe24aba2edeaf9b3507f0448f266c6046629bf9282f4a410a169ead11",
+      "literal": "case 1: /* warning only */",
+      "lines": [
+        102
+      ]
+    },
+    {
+      "path": "sources/drivers/soc/cxd/mmap.c",
+      "sha256": "3433478fe24aba2edeaf9b3507f0448f266c6046629bf9282f4a410a169ead11",
+      "literal": "case 2: /* warning and error */",
+      "lines": [
+        105
+      ]
+    },
+    {
+      "path": "fx3-cache-abi-sources/include/linux/dma-direction.h",
+      "sha256": "accf5e0d1f5d4a928c402d06ab701de6fe917f5e5938847a0e9b55e7fece372c",
+      "literal": "DMA_TO_DEVICE = 1",
+      "lines": [
+        9
+      ]
+    },
+    {
+      "path": "fx3-cache-abi-sources/include/linux/dma-direction.h",
+      "sha256": "accf5e0d1f5d4a928c402d06ab701de6fe917f5e5938847a0e9b55e7fece372c",
+      "literal": "DMA_FROM_DEVICE = 2",
+      "lines": [
+        10
+      ]
+    },
+    {
+      "path": "fx3-cache-abi-sources/include/linux/dma-direction.h",
+      "sha256": "accf5e0d1f5d4a928c402d06ab701de6fe917f5e5938847a0e9b55e7fece372c",
+      "literal": "DMA_NONE = 3",
+      "lines": [
+        11
+      ]
+    },
+    {
+      "path": "fx5-cache-abi-sources/include/linux/dma-direction.h",
+      "sha256": "72a8aa889dc17dac3f58e7c674fbf9bdaa8d45b9f7d2f9e4b09795f22749b899",
+      "literal": "DMA_TO_DEVICE = 1",
+      "lines": [
+        7
+      ]
+    },
+    {
+      "path": "fx5-cache-abi-sources/include/linux/dma-direction.h",
+      "sha256": "72a8aa889dc17dac3f58e7c674fbf9bdaa8d45b9f7d2f9e4b09795f22749b899",
+      "literal": "DMA_FROM_DEVICE = 2",
+      "lines": [
+        8
+      ]
+    },
+    {
+      "path": "fx5-cache-abi-sources/include/linux/dma-direction.h",
+      "sha256": "72a8aa889dc17dac3f58e7c674fbf9bdaa8d45b9f7d2f9e4b09795f22749b899",
+      "literal": "DMA_NONE = 3",
+      "lines": [
+        9
+      ]
+    },
+    {
+      "path": "fx3-cache-abi-sources/arch/arm64/mm/cache.S",
+      "sha256": "ebc67cf10523d184384038a8dc895c1f7ac373b0f6004baa781ece878f65bd93",
+      "literal": "b.eq\t__dma_inv_area",
+      "lines": [
+        186
+      ]
+    },
+    {
+      "path": "fx5-cache-abi-sources/arch/arm64/mm/cache.S",
+      "sha256": "66e61e1f0b013e215e15e0ee4b3fbaf6d35ce9937bcf084fc78e48b7d3dc1c1e",
+      "literal": "b\t__dma_clean_area",
+      "lines": [
+        234
+      ]
+    }
+  ],
+  "original_FX3_default_span_results": [
+    {
+      "label": "AP primary declared capacity",
+      "role": "AP default property",
+      "start": "0x412000000",
+      "end_exclusive": "0x414a00000",
+      "bytes": 44040192,
+      "FX3_public_AP_dma32_start": "0x12000000",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "CP escape transfer target",
+      "role": "CP default property",
+      "start": "0x808730000",
+      "end_exclusive": "0x809a21e00",
+      "bytes": 19865088,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\sabin\\idt_cam.bin",
+      "role": "AP projected slot",
+      "start": "0x412a09000",
+      "end_exclusive": "0x412a49000",
+      "bytes": 262144,
+      "FX3_public_AP_dma32_start": "0x12a09000",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\sabin\\idt_cam.bin",
+      "role": "CP default slot",
+      "start": "0x809139000",
+      "end_exclusive": "0x809179000",
+      "bytes": 262144,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\bonobo.bin",
+      "role": "AP projected slot",
+      "start": "0x4129d8000",
+      "end_exclusive": "0x412a09000",
+      "bytes": 200704,
+      "FX3_public_AP_dma32_start": "0x129d8000",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\bonobo.bin",
+      "role": "CP default slot",
+      "start": "0x809108000",
+      "end_exclusive": "0x809139000",
+      "bytes": 200704,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\DmmCfg.bin",
+      "role": "AP projected slot",
+      "start": "0x4132d8e00",
+      "end_exclusive": "0x4132f1e00",
+      "bytes": 102400,
+      "FX3_public_AP_dma32_start": "0x132d8e00",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\DmmCfg.bin",
+      "role": "CP default slot",
+      "start": "0x809a08e00",
+      "end_exclusive": "0x809a21e00",
+      "bytes": 102400,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\OldAmtCL.bin",
+      "role": "AP projected slot",
+      "start": "0x412780000",
+      "end_exclusive": "0x4127eddd0",
+      "bytes": 450000,
+      "FX3_public_AP_dma32_start": "0x12780000",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\OldAmtCL.bin",
+      "role": "CP default slot",
+      "start": "0x808eb0000",
+      "end_exclusive": "0x808f1ddd0",
+      "bytes": 450000,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\SysSound.bin",
+      "role": "AP projected slot",
+      "start": "0x4132b8e00",
+      "end_exclusive": "0x4132d8e00",
+      "bytes": 131072,
+      "FX3_public_AP_dma32_start": "0x132b8e00",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\SysSound.bin",
+      "role": "CP default slot",
+      "start": "0x8099e8e00",
+      "end_exclusive": "0x809a08e00",
+      "bytes": 131072,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\defdet.bin",
+      "role": "AP projected slot",
+      "start": "0x412d49000",
+      "end_exclusive": "0x413249000",
+      "bytes": 5242880,
+      "FX3_public_AP_dma32_start": "0x12d49000",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\defdet.bin",
+      "role": "CP default slot",
+      "start": "0x809479000",
+      "end_exclusive": "0x809979000",
+      "bytes": 5242880,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\cpImg.dat",
+      "role": "AP projected slot",
+      "start": "0x412a49000",
+      "end_exclusive": "0x412d49000",
+      "bytes": 3145728,
+      "FX3_public_AP_dma32_start": "0x12a49000",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\cpImg.dat",
+      "role": "CP default slot",
+      "start": "0x809179000",
+      "end_exclusive": "0x809479000",
+      "bytes": 3145728,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\psd.bin",
+      "role": "AP projected slot",
+      "start": "0x412000000",
+      "end_exclusive": "0x412500000",
+      "bytes": 5242880,
+      "FX3_public_AP_dma32_start": "0x12000000",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\psd.bin",
+      "role": "CP default slot",
+      "start": "0x808730000",
+      "end_exclusive": "0x808c30000",
+      "bytes": 5242880,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\lensfile.bin",
+      "role": "AP projected slot",
+      "start": "0x412500000",
+      "end_exclusive": "0x412580000",
+      "bytes": 524288,
+      "FX3_public_AP_dma32_start": "0x12500000",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    },
+    {
+      "label": "\\lensfile.bin",
+      "role": "CP default slot",
+      "start": "0x808c30000",
+      "end_exclusive": "0x808cb0000",
+      "bytes": 524288,
+      "FX3_public_AP_dma32_start": "0xffffffff",
+      "FX5_public_AP_dma32_start": "0xffffffff",
+      "contained_in_FX5_published_primary_memory_map": []
+    }
+  ],
+  "DMA32_boundary_arithmetic": [
+    {
+      "p32": "0x0",
+      "FX3_public_helper_p64": "0x400000000",
+      "FX5_public_helper_p64": "0x200000000"
+    },
+    {
+      "p32": "0x12000000",
+      "FX3_public_helper_p64": "0x412000000",
+      "FX5_public_helper_p64": "0x212000000"
+    },
+    {
+      "p32": "0x132d8e00",
+      "FX3_public_helper_p64": "0x4132d8e00",
+      "FX5_public_helper_p64": "0x2132d8e00"
+    },
+    {
+      "p32": "0xfdffffff",
+      "FX3_public_helper_p64": "0x4fdffffff",
+      "FX5_public_helper_p64": "0x2fdffffff"
+    },
+    {
+      "p32": "0xfe000000",
+      "FX3_public_helper_p64": "0xfe000000",
+      "FX5_public_helper_p64": "0x2fe000000"
+    },
+    {
+      "p32": "0xfe001000",
+      "FX3_public_helper_p64": "0xfe001000",
+      "FX5_public_helper_p64": "0x2fe001000"
+    },
+    {
+      "p32": "0xfeffffff",
+      "FX3_public_helper_p64": "0xfeffffff",
+      "FX5_public_helper_p64": "0x2feffffff"
+    },
+    {
+      "p32": "0xff000000",
+      "FX3_public_helper_p64": "0x0",
+      "FX5_public_helper_p64": "0x2ff000000"
+    },
+    {
+      "p32": "0xffffffff",
+      "FX3_public_helper_p64": "0x0",
+      "FX5_public_helper_p64": "0x2ffffffff"
+    }
+  ],
+  "arithmetic_scope": "Python evaluation of explicitly read source interval formulae, not execution of the original C/assembly or a physical address probe.",
+  "cache_contract": {
+    "UDIF_cache_header_byte_identical": true,
+    "flags": {
+      "FLUSH": 1,
+      "INVALIDATE": 2,
+      "NONE": 3
+    },
+    "public_FLUSH_route": {
+      "FX3": "UDIF -> __dma_map_area -> __dma_clean_area(start,size)",
+      "FX5": "UDIF -> dcache_clean_poc(start,end)"
+    },
+    "public_INVALIDATE_route": {
+      "FX3": "UDIF -> __dma_map_area -> __dma_inv_area(start,size)",
+      "FX5": "UDIF -> dcache_inval_poc(start,end)"
+    },
+    "NONE_scope": "The inspected UDIF wrappers reject null address/zero size only; NONE reaches the non-invalidate clean branch. Do not infer a no-op from the enum name.",
+    "scatter_gather_map_difference": "FX3 __dma_map_area branches on DMA_FROM_DEVICE; FX5 __dma_map_area always cleans before DMA, while both unmap functions invalidate for non-TO_DEVICE. Different timing is not itself proof of a defect.",
+    "v2p_scope": "AT S1E1R/PAR_EL1 translation and cache attributes are runtime inputs; no such instructions were executed.",
+    "phys_to_va_scope": "arch_phys_to_va uses arithmetic __p2v without the reverse-translation/cache check imposed by arch_phys_to_cache/noncache.",
+    "cachetype2_scope": "Checks first and last byte attributes only; this is not a proof every intervening page has one attribute.",
+    "mmap_guard_scope": "debug defaults to 0 and immediately permits; debug=1 warns only. It is not an always-on uniform-cache validator."
+  },
+  "next_action_changed_by_evidence": "Preserve address domains and use target-specific conversion/cache APIs; do not share raw DMA values or replace low-level cache symbols by name. Bind these source contracts to the actual FX3 7.02 runtime and donor before implementing an adapter.",
+  "physical_RAM_chip_size_or_RAW_pool_proved": false,
+  "FX5_selected_runtime_DTB_proved": false,
+  "actual_FX3_702_runtime_helper_binding": false,
+  "complete_private_donor_obtained": false,
+  "modified_or_flashable_package_produced": false,
+  "goal_complete": false,
+  "previous_goal_turn_classification": "progress: new anonymous public route with positive controls changed the next source-acquisition action; readiness was unchanged",
+  "current_goal_turn_classification": "progress: new paired source consumers, address-domain rejection and cache protocol constraints",
+  "historical_blocked_count_reused": false,
+  "native_goal_status": "active",
+  "source_built_or_executed": false,
+  "cache_or_TLB_operations_executed": 0,
+  "device_actions": 0,
+  "other_owner_files_written_or_tools_run": false
+}

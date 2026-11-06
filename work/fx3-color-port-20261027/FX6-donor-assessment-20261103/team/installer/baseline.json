@@ -1,0 +1,116 @@
+{
+  "command": [
+    "python3",
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/installer/preflight.py",
+    "--model",
+    "ILME-FX3",
+    "--ap",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+    "--cp",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+    "--fstab",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/initrc/fstab",
+    "--bootin",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/bootin.elf",
+    "--im",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/im.elf"
+  ],
+  "exit_code": 0,
+  "result": {
+    "schema": "fx3-installer-local-audit-v1",
+    "method": "local regular files, read-only",
+    "status": "local_original_preflight_only",
+    "checks": [
+      {
+        "check": "claimed_model",
+        "ok": true,
+        "detail": "ILME-FX3"
+      },
+      {
+        "check": "ap_sha256",
+        "ok": true,
+        "detail": {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+          "bytes": 79015712,
+          "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+        }
+      },
+      {
+        "check": "cp_sha256",
+        "ok": true,
+        "detail": {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+          "bytes": 15980568,
+          "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba"
+        }
+      },
+      {
+        "check": "fstab_sha256",
+        "ok": true,
+        "detail": {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/initrc/fstab",
+          "bytes": 1085,
+          "sha256": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0"
+        }
+      },
+      {
+        "check": "fx3_mount_rows",
+        "ok": true,
+        "detail": {
+          "usr": [
+            "/dev/nflasha15",
+            "/usr",
+            "ext2",
+            "ro,nodiratime,noatime,sync",
+            "0",
+            "0"
+          ],
+          "cp": [
+            "/dev/nflasha8",
+            "/cp",
+            "vfat",
+            "rw,nodiratime,noatime,sync,posix_attr",
+            "0",
+            "0"
+          ]
+        }
+      },
+      {
+        "check": "bootin_sha256",
+        "ok": true,
+        "detail": {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/bootin.elf",
+          "bytes": 23960,
+          "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2"
+        }
+      },
+      {
+        "check": "im_sha256",
+        "ok": true,
+        "detail": {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/im.elf",
+          "bytes": 40920,
+          "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91"
+        }
+      }
+    ],
+    "unknown": [
+      "FX3 live AP/CP regular-file bytes, inode and mount identity were not read",
+      "FX3-specific patch windows and final hashes do not exist",
+      "FX3 writable remount, fsync and read-only restoration are untested",
+      "Power-loss behavior, rollback after partial writes, and independent recovery are untested",
+      "Cold boot loaded AP/CP identity and modified-code execution are untested",
+      "FX3 WBI image_mode/image_dev and drop sequence are unverified",
+      "FX3 Jiritsu temporary native loader and file transport are not runtime-proven"
+    ],
+    "installation_ready": false,
+    "patch_windows": [],
+    "source_original_sha256": {
+      "ap": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "cp": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "fstab": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0",
+      "bootin": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "im": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91"
+    }
+  }
+}

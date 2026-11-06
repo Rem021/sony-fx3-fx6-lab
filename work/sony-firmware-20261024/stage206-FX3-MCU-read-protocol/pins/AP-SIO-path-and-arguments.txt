@@ -1,0 +1,13 @@
+00400ca4 010000b0 adrp     x1, #0x401000
+00400ca8 e203132a mov      w2, w19
+00400cac 21583291 add      x1, x1, #0xc96
+00400cb0 a0c30191 add      x0, x29, #0x70
+00400cb4 bf7700b9 str      wzr, [x29, #0x74]
+00400cb8 a2ffff97 bl       #0x400b40
+00400cbc a1c30191 add      x1, x29, #0x70
+00400cc0 a0030291 add      x0, x29, #0x80
+00400cc4 d3ffff97 bl       #0x400c10
+00400cc8 e2031a2a mov      w2, w26
+00400ccc e103192a mov      w1, w25
+00400cd0 a0030291 add      x0, x29, #0x80
+00400cd4 7d010094 bl       #0x4012c8

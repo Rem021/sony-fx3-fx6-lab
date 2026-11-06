@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "checks": [
+    "NO CARD blink does not release key gate or enqueue input",
+    "stale blink identity rejected after full menu transition",
+    "full historical menu identity can clear host gate only",
+    "old image cannot send next key; current full image can",
+    "partial category transition remains locked until current image review",
+    "static no-change may be reviewed without invented pixel change",
+    "End remains possible with review pending and blocks late confirmation",
+    "final receipt and ACK remain functional",
+    "A→B→A stale visual generation cannot submit a new guest key"
+  ],
+  "guest_started": false,
+  "historical_PNG_SHA256": [
+    "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+    "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+    "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+    "557376846b91022bcb8f7dba6131a559652bc43210e1572e287b23d41f2d5560",
+    "15cb5b958cf6c78c43758f3c5771ef91a90e4de9a1eb06059bb23f2dea1596fc"
+  ],
+  "server_thread_reaped": true
+}

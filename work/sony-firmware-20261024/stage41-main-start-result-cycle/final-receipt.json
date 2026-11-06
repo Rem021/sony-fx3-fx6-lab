@@ -1,0 +1,82 @@
+{
+  "schema": "fx3-stage41-main-start-result-cycle/1",
+  "created_utc": "2026-10-26T00:43:13.853377+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/README.md",
+      "bytes": 5689,
+      "sha256": "ff76cc8204d592959f1e021c739d417ff1675c53c2249fdc663af3247639fe70"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/coordinator-observations.json",
+      "bytes": 1484,
+      "sha256": "64af29aaaa0207b6aab708d45c1f14fb513896fdca3281625983516280cac3b5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/goal-status-after.json",
+      "bytes": 76296,
+      "sha256": "509785c815aad1ef5a584e056c4f9c2964ca92a4f2ffa93303aa85717aa01ec4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/goal-status-before.json",
+      "bytes": 73064,
+      "sha256": "37815e63494fac924cf430567458d3417a9b861041bf6b5794359f3127a885f1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/next-state-and-lock-anchors.json",
+      "bytes": 30280,
+      "sha256": "208de308c8d112eeeb7c0d6ee27c1fef04b2c44dae2a761dca819a42e32395ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/run-20261025/executed-source.py",
+      "bytes": 12233,
+      "sha256": "e18e16cc33ed9a0da87269e043e4f6ad7c0207a30af77d9eabc8d5a5489e3cb8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/run-20261025/source-receipt.json",
+      "bytes": 979,
+      "sha256": "1a109632fc320918d3ca1552db0d02175453ae5e56c87c7c4980bf9dc6bd15a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/run-20261025/start-result-cycle-results.json",
+      "bytes": 2306228,
+      "sha256": "5a8b7618071f4fcf6e276a0397ef01b3969170279199989a3b68be3b6c1bdcf3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/run-20261025/summary.json",
+      "bytes": 706,
+      "sha256": "59af2c1b9a058cdbf67374072252eaf61ed91cf6668b84097f7f4fbbbb36fb1a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage41-main-start-result-cycle/start_result_cycle.py",
+      "bytes": 12233,
+      "sha256": "e18e16cc33ed9a0da87269e043e4f6ad7c0207a30af77d9eabc8d5a5489e3cb8"
+    }
+  ],
+  "previous_manifest_sha256": "c1faf520990b248bb660e7a43d7b139947b462b39b433007279b6b17eb75907f",
+  "scope": "79 original fragments/6 compiled guest calls. Same-owner original START-result consumption/message return/reborrow then STOP/four-parameter return; peek and5controls. Upper lock/state/request association identified only statically, transport/current epoch/HAL/physical recording/recovery unbound.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage41-main-start-result-cycle/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage41-main-start-result-cycle/goal-status-after.json",
+    "before_sha256": "37815e63494fac924cf430567458d3417a9b861041bf6b5794359f3127a885f1",
+    "after_sha256": "509785c815aad1ef5a584e056c4f9c2964ca92a4f2ffa93303aa85717aa01ec4",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_and_compiled_code": true,
+    "original_image_RX_unchanged": true,
+    "runtime_or_diagnostic_output_adapters": false,
+    "actual_upper_lock_state_transport_request_epoch_Hal_verified": false,
+    "upper_locked_wrapper_and_state_caller_static_anchors_only": true,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "hardware_main_media_same_body_backup_restore_WBI_coldboot_or_rescue_verified": false,
+    "camera_loadable_module_or_device_firmware_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 MAIN START结果与同对象周期](<work/sony-firmware-20261024/stage41-main-start-result-cycle/README.md>)：原START读者只还消息，消息缓冲原生再借用于STOP后归还四类参数；上层锁/状态/代次、硬件与恢复仍待验收。"
+}

@@ -1,0 +1,368 @@
+{
+  "scope": "offline scripted protocol fixture; real PAGE/server; historical prerequisite oracle mocked, no human/agent semantic review claimed",
+  "session": "fx3-deadline-r23-4581997e3569",
+  "cases": {
+    "dynamic_8_26_second_new_explicit_action": {
+      "receipt_status": "click_invoked",
+      "clicks": 1,
+      "keyPOST": 1,
+      "pending": 1,
+      "before_historical_frame": {
+        "gen": 1,
+        "seq": 1,
+        "sha": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+      },
+      "PAGE_attempt": {
+        "accepted_next_step": 1,
+        "alarm_due_ms": 23159.80000001192,
+        "alarm_nonce": "718b2f22-f23c-49ce-aae2-988119d93d9d",
+        "attempt_id": "9f9bdc16-1547-4fa4-be28-e9a1a2374ce6",
+        "base_step": 0,
+        "created_monotonic_ms": 11500.69999998808,
+        "document_time_origin": 1793839338874.9,
+        "expected_step": 1,
+        "frame": {
+          "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+          "content_generation": 11,
+          "sequence": 11
+        },
+        "key": 427,
+        "launch_request_id": "1bc1b163-c02e-45b3-bb7b-dcb82be40c87",
+        "mutation_called": true,
+        "observed_sequence": 11,
+        "outcome": "accepted",
+        "server_request_id": "9f9bdc16-1547-4fa4-be28-e9a1a2374ce6",
+        "updated_monotonic_ms": 11503.899999976158
+      },
+      "server_rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 0,
+        "truncated": 0,
+        "records": []
+      },
+      "external_wait_seconds": 8.262657167040743,
+      "dynamic_updates": [
+        {
+          "elapsed_seconds": 0.41041112499078736,
+          "generation": 2,
+          "sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a"
+        },
+        {
+          "elapsed_seconds": 0.8045234580058604,
+          "generation": 3,
+          "sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+        },
+        {
+          "elapsed_seconds": 2.4102248750277795,
+          "generation": 4,
+          "sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a"
+        },
+        {
+          "elapsed_seconds": 3.202857958036475,
+          "generation": 5,
+          "sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+        },
+        {
+          "elapsed_seconds": 3.6032272500451654,
+          "generation": 6,
+          "sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a"
+        },
+        {
+          "elapsed_seconds": 4.808506666042376,
+          "generation": 7,
+          "sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+        },
+        {
+          "elapsed_seconds": 5.2061241660267115,
+          "generation": 8,
+          "sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a"
+        },
+        {
+          "elapsed_seconds": 5.607305083016399,
+          "generation": 9,
+          "sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+        },
+        {
+          "elapsed_seconds": 6.807513125007972,
+          "generation": 10,
+          "sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a"
+        },
+        {
+          "elapsed_seconds": 7.200534583011176,
+          "generation": 11,
+          "sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+        }
+      ],
+      "click_time_frame": {
+        "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+        "content_generation": 11,
+        "sequence": 11
+      },
+      "old_static_generation_not_permission": true,
+      "ABA_retains_new_generation": true
+    },
+    "old_nonce": {
+      "receipt_status": "preflight_not_clicked",
+      "clicks": 0,
+      "keyPOST": 0,
+      "pending": 0,
+      "before_historical_frame": {
+        "gen": 1,
+        "seq": 1,
+        "sha": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+      },
+      "PAGE_attempt": null,
+      "server_rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 0,
+        "truncated": 0,
+        "records": []
+      }
+    },
+    "stopping": {
+      "receipt_status": "preflight_not_clicked",
+      "clicks": 0,
+      "keyPOST": 0,
+      "pending": 0,
+      "before_historical_frame": {
+        "gen": 1,
+        "seq": 1,
+        "sha": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+      },
+      "PAGE_attempt": null,
+      "server_rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 0,
+        "truncated": 0,
+        "records": []
+      }
+    },
+    "invalid_loaded_frame": {
+      "receipt_status": "preflight_not_clicked",
+      "clicks": 0,
+      "keyPOST": 0,
+      "pending": 0,
+      "before_historical_frame": {
+        "gen": 1,
+        "seq": 1,
+        "sha": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+      },
+      "PAGE_attempt": null,
+      "server_rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 0,
+        "truncated": 0,
+        "records": []
+      }
+    },
+    "postclick_server_generation_race": {
+      "receipt_status": "click_invoked",
+      "clicks": 1,
+      "keyPOST": 1,
+      "pending": 0,
+      "before_historical_frame": {
+        "gen": 1,
+        "seq": 1,
+        "sha": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+      },
+      "PAGE_attempt": {
+        "alarm_due_ms": 20044.099999964237,
+        "alarm_nonce": "db633928-d1cc-4bb0-a7a2-090f936c33a6",
+        "attempt_id": "f492e592-e295-46f2-b1aa-19794e8508c4",
+        "base_step": 0,
+        "created_monotonic_ms": 61.89999997615814,
+        "document_time_origin": 1793839350681.4,
+        "expected_step": 1,
+        "frame": {
+          "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+          "content_generation": 1,
+          "sequence": 1
+        },
+        "http_status": 409,
+        "key": 427,
+        "launch_request_id": "22b83570-b602-4400-84dc-61785fdfc635",
+        "mutation_called": true,
+        "observed_sequence": 1,
+        "outcome": "explicit_rejected_unqueued",
+        "server_request_id": "f492e592-e295-46f2-b1aa-19794e8508c4",
+        "updated_monotonic_ms": 64.09999996423721
+      },
+      "server_rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 1,
+        "truncated": 0,
+        "records": [
+          {
+            "host_monotonic_ns": 423036274084791,
+            "http_status": 409,
+            "reason": "frame_identity_or_render_invalid",
+            "failed_predicates": [
+              "sha_mismatch",
+              "generation_mismatch"
+            ],
+            "observed_sequence": 1,
+            "observed_cached": true,
+            "observed_png_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+            "observed_content_generation": 1,
+            "current_sequence": 999,
+            "current_png_sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a",
+            "current_content_generation": 2,
+            "render_valid": true,
+            "phase": "ready",
+            "ready": true,
+            "busy": false,
+            "pending_count": 0,
+            "review_required": false,
+            "steps": 0,
+            "stop_requested": false,
+            "error_present": false,
+            "request_id": "f492e592-e295-46f2-b1aa-19794e8508c4"
+          }
+        ]
+      }
+    },
+    "unknown_reply_no_retry": {
+      "receipt_status": "unknown",
+      "clicks": 1,
+      "keyPOST": 1,
+      "pending": 1,
+      "before_historical_frame": {
+        "gen": 1,
+        "seq": 1,
+        "sha": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+      },
+      "PAGE_attempt": {
+        "accepted_next_step": 1,
+        "alarm_due_ms": 20044,
+        "alarm_nonce": "69d7047a-486d-49c0-8817-3424d84a6a11",
+        "attempt_id": "885d330d-1f98-4f45-912d-a28b15d825cf",
+        "base_step": 0,
+        "created_monotonic_ms": 61.5,
+        "document_time_origin": 1793839350776.3,
+        "expected_step": 1,
+        "frame": {
+          "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+          "content_generation": 1,
+          "sequence": 1
+        },
+        "key": 427,
+        "launch_request_id": "369bcbeb-f570-44ce-906f-13fe0284fd63",
+        "mutation_called": true,
+        "observed_sequence": 1,
+        "outcome": "accepted",
+        "server_request_id": "885d330d-1f98-4f45-912d-a28b15d825cf",
+        "updated_monotonic_ms": 63.59999996423721
+      },
+      "server_rejections": {
+        "schema": "fx3-host-key-rejection-v1",
+        "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+        "capacity": 64,
+        "total": 0,
+        "truncated": 0,
+        "records": []
+      }
+    },
+    "actual_helper_main_rejections": {
+      "cases": 3,
+      "clicks": 0,
+      "keyPOST": 0
+    }
+  },
+  "server_pid": 44865,
+  "port": 59328,
+  "browser_session_info": {
+    "data": {
+      "active": true,
+      "namespace": null,
+      "pid": 44868,
+      "runtime": {
+        "backgroundPid": 44868,
+        "browserLaunched": true,
+        "compatibilityStatus": "current",
+        "effectiveLaunch": {
+          "browserLaunched": true,
+          "engine": "chrome",
+          "launchHash": 11677035664275010974
+        },
+        "engine": "chrome",
+        "launchHash": 11677035664275010974,
+        "lifecycle": {
+          "effectiveLaunch": {
+            "browserLaunched": true,
+            "engine": "chrome",
+            "launchHash": 11677035664275010974
+          },
+          "launched": false,
+          "relaunchedBrowser": false,
+          "restartedBackground": false,
+          "restoreStatus": "not_configured",
+          "reused": false,
+          "saveStatus": "not_attempted"
+        },
+        "namespace": null,
+        "pageCount": 1,
+        "restoreCheckFn": null,
+        "restoreCheckText": null,
+        "restoreCheckUrl": null,
+        "restoreKey": null,
+        "restoreLoadedPath": null,
+        "restoreSave": "auto",
+        "restoreSavedPath": null,
+        "restoreSkippedOrigins": [],
+        "restoreStatus": "not_configured",
+        "restoreStatusDetail": null,
+        "restoreValidationPending": false,
+        "saveStatus": "not_attempted",
+        "session": "fx3-deadline-r23-4581997e3569",
+        "socketDir": "/Users/kafu/.agent-browser"
+      },
+      "runtimeError": null,
+      "session": "fx3-deadline-r23-4581997e3569",
+      "socketDir": "/Users/kafu/.agent-browser",
+      "version": "0.41.2"
+    },
+    "success": true
+  },
+  "owned_browser_pids": [
+    44868,
+    44869,
+    44875,
+    44876,
+    44878,
+    44881,
+    44884,
+    44885,
+    44886,
+    44887,
+    44888,
+    44889
+  ],
+  "passed": true,
+  "browser_close": "✓ Browser closed",
+  "server_thread_alive": false,
+  "port_connect_ex_after_close": 61,
+  "owned_pid_alive_after": {
+    "44868": false,
+    "44869": false,
+    "44875": false,
+    "44876": false,
+    "44878": false,
+    "44881": false,
+    "44884": false,
+    "44885": false,
+    "44886": false,
+    "44887": false,
+    "44888": false,
+    "44889": false
+  }
+}

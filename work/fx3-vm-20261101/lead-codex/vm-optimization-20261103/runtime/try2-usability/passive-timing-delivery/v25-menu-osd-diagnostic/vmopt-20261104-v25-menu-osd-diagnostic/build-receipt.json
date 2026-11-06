@@ -1,0 +1,87 @@
+{
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic/vmopt-20261104-v25-menu-osd-diagnostic/candidate.json",
+  "candidate_sha256": "2b7e3971057d98abf37007aaaef2d6cfe854257805b0ed0c1fc01b646067c67c",
+  "base_candidate_sha256": "90adc5fda97a4b26293e4763da1ed3d5eec22eaf2f0115292c1b720c5049e9aa",
+  "initrd_sha256": "607c61789de6ba05bfd4ce632e445411ea3e2152b508bfa0e0ac9d48470e87fb",
+  "dtb_sha256": "d2ef71d0d0d8f394a154d1bf86c2c74b52f31d25c416b15052fb86d6029107f1",
+  "changed_members": [
+    {
+      "member": "simulation/fx3-osd-headless-v5.so",
+      "old_sha256": "8023300a7b02e69cb1ea39c1489214cabce403cc3cab39058ac00bf06cd2a636",
+      "new_sha256": "4cab743cef3841fbc24ef066aa503ff9fc22a973bbc09750e7fcd6215cd8eb9f",
+      "old_size": 99232,
+      "new_size": 115728
+    }
+  ],
+  "other_member_payloads_and_modes_unchanged": true,
+  "member_count": 1140,
+  "initrd_end_old": "0x45b035894",
+  "initrd_end_new": "0x45b039904",
+  "dtb_only_initrd_end_changed": true,
+  "seed_sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+  "QEMU_started": false,
+  "guest_validated": false,
+  "source_sha256": "d7b76e881684822f0be542ef52fbd065fa128595589d3cf0d44e491ca5c819b4",
+  "so_sha256": "4cab743cef3841fbc24ef066aa503ff9fc22a973bbc09750e7fcd6215cd8eb9f",
+  "builder_sha256": "7245eca988c5a6f0dd7fc3e2ac178a6162af1411908b12c1849d067c7e256cb1",
+  "original_elf_audit": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/libObj.so",
+    "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+    "text_vma": "0x57d90",
+    "text_file_offset": "0x57d90",
+    "instruction_guards": [
+      {
+        "vma": "0xf2220",
+        "file_offset": "0xf2220",
+        "original_word": "f9402400"
+      },
+      {
+        "vma": "0xf2224",
+        "file_offset": "0xf2224",
+        "original_word": "94002c48"
+      },
+      {
+        "vma": "0xf2234",
+        "file_offset": "0xf2234",
+        "original_word": "14002c54"
+      },
+      {
+        "vma": "0xf22c8",
+        "file_offset": "0xf22c8",
+        "original_word": "f9402660"
+      },
+      {
+        "vma": "0xf22cc",
+        "file_offset": "0xf22cc",
+        "original_word": "94002c2e"
+      },
+      {
+        "vma": "0xf22f0",
+        "file_offset": "0xf22f0",
+        "original_word": "79400022"
+      },
+      {
+        "vma": "0xf22f4",
+        "file_offset": "0xf22f4",
+        "original_word": "528c0063"
+      },
+      {
+        "vma": "0xf2300",
+        "file_offset": "0xf2300",
+        "original_word": "528c00a3"
+      },
+      {
+        "vma": "0xfd354",
+        "file_offset": "0xfd354",
+        "original_word": "97fd60c7"
+      },
+      {
+        "vma": "0xfd390",
+        "file_offset": "0xfd390",
+        "original_word": "97fd6a08"
+      }
+    ],
+    "menu_handler_offset": null,
+    "menu_handler_attribution": "unproven"
+  }
+}

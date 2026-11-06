@@ -1,0 +1,17 @@
+  194120: 97fffe69     	bl	0x193ac4 <_ZN14MxfMovieWriter15IsEditAvailableEN15BaseMovieWriter8EditTypeEN3mpr15EssenceMarkTypeE+0x1a0>
+  194124: 79403280     	ldrh	w0, [x20, #0x18]
+  194128: 7900f260     	strh	w0, [x19, #0x78]
+  19412c: f9400280     	ldr	x0, [x20]
+  194130: f9004a60     	str	x0, [x19, #0x90]
+
+  19948c: 54002fcd     	b.le	0x199a84 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x1770>
+  199490: 1e230001     	ucvtf	s1, w0
+  199494: 7940f262     	ldrh	w2, [x19, #0x78]
+  199498: 92800761     	mov	x1, #-0x3c              // =-60
+  19949c: 52800780     	mov	w0, #0x3c               // =60
+
+  199ff4: 97ffe6b4     	bl	0x193ac4 <_ZN14MxfMovieWriter15IsEditAvailableEN15BaseMovieWriter8EditTypeEN3mpr15EssenceMarkTypeE+0x1a0>
+  199ff8: 91060260     	add	x0, x19, #0x180
+  199ffc: 7900f27f     	strh	wzr, [x19, #0x78]
+  19a000: 3902227f     	strb	wzr, [x19, #0x88]
+  19a004: d2802002     	mov	x2, #0x100              // =256

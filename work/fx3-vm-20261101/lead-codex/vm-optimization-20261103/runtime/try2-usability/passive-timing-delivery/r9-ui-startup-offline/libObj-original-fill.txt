@@ -1,0 +1,51 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000ff170 <grm_res>:
+  100c48: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  100c4c: 910003fd     	mov	x29, sp
+  100c50: f9000bf3     	str	x19, [sp, #0x10]
+  100c54: aa0003f3     	mov	x19, x0
+  100c58: d2800240     	mov	x0, #0x12               // =18
+  100c5c: 97fff971     	bl	0xff220 <grm_res+0xb0>
+  100c60: b4000060     	cbz	x0, 0x100c6c <grm_res+0x1afc>
+  100c64: d28000a0     	mov	x0, #0x5                // =5
+  100c68: 97fff6de     	bl	0xfe7e0 <uiresp_init+0xa80>
+  100c6c: d2800280     	mov	x0, #0x14               // =20
+  100c70: 97fff96c     	bl	0xff220 <grm_res+0xb0>
+  100c74: b4000060     	cbz	x0, 0x100c80 <grm_res+0x1b10>
+  100c78: d28000e0     	mov	x0, #0x7                // =7
+  100c7c: 97fff6d9     	bl	0xfe7e0 <uiresp_init+0xa80>
+  100c80: f9403e60     	ldr	x0, [x19, #0x78]
+  100c84: 9100a3a1     	add	x1, x29, #0x28
+  100c88: 97fd52ae     	bl	0x55740 <GRM_bitmapGetPhysicalAddress@plt>
+  100c8c: 34000120     	cbz	w0, 0x100cb0 <grm_res+0x1b40>
+  100c90: b0000703     	adrp	x3, 0x1e1000
+  100c94: b0000701     	adrp	x1, 0x1e1000
+  100c98: b0000700     	adrp	x0, 0x1e1000
+  100c9c: 913f2063     	add	x3, x3, #0xfc8
+  100ca0: 913e1021     	add	x1, x1, #0xf84
+  100ca4: 913eb800     	add	x0, x0, #0xfae
+  100ca8: 52800ca2     	mov	w2, #0x65               // =101
+  100cac: 97fd5481     	bl	0x55eb0 <__assert_fail@plt>
+  100cb0: aa1303e3     	mov	x3, x19
+  100cb4: f94017a1     	ldr	x1, [x29, #0x28]
+  100cb8: d2800002     	mov	x2, #0x0                // =0
+  100cbc: f8040c61     	str	x1, [x3, #0x40]!
+  100cc0: 52800001     	mov	w1, #0x0                // =0
+  100cc4: 97fd5313     	bl	0x55910 <_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE@plt>
+  100cc8: d2800280     	mov	x0, #0x14               // =20
+  100ccc: 97fff955     	bl	0xff220 <grm_res+0xb0>
+  100cd0: b4000060     	cbz	x0, 0x100cdc <grm_res+0x1b6c>
+  100cd4: d28000e0     	mov	x0, #0x7                // =7
+  100cd8: 97fff6dd     	bl	0xfe84c <uiresp_init+0xaec>
+  100cdc: 52800040     	mov	w0, #0x2                // =2
+  100ce0: 2906027f     	stp	wzr, w0, [x19, #0x30]
+  100ce4: aa1303e0     	mov	x0, x19
+  100ce8: 97ffffc7     	bl	0x100c04 <grm_res+0x1a94>
+  100cec: f9400bf3     	ldr	x19, [sp, #0x10]
+  100cf0: 52800000     	mov	w0, #0x0                // =0
+  100cf4: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  100cf8: d65f03c0     	ret

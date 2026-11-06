@@ -1,0 +1,67 @@
+{
+  "scope": "independent read-only host publish boundary; root cause unproven",
+  "updated_utc": "2026-11-05T03:56:42.835083+00:00",
+  "valid_header_poll_count": 2,
+  "polls": [
+    {
+      "host_monotonic": 434346.478554125,
+      "global_words": [
+        3622950502062641999,
+        2,
+        237,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        1572864,
+        65536,
+        0,
+        0
+      ],
+      "final": false
+    },
+    {
+      "host_monotonic": 434346.715256791,
+      "global_words": [
+        3622950502062641999,
+        2,
+        237,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        8,
+        1572864,
+        65536,
+        0,
+        0
+      ],
+      "final": true
+    }
+  ],
+  "frame_count": 1,
+  "rejected_torn_count": 0,
+  "frame_host_monotonic": 434346.781459375,
+  "source_readback_sha256": "3699681168b751fb253f1a484b46e9b1f905dbf5e8d629b7e69b1a43552490d8",
+  "code_evidence": {
+    "runtime": "r28-first-observation-candidate/run_trial_r24_review_snapshot.py:804",
+    "meaning": "cleanup performs poll(final=True) after consistent quiesced readback; successful poll calls state.publish",
+    "reader": "v25-r21-recovery-integration/trial_ring_cached.py:46",
+    "logging_boundary": "poll records only headers with MAGIC/version accepted; only2 records does not mean only2 calls occurred"
+  },
+  "observed_boundary": "last non-final valid header sequence0; first final valid header sequence1; no rejected torn samples recorded",
+  "limitations": [
+    "No proof that End caused guest first frame",
+    "No exact guest compositor time inferred from host observation",
+    "Why earlier live headers absent/unqualified still needs investigation"
+  ]
+}

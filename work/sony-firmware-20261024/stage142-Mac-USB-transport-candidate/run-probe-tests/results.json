@@ -1,0 +1,29 @@
+{
+  "status": "PASS_PROBE_BOUNDARIES_WITH_SYNTHETIC_WORKER_NO_REAL_NATIVE_OR_USB",
+  "cases": [
+    "plan local only",
+    "current authority refuses before cache fork or claim",
+    "service PID rejected before native load",
+    "synthetic allowed parent preserves claim and result",
+    "second attempt refused before cache or worker",
+    "cached absent refuses before claim and worker",
+    "cached moved refuses before claim and worker",
+    "cached ambiguous refuses before claim and worker",
+    "worker rejects mismatched nonce",
+    "worker rejects mismatched parent",
+    "worker rejects mismatched location",
+    "worker rejects mismatched probe",
+    "bounded worker metadata",
+    "bounded worker error",
+    "bounded worker invalid JSON",
+    "bounded worker wrong schema",
+    "bounded worker oversized",
+    "bounded worker timeout killed",
+    "bounded worker timeout still unknown"
+  ],
+  "case_count": 19,
+  "probe_sha256": "6bfaaaa7d7d5a2a96a7e7b05ffb58f6c512f3b5820c03354f71f7bd01e993319",
+  "test_sha256": "257614e109d8e5dfc16b3f8be697def01db70ebff49fd171452616fd1d6c2d1a",
+  "real_native_load_USB_driver_or_camera_operations": 0,
+  "one_shot_real_claim_created": false
+}

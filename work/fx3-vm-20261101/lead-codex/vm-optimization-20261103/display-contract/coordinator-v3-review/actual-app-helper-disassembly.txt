@@ -1,0 +1,54 @@
+
+work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2eaf294: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+ 2eaf298: 910003fd     	mov	x29, sp
+ 2eaf29c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2eaf2a0: 12807ff4     	mov	w20, #-0x400            // =-1024
+ 2eaf2a4: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 2eaf2a8: a90363f7     	stp	x23, x24, [sp, #0x30]
+ 2eaf2ac: a9046bf9     	stp	x25, x26, [sp, #0x40]
+ 2eaf2b0: 34000480     	cbz	w0, 0x2eaf340 <Application_System_Init+0x17bf7b0>
+ 2eaf2b4: 2a0103f9     	mov	w25, w1
+ 2eaf2b8: 910163a1     	add	x1, x29, #0x58
+ 2eaf2bc: 2a0303f7     	mov	w23, w3
+ 2eaf2c0: 2a0203f8     	mov	w24, w2
+ 2eaf2c4: 52800023     	mov	w3, #0x1                // =1
+ 2eaf2c8: 52800202     	mov	w2, #0x10               // =16
+ 2eaf2cc: 2a0003f5     	mov	w21, w0
+ 2eaf2d0: 2a0603fa     	mov	w26, w6
+ 2eaf2d4: aa0503f3     	mov	x19, x5
+ 2eaf2d8: 2a0403f6     	mov	w22, w4
+ 2eaf2dc: 979b9391     	bl	0x1594120 <osal_valloc_msg_wait@plt>
+ 2eaf2e0: 2a0003f4     	mov	w20, w0
+ 2eaf2e4: 350002e0     	cbnz	w0, 0x2eaf340 <Application_System_Init+0x17bf7b0>
+ 2eaf2e8: f9402fa0     	ldr	x0, [x29, #0x58]
+ 2eaf2ec: 2a1a03e1     	mov	w1, w26
+ 2eaf2f0: 979b8ac4     	bl	0x1591e00 <osal_set_msg_src@plt>
+ 2eaf2f4: f9402fa1     	ldr	x1, [x29, #0x58]
+ 2eaf2f8: 2a1503e0     	mov	w0, w21
+ 2eaf2fc: 29006039     	stp	w25, w24, [x1]
+ 2eaf300: 29015837     	stp	w23, w22, [x1, #0x8]
+ 2eaf304: 979b92b7     	bl	0x1593de0 <osal_snd_sync_msg@plt>
+ 2eaf308: 7100001f     	cmp	w0, #0x0
+ 2eaf30c: fa400a64     	ccmp	x19, #0x0, #0x4, eq
+ 2eaf310: 2a0003f4     	mov	w20, w0
+ 2eaf314: 54000100     	b.eq	0x2eaf334 <Application_System_Init+0x17bf7a4>
+ 2eaf318: f9402fa0     	ldr	x0, [x29, #0x58]
+ 2eaf31c: b9400001     	ldr	w1, [x0]
+ 2eaf320: b9000261     	str	w1, [x19]
+ 2eaf324: b9400401     	ldr	w1, [x0, #0x4]
+ 2eaf328: b9000661     	str	w1, [x19, #0x4]
+ 2eaf32c: 29410001     	ldp	w1, w0, [x0, #0x8]
+ 2eaf330: 29010261     	stp	w1, w0, [x19, #0x8]
+ 2eaf334: f9402fa1     	ldr	x1, [x29, #0x58]
+ 2eaf338: 2a1503e0     	mov	w0, w21
+ 2eaf33c: 979b9425     	bl	0x15943d0 <osal_free_msg@plt>
+ 2eaf340: 2a1403e0     	mov	w0, w20
+ 2eaf344: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2eaf348: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2eaf34c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+ 2eaf350: a9446bf9     	ldp	x25, x26, [sp, #0x40]

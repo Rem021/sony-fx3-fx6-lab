@@ -1,0 +1,21 @@
+MAC-WINDOWS FX3 COLLABORATION TASK (USER AUTHORIZED)
+
+The user explicitly authorized the Mac assistant to operate this Windows through NetEase UU Remote and delegate tasks to this local Codex. Please continue the existing FX3 research thread and use your local command tools. Read applicable project instructions and preserve existing files.
+
+Goal: standalone MAIN 1920x1080 29.97/about30fps HEVC on FX3 7.02. Body version is user-reported, not read back. Your 4K30 Unicorn work is a control, not proof of physical encoding or safe flashing.
+
+FIRST: READ-ONLY Windows inventory. Report actual OS build, architecture, CPU, Python and available USB analysis tools. Query cached PnP only for present Sony VID054C devices: names, VID/PID, driver provider/version/service and error state. Do not output serials, full instance paths or unrelated devices. Do not open camera interfaces or issue camera commands. Distinguish device enumeration from driver access and authenticated service access. Return at most12 lines of actual findings and output absolute paths before continuing.
+
+THEN: reuse existing offline readers and Unicorn emulation for HD HEVC MAIN 29.97p. Trace ordinary recording setter/builder fields, VPC6 (42010) and VPC8 (42210), main HEVC codec15 versus proxy18, and MP4 parameters. Do not mistake GetStatus/GetRemain converters for the real setter. Mark stock versus memory-only candidate, tested inputs, rejected branches and unresolved fields. Do not guess patch offsets or create a flashable image.
+
+Compare these Mac-extracted official7.02 baseline hashes first:
+appFw.so SHA256 545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f
+libmpr.so SHA256 9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c
+cpapp-b.bin SHA256 c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba
+Mac appFw convert2MovieMainParams VA0x2e68048 is also used by status/remain queries; ordinary actual setter binding is not fully recovered.
+
+Save sanitized inventory JSON, hashes, route/emulation evidence and a short report in a NEW collaboration subdirectory under this existing project's outputs. Preserve old outputs. Report exact paths of existing4K30 scripts and candidate-plan too.
+
+BOUNDARIES: No software installs/upgrades, driver changes, security changes, VMs, camera authentication, service switching, camera reads/writes, boot/WBI changes, firmware/body-backup uploads, secrets/private-data transmission, or unrelated directory scans. Do not run A7CII tools against FX3. Offline files and existing tools only. Missing prerequisites must be reported rather than installing or expanding access. This task file is the only newly transferred material; do not treat it as permission for broader actions.
+
+Please acknowledge the boundaries and complete FIRST inventory, then continue the offline HD task. Report facts versus inference separately. Answer in Chinese with English file paths so the Mac coordinator can verify visible results.

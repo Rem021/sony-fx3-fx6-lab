@@ -1,0 +1,409 @@
+{
+  "stage": "mpr_same_call_return_captured;cleanup",
+  "mapping": {
+    "pid": 237,
+    "snapshot_kind": "early_complete",
+    "snapshot_byte_range": [
+      243909,
+      276018
+    ],
+    "im": {
+      "bias": 0,
+      "inode": 1274,
+      "segments": [
+        {
+          "fileoff": 0,
+          "va": 4194304,
+          "filesz": 35147,
+          "memsz": 35147,
+          "align": 65536,
+          "flags": 5
+        },
+        {
+          "fileoff": 35920,
+          "va": 4295760,
+          "filesz": 2816,
+          "memsz": 2872,
+          "align": 65536,
+          "flags": 6
+        }
+      ],
+      "rows": [
+        {
+          "start": 4194304,
+          "end": 4231168,
+          "perms": "r-xp",
+          "offset": 0,
+          "inode": 1274,
+          "path": "/usr/bin/im.elf"
+        },
+        {
+          "start": 4292608,
+          "end": 4296704,
+          "perms": "r--p",
+          "offset": 32768,
+          "inode": 1274,
+          "path": "/usr/bin/im.elf"
+        },
+        {
+          "start": 4296704,
+          "end": 4300800,
+          "perms": "rw-p",
+          "offset": 36864,
+          "inode": 1274,
+          "path": "/usr/bin/im.elf"
+        },
+        {
+          "start": 4194304,
+          "end": 4231168,
+          "perms": "r-xp",
+          "offset": 0,
+          "inode": 1274,
+          "path": "/usr/bin/im.elf"
+        },
+        {
+          "start": 4292608,
+          "end": 4296704,
+          "perms": "r--p",
+          "offset": 32768,
+          "inode": 1274,
+          "path": "/usr/bin/im.elf"
+        },
+        {
+          "start": 4296704,
+          "end": 4300800,
+          "perms": "rw-p",
+          "offset": 36864,
+          "inode": 1274,
+          "path": "/usr/bin/im.elf"
+        }
+      ]
+    },
+    "ap": {
+      "bias": 544955924480,
+      "source": "same-record IM dlsym return plus current CPU ELF/PHDR/code"
+    },
+    "mpr": null
+  },
+  "records": [
+    {
+      "kind": "dispatch",
+      "vCPU": "02",
+      "stop": "T05thread:02;",
+      "pc": "0x406284",
+      "va": "0x406284",
+      "word_le": "e8feff97",
+      "x0": "0x7f94dcf670",
+      "fp": "0x7f62ffe6c0",
+      "tls": "0x7f62fff740",
+      "current_im_identity": {
+        "bias": "0x0",
+        "header_va": "0x400000",
+        "machine": "AArch64",
+        "elf_header_sha256": "6c965232a9b7266dbc4d27870f6368d8f000cf59b070257c8d70253dd670b708",
+        "program_headers_sha256": "5b2c04586516c1e827788f7ae71c4c43ae8d4ddbf56dd424599c290dafd50ec3",
+        "original_code_words": [
+          {
+            "va": "0x406284",
+            "file_offset": "0x6284",
+            "word_le": "e8feff97"
+          },
+          {
+            "va": "0x405f10",
+            "file_offset": "0x5f10",
+            "word_le": "f40300aa"
+          },
+          {
+            "va": "0x405eac",
+            "file_offset": "0x5eac",
+            "word_le": "a9f0ff97"
+          },
+          {
+            "va": "0x405f44",
+            "file_offset": "0x5f44",
+            "word_le": "80023fd6"
+          }
+        ]
+      },
+      "record": "0x7f94dcf670",
+      "record_words": [
+        "0x20000004",
+        "0x1",
+        "0xffffff9f",
+        "0x83"
+      ],
+      "path": "appFw.so",
+      "symbol": "Application_System_Init"
+    },
+    {
+      "kind": "dlsym_return",
+      "vCPU": "02",
+      "stop": "T05thread:02;",
+      "pc": "0x405f10",
+      "va": "0x405f10",
+      "word_le": "f40300aa",
+      "x0": "0x7ee2a83044",
+      "fp": "0x7f62ffe670",
+      "tls": "0x7f62fff740",
+      "ap_entry": "0x7ee2a83044",
+      "ap_bias": "0x7ee1e78000",
+      "current_ap_identity": {
+        "bias": "0x7ee1e78000",
+        "elf_header_sha256": "4809d8af884a2ecca2b2377344969f3df623b19ef27ab6a3bf49fefdb180e9dd",
+        "program_headers_sha256": "80b29fd6f9b19554dba009da973b148f2e9ae7a393831e2a905f8c50993055dc",
+        "program_header_bytes": 336,
+        "machine": "AArch64",
+        "original_code_words": [
+          {
+            "va": "0xc0b044",
+            "file_offset": "0xc0b044",
+            "word_le": "fd7bbaa9"
+          },
+          {
+            "va": "0x212f488",
+            "file_offset": "0x212f488",
+            "word_le": "b4830091"
+          },
+          {
+            "va": "0x212f7b8",
+            "file_offset": "0x212f7b8",
+            "word_le": "429fa797"
+          },
+          {
+            "va": "0x212f7bc",
+            "file_offset": "0x212f7bc",
+            "word_le": "f35341a9"
+          },
+          {
+            "va": "0xb174c0",
+            "file_offset": "0xb174c0",
+            "word_le": "d01e01d0"
+          },
+          {
+            "va": "0xb174c4",
+            "file_offset": "0xb174c4",
+            "word_le": "11b641f9"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "call",
+      "vCPU": "02",
+      "stop": "T05thread:02;",
+      "pc": "0x7ee3fa77b8",
+      "va": "0x212f7b8",
+      "word_le": "429fa797",
+      "x0": "0x7ed5e763b0",
+      "fp": "0x7ed5e76390",
+      "tls": "0x7ed5e77740",
+      "current_ap_identity": {
+        "bias": "0x7ee1e78000",
+        "elf_header_sha256": "4809d8af884a2ecca2b2377344969f3df623b19ef27ab6a3bf49fefdb180e9dd",
+        "program_headers_sha256": "80b29fd6f9b19554dba009da973b148f2e9ae7a393831e2a905f8c50993055dc",
+        "program_header_bytes": 336,
+        "machine": "AArch64",
+        "original_code_words": [
+          {
+            "va": "0xc0b044",
+            "file_offset": "0xc0b044",
+            "word_le": "fd7bbaa9"
+          },
+          {
+            "va": "0x212f488",
+            "file_offset": "0x212f488",
+            "word_le": "b4830091"
+          },
+          {
+            "va": "0x212f7b8",
+            "file_offset": "0x212f7b8",
+            "word_le": "429fa797"
+          },
+          {
+            "va": "0x212f7bc",
+            "file_offset": "0x212f7bc",
+            "word_le": "f35341a9"
+          },
+          {
+            "va": "0xb174c0",
+            "file_offset": "0xb174c0",
+            "word_le": "d01e01d0"
+          },
+          {
+            "va": "0xb174c4",
+            "file_offset": "0xb174c4",
+            "word_le": "11b641f9"
+          }
+        ]
+      },
+      "parameter": "0x7ed5e763b0",
+      "parameter_0x290_sha256": "585d8918da368cec6ef689aa3c14dc3306311ab6661c0bffc9a02e1685430cf1",
+      "parameter_0x290_hex": "00000000000000004c15fae37e000000384ffbe37e000000244efbe37e000000744dfbe37e0000007c98fbe37e0000002c15fae37e000000241bfbe37e000000a81afbe37e000000a44cfbe37e0000000c4cfbe37e0000005816fae37e000000244afbe37e000000f814fae37e0000005819fae37e000000fc59fae37e000000d848fbe37e000000e43cfbe37e000000bc14fae37e0000003820fae37e0000005808fae37e0000007872fae37e0000005448fbe37e000000ac47fbe37e0000000844fbe37e0000005c08fae37e0000006008fae37e0000009c14fae37e0000006814fae37e0000000000000000000000000000000000000000000000000000006408fae37e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002037fae37e0000002418fae37e0000007c41fbe37e000000f040fbe37e0000006440fbe37e000000c03ffbe37e0000002c14fae37e000000e83efbe37e000000f813fae37e000000bc13fae37e0000008013fae37e0000006813fbe37e000000643efbe37e000000e03dfbe37e0000000000000000000000383bfbe37e0000003c3cfbe37e0000006808fae37e000000bc38fae37e0000005438fae37e000000e466fae37e000000d015fae37e00000000000000000000009015fae37e000000303afbe37e000000b43afbe37e00000000000000000000006013fae37e00000000000000000000000000000000000000f438fbe37e0000009839fbe37e0000000200000000100000101000000000000000000000ffff000001000000ffffffffffffa00500000000",
+      "callback_plus_1d0": "0x7ee3fb3de0",
+      "callback_expected": "0x7ee3fb3de0",
+      "count_plus_268": 2,
+      "u16_fx3_reads_plus_1f2": 58362,
+      "u16_fx6_source_plus_28a": 1440,
+      "got_slot": "0x7ee4d69368",
+      "got_before": "0x7ee298edd0",
+      "mpr_identity_before": null
+    },
+    {
+      "kind": "return",
+      "vCPU": "02",
+      "stop": "T05thread:02;",
+      "pc": "0x7ee3fa77bc",
+      "va": "0x212f7bc",
+      "word_le": "f35341a9",
+      "x0": "0x3",
+      "fp": "0x7ed5e76390",
+      "tls": "0x7ed5e77740",
+      "current_ap_identity": {
+        "bias": "0x7ee1e78000",
+        "elf_header_sha256": "4809d8af884a2ecca2b2377344969f3df623b19ef27ab6a3bf49fefdb180e9dd",
+        "program_headers_sha256": "80b29fd6f9b19554dba009da973b148f2e9ae7a393831e2a905f8c50993055dc",
+        "program_header_bytes": 336,
+        "machine": "AArch64",
+        "original_code_words": [
+          {
+            "va": "0xc0b044",
+            "file_offset": "0xc0b044",
+            "word_le": "fd7bbaa9"
+          },
+          {
+            "va": "0x212f488",
+            "file_offset": "0x212f488",
+            "word_le": "b4830091"
+          },
+          {
+            "va": "0x212f7b8",
+            "file_offset": "0x212f7b8",
+            "word_le": "429fa797"
+          },
+          {
+            "va": "0x212f7bc",
+            "file_offset": "0x212f7bc",
+            "word_le": "f35341a9"
+          },
+          {
+            "va": "0xb174c0",
+            "file_offset": "0xb174c0",
+            "word_le": "d01e01d0"
+          },
+          {
+            "va": "0xb174c4",
+            "file_offset": "0xb174c4",
+            "word_le": "11b641f9"
+          }
+        ]
+      },
+      "got_after": "0x7eed20d844",
+      "mpr_identity_after": {
+        "bias": 545143484416,
+        "identity": {
+          "bias": "0x7eed157000",
+          "elf_header_sha256": "80d423f4dd9e67cdf1b1e2ab0538da797a5e77457b231a73169aa3c2578d6ace",
+          "program_headers_sha256": "f1d8c6cc7358b64b434ecd216dadbdcca706abaa0fc27a9a1fdb35efdc6e6c15",
+          "program_header_bytes": 280,
+          "machine": "AArch64",
+          "original_code_words": [
+            {
+              "va": "0xb6844",
+              "file_offset": "0xb6844",
+              "word_le": "fd7bb2a9"
+            },
+            {
+              "va": "0xb6870",
+              "file_offset": "0xb6870",
+              "word_le": "60d241b9"
+            },
+            {
+              "va": "0xb6874",
+              "file_offset": "0xb6874",
+              "word_le": "1f100071"
+            },
+            {
+              "va": "0xb6878",
+              "file_offset": "0xb6878",
+              "word_le": "49030054"
+            },
+            {
+              "va": "0x13250c",
+              "file_offset": "0x13250c",
+              "word_le": "fd7bbca9"
+            }
+          ]
+        },
+        "method": "GOT target minus original MPR Init VA; current CPU ELF/PHDR/words"
+      },
+      "return_w0_signed32": 3,
+      "mpr_entry_observed": false,
+      "capid_init_observed_if_armed": false,
+      "capid_breakpoint_armed": false,
+      "same_parameter": "0x7ed5e763b0",
+      "status": "same_call_return; MPR binding proven only if current mpr_identity_after present"
+    }
+  ],
+  "breakpoints_still_installed": [],
+  "resume_acks": [
+    {
+      "stage": "await_type4_record",
+      "command": "c",
+      "ack": "+"
+    },
+    {
+      "stage": "await_ap_dlsym_return",
+      "command": "c",
+      "ack": "+"
+    },
+    {
+      "stage": "await_mpr_call",
+      "command": "c",
+      "ack": "+"
+    },
+    {
+      "stage": "await_return",
+      "command": "c",
+      "ack": "+"
+    }
+  ],
+  "qmp_statuses": [
+    {
+      "stage": "arm",
+      "status": "paused"
+    },
+    {
+      "stage": "await_type4_record",
+      "status": "running"
+    },
+    {
+      "stage": "await_type4_record",
+      "status": "debug",
+      "rsp_stop": "T05thread:02;"
+    },
+    {
+      "stage": "await_ap_dlsym_return",
+      "status": "running"
+    },
+    {
+      "stage": "await_ap_dlsym_return",
+      "status": "debug",
+      "rsp_stop": "T05thread:02;"
+    },
+    {
+      "stage": "await_mpr_call",
+      "status": "running"
+    },
+    {
+      "stage": "await_mpr_call",
+      "status": "debug",
+      "rsp_stop": "T05thread:02;"
+    },
+    {
+      "stage": "await_return",
+      "status": "debug",
+      "rsp_stop": "T05thread:02;"
+    }
+  ],
+  "policy": "Z1/z1 and addressless c, stopped-only g/p/m/XML; no guest writes, step, keys"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "fx3-stage44-same-agent-source-and-trace-review/1",
+  "created_utc": "2026-10-26T01:20:28.876501+00:00",
+  "reviewer": "same coordinator; not independent replay or physical acceptance",
+  "passing_run": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/run-20261025",
+  "original_fragments": 14,
+  "source_instructions": 365,
+  "original_store_events": 97,
+  "unique_observed_PCs_including_boundaries": 214,
+  "script_equals_executed_copy_and_result_hashes_verified": true,
+  "all_observed_PCs_original_image_or_return_sentinel_not_compiled_prototype": true,
+  "all_guest_stores_arena_or_stack": true,
+  "checks": [
+    "Two legal-state STOP wrappers stop at mandatory transition diagnostic before state store/action.",
+    "Two independent action prefixes pass outer+31f70 to PCIATU unmap and stop before runtime lock wait.",
+    "Unmap local inactive/invalid-handle branches return1 without bottom service; valid-handle branch stops before service.",
+    "Declared held-guard fixture clears local bytes before actual unlock; acquisition/unlock never claimed.",
+    "Original type3 parser passes byte+a as u8 parameter key and result+4; original separate format fragment labels seq_id and forced_stop_flag.",
+    "Two separate packet/send-preparation fragments build2103/113/12/channel7; queue send unexecuted and no current epoch proved.",
+    "Only declared fragments executed; no log/lock/service success adapter, no camera/UU/Windows operation."
+  ],
+  "full_STOP_hardware_media_or_recovery_verified": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

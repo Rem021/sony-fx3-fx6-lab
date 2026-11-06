@@ -1,0 +1,70 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v10_stale_review.py	2026-11-03 06:11:11
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v12_mss_safe.py	2026-11-03 06:47:41
+@@ -23,7 +23,7 @@
+ from cpio_audit import audit
+ from trial_ring_usability import TrialRingReader
+ from trial_web_v3_usability import TrialState, start_server, KEYS
+-from trial_log_v3_usability import FullLogMonitor
++from trial_log_v4_mss import FullLogMonitor
+ from trial_health_v2 import evaluate as evaluate_health
+ from gate_input_usability import InputGate,valid_command
+ from file_readback100 import capture as capture_native_file
+@@ -78,13 +78,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = OUT / 'power-observe-STATE.json'
++    path = OUT / 'mss-safe-STATE.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = OUT / 'power-observe-STATE.json.tmp'
++    temp = OUT / 'mss-safe-STATE.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -99,20 +99,20 @@
+     ns = ap.parse_args()
+     if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 120 or not 32 <= ns.max_steps <= 4096:
+         ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
+-    ns.candidate = OUT/'vmopt-20261103-try2-power-observe-v1/candidate.json'
++    ns.candidate = OUT/'vmopt-20261103-try2-mss-safe-v2/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2powerinternal' if ns.internal_hoststep else 'try2power'
++    ns.label = 'try2mssinternal' if ns.internal_hoststep else 'try2mss'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-power-observe-v1'):
++    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-mss-safe-v2'):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+-    if digest(candidate_path) != 'd53363f076f5d0129c68e7489d407b0baab300bec62f487decf96a73e29d90a6':
++    if digest(candidate_path) != '6dd9fee185c4ea1a8859a70cca19a3af7f5c6d8d0280f849fc60afd21eba30b4':
+         raise RuntimeError('TRY2 manifest identity changed')
+     candidate = json.loads(candidate_path.read_text())
+     if candidate.get('try2_contract', {}).get('ready_before_CP_binding') is not True:
+@@ -128,7 +128,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-power-observe-v1') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-power-observe-v1'):
++    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-mss-safe-v2') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-mss-safe-v2'):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+@@ -192,7 +192,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v3_usability.py','trial_ring_usability.py','trial_log_usability.py','restore_api103_v2.py']:
++    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v3_usability.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
+         shutil.copyfile(OUT / name if (OUT / name).exists() else ROOT / name, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+     (run / 'cpio-audit.json').write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')

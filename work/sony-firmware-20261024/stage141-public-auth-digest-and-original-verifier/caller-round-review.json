@@ -1,0 +1,48 @@
+{
+  "status": "PASS_STATIC_NIN_CALLER_ROUND_REGISTER_NOT_THREAD_EXECUTION",
+  "original_core_sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+  "NinThread_function_sha256": "a4957fd5e9293966c04866a41e247d712d09edee335280df8ca5243d9c35d863",
+  "original_round_register": "w20",
+  "initial_round": 1,
+  "inclusive_round_limit": 3,
+  "selected_instructions": [
+    {
+      "pc": "0xbc1c",
+      "bytes": "34008052",
+      "asm": "mov w20, #1",
+      "PLT_symbol": null
+    },
+    {
+      "pc": "0xbd58",
+      "bytes": "e203142a",
+      "asm": "mov w2, w20",
+      "PLT_symbol": null
+    },
+    {
+      "pc": "0xbd64",
+      "bytes": "03f9ff97",
+      "asm": "bl #0xa170",
+      "PLT_symbol": "_Z6xxstepPhS_i"
+    },
+    {
+      "pc": "0xbdd4",
+      "bytes": "94060011",
+      "asm": "add w20, w20, #1",
+      "PLT_symbol": null
+    },
+    {
+      "pc": "0xbddc",
+      "bytes": "941e0053",
+      "asm": "uxtb w20, w20",
+      "PLT_symbol": null
+    },
+    {
+      "pc": "0xbde4",
+      "bytes": "9f0e0071",
+      "asm": "cmp w20, #3",
+      "PLT_symbol": null
+    }
+  ],
+  "no_NinThread_execution": true,
+  "camera_or_driver_operations": 0
+}

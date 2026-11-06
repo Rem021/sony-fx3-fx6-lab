@@ -1,0 +1,100 @@
+{
+  "created_utc": "2026-10-29T11:16:52.661539+00:00",
+  "source_stage": "stage168-claim-substep-diagnostics",
+  "source_release_bundle_sha256": "0bfe5210a392dd0b57752e8e5d67e23f2597a34f24e7609b8bad37b80dd0ca72",
+  "files": [
+    {
+      "path": "owner_trial.h",
+      "original_sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    },
+    {
+      "path": "owner_core.c",
+      "original_sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "owner_iokit.c",
+      "original_sha256": "7b33b03256f3c226ade7049c10a9e3f42790b9240d8291a60fbd600170f34fae"
+    },
+    {
+      "path": "owner_fixture.c",
+      "original_sha256": "aba073e7df59e076df15568789a5de697f2b73dd95bcd525985e33582eb26e55"
+    },
+    {
+      "path": "owner_ipc.c",
+      "original_sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "owner_binding.py",
+      "original_sha256": "b8f5e4170ef40e38c9d05c09909a99204b49baab476de1b1e4beeed2ed6d8a6f"
+    },
+    {
+      "path": "entry_shared.h",
+      "original_sha256": "43d4be1b325bcc5a8940054e9d6e8f917c72022537b34458f094398e26616948"
+    },
+    {
+      "path": "entry_support.c",
+      "original_sha256": "00dff89176cbe9073f102aebeefb354a770316c5e3a866e93ac2aece8b4d296c"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "original_sha256": "c9d7b7cbec73f4d6388a85fe9f727cea1ef6718a748fd4d4abd24a1e3c9571b4"
+    },
+    {
+      "path": "entry_binding.py",
+      "original_sha256": "2748a25a6488112f3139a3ac169e298ee0d972b51616e3bfbd5cb939b95aaef7"
+    },
+    {
+      "path": "launch_policy.py",
+      "original_sha256": "031241bb6204eb8382da51e8612ff7f4cf77ad61c032de52149c5020f2d69f4b"
+    },
+    {
+      "path": "cache_observer.py",
+      "original_sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971"
+    },
+    {
+      "path": "owner_supervisor.py",
+      "original_sha256": "7f9642d723811d7570089fd2cd9d49c7430bd1178b5d5601e57935952652b1bb"
+    },
+    {
+      "path": "build_helpers.py",
+      "original_sha256": "be59e0667fde180bbbf26b913a611730a24877732f6f54d2d635981c855e1273"
+    },
+    {
+      "path": "test_internal_stage.py",
+      "original_sha256": "7ce228c084353d227b8a9fcbf383a24e44baa18b0c32d96370bc93b091020243"
+    },
+    {
+      "path": "test_hardened_entry.py",
+      "original_sha256": "d8117bb612286fcdd52f642f6e172b4700d7017f79c406133ce07eee776b0cbc"
+    },
+    {
+      "path": "test_recorded_observer.py",
+      "original_sha256": "8fcae106ac44445695c86add47038ee2989d807806ca062ec5673e1372324ee5"
+    },
+    {
+      "path": "fixture_orphan_parent.py",
+      "original_sha256": "64c85bf710b95549895de5cca6de9f47ef110211426f1d9d976356eceb96dbde"
+    },
+    {
+      "path": "test_claim_trace.c",
+      "original_sha256": "99954efff3fc1d221778785b27989d41ffaab66bcd18f31541026d0acf1b6f68"
+    },
+    {
+      "path": "claim-trace-function.inc",
+      "original_sha256": "bada15bcb70e055101c1c27703f1afd08c48ab2f1149c22e8fd492e107de9da8"
+    },
+    {
+      "path": "claim-substep-map.json",
+      "original_sha256": "4337453147fdd9c5a628210d722aa1ff321414b65c0b874e408673d5216b2864"
+    }
+  ],
+  "camera_calls_to_remain_byte_identical": [
+    "owner_core.c",
+    "owner_iokit.c",
+    "owner_trial.h",
+    "owner_ipc.c",
+    "entry_support.c",
+    "entry_shared.h"
+  ],
+  "new_root_or_camera_execution": false
+}

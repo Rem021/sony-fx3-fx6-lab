@@ -1,0 +1,30 @@
+{
+  "reviewed_utc": "2026-11-05T10:22:57.503396+00:00",
+  "task": "task_53cced835047",
+  "outcome": "failed",
+  "evidence": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/run-inputs/r43-vm-53cced835047",
+  "manifest_sha256": "a50d0e15d4af12ef2d9daf1b3900ed07c91e11679e28058571677d10d3a4b8f2",
+  "native_manifest_sha256": "e2cca090c8c57028dd9d1c1681c59dd10a6ae8fa531b0e9c37707165c08b30bf",
+  "previous_coordinator_verification": {
+    "task_hash_entries": 235,
+    "native_hash_entries": 109,
+    "mismatches": 0,
+    "full_menu_observation_2_actually_viewed": true,
+    "runner_and_QEMU_absent": true,
+    "both_flocks_free": true
+  },
+  "counts": {
+    "starts": 1,
+    "accepted": 1,
+    "pinned": 0,
+    "confirmed": 0
+  },
+  "failure": "20s operator deadline expired; independent pin entered at +33.486s; firmware menu observed but no passed step",
+  "cleanup": "first completed and second already-cleaned retained separately; API16 restore and QMP quit verified",
+  "limitations": [
+    "No FX6 boot",
+    "No proven speedup",
+    "Individual Chromium child PID absence unknown"
+  ],
+  "next": "Prepare isolated 60s whole-step operator review budget candidate; keep native acknowledgement12s and snapshotTTL20s; no policy activation without user decision"
+}

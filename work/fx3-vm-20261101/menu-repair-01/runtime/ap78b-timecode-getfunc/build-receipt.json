@@ -1,0 +1,17 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap78a-timecode-capture-r2/candidate78a.json",
+  "base_sha256": "4c4de176f6d07b2e84fd2b4d255965953720dbb949b85ee26d58419f5aafa444",
+  "changes": [
+    "capidv31 exact timecode/getfunc response; muted software only",
+    "gatev4 42 points and native cv wait forwarding; original control flow preserved",
+    "DTB initrd-end updated"
+  ],
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap78b-timecode-getfunc/guest.cpio",
+    "sha256": "94a1308c53d837fba0bf4bcf14fc3bf713242a13dcaae3c1abd86faf95704750"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap78b-timecode-getfunc/guest.dtb",
+    "sha256": "c161e57dee7223ed91604d72d7ef3ac701174668c6463135149023220b84ac6c"
+  }
+}

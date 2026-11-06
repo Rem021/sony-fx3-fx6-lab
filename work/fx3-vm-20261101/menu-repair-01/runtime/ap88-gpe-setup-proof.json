@@ -1,0 +1,2026 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libgpe.so",
+  "sha256": "363879687bd43a69734187eb28f721ce6080209a95c62b04c833a4a117f12464",
+  "xrefs": {
+    "0xdb74": {
+      "code": [
+        {
+          "va": "0xdcbc",
+          "kind": "branch"
+        },
+        {
+          "va": "0xdcf0",
+          "kind": "branch"
+        },
+        {
+          "va": "0xde58",
+          "kind": "branch"
+        }
+      ],
+      "pointers": []
+    },
+    "0xdcb0": {
+      "code": [],
+      "pointers": [
+        "0x297d0"
+      ]
+    },
+    "0xdce4": {
+      "code": [],
+      "pointers": [
+        "0x297f8"
+      ]
+    },
+    "0xddcc": {
+      "code": [],
+      "pointers": []
+    }
+  },
+  "blocks": {
+    "0xdb74": [
+      {
+        "va": "0xdb74",
+        "raw": "fd7bbba9",
+        "asm": "stp x29, x30, [sp, #-0x50]!"
+      },
+      {
+        "va": "0xdb78",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0xdb7c",
+        "raw": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0xdb80",
+        "raw": "147c4093",
+        "asm": "sxtw x20, w0"
+      },
+      {
+        "va": "0xdb84",
+        "raw": "e00000d0",
+        "asm": "adrp x0, #0x2b000"
+      },
+      {
+        "va": "0xdb88",
+        "raw": "f55b02a9",
+        "asm": "stp x21, x22, [sp, #0x20]"
+      },
+      {
+        "va": "0xdb8c",
+        "raw": "00a00691",
+        "asm": "add x0, x0, #0x1a8"
+      },
+      {
+        "va": "0xdb90",
+        "raw": "01687438",
+        "asm": "ldrb w1, [x0, x20]"
+      },
+      {
+        "va": "0xdb94",
+        "raw": "f71b00f9",
+        "asm": "str x23, [sp, #0x30]"
+      },
+      {
+        "va": "0xdb98",
+        "raw": "41010034",
+        "asm": "cbz w1, #0xdbc0"
+      },
+      {
+        "va": "0xdb9c",
+        "raw": "42008052",
+        "asm": "mov w2, #2"
+      },
+      {
+        "va": "0xdba0",
+        "raw": "c10a8052",
+        "asm": "mov w1, #0x56"
+      },
+      {
+        "va": "0xdba4",
+        "raw": "60018052",
+        "asm": "mov w0, #0xb"
+      },
+      {
+        "va": "0xdba8",
+        "raw": "76ecff97",
+        "asm": "bl #0x8d80",
+        "symbol": "gpe_blog_warning"
+      },
+      {
+        "va": "0xdbac",
+        "raw": "f35341a9",
+        "asm": "ldp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0xdbb0",
+        "raw": "f55b42a9",
+        "asm": "ldp x21, x22, [sp, #0x20]"
+      },
+      {
+        "va": "0xdbb4",
+        "raw": "f71b40f9",
+        "asm": "ldr x23, [sp, #0x30]"
+      },
+      {
+        "va": "0xdbb8",
+        "raw": "fd7bc5a8",
+        "asm": "ldp x29, x30, [sp], #0x50"
+      },
+      {
+        "va": "0xdbbc",
+        "raw": "c0035fd6",
+        "asm": "ret"
+      },
+      {
+        "va": "0xdbc0",
+        "raw": "d30000f0",
+        "asm": "adrp x19, #0x28000"
+      },
+      {
+        "va": "0xdbc4",
+        "raw": "21008052",
+        "asm": "mov w1, #1"
+      },
+      {
+        "va": "0xdbc8",
+        "raw": "f50314aa",
+        "asm": "mov x21, x20"
+      },
+      {
+        "va": "0xdbcc",
+        "raw": "01683438",
+        "asm": "strb w1, [x0, x20]"
+      },
+      {
+        "va": "0xdbd0",
+        "raw": "73c647f9",
+        "asm": "ldr x19, [x19, #0xf88]"
+      },
+      {
+        "va": "0xdbd4",
+        "raw": "600240f9",
+        "asm": "ldr x0, [x19]"
+      },
+      {
+        "va": "0xdbd8",
+        "raw": "600200b5",
+        "asm": "cbnz x0, #0xdc24"
+      },
+      {
+        "va": "0xdbdc",
+        "raw": "a2230191",
+        "asm": "add x2, x29, #0x48"
+      },
+      {
+        "va": "0xdbe0",
+        "raw": "4100a052",
+        "asm": "mov w1, #0x20000"
+      },
+      {
+        "va": "0xdbe4",
+        "raw": "2061bed2",
+        "asm": "mov x0, #0xf3090000"
+      },
+      {
+        "va": "0xdbe8",
+        "raw": "36ecff97",
+        "asm": "bl #0x8cc0",
+        "symbol": "GetLogicalAddress"
+      },
+      {
+        "va": "0xdbec",
+        "raw": "20010034",
+        "asm": "cbz w0, #0xdc10"
+      },
+      {
+        "va": "0xdbf0",
+        "raw": "43000090",
+        "asm": "adrp x3, #0x15000"
+      },
+      {
+        "va": "0xdbf4",
+        "raw": "a20c8052",
+        "asm": "mov w2, #0x65"
+      },
+      {
+        "va": "0xdbf8",
+        "raw": "63c01b91",
+        "asm": "add x3, x3, #0x6f0"
+      },
+      {
+        "va": "0xdbfc",
+        "raw": "41000090",
+        "asm": "adrp x1, #0x15000"
+      },
+      {
+        "va": "0xdc00",
+        "raw": "40000090",
+        "asm": "adrp x0, #0x15000"
+      },
+      {
+        "va": "0xdc04",
+        "raw": "21701a91",
+        "asm": "add x1, x1, #0x69c"
+      },
+      {
+        "va": "0xdc08",
+        "raw": "00201b91",
+        "asm": "add x0, x0, #0x6c8"
+      },
+      {
+        "va": "0xdc0c",
+        "raw": "99ebff97",
+        "asm": "bl #0x8a70",
+        "symbol": "__assert_fail"
+      },
+      {
+        "va": "0xdc10",
+        "raw": "e1ff9f92",
+        "asm": "mov x1, #-0x10000"
+      },
+      {
+        "va": "0xdc14",
+        "raw": "a02740f9",
+        "asm": "ldr x0, [x29, #0x48]"
+      },
+      {
+        "va": "0xdc18",
+        "raw": "e19ea1f2",
+        "asm": "movk x1, #0xcf7, lsl #16"
+      },
+      {
+        "va": "0xdc1c",
+        "raw": "0000018b",
+        "asm": "add x0, x0, x1"
+      },
+      {
+        "va": "0xdc20",
+        "raw": "600200f9",
+        "asm": "str x0, [x19]"
+      },
+      {
+        "va": "0xdc24",
+        "raw": "c00000f0",
+        "asm": "adrp x0, #0x28000"
+      },
+      {
+        "va": "0xdc28",
+        "raw": "f30300aa",
+        "asm": "mov x19, x0"
+      },
+      {
+        "va": "0xdc2c",
+        "raw": "16d847f9",
+        "asm": "ldr x22, [x0, #0xfb0]"
+      },
+      {
+        "va": "0xdc30",
+        "raw": "c10240f9",
+        "asm": "ldr x1, [x22]"
+      },
+      {
+        "va": "0xdc34",
+        "raw": "e10100b5",
+        "asm": "cbnz x1, #0xdc70"
+      },
+      {
+        "va": "0xdc38",
+        "raw": "171080d2",
+        "asm": "mov x23, #0x80"
+      },
+      {
+        "va": "0xdc3c",
+        "raw": "a2230191",
+        "asm": "add x2, x29, #0x48"
+      },
+      {
+        "va": "0xdc40",
+        "raw": "1768bef2",
+        "asm": "movk x23, #0xf340, lsl #16"
+      },
+      {
+        "va": "0xdc44",
+        "raw": "01208152",
+        "asm": "mov w1, #0x900"
+      },
+      {
+        "va": "0xdc48",
+        "raw": "e00317aa",
+        "asm": "mov x0, x23"
+      },
+      {
+        "va": "0xdc4c",
+        "raw": "1decff97",
+        "asm": "bl #0x8cc0",
+        "symbol": "GetLogicalAddress"
+      },
+      {
+        "va": "0xdc50",
+        "raw": "a0000034",
+        "asm": "cbz w0, #0xdc64"
+      },
+      {
+        "va": "0xdc54",
+        "raw": "43000090",
+        "asm": "adrp x3, #0x15000"
+      },
+      {
+        "va": "0xdc58",
+        "raw": "220e8052",
+        "asm": "mov w2, #0x71"
+      },
+      {
+        "va": "0xdc5c",
+        "raw": "63c01b91",
+        "asm": "add x3, x3, #0x6f0"
+      },
+      {
+        "va": "0xdc60",
+        "raw": "e7ffff17",
+        "asm": "b #0xdbfc",
+        "symbol": ""
+      },
+      {
+        "va": "0xdc64",
+        "raw": "a02740f9",
+        "asm": "ldr x0, [x29, #0x48]"
+      },
+      {
+        "va": "0xdc68",
+        "raw": "000017cb",
+        "asm": "sub x0, x0, x23"
+      },
+      {
+        "va": "0xdc6c",
+        "raw": "c00200f9",
+        "asm": "str x0, [x22]"
+      },
+      {
+        "va": "0xdc70",
+        "raw": "60da47f9",
+        "asm": "ldr x0, [x19, #0xfb0]"
+      },
+      {
+        "va": "0xdc74",
+        "raw": "a2028052",
+        "asm": "mov w2, #0x15"
+      },
+      {
+        "va": "0xdc78",
+        "raw": "010040f9",
+        "asm": "ldr x1, [x0]"
+      },
+      {
+        "va": "0xdc7c",
+        "raw": "40000090",
+        "asm": "adrp x0, #0x15000"
+      },
+      {
+        "va": "0xdc80",
+        "raw": "00a01b91",
+        "asm": "add x0, x0, #0x6e8"
+      },
+      {
+        "va": "0xdc84",
+        "raw": "007874b8",
+        "asm": "ldr w0, [x0, x20, lsl #2]"
+      },
+      {
+        "va": "0xdc88",
+        "raw": "026821b8",
+        "asm": "str w2, [x0, x1]"
+      },
+      {
+        "va": "0xdc8c",
+        "raw": "40000090",
+        "asm": "adrp x0, #0x15000"
+      },
+      {
+        "va": "0xdc90",
+        "raw": "00801b91",
+        "asm": "add x0, x0, #0x6e0"
+      },
+      {
+        "va": "0xdc94",
+        "raw": "007874b8",
+        "asm": "ldr w0, [x0, x20, lsl #2]"
+      },
+      {
+        "va": "0xdc98",
+        "raw": "026821b8",
+        "asm": "str w2, [x0, x1]"
+      },
+      {
+        "va": "0xdc9c",
+        "raw": "e003152a",
+        "asm": "mov w0, w21"
+      },
+      {
+        "va": "0xdca0",
+        "raw": "01008052",
+        "asm": "mov w1, #0"
+      },
+      {
+        "va": "0xdca4",
+        "raw": "07eeff97",
+        "asm": "bl #0x94c0",
+        "symbol": "_ZN5mpgpe5Gperm11GetInstanceENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0xdca8",
+        "raw": "42edff97",
+        "asm": "bl #0x91b0",
+        "symbol": "_ZNK5mpgpe5Gperm4InitEv"
+      },
+      {
+        "va": "0xdcac",
+        "raw": "c0ffff17",
+        "asm": "b #0xdbac",
+        "symbol": ""
+      },
+      {
+        "va": "0xdcb0",
+        "raw": "fd7bbfa9",
+        "asm": "stp x29, x30, [sp, #-0x10]!"
+      },
+      {
+        "va": "0xdcb4",
+        "raw": "00008052",
+        "asm": "mov w0, #0"
+      },
+      {
+        "va": "0xdcb8",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0xdcbc",
+        "raw": "aeffff97",
+        "asm": "bl #0xdb74",
+        "symbol": ""
+      },
+      {
+        "va": "0xdcc0",
+        "raw": "01008052",
+        "asm": "mov w1, #0"
+      },
+      {
+        "va": "0xdcc4",
+        "raw": "00008052",
+        "asm": "mov w0, #0"
+      },
+      {
+        "va": "0xdcc8",
+        "raw": "feedff97",
+        "asm": "bl #0x94c0",
+        "symbol": "_ZN5mpgpe5Gperm11GetInstanceENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0xdccc",
+        "raw": "ddecff97",
+        "asm": "bl #0x9040",
+        "symbol": "_ZNK5mpgpe5Gperm4MainEv"
+      },
+      {
+        "va": "0xdcd0",
+        "raw": "fd7bc1a8",
+        "asm": "ldp x29, x30, [sp], #0x10"
+      },
+      {
+        "va": "0xdcd4",
+        "raw": "a2008052",
+        "asm": "mov w2, #5"
+      },
+      {
+        "va": "0xdcd8",
+        "raw": "21128052",
+        "asm": "mov w1, #0x91"
+      },
+      {
+        "va": "0xdcdc",
+        "raw": "60018052",
+        "asm": "mov w0, #0xb"
+      },
+      {
+        "va": "0xdce0",
+        "raw": "74ecff17",
+        "asm": "b #0x8eb0",
+        "symbol": "gpe_blog_error"
+      },
+      {
+        "va": "0xdce4",
+        "raw": "fd7bbfa9",
+        "asm": "stp x29, x30, [sp, #-0x10]!"
+      },
+      {
+        "va": "0xdce8",
+        "raw": "20008052",
+        "asm": "mov w0, #1"
+      },
+      {
+        "va": "0xdcec",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0xdcf0",
+        "raw": "a1ffff97",
+        "asm": "bl #0xdb74",
+        "symbol": ""
+      },
+      {
+        "va": "0xdcf4",
+        "raw": "01008052",
+        "asm": "mov w1, #0"
+      },
+      {
+        "va": "0xdcf8",
+        "raw": "20008052",
+        "asm": "mov w0, #1"
+      },
+      {
+        "va": "0xdcfc",
+        "raw": "f1edff97",
+        "asm": "bl #0x94c0",
+        "symbol": "_ZN5mpgpe5Gperm11GetInstanceENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0xdd00",
+        "raw": "d0ecff97",
+        "asm": "bl #0x9040",
+        "symbol": "_ZNK5mpgpe5Gperm4MainEv"
+      },
+      {
+        "va": "0xdd04",
+        "raw": "fd7bc1a8",
+        "asm": "ldp x29, x30, [sp], #0x10"
+      },
+      {
+        "va": "0xdd08",
+        "raw": "a2008052",
+        "asm": "mov w2, #5"
+      },
+      {
+        "va": "0xdd0c",
+        "raw": "21138052",
+        "asm": "mov w1, #0x99"
+      },
+      {
+        "va": "0xdd10",
+        "raw": "60018052",
+        "asm": "mov w0, #0xb"
+      },
+      {
+        "va": "0xdd14",
+        "raw": "67ecff17",
+        "asm": "b #0x8eb0",
+        "symbol": "gpe_blog_error"
+      }
+    ],
+    "0x156e0": [
+      {
+        "va": "0x156e0",
+        "raw": "800040f3400140f3800240f3400340f3766f6964206d7067"
+      }
+    ],
+    "0xddcc": [
+      {
+        "va": "0xddcc",
+        "raw": "fd7bbfa9",
+        "asm": "stp x29, x30, [sp, #-0x10]!"
+      },
+      {
+        "va": "0xddd0",
+        "raw": "00008052",
+        "asm": "mov w0, #0"
+      },
+      {
+        "va": "0xddd4",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0xddd8",
+        "raw": "d0ffff97",
+        "asm": "bl #0xdd18",
+        "symbol": ""
+      },
+      {
+        "va": "0xdddc",
+        "raw": "c00000f0",
+        "asm": "adrp x0, #0x28000"
+      },
+      {
+        "va": "0xdde0",
+        "raw": "00b847f9",
+        "asm": "ldr x0, [x0, #0xf70]"
+      },
+      {
+        "va": "0xdde4",
+        "raw": "2fecff97",
+        "asm": "bl #0x8ea0",
+        "symbol": "osal_create_thread"
+      },
+      {
+        "va": "0xdde8",
+        "raw": "c00000f0",
+        "asm": "adrp x0, #0x28000"
+      },
+      {
+        "va": "0xddec",
+        "raw": "00bc47f9",
+        "asm": "ldr x0, [x0, #0xf78]"
+      },
+      {
+        "va": "0xddf0",
+        "raw": "2cecff97",
+        "asm": "bl #0x8ea0",
+        "symbol": "osal_create_thread"
+      },
+      {
+        "va": "0xddf4",
+        "raw": "fd7bc1a8",
+        "asm": "ldp x29, x30, [sp], #0x10"
+      },
+      {
+        "va": "0xddf8",
+        "raw": "20008052",
+        "asm": "mov w0, #1"
+      },
+      {
+        "va": "0xddfc",
+        "raw": "c7ffff17",
+        "asm": "b #0xdd18",
+        "symbol": ""
+      }
+    ],
+    "0x8cc0": [
+      {
+        "va": "0x8cc0",
+        "raw": "100100b0",
+        "asm": "adrp x16, #0x29000"
+      },
+      {
+        "va": "0x8cc4",
+        "raw": "115641f9",
+        "asm": "ldr x17, [x16, #0x2a8]"
+      },
+      {
+        "va": "0x8cc8",
+        "raw": "10a20a91",
+        "asm": "add x16, x16, #0x2a8"
+      },
+      {
+        "va": "0x8ccc",
+        "raw": "20021fd6",
+        "asm": "br x17"
+      }
+    ],
+    "0x94c0": [
+      {
+        "va": "0x94c0",
+        "raw": "10010090",
+        "asm": "adrp x16, #0x29000"
+      },
+      {
+        "va": "0x94c4",
+        "raw": "115643f9",
+        "asm": "ldr x17, [x16, #0x6a8]"
+      },
+      {
+        "va": "0x94c8",
+        "raw": "10a21a91",
+        "asm": "add x16, x16, #0x6a8"
+      },
+      {
+        "va": "0x94cc",
+        "raw": "20021fd6",
+        "asm": "br x17"
+      }
+    ],
+    "0x91b0": [
+      {
+        "va": "0x91b0",
+        "raw": "10010090",
+        "asm": "adrp x16, #0x29000"
+      },
+      {
+        "va": "0x91b4",
+        "raw": "119242f9",
+        "asm": "ldr x17, [x16, #0x520]"
+      },
+      {
+        "va": "0x91b8",
+        "raw": "10821491",
+        "asm": "add x16, x16, #0x520"
+      },
+      {
+        "va": "0x91bc",
+        "raw": "20021fd6",
+        "asm": "br x17"
+      }
+    ],
+    "0x9040": [
+      {
+        "va": "0x9040",
+        "raw": "10010090",
+        "asm": "adrp x16, #0x29000"
+      },
+      {
+        "va": "0x9044",
+        "raw": "113642f9",
+        "asm": "ldr x17, [x16, #0x468]"
+      },
+      {
+        "va": "0x9048",
+        "raw": "10a21191",
+        "asm": "add x16, x16, #0x468"
+      },
+      {
+        "va": "0x904c",
+        "raw": "20021fd6",
+        "asm": "br x17"
+      }
+    ],
+    "0x96b8": [
+      {
+        "va": "0x96b8",
+        "raw": "fd7bbda9",
+        "asm": "stp x29, x30, [sp, #-0x30]!"
+      },
+      {
+        "va": "0x96bc",
+        "raw": "02008052",
+        "asm": "mov w2, #0"
+      },
+      {
+        "va": "0x96c0",
+        "raw": "01008052",
+        "asm": "mov w1, #0"
+      },
+      {
+        "va": "0x96c4",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x96c8",
+        "raw": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x96cc",
+        "raw": "14010090",
+        "asm": "adrp x20, #0x29000"
+      },
+      {
+        "va": "0x96d0",
+        "raw": "94622191",
+        "asm": "add x20, x20, #0x858"
+      },
+      {
+        "va": "0x96d4",
+        "raw": "f30000f0",
+        "asm": "adrp x19, #0x28000"
+      },
+      {
+        "va": "0x96d8",
+        "raw": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x96dc",
+        "raw": "f51300f9",
+        "asm": "str x21, [sp, #0x20]"
+      },
+      {
+        "va": "0x96e0",
+        "raw": "15010090",
+        "asm": "adrp x21, #0x29000"
+      },
+      {
+        "va": "0x96e4",
+        "raw": "b5a21d91",
+        "asm": "add x21, x21, #0x768"
+      },
+      {
+        "va": "0x96e8",
+        "raw": "36fcff97",
+        "asm": "bl #0x87c0",
+        "symbol": "_ZN5mpgpe5GpermC1ENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0x96ec",
+        "raw": "73d647f9",
+        "asm": "ldr x19, [x19, #0xfa8]"
+      },
+      {
+        "va": "0x96f0",
+        "raw": "e20315aa",
+        "asm": "mov x2, x21"
+      },
+      {
+        "va": "0x96f4",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x96f8",
+        "raw": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x96fc",
+        "raw": "14010090",
+        "asm": "adrp x20, #0x29000"
+      },
+      {
+        "va": "0x9700",
+        "raw": "94a22191",
+        "asm": "add x20, x20, #0x868"
+      },
+      {
+        "va": "0x9704",
+        "raw": "4bfeff97",
+        "asm": "bl #0x9030",
+        "symbol": "__cxa_atexit"
+      },
+      {
+        "va": "0x9708",
+        "raw": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x970c",
+        "raw": "02008052",
+        "asm": "mov w2, #0"
+      },
+      {
+        "va": "0x9710",
+        "raw": "21008052",
+        "asm": "mov w1, #1"
+      },
+      {
+        "va": "0x9714",
+        "raw": "2bfcff97",
+        "asm": "bl #0x87c0",
+        "symbol": "_ZN5mpgpe5GpermC1ENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0x9718",
+        "raw": "e20315aa",
+        "asm": "mov x2, x21"
+      },
+      {
+        "va": "0x971c",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x9720",
+        "raw": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x9724",
+        "raw": "f51340f9",
+        "asm": "ldr x21, [sp, #0x20]"
+      },
+      {
+        "va": "0x9728",
+        "raw": "f35341a9",
+        "asm": "ldp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x972c",
+        "raw": "fd7bc3a8",
+        "asm": "ldp x29, x30, [sp], #0x30"
+      },
+      {
+        "va": "0x9730",
+        "raw": "40feff17",
+        "asm": "b #0x9030",
+        "symbol": "__cxa_atexit"
+      },
+      {
+        "va": "0x9734",
+        "raw": "fd7bbda9",
+        "asm": "stp x29, x30, [sp, #-0x30]!"
+      },
+      {
+        "va": "0x9738",
+        "raw": "02008052",
+        "asm": "mov w2, #0"
+      },
+      {
+        "va": "0x973c",
+        "raw": "01008052",
+        "asm": "mov w1, #0"
+      },
+      {
+        "va": "0x9740",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x9744",
+        "raw": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x9748",
+        "raw": "140100d0",
+        "asm": "adrp x20, #0x2b000"
+      },
+      {
+        "va": "0x974c",
+        "raw": "94020291",
+        "asm": "add x20, x20, #0x80"
+      },
+      {
+        "va": "0x9750",
+        "raw": "f30000f0",
+        "asm": "adrp x19, #0x28000"
+      },
+      {
+        "va": "0x9754",
+        "raw": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x9758",
+        "raw": "f51300f9",
+        "asm": "str x21, [sp, #0x20]"
+      },
+      {
+        "va": "0x975c",
+        "raw": "15010090",
+        "asm": "adrp x21, #0x29000"
+      },
+      {
+        "va": "0x9760",
+        "raw": "b5a21d91",
+        "asm": "add x21, x21, #0x768"
+      },
+      {
+        "va": "0x9764",
+        "raw": "43fcff97",
+        "asm": "bl #0x8870",
+        "symbol": "_ZN5mpgpe3CMFC1ENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0x9768",
+        "raw": "73b647f9",
+        "asm": "ldr x19, [x19, #0xf68]"
+      },
+      {
+        "va": "0x976c",
+        "raw": "e20315aa",
+        "asm": "mov x2, x21"
+      },
+      {
+        "va": "0x9770",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x9774",
+        "raw": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x9778",
+        "raw": "140100d0",
+        "asm": "adrp x20, #0x2b000"
+      },
+      {
+        "va": "0x977c",
+        "raw": "94420491",
+        "asm": "add x20, x20, #0x110"
+      },
+      {
+        "va": "0x9780",
+        "raw": "2cfeff97",
+        "asm": "bl #0x9030",
+        "symbol": "__cxa_atexit"
+      },
+      {
+        "va": "0x9784",
+        "raw": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x9788",
+        "raw": "02008052",
+        "asm": "mov w2, #0"
+      },
+      {
+        "va": "0x978c",
+        "raw": "21008052",
+        "asm": "mov w1, #1"
+      },
+      {
+        "va": "0x9790",
+        "raw": "38fcff97",
+        "asm": "bl #0x8870",
+        "symbol": "_ZN5mpgpe3CMFC1ENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0x9794",
+        "raw": "e20315aa",
+        "asm": "mov x2, x21"
+      },
+      {
+        "va": "0x9798",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x979c",
+        "raw": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x97a0",
+        "raw": "f51340f9",
+        "asm": "ldr x21, [sp, #0x20]"
+      },
+      {
+        "va": "0x97a4",
+        "raw": "f35341a9",
+        "asm": "ldp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x97a8",
+        "raw": "fd7bc3a8",
+        "asm": "ldp x29, x30, [sp], #0x30"
+      },
+      {
+        "va": "0x97ac",
+        "raw": "21feff17",
+        "asm": "b #0x9030",
+        "symbol": "__cxa_atexit"
+      },
+      {
+        "va": "0x97b0",
+        "raw": "e00000f0",
+        "asm": "adrp x0, #0x28000"
+      },
+      {
+        "va": "0x97b4",
+        "raw": "00ec47f9",
+        "asm": "ldr x0, [x0, #0xfd8]"
+      }
+    ],
+    "0x9734": [
+      {
+        "va": "0x9734",
+        "raw": "fd7bbda9",
+        "asm": "stp x29, x30, [sp, #-0x30]!"
+      },
+      {
+        "va": "0x9738",
+        "raw": "02008052",
+        "asm": "mov w2, #0"
+      },
+      {
+        "va": "0x973c",
+        "raw": "01008052",
+        "asm": "mov w1, #0"
+      },
+      {
+        "va": "0x9740",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x9744",
+        "raw": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x9748",
+        "raw": "140100d0",
+        "asm": "adrp x20, #0x2b000"
+      },
+      {
+        "va": "0x974c",
+        "raw": "94020291",
+        "asm": "add x20, x20, #0x80"
+      },
+      {
+        "va": "0x9750",
+        "raw": "f30000f0",
+        "asm": "adrp x19, #0x28000"
+      },
+      {
+        "va": "0x9754",
+        "raw": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x9758",
+        "raw": "f51300f9",
+        "asm": "str x21, [sp, #0x20]"
+      },
+      {
+        "va": "0x975c",
+        "raw": "15010090",
+        "asm": "adrp x21, #0x29000"
+      },
+      {
+        "va": "0x9760",
+        "raw": "b5a21d91",
+        "asm": "add x21, x21, #0x768"
+      },
+      {
+        "va": "0x9764",
+        "raw": "43fcff97",
+        "asm": "bl #0x8870",
+        "symbol": "_ZN5mpgpe3CMFC1ENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0x9768",
+        "raw": "73b647f9",
+        "asm": "ldr x19, [x19, #0xf68]"
+      },
+      {
+        "va": "0x976c",
+        "raw": "e20315aa",
+        "asm": "mov x2, x21"
+      },
+      {
+        "va": "0x9770",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x9774",
+        "raw": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x9778",
+        "raw": "140100d0",
+        "asm": "adrp x20, #0x2b000"
+      },
+      {
+        "va": "0x977c",
+        "raw": "94420491",
+        "asm": "add x20, x20, #0x110"
+      },
+      {
+        "va": "0x9780",
+        "raw": "2cfeff97",
+        "asm": "bl #0x9030",
+        "symbol": "__cxa_atexit"
+      },
+      {
+        "va": "0x9784",
+        "raw": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x9788",
+        "raw": "02008052",
+        "asm": "mov w2, #0"
+      },
+      {
+        "va": "0x978c",
+        "raw": "21008052",
+        "asm": "mov w1, #1"
+      },
+      {
+        "va": "0x9790",
+        "raw": "38fcff97",
+        "asm": "bl #0x8870",
+        "symbol": "_ZN5mpgpe3CMFC1ENS_3GpeENS_7IntCoreE"
+      },
+      {
+        "va": "0x9794",
+        "raw": "e20315aa",
+        "asm": "mov x2, x21"
+      },
+      {
+        "va": "0x9798",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x979c",
+        "raw": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x97a0",
+        "raw": "f51340f9",
+        "asm": "ldr x21, [sp, #0x20]"
+      },
+      {
+        "va": "0x97a4",
+        "raw": "f35341a9",
+        "asm": "ldp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x97a8",
+        "raw": "fd7bc3a8",
+        "asm": "ldp x29, x30, [sp], #0x30"
+      },
+      {
+        "va": "0x97ac",
+        "raw": "21feff17",
+        "asm": "b #0x9030",
+        "symbol": "__cxa_atexit"
+      },
+      {
+        "va": "0x97b0",
+        "raw": "e00000f0",
+        "asm": "adrp x0, #0x28000"
+      },
+      {
+        "va": "0x97b4",
+        "raw": "00ec47f9",
+        "asm": "ldr x0, [x0, #0xfd8]"
+      },
+      {
+        "va": "0x97b8",
+        "raw": "400000b4",
+        "asm": "cbz x0, #0x97c0"
+      },
+      {
+        "va": "0x97bc",
+        "raw": "59ffff17",
+        "asm": "b #0x9520",
+        "symbol": "__gmon_start__"
+      },
+      {
+        "va": "0x97c0",
+        "raw": "c0035fd6",
+        "asm": "ret"
+      },
+      {
+        "va": "0x97c4",
+        "raw": "00000000",
+        "asm": "udf #0"
+      },
+      {
+        "va": "0x97c8",
+        "raw": "01010090",
+        "asm": "adrp x1, #0x29000"
+      },
+      {
+        "va": "0x97cc",
+        "raw": "00010090",
+        "asm": "adrp x0, #0x29000"
+      },
+      {
+        "va": "0x97d0",
+        "raw": "21402191",
+        "asm": "add x1, x1, #0x850"
+      },
+      {
+        "va": "0x97d4",
+        "raw": "00402191",
+        "asm": "add x0, x0, #0x850"
+      },
+      {
+        "va": "0x97d8",
+        "raw": "211c0091",
+        "asm": "add x1, x1, #7"
+      },
+      {
+        "va": "0x97dc",
+        "raw": "210000cb",
+        "asm": "sub x1, x1, x0"
+      },
+      {
+        "va": "0x97e0",
+        "raw": "3f3800f1",
+        "asm": "cmp x1, #0xe"
+      },
+      {
+        "va": "0x97e4",
+        "raw": "a9000054",
+        "asm": "b.ls #0x97f8"
+      },
+      {
+        "va": "0x97e8",
+        "raw": "e10000f0",
+        "asm": "adrp x1, #0x28000"
+      },
+      {
+        "va": "0x97ec",
+        "raw": "21e447f9",
+        "asm": "ldr x1, [x1, #0xfc8]"
+      },
+      {
+        "va": "0x97f0",
+        "raw": "410000b4",
+        "asm": "cbz x1, #0x97f8"
+      },
+      {
+        "va": "0x97f4",
+        "raw": "20001fd6",
+        "asm": "br x1"
+      }
+    ],
+    "0x9888": [
+      {
+        "va": "0x9888",
+        "raw": "e00000f0",
+        "asm": "adrp x0, #0x28000"
+      },
+      {
+        "va": "0x988c",
+        "raw": "00c02f91",
+        "asm": "add x0, x0, #0xbf0"
+      },
+      {
+        "va": "0x9890",
+        "raw": "010040f9",
+        "asm": "ldr x1, [x0]"
+      },
+      {
+        "va": "0x9894",
+        "raw": "610000b5",
+        "asm": "cbnz x1, #0x98a0"
+      },
+      {
+        "va": "0x9898",
+        "raw": "daffff17",
+        "asm": "b #0x9800",
+        "symbol": ""
+      },
+      {
+        "va": "0x989c",
+        "raw": "1f2003d5",
+        "asm": "nop"
+      },
+      {
+        "va": "0x98a0",
+        "raw": "e10000f0",
+        "asm": "adrp x1, #0x28000"
+      },
+      {
+        "va": "0x98a4",
+        "raw": "21cc47f9",
+        "asm": "ldr x1, [x1, #0xf98]"
+      },
+      {
+        "va": "0x98a8",
+        "raw": "81ffffb4",
+        "asm": "cbz x1, #0x9898"
+      },
+      {
+        "va": "0x98ac",
+        "raw": "fd7bbfa9",
+        "asm": "stp x29, x30, [sp, #-0x10]!"
+      },
+      {
+        "va": "0x98b0",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x98b4",
+        "raw": "20003fd6",
+        "asm": "blr x1"
+      },
+      {
+        "va": "0x98b8",
+        "raw": "fd7bc1a8",
+        "asm": "ldp x29, x30, [sp], #0x10"
+      },
+      {
+        "va": "0x98bc",
+        "raw": "d1ffff17",
+        "asm": "b #0x9800",
+        "symbol": ""
+      }
+    ]
+  },
+  "defined_symbols": {
+    "_ZN5mpgpe12CallbackFifoD0Ev": [
+      "0xae4c",
+      8
+    ],
+    "gpe0_comp_info": [
+      "0x29770",
+      40
+    ],
+    "_ZN5mpgpe13CommandBuffer14GetNextAddressEv": [
+      "0xad00",
+      72
+    ],
+    "GpeInit": [
+      "0xddcc",
+      52
+    ],
+    "DrawCompGpe1_core0": [
+      "0xdb64",
+      16
+    ],
+    "_ZN5mpgpe13CommandBuffer5EraseEj": [
+      "0xac80",
+      44
+    ],
+    "_ZN5mpgpe13CommandBuffer5ResetEv": [
+      "0xabec",
+      12
+    ],
+    "_ZN5mpgpe7message12SendWaitIntrENS_3GpeENS_7IntCoreEPKvm": [
+      "0xd8b4",
+      56
+    ],
+    "gpe0_info": [
+      "0x297c0",
+      40
+    ],
+    "_ZN5mpgpe3CMF7InitRegEv": [
+      "0x9dc8",
+      184
+    ],
+    "_ZN5mpgpe5Gperm11GetInstanceENS_3GpeENS_7IntCoreE": [
+      "0x9a8c",
+      92
+    ],
+    "_ZNK5mpgpe3CMF13GetCmdBufAddrEv": [
+      "0x9f5c",
+      8
+    ],
+    "_ZN5mpgpe10RingBufferINS_7CommandEE4NextEv": [
+      "0xacac",
+      84
+    ],
+    "_ZN5mpgpe10ResumeDrawENS_3GpeE": [
+      "0xc28c",
+      120
+    ],
+    "_ZN5mpgpe12CallbackFifoD1Ev": [
+      "0xad98",
+      4
+    ],
+    "_ZN5mpgpe3CMFC2ENS_3GpeENS_7IntCoreE": [
+      "0xc154",
+      124
+    ],
+    "_ZNK5mpgpe5Gperm4InitEv": [
+      "0x9ae8",
+      100
+    ],
+    "_ZTSN5mpgpe13CommandBufferE": [
+      "0x15160",
+      24
+    ],
+    "cglInit": [
+      "0x123b0",
+      160
+    ],
+    "_ZTVN5mpgpe13CommandBufferE": [
+      "0x28ca0",
+      32
+    ],
+    "_ZN5mpgpe5FlushENS_3GpeENS_7IntCoreEjjRKNS_10FlushParamE": [
+      "0xc760",
+      160
+    ],
+    "_ZN5mpgpe22GpermStretchRotateBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE": [
+      "0xa5f0",
+      220
+    ],
+    "_ZN5mpgpe5GpermD0Ev": [
+      "0x9a6c",
+      8
+    ],
+    "_ZN5mpgpe7BitBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE": [
+      "0xcf2c",
+      540
+    ],
+    "_ZN5mpgpe10RingBufferINS_8CmdMacroEED0Ev": [
+      "0xae6c",
+      8
+    ],
+    "_ZN5mpgpe13CommandBuffer10InitializeEPNS_7CommandEmj": [
+      "0xab30",
+      188
+    ],
+    "cglInitPERegs": [
+      "0x1230c",
+      8
+    ],
+    "cglInitSPCRegs": [
+      "0x123a8",
+      8
+    ],
+    "_ZN5mpgpe10DoCallbackENS_3GpeENS_7IntCoreEi": [
+      "0xc800",
+      120
+    ],
+    "cglInitMC": [
+      "0x12450",
+      196
+    ],
+    "_ZNK5mpgpe5Gperm4ExitEv": [
+      "0x9b4c",
+      48
+    ],
+    "_ZNK5mpgpe5Gperm6ResumeEv": [
+      "0x9b7c",
+      40
+    ],
+    "_ZN5mpgpe3CMF13GetNextCmdBufEv": [
+      "0xa02c",
+      228
+    ],
+    "_ZN5mpgpe3CMF6ResumeEv": [
+      "0x9f24",
+      56
+    ],
+    "gpe_blog_trace_end": [
+      "0xab10",
+      16
+    ],
+    "cglInitPERegsMC": [
+      "0x122a8",
+      100
+    ],
+    "_ZN5mpgpe3CMFC1ENS_3GpeENS_7IntCoreE": [
+      "0xc154",
+      124
+    ],
+    "_ZN5mpgpe13TerminateDrawENS_3GpeE": [
+      "0xc304",
+      8
+    ],
+    "_ZN5mpgpe12CallbackFifoD2Ev": [
+      "0xad98",
+      4
+    ],
+    "gpe_blog_1x16": [
+      "0xa9f4",
+      60
+    ],
+    "_ZN5mpgpe6UnlockENS_3GpeE": [
+      "0xd9fc",
+      104
+    ],
+    "_ZNK5mpgpe13CommandBuffer18GetPhysicalAddressEv": [
+      "0xac3c",
+      68
+    ],
+    "_ZTSN5mpgpe3CMFE": [
+      "0x151e8",
+      13
+    ],
+    "_ZN5mpgpe17DrawVariousFramesENS_3GpeENS_7IntCoreEjjRKNS_15DrawFramesParamE": [
+      "0xd148",
+      1384
+    ],
+    "_ZNK5mpgpe3CMF10GetCMCountEv": [
+      "0x9fc0",
+      12
+    ],
+    "_ZN5mpgpe7message15ReceiveWaitIntrENS_3GpeENS_7IntCoreEPvm": [
+      "0xd8ec",
+      164
+    ],
+    "_ZN5mpgpe10RingBufferINS_12CallbackInfoEED0Ev": [
+      "0xae54",
+      8
+    ],
+    "_ZNK5mpgpe13CommandBuffer10GetAddressEv": [
+      "0xabf8",
+      68
+    ],
+    "_ZN5mpgpe5GpermD1Ev": [
+      "0x9a68",
+      4
+    ],
+    "_ZN5mpgpe3CMF10InitializeERKNS_14GpeBufferParamE": [
+      "0x9e80",
+      164
+    ],
+    "_ZN5mpgpe10RingBufferINS_8CmdMacroEED1Ev": [
+      "0xada8",
+      4
+    ],
+    "_ZN5mpgpe13CommandBufferD0Ev": [
+      "0xae5c",
+      8
+    ],
+    "_ZTIN5mpgpe5GpermE": [
+      "0x28bf8",
+      16
+    ],
+    "_ZTSN5mpgpe10RingBufferINS_7CommandEEE": [
+      "0x15138",
+      35
+    ],
+    "_ZTSN5mpgpe5GpermE": [
+      "0x14e78",
+      15
+    ],
+    "_ZNK5mpgpe3CMF8WaitCompEv": [
+      "0x9ff4",
+      56
+    ],
+    "_ZN5mpgpe7message12SendDrawCompEjPKvm": [
+      "0xd888",
+      20
+    ],
+    "DrawCompGpe0_core0": [
+      "0xdb54",
+      16
+    ],
+    "_ZN5mpgpe12CallbackFifo3PopEPNS_12CallbackInfoE": [
+      "0x99cc",
+      156
+    ],
+    "_ZN5mpgpe10RingBufferINS_12CallbackInfoEED1Ev": [
+      "0xada4",
+      4
+    ],
+    "_ZN5mpgpe5GpermD2Ev": [
+      "0x9a68",
+      4
+    ],
+    "_ZN5mpgpe10RingBufferINS_8CmdMacroEED2Ev": [
+      "0xada8",
+      4
+    ],
+    "gpe_blog_trace_start": [
+      "0xab00",
+      16
+    ],
+    "_ZTIN5mpgpe3CMFE": [
+      "0x28c88",
+      24
+    ],
+    "cglInitSPCRegsMC": [
+      "0x12314",
+      148
+    ],
+    "_ZN5mpgpe13CommandBufferD1Ev": [
+      "0xad94",
+      4
+    ],
+    "_ZN5mpgpe7message11ReceiveDrawENS_3GpeENS_7IntCoreEPvm": [
+      "0xd84c",
+      60
+    ],
+    "_ZTSN5mpgpe12CallbackFifoE": [
+      "0x151a8",
+      23
+    ],
+    "cglInitMMRegs": [
+      "0x122a0",
+      8
+    ],
+    "_ZNK5mpgpe3CMF12SyncCallbackEj": [
+      "0xa110",
+      72
+    ],
+    "cglInitMMRegsMC": [
+      "0x121ac",
+      244
+    ],
+    "_ZTIN5mpgpe13CommandBufferE": [
+      "0x28c38",
+      24
+    ],
+    "_ZN5mpgpe3CMF11UpdateCountEj": [
+      "0x9fcc",
+      40
+    ],
+    "gpe_blog_3x16": [
+      "0xaa7c",
+      92
+    ],
+    "_ZTVN5mpgpe5GpermE": [
+      "0x28c08",
+      32
+    ],
+    "pltInitMC": [
+      "0x136c4",
+      100
+    ],
+    "_init": [
+      "0x8738",
+      0
+    ],
+    "_ZN5mpgpe14InitializeDrawENS_3GpeE": [
+      "0xc1d0",
+      188
+    ],
+    "_ZTIN5mpgpe10RingBufferINS_12CallbackInfoEEE": [
+      "0x28c50",
+      16
+    ],
+    "_ZTIN5mpgpe10RingBufferINS_8CmdMacroEEE": [
+      "0x28c78",
+      16
+    ],
+    "_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE": [
+      "0xa430",
+      228
+    ],
+    "gpe_blog_warning": [
+      "0xaaec",
+      20
+    ],
+    "_ZN5mpgpe10RingBufferINS_12CallbackInfoEED2Ev": [
+      "0xada4",
+      4
+    ],
+    "_ZN5mpgpe10GpermFlushENS_3GpeENS_7IntCoreEPjRKNS_10FlushParamE": [
+      "0xa768",
+      212
+    ],
+    "_ZN5mpgpe5GpermC2ENS_3GpeENS_7IntCoreE": [
+      "0x9a74",
+      24
+    ],
+    "_ZTSN5mpgpe10RingBufferINS_8CmdMacroEEE": [
+      "0x151c0",
+      36
+    ],
+    "_ZN5mpgpe12CallbackFifo5ResetEv": [
+      "0x9924",
+      12
+    ],
+    "_ZN5mpgpe11GpermFinishENS_3GpeENS_7IntCoreE": [
+      "0xa83c",
+      40
+    ],
+    "_ZN5mpgpe13CommandBufferD2Ev": [
+      "0xad94",
+      4
+    ],
+    "_ZN5mpgpe3CMFD0Ev": [
+      "0xae44",
+      8
+    ],
+    "GpeRes": [
+      "0xde4c",
+      36
+    ],
+    "_ZN5mpgpe10RingBufferINS_7CommandEED0Ev": [
+      "0xae64",
+      8
+    ],
+    "_ZN5mpgpe3CMF10DoCallbackEv": [
+      "0xa158",
+      132
+    ],
+    "gpe_blog_info": [
+      "0xab20",
+      16
+    ],
+    "_ZN5mpgpe5GpermC1ENS_3GpeENS_7IntCoreE": [
+      "0x9a74",
+      24
+    ],
+    "_ZNK5mpgpe5Gperm4MainEv": [
+      "0x9ba4",
+      360
+    ],
+    "_ZN5mpgpe12GpermBitBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE": [
+      "0xa514",
+      220
+    ],
+    "_ZTIN5mpgpe12CallbackFifoE": [
+      "0x28c60",
+      24
+    ],
+    "_ZN5mpgpe4LockENS_3GpeE": [
+      "0xd990",
+      108
+    ],
+    "_ZN5mpgpe3CMF11SetCallbackERKNS_12CallbackInfoE": [
+      "0x9f64",
+      92
+    ],
+    "_ZN5mpgpe7message15ReceiveDrawCompEjPvm": [
+      "0xd89c",
+      24
+    ],
+    "_ZN5mpgpe3CMFD1Ev": [
+      "0xad9c",
+      4
+    ],
+    "_ZN5mpgpe10RingBufferINS_8CmdMacroEE4NextEv": [
+      "0xa1dc",
+      84
+    ],
+    "_ZTIN5mpgpe10RingBufferINS_7CommandEEE": [
+      "0x28c28",
+      16
+    ],
+    "_ZN5mpgpe3CMF3SetEmjNS_7IntFIFOE": [
+      "0xa230",
+      360
+    ],
+    "GpeSus": [
+      "0xde00",
+      76
+    ],
+    "_ZTVN5mpgpe12CallbackFifoE": [
+      "0x28cc0",
+      32
+    ],
+    "_ZN5mpgpe10RingBufferINS_7CommandEED1Ev": [
+      "0xada0",
+      4
+    ],
+    "_ZN5mpgpe12CallbackFifo4PushERKNS_12CallbackInfoE": [
+      "0x9930",
+      156
+    ],
+    "_ZN5mpgpe13CommandBuffer22GetNextPhysicalAddressEv": [
+      "0xad48",
+      76
+    ],
+    "gpe1_info": [
+      "0x297e8",
+      40
+    ],
+    "_ZN5mpgpe8FillRectENS_3GpeENS_7IntCoreEjjRKNS_13FillRectParamE": [
+      "0xc30c",
+      1108
+    ],
+    "_ZN5mpgpe3CMF4InitEPNS_8CmdMacroEmj": [
+      "0x9d0c",
+      188
+    ],
+    "gpe_blog_error": [
+      "0xaad8",
+      20
+    ],
+    "_ZN5mpgpe17StretchRotateBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE": [
+      "0xc878",
+      1716
+    ],
+    "_ZN5mpgpe3CMFD2Ev": [
+      "0xad9c",
+      4
+    ],
+    "gpe_blog_2x16": [
+      "0xaa30",
+      76
+    ],
+    "pltInit": [
+      "0x13728",
+      12
+    ],
+    "_ZTVN5mpgpe3CMFE": [
+      "0x28ce0",
+      32
+    ],
+    "_ZTSN5mpgpe10RingBufferINS_12CallbackInfoEEE": [
+      "0x15178",
+      41
+    ],
+    "_ZN5mpgpe12CallbackFifo10InitializeEPNS_12CallbackInfoEj": [
+      "0x98c0",
+      100
+    ],
+    "_ZN5mpgpe22GpermDrawVariousFramesENS_3GpeENS_7IntCoreEPjRKNS_15DrawFramesParamE": [
+      "0xa6cc",
+      156
+    ],
+    "_ZN5mpgpe10RingBufferINS_7CommandEED2Ev": [
+      "0xada0",
+      4
+    ],
+    "gpe1_comp_info": [
+      "0x29798",
+      40
+    ],
+    "_ZN5mpgpe7message8SendDrawENS_3GpeENS_7IntCoreEPKvm": [
+      "0xd814",
+      56
+    ]
+  },
+  "utm_runner": [
+    {
+      "va": "0x1150",
+      "raw": "a04340b9",
+      "asm": "ldr w0, [x29, #0x40]"
+    },
+    {
+      "va": "0x1154",
+      "raw": "a2e30091",
+      "asm": "add x2, x29, #0x38"
+    },
+    {
+      "va": "0x1158",
+      "raw": "76ffff97",
+      "asm": "bl #0xf30",
+      "symbol": "sched_setscheduler"
+    },
+    {
+      "va": "0x115c",
+      "raw": "1f000071",
+      "asm": "cmp w0, #0"
+    },
+    {
+      "va": "0x1160",
+      "raw": "6bfdff54",
+      "asm": "b.lt #0x110c"
+    },
+    {
+      "va": "0x1164",
+      "raw": "600240f9",
+      "asm": "ldr x0, [x19]"
+    },
+    {
+      "va": "0x1168",
+      "raw": "00404079",
+      "asm": "ldrh w0, [x0, #0x20]"
+    },
+    {
+      "va": "0x116c",
+      "raw": "a08b0079",
+      "asm": "strh w0, [x29, #0x44]"
+    },
+    {
+      "va": "0x1170",
+      "raw": "e1fcff54",
+      "asm": "b.ne #0x110c"
+    },
+    {
+      "va": "0x1174",
+      "raw": "60220091",
+      "asm": "add x0, x19, #8"
+    },
+    {
+      "va": "0x1178",
+      "raw": "3affff97",
+      "asm": "bl #0xe60",
+      "symbol": "pthread_mutex_unlock"
+    },
+    {
+      "va": "0x117c",
+      "raw": "e00316aa",
+      "asm": "mov x0, x22"
+    },
+    {
+      "va": "0x1180",
+      "raw": "a0023fd6",
+      "asm": "blr x21"
+    },
+    {
+      "va": "0x1184",
+      "raw": "e6ffff17",
+      "asm": "b #0x111c",
+      "symbol": ""
+    },
+    {
+      "va": "0x1188",
+      "raw": "80008052",
+      "asm": "mov w0, #4"
+    },
+    {
+      "va": "0x118c",
+      "raw": "41008052",
+      "asm": "mov w1, #2"
+    },
+    {
+      "va": "0x1190",
+      "raw": "a03b00b9",
+      "asm": "str w0, [x29, #0x38]"
+    },
+    {
+      "va": "0x1194",
+      "raw": "efffff17",
+      "asm": "b #0x1150",
+      "symbol": ""
+    },
+    {
+      "va": "0x1198",
+      "raw": "a0008052",
+      "asm": "mov w0, #5"
+    },
+    {
+      "va": "0x119c",
+      "raw": "a03b00b9",
+      "asm": "str w0, [x29, #0x38]"
+    }
+  ],
+  "setup_assertion": "void mpgpe::Initialize(mpgpe::Gpe)",
+  "setup_register_table_raw16": "800040f3400140f3800240f3400340f3",
+  "AP88_newfatal": {
+    "run": "ap88cpr4-e71668cb",
+    "libc_base": "0x7f7b005000",
+    "PC": "0x7f7b03607c",
+    "PCrelative": "0x3107c",
+    "LRrelative": "0x31008",
+    "thread": "SeqQueueSetYuvO/411",
+    "native_assert": "infra_wrapper_bb.cpp:870 send_and_wait_cmp_i -> lib_assert.cpp30 notify_model_system_error",
+    "lastsaved_request_tid411": "0d2019011c0001800101000000000000000000000000000000000000",
+    "newreply_orrepair_added": false
+  }
+}

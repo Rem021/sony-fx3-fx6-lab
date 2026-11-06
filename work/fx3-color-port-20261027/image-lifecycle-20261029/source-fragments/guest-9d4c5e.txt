@@ -1,0 +1,18 @@
+009d4c5e movw       r1, #0xd27d
+009d4c62 movw       r2, #0x5c36
+009d4c66 movt       r1, #0x147
+009d4c6a movt       r2, #0x143
+009d4c6e ldrb       r1, [r1]
+009d4c70 ldrb.w     r2, [r2, #0xe3]
+009d4c74 orrs       r1, r2
+009d4c76 movw       r2, #0xd00f
+009d4c7a movt       r2, #0x147
+009d4c7e ands       r1, r0
+009d4c80 ldrb.w     r2, [r2, #0x50]
+009d4c84 ands       r2, r1
+009d4c86 movs       r1, #0
+009d4c88 cmp        r2, r0
+009d4c8a it         eq
+009d4c8c moveq      r1, #1
+009d4c8e mov        r0, r1
+009d4c90 bx         lr

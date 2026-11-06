@@ -1,0 +1,58 @@
+{
+  "UTC": "2026-11-05T02:26:09.113226+00:00",
+  "scope": "Independent view of offline fixture browser screenshots; no real native or VM proof",
+  "observations": [
+    {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/evidence/browser-attempt03/delayed_4500ms_three_observations/run-task_delayed_4500ms_three_observations/step-01-attempt-01/observation-1/observation.png",
+      "sha256": "36818f29d4b809bb23076fdb5b81d99a068ad3b2140c47bdf7e87109933f0f21",
+      "coordinator_actual_view": true,
+      "visual_observation": "MOCK brown green transition color image"
+    },
+    {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/evidence/browser-attempt03/delayed_4500ms_three_observations/run-task_delayed_4500ms_three_observations/step-01-attempt-01/observation-2/observation.png",
+      "sha256": "959f2adeb9b996c1d9c749ef65187323a8d75d4705c873355d137bbdc606b5d5",
+      "coordinator_actual_view": true,
+      "visual_observation": "MOCK blue pink transition color image"
+    },
+    {
+      "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/evidence/browser-attempt03/delayed_4500ms_three_observations/run-task_delayed_4500ms_three_observations/step-01-attempt-01/observation-3/observation.png",
+      "sha256": "49a642d19c0f1864a6491aa900b9afd854b8c6071656c094c314044e069b354c",
+      "coordinator_actual_view": true,
+      "visual_observation": "Full Setup > Area/Date 45/59 menu; orange Area/Date/Time Setting row"
+    }
+  ],
+  "positive_case": {
+    "passed": true,
+    "counts": {
+      "keyPOST": 1,
+      "confirmPOST": 1,
+      "pinPOST": 1,
+      "nativeDown": 1,
+      "nativeUp": 1
+    },
+    "visual_semantics": "MOCK",
+    "native": "MOCK",
+    "native_to_first_observation_return_seconds": 0.3358709580497816,
+    "configured_menu_delay_seconds": 4.5,
+    "native_to_menu_first_publish_seconds": 4.562574583047535,
+    "deadline_ms": 20000,
+    "actual_alarm_elapsed_ms": 8004.199999988079,
+    "observation_hashes": [
+      "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+      "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a",
+      "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292"
+    ],
+    "snapshot_id": "75a97d43-e4ce-4285-b180-df4bcd3a6e6f",
+    "nonzero_explicit_review_sleeps_seconds": [
+      0.8,
+      0.65,
+      0.8
+    ]
+  },
+  "whole_browser_suite_passed": false,
+  "subsequent_failure": "step-02-attempt-02 observe before local identity/lifecycle guard refused",
+  "candidate_cause_unconfirmed": "cached previous confirmed step may retain input_received=true; original confirm_visual leaves it unchanged; current postkey_read previous-step clause requires false",
+  "steering_message": "msg_da88115a5bca",
+  "runtime_authorized": false,
+  "deployment_changed": false
+}

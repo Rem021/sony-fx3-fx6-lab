@@ -1,0 +1,21 @@
+{
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+  "sha256": "1c5f706db0ed6d55451940f31dc05a6177d05696bc1fa5d853696d04c718b523",
+  "version": "0.17.0\n",
+  "version_stderr": "",
+  "method": "exact original command plus linker --strip-debug",
+  "reference": "r16-fixed-slot-guests/prepare_r15_samples.py",
+  "coordinator_confirmation": "msg_d0073edba2ce",
+  "env_overrides": {
+    "ZIG_GLOBAL_CACHE_DIR": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/zig-global-cache",
+    "ZIG_LOCAL_CACHE_DIR": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/zig-local-cache",
+    "TMPDIR": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/tmp",
+    "XDG_CACHE_HOME": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/zig-global-cache",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "unavailable": {
+    "xcrun llvm-strip": "utility not found",
+    "xcrun llvm-objcopy": "utility not found",
+    "zig objcopy --strip-debug": "prior r15 OBJCOPY-FAILED.json: ELF unimplemented; not retried"
+  }
+}

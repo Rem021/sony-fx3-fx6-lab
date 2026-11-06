@@ -1,0 +1,53 @@
+{
+  "created_utc": "2026-10-26T06:08:19.791315+00:00",
+  "status": "PASS_ORIGINAL_EMPTY_NAME_STOP_AND_CLIP_SUFFIX_WITH_EXPLICIT_BOUNDARIES",
+  "original_fragments": 50,
+  "original_stop_reasons": {
+    "returned": 28,
+    "boundary: after_selected_StopCmp_copy_before_completion_logic": 8,
+    "boundary: after_65byte_clip_name_copy": 4,
+    "boundary: before_unrecognized_writer_diagnostic": 4,
+    "boundary: before_factory_allocation": 1,
+    "boundary: before_full_registration": 1,
+    "boundary: after_registration_before_allocation": 1,
+    "boundary: before_original_diagnostic": 2,
+    "unapproved PLT _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERmm": 1
+  },
+  "native_runtime_link_calls": 51,
+  "target_metadata_fields": {
+    "valid_byte0": 1,
+    "record_format_enum4": 5,
+    "profile_enum8": 1,
+    "level_enum14": 5,
+    "rate_2c_30": [
+      30000,
+      1001
+    ],
+    "rate_34_38": [
+      30000,
+      1001
+    ],
+    "width_height_3c_3e": [
+      1920,
+      1080
+    ],
+    "bitrate_raw40": 16000,
+    "interlace_byte44": 0,
+    "byte45": 0,
+    "alternate_classifier_byte46": 0
+  },
+  "names": [
+    "",
+    "",
+    "CONTROL",
+    ""
+  ],
+  "observed_stop_callback": "_ZN3mpr20RecvWriterEvtStopCmpEmjiPvjS0_",
+  "event": "0x40000001",
+  "first_cross_library_linker_denial_preserved": true,
+  "empty_name_globally_harmless_proven": false,
+  "full_writer_or_real_recording_or_recovery": false,
+  "proof_sha256": "e63bf12d9c62f73335fa035b58f3d71547fd68956e699968f14df65fc9737bb7",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

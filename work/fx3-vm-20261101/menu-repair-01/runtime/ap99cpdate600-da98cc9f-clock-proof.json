@@ -1,0 +1,63 @@
+{
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap99cpdate600-da98cc9f/date99-clock-final.bin",
+  "sha256": "4ca90bcab0c8c802fbeb7378e79bebce4a4250e4f10c1b87cef7531bce531fda",
+  "bytes": 4096,
+  "header": [
+    3552006738972719417,
+    1,
+    2,
+    1,
+    25789506000,
+    1609426800008,
+    25790666992,
+    1
+  ],
+  "transactions": [
+    {
+      "slot": 1,
+      "sequence": 12,
+      "published_stable": true,
+      "serial": 2,
+      "reason": 1,
+      "actual_AP_source": "0x809005c5",
+      "Q_field_after_cleanup": "0x0",
+      "type2_embedded_Q": "0x809061c2",
+      "reply_embedded_Q": "0x809061c2",
+      "stage": 6,
+      "return": 0,
+      "native_original_request_free": 0,
+      "clock_generation": 2,
+      "start_ns": 25789306000,
+      "end_ns": 25790524000,
+      "UTC_valid": true,
+      "type4_sent": true,
+      "ready44": "0100000000000000000000000000000000000000000000000000000000000000000000000000000001000000",
+      "type2_request44": "020000000000000001000000c261908000000000000000000000000000000000000000000000000001000000",
+      "native_AP_type2_reply44": "020000000000000001000000c2619080e50701010000000008000000000000001c0200000000000001000000",
+      "type4_done44": "0400000000000000000000000000000000000000000000000000000000000000000000000000000001000000",
+      "type2_reply_status_s32": 0,
+      "type2_dynamic_Q_matches": true,
+      "native_AP_reply_datetime16": "e5070101000000000800000000000000",
+      "native_AP_reply_timezone8": "1c02000000000000",
+      "reason4_no_type4": false,
+      "retired_success": true
+    }
+  ],
+  "scope": "Software CP clock and owned copies of native messages; no physicalCP address or RTC proof.",
+  "clock": {
+    "generation": 2,
+    "valid_UTC": true,
+    "monotonic_basis_ns": 25789506000,
+    "UTC_base_ms": 1609426800008,
+    "last_export_ns": 25790666992,
+    "UTC_ms_at_last_export": 1609426800009,
+    "type4_sent_count": 1,
+    "native_date": "e5070101000000000800000000000000",
+    "native_timezone": "1c02000000000000",
+    "reason": 1,
+    "errors": 0,
+    "synthetic_cp_clock": true,
+    "original_CP_executed": false,
+    "physical_RTC_written": false
+  }
+}

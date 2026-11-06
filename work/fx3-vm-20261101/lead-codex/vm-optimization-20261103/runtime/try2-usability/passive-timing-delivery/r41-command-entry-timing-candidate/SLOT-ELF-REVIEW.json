@@ -1,0 +1,798 @@
+{
+  "passed": true,
+  "reference": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/package_r36.py",
+    "sha256": "0362d3eb2f828b3681c1f7aa3b5701f5d81a53be4be8777b338f4d688b4d6e67",
+    "bytes": 18983,
+    "scope": "first observed reference pin after reading source; not claimed pre-read snapshot"
+  },
+  "command": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-Wl,--strip-debug",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf",
+    "-mcpu=generic",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx/compat",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-gpe-observe-v26-perf.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src/fx3-gpe-observe-v26-perf.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-backend-v9.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-compaction-v1.S",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/gpe-r41-fixed-slot.so"
+  ],
+  "original_unstripped_command": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf",
+    "-mcpu=generic",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx/compat",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-gpe-observe-v26-perf.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src/fx3-gpe-observe-v26-perf.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-backend-v9.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-compaction-v1.S",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/gpe-r41-candidate.so"
+  ],
+  "only_additional_changes": [
+    "insert -Wl,--strip-debug",
+    "output path"
+  ],
+  "exit": 0,
+  "raw": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/gpe-r41-candidate.so",
+    "bytes": 277704,
+    "sha256": "04ba6d561c7dfbf2c2ce294c696207547e30b1c62ea0452f9899a0d2c78aba02",
+    "needed": [
+      "libc.so.6",
+      "libdl.so.2"
+    ],
+    "soname": "fx3-gpe-observe-v26-perf.so",
+    "sections": {
+      "": {
+        "type": 0,
+        "flags": 0,
+        "address": 0,
+        "offset": 0,
+        "size": 0,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".dynsym": {
+        "type": 11,
+        "flags": 2,
+        "address": 624,
+        "offset": 624,
+        "size": 1056,
+        "link": 6,
+        "entry_size": 24,
+        "sha256": "5f71e4041a2f1e58ca3493489571f5e825c8feaaf87422ee29ab1928ac36ccc9"
+      },
+      ".gnu.version": {
+        "type": 1879048191,
+        "flags": 2,
+        "address": 1680,
+        "offset": 1680,
+        "size": 88,
+        "link": 1,
+        "entry_size": 2,
+        "sha256": "c60d460fd81e5996c1dd3c7873b0cda3370f985d1a012b7dc0d63674777ff93d"
+      },
+      ".gnu.version_r": {
+        "type": 1879048190,
+        "flags": 2,
+        "address": 1768,
+        "offset": 1768,
+        "size": 64,
+        "link": 6,
+        "entry_size": 0,
+        "sha256": "c192e4121c9bfa79f77e68ff7d480ac50ec4a5d90c8fcd137bd83d942f128ca2"
+      },
+      ".gnu.hash": {
+        "type": 1879048182,
+        "flags": 2,
+        "address": 1832,
+        "offset": 1832,
+        "size": 152,
+        "link": 1,
+        "entry_size": 0,
+        "sha256": "ce0aa4e53e4e195986f9e7d544bf687923ac3c744afb4ea69a19ded4e3e951f2"
+      },
+      ".hash": {
+        "type": 5,
+        "flags": 2,
+        "address": 1984,
+        "offset": 1984,
+        "size": 360,
+        "link": 1,
+        "entry_size": 4,
+        "sha256": "4654ac62fd38c8a9efe73216e25aefb9856fbf4cbb57ed782747fc448808c897"
+      },
+      ".dynstr": {
+        "type": 3,
+        "flags": 2,
+        "address": 2344,
+        "offset": 2344,
+        "size": 640,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "0d86db7229ee37a2869c0903793fb20d24859bcc3eb187202d595c12add2f27a"
+      },
+      ".rela.dyn": {
+        "type": 4,
+        "flags": 2,
+        "address": 2984,
+        "offset": 2984,
+        "size": 528,
+        "link": 1,
+        "entry_size": 24,
+        "sha256": "88cb54ec86765a6ef1a21034a582a67f2ff16cdfa0f14083a5bcdb2d57026c9c"
+      },
+      ".rela.plt": {
+        "type": 4,
+        "flags": 66,
+        "address": 3512,
+        "offset": 3512,
+        "size": 672,
+        "link": 1,
+        "entry_size": 24,
+        "sha256": "3f33f68987e9ab797d4ad0c9cda8035fe8cf7bea775edfa55283d091222fca57"
+      },
+      ".rodata": {
+        "type": 1,
+        "flags": 50,
+        "address": 4192,
+        "offset": 4192,
+        "size": 79960,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "4f38241f99e6653b04651c1d5f401cfaa0655486cfae437569456a78bb6a739a"
+      },
+      ".eh_frame_hdr": {
+        "type": 1,
+        "flags": 2,
+        "address": 84152,
+        "offset": 84152,
+        "size": 476,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "556a901b5d36d98d59ef367dc52d899162ad294023a54be198bbd9048cdac7ab"
+      },
+      ".eh_frame": {
+        "type": 1,
+        "flags": 2,
+        "address": 84632,
+        "offset": 84632,
+        "size": 3176,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "725ff340cbb3b4e7cb4f434144b94423c8725384b4dc066c766904f779fcf76a"
+      },
+      ".text": {
+        "type": 1,
+        "flags": 6,
+        "address": 153344,
+        "offset": 87808,
+        "size": 38648,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "59c26fd1f5aeef219a9a996008e3511b4cfbe1af9ebc6e6f65b755953141fb17"
+      },
+      ".plt": {
+        "type": 1,
+        "flags": 536870918,
+        "address": 192000,
+        "offset": 126464,
+        "size": 480,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "8cea61cf70a534e3d07407880dce42c56a39db3fdd31ad07ac78a06ca266e353"
+      },
+      ".tbss": {
+        "type": 8,
+        "flags": 1027,
+        "address": 192480,
+        "offset": 126944,
+        "size": 44,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".data.rel.ro": {
+        "type": 1,
+        "flags": 3,
+        "address": 258016,
+        "offset": 126944,
+        "size": 112,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "b5fdab78d8947eacc864bfeecb4d2100780e5afe1cd8efafb124887913ac49fa"
+      },
+      ".dynamic": {
+        "type": 6,
+        "flags": 3,
+        "address": 258128,
+        "offset": 127056,
+        "size": 368,
+        "link": 6,
+        "entry_size": 16,
+        "sha256": "f41878001511e08584b346d2ca576fe20fe178fd4360e02b70c67a876855fb28"
+      },
+      ".got": {
+        "type": 1,
+        "flags": 3,
+        "address": 258496,
+        "offset": 127424,
+        "size": 120,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "6edd9f6f9cc92cded36e6c4a580933f9c9f1b90562b46903b806f21902a1a54f"
+      },
+      ".got.plt": {
+        "type": 1,
+        "flags": 3,
+        "address": 258616,
+        "offset": 127544,
+        "size": 248,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "bdc063db0726bf8483bea3d73d14b55a01a6a7245469c0de1a0a284884422024"
+      },
+      ".relro_padding": {
+        "type": 8,
+        "flags": 3,
+        "address": 258864,
+        "offset": 127792,
+        "size": 3280,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".data": {
+        "type": 1,
+        "flags": 3,
+        "address": 324400,
+        "offset": 127792,
+        "size": 16,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "db0550d553e2a146e34164d19cd55f006c38d700d8f9a4e3ba2c889a1d7c26b2"
+      },
+      ".bss": {
+        "type": 8,
+        "flags": 3,
+        "address": 324416,
+        "offset": 127808,
+        "size": 569208,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".debug_loc": {
+        "type": 1,
+        "flags": 0,
+        "address": 0,
+        "offset": 127808,
+        "size": 61695,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "0bae88f8bd32e338b394588d98a526619f5cf6e151615aef368ff326291c0bd7"
+      },
+      ".debug_abbrev": {
+        "type": 1,
+        "flags": 0,
+        "address": 0,
+        "offset": 189503,
+        "size": 2165,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "769833ba273d41e533771965d5d608e11ba1af0de952fed4a57ad2b6289cc0e6"
+      },
+      ".debug_info": {
+        "type": 1,
+        "flags": 0,
+        "address": 0,
+        "offset": 191668,
+        "size": 41508,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "0546bcc4c87da71b876986927e7397ba116ee9b872cdcc5c10ab210794feb6cb"
+      },
+      ".debug_ranges": {
+        "type": 1,
+        "flags": 0,
+        "address": 0,
+        "offset": 233176,
+        "size": 6624,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "274ba755a52c013ee1da5ef085cbf56f1780cb0f569a120784e983e319e21d03"
+      },
+      ".debug_str": {
+        "type": 1,
+        "flags": 48,
+        "address": 0,
+        "offset": 239800,
+        "size": 5440,
+        "link": 0,
+        "entry_size": 1,
+        "sha256": "233ce1958f05c3a5d37c6796b37695c3f8835f4d3c6e144a2547d31e95e714ae"
+      },
+      ".comment": {
+        "type": 1,
+        "flags": 48,
+        "address": 0,
+        "offset": 245240,
+        "size": 40,
+        "link": 0,
+        "entry_size": 1,
+        "sha256": "aede904fba9b554236757570189b27e4d38edaa1a213e287c10760145ac63891"
+      },
+      ".debug_line": {
+        "type": 1,
+        "flags": 0,
+        "address": 0,
+        "offset": 245280,
+        "size": 23162,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "51329d88fffd8ef833b5f177384a76b0031e9f88102512503aca95234bdeb7c4"
+      },
+      ".debug_aranges": {
+        "type": 1,
+        "flags": 0,
+        "address": 0,
+        "offset": 268442,
+        "size": 48,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "b602d4cec64d5e5c11f6caba93a28e6414d27302e2398f7c862a6e03b4d7b17a"
+      },
+      ".symtab": {
+        "type": 2,
+        "flags": 0,
+        "address": 0,
+        "offset": 268496,
+        "size": 4464,
+        "link": 32,
+        "entry_size": 24,
+        "sha256": "1465d7185b219d683f2736b2e19861b6a283ea3df710374fa000aabf30369079"
+      },
+      ".shstrtab": {
+        "type": 3,
+        "flags": 0,
+        "address": 0,
+        "offset": 272960,
+        "size": 316,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "a6b64185603bc28a940f8e1220c3de3f99c768644558d5b0cd8b92ac6dfde5a6"
+      },
+      ".strtab": {
+        "type": 3,
+        "flags": 0,
+        "address": 0,
+        "offset": 273276,
+        "size": 2311,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "afa98fdb800b5acaf9e1d3ad8017a56b2105ee507609c31de10088abb650dc72"
+      }
+    }
+  },
+  "fixed_slot_body": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/gpe-r41-fixed-slot.so",
+    "bytes": 129600,
+    "sha256": "19ca7deaf570eeb68fda0036bb75dec740ab30f404f9f91bd208fd3d53c06a39",
+    "needed": [
+      "libc.so.6",
+      "libdl.so.2"
+    ],
+    "soname": "fx3-gpe-observe-v26-perf.so",
+    "sections": {
+      "": {
+        "type": 0,
+        "flags": 0,
+        "address": 0,
+        "offset": 0,
+        "size": 0,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".dynsym": {
+        "type": 11,
+        "flags": 2,
+        "address": 624,
+        "offset": 624,
+        "size": 1056,
+        "link": 6,
+        "entry_size": 24,
+        "sha256": "5f71e4041a2f1e58ca3493489571f5e825c8feaaf87422ee29ab1928ac36ccc9"
+      },
+      ".gnu.version": {
+        "type": 1879048191,
+        "flags": 2,
+        "address": 1680,
+        "offset": 1680,
+        "size": 88,
+        "link": 1,
+        "entry_size": 2,
+        "sha256": "c60d460fd81e5996c1dd3c7873b0cda3370f985d1a012b7dc0d63674777ff93d"
+      },
+      ".gnu.version_r": {
+        "type": 1879048190,
+        "flags": 2,
+        "address": 1768,
+        "offset": 1768,
+        "size": 64,
+        "link": 6,
+        "entry_size": 0,
+        "sha256": "c192e4121c9bfa79f77e68ff7d480ac50ec4a5d90c8fcd137bd83d942f128ca2"
+      },
+      ".gnu.hash": {
+        "type": 1879048182,
+        "flags": 2,
+        "address": 1832,
+        "offset": 1832,
+        "size": 152,
+        "link": 1,
+        "entry_size": 0,
+        "sha256": "ce0aa4e53e4e195986f9e7d544bf687923ac3c744afb4ea69a19ded4e3e951f2"
+      },
+      ".hash": {
+        "type": 5,
+        "flags": 2,
+        "address": 1984,
+        "offset": 1984,
+        "size": 360,
+        "link": 1,
+        "entry_size": 4,
+        "sha256": "4654ac62fd38c8a9efe73216e25aefb9856fbf4cbb57ed782747fc448808c897"
+      },
+      ".dynstr": {
+        "type": 3,
+        "flags": 2,
+        "address": 2344,
+        "offset": 2344,
+        "size": 640,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "0d86db7229ee37a2869c0903793fb20d24859bcc3eb187202d595c12add2f27a"
+      },
+      ".rela.dyn": {
+        "type": 4,
+        "flags": 2,
+        "address": 2984,
+        "offset": 2984,
+        "size": 528,
+        "link": 1,
+        "entry_size": 24,
+        "sha256": "88cb54ec86765a6ef1a21034a582a67f2ff16cdfa0f14083a5bcdb2d57026c9c"
+      },
+      ".rela.plt": {
+        "type": 4,
+        "flags": 66,
+        "address": 3512,
+        "offset": 3512,
+        "size": 672,
+        "link": 1,
+        "entry_size": 24,
+        "sha256": "3f33f68987e9ab797d4ad0c9cda8035fe8cf7bea775edfa55283d091222fca57"
+      },
+      ".rodata": {
+        "type": 1,
+        "flags": 50,
+        "address": 4192,
+        "offset": 4192,
+        "size": 79960,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "4f38241f99e6653b04651c1d5f401cfaa0655486cfae437569456a78bb6a739a"
+      },
+      ".eh_frame_hdr": {
+        "type": 1,
+        "flags": 2,
+        "address": 84152,
+        "offset": 84152,
+        "size": 476,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "556a901b5d36d98d59ef367dc52d899162ad294023a54be198bbd9048cdac7ab"
+      },
+      ".eh_frame": {
+        "type": 1,
+        "flags": 2,
+        "address": 84632,
+        "offset": 84632,
+        "size": 3176,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "725ff340cbb3b4e7cb4f434144b94423c8725384b4dc066c766904f779fcf76a"
+      },
+      ".text": {
+        "type": 1,
+        "flags": 6,
+        "address": 153344,
+        "offset": 87808,
+        "size": 38648,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "59c26fd1f5aeef219a9a996008e3511b4cfbe1af9ebc6e6f65b755953141fb17"
+      },
+      ".plt": {
+        "type": 1,
+        "flags": 536870918,
+        "address": 192000,
+        "offset": 126464,
+        "size": 480,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "8cea61cf70a534e3d07407880dce42c56a39db3fdd31ad07ac78a06ca266e353"
+      },
+      ".tbss": {
+        "type": 8,
+        "flags": 1027,
+        "address": 192480,
+        "offset": 126944,
+        "size": 44,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".data.rel.ro": {
+        "type": 1,
+        "flags": 3,
+        "address": 258016,
+        "offset": 126944,
+        "size": 112,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "b5fdab78d8947eacc864bfeecb4d2100780e5afe1cd8efafb124887913ac49fa"
+      },
+      ".dynamic": {
+        "type": 6,
+        "flags": 3,
+        "address": 258128,
+        "offset": 127056,
+        "size": 368,
+        "link": 6,
+        "entry_size": 16,
+        "sha256": "f41878001511e08584b346d2ca576fe20fe178fd4360e02b70c67a876855fb28"
+      },
+      ".got": {
+        "type": 1,
+        "flags": 3,
+        "address": 258496,
+        "offset": 127424,
+        "size": 120,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "6edd9f6f9cc92cded36e6c4a580933f9c9f1b90562b46903b806f21902a1a54f"
+      },
+      ".got.plt": {
+        "type": 1,
+        "flags": 3,
+        "address": 258616,
+        "offset": 127544,
+        "size": 248,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "bdc063db0726bf8483bea3d73d14b55a01a6a7245469c0de1a0a284884422024"
+      },
+      ".relro_padding": {
+        "type": 8,
+        "flags": 3,
+        "address": 258864,
+        "offset": 127792,
+        "size": 3280,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".data": {
+        "type": 1,
+        "flags": 3,
+        "address": 324400,
+        "offset": 127792,
+        "size": 16,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "db0550d553e2a146e34164d19cd55f006c38d700d8f9a4e3ba2c889a1d7c26b2"
+      },
+      ".bss": {
+        "type": 8,
+        "flags": 3,
+        "address": 324416,
+        "offset": 127808,
+        "size": 569208,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      ".comment": {
+        "type": 1,
+        "flags": 48,
+        "address": 0,
+        "offset": 127808,
+        "size": 40,
+        "link": 0,
+        "entry_size": 1,
+        "sha256": "aede904fba9b554236757570189b27e4d38edaa1a213e287c10760145ac63891"
+      },
+      ".shstrtab": {
+        "type": 3,
+        "flags": 0,
+        "address": 0,
+        "offset": 127848,
+        "size": 211,
+        "link": 0,
+        "entry_size": 0,
+        "sha256": "f290ec577a102e1f5fbb900512505f32afe759dff86efa781caafed6856b136b"
+      }
+    }
+  },
+  "all_PHDR_equal": true,
+  "all_ALLOC_bytes_layout_link_identity_equal": [
+    ".dynsym",
+    ".gnu.version",
+    ".gnu.version_r",
+    ".gnu.hash",
+    ".hash",
+    ".dynstr",
+    ".rela.dyn",
+    ".rela.plt",
+    ".rodata",
+    ".eh_frame_hdr",
+    ".eh_frame",
+    ".text",
+    ".plt",
+    ".tbss",
+    ".data.rel.ro",
+    ".dynamic",
+    ".got",
+    ".got.plt",
+    ".relro_padding",
+    ".data",
+    ".bss"
+  ],
+  "all_program_segments_equal_except_exact_section_table_metadata": [
+    {
+      "index": 0,
+      "type": 6,
+      "offset": 64,
+      "filesz": 560,
+      "changed_offsets": []
+    },
+    {
+      "index": 1,
+      "type": 1,
+      "offset": 0,
+      "filesz": 87808,
+      "changed_offsets": [
+        40,
+        41,
+        42,
+        60,
+        62
+      ]
+    },
+    {
+      "index": 2,
+      "type": 1,
+      "offset": 87808,
+      "filesz": 39136,
+      "changed_offsets": []
+    },
+    {
+      "index": 3,
+      "type": 1,
+      "offset": 126944,
+      "filesz": 848,
+      "changed_offsets": []
+    },
+    {
+      "index": 4,
+      "type": 1,
+      "offset": 127792,
+      "filesz": 16,
+      "changed_offsets": []
+    },
+    {
+      "index": 5,
+      "type": 7,
+      "offset": 126944,
+      "filesz": 0,
+      "changed_offsets": []
+    },
+    {
+      "index": 6,
+      "type": 2,
+      "offset": 127056,
+      "filesz": 368,
+      "changed_offsets": []
+    },
+    {
+      "index": 7,
+      "type": 1685382482,
+      "offset": 126944,
+      "filesz": 848,
+      "changed_offsets": []
+    },
+    {
+      "index": 8,
+      "type": 1685382480,
+      "offset": 84152,
+      "filesz": 476,
+      "changed_offsets": []
+    },
+    {
+      "index": 9,
+      "type": 1685382481,
+      "offset": 0,
+      "filesz": 0,
+      "changed_offsets": []
+    }
+  ],
+  "ELF_header_changed_offsets": [
+    40,
+    41,
+    42,
+    60,
+    62
+  ],
+  "permitted_header_fields": [
+    "e_shoff",
+    "e_shnum",
+    "e_shstrndx"
+  ],
+  "dynamic_dependencies_and_exports_identical": true,
+  "slot_capacity_bytes": 276984,
+  "body_bytes": 129600,
+  "available_tail_bytes": 147384,
+  "CPIO_padded_or_modified": false,
+  "guest_loaded_or_executed": false,
+  "package_or_runtime_admission": false,
+  "old_objcopy_failure_preserved": "receipts/strip.stderr and build/strip-attempt.failed-empty-output",
+  "allocated_section_info_equal": true
+}

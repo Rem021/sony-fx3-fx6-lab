@@ -1,0 +1,223 @@
+{
+  "status": "CAP_PHASE1_READY_AP_PHASE2_UNRUN",
+  "runtime_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-f58ad0fb",
+  "serial_sha256": "19117b7c967fef4220177380beea201f7e3d465a46cecd19761b4d4b37b93688",
+  "init_member_sha256": "8ad0be3aec240977060e25ba1193ad80f6ef596ffe47392e3d5b5b79c0ee4a05",
+  "helper_source_sha256": "8d65d6907c38e0f6767f7127e74de29e703e927aa0dc0be08deb9081d36bb7e7",
+  "frozen_cpio_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "init_source_lines": {
+    "endmaps": "323-327: grep only /usr/bin/im.elf",
+    "early_maps": "348-351: pidof im.elf then cat /proc/uptime /proc/$im_pid/maps",
+    "late_maps": "354-369: delayed 10s snapshots; IM_PROCESS appears after fault"
+  },
+  "early_snapshots": [
+    {
+      "epoch": 1,
+      "pid": 237,
+      "byte_range": [
+        218302,
+        248858
+      ],
+      "first_uptime": "15.39 57.50",
+      "map_rows": 218,
+      "cap_rows": 7,
+      "cap_inode": 3790,
+      "cap_bias": "0x7f816d4000",
+      "ap_rows": 0
+    },
+    {
+      "epoch": 2,
+      "pid": 237,
+      "byte_range": [
+        452351,
+        504539
+      ],
+      "first_uptime": "16.65 59.76",
+      "map_rows": 356,
+      "cap_rows": 7,
+      "cap_inode": 3790,
+      "cap_bias": "0x7f816d4000",
+      "ap_rows": 0
+    },
+    {
+      "epoch": 3,
+      "pid": 237,
+      "byte_range": [
+        708001,
+        763745
+      ],
+      "first_uptime": "17.97 61.35",
+      "map_rows": 365,
+      "cap_rows": 7,
+      "cap_inode": 3790,
+      "cap_bias": "0x7f816d4000",
+      "ap_rows": 0
+    },
+    {
+      "epoch": 4,
+      "pid": 237,
+      "byte_range": [
+        962475,
+        1036707
+      ],
+      "first_uptime": "19.34 63.14",
+      "map_rows": 460,
+      "cap_rows": 7,
+      "cap_inode": 3790,
+      "cap_bias": "0x7f816d4000",
+      "ap_rows": 0
+    },
+    {
+      "epoch": 5,
+      "pid": 237,
+      "byte_range": [
+        1249565,
+        1324732
+      ],
+      "first_uptime": "20.84 65.03",
+      "map_rows": 509,
+      "cap_rows": 7,
+      "cap_inode": 3790,
+      "cap_bias": "0x7f816d4000",
+      "ap_rows": 0
+    }
+  ],
+  "pre_fault_ap_dladdr_profiles": [
+    {
+      "byte_range": [
+        1525005,
+        1526993
+      ],
+      "marker": "FX3_PROFILE_STACK_BEGIN destination=0x5503e0 header=0x1000355 tid=366 frame=0x7f4f7fca50",
+      "frame_count": 11,
+      "base": "0x7ed2a91000",
+      "first_two": [
+        {
+          "lr": "0x7ed4bed2e8",
+          "relative": "0x215c2e8",
+          "dladdr_base": "0x7ed2a91000"
+        },
+        {
+          "lr": "0x7ed3b86bcc",
+          "relative": "0x10f5bcc",
+          "dladdr_base": "0x7ed2a91000"
+        }
+      ]
+    },
+    {
+      "byte_range": [
+        1842678,
+        1844048
+      ],
+      "marker": "FX3_PROFILE_STACK_BEGIN destination=0x5503e0 header=0x1000355 tid=366 frame=0x7f4f7fca50",
+      "frame_count": 11,
+      "base": "0x7ed2a91000",
+      "first_two": [
+        {
+          "lr": "0x7ed4bed2e8",
+          "relative": "0x215c2e8",
+          "dladdr_base": "0x7ed2a91000"
+        },
+        {
+          "lr": "0x7ed3b86bcc",
+          "relative": "0x10f5bcc",
+          "dladdr_base": "0x7ed2a91000"
+        }
+      ]
+    },
+    {
+      "byte_range": [
+        1846392,
+        1847762
+      ],
+      "marker": "FX3_PROFILE_STACK_BEGIN destination=0x5503e0 header=0x1000355 tid=366 frame=0x7f4f7fca50",
+      "frame_count": 11,
+      "base": "0x7ed2a91000",
+      "first_two": [
+        {
+          "lr": "0x7ed4bed2e8",
+          "relative": "0x215c2e8",
+          "dladdr_base": "0x7ed2a91000"
+        },
+        {
+          "lr": "0x7ed3b86bcc",
+          "relative": "0x10f5bcc",
+          "dladdr_base": "0x7ed2a91000"
+        }
+      ]
+    },
+    {
+      "byte_range": [
+        1847940,
+        1849310
+      ],
+      "marker": "FX3_PROFILE_STACK_BEGIN destination=0x5503e0 header=0x1000355 tid=366 frame=0x7f4f7fca50",
+      "frame_count": 11,
+      "base": "0x7ed2a91000",
+      "first_two": [
+        {
+          "lr": "0x7ed4bed2e8",
+          "relative": "0x215c2e8",
+          "dladdr_base": "0x7ed2a91000"
+        },
+        {
+          "lr": "0x7ed3b86bcc",
+          "relative": "0x10f5bcc",
+          "dladdr_base": "0x7ed2a91000"
+        }
+      ]
+    },
+    {
+      "byte_range": [
+        1881317,
+        1882065
+      ],
+      "marker": "FX3_PROFILE_STACK_BEGIN destination=0x5503e0 header=0x1000359 tid=406 frame=0x7f4efe2de0",
+      "frame_count": 3,
+      "base": "0x7ed2a91000",
+      "first_two": [
+        {
+          "lr": "0x7ed4bed2e8",
+          "relative": "0x215c2e8",
+          "dladdr_base": "0x7ed2a91000"
+        },
+        {
+          "lr": "0x7ed454dba8",
+          "relative": "0x1abcba8",
+          "dladdr_base": "0x7ed2a91000"
+        }
+      ]
+    },
+    {
+      "byte_range": [
+        1882895,
+        1884059
+      ],
+      "marker": "FX3_PROFILE_STACK_BEGIN destination=0x92840747 header=0x32d200d tid=437 frame=0x7ec26444f0",
+      "frame_count": 7,
+      "base": "0x7ed2a91000",
+      "first_two": [
+        {
+          "lr": "0x7ed4b807a0",
+          "relative": "0x20ef7a0",
+          "dladdr_base": "0x7ed2a91000"
+        },
+        {
+          "lr": "0x7ed4b8260c",
+          "relative": "0x20f160c",
+          "dladdr_base": "0x7ed2a91000"
+        }
+      ]
+    }
+  ],
+  "request_byte_offset": 1884126,
+  "fault_byte_offset": 1884262,
+  "first_profile_precedes_request_bytes": 357133,
+  "ap_complete_proc_maps_before_request": false,
+  "cap_complete_proc_maps_before_request": true,
+  "old_strict_two_image_map_gate_ready": false,
+  "revised_CAP_phase1_ready_from_first_complete_snapshot": true,
+  "revised_AP_phase2_current_vcpu_identity": "not_run",
+  "explanation": "AP loads after last early maps; CAP can be armed from its complete PID237 map. Later same-process native dladdr AP base is only a candidate until current stopped vCPU ELF header/PHDR/original words/TLS/frame prove it.",
+  "next_minimal_observation": "With a separately allocated VM window, arm CAP Z1 from early original map; on hit validate current CPU images and same-call evidence before any model read; no historical ASLR substitution."
+}

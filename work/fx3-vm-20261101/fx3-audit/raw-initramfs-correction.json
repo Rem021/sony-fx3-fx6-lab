@@ -1,0 +1,23 @@
+{
+  "reason": "p07 original kernel explicitly reports gzip initramfs support not configured; use raw newc cpio",
+  "artifacts": [
+    {
+      "source_gzip": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-minimal-original-userspace-v2.cpio.gz",
+      "source_gzip_sha256": "c704d71d6e6618b087d21c3a2a1a2bb562cb19085032a69f7ec43314302c4f4f",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-minimal-original-userspace-v2.cpio",
+      "bytes": 1860580,
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c",
+      "newc_magic": "070701",
+      "scope": "Exact decompression only; unmodified original binaries and custom init preserved"
+    },
+    {
+      "source_gzip": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-original-app-loader-probe.cpio.gz",
+      "source_gzip_sha256": "21009d54a4e60413ae1425baf6671e91820abb246d2f8bc45a5ccc1e0e16cd0e",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-original-app-loader-probe.cpio",
+      "bytes": 8693220,
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+      "newc_magic": "070701",
+      "scope": "Exact decompression only; unmodified original binaries and custom init preserved"
+    }
+  ]
+}

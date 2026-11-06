@@ -1,0 +1,406 @@
+{
+  "created_utc": "2026-10-28T10:42:09.661272+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "validation": [
+    {
+      "script": "resource_binding_guest.py",
+      "exit_code": 0,
+      "stdout_sha256": "9a6c744e698ca84ca29985aec986dd04283297bf48f81870d6d24cf48d3eca2e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "script": "caller_binding_guest.py",
+      "exit_code": 0,
+      "stdout_sha256": "a17efbc96b2175caa5f5a766374aa37806fb00691d59852a923cf2ffb5a335eb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "script": "context_binding_guest.py",
+      "exit_code": 0,
+      "stdout_sha256": "3e475fabecce58ba56ec3326aa98cf31cd9f8acc72a092d999e75f960e39beda",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "script": "owner_boundaries_guest.py",
+      "exit_code": 0,
+      "stdout_sha256": "5e5b411a92cf8914aafb581fc50362356c9c67a5596ee95a0b685dc86245e77a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "script": "static_inventory.py",
+      "exit_code": 0,
+      "stdout_sha256": "621512ca8a6d0d72a88805b9ded815640091abb5e66fc9b3d00e9a8017a874f5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "original_binaries": [
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "bytes": 15980568,
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "unchanged": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+      "bytes": 13348560,
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "unchanged": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "unchanged": true
+    }
+  ],
+  "previous_sealed_material": [
+    {
+      "receipt": "work/fx3-color-port-20261027/final-receipt.json",
+      "files_verified": 1282,
+      "unchanged": true,
+      "receipt_sha256": "53f5113cc79c57b9465f2556735534917cc0fe29c881661449dcd6ed499b9424"
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/route-20261028/final-receipt.json",
+      "files_verified": 43,
+      "unchanged": true,
+      "receipt_sha256": "bf96cb1d8a76bd5eec86947332c14ceb538b6cdf4b71890b672845bfcbea217d"
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/consumer-20261028/final-receipt.json",
+      "files_verified": 35,
+      "unchanged": true,
+      "receipt_sha256": "670c50f53a270c32288b7bf96ed17c21bd360bab0562e6dc93cf1998d9694199"
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/resource-20261028/final-receipt.json",
+      "files_verified": 48,
+      "unchanged": true,
+      "receipt_sha256": "43f12cedea38c47f36d2375f69d307312f66de6658a36cd0b1427358a298685c"
+    }
+  ],
+  "project_index_prefix_unchanged": true,
+  "project_index_before_bytes": 57459,
+  "project_index_before_sha256": "66e785b64971f80b34c490a5321a56b51cb936dfdb93f58dd612617f4d225bc3",
+  "project_index_after_sha256": "21c323a7d9db80cfb74053cc6f4c9f19d50022a83f3d16cde49c45678930aea9",
+  "camera_usb_phone_actions": 0,
+  "full_firmware_modified": false,
+  "flashable_package_produced": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 9998,
+      "sha256": "5872ed0f9280a6bf78a2fba51f35304170ad3a7047b3cef5895a7732f326dd71"
+    },
+    {
+      "path": "caller-binding-results.json",
+      "bytes": 17170,
+      "sha256": "5a2fcf2731f7413211d5b966722e501cdfbf5f9120b5f9eaa3c5f6b7666b62d2"
+    },
+    {
+      "path": "caller_binding_guest.py",
+      "bytes": 6971,
+      "sha256": "b6cb177ede59e705ede67d70969c1f06b8784b9b0cc09576b83a56ae953fca59"
+    },
+    {
+      "path": "context-binding-results.json",
+      "bytes": 30689,
+      "sha256": "dc30d24e58a2447defc662e023ca8b090fc395f614050f420cb325d133d19777"
+    },
+    {
+      "path": "context-offset-candidates.json",
+      "bytes": 1501,
+      "sha256": "26a441cd5743d3c82667ee50ccf094978a9179ab1d2db59456226e347e67f7ca"
+    },
+    {
+      "path": "context_binding_guest.py",
+      "bytes": 5010,
+      "sha256": "1658b936b6aff155dc92e5fbe8d30e5a6d89ed25a8715e1c3cc57ca5513673a1"
+    },
+    {
+      "path": "development-notes.json",
+      "bytes": 1152,
+      "sha256": "9844c5906ff4e9d056a706584f030e715b090c5f86b0500563574ee5b0bd07cf"
+    },
+    {
+      "path": "disassembly/cp-002bf294-002bf322.txt",
+      "bytes": 1132,
+      "sha256": "33015c2c5a337d007ef086d48a128cbd2f32aab5665f15a1287a62319037497e"
+    },
+    {
+      "path": "disassembly/cp-002bf574-002bf638.txt",
+      "bytes": 1953,
+      "sha256": "e4517a248b6b09cca7af19418ad27487ca156d14a61e75ae3623dd91e1c8b1bb"
+    },
+    {
+      "path": "disassembly/cp-002fbe30-002fce16.txt",
+      "bytes": 37354,
+      "sha256": "9fa4785bc66f690ac9e6b7ceeac2e258123a19c92bd5601f20db53a68605d7ce"
+    },
+    {
+      "path": "disassembly/cp-0030020c-003004ca.txt",
+      "bytes": 6017,
+      "sha256": "198305584f2a87347654f02d22fb0878dc723892e49d0d34107947dc12795be5"
+    },
+    {
+      "path": "disassembly/cp-003004ca-003005bc.txt",
+      "bytes": 2141,
+      "sha256": "4aed4ae56431aa0a6b16bae6e87f310496eea771ab3ef7bb8af09abce4c8c713"
+    },
+    {
+      "path": "disassembly/cp-00300654-00300696.txt",
+      "bytes": 564,
+      "sha256": "52751c5bce300350a3a8e21f14038c12c4520ea6cf0fc3182816cc1d7cbf5569"
+    },
+    {
+      "path": "disassembly/cp-003007c2-0030082c.txt",
+      "bytes": 1038,
+      "sha256": "b8b3c3d5e3bd11363160581707dd312c835e29949c412300438f47da8fb334d8"
+    },
+    {
+      "path": "disassembly/cp-00300ea2-00301062.txt",
+      "bytes": 3984,
+      "sha256": "af47ac598f6d3ae4d82e7753df1e103fd42cebc37b7f6b1d45242e4ad04e202b"
+    },
+    {
+      "path": "disassembly/cp-00302724-003027c6.txt",
+      "bytes": 1434,
+      "sha256": "99227cc0c816ec5f5ce3bae475c37600dbd5727dfc2a3b852a0430dc8c3d3b66"
+    },
+    {
+      "path": "disassembly/cp-00306c18-00306cb2.txt",
+      "bytes": 1369,
+      "sha256": "b7c32dfe9606837ec1633d6d3ad05222c73910ef530fd83877f8c10bb38c6f73"
+    },
+    {
+      "path": "disassembly/cp-003084d4-003085c8.txt",
+      "bytes": 2124,
+      "sha256": "941c9ce5cdba928c1c51921579b329afcc55608c2bf14d924d3b1a029b7fe115"
+    },
+    {
+      "path": "disassembly/cp-0030a43c-0030a530.txt",
+      "bytes": 2240,
+      "sha256": "0589262c2e4e1f435e820a6498b068ec4700f38414d73f0951b51337bca98237"
+    },
+    {
+      "path": "disassembly/cp-003259bc-00325a8c.txt",
+      "bytes": 1998,
+      "sha256": "3d861b451c283788de7d28887123a216d4d9f89fff3e55958172927fa2587996"
+    },
+    {
+      "path": "disassembly/cp-003263fc-00326600.txt",
+      "bytes": 4624,
+      "sha256": "3ae611d9518600dfb367ce43ff0e13057e954a1e2ad2a8fec8810e7a5fcd382f"
+    },
+    {
+      "path": "disassembly/cp-00326680-003266d0.txt",
+      "bytes": 713,
+      "sha256": "1e1725bba439fea9c980158bbf9bf12436f91f6b32ccb991ef35a7c98f7ae603"
+    },
+    {
+      "path": "disassembly/cp-0037fa74-0037fd14.txt",
+      "bytes": 6711,
+      "sha256": "793ecfd9f9d5ad231450a763a321c7f7dbc3e10c1d93d04782268706b9a02d65"
+    },
+    {
+      "path": "disassembly/cp-0037ff6c-00380094.txt",
+      "bytes": 2656,
+      "sha256": "62dd2a9bb93926040f2d3e5bbecc84fd9d7766d68a36cb7cd88f57fc3fd650c0"
+    },
+    {
+      "path": "disassembly/cp-00380094-003801e4.txt",
+      "bytes": 3372,
+      "sha256": "04d4e665ce4a96505aa977742311fc7b1a5bebb6bbe60e23285d5fe2279c12f2"
+    },
+    {
+      "path": "disassembly/cp-003812c8-00381304.txt",
+      "bytes": 561,
+      "sha256": "db9a246b3bb8d2f4b51d8646882ca52d054d1e4e066b15b76cd3103006cd42a3"
+    },
+    {
+      "path": "disassembly/cp-00450af4-00450c30.txt",
+      "bytes": 95,
+      "sha256": "4f4b3574377349685189a5d05a97a5d928c58387b0cf88ef70ef3e6c4a44e259"
+    },
+    {
+      "path": "disassembly/cp-008ad4f4-008ad58a.txt",
+      "bytes": 1333,
+      "sha256": "0c9dc70b478848d477f906e6929c5a0bf05bf5ef960c913e14f8a2e29bfdce3d"
+    },
+    {
+      "path": "disassembly/cp-008ad662-008ad6c4.txt",
+      "bytes": 978,
+      "sha256": "06f5f26be2ccde44787202f348fb3d543d5170d52381703cb5fa7253af8ff566"
+    },
+    {
+      "path": "disassembly/cp-008c724c-008c72a4.txt",
+      "bytes": 907,
+      "sha256": "94ff59bea583da3b5477c174d1aabde62f10a0ce28063a4f9a7c6886309c0a2a"
+    },
+    {
+      "path": "disassembly/cp-008c7336-008c735c.txt",
+      "bytes": 390,
+      "sha256": "b841ccf5de5e317d2ae15ac91e4c2872396088334965e4d886c032d5645afe7a"
+    },
+    {
+      "path": "disassembly/cp-008cb474-008cb484.txt",
+      "bytes": 125,
+      "sha256": "0c2595474968eed468e4735930298dc97a40bbbefe762b0efe28a28ef9ea38d7"
+    },
+    {
+      "path": "disassembly/cp-008d1308-008d1538.txt",
+      "bytes": 5008,
+      "sha256": "6972046b3c292272e03f848c799371df2cfe57eebab190a4e5497591fa9f17bb"
+    },
+    {
+      "path": "disassembly/cp-008d1a7e-008d1ad6.txt",
+      "bytes": 838,
+      "sha256": "d007d10dcf6ed859aab1f4f060808e043d713ddd458fe162b06e6704b3fac647"
+    },
+    {
+      "path": "disassembly/cp-0090cd86-0090ce52.txt",
+      "bytes": 1797,
+      "sha256": "bb36c1d4ccc6f268c5352fc2eca1e953697177b95fddc996f5571f172125d7fd"
+    },
+    {
+      "path": "disassembly/cp-0090e1d0-0090e1dc.txt",
+      "bytes": 91,
+      "sha256": "e5840e32afa7b386a465b8609a710c3dc12ba5bb14cbcc84b5ccf4ff2d6000b4"
+    },
+    {
+      "path": "disassembly/cp-00947824-00947870.txt",
+      "bytes": 721,
+      "sha256": "ce5ba7a4f3fad7e5c6cc6a0a092c1d1d83f9ab0dd13a62dbdfd61e8e6513bde8"
+    },
+    {
+      "path": "disassembly/cp-009478ba-00947a3e.txt",
+      "bytes": 3697,
+      "sha256": "d0987f1ee147128b1aa6ea9dabfbd7dc3f2033732bfb9d56d43617ac510c837e"
+    },
+    {
+      "path": "disassembly/cp-009483f6-00948406.txt",
+      "bytes": 151,
+      "sha256": "55643ea0b52c008547a6ffa6bd39b67eb03ce5440a30e3fe2a66e69768e1aabf"
+    },
+    {
+      "path": "disassembly/cp-00948d26-00948d4e.txt",
+      "bytes": 384,
+      "sha256": "7ce945aac00f140674df766547efa611493da09c64ba6d38ea54ec73fd59cc09"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 293,
+      "sha256": "80d2ec4ba25952067d948d922835a4e8b8e6c31d992d1be407aaa18eacb977f3"
+    },
+    {
+      "path": "explore-3003e0-300920.txt",
+      "bytes": 11944,
+      "sha256": "14fc7457281f5f4cebc46215d5434a2076e991842fcbf7c855f499b7741c4503"
+    },
+    {
+      "path": "explore-93c060-93c240.txt",
+      "bytes": 4335,
+      "sha256": "ae389e9c3c3f9a1e8a8a775fe40f681f99600989f3a6221f3a807824a12928f8"
+    },
+    {
+      "path": "graph-node-resources.csv",
+      "bytes": 6742,
+      "sha256": "52f25e5970ad805ae3bd2af9bc4589113c9863c8d743c304c5469ab2cd895406"
+    },
+    {
+      "path": "owner-boundaries-results.json",
+      "bytes": 41188,
+      "sha256": "e5a1e3d4a217dddd749e54fa3261802e563431ef576d7f8e47018c761b943374"
+    },
+    {
+      "path": "owner_boundaries_guest.py",
+      "bytes": 3437,
+      "sha256": "86fea17ec28b3ac91dfbf93bc138583b2a72507f5d8c67bdb1a2e7ad94ef470b"
+    },
+    {
+      "path": "resource-binding-results.json",
+      "bytes": 71702,
+      "sha256": "9b43e5c86e36a9e9bfa0da872d5341eb1f2ed5e6b611c941cce8760dc878839a"
+    },
+    {
+      "path": "resource_binding_guest.py",
+      "bytes": 7481,
+      "sha256": "8d84b885f3434d03f262ab9c6d63254ab4cde591647c4ba84d33b0c39ecd1036"
+    },
+    {
+      "path": "slot-address-candidates.json",
+      "bytes": 2154,
+      "sha256": "b087d81d54072c182b0c03212a46cdc1a2acb1829dc3e7a1f7112f1678395db2"
+    },
+    {
+      "path": "static-inventory-results.json",
+      "bytes": 66569,
+      "sha256": "ba875811678270fd846e5a50d5466c635c1c98494b245ec453b03237a3d02978"
+    },
+    {
+      "path": "static_inventory.py",
+      "bytes": 3723,
+      "sha256": "04b7d5eb4ccbaa10aae3b68af4b6c5ce36d08c4cbe528cdbbb32145b9efc4a94"
+    },
+    {
+      "path": "validate_and_seal.py",
+      "bytes": 5798,
+      "sha256": "a432c3cd3dc2913d729439894b7b1d6c65b6d8c33404a208507ae20d481c5676"
+    },
+    {
+      "path": "validation-logs/caller_binding_guest.py.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "validation-logs/caller_binding_guest.py.stdout.txt",
+      "bytes": 96,
+      "sha256": "a17efbc96b2175caa5f5a766374aa37806fb00691d59852a923cf2ffb5a335eb"
+    },
+    {
+      "path": "validation-logs/context_binding_guest.py.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "validation-logs/context_binding_guest.py.stdout.txt",
+      "bytes": 123,
+      "sha256": "3e475fabecce58ba56ec3326aa98cf31cd9f8acc72a092d999e75f960e39beda"
+    },
+    {
+      "path": "validation-logs/owner_boundaries_guest.py.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "validation-logs/owner_boundaries_guest.py.stdout.txt",
+      "bytes": 119,
+      "sha256": "5e5b411a92cf8914aafb581fc50362356c9c67a5596ee95a0b685dc86245e77a"
+    },
+    {
+      "path": "validation-logs/resource_binding_guest.py.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "validation-logs/resource_binding_guest.py.stdout.txt",
+      "bytes": 104,
+      "sha256": "9a6c744e698ca84ca29985aec986dd04283297bf48f81870d6d24cf48d3eca2e"
+    },
+    {
+      "path": "validation-logs/static_inventory.py.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "validation-logs/static_inventory.py.stdout.txt",
+      "bytes": 82,
+      "sha256": "621512ca8a6d0d72a88805b9ded815640091abb5e66fc9b3d00e9a8017a874f5"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 1948,
+      "sha256": "c45cdbe03f8cced92e1b4dafb8b9b8479148974451725607ea98a35b0898d237"
+    }
+  ]
+}

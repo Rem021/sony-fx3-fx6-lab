@@ -1,0 +1,63 @@
+3a00: stp x29, x30, [sp, #-0x70]!
+3a04: mov w2, #1
+3a08: mov x29, sp
+3a0c: stp x21, x22, [sp, #0x20]
+3a10: add x21, x29, #0x70
+3a14: stp x25, x26, [sp, #0x40]
+3a18: mov x25, x1
+3a1c: mov x1, #8
+3a20: stp x19, x20, [sp, #0x10]
+3a24: str xzr, [x21, #-8]!
+3a28: mov x22, x0
+3a2c: stp x23, x24, [sp, #0x30]
+3a30: mov x3, x21
+3a34: bl #0x1490 ; Fsys_Seek
+3a38: cbz w0, #0x3a58
+3a3c: mov w0, #3
+3a40: ldp x19, x20, [sp, #0x10]
+3a44: ldp x21, x22, [sp, #0x20]
+3a48: ldp x23, x24, [sp, #0x30]
+3a4c: ldp x25, x26, [sp, #0x40]
+3a50: ldp x29, x30, [sp], #0x70
+3a54: ret 
+3a58: adrp x23, #0x3000
+3a5c: add x26, x29, #0x58
+3a60: add x24, x29, #0x60
+3a64: add x23, x23, #0xe6f
+3a68: mov w20, #0xb
+3a6c: mov x1, x26
+3a70: mov x0, x22
+3a74: mov w2, #4
+3a78: bl #0x1440 ; Fsys_Read
+3a7c: cmp w0, #3
+3a80: b.le #0x3a3c
+3a84: ldrb w0, [x29, #0x5a]
+3a88: mov w2, #4
+3a8c: ldrb w19, [x29, #0x59]
+3a90: ldrb w1, [x29, #0x5b]
+3a94: lsl w0, w0, #8
+3a98: orr w19, w0, w19, lsl #16
+3a9c: ldrb w0, [x29, #0x58]
+3aa0: orr w0, w1, w0, lsl #24
+3aa4: mov x1, x24
+3aa8: orr w19, w19, w0
+3aac: mov x0, x22
+3ab0: bl #0x1440 ; Fsys_Read
+3ab4: tbnz w0, #0x1f, #0x3a3c
+3ab8: mov x1, x23
+3abc: mov x0, x24
+3ac0: mov x2, #4
+3ac4: bl #0x1470 ; strncmp
+3ac8: cbnz w0, #0x3ad4
+3acc: str w19, [x25]
+3ad0: b #0x3a40
+3ad4: sub w20, w20, #1
+3ad8: uxtb w20, w20
+3adc: cbz w20, #0x3a3c
+3ae0: mov x3, x21
+3ae4: mov w1, w19
+3ae8: mov x0, x22
+3aec: mov w2, #1
+3af0: bl #0x1490 ; Fsys_Seek
+3af4: cbz w0, #0x3a6c
+3af8: b #0x3a3c

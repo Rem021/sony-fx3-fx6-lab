@@ -1,0 +1,133 @@
+{
+  "version": "0.5.0",
+  "archive": "outputs/fx3-recovery-adapter/releases/fx3-recovery-adapter-0.5.0.zip",
+  "archive_bytes": 84536,
+  "archive_sha256": "fd2130628b62939e867c7fad5887277d07d06bbd8ee41aeb1c793c22bd71bee4",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 14804,
+      "sha256": "d299e9d71b5c965778818dccc00e2af46c47d51a7510055cbaffbed7ce273ca3"
+    },
+    {
+      "path": "NOTICE.md",
+      "bytes": 3849,
+      "sha256": "94710ce0cf36af56b1ad5ba240a28dfe6d4a6beafcc34f9f384af010be862c54"
+    },
+    {
+      "path": "fx3_recovery/__init__.py",
+      "bytes": 97,
+      "sha256": "b8fb7f7738fcf3b415c8c26d2d870bf29dac630511042e6770bc2d19b034f6a8"
+    },
+    {
+      "path": "fx3_recovery/__main__.py",
+      "bytes": 6184,
+      "sha256": "1140ed097f15caa0ddea101c3a637b636a6de189b36c99f204b2589c6a59f5dd"
+    },
+    {
+      "path": "fx3_recovery/capture.py",
+      "bytes": 18689,
+      "sha256": "7660b8adb472cc4de170c2ca039b8df7709fcd1a39289a7c81010fe1fca7e159"
+    },
+    {
+      "path": "fx3_recovery/elflink.py",
+      "bytes": 15507,
+      "sha256": "c78e5997da0567cb0f2b55f4c678f1463a3988d18cf64e8dba9a2cbfad2a9449"
+    },
+    {
+      "path": "fx3_recovery/engine.py",
+      "bytes": 13266,
+      "sha256": "8a0eba48de3439a927dfbd3d35e857e1f50c639b7d34150480f454147e5312ed"
+    },
+    {
+      "path": "fx3_recovery/fat.py",
+      "bytes": 6833,
+      "sha256": "8ea3c9f11178475393bf2e6946e0ec9d1b1aa89ffecff05085eae3ce17144642"
+    },
+    {
+      "path": "fx3_recovery/files.py",
+      "bytes": 3143,
+      "sha256": "200e867ed94949706f33255cf6b3d5ec86a5e137921b18d23090c772755d6c34"
+    },
+    {
+      "path": "fx3_recovery/profiles.py",
+      "bytes": 2029,
+      "sha256": "dd25cd336b9effa7fff8c01e2ae5e48ee440e63636a6e26eb46cf928fbe52ecd"
+    },
+    {
+      "path": "fx3_recovery/squash.py",
+      "bytes": 10812,
+      "sha256": "23dabb17066c9626a523d5146276c6d7c480b862dcc970b0319b9d8566c43c6a"
+    },
+    {
+      "path": "fx3_recovery/worker.py",
+      "bytes": 4563,
+      "sha256": "26c7bd85990b3ce4b0113eeb280ed977ee82b37306c9f6a4073bef4c12b5811c"
+    },
+    {
+      "path": "tests/test_adapter.py",
+      "bytes": 11143,
+      "sha256": "2c6796f9f6065abe840a901a475529e0a76896cf49eff851be399a7fc0ae6afd"
+    },
+    {
+      "path": "tests/test_capture.py",
+      "bytes": 17139,
+      "sha256": "17e97981fa4e3a9770290eedf2331e35b300491b7e1b42fc021302c507d11e64"
+    },
+    {
+      "path": "tests/test_elflink.py",
+      "bytes": 14502,
+      "sha256": "a7c107cd46bc52d40d3e4170e7a19dc94e2f04be780bd133d49d27de2786b150"
+    },
+    {
+      "path": "tests/test_worker.py",
+      "bytes": 20353,
+      "sha256": "825979d9c9877dc2ce76ebbef90a9a33bc10911e6eaf6554cfac3ca79f4b0105"
+    },
+    {
+      "path": "native/README.md",
+      "bytes": 8160,
+      "sha256": "2bb40c5511ffa0b4e57bee4024917ebe2c1ccd497b100ace52c7907c97797402"
+    },
+    {
+      "path": "native/fx3_p1_reader.c",
+      "bytes": 11792,
+      "sha256": "22d6e613fb2c33861eac93653c7148e34ad22dd3b5b14ac0d4c75d5b903efb29"
+    },
+    {
+      "path": "native/entry.S",
+      "bytes": 183,
+      "sha256": "20cb24ecee89b629a5b1e4891c165b6883a8d146c817a86de7057965c3d7a96c"
+    },
+    {
+      "path": "fx3_recovery/boot_worker.py",
+      "bytes": 11054,
+      "sha256": "a7a2d4e75d89abd89004482381653abf2b22b5294084d7f656d7072dc1c7087c"
+    },
+    {
+      "path": "native/fx3_boot_reader.c",
+      "bytes": 15979,
+      "sha256": "06af135abf4e04ccb7cbc0727d4275ed4faf892fce6175f394a93aa7ce0aaaf5"
+    },
+    {
+      "path": "native/boot_entry.S",
+      "bytes": 185,
+      "sha256": "30a58a82a992dac4e4c50458b19600570ac65630a9c4913aeae7730ff232e7eb"
+    },
+    {
+      "path": "tests/test_boot_worker.py",
+      "bytes": 20312,
+      "sha256": "fa90353bce9a8cc8928a566036ebec8c33acdbd1df0dab3e07bb8128856c2447"
+    }
+  ],
+  "source_only": true,
+  "local_static_ELF_builder_included": true,
+  "camera_loader_or_launch_backend_included": false,
+  "native_binary_or_Sony_firmware_included": false,
+  "hardware_validated": false,
+  "flashable": false,
+  "independent_recovery_proven": false,
+  "boot_reader_candidate_included": true,
+  "boot_source_or_view_or_loaded_driver_attested": false,
+  "tests_passed": 58
+}

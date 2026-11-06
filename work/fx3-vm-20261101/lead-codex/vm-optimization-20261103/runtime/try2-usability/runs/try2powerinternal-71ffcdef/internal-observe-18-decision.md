@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-17-key-030.png using image tool. Setup>Setup Option 58/59 orange category focus; Video Light/Fan/IR/Pixel items visible Next: DOWN to last Setup category for read-only page navigation; no cleaning or remote control action

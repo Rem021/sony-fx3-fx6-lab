@@ -1,0 +1,7 @@
+#include <assert.h>
+#include <stddef.h>
+typedef unsigned long U;struct pool{unsigned char*p;U used;};static struct pool test_pool,app_pool,obj_pool;static U chosen;static unsigned calls,unmaps;
+static void*mmap(void*hint,U n,int prot,int flags,int fd,long off){assert(n==8192&&prot==3&&flags==0x22&&fd==-1&&!off);(void)hint;calls++;return(void*)chosen;}
+static int munmap(void*p,U n){assert((U)p==chosen&&n==8192);unmaps++;return 0;}
+static int allocate_pool(struct pool *pool,U pc){if(pool->p)return 0;long reach=pool==&obj_pool?(120L<<20):(1L<<26);U steps=pool==&obj_pool?2048:1792;for(U i=1;i<steps;i++)for(int sign=-1;sign<=1;sign+=2){U hint=(pc&~4095UL)+sign*(i*0x10000);void *p=mmap((void *)hint,8192,3,0x22,-1,0);if(p==(void *)-1)continue;long d=(long)((U)p-pc);if(d>-reach+8192&&d<reach-8192){pool->p=p;return 0;}munmap(p,8192);}return -1;}
+int main(void){U pc=0x1000000000UL;chosen=pc+(80UL<<20);assert(!allocate_pool(&obj_pool,pc)&&obj_pool.p==(void*)chosen&&calls==1&&!unmaps);calls=unmaps=0;assert(allocate_pool(&app_pool,pc)==-1&&!app_pool.p&&calls==3582&&unmaps==calls);obj_pool.p=0;chosen=pc+(129UL<<20);calls=unmaps=0;assert(allocate_pool(&obj_pool,pc)==-1&&!obj_pool.p&&calls==4094&&unmaps==calls);chosen=pc-(80UL<<20);assert(!allocate_pool(&obj_pool,pc));long distance=(long)(chosen-(pc+0xb0000));assert(distance>-(1L<<27)&&distance<(1L<<27));assert(!allocate_pool(&obj_pool,pc));return 0;}

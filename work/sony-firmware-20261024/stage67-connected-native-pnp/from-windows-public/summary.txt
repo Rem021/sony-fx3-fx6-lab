@@ -1,0 +1,22 @@
+FX3 connected-only PnP cached snapshot
+task_state=CACHED_ONLY_COMPLETE_NO_CURRENT_MATCH
+task_tag=FX3_CONNECTED_CACHE_20261026T163821Z
+observed_start_utc=2026-10-26T16:41:07.673Z
+observed_end_utc=2026-10-26T16:41:07.907Z
+observed_start_Asia_Shanghai=2026-10-27 00:41:07.673 +08:00
+observed_end_Asia_Shanghai=2026-10-27 00:41:07.907 +08:00
+directory_status=PASS; local fixed system C: NTFS ordinary directory; no ancestor reparse/network/camera-storage redirection
+ordinary_user_token=CONFIRMED; administrator=False
+
+本次只执行1条PnPUtil查询：/enum-devices /connected /deviceid USB\VID_054C&PID_0DA1，含用户指定的元数据选项。退出码0，stderr为空；原输出明确报告未找到设备。
+当前匹配根节点数量=0。
+当前磁盘候选数量=UNKNOWN（未查询；没有唯一当前根节点，按要求停止设备树及磁盘分支）。
+binding_status=MISSING_CURRENT_ROOT；binding_unique=false。
+Present/Started/问题码、接口启用状态、服务/堆栈/驱动INF/版本/提供者/报告签名者、Address/UINumber均为UNKNOWN；未用旧结果补齐。
+此结论仅表示本次connected+VID/PID筛选没有匹配结果，不推断相机物理连接情况，也不猜测其他VID/PID或模式。
+
+原始stdout/stderr仅保存在本任务private；完整SHA256见private-sha256.json。未读取或修改旧任务材料，未重复旧13文件的哈希盘点。
+未运行旧PS1、生成/执行探针、修改或绕过执行策略、提权、刷新/扫描或自动重试。
+camera_device_handles=0；camera_commands=0；card_or_media_reads=0；authentication=false；mode_or_driver_change=false；module_upload=false；WBI_or_flash=false；hardware_validation=NOT_PERFORMED。
+
+public_path=C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-connected-pnp-20261026T163821Z/public

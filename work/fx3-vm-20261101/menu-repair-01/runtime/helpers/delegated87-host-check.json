@@ -1,0 +1,16 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-delegated87.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-delegated87"
+  ],
+  "exit": 0,
+  "stdout": "DELEGATED_WRAPPER_PASS actual_v4/newblock_raw_readonly/no_extra_send_free_receive/oversize_not_read/native_args_errno_result_preserved\n",
+  "stderr": "FX3_AP87_DELEGATED_REQUEST index=1 tid=12 destination=0x92b4086f source=0x81cf6100 pointer=0x1041a8080 bytes=12 raw=0d2002040c00018000000000 caller=0x1041a0f90 no_reply_added=1 native_follows=1\nFX3_AP87_DELEGATED_RETURN index=1 destination=0x92b4086f result=-1024 errno=77 original_pointer_untouched=1\n",
+  "helper_sha256": "8b8921a71a13e53d801456b3beecce7769c4d6c4259bb754f7434c5b3e4a2bb7"
+}

@@ -1,0 +1,347 @@
+{
+  "cp": {
+    "sha256": "60de0ab5544749dd50d8245f573c0994573fef349186efe20b502c42e3289668",
+    "bytes": 17952816,
+    "format": "flat ARM32 little-endian code, no ELF header",
+    "file_offset_zero_load_address": "0x108000",
+    "first_literal_file_offset": "0xc",
+    "first_literal_value": "0x10800c",
+    "jump_target": "0x108010",
+    "boot_code": [
+      {
+        "offset": "0x0",
+        "bytes": "04109fe5",
+        "mnemonic": "ldr",
+        "op_str": "r1, [pc, #4]"
+      },
+      {
+        "offset": "0x4",
+        "bytes": "041081e2",
+        "mnemonic": "add",
+        "op_str": "r1, r1, #4"
+      },
+      {
+        "offset": "0x8",
+        "bytes": "01f0a0e1",
+        "mnemonic": "mov",
+        "op_str": "pc, r1"
+      },
+      {
+        "offset": "0xc",
+        "bytes": "0c801000",
+        "mnemonic": "andseq",
+        "op_str": "r8, r0, ip"
+      },
+      {
+        "offset": "0x10",
+        "bytes": "d300a0e3",
+        "mnemonic": "mov",
+        "op_str": "r0, #0xd3"
+      },
+      {
+        "offset": "0x14",
+        "bytes": "00f02fe1",
+        "mnemonic": "msr",
+        "op_str": "cpsr_fsxc, r0"
+      },
+      {
+        "offset": "0x18",
+        "bytes": "101f11ee",
+        "mnemonic": "mrc",
+        "op_str": "p15, #0, r1, c1, c0, #0"
+      },
+      {
+        "offset": "0x1c",
+        "bytes": "0210c1e3",
+        "mnemonic": "bic",
+        "op_str": "r1, r1, #2"
+      },
+      {
+        "offset": "0x20",
+        "bytes": "0111c1e3",
+        "mnemonic": "bic",
+        "op_str": "r1, r1, #0x40000000"
+      },
+      {
+        "offset": "0x24",
+        "bytes": "101f01ee",
+        "mnemonic": "mcr",
+        "op_str": "p15, #0, r1, c1, c0, #0"
+      },
+      {
+        "offset": "0x28",
+        "bytes": "6ff07ff5",
+        "mnemonic": "isb",
+        "op_str": "sy"
+      },
+      {
+        "offset": "0x2c",
+        "bytes": "012011e2",
+        "mnemonic": "ands",
+        "op_str": "r2, r1, #1"
+      },
+      {
+        "offset": "0x30",
+        "bytes": "0400000a",
+        "mnemonic": "beq",
+        "op_str": "#0x48"
+      },
+      {
+        "offset": "0x34",
+        "bytes": "320000eb",
+        "mnemonic": "bl",
+        "op_str": "#0x104"
+      },
+      {
+        "offset": "0x38",
+        "bytes": "101f11ee",
+        "mnemonic": "mrc",
+        "op_str": "p15, #0, r1, c1, c0, #0"
+      },
+      {
+        "offset": "0x3c",
+        "bytes": "0110c1e3",
+        "mnemonic": "bic",
+        "op_str": "r1, r1, #1"
+      },
+      {
+        "offset": "0x40",
+        "bytes": "101f01ee",
+        "mnemonic": "mcr",
+        "op_str": "p15, #0, r1, c1, c0, #0"
+      },
+      {
+        "offset": "0x44",
+        "bytes": "6ff07ff5",
+        "mnemonic": "isb",
+        "op_str": "sy"
+      },
+      {
+        "offset": "0x48",
+        "bytes": "b03f10ee",
+        "mnemonic": "mrc",
+        "op_str": "p15, #0, r3, c0, c0, #5"
+      },
+      {
+        "offset": "0x4c",
+        "bytes": "033013e2",
+        "mnemonic": "ands",
+        "op_str": "r3, r3, #3"
+      },
+      {
+        "offset": "0x50",
+        "bytes": "1400001a",
+        "mnemonic": "bne",
+        "op_str": "#0xa8"
+      },
+      {
+        "offset": "0x54",
+        "bytes": "0000a0e3",
+        "mnemonic": "mov",
+        "op_str": "r0, #0"
+      },
+      {
+        "offset": "0x58",
+        "bytes": "20139fe5",
+        "mnemonic": "ldr",
+        "op_str": "r1, [pc, #0x320]"
+      },
+      {
+        "offset": "0x5c",
+        "bytes": "000081e5",
+        "mnemonic": "str",
+        "op_str": "r0, [r1]"
+      },
+      {
+        "offset": "0x60",
+        "bytes": "1cd39fe5",
+        "mnemonic": "ldr",
+        "op_str": "sp, [pc, #0x31c]"
+      },
+      {
+        "offset": "0x64",
+        "bytes": "00b0a0e3",
+        "mnemonic": "mov",
+        "op_str": "fp, #0"
+      },
+      {
+        "offset": "0x68",
+        "bytes": "0070a0e3",
+        "mnemonic": "mov",
+        "op_str": "r7, #0"
+      },
+      {
+        "offset": "0x6c",
+        "bytes": "c90000ea",
+        "mnemonic": "b",
+        "op_str": "#0x398"
+      }
+    ],
+    "extra_embedded_addresses": [
+      [
+        "0x380",
+        "0x108d94"
+      ],
+      [
+        "0x384",
+        "0x109f20"
+      ],
+      [
+        "0x388",
+        "0x108d94"
+      ],
+      [
+        "0x38c",
+        "0x108da0"
+      ],
+      [
+        "0x390",
+        "0x108f1c"
+      ]
+    ],
+    "limitation": "self-referential startup mapping; CP runtime memory layout and IPC ABI remain unverified"
+  },
+  "av": {
+    "sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+    "bytes": 12939512,
+    "format": "ORIL flat AArch64 little-endian image, no ELF header",
+    "magic_offset": "0x8",
+    "header_first_pointer": "0xffffffc001000058",
+    "file_offset_zero_load_address": "0xffffffc001000000",
+    "startup_code": [
+      {
+        "offset": "0x58",
+        "bytes": "c04c0058",
+        "mnemonic": "ldr",
+        "op_str": "x0, #0x9f0"
+      },
+      {
+        "offset": "0x5c",
+        "bytes": "e11f8052",
+        "mnemonic": "mov",
+        "op_str": "w1, #0xff"
+      },
+      {
+        "offset": "0x60",
+        "bytes": "01840039",
+        "mnemonic": "strb",
+        "op_str": "w1, [x0, #0x21]"
+      },
+      {
+        "offset": "0x64",
+        "bytes": "a04c0058",
+        "mnemonic": "ldr",
+        "op_str": "x0, #0x9f8"
+      },
+      {
+        "offset": "0x68",
+        "bytes": "00001fd6",
+        "mnemonic": "br",
+        "op_str": "x0"
+      },
+      {
+        "offset": "0x6c",
+        "bytes": "f353bfa9",
+        "mnemonic": "stp",
+        "op_str": "x19, x20, [sp, #-0x10]!"
+      },
+      {
+        "offset": "0x70",
+        "bytes": "f55bbfa9",
+        "mnemonic": "stp",
+        "op_str": "x21, x22, [sp, #-0x10]!"
+      },
+      {
+        "offset": "0x74",
+        "bytes": "f763bfa9",
+        "mnemonic": "stp",
+        "op_str": "x23, x24, [sp, #-0x10]!"
+      },
+      {
+        "offset": "0x78",
+        "bytes": "f96bbfa9",
+        "mnemonic": "stp",
+        "op_str": "x25, x26, [sp, #-0x10]!"
+      },
+      {
+        "offset": "0x7c",
+        "bytes": "fb73bfa9",
+        "mnemonic": "stp",
+        "op_str": "x27, x28, [sp, #-0x10]!"
+      },
+      {
+        "offset": "0x80",
+        "bytes": "fd7bbfa9",
+        "mnemonic": "stp",
+        "op_str": "x29, x30, [sp, #-0x10]!"
+      },
+      {
+        "offset": "0x84",
+        "bytes": "28b50094",
+        "mnemonic": "bl",
+        "op_str": "#0x2d524"
+      },
+      {
+        "offset": "0x88",
+        "bytes": "fd7bc1a8",
+        "mnemonic": "ldp",
+        "op_str": "x29, x30, [sp], #0x10"
+      },
+      {
+        "offset": "0x8c",
+        "bytes": "fb73c1a8",
+        "mnemonic": "ldp",
+        "op_str": "x27, x28, [sp], #0x10"
+      },
+      {
+        "offset": "0x90",
+        "bytes": "f96bc1a8",
+        "mnemonic": "ldp",
+        "op_str": "x25, x26, [sp], #0x10"
+      },
+      {
+        "offset": "0x94",
+        "bytes": "f763c1a8",
+        "mnemonic": "ldp",
+        "op_str": "x23, x24, [sp], #0x10"
+      },
+      {
+        "offset": "0x98",
+        "bytes": "f55bc1a8",
+        "mnemonic": "ldp",
+        "op_str": "x21, x22, [sp], #0x10"
+      },
+      {
+        "offset": "0x9c",
+        "bytes": "f353c1a8",
+        "mnemonic": "ldp",
+        "op_str": "x19, x20, [sp], #0x10"
+      },
+      {
+        "offset": "0xa0",
+        "bytes": "004b0058",
+        "mnemonic": "ldr",
+        "op_str": "x0, #0xa00"
+      },
+      {
+        "offset": "0xa4",
+        "bytes": "c0035fd6",
+        "mnemonic": "ret",
+        "op_str": ""
+      }
+    ],
+    "limitation": "image-internal pointer mapping; active runtime load and DSP route unverified"
+  },
+  "fx3_av_reference": {
+    "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+    "bytes": 13348560,
+    "base": "0xffffffc001000000",
+    "first_differing_file_offset": "0x84"
+  },
+  "fx3_cp_reference": {
+    "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+    "bytes": 15980568,
+    "identical_prefix_bytes": 131072,
+    "first_differing_file_offset": "0x20000"
+  }
+}

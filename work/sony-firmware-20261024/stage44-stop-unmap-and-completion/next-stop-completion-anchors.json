@@ -1,0 +1,55 @@
+{
+  "schema": "fx3-stage44-next-stop-completion-anchors/1",
+  "created_utc": "2026-10-26T01:20:28.876501+00:00",
+  "image_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "legal_STOP": {
+    "wrapper": "0x2533b8",
+    "process": "0x2533d4",
+    "table": "0x380978",
+    "transition_log_before_state_store": "0x253534 ->0x253f44 ->0x27d528; state store0x253538",
+    "action_dispatch": "0x253558",
+    "entry_dispatch": "0x253570 ->0x253f00 ->0x250624",
+    "state8_guard_action_selector": [
+      "0x25591c",
+      "0x255924",
+      "0x25592c"
+    ],
+    "state9_guard_action_selector": [
+      "0x255934",
+      "0x25593c",
+      "0x255944"
+    ]
+  },
+  "PCIATU_unmap": {
+    "entry": "0x22e638",
+    "lock": "0x22e658 ->0x27dc14 ->0x2ef4c",
+    "mandatory_diagnostic": "0x22e65c ->0x27d528",
+    "independent_post_log_fragment": "0x22e6b8",
+    "service": "0x22e6d8 ->0x2f604",
+    "local_inactive_branch": "0x22e780",
+    "guard_destructor": "0x22e8a4 ->0x27dc6c ->0x2ef60"
+  },
+  "STOP_fields": {
+    "copy_and_key": "0x2259b0..0x2259cc",
+    "original_format": "0x445022",
+    "format_argument_loads": "0x24cc18 and0x24cc20",
+    "seq_id_width_bits": 8,
+    "configuration_epoch_or_unique_request_id_not_proven": true
+  },
+  "STOP_COMP": {
+    "construct": "0x24cc54..0x24cc70",
+    "cid": "0x2103",
+    "mid": "0x113",
+    "length": 12,
+    "send_prepare": "0x24cd1c..0x24cd30",
+    "unexecuted_send": "0x27dab4",
+    "next": "Find receiver/current state+channel/session correlation and actual infra completion; packet payload has channel only."
+  },
+  "next_work": [
+    "Follow STOP_COMP receiver and actual ENC_INFRA_STOP_WAIT completion, including error/cancel and producer/code lifetimes.",
+    "Bind real diagnostic initialization, shared lock, PCIATU map ownership and runtime services before claiming complete STOP.",
+    "Trace seq_id allocation/reuse/wrap and association with four parameter maps/current request; retain separate configuration epoch requirements.",
+    "Keep52byte initialization/full start-input/HAL/model/query/cache/mux/media/audio/thermal/same-body backup/restore/WBI/coldboot/independent rescue gates."
+  ],
+  "camera_or_remote_access_attempted": false
+}

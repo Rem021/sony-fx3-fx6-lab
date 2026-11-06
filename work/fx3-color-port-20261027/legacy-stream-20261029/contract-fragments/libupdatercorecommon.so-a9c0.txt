@@ -1,0 +1,14 @@
+0000a9c0 stp        x29, x30, [sp, #-0x20]!
+0000a9c4 mov        x2, #0x400
+0000a9c8 mov        x29, sp
+0000a9cc str        x19, [sp, #0x10]
+0000a9d0 mov        x19, x0
+0000a9d4 ldr        x0, [x0, #0x48]
+0000a9d8 ldr        x1, [x0]
+0000a9dc ldr        x3, [x1, #0x40]
+0000a9e0 add        x1, x19, #0xb0
+0000a9e4 blr        x3
+0000a9e8 str        x0, [x19, #0x4b0]
+0000a9ec ldr        x19, [sp, #0x10]
+0000a9f0 ldp        x29, x30, [sp], #0x20
+0000a9f4 ret        

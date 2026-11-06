@@ -1,0 +1,21 @@
+fe05aad0 ff8300d1 sub      sp, sp, #0x20
+fe05aad4 ff0f00f9 str      xzr, [sp, #0x18]
+fe05aad8 ff0b00f9 str      xzr, [sp, #0x10]
+fe05aadc ff0700f9 str      xzr, [sp, #8]
+fe05aae0 28e03bd5 mrs      x8, cntpct_el0
+fe05aae4 09e03bd5 mrs      x9, cntfrq_el0
+fe05aae8 e80b00f9 str      x8, [sp, #0x10]
+fe05aaec e90700f9 str      x9, [sp, #8]
+fe05aaf0 e80b40f9 ldr      x8, [sp, #0x10]
+fe05aaf4 e90740f9 ldr      x9, [sp, #8]
+fe05aaf8 6a9b86d2 mov      x10, #0x34db
+fe05aafc caf6baf2 movk     x10, #0xd7b6, lsl #16
+fe05ab00 4ad0dbf2 movk     x10, #0xde82, lsl #32
+fe05ab04 6a63e8f2 movk     x10, #0x431b, lsl #48
+fe05ab08 297dca9b umulh    x9, x9, x10
+fe05ab0c 29fd52d3 lsr      x9, x9, #0x12
+fe05ab10 0809c99a udiv     x8, x8, x9
+fe05ab14 e80f00f9 str      x8, [sp, #0x18]
+fe05ab18 e00f40f9 ldr      x0, [sp, #0x18]
+fe05ab1c ff830091 add      sp, sp, #0x20
+fe05ab20 c0035fd6 ret      

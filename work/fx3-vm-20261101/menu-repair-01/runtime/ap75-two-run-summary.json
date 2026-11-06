@@ -1,0 +1,248 @@
+{
+  "candidate_sha256": "9f0c7840b78504c125ecfbf3d3cb62dad3b2e5a4a0cb0cdfe045f78a51b4e9fd",
+  "runs": [
+    {
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap75final1-a67fe198",
+      "events": {
+        "FX3_TIMER_SNAPSHOT": [
+          {
+            "line": 7787,
+            "text": "FX3_TIMER_SNAPSHOT tid=289 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 7790,
+            "text": "FX3_TIMER_SNAPSHOT tid=289 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 7792,
+            "text": "FX3_TIMER_SNAPSHOT tid=289 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 7794,
+            "text": "FX3_TIMER_SNAPSHOT tid=289 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 7796,
+            "text": "FX3_TIMER_SNAPSHOT tid=289 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 7798,
+            "text": "FX3_TIMER_SNAPSHOT tid=289 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          }
+        ],
+        "FX3_TIMER_BOUND": [
+          {
+            "line": 5328,
+            "text": "FX3_TIMER_BOUND count=4 prefixes_verified=16 pc_relative_in_stolen=0 original_calls_preserved=1 app_base=0x7f5090c000 obj_base=0x7fa015a000"
+          }
+        ],
+        "FX3_TIMER_ENTRY": [],
+        "FX3_TIMER_ID ": [],
+        "FX3_TIMER_INFO ": [],
+        "FX3_TIMER_TABLE": [],
+        "FX3_TIMER_RETURN": [],
+        "FX3_UI_CONFIG_ENTER": [],
+        "FX3_UI_CONFIG_RETURN": [],
+        "FX3_UI_CONFIG_DONE": [],
+        "FX3_UI_FILL_EXEC": [],
+        "FX3_UI_FILL_RETURN": [],
+        "FX3_UI_WIRE": [
+          {
+            "line": 7788,
+            "text": "FX3_UI_WIRE tid=289 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 7791,
+            "text": "FX3_UI_WIRE tid=289 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 7793,
+            "text": "FX3_UI_WIRE tid=289 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 7795,
+            "text": "FX3_UI_WIRE tid=289 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 7797,
+            "text": "FX3_UI_WIRE tid=289 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 7799,
+            "text": "FX3_UI_WIRE tid=289 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          }
+        ],
+        "FX3_GPE_CMD": []
+      },
+      "stats": {
+        "FX3_UIPC_OBSERVER_END/195": {
+          "line": 46594,
+          "pid": 195,
+          "seen": 5,
+          "emitted": 2,
+          "dedup": 3,
+          "capacity_drop": 0,
+          "lock_drop": 0,
+          "stats_write_drop": 0,
+          "capacity": 256,
+          "snapshot": 1
+        },
+        "FX3_UIPC_OBSERVER_END/202": {
+          "line": 46595,
+          "pid": 202,
+          "seen": 20438,
+          "emitted": 195,
+          "dedup": 20243,
+          "capacity_drop": 0,
+          "lock_drop": 0,
+          "stats_write_drop": 55,
+          "capacity": 256,
+          "snapshot": 1
+        },
+        "FX3_TIMER_OBSERVER_END/202": {
+          "line": 46596,
+          "pid": 202,
+          "bound": 1,
+          "timer_entry": 0,
+          "id_compare": 0,
+          "info": 0,
+          "table": 0,
+          "config": 0,
+          "config_target": 0,
+          "fill": 0,
+          "event_seq": 0,
+          "snapshot": 1
+        }
+      },
+      "classification": {
+        "timer_callback": "未调用",
+        "configuration_call": "未调用",
+        "first_FillRect": "未调用"
+      },
+      "scope": "Bounded instrumented240s window only; no conditional-failure evidence; upstreamcause unknown"
+    },
+    {
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap75final2-4d01e9f8",
+      "events": {
+        "FX3_TIMER_SNAPSHOT": [
+          {
+            "line": 7995,
+            "text": "FX3_TIMER_SNAPSHOT tid=332 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 7998,
+            "text": "FX3_TIMER_SNAPSHOT tid=332 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 8000,
+            "text": "FX3_TIMER_SNAPSHOT tid=332 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 8002,
+            "text": "FX3_TIMER_SNAPSHOT tid=332 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 8004,
+            "text": "FX3_TIMER_SNAPSHOT tid=332 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          },
+          {
+            "line": 8006,
+            "text": "FX3_TIMER_SNAPSHOT tid=332 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=0 config_target=0 fill=0 event_seq=0 original_memory_read_only=1"
+          }
+        ],
+        "FX3_TIMER_BOUND": [
+          {
+            "line": 5603,
+            "text": "FX3_TIMER_BOUND count=4 prefixes_verified=16 pc_relative_in_stolen=0 original_calls_preserved=1 app_base=0x7f2d793000 obj_base=0x7f749b5000"
+          }
+        ],
+        "FX3_TIMER_ENTRY": [],
+        "FX3_TIMER_ID ": [],
+        "FX3_TIMER_INFO ": [],
+        "FX3_TIMER_TABLE": [],
+        "FX3_TIMER_RETURN": [],
+        "FX3_UI_CONFIG_ENTER": [],
+        "FX3_UI_CONFIG_RETURN": [],
+        "FX3_UI_CONFIG_DONE": [],
+        "FX3_UI_FILL_EXEC": [],
+        "FX3_UI_FILL_RETURN": [],
+        "FX3_UI_WIRE": [
+          {
+            "line": 7996,
+            "text": "FX3_UI_WIRE tid=332 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 7999,
+            "text": "FX3_UI_WIRE tid=332 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 8001,
+            "text": "FX3_UI_WIRE tid=332 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 8003,
+            "text": "FX3_UI_WIRE tid=332 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 8005,
+            "text": "FX3_UI_WIRE tid=332 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          },
+          {
+            "line": 8007,
+            "text": "FX3_UI_WIRE tid=332 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1"
+          }
+        ],
+        "FX3_GPE_CMD": []
+      },
+      "stats": {
+        "FX3_UIPC_OBSERVER_END/195": {
+          "line": 46923,
+          "pid": 195,
+          "seen": 5,
+          "emitted": 2,
+          "dedup": 3,
+          "capacity_drop": 0,
+          "lock_drop": 0,
+          "stats_write_drop": 0,
+          "capacity": 256,
+          "snapshot": 1
+        },
+        "FX3_UIPC_OBSERVER_END/202": {
+          "line": 46924,
+          "pid": 202,
+          "seen": 19637,
+          "emitted": 198,
+          "dedup": 19439,
+          "capacity_drop": 0,
+          "lock_drop": 0,
+          "stats_write_drop": 112,
+          "capacity": 256,
+          "snapshot": 1
+        },
+        "FX3_TIMER_OBSERVER_END/202": {
+          "line": 46925,
+          "pid": 202,
+          "bound": 1,
+          "timer_entry": 0,
+          "id_compare": 0,
+          "info": 0,
+          "table": 0,
+          "config": 0,
+          "config_target": 0,
+          "fill": 0,
+          "event_seq": 0,
+          "snapshot": 1
+        }
+      },
+      "classification": {
+        "timer_callback": "未调用",
+        "configuration_call": "未调用",
+        "first_FillRect": "未调用"
+      },
+      "scope": "Bounded instrumented240s window only; no conditional-failure evidence; upstreamcause unknown"
+    }
+  ],
+  "upstream_cause": "未证实",
+  "fix_implemented": false,
+  "next_step_requires_lead_approval": true
+}

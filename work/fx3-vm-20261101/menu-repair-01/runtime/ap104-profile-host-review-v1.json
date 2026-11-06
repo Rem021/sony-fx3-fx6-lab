@@ -1,0 +1,36 @@
+{
+  "tests": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-profile104-v1",
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-profile104-v1.log",
+      "stdout_last_line": "AP104_PROFILE_RING_BOUNDS_WRAP_NESTED_ERRNO_EXACT_MAP_ARGS_UNKNOWN_FIFO_ASAN_UBSAN_PASS"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-complete104-profile-v1",
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-complete104-profile-v1.log",
+      "stdout_last_line": "AP104_PROFILE_PASSIVE_CALLBACK_SEND_DYNAMIC_EXACT_ONCE_ARGUMENTS_RESULTS_ERRNO_ASAN_UBSAN_PASS"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-texture102-profile-v1",
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-texture102-profile-v1.log",
+      "stdout_last_line": "AP104_PROFILE_AP102_R2_OFFLOCK_PROT_NONE_COPY_SHA_HIST_ERRNO_BOUNDED_WAIT_PASS"
+    }
+  ],
+  "source_build_receipt": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v26-profile104-build.json",
+  "FDT_observer_reservation_verified": [
+    "0x41d400000",
+    "0x300000"
+  ],
+  "file_observer_max_write_end": "0x41d631000",
+  "profile_region": [
+    "0x41d640000",
+    "0x80000"
+  ],
+  "no_original_code_data_controls_written": true,
+  "metric_caveat": "Life hold inclusive; texture copy may include first workspace mmap; do not add all metrics as exclusive CPU time. Original FIFO enqueue/depth unknown; adapter inflight explicitly separate.",
+  "guest_test": "NOT_RUN_USER_TRY1_OWNS_RUNTIME_WINDOW",
+  "runtime_locks_acquired": false
+}

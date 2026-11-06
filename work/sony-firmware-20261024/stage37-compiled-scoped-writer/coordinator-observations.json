@@ -1,0 +1,81 @@
+{
+  "schema": "fx3-stage37-compiled-guest-writer-review/1",
+  "created_utc": "2026-10-25T23:55:20.080551+00:00",
+  "status": "PASS_SOURCE_ELF_TRACE_AND_EXPLICIT_SEQUENTIAL_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent source/object/trace/hash review; no independent implementation or physical verification.",
+  "previous_stage36_sealed_files_verified": 9,
+  "compiled_instruction_records_checked": 508,
+  "prototype_calls": 41,
+  "original_firmware_fragments": 30,
+  "unique_prototype_instruction_PCs": 429,
+  "unique_original_image_PCs_including_stop_boundaries": 335,
+  "prototype_store_records_checked": 1300,
+  "object_relocations": [
+    {
+      "offset": "0x510",
+      "type": 275,
+      "target": "0x13010000",
+      "old_word": "0x9000000e",
+      "relocated_word": "0x9000008e"
+    },
+    {
+      "offset": "0x514",
+      "type": 277,
+      "target": "0x13010000",
+      "old_word": "0x910001ce",
+      "relocated_word": "0x910001ce"
+    }
+  ],
+  "atomic_instruction_records": [
+    {
+      "offset": "0x28",
+      "asm": "ldaxr x10, [x8]"
+    },
+    {
+      "offset": "0x30",
+      "asm": "stxr w10, x9, [x8]"
+    },
+    {
+      "offset": "0x9c",
+      "asm": "clrex "
+    },
+    {
+      "offset": "0x1e0",
+      "asm": "stlr xzr, [x8]"
+    },
+    {
+      "offset": "0x534",
+      "asm": "ldar x16, [x11]"
+    },
+    {
+      "offset": "0x704",
+      "asm": "stlr x13, [x11]"
+    },
+    {
+      "offset": "0x7e8",
+      "asm": "stlr x12, [x11]"
+    }
+  ],
+  "original_image_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "prototype_object_sha256": "9a8b2a6051edd4e9ef1971311a220cbb4fd2b9c3a4b129e0ecf91d7dc38c3c67",
+  "source_FF_record_sha256": "f5cb9ba1652bdad279e55ed0d61d43b0581c19bec9ad18983f9c31959cffbf71",
+  "compiler_has_no_unresolved_external_symbols": true,
+  "only_prototype_object_relocated_original_image_RX": true,
+  "all_prototype_stores_within_control_A_copy_A_pointer_or_stack": true,
+  "second_owner_entire_0xf000_bytes_and_A_descriptor_unchanged": true,
+  "data_restore_requires_closed_gate_and_declared_leases_drained": true,
+  "old_packet_bytes_and_private_copy_still_retained": true,
+  "simulated_completion_is_not_real_consumer_provenance": true,
+  "failed_attempt": {
+    "path": "work/sony-firmware-20261024/stage37-compiled-scoped-writer/run-20261025",
+    "cause": "Harness counted only coefficient replacement and pointer publication, omitting earlier native byte-copy store at coefficient address. Corrected exact order/count and full256-byte native copy; C unchanged.",
+    "passing_result": false
+  },
+  "accepted_attempt": "work/sony-firmware-20261024/stage37-compiled-scoped-writer/run-20261025-reviewed",
+  "real_camera_hook_ABI_state_epoch_synchronization_all_consumers_completion_or_multicore_bound": false,
+  "code_reclamation_or_Hardware_or_physical_restore_verified": false,
+  "camera_or_remote_access_attempted": false,
+  "authorization_unchanged": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

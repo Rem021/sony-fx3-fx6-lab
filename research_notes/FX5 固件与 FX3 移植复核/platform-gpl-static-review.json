@@ -1,0 +1,388 @@
+{
+  "created_utc": "2026-10-28T05:59:34.254425+00:00",
+  "source_archive": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/gpl-archives/linux-kernel.tar.gz",
+  "archive_bytes": 151522353,
+  "archive_sha256": "1e1cf32816e841462bd1d0f4e93c4897a44d0a9b95641387c74cafb6d6f44190",
+  "archive_members": 64942,
+  "archive_regular_files": 60683,
+  "constrained_text_scan_regular_files": 163,
+  "scope": "CXD platform DTS plus drivers/soc/cxd and drivers/misc/cxd only; generic kernel sensor names are not model attribution",
+  "scan_term_case_insensitive_matches": {
+    "IMX510": [],
+    "BIONZ": [],
+    "X-OCN": [],
+    "BIG6": [],
+    "Bayer": [],
+    "demosaic": [],
+    "SensorRaw": [],
+    "ALCIN_UUD": [],
+    "MovieEncoder": []
+  },
+  "platform_source_facts": [
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/qemu.dts",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/qemu.dts",
+      "sha256": "ca381ce630b4676029d7d07b843781c0a1108230ae9fb6181de7821276b35991",
+      "lines": 135,
+      "matches": [
+        {
+          "line": 27,
+          "text": "memory@40000000 {"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/memmap-6G.dtsi",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/memmap-6G.dtsi",
+      "sha256": "acae11f706e21fbaa237a9e4dd55ddb2374a1737a882ac11ef5cbc69cb18441e",
+      "lines": 34,
+      "matches": [
+        {
+          "line": 29,
+          "text": "memory@200000000 {"
+        },
+        {
+          "line": 31,
+          "text": "reg = <0x2 0x00000000 0x1 0x80000000>;"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts.old",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/fvp.dts.old",
+      "sha256": "636d9a486448e76b1537e7469bb8e4a98ca55a12e003b8010d2647d5190318ac",
+      "lines": 32,
+      "matches": [
+        {
+          "line": 13,
+          "text": "memory@80000000 {"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/memmap-8G.dtsi",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/memmap-8G.dtsi",
+      "sha256": "a80d09ea6f02b100c8beb2156f36c3c67ebc8e83aabf7e9db21dfc1a607f70ed",
+      "lines": 34,
+      "matches": [
+        {
+          "line": 29,
+          "text": "memory@200000000 {"
+        },
+        {
+          "line": 31,
+          "text": "reg = <0x2 0x00000000 0x1 0xfe000000>;"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90xxx.dtsi",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/cxd90xxx.dtsi",
+      "sha256": "884a7262505d0b053d61f3791df2486d7f61a2d02d791d558ea5962caa56e05a",
+      "lines": 1147,
+      "matches": [
+        {
+          "line": 87,
+          "text": "memory2@640000000 {"
+        },
+        {
+          "line": 89,
+          "text": "reg = <0x6 0x40000000 0x0 0x20000000>;"
+        },
+        {
+          "line": 92,
+          "text": "reserved-memory {"
+        },
+        {
+          "line": 99,
+          "text": "reg = <0x6 0x40000000 0x0 0x20000000>;"
+        },
+        {
+          "line": 425,
+          "text": "compatible = \"snps,axi-dma-1.01a\";"
+        },
+        {
+          "line": 446,
+          "text": "compatible = \"snps,axi-dma-1.01a\";"
+        },
+        {
+          "line": 467,
+          "text": "compatible = \"snps,axi-dma-1.01a\";"
+        },
+        {
+          "line": 488,
+          "text": "compatible = \"snps,axi-dma-1.01a\";"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/memmap-3G.dtsi",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/memmap-3G.dtsi",
+      "sha256": "ea1f9fa30a2e7264013b655f6411a122936b2c17ee11863e86d664381169efb8",
+      "lines": 34,
+      "matches": [
+        {
+          "line": 29,
+          "text": "memory@200000000 {"
+        },
+        {
+          "line": 31,
+          "text": "reg = <0x2 0x00000000 0x0 0xC0000000>;"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/memmap-4G.dtsi",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/memmap-4G.dtsi",
+      "sha256": "071fa1beed55d360d05b0ff5b56db45d856aa068649968db86ed8135f4851b1c",
+      "lines": 34,
+      "matches": [
+        {
+          "line": 29,
+          "text": "memory@200000000 {"
+        },
+        {
+          "line": 31,
+          "text": "reg = <0x2 0x00000000 0x1 0x00000000>;"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/fvp.dts",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/fvp.dts",
+      "sha256": "357ebffd8ee5db332e64f1dca6d232797fa0b3b19fd48355c5f8050e5a499eeb",
+      "lines": 33,
+      "matches": [
+        {
+          "line": 13,
+          "text": "memory@80000000 {"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/arch/arm64/boot/dts/cxd/qemu-gicv2.dts",
+      "local_evidence": "gpl_platform_sources/arch/arm64/boot/dts/cxd/qemu-gicv2.dts",
+      "sha256": "784afefe2e852b57a803c5615e7ca5b5b3bceff5a4503ccfaf97193be37b666d",
+      "lines": 138,
+      "matches": [
+        {
+          "line": 27,
+          "text": "memory@40000000 {"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/soc/cxd/udif/dma-mapping.c",
+      "local_evidence": "gpl_platform_sources/drivers/soc/cxd/udif/dma-mapping.c",
+      "sha256": "6a3c04450a8ab3206ffe7af969b0c4b57c7c4b13a539e2f90eb0f8bc5c4305f0",
+      "lines": 57,
+      "matches": [
+        {
+          "line": 34,
+          "text": "int udif_dma_map_sg(struct scatterlist *sgl, int nelems, enum dma_data_direction dir)"
+        },
+        {
+          "line": 46,
+          "text": "EXPORT_SYMBOL(udif_dma_map_sg);"
+        },
+        {
+          "line": 48,
+          "text": "void udif_dma_unmap_sg(struct scatterlist *sgl, int nelems, enum dma_data_direction dir)"
+        },
+        {
+          "line": 57,
+          "text": "EXPORT_SYMBOL(udif_dma_unmap_sg);"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/soc/cxd/udif/cache.c",
+      "local_evidence": "gpl_platform_sources/drivers/soc/cxd/udif/cache.c",
+      "sha256": "a70355b2f54ced20a80c65719aab7b61c775296a944f028e654a2f7b4fd05e5e",
+      "lines": 40,
+      "matches": [
+        {
+          "line": 32,
+          "text": "void __udif_cache_ctrl(UDIF_VA va, UDIF_SIZE size, UDIF_CACHE_FLAGS dir)"
+        },
+        {
+          "line": 37,
+          "text": "dcache_clean_poc((unsigned long)va, (unsigned long)va + size);"
+        },
+        {
+          "line": 40,
+          "text": "EXPORT_SYMBOL(__udif_cache_ctrl);"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/soc/cxd/adrs_conv.c",
+      "local_evidence": "gpl_platform_sources/drivers/soc/cxd/adrs_conv.c",
+      "sha256": "4b17c5b5eac911a21d867fc78bcd28f37f63980d7c5643c7296dd21dc9631081",
+      "lines": 390,
+      "matches": [
+        {
+          "line": 220,
+          "text": "uintptr_t arch_phys_to_va(phys_addr_t pa)"
+        },
+        {
+          "line": 332,
+          "text": "uint32_t arch_p64_to_p32(phys_addr_t p64)"
+        },
+        {
+          "line": 336,
+          "text": "p32 = __arch_p64_to_p32(p64);"
+        },
+        {
+          "line": 379,
+          "text": "EXPORT_SYMBOL(arch_phys_to_va);"
+        },
+        {
+          "line": 387,
+          "text": "EXPORT_SYMBOL(arch_p64_to_p32);"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/soc/cxd/export/mach/noncache.h",
+      "local_evidence": "gpl_platform_sources/drivers/soc/cxd/export/mach/noncache.h",
+      "sha256": "8d0fec9985d349249eee65caaf83b6d73f291e020a9139ae32453d944414a935",
+      "lines": 182,
+      "matches": [
+        {
+          "line": 126,
+          "text": "#define PHYS_TO_VA(x)\t\tarch_phys_to_va(x)"
+        },
+        {
+          "line": 136,
+          "text": "#define PHYS64_TO_PHYS32(x)\tarch_p64_to_p32(x)"
+        },
+        {
+          "line": 164,
+          "text": "extern uintptr_t   arch_phys_to_va(phys_addr_t pa);"
+        },
+        {
+          "line": 174,
+          "text": "extern uint32_t    arch_p64_to_p32(phys_addr_t p64);"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/soc/cxd/export/mach/udif/cache.h",
+      "local_evidence": "gpl_platform_sources/drivers/soc/cxd/export/mach/udif/cache.h",
+      "sha256": "db2df8da94eaf73c2e0ec6b46901009e26656a8e3834e6c086dce88344a3bb36",
+      "lines": 32,
+      "matches": [
+        {
+          "line": 30,
+          "text": "extern void __udif_cache_ctrl(UDIF_VA va, UDIF_SIZE size, UDIF_CACHE_FLAGS dir);"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/soc/cxd/export/mach/dma32.h",
+      "local_evidence": "gpl_platform_sources/drivers/soc/cxd/export/mach/dma32.h",
+      "sha256": "c993710580e9b7de8129ba26ce3229934b8c3d44c7fdff505e4aa4576a378afd",
+      "lines": 32,
+      "matches": [
+        {
+          "line": 20,
+          "text": "static inline uint32_t __arch_p64_to_p32(uint64_t p64)"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/misc/cxd/dma/cdev.c",
+      "local_evidence": "gpl_platform_sources/drivers/misc/cxd/dma/cdev.c",
+      "sha256": "b1c59030fe997082cfa2b88f21d0a432da27a8ce4b4e942a79e617ef7cc83420",
+      "lines": 123,
+      "matches": [
+        {
+          "line": 60,
+          "text": "if (DMA_MEM_TRANSFER != ioctl->cmd) {"
+        },
+        {
+          "line": 78,
+          "text": "ret = dma_mem_transfer_async(&req);"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/misc/cxd/dma/module.c",
+      "local_evidence": "gpl_platform_sources/drivers/misc/cxd/dma/module.c",
+      "sha256": "ddf85177a88f1a9ff4ccbfad7c93486eec3281719a353dd82e065753bbd4c367",
+      "lines": 192,
+      "matches": [
+        {
+          "line": 106,
+          "text": "/* use dma_mem_transfer_async ? */"
+        }
+      ]
+    },
+    {
+      "archive_path": "linux-kernel/drivers/misc/cxd/dma/dma_core.c",
+      "local_evidence": "gpl_platform_sources/drivers/misc/cxd/dma/dma_core.c",
+      "sha256": "d0cdcba540fad241328da819794103f843016a8241eb4d78af8941f4e0e1a29f",
+      "lines": 211,
+      "matches": [
+        {
+          "line": 160,
+          "text": "int dma_mem_transfer_async(req_t *req)"
+        },
+        {
+          "line": 169,
+          "text": "EXPORT_SYMBOL(dma_mem_transfer_async);"
+        },
+        {
+          "line": 179,
+          "text": "int dma_peri_transfer_async(req_t *req)"
+        },
+        {
+          "line": 190,
+          "text": "EXPORT_SYMBOL(dma_peri_transfer_async);"
+        }
+      ]
+    }
+  ],
+  "cxd_dma_paths": [
+    "linux-kernel/drivers/misc/cxd/dma/log.c",
+    "linux-kernel/drivers/misc/cxd/dma/dw_axi_dmac.h",
+    "linux-kernel/drivers/misc/cxd/dma/proc.c",
+    "linux-kernel/drivers/misc/cxd/dma/cdev.c",
+    "linux-kernel/drivers/misc/cxd/dma/module.c",
+    "linux-kernel/drivers/misc/cxd/dma/Makefile",
+    "linux-kernel/drivers/misc/cxd/dma/dw_axi_dmac.c",
+    "linux-kernel/drivers/misc/cxd/dma/Kconfig",
+    "linux-kernel/drivers/misc/cxd/dma/config.h",
+    "linux-kernel/drivers/misc/cxd/dma/dma_core.c",
+    "linux-kernel/drivers/misc/cxd/dma/internal.h",
+    "linux-kernel/drivers/misc/cxd/pciedma/dwc_pcie.h",
+    "linux-kernel/drivers/misc/cxd/pciedma/log.c",
+    "linux-kernel/drivers/misc/cxd/pciedma/proc.c",
+    "linux-kernel/drivers/misc/cxd/pciedma/cdev.c",
+    "linux-kernel/drivers/misc/cxd/pciedma/module.c",
+    "linux-kernel/drivers/misc/cxd/pciedma/dwc_pcie.c",
+    "linux-kernel/drivers/misc/cxd/pciedma/Makefile",
+    "linux-kernel/drivers/misc/cxd/pciedma/connect.c",
+    "linux-kernel/drivers/misc/cxd/pciedma/Kconfig",
+    "linux-kernel/drivers/misc/cxd/pciedma/config.h",
+    "linux-kernel/drivers/misc/cxd/pciedma/dma_core.c",
+    "linux-kernel/drivers/misc/cxd/pciedma/internal.h"
+  ],
+  "sensor_generic_paths": [
+    "linux-kernel/drivers/media/i2c/imx412.c",
+    "linux-kernel/drivers/media/i2c/imx319.c",
+    "linux-kernel/drivers/media/i2c/imx274.c",
+    "linux-kernel/drivers/media/i2c/imx290.c",
+    "linux-kernel/drivers/media/i2c/imx208.c",
+    "linux-kernel/drivers/media/i2c/imx335.c",
+    "linux-kernel/drivers/media/i2c/imx355.c",
+    "linux-kernel/drivers/media/i2c/imx258.c",
+    "linux-kernel/drivers/media/i2c/imx334.c",
+    "linux-kernel/drivers/media/i2c/imx219.c",
+    "linux-kernel/drivers/media/i2c/imx214.c"
+  ],
+  "no_camera_access": true,
+  "downloaded_code_executed": false,
+  "not_full_firmware_unpack": true
+}

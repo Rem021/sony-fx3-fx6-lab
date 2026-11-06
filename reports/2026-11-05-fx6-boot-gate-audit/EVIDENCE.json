@@ -1,0 +1,94 @@
+{
+  "schema": "fx6-boot-gate-audit-v1",
+  "checked_utc": "2026-11-05T11:35:41.570145+00:00",
+  "goal": "FX6 system on fixed FX3 VM",
+  "goal_status": "active_not_complete",
+  "VM_executed": false,
+  "platform_changed": false,
+  "shared_candidate_modified": false,
+  "provider_block": {
+    "message": "msg_chaterr_5a1b17d63a36b951f0927f33",
+    "task": "task_32e1aa43202b",
+    "dispatch": "ctx_86469d59ce80",
+    "status": "unresolved",
+    "note": "OpenAI cyber safety flag; no retry/model reroute/blocked implementation executed"
+  },
+  "route_A": {
+    "last_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1",
+    "receipt_sha256": "0e2c7745ab4d2407a247b4cb28d449293eb4f055551bc9cbce1ee8fe683ebee0",
+    "serial_sha256": "89146ecfe10b1c676a72bcb725f30c8585ee2b04ff5a0d9d764c0aeabbcc20ed",
+    "stop": "unknown_loader_return",
+    "elapsed_seconds": 38.5776543749962,
+    "source_integrity": {
+      "expected_probe_sha256": "6f40e30e62fde9eddd74d547da8d6f3ab0d13be59413204632a232bc1d449aec",
+      "current_probe_sha256": "f10defaad641b3565d49c78225e84c9bcc4d60dabe4e7fdc70a82883de7c0842",
+      "historical_probe_sha256": "bb5c5e18b98cced5f86d4a57ff5487138d9cbc62ef7d98e4dfb4a1164db27921",
+      "matched_entries": 30,
+      "total_entries": 33
+    },
+    "dlsym_stop": {
+      "vcpu": "02",
+      "pc": "0x405f10",
+      "x0": "0x7f0377d044",
+      "tls": "0x7f837ff740",
+      "status": "not_same_im_record_tls",
+      "x22_recorded": false,
+      "gate_installed": false
+    }
+  },
+  "route_B": {
+    "last_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-4571c53b",
+    "receipt_sha256": "eb3990eb822a57322a496c7819aa47e502f875f0a7f0ca898235a45080164830",
+    "serial_sha256": "dfd0ef290ff0ea0c07335682f3e5a68b0ee5f626d41034a927a7031342df2be8",
+    "cp_helper_rc": 7,
+    "failure": "binding_failure/init_module -7",
+    "fx3_required_pcidma_va": "0xffffff80083220c8",
+    "fx6_pcidma_export_va": "0xffffff8008322f70",
+    "minimal_diff_feasible": false
+  },
+  "route_C": {
+    "fx6_initrd_ext2": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/initrd.img",
+      "bytes": 5661696,
+      "sha256": "fc97d08139b9ec20a1a511e608f6ed4f55d71f204472467463fdc181d2973da6",
+      "fs": "ext2"
+    },
+    "fx6_rootfs_squashfs": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha1/boot/initrd.img",
+      "bytes": 6914048,
+      "sha256": "5032fc777296e3e1f1b3bb6c7f2f249f18ee135f3c2424f83b7b6fff1e5831c0",
+      "fs": "squashfs"
+    },
+    "fx6_init": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/sbin/init",
+      "bytes": 735,
+      "sha256": "c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e"
+    },
+    "fixed_qemu_has_drive": false,
+    "fixed_qemu_has_initrd": false,
+    "fixed_qemu_has_append": false,
+    "fixed_dtb_bootargs_rdinit": "/init",
+    "required_block_devices": [
+      "/dev/nflasha2",
+      "/dev/nflasha3",
+      "/dev/nflasha7",
+      "/dev/nflasha8",
+      "/dev/nflasha10",
+      "/dev/nflasha11",
+      "/dev/nflasha12",
+      "/dev/nflasha15",
+      "/dev/nflasha18"
+    ],
+    "verdict": "requires platform/DTB/block-device or FX6 rootfs changes; not a fixed-platform direct boot"
+  },
+  "next_options": [
+    "resolve provider safety review/authorization without retry or bypass",
+    "authorize a new firmware/helper candidate for route B",
+    "explicitly relax fixed-platform boundary for route C"
+  ],
+  "limits": [
+    "read-only audit; no VM/browser/QEMU/guest/service/device",
+    "no boot/menu claim",
+    "no source repair/reseal/retry"
+  ]
+}

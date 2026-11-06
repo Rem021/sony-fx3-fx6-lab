@@ -1,0 +1,36 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 211fc90: 528000e0     	mov	w0, #0x7                // =7
+ 211fc94: 17ffffe5     	b	0x211fc28 <Application_System_Init+0x1514be4>
+ 211fc98: d00027e2     	adrp	x2, 0x261d000
+ 211fc9c: 52820401     	mov	w1, #0x1020             // =4128
+ 211fca0: 9110e042     	add	x2, x2, #0x438
+ 211fca4: b00027c0     	adrp	x0, 0x2618000
+ 211fca8: 911abc00     	add	x0, x0, #0x6af
+ 211fcac: 94011eb6     	bl	0x2167784 <Application_System_Init+0x155c740>
+ 211fcb0: 17ffffdf     	b	0x211fc2c <Application_System_Init+0x1514be8>
+ 211fcb4: d00027e2     	adrp	x2, 0x261d000
+ 211fcb8: 528204c1     	mov	w1, #0x1026             // =4134
+ 211fcbc: 9110e042     	add	x2, x2, #0x438
+ 211fcc0: 17fffff9     	b	0x211fca4 <Application_System_Init+0x1514c60>
+ 211fcc4: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 211fcc8: 52881223     	mov	w3, #0x4091             // =16529
+ 211fccc: 910003fd     	mov	x29, sp
+ 211fcd0: b9400002     	ldr	w2, [x0]
+ 211fcd4: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 211fcd8: aa0103f4     	mov	x20, x1
+ 211fcdc: f90013bf     	str	xzr, [x29, #0x20]
+ 211fce0: 528000a1     	mov	w1, #0x5                // =5
+ 211fce4: 2904ffa2     	stp	w2, wzr, [x29, #0x24]
+ 211fce8: b9400402     	ldr	w2, [x0, #0x4]
+ 211fcec: 390083a1     	strb	w1, [x29, #0x20]
+ 211fcf0: 71001c5f     	cmp	w2, #0x7
+ 211fcf4: 790047a3     	strh	w3, [x29, #0x22]
+ 211fcf8: 540004c8     	b.hi	0x211fd90 <Application_System_Init+0x1514d4c>
+ 211fcfc: b0002760     	adrp	x0, 0x260c000
+ 211fd00: 9132d000     	add	x0, x0, #0xcb4
+ 211fd04: 38624800     	ldrb	w0, [x0, w2, uxtw]

@@ -1,0 +1,18 @@
+fe04c6f0 80020058 ldr      x0, #0xfe04c740
+fe04c6f4 f30300aa mov      x19, x0
+fe04c6f8 740600d1 sub      x20, x19, #1
+fe04c6fc 75020058 ldr      x21, #0xfe04c748
+fe04c700 7f0215eb cmp      x19, x21
+fe04c704 43000054 b.lo     #0xfe04c70c
+fe04c708 8bf6ff97 bl       #0xfe04a134
+fe04c70c 630e40f9 ldr      x3, [x19, #0x18]
+fe04c710 60004092 and      x0, x3, #1
+fe04c714 1f0000f1 cmp      x0, #0
+fe04c718 40000054 b.eq     #0xfe04c720
+fe04c71c 830203cb sub      x3, x20, x3
+fe04c720 600240f9 ldr      x0, [x19]
+fe04c724 610640f9 ldr      x1, [x19, #8]
+fe04c728 620a40f9 ldr      x2, [x19, #0x10]
+fe04c72c 73820091 add      x19, x19, #0x20
+fe04c730 60003fd6 blr      x3
+fe04c734 f3ffff17 b        #0xfe04c700

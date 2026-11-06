@@ -1,0 +1,56 @@
+--- r26/prepare_run.py
++++ r28/prepare_run.py
+@@ -19,7 +19,7 @@
+       'plan_sha':hashlib.sha256((ROOT/'NAVIGATION-PLAN.json').read_bytes()).hexdigest(),'steps':plan['steps']}
+  def put(n,v):(out/n).write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n')
+  put('config.json',cfg)
+- files=[ROOT/'NAVIGATION-PLAN.json',ROOT/'prepare_run.py',ROOT/'PAGE-IDENTITY.json',ROOT/'trial_web_r24_review_snapshot.py',ROOT/'run_trial_r24_review_snapshot.py',ROOT/'review_page_r24.js',ROOT/'confirm_page_r24.js',*sorted((ROOT/'operator-helpers').glob('*.*')),*sorted((ROOT/'runtime-wrapper').glob('*.*'))]
++ files=[ROOT/'NAVIGATION-PLAN.json',ROOT/'prepare_run.py',ROOT/'PAGE-IDENTITY.json',ROOT/'trial_web_r24_review_snapshot.py',ROOT/'run_trial_r24_review_snapshot.py',ROOT/'review_page_r24.js',ROOT/'confirm_page_r24.js',*sorted((ROOT/'operator-helpers').glob('*.*')),*sorted((ROOT/'runtime-wrapper').glob('*.*')),*sorted((ROOT/'return-tools').glob('*.*')),ROOT/'CORE-SOURCE-FREEZE.json']
+  put('LOCAL-SOURCE-FREEZE.json',{str(f):hashlib.sha256(f.read_bytes()).hexdigest() for f in files if f.is_file()})
+  put('ledger.json',{'attempts':[],'recoveries':[]})
+  wrapper=ROOT/'runtime-wrapper'
+--- r26/operator-helpers/postkey_observation.py
++++ r28/operator-helpers/postkey_observation.py
+@@ -28,7 +28,7 @@
+   if len(rows)!=1 or rows[0]['url']!=binding['url']:raise ValueError('r26_unique_owned_tab_URL')
+   return rows
+  def read(name,action):
+-  code=Path(__file__).with_name('postkey_read.js').read_text()+'('+json.dumps({**binding,'page_sha':PAGE_SHA,'action':action})+')'
++  code=Path(__file__).with_name('postkey_read.js').read_text()+'('+json.dumps({**binding,'page_sha':PAGE_SHA,'action':action,'first_observation':res['observation_number']==1})+')'
+   return json.loads(browser(name,['eval','--stdin'],code))
+  try:
+   check(session,binding['url'])
+@@ -36,6 +36,8 @@
+   image=out/'observation.png';browser('actual-screenshot',['screenshot',str(image)])
+   record['tabs_after_screenshot']=tabs('tabs-after-screenshot');after=read('after','after');record['after']=after
+   record['tabs_after']=tabs('tabs-after')
++  record['sampling_browser_interval']={'origin':before['origin'],'before_ms':before['performance_ms'],'after_ms':after['performance_ms'],'exact_compositor_instant':'unknown','first_observation_wait':before.get('first_observation_wait')}
++  if res['observation_number']==1 and before.get('first_observation_wait',{}).get('not_before_satisfied') is not True:raise ValueError('r28_first_sample_schedule_not_proved')
+   for key in ('document_id','origin','run_incarnation'):
+    if before[key]!=after[key]:raise ValueError('r26_screenshot_identity_changed')
+   if before['qualified'] is not True or after['qualified'] is not True or before['alarm_identity_json']!=after['alarm_identity_json'] or after['performance_ms']<before['performance_ms']:raise ValueError('r26_screenshot_alarm_or_lifecycle_changed')
+--- r26/operator-helpers/postkey_read.js
++++ r28/operator-helpers/postkey_read.js
+@@ -18,10 +18,21 @@
+   const ready=value.review_required&&value.input_received&&value.review_step===c.step&&!value.busy&&s.review_required&&s.input_received&&s.review_step===c.step&&!s.busy&&!busy&&awaitingStep===null&&s.render_valid&&frameLoadedFor(s)&&image.complete&&image.naturalWidth>0;
+   return {h,ready,server:{run_incarnation:value.run_incarnation,launch_id:value.launch_request_id,step:value.steps,review_step:value.review_step,review_required:value.review_required,input_received:value.input_received,busy:value.busy,phase:value.phase,render_valid:value.render_valid},performance_ms:performance.now()};
+  }
++ const wait={schema:'fx3-first-observation-wait-r28-v1',first_observation:c.first_observation===true,applied:false,binding:{document_id:c.document_id,origin:c.document_time_origin,run_incarnation:c.run_incarnation,launch_id:c.launch_id,step:c.step,attempt_id:c.attempt_id,nonce:c.nonce},check_times_ms:[]};
++ if(c.action==='observe'&&c.first_observation===true){
++  let checked=await fresh();const h=checked.h;wait.arm_ms=h.current.armed_ms;wait.due_ms=h.current.due_ms;wait.not_before_ms=wait.arm_ms+5000;wait.entered_ms=performance.now();
++  wait.applied=wait.entered_ms<wait.not_before_ms;let nextFresh=performance.now();
++  while(performance.now()<wait.not_before_ms){
++   local();await new Promise(resolve=>setTimeout(resolve,Math.min(25,Math.max(1,wait.not_before_ms-performance.now()))));local();
++   if(performance.now()>=nextFresh||performance.now()>=wait.not_before_ms){checked=await fresh();wait.check_times_ms.push(performance.now());nextFresh=performance.now()+200;}
++  }
++  await fresh();wait.completed_ms=performance.now();wait.not_before_satisfied=wait.completed_ms>=wait.not_before_ms;
++  if(!wait.not_before_satisfied)throw Error('r28_first_sample_before_arm_plus5000');
++ }
+  let before=await fresh();const until=Math.min(performance.now()+6000,before.h.current.due_ms);
+  while(c.action!=='after'&&!before.ready&&performance.now()<until){await new Promise(r=>setTimeout(r,25));before=await fresh();}
+  if(!before.ready)throw Error('r26_native_review_phase_not_ready');
+- return {qualified:true,document_id:reviewDocumentId,origin,run_incarnation:c.run_incarnation,binding:c,
++ return {qualified:true,first_observation_wait:wait,document_id:reviewDocumentId,origin,run_incarnation:c.run_incarnation,binding:c,
+   phase:before.server,displayed_frame:{sequence:displayed,content_generation:displayedGeneration,PNG_sha256:shownSHA},
+   before,alarm_identity_json:JSON.stringify(before.h),performance_ms:performance.now()};
+ })

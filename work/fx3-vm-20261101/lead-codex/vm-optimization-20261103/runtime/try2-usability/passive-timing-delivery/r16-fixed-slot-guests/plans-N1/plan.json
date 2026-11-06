@@ -1,0 +1,794 @@
+{
+  "schema": "fx3-fixed-layout-plan/v1",
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3",
+  "pins": {
+    "candidate_sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518",
+    "archive_sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83",
+    "archive_size": 453213884,
+    "header_offset": 451339508,
+    "payload_offset": 451339648,
+    "slot_size": 58856,
+    "mode": 33261,
+    "member_sha256": "54eeed923a6412cd2c6743f6e8c968d1ede71b92aa79aca4575868ebccc4a9ec",
+    "dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+  },
+  "inputs": {
+    "raw_helper": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15-n1.so",
+    "stripped_helper": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/fx3-ui-gate-v15-n1-linker-strip.so",
+    "release_contract": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/N1-release.json"
+  },
+  "release_contract_sha256": "e93446824b30656967577042e55ef2279983b3199fbbdee66ed5581036bca146",
+  "source_identity": {
+    "device": 16777244,
+    "inode": 15085696,
+    "size": 453213884,
+    "mtime_ns": 1793798704705171317,
+    "ctime_ns": 1793798704705171317
+  },
+  "source_full_hash_status": "not_rehashed_in_seek_only_plan; required_before_write",
+  "archive_index_sha256": "59088dcbdb408ed56e215e0b6e6cfdf064eef545781977c163da77a23a930101",
+  "member_count_excluding_trailer": 1140,
+  "target_member": {
+    "name": "simulation/fx3-ui-gate-v1.so",
+    "header_offset": 451339508,
+    "payload_offset": 451339648,
+    "size": 58856,
+    "mode": 33261,
+    "nlink": 1,
+    "inode": 1113,
+    "devmajor": 0,
+    "devminor": 0,
+    "next_offset": 451398504,
+    "header_hex": "3037303730313030303030343539303030303831656430303030303030303030303030303030303030303030303130303030303030303030303065356538303030303030303030303030303030303030303030303030303030303030303030303030303031643030303030303030"
+  },
+  "raw_helper_sha256": "5faeb996c4c7386383a9e07ab5cc9f65c5e9e80217e5e777f15df7d26b9c8dbc",
+  "stripped_helper_sha256": "da4eef557353223542cfab4d0e9f9b91a42a3c77a886f42f791867d0e2a45d92",
+  "padded_slot_sha256": "26f338bc21d32a7b5d1deac70260ec25da747f0b0d38f91604eef11ca92a1148",
+  "zero_padding_bytes": 36808,
+  "allowed_change": {
+    "offset": 451339648,
+    "bytes": 58856
+  },
+  "audit": {
+    "schema": "fx3-strip-debug-audit/v1",
+    "passed": true,
+    "architecture": "ELF64-LE-AArch64-ET_DYN",
+    "raw_sha256": "5faeb996c4c7386383a9e07ab5cc9f65c5e9e80217e5e777f15df7d26b9c8dbc",
+    "stripped_sha256": "da4eef557353223542cfab4d0e9f9b91a42a3c77a886f42f791867d0e2a45d92",
+    "raw_size": 66832,
+    "stripped_size": 22048,
+    "program_headers_equal": true,
+    "program_header_sha256": "2de45b049e2f3417dcd7f1c6f220a34ff2245ad6fb8000d488f5250690a72e72",
+    "elf_header_changes": [
+      {
+        "field": "shoff",
+        "before": 64848,
+        "after": 20640
+      },
+      {
+        "field": "shnum",
+        "before": 31,
+        "after": 22
+      },
+      {
+        "field": "shstrndx",
+        "before": 29,
+        "after": 21
+      }
+    ],
+    "removed_debug_sections": [
+      ".debug_abbrev",
+      ".debug_aranges",
+      ".debug_info",
+      ".debug_line",
+      ".debug_loc",
+      ".debug_ranges",
+      ".debug_str"
+    ],
+    "removed_static_symbol_sections": [
+      ".strtab",
+      ".symtab"
+    ],
+    "retained_other_nonalloc_sections_equal": [
+      "",
+      ".comment"
+    ],
+    "alloc_sections": [
+      {
+        "name": ".dynsym",
+        "type": 11,
+        "flags": 2,
+        "addr": 624,
+        "offset": 624,
+        "size": 480,
+        "align": 8,
+        "entsize": 24,
+        "sha256": "d8eb8f764a1840078733b5a441595dbe1241a6c432073201be677dd418ec5065",
+        "nobits": false
+      },
+      {
+        "name": ".gnu.version",
+        "type": 1879048191,
+        "flags": 2,
+        "addr": 1104,
+        "offset": 1104,
+        "size": 40,
+        "align": 2,
+        "entsize": 2,
+        "sha256": "9e3258910bf000dbc56885e987dc628bbd1a8913269592aa263ec3468305cc13",
+        "nobits": false
+      },
+      {
+        "name": ".gnu.version_r",
+        "type": 1879048190,
+        "flags": 2,
+        "addr": 1144,
+        "offset": 1144,
+        "size": 64,
+        "align": 4,
+        "entsize": 0,
+        "sha256": "2882d7128856d2455285f936df1837468fad22576715da1d63b3ce07af08953b",
+        "nobits": false
+      },
+      {
+        "name": ".gnu.hash",
+        "type": 1879048182,
+        "flags": 2,
+        "addr": 1208,
+        "offset": 1208,
+        "size": 48,
+        "align": 8,
+        "entsize": 0,
+        "sha256": "ef7e899e76bba335547b2919736707fbb3f6c0d23402fa68feb4eff03c9b7162",
+        "nobits": false
+      },
+      {
+        "name": ".hash",
+        "type": 5,
+        "flags": 2,
+        "addr": 1256,
+        "offset": 1256,
+        "size": 168,
+        "align": 4,
+        "entsize": 4,
+        "sha256": "cb1445bfbcd21bd114ba861600640092687dd75fbbd8e58eba9221068e1b3d3b",
+        "nobits": false
+      },
+      {
+        "name": ".dynstr",
+        "type": 3,
+        "flags": 2,
+        "addr": 1424,
+        "offset": 1424,
+        "size": 311,
+        "align": 1,
+        "entsize": 0,
+        "sha256": "67077be065b5f2aeb5f47a799a780a1190292f88a98ae835fb0d7b574a644ce8",
+        "nobits": false
+      },
+      {
+        "name": ".rela.dyn",
+        "type": 4,
+        "flags": 2,
+        "addr": 1736,
+        "offset": 1736,
+        "size": 216,
+        "align": 8,
+        "entsize": 24,
+        "sha256": "9de210720b2dd17571dc392cd2b00cb2bda0ddeaf4ad7a66450e12fa172bce4d",
+        "nobits": false
+      },
+      {
+        "name": ".rela.plt",
+        "type": 4,
+        "flags": 66,
+        "addr": 1952,
+        "offset": 1952,
+        "size": 336,
+        "align": 8,
+        "entsize": 24,
+        "sha256": "fe40d35b96c745269d71bced6c057a03e42f4f0aea2b117ae9c08c0b34a80db5",
+        "nobits": false
+      },
+      {
+        "name": ".rodata",
+        "type": 1,
+        "flags": 50,
+        "addr": 2288,
+        "offset": 2288,
+        "size": 4809,
+        "align": 16,
+        "entsize": 0,
+        "sha256": "4a6b48f09186dd330ece69a6cbf0e2403c61e5aa572765ce739b5772d4056481",
+        "nobits": false
+      },
+      {
+        "name": ".eh_frame_hdr",
+        "type": 1,
+        "flags": 2,
+        "addr": 7100,
+        "offset": 7100,
+        "size": 124,
+        "align": 4,
+        "entsize": 0,
+        "sha256": "6c88af173ae9eb080a7388b0f0a4ba5b184a05e66060b2fd9a5c8d2f9921aeac",
+        "nobits": false
+      },
+      {
+        "name": ".eh_frame",
+        "type": 1,
+        "flags": 2,
+        "addr": 7224,
+        "offset": 7224,
+        "size": 668,
+        "align": 8,
+        "entsize": 0,
+        "sha256": "c4cc6192cb3e495f2a24de9e627056edf42ea8db9a959b153f2038f3fde27078",
+        "nobits": false
+      },
+      {
+        "name": ".text",
+        "type": 1,
+        "flags": 6,
+        "addr": 73428,
+        "offset": 7892,
+        "size": 11640,
+        "align": 4,
+        "entsize": 0,
+        "sha256": "b60a37f807f3c9571f7abf87231560669648c942bb6619fd6296d8f8b054391e",
+        "nobits": false
+      },
+      {
+        "name": ".plt",
+        "type": 1,
+        "flags": 536870918,
+        "addr": 85072,
+        "offset": 19536,
+        "size": 256,
+        "align": 16,
+        "entsize": 0,
+        "sha256": "a71236c7b8a93cd69f7649f181113c899839476bd742ed2ded422ebb508989d3",
+        "nobits": false
+      },
+      {
+        "name": ".tbss",
+        "type": 8,
+        "flags": 1027,
+        "addr": 85328,
+        "offset": 19792,
+        "size": 40,
+        "align": 8,
+        "entsize": 0,
+        "sha256": null,
+        "nobits": true
+      },
+      {
+        "name": ".dynamic",
+        "type": 6,
+        "flags": 3,
+        "addr": 150864,
+        "offset": 19792,
+        "size": 368,
+        "align": 8,
+        "entsize": 16,
+        "sha256": "13e03d44723b5b260ba75158bb058604a89e8bbcc7b23302a0be77ff7897658b",
+        "nobits": false
+      },
+      {
+        "name": ".got",
+        "type": 1,
+        "flags": 3,
+        "addr": 151232,
+        "offset": 20160,
+        "size": 112,
+        "align": 8,
+        "entsize": 0,
+        "sha256": "b5fdab78d8947eacc864bfeecb4d2100780e5afe1cd8efafb124887913ac49fa",
+        "nobits": false
+      },
+      {
+        "name": ".got.plt",
+        "type": 1,
+        "flags": 3,
+        "addr": 151344,
+        "offset": 20272,
+        "size": 136,
+        "align": 8,
+        "entsize": 0,
+        "sha256": "f115a1a098c5fae85f4a2ee24a915c18964d48dd79050fd5285a6ad131a7e2cc",
+        "nobits": false
+      },
+      {
+        "name": ".relro_padding",
+        "type": 8,
+        "flags": 3,
+        "addr": 151480,
+        "offset": 20408,
+        "size": 72,
+        "align": 1,
+        "entsize": 0,
+        "sha256": null,
+        "nobits": true
+      },
+      {
+        "name": ".bss",
+        "type": 8,
+        "flags": 3,
+        "addr": 217016,
+        "offset": 20408,
+        "size": 3424,
+        "align": 8,
+        "entsize": 0,
+        "sha256": null,
+        "nobits": true
+      }
+    ],
+    "dynamic": {
+      "needed": [
+        "libc.so.6",
+        "libdl.so.2"
+      ],
+      "soname": [
+        "fx3-ui-gate-v15-n1.so"
+      ],
+      "rpath": [],
+      "runpath": []
+    },
+    "exports": [
+      {
+        "name": "fx3_observed_reverse_context",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": ".text",
+        "value": 73428,
+        "size": 64
+      },
+      {
+        "name": "fx3_observed_reverse_enum",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": ".text",
+        "value": 73492,
+        "size": 44
+      },
+      {
+        "name": "fx3_observed_backup_rate",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": ".text",
+        "value": 73536,
+        "size": 44
+      },
+      {
+        "name": "dlopen",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": ".text",
+        "value": 81704,
+        "size": 1032
+      },
+      {
+        "name": "_ZNSt18condition_variable4waitERSt11unique_lockISt5mutexE",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": ".text",
+        "value": 82736,
+        "size": 332
+      }
+    ],
+    "undefined": [
+      {
+        "name": "__errno_location",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "syscall",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "dprintf",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "dlsym",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "clock_gettime",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "strstr",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "dlinfo",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "open",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "close",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "memset",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "read",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "mmap",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "munmap",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      },
+      {
+        "name": "mprotect",
+        "bind": 1,
+        "type": 2,
+        "other": 0,
+        "section": 0,
+        "value": 0,
+        "size": 0
+      }
+    ],
+    "pt_load_comparison": [
+      {
+        "program_header_index": 1,
+        "file_offset": 0,
+        "filesz": 7892,
+        "differing_file_offsets": [
+          40,
+          41,
+          60,
+          62
+        ],
+        "raw_sha256": "29eaf32bde2b0c4132d37ad8d66cbc0cd9542266a4543f6b3b7bec32f6cbc288",
+        "stripped_sha256": "7b934693ba40201dbecae07405cc01c95c42dae4e6c42fa69fa55dc5a0492a5a"
+      },
+      {
+        "program_header_index": 2,
+        "file_offset": 7892,
+        "filesz": 11900,
+        "differing_file_offsets": [],
+        "raw_sha256": "03ec9a8fb3508f5653828393f06365de740d56a6b760f11ea110ba7acc05740e",
+        "stripped_sha256": "03ec9a8fb3508f5653828393f06365de740d56a6b760f11ea110ba7acc05740e"
+      },
+      {
+        "program_header_index": 3,
+        "file_offset": 19792,
+        "filesz": 616,
+        "differing_file_offsets": [],
+        "raw_sha256": "2c7d1754702b5d5d2aa31680942337e7d8e3385831fd5a372747ff41dad7ef51",
+        "stripped_sha256": "2c7d1754702b5d5d2aa31680942337e7d8e3385831fd5a372747ff41dad7ef51"
+      },
+      {
+        "program_header_index": 4,
+        "file_offset": 20408,
+        "filesz": 0,
+        "differing_file_offsets": [],
+        "raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stripped_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "pt_load_whole_bytes_equal": false
+  },
+  "build_provenance": {
+    "method": "relink_original_command_with_only_-Wl,--strip-debug_and_output_change",
+    "references": {
+      "raw_build_manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/BUILD.json",
+        "sha256": "1082b8cb6434309befc28ce7635de5aa56fc0aeea19a3b597c1834675f64378a"
+      },
+      "source_manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-r15-guest-SOURCE-SHA256SUMS",
+        "sha256": "05aded60ec6ecabb67381eca1f9ea8b3311599725c9d8e2cbb022db72b077d7d"
+      },
+      "strip_build_receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/N1-build.json",
+        "sha256": "d2232c23e56f153c79b697980947d8f78e5d05f57b8e8eb09bebeb51e835528f"
+      }
+    },
+    "command_input_hashes": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+        "sha256": "1c5f706db0ed6d55451940f31dc05a6177d05696bc1fa5d853696d04c718b523"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+        "sha256": "956df1600610ce071c0316b93a890cb0fea75359246456d73a0a3fa520c3869c"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-probes-v1.S",
+        "sha256": "b82a530c86ad3d37e06ba37828c72942c3c9188d904ed2b3a3bee89ebf9f62a1"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+        "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+        "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+        "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+        "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+      }
+    ],
+    "source_rows": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/audit_offline_v15.py",
+        "sha256": "0bb170c8b9f7f966446ad2aa4d73c0fb4ec721be8a01dd628a8476ad68f502a6"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/build_guest_offline.py",
+        "sha256": "fb5da04e14d5edd4d6a759b9ceccc58adc4dfa2b1415f6acb03353aa9aec7982"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/cpio_audit.py",
+        "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/decode_printk_ring.py",
+        "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/file_readback100.py",
+        "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-probes-v1.S",
+        "sha256": "b82a530c86ad3d37e06ba37828c72942c3c9188d904ed2b3a3bee89ebf9f62a1"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+        "sha256": "956df1600610ce071c0316b93a890cb0fea75359246456d73a0a3fa520c3869c"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/gate_input_usability.py",
+        "sha256": "3c612905bb53861e8a3804aaa0696ba14d376646b37f52894b0c1ad7ed508104"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/host_exception_clock.py",
+        "sha256": "5f133dd0c8f6d17b19cab87616b1efe725445829d75447ac0de71ceb99a083dc"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/optional_paused_snapshots.py",
+        "sha256": "15fbc3b50b1871b815b13c05b8275922f561ea2683c64c0d9a2e81c611d451a9"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/osd_ring93_v4.py",
+        "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/parse_v25_diag_r3.py",
+        "sha256": "c232254a1991894e8a6a0446ee7a516ba7491211bfcf894852b56008345dcb9a"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/pending_visual_v20.py",
+        "sha256": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/pre_input_observation.py",
+        "sha256": "243f33e19c1362d3d1741ad60ac863cb5e5dd27fc9ab01dadd7f8f2fb829e50f"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/procdiag_readback.py",
+        "sha256": "0f6d479e7a1072f45ede37562bde66f22bea9c682886345a6b36f38ba92312f4"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/qmp_line_transport.py",
+        "sha256": "2686ee46ff1ce06b12650f4cb3c86ebe9d64fdeafc9e6ce8176a64c4b5ded0c3"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/quiesced_diag_readback.py",
+        "sha256": "51b2507730a5a7515333c0611022bf4a8c29d9a43663db8dd6e385db007ca6cb"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/restore_api103_v2.py",
+        "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/run_trial_v25_diag_r3.py",
+        "sha256": "b0eed77bc109be5919eccb6ffdc831fe4f725254c6dcdf4647d42110bb75166d"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/runtime_resource_guard.py",
+        "sha256": "6bb095d299b695818708360c355d6c3b4f6a7eff0112e03474b474b180051680"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/seal.py",
+        "sha256": "850848f3819b5f2fbf410a78589b1476074d93bfc8b95f634af7e7188ea765f7"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/snapshot_tail_v15.py",
+        "sha256": "96be4296aaab95e8c38c1615b8875347384d70fb54ec903eab67b015acecb37e"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/startup_qmp_v1.py",
+        "sha256": "efba2c336e063e18208f21df6e3bf9ae462abb1fef5ed0ec618f009004b67c74"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/terminal_status_v23.py",
+        "sha256": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/test_guest_snapshot_actual.c",
+        "sha256": "609e952652b360d70c166d58ee6755f9ee7a85293e5684e9f4d029033d758499"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/test_independent_diagnostics.py",
+        "sha256": "5af361a26fe3b7ddd1041559a0df4b7c1f20cd15b5ebd39d5bdf07d4046d8221"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/test_snapshot_tail_actual.py",
+        "sha256": "d05ee735f9a43e209ad9767e1df65b01c4b25859f7a85b03c24264617d94dd35"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/trial_health_v2.py",
+        "sha256": "99bb8104dd63fbb8cff7b887447fe56baf468d972c325fa39da2091f4e0c5751"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/trial_log_v4_mss.py",
+        "sha256": "4d57629fc8bf1c8d158bfcf101915b9edd626f7bfb11c55fc78fe634ef7d6645"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/trial_ring_cached.py",
+        "sha256": "9309794feded60291d6748bd4d19ab98a909e7ba73c91233a2ffb983551f9e11"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/trial_web_v22_navigation_review.py",
+        "sha256": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb"
+      }
+    ],
+    "raw_debug_elf_retained": true,
+    "static_symbol_removal_explicitly_accepted": true,
+    "no_strip_all": true
+  },
+  "release_contract": {
+    "schema": "fx3-fixed-layout-release/v1",
+    "helper_version": "r15",
+    "variant": "N1",
+    "soname": "fx3-ui-gate-v15-n1.so",
+    "raw_sha256": "5faeb996c4c7386383a9e07ab5cc9f65c5e9e80217e5e777f15df7d26b9c8dbc",
+    "stripped_sha256": "da4eef557353223542cfab4d0e9f9b91a42a3c77a886f42f791867d0e2a45d92",
+    "provenance": {
+      "raw_build_manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/BUILD.json",
+        "sha256": "1082b8cb6434309befc28ce7635de5aa56fc0aeea19a3b597c1834675f64378a"
+      },
+      "source_manifest": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-r15-guest-SOURCE-SHA256SUMS",
+        "sha256": "05aded60ec6ecabb67381eca1f9ea8b3311599725c9d8e2cbb022db72b077d7d"
+      },
+      "strip_build_receipt": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/N1-build.json",
+        "sha256": "d2232c23e56f153c79b697980947d8f78e5d05f57b8e8eb09bebeb51e835528f"
+      }
+    },
+    "diagnostic_contract": {
+      "guest_report": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/REPORT.md",
+        "sha256": "8f99778bf7395e0bd00b36a0acbd2b9e8423d9ea3de7db54c4e74e6802489869"
+      },
+      "source_freeze": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/SOURCE-FREEZE.json",
+        "sha256": "4737db8f89660c6bb41993b37f8aa9c8f9761a1e26be1e2fbbfa7a73db760d4b"
+      },
+      "source_adaptation": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/SOURCE-ADAPTATION.json",
+        "sha256": "40226603aa23a368005812ddcf9fef971c07beeb40dc707f9ecebccc2b0c3ac6"
+      },
+      "protocol": "r15 requested immutable snapshot v5",
+      "protocol_version": 5,
+      "physical_base": "0x41dc00000",
+      "reserved_bytes": 65536,
+      "request": {
+        "offset": "0x3000",
+        "bytes": 64
+      },
+      "ready_ack": {
+        "offset": "0x3040",
+        "bytes": 192
+      },
+      "payload": {
+        "offset": "0x3100",
+        "bytes": 784,
+        "qwords": 98,
+        "end_exclusive": "0x3410"
+      },
+      "ordinary_ram_statistics_authoritative": true,
+      "uc_region_plain_aligned_32bit_access_and_dmb_only": true,
+      "atomic_fields_snapshot_is_transactionally_consistent": false,
+      "snapshot_is_end_state": false,
+      "extra_tail_cont_not_part_of_first_frame_or_performance_window": true,
+      "protocol_runtime_validated": false,
+      "VM_started": false,
+      "scope": "guest packaging only; no host runner source/pin integration; r16 host managed separately"
+    }
+  },
+  "dtb_unchanged": true,
+  "runtime_validated": false,
+  "real_archive_generated": false
+}

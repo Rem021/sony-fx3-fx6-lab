@@ -1,0 +1,226 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap76corr-316e20b7",
+  "candidate_version": "capid v30; AP75r3 hooks retained",
+  "file_chain": [
+    {
+      "kind": 10,
+      "transfer": {
+        "source": "0x409",
+        "source_offset": "0",
+        "dest": "0x8402",
+        "dest_offset": "0",
+        "length": "51200",
+        "mode": "1",
+        "callback": "0x7f380ac74c",
+        "context": "0x7f23023530",
+        "CPphysical": "0x1db00000",
+        "APbacking": "0x41db00000",
+        "lease": "48",
+        "request_caller_owned": "1",
+        "request_result": "0",
+        "original_sound": "0",
+        "real_DMA": "0"
+      },
+      "line": 21712,
+      "beep327": {
+        "line": 21746,
+        "command": "0x327",
+        "tid": 325,
+        "kind": 10,
+        "registered": 1,
+        "volume": 0,
+        "physical": "0x1db00000",
+        "size": 2752,
+        "lease": 49,
+        "free0_lines": [
+          21748
+        ]
+      },
+      "beep32a": {
+        "line": 21763,
+        "command": "0x32a",
+        "tid": 325,
+        "kind": 10,
+        "registered": 1,
+        "volume": 6,
+        "physical": "0",
+        "size": 0,
+        "lease": 50,
+        "free0_lines": [
+          21764
+        ]
+      }
+    },
+    {
+      "kind": 11,
+      "transfer": {
+        "source": "0x40a",
+        "source_offset": "0",
+        "dest": "0x8403",
+        "dest_offset": "0",
+        "length": "51200",
+        "mode": "1",
+        "callback": "0x7f380ac74c",
+        "context": "0x7f23023530",
+        "CPphysical": "0x1db10000",
+        "APbacking": "0x41db10000",
+        "lease": "52",
+        "request_caller_owned": "1",
+        "request_result": "0",
+        "original_sound": "0",
+        "real_DMA": "0"
+      },
+      "line": 21810,
+      "beep327": {
+        "line": 21843,
+        "command": "0x327",
+        "tid": 325,
+        "kind": 11,
+        "registered": 1,
+        "volume": 0,
+        "physical": "0x1db10000",
+        "size": 2752,
+        "lease": 53,
+        "free0_lines": [
+          21844
+        ]
+      },
+      "beep32a": {
+        "line": 21859,
+        "command": "0x32a",
+        "tid": 325,
+        "kind": 11,
+        "registered": 1,
+        "volume": 6,
+        "physical": "0",
+        "size": 0,
+        "lease": 54,
+        "free0_lines": [
+          21860
+        ]
+      }
+    },
+    {
+      "kind": 12,
+      "transfer": {
+        "source": "0x40b",
+        "source_offset": "0",
+        "dest": "0x8404",
+        "dest_offset": "0",
+        "length": "51200",
+        "mode": "1",
+        "callback": "0x7f380ac74c",
+        "context": "0x7f23023530",
+        "CPphysical": "0x1db20000",
+        "APbacking": "0x41db20000",
+        "lease": "56",
+        "request_caller_owned": "1",
+        "request_result": "0",
+        "original_sound": "0",
+        "real_DMA": "0"
+      },
+      "line": 21906,
+      "beep327": {
+        "line": 21939,
+        "command": "0x327",
+        "tid": 325,
+        "kind": 12,
+        "registered": 1,
+        "volume": 0,
+        "physical": "0x1db20000",
+        "size": 9600,
+        "lease": 57,
+        "free0_lines": [
+          21940
+        ]
+      },
+      "beep32a": {
+        "line": 21955,
+        "command": "0x32a",
+        "tid": 325,
+        "kind": 12,
+        "registered": 1,
+        "volume": 7,
+        "physical": "0",
+        "size": 0,
+        "lease": 58,
+        "free0_lines": [
+          21956
+        ]
+      }
+    },
+    {
+      "kind": 13,
+      "transfer": {
+        "source": "0x40c",
+        "source_offset": "0",
+        "dest": "0x8405",
+        "dest_offset": "0",
+        "length": "51200",
+        "mode": "1",
+        "callback": "0x7f380ac74c",
+        "context": "0x7f23023530",
+        "CPphysical": "0x1db30000",
+        "APbacking": "0x41db30000",
+        "lease": "60",
+        "request_caller_owned": "1",
+        "request_result": "0",
+        "original_sound": "0",
+        "real_DMA": "0"
+      },
+      "line": 22003,
+      "beep327": {
+        "line": 22035,
+        "command": "0x327",
+        "tid": 325,
+        "kind": 13,
+        "registered": 1,
+        "volume": 0,
+        "physical": "0x1db30000",
+        "size": 12160,
+        "lease": 61,
+        "free0_lines": [
+          22036
+        ]
+      },
+      "beep32a": {
+        "line": 22052,
+        "command": "0x32a",
+        "tid": 325,
+        "kind": 13,
+        "registered": 1,
+        "volume": 7,
+        "physical": "0",
+        "size": 0,
+        "lease": 62,
+        "free0_lines": [
+          22053
+        ]
+      }
+    }
+  ],
+  "beep_observed": 26,
+  "beep_free0": 26,
+  "icdt_consumed": 4,
+  "barrier_passed": null,
+  "barrier_verdict": "UNPROVEN_NO_MATCHED_FOUR_TASK_COMPLETION_HANDLE_RECEIPT",
+  "getfunc325_observed": 0,
+  "UI_event_counts": {
+    "FX3_TIMER_SNAPSHOT": 6,
+    "FX3_TIMER_BOUND": 1,
+    "FX3_TIMER_ENTRY": 0,
+    "FX3_TIMER_ID ": 0,
+    "FX3_TIMER_INFO ": 0,
+    "FX3_TIMER_TABLE": 0,
+    "FX3_TIMER_RETURN": 0,
+    "FX3_UI_CONFIG_ENTER": 0,
+    "FX3_UI_CONFIG_RETURN": 0,
+    "FX3_UI_CONFIG_DONE": 0,
+    "FX3_UI_FILL_EXEC": 0,
+    "FX3_UI_FILL_RETURN": 0,
+    "FX3_UI_WIRE": 6,
+    "FX3_GPE_CMD": 0
+  },
+  "wire1004": 0,
+  "physical_audio_or_display_acceptance": false
+}

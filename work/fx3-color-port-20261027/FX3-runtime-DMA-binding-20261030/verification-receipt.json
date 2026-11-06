@@ -1,0 +1,55 @@
+{
+  "created_utc": "2026-10-30T14:31:05.434663+00:00",
+  "status": "PASS_ORIGINAL_PACKAGE_LINKAGE_AND_BOUNDED_PROBES_NOT_RUNTIME_OR_FLASH",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "original_function_spans_verified": 15,
+  "independent_exports_verified": 10,
+  "A64_ELFs_scanned": 565,
+  "importing_kernel_modules": 22,
+  "unresolved_shared_library_references": 1,
+  "recorded_import_relocations": 217,
+  "guest_cases": 12,
+  "executed_original_instructions": 158,
+  "guest_stop_counts": {
+    "unexecuted_system_or_cache_boundary": 3,
+    "return": 5,
+    "unexecuted_outside_call": 4
+  },
+  "return_ABI_note": "p64_to_p32 returns a uint32_t in W0. Successful original paths can retain input high bits in X0; do not read it as a full 64-bit converted address.",
+  "cachecontrol_static_command_review": {
+    "scope": "Original module-relative .text offsets; internal callback commands, not a verified external ioctl/device procedure.",
+    "command_dispatch": {
+      "0x3000": "Prepare aligned fields from frame+0x10 and length frame+0x28; then query cache type",
+      "0x3001": "Require cache type 0x11, pass flag1 to helper at .text+8",
+      "0x3002": "Require cache type 0x11, pass flag2 to helper at .text+8"
+    },
+    "inferred_frame_minimum_bytes": 48,
+    "fields": {
+      "0x00": "command",
+      "0x04": "status",
+      "0x08": "aligned start produced by command0x3000",
+      "0x10": "original start used by producer",
+      "0x18": "original inclusive end produced by command0x3000",
+      "0x20": "aligned inclusive end produced by command0x3000",
+      "0x28": "length"
+    },
+    "alignment": "The original code uses a 0x3f mask; this is an observed compiled 64-byte alignment rule, not a measurement of every hardware cache.",
+    "status_zero_limit": "Helper .text+0xe8 sets status0 and skips __udif_cache_ctrl when the mapped address or length condition at0xa4..0xb4 is zero; static path only, not a reproduced mapping failure or proof of completed cache maintenance.",
+    "producer_runtime_binding": false
+  },
+  "previous_stage_files_verified": 60,
+  "prior_goal_turn_classification": "progress: paired source cache/DMA contracts changed target binding investigation",
+  "current_goal_turn_classification": "progress: original 7.02 kernel exports, module call relocations and bounded original conversion/dispatch paths",
+  "full_objective_preserved": true,
+  "complete_private_donor_obtained": false,
+  "actual_running_body_kernel_or_module_state_verified": false,
+  "physical_RAW_samples_or_full_ISP_proved": false,
+  "modified_or_flashable_firmware_produced": false,
+  "goal_complete": false,
+  "native_goal_status": "active",
+  "device_actions": 0,
+  "native_Sony_programs_executed": 0,
+  "cache_or_system_instructions_executed": 0,
+  "hardware_or_helper_replies_fabricated": false,
+  "other_owner_files_written_or_tools_operated": false
+}

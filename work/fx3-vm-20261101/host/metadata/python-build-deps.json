@@ -1,0 +1,144 @@
+{
+  "version": "1",
+  "pip_version": "26.1.2",
+  "install": [
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/9c/07/b48592d325cb86682829f05216e4efb2dc881762b8f1bafb48b57442307a/meson-1.9.1-py3-none-any.whl",
+        "archive_info": {
+          "hashes": {
+            "sha256": "f824ab770c041a202f532f69e114c971918ed2daff7ea56583d80642564598d0"
+          },
+          "hash": "sha256=f824ab770c041a202f532f69e114c971918ed2daff7ea56583d80642564598d0"
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": true,
+      "metadata": {
+        "metadata_version": "2.4",
+        "name": "meson",
+        "version": "1.9.1",
+        "dynamic": [
+          "license-file"
+        ],
+        "summary": "A high performance build system",
+        "description": "Meson is a cross-platform build system designed to be both as fast and as user friendly as possible. It supports many languages and compilers, including GCC, Clang, PGI, Intel, and Visual Studio. Its build definitions are written in a simple non-Turing complete DSL.\n",
+        "keywords": [
+          "meson",
+          "mesonbuild",
+          "build system",
+          "cmake"
+        ],
+        "home_page": "https://mesonbuild.com",
+        "author": "Jussi Pakkanen",
+        "author_email": "jpakkane@gmail.com",
+        "license": "Apache License, Version 2.0",
+        "license_file": [
+          "COPYING"
+        ],
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Environment :: Console",
+          "Intended Audience :: Developers",
+          "License :: OSI Approved :: Apache Software License",
+          "Natural Language :: English",
+          "Operating System :: MacOS :: MacOS X",
+          "Operating System :: Microsoft :: Windows",
+          "Operating System :: POSIX :: BSD",
+          "Operating System :: POSIX :: Linux",
+          "Programming Language :: Python :: 3 :: Only",
+          "Programming Language :: Python :: 3.7",
+          "Programming Language :: Python :: 3.8",
+          "Programming Language :: Python :: 3.9",
+          "Programming Language :: Python :: 3.10",
+          "Programming Language :: Python :: 3.11",
+          "Programming Language :: Python :: 3.12",
+          "Programming Language :: Python :: 3.13",
+          "Topic :: Software Development :: Build Tools"
+        ],
+        "requires_dist": [
+          "ninja>=1.8.2; extra == \"ninja\"",
+          "tqdm; extra == \"progress\"",
+          "mypy; extra == \"typing\"",
+          "typing_extensions; python_version < \"3.8\" and extra == \"typing\""
+        ],
+        "requires_python": ">=3.7",
+        "project_url": [
+          "Source, https://github.com/mesonbuild/meson"
+        ],
+        "provides_extra": [
+          "ninja",
+          "progress",
+          "typing"
+        ]
+      }
+    },
+    {
+      "download_info": {
+        "url": "https://files.pythonhosted.org/packages/3c/74/d02409ed2aa865e051b7edda22ad416a39d81a84980f544f8de717cab133/ninja-1.13.0-py3-none-macosx_10_9_universal2.whl",
+        "archive_info": {
+          "hashes": {
+            "sha256": "fa2a8bfc62e31b08f83127d1613d10821775a0eb334197154c4d6067b7068ff1"
+          },
+          "hash": "sha256=fa2a8bfc62e31b08f83127d1613d10821775a0eb334197154c4d6067b7068ff1"
+        }
+      },
+      "is_direct": false,
+      "is_yanked": false,
+      "requested": true,
+      "metadata": {
+        "metadata_version": "2.1",
+        "name": "ninja",
+        "version": "1.13.0",
+        "summary": "Ninja is a small build system with a focus on speed",
+        "description": "==========================\nNinja Python Distributions\n==========================\n\n`Ninja <http://www.ninja-build.org>`_ is a small build system with a focus on speed.\n\nThe latest Ninja python wheels provide `ninja 1.13.0.gd74ef.kitware.jobserver-pipe-1 <https://ninja-build.org/manual.html>`_ executable\nand `ninja_syntax.py` for generating `.ninja` files.\n\n.. image:: https://raw.githubusercontent.com/scikit-build/ninja-python-distributions/master/ninja-python-distributions-logo.png\n\nLatest Release\n--------------\n\n.. table::\n\n  +----------------------------------------------------------------------+---------------------------------------------------------------------------+\n  | Versions                                                             | Downloads                                                                 |\n  +======================================================================+===========================================================================+\n  | .. image:: https://img.shields.io/pypi/v/ninja.svg                   | .. image:: https://img.shields.io/badge/downloads-2535k%20total-green.svg |\n  |     :target: https://pypi.python.org/pypi/ninja                      |     :target: https://pypi.python.org/pypi/ninja                           |\n  +----------------------------------------------------------------------+---------------------------------------------------------------------------+\n\nBuild Status\n------------\n\n.. table::\n\n  +---------------+-------------------------------------------------------------------------------------------------------------+\n  |               | GitHub Actions (Windows, macOS, Linux)                                                                      |\n  +===============+=============================================================================================================+\n  | PyPI          | .. image:: https://github.com/scikit-build/ninja-python-distributions/actions/workflows/build.yml/badge.svg |\n  |               |     :target: https://github.com/scikit-build/ninja-python-distributions/actions/workflows/build.yml         |\n  +---------------+-------------------------------------------------------------------------------------------------------------+\n\nMaintainers\n-----------\n\n* `How to update ninja version ? <https://github.com/scikit-build/ninja-python-distributions/blob/master/docs/update_ninja_version.rst>`_\n\n* `How to make a release ? <https://github.com/scikit-build/ninja-python-distributions/blob/master/docs/make_a_release.rst>`_\n\n\nMiscellaneous\n-------------\n\n* Documentation: https://github.com/scikit-build/ninja-python-distributions#readme\n* Source code: https://github.com/scikit-build/ninja-python-distributions\n* Mailing list: https://groups.google.com/forum/#!forum/scikit-build\n\nPython Version Support\n----------------------\n\nVersions after 1.11.1.1 no longer support Python 2-3.6, and require manylinux2010+ on linux.\nVersions after 1.13 no longer support Python 3.7, and require manylinux2014+/musllinux_1_2+ on linux.\n\nLicense\n-------\n\nThis project is maintained by Jean-Christophe Fillion-Robin from Kitware Inc.\nIt is covered by the `Apache License, Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0>`_.\n\nNinja is also distributed under the `Apache License, Version 2.0 <http://www.apache.org/licenses/LICENSE-2.0>`_.\nFor more information about Ninja, visit https://ninja-build.org\n\nLogo was originally created by Libby Rose from Kitware Inc.\nIt is covered by `CC BY 4.0 <https://creativecommons.org/licenses/by/4.0/>`_.\n\n\nHistory\n-------\n\nninja-python-distributions was initially developed in November 2016 by\nJean-Christophe Fillion-Robin to facilitate the distribution of project using\n`scikit-build <http://scikit-build.readthedocs.io/>`_ and depending on CMake\nand Ninja.\n",
+        "description_content_type": "text/x-rst",
+        "keywords": [
+          "build",
+          "c++",
+          "cross-compilation",
+          "cross-platform",
+          "fortran",
+          "ninja"
+        ],
+        "author_email": "Jean-Christophe Fillion-Robin <scikit-build@googlegroups.com>, Henry Schreiner <henryfs@princeton.edu>",
+        "classifier": [
+          "Development Status :: 5 - Production/Stable",
+          "Intended Audience :: Developers",
+          "License :: OSI Approved :: Apache Software License",
+          "License :: OSI Approved :: BSD License",
+          "Operating System :: OS Independent",
+          "Programming Language :: C",
+          "Programming Language :: C++",
+          "Programming Language :: Fortran",
+          "Programming Language :: Python",
+          "Topic :: Software Development :: Build Tools",
+          "Typing :: Typed"
+        ],
+        "requires_python": ">=3.8",
+        "project_url": [
+          "Bug Tracker, https://github.com/scikit-build/ninja-python-distributions/issues",
+          "Documentation, https://github.com/scikit-build/ninja-python-distributions#readme",
+          "Download, https://github.com/ninja-build/ninja/releases",
+          "Homepage, http://ninja-build.org/",
+          "Mailing list, https://groups.google.com/forum/#!forum/scikit-build",
+          "Source Code, https://github.com/scikit-build/ninja-python-distributions"
+        ]
+      }
+    }
+  ],
+  "environment": {
+    "implementation_name": "cpython",
+    "implementation_version": "3.14.6",
+    "os_name": "posix",
+    "platform_machine": "arm64",
+    "platform_release": "27.2.0",
+    "platform_system": "Darwin",
+    "platform_version": "Darwin Kernel Version 27.2.0: Thu Oct 15 00:00:57 PDT 2026; root:xnu-13432.41.4~25/RELEASE_ARM64_T6020",
+    "python_full_version": "3.14.6",
+    "platform_python_implementation": "CPython",
+    "python_version": "3.14",
+    "sys_platform": "darwin"
+  }
+}

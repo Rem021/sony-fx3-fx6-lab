@@ -1,0 +1,38 @@
+{
+  "current": {
+    "armed_ms": 73569.60000002384,
+    "deadline_ms": 20000,
+    "due_ms": 93569.60000002384,
+    "elapsed_ms": 20002.5,
+    "nonce": "c527067f-07cb-4dbe-b5de-1adfa66bd832",
+    "state": "expired"
+  },
+  "deadline_ms": 20000,
+  "documentTimeOrigin": 1793846218360.5,
+  "events": [
+    {
+      "event": "installed",
+      "performance_ms": 13966.900000035765,
+      "script_SHA256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+      "wall_UTC": "2026-11-05T02:37:12.327Z"
+    },
+    {
+      "due_ms": 93569.60000002384,
+      "event": "armed",
+      "nonce": "c527067f-07cb-4dbe-b5de-1adfa66bd832",
+      "performance_ms": 73569.60000002384,
+      "wall_UTC": "2026-11-05T02:38:11.930Z"
+    },
+    {
+      "elapsed_ms": 20002.5,
+      "event": "end_click",
+      "nonce": "c527067f-07cb-4dbe-b5de-1adfa66bd832",
+      "performance_ms": 93572.19999998808,
+      "wall_UTC": "2026-11-05T02:38:31.932Z"
+    }
+  ],
+  "expectedLaunchId": "b4c2e9c5-356d-4581-b72d-b23ef4c3dbfd",
+  "expectedURL": "http://127.0.0.1:61254/",
+  "sealed": true,
+  "version": 1
+}

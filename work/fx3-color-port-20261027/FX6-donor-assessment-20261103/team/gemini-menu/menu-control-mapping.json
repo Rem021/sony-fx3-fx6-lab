@@ -1,0 +1,2801 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-11-03T09:18:59.263229+00:00",
+  "task_id": "task_e952654a7b34",
+  "worker_role": "gemini-menu (FX5 interaction + FX6 full color target menu/control adaptation & RAW chain review)",
+  "volume_verification": {
+    "mount_point": "/Volumes/KAFU2T",
+    "volume_name": "KAFU2T",
+    "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+    "expected_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+    "verified": true
+  },
+  "input_binaries": {
+    "appFw.so": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "size": 79015712
+    },
+    "cpapp-b.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "size": 15980568
+    },
+    "av-cam.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "size": 13348560
+    },
+    "fx6-prefix-curl.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/fx6-prefix-curl.bin",
+      "sha256": "868a69d263a5389d5451fedb4c91f007306e6f79401826e0fb06c5aecb98fb0b",
+      "size": 65536
+    }
+  },
+  "interaction_architecture": {
+    "reference_model": "Sony FX5 (ILME-FX5, Help Guide 2630 v1) + Sony FX6 Ver. 6.00/6.01 Official BIG6 Specification",
+    "fx3_702_baseline": "Sony FX3 Ver. 7.02 (ILME-FX3, appFw.so + cpapp-b.bin + av-cam.bin)",
+    "modes": [
+      {
+        "mode_id": "HOME_BIG6_SCREEN",
+        "trigger": "HOME button or Quick Menu cycling / BIG6 screen toggle (FX5 home_screen.html / FX6 6.01 BIG6)",
+        "layout": "6 perimeter pillars (top-left: FPS, middle-left: ISO/Gain/EI, bottom-left: Shutter, top-right: Iris/ND, middle-right: Scene File/Look, bottom-right: White Balance) + center status/histogram/level/audio meters",
+        "interaction_rules": [
+          "Pressing multi-selector / dial or touching one of the 6 pillars opens its dedicated inline sub-panel.",
+          "Sub-controls dynamically adapt to [Project] - [Base Setting] - [Shooting Mode] (Custom vs Flexible ISO vs Cine EI vs Cine EI Quick).",
+          "Pressing BACK cancels uncommitted value edits and returns to the 6-pillar HOME state."
+        ]
+      },
+      {
+        "mode_id": "QUICK_MENU_6TAB",
+        "trigger": "Short press MENU button (FX5 quick_menu.html)",
+        "pages": [
+          {
+            "tab_index": 1,
+            "name": "Project",
+            "editable": true,
+            "item_slots": "Items 1..5 switch category via Left/Right, Item 6 jumps to Full Menu [Project]"
+          },
+          {
+            "tab_index": 2,
+            "name": "TC/Media",
+            "editable": true,
+            "item_slots": "Timecode Preset/Run/Format, Media Remaining/Format jump, Item 6 -> Full Menu [TC/Media]"
+          },
+          {
+            "tab_index": 3,
+            "name": "Monitoring",
+            "editable": true,
+            "item_slots": "Output/Display LUT, Zebra, Peaking, Marker, De-Squeeze, Item 6 -> Full Menu [Monitoring]"
+          },
+          {
+            "tab_index": 4,
+            "name": "Audio",
+            "editable": true,
+            "item_slots": "CH1..CH4 Input/Level, Audio Output/Timing, Item 6 -> Full Menu [Audio]"
+          },
+          {
+            "tab_index": 5,
+            "name": "Info (Status/Battery/Lens)",
+            "editable": false,
+            "item_slots": "Read-only diagnostics: System Date/Sensor Temp/Hours Meter, Battery/USB-PD, Lens Model/Serial/Iris/Focal/Focus/DoF"
+          }
+        ],
+        "navigation_contract": "Items 1-5 allow Left/Right page switching; Down moves into Item 6..N value slots; bottom slot jumps directly to the corresponding Full Menu category."
+      },
+      {
+        "mode_id": "FULL_MENU_10TAB",
+        "trigger": "Long press MENU button or select [Jump to Full Menu] slot in Quick Menu (FX5 fullmenu_use.html)",
+        "categories": [
+          "Shooting",
+          "Project",
+          "Paint/Look",
+          "TC/Media",
+          "Monitoring",
+          "Audio",
+          "Clip Operations",
+          "Technical",
+          "Network",
+          "Maintenance"
+        ],
+        "display_and_commit_rules": [
+          "Displays up to 8 menu lines per viewport.",
+          "Small option sets open a radio/list popup (<= 8 visible lines); wide numeric ranges (e.g., -99..+99 in Paint/Look or WB Tint) highlight inline for direct dial adjustment without opening a popup list.",
+          "Pressing BACK before confirmation aborts the in-progress change and restores the prior value.",
+          "Action items labeled [Execute] (e.g., Media Format, Reset, APR, All File Load/Save) open a modal confirmation dialog while temporarily hiding the menu tree."
+        ]
+      }
+    ]
+  },
+  "big6_and_menu_mapping": [
+    {
+      "id": "BIG6_01_FPS",
+      "ui_zone": "BIG6 Top-Left / Full Menu [Shooting] - [FPS] & [Project] - [Rec Format]",
+      "fx5_fx6_target_controls": [
+        "Variable FPS (S&Q) On/Off",
+        "Frame Rate value (1..240 fps depending on Rec Format, e.g., 1/2/4/8/15/24/25/30/48/50/60/100/120/200/240)",
+        "System Frequency (59.94Hz / 50.00Hz / 24.00Hz)"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_movie_format::run()",
+          "model::sequence_set_ee_frame_rate_mode_by_hdmi::run()",
+          "model::sequence_set_low_frame_rate_limit::run()"
+        ],
+        "model_getters_in_appfw": [
+          "0x293019c (shooting mode / S&Q state check in sequence_set_base_picture_setting)"
+        ],
+        "cp_av_backend": "CP sensor timing / readout mode + AV codec frame rate configuration"
+      },
+      "adaptation_status": "ADAPTABLE_WITH_STEP_CONSTRAINT",
+      "evidence_tier": "STATIC_BINARY_AND_OFFICIAL_DOC",
+      "gaps_and_constraints": [
+        "FX3 7.02 supports S&Q frame rates in discrete preset steps (1..240fps in FHD, 1..120fps in 4K) rather than FX6's 1fps continuous stepping across all sensor modes.",
+        "Switching System Frequency or S&Q vs Normal mode requires a mode/sensor reconfiguration transaction, not a live frame-accurate mid-record change."
+      ]
+    },
+    {
+      "id": "BIG6_02_ISO_GAIN_EI",
+      "ui_zone": "BIG6 Middle-Left / Full Menu [Shooting] - [ISO/Gain/EI]",
+      "fx5_fx6_target_controls": [
+        "Custom Mode: ISO or Gain(dB) value + Base Sensitivity (Low / High) + AGC On/Off + AGC Limit",
+        "Flexible ISO Mode: ISO value + Base ISO (Low 800 / High 12800) + AGC On/Off",
+        "Cine EI Mode: Exposure Index (EI +dB / ISO equivalent) + Base ISO (Low 800 / High 12800)",
+        "Cine EI Quick Mode: Exposure Index (EI) with automatic Base ISO switching across Low/High boundary"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_iso_speed_rate::run() (string @ 0x39520f8)",
+          "model::sequence_set_iso_auto_min_shut_speed::run() (string @ 0x3951fc4)",
+          "model::sequence_set_exposure_compensation::run()",
+          "model::sequence_set_base_picture_setting::run() (reads setting_log_shooting @ 0x2935944: 0=Off, 1=Cine EI, 2=Cine EI Quick, 3=Flexible ISO)"
+        ],
+        "cp_av_backend": "CP analog/digital sensor gain + Cine EI metadata/monitor-LUT gain offset"
+      },
+      "adaptation_status": "NATIVE_BACKEND_PRESENT",
+      "evidence_tier": "STATIC_BINARY_VERIFIED",
+      "gaps_and_constraints": [
+        "FX3 7.02 natively implements all 4 shooting modes (Custom/Off=0, Cine EI=1, Cine EI Quick=2, Flexible ISO=3) and dual Base ISO (800 / 12800 in S-Log3).",
+        "In Custom mode, FX5/FX6 allows explicit manual toggle between 'Low' and 'High' Base Sensitivity; on FX3 Custom/PP modes, the dual-base switchover occurs at the native ISO threshold rather than a standalone [Base Sensitivity: Low/High] toggle."
+      ]
+    },
+    {
+      "id": "BIG6_03_SHUTTER",
+      "ui_zone": "BIG6 Bottom-Left / Full Menu [Shooting] - [Shutter]",
+      "fx5_fx6_target_controls": [
+        "Shutter Mode: Speed vs Angle",
+        "Step vs Continuous (ECS / Extended Clear Scan)",
+        "Auto Shutter On/Off",
+        "FX6 Ver. 6.00/6.01 addition: 1.2F (1/50) shutter speed when shooting at 59.94P"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_shutter_type::run() (string @ 0x3955e14)",
+          "model::sequence_set_shutter_speed_am_switching::run() (string @ 0x3955d1c)",
+          "model::sequence_set_shutter_awblock::run() (string @ 0x3955cac)",
+          "model::sequence_set_front_eshutter_mode::run()",
+          "model::sequence_set_hybrid_shutter_mode::run()"
+        ],
+        "cp_av_backend": "CP exposure timing & anti-flicker variable shutter"
+      },
+      "adaptation_status": "NATIVE_BACKEND_PRESENT",
+      "evidence_tier": "STATIC_BINARY_VERIFIED",
+      "gaps_and_constraints": [
+        "FX3 7.02 already supports Shutter Angle (introduced in FX3 v6.00+) and Variable Shutter (anti-flicker fine tuning).",
+        "FX5's dedicated ECS frequency readout (Hz) and FX6 6.01's '1.2F (1/50)' label at 59.94P can be mapped at the UI/controller presentation layer onto FX3's existing 1/50 shutter speed / variable shutter ticks."
+      ]
+    },
+    {
+      "id": "BIG6_04_IRIS_AND_ND",
+      "ui_zone": "BIG6 Top-Right / Full Menu [Shooting] - [Iris] & [ND Filter]",
+      "fx5_fx6_target_controls": [
+        "Iris F-number manual control",
+        "Auto Iris On/Off + Push Auto Iris",
+        "FX6 BIG6 ND Filter: Clear / Preset (1/4, 1/16, 1/64) / Variable (1/4..1/128) / Auto ND"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_iris_dial::run() (string @ 0x3951dd4)",
+          "model::sequence_set_iris_drive::run() (string @ 0x3951e34)",
+          "model::sequence_set_iris_drive_for_high_resolution::run() (string @ 0x3951ea4)",
+          "model::sequence_set_aperture_am_switching::run() (string @ 0x3947744)"
+        ],
+        "cp_av_backend": "E-mount lens iris actuator controller via CP"
+      },
+      "adaptation_status": "IRIS_NATIVE_ND_HARDWARE_ABSENT",
+      "evidence_tier": "STATIC_BINARY_AND_HARDWARE_FACT",
+      "gaps_and_constraints": [
+        "Iris (F-stop, Auto/Manual switch, High-Resolution iris drive) has full native backend support on FX3 7.02.",
+        "HARDWARE ABSENT: Classic FX3 has NO internal optical or electronic variable ND filter hardware (`sequence_set_*` in appFw.so has zero ND filter actuator sequences). On FX3, the Top-Right BIG6 pillar must follow FX5's layout (`Iris` + `Auto Iris` only) or display `ND: N/A (External)` without pretending to drive an internal ND cell."
+      ]
+    },
+    {
+      "id": "BIG6_05_LOOK_SCENE_FILE",
+      "ui_zone": "BIG6 Middle-Right / Full Menu [Paint/Look] - [Base Look] / [Scene File] & [Shooting] - [LUT On/Off]",
+      "fx5_fx6_target_controls": [
+        "Custom Mode: Scene File selection (S-Cinetone, Standard, Still, ITU709, 709tone, User1..UserN) + Paint parameters (Black, Knee, Color Matrix, Multi Matrix, Detail, Skin Tone Detail)",
+        "Log Mode (Cine EI / Cine EI Quick / Flexible ISO): Base Look Select (S-Log3, s709, 709(800%), S-Cinetone, User1..16, + ACEScct/Rec.709 target)",
+        "Per-stream LUT On/Off (FX5 home_screen.html / FX6 6.01 BIG6): Main/Sub Rec vs HDMI vs VF/LCD Monitor LUT + Edit Look jump"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_base_picture_setting::run() @ 0x2d78050 -> 0x2e3172c -> 0x2e26fcc (wire 0x4151)",
+          "model::sequence_set_gamma_disp_assist::run() -> infra_wrapper_bb::detail::vdf_disp_set_monitor_lut @ 0x2debdb0 (wire 200d 0161 000a 8001 on 0x92840747)",
+          "model::sequence_set_disp_lut::run() (string @ 0x394be80)",
+          "model::sequence_set_embedded_lut::run() (string @ 0x394cc38)",
+          "model::sequence_set_lut_data::run() (string @ 0x39526f8)",
+          "model::sequence_set_picture_profile::run() (string @ 0x3953e80)"
+        ],
+        "cp_av_backend": "CP 0x4151 setter @ file+0x689f9c (VA 0x791f9d) -> 0x10a8de0+{0xba0..0xbb0} -> GetVfxMlutLookname @ file+0x3266ec -> SetVfxMlutParam @ file+0x3263fc -> VFX SDK @ VA 0xa4f8ba -> mlut_make_lli_table @ VA 0x470f78 -> 70 DMA descriptors @ 0x2025570 -> ISP/MLUT hardware window 0xf4009000 + (combo << 20)"
+      },
+      "adaptation_status": "PARTIAL_NATIVE_REQUIRES_AP_CP_PATCH_AND_ISP_STAGE_GAP",
+      "evidence_tier": "STATIC_AND_UNICORN_EMULATED",
+      "gaps_and_constraints": [
+        "1. Stock FX3 AP->CP 0x4151 domain only emits base_look in {0..11, 255}, so CP's dormant entry 22 (`MLUT_LOOKNAME_SL3SG3_TO_ACESREC709` at file+0xbf8ffc, target 0x02015794) is unreachable without the verified 6-instruction AP+CP bridge (`base_look=12`, CP gate `file+0x1cb8a8` `0c29`, selector branch to ID 22).",
+        "2. Monitor LUT (`0x2debdb0` BB/VDF `0x92840747`) and Main/Sub Base Picture (`0x2e26fcc` CP `0x90030001` `0x4151`) are already separate IPC channels on FX3, enabling FX5/FX6's per-stream LUT toggle UI, EXCEPT that in Log shooting modes FX3 records S-Log3 + embedded LUT metadata (`sequence_set_embedded_lut`) rather than baking arbitrary 3D LUTs into RAW/Log streams unless switched to Custom/PPLUT mode.",
+        "3. Full FX6 Paint parameters (Multi Matrix 16-axis phase/saturation, Skin Tone Detail 3-channel gate, cine knee/shoulder hardware curves) go beyond FX3 Picture Profile parameters and require CP ISP table evaluation (see RAW pipeline review)."
+      ]
+    },
+    {
+      "id": "BIG6_06_WHITE_BALANCE",
+      "ui_zone": "BIG6 Bottom-Right / Full Menu [Shooting] - [White Balance] & [Paint/Look] - [White]",
+      "fx5_fx6_target_controls": [
+        "White Balance Mode: Memory A..H (8 memories on FX5/FX6), Preset (5600K/3200K/4300K), ATW, AWB",
+        "Color Temp (2000K..15000K) with [Coarse] (100K step) and [Fine] (1K step) sub-modes",
+        "Tint (-99..+99)",
+        "One-push AWB Execute"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_wb_mode::run() @ 0x2d9f2c8 -> 0x2dd5b14 -> 0x2e3c3b8 -> 0x2e18e3c (wire 0x4006 PID_SET_WB_MODE)",
+          "model::sequence_set_wb_change_speed::run() (string @ 0x3957844, Shockless WB)",
+          "model::sequence_set_awblock::run()",
+          "model::sequence_set_custom_wb_save::run()",
+          "model::sequence_set_cwb_setting_display::run()",
+          "model::sequence_set_cwb_shooting_position::run()"
+        ],
+        "cp_av_backend": "CP 0x4006 setter @ file+0x68950c (VA 0x79150d) writes 0x10a8de0 + {0x9f4..0xa02} and logs 'FW: SET_WB_MODE[%d: %d: %d: %d: %d]' (@ VA 0xdb2fde)"
+      },
+      "adaptation_status": "PARTIAL_NATIVE_WITH_WIRE_QUANTIZATION_CONSTRAINT",
+      "evidence_tier": "STATIC_AND_UNICORN_EMULATED",
+      "gaps_and_constraints": [
+        "1. PROVEN WIRE QUANTIZATION: `appFw.so` `0x2e18e98` (`mov w3, #0x64; sdiv w26, w26, w3; strb w26, [x19, #0x10]`) divides Kelvin Color Temp by 100 and transmits a single byte at `+0x10` (consumed by CP `0x79153c` into `0x10a8de0+0xa00`). Native wire field `+0x10` only carries 100K [Coarse] steps (2500K..9900K).",
+        "2. However, wire fields `+0x9..+0xf` carry 2-axis fine shifts divided by 1000 with 16-bit remainders (`+0xc`, `+0xe` -> `0x10a8de0+0x9fa`, `+0x9fc`). To support FX5/FX6 [Fine] 1K Color Temp and Tint (-99..+99) on FX3 without breaking CP ABI, AP must decompose `(Temp_K, Tint)` into `(nearest_100K_byte, fine_AB_shift_mired, fine_GM_shift)` or patch CP's `0x10a8de0+0x9f4..0xa02` WB gain solver.",
+        "3. FX5/FX6 has 8 WB Memories (A..H); FX3 native CP wire table (`0x397543c`) has 3 Custom WB slots (`0xa, 0xb, 0xc`). Memories A..H can be persisted in AP model/backup storage and mapped through the active Kelvin+AB/GM payload."
+      ]
+    },
+    {
+      "id": "QUICK_AND_FULL_PROJECT",
+      "ui_zone": "Quick Menu Page 1 [Project] / Full Menu [Project]",
+      "fx5_fx6_target_controls": [
+        "[Base Setting] - [Shooting Mode] (Custom / Flexible ISO / Cine EI / Cine EI Quick)",
+        "[Base Setting] - [Target Display] (Rec.709 / HLG / S-Log3)",
+        "[Rec Format] - Frequency / Codec / Video Format (XAVC-I, XAVC-L, XAVC-S/HS)",
+        "[Cine EI / Flex.ISO Set.] - S-Gamut3.Cine/S-Log3 vs S-Gamut3/S-Log3, Input Color Space",
+        "[Simul/Relay Rec] & [Proxy Rec]",
+        "[All File] - Load/Save CAMID + Scene/Project config to SD"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_base_picture_setting::run() (Shooting Mode, Input Gamut, Color Gamut, Target Display)",
+          "model::sequence_set_movie_format::run()",
+          "model::sequence_set_proxy_setting::run()",
+          "model::sequence_set_double_slot_settings::run()"
+        ],
+        "cp_av_backend": "CP 0x4151 + AV recording pipeline & dual-slot media controller"
+      },
+      "adaptation_status": "NATIVE_BACKEND_PRESENT",
+      "evidence_tier": "STATIC_BINARY_VERIFIED",
+      "gaps_and_constraints": [
+        "FX3 7.02 supports XAVC S-I (All-Intra 4K 10-bit 4:2:2), XAVC S, XAVC HS, Proxy, Simul/Relay dual-slot recording, and Camera Settings Save/Load (CAMSET).",
+        "FX6 MXF wrapper (XAVC-I/XAVC-L in `.MXF`) vs FX3 MP4 wrapper: FX3 AV firmware (`av-cam.bin`) records MP4 containers; do not claim native MXF container output without AV muxer changes."
+      ]
+    },
+    {
+      "id": "QUICK_AND_FULL_TC_MEDIA",
+      "ui_zone": "Quick Menu Page 2 [TC/Media] / Full Menu [TC/Media]",
+      "fx5_fx6_target_controls": [
+        "[Timecode] - Mode (Preset / Regen), Run (Rec Run / Free Run), DF/NDF, Preset value, Reset",
+        "[Users Bit] - Mode & Preset",
+        "[TC Synchronization] - TC In / Out (FX6 BNC TC port)",
+        "[Remaining] - Media A / Media B remaining time & capacity",
+        "[Format Media] - Media A / Media B [Execute] (Full / Quick)",
+        "[Clip Naming] - Camera ID, Reel#, Position, Title Prefix"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_tc_ub_display_setting::run() (string @ 0x390ae63 area)",
+          "model::sequence_set_double_slot_settings::run()"
+        ],
+        "cp_av_backend": "AP/AV timecode generator, USB/Multi-terminal TC sync, CFexpress Type A / SDXC slotA/slotB manager"
+      },
+      "adaptation_status": "NATIVE_EXCEPT_BNC_TC_OUT",
+      "evidence_tier": "STATIC_BINARY_AND_HARDWARE_FACT",
+      "gaps_and_constraints": [
+        "Timecode Preset/Regen/RecRun/FreeRun/DF/NDF, Users Bit, Clip Naming, and Slot A/B Format [Execute] are natively supported in FX3 7.02.",
+        "HARDWARE DIFFERENCE: FX6 has a dedicated BNC Timecode In/Out switch; FX3 7.02 supports Timecode In (via Multi/Micro USB terminal adapter) but has no dedicated BNC TC Out jack."
+      ]
+    },
+    {
+      "id": "QUICK_AND_FULL_MONITORING",
+      "ui_zone": "Quick Menu Page 3 [Monitoring] / Full Menu [Monitoring]",
+      "fx5_fx6_target_controls": [
+        "[Output On/Off] - HDMI / SDI / VF / LCD",
+        "[Output Format] - Resolution & 24p/PsF/Progressive",
+        "[Output Display] - Clean HDMI vs Info OSD overlay",
+        "[De-Squeeze] - Off / 1.3x / 2.0x",
+        "[Zebra] - Zebra 1 / Zebra 2 / Level / Aperture",
+        "[Peaking] & [Marker] (Center, Aspect, Safety Zone, Guide Frame)"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_zebra::run()",
+          "model::sequence_set_peaking::run()",
+          "model::sequence_set_de_squeeze_disp::run()",
+          "model::sequence_set_ee_frame_rate_mode_by_hdmi::run()",
+          "model::sequence_set_gamma_disp_assist::run() (0x2debdb0)"
+        ],
+        "cp_av_backend": "BB/VDF display engine (0x92840747) + HDMI transmitter (16-bit RAW output or YCbCr video)"
+      },
+      "adaptation_status": "HDMI_LCD_NATIVE_SDI_VF_HARDWARE_ABSENT",
+      "evidence_tier": "STATIC_BINARY_AND_HARDWARE_FACT",
+      "gaps_and_constraints": [
+        "Zebra, Peaking, Markers, Anamorphic De-Squeeze (1.3x/2.0x), Monitor LUT, and HDMI output (including 16-bit 4.2K RAW output over HDMI) are native on FX3 7.02.",
+        "HARDWARE ABSENT: FX3 has NO 12G-SDI port and NO dedicated EVF loupe connector; SDI and VF output toggles must be omitted or marked N/A."
+      ]
+    },
+    {
+      "id": "QUICK_AND_FULL_AUDIO_AND_INFO",
+      "ui_zone": "Quick Menu Page 4 [Audio] & Page 5 [Info] / Full Menu [Audio] & [Maintenance]",
+      "fx5_fx6_target_controls": [
+        "[Audio Input] - CH1..CH4 Input Select (Handle XLR/TRS, Shoe, Internal Mic, Stereo Mini), Level, Limiter, Low Cut",
+        "[Audio Output] - Headphone CH1/2, CH3/4, Mono/Stereo, Timing (Live vs Lip Sync)",
+        "[Info Page] - System (Date/Time, Sensor Temp, Hours Meter), Battery/USB-PD, Lens (Model, Serial, Iris, Focal Length, Focus Distance, DoF)"
+      ],
+      "fx3_702_native_model_and_consumers": {
+        "ap_sequences": [
+          "model::sequence_set_audio_recording::run()",
+          "model::sequence_set_audio_record_level::run()",
+          "model::sequence_set_audio_recording_level_display::run()",
+          "model::sequence_set_audio_output::run()",
+          "model::sequence_set_audio_output_timing::run()",
+          "model::sequence_set_audio_signals::run()",
+          "model::sequence_set_external_mic_audio_format::run()"
+        ],
+        "cp_av_backend": "MI Shoe 4-channel digital audio interface (XLR-H1 handle) + internal stereo mic + 3.5mm mic/headphone + E-mount lens metadata"
+      },
+      "adaptation_status": "NATIVE_BACKEND_PRESENT_WITH_TELEMETRY_GAPS",
+      "evidence_tier": "STATIC_BINARY_VERIFIED",
+      "gaps_and_constraints": [
+        "FX3 7.02 supports 4-channel 24-bit audio recording via the XLR-H1 MI-shoe handle (`sequence_set_external_mic_audio_format`) and Audio Output Timing (`sequence_set_audio_output_timing`).",
+        "On the Quick Menu [Info] tab, Battery %, Lens Model/Focal Length/Focus Distance/Iris are available in AP model state, whereas FX5's numeric Sensor Temperature readout (deg C) and Hours Meter require verifying whether CP thermal/hour counters are exposed to AP UI."
+      ]
+    }
+  ],
+  "independent_raw_and_color_pipeline_review": {
+    "core_conclusion": "A 3D LUT (including the 33^3 MLUT table at 0x02015794 / 0xf4009000) is ONLY Stage 4 of a 6-stage imaging pipeline. Porting FX6's full RAW/color behavior to FX3 7.02 requires separating what runs on AP/CP ARM cores from what runs inside the BIONZ XR hardware ISP blocks and CP/AV RTOS tasks.",
+    "pipeline_stages": [
+      {
+        "stage_index": 1,
+        "stage_name": "Sensor Readout, Dual Base ISO Gain, OB Clamp, Defect Pixel & Lens Shading Correction",
+        "execution_domain": "Hardware ISP Front-End (SIE/IFE) configured by CP RTOS (`cpapp-b.bin`)",
+        "fx3_vs_fx6_evidence": "Both FX3 and FX6 use a 10.2MP full-frame back-illuminated Exmor R CMOS sensor family with 800 / 12800 dual base ISO in S-Log3. CP configures analog/conversion gain and front-end OB/shading registers before demosaic. HDMI RAW output taps linear 16-bit sensor data compressed/packed for Atomos/external recorders.",
+        "can_lut_replace_this": false,
+        "porting_verdict": "Hardware ISP front-end is controlled by CP sensor mode tables; cannot be altered by a post-demosaic 3D LUT."
+      },
+      {
+        "stage_index": 2,
+        "stage_name": "Bayer Demosaic & Spatial/Temporal Noise Reduction (2D/3D NR)",
+        "execution_domain": "Hardware ISP Core configured by CP RTOS (`cpapp-b.bin`)",
+        "fx3_vs_fx6_evidence": "FX6 Paint/Look exposes explicit Noise Suppression / Detail / Aperture / Crispening / Skin Tone Detail controls. In FX3 7.02, CP configures ISP NR/Detail profiles per shooting mode and ISO index, with limited Picture Profile Detail exposure.",
+        "can_lut_replace_this": false,
+        "porting_verdict": "Requires CP ISP parameter table mapping (`cpapp-b.bin`) if FX6 Paint [Detail / Noise Suppression / Skin Detail] controls are to have real pixel effect."
+      },
+      {
+        "stage_index": 3,
+        "stage_name": "White Balance Gains, 3x3 Color Correction Matrix (CCM), Pre-Gamma / Log Curve, Knee & Highlight Roll-off",
+        "execution_domain": "CP RTOS (`cpapp-b.bin` WB solver @ `0x10a8de0+0x9f4..0xa02`) -> Hardware ISP Color Matrix & Tone Curve Engine",
+        "fx3_vs_fx6_evidence": "AP sends `0x4006` (`PID_SET_WB_MODE`) and `0x4151` (`BasePictureSetting`) to CP `0x10a8de0`. CP computes R/G/B white balance gains and loads the camera-native-to-working-gamut (S-Gamut3 / S-Gamut3.Cine) matrix and S-Log3 / 709 / HLG transfer curve into ISP hardware registers BEFORE the MLUT block.",
+        "can_lut_replace_this": false,
+        "porting_verdict": "Critical upstream color stage! If WB gains (1K fine vs 100K coarse), gamut matrix (S-Gamut3 vs S-Gamut3.Cine), or highlight knee/roll-off differ upstream, feeding the wrong pre-curve signal into an FX6 3D LUT produces incorrect highlight compression and color skew."
+      },
+      {
+        "stage_index": 4,
+        "stage_name": "MLUT Block (1D Pre-Shaper + 33x33x33 3D LUT + Post-Matrix)",
+        "execution_domain": "CP VFX SDK (`VA 0xa4f8ba`) + DMA LLI Builder (`mlut_make_lli_table @ VA 0x470f78`) -> Hardware ISP MLUT Window (`0xf4009000 + (combo << 20)`)",
+        "fx3_vs_fx6_evidence": "Statically and CPU-emulation proven: `GetVfxMlutLookname` (`file+0x3266ec`) selects look ID 0..22 from registry `file+0xbf8ef4..0xbf9004` (including dormant ID 22 `MLUT_LOOKNAME_SL3SG3_TO_ACESREC709` at `0x02015794`, 70 descriptors, 149,888 bytes = 160B header + 3x1984B 1D shaper + 143,748B 33^3 3D LUT + 36B matrix). `mlut_make_lli_table` builds 70x16B DMA descriptors at `0x2025570` for up to 5 hardware combo slots (`combo 0..4`).",
+        "can_lut_replace_this": true,
+        "porting_verdict": "Fully mapped and CPU-emulated in `cpapp-b.bin`. Both built-in CP looks (including dormant ID 22) and User 3D LUTs (`0x0229cc00` / `0x02370000`) flow through this exact 70-descriptor DMA engine."
+      },
+      {
+        "stage_index": 5,
+        "stage_name": "Output Pipe Split: Main/Sub Codec Recording vs Monitoring (HDMI / LCD / OSD)",
+        "execution_domain": "CP Multi-Combo MLUT (`combo 0..4`) + BB/VDF Display Engine (`0x92840747` in `appFw.so` / `av-cam.bin`)",
+        "fx3_vs_fx6_evidence": "Proven two-path split: (a) CP `0x4151` controls the imaging/recording base picture and CP MLUT combos; (b) AP `vdf_disp_set_monitor_lut` (`0x2debdb0`, msg `200d 0161 000a 8001`) and `ColorGamut` (`0x2dee4ac`, msg `200d 0167 000a 8001`) configure the BB/VDF display assist pipeline (`0x92840747`).",
+        "can_lut_replace_this": false,
+        "porting_verdict": "FX5/FX6 BIG6 Look sub-panel separates [Main/Sub Rec LUT] from [HDMI / VF / LCD Monitor LUT]. Adapting this to FX3 requires coordinating `0x4151` (`sequence_set_base_picture_setting`), `sequence_set_embedded_lut`, and `0x2debdb0` (`vdf_disp_set_monitor_lut`) so Monitor Assist does not unintentionally bake into Log recording unless requested."
+      },
+      {
+        "stage_index": 6,
+        "stage_name": "UI State Machine, Persistence & Metadata (MXF/MP4 Acquisition Metadata)",
+        "execution_domain": "AP Linux (`appFw.so` `model::*`, `0x821c538` state block) + AV Muxer (`av-cam.bin`)",
+        "fx3_vs_fx6_evidence": "AP stores menu settings in `0x821c538 + offset` and dispatches `model::sequence_set_*::run()`. Notice that FX3 `sequence_set_base_picture_setting` constructor (`0x2c47cfc`) re-reads `0x821c538` getters every time any related setting changes.",
+        "can_lut_replace_this": false,
+        "porting_verdict": "Any custom BIG6/FX5 menu state (such as `base_look=12` for ID 22 or WB Memories A..H) must be persisted in AP model state so subsequent `sequence_set_base_picture_setting` runs do not clobber it back to default."
+      }
+    ],
+    "minimal_offline_replayable_experiment": {
+      "name": "CP Stage-3 + Stage-4 Coupled Offline Replay Harness (WB/Gamut + MLUT 70-Descriptor Reference Pipeline)",
+      "goal": "Without starting a VM or touching camera hardware, replay the exact coupled Stage-3 (WB `0x4006` + BasePicture `0x4151` gamut/log state in `0x10a8de0`) and Stage-4 (CP MLUT `0x02015794` / ID 17..22 160B header + 3x1984B 1D pre-shaper + 33^3 3D LUT + 3x3 post-matrix) numerical chain on synthetic 16-bit linear Exmor R ramps and Macbeth patches.",
+      "required_inputs": [
+        "Read-only `appFw.so` (SHA256 545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f)",
+        "Read-only `cpapp-b.bin` (SHA256 c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba)",
+        "Extracted CP DRAM MLUT blobs or donor FX6 MLUT blobs (once donor worker extracts FX6 partition)",
+        "Synthetic 16-bit linear EXR/raw ramp + 24-patch ColorChecker + +6/-6 stop exposure sweep"
+      ],
+      "steps": [
+        "1. Run Unicorn harness from `appFw.so` `0x2e3172c` (`0x4151`) and `0x2e3c3b8` (`0x4006`) into `cpapp-b.bin` `0x791f9d` and `0x79150d` to populate `0x10a8de0` state.",
+        "2. Run Unicorn harness through `cpapp-b.bin` `0x8d1ad6 -> GetVfxMlutLookname (0x3266ec) -> SetVfxMlutParam (0x3263fc) -> VFX SDK (0xa4f8ba) -> mlut_make_lli_table (0x470f78)` to capture the exact 70 DMA descriptors at `0x2025570` across `combo 0..4`.",
+        "3. Decode the 149,888-byte MLUT payload (3x 1D pre-shaper LUTs + 33x33x33 3D tetrahedral/trilinear lattice + 3x3 post-matrix) alongside the upstream Stage-3 WB/Gamut matrix and compare FX3 ID 17..22 against FX6 donor tables.",
+        "4. Measure delta-E (CIE2000) and highlight roll-off slope differences between (a) LUT-only application and (b) full Stage-3 + Stage-4 chain."
+      ],
+      "what_it_proves": "Proves byte-for-byte AP->CP control routing, multi-combo DMA descriptor generation, and isolates how much of FX6's look comes from the Stage-4 MLUT payload vs Stage-3 upstream WB/Gamut/Tone-Curve tables."
+    }
+  },
+  "static_and_emulation_chains": {
+    "chain_1_look_base_picture_setting_0x4151": {
+      "ap_sequence_ctor": {
+        "symbol": "model::sequence_set_base_picture_setting::sequence_set_base_picture_setting",
+        "file": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+        "va_range": "0x2c47cfc..0x2c47e88",
+        "vtable_va": "0x46dd608",
+        "got_slot": "0x47afd48",
+        "model_state_base_va": "0x821c538",
+        "populated_object_offsets": {
+          "+0x1bc": "setting_select_lut (via 0x2b49520)",
+          "+0x1c0": "is_exist_user_lut (via 0x2b49520)",
+          "+0x1c4": "setting_log_shooting (0=Off, 1=Cine EI, 2=Cine EI Quick, 3=Flexible ISO)",
+          "+0x1c8": "setting_input_signal (0..7)",
+          "+0x1cc": "setting_picture_profile_for_709tone (bool)",
+          "+0x1d0": "setting_gamut (1=S-Gamut3, 2=S-Gamut3.Cine)",
+          "+0x1d4": "setting_picture_profile (0x3b=S-Cinetone, etc.)",
+          "+0x1d8": "general_shooting_mode",
+          "+0x1dc": "color_gamut_target_display"
+        },
+        "head_instructions": [
+          {
+            "va": "0x2c47cfc",
+            "bytes": "fd7bbaa9",
+            "asm": "stp x29, x30, [sp, #-0x60]!"
+          },
+          {
+            "va": "0x2c47d00",
+            "bytes": "fd030091",
+            "asm": "mov x29, sp"
+          },
+          {
+            "va": "0x2c47d04",
+            "bytes": "f35301a9",
+            "asm": "stp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2c47d08",
+            "bytes": "f30300aa",
+            "asm": "mov x19, x0"
+          },
+          {
+            "va": "0x2c47d0c",
+            "bytes": "f55b02a9",
+            "asm": "stp x21, x22, [sp, #0x20]"
+          },
+          {
+            "va": "0x2c47d10",
+            "bytes": "b4630191",
+            "asm": "add x20, x29, #0x58"
+          },
+          {
+            "va": "0x2c47d14",
+            "bytes": "f76303a9",
+            "asm": "stp x23, x24, [sp, #0x30]"
+          },
+          {
+            "va": "0x2c47d18",
+            "bytes": "f92300f9",
+            "asm": "str x25, [sp, #0x40]"
+          },
+          {
+            "va": "0x2c47d1c",
+            "bytes": "d962f097",
+            "asm": "bl #0x2860880"
+          },
+          {
+            "va": "0x2c47d20",
+            "bytes": "40db0090",
+            "asm": "adrp x0, #0x47af000"
+          },
+          {
+            "va": "0x2c47d24",
+            "bytes": "00a446f9",
+            "asm": "ldr x0, [x0, #0xd48]"
+          },
+          {
+            "va": "0x2c47d28",
+            "bytes": "00400091",
+            "asm": "add x0, x0, #0x10"
+          },
+          {
+            "va": "0x2c47d2c",
+            "bytes": "600200f9",
+            "asm": "str x0, [x19]"
+          },
+          {
+            "va": "0x2c47d30",
+            "bytes": "f3880794",
+            "asm": "bl #0x2e2a0fc"
+          },
+          {
+            "va": "0x2c47d34",
+            "bytes": "60c201b9",
+            "asm": "str w0, [x19, #0x1c0]"
+          },
+          {
+            "va": "0x2c47d38",
+            "bytes": "e00314aa",
+            "asm": "mov x0, x20"
+          },
+          {
+            "va": "0x2c47d3c",
+            "bytes": "5b68f997",
+            "asm": "bl #0x2aa1ea8"
+          },
+          {
+            "va": "0x2c47d40",
+            "bytes": "5511f497",
+            "asm": "bl #0x294c294"
+          },
+          {
+            "va": "0x2c47d44",
+            "bytes": "000040b9",
+            "asm": "ldr w0, [x0]"
+          },
+          {
+            "va": "0x2c47d48",
+            "bytes": "60da01b9",
+            "asm": "str w0, [x19, #0x1d8]"
+          },
+          {
+            "va": "0x2c47d4c",
+            "bytes": "69bef397",
+            "asm": "bl #0x29376f0"
+          },
+          {
+            "va": "0x2c47d50",
+            "bytes": "000040b9",
+            "asm": "ldr w0, [x0]"
+          }
+        ]
+      },
+      "ap_sequence_run": {
+        "symbol": "model::sequence_set_base_picture_setting::run()",
+        "pretty_func_string_va": "0x39486e8",
+        "va_range": "0x2d78050..0x2d7819c",
+        "calls": [
+          "0x2dd8354 -> 0x2e3172c (Set Base Picture Setting wire 0x4151)",
+          "0x2dd03d4 -> 0x2dee4ac (Set ColorGamut BB/VDF wire 200d 0167 000a 8001 on 0x92840747)"
+        ],
+        "instructions": [
+          {
+            "va": "0x2d78050",
+            "bytes": "fd7bb8a9",
+            "asm": "stp x29, x30, [sp, #-0x80]!"
+          },
+          {
+            "va": "0x2d78054",
+            "bytes": "a3018052",
+            "asm": "mov w3, #0xd"
+          },
+          {
+            "va": "0x2d78058",
+            "bytes": "fd030091",
+            "asm": "mov x29, sp"
+          },
+          {
+            "va": "0x2d7805c",
+            "bytes": "f35301a9",
+            "asm": "stp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2d78060",
+            "bytes": "145100f0",
+            "asm": "adrp x20, #0x379b000"
+          },
+          {
+            "va": "0x2d78064",
+            "bytes": "f92300f9",
+            "asm": "str x25, [sp, #0x40]"
+          },
+          {
+            "va": "0x2d78068",
+            "bytes": "995e0090",
+            "asm": "adrp x25, #0x3948000"
+          },
+          {
+            "va": "0x2d7806c",
+            "bytes": "f30300aa",
+            "asm": "mov x19, x0"
+          },
+          {
+            "va": "0x2d78070",
+            "bytes": "f55b02a9",
+            "asm": "stp x21, x22, [sp, #0x20]"
+          },
+          {
+            "va": "0x2d78074",
+            "bytes": "005100b0",
+            "asm": "adrp x0, #0x3799000"
+          },
+          {
+            "va": "0x2d78078",
+            "bytes": "951a0591",
+            "asm": "add x21, x20, #0x146"
+          },
+          {
+            "va": "0x2d7807c",
+            "bytes": "36a31b91",
+            "asm": "add x22, x25, #0x6e8"
+          },
+          {
+            "va": "0x2d78080",
+            "bytes": "e10315aa",
+            "asm": "mov x1, x21"
+          },
+          {
+            "va": "0x2d78084",
+            "bytes": "003c2091",
+            "asm": "add x0, x0, #0x80f"
+          },
+          {
+            "va": "0x2d78088",
+            "bytes": "e20316aa",
+            "asm": "mov x2, x22"
+          },
+          {
+            "va": "0x2d7808c",
+            "bytes": "f76303a9",
+            "asm": "stp x23, x24, [sp, #0x30]"
+          },
+          {
+            "va": "0x2d78090",
+            "bytes": "b7630191",
+            "asm": "add x23, x29, #0x58"
+          },
+          {
+            "va": "0x2d78094",
+            "bytes": "b8830191",
+            "asm": "add x24, x29, #0x60"
+          },
+          {
+            "va": "0x2d78098",
+            "bytes": "b7df0794",
+            "asm": "bl #0x2f6ff74"
+          },
+          {
+            "va": "0x2d7809c",
+            "bytes": "60d641b9",
+            "asm": "ldr w0, [x19, #0x1d4]"
+          },
+          {
+            "va": "0x2d780a0",
+            "bytes": "e10317aa",
+            "asm": "mov x1, x23"
+          },
+          {
+            "va": "0x2d780a4",
+            "bytes": "a06300b9",
+            "asm": "str w0, [x29, #0x60]"
+          },
+          {
+            "va": "0x2d780a8",
+            "bytes": "60d241b9",
+            "asm": "ldr w0, [x19, #0x1d0]"
+          },
+          {
+            "va": "0x2d780ac",
+            "bytes": "a06700b9",
+            "asm": "str w0, [x29, #0x64]"
+          },
+          {
+            "va": "0x2d780b0",
+            "bytes": "60c241b9",
+            "asm": "ldr w0, [x19, #0x1c0]"
+          },
+          {
+            "va": "0x2d780b4",
+            "bytes": "a06b00b9",
+            "asm": "str w0, [x29, #0x68]"
+          },
+          {
+            "va": "0x2d780b8",
+            "bytes": "60be41b9",
+            "asm": "ldr w0, [x19, #0x1bc]"
+          },
+          {
+            "va": "0x2d780bc",
+            "bytes": "a06f00b9",
+            "asm": "str w0, [x29, #0x6c]"
+          },
+          {
+            "va": "0x2d780c0",
+            "bytes": "60c641b9",
+            "asm": "ldr w0, [x19, #0x1c4]"
+          },
+          {
+            "va": "0x2d780c4",
+            "bytes": "a07300b9",
+            "asm": "str w0, [x29, #0x70]"
+          },
+          {
+            "va": "0x2d780c8",
+            "bytes": "60ca41b9",
+            "asm": "ldr w0, [x19, #0x1c8]"
+          },
+          {
+            "va": "0x2d780cc",
+            "bytes": "a07700b9",
+            "asm": "str w0, [x29, #0x74]"
+          },
+          {
+            "va": "0x2d780d0",
+            "bytes": "60ce41b9",
+            "asm": "ldr w0, [x19, #0x1cc]"
+          },
+          {
+            "va": "0x2d780d4",
+            "bytes": "a07b00b9",
+            "asm": "str w0, [x29, #0x78]"
+          },
+          {
+            "va": "0x2d780d8",
+            "bytes": "60de41b9",
+            "asm": "ldr w0, [x19, #0x1dc]"
+          },
+          {
+            "va": "0x2d780dc",
+            "bytes": "a07f00b9",
+            "asm": "str w0, [x29, #0x7c]"
+          },
+          {
+            "va": "0x2d780e0",
+            "bytes": "e00318aa",
+            "asm": "mov x0, x24"
+          },
+          {
+            "va": "0x2d780e4",
+            "bytes": "9c800194",
+            "asm": "bl #0x2dd8354"
+          },
+          {
+            "va": "0x2d780e8",
+            "bytes": "a05b40b9",
+            "asm": "ldr w0, [x29, #0x58]"
+          },
+          {
+            "va": "0x2d780ec",
+            "bytes": "00040035",
+            "asm": "cbnz w0, #0x2d7816c"
+          },
+          {
+            "va": "0x2d780f0",
+            "bytes": "405d0090",
+            "asm": "adrp x0, #0x3920000"
+          },
+          {
+            "va": "0x2d780f4",
+            "bytes": "e20316aa",
+            "asm": "mov x2, x22"
+          },
+          {
+            "va": "0x2d780f8",
+            "bytes": "e10315aa",
+            "asm": "mov x1, x21"
+          },
+          {
+            "va": "0x2d780fc",
+            "bytes": "00c01991",
+            "asm": "add x0, x0, #0x670"
+          },
+          {
+            "va": "0x2d78100",
+            "bytes": "43048052",
+            "asm": "mov w3, #0x22"
+          },
+          {
+            "va": "0x2d78104",
+            "bytes": "82df0794",
+            "asm": "bl #0x2f6ff0c"
+          },
+          {
+            "va": "0x2d78108",
+            "bytes": "60ce41b9",
+            "asm": "ldr w0, [x19, #0x1cc]"
+          },
+          {
+            "va": "0x2d7810c",
+            "bytes": "e10318aa",
+            "asm": "mov x1, x24"
+          },
+          {
+            "va": "0x2d78110",
+            "bytes": "a05b00b9",
+            "asm": "str w0, [x29, #0x58]"
+          },
+          {
+            "va": "0x2d78114",
+            "bytes": "e00317aa",
+            "asm": "mov x0, x23"
+          },
+          {
+            "va": "0x2d78118",
+            "bytes": "af600194",
+            "asm": "bl #0x2dd03d4"
+          },
+          {
+            "va": "0x2d7811c",
+            "bytes": "a06340b9",
+            "asm": "ldr w0, [x29, #0x60]"
+          },
+          {
+            "va": "0x2d78120",
+            "bytes": "20030035",
+            "asm": "cbnz w0, #0x2d78184"
+          },
+          {
+            "va": "0x2d78124",
+            "bytes": "e05d00d0",
+            "asm": "adrp x0, #0x3936000"
+          },
+          {
+            "va": "0x2d78128",
+            "bytes": "22a31b91",
+            "asm": "add x2, x25, #0x6e8"
+          },
+          {
+            "va": "0x2d7812c",
+            "bytes": "811a0591",
+            "asm": "add x1, x20, #0x146"
+          },
+          {
+            "va": "0x2d78130",
+            "bytes": "00440d91",
+            "asm": "add x0, x0, #0x351"
+          },
+          {
+            "va": "0x2d78134",
+            "bytes": "63068052",
+            "asm": "mov w3, #0x33"
+          },
+          {
+            "va": "0x2d78138",
+            "bytes": "75df0794",
+            "asm": "bl #0x2f6ff0c"
+          },
+          {
+            "va": "0x2d7813c",
+            "bytes": "e05c0090",
+            "asm": "adrp x0, #0x3914000"
+          },
+          {
+            "va": "0x2d78140",
+            "bytes": "22a31b91",
+            "asm": "add x2, x25, #0x6e8"
+          },
+          {
+            "va": "0x2d78144",
+            "bytes": "811a0591",
+            "asm": "add x1, x20, #0x146"
+          }
+        ]
+      },
+      "ap_envelope_and_builder": {
+        "envelope_va": "0x2e3172c..0x2e317b4",
+        "batch_caller_va": "0x2e31254 (mov w9, #0x4151 @ 0x2e31320)",
+        "builder_symbol": "infra_wrapper_imaging::detail::set_base_picture_setting_i",
+        "builder_va": "0x2e26fcc..0x2e2716c",
+        "ipc_sender_va": "0x2e2fb90 (channel 0x90030001, size 0x10)",
+        "envelope_instructions": [
+          {
+            "va": "0x2e3172c",
+            "bytes": "fd7bbda9",
+            "asm": "stp x29, x30, [sp, #-0x30]!"
+          },
+          {
+            "va": "0x2e31730",
+            "bytes": "a2008052",
+            "asm": "mov w2, #5"
+          },
+          {
+            "va": "0x2e31734",
+            "bytes": "fd030091",
+            "asm": "mov x29, sp"
+          },
+          {
+            "va": "0x2e31738",
+            "bytes": "f35301a9",
+            "asm": "stp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2e3173c",
+            "bytes": "f40301aa",
+            "asm": "mov x20, x1"
+          },
+          {
+            "va": "0x2e31740",
+            "bytes": "01144129",
+            "asm": "ldp w1, w5, [x0, #8]"
+          },
+          {
+            "va": "0x2e31744",
+            "bytes": "bf7f02a9",
+            "asm": "stp xzr, xzr, [x29, #0x20]"
+          },
+          {
+            "va": "0x2e31748",
+            "bytes": "a2830039",
+            "asm": "strb w2, [x29, #0x20]"
+          },
+          {
+            "va": "0x2e3174c",
+            "bytes": "222a8852",
+            "asm": "mov w2, #0x4151"
+          },
+          {
+            "va": "0x2e31750",
+            "bytes": "04184329",
+            "asm": "ldp w4, w6, [x0, #0x18]"
+          },
+          {
+            "va": "0x2e31754",
+            "bytes": "b3830091",
+            "asm": "add x19, x29, #0x20"
+          },
+          {
+            "va": "0x2e31758",
+            "bytes": "a2470079",
+            "asm": "strh w2, [x29, #0x22]"
+          },
+          {
+            "va": "0x2e3175c",
+            "bytes": "e70313aa",
+            "asm": "mov x7, x19"
+          },
+          {
+            "va": "0x2e31760",
+            "bytes": "020c4229",
+            "asm": "ldp w2, w3, [x0, #0x10]"
+          },
+          {
+            "va": "0x2e31764",
+            "bytes": "a12700b9",
+            "asm": "str w1, [x29, #0x24]"
+          },
+          {
+            "va": "0x2e31768",
+            "bytes": "010440b9",
+            "asm": "ldr w1, [x0, #4]"
+          },
+          {
+            "va": "0x2e3176c",
+            "bytes": "000040b9",
+            "asm": "ldr w0, [x0]"
+          },
+          {
+            "va": "0x2e31770",
+            "bytes": "17d6ff97",
+            "asm": "bl #0x2e26fcc"
+          },
+          {
+            "va": "0x2e31774",
+            "bytes": "020180d2",
+            "asm": "mov x2, #8"
+          },
+          {
+            "va": "0x2e31778",
+            "bytes": "a0474079",
+            "asm": "ldrh w0, [x29, #0x22]"
+          },
+          {
+            "va": "0x2e3177c",
+            "bytes": "6102028b",
+            "asm": "add x1, x19, x2"
+          },
+          {
+            "va": "0x2e31780",
+            "bytes": "a8f10494",
+            "asm": "bl #0x2f6de20"
+          },
+          {
+            "va": "0x2e31784",
+            "bytes": "e10313aa",
+            "asm": "mov x1, x19"
+          },
+          {
+            "va": "0x2e31788",
+            "bytes": "20008052",
+            "asm": "mov w0, #1"
+          },
+          {
+            "va": "0x2e3178c",
+            "bytes": "050080d2",
+            "asm": "mov x5, #0"
+          },
+          {
+            "va": "0x2e31790",
+            "bytes": "040080d2",
+            "asm": "mov x4, #0"
+          },
+          {
+            "va": "0x2e31794",
+            "bytes": "03008052",
+            "asm": "mov w3, #0"
+          },
+          {
+            "va": "0x2e31798",
+            "bytes": "020280d2",
+            "asm": "mov x2, #0x10"
+          },
+          {
+            "va": "0x2e3179c",
+            "bytes": "6000b272",
+            "asm": "movk w0, #0x9003, lsl #16"
+          },
+          {
+            "va": "0x2e317a0",
+            "bytes": "fcf8ff97",
+            "asm": "bl #0x2e2fb90"
+          },
+          {
+            "va": "0x2e317a4",
+            "bytes": "9f0200b9",
+            "asm": "str wzr, [x20]"
+          },
+          {
+            "va": "0x2e317a8",
+            "bytes": "f35341a9",
+            "asm": "ldp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2e317ac",
+            "bytes": "fd7bc3a8",
+            "asm": "ldp x29, x30, [sp], #0x30"
+          },
+          {
+            "va": "0x2e317b0",
+            "bytes": "c0035fd6",
+            "asm": "ret"
+          }
+        ],
+        "builder_head_instructions": [
+          {
+            "va": "0x2e26fcc",
+            "bytes": "fd7bbba9",
+            "asm": "stp x29, x30, [sp, #-0x50]!"
+          },
+          {
+            "va": "0x2e26fd0",
+            "bytes": "1f040071",
+            "asm": "cmp w0, #1"
+          },
+          {
+            "va": "0x2e26fd4",
+            "bytes": "fd030091",
+            "asm": "mov x29, sp"
+          },
+          {
+            "va": "0x2e26fd8",
+            "bytes": "f35301a9",
+            "asm": "stp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2e26fdc",
+            "bytes": "f30307aa",
+            "asm": "mov x19, x7"
+          },
+          {
+            "va": "0x2e26fe0",
+            "bytes": "f55b02a9",
+            "asm": "stp x21, x22, [sp, #0x20]"
+          },
+          {
+            "va": "0x2e26fe4",
+            "bytes": "f603032a",
+            "asm": "mov w22, w3"
+          },
+          {
+            "va": "0x2e26fe8",
+            "bytes": "f92300f9",
+            "asm": "str x25, [sp, #0x40]"
+          },
+          {
+            "va": "0x2e26fec",
+            "bytes": "f903042a",
+            "asm": "mov w25, w4"
+          },
+          {
+            "va": "0x2e26ff0",
+            "bytes": "f76303a9",
+            "asm": "stp x23, x24, [sp, #0x30]"
+          },
+          {
+            "va": "0x2e26ff4",
+            "bytes": "00010054",
+            "asm": "b.eq #0x2e27014"
+          },
+          {
+            "va": "0x2e26ff8",
+            "bytes": "a0030034",
+            "asm": "cbz w0, #0x2e2706c"
+          },
+          {
+            "va": "0x2e26ffc",
+            "bytes": "1f080071",
+            "asm": "cmp w0, #2"
+          },
+          {
+            "va": "0x2e27000",
+            "bytes": "20030054",
+            "asm": "b.eq #0x2e27064"
+          },
+          {
+            "va": "0x2e27004",
+            "bytes": "3f040071",
+            "asm": "cmp w1, #1"
+          },
+          {
+            "va": "0x2e27008",
+            "bytes": "40018052",
+            "asm": "mov w0, #0xa"
+          },
+          {
+            "va": "0x2e2700c",
+            "bytes": "00009f1a",
+            "asm": "csel w0, w0, wzr, eq"
+          },
+          {
+            "va": "0x2e27010",
+            "bytes": "02000014",
+            "asm": "b #0x2e27018"
+          },
+          {
+            "va": "0x2e27014",
+            "bytes": "e0008052",
+            "asm": "mov w0, #7"
+          },
+          {
+            "va": "0x2e27018",
+            "bytes": "60220039",
+            "asm": "strb w0, [x19, #8]"
+          },
+          {
+            "va": "0x2e2701c",
+            "bytes": "c6020035",
+            "asm": "cbnz w6, #0x2e27074"
+          },
+          {
+            "va": "0x2e27020",
+            "bytes": "60008052",
+            "asm": "mov w0, #3"
+          },
+          {
+            "va": "0x2e27024",
+            "bytes": "60260039",
+            "asm": "strb w0, [x19, #9]"
+          },
+          {
+            "va": "0x2e27028",
+            "bytes": "60018052",
+            "asm": "mov w0, #0xb"
+          },
+          {
+            "va": "0x2e2702c",
+            "bytes": "60220039",
+            "asm": "strb w0, [x19, #8]"
+          },
+          {
+            "va": "0x2e27030",
+            "bytes": "df060071",
+            "asm": "cmp w22, #1"
+          },
+          {
+            "va": "0x2e27034",
+            "bytes": "7f320039",
+            "asm": "strb wzr, [x19, #0xc]"
+          },
+          {
+            "va": "0x2e27038",
+            "bytes": "d6029f1a",
+            "asm": "csel w22, w22, wzr, eq"
+          },
+          {
+            "va": "0x2e2703c",
+            "bytes": "3f030071",
+            "asm": "cmp w25, #0"
+          },
+          {
+            "va": "0x2e27040",
+            "bytes": "e0179f1a",
+            "asm": "cset w0, eq"
+          },
+          {
+            "va": "0x2e27044",
+            "bytes": "762a0039",
+            "asm": "strb w22, [x19, #0xa]"
+          },
+          {
+            "va": "0x2e27048",
+            "bytes": "602e0039",
+            "asm": "strb w0, [x19, #0xb]"
+          },
+          {
+            "va": "0x2e2704c",
+            "bytes": "f35341a9",
+            "asm": "ldp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2e27050",
+            "bytes": "f55b42a9",
+            "asm": "ldp x21, x22, [sp, #0x20]"
+          },
+          {
+            "va": "0x2e27054",
+            "bytes": "f76343a9",
+            "asm": "ldp x23, x24, [sp, #0x30]"
+          }
+        ]
+      },
+      "cp_receiver_and_mlut_chain": {
+        "file": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+        "dispatch_table_file_offset": "0xe003a0",
+        "dispatch_words": [
+          "0x0",
+          "0x7920cb",
+          "0x4151",
+          "0x791f9d",
+          "0x0",
+          "0x0"
+        ],
+        "checker_func": {
+          "name": "CheckSetParamBasePictureSetting",
+          "file_offset": "0x1f605c",
+          "va": "0x2fe05d",
+          "ec_gate_file_offset": "0x1cb8a8 (bytes 0c29: cmp r1, #12)"
+        },
+        "setter_func": {
+          "file_offset": "0x689f9c",
+          "va": "0x791f9d",
+          "writes": "0x10a8de0 + {0xba0, 0xba4, 0xba8, 0xbac, 0xbb0} and increments +0x76c",
+          "instructions": [
+            {
+              "file_offset": "0x689f9c",
+              "va": "0x791f9c",
+              "bytes": "d0b5",
+              "asm": "push {r4, r6, r7, lr}"
+            },
+            {
+              "file_offset": "0x689f9e",
+              "va": "0x791f9e",
+              "bytes": "02af",
+              "asm": "add r7, sp, #8"
+            },
+            {
+              "file_offset": "0x689fa0",
+              "va": "0x791fa0",
+              "bytes": "82b0",
+              "asm": "sub sp, #8"
+            },
+            {
+              "file_offset": "0x689fa2",
+              "va": "0x791fa2",
+              "bytes": "017a",
+              "asm": "ldrb r1, [r0, #8]"
+            },
+            {
+              "file_offset": "0x689fa4",
+              "va": "0x791fa4",
+              "bytes": "48f6e05e",
+              "asm": "movw lr, #0x8de0"
+            },
+            {
+              "file_offset": "0x689fa8",
+              "va": "0x791fa8",
+              "bytes": "c0f20a1e",
+              "asm": "movt lr, #0x10a"
+            },
+            {
+              "file_offset": "0x689fac",
+              "va": "0x791fac",
+              "bytes": "cef8a01b",
+              "asm": "str.w r1, [lr, #0xba0]"
+            },
+            {
+              "file_offset": "0x689fb0",
+              "va": "0x791fb0",
+              "bytes": "427a",
+              "asm": "ldrb r2, [r0, #9]"
+            },
+            {
+              "file_offset": "0x689fb2",
+              "va": "0x791fb2",
+              "bytes": "cef8a42b",
+              "asm": "str.w r2, [lr, #0xba4]"
+            },
+            {
+              "file_offset": "0x689fb6",
+              "va": "0x791fb6",
+              "bytes": "032a",
+              "asm": "cmp r2, #3"
+            },
+            {
+              "file_offset": "0x689fb8",
+              "va": "0x791fb8",
+              "bytes": "837a",
+              "asm": "ldrb r3, [r0, #0xa]"
+            },
+            {
+              "file_offset": "0x689fba",
+              "va": "0x791fba",
+              "bytes": "cef8a83b",
+              "asm": "str.w r3, [lr, #0xba8]"
+            },
+            {
+              "file_offset": "0x689fbe",
+              "va": "0x791fbe",
+              "bytes": "03d0",
+              "asm": "beq #0x791fc8"
+            },
+            {
+              "file_offset": "0x689fc0",
+              "va": "0x791fc0",
+              "bytes": "90f80bc0",
+              "asm": "ldrb.w ip, [r0, #0xb]"
+            },
+            {
+              "file_offset": "0x689fc4",
+              "va": "0x791fc4",
+              "bytes": "cef8accb",
+              "asm": "str.w ip, [lr, #0xbac]"
+            },
+            {
+              "file_offset": "0x689fc8",
+              "va": "0x791fc8",
+              "bytes": "90f80cc0",
+              "asm": "ldrb.w ip, [r0, #0xc]"
+            },
+            {
+              "file_offset": "0x689fcc",
+              "va": "0x791fcc",
+              "bytes": "cef8b0cb",
+              "asm": "str.w ip, [lr, #0xbb0]"
+            },
+            {
+              "file_offset": "0x689fd0",
+              "va": "0x791fd0",
+              "bytes": "def86c47",
+              "asm": "ldr.w r4, [lr, #0x76c]"
+            },
+            {
+              "file_offset": "0x689fd4",
+              "va": "0x791fd4",
+              "bytes": "0134",
+              "asm": "adds r4, #1"
+            },
+            {
+              "file_offset": "0x689fd6",
+              "va": "0x791fd6",
+              "bytes": "cef86c47",
+              "asm": "str.w r4, [lr, #0x76c]"
+            }
+          ]
+        },
+        "downstream_mlut": {
+          "caller_file_offset": "0x8d1ad6 (VA 0x9d9ad6)",
+          "selector_func": "GetVfxMlutLookname @ file+0x3266ec (VA 0x42e6ec)",
+          "dormant_entry_22_registry": {
+            "file_offset": "0xbf8ffc",
+            "va": "0xd00ffc",
+            "raw_bytes": "160000009457010246000000",
+            "look_id": 22,
+            "name": "MLUT_LOOKNAME_SL3SG3_TO_ACESREC709",
+            "target_addr": "0x02015794",
+            "descriptor_count": 70
+          },
+          "param_setter_func": "SetVfxMlutParam @ file+0x3263fc (VA 0x42e3fc)",
+          "vfx_sdk_entry": "VA 0xa4f8ba (file+0x9478ba) -> resource resolver VA 0x488094 (table 0x13eaff8) -> core VA 0xa14d86 -> queue VA 0xa1f2f2",
+          "dma_lli_builder": "mlut_make_lli_table @ VA 0x470f78 (file+0x368f78) -> 70 x 16B DMA descriptors @ 0x2025570 -> HW ISP/MLUT window 0xf4009000 + (combo << 20)"
+        }
+      },
+      "unicorn_emulation_proof": {
+        "ap_input_words_hex": "0100000000000000000000003b00000001000000010000000000000001000000",
+        "ap_emulated_ipc": {
+          "channel": "0x90030001",
+          "packet_ptr": "0x70007ff0",
+          "packet_len": 16,
+          "packet_bytes": "05005141000000000702010100000000"
+        },
+        "cp_setter_va": "0x791f9d",
+        "cp_state_written": {
+          "0x10a8de0+0xba0_base_look": 7,
+          "0x10a8de0+0xba4_shooting_mode": 2,
+          "0x10a8de0+0xba8_input_gamut": 1,
+          "0x10a8de0+0xbac_color_gamut": 1,
+          "0x10a8de0+0xbb0_target_display": 0,
+          "0x10a8de0+0x76c_update_counter": 1
+        }
+      }
+    },
+    "chain_2_monitor_lut_and_colorgamut_bb_vdf": {
+      "monitor_lut_sender": {
+        "symbol": "infra_wrapper_bb::detail::vdf_disp_set_monitor_lut",
+        "caller_symbol": "model::sequence_set_gamma_disp_assist::run()",
+        "va_range": "0x2debdb0..0x2debf04",
+        "transport_id": "0x92840747 (via 0x2de70a8)",
+        "header_bytes": "0d2061010a000180 (words: 0x200d, 0x0161, 0x000a, 0x8001)",
+        "instructions": [
+          {
+            "va": "0x2debdb0",
+            "bytes": "fd7bbaa9",
+            "asm": "stp x29, x30, [sp, #-0x60]!"
+          },
+          {
+            "va": "0x2debdb4",
+            "bytes": "fd030091",
+            "asm": "mov x29, sp"
+          },
+          {
+            "va": "0x2debdb8",
+            "bytes": "f71b00f9",
+            "asm": "str x23, [sp, #0x30]"
+          },
+          {
+            "va": "0x2debdbc",
+            "bytes": "f70301aa",
+            "asm": "mov x23, x1"
+          },
+          {
+            "va": "0x2debdc0",
+            "bytes": "a1018452",
+            "asm": "mov w1, #0x200d"
+          },
+          {
+            "va": "0x2debdc4",
+            "bytes": "f35301a9",
+            "asm": "stp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2debdc8",
+            "bytes": "f55b02a9",
+            "asm": "stp x21, x22, [sp, #0x20]"
+          },
+          {
+            "va": "0x2debdcc",
+            "bytes": "a1830079",
+            "asm": "strh w1, [x29, #0x40]"
+          },
+          {
+            "va": "0x2debdd0",
+            "bytes": "212c8052",
+            "asm": "mov w1, #0x161"
+          },
+          {
+            "va": "0x2debdd4",
+            "bytes": "bf930079",
+            "asm": "strh wzr, [x29, #0x48]"
+          },
+          {
+            "va": "0x2debdd8",
+            "bytes": "a1870079",
+            "asm": "strh w1, [x29, #0x42]"
+          },
+          {
+            "va": "0x2debddc",
+            "bytes": "41018052",
+            "asm": "mov w1, #0xa"
+          },
+          {
+            "va": "0x2debde0",
+            "bytes": "a18b0079",
+            "asm": "strh w1, [x29, #0x44]"
+          },
+          {
+            "va": "0x2debde4",
+            "bytes": "c1ff8f12",
+            "asm": "mov w1, #-0x7fff"
+          },
+          {
+            "va": "0x2debde8",
+            "bytes": "a18f0079",
+            "asm": "strh w1, [x29, #0x46]"
+          },
+          {
+            "va": "0x2debdec",
+            "bytes": "010040b9",
+            "asm": "ldr w1, [x0]"
+          },
+          {
+            "va": "0x2debdf0",
+            "bytes": "3f100071",
+            "asm": "cmp w1, #4"
+          },
+          {
+            "va": "0x2debdf4",
+            "bytes": "08040054",
+            "asm": "b.hi #0x2debe74"
+          },
+          {
+            "va": "0x2debdf8",
+            "bytes": "c05b0090",
+            "asm": "adrp x0, #0x3963000"
+          },
+          {
+            "va": "0x2debdfc",
+            "bytes": "00301991",
+            "asm": "add x0, x0, #0x64c"
+          },
+          {
+            "va": "0x2debe00",
+            "bytes": "00486138",
+            "asm": "ldrb w0, [x0, w1, uxtw]"
+          },
+          {
+            "va": "0x2debe04",
+            "bytes": "61000010",
+            "asm": "adr x1, #0x2debe10"
+          },
+          {
+            "va": "0x2debe08",
+            "bytes": "2088208b",
+            "asm": "add x0, x1, w0, sxtb #2"
+          },
+          {
+            "va": "0x2debe0c",
+            "bytes": "00001fd6",
+            "asm": "br x0"
+          },
+          {
+            "va": "0x2debe10",
+            "bytes": "20008052",
+            "asm": "mov w0, #1"
+          },
+          {
+            "va": "0x2debe14",
+            "bytes": "a0230139",
+            "asm": "strb w0, [x29, #0x48]"
+          },
+          {
+            "va": "0x2debe18",
+            "bytes": "a3430191",
+            "asm": "add x3, x29, #0x50"
+          },
+          {
+            "va": "0x2debe1c",
+            "bytes": "a1030191",
+            "asm": "add x1, x29, #0x40"
+          },
+          {
+            "va": "0x2debe20",
+            "bytes": "e0e88052",
+            "asm": "mov w0, #0x747"
+          },
+          {
+            "va": "0x2debe24",
+            "bytes": "84018052",
+            "asm": "mov w4, #0xc"
+          },
+          {
+            "va": "0x2debe28",
+            "bytes": "42018052",
+            "asm": "mov w2, #0xa"
+          },
+          {
+            "va": "0x2debe2c",
+            "bytes": "8050b272",
+            "asm": "movk w0, #0x9284, lsl #16"
+          },
+          {
+            "va": "0x2debe30",
+            "bytes": "bf2b00f9",
+            "asm": "str xzr, [x29, #0x50]"
+          },
+          {
+            "va": "0x2debe34",
+            "bytes": "bf5b00b9",
+            "asm": "str wzr, [x29, #0x58]"
+          },
+          {
+            "va": "0x2debe38",
+            "bytes": "9cecff97",
+            "asm": "bl #0x2de70a8"
+          },
+          {
+            "va": "0x2debe3c",
+            "bytes": "a05b40b9",
+            "asm": "ldr w0, [x29, #0x58]"
+          },
+          {
+            "va": "0x2debe40",
+            "bytes": "cde1ff97",
+            "asm": "bl #0x2de4574"
+          },
+          {
+            "va": "0x2debe44",
+            "bytes": "f35341a9",
+            "asm": "ldp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2debe48",
+            "bytes": "f55b42a9",
+            "asm": "ldp x21, x22, [sp, #0x20]"
+          },
+          {
+            "va": "0x2debe4c",
+            "bytes": "e00200b9",
+            "asm": "str w0, [x23]"
+          },
+          {
+            "va": "0x2debe50",
+            "bytes": "f71b40f9",
+            "asm": "ldr x23, [sp, #0x30]"
+          },
+          {
+            "va": "0x2debe54",
+            "bytes": "fd7bc6a8",
+            "asm": "ldp x29, x30, [sp], #0x60"
+          },
+          {
+            "va": "0x2debe58",
+            "bytes": "c0035fd6",
+            "asm": "ret"
+          },
+          {
+            "va": "0x2debe5c",
+            "bytes": "40008052",
+            "asm": "mov w0, #2"
+          },
+          {
+            "va": "0x2debe60",
+            "bytes": "edffff17",
+            "asm": "b #0x2debe14"
+          },
+          {
+            "va": "0x2debe64",
+            "bytes": "80008052",
+            "asm": "mov w0, #4"
+          }
+        ]
+      },
+      "colorgamut_sender": {
+        "va_range": "0x2dee4ac..0x2dee538",
+        "transport_id": "0x92840747 (via 0x2de70a8)",
+        "header_bytes": "0d2067010a000180 (words: 0x200d, 0x0167, 0x000a, 0x8001)",
+        "instructions": [
+          {
+            "va": "0x2dee4ac",
+            "bytes": "fd7bbca9",
+            "asm": "stp x29, x30, [sp, #-0x40]!"
+          },
+          {
+            "va": "0x2dee4b0",
+            "bytes": "a2018452",
+            "asm": "mov w2, #0x200d"
+          },
+          {
+            "va": "0x2dee4b4",
+            "bytes": "fd030091",
+            "asm": "mov x29, sp"
+          },
+          {
+            "va": "0x2dee4b8",
+            "bytes": "000040b9",
+            "asm": "ldr w0, [x0]"
+          },
+          {
+            "va": "0x2dee4bc",
+            "bytes": "f30b00f9",
+            "asm": "str x19, [sp, #0x10]"
+          },
+          {
+            "va": "0x2dee4c0",
+            "bytes": "a2430079",
+            "asm": "strh w2, [x29, #0x20]"
+          },
+          {
+            "va": "0x2dee4c4",
+            "bytes": "e22c8052",
+            "asm": "mov w2, #0x167"
+          },
+          {
+            "va": "0x2dee4c8",
+            "bytes": "bf530079",
+            "asm": "strh wzr, [x29, #0x28]"
+          },
+          {
+            "va": "0x2dee4cc",
+            "bytes": "a2470079",
+            "asm": "strh w2, [x29, #0x22]"
+          },
+          {
+            "va": "0x2dee4d0",
+            "bytes": "42018052",
+            "asm": "mov w2, #0xa"
+          },
+          {
+            "va": "0x2dee4d4",
+            "bytes": "a24b0079",
+            "asm": "strh w2, [x29, #0x24]"
+          },
+          {
+            "va": "0x2dee4d8",
+            "bytes": "c2ff8f12",
+            "asm": "mov w2, #-0x7fff"
+          },
+          {
+            "va": "0x2dee4dc",
+            "bytes": "a24f0079",
+            "asm": "strh w2, [x29, #0x26]"
+          },
+          {
+            "va": "0x2dee4e0",
+            "bytes": "e0000034",
+            "asm": "cbz w0, #0x2dee4fc"
+          },
+          {
+            "va": "0x2dee4e4",
+            "bytes": "1f040071",
+            "asm": "cmp w0, #1"
+          },
+          {
+            "va": "0x2dee4e8",
+            "bytes": "e0000054",
+            "asm": "b.eq #0x2dee504"
+          },
+          {
+            "va": "0x2dee4ec",
+            "bytes": "3f0000b9",
+            "asm": "str wzr, [x1]"
+          },
+          {
+            "va": "0x2dee4f0",
+            "bytes": "f30b40f9",
+            "asm": "ldr x19, [sp, #0x10]"
+          },
+          {
+            "va": "0x2dee4f4",
+            "bytes": "fd7bc4a8",
+            "asm": "ldp x29, x30, [sp], #0x40"
+          },
+          {
+            "va": "0x2dee4f8",
+            "bytes": "c0035fd6",
+            "asm": "ret"
+          },
+          {
+            "va": "0x2dee4fc",
+            "bytes": "20008052",
+            "asm": "mov w0, #1"
+          },
+          {
+            "va": "0x2dee500",
+            "bytes": "a0a30039",
+            "asm": "strb w0, [x29, #0x28]"
+          },
+          {
+            "va": "0x2dee504",
+            "bytes": "f30301aa",
+            "asm": "mov x19, x1"
+          },
+          {
+            "va": "0x2dee508",
+            "bytes": "a3c30091",
+            "asm": "add x3, x29, #0x30"
+          },
+          {
+            "va": "0x2dee50c",
+            "bytes": "a1830091",
+            "asm": "add x1, x29, #0x20"
+          },
+          {
+            "va": "0x2dee510",
+            "bytes": "e0e88052",
+            "asm": "mov w0, #0x747"
+          },
+          {
+            "va": "0x2dee514",
+            "bytes": "84018052",
+            "asm": "mov w4, #0xc"
+          },
+          {
+            "va": "0x2dee518",
+            "bytes": "42018052",
+            "asm": "mov w2, #0xa"
+          },
+          {
+            "va": "0x2dee51c",
+            "bytes": "8050b272",
+            "asm": "movk w0, #0x9284, lsl #16"
+          },
+          {
+            "va": "0x2dee520",
+            "bytes": "bf1b00f9",
+            "asm": "str xzr, [x29, #0x30]"
+          },
+          {
+            "va": "0x2dee524",
+            "bytes": "bf3b00b9",
+            "asm": "str wzr, [x29, #0x38]"
+          },
+          {
+            "va": "0x2dee528",
+            "bytes": "e0e2ff97",
+            "asm": "bl #0x2de70a8"
+          },
+          {
+            "va": "0x2dee52c",
+            "bytes": "a03b40b9",
+            "asm": "ldr w0, [x29, #0x38]"
+          },
+          {
+            "va": "0x2dee530",
+            "bytes": "11d8ff97",
+            "asm": "bl #0x2de4574"
+          },
+          {
+            "va": "0x2dee534",
+            "bytes": "600200b9",
+            "asm": "str w0, [x19]"
+          },
+          {
+            "va": "0x2dee538",
+            "bytes": "eeffff17",
+            "asm": "b #0x2dee4f0"
+          }
+        ]
+      },
+      "unicorn_emulation_proof": {
+        "bb_vdf_packets": [
+          {
+            "caller_va": "0x2debe38",
+            "transport_id": "0x92840747",
+            "length": 10,
+            "packet_hex": "0d2061010a0001800100"
+          },
+          {
+            "caller_va": "0x2dee528",
+            "transport_id": "0x92840747",
+            "length": 10,
+            "packet_hex": "0d2067010a0001800100"
+          }
+        ]
+      }
+    },
+    "chain_3_white_balance_0x4006": {
+      "ap_sequence_run": {
+        "symbol": "model::sequence_set_wb_mode::run()",
+        "pretty_func_string_va": "0x3957948",
+        "va_range": "0x2d9f2c8..0x2d9f3ec",
+        "vtable_got_slot": "0x47369f0",
+        "instructions": [
+          {
+            "va": "0x2d9f2c8",
+            "bytes": "fd7bbaa9",
+            "asm": "stp x29, x30, [sp, #-0x60]!"
+          },
+          {
+            "va": "0x2d9f2cc",
+            "bytes": "63018052",
+            "asm": "mov w3, #0xb"
+          },
+          {
+            "va": "0x2d9f2d0",
+            "bytes": "fd030091",
+            "asm": "mov x29, sp"
+          },
+          {
+            "va": "0x2d9f2d4",
+            "bytes": "f55b02a9",
+            "asm": "stp x21, x22, [sp, #0x20]"
+          },
+          {
+            "va": "0x2d9f2d8",
+            "bytes": "f64f0090",
+            "asm": "adrp x22, #0x379b000"
+          },
+          {
+            "va": "0x2d9f2dc",
+            "bytes": "f71b00f9",
+            "asm": "str x23, [sp, #0x30]"
+          },
+          {
+            "va": "0x2d9f2e0",
+            "bytes": "d75d0090",
+            "asm": "adrp x23, #0x3957000"
+          },
+          {
+            "va": "0x2d9f2e4",
+            "bytes": "f35301a9",
+            "asm": "stp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2d9f2e8",
+            "bytes": "f5222591",
+            "asm": "add x21, x23, #0x948"
+          },
+          {
+            "va": "0x2d9f2ec",
+            "bytes": "f30300aa",
+            "asm": "mov x19, x0"
+          },
+          {
+            "va": "0x2d9f2f0",
+            "bytes": "d41a0591",
+            "asm": "add x20, x22, #0x146"
+          },
+          {
+            "va": "0x2d9f2f4",
+            "bytes": "c04f00d0",
+            "asm": "adrp x0, #0x3799000"
+          },
+          {
+            "va": "0x2d9f2f8",
+            "bytes": "e10314aa",
+            "asm": "mov x1, x20"
+          },
+          {
+            "va": "0x2d9f2fc",
+            "bytes": "003c2091",
+            "asm": "add x0, x0, #0x80f"
+          },
+          {
+            "va": "0x2d9f300",
+            "bytes": "e20315aa",
+            "asm": "mov x2, x21"
+          },
+          {
+            "va": "0x2d9f304",
+            "bytes": "1c430794",
+            "asm": "bl #0x2f6ff74"
+          },
+          {
+            "va": "0x2d9f308",
+            "bytes": "66ca41b9",
+            "asm": "ldr w6, [x19, #0x1c8]"
+          },
+          {
+            "va": "0x2d9f30c",
+            "bytes": "c05d0090",
+            "asm": "adrp x0, #0x3957000"
+          },
+          {
+            "va": "0x2d9f310",
+            "bytes": "64c241b9",
+            "asm": "ldr w4, [x19, #0x1c0]"
+          },
+          {
+            "va": "0x2d9f314",
+            "bytes": "e20315aa",
+            "asm": "mov x2, x21"
+          },
+          {
+            "va": "0x2d9f318",
+            "bytes": "65c641b9",
+            "asm": "ldr w5, [x19, #0x1c4]"
+          },
+          {
+            "va": "0x2d9f31c",
+            "bytes": "e10314aa",
+            "asm": "mov x1, x20"
+          },
+          {
+            "va": "0x2d9f320",
+            "bytes": "001c2291",
+            "asm": "add x0, x0, #0x887"
+          },
+          {
+            "va": "0x2d9f324",
+            "bytes": "03028052",
+            "asm": "mov w3, #0x10"
+          },
+          {
+            "va": "0x2d9f328",
+            "bytes": "f9420794",
+            "asm": "bl #0x2f6ff0c"
+          },
+          {
+            "va": "0x2d9f32c",
+            "bytes": "64ce41b9",
+            "asm": "ldr w4, [x19, #0x1cc]"
+          },
+          {
+            "va": "0x2d9f330",
+            "bytes": "c05d0090",
+            "asm": "adrp x0, #0x3957000"
+          },
+          {
+            "va": "0x2d9f334",
+            "bytes": "65d241b9",
+            "asm": "ldr w5, [x19, #0x1d0]"
+          },
+          {
+            "va": "0x2d9f338",
+            "bytes": "e20315aa",
+            "asm": "mov x2, x21"
+          },
+          {
+            "va": "0x2d9f33c",
+            "bytes": "e10314aa",
+            "asm": "mov x1, x20"
+          },
+          {
+            "va": "0x2d9f340",
+            "bytes": "00302391",
+            "asm": "add x0, x0, #0x8cc"
+          },
+          {
+            "va": "0x2d9f344",
+            "bytes": "43028052",
+            "asm": "mov w3, #0x12"
+          },
+          {
+            "va": "0x2d9f348",
+            "bytes": "f1420794",
+            "asm": "bl #0x2f6ff0c"
+          },
+          {
+            "va": "0x2d9f34c",
+            "bytes": "60be41b9",
+            "asm": "ldr w0, [x19, #0x1bc]"
+          },
+          {
+            "va": "0x2d9f350",
+            "bytes": "a1030191",
+            "asm": "add x1, x29, #0x40"
+          },
+          {
+            "va": "0x2d9f354",
+            "bytes": "a04b00b9",
+            "asm": "str w0, [x29, #0x48]"
+          },
+          {
+            "va": "0x2d9f358",
+            "bytes": "60c241b9",
+            "asm": "ldr w0, [x19, #0x1c0]"
+          },
+          {
+            "va": "0x2d9f35c",
+            "bytes": "a04f00b9",
+            "asm": "str w0, [x29, #0x4c]"
+          },
+          {
+            "va": "0x2d9f360",
+            "bytes": "60c641b9",
+            "asm": "ldr w0, [x19, #0x1c4]"
+          },
+          {
+            "va": "0x2d9f364",
+            "bytes": "a05300b9",
+            "asm": "str w0, [x29, #0x50]"
+          },
+          {
+            "va": "0x2d9f368",
+            "bytes": "60ca41b9",
+            "asm": "ldr w0, [x19, #0x1c8]"
+          },
+          {
+            "va": "0x2d9f36c",
+            "bytes": "a05700b9",
+            "asm": "str w0, [x29, #0x54]"
+          },
+          {
+            "va": "0x2d9f370",
+            "bytes": "60ce41b9",
+            "asm": "ldr w0, [x19, #0x1cc]"
+          },
+          {
+            "va": "0x2d9f374",
+            "bytes": "a05b00b9",
+            "asm": "str w0, [x29, #0x58]"
+          },
+          {
+            "va": "0x2d9f378",
+            "bytes": "60d241b9",
+            "asm": "ldr w0, [x19, #0x1d0]"
+          },
+          {
+            "va": "0x2d9f37c",
+            "bytes": "a05f00b9",
+            "asm": "str w0, [x29, #0x5c]"
+          },
+          {
+            "va": "0x2d9f380",
+            "bytes": "a0230191",
+            "asm": "add x0, x29, #0x48"
+          },
+          {
+            "va": "0x2d9f384",
+            "bytes": "e4d90094",
+            "asm": "bl #0x2dd5b14"
+          },
+          {
+            "va": "0x2d9f388",
+            "bytes": "a04340b9",
+            "asm": "ldr w0, [x29, #0x40]"
+          },
+          {
+            "va": "0x2d9f38c",
+            "bytes": "40020035",
+            "asm": "cbnz w0, #0x2d9f3d4"
+          },
+          {
+            "va": "0x2d9f390",
+            "bytes": "c05d0090",
+            "asm": "adrp x0, #0x3957000"
+          },
+          {
+            "va": "0x2d9f394",
+            "bytes": "e20315aa",
+            "asm": "mov x2, x21"
+          }
+        ]
+      },
+      "ap_sender_and_payload_builder": {
+        "sender_va": "0x2e3c3b8..0x2e3c444",
+        "wire_id": "0x4006 (PID_SET_WB_MODE)",
+        "payload_builder_va": "0x2e18e3c..0x2e190a8",
+        "mode_jump_table_va": "0x397543c (16 entries)",
+        "mode_jump_table_bytes": "003d40424446484a4c4e50525a545658",
+        "sender_instructions": [
+          {
+            "va": "0x2e3c3b8",
+            "bytes": "fd7bbca9",
+            "asm": "stp x29, x30, [sp, #-0x40]!"
+          },
+          {
+            "va": "0x2e3c3bc",
+            "bytes": "a2008052",
+            "asm": "mov w2, #5"
+          },
+          {
+            "va": "0x2e3c3c0",
+            "bytes": "fd030091",
+            "asm": "mov x29, sp"
+          },
+          {
+            "va": "0x2e3c3c4",
+            "bytes": "f35301a9",
+            "asm": "stp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2e3c3c8",
+            "bytes": "f40301aa",
+            "asm": "mov x20, x1"
+          },
+          {
+            "va": "0x2e3c3cc",
+            "bytes": "a1a30091",
+            "asm": "add x1, x29, #0x28"
+          },
+          {
+            "va": "0x2e3c3d0",
+            "bytes": "b3a30091",
+            "asm": "add x19, x29, #0x28"
+          },
+          {
+            "va": "0x2e3c3d4",
+            "bytes": "041440b9",
+            "asm": "ldr w4, [x0, #0x14]"
+          },
+          {
+            "va": "0x2e3c3d8",
+            "bytes": "e50313aa",
+            "asm": "mov x5, x19"
+          },
+          {
+            "va": "0x2e3c3dc",
+            "bytes": "bf3b00b9",
+            "asm": "str wzr, [x29, #0x38]"
+          },
+          {
+            "va": "0x2e3c3e0",
+            "bytes": "3f7c00a9",
+            "asm": "stp xzr, xzr, [x1]"
+          },
+          {
+            "va": "0x2e3c3e4",
+            "bytes": "a2a30039",
+            "asm": "strb w2, [x29, #0x28]"
+          },
+          {
+            "va": "0x2e3c3e8",
+            "bytes": "c2008852",
+            "asm": "mov w2, #0x4006"
+          },
+          {
+            "va": "0x2e3c3ec",
+            "bytes": "010040b9",
+            "asm": "ldr w1, [x0]"
+          },
+          {
+            "va": "0x2e3c3f0",
+            "bytes": "a2570079",
+            "asm": "strh w2, [x29, #0x2a]"
+          },
+          {
+            "va": "0x2e3c3f4",
+            "bytes": "a12f00b9",
+            "asm": "str w1, [x29, #0x2c]"
+          },
+          {
+            "va": "0x2e3c3f8",
+            "bytes": "028c4129",
+            "asm": "ldp w2, w3, [x0, #0xc]"
+          },
+          {
+            "va": "0x2e3c3fc",
+            "bytes": "010840b9",
+            "asm": "ldr w1, [x0, #8]"
+          },
+          {
+            "va": "0x2e3c400",
+            "bytes": "000440b9",
+            "asm": "ldr w0, [x0, #4]"
+          },
+          {
+            "va": "0x2e3c404",
+            "bytes": "8e72ff97",
+            "asm": "bl #0x2e18e3c"
+          },
+          {
+            "va": "0x2e3c408",
+            "bytes": "a0574079",
+            "asm": "ldrh w0, [x29, #0x2a]"
+          },
+          {
+            "va": "0x2e3c40c",
+            "bytes": "61220091",
+            "asm": "add x1, x19, #8"
+          },
+          {
+            "va": "0x2e3c410",
+            "bytes": "820180d2",
+            "asm": "mov x2, #0xc"
+          },
+          {
+            "va": "0x2e3c414",
+            "bytes": "83c60494",
+            "asm": "bl #0x2f6de20"
+          },
+          {
+            "va": "0x2e3c418",
+            "bytes": "e10313aa",
+            "asm": "mov x1, x19"
+          },
+          {
+            "va": "0x2e3c41c",
+            "bytes": "20008052",
+            "asm": "mov w0, #1"
+          },
+          {
+            "va": "0x2e3c420",
+            "bytes": "050080d2",
+            "asm": "mov x5, #0"
+          },
+          {
+            "va": "0x2e3c424",
+            "bytes": "040080d2",
+            "asm": "mov x4, #0"
+          },
+          {
+            "va": "0x2e3c428",
+            "bytes": "03008052",
+            "asm": "mov w3, #0"
+          },
+          {
+            "va": "0x2e3c42c",
+            "bytes": "820280d2",
+            "asm": "mov x2, #0x14"
+          },
+          {
+            "va": "0x2e3c430",
+            "bytes": "6000b272",
+            "asm": "movk w0, #0x9003, lsl #16"
+          },
+          {
+            "va": "0x2e3c434",
+            "bytes": "d7cdff97",
+            "asm": "bl #0x2e2fb90"
+          },
+          {
+            "va": "0x2e3c438",
+            "bytes": "9f0200b9",
+            "asm": "str wzr, [x20]"
+          },
+          {
+            "va": "0x2e3c43c",
+            "bytes": "f35341a9",
+            "asm": "ldp x19, x20, [sp, #0x10]"
+          },
+          {
+            "va": "0x2e3c440",
+            "bytes": "fd7bc4a8",
+            "asm": "ldp x29, x30, [sp], #0x40"
+          },
+          {
+            "va": "0x2e3c444",
+            "bytes": "c0035fd6",
+            "asm": "ret"
+          }
+        ],
+        "builder_quantization_instructions": [
+          {
+            "va": "0x2e18e70",
+            "bytes": "280c0054",
+            "asm": "b.hi #0x2e18ff4"
+          },
+          {
+            "va": "0x2e18e74",
+            "bytes": "e15a00b0",
+            "asm": "adrp x1, #0x3975000"
+          },
+          {
+            "va": "0x2e18e78",
+            "bytes": "21f01091",
+            "asm": "add x1, x1, #0x43c"
+          },
+          {
+            "va": "0x2e18e7c",
+            "bytes": "20486038",
+            "asm": "ldrb w0, [x1, w0, uxtw]"
+          },
+          {
+            "va": "0x2e18e80",
+            "bytes": "61000010",
+            "asm": "adr x1, #0x2e18e8c"
+          },
+          {
+            "va": "0x2e18e84",
+            "bytes": "2088208b",
+            "asm": "add x0, x1, w0, sxtb #2"
+          },
+          {
+            "va": "0x2e18e88",
+            "bytes": "00001fd6",
+            "asm": "br x0"
+          },
+          {
+            "va": "0x2e18e8c",
+            "bytes": "bf200039",
+            "asm": "strb wzr, [x5, #8]"
+          },
+          {
+            "va": "0x2e18e90",
+            "bytes": "e203174b",
+            "asm": "neg w2, w23"
+          },
+          {
+            "va": "0x2e18e94",
+            "bytes": "047d8052",
+            "asm": "mov w4, #0x3e8"
+          },
+          {
+            "va": "0x2e18e98",
+            "bytes": "830c8052",
+            "asm": "mov w3, #0x64"
+          },
+          {
+            "va": "0x2e18e9c",
+            "bytes": "9f060071",
+            "asm": "cmp w20, #1"
+          },
+          {
+            "va": "0x2e18ea0",
+            "bytes": "610fc41a",
+            "asm": "sdiv w1, w27, w4"
+          },
+          {
+            "va": "0x2e18ea4",
+            "bytes": "7f460039",
+            "asm": "strb wzr, [x19, #0x11]"
+          },
+          {
+            "va": "0x2e18ea8",
+            "bytes": "400cc41a",
+            "asm": "sdiv w0, w2, w4"
+          },
+          {
+            "va": "0x2e18eac",
+            "bytes": "5a0fc31a",
+            "asm": "sdiv w26, w26, w3"
+          },
+          {
+            "va": "0x2e18eb0",
+            "bytes": "61260039",
+            "asm": "strb w1, [x19, #9]"
+          },
+          {
+            "va": "0x2e18eb4",
+            "bytes": "21ec041b",
+            "asm": "msub w1, w1, w4, w27"
+          },
+          {
+            "va": "0x2e18eb8",
+            "bytes": "602a0039",
+            "asm": "strb w0, [x19, #0xa]"
+          },
+          {
+            "va": "0x2e18ebc",
+            "bytes": "0088041b",
+            "asm": "msub w0, w0, w4, w2"
+          },
+          {
+            "va": "0x2e18ec0",
+            "bytes": "611a0079",
+            "asm": "strh w1, [x19, #0xc]"
+          },
+          {
+            "va": "0x2e18ec4",
+            "bytes": "601e0079",
+            "asm": "strh w0, [x19, #0xe]"
+          },
+          {
+            "va": "0x2e18ec8",
+            "bytes": "7a420039",
+            "asm": "strb w26, [x19, #0x10]"
+          },
+          {
+            "va": "0x2e18ecc",
+            "bytes": "c00e0054",
+            "asm": "b.eq #0x2e190a4"
+          },
+          {
+            "va": "0x2e18ed0",
+            "bytes": "b40d0034",
+            "asm": "cbz w20, #0x2e19084"
+          },
+          {
+            "va": "0x2e18ed4",
+            "bytes": "9f0a0071",
+            "asm": "cmp w20, #2"
+          },
+          {
+            "va": "0x2e18ed8",
+            "bytes": "600e0054",
+            "asm": "b.eq #0x2e190a4"
+          }
+        ]
+      },
+      "cp_receiver": {
+        "file": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+        "dispatch_table_file_offset": "0xdfeb90",
+        "dispatch_words": [
+          "0x0",
+          "0x7920cb",
+          "0x4006",
+          "0x79150d",
+          "0x1",
+          "0x0"
+        ],
+        "setter_file_offset": "0x68950c",
+        "setter_va": "0x79150d",
+        "log_string_va": "0xdb2fde (file+0xcaafde: 'FW: SET_WB_MODE[%d: %d: %d: %d: %d]')",
+        "setter_instructions": [
+          {
+            "file_offset": "0x68950c",
+            "va": "0x79150c",
+            "bytes": "b0b5",
+            "asm": "push {r4, r5, r7, lr}"
+          },
+          {
+            "file_offset": "0x68950e",
+            "va": "0x79150e",
+            "bytes": "02af",
+            "asm": "add r7, sp, #8"
+          },
+          {
+            "file_offset": "0x689510",
+            "va": "0x791510",
+            "bytes": "82b0",
+            "asm": "sub sp, #8"
+          },
+          {
+            "file_offset": "0x689512",
+            "va": "0x791512",
+            "bytes": "017a",
+            "asm": "ldrb r1, [r0, #8]"
+          },
+          {
+            "file_offset": "0x689514",
+            "va": "0x791514",
+            "bytes": "48f6e055",
+            "asm": "movw r5, #0x8de0"
+          },
+          {
+            "file_offset": "0x689518",
+            "va": "0x791518",
+            "bytes": "c0f20a15",
+            "asm": "movt r5, #0x10a"
+          },
+          {
+            "file_offset": "0x68951c",
+            "va": "0x79151c",
+            "bytes": "c5f8f419",
+            "asm": "str.w r1, [r5, #0x9f4]"
+          },
+          {
+            "file_offset": "0x689520",
+            "va": "0x791520",
+            "bytes": "90f90920",
+            "asm": "ldrsb.w r2, [r0, #9]"
+          },
+          {
+            "file_offset": "0x689524",
+            "va": "0x791524",
+            "bytes": "85f8f829",
+            "asm": "strb.w r2, [r5, #0x9f8]"
+          },
+          {
+            "file_offset": "0x689528",
+            "va": "0x791528",
+            "bytes": "90f90a30",
+            "asm": "ldrsb.w r3, [r0, #0xa]"
+          },
+          {
+            "file_offset": "0x68952c",
+            "va": "0x79152c",
+            "bytes": "85f8f939",
+            "asm": "strb.w r3, [r5, #0x9f9]"
+          },
+          {
+            "file_offset": "0x689530",
+            "va": "0x791530",
+            "bytes": "8489",
+            "asm": "ldrh r4, [r0, #0xc]"
+          },
+          {
+            "file_offset": "0x689532",
+            "va": "0x791532",
+            "bytes": "a5f8fa49",
+            "asm": "strh.w r4, [r5, #0x9fa]"
+          },
+          {
+            "file_offset": "0x689536",
+            "va": "0x791536",
+            "bytes": "c489",
+            "asm": "ldrh r4, [r0, #0xe]"
+          },
+          {
+            "file_offset": "0x689538",
+            "va": "0x791538",
+            "bytes": "a5f8fc49",
+            "asm": "strh.w r4, [r5, #0x9fc]"
+          },
+          {
+            "file_offset": "0x68953c",
+            "va": "0x79153c",
+            "bytes": "90f810c0",
+            "asm": "ldrb.w ip, [r0, #0x10]"
+          },
+          {
+            "file_offset": "0x689540",
+            "va": "0x791540",
+            "bytes": "85f800ca",
+            "asm": "strb.w ip, [r5, #0xa00]"
+          },
+          {
+            "file_offset": "0x689544",
+            "va": "0x791544",
+            "bytes": "90f911e0",
+            "asm": "ldrsb.w lr, [r0, #0x11]"
+          },
+          {
+            "file_offset": "0x689548",
+            "va": "0x791548",
+            "bytes": "85f801ea",
+            "asm": "strb.w lr, [r5, #0xa01]"
+          },
+          {
+            "file_offset": "0x68954c",
+            "va": "0x79154c",
+            "bytes": "807c",
+            "asm": "ldrb r0, [r0, #0x12]"
+          },
+          {
+            "file_offset": "0x68954e",
+            "va": "0x79154e",
+            "bytes": "85f8020a",
+            "asm": "strb.w r0, [r5, #0xa02]"
+          },
+          {
+            "file_offset": "0x689552",
+            "va": "0x791552",
+            "bytes": "45f63640",
+            "asm": "movw r0, #0x5c36"
+          },
+          {
+            "file_offset": "0x689556",
+            "va": "0x791556",
+            "bytes": "c0f24310",
+            "asm": "movt r0, #0x143"
+          },
+          {
+            "file_offset": "0x68955a",
+            "va": "0x79155a",
+            "bytes": "90f83200",
+            "asm": "ldrb.w r0, [r0, #0x32]"
+          },
+          {
+            "file_offset": "0x68955e",
+            "va": "0x79155e",
+            "bytes": "c007",
+            "asm": "lsls r0, r0, #0x1f"
+          },
+          {
+            "file_offset": "0x689560",
+            "va": "0x791560",
+            "bytes": "07d0",
+            "asm": "beq #0x791572"
+          },
+          {
+            "file_offset": "0x689562",
+            "va": "0x791562",
+            "bytes": "42f6de70",
+            "asm": "movw r0, #0x2fde"
+          },
+          {
+            "file_offset": "0x689566",
+            "va": "0x791566",
+            "bytes": "cde900ce",
+            "asm": "strd ip, lr, [sp]"
+          },
+          {
+            "file_offset": "0x68956a",
+            "va": "0x79156a",
+            "bytes": "c0f2db00",
+            "asm": "movt r0, #0xdb"
+          },
+          {
+            "file_offset": "0x68956e",
+            "va": "0x79156e",
+            "bytes": "55f289f8",
+            "asm": "bl #0x9e6684"
+          },
+          {
+            "file_offset": "0x689572",
+            "va": "0x791572",
+            "bytes": "0120",
+            "asm": "movs r0, #1"
+          },
+          {
+            "file_offset": "0x689574",
+            "va": "0x791574",
+            "bytes": "02b0",
+            "asm": "add sp, #8"
+          },
+          {
+            "file_offset": "0x689576",
+            "va": "0x791576",
+            "bytes": "b0bd",
+            "asm": "pop {r4, r5, r7, pc}"
+          }
+        ]
+      },
+      "unicorn_emulation_proof": {
+        "ap_input_words_hex": "0100000009000000c409000024faffffe015000001000000",
+        "ap_emulated_ipc": {
+          "channel": "0x90030001",
+          "packet_len": 20,
+          "packet_bytes": "050006400100000009020100f401f40138000100"
+        },
+        "cp_setter_va": "0x79150d",
+        "cp_state_written": {
+          "0x10a8de0+0x9f4_wb_mode": 9,
+          "0x10a8de0+0x9f8_ab_div_1000": 2,
+          "0x10a8de0+0x9f9_neg_gm_div_1000": 1,
+          "0x10a8de0+0x9fa_ab_mod_1000": 500,
+          "0x10a8de0+0x9fc_neg_gm_mod_1000": 500,
+          "0x10a8de0+0xa00_colortemp_100k_units": 56,
+          "0x10a8de0+0xa01_tint": 0,
+          "0x10a8de0+0xa02_flag": 1
+        },
+        "static_finding_1k_vs_100k": "appFw.so 0x2e18e98 executes `mov w3, #0x64; sdiv w26, w26, w3; strb w26, [x19, #0x10]`, quantizing Kelvin color temperature to 100K integer units (5600K -> 56 = 0x38) on wire 0x4006. FX5/FX6 BIG6 [Fine] 1K step control cannot pass 1K granularity through stock 0x4006 byte +0x10 without either translating 1K residual into the 16-bit AB/GM remainder fields (+0xc/+0xe -> +0x9fa/+0x9fc) or extending the CP WB consumer."
+      }
+    }
+  },
+  "online_sources_summary": {
+    "generated_at_utc": "2026-11-03T09:18:59.214241+00:00",
+    "sources": [
+      {
+        "id": "fx5_quick_menu",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/quick_menu.html",
+        "http_status": 200,
+        "content_length": 37475,
+        "sha256": "ec26c8dae88c709668d0a9fd0fb7d0e82c807fcdb5e79d8477cb49be1f24770c",
+        "title": "ILME-FX5/ILME-FX5B | Help Guide | Menu Screen",
+        "h1": "Interchangeable Lens Digital CameraILME-FX5/ILME-FX5BHelp Guide",
+        "fetch_status": "FETCHED_OK"
+      },
+      {
+        "id": "fx5_fullmenu_use",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/fullmenu_use.html",
+        "http_status": null,
+        "fetch_status": "ERROR_URLError",
+        "note": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>"
+      },
+      {
+        "id": "fx5_home_screen",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/home_screen.html",
+        "http_status": 200,
+        "content_length": 41883,
+        "sha256": "a348ee1079c7228557f6ffca444ec1abf7ad6cd4f0c85b390b5fde9cc72a0f03",
+        "title": "ILME-FX5/ILME-FX5B | Help Guide | Home Screen",
+        "h1": "Interchangeable Lens Digital CameraILME-FX5/ILME-FX5BHelp Guide",
+        "fetch_status": "FETCHED_OK"
+      },
+      {
+        "id": "fx5_project",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/project.html",
+        "http_status": null,
+        "fetch_status": "ERROR_URLError",
+        "note": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>"
+      },
+      {
+        "id": "fx5_paint_look",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/paint_look.html",
+        "http_status": null,
+        "fetch_status": "ERROR_URLError",
+        "note": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>"
+      },
+      {
+        "id": "fx5_tc_media",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/tc_media.html",
+        "http_status": 200,
+        "content_length": 34848,
+        "sha256": "05c272b90a8c0cbc6a9a5f5e37d2590f3fe9ac54d73259bca5dffef37aa4e0b4",
+        "title": "ILME-FX5/ILME-FX5B | Help Guide | [TC/Media] Menu",
+        "h1": "Interchangeable Lens Digital CameraILME-FX5/ILME-FX5BHelp Guide",
+        "fetch_status": "FETCHED_OK"
+      },
+      {
+        "id": "fx5_shooting",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/shooting.html",
+        "http_status": null,
+        "fetch_status": "ERROR_URLError",
+        "note": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1082)>"
+      },
+      {
+        "id": "fx5_monitoring",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/monitoring.html",
+        "http_status": 200,
+        "content_length": 45812,
+        "sha256": "cf9f2d887dd79d18c53d1a544227bb33620be906924040dd86b42cc261942cfa",
+        "title": "ILME-FX5/ILME-FX5B | Help Guide | [Monitoring] Menu",
+        "h1": "Interchangeable Lens Digital CameraILME-FX5/ILME-FX5BHelp Guide",
+        "fetch_status": "FETCHED_OK"
+      },
+      {
+        "id": "fx5_block_diagram",
+        "url": "https://helpguide.sony.net/ilc/2630/v1/en/contents/block_diagram.html",
+        "http_status": 200,
+        "content_length": 25230,
+        "sha256": "4e129a440108428c721153717ae6ff4f703260c49d2d03b530f36c1c309d9de4",
+        "title": "ILME-FX5/ILME-FX5B | Help Guide | Block Diagrams",
+        "h1": "Interchangeable Lens Digital CameraILME-FX5/ILME-FX5BHelp Guide",
+        "fetch_status": "FETCHED_OK"
+      },
+      {
+        "id": "fx6_601_support_page",
+        "url": "https://www.sony.com/electronics/support/camcorders-and-video-cameras-xqd-camcorders/ilme-fx6v/software/00259043",
+        "http_status": 403,
+        "fetch_status": "HTTP_403_BOT_FILTER_INDEXED_VIA_SEARCH",
+        "note": "Direct urllib request blocked by Akamai (HTTP 403); verified via public web search index and cross-checked with local work/sony-firmware-20261024/stage4-windows-collab/fx6-discovery/fx6-prefix-curl.bin (ILME-FX6V V6.00/V6.01 BIG6 Home screen & 3D LUT / Monitor LUT / AF assist update notes)."
+      }
+    ]
+  }
+}

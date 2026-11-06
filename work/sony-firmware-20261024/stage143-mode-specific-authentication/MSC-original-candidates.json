@@ -1,0 +1,122 @@
+{
+  "status": "THREE_ORIGINAL_MSC_CANDIDATES_EXTRACTED_AS_DATA_NOT_AUTH_VERIFIED",
+  "source_image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "records": [
+    {
+      "image_entry": {
+        "path": "/kmod/usbg_storage.ko",
+        "inode": 70908,
+        "mode": "0o100644",
+        "size": 104288,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/work/original-candidates/kmod/usbg_storage.ko",
+      "bytes": 104288,
+      "sha256": "b43130dbc3d9b72dc03c3acb7993639e1cefcbb43621fef809f6f617cb30b255",
+      "elf_type": "ET_REL",
+      "machine": "EM_AARCH64",
+      "candidate_symbols": [
+        {
+          "name": "getSense",
+          "value": "0x8768",
+          "size": 28,
+          "section": 2
+        },
+        {
+          "name": "requestSense_dvd",
+          "value": "0xabf0",
+          "size": 668,
+          "section": 2
+        },
+        {
+          "name": "modeSense6_ms",
+          "value": "0x6fd8",
+          "size": 700,
+          "section": 2
+        },
+        {
+          "name": "setSenseDvd",
+          "value": "0xaf50",
+          "size": 64,
+          "section": 2
+        },
+        {
+          "name": "setSense",
+          "value": "0x8750",
+          "size": 24,
+          "section": 2
+        },
+        {
+          "name": "modeSense10_ms",
+          "value": "0x7298",
+          "size": 720,
+          "section": 2
+        },
+        {
+          "name": "modeSense10_ata",
+          "value": "0x7770",
+          "size": 540,
+          "section": 2
+        },
+        {
+          "name": "modeSense6_ata",
+          "value": "0x7568",
+          "size": 520,
+          "section": 2
+        },
+        {
+          "name": "requestSense_std",
+          "value": "0x7e50",
+          "size": 380,
+          "section": 2
+        }
+      ],
+      "original_native_code_loaded_or_executed": false
+    },
+    {
+      "image_entry": {
+        "path": "/lib/libUsbControl.so",
+        "inode": 95134,
+        "mode": "0o100555",
+        "size": 135424,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/work/original-candidates/lib/libUsbControl.so",
+      "bytes": 135424,
+      "sha256": "2bf51f28fd5066e56afc8bbb02ddbaa96b36f57ff2a823cecf9f901781754ed9",
+      "elf_type": "ET_DYN",
+      "machine": "EM_AARCH64",
+      "candidate_symbols": [
+        {
+          "name": "_ZN10UsbControl16actionInitToStopEPN3UFW3FsmEiPv",
+          "value": "0x15c50",
+          "size": 28,
+          "section": 10
+        }
+      ],
+      "original_native_code_loaded_or_executed": false
+    },
+    {
+      "image_entry": {
+        "path": "/lib/libusbcmd.so",
+        "inode": 95528,
+        "mode": "0o100555",
+        "size": 27208,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/work/original-candidates/lib/libusbcmd.so",
+      "bytes": 27208,
+      "sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "elf_type": "ET_DYN",
+      "machine": "EM_AARCH64",
+      "candidate_symbols": [],
+      "original_native_code_loaded_or_executed": false
+    }
+  ],
+  "camera_or_Windows_operations": 0,
+  "initial_MSC_verifier_proven": false
+}

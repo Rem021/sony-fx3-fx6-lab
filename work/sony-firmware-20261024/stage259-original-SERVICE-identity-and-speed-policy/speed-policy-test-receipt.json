@@ -1,0 +1,48 @@
+{
+  "status": "ORIGINAL_DERIVED_SPEED_POLICY_OWN_CODE_CHECKS_PASS",
+  "checks": 3,
+  "rows": [
+    {
+      "case": "three_original_derived_layouts_and_negative_SS_policy",
+      "status": "PASS",
+      "stdout": "PASS original-derived FS/HS/SS and bounded policy;SS companion mutations/truncation/missing/duplicate;old512 boundaries\n",
+      "compile_argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/descriptor_policy.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/descriptor_unit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/artifacts/descriptor-unit"
+      ],
+      "binary_sha256": "d496b796ca1af62fc56810160f9f85ecf40e0784300cfcb3539848502185d107"
+    },
+    {
+      "case": "derived-FS",
+      "status": "PASS",
+      "raw_flow_frames": 80,
+      "packet": 64,
+      "descriptor_bytes": 46,
+      "child_gone": true,
+      "physical_identity_artificial": true
+    },
+    {
+      "case": "derived-SS",
+      "status": "PASS",
+      "raw_flow_frames": 80,
+      "packet": 1024,
+      "descriptor_bytes": 70,
+      "child_gone": true,
+      "physical_identity_artificial": true
+    }
+  ],
+  "actual_root_or_IOKit_or_original_Sony_code_executed": false,
+  "SERVICE_identity_problem_fixed": false
+}

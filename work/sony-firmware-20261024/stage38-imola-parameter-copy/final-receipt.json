@@ -1,0 +1,82 @@
+{
+  "schema": "fx3-stage38-imola-parameter-copy/1",
+  "created_utc": "2026-10-26T00:07:21.881237+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/README.md",
+      "bytes": 7044,
+      "sha256": "ade6f4a00dfb2003cad0cf753cb0dabc4735406c88a03d750c3a9efef9cd16d7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/coordinator-observations.json",
+      "bytes": 1885,
+      "sha256": "61e63e22cca89e581b4a401ee04392ed59ce9bbe36a3a935b0332c52faedbdde"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/goal-status-after.json",
+      "bytes": 68233,
+      "sha256": "943576ff102ff18df272ebc4f1b77085b5a134f543b89134229c7579eb1c3ded"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/goal-status-before.json",
+      "bytes": 64565,
+      "sha256": "61779b0c0295996ef30edf82e2af6e9e210ab95ce077d8e81493b24053a198b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/next-consumer-anchors.json",
+      "bytes": 3719,
+      "sha256": "5c9acccb0f8eafe7e4390f84da90e0463403d97ad678ae4ea152c7fad384164f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/parameter_copy.py",
+      "bytes": 17043,
+      "sha256": "c2bf42ed6a07f259959e02b6721ddb5fdd56cc05add608a35dc421ad30c8b998"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/run-20261025/executed-source.py",
+      "bytes": 17043,
+      "sha256": "c2bf42ed6a07f259959e02b6721ddb5fdd56cc05add608a35dc421ad30c8b998"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/run-20261025/parameter-copy-results.json",
+      "bytes": 2595206,
+      "sha256": "045fe1fc91ae77b8e8170f3c21a4cecc1c7ebb526758777b23a58071822c952a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/run-20261025/source-receipt.json",
+      "bytes": 883,
+      "sha256": "8c4f143ca30282be2fce155993a61861729aae73389e13e8a5ab83cd4a564626"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/run-20261025/summary.json",
+      "bytes": 610,
+      "sha256": "e9306cc764dc98eb83d8c376af93920b84a294cc73ce910b4fe3dc396ce56a04"
+    }
+  ],
+  "previous_manifest_sha256": "e36641ede43d83275f58efba31d8d3c577b9ab219a8de07861489f93d6ab52ff",
+  "scope": "37 original fragments and14 compiled guest prototype calls. Independent extended HEVC construction fragments then original448-byte pool copy/index registration on fixtures;52bytes retain seed. Real input initialization, full builder/valid request, publication hooks/complete consumers/error cleanup, HAL/recording/physical recovery unproved.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage38-imola-parameter-copy/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage38-imola-parameter-copy/goal-status-after.json",
+    "before_sha256": "61779b0c0295996ef30edf82e2af6e9e210ab95ce077d8e81493b24053a198b2",
+    "after_sha256": "943576ff102ff18df272ebc4f1b77085b5a134f543b89134229c7579eb1c3ded",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_bounded_original_and_compiled_code": true,
+    "original_image_RX_unchanged": true,
+    "native_output_or_diagnostic_return_adapters": false,
+    "unbound_runtime_clear_and_unconditional_diagnostic_executed": false,
+    "actual_camera_hook_registration_before_publication_bound": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "valid_whole_Hal_request_hardware_or_restore_verified": false,
+    "camera_loadable_module_or_device_firmware_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 扩展IMOLA参数与池缓冲登记](<work/sony-firmware-20261024/stage38-imola-parameter-copy/README.md>)：原448字节复制/索引保留16M，复选原预置不清副本；52字节初始化及真实消费/归还/HAL/恢复待验证。"
+}

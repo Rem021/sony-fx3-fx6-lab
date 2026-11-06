@@ -1,0 +1,93 @@
+{
+  "status": "RECHECKED_TWO_HISTORICAL_PACKAGE_TOP_AND_NOR_INNER_INVENTORIES",
+  "packages": [
+    {
+      "source": "work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA1Data_ILMEFX3V204.dat",
+      "source_sha256": "774982ecfbeae1cd9d822a2da6599cc390438ae4012b3f9ba8c43e75ec4e9068",
+      "source_bytes": 779108760,
+      "version": "2.04",
+      "model_id": "0x91030080",
+      "outer_CRC32_verified": "0x5aec5feb",
+      "header_CRC32_verified": true,
+      "outer_tar_members": 135,
+      "member_inventory_matches_prior": true,
+      "AP_boot_asset_name_matches": [],
+      "NOR_archive_sha256": "913d1a3271f855b90192d84fbbdb224533c8d8493833d0c194b3d14fdad4dd3f",
+      "NOR_members": [
+        {
+          "name": "loader_nor.bin",
+          "bytes": 101888,
+          "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942"
+        },
+        {
+          "name": "LdrBkupList.txt",
+          "bytes": 650,
+          "sha256": "ae537183ecce42fbe9589c01f7ee4a19929fa2fc1cb09e48eda9ef2ab6f5dd88"
+        },
+        {
+          "name": "pformat_config.txt",
+          "bytes": 1274,
+          "sha256": "21cd5b29dd165c322f5b00bb057802c377ff94af15f95881e150a32130302ece"
+        },
+        {
+          "name": "loader_nor.md5",
+          "bytes": 152,
+          "sha256": "d095931a73e436b17e019aa2a7c6ef56fd4281f63a1d25b50771cb967c17ece3"
+        }
+      ],
+      "checked_plaintext_blocks": 262,
+      "all_plaintext_blocks_checked": false,
+      "source_open_readonly": true
+    },
+    {
+      "source": "work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA2Data_ILMEFX3V205.dat",
+      "source_sha256": "dc411c1e1ea77e1c8614d6045a345d85553e46f60ec9105e6236299a3620740a",
+      "source_bytes": 756424088,
+      "version": "2.05",
+      "model_id": "0x91030080",
+      "outer_CRC32_verified": "0xaf5ffe93",
+      "header_CRC32_verified": true,
+      "outer_tar_members": 134,
+      "member_inventory_matches_prior": true,
+      "AP_boot_asset_name_matches": [],
+      "NOR_archive_sha256": "913d1a3271f855b90192d84fbbdb224533c8d8493833d0c194b3d14fdad4dd3f",
+      "NOR_members": [
+        {
+          "name": "loader_nor.bin",
+          "bytes": 101888,
+          "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942"
+        },
+        {
+          "name": "LdrBkupList.txt",
+          "bytes": 650,
+          "sha256": "ae537183ecce42fbe9589c01f7ee4a19929fa2fc1cb09e48eda9ef2ab6f5dd88"
+        },
+        {
+          "name": "pformat_config.txt",
+          "bytes": 1274,
+          "sha256": "21cd5b29dd165c322f5b00bb057802c377ff94af15f95881e150a32130302ece"
+        },
+        {
+          "name": "loader_nor.md5",
+          "bytes": 152,
+          "sha256": "d095931a73e436b17e019aa2a7c6ef56fd4281f63a1d25b50771cb967c17ece3"
+        }
+      ],
+      "checked_plaintext_blocks": 262,
+      "all_plaintext_blocks_checked": false,
+      "source_open_readonly": true
+    }
+  ],
+  "reader_path": "work/fx3-color-port-20261027/tail-20261028/read_original_fdat.py",
+  "reader_sha256": "459c21661de01e37a1986fb6bfb5f209980f617d064a55e814d7ae810cdd44e9",
+  "AES_wrapper_path": "work/fx3-color-port-20261027/package-20261028/cbc_vectors.py",
+  "AES_wrapper_sha256": "45d4f421585701be1d283a3bac9351fc42f6fbb4388bbb8c82d9b7668f3d8f46",
+  "public_format_url": "https://raw.githubusercontent.com/DavidBuchanan314/fwtool.py/3955d7890fc38daf942bb52827599bfe35de4a14/fwtool/sony/constants.py",
+  "public_format_sha256": "f9ff02a3889b587cd5bad5f4362fb73fee2f8f3591fc3ed6003eb8ac92d0622a",
+  "public_format_preceding_errors": [],
+  "bounded_absence_scope": "Reviewed top-level package names and NOR inner members only; not a proof of global unavailability or all opaque content.",
+  "no_current_body_identity_attestation": true,
+  "original_stage_files_modified": false,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

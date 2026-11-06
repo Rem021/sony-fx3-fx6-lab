@@ -1,0 +1,4 @@
+{
+  "passing_result": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage106-native-MPR-Open-fields/mpr_open.py\", line 202, in main\n    produced=[produce(seed,p) for seed in (0xa5,0xc3) for p in PROFILES]\n              ~~~~~~~^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage106-native-MPR-Open-fields/mpr_open.py\", line 146, in produce\n    assert raw[0x66]==(4 if vpc==1 else 10)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

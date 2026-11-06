@@ -1,0 +1,104 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/run_trial_v22_navigation_review.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/host-terminal-v23/run_trial_v22_navigation_review.py
+@@ -2,8 +2,8 @@
+ """TRY2 local web runner for the validated English, performance, and readiness candidate."""
+ from pathlib import Path
+ import sys
+-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+-sys.path.insert(1, str(Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"))
++sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
++sys.path.insert(1, str(Path(__file__).resolve().parents[7] / "menu-repair-01/runtime"))
+ import argparse
+ import re
+ import datetime
+@@ -30,9 +30,10 @@
+ from gate_input_usability import InputGate,valid_command
+ from file_readback100 import capture as capture_native_file
+ from restore_api103_v2 import restore_native_api
+-
+-ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
+-OUT = Path(__file__).resolve().parents[2]
++from terminal_status_v23 import terminal_summary
++
++ROOT = Path(__file__).resolve().parents[7] / "menu-repair-01/runtime"
++OUT = Path(__file__).resolve().parents[3]
+ HERE = Path(__file__).resolve().parent
+ BASE = ROOT.parent
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+@@ -81,13 +82,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = HERE / 'STATE-v22.json'
++    path = HERE / 'STATE-v23.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = HERE / 'STATE-v22.json.tmp'
++    temp = HERE / 'STATE-v23.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -126,18 +127,18 @@
+         ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
+     if not valid_command(1, 0x1ab, 100, 0, 0, ns.max_steps) or not valid_command(32, 0x30, 100, 31, 0, ns.max_steps):
+         raise RuntimeError('InputGate capacity contract rejected before QEMU startup')
+-    ns.candidate = HERE.parent/'vmopt-20261103-try2-passive-timing-v4/candidate.json'
++    ns.candidate = HERE.parent.parent/'vmopt-20261103-try2-passive-timing-v4/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2navreview-internal-v22' if ns.internal_hoststep else 'try2navreview-web-v22'
++    ns.label = 'try2navreview-internal-v23' if ns.internal_hoststep else 'try2navreview-web-v23'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(HERE.parent / 'vmopt-20261103-try2-passive-timing-v4'):
++    if not candidate_path.is_relative_to(HERE.parent.parent / 'vmopt-20261103-try2-passive-timing-v4'):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+     if digest(candidate_path) != '90adc5fda97a4b26293e4763da1ed3d5eec22eaf2f0115292c1b720c5049e9aa':
+         raise RuntimeError('TRY2 manifest identity changed')
+@@ -155,7 +156,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(HERE.parent / 'vmopt-20261103-try2-passive-timing-v4') or not initrd.resolve().is_relative_to(HERE.parent / 'vmopt-20261103-try2-passive-timing-v4'):
++    if not dtb.resolve().is_relative_to(HERE.parent.parent / 'vmopt-20261103-try2-passive-timing-v4') or not initrd.resolve().is_relative_to(HERE.parent.parent / 'vmopt-20261103-try2-passive-timing-v4'):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+@@ -219,7 +220,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -789,16 +790,16 @@
+                'physical_device_operations': 0, 'remote_network_connections': 0, 'HTTP_loopback_only': True,
+                'scope': 'TRY2 original FX3 menu software model with improved icon and focus presentation; no camera, live view, or exact compositor claim'}
+     (run/'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n')
++    terminal = terminal_summary(receipt)
+     checkpoint({'phase': 'TRY2_COMPLETE_HEALTHY' if health_pass else 'TRY2_COMPLETE_REVIEW_PENDING',
+                 'last_run': str(run), 'current_run': None, 'last_run_immutable': True,
+                 'guest_process': {'pid': receipt['qemu_pid'], 'current_running_pid': None,
+                                   'observer_pid': os.getpid(), 'exit': receipt['qemu_exit'], 'reaped': receipt['process_reaped']},
+                 'inputs_unchanged': unchanged, 'trial_url': None,
+                 'locks': [{'path': x['path'], 'holder': None, 'status': 'released' if x['free_at_close'] else 'held_by_other'} for x in lock_status],
+-                'TRY2': {'health_pass': health_pass, 'last_run': str(run), 'launch': [sys.executable, str(Path(__file__))]}})
+-    final_message = ('启动未完成，模拟器未启动；请查看原始错误和回执。' if p is None else
+-                     '试用已结束，模拟器已退出，资源已回收。' if lifecycle_pass else
+-                     '试用已结束，收尾检查未全部通过，请查看启动终端。')
++                'TRY2': {'health_pass': health_pass, 'last_run': str(run), 'launch': [sys.executable, str(Path(__file__))]},
++                'next_minimal_command': {**terminal, 'argv': [sys.executable, str(Path(__file__)), '--port', str(ns.port)]}})
++    final_message = terminal['status']
+     trial.update(phase='finished', busy=False, result={'health_pass': health_pass, 'qemu_exit': receipt['qemu_exit'],
+                                                     'API16_restored': shutdown.get('API16_restored')},
+                  message=final_message,

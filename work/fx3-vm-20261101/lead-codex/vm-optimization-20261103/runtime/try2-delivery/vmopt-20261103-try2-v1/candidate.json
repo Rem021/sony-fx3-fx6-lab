@@ -1,0 +1,354 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/vmopt-20261103-try2-v1/guest.dtb",
+    "sha256": "872e09351ea03939931886ef1c77ee82ba623d893966423399aa29e2818c1387"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/vmopt-20261103-try2-v1/guest.cpio",
+    "sha256": "502f2be1b575d2031ba9ee999cc23698795a69110297768c3588efb6ccc64caa"
+  },
+  "required_markers": [
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0",
+    "FX3_PRESET_CONTEXT_BOUND",
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS",
+    "FX3_AP89_UUD_DECISION",
+    "FX3_AP89_SCREEN_CREATE",
+    "FX3_AP_IM_ENDMAPS_",
+    "registration_origin=malloc_parent_v1",
+    "FX3_GPE_RESOURCE_BOUND",
+    "FX3_GPE_RESOURCE_REGISTER",
+    "FX3_GPE_SCOPE",
+    "FX3_RM_BOUND",
+    "FX3_RM_FRONT_TRANSFER",
+    "FX3_RM_REPLY_TRANSFER",
+    "FX3_RM_NATIVE_FREE",
+    "FX3_MEDIA_SELFTEST_PASS",
+    "FX3_MEDIA_BOUND module=D",
+    "FX3_MEDIA_FRONT",
+    "FRONT_FULL_BODY",
+    "FX3_MEDIA_START_BRANCH",
+    "FX3_MEDIA_NOTIFY",
+    "FX3_KEY96_READY",
+    "FX3_OSD_FRAME_TARGET_VALID",
+    "FX3_GPE_COMPACTION_BOUND",
+    "FX3_GPE_DRAW_INTERVAL",
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND",
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED",
+    "FX3_KEY96_POLL",
+    "FX3_KEY96_THREAD_BEGIN",
+    "FX3_PANEL_CONFIG_V2_COMMIT",
+    "FX3_PROC97_STATUS_BEGIN",
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN",
+    "FX3_DATE98_KERNEL_OBSERVE_READY",
+    "FX3_DATE99_WORKER_READY",
+    "FX3_DATE99_CONSUMER_BOUND",
+    "FX3_SYNC100_BACKEND_BOUND",
+    "FX3_FILE100_OBSERVER_READY",
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN",
+    "FX3_BACKUP_INSMOD_RC=0",
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0",
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS",
+    "FX3_LDEC103_SELFTEST_RC=0",
+    "FX3_GPE104_LIB_BIND",
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0",
+    "FX3_FILE103_READY_CONFIRMED"
+  ],
+  "scope": "vmopt-20261103-reload-v1: controlled cold restart with exact O_RDONLY generation-4 Backup copy from lifecycle-v1; no host RAM replay; original seed untouched; all other AP105/lifecycle observer bytes unchanged.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true,
+  "input_gate": {
+    "physical": "0x41df00000",
+    "bytes": 65536,
+    "host_write_offset": 8,
+    "host_write_bytes": 12,
+    "magic": "0x3545594b334d5253",
+    "navigation_requires_host_visual_confirmation": true,
+    "no_predefined_sequence": true
+  },
+  "host_step_contract": {
+    "authority": "msg_7eb2cdbf663a",
+    "delete_key": "0x1f8",
+    "whitelist": [
+      "0x3",
+      "0x30",
+      "0x15",
+      "0x1af",
+      "0x1ac",
+      "0x1ab",
+      "0x1f8"
+    ],
+    "physical": "0x41df00008",
+    "bytes": 12,
+    "max_steps": 30,
+    "hold_ms": [
+      50,
+      200
+    ],
+    "audit_proof": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/audits/key-delete-c4/key-delete-proof.json",
+    "audit_sha256": "4ab624e2cc34b99fb21f2ee7996e7f070166ef928cbcb216dbd2b966a27c6020"
+  },
+  "input_diagnostics": {
+    "software_page": "0x41df00040",
+    "record_bytes": 104,
+    "each_poll_latest_counter_and_fields": true,
+    "serial_transition_and_1s_sample": true,
+    "native_receiver_queue_query_interval_seconds": 1,
+    "screen_gate_used": false,
+    "screen_correlates_original_open_log": true,
+    "thread_proc_independent_of_worker": true
+  },
+  "date_observer_contract": {
+    "authority": [
+      "msg_de25f58b89eb",
+      "msg_2c43f8a7ac82"
+    ],
+    "software_output": {
+      "physical": "0x41df01000",
+      "bytes": 24576,
+      "cap": 64,
+      "record_bytes": 320,
+      "native_request_reply_max_bytes": 64
+    },
+    "kernel_target": "0x909005c5",
+    "kernel_bytes": 44,
+    "user_target": "0x80900141",
+    "user_bytes": 32,
+    "reply_or_setter_added": false,
+    "after_return_conditional_not_required_marker": true,
+    "clock_initial_call_and_result": [
+      "0x2b72680",
+      "0x2b72684"
+    ]
+  },
+  "cp_date99_contract": {
+    "authority": "msg_fa0d4b6ae7b5",
+    "original_audit": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/audits/date-service-set/README.md",
+    "schema_proof": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/audits/date-service-set/date-set-proof.json",
+    "proof_sha256": "36d103136d8a7eb71266ce15247ca3ddf3e2c7c40820309784f70da29bc96e4c",
+    "clock_output_physical": "0x41df08000",
+    "bytes": 4096,
+    "clock_header_bytes": 256,
+    "trace_offset": 512,
+    "trace_capacity": 14,
+    "trace_record_bytes": 256,
+    "native_AP_queue_accounting": true,
+    "CP_source": "0x909005c5",
+    "clock_software_only": true,
+    "Backup_write_success_actual_bytes": 1,
+    "parameter_value_target": 0
+  },
+  "ap100_contract": {
+    "authority": [
+      "msg_db11d2266751",
+      "msg_e26a15170c50"
+    ],
+    "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap99-r2-user-backup-nread/candidate.json",
+    "source_alias_destination": true,
+    "file_observer_reservation": {
+      "physical": "0x41d400000",
+      "bytes": 3145728
+    },
+    "original_16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+    "restoration_required": true
+  },
+  "native_Backup_seed": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+    "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+    "bytes": 2229740,
+    "native_bank_checks": [
+      {
+        "offset": 0,
+        "bytes": 857900,
+        "checksum": 25879547,
+        "checksum_valid": true
+      },
+      {
+        "offset": 860160,
+        "bytes": 1369580,
+        "checksum": 155466674,
+        "checksum_valid": true
+      }
+    ]
+  },
+  "conditional_markers": {
+    "FX3_SYNC100_DMA_COPY": "Original operation may not occur when saved setup is already complete; report actual presence separately",
+    "FX3_SYNC100_NATIVE_CALLBACK_RETURN": "Original operation may not occur when saved setup is already complete; report actual presence separately",
+    "FX3_TOUCH100_COMMIT": "Original operation may not occur when saved setup is already complete; report actual presence separately",
+    "FX3_TOUCH100_CONSUMED": "Original operation may not occur when saved setup is already complete; report actual presence separately",
+    "const_alpha=": "Original operation may not occur when saved setup is already complete; report actual presence separately",
+    "FX3_DATE98_LIVE": "Original operation may not occur when saved setup is already complete; report actual presence separately",
+    "FX3_DATE98_TRACE_BOUND": "No ordinary32B set occurs in saved force0 coldboot; native date_cache/type0 civil and original BYBOOT clock init report separately",
+    "empty_clip_noop=1": "Require actual marker only if an otherwise-valid empty clip occurs; guard rejects remain fatal",
+    "approx_tile=repeat_mask_v1": "Required when recognizedP74 tile actually occurs; guarded candidate approximation"
+  },
+  "ap101_contract": {
+    "authority": "msg_ebab9bedf83a",
+    "original_seed_replaced_only_in_new_candidate": true,
+    "RAM_replay_removed": [
+      "simulation/ap89-backup-ram.bin",
+      "simulation/fx3-backup-replay-v1"
+    ],
+    "all_other_simulation_and_original_ELF_bodies_identical": true,
+    "official_language_path": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000845207.html",
+    "constructor_approval": "msg_554068dbc450",
+    "constructor_initial_CP": {
+      "sha256": "b76c2f6c8caf62aa4dd11d0466575f38e12e9b6288d2d003ce326ce5530212e8",
+      "FNV64": "0xee5c1a03bd34104f",
+      "SuspendComp": 1,
+      "only_differences_from_prior_seed": [
+        9,
+        32
+      ],
+      "difference_origin": "original native backupfile_save sets SuspendComp1 and recomputes checksum",
+      "all_algorithms_unchanged": true
+    },
+    "empty_clip_GPE_approval": "msg_a9a7efb598c7",
+    "empty_clip_original_proof": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-empty-clip-original-proof-v2.json",
+      "sha256": "0ab7a08dd17bbae634bbc9f39a10a5641f6eddb4d79a16faa8b271e03d949b01"
+    },
+    "repeat_tile_approval": [
+      "msg_a13ef691c862",
+      "msg_a9a7efb598c7"
+    ],
+    "P74_original_proof": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-P74-original-proof-v1.json",
+      "sha256": "8237b767409843d6172f2225540cbd21045d46590b6bf71526e5546886241029"
+    }
+  },
+  "ap102_contract": {
+    "authority": [
+      "msg_451e29d2c9b9",
+      "msg_7eb2cdbf663a",
+      "msg_2c7707dd92c8",
+      "msg_398ba0ce872e",
+      "msg_3e6f6bab1767"
+    ],
+    "original_proof": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap102-observer-original-proof-v1.json",
+      "sha256": "888b6a66eae39e3124c26e6d6ff7d8d6baf8d388b75ac21892ce586e3e26b6f2"
+    },
+    "baseline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap102-v1-observe/candidate.json",
+    "baseline_SHA256": "4d9293b3fd47ca3ca84020c0eda2eb40fc2ec2614d40b5f146880b5d6b7f2c19",
+    "device_protocols_Backup_pixel_math_native_file_unchanged": true,
+    "adapter_serialization_change": "bounded wait up to500ms per msg_398ba0ce872e",
+    "observer_hash_after_raster_unlock": true,
+    "new_passive_observers": {
+      "simulation/fx3-gpe-observe-v7.so": "fx3-gpe-observe-v24-serial102.so"
+    },
+    "no_new_protocol_responses": true,
+    "no_direct_flush": true,
+    "stages": [
+      "native Area/Date/Time same-value reconfirmation, original full sync/file generation",
+      "ordinary inline On/Off setting from actual menu, close MENU, idle>=60s; RAM/key/native local file save readback"
+    ],
+    "previous_candidate": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap102-r2-offlock-serial/candidate.json",
+      "sha256": "b0cb59106e425024f53f181c6d308ba9e955b4bd27ccb4fedbc4392f22f2088e"
+    }
+  },
+  "ap103_contract": {
+    "authority": "msg_29cd3974555b",
+    "baseline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap102-r3-date-ordinary/candidate.json",
+    "baseline_sha256": "f693609ab5cd9e6cd6f50d63f7dde14b5d9f0eb77db3f1e7fea98407eb8ac3b0",
+    "synthetic_ldec": true,
+    "original_ldec_hw": false,
+    "ABI": {
+      "command": 1,
+      "bytes": 32,
+      "major": 251,
+      "minor": 205,
+      "no_encoded_magic_or_size": true,
+      "no_output_length_writeback": true
+    },
+    "test_reservation": {
+      "physical": "0x41d300000",
+      "bytes": 1048576
+    },
+    "decoder_core": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/ldec-lz77/ldec_soft.c",
+      "sha256": "10eacafe48b4d3c6ff3afcde507619e394294cdf8324dc5e0c7af9d1fd233780"
+    },
+    "guest_selftest_required": true,
+    "malformed_error_mapping_scope": "Original badcmd/channel=-22, copy/allocation/hardwareinvalid=-5; exact malformedhardware stream behavior unproven."
+  },
+  "ap105_contract": {
+    "authority": "msg_719755e33697",
+    "runtime_authority": "msg_4e88c7b0d2b2",
+    "baseline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap103-r2-soft-ldec/candidate.json",
+    "baseline_SHA256": "5d2155cb3e208ba182caa1c57e8c03f05b140e575ec9ea7c9b8e2743993aefe7",
+    "performance_so": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v26-perf-ap105.so",
+      "sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4"
+    },
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-observe-v26-perf.so",
+    "accepted_host_receipt": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/build/test.json",
+      "sha256": "39242a00671a33c54e3cfd2ee00829ab3c2647c0458bbe5c2fa2fc444e236c47"
+    },
+    "only_changed_CPIO_member": "simulation/fx3-gpe-observe-v7.so relative to AP103 baseline; lifecycle-v1 additionally changes only simulation/fx3-osd-lifetime-v2.so relative to AP105",
+    "init_and_original_shutdown_script_unchanged": true,
+    "software_LDEC_unchanged": true,
+    "texture_observe": 0,
+    "callback_cache": 0,
+    "GDB_CPU_breakpoints": 0,
+    "GDB_register_reads": 0,
+    "native_receive_budget_unchanged_ms": 5000,
+    "optional_profile104_NOT_overlaid": true,
+    "runtime_acceptance_pending": true
+  },
+  "lifecycle_v1_contract": {
+    "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap105-v1-gpe-perf/candidate.json",
+    "base_sha256": "0c4fd429c0c506c285895bdad87fd2bff78babd0db89b597932525b869f7ed7c",
+    "changed_CPIO_member": [
+      "simulation/fx3-osd-lifetime-v2.so"
+    ],
+    "old_osd_so_sha256": "1ea2dad0d002ec2cbb8404b5dd1ba03d5a413f4ac7949cd6aafae2f1330d07f5",
+    "new_osd_so_sha256": "267629249407e7d3f319647330d45a0db73c5be0fae3b6fa302594b044f8f468",
+    "native_receive_budget_unchanged_ms": 5000,
+    "no_new_ack_or_free": true,
+    "original_seed_unchanged": true
+  },
+  "cold_reload_contract": {
+    "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-lifecycle-v1/candidate.json",
+    "base_sha256": "d92d9bbfce284ac5684e5c3ef29e78ca7cad60fa9d5faa625768b3267b5b18b2",
+    "source_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/runs/vmopt-20261103-lifecycle-guest18-1da10e34",
+    "source_O_RDONLY_copy": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/runs/vmopt-20261103-lifecycle-guest18-1da10e34/Backup-native-file-date-closed-idle60.bin",
+    "source_sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+    "fixed_copy": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+    "fixed_sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+    "generation": 4,
+    "only_changed_CPIO_member": [
+      "setting/Backup.bin"
+    ],
+    "original_seed_untouched": true,
+    "no_host_RAM_replay": true,
+    "prior_run_exited_reaped_restored_locks_released": true
+  },
+  "try2_contract": {
+    "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/candidate.json",
+    "base_sha256": "51ad68c282ad7e6adb88e31b25d714a55279dc35cd125dcbb1fd1a1c2e651687",
+    "readiness_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/prepare_candidate104_v2.py",
+    "readiness_source_sha256": "a01a6b3a81ba88195497e42c15248b7eac96a1a8079961544f03eae5ab19cdae",
+    "observer_v2_sha256": "044d08549217523c645035e02ae74b1e76b73db17a61d13b0ff4ecd05a3987e0",
+    "ready_before_CP_binding": true,
+    "matching_live_PID": true,
+    "original_guest_receive_timeout_ms": 5000,
+    "original_seed_untouched": true,
+    "changed_existing_CPIO_member": [
+      "init"
+    ],
+    "added_CPIO_member": [
+      "simulation/fx3-file100-observer-v2"
+    ],
+    "DTB_only_initrd_end": true
+  }
+}

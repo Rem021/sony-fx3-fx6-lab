@@ -1,0 +1,1020 @@
+{
+  "upm_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+  "observed_fault_pc_text": "0xabd8",
+  "SCU_native_literals": {},
+  "consumer": [
+    {
+      "va": "0xab9c",
+      "bytes": "00000000",
+      "instruction": "udf #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xaba0",
+      "bytes": "fd7bbea9",
+      "instruction": "stp x29, x30, [sp, #-0x20]!",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xaba4",
+      "bytes": "01008012",
+      "instruction": "mov w1, #-1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xaba8",
+      "bytes": "fd030091",
+      "instruction": "mov x29, sp",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabac",
+      "bytes": "f30b00f9",
+      "instruction": "str x19, [sp, #0x10]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabb0",
+      "bytes": "73178052",
+      "instruction": "mov w19, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabb4",
+      "bytes": "5312a072",
+      "instruction": "movk w19, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabb8",
+      "bytes": "e003132a",
+      "instruction": "mov w0, w19",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabbc",
+      "bytes": "00000094",
+      "instruction": "bl #0xabbc",
+      "reloc_symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "va": "0xabc0",
+      "bytes": "e003132a",
+      "instruction": "mov w0, w19",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabc4",
+      "bytes": "00000094",
+      "instruction": "bl #0xabc4",
+      "reloc_symbol": "osal_sig_sem"
+    },
+    {
+      "va": "0xabc8",
+      "bytes": "9f3e03d5",
+      "instruction": "dsb st",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabcc",
+      "bytes": "61158e92",
+      "instruction": "mov x1, #-0x70ac",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabd0",
+      "bytes": "20208052",
+      "instruction": "mov w0, #0x101",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabd4",
+      "bytes": "0127bef2",
+      "instruction": "movk x1, #0xf138, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabd8",
+      "bytes": "200000b9",
+      "instruction": "str w0, [x1]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabdc",
+      "bytes": "00008052",
+      "instruction": "mov w0, #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabe0",
+      "bytes": "f30b40f9",
+      "instruction": "ldr x19, [sp, #0x10]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabe4",
+      "bytes": "fd7bc2a8",
+      "instruction": "ldp x29, x30, [sp], #0x20",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabe8",
+      "bytes": "c0035fd6",
+      "instruction": "ret ",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabec",
+      "bytes": "1f2003d5",
+      "instruction": "nop ",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabf0",
+      "bytes": "fd7bbca9",
+      "instruction": "stp x29, x30, [sp, #-0x40]!",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabf4",
+      "bytes": "fd030091",
+      "instruction": "mov x29, sp",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabf8",
+      "bytes": "f35301a9",
+      "instruction": "stp x19, x20, [sp, #0x10]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xabfc",
+      "bytes": "f403002a",
+      "instruction": "mov w20, w0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac00",
+      "bytes": "60178052",
+      "instruction": "mov w0, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac04",
+      "bytes": "f51300f9",
+      "instruction": "str x21, [sp, #0x20]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac08",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac0c",
+      "bytes": "f503012a",
+      "instruction": "mov w21, w1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac10",
+      "bytes": "01008012",
+      "instruction": "mov w1, #-1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac14",
+      "bytes": "00000094",
+      "instruction": "bl #0xac14",
+      "reloc_symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "va": "0xac18",
+      "bytes": "60178052",
+      "instruction": "mov w0, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac1c",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac20",
+      "bytes": "00000094",
+      "instruction": "bl #0xac20",
+      "reloc_symbol": "osal_sig_sem"
+    },
+    {
+      "va": "0xac24",
+      "bytes": "20080058",
+      "instruction": "ldr x0, #0xad28",
+      "reloc_symbol": null,
+      "literal_u64": "0x0"
+    },
+    {
+      "va": "0xac28",
+      "bytes": "00004039",
+      "instruction": "ldrb w0, [x0]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac2c",
+      "bytes": "60040035",
+      "instruction": "cbnz w0, #0xacb8",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac30",
+      "bytes": "9f3e03d5",
+      "instruction": "dsb st",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac34",
+      "bytes": "e1158e92",
+      "instruction": "mov x1, #-0x70b0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac38",
+      "bytes": "20208052",
+      "instruction": "mov w0, #0x101",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac3c",
+      "bytes": "0127bef2",
+      "instruction": "movk x1, #0xf138, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac40",
+      "bytes": "200000b9",
+      "instruction": "str w0, [x1]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac44",
+      "bytes": "f3138e92",
+      "instruction": "mov x19, #-0x70a0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac48",
+      "bytes": "1327bef2",
+      "instruction": "movk x19, #0xf138, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac4c",
+      "bytes": "02000014",
+      "instruction": "b #0xac54",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac50",
+      "bytes": "00000094",
+      "instruction": "bl #0xac50",
+      "reloc_symbol": "schedule"
+    },
+    {
+      "va": "0xac54",
+      "bytes": "600240b9",
+      "instruction": "ldr w0, [x19]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac58",
+      "bytes": "9f3d03d5",
+      "instruction": "dsb ld",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac5c",
+      "bytes": "a03f00b9",
+      "instruction": "str w0, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac60",
+      "bytes": "a03f40b9",
+      "instruction": "ldr w0, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac64",
+      "bytes": "60ff4737",
+      "instruction": "tbnz w0, #8, #0xac50",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac68",
+      "bytes": "9422152a",
+      "instruction": "orr w20, w20, w21, lsl #8",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac6c",
+      "bytes": "b43f00b9",
+      "instruction": "str w20, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac70",
+      "bytes": "9f3e03d5",
+      "instruction": "dsb st",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac74",
+      "bytes": "61148e92",
+      "instruction": "mov x1, #-0x70a4",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac78",
+      "bytes": "a03f40b9",
+      "instruction": "ldr w0, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac7c",
+      "bytes": "0127bef2",
+      "instruction": "movk x1, #0xf138, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac80",
+      "bytes": "200000b9",
+      "instruction": "str w0, [x1]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac84",
+      "bytes": "9f3e03d5",
+      "instruction": "dsb st",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac88",
+      "bytes": "e1148e92",
+      "instruction": "mov x1, #-0x70a8",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac8c",
+      "bytes": "20008052",
+      "instruction": "mov w0, #1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac90",
+      "bytes": "0127bef2",
+      "instruction": "movk x1, #0xf138, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac94",
+      "bytes": "200000b9",
+      "instruction": "str w0, [x1]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac98",
+      "bytes": "bf02006b",
+      "instruction": "cmp w21, w0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xac9c",
+      "bytes": "a0010054",
+      "instruction": "b.eq #0xacd0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xaca0",
+      "bytes": "e0138e92",
+      "instruction": "mov x0, #-0x70a0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xaca4",
+      "bytes": "0027bef2",
+      "instruction": "movk x0, #0xf138, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xaca8",
+      "bytes": "000040b9",
+      "instruction": "ldr w0, [x0]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacac",
+      "bytes": "9f3d03d5",
+      "instruction": "dsb ld",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacb0",
+      "bytes": "a03f00b9",
+      "instruction": "str w0, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacb4",
+      "bytes": "a03f40b9",
+      "instruction": "ldr w0, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacb8",
+      "bytes": "f35341a9",
+      "instruction": "ldp x19, x20, [sp, #0x10]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacbc",
+      "bytes": "00008052",
+      "instruction": "mov w0, #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacc0",
+      "bytes": "f51340f9",
+      "instruction": "ldr x21, [sp, #0x20]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacc4",
+      "bytes": "fd7bc4a8",
+      "instruction": "ldp x29, x30, [sp], #0x40",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacc8",
+      "bytes": "c0035fd6",
+      "instruction": "ret ",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xaccc",
+      "bytes": "1f2003d5",
+      "instruction": "nop ",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacd0",
+      "bytes": "f5158e92",
+      "instruction": "mov x21, #-0x70b0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacd4",
+      "bytes": "73178052",
+      "instruction": "mov w19, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacd8",
+      "bytes": "1527bef2",
+      "instruction": "movk x21, #0xf138, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacdc",
+      "bytes": "5312a072",
+      "instruction": "movk w19, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xace0",
+      "bytes": "34208052",
+      "instruction": "mov w20, #0x101",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xace4",
+      "bytes": "02000014",
+      "instruction": "b #0xacec",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xace8",
+      "bytes": "00000094",
+      "instruction": "bl #0xace8",
+      "reloc_symbol": "schedule"
+    },
+    {
+      "va": "0xacec",
+      "bytes": "a20240b9",
+      "instruction": "ldr w2, [x21]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacf0",
+      "bytes": "9f3d03d5",
+      "instruction": "dsb ld",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacf4",
+      "bytes": "e003132a",
+      "instruction": "mov w0, w19",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacf8",
+      "bytes": "01008012",
+      "instruction": "mov w1, #-1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xacfc",
+      "bytes": "a23f00b9",
+      "instruction": "str w2, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad00",
+      "bytes": "00000094",
+      "instruction": "bl #0xad00",
+      "reloc_symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "va": "0xad04",
+      "bytes": "e003132a",
+      "instruction": "mov w0, w19",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad08",
+      "bytes": "00000094",
+      "instruction": "bl #0xad08",
+      "reloc_symbol": "osal_sig_sem"
+    },
+    {
+      "va": "0xad0c",
+      "bytes": "a03f40b9",
+      "instruction": "ldr w0, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad10",
+      "bytes": "a03f40b9",
+      "instruction": "ldr w0, [x29, #0x3c]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad14",
+      "bytes": "0000140a",
+      "instruction": "and w0, w0, w20",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad18",
+      "bytes": "1f040071",
+      "instruction": "cmp w0, #1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad1c",
+      "bytes": "61feff54",
+      "instruction": "b.ne #0xace8",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad20",
+      "bytes": "e0ffff17",
+      "instruction": "b #0xaca0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad24",
+      "bytes": "1f2003d5",
+      "instruction": "nop ",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad28",
+      "bytes": "00000000",
+      "instruction": "udf #0",
+      "reloc_symbol": ""
+    },
+    {
+      "va": "0xad2c",
+      "bytes": "00000000",
+      "instruction": "udf #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad30",
+      "bytes": "fd7bbea9",
+      "instruction": "stp x29, x30, [sp, #-0x20]!",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad34",
+      "bytes": "fd030091",
+      "instruction": "mov x29, sp",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad38",
+      "bytes": "f35301a9",
+      "instruction": "stp x19, x20, [sp, #0x10]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad3c",
+      "bytes": "00000094",
+      "instruction": "bl #0xad3c",
+      "reloc_symbol": "k_upm_get_ldr_mode"
+    },
+    {
+      "va": "0xad40",
+      "bytes": "1f2c0071",
+      "instruction": "cmp w0, #0xb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad44",
+      "bytes": "01040051",
+      "instruction": "sub w1, w0, #1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad48",
+      "bytes": "0418507a",
+      "instruction": "ccmp w0, #0x10, #4, ne",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad4c",
+      "bytes": "2018417a",
+      "instruction": "ccmp w1, #1, #0, ne",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad50",
+      "bytes": "93060058",
+      "instruction": "ldr x19, #0xae20",
+      "reloc_symbol": null,
+      "literal_u64": "0x0"
+    },
+    {
+      "va": "0xad54",
+      "bytes": "69020054",
+      "instruction": "b.ls #0xada0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad58",
+      "bytes": "60178052",
+      "instruction": "mov w0, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad5c",
+      "bytes": "22008052",
+      "instruction": "mov w2, #1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad60",
+      "bytes": "01008012",
+      "instruction": "mov w1, #-1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad64",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad68",
+      "bytes": "62020039",
+      "instruction": "strb w2, [x19]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad6c",
+      "bytes": "00000094",
+      "instruction": "bl #0xad6c",
+      "reloc_symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "va": "0xad70",
+      "bytes": "60178052",
+      "instruction": "mov w0, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad74",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad78",
+      "bytes": "00000094",
+      "instruction": "bl #0xad78",
+      "reloc_symbol": "osal_sig_sem"
+    },
+    {
+      "va": "0xad7c",
+      "bytes": "60024039",
+      "instruction": "ldrb w0, [x19]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad80",
+      "bytes": "60000034",
+      "instruction": "cbz w0, #0xad8c",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad84",
+      "bytes": "60064039",
+      "instruction": "ldrb w0, [x19, #1]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad88",
+      "bytes": "c0020035",
+      "instruction": "cbnz w0, #0xade0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad8c",
+      "bytes": "85ffff97",
+      "instruction": "bl #0xaba0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad90",
+      "bytes": "00008052",
+      "instruction": "mov w0, #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad94",
+      "bytes": "f35341a9",
+      "instruction": "ldp x19, x20, [sp, #0x10]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad98",
+      "bytes": "fd7bc2a8",
+      "instruction": "ldp x29, x30, [sp], #0x20",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xad9c",
+      "bytes": "c0035fd6",
+      "instruction": "ret ",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xada0",
+      "bytes": "e10313aa",
+      "instruction": "mov x1, x19",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xada4",
+      "bytes": "e0038052",
+      "instruction": "mov w0, #0x1f",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xada8",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadac",
+      "bytes": "00000094",
+      "instruction": "bl #0xadac",
+      "reloc_symbol": "Backup_read"
+    },
+    {
+      "va": "0xadb0",
+      "bytes": "f403002a",
+      "instruction": "mov w20, w0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadb4",
+      "bytes": "60178052",
+      "instruction": "mov w0, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadb8",
+      "bytes": "01008012",
+      "instruction": "mov w1, #-1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadbc",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadc0",
+      "bytes": "00000094",
+      "instruction": "bl #0xadc0",
+      "reloc_symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "va": "0xadc4",
+      "bytes": "60178052",
+      "instruction": "mov w0, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadc8",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadcc",
+      "bytes": "00000094",
+      "instruction": "bl #0xadcc",
+      "reloc_symbol": "osal_sig_sem"
+    },
+    {
+      "va": "0xadd0",
+      "bytes": "74fdff36",
+      "instruction": "tbz w20, #0x1f, #0xad7c",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadd4",
+      "bytes": "20008052",
+      "instruction": "mov w0, #1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadd8",
+      "bytes": "60020039",
+      "instruction": "strb w0, [x19]",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xaddc",
+      "bytes": "eaffff17",
+      "instruction": "b #0xad84",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xade0",
+      "bytes": "60178052",
+      "instruction": "mov w0, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xade4",
+      "bytes": "01008012",
+      "instruction": "mov w1, #-1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xade8",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadec",
+      "bytes": "00000094",
+      "instruction": "bl #0xadec",
+      "reloc_symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "va": "0xadf0",
+      "bytes": "60178052",
+      "instruction": "mov w0, #0xbb",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadf4",
+      "bytes": "4012a072",
+      "instruction": "movk w0, #0x92, lsl #16",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xadf8",
+      "bytes": "00000094",
+      "instruction": "bl #0xadf8",
+      "reloc_symbol": "osal_sig_sem"
+    },
+    {
+      "va": "0xadfc",
+      "bytes": "23008052",
+      "instruction": "mov w3, #1",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xae00",
+      "bytes": "05008052",
+      "instruction": "mov w5, #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xae04",
+      "bytes": "e103032a",
+      "instruction": "mov w1, w3",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xae08",
+      "bytes": "040080d2",
+      "instruction": "mov x4, #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xae0c",
+      "bytes": "02008052",
+      "instruction": "mov w2, #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xae10",
+      "bytes": "00008052",
+      "instruction": "mov w0, #0",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xae14",
+      "bytes": "00000094",
+      "instruction": "bl #0xae14",
+      "reloc_symbol": "upm_blog_writeonce"
+    },
+    {
+      "va": "0xae18",
+      "bytes": "600c8012",
+      "instruction": "mov w0, #-0x64",
+      "reloc_symbol": null
+    },
+    {
+      "va": "0xae1c",
+      "bytes": "deffff17",
+      "instruction": "b #0xad94",
+      "reloc_symbol": null
+    }
+  ],
+  "sony_header": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/scu-model/regs-scu.h",
+    "sha256": "878e3d1752b72e3bda2a2fdba65a6cc9e82bda20b7fd0d794bd3163dae9eb1af",
+    "DATA": 0,
+    "SET": 4,
+    "CLR": 8
+  },
+  "boundary": "Restricted virtual AP request bank INFERRED from native consumer; generic SCU DATA/SET/CLR header does not prove f50/f54/f58/f5c/f60 handshake layout. No physical effects/CP ACK/firmware replies.",
+  "native_computed_addresses": [
+    {
+      "instruction_va": "0xabd4",
+      "register": "x1",
+      "computed_value": "0xfffffffff1388f54"
+    },
+    {
+      "instruction_va": "0xac3c",
+      "register": "x1",
+      "computed_value": "0xfffffffff1388f50"
+    },
+    {
+      "instruction_va": "0xac48",
+      "register": "x19",
+      "computed_value": "0xfffffffff1388f60"
+    },
+    {
+      "instruction_va": "0xac7c",
+      "register": "x1",
+      "computed_value": "0xfffffffff1388f5c"
+    },
+    {
+      "instruction_va": "0xac90",
+      "register": "x1",
+      "computed_value": "0xfffffffff1388f58"
+    },
+    {
+      "instruction_va": "0xaca4",
+      "register": "x0",
+      "computed_value": "0xfffffffff1388f60"
+    },
+    {
+      "instruction_va": "0xacd8",
+      "register": "x21",
+      "computed_value": "0xfffffffff1388f50"
+    }
+  ]
+}

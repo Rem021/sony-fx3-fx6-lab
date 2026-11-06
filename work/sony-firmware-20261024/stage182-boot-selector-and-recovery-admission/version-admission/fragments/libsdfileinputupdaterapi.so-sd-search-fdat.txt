@@ -1,0 +1,161 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0xa0e8, 0xa360) raw slice SHA256 8ae509ad0a6421fdb40c6bdc5b6888c712a5786ca339f24253a8890a62c0ee6e
+    a0e8: a9b87bfd     	stp	x29, x30, [sp, #-0x80]!
+    a0ec: 910003fd     	mov	x29, sp
+    a0f0: a90363f7     	stp	x23, x24, [sp, #0x30]
+    a0f4: aa0003f8     	mov	x24, x0
+    a0f8: 12800ec0     	mov	w0, #-0x77              // =-119
+    a0fc: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    a100: aa0103f6     	mov	x22, x1
+    a104: 528008c1     	mov	w1, #0x46               // =70
+    a108: 3901c3a0     	strb	w0, [x29, #0x70]
+    a10c: 52800aa0     	mov	w0, #0x55               // =85
+    a110: 3901cba1     	strb	w1, [x29, #0x72]
+    a114: 52800341     	mov	w1, #0x1a               // =26
+    a118: 3901c7a0     	strb	w0, [x29, #0x71]
+    a11c: 3901cfa0     	strb	w0, [x29, #0x73]
+    a120: 528001a0     	mov	w0, #0xd                // =13
+    a124: 3901dba1     	strb	w1, [x29, #0x76]
+    a128: d2800001     	mov	x1, #0x0                // =0
+    a12c: 3901d3a0     	strb	w0, [x29, #0x74]
+    a130: 52800140     	mov	w0, #0xa                // =10
+    a134: a90153f3     	stp	x19, x20, [sp, #0x10]
+    a138: 9101a3b3     	add	x19, x29, #0x68
+    a13c: 3901d7a0     	strb	w0, [x29, #0x75]
+    a140: 3901dfa0     	strb	w0, [x29, #0x77]
+    a144: aa1603e0     	mov	x0, x22
+    a148: a9046bf9     	stp	x25, x26, [sp, #0x40]
+    a14c: f90037bf     	str	xzr, [x29, #0x68]
+    a150: f9002bfb     	str	x27, [sp, #0x50]
+    a154: 97fff3c3     	bl	0x7060 <Updater::FsysFileHandler::Seek(long)@plt>
+    a158: aa1303e1     	mov	x1, x19
+    a15c: aa1603e0     	mov	x0, x22
+    a160: d2800102     	mov	x2, #0x8                // =8
+    a164: 97fff447     	bl	0x7280 <Updater::FsysFileHandler::Read(void*, unsigned long)@plt>
+    a168: aa1303e0     	mov	x0, x19
+    a16c: 9101c3a1     	add	x1, x29, #0x70
+    a170: d2800102     	mov	x2, #0x8                // =8
+    a174: b0000013     	adrp	x19, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a178: 97fff412     	bl	0x71c0 <memcmp@plt>
+    a17c: 34000300     	cbz	w0, 0xa1dc <Updater::SDUUDConditionChecker::searchFDAT(Updater::FsysFileHandler&)+0xf4>
+    a180: 97fff50c     	bl	0x75b0 <__errno_location@plt>
+    a184: b9400004     	ldr	w4, [x0]
+    a188: 52800054     	mov	w20, #0x2               // =2
+    a18c: 52800e03     	mov	w3, #0x70               // =112
+    a190: 72a00074     	movk	w20, #0x3, lsl #16
+    a194: 90000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    a198: 9112d662     	add	x2, x19, #0x4b5
+    a19c: 2a1403e1     	mov	w1, w20
+    a1a0: 913e9000     	add	x0, x0, #0xfa4
+    a1a4: 97fff5db     	bl	0x7910 <printf@plt>
+    a1a8: d2800200     	mov	x0, #0x10               // =16
+    a1ac: 97fff3fd     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    a1b0: b9000814     	str	w20, [x0, #0x8]
+    a1b4: f0000081     	adrp	x1, 0x1d000
+    a1b8: f0000082     	adrp	x2, 0x1d000
+    a1bc: 3900301f     	strb	wzr, [x0, #0xc]
+    a1c0: f947a821     	ldr	x1, [x1, #0xf50]
+    a1c4: f947b842     	ldr	x2, [x2, #0xf70]
+    a1c8: 91004021     	add	x1, x1, #0x10
+    a1cc: f9000001     	str	x1, [x0]
+    a1d0: f0000081     	adrp	x1, 0x1d000
+    a1d4: f947e421     	ldr	x1, [x1, #0xfc8]
+    a1d8: 97fff576     	bl	0x77b0 <__cxa_throw@plt>
+    a1dc: 910203b7     	add	x23, x29, #0x80
+    a1e0: b0000019     	adrp	x25, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a1e4: 91108339     	add	x25, x25, #0x420
+    a1e8: d2800115     	mov	x21, #0x8               // =8
+    a1ec: f81f8eff     	str	xzr, [x23, #-0x8]!
+    a1f0: 910012fb     	add	x27, x23, #0x4
+    a1f4: aa1703e1     	mov	x1, x23
+    a1f8: aa1603e0     	mov	x0, x22
+    a1fc: d2800102     	mov	x2, #0x8                // =8
+    a200: 97fff420     	bl	0x7280 <Updater::FsysFileHandler::Read(void*, unsigned long)@plt>
+    a204: f100201f     	cmp	x0, #0x8
+    a208: aa0003fa     	mov	x26, x0
+    a20c: 540000e0     	b.eq	0xa228 <Updater::SDUUDConditionChecker::searchFDAT(Updater::FsysFileHandler&)+0x140>
+    a210: 97fff4e8     	bl	0x75b0 <__errno_location@plt>
+    a214: 52800254     	mov	w20, #0x12              // =18
+    a218: 72a00074     	movk	w20, #0x3, lsl #16
+    a21c: 52800f63     	mov	w3, #0x7b               // =123
+    a220: b9400004     	ldr	w4, [x0]
+    a224: 17ffffdc     	b	0xa194 <Updater::SDUUDConditionChecker::searchFDAT(Updater::FsysFileHandler&)+0xac>
+    a228: 3941e7a0     	ldrb	w0, [x29, #0x79]
+    a22c: 3941ebb4     	ldrb	w20, [x29, #0x7a]
+    a230: 3941efa1     	ldrb	w1, [x29, #0x7b]
+    a234: 53103c00     	lsl	w0, w0, #16
+    a238: 0b142014     	add	w20, w0, w20, lsl #8
+    a23c: 3941e3a0     	ldrb	w0, [x29, #0x78]
+    a240: 0b006020     	add	w0, w1, w0, lsl #24
+    a244: 0b000294     	add	w20, w20, w0
+    a248: f9400b00     	ldr	x0, [x24, #0x10]
+    a24c: f9400001     	ldr	x1, [x0]
+    a250: b9007bb4     	str	w20, [x29, #0x78]
+    a254: f9401c21     	ldr	x1, [x1, #0x38]
+    a258: d63f0020     	blr	x1
+    a25c: eb34401f     	cmp	x0, w20, uxtw
+    a260: 54000222     	b.hs	0xa2a4 <Updater::SDUUDConditionChecker::searchFDAT(Updater::FsysFileHandler&)+0x1bc>
+    a264: f9400b00     	ldr	x0, [x24, #0x10]
+    a268: 52800054     	mov	w20, #0x2               // =2
+    a26c: b9407bb5     	ldr	w21, [x29, #0x78]
+    a270: 72a00074     	movk	w20, #0x3, lsl #16
+    a274: f9400001     	ldr	x1, [x0]
+    a278: f9401c21     	ldr	x1, [x1, #0x38]
+    a27c: d63f0020     	blr	x1
+    a280: aa0003e5     	mov	x5, x0
+    a284: b0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a288: 2a1503e4     	mov	w4, w21
+    a28c: 9112d662     	add	x2, x19, #0x4b5
+    a290: 2a1403e1     	mov	w1, w20
+    a294: 910ee800     	add	x0, x0, #0x3ba
+    a298: 52801043     	mov	w3, #0x82               // =130
+    a29c: 97fff59d     	bl	0x7910 <printf@plt>
+    a2a0: 17ffffc2     	b	0xa1a8 <Updater::SDUUDConditionChecker::searchFDAT(Updater::FsysFileHandler&)+0xc0>
+    a2a4: aa1903e1     	mov	x1, x25
+    a2a8: aa1b03e0     	mov	x0, x27
+    a2ac: d2800082     	mov	x2, #0x4                // =4
+    a2b0: 97fff3c4     	bl	0x71c0 <memcmp@plt>
+    a2b4: 34000220     	cbz	w0, 0xa2f8 <Updater::SDUUDConditionChecker::searchFDAT(Updater::FsysFileHandler&)+0x210>
+    a2b8: b9407ba0     	ldr	w0, [x29, #0x78]
+    a2bc: 91002000     	add	x0, x0, #0x8
+    a2c0: 8b0002b5     	add	x21, x21, x0
+    a2c4: aa1603e0     	mov	x0, x22
+    a2c8: aa1503e1     	mov	x1, x21
+    a2cc: 97fff365     	bl	0x7060 <Updater::FsysFileHandler::Seek(long)@plt>
+    a2d0: b0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a2d4: aa1a03e5     	mov	x5, x26
+    a2d8: 294f1ba7     	ldp	w7, w6, [x29, #0x78]
+    a2dc: aa1503e4     	mov	x4, x21
+    a2e0: 9112d662     	add	x2, x19, #0x4b5
+    a2e4: 91118800     	add	x0, x0, #0x462
+    a2e8: 528011a3     	mov	w3, #0x8d               // =141
+    a2ec: 52800001     	mov	w1, #0x0                // =0
+    a2f0: 97fff588     	bl	0x7910 <printf@plt>
+    a2f4: 17ffffc0     	b	0xa1f4 <Updater::SDUUDConditionChecker::searchFDAT(Updater::FsysFileHandler&)+0x10c>
+    a2f8: 9112d673     	add	x19, x19, #0x4b5
+    a2fc: b0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a300: aa1303e2     	mov	x2, x19
+    a304: 91109400     	add	x0, x0, #0x425
+    a308: 528010c3     	mov	w3, #0x86               // =134
+    a30c: 52800001     	mov	w1, #0x0                // =0
+    a310: 97fff580     	bl	0x7910 <printf@plt>
+    a314: f9400b00     	ldr	x0, [x24, #0x10]
+    a318: f9400001     	ldr	x1, [x0]
+    a31c: f9405422     	ldr	x2, [x1, #0xa8]
+    a320: b9407ba1     	ldr	w1, [x29, #0x78]
+    a324: d63f0040     	blr	x2
+    a328: b0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a32c: aa1303e2     	mov	x2, x19
+    a330: 91111400     	add	x0, x0, #0x445
+    a334: 52801223     	mov	w3, #0x91               // =145
+    a338: 52800001     	mov	w1, #0x0                // =0
+    a33c: 97fff575     	bl	0x7910 <printf@plt>
+    a340: f9402bfb     	ldr	x27, [sp, #0x50]
+    a344: aa1503e0     	mov	x0, x21
+    a348: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    a34c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    a350: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    a354: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+    a358: a8c87bfd     	ldp	x29, x30, [sp], #0x80
+    a35c: d65f03c0     	ret

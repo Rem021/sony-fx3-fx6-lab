@@ -1,0 +1,329 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+  "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+  "evidence_level": "FX6 original file static only; no FX3 runtime, VM, cold boot, or camera claim",
+  "model_id": "0x3662",
+  "diagnostic_string_va": "0x25364f8",
+  "diagnostic_string": "static void model::model_extern::extern_BKID_APP_EXTERN_BASE_ISO()",
+  "enum_jump_table_va": "0x2535dac",
+  "enum_jump_table_raw": "2500101825",
+  "enum_case_target": {
+    "0": "0x1a68428",
+    "1": "0x1a68394",
+    "2": "0x1a683d4",
+    "3": "0x1a683f4",
+    "4": "0x1a68428"
+  },
+  "model_table_base": "0x29c7668",
+  "slots": [
+    {
+      "slot": "+0x0",
+      "va": "0x2a6a8c8",
+      "file_offset": "0x2a5a8c8",
+      "raw_le": "dc6c470100000000",
+      "pre_relocation_target": "0x1476cdc",
+      "relocation": "R_AARCH64_RELATIVE"
+    },
+    {
+      "slot": "+0x10",
+      "va": "0x2a6a8d8",
+      "file_offset": "0x2a5a8d8",
+      "raw_le": "7c1e450100000000",
+      "pre_relocation_target": "0x1451e7c",
+      "relocation": "R_AARCH64_RELATIVE"
+    },
+    {
+      "slot": "+0x20",
+      "va": "0x2a6a8e8",
+      "file_offset": "0x2a5a8e8",
+      "raw_le": "941e450100000000",
+      "pre_relocation_target": "0x1451e94",
+      "relocation": "R_AARCH64_RELATIVE"
+    }
+  ],
+  "global_value_va": "0x4ed22d8",
+  "global_mirror_va": "0x4ed22e0",
+  "first_unresolved_runtime_edge": {
+    "lookup_call_va": "0x113469c",
+    "conditional_miss_va": "0x11346a0",
+    "successor_id_read_va": "0x11346cc",
+    "successor_dispatch_call_va": "0x11346d4",
+    "reason": "successor ID is read from runtime registry entry returned by lookup; original file does not fix entry presence or ID"
+  },
+  "ipc_field_length_consumer": "unknown; no direct IPC boundary established from this edge",
+  "instructions": [
+    {
+      "va": "0x1a68344",
+      "file_offset": "0x1a68344",
+      "raw_le": "fd7bb9a9",
+      "word": "a9b97bfd",
+      "meaning": "producer function prologue"
+    },
+    {
+      "va": "0x1a6836c",
+      "file_offset": "0x1a6836c",
+      "raw_le": "4fd7e997",
+      "word": "97e9d74f",
+      "meaning": "enum-pointer getter call"
+    },
+    {
+      "va": "0x1a68370",
+      "file_offset": "0x1a68370",
+      "raw_le": "010040b9",
+      "word": "b9400001",
+      "meaning": "enum read [x0] into w1"
+    },
+    {
+      "va": "0x1a68384",
+      "file_offset": "0x1a68384",
+      "raw_le": "00486138",
+      "word": "38614800",
+      "meaning": "jump-table byte read"
+    },
+    {
+      "va": "0x1a68390",
+      "file_offset": "0x1a68390",
+      "raw_le": "00001fd6",
+      "word": "d61f0000",
+      "meaning": "enum branch"
+    },
+    {
+      "va": "0x1a683a8",
+      "file_offset": "0x1a683a8",
+      "raw_le": "40cc8652",
+      "word": "5286cc40",
+      "meaning": "model ID 0x3662"
+    },
+    {
+      "va": "0x1a683b8",
+      "file_offset": "0x1a683b8",
+      "raw_le": "01408652",
+      "word": "52864001",
+      "meaning": "w1 = 12800"
+    },
+    {
+      "va": "0x1a683c8",
+      "file_offset": "0x1a683c8",
+      "raw_le": "c2ffff97",
+      "word": "97ffffc2",
+      "meaning": "model setter call 0x1a682d0"
+    },
+    {
+      "va": "0x1a683d0",
+      "file_offset": "0x1a683d0",
+      "raw_le": "4c20f997",
+      "word": "97f9204c",
+      "meaning": "dirty notification call 0x18b0500"
+    },
+    {
+      "va": "0x1a683f0",
+      "file_offset": "0x1a683f0",
+      "raw_le": "c0035fd6",
+      "word": "d65f03c0",
+      "meaning": "producer function return"
+    },
+    {
+      "va": "0x1a68408",
+      "file_offset": "0x1a68408",
+      "raw_le": "40cc8652",
+      "word": "5286cc40",
+      "meaning": "model ID 0x3662"
+    },
+    {
+      "va": "0x1a68410",
+      "file_offset": "0x1a68410",
+      "raw_le": "01f48152",
+      "word": "5281f401",
+      "meaning": "w1 = 4000"
+    },
+    {
+      "va": "0x1a68444",
+      "file_offset": "0x1a68444",
+      "raw_le": "01648052",
+      "word": "52806401",
+      "meaning": "w1 = 800"
+    },
+    {
+      "va": "0x1a6845c",
+      "file_offset": "0x1a6845c",
+      "raw_le": "625600d0",
+      "word": "d0005662",
+      "meaning": "diagnostic branch begins"
+    },
+    {
+      "va": "0x1a68470",
+      "file_offset": "0x1a68470",
+      "raw_le": "c5fc1b94",
+      "word": "941bfcc5",
+      "meaning": "diagnostic logger call"
+    },
+    {
+      "va": "0x1a682e0",
+      "file_offset": "0x1a682e0",
+      "raw_le": "f403012a",
+      "word": "2a0103f4",
+      "meaning": "setter saves value in w20"
+    },
+    {
+      "va": "0x1a682e4",
+      "file_offset": "0x1a682e4",
+      "raw_le": "011040b9",
+      "word": "b9401001",
+      "meaning": "setter reads model ID at +0x10"
+    },
+    {
+      "va": "0x1a6830c",
+      "file_offset": "0x1a6830c",
+      "raw_le": "140000b9",
+      "word": "b9000014",
+      "meaning": "setter writes w20 to nested value"
+    },
+    {
+      "va": "0x1a6831c",
+      "file_offset": "0x1a6831c",
+      "raw_le": "140000b9",
+      "word": "b9000014",
+      "meaning": "setter writes w20 to primary value"
+    },
+    {
+      "va": "0x1a68324",
+      "file_offset": "0x1a68324",
+      "raw_le": "60520039",
+      "word": "39005260",
+      "meaning": "setter sets dirty flag at +0x14"
+    },
+    {
+      "va": "0x18b0500",
+      "file_offset": "0x18b0500",
+      "raw_le": "01504039",
+      "word": "39405001",
+      "meaning": "notification checks dirty flag"
+    },
+    {
+      "va": "0x18b0528",
+      "file_offset": "0x18b0528",
+      "raw_le": "001040b9",
+      "word": "b9401000",
+      "meaning": "notification loads model ID"
+    },
+    {
+      "va": "0x18b052c",
+      "file_offset": "0x18b052c",
+      "raw_le": "5310e217",
+      "word": "17e21053",
+      "meaning": "tail branch to 0x1134678"
+    },
+    {
+      "va": "0x113469c",
+      "file_offset": "0x113469c",
+      "raw_le": "4908ff97",
+      "word": "97ff0849",
+      "meaning": "runtime registry lookup"
+    },
+    {
+      "va": "0x11346a0",
+      "file_offset": "0x11346a0",
+      "raw_le": "c00200b4",
+      "word": "b40002c0",
+      "meaning": "lookup miss branch"
+    },
+    {
+      "va": "0x11346ac",
+      "file_offset": "0x11346ac",
+      "raw_le": "790a1094",
+      "word": "94100a79",
+      "meaning": "ID-indexed getter dispatch"
+    },
+    {
+      "va": "0x11346cc",
+      "file_offset": "0x11346cc",
+      "raw_le": "600640b9",
+      "word": "b9400660",
+      "meaning": "runtime successor ID read [x19+4]"
+    },
+    {
+      "va": "0x11346d4",
+      "file_offset": "0x11346d4",
+      "raw_le": "7d0a1094",
+      "word": "94100a7d",
+      "meaning": "successor setter dispatch"
+    },
+    {
+      "va": "0x11346fc",
+      "file_offset": "0x11346fc",
+      "raw_le": "570a1094",
+      "word": "94100a57",
+      "meaning": "lookup miss indexed predicate"
+    },
+    {
+      "va": "0x1134730",
+      "file_offset": "0x1134730",
+      "raw_le": "d604ff97",
+      "word": "97ff04d6",
+      "meaning": "lookup miss dirty-bit path"
+    },
+    {
+      "va": "0x15370a4",
+      "file_offset": "0x15370a4",
+      "raw_le": "001040f9",
+      "word": "f9401000",
+      "meaning": "getter slot +0x20"
+    },
+    {
+      "va": "0x15370a8",
+      "file_offset": "0x15370a8",
+      "raw_le": "00001fd6",
+      "word": "d61f0000",
+      "meaning": "indexed branch through getter"
+    },
+    {
+      "va": "0x15370dc",
+      "file_offset": "0x15370dc",
+      "raw_le": "020840f9",
+      "word": "f9400802",
+      "meaning": "setter slot +0x10"
+    },
+    {
+      "va": "0x15370e4",
+      "file_offset": "0x15370e4",
+      "raw_le": "40001fd6",
+      "word": "d61f0040",
+      "meaning": "indexed branch through setter"
+    },
+    {
+      "va": "0x1451e94",
+      "file_offset": "0x1451e94",
+      "raw_le": "00d401b0",
+      "word": "b001d400",
+      "meaning": "resolved Base ISO getter"
+    },
+    {
+      "va": "0x1451e98",
+      "file_offset": "0x1451e98",
+      "raw_le": "00d842b9",
+      "word": "b942d800",
+      "meaning": "getter reads global +0x2d8"
+    },
+    {
+      "va": "0x1451e7c",
+      "file_offset": "0x1451e7c",
+      "raw_le": "c1ca01d0",
+      "word": "d001cac1",
+      "meaning": "resolved Base ISO setter"
+    },
+    {
+      "va": "0x1451e88",
+      "file_offset": "0x1451e88",
+      "raw_le": "20a80cb9",
+      "word": "b90ca820",
+      "meaning": "setter writes global +0xca8"
+    },
+    {
+      "va": "0x1451e8c",
+      "file_offset": "0x1451e8c",
+      "raw_le": "20b00cb9",
+      "word": "b90cb020",
+      "meaning": "setter writes global +0xcb0"
+    }
+  ]
+}

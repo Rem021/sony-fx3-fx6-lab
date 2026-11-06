@@ -1,0 +1,369 @@
+{
+  "created_utc": "2026-11-02T13:44:13.412757+00:00",
+  "duration_seconds": 12.914371207996737,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88b-r2-cp-backup-reset-early-gpe/candidate.json",
+  "candidate_sha256": "70df2e7d033c390a48f26e433f6e25cc36526bef66241234507236471540b73c",
+  "observer_source_snapshot": [
+    {
+      "name": "run_candidate88_model_r2.py",
+      "sha256": "c417f76aa144278c8cc2d0ea5136a88a0ba7b7b41f872e2f296350b049843fae"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring85_v3.py",
+      "sha256": "f9392cae4a7cbfecbae84cdd7cf3602fd98ad2d9d31f5766b8871fa46e12e1f1"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap88cpr2-f2e98625",
+  "requested_seconds": 300,
+  "qemu_pid": 57677,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88b-r2-cp-backup-reset-early-gpe/guest.dtb",
+      "sha256": "c975df37fc3d921825eeb33fb4805f61beb6c62e58923205a028029f6ec50547"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88b-r2-cp-backup-reset-early-gpe/guest.cpio",
+      "sha256": "74ded54d05e0f5e4ec3201fde9615903e9f48f48672bb4538ac76bd6d4b72065"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88b-r2-cp-backup-reset-early-gpe/candidate.json",
+      "sha256": "70df2e7d033c390a48f26e433f6e25cc36526bef66241234507236471540b73c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.20812462497269735,
+      "rss_vsz_kib": "944912 495712144"
+    },
+    {
+      "elapsed_seconds": 0.47489520799717866,
+      "rss_vsz_kib": "1103120 495712144"
+    },
+    {
+      "elapsed_seconds": 0.743759915989358,
+      "rss_vsz_kib": "1104400 495712144"
+    },
+    {
+      "elapsed_seconds": 1.007196832972113,
+      "rss_vsz_kib": "1110112 495712144"
+    },
+    {
+      "elapsed_seconds": 1.2660891659907065,
+      "rss_vsz_kib": "1248544 495712144"
+    },
+    {
+      "elapsed_seconds": 1.5280659159761854,
+      "rss_vsz_kib": "1503776 495712144"
+    },
+    {
+      "elapsed_seconds": 1.7918908749998081,
+      "rss_vsz_kib": "1545232 495712144"
+    },
+    {
+      "elapsed_seconds": 2.054427915980341,
+      "rss_vsz_kib": "1558752 495712144"
+    },
+    {
+      "elapsed_seconds": 2.313603582995711,
+      "rss_vsz_kib": "1575232 495712144"
+    },
+    {
+      "elapsed_seconds": 2.596193832985591,
+      "rss_vsz_kib": "1578496 495712144"
+    },
+    {
+      "elapsed_seconds": 2.8584187499945983,
+      "rss_vsz_kib": "1578496 495712144"
+    },
+    {
+      "elapsed_seconds": 3.124346999975387,
+      "rss_vsz_kib": "1580592 495712144"
+    },
+    {
+      "elapsed_seconds": 3.3876501659979112,
+      "rss_vsz_kib": "1580672 495712144"
+    },
+    {
+      "elapsed_seconds": 3.672925665974617,
+      "rss_vsz_kib": "1580752 495712144"
+    },
+    {
+      "elapsed_seconds": 3.932051165989833,
+      "rss_vsz_kib": "1580640 495712144"
+    },
+    {
+      "elapsed_seconds": 4.199003832996823,
+      "rss_vsz_kib": "1577824 495712144"
+    },
+    {
+      "elapsed_seconds": 4.4640762909839395,
+      "rss_vsz_kib": "1564704 495712144"
+    },
+    {
+      "elapsed_seconds": 4.72576812497573,
+      "rss_vsz_kib": "1536192 495712144"
+    },
+    {
+      "elapsed_seconds": 4.988518957979977,
+      "rss_vsz_kib": "1549792 495712144"
+    },
+    {
+      "elapsed_seconds": 5.2470674159994815,
+      "rss_vsz_kib": "1555568 495712144"
+    },
+    {
+      "elapsed_seconds": 5.505994999984978,
+      "rss_vsz_kib": "1557088 495712144"
+    },
+    {
+      "elapsed_seconds": 5.772229707974475,
+      "rss_vsz_kib": "1565888 495712144"
+    },
+    {
+      "elapsed_seconds": 6.038083665975137,
+      "rss_vsz_kib": "1562128 495712144"
+    },
+    {
+      "elapsed_seconds": 6.29774899999029,
+      "rss_vsz_kib": "1564048 495712144"
+    },
+    {
+      "elapsed_seconds": 6.556590957974549,
+      "rss_vsz_kib": "1561584 495712144"
+    },
+    {
+      "elapsed_seconds": 6.818539207975846,
+      "rss_vsz_kib": "1540112 495712144"
+    },
+    {
+      "elapsed_seconds": 7.084799624979496,
+      "rss_vsz_kib": "1540704 495712144"
+    },
+    {
+      "elapsed_seconds": 7.344041707983706,
+      "rss_vsz_kib": "1540832 495712144"
+    },
+    {
+      "elapsed_seconds": 7.601603499992052,
+      "rss_vsz_kib": "1541120 495712144"
+    },
+    {
+      "elapsed_seconds": 7.866052874975139,
+      "rss_vsz_kib": "1542880 495712144"
+    },
+    {
+      "elapsed_seconds": 8.12367954099318,
+      "rss_vsz_kib": "1552544 495712144"
+    },
+    {
+      "elapsed_seconds": 8.387623165996047,
+      "rss_vsz_kib": "1563648 495712144"
+    },
+    {
+      "elapsed_seconds": 8.649303874990437,
+      "rss_vsz_kib": "1565168 495712144"
+    },
+    {
+      "elapsed_seconds": 8.919329957978334,
+      "rss_vsz_kib": "1565536 495712144"
+    },
+    {
+      "elapsed_seconds": 9.184301624976797,
+      "rss_vsz_kib": "1473296 495712144"
+    },
+    {
+      "elapsed_seconds": 9.449765457975445,
+      "rss_vsz_kib": "1473968 495712144"
+    },
+    {
+      "elapsed_seconds": 9.708950457978062,
+      "rss_vsz_kib": "1474688 495712144"
+    },
+    {
+      "elapsed_seconds": 9.97740237499238,
+      "rss_vsz_kib": "1471344 495712144"
+    },
+    {
+      "elapsed_seconds": 10.2381202079996,
+      "rss_vsz_kib": "1471584 495712144"
+    },
+    {
+      "elapsed_seconds": 10.503160124993883,
+      "rss_vsz_kib": "1471760 495712144"
+    },
+    {
+      "elapsed_seconds": 10.77171345797251,
+      "rss_vsz_kib": "1474848 495712144"
+    },
+    {
+      "elapsed_seconds": 11.050819332973333,
+      "rss_vsz_kib": "1474928 495712144"
+    },
+    {
+      "elapsed_seconds": 11.314532582997344,
+      "rss_vsz_kib": "1475728 495712144"
+    },
+    {
+      "elapsed_seconds": 11.578888207994169,
+      "rss_vsz_kib": "1540736 495712144"
+    },
+    {
+      "elapsed_seconds": 11.843786415993236,
+      "rss_vsz_kib": "1570144 495712144"
+    },
+    {
+      "elapsed_seconds": 12.118605874973582,
+      "rss_vsz_kib": "1570544 495712144"
+    }
+  ],
+  "printk_ring_decode": {
+    "exit": 0,
+    "stdout": "records 920 first 0 next 72640\n",
+    "stderr": ""
+  },
+  "read_only_guest_memory_snapshots": [
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-reserved-ram.bin",
+      "scope": "Quiesced original Backup RAM only; not persistence/API acceptance",
+      "present": true,
+      "actual_bytes": 2232320,
+      "sha256": "876b80f9eb48935c691479e43ec64e2e2b75d013853dc56d9003c77256f08e06"
+    },
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-after-shutdown.bin",
+      "scope": "AP88 final quiescedreservedBackup; shutdowncompletion separatelyverified; notAP89 input yet",
+      "present": true,
+      "actual_bytes": 2232320,
+      "sha256": "876b80f9eb48935c691479e43ec64e2e2b75d013853dc56d9003c77256f08e06"
+    },
+    {
+      "address": 17674797056,
+      "size": 65536,
+      "name": "capid-reserved-ram.bin",
+      "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17675845632,
+      "size": 1048576,
+      "name": "dmm-virtual-ram.bin",
+      "scope": "Quiesced explicit virtual two-slot DMM backing only; no originalCP/capture acceptance",
+      "present": true,
+      "actual_bytes": 1048576,
+      "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58"
+    },
+    {
+      "address": 17676894208,
+      "size": 65536,
+      "name": "adf-muted-ram.bin",
+      "scope": "Explicit muted software backing; original_sound=0",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17678991360,
+      "size": 65536,
+      "name": "ui-gate-counters.bin",
+      "scope": "Observer-only counters and boot records, double-bank published snapshot; no behavior model",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "002d5d34af0d36aad6da531f087e027fd3d6d34731b0b6388fe3a12ffa92cb3f"
+    },
+    {
+      "address": 17680039936,
+      "size": 589824,
+      "name": "face-dmm-reserved-ram.bin",
+      "scope": "Independent virtual face-registration byte storage; actual local-to-remote copy; no recognition/physical camera acceptance",
+      "present": true,
+      "actual_bytes": 589824,
+      "sha256": "250480ecefa3655c774b6a4e5d4eb16675ee4f181c2285c25020fac6e3aaf3b5"
+    },
+    {
+      "address": 17683185664,
+      "size": 16777216,
+      "name": "osd-ring-final.bin",
+      "scope": "Software OSD snapshot ring; no CP panel/compositor acceptance",
+      "present": true,
+      "actual_bytes": 16777216,
+      "sha256": "080acf35a507ac9849cfcba47dc2ad83e01b75663a516279c8b9d243b719643e"
+    }
+  ],
+  "guest_exception_markers": [],
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_GPE_EARLY_THREAD_GATE gpe=1": false,
+    "FX3_BACKUP_CP_PUBLIC_OWNER": true,
+    "FX3_BACKUP_CP_INSMOD_RC=0": true,
+    "FX3_BACKUP_CP_STORAGE": false,
+    "FX3_BACKUP_CP_COMMIT flag=1 stage=1": false,
+    "FX3_BACKUP_CP_COMMIT flag=4 stage=2": false,
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=1 flag=1": false,
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=2 flag=4": false,
+    "FX3_AP_IM_ENDMAPS_": true
+  },
+  "guest_warning_lines": [],
+  "menu_verified": false,
+  "classification": "OBSERVATION_ONLY_REVIEW_GUEST_LOGS",
+  "physical_devices_host_disks_network": 0,
+  "early_stop_reason": "AP86B explicit diagnostic/rejection gate; stop for review; no further protocol changes",
+  "receipt_scope": "AP88 explicit virtualCP Backup op33/F1thenF4once. Native kernel publicsender route; actualinitialized40B validated (nativeallocation128/capacity60). CP separate physicalbacking4040d2000/1369580 insideexistingsecondBK4; pinnedfullbank/checksum/allindex/defaultbounds/repeat4; actual317+2copy/readback; independent4096reply zero tail4056declaredsoftwaredifference; native003e0811 source/replytoactualQ; requestfreeoriginaldestination; noAPwholebankreset. OriginalBackup_reset_all passivereturnwrapper. GPEv15 onlyexisting bindingbeforeexactnativegpe0_info/gpe1_info threadcreate; originalcreateargs/result/errno unchanged; noMMIOmodel. Postresetunknownfullraw<=4096,no reply. NoAP89boot."
+}

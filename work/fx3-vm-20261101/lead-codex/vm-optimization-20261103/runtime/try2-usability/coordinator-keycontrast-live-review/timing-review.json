@@ -1,0 +1,43 @@
+{
+  "sources": {
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssallinternal-keycontrast-06db37ef/osd-ring-readback.json": "16baf2b31d995b8cb651594b861a19062d1bbf0b8e866ba1528aab20003111b4",
+    "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssallinternal-keycontrast-06db37ef/trial-input-events.jsonl": "76c44ca8c3197c7f4cef87cef7a5ccc0ea9a910a1a2767268381e54f7f5fec36"
+  },
+  "rows": [
+    {
+      "step": 1,
+      "key": "0x1ab",
+      "observed_window_s": 280.50479783298215,
+      "poll_count": 613,
+      "max_poll_gap_s": 1.9907852089963853,
+      "first_observed_head_advance_after_send_s": 192.15822095796466,
+      "first_changed_frame_after_send_s": 192.23633566696662,
+      "first_changed_sequence": 78,
+      "first_changed_png_sha": "abc20e41bb450786b3f3edd6a66c79cff80ce2b264e3e0230592eda1050a72e5"
+    },
+    {
+      "step": 2,
+      "key": "0x15",
+      "observed_window_s": 66.46257087500999,
+      "poll_count": 142,
+      "max_poll_gap_s": 0.5516478749923408,
+      "first_observed_head_advance_after_send_s": 28.024016416980885,
+      "first_changed_frame_after_send_s": 28.103152249997947,
+      "first_changed_sequence": 435,
+      "first_changed_png_sha": "557376846b91022bcb8f7dba6131a559652bc43210e1572e287b23d41f2d5560"
+    },
+    {
+      "step": 3,
+      "key": "0x30",
+      "observed_window_s": 49.616576958971564,
+      "poll_count": 111,
+      "max_poll_gap_s": 0.6978736669989303,
+      "first_observed_head_advance_after_send_s": 0.3004307500086725,
+      "first_changed_frame_after_send_s": 2.599296249973122,
+      "first_changed_sequence": 691,
+      "first_changed_png_sha": "3d071654943844a37e1651eb74b2919150d885664a6bbde5ed23407e3f970e17"
+    }
+  ],
+  "scope": "recorded QMP committed-ring observations; no new guest execution",
+  "interpretation": "MENU/LEFT delays exist before observed committed-ring head advance while host keeps polling. This internal run has no HTTP browser, so browser request timeout is not sufficient to explain these delays. Does not distinguish guest rendering, scheduling, observer publisher or host resource effects. Current post-run memory readings do not establish in-run memory pressure."
+}

@@ -1,0 +1,23 @@
+{
+  "created_utc": "2026-10-26T14:35:22.019013+00:00",
+  "status": "PASS_ORIGINAL_LIRO_OSAL_LINK_TO_UNEXECUTED_KERNEL_SERVICE",
+  "module_relocations": 973,
+  "combined_relocation_counts": {
+    "257": 453,
+    "283": 460,
+    "261": 60
+  },
+  "unique_provider_names": 54,
+  "bounded_fragments": 33,
+  "stop_counts": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 7,
+    "returned": 18,
+    "boundary: before_original_buffer_channel_preparation": 3,
+    "boundary: before_original_unexecuted_kernel_service": 5
+  },
+  "native_LIRO_OSAL_imports": 4,
+  "kernel_lock_body_driver_registration_allocation_reply_or_Hal_executed": false,
+  "native_proof_sha256": "a3a6557d81446e23afaa013080ded523da99fb090b5bacc71cfa55d0c8e1f494",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

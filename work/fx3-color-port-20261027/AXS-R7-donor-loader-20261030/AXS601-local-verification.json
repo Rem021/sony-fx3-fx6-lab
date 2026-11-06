@@ -1,0 +1,76 @@
+{
+  "created_utc": "2026-10-30T16:57:05.705378+00:00",
+  "result": "COMPLETE_OFFICIAL_ZIP_CRC_AND_FIRMWARE_MD5_VERIFIED",
+  "original_acquisition_receipt": "AXS601-acquisition.json",
+  "ZIP_sha256": "0778a4385d4336439b51d696941964df77ce2eb58bb8b8314ee9f2b26f9faa64",
+  "development_failure": "All ZIP members were read and selected files saved, but the initial final selector compared .md5 case-sensitively and missed .MD5. A first local check then assumed hash-first text; the actual text has a filename MD5 Hush line and a standalone hash line. Both parsing assumptions were corrected from the source text. Retained failed acquisition receipt; no repeated download.",
+  "members": [
+    {
+      "name": "AXS-R7_V601/",
+      "bytes": 0,
+      "CRC32": "00000000",
+      "compression": 0
+    },
+    {
+      "name": "AXS-R7_V601/AXS-R7_6.01_firmware.f.bin",
+      "bytes": 29329516,
+      "CRC32": "f1eb4ded",
+      "compression": 8,
+      "CRC32_verified": true,
+      "sha256": "da0028a10ff74538bbac96222089e2682e4a82fdb5028e5c3ee0844519f1e277",
+      "saved_path": "AXS601-members/AXS-R7_6.01_firmware.f.bin"
+    },
+    {
+      "name": "AXS-R7_V601/AXS-R7_6.01_firmware.f.bin.MD5",
+      "bytes": 71,
+      "CRC32": "3877a90c",
+      "compression": 8,
+      "CRC32_verified": true,
+      "sha256": "b0cc3f6e2cf198cdc8e487b6c07f19423d7b762fcc03d745c70381d7b1910542",
+      "saved_path": "AXS601-members/AXS-R7_6.01_firmware.f.bin.MD5"
+    },
+    {
+      "name": "AXS-R7_V601/AXS-R7_UpdateManual_E.pdf",
+      "bytes": 261480,
+      "CRC32": "f281819d",
+      "compression": 8,
+      "CRC32_verified": true,
+      "sha256": "be3fb9f4db7f11645779be0c0ad3dd070a19f53dd58ad67208c9d59856b0a235"
+    },
+    {
+      "name": "AXS-R7_V601/AXS-R7_UpdateManual_J.pdf",
+      "bytes": 325378,
+      "CRC32": "fed0c344",
+      "compression": 8,
+      "CRC32_verified": true,
+      "sha256": "392080a007ca50a6975991a786b27922418b14d9dfd078473cf5d769828ef0db"
+    },
+    {
+      "name": "AXS-R7_V601/AXS-R7_V6.00_ReleaseNote.pdf",
+      "bytes": 66143,
+      "CRC32": "fa737472",
+      "compression": 8,
+      "CRC32_verified": true,
+      "sha256": "3f690f563beb115ba5f3ea687355bae003880b94a1174b18c43afc21cdfa31dc"
+    },
+    {
+      "name": "AXS-R7_V601/Readme.txt",
+      "bytes": 349,
+      "CRC32": "65bc7867",
+      "compression": 8,
+      "CRC32_verified": true,
+      "sha256": "5f3de77ab3c7444c0f3cb7c1cea5dfa114553cf4983df78c19ed1d482398b4fc",
+      "saved_path": "AXS601-members/Readme.txt"
+    }
+  ],
+  "firmware_path": "AXS601-members/AXS-R7_6.01_firmware.f.bin",
+  "firmware_bytes": 29329516,
+  "firmware_sha256": "da0028a10ff74538bbac96222089e2682e4a82fdb5028e5c3ee0844519f1e277",
+  "firmware_md5": "ee5e37ca5bcad5dbd770c8aff4d7ebc4",
+  "adjacent_md5_text": "AXS-R7_6.01_firmware.f.bin MD5 Hush\nee5e37ca5bcad5dbd770c8aff4d7ebc4\n",
+  "network_requests": 0,
+  "PDF_contents_read": false,
+  "vendor_execution": false,
+  "device_actions": 0,
+  "decoded_private_loader_or_ISP": false
+}

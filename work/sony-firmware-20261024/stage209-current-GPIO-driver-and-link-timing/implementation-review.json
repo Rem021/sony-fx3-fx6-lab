@@ -1,0 +1,18 @@
+{
+  "status": "CURRENT_GPIO_CONTRACT_AND_SIO_RATE_VALUE_DIFFERENCE_BOUND",
+  "previous_goal_turn_classification": "progress",
+  "this_goal_turn_classification": "progress",
+  "next_action_changed": "Current package GPIO ioctl/struct/resource4/mode9 stores now pinned. Current7.02 helper SIO request42=19, reference payload rate3; historic2.05 provider maps request42 to rate registers. Different clock parents may explain values; investigate frequency formula/parents instead of uncritically copying3 or19.",
+  "limits": [
+    "Current GPIO evidence is package main kernel, not same-body installed p1 attestation",
+    "Reference GPIO init omits explicit input-enable and changes write order; prior pin state not observed",
+    "SIO register interpretation uses separately labeled historical2.05 module; current helper request19 is exact7.02",
+    "Different divider words do not prove different Hz without clock parents and hardware formula",
+    "No MCU transport, boot entry, backup/restore, modified flash or long-record acceptance"
+  ],
+  "root01": "195 specific approval pending; no launch/job or repeated question",
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

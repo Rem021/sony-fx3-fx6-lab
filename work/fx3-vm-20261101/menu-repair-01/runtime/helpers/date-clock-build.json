@@ -1,0 +1,30 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-Wl,--no-as-needed",
+    "-pie",
+    "-fPIE",
+    "-Wl,-e,_start",
+    "-Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1",
+    "-Wl,-rpath,/usr/lib",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/success-cases/source/runtime/analysis/seed-date-clock.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libosal_uipc.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/seed-date-clock"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "source_sha256": "e63d76cb4648980aa6b53f8dbc6cbfb1a3b01b7cfddc09e132c6cfff496eb380",
+  "scope": "original date driver boot API with real status/readback; no host date/no physical RTC"
+}

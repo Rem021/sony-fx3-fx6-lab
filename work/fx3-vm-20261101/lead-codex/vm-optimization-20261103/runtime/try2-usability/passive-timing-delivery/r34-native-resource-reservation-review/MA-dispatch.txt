@@ -1,0 +1,149 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/regular-files/usr/kmod/grm_ma.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000000000 <.text>:
+       0: 52800000     	mov	w0, #0x0                // =0
+       4: d65f03c0     	ret
+       8: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!
+       c: 52808480     	mov	w0, #0x424              // =1060
+      10: 72a02980     	movk	w0, #0x14c, lsl #16
+      14: 910003fd     	mov	x29, sp
+      18: 58000101     	ldr	x1, 0x38 <.text+0x38>
+      1c: f9400021     	ldr	x1, [x1]
+      20: 94000000     	bl	0x20 <.text+0x20>
+		0000000000000020:  R_AARCH64_CALL26	osal_unreg_msg_queue_cb
+      24: 94000000     	bl	0x24 <.text+0x24>
+		0000000000000024:  R_AARCH64_CALL26	ma_procfs_term
+      28: 94000000     	bl	0x28 <.text+0x28>
+		0000000000000028:  R_AARCH64_CALL26	ma_list_term
+      2c: 52800000     	mov	w0, #0x0                // =0
+      30: a8c17bfd     	ldp	x29, x30, [sp], #0x10
+      34: d65f03c0     	ret
+      38: 00 00 00 00  	.word	0x00000000
+		0000000000000038:  R_AARCH64_ABS64	.bss
+      3c: 00 00 00 00  	.word	0x00000000
+      40: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+      44: 910003fd     	mov	x29, sp
+      48: f9000bf3     	str	x19, [sp, #0x10]
+      4c: 58000233     	ldr	x19, 0x90 <.text+0x90>
+      50: 58000241     	ldr	x1, 0x98 <.text+0x98>
+      54: 91002262     	add	x2, x19, #0x8
+      58: aa0203e0     	mov	x0, x2
+      5c: 94000000     	bl	0x5c <.text+0x5c>
+		000000000000005c:  R_AARCH64_CALL26	__mutex_init
+      60: 94000000     	bl	0x60 <.text+0x60>
+		0000000000000060:  R_AARCH64_CALL26	ma_list_init
+      64: 94000000     	bl	0x64 <.text+0x64>
+		0000000000000064:  R_AARCH64_CALL26	ma_procfs_init
+      68: 580001c2     	ldr	x2, 0xa0 <.text+0xa0>
+      6c: aa1303e1     	mov	x1, x19
+      70: 52808480     	mov	w0, #0x424              // =1060
+      74: d2800003     	mov	x3, #0x0                // =0
+      78: 72a02980     	movk	w0, #0x14c, lsl #16
+      7c: 94000000     	bl	0x7c <.text+0x7c>
+		000000000000007c:  R_AARCH64_CALL26	osal_reg_sync_msg_queue_cb
+      80: f9400bf3     	ldr	x19, [sp, #0x10]
+      84: 52800000     	mov	w0, #0x0                // =0
+      88: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+      8c: d65f03c0     	ret
+      90: 00 00 00 00  	.word	0x00000000
+		0000000000000090:  R_AARCH64_ABS64	.bss
+      94: 00 00 00 00  	.word	0x00000000
+      98: 00 00 00 00  	.word	0x00000000
+		0000000000000098:  R_AARCH64_ABS64	.rodata.str1.8
+      9c: 00 00 00 00  	.word	0x00000000
+      a0: 00 00 00 00  	.word	0x00000000
+		00000000000000a0:  R_AARCH64_ABS64	.text+0xa8
+      a4: 00 00 00 00  	.word	0x00000000
+      a8: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+      ac: 910003fd     	mov	x29, sp
+      b0: a90153f3     	stp	x19, x20, [sp, #0x10]
+      b4: aa0003f3     	mov	x19, x0
+      b8: 58000814     	ldr	x20, 0x1b8 <.text+0x1b8>
+      bc: 91002280     	add	x0, x20, #0x8
+      c0: 94000000     	bl	0xc0 <.text+0xc0>
+		00000000000000c0:  R_AARCH64_CALL26	mutex_lock
+      c4: 79400260     	ldrh	w0, [x19]
+      c8: 51000400     	sub	w0, w0, #0x1
+      cc: 7100301f     	cmp	w0, #0xc
+      d0: 54000128     	b.hi	0xf4 <.text+0xf4>
+      d4: 58000761     	ldr	x1, 0x1c0 <.text+0x1c0>
+      d8: 38604820     	ldrb	w0, [x1, w0, uxtw]
+      dc: 10000061     	adr	x1, 0xe8 <.text+0xe8>
+      e0: 8b208820     	add	x0, x1, w0, sxtb #2
+      e4: d61f0000     	br	x0
+      e8: 91004261     	add	x1, x19, #0x10
+      ec: 91002260     	add	x0, x19, #0x8
+      f0: 94000000     	bl	0xf0 <.text+0xf0>
+		00000000000000f0:  R_AARCH64_CALL26	ma_compact_init_impl
+      f4: 91002280     	add	x0, x20, #0x8
+      f8: 94000000     	bl	0xf8 <.text+0xf8>
+		00000000000000f8:  R_AARCH64_CALL26	mutex_unlock
+      fc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+     100: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+     104: d65f03c0     	ret
+     108: 9100a261     	add	x1, x19, #0x28
+     10c: 91002260     	add	x0, x19, #0x8
+     110: 94000000     	bl	0x110 <.text+0x110>
+		0000000000000110:  R_AARCH64_CALL26	ma_compact_impl
+     114: 17fffff8     	b	0xf4 <.text+0xf4>
+     118: 91008261     	add	x1, x19, #0x20
+     11c: 91002260     	add	x0, x19, #0x8
+     120: 94000000     	bl	0x120 <.text+0x120>
+		0000000000000120:  R_AARCH64_CALL26	ma_dmm_open_impl
+     124: 17fffff4     	b	0xf4 <.text+0xf4>
+     128: 91004261     	add	x1, x19, #0x10
+     12c: 91002260     	add	x0, x19, #0x8
+     130: 94000000     	bl	0x130 <.text+0x130>
+		0000000000000130:  R_AARCH64_CALL26	ma_dmm_close_impl
+     134: 17fffff0     	b	0xf4 <.text+0xf4>
+     138: 9100c261     	add	x1, x19, #0x30
+     13c: 91002260     	add	x0, x19, #0x8
+     140: 94000000     	bl	0x140 <.text+0x140>
+		0000000000000140:  R_AARCH64_CALL26	ma_create_msp_impl
+     144: 17ffffec     	b	0xf4 <.text+0xf4>
+     148: 91002261     	add	x1, x19, #0x8
+     14c: 91004260     	add	x0, x19, #0x10
+     150: 94000000     	bl	0x150 <.text+0x150>
+		0000000000000150:  R_AARCH64_CALL26	ma_cache_flush_impl
+     154: 17ffffe8     	b	0xf4 <.text+0xf4>
+     158: 91002261     	add	x1, x19, #0x8
+     15c: 91004260     	add	x0, x19, #0x10
+     160: 94000000     	bl	0x160 <.text+0x160>
+		0000000000000160:  R_AARCH64_CALL26	ma_cache_invalidate_impl
+     164: 17ffffe4     	b	0xf4 <.text+0xf4>
+     168: 91006261     	add	x1, x19, #0x18
+     16c: 91002260     	add	x0, x19, #0x8
+     170: 94000000     	bl	0x170 <.text+0x170>
+		0000000000000170:  R_AARCH64_CALL26	ma_findbyname_impl
+     174: 17ffffe0     	b	0xf4 <.text+0xf4>
+     178: 91004261     	add	x1, x19, #0x10
+     17c: 91002260     	add	x0, x19, #0x8
+     180: 94000000     	bl	0x180 <.text+0x180>
+		0000000000000180:  R_AARCH64_CALL26	ma_findbyphys_impl
+     184: 17ffffdc     	b	0xf4 <.text+0xf4>
+     188: 91008261     	add	x1, x19, #0x20
+     18c: 91002260     	add	x0, x19, #0x8
+     190: 94000000     	bl	0x190 <.text+0x190>
+		0000000000000190:  R_AARCH64_CALL26	ma_malloc_impl
+     194: 17ffffd8     	b	0xf4 <.text+0xf4>
+     198: 91008261     	add	x1, x19, #0x20
+     19c: 91002260     	add	x0, x19, #0x8
+     1a0: 94000000     	bl	0x1a0 <.text+0x1a0>
+		00000000000001a0:  R_AARCH64_CALL26	ma_free_impl
+     1a4: 17ffffd4     	b	0xf4 <.text+0xf4>
+     1a8: 91004261     	add	x1, x19, #0x10
+     1ac: 91002260     	add	x0, x19, #0x8
+     1b0: 94000000     	bl	0x1b0 <.text+0x1b0>
+		00000000000001b0:  R_AARCH64_CALL26	ma_compact_fin_impl
+     1b4: 17ffffd0     	b	0xf4 <.text+0xf4>
+     1b8: 00 00 00 00  	.word	0x00000000
+		00000000000001b8:  R_AARCH64_ABS64	.bss
+     1bc: 00 00 00 00  	.word	0x00000000
+     1c0: 00 00 00 00  	.word	0x00000000
+		00000000000001c0:  R_AARCH64_ABS64	.rodata
+     1c4: 00 00 00 00  	.word	0x00000000
+     1c8: 52800000     	mov	w0, #0x0                // =0
+     1cc: d65f03c0     	ret

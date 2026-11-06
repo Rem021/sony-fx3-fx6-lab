@@ -1,0 +1,11 @@
+{
+  "status": "FAILED_EXPECTATION_RETAINED",
+  "script_sha256": "0ef86fba41ce4b0fb7bcb2e642a7158b3e61ff5fe865595387b5dfb37aa9b2ca",
+  "failure": "AssertionError at system_snapshot.py:172: expected byte0x81=0 for Frame2/25fps, observed1",
+  "invalid_assumptions": [
+    "Packet byte0x81 had been called ntsc_flag in older helpers; fractional and integer FPS controls refute that label.",
+    "Input object offset0x138 was prematurely treated as NTSC/PAL based on an unconnected same-offset producer; that association is not proven."
+  ],
+  "camera_actions": false,
+  "superseded_by": "../run-corrected-20261025"
+}

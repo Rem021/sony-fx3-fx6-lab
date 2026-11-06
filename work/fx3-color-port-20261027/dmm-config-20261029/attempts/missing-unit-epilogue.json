@@ -1,0 +1,7 @@
+{
+  "outcome": "original missing-unit path stopped by code allowlist at 0xab9880",
+  "reason": "New lookup span ended at the branch before its original error-store and return epilogue.",
+  "correction": "Extend only the original lookup prefix/epilogue to 0xab988e; selected-unit path still stops before 0xab9a5c slot allocation.",
+  "counted_as_passing_case": false,
+  "allocation_or_provider_result_supplied": false
+}

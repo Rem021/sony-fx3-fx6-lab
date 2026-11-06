@@ -1,0 +1,103 @@
+{
+  "source_only": true,
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/fork.c",
+      "sha256": "c98b5a4f72ee235b14d2ff2c96f22e280b9176fadccaa05ee8a224dd4cf0bb37",
+      "first_line": 1705,
+      "last_line": 1718,
+      "range_sha256": "0cec79b05bfe4275d697a451bae00e6558fb4c51c94629a3ee681d51b46c791b",
+      "required_tokens": [
+        "CLONE_PARENT",
+        "current->group_leader->exit_signal"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/fork.c",
+      "sha256": "c98b5a4f72ee235b14d2ff2c96f22e280b9176fadccaa05ee8a224dd4cf0bb37",
+      "first_line": 1742,
+      "last_line": 1754,
+      "range_sha256": "d1b987011f2d7479bccd0c919cb4074a3357569f397de3e3df7a4724ad644b3a",
+      "required_tokens": [
+        "CLONE_PARENT",
+        "p->real_parent = current->real_parent"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/source-reference/exit.c",
+      "sha256": "d514e84186bcf7a66e78a5d474f4fd26d199b9f26c4bf53324b9bbcd51b00307",
+      "first_line": 517,
+      "last_line": 527,
+      "range_sha256": "7f332d0583d359f8321570d92f42f92be9ed81a00dc2d061eb7c3b1f5d3a5cba",
+      "required_tokens": [
+        "find_alive_thread"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/source-reference/exit.c",
+      "sha256": "d514e84186bcf7a66e78a5d474f4fd26d199b9f26c4bf53324b9bbcd51b00307",
+      "first_line": 562,
+      "last_line": 589,
+      "range_sha256": "bbc83124b0a7001a2f31f70d6aefaf2c31c1c131c9e108c122babc4a37aca7b0",
+      "required_tokens": [
+        "find_alive_thread",
+        "is_child_subreaper"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/source-reference/exit.c",
+      "sha256": "d514e84186bcf7a66e78a5d474f4fd26d199b9f26c4bf53324b9bbcd51b00307",
+      "first_line": 638,
+      "last_line": 660,
+      "range_sha256": "bd419d582a865ae757037c230d539b85257ab890d3f16a3340bfd715a9537469",
+      "required_tokens": [
+        "t->real_parent = reaper",
+        "same_thread_group",
+        "list_splice_tail_init"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/source-reference/exit.c",
+      "sha256": "d514e84186bcf7a66e78a5d474f4fd26d199b9f26c4bf53324b9bbcd51b00307",
+      "first_line": 1551,
+      "last_line": 1568,
+      "range_sha256": "2e54e60f9ef79ea96bf86bbcc8fe072e5cf32c53245bea505b62b9cc834afad9",
+      "required_tokens": [
+        "tsk = current",
+        "__WNOTHREAD"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/fork.c",
+      "sha256": "c98b5a4f72ee235b14d2ff2c96f22e280b9176fadccaa05ee8a224dd4cf0bb37",
+      "first_line": 1064,
+      "last_line": 1105,
+      "range_sha256": "3cad25a301a878a3923442d4ac4167946ca818dfb14efa40089f4ac86b176b7e",
+      "required_tokens": [
+        "CONFIG_FUTEX",
+        "exit_robust_list",
+        "mm_users"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/source-reference/exit.c",
+      "sha256": "d514e84186bcf7a66e78a5d474f4fd26d199b9f26c4bf53324b9bbcd51b00307",
+      "first_line": 812,
+      "last_line": 825,
+      "range_sha256": "4d5abd0ab665286ffea57fff5e343c77f1314bbdfa9f28b444395df65d76c010",
+      "required_tokens": [
+        "tsk->exit_code = code",
+        "exit_mm",
+        "exit_files"
+      ]
+    }
+  ],
+  "reference": "Linux v4.9, not actual loaded Sony kernel",
+  "same_live_creator_inode_is_complete_child_identity_proof": false,
+  "continuous_mask_removes_only_signal_callback_creation_gap": true,
+  "parent_sharing_or_adoption_context_unverified": true,
+  "robust_futex_exit_marker_implemented": false,
+  "clear_child_tid_requires_reference_mm_users_condition": true,
+  "mm_release_notification_is_all_FDs_closed_or_final_reap": false,
+  "first_flash_released": false
+}

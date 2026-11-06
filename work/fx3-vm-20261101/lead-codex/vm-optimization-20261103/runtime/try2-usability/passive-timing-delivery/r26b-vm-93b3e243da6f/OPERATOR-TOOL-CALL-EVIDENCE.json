@@ -1,0 +1,70 @@
+{
+  "source": "actual tool calls in this conversation plus immutable child invocation/process/summary files",
+  "production_module": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-tool-return-preparation/tool_call.mjs",
+  "prestart_proof": "PRESTART-NODE-DISPLAY.json",
+  "production_calls": [
+    {
+      "action": "standby_review",
+      "operation": [
+        "standby_review",
+        "实际查看本轮新待机PNG：HD Fixed-59.94fps、NO CARD、F、AF-C、±0.0、AWB图标，无菜单，合格待机。"
+      ],
+      "directory": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26b-vm-93b3e243da6f/tool-return-940904e0-e78c-4c4b-8519-4bfc87445da2",
+      "image_actually_displayed": false
+    },
+    {
+      "action": "click",
+      "operation": [
+        "click",
+        "1",
+        "完整Setup > Area/Date，橙色Area/Date/Time Setting"
+      ],
+      "directory": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26b-vm-93b3e243da6f/tool-return-0d318e3a-2950-48d5-9923-83edb9eded70",
+      "image_actually_displayed": true
+    },
+    {
+      "action": "observe",
+      "operation": [
+        "observe",
+        "实际看首张观察为Setup Area/Date过渡布局，橙色Area/Date/Time Setting未完整选中，明确再观察。"
+      ],
+      "directory": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26b-vm-93b3e243da6f/tool-return-cd989ffb-77e1-4fb6-b723-1ed8a9a08206",
+      "image_actually_displayed": true
+    },
+    {
+      "action": "pin",
+      "operation": [
+        "pin",
+        "实际看第二张观察已完整Setup > Area/Date 45/59，橙色Area/Date/Time Setting且Language English，明确固定。"
+      ],
+      "directory": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26b-vm-93b3e243da6f/tool-return-3259ffb1-ef86-44ad-a3f0-03b4f3518755",
+      "image_actually_displayed": false
+    }
+  ],
+  "functions_yield_wait": {
+    "click_cell_id": "11",
+    "pin_cell_id": "13",
+    "only_same_cell_wait_used": true,
+    "no_action_reexecuted": true
+  },
+  "node_timeout_ms": 120000,
+  "original_alarm_ms": 20000,
+  "timeout_semantics": "tool wait only; no alarm extension",
+  "screen_stdout_JSON_parsed": false,
+  "old_current_return_fallback_used": false,
+  "image_failure_fallback_used": false,
+  "final_response_failure": {
+    "status": "return_failed",
+    "reason": "nonzero_or_unknown_exit_no_result_read",
+    "PNG": null,
+    "failure_streams_retained": true,
+    "original_wrapper_End_already_completed": true
+  },
+  "timing": {
+    "click_return_to_observe_entry_seconds": 9.709404125,
+    "observe_return_to_pin_entry_seconds": 9.03171625,
+    "boundary": "host wrapper invocation intervals; not exact model image receipt/review durations"
+  },
+  "model_received_at": "unknown",
+  "model_review_completed_at": "unknown"
+}

@@ -1,0 +1,116 @@
+{
+  "created_utc": "2026-10-27T18:09:37.634064+00:00",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage129-AP-DMM-config-and-device-trial-plan/inputs/AP-DmmCfg.bin",
+      "bytes": 66796,
+      "sha256": "48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1",
+      "source": {
+        "container": "work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+        "container_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+        "member": "0800_appli/setting/DmmCfg.bin",
+        "offset": 800286720,
+        "tar_header_checksum_validated": true,
+        "header_sha256": "8d38f56b89eb25d82ba0260721117ba650bd6e1544be036c9a0ec901821e4a22"
+      }
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage129-AP-DMM-config-and-device-trial-plan/inputs/appli.sum",
+      "bytes": 2820,
+      "sha256": "7896f3aaee61b07aafbd117398ed1b8a0ac62c498329349a14e0ccbb3ddf0abd",
+      "source": {
+        "container": "work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+        "container_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+        "member": "0801_appli_sum/appli.sum",
+        "offset": 808532992,
+        "tar_header_checksum_validated": true,
+        "header_sha256": "afb5e5e3b445621cac1d4a40c0f002356ad435d45b18e845e34ce9084981ebf4"
+      }
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage129-AP-DMM-config-and-device-trial-plan/inputs/insmod_drv2",
+      "bytes": 1298,
+      "sha256": "19757bdd450061f861e2da44a6a93be2525668e3f7edc64e5a99a25bde56564e",
+      "source": {
+        "image": "work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+        "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+        "regular_file": {
+          "path": "/sbin/initrc/insmod_drv2",
+          "inode": 127,
+          "mode": "0o100644",
+          "size": 1298,
+          "flags": "0x0",
+          "type": 32768
+        }
+      }
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage129-AP-DMM-config-and-device-trial-plan/inputs/fstab",
+      "bytes": 1085,
+      "sha256": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0",
+      "source": {
+        "image": "work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+        "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+        "regular_file": {
+          "path": "/sbin/initrc/fstab",
+          "inode": 132,
+          "mode": "0o100644",
+          "size": 1085,
+          "flags": "0x0",
+          "type": 32768
+        }
+      }
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage129-AP-DMM-config-and-device-trial-plan/inputs/init2",
+      "bytes": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb",
+      "source": {
+        "image": "work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+        "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+        "regular_file": {
+          "path": "/sbin/init2",
+          "inode": 139,
+          "mode": "0o100755",
+          "size": 1658,
+          "flags": "0x0",
+          "type": 32768
+        }
+      }
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage129-AP-DMM-config-and-device-trial-plan/inputs/init",
+      "bytes": 735,
+      "sha256": "c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e",
+      "source": {
+        "image": "work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+        "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+        "regular_file": {
+          "path": "/sbin/init",
+          "inode": 144,
+          "mode": "0o100755",
+          "size": 735,
+          "flags": "0x0",
+          "type": 32768
+        }
+      }
+    }
+  ],
+  "AP_config_official_sum_row": [
+    "0",
+    "f5d46b2d",
+    "000104ec",
+    "000001a4",
+    "00000000",
+    "000003e8",
+    "root",
+    "root",
+    "-1",
+    "-1",
+    "setting/DmmCfg.bin",
+    ""
+  ],
+  "official_size_crc_match": true,
+  "source_inputs_read_only": true,
+  "scripts_executed_mount_or_camera_access": false
+}

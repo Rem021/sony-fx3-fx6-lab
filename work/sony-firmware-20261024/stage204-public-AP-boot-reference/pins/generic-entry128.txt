@@ -1,0 +1,32 @@
+fe049000 c12f0058 ldr      x1, #0xfe0495f8
+fe049004 01c018d5 msr      vbar_el1, x1
+fe049008 01c01cd5 msr      vbar_el2, x1
+fe04900c 01c01ed5 msr      vbar_el3, x1
+fe049010 239080d2 mov      x3, #0x481
+fe049014 03111ed5 msr      scr_el3, x3
+fe049018 660e80d2 mov      x6, #0x73
+fe04901c 25103ed5 mrs      x5, actlr_el3
+fe049020 050006aa orr      x5, x0, x6
+fe049024 25101ed5 msr      actlr_el3, x5
+fe049028 c52e0058 ldr      x5, #0xfe049600
+fe04902c 05e01bd5 msr      cntfrq_el0, x5
+fe049030 45b039d5 mrs      x5, s3_1_c11_c0_2
+fe049034 a50040b2 orr      x5, x5, #1
+fe049038 a5007bb2 orr      x5, x5, #0x20
+fe04903c 45b019d5 msr      s3_1_c11_c0_2, x5
+fe049040 02113cd5 mrs      x2, hcr_el2
+fe049044 e20361b3 bfc      x2, #0x1f, #1
+fe049048 02111cd5 msr      hcr_el2, x2
+fe04904c 1f211cd5 msr      vttbr_el2, xzr
+fe049050 a00038d5 mrs      x0, mpidr_el1
+fe049054 a0001cd5 msr      vmpidr_el2, x0
+fe049058 000038d5 mrs      x0, midr_el1
+fe04905c 00001cd5 msr      vpidr_el2, x0
+fe049060 5f111ed5 msr      cptr_el3, xzr
+fe049064 5f111cd5 msr      cptr_el2, xzr
+fe049068 0006a0d2 mov      x0, #0x300000
+fe04906c 401018d5 msr      cpacr_el1, x0
+fe049070 0000a8d2 mov      x0, #0x40000000
+fe049074 00531cd5 msr      fpexc32_el2, x0
+fe049078 9f1010d5 msr      oslar_el1, xzr
+fe04907c 9f1310d5 msr      osdlr_el1, xzr

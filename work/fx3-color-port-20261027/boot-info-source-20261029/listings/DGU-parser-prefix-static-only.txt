@@ -1,0 +1,55 @@
+0xfe04536c: f963bca9 stp x25, x24, [sp, #-0x40]!
+0xfe045370: f75b01a9 stp x23, x22, [sp, #0x10]
+0xfe045374: f55302a9 stp x21, x20, [sp, #0x20]
+0xfe045378: f37b03a9 stp x19, x30, [sp, #0x30]
+0xfe04537c: f503012a mov w21, w1
+0xfe045380: f603002a mov w22, w0
+0xfe045384: 130000b0 adrp x19, #0xfe046000
+0xfe045388: 73e22591 add x19, x19, #0x978
+0xfe04538c: 82108052 mov w2, #0x84
+0xfe045390: e00313aa mov x0, x19
+0xfe045394: e1031f2a mov w1, wzr
+0xfe045398: 4dfbff97 bl #0xfe0440cc
+0xfe04539c: 140000b0 adrp x20, #0xfe046000
+0xfe0453a0: 94921c91 add x20, x20, #0x724
+0xfe0453a4: 82088052 mov w2, #0x44
+0xfe0453a8: e00314aa mov x0, x20
+0xfe0453ac: e1031f2a mov w1, wzr
+0xfe0453b0: 47fbff97 bl #0xfe0440cc
+0xfe0453b4: 180000b0 adrp x24, #0xfe046000
+0xfe0453b8: 1f6b07b9 str wzr, [x24, #0x768]
+0xfe0453bc: 170000b0 adrp x23, #0xfe046000
+0xfe0453c0: f7f22791 add x23, x23, #0x9fc
+0xfe0453c4: e2071e32 mov w2, #0xc
+0xfe0453c8: e00317aa mov x0, x23
+0xfe0453cc: e1031f2a mov w1, wzr
+0xfe0453d0: 3ffbff97 bl #0xfe0440cc
+0xfe0453d4: 080000b0 adrp x8, #0xfe046000
+0xfe0453d8: 171505f9 str x23, [x8, #0xa28]
+0xfe0453dc: 170000b0 adrp x23, #0xfe046000
+0xfe0453e0: f7222891 add x23, x23, #0xa08
+0xfe0453e4: e2071d32 mov w2, #0x18
+0xfe0453e8: e00317aa mov x0, x23
+0xfe0453ec: e1031f2a mov w1, wzr
+0xfe0453f0: 37fbff97 bl #0xfe0440cc
+0xfe0453f4: 080000b0 adrp x8, #0xfe046000
+0xfe0453f8: 090000b0 adrp x9, #0xfe046000
+0xfe0453fc: 171105f9 str x23, [x8, #0xa20]
+0xfe045400: e80314aa mov x8, x20
+0xfe045404: 7f0200b9 str wzr, [x19]
+0xfe045408: 3fc12539 strb wzr, [x9, #0x970]
+0xfe04540c: 1f1d0138 strb wzr, [x8, #0x11]!
+0xfe045410: 7f1a00b9 str wzr, [x19, #0x18]
+0xfe045414: e9070032 mov w9, #3
+0xfe045418: 1f0d0039 strb wzr, [x8, #3]
+0xfe04541c: 1f090039 strb wzr, [x8, #2]
+0xfe045420: 09110039 strb w9, [x8, #4]
+0xfe045424: e903152a mov w9, w21
+0xfe045428: 1f050039 strb wzr, [x8, #1]
+0xfe04542c: 76560529 stp w22, w21, [x19, #0x28]
+0xfe045430: 28014079 ldrh w8, [x9]
+0xfe045434: 0801150b add w8, w8, w21
+0xfe045438: f6030032 mov w22, #1
+0xfe04543c: 17000090 adrp x23, #0xfe045000
+0xfe045440: f7e22891 add x23, x23, #0xa38
+0xfe045444: 680600b9 str w8, [x19, #4]

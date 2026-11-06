@@ -1,0 +1,95 @@
+{
+  "production_modules": [
+    {
+      "path": "owner_supervisor.py",
+      "sha256": "f30f7d56c6d753d6f93b21631dd4442a98ec99fd859c5c38512cb73cea9a81db",
+      "native_kill_terminate_signal_or_communicate_calls": []
+    },
+    {
+      "path": "owner_worker.py",
+      "sha256": "21530b1a1b5701a8cc90bb3e46f4386182feedacda341dc3d6f292493e2c0daf",
+      "native_kill_terminate_signal_or_communicate_calls": []
+    },
+    {
+      "path": "shared_job.py",
+      "sha256": "305a6baa34366713282a95bc4acb92a3e36605b45fb144793384115fb7a20028",
+      "native_kill_terminate_signal_or_communicate_calls": []
+    }
+  ],
+  "clock_domain": "CLOCK_MONOTONIC",
+  "recorded_fixture_processes_checked": [
+    {
+      "record": "run-process-tests/wrong-receipt/process.json",
+      "pid": 43348,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "run-process-tests/dead-fixture/process.json",
+      "pid": 43353,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "run-process-tests/cooperative-stop/process.json",
+      "pid": 43297,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "run-process-tests/overdue-call/process.json",
+      "pid": 43300,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "run-process-tests/missing-receipt/process.json",
+      "pid": 43346,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "run-process-tests/result-before-exit/process.json",
+      "pid": 43344,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "run-process-tests/observer-error/process.json",
+      "pid": 43350,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "run-process-tests/normal/process.json",
+      "pid": 43295,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "run-process-tests/signal-stop/process.json",
+      "pid": 43342,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "attempt-interpreter-reexec/run-process-tests/cooperative-stop/process.json",
+      "pid": 39889,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "attempt-interpreter-reexec/run-process-tests/normal/process.json",
+      "pid": 39887,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "attempt-clock-domain-review/run-process-tests/cooperative-stop/process.json",
+      "pid": 41238,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "attempt-clock-domain-review/run-process-tests/overdue-call/process.json",
+      "pid": 41242,
+      "expected_nonce_not_in_current_process": true
+    },
+    {
+      "record": "attempt-clock-domain-review/run-process-tests/normal/process.json",
+      "pid": 41233,
+      "expected_nonce_not_in_current_process": true
+    }
+  ],
+  "true_native_library_loaded": false,
+  "new_device_operations": 0,
+  "limitations": "Same-agent local review. Actual IOKit calls, administrator launch, native-driver return and physical camera acceptance remain unverified."
+}

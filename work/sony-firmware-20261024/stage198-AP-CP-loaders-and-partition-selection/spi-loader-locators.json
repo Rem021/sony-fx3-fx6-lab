@@ -1,0 +1,5809 @@
+{
+  "source_sha256": "314d372d0d2b9883c3b9dc04b40389edb3100e6d5ef529633cc427c3d0cab72e",
+  "tentative_base": "0xfe049000",
+  "scope": "all aligned words may include data; literal-reference candidates only, no runtime/reachability proof",
+  "base_clues": {
+    "literal_file0x618": "0xfe049230",
+    "literal_file0x620": "0xfe049470"
+  },
+  "references": [
+    {
+      "site_offset": "0x25d4",
+      "VA_if_base_correct": "0xfe04b5d4",
+      "literal_offset": "0x8e11",
+      "string": "%s:Enter(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x25d8",
+      "VA_if_base_correct": "0xfe04b5d8",
+      "literal_offset": "0x8e9a",
+      "string": "PCIe_EP_Config_BAR",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2600",
+      "VA_if_base_correct": "0xfe04b600",
+      "literal_offset": "0x8c64",
+      "string": "[PCIe] [ERROR]can't get controller base due to incorrect channel ID\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2620",
+      "VA_if_base_correct": "0xfe04b620",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2628",
+      "VA_if_base_correct": "0xfe04b628",
+      "literal_offset": "0x8e9a",
+      "string": "PCIe_EP_Config_BAR",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x269c",
+      "VA_if_base_correct": "0xfe04b69c",
+      "literal_offset": "0x8dbc",
+      "string": "[PCIe] [ERROR][ERROR]Invalid BAR number\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x26c0",
+      "VA_if_base_correct": "0xfe04b6c0",
+      "literal_offset": "0x8d03",
+      "string": "[PCIe] [ERROR]controller base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x26d4",
+      "VA_if_base_correct": "0xfe04b6d4",
+      "literal_offset": "0x8ce2",
+      "string": "[PCIe] [ERROR]PHY base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2724",
+      "VA_if_base_correct": "0xfe04b724",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x274c",
+      "VA_if_base_correct": "0xfe04b74c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2774",
+      "VA_if_base_correct": "0xfe04b774",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x279c",
+      "VA_if_base_correct": "0xfe04b79c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x27ec",
+      "VA_if_base_correct": "0xfe04b7ec",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2828",
+      "VA_if_base_correct": "0xfe04b828",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2860",
+      "VA_if_base_correct": "0xfe04b860",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2890",
+      "VA_if_base_correct": "0xfe04b890",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x28e0",
+      "VA_if_base_correct": "0xfe04b8e0",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x290c",
+      "VA_if_base_correct": "0xfe04b90c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2940",
+      "VA_if_base_correct": "0xfe04b940",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2968",
+      "VA_if_base_correct": "0xfe04b968",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x298c",
+      "VA_if_base_correct": "0xfe04b98c",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x29b4",
+      "VA_if_base_correct": "0xfe04b9b4",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x29e8",
+      "VA_if_base_correct": "0xfe04b9e8",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x29f0",
+      "VA_if_base_correct": "0xfe04b9f0",
+      "literal_offset": "0x8e9a",
+      "string": "PCIe_EP_Config_BAR",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2a24",
+      "VA_if_base_correct": "0xfe04ba24",
+      "literal_offset": "0x8edf",
+      "string": "unknown",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2a30",
+      "VA_if_base_correct": "0xfe04ba30",
+      "literal_offset": "0x8e2c",
+      "string": "[ERROR]Invalid BAR type\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2a50",
+      "VA_if_base_correct": "0xfe04ba50",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2a58",
+      "VA_if_base_correct": "0xfe04ba58",
+      "literal_offset": "0x8e9a",
+      "string": "PCIe_EP_Config_BAR",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2a94",
+      "VA_if_base_correct": "0xfe04ba94",
+      "literal_offset": "0x8de6",
+      "string": "[PCIe] [INFO]Config BAR%d  with type:%s  \n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2ab0",
+      "VA_if_base_correct": "0xfe04bab0",
+      "literal_offset": "0x8bfe",
+      "string": "[PCIe] [INFO]mask : 0x%lx ==> Done!!\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2af8",
+      "VA_if_base_correct": "0xfe04baf8",
+      "literal_offset": "0x8e11",
+      "string": "%s:Enter(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2afc",
+      "VA_if_base_correct": "0xfe04bafc",
+      "literal_offset": "0x8ee7",
+      "string": "PCIe_EP_GetPhyStatus",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2b24",
+      "VA_if_base_correct": "0xfe04bb24",
+      "literal_offset": "0x8c25",
+      "string": "[PCIe] [ERROR]can't get PHY base due to incorrect channel ID\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2b4c",
+      "VA_if_base_correct": "0xfe04bb4c",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2b54",
+      "VA_if_base_correct": "0xfe04bb54",
+      "literal_offset": "0x8ee7",
+      "string": "PCIe_EP_GetPhyStatus",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2b94",
+      "VA_if_base_correct": "0xfe04bb94",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2bbc",
+      "VA_if_base_correct": "0xfe04bbbc",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2be8",
+      "VA_if_base_correct": "0xfe04bbe8",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2c28",
+      "VA_if_base_correct": "0xfe04bc28",
+      "literal_offset": "0x8ce2",
+      "string": "[PCIe] [ERROR]PHY base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2c60",
+      "VA_if_base_correct": "0xfe04bc60",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2c68",
+      "VA_if_base_correct": "0xfe04bc68",
+      "literal_offset": "0x8ee7",
+      "string": "PCIe_EP_GetPhyStatus",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2c98",
+      "VA_if_base_correct": "0xfe04bc98",
+      "literal_offset": "0x8d2b",
+      "string": "[PCIe] [ERROR]num-lanes %u: invalid value\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2cc0",
+      "VA_if_base_correct": "0xfe04bcc0",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2cc8",
+      "VA_if_base_correct": "0xfe04bcc8",
+      "literal_offset": "0x8ee7",
+      "string": "PCIe_EP_GetPhyStatus",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2d04",
+      "VA_if_base_correct": "0xfe04bd04",
+      "literal_offset": "0x8e11",
+      "string": "%s:Enter(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2d08",
+      "VA_if_base_correct": "0xfe04bd08",
+      "literal_offset": "0x8f1d",
+      "string": "PCIe_EP_Get_Event",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2d30",
+      "VA_if_base_correct": "0xfe04bd30",
+      "literal_offset": "0x8c25",
+      "string": "[PCIe] [ERROR]can't get PHY base due to incorrect channel ID\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2d58",
+      "VA_if_base_correct": "0xfe04bd58",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2d60",
+      "VA_if_base_correct": "0xfe04bd60",
+      "literal_offset": "0x8f1d",
+      "string": "PCIe_EP_Get_Event",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2da0",
+      "VA_if_base_correct": "0xfe04bda0",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2dc4",
+      "VA_if_base_correct": "0xfe04bdc4",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2df0",
+      "VA_if_base_correct": "0xfe04bdf0",
+      "literal_offset": "0x8d7c",
+      "string": "[PCIe] [INFO][Event] Link Down\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2e10",
+      "VA_if_base_correct": "0xfe04be10",
+      "literal_offset": "0x8ce2",
+      "string": "[PCIe] [ERROR]PHY base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2e24",
+      "VA_if_base_correct": "0xfe04be24",
+      "literal_offset": "0x8d9d",
+      "string": "[PCIe] [INFO][Event] Link Up\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2e50",
+      "VA_if_base_correct": "0xfe04be50",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2e58",
+      "VA_if_base_correct": "0xfe04be58",
+      "literal_offset": "0x8f1d",
+      "string": "PCIe_EP_Get_Event",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2e80",
+      "VA_if_base_correct": "0xfe04be80",
+      "literal_offset": "0x8d57",
+      "string": "[PCIe] [INFO][Event] CfgWr Receive\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2ec8",
+      "VA_if_base_correct": "0xfe04bec8",
+      "literal_offset": "0x8e11",
+      "string": "%s:Enter(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2ecc",
+      "VA_if_base_correct": "0xfe04becc",
+      "literal_offset": "0x8ead",
+      "string": "PCIe_EP_LTSSM_Enable_Disable",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2ef4",
+      "VA_if_base_correct": "0xfe04bef4",
+      "literal_offset": "0x8c25",
+      "string": "[PCIe] [ERROR]can't get PHY base due to incorrect channel ID\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2f1c",
+      "VA_if_base_correct": "0xfe04bf1c",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2f24",
+      "VA_if_base_correct": "0xfe04bf24",
+      "literal_offset": "0x8ead",
+      "string": "PCIe_EP_LTSSM_Enable_Disable",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2f68",
+      "VA_if_base_correct": "0xfe04bf68",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2f90",
+      "VA_if_base_correct": "0xfe04bf90",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2fbc",
+      "VA_if_base_correct": "0xfe04bfbc",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2fc4",
+      "VA_if_base_correct": "0xfe04bfc4",
+      "literal_offset": "0x8ead",
+      "string": "PCIe_EP_LTSSM_Enable_Disable",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x2ff0",
+      "VA_if_base_correct": "0xfe04bff0",
+      "literal_offset": "0x8ce2",
+      "string": "[PCIe] [ERROR]PHY base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3000",
+      "VA_if_base_correct": "0xfe04c000",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3058",
+      "VA_if_base_correct": "0xfe04c058",
+      "literal_offset": "0x8e11",
+      "string": "%s:Enter(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x305c",
+      "VA_if_base_correct": "0xfe04c05c",
+      "literal_offset": "0x8eca",
+      "string": "PCIe_EP_PERST_Switch",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3084",
+      "VA_if_base_correct": "0xfe04c084",
+      "literal_offset": "0x8c25",
+      "string": "[PCIe] [ERROR]can't get PHY base due to incorrect channel ID\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x30ac",
+      "VA_if_base_correct": "0xfe04c0ac",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x30b4",
+      "VA_if_base_correct": "0xfe04c0b4",
+      "literal_offset": "0x8eca",
+      "string": "PCIe_EP_PERST_Switch",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x30f8",
+      "VA_if_base_correct": "0xfe04c0f8",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x312c",
+      "VA_if_base_correct": "0xfe04c12c",
+      "literal_offset": "0x8ce2",
+      "string": "[PCIe] [ERROR]PHY base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x313c",
+      "VA_if_base_correct": "0xfe04c13c",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3164",
+      "VA_if_base_correct": "0xfe04c164",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3190",
+      "VA_if_base_correct": "0xfe04c190",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3198",
+      "VA_if_base_correct": "0xfe04c198",
+      "literal_offset": "0x8eca",
+      "string": "PCIe_EP_PERST_Switch",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x31ec",
+      "VA_if_base_correct": "0xfe04c1ec",
+      "literal_offset": "0x8e11",
+      "string": "%s:Enter(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x31f0",
+      "VA_if_base_correct": "0xfe04c1f0",
+      "literal_offset": "0x8f0c",
+      "string": "PCIe_EP_PostInit",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3218",
+      "VA_if_base_correct": "0xfe04c218",
+      "literal_offset": "0x8c64",
+      "string": "[PCIe] [ERROR]can't get controller base due to incorrect channel ID\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3238",
+      "VA_if_base_correct": "0xfe04c238",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3240",
+      "VA_if_base_correct": "0xfe04c240",
+      "literal_offset": "0x8f0c",
+      "string": "PCIe_EP_PostInit",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x329c",
+      "VA_if_base_correct": "0xfe04c29c",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x32c4",
+      "VA_if_base_correct": "0xfe04c2c4",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x32ec",
+      "VA_if_base_correct": "0xfe04c2ec",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3314",
+      "VA_if_base_correct": "0xfe04c314",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3344",
+      "VA_if_base_correct": "0xfe04c344",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x336c",
+      "VA_if_base_correct": "0xfe04c36c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x339c",
+      "VA_if_base_correct": "0xfe04c39c",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x33c4",
+      "VA_if_base_correct": "0xfe04c3c4",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x33ec",
+      "VA_if_base_correct": "0xfe04c3ec",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3418",
+      "VA_if_base_correct": "0xfe04c418",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3440",
+      "VA_if_base_correct": "0xfe04c440",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x346c",
+      "VA_if_base_correct": "0xfe04c46c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x349c",
+      "VA_if_base_correct": "0xfe04c49c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x34cc",
+      "VA_if_base_correct": "0xfe04c4cc",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x34fc",
+      "VA_if_base_correct": "0xfe04c4fc",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x352c",
+      "VA_if_base_correct": "0xfe04c52c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x355c",
+      "VA_if_base_correct": "0xfe04c55c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3588",
+      "VA_if_base_correct": "0xfe04c588",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x35cc",
+      "VA_if_base_correct": "0xfe04c5cc",
+      "literal_offset": "0x8d03",
+      "string": "[PCIe] [ERROR]controller base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x35e0",
+      "VA_if_base_correct": "0xfe04c5e0",
+      "literal_offset": "0x8ce2",
+      "string": "[PCIe] [ERROR]PHY base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x360c",
+      "VA_if_base_correct": "0xfe04c60c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3634",
+      "VA_if_base_correct": "0xfe04c634",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3674",
+      "VA_if_base_correct": "0xfe04c674",
+      "literal_offset": "0x8d2b",
+      "string": "[PCIe] [ERROR]num-lanes %u: invalid value\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x36b4",
+      "VA_if_base_correct": "0xfe04c6b4",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x36e4",
+      "VA_if_base_correct": "0xfe04c6e4",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x370c",
+      "VA_if_base_correct": "0xfe04c70c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3734",
+      "VA_if_base_correct": "0xfe04c734",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x375c",
+      "VA_if_base_correct": "0xfe04c75c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3780",
+      "VA_if_base_correct": "0xfe04c780",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x37a8",
+      "VA_if_base_correct": "0xfe04c7a8",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x37cc",
+      "VA_if_base_correct": "0xfe04c7cc",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x37f4",
+      "VA_if_base_correct": "0xfe04c7f4",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3820",
+      "VA_if_base_correct": "0xfe04c820",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3828",
+      "VA_if_base_correct": "0xfe04c828",
+      "literal_offset": "0x8f0c",
+      "string": "PCIe_EP_PostInit",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3854",
+      "VA_if_base_correct": "0xfe04c854",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x385c",
+      "VA_if_base_correct": "0xfe04c85c",
+      "literal_offset": "0x8f0c",
+      "string": "PCIe_EP_PostInit",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x38a0",
+      "VA_if_base_correct": "0xfe04c8a0",
+      "literal_offset": "0x8e11",
+      "string": "%s:Enter(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x38a4",
+      "VA_if_base_correct": "0xfe04c8a4",
+      "literal_offset": "0x8efc",
+      "string": "PCIe_EP_PreInit",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3944",
+      "VA_if_base_correct": "0xfe04c944",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x394c",
+      "VA_if_base_correct": "0xfe04c94c",
+      "literal_offset": "0x8efc",
+      "string": "PCIe_EP_PreInit",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3970",
+      "VA_if_base_correct": "0xfe04c970",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3978",
+      "VA_if_base_correct": "0xfe04c978",
+      "literal_offset": "0x8efc",
+      "string": "PCIe_EP_PreInit",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x39e0",
+      "VA_if_base_correct": "0xfe04c9e0",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3a08",
+      "VA_if_base_correct": "0xfe04ca08",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3a84",
+      "VA_if_base_correct": "0xfe04ca84",
+      "literal_offset": "0x8caa",
+      "string": "[PCIe] [INFO] Start to load FW, data count = %d DWORD\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3a98",
+      "VA_if_base_correct": "0xfe04ca98",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3af8",
+      "VA_if_base_correct": "0xfe04caf8",
+      "literal_offset": "0x8ce2",
+      "string": "[PCIe] [ERROR]PHY base is NULL\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3b30",
+      "VA_if_base_correct": "0xfe04cb30",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3b5c",
+      "VA_if_base_correct": "0xfe04cb5c",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3b90",
+      "VA_if_base_correct": "0xfe04cb90",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3bbc",
+      "VA_if_base_correct": "0xfe04cbbc",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3c14",
+      "VA_if_base_correct": "0xfe04cc14",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3c40",
+      "VA_if_base_correct": "0xfe04cc40",
+      "literal_offset": "0x8e59",
+      "string": "write[0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3c70",
+      "VA_if_base_correct": "0xfe04cc70",
+      "literal_offset": "0x8e1f",
+      "string": "%s:Exit(%d)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3c78",
+      "VA_if_base_correct": "0xfe04cc78",
+      "literal_offset": "0x8efc",
+      "string": "PCIe_EP_PreInit",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3d48",
+      "VA_if_base_correct": "0xfe04cd48",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3d84",
+      "VA_if_base_correct": "0xfe04cd84",
+      "literal_offset": "0x8e45",
+      "string": "read [0x%x] = 0x%x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3e74",
+      "VA_if_base_correct": "0xfe04ce74",
+      "literal_offset": "0x83b7",
+      "string": "LDR_E:Wake DDR Fail. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3e8c",
+      "VA_if_base_correct": "0xfe04ce8c",
+      "literal_offset": "0x8395",
+      "string": "LDR:Wake DDR Done. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3ec0",
+      "VA_if_base_correct": "0xfe04cec0",
+      "literal_offset": "0x9340",
+      "string": "\nSPI Loader Ver.00.16 (May 21 2020 21:28:44)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3ef0",
+      "VA_if_base_correct": "0xfe04cef0",
+      "literal_offset": "0x83db",
+      "string": "LDR:ldr_nor_init skip. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3f54",
+      "VA_if_base_correct": "0xfe04cf54",
+      "literal_offset": "0x8428",
+      "string": "LDR_E:wait for pcie_stm_comm_ready. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3f80",
+      "VA_if_base_correct": "0xfe04cf80",
+      "literal_offset": "0x848c",
+      "string": "LDR:pcie_stm_comm_ready. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x3fa8",
+      "VA_if_base_correct": "0xfe04cfa8",
+      "literal_offset": "0x845b",
+      "string": "LDR:wait for pcie_stm_comm_ready. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x401c",
+      "VA_if_base_correct": "0xfe04d01c",
+      "literal_offset": "0x8401",
+      "string": "LDR:PCIe send stand-by. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4070",
+      "VA_if_base_correct": "0xfe04d070",
+      "literal_offset": "0x8351",
+      "string": "LDR:PCIe matched. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4098",
+      "VA_if_base_correct": "0xfe04d098",
+      "literal_offset": "0x8372",
+      "string": "LDR:PCIe unmatched. time = %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x40cc",
+      "VA_if_base_correct": "0xfe04d0cc",
+      "literal_offset": "0x833b",
+      "string": "LDR_E:Load LBkup[%d]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x40fc",
+      "VA_if_base_correct": "0xfe04d0fc",
+      "literal_offset": "0x8f9a",
+      "string": "ISR_E:Current EL with SP0. fiq handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x412c",
+      "VA_if_base_correct": "0xfe04d12c",
+      "literal_offset": "0x9005",
+      "string": "ISR_E:Current EL with SP0. Irq handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x415c",
+      "VA_if_base_correct": "0xfe04d15c",
+      "literal_offset": "0x90db",
+      "string": "ISR_E:Current EL with SP0. SError handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x418c",
+      "VA_if_base_correct": "0xfe04d18c",
+      "literal_offset": "0x91bd",
+      "string": "ISR_E:Current EL with SP0. Synchronous Abort handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x41d0",
+      "VA_if_base_correct": "0xfe04d1d0",
+      "literal_offset": "0x8f66",
+      "string": "ISR_E:Current EL with SPx. Fiq handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4200",
+      "VA_if_base_correct": "0xfe04d200",
+      "literal_offset": "0x90a7",
+      "string": "ISR_E:Current EL with SPx. Irq handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4230",
+      "VA_if_base_correct": "0xfe04d230",
+      "literal_offset": "0x9186",
+      "string": "ISR_E:Current EL with SPx. SError handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4260",
+      "VA_if_base_correct": "0xfe04d260",
+      "literal_offset": "0x9289",
+      "string": "ISR_E:Current EL with SPx. Synchronous Abort handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x429c",
+      "VA_if_base_correct": "0xfe04d29c",
+      "literal_offset": "0x87c0",
+      "string": "MIS_HEAD",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x42bc",
+      "VA_if_base_correct": "0xfe04d2bc",
+      "literal_offset": "0x87ab",
+      "string": "600002",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x42d8",
+      "VA_if_base_correct": "0xfe04d2d8",
+      "literal_offset": "0x87b2",
+      "string": "600003",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x42f4",
+      "VA_if_base_correct": "0xfe04d2f4",
+      "literal_offset": "0x87b9",
+      "string": "600004",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4310",
+      "VA_if_base_correct": "0xfe04d310",
+      "literal_offset": "0x86c9",
+      "string": "DGU_E:MIS Ver check error.\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4320",
+      "VA_if_base_correct": "0xfe04d320",
+      "literal_offset": "0x86e5",
+      "string": "DGU_E:MIS VerChk Err.\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4334",
+      "VA_if_base_correct": "0xfe04d334",
+      "literal_offset": "0x8780",
+      "string": "DGU:MIS Ver:%s\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4358",
+      "VA_if_base_correct": "0xfe04d358",
+      "literal_offset": "0x87ce",
+      "string": "TRNG",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x435c",
+      "VA_if_base_correct": "0xfe04d35c",
+      "literal_offset": "0x87c9",
+      "string": "COLD",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4368",
+      "VA_if_base_correct": "0xfe04d368",
+      "literal_offset": "0x87a6",
+      "string": "HOT ",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4380",
+      "VA_if_base_correct": "0xfe04d380",
+      "literal_offset": "0x876e",
+      "string": "DGU:Jump DGU[%s]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x43e8",
+      "VA_if_base_correct": "0xfe04d3e8",
+      "literal_offset": "0x8732",
+      "string": "DGU:Done DGU, MIS %dfiles.\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4408",
+      "VA_if_base_correct": "0xfe04d408",
+      "literal_offset": "0x874e",
+      "string": "DGU_E:Jump DGU[%lX(%d/%lX)]:%X\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4424",
+      "VA_if_base_correct": "0xfe04d424",
+      "literal_offset": "0x8732",
+      "string": "DGU:Done DGU, MIS %dfiles.\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4440",
+      "VA_if_base_correct": "0xfe04d440",
+      "literal_offset": "0x8780",
+      "string": "DGU:MIS Ver:%s\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4478",
+      "VA_if_base_correct": "0xfe04d478",
+      "literal_offset": "0x87ce",
+      "string": "TRNG",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x447c",
+      "VA_if_base_correct": "0xfe04d47c",
+      "literal_offset": "0x87a6",
+      "string": "HOT ",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4488",
+      "VA_if_base_correct": "0xfe04d488",
+      "literal_offset": "0x876e",
+      "string": "DGU:Jump DGU[%s]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x44b4",
+      "VA_if_base_correct": "0xfe04d4b4",
+      "literal_offset": "0x876e",
+      "string": "DGU:Jump DGU[%s]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x44f0",
+      "VA_if_base_correct": "0xfe04d4f0",
+      "literal_offset": "0x876e",
+      "string": "DGU:Jump DGU[%s]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4518",
+      "VA_if_base_correct": "0xfe04d518",
+      "literal_offset": "0x8717",
+      "string": "DGU:Done DGU, MIS 3Files.\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4524",
+      "VA_if_base_correct": "0xfe04d524",
+      "literal_offset": "0x874e",
+      "string": "DGU_E:Jump DGU[%lX(%d/%lX)]:%X\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x454c",
+      "VA_if_base_correct": "0xfe04d54c",
+      "literal_offset": "0x8790",
+      "string": "DGU:Done DGU [%ld]us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4574",
+      "VA_if_base_correct": "0xfe04d574",
+      "literal_offset": "0x86fc",
+      "string": "DGU:Done DGU, MIS 2Files.\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4610",
+      "VA_if_base_correct": "0xfe04d610",
+      "literal_offset": "0x85a3",
+      "string": "LDR_W:size is out of range:0x%X\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4628",
+      "VA_if_base_correct": "0xfe04d628",
+      "literal_offset": "0x860e",
+      "string": "LDR_W:invalid address:0x%p\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x467c",
+      "VA_if_base_correct": "0xfe04d67c",
+      "literal_offset": "0x85c4",
+      "string": "LDR_W:invalid order:0x%X\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4694",
+      "VA_if_base_correct": "0xfe04d694",
+      "literal_offset": "0x854e",
+      "string": "LDR:ldump addr:0x%p(size:0x%X,order:0x%X)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4a18",
+      "VA_if_base_correct": "0xfe04da18",
+      "literal_offset": "0x867c",
+      "string": "%08X ",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4a1c",
+      "VA_if_base_correct": "0xfe04da1c",
+      "literal_offset": "0x8676",
+      "string": "%04X ",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4a20",
+      "VA_if_base_correct": "0xfe04da20",
+      "literal_offset": "0x8670",
+      "string": "%02X ",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4a24",
+      "VA_if_base_correct": "0xfe04da24",
+      "literal_offset": "0x8669",
+      "string": "\n%lX: ",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4bf0",
+      "VA_if_base_correct": "0xfe04dbf0",
+      "literal_offset": "0x860e",
+      "string": "LDR_W:invalid address:0x%p\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4c0c",
+      "VA_if_base_correct": "0xfe04dc0c",
+      "literal_offset": "0x8579",
+      "string": "LDR:lset addr:0x%p(size:0x%X,data:0x%lX)\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4c5c",
+      "VA_if_base_correct": "0xfe04dc5c",
+      "literal_offset": "0x85a3",
+      "string": "LDR_W:size is out of range:0x%X\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4cd0",
+      "VA_if_base_correct": "0xfe04dcd0",
+      "literal_offset": "0x852b",
+      "string": "lshow ddr area=%d[%p] size=0x%lx\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4dfc",
+      "VA_if_base_correct": "0xfe04ddfc",
+      "literal_offset": "0x86c3",
+      "string": "lshow",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4e00",
+      "VA_if_base_correct": "0xfe04de00",
+      "literal_offset": "0x8523",
+      "string": "lshow\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4e04",
+      "VA_if_base_correct": "0xfe04de04",
+      "literal_offset": "0x868c",
+      "string": "ldump",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4e08",
+      "VA_if_base_correct": "0xfe04de08",
+      "literal_offset": "0x86be",
+      "string": "lset",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4e0c",
+      "VA_if_base_correct": "0xfe04de0c",
+      "literal_offset": "0x86b7",
+      "string": "lreset",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4e10",
+      "VA_if_base_correct": "0xfe04de10",
+      "literal_offset": "0x850e",
+      "string": "software reset req\n\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4f60",
+      "VA_if_base_correct": "0xfe04df60",
+      "literal_offset": "0x86c3",
+      "string": "lshow",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x4f70",
+      "VA_if_base_correct": "0xfe04df70",
+      "literal_offset": "0x862a",
+      "string": "skip\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x500c",
+      "VA_if_base_correct": "0xfe04e00c",
+      "literal_offset": "0x868c",
+      "string": "ldump",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5024",
+      "VA_if_base_correct": "0xfe04e024",
+      "literal_offset": "0x86be",
+      "string": "lset",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x503c",
+      "VA_if_base_correct": "0xfe04e03c",
+      "literal_offset": "0x86ad",
+      "string": "ltimer",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5050",
+      "VA_if_base_correct": "0xfe04e050",
+      "literal_offset": "0x8637",
+      "string": "ltimer\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5080",
+      "VA_if_base_correct": "0xfe04e080",
+      "literal_offset": "0x8692",
+      "string": "slogic timer",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x508c",
+      "VA_if_base_correct": "0xfe04e08c",
+      "literal_offset": "0x8600",
+      "string": "continue\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x50cc",
+      "VA_if_base_correct": "0xfe04e0cc",
+      "literal_offset": "0x8662",
+      "string": "lshow\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x50f4",
+      "VA_if_base_correct": "0xfe04e0f4",
+      "literal_offset": "0x8630",
+      "string": "ldump\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x510c",
+      "VA_if_base_correct": "0xfe04e10c",
+      "literal_offset": "0x865c",
+      "string": "lset\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5124",
+      "VA_if_base_correct": "0xfe04e124",
+      "literal_offset": "0x869f",
+      "string": "generic timer",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x518c",
+      "VA_if_base_correct": "0xfe04e18c",
+      "literal_offset": "0x863f",
+      "string": "LDR:ltimer wait_us=0x%x, %s\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x51a0",
+      "VA_if_base_correct": "0xfe04e1a0",
+      "literal_offset": "0x85de",
+      "string": "LDR_W:invalid select_timer:0x%lX\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x520c",
+      "VA_if_base_correct": "0xfe04e20c",
+      "literal_offset": "0x881b",
+      "string": "SEQ_E:Assert Cetus error request. time = %d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5270",
+      "VA_if_base_correct": "0xfe04e270",
+      "literal_offset": "0x87ef",
+      "string": "ERROR: Blinking LED[LDR2=%d LNG=%d SHT=%d]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x528c",
+      "VA_if_base_correct": "0xfe04e28c",
+      "literal_offset": "0x87d3",
+      "string": "ERROR: Loader boot failed.\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x549c",
+      "VA_if_base_correct": "0xfe04e49c",
+      "literal_offset": "0x8848",
+      "string": "INS_E:dgu_mis_info:Unknown\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x54d4",
+      "VA_if_base_correct": "0xfe04e4d4",
+      "literal_offset": "0x8f2f",
+      "string": "ISR_E:Lower EL using AArch32. Fiq handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5504",
+      "VA_if_base_correct": "0xfe04e504",
+      "literal_offset": "0x9039",
+      "string": "ISR_E:Lower EL using AArch32. Irq handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5534",
+      "VA_if_base_correct": "0xfe04e534",
+      "literal_offset": "0x9112",
+      "string": "ISR_E:Lower EL using AArch32. SError handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5564",
+      "VA_if_base_correct": "0xfe04e564",
+      "literal_offset": "0x91ff",
+      "string": "ISR_E:Lower EL using AArch32. Synchronous Abort handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5594",
+      "VA_if_base_correct": "0xfe04e594",
+      "literal_offset": "0x8fce",
+      "string": "ISR_E:Lower EL using AArch64. fiq handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x55c4",
+      "VA_if_base_correct": "0xfe04e5c4",
+      "literal_offset": "0x9070",
+      "string": "ISR_E:Lower EL using AArch64. Irq handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x55f4",
+      "VA_if_base_correct": "0xfe04e5f4",
+      "literal_offset": "0x914c",
+      "string": "ISR_E:Lower EL using AArch64. SError handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5624",
+      "VA_if_base_correct": "0xfe04e624",
+      "literal_offset": "0x9244",
+      "string": "ISR_E:Lower EL using AArch64. Synchronous Abort handler, esr 0x%08x\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x56bc",
+      "VA_if_base_correct": "0xfe04e6bc",
+      "literal_offset": "0x8864",
+      "string": "LBK_E:Inf LBK:%X\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5738",
+      "VA_if_base_correct": "0xfe04e738",
+      "literal_offset": "0x888a",
+      "string": "LBK_E:no entry:%X\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5744",
+      "VA_if_base_correct": "0xfe04e744",
+      "literal_offset": "0x88af",
+      "string": "LBK_E:No Bkup\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x57a8",
+      "VA_if_base_correct": "0xfe04e7a8",
+      "literal_offset": "0x889d",
+      "string": "LBK_E:no data:%d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x57c0",
+      "VA_if_base_correct": "0xfe04e7c0",
+      "literal_offset": "0x8876",
+      "string": "LBK_E:Read Bkup:%X\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5838",
+      "VA_if_base_correct": "0xfe04e838",
+      "literal_offset": "0x84b4",
+      "string": "LDR:COPY MIS TRNG DATA @0x%p -> @0x%p\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x588c",
+      "VA_if_base_correct": "0xfe04e88c",
+      "literal_offset": "0x8be1",
+      "string": "LDR_E:invalid area no = %lu\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x58d0",
+      "VA_if_base_correct": "0xfe04e8d0",
+      "literal_offset": "0x8bb2",
+      "string": "LDR_E:buf NULL\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x58fc",
+      "VA_if_base_correct": "0xfe04e8fc",
+      "literal_offset": "0x8bc2",
+      "string": "LDR_E:error param: area_no=%d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5938",
+      "VA_if_base_correct": "0xfe04e938",
+      "literal_offset": "0x8bc2",
+      "string": "LDR_E:error param: area_no=%d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x598c",
+      "VA_if_base_correct": "0xfe04e98c",
+      "literal_offset": "0x8b93",
+      "string": "LDR:DDR Log Save Not Finished\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5998",
+      "VA_if_base_correct": "0xfe04e998",
+      "literal_offset": "0x8b78",
+      "string": "LDR:DDR Log Save Finished\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5a64",
+      "VA_if_base_correct": "0xfe04ea64",
+      "literal_offset": "0x8318",
+      "string": "LDR:ldr_jump_to_kernel addr=0x%lX\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5adc",
+      "VA_if_base_correct": "0xfe04eadc",
+      "literal_offset": "0x88be",
+      "string": "PCI_E:Pcie user Initialize not passed. \n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5b64",
+      "VA_if_base_correct": "0xfe04eb64",
+      "literal_offset": "0x84e6",
+      "string": "LD3:%s done:%lu us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5b68",
+      "VA_if_base_correct": "0xfe04eb68",
+      "literal_offset": "0x8b56",
+      "string": "PCIe load patch ",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5b98",
+      "VA_if_base_correct": "0xfe04eb98",
+      "literal_offset": "0x84e6",
+      "string": "LD3:%s done:%lu us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5b9c",
+      "VA_if_base_correct": "0xfe04eb9c",
+      "literal_offset": "0x8b67",
+      "string": "PCIe apply patch",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5be0",
+      "VA_if_base_correct": "0xfe04ebe0",
+      "literal_offset": "0x88e7",
+      "string": "PCI:wait for stable PCIE core_clk, time = %d[us] >  %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5c10",
+      "VA_if_base_correct": "0xfe04ec10",
+      "literal_offset": "0x8923",
+      "string": "PCI:wait for stable PCIE core_clk, time = %d[us] <= %d[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5c3c",
+      "VA_if_base_correct": "0xfe04ec3c",
+      "literal_offset": "0x89c4",
+      "string": "PCI_E:Pcie pre initialize fail. ercd: %d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5c90",
+      "VA_if_base_correct": "0xfe04ec90",
+      "literal_offset": "0x89ee",
+      "string": "PCI_E:Pcie post initialize fail. ercd: %d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5cf8",
+      "VA_if_base_correct": "0xfe04ecf8",
+      "literal_offset": "0x895f",
+      "string": "PCI:phy state: %d, data link state: %d, time = %lu[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5d38",
+      "VA_if_base_correct": "0xfe04ed38",
+      "literal_offset": "0x895f",
+      "string": "PCI:phy state: %d, data link state: %d, time = %lu[us]\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5d58",
+      "VA_if_base_correct": "0xfe04ed58",
+      "literal_offset": "0x8ad2",
+      "string": "LD3:PCIe LinkUp     done:%lu us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5dac",
+      "VA_if_base_correct": "0xfe04edac",
+      "literal_offset": "0x8997",
+      "string": "PCI_E:Pcie device initialize fail. ercd: %d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5e08",
+      "VA_if_base_correct": "0xfe04ee08",
+      "literal_offset": "0x8a68",
+      "string": "PCI_W:CLKREQ/RefClk port %d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5e48",
+      "VA_if_base_correct": "0xfe04ee48",
+      "literal_offset": "0x8a32",
+      "string": "PCI_W:CLKREQ/RefClk bit %d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5e70",
+      "VA_if_base_correct": "0xfe04ee70",
+      "literal_offset": "0x8ab5",
+      "string": "PCI:CLKREQ/RefClk p:%d b:%d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5e8c",
+      "VA_if_base_correct": "0xfe04ee8c",
+      "literal_offset": "0x8a85",
+      "string": "PCI:PERST4 p:%d b:%d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5ed4",
+      "VA_if_base_correct": "0xfe04eed4",
+      "literal_offset": "0x8a4e",
+      "string": "PCI_W:PCIE PRSNT port %d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5f10",
+      "VA_if_base_correct": "0xfe04ef10",
+      "literal_offset": "0x8a19",
+      "string": "PCI_W:PCIE PRSNT bit %d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5f38",
+      "VA_if_base_correct": "0xfe04ef38",
+      "literal_offset": "0x8a9b",
+      "string": "PCI:PCIE_PRSNT p:%d b:%d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x5ffc",
+      "VA_if_base_correct": "0xfe04effc",
+      "literal_offset": "0x8af3",
+      "string": "LD3:PCIe Pre-Init   done:%lu us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x604c",
+      "VA_if_base_correct": "0xfe04f04c",
+      "literal_offset": "0x8b35",
+      "string": "LD3:PCIe Post-Init  done:%lu us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x60b0",
+      "VA_if_base_correct": "0xfe04f0b0",
+      "literal_offset": "0x8b14",
+      "string": "LD3:PCIe Init-Dev   done:%lu us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x6268",
+      "VA_if_base_correct": "0xfe04f268",
+      "literal_offset": "0x84e6",
+      "string": "LD3:%s done:%lu us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x6288",
+      "VA_if_base_correct": "0xfe04f288",
+      "literal_offset": "0x84db",
+      "string": "SEQ:%s:%d\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x6334",
+      "VA_if_base_correct": "0xfe04f334",
+      "literal_offset": "0x84fa",
+      "string": "LD3:%s cont:%lu us\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x63ec",
+      "VA_if_base_correct": "0xfe04f3ec",
+      "literal_offset": "0x92df",
+      "string": "ISR_E:ELR:     %lx\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x6400",
+      "VA_if_base_correct": "0xfe04f400",
+      "literal_offset": "0x92cb",
+      "string": "ISR_E:LR:      %lx\n",
+      "candidate_only": true
+    },
+    {
+      "site_offset": "0x6414",
+      "VA_if_base_correct": "0xfe04f414",
+      "literal_offset": "0x92f3",
+      "string": "ISR_E:x%-2d: %016lx x%-2d: %016lx\n",
+      "candidate_only": true
+    }
+  ],
+  "direct_branch_candidates": [
+    {
+      "site_offset": "0x9c",
+      "kind": "bl",
+      "target_offset": "0x97c"
+    },
+    {
+      "site_offset": "0xe4",
+      "kind": "bl",
+      "target_offset": "0x990"
+    },
+    {
+      "site_offset": "0xf0",
+      "kind": "bl",
+      "target_offset": "0x990"
+    },
+    {
+      "site_offset": "0x140",
+      "kind": "b",
+      "target_offset": "0x148"
+    },
+    {
+      "site_offset": "0x168",
+      "kind": "bl",
+      "target_offset": "0x990"
+    },
+    {
+      "site_offset": "0x18c",
+      "kind": "b",
+      "target_offset": "0x194"
+    },
+    {
+      "site_offset": "0x210",
+      "kind": "b",
+      "target_offset": "0x470"
+    },
+    {
+      "site_offset": "0x2f8",
+      "kind": "b",
+      "target_offset": "-0x7fffd08"
+    },
+    {
+      "site_offset": "0x308",
+      "kind": "b",
+      "target_offset": "-0x7fffcf8"
+    },
+    {
+      "site_offset": "0x4b8",
+      "kind": "b",
+      "target_offset": "0x628"
+    },
+    {
+      "site_offset": "0x4bc",
+      "kind": "b",
+      "target_offset": "0x4bc"
+    },
+    {
+      "site_offset": "0x4dc",
+      "kind": "b",
+      "target_offset": "0x4cc"
+    },
+    {
+      "site_offset": "0x4f4",
+      "kind": "b",
+      "target_offset": "0x4f4"
+    },
+    {
+      "site_offset": "0x510",
+      "kind": "b",
+      "target_offset": "0x41bc"
+    },
+    {
+      "site_offset": "0x514",
+      "kind": "b",
+      "target_offset": "0x514"
+    },
+    {
+      "site_offset": "0x628",
+      "kind": "bl",
+      "target_offset": "0x23f8"
+    },
+    {
+      "site_offset": "0x62c",
+      "kind": "bl",
+      "target_offset": "0x73c"
+    },
+    {
+      "site_offset": "0x700",
+      "kind": "bl",
+      "target_offset": "0x770"
+    },
+    {
+      "site_offset": "0x704",
+      "kind": "bl",
+      "target_offset": "0x2060"
+    },
+    {
+      "site_offset": "0x714",
+      "kind": "bl",
+      "target_offset": "0x7930"
+    },
+    {
+      "site_offset": "0x73c",
+      "kind": "bl",
+      "target_offset": "0x530"
+    },
+    {
+      "site_offset": "0x748",
+      "kind": "bl",
+      "target_offset": "0x6f4"
+    },
+    {
+      "site_offset": "0x74c",
+      "kind": "bl",
+      "target_offset": "0x5a28"
+    },
+    {
+      "site_offset": "0x750",
+      "kind": "bl",
+      "target_offset": "0x2308"
+    },
+    {
+      "site_offset": "0x764",
+      "kind": "bl",
+      "target_offset": "0x730"
+    },
+    {
+      "site_offset": "0x76c",
+      "kind": "bl",
+      "target_offset": "0x40e8"
+    },
+    {
+      "site_offset": "0xa28",
+      "kind": "bl",
+      "target_offset": "0x1e90"
+    },
+    {
+      "site_offset": "0xa38",
+      "kind": "bl",
+      "target_offset": "0x1948"
+    },
+    {
+      "site_offset": "0xa74",
+      "kind": "bl",
+      "target_offset": "0x1e90"
+    },
+    {
+      "site_offset": "0xa84",
+      "kind": "bl",
+      "target_offset": "0x1948"
+    },
+    {
+      "site_offset": "0xadc",
+      "kind": "bl",
+      "target_offset": "0x1e90"
+    },
+    {
+      "site_offset": "0xaf0",
+      "kind": "bl",
+      "target_offset": "0x18b0"
+    },
+    {
+      "site_offset": "0xb08",
+      "kind": "bl",
+      "target_offset": "0x1910"
+    },
+    {
+      "site_offset": "0xc5c",
+      "kind": "b",
+      "target_offset": "0xc6c"
+    },
+    {
+      "site_offset": "0xc80",
+      "kind": "bl",
+      "target_offset": "0x1578"
+    },
+    {
+      "site_offset": "0xc98",
+      "kind": "b",
+      "target_offset": "0xcc4"
+    },
+    {
+      "site_offset": "0xcb0",
+      "kind": "b",
+      "target_offset": "0xcc4"
+    },
+    {
+      "site_offset": "0xcc8",
+      "kind": "b",
+      "target_offset": "0xcd4"
+    },
+    {
+      "site_offset": "0xccc",
+      "kind": "bl",
+      "target_offset": "0x15a4"
+    },
+    {
+      "site_offset": "0xce0",
+      "kind": "b",
+      "target_offset": "0xd10"
+    },
+    {
+      "site_offset": "0xd38",
+      "kind": "b",
+      "target_offset": "0x168c"
+    },
+    {
+      "site_offset": "0xd68",
+      "kind": "b",
+      "target_offset": "0xd70"
+    },
+    {
+      "site_offset": "0xd78",
+      "kind": "b",
+      "target_offset": "0xd94"
+    },
+    {
+      "site_offset": "0xdcc",
+      "kind": "b",
+      "target_offset": "0x168c"
+    },
+    {
+      "site_offset": "0xdd8",
+      "kind": "b",
+      "target_offset": "0xdc8"
+    },
+    {
+      "site_offset": "0xe14",
+      "kind": "b",
+      "target_offset": "0xe28"
+    },
+    {
+      "site_offset": "0xe30",
+      "kind": "bl",
+      "target_offset": "0x15a4"
+    },
+    {
+      "site_offset": "0xe4c",
+      "kind": "b",
+      "target_offset": "0xd50"
+    },
+    {
+      "site_offset": "0xe70",
+      "kind": "b",
+      "target_offset": "0xe80"
+    },
+    {
+      "site_offset": "0xe84",
+      "kind": "b",
+      "target_offset": "0xd50"
+    },
+    {
+      "site_offset": "0xea8",
+      "kind": "b",
+      "target_offset": "0xeb8"
+    },
+    {
+      "site_offset": "0xed4",
+      "kind": "b",
+      "target_offset": "0xd50"
+    },
+    {
+      "site_offset": "0xf40",
+      "kind": "b",
+      "target_offset": "0x1204"
+    },
+    {
+      "site_offset": "0xf84",
+      "kind": "b",
+      "target_offset": "0xf50"
+    },
+    {
+      "site_offset": "0xfb0",
+      "kind": "bl",
+      "target_offset": "0x7920"
+    },
+    {
+      "site_offset": "0xfcc",
+      "kind": "b",
+      "target_offset": "0x104c"
+    },
+    {
+      "site_offset": "0xff0",
+      "kind": "b",
+      "target_offset": "0x1000"
+    },
+    {
+      "site_offset": "0x1034",
+      "kind": "b",
+      "target_offset": "0x1098"
+    },
+    {
+      "site_offset": "0x105c",
+      "kind": "bl",
+      "target_offset": "0x7920"
+    },
+    {
+      "site_offset": "0x10f0",
+      "kind": "b",
+      "target_offset": "0x1164"
+    },
+    {
+      "site_offset": "0x1120",
+      "kind": "b",
+      "target_offset": "0x1150"
+    },
+    {
+      "site_offset": "0x1138",
+      "kind": "b",
+      "target_offset": "0x1164"
+    },
+    {
+      "site_offset": "0x1140",
+      "kind": "b",
+      "target_offset": "0x1150"
+    },
+    {
+      "site_offset": "0x1148",
+      "kind": "b",
+      "target_offset": "0x1150"
+    },
+    {
+      "site_offset": "0x1190",
+      "kind": "bl",
+      "target_offset": "0x1e90"
+    },
+    {
+      "site_offset": "0x11a0",
+      "kind": "bl",
+      "target_offset": "0x630"
+    },
+    {
+      "site_offset": "0x11c4",
+      "kind": "b",
+      "target_offset": "0x11e0"
+    },
+    {
+      "site_offset": "0x11dc",
+      "kind": "b",
+      "target_offset": "0xf1c"
+    },
+    {
+      "site_offset": "0x11ec",
+      "kind": "b",
+      "target_offset": "0xf1c"
+    },
+    {
+      "site_offset": "0x11f4",
+      "kind": "b",
+      "target_offset": "0xf1c"
+    },
+    {
+      "site_offset": "0x1214",
+      "kind": "b",
+      "target_offset": "0xf1c"
+    },
+    {
+      "site_offset": "0x1278",
+      "kind": "bl",
+      "target_offset": "0x1568"
+    },
+    {
+      "site_offset": "0x1290",
+      "kind": "bl",
+      "target_offset": "0x1550"
+    },
+    {
+      "site_offset": "0x12d4",
+      "kind": "bl",
+      "target_offset": "0x1d24"
+    },
+    {
+      "site_offset": "0x133c",
+      "kind": "b",
+      "target_offset": "0x12bc"
+    },
+    {
+      "site_offset": "0x1364",
+      "kind": "b",
+      "target_offset": "0x1374"
+    },
+    {
+      "site_offset": "0x13b0",
+      "kind": "b",
+      "target_offset": "0x13e0"
+    },
+    {
+      "site_offset": "0x13cc",
+      "kind": "b",
+      "target_offset": "0x13e0"
+    },
+    {
+      "site_offset": "0x14f4",
+      "kind": "bl",
+      "target_offset": "0x1f04"
+    },
+    {
+      "site_offset": "0x1538",
+      "kind": "bl",
+      "target_offset": "0x2010"
+    },
+    {
+      "site_offset": "0x1554",
+      "kind": "bl",
+      "target_offset": "0x2060"
+    },
+    {
+      "site_offset": "0x160c",
+      "kind": "b",
+      "target_offset": "0x161c"
+    },
+    {
+      "site_offset": "0x1614",
+      "kind": "b",
+      "target_offset": "0x1630"
+    },
+    {
+      "site_offset": "0x1650",
+      "kind": "bl",
+      "target_offset": "0xb28"
+    },
+    {
+      "site_offset": "0x1654",
+      "kind": "b",
+      "target_offset": "0x1668"
+    },
+    {
+      "site_offset": "0x1674",
+      "kind": "bl",
+      "target_offset": "0xbb4"
+    },
+    {
+      "site_offset": "0x16d8",
+      "kind": "b",
+      "target_offset": "0x16e0"
+    },
+    {
+      "site_offset": "0x16ec",
+      "kind": "b",
+      "target_offset": "0x16f4"
+    },
+    {
+      "site_offset": "0x171c",
+      "kind": "bl",
+      "target_offset": "0xb28"
+    },
+    {
+      "site_offset": "0x1724",
+      "kind": "b",
+      "target_offset": "0x1748"
+    },
+    {
+      "site_offset": "0x1764",
+      "kind": "bl",
+      "target_offset": "0xb28"
+    },
+    {
+      "site_offset": "0x1768",
+      "kind": "b",
+      "target_offset": "0x1788"
+    },
+    {
+      "site_offset": "0x1794",
+      "kind": "b",
+      "target_offset": "0x17b4"
+    },
+    {
+      "site_offset": "0x17c4",
+      "kind": "bl",
+      "target_offset": "0xbb4"
+    },
+    {
+      "site_offset": "0x181c",
+      "kind": "b",
+      "target_offset": "0x182c"
+    },
+    {
+      "site_offset": "0x1844",
+      "kind": "b",
+      "target_offset": "0x1890"
+    },
+    {
+      "site_offset": "0x185c",
+      "kind": "b",
+      "target_offset": "0x1890"
+    },
+    {
+      "site_offset": "0x1884",
+      "kind": "b",
+      "target_offset": "0x1890"
+    },
+    {
+      "site_offset": "0x18e8",
+      "kind": "bl",
+      "target_offset": "0x1e90"
+    },
+    {
+      "site_offset": "0x18f4",
+      "kind": "bl",
+      "target_offset": "0xee8"
+    },
+    {
+      "site_offset": "0x196c",
+      "kind": "bl",
+      "target_offset": "0x1e90"
+    },
+    {
+      "site_offset": "0x1980",
+      "kind": "bl",
+      "target_offset": "0x18b0"
+    },
+    {
+      "site_offset": "0x198c",
+      "kind": "bl",
+      "target_offset": "0x531c"
+    },
+    {
+      "site_offset": "0x19fc",
+      "kind": "b",
+      "target_offset": "0x1a40"
+    },
+    {
+      "site_offset": "0x1a0c",
+      "kind": "bl",
+      "target_offset": "0x2250"
+    },
+    {
+      "site_offset": "0x1a80",
+      "kind": "bl",
+      "target_offset": "0xb28"
+    },
+    {
+      "site_offset": "0x1a90",
+      "kind": "b",
+      "target_offset": "0x1adc"
+    },
+    {
+      "site_offset": "0x1aa0",
+      "kind": "bl",
+      "target_offset": "0x2250"
+    },
+    {
+      "site_offset": "0x1ab8",
+      "kind": "b",
+      "target_offset": "0x1ad0"
+    },
+    {
+      "site_offset": "0x1af4",
+      "kind": "bl",
+      "target_offset": "0xbb4"
+    },
+    {
+      "site_offset": "0x1b4c",
+      "kind": "b",
+      "target_offset": "0x1b5c"
+    },
+    {
+      "site_offset": "0x1b7c",
+      "kind": "b",
+      "target_offset": "0x1ba8"
+    },
+    {
+      "site_offset": "0x1b94",
+      "kind": "b",
+      "target_offset": "0x1ba8"
+    },
+    {
+      "site_offset": "0x1bb8",
+      "kind": "b",
+      "target_offset": "0x1be8"
+    },
+    {
+      "site_offset": "0x1bf8",
+      "kind": "b",
+      "target_offset": "0x168c"
+    },
+    {
+      "site_offset": "0x1c14",
+      "kind": "b",
+      "target_offset": "0x1c30"
+    },
+    {
+      "site_offset": "0x1c78",
+      "kind": "b",
+      "target_offset": "0x168c"
+    },
+    {
+      "site_offset": "0x1cb0",
+      "kind": "b",
+      "target_offset": "0x1cc4"
+    },
+    {
+      "site_offset": "0x1ccc",
+      "kind": "bl",
+      "target_offset": "0x15a4"
+    },
+    {
+      "site_offset": "0x1ce4",
+      "kind": "b",
+      "target_offset": "0x1c0c"
+    },
+    {
+      "site_offset": "0x1d08",
+      "kind": "b",
+      "target_offset": "0x1d18"
+    },
+    {
+      "site_offset": "0x1d18",
+      "kind": "b",
+      "target_offset": "0x1c0c"
+    },
+    {
+      "site_offset": "0x1d74",
+      "kind": "b",
+      "target_offset": "0x1dc8"
+    },
+    {
+      "site_offset": "0x1d98",
+      "kind": "b",
+      "target_offset": "0x1dc8"
+    },
+    {
+      "site_offset": "0x1db8",
+      "kind": "b",
+      "target_offset": "0x1dc8"
+    },
+    {
+      "site_offset": "0x1dc0",
+      "kind": "b",
+      "target_offset": "0x1dc8"
+    },
+    {
+      "site_offset": "0x1dd4",
+      "kind": "b",
+      "target_offset": "0x1e08"
+    },
+    {
+      "site_offset": "0x1e0c",
+      "kind": "bl",
+      "target_offset": "0x2224"
+    },
+    {
+      "site_offset": "0x1e3c",
+      "kind": "bl",
+      "target_offset": "0x1568"
+    },
+    {
+      "site_offset": "0x1e90",
+      "kind": "b",
+      "target_offset": "0x1eb0"
+    },
+    {
+      "site_offset": "0x1ee8",
+      "kind": "b",
+      "target_offset": "0x1ef4"
+    },
+    {
+      "site_offset": "0x1f74",
+      "kind": "b",
+      "target_offset": "0x1f94"
+    },
+    {
+      "site_offset": "0x1f78",
+      "kind": "b",
+      "target_offset": "0x1e90"
+    },
+    {
+      "site_offset": "0x1fd8",
+      "kind": "b",
+      "target_offset": "0x1fe4"
+    },
+    {
+      "site_offset": "0x2048",
+      "kind": "b",
+      "target_offset": "0x1fd8"
+    },
+    {
+      "site_offset": "0x2050",
+      "kind": "b",
+      "target_offset": "0x2010"
+    },
+    {
+      "site_offset": "0x2058",
+      "kind": "b",
+      "target_offset": "0x1fd8"
+    },
+    {
+      "site_offset": "0x2094",
+      "kind": "b",
+      "target_offset": "0x209c"
+    },
+    {
+      "site_offset": "0x2098",
+      "kind": "bl",
+      "target_offset": "0x15d0"
+    },
+    {
+      "site_offset": "0x20f0",
+      "kind": "b",
+      "target_offset": "0x2100"
+    },
+    {
+      "site_offset": "0x2110",
+      "kind": "b",
+      "target_offset": "0x2070"
+    },
+    {
+      "site_offset": "0x2134",
+      "kind": "b",
+      "target_offset": "0x2144"
+    },
+    {
+      "site_offset": "0x2148",
+      "kind": "b",
+      "target_offset": "0x2070"
+    },
+    {
+      "site_offset": "0x2170",
+      "kind": "b",
+      "target_offset": "0x2178"
+    },
+    {
+      "site_offset": "0x2174",
+      "kind": "bl",
+      "target_offset": "0x19b8"
+    },
+    {
+      "site_offset": "0x21cc",
+      "kind": "b",
+      "target_offset": "0x21dc"
+    },
+    {
+      "site_offset": "0x21e8",
+      "kind": "b",
+      "target_offset": "0x214c"
+    },
+    {
+      "site_offset": "0x220c",
+      "kind": "b",
+      "target_offset": "0x221c"
+    },
+    {
+      "site_offset": "0x2220",
+      "kind": "b",
+      "target_offset": "0x214c"
+    },
+    {
+      "site_offset": "0x2270",
+      "kind": "bl",
+      "target_offset": "0x1550"
+    },
+    {
+      "site_offset": "0x2330",
+      "kind": "b",
+      "target_offset": "0x760"
+    },
+    {
+      "site_offset": "0x2410",
+      "kind": "bl",
+      "target_offset": "0x73c"
+    },
+    {
+      "site_offset": "0x243c",
+      "kind": "b",
+      "target_offset": "0x2408"
+    },
+    {
+      "site_offset": "0x245c",
+      "kind": "b",
+      "target_offset": "0x2468"
+    },
+    {
+      "site_offset": "0x2480",
+      "kind": "bl",
+      "target_offset": "0x2528"
+    },
+    {
+      "site_offset": "0x2490",
+      "kind": "bl",
+      "target_offset": "0x2500"
+    },
+    {
+      "site_offset": "0x249c",
+      "kind": "bl",
+      "target_offset": "0x24c8"
+    },
+    {
+      "site_offset": "0x24ac",
+      "kind": "bl",
+      "target_offset": "0x14e0"
+    },
+    {
+      "site_offset": "0x24b0",
+      "kind": "b",
+      "target_offset": "0x24b8"
+    },
+    {
+      "site_offset": "0x25dc",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2604",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2630",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x26a0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x26b0",
+      "kind": "b",
+      "target_offset": "0x2638"
+    },
+    {
+      "site_offset": "0x26c4",
+      "kind": "b",
+      "target_offset": "0x2604"
+    },
+    {
+      "site_offset": "0x26d8",
+      "kind": "b",
+      "target_offset": "0x2604"
+    },
+    {
+      "site_offset": "0x2700",
+      "kind": "b",
+      "target_offset": "0x2708"
+    },
+    {
+      "site_offset": "0x2730",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2758",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2780",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x27a8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x27f8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2808",
+      "kind": "b",
+      "target_offset": "0x2844"
+    },
+    {
+      "site_offset": "0x2834",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x286c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x289c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x28ec",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2918",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x294c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2974",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2998",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x29c0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x29f8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2a00",
+      "kind": "b",
+      "target_offset": "0x2638"
+    },
+    {
+      "site_offset": "0x2a28",
+      "kind": "b",
+      "target_offset": "0x2a90"
+    },
+    {
+      "site_offset": "0x2a34",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2a60",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2a68",
+      "kind": "b",
+      "target_offset": "0x2638"
+    },
+    {
+      "site_offset": "0x2a78",
+      "kind": "b",
+      "target_offset": "0x2a90"
+    },
+    {
+      "site_offset": "0x2a9c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2ab4",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2ac0",
+      "kind": "b",
+      "target_offset": "0x29fc"
+    },
+    {
+      "site_offset": "0x2b00",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2b28",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2b38",
+      "kind": "b",
+      "target_offset": "0x2c78"
+    },
+    {
+      "site_offset": "0x2b5c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2b64",
+      "kind": "b",
+      "target_offset": "0x2c78"
+    },
+    {
+      "site_offset": "0x2ba0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2bc8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2bf0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2c18",
+      "kind": "b",
+      "target_offset": "0x2c3c"
+    },
+    {
+      "site_offset": "0x2c2c",
+      "kind": "b",
+      "target_offset": "0x2b28"
+    },
+    {
+      "site_offset": "0x2c34",
+      "kind": "b",
+      "target_offset": "0x2c3c"
+    },
+    {
+      "site_offset": "0x2c70",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2c9c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2cac",
+      "kind": "b",
+      "target_offset": "0x2c78"
+    },
+    {
+      "site_offset": "0x2cd0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2cd8",
+      "kind": "b",
+      "target_offset": "0x2c78"
+    },
+    {
+      "site_offset": "0x2d0c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2d34",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2d44",
+      "kind": "b",
+      "target_offset": "0x2e64"
+    },
+    {
+      "site_offset": "0x2d68",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2d70",
+      "kind": "b",
+      "target_offset": "0x2e64"
+    },
+    {
+      "site_offset": "0x2dac",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2dd0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2df4",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2e00",
+      "kind": "b",
+      "target_offset": "0x2e74"
+    },
+    {
+      "site_offset": "0x2e14",
+      "kind": "b",
+      "target_offset": "0x2d34"
+    },
+    {
+      "site_offset": "0x2e28",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2e60",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2e84",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2e94",
+      "kind": "b",
+      "target_offset": "0x2e64"
+    },
+    {
+      "site_offset": "0x2ed0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2ef8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2f08",
+      "kind": "b",
+      "target_offset": "0x2fd4"
+    },
+    {
+      "site_offset": "0x2f2c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2f34",
+      "kind": "b",
+      "target_offset": "0x2fd4"
+    },
+    {
+      "site_offset": "0x2f74",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2f9c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2fcc",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x2ff4",
+      "kind": "b",
+      "target_offset": "0x2ef8"
+    },
+    {
+      "site_offset": "0x300c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3024",
+      "kind": "b",
+      "target_offset": "0x2fa0"
+    },
+    {
+      "site_offset": "0x3060",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3088",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3098",
+      "kind": "b",
+      "target_offset": "0x31a8"
+    },
+    {
+      "site_offset": "0x30bc",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x30c4",
+      "kind": "b",
+      "target_offset": "0x31a8"
+    },
+    {
+      "site_offset": "0x3104",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x311c",
+      "kind": "b",
+      "target_offset": "0x3174"
+    },
+    {
+      "site_offset": "0x3130",
+      "kind": "b",
+      "target_offset": "0x3088"
+    },
+    {
+      "site_offset": "0x3148",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3170",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x31a0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x31f4",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x321c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3248",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x32a8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x32d0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x32f8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3320",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3350",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3378",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x33a8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x33d0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x33f8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3424",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x344c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3478",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x34a8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x34d8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3508",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3538",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3568",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3594",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x35bc",
+      "kind": "b",
+      "target_offset": "0x35f4"
+    },
+    {
+      "site_offset": "0x35d0",
+      "kind": "b",
+      "target_offset": "0x321c"
+    },
+    {
+      "site_offset": "0x35e4",
+      "kind": "b",
+      "target_offset": "0x321c"
+    },
+    {
+      "site_offset": "0x35ec",
+      "kind": "b",
+      "target_offset": "0x35f4"
+    },
+    {
+      "site_offset": "0x3618",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3640",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3664",
+      "kind": "b",
+      "target_offset": "0x369c"
+    },
+    {
+      "site_offset": "0x367c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x368c",
+      "kind": "b",
+      "target_offset": "0x3250"
+    },
+    {
+      "site_offset": "0x3694",
+      "kind": "b",
+      "target_offset": "0x369c"
+    },
+    {
+      "site_offset": "0x36c0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x36cc",
+      "kind": "bl",
+      "target_offset": "0x3d1c"
+    },
+    {
+      "site_offset": "0x36f0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3718",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3740",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3768",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x378c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x37b4",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x37d8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3800",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3830",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3838",
+      "kind": "b",
+      "target_offset": "0x3250"
+    },
+    {
+      "site_offset": "0x3864",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x386c",
+      "kind": "b",
+      "target_offset": "0x3250"
+    },
+    {
+      "site_offset": "0x38a8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x38cc",
+      "kind": "b",
+      "target_offset": "0x3988"
+    },
+    {
+      "site_offset": "0x38d4",
+      "kind": "bl",
+      "target_offset": "0x61cc"
+    },
+    {
+      "site_offset": "0x38e0",
+      "kind": "bl",
+      "target_offset": "0x612c"
+    },
+    {
+      "site_offset": "0x38ec",
+      "kind": "bl",
+      "target_offset": "0x612c"
+    },
+    {
+      "site_offset": "0x38f8",
+      "kind": "bl",
+      "target_offset": "0x612c"
+    },
+    {
+      "site_offset": "0x3904",
+      "kind": "bl",
+      "target_offset": "0x612c"
+    },
+    {
+      "site_offset": "0x3910",
+      "kind": "bl",
+      "target_offset": "0x612c"
+    },
+    {
+      "site_offset": "0x391c",
+      "kind": "bl",
+      "target_offset": "0x64ec"
+    },
+    {
+      "site_offset": "0x3924",
+      "kind": "bl",
+      "target_offset": "0x617c"
+    },
+    {
+      "site_offset": "0x3954",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x395c",
+      "kind": "b",
+      "target_offset": "0x3988"
+    },
+    {
+      "site_offset": "0x3980",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x39ec",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3a14",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3a20",
+      "kind": "b",
+      "target_offset": "0x3a28"
+    },
+    {
+      "site_offset": "0x3a2c",
+      "kind": "bl",
+      "target_offset": "0x617c"
+    },
+    {
+      "site_offset": "0x3a38",
+      "kind": "bl",
+      "target_offset": "0x617c"
+    },
+    {
+      "site_offset": "0x3a44",
+      "kind": "bl",
+      "target_offset": "0x617c"
+    },
+    {
+      "site_offset": "0x3a5c",
+      "kind": "bl",
+      "target_offset": "0x64dc"
+    },
+    {
+      "site_offset": "0x3a8c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3ac0",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3ad4",
+      "kind": "bl",
+      "target_offset": "0x64dc"
+    },
+    {
+      "site_offset": "0x3ae8",
+      "kind": "b",
+      "target_offset": "0x3b74"
+    },
+    {
+      "site_offset": "0x3afc",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3b08",
+      "kind": "b",
+      "target_offset": "0x3934"
+    },
+    {
+      "site_offset": "0x3b18",
+      "kind": "bl",
+      "target_offset": "0x14e0"
+    },
+    {
+      "site_offset": "0x3b3c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3b68",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3b9c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3bc8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3bd4",
+      "kind": "bl",
+      "target_offset": "0x612c"
+    },
+    {
+      "site_offset": "0x3be4",
+      "kind": "bl",
+      "target_offset": "0x612c"
+    },
+    {
+      "site_offset": "0x3bf0",
+      "kind": "bl",
+      "target_offset": "0x617c"
+    },
+    {
+      "site_offset": "0x3bfc",
+      "kind": "bl",
+      "target_offset": "0x617c"
+    },
+    {
+      "site_offset": "0x3c20",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3c4c",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3c80",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3c88",
+      "kind": "b",
+      "target_offset": "0x3988"
+    },
+    {
+      "site_offset": "0x3ce8",
+      "kind": "bl",
+      "target_offset": "0x4884"
+    },
+    {
+      "site_offset": "0x3cfc",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x3d50",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3da4",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3dd8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x3dfc",
+      "kind": "b",
+      "target_offset": "0x3d68"
+    },
+    {
+      "site_offset": "0x3e04",
+      "kind": "b",
+      "target_offset": "0x3d68"
+    },
+    {
+      "site_offset": "0x3e1c",
+      "kind": "bl",
+      "target_offset": "0x64a8"
+    },
+    {
+      "site_offset": "0x3e24",
+      "kind": "bl",
+      "target_offset": "0x64a8"
+    },
+    {
+      "site_offset": "0x3e30",
+      "kind": "bl",
+      "target_offset": "0x4b04"
+    },
+    {
+      "site_offset": "0x3e50",
+      "kind": "bl",
+      "target_offset": "0x6458"
+    },
+    {
+      "site_offset": "0x3e54",
+      "kind": "bl",
+      "target_offset": "0x6120"
+    },
+    {
+      "site_offset": "0x3e5c",
+      "kind": "bl",
+      "target_offset": "0x4588"
+    },
+    {
+      "site_offset": "0x3e64",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x3e7c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x3e84",
+      "kind": "b",
+      "target_offset": "0x3e9c"
+    },
+    {
+      "site_offset": "0x3e94",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x3ec8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x3ee4",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x3ef8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x3f40",
+      "kind": "bl",
+      "target_offset": "0x5ac8"
+    },
+    {
+      "site_offset": "0x3f48",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x3f5c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x3f64",
+      "kind": "b",
+      "target_offset": "0x3fbc"
+    },
+    {
+      "site_offset": "0x3f74",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x3f88",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x3f90",
+      "kind": "b",
+      "target_offset": "0x3fbc"
+    },
+    {
+      "site_offset": "0x3f9c",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x3fb0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x3fd8",
+      "kind": "bl",
+      "target_offset": "0x60dc"
+    },
+    {
+      "site_offset": "0x4010",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x4024",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4060",
+      "kind": "bl",
+      "target_offset": "0x7b0"
+    },
+    {
+      "site_offset": "0x4064",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x4074",
+      "kind": "b",
+      "target_offset": "0x409c"
+    },
+    {
+      "site_offset": "0x408c",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x40a0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x40b8",
+      "kind": "bl",
+      "target_offset": "0x5658"
+    },
+    {
+      "site_offset": "0x40d8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x40e8",
+      "kind": "b",
+      "target_offset": "0x40e8"
+    },
+    {
+      "site_offset": "0x4108",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4110",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x4118",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x4138",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4140",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x4148",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x4168",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4170",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x4178",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x4198",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x41a0",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x41a8",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x41b0",
+      "kind": "bl",
+      "target_offset": "0x3c8c"
+    },
+    {
+      "site_offset": "0x41b8",
+      "kind": "b",
+      "target_offset": "0x844"
+    },
+    {
+      "site_offset": "0x41bc",
+      "kind": "b",
+      "target_offset": "0x3ca8"
+    },
+    {
+      "site_offset": "0x41dc",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x41e4",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x41ec",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x420c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4214",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x421c",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x423c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4244",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x424c",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x426c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4274",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x427c",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x42ac",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x42cc",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x42e8",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x4304",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x4318",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4328",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x432c",
+      "kind": "b",
+      "target_offset": "0x4540"
+    },
+    {
+      "site_offset": "0x4340",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4344",
+      "kind": "bl",
+      "target_offset": "0x41ac"
+    },
+    {
+      "site_offset": "0x43a0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x43cc",
+      "kind": "b",
+      "target_offset": "0x43e4"
+    },
+    {
+      "site_offset": "0x43d4",
+      "kind": "b",
+      "target_offset": "0x443c"
+    },
+    {
+      "site_offset": "0x43dc",
+      "kind": "b",
+      "target_offset": "0x443c"
+    },
+    {
+      "site_offset": "0x43f4",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x43fc",
+      "kind": "b",
+      "target_offset": "0x455c"
+    },
+    {
+      "site_offset": "0x441c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4430",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4434",
+      "kind": "b",
+      "target_offset": "0x4540"
+    },
+    {
+      "site_offset": "0x444c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4450",
+      "kind": "bl",
+      "target_offset": "0x41ac"
+    },
+    {
+      "site_offset": "0x4494",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x44c0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x44fc",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x451c",
+      "kind": "b",
+      "target_offset": "0x4578"
+    },
+    {
+      "site_offset": "0x453c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4540",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x4554",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x457c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4584",
+      "kind": "b",
+      "target_offset": "0x455c"
+    },
+    {
+      "site_offset": "0x4590",
+      "kind": "bl",
+      "target_offset": "0x5470"
+    },
+    {
+      "site_offset": "0x459c",
+      "kind": "bl",
+      "target_offset": "0x5470"
+    },
+    {
+      "site_offset": "0x45b0",
+      "kind": "b",
+      "target_offset": "0x4280"
+    },
+    {
+      "site_offset": "0x45d8",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x45f8",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x461c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4620",
+      "kind": "b",
+      "target_offset": "0x46d0"
+    },
+    {
+      "site_offset": "0x4634",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4638",
+      "kind": "b",
+      "target_offset": "0x46d0"
+    },
+    {
+      "site_offset": "0x4654",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x4688",
+      "kind": "b",
+      "target_offset": "0x461c"
+    },
+    {
+      "site_offset": "0x46a8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x46cc",
+      "kind": "bl",
+      "target_offset": "0x49cc"
+    },
+    {
+      "site_offset": "0x4750",
+      "kind": "bl",
+      "target_offset": "0x150c"
+    },
+    {
+      "site_offset": "0x47a0",
+      "kind": "bl",
+      "target_offset": "0xaa0"
+    },
+    {
+      "site_offset": "0x47c8",
+      "kind": "bl",
+      "target_offset": "0x9b8"
+    },
+    {
+      "site_offset": "0x47e4",
+      "kind": "bl",
+      "target_offset": "0x9b8"
+    },
+    {
+      "site_offset": "0x480c",
+      "kind": "bl",
+      "target_offset": "0x9b8"
+    },
+    {
+      "site_offset": "0x4828",
+      "kind": "bl",
+      "target_offset": "0x1360"
+    },
+    {
+      "site_offset": "0x485c",
+      "kind": "bl",
+      "target_offset": "0x14e0"
+    },
+    {
+      "site_offset": "0x489c",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x48bc",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x48cc",
+      "kind": "b",
+      "target_offset": "0x48d8"
+    },
+    {
+      "site_offset": "0x48fc",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x4910",
+      "kind": "bl",
+      "target_offset": "0x6538"
+    },
+    {
+      "site_offset": "0x491c",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x492c",
+      "kind": "b",
+      "target_offset": "0x4938"
+    },
+    {
+      "site_offset": "0x4980",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x4994",
+      "kind": "bl",
+      "target_offset": "0x6538"
+    },
+    {
+      "site_offset": "0x49a0",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x49b0",
+      "kind": "b",
+      "target_offset": "0x49bc"
+    },
+    {
+      "site_offset": "0x4a5c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4a7c",
+      "kind": "b",
+      "target_offset": "0x4ab0"
+    },
+    {
+      "site_offset": "0x4a88",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4aa0",
+      "kind": "b",
+      "target_offset": "0x4ab0"
+    },
+    {
+      "site_offset": "0x4ab0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4ae4",
+      "kind": "b",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4b20",
+      "kind": "bl",
+      "target_offset": "0x6538"
+    },
+    {
+      "site_offset": "0x4b28",
+      "kind": "b",
+      "target_offset": "0x4b30"
+    },
+    {
+      "site_offset": "0x4b84",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x4ba4",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x4be0",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x4be8",
+      "kind": "b",
+      "target_offset": "0x4c08"
+    },
+    {
+      "site_offset": "0x4bfc",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4c00",
+      "kind": "b",
+      "target_offset": "0x4c84"
+    },
+    {
+      "site_offset": "0x4c20",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4c54",
+      "kind": "b",
+      "target_offset": "0x4c84"
+    },
+    {
+      "site_offset": "0x4c68",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4c6c",
+      "kind": "b",
+      "target_offset": "0x4c84"
+    },
+    {
+      "site_offset": "0x4c74",
+      "kind": "b",
+      "target_offset": "0x4c84"
+    },
+    {
+      "site_offset": "0x4c7c",
+      "kind": "b",
+      "target_offset": "0x4c84"
+    },
+    {
+      "site_offset": "0x4cb4",
+      "kind": "bl",
+      "target_offset": "0x58e8"
+    },
+    {
+      "site_offset": "0x4cc0",
+      "kind": "bl",
+      "target_offset": "0x5924"
+    },
+    {
+      "site_offset": "0x4ce0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4d04",
+      "kind": "bl",
+      "target_offset": "0x6644"
+    },
+    {
+      "site_offset": "0x4d0c",
+      "kind": "bl",
+      "target_offset": "0x6644"
+    },
+    {
+      "site_offset": "0x4d48",
+      "kind": "b",
+      "target_offset": "0x4d18"
+    },
+    {
+      "site_offset": "0x4d8c",
+      "kind": "bl",
+      "target_offset": "0x6644"
+    },
+    {
+      "site_offset": "0x4d94",
+      "kind": "bl",
+      "target_offset": "0x6644"
+    },
+    {
+      "site_offset": "0x4dd4",
+      "kind": "bl",
+      "target_offset": "0x65cc"
+    },
+    {
+      "site_offset": "0x4e14",
+      "kind": "bl",
+      "target_offset": "0x6504"
+    },
+    {
+      "site_offset": "0x4e34",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x4e48",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x4e5c",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x4e70",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x4e7c",
+      "kind": "bl",
+      "target_offset": "0x6644"
+    },
+    {
+      "site_offset": "0x4e80",
+      "kind": "b",
+      "target_offset": "0x4ee4"
+    },
+    {
+      "site_offset": "0x4e9c",
+      "kind": "b",
+      "target_offset": "0x4ef4"
+    },
+    {
+      "site_offset": "0x4ea8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4eb8",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x4ebc",
+      "kind": "bl",
+      "target_offset": "0x4c94"
+    },
+    {
+      "site_offset": "0x4ec0",
+      "kind": "b",
+      "target_offset": "0x4ee4"
+    },
+    {
+      "site_offset": "0x4ec4",
+      "kind": "bl",
+      "target_offset": "0x45b4"
+    },
+    {
+      "site_offset": "0x4ec8",
+      "kind": "b",
+      "target_offset": "0x4ee4"
+    },
+    {
+      "site_offset": "0x4ecc",
+      "kind": "bl",
+      "target_offset": "0x4b60"
+    },
+    {
+      "site_offset": "0x4ed0",
+      "kind": "b",
+      "target_offset": "0x4ee4"
+    },
+    {
+      "site_offset": "0x4edc",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x4ee0",
+      "kind": "bl",
+      "target_offset": "0x59b0"
+    },
+    {
+      "site_offset": "0x4ef4",
+      "kind": "bl",
+      "target_offset": "0x65cc"
+    },
+    {
+      "site_offset": "0x4f30",
+      "kind": "bl",
+      "target_offset": "0x65cc"
+    },
+    {
+      "site_offset": "0x4f78",
+      "kind": "bl",
+      "target_offset": "0x6504"
+    },
+    {
+      "site_offset": "0x4fac",
+      "kind": "b",
+      "target_offset": "0x51b0"
+    },
+    {
+      "site_offset": "0x4fb0",
+      "kind": "bl",
+      "target_offset": "0x6644"
+    },
+    {
+      "site_offset": "0x4fcc",
+      "kind": "bl",
+      "target_offset": "0x65cc"
+    },
+    {
+      "site_offset": "0x4fd4",
+      "kind": "b",
+      "target_offset": "0x51c4"
+    },
+    {
+      "site_offset": "0x4fe8",
+      "kind": "b",
+      "target_offset": "0x51b0"
+    },
+    {
+      "site_offset": "0x4ff8",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x5010",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x5028",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x5040",
+      "kind": "bl",
+      "target_offset": "0x13e8"
+    },
+    {
+      "site_offset": "0x5058",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x5068",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x5084",
+      "kind": "b",
+      "target_offset": "0x5128"
+    },
+    {
+      "site_offset": "0x5094",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x5098",
+      "kind": "b",
+      "target_offset": "0x51ac"
+    },
+    {
+      "site_offset": "0x50a4",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x50ac",
+      "kind": "b",
+      "target_offset": "0x51b0"
+    },
+    {
+      "site_offset": "0x50b8",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x50c0",
+      "kind": "b",
+      "target_offset": "0x51b0"
+    },
+    {
+      "site_offset": "0x50d4",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x50e4",
+      "kind": "bl",
+      "target_offset": "0x1248"
+    },
+    {
+      "site_offset": "0x50e8",
+      "kind": "bl",
+      "target_offset": "0x4c94"
+    },
+    {
+      "site_offset": "0x50ec",
+      "kind": "b",
+      "target_offset": "0x51ac"
+    },
+    {
+      "site_offset": "0x50fc",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x5100",
+      "kind": "bl",
+      "target_offset": "0x45b4"
+    },
+    {
+      "site_offset": "0x5104",
+      "kind": "b",
+      "target_offset": "0x51ac"
+    },
+    {
+      "site_offset": "0x5114",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x5118",
+      "kind": "bl",
+      "target_offset": "0x4b60"
+    },
+    {
+      "site_offset": "0x511c",
+      "kind": "b",
+      "target_offset": "0x51ac"
+    },
+    {
+      "site_offset": "0x5144",
+      "kind": "bl",
+      "target_offset": "0x64ec"
+    },
+    {
+      "site_offset": "0x5150",
+      "kind": "bl",
+      "target_offset": "0x64ec"
+    },
+    {
+      "site_offset": "0x5154",
+      "kind": "b",
+      "target_offset": "0x516c"
+    },
+    {
+      "site_offset": "0x515c",
+      "kind": "bl",
+      "target_offset": "0x53a4"
+    },
+    {
+      "site_offset": "0x5168",
+      "kind": "bl",
+      "target_offset": "0x53a4"
+    },
+    {
+      "site_offset": "0x5190",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5194",
+      "kind": "b",
+      "target_offset": "0x51ac"
+    },
+    {
+      "site_offset": "0x51a8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x51b4",
+      "kind": "bl",
+      "target_offset": "0x65f4"
+    },
+    {
+      "site_offset": "0x51bc",
+      "kind": "bl",
+      "target_offset": "0x65cc"
+    },
+    {
+      "site_offset": "0x5200",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x5214",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5284",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5294",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5298",
+      "kind": "bl",
+      "target_offset": "0x5964"
+    },
+    {
+      "site_offset": "0x529c",
+      "kind": "bl",
+      "target_offset": "0x4708"
+    },
+    {
+      "site_offset": "0x52a0",
+      "kind": "bl",
+      "target_offset": "0x6538"
+    },
+    {
+      "site_offset": "0x52a4",
+      "kind": "bl",
+      "target_offset": "0x5644"
+    },
+    {
+      "site_offset": "0x52b8",
+      "kind": "bl",
+      "target_offset": "0x494c"
+    },
+    {
+      "site_offset": "0x52bc",
+      "kind": "bl",
+      "target_offset": "0x4d4c"
+    },
+    {
+      "site_offset": "0x52c0",
+      "kind": "bl",
+      "target_offset": "0x4dac"
+    },
+    {
+      "site_offset": "0x52d0",
+      "kind": "bl",
+      "target_offset": "0x59d0"
+    },
+    {
+      "site_offset": "0x52dc",
+      "kind": "bl",
+      "target_offset": "0x53a4"
+    },
+    {
+      "site_offset": "0x52ec",
+      "kind": "bl",
+      "target_offset": "0x59d0"
+    },
+    {
+      "site_offset": "0x52f8",
+      "kind": "bl",
+      "target_offset": "0x53a4"
+    },
+    {
+      "site_offset": "0x5308",
+      "kind": "bl",
+      "target_offset": "0x59d0"
+    },
+    {
+      "site_offset": "0x5314",
+      "kind": "bl",
+      "target_offset": "0x53a4"
+    },
+    {
+      "site_offset": "0x5318",
+      "kind": "b",
+      "target_offset": "0x52c0"
+    },
+    {
+      "site_offset": "0x5338",
+      "kind": "bl",
+      "target_offset": "0x6644"
+    },
+    {
+      "site_offset": "0x5340",
+      "kind": "bl",
+      "target_offset": "0x6644"
+    },
+    {
+      "site_offset": "0x54a4",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x54e0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x54e8",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x54f0",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x5510",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5518",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x5520",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x5540",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5548",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x5550",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x5570",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5578",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x5580",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x55a0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x55a8",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x55b0",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x55d0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x55d8",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x55e0",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x5600",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5608",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x5610",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x5630",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5638",
+      "kind": "bl",
+      "target_offset": "0x63d8"
+    },
+    {
+      "site_offset": "0x5640",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x5674",
+      "kind": "bl",
+      "target_offset": "0x54b4"
+    },
+    {
+      "site_offset": "0x56a8",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x56c8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5704",
+      "kind": "bl",
+      "target_offset": "0x54b4"
+    },
+    {
+      "site_offset": "0x573c",
+      "kind": "b",
+      "target_offset": "0x57ac"
+    },
+    {
+      "site_offset": "0x574c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5750",
+      "kind": "b",
+      "target_offset": "0x57b8"
+    },
+    {
+      "site_offset": "0x575c",
+      "kind": "bl",
+      "target_offset": "0x2474"
+    },
+    {
+      "site_offset": "0x576c",
+      "kind": "b",
+      "target_offset": "0x57bc"
+    },
+    {
+      "site_offset": "0x5794",
+      "kind": "bl",
+      "target_offset": "0x14e0"
+    },
+    {
+      "site_offset": "0x57a0",
+      "kind": "b",
+      "target_offset": "0x57bc"
+    },
+    {
+      "site_offset": "0x57b4",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x57cc",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x57f8",
+      "kind": "bl",
+      "target_offset": "0x5470"
+    },
+    {
+      "site_offset": "0x581c",
+      "kind": "bl",
+      "target_offset": "0x14e0"
+    },
+    {
+      "site_offset": "0x5844",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5894",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5898",
+      "kind": "b",
+      "target_offset": "0x58dc"
+    },
+    {
+      "site_offset": "0x58c4",
+      "kind": "bl",
+      "target_offset": "0x14e0"
+    },
+    {
+      "site_offset": "0x58c8",
+      "kind": "b",
+      "target_offset": "0x58dc"
+    },
+    {
+      "site_offset": "0x58d8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5904",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5940",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5968",
+      "kind": "bl",
+      "target_offset": "0x46e0"
+    },
+    {
+      "site_offset": "0x5970",
+      "kind": "bl",
+      "target_offset": "0x46ec"
+    },
+    {
+      "site_offset": "0x597c",
+      "kind": "bl",
+      "target_offset": "0x5854"
+    },
+    {
+      "site_offset": "0x5990",
+      "kind": "b",
+      "target_offset": "0x599c"
+    },
+    {
+      "site_offset": "0x59a0",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5a00",
+      "kind": "bl",
+      "target_offset": "0x53a4"
+    },
+    {
+      "site_offset": "0x5a0c",
+      "kind": "bl",
+      "target_offset": "0x53a4"
+    },
+    {
+      "site_offset": "0x5a30",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x5a34",
+      "kind": "bl",
+      "target_offset": "0x63cc"
+    },
+    {
+      "site_offset": "0x5a50",
+      "kind": "bl",
+      "target_offset": "0x621c"
+    },
+    {
+      "site_offset": "0x5a74",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5aa8",
+      "kind": "bl",
+      "target_offset": "0x7b0"
+    },
+    {
+      "site_offset": "0x5abc",
+      "kind": "bl",
+      "target_offset": "0x41bc"
+    },
+    {
+      "site_offset": "0x5ac4",
+      "kind": "bl",
+      "target_offset": "0x51e8"
+    },
+    {
+      "site_offset": "0x5ae4",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5b24",
+      "kind": "b",
+      "target_offset": "0x5dc4"
+    },
+    {
+      "site_offset": "0x5b50",
+      "kind": "b",
+      "target_offset": "0x5bc4"
+    },
+    {
+      "site_offset": "0x5b54",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x5b70",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5b88",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x5ba4",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5bc4",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x5bec",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5c08",
+      "kind": "b",
+      "target_offset": "0x5c68"
+    },
+    {
+      "site_offset": "0x5c1c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5c24",
+      "kind": "b",
+      "target_offset": "0x5dc4"
+    },
+    {
+      "site_offset": "0x5c2c",
+      "kind": "bl",
+      "target_offset": "0x3870"
+    },
+    {
+      "site_offset": "0x5c48",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5c70",
+      "kind": "bl",
+      "target_offset": "0x3028"
+    },
+    {
+      "site_offset": "0x5c80",
+      "kind": "bl",
+      "target_offset": "0x31b8"
+    },
+    {
+      "site_offset": "0x5c9c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5cc8",
+      "kind": "bl",
+      "target_offset": "0x2ac4"
+    },
+    {
+      "site_offset": "0x5cd0",
+      "kind": "bl",
+      "target_offset": "0x2cdc"
+    },
+    {
+      "site_offset": "0x5cec",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x5d08",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5d24",
+      "kind": "b",
+      "target_offset": "0x5d7c"
+    },
+    {
+      "site_offset": "0x5d2c",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x5d48",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5d4c",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x5d60",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5d88",
+      "kind": "bl",
+      "target_offset": "0x2590"
+    },
+    {
+      "site_offset": "0x5d9c",
+      "kind": "bl",
+      "target_offset": "0x2e98"
+    },
+    {
+      "site_offset": "0x5db8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5df0",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x5e10",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5e30",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x5e54",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5e78",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5ea4",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5ebc",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x5edc",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5ef8",
+      "kind": "bl",
+      "target_offset": "0x56d8"
+    },
+    {
+      "site_offset": "0x5f1c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5f40",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x5ff0",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x6004",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x6008",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x603c",
+      "kind": "b",
+      "target_offset": "0x5dc4"
+    },
+    {
+      "site_offset": "0x6040",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x6054",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x60a0",
+      "kind": "b",
+      "target_offset": "0x5ca8"
+    },
+    {
+      "site_offset": "0x60a4",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x60b8",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x60d8",
+      "kind": "b",
+      "target_offset": "0x5dc4"
+    },
+    {
+      "site_offset": "0x6244",
+      "kind": "bl",
+      "target_offset": "0x5b04"
+    },
+    {
+      "site_offset": "0x6270",
+      "kind": "b",
+      "target_offset": "0x62dc"
+    },
+    {
+      "site_offset": "0x6290",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x6298",
+      "kind": "bl",
+      "target_offset": "0x4f14"
+    },
+    {
+      "site_offset": "0x62c4",
+      "kind": "b",
+      "target_offset": "0x6374"
+    },
+    {
+      "site_offset": "0x62d0",
+      "kind": "b",
+      "target_offset": "0x6374"
+    },
+    {
+      "site_offset": "0x62d8",
+      "kind": "b",
+      "target_offset": "0x62f4"
+    },
+    {
+      "site_offset": "0x6324",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x633c",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x6348",
+      "kind": "b",
+      "target_offset": "0x6374"
+    },
+    {
+      "site_offset": "0x6354",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x6368",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x6378",
+      "kind": "bl",
+      "target_offset": "0x5b04"
+    },
+    {
+      "site_offset": "0x63a4",
+      "kind": "b",
+      "target_offset": "0x63b0"
+    },
+    {
+      "site_offset": "0x63f4",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x6408",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x6430",
+      "kind": "bl",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x6454",
+      "kind": "b",
+      "target_offset": "0x4718"
+    },
+    {
+      "site_offset": "0x64c0",
+      "kind": "b",
+      "target_offset": "0x64cc"
+    },
+    {
+      "site_offset": "0x64cc",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x64e0",
+      "kind": "bl",
+      "target_offset": "0x5350"
+    },
+    {
+      "site_offset": "0x64f4",
+      "kind": "bl",
+      "target_offset": "0x53a4"
+    },
+    {
+      "site_offset": "0x6634",
+      "kind": "bl",
+      "target_offset": "0xa58"
+    },
+    {
+      "site_offset": "0x6800",
+      "kind": "b",
+      "target_offset": "0x7000"
+    },
+    {
+      "site_offset": "0x6880",
+      "kind": "b",
+      "target_offset": "0x7088"
+    },
+    {
+      "site_offset": "0x6900",
+      "kind": "b",
+      "target_offset": "0x7110"
+    },
+    {
+      "site_offset": "0x6980",
+      "kind": "b",
+      "target_offset": "0x7198"
+    },
+    {
+      "site_offset": "0x6a00",
+      "kind": "b",
+      "target_offset": "0x7220"
+    },
+    {
+      "site_offset": "0x6a80",
+      "kind": "b",
+      "target_offset": "0x72a8"
+    },
+    {
+      "site_offset": "0x6b00",
+      "kind": "b",
+      "target_offset": "0x7330"
+    },
+    {
+      "site_offset": "0x6b80",
+      "kind": "b",
+      "target_offset": "0x73b8"
+    },
+    {
+      "site_offset": "0x6c00",
+      "kind": "b",
+      "target_offset": "0x7440"
+    },
+    {
+      "site_offset": "0x6c80",
+      "kind": "b",
+      "target_offset": "0x74c8"
+    },
+    {
+      "site_offset": "0x6d00",
+      "kind": "b",
+      "target_offset": "0x7550"
+    },
+    {
+      "site_offset": "0x6d80",
+      "kind": "b",
+      "target_offset": "0x75d8"
+    },
+    {
+      "site_offset": "0x6e00",
+      "kind": "b",
+      "target_offset": "0x7660"
+    },
+    {
+      "site_offset": "0x6e80",
+      "kind": "b",
+      "target_offset": "0x76e8"
+    },
+    {
+      "site_offset": "0x6f00",
+      "kind": "b",
+      "target_offset": "0x7770"
+    },
+    {
+      "site_offset": "0x6f80",
+      "kind": "b",
+      "target_offset": "0x77f8"
+    },
+    {
+      "site_offset": "0x7060",
+      "kind": "b",
+      "target_offset": "0x7078"
+    },
+    {
+      "site_offset": "0x706c",
+      "kind": "b",
+      "target_offset": "0x7078"
+    },
+    {
+      "site_offset": "0x7080",
+      "kind": "bl",
+      "target_offset": "0x417c"
+    },
+    {
+      "site_offset": "0x7084",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x70e8",
+      "kind": "b",
+      "target_offset": "0x7100"
+    },
+    {
+      "site_offset": "0x70f4",
+      "kind": "b",
+      "target_offset": "0x7100"
+    },
+    {
+      "site_offset": "0x7108",
+      "kind": "bl",
+      "target_offset": "0x411c"
+    },
+    {
+      "site_offset": "0x710c",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7170",
+      "kind": "b",
+      "target_offset": "0x7188"
+    },
+    {
+      "site_offset": "0x717c",
+      "kind": "b",
+      "target_offset": "0x7188"
+    },
+    {
+      "site_offset": "0x7190",
+      "kind": "bl",
+      "target_offset": "0x40ec"
+    },
+    {
+      "site_offset": "0x7194",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x71f8",
+      "kind": "b",
+      "target_offset": "0x7210"
+    },
+    {
+      "site_offset": "0x7204",
+      "kind": "b",
+      "target_offset": "0x7210"
+    },
+    {
+      "site_offset": "0x7218",
+      "kind": "bl",
+      "target_offset": "0x414c"
+    },
+    {
+      "site_offset": "0x721c",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7280",
+      "kind": "b",
+      "target_offset": "0x7298"
+    },
+    {
+      "site_offset": "0x728c",
+      "kind": "b",
+      "target_offset": "0x7298"
+    },
+    {
+      "site_offset": "0x72a0",
+      "kind": "bl",
+      "target_offset": "0x4250"
+    },
+    {
+      "site_offset": "0x72a4",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7308",
+      "kind": "b",
+      "target_offset": "0x7320"
+    },
+    {
+      "site_offset": "0x7314",
+      "kind": "b",
+      "target_offset": "0x7320"
+    },
+    {
+      "site_offset": "0x7328",
+      "kind": "bl",
+      "target_offset": "0x41f0"
+    },
+    {
+      "site_offset": "0x732c",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7390",
+      "kind": "b",
+      "target_offset": "0x73a8"
+    },
+    {
+      "site_offset": "0x739c",
+      "kind": "b",
+      "target_offset": "0x73a8"
+    },
+    {
+      "site_offset": "0x73b0",
+      "kind": "bl",
+      "target_offset": "0x41c0"
+    },
+    {
+      "site_offset": "0x73b4",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7418",
+      "kind": "b",
+      "target_offset": "0x7430"
+    },
+    {
+      "site_offset": "0x7424",
+      "kind": "b",
+      "target_offset": "0x7430"
+    },
+    {
+      "site_offset": "0x7438",
+      "kind": "bl",
+      "target_offset": "0x4220"
+    },
+    {
+      "site_offset": "0x743c",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x74a0",
+      "kind": "b",
+      "target_offset": "0x74b8"
+    },
+    {
+      "site_offset": "0x74ac",
+      "kind": "b",
+      "target_offset": "0x74b8"
+    },
+    {
+      "site_offset": "0x74c0",
+      "kind": "bl",
+      "target_offset": "0x5614"
+    },
+    {
+      "site_offset": "0x74c4",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7528",
+      "kind": "b",
+      "target_offset": "0x7540"
+    },
+    {
+      "site_offset": "0x7534",
+      "kind": "b",
+      "target_offset": "0x7540"
+    },
+    {
+      "site_offset": "0x7548",
+      "kind": "bl",
+      "target_offset": "0x55b4"
+    },
+    {
+      "site_offset": "0x754c",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x75b0",
+      "kind": "b",
+      "target_offset": "0x75c8"
+    },
+    {
+      "site_offset": "0x75bc",
+      "kind": "b",
+      "target_offset": "0x75c8"
+    },
+    {
+      "site_offset": "0x75d0",
+      "kind": "bl",
+      "target_offset": "0x5584"
+    },
+    {
+      "site_offset": "0x75d4",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7638",
+      "kind": "b",
+      "target_offset": "0x7650"
+    },
+    {
+      "site_offset": "0x7644",
+      "kind": "b",
+      "target_offset": "0x7650"
+    },
+    {
+      "site_offset": "0x7658",
+      "kind": "bl",
+      "target_offset": "0x55e4"
+    },
+    {
+      "site_offset": "0x765c",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x76c0",
+      "kind": "b",
+      "target_offset": "0x76d8"
+    },
+    {
+      "site_offset": "0x76cc",
+      "kind": "b",
+      "target_offset": "0x76d8"
+    },
+    {
+      "site_offset": "0x76e0",
+      "kind": "bl",
+      "target_offset": "0x5554"
+    },
+    {
+      "site_offset": "0x76e4",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7748",
+      "kind": "b",
+      "target_offset": "0x7760"
+    },
+    {
+      "site_offset": "0x7754",
+      "kind": "b",
+      "target_offset": "0x7760"
+    },
+    {
+      "site_offset": "0x7768",
+      "kind": "bl",
+      "target_offset": "0x54f4"
+    },
+    {
+      "site_offset": "0x776c",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x77d0",
+      "kind": "b",
+      "target_offset": "0x77e8"
+    },
+    {
+      "site_offset": "0x77dc",
+      "kind": "b",
+      "target_offset": "0x77e8"
+    },
+    {
+      "site_offset": "0x77f0",
+      "kind": "bl",
+      "target_offset": "0x54c4"
+    },
+    {
+      "site_offset": "0x77f4",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x7858",
+      "kind": "b",
+      "target_offset": "0x7870"
+    },
+    {
+      "site_offset": "0x7864",
+      "kind": "b",
+      "target_offset": "0x7870"
+    },
+    {
+      "site_offset": "0x7878",
+      "kind": "bl",
+      "target_offset": "0x5524"
+    },
+    {
+      "site_offset": "0x787c",
+      "kind": "b",
+      "target_offset": "0x7880"
+    },
+    {
+      "site_offset": "0x78a4",
+      "kind": "b",
+      "target_offset": "0x78b4"
+    },
+    {
+      "site_offset": "0x78ac",
+      "kind": "b",
+      "target_offset": "0x78b4"
+    },
+    {
+      "site_offset": "0x7948",
+      "kind": "bl",
+      "target_offset": "0x2334"
+    }
+  ],
+  "Sony_or_guest_code_executed": false
+}

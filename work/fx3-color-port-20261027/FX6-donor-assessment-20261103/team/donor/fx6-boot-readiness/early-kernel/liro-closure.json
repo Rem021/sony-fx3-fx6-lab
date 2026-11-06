@@ -1,0 +1,3052 @@
+{
+  "status": "PASS_STATIC_CLOSURE_ONLY",
+  "sources": {
+    "elf_parser": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/elf64.py",
+      "sha256": "38f49a8142e582e11903288f7103e36d2079e26891b6cc8c8fe3971246dfa32b"
+    },
+    "fdt_parser": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/fdt.py",
+      "sha256": "0ab6f0d51b4d18c755f54f0bade9a0eb4e0c8a4bde56dc95d4753dcdb8511db4"
+    },
+    "module_catalog": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/original-full-module-provider-catalog.json",
+      "sha256": "6dc947431322367c3db93b877cceb9c7afeb3a0a4589c1747ab9982a5207b43c"
+    },
+    "kernel_symbol_catalog": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/work/kernel-symbol-catalog.json",
+      "sha256": "b37c6b7d4315f65234cd6b64c3be4a3d7c6e0d2cca66204e27cb5c575000a51e"
+    },
+    "kernel_export_crosscheck": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/run-symbol-verification/export-crosscheck.json",
+      "sha256": "c3e33ad1d45276727dc7ee9c287bdbd3e440e32b1724816c74ba897641aae6f6"
+    },
+    "cpio_audit": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/cpio-audit.json",
+      "sha256": "cc0b3c5b1925aa4bb0cb14aab275f2831833c7378490ca5408789f3824eb4847"
+    },
+    "owner_baseline": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+      "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669"
+    },
+    "fx3_native_dtb": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/setting/cxd90057.dtb",
+      "sha256": "c5735ad9c6da8c48fb24eeee0bb743d07c486a47d5db19bef13b5eaea24ad280"
+    }
+  },
+  "fx3_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "kernel_export_crosscheck_count": 6089,
+  "closure_modules": {
+    "/usr/kmod/liro.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/b4bd80cc614751e0092ee19e89cb90632db580bc01f23f1a1df23544e9b10186",
+      "sha256": "b4bd80cc614751e0092ee19e89cb90632db580bc01f23f1a1df23544e9b10186",
+      "bytes": 121488,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 136,
+      "kernel_imports": 67,
+      "module_imports": 69,
+      "direct_module_dependencies": [
+        "/kmod/dma330.ko",
+        "/usr/kmod/backup.ko",
+        "/usr/kmod/dmm.ko",
+        "/usr/kmod/icdt.ko",
+        "/usr/kmod/osal_uipc.ko",
+        "/usr/kmod/osal_utm.ko",
+        "/usr/kmod/pcieatu.ko"
+      ],
+      "init_module": {
+        "section": ".init.text",
+        "section_offset": 1600,
+        "file_offset": 42192,
+        "bytes": 40,
+        "body_sha256": "7d86b0edced724e902309aeac46ae57e4c506ae48b00923a70d781e17f8e468c",
+        "relocations": [
+          {
+            "section_offset": 1628,
+            "type": 283,
+            "symbol": "udif_driver_register",
+            "symbol_section": null,
+            "addend": 0,
+            "rela_file_offset": 107464
+          }
+        ]
+      },
+      "hardware_relevant_import_names": [
+        "arch_phys_to_cachetype",
+        "arch_phys_to_noncache",
+        "dma330_mem_transfer_async",
+        "pciatu_unmap",
+        "udif_driver_register",
+        "pciatu_map",
+        "memstart_addr",
+        "udif_driver_unregister",
+        "subsys_request_irq",
+        "arch_phys_to_memtype",
+        "arch_phys_to_va",
+        "pcidma_transfer_async",
+        "arch_phys_to_cache",
+        "subsys_free_irq",
+        "arch_va_to_phys"
+      ]
+    },
+    "/usr/kmod/osal_uipc.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+      "sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+      "bytes": 76168,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 47,
+      "kernel_imports": 44,
+      "module_imports": 3,
+      "direct_module_dependencies": [
+        "/kmod/devno.ko",
+        "/usr/kmod/osal_utm.ko"
+      ],
+      "init_module": {
+        "section": ".init.text",
+        "section_offset": 256,
+        "file_offset": 28808,
+        "bytes": 40,
+        "body_sha256": "c908693e6564de2f04ebe7ac7fb5f0c3fe172ac4fb01d06db9600a53040062bb",
+        "relocations": [
+          {
+            "section_offset": 284,
+            "type": 283,
+            "symbol": "udif_driver_register",
+            "symbol_section": null,
+            "addend": 0,
+            "rela_file_offset": 70152
+          }
+        ]
+      },
+      "hardware_relevant_import_names": [
+        "udif_driver_register",
+        "_raw_spin_lock_irqsave",
+        "memstart_addr",
+        "udif_driver_unregister",
+        "_raw_spin_unlock_irqrestore"
+      ]
+    },
+    "/usr/kmod/osal_utm.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/f6679c6481adaa0cffb5e27dbf949f5d8168ca4200f4cb245e900544977b5f1c",
+      "sha256": "f6679c6481adaa0cffb5e27dbf949f5d8168ca4200f4cb245e900544977b5f1c",
+      "bytes": 10688,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 18,
+      "kernel_imports": 18,
+      "module_imports": 0,
+      "direct_module_dependencies": [],
+      "init_module": {
+        "section": ".init.text",
+        "section_offset": 8,
+        "file_offset": 1648,
+        "bytes": 36,
+        "body_sha256": "dd5e0677fc03eb2759be5c0e48334ae057558027b4eae26921ba3e954f4a9ce0",
+        "relocations": [
+          {
+            "section_offset": 32,
+            "type": 283,
+            "symbol": "udif_driver_register",
+            "symbol_section": null,
+            "addend": 0,
+            "rela_file_offset": 7480
+          }
+        ]
+      },
+      "hardware_relevant_import_names": [
+        "udif_driver_register",
+        "udif_driver_unregister"
+      ]
+    },
+    "/usr/kmod/backup.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "bytes": 144976,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 65,
+      "kernel_imports": 49,
+      "module_imports": 16,
+      "direct_module_dependencies": [
+        "/kmod/devno.ko",
+        "/usr/kmod/osal_uipc.ko",
+        "/usr/kmod/osal_utm.ko"
+      ],
+      "init_module": {
+        "section": ".init.text",
+        "section_offset": 632,
+        "file_offset": 53624,
+        "bytes": 40,
+        "body_sha256": "5c8c05767cb043233e8063568a383230a9a102cc928b7121d3db69ceb7044016",
+        "relocations": [
+          {
+            "section_offset": 660,
+            "type": 283,
+            "symbol": "udif_driver_register",
+            "symbol_section": null,
+            "addend": 0,
+            "rela_file_offset": 138448
+          }
+        ]
+      },
+      "hardware_relevant_import_names": [
+        "arch_phys_to_cachetype",
+        "arch_phys_to_noncache",
+        "udif_driver_register",
+        "udif_driver_unregister",
+        "arch_phys_to_va",
+        "pcidma_transfer_async",
+        "arch_phys_to_cache",
+        "arch_va_to_phys"
+      ]
+    },
+    "/usr/kmod/dmm.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "bytes": 118336,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 50,
+      "kernel_imports": 30,
+      "module_imports": 20,
+      "direct_module_dependencies": [
+        "/usr/kmod/backup.ko",
+        "/usr/kmod/osal_uipc.ko",
+        "/usr/kmod/osal_utm.ko"
+      ],
+      "init_module": {
+        "section": ".init.text",
+        "section_offset": 0,
+        "file_offset": 50464,
+        "bytes": 36,
+        "body_sha256": "dd5e0677fc03eb2759be5c0e48334ae057558027b4eae26921ba3e954f4a9ce0",
+        "relocations": [
+          {
+            "section_offset": 24,
+            "type": 283,
+            "symbol": "udif_driver_register",
+            "symbol_section": null,
+            "addend": 0,
+            "rela_file_offset": 111728
+          }
+        ]
+      },
+      "hardware_relevant_import_names": [
+        "arch_phys_to_noncache",
+        "udif_driver_register",
+        "_raw_spin_lock_irqsave",
+        "udif_driver_unregister",
+        "_raw_spin_unlock_irqrestore",
+        "arch_phys_to_cache"
+      ]
+    },
+    "/kmod/dma330.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/9ba277f011b3ddcfbc3fa610d22b63ae3be1e0ded385b42ff2c7cf0a83e520ab",
+      "sha256": "9ba277f011b3ddcfbc3fa610d22b63ae3be1e0ded385b42ff2c7cf0a83e520ab",
+      "bytes": 607336,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 35,
+      "kernel_imports": 34,
+      "module_imports": 1,
+      "direct_module_dependencies": [
+        "/kmod/devno.ko"
+      ],
+      "init_module": {
+        "section": ".init.text",
+        "section_offset": 0,
+        "file_offset": 37056,
+        "bytes": 40,
+        "body_sha256": "6a9a1589a4fd850aa86a57faf1bfbb3f9a487cdfaad4a29d8d4583b7f0357fa8",
+        "relocations": [
+          {
+            "section_offset": 28,
+            "type": 283,
+            "symbol": "udif_driver_register",
+            "symbol_section": null,
+            "addend": 0,
+            "rela_file_offset": 597272
+          }
+        ]
+      },
+      "hardware_relevant_import_names": [
+        "arch_phys_to_noncache",
+        "udif_driver_register",
+        "_raw_spin_lock_irqsave",
+        "udif_driver_unregister",
+        "_raw_spin_unlock_irqrestore",
+        "arch_phys_to_va",
+        "__udif_free_irq",
+        "__udif_request_irq",
+        "arch_va_to_phys"
+      ]
+    },
+    "/usr/kmod/pcieatu.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/08c61d2d889f4fc8e7219ddc269fb8170a090ffb4e207cf52ed1afce6fb82c35",
+      "sha256": "08c61d2d889f4fc8e7219ddc269fb8170a090ffb4e207cf52ed1afce6fb82c35",
+      "bytes": 24360,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 18,
+      "kernel_imports": 18,
+      "module_imports": 0,
+      "direct_module_dependencies": [],
+      "init_module": {
+        "section": ".init.text",
+        "section_offset": 896,
+        "file_offset": 6816,
+        "bytes": 40,
+        "body_sha256": "ed3732e06a421ef01a8a67679e670079cb8c410a1f80481f243ea3f84ff2a87d",
+        "relocations": [
+          {
+            "section_offset": 924,
+            "type": 283,
+            "symbol": "udif_driver_register",
+            "symbol_section": null,
+            "addend": 0,
+            "rela_file_offset": 19696
+          }
+        ]
+      },
+      "hardware_relevant_import_names": [
+        "udif_driver_register",
+        "_raw_spin_lock_irqsave",
+        "udif_driver_unregister",
+        "_raw_spin_unlock_irqrestore"
+      ]
+    },
+    "/usr/kmod/icdt.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/9cb41cfbd876c8f1b719328fa97056b91b9ef19ef8984eca74488085a2487471",
+      "sha256": "9cb41cfbd876c8f1b719328fa97056b91b9ef19ef8984eca74488085a2487471",
+      "bytes": 21776,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 36,
+      "kernel_imports": 23,
+      "module_imports": 13,
+      "direct_module_dependencies": [
+        "/usr/kmod/osal_uipc.ko",
+        "/usr/kmod/osal_utm.ko"
+      ],
+      "init_module": {
+        "section": ".init.text",
+        "section_offset": 216,
+        "file_offset": 6872,
+        "bytes": 40,
+        "body_sha256": "e6b7aa1255f00d68e5ce8a12e4bdabd1307eab640faea0f525ada07ad4940fcd",
+        "relocations": [
+          {
+            "section_offset": 244,
+            "type": 283,
+            "symbol": "udif_driver_register",
+            "symbol_section": null,
+            "addend": 0,
+            "rela_file_offset": 19576
+          }
+        ]
+      },
+      "hardware_relevant_import_names": [
+        "udif_driver_register",
+        "memstart_addr",
+        "udif_driver_unregister",
+        "pcidma_transfer_async",
+        "arch_va_to_phys"
+      ]
+    },
+    "/kmod/devno.ko": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "bytes": 6344,
+      "present_in_frozen_cpio": true,
+      "undefined_total": 0,
+      "kernel_imports": 0,
+      "module_imports": 0,
+      "direct_module_dependencies": [],
+      "init_module": null,
+      "hardware_relevant_import_names": []
+    }
+  },
+  "closure_count": 9,
+  "module_edges": [
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_reg_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_thread_id",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_nread",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_free_stack",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write_vsize_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_nread_setting_attr_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "dmm_direct_call",
+      "provider": "/usr/kmod/dmm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_check",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_get_datasize_multi",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "dma330_mem_transfer_async",
+      "provider": "/kmod/dma330.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "pciatu_unmap",
+      "provider": "/usr/kmod/pcieatu.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_reg_sync_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_read_multi_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_snd_sync_direct",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_read_4Byte",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_wai_sem_tmo",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write_setting_attr",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_get_datasize_interchip",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_create_waitable_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_read",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_snd_sync_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_nread_multi_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_set_msgq_broadcast_mode",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_reset",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_read_setting_attr_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write_multi_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_sync_all",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_set_msg_pri",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "pciatu_map",
+      "provider": "/usr/kmod/pcieatu.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_msg_size",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_create_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_dynamic_id",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_sync_subsystem",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_nread_interchip",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_read_setting_attr",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_rcv_msg_tmo",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_nread_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write_vsize",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_nread_setting_attr",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_valloc_msg_wait",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_wait_thread_exit",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_unreg_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write_setting_attr_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_unreg_cb",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_reset_all",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write_multi",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_reset_subsystem",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_stat_sem",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_read_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_nread_multi",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write_interchip",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_get_stack",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_exit_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_reg_cb",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_set_cpu",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_set_msg_src",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_snd_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_get_datasize",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_get_attribute",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_get_msg_src",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_stat_msgq",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_sig_sem",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_read_multi",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_subsystem_id",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "Backup_write_async",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_get_msg_pri",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "interchip_transfer_async",
+      "provider": "/usr/kmod/icdt.ko"
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "osal_free_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "osal_create_waitable_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "udif_devnodes",
+      "provider": "/kmod/devno.ko"
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "osal_wait_thread_exit",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_reg_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_reg_sync_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_snd_sync_direct",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_wai_sem_tmo",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_snd_sync_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_create_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_dynamic_id",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_rcv_msg_tmo",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "udif_devnodes",
+      "provider": "/kmod/devno.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_valloc_msg_wait",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_unreg_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_exit_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_set_msg_src",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_snd_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_sig_sem",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "osal_free_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_reg_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_reg_sync_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_snd_sync_direct",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_wai_sem_tmo",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_create_waitable_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "Backup_read",
+      "provider": "/usr/kmod/backup.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_snd_sync_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_set_msg_pri",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_msg_size",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_dynamic_id",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_rcv_msg_tmo",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_valloc_msg_wait",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_wait_thread_exit",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_unreg_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_exit_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_set_msg_src",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_snd_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_get_msg_src",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_sig_sem",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "osal_free_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "udif_devnodes",
+      "provider": "/kmod/devno.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_reg_sync_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_snd_sync_direct",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_create_waitable_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_snd_sync_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_dynamic_id",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_rcv_msg_tmo",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_valloc_msg_wait",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_wait_thread_exit",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_unreg_msg_queue_cb",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_exit_thread",
+      "provider": "/usr/kmod/osal_utm.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_set_msg_src",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_snd_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "osal_free_msg",
+      "provider": "/usr/kmod/osal_uipc.ko"
+    }
+  ],
+  "module_edge_count": 122,
+  "kernel_edges": [
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "hwtimer_init_timer",
+      "kernel_export_entry_file_offset": 5750312,
+      "kernel_export_target_address": "0xffffff8008320440",
+      "ksymtab_symbol_file_offset": 5750312
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "filp_open",
+      "kernel_export_entry_file_offset": 5746344,
+      "kernel_export_target_address": "0xffffff800818a8f8",
+      "ksymtab_symbol_file_offset": 5746344
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "flush_icache_range",
+      "kernel_export_entry_file_offset": 5746920,
+      "kernel_export_target_address": "0xffffff80080960c0",
+      "ksymtab_symbol_file_offset": 5746920
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "yield",
+      "kernel_export_entry_file_offset": 5785368,
+      "kernel_export_target_address": "0xffffff80084a0b08",
+      "ksymtab_symbol_file_offset": 5785368
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "pm_get_state",
+      "kernel_export_entry_file_offset": 5767656,
+      "kernel_export_target_address": "0xffffff80080e3278",
+      "ksymtab_symbol_file_offset": 5767656
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "param_ops_ulong",
+      "kernel_export_entry_file_offset": 5764568,
+      "kernel_export_target_address": "0xffffff80084b7f68",
+      "ksymtab_symbol_file_offset": 5764568
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_phys_to_cachetype",
+      "kernel_export_entry_file_offset": 5733816,
+      "kernel_export_target_address": "0xffffff800839b338",
+      "ksymtab_symbol_file_offset": 5733816
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "hwtimer_mod_timer",
+      "kernel_export_entry_file_offset": 5750328,
+      "kernel_export_target_address": "0xffffff800831fde0",
+      "ksymtab_symbol_file_offset": 5750328
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "snprintf",
+      "kernel_export_entry_file_offset": 5774664,
+      "kernel_export_target_address": "0xffffff800827cdd8",
+      "ksymtab_symbol_file_offset": 5774664
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "complete",
+      "kernel_export_entry_file_offset": 5739528,
+      "kernel_export_target_address": "0xffffff80080d8418",
+      "ksymtab_symbol_file_offset": 5739528
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_phys_to_noncache",
+      "kernel_export_entry_file_offset": 5733864,
+      "kernel_export_target_address": "0xffffff800839b6b0",
+      "ksymtab_symbol_file_offset": 5733864
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_va_to_cachetype",
+      "kernel_export_entry_file_offset": 5733912,
+      "kernel_export_target_address": "0xffffff800839b408",
+      "ksymtab_symbol_file_offset": 5733912
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "set_bit",
+      "kernel_export_entry_file_offset": 5771912,
+      "kernel_export_target_address": "0xffffff800826f4c0",
+      "ksymtab_symbol_file_offset": 5771912
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "memcpy",
+      "kernel_export_entry_file_offset": 5758616,
+      "kernel_export_target_address": "0xffffff800826fe80",
+      "ksymtab_symbol_file_offset": 5758616
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "kfree",
+      "kernel_export_entry_file_offset": 5756264,
+      "kernel_export_target_address": "0xffffff80081848a0",
+      "ksymtab_symbol_file_offset": 5756264
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "hwtimer_del_timer",
+      "kernel_export_entry_file_offset": 5750296,
+      "kernel_export_target_address": "0xffffff800831fd70",
+      "ksymtab_symbol_file_offset": 5750296
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "proc_create_data",
+      "kernel_export_entry_file_offset": 5768360,
+      "kernel_export_target_address": "0xffffff80081e5140",
+      "ksymtab_symbol_file_offset": 5768360
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "udif_driver_register",
+      "kernel_export_entry_file_offset": 5780360,
+      "kernel_export_target_address": "0xffffff800839a528",
+      "ksymtab_symbol_file_offset": 5780360
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "tmonitor_start",
+      "kernel_export_entry_file_offset": 5778792,
+      "kernel_export_target_address": "0xffffff8008137ab0",
+      "ksymtab_symbol_file_offset": 5778792
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "hwtimer_read_clock",
+      "kernel_export_entry_file_offset": 5750344,
+      "kernel_export_target_address": "0xffffff800831fbb0",
+      "ksymtab_symbol_file_offset": 5750344
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "wake_up_process",
+      "kernel_export_entry_file_offset": 5783656,
+      "kernel_export_target_address": "0xffffff80080c57a8",
+      "ksymtab_symbol_file_offset": 5783656
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "fpsimd_arch_init",
+      "kernel_export_entry_file_offset": 5747128,
+      "kernel_export_target_address": "0xffffff8008086c78",
+      "ksymtab_symbol_file_offset": 5747128
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "schedule",
+      "kernel_export_entry_file_offset": 5771096,
+      "kernel_export_target_address": "0xffffff80084a05f8",
+      "ksymtab_symbol_file_offset": 5771096
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "hwtimer_read_clock_cpu",
+      "kernel_export_entry_file_offset": 5750360,
+      "kernel_export_target_address": "0xffffff8008320410",
+      "ksymtab_symbol_file_offset": 5750360
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "__udif_cache_ctrl",
+      "kernel_export_entry_file_offset": 5732056,
+      "kernel_export_target_address": "0xffffff800839b0c8",
+      "ksymtab_symbol_file_offset": 5732056
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "preempt_schedule",
+      "kernel_export_entry_file_offset": 5768088,
+      "kernel_export_target_address": "0xffffff80084a0920",
+      "ksymtab_symbol_file_offset": 5768088
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "kimage_voffset",
+      "kernel_export_entry_file_offset": 5756472,
+      "kernel_export_target_address": "0xffffff80085e99f0",
+      "ksymtab_symbol_file_offset": 5756472
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "memstart_addr",
+      "kernel_export_entry_file_offset": 5759000,
+      "kernel_export_target_address": "0xffffff80085e99e0",
+      "ksymtab_symbol_file_offset": 5759000
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "udif_driver_unregister",
+      "kernel_export_entry_file_offset": 5780376,
+      "kernel_export_target_address": "0xffffff8008399ce0",
+      "ksymtab_symbol_file_offset": 5780376
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "find_next_zero_bit",
+      "kernel_export_entry_file_offset": 5746488,
+      "kernel_export_target_address": "0xffffff8008285d20",
+      "ksymtab_symbol_file_offset": 5746488
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "subsys_request_irq",
+      "kernel_export_entry_file_offset": 5776760,
+      "kernel_export_target_address": "0xffffff80083213d8",
+      "ksymtab_symbol_file_offset": 5776760
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_phys_to_memtype",
+      "kernel_export_entry_file_offset": 5733848,
+      "kernel_export_target_address": "0xffffff800839b290",
+      "ksymtab_symbol_file_offset": 5733848
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "__cpu_online_mask",
+      "kernel_export_entry_file_offset": 5728392,
+      "kernel_export_target_address": "0xffffff8008686eb8",
+      "ksymtab_symbol_file_offset": 5728392
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "printk",
+      "kernel_export_entry_file_offset": 5768264,
+      "kernel_export_target_address": "0xffffff800849c654",
+      "ksymtab_symbol_file_offset": 5768264
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "proc_mkdir",
+      "kernel_export_entry_file_offset": 5768520,
+      "kernel_export_target_address": "0xffffff80081e5120",
+      "ksymtab_symbol_file_offset": 5768520
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "udif_perr_enable",
+      "kernel_export_entry_file_offset": 5780504,
+      "kernel_export_target_address": "0xffffff80086bdf20",
+      "ksymtab_symbol_file_offset": 5780504
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "memset",
+      "kernel_export_entry_file_offset": 5758936,
+      "kernel_export_target_address": "0xffffff8008270180",
+      "ksymtab_symbol_file_offset": 5758936
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_phys_to_va",
+      "kernel_export_entry_file_offset": 5733880,
+      "kernel_export_target_address": "0xffffff800839ba20",
+      "ksymtab_symbol_file_offset": 5733880
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "vfs_read",
+      "kernel_export_entry_file_offset": 5782696,
+      "kernel_export_target_address": "0xffffff800818bba0",
+      "ksymtab_symbol_file_offset": 5782696
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "wait_for_completion",
+      "kernel_export_entry_file_offset": 5783400,
+      "kernel_export_target_address": "0xffffff80084a1230",
+      "ksymtab_symbol_file_offset": 5783400
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "boot_time_add",
+      "kernel_export_entry_file_offset": 5737448,
+      "kernel_export_target_address": "0xffffff800829cfa0",
+      "ksymtab_symbol_file_offset": 5737448
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "PDE_DATA",
+      "kernel_export_entry_file_offset": 5727512,
+      "kernel_export_target_address": "0xffffff80081e4908",
+      "ksymtab_symbol_file_offset": 5727512
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "__init_waitqueue_head",
+      "kernel_export_entry_file_offset": 5729400,
+      "kernel_export_target_address": "0xffffff80080d7830",
+      "ksymtab_symbol_file_offset": 5729400
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "kthread_bind",
+      "kernel_export_entry_file_offset": 5757416,
+      "kernel_export_target_address": "0xffffff80080bd880",
+      "ksymtab_symbol_file_offset": 5757416
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "param_ops_string",
+      "kernel_export_entry_file_offset": 5764504,
+      "kernel_export_target_address": "0xffffff80084b7e28",
+      "ksymtab_symbol_file_offset": 5764504
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "hwtimer_schedule_timeout",
+      "kernel_export_entry_file_offset": 5750376,
+      "kernel_export_target_address": "0xffffff8008320488",
+      "ksymtab_symbol_file_offset": 5750376
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_va_to_memtype",
+      "kernel_export_entry_file_offset": 5733928,
+      "kernel_export_target_address": "0xffffff800839b2d0",
+      "ksymtab_symbol_file_offset": 5733928
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "kthread_create_on_node",
+      "kernel_export_entry_file_offset": 5757432,
+      "kernel_export_target_address": "0xffffff80080bcf00",
+      "ksymtab_symbol_file_offset": 5757432
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "pcidma_transfer_async",
+      "kernel_export_entry_file_offset": 5766760,
+      "kernel_export_target_address": "0xffffff80083220c8",
+      "ksymtab_symbol_file_offset": 5766760
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "tmonitor_stop",
+      "kernel_export_entry_file_offset": 5778808,
+      "kernel_export_target_address": "0xffffff8008137498",
+      "ksymtab_symbol_file_offset": 5778808
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "cpu_number",
+      "kernel_export_entry_file_offset": 5740424,
+      "kernel_export_target_address": "0xffffff8008661028",
+      "ksymtab_symbol_file_offset": 5740424
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "tmonitor_write",
+      "kernel_export_entry_file_offset": 5778824,
+      "kernel_export_target_address": "0xffffff8008137af0",
+      "ksymtab_symbol_file_offset": 5778824
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "clear_bit",
+      "kernel_export_entry_file_offset": 5739208,
+      "kernel_export_target_address": "0xffffff800826f490",
+      "ksymtab_symbol_file_offset": 5739208
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "vfree",
+      "kernel_export_entry_file_offset": 5782376,
+      "kernel_export_target_address": "0xffffff8008172f60",
+      "ksymtab_symbol_file_offset": 5782376
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "filp_close",
+      "kernel_export_entry_file_offset": 5746328,
+      "kernel_export_target_address": "0xffffff80081892a0",
+      "ksymtab_symbol_file_offset": 5746328
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_phys_to_cache",
+      "kernel_export_entry_file_offset": 5733800,
+      "kernel_export_target_address": "0xffffff800839b7f0",
+      "ksymtab_symbol_file_offset": 5733800
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "remove_proc_entry",
+      "kernel_export_entry_file_offset": 5770136,
+      "kernel_export_target_address": "0xffffff80081e5640",
+      "ksymtab_symbol_file_offset": 5770136
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "tmonitor_dump",
+      "kernel_export_entry_file_offset": 5778744,
+      "kernel_export_target_address": "0xffffff80081375c0",
+      "ksymtab_symbol_file_offset": 5778744
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_va_to_noncache",
+      "kernel_export_entry_file_offset": 5733944,
+      "kernel_export_target_address": "0xffffff800839b4e0",
+      "ksymtab_symbol_file_offset": 5733944
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "subsys_free_irq",
+      "kernel_export_entry_file_offset": 5776728,
+      "kernel_export_target_address": "0xffffff8008321518",
+      "ksymtab_symbol_file_offset": 5776728
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_va_to_cache",
+      "kernel_export_entry_file_offset": 5733896,
+      "kernel_export_target_address": "0xffffff800839b5c0",
+      "ksymtab_symbol_file_offset": 5733896
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "pm_is_mem_alive",
+      "kernel_export_entry_file_offset": 5767672,
+      "kernel_export_target_address": "0xffffff800839e640",
+      "ksymtab_symbol_file_offset": 5767672
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "param_ops_int",
+      "kernel_export_entry_file_offset": 5764424,
+      "kernel_export_target_address": "0xffffff80084b7fc8",
+      "ksymtab_symbol_file_offset": 5764424
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "vmalloc",
+      "kernel_export_entry_file_offset": 5783128,
+      "kernel_export_target_address": "0xffffff8008173d38",
+      "ksymtab_symbol_file_offset": 5783128
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "complete_and_exit",
+      "kernel_export_entry_file_offset": 5739560,
+      "kernel_export_target_address": "0xffffff80080a3900",
+      "ksymtab_symbol_file_offset": 5739560
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "__kmalloc",
+      "kernel_export_entry_file_offset": 5729992,
+      "kernel_export_target_address": "0xffffff8008183c50",
+      "ksymtab_symbol_file_offset": 5729992
+    },
+    {
+      "consumer": "/usr/kmod/liro.ko",
+      "symbol": "arch_va_to_phys",
+      "kernel_export_entry_file_offset": 5733960,
+      "kernel_export_target_address": "0xffffff800839b938",
+      "ksymtab_symbol_file_offset": 5733960
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "filp_open",
+      "kernel_export_entry_file_offset": 5746344,
+      "kernel_export_target_address": "0xffffff800818a8f8",
+      "ksymtab_symbol_file_offset": 5746344
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "vfs_write",
+      "kernel_export_entry_file_offset": 5782856,
+      "kernel_export_target_address": "0xffffff800818bcd8",
+      "ksymtab_symbol_file_offset": 5782856
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "snprintf",
+      "kernel_export_entry_file_offset": 5774664,
+      "kernel_export_target_address": "0xffffff800827cdd8",
+      "ksymtab_symbol_file_offset": 5774664
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "scnprintf",
+      "kernel_export_entry_file_offset": 5771224,
+      "kernel_export_target_address": "0xffffff800827ce28",
+      "ksymtab_symbol_file_offset": 5771224
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "memcpy",
+      "kernel_export_entry_file_offset": 5758616,
+      "kernel_export_target_address": "0xffffff800826fe80",
+      "ksymtab_symbol_file_offset": 5758616
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "remap_pfn_range",
+      "kernel_export_entry_file_offset": 5770056,
+      "kernel_export_target_address": "0xffffff80081648d8",
+      "ksymtab_symbol_file_offset": 5770056
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "kfree",
+      "kernel_export_entry_file_offset": 5756264,
+      "kernel_export_target_address": "0xffffff80081848a0",
+      "ksymtab_symbol_file_offset": 5756264
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "kmalloc_add_trace",
+      "kernel_export_entry_file_offset": 5756632,
+      "kernel_export_target_address": "0xffffff80081391f8",
+      "ksymtab_symbol_file_offset": 5756632
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "proc_create_data",
+      "kernel_export_entry_file_offset": 5768360,
+      "kernel_export_target_address": "0xffffff80081e5140",
+      "ksymtab_symbol_file_offset": 5768360
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "free_pages",
+      "kernel_export_entry_file_offset": 5747368,
+      "kernel_export_target_address": "0xffffff8008141910",
+      "ksymtab_symbol_file_offset": 5747368
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "udif_driver_register",
+      "kernel_export_entry_file_offset": 5780360,
+      "kernel_export_target_address": "0xffffff800839a528",
+      "ksymtab_symbol_file_offset": 5780360
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "_raw_spin_lock_irqsave",
+      "kernel_export_entry_file_offset": 5732952,
+      "kernel_export_target_address": "0xffffff80084a3de8",
+      "ksymtab_symbol_file_offset": 5732952
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "wake_up_process",
+      "kernel_export_entry_file_offset": 5783656,
+      "kernel_export_target_address": "0xffffff80080c57a8",
+      "ksymtab_symbol_file_offset": 5783656
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "udif_cdev_register",
+      "kernel_export_entry_file_offset": 5780200,
+      "kernel_export_target_address": "0xffffff8008397698",
+      "ksymtab_symbol_file_offset": 5780200
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "__refrigerator",
+      "kernel_export_entry_file_offset": 5730984,
+      "kernel_export_target_address": "0xffffff80080f95b0",
+      "ksymtab_symbol_file_offset": 5730984
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "dump_stack",
+      "kernel_export_entry_file_offset": 5744264,
+      "kernel_export_target_address": "0xffffff800849d540",
+      "ksymtab_symbol_file_offset": 5744264
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "schedule",
+      "kernel_export_entry_file_offset": 5771096,
+      "kernel_export_target_address": "0xffffff80084a05f8",
+      "ksymtab_symbol_file_offset": 5771096
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "schedule_timeout",
+      "kernel_export_entry_file_offset": 5771112,
+      "kernel_export_target_address": "0xffffff80084a3230",
+      "ksymtab_symbol_file_offset": 5771112
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "__arch_copy_to_user",
+      "kernel_export_entry_file_offset": 5727704,
+      "kernel_export_target_address": "0xffffff800826fa00",
+      "ksymtab_symbol_file_offset": 5727704
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "__get_free_pages",
+      "kernel_export_entry_file_offset": 5729048,
+      "kernel_export_target_address": "0xffffff80081435f8",
+      "ksymtab_symbol_file_offset": 5729048
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "kmem_cache_alloc",
+      "kernel_export_entry_file_offset": 5756696,
+      "kernel_export_target_address": "0xffffff8008183b98",
+      "ksymtab_symbol_file_offset": 5756696
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "mutex_lock",
+      "kernel_export_entry_file_offset": 5759544,
+      "kernel_export_target_address": "0xffffff80084a1f98",
+      "ksymtab_symbol_file_offset": 5759544
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "strncmp",
+      "kernel_export_entry_file_offset": 5776440,
+      "kernel_export_target_address": "0xffffff8008270530",
+      "ksymtab_symbol_file_offset": 5776440
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "memstart_addr",
+      "kernel_export_entry_file_offset": 5759000,
+      "kernel_export_target_address": "0xffffff80085e99e0",
+      "ksymtab_symbol_file_offset": 5759000
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "udif_driver_unregister",
+      "kernel_export_entry_file_offset": 5780376,
+      "kernel_export_target_address": "0xffffff8008399ce0",
+      "ksymtab_symbol_file_offset": 5780376
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "find_next_zero_bit",
+      "kernel_export_entry_file_offset": 5746488,
+      "kernel_export_target_address": "0xffffff8008285d20",
+      "ksymtab_symbol_file_offset": 5746488
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "printk",
+      "kernel_export_entry_file_offset": 5768264,
+      "kernel_export_target_address": "0xffffff800849c654",
+      "ksymtab_symbol_file_offset": 5768264
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "__mutex_init",
+      "kernel_export_entry_file_offset": 5730280,
+      "kernel_export_target_address": "0xffffff80080d9160",
+      "ksymtab_symbol_file_offset": 5730280
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "freezing_slow_path",
+      "kernel_export_entry_file_offset": 5747464,
+      "kernel_export_target_address": "0xffffff80080f9560",
+      "ksymtab_symbol_file_offset": 5747464
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "_raw_spin_unlock_irqrestore",
+      "kernel_export_entry_file_offset": 5733048,
+      "kernel_export_target_address": "0xffffff80084a4098",
+      "ksymtab_symbol_file_offset": 5733048
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "proc_mkdir",
+      "kernel_export_entry_file_offset": 5768520,
+      "kernel_export_target_address": "0xffffff80081e5120",
+      "ksymtab_symbol_file_offset": 5768520
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "memset",
+      "kernel_export_entry_file_offset": 5758936,
+      "kernel_export_target_address": "0xffffff8008270180",
+      "ksymtab_symbol_file_offset": 5758936
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "vfs_read",
+      "kernel_export_entry_file_offset": 5782696,
+      "kernel_export_target_address": "0xffffff800818bba0",
+      "ksymtab_symbol_file_offset": 5782696
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "udif_cdev_unregister",
+      "kernel_export_entry_file_offset": 5780216,
+      "kernel_export_target_address": "0xffffff80083979a0",
+      "ksymtab_symbol_file_offset": 5780216
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "vfree",
+      "kernel_export_entry_file_offset": 5782376,
+      "kernel_export_target_address": "0xffffff8008172f60",
+      "ksymtab_symbol_file_offset": 5782376
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "mutex_unlock",
+      "kernel_export_entry_file_offset": 5759608,
+      "kernel_export_target_address": "0xffffff80084a2068",
+      "ksymtab_symbol_file_offset": 5759608
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "filp_close",
+      "kernel_export_entry_file_offset": 5746328,
+      "kernel_export_target_address": "0xffffff80081892a0",
+      "ksymtab_symbol_file_offset": 5746328
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "remove_proc_entry",
+      "kernel_export_entry_file_offset": 5770136,
+      "kernel_export_target_address": "0xffffff80081e5640",
+      "ksymtab_symbol_file_offset": 5770136
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "simple_strtoul",
+      "kernel_export_entry_file_offset": 5773064,
+      "kernel_export_target_address": "0xffffff8008279ec8",
+      "ksymtab_symbol_file_offset": 5773064
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "__arch_copy_from_user",
+      "kernel_export_entry_file_offset": 5727672,
+      "kernel_export_target_address": "0xffffff800826f640",
+      "ksymtab_symbol_file_offset": 5727672
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "system_freezing_cnt",
+      "kernel_export_entry_file_offset": 5777464,
+      "kernel_export_target_address": "0xffffff8008707ec8",
+      "ksymtab_symbol_file_offset": 5777464
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "vmalloc",
+      "kernel_export_entry_file_offset": 5783128,
+      "kernel_export_target_address": "0xffffff8008173d38",
+      "ksymtab_symbol_file_offset": 5783128
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "msleep",
+      "kernel_export_entry_file_offset": 5759512,
+      "kernel_export_target_address": "0xffffff80080fb850",
+      "ksymtab_symbol_file_offset": 5759512
+    },
+    {
+      "consumer": "/usr/kmod/osal_uipc.ko",
+      "symbol": "kmalloc_caches",
+      "kernel_export_entry_file_offset": 5756648,
+      "kernel_export_target_address": "0xffffff800870bde8",
+      "ksymtab_symbol_file_offset": 5756648
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "filp_open",
+      "kernel_export_entry_file_offset": 5746344,
+      "kernel_export_target_address": "0xffffff800818a8f8",
+      "ksymtab_symbol_file_offset": 5746344
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "snprintf",
+      "kernel_export_entry_file_offset": 5774664,
+      "kernel_export_target_address": "0xffffff800827cdd8",
+      "ksymtab_symbol_file_offset": 5774664
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "complete",
+      "kernel_export_entry_file_offset": 5739528,
+      "kernel_export_target_address": "0xffffff80080d8418",
+      "ksymtab_symbol_file_offset": 5739528
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "kfree",
+      "kernel_export_entry_file_offset": 5756264,
+      "kernel_export_target_address": "0xffffff80081848a0",
+      "ksymtab_symbol_file_offset": 5756264
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "kmalloc_add_trace",
+      "kernel_export_entry_file_offset": 5756632,
+      "kernel_export_target_address": "0xffffff80081391f8",
+      "ksymtab_symbol_file_offset": 5756632
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "udif_driver_register",
+      "kernel_export_entry_file_offset": 5780360,
+      "kernel_export_target_address": "0xffffff800839a528",
+      "ksymtab_symbol_file_offset": 5780360
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "wake_up_process",
+      "kernel_export_entry_file_offset": 5783656,
+      "kernel_export_target_address": "0xffffff80080c57a8",
+      "ksymtab_symbol_file_offset": 5783656
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "strnlen",
+      "kernel_export_entry_file_offset": 5776504,
+      "kernel_export_target_address": "0xffffff8008270740",
+      "ksymtab_symbol_file_offset": 5776504
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "kmem_cache_alloc",
+      "kernel_export_entry_file_offset": 5756696,
+      "kernel_export_target_address": "0xffffff8008183b98",
+      "ksymtab_symbol_file_offset": 5756696
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "udif_driver_unregister",
+      "kernel_export_entry_file_offset": 5780376,
+      "kernel_export_target_address": "0xffffff8008399ce0",
+      "ksymtab_symbol_file_offset": 5780376
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "printk",
+      "kernel_export_entry_file_offset": 5768264,
+      "kernel_export_target_address": "0xffffff800849c654",
+      "ksymtab_symbol_file_offset": 5768264
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "wait_for_completion",
+      "kernel_export_entry_file_offset": 5783400,
+      "kernel_export_target_address": "0xffffff80084a1230",
+      "ksymtab_symbol_file_offset": 5783400
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "__init_waitqueue_head",
+      "kernel_export_entry_file_offset": 5729400,
+      "kernel_export_target_address": "0xffffff80080d7830",
+      "ksymtab_symbol_file_offset": 5729400
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "kthread_create_on_node",
+      "kernel_export_entry_file_offset": 5757432,
+      "kernel_export_target_address": "0xffffff80080bcf00",
+      "ksymtab_symbol_file_offset": 5757432
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "filp_close",
+      "kernel_export_entry_file_offset": 5746328,
+      "kernel_export_target_address": "0xffffff80081892a0",
+      "ksymtab_symbol_file_offset": 5746328
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "complete_and_exit",
+      "kernel_export_entry_file_offset": 5739560,
+      "kernel_export_target_address": "0xffffff80080a3900",
+      "ksymtab_symbol_file_offset": 5739560
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "kmalloc_caches",
+      "kernel_export_entry_file_offset": 5756648,
+      "kernel_export_target_address": "0xffffff800870bde8",
+      "ksymtab_symbol_file_offset": 5756648
+    },
+    {
+      "consumer": "/usr/kmod/osal_utm.ko",
+      "symbol": "kernel_write",
+      "kernel_export_entry_file_offset": 5755976,
+      "kernel_export_target_address": "0xffffff80081b91a0",
+      "ksymtab_symbol_file_offset": 5755976
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "filp_open",
+      "kernel_export_entry_file_offset": 5746344,
+      "kernel_export_target_address": "0xffffff800818a8f8",
+      "ksymtab_symbol_file_offset": 5746344
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "__udif_kfree",
+      "kernel_export_entry_file_offset": 5732184,
+      "kernel_export_target_address": "0xffffff8008399588",
+      "ksymtab_symbol_file_offset": 5732184
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "vfs_write",
+      "kernel_export_entry_file_offset": 5782856,
+      "kernel_export_target_address": "0xffffff800818bcd8",
+      "ksymtab_symbol_file_offset": 5782856
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "__init_rwsem",
+      "kernel_export_entry_file_offset": 5729368,
+      "kernel_export_target_address": "0xffffff80080daf70",
+      "ksymtab_symbol_file_offset": 5729368
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "arch_phys_to_cachetype",
+      "kernel_export_entry_file_offset": 5733816,
+      "kernel_export_target_address": "0xffffff800839b338",
+      "ksymtab_symbol_file_offset": 5733816
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "snprintf",
+      "kernel_export_entry_file_offset": 5774664,
+      "kernel_export_target_address": "0xffffff800827cdd8",
+      "ksymtab_symbol_file_offset": 5774664
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "arch_phys_to_noncache",
+      "kernel_export_entry_file_offset": 5733864,
+      "kernel_export_target_address": "0xffffff800839b6b0",
+      "ksymtab_symbol_file_offset": 5733864
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "udif_km_debug",
+      "kernel_export_entry_file_offset": 5780472,
+      "kernel_export_target_address": "0xffffff80087226c0",
+      "ksymtab_symbol_file_offset": 5780472
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "memcpy",
+      "kernel_export_entry_file_offset": 5758616,
+      "kernel_export_target_address": "0xffffff800826fe80",
+      "ksymtab_symbol_file_offset": 5758616
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "kfree",
+      "kernel_export_entry_file_offset": 5756264,
+      "kernel_export_target_address": "0xffffff80081848a0",
+      "ksymtab_symbol_file_offset": 5756264
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "kmalloc_add_trace",
+      "kernel_export_entry_file_offset": 5756632,
+      "kernel_export_target_address": "0xffffff80081391f8",
+      "ksymtab_symbol_file_offset": 5756632
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "udif_driver_register",
+      "kernel_export_entry_file_offset": 5780360,
+      "kernel_export_target_address": "0xffffff800839a528",
+      "ksymtab_symbol_file_offset": 5780360
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "path_put",
+      "kernel_export_entry_file_offset": 5764904,
+      "kernel_export_target_address": "0xffffff8008195b78",
+      "ksymtab_symbol_file_offset": 5764904
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "udif_cdev_register",
+      "kernel_export_entry_file_offset": 5780200,
+      "kernel_export_target_address": "0xffffff8008397698",
+      "ksymtab_symbol_file_offset": 5780200
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "__arch_copy_to_user",
+      "kernel_export_entry_file_offset": 5727704,
+      "kernel_export_target_address": "0xffffff800826fa00",
+      "ksymtab_symbol_file_offset": 5727704
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "__udif_cache_ctrl",
+      "kernel_export_entry_file_offset": 5732056,
+      "kernel_export_target_address": "0xffffff800839b0c8",
+      "ksymtab_symbol_file_offset": 5732056
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "kmem_cache_alloc",
+      "kernel_export_entry_file_offset": 5756696,
+      "kernel_export_target_address": "0xffffff8008183b98",
+      "ksymtab_symbol_file_offset": 5756696
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "__udif_kmalloc",
+      "kernel_export_entry_file_offset": 5732200,
+      "kernel_export_target_address": "0xffffff8008399278",
+      "ksymtab_symbol_file_offset": 5732200
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "arch_p32_to_p64",
+      "kernel_export_entry_file_offset": 5733736,
+      "kernel_export_target_address": "0xffffff800839bb98",
+      "ksymtab_symbol_file_offset": 5733736
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "down_write",
+      "kernel_export_entry_file_offset": 5743928,
+      "kernel_export_target_address": "0xffffff80084a24a8",
+      "ksymtab_symbol_file_offset": 5743928
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "up_write",
+      "kernel_export_entry_file_offset": 5781608,
+      "kernel_export_target_address": "0xffffff80080d97d0",
+      "ksymtab_symbol_file_offset": 5781608
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "strstr",
+      "kernel_export_entry_file_offset": 5776664,
+      "kernel_export_target_address": "0xffffff8008279330",
+      "ksymtab_symbol_file_offset": 5776664
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "mutex_lock",
+      "kernel_export_entry_file_offset": 5759544,
+      "kernel_export_target_address": "0xffffff80084a1f98",
+      "ksymtab_symbol_file_offset": 5759544
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "strncpy",
+      "kernel_export_entry_file_offset": 5776456,
+      "kernel_export_target_address": "0xffffff8008278b38",
+      "ksymtab_symbol_file_offset": 5776456
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "udif_driver_unregister",
+      "kernel_export_entry_file_offset": 5780376,
+      "kernel_export_target_address": "0xffffff8008399ce0",
+      "ksymtab_symbol_file_offset": 5780376
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "printk",
+      "kernel_export_entry_file_offset": 5768264,
+      "kernel_export_target_address": "0xffffff800849c654",
+      "ksymtab_symbol_file_offset": 5768264
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "__mutex_init",
+      "kernel_export_entry_file_offset": 5730280,
+      "kernel_export_target_address": "0xffffff80080d9160",
+      "ksymtab_symbol_file_offset": 5730280
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "udif_perr_enable",
+      "kernel_export_entry_file_offset": 5780504,
+      "kernel_export_target_address": "0xffffff80086bdf20",
+      "ksymtab_symbol_file_offset": 5780504
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "memset",
+      "kernel_export_entry_file_offset": 5758936,
+      "kernel_export_target_address": "0xffffff8008270180",
+      "ksymtab_symbol_file_offset": 5758936
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "kern_path",
+      "kernel_export_entry_file_offset": 5755576,
+      "kernel_export_target_address": "0xffffff800819b328",
+      "ksymtab_symbol_file_offset": 5755576
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "arch_phys_to_va",
+      "kernel_export_entry_file_offset": 5733880,
+      "kernel_export_target_address": "0xffffff800839ba20",
+      "ksymtab_symbol_file_offset": 5733880
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "vfs_read",
+      "kernel_export_entry_file_offset": 5782696,
+      "kernel_export_target_address": "0xffffff800818bba0",
+      "ksymtab_symbol_file_offset": 5782696
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "param_ops_string",
+      "kernel_export_entry_file_offset": 5764504,
+      "kernel_export_target_address": "0xffffff80084b7e28",
+      "ksymtab_symbol_file_offset": 5764504
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "down_read",
+      "kernel_export_entry_file_offset": 5743864,
+      "kernel_export_target_address": "0xffffff80084a2450",
+      "ksymtab_symbol_file_offset": 5743864
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "pcidma_transfer_async",
+      "kernel_export_entry_file_offset": 5766760,
+      "kernel_export_target_address": "0xffffff80083220c8",
+      "ksymtab_symbol_file_offset": 5766760
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "udif_cdev_unregister",
+      "kernel_export_entry_file_offset": 5780216,
+      "kernel_export_target_address": "0xffffff80083979a0",
+      "ksymtab_symbol_file_offset": 5780216
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "vfree",
+      "kernel_export_entry_file_offset": 5782376,
+      "kernel_export_target_address": "0xffffff8008172f60",
+      "ksymtab_symbol_file_offset": 5782376
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "mutex_unlock",
+      "kernel_export_entry_file_offset": 5759608,
+      "kernel_export_target_address": "0xffffff80084a2068",
+      "ksymtab_symbol_file_offset": 5759608
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "filp_close",
+      "kernel_export_entry_file_offset": 5746328,
+      "kernel_export_target_address": "0xffffff80081892a0",
+      "ksymtab_symbol_file_offset": 5746328
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "arch_phys_to_cache",
+      "kernel_export_entry_file_offset": 5733800,
+      "kernel_export_target_address": "0xffffff800839b7f0",
+      "ksymtab_symbol_file_offset": 5733800
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "__arch_copy_from_user",
+      "kernel_export_entry_file_offset": 5727672,
+      "kernel_export_target_address": "0xffffff800826f640",
+      "ksymtab_symbol_file_offset": 5727672
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "vfs_stat",
+      "kernel_export_entry_file_offset": 5782776,
+      "kernel_export_target_address": "0xffffff8008191138",
+      "ksymtab_symbol_file_offset": 5782776
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "strlen",
+      "kernel_export_entry_file_offset": 5776360,
+      "kernel_export_target_address": "0xffffff80082704a0",
+      "ksymtab_symbol_file_offset": 5776360
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "param_ops_int",
+      "kernel_export_entry_file_offset": 5764424,
+      "kernel_export_target_address": "0xffffff80084b7fc8",
+      "ksymtab_symbol_file_offset": 5764424
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "vmalloc",
+      "kernel_export_entry_file_offset": 5783128,
+      "kernel_export_target_address": "0xffffff8008173d38",
+      "ksymtab_symbol_file_offset": 5783128
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "up_read",
+      "kernel_export_entry_file_offset": 5781592,
+      "kernel_export_target_address": "0xffffff80080d9790",
+      "ksymtab_symbol_file_offset": 5781592
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "__kmalloc",
+      "kernel_export_entry_file_offset": 5729992,
+      "kernel_export_target_address": "0xffffff8008183c50",
+      "ksymtab_symbol_file_offset": 5729992
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "kmalloc_caches",
+      "kernel_export_entry_file_offset": 5756648,
+      "kernel_export_target_address": "0xffffff800870bde8",
+      "ksymtab_symbol_file_offset": 5756648
+    },
+    {
+      "consumer": "/usr/kmod/backup.ko",
+      "symbol": "arch_va_to_phys",
+      "kernel_export_entry_file_offset": 5733960,
+      "kernel_export_target_address": "0xffffff800839b938",
+      "ksymtab_symbol_file_offset": 5733960
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "filp_open",
+      "kernel_export_entry_file_offset": 5746344,
+      "kernel_export_target_address": "0xffffff800818a8f8",
+      "ksymtab_symbol_file_offset": 5746344
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "__udif_kfree",
+      "kernel_export_entry_file_offset": 5732184,
+      "kernel_export_target_address": "0xffffff8008399588",
+      "ksymtab_symbol_file_offset": 5732184
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "vfs_write",
+      "kernel_export_entry_file_offset": 5782856,
+      "kernel_export_target_address": "0xffffff800818bcd8",
+      "ksymtab_symbol_file_offset": 5782856
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "snprintf",
+      "kernel_export_entry_file_offset": 5774664,
+      "kernel_export_target_address": "0xffffff800827cdd8",
+      "ksymtab_symbol_file_offset": 5774664
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "arch_phys_to_noncache",
+      "kernel_export_entry_file_offset": 5733864,
+      "kernel_export_target_address": "0xffffff800839b6b0",
+      "ksymtab_symbol_file_offset": 5733864
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "scnprintf",
+      "kernel_export_entry_file_offset": 5771224,
+      "kernel_export_target_address": "0xffffff800827ce28",
+      "ksymtab_symbol_file_offset": 5771224
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "udif_km_debug",
+      "kernel_export_entry_file_offset": 5780472,
+      "kernel_export_target_address": "0xffffff80087226c0",
+      "ksymtab_symbol_file_offset": 5780472
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "memcpy",
+      "kernel_export_entry_file_offset": 5758616,
+      "kernel_export_target_address": "0xffffff800826fe80",
+      "ksymtab_symbol_file_offset": 5758616
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "kfree",
+      "kernel_export_entry_file_offset": 5756264,
+      "kernel_export_target_address": "0xffffff80081848a0",
+      "ksymtab_symbol_file_offset": 5756264
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "kmalloc_add_trace",
+      "kernel_export_entry_file_offset": 5756632,
+      "kernel_export_target_address": "0xffffff80081391f8",
+      "ksymtab_symbol_file_offset": 5756632
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "udif_driver_register",
+      "kernel_export_entry_file_offset": 5780360,
+      "kernel_export_target_address": "0xffffff800839a528",
+      "ksymtab_symbol_file_offset": 5780360
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "_raw_spin_lock_irqsave",
+      "kernel_export_entry_file_offset": 5732952,
+      "kernel_export_target_address": "0xffffff80084a3de8",
+      "ksymtab_symbol_file_offset": 5732952
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "_raw_spin_lock",
+      "kernel_export_entry_file_offset": 5732904,
+      "kernel_export_target_address": "0xffffff80084a3d58",
+      "ksymtab_symbol_file_offset": 5732904
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "kmem_cache_alloc",
+      "kernel_export_entry_file_offset": 5756696,
+      "kernel_export_target_address": "0xffffff8008183b98",
+      "ksymtab_symbol_file_offset": 5756696
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "__udif_kmalloc",
+      "kernel_export_entry_file_offset": 5732200,
+      "kernel_export_target_address": "0xffffff8008399278",
+      "ksymtab_symbol_file_offset": 5732200
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "udif_remove_proc",
+      "kernel_export_entry_file_offset": 5780520,
+      "kernel_export_target_address": "0xffffff80083969f0",
+      "ksymtab_symbol_file_offset": 5780520
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "udif_create_proc",
+      "kernel_export_entry_file_offset": 5780248,
+      "kernel_export_target_address": "0xffffff80083968f8",
+      "ksymtab_symbol_file_offset": 5780248
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "udif_driver_unregister",
+      "kernel_export_entry_file_offset": 5780376,
+      "kernel_export_target_address": "0xffffff8008399ce0",
+      "ksymtab_symbol_file_offset": 5780376
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "printk",
+      "kernel_export_entry_file_offset": 5768264,
+      "kernel_export_target_address": "0xffffff800849c654",
+      "ksymtab_symbol_file_offset": 5768264
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "_raw_spin_unlock_irqrestore",
+      "kernel_export_entry_file_offset": 5733048,
+      "kernel_export_target_address": "0xffffff80084a4098",
+      "ksymtab_symbol_file_offset": 5733048
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "memset",
+      "kernel_export_entry_file_offset": 5758936,
+      "kernel_export_target_address": "0xffffff8008270180",
+      "ksymtab_symbol_file_offset": 5758936
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "vfs_read",
+      "kernel_export_entry_file_offset": 5782696,
+      "kernel_export_target_address": "0xffffff800818bba0",
+      "ksymtab_symbol_file_offset": 5782696
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "param_ops_charp",
+      "kernel_export_entry_file_offset": 5764392,
+      "kernel_export_target_address": "0xffffff80084b7ee8",
+      "ksymtab_symbol_file_offset": 5764392
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "filp_close",
+      "kernel_export_entry_file_offset": 5746328,
+      "kernel_export_target_address": "0xffffff80081892a0",
+      "ksymtab_symbol_file_offset": 5746328
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "arch_phys_to_cache",
+      "kernel_export_entry_file_offset": 5733800,
+      "kernel_export_target_address": "0xffffff800839b7f0",
+      "ksymtab_symbol_file_offset": 5733800
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "__arch_copy_from_user",
+      "kernel_export_entry_file_offset": 5727672,
+      "kernel_export_target_address": "0xffffff800826f640",
+      "ksymtab_symbol_file_offset": 5727672
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "strlen",
+      "kernel_export_entry_file_offset": 5776360,
+      "kernel_export_target_address": "0xffffff80082704a0",
+      "ksymtab_symbol_file_offset": 5776360
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "_raw_spin_unlock",
+      "kernel_export_entry_file_offset": 5733000,
+      "kernel_export_target_address": "0xffffff80084a4050",
+      "ksymtab_symbol_file_offset": 5733000
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "__kmalloc",
+      "kernel_export_entry_file_offset": 5729992,
+      "kernel_export_target_address": "0xffffff8008183c50",
+      "ksymtab_symbol_file_offset": 5729992
+    },
+    {
+      "consumer": "/usr/kmod/dmm.ko",
+      "symbol": "kmalloc_caches",
+      "kernel_export_entry_file_offset": 5756648,
+      "kernel_export_target_address": "0xffffff800870bde8",
+      "ksymtab_symbol_file_offset": 5756648
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "param_ops_uint",
+      "kernel_export_entry_file_offset": 5764520,
+      "kernel_export_target_address": "0xffffff80084b7fa8",
+      "ksymtab_symbol_file_offset": 5764520
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "param_ops_ulong",
+      "kernel_export_entry_file_offset": 5764568,
+      "kernel_export_target_address": "0xffffff80084b7f68",
+      "ksymtab_symbol_file_offset": 5764568
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "arch_phys_to_noncache",
+      "kernel_export_entry_file_offset": 5733864,
+      "kernel_export_target_address": "0xffffff800839b6b0",
+      "ksymtab_symbol_file_offset": 5733864
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "scnprintf",
+      "kernel_export_entry_file_offset": 5771224,
+      "kernel_export_target_address": "0xffffff800827ce28",
+      "ksymtab_symbol_file_offset": 5771224
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "memcpy",
+      "kernel_export_entry_file_offset": 5758616,
+      "kernel_export_target_address": "0xffffff800826fe80",
+      "ksymtab_symbol_file_offset": 5758616
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "udif_driver_register",
+      "kernel_export_entry_file_offset": 5780360,
+      "kernel_export_target_address": "0xffffff800839a528",
+      "ksymtab_symbol_file_offset": 5780360
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "_raw_spin_lock_irqsave",
+      "kernel_export_entry_file_offset": 5732952,
+      "kernel_export_target_address": "0xffffff80084a3de8",
+      "ksymtab_symbol_file_offset": 5732952
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "wake_up_process",
+      "kernel_export_entry_file_offset": 5783656,
+      "kernel_export_target_address": "0xffffff80080c57a8",
+      "ksymtab_symbol_file_offset": 5783656
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "udif_cdev_register",
+      "kernel_export_entry_file_offset": 5780200,
+      "kernel_export_target_address": "0xffffff8008397698",
+      "ksymtab_symbol_file_offset": 5780200
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "schedule_timeout",
+      "kernel_export_entry_file_offset": 5771112,
+      "kernel_export_target_address": "0xffffff80084a3230",
+      "ksymtab_symbol_file_offset": 5771112
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "arch_p32_to_p64",
+      "kernel_export_entry_file_offset": 5733736,
+      "kernel_export_target_address": "0xffffff800839bb98",
+      "ksymtab_symbol_file_offset": 5733736
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "udif_remove_proc",
+      "kernel_export_entry_file_offset": 5780520,
+      "kernel_export_target_address": "0xffffff80083969f0",
+      "ksymtab_symbol_file_offset": 5780520
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "mutex_lock",
+      "kernel_export_entry_file_offset": 5759544,
+      "kernel_export_target_address": "0xffffff80084a1f98",
+      "ksymtab_symbol_file_offset": 5759544
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "udif_devices",
+      "kernel_export_entry_file_offset": 5780312,
+      "kernel_export_target_address": "0xffffff80086be230",
+      "ksymtab_symbol_file_offset": 5780312
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "udif_create_proc",
+      "kernel_export_entry_file_offset": 5780248,
+      "kernel_export_target_address": "0xffffff80083968f8",
+      "ksymtab_symbol_file_offset": 5780248
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "strncmp",
+      "kernel_export_entry_file_offset": 5776440,
+      "kernel_export_target_address": "0xffffff8008270530",
+      "ksymtab_symbol_file_offset": 5776440
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "udif_driver_unregister",
+      "kernel_export_entry_file_offset": 5780376,
+      "kernel_export_target_address": "0xffffff8008399ce0",
+      "ksymtab_symbol_file_offset": 5780376
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "printk",
+      "kernel_export_entry_file_offset": 5768264,
+      "kernel_export_target_address": "0xffffff800849c654",
+      "ksymtab_symbol_file_offset": 5768264
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "__mutex_init",
+      "kernel_export_entry_file_offset": 5730280,
+      "kernel_export_target_address": "0xffffff80080d9160",
+      "ksymtab_symbol_file_offset": 5730280
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "_raw_spin_unlock_irqrestore",
+      "kernel_export_entry_file_offset": 5733048,
+      "kernel_export_target_address": "0xffffff80084a4098",
+      "ksymtab_symbol_file_offset": 5733048
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "memset",
+      "kernel_export_entry_file_offset": 5758936,
+      "kernel_export_target_address": "0xffffff8008270180",
+      "ksymtab_symbol_file_offset": 5758936
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "arch_phys_to_va",
+      "kernel_export_entry_file_offset": 5733880,
+      "kernel_export_target_address": "0xffffff800839ba20",
+      "ksymtab_symbol_file_offset": 5733880
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "boot_time_add",
+      "kernel_export_entry_file_offset": 5737448,
+      "kernel_export_target_address": "0xffffff800829cfa0",
+      "ksymtab_symbol_file_offset": 5737448
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "__udif_free_irq",
+      "kernel_export_entry_file_offset": 5732168,
+      "kernel_export_target_address": "0xffffff8008397010",
+      "ksymtab_symbol_file_offset": 5732168
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "udif_cdev_unregister",
+      "kernel_export_entry_file_offset": 5780216,
+      "kernel_export_target_address": "0xffffff80083979a0",
+      "ksymtab_symbol_file_offset": 5780216
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "strcspn",
+      "kernel_export_entry_file_offset": 5776232,
+      "kernel_export_target_address": "0xffffff8008278ca0",
+      "ksymtab_symbol_file_offset": 5776232
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "mutex_unlock",
+      "kernel_export_entry_file_offset": 5759608,
+      "kernel_export_target_address": "0xffffff80084a2068",
+      "ksymtab_symbol_file_offset": 5759608
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "__const_udelay",
+      "kernel_export_entry_file_offset": 5728360,
+      "kernel_export_target_address": "0xffffff800826fb88",
+      "ksymtab_symbol_file_offset": 5728360
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "__udif_request_irq",
+      "kernel_export_entry_file_offset": 5732216,
+      "kernel_export_target_address": "0xffffff8008396e50",
+      "ksymtab_symbol_file_offset": 5732216
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "simple_strtoul",
+      "kernel_export_entry_file_offset": 5773064,
+      "kernel_export_target_address": "0xffffff8008279ec8",
+      "ksymtab_symbol_file_offset": 5773064
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "__arch_copy_from_user",
+      "kernel_export_entry_file_offset": 5727672,
+      "kernel_export_target_address": "0xffffff800826f640",
+      "ksymtab_symbol_file_offset": 5727672
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "strspn",
+      "kernel_export_entry_file_offset": 5776648,
+      "kernel_export_target_address": "0xffffff8008278c48",
+      "ksymtab_symbol_file_offset": 5776648
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "msleep",
+      "kernel_export_entry_file_offset": 5759512,
+      "kernel_export_target_address": "0xffffff80080fb850",
+      "ksymtab_symbol_file_offset": 5759512
+    },
+    {
+      "consumer": "/kmod/dma330.ko",
+      "symbol": "arch_va_to_phys",
+      "kernel_export_entry_file_offset": 5733960,
+      "kernel_export_target_address": "0xffffff800839b938",
+      "ksymtab_symbol_file_offset": 5733960
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "__udif_kfree",
+      "kernel_export_entry_file_offset": 5732184,
+      "kernel_export_target_address": "0xffffff8008399588",
+      "ksymtab_symbol_file_offset": 5732184
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "param_ops_uint",
+      "kernel_export_entry_file_offset": 5764520,
+      "kernel_export_target_address": "0xffffff80084b7fa8",
+      "ksymtab_symbol_file_offset": 5764520
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "udif_km_debug",
+      "kernel_export_entry_file_offset": 5780472,
+      "kernel_export_target_address": "0xffffff80087226c0",
+      "ksymtab_symbol_file_offset": 5780472
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "kfree",
+      "kernel_export_entry_file_offset": 5756264,
+      "kernel_export_target_address": "0xffffff80081848a0",
+      "ksymtab_symbol_file_offset": 5756264
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "kmalloc_add_trace",
+      "kernel_export_entry_file_offset": 5756632,
+      "kernel_export_target_address": "0xffffff80081391f8",
+      "ksymtab_symbol_file_offset": 5756632
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "udif_driver_register",
+      "kernel_export_entry_file_offset": 5780360,
+      "kernel_export_target_address": "0xffffff800839a528",
+      "ksymtab_symbol_file_offset": 5780360
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "_raw_spin_lock_irqsave",
+      "kernel_export_entry_file_offset": 5732952,
+      "kernel_export_target_address": "0xffffff80084a3de8",
+      "ksymtab_symbol_file_offset": 5732952
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "wake_up_process",
+      "kernel_export_entry_file_offset": 5783656,
+      "kernel_export_target_address": "0xffffff80080c57a8",
+      "ksymtab_symbol_file_offset": 5783656
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "schedule_timeout",
+      "kernel_export_entry_file_offset": 5771112,
+      "kernel_export_target_address": "0xffffff80084a3230",
+      "ksymtab_symbol_file_offset": 5771112
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "kmem_cache_alloc",
+      "kernel_export_entry_file_offset": 5756696,
+      "kernel_export_target_address": "0xffffff8008183b98",
+      "ksymtab_symbol_file_offset": 5756696
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "__udif_kmalloc",
+      "kernel_export_entry_file_offset": 5732200,
+      "kernel_export_target_address": "0xffffff8008399278",
+      "ksymtab_symbol_file_offset": 5732200
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "mutex_lock",
+      "kernel_export_entry_file_offset": 5759544,
+      "kernel_export_target_address": "0xffffff80084a1f98",
+      "ksymtab_symbol_file_offset": 5759544
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "udif_driver_unregister",
+      "kernel_export_entry_file_offset": 5780376,
+      "kernel_export_target_address": "0xffffff8008399ce0",
+      "ksymtab_symbol_file_offset": 5780376
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "printk",
+      "kernel_export_entry_file_offset": 5768264,
+      "kernel_export_target_address": "0xffffff800849c654",
+      "ksymtab_symbol_file_offset": 5768264
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "__mutex_init",
+      "kernel_export_entry_file_offset": 5730280,
+      "kernel_export_target_address": "0xffffff80080d9160",
+      "ksymtab_symbol_file_offset": 5730280
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "_raw_spin_unlock_irqrestore",
+      "kernel_export_entry_file_offset": 5733048,
+      "kernel_export_target_address": "0xffffff80084a4098",
+      "ksymtab_symbol_file_offset": 5733048
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "mutex_unlock",
+      "kernel_export_entry_file_offset": 5759608,
+      "kernel_export_target_address": "0xffffff80084a2068",
+      "ksymtab_symbol_file_offset": 5759608
+    },
+    {
+      "consumer": "/usr/kmod/pcieatu.ko",
+      "symbol": "kmalloc_caches",
+      "kernel_export_entry_file_offset": 5756648,
+      "kernel_export_target_address": "0xffffff800870bde8",
+      "ksymtab_symbol_file_offset": 5756648
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "__udif_kfree",
+      "kernel_export_entry_file_offset": 5732184,
+      "kernel_export_target_address": "0xffffff8008399588",
+      "ksymtab_symbol_file_offset": 5732184
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "scnprintf",
+      "kernel_export_entry_file_offset": 5771224,
+      "kernel_export_target_address": "0xffffff800827ce28",
+      "ksymtab_symbol_file_offset": 5771224
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "udif_km_debug",
+      "kernel_export_entry_file_offset": 5780472,
+      "kernel_export_target_address": "0xffffff80087226c0",
+      "ksymtab_symbol_file_offset": 5780472
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "memcpy",
+      "kernel_export_entry_file_offset": 5758616,
+      "kernel_export_target_address": "0xffffff800826fe80",
+      "ksymtab_symbol_file_offset": 5758616
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "kfree",
+      "kernel_export_entry_file_offset": 5756264,
+      "kernel_export_target_address": "0xffffff80081848a0",
+      "ksymtab_symbol_file_offset": 5756264
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "kmalloc_add_trace",
+      "kernel_export_entry_file_offset": 5756632,
+      "kernel_export_target_address": "0xffffff80081391f8",
+      "ksymtab_symbol_file_offset": 5756632
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "udif_driver_register",
+      "kernel_export_entry_file_offset": 5780360,
+      "kernel_export_target_address": "0xffffff800839a528",
+      "ksymtab_symbol_file_offset": 5780360
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "_raw_spin_lock",
+      "kernel_export_entry_file_offset": 5732904,
+      "kernel_export_target_address": "0xffffff80084a3d58",
+      "ksymtab_symbol_file_offset": 5732904
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "__udif_cache_ctrl",
+      "kernel_export_entry_file_offset": 5732056,
+      "kernel_export_target_address": "0xffffff800839b0c8",
+      "ksymtab_symbol_file_offset": 5732056
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "kmem_cache_alloc",
+      "kernel_export_entry_file_offset": 5756696,
+      "kernel_export_target_address": "0xffffff8008183b98",
+      "ksymtab_symbol_file_offset": 5756696
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "__udif_kmalloc",
+      "kernel_export_entry_file_offset": 5732200,
+      "kernel_export_target_address": "0xffffff8008399278",
+      "ksymtab_symbol_file_offset": 5732200
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "udif_remove_proc",
+      "kernel_export_entry_file_offset": 5780520,
+      "kernel_export_target_address": "0xffffff80083969f0",
+      "ksymtab_symbol_file_offset": 5780520
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "udif_create_proc",
+      "kernel_export_entry_file_offset": 5780248,
+      "kernel_export_target_address": "0xffffff80083968f8",
+      "ksymtab_symbol_file_offset": 5780248
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "memstart_addr",
+      "kernel_export_entry_file_offset": 5759000,
+      "kernel_export_target_address": "0xffffff80085e99e0",
+      "ksymtab_symbol_file_offset": 5759000
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "udif_driver_unregister",
+      "kernel_export_entry_file_offset": 5780376,
+      "kernel_export_target_address": "0xffffff8008399ce0",
+      "ksymtab_symbol_file_offset": 5780376
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "printk",
+      "kernel_export_entry_file_offset": 5768264,
+      "kernel_export_target_address": "0xffffff800849c654",
+      "ksymtab_symbol_file_offset": 5768264
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "udif_perr_enable",
+      "kernel_export_entry_file_offset": 5780504,
+      "kernel_export_target_address": "0xffffff80086bdf20",
+      "ksymtab_symbol_file_offset": 5780504
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "memset",
+      "kernel_export_entry_file_offset": 5758936,
+      "kernel_export_target_address": "0xffffff8008270180",
+      "ksymtab_symbol_file_offset": 5758936
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "pcidma_transfer_async",
+      "kernel_export_entry_file_offset": 5766760,
+      "kernel_export_target_address": "0xffffff80083220c8",
+      "ksymtab_symbol_file_offset": 5766760
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "_raw_spin_unlock",
+      "kernel_export_entry_file_offset": 5733000,
+      "kernel_export_target_address": "0xffffff80084a4050",
+      "ksymtab_symbol_file_offset": 5733000
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "__kmalloc",
+      "kernel_export_entry_file_offset": 5729992,
+      "kernel_export_target_address": "0xffffff8008183c50",
+      "ksymtab_symbol_file_offset": 5729992
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "kmalloc_caches",
+      "kernel_export_entry_file_offset": 5756648,
+      "kernel_export_target_address": "0xffffff800870bde8",
+      "ksymtab_symbol_file_offset": 5756648
+    },
+    {
+      "consumer": "/usr/kmod/icdt.ko",
+      "symbol": "arch_va_to_phys",
+      "kernel_export_entry_file_offset": 5733960,
+      "kernel_export_target_address": "0xffffff800839b938",
+      "ksymtab_symbol_file_offset": 5733960
+    }
+  ],
+  "kernel_edge_count": 283,
+  "ambiguous": [],
+  "unresolved_strong": [],
+  "four_liro_provider_edges": {
+    "dma330_mem_transfer_async": "/kmod/dma330.ko",
+    "pciatu_unmap": "/usr/kmod/pcieatu.ko",
+    "pciatu_map": "/usr/kmod/pcieatu.ko",
+    "interchip_transfer_async": "/usr/kmod/icdt.ko"
+  },
+  "guest_init_explicit_module_references": {
+    "/usr/kmod/liro.ko": [],
+    "/usr/kmod/osal_uipc.ko": [
+      70,
+      72
+    ],
+    "/usr/kmod/osal_utm.ko": [
+      70,
+      72
+    ],
+    "/usr/kmod/backup.ko": [
+      125,
+      126,
+      128
+    ],
+    "/usr/kmod/dmm.ko": [
+      244
+    ],
+    "/kmod/dma330.ko": [],
+    "/usr/kmod/pcieatu.ko": [],
+    "/usr/kmod/icdt.ko": [],
+    "/kmod/devno.ko": [
+      70,
+      72
+    ]
+  },
+  "device_tree_comparison": {
+    "native_root_compatible": [
+      "cxd,cxd90057"
+    ],
+    "native_pcie_i": {
+      "path": "/soc/pcie_i",
+      "compatible": [
+        "snps,dw-pcie"
+      ],
+      "status": [
+        "disabled"
+      ],
+      "reg_hex": "00000000f7000000000000000038000000000000dffc0000000000000002000000000000f11c00000000000000040000"
+    },
+    "native_dma330": {
+      "path": "/soc/mdma@F1057000",
+      "compatible": [
+        "arm,pl330",
+        "arm,primecell"
+      ],
+      "status": [
+        "ok"
+      ],
+      "reg_hex": "00000000f10570000000000000001000"
+    },
+    "fixed_guest_root_compatible": [
+      "linux,dummy-virt"
+    ],
+    "fixed_guest_generic_pcie": {
+      "path": "/pcie@10000000",
+      "compatible": [
+        "pci-host-ecam-generic"
+      ],
+      "status": [],
+      "reg_hex": "00000040100000000000000010000000"
+    },
+    "fixed_guest_has_native_pcie_i_or_pl330": false
+  },
+  "pcieatu_first_hw_read_candidate": {
+    "module_sha256": "08c61d2d889f4fc8e7219ddc269fb8170a090ffb4e207cf52ed1afce6fb82c35",
+    "pcie_ctrl_default_value": 3,
+    "pcie_ctrl_file_offset": 9776,
+    "init_module_section_offset": 896,
+    "udif_driver_register_call_section_offset": 924,
+    "descriptor_to_callback_table_relocation_data_offset": 64,
+    "callback_table_data_offset": 136,
+    "callback_to_init_relocation_data_offset": 136,
+    "callback_section": ".init.text",
+    "callback_read_section_offset": 212,
+    "callback_read_file_offset": 6132,
+    "instruction_le_hex": "000040b9",
+    "calculated_virtual_address": "0xfffffffff7300004",
+    "calculated_physical_low32": "0xf7300004",
+    "execution_proven": false
+  },
+  "runtime_module_initialization_tested": false,
+  "MMIO_or_IRQ_model_passed": false
+}

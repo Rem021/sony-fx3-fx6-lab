@@ -1,0 +1,12 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x1370 e00315aa mov      x0, x21
+0x1374 00000094 bl       #0x1374 ; relocation {"symbol": "__arch_copy_from_user", "addend": 0}
+0x1378 e20300aa mov      x2, x0
+0x137c e01900b5 cbnz     x0, #0x16b8
+0x1380 a11240b9 ldr      w1, [x21, #0x10]
+0x1384 3f000471 cmp      w1, #0x100
+0x1388 e303012a mov      w3, w1
+0x138c 8d000054 b.le     #0x139c
+0x1390 00208052 mov      w0, #0x100
+0x1394 e303002a mov      w3, w0
+0x1398 a01200b9 str      w0, [x21, #0x10]

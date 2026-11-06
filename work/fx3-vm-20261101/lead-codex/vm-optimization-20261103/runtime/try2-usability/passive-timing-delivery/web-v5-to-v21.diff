@@ -1,0 +1,31 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/trial_web_v5_final_receipt.py	2026-11-03 08:07:36
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/trial_web_v21_final_timing.py	2026-11-03 09:43:11
+@@ -22,6 +22,9 @@
+         self.error = None
+         self.ready = False
+         self.busy = False
++        self.visual_state = 'idle'
++        self.input_received = False
++        self.visual_change_observed = False
+         self.steps = 0
+         self.max_steps = max_steps
+         self.render_valid = False
+@@ -61,6 +64,9 @@
+                     'ready': bool(self.ready and not self.busy and not self.stop.is_set()
+                                   and not self.error and self.render_valid and self.steps < self.max_steps),
+                     'busy': self.busy, 'steps': self.steps, 'max_steps': self.max_steps,
++                    'visual_state': self.visual_state,
++                    'input_received': self.input_received,
++                    'visual_change_observed': self.visual_change_observed,
+                     'render_valid': self.render_valid,
+                     'black_after_ready_count': len(self.black_after_ready),
+                     'frame': self.frame, 'result': self.result,
+@@ -198,7 +204,7 @@
+  if(finished)return;
+  try{
+    const s=(await request('/api/status')).body;lastStatus=s;
+-   statusEl.textContent=s.message;err.textContent=s.error||'';
++   statusEl.textContent=s.message+(s.visual_state==='visual_pending'?'（输入已接收，仍在观察画面）':'');err.textContent=s.error||'';
+    document.querySelector('#meta').textContent=`按键 ${s.steps}/${s.max_steps} · 剩余 ${Math.ceil(s.remaining_seconds/60)} 分钟 · 提交帧 ${s.frame?s.frame.sequence:'等待中'}`;
+    document.querySelector('#events').replaceChildren(...s.events.map(e=>{
+      const li=document.createElement('li');li.textContent=e;return li;

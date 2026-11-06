@@ -1,0 +1,54 @@
+{
+  "schema": "fx3-stage32-coordinator-review/1",
+  "created_utc": "2026-10-25T22:41:26.492040+00:00",
+  "status": "PASS_SOURCE_BYTE_FRAGMENT_PRECONDITION_AND_ENUM_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent source-byte/structural/hash review; no independent implementation replay or camera acceptance.",
+  "prior_manifest_files_verified": {
+    "stage25-mc-image-map": 15,
+    "stage26-mc-open-routing": 11,
+    "stage28-main-frontend-binding": 8,
+    "stage31-timing-parameter-ownership": 8
+  },
+  "raw_instruction_records_checked": 1630,
+  "bounded_executions": 44,
+  "descriptor_scenarios": 6,
+  "fragment_descriptors": 4,
+  "pure_coding_controls": 6,
+  "pure_diagnostic_names": 10,
+  "MAIN_proxy_descriptor_only_byte_difference": "0x18 stream_type; same explicit channel0 fixture",
+  "target_original_names": {
+    "format_category_enum": "IMOLA",
+    "coding_enum": "HEVC_MP4",
+    "frame_enum": "29_97",
+    "interlace_enum": "PROGRESSIVE",
+    "quality_enum": "FH",
+    "chroma_enum": "CHROMA_420",
+    "depth_enum": "BIT_DEPTH_10"
+  },
+  "quality_FH_not_literal16Mbps_or_HEVC_acceptance": true,
+  "earlier_codecFF_not_valid_mandatory_validation_failure_witness": true,
+  "unexecuted_clear_and_diagnostics_not_proven_neutral": true,
+  "continuous_builder_and_parent_preparation_not_verified": true,
+  "sender_prefix_before_constructor_only": true,
+  "all_guest_stores_stack_or_fixture": true,
+  "original_image_unchanged": true,
+  "native_output_or_diagnostic_adapters": false,
+  "review_attempt_note": "First host-only review failed before any review/ledger writes: TypeError PosixPath not subscriptable in prior-manifest path expression; corrected to path join. No emulation result changed or rerun for this typo.",
+  "source_revision_history": "Initial successful run retains exact source-snapshot; formal enum-bound run records current source hash. No emulation failures or overwritten results.",
+  "primary_source_refreshed": {
+    "date": "2026-10-25",
+    "url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000882045.html",
+    "supports": "Classic FX3 HEVC42010 HD proxy baseline, not MAIN target or recovery."
+  },
+  "unverified": [
+    "Runtime clear API and excluded diagnostic effects; whole parent/outputIF/input_if",
+    "Resource receiver, HEVC_MP4/FH interpretation/bitrate, buffers/transport/full replies",
+    "Actual timing/configuration order/generations/clock/native safe points",
+    "Hardware Open/Start, MAIN media/audio/timebase/sync/long-run/temperature/regression",
+    "Same-body healthy checkpoint, restricted restore/readback, WBI/cold boot and independent recovery"
+  ],
+  "new_Windows_UU_or_camera_access_attempted": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

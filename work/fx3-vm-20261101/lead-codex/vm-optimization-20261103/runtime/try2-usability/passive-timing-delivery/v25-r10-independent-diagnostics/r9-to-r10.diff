@@ -1,0 +1,172 @@
+--- r9/run_trial_v25_diag_r3.py
++++ r10/run_trial_v25_diag_r3.py
+@@ -37,6 +37,7 @@
+ from qmp_line_transport import QmpLineTransport
+ from runtime_resource_guard import RuntimeResourceGuard
+ from startup_qmp_v1 import startup_handshake, is_proven_prelaunch
++from optional_paused_snapshots import capture as capture_optional_paused_snapshots
+ from host_exception_clock import write_host_first_exception, write_host_journal
+ 
+ ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
+@@ -237,7 +238,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py','optional_paused_snapshots.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -728,15 +729,33 @@
+                     shutdown['API16_restored'] = False
+                     shutdown['native_unbind_return'] = None
+                 else:
+-                    try:
+-                        transport.set_default_timeout(30)
+-                        shutdown['diag_snapshot'] = capture_quiesced_diag(qmp, run)
+-                    except Exception as exc:
+-                        shutdown['snapshot_error'] = repr(exc)
+-                        shutdown.setdefault('diag_snapshot', {'consistent': False, 'error': repr(exc)})
+-                    finally:
+-                        transport.set_default_timeout(3)
+-                    if shutdown.get('diag_snapshot', {}).get('consistent'):
++                    if transport.send_unknown:
++                        shutdown['diag_snapshot'] = {'consistent': False, 'paused_proven': False,
++                                                     'readback_complete': False, 'error': 'transport_send_unknown'}
++                    else:
++                        try:
++                            transport.set_default_timeout(30)
++                            shutdown['diag_snapshot'] = capture_quiesced_diag(qmp, run)
++                        except Exception as exc:
++                            shutdown['snapshot_error'] = repr(exc)
++                            shutdown.setdefault('diag_snapshot', {'consistent': False, 'error': repr(exc)})
++                        finally:
++                            transport.set_default_timeout(3)
++                    ring_complete = (shutdown.get('diag_snapshot', {}).get('paused_proven') is True
++                                     and shutdown.get('diag_snapshot', {}).get('readback_complete') is True)
++                    if ring_complete:
++                        try:
++                            shutdown['optional_snapshots'] = capture_optional_paused_snapshots(
++                                qmp, transport, run, snapshots, budget=10.0)
++                        except Exception as exc:
++                            shutdown['optional_snapshots'] = {'attempted': False, 'error': repr(exc)}
++                        try:
++                            journal.append({'optional_snapshots': shutdown['optional_snapshots']})
++                        except Exception as exc:
++                            shutdown['optional_snapshot_journal_error'] = repr(exc)
++                    else:
++                        shutdown['optional_snapshots'] = {'attempted': False, 'reason': 'core_ring_not_proven_complete'}
++                    if shutdown.get('diag_snapshot', {}).get('consistent') and not transport.send_unknown:
+                         # Every optional observation has its own failure boundary.
+                         # A failed frame/vCPU/task read must not hide the core ring
+                         # or prevent native API restoration and QEMU reap.
+@@ -749,34 +768,39 @@
+                         except Exception as exc:
+                             shutdown['fault_frame_error'] = repr(exc)
+                         if early_stop_reason:
+-                            shutdown['fault_guest_tasks'] = capture_optional_guest_tasks(qmp, run)
+-                            shutdown['fault_vcpu_snapshot'] = capture_optional_vcpus(qmp, run)
+-                        shutdown['optional_snapshot_errors'] = []
+-                        for snapshot in snapshots:
+-                            if snapshot['name'] == 'osd-ring-final.bin':
+-                                continue
+                             try:
+-                                response = qmp('human-monitor-command', {'command-line': 'pmemsave '+hex(snapshot['address'])+' '+hex(snapshot['size'])+' "'+str(run/snapshot['name'])+'"'})
+-                                if 'error' in response or 'return' not in response:
+-                                    raise RuntimeError('QMP pmemsave error: ' + repr(response))
++                                shutdown['fault_guest_tasks'] = capture_optional_guest_tasks(qmp, run)
+                             except Exception as exc:
+-                                shutdown['optional_snapshot_errors'].append({'name': snapshot['name'], 'error': repr(exc)})
++                                shutdown['fault_guest_tasks_error'] = repr(exc)
++                            try:
++                                shutdown['fault_vcpu_snapshot'] = capture_optional_vcpus(qmp, run)
++                            except Exception as exc:
++                                shutdown['fault_vcpu_error'] = repr(exc)
+                         try:
+                             shutdown['serial_bytes_before_cleanup'] = (run/'serial.log').stat().st_size
+                         except Exception as exc:
+                             shutdown['serial_stat_error'] = repr(exc)
+                     try:
+                         log_monitor.poll()
+-                        if 'FX3_FILE100_OBSERVER_READY' in '\n'.join(log_monitor.selected):
++                    except Exception as exc:
++                        shutdown['optional_log_poll_error'] = repr(exc)
++                    if not transport.send_unknown and 'FX3_FILE100_OBSERVER_READY' in '\n'.join(log_monitor.selected):
++                        try:
+                             native_file_reads.append(capture_native_file(qmp, run, 'final-before-shutdown'))
+-                        restore = restore_native_api(qmp, input_gate, run, timeout=20)
+-                        shutdown['restore103'] = restore
+-                        shutdown['API16_restored'] = restore['passed']
+-                        shutdown['native_unbind_return'] = 0 if restore['reason'] in ('guest_acknowledged_and_original_bytes_verified', 'already_original_no_request_no_resume') else None
+-                        if not restore['passed']:
+-                            shutdown['restore_error'] = restore['reason']
+-                    except Exception as exc:
+-                        shutdown['restore_error'] = repr(exc)
++                        except Exception as exc:
++                            shutdown['optional_native_file_error'] = repr(exc)
++                    if transport.send_unknown:
++                        shutdown['restore_error'] = 'transport_send_unknown_before_restore'
++                    else:
++                        try:
++                            restore = restore_native_api(qmp, input_gate, run, timeout=20)
++                            shutdown['restore103'] = restore
++                            shutdown['API16_restored'] = restore['passed']
++                            shutdown['native_unbind_return'] = 0 if restore['reason'] in ('guest_acknowledged_and_original_bytes_verified', 'already_original_no_request_no_resume') else None
++                            if not restore['passed']:
++                                shutdown['restore_error'] = restore['reason']
++                        except Exception as exc:
++                            shutdown['restore_error'] = repr(exc)
+                 try:
+                     qmp('quit')
+                     shutdown['quit_sent'] = True
+--- r9/quiesced_diag_readback.py
++++ r10/quiesced_diag_readback.py
+@@ -30,18 +30,37 @@
+         'command-line': f'pmemsave {ADDRESS:#x} {SIZE:#x} "{path}"'})
+     if 'error' in result or 'return' not in result:
+         raise RuntimeError('QMP pmemsave failed: ' + repr(result))
+-    if not path.is_file() or path.stat().st_size != SIZE:
+-        raise RuntimeError('full OSD ring readback missing or wrong size')
++    if not path.is_file():
++        raise RuntimeError('full OSD ring readback missing')
+     raw = path.read_bytes()
+-    parsed = parse(raw, quiesced=True)
+-    digest = hashlib.sha256(raw).hexdigest()
+-    (run / 'osd-ring-final-diag.json').write_text(json.dumps(parsed, indent=2) + '\n')
+-    receipt = {'consistent': True, 'method': 'QMP stop acknowledged; query-status running=false,status=paused; full pmemsave while paused',
+-               'query_status': state, 'bytes': len(raw), 'sha256': digest,
+-               'path': str(path), 'parse_path': str(run / 'osd-ring-final-diag.json'),
+-               'dropped_busy_writer_events': parsed['dropped_busy_writer_events'],
+-               'invalid_or_torn_slots': parsed['invalid_or_torn_slots']}
+-    (run / 'osd-ring-final-readback-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
++    receipt = {'consistent': False, 'paused_proven': True, 'readback_complete': len(raw) == SIZE,
++               'parse_valid': False,
++               'method': 'QMP stop acknowledged; query-status running=false,status=paused; full pmemsave while paused',
++               'query_status': state, 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest(),
++               'path': str(path), 'parse_path': None}
++    if len(raw) != SIZE:
++        receipt['readback_error'] = 'wrong_length_after_read'
++    else:
++        try:
++            parsed = parse(raw, quiesced=True)
++        except Exception as exc:
++            receipt['parse_error'] = repr(exc)
++        else:
++            receipt.update(parse_valid=True,
++                           dropped_busy_writer_events=parsed['dropped_busy_writer_events'],
++                           invalid_or_torn_slots=parsed['invalid_or_torn_slots'])
++            try:
++                diag_path = run / 'osd-ring-final-diag.json'
++                diag_path.write_text(json.dumps(parsed, indent=2) + '\n')
++                receipt['parse_path'] = str(diag_path)
++                receipt['consistent'] = True
++            except Exception as exc:
++                receipt['parsed_artifact_write_error'] = repr(exc)
++    try:
++        (run / 'osd-ring-final-readback-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
++    except Exception as exc:
++        receipt['receipt_write_error'] = repr(exc)
++        receipt['consistent'] = False
+     return receipt
+ 
+ 

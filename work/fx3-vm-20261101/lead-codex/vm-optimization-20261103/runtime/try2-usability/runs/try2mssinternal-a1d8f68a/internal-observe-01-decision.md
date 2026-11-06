@@ -1,0 +1,1 @@
+Viewed runs/try2mssinternal-a1d8f68a/trial-frame.png using image tool. English standby, HD Fixed-59.94fps and icons visible Next: Open native MENU to correlate a meaningful user action with the original MSS sequence

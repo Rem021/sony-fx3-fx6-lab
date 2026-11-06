@@ -1,0 +1,238 @@
+# work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so
+# SHA256 6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9
+# VA [0x19bdc, 0x19f88) raw slice SHA256 3bb58c55f0f419d6af97c387a8e11ccf1a6d75c04bc50b137699d4af5f13289d
+   19bdc: a9b17bfd     	stp	x29, x30, [sp, #-0xf0]!
+   19be0: 910003fd     	mov	x29, sp
+   19be4: a90153f3     	stp	x19, x20, [sp, #0x10]
+   19be8: 910303b4     	add	x20, x29, #0xc0
+   19bec: a90363f7     	stp	x23, x24, [sp, #0x30]
+   19bf0: aa0003f7     	mov	x23, x0
+   19bf4: aa1403e0     	mov	x0, x20
+   19bf8: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   19bfc: a9046bf9     	stp	x25, x26, [sp, #0x40]
+   19c00: 97ffd904     	bl	0x10010 <Updater::MountPoint::MountPoint()@plt>
+   19c04: f94002e0     	ldr	x0, [x23]
+   19c08: f9403001     	ldr	x1, [x0, #0x60]
+   19c0c: aa1703e0     	mov	x0, x23
+   19c10: d63f0020     	blr	x1
+   19c14: 72001c1f     	tst	w0, #0xff
+   19c18: 540016c1     	b.ne	0x19ef0 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x314>
+   19c1c: d0000013     	adrp	x19, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19c20: aa1403e0     	mov	x0, x20
+   19c24: 912dba61     	add	x1, x19, #0xb6e
+   19c28: 97ffd8de     	bl	0xffa0 <Updater::MountPoint::Initialize(char const*)@plt>
+   19c2c: d000001a     	adrp	x26, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19c30: aa1403e0     	mov	x0, x20
+   19c34: 91217f41     	add	x1, x26, #0x85f
+   19c38: 52808202     	mov	w2, #0x410              // =1040
+   19c3c: 97ffd825     	bl	0xfcd0 <Updater::MountPoint::Mount(char const*, unsigned int)@plt>
+   19c40: 72001c1f     	tst	w0, #0xff
+   19c44: 54000401     	b.ne	0x19cc4 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0xe8>
+   19c48: b9400ae0     	ldr	w0, [x23, #0x8]
+   19c4c: 51000401     	sub	w1, w0, #0x1
+   19c50: 7100043f     	cmp	w1, #0x1
+   19c54: 7a448804     	ccmp	w0, #0x4, #0x4, hi
+   19c58: 540014c0     	b.eq	0x19ef0 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x314>
+   19c5c: f0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   19c60: d0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19c64: 528001c1     	mov	w1, #0xe                // =14
+   19c68: 91217f44     	add	x4, x26, #0x85f
+   19c6c: 910dd442     	add	x2, x2, #0x375
+   19c70: 91220400     	add	x0, x0, #0x881
+   19c74: 52800cc3     	mov	w3, #0x66               // =102
+   19c78: 72a00061     	movk	w1, #0x3, lsl #16
+   19c7c: 97ffdb2d     	bl	0x10930 <printf@plt>
+   19c80: d2800200     	mov	x0, #0x10               // =16
+   19c84: 97ffd83f     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   19c88: 900000c1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   19c8c: 900000c2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   19c90: f9471821     	ldr	x1, [x1, #0xe30]
+   19c94: f9474442     	ldr	x2, [x2, #0xe88]
+   19c98: 91004021     	add	x1, x1, #0x10
+   19c9c: f9000001     	str	x1, [x0]
+   19ca0: 528001c1     	mov	w1, #0xe                // =14
+   19ca4: 72a00061     	movk	w1, #0x3, lsl #16
+   19ca8: b9000801     	str	w1, [x0, #0x8]
+   19cac: 900000c1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   19cb0: 3900301f     	strb	wzr, [x0, #0xc]
+   19cb4: f947e021     	ldr	x1, [x1, #0xfc0]
+   19cb8: 97ffda92     	bl	0x10700 <__cxa_throw@plt>
+   19cbc: aa0003f3     	mov	x19, x0
+   19cc0: 1400009b     	b	0x19f2c <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x350>
+   19cc4: 910143b5     	add	x21, x29, #0x50
+   19cc8: aa1503e0     	mov	x0, x21
+   19ccc: 97ffda2d     	bl	0x10580 <Updater::StringHandler::StringHandler()@plt>
+   19cd0: d0000003     	adrp	x3, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19cd4: f0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   19cd8: 912cb863     	add	x3, x3, #0xb2e
+   19cdc: 91128042     	add	x2, x2, #0x4a0
+   19ce0: 912dba61     	add	x1, x19, #0xb6e
+   19ce4: aa1503e0     	mov	x0, x21
+   19ce8: 97ffdada     	bl	0x10850 <Updater::StringHandler::SetString(char const*, char const*, char const*)@plt>
+   19cec: aa1503e0     	mov	x0, x21
+   19cf0: 97ffd958     	bl	0x10250 <Updater::DirectoryHandler::Create(Updater::StringHandler const&)@plt>
+   19cf4: b9400ae0     	ldr	w0, [x23, #0x8]
+   19cf8: 910263b6     	add	x22, x29, #0x98
+   19cfc: 51000c00     	sub	w0, w0, #0x3
+   19d00: 7100101f     	cmp	w0, #0x4
+   19d04: 540002c8     	b.hi	0x19d5c <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x180>
+   19d08: f0000001     	adrp	x1, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   19d0c: 91097021     	add	x1, x1, #0x25c
+   19d10: 38604820     	ldrb	w0, [x1, w0, uxtw]
+   19d14: 10000061     	adr	x1, 0x19d20 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x144>
+   19d18: 8b208820     	add	x0, x1, w0, sxtb #2
+   19d1c: d61f0000     	br	x0
+   19d20: 9101c3b7     	add	x23, x29, #0x70
+   19d24: 912dba61     	add	x1, x19, #0xb6e
+   19d28: aa1703e0     	mov	x0, x23
+   19d2c: 97ffda21     	bl	0x105b0 <Updater::ModeFlagFile::ModeFlagFile(char const*)@plt>
+   19d30: aa1703e0     	mov	x0, x23
+   19d34: 97ffdab3     	bl	0x10800 <Updater::BaseFlagFile::Create()@plt>
+   19d38: 912dba61     	add	x1, x19, #0xb6e
+   19d3c: aa1603e0     	mov	x0, x22
+   19d40: 97ffd93c     	bl	0x10230 <Updater::Mode3FlagFile::Mode3FlagFile(char const*)@plt>
+   19d44: aa1603e0     	mov	x0, x22
+   19d48: 97ffdaae     	bl	0x10800 <Updater::BaseFlagFile::Create()@plt>
+   19d4c: aa1603e0     	mov	x0, x22
+   19d50: 97ffda30     	bl	0x10610 <Updater::Mode3FlagFile::~Mode3FlagFile()@plt>
+   19d54: aa1703e0     	mov	x0, x23
+   19d58: 97ffd81e     	bl	0xfdd0 <Updater::ModeFlagFile::~ModeFlagFile()@plt>
+   19d5c: 912dba61     	add	x1, x19, #0xb6e
+   19d60: aa1603e0     	mov	x0, x22
+   19d64: 97ffd8db     	bl	0x100d0 <Updater::CompleteFlagFile::CompleteFlagFile(char const*)@plt>
+   19d68: 14000036     	b	0x19e40 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x264>
+   19d6c: 9101c3b7     	add	x23, x29, #0x70
+   19d70: 912dba61     	add	x1, x19, #0xb6e
+   19d74: aa1703e0     	mov	x0, x23
+   19d78: 97ffda0e     	bl	0x105b0 <Updater::ModeFlagFile::ModeFlagFile(char const*)@plt>
+   19d7c: aa1703e0     	mov	x0, x23
+   19d80: 97ffdaa0     	bl	0x10800 <Updater::BaseFlagFile::Create()@plt>
+   19d84: 912dba61     	add	x1, x19, #0xb6e
+   19d88: aa1603e0     	mov	x0, x22
+   19d8c: 97ffd951     	bl	0x102d0 <Updater::Mode5FlagFile::Mode5FlagFile(char const*)@plt>
+   19d90: aa1603e0     	mov	x0, x22
+   19d94: 97ffda9b     	bl	0x10800 <Updater::BaseFlagFile::Create()@plt>
+   19d98: aa1603e0     	mov	x0, x22
+   19d9c: 97ffd8e5     	bl	0x10130 <Updater::Mode5FlagFile::~Mode5FlagFile()@plt>
+   19da0: 17ffffed     	b	0x19d54 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x178>
+   19da4: 9101c3b8     	add	x24, x29, #0x70
+   19da8: 912dba61     	add	x1, x19, #0xb6e
+   19dac: aa1803e0     	mov	x0, x24
+   19db0: 97ffda00     	bl	0x105b0 <Updater::ModeFlagFile::ModeFlagFile(char const*)@plt>
+   19db4: aa1803e0     	mov	x0, x24
+   19db8: 97ffda92     	bl	0x10800 <Updater::BaseFlagFile::Create()@plt>
+   19dbc: 912dba61     	add	x1, x19, #0xb6e
+   19dc0: aa1603e0     	mov	x0, x22
+   19dc4: 97ffd91f     	bl	0x10240 <Updater::Mode6FlagFile::Mode6FlagFile(char const*)@plt>
+   19dc8: aa1603e0     	mov	x0, x22
+   19dcc: 97ffda8d     	bl	0x10800 <Updater::BaseFlagFile::Create()@plt>
+   19dd0: d0000019     	adrp	x25, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19dd4: d0000004     	adrp	x4, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19dd8: d0000002     	adrp	x2, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19ddc: 91215b21     	add	x1, x25, #0x856
+   19de0: 9116cc42     	add	x2, x2, #0x5b3
+   19de4: 91212c84     	add	x4, x4, #0x84b
+   19de8: d2800203     	mov	x3, #0x10               // =16
+   19dec: 91217f40     	add	x0, x26, #0x85f
+   19df0: f2b81da3     	movk	x3, #0xc0ed, lsl #16
+   19df4: 97ffd88b     	bl	0x10020 <mount@plt>
+   19df8: f94002e0     	ldr	x0, [x23]
+   19dfc: 52800001     	mov	w1, #0x0                // =0
+   19e00: f9401402     	ldr	x2, [x0, #0x28]
+   19e04: aa1703e0     	mov	x0, x23
+   19e08: d63f0040     	blr	x2
+   19e0c: 91215b20     	add	x0, x25, #0x856
+   19e10: 97ffd9bc     	bl	0x10500 <umount@plt>
+   19e14: aa1603e0     	mov	x0, x22
+   19e18: 97ffd93a     	bl	0x10300 <Updater::Mode6FlagFile::~Mode6FlagFile()@plt>
+   19e1c: aa1803e0     	mov	x0, x24
+   19e20: 17ffffce     	b	0x19d58 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x17c>
+   19e24: 912dba61     	add	x1, x19, #0xb6e
+   19e28: aa1603e0     	mov	x0, x22
+   19e2c: 97ffd9e1     	bl	0x105b0 <Updater::ModeFlagFile::ModeFlagFile(char const*)@plt>
+   19e30: aa1603e0     	mov	x0, x22
+   19e34: 97ffda73     	bl	0x10800 <Updater::BaseFlagFile::Create()@plt>
+   19e38: aa1603e0     	mov	x0, x22
+   19e3c: 17ffffc7     	b	0x19d58 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x17c>
+   19e40: aa1603e0     	mov	x0, x22
+   19e44: 97ffd893     	bl	0x10090 <Updater::BaseFlagFile::IsValid()@plt>
+   19e48: 72001c1f     	tst	w0, #0xff
+   19e4c: 540001e1     	b.ne	0x19e88 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x2ac>
+   19e50: aa1403e0     	mov	x0, x20
+   19e54: 97ffd99f     	bl	0x104d0 <Updater::MountPoint::Umount()@plt>
+   19e58: 72001c1f     	tst	w0, #0xff
+   19e5c: 54000421     	b.ne	0x19ee0 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x304>
+   19e60: f0000002     	adrp	x2, 0x1c000 <typeinfo name for Updater::ThreadPlugin+0x18>
+   19e64: d0000000     	adrp	x0, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19e68: 528001e1     	mov	w1, #0xf                // =15
+   19e6c: 912dba64     	add	x4, x19, #0xb6e
+   19e70: 910dd442     	add	x2, x2, #0x375
+   19e74: 91220400     	add	x0, x0, #0x881
+   19e78: 52801363     	mov	w3, #0x9b               // =155
+   19e7c: 72a00061     	movk	w1, #0x3, lsl #16
+   19e80: 97ffdaac     	bl	0x10930 <printf@plt>
+   19e84: 14000004     	b	0x19e94 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x2b8>
+   19e88: aa1603e0     	mov	x0, x22
+   19e8c: 97ffd789     	bl	0xfcb0 <Updater::BaseFlagFile::Delete()@plt>
+   19e90: 17fffff0     	b	0x19e50 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x274>
+   19e94: d2800200     	mov	x0, #0x10               // =16
+   19e98: 97ffd7ba     	bl	0xfd80 <__cxa_allocate_exception@plt>
+   19e9c: 900000c1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   19ea0: 900000c2     	adrp	x2, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   19ea4: f9471821     	ldr	x1, [x1, #0xe30]
+   19ea8: f9474442     	ldr	x2, [x2, #0xe88]
+   19eac: 91004021     	add	x1, x1, #0x10
+   19eb0: f9000001     	str	x1, [x0]
+   19eb4: 528001e1     	mov	w1, #0xf                // =15
+   19eb8: 72a00061     	movk	w1, #0x3, lsl #16
+   19ebc: b9000801     	str	w1, [x0, #0x8]
+   19ec0: 900000c1     	adrp	x1, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   19ec4: 3900301f     	strb	wzr, [x0, #0xc]
+   19ec8: f947e021     	ldr	x1, [x1, #0xfc0]
+   19ecc: 97ffda0d     	bl	0x10700 <__cxa_throw@plt>
+   19ed0: aa0003f3     	mov	x19, x0
+   19ed4: aa1603e0     	mov	x0, x22
+   19ed8: 97ffd742     	bl	0xfbe0 <Updater::CompleteFlagFile::~CompleteFlagFile()@plt>
+   19edc: 14000012     	b	0x19f24 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x348>
+   19ee0: aa1603e0     	mov	x0, x22
+   19ee4: 97ffd73f     	bl	0xfbe0 <Updater::CompleteFlagFile::~CompleteFlagFile()@plt>
+   19ee8: aa1503e0     	mov	x0, x21
+   19eec: 97ffda21     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   19ef0: aa1403e0     	mov	x0, x20
+   19ef4: 97ffd72f     	bl	0xfbb0 <Updater::MountPoint::~MountPoint()@plt>
+   19ef8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   19efc: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   19f00: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   19f04: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+   19f08: a8cf7bfd     	ldp	x29, x30, [sp], #0xf0
+   19f0c: d65f03c0     	ret
+   19f10: aa0003f3     	mov	x19, x0
+   19f14: aa1603e0     	mov	x0, x22
+   19f18: 97ffd9be     	bl	0x10610 <Updater::Mode3FlagFile::~Mode3FlagFile()@plt>
+   19f1c: aa1703e0     	mov	x0, x23
+   19f20: 97ffd7ac     	bl	0xfdd0 <Updater::ModeFlagFile::~ModeFlagFile()@plt>
+   19f24: aa1503e0     	mov	x0, x21
+   19f28: 97ffda12     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   19f2c: aa1403e0     	mov	x0, x20
+   19f30: 97ffd720     	bl	0xfbb0 <Updater::MountPoint::~MountPoint()@plt>
+   19f34: aa1303e0     	mov	x0, x19
+   19f38: 97ffda1a     	bl	0x107a0 <_Unwind_Resume@plt>
+   19f3c: aa0003f3     	mov	x19, x0
+   19f40: 17fffff7     	b	0x19f1c <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x340>
+   19f44: aa0003f3     	mov	x19, x0
+   19f48: aa1603e0     	mov	x0, x22
+   19f4c: 97ffd879     	bl	0x10130 <Updater::Mode5FlagFile::~Mode5FlagFile()@plt>
+   19f50: 17fffff3     	b	0x19f1c <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x340>
+   19f54: 17fffffa     	b	0x19f3c <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x360>
+   19f58: aa0003f3     	mov	x19, x0
+   19f5c: aa1603e0     	mov	x0, x22
+   19f60: 97ffd8e8     	bl	0x10300 <Updater::Mode6FlagFile::~Mode6FlagFile()@plt>
+   19f64: aa1803e0     	mov	x0, x24
+   19f68: 17ffffee     	b	0x19f20 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x344>
+   19f6c: aa0003f3     	mov	x19, x0
+   19f70: 17fffffd     	b	0x19f64 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x388>
+   19f74: aa0003f3     	mov	x19, x0
+   19f78: aa1603e0     	mov	x0, x22
+   19f7c: 17ffffe9     	b	0x19f20 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x344>
+   19f80: aa0003f3     	mov	x19, x0
+   19f84: 17ffffe8     	b	0x19f24 <Updater::FlagFirmwareInformationHandler::StartUpdate()+0x348>

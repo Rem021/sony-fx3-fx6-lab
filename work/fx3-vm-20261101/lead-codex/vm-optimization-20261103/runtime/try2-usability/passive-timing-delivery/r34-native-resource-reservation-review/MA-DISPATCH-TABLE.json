@@ -1,0 +1,23 @@
+{
+  "section": ".rodata",
+  "file_offset": 18000,
+  "bytes": "0c101403181c2024282c000830",
+  "formula": "text+0xe8 + sign_extend(table[command-1])*4",
+  "targets": {
+    "1": "0x118",
+    "2": "0x128",
+    "3": "0x138",
+    "4": "0xf4",
+    "5": "0x148",
+    "6": "0x158",
+    "7": "0x168",
+    "8": "0x178",
+    "9": "0x188",
+    "10": "0x198",
+    "11": "0xe8",
+    "12": "0x108",
+    "13": "0x1a8"
+  },
+  "command1": "0x118 -> CALL relocation ma_dmm_open_impl",
+  "command3": "0x138 -> CALL relocation ma_create_msp_impl"
+}

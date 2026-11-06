@@ -1,0 +1,113 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001b30f4 <_ZNSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS2_EEaSERKS4_>:
+  1b3284: a9b77bfd     	stp	x29, x30, [sp, #-0x90]!
+  1b3288: 910003fd     	mov	x29, sp
+  1b328c: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1b3290: aa0003f3     	mov	x19, x0
+  1b3294: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  1b3298: 910103b4     	add	x20, x29, #0x40
+  1b329c: f9001bf7     	str	x23, [sp, #0x30]
+  1b32a0: 97ff32b2     	bl	0x17fd68 <_ZN15BaseMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0x1fc>
+  1b32a4: d00076c1     	adrp	x1, 0x108d000
+  1b32a8: aa1303e0     	mov	x0, x19
+  1b32ac: f9473c21     	ldr	x1, [x1, #0xe78]
+  1b32b0: 91004021     	add	x1, x1, #0x10
+  1b32b4: f80a0401     	str	x1, [x0], #0xa0
+  1b32b8: 97fd006e     	bl	0xf3470 <_ZN3mpr6thread10signalLockC1Ev@plt>
+  1b32bc: a9047fbf     	stp	xzr, xzr, [x29, #0x40]
+  1b32c0: aa1403e0     	mov	x0, x20
+  1b32c4: d2800001     	mov	x1, #0x0                // =0
+  1b32c8: a9057fbf     	stp	xzr, xzr, [x29, #0x50]
+  1b32cc: a9067fbf     	stp	xzr, xzr, [x29, #0x60]
+  1b32d0: a9077fbf     	stp	xzr, xzr, [x29, #0x70]
+  1b32d4: a9087fbf     	stp	xzr, xzr, [x29, #0x80]
+  1b32d8: 97fffd8c     	bl	0x1b2908 <_ZN16XavcsMovieWriter22GetParameterSetPerInfoEjN3mpr10StreamTypeEhPNS_9PpsInfo_tEbN10libXavcMp416ParameterSetTypeEmjPS4_PNS0_7DmacLibERKNS0_5Codec14BufferAreaInfoEPN10MovieError12MovieError_tE+0x5ac>
+  1b32dc: 91042260     	add	x0, x19, #0x108
+  1b32e0: f900867f     	str	xzr, [x19, #0x108]
+  1b32e4: d2800001     	mov	x1, #0x0                // =0
+  1b32e8: f900041f     	str	xzr, [x0, #0x8]
+  1b32ec: a911fe7f     	stp	xzr, xzr, [x19, #0x118]
+  1b32f0: a912fe7f     	stp	xzr, xzr, [x19, #0x128]
+  1b32f4: a913fe7f     	stp	xzr, xzr, [x19, #0x138]
+  1b32f8: a914fe7f     	stp	xzr, xzr, [x19, #0x148]
+  1b32fc: 97fffd83     	bl	0x1b2908 <_ZN16XavcsMovieWriter22GetParameterSetPerInfoEjN3mpr10StreamTypeEhPNS_9PpsInfo_tEbN10libXavcMp416ParameterSetTypeEmjPS4_PNS0_7DmacLibERKNS0_5Codec14BufferAreaInfoEPN10MovieError12MovieError_tE+0x5ac>
+  1b3300: f94023a0     	ldr	x0, [x29, #0x40]
+  1b3304: b4000220     	cbz	x0, 0x1b3348 <_ZNSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS2_EEaSERKS4_+0x254>
+  1b3308: 91046276     	add	x22, x19, #0x118
+  1b330c: 91004281     	add	x1, x20, #0x10
+  1b3310: aa1603e0     	mov	x0, x22
+  1b3314: 9104e275     	add	x21, x19, #0x138
+  1b3318: 97ffffd2     	bl	0x1b3260 <_ZNSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS2_EEaSERKS4_+0x16c>
+  1b331c: 9100c281     	add	x1, x20, #0x30
+  1b3320: aa1503e0     	mov	x0, x21
+  1b3324: 97ffffcf     	bl	0x1b3260 <_ZNSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS2_EEaSERKS4_+0x16c>
+  1b3328: f9408660     	ldr	x0, [x19, #0x108]
+  1b332c: f94023a1     	ldr	x1, [x29, #0x40]
+  1b3330: f90023a0     	str	x0, [x29, #0x40]
+  1b3334: f9008661     	str	x1, [x19, #0x108]
+  1b3338: f9408a60     	ldr	x0, [x19, #0x110]
+  1b333c: f94027a1     	ldr	x1, [x29, #0x48]
+  1b3340: f90027a0     	str	x0, [x29, #0x48]
+  1b3344: f9008a61     	str	x1, [x19, #0x110]
+  1b3348: aa1403e0     	mov	x0, x20
+  1b334c: 91400675     	add	x21, x19, #0x1, lsl #12 // =0x1000
+  1b3350: 52800097     	mov	w23, #0x4               // =4
+  1b3354: 52846216     	mov	w22, #0x2310            // =8976
+  1b3358: 97fff641     	bl	0x1b0c5c <_ZN16XavcsMovieWriter31ConvertToFpsNumerAndDenomForProEjN3mpr8TvSystemEPN6NRTDEF13RationalValueE+0x700>
+  1b335c: 91124260     	add	x0, x19, #0x490
+  1b3360: 97fe3fa8     	bl	0x143200 <_ZN3mpr15IsFatFileSystemEj+0xb0>
+  1b3364: 911b2260     	add	x0, x19, #0x6c8
+  1b3368: 97fe3fa6     	bl	0x143200 <_ZN3mpr15IsFatFileSystemEj+0xb0>
+  1b336c: f90c2a7f     	str	xzr, [x19, #0x1850]
+  1b3370: d2831a00     	mov	x0, #0x18d0             // =6352
+  1b3374: d2831e03     	mov	x3, #0x18f0             // =6384
+  1b3378: 8b000261     	add	x1, x19, x0
+  1b337c: f90c2e7f     	str	xzr, [x19, #0x1858]
+  1b3380: f90c6261     	str	x1, [x19, #0x18c0]
+  1b3384: 8b030261     	add	x1, x19, x3
+  1b3388: f90c327f     	str	xzr, [x19, #0x1860]
+  1b338c: d2832202     	mov	x2, #0x1910             // =6416
+  1b3390: f90c667f     	str	xzr, [x19, #0x18c8]
+  1b3394: d2870d04     	mov	x4, #0x3868             // =14440
+  1b3398: 392342bf     	strb	wzr, [x21, #0x8d0]
+  1b339c: 8b020260     	add	x0, x19, x2
+  1b33a0: f90c7261     	str	x1, [x19, #0x18e0]
+  1b33a4: f90c767f     	str	xzr, [x19, #0x18e8]
+  1b33a8: 3923c2bf     	strb	wzr, [x21, #0x8f0]
+  1b33ac: f90c8260     	str	x0, [x19, #0x1900]
+  1b33b0: 8b040260     	add	x0, x19, x4
+  1b33b4: f90c867f     	str	xzr, [x19, #0x1908]
+  1b33b8: 392442bf     	strb	wzr, [x21, #0x910]
+  1b33bc: 97fd002d     	bl	0xf3470 <_ZN3mpr6thread10signalLockC1Ev@plt>
+  1b33c0: d2871f05     	mov	x5, #0x38f8             // =14584
+  1b33c4: 8b050260     	add	x0, x19, x5
+  1b33c8: 97ffeac9     	bl	0x1adeec <_ZN16XavcsMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0x42c>
+  1b33cc: 390113b7     	strb	w23, [x29, #0x44]
+  1b33d0: 52802000     	mov	w0, #0x100              // =256
+  1b33d4: 52800101     	mov	w1, #0x8                // =8
+  1b33d8: 790083b6     	strh	w22, [x29, #0x40]
+  1b33dc: 790087a0     	strh	w0, [x29, #0x42]
+  1b33e0: aa1403e0     	mov	x0, x20
+  1b33e4: 390117bf     	strb	wzr, [x29, #0x45]
+  1b33e8: 39011bbf     	strb	wzr, [x29, #0x46]
+  1b33ec: 39011fbf     	strb	wzr, [x29, #0x47]
+  1b33f0: 97ffe8b9     	bl	0x1ad6d4 <_ZN16XavcsMovieWriter15IsEditAvailableEN15BaseMovieWriter8EditTypeEN3mpr15EssenceMarkTypeE+0x1a4>
+  1b33f4: 91060260     	add	x0, x19, #0x180
+  1b33f8: 7900ea7f     	strh	wzr, [x19, #0x74]
+  1b33fc: 3902027f     	strb	wzr, [x19, #0x80]
+  1b3400: d2802002     	mov	x2, #0x100              // =256
+  1b3404: f9002e7f     	str	xzr, [x19, #0x58]
+  1b3408: 52800001     	mov	w1, #0x0                // =0
+  1b340c: b900627f     	str	wzr, [x19, #0x60]
+  1b3410: f900367f     	str	xzr, [x19, #0x68]
+  1b3414: b900727f     	str	wzr, [x19, #0x70]
+  1b3418: f9003e7f     	str	xzr, [x19, #0x78]
+  1b341c: f9004e7f     	str	xzr, [x19, #0x98]
+  1b3420: f900be7f     	str	xzr, [x19, #0x178]
+  1b3424: a908fe7f     	stp	xzr, xzr, [x19, #0x88]
+  1b3428: a915fe7f     	stp	xzr, xzr, [x19, #0x158]
+  1b342c: a916fe7f     	stp	xzr, xzr, [x19, #0x168]

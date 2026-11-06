@@ -1,0 +1,33 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/explicit_confirm_cli.py",
+    "--session",
+    "fx3-deadline-r23-9710706aa341",
+    "--url",
+    "http://127.0.0.1:60889/",
+    "--launch-id",
+    "920ab44f-c731-4322-84f1-fdeb50fa4b9b",
+    "--nonce",
+    "5189c742-1652-4833-847a-bf907a61ca5a",
+    "--step",
+    "7",
+    "--png-sha",
+    "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+    "--target",
+    "已实际查看本步新PNG：完整菜单关闭，恢复黑底待机，HD Fixed-59.94fps、NO CARD、AF-C、AWB等图标，无菜单；步骤7语义符合。",
+    "--receipt",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341/step-07-attempt-07/explicit-confirm-receipt.json"
+  ],
+  "start": {
+    "UTC": "2026-11-05T00:57:35.156739+00:00",
+    "host_ns": 423940684062333
+  },
+  "end": {
+    "UTC": "2026-11-05T00:57:35.216563+00:00",
+    "host_ns": 423940743889375
+  },
+  "returncode": 2,
+  "stdout": "{\n  \"status\": \"refused\",\n  \"session\": \"fx3-deadline-r23-9710706aa341\",\n  \"url\": \"http://127.0.0.1:60889/\",\n  \"launch_id\": \"920ab44f-c731-4322-84f1-fdeb50fa4b9b\",\n  \"alarm_nonce\": \"5189c742-1652-4833-847a-bf907a61ca5a\",\n  \"step\": 7,\n  \"reviewed_png_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\",\n  \"target\": \"已实际查看本步新PNG：完整菜单关闭，恢复黑底待机，HD Fixed-59.94fps、NO CARD、AF-C、AWB等图标，无菜单；步骤7语义符合。\",\n  \"host_invoked_UTC\": \"2026-11-05T00:57:35.195704+00:00\",\n  \"host_monotonic_invoked\": 423940.723189416,\n  \"eval_may_have_started\": true,\n  \"retries\": 0,\n  \"guest_keys_sent_by_helper\": 0,\n  \"tab_id\": null,\n  \"host_preflight_UTC\": \"2026-11-05T00:57:35.202051+00:00\",\n  \"browser_result\": {\n    \"click_invoked\": false,\n    \"events\": [\n      {\n        \"event\": \"invoked\",\n        \"performance_ms\": 181416.60000002384,\n        \"reviewed_png_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\",\n        \"step\": 7,\n        \"target\": \"已实际查看本步新PNG：完整菜单关闭，恢复黑底待机，HD Fixed-59.94fps、NO CARD、AF-C、AWB等图标，无菜单；步骤7语义符合。\",\n        \"wall_UTC\": \"2026-11-05T00:57:35.208Z\"\n      },\n      {\n        \"error\": \"Error: current_review_or_loaded_image_not_ready\",\n        \"event\": \"refused_or_unknown\",\n        \"performance_ms\": 181417.10000002384,\n        \"wall_UTC\": \"2026-11-05T00:57:35.209Z\"\n      }\n    ],\n    \"expected\": null,\n    \"reason\": \"Error: current_review_or_loaded_image_not_ready\",\n    \"status\": \"refused\"\n  },\n  \"host_return_UTC\": \"2026-11-05T00:57:35.210334+00:00\",\n  \"host_monotonic_return\": 423940.737660875\n}\n",
+  "stderr": ""
+}

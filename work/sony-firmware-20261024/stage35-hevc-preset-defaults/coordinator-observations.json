@@ -1,0 +1,78 @@
+{
+  "schema": "fx3-stage35-coordinator-review/1",
+  "created_utc": "2026-10-25T23:27:29.784600+00:00",
+  "status": "PASS_ORIGINAL_PRESET_SOURCE_POINTER_AND_DEFAULT_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent source-byte/structural/hash review, no independent implementation or camera replay.",
+  "prior_sealed_files_verified": {
+    "stage33-imola-format-matcher": 9,
+    "stage34-qos-request-and-feedback": 11
+  },
+  "source_instruction_records_checked": 608,
+  "additional_next_application_instruction_records_checked": 326,
+  "original_preset_records": 316,
+  "bounded_executions": 18,
+  "defaults": [
+    {
+      "label": "MAIN FF",
+      "preset": "0x19450",
+      "target": 24498176,
+      "trace": 25999360
+    },
+    {
+      "label": "MAIN QT35M",
+      "preset": "0x1944c",
+      "target": 33000000,
+      "trace": 34996224
+    },
+    {
+      "label": "MAIN QT50M",
+      "preset": "0x1944d",
+      "target": 50000000,
+      "trace": 57999360
+    },
+    {
+      "label": "MAIN QT9M",
+      "preset": "0x19454",
+      "target": 8800000,
+      "trace": 9999360
+    },
+    {
+      "label": "proxy FH",
+      "preset": "0x1c26b",
+      "target": 16000000,
+      "trace": 16000000
+    },
+    {
+      "label": "UHD QT150M control",
+      "preset": "0x18da8",
+      "target": 150000000,
+      "trace": 159989760
+    }
+  ],
+  "all_selector_scans_original_records0_through315": true,
+  "original_selected_record_bytes_used_without_synthetic_parameters": true,
+  "guest_stores_stack_and_fixture_only": true,
+  "original_image_unchanged": true,
+  "MAIN_FF_default_not16000000": true,
+  "proxy_FH_default_is16000000": true,
+  "static_default_query_not_current_Hal_rate_readback": true,
+  "timing_strategy_candidate_not_bound_as_bitrate_producer": true,
+  "standard_context": {
+    "official_source": "https://www.itu.int/rec/dologin_pub.asp?id=T-REC-H.265-201304-S%21%21PDF-E&lang=e&type=items",
+    "verified_via": "Official-domain indexed excerpt states H.265 E-52 HRD formula and bits/s; direct full-PDF fetch timed out. No claim of full-standard review.",
+    "inference_scope": "Formula/names and matching16M proxy/150M control support interpreting decoded defaults in bps; no actual media rate measurement."
+  },
+  "unverified": [
+    "Whole resource/state/channel constructor, actual preset publication/initialization and mutable lifetime/aliases",
+    "Controlled MAIN16M modification path, actual QoS producer/units and application/readback; upstream model/query/cache/menu consistency",
+    "Native clear/log/runtime API binding, physical buffers/VCD and complete errors/replies",
+    "Hardware Open/Start, actual media/HEVC/audio/timebase/sync/long-run/thermal/regression",
+    "Healthy same-body backup, restricted restore/readback/native safe points, WBI/cold boot and independent recovery"
+  ],
+  "native_output_or_diagnostic_adapters": false,
+  "synthetic_Hal_records": false,
+  "camera_or_remote_access_attempted": false,
+  "authorization_unchanged": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

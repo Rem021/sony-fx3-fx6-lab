@@ -1,0 +1,492 @@
+{
+  "AV": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+    "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+    "bytes": 13348560,
+    "candidate_base": "0xffffffc001000000",
+    "A64_hits": [],
+    "scope": "Raw ORIL image and existing static address model, not observed loader/MMU executable sections."
+  },
+  "CP": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+    "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+    "bytes": 15980568,
+    "ARM_Thumb_marker_hits": []
+  },
+  "positive_controls": {
+    "Thumb2": [
+      {
+        "value": "0x2000b015",
+        "ISA": "Thumb2",
+        "first_file_offset": "0x7bc14",
+        "final_file_offset": "0x7bc1c",
+        "construction": [
+          {
+            "VA": "0x183c14",
+            "instruction": "movw r8, #0xb015",
+            "bytes": "4bf21508"
+          },
+          {
+            "VA": "0x183c18",
+            "instruction": "mov r4, r2",
+            "bytes": "1446"
+          },
+          {
+            "VA": "0x183c1a",
+            "instruction": "ldrb r1, [r6]",
+            "bytes": "3178"
+          },
+          {
+            "VA": "0x183c1c",
+            "instruction": "movt r8, #0x2000",
+            "bytes": "c2f20008"
+          }
+        ]
+      }
+    ],
+    "ARM": [
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x3a8",
+        "final_file_offset": "0x3b4",
+        "construction": [
+          {
+            "VA": "0x1083a8",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x1083ac",
+            "instruction": "mov r2, #0x17c",
+            "bytes": "5f2fa0e3"
+          },
+          {
+            "VA": "0x1083b0",
+            "instruction": "movt r4, #0x10",
+            "bytes": "104040e3"
+          },
+          {
+            "VA": "0x1083b4",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447e20",
+        "final_file_offset": "0x447e28",
+        "construction": [
+          {
+            "VA": "0x54fe20",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54fe24",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54fe28",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447e3c",
+        "final_file_offset": "0x447e44",
+        "construction": [
+          {
+            "VA": "0x54fe3c",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54fe40",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54fe44",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447e58",
+        "final_file_offset": "0x447e60",
+        "construction": [
+          {
+            "VA": "0x54fe58",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54fe5c",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54fe60",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447e74",
+        "final_file_offset": "0x447e7c",
+        "construction": [
+          {
+            "VA": "0x54fe74",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54fe78",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54fe7c",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447e90",
+        "final_file_offset": "0x447e98",
+        "construction": [
+          {
+            "VA": "0x54fe90",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54fe94",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54fe98",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447eac",
+        "final_file_offset": "0x447eb4",
+        "construction": [
+          {
+            "VA": "0x54feac",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54feb0",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54feb4",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447f58",
+        "final_file_offset": "0x447f60",
+        "construction": [
+          {
+            "VA": "0x54ff58",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54ff5c",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54ff60",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447f74",
+        "final_file_offset": "0x447f7c",
+        "construction": [
+          {
+            "VA": "0x54ff74",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54ff78",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54ff7c",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447f90",
+        "final_file_offset": "0x447f98",
+        "construction": [
+          {
+            "VA": "0x54ff90",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54ff94",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54ff98",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447fac",
+        "final_file_offset": "0x447fb4",
+        "construction": [
+          {
+            "VA": "0x54ffac",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54ffb0",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54ffb4",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447fc8",
+        "final_file_offset": "0x447fd0",
+        "construction": [
+          {
+            "VA": "0x54ffc8",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54ffcc",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54ffd0",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x447fe4",
+        "final_file_offset": "0x447fec",
+        "construction": [
+          {
+            "VA": "0x54ffe4",
+            "instruction": "movw r1, #0x8000",
+            "bytes": "001008e3"
+          },
+          {
+            "VA": "0x54ffe8",
+            "instruction": "add r0, r0, r0, lsl #3",
+            "bytes": "800180e0"
+          },
+          {
+            "VA": "0x54ffec",
+            "instruction": "movt r1, #0x12",
+            "bytes": "121040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x44bdec",
+        "final_file_offset": "0x44be00",
+        "construction": [
+          {
+            "VA": "0x553dec",
+            "instruction": "movw r2, #0x8000",
+            "bytes": "002008e3"
+          },
+          {
+            "VA": "0x553df0",
+            "instruction": "mvn sb, #0",
+            "bytes": "0090e0e3"
+          },
+          {
+            "VA": "0x553df4",
+            "instruction": "mov r0, r4",
+            "bytes": "0400a0e1"
+          },
+          {
+            "VA": "0x553df8",
+            "instruction": "mov r1, #0",
+            "bytes": "0010a0e3"
+          },
+          {
+            "VA": "0x553dfc",
+            "instruction": "mov r3, #0",
+            "bytes": "0030a0e3"
+          },
+          {
+            "VA": "0x553e00",
+            "instruction": "movt r2, #0x12",
+            "bytes": "122040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x44c244",
+        "final_file_offset": "0x44c254",
+        "construction": [
+          {
+            "VA": "0x554244",
+            "instruction": "movw r2, #0x8000",
+            "bytes": "002008e3"
+          },
+          {
+            "VA": "0x554248",
+            "instruction": "dsb sy",
+            "bytes": "4ff07ff5"
+          },
+          {
+            "VA": "0x55424c",
+            "instruction": "movw r1, #0xfff",
+            "bytes": "ff1f00e3"
+          },
+          {
+            "VA": "0x554250",
+            "instruction": "mov r0, #0",
+            "bytes": "0000a0e3"
+          },
+          {
+            "VA": "0x554254",
+            "instruction": "movt r2, #0x12",
+            "bytes": "122040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x44bd50",
+        "final_file_offset": "0x44bd68",
+        "construction": [
+          {
+            "VA": "0x553d50",
+            "instruction": "movw r8, #0x8000",
+            "bytes": "008008e3"
+          },
+          {
+            "VA": "0x553d54",
+            "instruction": "mov r4, r0",
+            "bytes": "0040a0e1"
+          },
+          {
+            "VA": "0x553d58",
+            "instruction": "movw r7, #0x7000",
+            "bytes": "007007e3"
+          },
+          {
+            "VA": "0x553d5c",
+            "instruction": "movw r5, #0x8000",
+            "bytes": "005008e3"
+          },
+          {
+            "VA": "0x553d60",
+            "instruction": "mov r6, #0",
+            "bytes": "0060a0e3"
+          },
+          {
+            "VA": "0x553d64",
+            "instruction": "mov r1, #0x210",
+            "bytes": "211ea0e3"
+          },
+          {
+            "VA": "0x553d68",
+            "instruction": "movt r8, #0x12",
+            "bytes": "128040e3"
+          }
+        ]
+      },
+      {
+        "value": "0x128000",
+        "ISA": "ARM",
+        "first_file_offset": "0x9ac",
+        "final_file_offset": "0x9b4",
+        "construction": [
+          {
+            "VA": "0x1089ac",
+            "instruction": "movw ip, #0x8000",
+            "bytes": "00c008e3"
+          },
+          {
+            "VA": "0x1089b0",
+            "instruction": "lsr lr, r2, #2",
+            "bytes": "22e1a0e1"
+          },
+          {
+            "VA": "0x1089b4",
+            "instruction": "movt ip, #0x12",
+            "bytes": "12c040e3"
+          }
+        ]
+      }
+    ]
+  },
+  "scope": "Bounded MOVW/MOVT and MOVZ/MOVN/MOVK patterns only. Raw data may produce candidates; manual reachability review required. No match does not exclude another construction, image, mode, stage or processor. No original native/device execution."
+}

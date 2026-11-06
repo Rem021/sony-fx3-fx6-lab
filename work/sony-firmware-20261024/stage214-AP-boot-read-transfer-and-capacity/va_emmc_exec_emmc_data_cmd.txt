@@ -1,0 +1,61 @@
+00004d08: c7070058 ldr x7, #0x4e00
+00004d0c: e50302aa mov x5, x2
+00004d10: e20840b9 ldr w2, [x7, #8]
+00004d14: 62050034 cbz w2, #0x4dc0
+00004d18: 800500b4 cbz x0, #0x4dc8
+00004d1c: 020840f9 ldr x2, [x0, #0x10]
+00004d20: 820500b4 cbz x2, #0x4dd0
+00004d24: a30500b4 cbz x3, #0x4dd8
+00004d28: e60305aa mov x6, x5
+00004d2c: a504058b add x5, x5, x5, lsl #1
+00004d30: ea4788d2 mov x10, #0x423f
+00004d34: 699b86d2 mov x9, #0x34db
+00004d38: c50c058b add x5, x6, x5, lsl #3
+00004d3c: ea01a0f2 movk x10, #0xf, lsl #16
+00004d40: c9f6baf2 movk x9, #0xd7b6, lsl #16
+00004d44: e20303aa mov x2, x3
+00004d48: 49d0dbf2 movk x9, #0xde82, lsl #32
+00004d4c: e303042a mov w3, w4
+00004d50: 4409058b add x4, x10, x5, lsl #2
+00004d54: 6963e8f2 movk x9, #0x431b, lsl #48
+00004d58: fd7bbea9 stp x29, x30, [sp, #-0x20]!
+00004d5c: 084888d2 mov x8, #0x4240
+00004d60: e801a0f2 movk x8, #0xf, lsl #16
+00004d64: 66b89ed2 mov x6, #0xf5c3
+00004d68: 847cc99b umulh x4, x4, x9
+00004d6c: fd030091 mov x29, sp
+00004d70: 0685abf2 movk x6, #0x5c28, lsl #16
+00004d74: f30b00f9 str x19, [sp, #0x10]
+00004d78: e651d8f2 movk x6, #0xc28f, lsl #32
+00004d7c: 84fc52d3 lsr x4, x4, #0x12
+00004d80: a61ee5f2 movk x6, #0x28f5, lsl #48
+00004d84: 84940191 add x4, x4, #0x65
+00004d88: e70840f9 ldr x7, [x7, #0x10]
+00004d8c: 847c089b mul x4, x4, x8
+00004d90: e51440f9 ldr x5, [x7, #0x28]
+00004d94: 84fc42d3 lsr x4, x4, #2
+00004d98: 847cc69b umulh x4, x4, x6
+00004d9c: 84fc42d3 lsr x4, x4, #2
+00004da0: a0003fd6 blr x5
+00004da4: f303002a mov w19, w0
+00004da8: a001f837 tbnz w0, #0x1f, #0x4ddc
+00004dac: 13008052 mov w19, #0
+00004db0: e003132a mov w0, w19
+00004db4: f30b40f9 ldr x19, [sp, #0x10]
+00004db8: fd7bc2a8 ldp x29, x30, [sp], #0x20
+00004dbc: c0035fd6 ret 
+00004dc0: 000021d4 brk #0x800
+00004dc4: 1f2003d5 nop 
+00004dc8: 000021d4 brk #0x800
+00004dcc: 1f2003d5 nop 
+00004dd0: 000021d4 brk #0x800
+00004dd4: 1f2003d5 nop 
+00004dd8: 000021d4 brk #0x800
+00004ddc: 63010058 ldr x3, #0x4e08
+00004de0: e403132a mov w4, w19
+00004de4: 61010058 ldr x1, #0x4e10
+00004de8: 22698052 mov w2, #0x349
+00004dec: 60010058 ldr x0, #0x4e18
+00004df0: 63400491 add x3, x3, #0x110
+00004df4: 00000094 bl #0x4df4 ; {'section': '.text', 'offset': 19956, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00004df8: eeffff17 b #0x4db0

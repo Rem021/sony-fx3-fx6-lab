@@ -1,0 +1,30 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-media-observe-v4-near-gap.so",
+    "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v4-near-gap.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-media-probes-v1.S",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v4-near-gap.so"
+  ],
+  "source_sha256": "9a0f649bce77ea12514f893b5d031eb0ac324422c5cfe1d9bf1c42c9018dc2e1",
+  "original_assembly_sha256": "e65c55a9910c14f736fd4f10c6d452aae2090191f2f0e4cd94ff95fbca256be5",
+  "output_sha256": "179c74c396af95e920da7549e4ce4f8c6f9cb1bcc5ea8edf6800ff5040abeb44",
+  "exit": 0,
+  "original_candidate_module_sha256": "ba65b611acf51f7a372cd656e0a667a02d99d4d48a006cfb0bedca7d3383997a",
+  "scope": "nearby trampoline gap search only; no source firmware/CP/timeout change"
+}

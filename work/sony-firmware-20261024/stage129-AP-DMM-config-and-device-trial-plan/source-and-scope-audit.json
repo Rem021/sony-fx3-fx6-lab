@@ -1,0 +1,110 @@
+{
+  "created_utc": "2026-10-27T18:16:53.112646+00:00",
+  "input_receipt_sha256": "5a807d8afc2b1906c27db35dc131e55201bc77fc2bff419344c2bf0d0eb02f28",
+  "AP_config_sha256": "48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1",
+  "CP_negative_control_sha256": "820dc02b6a001636b93fff51d90baaced1ba75cf9bbaa90600dfc7fd7a705166",
+  "startup_source_excerpts": {
+    "driver_config_selection": [
+      {
+        "line": 1,
+        "text": "DMMCFG_FILE=/setting/DmmCfg.bin"
+      },
+      {
+        "line": 2,
+        "text": "if [ ! -e $DMMCFG_FILE ] ; then"
+      },
+      {
+        "line": 3,
+        "text": "    DMMCFG_FILE=/setting/DmmConfig.bin"
+      },
+      {
+        "line": 24,
+        "text": "insmod /usr/kmod/dmm.ko DmmConfig=$DMMCFG_FILE"
+      }
+    ],
+    "mounts": [
+      {
+        "line": 1,
+        "text": "/dev/nflasha2\t/setting vfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0"
+      },
+      {
+        "line": 3,
+        "text": "/dev/nflasha8\t/cp\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0"
+      }
+    ],
+    "init2_driver_source": [
+      {
+        "line": 60,
+        "text": "    [ -r $INITRC_DIR/insmod_drv2     ] && . $INITRC_DIR/insmod_drv2"
+      }
+    ]
+  },
+  "native_layout_source": "work/sony-firmware-20261024/stage128-DMM-provider-and-config/provider_audit.py",
+  "native_layout_source_sha256": "b417150afbdcef506370e51bb1c65d5b19b3c2cc826e2772fe9dd93eb44c5eae",
+  "host_parser_scope": "Native initializer-supported layout decoded in host with full bounds/sentinels and complete consumption; not full native parser or runtime execution.",
+  "official_AP_source_binding_not_same_body_loaded_hash": true,
+  "target_MPR_unit_types": [
+    700,
+    701,
+    822,
+    823,
+    922,
+    939,
+    962,
+    963,
+    966,
+    974,
+    975,
+    985,
+    986,
+    987,
+    991,
+    1243,
+    1244,
+    1245,
+    1246,
+    528413
+  ],
+  "target_matches": 20,
+  "target_extent_list_max": 1,
+  "whole_official_AP_extent_list_max": 8,
+  "runtime_rule_addresses_sizes_and_owner_unproven": true,
+  "prepared_cache_collector_sha256": "ed7094e03e1fbad280080ac852a15e8aa571a8011d2033a397648ff6f5374647",
+  "cache_self_test_host_query_forced_failure_guard_passed": true,
+  "cache_live_path_only_explicit_query_flag_and_not_executed": true,
+  "first_to_formal_source_diff": [
+    "--- first",
+    "+++ formal",
+    "@@ -4,7 +4,7 @@",
+    " import argparse,datetime,hashlib,json,os,stat,sys",
+    " STAGE=Path(__file__).resolve().parent;BASE=STAGE.parent;ROOT=BASE.parents[1]",
+    " sys.path.insert(0,str(BASE/'stage128-DMM-provider-and-config'));import provider_audit as p",
+    "-import prepare_inputs as local_prep",
+    "+shared_volume_check=p.prep.volume",
+    " AP=STAGE/'inputs/AP-DmmCfg.bin';CP=BASE/'stage128-DMM-provider-and-config/inputs/DmmCfg.bin'",
+    " AP_SHA='48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1'",
+    " AP_VERSION='for ilc32g12m-ipsxmp     2025/06/20 15:43:19'",
+    "@@ -43,7 +43,7 @@",
+    "         'rejection':reasons,'offline_fixed_package_configuration_accepted':not reasons})",
+    "     return r,cfg",
+    " def run(out):",
+    "-    local_prep.volume();assert (BASE/'GOAL_STATUS.json').read_bytes()==(STAGE/'goal-status-before.json').read_bytes()",
+    "+    shared_volume_check();assert (BASE/'GOAL_STATUS.json').read_bytes()==(STAGE/'goal-status-before.json').read_bytes()",
+    "     raw=bounded_regular_file(AP);r,cfg=inspect(raw);assert r['offline_fixed_package_configuration_accepted']",
+    "     assert r['unit_count']==603 and r['target_matches']==20 and r['max_extent_list_in_complete_file']==8",
+    "     assert set(r['target_extent_counts'].values())=={1} and len(cfg['rules'])==290",
+    "@@ -77,7 +77,9 @@",
+    "         bindings.append({'unit_type':unit,'unit_offset':u['header_offset'],'extent_types':u['extent_types'],",
+    "             'candidate_definition_rows':defs,'actual_active_rule_address_size_and_owner_unproven':True})",
+    "     # Preserve the decoded original, not a repacked or installable config.",
+    "-    put(STAGE/'AP-DmmCfg-decoded.json',cfg)",
+    "+    decoded=STAGE/'AP-DmmCfg-decoded.json'",
+    "+    if decoded.exists():assert json.loads(decoded.read_text())==cfg",
+    "+    else:put(decoded,cfg)",
+    "     boot=(STAGE/'inputs/insmod_drv2').read_text();fstab=(STAGE/'inputs/fstab').read_text();init2=(STAGE/'inputs/init2').read_text()",
+    "     required=['DMMCFG_FILE=/setting/DmmCfg.bin','if [ ! -e $DMMCFG_FILE ] ; then',",
+    "         '    DMMCFG_FILE=/setting/DmmConfig.bin','insmod /usr/kmod/dmm.ko DmmConfig=$DMMCFG_FILE']"
+  ],
+  "first_and_formal_results_preserved": true,
+  "no_added_native_or_physical_camera_test_claimed": true
+}

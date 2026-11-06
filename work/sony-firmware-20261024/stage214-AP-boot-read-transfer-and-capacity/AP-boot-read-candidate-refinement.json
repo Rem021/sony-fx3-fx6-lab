@@ -1,0 +1,15 @@
+{
+  "schema": "fx3-AP-boot-read-candidate-refinement-v1",
+  "previous_candidate": "../stage213-AP-eMMC-boot-asset-search/AP-boot-capture-contract-candidate.json",
+  "additions": [
+    "Capacity comes from EXT_CSD[226], not a model-wide constant.",
+    "Selected software decrypt callbacks are omitted, but actual dump encoding and restore still require validation.",
+    "Kernel read may select eMMC hardware partition through CMD6 and may panic on specified failures; include this in any concrete future device scope.",
+    "No automatic claim of previous-partition restoration; unknown state must remain unknown after loss of receipts."
+  ],
+  "executable": false,
+  "new_device_backend": false,
+  "camera_operation_authorized": false,
+  "actual_device_operations": 0,
+  "persistent_write_release": false
+}

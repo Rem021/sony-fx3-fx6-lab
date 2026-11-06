@@ -1,0 +1,21 @@
+{
+  "status": "GUEST_BRIDGE_STATIC_AND_HOST_VERIFIED_NOT_RUN",
+  "source_cpio_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "new_cpio_sha256": "8abed37418a0f07e8193228ca2242f185103b6b5f98959b98821bbeeb3ad3b5d",
+  "new_cpio_bytes": 453184500,
+  "patched_ap_sha256": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1",
+  "bridge_elf_sha256": "b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b",
+  "exact_member_changes": [
+    "usr/lib/appFw.so",
+    "+usr/lib/libfx6diag.so"
+  ],
+  "other_existing_members_same_header_and_payload": true,
+  "host_test_count": 6,
+  "prior_observer_test_status": "separately_rerun_PASS_NO_QEMU",
+  "source_sha256_file": "source-sha256.json",
+  "no_vm_started_in_this_task": true,
+  "guest_load_or_Init_return_observed": false,
+  "first_unknown_callback_observed": false,
+  "API16_restore_in_diagnostic_run": "deliberately_skipped_no_guest_resume",
+  "next_gate": "owner-reviewed single fixed-FX3 VM window; pre-call all-Z1 gate and bounded diagnostic stop"
+}

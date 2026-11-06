@@ -1,0 +1,23 @@
+{
+  "status": "PASS_OFFLINE_ONE_VM_CANDIDATE",
+  "manifest_sha256": "5949028dd22d034e40579d166c0186a76d2b6d1d0923ca2f6a8a566213f12aa0",
+  "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "initrd_sha256": "506ad36e58c9257fd529dfabbc0429e697131a72f3359a2c294b6dd8bc6f961c",
+  "payload_changes": [
+    {
+      "role": "kernel Image",
+      "from_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/vmlinux.bin",
+      "from_sha256": "bc4925e701ae363c797f22ef28f29dc48fd17af7f25a3f64d7d0824312c0dab9",
+      "to_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "to_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "role": "guest CPIO CP helper member",
+      "from_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+      "from_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+      "to_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal14.cpio",
+      "to_sha256": "506ad36e58c9257fd529dfabbc0429e697131a72f3359a2c294b6dd8bc6f961c"
+    }
+  ],
+  "runtime_started": false
+}

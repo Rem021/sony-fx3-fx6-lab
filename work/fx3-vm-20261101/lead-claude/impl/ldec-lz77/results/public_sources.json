@@ -1,0 +1,134 @@
+{
+  "checked_utc": "2026-11-03T03:55:47.401216+00:00",
+  "local_searches": [
+    {
+      "note": "rg default text/ignore rules; negative search is bounded to this snapshot",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage135-Fastboot-entry-discovery/a7iv-reference-source/ILCE-7M4-RE-2328d18ce640e6c8cd9341efcf0043ce9042a135",
+      "regex": "uxd|ldec|lz77|lz.?77 decoder",
+      "rg_exit": 1,
+      "text_match_lines": 0
+    },
+    {
+      "note": "rg default text/ignore rules; negative search is bounded to this snapshot",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage204-public-AP-boot-reference",
+      "regex": "uxd|ldec|lz77|lz.?77 decoder",
+      "rg_exit": 1,
+      "text_match_lines": 0
+    },
+    {
+      "note": "rg default text/ignore rules; negative search is bounded to this snapshot",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/research/a7c2-latest",
+      "regex": "uxd|ldec|lz77|lz.?77 decoder",
+      "rg_exit": 1,
+      "text_match_lines": 0
+    }
+  ],
+  "sources": [
+    {
+      "browse_url": "https://github.com/DavidBuchanan314/Sony-ILCE-7M4-Linux/blob/fa5c6f6aba58f675691e5adf291b155b76e6e93e/linux-kernel/include/linux/lz77.h",
+      "bytes": 4254,
+      "commit": "fa5c6f6aba58f675691e5adf291b155b76e6e93e",
+      "license_observed": "Sony copyright; Dual BSD/GPL source",
+      "path": "linux-kernel/include/linux/lz77.h",
+      "relevant_line_numbers": [
+        62,
+        63,
+        67,
+        68,
+        70,
+        71,
+        84,
+        86,
+        91,
+        114
+      ],
+      "repo": "DavidBuchanan314/Sony-ILCE-7M4-Linux",
+      "sha256": "a81de158c8d28ba02766bf5d6e2ab74b17acffb010f91834800f6a4b5910a38b",
+      "title": "Sony public Linux header",
+      "url": "https://raw.githubusercontent.com/DavidBuchanan314/Sony-ILCE-7M4-Linux/fa5c6f6aba58f675691e5adf291b155b76e6e93e/linux-kernel/include/linux/lz77.h"
+    },
+    {
+      "browse_url": "https://github.com/DavidBuchanan314/Sony-ILCE-7M4-Linux/blob/fa5c6f6aba58f675691e5adf291b155b76e6e93e/linux-kernel/lib/lz77/lz77_inflate.c",
+      "bytes": 4700,
+      "commit": "fa5c6f6aba58f675691e5adf291b155b76e6e93e",
+      "license_observed": "Sony copyright; Dual BSD/GPL source",
+      "path": "linux-kernel/lib/lz77/lz77_inflate.c",
+      "relevant_line_numbers": [
+        92,
+        104,
+        114,
+        133
+      ],
+      "repo": "DavidBuchanan314/Sony-ILCE-7M4-Linux",
+      "sha256": "2e087e245d50bea7875bf5293f3b4374e31ca2305441ee18e0c2f82da682b6a2",
+      "title": "Sony public Linux decoder",
+      "url": "https://raw.githubusercontent.com/DavidBuchanan314/Sony-ILCE-7M4-Linux/fa5c6f6aba58f675691e5adf291b155b76e6e93e/linux-kernel/lib/lz77/lz77_inflate.c"
+    },
+    {
+      "browse_url": "https://github.com/DavidBuchanan314/Sony-ILCE-7M4-Linux/blob/fa5c6f6aba58f675691e5adf291b155b76e6e93e/linux-kernel/lib/lz77/lz77_deflate.c",
+      "bytes": 7151,
+      "commit": "fa5c6f6aba58f675691e5adf291b155b76e6e93e",
+      "license_observed": "Sony copyright; Dual BSD/GPL source",
+      "path": "linux-kernel/lib/lz77/lz77_deflate.c",
+      "relevant_line_numbers": [
+        120,
+        157,
+        163,
+        164,
+        209,
+        243,
+        260
+      ],
+      "repo": "DavidBuchanan314/Sony-ILCE-7M4-Linux",
+      "sha256": "bf74cdf4cfad049df542e717e15a4f9b5044536a14b4c9f7d4993ac2ee854b15",
+      "title": "Sony public Linux encoder",
+      "url": "https://raw.githubusercontent.com/DavidBuchanan314/Sony-ILCE-7M4-Linux/fa5c6f6aba58f675691e5adf291b155b76e6e93e/linux-kernel/lib/lz77/lz77_deflate.c"
+    },
+    {
+      "browse_url": "https://github.com/ma1co/fwtool.py/blob/cdba742b73eed5981480c326aeb30033aabf0223/fwtool/lz77/__init__.py",
+      "bytes": 838,
+      "commit": "cdba742b73eed5981480c326aeb30033aabf0223",
+      "license_observed": "MIT",
+      "path": "fwtool/lz77/__init__.py",
+      "relevant_line_numbers": [
+        4,
+        15,
+        27,
+        30
+      ],
+      "repo": "ma1co/fwtool.py",
+      "sha256": "dc1407237c002545b08530b96d4efc1eadd24021ae6efc54688408850584c197",
+      "title": "fwtool Python decoder",
+      "url": "https://raw.githubusercontent.com/ma1co/fwtool.py/cdba742b73eed5981480c326aeb30033aabf0223/fwtool/lz77/__init__.py"
+    },
+    {
+      "browse_url": "https://github.com/chocotan/a7c2-qemu/blob/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/sony-lz77.c",
+      "bytes": 3687,
+      "commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+      "license_observed": "MIT attribution to ma1co in source",
+      "path": "runtime/analysis/sony-lz77.c",
+      "relevant_line_numbers": [
+        25,
+        29,
+        48,
+        49,
+        50
+      ],
+      "repo": "chocotan/a7c2-qemu",
+      "sha256": "cad2ac49979f08dd93cf7bd498ef66691dce35b924eccf5986eda03824328bbf",
+      "title": "A7C2 bounded C implementation",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/sony-lz77.c"
+    },
+    {
+      "browse_url": "https://github.com/chocotan/a7c2-qemu/blob/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/sony-lz77.h",
+      "bytes": 231,
+      "commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+      "license_observed": "repository context",
+      "path": "runtime/analysis/sony-lz77.h",
+      "repo": "chocotan/a7c2-qemu",
+      "sha256": "d11d5730a66867e564aeccc3020e4e6fa9ba63eda50885d73da47273bd9606ab",
+      "title": "A7C2 interface",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/sony-lz77.h"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "verified_UTC": "2026-11-05T04:09:45.655150+00:00",
+  "outcome": "read_only_analysis_passed_root_cause_unresolved",
+  "original_input_count": 89,
+  "all_consumed_original_inputs_unchanged": true,
+  "checks": [
+    {
+      "run": "r26",
+      "raw_serial_offsets_and_LF_lines_match": true,
+      "header_id_matching": true,
+      "pause_event_pairing_matches_coordinator": true
+    },
+    {
+      "run": "r26b",
+      "raw_serial_offsets_and_LF_lines_match": true,
+      "header_id_matching": true,
+      "pause_event_pairing_matches_coordinator": true
+    },
+    {
+      "run": "r28",
+      "raw_serial_offsets_and_LF_lines_match": true,
+      "header_id_matching": true,
+      "pause_event_pairing_matches_coordinator": true
+    }
+  ],
+  "r28_End_boundary_straddles_first_commit_observation": true,
+  "late_frame_does_not_retroqualify": true,
+  "r28_start_count": 1,
+  "r28_key_POST_count": 0,
+  "analysis_actions": {
+    "VM_or_Start": 0,
+    "browser_or_service": 0,
+    "runtime_import": 0,
+    "candidate_or_platform_change": 0
+  },
+  "cleanup": "No owned VM, browser or service was created; only foreground read-only analysis processes used.",
+  "limits": "No causal root fix or new runtime acceptance claimed; historical sealed samples remain failed overall."
+}

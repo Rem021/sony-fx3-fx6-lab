@@ -1,0 +1,41 @@
+{
+  "schema": "fx3-stage22-coordinator-review/1",
+  "created_utc": "2026-10-25T20:18:59.852717+00:00",
+  "status": "PASS_ARTIFACT_AND_SCOPE_REVIEW",
+  "reviewer_role": "Coordinator structural review, not an independent model replay or real device verification.",
+  "previous_goal_turn_classification": "progress",
+  "previous_stage_sealed_files_verified": 10,
+  "source_hashes_verified": true,
+  "reference_model_states": 1194,
+  "wrong_candidate_counterexamples": 2,
+  "early_retirement_counterexample_still_has_current_pointer": true,
+  "model_code_positions_are_phase_labels_not_native_PC_measurements": true,
+  "model_number_limits_use_Python_integers_not_native_uint64_proof": true,
+  "protocol_controls": 7,
+  "original_destructor_header_cases": 2,
+  "original_sized_delete_argument_cases": 2,
+  "all_original_fragments_stopped_before_cleanup_or_free": true,
+  "native_backend_output_adapters": false,
+  "first_attempt": "Wrong-candidate mutation lacked its own no-op completion behavior; preserved failed source/trace, completed the deliberately wrong abstract protocol, and ran a fresh directory. Native code and correct Registry protocol were not changed.",
+  "primary_sources_checked_20261025": [
+    {
+      "url": "https://docs.kernel.org/RCU/whatisRCU.html",
+      "use": "General removal/grace/reclamation separation, not a Sony API claim."
+    },
+    {
+      "url": "https://eel.is/c++draft/intro.races",
+      "use": "General synchronization and distinct atomic modification-order constraints, not native gate verification."
+    }
+  ],
+  "unverified": [
+    "Real serialization, ticket storage, overflow/error handling and native ABI",
+    "All actual consumer and object/input lifetime coverage",
+    "Detach/instruction visibility, actual PC grace, restore/readback and code reclamation",
+    "Same-body healthy backup, WBI/cold boot and independent recovery",
+    "MAIN hardware recording, A/V sync, long recording and thermal regression"
+  ],
+  "new_remote_attempts": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

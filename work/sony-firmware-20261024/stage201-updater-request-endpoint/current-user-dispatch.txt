@@ -1,0 +1,29 @@
+000032cc a00240b9 ldr      w0, [x21]
+000032d0 e20314aa mov      x2, x20
+000032d4 e10316aa mov      x1, x22
+000032d8 96fcff97 bl       #0x2530 ; ioctl
+000032dc f303002a mov      w19, w0
+000032e0 1f040031 cmn      w0, #1
+000032e4 a0010035 cbnz     w0, #0x3318
+000032e8 a20746a9 ldp      x2, x1, [x29, #0x60]
+000032ec a03b40f9 ldr      x0, [x29, #0x70]
+000032f0 40003fd6 blr      x2
+000032f4 bf8300b9 str      wzr, [x29, #0x80]
+000032f8 a00240b9 ldr      w0, [x21]
+000032fc e20314aa mov      x2, x20
+00003300 e10316aa mov      x1, x22
+00003304 b74700f9 str      x23, [x29, #0x88]
+00003308 8afcff97 bl       #0x2530 ; ioctl
+0000330c f303002a mov      w19, w0
+00003310 1f040031 cmn      w0, #1
+00003314 a0feff34 cbz      w0, #0x32e8
+00003318 40030054 b.eq     #0x3380
+0000331c 7ff60f31 cmn      w19, #0x3fd
+00003320 60fdff54 b.eq     #0x32cc
+00003324 33feff34 cbz      w19, #0x32e8
+00003328 e00318aa mov      x0, x24
+0000332c 21008052 mov      w1, #1
+00003330 2cfcff97 bl       #0x23e0 ; open
+00003334 fc03002a mov      w28, w0
+00003338 60fcff37 tbnz     w0, #0x1f, #0x32c4
+0000333c e00314aa mov      x0, x20

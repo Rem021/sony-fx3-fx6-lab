@@ -1,0 +1,42 @@
+{
+  "schema": "fx3-offline-status-diagnostic-candidate/1",
+  "status": "UNDEPLOYABLE_UNAUTHORIZED_DEVICE_USE",
+  "model": "classic ILME-FX3",
+  "firmware_sample": "7.02",
+  "address_kind": "ELF virtual addresses; actual process base and same-body identity missing",
+  "candidate_reader": {
+    "symbol": "mpr::GetMovieRecStatusInternal",
+    "ELF_entry": "0xf3f7c",
+    "output_bytes": 136,
+    "scope": "native reader/copy/unlock call order only; runtime pthread and caller context unverified"
+  },
+  "exclude_from_read_only_diagnostic": [
+    "GetMovieRecStatusForUpdate",
+    "SetMovieRecStatus",
+    "UnlockMovieRecStatus",
+    "SetMovieRecParam",
+    "RecStart",
+    "RecStop"
+  ],
+  "status_header": 83,
+  "constructor_zero_body_does_not_mean_idle": true,
+  "state_and_parameter_queries_do_not_provide_atomic_joint_snapshot": true,
+  "three_sync_objects": {
+    "status_rwlock": "0x38d478",
+    "parameter_rwlock": "0x38cc30",
+    "integration_API_mutex": "0x372190"
+  },
+  "shared_integration_mutex_covers_all_async_writers_or_epoch": false,
+  "auxiliary_parameter_pointer_policy": "Collect length/pointer metadata only; no dereference until actual bounded region, lifetime and synchronization proven.",
+  "next_runtime_acceptance_requirements": [
+    "exact same-body loaded program identity/base and ABI",
+    "authorized non-device-writing observation route",
+    "normal caller/thread context and lock order/reentrancy",
+    "real valid entries, media/slot and state semantics",
+    "full immutable value/auxiliary ownership snapshot and actual record instance relation",
+    "all Start/Stop/async completion and config writers mapped into a verified synchronization/lifetime contract"
+  ],
+  "runtime_idle_epoch_or_record_start_admission_available": false,
+  "camera_interface_or_code_load_or_persistent_write_permitted": false,
+  "actual_MAIN_hardware_recording_backup_restore_or_rescue_proven": false
+}

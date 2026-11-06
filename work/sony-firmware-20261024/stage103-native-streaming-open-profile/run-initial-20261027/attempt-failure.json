@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage103-native-streaming-open-profile/open_profile.py\", line 138, in main\n    classified=[classify(blob,p) for p in produced]\n                ~~~~~~~~^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage103-native-streaming-open-profile/open_profile.py\", line 118, in classify\n    assert result['frame']['original_name']==('29_97' if producer['declared_controls']['frame_ac']==0 else '25')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "passing_result": false
+}

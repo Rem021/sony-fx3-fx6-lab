@@ -1,0 +1,11 @@
+{
+  "corrections": [
+    "Initial restart filename scan covered p15 only; checked saved p3-initrd/p7/Ubody inventories separately before discussing script availability.",
+    "UPM rodata0x2c8 was explored as a handler table. Its relocation actually targets rodata.str1.8+0x10e8, the name UPM_CMD_OFF_FACTOR, not code. Disassembly of text+0x10e8 in an exploratory locator is not consumer evidence.",
+    "Actual queue21 consumer was instead bound by receive-thread code and text relocation at0x3e4.",
+    "GitHub API requests ended in TLS/timeout errors; no HEAD/tree freshness claim from failed requests. Web-read main documentation and saved fixed commits are labeled separately.",
+    "WFI-selfloop search is a locator filter only; absence of a selected GPIO signature is not absence of a reset implementation."
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

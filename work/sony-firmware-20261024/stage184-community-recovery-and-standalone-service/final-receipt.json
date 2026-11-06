@@ -1,0 +1,556 @@
+{
+  "schema": "fx3-stage184-community-recovery-and-standalone-service/1",
+  "created_utc": "2026-10-29T15:20:20.832842+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "previous_manifest_path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/final-receipt.json",
+  "previous_manifest_sha256": "900dfc4c3f8e348376e285a12f354f62be1e754559c9c1898c669df2606d2c0c",
+  "previous_manifest_members_verified": 122,
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/README.md",
+      "bytes": 1433,
+      "sha256": "452883b9c51ec1729b0e1acb9a1a9bab0a0cef0ba443e1322ba36b17212320b9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/a7c2-search.json",
+      "bytes": 255065,
+      "sha256": "1bc3f252caec2f4b8ab7112116cbb7289b707c3ad19c6d8236bc34086b1e8b76"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/api-capture.json",
+      "bytes": 2574,
+      "sha256": "89d312baa21028965b4b3aab57583fd66d6c12550255ff92881a5346dee0fa31"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/button-tree.json",
+      "bytes": 8053,
+      "sha256": "8c2858ed340617b17d53a2e8c52588bc2d06924c0d14698e8369a46b64bdfc7c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/button/README.md",
+      "bytes": 4621,
+      "sha256": "76368b95cf7e398ece75c007b5469afa571d7ee9ed8902a8086cba1d9d0d43b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/camera-tools-head.json",
+      "bytes": 1070143,
+      "sha256": "1f1321d6bf6658567bd6bed7a33a436e6c65b740235203e3ac2b2e09a3316564"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/exact-shared-triple-corecommon-disassembly.txt",
+      "bytes": 10038,
+      "sha256": "75be241f7c42098cbdbfb183aa43a026e5beaf7c55c390e8b3133ac3b0f22a92"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23-forks.json",
+      "bytes": 583416,
+      "sha256": "63c1796560af49c96c9735ff6490150deb3975e6ce6bc9f85d751a1f71c9ae4b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23-head.json",
+      "bytes": 7979,
+      "sha256": "3fe207e467c94415cdc320918bb25f56a800ae32945c9658c7fc4c80d3435344"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23-issues-updated.json",
+      "bytes": 247622,
+      "sha256": "65b8367a304ca55ce1598710133a6ada9c8aa5fe0064d22b7bf5075719a25109"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/docs/en/development.md",
+      "bytes": 12117,
+      "sha256": "81fdadc078ee211278c12900fda1de25af85b61d19307792d5bfb8b006f74751"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/recovery.py",
+      "bytes": 2217,
+      "sha256": "1a928806197ce675a2778e1391d0cc0589ed816fe54803762282175826ac41de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/src/camera_runtime/transport.py",
+      "bytes": 23438,
+      "sha256": "52f2c34f4b5c5d2361a7a5869320fec3711b753299a74fd814a87129d1a9d10a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/src/looks/looktool/backupstore.py",
+      "bytes": 5647,
+      "sha256": "13ae8cf28073f3bd56fce9da27f03d91e6e35a7d086edd863910451f145841b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/src/looks/looktool/checkpoint.py",
+      "bytes": 7347,
+      "sha256": "f4ce603b023f32a2dc0d824634aa36c87f8709508d7c2e327aa91a39934832d7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/src/looks/looktool/checkpointjob.py",
+      "bytes": 15148,
+      "sha256": "638ab8829d08a356715529458a928e1774440de77a43503c4302745b17a3530e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/src/looks/looktool/devicesession.py",
+      "bytes": 12606,
+      "sha256": "e33b7a0fb421d6a77b997d8c7e7a90b152fccfb09ffff8efc960b00af96288af"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/src/looks/looktool/direct.py",
+      "bytes": 53752,
+      "sha256": "77adc81eb18b32648bb779201332a7c362f1e4829469f538eb876a162d21923e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/fl23/src/looks/looktool/factoryrecover.py",
+      "bytes": 18373,
+      "sha256": "bd4be31764f8120d8cbc1ace62a5ead92d23c9d86e69483e32557d7eb8b81b9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/issue28-comments.json",
+      "bytes": 7080,
+      "sha256": "cd0b58fc4bb70929047593b17d48480898c336d92137fededb465860bfe03b5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/issue31-comments.json",
+      "bytes": 37598,
+      "sha256": "cbb0b2f3add89caee1e4339203920546ee3a8188080e824879bfe3c4e445d4ae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/legacy-library-size-hash-comparison.json",
+      "bytes": 1506,
+      "sha256": "8752279573f3b71f2c864d0339fbe0424a625706d584911e1430abec373e04dd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/mdhan-issues.json",
+      "bytes": 68382,
+      "sha256": "9929b48c3f2416ba14dea9e080ecdc05d75cb6e3ff9a961e2fc9b135ec19318c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/mdhan-tree.json",
+      "bytes": 23324,
+      "sha256": "519bcf24480077762697e9340e10e654b5b7370835ffec919dbfe44ac99cf954"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/mdhan/README.md",
+      "bytes": 22360,
+      "sha256": "dd2d04ed7feeff0eb65d6c0d9e40d06857e81bbc14c8b192d58379a324b47411"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/more-source-capture.json",
+      "bytes": 4519,
+      "sha256": "e0beaa8c00e4012b6c4163e8cdcee631c94bf1b88268b5ccde32e997c5175b22"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/newfork-tree.json",
+      "bytes": 152866,
+      "sha256": "bc303bd562e24d6731299e3a605eff55bb01cf8ef3d77158856b9f717da2ef75"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/qemu-tree.json",
+      "bytes": 610846,
+      "sha256": "bf36e3f111a94c45b9e0cb07a51d875bf4451d9287d84a93b0b81cd23665a609"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/qemu/README.md",
+      "bytes": 6001,
+      "sha256": "a10ec46a5b09b255c35b5d458190cd158dada617995dceb6920fdba20f386c6a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/reused-source-inventory.json",
+      "bytes": 7339,
+      "sha256": "dcce203c2c113283cd5136eb5e276de2ed59c031cb24a748e1d917f53bbe3a36"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/selected-issue-25.md",
+      "bytes": 7408,
+      "sha256": "e70b35c42c37270d2d6837fc4117f1720861649378f16753a94cd89e32f5c43b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/selected-issue-28.md",
+      "bytes": 2482,
+      "sha256": "7fbfa400429e2d9122138e2dc9795ceb0983154f8c23296f332a4dfcd39d20af"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/selected-issue-31.md",
+      "bytes": 527,
+      "sha256": "c87824eb8d1a3dba1c9102497bf530856eb10052c6d2ccc7781b0c8ffd2f05fa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/selected-issue-32.md",
+      "bytes": 755,
+      "sha256": "c335efdfae626cd3e71cb9aabfb7e8893a7d6190b7aee1b159fb33bc8810ea86"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/selected-issue-37.md",
+      "bytes": 1456,
+      "sha256": "b462b05c7286381fb7161cc360536404b01bb41831bc766b3d6a275fba586036"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/selected-issue-44.md",
+      "bytes": 5568,
+      "sha256": "630d94163ef3566a4889325f60cea5f6bb1b34c335c0aa183435aa093d233fb2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/selected-issue-57.md",
+      "bytes": 3736,
+      "sha256": "4f2318ed1f07dad4d6ca47d4c914c907b29c81fd9d0daaea54263fabcca67f51"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/selected-issue-58.md",
+      "bytes": 920,
+      "sha256": "630be304902381d34195e612a317f602a735433da37bd1b93eb4f1bba88b8801"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/service-preload-head.json",
+      "bytes": 40654,
+      "sha256": "5af0642f24dd5a25d6d566441d0757cf409c6ba51fbab1d955397af98ba7af0e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/shared-triple-byte-check.json",
+      "bytes": 905,
+      "sha256": "6407bf3b9acc812147115bbd69a5ca3bc6c563365fca25481ec71f1b6d514f92"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/shutterlock-search.json",
+      "bytes": 5861,
+      "sha256": "4856234dd6734a43edfd48ede976b44a7b50fb6325c1b0afcadac3ed12acbea9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/shutterlock-tree.json",
+      "bytes": 5086,
+      "sha256": "76496ec911d1d20cd323416b5e77197cf29a7fc62f84d8bd24b23f23add3b3c9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/shutterlock/PROJECT_CHARTER.md",
+      "bytes": 4934,
+      "sha256": "3c757d3a6b58c32c040e798826d9dfb374a8a328769ee956bb0d924a1a75bd44"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/shutterlock/README.md",
+      "bytes": 3053,
+      "sha256": "878faf7dda829b429cc8a423c9907fb40e835a748d7f6ec9edaa495835be0721"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/a7c2-recovery/source-capture.json",
+      "bytes": 4878,
+      "sha256": "0978793b5b9d8ad1be2aee494d3faf8d12343ebf2442dbcb145d502923b97e40"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/adjust-command-table.json",
+      "bytes": 568543,
+      "sha256": "a9ee3c513b9fa13f24355f4f208e10f05474baf4e47b0ee6025a16c8a2853fb8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/analyze_static.py",
+      "bytes": 4307,
+      "sha256": "4edffd5b39c5aaeec5877e8da56cc5910258400a63331e6d628ddac18e83c91f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/bootin.elf-metadata.json",
+      "bytes": 35500,
+      "sha256": "2532e734e59bc923ee08e5b0484154a2aa76b557f6f3b0cbebcaea694b093cb3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/bootin.elf-text.txt",
+      "bytes": 95160,
+      "sha256": "4865239200212ab6f4fed8866636bae47867a7d21f902b5d233205eaa83706ca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/command-tables-and-relocations.json",
+      "bytes": 20736,
+      "sha256": "10bbd5df73a217dc90158df88c84f166197fd9a69e99136d8628dece8192ae2f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/final-static-verification.json",
+      "bytes": 338,
+      "sha256": "8de28acd654b46228da4f5f85d52fd30712e39c1b45de5bb33715a73a302263c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/libJiritsu.so-metadata.json",
+      "bytes": 321921,
+      "sha256": "60c98d31780462eafb496650b0ae1b533980c7be7833f02cadd6af6334adf60b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/libJiritsu.so-text.txt",
+      "bytes": 557073,
+      "sha256": "a1a8dbe51d83d1805c367c8ad46151cd657c3708b9de7f4f9edffd6c74d6f1ad"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/libsencore.so-metadata.json",
+      "bytes": 573876,
+      "sha256": "d7e49c9d7cf97f74ff1a70e9b70a86bd91eb33c20f4d5c93429db44127ee944e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/libsencore.so-text.txt",
+      "bytes": 583923,
+      "sha256": "84e918954eda8a085ce21b363b771dc6963b2e8fa271a2b350b470e1e7551b86"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/libtestcmd.so-metadata.json",
+      "bytes": 28751,
+      "sha256": "964858594c07e247a4d7062775104d720a7587762465153ead161319029bd532"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/libtestcmd.so-text.txt",
+      "bytes": 62712,
+      "sha256": "2a2ca47ec9a9575746e1b83773295daf2a6c1a0eccd713e1aa72b8e46b33990e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/libtestcmd_scn.so-metadata.json",
+      "bytes": 15687,
+      "sha256": "e17200484bddc355f286b1d4e2f48c07ede8def264e6c2023d3b7722bfe05219"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/libtestcmd_scn.so-text.txt",
+      "bytes": 17701,
+      "sha256": "6fe4b0182c4283131bfe1d74eccf2bc7d314b93d694f0c1522318a645fc999b0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/manifest.json",
+      "bytes": 3797,
+      "sha256": "9f719241ab2a4279117ef4efbf472cb95e9889c97d37c5c257ed63e57156b4c6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "bytes": 225200,
+      "sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libtestcmd.so",
+      "bytes": 18504,
+      "sha256": "a6fcb217753d7315abafaf15b8b56dd3106d198e68785c434b3b641862ca1cc6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libtestcmd_scn.so",
+      "bytes": 10192,
+      "sha256": "9f8da044753cdfda41367d87a6020d50e0ecf985cd43eb6ebd0e6521cb9ef861"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/provider-dependency.json",
+      "bytes": 6658,
+      "sha256": "834c7d97a1302b6eb8d06bcb6658c944df6125c35f02b5b51dc7a1f9914b4ae6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/seal_evidence.py",
+      "bytes": 6528,
+      "sha256": "0dfe352b14b0828405985253bec2bc968aacd1d4bf487834a5acfb064b238102"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/selected-original-functions.json",
+      "bytes": 573192,
+      "sha256": "227d776bc84b8d68283b936b8c848e311562d0cb8b216e274757b95100e636df"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/sen.elf-metadata.json",
+      "bytes": 37910,
+      "sha256": "74181970d18adce8b821f4f225388516830060f96532fb49435d9761f0bab670"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/sen.elf-text.txt",
+      "bytes": 99409,
+      "sha256": "fb9e11a5e62bef8e17962c0287d39eef5b4c4a89f37f2d177dcb6bb1dc425205"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/sources.json",
+      "bytes": 1897,
+      "sha256": "879542dc65b512391507abbd8b9e482465e61c20350aae08fe59ccf9af19c645"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/goal-status-after.json",
+      "bytes": 347690,
+      "sha256": "2883a9a661ec490e9172721db655a458893da60dcdef02a62a8905a87e1a6a9f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/goal-status-before.json",
+      "bytes": 344049,
+      "sha256": "bbd930476e8481b9fc2992318c66a768c32649f10a9bb8c73b8482032f37649d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/provenance.json",
+      "bytes": 22714,
+      "sha256": "e5dfe49a81cad3e1d4b9db28bb28d38682e02395f661656ad7c95da2177daafd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/readme-after.md",
+      "bytes": 72099,
+      "sha256": "07df46d534e9ab66cbb2980a080ebcd81c15d17661e0b39ae8189c3098f11852"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/readme-before.md",
+      "bytes": 71749,
+      "sha256": "20c1557e461385a1af7c927ebca4d9bb418b6de68cb60dce267dd7b2e9659159"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/register_research.py",
+      "bytes": 19066,
+      "sha256": "27223c5a059a39584c0e5217bcfcd975840890d8c12680bcbd019ee6cd82bde5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/registration-verification.json",
+      "bytes": 979,
+      "sha256": "5c875363a339fcae4cc969278dba44e68aa6b2f97ae6e28c7cbfe41d3c1d0704"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/reports/索尼 社区救砖 独立服务.md",
+      "bytes": 9943,
+      "sha256": "02d82913d822da2e1f8c8334d84dcb26ef17b34f1d84b23fe211855b1772aa35"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/a7c2-recovery.md",
+      "bytes": 21473,
+      "sha256": "ffce74cde83c66f5f8b0dd3be5c261bc36162c26b52d98c5c71c60f491b7caed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a6700/README.md",
+      "bytes": 2961,
+      "sha256": "dac6d70739bfcfa51710b4f8613f4d16166ab7bde04709a7da1a974a9fc020aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a6700/开发计划与进展.md",
+      "bytes": 3702,
+      "sha256": "e6f89c863708f8429122f324b39c3826938a64bb333c4c7b129c66023b2926e6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a6700/操作手册.md",
+      "bytes": 7422,
+      "sha256": "0a5266d4209113e8fccc6c886cc1eb591eee05557b04e637cd52c18a9ba031b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a6700/硬件说明.md",
+      "bytes": 3016,
+      "sha256": "4ff60e3df394d78d196781d350ace7f13b02e5e82c50bb4634bfd991a1b66737"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a7m4-upstream/payloads/fastboot/README.md",
+      "bytes": 1441,
+      "sha256": "4b3b650f34e73b6699d28deca3a86b03f9d7eb755ec89e2c16ea57fd52a058dd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a7m4/a7m4/profiles/sd-recovery.json",
+      "bytes": 320,
+      "sha256": "c4123a98d0718f1ed8a8feb124f31a9c473c3e457b2ae4b3957c9ae735a74dec"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a7m4/a7m4/sd_recovery.py",
+      "bytes": 18783,
+      "sha256": "79a9597a783e466e6a3b66cbbf5760c18502ec1695f659b55c2162444afed7a1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a7m4/docs/wiring.md",
+      "bytes": 2060,
+      "sha256": "07c4343d1fcb28998623de4aed8fc7028d059ca3334ba6fbea700df43d1b06ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/a7m4/methods/00-sd-recovery/validation.md",
+      "bytes": 4475,
+      "sha256": "5370e46e1693312a14945a44092b861d2dce98f787bafc69f243ec44ffd7a6ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/current-refs.json",
+      "bytes": 1943,
+      "sha256": "046a13717134aa11c41a3420cf55274d1fea816297a2452d7c8a011039e367f8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/fwtool-devices.yml",
+      "bytes": 7683,
+      "sha256": "6bdcf3b5d5c6ca2d93318a8dd39aa3a9382ea3e480fe9164884ad1cfdd86bb19"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/pmca/README.md",
+      "bytes": 5548,
+      "sha256": "779f36d8cf20c878ff8245d2d69fab1fcf0f77c2c5a58f00dddbb99c44379fa3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/source-manifest.json",
+      "bytes": 10070,
+      "sha256": "1e243f03154aebbc59f0185f0aa5a3a659121ace2ed313b439ab6261569363fa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/web-readings.json",
+      "bytes": 1848,
+      "sha256": "1b387d203157f8de1a1db74aeb13253f75b655544d12daba4fb0895bbe5c5216"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/zve10/README.md",
+      "bytes": 5033,
+      "sha256": "bf8869cf8bfff396a1d22f693d0c0a706a93bc2ce66115d2d65e17c0f997f736"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/zve10/bootrom/README.md",
+      "bytes": 4498,
+      "sha256": "b7e74f7dda4a487072dbda598bcf2a5b5888db8e41e7621f968e4bb08248c7c0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/zve10/bootrom/docs/hardware.md",
+      "bytes": 2509,
+      "sha256": "ead67b6a1e818fbc6ff08df27cde63e96535192edbabc3b0510ad133c6df45ce"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/zve10/bootrom/docs/recovery.md",
+      "bytes": 3045,
+      "sha256": "aa3f8699bb33abb4bdb404503523b36544b53cdf6d3a426a2dc12b26791bc033"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/zve10/bootrom/prebuilt/manifest.json",
+      "bytes": 446,
+      "sha256": "303e27a211a0adfb392c8bcab38648702b777b92a3acec23b49376c545d9580a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-evidence/zve10/linux/README.md",
+      "bytes": 4254,
+      "sha256": "80d14dde37441290ce92e42e7e89bd30bcb3dd96ca7e5c9e252f54c93a34883f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/community-independent.md",
+      "bytes": 19128,
+      "sha256": "d6b4afb09ab76a04803964d8af88a0e947e005746bd834c2aa5b43a54a6f9cf9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/research_notes/索尼 社区救砖 独立服务/standalone-commands.md",
+      "bytes": 15348,
+      "sha256": "92651fbccc81ead91e6ac42bf0d9c1f0e0d9145935ee44a7ca848df5624108c2"
+    }
+  ],
+  "member_count": 100,
+  "mutable_heads_not_manifest_members": true,
+  "exclusion_rules": {
+    "directory_names_any_depth": [
+      ".cache",
+      ".mypy_cache",
+      ".pip-cache",
+      ".pip_cache",
+      ".pytest_cache",
+      ".ruff_cache",
+      ".venv",
+      "__pycache__",
+      "dependency-cache",
+      "dependency_cache",
+      "pip-cache",
+      "pip_cache",
+      "venv"
+    ],
+    "file_suffixes": [
+      ".pyc",
+      ".pyo"
+    ],
+    "self_manifest": "final-receipt.json",
+    "reason": "Exclude rebuildable dependency environments, pip/dependency caches and compiled caches; retain analysis scripts, original/disassembly evidence, notes, provenance and receipts.",
+    "excluded_paths_retained_without_deletion": true
+  },
+  "excluded_paths": [],
+  "allowed_goal_keys_changed": [
+    "latest_stage",
+    "latest_stage_evidence",
+    "next_safe_offline_actions",
+    "progress_audit",
+    "research_activity",
+    "updated_utc"
+  ],
+  "mutable_progress": {
+    "before_sha256": "bbd930476e8481b9fc2992318c66a768c32649f10a9bb8c73b8482032f37649d",
+    "after_sha256": "2883a9a661ec490e9172721db655a458893da60dcdef02a62a8905a87e1a6a9f",
+    "readme_before_sha256": "20c1557e461385a1af7c927ebca4d9bb418b6de68cb60dce267dd7b2e9659159",
+    "readme_after_sha256": "07df46d534e9ab66cbb2980a080ebcd81c15d17661e0b39ae8189c3098f11852"
+  },
+  "research_priority_exactly_preserved": true,
+  "native_goal_manager_untouched": true,
+  "new_device_operations_or_test_runs": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

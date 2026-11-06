@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-r31-22ac221f3da6",
+    "eval",
+    "--stdin"
+  ],
+  "start": {
+    "UTC": "2026-11-05T04:45:48.866929+00:00",
+    "host_ns": 437634356400500
+  },
+  "end": {
+    "UTC": "2026-11-05T04:45:48.886864+00:00",
+    "host_ns": 437634376322625
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"alarm\": {\n    \"current\": null,\n    \"deadline_ms\": 20000,\n    \"documentTimeOrigin\": 1793853755776.1,\n    \"events\": [\n      {\n        \"event\": \"installed\",\n        \"performance_ms\": 8670.599999964237,\n        \"script_SHA256\": \"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\",\n        \"wall_UTC\": \"2026-11-05T04:42:44.444Z\"\n      }\n    ],\n    \"expectedLaunchId\": \"58df38f6-d1dd-4ed4-ab6e-938ea0bea423\",\n    \"expectedURL\": \"http://127.0.0.1:63982/\",\n    \"sealed\": false,\n    \"version\": 1\n  },\n  \"ending\": true,\n  \"finished\": true,\n  \"lastStatus\": {\n    \"black_after_ready_count\": 0,\n    \"browser_ready\": true,\n    \"busy\": false,\n    \"error\": null,\n    \"events\": [],\n    \"final_receipt_id\": \"90gNoQOtNQXYKKuWJDdIwQ\",\n    \"frame\": null,\n    \"input_received\": false,\n    \"launch_request_id\": \"58df38f6-d1dd-4ed4-ab6e-938ea0bea423\",\n    \"launch_status\": \"running\",\n    \"max_steps\": 32,\n    \"message\": \"试用已结束：本轮健康检查未通过，资源已回收；请查阅回执。\",\n    \"phase\": \"finished\",\n    \"ready\": false,\n    \"remaining_seconds\": 295,\n    \"render_valid\": false,\n    \"result\": {\n      \"API16_restored\": true,\n      \"duration_seconds\": 184.4962241250323,\n      \"health_pass\": false,\n      \"qemu_exit\": 0\n    },\n    \"review_confirmation\": null,\n    \"review_protocol_unknown\": false,\n    \"review_required\": false,\n    \"review_snapshot_present\": false,\n    \"review_step\": null,\n    \"run_incarnation\": \"de127cbf-b852-4655-909b-65f066051d36\",\n    \"steps\": 0,\n    \"visual_change_observed\": false,\n    \"visual_state\": \"idle\"\n  }\n}\n",
+  "stderr": ""
+}

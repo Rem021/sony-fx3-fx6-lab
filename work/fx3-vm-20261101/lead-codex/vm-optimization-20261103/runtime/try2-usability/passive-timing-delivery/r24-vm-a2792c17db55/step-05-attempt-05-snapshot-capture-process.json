@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-review-snapshot-candidate/operator-helpers/review_snapshot_cli.py",
+    "capture",
+    "--session",
+    "fx3-deadline-r24-a2792c17db55",
+    "--url",
+    "http://127.0.0.1:49966/",
+    "--launch",
+    "c008fda8-6c61-441e-9664-92d451ffac28",
+    "--nonce",
+    "9b4bbba9-e74c-4d2e-bfe0-f50daa813ec9",
+    "--step",
+    "5",
+    "--attempt",
+    "e1399ec0-ab51-4818-a69b-c128fe587e36",
+    "--out",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55/step-05-attempt-05/capture"
+  ],
+  "start": {
+    "UTC": "2026-11-05T01:38:22.457829+00:00",
+    "host_ns": 426387979237625
+  },
+  "end": {
+    "UTC": "2026-11-05T01:38:25.713839+00:00",
+    "host_ns": 426391235269875
+  },
+  "returncode": 0,
+  "stdout": "{\"status\": \"qualified_review_snapshot\", \"capture_schema\": \"fx3-r24-snapshot-capture-v1\", \"nonce\": \"9b4bbba9-e74c-4d2e-bfe0-f50daa813ec9\", \"step\": 5, \"attempt_id\": \"e1399ec0-ab51-4818-a69b-c128fe587e36\", \"guest_keys_sent\": 0, \"host_start_ns\": 426388031512041, \"pin_result\": {\"document_id\": \"1bad66ad-84ed-4c97-8b9f-5e3ea8224f04\", \"origin\": 1793842568306.2, \"pin_invoked\": true}, \"document_time_origin\": 1793842568306.2, \"snapshot\": {\"PNG_sha256\": \"5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7\", \"attempt_id\": \"e1399ec0-ab51-4818-a69b-c128fe587e36\", \"byte_length\": 27526, \"content_generation\": 37, \"document_id\": \"1bad66ad-84ed-4c97-8b9f-5e3ea8224f04\", \"launch_id\": \"c008fda8-6c61-441e-9664-92d451ffac28\", \"native_receive_floor_sequence\": 997, \"native_receive_observed_host_monotonic\": 426388.465057625, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\", \"observed_sequence\": 998, \"pin_request_id\": \"fc0aa2f4-2dcb-4747-85e0-697850ced2d4\", \"run_incarnation\": \"049f6bf0-a48b-43d7-80dd-2c3e22484a18\", \"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"a9ef5803-ed33-445f-a18b-49067d51e22f\", \"step\": 5}, \"screenshot_path\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55/step-05-attempt-05/capture/review-snapshot.png\", \"screenshot_sha256\": \"5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7\", \"actual_visual_semantic_review\": \"pending separate operation-agent image viewing\", \"host_end_ns\": 426391228935250}\n",
+  "stderr": ""
+}

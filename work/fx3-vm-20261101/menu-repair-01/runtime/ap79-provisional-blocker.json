@@ -1,0 +1,120 @@
+{
+  "provisional_run": "ap79tail-17293cc1",
+  "mode_input24": "010000000000000001000000000000000100000000000000",
+  "getpin_raw": "c061cf81a0a0a0a001003000180000003000000000000000001000001800020000000000020000000100000000000000",
+  "getpin_frames": [
+    {
+      "line": 21622,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=0 fp=0x7f272391b0 lr=0x7f72111f20 module=/usr/lib/dataflowInfraFramework.so relative=0x33f20"
+    },
+    {
+      "line": 21623,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=1 fp=0x7f27239210 lr=0x7f3dad2ab8 module=/usr/lib/appFw.so relative=0x2e10ab8"
+    },
+    {
+      "line": 21624,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=2 fp=0x7f27239260 lr=0x7f3dad2dec module=/usr/lib/appFw.so relative=0x2e10dec"
+    },
+    {
+      "line": 21625,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=3 fp=0x7f27239440 lr=0x7f3dad343c module=/usr/lib/appFw.so relative=0x2e1143c"
+    },
+    {
+      "line": 21626,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=4 fp=0x7f272394d0 lr=0x7f3db80410 module=/usr/lib/appFw.so relative=0x2ebe410"
+    },
+    {
+      "line": 21627,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=5 fp=0x7f27239550 lr=0x7f3db80b40 module=/usr/lib/appFw.so relative=0x2ebeb40"
+    },
+    {
+      "line": 21628,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=6 fp=0x7f27239610 lr=0x7f3daa3fb0 module=/usr/lib/appFw.so relative=0x2de1fb0"
+    },
+    {
+      "line": 21629,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=7 fp=0x7f27239660 lr=0x7f3d829a48 module=/usr/lib/appFw.so relative=0x2b67a48"
+    },
+    {
+      "line": 21630,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=8 fp=0x7f272396c0 lr=0x7f3d82a374 module=/usr/lib/appFw.so relative=0x2b68374"
+    },
+    {
+      "line": 21631,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=9 fp=0x7f272397f0 lr=0x7f3d8996fc module=/usr/lib/appFw.so relative=0x2bd76fc"
+    },
+    {
+      "line": 21632,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=10 fp=0x7f27239850 lr=0x7f3dc33ba0 module=/usr/lib/appFw.so relative=0x2f71ba0"
+    },
+    {
+      "line": 21633,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=11 fp=0x7f272398d0 lr=0x7f8f6de184 module=/usr/lib/libosal_utm.so relative=0x1184"
+    },
+    {
+      "line": 21634,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=12 fp=0x7f272398f0 lr=0x7f8f688020 module=/lib/libpthread.so.0 relative=0x7020"
+    },
+    {
+      "line": 21635,
+      "text": "FX3_BOOT_TAIL_FRAME destination=0x9284074a seq=5 depth=13 fp=0x7f27239940 lr=0x7f8ef67dbc module=/lib/libc.so.6 relative=0xc8dbc"
+    }
+  ],
+  "tail_consumed": [
+    {
+      "line": 21551,
+      "text": "FX3_BOOT_TAIL_CONSUMED destination=0x81cf61c0 command=0x165 kind=1 lease=28 result=0"
+    },
+    {
+      "line": 21576,
+      "text": "FX3_BOOT_TAIL_CONSUMED destination=0x81cf61c0 command=0x10a kind=2 lease=29 result=0"
+    },
+    {
+      "line": 21580,
+      "text": "FX3_BOOT_TAIL_CONSUMED destination=0x81cf61c0 command=0x101 kind=3 lease=30 result=0"
+    },
+    {
+      "line": 21587,
+      "text": "FX3_BOOT_TAIL_CONSUMED destination=0x81cf61c0 command=0x117 kind=4 lease=31 result=0"
+    },
+    {
+      "line": 21591,
+      "text": "FX3_BOOT_TAIL_CONSUMED destination=0x81cf61c0 command=0x117 kind=4 lease=32 result=0"
+    },
+    {
+      "line": 21595,
+      "text": "FX3_BOOT_TAIL_CONSUMED destination=0x81cf61c0 command=0x117 kind=4 lease=33 result=0"
+    },
+    {
+      "line": 21600,
+      "text": "FX3_BOOT_TAIL_CONSUMED destination=0x81cf61c0 command=0x117 kind=4 lease=34 result=0"
+    },
+    {
+      "line": 21604,
+      "text": "FX3_BOOT_TAIL_CONSUMED destination=0x81cf61c0 command=0x117 kind=4 lease=35 result=0"
+    }
+  ],
+  "rate_observed": [
+    {
+      "line": 21583,
+      "text": "FX3_HDMI_RATE_OBSERVE source=0x81cf61c0 port=0 rate=0 echoed_port=0 echoed_rate=0 backup_known=1 backup_02cf1493=8 next_port=0 before_admission=1"
+    },
+    {
+      "line": 21588,
+      "text": "FX3_HDMI_RATE_OBSERVE source=0x81cf61c0 port=1 rate=0 echoed_port=1 echoed_rate=0 backup_known=1 backup_02cf1493=8 next_port=1 before_admission=1"
+    },
+    {
+      "line": 21592,
+      "text": "FX3_HDMI_RATE_OBSERVE source=0x81cf61c0 port=2 rate=17 echoed_port=2 echoed_rate=17 backup_known=1 backup_02cf1493=8 next_port=2 before_admission=1"
+    },
+    {
+      "line": 21596,
+      "text": "FX3_HDMI_RATE_OBSERVE source=0x81cf61c0 port=3 rate=17 echoed_port=3 echoed_rate=17 backup_known=1 backup_02cf1493=8 next_port=3 before_admission=1"
+    },
+    {
+      "line": 21601,
+      "text": "FX3_HDMI_RATE_OBSERVE source=0x81cf61c0 port=4 rate=0 echoed_port=4 echoed_rate=0 backup_known=1 backup_02cf1493=8 next_port=4 before_admission=1"
+    }
+  ],
+  "next_request_no_reply_added": true
+}

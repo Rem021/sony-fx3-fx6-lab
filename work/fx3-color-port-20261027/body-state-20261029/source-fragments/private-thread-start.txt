@@ -1,0 +1,50 @@
+00014360 ldr        x1, #0x14410
+00014364 ldr        x0, [x1, #0x6d0]
+00014368 cbz        x0, #0x14378
+0001436c mov        w0, #0
+00014370 ret        
+00014374 nop        
+00014378 stp        x29, x30, [sp, #-0x50]!
+0001437c add        x1, x1, #0x6d0
+00014380 mov        w2, #0x92
+00014384 mov        x29, sp
+00014388 ldr        x4, #0x14418
+0001438c add        x0, x29, #0x28
+00014390 ldr        x3, #0x14420
+00014394 str        x19, [sp, #0x10]
+00014398 mov        w19, #4
+0001439c strh       w2, [x29, #0x48]
+000143a0 str        x4, [x29, #0x28]
+000143a4 stp        x3, xzr, [x29, #0x38]
+000143a8 str        wzr, [x29, #0x4c]
+000143ac str        w19, [x29, #0x30]
+000143b0 bl         #0x143b0 ; [{"symbol": "osal_create_waitable_thread", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000143b4 str        w0, [x29, #0x24]
+000143b8 tbnz       w0, #0x1f, #0x143d0
+000143bc mov        w0, #0
+000143c0 ldr        x19, [sp, #0x10]
+000143c4 ldp        x29, x30, [sp], #0x50
+000143c8 ret        
+000143cc nop        
+000143d0 mov        w5, w19
+000143d4 add        x4, x29, #0x24
+000143d8 mov        w3, #0x18b
+000143dc mov        w2, #0x12
+000143e0 mov        w1, #2
+000143e4 mov        w0, #0
+000143e8 bl         #0x143e8 ; [{"symbol": "upm_blog_writeonce", "addend": 0, "type": 283, "section": 2}]
+000143ec mov        w0, #0xbb
+000143f0 mov        w1, #-1
+000143f4 movk       w0, #0x92, lsl #16
+000143f8 bl         #0x143f8 ; [{"symbol": "osal_wai_sem_tmo", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000143fc mov        w0, #0xbb
+00014400 movk       w0, #0x92, lsl #16
+00014404 bl         #0x14404 ; [{"symbol": "osal_sig_sem", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00014408 ldr        w0, [x29, #0x24]
+0001440c b          #0x143c0
+00014410 udf        #0 ; [{"symbol": "", "addend": 2384, "type": 257, "section": 27}]
+00014414 udf        #0
+00014418 udf        #0 ; [{"symbol": "", "addend": 6424, "type": 257, "section": 14}]
+0001441c udf        #0
+00014420 udf        #0 ; [{"symbol": "", "addend": 81384, "type": 257, "section": 2}]
+00014424 udf        #0

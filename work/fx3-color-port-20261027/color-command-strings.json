@@ -1,0 +1,222 @@
+[
+  {
+    "offset": "0x453f6f",
+    "text": "ddl_mlut_clkrst [IPTYPE]"
+  },
+  {
+    "offset": "0x453f88",
+    "text": "ddl_mlut_data_reset [IPTYPE]"
+  },
+  {
+    "offset": "0x453fa5",
+    "text": "ddl_mlut_reg_reset [IPTYPE]"
+  },
+  {
+    "offset": "0x453fc1",
+    "text": "ddl_mlut_clk_off [IPTYPE]"
+  },
+  {
+    "offset": "0x453fdb",
+    "text": "ddl_mlut_set_mode_flow [IPTYPE][MLUT_MODE_FLOW][MLUT_MODE_FLOW_3DLUT]"
+  },
+  {
+    "offset": "0x454021",
+    "text": "ddl_mlut_set_hv_param [IPTYPE][mlut_h_width][mlut_v_height]"
+  },
+  {
+    "offset": "0x45405d",
+    "text": "ddl_mlut_set_lookname [IPTYPE][MLUT_LOOKNAME]"
+  },
+  {
+    "offset": "0x45408b",
+    "text": "ddl_mlut_get_lookname [IPTYPE]"
+  },
+  {
+    "offset": "0x4540aa",
+    "text": "ddl_mlut_onoff_l1d_cpu_ram_access [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x4540e1",
+    "text": "ddl_mlut_onoff_yr1d_cpu_ram_access [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x454119",
+    "text": "ddl_mlut_onoff_l3d_cpu_ram_access [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x454150",
+    "text": "ddl_mlut_onoff_yc2rgb [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x45417b",
+    "text": "ddl_mlut_onoff_l1d_a [IPTYPE][on_r][on_g][on_b][pre_black][post_black]"
+  },
+  {
+    "offset": "0x4541c2",
+    "text": "ddl_mlut_onoff_l1d_b [IPTYPE][on_r][on_g][on_b][pre_black][post_black]"
+  },
+  {
+    "offset": "0x454209",
+    "text": "ddl_mlut_onoff_l1d_c [IPTYPE][on_r][on_g][on_b][pre_black][post_black]"
+  },
+  {
+    "offset": "0x454250",
+    "text": "ddl_mlut_onoff_mtx_a [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x45427a",
+    "text": "ddl_mlut_onoff_mtx_b [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x4542a4",
+    "text": "ddl_mlut_onoff_mtx_c [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x4542ce",
+    "text": "ddl_mlut_onoff_mtx_d [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x4542f8",
+    "text": "ddl_mlut_onoff_eigain [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x454323",
+    "text": "ddl_mlut_onoff_yr1d [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x45434c",
+    "text": "ddl_mlut_onoff_asccdl [IPTYPE][cdl_on][clip_on][ofst_in_on][sub_out_on][on_r][on_g][on_b]"
+  },
+  {
+    "offset": "0x4543a6",
+    "text": "ddl_mlut_onoff_l3d [IPTYPE][all_on][on_r][on_g][on_b][pre_black][post_black]"
+  },
+  {
+    "offset": "0x4543f3",
+    "text": "ddl_mlut_onoff_rgb2yc [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x45441e",
+    "text": "ddl_mlut_onoff_hcd [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x454446",
+    "text": "ddl_mlut_onoff_fcd [IPTYPE][MLUT_ONOFF]"
+  },
+  {
+    "offset": "0x45446e",
+    "text": "ddl_mlut_change_l1d_a_sram [IPTYPE][sel]"
+  },
+  {
+    "offset": "0x454497",
+    "text": "ddl_mlut_change_l1d_b_sram [IPTYPE][sel]"
+  },
+  {
+    "offset": "0x4544c0",
+    "text": "ddl_mlut_change_l1d_c_sram [IPTYPE][sel]"
+  },
+  {
+    "offset": "0x4544e9",
+    "text": "ddl_mlut_change_l3d_sram [IPTYPE][sel][ram]"
+  },
+  {
+    "offset": "0x454515",
+    "text": "ddl_mlut_set_l3d_sram [IPTYPE][size]"
+  },
+  {
+    "offset": "0x45453a",
+    "text": "ddl_mlut_calc_eigain_setting [ei][base_iso]"
+  },
+  {
+    "offset": "0x454566",
+    "text": "ddl_mlut_calc_eigain_setting_f [rgb_gain]"
+  },
+  {
+    "offset": "0x454590",
+    "text": "ddl_mlut_set_eigain_shift [IPTYPE][sft_r][sft_g][sft_b]"
+  },
+  {
+    "offset": "0x4545c8",
+    "text": "ddl_mlut_set_eigain_black [IPTYPE][black_r][black_g][black_b]"
+  },
+  {
+    "offset": "0x454606",
+    "text": "ddl_mlut_set_eigain_white [IPTYPE][white_r][white_g][white_b]"
+  },
+  {
+    "offset": "0x454644",
+    "text": "ddl_mlut_set_eigain_clip_level [IPTYPE][0-0xFFFF]"
+  },
+  {
+    "offset": "0x454676",
+    "text": "ddl_mlut_set_eigain_flare [IPTYPE][flare_r][flare_g][flare_b]"
+  },
+  {
+    "offset": "0x4546b4",
+    "text": "ddl_mlut_set_eigain_setting [IPTYPE][ei][base_iso]"
+  },
+  {
+    "offset": "0x4546e7",
+    "text": "ddl_mlut_set_eigain_setting [IPTYPE][TestParam:0-9]"
+  },
+  {
+    "offset": "0x45471b",
+    "text": "ddl_mlut_get_eigain_setting [IPTYPE]"
+  },
+  {
+    "offset": "0x454740",
+    "text": "ddl_mlut_onoff_l3d(task) [IPTYPE][all_on][r][g][b][pre_black][post_black][callback]"
+  },
+  {
+    "offset": "0x454794",
+    "text": "ddl_mlut_set_l3d_reg [IPTYPE][size]"
+  },
+  {
+    "offset": "0x4547ed",
+    "text": "mlut_flush_range"
+  },
+  {
+    "offset": "0x45482e",
+    "text": "mlut_read_backup"
+  },
+  {
+    "offset": "0x454843",
+    "text": "mlut_clear_block [IPTYPE][MLUT_BLOCK]"
+  },
+  {
+    "offset": "0x454884",
+    "text": "vfx_mlut_enable"
+  },
+  {
+    "offset": "0x4548b1",
+    "text": "mlut_pre_test [IPTYPE]"
+  },
+  {
+    "offset": "0x4548cc",
+    "text": "ddl_mlut_set_lookname_dmac_loop [IPTYPE][MLUT_LOOKNAME][loop_count]"
+  },
+  {
+    "offset": "0x454910",
+    "text": "ddl_mlut_calc_eigain_setting_both [ei][base_iso]"
+  },
+  {
+    "offset": "0x454941",
+    "text": "ddl_mlut_calc_eigain_setting_check"
+  },
+  {
+    "offset": "0x454964",
+    "text": "cmp_reg_data [IPTYPE][MLUT_LOOKNAME]"
+  },
+  {
+    "offset": "0x454989",
+    "text": "cmp_sram_data [IPTYPE][MLUT_LOOKNAME]"
+  },
+  {
+    "offset": "0x45512c",
+    "text": "mlut_make_lli_table"
+  },
+  {
+    "offset": "0x457204",
+    "text": "ddl_VfxCheckMlutArtBinary"
+  }
+]

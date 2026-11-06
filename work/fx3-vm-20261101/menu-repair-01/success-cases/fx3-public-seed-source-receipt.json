@@ -1,0 +1,72 @@
+{
+  "created_utc": "2026-11-01T11:32:20.950545+00:00",
+  "scope": "Bounded read-only verification of same-model FX3 7.02 official public FDAT members; no original-script execution or full re-unpack",
+  "fdat": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+  "fdat_bytes": 808704512,
+  "fdat_full_sha256_recorded_in_prior_verified_receipt": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "full_FDAT_rehashed_this_round": false,
+  "source_metadata_stable_during_read": true,
+  "manifest_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-offline-manifest.json",
+  "manifest_sha256": "61c1e6fa61789a7f5ba3c9a940a01bcaf92e4cd043193bd7bef7f3c65fdfb459",
+  "prior_template_receipt": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/dmm-backup-20261029/public-template-parameters.json",
+  "prior_template_receipt_sha256": "2704461b6ac3441ec845d2ef0621979b111430708fbf3c65de69d4f0c84e0fe9",
+  "firmware_tar_offset": 1253888,
+  "members": [
+    {
+      "member": "0111_backup_sum/backup.sum",
+      "absolute_offset_in_FDAT": 50329088,
+      "bytes": 2608,
+      "sha256": "0b715a14f6271b7116467f9f141e59316e8b0ecd4c80834fbc5393c952b5c252",
+      "crc32": "0x4e47c939",
+      "tar_header_sha256": "c850c59c2456054fe042cef4c8108c3e7de7e9de3237073d89226b563adaf674",
+      "tar_header_checksum_and_name_and_size_verified": true
+    },
+    {
+      "member": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95900_ALLLANG.bin",
+      "absolute_offset_in_FDAT": 1262080,
+      "bytes": 2229740,
+      "sha256": "bf3a9d851f9853fd80953be165f2e4d77770314a85465bc7698ebad438d0e7a2",
+      "crc32": "0x4607d0ba",
+      "tar_header_sha256": "172b63682ffa3c53607f41f0420d770e1725464ec0ec071cac6191cbd9f92524",
+      "tar_header_checksum_and_name_and_size_verified": true
+    },
+    {
+      "member": "0800_appli/setting/ulogio.bin",
+      "absolute_offset_in_FDAT": 800427008,
+      "bytes": 2784,
+      "sha256": "dd5a1729788d6ee49b2217afc949eeb1e7c04c7244166d174bc90fda303dfc96",
+      "crc32": "0xcf027e11",
+      "tar_header_sha256": "df5d5d4b2346d5c85cc453df5385998c52515f6a3f674fcadeb8bc2446551cdd",
+      "tar_header_checksum_and_name_and_size_verified": true
+    },
+    {
+      "member": "0800_appli/setting/DmmCfg.bin",
+      "absolute_offset_in_FDAT": 800286720,
+      "bytes": 66796,
+      "sha256": "48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1",
+      "crc32": "0xf5d46b2d",
+      "tar_header_sha256": "8d38f56b89eb25d82ba0260721117ba650bd6e1544be036c9a0ec901821e4a22",
+      "tar_header_checksum_and_name_and_size_verified": true
+    }
+  ],
+  "Backup_canonical_selected_for_VM_experiment": "0110_backup/SYSIPSX-DSLR/ALCIN/CX95900_ALLLANG.bin",
+  "Backup_official_size_and_crc_verified_against_original_backup_sum": true,
+  "Backup_banks": [
+    {
+      "offset": 0,
+      "bytes": 857900,
+      "sha256": "33789a7a4d648c9a0bd74bd332de395500bdf0f363839f1d770393a3a3191da5",
+      "checksum_verified": true
+    },
+    {
+      "offset": 860160,
+      "bytes": 1369580,
+      "sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+      "checksum_verified": true
+    }
+  ],
+  "body_region_or_actual_boot_bank_confirmed": false,
+  "user_body_private_backup_read": false,
+  "extracted_new_binary_copies": false,
+  "deployment_requirement": "Host may copy these exact member bytes only into this task private guest seed files; both seed locations must match. Loading and original API readback are separate runtime acceptance."
+}

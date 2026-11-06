@@ -1,0 +1,49 @@
+{
+  "processes": {
+    "runner": {
+      "pid": 39664,
+      "absent": true
+    },
+    "qemu": {
+      "pid": 39795,
+      "absent": true
+    }
+  },
+  "port_closed": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true,
+      "free_at_postcheck": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true,
+      "free_at_postcheck": true
+    }
+  ],
+  "qmp_quit_request": {
+    "request": {
+      "execute": "quit",
+      "id": 213
+    },
+    "elapsed_seconds": 54.40228720899904
+  },
+  "qmp_quit_ack": {
+    "response": {
+      "return": {},
+      "id": 213
+    }
+  },
+  "browser_session_inactive": true,
+  "web_final_ACK": {
+    "acknowledged": true,
+    "wait_seconds": 0.38744787499308586,
+    "end_reason": "browser_ack",
+    "maximum_wait_seconds": 30.0,
+    "scope": "browser_receipt_delivery_only"
+  },
+  "cleanup_errors": [],
+  "UTC": "2026-11-05T00:21:37.487106+00:00",
+  "host_ns": 421783016834041
+}

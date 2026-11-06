@@ -1,0 +1,75 @@
+{
+  "status": "PASS_CODE_CALLBACK_CAN_OBSERVE_ANNULLED_BEQL_DELAY_BREAK",
+  "source_image_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "source_script_sha256": "1db6412789f8a952e4f95e29a107f0c7282b250e12a518f9c3eecabb4856b683",
+  "cases": [
+    {
+      "pcs": [
+        "0x8019854c",
+        "0x80198550",
+        "0x80198554",
+        "0x80198558",
+        "0x8019855c",
+        "0x80198560",
+        "0x83000000"
+      ],
+      "interrupts": [],
+      "stop": "returned",
+      "error": null,
+      "declared_dividend": 10,
+      "declared_divisor": 1,
+      "result_v0": 10,
+      "SP_after": "0x82008000",
+      "PC_after": "0x83000000",
+      "actual_source_words_hex": "1b00430001006050cd010000121000000800e003ff004230",
+      "memory_read_write_hooks_installed": false,
+      "original_image_unchanged": true,
+      "no_instruction_NOP_replacement_PC_write_or_fake_return": true
+    },
+    {
+      "pcs": [
+        "0x8019854c",
+        "0x80198550",
+        "0x80198554",
+        "0x80198558",
+        "0x8019855c",
+        "0x80198560",
+        "0x83000000"
+      ],
+      "interrupts": [],
+      "stop": "returned",
+      "error": null,
+      "declared_dividend": 10,
+      "declared_divisor": 2,
+      "result_v0": 5,
+      "SP_after": "0x82008000",
+      "PC_after": "0x83000000",
+      "actual_source_words_hex": "1b00430001006050cd010000121000000800e003ff004230",
+      "memory_read_write_hooks_installed": false,
+      "original_image_unchanged": true,
+      "no_instruction_NOP_replacement_PC_write_or_fake_return": true
+    },
+    {
+      "pcs": [
+        "0x8019854c",
+        "0x80198550",
+        "0x80198554"
+      ],
+      "interrupts": [
+        18
+      ],
+      "stop": "native_interrupt",
+      "error": null,
+      "declared_dividend": 10,
+      "declared_divisor": 0,
+      "result_v0": 10,
+      "SP_after": "0x82008000",
+      "PC_after": "0x0",
+      "actual_source_words_hex": "1b00430001006050cd010000121000000800e003ff004230",
+      "memory_read_write_hooks_installed": false,
+      "original_image_unchanged": true,
+      "no_instruction_NOP_replacement_PC_write_or_fake_return": true
+    }
+  ],
+  "scope": "Local Unicorn2.1.4 MIPS32_24KC original DIVU/BEQL/BREAK sequence. CODE observation is not proof of architectural execution of an annulled delay slot. Positive division returns; zero control traps. No universal claim about other instructions or engines."
+}

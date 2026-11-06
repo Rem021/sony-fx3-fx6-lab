@@ -1,0 +1,58 @@
+{
+  "state": "complete",
+  "releases": {
+    "ui": {
+      "raw_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/raw/fx3-ui-r35.so",
+      "raw_sha256": "8fbad11e585a88ba55fc657785b6bc132bd12ee20ac3a31f23c603b1b1b322d1",
+      "raw_bytes": 72656,
+      "release_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/release/fx3-ui-r35.so",
+      "release_sha256": "87267da03bbc5f05b81aa559a4a1c713d1e7462bdb4602a571405dc048bba4fe",
+      "release_bytes": 23400,
+      "slot_bytes": 58856,
+      "zero_tail_bytes": 35456,
+      "audit_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/ui-ELF-AUDIT.json",
+      "removed_debug_sections": [
+        ".debug_abbrev",
+        ".debug_aranges",
+        ".debug_info",
+        ".debug_line",
+        ".debug_loc",
+        ".debug_ranges",
+        ".debug_str"
+      ],
+      "removed_static_sections": [
+        ".strtab",
+        ".symtab"
+      ]
+    },
+    "osd": {
+      "raw_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/raw/fx3-osd-r35.so",
+      "raw_sha256": "1a0761b8c73fb04502406686499ff01f3683bcc767ce1503fae3e6bbb996bf21",
+      "raw_bytes": 119544,
+      "release_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/release/fx3-osd-r35.so",
+      "release_sha256": "51685bf707f7c1947c81936de03a0694b2228228792e732ee177c788acd09837",
+      "release_bytes": 34960,
+      "slot_bytes": 109000,
+      "zero_tail_bytes": 74040,
+      "audit_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/osd-ELF-AUDIT.json",
+      "removed_debug_sections": [
+        ".debug_abbrev",
+        ".debug_info",
+        ".debug_line",
+        ".debug_loc",
+        ".debug_ranges",
+        ".debug_str"
+      ],
+      "removed_static_sections": [
+        ".strtab",
+        ".symtab"
+      ]
+    }
+  },
+  "supersedes_retained_historical_markers": [
+    "receipts/ui-release.INCOMPLETE.json",
+    "receipts/osd-release.INCOMPLETE.json"
+  ],
+  "only_metadata_strip_debug_used": true,
+  "raw_ELFs_retained": true
+}

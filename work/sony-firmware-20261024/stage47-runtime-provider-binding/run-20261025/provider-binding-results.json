@@ -1,0 +1,2116 @@
+{
+  "status": "PASS_ORIGINAL_LIRO_HEADER_AND_IMPORT_PROVIDER_BINDING_WITHIN_OFFLINE_FRAGMENT_SCOPE",
+  "created_utc": "2026-10-26T02:11:32.323998+00:00",
+  "header_cases": [
+    {
+      "case": "original",
+      "magic_u32": "0x4c49524f",
+      "version_u32": 5,
+      "original_fragment": {
+        "label": "original loader header-check fragment original",
+        "start_pc": "0x14000338",
+        "stop_pc": "0x14000388",
+        "reason": "boundary: after_header_acceptance_before_diagnostic",
+        "pcs": [
+          "0x14000338",
+          "0x1400033c",
+          "0x14000340",
+          "0x14000344",
+          "0x14000348",
+          "0x1400034c",
+          "0x14000360",
+          "0x14000364",
+          "0x14000368",
+          "0x14000380",
+          "0x14000384",
+          "0x14000388"
+        ],
+        "writes": [],
+        "x0_to_x5": [
+          "0x140106d0",
+          "0x5",
+          "0x4c49524f",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "native_output_or_runtime_adapter": false
+      },
+      "scope": "Independent loader fragment0x338 with declared module-context/header fixture; diagnostics/full cleanup/loading not executed."
+    },
+    {
+      "case": "bad_magic",
+      "magic_u32": "0x0",
+      "version_u32": 5,
+      "original_fragment": {
+        "label": "original loader header-check fragment bad_magic",
+        "start_pc": "0x14000338",
+        "stop_pc": "0x14000354",
+        "reason": "boundary: before_magic_mismatch_diagnostic",
+        "pcs": [
+          "0x14000338",
+          "0x1400033c",
+          "0x14000340",
+          "0x14000344",
+          "0x14000348",
+          "0x1400034c",
+          "0x14000350",
+          "0x14000354"
+        ],
+        "writes": [],
+        "x0_to_x5": [
+          "0x14010690",
+          "0x0",
+          "0x4c49524f",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "native_output_or_runtime_adapter": false
+      },
+      "scope": "Independent loader fragment0x338 with declared module-context/header fixture; diagnostics/full cleanup/loading not executed."
+    },
+    {
+      "case": "bad_version",
+      "magic_u32": "0x4c49524f",
+      "version_u32": 6,
+      "original_fragment": {
+        "label": "original loader header-check fragment bad_version",
+        "start_pc": "0x14000338",
+        "stop_pc": "0x14000370",
+        "reason": "boundary: before_version_mismatch_diagnostic",
+        "pcs": [
+          "0x14000338",
+          "0x1400033c",
+          "0x14000340",
+          "0x14000344",
+          "0x14000348",
+          "0x1400034c",
+          "0x14000360",
+          "0x14000364",
+          "0x14000368",
+          "0x1400036c",
+          "0x14000370"
+        ],
+        "writes": [],
+        "x0_to_x5": [
+          "0x140106b0",
+          "0x6",
+          "0x4c49524f",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "native_output_or_runtime_adapter": false
+      },
+      "scope": "Independent loader fragment0x338 with declared module-context/header fixture; diagnostics/full cleanup/loading not executed."
+    }
+  ],
+  "loader_copy_arguments": {
+    "original_fragment": {
+      "label": "original loader import-vector copy argument setup",
+      "start_pc": "0x140004b0",
+      "stop_pc": "0x140004c4",
+      "reason": "boundary: before_unexecuted_kernel_memcpy",
+      "pcs": [
+        "0x140004b0",
+        "0x140004b4",
+        "0x140004b8",
+        "0x140004bc",
+        "0x140004c0",
+        "0x140004c4"
+      ],
+      "writes": [],
+      "x0_to_x5": [
+        "0xffffffc0010001ec",
+        "0x14020000",
+        "0x698",
+        "0x0",
+        "0x0",
+        "0x0"
+      ],
+      "native_output_or_runtime_adapter": false
+    },
+    "source_section": ".init.data",
+    "destination": "av-cam header[0x20]+0x48",
+    "length": 1688,
+    "slot_count": 211,
+    "avcam_destination_unchanged": true,
+    "source_function_addresses_unresolved": true,
+    "actual_memcpy_or_runtime_binding_executed": false,
+    "literal_relocations": [
+      {
+        "section_offset": "0x570",
+        "target_section": ".rodata.str1.8",
+        "addend": "0x690",
+        "relocated_fixture_value": "0x14010690",
+        "relocation_type": 257
+      },
+      {
+        "section_offset": "0x578",
+        "target_section": ".rodata.str1.8",
+        "addend": "0x6b0",
+        "relocated_fixture_value": "0x140106b0",
+        "relocation_type": 257
+      },
+      {
+        "section_offset": "0x580",
+        "target_section": ".rodata.str1.8",
+        "addend": "0x6d0",
+        "relocated_fixture_value": "0x140106d0",
+        "relocation_type": 257
+      },
+      {
+        "section_offset": "0x598",
+        "target_section": ".init.data",
+        "addend": "0x0",
+        "relocated_fixture_value": "0x14020000",
+        "relocation_type": 257
+      }
+    ]
+  },
+  "veneer_cases": [
+    {
+      "veneer_offset": "0x2ef4c",
+      "API_offset": "0x388",
+      "raw_file_slot_offset": "0x52c",
+      "loader_vector_offset": "0x340",
+      "provider_relocation": {
+        "symbol": "osal_wai_sem_tmo",
+        "symbol_section": "SHN_UNDEF",
+        "symbol_value": "0x0",
+        "addend": "0x0",
+        "relocation_type": 257
+      },
+      "branch_register": "x2",
+      "original_fragment": {
+        "label": "original av-cam uninitialized veneer osal_wai_sem_tmo",
+        "start_pc": "0xffffffc00102ef4c",
+        "stop_pc": "0xffffffc00102ef5c",
+        "reason": "boundary: before_unbound_indirect_osal_wai_sem_tmo",
+        "pcs": [
+          "0xffffffc00102ef4c",
+          "0xffffffc00102ef50",
+          "0xffffffc00102ef54",
+          "0xffffffc00102ef58",
+          "0xffffffc00102ef5c"
+        ],
+        "writes": [],
+        "x0_to_x5": [
+          "0x11010000",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "native_output_or_runtime_adapter": false
+      },
+      "uninitialized_target": 0,
+      "actual_runtime_service_address_or_effect_unverified": true
+    },
+    {
+      "veneer_offset": "0x2ef60",
+      "API_offset": "0x390",
+      "raw_file_slot_offset": "0x534",
+      "loader_vector_offset": "0x348",
+      "provider_relocation": {
+        "symbol": "osal_sig_sem",
+        "symbol_section": "SHN_UNDEF",
+        "symbol_value": "0x0",
+        "addend": "0x0",
+        "relocation_type": 257
+      },
+      "branch_register": "x1",
+      "original_fragment": {
+        "label": "original av-cam uninitialized veneer osal_sig_sem",
+        "start_pc": "0xffffffc00102ef60",
+        "stop_pc": "0xffffffc00102ef70",
+        "reason": "boundary: before_unbound_indirect_osal_sig_sem",
+        "pcs": [
+          "0xffffffc00102ef60",
+          "0xffffffc00102ef64",
+          "0xffffffc00102ef68",
+          "0xffffffc00102ef6c",
+          "0xffffffc00102ef70"
+        ],
+        "writes": [],
+        "x0_to_x5": [
+          "0x11010000",
+          "0x0",
+          "0x58",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "native_output_or_runtime_adapter": false
+      },
+      "uninitialized_target": 0,
+      "actual_runtime_service_address_or_effect_unverified": true
+    },
+    {
+      "veneer_offset": "0x2f604",
+      "API_offset": "0x698",
+      "raw_file_slot_offset": "0x83c",
+      "loader_vector_offset": "0x650",
+      "provider_relocation": {
+        "symbol": "pciatu_unmap",
+        "symbol_section": "SHN_UNDEF",
+        "symbol_value": "0x0",
+        "addend": "0x0",
+        "relocation_type": 257
+      },
+      "branch_register": "x1",
+      "original_fragment": {
+        "label": "original av-cam uninitialized veneer pciatu_unmap",
+        "start_pc": "0xffffffc00102f604",
+        "stop_pc": "0xffffffc00102f614",
+        "reason": "boundary: before_unbound_indirect_pciatu_unmap",
+        "pcs": [
+          "0xffffffc00102f604",
+          "0xffffffc00102f608",
+          "0xffffffc00102f60c",
+          "0xffffffc00102f610",
+          "0xffffffc00102f614"
+        ],
+        "writes": [],
+        "x0_to_x5": [
+          "0x11010000",
+          "0x0",
+          "0x58",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "native_output_or_runtime_adapter": false
+      },
+      "uninitialized_target": 0,
+      "actual_runtime_service_address_or_effect_unverified": true
+    },
+    {
+      "veneer_offset": "0x2f67c",
+      "API_offset": "0x6b8",
+      "raw_file_slot_offset": "0x85c",
+      "loader_vector_offset": "0x670",
+      "provider_relocation": {
+        "symbol": "memset",
+        "symbol_section": "SHN_UNDEF",
+        "symbol_value": "0x0",
+        "addend": "0x0",
+        "relocation_type": 257
+      },
+      "branch_register": "x3",
+      "original_fragment": {
+        "label": "original av-cam uninitialized veneer memset",
+        "start_pc": "0xffffffc00102f67c",
+        "stop_pc": "0xffffffc00102f68c",
+        "reason": "boundary: before_unbound_indirect_memset",
+        "pcs": [
+          "0xffffffc00102f67c",
+          "0xffffffc00102f680",
+          "0xffffffc00102f684",
+          "0xffffffc00102f688",
+          "0xffffffc00102f68c"
+        ],
+        "writes": [],
+        "x0_to_x5": [
+          "0x11010000",
+          "0x0",
+          "0x58",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "native_output_or_runtime_adapter": false
+      },
+      "uninitialized_target": 0,
+      "actual_runtime_service_address_or_effect_unverified": true
+    }
+  ],
+  "source_regions": [
+    {
+      "name": "original magic and version checks",
+      "instructions": [
+        {
+          "offset": "0x338",
+          "va": "0x338",
+          "bytes": "602a40f9",
+          "asm": "ldr x0, [x19, #0x50]"
+        },
+        {
+          "offset": "0x33c",
+          "va": "0x33c",
+          "bytes": "e2498a52",
+          "asm": "mov w2, #0x524f"
+        },
+        {
+          "offset": "0x340",
+          "va": "0x340",
+          "bytes": "2289a972",
+          "asm": "movk w2, #0x4c49, lsl #16"
+        },
+        {
+          "offset": "0x344",
+          "va": "0x344",
+          "bytes": "010840b9",
+          "asm": "ldr w1, [x0, #8]"
+        },
+        {
+          "offset": "0x348",
+          "va": "0x348",
+          "bytes": "3f00026b",
+          "asm": "cmp w1, w2"
+        },
+        {
+          "offset": "0x34c",
+          "va": "0x34c",
+          "bytes": "a0000054",
+          "asm": "b.eq #0x360"
+        },
+        {
+          "offset": "0x350",
+          "va": "0x350",
+          "bytes": "00110058",
+          "asm": "ldr x0, #0x570"
+        },
+        {
+          "offset": "0x354",
+          "va": "0x354",
+          "bytes": "00000094",
+          "asm": "bl #0x354"
+        },
+        {
+          "offset": "0x358",
+          "va": "0x358",
+          "bytes": "7f2a00f9",
+          "asm": "str xzr, [x19, #0x50]"
+        },
+        {
+          "offset": "0x35c",
+          "va": "0x35c",
+          "bytes": "68000014",
+          "asm": "b #0x4fc"
+        },
+        {
+          "offset": "0x360",
+          "va": "0x360",
+          "bytes": "010c40b9",
+          "asm": "ldr w1, [x0, #0xc]"
+        },
+        {
+          "offset": "0x364",
+          "va": "0x364",
+          "bytes": "3f140071",
+          "asm": "cmp w1, #5"
+        },
+        {
+          "offset": "0x368",
+          "va": "0x368",
+          "bytes": "c0000054",
+          "asm": "b.eq #0x380"
+        },
+        {
+          "offset": "0x36c",
+          "va": "0x36c",
+          "bytes": "60100058",
+          "asm": "ldr x0, #0x578"
+        },
+        {
+          "offset": "0x370",
+          "va": "0x370",
+          "bytes": "a2008052",
+          "asm": "mov w2, #5"
+        },
+        {
+          "offset": "0x374",
+          "va": "0x374",
+          "bytes": "00000094",
+          "asm": "bl #0x374"
+        },
+        {
+          "offset": "0x378",
+          "va": "0x378",
+          "bytes": "7f2a00f9",
+          "asm": "str xzr, [x19, #0x50]"
+        },
+        {
+          "offset": "0x37c",
+          "va": "0x37c",
+          "bytes": "60000014",
+          "asm": "b #0x4fc"
+        },
+        {
+          "offset": "0x380",
+          "va": "0x380",
+          "bytes": "00100058",
+          "asm": "ldr x0, #0x580"
+        },
+        {
+          "offset": "0x384",
+          "va": "0x384",
+          "bytes": "140080d2",
+          "asm": "mov x20, #0"
+        },
+        {
+          "offset": "0x388",
+          "va": "0x388",
+          "bytes": "00000094",
+          "asm": "bl #0x388"
+        }
+      ]
+    },
+    {
+      "name": "original vector-copy and app entry order",
+      "instructions": [
+        {
+          "offset": "0x4b0",
+          "va": "0x4b0",
+          "bytes": "742a40f9",
+          "asm": "ldr x20, [x19, #0x50]"
+        },
+        {
+          "offset": "0x4b4",
+          "va": "0x4b4",
+          "bytes": "21070058",
+          "asm": "ldr x1, #0x598"
+        },
+        {
+          "offset": "0x4b8",
+          "va": "0x4b8",
+          "bytes": "02d380d2",
+          "asm": "mov x2, #0x698"
+        },
+        {
+          "offset": "0x4bc",
+          "va": "0x4bc",
+          "bytes": "801240f9",
+          "asm": "ldr x0, [x20, #0x20]"
+        },
+        {
+          "offset": "0x4c0",
+          "va": "0x4c0",
+          "bytes": "00200191",
+          "asm": "add x0, x0, #0x48"
+        },
+        {
+          "offset": "0x4c4",
+          "va": "0x4c4",
+          "bytes": "00000094",
+          "asm": "bl #0x4c4"
+        },
+        {
+          "offset": "0x4c8",
+          "va": "0x4c8",
+          "bytes": "810a40f9",
+          "asm": "ldr x1, [x20, #0x10]"
+        },
+        {
+          "offset": "0x4cc",
+          "va": "0x4cc",
+          "bytes": "e0090058",
+          "asm": "ldr x0, #0x608"
+        },
+        {
+          "offset": "0x4d0",
+          "va": "0x4d0",
+          "bytes": "00000094",
+          "asm": "bl #0x4d0"
+        },
+        {
+          "offset": "0x4d4",
+          "va": "0x4d4",
+          "bytes": "612a40f9",
+          "asm": "ldr x1, [x19, #0x50]"
+        },
+        {
+          "offset": "0x4d8",
+          "va": "0x4d8",
+          "bytes": "000080d2",
+          "asm": "mov x0, #0"
+        },
+        {
+          "offset": "0x4dc",
+          "va": "0x4dc",
+          "bytes": "210840f9",
+          "asm": "ldr x1, [x1, #0x10]"
+        },
+        {
+          "offset": "0x4e0",
+          "va": "0x4e0",
+          "bytes": "20003fd6",
+          "asm": "blr x1"
+        }
+      ]
+    }
+  ],
+  "loader_init_data_relocations": [
+    {
+      "offset": "0x0",
+      "symbol": "CRE_TSK",
+      "symbol_section": 2,
+      "symbol_value": "0x4218",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x8",
+      "symbol": "cre_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x2df0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x10",
+      "symbol": "acre_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x2ef0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x18",
+      "symbol": "del_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x2fe8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x20",
+      "symbol": "act_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x3178",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x28",
+      "symbol": "can_act",
+      "symbol_section": 2,
+      "symbol_value": "0x3210",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x30",
+      "symbol": "sta_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x3278",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x38",
+      "symbol": "ext_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x32f8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x40",
+      "symbol": "exd_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x3348",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x48",
+      "symbol": "ter_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x33c0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x50",
+      "symbol": "chg_pri",
+      "symbol_section": 2,
+      "symbol_value": "0x35f8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x58",
+      "symbol": "get_pri",
+      "symbol_section": 2,
+      "symbol_value": "0x37f0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x60",
+      "symbol": "ref_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x3870",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x68",
+      "symbol": "ref_tst",
+      "symbol_section": 2,
+      "symbol_value": "0x3948",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x70",
+      "symbol": "tslp_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x39f0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x78",
+      "symbol": "wup_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x3bd0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x80",
+      "symbol": "can_wup",
+      "symbol_section": 2,
+      "symbol_value": "0x3c70",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x88",
+      "symbol": "rel_wai",
+      "symbol_section": 2,
+      "symbol_value": "0x3ce8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x90",
+      "symbol": "dly_tsk",
+      "symbol_section": 2,
+      "symbol_value": "0x3eb8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x98",
+      "symbol": "CRE_SEM",
+      "symbol_section": 2,
+      "symbol_value": "0x2480",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xa0",
+      "symbol": "cre_sem",
+      "symbol_section": 2,
+      "symbol_value": "0x1d40",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xa8",
+      "symbol": "acre_sem",
+      "symbol_section": 2,
+      "symbol_value": "0x1e48",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xb0",
+      "symbol": "del_sem",
+      "symbol_section": 2,
+      "symbol_value": "0x1f90",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xb8",
+      "symbol": "sig_sem",
+      "symbol_section": 2,
+      "symbol_value": "0x2060",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xc0",
+      "symbol": "twai_sem",
+      "symbol_section": 2,
+      "symbol_value": "0x20f8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xc8",
+      "symbol": "ref_sem",
+      "symbol_section": 2,
+      "symbol_value": "0x23a0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xd0",
+      "symbol": "CRE_FLG",
+      "symbol_section": 2,
+      "symbol_value": "0x4bd0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xd8",
+      "symbol": "cre_flg",
+      "symbol_section": 2,
+      "symbol_value": "0x4378",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xe0",
+      "symbol": "acre_flg",
+      "symbol_section": 2,
+      "symbol_value": "0x4478",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xe8",
+      "symbol": "del_flg",
+      "symbol_section": 2,
+      "symbol_value": "0x45b8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xf0",
+      "symbol": "set_flg",
+      "symbol_section": 2,
+      "symbol_value": "0x4680",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0xf8",
+      "symbol": "clr_flg",
+      "symbol_section": 2,
+      "symbol_value": "0x4770",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x100",
+      "symbol": "twai_flg",
+      "symbol_section": 2,
+      "symbol_value": "0x47c8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x108",
+      "symbol": "ref_flg",
+      "symbol_section": 2,
+      "symbol_value": "0x4af0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x110",
+      "symbol": "CRE_MBX",
+      "symbol_section": 2,
+      "symbol_value": "0x54e8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x118",
+      "symbol": "cre_mbx",
+      "symbol_section": 2,
+      "symbol_value": "0x4d18",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x120",
+      "symbol": "acre_mbx",
+      "symbol_section": 2,
+      "symbol_value": "0x4e18",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x128",
+      "symbol": "del_mbx",
+      "symbol_section": 2,
+      "symbol_value": "0x4f58",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x130",
+      "symbol": "snd_mbx",
+      "symbol_section": 2,
+      "symbol_value": "0x5028",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x138",
+      "symbol": "trcv_mbx",
+      "symbol_section": 2,
+      "symbol_value": "0x5120",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x140",
+      "symbol": "ref_mbx",
+      "symbol_section": 2,
+      "symbol_value": "0x53e8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x148",
+      "symbol": "CRE_MBF",
+      "symbol_section": 2,
+      "symbol_value": "0x6508",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x150",
+      "symbol": "cre_mbf",
+      "symbol_section": 2,
+      "symbol_value": "0x5848",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x158",
+      "symbol": "acre_mbf",
+      "symbol_section": 2,
+      "symbol_value": "0x5910",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x160",
+      "symbol": "del_mbf",
+      "symbol_section": 2,
+      "symbol_value": "0x5a00",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x168",
+      "symbol": "tsnd_mbf",
+      "symbol_section": 2,
+      "symbol_value": "0x5b10",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x170",
+      "symbol": "trcv_mbf",
+      "symbol_section": 2,
+      "symbol_value": "0x5f78",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x178",
+      "symbol": "ref_mbf",
+      "symbol_section": 2,
+      "symbol_value": "0x63f0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x180",
+      "symbol": "CRE_MPF",
+      "symbol_section": 2,
+      "symbol_value": "0x6fa8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x188",
+      "symbol": "cre_mpf",
+      "symbol_section": 2,
+      "symbol_value": "0x6798",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x190",
+      "symbol": "acre_mpf",
+      "symbol_section": 2,
+      "symbol_value": "0x6878",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x198",
+      "symbol": "del_mpf",
+      "symbol_section": 2,
+      "symbol_value": "0x6990",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1a0",
+      "symbol": "tget_mpf",
+      "symbol_section": 2,
+      "symbol_value": "0x6a58",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1a8",
+      "symbol": "rel_mpf",
+      "symbol_section": 2,
+      "symbol_value": "0x6de0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1b0",
+      "symbol": "ref_mpf",
+      "symbol_section": 2,
+      "symbol_value": "0x6ed8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1b8",
+      "symbol": "CRE_MPL",
+      "symbol_section": 2,
+      "symbol_value": "0x7d28",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1c0",
+      "symbol": "cre_mpl",
+      "symbol_section": 2,
+      "symbol_value": "0x74c0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1c8",
+      "symbol": "acre_mpl",
+      "symbol_section": 2,
+      "symbol_value": "0x7590",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1d0",
+      "symbol": "del_mpl",
+      "symbol_section": 2,
+      "symbol_value": "0x76e8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1d8",
+      "symbol": "tget_mpl",
+      "symbol_section": 2,
+      "symbol_value": "0x77a8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1e0",
+      "symbol": "rel_mpl",
+      "symbol_section": 2,
+      "symbol_value": "0x7b10",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1e8",
+      "symbol": "ref_mpl",
+      "symbol_section": 2,
+      "symbol_value": "0x7c08",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1f0",
+      "symbol": "get_tim",
+      "symbol_section": 2,
+      "symbol_value": "0x8f40",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x1f8",
+      "symbol": "CRE_CYC",
+      "symbol_section": 2,
+      "symbol_value": "0x8520",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x200",
+      "symbol": "cre_cyc",
+      "symbol_section": 2,
+      "symbol_value": "0x8118",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x208",
+      "symbol": "acre_cyc",
+      "symbol_section": 2,
+      "symbol_value": "0x81f0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x210",
+      "symbol": "del_cyc",
+      "symbol_section": 2,
+      "symbol_value": "0x82f0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x218",
+      "symbol": "sta_cyc",
+      "symbol_section": 2,
+      "symbol_value": "0x83b0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x220",
+      "symbol": "stp_cyc",
+      "symbol_section": 2,
+      "symbol_value": "0x8420",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x228",
+      "symbol": "ref_cyc",
+      "symbol_section": 2,
+      "symbol_value": "0x8480",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x230",
+      "symbol": "CRE_ALM",
+      "symbol_section": 2,
+      "symbol_value": "0x8c60",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x238",
+      "symbol": "cre_alm",
+      "symbol_section": 2,
+      "symbol_value": "0x87b8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x240",
+      "symbol": "acre_alm",
+      "symbol_section": 2,
+      "symbol_value": "0x88d0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x248",
+      "symbol": "del_alm",
+      "symbol_section": 2,
+      "symbol_value": "0x8a28",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x250",
+      "symbol": "sta_alm",
+      "symbol_section": 2,
+      "symbol_value": "0x8ae8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x258",
+      "symbol": "stp_alm",
+      "symbol_section": 2,
+      "symbol_value": "0x8b68",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x260",
+      "symbol": "ref_alm",
+      "symbol_section": 2,
+      "symbol_value": "0x8bc8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x268",
+      "symbol": "get_tid",
+      "symbol_section": 2,
+      "symbol_value": "0x8d00",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x270",
+      "symbol": "loc_cpu",
+      "symbol_section": 2,
+      "symbol_value": "0x1a88",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x278",
+      "symbol": "unl_cpu",
+      "symbol_section": 2,
+      "symbol_value": "0x1b08",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x280",
+      "symbol": "dis_dsp",
+      "symbol_section": 2,
+      "symbol_value": "0x8d50",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x288",
+      "symbol": "ena_dsp",
+      "symbol_section": 2,
+      "symbol_value": "0x8de8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x290",
+      "symbol": "sns_ctx",
+      "symbol_section": 2,
+      "symbol_value": "0x1bd0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x298",
+      "symbol": "sns_loc",
+      "symbol_section": 2,
+      "symbol_value": "0x1c18",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2a0",
+      "symbol": "sns_dsp",
+      "symbol_section": 2,
+      "symbol_value": "0x8ec0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2a8",
+      "symbol": "sns_dpn",
+      "symbol_section": 2,
+      "symbol_value": "0x8ee8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2b0",
+      "symbol": "def_inh",
+      "symbol_section": 2,
+      "symbol_value": "0x1778",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2b8",
+      "symbol": "dis_int",
+      "symbol_section": 2,
+      "symbol_value": "0x19a8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2c0",
+      "symbol": "ena_int",
+      "symbol_section": 2,
+      "symbol_value": "0x1980",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2c8",
+      "symbol": "Vspin_lock",
+      "symbol_section": 2,
+      "symbol_value": "0x9990",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2d0",
+      "symbol": "Vspin_trylock",
+      "symbol_section": 2,
+      "symbol_value": "0x99c0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2d8",
+      "symbol": "Vspin_unlock",
+      "symbol_section": 2,
+      "symbol_value": "0x99f8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2e0",
+      "symbol": "ref_cfg",
+      "symbol_section": 2,
+      "symbol_value": "0x8f90",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2e8",
+      "symbol": "ref_ver",
+      "symbol_section": 2,
+      "symbol_value": "0x8f28",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2f0",
+      "symbol": "chk_pic",
+      "symbol_section": 2,
+      "symbol_value": "0x19d0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x2f8",
+      "symbol": "clr_pic",
+      "symbol_section": 2,
+      "symbol_value": "0x1a00",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x300",
+      "symbol": "set_pic",
+      "symbol_section": 2,
+      "symbol_value": "0x1a70",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x308",
+      "symbol": "_get_stack_info",
+      "symbol_section": 2,
+      "symbol_value": "0x3d78",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x310",
+      "symbol": "liro_malloc",
+      "symbol_section": 2,
+      "symbol_value": "0x9860",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x318",
+      "symbol": "liro_free",
+      "symbol_section": 2,
+      "symbol_value": "0x98d8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x320",
+      "symbol": "printch",
+      "symbol_section": 2,
+      "symbol_value": "0x30",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x328",
+      "symbol": "prints",
+      "symbol_section": 2,
+      "symbol_value": "0x70",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x330",
+      "symbol": "profile",
+      "symbol_section": 2,
+      "symbol_value": "0xa0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x338",
+      "symbol": "osal_stat_sem",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x340",
+      "symbol": "osal_wai_sem_tmo",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x348",
+      "symbol": "osal_sig_sem",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x350",
+      "symbol": "osal_stat_msgq",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x358",
+      "symbol": "osal_set_msgq_broadcast_mode",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x360",
+      "symbol": "osal_snd_msg",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x368",
+      "symbol": "osal_snd_sync_msg",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x370",
+      "symbol": "osal_snd_sync_direct",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x378",
+      "symbol": "",
+      "symbol_section": 2,
+      "symbol_value": "0x0",
+      "addend": "0xc28",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x380",
+      "symbol": "osal_reg_msg_queue_cb",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x388",
+      "symbol": "osal_unreg_msg_queue_cb",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x390",
+      "symbol": "osal_reg_sync_msg_queue_cb",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x398",
+      "symbol": "osal_valloc_msg_wait",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3a0",
+      "symbol": "osal_free_msg",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3a8",
+      "symbol": "osal_set_msg_pri",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3b0",
+      "symbol": "osal_get_msg_pri",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3b8",
+      "symbol": "osal_dynamic_id",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3c0",
+      "symbol": "osal_msg_size",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3c8",
+      "symbol": "osal_set_msg_src",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3d0",
+      "symbol": "osal_get_msg_src",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3d8",
+      "symbol": "osal_create_thread",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3e0",
+      "symbol": "osal_create_waitable_thread",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3e8",
+      "symbol": "osal_exit_thread",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3f0",
+      "symbol": "osal_wait_thread_exit",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x3f8",
+      "symbol": "osal_thread_id",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x400",
+      "symbol": "osal_subsystem_id",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x408",
+      "symbol": "osal_set_cpu",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x410",
+      "symbol": "osal_get_stack",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x418",
+      "symbol": "osal_free_stack",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x478",
+      "symbol": "Backup_nread",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x480",
+      "symbol": "Backup_nread_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x488",
+      "symbol": "Backup_nread_multi",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x490",
+      "symbol": "Backup_nread_multi_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x498",
+      "symbol": "Backup_nread_setting_attr",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4a0",
+      "symbol": "Backup_nread_setting_attr_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4a8",
+      "symbol": "Backup_read_setting_attr",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4b0",
+      "symbol": "Backup_read_setting_attr_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4b8",
+      "symbol": "Backup_write_setting_attr",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4c0",
+      "symbol": "Backup_write_setting_attr_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4c8",
+      "symbol": "Backup_get_datasize",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4d0",
+      "symbol": "Backup_get_datasize_multi",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4d8",
+      "symbol": "Backup_get_attribute",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4e0",
+      "symbol": "Backup_read",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4e8",
+      "symbol": "Backup_read_multi",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4f0",
+      "symbol": "Backup_read_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x4f8",
+      "symbol": "Backup_read_multi_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x500",
+      "symbol": "Backup_write",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x508",
+      "symbol": "Backup_write_vsize",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x510",
+      "symbol": "Backup_write_multi",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x518",
+      "symbol": "Backup_write_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x520",
+      "symbol": "Backup_write_vsize_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x528",
+      "symbol": "Backup_write_multi_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x530",
+      "symbol": "Backup_sync_subsystem",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x538",
+      "symbol": "Backup_sync_all",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x540",
+      "symbol": "Backup_reg_cb",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x548",
+      "symbol": "Backup_unreg_cb",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x550",
+      "symbol": "Backup_reset",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x558",
+      "symbol": "Backup_reset_subsystem",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x560",
+      "symbol": "Backup_reset_all",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x568",
+      "symbol": "Backup_check",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x570",
+      "symbol": "Backup_read_4Byte",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x578",
+      "symbol": "Backup_get_datasize_interchip",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x580",
+      "symbol": "Backup_nread_interchip",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x588",
+      "symbol": "Backup_write_interchip",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x590",
+      "symbol": "dmm_direct_call",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x598",
+      "symbol": "interchip_transfer_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5a0",
+      "symbol": "tmonitor_write",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5a8",
+      "symbol": "memcpy",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5b0",
+      "symbol": "Vset_cpu",
+      "symbol_section": 2,
+      "symbol_value": "0x4128",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5b8",
+      "symbol": "Vcur_cpu",
+      "symbol_section": 2,
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5c0",
+      "symbol": "malloc_reset",
+      "symbol_section": 2,
+      "symbol_value": "0x9940",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5c8",
+      "symbol": "cache_flush_range",
+      "symbol_section": 2,
+      "symbol_value": "0xb8",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5d0",
+      "symbol": "cache_inv_range",
+      "symbol_section": 2,
+      "symbol_value": "0x130",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5d8",
+      "symbol": "arch_phys_to_noncache",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5e0",
+      "symbol": "arch_phys_to_cache",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5e8",
+      "symbol": "arch_va_to_phys",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5f0",
+      "symbol": "arch_va_to_noncache",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x5f8",
+      "symbol": "arch_va_to_cache",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x610",
+      "symbol": "arch_phys_to_va",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x618",
+      "symbol": "arch_phys_to_memtype",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x620",
+      "symbol": "arch_va_to_memtype",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x628",
+      "symbol": "arch_phys_to_cachetype",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x630",
+      "symbol": "arch_va_to_cachetype",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x638",
+      "symbol": "dma330_mem_transfer_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x640",
+      "symbol": "pcidma_transfer_async",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x648",
+      "symbol": "pciatu_map",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x650",
+      "symbol": "pciatu_unmap",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x658",
+      "symbol": "tmonitor_start",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x660",
+      "symbol": "tmonitor_stop",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x668",
+      "symbol": "tmonitor_dump",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    },
+    {
+      "offset": "0x670",
+      "symbol": "memset",
+      "symbol_section": "SHN_UNDEF",
+      "symbol_value": "0x0",
+      "addend": "0x0",
+      "relocation_type": 257
+    }
+  ],
+  "kernel_module_vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+  "original_fragments": 8,
+  "original_guest_store_count": 0,
+  "raw_clear_slot_correct_offset": "0x85c",
+  "instruction_literals_relocated_only_at": [
+    "0x570",
+    "0x578",
+    "0x580",
+    "0x598"
+  ],
+  "loader_version_field5_bound_not_inferred_segment_count": true,
+  "kernel_symbol_implementation_addresses_full_runtime_init_or_lock_semantics_bound": false,
+  "no_substitute_memset_or_mock_service_return": true,
+  "camera_or_remote_operation": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

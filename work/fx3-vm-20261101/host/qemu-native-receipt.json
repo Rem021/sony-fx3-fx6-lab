@@ -1,0 +1,47 @@
+{
+  "created_utc": "2026-11-01T10:02:12.665862+00:00",
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64",
+  "bytes": 35941248,
+  "sha256": "e64fe35106e725081094f31b2f76e843fed2107c6e86c2d07bb52499a18124b8",
+  "smoke": [
+    {
+      "args": [
+        "file",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64"
+      ],
+      "exit": 0,
+      "stdout": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64: Mach-O 64-bit executable arm64\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "QEMU emulator version 11.1.2\nCopyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "codesign",
+        "--verify",
+        "--verbose=2",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64: valid on disk\n/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64: satisfies its Designated Requirement\n"
+    },
+    {
+      "args": [
+        "otool",
+        "-L",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64"
+      ],
+      "exit": 0,
+      "stdout": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build/qemu-system-aarch64:\n\t/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.12)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.1.8)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/glib/2.90.1/lib/libglib-2.0.0.dylib (compatibility version 9001.0.0, current version 9001.1.0)\n",
+      "stderr": ""
+    }
+  ]
+}

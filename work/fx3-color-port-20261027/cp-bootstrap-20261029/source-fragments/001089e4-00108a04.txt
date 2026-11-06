@@ -1,0 +1,8 @@
+001089e4 movw       r1, #0x2000
+001089e8 movt       r1, #0x3e4
+001089ec ldrb       r1, [r1]
+001089f0 cmp        r1, #0
+001089f4 movwne     r1, #0
+001089f8 movtne     r1, #0xd022
+001089fc strne      r1, [r0]
+00108a00 bx         lr

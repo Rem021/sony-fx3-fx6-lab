@@ -1,0 +1,59 @@
+{
+  "schema": "fx6-hybrid-fx3kernel-gpecap22-run-v1",
+  "utc": "2026-11-06T09:04:07.677395+00:00",
+  "manifest_sha256": "082a06d607e4a007ed59e26e781b7d69ea629c3b00a90b282b1cc7e8a09a4c9d",
+  "mode": "ap-window",
+  "reason": "ap_guard_observed_continue",
+  "serial_observation": {
+    "first_line": "[    0.122500] Booting Linux on physical CPU 0x0",
+    "linux_version_line": "[    0.148656] Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025",
+    "fault_markers": [],
+    "init_boundary_line": "FX3_DEVTMPFS_RC=0",
+    "init_boundary_rc": 0,
+    "first_module_line": "FX3_INSMOD_RC_/kmod/devno.ko=0",
+    "first_module_rc": 0,
+    "cpuset_not_ready": false,
+    "simulation_guard": true,
+    "pre_cp_first_negative_line": null,
+    "cp_helper_begin": true,
+    "cp_helper_rc_line": null,
+    "cp_helper_rc": null,
+    "pre_ap_guard": false,
+    "ap_guard": true
+  },
+  "cp_bind_marker": true,
+  "cp_helper_rc": 0,
+  "cp_helper_rc0": true,
+  "pre_ap_guard": true,
+  "ap_guard": true,
+  "ap_markers": [],
+  "startup_probe": {
+    "registers": "\r\nCPU#0\r\n PC=0000000400000000 X00=0000000000000000 X01=0000000000000000\r\nX02=0000000000000000 X03=0000000000000000 X04=0000000000000000\r\nX05=0000000000000000 X06=0000000000000000 X07=0000000000000000\r\nX08=0000000000000000 X09=0000000000000000 X10=0000000000000000\r\nX11=0000000000000000 X12=0000000000000000 X13=0000000000000000\r\nX14=0000000000000000 X15=0000000000000000 X16=0000000000000000\r\nX17=0000000000000000 X18=0000000000000000 X19=0000000000000000\r\nX20=0000000000000000 X21=0000000000000000 X22=0000000000000000\r\nX23=0000000000000000 X24=0000000000000000 X25=0000000000000000\r\nX26=0000000000000000 X27=0000000000000000 X28=0000000000000000\r\nX29=0000000000000000 X30=0000000000000000  SP=0000000000000000\r\nPSTATE=00000000400003c5 -Z-- EL1h    FPU disabled\r\n",
+    "cpu_count": 4
+  },
+  "elapsed_seconds": 60.1344432909973,
+  "maximum_seconds": 60,
+  "qemu_pid": 34368,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "locks_released": true,
+  "logs": {
+    "serial.log": {
+      "bytes": 167528,
+      "sha256": "f16fc375485d7ac16c168dd43750001d33d7649bcd15358be88f23484b5e74c8"
+    },
+    "host-stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "host-stderr.log": {
+      "bytes": 121,
+      "sha256": "44c22547c12d012e38365b358c2ae15869593879f62ddbdb3b969f1c7b2be07a"
+    }
+  },
+  "error": null,
+  "firmware_AP_CP_AV_result": "CP_RC0_OBSERVED_NOT_AP",
+  "polling_is_not_CPU_breakpoint": true,
+  "one_VM_one_Start": true,
+  "deployment": false
+}

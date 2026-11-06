@@ -1,0 +1,184 @@
+{
+  "created_utc": "2026-10-30T11:56:58.319900+00:00",
+  "stage": "WBI-zero-staging-20261030",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5532,
+      "sha256": "d6eef7d14a01885b6088835100f6655e8ca2c74e8926d46a481e38a2bc93f282"
+    },
+    {
+      "path": "WBI-record-inventory.json",
+      "bytes": 566807,
+      "sha256": "5625b935715c4cb89de279cc250eda22c2a0a2ea959bf1ae2462ab2076a5d84e"
+    },
+    {
+      "path": "WBI-zero-proof.json",
+      "bytes": 8542,
+      "sha256": "2320a7bb3dbb4ca6cb724195c0bad8c2a653a218305fe5750648f8e478f0722e"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 1046,
+      "sha256": "cb5836f376b7ae50da0f9e7c456a6f79ac5c211ba3889ada228bfb132b324451"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 1246,
+      "sha256": "a8878b47a412c4454f9d6b1816ba50d0e870009af57b960aad3ea29b6c80f66c"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 433,
+      "sha256": "88625a2bac8f923ed6565700f0d60c07ddff39a64ed8d8482e0b27dd54cd6e55"
+    },
+    {
+      "path": "listings/reference-WBI-load-entry.txt",
+      "bytes": 704,
+      "sha256": "1d1c6b199508e9f601e60db8c265f56d2873f995d190574331e54749ae0ed54f"
+    },
+    {
+      "path": "listings/reference-WBI-table-copy-and-flag-dispatch.txt",
+      "bytes": 1109,
+      "sha256": "d9533bb854e465fb94b281e261c690fa12f167075066b89670917013c1d3d3de"
+    },
+    {
+      "path": "listings/reference-WBI-table-read-loop.txt",
+      "bytes": 1677,
+      "sha256": "22253b8a80fadfb129f69e9f8422eeb79601ea1fa581dc8c301014780446e122"
+    },
+    {
+      "path": "listings/reference-WBI-zero-fill-branch.txt",
+      "bytes": 1863,
+      "sha256": "9fd3bfd268b11542e9aad9e40e96baa1561411b2c99501f4fd262be966820670"
+    },
+    {
+      "path": "prove_wbi_zero.py",
+      "bytes": 10974,
+      "sha256": "b400fceba13412fdd6fe56dd264deb5810edafe88d69eb078be52578666c1c27"
+    },
+    {
+      "path": "source-review.json",
+      "bytes": 1165,
+      "sha256": "af16fd9d890bd72661bc4df7f103e67d84edd71a5982fd57d5e78f866bbc584b"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 2715,
+      "sha256": "4bfdb5339b7fa112861e701c86ab2081091f6ddb82b18dd12af80378f3a65c12"
+    },
+    {
+      "path": "verify_wbi_zero.py",
+      "bytes": 3558,
+      "sha256": "edfe1ee1181f14fa280399d89061927c0890d20c7f3304e504c640c6e42eb717"
+    }
+  ],
+  "validation": {
+    "status": "PASS_SCOPED_WBI_ZERO_DISPATCH_AND_STAGING_EXCLUSION",
+    "original_section_rows_compared_with_independent_stage203": 1399,
+    "original_section_metadata_xor_checks": 1399,
+    "stored_records": 1317,
+    "zero_fill_records": 82,
+    "instruction_checks": [
+      {
+        "VA": "0xfe0597d4",
+        "bytes": "880a4092",
+        "instruction": "and x8, x20, #7"
+      },
+      {
+        "VA": "0xfe0597dc",
+        "bytes": "2119088b",
+        "instruction": "add x1, x9, x8, lsl #6"
+      },
+      {
+        "VA": "0xfe0597e0",
+        "bytes": "e2031a32",
+        "instruction": "mov w2, #0x40"
+      },
+      {
+        "VA": "0xfe0597e8",
+        "bytes": "17c7ff97",
+        "instruction": "bl #0xfe04b444"
+      },
+      {
+        "VA": "0xfe0597ec",
+        "bytes": "171340f9",
+        "instruction": "ldr x23, [x24, #0x20]"
+      },
+      {
+        "VA": "0xfe059804",
+        "bytes": "09634039",
+        "instruction": "ldrb w9, [x24, #0x18]"
+      },
+      {
+        "VA": "0xfe059808",
+        "bytes": "080340f9",
+        "instruction": "ldr x8, [x24]"
+      },
+      {
+        "VA": "0xfe05980c",
+        "bytes": "e9070037",
+        "instruction": "tbnz w9, #0, #0xfe059908"
+      },
+      {
+        "VA": "0xfe059908",
+        "bytes": "091340f9",
+        "instruction": "ldr x9, [x24, #0x20]"
+      },
+      {
+        "VA": "0xfe059928",
+        "bytes": "170340f9",
+        "instruction": "ldr x23, [x24]"
+      },
+      {
+        "VA": "0xfe05992c",
+        "bytes": "181340f9",
+        "instruction": "ldr x24, [x24, #0x20]"
+      },
+      {
+        "VA": "0xfe05993c",
+        "bytes": "57f2ff97",
+        "instruction": "bl #0xfe056298"
+      },
+      {
+        "VA": "0xfe059940",
+        "bytes": "e8031e32",
+        "instruction": "mov w8, #4"
+      },
+      {
+        "VA": "0xfe059980",
+        "bytes": "e8df01a9",
+        "instruction": "stp x8, x23, [sp, #0x18]"
+      },
+      {
+        "VA": "0xfe059984",
+        "bytes": "f81700f9",
+        "instruction": "str x24, [sp, #0x28]"
+      },
+      {
+        "VA": "0xfe059988",
+        "bytes": "a0f2ff97",
+        "instruction": "bl #0xfe056408"
+      }
+    ],
+    "original_reference_dispatch_fragments": 2,
+    "independent_pre_DMA_fragment": 1,
+    "two_original_records_copied_byte_exact": true,
+    "default_AP_staging_region_queries": 3,
+    "overlapping_any_records": 0,
+    "flag1_zero_semantics_supported_by_Sony_reference_and_AP_dispatch": true,
+    "source_kernel_version": "FX3 GPL Ver7.00 reference, layout verified against 7.02 data",
+    "AP_code_model": "A7 IV v2.00 reference, not current target FX3 AP",
+    "actual_WBI_restore_or_DMA_executed": false,
+    "unknown_earlier_initialization_remains": true,
+    "physical_chip_capacity_inferred": false,
+    "complete_source_RAM_or_full_private_ISP_recovered": false,
+    "modified_or_flashable_firmware_produced": false,
+    "goal_complete": false
+  },
+  "goal_status": "active",
+  "goal_complete": false,
+  "device_actions": 0,
+  "modified_or_flashable_firmware_produced": false
+}

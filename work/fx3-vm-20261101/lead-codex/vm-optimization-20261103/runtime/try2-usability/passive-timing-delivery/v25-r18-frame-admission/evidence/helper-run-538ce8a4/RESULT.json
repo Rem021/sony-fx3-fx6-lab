@@ -1,0 +1,49 @@
+{
+  "scope": "offline Chrome with actual r18 PAGE and helper JS; no VM",
+  "cases": {
+    "old_deadline_rejected_new_PAGE": {
+      "error": "✗ Evaluation error: Error: deadline_refused: PAGE fingerprint\n    at fail (<anonymous>:6:35)\n    at installInteractionDeadline (<anonymous>:36:28)\n",
+      "counts": {}
+    },
+    "new_deadline_installed_armed": {
+      "due_ms": 23130.89999997616,
+      "deadline_ms": 20000
+    },
+    "old_capture_rejected_new_PAGE": {
+      "status": "no_qualified_screenshot",
+      "reason": "Error: PAGE_fingerprint"
+    },
+    "new_capture_qualified_historical_PNG": {
+      "status": "qualified_screenshot_for_operator_review",
+      "screenshot_sha256": "d202c7f05214ef72eca209f4f8cf32c563e89aeed1110a75429074c1f40608ee",
+      "waited_ms": 587.6999999880791,
+      "counts": {}
+    },
+    "old_explicit_rejected_new_PAGE": {
+      "status": "refused",
+      "counts": {}
+    },
+    "new_explicit_confirm_cancelled": {
+      "status": "confirmed_and_cancelled",
+      "guest_input_written": false,
+      "counts": {
+        "confirm": 1
+      },
+      "deadline_state": "cancelled",
+      "due_ms": 23130.89999997616
+    },
+    "wrong_PAGE_rejected_by_capture_and_explicit": {
+      "capture": "Error: PAGE_fingerprint",
+      "explicit": "refused",
+      "counts": {}
+    },
+    "wrong_PAGE_rejected_by_deadline": {
+      "error": "✗ Evaluation error: Error: deadline_refused: PAGE fingerprint\n    at fail (<anonymous>:6:35)\n    at installInteractionDeadline (<anonymous>:36:28)\n",
+      "counts": {}
+    }
+  },
+  "session": "fx3-deadline-r18-1e6bf515",
+  "evidence_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r18-frame-admission/evidence/helper-run-538ce8a4",
+  "passed": true,
+  "browser_closed": true
+}

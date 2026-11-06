@@ -1,0 +1,48 @@
+{
+  "scope": "production predicate/helper extraction; no QEMU or new guest input",
+  "cases": [
+    {
+      "case": "idle",
+      "baseline_timeout": false,
+      "candidate_error": null,
+      "passed": true
+    },
+    {
+      "case": "before_deadline",
+      "baseline_timeout": false,
+      "candidate_error": null,
+      "passed": true
+    },
+    {
+      "case": "missing_sender",
+      "baseline_timeout": true,
+      "candidate_error": "按键 12 秒内未得到原生 key-up 回执",
+      "passed": true
+    },
+    {
+      "case": "missing_native_consumer",
+      "baseline_timeout": false,
+      "candidate_error": "按键 12 秒内原程序按下/抬起接收证据不完整，停止本轮；不会自动重发。",
+      "passed": true
+    },
+    {
+      "case": "wrong_step_sender",
+      "baseline_timeout": true,
+      "candidate_error": "按键 12 秒内未得到原生 key-up 回执",
+      "passed": true
+    },
+    {
+      "case": "all_input_receipts_menu_still_rendering",
+      "baseline_timeout": false,
+      "candidate_error": null,
+      "passed": true
+    }
+  ],
+  "historical_step10": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-70588c4c/serial.log",
+    "native_down": true,
+    "native_up": true,
+    "sender_up": true,
+    "caused_by_this_gap": false
+  }
+}

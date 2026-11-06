@@ -1,0 +1,25 @@
+{
+  "timestamp_utc": "2026-11-05T18:11:28.440247+00:00",
+  "task": "task_b82d76ef57c1",
+  "dispatch": "ctx_4d176e816e6b",
+  "manifest": {
+    "count": 109,
+    "all_match": true,
+    "sha256": "f5cf42360d190bb9c3ce2c62966dce5e9e68b55aeb1e3e58318d17ec1299ce7b"
+  },
+  "status": "not_runtime_ready_real_protocol_order_missing",
+  "verified_findings": [
+    "baseline argv contains -S; start waits for mapping before initial boot cont",
+    "QMP factory reads greeting but never qmp_capabilities; connect/greeting/readline have no bounded timeout or startup retry",
+    "observe handles on_stop without addressless continue, so no real return stop after first entry",
+    "independent process fake requiring quit reproduces stop/query/wait/terminate/wait/quit/unlock; quit must precede wait",
+    "lock_released receipt remains false although actual flag is true",
+    "cleanup callback can run after unconfirmed stop and daemon callback can outlive timeout and mutate connection after quit",
+    "hard total deadline not enforced through real blocking I/O, callbacks, and wait stages"
+  ],
+  "tests_limitation": "fake QMP permits commands without negotiation; fake map independent of boot state; fake RSP emits next stop without resume; fake process wait returns success without quit",
+  "API16_status": "target compatibility with old F100FILE cleanup remains unestablished; string absence alone does not prove no restoration mechanism",
+  "VM_started": false,
+  "VM_authorized": false,
+  "next": "stateful fake transport covering real protocol and bounded runner; no live launch"
+}

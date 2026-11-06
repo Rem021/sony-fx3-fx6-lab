@@ -1,0 +1,8 @@
+{
+  "recorded_utc": "2026-11-01T14:22:09.377796+00:00",
+  "failure": "initial test_manual_entry.py attempt01 raised FileNotFoundError before spawning any process because parent directory runs/ did not exist yet",
+  "correction": "created runs/ directory with mode 0700 and reran attempt01 cleanly",
+  "no_processes_spawned_on_failed_mkdir": true,
+  "production_release_flags_still_zero": true,
+  "new_admin_or_USB_operations": 0
+}

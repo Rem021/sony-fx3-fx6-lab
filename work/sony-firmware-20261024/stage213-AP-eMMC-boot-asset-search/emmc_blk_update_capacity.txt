@@ -1,0 +1,33 @@
+0000ada0: fd7bbca9 stp x29, x30, [sp, #-0x40]!
+0000ada4: fd030091 mov x29, sp
+0000ada8: f55b02a9 stp x21, x22, [sp, #0x20]
+0000adac: f5030058 ldr x21, #0xae28
+0000adb0: f35301a9 stp x19, x20, [sp, #0x10]
+0000adb4: f71b00f9 str x23, [sp, #0x30]
+0000adb8: a00a40b9 ldr w0, [x21, #8]
+0000adbc: 1f000071 cmp w0, #0
+0000adc0: 8d020054 b.le #0xae10
+0000adc4: 14008052 mov w20, #0
+0000adc8: 165f8052 mov w22, #0x2f8
+0000adcc: b30240f9 ldr x19, [x21]
+0000add0: 934e369b smaddl x19, w20, w22, x19
+0000add4: 94060011 add w20, w20, #1
+0000add8: e00313aa mov x0, x19
+0000addc: 170c41f8 ldr x23, [x0, #0x10]!
+0000ade0: 58f4ff97 bl #0x7f40
+0000ade4: e04200f9 str x0, [x23, #0x80]
+0000ade8: 600a40f9 ldr x0, [x19, #0x10]
+0000adec: 611640f9 ldr x1, [x19, #0x28]
+0000adf0: 004040f9 ldr x0, [x0, #0x80]
+0000adf4: 00fc49d3 lsr x0, x0, #9
+0000adf8: 202800f9 str x0, [x1, #0x50]
+0000adfc: 601640f9 ldr x0, [x19, #0x28]
+0000ae00: 00000094 bl #0xae00 ; {'section': '.text', 'offset': 44544, 'type': 283, 'symbol': 'revalidate_disk', 'addend': 0}
+0000ae04: a00a40b9 ldr w0, [x21, #8]
+0000ae08: 1f00146b cmp w0, w20
+0000ae0c: 0cfeff54 b.gt #0xadcc
+0000ae10: f35341a9 ldp x19, x20, [sp, #0x10]
+0000ae14: f55b42a9 ldp x21, x22, [sp, #0x20]
+0000ae18: f71b40f9 ldr x23, [sp, #0x30]
+0000ae1c: fd7bc4a8 ldp x29, x30, [sp], #0x40
+0000ae20: c0035fd6 ret 

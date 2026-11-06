@@ -1,0 +1,91 @@
+{
+  "sequence": [
+    {
+      "order": 1,
+      "mode": "r15 N1/N64 relink sequentially",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/prepare_r15_samples.py",
+      "exit": 0,
+      "log": "STRIP-BUILD.log"
+    },
+    {
+      "order": 2,
+      "command": [
+        "python3",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/fixed_layout.py",
+        "plan",
+        "--raw-helper",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15-n1.so",
+        "--helper",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/fx3-ui-gate-v15-n1-linker-strip.so",
+        "--release-contract",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/N1-release.json",
+        "--report-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/plans-N1"
+      ],
+      "exit": 0,
+      "review": "PLAN-REVIEW-N1.json"
+    },
+    {
+      "order": 3,
+      "command": [
+        "python3",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/fixed_layout.py",
+        "write",
+        "--plan",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/plans-N1/plan.json",
+        "--output-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N1",
+        "--acknowledge-real-cpio-output",
+        "REVIEWED_R15_FIXED_SLOT"
+      ],
+      "exit": 0,
+      "log": "WRITE-N1.log"
+    },
+    {
+      "order": 4,
+      "command": [
+        "python3",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/fixed_layout.py",
+        "plan",
+        "--raw-helper",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15-n64.so",
+        "--helper",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/fx3-ui-gate-v15-n64-linker-strip.so",
+        "--release-contract",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/N64-release.json",
+        "--report-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/plans-N64"
+      ],
+      "exit": 0,
+      "review": "PLAN-REVIEW-N64.json"
+    },
+    {
+      "order": 5,
+      "command": [
+        "python3",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/fixed_layout.py",
+        "write",
+        "--plan",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/plans-N64/plan.json",
+        "--output-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64",
+        "--acknowledge-real-cpio-output",
+        "REVIEWED_R15_FIXED_SLOT"
+      ],
+      "exit": 0,
+      "log": "WRITE-N64.log"
+    },
+    {
+      "order": 6,
+      "mode": "independent artifact verification",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/verify_generated.py",
+      "exit": 0,
+      "log": "VERIFY.log"
+    }
+  ],
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "VM_started": false,
+  "parallel_large_file_operations": false
+}

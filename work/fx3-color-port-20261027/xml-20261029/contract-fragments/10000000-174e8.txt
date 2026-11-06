@@ -1,0 +1,56 @@
+000174e8 stp        x29, x30, [sp, #-0x20]!
+000174ec mov        x29, sp
+000174f0 stp        x19, x20, [sp, #0x10]
+000174f4 mov        x19, x0
+000174f8 ldr        x0, [x0, #0x18]
+000174fc cbz        x0, #0x17514
+00017500 mov        x20, x1
+00017504 ldr        x1, [x19, #0x20]
+00017508 cbz        x1, #0x17514
+0001750c ldr        x1, [x19, #8]
+00017510 cbnz       x1, #0x1756c
+00017514 mov        w19, #0x1a
+00017518 adrp       x2, #0x1b000
+0001751c movk       w19, #3, lsl #16
+00017520 adrp       x0, #0x1b000
+00017524 add        x2, x2, #0xf13 ; literal 'XmlConfigHandler.cpp'
+00017528 mov        w1, w19
+0001752c add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00017530 mov        w3, #0x8b
+00017534 bl         #0x10930 ; printf
+00017538 mov        x0, #0x10
+0001753c bl         #0xfd80 ; __cxa_allocate_exception
+00017540 str        w19, [x0, #8]
+00017544 adrp       x1, #0x31000
+00017548 adrp       x2, #0x31000
+0001754c strb       wzr, [x0, #0xc]
+00017550 ldr        x1, [x1, #0xe30]
+00017554 ldr        x2, [x2, #0xe88]
+00017558 add        x1, x1, #0x10
+0001755c str        x1, [x0]
+00017560 adrp       x1, #0x31000
+00017564 ldr        x1, [x1, #0xfc0]
+00017568 bl         #0x10700 ; __cxa_throw
+0001756c ldr        x1, [x0]
+00017570 ldr        x1, [x1, #0x20]
+00017574 blr        x1
+00017578 ldp        x0, x1, [x19]
+0001757c mov        x2, x20
+00017580 ldr        x3, [x0, #0x58]
+00017584 mov        x0, x19
+00017588 blr        x3
+0001758c ldr        x0, [x19]
+00017590 mov        x2, x20
+00017594 ldr        x1, [x19, #0x10]
+00017598 ldr        x3, [x0, #0x58]
+0001759c mov        x0, x19
+000175a0 blr        x3
+000175a4 ldr        x0, [x19, #0x18]
+000175a8 ldr        x1, [x0]
+000175ac ldr        x1, [x1, #0x28]
+000175b0 blr        x1
+000175b4 cmp        w0, #0
+000175b8 cset       w0, ne
+000175bc ldp        x19, x20, [sp, #0x10]
+000175c0 ldp        x29, x30, [sp], #0x20
+000175c4 ret        

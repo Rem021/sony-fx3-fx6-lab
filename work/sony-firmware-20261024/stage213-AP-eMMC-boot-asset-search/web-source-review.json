@@ -1,0 +1,27 @@
+{
+  "primary_sources": [
+    {
+      "url": "https://support.d-imaging.sony.co.jp/support/ilme/products/ilmefx3/update/v300/ja/win/index.html",
+      "live_read": true,
+      "supports": "official3.00 package includes intermediate installer selecting2.04 or2.05 based on older installed version",
+      "does_not_prove": "7.02 downgrade permission, APboot0 availability or recovery of a modified unbootable body"
+    },
+    {
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+      "valid_prior_live_result_reused": "stage212",
+      "supports": "Sony Ver7.00 GPL source origin; pinned complete archive used for structure headers",
+      "does_not_prove": "current proprietary7.02 driver source or matching node table"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/DavidBuchanan314/fwtool.py/3955d7890fc38daf942bb52827599bfe35de4a14/fwtool/sony/constants.py",
+      "fixed_SHA_verified": "f9ff02a3889b587cd5bad5f4362fb73fee2f8f3591fc3ed6003eb8ac92d0622a",
+      "supports": "published format constants used by previously reviewed host parser, values retained only in memory",
+      "does_not_prove": "modified-package admission or device recovery"
+    }
+  ],
+  "search_scope": ["ILME-FX3 boot0","FX3 loader_emmc.tar","Sony FX3 BootROM","ILME-FX3 emmc","ALCIN loader_emmc","ILME-FX3 nflashaB0"],
+  "search_result_quality": "No directly verified new FX3 AP boot0 artifact from those queries. Search absence is not global absence proof. Unrelated camera-card/phone/Cypress results excluded; third-party ZVE10 hardware notes not used to infer FX3 interfaces or absence of a USB boot stack.",
+  "A7IV_fixed_boot_directory_live_fetch": "web fetch returned cache miss; existing pinned public reference retained, not newly verified by this directory fetch",
+  "current_proprietary_driver_evidence": "reextracted original7.02 p3 initrd modules, bound in driver/devno source captures",
+  "hardware_acceptance_claimed": false
+}

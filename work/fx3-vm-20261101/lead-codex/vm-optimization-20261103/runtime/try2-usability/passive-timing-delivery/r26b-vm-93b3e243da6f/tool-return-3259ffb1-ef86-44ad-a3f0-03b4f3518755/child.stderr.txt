@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/runtime-wrapper/operate.py", line 112, in <module>
+    if __name__=='__main__':run_action(sys.argv[1])
+                            ~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/runtime-wrapper/operate.py", line 104, in run_action
+    event('operator_tool_'+action+'_entry');v=_run_action(action);event('operator_tool_'+action+'_return_prepared',**v);print(json.dumps(v,ensure_ascii=False));return v
+                                              ~~~~~~~~~~~^^^^^^^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/runtime-wrapper/operate.py", line 72, in _run_action
+    flow.before_pin(a,target)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/runtime-wrapper/postkey_flow.py", line 47, in before_pin
+    result=evaluate(CFG['session'],'postkey_read.js',{**v['binding'],'page_sha':PAGE_SHA,'action':'guard'})
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/operator-helpers/review_snapshot_cli.py", line 21, in evaluate
+    def evaluate(session,file,c):return json.loads(call(session,['eval','--stdin'],(HERE/file).read_text()+'('+json.dumps(c)+')'))
+                                                   ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/operator-helpers/review_snapshot_cli.py", line 13, in call
+    if p.returncode:raise RuntimeError('owned browser operation failed')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: owned browser operation failed

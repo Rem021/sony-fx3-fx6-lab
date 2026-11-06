@@ -1,0 +1,270 @@
+[
+  {
+    "source_p1": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1",
+    "member": "/usr/bin/ud_reboot.elf",
+    "bytes": 14432,
+    "sha256": "314725816b8a251500eb38b001ab8bd8449f6560753db4090658086331586d7a",
+    "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage202-update-transition-and-restart/historical/2.05/ud_reboot.elf",
+    "entry": "0x4014f8",
+    "start": [
+      "004014f8 1d0080d2 mov     x29, #0",
+      "004014fc 1e0080d2 mov     x30, #0",
+      "00401500 e50300aa mov     x5, x0",
+      "00401504 e10340f9 ldr     x1, [sp]",
+      "00401508 e2230091 add     x2, sp, #8",
+      "0040150c e6030091 mov     x6, sp",
+      "00401510 c0000058 ldr     x0, #0x401528",
+      "00401514 e3000058 ldr     x3, #0x401530",
+      "00401518 04010058 ldr     x4, #0x401538",
+      "0040151c d1fdff97 bl      #0x400c60",
+      "00401520 f8fdff97 bl      #0x400d00",
+      "00401524 00000000 udf     #0"
+    ],
+    "imports": [
+      "_Jv_RegisterClasses",
+      "_ITM_deregisterTMCloneTable",
+      "__gmon_start__",
+      "_ITM_registerTMCloneTable",
+      "open",
+      "memset",
+      "system",
+      "write",
+      "abort",
+      "UdtrGpioOpen",
+      "__libc_start_main",
+      "usleep",
+      "__errno_location",
+      "UdtrGpioClose",
+      "sleep",
+      "ioctl",
+      "snprintf",
+      "strncat",
+      "Backup_read_4Byte",
+      "puts",
+      "get_power_IC_type",
+      "osal_snd_sync_direct",
+      "close",
+      "UdtrGpioWrite",
+      "read",
+      "printf"
+    ],
+    "strings": [
+      {
+        "off": "0x691",
+        "text": "libul_GpioCtrl.so"
+      },
+      {
+        "off": "0x708",
+        "text": "UdtrGpioOpen"
+      },
+      {
+        "off": "0x715",
+        "text": "UdtrGpioClose"
+      },
+      {
+        "off": "0x723",
+        "text": "UdtrGpioWrite"
+      },
+      {
+        "off": "0x19ee",
+        "text": "/dev/sio"
+      },
+      {
+        "off": "0x1a68",
+        "text": "darwin_com_reboot"
+      },
+      {
+        "off": "0x1a7a",
+        "text": "[UD_REBOOT] GPIO write failed = %d"
+      },
+      {
+        "off": "0x1a9e",
+        "text": "[UD_REBOOT] error ; SIO driver write failed, ERRMSG[%d]"
+      },
+      {
+        "off": "0x1ad7",
+        "text": "[UD_REBOOT] error ; SIO driver close failed, ERRMSG[%d]"
+      },
+      {
+        "off": "0x1b10",
+        "text": "[UD_REBOOT] error : Gpio CS port close failed, ERRNO[%d]"
+      },
+      {
+        "off": "0x1b4a",
+        "text": "[UD_REBOOT] error : SIO driver open failed [%s], ERRMSG[%d]"
+      },
+      {
+        "off": "0x1b87",
+        "text": "[UD_REBOOT] error : SIO driver ioctl failed, ERRMSG[%d]"
+      },
+      {
+        "off": "0x1bc0",
+        "text": "[UD_REBOOT] error : Gpio CS port open failed, ERRNO[%d]"
+      },
+      {
+        "off": "0x1bf9",
+        "text": "[UD_REBOOT] Power IC type is CHARON(CAM)"
+      },
+      {
+        "off": "0x1c22",
+        "text": "/dev/sio3"
+      },
+      {
+        "off": "0x1c2c",
+        "text": "[UD_REBOOT] 1 ERRNO[%d]"
+      },
+      {
+        "off": "0x1c45",
+        "text": "[UD_REBOOT] 2 ERRNO[%d]"
+      },
+      {
+        "off": "0x1c5e",
+        "text": "[UD_REBOOT] 3 ERRNO[%d]"
+      },
+      {
+        "off": "0x1c77",
+        "text": "[UD_REBOOT] Power IC type is CHARON(DSC)"
+      },
+      {
+        "off": "0x1ca0",
+        "text": "[UD_REBOOT] Power IC type is PIROSHKI"
+      },
+      {
+        "off": "0x1cc9",
+        "text": "[UD_REBOOT] error ; Gpio driver open failed, ERRNO[%d]"
+      },
+      {
+        "off": "0x1d01",
+        "text": "[UD_REBOOT] Power IC type is CA"
+      },
+      {
+        "off": "0x1d40",
+        "text": "[UD_REBOOT] %s error WIFEXITED(%d)"
+      },
+      {
+        "off": "0x1d64",
+        "text": "[UD_REBOOT] %s error WEXITSTATUS=%d"
+      },
+      {
+        "off": "0x1e4c",
+        "text": "[UD_COM_PIC] %s:%d:Gpio CS port open failed, ERRNO[%d]"
+      },
+      {
+        "off": "0x1e84",
+        "text": "[UD_COM_PIC] %s:%d:Gpio XPWR_OFF port open failed, ERRNO[%d]"
+      },
+      {
+        "off": "0x1ec2",
+        "text": "[UD_COM_PIC] %s:%d:GPIO write failed, ERRMSG[%d]"
+      },
+      {
+        "off": "0x2069",
+        "text": "[UD_REBOOT] error : Invalid power IC type, ERRNO[%d]"
+      }
+    ]
+  },
+  {
+    "source_p1": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1",
+    "member": "/usr/bin/ud_pd_firmup.elf",
+    "bytes": 14432,
+    "sha256": "92dbb8b08bde699414df31be995bf48cc23022b506e7dec04018f3f099e018ef",
+    "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage202-update-transition-and-restart/historical/2.05/ud_pd_firmup.elf",
+    "entry": "0x401168",
+    "start": [
+      "00401168 1d0080d2 mov     x29, #0",
+      "0040116c 1e0080d2 mov     x30, #0",
+      "00401170 e50300aa mov     x5, x0",
+      "00401174 e10340f9 ldr     x1, [sp]",
+      "00401178 e2230091 add     x2, sp, #8",
+      "0040117c e6030091 mov     x6, sp",
+      "00401180 c0000058 ldr     x0, #0x401198",
+      "00401184 e3000058 ldr     x3, #0x4011a0",
+      "00401188 04010058 ldr     x4, #0x4011a8",
+      "0040118c 95feff97 bl      #0x400be0",
+      "00401190 c0feff97 bl      #0x400c90",
+      "00401194 00000000 udf     #0"
+    ],
+    "imports": [
+      "_Jv_RegisterClasses",
+      "_ITM_deregisterTMCloneTable",
+      "__gmon_start__",
+      "_ITM_registerTMCloneTable",
+      "open",
+      "memset",
+      "clock_gettime",
+      "free",
+      "fopen",
+      "write",
+      "abort",
+      "strtol",
+      "__libc_start_main",
+      "strtoul",
+      "usleep",
+      "fgets",
+      "fclose",
+      "ioctl",
+      "Backup_read_4Byte",
+      "strcmp",
+      "puts",
+      "memcpy",
+      "close",
+      "read",
+      "malloc",
+      "printf"
+    ],
+    "strings": [
+      {
+        "off": "0x1b13",
+        "text": "/dev/gpio"
+      },
+      {
+        "off": "0x1b1d",
+        "text": "[UD_PD_FIRMUP] gpio error"
+      },
+      {
+        "off": "0x1b9f",
+        "text": "%s reset [b]"
+      },
+      {
+        "off": "0x1bd5",
+        "text": "%s detach beets driver [i]"
+      },
+      {
+        "off": "0x1c17",
+        "text": "[UD_PD_FIRMUP] update(fw%d)"
+      },
+      {
+        "off": "0x1c5f",
+        "text": "[UD_PD_FIRMUP] done."
+      },
+      {
+        "off": "0x1c76",
+        "text": "[UD_PD_FIRMUP] reset"
+      },
+      {
+        "off": "0x1c8d",
+        "text": "[UD_PD_FIRMUP] select fw1 for uud"
+      },
+      {
+        "off": "0x1cb1",
+        "text": "[UD_PD_FIRMUP] ioctl requet"
+      },
+      {
+        "off": "0x1ccd",
+        "text": "/dev/usb/buspwric"
+      },
+      {
+        "off": "0x1cdf",
+        "text": "no beets driver"
+      },
+      {
+        "off": "0x1cef",
+        "text": "beets ioctl error"
+      },
+      {
+        "off": "0x1d01",
+        "text": "/dev/i2c-0"
+      }
+    ]
+  }
+]

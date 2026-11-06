@@ -1,0 +1,1 @@
+Viewed runs/try2mssinternal-a1d8f68a/trial-frame.png using image tool. Setup > Area/Date; English value visible; orange focus on Area/Date/Time Setting; MENU Close Next: Close menu by displayed native MENU action without changing any setting

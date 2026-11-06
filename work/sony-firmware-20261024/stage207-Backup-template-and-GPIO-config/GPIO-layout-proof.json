@@ -1,0 +1,130 @@
+{
+  "status": "GPIO_ARGUMENTS_NAMED_PORTID_BITNUM_AND_MODE2_OUTPUT_H_BOUND",
+  "current_main_provider": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-main-AP/lib/libul_GpioCtrl.so",
+  "source_sha256": "49904397517841f9be3ddda6c359d0391eb9ab726a02aa891ca1f97976550548",
+  "main_provider_reverified_against_image": true,
+  "source_image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "argument_mapping": {
+    "argument1": "portid byte at handle+12 / ioctl port struct+4",
+    "argument2": "bitnum byte at handle+16 / ioctl port struct+8",
+    "argument3": "open mode;2 maps to named GPIOMODE_GPIO | GPIOMODE_OUTPUT_H with control9"
+  },
+  "ioctl": "0xc0104702",
+  "historical_provider_comparisons": [
+    {
+      "version": "2.04",
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.04-p1/usr/lib/libul_GpioCtrl.so",
+      "sha256": "4c36648d884bb89d109bb1eda681683ec65e5995cd3d7fa4c1a5228fb41a6e2f",
+      "bytes": 10064,
+      "text_equal": true,
+      "rodata_equal": true,
+      "differing_bytes": 7,
+      "differences_only_within_nonloaded_comment_section": true,
+      "current_body_p1_identity_proven": false
+    },
+    {
+      "version": "2.05",
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/lib/libul_GpioCtrl.so",
+      "sha256": "4c36648d884bb89d109bb1eda681683ec65e5995cd3d7fa4c1a5228fb41a6e2f",
+      "bytes": 10064,
+      "text_equal": true,
+      "rodata_equal": true,
+      "differing_bytes": 7,
+      "differences_only_within_nonloaded_comment_section": true,
+      "current_body_p1_identity_proven": false
+    }
+  ],
+  "selected_ranges": [
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-main-AP/lib/libul_GpioCtrl.so",
+      "source_sha256": "49904397517841f9be3ddda6c359d0391eb9ab726a02aa891ca1f97976550548",
+      "start": "0xb00",
+      "end_exclusive": "0xb48",
+      "bytes": 72,
+      "sha256": "afa0f5b78cf2781978ffe5b8a341163e417389ca85bb645a6c8ba7fc692dddbe",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage207-Backup-template-and-GPIO-config/pins/GPIO-argument-storage.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-main-AP/lib/libul_GpioCtrl.so",
+      "source_sha256": "49904397517841f9be3ddda6c359d0391eb9ab726a02aa891ca1f97976550548",
+      "start": "0xb64",
+      "end_exclusive": "0xb7c",
+      "bytes": 24,
+      "sha256": "a7d1fcdeca8bde3582c0a8845b3ba9ae859eadcaacde8a551af7948c071003ea",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage207-Backup-template-and-GPIO-config/pins/GPIO-port-structure-copy.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-main-AP/lib/libul_GpioCtrl.so",
+      "source_sha256": "49904397517841f9be3ddda6c359d0391eb9ab726a02aa891ca1f97976550548",
+      "start": "0xbc8",
+      "end_exclusive": "0xc10",
+      "bytes": 72,
+      "sha256": "27490b288c363af246c838ba30ceeac906413072acf5564675f7839b0ee94c1c",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage207-Backup-template-and-GPIO-config/pins/GPIO-mode2-output-high.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-main-AP/lib/libul_GpioCtrl.so",
+      "source_sha256": "49904397517841f9be3ddda6c359d0391eb9ab726a02aa891ca1f97976550548",
+      "start": "0xaa0",
+      "end_exclusive": "0xaf8",
+      "bytes": 88,
+      "sha256": "e8ed0a1df267383d3395fc75798d4626d6718e178aeefe3992c2de7a1f8ddb2c",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage207-Backup-template-and-GPIO-config/pins/GPIO-named-field-diagnostic.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-main-AP/lib/libul_GpioCtrl.so",
+      "source_sha256": "49904397517841f9be3ddda6c359d0391eb9ab726a02aa891ca1f97976550548",
+      "start": "0xe62",
+      "end_exclusive": "0xec0",
+      "bytes": 94,
+      "sha256": "b836f3f601bdfe519df0a32625f2f6b3ea8d24ecdb27e992a263c17022cd0ffa",
+      "data_not_code": true,
+      "output": "work/sony-firmware-20261024/stage207-Backup-template-and-GPIO-config/pins/GPIO-field-names.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-main-AP/lib/libul_GpioCtrl.so",
+      "source_sha256": "49904397517841f9be3ddda6c359d0391eb9ab726a02aa891ca1f97976550548",
+      "start": "0xdb4",
+      "end_exclusive": "0xe0b",
+      "bytes": 87,
+      "sha256": "a793fcd7b6a9049cecd58e1b3db489355925ef0e81e90f40107f2aace9df4c3b",
+      "data_not_code": true,
+      "output": "work/sony-firmware-20261024/stage207-Backup-template-and-GPIO-config/pins/GPIO-output-high-name.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/evidence/boot-request/originals/lib/libbackup.so",
+      "source_sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+      "start": "0x1e14",
+      "end_exclusive": "0x1e4c",
+      "bytes": 56,
+      "sha256": "a1c8584b79522345c61a22a67dc73d37ba836f464a39b82af07ce4bd5b2b4684",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage207-Backup-template-and-GPIO-config/pins/Backup-read4-wrapper.txt"
+    }
+  ],
+  "Backup_wrapper_has_record_file_selection": false,
+  "available_interchip_API_names": [
+    "Backup_write_interchip",
+    "Backup_nread_multi_interchip",
+    "Backup_get_datasize_multi_interchip",
+    "Backup_get_datasize_interchip",
+    "Backup_write_vsize_interchip",
+    "Backup_nread_setting_attr_interchip",
+    "Backup_nread_interchip",
+    "Backup_get_attribute_interchip",
+    "Backup_rwlock_interchip"
+  ],
+  "record0_or_record1_mapping_to_actual_AP_read_proven": false,
+  "actual_pin_or_voltage_measured": false,
+  "limits": [
+    "named layout and defaults do not identify current-body active configuration",
+    "current main provider and historical p1 code agreement do not attest installed7.02 updater provider",
+    "ordinary Backup_read_4Byte forwards a service request; this wrapper does not parse/select a file record"
+  ],
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

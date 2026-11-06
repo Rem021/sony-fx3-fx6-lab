@@ -1,0 +1,58 @@
+{
+  "status": "PASS_ORIGINAL_LOADER_REVIEW_AND_INVENTORY_COVERAGE",
+  "original_loader_consumer_cases": 5,
+  "AP_ELFs_reverified": 532,
+  "launch_candidate_files": 29,
+  "direct_call_candidates": 103,
+  "prior_inventory_decode_stop_corrected_and_preserved": true,
+  "three_original_helper_call_instructions_reconciled": true,
+  "new_camera_operations": 0,
+  "physical_boot_or_recovery_proven": false,
+  "files": [
+    {
+      "path": "inventory_launch.py",
+      "bytes": 6321,
+      "sha256": "0336d61e748803048777a45995a0018cc669f5b7af6d64e2b0b52df2642f7f32"
+    },
+    {
+      "path": "launch-inventory-v2.json",
+      "bytes": 54376,
+      "sha256": "af4b654e4883bd02d6aa2f718348934d3f2059a5956eaa447c66994e05587baa"
+    },
+    {
+      "path": "inventory-initial-stop-on-data.py",
+      "bytes": 5635,
+      "sha256": "766f42273acdb94c668899983e7d8c788499d2e71114519b39d488377840b0b6"
+    },
+    {
+      "path": "launch-inventory-initial-stop-on-data.json",
+      "bytes": 42899,
+      "sha256": "7a74fcb275ed5d79843ce2bce2624f784920e8794096df329e3eb9679daaee75"
+    },
+    {
+      "path": "audit_preload_recovery.py",
+      "bytes": 9836,
+      "sha256": "c061875a017eb1d231e53ab7e114881419c7c3c116722bc8983c4f509b824dac"
+    },
+    {
+      "path": "preload-recovery-review.json",
+      "bytes": 6925,
+      "sha256": "7455445b60e3c38455da63434e64c10db9882b2565e5b5d993634bf47d959487"
+    },
+    {
+      "path": "glibc-2.25-rtld-source.txt",
+      "bytes": 82121,
+      "sha256": "909759872684237c9d8c93bfa71acd1bfd50f44aa68175c71e59692d3cda3aa3"
+    },
+    {
+      "path": "launch-decision.json",
+      "bytes": 2883,
+      "sha256": "d9ed4d5e9f60725295ff3f19492abe7a15958b3253f7d57e0e60d0070c898dfe"
+    },
+    {
+      "path": "verify_review.py",
+      "bytes": 6011,
+      "sha256": "08cbd02ca00eaf0278b7dfadc0293c0f56c358e042df36434935ad8994d73f5d"
+    }
+  ]
+}

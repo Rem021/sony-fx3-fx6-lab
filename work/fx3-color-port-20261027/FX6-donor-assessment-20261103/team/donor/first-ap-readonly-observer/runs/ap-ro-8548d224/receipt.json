@@ -1,0 +1,246 @@
+{
+  "schema": "fx6-ap-readonly-gdb-v1",
+  "stop": "same_call_return_captured",
+  "host_error": null,
+  "elapsed_seconds": 53.62359195802128,
+  "qemu_exit": 0,
+  "qemu_reaped": true,
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": true,
+    "quit_sent": true,
+    "guest_stopped": true,
+    "restore": {
+      "passed": true,
+      "reason": "guest_acknowledged_and_original_bytes_verified",
+      "timeout_seconds": 20,
+      "elapsed_seconds": 1.2899496250320226,
+      "request_bytes": 8,
+      "request_issued": true,
+      "existing_request_reused": false,
+      "request_physical": "0x41d400030",
+      "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "requires_ack_and_original_bytes_after_request": true,
+      "already_original_without_pending_request_never_resumed": false,
+      "original_guest_code_written_by_host": false,
+      "guest_left_stopped": true,
+      "exception": null,
+      "attempts": [
+        {
+          "attempt": 0,
+          "elapsed_seconds": 0.0034932910348288715,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-000-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-000-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 0,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "a3d4cb85a4a2ea84eb93ae12c4cc1210c1709cb8ed3d19d4410b463edf2bf381"
+        },
+        {
+          "attempt": 1,
+          "elapsed_seconds": 0.25781691598240286,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-001-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-001-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "586a067d17e5acd53c466734cbbceb553e2a6e8f29ac86365d80ae1b6ae8fd15"
+        },
+        {
+          "attempt": 2,
+          "elapsed_seconds": 0.5151504580280744,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-002-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-002-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "586a067d17e5acd53c466734cbbceb553e2a6e8f29ac86365d80ae1b6ae8fd15"
+        },
+        {
+          "attempt": 3,
+          "elapsed_seconds": 0.7739186250255443,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-003-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-003-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "586a067d17e5acd53c466734cbbceb553e2a6e8f29ac86365d80ae1b6ae8fd15"
+        },
+        {
+          "attempt": 4,
+          "elapsed_seconds": 1.0312865410232916,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-004-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-004-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "586a067d17e5acd53c466734cbbceb553e2a6e8f29ac86365d80ae1b6ae8fd15"
+        },
+        {
+          "attempt": 5,
+          "elapsed_seconds": 1.289731374999974,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-005-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/restore103-005-api16.bin",
+          "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+          "api16_original": true,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 1,
+          "header_SHA256": "a78a0b065f36da17d0908b40ce99c9ac06df9922df8d4d9ceeea87734bc65abf"
+        }
+      ]
+    }
+  },
+  "breakpoint_cleanup": {
+    "attempted": true,
+    "results": [
+      {
+        "address": "0x7ecf6ae7a0",
+        "reply": "OK"
+      }
+    ],
+    "all_removed": true,
+    "unremoved": []
+  },
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free": true
+    }
+  ],
+  "inputs_sha256_after": {
+    "baseline": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+    "candidate": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+    "ap": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+    "cap": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e"
+  },
+  "inputs_unchanged": true,
+  "serial": {
+    "available": true,
+    "bytes": 2227102,
+    "sha256": "b2d6f86f7b5ce81017c7dd9a7125128d4f8cdb35d85985aa18d990d48f5bfde2",
+    "first": {
+      "verify": {
+        "byte_range": [
+          84988,
+          85013
+        ],
+        "raw": "FX3_TRACE_ABI_VERIFY_RC=0"
+      },
+      "list": {
+        "byte_range": [
+          86546,
+          86569
+        ],
+        "raw": "FX3_TRACE_ABI_LIST_RC=0"
+      },
+      "true": {
+        "byte_range": [
+          86571,
+          86594
+        ],
+        "raw": "FX3_TRACE_ABI_TRUE_RC=0"
+      },
+      "not_ready": null,
+      "natural_bootin": {
+        "byte_range": [
+          97275,
+          97302
+        ],
+        "raw": "FX3_AP_NATURAL_BOOTIN_BEGIN"
+      },
+      "im_map": {
+        "byte_range": [
+          161931,
+          162019
+        ],
+        "raw": "00400000-00409000 r-xp 00000000 00:02 1097                               /usr/bin/im.elf"
+      },
+      "ap_guard": {
+        "byte_range": [
+          1410943,
+          1411011
+        ],
+        "raw": "FX3_MEDIA_BIND_REJECT module=A reason=parameter_getter_code id=0x6db"
+      }
+    },
+    "im_process_label_count": 1,
+    "synthetic_key_count": 0,
+    "fx3_boot_queue_not_fx6_AP_entry_evidence": true
+  },
+  "health": {
+    "lines": 17771,
+    "failure": {
+      "line": 17559,
+      "kind": "real_fault_or_unproven_guard",
+      "text": "assert at infra_wrapper_bb_procam_chaplin_base.cpp:1075"
+    },
+    "diagnostics": [
+      {
+        "line": 8782,
+        "which": "fx3_media_ap_getter_guard",
+        "text": "FX3_MEDIA_BIND_REJECT module=A reason=parameter_getter_code id=0x6db"
+      },
+      {
+        "line": 8785,
+        "which": "fx3_ui_60_word_guard",
+        "text": "FX3_UI_GATE_BIND_FAIL id=0 reason=original_instruction"
+      },
+      {
+        "line": 8786,
+        "which": "fx3_timer_ap_prefix_guard",
+        "text": "FX3_TIMER_BIND_FAILED k=0 reason=prefix original_unchanged=1"
+      },
+      {
+        "line": 8787,
+        "which": "fx3_preset_48_word_guard",
+        "text": "FX3_PRESET_CONTEXT_BIND_REJECT point=0 reason=original_word"
+      }
+    ],
+    "loader_all_observations": {
+      "verify": [
+        {
+          "line": 1111,
+          "column": 0,
+          "value": 0
+        }
+      ],
+      "list": [
+        {
+          "line": 1138,
+          "column": 0,
+          "value": 0
+        }
+      ],
+      "true": [
+        {
+          "line": 1139,
+          "column": 0,
+          "value": 0
+        }
+      ]
+    },
+    "partial_line_bytes": 0
+  },
+  "probe_stage": "same_call_return_captured;cleanup"
+}

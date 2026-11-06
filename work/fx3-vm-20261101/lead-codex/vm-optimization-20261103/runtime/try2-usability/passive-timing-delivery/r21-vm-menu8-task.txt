@@ -1,0 +1,23 @@
+FX3｜r21/N64 八键真实VM验收任务（已授权一次VM，先准备后Start）
+
+前置已完成：r21b独立看图完整链已验收，正式消息msg_431cdb30f423，104项交付和8项源码核验通过；REPORT SHA9e62c6884c5e9673563a26d4419e2d1f9fa4555a80954f1733cad162ad761631，SHA256SUMS b223b4eb597866a36213c84a4cf29a51491e2838819463847c97d423c01e04ef，SOURCE-FREEZE a6fb291bd3d6ac3aa0940651f0933f3d0526d858ddc756eea45f9ef125e49d32。r21集成已验：SHA256SUMS dcbbb11fc1942a480b8624e53d769e29b93fec3c884401811cc0599fea3b02ef（145项），SOURCE-FREEZE 31ee6b1d00fecfc5ac53e874b144230d2430208277c295d74c4a804fbe1135ec（40项），固定输入14项。现在正式派发，授权准备并运行唯一一次VM，无需再次询问许可。
+
+根/资源：/Volumes/KAFU2T/AI/Projects/Mac；TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery。只写本次独立准备目录及runner新run，旧失败、冻结r21、已部署r10和协调ledger不改。写入前核UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B；真实Start前核无其他runner/QEMU、outputs/fx3-vm/.run.lock与menu-repair-01/runtime/.run.lock空闲。不得抢锁/杀其他任务。固定FX3 4cortex-a35/5120MiB/MTTCG/noicount、kernel/DTB/N64 CPIO不变；QEMU实际执行件bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d要从实际argv与源路径核实，不能用基础安装QEMU代替。
+
+运行命令：python3 -B DEL/v25-r21-recovery-integration/run_trial_v25_diag_r3.py --port 0 --max-minutes 8 --max-steps 32 --snapshot-tail --gate-publish-interval 64 --pre-input-snapshot-step 2。目录标签仍可能r17，以实际r21源码路径/hash为版本证据。网页启动后但Start前完成全部命令准备及wrapper核验；只一个自有fx3-deadline-* tab、1280x1200，一次真实Start。首帧上限180秒。
+
+明确预算：8个实际accepted键，至多10次显式点击、全轮至多2次未入队恢复、每个guest step至多1次恢复。每次attempt独立目录/nonce，guest步号与尝试次数分开；一轮唯一ledger。不得绕过operator_click、直接POST、自动重发或复用已取消nonce。
+
+固定8步语义：MENU完整Setup > Area/Date橙色Area/Date/Time Setting；UP到Language English；C4语言帮助；MENU返回Language；OK查看English语言列表但不改语言；MENU取消；MENU关闭到待机；MENU重开。未达到语义即End，不补键。实际每步down/up/done、画面和confirm分别记录，HTTP202只证明入队。
+
+正常链：亲看当前图后一次工具新nonce arm+实际operator_click；第1 accepted MENU用冻结bounded_capture，后续步用既有只读捕图逻辑派生的本轮wrapper并核r21身份/当前attempt。图须进程0、精确合格status、新独占路径、PNG/hash匹配，再同工具返回；操作员亲看后下一工具原explicit_confirm，精确历史ACK+当前ready+同nonce取消且elapsed<20000。不得在计时期间插入协调/报告/分析调用。
+
+明确未入队分支：只允许当前attempt not_posted或匹配request_id的完整拒绝；以原recovery capture返回恢复审阅图，亲看后下一工具原recovery cancel同nonce；取消只清理该尝试、不确认画面/发键/arm。返回新图再亲看，另一次明确调用新nonce+operator_click。原server SHA/gen门不变，GET只是快照。accepted/unknown/inflight/异常不能借旧拒绝恢复。原20秒到期即End；次数超限、图无效/缺失、原生错误、目标错误或未知结果立即End。旧“409即End”轮仍保留failed，不追溯改成通过。
+
+使用已验r21b实际异常清理入口，失败须先End再分析。所有源冻结/命令准备/路径检查在arm之前；每轮最多一次VM，不重复启动。成功8键后End；保留API16原字节恢复/原20s ACK、QMP quit ACK/exit/reap、双锁free、网页finalACK、自有browser关闭。导出raw拒绝及零拒绝记录原字节hash，v5诊断tail明确非事务快照。
+
+交付简明REPORT、分项RESULT、固定配置与输入前后hash、实际argv、逐attempt/step原始HTTP/原生ACK/截图/确认/时钟、退出清理证据及SHA清单。清楚区分完整8键、部分成功、启动健康、恢复次数、结束健康。失败报告failed；不得将fixture或宿主检查冒充VM/设备/FX6证据。不使用物理相机/USB/SD/刷写，不派其他代理。
+
+你是新的独立操作员，只读必要源和操作手册，不读全部历史、不另派代理。r21b操作源在DEL/interaction-operator-rehearsal-r21b，step2-8只读捕图/配置样例在TRY/runs/v25gate-n64-r17-90781f3e；旧脚本只供派生，原文件不改。运行前必须把每步的实际CLI参数、r21页面指纹及本次attempt身份接线做好，不等arm后才探索命令。不得重跑整个fixture，必要的纯host参数/异常路径检查要在Start前完成。已有独立演练通过，不新建另一离线演练。
+
+尚未启动guest时若发现工具无法安全接线，明确回报准备缺口，不启动试错VM。实际guest开始后只在没有armed timer时发送简短状态；arm至cancel/End期间优先完成看图和下一工具，避免与协调消息/报告干扰。收尾报告精简但完整，原始证据齐备即可，不派生无关分析文件。

@@ -1,0 +1,222 @@
+{
+  "original": {
+    "path": "work/sony-firmware-20261024/stage150-normal-resource-and-thread-transition/work/originals/libMWF.so",
+    "bytes": 353120,
+    "sha256": "06a80e89d1bba839bf4ea83492fb1fe0490037a8c8c46bf21d7ac46657d47a26"
+  },
+  "source_image_SHA256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "fixed_reader": {
+    "path": "work/sony-firmware-20261024/stage134-backup-reader-scope-and-service-extension/audit_readers.py",
+    "bytes": 8603,
+    "sha256": "1bff3cd4993406760cda36356d4d2607ff7d3e0a0072a2214db34ea67090c40a"
+  },
+  "methods": [
+    {
+      "name": "_ZN3MWF8RsrcAcsrD2Ev",
+      "VA": "0x374e4",
+      "bytes": 376
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr13GetProcessNumEPjS1_S1_",
+      "VA": "0x36de8",
+      "bytes": 52
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr17SubAcquireRsrcMgrENS0_8AcqAct_tEPjPNS_10ObjMsgListE",
+      "VA": "0x386dc",
+      "bytes": 580
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr12CallbackFuncEjPv",
+      "VA": "0x38510",
+      "bytes": 16
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr7AcquireEPNS_6ObjMsgENS0_8AcqAct_tE",
+      "VA": "0x37d24",
+      "bytes": 108
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr7ReleaseEv",
+      "VA": "0x37210",
+      "bytes": 80
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr15SubCallbackProcEjPNS_10ObjMsgListE",
+      "VA": "0x38238",
+      "bytes": 648
+    },
+    {
+      "name": "_ZN3MWF12RsrcRelation11DelRsrcAcsrEN7DefRsrc8AcsrId_tEPNS_8RsrcAcsrE",
+      "VA": "0x3a724",
+      "bytes": 168
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEPFvS3_S4_S2_Ej",
+      "VA": "0x36fc4",
+      "bytes": 36
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsrC2EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEPFvS3_S4_S2_Ej",
+      "VA": "0x36fc4",
+      "bytes": 36
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr18SubMergeLIFOCbListEPvPNS_10ObjMsgListE",
+      "VA": "0x38520",
+      "bytes": 444
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr12CallbackProcEj",
+      "VA": "0x384c0",
+      "bytes": 80
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr11AcquireProcEPNS_6ObjMsgENS0_8AcqAct_tEb",
+      "VA": "0x37a38",
+      "bytes": 636
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr24SubCheckRsrcMgrLIFOExistEPNS_10ObjMsgListE",
+      "VA": "0x38a68",
+      "bytes": 416
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+      "VA": "0x36fa0",
+      "bytes": 36
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEPFvS3_S4_S2_E",
+      "VA": "0x36f7c",
+      "bytes": 36
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr7AcquireEPNS_6ObjMsgEb",
+      "VA": "0x37d90",
+      "bytes": 108
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsrC2EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+      "VA": "0x36fa0",
+      "bytes": 36
+    },
+    {
+      "name": "_ZN3MWF12RsrcRelation15RefRsrcAcsrListEv",
+      "VA": "0x3a888",
+      "bytes": 16
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsrC2EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEPFvS3_S4_S2_E",
+      "VA": "0x36f7c",
+      "bytes": 36
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr11SubCallbackENS_6ObjMsgE",
+      "VA": "0x3808c",
+      "bytes": 428
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr14SubAddUserListENS_6ObjMsgEj",
+      "VA": "0x37684",
+      "bytes": 112
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr16ExecLIFOCallBackEN7DefRsrc8AcsrId_tE",
+      "VA": "0x37804",
+      "bytes": 232
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr16SubInternalPauseEv",
+      "VA": "0x376f4",
+      "bytes": 272
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr6CancelEjPNS_10ObjMsgListE",
+      "VA": "0x37260",
+      "bytes": 336
+    },
+    {
+      "name": "_ZN3MWF12RsrcRelation18UnlockRsrcAcsrListEv",
+      "VA": "0x3a898",
+      "bytes": 16
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr12ForceReleaseEv",
+      "VA": "0x373b0",
+      "bytes": 308
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr14SubAcquireWaitEbNS_6ObjMsgEPNS_10ObjMsgListE",
+      "VA": "0x378ec",
+      "bytes": 332
+    },
+    {
+      "name": "_ZN3MWF12RsrcRelation11AddRsrcAcsrEN7DefRsrc8AcsrId_tEPNS_8RsrcAcsrE",
+      "VA": "0x3a648",
+      "bytes": 220
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr21SubGetValidRsrcMgrNumEv",
+      "VA": "0x38c08",
+      "bytes": 168
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr5PauseEv",
+      "VA": "0x36fe8",
+      "bytes": 320
+    },
+    {
+      "name": "_ZN3MWF12RsrcRelation16LockRsrcAcsrListEb",
+      "VA": "0x3a864",
+      "bytes": 36
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr8InitAcsrEN7DefRsrc8AcsrId_tEj",
+      "VA": "0x36ea4",
+      "bytes": 216
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr13LibGetAcsrMsgENS_6ObjMsgEPPS1_PjS4_",
+      "VA": "0x36d78",
+      "bytes": 112
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsrD0Ev",
+      "VA": "0x3765c",
+      "bytes": 40
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr7AcquireEPNS_6ObjMsgE",
+      "VA": "0x37dfc",
+      "bytes": 96
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr17SubReleaseRsrcMgrEjNS0_18RelRsrcMgrAction_tE",
+      "VA": "0x38920",
+      "bytes": 328
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr14DebugPrintListEv",
+      "VA": "0x37e5c",
+      "bytes": 560
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr11ReleaseProcEv",
+      "VA": "0x37128",
+      "bytes": 232
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsr7AcquireEPNS_6ObjMsgENS0_8AcqAct_tEb",
+      "VA": "0x37cb4",
+      "bytes": 112
+    },
+    {
+      "name": "_ZN3MWF8RsrcAcsrD1Ev",
+      "VA": "0x374e4",
+      "bytes": 376
+    }
+  ],
+  "original_code_loaded_or_executed": false,
+  "new_camera_or_USB_operations": 0
+}

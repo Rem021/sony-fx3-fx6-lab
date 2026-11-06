@@ -1,0 +1,44 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b3298 <_ZN3mpr4EditEPv>:
+   b3a78: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+   b3a7c: 713f803f     	cmp	w1, #0xfe0
+   b3a80: 7a40d824     	ccmp	w1, #0x0, #0x4, le
+   b3a84: 910003fd     	mov	x29, sp
+   b3a88: fa401804     	ccmp	x0, #0x0, #0x4, ne
+   b3a8c: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b3a90: 12807ff4     	mov	w20, #-0x400            // =-1024
+   b3a94: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   b3a98: 540007a0     	b.eq	0xb3b8c <_ZN3mpr4EditEPv+0x8f4>
+   b3a9c: 9100e3b6     	add	x22, x29, #0x38
+   b3aa0: 11008022     	add	w2, w1, #0x20
+   b3aa4: 2a0103f3     	mov	w19, w1
+   b3aa8: aa0003f5     	mov	x21, x0
+   b3aac: aa1603e1     	mov	x1, x22
+   b3ab0: 52802740     	mov	w0, #0x13a              // =314
+   b3ab4: 52800003     	mov	w3, #0x0                // =0
+   b3ab8: 72a011e0     	movk	w0, #0x8f, lsl #16
+   b3abc: 97ff2a25     	bl	0x7e350 <osal_valloc_msg_wait@plt>
+   b3ac0: 2a0003f4     	mov	w20, w0
+   b3ac4: 350002e0     	cbnz	w0, 0xb3b20 <_ZN3mpr4EditEPv+0x888>
+   b3ac8: f9401fb4     	ldr	x20, [x29, #0x38]
+   b3acc: 52800040     	mov	w0, #0x2                // =2
+   b3ad0: 79000280     	strh	w0, [x20]
+   b3ad4: 52800780     	mov	w0, #0x3c               // =60
+   b3ad8: 2900ce9f     	stp	wzr, w19, [x20, #0x4]
+   b3adc: 79000680     	strh	w0, [x20, #0x2]
+   b3ae0: 91004280     	add	x0, x20, #0x10
+   b3ae4: 97ffffcb     	bl	0xb3a10 <_ZN3mpr4EditEPv+0x778>
+   b3ae8: 93407e62     	sxtw	x2, w19
+   b3aec: aa1503e1     	mov	x1, x21
+   b3af0: 91006280     	add	x0, x20, #0x18
+   b3af4: 97ff1fb7     	bl	0x7b9d0 <memcpy@plt>
+   b3af8: f9401fa0     	ldr	x0, [x29, #0x38]
+   b3afc: 52802741     	mov	w1, #0x13a              // =314
+   b3b00: 72a011e1     	movk	w1, #0x8f, lsl #16
+   b3b04: 97ff2143     	bl	0x7c010 <osal_set_msg_src@plt>
+   b3b08: f9401fa1     	ldr	x1, [x29, #0x38]
+   b3b0c: 52802740     	mov	w0, #0x13a              // =314

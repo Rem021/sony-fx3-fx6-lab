@@ -1,0 +1,338 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v4-near-gap.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000139bc <dlopen>:
+   139bc: d10283ff     	sub	sp, sp, #0xa0
+   139c0: a9047bfd     	stp	x29, x30, [sp, #0x40]
+   139c4: a9056ffc     	stp	x28, x27, [sp, #0x50]
+   139c8: a90667fa     	stp	x26, x25, [sp, #0x60]
+   139cc: a9075ff8     	stp	x24, x23, [sp, #0x70]
+   139d0: a90857f6     	stp	x22, x21, [sp, #0x80]
+   139d4: a9094ff4     	stp	x20, x19, [sp, #0x90]
+   139d8: 910103fd     	add	x29, sp, #0x40
+   139dc: 2a0103f3     	mov	w19, w1
+   139e0: aa0003f5     	mov	x21, x0
+   139e4: 940003c7     	bl	0x14900 <__errno_location@plt>
+   139e8: b9400016     	ldr	w22, [x0]
+   139ec: b0ffff61     	adrp	x1, 0x0 <usleep>
+   139f0: 912c3021     	add	x1, x1, #0xb0c
+   139f4: 92800000     	mov	x0, #-0x1               // =-1
+   139f8: 940003de     	bl	0x14970 <dlsym@plt>
+   139fc: b4002760     	cbz	x0, 0x13ee8 <dlopen+0x52c>
+   13a00: aa0003f4     	mov	x20, x0
+   13a04: 940003bf     	bl	0x14900 <__errno_location@plt>
+   13a08: b9000016     	str	w22, [x0]
+   13a0c: aa1503e0     	mov	x0, x21
+   13a10: 2a1303e1     	mov	w1, w19
+   13a14: d63f0280     	blr	x20
+   13a18: aa0003f3     	mov	x19, x0
+   13a1c: 940003b9     	bl	0x14900 <__errno_location@plt>
+   13a20: b9400018     	ldr	w24, [x0]
+   13a24: b40024b5     	cbz	x21, 0x13eb8 <dlopen+0x4fc>
+   13a28: b4002493     	cbz	x19, 0x13eb8 <dlopen+0x4fc>
+   13a2c: d0000108     	adrp	x8, 0x35000 <params+0x2b8>
+   13a30: b940c108     	ldr	w8, [x8, #0xc0]
+   13a34: 34002428     	cbz	w8, 0x13eb8 <dlopen+0x4fc>
+   13a38: d0000119     	adrp	x25, 0x35000 <params+0x2b8>
+   13a3c: 91053339     	add	x25, x25, #0x14c
+   13a40: 52800028     	mov	w8, #0x1                // =1
+   13a44: 085fff29     	ldaxrb	w9, [x25]
+   13a48: 080a7f28     	stxrb	w10, w8, [x25]
+   13a4c: 35ffffca     	cbnz	w10, 0x13a44 <dlopen+0x88>
+   13a50: 35002349     	cbnz	w9, 0x13eb8 <dlopen+0x4fc>
+   13a54: d10023a2     	sub	x2, x29, #0x8
+   13a58: aa1303e0     	mov	x0, x19
+   13a5c: 52800041     	mov	w1, #0x2                // =2
+   13a60: f81f83bf     	stur	xzr, [x29, #-0x8]
+   13a64: 940003c7     	bl	0x14980 <dlinfo@plt>
+   13a68: 35002260     	cbnz	w0, 0x13eb4 <dlopen+0x4f8>
+   13a6c: f85f83a8     	ldur	x8, [x29, #-0x8]
+   13a70: b4002228     	cbz	x8, 0x13eb4 <dlopen+0x4f8>
+   13a74: b0ffff61     	adrp	x1, 0x0 <usleep>
+   13a78: 912bb421     	add	x1, x1, #0xaed
+   13a7c: aa1503e0     	mov	x0, x21
+   13a80: 940003c4     	bl	0x14990 <strstr@plt>
+   13a84: aa0003f4     	mov	x20, x0
+   13a88: b40000a0     	cbz	x0, 0x13a9c <dlopen+0xe0>
+   13a8c: d0000108     	adrp	x8, 0x35000 <params+0x2b8>
+   13a90: 39455108     	ldrb	w8, [x8, #0x154]
+   13a94: 36000148     	tbz	w8, #0x0, 0x13abc <dlopen+0x100>
+   13a98: 14000107     	b	0x13eb4 <dlopen+0x4f8>
+   13a9c: b0ffff61     	adrp	x1, 0x0 <usleep>
+   13aa0: 912b5c21     	add	x1, x1, #0xad7
+   13aa4: aa1503e0     	mov	x0, x21
+   13aa8: 940003ba     	bl	0x14990 <strstr@plt>
+   13aac: b4001000     	cbz	x0, 0x13cac <dlopen+0x2f0>
+   13ab0: d0000108     	adrp	x8, 0x35000 <params+0x2b8>
+   13ab4: 39456108     	ldrb	w8, [x8, #0x158]
+   13ab8: 37001fe8     	tbnz	w8, #0x0, 0x13eb4 <dlopen+0x4f8>
+   13abc: d0000115     	adrp	x21, 0x35000 <params+0x2b8>
+   13ac0: 394572a8     	ldrb	w8, [x21, #0x15c]
+   13ac4: 36000a08     	tbz	w8, #0x0, 0x13c04 <dlopen+0x248>
+   13ac8: d503201f     	nop
+   13acc: 10f70328     	adr	x8, 0x1b30 <points_D>
+   13ad0: d0ffff69     	adrp	x9, 0x1000 <usleep+0x1000>
+   13ad4: 91338129     	add	x9, x9, #0xce0
+   13ad8: f100029f     	cmp	x20, #0x0
+   13adc: b25963ea     	mov	x10, #-0x8000000000     // =-549755813888
+   13ae0: 9a88012c     	csel	x12, x9, x8, eq
+   13ae4: 52800368     	mov	w8, #0x1b               // =27
+   13ae8: 52800129     	mov	w9, #0x9                // =9
+   13aec: f280026a     	movk	x10, #0x13
+   13af0: d000010b     	adrp	x11, 0x35000 <params+0x2b8>
+   13af4: 9105c16b     	add	x11, x11, #0x170
+   13af8: 9a880136     	csel	x22, x9, x8, eq
+   13afc: d0000108     	adrp	x8, 0x35000 <params+0x2b8>
+   13b00: 91060108     	add	x8, x8, #0x180
+   13b04: 9a8b0108     	csel	x8, x8, x11, eq
+   13b08: 9100219b     	add	x27, x12, #0x8
+   13b0c: b000011c     	adrp	x28, 0x34000 <usleep+0x34000>
+   13b10: b2596bf5     	mov	x21, #-0x7ffffffffd     // =-549755813885
+   13b14: 913fc15a     	add	x26, x10, #0xff0
+   13b18: a900a3ec     	stp	x12, x8, [sp, #0x8]
+   13b1c: f9000ff6     	str	x22, [sp, #0x18]
+   13b20: b94d4380     	ldr	w0, [x28, #0xd40]
+   13b24: f85f8377     	ldur	x23, [x27, #-0x8]
+   13b28: 37f80ae0     	tbnz	w0, #0x1f, 0x13c84 <dlopen+0x2c8>
+   13b2c: f85f83a8     	ldur	x8, [x29, #-0x8]
+   13b30: f9400108     	ldr	x8, [x8]
+   13b34: 8b0802e3     	add	x3, x23, x8
+   13b38: 8b150068     	add	x8, x3, x21
+   13b3c: eb1a011f     	cmp	x8, x26
+   13b40: 54000a23     	b.lo	0x13c84 <dlopen+0x2c8>
+   13b44: 910083e1     	add	x1, sp, #0x20
+   13b48: 52800082     	mov	w2, #0x4                // =4
+   13b4c: 94000381     	bl	0x14950 <pread@plt>
+   13b50: f100101f     	cmp	x0, #0x4
+   13b54: 54000981     	b.ne	0x13c84 <dlopen+0x2c8>
+   13b58: b94023e8     	ldr	w8, [sp, #0x20]
+   13b5c: b8410769     	ldr	w9, [x27], #0x10
+   13b60: 6b09011f     	cmp	w8, w9
+   13b64: 54000901     	b.ne	0x13c84 <dlopen+0x2c8>
+   13b68: f10006d6     	subs	x22, x22, #0x1
+   13b6c: 54fffda1     	b.ne	0x13b20 <dlopen+0x164>
+   13b70: f100029f     	cmp	x20, #0x0
+   13b74: 52a00208     	mov	w8, #0x100000           // =1048576
+   13b78: f9400ffb     	ldr	x27, [sp, #0x18]
+   13b7c: 9a9f0115     	csel	x21, x8, xzr, eq
+   13b80: a940f3e8     	ldp	x8, x28, [sp, #0x8]
+   13b84: aa1b03fa     	mov	x26, x27
+   13b88: 91002116     	add	x22, x8, #0x8
+   13b8c: f85f83a8     	ldur	x8, [x29, #-0x8]
+   13b90: f85f82d7     	ldur	x23, [x22, #-0x8]
+   13b94: aa1c03e0     	mov	x0, x28
+   13b98: b84106c2     	ldr	w2, [x22], #0x10
+   13b9c: f9400108     	ldr	x8, [x8]
+   13ba0: 8b1502e3     	add	x3, x23, x21
+   13ba4: 8b0802e1     	add	x1, x23, x8
+   13ba8: 940000fc     	bl	0x13f98 <install>
+   13bac: 35001220     	cbnz	w0, 0x13df0 <dlopen+0x434>
+   13bb0: f100075a     	subs	x26, x26, #0x1
+   13bb4: 54fffec1     	b.ne	0x13b8c <dlopen+0x1d0>
+   13bb8: f85f83aa     	ldur	x10, [x29, #-0x8]
+   13bbc: d0000108     	adrp	x8, 0x35000 <params+0x2b8>
+   13bc0: 91055108     	add	x8, x8, #0x154
+   13bc4: d0000109     	adrp	x9, 0x35000 <params+0x2b8>
+   13bc8: 91056129     	add	x9, x9, #0x158
+   13bcc: f100029f     	cmp	x20, #0x0
+   13bd0: 9a880128     	csel	x8, x9, x8, eq
+   13bd4: 52800889     	mov	w9, #0x44               // =68
+   13bd8: 528009ab     	mov	w11, #0x4d              // =77
+   13bdc: f9400143     	ldr	x3, [x10]
+   13be0: 5280002c     	mov	w12, #0x1               // =1
+   13be4: 1a890162     	csel	w2, w11, w9, eq
+   13be8: d0ffff61     	adrp	x1, 0x1000 <usleep+0x1000>
+   13bec: 91232821     	add	x1, x1, #0x8ca
+   13bf0: 52800040     	mov	w0, #0x2                // =2
+   13bf4: aa1b03e4     	mov	x4, x27
+   13bf8: 3900010c     	strb	w12, [x8]
+   13bfc: 9400034d     	bl	0x14930 <dprintf@plt>
+   13c00: 140000ad     	b	0x13eb4 <dlopen+0x4f8>
+   13c04: b0000081     	adrp	x1, 0x24000 <mount_call+0x23fa0>
+   13c08: d0000100     	adrp	x0, 0x35000 <params+0x2b8>
+   13c0c: 91058000     	add	x0, x0, #0x160
+   13c10: f9460421     	ldr	x1, [x1, #0xc08]
+   13c14: 528007e3     	mov	w3, #0x3f               // =63
+   13c18: b9400022     	ldr	w2, [x1]
+   13c1c: 940000df     	bl	0x13f98 <install>
+   13c20: 35000260     	cbnz	w0, 0x13c6c <dlopen+0x2b0>
+   13c24: b0000081     	adrp	x1, 0x24000 <mount_call+0x23fa0>
+   13c28: d0000100     	adrp	x0, 0x35000 <params+0x2b8>
+   13c2c: 91058000     	add	x0, x0, #0x160
+   13c30: f9460821     	ldr	x1, [x1, #0xc10]
+   13c34: 528007e3     	mov	w3, #0x3f               // =63
+   13c38: b9400022     	ldr	w2, [x1]
+   13c3c: 940000d7     	bl	0x13f98 <install>
+   13c40: 35000160     	cbnz	w0, 0x13c6c <dlopen+0x2b0>
+   13c44: b0000081     	adrp	x1, 0x24000 <mount_call+0x23fa0>
+   13c48: d0000100     	adrp	x0, 0x35000 <params+0x2b8>
+   13c4c: 91058000     	add	x0, x0, #0x160
+   13c50: f9460c21     	ldr	x1, [x1, #0xc18]
+   13c54: 528007e3     	mov	w3, #0x3f               // =63
+   13c58: b9400022     	ldr	w2, [x1]
+   13c5c: 940000cf     	bl	0x13f98 <install>
+   13c60: 35000060     	cbnz	w0, 0x13c6c <dlopen+0x2b0>
+   13c64: 9400027e     	bl	0x1465c <fx3_media_test>
+   13c68: 34000ec0     	cbz	w0, 0x13e40 <dlopen+0x484>
+   13c6c: 2a0003e2     	mov	w2, w0
+   13c70: d0ffff61     	adrp	x1, 0x1000 <usleep+0x1000>
+   13c74: 9109e821     	add	x1, x1, #0x27a
+   13c78: 52800040     	mov	w0, #0x2                // =2
+   13c7c: 9400032d     	bl	0x14930 <dprintf@plt>
+   13c80: 1400008d     	b	0x13eb4 <dlopen+0x4f8>
+   13c84: f100029f     	cmp	x20, #0x0
+   13c88: 52800888     	mov	w8, #0x44               // =68
+   13c8c: 528009a9     	mov	w9, #0x4d               // =77
+   13c90: 1a880122     	csel	w2, w9, w8, eq
+   13c94: b0ffff61     	adrp	x1, 0x0 <usleep>
+   13c98: 913bac21     	add	x1, x1, #0xeeb
+   13c9c: 52800040     	mov	w0, #0x2                // =2
+   13ca0: aa1703e3     	mov	x3, x23
+   13ca4: 94000323     	bl	0x14930 <dprintf@plt>
+   13ca8: 14000083     	b	0x13eb4 <dlopen+0x4f8>
+   13cac: b0ffff61     	adrp	x1, 0x0 <usleep>
+   13cb0: 912b3821     	add	x1, x1, #0xace
+   13cb4: aa1503e0     	mov	x0, x21
+   13cb8: 94000336     	bl	0x14990 <strstr@plt>
+   13cbc: b4000fc0     	cbz	x0, 0x13eb4 <dlopen+0x4f8>
+   13cc0: d0000114     	adrp	x20, 0x35000 <params+0x2b8>
+   13cc4: f9406688     	ldr	x8, [x20, #0xc8]
+   13cc8: b5000f68     	cbnz	x8, 0x13eb4 <dlopen+0x4f8>
+   13ccc: b25963f6     	mov	x22, #-0x8000000000     // =-549755813888
+   13cd0: b0000115     	adrp	x21, 0x34000 <usleep+0x34000>
+   13cd4: 9135d2b5     	add	x21, x21, #0xd74
+   13cd8: f2800276     	movk	x22, #0x13
+   13cdc: 52800157     	mov	w23, #0xa               // =10
+   13ce0: b000011a     	adrp	x26, 0x34000 <usleep+0x34000>
+   13ce4: b94d4340     	ldr	w0, [x26, #0xd40]
+   13ce8: 37f80780     	tbnz	w0, #0x1f, 0x13dd8 <dlopen+0x41c>
+   13cec: f85f83a8     	ldur	x8, [x29, #-0x8]
+   13cf0: f85dc2a9     	ldur	x9, [x21, #-0x24]
+   13cf4: f9400108     	ldr	x8, [x8]
+   13cf8: 8b080123     	add	x3, x9, x8
+   13cfc: 914006c9     	add	x9, x22, #0x1, lsl #12  // =0x1000
+   13d00: 8b160068     	add	x8, x3, x22
+   13d04: eb09011f     	cmp	x8, x9
+   13d08: 54000683     	b.lo	0x13dd8 <dlopen+0x41c>
+   13d0c: 910083e1     	add	x1, sp, #0x20
+   13d10: 52800282     	mov	w2, #0x14               // =20
+   13d14: 9400030f     	bl	0x14950 <pread@plt>
+   13d18: f100501f     	cmp	x0, #0x14
+   13d1c: 540005e1     	b.ne	0x13dd8 <dlopen+0x41c>
+   13d20: a9402ea8     	ldp	x8, x11, [x21]
+   13d24: b94033ec     	ldr	w12, [sp, #0x30]
+   13d28: a9422be9     	ldp	x9, x10, [sp, #0x20]
+   13d2c: b94012ad     	ldr	w13, [x21, #0x10]
+   13d30: eb08013f     	cmp	x9, x8
+   13d34: fa4b0140     	ccmp	x10, x11, #0x0, eq
+   13d38: fa4d0180     	ccmp	x12, x13, #0x0, eq
+   13d3c: 540004e1     	b.ne	0x13dd8 <dlopen+0x41c>
+   13d40: b94d4340     	ldr	w0, [x26, #0xd40]
+   13d44: 37f804a0     	tbnz	w0, #0x1f, 0x13dd8 <dlopen+0x41c>
+   13d48: f85f83a8     	ldur	x8, [x29, #-0x8]
+   13d4c: f85e42a9     	ldur	x9, [x21, #-0x1c]
+   13d50: f9400108     	ldr	x8, [x8]
+   13d54: 8b080123     	add	x3, x9, x8
+   13d58: 914006c9     	add	x9, x22, #0x1, lsl #12  // =0x1000
+   13d5c: 8b160068     	add	x8, x3, x22
+   13d60: eb09011f     	cmp	x8, x9
+   13d64: 540003a3     	b.lo	0x13dd8 <dlopen+0x41c>
+   13d68: 910083e1     	add	x1, sp, #0x20
+   13d6c: 52800282     	mov	w2, #0x14               // =20
+   13d70: 940002f8     	bl	0x14950 <pread@plt>
+   13d74: f100501f     	cmp	x0, #0x14
+   13d78: 54000301     	b.ne	0x13dd8 <dlopen+0x41c>
+   13d7c: a9422be9     	ldp	x9, x10, [sp, #0x20]
+   13d80: f84142a8     	ldur	x8, [x21, #0x14]
+   13d84: f841c2ab     	ldur	x11, [x21, #0x1c]
+   13d88: b94033ec     	ldr	w12, [sp, #0x30]
+   13d8c: b94026ad     	ldr	w13, [x21, #0x24]
+   13d90: eb08013f     	cmp	x9, x8
+   13d94: fa4b0140     	ccmp	x10, x11, #0x0, eq
+   13d98: fa4d0180     	ccmp	x12, x13, #0x0, eq
+   13d9c: 540001e1     	b.ne	0x13dd8 <dlopen+0x41c>
+   13da0: f10006f7     	subs	x23, x23, #0x1
+   13da4: 910162b5     	add	x21, x21, #0x58
+   13da8: 54fff9e1     	b.ne	0x13ce4 <dlopen+0x328>
+   13dac: f85f83a8     	ldur	x8, [x29, #-0x8]
+   13db0: b0ffff60     	adrp	x0, 0x0 <usleep>
+   13db4: 912ccc00     	add	x0, x0, #0xb33
+   13db8: f9400108     	ldr	x8, [x8]
+   13dbc: f9006688     	str	x8, [x20, #0xc8]
+   13dc0: 97fffdf0     	bl	0x13580 <sample>
+   13dc4: d0000115     	adrp	x21, 0x35000 <params+0x2b8>
+   13dc8: 394542a8     	ldrb	w8, [x21, #0x150]
+   13dcc: 36000288     	tbz	w8, #0x0, 0x13e1c <dlopen+0x460>
+   13dd0: 52800023     	mov	w3, #0x1                // =1
+   13dd4: 14000033     	b	0x13ea0 <dlopen+0x4e4>
+   13dd8: f85d42a2     	ldur	x2, [x21, #-0x2c]
+   13ddc: d0ffff61     	adrp	x1, 0x1000 <usleep+0x1000>
+   13de0: 91006c21     	add	x1, x1, #0x1b
+   13de4: 52800040     	mov	w0, #0x2                // =2
+   13de8: 940002d2     	bl	0x14930 <dprintf@plt>
+   13dec: 14000032     	b	0x13eb4 <dlopen+0x4f8>
+   13df0: f100029f     	cmp	x20, #0x0
+   13df4: 52800888     	mov	w8, #0x44               // =68
+   13df8: 528009a9     	mov	w9, #0x4d               // =77
+   13dfc: 2a0003e4     	mov	w4, w0
+   13e00: 1a880122     	csel	w2, w9, w8, eq
+   13e04: d0ffff61     	adrp	x1, 0x1000 <usleep+0x1000>
+   13e08: 9108d421     	add	x1, x1, #0x235
+   13e0c: 52800040     	mov	w0, #0x2                // =2
+   13e10: aa1703e3     	mov	x3, x23
+   13e14: 940002c7     	bl	0x14930 <dprintf@plt>
+   13e18: 14000027     	b	0x13eb4 <dlopen+0x4f8>
+   13e1c: 90000002     	adrp	x2, 0x13000 <stack+0x174>
+   13e20: 913db042     	add	x2, x2, #0xf6c
+   13e24: 910083e0     	add	x0, sp, #0x20
+   13e28: aa1f03e1     	mov	x1, xzr
+   13e2c: aa1f03e3     	mov	x3, xzr
+   13e30: 940002dc     	bl	0x149a0 <pthread_create@plt>
+   13e34: 340002e0     	cbz	w0, 0x13e90 <dlopen+0x4d4>
+   13e38: 394542a3     	ldrb	w3, [x21, #0x150]
+   13e3c: 14000019     	b	0x13ea0 <dlopen+0x4e4>
+   13e40: 9400029c     	bl	0x148b0 <fx3_media_test_cb>
+   13e44: 71002c1f     	cmp	w0, #0xb
+   13e48: 54000201     	b.ne	0x13e88 <dlopen+0x4cc>
+   13e4c: 52800020     	mov	w0, #0x1                // =1
+   13e50: 94000298     	bl	0x148b0 <fx3_media_test_cb>
+   13e54: 7100581f     	cmp	w0, #0x16
+   13e58: 54000181     	b.ne	0x13e88 <dlopen+0x4cc>
+   13e5c: 52800120     	mov	w0, #0x9                // =9
+   13e60: 94000299     	bl	0x148c4 <fx3_media_bl_test>
+   13e64: 7100401f     	cmp	w0, #0x10
+   13e68: 54000101     	b.ne	0x13e88 <dlopen+0x4cc>
+   13e6c: 52800028     	mov	w8, #0x1                // =1
+   13e70: d0ffff61     	adrp	x1, 0x1000 <usleep+0x1000>
+   13e74: 9124e421     	add	x1, x1, #0x939
+   13e78: 52800040     	mov	w0, #0x2                // =2
+   13e7c: 390572a8     	strb	w8, [x21, #0x15c]
+   13e80: 940002ac     	bl	0x14930 <dprintf@plt>
+   13e84: 17ffff11     	b	0x13ac8 <dlopen+0x10c>
+   13e88: 52801f42     	mov	w2, #0xfa               // =250
+   13e8c: 17ffff79     	b	0x13c70 <dlopen+0x2b4>
+   13e90: f94013e0     	ldr	x0, [sp, #0x20]
+   13e94: 940002c7     	bl	0x149b0 <pthread_detach@plt>
+   13e98: 52800023     	mov	w3, #0x1                // =1
+   13e9c: 390542a3     	strb	w3, [x21, #0x150]
+   13ea0: f9406682     	ldr	x2, [x20, #0xc8]
+   13ea4: d0ffff61     	adrp	x1, 0x1000 <usleep+0x1000>
+   13ea8: 910aac21     	add	x1, x1, #0x2ab
+   13eac: 52800040     	mov	w0, #0x2                // =2
+   13eb0: 940002a0     	bl	0x14930 <dprintf@plt>
+   13eb4: 089fff3f     	stlrb	wzr, [x25]
+   13eb8: 94000292     	bl	0x14900 <__errno_location@plt>
+   13ebc: aa0003e8     	mov	x8, x0
+   13ec0: aa1303e0     	mov	x0, x19
+   13ec4: b9000118     	str	w24, [x8]
+   13ec8: a9494ff4     	ldp	x20, x19, [sp, #0x90]
+   13ecc: a94857f6     	ldp	x22, x21, [sp, #0x80]
+   13ed0: a9475ff8     	ldp	x24, x23, [sp, #0x70]
+   13ed4: a94667fa     	ldp	x26, x25, [sp, #0x60]
+   13ed8: a9456ffc     	ldp	x28, x27, [sp, #0x50]
+   13edc: a9447bfd     	ldp	x29, x30, [sp, #0x40]
+   13ee0: 910283ff     	add	sp, sp, #0xa0
+   13ee4: d65f03c0     	ret
+   13ee8: d4200020     	brk	#0x1

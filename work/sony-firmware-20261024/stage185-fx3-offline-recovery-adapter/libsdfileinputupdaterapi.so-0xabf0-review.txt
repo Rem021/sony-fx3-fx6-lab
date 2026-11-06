@@ -1,0 +1,14 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000000abf0 <Updater::SignatureVerification::VerifySignature(Updater::verify_info_t, char const*)>:
+    abf0: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+    abf4: 910003fd     	mov	x29, sp
+    abf8: a90153f3     	stp	x19, x20, [sp, #0x10]
+    abfc: aa0103f3     	mov	x19, x1
+    ac00: aa0203e1     	mov	x1, x2
+    ac04: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    ac08: aa0203f4     	mov	x20, x2
+    ac0c: 97fff281     	bl	0x7610 <_ZN7Updater21SignatureVerification9verifyKeyEPKc@plt>

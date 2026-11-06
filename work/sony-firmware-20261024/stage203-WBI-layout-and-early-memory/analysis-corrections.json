@@ -1,0 +1,12 @@
+{
+  "corrections": [
+    "Stage9 had already parsed1399 WBI sections. This stage revalidates that map against actual bytes and named Sony reference layout, then adds checksum/address coverage, trailer and resume evidence; it does not claim the map itself is new.",
+    "Original descriptor order is not globally ascending: transition1378->1379 returns to a lower address. Physical sorting reveals no overlaps; serialized source order retained.",
+    "0x400000000 is an address base of16GiB, not4GiB and not total RAM capacity. Exact64-bit addresses retained in mappings.",
+    "Found261632 bytes after the declared table,2298 nonzero; cannot call all trailer bytes zero or trim them. RBUF/SUBS/log-like structure remains only a partial interpretation.",
+    "emmc tbl init argument and WBI record1379 match, but the full handoff format and partition geometry remain undecoded; not promoted to a boot0/p1 backup.",
+    "Kernel header64 and resume64 match, but673 bytes differ in the compared5963776B block. No assumption about difference cause or whole-image interchangeability."
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

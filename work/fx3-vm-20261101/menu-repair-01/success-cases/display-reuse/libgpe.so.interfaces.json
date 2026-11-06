@@ -1,0 +1,1555 @@
+{
+  "guest_path": "/usr/lib/libgpe.so",
+  "local_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libgpe.so",
+  "bytes": 106480,
+  "sha256": "363879687bd43a69734187eb28f721ce6080209a95c62b04c833a4a117f12464",
+  "dynsym_total": 491,
+  "defined_total": 461,
+  "source_exact_matches": [
+    {
+      "name": "_ZNK5mpgpe5Gperm4InitEv",
+      "value": "0x9ae8",
+      "size": 100,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe5FlushENS_3GpeENS_7IntCoreEjjRKNS_10FlushParamE",
+      "value": "0xc760",
+      "size": 160,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7BitBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE",
+      "value": "0xcf2c",
+      "size": 540,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7message12SendDrawCompEjPKvm",
+      "value": "0xd888",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe14InitializeDrawENS_3GpeE",
+      "value": "0xc1d0",
+      "size": 188,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE",
+      "value": "0xa430",
+      "size": 228,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe12GpermBitBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE",
+      "value": "0xa514",
+      "size": 220,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe8FillRectENS_3GpeENS_7IntCoreEjjRKNS_13FillRectParamE",
+      "value": "0xc30c",
+      "size": 1108,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    }
+  ],
+  "selected_dynsym": [
+    {
+      "name": "osal_set_msg_src",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_snd_msg",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_valloc_msg_wait",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_free_msg",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZN5mpgpe12CallbackFifoD0Ev",
+      "value": "0xae4c",
+      "size": 8,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13CommandBuffer14GetNextAddressEv",
+      "value": "0xad00",
+      "size": 72,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13CommandBuffer5EraseEj",
+      "value": "0xac80",
+      "size": 44,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13CommandBuffer5ResetEv",
+      "value": "0xabec",
+      "size": 12,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7message12SendWaitIntrENS_3GpeENS_7IntCoreEPKvm",
+      "value": "0xd8b4",
+      "size": 56,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMF7InitRegEv",
+      "value": "0x9dc8",
+      "size": 184,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe5Gperm11GetInstanceENS_3GpeENS_7IntCoreE",
+      "value": "0x9a8c",
+      "size": 92,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK5mpgpe3CMF13GetCmdBufAddrEv",
+      "value": "0x9f5c",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_7CommandEE4NextEv",
+      "value": "0xacac",
+      "size": 84,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10ResumeDrawENS_3GpeE",
+      "value": "0xc28c",
+      "size": 120,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe12CallbackFifoD1Ev",
+      "value": "0xad98",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMFC2ENS_3GpeENS_7IntCoreE",
+      "value": "0xc154",
+      "size": 124,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK5mpgpe5Gperm4InitEv",
+      "value": "0x9ae8",
+      "size": 100,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTSN5mpgpe13CommandBufferE",
+      "value": "0x15160",
+      "size": 24,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 12
+    },
+    {
+      "name": "_ZTVN5mpgpe13CommandBufferE",
+      "value": "0x28ca0",
+      "size": 32,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZN5mpgpe5FlushENS_3GpeENS_7IntCoreEjjRKNS_10FlushParamE",
+      "value": "0xc760",
+      "size": 160,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe22GpermStretchRotateBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE",
+      "value": "0xa5f0",
+      "size": 220,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe5GpermD0Ev",
+      "value": "0x9a6c",
+      "size": 8,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7BitBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE",
+      "value": "0xcf2c",
+      "size": 540,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_8CmdMacroEED0Ev",
+      "value": "0xae6c",
+      "size": 8,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13CommandBuffer10InitializeEPNS_7CommandEmj",
+      "value": "0xab30",
+      "size": 188,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10DoCallbackENS_3GpeENS_7IntCoreEi",
+      "value": "0xc800",
+      "size": 120,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK5mpgpe5Gperm4ExitEv",
+      "value": "0x9b4c",
+      "size": 48,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK5mpgpe5Gperm6ResumeEv",
+      "value": "0x9b7c",
+      "size": 40,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMF13GetNextCmdBufEv",
+      "value": "0xa02c",
+      "size": 228,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMF6ResumeEv",
+      "value": "0x9f24",
+      "size": 56,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMFC1ENS_3GpeENS_7IntCoreE",
+      "value": "0xc154",
+      "size": 124,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13TerminateDrawENS_3GpeE",
+      "value": "0xc304",
+      "size": 8,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe12CallbackFifoD2Ev",
+      "value": "0xad98",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe6UnlockENS_3GpeE",
+      "value": "0xd9fc",
+      "size": 104,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK5mpgpe13CommandBuffer18GetPhysicalAddressEv",
+      "value": "0xac3c",
+      "size": 68,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTSN5mpgpe3CMFE",
+      "value": "0x151e8",
+      "size": 13,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 12
+    },
+    {
+      "name": "_ZN5mpgpe17DrawVariousFramesENS_3GpeENS_7IntCoreEjjRKNS_15DrawFramesParamE",
+      "value": "0xd148",
+      "size": 1384,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK5mpgpe3CMF10GetCMCountEv",
+      "value": "0x9fc0",
+      "size": 12,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7message15ReceiveWaitIntrENS_3GpeENS_7IntCoreEPvm",
+      "value": "0xd8ec",
+      "size": 164,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_12CallbackInfoEED0Ev",
+      "value": "0xae54",
+      "size": 8,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK5mpgpe13CommandBuffer10GetAddressEv",
+      "value": "0xabf8",
+      "size": 68,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe5GpermD1Ev",
+      "value": "0x9a68",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMF10InitializeERKNS_14GpeBufferParamE",
+      "value": "0x9e80",
+      "size": 164,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_8CmdMacroEED1Ev",
+      "value": "0xada8",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13CommandBufferD0Ev",
+      "value": "0xae5c",
+      "size": 8,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTIN5mpgpe5GpermE",
+      "value": "0x28bf8",
+      "size": 16,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZTSN5mpgpe10RingBufferINS_7CommandEEE",
+      "value": "0x15138",
+      "size": 35,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 12
+    },
+    {
+      "name": "_ZTSN5mpgpe5GpermE",
+      "value": "0x14e78",
+      "size": 15,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 12
+    },
+    {
+      "name": "_ZNK5mpgpe3CMF8WaitCompEv",
+      "value": "0x9ff4",
+      "size": 56,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7message12SendDrawCompEjPKvm",
+      "value": "0xd888",
+      "size": 20,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe12CallbackFifo3PopEPNS_12CallbackInfoE",
+      "value": "0x99cc",
+      "size": 156,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_12CallbackInfoEED1Ev",
+      "value": "0xada4",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe5GpermD2Ev",
+      "value": "0x9a68",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_8CmdMacroEED2Ev",
+      "value": "0xada8",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTIN5mpgpe3CMFE",
+      "value": "0x28c88",
+      "size": 24,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZN5mpgpe13CommandBufferD1Ev",
+      "value": "0xad94",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7message11ReceiveDrawENS_3GpeENS_7IntCoreEPvm",
+      "value": "0xd84c",
+      "size": 60,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTSN5mpgpe12CallbackFifoE",
+      "value": "0x151a8",
+      "size": 23,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 12
+    },
+    {
+      "name": "_ZNK5mpgpe3CMF12SyncCallbackEj",
+      "value": "0xa110",
+      "size": 72,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTIN5mpgpe13CommandBufferE",
+      "value": "0x28c38",
+      "size": 24,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZN5mpgpe3CMF11UpdateCountEj",
+      "value": "0x9fcc",
+      "size": 40,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTVN5mpgpe5GpermE",
+      "value": "0x28c08",
+      "size": 32,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZN5mpgpe14InitializeDrawENS_3GpeE",
+      "value": "0xc1d0",
+      "size": 188,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTIN5mpgpe10RingBufferINS_12CallbackInfoEEE",
+      "value": "0x28c50",
+      "size": 16,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZTIN5mpgpe10RingBufferINS_8CmdMacroEEE",
+      "value": "0x28c78",
+      "size": 16,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE",
+      "value": "0xa430",
+      "size": 228,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_12CallbackInfoEED2Ev",
+      "value": "0xada4",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10GpermFlushENS_3GpeENS_7IntCoreEPjRKNS_10FlushParamE",
+      "value": "0xa768",
+      "size": 212,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe5GpermC2ENS_3GpeENS_7IntCoreE",
+      "value": "0x9a74",
+      "size": 24,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTSN5mpgpe10RingBufferINS_8CmdMacroEEE",
+      "value": "0x151c0",
+      "size": 36,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 12
+    },
+    {
+      "name": "_ZN5mpgpe12CallbackFifo5ResetEv",
+      "value": "0x9924",
+      "size": 12,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe11GpermFinishENS_3GpeENS_7IntCoreE",
+      "value": "0xa83c",
+      "size": 40,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13CommandBufferD2Ev",
+      "value": "0xad94",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMFD0Ev",
+      "value": "0xae44",
+      "size": 8,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_7CommandEED0Ev",
+      "value": "0xae64",
+      "size": 8,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMF10DoCallbackEv",
+      "value": "0xa158",
+      "size": 132,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe5GpermC1ENS_3GpeENS_7IntCoreE",
+      "value": "0x9a74",
+      "size": 24,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK5mpgpe5Gperm4MainEv",
+      "value": "0x9ba4",
+      "size": 360,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe12GpermBitBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE",
+      "value": "0xa514",
+      "size": 220,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTIN5mpgpe12CallbackFifoE",
+      "value": "0x28c60",
+      "size": 24,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZN5mpgpe4LockENS_3GpeE",
+      "value": "0xd990",
+      "size": 108,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMF11SetCallbackERKNS_12CallbackInfoE",
+      "value": "0x9f64",
+      "size": 92,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7message15ReceiveDrawCompEjPvm",
+      "value": "0xd89c",
+      "size": 24,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMFD1Ev",
+      "value": "0xad9c",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_8CmdMacroEE4NextEv",
+      "value": "0xa1dc",
+      "size": 84,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTIN5mpgpe10RingBufferINS_7CommandEEE",
+      "value": "0x28c28",
+      "size": 16,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZN5mpgpe3CMF3SetEmjNS_7IntFIFOE",
+      "value": "0xa230",
+      "size": 360,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTVN5mpgpe12CallbackFifoE",
+      "value": "0x28cc0",
+      "size": 32,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_7CommandEED1Ev",
+      "value": "0xada0",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe12CallbackFifo4PushERKNS_12CallbackInfoE",
+      "value": "0x9930",
+      "size": 156,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe13CommandBuffer22GetNextPhysicalAddressEv",
+      "value": "0xad48",
+      "size": 76,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe8FillRectENS_3GpeENS_7IntCoreEjjRKNS_13FillRectParamE",
+      "value": "0xc30c",
+      "size": 1108,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMF4InitEPNS_8CmdMacroEmj",
+      "value": "0x9d0c",
+      "size": 188,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe17StretchRotateBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE",
+      "value": "0xc878",
+      "size": 1716,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe3CMFD2Ev",
+      "value": "0xad9c",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZTVN5mpgpe3CMFE",
+      "value": "0x28ce0",
+      "size": 32,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 18
+    },
+    {
+      "name": "_ZTSN5mpgpe10RingBufferINS_12CallbackInfoEEE",
+      "value": "0x15178",
+      "size": 41,
+      "bind": 2,
+      "type": 1,
+      "defined": true,
+      "section_index": 12
+    },
+    {
+      "name": "_ZN5mpgpe12CallbackFifo10InitializeEPNS_12CallbackInfoEj",
+      "value": "0x98c0",
+      "size": 100,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe22GpermDrawVariousFramesENS_3GpeENS_7IntCoreEPjRKNS_15DrawFramesParamE",
+      "value": "0xa6cc",
+      "size": 156,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe10RingBufferINS_7CommandEED2Ev",
+      "value": "0xada0",
+      "size": 4,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN5mpgpe7message8SendDrawENS_3GpeENS_7IntCoreEPKvm",
+      "value": "0xd814",
+      "size": 56,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    }
+  ],
+  "selected_relocations": [
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c00",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTSN5mpgpe5GpermE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c10",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTIN5mpgpe5GpermE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c18",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe5GpermD1Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28fa8",
+      "type": 1025,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe5GpermD1Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c20",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe5GpermD0Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c30",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTSN5mpgpe10RingBufferINS_7CommandEEE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c40",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTSN5mpgpe13CommandBufferE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c48",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTIN5mpgpe10RingBufferINS_7CommandEEE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c58",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTSN5mpgpe10RingBufferINS_12CallbackInfoEEE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c68",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTSN5mpgpe12CallbackFifoE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c70",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTIN5mpgpe10RingBufferINS_12CallbackInfoEEE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c80",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTSN5mpgpe10RingBufferINS_8CmdMacroEEE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c90",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTSN5mpgpe3CMFE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28c98",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTIN5mpgpe10RingBufferINS_8CmdMacroEEE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28ca8",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTIN5mpgpe13CommandBufferE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28cb0",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe13CommandBufferD1Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28cb8",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe13CommandBufferD0Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28cc8",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTIN5mpgpe12CallbackFifoE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28cd0",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe12CallbackFifoD1Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28cd8",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe12CallbackFifoD0Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28ce8",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZTIN5mpgpe3CMFE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28cf0",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMFD1Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28f68",
+      "type": 1025,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMFD1Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28cf8",
+      "type": 257,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMFD0Ev"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28f48",
+      "type": 1025,
+      "addend": 0,
+      "symbol": "_ZTVN5mpgpe5GpermE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28f58",
+      "type": 1025,
+      "addend": 0,
+      "symbol": "_ZTVN5mpgpe3CMFE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28fb8",
+      "type": 1025,
+      "addend": 0,
+      "symbol": "_ZTVN5mpgpe12CallbackFifoE"
+    },
+    {
+      "section": ".rela.dyn",
+      "offset": "0x28fd0",
+      "type": 1025,
+      "addend": 0,
+      "symbol": "_ZTVN5mpgpe13CommandBufferE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29028",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe5GpermC1ENS_3GpeENS_7IntCoreE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29050",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_set_msg_src"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29080",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMFC1ENS_3GpeENS_7IntCoreE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x290a8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe13CommandBuffer5EraseEj"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x290c8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF7InitRegEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x290f0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe12CallbackFifo5ResetEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29108",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe5FlushENS_3GpeENS_7IntCoreEjjRKNS_10FlushParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29148",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe17DrawVariousFramesENS_3GpeENS_7IntCoreEjjRKNS_15DrawFramesParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29158",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe7BitBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x291b8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe12CallbackFifo4PushERKNS_12CallbackInfoE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x291e0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_snd_msg"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29218",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF11UpdateCountEj"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29260",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK5mpgpe13CommandBuffer10GetAddressEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29268",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_valloc_msg_wait"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x292a0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK5mpgpe3CMF10GetCMCountEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x292d8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe4LockENS_3GpeE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x292e0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe13CommandBuffer10InitializeEPNS_7CommandEmj"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x292e8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF10DoCallbackEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x292f0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe17StretchRotateBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29310",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe6UnlockENS_3GpeE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29318",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF11SetCallbackERKNS_12CallbackInfoE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29340",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe13CommandBuffer22GetNextPhysicalAddressEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x293e0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe7message12SendWaitIntrENS_3GpeENS_7IntCoreEPKvm"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x293f8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK5mpgpe3CMF8WaitCompEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29408",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe12CallbackFifo10InitializeEPNS_12CallbackInfoEj"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29468",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK5mpgpe5Gperm4MainEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29470",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe7message12SendDrawCompEjPKvm"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x294c0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe13TerminateDrawENS_3GpeE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x294f8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe10GpermFlushENS_3GpeENS_7IntCoreEPjRKNS_10FlushParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29508",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF10InitializeERKNS_14GpeBufferParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29520",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK5mpgpe5Gperm4InitEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29538",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe10RingBufferINS_7CommandEE4NextEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29560",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF6ResumeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29598",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF13GetNextCmdBufEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x295a0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe10DoCallbackENS_3GpeENS_7IntCoreEi"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x295b8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe12CallbackFifo3PopEPNS_12CallbackInfoE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x295e0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe7message15ReceiveWaitIntrENS_3GpeENS_7IntCoreEPvm"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x295f8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe10RingBufferINS_8CmdMacroEE4NextEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29628",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe7message15ReceiveDrawCompEjPvm"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29630",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK5mpgpe5Gperm6ResumeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29638",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF3SetEmjNS_7IntFIFOE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29650",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe14InitializeDrawENS_3GpeE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29660",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe8FillRectENS_3GpeENS_7IntCoreEjjRKNS_13FillRectParamE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29668",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK5mpgpe5Gperm4ExitEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29680",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe10ResumeDrawENS_3GpeE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x296a0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe3CMF4InitEPNS_8CmdMacroEmj"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x296a8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe5Gperm11GetInstanceENS_3GpeENS_7IntCoreE"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x296b8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe13CommandBuffer5ResetEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x296c8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe7message8SendDrawENS_3GpeENS_7IntCoreEPKvm"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x296e8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK5mpgpe3CMF12SyncCallbackEj"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29710",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_free_msg"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x29758",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN5mpgpe7message11ReceiveDrawENS_3GpeENS_7IntCoreEPvm"
+    }
+  ]
+}

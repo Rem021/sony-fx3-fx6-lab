@@ -1,0 +1,149 @@
+{
+  "source_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+  "function": "k_upm_init_boot_factor",
+  "instructions": [
+    {
+      "va": "0x4168",
+      "bytes": "fd7bbea9",
+      "instruction": "stp x29, x30, [sp, #-0x20]!",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x416c",
+      "bytes": "01008012",
+      "instruction": "mov w1, #-1",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4170",
+      "bytes": "fd030091",
+      "instruction": "mov x29, sp",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4174",
+      "bytes": "f30b00f9",
+      "instruction": "str x19, [sp, #0x10]",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4178",
+      "bytes": "73178052",
+      "instruction": "mov w19, #0xbb",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x417c",
+      "bytes": "5312a072",
+      "instruction": "movk w19, #0x92, lsl #16",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4180",
+      "bytes": "e003132a",
+      "instruction": "mov w0, w19",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4184",
+      "bytes": "00000094",
+      "instruction": "bl #0x4184",
+      "relocation_symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "va": "0x4188",
+      "bytes": "e003132a",
+      "instruction": "mov w0, w19",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x418c",
+      "bytes": "00000094",
+      "instruction": "bl #0x418c",
+      "relocation_symbol": "osal_sig_sem"
+    },
+    {
+      "va": "0x4190",
+      "bytes": "01020058",
+      "instruction": "ldr x1, #0x41d0",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4194",
+      "bytes": "e0248852",
+      "instruction": "mov w0, #0x4127",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4198",
+      "bytes": "82010058",
+      "instruction": "ldr x2, #0x41c8",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x419c",
+      "bytes": "030080d2",
+      "instruction": "mov x3, #0",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41a0",
+      "bytes": "21200091",
+      "instruction": "add x1, x1, #8",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41a4",
+      "bytes": "4012b072",
+      "instruction": "movk w0, #0x8092, lsl #16",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41a8",
+      "bytes": "00000094",
+      "instruction": "bl #0x41a8",
+      "relocation_symbol": "osal_reg_sync_msg_queue_cb"
+    },
+    {
+      "va": "0x41ac",
+      "bytes": "20008052",
+      "instruction": "mov w0, #1",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41b0",
+      "bytes": "00000094",
+      "instruction": "bl #0x41b0",
+      "relocation_symbol": "k_upm_setup_boot_factor"
+    },
+    {
+      "va": "0x41b4",
+      "bytes": "f30b40f9",
+      "instruction": "ldr x19, [sp, #0x10]",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41b8",
+      "bytes": "00008052",
+      "instruction": "mov w0, #0",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41bc",
+      "bytes": "fd7bc2a8",
+      "instruction": "ldp x29, x30, [sp], #0x20",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41c0",
+      "bytes": "c0035fd6",
+      "instruction": "ret ",
+      "relocation_symbol": null
+    }
+  ],
+  "endpoint": "0x80924127",
+  "actual_AP25_requests_missing_receiver": "original sends return-1 errno1020; raw errno on successful requests not treated as failures",
+  "actual_UPM_trial": "AP24 k_upm_snd_rec_inh_msg+0x60 SCU VAfffffffff1388f54 faults before UPM init can complete",
+  "SCU_reference": "Sony GPL platform.h CXD900XX_SCU=f1388000; no register-side-effect model yet",
+  "scope": "Source binding and actual missing receiver, not emulated UPM or automatic success replies"
+}

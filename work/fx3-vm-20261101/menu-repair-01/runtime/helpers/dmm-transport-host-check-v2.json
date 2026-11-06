@@ -1,0 +1,18 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-dmm-transport-v2.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-dmm-transport-v2"
+  ],
+  "compile_stderr": "",
+  "exit": 0,
+  "stdout": "FX3_DMM_TRANSPORT_TEST_PASS: storage, generations, stalehandles, open/close/free, exhaustion, rollback, allocationfailure, originalownership, PID\n",
+  "stderr": "FX3_REMOTE_DMM_COMMIT op=0x20 source=0x81cf6186 status=0 handle=0x8400 address=0x1d900000 bytes=0x80000 slots=1/0 opens=1/0 allocations=1 lease=1 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x20 lease=1 result=0\nFX3_REMOTE_DMM_COMMIT op=0x20 source=0x81cf6186 status=0 handle=0x8401 address=0x1d980000 bytes=0x80000 slots=1/1 opens=1/1 allocations=2 lease=3 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x20 lease=3 result=0\nFX3_REMOTE_DMM_COMMIT op=0x20 source=0x81cf6186 status=-1 handle=0xffffffff address=0 bytes=0 slots=1/1 opens=1/1 allocations=2 lease=4 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x20 lease=4 result=0\nFX3_REMOTE_DMM_COMMIT op=0x2a source=0x81cf6186 status=0 handle=0x8400 address=0x1d900000 bytes=0x80000 slots=1/1 opens=1/1 allocations=2 lease=5 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x2a lease=5 result=0\nFX3_REMOTE_DMM_COMMIT op=0x21 source=0x81cf6186 status=0 handle=0x8400 address=0x1d900000 bytes=0x80000 slots=1/1 opens=2/1 allocations=2 lease=6 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x21 lease=6 result=0\nFX3_REMOTE_DMM_COMMIT op=0x22 source=0x81cf6186 status=0 handle=0x8400 address=0 bytes=0 slots=1/1 opens=1/1 allocations=2 lease=7 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x22 lease=7 result=0\nFX3_REMOTE_DMM_COMMIT op=0x23 source=0x81cf6186 status=0 handle=0x8400 address=0 bytes=0 slots=0/1 opens=0/1 allocations=2 lease=8 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x23 lease=8 result=0\nFX3_REMOTE_DMM_COMMIT op=0x20 source=0x81cf6186 status=0 handle=0x8800 address=0x1d900000 bytes=0x80000 slots=1/1 opens=1/1 allocations=3 lease=9 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x20 lease=9 result=0\nFX3_REMOTE_DMM_COMMIT op=0x21 source=0x81cf6186 status=-5 handle=0x8400 address=0 bytes=0 slots=1/1 opens=1/1 allocations=3 lease=10 request_free=0 virtual_storage=1 original_CP=0\nFX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x21 lease=10 result=0\n",
+  "corrected": "Hostfixture designatedinitializer .initialized=1; priorfixtureaccess_owner=1 initialized0 caused noVMlaunch. Native model unchanged."
+}

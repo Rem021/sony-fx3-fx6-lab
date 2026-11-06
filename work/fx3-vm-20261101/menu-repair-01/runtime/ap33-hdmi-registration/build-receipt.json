@@ -1,0 +1,22 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap32-app-wait/candidate32.json",
+  "base_sha256": "740da0fdc28bfc4d1b32124b4bd5accfa80e95b56a91f5a4f470d5326e897b55",
+  "helper": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-hdmi-registration-v1.so",
+  "helper_sha256": "161305ff40605b03ce83d9378fe46c5b524ad9679ece310d6cc03ed040adf035",
+  "helper_source_sha256": "a7127576239011afa3faf0b8a0078d3c03c279b8ae5212a294e36bb9b1a7faa4",
+  "entries": 1111,
+  "changes": [
+    "add one explicitly-enabled software HDMI registration helper",
+    "init preload/environment",
+    "DTB chosen initrd-end matches actualcpio"
+  ],
+  "retained": "all AP32 archive members unchanged except init; original firmware files/metadata retained",
+  "cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap33-hdmi-registration/guest.cpio",
+    "sha256": "1b551fe1b78beb834aaee80739dc3ce208167631bfd1e3d3e3743af0426a96d8"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap33-hdmi-registration/guest.dtb",
+    "sha256": "58b7353f9c52bec80afccb63e5d4a0d5c4b826ef5b8a276c281d1f02ae4e432e"
+  }
+}

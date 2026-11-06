@@ -1,0 +1,53 @@
+{
+  "time": "2026-11-06T04:10:36.657807+00:00",
+  "task": "task_d2c1b15a7f63",
+  "dispatch": "ctx_b9c3158207f7",
+  "status": "observation_failed_host_cleanup_verified",
+  "manifest": {
+    "count": 20,
+    "all_match": true,
+    "sha256": "eba0bada27ecade4ff45026f429d7241e3de3452c9169cebd1fe9cb2ce6cd030"
+  },
+  "starts_used": 1,
+  "additional_start_authorized": false,
+  "elapsed_cli_seconds": 158.78,
+  "records": 0,
+  "two_keys_observed": false,
+  "host_cleanup_complete": true,
+  "processes_independently_absent": [
+    76229,
+    77422
+  ],
+  "both_locks_independently_acquired_and_released": true,
+  "guest_restore_status": "unknown_not_attempted",
+  "boot_menu_passed": false,
+  "offline_reproduction": {
+    "early_blocks": 4,
+    "pid": 239,
+    "epochs": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "appfw_rows_in_early_blocks": 0,
+    "actual_choose_error": "newest early map block invalid: missing/mixed inode",
+    "appfw_rows_logical_lines": [
+      9078,
+      9079,
+      9080,
+      9081
+    ],
+    "containing_im_endmaps_block_lines": [
+      8955,
+      9222
+    ],
+    "model_assert_lines": [
+      18125,
+      18178
+    ],
+    "conclusion": "current parser only accepts EARLY_MAPS; observed AppFw rows belong to later IM_ENDMAPS; runtime values remain unknown"
+  },
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/r6-stop-only-20261106T2005Z",
+  "timing_limitations": "158.78s is /usr/bin/time CLI wall duration, not independently captured QEMU-only monotonic duration; report end time derived"
+}

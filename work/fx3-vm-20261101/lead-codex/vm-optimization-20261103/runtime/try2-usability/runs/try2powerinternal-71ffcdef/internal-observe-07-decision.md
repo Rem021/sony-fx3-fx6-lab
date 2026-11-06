@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-06-key-030.png using image tool. Setup>Touch Operation 50/59, orange focus; touch settings listed Next: DOWN to Monitor category; continue seeking original Power Setting Option without edits

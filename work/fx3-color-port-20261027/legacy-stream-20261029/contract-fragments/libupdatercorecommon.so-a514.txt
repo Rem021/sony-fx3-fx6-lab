@@ -1,0 +1,20 @@
+0000a514 stp        x29, x30, [sp, #-0x20]!
+0000a518 mov        x29, sp
+0000a51c str        x19, [sp, #0x10]
+0000a520 mov        x19, x0
+0000a524 adrp       x0, #0x1e000
+0000a528 str        wzr, [x19, #8]
+0000a52c ldr        x0, [x0, #0xfb0]
+0000a530 add        x0, x0, #0x10
+0000a534 str        x0, [x19]
+0000a538 add        x0, x19, #0x10
+0000a53c bl         #0x7f80 ; Updater::BaseModule::ThreadStatus::ThreadStatus
+0000a540 strb       wzr, [x19, #0x78]
+0000a544 stp        xzr, xzr, [x19, #0x48]
+0000a548 add        x0, x19, #0x80
+0000a54c stp        xzr, xzr, [x19, #0x58]
+0000a550 mov        x1, #0
+0000a554 str        xzr, [x19, #0x68]
+0000a558 ldr        x19, [sp, #0x10]
+0000a55c ldp        x29, x30, [sp], #0x20
+0000a560 b          #0x7c20 ; pthread_mutex_init

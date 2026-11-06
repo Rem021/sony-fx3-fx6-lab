@@ -1,0 +1,148 @@
+{
+  "proof_sha256": "650e50bc796ff3c519f0b690791ac07308e265ba04890df36bfb574dc2c17035",
+  "source_hash_checks": [
+    {
+      "name": "ap",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "expected": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    {
+      "name": "cp",
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "expected": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba"
+    },
+    {
+      "name": "df",
+      "sha256": "5d6a9be3ba359cffb1a1894bb667071e0f0e2fe2749b6c5e36ce8364e57eae2a",
+      "expected": "5d6a9be3ba359cffb1a1894bb667071e0f0e2fe2749b6c5e36ce8364e57eae2a"
+    },
+    {
+      "name": "AP79_serial",
+      "sha256": "01009cc3a8fe5e8c253114c57e0fe6cc13b167511c74996fdd6acd9d9c4ac72f",
+      "expected": "01009cc3a8fe5e8c253114c57e0fe6cc13b167511c74996fdd6acd9d9c4ac72f"
+    },
+    {
+      "name": "AP79_passive_RAM",
+      "sha256": "f42b565ea4a69d103e482712ffc02543d471306535a54e4a388895c5feefcef7",
+      "expected": "f42b565ea4a69d103e482712ffc02543d471306535a54e4a388895c5feefcef7"
+    }
+  ],
+  "proof_sections_read": [
+    "scope",
+    "evidence_levels",
+    "sources",
+    "checks",
+    "blocks",
+    "constructor",
+    "tables",
+    "selection",
+    "differences",
+    "disconnect_requests_from_cold_state",
+    "projected_cold_software_requests",
+    "AP79_serial_evidence",
+    "AP79_full_table_readback",
+    "AP_assert_fail_binding",
+    "CP_classes",
+    "CP_native_pin_objects",
+    "model_after_11_connections",
+    "software_model_checks",
+    "reply_schemas",
+    "design_reference",
+    "unproven"
+  ],
+  "tables_total": 650,
+  "reference_cases": [
+    {
+      "case": "known_disconnected_GET_reports_state1",
+      "status": 0,
+      "business_reply": "0010008020000200000000000200000001000000010000004a07849200000000",
+      "offset": 28
+    },
+    {
+      "case": "unknown_GET_rejected",
+      "status": -32,
+      "business_reply": "0010008020000200ff000000ff00000000000000ff00000000000000e0ffffff",
+      "offset": 28
+    },
+    {
+      "case": "type_mismatch_no_graph_change",
+      "status": -23,
+      "business_reply": "00100180200002000000000002000000010000004a078492e9ffffff00000000",
+      "offset": 24
+    },
+    {
+      "case": "direction_mismatch_no_graph_change",
+      "status": -22,
+      "business_reply": "00100180200002000000000002000000010000004a078492eaffffff00000000",
+      "offset": 24
+    },
+    {
+      "case": "connect_owned_empty_endpoints",
+      "status": 0,
+      "business_reply": "00100180200002000000000002000000010000004a0784920000000000000000",
+      "offset": 24
+    },
+    {
+      "case": "idempotent_same_edge",
+      "status": 0,
+      "business_reply": "00100180200002000000000002000000010000004a0784920000000000000000",
+      "offset": 24
+    },
+    {
+      "case": "occupied_source_to_other_peer",
+      "status": -25,
+      "business_reply": "00100180200002000000000002000000010000004a078492e7ffffff00000000",
+      "offset": 24
+    },
+    {
+      "case": "GET_connected_state0",
+      "status": 0,
+      "business_reply": "0010008020000200000000000200000001000000000000004a07849200000000",
+      "offset": 28
+    },
+    {
+      "case": "disconnect_inflight_refuses_without_release",
+      "status": -24,
+      "business_reply": "00100280200002000000000002000000010000004a078492e8ffffff00000000",
+      "offset": 24
+    },
+    {
+      "case": "disconnect_after_all_leases_returned",
+      "status": 0,
+      "business_reply": "00100280200002000000000002000000010000004a0784920000000000000000",
+      "offset": 24
+    },
+    {
+      "case": "already_disconnected_returns_minus26",
+      "status": -26,
+      "business_reply": "00100280200002000000000002000000010000004a078492e6ffffff00000000",
+      "offset": 24
+    }
+  ],
+  "reply_schemas": {
+    "GET": {
+      "header": "0010008020000200",
+      "offsets": {
+        "8": "type32",
+        "12": "direction32",
+        "16": "index32",
+        "20": "CP_connection_state32:0connected,1disconnected,2transition",
+        "24": "provider_OSAL_ID32",
+        "28": "signed_status32"
+      }
+    },
+    "CONNECT_DISCONNECT": {
+      "header": "1000/(8001|8002)/32/flags2",
+      "offsets": {
+        "8": "type32",
+        "12": "direction32",
+        "16": "index32",
+        "20": "provider_OSAL_ID32",
+        "24": "signed_status32",
+        "28": "reserved0"
+      }
+    },
+    "Dataflow_reply": "24B envelope +32B business =56B; +0 provider SID for InfraBB/OSD GET, zero for the other audited GET and generic REQUEST_CONNECT/DISCONNECT replies; +4 magic a0a0a0a0,+8 u16 count1,+10u16 total56,+12read24,+16write56,+20reserved0 chosen; OSAL source=provider, target=active request.reply_id"
+  },
+  "constructor_semantics": "Read and parsed all proof sections; used independently audited 22 canonical endpoint/11-edge/33-packet projection, not copied CP execution."
+}

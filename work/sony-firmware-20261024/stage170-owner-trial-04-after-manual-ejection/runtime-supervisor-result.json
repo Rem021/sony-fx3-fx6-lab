@@ -1,0 +1,103 @@
+{
+  "status": "UNKNOWN_INDEPENDENT_DRIVER_ASSOCIATION",
+  "helper_terminal_verified": true,
+  "helper_identity": {
+    "pid": 12230,
+    "uid": 0,
+    "birth_sec": 1793195343,
+    "birth_usec": 845675,
+    "path": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-04/helper"
+  },
+  "relay_returncode": 0,
+  "native": {
+    "status_code": 1,
+    "capture_attempted": true,
+    "claim_attempted": true,
+    "interface_claimed_in_this_trial": false,
+    "cleanup_error": false,
+    "clock_invalid": false,
+    "active_native_call_phase": 0,
+    "events": [
+      {
+        "phase": 1,
+        "raw_return": 0
+      },
+      {
+        "phase": 2,
+        "raw_return": 0
+      },
+      {
+        "phase": 3,
+        "raw_return": 0
+      },
+      {
+        "phase": 4,
+        "raw_return": 0
+      },
+      {
+        "phase": 5,
+        "raw_return": 0
+      },
+      {
+        "phase": 6,
+        "raw_return": 0
+      },
+      {
+        "phase": 102,
+        "raw_return": 0
+      },
+      {
+        "phase": 103,
+        "raw_return": -536870210
+      },
+      {
+        "phase": 7,
+        "raw_return": -536870210
+      },
+      {
+        "phase": 9,
+        "raw_return": 0
+      },
+      {
+        "phase": 10,
+        "raw_return": 0
+      },
+      {
+        "phase": 11,
+        "raw_return": 0
+      },
+      {
+        "phase": 12,
+        "raw_return": -536870160
+      },
+      {
+        "phase": 12,
+        "raw_return": 0
+      }
+    ],
+    "same_camera_firmware_or_HEVC_recording_proven": false,
+    "native_driver_return_independently_proven": false
+  },
+  "receipt": {
+    "schema": 2,
+    "grant_id": "fx3-702-msc-owner-20261028-04",
+    "mode": "live",
+    "nonce": "78270d4bcd714ac54c648f5956e5d0eb",
+    "pid": 12230,
+    "birth_sec": 1793195343,
+    "birth_usec": 845675,
+    "native_return": 1,
+    "result_sha256": "9e9fc3a90f56b6b4fcbd97a79123c81a9fdcdf68a77d9eb25fe38e94d3ee88a3",
+    "physical_camera_acceptance": false
+  },
+  "restarted_or_killed": false,
+  "physical_acceptance": false,
+  "independent_cache": {
+    "same_cached_body_and_driver_association_observed": false,
+    "reasons": [
+      "baseline_driver_classes_not_all_back"
+    ],
+    "evidence_scope": "Independent cached association only; not functional IO, camera health, backup, recording or rescue",
+    "actual_driver_IO_or_camera_acceptance": false
+  }
+}

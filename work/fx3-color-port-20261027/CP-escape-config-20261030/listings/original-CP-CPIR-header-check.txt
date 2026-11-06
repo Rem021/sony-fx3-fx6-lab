@@ -1,0 +1,42 @@
+0x4aa23c: 0020       movs r0, #0
+0x4aa23e: 5146       mov r1, sl
+0x4aa240: 0490       str r0, [sp, #0x10]
+0x4aa242: 04aa       add r2, sp, #0x10
+0x4aa244: 3046       mov r0, r6
+0x4aa246: 00f00bfb   bl #0x4aa860
+0x4aa24a: 049c       ldr r4, [sp, #0x10]
+0x4aa24c: 74b1       cbz r4, #0x4aa26c
+0x4aa24e: 5da1       adr r1, #0x174
+0x4aa250: 2046       mov r0, r4
+0x4aa252: 0422       movs r2, #4
+0x4aa254: aef0eaed   blx #0x558e2c
+0x4aa258: d0b1       cbz r0, #0x4aa290
+0x4aa25a: cde9006a   strd r6, sl, [sp]
+0x4aa25e: 5ba2       adr r2, #0x16c
+0x4aa260: 07e0       b #0x4aa272
+0x4aa262: 44f22722   movw r2, #0x4227
+0x4aa266: c0f2e102   movt r2, #0xe1
+0x4aa26a: 02e0       b #0x4aa272
+0x4aa26c: cde9006a   strd r6, sl, [sp]
+0x4aa270: 6fa2       adr r2, #0x1bc
+0x4aa272: 44f23a23   movw r3, #0x423a
+0x4aa276: 5020       movs r0, #0x50
+0x4aa278: 0121       movs r1, #1
+0x4aa27a: c0f2e103   movt r3, #0xe1
+0x4aa27e: e1f1a2f0   bl #0xa8b3c6
+0x4aa282: 6ff0040b   mvn fp, #4
+0x4aa286: 5846       mov r0, fp
+0x4aa288: 05b0       add sp, #0x14
+0x4aa28a: bde8000f   pop.w {r8, sb, sl, fp}
+0x4aa28e: f0bd       pop {r4, r5, r6, r7, pc}
+0x4aa290: a088       ldrh r0, [r4, #4]
+0x4aa292: e188       ldrh r1, [r4, #6]
+0x4aa294: 44f23a23   movw r3, #0x423a
+0x4aa298: 55a2       adr r2, #0x154
+0x4aa29a: c0f2e103   movt r3, #0xe1
+0x4aa29e: cde90001   strd r0, r1, [sp]
+0x4aa2a2: 5020       movs r0, #0x50
+0x4aa2a4: 0421       movs r1, #4
+0x4aa2a6: e1f18ef0   bl #0xa8b3c6
+0x4aa2aa: 0499       ldr r1, [sp, #0x10]
+0x4aa2ac: 8868       ldr r0, [r1, #8]

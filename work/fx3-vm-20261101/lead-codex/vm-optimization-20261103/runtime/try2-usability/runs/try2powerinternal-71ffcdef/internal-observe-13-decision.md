@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/internal-preview-13.png using image tool. Reopened Setup>Power Setting Option, Power Save Start Time still 5 Min, orange right row; no changes Next: LEFT moves to Setup category list for browsing other settings pages; no value opened

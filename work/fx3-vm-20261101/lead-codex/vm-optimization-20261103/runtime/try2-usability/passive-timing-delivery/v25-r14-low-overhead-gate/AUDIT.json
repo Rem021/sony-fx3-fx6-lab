@@ -1,0 +1,44 @@
+{
+  "original_source_sha256": "bb6650761764f2990650243b9e81ef7f4434c165faef8701afa1033cb961261c",
+  "original_assembly_sha256": "b82a530c86ad3d37e06ba37828c72942c3c9188d904ed2b3a3bee89ebf9f62a1",
+  "new_assembly_identical": true,
+  "original_tables": {
+    "offsets": {
+      "identical": true,
+      "sha256": "70e0d19dea88de767f8e85dc9554db749190ebeb9a8326d2cd2600b556720dc8"
+    },
+    "words": {
+      "identical": true,
+      "sha256": "4ee10eb5e60f72ed37ce8f66c825741480d2c780d6bb8777502ed41fc88d9507"
+    },
+    "regs": {
+      "identical": true,
+      "sha256": "0f7eb6e4f5d9caf879ec2b407d22ca67f1e64571ec62289992f9f3e260ceae4c"
+    }
+  },
+  "old_undefined_symbols": [
+    "__errno_location",
+    "syscall",
+    "dprintf",
+    "dlsym",
+    "clock_gettime",
+    "strstr",
+    "dlinfo",
+    "open",
+    "close",
+    "memset",
+    "read",
+    "mmap",
+    "munmap",
+    "mprotect"
+  ],
+  "new_undefined_symbols_identical": true,
+  "future_observer_0x3000_0x3400_not_written_by_r14_core": true,
+  "statistics_bytes": 784,
+  "legacy_prefix_bytes": 768,
+  "new_fields": [
+    "object_mismatch",
+    "root_change"
+  ],
+  "static_semantic_limit": "original branch instructions unchanged; native host stub does not validate guest GPR/SIMD/NZCV execution"
+}

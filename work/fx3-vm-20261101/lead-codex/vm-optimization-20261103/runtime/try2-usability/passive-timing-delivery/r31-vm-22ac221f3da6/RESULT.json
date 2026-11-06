@@ -1,0 +1,161 @@
+{
+  "status": "failed",
+  "failure_scope": "no qualified standby within original180-second deadline; eight steps not entered",
+  "diagnostic_delivery_status": "passed",
+  "diagnostic_artifact_validation_checks": 65,
+  "startup_observation_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd/startup-observation.json",
+  "startup_observation_bytes": 12210,
+  "startup_observation_saved": true,
+  "startup_observation_errors": {},
+  "startup_observation_header_counts": {
+    "bad_magic": 399
+  },
+  "startup_observation_marker_count": 9,
+  "startup_observation_absent_markers": [
+    "FX3_TIMER_ENTRY ",
+    "FX3_UI_FILL_EXEC ",
+    "FX3_OSD_HEADLESS_COPY ",
+    "FX3_OSD_FRAME_TARGET_VALID ",
+    "FX3_OSD102_COMMIT "
+  ],
+  "startup_observation_ready_observations": 2620,
+  "startup_observation_eviction_omission": {
+    "headers": {
+      "evicted_transitions": 0,
+      "first_kind_omitted": 0,
+      "serialization_omitted_recent": 0
+    },
+    "ready": {
+      "evicted_transitions": 0,
+      "first_kind_omitted": 0,
+      "serialization_omitted_recent": 0
+    },
+    "phases": {
+      "evicted_transitions": 0,
+      "first_kind_omitted": 0,
+      "serialization_omitted_recent": 0
+    }
+  },
+  "task_id": "task_22ac221f3da6",
+  "dispatch_id": "ctx_e5c0b4fef828",
+  "data_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r31-vm-22ac221f3da6",
+  "native_run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd",
+  "VM_count": 1,
+  "Start_POST_count": 1,
+  "accepted_keys": 0,
+  "explicit_attempts": 0,
+  "qualified_standby_captures": 0,
+  "qualified_unpinned_observations": 0,
+  "PAGE_snapshot_pin_count": 0,
+  "separate_confirmations": 0,
+  "semantic_steps_passed": 0,
+  "all_eight_steps_attempted": false,
+  "attributed_unqueued_recoveries": 0,
+  "Node_preload_and_independent_binding_check": true,
+  "historical_sample_actual_display": true,
+  "production_short_function_calls": 0,
+  "tool_return_UUID_directories": 0,
+  "first_qualified_standby_seconds": null,
+  "first_qualified_standby_limit_seconds": 180,
+  "startup_watchdog_failure_observed_seconds": 180.46241100004409,
+  "runner_duration_seconds": 184.4962241250323,
+  "runtime_budget_seconds": 480,
+  "input_alarm_ms": 20000,
+  "input_alarm_ever_armed": false,
+  "HAR_ready_true_count": 0,
+  "HAR_frame_status_count": 0,
+  "cleanup_only_frame_accepted_as_startup": false,
+  "scripted_navigation": true,
+  "visual_review_at_click": false,
+  "model_received_at": "unknown",
+  "model_review_completed_at": "unknown",
+  "cleanup_passed": true,
+  "API16": {
+    "hex": "000b00b4fd7bbba9fd030091f35301a9",
+    "guest_ACK_restore_seen": 1,
+    "seconds": 2.638523624977097,
+    "budget_seconds": 20,
+    "bytes_verified": true
+  },
+  "QMP_quit_request": {
+    "execute": "quit",
+    "id": 487
+  },
+  "QMP_quit_ACK": {
+    "return": {},
+    "id": 487
+  },
+  "qemu_exit": 0,
+  "qemu_reaped": true,
+  "runner_QEMU_browser_PID_absent": true,
+  "both_locks_free": true,
+  "port_closed": true,
+  "web_final_ACK": true,
+  "owned_browser_closed": true,
+  "rejection_export": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd/web-key-rejections.json",
+    "bytes": 304,
+    "sha256": "d7abb984034ce7a3b90576bf384bb885e5337c1ffece2ffc32d32373771194bc",
+    "total": 0
+  },
+  "HTTP_requests": 467,
+  "HTTP_POST_counts": {
+    "start": 1,
+    "stop": 1,
+    "final-ack": 1
+  },
+  "r30_delivery_matches": 100,
+  "r30_production_sources_match": 41,
+  "r30_core_sources_match": 36,
+  "historical_input_rechecks": 94,
+  "historical_provenance": "r30 input94 original采样时序按原分组；本r31运行前重新核验94项，并不回写历史采样",
+  "frozen_input_counts_before_after_identical": {
+    "r30_local_core": 36,
+    "pins": 2,
+    "r25_manifest": 1,
+    "r25_delivery594": 594,
+    "r24_manifest": 1,
+    "r24_delivery151": 151,
+    "source40": 40,
+    "delivery145": 145,
+    "fixed14": 14,
+    "qemu": 1
+  },
+  "actual_imports_before_after_identical": true,
+  "actual_QEMU_argv_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd/command.json",
+  "live_ps_argv_capture": "unknown; collection only after qualified standby, never reached",
+  "source_modified": false,
+  "platform_modified": false,
+  "deployment_modified": false,
+  "prior_failures_preserved": true,
+  "default_deployment": "r10, no deployment writes",
+  "snapshot_tail_is_end_state": false,
+  "snapshot_tail_post_snapshot_event_counts": "unknown",
+  "remaining": [
+    "qualified standby within180s not achieved",
+    "all eight menu steps untested",
+    "real arm+5s observation/pin/confirm/recovery untested",
+    "underlying backlog/root cause not fixed by observational candidate",
+    "no additional VM/Start authorization"
+  ],
+  "evidence": [
+    "STARTUP-OBSERVATION-AUDIT.json",
+    "STARTUP-TIMELINE.json",
+    "STEP-EVIDENCE.json",
+    "OPERATOR-TOOL-CALL-EVIDENCE.json",
+    "PRESTART-NODE-DISPLAY.json",
+    "HTTP-POST-ORIGINAL-BODIES.json",
+    "traffic.har",
+    "NATIVE-KEY-ORIGINAL-LINES.bin",
+    "NATIVE-KEY-ORIGINAL-OFFSETS.json",
+    "INDEPENDENT-CLEANUP.json",
+    "SEALED-DELIVERY-BEFORE.json",
+    "SEALED-DELIVERY-AFTER.json",
+    "INPUTS-BEFORE.json",
+    "INPUTS-AFTER.json",
+    "ACTUAL-IMPORT-BEFORE.json",
+    "ACTUAL-IMPORT-AFTER.json"
+  ],
+  "formal_spec_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r31-vm-menu8-task.txt",
+  "formal_spec_sha256": "fb6974b46be6e1b41d31c40a91b9308f785233dbc1a4c73559d120e003fae299"
+}

@@ -1,0 +1,1 @@
+Step 3: reviewed immutable Setup 45/59 PNG SHA 15cb5b958cf6c78c43758f3c5771ef91a90e4de9a1eb06059bb23f2dea1596fc; orange focus is on left Area/Date category, English and Reset/Save Settings below. Choose one DOWN to move category focus only, no setting mutation, then stop all input and cleanly exit.

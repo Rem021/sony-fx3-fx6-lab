@@ -1,0 +1,259 @@
+{
+  "CP_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+  "CP_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "embedded_boot_descriptor_VA": "0x128000",
+  "descriptor_bytes": 380,
+  "descriptor_sha256": "543e6e57aa6ebb26257a96e3a28c59068cbd5eb9fef26c67ed8684c7fc05f50b",
+  "cases": [
+    {
+      "name": "strict_full_entry",
+      "entry": "0x108398",
+      "args": [],
+      "declared_optional_flag": null,
+      "boundary": {
+        "reason": "before_unknown_hardware_flag_read",
+        "PC": "0x10897c",
+        "address": "0x3e42001",
+        "bytes": 1
+      },
+      "original_instructions": 6,
+      "original_RAM_writes": 0,
+      "flag_reads": 0,
+      "first_trace": [
+        "0x108398",
+        "0x10839c",
+        "0x1083a0",
+        "0x108974",
+        "0x108978",
+        "0x10897c"
+      ],
+      "registers": [
+        "0x3e42001",
+        "0x0",
+        "0x0",
+        "0x0"
+      ]
+    },
+    {
+      "name": "strict_post_poll_fragment",
+      "entry": "0x1083a4",
+      "args": [],
+      "declared_optional_flag": null,
+      "boundary": {
+        "reason": "before_unknown_hardware_flag_read",
+        "PC": "0x1089ec",
+        "address": "0x3e42000",
+        "bytes": 1
+      },
+      "original_instructions": 131,
+      "original_RAM_writes": 97,
+      "flag_reads": 0,
+      "first_trace": [
+        "0x1083a4",
+        "0x1083a8",
+        "0x1083ac",
+        "0x1083b0",
+        "0x1083b4",
+        "0x1083b8",
+        "0x1083bc",
+        "0x108a04",
+        "0x108a08",
+        "0x108a0c",
+        "0x108a10",
+        "0x108a14",
+        "0x108a18",
+        "0x108a1c",
+        "0x108a20",
+        "0x108a24",
+        "0x108a28",
+        "0x108a2c",
+        "0x108a30",
+        "0x108a34",
+        "0x108a38",
+        "0x108a3c",
+        "0x108a40",
+        "0x108a44"
+      ],
+      "registers": [
+        "0x2000f010",
+        "0x3e42000",
+        "0x3ff",
+        "0xedf000"
+      ],
+      "L1_pointer": "0x14e8000",
+      "L2_pointer": "0x14ec000",
+      "note": "Separate fragment after polling; poll success is not supplied or claimed."
+    },
+    {
+      "name": "post_poll_declared_flag_0",
+      "entry": "0x1083a4",
+      "args": [],
+      "declared_optional_flag": 0,
+      "boundary": {
+        "reason": "before_CPU_setup_call",
+        "PC": "0x108728"
+      },
+      "original_instructions": 66848,
+      "original_RAM_writes": 7299,
+      "flag_reads": 1,
+      "first_trace": [
+        "0x1083a4",
+        "0x1083a8",
+        "0x1083ac",
+        "0x1083b0",
+        "0x1083b4",
+        "0x1083b8",
+        "0x1083bc",
+        "0x108a04",
+        "0x108a08",
+        "0x108a0c",
+        "0x108a10",
+        "0x108a14",
+        "0x108a18",
+        "0x108a1c",
+        "0x108a20",
+        "0x108a24",
+        "0x108a28",
+        "0x108a2c",
+        "0x108a30",
+        "0x108a34",
+        "0x108a38",
+        "0x108a3c",
+        "0x108a40",
+        "0x108a44"
+      ],
+      "registers": [
+        "0x108d94",
+        "0x0",
+        "0x14f4000",
+        "0x1000"
+      ],
+      "L1_pointer": "0x14e8000",
+      "L2_pointer": "0x14ec000",
+      "boot_metadata": [
+        "0x14e8000",
+        "0x14ec000",
+        "0x6",
+        "0x153c000",
+        "0x1414000",
+        "0x108d94"
+      ],
+      "original_copy_matches": true
+    },
+    {
+      "name": "original_software_MMU_init_after_flag0_prefix",
+      "entry": "0x553d48",
+      "args": [
+        "0x14007c8"
+      ],
+      "declared_optional_flag": 0,
+      "boundary": {
+        "reason": "before_privileged_or_hardware_operation",
+        "PC": "0x5541e4",
+        "instruction": "dsb sy"
+      },
+      "original_instructions": 1122,
+      "original_RAM_writes": 333,
+      "flag_reads": 0,
+      "first_trace": [
+        "0x553d48",
+        "0x553d4c",
+        "0x553d50",
+        "0x553d54",
+        "0x553d58",
+        "0x553d5c",
+        "0x553d60",
+        "0x553d64",
+        "0x553d68",
+        "0x553d6c",
+        "0x553d70",
+        "0x553d74",
+        "0x553d78",
+        "0x553d7c",
+        "0x553d80",
+        "0x553d84",
+        "0x553d88",
+        "0x553d8c",
+        "0x553d90",
+        "0x553d94",
+        "0x553d98",
+        "0x553d9c",
+        "0x553da0",
+        "0x553da4"
+      ],
+      "registers": [
+        "0x14ec000",
+        "0x0",
+        "0x28",
+        "0x2"
+      ],
+      "ROOT_first3": [
+        "0x14e8000",
+        "0x14ec000",
+        "0x20"
+      ],
+      "ROOT_boot_fields": [
+        "0x14e8000",
+        "0x14ec000",
+        "0x0"
+      ]
+    },
+    {
+      "name": "post_poll_declared_flag_1",
+      "entry": "0x1083a4",
+      "args": [],
+      "declared_optional_flag": 1,
+      "boundary": {
+        "reason": "after_declared_optional_flag_before_table_generation",
+        "PC": "0x108434"
+      },
+      "original_instructions": 136,
+      "original_RAM_writes": 97,
+      "flag_reads": 1,
+      "first_trace": [
+        "0x1083a4",
+        "0x1083a8",
+        "0x1083ac",
+        "0x1083b0",
+        "0x1083b4",
+        "0x1083b8",
+        "0x1083bc",
+        "0x108a04",
+        "0x108a08",
+        "0x108a0c",
+        "0x108a10",
+        "0x108a14",
+        "0x108a18",
+        "0x108a1c",
+        "0x108a20",
+        "0x108a24",
+        "0x108a28",
+        "0x108a2c",
+        "0x108a30",
+        "0x108a34",
+        "0x108a38",
+        "0x108a3c",
+        "0x108a40",
+        "0x108a44"
+      ],
+      "registers": [
+        "0x2000f010",
+        "0xd0220000",
+        "0x3ff",
+        "0xedf000"
+      ],
+      "L1_pointer": "0x14e8000",
+      "L2_pointer": "0x14ec000",
+      "boot_metadata": [
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0",
+        "0x0"
+      ],
+      "original_copy_matches": true
+    }
+  ],
+  "scope": "Only original CP instructions in isolated RAM. Strict entry stops at hardware flag. Post-poll fragments do not claim the real poll passed; optional hardware flag0/1 are declared fixtures. Unknown RAM reads, external memory and privileged instructions stop. No synthetic MMU/table/attribute reply, device or full camera boot."
+}

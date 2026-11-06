@@ -1,0 +1,95 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap86bnoobserver-fe62ded9",
+  "classification": "OSD_INCOMPLETE_OR_NEW_BLOCK",
+  "actual_seconds": 81.75637554199784,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "host_pid_absent": true,
+  "inputs_unchanged": true,
+  "missing_markers": [
+    "FX3_TIMER_OBSERVER_END",
+    "FX3_UIPC_OBSERVER_END",
+    "FX3_AP_IM_ENDMAPS_"
+  ],
+  "im_alive_last_snapshot": true,
+  "im_alive_end_compact_maps": false,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "released_verified": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "released_verified": true
+    }
+  ],
+  "speed_observations": {
+    "peak_all": 326,
+    "last_a18": 2,
+    "backlog_skip": 2238,
+    "time_pass": 876,
+    "time_skip": 77,
+    "dequeue_total": 3187,
+    "timer_dequeue": 3155,
+    "mirror_skip": 1,
+    "actual_UI_updates": 876,
+    "timer_production_probe_hits": 3158
+  },
+  "barrier_passed": true,
+  "OSD_event_counts": {
+    "FX3_PEAKING_COMMIT": 1,
+    "FX3_PEAKING_CONSUMED": 1,
+    "FX3_OSD_HEADLESS_BOUND": 1,
+    "FX3_OSD_HEADLESS_VALIDATE": 1,
+    "FX3_OSD_HEADLESS_COPY": 1,
+    "FX3_OSD_HEADLESS_LEASE": 1,
+    "FX3_OSD_HEADLESS_NATIVE_FREE": 58,
+    "FX3_OSD_NATIVE_SIGNAL": 58,
+    "FX3_OSD_HEADLESS_ACK": 58,
+    "FX3_OSD_DRAW_WAIT_RETURN": 57
+  },
+  "OSD_ring_final": {
+    "magic": "0x31474e495244534f",
+    "schema": 1,
+    "pid": 222,
+    "epoch": 1,
+    "completed_snapshots": 875,
+    "ACKs_queued": 875,
+    "native_signal_success_count": 875,
+    "duplicates": 0,
+    "rejected": 0,
+    "failed": 0,
+    "slot_overwrites": 867,
+    "slots": 8,
+    "stride": "0x180000",
+    "header": "0x10000",
+    "stage": 0,
+    "pending": "0x0",
+    "scope": "software ledger; native signal receipt additionally verified by original callsite markers"
+  },
+  "OSD_rejects": [],
+  "OSD_native_completion_verified": true,
+  "OSD_consecutive_frames_verified": false,
+  "OSD_consecutive_publications_verified": true,
+  "OSD_distinct_pixel_source_sequences": [
+    1
+  ],
+  "gpe_grouped_statistics": [
+    {
+      "op": "FillRect",
+      "fmt": "0",
+      "flags": "0xff",
+      "result": "0",
+      "approx_blend": "0",
+      "count": 1
+    },
+    {
+      "op": "Flush",
+      "fmt": "0",
+      "flags": "0",
+      "result": "0",
+      "approx_blend": "0",
+      "count": 1
+    }
+  ]
+}

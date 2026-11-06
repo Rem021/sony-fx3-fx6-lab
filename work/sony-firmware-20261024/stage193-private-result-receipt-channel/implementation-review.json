@@ -1,0 +1,27 @@
+{
+  "status": "PRIVATE_RECEIPT_DELIVERY_IMPLEMENTED_OFFLINE_NOT_RELEASED",
+  "candidate": "fx3-702-private-receipt-channel-20261029-09",
+  "local_checks": 58,
+  "integration": 38,
+  "targeted_receipts": 20,
+  "root_cross_UID_tested": false,
+  "native_helper_executed": false,
+  "new_administrator_or_camera_operations": 0,
+  "identity_scope": "kernel UID/PID captured while helper alive; prior kernel birth/path/hash before entry ACK; same accepted stream and private nonce/grant-bound header; no socket FD passing/import by this controller",
+  "digest_scope": "SHA256 integrity, not digital signature or administrator-resistant proof; fixture same-user peers are not an authority boundary against that same user",
+  "terminal_scope": "COMPLETE private return plus separate incarnation-absence observation; HELD never authorizes exit/release; pending call still retains owner after observer timeout",
+  "persistent_receipt_scope": "saved user-owned JSON/bin are evidence snapshots only; no restart rehydration implemented or accepted as newly authenticated",
+  "previous_checks_not_rerun": {
+    "stage192_journal": 18,
+    "stage191_wire": 55
+  },
+  "remaining": [
+    "fixed bootstrap, Terminal and full user supervisor integration to schema3/ABI4 + socket ACK/receipt",
+    "durable trusted receipt verification after controller restart; relay PID must not substitute for helper PID",
+    "new concrete separate host-only root-to-UID501 fake-object validation before native USB trial authorization",
+    "current same-body p1 acquisition, guarded launch route, real cold boot/WBI and independent recovery",
+    "actual target MAIN HD HEVC record and long-record acceptance"
+  ],
+  "goal_complete": false,
+  "persistent_write_release": false
+}

@@ -1,0 +1,12 @@
+0000423c stp        x29, x30, [sp, #-0x20]!
+00004240 mov        x29, sp
+00004244 str        x19, [sp, #0x10]
+00004248 mov        x19, x0
+0000424c bl         #0x3690 ; Updater::DecryptorModule::DecryptorModule
+00004250 adrp       x0, #0x15000
+00004254 ldr        x0, [x0, #0xfb8]
+00004258 add        x0, x0, #0x10
+0000425c str        x0, [x19]
+00004260 ldr        x19, [sp, #0x10]
+00004264 ldp        x29, x30, [sp], #0x20
+00004268 ret        

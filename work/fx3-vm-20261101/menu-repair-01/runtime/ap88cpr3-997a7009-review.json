@@ -1,0 +1,201 @@
+{
+  "created_utc": "2026-11-02T13:50:28.103746+00:00",
+  "run": "ap88cpr3-997a7009",
+  "receipt_sha256": "257467d602b2e0e2bc10d99654f234074837e4d69b53cb4db3d7498d8427cd96",
+  "duration_seconds": 12.834456999989925,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "host_observer_error": null,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "fatal_markers": [],
+  "missing_markers_combined_serial_and_printk": [
+    "FX3_GPE_EARLY_THREAD_GATE gpe=1",
+    "FX3_BACKUP_CP_STORAGE",
+    "FX3_BACKUP_CP_COMMIT flag=1 stage=1",
+    "FX3_BACKUP_CP_COMMIT flag=4 stage=2",
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=1 flag=1",
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=2 flag=4"
+  ],
+  "receipt_serial_only_missing": [
+    "FX3_GPE_EARLY_THREAD_GATE gpe=1",
+    "FX3_BACKUP_CP_STORAGE",
+    "FX3_BACKUP_CP_COMMIT flag=1 stage=1",
+    "FX3_BACKUP_CP_COMMIT flag=4 stage=2",
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=1 flag=1",
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=2 flag=4"
+  ],
+  "marker_evidence_scope": "Rawserial flags retained; kernelprintkring independentlyrecovers interleavedkernelmarkers, neverrewritesreceipt",
+  "im_alive_last_complete_maps": {
+    "pid": 226,
+    "uptime": 10.85,
+    "byte_offset": 1337376,
+    "im_maps_lines": [
+      "00400000-00409000 r-xp 00000000 00:02 1100                               /usr/bin/im.elf",
+      "00418000-00419000 r--p 00008000 00:02 1100                               /usr/bin/im.elf",
+      "00419000-0041a000 rw-p 00009000 00:02 1100                               /usr/bin/im.elf"
+    ]
+  },
+  "im_complete_maps_samples": 6,
+  "CP_kernel_records": [
+    {
+      "LF_line": 847,
+      "text": "846 [62.930813] FX3_BACKUP_CP_PUBLIC_OWNER capture_only=0 exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+    },
+    {
+      "LF_line": 865,
+      "text": "864 [68.599781] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000030000000d00000000000000000000000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 866,
+      "text": "865 [68.618469] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=20 captured=20 raw=5602920000000000060000001a0000001f000000 epoch=1"
+    },
+    {
+      "LF_line": 867,
+      "text": "866 [68.619313] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 868,
+      "text": "867 [68.690500] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 869,
+      "text": "868 [68.750062] FX3_BACKUP_CP_UNHANDLED destination=0x928708f7 logical_bytes=16 captured=16 raw=5a019200010000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 871,
+      "text": "870 [68.821125] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x928708f7 source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 872,
+      "text": "871 [68.904843] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 873,
+      "text": "872 [68.918312] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000001a00000080ffffff94368e000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 874,
+      "text": "873 [68.918594] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 875,
+      "text": "874 [69.000687] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 876,
+      "text": "875 [69.021656] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292004f00ffff epoch=1"
+    },
+    {
+      "LF_line": 877,
+      "text": "876 [69.036750] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 878,
+      "text": "877 [69.057438] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292005200ffff epoch=1"
+    },
+    {
+      "LF_line": 879,
+      "text": "878 [69.072312] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 880,
+      "text": "879 [69.092844] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292003e00ffff epoch=1"
+    },
+    {
+      "LF_line": 881,
+      "text": "880 [69.107719] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 882,
+      "text": "881 [69.128593] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=40 captured=40 raw=53029200120192000000000000000000ffffffffffffffff01000000010000000100ff0400000000 epoch=1"
+    },
+    {
+      "LF_line": 883,
+      "text": "882 [69.183437] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 884,
+      "text": "883 [69.220000] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 885,
+      "text": "884 [69.260843] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 886,
+      "text": "885 [69.307438] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 887,
+      "text": "886 [69.351500] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 889,
+      "text": "888 [69.390156] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 891,
+      "text": "890 [69.456688] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 892,
+      "text": "891 [69.772218] FX3_BACKUP_CP_UNHANDLED destination=0x909005c5 logical_bytes=44 captured=40 raw=01000000000000000000000000000000000000000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 893,
+      "text": "892 [69.794938] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x909005c5 source=0x809005c5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 903,
+      "text": "902 [180.144688] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=5402920050000000 epoch=1"
+    },
+    {
+      "LF_line": 904,
+      "text": "903 [180.222000] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 905,
+      "text": "904 [180.327656] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=44 captured=40 raw=5202920000000000ffffffffffffffff000000000000000000000000ffffffff0000000003000000 epoch=1"
+    },
+    {
+      "LF_line": 906,
+      "text": "905 [180.355250] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 907,
+      "text": "906 [180.377468] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 908,
+      "text": "907 [180.399531] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    }
+  ],
+  "native_reset_API_records": [],
+  "screen_records": [],
+  "native_power_event_records": [],
+  "GPE_records": [],
+  "backup_snapshot": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap88cpr3-997a7009/backup-after-shutdown.bin",
+    "exists": true,
+    "scope": "QuiescedreservedRAM; filenamealone isnotshutdowncompletion",
+    "bytes": 2232320,
+    "sha256": "497ae4efb1ef5d20783e8bcd3ba0dd5fcec6b4f37497a8a8d9b5a89c3239c155",
+    "CP_second_bank_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+    "CP_second_bank_matches_pinned_seed": true
+  },
+  "timeline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88cpr3-997a7009-post11a-requests.json",
+  "original_menu_verified": false,
+  "AP89_boot_executed": false,
+  "early_stop_reason": "AP86B explicit diagnostic/rejection gate; stop for review; no further protocol changes"
+}

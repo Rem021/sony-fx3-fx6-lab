@@ -1,0 +1,137 @@
+{
+  "status": "FX3_CURRENT_MCU_COUNTER_AND_THREE_RELOAD_SOURCES_MATCH_REFERENCE_ADDRESSES",
+  "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+  "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+  "source_layout_base": "0x4200",
+  "counter_table": "0x200026fc",
+  "counter_pool": "0x65b4",
+  "counter_literal_references": [
+    "0x64ee",
+    "0x6502",
+    "0x651a",
+    "0x654c"
+  ],
+  "initializer_declared_bytes": 4,
+  "disabled_sentinel": 255,
+  "decrement_consumer": "0x652a",
+  "zero_case": "returns1; physical shutdown/reset caller and timing not established in this proof",
+  "reload_source_examples": [
+    {
+      "slot": 0,
+      "base_load": "0x8d34",
+      "base_pool": "0x8f70",
+      "byte_load": "0x8de8",
+      "source_address": "0x2000003c",
+      "setter_call": "0x8dee"
+    },
+    {
+      "slot": 1,
+      "base_load": "0x8f90",
+      "base_pool": "0x9374",
+      "byte_load": "0x8f92",
+      "source_address": "0x2000003d",
+      "setter_call": "0x8f98"
+    },
+    {
+      "slot": 2,
+      "base_load": "0x9042",
+      "base_pool": "0x9374",
+      "byte_load": "0x907a",
+      "source_address": "0x2000003e",
+      "setter_call": "0x9080"
+    }
+  ],
+  "reference_header_sha256": "b3b5b781e69e5ee8b599bbffa12c9674dbbd914c95c5b27e2af50ba1bda783cc",
+  "selected_ranges": [
+    {
+      "start": "0x64ea",
+      "end_exclusive": "0x652a",
+      "bytes": 64,
+      "sha256": "48da5ee9f6cd6f97dc33d1b00a5449706a2131d31eb01444259e467492ef3b8e",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-init-set-disable.txt"
+    },
+    {
+      "start": "0x652a",
+      "end_exclusive": "0x6574",
+      "bytes": 74,
+      "sha256": "d3e566c4aeaf892bb73aa1d0089e5d696a830f60add895e0910d2dbcf72e8d84",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-counter-consumer.txt"
+    },
+    {
+      "start": "0x65b4",
+      "end_exclusive": "0x65b8",
+      "bytes": 4,
+      "sha256": "0c283d5fea724d82ef59ceb881d21b9675e85f9702df7c66efd4ad48887594c8",
+      "data_not_code": true,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-address-pool.txt"
+    },
+    {
+      "start": "0x8d32",
+      "end_exclusive": "0x8d3c",
+      "bytes": 10,
+      "sha256": "3828f03a7dec069a45c51b02b7da51fb2511e7802c7b8be4f465a794c74698fc",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload0-base.txt"
+    },
+    {
+      "start": "0x8de8",
+      "end_exclusive": "0x8df2",
+      "bytes": 10,
+      "sha256": "9ffe71e65ff1687c00401936f1f2fcc439d7777028fe1061e5b398206736b9a0",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload0-call.txt"
+    },
+    {
+      "start": "0x8f90",
+      "end_exclusive": "0x8f9c",
+      "bytes": 12,
+      "sha256": "8f817ce87757df84a8dc6f0dd725021e7ae0dfd79aa88a5ae2b89aa7c6ad07d3",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload1-call.txt"
+    },
+    {
+      "start": "0x9042",
+      "end_exclusive": "0x9044",
+      "bytes": 2,
+      "sha256": "e0d313760b4cada10641fd0337838470bd54a01491919e245c53f873de3c73a5",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload2-base.txt"
+    },
+    {
+      "start": "0x907a",
+      "end_exclusive": "0x9084",
+      "bytes": 10,
+      "sha256": "0b87e8e7b84048ef392e4829f759de795e4a55daf5ad87f64bca2f520e828c3d",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-reload2-call.txt"
+    },
+    {
+      "start": "0x8f70",
+      "end_exclusive": "0x8f74",
+      "bytes": 4,
+      "sha256": "2de44621c76edf2debbc2df62ccb52c5036b1919dca3af0c0a886cc48dbfaeba",
+      "data_not_code": true,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-base-pool0.txt"
+    },
+    {
+      "start": "0x9374",
+      "end_exclusive": "0x9378",
+      "bytes": 4,
+      "sha256": "2de44621c76edf2debbc2df62ccb52c5036b1919dca3af0c0a886cc48dbfaeba",
+      "data_not_code": true,
+      "output": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/pins/WDT-base-pool12.txt"
+    }
+  ],
+  "actual_live_counter_state_read": false,
+  "SIO_channel_pins_command16_or_keepalive_compatibility_proven": false,
+  "limits": [
+    "static same addresses are not the same whole MCU firmware or protocol compatibility",
+    "reload examples bind3 call sites only; not an exhaustive classification of all setters",
+    "slots0/2 use callee-saved base registers across intervening calls; their source association assumes normal ARM procedure-call preservation, not symbolic execution of all callees",
+    "no time unit, timeout, RAM write, feed/disable operation or failure recovery has been measured"
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

@@ -1,0 +1,321 @@
+{
+  "source_package_sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+  "binaries": [
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/bin/sen.elf",
+      "size": 27240,
+      "sha256": "9e3236666176b69746848edaac31e1e0ef00c4e80a9f062794ff62be2d605470",
+      "machine": "EM_AARCH64",
+      "needed": [
+        "libdl.so.2",
+        "libstdc++.so.6",
+        "libpthread.so.0",
+        "libosal_uipc.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "relevant_imports": [
+        "dlsym",
+        "__libc_start_main",
+        "dlopen"
+      ],
+      "relevant_strings": [
+        {
+          "offset": "0x238",
+          "text": "/lib/ld-linux-aarch64.so.1"
+        },
+        {
+          "offset": "0xc69",
+          "text": "libdl.so.2"
+        },
+        {
+          "offset": "0xccd",
+          "text": "libstdc++.so.6"
+        },
+        {
+          "offset": "0xcf8",
+          "text": "libpthread.so.0"
+        },
+        {
+          "offset": "0xe94",
+          "text": "libosal_uipc.so"
+        },
+        {
+          "offset": "0xf33",
+          "text": "libm.so.6"
+        },
+        {
+          "offset": "0xf3d",
+          "text": "libgcc_s.so.1"
+        },
+        {
+          "offset": "0xf5a",
+          "text": "libc.so.6"
+        },
+        {
+          "offset": "0x104f",
+          "text": "librt.so.1"
+        },
+        {
+          "offset": "0x3cf3",
+          "text": "SENSER CORE module start failed!"
+        },
+        {
+          "offset": "0x3d23",
+          "text": "SENSER CORE module stop failed!"
+        },
+        {
+          "offset": "0x3e79",
+          "text": "/setting/.hasp"
+        },
+        {
+          "offset": "0x3eb2",
+          "text": "SENSER_MODE = %d"
+        },
+        {
+          "offset": "0x3ed3",
+          "text": "/setting/sen/smode"
+        },
+        {
+          "offset": "0x3f02",
+          "text": "/setting/sen/"
+        },
+        {
+          "offset": "0x3f30",
+          "text": "rmdir senser_mode_dir failed"
+        },
+        {
+          "offset": "0x3f4d",
+          "text": "remove senser_mode_file failed"
+        },
+        {
+          "offset": "0x3f91",
+          "text": "senser_usb_mode_start"
+        },
+        {
+          "offset": "0x3fa7",
+          "text": "senser_normal_mode_start"
+        },
+        {
+          "offset": "0x3fc0",
+          "text": "libsencore.so"
+        },
+        {
+          "offset": "0x3fce",
+          "text": "senser_stop"
+        }
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/bin/bootin.elf",
+      "size": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "machine": "EM_AARCH64",
+      "needed": [
+        "libbackup.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "relevant_imports": [
+        "__libc_start_main",
+        "execve",
+        "execv"
+      ],
+      "relevant_strings": [
+        {
+          "offset": "0x200",
+          "text": "/lib/ld-linux-aarch64.so.1"
+        },
+        {
+          "offset": "0xad9",
+          "text": "libbackup.so"
+        },
+        {
+          "offset": "0xbc2",
+          "text": "libosal_utm.so"
+        },
+        {
+          "offset": "0xbd1",
+          "text": "libosal_uipc.so"
+        },
+        {
+          "offset": "0xc1e",
+          "text": "libpthread.so.0"
+        },
+        {
+          "offset": "0xc76",
+          "text": "libstdc++.so.6"
+        },
+        {
+          "offset": "0xc85",
+          "text": "libm.so.6"
+        },
+        {
+          "offset": "0xc8f",
+          "text": "libdl.so.2"
+        },
+        {
+          "offset": "0xc9a",
+          "text": "libgcc_s.so.1"
+        },
+        {
+          "offset": "0xca8",
+          "text": "libc.so.6"
+        },
+        {
+          "offset": "0xdbc",
+          "text": "librt.so.1"
+        },
+        {
+          "offset": "0x3978",
+          "text": "/setting/mode/preload"
+        },
+        {
+          "offset": "0x399a",
+          "text": "/usr/bin/im.elf "
+        },
+        {
+          "offset": "0x3ae9",
+          "text": " bootin: Version %s.%s"
+        },
+        {
+          "offset": "0x3b01",
+          "text": "  bootin.elf { file=<mode_file> } { dmode=<debug_mode> }"
+        },
+        {
+          "offset": "0x3bce",
+          "text": "     <mode_file> : default is /setting/mode/dmode"
+        },
+        {
+          "offset": "0x3df8",
+          "text": "         killall : kill existing bootin.elf"
+        },
+        {
+          "offset": "0x3e50",
+          "text": "bootin_sync_apicb"
+        },
+        {
+          "offset": "0x3e83",
+          "text": "/setting/mode/tmode"
+        },
+        {
+          "offset": "0x3ebf",
+          "text": "Bb bootin"
+        },
+        {
+          "offset": "0x3ec9",
+          "text": "Bb bootin init failed"
+        },
+        {
+          "offset": "0x3f48",
+          "text": "/usr/bin/im.elf"
+        },
+        {
+          "offset": "0x3f58",
+          "text": "/usr/tool/libLeakTracer.so"
+        },
+        {
+          "offset": "0x3f73",
+          "text": "/usr/tool/libefence.so"
+        },
+        {
+          "offset": "0x3f8a",
+          "text": "/usr/lib/libjemalloc.so"
+        },
+        {
+          "offset": "0x3fc8",
+          "text": "/usr/tool/libasan.so"
+        },
+        {
+          "offset": "0x4198",
+          "text": "/usr/bin/mkfifo /tmp/lt/leaktracer.in"
+        },
+        {
+          "offset": "0x41e3",
+          "text": "/usr/bin/mkfifo /tmp/lt/leaktracer.out"
+        }
+      ]
+    }
+  ],
+  "scripts": [
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha7/sbin/init",
+      "size": 735,
+      "sha256": "c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e",
+      "text": "#!/bin/busybox sh\n\nINITRC_DIR=/sbin/initrc\nDEFAULT_MODE=0\nKMSG=/dev/kmsg\nBOOT_TIME=/proc/snsc_boot_time\nMODE_FILE=/setting/mode/dmode\nSEN_FILE=/setting/sen/smode\nNO_LDR_FILE=/sbin/NOLDR\nNO_LDR_MODE=0\n\nexport HOME=/\nexport PATH=/sbin:/bin:/usr/sbin:/usr/bin:$PATH\nexport TOPRC=/etc/toprc\nexport MALLOC_OPTIONS=gfffffffff\nexport MALLOC_MMAP_THRESHOLD_=131072\nexport MALLOC_CHECK_=3\nexport LT_ABORTREASON=0\nexport WBSHD=/tmp_wbshd/shared.XXXXXX\n\nbusybox mount -o rw -t proc proc /proc\nmkdir -p /dev/pts\n\n[ -r $INITRC_DIR/insmod_drv1  ] && . $INITRC_DIR/insmod_drv1\n[ -r $INITRC_DIR/setup_nflash ] && . $INITRC_DIR/setup_nflash\n[ -r $INITRC_DIR/setup_rootfs ] && . $INITRC_DIR/setup_rootfs\n\n/sbin/init2\n\nwhile true\ndo\n    ash --login\ndone\n"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha7/sbin/init2",
+      "size": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb",
+      "text": "#!/bin/busybox sh\n\nINITRC_DIR=/sbin/initrc\nDEFAULT_MODE=3\nKMSG=/dev/kmsg\nBOOT_TIME=/proc/snsc_boot_time\nMODE_FILE=/setting/mode/dmode\nSEN_FILE=/setting/sen/smode\nFSTAB=$INITRC_DIR/fstab\nFSTAB_EXT=$INITRC_DIR/fstab.ext\n\nsetup_bis()\n{\n    UPM_BOOTMODE=`cat /proc/udm/upm_bootmode`\n    echo \"upm_bootmode = $UPM_BOOTMODE\" > $KMSG\n    echo \"upm_bootmode = $UPM_BOOTMODE\" > $BOOT_TIME\n\n    [ \"$UPM_BOOTMODE\" != \"BIS\" ] && return 1\n\n    SSBIPROF_MNTSRC=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 1`\n    SSBIPROF_MNTTGT=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 2`\n    SSBIPROF_MNTOPT=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 4`\n\n    busybox umount $SSBIPROF_MNTTGT\n    /sbin/mkdosfs -f 1 -s 32 $SSBIPROF_MNTSRC\n    busybox mount $SSBIPROF_MNTSRC $SSBIPROF_MNTTGT -o $SSBIPROF_MNTOPT\n\n    return 0\n}\n\nsetup_senser()\n{\n    [ -r $SEN_FILE ] || return 1\n\n#   echo $SEN_FILE found.\n    SEN_STR=`cat $SEN_FILE`\n    if   [ \"$SEN_STR\" == \"UU\" ] ; then\n        /usr/bin/sen.elf &\n    fi\n\n    return 0\n}\n\nbusybox mount -t sysfs none /sys\nbusybox mount -t debugfs none /sys/kernel/debug\nbusybox mount -a -T $FSTAB\n\n[ -r $FSTAB_EXT ] && busybox mount -a -T $FSTAB_EXT\n\nmount -t tmpfs none /tmp_wbshd\n\nMODE=\"$DEFAULT_MODE\"\n[ -r $MODE_FILE ] && MODE=`cat $MODE_FILE`\n\nif [ \"$MODE\" != \"0\" ] ; then\n    ### set_mindrv()\n    echo set > /proc/udm/drivers\n\n    [ -r $INITRC_DIR/setup_shielding ] && . $INITRC_DIR/setup_shielding\n    [ -r $INITRC_DIR/insmod_drv2     ] && . $INITRC_DIR/insmod_drv2\n\n    setup_bis || setup_senser\n\n    /usr/bin/bootin.elf &\nfi\n\n[ -r $INITRC_DIR/setup_console ] && . $INITRC_DIR/setup_console\n\nwhile true\ndo\n    ash --login\ndone\n"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha7/sbin/initrc/setup_rootfs",
+      "size": 593,
+      "sha256": "ee84d317484d8cb4a0f1e39d665f1f04f18bf4d193a36a6e9bf63f8666a6a34d",
+      "text": "ROOTFS_OLDTGT=\"/initrd\"\nFSTAB_ROOT=\"$INITRC_DIR/fstab.root\"\n\ndo_pivot_root()\n{\n\t[ -r $FSTAB_ROOT ] || return 1\n\tbusybox mount -a -T $FSTAB_ROOT\n\n\tROOTFS_MNTTGT=`busybox cut -f 2 $FSTAB_ROOT`\n\n\tcd $ROOTFS_MNTTGT\n\n\t/sbin/pivot_root . $ROOTFS_MNTTGT$ROOTFS_OLDTGT\n\n\tbusybox mount --move $ROOTFS_OLDTGT/proc /proc\n\tbusybox mount --move $ROOTFS_OLDTGT/dev  /dev\n\n\texec busybox chroot . /bin/ash -c \"busybox umount $ROOTFS_OLDTGT; freeramdisk /dev/ram0; /sbin/init2;\" < dev/console > dev/console 2>&1\n}\n\nbusybox mount | grep nfs >> /dev/null\nis_nfs=$?\nif [ \"$is_nfs\" != 0 ] ; then\n\tdo_pivot_root\nfi\n"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha7/sbin/initrc/fstab",
+      "size": 1085,
+      "sha256": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0",
+      "text": "/dev/nflasha2\t/setting vfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha3\t/system\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha8\t/cp\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha11\t/log\tvfat\trw,nodiratime,noatime,sync,posix_attr,batch_sync\t0\t0\n/dev/nflasha12\t/cert\tvfat\trw,nodiratime,noatime,sync,posix_attr,batch_sync\t0\t0\n/dev/nflasha18\t/lens\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha10\t/tmp\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha15\t/usr\text2\tro,nodiratime,noatime,sync\t0\t0\n\n#/dev/nflasha2\t/setting vfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha3\t/system\tvfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha8\t/cp\tvfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha11\t/log\tvfat\trw,nodiratime,noatime,sync,noexec,batch_sync\t0\t0\n#/dev/nflasha12\t/cert\tvfat\trw,nodiratime,noatime,sync,noexec,batch_sync\t0\t0\n#/dev/nflasha18\t/lens\tvfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha10\t/tmp\tvfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha15\t/usr\text2\tro,nodiratime,noatime,sync\t0\t0\n"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha7/sbin/initrc/fstab.root",
+      "size": 58,
+      "sha256": "c77d93236b89349bcc24853756f960bb49411e922c9430ede70b5b2cb8b6a4b2",
+      "text": "/dev/nflasha7\t/rootfs\text2\tro,nodiratime,noatime,sync\t0\t0\n"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha7/sbin/initrc/setup_console",
+      "size": 1205,
+      "sha256": "9411360fdfe60c7b7a09fa9e931e4ae9ec9c062e480b620e4c313c31f9139dd0",
+      "text": "# for job control\nTTYCMD=\"ash --login\"\n\ngrep \"console\\=\" /proc/cmdline >/dev/null\nif [ \"$?\" -ne \"1\" ]; then\n\tCMDLINE=`cat /proc/cmdline`\n\tfor i in ${CMDLINE}\n\t  do\n\t\tcase \"${i}\" in\n\t\t  console\\=*)\n\t\t\tl_console=`echo \"${i}\" | busybox cut -f2 -d=`\n\t\t\t# Parse the console line. No options specified if\n\t\t\t# no comma\n\t\t\tCONSOLE=`echo $l_console | busybox cut -f1 -d,`\n\t\t\tif [ \"${CONSOLE}\" = \"\" ]; then\n\t\t\t  # no options specified\n\t\t\t  CONSOLE=${l_console}\n\t\t\tfi\n\t\t\t\t# check console device available at /dev \n\t\t\t\tif [ ! -e /dev/${CONSOLE} ]; then\n\t\t\t\t  case \"${CONSOLE}\" in\n\t\t\t\t\t\"ttymxc0\")\n\t\t\t\t\t\tif [ ! -e /dev/ttymxc0 ]; then\n\t\t\t\t\t\t\tbusybox mknod /dev/ttymxc0 c 207 16;\n\t\t\t\t\t\tfi\n\t\t\t\t\t;;\n\t\t\t\t\t\"ttyAMA0\")\n\t\t\t\t\t\tif [ ! -e /dev/ttyAMA0 ]; then\n\t\t\t\t\t  \t\tbusybox  mknod /dev/ttyAMA0 c 204 64;\n\t\t\t\t\t\tfi\n\t\t\t\t  \t;;\n\t\t\t\t\t\"ttyO0\")\n\t\t\t\t\t\tif [ ! -e /dev/ttyO0 ]; then\n\t\t\t\t\t  \t\tbusybox  mknod /dev/ttyO0 c 253 0;\n\t\t\t\t\t\tfi\n\t\t\t\t  \t;;\n\t\t\t\t\t*)   # for no device file\n\t\t\t\t\t\tTTYCMD=\"ash --login\"\n\t\t\t\t\t\tbreak;\n\t\t\t\t  \t;;\n\t\t\t\t\tesac\n\t\t\t\tfi\n\t\t\tCONSOLE_BAUDRATE=`busybox stty speed -F /dev/$CONSOLE`\n\t\t\tTTYCMD=\"/sbin/getty -n -L -l /bin/ash ${CONSOLE_BAUDRATE} /dev/${CONSOLE} linux\"\n\t\t;;\n\t\tesac\n\tdone\nfi\n\nwhile true\ndo\n  $TTYCMD\ndone\n"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/bin/up.sh",
+      "size": 6572,
+      "sha256": "c774320a0ab92c13b467b9219e1f60262a1effa0b551ba3b713514a36dadc402",
+      "text": "#!/bin/sh\n\nUPMNT=/setting\nUPDIR=$UPMNT/updater\nUPMODE=$UPDIR/mode\nUPMODE1=$UPDIR/mode1\n\nLSI_MAIN=1\nLSI_SUB=2\n\n#######################################\n### Function declaration\n\n### change to usermode\nfunc_usermode()\n{\n\t#delete other mode flags\n\trm -f $UPDIR/mode*\n\n\t#create mode flag\n\ttouch $UPDIR/mode\n\n\t#sync\n\tsync\n\n\t# file check and message\n\tif [ -f \"$UPMODE\" ] ; then\n\t\techo \"next boot...   UFP mode\"\n\telse\n\t\techo \"next boot...   Normal mode\"\n\tfi\n}\n\n### change to version skip mode\nfunc_verskip()\n{\n\t#delete other mode flags\n\trm -f $UPDIR/mode*\n\n\t#create mode flag\n\ttouch $UPDIR/mode $UPDIR/mode6\n\n\t#sync\n\tsync\n\n\t# file check and message\n\tif [ -f \"$UPDIR/mode6\" ] ; then\n\t\techo \"next boot...   Version Skip mode\"\n\telse\n\t\techo \"next boot...   Normal mode\"\n\tfi\n}\n\n### change to version skip mode\nfunc_mscrypt()\n{\n\t#delete other mode flags\n\trm -f $UPDIR/mode*\n\n\t#create mode flag\n\ttouch $UPDIR/mode $UPDIR/mode5\n\n\t#sync\n\tsync\n\n\t# file check and message\n\tif [ -f \"$UPDIR/mode5\" ] ; then\n\t\techo \"next boot...   MS Crypt mode\"\n\telse\n\t\techo \"next boot...   Normal mode\"\n\tfi\n}\n\n### change to file crypt mode\nfunc_filecrypt()\n{\n        #delete other mode flags\n        rm -f $UPDIR/mode*\n\n        #create mode flag\n        touch $UPDIR/mode $UPDIR/mode7\n\n        #sync\n        sync\n\n        # file check and message\n        if [ -f \"$UPDIR/mode7\" ] ; then\n                echo \"next boot...   File Crypt mode\"\n        else\n                echo \"next boot...   Normal mode\"\n        fi\n}\n\n### change to servicemode\nfunc_servicemode()\n{\n\t#delete other mode flags\n\trm -f $UPDIR/mode*\n\n\t#create mode flag\n\ttouch $UPDIR/mode $UPDIR/mode3\n\n\t#sync\n\tsync\n\n\t# file check and message\n\tif [ -f \"$UPDIR/mode3\" ] ; then\n\t\techo \"next boot...   Service mode\"\n\telse\n\t\techo \"next boot...   Normal mode\"\n\tfi\n\n}\n\n### change to keepbackup mode\nfunc_keepbackup()\n{\n\t#delete other mode flags\n\trm -f $UPDIR/mode*\n\n\t#create mode flag\n\ttouch $UPDIR/mode $UPDIR/mode1 $UPDIR/mode4\n\n\t#sync\n\tsync\n\n\t# file check and message\n\tif [ -f \"$UPDIR/mode4\" ] ; then\n\t\techo \"next boot...   Keepbackup mode\"\n\telse\n\t\techo \"next boot...   Normal mode\"\n\tfi\n}\n\n\n### modify version\n## $1 : target version\nfunc_modver()\n{\n\tlocal _newver=$1\n\ttest ${#_newver} -eq 4 || { echo \"Invalid Parameter\" ; return 1 ; } \n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tmount -t tmpfs -o size=1024 tmpfs /tmp_updater\n\tfi\n\n\t#get current version\n\tud_datcnv.elf -d -i /setting/updater/dat4 -o /tmp_updater/upcurver -a\n\tif [ $? -ne 0 ] ; then\n\t\techo \"Could not get current version\" ; return 1 ;\n\tfi\n\tlocal _current\n\t_current=`cat /tmp_updater/upcurver`\n\n\trm -f /tmp_updater/upcurver\n\n\t#write new version into tempfile\n\techo \"$_newver\" > /tmp_updater/upnewver\n\tud_datcnv.elf -e -i /tmp_updater/upnewver -o /setting/updater/dat4 -a\n\tif [ $? -ne 0 ] ; then\n\t\techo \"Could not write new version\" ; return 1 ;\n\tfi\n\n\t#sync\n\tsync\n\tsync\n\n\trm -f /tmp_updater/upnewver\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tumount /tmp_updater\n\tfi\n\n\t#message\n\techo \"Modify verion $_current -> $_newver\"\n}\n\n### modify model\n## $1 : target model\nfunc_modmod()\n{\n\tfunc_com_mod_modreg \"model\" \"dat2\" $1\n}\n\n### modify region\n## $1 : target region\nfunc_modreg()\n{\n\tfunc_com_mod_modreg \"region\" \"dat3\" $1\n\n}\n\n### common func modmod, modreg\n# $1 : Prompt String\n# $2 : filename ( dat2 or dat3 )\n# $3 : new value\nfunc_com_mod_modreg()\n{\n\tlocal _file=$2\n\tlocal _newval=$3\n\ttest ${#_newval} -eq 8 || { echo \"Invalid Parameter\" ; return 1 ; }\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tmount -t tmpfs -o size=1024 tmpfs /tmp_updater\n\tfi\n\n\tmkdir -p /tmp_updater/upmnt\n\tmount -t vfat /dev/nflasha1 -o posix_attr,noatime,nodiratime,shortname=mixed /tmp_updater/upmnt\n\tif [ $? -ne 0 ] ; then\n\t\techo \"Error Failed to mount p1\" ; exit 1\n\tfi\n\n\t#get current value\n\tud_datcnv.elf -d -i /tmp_updater/upmnt/$_file -o /tmp_updater/upcurval -a\n\tif [ $? -ne 0 ] ; then\n\t\techo \"Could not get current value\"\n\t\tumount /tmp_updater/upmnt\n\t\texit 1\n\tfi\n\n\tlocal _current\n\t_current=`cat /tmp_updater/upcurval`\n\trm -f /tmp_updater/upcurval\n\n\t#write new value into tempfile\n\techo \"$_newval\" > /tmp_updater/upnewval\n\tud_datcnv.elf -e -i /tmp_updater/upnewval -o /tmp_updater/upmnt/$_file -a\n\tif [ $? -ne 0 ] ; then\n\t\techo \"Could not write new value\" ; unmount /tmp_updater/upmnt ; exit 1 ;\n\tfi\n\n\tumount /tmp_updater/upmnt\n\n\trm -rf /tmp_updater/upnewval /tmp_updater/upmnt\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tumount /tmp_updater\n\tfi\n\n\t#message\n\techo \"Modify $1 $_current -> $_newval\"\n\n}\n\n### console on/off\n# $1 : on/off\nfunc_cons()\n{\n\tlocal _flag=$1\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tmount -t tmpfs -o size=1024 tmpfs /tmp_updater\n\tfi\n\n\tmkdir -p /tmp_updater/upmnt\n\tmount -t vfat /dev/nflasha1 -o posix_attr,noatime,nodiratime,shortname=mixed /tmp_updater/upmnt\n\tif [ $? -ne 0 ] ; then\n\t\techo \"Error Failed to mount p1\" ; exit 1\n\tfi\n\n\tif [ $_flag = \"off\" ] ; then\n\t\tsed -e 's/console=ttyAMA0,460800n8 amba2.console=1/console=ttynull/g' /tmp_updater/upmnt/boot/kemco.txt > /tmp_updater/upmnt/boot/kemco_new.txt\n\telse\n\t\tsed -e 's/console=ttynull/console=ttyAMA0,460800n8 amba2.console=1/g' /tmp_updater/upmnt/boot/kemco.txt > /tmp_updater/upmnt/boot/kemco_new.txt\n\tfi\n\tmv /tmp_updater/upmnt/boot/kemco_new.txt /tmp_updater/upmnt/boot/kemco.txt\n\n\tumount /tmp_updater/upmnt\n\n\trm -rf /tmp_updater/upnewval /tmp_updater/upmnt\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tumount /tmp_updater\n\tfi\n\n\t#message\n\techo \"console $_flag\"\n\n}\n\n##########################################\n## main \n##########################################\n\n\nif [ $# -eq 0 ] ; then\n\n# if not exist ,  create directory\nif [ ! -d \"$UPDIR\" ];then\n\tmkdir $UPDIR\nfi\n\n# create file\nif [ -f \"$UPMODE\" ];then\n\trm -f $UPDIR/mode*\nelse\n\ttouch $UPMODE $UPMODE1\nfi\n# write nand \nsync\n\n# file check and message\nif [ -f \"$UPMODE\" ];then\n\techo \"next boot...   Updater mode\"\n\tmode_num=4\nelse\n\techo \"next boot...   Normal mode\"\n\tmode_num=0\nfi\n\nelse\n#########################################\n## user, service, modmod, modver, modreg\n\ncase $1 in\n#\t\"keep\" )\n#\t\tfunc_keepbackup\n#\t\t;;\n\t\"user\" )\n\t\tfunc_usermode\n\t\tmode_num=2\n\t\t;;\n\t\"serv\" )\n\t\tfunc_servicemode\n\t\tmode_num=3\n\t\t;;\n\t\"modmod\" )\n\t\tfunc_modmod $2\n\t\t;;\n\t\"modver\" )\n\t\tfunc_modver $2\n\t\t;;\n\t\"modreg\" )\n\t\tfunc_modreg $2\n\t\t;;\n\t\"ms\" )\n\t\tfunc_mscrypt\n\t\tmode_num=5\n\t\t;;\n\t\"ver\" )\n\t\tfunc_verskip\n\t\tmode_num=6\n\t\t;;\n\t\"file\" )\n\t\tfunc_filecrypt\n\t\tmode_num=7\n\t\t;;\n\t*)\n\t\t;;\nesac\n\nfi\n\nif [ $((mode_num)) -ne 0 ]; then\n\tif [ -e /setting/updater/debug ] ; then\n\t\tfunc_cons on\n\telif [ -e /setting/updater/consoff ] ; then\n\t\tfunc_cons off\n\tfi\nfi\n\ntest -e /root/IAMUPDATER\nif [ $? = 0 ]; then\n\texit 0\nfi\n\nud_send_lsi.elf $mode_num\n"
+    }
+  ],
+  "scope": "offline static inspection, no script or firmware execution",
+  "proven_recovery_independent_of_appFw": false,
+  "not_proven": [
+    "kernel/bootloader selection and WBI path",
+    "external trigger for smode UU without running main app",
+    "all dynamic and indirect dependencies",
+    "service command reachability on broken main application",
+    "actual restore success after main application failure"
+  ],
+  "conclusion": "A pre-main conditional service executable is present; an independently reachable working restore path is not yet established.",
+  "startup_order": [
+    "/sbin/init: early driver/nflash/rootfs setup",
+    "pivot_root to nflasha7 rootfs when applicable",
+    "/sbin/init2: mount sysfs/debugfs/fstab",
+    "mode!=0: driver setup",
+    "setup_bis || setup_senser",
+    "setup_senser: if /setting/sen/smode==UU, launch /usr/bin/sen.elf asynchronously",
+    "launch /usr/bin/bootin.elf asynchronously",
+    "console loop"
+  ],
+  "important_distinction": "up.sh updater/mode3 is not the same condition as init2 setting/sen/smode==UU",
+  "dependency_gaps": [
+    "sen.elf contains libsencore.so string and imports dlopen/dlsym; exact runtime selection was not traced",
+    "libsencore.so has libtestcmd/libtestcmd_scn/libSTMcmdexecute dependencies and dynamic plugin format libpro%02X.so",
+    "full indirect dependencies, IPC requirements and dynamic registration were not followed",
+    "DT_NEEDED absence of appFw.so alone does not prove service execution independence"
+  ],
+  "checked_at_utc": "2026-10-25T06:37:29.075453+00:00"
+}

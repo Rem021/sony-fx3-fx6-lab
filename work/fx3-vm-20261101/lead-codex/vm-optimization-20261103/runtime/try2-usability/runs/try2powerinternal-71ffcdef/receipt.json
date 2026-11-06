@@ -1,0 +1,2783 @@
+{
+  "created_utc": "2026-11-03T14:11:58.693350+00:00",
+  "duration_seconds": 770.1333617089549,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-power-observe-v1/candidate.json",
+  "candidate_sha256": "d53363f076f5d0129c68e7489d407b0baab300bec62f487decf96a73e29d90a6",
+  "models_identical_to_frozen_AP101_r4": false,
+  "authority": "msg_3a52a0ab7e46",
+  "observer_source_snapshot": [
+    {
+      "name": "run_trial_v10_stale_review.py",
+      "sha256": "a1072dc1456c67bcd376c57fe6c17e622c6882d2410de25f4dd111cc147be4dd"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "gate_input_usability.py",
+      "sha256": "a491ad53babf720830d5bda45ecf6467b018cd79dae7247ebcce45bd854f37f6"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_web_v3_usability.py",
+      "sha256": "1335ac18a7f29291182255ae88cd100d6df289f5266507ca7adfcca8675187f4"
+    },
+    {
+      "name": "trial_ring_usability.py",
+      "sha256": "4dea2f0154844e24675726727fee5bdb7bbb50456dfd15288dfdb8d7daef1bdc"
+    },
+    {
+      "name": "trial_log_usability.py",
+      "sha256": "5e10008a139cd5fcf4a954c5ec100d7f6c1d86d28c2cadf2383f520717e854d6"
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef",
+  "maximum_seconds": 1800,
+  "maximum_steps": 40,
+  "stop_cause": "health_failure",
+  "internal_hoststep_mode": true,
+  "HTTP_key_source_used": false,
+  "qemu_pid": 74946,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-power-observe-v1/guest.dtb",
+      "sha256": "9281b0b9f98d0e75fab2d0909582e0ca584a7f0ca6be6d9eba5892944dd7b392"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-power-observe-v1/guest.cpio",
+      "sha256": "1b72eed06a5d2104caba23a438b1eb3dd86c3e52fddd79d45aa116a078c814ae"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-power-observe-v1/candidate.json",
+      "sha256": "d53363f076f5d0129c68e7489d407b0baab300bec62f487decf96a73e29d90a6"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.24382791697280481,
+      "rss_vsz_kib": "933888 495709408"
+    },
+    {
+      "elapsed_seconds": 5.273639291990548,
+      "rss_vsz_kib": "1076000 495709408"
+    },
+    {
+      "elapsed_seconds": 10.331731999991462,
+      "rss_vsz_kib": "1053920 495709408"
+    },
+    {
+      "elapsed_seconds": 15.352212750003673,
+      "rss_vsz_kib": "1068752 495709408"
+    },
+    {
+      "elapsed_seconds": 20.4481294999714,
+      "rss_vsz_kib": "1152048 495709408"
+    },
+    {
+      "elapsed_seconds": 25.457920708984602,
+      "rss_vsz_kib": "1315968 495717600"
+    },
+    {
+      "elapsed_seconds": 30.481979083968326,
+      "rss_vsz_kib": "1346240 495717600"
+    },
+    {
+      "elapsed_seconds": 35.504105208965484,
+      "rss_vsz_kib": "1355712 495733984"
+    },
+    {
+      "elapsed_seconds": 40.53424383397214,
+      "rss_vsz_kib": "1381456 495733984"
+    },
+    {
+      "elapsed_seconds": 45.54082916700281,
+      "rss_vsz_kib": "1380304 495733984"
+    },
+    {
+      "elapsed_seconds": 50.548889666970354,
+      "rss_vsz_kib": "1369744 495733984"
+    },
+    {
+      "elapsed_seconds": 55.55822504195385,
+      "rss_vsz_kib": "1284832 495733984"
+    },
+    {
+      "elapsed_seconds": 60.61040504195262,
+      "rss_vsz_kib": "1285104 495733984"
+    },
+    {
+      "elapsed_seconds": 65.6566821669694,
+      "rss_vsz_kib": "1276528 495733984"
+    },
+    {
+      "elapsed_seconds": 70.69718037499115,
+      "rss_vsz_kib": "1274032 495733984"
+    },
+    {
+      "elapsed_seconds": 75.8137454589596,
+      "rss_vsz_kib": "657312 495733984"
+    },
+    {
+      "elapsed_seconds": 80.82798004196957,
+      "rss_vsz_kib": "383328 495733984"
+    },
+    {
+      "elapsed_seconds": 85.86277187499218,
+      "rss_vsz_kib": "321216 495733984"
+    },
+    {
+      "elapsed_seconds": 90.87481316697085,
+      "rss_vsz_kib": "297904 495733984"
+    },
+    {
+      "elapsed_seconds": 95.93500858399784,
+      "rss_vsz_kib": "298320 495733984"
+    },
+    {
+      "elapsed_seconds": 100.96545166696887,
+      "rss_vsz_kib": "298624 495733984"
+    },
+    {
+      "elapsed_seconds": 106.00093662500149,
+      "rss_vsz_kib": "298032 495733984"
+    },
+    {
+      "elapsed_seconds": 111.00684749998618,
+      "rss_vsz_kib": "298768 495733984"
+    },
+    {
+      "elapsed_seconds": 116.04678179195616,
+      "rss_vsz_kib": "298784 495733984"
+    },
+    {
+      "elapsed_seconds": 121.10469004197512,
+      "rss_vsz_kib": "298880 495733984"
+    },
+    {
+      "elapsed_seconds": 126.20704358397052,
+      "rss_vsz_kib": "299120 495733984"
+    },
+    {
+      "elapsed_seconds": 131.26515441696392,
+      "rss_vsz_kib": "311616 495733984"
+    },
+    {
+      "elapsed_seconds": 136.29339837498264,
+      "rss_vsz_kib": "311744 495733984"
+    },
+    {
+      "elapsed_seconds": 141.34978175000288,
+      "rss_vsz_kib": "311856 495733984"
+    },
+    {
+      "elapsed_seconds": 146.38276479195338,
+      "rss_vsz_kib": "311936 495733984"
+    },
+    {
+      "elapsed_seconds": 151.41023779200623,
+      "rss_vsz_kib": "311584 495733984"
+    },
+    {
+      "elapsed_seconds": 156.41813716699835,
+      "rss_vsz_kib": "311664 495733984"
+    },
+    {
+      "elapsed_seconds": 161.4435901249526,
+      "rss_vsz_kib": "311664 495733984"
+    },
+    {
+      "elapsed_seconds": 166.50493837497197,
+      "rss_vsz_kib": "311712 495733984"
+    },
+    {
+      "elapsed_seconds": 171.53366374998586,
+      "rss_vsz_kib": "314368 495733984"
+    },
+    {
+      "elapsed_seconds": 176.5797155839973,
+      "rss_vsz_kib": "314400 495733984"
+    },
+    {
+      "elapsed_seconds": 181.65818508400116,
+      "rss_vsz_kib": "314432 495733984"
+    },
+    {
+      "elapsed_seconds": 186.70139766699867,
+      "rss_vsz_kib": "314448 495733984"
+    },
+    {
+      "elapsed_seconds": 191.71225712500745,
+      "rss_vsz_kib": "314480 495733984"
+    },
+    {
+      "elapsed_seconds": 196.7473892919952,
+      "rss_vsz_kib": "314624 495733984"
+    },
+    {
+      "elapsed_seconds": 201.79891304200282,
+      "rss_vsz_kib": "314656 495733984"
+    },
+    {
+      "elapsed_seconds": 206.80401783395791,
+      "rss_vsz_kib": "314656 495733984"
+    },
+    {
+      "elapsed_seconds": 211.8431192499702,
+      "rss_vsz_kib": "314656 495733984"
+    },
+    {
+      "elapsed_seconds": 216.89497383398702,
+      "rss_vsz_kib": "314688 495733984"
+    },
+    {
+      "elapsed_seconds": 221.90300549997482,
+      "rss_vsz_kib": "314688 495733984"
+    },
+    {
+      "elapsed_seconds": 226.9900251670042,
+      "rss_vsz_kib": "314720 495733984"
+    },
+    {
+      "elapsed_seconds": 232.04407895897748,
+      "rss_vsz_kib": "314832 495733984"
+    },
+    {
+      "elapsed_seconds": 237.09189187496668,
+      "rss_vsz_kib": "312224 495733984"
+    },
+    {
+      "elapsed_seconds": 242.125970708963,
+      "rss_vsz_kib": "312272 495733984"
+    },
+    {
+      "elapsed_seconds": 247.14437945897225,
+      "rss_vsz_kib": "312288 495733984"
+    },
+    {
+      "elapsed_seconds": 252.16535254195333,
+      "rss_vsz_kib": "312288 495733984"
+    },
+    {
+      "elapsed_seconds": 257.19865241699154,
+      "rss_vsz_kib": "312256 495733984"
+    },
+    {
+      "elapsed_seconds": 262.2341439589509,
+      "rss_vsz_kib": "312240 495733984"
+    },
+    {
+      "elapsed_seconds": 267.2949717500014,
+      "rss_vsz_kib": "311584 495733984"
+    },
+    {
+      "elapsed_seconds": 272.3988747499534,
+      "rss_vsz_kib": "311056 495733984"
+    },
+    {
+      "elapsed_seconds": 277.4404347919626,
+      "rss_vsz_kib": "311248 495733984"
+    },
+    {
+      "elapsed_seconds": 282.4844658339862,
+      "rss_vsz_kib": "311344 495733984"
+    },
+    {
+      "elapsed_seconds": 287.53405749995727,
+      "rss_vsz_kib": "311584 495733984"
+    },
+    {
+      "elapsed_seconds": 292.56859066698235,
+      "rss_vsz_kib": "311648 495733984"
+    },
+    {
+      "elapsed_seconds": 297.5973466249998,
+      "rss_vsz_kib": "311696 495733984"
+    },
+    {
+      "elapsed_seconds": 302.7190319999936,
+      "rss_vsz_kib": "309456 495733984"
+    },
+    {
+      "elapsed_seconds": 307.7265717089758,
+      "rss_vsz_kib": "309456 495733984"
+    },
+    {
+      "elapsed_seconds": 312.73588179197395,
+      "rss_vsz_kib": "309600 495733984"
+    },
+    {
+      "elapsed_seconds": 317.78850979200797,
+      "rss_vsz_kib": "309600 495733984"
+    },
+    {
+      "elapsed_seconds": 322.8128673749743,
+      "rss_vsz_kib": "311760 495733984"
+    },
+    {
+      "elapsed_seconds": 327.85954145895084,
+      "rss_vsz_kib": "311776 495733984"
+    },
+    {
+      "elapsed_seconds": 332.8833713339991,
+      "rss_vsz_kib": "311792 495733984"
+    },
+    {
+      "elapsed_seconds": 337.89611658395734,
+      "rss_vsz_kib": "311936 495733984"
+    },
+    {
+      "elapsed_seconds": 342.9334324999945,
+      "rss_vsz_kib": "218432 495733984"
+    },
+    {
+      "elapsed_seconds": 347.9423505839659,
+      "rss_vsz_kib": "218480 495733984"
+    },
+    {
+      "elapsed_seconds": 352.9829040839686,
+      "rss_vsz_kib": "218544 495733984"
+    },
+    {
+      "elapsed_seconds": 358.06632554199314,
+      "rss_vsz_kib": "194624 495733984"
+    },
+    {
+      "elapsed_seconds": 363.0783634999534,
+      "rss_vsz_kib": "192304 495733984"
+    },
+    {
+      "elapsed_seconds": 368.1393920839764,
+      "rss_vsz_kib": "198752 495733984"
+    },
+    {
+      "elapsed_seconds": 373.14961420896,
+      "rss_vsz_kib": "198704 495733984"
+    },
+    {
+      "elapsed_seconds": 378.1588106249692,
+      "rss_vsz_kib": "198720 495733984"
+    },
+    {
+      "elapsed_seconds": 383.19067162496503,
+      "rss_vsz_kib": "200880 495733984"
+    },
+    {
+      "elapsed_seconds": 388.24311841698363,
+      "rss_vsz_kib": "201232 495733984"
+    },
+    {
+      "elapsed_seconds": 393.266120708955,
+      "rss_vsz_kib": "213200 495733984"
+    },
+    {
+      "elapsed_seconds": 398.27440787496744,
+      "rss_vsz_kib": "217104 495733984"
+    },
+    {
+      "elapsed_seconds": 403.2941451249644,
+      "rss_vsz_kib": "217120 495733984"
+    },
+    {
+      "elapsed_seconds": 408.4237419999554,
+      "rss_vsz_kib": "217344 495733984"
+    },
+    {
+      "elapsed_seconds": 413.47495775000425,
+      "rss_vsz_kib": "216608 495733984"
+    },
+    {
+      "elapsed_seconds": 418.49899766698945,
+      "rss_vsz_kib": "212816 495733984"
+    },
+    {
+      "elapsed_seconds": 423.5456054999959,
+      "rss_vsz_kib": "212864 495733984"
+    },
+    {
+      "elapsed_seconds": 428.58614020899404,
+      "rss_vsz_kib": "205456 495733984"
+    },
+    {
+      "elapsed_seconds": 433.61033158400096,
+      "rss_vsz_kib": "200768 495733984"
+    },
+    {
+      "elapsed_seconds": 438.6419936249731,
+      "rss_vsz_kib": "206576 495733984"
+    },
+    {
+      "elapsed_seconds": 443.7018562089652,
+      "rss_vsz_kib": "208160 495733984"
+    },
+    {
+      "elapsed_seconds": 448.7403549999581,
+      "rss_vsz_kib": "208176 495733984"
+    },
+    {
+      "elapsed_seconds": 453.7771555839572,
+      "rss_vsz_kib": "204432 495733984"
+    },
+    {
+      "elapsed_seconds": 458.7948234590003,
+      "rss_vsz_kib": "196032 495733984"
+    },
+    {
+      "elapsed_seconds": 463.8763699589763,
+      "rss_vsz_kib": "193952 495733984"
+    },
+    {
+      "elapsed_seconds": 468.8834777500015,
+      "rss_vsz_kib": "198624 495733984"
+    },
+    {
+      "elapsed_seconds": 473.9337697919691,
+      "rss_vsz_kib": "198768 495733984"
+    },
+    {
+      "elapsed_seconds": 478.94284487498226,
+      "rss_vsz_kib": "196352 495733984"
+    },
+    {
+      "elapsed_seconds": 483.9832976249745,
+      "rss_vsz_kib": "196464 495733984"
+    },
+    {
+      "elapsed_seconds": 489.01887691696174,
+      "rss_vsz_kib": "195280 495733984"
+    },
+    {
+      "elapsed_seconds": 494.03948562499136,
+      "rss_vsz_kib": "196576 495733984"
+    },
+    {
+      "elapsed_seconds": 499.09173170896247,
+      "rss_vsz_kib": "197360 495733984"
+    },
+    {
+      "elapsed_seconds": 504.13010720897,
+      "rss_vsz_kib": "199584 495733984"
+    },
+    {
+      "elapsed_seconds": 509.1940684169531,
+      "rss_vsz_kib": "199712 495733984"
+    },
+    {
+      "elapsed_seconds": 514.2247035839828,
+      "rss_vsz_kib": "199712 495733984"
+    },
+    {
+      "elapsed_seconds": 519.2742625419633,
+      "rss_vsz_kib": "199888 495733984"
+    },
+    {
+      "elapsed_seconds": 524.3632379589835,
+      "rss_vsz_kib": "199792 495733984"
+    },
+    {
+      "elapsed_seconds": 529.3903533339617,
+      "rss_vsz_kib": "200032 495733984"
+    },
+    {
+      "elapsed_seconds": 534.4250181670068,
+      "rss_vsz_kib": "200176 495733984"
+    },
+    {
+      "elapsed_seconds": 539.4311666249996,
+      "rss_vsz_kib": "200240 495733984"
+    },
+    {
+      "elapsed_seconds": 544.450705583964,
+      "rss_vsz_kib": "192272 495733984"
+    },
+    {
+      "elapsed_seconds": 549.5803187499987,
+      "rss_vsz_kib": "198288 495733984"
+    },
+    {
+      "elapsed_seconds": 554.6273408749839,
+      "rss_vsz_kib": "198400 495733984"
+    },
+    {
+      "elapsed_seconds": 559.6421074589598,
+      "rss_vsz_kib": "191568 495733984"
+    },
+    {
+      "elapsed_seconds": 564.6618631669553,
+      "rss_vsz_kib": "193616 495733984"
+    },
+    {
+      "elapsed_seconds": 569.7175767499721,
+      "rss_vsz_kib": "193728 495733984"
+    },
+    {
+      "elapsed_seconds": 574.7426607919624,
+      "rss_vsz_kib": "194272 495733984"
+    },
+    {
+      "elapsed_seconds": 579.7667472499888,
+      "rss_vsz_kib": "188672 495733984"
+    },
+    {
+      "elapsed_seconds": 584.7881402089843,
+      "rss_vsz_kib": "188720 495733984"
+    },
+    {
+      "elapsed_seconds": 589.8054866250022,
+      "rss_vsz_kib": "188976 495733984"
+    },
+    {
+      "elapsed_seconds": 594.8920222919551,
+      "rss_vsz_kib": "186096 495733984"
+    },
+    {
+      "elapsed_seconds": 599.9406480419566,
+      "rss_vsz_kib": "186128 495733984"
+    },
+    {
+      "elapsed_seconds": 604.9675044169999,
+      "rss_vsz_kib": "186320 495733984"
+    },
+    {
+      "elapsed_seconds": 610.0206031669513,
+      "rss_vsz_kib": "186544 495733984"
+    },
+    {
+      "elapsed_seconds": 615.0819036669564,
+      "rss_vsz_kib": "185760 495733984"
+    },
+    {
+      "elapsed_seconds": 620.1408914589556,
+      "rss_vsz_kib": "186640 495733984"
+    },
+    {
+      "elapsed_seconds": 625.2388741250033,
+      "rss_vsz_kib": "186672 495733984"
+    },
+    {
+      "elapsed_seconds": 630.2632947919774,
+      "rss_vsz_kib": "185728 495733984"
+    },
+    {
+      "elapsed_seconds": 635.2705505419872,
+      "rss_vsz_kib": "183248 495733984"
+    },
+    {
+      "elapsed_seconds": 640.4052803749801,
+      "rss_vsz_kib": "182416 495733984"
+    },
+    {
+      "elapsed_seconds": 645.4484808339621,
+      "rss_vsz_kib": "182672 495733984"
+    },
+    {
+      "elapsed_seconds": 650.4768904169905,
+      "rss_vsz_kib": "179584 495733984"
+    },
+    {
+      "elapsed_seconds": 655.5124088339508,
+      "rss_vsz_kib": "169648 495733984"
+    },
+    {
+      "elapsed_seconds": 660.5557372919866,
+      "rss_vsz_kib": "179280 495733984"
+    },
+    {
+      "elapsed_seconds": 665.5807726669591,
+      "rss_vsz_kib": "179040 495733984"
+    },
+    {
+      "elapsed_seconds": 670.6819032089552,
+      "rss_vsz_kib": "170384 495733984"
+    },
+    {
+      "elapsed_seconds": 675.713154083991,
+      "rss_vsz_kib": "170816 495733984"
+    },
+    {
+      "elapsed_seconds": 680.7694584589917,
+      "rss_vsz_kib": "173328 495733984"
+    },
+    {
+      "elapsed_seconds": 685.89572291699,
+      "rss_vsz_kib": "180832 495733984"
+    },
+    {
+      "elapsed_seconds": 690.9381822499563,
+      "rss_vsz_kib": "180688 495733984"
+    },
+    {
+      "elapsed_seconds": 695.9959883340052,
+      "rss_vsz_kib": "167952 495733984"
+    },
+    {
+      "elapsed_seconds": 701.0251865839818,
+      "rss_vsz_kib": "177024 495733984"
+    },
+    {
+      "elapsed_seconds": 706.0569098749547,
+      "rss_vsz_kib": "174848 495733984"
+    },
+    {
+      "elapsed_seconds": 711.1093790419982,
+      "rss_vsz_kib": "179920 495733984"
+    },
+    {
+      "elapsed_seconds": 716.1622970419703,
+      "rss_vsz_kib": "179536 495733984"
+    },
+    {
+      "elapsed_seconds": 721.1899100419832,
+      "rss_vsz_kib": "179712 495733984"
+    },
+    {
+      "elapsed_seconds": 726.2416594999959,
+      "rss_vsz_kib": "172464 495733984"
+    },
+    {
+      "elapsed_seconds": 731.2842657499714,
+      "rss_vsz_kib": "174976 495733984"
+    },
+    {
+      "elapsed_seconds": 736.3155267499969,
+      "rss_vsz_kib": "175264 495733984"
+    },
+    {
+      "elapsed_seconds": 741.3532404169673,
+      "rss_vsz_kib": "178736 495733984"
+    },
+    {
+      "elapsed_seconds": 746.488721458998,
+      "rss_vsz_kib": "181248 495733984"
+    },
+    {
+      "elapsed_seconds": 751.5371699999669,
+      "rss_vsz_kib": "181520 495733984"
+    },
+    {
+      "elapsed_seconds": 756.5452811669675,
+      "rss_vsz_kib": "181680 495733984"
+    },
+    {
+      "elapsed_seconds": 761.6870355419815,
+      "rss_vsz_kib": "181840 495733984"
+    },
+    {
+      "elapsed_seconds": 766.7225768339704,
+      "rss_vsz_kib": "159168 495733984"
+    }
+  ],
+  "early_stop_reason": "native_model_power_off_observed: FX3_BOOT_QUEUE_SEND tid=378 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1",
+  "full_serial_bytes_inspected": 80977079,
+  "serial_health_failure": null,
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": true,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY96_READY": true,
+    "FX3_OSD_FRAME_TARGET_VALID": true,
+    "FX3_GPE_COMPACTION_BOUND": true,
+    "FX3_GPE_DRAW_INTERVAL": true,
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": true,
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": true,
+    "FX3_KEY96_POLL": true,
+    "FX3_KEY96_THREAD_BEGIN": true,
+    "FX3_PANEL_CONFIG_V2_COMMIT": true,
+    "FX3_PROC97_STATUS_BEGIN": true,
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": true,
+    "FX3_DATE98_KERNEL_OBSERVE_READY": true,
+    "FX3_DATE99_WORKER_READY": true,
+    "FX3_DATE99_CONSUMER_BOUND": true,
+    "FX3_SYNC100_BACKEND_BOUND": true,
+    "FX3_FILE100_OBSERVER_READY": true,
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": true,
+    "FX3_BACKUP_INSMOD_RC=0": true,
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": true,
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": true,
+    "FX3_LDEC103_SELFTEST_RC=0": true,
+    "FX3_GPE104_LIB_BIND": true,
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": true,
+    "FX3_FILE103_READY_CONFIRMED": true,
+    "FX3_POWER_OBSERVER_BOUND": true
+  },
+  "marker_evidence": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": {
+      "method": "literal",
+      "marker": "FX3_GPE_EARLY_THREAD_GATE gpe=0"
+    },
+    "FX3_PRESET_CONTEXT_BOUND": {
+      "method": "literal",
+      "marker": "FX3_PRESET_CONTEXT_BOUND"
+    },
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_PRESET_CONTEXT_SELFTEST_PASS"
+    },
+    "FX3_AP89_UUD_DECISION": {
+      "method": "literal",
+      "marker": "FX3_AP89_UUD_DECISION"
+    },
+    "FX3_AP89_SCREEN_CREATE": {
+      "method": "literal",
+      "marker": "FX3_AP89_SCREEN_CREATE"
+    },
+    "FX3_AP_IM_ENDMAPS_": {
+      "method": "literal",
+      "marker": "FX3_AP_IM_ENDMAPS_"
+    },
+    "registration_origin=malloc_parent_v1": {
+      "method": "literal",
+      "marker": "registration_origin=malloc_parent_v1"
+    },
+    "FX3_GPE_RESOURCE_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_RESOURCE_BOUND"
+    },
+    "FX3_GPE_RESOURCE_REGISTER": {
+      "method": "literal",
+      "marker": "FX3_GPE_RESOURCE_REGISTER"
+    },
+    "FX3_GPE_SCOPE": {
+      "method": "literal",
+      "marker": "FX3_GPE_SCOPE"
+    },
+    "FX3_RM_BOUND": {
+      "method": "literal",
+      "marker": "FX3_RM_BOUND"
+    },
+    "FX3_RM_FRONT_TRANSFER": {
+      "method": "literal",
+      "marker": "FX3_RM_FRONT_TRANSFER"
+    },
+    "FX3_RM_REPLY_TRANSFER": {
+      "method": "literal",
+      "marker": "FX3_RM_REPLY_TRANSFER"
+    },
+    "FX3_RM_NATIVE_FREE": {
+      "method": "literal",
+      "marker": "FX3_RM_NATIVE_FREE"
+    },
+    "FX3_MEDIA_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_SELFTEST_PASS"
+    },
+    "FX3_MEDIA_BOUND module=D": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_BOUND module=D"
+    },
+    "FX3_MEDIA_FRONT": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_FRONT"
+    },
+    "FRONT_FULL_BODY": {
+      "method": "literal",
+      "marker": "FRONT_FULL_BODY"
+    },
+    "FX3_MEDIA_START_BRANCH": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_START_BRANCH"
+    },
+    "FX3_MEDIA_NOTIFY": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_NOTIFY"
+    },
+    "FX3_KEY96_READY": {
+      "method": "literal",
+      "marker": "FX3_KEY96_READY"
+    },
+    "FX3_OSD_FRAME_TARGET_VALID": {
+      "method": "literal",
+      "marker": "FX3_OSD_FRAME_TARGET_VALID"
+    },
+    "FX3_GPE_COMPACTION_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_COMPACTION_BOUND"
+    },
+    "FX3_GPE_DRAW_INTERVAL": {
+      "method": "literal",
+      "marker": "FX3_GPE_DRAW_INTERVAL"
+    },
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_SCREEN_AUTHORITY_BOUND"
+    },
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": {
+      "method": "literal",
+      "marker": "FX3_AP_SNAPSHOT_DMM_SKIPPED"
+    },
+    "FX3_KEY96_POLL": {
+      "method": "literal",
+      "marker": "FX3_KEY96_POLL"
+    },
+    "FX3_KEY96_THREAD_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_KEY96_THREAD_BEGIN"
+    },
+    "FX3_PANEL_CONFIG_V2_COMMIT": {
+      "method": "literal",
+      "marker": "FX3_PANEL_CONFIG_V2_COMMIT"
+    },
+    "FX3_PROC97_STATUS_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_PROC97_STATUS_BEGIN"
+    },
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_PROC97_ALL_THREAD_STAT_BEGIN"
+    },
+    "FX3_DATE98_KERNEL_OBSERVE_READY": {
+      "method": "literal",
+      "marker": "FX3_DATE98_KERNEL_OBSERVE_READY"
+    },
+    "FX3_DATE99_WORKER_READY": {
+      "method": "literal",
+      "marker": "FX3_DATE99_WORKER_READY"
+    },
+    "FX3_DATE99_CONSUMER_BOUND": {
+      "method": "semantic_after_interleaved_literal",
+      "worker": "FX3_DATE99_WORKER_READY serialized=1",
+      "registered_branch": "FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=",
+      "owner_result": "FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0",
+      "transaction": 1,
+      "reason": 4,
+      "generation": 1,
+      "readback_UTC_ms": 1609426800001,
+      "retired_result": 0,
+      "native_request_free": 0
+    },
+    "FX3_SYNC100_BACKEND_BOUND": {
+      "method": "literal",
+      "marker": "FX3_SYNC100_BACKEND_BOUND"
+    },
+    "FX3_FILE100_OBSERVER_READY": {
+      "method": "literal",
+      "marker": "FX3_FILE100_OBSERVER_READY"
+    },
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN"
+    },
+    "FX3_BACKUP_INSMOD_RC=0": {
+      "method": "literal",
+      "marker": "FX3_BACKUP_INSMOD_RC=0"
+    },
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0"
+    },
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS"
+    },
+    "FX3_LDEC103_SELFTEST_RC=0": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_SELFTEST_RC=0"
+    },
+    "FX3_GPE104_LIB_BIND": {
+      "method": "literal",
+      "marker": "FX3_GPE104_LIB_BIND"
+    },
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": {
+      "method": "literal",
+      "marker": "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0"
+    },
+    "FX3_FILE103_READY_CONFIRMED": {
+      "method": "literal",
+      "marker": "FX3_FILE103_READY_CONFIRMED"
+    },
+    "FX3_POWER_OBSERVER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_POWER_OBSERVER_BOUND"
+    }
+  },
+  "date99_raw_serial_evidence": {
+    "literal_consumer_bound": null,
+    "worker": {
+      "serial_byte_range": [
+        81040,
+        81141
+      ],
+      "raw": "FX3_DATE99_WORKER_READY serialized=1 native_OSAL_waitable_thread=1 synthetic_cp_clock=1 original_CP=0"
+    },
+    "registered_branch": {
+      "serial_byte_range": [
+        81386,
+        81503
+      ],
+      "raw": "FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=0x909005c5 original_other_destinations_unchanged=1"
+    },
+    "owner_result_zero": {
+      "serial_byte_range": [
+        81520,
+        81677
+      ],
+      "raw": "FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+    },
+    "accept": {
+      "serial_byte_range": [
+        93958,
+        94085
+      ],
+      "raw": "FX3_DATE99_ACCEPT transaction=1 reason=4 source=0x809005c5 original_request_queue_owned=1 deferred_worker=1 no_reentrant_wait=1"
+    },
+    "clock_commit": {
+      "serial_byte_range": [
+        94956,
+        95234
+      ],
+      "raw": "FX3_DATE99_CLOCK_COMMIT transaction=1 generation=1 reason=4 valid_UTC=1 AP_type=0 UTC_base_ms=1609426800001 mono_basis_ns=2632633496 now_ns=2632960000 RTT_ns=653008 readback_UTC_ms=1609426800001 software_clock_advances=1 synthetic_cp_clock=1 original_CP=0 physical_RTC_written=0"
+    },
+    "retired": {
+      "serial_byte_range": [
+        95332,
+        95468
+      ],
+      "raw": "FX3_DATE99_RETIRED transaction=1 reason=4 result=0 native_request_free=0 type4_sent=0 generation=1 original_owner_destination=0x909005c5"
+    },
+    "reject": null,
+    "literal_present": false,
+    "semantic_evidence": {
+      "method": "semantic_after_interleaved_literal",
+      "worker": "FX3_DATE99_WORKER_READY serialized=1",
+      "registered_branch": "FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=",
+      "owner_result": "FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0",
+      "transaction": 1,
+      "reason": 4,
+      "generation": 1,
+      "readback_UTC_ms": 1609426800001,
+      "retired_result": 0,
+      "native_request_free": 0
+    }
+  },
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": true,
+    "quit_sent": true,
+    "serial_bytes_before_cleanup": 80948621,
+    "restore103": {
+      "passed": true,
+      "reason": "guest_acknowledged_and_original_bytes_verified",
+      "timeout_seconds": 20,
+      "elapsed_seconds": 1.5573941670008935,
+      "request_bytes": 8,
+      "request_issued": true,
+      "existing_request_reused": false,
+      "request_physical": "0x41d400030",
+      "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "requires_ack_and_original_bytes_after_request": true,
+      "already_original_without_pending_request_never_resumed": false,
+      "original_guest_code_written_by_host": false,
+      "guest_left_stopped": true,
+      "exception": null,
+      "attempts": [
+        {
+          "attempt": 0,
+          "elapsed_seconds": 0.00202791701303795,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-000-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-000-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 0,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "ba34098b369c016f6e971c7c9d2f02109c74ee0960f05578584ae0cd66e9d9a6"
+        },
+        {
+          "attempt": 1,
+          "elapsed_seconds": 0.26375866698799655,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-001-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-001-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 2,
+          "elapsed_seconds": 0.5240872919675894,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-002-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-002-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 3,
+          "elapsed_seconds": 0.7820893339812756,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-003-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-003-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 4,
+          "elapsed_seconds": 1.0433784169727005,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-004-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-004-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 5,
+          "elapsed_seconds": 1.2999856249662116,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-005-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-005-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+        },
+        {
+          "attempt": 6,
+          "elapsed_seconds": 1.5569013750064187,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-006-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/restore103-006-api16.bin",
+          "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+          "api16_original": true,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 1,
+          "header_SHA256": "e8668d6dda28642898c97841bc9ae5d653e42b7924dc2a7675e5c6d6bb2e1cd6"
+        }
+      ]
+    },
+    "native_unbind_return": 0
+  },
+  "lifecycle_pass": true,
+  "protocol_pass": true,
+  "render_pass": true,
+  "black_frame_semantics": "unknown; an all-zero committed panel cannot satisfy this visual trial",
+  "native_shutdown_after_ready": true,
+  "native_shutdown_original_lines": [
+    "open screen: scr7001_1002 -> scr0039_shutdown"
+  ],
+  "native_shutdown_count_at_ready": 0,
+  "native_model_power_off_after_ready": true,
+  "native_model_power_off_original_lines": [
+    "FX3_BOOT_QUEUE_SEND tid=378 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1"
+  ],
+  "native_model_power_off_count_at_ready": 0,
+  "health_pass": false,
+  "requested_exit_phase": null,
+  "requested_exit_phase_hit": false,
+  "key_steps": 27,
+  "step_captures": [
+    {
+      "sequence": 1106,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1106,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x8ab92de224e9279f",
+      "sha256": "ead80219131035911c7338b69f8102fe2158bb160df25cd82ec28c47a12b356c",
+      "PNG_sha256": "168a2787c26a0ec885b6ae816404991f6dcce5e770a0f904d66d6000229a265e",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 298933.405299458,
+      "committed_slot": 1,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x679bc4a175b260ab",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 1,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-01-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-01-key-1ab.png",
+      "raw_sha256": "ead80219131035911c7338b69f8102fe2158bb160df25cd82ec28c47a12b356c",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1106,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1797,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1797,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x3b81690bafb1e98c",
+      "sha256": "a34696484931a94f7d013cd204ddd5cd423bf10cd3ed2a8deb87dd975a7d579d",
+      "PNG_sha256": "d2ead30b5ce54a2548eb9076db9ecc11b8dedd7fc8ef08658a01a81f6a957d5d",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 298975.131209375,
+      "committed_slot": 4,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x679bc4a175b260ab",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 2,
+      "key": "0x15",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-02-key-015.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-02-key-015.png",
+      "raw_sha256": "a34696484931a94f7d013cd204ddd5cd423bf10cd3ed2a8deb87dd975a7d579d",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1797,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2218,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 2216,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x3d6ff845e920bfec",
+      "sha256": "1f54a2d76fa2cebacc2d4272e6928bcbab79cab3bace5f52b63a9a4909188751",
+      "PNG_sha256": "3d071654943844a37e1651eb74b2919150d885664a6bbde5ed23407e3f970e17",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299000.975905041,
+      "committed_slot": 1,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x12687cc9cacfc46a",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 3,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-03-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-03-key-030.png",
+      "raw_sha256": "1f54a2d76fa2cebacc2d4272e6928bcbab79cab3bace5f52b63a9a4909188751",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2218,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2864,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 2864,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x67b1377a1ed36483",
+      "sha256": "3d706efb0d88e1b5cc2c61245b870ed210cf4f951673b8b98f06a572f7bc7727",
+      "PNG_sha256": "4f53b2e7e66a6211134ac1b5470a614407a7a42a16082b3be621e13a0aa2bcf8",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299036.983479125,
+      "committed_slot": 7,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x12687cc9cacfc46a",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 4,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-04-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-04-key-030.png",
+      "raw_sha256": "3d706efb0d88e1b5cc2c61245b870ed210cf4f951673b8b98f06a572f7bc7727",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2864,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 3609,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 3608,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xbb6c5f2493adb352",
+      "sha256": "5c261d7bd88e803d66f3f45b4b862a8b23613d83e3e4c1eab564df463fbdd5de",
+      "PNG_sha256": "468d6dff00e29aae9bf498e76400ffec3379d1db9431290f6845456f2488da46",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299080.366806416,
+      "committed_slot": 0,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x12687cc9cacfc46a",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 5,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-05-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-05-key-030.png",
+      "raw_sha256": "5c261d7bd88e803d66f3f45b4b862a8b23613d83e3e4c1eab564df463fbdd5de",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 3609,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 3814,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 3814,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x3e0b9aa54439ec46",
+      "sha256": "3c9722be889999ac8c5d2cd52135169dc58cab6079502ef7d5c391a6dd393110",
+      "PNG_sha256": "3e70df0b1e49e56d0f6299242c3bb09d4443084eaa3544ec4b66c9803985758b",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299093.9338,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x12687cc9cacfc46a",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 6,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-06-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-06-key-030.png",
+      "raw_sha256": "3c9722be889999ac8c5d2cd52135169dc58cab6079502ef7d5c391a6dd393110",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 3814,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 4001,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 3999,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x24c12f5c1b35b4f1",
+      "sha256": "7146365f4a10cf641b0503a67e3062336a8e3efbbaa048f5b4ce8ce5e5a185e6",
+      "PNG_sha256": "da006693eb672d64cdec05654e0d77b091417516324e0b36759a24d65ec9fbc3",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299105.427332166,
+      "committed_slot": 0,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x12687cc9cacfc46a",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 7,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-07-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-07-key-030.png",
+      "raw_sha256": "7146365f4a10cf641b0503a67e3062336a8e3efbbaa048f5b4ce8ce5e5a185e6",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 4001,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 4174,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 4174,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x9a9656cb33e7581a",
+      "sha256": "a15238801e1c0b6c02ed355ce47018795625deea5ae2e8096f50609af139fcbc",
+      "PNG_sha256": "bd7fae0a5e380ceca4f2b7749f95ab721f7e291e3d539c41828ef358cf1937df",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299116.855135583,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x12687cc9cacfc46a",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 8,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-08-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-08-key-030.png",
+      "raw_sha256": "a15238801e1c0b6c02ed355ce47018795625deea5ae2e8096f50609af139fcbc",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 4174,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 4571,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 4571,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x8f1c72611de1cc13",
+      "sha256": "27173def695a1c65a564d21d7df9a0629f6cba7d30886f81c9108dcb41834497",
+      "PNG_sha256": "b576d8d77df09c226bef0e2e78bc48ed7fb5ff5d6c676799f61d76b6d3cdb321",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299140.83713325,
+      "committed_slot": 2,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x12687cc9cacfc46a",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 9,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-09-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-09-key-030.png",
+      "raw_sha256": "27173def695a1c65a564d21d7df9a0629f6cba7d30886f81c9108dcb41834497",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 4571,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 5029,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 5029,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xe8df9550198281fb",
+      "sha256": "5963cf19f40f1f8f80dd178ac996badf04133ef0a2d8704641c17d7230209512",
+      "PNG_sha256": "a46330f751d0d93fd15f67bfa8f8378652d08e2eb6312c4828ae4e226996cdcf",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299171.69504275,
+      "committed_slot": 4,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x959db68c8467363b",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 10,
+      "key": "0x1af",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-10-key-1af.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-10-key-1af.png",
+      "raw_sha256": "5963cf19f40f1f8f80dd178ac996badf04133ef0a2d8704641c17d7230209512",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 5029,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 5456,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 5451,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x19abb616faf34124",
+      "sha256": "139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086",
+      "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299198.699449,
+      "committed_slot": 7,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x44758d30d1873d8e",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 11,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-11-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-11-key-1ab.png",
+      "raw_sha256": "139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 5456,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 6018,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 6016,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x2846744330ced770",
+      "sha256": "b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051",
+      "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299240.345324041,
+      "committed_slot": 1,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xd53137e78b362661",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 12,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-12-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-12-key-1ab.png",
+      "raw_sha256": "b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 6018,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 6445,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 6445,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x1cb7085752f86d2",
+      "sha256": "c1f8313c6f111b5ab3f6b3085b0abba659c67cfc086b838faa35758ed9a1e514",
+      "PNG_sha256": "5a1c64425a54beb425516bed32d47575dcbf607c2e1b2ab5b8383d35b1a5de85",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299270.087303958,
+      "committed_slot": 4,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xca17bd238923be7e",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 13,
+      "key": "0x15",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-13-key-015.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-13-key-015.png",
+      "raw_sha256": "c1f8313c6f111b5ab3f6b3085b0abba659c67cfc086b838faa35758ed9a1e514",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 6445,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 6843,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 6840,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x60b484655ba141ca",
+      "sha256": "b1b72817148051a94cfe74d9f519bffc3dc96a10e37cd245bdb9f0cafb563542",
+      "PNG_sha256": "9b2f0720d32937cbcac24924de1f4140f71f849baa5a55a280b82fd20e79b716",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299298.306147583,
+      "committed_slot": 2,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 14,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-14-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-14-key-030.png",
+      "raw_sha256": "b1b72817148051a94cfe74d9f519bffc3dc96a10e37cd245bdb9f0cafb563542",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 6843,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 7079,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 7076,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xc1099ce7b1791091",
+      "sha256": "425fb71a987bc58cb0ec7ff783f5aae98395f36a8251e85a6089453856ed0f2b",
+      "PNG_sha256": "6efc7add0e1742c52d3187c513dd6dd7e834eda46d6bcd2032582e97a3f8365d",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299312.403472083,
+      "committed_slot": 6,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 15,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-15-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-15-key-030.png",
+      "raw_sha256": "425fb71a987bc58cb0ec7ff783f5aae98395f36a8251e85a6089453856ed0f2b",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 7079,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 7268,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 7268,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xb3fb177273766b2d",
+      "sha256": "bf6dc697a94331a6e8fa902550b0bf49affdce567ba7c8308434b47a41be2055",
+      "PNG_sha256": "0eec6fecd659da83390d5db4557cf98c9946bddbd98a230e5cd632af1f207235",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299324.891947583,
+      "committed_slot": 3,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 16,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-16-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-16-key-030.png",
+      "raw_sha256": "bf6dc697a94331a6e8fa902550b0bf49affdce567ba7c8308434b47a41be2055",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 7268,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 7485,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 7484,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x5c275db6b38417fd",
+      "sha256": "9988affd835c14045de2cc5d4281b4a66ee5ea0124d7403ce3c7bc26a7de091b",
+      "PNG_sha256": "d7b4f550780996b35b204e9dc890a3ffa29b6d78cafb61e95c5b5e8c477673ad",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299337.5053215,
+      "committed_slot": 4,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 17,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-17-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-17-key-030.png",
+      "raw_sha256": "9988affd835c14045de2cc5d4281b4a66ee5ea0124d7403ce3c7bc26a7de091b",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 7485,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 7705,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 7703,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x3330986e65c6fbfa",
+      "sha256": "2c87132b6d6aa1fc513399a0a56bf9f11168a5cd63330e4dd322ec87e7b299e7",
+      "PNG_sha256": "37b2af6c45c33927ac42ab005ff3677b08be2833445a7eab5acc6c5a42160f8f",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299351.241666833,
+      "committed_slot": 0,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 18,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-18-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-18-key-030.png",
+      "raw_sha256": "2c87132b6d6aa1fc513399a0a56bf9f11168a5cd63330e4dd322ec87e7b299e7",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 7705,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 8100,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 8100,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x9cb174de4e507ab0",
+      "sha256": "d1e6ad48a0f5573877d514443ee54a9692359c5d617b2b949f63264974cf9dbf",
+      "PNG_sha256": "9003bc1019da436ff75b3309783a8b156faa2249fbf23fd3d63cf3e758fb6f20",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299380.246844416,
+      "committed_slot": 3,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 19,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-19-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-19-key-030.png",
+      "raw_sha256": "d1e6ad48a0f5573877d514443ee54a9692359c5d617b2b949f63264974cf9dbf",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 8100,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 8512,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 8512,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x303317bcf3d30715",
+      "sha256": "3a3798b905c53cb6f31822f32e2db4a563a1b3af1fa19798ed4543a20607a50b",
+      "PNG_sha256": "c9718dc5fe901ca18b0fcc44c666b88992be29b9a4f2b1954a225acb9fca2502",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299412.161904625,
+      "committed_slot": 7,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 20,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-20-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-20-key-030.png",
+      "raw_sha256": "3a3798b905c53cb6f31822f32e2db4a563a1b3af1fa19798ed4543a20607a50b",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 8512,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 8662,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 8658,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xb5e4a2a9cb86ed94",
+      "sha256": "45496ac3819577dff582ac9768b78714c1fd6e4416e1e32ec0f6bb57569a8c2d",
+      "PNG_sha256": "4f18b6fa8301cd70626f849572506304c6e1f67244e209a501d83e4d9ee8a99b",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299462.014034416,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 21,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-21-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-21-key-030.png",
+      "raw_sha256": "45496ac3819577dff582ac9768b78714c1fd6e4416e1e32ec0f6bb57569a8c2d",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 8662,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 8734,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 8734,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xdd516ff80d5d6af",
+      "sha256": "2b23589d9242856d449a6ac1570335c682003128c0c78ac9117a7f87803eb6f8",
+      "PNG_sha256": "f75fdff815a2f94dd00ce76f2aa804510dbb43ed1a1c3a64e88fb028b9ca302f",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299490.685150666,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 22,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-22-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-22-key-030.png",
+      "raw_sha256": "2b23589d9242856d449a6ac1570335c682003128c0c78ac9117a7f87803eb6f8",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 8734,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 8881,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 8881,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x667e19f45503347",
+      "sha256": "88c5ba7aa3a44360dda3fd7f3536c822fd94faa6fbd25f33f8cecbda0e0f229d",
+      "PNG_sha256": "5271d5ebc4db8dab1a785274492b8d725804545e4c6ae2b8678935c1e230e112",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299502.853839791,
+      "committed_slot": 0,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 23,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-23-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-23-key-030.png",
+      "raw_sha256": "88c5ba7aa3a44360dda3fd7f3536c822fd94faa6fbd25f33f8cecbda0e0f229d",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 8881,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 9060,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 9060,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x47e6a391cff420b3",
+      "sha256": "fb21c4703ce2f6dffd7f6e6eff347668a4c21b477c07097973b7ece9f246f8a0",
+      "PNG_sha256": "481e00ce4b1fb81a155b1d1f74b98910340aa0a4b44329a75216d11231d10629",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299517.155743166,
+      "committed_slot": 3,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 24,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-24-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-24-key-030.png",
+      "raw_sha256": "fb21c4703ce2f6dffd7f6e6eff347668a4c21b477c07097973b7ece9f246f8a0",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 9060,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 9310,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 9305,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xc99604eb1a3693f8",
+      "sha256": "34bb7b749c6369697ec6bd5e166e634ba2b527281ea63ab7675f685630df56e6",
+      "PNG_sha256": "98ee67976f3397b5607c7d99befb8be3c7182357a784e625f03e43057e2c090f",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299536.996128875,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 25,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-25-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-25-key-030.png",
+      "raw_sha256": "34bb7b749c6369697ec6bd5e166e634ba2b527281ea63ab7675f685630df56e6",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 9310,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 9504,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 9504,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xb48b15187f2d83f1",
+      "sha256": "3df42dbbb2a224eaa57e4b41d50f55d3f9c3ea3142fe13bcaa21486394ef9c85",
+      "PNG_sha256": "7465f81fc5862f17a45c046f8ad246fb638c0cbab1912f226ae9c45b26aa6097",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299549.713429833,
+      "committed_slot": 7,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402ae20",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f061cb100",
+        "map_begin": "0x7f061cb000",
+        "map_end": "0x7f06262000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e78d500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f92408a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 26,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-26-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-26-key-030.png",
+      "raw_sha256": "3df42dbbb2a224eaa57e4b41d50f55d3f9c3ea3142fe13bcaa21486394ef9c85",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 9504,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 9673,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 9671,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xe0256fb11b20da01",
+      "sha256": "7ad4a259ae5cc654d4244addb543c5f20c30e7fd31f5a734f7289ea93ba336b6",
+      "PNG_sha256": "8c2819da0cce7807d9425789b88e1bdd829da6f6d3d87e534284419489fbba2c",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 299561.217412166,
+      "committed_slot": 0,
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b050",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xf07f53f19f257457",
+        "bits_cpu_VA": "0x7f06134100",
+        "map_begin": "0x7f06134000",
+        "map_end": "0x7f061cb000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 27,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-27-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-71ffcdef/trial-step-27-key-030.png",
+      "raw_sha256": "7ad4a259ae5cc654d4244addb543c5f20c30e7fd31f5a734f7289ea93ba336b6",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 9673,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    }
+  ],
+  "standby_ready": true,
+  "menu_verified": false,
+  "visual_acceptance_separate_from_health": true,
+  "render_valid_at_end": true,
+  "black_after_ready": [],
+  "render_observation_ok": true,
+  "browser_visual_acceptance": null,
+  "physical_device_operations": 0,
+  "remote_network_connections": 0,
+  "HTTP_loopback_only": true,
+  "scope": "TRY2 original FX3 menu software model with improved icon and focus presentation; no camera, live view, or exact compositor claim"
+}

@@ -1,0 +1,50 @@
+{
+  "case": "fx5-en_US",
+  "request": {
+    "locale": "pmm",
+    "language": "en_US",
+    "ModelList": [
+      {
+        "modelName": "ILME-FX5",
+        "currentVersion": "1.00"
+      }
+    ]
+  },
+  "synthetic_input": true,
+  "method": "POST",
+  "url": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/api/firmwarelist_api.php",
+  "request_headers": {
+    "Content-Type": "application/json; charset=utf-8",
+    "User-Agent": "FirmwareCatalogResearch/1.0",
+    "Accept": "application/json"
+  },
+  "started_utc": "2026-10-30T13:31:33.515867+00:00",
+  "request_sha256": "b3e057c0352a811a3c33183088049326638638dca76164fb6f966c35ec3293f9",
+  "authentication": "none; no cookies or credentials",
+  "device_operations": 0,
+  "http_status": 200,
+  "response_bytes": 271,
+  "response_sha256": "4c351cf8e6eb883837aee91d9a0c00cc91800924c0d44619fe401a98482335c2",
+  "final_url": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/api/firmwarelist_api.php",
+  "response_headers": {
+    "Content-Type": "application/json",
+    "Content-Length": "271",
+    "Date": "Fri, 30 Oct 2026 13:31:34 GMT",
+    "Server": "Apache"
+  },
+  "parsed_response": {
+    "version": "1.00",
+    "date": "2023-01-24T00:00:00Z",
+    "firmwareInfoAPI": "https://support.d-imaging.sony.co.jp/FSErFHP8Je0xINMFVv9P/api/firmwareInfo_api.php",
+    "firmwareList": [
+      {
+        "modelName": "ILME-FX5",
+        "currentVersion": "1.00",
+        "firmwareVersion": "",
+        "firmwareID": "",
+        "firmwareSize": 0
+      }
+    ]
+  },
+  "finished_utc": "2026-10-30T13:31:34.819334+00:00"
+}

@@ -1,0 +1,131 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/run_trial_v21_final_timing.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/run_trial_v22_navigation_review.py
+@@ -2,8 +2,8 @@
+ """TRY2 local web runner for the validated English, performance, and readiness candidate."""
+ from pathlib import Path
+ import sys
+-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+-sys.path.insert(1, str(Path(__file__).resolve().parents[5] / "menu-repair-01/runtime"))
++sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
++sys.path.insert(1, str(Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"))
+ import argparse
+ import re
+ import datetime
+@@ -22,8 +22,8 @@
+ import time
+ import uuid
+ from cpio_audit import audit
+-from trial_ring_usability import TrialRingReader
+-from trial_web_v21_final_timing import TrialState, start_server, wait_for_final_receipt, KEYS
++from trial_ring_cached import TrialRingReader
++from trial_web_v22_navigation_review import TrialState, start_server, wait_for_final_receipt, KEYS
+ from pending_visual_v20 import classify as classify_visual, late_change
+ from trial_log_v4_mss import FullLogMonitor
+ from trial_health_v2 import evaluate as evaluate_health
+@@ -31,8 +31,8 @@
+ from file_readback100 import capture as capture_native_file
+ from restore_api103_v2 import restore_native_api
+ 
+-ROOT = Path(__file__).resolve().parents[5] / "menu-repair-01/runtime"
+-OUT = Path(__file__).resolve().parent.parent
++ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
++OUT = Path(__file__).resolve().parents[2]
+ HERE = Path(__file__).resolve().parent
+ BASE = ROOT.parent
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+@@ -81,13 +81,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = HERE / 'STATE-v21.json'
++    path = HERE / 'STATE-v22.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = HERE / 'STATE-v21.json.tmp'
++    temp = HERE / 'STATE-v22.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -126,18 +126,18 @@
+         ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
+     if not valid_command(1, 0x1ab, 100, 0, 0, ns.max_steps) or not valid_command(32, 0x30, 100, 31, 0, ns.max_steps):
+         raise RuntimeError('InputGate capacity contract rejected before QEMU startup')
+-    ns.candidate = HERE/'vmopt-20261103-try2-passive-timing-v4/candidate.json'
++    ns.candidate = HERE.parent/'vmopt-20261103-try2-passive-timing-v4/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2passivetiming-internal-v21' if ns.internal_hoststep else 'try2passivetiming-web-v21'
++    ns.label = 'try2navreview-internal-v22' if ns.internal_hoststep else 'try2navreview-web-v22'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(HERE / 'vmopt-20261103-try2-passive-timing-v4'):
++    if not candidate_path.is_relative_to(HERE.parent / 'vmopt-20261103-try2-passive-timing-v4'):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+     if digest(candidate_path) != '90adc5fda97a4b26293e4763da1ed3d5eec22eaf2f0115292c1b720c5049e9aa':
+         raise RuntimeError('TRY2 manifest identity changed')
+@@ -155,7 +155,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(HERE / 'vmopt-20261103-try2-passive-timing-v4') or not initrd.resolve().is_relative_to(HERE / 'vmopt-20261103-try2-passive-timing-v4'):
++    if not dtb.resolve().is_relative_to(HERE.parent / 'vmopt-20261103-try2-passive-timing-v4') or not initrd.resolve().is_relative_to(HERE.parent / 'vmopt-20261103-try2-passive-timing-v4'):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+@@ -219,7 +219,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v21_final_timing.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
++    for name in [Path(__file__).name, 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -556,7 +556,7 @@
+                     (run/'trial-visual-outcomes.json').write_text(json.dumps(visual_records, ensure_ascii=False, indent=2)+'\n')
+                     with trial.lock:
+                         trial.events.append('%02d · %s · 原生队列已接收，帧 %s%s' % (host_step, current_command['label'], captured['sequence'], '' if visual.visual_change_observed else '（观察期内像素未变，处理完成未知）'))
+-                        trial.busy = False
++                        trial.require_visual_review(host_step, visual.state, visual.visual_change_observed)
+                     if visual.state == 'no_change_observed':
+                         last_nochange_frame = dict(ring_reader.current_record)
+                         last_nochange_key = current_command['key']
+@@ -565,18 +565,22 @@
+                         last_nochange_key = None
+                     current_command = None
+                     ambiguous_current_step = None
+-                    trial.update(visual_state=visual.state, input_received=True,
+-                                 visual_change_observed=visual.visual_change_observed)
+-                    trial.update(message='固件提交全黑画面，已暂停按键；可结束试用。' if not trial.render_valid
+-                                 else '本轮已达按键上限，请结束后重新启动。' if host_step == ns.max_steps
+-                                 else 'MENU 已被原生队列接收，仍须等完整菜单或故障/预算；此时内部下一键会被拒绝。' if ns.internal_hoststep and last_nochange_key == 0x1ab
+-                                 else '画面已更新；请查看后再决定下一键。' if visual.visual_change_observed
+-                                 else '原生队列已接收，观察期内画面未变；请复看当前图，处理完成仍未知。')
++                    if not trial.render_valid:
++                        trial.update(message='固件提交全黑画面，已暂停按键；可结束试用。')
++                    elif host_step == ns.max_steps:
++                        trial.update(message='本轮已达按键上限，请结束后重新启动。')
+ 
+                 proposed = trial.take() if current_command is None and not ns.internal_hoststep else None
+                 if ns.internal_hoststep and current_command is None and phaseA_capture is not None and trial.render_valid:
+                     request_path = run/'INTERNAL_STEP.json'
+-                    if request_path.exists() and last_nochange_frame is not None and last_nochange_key == 0x1ab:
++                    if request_path.exists() and trial.review_required:
++                        stale = run/('internal-review-required-%02d-%s.json' % (host_step+1, uuid.uuid4().hex[:8]))
++                        request_path.rename(stale)
++                        (run/(stale.stem+'-receipt.json')).write_text(json.dumps({
++                            'status':'stale_no_guest_write', 'reason':'user_visual_confirmation_required',
++                            'sent_steps_unchanged':host_step, 'next_step_unchanged':host_step+1,
++                            'old_request_never_auto_retried':True}, ensure_ascii=False, indent=2)+'\n')
++                    elif request_path.exists() and last_nochange_frame is not None and last_nochange_key == 0x1ab:
+                         stale = run/('internal-stale-menu-pending-%02d-%s.json' % (host_step+1, uuid.uuid4().hex[:8]))
+                         request_path.rename(stale)
+                         (run/(stale.stem+'-receipt.json')).write_text(json.dumps({

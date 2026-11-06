@@ -1,0 +1,112 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/clang",
+        "-std=gnu11",
+        "-O2",
+        "-I",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+        "-DTEST_CANDIDATE=0",
+        "-DRETURN_HEADER=\"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-complete104-observe-v1.h\"",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/tests/cost.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/cost-original"
+      ],
+      "exit": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/clang",
+        "-std=gnu11",
+        "-O2",
+        "-I",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+        "-DTEST_CANDIDATE=1",
+        "-DRETURN_HEADER=\"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src/fx3-complete104-observe-v1.h\"",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/tests/cost.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/cost-candidate"
+      ],
+      "exit": 0
+    }
+  ],
+  "measurement": {
+    "original": {
+      "raw_rows": [
+        [
+          0,
+          0,
+          20000,
+          6923000,
+          3488890
+        ],
+        [
+          0,
+          1,
+          20000,
+          6847000,
+          3488890
+        ],
+        [
+          0,
+          2,
+          20000,
+          15432000,
+          3488890
+        ]
+      ],
+      "ns_per_return_helper_with_sink": [
+        346.15,
+        342.35,
+        771.6
+      ],
+      "bytes_per_line": [
+        174.4445,
+        174.4445,
+        174.4445
+      ]
+    },
+    "candidate": {
+      "raw_rows": [
+        [
+          1,
+          0,
+          20000,
+          15113000,
+          3988890
+        ],
+        [
+          1,
+          1,
+          20000,
+          12086000,
+          3988890
+        ],
+        [
+          1,
+          2,
+          20000,
+          16490000,
+          3988890
+        ]
+      ],
+      "ns_per_return_helper_with_sink": [
+        755.65,
+        604.3,
+        824.5
+      ],
+      "bytes_per_line": [
+        199.4445,
+        199.4445,
+        199.4445
+      ]
+    },
+    "delta_median_host_ns": 409.5,
+    "extra_clock_calls_per_command": 1,
+    "extra_dprintf_calls": 0,
+    "extra_characters_max_u64": 30,
+    "limits": "host CLOCK_MONOTONIC/format-to-buffer cost only, includes one added clock and appended formatting; original helper includes its own clock. No serial syscall, native raster, guest/QEMU/CPU-time or performance improvement inference."
+  },
+  "host_source_sha256": "7188638cb0c6a18b056fb79c2c666d14fac5641b90b98da8957e724ee86c0cf3"
+}

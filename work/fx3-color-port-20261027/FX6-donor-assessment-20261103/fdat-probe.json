@@ -1,0 +1,33 @@
+{
+  "constants_source_commit": "3955d7890fc38daf942bb52827599bfe35de4a14",
+  "constants_sha256": "f9ff02a3889b587cd5bad5f4362fb73fee2f8f3591fc3ed6003eb8ac92d0622a",
+  "prefix_sha256": "868a69d263a5389d5451fedb4c91f007306e6f79401826e0fb06c5aecb98fb0b",
+  "tail_sha256": "fba0db25cd13ddbf54f6c5bddc037baad935cd8d24864ebd346ed5c3d532e3fd",
+  "matches": [
+    {
+      "scheme": "key_cxd90057_k0",
+      "magic": "UDTRFIRM",
+      "version_tag": "0100",
+      "firmware_version": "6.01",
+      "model_id": "0x91040086",
+      "filesystem_count": 2,
+      "filesystem_slots": [
+        {
+          "slot": 0,
+          "mode": "U",
+          "offset": 512,
+          "bytes": 1253376
+        },
+        {
+          "slot": 1,
+          "mode": "P",
+          "offset": 512,
+          "bytes": 0
+        }
+      ],
+      "header_crc_matches": true,
+      "block_checksum_matches": true
+    }
+  ],
+  "scope": "first block only; neither full firmware extraction nor signature verification nor RAW/ISP compatibility"
+}

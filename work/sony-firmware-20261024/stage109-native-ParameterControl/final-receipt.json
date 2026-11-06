@@ -1,0 +1,117 @@
+{
+  "schema": "fx3-stage109-ParameterControl/1",
+  "created_utc": "2026-10-27T13:15:58.668943+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/README.md",
+      "bytes": 6090,
+      "sha256": "82cf25294633cdb3eced20a3cbe5cde1f9e1eafe0058de3760f8531183038bd6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/completed-evidence-review.json",
+      "bytes": 657,
+      "sha256": "be74b64540e5390a7382fe46a067996452c22256e3ae2e2a76575feab54bcb84"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/extraction-receipt.json",
+      "bytes": 810,
+      "sha256": "ed02f79f5e5ad199ee5415ac4d5aa92177e40832eee03bdbffe04c0192529790"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/goal-status-after.json",
+      "bytes": 333370,
+      "sha256": "6e1a39c7e01549ea09dc0aae6f73d849563048eb183d0cf1347360d80a6335c8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/goal-status-before.json",
+      "bytes": 329389,
+      "sha256": "be24124366273ac943281488ac7f5bdec09a49420308a27e7a85b19b407cbd60"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/inputs/libMWF.so",
+      "bytes": 353120,
+      "sha256": "06a80e89d1bba839bf4ea83492fb1fe0490037a8c8c46bf21d7ac46657d47a26"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/parameter_control.py",
+      "bytes": 17500,
+      "sha256": "52d23001e1947453ff2fbccfa17cae80a56f215f830ee73d700dcd15322b3b9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/review_and_seal.py",
+      "bytes": 14850,
+      "sha256": "12f2039006da4dcb7ea510a708064e2f520d438729f5995a8186146aeb0ae8b1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/run-original-table-and-storage-20261027/executed-source.py",
+      "bytes": 17500,
+      "sha256": "52d23001e1947453ff2fbccfa17cae80a56f215f830ee73d700dcd15322b3b9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/run-original-table-and-storage-20261027/parameter-control-results.json",
+      "bytes": 339406,
+      "sha256": "d6f25d4ff7f7d5295f0df3aa70ae66c6fc0d7cb517f40d8c8a0565ec20a2a587"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/run-original-vcalls-20261027/executed-source.py",
+      "bytes": 13661,
+      "sha256": "e76dee2496f49c9f8136db79b3b959446b1123a27c1e844e10132bc5930e16c6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/run-original-vcalls-20261027/parameter-control-results.json",
+      "bytes": 237311,
+      "sha256": "a273a8833ec253c9f4a6f32e358402ce145b5eda1f34ed36656f62d145927b02"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/run-original-vcalls-and-missing-keys-20261027/executed-source.py",
+      "bytes": 15757,
+      "sha256": "4f20a4f87d38f0faed69968960552d75c5c51e288934f08e23961d700d0064fa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/run-original-vcalls-and-missing-keys-20261027/parameter-control-results.json",
+      "bytes": 311479,
+      "sha256": "86dcdfd30ee92601c74638d7e3d75c77fec819b698ca8cfef7a811438899a390"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage109-native-ParameterControl/source-and-scope-audit.json",
+      "bytes": 85536,
+      "sha256": "504ea76e5e3d7dbb306b80055773ffb571b9c235b8c8b0f213a68dd3b7813094"
+    }
+  ],
+  "previous_manifest_sha256": "83772cc18dc70445d29df666da9251de354ab32e375eda66a595eb315081eb53",
+  "operations": {
+    "status": "PASS_ORIGINAL_VTABLE_AND_PARAMETER_STORAGE_UNDER_DECLARED_MAP_NOT_RUNTIME_LIFETIME",
+    "created_utc": "2026-10-27T13:15:58.668943+00:00",
+    "previous_manifest_members_verified": 16,
+    "storage_cases": 4,
+    "missing_key_controls": 4,
+    "original_table_prefix_controls": 2,
+    "bounded_phases": 62,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "all_native_virtual_calls_bound_to_original_symbols": true,
+    "all_mutex_allocators_free_remain_stops_with_independent_later_inputs": true,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "be24124366273ac943281488ac7f5bdec09a49420308a27e7a85b19b407cbd60",
+    "after_sha256": "6e1a39c7e01549ea09dc0aae6f73d849563048eb183d0cf1347360d80a6335c8"
+  },
+  "readme_index_before_sha256": "35618157f7771eb58b7cf9a06ce0a2a8278b8bb5d9c18eb45cd4aa24c1debe98",
+  "readme_index_after_sha256": "37ae38d7c72b854bb9d430512e2c08fb77d556fed62504237fa5f4316c664a06",
+  "readme_index_entry": "- [2026-10-27 FX3 原参数控制与外部参数寿命](<work/sony-firmware-20261024/stage109-native-ParameterControl/README.md>)：原虚表、MovieEncoder参数表、MWF存储及缺项对照62阶段；56B命令复制仍引用外部raw98，锁/分配和实机验收保持未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

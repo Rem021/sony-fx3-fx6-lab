@@ -1,0 +1,20 @@
+{
+  "scope": "Offline harness development failures retained as evidence. No original firmware bytes were edited.",
+  "observations": [
+    {
+      "stage": "resource wrapper ABI",
+      "failure": "Optional bitmap argument 2 caused an unmapped memory write.",
+      "resolution": "Reviewed original stack argument consumption; supplied a declared null optional bitmap pointer. The erroneous target address was not mapped."
+    },
+    {
+      "stage": "context producer input",
+      "failure": "For declared input +0x8fc=1, +0x908=2, flag=0, actual fields were [1,1,1,1] rather than expected [1,5,1,2].",
+      "resolution": "Original file 0x3004f0 reloads R0 from parameter +0x900 before the branch. Corrected the fixture input field to +0x900, retaining the original branch code."
+    },
+    {
+      "stage": "context producer expected tail value",
+      "failure": "For parameter +0x900=2, +0x908=2, flag=0, actual fields were [5,1,2,1] rather than expected [5,1,2,2].",
+      "resolution": "Reviewed branch from file 0x3007f2 to 0x300806: the tail preserves R1=1. Corrected that expected field without patching the guest instructions."
+    }
+  ]
+}

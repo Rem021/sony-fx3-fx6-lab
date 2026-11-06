@@ -1,0 +1,111 @@
+{
+  "schema": "fx3-stage110-user-OSAL-envelope/1",
+  "created_utc": "2026-10-27T13:33:20.001583+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/README.md",
+      "bytes": 6902,
+      "sha256": "ee3ffef42ece8f37150d3c8d4d578ebbf01dc17a46a0539256c0a424d8b4cd10"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/completed-evidence-review.json",
+      "bytes": 562,
+      "sha256": "547effb1d6413ec975e648d422e2607dd569873970ce5624b6feb883f1626b84"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/extraction-receipt.json",
+      "bytes": 818,
+      "sha256": "c6d729fc7dc95dd6e9aad95ed7b6ff9f9d948452cda88bd87339db4ecade0bac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/goal-status-after.json",
+      "bytes": 337159,
+      "sha256": "effa6292f54f1b51d257a48e864fdd88b1db6d31f8c0e6d5e465ebb7a3c09898"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/goal-status-before.json",
+      "bytes": 333370,
+      "sha256": "6e1a39c7e01549ea09dc0aae6f73d849563048eb183d0cf1347360d80a6335c8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/inputs/libosal_uipc.so",
+      "bytes": 43752,
+      "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/osal_envelope.py",
+      "bytes": 14082,
+      "sha256": "fefc466c993223b38f71b03112154effc4f7dca87c3b859ec0bf88833b9b0a90"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/public-source-notes.json",
+      "bytes": 794,
+      "sha256": "3a77ba0cc2ec3bde993c3db2218bec427193d08c416d005e080aec076524c504"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/review_and_seal.py",
+      "bytes": 16499,
+      "sha256": "a67839b8f84065dd01dd871daf27e8b9eb1118418c214e0fd384932aca82d60a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/run-native-callback-boundary-20261027/executed-source.py",
+      "bytes": 14082,
+      "sha256": "fefc466c993223b38f71b03112154effc4f7dca87c3b859ec0bf88833b9b0a90"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/run-native-callback-boundary-20261027/osal-envelope-results.json",
+      "bytes": 296681,
+      "sha256": "1be2ebfb79f52b0e7c4e2e0b1252b53ca0eb47387947d7c8872b07a919a307d1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/run-native-envelope-and-replies-20261027/attempt-failure.json",
+      "bytes": 1714,
+      "sha256": "53cd0f3d2b317286002ee7e130630349da73fc45b759ce6b53956bbf8981e693"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/run-native-envelope-and-replies-20261027/executed-source.py",
+      "bytes": 13431,
+      "sha256": "0be14bc877cea6599b554a5f93abbcc11114cb6aca05ece891d344cb63264193"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage110-native-OSAL-envelope/source-and-scope-audit.json",
+      "bytes": 60946,
+      "sha256": "bd1e14e54e0e6fd55515fc153c7ef3aeb948cad0783327f6512b4f99c70a64c4"
+    }
+  ],
+  "previous_manifest_sha256": "2f37447990c96a2cbf001d723a13d727e3cfb3aaaa2d7305b111a57c70d93846",
+  "operations": {
+    "status": "PASS_NATIVE_USER_OSAL_METADATA_RECEIVE_CLASSIFICATION_AND_REPLY_MATCH_SCOPE",
+    "created_utc": "2026-10-27T13:33:20.001583+00:00",
+    "previous_manifest_members_verified": 15,
+    "receive_cases": 12,
+    "sender_expectation_cases": 4,
+    "declared_reply_cases": 12,
+    "bounded_phases": 74,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "failed_attempt_retained_without_passing_result": true,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "6e1a39c7e01549ea09dc0aae6f73d849563048eb183d0cf1347360d80a6335c8",
+    "after_sha256": "effa6292f54f1b51d257a48e864fdd88b1db6d31f8c0e6d5e465ebb7a3c09898"
+  },
+  "readme_index_before_sha256": "37ae38d7c72b854bb9d430512e2c08fb77d556fed62504237fa5f4316c664a06",
+  "readme_index_after_sha256": "c7d0e42d0d836150e334fff2eeca34da38a810e02a8a443bec37a71e0eb3914b",
+  "readme_index_entry": "- [2026-10-27 FX3 原OSAL封装与回复匹配](<work/sony-firmware-20261024/stage110-native-OSAL-envelope/README.md>)：原接收分类、长度边界与同步/其他回复路由74阶段；真实传输、锁、固定参数寿命与实机验收仍缺，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

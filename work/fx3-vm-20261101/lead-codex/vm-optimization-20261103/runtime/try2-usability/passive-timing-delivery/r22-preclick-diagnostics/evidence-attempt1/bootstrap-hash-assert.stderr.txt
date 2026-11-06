@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r22-preclick-diagnostics/test_targeted.py", line 20, in <module>
+    assert candidate.PAGE_SHA==hashlib.sha256(page.PAGE.split('<script>')[1].split('</script>')[0].strip().encode()).hexdigest()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

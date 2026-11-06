@@ -1,0 +1,20 @@
+{
+  "path": "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Versions/A/Headers/usb/IOUSBLib.h",
+  "header_sha256": "16acc674ebc759d00904e8ae1cd2137b5f814d54fe237c5193cf6549131d542a",
+  "claim": "Seize attempts cooperative close and can fail with exclusive access; not guaranteed kernel-driver detachment",
+  "checked_markers": [
+    "has the device opened, an attempt is made to get that client to close it before",
+    "Returns kIOReturnExclusiveAccess if some other task has the device opened already and refuses"
+  ],
+  "matches": [
+    {
+      "line": 1304,
+      "text": "has the device opened, an attempt is made to get that client to close it before"
+    },
+    {
+      "line": 1310,
+      "text": "@result     Returns kIOReturnExclusiveAccess if some other task has the device opened already and refuses"
+    }
+  ],
+  "actual_OS_behavior_verified": false
+}

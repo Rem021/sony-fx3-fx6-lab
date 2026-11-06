@@ -1,0 +1,17 @@
+{
+  "schema": "fx6-map-observer-integration-tests-v3",
+  "status": "PASS_OFFLINE_FAKE",
+  "tests": 10,
+  "cases": [
+    "framed_provider_accepts_fixture_without_legacy_maps",
+    "framed_provider_rejects_corrupt_no_fallback",
+    "entry_default_disabled_and_fake_success",
+    "entry_returns_nonzero_on_failed_receipt",
+    "mapping_waits_for_late_complete_frame",
+    "mapping_timeout_no_frame",
+    "stream_arbitrary_byte_chunks_only_final_frame",
+    "invalid_utf8_noise_does_not_crash",
+    "partial_tail_not_early_rejected_or_accepted",
+    "complete_malformed_line_rejected_immediately"
+  ]
+}

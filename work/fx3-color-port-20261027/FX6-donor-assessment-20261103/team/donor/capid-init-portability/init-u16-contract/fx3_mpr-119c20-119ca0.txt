@@ -1,0 +1,38 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000119be0 <_ZNSt12_Vector_baseIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EED2Ev>:
+  119c20: 97fff661     	bl	0x1175a4 <_ZN16XavcsMovieWriter8DataCopyERSt6vectorIN3mpr5Codec14BufferAreaInfoESaIS3_EEPNS1_7DmacLibERKS3_Ph+0x118>
+  119c24: 2a0003f5     	mov	w21, w0
+  119c28: 34000220     	cbz	w0, 0x119c6c <_ZNSt12_Vector_baseIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EED2Ev+0x8c>
+  119c2c: 52800060     	mov	w0, #0x3                // =3
+  119c30: 52800181     	mov	w1, #0xc                // =12
+  119c34: 3900f7bf     	strb	wzr, [x29, #0x3d]
+  119c38: 3900f3a0     	strb	w0, [x29, #0x3c]
+  119c3c: 52846200     	mov	w0, #0x2310             // =8976
+  119c40: 3900fbbf     	strb	wzr, [x29, #0x3e]
+  119c44: 790073a0     	strh	w0, [x29, #0x38]
+  119c48: 52808520     	mov	w0, #0x429              // =1065
+  119c4c: 3900ffbf     	strb	wzr, [x29, #0x3f]
+  119c50: 790077a0     	strh	w0, [x29, #0x3a]
+  119c54: aa1403e0     	mov	x0, x20
+  119c58: b90043b5     	str	w21, [x29, #0x40]
+  119c5c: 97ffef74     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  119c60: f9403e60     	ldr	x0, [x19, #0x78]
+  119c64: 2a1503e1     	mov	w1, w21
+  119c68: 97ff8940     	bl	0xfc168 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListE+0x27c8>
+  119c6c: b9402262     	ldr	w2, [x19, #0x20]
+  119c70: 340002e2     	cbz	w2, 0x119ccc <_ZNSt12_Vector_baseIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EED2Ev+0xec>
+  119c74: b9402663     	ldr	w3, [x19, #0x24]
+  119c78: a9410660     	ldp	x0, x1, [x19, #0x10]
+  119c7c: f9401664     	ldr	x4, [x19, #0x28]
+  119c80: 97fd9724     	bl	0x7f910 <_ZN16XavcsMovieWriter25SetRealTimeMetaSampleInfoEP10libXavcMp4RSt6vectorIN3mpr16MovieEncodeTable8MetaInfoESaIS5_EEjjm@plt>
+  119c84: 2a0003f5     	mov	w21, w0
+  119c88: 34000220     	cbz	w0, 0x119ccc <_ZNSt12_Vector_baseIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EED2Ev+0xec>
+  119c8c: 52800060     	mov	w0, #0x3                // =3
+  119c90: 52800181     	mov	w1, #0xc                // =12
+  119c94: 3900f7bf     	strb	wzr, [x29, #0x3d]
+  119c98: 3900f3a0     	strb	w0, [x29, #0x3c]
+  119c9c: 52846200     	mov	w0, #0x2310             // =8976

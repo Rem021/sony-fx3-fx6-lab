@@ -1,0 +1,35 @@
+{
+  "program_sha256": "8603c294998ab91ca9cf6c097818b901cfe41b5ab0c5a282d9028df5d01e708f",
+  "assertion": "Expected file load boundary not reached",
+  "actual_original_result": {
+    "boundary": {
+      "reason": "before_unmapped_state",
+      "PC": "0xfe052250",
+      "address": "0x100200000",
+      "bytes": 8
+    },
+    "original_instruction_entries": 13,
+    "trace": [
+      "0xfe052220",
+      "0xfe052224",
+      "0xfe052228",
+      "0xfe05222c",
+      "0xfe052230",
+      "0xfe052234",
+      "0xfe052238",
+      "0xfe05223c",
+      "0xfe052240",
+      "0xfe052244",
+      "0xfe052248",
+      "0xfe05224c",
+      "0xfe052250"
+    ],
+    "X0": "0x6",
+    "X1": "0x0",
+    "X29": "0x8",
+    "file_read_or_transfer_executed": false,
+    "unknown_state_or_success_reply_supplied": false,
+    "memory_writes": 0
+  },
+  "original_files_modified": false
+}

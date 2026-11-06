@@ -1,0 +1,103 @@
+{
+  "created_utc": "2026-11-02T13:40:52.945637+00:00",
+  "run": "ap88capture3r-d0263fb2",
+  "receipt_sha256": "7a2a22da0e48b0fe548b4a49c7e5d80223be375278b618fcfebe8e13cd70aaa1",
+  "duration_seconds": 301.25753037497634,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "host_observer_error": null,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "fatal_markers": [],
+  "missing_markers_combined_serial_and_printk": [],
+  "receipt_serial_only_missing": [
+    "FX3_BACKUP_CP_CAPTURE serial=1",
+    "FX3_BACKUP_CP_CAPTURE_DONE"
+  ],
+  "marker_evidence_scope": "Rawserial flags retained; kernelprintkring independentlyrecovers interleavedkernelmarkers, neverrewritesreceipt",
+  "im_alive_last_complete_maps": {
+    "pid": 226,
+    "uptime": 299.42,
+    "byte_offset": 6506746,
+    "im_maps_lines": [
+      "00400000-00409000 r-xp 00000000 00:02 2300                               /usr/bin/im.elf",
+      "00418000-00419000 r--p 00008000 00:02 2300                               /usr/bin/im.elf",
+      "00419000-0041a000 rw-p 00009000 00:02 2300                               /usr/bin/im.elf",
+      "00400000-00409000 r-xp 00000000 00:02 2300                               /usr/bin/im.elf",
+      "00418000-00419000 r--p 00008000 00:02 2300                               /usr/bin/im.elf",
+      "00419000-0041a000 rw-p 00009000 00:02 2300                               /usr/bin/im.elf"
+    ]
+  },
+  "im_complete_maps_samples": 414,
+  "CP_kernel_records": [
+    {
+      "LF_line": 847,
+      "text": "846 [61.225594] FX3_BACKUP_CP_PUBLIC_OWNER capture_only=1 route=kernel_native_osal_reg_public table_send_offset=0 sync_null_preserves_prior_route=1 result=0"
+    },
+    {
+      "LF_line": 933,
+      "text": "932 [831.009125] FX3_BACKUP_CP_CAPTURE serial=1 destination=0x903e0811 pointer=ffffffc11e5e43c0 metadata_size=40 source=0x803e61c2 Q=0x803e61c2 fields_destination=0x903e0811 pages=1 argcount=2 ptrcount=0 selector=2 flag=1 observed40=1 no_reply=1 request_not_freed=1"
+    },
+    {
+      "LF_line": 934,
+      "text": "933 [831.147250] FX3_BACKUP_CP_RAW serial=1 bytes=40 raw=330000000000000011083e90c2613e80010000000100000002000000000000000200000001000000"
+    },
+    {
+      "LF_line": 935,
+      "text": "934 [831.185000] FX3_BACKUP_CP_NATIVE_ALLOCATION serial=1 header24=50074e0080ffffff02410100c2613e802800000055555555 block_count=2 private_prefix=40 allocation_bytes=128 data_capacity_excluding_canary=60 logical_bytes=40 capacity_from_original_allocator=1 body_read_limit=40"
+    },
+    {
+      "LF_line": 936,
+      "text": "935 [831.305156] FX3_BACKUP_CP_CAPTURE_DONE serial=1 no_reply=1"
+    }
+  ],
+  "native_reset_API_records": [],
+  "screen_records": [
+    {
+      "LF_line": 11292,
+      "text": "FX3_AP87_SCREEN_OPEN_ENTER sample=45 tid=352 manager=0x7ed32b64f0 id1=0x407 id2=0x2ae id3=0x407 creation_and_visibility_unproven=1\r"
+    },
+    {
+      "LF_line": 20710,
+      "text": "open screen: scr0039_boot -> scr0039_shutdown\r"
+    },
+    {
+      "LF_line": 20715,
+      "text": "FX3_AP87_SCREEN_OPEN_ENTER sample=1171 tid=352 manager=0x7ed32b64f0 id1=0x2ae id2=0x2af id3=0x2ae creation_and_visibility_unproven=1\r"
+    }
+  ],
+  "native_power_event_records": [
+    {
+      "LF_line": 11230,
+      "text": "FX3_BOOT_QUEUE_SEND tid=352 bytes=28 source=0x830128 raw=72000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1\r"
+    },
+    {
+      "LF_line": 19030,
+      "text": "FX3_BOOT_QUEUE_SEND tid=355 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1\r"
+    }
+  ],
+  "GPE_records": [],
+  "backup_snapshot": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap88capture3r-d0263fb2/backup-after-shutdown.bin",
+    "exists": true,
+    "scope": "QuiescedreservedRAM; filenamealone isnotshutdowncompletion",
+    "bytes": 2232320,
+    "sha256": "a7bc42600350f6a9a41595548bf513f331db1f55b279f5defa0d1d3d2d94801a",
+    "CP_second_bank_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+    "CP_second_bank_matches_pinned_seed": true
+  },
+  "timeline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88capture3r-d0263fb2-post11a-requests.json",
+  "original_menu_verified": false,
+  "AP89_boot_executed": false,
+  "early_stop_reason": null
+}

@@ -1,0 +1,69 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v8_long_boundary.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v9_power_observe.py
+@@ -49,13 +49,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = OUT / 'STATE.json'
++    path = OUT / 'power-observe-STATE.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = OUT / 'STATE.json.tmp'
++    temp = OUT / 'power-observe-STATE.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -70,20 +70,20 @@
+     ns = ap.parse_args()
+     if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 120 or not 32 <= ns.max_steps <= 4096:
+         ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
+-    ns.candidate = OUT/'vmopt-20261103-try2-long-media-gap-v2/candidate.json'
++    ns.candidate = OUT/'vmopt-20261103-try2-power-observe-v1/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2gapinternal' if ns.internal_hoststep else 'try2gap'
++    ns.label = 'try2powerinternal' if ns.internal_hoststep else 'try2power'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-long-media-gap-v2'):
++    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-power-observe-v1'):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+-    if digest(candidate_path) != '67eb81401a457bf7ffecb21f7367e7819b5bf3e13aef39dd8a4c9001ce408417':
++    if digest(candidate_path) != 'd53363f076f5d0129c68e7489d407b0baab300bec62f487decf96a73e29d90a6':
+         raise RuntimeError('TRY2 manifest identity changed')
+     candidate = json.loads(candidate_path.read_text())
+     if candidate.get('try2_contract', {}).get('ready_before_CP_binding') is not True:
+@@ -99,7 +99,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-long-media-gap-v2') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-long-media-gap-v2'):
++    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-power-observe-v1') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-power-observe-v1'):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+@@ -346,6 +346,16 @@
+                     early_stop_reason = log_monitor.failure
+                     trial.fail(early_stop_reason)
+                     break
++                if log_monitor.native_power_off_events:
++                    early_stop_reason = 'native_model_power_off_observed: ' + log_monitor.native_power_off_events[-1]
++                    trial.fail(early_stop_reason)
++                    # No more input. Let the preallocated passive observer export its two records.
++                    flush_deadline = min(deadline, time.monotonic()+0.5)
++                    while time.monotonic() < flush_deadline:
++                        if 'FX3_POWER_NATIVE_NOTIFY seq=2' in log_monitor.poll():
++                            break
++                        time.sleep(.02)
++                    break
+                 if phaseA_capture is not None and len(log_monitor.native_shutdown_events) > shutdown_count_at_ready:
+                     early_stop_reason = 'native_shutdown_after_ready_without_user_power_key: ' + log_monitor.native_shutdown_events[-1]
+                     trial.fail(early_stop_reason)

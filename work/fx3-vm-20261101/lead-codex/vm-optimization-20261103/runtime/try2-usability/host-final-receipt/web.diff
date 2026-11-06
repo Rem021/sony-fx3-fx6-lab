@@ -1,0 +1,98 @@
+--- trial_web_v4_resilient.py
++++ trial_web_v5_final_receipt.py
+@@ -33,6 +33,10 @@
+         self.frames = collections.OrderedDict()
+         self.url = None
+         self.result = None
++        # Delivery acknowledgement, never a new VM cleanup assertion.
++        self.final_receipt_id = secrets.token_urlsafe(16)
++        self.final_receipt_seen = threading.Event()
++        self.final_receipt_close = threading.Event()
+ 
+     def update(self, **kwargs):
+         with self.lock:
+@@ -60,6 +64,7 @@
+                     'render_valid': self.render_valid,
+                     'black_after_ready_count': len(self.black_after_ready),
+                     'frame': self.frame, 'result': self.result,
++                    'final_receipt_id': self.final_receipt_id if self.phase == 'finished' else None,
+                     'remaining_seconds': max(0, int(self.deadline-time.monotonic())),
+                     'events': list(self.events[-12:])}
+ 
+@@ -83,6 +88,25 @@
+             self.pending.append(item)
+             self.busy = True
+             return 202, {'accepted': True, 'next_step': self.steps+1, 'key': hex(key)}
++
++    def request_stop(self):
++        with self.lock:
++            # Another tab or delayed request must not undo a terminal receipt.
++            if self.phase == 'finished':
++                return 200, {'finished': True}
++            self.ready = False
++            self.phase = 'stopping'
++            self.message = '正在结束试用并回收资源…'
++            self.stop.set()
++            return 202, {'stopping': True}
++
++    def acknowledge_final(self, body):
++        with self.lock:
++            if self.phase != 'finished' or body.get('receipt_id') != self.final_receipt_id:
++                return 409, {'error': '最终结果尚未生成或回执不匹配。'}
++            self.final_receipt_seen.set()
++            self.final_receipt_close.set()
++            return 200, {'acknowledged': True}
+ 
+     def take(self):
+         with self.lock:
+@@ -181,7 +205,11 @@
+    }));
+    // A final server receipt remains authoritative even if its last image is unavailable.
+    if(s.phase==='finished'){
+-     finished=true;disableKeys();endButton.disabled=true;return;
++     finished=true;disableKeys();endButton.disabled=true;
++     // Confirm delivery only after displaying the authoritative final status.
++     // A lost ACK never overrides that status or initiates another operation.
++     if(s.final_receipt_id)void post('/api/final-ack',{receipt_id:s.final_receipt_id}).catch(()=>{});
++     return;
+    }
+    if(s.phase==='stopping'){ending=true;disableKeys();}
+    if(awaitingStep!==null&&!busy&&!deliveryUnknown&&s.steps>=awaitingStep&&!s.busy){
+@@ -285,9 +313,11 @@
+                 code, result = state.submit(body)
+                 return self.reply(code, result)
+             if self.path == '/api/stop':
+-                state.update(ready=False, phase='stopping', message='正在结束试用并回收资源…')
+-                state.stop.set()
+-                return self.reply(202, {'stopping': True})
++                code, result = state.request_stop()
++                return self.reply(code, result)
++            if self.path == '/api/final-ack':
++                code, result = state.acknowledge_final(body)
++                return self.reply(code, result)
+             return self.reply(404, {'error': '操作不存在。'})
+ 
+     class Server(ThreadingHTTPServer):
+@@ -298,3 +328,22 @@
+     thread = threading.Thread(target=server.serve_forever, name='fx3-trial-loopback', daemon=True)
+     thread.start()
+     return server, thread
++
++
++def wait_for_final_receipt(state, timeout=30.0):
++    """Keep final status readable across one bounded 24s browser request cycle.
++
++    Locks and QEMU are already cleaned up by the caller. This wait is bounded
++    even if the browser is closed; acknowledgement proves receipt, not success.
++    """
++    if not 0 <= timeout <= 30:
++        raise ValueError('final receipt grace must be within 0..30 seconds')
++    with state.lock:
++        if state.phase != 'finished':
++            raise RuntimeError('cannot acknowledge an unfinished session')
++    started = time.monotonic()
++    closed = state.final_receipt_close.wait(timeout)
++    acknowledged = state.final_receipt_seen.is_set()
++    return {'acknowledged': acknowledged, 'wait_seconds': time.monotonic()-started,
++            'end_reason': 'browser_ack' if acknowledged else 'local_exit' if closed else 'timeout',
++            'maximum_wait_seconds': timeout, 'scope': 'browser_receipt_delivery_only'}

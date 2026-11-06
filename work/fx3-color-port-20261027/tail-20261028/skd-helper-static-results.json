@@ -1,0 +1,44 @@
+{
+  "source_sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+  "root": "0x40867a000",
+  "base": "0x7f73ef9000",
+  "fragments": [
+    {
+      "label": "SKD-digest-helper",
+      "va": "0x647cc",
+      "bytes": 268,
+      "sha256": "3dae55af3a5a1e5f059e799b9469fe7f4dcb5c3a23a4ffe8c3ff39f97310f8c7"
+    },
+    {
+      "label": "SKD-key-helper",
+      "va": "0x648d8",
+      "bytes": 600,
+      "sha256": "25411d8e6e77387a06140a68bb5c37eaea0cc2bd0a4ffde44c0c04b025e5b03c"
+    },
+    {
+      "label": "SKD-verifier-backend",
+      "va": "0xa22a0",
+      "bytes": 384,
+      "sha256": "00ce174f06d2ff6f11543c3e87915de64be9809eade57a60a4f5777bac94d5ae"
+    },
+    {
+      "label": "SKD-signer-backend",
+      "va": "0xa1c38",
+      "bytes": 384,
+      "sha256": "b00714e2a991322bcad99791c0af6d9d6514af31ff882e4b992e3ad32cd2bd9a"
+    }
+  ],
+  "tables": {
+    "digest_lengths": [
+      32,
+      48,
+      64
+    ],
+    "digest_types": [
+      672,
+      673,
+      674
+    ]
+  },
+  "scope": "Offline snapshot static reads only; fixed 256-byte signature argument and helper tables do not yet prove the FDAT tail consumer."
+}

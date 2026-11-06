@@ -1,0 +1,256 @@
+{
+  "created_utc": "2026-10-28T13:20:07.766197+00:00",
+  "exact_target_count": 1,
+  "rows": [
+    {
+      "depth": 0,
+      "properties": {
+        "IOObjectClass": "IOUSBHostDevice",
+        "IORegistryEntryID": 4296640569,
+        "IOCFPlugInTypes": {
+          "9dc7b780-9ec0-11d4-a54f-000a27052861": "IOUSBHostFamily.kext/Contents/PlugIns/IOUSBLib.bundle"
+        },
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 1,
+      "properties": {
+        "IOObjectClass": "AppleUSBHostCompositeDevice",
+        "IORegistryEntryID": 4296640573,
+        "IOClass": "AppleUSBHostCompositeDevice",
+        "IOProviderClass": "IOUSBHostDevice",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 1,
+      "properties": {
+        "IOObjectClass": "AppleUSBHostDeviceUserClient",
+        "IORegistryEntryID": 4296640575,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 1,
+      "properties": {
+        "IOObjectClass": "AppleUSBHostDeviceUserClient",
+        "IORegistryEntryID": 4296640576,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 1,
+      "properties": {
+        "IOObjectClass": "IOUSBHostInterface",
+        "IORegistryEntryID": 4296640578,
+        "IOCFPlugInTypes": {
+          "2d9786c6-9ef3-11d4-ad51-000a27052861": "IOUSBHostFamily.kext/Contents/PlugIns/IOUSBLib.bundle"
+        },
+        "bInterfaceNumber": 0,
+        "bInterfaceClass": 8,
+        "bInterfaceSubClass": 6,
+        "bInterfaceProtocol": 80,
+        "bNumEndpoints": 2,
+        "bAlternateSetting": 0,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 2,
+      "properties": {
+        "IOObjectClass": "IOUSBMassStorageInterfaceNub",
+        "IORegistryEntryID": 4296640579,
+        "IOClass": "IOUSBMassStorageInterfaceNub",
+        "IOProviderClass": "IOUSBHostInterface",
+        "bInterfaceNumber": 0,
+        "bInterfaceClass": 8,
+        "bInterfaceSubClass": 6,
+        "bInterfaceProtocol": 80,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 3,
+      "properties": {
+        "IOObjectClass": "IOUSBMassStorageDriverNub",
+        "IORegistryEntryID": 4296640582,
+        "IOClass": "IOUSBMassStorageDriverNub",
+        "IOProviderClass": "IOUSBMassStorageInterfaceNub",
+        "bInterfaceNumber": 0,
+        "bInterfaceClass": 8,
+        "bInterfaceSubClass": 6,
+        "bInterfaceProtocol": 80,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 4,
+      "properties": {
+        "IOObjectClass": "IOUSBMassStorageDriver",
+        "IORegistryEntryID": 4296640584,
+        "IOClass": "IOUSBMassStorageDriver",
+        "IOProviderClass": "IOUSBMassStorageDriverNub",
+        "bInterfaceProtocol": 80,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 5,
+      "properties": {
+        "IOObjectClass": "IOSCSILogicalUnitNub",
+        "IORegistryEntryID": 4296640586,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 6,
+      "properties": {
+        "IOObjectClass": "IOSCSIPeripheralDeviceType00",
+        "IORegistryEntryID": 4296640595,
+        "IOClass": "IOSCSIPeripheralDeviceType00",
+        "IOProviderClass": "IOSCSIPeripheralDeviceNub",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 7,
+      "properties": {
+        "IOObjectClass": "IOBlockStorageServices",
+        "IORegistryEntryID": 4296640598,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 8,
+      "properties": {
+        "IOObjectClass": "IOBlockStorageDriver",
+        "IORegistryEntryID": 4296640599,
+        "IOClass": "IOBlockStorageDriver",
+        "IOProviderClass": "IOBlockStorageDevice",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 5,
+      "properties": {
+        "IOObjectClass": "IOSCSILogicalUnitNub",
+        "IORegistryEntryID": 4296640594,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 6,
+      "properties": {
+        "IOObjectClass": "IOSCSIPeripheralDeviceType00",
+        "IORegistryEntryID": 4296640602,
+        "IOClass": "IOSCSIPeripheralDeviceType00",
+        "IOProviderClass": "IOSCSIPeripheralDeviceNub",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 7,
+      "properties": {
+        "IOObjectClass": "IOBlockStorageServices",
+        "IORegistryEntryID": 4296640605,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 8,
+      "properties": {
+        "IOObjectClass": "IOBlockStorageDriver",
+        "IORegistryEntryID": 4296640606,
+        "IOClass": "IOBlockStorageDriver",
+        "IOProviderClass": "IOBlockStorageDevice",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 5,
+      "properties": {
+        "IOObjectClass": "IOSCSILogicalUnitNub",
+        "IORegistryEntryID": 4296640601,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 6,
+      "properties": {
+        "IOObjectClass": "IOSCSIPeripheralDeviceType00",
+        "IORegistryEntryID": 4296640608,
+        "IOClass": "IOSCSIPeripheralDeviceType00",
+        "IOProviderClass": "IOSCSIPeripheralDeviceNub",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 7,
+      "properties": {
+        "IOObjectClass": "IOBlockStorageServices",
+        "IORegistryEntryID": 4296640611,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 8,
+      "properties": {
+        "IOObjectClass": "IOBlockStorageDriver",
+        "IORegistryEntryID": 4296640612,
+        "IOClass": "IOBlockStorageDriver",
+        "IOProviderClass": "IOBlockStorageDevice",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 9,
+      "properties": {
+        "IOObjectClass": "IOMedia",
+        "IORegistryEntryID": 4296640619,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 10,
+      "properties": {
+        "IOObjectClass": "IOMediaBSDClient",
+        "IORegistryEntryID": 4296640620,
+        "IOClass": "IOMediaBSDClient",
+        "IOProviderClass": "IOMedia",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 10,
+      "properties": {
+        "IOObjectClass": "IOFDiskPartitionScheme",
+        "IORegistryEntryID": 4296640623,
+        "IOClass": "IOFDiskPartitionScheme",
+        "IOProviderClass": "IOMedia",
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 11,
+      "properties": {
+        "IOObjectClass": "IOMedia",
+        "IORegistryEntryID": 4296640626,
+        "IOServiceBusyState": 0
+      }
+    },
+    {
+      "depth": 12,
+      "properties": {
+        "IOObjectClass": "IOMediaBSDClient",
+        "IORegistryEntryID": 4296640627,
+        "IOClass": "IOMediaBSDClient",
+        "IOProviderClass": "IOMedia",
+        "IOServiceBusyState": 0
+      }
+    }
+  ],
+  "cached_only": true,
+  "serial_or_card_contents_saved": false,
+  "scope": "post-return metadata only; not capture-time interface state; no new user client"
+}

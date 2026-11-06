@@ -1,0 +1,751 @@
+{
+  "schema_version": "2.0.0",
+  "generated_at_utc": "2026-11-03T09:32:25.864715+00:00",
+  "task_id": "task_c03fd449177f",
+  "volume_verification": {
+    "mount_point": "/Volumes/KAFU2T",
+    "volume_name": "KAFU2T",
+    "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+    "expected_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+    "verified": true
+  },
+  "bound_input_binaries": {
+    "appFw.so": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "size": 79015712,
+      "expected_size": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "expected_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "digest_bound_and_verified": true
+    },
+    "cpapp-b.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "size": 15980568,
+      "expected_size": 15980568,
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "expected_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "digest_bound_and_verified": true
+    },
+    "av-cam.bin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+      "size": 13348560,
+      "expected_size": 13348560,
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "expected_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "digest_bound_and_verified": true
+    }
+  },
+  "address_mapping_proof": {
+    "appFw_elf_pt_load_segments": [
+      {
+        "index": 0,
+        "p_offset": "0x0",
+        "p_vaddr": "0x0",
+        "p_filesz": "0x3d0f79d",
+        "p_memsz": "0x3d0f79d",
+        "va_minus_file_delta": "0x0",
+        "file_Backed_va_end": "0x3d0f79d",
+        "mem_va_end": "0x3d0f79d"
+      },
+      {
+        "index": 1,
+        "p_offset": "0x3d10000",
+        "p_vaddr": "0x3d20000",
+        "p_filesz": "0xe4a730",
+        "p_memsz": "0x60a5778",
+        "va_minus_file_delta": "0x10000",
+        "file_Backed_va_end": "0x4b6a730",
+        "mem_va_end": "0x9dc5778"
+      }
+    ],
+    "appFw_pt_load_0_proof": "All analyzed code/rodata VAs (0x2c47cfc..0x3975a78) reside in PT_LOAD[0] (vaddr=0x0, offset=0x0, filesz=0x3d0f79d), proving 1:1 identity between ELF VA and file offset. Model state base 0x821c538 resides in PT_LOAD[1] runtime BSS (vaddr=0x3d20000, mem_va_end=0x9a3b648), proving 0x821c538 is an unbacked runtime RAM address and NOT non-volatile flash storage.",
+    "cpapp_b_load_base_proof": {
+      "entry_file_offset": "0x0",
+      "entry_words_hex": [
+        "0xe59f1004",
+        "0xe2811004",
+        "0xe1a0f001",
+        "0x0010800c"
+      ],
+      "literal_at_file_0x0c": "0x0010800c",
+      "derived_va_base": "0x108000",
+      "explanation": "Instruction at file+0x0 (`ldr r1, [pc, #4]`) loads the literal at file+0x0c (`0x0010800c`), adds 4 (`0x00108010`), and branches to file+0x10 (`mov pc, r1`), proving `VA = file_offset + 0x108000`."
+    }
+  },
+  "stub_inventory_and_byte_diffs": [
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e31780",
+      "file_offset": "0x2e31780",
+      "original_bytes": "a8f10494",
+      "original_asm": "bl #0x2f6de20",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub logger call (`bl #0x2f6de20`) in `0x4151` envelope sender `0x2e3172c`"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e317a0",
+      "file_offset": "0x2e317a0",
+      "original_bytes": "fcf8ff97",
+      "original_asm": "bl #0x2e2fb90",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub IPC transport call (`bl #0x2e2fb90`, channel `0x90030001`) in `0x2e3172c`; packet is read by host hook at this PC"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e27104",
+      "file_offset": "0x2e27104",
+      "original_bytes": "4e230594",
+      "original_asm": "bl #0x2f6fe3c",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error logger helper (`bl #0x2f6fe3c`) in `0x2e26fcc` invalid-input branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e27114",
+      "file_offset": "0x2e27114",
+      "original_bytes": "4a230594",
+      "original_asm": "bl #0x2f6fe3c",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error logger helper (`bl #0x2f6fe3c`) in `0x2e26fcc` invalid-input branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e27124",
+      "file_offset": "0x2e27124",
+      "original_bytes": "49130594",
+      "original_asm": "bl #0x2f6be48",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error logger helper (`bl #0x2f6be48`) in `0x2e26fcc` invalid-input branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e27130",
+      "file_offset": "0x2e27130",
+      "original_bytes": "46130594",
+      "original_asm": "bl #0x2f6be48",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error logger helper (`bl #0x2f6be48`) in `0x2e26fcc` invalid-input branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e27144",
+      "file_offset": "0x2e27144",
+      "original_bytes": "9fad9d97",
+      "original_asm": "bl #0x15927c0",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error print (`bl #0x15927c0`) in `0x2e26fcc` invalid-input branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e27154",
+      "file_offset": "0x2e27154",
+      "original_bytes": "9bad9d97",
+      "original_asm": "bl #0x15927c0",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error print (`bl #0x15927c0`) in `0x2e26fcc` invalid-input branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e27160",
+      "file_offset": "0x2e27160",
+      "original_bytes": "58af9d97",
+      "original_asm": "bl #0x1592ec0",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error sleep/notify (`bl #0x1592ec0`) in `0x2e26fcc` invalid-input branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e27164",
+      "file_offset": "0x2e27164",
+      "original_bytes": "93600294",
+      "original_asm": "bl #0x2ebf3b0",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error assert handler (`bl #0x2ebf3b0`) in `0x2e26fcc` invalid-input branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2debe38",
+      "file_offset": "0x2debe38",
+      "original_bytes": "9cecff97",
+      "original_asm": "bl #0x2de70a8",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub BB/VDF transport send (`bl #0x2de70a8`, channel `0x92840747`) in `vdf_disp_set_monitor_lut` (`0x2debdb0`)"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2debe40",
+      "file_offset": "0x2debe40",
+      "original_bytes": "cde1ff97",
+      "original_asm": "bl #0x2de4574",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub BB/VDF status mapper (`bl #0x2de4574`) in `vdf_disp_set_monitor_lut` (`0x2debdb0`)"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2dee528",
+      "file_offset": "0x2dee528",
+      "original_bytes": "e0e2ff97",
+      "original_asm": "bl #0x2de70a8",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub BB/VDF transport send (`bl #0x2de70a8`, channel `0x92840747`) in `ColorGamut` sender (`0x2dee4ac`)"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2dee530",
+      "file_offset": "0x2dee530",
+      "original_bytes": "11d8ff97",
+      "original_asm": "bl #0x2de4574",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub BB/VDF status mapper (`bl #0x2de4574`) in `ColorGamut` sender (`0x2dee4ac`)"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e3c414",
+      "file_offset": "0x2e3c414",
+      "original_bytes": "83c60494",
+      "original_asm": "bl #0x2f6de20",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub logger call (`bl #0x2f6de20`) in `0x4006` WB sender `0x2e3c3b8`"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e3c434",
+      "file_offset": "0x2e3c434",
+      "original_bytes": "d7cdff97",
+      "original_asm": "bl #0x2e2fb90",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub IPC transport call (`bl #0x2e2fb90`, channel `0x90030001`) in `0x2e3c3b8`; packet is read by host hook at this PC"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e1901c",
+      "file_offset": "0x2e1901c",
+      "original_bytes": "885b0594",
+      "original_asm": "bl #0x2f6fe3c",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error logger helper (`bl #0x2f6fe3c`) in `0x2e18e3c` invalid-WB-mode branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e1902c",
+      "file_offset": "0x2e1902c",
+      "original_bytes": "845b0594",
+      "original_asm": "bl #0x2f6fe3c",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error logger helper (`bl #0x2f6fe3c`) in `0x2e18e3c` invalid-WB-mode branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e1903c",
+      "file_offset": "0x2e1903c",
+      "original_bytes": "834b0594",
+      "original_asm": "bl #0x2f6be48",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error logger helper (`bl #0x2f6be48`) in `0x2e18e3c` invalid-WB-mode branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e19048",
+      "file_offset": "0x2e19048",
+      "original_bytes": "804b0594",
+      "original_asm": "bl #0x2f6be48",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error logger helper (`bl #0x2f6be48`) in `0x2e18e3c` invalid-WB-mode branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e1905c",
+      "file_offset": "0x2e1905c",
+      "original_bytes": "d9e59d97",
+      "original_asm": "bl #0x15927c0",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error print (`bl #0x15927c0`) in `0x2e18e3c` invalid-WB-mode branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e1906c",
+      "file_offset": "0x2e1906c",
+      "original_bytes": "d5e59d97",
+      "original_asm": "bl #0x15927c0",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error print (`bl #0x15927c0`) in `0x2e18e3c` invalid-WB-mode branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e19078",
+      "file_offset": "0x2e19078",
+      "original_bytes": "92e79d97",
+      "original_asm": "bl #0x1592ec0",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error sleep/notify (`bl #0x1592ec0`) in `0x2e18e3c` invalid-WB-mode branch"
+    },
+    {
+      "binary": "appFw.so",
+      "arch": "arm64",
+      "va": "0x2e1907c",
+      "file_offset": "0x2e1907c",
+      "original_bytes": "cd980294",
+      "original_asm": "bl #0x2ebf3b0",
+      "replacement_bytes": "00008052",
+      "replacement_asm": "mov w0, #0",
+      "reason": "Stub error assert handler (`bl #0x2ebf3b0`) in `0x2e18e3c` invalid-WB-mode branch"
+    },
+    {
+      "binary": "cpapp-b.bin",
+      "arch": "thumb",
+      "va": "0x2fe086",
+      "file_offset": "0x1f6086",
+      "original_bytes": "e8f2fdf2",
+      "original_asm": "bl #0x9e6684",
+      "replacement_bytes": "00bf00bf",
+      "replacement_asm": "nop; nop",
+      "reason": "Stub CP debug print `bl #0x9e6684` in `CheckSetParamBasePictureSetting` (`+0xba0` diff)"
+    },
+    {
+      "binary": "cpapp-b.bin",
+      "arch": "thumb",
+      "va": "0x2fe09e",
+      "file_offset": "0x1f609e",
+      "original_bytes": "e8f2f1f2",
+      "original_asm": "bl #0x9e6684",
+      "replacement_bytes": "00bf00bf",
+      "replacement_asm": "nop; nop",
+      "reason": "Stub CP debug print `bl #0x9e6684` in `CheckSetParamBasePictureSetting` (`+0xba4` diff)"
+    },
+    {
+      "binary": "cpapp-b.bin",
+      "arch": "thumb",
+      "va": "0x2fe0b6",
+      "file_offset": "0x1f60b6",
+      "original_bytes": "e8f2e5f2",
+      "original_asm": "bl #0x9e6684",
+      "replacement_bytes": "00bf00bf",
+      "replacement_asm": "nop; nop",
+      "reason": "Stub CP debug print `bl #0x9e6684` in `CheckSetParamBasePictureSetting` (`+0xba8` diff)"
+    },
+    {
+      "binary": "cpapp-b.bin",
+      "arch": "thumb",
+      "va": "0x2fe0ce",
+      "file_offset": "0x1f60ce",
+      "original_bytes": "e8f2d9f2",
+      "original_asm": "bl #0x9e6684",
+      "replacement_bytes": "00bf00bf",
+      "replacement_asm": "nop; nop",
+      "reason": "Stub CP debug print `bl #0x9e6684` in `CheckSetParamBasePictureSetting` (`+0xbac` diff)"
+    },
+    {
+      "binary": "cpapp-b.bin",
+      "arch": "thumb",
+      "va": "0x2fe0f4",
+      "file_offset": "0x1f60f4",
+      "original_bytes": "e8f2c6b2",
+      "original_asm": "b.w #0x9e6684",
+      "replacement_bytes": "704700bf",
+      "replacement_asm": "bx lr; nop",
+      "reason": "Replace tail-call `b.w #0x9e6684` with `bx lr; nop` in `CheckSetParamBasePictureSetting` (`+0xbb0` diff)"
+    },
+    {
+      "binary": "cpapp-b.bin",
+      "arch": "thumb",
+      "va": "0x2d38e6",
+      "file_offset": "0x1cb8e6",
+      "original_bytes": "12f3cdf6",
+      "original_asm": "bl #0x9e6684",
+      "replacement_bytes": "00bf00bf",
+      "replacement_asm": "nop; nop",
+      "reason": "Stub CP debug print `bl #0x9e6684` in `0x1cb8a8` when `base_look >= 12` (`cmp r1, #0xc`)"
+    }
+  ],
+  "bounded_suite_1_base_picture_setting_0x4151": {
+    "execution_scope_notice": "Executed ONLY AP packet builder (0x2e3172c -> 0x2e26fcc) and CP RAM setter/checker/gate (0x791f9c, 0x2fe05c, 0x2d38a8) with manual host packet handoff. Did NOT execute real IPC transport, did NOT execute 0x470f78 DMA builder in this script, and did NOT write to flash/disk.",
+    "case_1a_positive_ap_4151": {
+      "host_synthetic_input_8words": [
+        1,
+        0,
+        0,
+        59,
+        1,
+        1,
+        0,
+        1
+      ],
+      "instructions_executed": 72,
+      "instruction_budget": 300,
+      "budget_exhausted": false,
+      "final_pc": "0x2e00000",
+      "expected_return_pc": "0x2e00000",
+      "terminated_at_expected_pc": true,
+      "hit_error_branch_0x2e270dc": false,
+      "sentinels_intact": true,
+      "out_status_written": 0,
+      "captured_ipc": {
+        "channel": "0x90030001",
+        "packet_va": "0x70007ff0",
+        "packet_len": 16,
+        "packet_hex": "05005141000000000702010100000000"
+      }
+    },
+    "case_1b_negative_counterexample_ap_4151_log_mode_9": {
+      "host_synthetic_input_8words": [
+        1,
+        0,
+        0,
+        59,
+        9,
+        1,
+        0,
+        1
+      ],
+      "instructions_executed": 99,
+      "instruction_budget": 300,
+      "budget_exhausted": false,
+      "final_pc": "0x2e00000",
+      "expected_return_pc": "0x2e00000",
+      "terminated_at_expected_pc": true,
+      "hit_error_branch_0x2e270dc": true,
+      "sentinels_intact": true,
+      "out_status_written": 0,
+      "captured_ipc": {
+        "channel": "0x90030001",
+        "packet_va": "0x70007ff0",
+        "packet_len": 16,
+        "packet_hex": "05005141000000000700010100000000"
+      }
+    },
+    "case_1c_positive_cp_4151_ram_setter": {
+      "host_manual_handoff_packet_hex": "05005141000000000702010100000000",
+      "instructions_executed": 28,
+      "instruction_budget": 100,
+      "budget_exhausted": false,
+      "final_pc": "0x790000",
+      "expected_return_pc": "0x790000",
+      "return_r0": 1,
+      "sentinels_intact": true,
+      "emulated_ram_0x10a8de0_writes": {
+        "+0xba0_base_look": 7,
+        "+0xba4_shooting_mode": 2,
+        "+0xba8_input_gamut": 1,
+        "+0xbac_color_gamut": 1,
+        "+0xbb0_target_display": 0,
+        "+0x76c_update_counter": 1
+      }
+    },
+    "case_1d_cp_checker_and_ec_gate_counterexamples": {
+      "checker_0x1f605c_when_state_equals_12": {
+        "steps": 34,
+        "mismatch_log_sites_hit": [],
+        "state_unmodified": true
+      },
+      "checker_0x1f605c_when_base_look_differs": {
+        "steps": 39,
+        "mismatch_log_sites_hit": [
+          "0x2fe086"
+        ],
+        "state_unmodified": true
+      },
+      "ec_gate_0x1cb8a8_valid_base_look_7": {
+        "input_base_look": 7,
+        "steps": 18,
+        "hit_invalid_reset_0x2d38ea": false,
+        "resulting_acq_0x794": 7
+      },
+      "ec_gate_0x1cb8a8_counterexample_base_look_12_rejected_to_0": {
+        "input_base_look": 12,
+        "steps": 23,
+        "hit_invalid_reset_0x2d38ea": true,
+        "resulting_acq_0x794": 0
+      }
+    }
+  },
+  "bounded_suite_2_bb_vdf_monitor_lut_and_colorgamut": {
+    "monitor_lut_valid_0": {
+      "func_va": "0x2debdb0",
+      "input_u32": 0,
+      "steps": 43,
+      "budget": 200,
+      "budget_exhausted": false,
+      "final_pc": "0x2de0000",
+      "hit_error_branch": false,
+      "packets_sent": [
+        {
+          "caller_va": "0x2debe38",
+          "transport_id": "0x92840747",
+          "length": 10,
+          "packet_hex": "0d2061010a0001800100"
+        }
+      ],
+      "out_status": 0
+    },
+    "monitor_lut_counterexample_invalid_9": {
+      "func_va": "0x2debdb0",
+      "input_u32": 9,
+      "steps": 19,
+      "budget": 200,
+      "budget_exhausted": false,
+      "final_pc": "0x2debe74",
+      "hit_error_branch": true,
+      "packets_sent": [],
+      "out_status": 3149642683
+    },
+    "colorgamut_valid_0": {
+      "func_va": "0x2dee4ac",
+      "input_u32": 0,
+      "steps": 33,
+      "budget": 200,
+      "budget_exhausted": false,
+      "final_pc": "0x2de0000",
+      "hit_error_branch": false,
+      "packets_sent": [
+        {
+          "caller_va": "0x2dee528",
+          "transport_id": "0x92840747",
+          "length": 10,
+          "packet_hex": "0d2067010a0001800100"
+        }
+      ],
+      "out_status": 0
+    },
+    "colorgamut_valid_1": {
+      "func_va": "0x2dee4ac",
+      "input_u32": 1,
+      "steps": 33,
+      "budget": 200,
+      "budget_exhausted": false,
+      "final_pc": "0x2de0000",
+      "hit_error_branch": false,
+      "packets_sent": [
+        {
+          "caller_va": "0x2dee528",
+          "transport_id": "0x92840747",
+          "length": 10,
+          "packet_hex": "0d2067010a0001800000"
+        }
+      ],
+      "out_status": 0
+    },
+    "colorgamut_counterexample_invalid_5_no_packet_sent": {
+      "func_va": "0x2dee4ac",
+      "input_u32": 5,
+      "steps": 20,
+      "budget": 200,
+      "budget_exhausted": false,
+      "final_pc": "0x2de0000",
+      "hit_error_branch": false,
+      "packets_sent": [],
+      "out_status": 0
+    }
+  },
+  "bounded_suite_3_white_balance_0x4006": {
+    "case_3a_positive_ap_wb_4006": {
+      "host_synthetic_input_6words": [
+        1,
+        9,
+        2500,
+        -1500,
+        5600,
+        1
+      ],
+      "instructions_executed": 85,
+      "instruction_budget": 300,
+      "budget_exhausted": false,
+      "final_pc": "0x2e00000",
+      "expected_return_pc": "0x2e00000",
+      "hit_error_branch_0x2e18ff4": false,
+      "sentinels_intact": true,
+      "captured_ipc": {
+        "channel": "0x90030001",
+        "packet_len": 20,
+        "packet_hex": "050006400100000009020100f401f40138000100"
+      }
+    },
+    "case_3b_negative_counterexample_ap_wb_mode_21": {
+      "host_synthetic_input_6words": [
+        1,
+        21,
+        2500,
+        -1500,
+        5600,
+        1
+      ],
+      "instructions_executed": 111,
+      "instruction_budget": 300,
+      "budget_exhausted": false,
+      "final_pc": "0x2e00000",
+      "expected_return_pc": "0x2e00000",
+      "hit_error_branch_0x2e18ff4": true,
+      "sentinels_intact": true,
+      "captured_ipc": {
+        "channel": "0x90030001",
+        "packet_len": 20,
+        "packet_hex": "050006400100000000020100f401f40138000100"
+      }
+    },
+    "case_3c_positive_cp_wb_setter_0x79150d": {
+      "instructions_executed": 29,
+      "final_pc": "0x790000",
+      "sentinels_intact": true,
+      "emulated_ram_0x10a8de0_writes": {
+        "+0x9f4_wb_mode": 9,
+        "+0x9f8_ab_div_1000": 2,
+        "+0x9f9_neg_gm_div_1000": 1,
+        "+0x9fa_ab_mod_1000": 500,
+        "+0x9fc_neg_gm_mod_1000": 500,
+        "+0xa00_colortemp_100k_units": 56,
+        "+0xa01_tint": 0,
+        "+0xa02_flag": 1
+      }
+    },
+    "case_3d_cp_downstream_copier_0x3c9162": {
+      "va_range": "0x3c9162..0x3c91ba (file+0x2c1162..0x2c11ba)",
+      "instructions_executed": 22,
+      "sentinels_intact": true,
+      "copied_fields_at_r0": {
+        "+0xec_wb_mode": 9,
+        "+0xf4_ab_div_1000": 2,
+        "+0xf5_neg_gm_div_1000": 1,
+        "+0xf6_ab_mod_1000": 500,
+        "+0xf8_neg_gm_mod_1000": 500,
+        "+0xfc_colortemp_100k_units": 56
+      },
+      "hypothesis_boundary": "PROVEN SEPARATION: CP copies `+0xa00` (100K Color Temp byte) to `[r0+0xfc]` and `+0x9f8..+0x9fc` (AB/GM quotient & remainder) to `[r0+0xf4..0xf8]` as distinct fields. Therefore, folding 1K Kelvin residuals into AB/GM fields is an UNVERIFIED HYPOTHESIS and MUST NOT be implemented without reverse-engineering the downstream WB R/G/B gain solver and proving the physical units/domain of `+0xf4..+0xf8` vs `+0xfc`."
+    }
+  },
+  "look22_object_and_stage_binding_cited": {
+    "v1_errata_retraction": "RETRACTED FROM V1: v1 erroneously claimed a '149,888-byte (160B header + 3x1984B 1D + 143,748B 33^3 3D + 36B matrix)' layout (which also had an arithmetic error: 160 + 5952 + 143748 + 36 = 149,896 != 149,888). That description is retracted. Below is the exact object-by-object binding from the verified FX3 7.02 binaries.",
+    "av_cam_bin_object_binding": {
+      "binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "image_base": "0xffffffc001000000",
+      "descriptor_record_size_bytes": 152,
+      "descriptor_struct_format": "<Q data_pointer, I register_offset, I reserved_zero, I word_count, char name[128], pad[4]>",
+      "look22_descriptor_va": "0xffffffc001b05638 (file+0xb05638)",
+      "look22_descriptor_count": 70,
+      "look22_descriptor_table_bytes": 10640,
+      "dma_builder_func_in_av": "0x2c4794 (emits 70 x 16B = 1,120B DMA list targeting 0xf3019000 for IP=0)",
+      "stages_in_70_descriptors": [
+        {
+          "descriptor_indices": "0..5 (6 descriptors)",
+          "stage_role": "L1D_A: S-Log3 to Linear 1D LUT (R, G, B channel select + SRAM)",
+          "av_dst_offset_range": "0xb05638..0xb05930",
+          "av_src_offset_range": "0xbe6830..0xbe6700",
+          "descriptor_names": [
+            "MLUT_L1D_A_CH_SEL_R",
+            "MLUT_L1D_A_SRAM_R_SL3TOLINEAR",
+            "MLUT_L1D_A_CH_SEL_G",
+            "MLUT_L1D_A_SRAM_G_SL3TOLINEAR",
+            "MLUT_L1D_A_CH_SEL_B",
+            "MLUT_L1D_A_SRAM_B_SL3TOLINEAR"
+          ],
+          "data_format_in_av": "Per channel: 256 packed 32-bit words (1,024 bytes) = 512 x 16-bit halfword slots"
+        },
+        {
+          "descriptor_indices": "6..11 (6 descriptors)",
+          "stage_role": "L1D_B: VENICE S-Log3/S-Gamut3 ACES 1D Shaper LUT (R, G, B channel select + SRAM)",
+          "av_dst_offset_range": "0xb059c8..0xb05cc0",
+          "av_src_offset_range": "0xbe8120..0xbe7ff0",
+          "descriptor_names": [
+            "MLUT_L1D_B_CH_SEL_R",
+            "MLUT_L1D_B_SRAM_R_VENICE_L1D0_SLOG3_SGAMUT3_ACES",
+            "MLUT_L1D_B_CH_SEL_G",
+            "MLUT_L1D_B_SRAM_G_VENICE_L1D0_SLOG3_SGAMUT3_ACES",
+            "MLUT_L1D_B_CH_SEL_B",
+            "MLUT_L1D_B_SRAM_B_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+          ],
+          "data_format_in_av": "Per channel: 256 packed 32-bit words (1,024 bytes) = 512 x 16-bit halfword slots (first 511 monotonic, 512th slot = 0)"
+        },
+        {
+          "descriptor_indices": "12..59 (48 descriptors = 24 pairs of SEL + SRAM)",
+          "stage_role": "L3D: VENICE 20x20x20 3D LUT across 24 SRAM banks (8 banks x 3 channels R, G, B)",
+          "av_dst_offset_range": "0xb05d58..0xb07940",
+          "av_src_offset_range": "0xbf5648..0xbf5518",
+          "first_and_last_names": [
+            "MLUT_L3D_SEL_R_RAM0",
+            "MLUT_L3D_SRAM_R_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES",
+            "MLUT_L3D_SEL_B_RAM7",
+            "MLUT_L3D_SRAM_B_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+          ],
+          "data_format_in_av": "24 banks (R0..R7, G0..G7, B0..B7), 500 x 32-bit words (1,000 x 16-bit values = 2,000 bytes) per bank = 20x20x20 (8,000 nodes, 24,000 channel values, 48,000 bytes total). Deinterleave rule: bank = ((r & 1) << 2) | ((g & 1) << 1) | (b & 1), index_in_bank = (r // 2) * 100 + (g // 2) * 10 + b // 2."
+        },
+        {
+          "descriptor_indices": "60..69 (10 descriptors)",
+          "stage_role": "MLUT Top / YC2RGB / L1D_A_REG / MTX_A (SG3->AP1) / L1D_B_REG / L1D_C_REG / MTX_B / L3D_REG / MTX_C (Full->Legal) / RGB2YC",
+          "av_dst_offset_range": "0xb079d8..0xb07f30",
+          "av_src_offset_range": "0xbe6240..0xbf66e8",
+          "descriptor_names": [
+            "MLUT_TOP_REG_SEL_E_NORM_WS_CUBE_CDL",
+            "MLUT_YC2RGB_REG_INV709_YC",
+            "MLUT_L1D_A_REG_SL3TOLINEAR",
+            "MLUT_MTX_A_REG_SG3TOAP1_0",
+            "MLUT_L1D_B_REG_VENICE_L1D0_SLOG3_SGAMUT3_ACES",
+            "MLUT_L1D_C_REG_LUT_OFF",
+            "MLUT_MTX_B_REG_IDENTITY",
+            "MLUT_L3D_REG_VENICE_3DLUT_SLOG3_SGAMUT3_ACES",
+            "MLUT_MTX_C_REG_FULLTOLEGAL",
+            "MLUT_RGB2YC_REG_709_LEGAL"
+          ],
+          "matrix_binding_note": "Index 63 uses `MLUT_MTX_A_REG_SG3TOAP1_0` (src 0xbe6d88, data @ 0xc15aa8), which is byte-for-byte identical to `MLUT_MTX_A_REG_VENICE_LMX0_SLOG3_SGAMUT3_ACES` (@ 0xc15b78): 9 signed 19-bit Q16 coefficients matching Sony VENICE S-Gamut3 -> ACES AP1."
+        }
+      ]
+    },
+    "cpapp_b_bin_object_binding": {
+      "binary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "va_base": "0x108000",
+      "look22_registry_file_offset": "0xbf8ffc (VA 0xd00ffc)",
+      "look22_runtime_target_va": "0x02015794",
+      "look22_descriptor_count": 70,
+      "cp_descriptor_record_size_bytes": 140,
+      "cp_initialized_profile_bytes": 9800,
+      "cp_initialized_profile_sha256_cited": "a4f057164b12be25a2e9e80bcdd6e78bffe3d7685606e8dde39d22b1e98c10e0",
+      "cp_dma_builder_func_cited": "mlut_make_lli_table @ VA 0x470f78 (file+0x368f78): consumes 70 x 140B CP descriptors and writes 70 x 16B (1,120B) DMA LLI entries to VA 0x2025570 targeting 0xf4009000 + (group << 20) for groups 0..6. NOTE: Cited from `work/fx3-color-port-20261027/resource-20261028/cp-mlut-dma-results.json`; NOT re-executed inside `verify_menu_backend_chains_v2.py`."
+    }
+  }
+}

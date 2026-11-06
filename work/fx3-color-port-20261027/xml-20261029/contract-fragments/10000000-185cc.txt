@@ -1,0 +1,21 @@
+000185cc stp        x29, x30, [sp, #-0x20]!
+000185d0 mov        x29, sp
+000185d4 str        x19, [sp, #0x10]
+000185d8 mov        x19, x0
+000185dc adrp       x0, #0x31000
+000185e0 str        w1, [x19, #8]
+000185e4 mov        x1, #0
+000185e8 ldr        x0, [x0, #0xf78]
+000185ec str        x2, [x19, #0x10]
+000185f0 add        x0, x0, #0x10
+000185f4 strb       wzr, [x19, #0x90]
+000185f8 str        x0, [x19]
+000185fc add        x0, x19, #0x18
+00018600 stp        xzr, xzr, [x19, #0x78]
+00018604 str        xzr, [x19, #0x88]
+00018608 bl         #0xff00 ; pthread_mutex_init
+0001860c add        x0, x19, #0x48
+00018610 ldr        x19, [sp, #0x10]
+00018614 ldp        x29, x30, [sp], #0x20
+00018618 mov        x1, #0
+0001861c b          #0xff00 ; pthread_mutex_init

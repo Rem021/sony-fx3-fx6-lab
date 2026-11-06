@@ -1,0 +1,36 @@
+{
+  "schema": "fx3-stage28-coordinator-review/1",
+  "created_utc": "2026-10-25T21:51:49.455478+00:00",
+  "status": "PASS_ARTIFACT_SOURCE_BYTE_AND_CONSTRUCTION_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent structural/source-byte/hash review; no independent replay or real camera verification.",
+  "previous_manifest_files_verified": {
+    "stage25-mc-image-map": 15,
+    "stage26-mc-open-routing": 11,
+    "stage27-encoder-state-machine": 8
+  },
+  "static_raw_instruction_records_checked": 269,
+  "bounded_scenarios": 7,
+  "bounded_phases": 12,
+  "post_allocation_is_precondition_not_faked_allocator_return": true,
+  "partial_constructed_vptr_graph_is_fixture_not_whole_constructor": true,
+  "per_phase_stop_and_trace_reset_checked": true,
+  "index0_initial_frontend_is_external_ISP_in_constructor_model": true,
+  "previous_direct_normal_state_fixtures_not_end_to_end_MAIN": true,
+  "normal_owner_callback_binding_is_static_original_setter_not_live_state": true,
+  "clock_diagnostic_and_timing_FSM_not_executed": true,
+  "native_output_adapters": false,
+  "guest_writes_only_stack_and_fixture": true,
+  "unverified": [
+    "Actual OSAL registration, live initialized objects/current state, sender identity and physical/shared address transport",
+    "External-ISP Open FSM completion and any parameter preservation/rebuild before normal-state entry",
+    "Real clock, timing_normal FSM0x19841c, resource/VCD selection and hardware/error replies",
+    "Actual task/transition hooks and full lower pending parameter lifetime",
+    "Same-body healthy backup, restricted restore/readback, independent recovery and WBI/cold boot",
+    "Actual MAIN bitstream/container/audio/timebase/sync/long-run/temperature and regression"
+  ],
+  "new_Windows_UU_attempts": false,
+  "camera_or_remote_access_attempted": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

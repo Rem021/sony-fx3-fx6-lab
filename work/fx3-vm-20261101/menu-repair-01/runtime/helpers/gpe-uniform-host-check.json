@@ -1,0 +1,15 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe-uniform.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe-uniform"
+  ],
+  "compile_stderr": "",
+  "exit": -6,
+  "stdout": "",
+  "stderr": "Assertion failed: (!uniform_plan(p,&z)&&z.span==614400&&z.pitch==1280), function main, file check-gpe-uniform.c, line 7.\n"
+}

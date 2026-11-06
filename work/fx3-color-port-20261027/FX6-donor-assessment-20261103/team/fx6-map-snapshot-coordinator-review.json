@@ -1,0 +1,27 @@
+{
+  "time": "2026-11-06T04:23:59.655290+00:00",
+  "status": "offline_prototype_requires_capture_and_decoder_fixes",
+  "parser_manifest": {
+    "count": 44,
+    "all_match": true,
+    "sha256": "392515bfe6c7808c42e012c8d83f7c3661a44ad18676c53ef7a4b5374224dc6b"
+  },
+  "snapshot_manifest": {
+    "count": 22,
+    "all_match": true,
+    "sha256": "b943558e0df2bdea58de9dbaf6117132373ebafbff42f9cda447ba23f214b85b"
+  },
+  "independent_probes": [
+    "empty frame with claimed complete=1 accepted as bytes=0 line_terminated=true",
+    "payload not-newline with claimed line_terminated=1 accepted",
+    "FNV offset basis differs from standard FNV1a64 (0x14650fb0739d0383 vs0xcbf29ce484222325)"
+  ],
+  "code_findings": [
+    "one short read with final newline does not itself establish EOF/full map stream",
+    "production --starttime override bypasses process identity read; no after identity check",
+    "single-frame decoder has no selection path for three planned sequential snapshots",
+    "nested marker attribution alone does not prove stdout row source under concurrent writers"
+  ],
+  "VM_started": false,
+  "next": "offline fixes only; no guest diagnostic or CPIO activation authorized"
+}

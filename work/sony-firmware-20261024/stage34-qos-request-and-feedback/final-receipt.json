@@ -1,0 +1,84 @@
+{
+  "schema": "fx3-stage34-qos-request-and-feedback/1",
+  "created_utc": "2026-10-25T23:10:25.620216+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/README.md",
+      "bytes": 7134,
+      "sha256": "eaf4197b51cea185668410b3d7f6d53063cc5c404f74d3da82187bc9a0329833"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/coordinator-observations.json",
+      "bytes": 2153,
+      "sha256": "d701def6e88b026468bcf9fd1a17a410a2dd863a383ed0ab5a58fd60ca6e4950"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/goal-status-after.json",
+      "bytes": 56090,
+      "sha256": "e66ef2d9cb28611a954488958a57d7b76658f390b166f75b32d0f0ab9100137e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/goal-status-before.json",
+      "bytes": 53233,
+      "sha256": "68c7af412c9e875589025a0a2e120aa93a082d8eb07cef6c42e6c22983c0361e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/next-producer-anchors.json",
+      "bytes": 71598,
+      "sha256": "203f027016bb1e43ae9b1e858f3c40fa7e42980c1e092c9662b1f3ffac09b271"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/qos_paths.py",
+      "bytes": 16054,
+      "sha256": "15a0141d3b4499aa9530f95fa8f2afee4d6d72bdb26d8e822ff32aefb60353c5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/run-20261025/attempt-failure.json",
+      "bytes": 998,
+      "sha256": "08018b95272e68b15603df1a801524a6c2b4babf08d29acff5fdf80510345ac3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/run-20261025/attempt-source.py",
+      "bytes": 16055,
+      "sha256": "ed76e9c7d3c8021e1da2ba8d209031a91d1b29dcf3447f616e5bab11e340c3fc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/run-corrected-20261025/qos-path-results.json",
+      "bytes": 315212,
+      "sha256": "e4b9a202cd423ca2d5a2ff6e691cd6153e88f0b9f794adeae7ba95e5be64a0ce"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/run-corrected-20261025/source-receipt.json",
+      "bytes": 785,
+      "sha256": "391590050ab9d44b1381d8c67f155e3b5b62ebdf03e70c76c1087cd240874791"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/run-corrected-20261025/summary.json",
+      "bytes": 632,
+      "sha256": "0dbe8841dcd01689dbb9edff7a060bc3f41ee2bd6685d36c936e633b3595bf49"
+    }
+  ],
+  "previous_manifest_sha256": "f1f5393b412f4f3fe26f0b399df5f010c9947b9641002d9fddf9637dbc30623b",
+  "scope": "26 original bounded executions. Request/cache/quantizer prefixes and explicitly synthetic HAL feedback marshaling; not actual bitrate/producer/units/default/HAL/hardware/restore.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage34-qos-request-and-feedback/goal-status-after.json",
+    "before_sha256": "68c7af412c9e875589025a0a2e120aa93a082d8eb07cef6c42e6c22983c0361e",
+    "after_sha256": "e66ef2d9cb28611a954488958a57d7b76658f390b166f75b32d0f0ab9100137e",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "native_output_adapters": false,
+    "actual_transport_clear_Hal_or_hardware": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 QoS 请求、确认与码率转换](<work/sony-firmware-20261024/stage34-qos-request-and-feedback/README.md>)：原数值路径可精确表示16000000并按trace上限限幅；一种确认在应用前构建，真实单位、FF默认码率、硬件与恢复仍未验证。"
+}

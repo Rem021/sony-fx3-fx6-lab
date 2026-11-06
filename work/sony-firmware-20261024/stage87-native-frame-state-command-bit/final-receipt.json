@@ -1,0 +1,75 @@
+{
+  "schema": "fx3-stage87-native-frame-command-bit/1",
+  "created_utc": "2026-10-27T06:47:10.038712+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage87-native-frame-state-command-bit/README.md",
+      "bytes": 4615,
+      "sha256": "2befe49d52cd3130efa7dbb7e8d1902308c12b08802dc841aaf79bb1cda719ef"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage87-native-frame-state-command-bit/completed-evidence-review.json",
+      "bytes": 987,
+      "sha256": "0fbea7ec6bf6bea7871da341b8ef05324941e6210dea6a33b4e8e27a5d1aa10a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage87-native-frame-state-command-bit/frame_command.py",
+      "bytes": 13994,
+      "sha256": "006be0b90dd7db9ffc8f963df5d4d319ead413797f0a0a91f02f3f797fdbc7a5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage87-native-frame-state-command-bit/goal-status-after.json",
+      "bytes": 261903,
+      "sha256": "6c4925aeec9626cc4c8fd804776cfa9b345e06b58e141f5580789c6aba5d1062"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage87-native-frame-state-command-bit/goal-status-before.json",
+      "bytes": 259725,
+      "sha256": "027e50ec81e69175ddaac1d3beefb76c73af5bd47872b936eb176eb2ec4d9a21"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage87-native-frame-state-command-bit/review_and_seal.py",
+      "bytes": 11809,
+      "sha256": "f58ec04971c56be7287b41ac70cbcb97e92c5269f14813d34f5e332b0010c88c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage87-native-frame-state-command-bit/run-20261026/executed-source.py",
+      "bytes": 13994,
+      "sha256": "006be0b90dd7db9ffc8f963df5d4d319ead413797f0a0a91f02f3f797fdbc7a5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage87-native-frame-state-command-bit/run-20261026/frame-command-results.json",
+      "bytes": 8035841,
+      "sha256": "ff4df8610b9f8c6cfe75b61b41182c8378defc514726f0d7f7eb53421b82754b"
+    }
+  ],
+  "previous_manifest_sha256": "98bc21668344a77d70e42e00ca06c3adc35e7668da23026f85c48dc4528d4cd1",
+  "operations": {
+    "status": "PASS_DECLARED_NATIVE_FRAME_FLAG_TO_PARAMETER_AND_COMMAND_BIT",
+    "created_utc": "2026-10-27T06:47:10.038712+00:00",
+    "prior_sealed_files_verified": 13,
+    "formal_cases": 20,
+    "formal_bounded_phases": 100,
+    "native_prefixes_resolve_declared_frame_and_packet_handles": true,
+    "native_bool_normalization_not_raw_lowbit_copy": true,
+    "native_override_and_complete_leaf_return_with_paired_command_bit13": true,
+    "analysis_packet_old_seed_difference_bytes_after_override": 4,
+    "source_GOP_unchanged_gate0_and_frame_publication0": true,
+    "post_gate_copy_and_partial_command_entries_do_not_prove_real_dispatch": true,
+    "whole_producer_source_owner_init_command_middle_MAIN_hardware_or_recovery": false,
+    "review_scope": "Same-agent source, full-protected-region, native pointer/frame and paired-control output review; not independent engine or camera acceptance.",
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "027e50ec81e69175ddaac1d3beefb76c73af5bd47872b936eb176eb2ec4d9a21",
+    "after_sha256": "6c4925aeec9626cc4c8fd804776cfa9b345e06b58e141f5580789c6aba5d1062"
+  },
+  "readme_index_before_sha256": "5d75348272f1073508043d0663ff93c493eff930abbef6945fe3d46236677b06",
+  "readme_index_after_sha256": "49279470eaa40ccfc75a5d305cf78c9fedae6a21c354694a0ff5cca81bfe02c0",
+  "readme_index_entry": "- [2026-10-26 FX3 帧状态与命令位消费](<work/sony-firmware-20261024/stage87-native-frame-state-command-bit/README.md>)：声明句柄图原36→Frame4da→参数覆盖→原命令叶函数；20例100阶段，分析副本旧差异5降4。源gate/发布仍0，非正常分派/硬件，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

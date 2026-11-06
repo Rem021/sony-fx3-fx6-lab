@@ -1,0 +1,117 @@
+{
+  "schema": "fx3-stage100-native-QoS-state-routing-queue-lifetime/1",
+  "created_utc": "2026-10-27T10:25:48.265767+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/README.md",
+      "bytes": 6488,
+      "sha256": "351cc31dda674cc64cc03babb5f941ccb59157c6818d403d04f5949db1e3451f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/completed-evidence-review.json",
+      "bytes": 595,
+      "sha256": "3ae773a35eb22486776f95b7b389e4c4bf2b8bab502715e1464bdb8c8a5553a2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/goal-status-after.json",
+      "bytes": 302277,
+      "sha256": "52cf7277e34721ac549509fa607720da1355f07f196c6fbab3c24ff0bdcda744"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/goal-status-before.json",
+      "bytes": 298910,
+      "sha256": "c76b50edfc463ba65b9a5638dd977706b3257997f8327b7fcdc2b8c68a82234b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/qos_routing.py",
+      "bytes": 18062,
+      "sha256": "b1a17f7181d1ea2ac65cf6e23c7245cf6bdb52051816e92ee449fd5aa1492dda"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/review_and_seal.py",
+      "bytes": 12982,
+      "sha256": "bbbaf183fae5df9e18561544b56038e44f4c5cb13d270019a2b4fd98e9648da9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/run-initial-20261027/executed-source.py",
+      "bytes": 12921,
+      "sha256": "f3a9fc43822cd2697dd8717f8642c942d5300c973c73f324a4793c5512981a9e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/run-initial-20261027/qos-routing-results.json",
+      "bytes": 334623,
+      "sha256": "7e0a903a61ba9f8e19cd462bb4ea0bca55a633654ca4a5e1031f17442bcd2eaa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/run-separated-stack-20261027/executed-source.py",
+      "bytes": 14257,
+      "sha256": "4d47825bcf1115341fb28696a97788701a7d41048f4794986506d9eb1c7df187"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/run-separated-stack-20261027/qos-routing-results.json",
+      "bytes": 347909,
+      "sha256": "4488a1d3a37d4ce8ec31ed0b861588a2a1eb051f411d74762507960d2f7d5ee1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/run-state-dispatch-20261027/attempt-failure.json",
+      "bytes": 639,
+      "sha256": "bb9c83228bc28e2d5df8e53b1126bb9f67b0abb49cc57c7986ec9b6e028dd4c5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/run-state-dispatch-20261027/executed-source.py",
+      "bytes": 17003,
+      "sha256": "2edffd465f0bb68ad0c632e05ce4cc0165bff30e990a7adb81a3de55e776aa2f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/run-state21-corrected-coupled-20261027/executed-source.py",
+      "bytes": 18062,
+      "sha256": "b1a17f7181d1ea2ac65cf6e23c7245cf6bdb52051816e92ee449fd5aa1492dda"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/run-state21-corrected-coupled-20261027/qos-routing-results.json",
+      "bytes": 715129,
+      "sha256": "57d568268733ea5cf4346462f6c7d20f99357c82e9e142d62cfff2b445c7e0b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/topology-and-ROM-audit.json",
+      "bytes": 51950,
+      "sha256": "f5d6deabe68f57e2e11805f95e72b27222aba418e38aedd8c76f9a82e7379580"
+    }
+  ],
+  "previous_manifest_sha256": "cd419ece663b41fd610bfce5d35bb745abeea76aff90af86f637de056ecc9c1f",
+  "operations": {
+    "status": "PASS_NATIVE_TIMING_QOS_DISPATCH_ENVELOPE_AND_BOUNDED_QUEUE_POINTER_LIFETIME",
+    "created_utc": "2026-10-27T10:25:48.265767+00:00",
+    "prior_files_verified": 11,
+    "route_cases": 10,
+    "queue_cases": 4,
+    "state_cases": 18,
+    "bounded_phases": 118,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_evidence_review_not_independent_engine": true,
+    "initial_state21_expectation_corrected_to_native22": true,
+    "new_real_MAIN_policy_or_applied_target_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "c76b50edfc463ba65b9a5638dd977706b3257997f8327b7fcdc2b8c68a82234b",
+    "after_sha256": "52cf7277e34721ac549509fa607720da1355f07f196c6fbab3c24ff0bdcda744"
+  },
+  "readme_index_before_sha256": "1b86f813572b1e5e21ccce4e8917b231dff1cb792a6b6deb782733356a0546de",
+  "readme_index_after_sha256": "f0c1c95bd2b03e691d944792ddcb0df83067c0b0ea52e4d73a0d2dfcfe685a92",
+  "readme_index_entry": "- [2026-10-27 FX3 原QoS状态分派与请求寿命](<work/sony-firmware-20261024/stage100-native-qos-routing-and-queue-lifetime/README.md>)：32组/118阶段，原ROM选择排队或转发；指针出队0不代表请求完成。不同接口原指针已区分，MAIN策略/实录/恢复仍未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

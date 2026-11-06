@@ -1,0 +1,19 @@
+FX3｜r21b 修正测试后台后的单次独立演练（已授权准备并执行一次）
+
+基线：冻结 v25-r21-recovery-integration 完全不变。正式验收消息msg_e1c9294f7a85；SHA256SUMS dcbbb11fc1942a480b8624e53d769e29b93fec3c884401811cc0599fea3b02ef；SOURCE-FREEZE 31ee6b1d00fecfc5ac53e874b144230d2430208277c295d74c4a804fbe1135ec。上一独立演练 interaction-operator-rehearsal-r21 为failed，须原样保留。前次A恢复8.3671秒成功；B已接受但fixture传visual_pending且review_required=true，原bounded正确拒绝。不得改helper放宽这个不一致状态。
+
+只写新的 passive-timing-delivery/interaction-operator-rehearsal-r21b。可复用上一演练源脚本，不复制证据/once标记/ledger；为本轮建立新UUID、nonce A/B、服务端口和浏览器会话。无QEMU/guest/设备/部署/其他agent。
+
+最小修正：fixture在接受B后发布完整历史菜单PNG，正确调用require_visual_review(1,'visual_changed',True)。与生产run_trial_v25_diag_r3.py:609-629对照：只在visual_changed/no_change_observed进入review。计时前做不启浏览器的定向fixture状态检查，确认review_required=true时visual_state合法；不要重跑已有整套r21测试。此检查用于阻止同一fixture错误，不替代本轮实际看图。
+
+保持原完整操作链：一次明确A MENU -> 原submit锁内完整409/未入队 -> recovery capture真实截图在同工具返回 -> 操作员亲看后下一工具cancel A -> 返回新图 -> 再亲看，另一次工具新nonce B arm+实际operator_click MENU -> bounded capture完整菜单返回 -> 操作员亲看后另一次工具原explicit_confirm匹配ACK并cancel B。每次原20秒截止不改，0重发/0复用nonce，最多2次点击、1次恢复。不得自动按图SHA批准、合并看图与确认、由脚本替操作者决定语义。后端受控历史PNG不代表VM绘图性能。
+
+准备全部命令和失败清理后才arm。第一次失败即End并结束本轮，禁止原地再演练；成功也结束。End/finalACK后仅清理本轮服务/browser。若失败时alarm仍armed，记录真实状态，勿为强行dispose而取消accepted/unknown alarm；关闭自有document后记录timer随文档结束，不虚称显式dispose通过。成功链已cancel时可正常dispose。
+
+记录原时钟、HTTP/attempt/nonce/due/cancel事件、ledger预留、截图hash/固件PNGhash各自身份，分清工具返回准备与实际接图时刻（后者未测则unknown）。验收计数为2POST=1拒绝+1接受、1recovery、1confirm、实际guest0，完整链成功才passed。依赖前后哈希、REPORT/RESULT、截图、清理PID/端口/browser证据及交付清单均需封存。回报worker_done succeeded/failed，不要求用户额外许可；此任务现在正式派发，授权准备及一次离线演练，无需再次请求放行。
+
+上一轮正式失败回执msg_5a1e392b886a，88项交付独立核验；REPORT SHA e74eb7ae0b2fc8a50b5892e16f20eb8a20a60a61317929d06db4e9c9dfed4bb2，SHA256SUMS 7327a058d4e62fe7a67a16bab6d51d4d2df00b83defafd98b02b30bd914d7d8f。
+
+第二项必要修正：原工具调用import run_action绕过__main__异常清理，必须将异常处理放入实际调用路径或改成调用真实CLI入口；计时前用无browser/无arm的定向异常注入确认调用路径确实执行End/cleanup回调且退出非0。不要启动额外计时演练作为检查，也不要改冻结r21工具。正常成功看图/确认仍严格分开调用；错误清理不得误触发确认/发新键。
+
+交付根绝对路径：/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery。新目录必须为interaction-operator-rehearsal-r21b。原失败目录和r21冻结目录不可写。

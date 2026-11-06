@@ -1,0 +1,65 @@
+{
+  "execution_and_API_cleanup_pass": true,
+  "runs": [
+    {
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103restore60a-f0a4d75c",
+      "requested_seconds": 60,
+      "duration_seconds": 63.24065020901617,
+      "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap103-r2-soft-ldec/candidate.json",
+      "candidate_SHA256": "5d2155cb3e208ba182caa1c57e8c03f05b140e575ec9ea7c9b8e2743993aefe7",
+      "restore_elapsed_seconds": 1.5702788750058971,
+      "actual_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "guest_ack": 1,
+      "guest_status": 0,
+      "API16_original": true,
+      "QEMU_exit": 0,
+      "process_reaped": true,
+      "PID_absent": true,
+      "inputs_unchanged": true,
+      "kernel_breakpoints_removed": true,
+      "all_original_probe_words_unchanged": true,
+      "zero_UI_keys": true,
+      "missing_raw_required_markers": [
+        "FX3_OSD_FRAME_TARGET_VALID"
+      ],
+      "receipt_SHA256": "72b692a741bc11af609d43ff9370c60358580f879f3442120c658611a4db85f5",
+      "restore_receipt_SHA256": "c5085f76f5c0634ba7f8c6953b12a34c4b66a2f795efdc14b2fe3c865eef99a2",
+      "scope": "API restoration and zero-key short runtime only; not AP103 full600/UI save acceptance"
+    },
+    {
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103restore60delay-0ccbbf62",
+      "requested_seconds": 60,
+      "duration_seconds": 68.51516570802778,
+      "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap103-restore-delay-test-v1/candidate.json",
+      "candidate_SHA256": "c7e138132d51a78c2449ace4be0f44bbcd46b5e9c84bbde53fdd31436715d4fd",
+      "restore_elapsed_seconds": 6.668736749968957,
+      "actual_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "guest_ack": 1,
+      "guest_status": 0,
+      "API16_original": true,
+      "QEMU_exit": 0,
+      "process_reaped": true,
+      "PID_absent": true,
+      "inputs_unchanged": true,
+      "kernel_breakpoints_removed": true,
+      "all_original_probe_words_unchanged": true,
+      "zero_UI_keys": true,
+      "missing_raw_required_markers": [],
+      "receipt_SHA256": "8dce298f8049d255c248b82e7489d925bad90a59730c3d88441e2fcc69aa0905",
+      "restore_receipt_SHA256": "ef06bdddb2455ce57f551d12912646d107bf5b694b4378e4654ae2ecf888296d",
+      "scope": "API restoration and zero-key short runtime only; not AP103 full600/UI save acceptance"
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "released": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "released": true
+    }
+  ],
+  "old_fourth_run_remains_failed": true,
+  "full_AP103_600_and_saves_remain_unaccepted": true
+}

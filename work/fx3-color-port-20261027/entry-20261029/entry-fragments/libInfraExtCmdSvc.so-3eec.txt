@@ -1,0 +1,140 @@
+00003eec stp        x29, x30, [sp, #-0x30]!
+00003ef0 mov        x29, sp
+00003ef4 stp        x19, x20, [sp, #0x10]
+00003ef8 mov        x19, x0
+00003efc stp        x21, x22, [sp, #0x20]
+00003f00 mov        x21, x1
+00003f04 bl         #0x1f10 ; osal_get_msg_src
+00003f08 cbz        x19, #0x410c
+00003f0c ldr        w20, [x19]
+00003f10 mov        w22, w0
+00003f14 mov        w0, #0x1009
+00003f18 cmp        w20, w0
+00003f1c b.eq       #0x40b8
+00003f20 b.gt       #0x3fa4
+00003f24 mov        w0, #0x1005
+00003f28 cmp        w20, w0
+00003f2c b.eq       #0x4074
+00003f30 b.gt       #0x3f60
+00003f34 mov        w0, #0x1004
+00003f38 cmp        w20, w0
+00003f3c b.eq       #0x4044
+00003f40 mov        w2, #0x108
+00003f44 mov        w1, #1
+00003f48 mov        w0, #2
+00003f4c bl         #0x239c
+00003f50 mov        w2, w20
+00003f54 ldrh       w1, [x19, #0xa]
+00003f58 mov        w0, #3
+00003f5c b          #0x4034
+00003f60 mov        w0, #0x1007
+00003f64 cmp        w20, w0
+00003f68 b.eq       #0x408c
+00003f6c mov        w0, #0x1008
+00003f70 cmp        w20, w0
+00003f74 b.ne       #0x3f40
+00003f78 ldrh       w1, [x19, #0xa]
+00003f7c mov        w2, w20
+00003f80 mov        w0, #0x10
+00003f84 bl         #0x239c
+00003f88 mov        x2, x19
+00003f8c mov        x1, x21
+00003f90 mov        x0, x21
+00003f94 ldp        x19, x20, [sp, #0x10]
+00003f98 ldp        x21, x22, [sp, #0x20]
+00003f9c ldp        x29, x30, [sp], #0x30
+00003fa0 b          #0x1fc0 ; ExtCmdSvc::IntrInitCmd
+00003fa4 mov        w0, #0x100c
+00003fa8 cmp        w20, w0
+00003fac b.eq       #0x40e4
+00003fb0 b.gt       #0x3fe8
+00003fb4 mov        w0, #0x100b
+00003fb8 cmp        w20, w0
+00003fbc b.ne       #0x3f40
+00003fc0 ldrh       w1, [x19, #0xa]
+00003fc4 mov        w2, w20
+00003fc8 mov        w0, #0x10
+00003fcc bl         #0x239c
+00003fd0 mov        x1, x21
+00003fd4 mov        x0, x21
+00003fd8 ldp        x19, x20, [sp, #0x10]
+00003fdc ldp        x21, x22, [sp, #0x20]
+00003fe0 ldp        x29, x30, [sp], #0x30
+00003fe4 b          #0x1dd0 ; ExtCmdSvc::IntrOpenCmd
+00003fe8 mov        w0, #1
+00003fec movk       w0, #0x2000, lsl #16
+00003ff0 cmp        w20, w0
+00003ff4 b.eq       #0x401c
+00003ff8 add        w0, w0, #1
+00003ffc cmp        w20, w0
+00004000 b.ne       #0x3f40
+00004004 mov        x1, x19
+00004008 mov        x0, x21
+0000400c ldp        x19, x20, [sp, #0x10]
+00004010 ldp        x21, x22, [sp, #0x20]
+00004014 ldp        x29, x30, [sp], #0x30
+00004018 b          #0x20d0 ; ExtCmdSvc::ReqTransferCmd
+0000401c mov        x1, x19
+00004020 mov        x0, x21
+00004024 bl         #0x1ff0 ; ExtCmdSvc::AttachCmd
+00004028 ldrh       w1, [x19, #0xa]
+0000402c mov        w2, w20
+00004030 mov        w0, #0x10
+00004034 ldp        x19, x20, [sp, #0x10]
+00004038 ldp        x21, x22, [sp, #0x20]
+0000403c ldp        x29, x30, [sp], #0x30
+00004040 b          #0x239c
+00004044 ldrh       w1, [x19, #0xa]
+00004048 mov        w2, w20
+0000404c mov        w0, #0x10
+00004050 bl         #0x239c
+00004054 mov        w3, w22
+00004058 mov        x2, x19
+0000405c mov        x1, x21
+00004060 mov        x0, x21
+00004064 ldp        x19, x20, [sp, #0x10]
+00004068 ldp        x21, x22, [sp, #0x20]
+0000406c ldp        x29, x30, [sp], #0x30
+00004070 b          #0x20e0 ; ExtCmdSvc::IntrActivatedEvt
+00004074 mov        x1, x19
+00004078 mov        x0, x21
+0000407c ldp        x19, x20, [sp, #0x10]
+00004080 ldp        x21, x22, [sp, #0x20]
+00004084 ldp        x29, x30, [sp], #0x30
+00004088 b          #0x2060 ; ExtCmdSvc::IntrReqTransferCmp
+0000408c ldrh       w1, [x19, #0xa]
+00004090 mov        w2, w20
+00004094 mov        w0, #0x10
+00004098 bl         #0x239c
+0000409c mov        w2, w22
+000040a0 mov        x1, x19
+000040a4 mov        x0, x21
+000040a8 ldp        x19, x20, [sp, #0x10]
+000040ac ldp        x21, x22, [sp, #0x20]
+000040b0 ldp        x29, x30, [sp], #0x30
+000040b4 b          #0x2080 ; ExtCmdSvc::IntrRegistTransportCmd
+000040b8 ldrh       w1, [x19, #0xa]
+000040bc mov        w2, w20
+000040c0 mov        w0, #0x10
+000040c4 bl         #0x239c
+000040c8 mov        x2, x19
+000040cc mov        x1, x21
+000040d0 mov        x0, x21
+000040d4 ldp        x19, x20, [sp, #0x10]
+000040d8 ldp        x21, x22, [sp, #0x20]
+000040dc ldp        x29, x30, [sp], #0x30
+000040e0 b          #0x1e70 ; ExtCmdSvc::IntrFinalizeCmd
+000040e4 ldrh       w1, [x19, #0xa]
+000040e8 mov        w2, w20
+000040ec mov        w0, #0x10
+000040f0 bl         #0x239c
+000040f4 mov        x1, x21
+000040f8 mov        x0, x21
+000040fc ldp        x19, x20, [sp, #0x10]
+00004100 ldp        x21, x22, [sp, #0x20]
+00004104 ldp        x29, x30, [sp], #0x30
+00004108 b          #0x1dc0 ; ExtCmdSvc::IntrCloseCmd
+0000410c mov        w2, #0x10e
+00004110 mov        w1, #1
+00004114 mov        w0, #2
+00004118 b          #0x4034

@@ -1,0 +1,21 @@
+0xfe042654: f60f1df8 str x22, [sp, #-0x30]!
+0xfe042658: f55301a9 stp x21, x20, [sp, #0x10]
+0xfe04265c: f37b02a9 stp x19, x30, [sp, #0x20]
+0xfe042660: f40302aa mov x20, x2
+0xfe042664: f30301aa mov x19, x1
+0xfe042668: f60300aa mov x22, x0
+0xfe04266c: e0031f2a mov w0, wzr
+0xfe042670: 42050094 bl #0xfe043b78
+0xfe042674: c0064079 ldrh w0, [x22, #2]
+0xfe042678: 61520091 add x1, x19, #0x14
+0xfe04267c: e2071432 mov w2, #0x3000
+0xfe042680: e3071e32 mov w3, #0xc
+0xfe042684: 40050094 bl #0xfe043b84
+0xfe042688: c0064079 ldrh w0, [x22, #2]
+0xfe04268c: 75460091 add x21, x19, #0x11
+0xfe042690: e2071232 mov w2, #0xc000
+0xfe042694: e30b1f32 mov w3, #0xe
+0xfe042698: e10315aa mov x1, x21
+0xfe04269c: 3a050094 bl #0xfe043b84
+0xfe0426a0: e00313aa mov x0, x19
+0xfe0426a4: 0c0b0094 bl #0xfe0452d4

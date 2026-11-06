@@ -1,0 +1,229 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap85r4osdring-5dcb8371",
+  "original_AP_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "0400_request": [
+    {
+      "line": 21809,
+      "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf61c2 caller=0x7f047af264 raw=0d2000040a0001800000 dispatch_pending=1"
+    }
+  ],
+  "original_sync_wrapper": {
+    "0x2de7238": {
+      "bytes": "a43340f9427f4093e1031baae00304aa7eaa9e97a17340b9a03f40f9ebaa9e97a13f40f9e003192a2caf9e9780040034",
+      "instructions": [
+        {
+          "va": "0x2de7238",
+          "bytes": "a43340f9",
+          "asm": "ldr x4, [x29, #0x60]"
+        },
+        {
+          "va": "0x2de723c",
+          "bytes": "427f4093",
+          "asm": "sxtw x2, w26"
+        },
+        {
+          "va": "0x2de7240",
+          "bytes": "e1031baa",
+          "asm": "mov x1, x27"
+        },
+        {
+          "va": "0x2de7244",
+          "bytes": "e00304aa",
+          "asm": "mov x0, x4"
+        },
+        {
+          "va": "0x2de7248",
+          "bytes": "7eaa9e97",
+          "asm": "bl #0x1591c40"
+        },
+        {
+          "va": "0x2de724c",
+          "bytes": "a17340b9",
+          "asm": "ldr w1, [x29, #0x70]"
+        },
+        {
+          "va": "0x2de7250",
+          "bytes": "a03f40f9",
+          "asm": "ldr x0, [x29, #0x78]"
+        },
+        {
+          "va": "0x2de7254",
+          "bytes": "ebaa9e97",
+          "asm": "bl #0x1591e00"
+        },
+        {
+          "va": "0x2de7258",
+          "bytes": "a13f40f9",
+          "asm": "ldr x1, [x29, #0x78]"
+        },
+        {
+          "va": "0x2de725c",
+          "bytes": "e003192a",
+          "asm": "mov w0, w25"
+        },
+        {
+          "va": "0x2de7260",
+          "bytes": "2caf9e97",
+          "asm": "bl #0x1592f10"
+        },
+        {
+          "va": "0x2de7264",
+          "bytes": "80040034",
+          "asm": "cbz w0, #0x2de72f4"
+        }
+      ]
+    },
+    "0x2de72f4": {
+      "bytes": "a07340b9e10315aa02008012b8ae9e97b33f40f9027f4093e00317aae10313aa4baa9e97a07340b9e10313aa2cb49e97e00316aa06f8ff97f35341a9f55b42a9f76343a9f96b44a9fb7345a9fd7bc8a8",
+      "instructions": [
+        {
+          "va": "0x2de72f4",
+          "bytes": "a07340b9",
+          "asm": "ldr w0, [x29, #0x70]"
+        },
+        {
+          "va": "0x2de72f8",
+          "bytes": "e10315aa",
+          "asm": "mov x1, x21"
+        },
+        {
+          "va": "0x2de72fc",
+          "bytes": "02008012",
+          "asm": "mov w2, #-1"
+        },
+        {
+          "va": "0x2de7300",
+          "bytes": "b8ae9e97",
+          "asm": "bl #0x1592de0"
+        },
+        {
+          "va": "0x2de7304",
+          "bytes": "b33f40f9",
+          "asm": "ldr x19, [x29, #0x78]"
+        },
+        {
+          "va": "0x2de7308",
+          "bytes": "027f4093",
+          "asm": "sxtw x2, w24"
+        },
+        {
+          "va": "0x2de730c",
+          "bytes": "e00317aa",
+          "asm": "mov x0, x23"
+        },
+        {
+          "va": "0x2de7310",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2de7314",
+          "bytes": "4baa9e97",
+          "asm": "bl #0x1591c40"
+        },
+        {
+          "va": "0x2de7318",
+          "bytes": "a07340b9",
+          "asm": "ldr w0, [x29, #0x70]"
+        },
+        {
+          "va": "0x2de731c",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2de7320",
+          "bytes": "2cb49e97",
+          "asm": "bl #0x15943d0"
+        },
+        {
+          "va": "0x2de7324",
+          "bytes": "e00316aa",
+          "asm": "mov x0, x22"
+        },
+        {
+          "va": "0x2de7328",
+          "bytes": "06f8ff97",
+          "asm": "bl #0x2de5340"
+        },
+        {
+          "va": "0x2de732c",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x2de7330",
+          "bytes": "f55b42a9",
+          "asm": "ldp x21, x22, [sp, #0x20]"
+        },
+        {
+          "va": "0x2de7334",
+          "bytes": "f76343a9",
+          "asm": "ldp x23, x24, [sp, #0x30]"
+        },
+        {
+          "va": "0x2de7338",
+          "bytes": "f96b44a9",
+          "asm": "ldp x25, x26, [sp, #0x40]"
+        },
+        {
+          "va": "0x2de733c",
+          "bytes": "fb7345a9",
+          "asm": "ldp x27, x28, [sp, #0x50]"
+        },
+        {
+          "va": "0x2de7340",
+          "bytes": "fd7bc8a8",
+          "asm": "ldp x29, x30, [sp], #0x80"
+        }
+      ]
+    }
+  },
+  "SeqQueueCommon_snapshots": [
+    {
+      "tid": 346,
+      "line": 15590,
+      "raw": "Name:\tSeqQueueCommon\nUmask:\t0022\nState:\tR (running)\nTgid:\t221\nNgid:\t0\nPid:\t346\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 3502492 kB\nVmSize:\t 3502492 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  105504 kB\nVmRSS:\t  105504 kB\nRssAnon:\t   40732 kB\nRssFile:\t     424 kB\nRssShmem:\t   64348 kB\nVmData:\t 1347004 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95336 kB\nVmPTE:\t    3256 kB\nVmPMD:\t      32 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t145\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t9\nnonvoluntary_ctxt_switches:\t101\nrunning\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffffc11ef694c0>] 0xffffffc11ef694c0\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_346_BEGIN\n346 (SeqQueueCommon) R 1 0 0 0 -1 4194624 38 0 0 0 52 297 0 0 -2 0 145 0 1270 3586551808 26376 18446744073709551615 4194304 4229451 549032997536 0 0 0 0 4102 196608 0 0 0 -1 0 1 2 0 0 0 4295760 4298576 4300800 549032999409 549032999469 549032999469 549033000936 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_346_END\n"
+    },
+    {
+      "tid": 346,
+      "line": 33755,
+      "raw": "Name:\tSeqQueueCommon\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t221\nNgid:\t0\nPid:\t346\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7502980 kB\nVmSize:\t 7502980 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3290832 kB\nVmRSS:\t 3290832 kB\nRssAnon:\t   53520 kB\nRssFile:\t 3163628 kB\nRssShmem:\t   73684 kB\nVmData:\t 1723996 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95412 kB\nVmPTE:\t    7532 kB\nVmPMD:\t      40 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t188\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t155\nnonvoluntary_ctxt_switches:\t355\n29 0x3 0xffffffff80000007 0x7eee742560 0x7eee743140 0x7eee743248 0x7eee74215c 0x7eee7421a0 0x7fb1c74cbc\nFX3_TIMER_SNAPSHOT tid=836 bound=1 patch_mask=0xf timer_entry=72 id_compare=72 info=72 table=72 config=0 config_target=0 fill=1 event_seq=289 original_memory_read_only=1\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_UI_WIRE tid=836 target=0x8288076c op=4 tag1=0x6005 tag2=0 result=0 independent_of_unique_lock=1\nFX3_TASK_AFFINITY_346_BEGIN\nFX3_BOOT_QUEUE_SEND tid=225 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nFX3_TIMER_SNAPSHOT tid=308 bound=1 patch_mask=0xf timer_entry=72 id_compare=72 info=72 table=72 config=0 config_target=0 fill=1 event_seq=289 original_memory_read_only=1\nFX3_UI_WIRE tid=308 target=0x8288076c op=4 tag1=0x1 tag2=0 result=0 independent_of_unique_lock=1\nFX3_TIMER_SNAPSHOT tid=251 bound=1 patch_mask=0xf timer_entry=72 id_compare=72 info=72 table=72 config=0 config_target=0 fill=1 event_seq=289 original_memory_read_only=1\nFX3_UI_WIRE tid=251 target=0x8280074d op=4 tag1=0x1002 tag2=0 result=0 independent_of_unique_lock=1\n346 (SeqQueueCommon) S 1 0 0 0 -1 4194624 1282 0 0 0 74 529 0 0 -2 0 188 0 1270 7683051520 822708 18446744073709551615 4194304 4229451 549032997536 0 0 0 0 4102 196608 1 0 0 -1 2 1 2 0 0 0 4295760 4298576 4300800 549032999409 549032999469 549032999469 549033000936 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TIMER_SNAPSHOT tid=836 bound=1 patch_mask=0xf timer_entry=72 id_compare=72 info=72 table=72 config=0 config_target=0 fill=1 event_seq=289 original_memory_read_only=1\nFX3_UI_WIRE tid=836 target=0x8288076c op=4 tag1=0x6005 tag2=0 result=0 independent_of_unique_lock=1\nFX3_BOOT_QUEUE_SEND tid=224 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nFX3_TASK_AFFINITY_346_END\n"
+    },
+    {
+      "tid": 346,
+      "line": 52734,
+      "raw": "FX3_TIMER_SNAPSHOT tid=251 bound=1 patch_mask=0xf timer_entry=197 id_compare=197 info=197 table=197 config=0 config_target=0 fill=1 event_seq=789 original_memory_read_only=1\nFX3_UI_WIRE tid=251 target=0x8280074d op=4 tag1=0x1002 tag2=0 result=0 independent_of_unique_lock=1\nFX3_BOOT_QUEUE_SEND tid=224 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nName:\tSeqQueueCommon\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t221\nNgid:\t0\nPid:\t346\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7502980 kB\nVmSize:\t 7502980 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3290832 kB\nVmRSS:\t 3290832 kB\nRssAnon:\t   53520 kB\nRssFile:\t 3163628 kB\nRssShmem:\t   73684 kB\nVmData:\t 1723996 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95412 kB\nVmPTE:\t    7532 kB\nVmPMD:\t      40 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t188\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t155\nnonvoluntary_ctxt_switches:\t355\n29 0x3 0xffffffff80000007 0x7eee742560 0x7eee743140 0x7eee743248 0x7eee74215c 0x7eee7421a0 0x7fb1c74cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TIMER_SNAPSHOT tid=836 bound=1 patch_mask=0xf timer_entry=197 id_compare=197 info=197 table=197 config=0 config_target=0 fill=1 event_seq=789 original_memory_read_only=1\nFX3_UI_WIRE tid=836 target=0x8288076c op=4 tag1=0x6005 tag2=0 result=0 independent_of_unique_lock=1\nFX3_TASK_AFFINITY_346_BEGIN\nFX3_BOOT_QUEUE_SEND tid=225 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nFX3_TIMER_ENTRY seq=790 tid=308 widget=0x7f0653b168 id_object=0x7f580b4324 input_time=54267 ui_update=0 original=1\nFX3_TIMER_ID seq=791 tid=308 widget=0x7f0653b168 read=1 input_id=0x12 expected=0x12 result=0x1 branch_at=0x176fb80 taken_exit=0\nFX3_TIMER_TABLE seq=792 tid=308 widget=0x7f0653b168 manager=0x7f5800dde0 head=0x7f580b4320 head_read=1 result=0x1 hit=1 stored_time=10401 time_read=1 next_offset=0x30\nFX3_TIMER_INFO seq=793 tid=308 widget=0x7f0653b168 result=0x1 stored_time=10401 time_read=1 branch_at=0x176fbc0 taken_exit=0\nFX3_TIMER_SNAPSHOT tid=308 bound=1 patch_mask=0xf timer_entry=198 id_compare=198 info=198 table=198 config=0 config_target=0 fill=1 event_seq=793 original_memory_read_only=1\nFX3_UI_WIRE tid=308 target=0x8280074d op=4 tag1=0x1004 tag2=0 result=0 independent_of_unique_lock=1\nFX3_TIMER_RETURN seq=790 tid=308 result=0x7\n346 (SeqQueueCommon) S 1 0 0 0 -1 4194624 1282 0 0 0 74 529 0 0 -2 0 188 0 1270 7683051520 822708 18446744073709551615 4194304 4229451 549032997536 0 0 0 0 4102 196608 1 0 0 -1 2 1 2 0 0 0 4295760 4298576 4300800 549032999409 549032999469 549032999469 549033000936 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TIMER_SNAPSHOT tid=308 bound=1 patch_mask=0xf timer_entry=198 id_compare=198 info=198 table=198 config=0 config_target=0 fill=1 event_seq=793 original_memory_read_only=1\nFX3_UI_WIRE tid=308 target=0x8288076c op=4 tag1=0x1 tag2=0 result=0 independent_of_unique_lock=1\nFX3_BOOT_QUEUE_SEND tid=225 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nFX3_TIMER_SNAPSHOT tid=251 bound=1 patch_mask=0xf timer_entry=198 id_compare=198 info=198 table=198 config=0 config_target=0 fill=1 event_seq=793 original_memory_read_only=1\nFX3_UI_WIRE tid=251 target=0x8280074d op=4 tag1=0x1002 tag2=0 result=0 independent_of_unique_lock=1\nFX3_TIMER_SNAPSHOT tid=836 bound=1 patch_mask=0xf timer_entry=198 id_compare=198 info=198 table=198 config=0 config_target=0 fill=1 event_seq=793 original_memory_read_only=1\nFX3_UI_WIRE tid=836 target=0x8288076c op=4 tag1=0x6005 tag2=0 result=0 independent_of_unique_lock=1\nFX3_TASK_AFFINITY_346_END\n"
+    }
+  ],
+  "scope": "Native send+infinite receive and kernel thread wait support0400 blocking; originalCP reply contract not yet audited; no reply added",
+  "late_OSD_pair_block": {
+    "completed_seq": 1358,
+    "ACK_queued": 1358,
+    "native_signal_success": 1358,
+    "stage": 1,
+    "pending": "1005",
+    "unchanged_tail_host_seconds": 102.01709316699998,
+    "software_failure": 0,
+    "claim": "1002 observed for next batch; matching1005 descriptor never observed during tail; no ACK outstanding at1358",
+    "unproven_cause": "Original allocation/send/pool/queue path; passive shadow leaves original messages ownership unchanged. Do not infer pool exhaustion without allocator/thread evidence.",
+    "bounded_pair_deadline": "No explicit guest pair timeout implemented in current helper; owner bounded run terminates observation. Required before claiming complete robust consumer."
+  },
+  "pixel_readback": {
+    "observed_ring_snapshots": 232,
+    "observed_sequence_gaps": 1126,
+    "retained_on_host": 14,
+    "PNG_count": 28,
+    "unique_native_pixel_SHA256": [
+      "34c69899504b36f13e8b22120cf0fd894e61fcd6b046fb8535b79cc491fa3b3f"
+    ],
+    "all_retained_source_seq": [
+      1
+    ],
+    "first30_not_all_retained": "Observed sequence8..15 retained; sequences1..7 and16..30 overwritten before passive host samples; every30 retention applies only to observed slots, gaps logged",
+    "nonuniform": false,
+    "final545_payload614400_sha256": "34c69899504b36f13e8b22120cf0fd894e61fcd6b046fb8535b79cc491fa3b3f",
+    "matches_all_ring_pixels": true,
+    "PNG_viewed": "osd-frame-000008-format0-RGBA-opaque.png visually uniform black; RGBA/opaque logical interpretation only"
+  }
+}

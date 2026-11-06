@@ -1,0 +1,34 @@
+0000eb88: fd7bbca9 stp x29, x30, [sp, #-0x40]!
+0000eb8c: fd030091 mov x29, sp
+0000eb90: f35301a9 stp x19, x20, [sp, #0x10]
+0000eb94: 331c0053 uxtb w19, w1
+0000eb98: 61721d12 and w1, w19, #0xfffffff8
+0000eb9c: f55b02a9 stp x21, x22, [sp, #0x20]
+0000eba0: 3f200071 cmp w1, #8
+0000eba4: f76303a9 stp x23, x24, [sp, #0x30]
+0000eba8: 01010054 b.ne #0xebc8
+0000ebac: 00008052 mov w0, #0
+0000ebb0: f35341a9 ldp x19, x20, [sp, #0x10]
+0000ebb4: f55b42a9 ldp x21, x22, [sp, #0x20]
+0000ebb8: f76343a9 ldp x23, x24, [sp, #0x30]
+0000ebbc: fd7bc4a8 ldp x29, x30, [sp], #0x40
+0000ebc0: c0035fd6 ret 
+0000ebc4: 1f2003d5 nop 
+0000ebc8: 17060058 ldr x23, #0xec88
+0000ebcc: f40300aa mov x20, x0
+0000ebd0: 16060058 ldr x22, #0xec90
+0000ebd4: f503022a mov w21, w2
+0000ebd8: f8c20691 add x24, x23, #0x1b0
+0000ebdc: e0050058 ldr x0, #0xec98
+0000ebe0: e403132a mov w4, w19
+0000ebe4: e30318aa mov x3, x24
+0000ebe8: e10316aa mov x1, x22
+0000ebec: 02dc8152 mov w2, #0xee0
+0000ebf0: 00000094 bl #0xebf0 ; {'section': '.text', 'offset': 60400, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0000ebf4: 75010035 cbnz w21, #0xec20
+0000ebf8: e4de8152 mov w4, #0xef7
+0000ebfc: a0050058 ldr x0, #0xecb0
+0000ec00: e10316aa mov x1, x22
+0000ec04: e3c20691 add x3, x23, #0x1b0
+0000ec08: e203042a mov w2, w4
+0000ec0c: 00000094 bl #0xec0c ; {'section': '.text', 'offset': 60428, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}

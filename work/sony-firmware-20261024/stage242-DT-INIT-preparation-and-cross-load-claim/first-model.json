@@ -1,0 +1,314 @@
+{
+  "result": 11,
+  "fault": null,
+  "root_pid": 321,
+  "root_tid": 777,
+  "original_mask": 1024,
+  "final_mask": 1024,
+  "clones": [
+    {
+      "parent": 321,
+      "child": 5001,
+      "role": "collector",
+      "flags": 17,
+      "parent_mask": 18446744073709289215,
+      "private_VM_files_sighand": true,
+      "resume_pc": 1342326796,
+      "old_file_image_removed_before_first_child_instruction": true
+    },
+    {
+      "parent": 5001,
+      "child": 7002,
+      "role": "worker",
+      "flags": 0,
+      "parent_mask": 18446744073709289215,
+      "private_VM_files_sighand": true,
+      "resume_pc": 1342318524,
+      "old_file_image_removed_before_first_child_instruction": false
+    }
+  ],
+  "masks": [
+    {
+      "role": "caller",
+      "before": 1024,
+      "after": 18446744073709289215
+    },
+    {
+      "role": "caller",
+      "before": 18446744073709289215,
+      "after": 1024
+    }
+  ],
+  "mappings": [
+    {
+      "event": "anonymous_RW",
+      "raw": 1342181376,
+      "bytes": 327680,
+      "aligned": 1342242816
+    },
+    {
+      "event": "protect",
+      "address": 1342181376,
+      "bytes": 327680,
+      "permissions": 0
+    },
+    {
+      "event": "protect",
+      "address": 1342242816,
+      "bytes": 65536,
+      "permissions": 1
+    },
+    {
+      "event": "protect",
+      "address": 1342308352,
+      "bytes": 65536,
+      "permissions": 5
+    },
+    {
+      "event": "protect",
+      "address": 1342373888,
+      "bytes": 65536,
+      "permissions": 1
+    },
+    {
+      "event": "protect",
+      "address": 1342439424,
+      "bytes": 65536,
+      "permissions": 3
+    },
+    {
+      "event": "unmap_parent_copy",
+      "address": 1342181376,
+      "bytes": 327680
+    }
+  ],
+  "root_remaining_new_FDs": [],
+  "root_remaining_anonymous": [],
+  "borrowed_FDs_unchanged": true,
+  "messages": [
+    {
+      "sender": 5001,
+      "role": "collector",
+      "type": 3,
+      "plan_sha": "13c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb34",
+      "image_sha": "2a0981d69c983a30a57f0ef6c6badf54ba7927fa4c5ad6e81968ec5f77360067",
+      "issued": 1000001000,
+      "expires": 61000001000,
+      "payload_sha256": "d9b883f47155b001842827df747c22f86fa1bd3801f35918796aabb3de78c415"
+    },
+    {
+      "sender": 321,
+      "role": "caller",
+      "type": 4,
+      "plan_sha": "13c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb34",
+      "image_sha": "2a0981d69c983a30a57f0ef6c6badf54ba7927fa4c5ad6e81968ec5f77360067",
+      "issued": 1000001000,
+      "expires": 61000001000,
+      "payload_sha256": "d6fb2c564f9161d18a6362d69690a96c5008a63de7b68590dbd3b2b849abf167"
+    },
+    {
+      "sender": 5001,
+      "role": "collector",
+      "type": 1,
+      "plan_sha": "13c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb34",
+      "image_sha": "2a0981d69c983a30a57f0ef6c6badf54ba7927fa4c5ad6e81968ec5f77360067",
+      "issued": 1000001000,
+      "expires": 61000001000,
+      "payload_sha256": "a0a509d62ecba4fc7ec524a2dbe9dbdf0f3204ae38d61e2d1f2ba12aacffde7f"
+    },
+    {
+      "sender": 7002,
+      "role": "worker",
+      "type": 2,
+      "plan_sha": "13c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb34",
+      "image_sha": "2a0981d69c983a30a57f0ef6c6badf54ba7927fa4c5ad6e81968ec5f77360067",
+      "issued": 1000001000,
+      "expires": 61000001000,
+      "payload_sha256": "6aff58ed3f8d3f7323391f9c5b6d8f52665a5f300fb09b7d9a2893db4c9b840c"
+    }
+  ],
+  "received": [
+    {
+      "receiver": 321,
+      "fd": 4,
+      "object_pid": 5001
+    }
+  ],
+  "waits": [
+    {
+      "caller": 5001,
+      "pid": -1,
+      "flags": 1073741825,
+      "returned": -10,
+      "status": null
+    },
+    {
+      "caller": 5001,
+      "pid": 7002,
+      "flags": 2684354561,
+      "returned": 0,
+      "status": null
+    },
+    {
+      "caller": 5001,
+      "pid": 7002,
+      "flags": 2684354561,
+      "returned": 7002,
+      "status": 0
+    }
+  ],
+  "reaper": [
+    {
+      "reason": "saved parent mask restored after sentinel or cleanup",
+      "pid": 5001,
+      "status": 10752,
+      "only_fake_Sony_reaper_semantics": true
+    }
+  ],
+  "collector_status": 10752,
+  "collector_reaped": true,
+  "worker_status": 0,
+  "root_sleeps": 3,
+  "source_accesses": [],
+  "original_plan_sha": "13c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb34",
+  "errors": [],
+  "prepare_fault": null,
+  "file_events": [
+    {
+      "op": "open",
+      "role": "caller",
+      "path": "/proc/self/exe",
+      "fd": 3,
+      "flags": 524288
+    },
+    {
+      "op": "close",
+      "role": "caller",
+      "path": "/proc/self/exe",
+      "fd": 3
+    },
+    {
+      "op": "open",
+      "role": "caller",
+      "path": "/tmp/jiritsu/libJit.so",
+      "fd": 3,
+      "flags": 655360
+    },
+    {
+      "op": "close",
+      "role": "caller",
+      "path": "/tmp/jiritsu/libJit.so",
+      "fd": 3
+    },
+    {
+      "op": "open",
+      "role": "caller",
+      "path": "/tmp_wbshd",
+      "fd": 3,
+      "flags": 720896
+    },
+    {
+      "op": "open",
+      "role": "caller",
+      "path": "/tmp_wbshd/fx3-plan-preparation-v1",
+      "fd": 4,
+      "flags": 720896
+    },
+    {
+      "op": "open",
+      "role": "caller",
+      "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+      "fd": 5,
+      "flags": 655554
+    },
+    {
+      "op": "write",
+      "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+      "bytes": 256
+    },
+    {
+      "op": "close",
+      "role": "caller",
+      "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+      "fd": 5
+    },
+    {
+      "op": "open",
+      "role": "caller",
+      "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+      "fd": 5,
+      "flags": 655554
+    },
+    {
+      "op": "write",
+      "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+      "bytes": 256
+    },
+    {
+      "op": "close",
+      "role": "caller",
+      "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+      "fd": 5
+    },
+    {
+      "op": "open",
+      "role": "caller",
+      "path": "/tmp_wbshd/fx3-entry-plan-v1.bin",
+      "fd": 5,
+      "flags": 655360
+    },
+    {
+      "op": "close",
+      "role": "caller",
+      "path": "/tmp_wbshd/fx3-entry-plan-v1.bin",
+      "fd": 5
+    },
+    {
+      "op": "close",
+      "role": "caller",
+      "path": "/tmp_wbshd/fx3-plan-preparation-v1",
+      "fd": 4
+    },
+    {
+      "op": "close",
+      "role": "caller",
+      "path": "/tmp_wbshd",
+      "fd": 3
+    }
+  ],
+  "publications": [
+    {
+      "path": "/tmp_wbshd/fx3-entry-plan-v1.bin",
+      "bytes": 256,
+      "sha256": "13c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb34"
+    }
+  ],
+  "claims": [
+    {
+      "pid": 321,
+      "result": 0
+    }
+  ],
+  "other_results": [],
+  "clock_calls": 20,
+  "files": {
+    "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+      "mode": 33152,
+      "bytes": 256,
+      "sha256": "55adebc0ac4754d1b52eb0ef94fa14a4a2c2e8ff8242b9370af302bb5b8ede7d",
+      "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb2adb116b957ba8712dae2dfd4a801505e047bc9b3e9312d1f5bb83b408ca3b7113c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb342a0981d69c983a30a57f0ef6c6badf54ba7927fa4c5ad6e81968ec5f77360067e8cd9a3b00000000e825e2330e0000001cdd54555420443562bcb7c08454954933c2c4290235bb6b7fd955a1d29aa7df01000000000000000900000000000000a486010000000000000000000000000000000000000000000000000000000000000000000000000000000000138ed174",
+      "ino": 100005
+    },
+    "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+      "mode": 33152,
+      "bytes": 256,
+      "sha256": "13c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb34",
+      "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd2a0981d69c983a30a57f0ef6c6badf54ba7927fa4c5ad6e81968ec5f77360067e8cd9a3b00000000e825e2330e0000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000978fb22e",
+      "ino": 100004
+    }
+  },
+  "full_file_sha256": "2adb116b957ba8712dae2dfd4a801505e047bc9b3e9312d1f5bb83b408ca3b71",
+  "immutable_image_id": "2a0981d69c983a30a57f0ef6c6badf54ba7927fa4c5ad6e81968ec5f77360067",
+  "original_published_plan_sha256": "13c93a099f429b4c60b6865e4dd49cb801b3d93791b36de3aade1598d098cb34",
+  "original_Sony_im_file_hashed_not_executed": true
+}

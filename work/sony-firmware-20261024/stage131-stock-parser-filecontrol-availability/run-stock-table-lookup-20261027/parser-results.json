@@ -1,0 +1,789 @@
+{
+  "status": "PASS_STOCK_PFUNC_TABLES_EXCLUDE_FF01_FF03_WITH_ORIGINAL_PARSE_LOOKUP_NOT_DEVICE_PROTOCOL",
+  "created_utc": "2026-10-27T18:45:39.897854+00:00",
+  "source_sha256": "f77a4dfbac8c97ea6568730b1f234056472bd5d0ae73e78be849aa29bf408f9e",
+  "stock_tables": [
+    {
+      "name": "pFunc_level_A",
+      "VA": 440392,
+      "size": 112,
+      "raw_bytes": "1000000000000000000000000000000020000000000000000000000000000000300000000000000000000000000000004000000000000000000000000000000000ff000000000000000000000000000002ff000000000000000000000000000000000000000000000000000000000000",
+      "rows": [
+        {
+          "row": "0x6b848",
+          "pFunc": 16,
+          "callback": "_Z15ProductInfoFuncPK12SenserPacket",
+          "target": "0xeabc"
+        },
+        {
+          "row": "0x6b858",
+          "pFunc": 32,
+          "callback": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+          "target": "0xec08"
+        },
+        {
+          "row": "0x6b868",
+          "pFunc": 48,
+          "callback": "_Z15MiconAccessFuncPK12SenserPacket",
+          "target": "0xeba8"
+        },
+        {
+          "row": "0x6b878",
+          "pFunc": 64,
+          "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+          "target": "0x10344"
+        },
+        {
+          "row": "0x6b888",
+          "pFunc": 65280,
+          "callback": "_Z8TestModePK12SenserPacket",
+          "target": "0xec10"
+        },
+        {
+          "row": "0x6b898",
+          "pFunc": 65282,
+          "callback": "_Z9SonarFuncPK12SenserPacket",
+          "target": "0xec9c"
+        },
+        {
+          "row": "0x6b8a8",
+          "pFunc": 0,
+          "callback": null,
+          "target": "0x0"
+        }
+      ]
+    },
+    {
+      "name": "pFunc_level_B",
+      "VA": 440504,
+      "size": 64,
+      "raw_bytes": "40000000000000000000000000000000100000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000",
+      "rows": [
+        {
+          "row": "0x6b8b8",
+          "pFunc": 64,
+          "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+          "target": "0x10344"
+        },
+        {
+          "row": "0x6b8c8",
+          "pFunc": 16,
+          "callback": "_Z15ProductInfoFuncPK12SenserPacket",
+          "target": "0xeabc"
+        },
+        {
+          "row": "0x6b8d8",
+          "pFunc": 32,
+          "callback": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+          "target": "0xec08"
+        },
+        {
+          "row": "0x6b8e8",
+          "pFunc": 0,
+          "callback": null,
+          "target": "0x0"
+        }
+      ]
+    },
+    {
+      "name": "pFunc_level_C",
+      "VA": 440568,
+      "size": 32,
+      "raw_bytes": "4000000000000000000000000000000000000000000000000000000000000000",
+      "rows": [
+        {
+          "row": "0x6b8f8",
+          "pFunc": 64,
+          "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+          "target": "0x10344"
+        },
+        {
+          "row": "0x6b908",
+          "pFunc": 0,
+          "callback": null,
+          "target": "0x0"
+        }
+      ]
+    }
+  ],
+  "local_guest_links": [
+    {
+      "offset": 437952,
+      "type": "R_AARCH64_GLOB_DAT",
+      "symbol": "pFunc",
+      "target": 442272
+    },
+    {
+      "offset": 440400,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z15ProductInfoFuncPK12SenserPacket",
+      "target": 60092
+    },
+    {
+      "offset": 440416,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+      "target": 60424
+    },
+    {
+      "offset": 440432,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z15MiconAccessFuncPK12SenserPacket",
+      "target": 60328
+    },
+    {
+      "offset": 440448,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "target": 66372
+    },
+    {
+      "offset": 440464,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z8TestModePK12SenserPacket",
+      "target": 60432
+    },
+    {
+      "offset": 440480,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z9SonarFuncPK12SenserPacket",
+      "target": 60572
+    },
+    {
+      "offset": 440512,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "target": 66372
+    },
+    {
+      "offset": 440528,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z15ProductInfoFuncPK12SenserPacket",
+      "target": 60092
+    },
+    {
+      "offset": 440544,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+      "target": 60424
+    },
+    {
+      "offset": 440576,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "target": 66372
+    }
+  ],
+  "cases": [
+    {
+      "declared_table": "pFunc_level_A",
+      "declared_pFunc": "0x40",
+      "matched_callback": {
+        "row": "0x6b878",
+        "pFunc": 64,
+        "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+        "target": "0x10344"
+      },
+      "reason": "before_original_callback_BLR",
+      "stop_pc": "0xea28",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea28"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": "pFunc_level_A",
+      "declared_pFunc": "0xff01",
+      "matched_callback": null,
+      "reason": "before_original_fallback_allocation",
+      "stop_pc": "0xa6b0",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea30",
+        "0xea34",
+        "0xa6b0"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": "pFunc_level_A",
+      "declared_pFunc": "0xff03",
+      "matched_callback": null,
+      "reason": "before_original_fallback_allocation",
+      "stop_pc": "0xa6b0",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea30",
+        "0xea34",
+        "0xa6b0"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": "pFunc_level_B",
+      "declared_pFunc": "0x40",
+      "matched_callback": {
+        "row": "0x6b8b8",
+        "pFunc": 64,
+        "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+        "target": "0x10344"
+      },
+      "reason": "before_original_callback_BLR",
+      "stop_pc": "0xea28",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea28"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": "pFunc_level_B",
+      "declared_pFunc": "0xff01",
+      "matched_callback": null,
+      "reason": "before_original_fallback_allocation",
+      "stop_pc": "0xa6b0",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea30",
+        "0xea34",
+        "0xa6b0"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": "pFunc_level_B",
+      "declared_pFunc": "0xff03",
+      "matched_callback": null,
+      "reason": "before_original_fallback_allocation",
+      "stop_pc": "0xa6b0",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea30",
+        "0xea34",
+        "0xa6b0"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": "pFunc_level_C",
+      "declared_pFunc": "0x40",
+      "matched_callback": {
+        "row": "0x6b8f8",
+        "pFunc": 64,
+        "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+        "target": "0x10344"
+      },
+      "reason": "before_original_callback_BLR",
+      "stop_pc": "0xea28",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea28"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": "pFunc_level_C",
+      "declared_pFunc": "0xff01",
+      "matched_callback": null,
+      "reason": "before_original_fallback_allocation",
+      "stop_pc": "0xa6b0",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea30",
+        "0xea34",
+        "0xa6b0"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": "pFunc_level_C",
+      "declared_pFunc": "0xff03",
+      "matched_callback": null,
+      "reason": "before_original_fallback_allocation",
+      "stop_pc": "0xa6b0",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea10",
+        "0xea14",
+        "0xea18",
+        "0xea1c",
+        "0xea20",
+        "0xea24",
+        "0xea10",
+        "0xea14",
+        "0xea30",
+        "0xea34",
+        "0xa6b0"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    },
+    {
+      "declared_table": null,
+      "declared_pFunc": "0x40",
+      "matched_callback": null,
+      "reason": "before_original_fallback_allocation",
+      "stop_pc": "0xa6b0",
+      "pcs": [
+        "0xe9f4",
+        "0xe9f8",
+        "0xe9fc",
+        "0xea00",
+        "0xea04",
+        "0xea08",
+        "0xea0c",
+        "0xea30",
+        "0xea34",
+        "0xa6b0"
+      ],
+      "stores": [
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe0",
+          "size": 8
+        },
+        {
+          "pc": "0xe9f8",
+          "address": "0x1001ffe8",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff0",
+          "size": 8
+        },
+        {
+          "pc": "0xea04",
+          "address": "0x1001fff8",
+          "size": 8
+        }
+      ],
+      "images_scratch_and_stack_outside_32_bytes_unchanged": true,
+      "packet_transport_auth_real_table_selection_callback_allocator_or_IO_executed": false
+    }
+  ],
+  "actual_Mac_cache_camera_Windows_or_host_services_executed": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

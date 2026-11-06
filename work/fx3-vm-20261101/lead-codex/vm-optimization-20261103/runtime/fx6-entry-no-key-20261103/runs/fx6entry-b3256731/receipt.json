@@ -1,0 +1,56 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-b3256731",
+  "created_utc": "2026-11-03T16:42:47.379925+00:00",
+  "duration_seconds": 5.554168957984075,
+  "stop_cause": "host_exception",
+  "host_error": "OSError('AF_UNIX path too long')",
+  "qemu_pid": 30381,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_pins": {
+    "baseline": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+    "source": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+    "candidate": "ff2f927de24b801d334ce9111fb486fb2af85d24c509ab20c43eda0a69ffdc40",
+    "old_cpio": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+  },
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free": true
+    }
+  ],
+  "serial": {
+    "available": true,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "first": {
+      "verify": null,
+      "list": null,
+      "true": null,
+      "not_ready": null,
+      "natural_bootin": null,
+      "im_map": null,
+      "ipc_send": null
+    },
+    "im_process_label_count": 0,
+    "synthetic_key_count": 0,
+    "first_boot_ipc_is_send_only": true
+  },
+  "serial_health_failure": null,
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": false,
+    "quit_sent": false
+  },
+  "key_steps": 0,
+  "synthetic_events": 0,
+  "fx3_platform_unchanged": true,
+  "fx6_system_or_menu_proven": false,
+  "im_PT_LOAD_new_logic_proven": false
+}

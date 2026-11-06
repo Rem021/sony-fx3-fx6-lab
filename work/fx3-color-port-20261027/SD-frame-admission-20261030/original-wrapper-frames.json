@@ -1,0 +1,119 @@
+{
+  "packages": [
+    {
+      "source": "work/sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+      "bytes": 811876768,
+      "sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+      "chunks_through_first_FDAT": [
+        {
+          "header_offset": 8,
+          "payload_offset": 16,
+          "tag": "DATV",
+          "bytes": 4
+        },
+        {
+          "header_offset": 20,
+          "payload_offset": 28,
+          "tag": "PROV",
+          "bytes": 4
+        },
+        {
+          "header_offset": 32,
+          "payload_offset": 40,
+          "tag": "UDID",
+          "bytes": 84
+        },
+        {
+          "header_offset": 124,
+          "payload_offset": 132,
+          "tag": "FDAT",
+          "bytes": 811876624
+        }
+      ],
+      "trailing_DEND_bytes": 12,
+      "ciphertext_bytes": 811876352,
+      "signed_bytes": 811876368,
+      "signature_offset_in_FDAT": 811876368,
+      "IV_offset_in_FDAT": 811876352,
+      "existing_RSA_evidence_reused": true,
+      "RSA_not_reexecuted": true
+    },
+    {
+      "source": "work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA1Data_ILMEFX3V204.dat",
+      "bytes": 779108760,
+      "sha256": "774982ecfbeae1cd9d822a2da6599cc390438ae4012b3f9ba8c43e75ec4e9068",
+      "chunks_through_first_FDAT": [
+        {
+          "header_offset": 8,
+          "payload_offset": 16,
+          "tag": "DATV",
+          "bytes": 4
+        },
+        {
+          "header_offset": 20,
+          "payload_offset": 28,
+          "tag": "PROV",
+          "bytes": 4
+        },
+        {
+          "header_offset": 32,
+          "payload_offset": 40,
+          "tag": "UDID",
+          "bytes": 76
+        },
+        {
+          "header_offset": 116,
+          "payload_offset": 124,
+          "tag": "FDAT",
+          "bytes": 779108624
+        }
+      ],
+      "trailing_DEND_bytes": 12,
+      "ciphertext_bytes": 779108352,
+      "signed_bytes": 779108368,
+      "signature_offset_in_FDAT": 779108368,
+      "IV_offset_in_FDAT": 779108352,
+      "existing_RSA_evidence_reused": true,
+      "RSA_not_reexecuted": true
+    },
+    {
+      "source": "work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA2Data_ILMEFX3V205.dat",
+      "bytes": 756424088,
+      "sha256": "dc411c1e1ea77e1c8614d6045a345d85553e46f60ec9105e6236299a3620740a",
+      "chunks_through_first_FDAT": [
+        {
+          "header_offset": 8,
+          "payload_offset": 16,
+          "tag": "DATV",
+          "bytes": 4
+        },
+        {
+          "header_offset": 20,
+          "payload_offset": 28,
+          "tag": "PROV",
+          "bytes": 4
+        },
+        {
+          "header_offset": 32,
+          "payload_offset": 40,
+          "tag": "UDID",
+          "bytes": 76
+        },
+        {
+          "header_offset": 116,
+          "payload_offset": 124,
+          "tag": "FDAT",
+          "bytes": 756423952
+        }
+      ],
+      "trailing_DEND_bytes": 12,
+      "ciphertext_bytes": 756423680,
+      "signed_bytes": 756423696,
+      "signature_offset_in_FDAT": 756423696,
+      "IV_offset_in_FDAT": 756423680,
+      "existing_RSA_evidence_reused": true,
+      "RSA_not_reexecuted": true
+    }
+  ],
+  "scope": "Original file framing and existing signed interval evidence only; no altered package."
+}

@@ -1,0 +1,137 @@
+{
+  "Start_POST": {
+    "UTC_request_start": "2026-11-05T03:48:00.77292288Z",
+    "duration_ms": 1.1709999802187085,
+    "endpoint": "start",
+    "request_body_text": "{\"request_id\":\"d3cea3e0-d910-4050-aa16-0932e595f25c\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"request_id\": \"d3cea3e0-d910-4050-aa16-0932e595f25c\", \"guest_spawned_by_http\": false}"
+  },
+  "first_frame_clock": {
+    "limit_seconds": 180,
+    "start_monotonic": 434166.237438625,
+    "UTC": "2026-11-05T03:48:01.339409+00:00",
+    "host_ns": 434166841697166
+  },
+  "last_startup_poll": {
+    "argv": [
+      "agent-browser",
+      "--session",
+      "fx3-deadline-r28-cb12b6256797",
+      "eval",
+      "--stdin"
+    ],
+    "start": {
+      "UTC": "2026-11-05T03:51:00.041559+00:00",
+      "host_ns": 434345543413250
+    },
+    "end": {
+      "UTC": "2026-11-05T03:51:00.049856+00:00",
+      "host_ns": 434345551710000
+    },
+    "returncode": 0,
+    "stdout": "{\n  \"error\": null,\n  \"finished\": false,\n  \"loaded\": false,\n  \"phase\": \"starting\",\n  \"ready\": false\n}\n",
+    "stderr": ""
+  },
+  "startup_failure": {
+    "error": "RuntimeError('first frame not ready by 180 seconds')",
+    "UTC": "2026-11-05T03:51:01.057599+00:00",
+    "host_ns": 434346559450916
+  },
+  "startup_failure_at_seconds": 180.32201229099883,
+  "End_tool": {
+    "argv": [
+      "agent-browser",
+      "--session",
+      "fx3-deadline-r28-cb12b6256797",
+      "eval",
+      "--stdin"
+    ],
+    "start": {
+      "UTC": "2026-11-05T03:51:01.104287+00:00",
+      "host_ns": 434346606129583
+    },
+    "end": {
+      "UTC": "2026-11-05T03:51:01.124407+00:00",
+      "host_ns": 434346626251916
+    },
+    "returncode": 0,
+    "stdout": "{\n  \"End_invoked\": true\n}\n",
+    "stderr": ""
+  },
+  "End_tool_start_at_seconds": 180.36869095795555,
+  "stop_POST": {
+    "UTC_request_start": "2026-11-05T03:51:01.115731968Z",
+    "duration_ms": 0.9090000231973827,
+    "endpoint": "stop",
+    "request_body_text": "{}",
+    "status": 202,
+    "response_body_text": "{\"stopping\": true}"
+  },
+  "first_HAR_status_with_frame": {
+    "UTC_request_start": "2026-11-05T03:51:01.60269696Z",
+    "duration_ms": 0.7889999350421131,
+    "phase": "stopping",
+    "ready": false,
+    "frame": {
+      "sequence": 1,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x2846744330ced770",
+      "sha256": "b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051",
+      "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 434346.781459375,
+      "committed_slot": 0,
+      "native_identity": {
+        "FB": "0x7f4c001160",
+        "bitmap": "0x7f5000c2a0",
+        "entry": "0x7f4c001198",
+        "allocation": "0x4c001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x2886049",
+        "config_hash": "0xba34d6cd06dc0e8",
+        "bits_cpu_VA": "0x7edf797100",
+        "map_begin": "0x7edf797000",
+        "map_end": "0x7edf82e000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "content_generation": 1
+    }
+  },
+  "ready_true_status_entries": [],
+  "late_frame_host_observation_after_End_tool_start_seconds": 0.17532979202223942,
+  "ended_page_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-vm-cb12b6256797/ended-page.png",
+  "ended_page_sha256": "579bf13d12905996add777b5b63c039bdb54c23d442f9a39c9a1fd1b6178d255",
+  "ended_page_actual_review": "End后亲看结束页，显示HD Fixed-59.94fps、F、AF-C、±0.0/AWB等较晚图标；该页为finished/0键/健康未通过，不作为合格待机或八步成功。",
+  "model_received_at": "unknown",
+  "model_review_completed_at": "unknown",
+  "limits": "HAR time is request start; frame host observation and browser compositor/model receipt are different boundaries"
+}

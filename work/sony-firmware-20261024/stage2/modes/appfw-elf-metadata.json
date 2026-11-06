@@ -1,0 +1,262 @@
+{
+  "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+  "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "size": 79015712,
+  "elf_class": 64,
+  "machine": "EM_AARCH64",
+  "entry": "0x1594680",
+  "type": "ET_DYN",
+  "sections": [
+    {
+      "name": "",
+      "offset": 0,
+      "addr": "0x0",
+      "size": 0,
+      "type": "SHT_NULL"
+    },
+    {
+      "name": ".gnu.hash",
+      "offset": 400,
+      "addr": "0x190",
+      "size": 36,
+      "type": "SHT_GNU_HASH"
+    },
+    {
+      "name": ".dynsym",
+      "offset": 440,
+      "addr": "0x1b8",
+      "size": 19272,
+      "type": "SHT_DYNSYM"
+    },
+    {
+      "name": ".dynstr",
+      "offset": 19712,
+      "addr": "0x4d00",
+      "size": 32172,
+      "type": "SHT_STRTAB"
+    },
+    {
+      "name": ".gnu.version",
+      "offset": 51884,
+      "addr": "0xcaac",
+      "size": 1606,
+      "type": "SHT_GNU_versym"
+    },
+    {
+      "name": ".gnu.version_r",
+      "offset": 53496,
+      "addr": "0xd0f8",
+      "size": 400,
+      "type": "SHT_GNU_verneed"
+    },
+    {
+      "name": ".rela.dyn",
+      "offset": 53896,
+      "addr": "0xd288",
+      "size": 22544808,
+      "type": "SHT_RELA"
+    },
+    {
+      "name": ".rela.plt",
+      "offset": 22598704,
+      "addr": "0x158d430",
+      "size": 17520,
+      "type": "SHT_RELA"
+    },
+    {
+      "name": ".init",
+      "offset": 22616224,
+      "addr": "0x15918a0",
+      "size": 20,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".plt",
+      "offset": 22616256,
+      "addr": "0x15918c0",
+      "size": 11712,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".text",
+      "offset": 22627968,
+      "addr": "0x1594680",
+      "size": 27215176,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".fini",
+      "offset": 49843144,
+      "addr": "0x2f88bc8",
+      "size": 16,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".rodata",
+      "offset": 49843168,
+      "addr": "0x2f88be0",
+      "size": 14158234,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".eh_frame_hdr",
+      "offset": 64001404,
+      "addr": "0x3d0957c",
+      "size": 2780,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".eh_frame",
+      "offset": 64004184,
+      "addr": "0x3d0a058",
+      "size": 16972,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".gcc_except_table",
+      "offset": 64021156,
+      "addr": "0x3d0e2a4",
+      "size": 5369,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".init_array",
+      "offset": 64028672,
+      "addr": "0x3d20000",
+      "size": 2344,
+      "type": "SHT_INIT_ARRAY"
+    },
+    {
+      "name": ".fini_array",
+      "offset": 64031016,
+      "addr": "0x3d20928",
+      "size": 8,
+      "type": "SHT_FINI_ARRAY"
+    },
+    {
+      "name": ".jcr",
+      "offset": 64031024,
+      "addr": "0x3d20930",
+      "size": 8,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".data.rel.ro",
+      "offset": 64031032,
+      "addr": "0x3d20938",
+      "size": 10302960,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".dynamic",
+      "offset": 74333992,
+      "addr": "0x46f3f28",
+      "size": 736,
+      "type": "SHT_DYNAMIC"
+    },
+    {
+      "name": ".got",
+      "offset": 74334728,
+      "addr": "0x46f4208",
+      "size": 884192,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".got.plt",
+      "offset": 75218920,
+      "addr": "0x47cbfe8",
+      "size": 5880,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".data",
+      "offset": 75224800,
+      "addr": "0x47cd6e0",
+      "size": 3788880,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".bss",
+      "offset": 79013680,
+      "addr": "0x4b6a730",
+      "size": 86356040,
+      "type": "SHT_NOBITS"
+    },
+    {
+      "name": ".comment",
+      "offset": 79013680,
+      "addr": "0x0",
+      "size": 64,
+      "type": "SHT_PROGBITS"
+    },
+    {
+      "name": ".shstrtab",
+      "offset": 79013744,
+      "addr": "0x0",
+      "size": 238,
+      "type": "SHT_STRTAB"
+    }
+  ],
+  "segments": [
+    {
+      "p_type": "PT_LOAD",
+      "p_flags": 5,
+      "p_offset": 0,
+      "p_vaddr": 0,
+      "p_paddr": 0,
+      "p_filesz": 64026525,
+      "p_memsz": 64026525,
+      "p_align": 65536
+    },
+    {
+      "p_type": "PT_LOAD",
+      "p_flags": 6,
+      "p_offset": 64028672,
+      "p_vaddr": 64094208,
+      "p_paddr": 64094208,
+      "p_filesz": 14985008,
+      "p_memsz": 101341048,
+      "p_align": 65536
+    },
+    {
+      "p_type": "PT_DYNAMIC",
+      "p_flags": 6,
+      "p_offset": 74333992,
+      "p_vaddr": 74399528,
+      "p_paddr": 74399528,
+      "p_filesz": 736,
+      "p_memsz": 736,
+      "p_align": 8
+    },
+    {
+      "p_type": "PT_GNU_EH_FRAME",
+      "p_flags": 4,
+      "p_offset": 64001404,
+      "p_vaddr": 64001404,
+      "p_paddr": 64001404,
+      "p_filesz": 2780,
+      "p_memsz": 2780,
+      "p_align": 4
+    },
+    {
+      "p_type": "PT_GNU_STACK",
+      "p_flags": 6,
+      "p_offset": 0,
+      "p_vaddr": 0,
+      "p_paddr": 0,
+      "p_filesz": 0,
+      "p_memsz": 0,
+      "p_align": 16
+    },
+    {
+      "p_type": "PT_GNU_RELRO",
+      "p_flags": 4,
+      "p_offset": 64028672,
+      "p_vaddr": 64094208,
+      "p_paddr": 64094208,
+      "p_filesz": 11190272,
+      "p_memsz": 11190272,
+      "p_align": 1
+    }
+  ]
+}

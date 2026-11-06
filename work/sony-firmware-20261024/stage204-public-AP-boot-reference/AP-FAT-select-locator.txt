@@ -1,0 +1,59 @@
+fe059e94 fb6bbba9 stp      x27, x26, [sp, #-0x50]!
+fe059e98 f37b04a9 stp      x19, x30, [sp, #0x40]
+fe059e9c f303002a mov      w19, w0
+fe059ea0 610000b0 adrp     x1, #0xfe066000
+fe059ea4 21242391 add      x1, x1, #0x8c9
+fe059ea8 e0071f32 mov      w0, #6
+fe059eac e203132a mov      w2, w19
+fe059eb0 f96301a9 stp      x25, x24, [sp, #0x10]
+fe059eb4 f75b02a9 stp      x23, x22, [sp, #0x20]
+fe059eb8 f55303a9 stp      x21, x20, [sp, #0x30]
+fe059ebc 9dedff97 bl       #0xfe055530
+fe059ec0 7f020071 cmp      w19, #0
+fe059ec4 4d010054 b.le     #0xfe059eec
+fe059ec8 880000b0 adrp     x8, #0xfe06a000
+fe059ecc 08d94e39 ldrb     w8, [x8, #0x3b6]
+fe059ed0 48010036 tbz      w8, #0, #0xfe059ef8
+fe059ed4 970000b0 adrp     x23, #0xfe06a000
+fe059ed8 e83a43b9 ldr      w8, [x23, #0x338]
+fe059edc 1f01136b cmp      w8, w19
+fe059ee0 21010054 b.ne     #0xfe059f04
+fe059ee4 e0031f2a mov      w0, wzr
+fe059ee8 46000014 b        #0xfe05a000
+fe059eec 610000b0 adrp     x1, #0xfe066000
+fe059ef0 21e42991 add      x1, x1, #0xa79
+fe059ef4 40000014 b        #0xfe059ff4
+fe059ef8 610000b0 adrp     x1, #0xfe066000
+fe059efc 21342c91 add      x1, x1, #0xb0d
+fe059f00 3d000014 b        #0xfe059ff4
+fe059f04 940000b0 adrp     x20, #0xfe06a000
+fe059f08 94022891 add      x20, x20, #0xa00
+fe059f0c e3030032 mov      w3, #1
+fe059f10 e003132a mov      w0, w19
+fe059f14 e10314aa mov      x1, x20
+fe059f18 e2031f2a mov      w2, wzr
+fe059f1c f33a03b9 str      w19, [x23, #0x338]
+fe059f20 0dfbff97 bl       #0xfe058b54
+fe059f24 80000034 cbz      w0, #0xfe059f34
+fe059f28 610000b0 adrp     x1, #0xfe066000
+fe059f2c 21041f91 add      x1, x1, #0x7c1
+fe059f30 2d000014 b        #0xfe059fe4
+fe059f34 88fa4739 ldrb     w8, [x20, #0x1fe]
+fe059f38 89fe4739 ldrb     w9, [x20, #0x1ff]
+fe059f3c 281d1833 bfi      w8, w9, #8, #8
+fe059f40 a94a9552 mov      w9, #0xaa55
+fe059f44 1f01096b cmp      w8, w9
+fe059f48 e1030054 b.ne     #0xfe059fc4
+fe059f4c 882e4039 ldrb     w8, [x20, #0xb]
+fe059f50 89324039 ldrb     w9, [x20, #0xc]
+fe059f54 281d1833 bfi      w8, w9, #8, #8
+fe059f58 1f010871 cmp      w8, #0x200
+fe059f5c a1030054 b.ne     #0xfe059fd0
+fe059f60 88364039 ldrb     w8, [x20, #0xd]
+fe059f64 980000b0 adrp     x24, #0xfe06a000
+fe059f68 09591753 lsl      w9, w8, #9
+fe059f6c 1f810071 cmp      w8, #0x20
+fe059f70 093303b9 str      w9, [x24, #0x330]
+fe059f74 41030054 b.ne     #0xfe059fdc
+fe059f78 955a4039 ldrb     w21, [x20, #0x16]
+fe059f7c 885e4039 ldrb     w8, [x20, #0x17]

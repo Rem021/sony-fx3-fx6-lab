@@ -1,0 +1,110 @@
+{
+  "source_sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+  "entry_offset": "0x2a650c",
+  "entry_va": "0xffffffc0012a650c",
+  "function_original_bytes_sha256": "e782906894cdd55292e589ba0f7d73dbc547a1cad398754dfdd2055a425793ca",
+  "scope": "isolated ARM64 CPU function, original FX6 bytes, bounded PC and memory writes; no VM/OS/ISP/DMA/camera",
+  "cases": [
+    {
+      "input": -1,
+      "returned": 0,
+      "instructions": 218,
+      "output_sha256": "60bf07c488aad18fda339df07e4fbc47b4f00be71711936f18d04d352ad01890",
+      "matches_original_table_record": false,
+      "write_count": 4,
+      "pc_range": [
+        "0x2a650c",
+        "0x2a6598"
+      ]
+    },
+    {
+      "input": 0,
+      "returned": 0,
+      "instructions": 218,
+      "output_sha256": "60bf07c488aad18fda339df07e4fbc47b4f00be71711936f18d04d352ad01890",
+      "matches_original_table_record": false,
+      "write_count": 4,
+      "pc_range": [
+        "0x2a650c",
+        "0x2a6598"
+      ]
+    },
+    {
+      "input": 1,
+      "returned": 1,
+      "instructions": 25,
+      "output_sha256": "4a85ae38ab58f31a7708b771cb5d78fe666584d614318b9bd5dfdd958666eb4e",
+      "matches_original_table_record": true,
+      "write_count": 8,
+      "pc_range": [
+        "0x2a650c",
+        "0x2a6598"
+      ],
+      "index": 1,
+      "descriptor_array_offset": "0xa88bd0",
+      "descriptor_count": 22,
+      "name": "MLUT_LOOKNAME_SL3SG3C_THRU"
+    },
+    {
+      "input": 16,
+      "returned": 1,
+      "instructions": 130,
+      "output_sha256": "b47642fca28b7acfb70990156157e107a856111a52d864da234d477d8dcdbec6",
+      "matches_original_table_record": true,
+      "write_count": 8,
+      "pc_range": [
+        "0x2a650c",
+        "0x2a6598"
+      ],
+      "index": 16,
+      "descriptor_array_offset": "0xa9a540",
+      "descriptor_count": 70,
+      "name": "MLUT_LOOKNAME_SL3SG3C_TO_VINTAGE"
+    },
+    {
+      "input": 22,
+      "returned": 1,
+      "instructions": 172,
+      "output_sha256": "411e7b6ac81ddc43f4a23eccaad3cbff8d18dfef14078b0f2235670e87a4b693",
+      "matches_original_table_record": true,
+      "write_count": 8,
+      "pc_range": [
+        "0x2a650c",
+        "0x2a6598"
+      ],
+      "index": 22,
+      "descriptor_array_offset": "0xaa2ca0",
+      "descriptor_count": 70,
+      "name": "MLUT_LOOKNAME_SL3SG3_TO_ACESREC709"
+    },
+    {
+      "input": 29,
+      "returned": 1,
+      "instructions": 221,
+      "output_sha256": "f67f4dbe20ce30dada2af09732e874a07b426a7ea252f98743f4e7621d7d1812",
+      "matches_original_table_record": true,
+      "write_count": 8,
+      "pc_range": [
+        "0x2a650c",
+        "0x2a6598"
+      ],
+      "index": 29,
+      "descriptor_array_offset": "0xab1690",
+      "descriptor_count": 70,
+      "name": "MLUT_LOOKNAME_SL3SG3_TO_WARM"
+    },
+    {
+      "input": 30,
+      "returned": 0,
+      "instructions": 218,
+      "output_sha256": "60bf07c488aad18fda339df07e4fbc47b4f00be71711936f18d04d352ad01890",
+      "matches_original_table_record": false,
+      "write_count": 4,
+      "pc_range": [
+        "0x2a650c",
+        "0x2a6598"
+      ]
+    }
+  ],
+  "result": "PASS"
+}

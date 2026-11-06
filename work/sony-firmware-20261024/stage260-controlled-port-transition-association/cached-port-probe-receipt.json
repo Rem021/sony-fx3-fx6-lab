@@ -1,0 +1,30 @@
+{
+  "recorded_utc": "2026-11-01T06:07:48.181007+00:00",
+  "compile_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage260-controlled-port-transition-association/port_anchor.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage260-controlled-port-transition-association/cached_port_probe.c",
+    "-framework",
+    "IOKit",
+    "-framework",
+    "CoreFoundation",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage260-controlled-port-transition-association/cached-port-probe"
+  ],
+  "returncode": 0,
+  "stdout": "{\"uid\":501,\"candidate_count\":1,\"registryID\":4295901308,\"physical_port_registryID\":4294968654,\"logical_port_registryID\":4294969719,\"anchor_available\":true,\"USB_interface_opened\":false,\"serial_selected\":false}\n",
+  "stderr": "",
+  "binary_sha256": "8470fb563fc060db55405754d48562824f6fe9d8392aa63d6334a9988a6a5fab",
+  "source_hashes": {
+    "port_anchor.c": "926bd1035e4782b505371ea7b934d47ab6e85d06ef45e24d7794cfccd12984fa",
+    "port_anchor.h": "a95919691814f7e3fc8efd431867f1fd03a6fdc27a2dcbd71d2c17ccb3580c6d",
+    "cached_port_probe.c": "615ab3333feec1897b9882c078b8bab36e550a53cd25bba91427194b1bd06b66"
+  },
+  "scope": "ordinary-user IORegistry properties only; no USB interface or commands"
+}

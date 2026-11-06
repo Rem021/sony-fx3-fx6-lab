@@ -1,0 +1,7 @@
+{
+  "status": "STOPPED_BY_INSTRUCTION_GUARD",
+  "PC": "0x80198554",
+  "mnemonic": "break 0,7",
+  "formal_results_written": false,
+  "diagnosis": "Native original nonzero BEQL path may annul delay BREAK; independent 3-case probe shows CODE observation in both return and zero trap controls."
+}

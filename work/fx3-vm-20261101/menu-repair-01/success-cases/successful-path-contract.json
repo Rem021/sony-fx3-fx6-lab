@@ -1,0 +1,218 @@
+{
+  "created_utc": "2026-11-01T11:05:28.925607+00:00",
+  "upstream_commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "case": {
+    "model": "ILCE-7CM2",
+    "firmware": "2.01 ALLLANG",
+    "reported_success": "original AP setup/HUD/menu, limited inputs and virtual SD",
+    "reported_failure": "black live view, no original JPG/MP4 capture, physical ASIC compatibility unverified",
+    "locally_reproduced": false
+  },
+  "uipc": {
+    "file": "runtime/analysis/qemu-menu-probe.py",
+    "lines": [
+      1113,
+      1131
+    ],
+    "commands_order": [
+      "mount proc/sysfs/tmpfs setting",
+      "mount cpuset and configure expected named groups",
+      "mount devtmpfs occurs in initramfs /init",
+      "insmod /kmod/devno.ko",
+      "insmod /usr/kmod/osal_utm.ko",
+      "insmod /usr/kmod/osal_uipc.ko",
+      "ls -l /dev/uipc"
+    ],
+    "uipc_node_created_by": "original drivers/devtmpfs; no manual uipc mknod in setup",
+    "transport_errors_alternate": "only explicit args.transport_errors uses /simulation/osal-uipc-transport-errors.ko",
+    "ioctl_or_init16_emulation_in_observer": false,
+    "UDIF_set": {
+      "file": "runtime/analysis/qemu-menu-probe.py",
+      "line": 1181,
+      "condition": "MENU_EXTRA_MODULES set",
+      "position": "after original three IPC modules, before extra module list",
+      "default_natural_baseline_sets_EXTRA_MODULES": false,
+      "optional_imaging_or_PNG_profile_sets_EXTRA_MODULES": "safe"
+    }
+  },
+  "post_uipc_order": [
+    {
+      "step": "utimer",
+      "requirement": "Sony timer hardware model and matching guest clock/IRQs",
+      "source": "qemu-menu-probe.py:1190-1191"
+    },
+    {
+      "step": "Backup",
+      "commands": [
+        "cp verified seed to /setting/Backup.bin",
+        "insmod backup.ko Backup_load=1 Backup_save=0",
+        "stream.ko",
+        "stream2.ko"
+      ],
+      "source": "qemu-menu-probe.py:1192-1200"
+    },
+    {
+      "step": "DMM",
+      "commands": [
+        "copy seed-setting to /setting",
+        "osal_ulogio.ko ulogio_initfile=/setting/ulogio.bin",
+        "dmm.ko DmmConfig=/setting/DmmCfg.bin",
+        "grm_ma.ko"
+      ],
+      "source": "qemu-menu-probe.py:1201-1205"
+    },
+    {
+      "step": "extra modules",
+      "condition": "MENU_EXTRA_MODULES",
+      "source": "qemu-menu-probe.py:1208"
+    },
+    {
+      "step": "power/date",
+      "commands": [
+        "upm.ko",
+        "udate.ko",
+        "seed-date-clock",
+        "DATE_CLOCK_INIT_OK"
+      ],
+      "source": "qemu-menu-probe.py:1242-1246"
+    }
+  ],
+  "foreign_sender": {
+    "file": "runtime/analysis/menu-observe.c",
+    "lines": [
+      448,
+      467
+    ],
+    "predicate": "destination & 0x70000000",
+    "original_kernel_requirement": "single public sender registered by in-kernel osal_reg_public; pcie-if.ko provides one implementation",
+    "userspace_osal_reg_public": "writes userspace BSS only; cannot install the kernel sender",
+    "successful_model_approach": "targeted sender GOT hook to serve actual protocol or load original InfraAvbbc entry; not a blanket success ioctl"
+  },
+  "timer": {
+    "patch": "source/qemu-sony-native.patch",
+    "new_source": "hw/timer/sony_hwtimer.c",
+    "new_source_patch_lines": [
+      389,
+      546
+    ],
+    "frequency_hz": 4000000,
+    "counter_period_ns": "250 << (control & 7)",
+    "base": "0xf1042000 + i*0x1000, i=0..3",
+    "gic_input": "200+i, verify FX3 SPI/INTID interpretation",
+    "control_enable": "0x1000",
+    "control_irq_enable": "0x100",
+    "modes": "control & 0x30",
+    "reg_offsets": {
+      "0": "control read/write",
+      "4": "write reset/clear status",
+      "8": "compare",
+      "12": "counter read",
+      "16": "counter write"
+    },
+    "do_not_include_blindly": [
+      "SPAcc stub",
+      "F0000000 catch-all that reads all ones"
+    ]
+  },
+  "guest_abi": {
+    "source": "runtime/analysis/build-observers.sh:12-15",
+    "tested_upstream_compiler": "clang --target=aarch64-linux-gnu plus lld on Linux host",
+    "flags": [
+      "-fuse-ld=lld",
+      "-nostdlib",
+      "-O2",
+      "-mno-outline-atomics",
+      "-Wl,--no-undefined"
+    ],
+    "explicit_original_libraries": [
+      "libc-2.25.so",
+      "libdl-2.25.so",
+      "libpthread-2.25.so",
+      "ld-2.25.so"
+    ],
+    "helper_flags": [
+      "-Wl,-e,_start",
+      "-Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1"
+    ],
+    "Sony_library_helpers": [
+      "-Wl,--no-as-needed",
+      "-Wl,--allow-shlib-undefined"
+    ],
+    "startup": "self-defined _start -> __libc_start_main; no foreign CRT objects",
+    "Zig_status": "maintainer static porting suggestion only, not upstream measured success"
+  },
+  "software_menu_model_sources": [
+    {
+      "file": "runtime/analysis/sony-lz77.c",
+      "role": "strict software original-resource decoder",
+      "requires_FX3_offset_port": false,
+      "requires_FX3_interface_check": true
+    },
+    {
+      "file": "runtime/analysis/gpe-raster.c",
+      "role": "bounds-checked fill/copy raster operations",
+      "requires_FX3_interface_check": true
+    },
+    {
+      "file": "runtime/analysis/gpe-sprite.c",
+      "role": "explicit RGBA4444/A8/source-over/nearest software policy",
+      "requires_FX3_interface_check": true
+    },
+    {
+      "file": "runtime/analysis/headless-osd.c",
+      "functions": [
+        "hosd_claim",
+        "hosd_capture_frame",
+        "hosd_step",
+        "hosd_worker"
+      ],
+      "role": "lease-aware AP framebuffer consumption and protocol lifecycle",
+      "requires_FX3_offset_port": true
+    },
+    {
+      "file": "runtime/analysis/ramfb-viewer.c",
+      "role": "HOSDAP02 -> XRGB8888 in reserved scanout -> fw_cfg RAMFB",
+      "requires_FX3_memory_layout_port": true
+    },
+    {
+      "file": "runtime/analysis/inject-key.c",
+      "role": "original OSAL allocate/set source/send/free; App32 vs Infra20 formats",
+      "requires_FX3_queue_and_key_mapping": true
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "role": "original symbol and GOT/PLT interception, model service routing, lifecycle observation",
+      "requires_FX3_offset_port": true,
+      "warning": "668KB and many dependent models; do not compile unchanged into FX3"
+    },
+    {
+      "file": "runtime/analysis/prepare-assets.py",
+      "role": "original public defaults, libIMDB named service flags, source inventory",
+      "requires_FX3_IMDB_table_port": true
+    }
+  ],
+  "source_base_url": "https://github.com/chocotan/a7c2-qemu/blob/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/",
+  "source_inventory": "current-source-inventory.json",
+  "not_an_executable_deployment_recipe": true,
+  "missing_sync_callback_original_service": {
+    "original_source": "runtime/analysis/menu-observe.c",
+    "failure_comment_line": 706,
+    "raw_sid": "0x12282f6",
+    "category": "0x6107",
+    "command": "0x1000",
+    "request_bytes": 16,
+    "upstream_failure": "-1020 / sequence_boot run_i assert1436",
+    "original_library": "libBusPower.so",
+    "original_entry": "BusPower_Init",
+    "entry_abi": "void(void), verify on FX3",
+    "function_line": 9586,
+    "dlopen_flags": "RTLD_LAZY|RTLD_GLOBAL = 0x101",
+    "timing": "after resolving Application_System_Init and appFw dependencies mapped; original observer dlsym hook L11410 / service trigger L6551",
+    "not_a_reply_shim": true
+  },
+  "old_model_warning": {
+    "echo_endpoint_line": 500,
+    "later_correction_line": 590,
+    "reason": "old request echo was wrong in command,length,result,source and no-wait ownership; never use blanket echo/ACK"
+  }
+}

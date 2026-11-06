@@ -1,0 +1,71 @@
+{
+  "created_utc": "2026-10-26T02:01:35.414775+00:00",
+  "reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "files": [
+    {
+      "source_partition": "work/sony-firmware-20261024/stage2/extraction/nflasha3.img",
+      "partition_sha256": "ca5a8c80a1883c4a72c2f40018e3d40ab43e28ff0bf6a1d89f17d0680c607568",
+      "entry": {
+        "path": "/vmlinux.bin",
+        "cluster": 1169,
+        "size": 6610952,
+        "attributes": 32,
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "bytes": 6610952,
+      "first64_hex": "00c0161400000000000008000000000000f06a00000000000a0000000000000000000000000000000000000000000000000000000000000041524d6400000000"
+    },
+    {
+      "source_partition": "work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+      "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/kmod/liro.ko",
+        "inode": 70843,
+        "mode": "0o100755",
+        "size": 121488,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha15/kmod/liro.ko",
+      "sha256": "b4bd80cc614751e0092ee19e89cb90632db580bc01f23f1a1df23544e9b10186",
+      "bytes": 121488,
+      "first64_hex": "7f454c460201010000000000000000000100b7000100000000000000000000000000000000000000d0d101000000000000000000400000000000400023002200"
+    },
+    {
+      "source_partition": "work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+      "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/kmod/osal_utm.ko",
+        "inode": 70935,
+        "mode": "0o100755",
+        "size": 10688,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha15/kmod/osal_utm.ko",
+      "sha256": "f6679c6481adaa0cffb5e27dbf949f5d8168ca4200f4cb245e900544977b5f1c",
+      "bytes": 10688,
+      "first64_hex": "7f454c460201010000000000000000000100b7000100000000000000000000000000000000000000c0220000000000000000000040000000000040001c001b00"
+    },
+    {
+      "source_partition": "work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+      "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/kmod/mcmn_drv.ko",
+        "inode": 70886,
+        "mode": "0o100755",
+        "size": 253216,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha15/kmod/mcmn_drv.ko",
+      "sha256": "da4596fe04a1c932fac6c9b160c031bfb817e85caf3e77c6219d2f013a8d9b22",
+      "bytes": 253216,
+      "first64_hex": "7f454c460201010000000000000000000100b700010000000000000000000000000000000000000020d503000000000000000000400000000000400020001f00"
+    }
+  ],
+  "mount_or_payload_execution": false,
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B"
+}

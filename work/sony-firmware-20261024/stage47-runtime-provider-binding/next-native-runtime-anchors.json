@@ -1,0 +1,176 @@
+{
+  "schema": "fx3-stage47-next-native-runtime-anchors/1",
+  "created_utc": "2026-10-26T02:25:18.642116+00:00",
+  "original_LIRO": {
+    "file": "official-files/nflasha15/kmod/liro.ko",
+    "header_checks": ".init.text338..380",
+    "copy": ".init.text4b0..4c4",
+    "length": "0x698",
+    "API_prefix_bytes": "0x48",
+    "entry_after_copy": ".init.text4d8..4e0"
+  },
+  "resolved_kernel_memory_functions": {
+    "memcpy": {
+      "entry_offset": "0x57de98",
+      "value": 18446743524090510976,
+      "file_offset": 2031232,
+      "name_offset": "0x58e3a5"
+    },
+    "memset": {
+      "entry_offset": "0x57dfd8",
+      "value": 18446743524090511744,
+      "file_offset": 2032000,
+      "name_offset": "0x58e3ac"
+    }
+  },
+  "kernel_static_base": "0xffffff8008080000",
+  "partial_guest_relocations": [
+    ".init.text+598 ->guest.init.data",
+    ".init.text+4c4 CALL26 ->kernel memcpy",
+    ".init.data+670 ABS64 ->kernel memset"
+  ],
+  "all_other_avcam_imports_unresolved": 210,
+  "OSAL_wait_signal_real_symbols": [
+    {
+      "name": "osal_wai_sem_tmo",
+      "text_offset": "0x61b8",
+      "size": 608,
+      "relocations": [
+        {
+          "offset": "0x61e8",
+          "type": 283,
+          "symbol": "check_dynamic_sem_id",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x61fc",
+          "type": 283,
+          "symbol": "get_bsem",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x6208",
+          "type": 283,
+          "symbol": "osal_lock",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x6230",
+          "type": 283,
+          "symbol": "osal_unlock",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x62cc",
+          "type": 283,
+          "symbol": "osal_unlock",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x6300",
+          "type": 283,
+          "symbol": "osal_lock",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x631c",
+          "type": 283,
+          "symbol": "osal_unlock",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x632c",
+          "type": 283,
+          "symbol": "schedule_timeout",
+          "section": "SHN_UNDEF",
+          "addend": 0
+        },
+        {
+          "offset": "0x6348",
+          "type": 283,
+          "symbol": "osal_lock",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x6390",
+          "type": 283,
+          "symbol": "printk",
+          "section": "SHN_UNDEF",
+          "addend": 0
+        },
+        {
+          "offset": "0x6398",
+          "type": 283,
+          "symbol": "schedule",
+          "section": "SHN_UNDEF",
+          "addend": 0
+        },
+        {
+          "offset": "0x63b8",
+          "type": 283,
+          "symbol": "osal_unlock",
+          "section": 2,
+          "addend": 0
+        }
+      ]
+    },
+    {
+      "name": "osal_sig_sem",
+      "text_offset": "0x6430",
+      "size": 180,
+      "relocations": [
+        {
+          "offset": "0x6440",
+          "type": 283,
+          "symbol": "check_dynamic_sem_id",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x6478",
+          "type": 283,
+          "symbol": "get_bsem",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x6484",
+          "type": 283,
+          "symbol": "osal_lock",
+          "section": 2,
+          "addend": 0
+        },
+        {
+          "offset": "0x64a4",
+          "type": 283,
+          "symbol": "wake_up_process",
+          "section": "SHN_UNDEF",
+          "addend": 0
+        },
+        {
+          "offset": "0x64ac",
+          "type": 283,
+          "symbol": "osal_unlock",
+          "section": 2,
+          "addend": 0
+        }
+      ]
+    }
+  ],
+  "unresolved_pciatu_unmap": "CAPI698; LIRO.init.data650, kernel string lookup not enough to bind actual implementation.",
+  "next_work": [
+    "Carry original memory-provider binding into full encoder-object/request initialization and trace the52seed-dependent codec bytes; two state constructors do not close those fields.",
+    "Bind actual log/runtime synchronization and kernel/module relocations from real provider objects; do not substitute similarly shaped semaphore APIs.",
+    "Keep original constructor completion separate from factory/owner/instance/current epoch and all worker/consumer code exits.",
+    "Preserve real MAIN/audio/mux/query/cache/longrun/thermal, same-body backup/restricted restore/readback/WBI/coldboot/independent rescue requirements."
+  ],
+  "hardware_or_remote_access_attempted": false
+}

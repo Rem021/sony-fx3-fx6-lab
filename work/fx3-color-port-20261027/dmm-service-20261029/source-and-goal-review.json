@@ -1,0 +1,245 @@
+{
+  "created_utc": "2026-10-29T18:27:29.800725+00:00",
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "previous_sealed_files_verified": 19,
+  "source_fragments": [
+    {
+      "va": "0x4d77e4",
+      "bytes": 70,
+      "sha256": "bedfd4fea9e27cdb81e8f2b934f6ecd2c399bc992097c4f70a7a4e0d8c849144",
+      "listing": "source-fragments/004d77e4-004d782a.txt"
+    },
+    {
+      "va": "0x49ef00",
+      "bytes": 266,
+      "sha256": "d289926c4505ac0b4deb9032dda47faaa14b1c6c19327a14f5624c47a7aea315",
+      "listing": "source-fragments/0049ef00-0049f00a.txt"
+    },
+    {
+      "va": "0x49f368",
+      "bytes": 568,
+      "sha256": "5859edcbdf01c63b1e293d00dc2cee3625d9c9121642aa1a41d89604949a9f98",
+      "listing": "source-fragments/0049f368-0049f5a0.txt"
+    },
+    {
+      "va": "0xa874e2",
+      "bytes": 44,
+      "sha256": "36284e33c284c1ede48168a321c3d27e825c15b9d9f318a86ff42af65b639ede",
+      "listing": "source-fragments/00a874e2-00a8750e.txt"
+    },
+    {
+      "va": "0xab95e0",
+      "bytes": 86,
+      "sha256": "41fab46566daa2d3430b8dd96a414564914646d08b8741f2abe40321b5bde7e4",
+      "listing": "source-fragments/00ab95e0-00ab9636.txt"
+    },
+    {
+      "va": "0xa87b3c",
+      "bytes": 18,
+      "sha256": "1c68bcc8b3f323d8be81dda9ef70297d225d64fe022e74acfe5677f6436e15f5",
+      "listing": "source-fragments/00a87b3c-00a87b4e.txt"
+    },
+    {
+      "va": "0xab71cc",
+      "bytes": 224,
+      "sha256": "349cf206f937243bfef0e968cdd23cd98854e3caa0e1bf4c6132be938c7065df",
+      "listing": "source-fragments/00ab71cc-00ab72ac.txt"
+    },
+    {
+      "va": "0xab6190",
+      "bytes": 244,
+      "sha256": "a0e513f3caee5736cadc15c60649abc463477936edc57f8b51911e698e9676fe",
+      "listing": "source-fragments/00ab6190-00ab6284.txt"
+    },
+    {
+      "va": "0xab9830",
+      "bytes": 94,
+      "sha256": "f660994f274a924bc1dee71339db76bc95b897adefbd1b24d3ed6fb7d2cd3d1a",
+      "listing": "source-fragments/00ab9830-00ab988e.txt"
+    },
+    {
+      "va": "0xab9e28",
+      "bytes": 204,
+      "sha256": "06665c9d2ed6898e1fea640c72e798f78c690903745c3e1e48f8c74bef7d2da3",
+      "listing": "source-fragments/00ab9e28-00ab9ef4.txt"
+    },
+    {
+      "va": "0xaba7b6",
+      "bytes": 140,
+      "sha256": "37ae4fb54b8eb899e41fbef911b1a8abfb15e594ac5ff35db3c21a0ce75ccfc8",
+      "listing": "source-fragments/00aba7b6-00aba842.txt"
+    },
+    {
+      "va": "0xab60ae",
+      "bytes": 18,
+      "sha256": "774aa36e38c6169cb478ef07e07fe8910651f964e17b7fe7d4b0c60e195842e3",
+      "listing": "source-fragments/00ab60ae-00ab60c0.txt"
+    },
+    {
+      "va": "0x4d7a84",
+      "bytes": 188,
+      "sha256": "d74f7dbe5b77a0e8ab061d1d295d7ea3a050f9e24c844ae8007c0065d8cfc604",
+      "listing": "source-fragments/004d7a84-004d7b40.txt"
+    },
+    {
+      "va": "0xa84be8",
+      "bytes": 84,
+      "sha256": "22f09d7727a57f3bdc59ed20d3169040dfdf81f83015c1276c3d497dc561e4b3",
+      "listing": "source-fragments/00a84be8-00a84c3c.txt"
+    },
+    {
+      "va": "0xa85174",
+      "bytes": 224,
+      "sha256": "cb4187bd44ca5cfecc90dafe56d9678d3657d2a36b33b96c88a02f02e06e6ce7",
+      "listing": "source-fragments/00a85174-00a85254.txt"
+    }
+  ],
+  "queue_binding": {
+    "queue_ID": "0x61003c",
+    "registration_entry": "0x4d77e4",
+    "registration_API": "0x49ef00",
+    "stored_handle": "0x13f8fd8",
+    "original_queue_dispatch_wrapper": "0xa874e3",
+    "original_callback": "0xab95e1",
+    "dispatcher_entry": "0xab71cc",
+    "evidence": "Original registration and separate original callback prefix executed in bounded RAM; full normal send stopped before kernel thread identity.",
+    "normal_boot_and_real_send_proven": false
+  },
+  "static_message_dispatch": {
+    "executed": false,
+    "table_va": "0xd11f94",
+    "entry_count": 46,
+    "table_sha256": "02ac3f953354ac80ec8181755ca1f87e093a46825adf99673cb47e6db4898892",
+    "request_type": "0x20",
+    "original_handler": "0xab6191",
+    "table_file": "source-fragments/00d11f94-dispatch-table.json",
+    "dispatcher_copies_request_bytes": 40,
+    "dispatcher_request_frame_offset": "0xc",
+    "handler_observations": [
+      "Reply type request_type|0x8000; client0x20 corresponds to0x8020.",
+      "Request u16+0x14 copied through frame+0x20 to reply u16+6.",
+      "Request u32+4 through frame+0x10 supplies unit/type key0x4af to0xab9830.",
+      "Request u16+0x16 through frame+0x22 is masked by0x10f; values0,1,4 can reach0xab9830.",
+      "With appropriate returned handle/mode,0xab9e28 formats count and64-bit base+offset plus size into16-byte records. These have not been returned by a real provider."
+    ],
+    "distinction": "Static handler and extent layout, not executed allocation, valid handle, recovered live physical address or sensor pixel data."
+  },
+  "static_configuration_dependency": {
+    "executed": false,
+    "unit_list_initializer": "0xaba7b6",
+    "unit_key_table_RAM": "0x1fba6d0",
+    "extent_ID_list_RAM": "0x1fbc6d0",
+    "unit_list_pointer_global": "0x13f8ff4",
+    "read_thunk": "0xab60ae -> 0x4d7a84",
+    "parameter_key": "0xfa0182",
+    "parameter_query": "0xa84be8",
+    "read_offset_global": "0x13f8ffc",
+    "physical_range_translation_table": "0xb54930",
+    "evidence": "Original initializer reads key/list records through GetConfigData; its raw source is a64-bit parameter value, range-translated and converted by0x53894c before stream copies.",
+    "scope": "These RAM addresses are beyond this flat CP file; no populated unit0x4af configuration or physical pool is inferred from addresses alone."
+  },
+  "public_readback": {
+    "official_FX5_support_and_downloads_200_no_update": true,
+    "wording": "現在、本ページで提供されているアップデート情報はありません。",
+    "scope": "Only the inspected Japanese pages currently state no update information. Not global/repair-channel absence.",
+    "FX5_OSS_archive_links": 59,
+    "FX5_complete_proprietary_image_obtained": false,
+    "VENICE2_official_version": "5.00",
+    "VENICE2_release": "2026-07",
+    "VENICE2_listed_bytes": 862640780,
+    "venice_text_correction": {
+      "saved_raw_unchanged": true,
+      "initial_UTF8_text_preserved": true,
+      "correct_encoding": "cp932/Shift_JIS",
+      "file": "public-pages/venice2-jp-update.corrected-text.txt",
+      "sha256": "a8ded578a05698ac5f36b129a4053428fdf6beb00fd53130e3d5f024f41f7f35"
+    },
+    "FX5B_failed_request": "SSL EOF; no absence inference"
+  },
+  "existing_evidence_pins": [
+    {
+      "path": "input-20261028/validation-results.json",
+      "bytes": 902,
+      "sha256": "98d17c3afbf23cefe7577acd90c7f346214ca9ca2f17d92149181317b88c7a7b"
+    },
+    {
+      "path": "input-20261028/final-receipt.json",
+      "bytes": 94324,
+      "sha256": "f49bd30b46c82a992e58f36ec0a2a79733485e580578ed43441e62a6466b9064"
+    },
+    {
+      "path": "transport-20261029/verification-contract-review.json",
+      "bytes": 2078,
+      "sha256": "45cc29686e239d6c9f333070b9ec21ff9afe9878af83ab3c2dbadebd030e58e0"
+    },
+    {
+      "path": "transport-20261029/final-receipt.json",
+      "bytes": 7734,
+      "sha256": "d68f4e244b6f1ee236cb552e32733ba80312906212398c84baa519d8658b08c9"
+    },
+    {
+      "path": "donor-20261028/donor-inner-source-inventory.json",
+      "bytes": 1950,
+      "sha256": "a3ad5ef456c521cdfc3698fbf4732559400c76fe14e79875f837a1a2e18612b8"
+    },
+    {
+      "path": "donor-20261028/final-receipt.json",
+      "bytes": 17394,
+      "sha256": "7485ad09941dcc007b1fb787791710dd4936f5c03033998505b9074bda899709"
+    }
+  ],
+  "original_donor_payloads_rehashed": [
+    {
+      "version": "v392",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v392/BERLIN/DATA23213",
+      "bytes": 287442920,
+      "sha256": "9153710c8a3b9e12d0aed67f6cc22f3a5b0dd63bc99ec3488c2269b6dced3096"
+    },
+    {
+      "version": "v410",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v410/BERLIN/DATA23213",
+      "bytes": 286877016,
+      "sha256": "2b9247384af40a933868ffec6e7c9d433570003414d33f05396fc53235def982"
+    },
+    {
+      "version": "v500",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v500/BERLIN/DATA23213",
+      "bytes": 287401488,
+      "sha256": "662a93a061d17691bf4d243788c94a4dff7b97c92b48e6eeddf87f4c3f5d0019"
+    }
+  ],
+  "complete_goal_gates": [
+    {
+      "gate": "FX5 full private menus/applications and dependencies",
+      "passed": false,
+      "evidence": "Public OSS and inspected no-update pages do not supply full proprietary image."
+    },
+    {
+      "gate": "VENICE full RAW/sensor calibration/WB/demosaic/NR/ISP chain",
+      "passed": false,
+      "evidence": "Original three DATA23213 payloads remain opaque; existing ART/monitor coefficient matches are partial."
+    },
+    {
+      "gate": "FX3 MAIN pixel binding and physical buffer provider",
+      "passed": false,
+      "evidence": "Normal receiver is now linked; actual unit0x4af config, scheduler/kernel state, allocation and MAIN pixel path remain unproven."
+    },
+    {
+      "gate": "Whole professional menu and function transplant",
+      "passed": false,
+      "evidence": "No full donor system or integrated implementation."
+    },
+    {
+      "gate": "Modified package admission and normal boot/recovery",
+      "passed": false,
+      "evidence": "Earlier official package signatures verified and mutations rejected; USB/UUD verification is historical2.04/2.05 evidence. No current7.02 modified-package admission, boot or independent recovery receipt."
+    }
+  ],
+  "next_research": "Trace parameter0xfa0182 normal producer and unit-list stream source, rather than fabricating provider replies; retain full donor/signature/boot gates.",
+  "full_modified_firmware_emitted": false,
+  "flashable_package_produced": false,
+  "goal_complete": false,
+  "device_actions": 0,
+  "sony_native_programs_executed": 0,
+  "private_signing_material_read_or_derived": false
+}

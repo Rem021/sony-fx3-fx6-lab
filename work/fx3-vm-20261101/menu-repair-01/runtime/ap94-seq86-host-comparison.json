@@ -1,0 +1,21 @@
+{
+  "run": "ap94child-ad25d7a1",
+  "results": [
+    {
+      "adapter": "fx3-gpe-observe-v18-frame-target.c",
+      "exit": 0,
+      "source_without_child": true,
+      "exact_original_raw144_hex": "0061e93a040000002a0200008700000006000000060000005000000087000000e00100003800000000000000000000008002000000000000804f9210040000003a01000000000000060000000600000000000000000000004001000000000000000000000000000000000000000000000100ff0100000000000100000000000000000000000000000000000000000000",
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe94-seq86-v18.log"
+    },
+    {
+      "adapter": "fx3-gpe-observe-v19-child-stretch.c",
+      "exit": 0,
+      "source_without_child": true,
+      "exact_original_raw144_hex": "0061e93a040000002a0200008700000006000000060000005000000087000000e00100003800000000000000000000008002000000000000804f9210040000003a01000000000000060000000600000000000000000000004001000000000000000000000000000000000000000000000100ff0100000000000100000000000000000000000000000000000000000000",
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe94-seq86-v19.log"
+    }
+  ],
+  "conclusion": "both v18 native403 extension of v16r2 parent-source policy and v19 accept identical captured seq86 with no source child record; guest transient guard source not determined",
+  "not_runtime_root_cause_proof": true
+}

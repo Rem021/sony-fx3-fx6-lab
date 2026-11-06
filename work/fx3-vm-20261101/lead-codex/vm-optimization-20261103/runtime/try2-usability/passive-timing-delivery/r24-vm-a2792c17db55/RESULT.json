@@ -1,0 +1,69 @@
+{
+  "schema": "fx3-r24-real-eight-step-result-v1",
+  "task_id": "task_a2792c17db55",
+  "dispatch_id": "ctx_49994a8abadc",
+  "result": "failed",
+  "menu_acceptance": "partial_7_of_8",
+  "VM_count": 1,
+  "Start_count": 1,
+  "accepted_keys": 7,
+  "explicit_attempts": 8,
+  "recovery_cancels": 1,
+  "completed_recovery_chains": 0,
+  "confirmed_snapshots": 7,
+  "first_qualified_standby_seconds": 44.224257458001375,
+  "first_standby_budget_seconds": 180,
+  "runner_duration_seconds": 167.4485515000415,
+  "maximum_seconds": 480,
+  "scripted_navigation": true,
+  "visual_review_at_click": false,
+  "live_human_visual_review_claimed": false,
+  "steps_passed": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "failed_step": 8,
+  "failed_action": "recovery_cancel post-cancel untimed screenshot identity assertion at untimed_image.py:7",
+  "recovery_capture_changed": {
+    "sha": {
+      "before": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "after": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4"
+    },
+    "gen": {
+      "before": 65,
+      "after": 66
+    },
+    "seq": {
+      "before": 1615,
+      "after": 1622
+    }
+  },
+  "cleanup_passed": true,
+  "cleanup_evidence": "FINAL-RESOURCE-VERIFICATION.json",
+  "inputs_before_after_match": true,
+  "r24_hash_checks": 182,
+  "frozen_r21_counts": {
+    "pins": 2,
+    "source40": 40,
+    "delivery145": 145,
+    "fixed14": 14,
+    "qemu": 1
+  },
+  "guest_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-3c01e985",
+  "host_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55",
+  "remaining": [
+    "第8步MENU重开完整菜单未入队、未视觉验收、未确认",
+    "完整八步目标失败；任何未来VM需新授权"
+  ],
+  "model_received_at": "unknown",
+  "model_review_completed_at": "unknown",
+  "source_modified": false,
+  "deployment_changed": false,
+  "coordinator_ledger_modified": false,
+  "created_UTC": "2026-11-05T01:43:47.118847+00:00"
+}

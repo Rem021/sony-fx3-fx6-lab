@@ -1,0 +1,18 @@
+{
+  "created_utc": "2026-10-30T13:38:19.584627+00:00",
+  "review_scope": "Own collection and offline evidence audit code; no third-party execution or device backend.",
+  "guards_reviewed": [
+    "External volume UUID before new collection/output",
+    "Refuse existing query output directory",
+    "Metadata bounded to 4 MiB",
+    "Only IDs 953 and 963 from actual positive responses",
+    "Exact ModelList / firmwareInfoAPI / firmwareID / fwURL casing",
+    "Declared synthetic input versions",
+    "No credentials, ID enumeration, camera or updater code",
+    "Prefix limited to 64 bytes with no full-identity claim",
+    "Source archive bytes verified without running source",
+    "Historical three-turn blocked count not reused"
+  ],
+  "tests_not_replayed": "No old signature, emulation, hardware or download tests rerun; fresh network results were verified offline.",
+  "full_goal_ready": false
+}

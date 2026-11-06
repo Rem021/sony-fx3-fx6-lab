@@ -1,0 +1,77 @@
+{
+  "scope": "HOST FIXTURE ONLY; exact extracted baseline functions; MOCK native open, memory and mmap; no runtime candidate",
+  "compiler_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O0",
+    "-Wall",
+    "-Wextra",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/host-fixture/baseline-local-predicates.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/host-fixture/baseline-local-predicates"
+  ],
+  "compile_exit": 0,
+  "compiler_stderr": "",
+  "cases": [
+    {
+      "case": "synthetic_native_open_ui_resource_accepts_gap_and_maps_full_reserve",
+      "passed": true
+    },
+    {
+      "counterexample": {
+        "MOCK_native_open_rc": 0,
+        "MOCK_screen_assumed_live": true,
+        "native_calls": 1,
+        "physical": "0x41dc00000",
+        "mapped_bytes": 65536,
+        "prot": 3,
+        "actual_firmware_reachability": "UNPROVEN",
+        "actual_physical_write": false
+      }
+    },
+    {
+      "case": "native_error_rc_once_preserved",
+      "passed": true
+    },
+    {
+      "case": "wrong_native_state_rejected",
+      "passed": true
+    },
+    {
+      "case": "missing_identity_rejected",
+      "passed": true
+    },
+    {
+      "case": "physical_overflow_rejected",
+      "passed": true
+    },
+    {
+      "case": "outside_resource_rejected",
+      "passed": true
+    },
+    {
+      "case": "changed_identity_invalidates_lookup",
+      "passed": true
+    },
+    {
+      "case": "ambiguous_multiple_resources_rejected",
+      "passed": true
+    },
+    {
+      "case": "synthetic_gap_only_parent_rounds_to_4KiB_page",
+      "passed": true
+    },
+    {
+      "case": "baseline_ui_bind_claim_cmdline_open_mmap_failures",
+      "passed": true
+    },
+    {
+      "case": "actual_ui_bind_erases_early_gap_witness_then_sets_pid_header",
+      "passed": true
+    }
+  ],
+  "run_exit": 0,
+  "passed_cases": 11,
+  "run_stderr": ""
+}

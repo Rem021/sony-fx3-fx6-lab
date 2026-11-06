@@ -1,0 +1,21 @@
+{
+  "reason": "Strict unmodified metadata identity check failed; no functions labelled or extracted by failed script",
+  "checks": [
+    {
+      "name": "header",
+      "read": true,
+      "match": true,
+      "difference_offsets": []
+    },
+    {
+      "name": "gnu_hash",
+      "read": true,
+      "match": true,
+      "difference_offsets": []
+    },
+    {
+      "name": "dynstr",
+      "error": "invalid descriptor"
+    }
+  ]
+}

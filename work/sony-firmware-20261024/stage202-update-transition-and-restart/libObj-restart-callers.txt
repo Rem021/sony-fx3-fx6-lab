@@ -1,0 +1,199 @@
+RANGE 0xce4c4 0xce5a0
+000ce4c4 adrp    x3, #0x1d4000
+000ce4c8 mov     w5, w1
+000ce4cc mov     x29, sp
+000ce4d0 add     x4, x4, #0x70
+000ce4d4 add     x3, x3, #0xe39
+000ce4d8 str     x19, [sp, #0x10]
+000ce4dc mov     w2, #2
+000ce4e0 mov     w19, w1
+000ce4e4 mov     w0, #0x7a
+000ce4e8 mov     w1, #0
+000ce4ec bl      #0xb93ac
+000ce4f0 adrp    x7, #0x1d4000
+000ce4f4 mov     w4, w19
+000ce4f8 add     x7, x7, #0xe58
+000ce4fc mov     w6, #0
+000ce500 mov     w5, #0
+000ce504 mov     w3, #0
+000ce508 mov     w2, #0x4000
+000ce50c mov     w1, #0
+000ce510 mov     w0, #0x7a
+000ce514 bl      #0xb9588
+000ce518 mov     w2, w19
+000ce51c ldr     x19, [sp, #0x10]
+000ce520 ldp     x29, x30, [sp], #0x20
+000ce524 mov     w1, #0x1b
+000ce528 mov     w0, #0x8c
+000ce52c b       #0xcdbbc
+000ce530 stp     x29, x30, [sp, #-0x20]!
+000ce534 adrp    x4, #0x1d4000
+000ce538 adrp    x3, #0x1d4000
+000ce53c mov     w5, w1
+000ce540 mov     x29, sp
+000ce544 add     x4, x4, #0xe98
+000ce548 add     x3, x3, #0xe39
+000ce54c str     x19, [sp, #0x10]
+000ce550 mov     w2, #2
+000ce554 mov     w19, w1
+000ce558 mov     w0, #0x7a
+000ce55c mov     w1, #0
+000ce560 bl      #0xb93ac
+000ce564 adrp    x7, #0x1d4000
+000ce568 mov     w4, w19
+000ce56c add     x7, x7, #0x76a
+000ce570 mov     w6, #0
+000ce574 mov     w5, #0
+000ce578 mov     w3, #0
+000ce57c mov     w2, #0x4001
+000ce580 mov     w1, #0
+000ce584 mov     w0, #0x7a
+000ce588 bl      #0xb9588
+000ce58c mov     w2, w19
+000ce590 ldr     x19, [sp, #0x10]
+000ce594 ldp     x29, x30, [sp], #0x20
+000ce598 mov     w1, #0x1c
+000ce59c mov     w0, #7
+RANGE 0xed4a8 0xed668
+000ed4a8 stp     x29, x30, [sp, #-0x30]!
+000ed4ac mov     w3, #0
+000ed4b0 mov     w2, #2
+000ed4b4 mov     x29, sp
+000ed4b8 stp     x19, x20, [sp, #0x10]
+000ed4bc mov     x20, x0
+000ed4c0 adrp    x0, #0x1dc000
+000ed4c4 add     x1, x29, #0x20
+000ed4c8 add     x0, x0, #0x94d
+000ed4cc stp     x0, xzr, [x29, #0x20]
+000ed4d0 bl      #0x56940 ; stm_system
+000ed4d4 mov     w19, w0
+000ed4d8 adrp    x0, #0x1dc000
+000ed4dc add     x0, x0, #0x963
+000ed4e0 bl      #0x55660 ; puts
+000ed4e4 mov     w0, #1
+000ed4e8 strb    w0, [x20]
+000ed4ec mov     w0, w19
+000ed4f0 ldp     x19, x20, [sp, #0x10]
+000ed4f4 ldp     x29, x30, [sp], #0x30
+000ed4f8 ret     
+000ed4fc stp     x29, x30, [sp, #-0x60]!
+000ed500 mov     x1, #0x420
+000ed504 mov     x29, sp
+000ed508 stp     x23, x24, [sp, #0x30]
+000ed50c add     x23, x0, #7, lsl #12
+000ed510 stp     x19, x20, [sp, #0x10]
+000ed514 stp     x21, x22, [sp, #0x20]
+000ed518 mov     w21, #0xc28
+000ed51c ldr     w20, [x23, #0xdb0]
+000ed520 ldr     w22, [x0, #0x410]
+000ed524 stp     x25, x26, [sp, #0x40]
+000ed528 stp     x27, x28, [sp, #0x50]
+000ed52c umaddl  x21, w20, w21, x1
+000ed530 add     w1, w22, #2
+000ed534 cmp     w1, #0x40e
+000ed538 add     x21, x0, x21
+000ed53c b.hi    #0xed660
+000ed540 mov     w2, #0x5c
+000ed544 add     w24, w22, #1
+000ed548 mov     x19, x0
+000ed54c mov     w20, w20
+000ed550 strb    w2, [x0, w22, uxtw]
+000ed554 mov     w2, #0x2a
+000ed558 adrp    x25, #0x1e3000
+000ed55c strb    w2, [x0, w24, uxtw]
+000ed560 mov     x2, x21
+000ed564 strb    wzr, [x0, w1, uxtw]
+000ed568 mov     w1, #-0x80
+000ed56c bl      #0x56a20 ; Fsys_FindFirst
+000ed570 mov     x1, #0xc28
+000ed574 madd    x20, x20, x1, x19
+000ed578 cbnz    w0, #0xed600
+000ed57c ldr     x26, [x20, #0x420]
+000ed580 mov     x0, x26
+000ed584 bl      #0x55930 ; strlen
+000ed588 mov     x28, x0
+000ed58c add     x1, x25, #0xe5a
+000ed590 mov     x0, x26
+000ed594 bl      #0x57360 ; strcmp
+000ed598 cbnz    w0, #0xed5a8
+000ed59c mov     x0, x21
+000ed5a0 bl      #0x57180 ; Fsys_FindNext
+000ed5a4 b       #0xed578
+000ed5a8 adrp    x1, #0x1e3000
+000ed5ac mov     x0, x26
+000ed5b0 add     x1, x1, #0x9ca
+000ed5b4 bl      #0x57360 ; strcmp
+000ed5b8 cbz     w0, #0xed59c
+000ed5bc ldrb    w0, [x20, #0x446]
+000ed5c0 mov     w1, #9
+000ed5c4 tst     w1, w0
+000ed5c8 b.ne    #0xed59c
+000ed5cc add     w27, w24, w28
+000ed5d0 cmp     w27, #0x40e
+000ed5d4 b.hi    #0xed59c
+000ed5d8 add     w2, w28, #1
+000ed5dc mov     x1, x26
+000ed5e0 add     x0, x19, w24, uxtw
+000ed5e4 bl      #0x55450 ; memcpy
+000ed5e8 ldrb    w0, [x20, #0x446]
+000ed5ec tbnz    w0, #4, #0xed628
+000ed5f0 ldr     x1, [x19, #0x418]
+000ed5f4 mov     x0, x19
+000ed5f8 bl      #0x571f0 ; Fsys_SetTimeStamp
+000ed5fc cbz     w0, #0xed59c
+000ed600 cmp     w0, #2
+000ed604 strb    wzr, [x19, w22, uxtw]
+000ed608 csel    w0, w0, wzr, ne
+000ed60c ldp     x19, x20, [sp, #0x10]
+000ed610 ldp     x21, x22, [sp, #0x20]
+000ed614 ldp     x23, x24, [sp, #0x30]
+000ed618 ldp     x25, x26, [sp, #0x40]
+000ed61c ldp     x27, x28, [sp, #0x50]
+000ed620 ldp     x29, x30, [sp], #0x60
+000ed624 ret     
+000ed628 ldr     w0, [x23, #0xdb0]
+000ed62c add     w0, w0, #1
+000ed630 cmp     w0, #9
+000ed634 b.hi    #0xed5f0
+000ed638 str     w27, [x19, #0x410]
+000ed63c str     w0, [x23, #0xdb0]
+000ed640 mov     x0, x19
+000ed644 bl      #0xed4fc
+000ed648 ldr     w1, [x23, #0xdb0]
+000ed64c str     w22, [x19, #0x410]
+000ed650 sub     w1, w1, #1
+000ed654 str     w1, [x23, #0xdb0]
+000ed658 cbz     w0, #0xed5f0
+000ed65c b       #0xed600
+000ed660 mov     w0, #-0x80000000
+000ed664 b       #0xed60c
+RANGE 0xb93ac 0xb9420
+000b93ac stp     x29, x30, [sp, #-0x180]!
+000b93b0 cmp     w2, #1
+000b93b4 uxth    w0, w0
+000b93b8 mov     x29, sp
+000b93bc add     x1, x29, #0x100
+000b93c0 str     x19, [sp, #0x10]
+000b93c4 stp     x4, x5, [x29, #0x160]
+000b93c8 stp     x6, x7, [x29, #0x170]
+000b93cc str     q0, [x29, #0xe0]
+000b93d0 str     q1, [x29, #0xf0]
+000b93d4 str     q2, [x1]
+000b93d8 add     x1, x29, #0x110
+000b93dc str     q3, [x1]
+000b93e0 add     x1, x29, #0x120
+000b93e4 str     q4, [x1]
+000b93e8 add     x1, x29, #0x130
+000b93ec str     q5, [x1]
+000b93f0 add     x1, x29, #0x140
+000b93f4 str     q6, [x1]
+000b93f8 add     x1, x29, #0x150
+000b93fc str     q7, [x1]
+000b9400 b.eq    #0xb9534
+000b9404 cmp     w2, #2
+000b9408 mov     w1, #4
+000b940c b.eq    #0xb942c
+000b9410 cmp     w2, #3
+000b9414 mov     w1, #8
+000b9418 b.eq    #0xb942c
+000b941c cmp     w2, #4

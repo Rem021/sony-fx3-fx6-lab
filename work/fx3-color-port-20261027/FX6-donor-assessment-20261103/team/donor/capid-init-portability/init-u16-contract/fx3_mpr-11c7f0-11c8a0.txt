@@ -1,0 +1,50 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000011c664 <_ZNSt6vectorIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EEaSERKS4_>:
+  11c7f0: f9400678     	ldr	x24, [x19, #0x8]
+  11c7f4: d2917461     	mov	x1, #0x8ba3             // =35747
+  11c7f8: f94006b9     	ldr	x25, [x21, #0x8]
+  11c7fc: f2b745c1     	movk	x1, #0xba2e, lsl #16
+  11c800: f2d45d01     	movk	x1, #0xa2e8, lsl #32
+  11c804: aa0003f4     	mov	x20, x0
+  11c808: cb180336     	sub	x22, x25, x24
+  11c80c: f2e5d161     	movk	x1, #0x2e8b, lsl #48
+  11c810: 9347fec0     	asr	x0, x22, #7
+  11c814: 9b017c00     	mul	x0, x0, x1
+  11c818: b4000960     	cbz	x0, 0x11c944 <_ZNSt6vectorIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EEaSERKS4_+0x2e0>
+  11c81c: d285d161     	mov	x1, #0x2e8b             // =11915
+  11c820: f2bd1741     	movk	x1, #0xe8ba, lsl #16
+  11c824: f2d17441     	movk	x1, #0x8ba2, lsl #32
+  11c828: f2e005c1     	movk	x1, #0x2e, lsl #48
+  11c82c: eb01001f     	cmp	x0, x1
+  11c830: 54000049     	b.ls	0x11c838 <_ZNSt6vectorIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EEaSERKS4_+0x1d4>
+  11c834: 97fd806f     	bl	0x7c9f0 <_ZSt17__throw_bad_allocv@plt>
+  11c838: aa1603e0     	mov	x0, x22
+  11c83c: 97fd8b39     	bl	0x7f520 <_Znwm@plt>
+  11c840: aa0003e2     	mov	x2, x0
+  11c844: aa0003f5     	mov	x21, x0
+  11c848: aa1903e1     	mov	x1, x25
+  11c84c: aa1803e0     	mov	x0, x24
+  11c850: 97fd82bc     	bl	0x7d340 <_ZNSt11__copy_moveILb0ELb1ESt26random_access_iterator_tagE8__copy_mIN3mpr16MovieEncodeTable8MetaInfoEEEPT_PKS6_S9_S7_@plt>
+  11c854: f9400280     	ldr	x0, [x20]
+  11c858: b4000040     	cbz	x0, 0x11c860 <_ZNSt6vectorIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EEaSERKS4_+0x1fc>
+  11c85c: 97fd8a4d     	bl	0x7f190 <_ZdlPv@plt>
+  11c860: f9000295     	str	x21, [x20]
+  11c864: 8b1602b5     	add	x21, x21, x22
+  11c868: f9000a95     	str	x21, [x20, #0x10]
+  11c86c: f9400280     	ldr	x0, [x20]
+  11c870: 8b160016     	add	x22, x0, x22
+  11c874: f9000696     	str	x22, [x20, #0x8]
+  11c878: b9402260     	ldr	w0, [x19, #0x20]
+  11c87c: b90073a0     	str	w0, [x29, #0x70]
+  11c880: b9402660     	ldr	w0, [x19, #0x24]
+  11c884: b90077a0     	str	w0, [x29, #0x74]
+  11c888: f9401660     	ldr	x0, [x19, #0x28]
+  11c88c: f9003fa0     	str	x0, [x29, #0x78]
+  11c890: d2800300     	mov	x0, #0x18               // =24
+  11c894: 97fd8b23     	bl	0x7f520 <_Znwm@plt>
+  11c898: a9007c1f     	stp	xzr, xzr, [x0]
+  11c89c: 9100c261     	add	x1, x19, #0x30

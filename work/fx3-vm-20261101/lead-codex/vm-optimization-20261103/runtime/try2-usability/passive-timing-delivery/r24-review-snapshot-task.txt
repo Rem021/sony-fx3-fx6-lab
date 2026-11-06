@@ -1,0 +1,15 @@
+FX3｜r24按键后审阅快照与下一键实时许可分离（仅离线候选）
+目标：修复动态待机画面导致已真实审阅的按键后截图难以完成确认的问题，服务完整八步菜单及日常可用性。不是修改FX3模拟器平台或缩减菜单路径。允许仅创建DEL/r24-review-snapshot-candidate及其子目录；旧r21/r22/r23源、旧测试证据、部署r10、协调ledger全部只读。不得启动runner/QEMU/相机/USB/SD/FX6，不部署，不另派代理。
+根=/Volumes/KAFU2T/AI/Projects/Mac；TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery。先核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。
+证据：DEL/r23-vm-9710706aa341，run TRY/runs/v25gate-n64-r17-e2699e9d。当前另一个操作worker正在封存，勿写它目录。前6步confirmed；第7步真实截图返回待机，visual_judgement通过，explicit_confirm在click前拒绝current_review_or_loaded_image_not_ready，expected null；没有瞬时联合条件快照，不把任何具体子条件说成实测根因。原explicit_confirm.js precondition同时要求被审阅PNG==lastStatus当前PNG==shownSHA、loadedgen==server当前gen；原server confirm_visual也要求历史审阅gen/SHA==当前gen/SHA。capture到confirm约9秒；NO CARD动画持续变化。这是可独立复现的结构性失败风险，不等于已经证明本轮精确子条件。
+
+协调员决定新候选审阅合同（只作用于本候选，不追溯更改旧失败）：
+1. 确认语义是“已审阅本次按键后的指定画面”，不是“点击确认时仍是该画面”。下一键仍必须通过全部实时PAGE/server输入门、ready/step/launch/error/stop/unknown条件；确认绝不发送guest键，也不能单凭历史确认授权下一键。
+2. 不做两SHA白名单、动画区域遮罩、等待动画回到某SHA再自动确认、填最新gen冒充旧截图、延长20秒或放宽原生错误。也不冻结guest/停止发布来制造稳定截图。
+3. 为当前review step设计有界、服务端绑定的审阅快照/令牌：只接受该轮该attempt原生收键之后的合格图、精确bytes/SHA/generation/sequence，绑定launch+step+attempt/request身份。不是任意历史帧豁免；旧step/别的run/跨tab混用/替换图/请求重放/未来帧/收键前帧均拒绝。快照证据在保留期间不可被动态frame替换或环形缓存淘汰；一步至多一个有效审阅对象或严格的失效替换规则，内存有界。
+4. 停止、原生错误、unknown、另一次input/review step或launch变化一律使审阅无效；异步响应不得恢复终止状态。确认后保留精确历史回执供r23 planned prerequisite验证；恢复下一键依赖另一次明确单步调用和新实时帧许可，不复用历史帧作输入许可。
+5. 页面清楚区分固定审阅图与当前实时图（若需要冻结展示，仅冻结明示的审阅副本），避免按钮文案声称当前画面已被看过。操作代理必须实际看到确切快照PNG，之后单独明确确认；JSON自证不算视觉验收。保持原20秒alarm与End/finalACK清理链。
+
+请先读必要原代码/r23合同，形成简短设计和最小变更边界，再在新目录实现候选及针对性离线测试。可复用冻结r21基础/r23 planned wrapper，但必须明确列出修改点、保留输入门逐项对照，固定kernel/DTB/QEMU/CPU/memory/N64 CPIO不变。新命名或新版本PAGE/server/confirm helper，不能冒充原字节。需要修改r23历史确认消费者时仅在候选副本中做精确schema接线。若该设计存在无法闭合的身份/原生错误传播问题，先上报具体问题，不靠绕过门获得绿色测试。
+验证重点：动态A→B→A且超过旧审图延迟，真实原新候选PAGE/server在review_REQUIRED下更新到新generation，精确历史快照仍可确认、回执仍指原图；原实时输入gate拒绝过期输入；新计划下一步只有fresh合法帧才能通过。覆盖未实际显式confirm、跨step/run/attempt、篡改bytes/hash、snapshot失效、环形帧淘汰、stop/error/unknown、confirm响应丢失不重复操作、异步终止竞态、有界内存。真实wrapper __main__和正向capture→confirm→next planned接线要有针对性验证，明确fixture视觉是mock。记录各变更后的准确hash及单独实际运行准备方法，原输入前后不变、所有自有host服务/browser/端口清理。
+不得重复泛跑旧矩阵或新增容易通过替代目标。交付简洁REPORT/CONTRACT/PREPARATION、候选源码与必要测试原件、SHA清单。即使离线通过，真实八步仍待另派单VM验收，本轮不得启动真实VM。worker_done明确offline-only与未验项目。

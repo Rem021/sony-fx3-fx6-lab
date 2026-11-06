@@ -1,0 +1,96 @@
+ 213c17c: a9b57bfd     	stp	x29, x30, [sp, #-0xb0]!
+ 213c180: 910003fd     	mov	x29, sp
+ 213c184: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 213c188: aa0003f3     	mov	x19, x0
+ 213c18c: f001d800     	adrp	x0, 0x5c3f000
+ 213c190: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 213c194: 9111e000     	add	x0, x0, #0x478
+ 213c198: a90363f7     	stp	x23, x24, [sp, #0x30]
+ 213c19c: f9002fa0     	str	x0, [x29, #0x58]
+ 213c1a0: f90023f9     	str	x25, [sp, #0x40]
+ 213c1a4: 97ab354c     	bl	0xc096d4 <.text+0xef4e4>
+ 213c1a8: b9400267     	ldr	w7, [x19]
+ 213c1ac: 2a0703e0     	mov	w0, w7
+ 213c1b0: 97ffc4dd     	bl	0x212d524 <Application_System_Init+0x15224e0>
+ 213c1b4: b4000220     	cbz	x0, 0x213c1f8 <Application_System_Init+0x15311b4>
+ 213c1b8: 9102c3b4     	add	x20, x29, #0xb0
+ 213c1bc: d001d800     	adrp	x0, 0x5c3e000
+ 213c1c0: 91222000     	add	x0, x0, #0x888
+ 213c1c4: b81c8e87     	str	w7, [x20, #-0x38]!
+ 213c1c8: aa1403e1     	mov	x1, x20
+ 213c1cc: 97fffda9     	bl	0x213b870 <Application_System_Init+0x153082c>
+ 213c1d0: f9400000     	ldr	x0, [x0]
+ 213c1d4: b9400a61     	ldr	w1, [x19, #0x8]
+ 213c1d8: b9000801     	str	w1, [x0, #0x8]
+ 213c1dc: f9400001     	ldr	x1, [x0]
+ 213c1e0: aa1403e0     	mov	x0, x20
+ 213c1e4: 97ffc9ec     	bl	0x212e994 <Application_System_Init+0x1523950>
+ 213c1e8: aa1403e0     	mov	x0, x20
+ 213c1ec: 97f0c3d2     	bl	0x1d6d134 <Application_System_Init+0x11620f0>
+ 213c1f0: aa1403e0     	mov	x0, x20
+ 213c1f4: 97ed9151     	bl	0x1ca0738 <Application_System_Init+0x10956f4>
+ 213c1f8: 910163b6     	add	x22, x29, #0x58
+ 213c1fc: aa1603e0     	mov	x0, x22
+ 213c200: 97ab5509     	bl	0xc11624 <Application_System_Init+0x65e0>
+ 213c204: b9400a60     	ldr	w0, [x19, #0x8]
+ 213c208: 7100041f     	cmp	w0, #0x1
+ 213c20c: 540001e8     	b.hi	0x213c248 <Application_System_Init+0x1531204>
+ 213c210: d2800100     	mov	x0, #0x8                // =8
+ 213c214: 97e4caf3     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 213c218: aa0003e1     	mov	x1, x0
+ 213c21c: b9400e62     	ldr	w2, [x19, #0xc]
+ 213c220: 340000a2     	cbz	w2, 0x213c234 <Application_System_Init+0x15311f0>
+ 213c224: 7100105f     	cmp	w2, #0x4
+ 213c228: 540007c0     	b.eq	0x213c320 <Application_System_Init+0x15312dc>
+ 213c22c: 97e4caf1     	bl	0x1a6edf0 <Application_System_Init+0xe63dac>
+ 213c230: 14000006     	b	0x213c248 <Application_System_Init+0x1531204>
+ 213c234: 52802742     	mov	w2, #0x13a              // =314
+ 213c238: b9000002     	str	w2, [x0]
+ 213c23c: b9401262     	ldr	w2, [x19, #0x10]
+ 213c240: b9000422     	str	w2, [x1, #0x4]
+ 213c244: 97e4cc9a     	bl	0x1a6f4ac <Application_System_Init+0xe64468>
+ 213c248: d001d800     	adrp	x0, 0x5c3e000
+ 213c24c: d001d815     	adrp	x21, 0x5c3e000
+ 213c250: 912e8000     	add	x0, x0, #0xba0
+ 213c254: b9400678     	ldr	w24, [x19, #0x4]
+ 213c258: f9002ba0     	str	x0, [x29, #0x50]
+ 213c25c: f9004bbf     	str	xzr, [x29, #0x90]
+ 213c260: 97ab351d     	bl	0xc096d4 <.text+0xef4e4>
+ 213c264: f94422b4     	ldr	x20, [x21, #0x840]
+ 213c268: 912102b5     	add	x21, x21, #0x840
+ 213c26c: eb15029f     	cmp	x20, x21
+ 213c270: 54000660     	b.eq	0x213c33c <Application_System_Init+0x15312f8>
+ 213c274: b9401280     	ldr	w0, [x20, #0x10]
+ 213c278: 6b00031f     	cmp	w24, w0
+ 213c27c: 540005c1     	b.ne	0x213c334 <Application_System_Init+0x15312f0>
+ 213c280: 9102c3b7     	add	x23, x29, #0xb0
+ 213c284: aa1603e0     	mov	x0, x22
+ 213c288: b81c8ef8     	str	w24, [x23, #-0x38]!
+ 213c28c: 91006298     	add	x24, x20, #0x18
+ 213c290: aa1803e1     	mov	x1, x24
+ 213c294: 97fff5bb     	bl	0x2139980 <Application_System_Init+0x152e93c>
+ 213c298: 910022e1     	add	x1, x23, #0x8
+ 213c29c: aa1603e0     	mov	x0, x22
+ 213c2a0: 97fd6569     	bl	0x2095844 <Application_System_Init+0x148a800>
+ 213c2a4: f94037a0     	ldr	x0, [x29, #0x68]
+ 213c2a8: f9404ba1     	ldr	x1, [x29, #0x90]
+ 213c2ac: f9004ba0     	str	x0, [x29, #0x90]
+ 213c2b0: f9403ba0     	ldr	x0, [x29, #0x70]
+ 213c2b4: f90037a1     	str	x1, [x29, #0x68]
+ 213c2b8: f9404fa1     	ldr	x1, [x29, #0x98]
+ 213c2bc: f9004fa0     	str	x0, [x29, #0x98]
+ 213c2c0: aa1603e0     	mov	x0, x22
+ 213c2c4: f9003ba1     	str	x1, [x29, #0x70]
+ 213c2c8: 97b7d06f     	bl	0xf30484 <Application_System_Init+0x325440>
+ 213c2cc: f9401e80     	ldr	x0, [x20, #0x38]
+ 213c2d0: f90053a0     	str	x0, [x29, #0xa0]
+ 213c2d4: f9402280     	ldr	x0, [x20, #0x40]
+ 213c2d8: f90057a0     	str	x0, [x29, #0xa8]
+ 213c2dc: f9400aa0     	ldr	x0, [x21, #0x10]
+ 213c2e0: d1000400     	sub	x0, x0, #0x1
+ 213c2e4: f9000aa0     	str	x0, [x21, #0x10]
+ 213c2e8: aa1403e0     	mov	x0, x20
+ 213c2ec: 52800035     	mov	w21, #0x1               // =1
+ 213c2f0: 97a776bc     	bl	0xb19de0 <_ZNSt8__detail15_List_node_base9_M_unhookEv@plt>
+ 213c2f4: aa1803e0     	mov	x0, x24
+ 213c2f8: 97b7d063     	bl	0xf30484 <Application_System_Init+0x325440>

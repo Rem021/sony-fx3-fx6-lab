@@ -1,0 +1,1034 @@
+{
+  "created_utc": "2026-11-02T15:20:56.882004+00:00",
+  "run": "ap91r2keys-9d3939d7",
+  "receipt_sha256": "34d22ebe774437f2bce94ef427688e7248e43c9a8cad6c2ab4725c79ca930d8b",
+  "duration_seconds": 303.2239432919887,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "host_observer_error": null,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "fatal_markers": [],
+  "missing_markers_combined_serial_and_printk": [],
+  "receipt_serial_only_missing": [],
+  "marker_evidence_scope": "Rawserial flags retained; kernelprintkring independentlyrecovers interleavedkernelmarkers, neverrewritesreceipt",
+  "im_alive_last_complete_maps": {
+    "pid": 228,
+    "uptime": 295.94,
+    "byte_offset": 27073822,
+    "im_maps_lines": [
+      "00400000-00409000 r-xp 00000000 00:02 1277                               /usr/bin/im.elf",
+      "00418000-00419000 r--p 00008000 00:02 1277                               /usr/bin/im.elf",
+      "00419000-0041a000 rw-p 00009000 00:02 1277                               /usr/bin/im.elf"
+    ]
+  },
+  "im_complete_maps_samples": 413,
+  "CP_kernel_records": [
+    {
+      "LF_line": 774,
+      "text": "846 [64.857906] FX3_BACKUP_CP_PUBLIC_OWNER capture_only=0 exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+    },
+    {
+      "LF_line": 792,
+      "text": "864 [70.522843] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000030000000d00000080ffffff80bddc080000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 793,
+      "text": "865 [70.547313] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 794,
+      "text": "866 [70.594218] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=20 captured=20 raw=5602920000000000060000001a0000001f000000 epoch=1"
+    },
+    {
+      "LF_line": 795,
+      "text": "867 [70.617906] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 797,
+      "text": "869 [70.702219] FX3_BACKUP_CP_UNHANDLED destination=0x928708f7 logical_bytes=16 captured=16 raw=5a019200010000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 798,
+      "text": "870 [70.702719] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x928708f7 source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 799,
+      "text": "871 [70.748750] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000001a00000080ffffff94368e000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 800,
+      "text": "872 [70.749156] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 801,
+      "text": "873 [70.756438] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 802,
+      "text": "874 [70.757093] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 803,
+      "text": "875 [70.769063] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=40 captured=40 raw=53029200120192000000000000000000ffffffffffffffff01000000010000000100ff0400000000 epoch=1"
+    },
+    {
+      "LF_line": 804,
+      "text": "876 [70.769312] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 805,
+      "text": "877 [70.769531] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292004f00ffff epoch=1"
+    },
+    {
+      "LF_line": 806,
+      "text": "878 [70.770094] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 807,
+      "text": "879 [70.782906] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292005200ffff epoch=1"
+    },
+    {
+      "LF_line": 808,
+      "text": "880 [70.783312] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 809,
+      "text": "881 [70.783563] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292003e00ffff epoch=1"
+    },
+    {
+      "LF_line": 810,
+      "text": "882 [70.783781] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 811,
+      "text": "883 [70.791968] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 812,
+      "text": "884 [70.792156] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 813,
+      "text": "885 [70.797375] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 814,
+      "text": "886 [70.797531] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 815,
+      "text": "887 [70.799063] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 816,
+      "text": "888 [70.799250] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 819,
+      "text": "891 [71.729250] FX3_BACKUP_CP_UNHANDLED destination=0x909005c5 logical_bytes=44 captured=40 raw=01000000000000000000000000000000000000000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 820,
+      "text": "892 [71.754500] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x909005c5 source=0x809005c5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 823,
+      "text": "895 [227.049906] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000000d00000080ffffff00e78d0080ffffffd0034a0880ffffffa03bc30880ffffff epoch=1"
+    },
+    {
+      "LF_line": 824,
+      "text": "896 [227.124531] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 832,
+      "text": "904 [344.172563] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=44 captured=40 raw=5202920000000000ffffffffffffffff000000000000000000000000ffffffff0000000003000000 epoch=1"
+    },
+    {
+      "LF_line": 833,
+      "text": "905 [344.244344] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 834,
+      "text": "906 [344.264843] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=5402920050000000 epoch=1"
+    },
+    {
+      "LF_line": 835,
+      "text": "907 [344.279562] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    }
+  ],
+  "native_reset_API_records": [],
+  "screen_records": [
+    {
+      "LF_line": 10278,
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec76ac540 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1\r"
+    },
+    {
+      "LF_line": 15936,
+      "text": "open screen: scr0039_boot -> scr0099_0001\r"
+    },
+    {
+      "LF_line": 16071,
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec76ac540 id1=0x2ae id2=0xfa id3=0x2ae three_reference_args_one_call=1 creation_not_yet_complete=1\r"
+    },
+    {
+      "LF_line": 18144,
+      "text": "open screen: scr0099_0001 -> dlg_dbl021_base\r"
+    },
+    {
+      "LF_line": 18148,
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec76ac540 id1=0xfa id2=0x2c7 id3=0xfa three_reference_args_one_call=1 creation_not_yet_complete=1\r"
+    }
+  ],
+  "native_power_event_records": [
+    {
+      "LF_line": 10232,
+      "text": "FX3_BOOT_QUEUE_SEND tid=355 bytes=28 source=0x830128 raw=72000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1\r"
+    }
+  ],
+  "GPE_records": [
+    {
+      "LF_line": 22386,
+      "text": "FX3_GPE_CMD op=FillRect seq=0 async=1 fmt=0 w=640 h=480 dst_phys=0x43feb5100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22461,
+      "text": "FX3_GPE_CMD op=FillRect seq=1 async=1 fmt=0 w=640 h=480 dst_phys=0x43feb5100 src_phys=0 flags=0x1ff result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22525,
+      "text": "FX3_GPE_CMD op=BitBlit seq=2 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22592,
+      "text": "FX3_GPE_CMD op=BitBlit seq=3 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22603,
+      "text": "FX3_GPE_CMD op=BitBlit seq=4 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22671,
+      "text": "FX3_GPE_CMD op=BitBlit seq=5 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22737,
+      "text": "FX3_GPE_CMD op=BitBlit seq=6 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22851,
+      "text": "FX3_GPE_CMD op=BitBlit seq=7 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22926,
+      "text": "FX3_GPE_CMD op=BitBlit seq=8 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 22995,
+      "text": "FX3_GPE_CMD op=BitBlit seq=9 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23065,
+      "text": "FX3_GPE_CMD op=BitBlit seq=10 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23179,
+      "text": "FX3_GPE_CMD op=BitBlit seq=11 async=1 fmt=0 w=106 h=42 dst_phys=0x43feb5100 src_phys=0x410c643c0 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 23255,
+      "text": "FX3_GPE_CMD op=BitBlit seq=12 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23321,
+      "text": "FX3_GPE_CMD op=BitBlit seq=13 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23387,
+      "text": "FX3_GPE_CMD op=BitBlit seq=14 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23454,
+      "text": "FX3_GPE_CMD op=BitBlit seq=15 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23582,
+      "text": "FX3_GPE_CMD op=BitBlit seq=16 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23655,
+      "text": "FX3_GPE_CMD op=BitBlit seq=17 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23721,
+      "text": "FX3_GPE_CMD op=BitBlit seq=18 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23836,
+      "text": "FX3_GPE_CMD op=BitBlit seq=19 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23902,
+      "text": "FX3_GPE_CMD op=BitBlit seq=20 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x41092d1c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 23976,
+      "text": "FX3_GPE_CMD op=BitBlit seq=21 async=1 fmt=0 w=96 h=42 dst_phys=0x43feb5100 src_phys=0x410c65680 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 24044,
+      "text": "FX3_GPE_CMD op=BitBlit seq=22 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24112,
+      "text": "FX3_GPE_CMD op=BitBlit seq=23 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24178,
+      "text": "FX3_GPE_CMD op=BitBlit seq=24 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24233,
+      "text": "FX3_GPE_CMD op=BitBlit seq=25 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24363,
+      "text": "FX3_GPE_CMD op=BitBlit seq=26 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24429,
+      "text": "FX3_GPE_CMD op=BitBlit seq=27 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24506,
+      "text": "FX3_GPE_CMD op=BitBlit seq=28 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24576,
+      "text": "FX3_GPE_CMD op=BitBlit seq=29 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24639,
+      "text": "FX3_GPE_CMD op=BitBlit seq=30 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24709,
+      "text": "FX3_GPE_CMD op=BitBlit seq=31 async=1 fmt=0 w=121 h=42 dst_phys=0x43feb5100 src_phys=0x410c66680 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 24775,
+      "text": "FX3_GPE_CMD op=BitBlit seq=32 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24890,
+      "text": "FX3_GPE_CMD op=BitBlit seq=33 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 24964,
+      "text": "FX3_GPE_CMD op=BitBlit seq=34 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25032,
+      "text": "FX3_GPE_CMD op=BitBlit seq=35 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25100,
+      "text": "FX3_GPE_CMD op=BitBlit seq=36 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25170,
+      "text": "FX3_GPE_CMD op=BitBlit seq=37 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25236,
+      "text": "FX3_GPE_CMD op=BitBlit seq=38 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25361,
+      "text": "FX3_GPE_CMD op=BitBlit seq=39 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25431,
+      "text": "FX3_GPE_CMD op=BitBlit seq=40 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25500,
+      "text": "FX3_GPE_CMD op=BitBlit seq=41 async=1 fmt=0 w=117 h=42 dst_phys=0x43feb5100 src_phys=0x410c67bc0 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 25619,
+      "text": "FX3_GPE_CMD op=BitBlit seq=42 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25695,
+      "text": "FX3_GPE_CMD op=BitBlit seq=43 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25761,
+      "text": "FX3_GPE_CMD op=BitBlit seq=44 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25881,
+      "text": "FX3_GPE_CMD op=BitBlit seq=45 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 25947,
+      "text": "FX3_GPE_CMD op=BitBlit seq=46 async=1 fmt=0 w=308 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26023,
+      "text": "FX3_GPE_CMD op=BitBlit seq=47 async=1 fmt=0 w=6 h=40 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26091,
+      "text": "FX3_GPE_CMD op=BitBlit seq=48 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26160,
+      "text": "FX3_GPE_CMD op=BitBlit seq=49 async=1 fmt=0 w=308 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26275,
+      "text": "FX3_GPE_CMD op=BitBlit seq=50 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410924f80 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26353,
+      "text": "FX3_GPE_CMD op=BitBlit seq=51 async=1 fmt=0 w=107 h=42 dst_phys=0x43feb5100 src_phys=0x410c69100 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 26422,
+      "text": "FX3_GPE_CMD op=BitBlit seq=52 async=1 fmt=0 w=4 h=2 dst_phys=0x43feb5100 src_phys=0x410924e00 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26538,
+      "text": "FX3_GPE_CMD op=BitBlit seq=53 async=1 fmt=0 w=4 h=5 dst_phys=0x43feb5100 src_phys=0x410924e00 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26612,
+      "text": "FX3_GPE_CMD op=BitBlit seq=54 async=1 fmt=0 w=4 h=2 dst_phys=0x43feb5100 src_phys=0x410924e00 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26681,
+      "text": "FX3_GPE_CMD op=BitBlit seq=55 async=1 fmt=0 w=4 h=2 dst_phys=0x43feb5100 src_phys=0x4109243c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26796,
+      "text": "FX3_GPE_CMD op=BitBlit seq=56 async=1 fmt=0 w=4 h=76 dst_phys=0x43feb5100 src_phys=0x4109243c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26872,
+      "text": "FX3_GPE_CMD op=BitBlit seq=57 async=1 fmt=0 w=4 h=2 dst_phys=0x43feb5100 src_phys=0x4109243c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 26940,
+      "text": "FX3_GPE_CMD op=BitBlit seq=58 async=1 fmt=0 w=640 h=60 dst_phys=0x43feb5100 src_phys=0x4105243c0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27011,
+      "text": "FX3_GPE_CMD op=BitBlit seq=59 async=1 fmt=0 w=640 h=60 dst_phys=0x43feb5100 src_phys=0x410537000 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27075,
+      "text": "FX3_GPE_CMD op=BitBlit seq=60 async=1 fmt=0 w=100 h=42 dst_phys=0x43feb5100 src_phys=0x410c6b900 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 27144,
+      "text": "FX3_GPE_CMD op=BitBlit seq=61 async=1 fmt=0 w=58 h=36 dst_phys=0x43feb5100 src_phys=0x410c6cbc0 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27210,
+      "text": "FX3_GPE_CMD op=BitBlit seq=62 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27272,
+      "text": "FX3_GPE_CMD op=BitBlit seq=63 async=1 fmt=0 w=33 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27342,
+      "text": "FX3_GPE_CMD op=BitBlit seq=64 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27404,
+      "text": "FX3_GPE_CMD op=BitBlit seq=65 async=1 fmt=0 w=6 h=32 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27412,
+      "text": "FX3_GPE_CMD op=BitBlit seq=66 async=1 fmt=0 w=33 h=32 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27416,
+      "text": "FX3_GPE_CMD op=BitBlit seq=67 async=1 fmt=0 w=6 h=32 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27420,
+      "text": "FX3_GPE_CMD op=BitBlit seq=68 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27424,
+      "text": "FX3_GPE_CMD op=BitBlit seq=69 async=1 fmt=0 w=33 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27429,
+      "text": "FX3_GPE_CMD op=BitBlit seq=70 async=1 fmt=0 w=6 h=6 dst_phys=0x43feb5100 src_phys=0x410935400 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27434,
+      "text": "FX3_GPE_CMD op=FillRect seq=71 async=1 fmt=0 w=640 h=480 dst_phys=0x43feb5100 src_phys=0 flags=0x1ff result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27438,
+      "text": "FX3_GPE_CMD op=BitBlit seq=72 async=1 fmt=0 w=600 h=416 dst_phys=0x43feb5100 src_phys=0x410549c40 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 27443,
+      "text": "FX3_GPE_CMD op=BitBlit seq=73 async=1 fmt=0 w=436 h=38 dst_phys=0x43feb5100 src_phys=0x410c6de00 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 27476,
+      "text": "FX3_GPE_CMD op=BitBlit seq=74 async=1 fmt=0 w=463 h=38 dst_phys=0x43feb5100 src_phys=0x410c720c0 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 27542,
+      "text": "FX3_GPE_CMD op=BitBlit seq=75 async=1 fmt=0 w=131 h=38 dst_phys=0x43feb5100 src_phys=0x410c76600 flags=0x10000000e0001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2\r"
+    },
+    {
+      "LF_line": 27546,
+      "text": "FX3_GPE_CMD op=Flush seq=76 async=0 fmt=0 w=0 h=0 dst_phys=0 src_phys=0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=0 rotation=0 src_fmt=0\r"
+    }
+  ],
+  "backup_snapshot": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/backup-after-shutdown.bin",
+    "exists": true,
+    "scope": "QuiescedreservedRAM; filenamealone isnotshutdowncompletion",
+    "bytes": 2232320,
+    "sha256": "2fd83594ea13718e38982a57df738ffca7e86455a0194018b12aab6e3b437141",
+    "CP_second_bank_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+    "CP_second_bank_matches_pinned_seed": true
+  },
+  "timeline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap91r2keys-9d3939d7-post11a-requests.json",
+  "original_menu_verified": false,
+  "AP89_boot_executed": true,
+  "early_stop_reason": null,
+  "AP90_executed": true,
+  "symbol_lookup_error": false,
+  "resource_registrations": [
+    {
+      "LF_line": 2542,
+      "text": "FX3_GPE_RESOURCE_REGISTER object=0x7f380011c0 identity=0xffffffc11ebdae00 type=0x403 uhdl=0x401 logical=0x7f2f508000 phys=0x43ae96000 bytes=0x140000 epoch=1 original_success_status=0 state=0x10 scope=allocation_interval subblock_lifetime_unproven=1 queued_ABA_uncovered=1 vptr=0x7f52c08a48 registration_origin=native_open_return_v1\r"
+    },
+    {
+      "LF_line": 2567,
+      "text": "FX3_GPE_RESOURCE_REGISTER object=0x7f38001300 identity=0xffffffc11e690300 type=0x403 uhdl=0x402 logical=0x7f2ebc8000 phys=0x43feb5000 bytes=0x140000 epoch=2 original_success_status=0 state=0x10 scope=allocation_interval subblock_lifetime_unproven=1 queued_ABA_uncovered=1 vptr=0x7f52c08a48 registration_origin=native_open_return_v1\r"
+    },
+    {
+      "LF_line": 16284,
+      "text": "FX3_GPE_RESOURCE_REGISTER object=0x7f2400f110 identity=0xffffffc139fc8400 type=0 uhdl=0x30303030 logical=0x7ec5e40000 phys=0x410924000 bytes=0x340000 epoch=3 original_success_status=0 state=0x10 scope=allocation_interval subblock_lifetime_unproven=1 queued_ABA_uncovered=1 vptr=0x7f52c08a48 registration_origin=malloc_parent_v1\r"
+    },
+    {
+      "LF_line": 16418,
+      "text": "FX3_GPE_RESOURCE_REGISTER object=0x7f2400f320 identity=0xffffffc139fc8480 type=0 uhdl=0x30303030 logical=0x7ec5c40000 phys=0x410c64000 bytes=0x200000 epoch=4 original_success_status=0 state=0x10 scope=allocation_interval subblock_lifetime_unproven=1 queued_ABA_uncovered=1 vptr=0x7f52c08a48 registration_origin=malloc_parent_v1\r"
+    },
+    {
+      "LF_line": 16493,
+      "text": "FX3_GPE_RESOURCE_REGISTER object=0x7f2400eee0 identity=0xffffffc139fc8380 type=0 uhdl=0x3035303d logical=0x7ec6180000 phys=0x410524000 bytes=0x400000 epoch=5 original_success_status=0 state=0x10 scope=allocation_interval subblock_lifetime_unproven=1 queued_ABA_uncovered=1 vptr=0x7f52c08a48 registration_origin=malloc_parent_v1\r"
+    }
+  ],
+  "resource_parent_rejects": [],
+  "GPE_scope": [
+    {
+      "LF_line": 22303,
+      "text": "FX3_GPE_SCOPE seq=0 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=0 native_count_after=0 approx_fmt2=0 formula=none original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 22397,
+      "text": "FX3_GPE_SCOPE seq=1 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=0 native_count_after=0 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 22514,
+      "text": "FX3_GPE_SCOPE seq=2 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 22530,
+      "text": "FX3_GPE_SCOPE seq=3 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 22597,
+      "text": "FX3_GPE_SCOPE seq=4 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 22664,
+      "text": "FX3_GPE_SCOPE seq=5 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 22735,
+      "text": "FX3_GPE_SCOPE seq=6 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 22800,
+      "text": "FX3_GPE_SCOPE seq=7 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 22865,
+      "text": "FX3_GPE_SCOPE seq=8 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 22991,
+      "text": "FX3_GPE_SCOPE seq=9 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 23057,
+      "text": "FX3_GPE_SCOPE seq=10 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 23130,
+      "text": "FX3_GPE_SCOPE seq=11 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 23196,
+      "text": "FX3_GPE_SCOPE seq=12 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 23310,
+      "text": "FX3_GPE_SCOPE seq=13 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 23329,
+      "text": "FX3_GPE_SCOPE seq=14 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 23443,
+      "text": "FX3_GPE_SCOPE seq=15 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 23522,
+      "text": "FX3_GPE_SCOPE seq=16 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 23639,
+      "text": "FX3_GPE_SCOPE seq=17 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 23715,
+      "text": "FX3_GPE_SCOPE seq=18 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 23783,
+      "text": "FX3_GPE_SCOPE seq=19 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 23852,
+      "text": "FX3_GPE_SCOPE seq=20 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 23919,
+      "text": "FX3_GPE_SCOPE seq=21 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 24033,
+      "text": "FX3_GPE_SCOPE seq=22 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 24108,
+      "text": "FX3_GPE_SCOPE seq=23 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 24174,
+      "text": "FX3_GPE_SCOPE seq=24 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 24184,
+      "text": "FX3_GPE_SCOPE seq=25 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 24308,
+      "text": "FX3_GPE_SCOPE seq=26 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 24380,
+      "text": "FX3_GPE_SCOPE seq=27 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 24503,
+      "text": "FX3_GPE_SCOPE seq=28 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 24570,
+      "text": "FX3_GPE_SCOPE seq=29 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 24636,
+      "text": "FX3_GPE_SCOPE seq=30 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 24701,
+      "text": "FX3_GPE_SCOPE seq=31 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 24770,
+      "text": "FX3_GPE_SCOPE seq=32 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 24840,
+      "text": "FX3_GPE_SCOPE seq=33 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 24906,
+      "text": "FX3_GPE_SCOPE seq=34 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 25021,
+      "text": "FX3_GPE_SCOPE seq=35 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 25095,
+      "text": "FX3_GPE_SCOPE seq=36 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 25154,
+      "text": "FX3_GPE_SCOPE seq=37 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 25231,
+      "text": "FX3_GPE_SCOPE seq=38 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 25303,
+      "text": "FX3_GPE_SCOPE seq=39 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 25421,
+      "text": "FX3_GPE_SCOPE seq=40 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 25489,
+      "text": "FX3_GPE_SCOPE seq=41 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 25567,
+      "text": "FX3_GPE_SCOPE seq=42 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 25684,
+      "text": "FX3_GPE_SCOPE seq=43 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 25750,
+      "text": "FX3_GPE_SCOPE seq=44 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 25827,
+      "text": "FX3_GPE_SCOPE seq=45 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 25898,
+      "text": "FX3_GPE_SCOPE seq=46 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26012,
+      "text": "FX3_GPE_SCOPE seq=47 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26078,
+      "text": "FX3_GPE_SCOPE seq=48 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 26155,
+      "text": "FX3_GPE_SCOPE seq=49 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26226,
+      "text": "FX3_GPE_SCOPE seq=50 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 26340,
+      "text": "FX3_GPE_SCOPE seq=51 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 26420,
+      "text": "FX3_GPE_SCOPE seq=52 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26483,
+      "text": "FX3_GPE_SCOPE seq=53 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26602,
+      "text": "FX3_GPE_SCOPE seq=54 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26668,
+      "text": "FX3_GPE_SCOPE seq=55 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26743,
+      "text": "FX3_GPE_SCOPE seq=56 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26813,
+      "text": "FX3_GPE_SCOPE seq=57 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 26927,
+      "text": "FX3_GPE_SCOPE seq=58 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400eee0 source_uhdl=0x3035303d source_epoch=5 source_type=0 source_phys=0x410524000 source_bytes=0x400000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=3 native_count_after=3 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 26996,
+      "text": "FX3_GPE_SCOPE seq=59 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400eee0 source_uhdl=0x3035303d source_epoch=5 source_type=0 source_phys=0x410524000 source_bytes=0x400000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=3 native_count_after=3 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27071,
+      "text": "FX3_GPE_SCOPE seq=60 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27138,
+      "text": "FX3_GPE_SCOPE seq=61 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27204,
+      "text": "FX3_GPE_SCOPE seq=62 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27269,
+      "text": "FX3_GPE_SCOPE seq=63 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 27335,
+      "text": "FX3_GPE_SCOPE seq=64 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27402,
+      "text": "FX3_GPE_SCOPE seq=65 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 27411,
+      "text": "FX3_GPE_SCOPE seq=66 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 27415,
+      "text": "FX3_GPE_SCOPE seq=67 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 27419,
+      "text": "FX3_GPE_SCOPE seq=68 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27423,
+      "text": "FX3_GPE_SCOPE seq=69 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=nearest_v1\r"
+    },
+    {
+      "LF_line": 27427,
+      "text": "FX3_GPE_SCOPE seq=70 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f110 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=5 native_count_after=5 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27433,
+      "text": "FX3_GPE_SCOPE seq=71 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=0 native_count_after=0 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27437,
+      "text": "FX3_GPE_SCOPE seq=72 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400eee0 source_uhdl=0x3035303d source_epoch=5 source_type=0 source_phys=0x410524000 source_bytes=0x400000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=3 native_count_after=3 approx_fmt2=0 formula=straight_over_v1 original_fmt2_semantics_unproven=0 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27441,
+      "text": "FX3_GPE_SCOPE seq=73 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27459,
+      "text": "FX3_GPE_SCOPE seq=74 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    },
+    {
+      "LF_line": 27503,
+      "text": "FX3_GPE_SCOPE seq=75 screen_extent_id=0x81 screen_type=0x545 screen_serial=0x8c source_object=0x7f2400f320 source_uhdl=0x30303030 source_epoch=4 source_type=0 source_phys=0x410c64000 source_bytes=0x200000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 allocation_event_scope=all_heaps_conservative native_count_before=11 native_count_after=11 approx_fmt2=1 formula=a8_color_straight_over_v1_candidate original_fmt2_semantics_unproven=1 approx_stretch=none\r"
+    }
+  ],
+  "subblock_or_compaction_changes_observed": [],
+  "subblock_lifetime_compaction_queued_ABA_covered": false,
+  "GPE_statistics": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap91r2keys-9d3939d7-gpe-statistics.json",
+  "backup_preAP_QMP_input": {
+    "sha256": "38cf44637c44d3f47d7b8541dddf7ecc443e262f40dec3aec59f7b94d5b8b38f",
+    "expected": "38cf44637c44d3f47d7b8541dddf7ecc443e262f40dec3aec59f7b94d5b8b38f",
+    "before_AP_bootin_marker": true,
+    "verified": true,
+    "bytes": 2232320,
+    "physical": "0x404000000",
+    "method": "QMPstop/pmemsave afterguesthelperremapSHA beforeAPlaunch;existingreservedRAMonly"
+  },
+  "QMP_pixel_readback": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/gpe-surface-545.bin",
+    "bytes": 614400,
+    "physical": "0x43feb5100",
+    "format": 0,
+    "geometry": [
+      640,
+      480
+    ],
+    "stride_pixels": 640,
+    "unique_pixels": 14,
+    "sha256": "fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460",
+    "independent_QMP_physical_readback": true,
+    "original_menu_input_verified": false,
+    "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap91r2keys-9d3939d7/ap91-QMP-logical-fmt0.png",
+    "PNG_sha256": "c3257493ac9acf3a3066e21f9f028e8f7ef06ffd11149bf9c175f99a9b7873b0"
+  },
+  "original_UUD_decision": [
+    {
+      "LF_line": 15935,
+      "text": "FX3_AP89_UUD_DECISION native_update_return=0 mode143=1 option145=0 native_branch_follows=2380320 forced=0\r"
+    }
+  ],
+  "AP91_executed": true,
+  "AP91_key_review": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap91r2keys-9d3939d7-key-review.json",
+  "synthetic_input": true,
+  "original_cp_key_detection": false,
+  "application_callback_execution_proven": true,
+  "input_menu_feedback_verified": false,
+  "application_callback_correction": {
+    "proof_sha256": "cd09e63c776776302de29413ac071608fdfd56f5db107d85f2673629b14fb906",
+    "native_forward_return_relative": "0x16f10b4",
+    "native_destination": "0x005503e0",
+    "events": [
+      {
+        "line": 28935,
+        "raw": "ac0100000000000001000000ffffff7f00000000000000000100000000000000",
+        "event_code": "0x1ac",
+        "status": 1,
+        "prev_status": 2147483647,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 28960,
+        "raw": "ac01000000000000000000000100000000000000000000000100000000000000",
+        "event_code": "0x1ac",
+        "status": 0,
+        "prev_status": 1,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 31273,
+        "raw": "ab0100000000000001000000ffffff7f00000000000000000100000000000000",
+        "event_code": "0x1ab",
+        "status": 1,
+        "prev_status": 2147483647,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 31333,
+        "raw": "ab01000000000000000000000100000000000000000000000100000000000000",
+        "event_code": "0x1ab",
+        "status": 0,
+        "prev_status": 1,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 33742,
+        "raw": "300000000000000001000000ffffff7f00000000000000000100000000000000",
+        "event_code": "0x30",
+        "status": 1,
+        "prev_status": 2147483647,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 33803,
+        "raw": "3000000000000000000000000100000000000000000000000100000000000000",
+        "event_code": "0x30",
+        "status": 0,
+        "prev_status": 1,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 39006,
+        "raw": "3000000000000000010000000000000000000000000000000100000000000000",
+        "event_code": "0x30",
+        "status": 1,
+        "prev_status": 0,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 39112,
+        "raw": "3000000000000000000000000100000000000000000000000100000000000000",
+        "event_code": "0x30",
+        "status": 0,
+        "prev_status": 1,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 45077,
+        "raw": "af0100000000000001000000ffffff7f00000000000000000100000000000000",
+        "event_code": "0x1af",
+        "status": 1,
+        "prev_status": 2147483647,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 45236,
+        "raw": "af01000000000000000000000100000000000000000000000100000000000000",
+        "event_code": "0x1af",
+        "status": 0,
+        "prev_status": 1,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 52227,
+        "raw": "ab01000000000000010000000000000000000000000000000100000000000000",
+        "event_code": "0x1ab",
+        "status": 1,
+        "prev_status": 0,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      },
+      {
+        "line": 52380,
+        "raw": "ab01000000000000000000000100000000000000000000000100000000000000",
+        "event_code": "0x1ab",
+        "status": 0,
+        "prev_status": 1,
+        "ex_info": 0,
+        "repeat": 0,
+        "from_type": 1,
+        "inh": 0
+      }
+    ],
+    "UI_dequeue_controller_action_unproven": true
+  }
+}

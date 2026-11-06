@@ -1,0 +1,21 @@
+{
+  "commit": "0f03359e72cdf9d75330219c7ae15bf97180486a",
+  "archive_sha256": "0feeab92ad7094f455f4571618259c26e93ff32818aebf59e89b25dc4a070590",
+  "README_modern_camera_updater_marked_unsupported": true,
+  "README_official_flashing_experimental": true,
+  "core_firmware_entry": "read_dat checks UFU magic and locates FDAT; selected entry is not a VENICE type3/type4 decoder",
+  "app_firmware_entry": "Passes original FDAT slice to camera check_guard then write_firmware; no target acceptance receipt produced",
+  "updater_shell_generator_chip_arms": [
+    "CXD4105",
+    "CXD4115",
+    "CXD4115_ilc",
+    "CXD4120",
+    "CXD4132",
+    "CXD90014"
+  ],
+  "shipped_model_table_rows": 121,
+  "exact_FX3_FX3A_FX5_rows": [],
+  "selected_source_executed": false,
+  "signing_key_access_or_derivation": false,
+  "scope": "Selected parser/sender/generator/model-table inspection. Not a claim that all settings/service-mode operations reject modern Sony or that the entire repository cannot change later."
+}

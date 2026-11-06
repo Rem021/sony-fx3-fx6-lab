@@ -1,0 +1,29 @@
+{
+  "phase": "entry-20261029",
+  "camera_actions": 0,
+  "native_sony_execution": false,
+  "full_modified_package_emitted": false,
+  "termination_condition_met": false,
+  "corrections": [
+    {
+      "observation": "execute_update guest reached the original error-status jump-table read at app PC 0x2eaea04; the source RO page was absent from the initial bounded map.",
+      "evidence": "attempts/execute-update-guest-bodyfail-failure.json",
+      "resolution": "Mapped the real file-backed source page containing the nine-byte table at 0x399f5ec and made it read-only. All nine intended cases then passed. No guessed RAM or missing snapshot pages were supplied."
+    },
+    {
+      "observation": "Two exploratory static reads of crypter global 0x412094 failed because it is BSS rather than file-backed data.",
+      "resolution": "Retained View.read rejection. Recorded SHT_NOBITS and init-array pointers without claiming a runtime FILE_CHUNK argument or zero-filled WBI evidence."
+    },
+    {
+      "observation": "The first external-command listing attempt assumed a single .rodata section and stopped on a module with a different section layout.",
+      "resolution": "The new phase's listing helper now identifies allocated read-only non-code sections explicitly. Rebuilt the unsealed static outputs; the original nine entry fragments still contain 93 annotated literals."
+    }
+  ],
+  "fixture_boundaries": [
+    "Registration replies, file-preparation results, backup operations, process requests and follow-up actions in execute_update_guest are explicit host fixtures.",
+    "media_length_guest reads the official original file only. Its two threshold fixtures are sixteen-byte prefixes without payload or signatures; execution stops at the first payload-read request.",
+    "Selected ELF mappings use file bytes and declared synthetic RAM; no omitted WBI memory is filled or represented as recovered.",
+    "Kernel module analysis is static ET_REL only; no native kernel module, ioctl, USB or camera operation occurs.",
+    "A typed success result, small header/checksum pass or direct dlopen call is not a whole-container admission or flash receipt."
+  ]
+}

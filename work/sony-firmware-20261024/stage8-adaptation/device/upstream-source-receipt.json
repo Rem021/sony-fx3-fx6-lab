@@ -1,0 +1,204 @@
+{
+  "commit": "b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d",
+  "files": [
+    {
+      "path": "src/camera_runtime/assets/installer.so",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/camera_runtime/assets/installer.so",
+      "sha256": "68c19f096f42381a0dcdc9d7b0029452164bf43fe5eaeb89ec889d9f058df206",
+      "bytes": 56864,
+      "temporary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage8-adaptation/device/temporary-upstream/installer.so"
+    },
+    {
+      "path": "src/camera_runtime/assets/wbi.so",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/camera_runtime/assets/wbi.so",
+      "sha256": "8d73d55bf89a8400b1c00130b514405d850553536f222fca0eb3959eb0a0be25",
+      "bytes": 17608,
+      "temporary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage8-adaptation/device/temporary-upstream/wbi.so"
+    },
+    {
+      "path": "src/camera_runtime/native/runtime.c",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/camera_runtime/native/runtime.c",
+      "sha256": "f976ac7190ea25bdce571811adcdc59c69325a0364cb33d1d95b14cc5c190f49",
+      "bytes": 1969,
+      "temporary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage8-adaptation/device/temporary-upstream/runtime.c",
+      "selected_lines": [
+        {
+          "line": 10,
+          "text": "    u8 image_mode[16],image_dev[32],uptime[128],boot_id[64];"
+        },
+        {
+          "line": 15,
+          "text": "__attribute__((visibility(\"default\"))) void _init(void) {"
+        },
+        {
+          "line": 21,
+          "text": "        i64 mem=op(\"/proc/self/mem\",0),disk=op(\"/usr/lib/appFw.so\",0);"
+        },
+        {
+          "line": 32,
+          "text": "    read_all(\"/sys/power/image_mode\",runtime.image_mode,sizeof(runtime.image_mode));"
+        },
+        {
+          "line": 33,
+          "text": "    read_all(\"/sys/power/image_dev\",runtime.image_dev,sizeof(runtime.image_dev));"
+        },
+        {
+          "line": 36,
+          "text": "    i64 out=op(\"/tmp/jiritsu/a7c2.runtime.result\",0x241);"
+        }
+      ]
+    },
+    {
+      "path": "src/camera_runtime/native/wbi.c",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/camera_runtime/native/wbi.c",
+      "sha256": "f35ce9b4d22d86534664ebc3d0492e6e3bd0ee7234d58bdfad2488192e090585",
+      "bytes": 4035,
+      "temporary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage8-adaptation/device/temporary-upstream/wbi.c",
+      "selected_lines": [
+        {
+          "line": 32,
+          "text": "    i64 fd=op(\"/tmp/jiritsu/a7c2.wbi.request\",0);"
+        },
+        {
+          "line": 39,
+          "text": "    n=read_text(\"/sys/power/image_mode\",r.before_mode,sizeof(r.before_mode));"
+        },
+        {
+          "line": 41,
+          "text": "    n=read_text(\"/sys/power/image_dev\",r.before_dev,sizeof(r.before_dev));"
+        },
+        {
+          "line": 42,
+          "text": "    if(n!=6||!same(r.before_dev,(const u8*)\"*wbi4\\n\",6)) {r.status=n<0?n:-22;return;}"
+        },
+        {
+          "line": 48,
+          "text": "    change(\"/sys/power/image_drop\",'1',&r.drop_write,&r.drop_close);"
+        },
+        {
+          "line": 51,
+          "text": "        change(\"/sys/power/image_mode\",'0',&r.mode_write,&r.mode_close);"
+        },
+        {
+          "line": 54,
+          "text": "    n=read_text(\"/sys/power/image_mode\",r.after_mode,sizeof(r.after_mode));"
+        },
+        {
+          "line": 56,
+          "text": "    n=read_text(\"/sys/power/image_dev\",r.after_dev,sizeof(r.after_dev));"
+        },
+        {
+          "line": 70,
+          "text": "__attribute__((visibility(\"default\"))) void _init(void) {"
+        },
+        {
+          "line": 73,
+          "text": "    r.cleanup=sc(35,-100,(i64)\"/tmp/jiritsu/libJit.so\",0,0,0,0);work();"
+        },
+        {
+          "line": 74,
+          "text": "    i64 fd=op(\"/tmp/jiritsu/a7c2.wbi.result\",0x241);"
+        }
+      ]
+    },
+    {
+      "path": "src/camera_runtime/native/installer.c",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/camera_runtime/native/installer.c",
+      "sha256": "7e86900d6bb5d3e9f6200c40566c30ffd37e14be1d1d7bcd54c9ab1652d96a74",
+      "bytes": 8061,
+      "temporary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage8-adaptation/device/temporary-upstream/installer.c",
+      "selected_lines": [
+        {
+          "line": 23,
+          "text": "#define INSTALL_REQUEST \"/tmp/jiritsu/a7c2.install.request\""
+        },
+        {
+          "line": 24,
+          "text": "#define INSTALL_RESULT \"/tmp/jiritsu/a7c2.install.result\""
+        },
+        {
+          "line": 38,
+          "text": "static const char *path(u32 i) {return i?\"/cp/cpapp-b.bin\":\"/usr/lib/appFw.so\";}"
+        },
+        {
+          "line": 154,
+          "text": "__attribute__((visibility(\"default\"))) void _init(void) {"
+        },
+        {
+          "line": 157,
+          "text": "    r.cleanup=sc(35,-100,(i64)\"/tmp/jiritsu/libJit.so\",0,0,0,0);"
+        },
+        {
+          "line": 164,
+          "text": "    /* Return to the original native Jiritsu loader. */"
+        }
+      ]
+    },
+    {
+      "path": "src/camera_runtime/transport.py",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/camera_runtime/transport.py",
+      "sha256": "52f2c34f4b5c5d2361a7a5869320fec3711b753299a74fd814a87129d1a9d10a",
+      "bytes": 23438,
+      "temporary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage8-adaptation/device/temporary-upstream/transport.py",
+      "selected_lines": [
+        {
+          "line": 404,
+          "text": "    def jiritsu(self,cmd,data=b'',missing=False):"
+        },
+        {
+          "line": 405,
+          "text": "        if cmd not in [15,16,17,18]:raise ValueError('\u4e0d\u5141\u8a31\u6b64 Jiritsu \u547d\u4ee4')"
+        },
+        {
+          "line": 408,
+          "text": "        if response or len(out)<4:raise RuntimeError('Jiritsu \u56de\u61c9\u683c\u5f0f\u932f\u8aa4')"
+        },
+        {
+          "line": 411,
+          "text": "        if status:raise RuntimeError(f'Jiritsu \u72c0\u614b {status:#x}')"
+        },
+        {
+          "line": 414,
+          "text": "        if not path.startswith('/tmp/jiritsu/') or '\\0' in path or len(path)>510:raise ValueError('\u8def\u5f91\u4e0d\u7b26')"
+        },
+        {
+          "line": 415,
+          "text": "        self.jiritsu(15,b'\\0'+path.encode('ascii')+b'\\0')"
+        },
+        {
+          "line": 416,
+          "text": "    def read(self,path,missing=False):self.select(path);return self.jiritsu(17,b'\\0\\xff\\0',missing)"
+        },
+        {
+          "line": 419,
+          "text": "        path='/tmp/jiritsu/'+name;self.select(path)"
+        },
+        {
+          "line": 420,
+          "text": "        if remove:self.jiritsu(18,b'\\0\\xff')"
+        },
+        {
+          "line": 423,
+          "text": "            self.jiritsu(16,b'\\0\\xff\\0'+data)"
+        }
+      ]
+    },
+    {
+      "path": "src/camera_runtime/vendor/pmca/usb/sony.py",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d/src/camera_runtime/vendor/pmca/usb/sony.py",
+      "sha256": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e",
+      "bytes": 36033,
+      "temporary": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage8-adaptation/device/temporary-upstream/sony.py",
+      "selected_lines": [
+        {
+          "line": 1016,
+          "text": " def readFile(self, filename, outFile=None):"
+        },
+        {
+          "line": 1019,
+          "text": " def writeFile(self, filename, data):"
+        }
+      ]
+    }
+  ]
+}

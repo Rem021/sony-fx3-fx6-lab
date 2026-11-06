@@ -1,0 +1,12 @@
+{
+  "source": "outputs/fx3-recovery-adapter/fx3_recovery/elflink.py",
+  "source_sha256": "c78e5997da0567cb0f2b55f4c678f1463a3988d18cf64e8dba9a2cbfad2a9449",
+  "changes": [
+    "local static worker source pins only",
+    "segment layout alignment 65536",
+    "ADRP delegates original 4096-byte ISA relocation",
+    "explicit own fx3_boot_read_window entry",
+    "no formal linker or release modifications",
+    "local restricted integer LDST32 relocation285; target4-byte alignment, opcode mask and roundtrip check; formal builder unchanged"
+  ]
+}

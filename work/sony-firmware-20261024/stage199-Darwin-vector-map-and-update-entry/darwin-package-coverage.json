@@ -1,0 +1,24 @@
+{
+  "audit_path": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/current-updater-asset-audit.json",
+  "audit_sha256": "34f9e2973078b4658545b7acce3bcf8cbf799cc0ca831c7a29f2ca8e61183f84",
+  "audit_source_FDAT_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "Darwin_named_payload_members": [
+    {
+      "name": "0640_darwin/darwin_core.bin",
+      "size": 243000,
+      "type": "0",
+      "tar_header_offset": 49087488,
+      "data_offset_in_tar": 49088000,
+      "fdat_data_offset": 50341888,
+      "header_checksum_matches": true,
+      "sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "crc32": "88c72292"
+    }
+  ],
+  "darwin_sum_path": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/tar-selected/0641_darwin_sum/darwin.sum",
+  "darwin_sum_sha256": "e989fba36d35b50de7fca3ba490b1cb07563ad927497f5a9556dcd4b5f58b013",
+  "darwin_sum_ascii": "0,88c72292,0003b538,000001a4,00000000,000003e8,root,root,-1,-1,darwin_core.bin,\n",
+  "scope": "named package members and current checksum list only; no exhaustive proof of every nested executable or a physical memory acquisition",
+  "independent_Darwin_bootloader_or_current_FX3_AP_boot0_obtained": false,
+  "root_or_device_operations": 0
+}

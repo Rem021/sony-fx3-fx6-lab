@@ -1,0 +1,44 @@
+{
+  "reviewed_at": "2026-11-05T12:14:28.037701+00:00",
+  "status": "offline_integration_accepted_runtime_unverified",
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r47-runtime-integration-candidate",
+  "worker_task": "task_b03463147685",
+  "documentation_followup_task": "task_d60f5e3b6fa1",
+  "documentation_followup_dispatch": "ctx_22338af01698",
+  "manifest": {
+    "sha256": "3fecb3631c4126c4b7468cc8a849a5f7932a353d8dc34c10ba27c9370d61533d",
+    "entries": 93,
+    "mismatches": []
+  },
+  "source_freeze": {
+    "sha256": "981664fb7c563162e84ac0feaa82a0ebf0ae8bc361df74d11519e29499831e76",
+    "entries": 44,
+    "mismatches": []
+  },
+  "core_freeze": {
+    "sha256": "c87cb75380013efd940a653da015d2116b8caf159db4a818ac377546b9349dc2",
+    "entries": 39,
+    "mismatches": []
+  },
+  "review_basis": [
+    "independently hashed manifest and every SOURCE/CORE member",
+    "read actual launch_prepare/start_and_wait/cleanup/audit_after source",
+    "reviewed actual PAGE+deadline+recovery fake-DOM test and actual cleanup_once-to-certify/seal/revalidate test",
+    "verified corrected command draft includes separate unique Start and actual standby image review"
+  ],
+  "worker_tests": {
+    "suite": "9/9",
+    "cleanup_injected_dependencies": "7/7",
+    "PAGE_fake_DOM": "4/4",
+    "coordinator_reran_tests": false
+  },
+  "limitations": [
+    "native and resource dependencies mocked in offline tests",
+    "no real visual recovery or runtime cleanup acceptance",
+    "r45 remains failed with cleanup unknown",
+    "FX6 boot/menu remains unproven"
+  ],
+  "runtime_authorized": false,
+  "deployed": false,
+  "next_action": "user decision on one bounded r47 candidate VM measurement using 60s operator review policy; no automatic second Start"
+}

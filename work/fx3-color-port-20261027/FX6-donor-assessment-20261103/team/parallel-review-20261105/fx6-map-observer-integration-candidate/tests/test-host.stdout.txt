@@ -1,0 +1,14 @@
+DISABLED: framed observer default-disabled; no VM started
+DENIED: wrong framed token
+DENIED: --new-run-approval required
+FRAMED_ENTRY_RESULT {'status': 'fake'}
+{
+  "schema": "fx6-map-observer-integration-tests-v1",
+  "status": "PASS_OFFLINE_FAKE",
+  "tests": 3,
+  "cases": [
+    "framed_provider_accepts_fixture_without_legacy_maps",
+    "framed_provider_rejects_corrupt_no_fallback",
+    "entry_default_disabled_and_fake_runner_once"
+  ]
+}

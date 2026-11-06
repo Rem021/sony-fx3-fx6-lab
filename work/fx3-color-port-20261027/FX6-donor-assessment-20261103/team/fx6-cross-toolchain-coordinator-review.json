@@ -1,0 +1,26 @@
+{
+  "time": "2026-11-06T04:33:47.760547+00:00",
+  "status": "path_only_toolchain_blocker_incomplete_existing_lld_found",
+  "manifests": [
+    {
+      "name": "fx6-map-snapshot-producer-candidate",
+      "count": 48,
+      "all_match": true,
+      "manifest_sha256": "37fd52ce867607b3340aa76c4d4931e0bdce4fa00f07ddb79f6003c03cccb61a"
+    },
+    {
+      "name": "fx6-map-observer-integration-candidate",
+      "count": 4,
+      "all_match": true,
+      "manifest_sha256": "1bfaec776cc88b39a5d9534478916d136e7e3f218ebb7367497dab3e198aff03"
+    }
+  ],
+  "verified_existing_linker": "/Volumes/KAFU2T/AI/Projects/HUSK/work/tools/rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/bin/gcc-ld/ld.lld",
+  "linker_version": "LLD 23.1.1",
+  "clang": "/usr/bin/clang",
+  "next": "isolated small musl source cross-build with existing clang/lld; no system install or VM",
+  "references": [
+    "https://clang.llvm.org/docs/CrossCompilation.html",
+    "https://musl.libc.org/releases.html"
+  ]
+}

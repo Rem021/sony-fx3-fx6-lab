@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-10-28T14:15:18.365514+00:00",
+  "source": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+  "source_type": "Research author primary repository README, web retrieved during current turn",
+  "tested_model": "Sony ILCE-7M4 / A7 IV",
+  "author_claims": [
+    "Serial bootloader can be entered via accessory connector RX shortly after reset",
+    "Bare-metal fastboot payload can dump and restore eMMC partitions and handles partition encryption",
+    "A7 IV eMMC partitions use AES-XTS and the author reports no partition signature verification"
+  ],
+  "fx3_equivalence_verified": false,
+  "fx3_boot0_or_bootrom_dump_acquired_by_this_task": false,
+  "device_actions": 0,
+  "downloads_or_execution_of_boot_payloads": 0,
+  "scope": "A model-specific alternative research route. This primary A7 IV report is not evidence that FX3 permits the same entry, keys, partition writes, unsigned boot or recovery. Other agent USB/recovery work is not changed."
+}

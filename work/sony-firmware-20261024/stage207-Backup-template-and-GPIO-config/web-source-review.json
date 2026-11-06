@@ -1,0 +1,29 @@
+{
+  "reviewed_utc": "2026-10-29T23:58:09.433809+00:00",
+  "status": "PRIMARY_FORMAT_SOURCE_AND_LOCAL_OFFICIAL_BYTES_ONLY",
+  "sources": [
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/backup/__init__.py",
+      "scope": "BK4 property/header/checksum format; not FX3 runtime record roles or recovery support",
+      "capture": "format-source-capture.json",
+      "host_parser_use": "PMCA-reader-crosscheck.json"
+    },
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/util/__init__.py",
+      "scope": "Struct helper for bounded host parser"
+    },
+    {
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+      "scope": "Previously captured Ver7.00 GPL reference only; GPIO subset does not prove current7.02 ioctl implementation",
+      "capture": "GPL-GPIO-source-capture.json"
+    }
+  ],
+  "official7_02_templates": "template-source-capture.json",
+  "official7_02_GPIO": "GPIO-layout-proof.json",
+  "decisions": [
+    "both BK4 records are valid; first matching public A7IV defaults does not identify the runtime record",
+    "GPIO diagnostics bind parameter names; no target register or pin was touched",
+    "No newly found exact FX3 independent recovery claim is asserted"
+  ],
+  "new_device_operations": 0
+}

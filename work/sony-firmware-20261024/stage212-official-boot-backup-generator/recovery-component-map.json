@@ -1,0 +1,40 @@
+{
+  "schema": "fx3-static-boot-component-contract-v1",
+  "target": "classic ILME-FX3 7.02",
+  "AP": {
+    "official_script": "originals/bin/loader_writer.sh",
+    "expected_archive": "loader_emmc.tar",
+    "archive_acquired": false,
+    "Backup_record_index": 0,
+    "bksb_option": "-m",
+    "script_Backup_source": "/setting/Backup.bin",
+    "script_target": "/dev/nflashaB0",
+    "formatter_writable_shared_map_bytes": 2097152,
+    "exact_component_write_footprint_verified": false,
+    "optional_extra_dependency": "running-memory DDR training data and MIS-selected write location",
+    "cannot_substitute_CP65_property_list": true,
+    "independent_entry_or_current_same_body_restore_verified": false
+  },
+  "CP_NOR": {
+    "official_script": "originals/bin/nor_loader_writer.sh",
+    "archive": "loader_nor.tar",
+    "archive_SHA256": "913d1a3271f855b90192d84fbbdb224533c8d8493833d0c194b3d14fdad4dd3f",
+    "Backup_record_index": 1,
+    "bksb_option": "-c",
+    "Backup_source_alternatives": ["package backup glob if present","/setting/Backup.bin otherwise"],
+    "property_list_count": 65,
+    "CP_config_BKSB_capacity_bytes": 2048,
+    "public_CP_defaults_predicted_BKSB_bytes": 1088,
+    "SPI_then_CP_updater_route_static_only": true,
+    "also_stores_generated_nor_image_in_p8": true,
+    "actual_body_hardware_population_or_update_branch_verified": false,
+    "not_independent_AP_rescue_proof": true
+  },
+  "receipt_rule": "Selected formatter main path discards writer result; require independent content and boot/restore acceptance, not exit0 or OK text alone.",
+  "needed_same_body_capture_scope_not_yet_authorized_or_done": ["whole AP boot regions","current p1 with identity and full hash","complete relevant BK4 copies rather than a property subset","CP image/config and hardware applicability separately if restore scope includes it"],
+  "execution_ready": false,
+  "device_backend_added": false,
+  "persistent_write_release": false,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

@@ -1,0 +1,28 @@
+{
+  "pinned_commit": "f124d87c26110a82db54775bfa64a0843ff21410",
+  "sources": [
+    {
+      "path": "work/sony-firmware-20261024/stage151-latest-A7CII-HEVC-evidence/work/public-sources/camera-tools/windows/runtime/windows_p1_capture.py",
+      "sha256": "df2ed8b35bfbc63804483b2649435c74336f55b96d4518d47880a587b14ed676"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage151-latest-A7CII-HEVC-evidence/work/public-sources/camera-tools/windows/runtime/core/sony-firmware-research/volatile_p1_window_201.c",
+      "sha256": "7ab0177c8c1d7e45a7b9d399e40e3ea37004acea08117d66938fb2a78dbdb742"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage151-latest-A7CII-HEVC-evidence/work/public-sources/camera-tools/windows/runtime/core/sony-service-research/p1_block_window_protocol_201.py",
+      "sha256": "5c6429bf465985eedb16aaad13a1c19c96c51fa3f39062b121bb512b625a4aa8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage151-latest-A7CII-HEVC-evidence/work/public-sources/camera-tools/windows/runtime/core/sony-service-research/p1_fixed_host_export_201.py",
+      "sha256": "3f789912b8065ffcb9aedafb28ae13e6312c983c31c06f38eaa6415282a178d8"
+    }
+  ],
+  "new_camera_operations": 0,
+  "findings": [
+    "A7CII exact252:129 node binding cannot establish FX3 device identity",
+    "native constructor unlinks /etc/ld.so.preload BEFORE tmpfs/request checks; whole acquisition is not zero-write",
+    "original runtime LIVE_EXECUTION_REVIEWED=False; do not enable or import it",
+    "implement host fixed-range acquisition core plus regular-file provider only; camera provider remains absent"
+  ]
+}

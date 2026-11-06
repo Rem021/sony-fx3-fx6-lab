@@ -1,0 +1,49 @@
+{
+  "status": "PASS_ORIGINAL_STATIC_HEVC_PRESET_BINDING_AND_DEFAULT_RATES",
+  "preset_records": 316,
+  "scenarios": 6,
+  "bounded_phases": 18,
+  "defaults": [
+    {
+      "label": "MAIN FF",
+      "preset_id": "0x19450",
+      "target": 24498176,
+      "trace": 25999360
+    },
+    {
+      "label": "MAIN QT35M",
+      "preset_id": "0x1944c",
+      "target": 33000000,
+      "trace": 34996224
+    },
+    {
+      "label": "MAIN QT50M",
+      "preset_id": "0x1944d",
+      "target": 50000000,
+      "trace": 57999360
+    },
+    {
+      "label": "MAIN QT9M",
+      "preset_id": "0x19454",
+      "target": 8800000,
+      "trace": 9999360
+    },
+    {
+      "label": "proxy FH",
+      "preset_id": "0x1c26b",
+      "target": 16000000,
+      "trace": 16000000
+    },
+    {
+      "label": "UHD QT150M control",
+      "preset_id": "0x18da8",
+      "target": 150000000,
+      "trace": 159989760
+    }
+  ],
+  "MAIN_FF_default_not16M": true,
+  "static_query_not_live_rate_readback": true,
+  "actual_hardware_or_restore_verified": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

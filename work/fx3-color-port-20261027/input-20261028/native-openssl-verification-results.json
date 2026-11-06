@@ -1,0 +1,25 @@
+{
+  "status": "PASS_INDEPENDENT_NATIVE_RSA_BOUNDARY_VERIFICATION",
+  "host_crypto": "LibreSSL 3.3.6",
+  "source_sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+  "key_pem_sha256": "8281413b5607446939613e07d020b2c7d8ee2371349099de56bc8288f7be0a43",
+  "cases": [
+    {
+      "includes_iv": true,
+      "bytes": 811876368,
+      "exit_code": 0,
+      "stdout": "Verified OK\n",
+      "stderr": "",
+      "seconds": 7.339062416984234
+    },
+    {
+      "includes_iv": false,
+      "bytes": 811876352,
+      "exit_code": 1,
+      "stdout": "Verification Failure\n",
+      "stderr": "",
+      "seconds": 4.533077958039939
+    }
+  ],
+  "scope": "Host OpenSSL public signature verification of original encrypted 7.02 FDAT. Original body plus IV passes; body without IV fails. No Sony executable, signing, update process or device access."
+}

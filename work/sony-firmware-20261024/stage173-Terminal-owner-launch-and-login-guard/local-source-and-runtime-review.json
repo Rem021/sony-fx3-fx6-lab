@@ -1,0 +1,92 @@
+{
+  "current_checks": {
+    "internal-stage-tests.json": {
+      "checks": 13,
+      "status": "PASS_USER_INTERNAL_STAGING_NOT_ADMIN_OR_USB_ACCEPTANCE"
+    },
+    "hardened-entry-tests.json": {
+      "checks": 13,
+      "status": "PASS_HARDENED_FIXTURE_LAUNCH_NOT_ROOT_OR_USB_ACCEPTANCE"
+    },
+    "recorded-observer-tests.json": {
+      "checks": 5,
+      "status": "PASS_RECORDED_OBSERVER_AND_ACTUAL_OWN_PARENT_EXIT_NOT_ROOT_OR_CAMERA_ACCEPTANCE"
+    },
+    "terminal-relay-tests.json": {
+      "checks": 15,
+      "status": "PASS_TERMINAL_LAUNCH_AND_COMPLETION_SEPARATED_NO_REAL_TERMINAL_OR_ROOT"
+    },
+    "host-login-admission-tests.json": {
+      "checks": 15,
+      "status": "PASS_PURE_LOGIN_ADMISSION_FAULT_CASES"
+    },
+    "claim-trace-memory-tests.json": {
+      "checks": 3,
+      "status": "PASS_EXACT_TRACE_RETURN_BITS_ORDER_CAPACITY_AND_BUDGET"
+    }
+  },
+  "total_current_checks": 64,
+  "byte_identical_runtime_components": [
+    {
+      "path": "owner_core.c",
+      "sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "7b33b03256f3c226ade7049c10a9e3f42790b9240d8291a60fbd600170f34fae"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "00dff89176cbe9073f102aebeefb354a770316c5e3a866e93ac2aece8b4d296c"
+    },
+    {
+      "path": "entry_shared.h",
+      "sha256": "43d4be1b325bcc5a8940054e9d6e8f917c72022537b34458f094398e26616948"
+    },
+    {
+      "path": "entry_binding.py",
+      "sha256": "2748a25a6488112f3139a3ac169e298ee0d972b51616e3bfbd5cb939b95aaef7"
+    },
+    {
+      "path": "owner_binding.py",
+      "sha256": "b8f5e4170ef40e38c9d05c09909a99204b49baab476de1b1e4beeed2ed6d8a6f"
+    },
+    {
+      "path": "cache_observer.py",
+      "sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971"
+    },
+    {
+      "path": "claim-trace-function.inc",
+      "sha256": "bada15bcb70e055101c1c27703f1afd08c48ab2f1149c22e8fd492e107de9da8"
+    },
+    {
+      "path": "claim-substep-map.json",
+      "sha256": "4337453147fdd9c5a628210d722aa1ff321414b65c0b874e408673d5216b2864"
+    }
+  ],
+  "native_undefined_symbols_added": [
+    "_SessionGetInfo",
+    "_getaudit_addr",
+    "_getauid"
+  ],
+  "native_undefined_symbols_removed": [],
+  "new_native_apis_scope": "Only own audit and GUI session reads; no audit setters or new USB transfer APIs",
+  "login_guard_before_frame_open_ready_ACK_or_provider": true,
+  "provider_IOKit_calls_arguments_count_order_unchanged": true,
+  "current_live_CLI_denied_before_claim_cache_frame_or_Terminal": true,
+  "default_CLI_plan_only": true,
+  "native_sha256": "fa7b5da122b67f25349551edb1870fbe93dd870c7043721cb0a46e735346625d",
+  "fixture_sha256": "7b24dfe8c7e30bba112ff0bcd4222be03989b1b19c17ba4936a0197bad76f9ca",
+  "new_grant_directory_and_claim_absent": true,
+  "root_or_native_IOKit_or_Terminal_execution": false,
+  "new_camera_operations": 0,
+  "new_privacy_changes": 0
+}

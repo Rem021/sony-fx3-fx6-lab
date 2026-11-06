@@ -1,0 +1,12 @@
+--- a/init
++++ b/init
+@@ -368,7 +368,8 @@
+     echo FX3_AP_IM_PROCESS=${procdir##*/}
+     /bin/busybox cat "$procdir/cmdline"
+     echo
+-    /bin/busybox cat "$procdir/status" "$procdir/maps" "$procdir/wchan"
++    /bin/busybox cat "$procdir/status" "$procdir/wchan"
++    /simulation/fx3-map-snapshot "${procdir##*/}" "${turn}"
+     /bin/busybox ls -l "$procdir/fd"
+     for taskdir in "$procdir"/task/*; do
+      echo FX3_TASK_SNAPSHOT_${taskdir##*/}_BEGIN

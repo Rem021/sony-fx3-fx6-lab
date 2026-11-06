@@ -1,0 +1,53 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so
+# SHA256 2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7
+# VA [0x10af8, 0x10bc0) raw slice SHA256 8ea298991df2f2429fabdd3874c19945ed56433e01f197a15422d45b69cc48bb
+   10af8: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+   10afc: f0000000     	adrp	x0, 0x13000 <Updater::UFPDecryptorModule::exec_write_firm()+0x158>
+   10b00: 91306c00     	add	x0, x0, #0xc1b
+   10b04: 52804a23     	mov	w3, #0x251              // =593
+   10b08: 910003fd     	mov	x29, sp
+   10b0c: a90153f3     	stp	x19, x20, [sp, #0x10]
+   10b10: f0000014     	adrp	x20, 0x13000 <Updater::UFPDecryptorModule::exec_write_firm()+0x158>
+   10b14: 91391682     	add	x2, x20, #0xe45
+   10b18: 52800001     	mov	w1, #0x0                // =0
+   10b1c: f90013f5     	str	x21, [sp, #0x20]
+   10b20: 97fff0f8     	bl	0xcf00 <printf@plt>
+   10b24: d2801200     	mov	x0, #0x90               // =144
+   10b28: 97ffef7e     	bl	0xc920 <operator new(unsigned long)@plt>
+   10b2c: 52800022     	mov	w2, #0x1                // =1
+   10b30: 528000e1     	mov	w1, #0x7                // =7
+   10b34: aa0003f3     	mov	x19, x0
+   10b38: 97ffee02     	bl	0xc340 <Updater::UpdaterManager::UpdaterManager(Updater::UPDATER_ACTION_MODE, bool)@plt>
+   10b3c: f0000000     	adrp	x0, 0x13000 <Updater::UFPDecryptorModule::exec_write_firm()+0x158>
+   10b40: aa1303e4     	mov	x4, x19
+   10b44: 91391682     	add	x2, x20, #0xe45
+   10b48: 91313800     	add	x0, x0, #0xc4e
+   10b4c: 52804aa3     	mov	w3, #0x255              // =597
+   10b50: 52800001     	mov	w1, #0x0                // =0
+   10b54: 97fff0eb     	bl	0xcf00 <printf@plt>
+   10b58: aa1303e0     	mov	x0, x19
+   10b5c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   10b60: f94013f5     	ldr	x21, [sp, #0x20]
+   10b64: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+   10b68: d65f03c0     	ret
+   10b6c: aa0003f5     	mov	x21, x0
+   10b70: aa1303e0     	mov	x0, x19
+   10b74: d2801201     	mov	x1, #0x90               // =144
+   10b78: 97ffef76     	bl	0xc950 <operator delete(void*, unsigned long)@plt>
+   10b7c: aa1503e0     	mov	x0, x21
+   10b80: 97ffee5c     	bl	0xc4f0 <__cxa_begin_catch@plt>
+   10b84: f0000000     	adrp	x0, 0x13000 <Updater::UFPDecryptorModule::exec_write_firm()+0x158>
+   10b88: 91391682     	add	x2, x20, #0xe45
+   10b8c: 91324800     	add	x0, x0, #0xc92
+   10b90: 52804b03     	mov	w3, #0x258              // =600
+   10b94: 52800001     	mov	w1, #0x0                // =0
+   10b98: 97fff0da     	bl	0xcf00 <printf@plt>
+   10b9c: 14000002     	b	0x10ba4 <GetVersionSkipUpdater+0xac>
+   10ba0: 17fffff8     	b	0x10b80 <GetVersionSkipUpdater+0x88>
+   10ba4: 97fff03b     	bl	0xcc90 <__cxa_end_catch@plt>
+   10ba8: d2800000     	mov	x0, #0x0                // =0
+   10bac: 17ffffec     	b	0x10b5c <GetVersionSkipUpdater+0x64>
+   10bb0: aa0003f3     	mov	x19, x0
+   10bb4: 97fff037     	bl	0xcc90 <__cxa_end_catch@plt>
+   10bb8: aa1303e0     	mov	x0, x19
+   10bbc: 97fff07d     	bl	0xcdb0 <_Unwind_Resume@plt>

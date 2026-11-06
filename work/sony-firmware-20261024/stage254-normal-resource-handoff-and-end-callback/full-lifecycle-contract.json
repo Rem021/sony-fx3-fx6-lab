@@ -1,0 +1,65 @@
+{
+  "schema": "fx3-normal-lifecycle-design-v1",
+  "status": "SOURCE_FLOW_BOUND_NATIVE_MULTI_IDENTITY_SENDER_NOT_IMPLEMENTED_OR_APPROVED",
+  "applicability": "Saved classic ILME-FX3 7.02 official files; actual runtime registrations and resource delivery remain unmeasured.",
+  "lifecycle": [
+    {
+      "step": 1,
+      "action": "Bind original MSC identity and owner",
+      "existing": "12 proved one Mac ownership/return trial only.",
+      "remaining": "A new sender must bind its own one-shot permit and current identity, not reuse grant12."
+    },
+    {
+      "step": 2,
+      "action": "Complete the initial-MSC exchange and normal resource handoff",
+      "source": "onComplete ea6b0 -> Acquire ea660 -> resource42 callback ea9b4 -> ea924 -> supervisor ea750 or resource semaphore post.",
+      "effect": "START affects drivers/events; completing authentication can update service history and mode state.",
+      "digest_policy": "Stage145 explicit MSC first4/reference versus SERVICE full512+round-material split is retained; no silent switch of MSC policy or claim of level3."
+    },
+    {
+      "step": 3,
+      "action": "Account for initial NIN and bind the new service generation",
+      "source": "Supervisor attempts NIN cancel/join at ea854/ea860, then starts service worker at ea884.",
+      "remaining": "Native sender has no admitted fresh0336 binding/profile. Old MSC objects and endpoint assumptions must not be carried into a new generation.",
+      "observed_identity_is_not": "Camera thread join success or authentication success."
+    },
+    {
+      "step": 4,
+      "action": "If separately included, finish service exchange and make only the fixed capability read",
+      "existing": "Stage253 fixes ProductInfo 001F arg0,17B request/max100B reply; arg80 reset is excluded.",
+      "remaining": "Actual service descriptor/endpoint ownership, receiving path and private transient-HMAC handling are not integrated.",
+      "scope": "A/B capability lower bound only, not level3, full backup or firmware identity."
+    },
+    {
+      "step": 5,
+      "action": "Request normal service end once and record actual outcomes",
+      "source": "Core internal event3 cd70 -> worker join attempts cd78 -> global end callback cd98 -> eac50 -> sem_post2ce0b8.",
+      "remaining": "A returned STOP, STALL or internal notify does not expose aggregate join success; in-flight calls and partial effects need separate outcomes.",
+      "forbidden": "No automatic START/STOP repeat, reset, force-kill or clearing local flags to claim device completion."
+    },
+    {
+      "step": 6,
+      "action": "Return host ownership and inspect normal-camera state",
+      "source": "Supervisor end wait ea8d8 -> service worker cancel/join ea3e0 -> resource Release ea71c -> state1 -> resource wait ea81c.",
+      "persistent_thread": "The normal supervisor is intentionally long-lived until a separate shutdown state5.",
+      "evidence": "Host calls returned, host helper exit, same-body MSC/driver return and user screen are individual observations. Camera session-thread completion stays unknown unless separately measured."
+    }
+  ],
+  "result_dimensions": {
+    "exchange_finished": "A syntactically valid 6/1 only closes the observed exchange.",
+    "capability_read": "A valid88B reply is a bounded capability observation under the stated stock-table assumptions.",
+    "host_and_USB_return": "Actual host return/exit and reappearance are useful independent observations, not a per-thread camera receipt.",
+    "camera_session_threads": "Specific NIN/service-worker completion needs separate evidence; reviewed callbacks have no per-trial status reply.",
+    "normal_supervisor": "Still waiting can be normal and must not itself force a failure verdict."
+  },
+  "next_implementation_deliverables": [
+    "Implement the host adapter across MSC0DA1 -> fresh SERVICE0336 -> returned MSC, with generation-specific ownership and actual descriptors; production iokit_wire currently refuses SERVICE mode.",
+    "Connect the existing mode-specific digest provider and fixed read0 codec to that adapter, with explicit history/mode effects and immutable request limits.",
+    "Build a fixed candidate and check normal transition plus every actual native failure boundary. Before any new launch, publish the complete program, digest, uncertainty handling and specific requested scope."
+  ],
+  "no_new_synthetic_replay_or_original_code_execution": true,
+  "new_live_package_ready": false,
+  "new_live_permission_requested": false,
+  "milestone2_complete": false,
+  "persistent_write_release": false
+}

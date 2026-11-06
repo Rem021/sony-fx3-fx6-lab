@@ -1,0 +1,125 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/host-startup-v24/run_trial_v22_navigation_review.py	2026-11-03 10:56:05
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/run_trial_v25_diag_r3.py	2026-11-04 05:26:25
+@@ -2,8 +2,8 @@
+ """TRY2 local web runner for the validated English, performance, and readiness candidate."""
+ from pathlib import Path
+ import sys
+-sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+-sys.path.insert(1, str(Path(__file__).resolve().parents[7] / "menu-repair-01/runtime"))
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++sys.path.insert(1, str(Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"))
+ import argparse
+ import re
+ import datetime
+@@ -31,9 +31,10 @@
+ from file_readback100 import capture as capture_native_file
+ from restore_api103_v2 import restore_native_api
+ from terminal_status_v23 import terminal_summary
++from quiesced_diag_readback import capture as capture_quiesced_diag
+ 
+-ROOT = Path(__file__).resolve().parents[7] / "menu-repair-01/runtime"
+-OUT = Path(__file__).resolve().parents[3]
++ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
++OUT = Path(__file__).resolve().parents[2]
+ HERE = Path(__file__).resolve().parent
+ BASE = ROOT.parent
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+@@ -82,7 +83,7 @@
+ 
+ 
+ def checkpoint(value):
+-    path = HERE / 'STATE-v24.json'
++    path = HERE / 'STATE-v25-r3.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+@@ -130,20 +131,20 @@
+         ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
+     if not valid_command(1, 0x1ab, 100, 0, 0, ns.max_steps) or not valid_command(32, 0x30, 100, 31, 0, ns.max_steps):
+         raise RuntimeError('InputGate capacity contract rejected before QEMU startup')
+-    ns.candidate = HERE.parent.parent/'vmopt-20261103-try2-passive-timing-v4/candidate.json'
++    ns.candidate = HERE/'vmopt-20261104-v25-menu-osd-diagnostic-r3/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2navreview-internal-v24' if ns.internal_hoststep else 'try2navreview-web-v24'
++    ns.label = 'v25diag-internal-r3' if ns.internal_hoststep else 'v25diag-web-r3'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(HERE.parent.parent / 'vmopt-20261103-try2-passive-timing-v4'):
++    if not candidate_path.is_relative_to(HERE / 'vmopt-20261104-v25-menu-osd-diagnostic-r3'):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+-    if digest(candidate_path) != '90adc5fda97a4b26293e4763da1ed3d5eec22eaf2f0115292c1b720c5049e9aa':
++    if digest(candidate_path) != 'a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518':
+         raise RuntimeError('TRY2 manifest identity changed')
+     candidate = json.loads(candidate_path.read_text())
+     if candidate.get('try2_contract', {}).get('ready_before_CP_binding') is not True:
+@@ -159,7 +160,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(HERE.parent.parent / 'vmopt-20261103-try2-passive-timing-v4') or not initrd.resolve().is_relative_to(HERE.parent.parent / 'vmopt-20261103-try2-passive-timing-v4'):
++    if not dtb.resolve().is_relative_to(HERE / 'vmopt-20261104-v25-menu-osd-diagnostic-r3') or not initrd.resolve().is_relative_to(HERE / 'vmopt-20261104-v25-menu-osd-diagnostic-r3'):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+@@ -213,7 +214,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -688,17 +689,24 @@
+                 # Cleanup runs for HTTP end, Ctrl-C, timeout, and observation errors alike.
+                 shutdown['attempted'] = True
+                 try:
+-                    qmp('stop')
++                    s.settimeout(30)
++                    shutdown['diag_snapshot'] = capture_quiesced_diag(qmp, run)
++                    s.settimeout(3)
+                     if ring_reader is not None:
+                         ring_reader.poll(final=True)
+                         if ring_reader.current_record:
+                             ring_reader.evidence('final')
+                         ring_reader.save()
+                     for snapshot in snapshots:
++                        if snapshot['name'] == 'osd-ring-final.bin':
++                            continue
+                         qmp('human-monitor-command', {'command-line': 'pmemsave '+hex(snapshot['address'])+' '+hex(snapshot['size'])+' "'+str(run/snapshot['name'])+'"'})
+                     shutdown['serial_bytes_before_cleanup'] = (run/'serial.log').stat().st_size
+                 except Exception as exc:
+                     shutdown['snapshot_error'] = repr(exc)
++                    shutdown['diag_snapshot'] = {'consistent': False, 'error': repr(exc)}
++                    if s is not None:
++                        s.settimeout(3)
+                 try:
+                     log_monitor.poll()
+                     if 'FX3_FILE100_OBSERVER_READY' in '\n'.join(log_monitor.selected):
+@@ -766,9 +774,11 @@
+         markers_complete=phase_exit_hit if ns.exit_at_phase else all(log_monitor.markers.values()),
+         standby_observed=phaseA_capture is not None, render_valid=trial.render_valid,
+         black_after_ready=trial.black_after_ready, early_stop=early_stop_reason)
++    diagnostic_readback_pass = shutdown.get('diag_snapshot', {}).get('consistent') is True
++    health_pass = bool(health_pass and diagnostic_readback_pass)
+     receipt = {'created_utc': started, 'duration_seconds': time.monotonic()-start,
+                'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+-               'models_identical_to_frozen_AP101_r4': False, 'authority': 'msg_3a52a0ab7e46',
++               'models_identical_to_frozen_AP101_r4': False, 'authority': 'task_981cfd88e8cd_offline_candidate',
+                'observer_source_snapshot': observer_sources, 'run': str(run),
+                'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps,
+                'diagnostic_actual_step_limit': 12 if ns.internal_hoststep else None,
+@@ -787,6 +797,7 @@
+                    {'available': False, 'reason': 'serial_log_not_created',
+                     'literal_present': False, 'semantic_evidence': None}),
+                'cleanup': shutdown, 'lifecycle_pass': bool(lifecycle_pass),
++               'diagnostic_readback_pass': diagnostic_readback_pass,
+                'protocol_pass': protocol_pass, 'render_pass': render_pass,
+                'black_frame_semantics': 'unknown; an all-zero committed panel cannot satisfy this visual trial',
+                'native_shutdown_after_ready': bool(phaseA_capture is not None and len(log_monitor.native_shutdown_events) > shutdown_count_at_ready),

@@ -1,0 +1,33 @@
+{
+  "reason": "Initial adapter routing admitted the original ARM context function before the inherited context0 adapter. It therefore correctly stopped at CP15 even in the intended adapted case; route that one explicit adapter before generic ARM windows.",
+  "observed": {
+    "boundary": {
+      "operation": "before_cpu_affinity_register",
+      "pc": "0x52c488",
+      "registers": [
+        "0x200001d3",
+        "0x200001d3",
+        "0x148e80c",
+        "0x5000ed28"
+      ],
+      "original_lr": "0xa87095",
+      "native_call": false,
+      "resource_reply_supplied": false,
+      "cpu_register_value_supplied": false
+    },
+    "returned": false,
+    "raw_r0": "0x200001d3"
+  },
+  "metadata_events": [
+    {
+      "pc": "0x4a032c",
+      "registers": [
+        "0x2a",
+        "0x5",
+        "0x5000ecf8",
+        "0x5000ed28"
+      ]
+    }
+  ],
+  "formal_cases": 0
+}

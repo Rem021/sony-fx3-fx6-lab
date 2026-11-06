@@ -1,0 +1,31 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88a-cp-backup-capture/guest.dtb",
+    "sha256": "ba0a095dee1b3fd844d01886ff80dffcf3029620d32e1ae6c40bc30ea4466348"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88a-cp-backup-capture/guest.cpio",
+    "sha256": "87dbfe94709e14bb49f2d012a9d7a36a5eb62c6353b8b24522a7ddea7fa74f58"
+  },
+  "required_markers": [
+    "FX3_BACKUP_CP_PUBLIC_OWNER",
+    "FX3_BACKUP_CP_INSMOD_RC=0",
+    "FX3_BACKUP_CP_CAPTURE serial=1",
+    "FX3_BACKUP_CP_RAW serial=1",
+    "FX3_BACKUP_CP_CAPTURE_DONE",
+    "FX3_SYS_UUD_COMMIT",
+    "FX3_SYS_UUD_CONSUMED",
+    "FX3_AP_IM_ENDMAPS_"
+  ],
+  "scope": "AP88 firststage: independent standardkernel module registered through originalkernelosal_reg_public, original4.9.337 moduleABI. Captureonly exactdest903e0811/op33 fullinitialized40B/metadata_size/sourceQ/F/pages; returns0 as previousabsentpublicroute, no replies/frees or storagechanges. Otherprotocolhelpers originalsameAP87r2. ExistingBackupreserved404000000/221000 unchanged. Extra1s read-only im maps fromlaunch; stopafterfirstcapture forcontractfreeze. No AP89 replay.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true
+}

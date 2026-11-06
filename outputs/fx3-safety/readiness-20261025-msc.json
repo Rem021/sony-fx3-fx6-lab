@@ -1,0 +1,192 @@
+{
+  "schema": "fx3-research-safety-inventory-v1",
+  "created_utc": "2026-10-25T10:00:18.583686+00:00",
+  "scope": "Only this task evidence; no search for user backups elsewhere",
+  "state": "OFFLINE_RESEARCH_ONLY",
+  "persistent_write_release": false,
+  "is_flash_authorization_or_recovery_certificate": false,
+  "stock_files": [
+    {
+      "name": "appFw.so",
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "source_kind": "official_stock_reference_not_body_backup",
+      "expected_bytes": 79015712,
+      "expected_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "verified": true,
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    {
+      "name": "libmpr.so",
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so",
+      "source_kind": "official_stock_reference_not_body_backup",
+      "expected_bytes": 3517008,
+      "expected_sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+      "verified": true,
+      "bytes": 3517008,
+      "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c"
+    },
+    {
+      "name": "cpapp-b.bin",
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_kind": "official_stock_reference_not_body_backup",
+      "expected_bytes": 15980568,
+      "expected_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "verified": true,
+      "bytes": 15980568,
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba"
+    }
+  ],
+  "windows_snapshot": {
+    "receipt_present": true,
+    "live_usb_query_performed_by_this_audit": false,
+    "source": "work/sony-firmware-20261024/stage4-windows-collab/from-windows/host-inventory.json",
+    "sha256": "fb0b5739a3fc4a9a6719b0e17240f128f78f4d4983b72d38229055db3096f734",
+    "captured_utc": "2026-10-25T08:58:30.6857004Z",
+    "cached_devices": [
+      {
+        "name": "USB 输入设备",
+        "vid": "054C",
+        "pid": "0DF2",
+        "status": "OK",
+        "driver_provider": "Microsoft",
+        "driver_version": "10.0.26100.9711",
+        "service": "HidUsb"
+      },
+      {
+        "name": "HID-compliant game controller",
+        "vid": "054C",
+        "pid": "0DF2",
+        "status": "OK",
+        "driver_provider": "Microsoft",
+        "driver_version": "10.0.26100.9711",
+        "service": null
+      },
+      {
+        "name": "USB Composite Device",
+        "vid": "054C",
+        "pid": "0DF2",
+        "status": "OK",
+        "driver_provider": "Microsoft",
+        "driver_version": "10.0.26100.9711",
+        "service": "usbccgp"
+      },
+      {
+        "name": "DualSense Edge Wireless Controller",
+        "vid": "054C",
+        "pid": "0DF2",
+        "status": "OK",
+        "driver_provider": "Microsoft",
+        "driver_version": "10.0.26100.9457",
+        "service": "usbaudio"
+      }
+    ],
+    "access_evidence": {
+      "cached_device_enumeration_only": true,
+      "camera_interface_opened": false,
+      "driver_access_tested": false,
+      "authenticated_service_access_tested": false,
+      "body_version": "7.02 user-reported; not read back"
+    }
+  },
+  "camera_msc_snapshot": {
+    "receipt_present": true,
+    "live_usb_query_performed_by_this_audit": false,
+    "source": "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json",
+    "sha256": "01b5b580eb4378a40c8e9ea751be9201ccca8a52e8efe8a415015c6fc93ff415",
+    "captured_utc": "2026-10-25T09:54:17.7315333Z",
+    "cached_camera_nodes": [
+      {
+        "name": "USB 大容量存储设备",
+        "bus_reported_description": "ILME-FX3",
+        "vid": "054C",
+        "pid": "0DA1",
+        "interface_number": null,
+        "present": true,
+        "pnp_class": "USB",
+        "driver_provider": "Microsoft",
+        "driver_version": "10.0.26100.9444",
+        "driver_service": "USBSTOR",
+        "driver_is_signed": true,
+        "status": "OK",
+        "config_manager_error_code": 0,
+        "cached_description_property_read": true,
+        "camera_model_name_matches": true
+      }
+    ],
+    "access_evidence": {
+      "cached_enumeration_only": true,
+      "camera_interface_opened": false,
+      "driver_handle_access_tested": false,
+      "authenticated_service_access_tested": false,
+      "camera_commands_issued": false,
+      "storage_cards_enumerated": false,
+      "card_media_read": false,
+      "connection_mode_changed": false,
+      "driver_install_or_change": false,
+      "firmware_written": false,
+      "body_firmware_version_read_back": false
+    }
+  },
+  "gates": [
+    {
+      "id": "official_reference_integrity",
+      "status": "VERIFIED",
+      "scope": "Three extracted official program files only"
+    },
+    {
+      "id": "normal_msc_pnp_binding",
+      "status": "VERIFIED_SNAPSHOT",
+      "scope": "Cached Windows bus model, USB identity and driver binding only; not device-handle or recovery access"
+    },
+    {
+      "id": "exact_physical_body_and_firmware",
+      "status": "NOT_PROVEN",
+      "needs": "Actual FX3 identity/version/program fingerprint; latest user report is insufficient"
+    },
+    {
+      "id": "healthy_same_body_checkpoint",
+      "status": "NOT_PROVEN",
+      "needs": "Before-change modified-scope originals/settings plus provenance and verified hashes"
+    },
+    {
+      "id": "normal_fx3_service_access",
+      "status": "NOT_PROVEN",
+      "needs": "FX3-specific authenticated read and clean exit; no such test recorded"
+    },
+    {
+      "id": "recovery_entry_independent_of_modified_application",
+      "status": "NOT_PROVEN",
+      "needs": "Reachability and repair under the intended application-failure condition"
+    },
+    {
+      "id": "fx3_restore_round_trip",
+      "status": "NOT_PROVEN",
+      "needs": "Same-body complete readback, disk/RAM/cold-start/behavior verification after a real restore"
+    },
+    {
+      "id": "fx3_write_and_power_loss_behavior",
+      "status": "NOT_PROVEN",
+      "needs": "Model-specific bounded writer and failure tests; pwrite/fsync alone is not atomic"
+    },
+    {
+      "id": "new_mode_actual_encoding_and_stability",
+      "status": "NOT_PROVEN",
+      "needs": "Hardware acceptance, valid bitstream/audio/timestamps/long-run and cold-start results"
+    }
+  ],
+  "limits": [
+    "Stock programs are not unique body calibration/NVRAM/full storage backups",
+    "A cached Sony VID/PID is not authenticated service access",
+    "Normal service access is not recovery after main application failure",
+    "No-op restore and dry run do not prove actual restoration",
+    "A CPU model or in-memory fault test does not prove power-loss recovery",
+    "Hardware failure or inaccessible early boot may require qualified repair"
+  ],
+  "operations": {
+    "camera_interfaces_opened": false,
+    "camera_commands": false,
+    "firmware_or_backup_written": false,
+    "network_requests": false
+  }
+}

@@ -1,0 +1,90 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v6_media_gap.py	2026-11-03 04:05:15
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v8_long_boundary.py	2026-11-03 05:10:53
+@@ -23,7 +23,8 @@
+ from cpio_audit import audit
+ from trial_ring_usability import TrialRingReader
+ from trial_web_v3_usability import TrialState, start_server, KEYS
+-from trial_log_usability import FullLogMonitor
++from trial_log_v3_usability import FullLogMonitor
++from trial_health_v2 import evaluate as evaluate_health
+ from gate_input_usability import InputGate,valid_command
+ from file_readback100 import capture as capture_native_file
+ from restore_api103_v2 import restore_native_api
+@@ -318,6 +319,8 @@
+             trial.deadline = deadline
+             replay_input_verified = False
+             phaseA_capture = None
++            shutdown_count_at_ready = 0
++            power_off_count_at_ready = 0
+             last_screen_count = 0
+             last_screen_observed_at = guest_start
+             host_step = 0
+@@ -343,6 +346,14 @@
+                     early_stop_reason = log_monitor.failure
+                     trial.fail(early_stop_reason)
+                     break
++                if phaseA_capture is not None and len(log_monitor.native_shutdown_events) > shutdown_count_at_ready:
++                    early_stop_reason = 'native_shutdown_after_ready_without_user_power_key: ' + log_monitor.native_shutdown_events[-1]
++                    trial.fail(early_stop_reason)
++                    break
++                if phaseA_capture is not None and len(log_monitor.native_power_off_events) > power_off_count_at_ready:
++                    early_stop_reason = 'native_model_power_off_after_ready_without_user_power_key: ' + log_monitor.native_power_off_events[-1]
++                    trial.fail(early_stop_reason)
++                    break
+                 if log_monitor.offset > 480*1024*1024:
+                     stop_cause = 'serial_log_safety_limit'
+                     break
+@@ -353,6 +364,10 @@
+                 if time.monotonic()-last_ring_poll >= .4:
+                     ring_reader.poll()
+                     last_ring_poll = time.monotonic()
++                    if phaseA_capture is not None and trial.black_after_ready:
++                        early_stop_reason = 'render: native committed all-zero pixels after ready; legitimate black/sleep semantics unknown'
++                        trial.fail(early_stop_reason)
++                        break
+                 if time.monotonic() >= next_native_file:
+                     qmp('stop')
+                     native_file_reads.append(capture_native_file(qmp, run, 'periodic-%02d' % len(native_file_reads)))
+@@ -394,6 +409,8 @@
+                              and ring_reader.current_record['nonuniform_pixels'])
+                     if valid:
+                         phaseA_capture = ring_reader.evidence('standby-ready')
++                        shutdown_count_at_ready = len(log_monitor.native_shutdown_events)
++                        power_off_count_at_ready = len(log_monitor.native_power_off_events)
+                         (run/'trial-phaseA.json').write_text(json.dumps({
+                             'branches': branches, 'native_notifications': notify, 'native_free_sizes': freed,
+                             'last_native_screen': opens[-1][1], 'no_keys_before_ready': not input_gate.history,
+@@ -574,8 +591,11 @@
+                       and all(x['free_at_close'] for x in lock_status)
+                       and shutdown.get('API16_restored') and shutdown.get('native_unbind_return') == 0
+                       and shutdown.get('quit_sent'))
+-    health_pass = bool(lifecycle_pass and not error and not early_stop_reason and not log_monitor.failure
+-                       and (phase_exit_hit if ns.exit_at_phase else all(log_monitor.markers.values())))
++    protocol_pass, render_pass, health_pass = evaluate_health(
++        lifecycle=lifecycle_pass, observer_error=error, serial_failure=log_monitor.failure,
++        markers_complete=phase_exit_hit if ns.exit_at_phase else all(log_monitor.markers.values()),
++        standby_observed=phaseA_capture is not None, render_valid=trial.render_valid,
++        black_after_ready=trial.black_after_ready, early_stop=early_stop_reason)
+     receipt = {'created_utc': started, 'duration_seconds': time.monotonic()-start,
+                'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+                'models_identical_to_frozen_AP101_r4': False, 'authority': 'msg_3a52a0ab7e46',
+@@ -588,7 +608,18 @@
+                'locks': lock_status, 'host_observer_error': error, 'memory_samples': samples,
+                'early_stop_reason': early_stop_reason, 'full_serial_bytes_inspected': log_monitor.offset,
+                'serial_health_failure': log_monitor.failure, 'markers': log_monitor.markers,
+-               'cleanup': shutdown, 'lifecycle_pass': bool(lifecycle_pass), 'health_pass': health_pass,
++               'marker_evidence': log_monitor.marker_evidence,
++               'date99_raw_serial_evidence': log_monitor.date99_raw_receipt(),
++               'cleanup': shutdown, 'lifecycle_pass': bool(lifecycle_pass),
++               'protocol_pass': protocol_pass, 'render_pass': render_pass,
++               'black_frame_semantics': 'unknown; an all-zero committed panel cannot satisfy this visual trial',
++               'native_shutdown_after_ready': bool(phaseA_capture is not None and len(log_monitor.native_shutdown_events) > shutdown_count_at_ready),
++               'native_shutdown_original_lines': log_monitor.native_shutdown_events,
++               'native_shutdown_count_at_ready': shutdown_count_at_ready if 'shutdown_count_at_ready' in locals() else None,
++               'native_model_power_off_after_ready': bool(phaseA_capture is not None and len(log_monitor.native_power_off_events) > power_off_count_at_ready),
++               'native_model_power_off_original_lines': log_monitor.native_power_off_events,
++               'native_model_power_off_count_at_ready': power_off_count_at_ready if 'power_off_count_at_ready' in locals() else None,
++               'health_pass': health_pass,
+                'requested_exit_phase': ns.exit_at_phase, 'requested_exit_phase_hit': phase_exit_hit if 'phase_exit_hit' in locals() else False,
+                'key_steps': trial.steps, 'step_captures': step_captures,
+                'standby_ready': phaseA_capture is not None if 'phaseA_capture' in locals() else False,

@@ -1,0 +1,76 @@
+{
+  "status": "PASS_USER_INTERNAL_STAGING_NOT_ADMIN_OR_USB_ACCEPTANCE",
+  "checks": 11,
+  "cases": [
+    {
+      "name": "actual_internal_exclusive_copy_hash_and_permissions",
+      "receipt": {
+        "path": "/private/tmp/fx3-owner-stage164-fixture-a5_mbdpz/good/source-helper",
+        "sha256": "c1e593752e9deba1893b24e3223486d3bad7311d47087a1b4477f29149f3f430",
+        "bytes": 37608,
+        "uid": 501,
+        "directory_mode": "0700",
+        "file_mode": "0500",
+        "exclusive_no_follow_copy": true,
+        "native_executed": false
+      }
+    },
+    {
+      "name": "wrong_digest_no_private_executable",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "symlink_source_rejected",
+      "rejected": "OSError",
+      "destination_not_created": true
+    },
+    {
+      "name": "existing_destination_not_overwritten",
+      "rejected": "FileExistsError",
+      "destination_not_created": false
+    },
+    {
+      "name": "symlink_destination_not_followed",
+      "rejected": "FileExistsError",
+      "destination_not_created": false
+    },
+    {
+      "name": "nonprivate_directory_rejected",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "symlink_directory_rejected",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "internal_source_fixture_executes_with_external_alias_unavailable_and_cwd_root",
+      "helper_pid": 81041,
+      "actual_cwd": "/",
+      "helper_terminal_verified": true,
+      "status": "PROVIDER_OBSERVATION_COMPLETED",
+      "fixture_not_IOKit_or_root": true
+    },
+    {
+      "name": "reviewed_admin_source_has_only_internal_paths_and_postcopy_hash",
+      "admin_executed": false
+    },
+    {
+      "name": "old_grant_cannot_launch_new_candidate",
+      "rejected": "Rejected",
+      "destination_not_created": true
+    },
+    {
+      "name": "old_consumed_claim_preserved",
+      "sha256": "ae3e6eb503d37a659267794e9468872da5b052bf27fc683af4d664ceacecd07f"
+    }
+  ],
+  "retained_fixture_private_directory": "/private/tmp/fx3-owner-stage164-fixture-a5_mbdpz",
+  "root_or_native_IOKit_execution": false,
+  "administrator_prompt_requested": false,
+  "device_operations": 0,
+  "script_sha256": "3099dddef39ff842489b1a8d1089a44d69ac3446893baaffe3de5974c94326bc",
+  "bootstrap_sha256": "308dac69ba8edbb69c58d0c9c51a9f5c9306a3db7a838bda2ea6611c83d4c79f"
+}

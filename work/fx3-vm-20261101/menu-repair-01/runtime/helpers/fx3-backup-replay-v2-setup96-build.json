@@ -1,0 +1,23 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1",
+    "-Wl,-e,_start",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-replay-v2-setup96.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-replay-v2-setup96"
+  ],
+  "exit": 0,
+  "sha256": "d757710c2aa51133820154ce6155dbd5a93924bb66170ff58b79eb5abbf75182",
+  "source_sha256": "efe46acfba86a1e83da9d5806a13dcee6a72ca796f308be71e8ce7d8d81d1c66",
+  "input_sha256": "191924ef39d996171ae06ab4ca85e249b655b16db6b68fd1e2ddea45efc60bdc",
+  "authority": "msg_48dccc7b7d3d"
+}

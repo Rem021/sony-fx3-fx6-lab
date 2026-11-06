@@ -1,0 +1,5149 @@
+{
+  "status": "SCOPED_CHECKS_PASS_WITH_REQUIRED_CLOSED_DOMAIN_BOUNDARY",
+  "tests": 8,
+  "failures": 0,
+  "errors": 0,
+  "details": [],
+  "cases": [
+    {
+      "fault": null,
+      "collector_exit_status": 2560,
+      "collector_alive": false,
+      "collector_state": 10,
+      "own_worker_status": 0,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 0,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 2560,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 0
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 1,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 174
+    },
+    {
+      "fault": "between-recv-wait",
+      "collector_exit_status": 2560,
+      "collector_alive": false,
+      "collector_state": 10,
+      "own_worker_status": 0,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 0,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 2560,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 0
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 171
+    },
+    {
+      "fault": "multi-thread",
+      "collector_exit_status": 1024,
+      "collector_alive": false,
+      "collector_state": 4,
+      "own_worker_status": null,
+      "own_worker_alive": null,
+      "worker_reaped": null,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 1024,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            0,
+            1,
+            2,
+            7,
+            9
+          ]
+        }
+      ],
+      "waits": [],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 11
+    },
+    {
+      "fault": "tid-mismatch",
+      "collector_exit_status": 1024,
+      "collector_alive": false,
+      "collector_state": 4,
+      "own_worker_status": null,
+      "own_worker_alive": null,
+      "worker_reaped": null,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 1024,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            0,
+            1,
+            2,
+            7,
+            9
+          ]
+        }
+      ],
+      "waits": [],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 3
+    },
+    {
+      "fault": "subreaper",
+      "collector_exit_status": 1024,
+      "collector_alive": false,
+      "collector_state": 4,
+      "own_worker_status": null,
+      "own_worker_alive": null,
+      "worker_reaped": null,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 1024,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            0,
+            1,
+            2,
+            7,
+            9
+          ]
+        }
+      ],
+      "waits": [],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 12
+    },
+    {
+      "fault": "traced",
+      "collector_exit_status": 1024,
+      "collector_alive": false,
+      "collector_state": 4,
+      "own_worker_status": null,
+      "own_worker_alive": null,
+      "worker_reaped": null,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 1024,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            0,
+            1,
+            2,
+            7,
+            9
+          ]
+        }
+      ],
+      "waits": [],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 11
+    },
+    {
+      "fault": "unblocked",
+      "collector_exit_status": 1024,
+      "collector_alive": false,
+      "collector_state": 4,
+      "own_worker_status": null,
+      "own_worker_alive": null,
+      "worker_reaped": null,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 1024,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            0,
+            1,
+            2,
+            7,
+            9
+          ]
+        }
+      ],
+      "waits": [],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 7
+    },
+    {
+      "fault": "existing-child",
+      "collector_exit_status": 1024,
+      "collector_alive": false,
+      "collector_state": 4,
+      "own_worker_status": null,
+      "own_worker_alive": null,
+      "worker_reaped": null,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 1024,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            0,
+            1,
+            2,
+            7,
+            9
+          ]
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [
+            "preexisting"
+          ],
+          "returned": 0,
+          "status": null
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 13
+    },
+    {
+      "fault": "status-open",
+      "collector_exit_status": 1024,
+      "collector_alive": false,
+      "collector_state": 4,
+      "own_worker_status": null,
+      "own_worker_alive": null,
+      "worker_reaped": null,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 1024,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            0,
+            1,
+            2,
+            7,
+            9
+          ]
+        }
+      ],
+      "waits": [],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 8
+    },
+    {
+      "fault": "prctl-unavailable",
+      "collector_exit_status": 1024,
+      "collector_alive": false,
+      "collector_state": 4,
+      "own_worker_status": null,
+      "own_worker_alive": null,
+      "worker_reaped": null,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 1024,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            0,
+            1,
+            2,
+            7,
+            9
+          ]
+        }
+      ],
+      "waits": [],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 12
+    },
+    {
+      "fault": "worker-close-error",
+      "collector_exit_status": 512,
+      "collector_alive": false,
+      "collector_state": 2,
+      "own_worker_status": 17408,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 17408,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 512,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 17408
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 1,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 174
+    },
+    {
+      "fault": "SIGKILL-after-DONE",
+      "collector_exit_status": 512,
+      "collector_alive": false,
+      "collector_state": 2,
+      "own_worker_status": 9,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 9,
+          "kind": "SIGKILL after DONE",
+          "closed_FDs": []
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 512,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 9
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 1,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 174
+    },
+    {
+      "fault": "wrong-DONE",
+      "collector_exit_status": 512,
+      "collector_alive": false,
+      "collector_state": 2,
+      "own_worker_status": 0,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 0,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 512,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 0
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 1,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 175
+    },
+    {
+      "fault": "SCM-rights",
+      "collector_exit_status": 512,
+      "collector_alive": false,
+      "collector_state": 2,
+      "own_worker_status": 0,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 0,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 512,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 0
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 1,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 176
+    },
+    {
+      "fault": "GO-send-error",
+      "collector_exit_status": 512,
+      "collector_alive": false,
+      "collector_state": 2,
+      "own_worker_status": 17920,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 17920,
+          "kind": "SYS_exit",
+          "closed_FDs": [
+            13
+          ]
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 512,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 17920
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 1,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 471
+    },
+    {
+      "fault": "collector-close-error",
+      "collector_exit_status": 512,
+      "collector_alive": false,
+      "collector_state": 2,
+      "own_worker_status": 0,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 0,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 512,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 0
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 1,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 174
+    },
+    {
+      "fault": "stall",
+      "collector_exit_status": null,
+      "collector_alive": true,
+      "collector_state": 2,
+      "own_worker_status": null,
+      "own_worker_alive": true,
+      "worker_reaped": false,
+      "collector_remaining_FDs": [
+        12
+      ],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 120,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 632
+    },
+    {
+      "fault": "late-zero",
+      "collector_exit_status": 512,
+      "collector_alive": false,
+      "collector_state": 2,
+      "own_worker_status": 0,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 0,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 512,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 7002,
+          "status": 0
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 105,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 590
+    },
+    {
+      "fault": "external-reap-cousin",
+      "collector_exit_status": null,
+      "collector_alive": true,
+      "collector_state": 2,
+      "own_worker_status": 17408,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [
+        12
+      ],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 17408,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "explicit external tracer reaps worker and creates replacement",
+          "own_status": 17408,
+          "replacement_parent": 1,
+          "closed_tree_contract_violated": false
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 120,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 527
+    },
+    {
+      "fault": "external-reap-host-child",
+      "collector_exit_status": null,
+      "collector_alive": true,
+      "collector_state": 2,
+      "own_worker_status": 17408,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [
+        12
+      ],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 17408,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "explicit external tracer reaps worker and creates replacement",
+          "own_status": 17408,
+          "replacement_parent": 321,
+          "closed_tree_contract_violated": false
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 120,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 527
+    },
+    {
+      "fault": "collector-killed",
+      "collector_exit_status": 9,
+      "collector_alive": false,
+      "collector_state": 2,
+      "own_worker_status": null,
+      "own_worker_alive": true,
+      "worker_reaped": false,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 9,
+          "kind": "SIGKILL",
+          "closed_FDs": [
+            12
+          ]
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 0,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 155
+    },
+    {
+      "fault": "illegal-parent-injection",
+      "collector_exit_status": 2560,
+      "collector_alive": false,
+      "collector_state": 10,
+      "own_worker_status": 17408,
+      "own_worker_alive": false,
+      "worker_reaped": true,
+      "collector_remaining_FDs": [],
+      "host_borrowed_FDs_unchanged": true,
+      "private_messages": [
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        }
+      ],
+      "events": [
+        {
+          "event": "clone0",
+          "parent": 5001,
+          "child": 7002,
+          "private_VM_FDs_sighand": true,
+          "new_child_list_empty": true,
+          "new_subreaper": false
+        },
+        {
+          "event": "private message",
+          "sender": 5001,
+          "type": 1
+        },
+        {
+          "event": "private message",
+          "sender": 7002,
+          "type": 2
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own worker",
+          "pid": 7002,
+          "status": 17408,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        },
+        {
+          "event": "explicit external tracer reaps worker and creates replacement",
+          "own_status": 17408,
+          "replacement_parent": 5001,
+          "closed_tree_contract_violated": true
+        },
+        {
+          "event": "kernel task terminal",
+          "role": "own collector",
+          "pid": 5001,
+          "status": 2560,
+          "kind": "SYS_exit",
+          "closed_FDs": []
+        }
+      ],
+      "waits": [
+        {
+          "request": -1,
+          "options": 1073741825,
+          "eligible_roles": [],
+          "returned": -10,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "own worker"
+          ],
+          "returned": 0,
+          "status": null
+        },
+        {
+          "request": 7002,
+          "options": 2684354561,
+          "eligible_roles": [
+            "foreign replacement"
+          ],
+          "returned": 7002,
+          "status": 0
+        }
+      ],
+      "source_accesses": [],
+      "collector_sleeps": 1,
+      "only_collector_created_child": true,
+      "injected_rights_all_closed": true,
+      "syscall_count": 174
+    }
+  ],
+  "source_hashes": {
+    "collector.c": "b145e57eaf026dd7b89d483675476c1df01d44c3da486512cbf2126ac784cce2",
+    "isolated_build.py": "de0b955eb1c5cbe4f29f97a3e1e1f2f863c2e7a0f61be3c8cdf55eb4990f7dea",
+    "model_collector.py": "e94311fa3922ceceec42c9932355e8917c053c5eb89d549ca28232001ef6df12",
+    "test_collector.py": "603e6c033cd1f08b81f033ae56528bc7741032757f618eb1bd709dc4f47142e4"
+  },
+  "binary_sha256": "d87dce5b1fdfcac38c99081464d5751ffe609e9331d20a0bf10de5de1ce65eb1",
+  "illegal_same_parent_injection_still_false_completes": true,
+  "closed_child_domain_is_required_not_optional": true,
+  "outer_bootstrap_parent_exit_binding_and_host_completion_implemented": false,
+  "probe_deployable": false,
+  "only_own_ARM64_executed": true,
+  "actual_Linux_processes_or_threads_created": false,
+  "original_Sony_Linux_glibc_or_driver_executed": false,
+  "new_device_operations": 0,
+  "full_boot_source_reading_integrated": false,
+  "all16_target_requirements_unchanged": true,
+  "first_flash_released": false
+}

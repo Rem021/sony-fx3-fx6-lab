@@ -1,0 +1,75 @@
+{
+  "cases": [
+    {
+      "ip_fixture": 0,
+      "look": 22,
+      "status": "REACHED_QUEUE_ENTRY_NOT_EXECUTED",
+      "instruction_count": 57,
+      "declared_provider_calls": [
+        {
+          "provider": "declared memset",
+          "size": 72,
+          "byte": 0
+        }
+      ],
+      "queue_checkpoint": [
+        {
+          "queue_entry_offset": "0x2c4cc8",
+          "input_hex": "0000000016000000000000000000000000020061000000005a08ae020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "command": 0,
+          "look": 22,
+          "ip": 0,
+          "callback": "0x61000200",
+          "event_field": "0x2ae085a"
+        }
+      ],
+      "actual_enqueue_or_callback_completion": false
+    },
+    {
+      "ip_fixture": 0,
+      "look": 0,
+      "status": "REJECTED_MINUS_13",
+      "instruction_count": 40,
+      "declared_provider_calls": [
+        {
+          "provider": "declared memset",
+          "size": 72,
+          "byte": 0
+        }
+      ],
+      "queue_checkpoint": [],
+      "actual_enqueue_or_callback_completion": false
+    },
+    {
+      "ip_fixture": 0,
+      "look": 30,
+      "status": "REJECTED_MINUS_13",
+      "instruction_count": 39,
+      "declared_provider_calls": [
+        {
+          "provider": "declared memset",
+          "size": 72,
+          "byte": 0
+        }
+      ],
+      "queue_checkpoint": [],
+      "actual_enqueue_or_callback_completion": false
+    },
+    {
+      "ip_fixture": 1,
+      "look": 22,
+      "status": "REJECTED_MINUS_13",
+      "instruction_count": 37,
+      "declared_provider_calls": [
+        {
+          "provider": "declared memset",
+          "size": 72,
+          "byte": 0
+        }
+      ],
+      "queue_checkpoint": [],
+      "actual_enqueue_or_callback_completion": false
+    }
+  ],
+  "scope": "Original look-setting front end to a queue-entry checkpoint, logging mode=3 and memset provider declared. No actual queue, OSAL resource, DMA, MAIN routing or output evidence."
+}

@@ -1,0 +1,59 @@
+{
+  "builds": {
+    "native": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-dynamiclib",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c",
+        "-framework",
+        "IOKit",
+        "-framework",
+        "CoreFoundation",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v2/fx3-generation-stream.dylib"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v2/fx3-generation-stream.dylib",
+      "sha256": "115d61e049edd0451a16443f234cff9cb5e275a015b429b43c4554ca9b21b836",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v2/fx3-generation-stream.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v2/fx3-generation-stream.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.1.8)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "unit": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/unit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v2/stream-unit"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v2/stream-unit",
+      "sha256": "c6aca8017391400cf3a56d1cf71f898931d85240b30de68e62d7e91f8a99241c",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v2/stream-unit:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    }
+  },
+  "native_library_executed": false,
+  "USB_cache_or_admin_operations": 0
+}

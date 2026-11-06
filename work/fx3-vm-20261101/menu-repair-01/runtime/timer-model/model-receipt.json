@@ -1,0 +1,30 @@
+{
+  "upstream_patch_sha256": "29a84ae7a23897af25279f3c438bef387a01d59137767e0362631d4c294f78f8",
+  "selected_file": "hw/timer/sony_hwtimer.c",
+  "changes": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/hw/arm/virt.c",
+      "before_sha256": "c87dcfffc0934812284dba05fd525ab0f400b0021b3b90896371f455f6f3289d",
+      "after_sha256": "577f142313acf95099aae6d872fc889d891cd12066ce1b0564c659bad682b20b"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/hw/timer/meson.build",
+      "before_sha256": "85138d80d0c38fb59eb52ff60f25bca12668f4fd21658a2bb6323abf91f37417",
+      "after_sha256": "7b4ad23db3d2c50df0dbc7f75b20a268c217637ea66e402f0772671ad7b98a62"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/hw/timer/sony_hwtimer.c",
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "050193cca7d211539430440f076d7edf15c70bb1275003369057e8d93b97c30b"
+    }
+  ],
+  "irq_basis": "Sony FX3 7.00 GPL irqs.h non-FPGA IRQ_TIMER_BASE232 -> GIC SPI index200; exact7.02 runtime initialization/interrupt acceptance not yet verified",
+  "guest_or_UI_tested": false,
+  "excluded_upstream_models": [
+    "catch-all bus",
+    "crypto",
+    "USB",
+    "native key bridge",
+    "warmboot aliases"
+  ]
+}

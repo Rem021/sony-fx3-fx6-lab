@@ -1,0 +1,47 @@
+ 2e52150: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 2e52154: 52808903     	mov	w3, #0x448              // =1096
+ 2e52158: 910003fd     	mov	x29, sp
+ 2e5215c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e52160: aa0003f3     	mov	x19, x0
+ 2e52164: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 2e52168: f0004a20     	adrp	x0, 0x3799000
+ 2e5216c: f00059f6     	adrp	x22, 0x3991000
+ 2e52170: 900058b5     	adrp	x21, 0x3966000
+ 2e52174: 910e02c2     	add	x2, x22, #0x380
+ 2e52178: 91351ea1     	add	x1, x21, #0xd47
+ 2e5217c: 91203c00     	add	x0, x0, #0x80f
+ 2e52180: 94047763     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e52184: d2800300     	mov	x0, #0x18               // =24
+ 2e52188: 97f09a01     	bl	0x2a7898c <Application_System_Init+0x1388dfc>
+ 2e5218c: aa0003f4     	mov	x20, x0
+ 2e52190: 52800280     	mov	w0, #0x14               // =20
+ 2e52194: b9000280     	str	w0, [x20]
+ 2e52198: b9400660     	ldr	w0, [x19, #0x4]
+ 2e5219c: 97fffa2f     	bl	0x2e50a58 <Application_System_Init+0x1760ec8>
+ 2e521a0: b9000680     	str	w0, [x20, #0x4]
+ 2e521a4: b9400a60     	ldr	w0, [x19, #0x8]
+ 2e521a8: b9000a80     	str	w0, [x20, #0x8]
+ 2e521ac: b9400e60     	ldr	w0, [x19, #0xc]
+ 2e521b0: b9000e80     	str	w0, [x20, #0xc]
+ 2e521b4: f9400a60     	ldr	x0, [x19, #0x10]
+ 2e521b8: f9000a80     	str	x0, [x20, #0x10]
+ 2e521bc: aa1403e0     	mov	x0, x20
+ 2e521c0: 97f09a04     	bl	0x2a789d0 <Application_System_Init+0x1388e40>
+ 2e521c4: b9400660     	ldr	w0, [x19, #0x4]
+ 2e521c8: 35000100     	cbnz	w0, 0x2e521e8 <Application_System_Init+0x1762658>
+ 2e521cc: d2800100     	mov	x0, #0x8                // =8
+ 2e521d0: 97f099ef     	bl	0x2a7898c <Application_System_Init+0x1388dfc>
+ 2e521d4: 52802242     	mov	w2, #0x112              // =274
+ 2e521d8: b9000002     	str	w2, [x0]
+ 2e521dc: b9400a62     	ldr	w2, [x19, #0x8]
+ 2e521e0: b9000402     	str	w2, [x0, #0x4]
+ 2e521e4: 97f099fb     	bl	0x2a789d0 <Application_System_Init+0x1388e40>
+ 2e521e8: 910e02c2     	add	x2, x22, #0x380
+ 2e521ec: 91351ea1     	add	x1, x21, #0xd47
+ 2e521f0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2e521f4: d0005600     	adrp	x0, 0x3914000
+ 2e521f8: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2e521fc: 9107a800     	add	x0, x0, #0x1ea
+ 2e52200: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 2e52204: 52808b43     	mov	w3, #0x45a              // =1114
+ 2e52208: 14047741     	b	0x2f6ff0c <Application_System_Init+0x188037c>

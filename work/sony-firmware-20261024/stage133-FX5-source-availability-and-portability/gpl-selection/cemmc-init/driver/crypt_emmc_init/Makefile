@@ -1,0 +1,114 @@
+#===============================================================
+# 各種make変数をリセットします。必ず先頭行に記述してください。
+# ビルド対象に応じて1つだけ有効にしてください。
+# また、この記述は削除しないでください。
+#===============================================================
+#include $(CLEAR_VARS_USERSPACE)
+include $(CLEAR_VARS_DRIVER)
+#include $(CLEAR_VARS_LIRO)
+#include $(CLEAR_VARS_MP_LIRO)
+#include $(CLEAR_VARS_CP)
+#include $(CLEAR_VARS_PROISP)
+
+#===============================================================
+# 生成ファイル名をセットします。必ず1つだけ指定してください。
+# 複数のファイル名は指定できません。
+# 例：
+# TARGET := hoge.ko
+#===============================================================
+TARGET := crypto-emmc-init.ko
+TARGET_UPDATER_DRIVER := crypto-emmc-init.ko
+
+#===============================================================
+# 任意のファイル（バイナリファイル等）をインストールする場合に指定してください。
+# 複数のファイルを指定する場合は2つ目以降のファイルを
+# RESOURCE += xxx で記述してください。
+# 例：
+# RESOURCE := file_a
+# RESOURCE += file_b
+#===============================================================
+RESOURCE :=
+
+#===============================================================
+# ビルド対象のディレクトリがあれば記述してください。
+# ほとんどの場合は下層のディレクトリを指定します。
+# 複数のディレクトリがある場合は2つ目以降のディレクトリを
+# SUBDIRS += xxx で記述してください。
+# 例：
+# SUBDIRS := dir_a
+# SUBDIRS += dir_b
+#===============================================================
+SUBDIRS :=
+
+#===============================================================
+# コンパイル対象のファイルをセットします。
+# SUBDIRSも同時に設定されている場合はSUBDIRSで指定された
+# ディレクトリが先にビルドされます。
+# 複数ファイルある場合は2つ目以降のパスを
+# SRCS += xxx で記述してください。
+# 例：
+# SRCS := aaa.c
+# SRCS += bbb.c
+#===============================================================
+SRCS :=
+SRCS += crypt_emmc_init.c
+SRCS += crypt_emmc_init_driver.c
+SRCS += crypt_emmc_init_tee_cmd.c
+SRCS += crypt_emmc_init_tee_core.c
+
+#===============================================================
+# *.cファイルのコンパイル時オプションをセットしてください。
+# 複数のオプションがある場合は2つ目以降のパスを
+# EXTRA_CFLAGS += xxx で記述してください。
+# 例：
+# EXTRA_CFLAGS := xxx
+# EXTRA_CFLAGS += yyy
+#===============================================================
+export CRYPT_EMMC_TEST ?= N
+ifeq ($(CRYPT_EMMC_TEST),Y)
+EXTRA_CFLAGS := -DCRYPT_EMMC_INIT_CONFIG_DEBUG # Enable only test
+endif
+
+#===============================================================
+# RESOURCEで指定したファイルのインストールパスとファイル名を指定してください。
+# INSTALL_RES_USER_NAMEが空の場合はRESOURCE名でインストールされます。
+#===============================================================
+INSTALL_USER_PATH	:= /kmod
+INSTALL_USER_NAME	:=
+
+INSTALL_RES_USER_PATH :=
+INSTALL_RES_USER_NAME :=
+
+#===============================================================
+# ビルド対象に応じて1つだけ有効にしてください。
+#
+# $(BUILD_RULE_HOST_USERSPACE)
+#	MainLSIのuserspace空間で動作するオブジェクトをビルドする場合。
+#
+# $(BUILD_RULE_HOST_DRIVER)
+#	MainLSIのdriverをビルドする場合。
+#
+# $(BUILD_RULE_LIRO)
+#	LIROの構成モジュールをビルドする場合。
+#
+# $(BUILD_RULE_MP_LIRO)
+#	IPS-X MPのLIROの構成モジュールをビルドする場合。
+#
+# $(BUILD_RULE_CP)
+#	IPS-X CPの構成モジュールをビルドする場合。
+#
+# $(BUILD_RULE_PROISP)
+#	Dpro proispの構成モジュールをビルドする場合。
+#===============================================================
+#include $(BUILD_RULE_HOST_USERSPACE)
+include $(BUILD_RULE_HOST_DRIVER)
+#include $(BUILD_RULE_LIRO)
+#include $(BUILD_RULE_MP_LIRO)
+#include $(BUILD_RULE_CP)
+#include $(BUILD_RULE_PROISP)
+
+#===============================================================
+# 独自のターゲットを定義する場合はoriginal.mkのファイル名で作成し、
+# 以下のコメントを外して有効にしてください。
+#===============================================================
+#include	$(BUILD_RULE_ORIGINAL)

@@ -1,0 +1,33 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88b-r2-cp-backup-reset-early-gpe/guest.dtb",
+    "sha256": "c975df37fc3d921825eeb33fb4805f61beb6c62e58923205a028029f6ec50547"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88b-r2-cp-backup-reset-early-gpe/guest.cpio",
+    "sha256": "74ded54d05e0f5e4ec3201fde9615903e9f48f48672bb4538ac76bd6d4b72065"
+  },
+  "required_markers": [
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0",
+    "FX3_GPE_EARLY_THREAD_GATE gpe=1",
+    "FX3_BACKUP_CP_PUBLIC_OWNER",
+    "FX3_BACKUP_CP_INSMOD_RC=0",
+    "FX3_BACKUP_CP_STORAGE",
+    "FX3_BACKUP_CP_COMMIT flag=1 stage=1",
+    "FX3_BACKUP_CP_COMMIT flag=4 stage=2",
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=1 flag=1",
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=2 flag=4",
+    "FX3_AP_IM_ENDMAPS_"
+  ],
+  "scope": "AP88 explicit virtualCP Backup op33/F1thenF4once. Native kernel publicsender route; actualinitialized40B validated (nativeallocation128/capacity60). CP separate physicalbacking4040d2000/1369580 insideexistingsecondBK4; pinnedfullbank/checksum/allindex/defaultbounds/repeat4; actual317+2copy/readback; independent4096reply zero tail4056declaredsoftwaredifference; native003e0811 source/replytoactualQ; requestfreeoriginaldestination; noAPwholebankreset. OriginalBackup_reset_all passivereturnwrapper. GPEv15 onlyexisting bindingbeforeexactnativegpe0_info/gpe1_info threadcreate; originalcreateargs/result/errno unchanged; noMMIOmodel. Postresetunknownfullraw<=4096,no reply. NoAP89boot.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true
+}

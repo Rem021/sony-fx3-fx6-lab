@@ -1,0 +1,25 @@
+{
+  "created_utc": "2026-10-27T03:29:24.545653+00:00",
+  "status": "PASS_OLD_RESULT_OVERFLOW_REPRODUCED_FIXED_FRAME_RESULT_SCOPE",
+  "prior_sealed_file_counts": {
+    "stage69-native-16M-callpath": 50,
+    "stage73-native-free-message-path": 18
+  },
+  "old_baseline_cases": 2,
+  "fixed_target_cases": 2,
+  "regression_controls": 2,
+  "total_bounded_fragments": 41,
+  "old24_original_result_stores_outside_container_bytes": 26,
+  "old24_saved_LR_and_register_slots_corrupted": true,
+  "fixed56_all_original52_span_writes_contained": true,
+  "fixed56_all_saved_register_slots_unchanged": true,
+  "fixed_target_original_channel_arguments_and_kernel_boundary": true,
+  "retained_review_correction": "The original channel boundary and same-context resume produce two identical observations; corrected reviewer count only, no native tests repeated or returns changed.",
+  "old_numeric_prefix_is_not_safe_adapter_evidence": true,
+  "original_getter_complete_type_size_or_tail_field_semantics_proven": false,
+  "prior_original_only_stages_with_inert_adapter_invalidated": false,
+  "channel_return_unwind_real_OSAL_hardware_main_recording_or_recovery_proven": false,
+  "Windows_UU_camera_operations": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

@@ -1,0 +1,15 @@
+009d67a0 movw       r0, #0x13a8
+009d67a4 adds       r5, r4, r0
+009d67a6 mov        r0, r5
+009d67a8 bl         #0x9d1442
+009d67ac movw       r0, #0x16d4
+009d67b0 mov        r1, r5
+009d67b2 mov.w      r2, #0x32c
+009d67b6 movw       sl, #0x16d4
+009d67ba add        r0, r4
+009d67bc blx        #0x558400
+009d67c0 movw       r0, #0x1074
+009d67c4 mov        r1, r5
+009d67c6 mov.w      r2, #0x32c
+009d67ca add        r0, r4
+009d67cc blx        #0x558400

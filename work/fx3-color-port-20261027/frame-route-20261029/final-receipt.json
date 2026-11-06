@@ -1,0 +1,129 @@
+{
+  "stage": "frame-route-20261029",
+  "sealed_at_utc": "2026-10-29T16:42:54.803910+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5266,
+      "sha256": "94bb0c4df39a7acca002373e17c1418b992705a3fde821f593d0998319ee42f0"
+    },
+    {
+      "path": "attempts/parent-repeat-assertion.json",
+      "bytes": 593,
+      "sha256": "f84ab98fe00add4ccc43ede2d96686d0b31ef81c7dac6f857f892225f43f73fe"
+    },
+    {
+      "path": "caller-gate-results.json",
+      "bytes": 39146,
+      "sha256": "5a14e26aaca64871b94dbbae6009059d3d9fc6b4037a3af72c777f2d7b40c89a"
+    },
+    {
+      "path": "caller_gate_guest.py",
+      "bytes": 7894,
+      "sha256": "777e2f5eb462e9d30e12ec0aec670142809b6d86e8bf33129a739abc62936608"
+    },
+    {
+      "path": "frame-route-source-results.json",
+      "bytes": 46547,
+      "sha256": "7069928ee6a2a1d7c5492b153df81d5c4cce99e8bec6e8005d50a85e986b7e13"
+    },
+    {
+      "path": "inspect_frame_routes.py",
+      "bytes": 4046,
+      "sha256": "0d266188361f1f29283b718b1b358fe4e7fee115b7b39a5e92d78d8f47801fd8"
+    },
+    {
+      "path": "mask-acquisition-results.json",
+      "bytes": 22613,
+      "sha256": "a1966fc78e757b00250636207a26411295f7eb753421942cbd3f9b8613f25c85"
+    },
+    {
+      "path": "mask_acquisition_guest.py",
+      "bytes": 5582,
+      "sha256": "fc9661be90953efed0450340e9878b277323678aee8e228cf0bcee1531e5e7a2"
+    },
+    {
+      "path": "source-fragments/caller-gate.txt",
+      "bytes": 495,
+      "sha256": "1e202199e5beca801ae853bc5083a8bd43ccd49bbcee3b6215d8b6144fe0bb64"
+    },
+    {
+      "path": "source-fragments/gate-after-submit.txt",
+      "bytes": 862,
+      "sha256": "20d1e486d78bc655564bc6fedfeda13c1ad7c47472e5aedb1363cf361106b462"
+    },
+    {
+      "path": "source-fragments/mlut-callback-registration.txt",
+      "bytes": 385,
+      "sha256": "9248260309053cfd4042722433ef6bc1d9e779b550a2041f31a97e7fca53a0e9"
+    },
+    {
+      "path": "source-fragments/mlut-caller.txt",
+      "bytes": 2970,
+      "sha256": "e99e61c6319f65529d26f4ce0e1dcfb67e8a8dab809f8ebc17ed3c117c002522"
+    },
+    {
+      "path": "source-fragments/next-image-utility-wrapper.txt",
+      "bytes": 748,
+      "sha256": "0eba596aaa447ddbe05641fa6c415f96073eb0b73ec4dcccf64e33ccba19f8df"
+    },
+    {
+      "path": "source-fragments/next-image-utility.txt",
+      "bytes": 4008,
+      "sha256": "231cedbd676e5e728579f0423217ace52e8dbcadd8ab9d5437596646753efdd9"
+    },
+    {
+      "path": "source-fragments/optional-frame-path.txt",
+      "bytes": 195,
+      "sha256": "a53211be8ab2800faafa8e16723e2789ba0217a51ae9aecf010e56707533ee36"
+    },
+    {
+      "path": "source-fragments/original-sync-clear.txt",
+      "bytes": 119,
+      "sha256": "c529a900c8e2e7ca069703486b39fb15ec270e47b2688a24ffd2f320619d0091"
+    },
+    {
+      "path": "source-fragments/registration-wrapper.txt",
+      "bytes": 174,
+      "sha256": "61c3b42e24c0a903e3dc1c38fd6191847309560efa40ab0a012ea5c602d342cb"
+    },
+    {
+      "path": "source-fragments/resource-mask-checker.txt",
+      "bytes": 601,
+      "sha256": "d45a93fab90090cc2a5e8e9563aca75c2722ca7000a753655979e35aa938d686"
+    },
+    {
+      "path": "source-fragments/resource-request-caller.txt",
+      "bytes": 1708,
+      "sha256": "4ce5e1af334d284015e302ac83ff855c813ee6ae632a9c625a2635098478f332"
+    },
+    {
+      "path": "source-fragments/resource-request-helper.txt",
+      "bytes": 6084,
+      "sha256": "bc33f91f8b9c02647547302e40e60aa0ae3dee240dc6803ee004fec42e58af13"
+    },
+    {
+      "path": "source-fragments/stp-allocator-boundary.txt",
+      "bytes": 3915,
+      "sha256": "c2b7996e7f31a5a9f8c8d0243e678a24092d835533902ce930a16ce7f2d1083e"
+    },
+    {
+      "path": "validate_frame_routes.py",
+      "bytes": 6618,
+      "sha256": "08de4d52a4ec2b055f0af776b7781c839131570bfecc37cf6227147d0ede6c31"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 1226,
+      "sha256": "6e768e1f9a9beca28296df6bba6a28cc74bdea2aa8f9a4480717985c6714b616"
+    }
+  ],
+  "previous_receipt_sha256": "8692416fe7833eff1203ed3dee90c7926a9b7dfe868cee7a3e42edc88e1e26f5",
+  "checks": 11,
+  "goal_complete": false,
+  "termination_condition_met": false,
+  "firmware_output": false,
+  "device_actions": 0,
+  "conclusion": "Original MLUT caller resource gate, failure latch/reset and callback record recovered; actual resource masks, STP, queue/buffer/MAIN routing and flashable full colour port remain unproven."
+}

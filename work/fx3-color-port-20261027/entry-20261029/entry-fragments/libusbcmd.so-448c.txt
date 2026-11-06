@@ -1,0 +1,43 @@
+0000448c stp        x29, x30, [sp, #-0x40]!
+00004490 mov        w3, #1
+00004494 mov        x29, sp
+00004498 stp        x19, x20, [sp, #0x10]
+0000449c mov        x19, x2
+000044a0 stp        x21, x22, [sp, #0x20]
+000044a4 mov        x20, x1
+000044a8 mov        x22, x0
+000044ac add        x1, x29, #0x38
+000044b0 ldr        w21, [x19, #0x20]
+000044b4 mov        w2, #0x60
+000044b8 add        x19, x19, #0x38
+000044bc mov        w0, w21
+000044c0 bl         #0x2900 ; osal_valloc_msg_wait
+000044c4 ldr        x1, [x29, #0x38]
+000044c8 mov        w0, #0x1005
+000044cc str        w0, [x1]
+000044d0 ldr        w0, [x20, #0x18]
+000044d4 str        w0, [x1, #4]
+000044d8 ldur       x0, [x19, #-0x10]
+000044dc str        x0, [x1, #0x10]
+000044e0 ldur       x0, [x19, #-8]
+000044e4 str        x0, [x1, #0x58]
+000044e8 add        x0, x1, #0x18
+000044ec ldp        x2, x3, [x19]
+000044f0 stp        x2, x3, [x0]
+000044f4 ldp        x2, x3, [x19, #0x10]
+000044f8 stp        x2, x3, [x0, #0x10]
+000044fc ldr        x2, [x19, #0x20]
+00004500 str        x2, [x1, #0x38]
+00004504 mov        w2, w21
+00004508 ldr        w0, [x20, #0x18]
+0000450c str        w0, [x1, #0x34]
+00004510 ldr        w0, [x20, #0x10]
+00004514 str        w0, [x1, #0x38]
+00004518 ldr        w0, [x20, #0x14]
+0000451c str        w0, [x1, #0x3c]
+00004520 mov        x0, x22
+00004524 bl         #0x2a00 ; UsbCmd_ExtCmdSvcWrap::SndMsgToUpperSync
+00004528 ldp        x19, x20, [sp, #0x10]
+0000452c ldp        x21, x22, [sp, #0x20]
+00004530 ldp        x29, x30, [sp], #0x40
+00004534 ret        

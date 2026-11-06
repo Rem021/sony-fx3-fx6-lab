@@ -1,0 +1,31 @@
+_ZN7Updater12BaseFirmware12EndWriteFirmEv
+0000bbf4 ldr       x0, [x0, #8]
+0000bbf8 cbnz      x0, #0xbc60
+0000bbfc stp       x29, x30, [sp, #-0x20]!
+0000bc00 adrp      x2, #0xd000
+0000bc04 adrp      x0, #0xd000
+0000bc08 add       x2, x2, #0x921
+0000bc0c mov       x29, sp
+0000bc10 str       x19, [sp, #0x10]
+0000bc14 mov       w19, #0x1a
+0000bc18 movk      w19, #3, lsl #16
+0000bc1c add       x0, x0, #0x4b2
+0000bc20 mov       w1, w19
+0000bc24 mov       w3, #0x2f
+0000bc28 bl        #0x8cf0 ; printf
+0000bc2c mov       x0, #0x10
+0000bc30 bl        #0x8590 ; __cxa_allocate_exception
+0000bc34 str       w19, [x0, #8]
+0000bc38 adrp      x1, #0x20000
+0000bc3c adrp      x2, #0x20000
+0000bc40 strb      wzr, [x0, #0xc]
+0000bc44 ldr       x1, [x1, #0xf10]
+0000bc48 ldr       x2, [x2, #0xf30]
+0000bc4c add       x1, x1, #0x10
+0000bc50 str       x1, [x0]
+0000bc54 adrp      x1, #0x20000
+0000bc58 ldr       x1, [x1, #0xfc8]
+0000bc5c bl        #0x8be0 ; __cxa_throw
+0000bc60 ldr       x1, [x0]
+0000bc64 ldr       x1, [x1, #0x28]
+0000bc68 br        x1

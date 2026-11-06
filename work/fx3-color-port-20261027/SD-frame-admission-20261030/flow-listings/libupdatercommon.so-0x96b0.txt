@@ -1,0 +1,83 @@
+_ZN7Updater10RingBuffer19ReadDataWithoutCopyEPPhm
+000096b0 stp       x29, x30, [sp, #-0x50]!
+000096b4 mov       x29, sp
+000096b8 stp       x19, x20, [sp, #0x10]
+000096bc mov       x19, x0
+000096c0 add       x0, x0, #0x98
+000096c4 stp       x21, x22, [sp, #0x20]
+000096c8 str       x0, [x29, #0x38]
+000096cc mov       x21, x2
+000096d0 mov       x22, x1
+000096d4 bl        #0x6a90 ; pthread_mutex_lock
+000096d8 ldr       x20, [x19, #0x18]
+000096dc ldr       x0, [x19, #8]
+000096e0 sub       x0, x20, x0
+000096e4 ldr       x20, [x19, #0x10]
+000096e8 sub       x20, x20, x0
+000096ec cmp       x20, x21
+000096f0 csel      x20, x20, x21, ls
+000096f4 add       x21, x19, #0x38
+000096f8 mov       x0, x21
+000096fc stp       x20, x21, [x29, #0x40]
+00009700 bl        #0x6a90 ; pthread_mutex_lock
+00009704 ldrb      w0, [x19, #0x31]
+00009708 tst       w0, #0xff
+0000970c b.eq      #0x9738
+00009710 mov       x19, #0
+00009714 add       x0, x29, #0x48
+00009718 bl        #0x956c
+0000971c add       x0, x29, #0x38
+00009720 bl        #0x956c
+00009724 mov       x0, x19
+00009728 ldp       x19, x20, [sp, #0x10]
+0000972c ldp       x21, x22, [sp, #0x20]
+00009730 ldp       x29, x30, [sp], #0x50
+00009734 ret       
+00009738 ldrb      w0, [x19, #0x30]
+0000973c tst       w0, #0xff
+00009740 b.ne      #0x97dc
+00009744 ldr       x0, [x19, #0x28]
+00009748 cmp       x20, x0
+0000974c b.ls      #0x97dc
+00009750 ldr       x0, [x19, #0x10]
+00009754 lsr       x0, x0, #1
+00009758 cmp       x20, x0
+0000975c b.ls      #0x9764
+00009760 str       x0, [x29, #0x40]
+00009764 add       x20, x19, #0x68
+00009768 ldrb      w0, [x19, #0x30]
+0000976c tst       w0, #0xff
+00009770 b.ne      #0x97a0
+00009774 ldrb      w0, [x19, #0x31]
+00009778 tst       w0, #0xff
+0000977c b.ne      #0x9710
+00009780 ldr       x1, [x19, #0x28]
+00009784 ldr       x0, [x29, #0x40]
+00009788 cmp       x1, x0
+0000978c b.hs      #0x97a0
+00009790 mov       x1, x21
+00009794 mov       x0, x20
+00009798 bl        #0x6f60 ; pthread_cond_wait
+0000979c b         #0x9768
+000097a0 ldr       x0, [x19, #0x18]
+000097a4 ldr       x1, [x19, #0x28]
+000097a8 str       x0, [x22]
+000097ac ldr       x0, [x29, #0x40]
+000097b0 cmp       x1, x0
+000097b4 b.hs      #0x97f0
+000097b8 ldr       x19, [x19, #0x28]
+000097bc b         #0x9714
+000097c0 mov       x19, x0
+000097c4 add       x0, x29, #0x48
+000097c8 bl        #0x956c
+000097cc add       x0, x29, #0x38
+000097d0 bl        #0x956c
+000097d4 mov       x0, x19
+000097d8 bl        #0x6f40 ; _Unwind_Resume
+000097dc ldr       x0, [x19, #0x18]
+000097e0 str       x0, [x22]
+000097e4 ldr       x0, [x19, #0x28]
+000097e8 cmp       x20, x0
+000097ec b.hi      #0x97b8
+000097f0 ldr       x19, [x29, #0x40]
+000097f4 b         #0x9714

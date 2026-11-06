@@ -1,0 +1,1 @@
+Viewed trial-step-01-key-1ab.png: transition retained lower icons with blank main panel. Then viewed and copied post-menu-current.png: Setup > Area/Date, orange focus on Area/Date/Time Setting, English language row, MENU Close footer. Native step 1 down/up completed. No further key is sent; waiting for original power-off notification to capture its native input.

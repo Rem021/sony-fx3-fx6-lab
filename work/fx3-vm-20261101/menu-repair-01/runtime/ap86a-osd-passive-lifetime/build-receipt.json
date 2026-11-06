@@ -1,0 +1,20 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap85-osd-software-ring-r4/candidate85-r4.json",
+  "base_sha256": "02ccf37fc3e48119b777eb4c4ad3778ea24eec8e4d070f32309c365b003a0ecd",
+  "CPIO_changed": [
+    "init",
+    "simulation/fx3-osd-headless-v4.so"
+  ],
+  "CPIO_added": [
+    "simulation/fx3-osd-lifetime-v1.so"
+  ],
+  "helper_sha256": {
+    "fx3-osd-headless-v4.so": "8b9216d8f58a199d8dc849a869799e7f913340542a032d9ace4be1dd46c40276",
+    "fx3-osd-lifetime-v1.so": "b222c211e44b22242cdd4c70d21c0eecafb028319c96f2415a4f33986d97ce84"
+  },
+  "native_kernel_module_matches_audited": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+  "all_other_helpers_originals_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "original_message_ownership_changed": false,
+  "0400_reply_added": false
+}

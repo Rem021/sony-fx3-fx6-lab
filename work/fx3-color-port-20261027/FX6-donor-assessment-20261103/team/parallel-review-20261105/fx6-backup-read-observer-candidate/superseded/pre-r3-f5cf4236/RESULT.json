@@ -1,0 +1,107 @@
+{
+  "schema": "fx6-backup-read-observer-r2-result-v1",
+  "task": "task_b82d76ef57c1",
+  "dispatch": "ctx_4d176e816e6b",
+  "status": "HOST_ONLY_R2_CORRECTED_NOT_RUNTIME_READY",
+  "offline_complete": true,
+  "runtime_ready": false,
+  "vm_started": false,
+  "guest_contacted": false,
+  "qmp_or_browser_contact": false,
+  "old_authorization_reused": false,
+  "old_observer_modified": false,
+  "target_cpio_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+  "appfw_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+  "serial_sha256": "377142e9dcee7f4f7728db6e9fcb822a9f3e501e61da7f719761d4d506f5050e",
+  "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "target_thunks": [
+    "0x2169784",
+    "0x21697d4"
+  ],
+  "target_returns": [
+    "0x11f67d4",
+    "0x11f67f4"
+  ],
+  "current_fixture_bias": "0x7ed3ccc000",
+  "cleanup_fixes": {
+    "callback_requires_passed_API16_original_ack": true,
+    "callback_false_never_clean": true,
+    "qmp_stop_query_confirmed": true,
+    "qmp_stop_exception_fallback": true,
+    "qemu_wait_timeout_no_lock_release": true,
+    "qemu_quit_failure_recorded": true,
+    "lock_release_failure_not_clean": true,
+    "possibly_installed": true,
+    "residual_no_guest_resume": true,
+    "repeated_cleanup_idempotent": true,
+    "partial_launch": true,
+    "no_breakpoint_uninitialized": true
+  },
+  "runner": {
+    "path": "observer/host_runner.py",
+    "real_deps": "observer/host_runner.py:real_deps",
+    "default_disabled_entry": "observer/run_lifecycle.py",
+    "separate_new_run_approval_required": true,
+    "tests": 10,
+    "test_status": "PASS_NO_QEMU_FAKE_RUNNER",
+    "tests_sha256": "4fc0e546f8df9ff481a6548882f33c86007899f437f86a010ad405870a920ccd",
+    "runner_sha256": "faa74c0fd249174b8cff6769bd4e3818738013e4789c816a8fcfbd423446ec22"
+  },
+  "execution_adapter": {
+    "path": "observer/execution_adapter.py",
+    "tests": 5,
+    "test_status": "PASS_NO_QEMU_FAKE_LIFECYCLE",
+    "tests_sha256": "08ac6e718f7829b83eafbf8b362bb0b39f9c8fc7afe8b8c15ec73ffaf7d98ed6",
+    "adapter_sha256": "b847a13ee918f14980d9323355178c41fa41bc0298a07532b6f0896a1fd81f2a"
+  },
+  "rsp_tests": {
+    "count": 7,
+    "status": "PASS_NO_QEMU_REAL_SOCKET",
+    "sha256": "65fc17aab0b0693b332352fcd15a612ed26936eb06303324a32d54c51036a574",
+    "rsp_sha256": "3733656d8ceb70a3ff1ba7c0fdc020a9c0d7ed91f54883b5ed3ab42ae2ff91a5"
+  },
+  "core_tests": {
+    "count": 16,
+    "status": "PASS_NO_QEMU_FAKE_RSP",
+    "sha256": "415e40b4cc8d43566d821380c012450038a286af47665aad44d0496939d20b37",
+    "core_sha256": "067bdab76dea045402e930cbf1a08ca514747e33170f2fd650c5cfc7554b6b36"
+  },
+  "fixed_gaps": {
+    "rsp_checksum_framing": true,
+    "strict_unique_T05": true,
+    "gdb_cpu_thread_guest_tid_unknown": true,
+    "map_full_coverage_relro": true,
+    "map_header_phdr_code_ranges": true,
+    "identity_104_of_128": 104,
+    "short_read_reject": true,
+    "180_total_from_launch": true,
+    "150_observe": true,
+    "private_index20_target_index31": true,
+    "baseline_env_5": true,
+    "baseline_argv_derived": true
+  },
+  "input_seal": {
+    "count": 10,
+    "extra_count": 4,
+    "unchanged": true,
+    "path": "receipts/input-compare.json",
+    "extra_path": "receipts/extra-input-compare.json"
+  },
+  "inherited_cleanup": {
+    "required_for_clean": true,
+    "adapter_self_write": false,
+    "api16_contract": "f093dc43b6e1421f7498533860be320aff009a1f51c44fa3ddfcd63b97ca25fd",
+    "target_3a08_compatibility": "NOT_ESTABLISHED: no F100FILE/API16 control in helper; file100 observer_only_control; unbind no_symbol",
+    "status": "real_runtime_inherited_cleanup_blocked",
+    "runtime_cleanup_open": true
+  },
+  "limitations": [
+    "fake RSP/lifecycle/runner tests are not real CPU/menu evidence",
+    "no guest TID derivation from GDB CPU thread",
+    "receiver 0x3e014d remains unresolved",
+    "inherited API16/unbind protocol not established on 3a08; real clean blocked",
+    "no VM run"
+  ],
+  "snapshot": "superseded/pre-r2-3f182d91/",
+  "report": "REPORT.md"
+}

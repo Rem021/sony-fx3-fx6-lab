@@ -1,0 +1,150 @@
+{
+  "schema": "fx3-stage219-bound-handoff-request-claims-verification-v1",
+  "created_utc": "2026-10-30T07:54:34.113252+00:00",
+  "status": "PASS_REQUEST_AND_WINDOW_FENCES_WITH_CONFIRMED_OPEN_GLOBAL_EXCLUSION_GAP",
+  "previous_manifest_sha256": "470396cf0542fbf3395777fcfd21df00b8d78e2b31a2d691f1518600e52caff5",
+  "previous_members_reverified": 106,
+  "module_sha256": "be0805584b07e116d26da2ee8036a67cbd9c65801efdaedab47e995f33e3030d",
+  "module_source_sha256": "0cb09f2ccfe6f7dedaaa031ec1ffe1c1ff936b7b64779be2ff0603bcdc17ad8f",
+  "handoff_source_sha256": "5788e13bcd0335ac3928433d8cb54d6b3e1eb0a587cc9845ae9dbee3f3d04fee",
+  "inner_reader_sha256": "a1459db35501716dc414b45479aaa25c1ddb252ec440bd24258c4db7dbd78683",
+  "tests_passed": 11,
+  "own_ARM64_cases": 50,
+  "real_ordinary_Mac_processes": [
+    {
+      "Sony_or_Linux_code_executed": false,
+      "actual_target_root_or_Linux_process_verified": false,
+      "claims": [
+        "nonce-3333333333333333333333333333333333333333333333333333333333333333.pending",
+        "capture-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-b0-w0.pending"
+      ],
+      "guest_result": 51,
+      "modeled_PID_equals_actual_test_PID": true,
+      "module_sha256": "be0805584b07e116d26da2ee8036a67cbd9c65801efdaedab47e995f33e3030d",
+      "os_pid": 19310,
+      "source_reads": 0
+    },
+    {
+      "Sony_or_Linux_code_executed": false,
+      "actual_target_root_or_Linux_process_verified": false,
+      "claims": [
+        "nonce-4444444444444444444444444444444444444444444444444444444444444444.pending",
+        "capture-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-b0-w0.pending"
+      ],
+      "guest_result": 0,
+      "modeled_PID_equals_actual_test_PID": true,
+      "module_sha256": "be0805584b07e116d26da2ee8036a67cbd9c65801efdaedab47e995f33e3030d",
+      "os_pid": 19311,
+      "source_reads": 2
+    }
+  ],
+  "synthesized_boot_bytes": 33423360,
+  "synthesized_boot_sha256": "0bf7d4c932dc8a583aa5101bad7c8e7a8d6191c15c54479847c83b62434cc625",
+  "window_chunks": [
+    128,
+    128,
+    128,
+    126
+  ],
+  "both_claim_names_reserved_before_write": true,
+  "partial_claims": [
+    {
+      "path": "runs-final-v2/claim-short-write-shared/capture-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-b0-w0.pending",
+      "bytes": 0,
+      "valid_record": false,
+      "name_remains_held": true,
+      "is_completion": false
+    },
+    {
+      "path": "runs-final-v2/claim-short-write-shared/nonce-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.pending",
+      "bytes": 0,
+      "valid_record": false,
+      "name_remains_held": true,
+      "is_completion": false
+    },
+    {
+      "path": "runs-final-v2/claim-short-write-shared/nonce-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.pending",
+      "bytes": 255,
+      "valid_record": false,
+      "name_remains_held": true,
+      "is_completion": false
+    },
+    {
+      "path": "runs-final-v2/claim-sync-shared/capture-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-b0-w0.pending",
+      "bytes": 0,
+      "valid_record": false,
+      "name_remains_held": true,
+      "is_completion": false
+    },
+    {
+      "path": "runs-final-v2/claim-sync-shared/nonce-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.pending",
+      "bytes": 0,
+      "valid_record": false,
+      "name_remains_held": true,
+      "is_completion": false
+    },
+    {
+      "path": "runs-final-v2/claim-sync-shared/nonce-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.pending",
+      "bytes": 256,
+      "valid_record": true,
+      "name_remains_held": true,
+      "is_completion": false
+    },
+    {
+      "path": "runs-final-v2/claim-close-shared/capture-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-b0-w0.pending",
+      "bytes": 256,
+      "valid_record": true,
+      "name_remains_held": true,
+      "is_completion": false
+    },
+    {
+      "path": "runs-final-v2/claim-close-shared/nonce-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.pending",
+      "bytes": 0,
+      "valid_record": false,
+      "name_remains_held": true,
+      "is_completion": false
+    },
+    {
+      "path": "runs-final-v2/claim-close-shared/nonce-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.pending",
+      "bytes": 256,
+      "valid_record": true,
+      "name_remains_held": true,
+      "is_completion": false
+    }
+  ],
+  "claim_is_trusted_completion": false,
+  "cross_request_global_exclusion_implemented": false,
+  "live_cross_request_overlap_reproduced": {
+    "Sony_or_Linux_kernel_executed": false,
+    "camera_deployment_released": false,
+    "evidence": {
+      "first_has_not_returned": true,
+      "first_source_reads": 1,
+      "first_still_live": true,
+      "second_result": 0,
+      "second_source_reads": 2
+    },
+    "first_return_after_cooperative_release": 23,
+    "handoff_implementation_sha256": "5788e13bcd0335ac3928433d8cb54d6b3e1eb0a587cc9845ae9dbee3f3d04fee",
+    "module_sha256": "be0805584b07e116d26da2ee8036a67cbd9c65801efdaedab47e995f33e3030d",
+    "module_source_sha256": "0cb09f2ccfe6f7dedaaa031ec1ffe1c1ff936b7b64779be2ff0603bcdc17ad8f",
+    "new_camera_operations": 0,
+    "ordinary_association_tests_do_not_prove_global_exclusion": true,
+    "own_ARM64_code_executed": true,
+    "readiness_pass": false,
+    "reproduction_source_sha256": "319f0abb70789762a56a47146c8c3e9e696208de0eb8a6455fd273148daeb7ee",
+    "status": "CONFIRMED_OPEN_CROSS_REQUEST_EXCLUSION_GAP_IN_FAKE_KERNEL_MODEL"
+  },
+  "own_ARM64_code_executed": true,
+  "Sony_Linux_glibc_loader_or_camera_execution": false,
+  "actual_root_isolation_or_camera_tmpfs_verified": false,
+  "target_clock_or_PID_live_observed": false,
+  "trusted_launcher_or_complete_receipt_verified": false,
+  "inner_source_derived_by_four_documented_changes": true,
+  "formal_release04_and05_and23_sources_unchanged": true,
+  "root01_bundle_and_absent_job_unchanged": true,
+  "all16_requirements_and_authorizations_unchanged": true,
+  "new_camera_USB_or_root_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

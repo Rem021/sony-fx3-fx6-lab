@@ -1,0 +1,78 @@
+{
+  "server_thread_alive": false,
+  "final_ack_seen": true,
+  "snapshot": {
+    "phase": "finished",
+    "message": "OFFLINE FIXTURE ended; no VM lifecycle claim",
+    "error": null,
+    "ready": false,
+    "busy": false,
+    "steps": 1,
+    "max_steps": 8,
+    "visual_state": "visual_pending",
+    "input_received": true,
+    "visual_change_observed": true,
+    "review_required": true,
+    "review_step": 1,
+    "review_confirmation": null,
+    "browser_ready": true,
+    "launch_request_id": "bb9c2485-fe65-40d5-92d5-db1d5365fd86",
+    "launch_status": "running",
+    "render_valid": true,
+    "black_after_ready_count": 0,
+    "frame": {
+      "sequence": 213,
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "width": 640,
+      "height": 480,
+      "all_zero_pixels": false,
+      "content_generation": 3
+    },
+    "result": {
+      "scope": "offline simulation only",
+      "actual_guest_inputs": 0
+    },
+    "final_receipt_id": "Js3JOKrKWg89_gn4dcHTFw",
+    "remaining_seconds": 566,
+    "events": []
+  },
+  "key_rejections": {
+    "schema": "fx3-host-key-rejection-v1",
+    "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+    "capacity": 64,
+    "total": 1,
+    "truncated": 0,
+    "records": [
+      {
+        "host_monotonic_ns": 419420689401375,
+        "http_status": 409,
+        "reason": "frame_identity_or_render_invalid",
+        "failed_predicates": [
+          "sha_mismatch",
+          "generation_mismatch"
+        ],
+        "observed_sequence": 211,
+        "observed_cached": true,
+        "observed_png_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+        "observed_content_generation": 1,
+        "current_sequence": 212,
+        "current_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+        "current_content_generation": 2,
+        "render_valid": true,
+        "phase": "ready",
+        "ready": true,
+        "busy": false,
+        "pending_count": 0,
+        "review_required": false,
+        "steps": 0,
+        "stop_requested": false,
+        "error_present": false,
+        "request_id": "c75de8c6-2738-41ff-998b-a35c8cce19da"
+      }
+    ]
+  },
+  "key_calls": 2,
+  "actual_guest_inputs": 0,
+  "UTC": "2026-11-04T23:42:37.162367+00:00",
+  "host_ns": 419442694243416
+}

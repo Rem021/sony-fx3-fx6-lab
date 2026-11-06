@@ -1,0 +1,244 @@
+{
+  "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "SPI_state_CFG_raw_encoding_matches": true,
+  "instructions": 679,
+  "reachable_in_local_overapproximation": 679,
+  "normal_returns": [
+    "0xfe0556d4"
+  ],
+  "initial_underbounded_window": {
+    "end_exclusive": "0xfe0556d8",
+    "rejected": true,
+    "reason": "direct conditional successor reaches post-RET tail block",
+    "corrected_end_exclusive": "0xfe055724",
+    "artifact_preserved": "spi-state-initial-window.txt"
+  },
+  "exact_BL_targets": [
+    {
+      "site": "0xfe05c158",
+      "target": "0xfe05c424",
+      "word": "0x940000b3"
+    },
+    {
+      "site": "0xfe05c194",
+      "target": "0xfe04b45c",
+      "word": "0x97ffbcb2"
+    },
+    {
+      "site": "0xfe05c1a4",
+      "target": "0xfe04b45c",
+      "word": "0x97ffbcae"
+    },
+    {
+      "site": "0xfe05334c",
+      "target": "0xfe05c03c",
+      "word": "0x9400233c"
+    },
+    {
+      "site": "0xfe053380",
+      "target": "0xfe04b45c",
+      "word": "0x97ffe037"
+    },
+    {
+      "site": "0xfe053388",
+      "target": "0xfe059198",
+      "word": "0x94001784"
+    },
+    {
+      "site": "0xfe059208",
+      "target": "0xfe053eb0",
+      "word": "0x97ffeb2a"
+    },
+    {
+      "site": "0xfe051fe0",
+      "target": "0xfe053ab4",
+      "word": "0x940006b5"
+    },
+    {
+      "site": "0xfe05b224",
+      "target": "0xfe054c88",
+      "word": "0x97ffe699"
+    },
+    {
+      "site": "0xfe054ca4",
+      "target": "0xfe053c78",
+      "word": "0x97fffbf5"
+    }
+  ],
+  "raw_words_checked": {
+    "0xfe05c148": "0x910043e0",
+    "0xfe05c198": "0x910043e1",
+    "0xfe05c19c": "0x321d0be2",
+    "0xfe059204": "0xb9403000",
+    "0xfe053eb0": "0xd0000068",
+    "0xfe053eb4": "0xb905d500",
+    "0xfe053ab4": "0xd0000068",
+    "0xfe053ab8": "0xb945d500",
+    "0xfe051fe4": "0xb901b660",
+    "0xfe05c06c": "0x321c03e8",
+    "0xfe05c0b8": "0x7100045f",
+    "0xfe05c144": "0x321a07e8",
+    "0xfe05c448": "0xb900003f"
+  },
+  "mode_dataflow": {
+    "received_payload_offset": "0x30",
+    "destination_global": "0xfe0615d4",
+    "readback_global": "0xfe0615d4",
+    "context_offset_if_Copy_BM_BF_row_executes": "0x1b4",
+    "wire_command": 1,
+    "caller_length_counter_initial_value": 192,
+    "receiver_clears_length_counter_on_entry": true,
+    "initial_value_is_not_a_proven_receive_bound": true,
+    "prefix_copy_bytes": 56,
+    "remote_controller_identity_established": false,
+    "actual_received_length_validation_proven": false,
+    "p1_or_p3_selection_proven": false
+  },
+  "COMMON_table": [
+    {
+      "VA": "0xfe061870",
+      "target": "0xfe0529a8",
+      "flags": "0x0",
+      "name": "GPIO Init"
+    },
+    {
+      "VA": "0xfe061890",
+      "target": "0xfe0532b4",
+      "flags": "0x0",
+      "name": "DBG/UPD SW Read"
+    },
+    {
+      "VA": "0xfe0618b0",
+      "target": "0xfe052970",
+      "flags": "0x0",
+      "name": "Init InfSec"
+    },
+    {
+      "VA": "0xfe0618d0",
+      "target": "0xfe0533f4",
+      "flags": "0x0",
+      "name": "Init SPI"
+    },
+    {
+      "VA": "0xfe0618f0",
+      "target": "0xfe05331c",
+      "flags": "0x1",
+      "name": "SPI 1st"
+    },
+    {
+      "VA": "0xfe061910",
+      "target": "0xfe052ff8",
+      "flags": "0x0",
+      "name": "Init OSPI-NOR"
+    },
+    {
+      "VA": "0xfe061930",
+      "target": "0xfe052c88",
+      "flags": "0x0",
+      "name": "Setup PCIe"
+    },
+    {
+      "VA": "0xfe061950",
+      "target": "0xfe05346c",
+      "flags": "0x0",
+      "name": "Wake DDR"
+    },
+    {
+      "VA": "0xfe061970",
+      "target": "0xfe052bb8",
+      "flags": "0x0",
+      "name": "PCIe Clear Sig"
+    },
+    {
+      "VA": "0xfe061990",
+      "target": "0xfe052f54",
+      "flags": "0x8000",
+      "name": "Ld Config MEM:1"
+    },
+    {
+      "VA": "0xfe0619b0",
+      "target": "0xfe052be4",
+      "flags": "0x1",
+      "name": "PCIE sns state"
+    },
+    {
+      "VA": "0xfe0619d0",
+      "target": "0xfe051c50",
+      "flags": "0x0",
+      "name": "check_sus_e"
+    },
+    {
+      "VA": "0xfe0619f0",
+      "target": "0xfe051fd8",
+      "flags": "0x8000",
+      "name": "Copy BM/BF"
+    },
+    {
+      "VA": "0xfe061a10",
+      "target": "0xfe052b68",
+      "flags": "0x8000",
+      "name": "DDR Log Init"
+    },
+    {
+      "VA": "0xfe061a30",
+      "target": "0x0",
+      "flags": "0x8000",
+      "name": "end[Common]tbl"
+    }
+  ],
+  "additional_source_ranges": [
+    {
+      "label": "mode-setter",
+      "start": "0xfe053eb0",
+      "end_exclusive": "0xfe053ebc",
+      "sha256": "24c6ac16cfc3daaeac898ff9ae4af6113d29422e697526662ab2cd442cda46f6",
+      "bytes": 12,
+      "instructions": 3
+    },
+    {
+      "label": "context-mode-copy",
+      "start": "0xfe051fd8",
+      "end_exclusive": "0xfe051ffc",
+      "sha256": "03edb8325cbda608dfb3748e4e40e33c92b0c38dc47a379fa5c6d2a3704e7b28",
+      "bytes": 36,
+      "instructions": 9
+    },
+    {
+      "label": "SPI-peripheral-receive",
+      "start": "0xfe05c424",
+      "end_exclusive": "0xfe05c55c",
+      "sha256": "bfbf816bf52ea1093ed7f69ce7943bc09d2dd7c31ecb227794ff4a8e6f5e709a",
+      "bytes": 312,
+      "instructions": 78
+    },
+    {
+      "label": "power-sequence-caller",
+      "start": "0xfe05b0e0",
+      "end_exclusive": "0xfe05b268",
+      "sha256": "2af75336ec80b76fd95b183316a31e990db116cef80aa0bccff0eddc07a59bca",
+      "bytes": 392,
+      "instructions": 98
+    }
+  ],
+  "aligned_BL_locator_candidates": [
+    {
+      "site": "0xfe05334c",
+      "target": "0xfe05c03c",
+      "candidate_only": true
+    },
+    {
+      "site": "0xfe059208",
+      "target": "0xfe053eb0",
+      "candidate_only": true
+    },
+    {
+      "site": "0xfe05b224",
+      "target": "0xfe054c88",
+      "candidate_only": true
+    }
+  ],
+  "locator_scan_scope": "all aligned words include possible data; no exhaustive indirect/alias/reachability claim",
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "source_unchanged": true
+}

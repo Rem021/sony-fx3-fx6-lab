@@ -1,0 +1,34 @@
+{
+  "run": "ap94r3center-f3bba0ba",
+  "records": [
+    {
+      "LF_line": 32130,
+      "text": "FX3_GPE_SCREEN_GUARD_FAIL code=3 path=dmm_extents read_n=38419 read_result=0 read_errno=0 current_errno=0 captured_bytes=115 raw_hex=303030322020303030302020202030303030303030312020303030303030306620203030303030303030202030303030303030302020666666666666666620203030303030303032202034323962303030303020283430303030303030302b3239623030303030292020303639303030303020 no_retry=1 decision_unchanged=1\r"
+    },
+    {
+      "LF_line": 32132,
+      "text": "FX3_GPE_REJECT_DETAIL seq=93 op=1 stage=screen_recheck reason=4 errno=0 screen_fail_code=3 screen_path=dmm_extents screen_read_n=38419 screen_read_result=0 screen_read_errno=0 decision_unchanged=1 no_retry=1\r"
+    },
+    {
+      "LF_line": 32133,
+      "text": "FX3_GPE_REJECT_PARENT seq=93 role=destination object=0x7f600011e0 epoch=1 native_open=1 expected_identity=0xffffffc11e6bcb80 expected_type=0x403 expected_uhdl=0x401 expected_logical=0x7f80381000 expected_phys=0x43ae96000 expected_bytes=0x140000 expected_vptr=0x7f82408a48 reread_result=112 reread_errno=0 raw70=488a40827f000000cafefeed0000000080cb6b1ec1ffffff000000000000000010000000000000000000000000000000000000000000000003040000000000000104000000000000f07f40827f0000000010000000000000001038807f0000000060e93a040000000000140000000000 extra_read_only=1\r"
+    },
+    {
+      "LF_line": 32135,
+      "text": "FX3_GPE_REJECT_PARENT seq=93 role=source object=0x7f5c00f360 epoch=4 native_open=0 expected_identity=0xffffffc11bdeee80 expected_type=0 expected_uhdl=0x30303030 expected_logical=0x7eeb9c6000 expected_phys=0x410c64000 expected_bytes=0x200000 expected_vptr=0x7f82408a48 reread_result=112 reread_errno=0 raw70=488a40827f000000cafefeed20626f6480eede1bc1ffffff0200000000000000100000000a0000006d70546578744865617000000000000000000000000000003030303030303030f07f40827f000000001000000000000000609ceb7e0000000040c610040000000000200000000000 extra_read_only=1\r"
+    },
+    {
+      "LF_line": 32136,
+      "text": "FX3_GPE_CMD op=BitBlit seq=93 async=1 fmt=0 w=96 h=42 dst_phys=0x43ae96100 src_phys=0x410c65680 flags=0x10000000e0001 result=5 reason=4 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 rotation=0 src_fmt=2[ 1182.382000] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1022\r"
+    },
+    {
+      "LF_line": 32138,
+      "text": "FX3_GPE_RAW_PARAMS op=BitBlit seq=93 read=1 len=144 raw_hex=0061e93a04000000100100008e000000600000002a0000006e0000008c000000a40100002e000000000000000000000080020000000000008056c610040000000000000000000000600000002a00000000000000000000006000000002000000000000000000000000000000ddddddff0100ff01000e0000000100000000000000000000000000000000000000000000\r"
+    }
+  ],
+  "decoded_rejected_row": "0002  0000    00000001  0000000f  00000000  00000000  ffffffff  00000002  429b00000 (400000000+29b00000)  06900000 ",
+  "host_sscanf_replay": "PASS n=12 used=115 len=115 id=2 all_schema_arithmetic_tail_tests_pass; only_duplicate_id_term_left_in_original_code3_predicate",
+  "inference": "captured row passes all code3 conditions except duplicate-id bit; therefore id2 must already have been encountered in that complete proc read, assuming ordinary defined execution. Earlier duplicated row was not separately saved; concurrent snapshot causality not yet proven.",
+  "raw_full_proc_snapshot_not_saved": true,
+  "no_guard_relaxation": true
+}

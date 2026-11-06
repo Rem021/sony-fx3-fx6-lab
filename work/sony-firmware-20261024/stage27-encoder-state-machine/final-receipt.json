@@ -1,0 +1,70 @@
+{
+  "schema": "fx3-stage27-encoder-state-machine/1",
+  "created_utc": "2026-10-25T21:42:03.743278+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage27-encoder-state-machine/README.md",
+      "bytes": 6717,
+      "sha256": "dbb756a28aadfb502c9216921a22cff6ed767450b65229272b3d727cc9a9d6aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage27-encoder-state-machine/coordinator-observations.json",
+      "bytes": 1862,
+      "sha256": "a4bc5314ebf241d99ec161380c6ffe399d193168c5db1fead5703636b0863433"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage27-encoder-state-machine/encoder_state_machine.py",
+      "bytes": 13046,
+      "sha256": "d85f2604f4d5908befa3168d22c1cb93176355c181eae15e6b23cd14e31e711d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage27-encoder-state-machine/goal-status-after.json",
+      "bytes": 40256,
+      "sha256": "407a5354ec1e911b18d2dff59431e8efbfb1a7e995ce2cff36ef1e960fc11b54"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage27-encoder-state-machine/goal-status-before.json",
+      "bytes": 38250,
+      "sha256": "eb82329ce2d9a556236bc3d23ef0d9f00d5bf21c7f3f3eaec8e91d1569984e36"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/encoder-state-machine-results.json",
+      "bytes": 100689,
+      "sha256": "bfd5f4f9460fefa39e1edec7875b309fa9ae97457bca190853abf8cfa145eaa8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/source-receipt.json",
+      "bytes": 800,
+      "sha256": "7df44bcd31194a409e003f8fcae59260335d3d46eb248df9812e9e050035098d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/summary.json",
+      "bytes": 436,
+      "sha256": "3449348808491c72984cace895e5d81efa49fd1b065dfc0337ec6b66a04ce76a"
+    }
+  ],
+  "previous_manifest_sha256": "3885a86a39c712cf5b8e1bff81d2c61e5db925a7a98078da06028945b2b76858",
+  "scope": "12 bounded original state/queue/action-entry cases on independent fixtures. Not end-to-end Open, complete queue lifetime, resource/hardware acceptance or restore.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage27-encoder-state-machine/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage27-encoder-state-machine/goal-status-after.json",
+    "before_sha256": "eb82329ce2d9a556236bc3d23ef0d9f00d5bf21c7f3f3eaec8e91d1569984e36",
+    "after_sha256": "407a5354ec1e911b18d2dff59431e8efbfb1a7e995ce2cff36ef1e960fc11b54",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_state_and_queue_fragments": true,
+    "read_only_raw_return_instrumentation": true,
+    "native_output_adapters": false,
+    "actual_transition_hooks_Open_action_resources_transport_hardware": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 Open状态机与待处理参数](<work/sony-firmware-20261024/stage27-encoder-state-machine/README.md>)：12例核对数值状态、忙碌排队和动作选择；待处理复制保留源参数指针，完整动作/硬件接受与恢复安全点仍未验证。"
+}

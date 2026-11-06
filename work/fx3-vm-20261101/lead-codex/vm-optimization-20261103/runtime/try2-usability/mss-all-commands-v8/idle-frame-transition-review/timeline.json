@@ -1,0 +1,441 @@
+{
+  "48a838e5": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssallinternal-48a838e5",
+    "serial_sha256": "4452b928c28f9c6cfbdad5380678cbb84219722e1efbc783a161e8f84bd331e0",
+    "ring_json_sha256": "5f4f053571e2d01b018bab69e21ef13acd8defbcdb54dbec2d0d26f4498e14c5",
+    "sample_before": {
+      "sequence": 548,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 542,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "fnv64": "0x2846744330ced770",
+      "sha256": "b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051",
+      "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "host_monotonic": 305934.996073375,
+      "committed_slot": 3,
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f74001200",
+        "epoch": 1,
+        "identity": "0xffffffc11d869500",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7fa826fa48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402aee0",
+        "entry": "0x7f74001178",
+        "allocation": "0x74001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xc1ee855207a1908d",
+        "bits_cpu_VA": "0x7f180a2100",
+        "map_begin": "0x7f180a2000",
+        "map_end": "0x7f18139000",
+        "map_offset": "0x43ae96000"
+      }
+    },
+    "sample_after": {
+      "sequence": 551,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 549,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "fnv64": "0x19abb616faf34124",
+      "sha256": "139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086",
+      "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "host_monotonic": 305935.409177958,
+      "committed_slot": 6,
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "native_identity": {
+        "FB": "0x7f74001160",
+        "bitmap": "0x7f6402b110",
+        "entry": "0x7f74001198",
+        "allocation": "0x74001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x39d30920cbbad82c",
+        "bits_cpu_VA": "0x7f1800b100",
+        "map_begin": "0x7f1800b000",
+        "map_end": "0x7f180a2000",
+        "map_offset": "0x43feb5000"
+      }
+    },
+    "same_host_monotonic_delta_s": 0.41310458298539743,
+    "source_events": {
+      "542": [
+        {
+          "line_0_based": 96906,
+          "marker": "FX3_GPE_SCOPE",
+          "text": "FX3_GPE_SCOPE seq=326 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x2 source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=0 native_count_after=0 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=none"
+        },
+        {
+          "line_0_based": 96908,
+          "marker": "FX3_GPE_NATIVE_TARGET",
+          "text": "FX3_GPE_NATIVE_TARGET seq=326 destination_origin=native_open_type403_v1 object=0x7f74001200 identity=0xffffffc11d869500 vptr=0x7fa826fa48 type=0x403 uhdl=0x401 epoch=1 phys=0x43ae96000 bytes=0x140000 original_state10=1 original_fields_rechecked=1 per_row_parent_bounds=1 lifecycle_guard=1 source_alias_same_parent=0 screen_or_doublebuffer_role_unproven=1 bitmap_subblock_compaction_queuedABA_uncovered=1"
+        },
+        {
+          "line_0_based": 96910,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=FillRect seq=326 async=1 fmt=0 w=96 h=26 dst_phys=0x43ae96100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none[ 3273.704062] UDIF:"
+        },
+        {
+          "line_0_based": 96915,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f70fff720 ns=104338479008 seq=326 op=0 completion_source=0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 96917,
+          "marker": "FX3_GPE104_COMPLETE_RETURN",
+          "text": "FX3_GPE104_COMPLETE_RETURN tid=278 tpidr=0x7f70fff720 event=540 ns=104341260000 seq=327 completion_source=0x808261c0 result=1 errno=0 real_function_returned=1 unchanged=1"
+        },
+        {
+          "line_0_based": 96921,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=Flush seq=327 async=0 fmt=0 w=0 h=0 dst_phys=0 src_phys=0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=0 const_alpha=0 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        {
+          "line_0_based": 96930,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f70fff720 ns=104359850000 seq=327 op=4 completion_source=0x808261c0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 96948,
+          "marker": "FX3_OSD_HEADLESS_VALIDATE",
+          "text": "FX3_OSD_HEADLESS_VALIDATE bitmap_format=1 gpe_format=0 fb_format=1 width=640 height=480 row_pixels=640 span=614400 bitmap_bytes=614400 physical=0x43ae96100 token=0x401 expected_token=0x401 wire_format_bool=0 active_registered_frame=1 size_result=0 result=0"
+        },
+        {
+          "line_0_based": 96950,
+          "marker": "FX3_OSD_HEADLESS_COPY",
+          "text": "FX3_OSD_HEADLESS_COPY bits=0x7f180a2100 map_begin=0x7f180a2000 map_end=0x7f18139000 map_offset=0x43ae96000 physical=0x43ae96100 span=614400 native_read_lease=1 shared_raster_guard=1 copied_equal=1"
+        },
+        {
+          "line_0_based": 96956,
+          "marker": "FX3_OSD_HEADLESS_LEASE",
+          "text": "FX3_OSD_HEADLESS_LEASE fb=0x7f74001160 bitmap=0x7f6402aee0 sem88=0x288604d sem78=0x288604c read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1"
+        },
+        {
+          "line_0_based": 96958,
+          "marker": "FX3_OSD102_COMMIT",
+          "text": "FX3_OSD102_COMMIT frame=542 op=0x1003 pixel_source_seq=542 copied_GPE_last=327 FB=0x7f74001160 bitmap=0x7f6402aee0 entry=0x7f74001178 allocation=0x74001200 token=0x401 physical=0x43ae96100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000104000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+        }
+      ],
+      "549": [
+        {
+          "line_0_based": 97755,
+          "marker": "FX3_GPE_SCOPE",
+          "text": "FX3_GPE_SCOPE seq=328 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x2 source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=0 native_count_after=0 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=none"
+        },
+        {
+          "line_0_based": 97758,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=FillRect seq=328 async=1 fmt=0 w=96 h=26 dst_phys=0x43feb5100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        {
+          "line_0_based": 97760,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f70fff720 ns=104988218000 seq=328 op=0 completion_source=0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 97761,
+          "marker": "FX3_GPE_SCOPE",
+          "text": "FX3_GPE_SCOPE seq=329 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x2 source_object=0x7f6402e020 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=21 native_count_after=21 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=none"
+        },
+        {
+          "line_0_based": 97765,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=BitBlit seq=329 async=1 fmt=0 w=96 h=26 dst_phys=0x43feb5100 src_phys=0x41092c540 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        {
+          "line_0_based": 97768,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f70fff720 ns=105003145008 seq=329 op=1 completion_source=0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 97773,
+          "marker": "FX3_GPE104_COMPLETE_RETURN",
+          "text": "FX3_GPE104_COMPLETE_RETURN tid=278 tpidr=0x7f70fff720 event=543 ns=105006947008 seq=330 completion_source=0x808261c0 result=1 errno=0 real_function_returned=1 unchanged=1"
+        },
+        {
+          "line_0_based": 97776,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=Flush seq=330 async=0 fmt=0 w=0 h=0 dst_phys=0 src_phys=0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=0 const_alpha=0 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        {
+          "line_0_based": 97781,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f70fff720 ns=105013975008 seq=330 op=4 completion_source=0x808261c0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 97860,
+          "marker": "FX3_OSD_HEADLESS_VALIDATE",
+          "text": "FX3_OSD_HEADLESS_VALIDATE bitmap_format=1 gpe_format=0 fb_format=1 width=640 height=480 row_pixels=640 span=614400 bitmap_bytes=614400 physical=0x43feb5100 token=0x402 expected_token=0x402 wire_format_bool=0 active_registered_frame=1 size_result=0 result=0"
+        },
+        {
+          "line_0_based": 97870,
+          "marker": "FX3_OSD_HEADLESS_COPY",
+          "text": "FX3_OSD_HEADLESS_COPY bits=0x7f1800b100 map_begin=0x7f1800b000 map_end=0x7f180a2000 map_offset=0x43feb5000 physical=0x43feb5100 span=614400 native_read_lease=1 shared_raster_guard=1 copied_equal=1"
+        },
+        {
+          "line_0_based": 97872,
+          "marker": "FX3_OSD_HEADLESS_LEASE",
+          "text": "FX3_OSD_HEADLESS_LEASE fb=0x7f74001160 bitmap=0x7f6402b110 sem88=0x288604d sem78=0x288604c read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1"
+        },
+        {
+          "line_0_based": 97874,
+          "marker": "FX3_OSD102_COMMIT",
+          "text": "FX3_OSD102_COMMIT frame=549 op=0x1003 pixel_source_seq=549 copied_GPE_last=330 FB=0x7f74001160 bitmap=0x7f6402b110 entry=0x7f74001198 allocation=0x74001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+        }
+      ]
+    },
+    "clock_boundary": "GPE ns is guest monotonic. OSD commit has no guest timestamp; PNG sampling has host monotonic. Do not subtract across clocks."
+  },
+  "c017e6ed": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssallinternal-c017e6ed",
+    "serial_sha256": "4f7d1745806314521f43257eec20ac69581119181057ad1d191549afab3ceac0",
+    "ring_json_sha256": "82969a0d0ddc10952c009746f7688ceb5dbf41aa19dc679f4a81eeb5e02b80a6",
+    "sample_before": {
+      "sequence": 655,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 648,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "fnv64": "0x19abb616faf34124",
+      "sha256": "139e971ef22f77c633552c47a59cbc03c01a4639d5fda1858c635f0707513086",
+      "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "host_monotonic": 306640.378769625,
+      "committed_slot": 6,
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f54001200",
+        "epoch": 1,
+        "identity": "0xffffffc11e798a80",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f75c08a48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "native_identity": {
+        "FB": "0x7f54001160",
+        "bitmap": "0x7f4c02ae60",
+        "entry": "0x7f54001178",
+        "allocation": "0x54001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0xd5d619805cbbc1ba",
+        "bits_cpu_VA": "0x7ed7bbc100",
+        "map_begin": "0x7ed7bbc000",
+        "map_end": "0x7ed7c53000",
+        "map_offset": "0x43ae96000"
+      }
+    },
+    "sample_after": {
+      "sequence": 663,
+      "epoch": 1,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 656,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "fnv64": "0x2846744330ced770",
+      "sha256": "b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051",
+      "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "host_monotonic": 306640.897358666,
+      "committed_slot": 6,
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "native_identity": {
+        "FB": "0x7f54001160",
+        "bitmap": "0x7f4c02b090",
+        "entry": "0x7f54001198",
+        "allocation": "0x54001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x93ce68f45c741dcf",
+        "bits_cpu_VA": "0x7ed7b25100",
+        "map_begin": "0x7ed7b25000",
+        "map_end": "0x7ed7bbc000",
+        "map_offset": "0x43feb5000"
+      }
+    },
+    "same_host_monotonic_delta_s": 0.5185890410211869,
+    "source_events": {
+      "648": [
+        {
+          "line_0_based": 105818,
+          "marker": "FX3_GPE_SCOPE",
+          "text": "FX3_GPE_SCOPE seq=399 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x2 source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=0 native_count_after=0 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=none"
+        },
+        {
+          "line_0_based": 105823,
+          "marker": "FX3_GPE_NATIVE_TARGET",
+          "text": "FX3_GPE_NATIVE_TARGET seq=399 destination_origin=native_open_type403_v1 object=0x7f54001200 identity=0xffffffc11e798a80 vptr=0x7f75c08a48 type=0x403 uhdl=0x401 epoch=1 phys=0x43ae96000 bytes=0x140000 original_state10=1 original_fields_rechecked=1 per_row_parent_bounds=1 lifecycle_guard=1 source_alias_same_parent=0 screen_or_doublebuffer_role_unproven=1 bitmap_subblock_compaction_queuedABA_uncovered=1"
+        },
+        {
+          "line_0_based": 105824,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=FillRect seq=399 async=1 fmt=0 w=96 h=26 dst_phys=0x43ae96100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        {
+          "line_0_based": 105828,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f2ffff720 ns=115131432000 seq=399 op=0 completion_source=0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 105837,
+          "marker": "FX3_GPE_SCOPE",
+          "text": "FX3_GPE_SCOPE seq=400 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x2 source_object=0x7f4c02dfa0 source_uhdl=0x30303030 source_epoch=3 source_type=0 source_phys=0x410924000 source_bytes=0x340000 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=21 native_count_after=21 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=none"
+        },
+        {
+          "line_0_based": 105839,
+          "marker": "FX3_GPE_NATIVE_TARGET",
+          "text": "FX3_GPE_NATIVE_TARGET seq=400 destination_origin=native_open_type403_v1 object=0x7f54001200 identity=0xffffffc11e798a80 vptr=0x7f75c08a48 type=0x403 uhdl=0x401 epoch=1 phys=0x43ae96000 bytes=0x140000 original_state10=1 original_fields_rechecked=1 per_row_parent_bounds=1 lifecycle_guard=1 source_alias_same_parent=0 screen_or_doublebuffer_role_unproven=1 bitmap_subblock_compaction_queuedABA_uncovered=1"
+        },
+        {
+          "line_0_based": 105841,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=BitBlit seq=400 async=1 fmt=0 w=96 h=26 dst_phys=0x43ae96100 src_phys=0x41092c540 flags=0x1000000000001 result=0 reason=0 read=1 approx_blend=1 formula=straight_over_v1 selector=1 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        {
+          "line_0_based": 105843,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f2ffff720 ns=115159302000 seq=400 op=1 completion_source=0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 105873,
+          "marker": "FX3_GPE104_COMPLETE_RETURN",
+          "text": "FX3_GPE104_COMPLETE_RETURN tid=278 tpidr=0x7f2ffff720 event=612 ns=115212916000 seq=401 completion_source=0x808261c0 result=1 errno=0 real_function_returned=1 unchanged=1"
+        },
+        {
+          "line_0_based": 105874,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=Flush seq=401 async=0 fmt=0 w=0 h=0 dst_phys=0 src_phys=0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=0 const_alpha=0 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        {
+          "line_0_based": 105875,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f2ffff720 ns=115215464992 seq=401 op=4 completion_source=0x808261c0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 105878,
+          "marker": "FX3_OSD_HEADLESS_VALIDATE",
+          "text": "FX3_OSD_HEADLESS_VALIDATE bitmap_format=1 gpe_format=0 fb_format=1 width=640 height=480 row_pixels=640 span=614400 bitmap_bytes=614400 physical=0x43ae96100 token=0x401 expected_token=0x401 wire_format_bool=0 active_registered_frame=1 size_result=0 result=0"
+        },
+        {
+          "line_0_based": 105881,
+          "marker": "FX3_OSD_HEADLESS_COPY",
+          "text": "FX3_OSD_HEADLESS_COPY bits=0x7ed7bbc100 map_begin=0x7ed7bbc000 map_end=0x7ed7c53000 map_offset=0x43ae96000 physical=0x43ae96100 span=614400 native_read_lease=1 shared_raster_guard=1 copied_equal=1"
+        },
+        {
+          "line_0_based": 105893,
+          "marker": "FX3_OSD_HEADLESS_LEASE",
+          "text": "FX3_OSD_HEADLESS_LEASE fb=0x7f54001160 bitmap=0x7f4c02ae60 sem88=0x288604d sem78=0x288604c read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1"
+        },
+        {
+          "line_0_based": 105897,
+          "marker": "FX3_OSD102_COMMIT",
+          "text": "FX3_OSD102_COMMIT frame=648 op=0x1003 pixel_source_seq=648 copied_GPE_last=401 FB=0x7f54001160 bitmap=0x7f4c02ae60 entry=0x7f54001178 allocation=0x54001200 token=0x401 physical=0x43ae96100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000104000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+        }
+      ],
+      "656": [
+        {
+          "line_0_based": 106156,
+          "marker": "FX3_GPE_SCOPE",
+          "text": "FX3_GPE_SCOPE seq=402 screen_anchor_extent_id=0x81 screen_anchor_type=0x545 screen_serial=0x2 source_object=0 source_uhdl=0 source_epoch=0 source_type=0 source_phys=0 source_bytes=0 interval_lease=1 subblock_lifetime_unproven=1 queued_ABA_uncovered=1 compaction_uncovered=1 compaction_or_subblock_change_during_draw=0 native_count_before=0 native_count_after=0 approx_fmt2=0 original_fmt2_semantics_unproven=0 approx_stretch=none[ 36"
+        },
+        {
+          "line_0_based": 106159,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=FillRect seq=402 async=1 fmt=0 w=96 h=26 dst_phys=0x43feb5100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none:"
+        },
+        {
+          "line_0_based": 106162,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f2ffff720 ns=115756660000 seq=402 op=0 completion_source=0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 106165,
+          "marker": "FX3_GPE104_COMPLETE_RETURN",
+          "text": "FX3_GPE104_COMPLETE_RETURN tid=278 tpidr=0x7f2ffff720 event=615 ns=115761170992 seq=403 completion_source=0x808261c0 result=1 errno=0 real_function_returned=1 unchanged=1"
+        },
+        {
+          "line_0_based": 106166,
+          "marker": "FX3_GPE_CMD op=",
+          "text": "FX3_GPE_CMD op=Flush seq=403 async=0 fmt=0 w=0 h=0 dst_phys=0 src_phys=0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=0 const_alpha=0 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+        },
+        {
+          "line_0_based": 106167,
+          "marker": "FX3_GPE104_CMD_RETURN",
+          "text": "FX3_GPE104_CMD_RETURN tid=278 tpidr=0x7f2ffff720 ns=115763448000 seq=403 op=4 completion_source=0x808261c0 result=0 errno=0 call_path=adapter_return_to_original_Main unchanged=1"
+        },
+        {
+          "line_0_based": 106190,
+          "marker": "FX3_OSD_HEADLESS_VALIDATE",
+          "text": "FX3_OSD_HEADLESS_VALIDATE bitmap_format=1 gpe_format=0 fb_format=1 width=640 height=480 row_pixels=640 span=614400 bitmap_bytes=614400 physical=0x43feb5100 token=0x402 expected_token=0x402 wire_format_bool=0 active_registered_frame=1 size_result=0 result=0"
+        },
+        {
+          "line_0_based": 106192,
+          "marker": "FX3_OSD_HEADLESS_COPY",
+          "text": "FX3_OSD_HEADLESS_COPY bits=0x7ed7b25100 map_begin=0x7ed7b25000 map_end=0x7ed7bbc000 map_offset=0x43feb5000 physical=0x43feb5100 span=614400 native_read_lease=1 shared_raster_guard=1 copied_equal=1"
+        },
+        {
+          "line_0_based": 106198,
+          "marker": "FX3_OSD_HEADLESS_LEASE",
+          "text": "FX3_OSD_HEADLESS_LEASE fb=0x7f54001160 bitmap=0x7f4c02b090 sem88=0x288604d sem78=0x288604c read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1"
+        },
+        {
+          "line_0_based": 106200,
+          "marker": "FX3_OSD102_COMMIT",
+          "text": "FX3_OSD102_COMMIT frame=656 op=0x1003 pixel_source_seq=656 copied_GPE_last=403 FB=0x7f54001160 bitmap=0x7f4c02b090 entry=0x7f54001198 allocation=0x54001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+        }
+      ]
+    },
+    "clock_boundary": "GPE ns is guest monotonic. OSD commit has no guest timestamp; PNG sampling has host monotonic. Do not subtract across clocks."
+  }
+}

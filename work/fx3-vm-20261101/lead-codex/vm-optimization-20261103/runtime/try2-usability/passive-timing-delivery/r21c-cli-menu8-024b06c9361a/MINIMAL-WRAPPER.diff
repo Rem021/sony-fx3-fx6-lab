@@ -1,0 +1,136 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/cleanup.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/cleanup.py
+@@ -1,6 +1,24 @@
+-"""Original End first; allow original final ACK, reap, then close owned browser."""
+-import socket
++"""Original End first; classify alarm explicitly, preserve HAR/close, await final exit."""
++import socket, math, re
+ from common import *
++
++def alarm_disposition(value,c):
++ if not isinstance(value,dict):return 'unknown_malformed'
++ if (value.get('version')!=1 or value.get('deadline_ms')!=20000 or
++     value.get('expectedURL')!=c['url'] or value.get('expectedLaunchId')!=c['launch_id'] or
++     type(value.get('sealed')) is not bool or type(value.get('documentTimeOrigin')) not in (int,float) or
++     not math.isfinite(value['documentTimeOrigin']) or not isinstance(value.get('events'),list) or 'current' not in value):return 'unknown_malformed'
++ current=value['current']
++ if current is None:
++  return 'valid_null_never_armed' if not any(isinstance(e,dict) and e.get('event') in ('armed','cancelled','expired') for e in value['events']) else 'unknown_malformed'
++ if not isinstance(current,dict):return 'unknown_malformed'
++ if (not isinstance(current.get('nonce'),str) or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',current['nonce']) or
++     any(type(current.get(k)) not in (int,float) or not math.isfinite(current[k]) for k in ('armed_ms','due_ms')) or
++     current['due_ms']-current['armed_ms']!=20000 or current.get('deadline_ms')!=20000):return 'unknown_malformed'
++ if current.get('state')=='armed':return 'valid_armed_do_not_cancel_or_dispose'
++ if current.get('state') in ('cancelled','expired'):return 'valid_nonarmed'
++ return 'unknown_malformed'
++
+ def cleanup():
+  c=identity();errors=[];event('cleanup_entry_End_first')
+  try:
+@@ -10,21 +28,40 @@
+  while time.monotonic()<limit:
+   if (Path(c['run'])/'trial-web-final-receipt.json').exists():break
+   time.sleep(.2)
++ else:errors.append('final browser ACK receipt absent within cleanup wait')
+  try:
+   ev('ended-state','({lastStatus,finished,ending,alarm:window.__fx3InteractionDeadlineV1?.status?.()})')
+   browser('ended-page',['screenshot',str(HERE/'ended-page.png')],timeout=10)
+-  alarm=dl('deadline-after-End','status');write('deadline-after-End.json',alarm)
+-  if alarm.get('current',{}).get('state')!='armed':write('deadline-dispose.json',dl('deadline-dispose','dispose'))
+-  else:write('dispose-not-invoked.json',{'reason':'armed alarm cannot be force cancelled; owned document will close'})
+- except Exception as e:errors.append('ended document: '+repr(e))
++ except Exception as e:errors.append('ended document capture: '+repr(e))
++ disposition='unknown_status_fetch_failed'
++ try:
++  alarm=dl('deadline-after-End','status');write('deadline-after-End.json',alarm);disposition=alarm_disposition(alarm,c)
++  if disposition in ('valid_null_never_armed','valid_nonarmed'):
++   write('deadline-dispose.json',dl('deadline-dispose','dispose'))
++  else:write('dispose-not-invoked.json',{'reason':disposition,'alarm_cleanup':'no cancel/no dispose; owned document closes below'})
++ except Exception as e:errors.append('alarm status/dispose: '+repr(e))
++ write('ALARM-DISPOSITION.json',{'classification':disposition,'forced_cancel':False})
+  try:browser('HAR-stop',['network','har','stop',str(HERE/'traffic.har')],timeout=15)
+  except Exception as e:errors.append('HAR: '+repr(e))
+- try:
+-  browser('browser-before-close',['session','info','--json']);browser('browser-close',['close']);browser('browser-after-close',['session','info','--json'])
++ try:browser('browser-before-close',['session','info','--json'])
++ except Exception as e:errors.append('browser before-close info: '+repr(e))
++ try:browser('browser-close',['close'])
+  except Exception as e:errors.append('browser close: '+repr(e))
++ try:browser('browser-after-close',['session','info','--json'])
++ except Exception as e:errors.append('browser after-close info: '+repr(e))
+  def alive(pid):
+   try:os.kill(pid,0);return True
+   except ProcessLookupError:return False
+- port=int(c['url'].split(':')[-1].strip('/'));s=socket.socket();s.settimeout(.3);closed=s.connect_ex(('127.0.0.1',port))!=0;s.close()
+- value={'errors':errors,'runner_pid':c['runner_pid'],'runner_alive':alive(c['runner_pid']),'port_closed':closed,**stamp()};write('CLEANUP.json',value);print(json.dumps(value));return value
++ port=int(c['url'].split(':')[-1].strip('/'))
++ def portclosed():
++  s=socket.socket();s.settimeout(.3)
++  try:return s.connect_ex(('127.0.0.1',port))!=0
++  finally:s.close()
++ limit=time.monotonic()+5
++ while True:
++  running=alive(c['runner_pid']);closed=portclosed()
++  if (not running and closed) or time.monotonic()>=limit:break
++  time.sleep(.05)
++ if running or not closed:errors.append('final runner PID/port not closed within bounded wait')
++ value={'errors':errors,'alarm_disposition':disposition,'runner_pid':c['runner_pid'],'runner_alive':running,'port_closed':closed,'bounded_final_recheck_seconds':5,**stamp()};write('CLEANUP.json',value);print(json.dumps(value));return value
+ if __name__=='__main__':cleanup()
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/operate.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/operate.py
+@@ -1,4 +1,5 @@
+ """One explicit tool call per click/capture, confirm, or recovery cancel; no retry."""
++import sys
+ from common import *
+ from capture_validation import validate_capture
+ from later_capture import current_guard
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/later_capture.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/later_capture.py
+@@ -1,4 +1,5 @@
+ """Read-only derived capture for steps 2-8, current r21 attempt binding."""
++import sys
+ from common import *
+ def current_guard(c):
+  return r'''(async()=>{const c=CONFIG,s=[...document.scripts];const d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');const a=fx3KeyAttemptOutcome();if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||a?.attempt_id!==c.attempt_id||a.alarm_nonce!==c.nonce||a.expected_step!==c.step||a.outcome!=='accepted')throw Error('r21_current_attempt_identity');return a;})()'''.replace('CONFIG',json.dumps(c))
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/launch_prepare.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/launch_prepare.py
+@@ -44,6 +44,7 @@
+  v=ev('PAGE-before-Start',r'''(async()=>{const s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');return {canonical_sha:await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;')),lastStatus,viewport:[innerWidth,innerHeight]};})()''')
+  assert v['canonical_sha']=='f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab' and v['lastStatus']['phase']=='awaiting_launch' and v['viewport']==[1280,1200]
+  tabs=json.loads(browser('owned-tab-prestart',['tab','--json']))['data']['tabs'];assert len(tabs)==1 and tabs[0]['url']==url
++ assert not (HERE/'ledger.json').exists();write('ledger.json',{'attempts':[],'recoveries':[]})
+  browser('prestart-screenshot',['screenshot',str(HERE/'prestart.png')]);write('PRESTART-READY.json',{'passed':True,'actual_cli_steps':[{'step':x['step'],'click_command':['python3','-B',str(HERE/'operate.py'),'click',str(x['step']),x['target']],'confirm_command':['python3','-B',str(HERE/'operate.py'),'confirm','亲看并确认 '+x['target']]} for x in CFG['steps']],'bindings':'one exclusive step-N-attempt-N dir / new nonce generated before arm; helper CLI arguments fully wired from runtime.json','cancel_command':['python3','-B',str(HERE/'operate.py'),'recovery_cancel','仅取消同nonce未入队alarm'],'end_command':['python3','-B',str(HERE/'cleanup.py')],'tab':tabs[0],**stamp()})
+  write('LOCAL-SOURCE-FREEZE.json',{p.name:sha(p) for p in HERE.iterdir() if p.suffix in ('.py','.js')});print(json.dumps({'status':'web_prepared_guest_not_started','run':str(run),'url':url,'session':CFG['session']}))
+ if __name__=='__main__':main()
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/preflight.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21c-cli-menu8-024b06c9361a/preflight.py
+@@ -17,9 +17,13 @@
+ 
+ def main():
+  verify('INPUTS-BEFORE.json')
+- writes=[]
++ writes=[];out=HERE/'authorized-outputs-before';out.mkdir()
+  for f in ('preflight-aaf006610b0d2b6e.json','STATE-v24.json.tmp','STATE-v25-r3.json'):
+-  p=FROZEN/f;assert not p.exists() and not p.is_symlink();assert not any(f==line.split(maxsplit=1)[1] for line in (FROZEN/'SHA256SUMS').read_text().splitlines());writes.append({'path':str(p),'exists':False,'symlink':False,'in_frozen_sums':False})
++  p=FROZEN/f;assert not p.is_symlink();assert not any(f==line.split(maxsplit=1)[1] for line in (FROZEN/'SHA256SUMS').read_text().splitlines());row={'path':str(p),'exists':p.exists(),'symlink':False,'in_frozen_sums':False}
++  if p.exists():
++   import shutil
++   shutil.copyfile(p,out/f);row.update(sha256=sha(p),bytes=p.stat().st_size,copied_to=str(out/f))
++  writes.append(row)
+  write('OUTPUT-BOUNDARY-BEFORE.json',{'coordinator_message':'msg_82796ff62714','allowed_outputs':writes})
+  for p in HERE.glob('*.py'):ast.parse(p.read_text())
+  from later_capture import current_guard
+@@ -29,10 +33,8 @@
+   p=subprocess.run(['node','--check'],input=(HERE/f).read_text()+'({})',text=True,capture_output=True);assert p.returncode==0,p.stderr
+  for f in ('operator_click.py','recovery_tools.py','explicit_confirm_cli.py','bounded_capture_cli.py','deadline_cli.py'):
+   run('parser-'+f,['python3','-B',str(OPS/f),'--help'])
+- # Exercise actual entry guard with no browser/arm permitted, same pre-timer shape as r21b.
+- code='''import sys,json\nfrom pathlib import Path\nsys.path.insert(0,sys.argv[1]);import operate\ntrace=[]\ndef injected(action):trace.append('actual action');raise RuntimeError('intentional host-only guard test')\ndef cleanup():trace.append('cleanup callback');return {'test_double_only':True}\ndef write(n,v):trace.append(n)\noperate._run_action=injected;operate.failcleanup=cleanup;operate.write=write;operate.event=lambda *a,**k:None\ntry:operate.run_action('host-only')\nfinally:Path(sys.argv[2]).write_text(json.dumps(trace))\n'''
+- p=subprocess.run(['python3','-B','-c',code,str(HERE),str(HERE/'HOST-GUARD-TRACE.json')],env=ENV,capture_output=True,text=True);assert p.returncode!=0 and read('HOST-GUARD-TRACE.json')==['actual action','FAILURE.json','cleanup callback','FAILURE-CLEANUP-DISPATCH.json']
+- write('HOST-GUARD-PROCESS.json',{'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr,'expected_nonzero':True,'no_browser_arm_guest':True})
++ run('actual-cli-host-tests',['python3','-B',str(HERE/'host_cli_checks.py')],timeout=30)
++ assert read('HOST-CLI-RESULT.json')['passed']
+  write('LOCAL-SOURCE-FREEZE.json',{p.name:sha(p) for p in HERE.iterdir() if p.suffix in ('.py','.js')})
+- write('PREFLIGHT-RESULT.json',{'passed':True,'scope':'host parameters, source identities and exception dispatch only; no timed fixture','browser_calls':0,'guest_starts':0,**stamp()});print(json.dumps({'passed':True}))
++ write('PREFLIGHT-RESULT.json',{'passed':True,'scope':'host parameters, source identities, actual __main__ CLI dispatch, cleanup branches; no timed fixture','browser_calls':0,'guest_starts':0,**stamp()});print(json.dumps({'passed':True}))
+ if __name__=='__main__':main()

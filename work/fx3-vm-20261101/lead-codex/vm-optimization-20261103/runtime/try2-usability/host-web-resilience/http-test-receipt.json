@@ -1,0 +1,13 @@
+{
+  "status": "PASS_LOOPBACK_HTTP_FAKE_GUEST",
+  "checks": [
+    "actual server serves bounded-request candidate and existing CSP",
+    "frame bytes and identity headers agree",
+    "unauthenticated request never enters input queue",
+    "one accepted key, concurrent duplicate blocked, no guest write",
+    "stop acknowledgement is distinct from final completion status"
+  ],
+  "module_sha256": "a32439c86507289f46442b474ced37434ea3da3d912be371e4a9010477ef6d04",
+  "server_thread_reaped": true,
+  "scope": "Real loopback HTTP with fixture state; no browser rendering, QEMU, firmware input or VM cleanup proof"
+}

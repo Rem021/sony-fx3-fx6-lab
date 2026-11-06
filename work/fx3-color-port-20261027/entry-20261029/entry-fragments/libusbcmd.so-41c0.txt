@@ -1,0 +1,32 @@
+000041c0 stp        x29, x30, [sp, #-0x30]!
+000041c4 mov        x29, sp
+000041c8 ldr        x0, [x1]
+000041cc str        x19, [sp, #0x10]
+000041d0 str        wzr, [x29, #0x2c]
+000041d4 cbz        x0, #0x41f0
+000041d8 mov        w0, #-7
+000041dc str        w0, [x29, #0x2c]
+000041e0 ldr        w0, [x29, #0x2c]
+000041e4 ldr        x19, [sp, #0x10]
+000041e8 ldp        x29, x30, [sp], #0x30
+000041ec ret        
+000041f0 mov        x19, x1
+000041f4 add        x6, x29, #0x2c
+000041f8 mov        w1, w2
+000041fc mov        x3, #0
+00004200 mov        x2, #0
+00004204 mov        w0, #0x7a
+00004208 ldp        w4, w5, [x19, #0x14]
+0000420c bl         #0x29e0 ; usbcmd_Create
+00004210 str        x0, [x19]
+00004214 cbnz       x0, #0x4220
+00004218 mov        w0, #-3
+0000421c b          #0x41dc
+00004220 bl         #0x2950 ; usbcmd_t::AllocDataParam
+00004224 str        x0, [x19, #8]
+00004228 cbnz       x0, #0x41e0
+0000422c ldr        x0, [x19]
+00004230 bl         #0x2c80 ; usbcmd_Destroy
+00004234 str        xzr, [x19]
+00004238 mov        w0, #-6
+0000423c b          #0x41dc

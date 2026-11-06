@@ -1,0 +1,47 @@
+00004c80 03300091 add      x3, x0, #0xc
+00004c84 00304039 ldrb     w0, [x0, #0xc]
+00004c88 1f080171 cmp      w0, #0x42
+00004c8c 41050054 b.ne     #0x4d34
+00004c90 84050058 ldr      x4, #0x4d40
+00004c94 20008052 mov      w0, #1
+00004c98 61098052 mov      w1, #0x4b
+00004c9c 220080d2 mov      x2, #1
+00004ca0 62686238 ldrb     w2, [x3, x2]
+00004ca4 00040011 add      w0, w0, #1
+00004ca8 5f00016b cmp      w2, w1
+00004cac 027c4093 sxtw     x2, w0
+00004cb0 c1000054 b.ne     #0x4cc8
+00004cb4 81c86038 ldrb     w1, [x4, w0, sxtw]
+00004cb8 41ffff35 cbnz     w1, #0x4ca0
+00004cbc 80008052 mov      w0, #4
+00004cc0 c0035fd6 ret      
+00004cc4 1f2003d5 nop      
+00004cc8 04040058 ldr      x4, #0x4d48
+00004ccc 20008052 mov      w0, #1
+00004cd0 61098052 mov      w1, #0x4b
+00004cd4 220080d2 mov      x2, #1
+00004cd8 62686238 ldrb     w2, [x3, x2]
+00004cdc 00040011 add      w0, w0, #1
+00004ce0 5f00016b cmp      w2, w1
+00004ce4 027c4093 sxtw     x2, w0
+00004ce8 c1000054 b.ne     #0x4d00
+00004cec 81c86038 ldrb     w1, [x4, w0, sxtw]
+00004cf0 41ffff35 cbnz     w1, #0x4cd8
+00004cf4 60008052 mov      w0, #3
+00004cf8 c0035fd6 ret      
+00004cfc 1f2003d5 nop      
+00004d00 84020058 ldr      x4, #0x4d50
+00004d04 20008052 mov      w0, #1
+00004d08 61098052 mov      w1, #0x4b
+00004d0c 220080d2 mov      x2, #1
+00004d10 62686238 ldrb     w2, [x3, x2]
+00004d14 00040011 add      w0, w0, #1
+00004d18 5f00016b cmp      w2, w1
+00004d1c 027c4093 sxtw     x2, w0
+00004d20 a1000054 b.ne     #0x4d34
+00004d24 81c86038 ldrb     w1, [x4, w0, sxtw]
+00004d28 41ffff35 cbnz     w1, #0x4d10
+00004d2c 40008052 mov      w0, #2
+00004d30 c0035fd6 ret      
+00004d34 20008052 mov      w0, #1
+00004d38 c0035fd6 ret      

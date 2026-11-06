@@ -1,0 +1,45 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b6844 <_ZN3mpr4InitERKNS_11initInParamE>:
+   b6844: a9b27bfd     	stp	x29, x30, [sp, #-0xe0]!
+   b6848: 52803f01     	mov	w1, #0x1f8              // =504
+   b684c: 910003fd     	mov	x29, sp
+   b6850: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b6854: aa0003f3     	mov	x19, x0
+   b6858: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   b685c: a90363f7     	stp	x23, x24, [sp, #0x30]
+   b6860: f90023f9     	str	x25, [sp, #0x40]
+   b6864: 97fffba2     	bl	0xb56ec <_ZN3mpr11PowerOnMainEPv+0xf4>
+   b6868: aa1303e0     	mov	x0, x19
+   b686c: 97ff2f75     	bl	0x82640 <_ZNK3mpr11initInParam8DbgPrintEv@plt>
+   b6870: b941d260     	ldr	w0, [x19, #0x1d0]
+   b6874: 7100101f     	cmp	w0, #0x4
+   b6878: 54000349     	b.ls	0xb68e0 <_ZN3mpr4InitERKNS_11initInParamE+0x9c>
+   b687c: 52800061     	mov	w1, #0x3                // =3
+   b6880: b90083a0     	str	w0, [x29, #0x80]
+   b6884: 9101e3a0     	add	x0, x29, #0x78
+   b6888: 3901f7bf     	strb	wzr, [x29, #0x7d]
+   b688c: 3901f3a1     	strb	w1, [x29, #0x7c]
+   b6890: 52843401     	mov	w1, #0x21a0             // =8608
+   b6894: 3901fbbf     	strb	wzr, [x29, #0x7e]
+   b6898: 52800073     	mov	w19, #0x3               // =3
+   b689c: 7900f3a1     	strh	w1, [x29, #0x78]
+   b68a0: 52800181     	mov	w1, #0xc                // =12
+   b68a4: 3901ffbf     	strb	wzr, [x29, #0x7f]
+   b68a8: 7900f7bf     	strh	wzr, [x29, #0x7a]
+   b68ac: 97fffb90     	bl	0xb56ec <_ZN3mpr11PowerOnMainEPv+0xf4>
+   b68b0: 52800020     	mov	w0, #0x1                // =1
+   b68b4: 52800101     	mov	w1, #0x8                // =8
+   b68b8: 290f7fa0     	stp	w0, wzr, [x29, #0x78]
+   b68bc: 9101e3a0     	add	x0, x29, #0x78
+   b68c0: 97fffb8b     	bl	0xb56ec <_ZN3mpr11PowerOnMainEPv+0xf4>
+   b68c4: f94023f9     	ldr	x25, [sp, #0x40]
+   b68c8: 2a1303e0     	mov	w0, w19
+   b68cc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   b68d0: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   b68d4: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   b68d8: a8ce7bfd     	ldp	x29, x30, [sp], #0xe0
+   b68dc: d65f03c0     	ret

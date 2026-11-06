@@ -1,0 +1,383 @@
+{
+  "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/fixture_contract.py": {
+    "sha256": "305254cd3f1ad3fbe747f5a8b068a6a2785a2f9678328339ce6ce8ff34c5e300",
+    "lines": [
+      {
+        "line": 1,
+        "text": "\"\"\"Controlled historical PNG completion; mirrors original runner final-review gate.\"\"\""
+      },
+      {
+        "line": 2,
+        "text": "def complete_review(state):"
+      },
+      {
+        "line": 3,
+        "text": " state.require_visual_review(1,'visual_changed',True)"
+      },
+      {
+        "line": 4,
+        "text": " snapshot=state.snapshot()"
+      },
+      {
+        "line": 5,
+        "text": " if not (snapshot['review_required'] and snapshot['review_step']==1 and snapshot['visual_state']=='visual_changed' and snapshot['input_received'] and snapshot['visual_change_observed'] and not snapshot['busy']):"
+      },
+      {
+        "line": 6,
+        "text": "  raise AssertionError('invalid complete fixture review state')"
+      },
+      {
+        "line": 7,
+        "text": " return snapshot"
+      }
+    ]
+  },
+  "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/fixture_server.py": {
+    "sha256": "a97593525c8fe89e09545bd697e20f4d527973782be2b917a7a0c38a2d219e2e",
+    "lines": [
+      {
+        "line": 27,
+        "text": "  log('submit_enter_under_original_lock',ordinal=calls,request=body,before=before)"
+      },
+      {
+        "line": 28,
+        "text": "  if calls==1:publish('trial-step-01-key-1ab.png',212)"
+      },
+      {
+        "line": 29,
+        "text": "  code,reply=original_submit(body)"
+      },
+      {
+        "line": 30,
+        "text": "  log('original_submit_return_under_same_lock',ordinal=calls,HTTP_status=code,response=reply,pending_count=len(state.pending),steps=state.steps,rejections=state.key_rejection_snapshot())"
+      },
+      {
+        "line": 31,
+        "text": "  if code==202:"
+      },
+      {
+        "line": 32,
+        "text": "   assert calls==2 and len(state.pending)==1 and state.steps==0"
+      },
+      {
+        "line": 33,
+        "text": "   item=state.take();assert item['key']==427"
+      },
+      {
+        "line": 34,
+        "text": "   log('fixture_dequeued_one_accepted_key',item=item,actual_guest_inputs=0)"
+      },
+      {
+        "line": 35,
+        "text": "   state.update(steps=1)"
+      },
+      {
+        "line": 36,
+        "text": "   publish('trial-final.png',213)"
+      },
+      {
+        "line": 37,
+        "text": "   complete_review(state)"
+      },
+      {
+        "line": 38,
+        "text": "   state.update(message='OFFLINE FIXTURE: historical complete Setup > Area/Date PNG; no guest executes')"
+      },
+      {
+        "line": 39,
+        "text": "  return code,reply"
+      },
+      {
+        "line": 40,
+        "text": "state.submit=controlled_submit"
+      },
+      {
+        "line": 41,
+        "text": "server,server_thread=m.start_server(state,0)"
+      },
+      {
+        "line": 42,
+        "text": "handler=server.RequestHandlerClass;original_post=handler.do_POST;original_reply=handler.reply"
+      },
+      {
+        "line": 43,
+        "text": "# Capture exact HTTP request body through the real handler; exclude token header."
+      },
+      {
+        "line": 44,
+        "text": "def record_post(h):"
+      },
+      {
+        "line": 45,
+        "text": " n=int(h.headers.get('Content-Length','0'));raw=h.rfile.read(n);previous=h.rfile"
+      },
+      {
+        "line": 46,
+        "text": " h._request_log_id=str(uuid.uuid4());h.rfile=io.BytesIO(raw)"
+      }
+    ]
+  },
+  "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/operate.py": {
+    "sha256": "58ef67b8daf31a9025f280bd3b55832349273db9fe04ee4c766883987fca0238",
+    "lines": [
+      {
+        "line": 49,
+        "text": " return {'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr,**stamp()}"
+      },
+      {
+        "line": 50,
+        "text": "def run_action(action):"
+      },
+      {
+        "line": 51,
+        "text": " # Actual imported AND CLI entry uses this guard, not just __main__."
+      },
+      {
+        "line": 52,
+        "text": " try:return _run_action(action)"
+      },
+      {
+        "line": 53,
+        "text": " except BaseException as e:"
+      },
+      {
+        "line": 54,
+        "text": "  write('FAILURE.json',{'action':action,'error':repr(e),**stamp()})"
+      },
+      {
+        "line": 55,
+        "text": "  try:write('FAILURE-CLEANUP-DISPATCH.json',_cleanup_on_failure())"
+      },
+      {
+        "line": 56,
+        "text": "  except BaseException as ce:write('FAILURE-CLEANUP-ERROR.json',{'error':repr(ce),**stamp()})"
+      },
+      {
+        "line": 57,
+        "text": "  raise"
+      },
+      {
+        "line": 58,
+        "text": "if __name__=='__main__':run_action(sys.argv[1])"
+      }
+    ]
+  },
+  "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/run_trial_v25_diag_r3.py": {
+    "sha256": "c429f375d57a288370fefda0aedb62270fce96220d5b885d12f5ff27f69e789b",
+    "lines": [
+      {
+        "line": 600,
+        "text": "                                         ring_reader.current_record, time.monotonic())"
+      },
+      {
+        "line": 601,
+        "text": "                if current_command is not None and visual.state == 'unknown_ack':"
+      },
+      {
+        "line": 602,
+        "text": "                    early_stop_reason = native_input_deadline_error(current_command, host_step, up_seen, native_down_seen,"
+      },
+      {
+        "line": 603,
+        "text": "                                                                    both_native_events, time.monotonic()) or visual.fault"
+      },
+      {
+        "line": 604,
+        "text": "                    trial.update(visual_state='unknown_ack')"
+      },
+      {
+        "line": 605,
+        "text": "                    trial.fail(early_stop_reason)"
+      },
+      {
+        "line": 606,
+        "text": "                    break"
+      },
+      {
+        "line": 607,
+        "text": "                if current_command is not None and visual.state == 'visual_pending':"
+      },
+      {
+        "line": 608,
+        "text": "                    trial.update(visual_state='visual_pending', input_received=True)"
+      },
+      {
+        "line": 609,
+        "text": "                if current_command is not None and visual.state in ('visual_changed', 'no_change_observed'):"
+      },
+      {
+        "line": 610,
+        "text": "                    captured = ring_reader.evidence('step-%02d-key-%03x' % (host_step, current_command['key']), host_step, current_command['key'])"
+      },
+      {
+        "line": 611,
+        "text": "                    if captured.get('error'):"
+      },
+      {
+        "line": 612,
+        "text": "                        raise RuntimeError('按键后未取得已校验提交帧')"
+      },
+      {
+        "line": 613,
+        "text": "                    step_captures.append(captured)"
+      },
+      {
+        "line": 614,
+        "text": "                    (run/'trial-step-readbacks.json').write_text(json.dumps(step_captures, ensure_ascii=False, indent=2)+'\\n')"
+      },
+      {
+        "line": 615,
+        "text": "                    visual_records.append({'step': host_step, 'state': visual.state, 'input_received': True,"
+      },
+      {
+        "line": 616,
+        "text": "                                           'visual_change_observed': visual.visual_change_observed,"
+      },
+      {
+        "line": 617,
+        "text": "                                           'before_sequence': current_command['before_command_sequence'],"
+      },
+      {
+        "line": 618,
+        "text": "                                           'before_png_sha256': current_command['before_command_png_sha256'],"
+      },
+      {
+        "line": 619,
+        "text": "                                           'observed_sequence': captured['sequence'],"
+      },
+      {
+        "line": 620,
+        "text": "                                           'observed_png_sha256': captured['PNG_sha256'],"
+      },
+      {
+        "line": 621,
+        "text": "                                           'ack_host_monotonic': up_seen[host_step][0],"
+      },
+      {
+        "line": 622,
+        "text": "                                           'decision_host_monotonic': time.monotonic(),"
+      },
+      {
+        "line": 623,
+        "text": "                                           'downstream_handler_completed': 'unknown',"
+      },
+      {
+        "line": 624,
+        "text": "                                           'pixel_attribution': ('unknown_due_to_prior_no_change' if ambiguous_current_step == host_step"
+      },
+      {
+        "line": 625,
+        "text": "                                                                 else 'observed_after_this_input_not_proven_caused')})"
+      },
+      {
+        "line": 626,
+        "text": "                    (run/'trial-visual-outcomes.json').write_text(json.dumps(visual_records, ensure_ascii=False, indent=2)+'\\n')"
+      },
+      {
+        "line": 627,
+        "text": "                    with trial.lock:"
+      },
+      {
+        "line": 628,
+        "text": "                        trial.events.append('%02d · %s · 原生队列已接收，帧 %s%s' % (host_step, current_command['label'], captured['sequence'], '' if visual.visual_change_observed else '（观察期内像素未变，处理完成未知）'))"
+      },
+      {
+        "line": 629,
+        "text": "                        trial.require_visual_review(host_step, visual.state, visual.visual_change_observed)"
+      },
+      {
+        "line": 630,
+        "text": "                    if visual.state == 'no_change_observed':"
+      },
+      {
+        "line": 631,
+        "text": "                        last_nochange_frame = dict(ring_reader.current_record)"
+      },
+      {
+        "line": 632,
+        "text": "                        last_nochange_key = current_command['key']"
+      },
+      {
+        "line": 633,
+        "text": "                    else:"
+      },
+      {
+        "line": 634,
+        "text": "                        last_nochange_frame = None"
+      }
+    ]
+  },
+  "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/bounded_capture.js": {
+    "sha256": "c73c755327fc3a035337bc37d1e326b61d19ef1437f9a9852616c59ca6d94900",
+    "lines": [
+      {
+        "line": 69,
+        "text": "      return {kind:'accepted_menu_waiting_for_status', diagnostics:diagnostics()};"
+      },
+      {
+        "line": 70,
+        "text": "    }"
+      },
+      {
+        "line": 71,
+        "text": "    if (!s.review_required) {"
+      },
+      {
+        "line": 72,
+        "text": "      if (!s.busy || s.review_step!==null)"
+      },
+      {
+        "line": 73,
+        "text": "        fail('step_one_without_expected_processing_or_review', diagnostics());"
+      },
+      {
+        "line": 74,
+        "text": "      if (s.visual_state==='input_pending' && s.input_received===false)"
+      },
+      {
+        "line": 75,
+        "text": "        return {kind:'step_one_input_pending', diagnostics:diagnostics()};"
+      },
+      {
+        "line": 76,
+        "text": "      if (s.visual_state==='visual_pending' && s.input_received===true)"
+      },
+      {
+        "line": 77,
+        "text": "        return {kind:'step_one_visual_pending_native_ack', diagnostics:diagnostics()};"
+      },
+      {
+        "line": 78,
+        "text": "      fail('step_one_unexpected_processing_state', diagnostics());"
+      },
+      {
+        "line": 79,
+        "text": "    }"
+      },
+      {
+        "line": 80,
+        "text": "    if (s.review_step!==1 || s.input_received!==true || s.busy)"
+      },
+      {
+        "line": 81,
+        "text": "      fail('step_one_review_identity_or_status_busy', diagnostics());"
+      },
+      {
+        "line": 82,
+        "text": "    if (s.visual_state!=='visual_changed' && s.visual_state!=='no_change_observed')"
+      },
+      {
+        "line": 83,
+        "text": "      fail('step_one_review_visual_state_unexpected', diagnostics());"
+      },
+      {
+        "line": 84,
+        "text": "    if (busy && awaitingStep===1)"
+      },
+      {
+        "line": 85,
+        "text": "      return {kind:'step_one_ack_handler_finishing', diagnostics:diagnostics()};"
+      }
+    ]
+  }
+}

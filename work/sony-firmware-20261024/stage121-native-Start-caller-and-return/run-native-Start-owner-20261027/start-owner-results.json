@@ -1,0 +1,973 @@
+{
+  "status": "PASS_NATIVE_START_CALLBACK_RECORD_POINTER_HANDOFF_NOT_REAL_INSTANCE_BINDING",
+  "created_utc": "2026-10-27T16:40:05.881826+00:00",
+  "source_sha256": "706851ee9fa200949d24286bcd8387d2dea1756d04b1230c69962a15deb64dbb",
+  "prior_Start_results_sha256": "bf2c5a9c54c5ea5f845fbdccdb5fbb00e30b179a15a690100a7351b824c323cf",
+  "cases": [
+    {
+      "seed": 165,
+      "declared_Codec_return": 0,
+      "outcome": "four_error_callback_pointers_prepared",
+      "callback_record_stride": 96,
+      "callback_record_count": 4,
+      "callback_symbol": "mpr::NotifyMovieRecError",
+      "callback_ELF_VA": "0xd714c",
+      "events": [
+        {
+          "label": "original ExecEncStart prologue before diagnostic, declared callback-record pointer",
+          "entry": "0xca6e4",
+          "reason": "boundary: before_original_MPR_diagnostic",
+          "stop_pc": "0xc8c70",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca6e4",
+            "0xca6e8",
+            "0xca6ec",
+            "0xca6f0",
+            "0xca6f4",
+            "0xca6f8",
+            "0xca6fc",
+            "0xca700",
+            "0xca704",
+            "0xca708",
+            "0xca70c",
+            "0xca710",
+            "0xca714",
+            "0xca718",
+            "0xca71c",
+            "0xca720",
+            "0xca724",
+            "0xca728",
+            "0xca72c",
+            "0xca730",
+            "0xca734",
+            "0xca738",
+            "0xc8c70"
+          ],
+          "stores": [
+            {
+              "pc": "0xca6ec",
+              "address": "0x1001fdf0",
+              "size": 8,
+              "value": 940200400
+            },
+            {
+              "pc": "0xca6ec",
+              "address": "0x1001fdf8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0xca6f4",
+              "address": "0x1001fe00",
+              "size": 8,
+              "value": 940200240
+            },
+            {
+              "pc": "0xca6f4",
+              "address": "0x1001fe08",
+              "size": 8,
+              "value": 940200256
+            },
+            {
+              "pc": "0xca704",
+              "address": "0x1001fe10",
+              "size": 8,
+              "value": 940200272
+            },
+            {
+              "pc": "0xca704",
+              "address": "0x1001fe18",
+              "size": 8,
+              "value": 940200288
+            },
+            {
+              "pc": "0xca70c",
+              "address": "0x1001ff02",
+              "size": 2,
+              "value": 608
+            },
+            {
+              "pc": "0xca714",
+              "address": "0x1001fe20",
+              "size": 8,
+              "value": 940200304
+            },
+            {
+              "pc": "0xca714",
+              "address": "0x1001fe28",
+              "size": 8,
+              "value": 940200320
+            },
+            {
+              "pc": "0xca71c",
+              "address": "0x1001ff05",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca724",
+              "address": "0x1001ff04",
+              "size": 1,
+              "value": 4
+            },
+            {
+              "pc": "0xca72c",
+              "address": "0x1001ff06",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca730",
+              "address": "0x1001ff07",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca734",
+              "address": "0x1001ff00",
+              "size": 2,
+              "value": 8464
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        },
+        {
+          "label": "independent declared Codec return; native caller chooses callback registration or error path",
+          "entry": "0xca7b0",
+          "reason": "boundary: before_original_callback_records_lock",
+          "stop_pc": "0x7dfa0",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca7b0",
+            "0xca7b4",
+            "0xca80c",
+            "0xca810",
+            "0xca814",
+            "0xca818",
+            "0xfc4c0",
+            "0xfc4c4",
+            "0xfc4c8",
+            "0xfc4cc",
+            "0xfc4d0",
+            "0xfc51c",
+            "0xfc520",
+            "0xfc524",
+            "0xfc528",
+            "0xfc52c",
+            "0xfc530",
+            "0x7dfa0"
+          ],
+          "stores": [
+            {
+              "pc": "0xfc4c0",
+              "address": "0x1001fdb0",
+              "size": 8,
+              "value": 268566000
+            },
+            {
+              "pc": "0xfc4c0",
+              "address": "0x1001fdb8",
+              "size": 8,
+              "value": 829468
+            },
+            {
+              "pc": "0xfc4c8",
+              "address": "0x1001fdc0",
+              "size": 8,
+              "value": 285216768
+            },
+            {
+              "pc": "0xfc4c8",
+              "address": "0x1001fdc8",
+              "size": 8,
+              "value": 268566272
+            },
+            {
+              "pc": "0xfc4cc",
+              "address": "0x1001fdd0",
+              "size": 8,
+              "value": 268566128
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        },
+        {
+          "label": "independent post-lock native four callback-pointer stores before unlock",
+          "entry": "0xfc534",
+          "reason": "boundary: before_original_Codec_normalLock_unlock",
+          "stop_pc": "0x80ef0",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xfc534",
+            "0xfc538",
+            "0xfc53c",
+            "0xfc540",
+            "0xfc544",
+            "0xfc548",
+            "0x80ef0"
+          ],
+          "stores": [
+            {
+              "pc": "0xfc534",
+              "address": "0x11008010",
+              "size": 8,
+              "value": 880972
+            },
+            {
+              "pc": "0xfc53c",
+              "address": "0x11008070",
+              "size": 8,
+              "value": 880972
+            },
+            {
+              "pc": "0xfc540",
+              "address": "0x110080d0",
+              "size": 8,
+              "value": 880972
+            },
+            {
+              "pc": "0xfc544",
+              "address": "0x11008130",
+              "size": 8,
+              "value": 880972
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        }
+      ],
+      "actual_owner_active_records_error_delivery_and_recording_instance_proven": false,
+      "all_thread_lock_unlock_logging_error_fanout_and_callback_bodies_unexecuted": true
+    },
+    {
+      "seed": 165,
+      "declared_Codec_return": 2,
+      "outcome": "same_record_pointer_and_error_code_before_fanout",
+      "callback_record_stride": 96,
+      "callback_record_count": 4,
+      "callback_symbol": "mpr::NotifyMovieRecError",
+      "callback_ELF_VA": "0xd714c",
+      "events": [
+        {
+          "label": "original ExecEncStart prologue before diagnostic, declared callback-record pointer",
+          "entry": "0xca6e4",
+          "reason": "boundary: before_original_MPR_diagnostic",
+          "stop_pc": "0xc8c70",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca6e4",
+            "0xca6e8",
+            "0xca6ec",
+            "0xca6f0",
+            "0xca6f4",
+            "0xca6f8",
+            "0xca6fc",
+            "0xca700",
+            "0xca704",
+            "0xca708",
+            "0xca70c",
+            "0xca710",
+            "0xca714",
+            "0xca718",
+            "0xca71c",
+            "0xca720",
+            "0xca724",
+            "0xca728",
+            "0xca72c",
+            "0xca730",
+            "0xca734",
+            "0xca738",
+            "0xc8c70"
+          ],
+          "stores": [
+            {
+              "pc": "0xca6ec",
+              "address": "0x1001fdf0",
+              "size": 8,
+              "value": 940200400
+            },
+            {
+              "pc": "0xca6ec",
+              "address": "0x1001fdf8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0xca6f4",
+              "address": "0x1001fe00",
+              "size": 8,
+              "value": 940200240
+            },
+            {
+              "pc": "0xca6f4",
+              "address": "0x1001fe08",
+              "size": 8,
+              "value": 940200256
+            },
+            {
+              "pc": "0xca704",
+              "address": "0x1001fe10",
+              "size": 8,
+              "value": 940200272
+            },
+            {
+              "pc": "0xca704",
+              "address": "0x1001fe18",
+              "size": 8,
+              "value": 940200288
+            },
+            {
+              "pc": "0xca70c",
+              "address": "0x1001ff02",
+              "size": 2,
+              "value": 608
+            },
+            {
+              "pc": "0xca714",
+              "address": "0x1001fe20",
+              "size": 8,
+              "value": 940200304
+            },
+            {
+              "pc": "0xca714",
+              "address": "0x1001fe28",
+              "size": 8,
+              "value": 940200320
+            },
+            {
+              "pc": "0xca71c",
+              "address": "0x1001ff05",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca724",
+              "address": "0x1001ff04",
+              "size": 1,
+              "value": 4
+            },
+            {
+              "pc": "0xca72c",
+              "address": "0x1001ff06",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca730",
+              "address": "0x1001ff07",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca734",
+              "address": "0x1001ff00",
+              "size": 2,
+              "value": 8464
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        },
+        {
+          "label": "independent declared Codec return; native caller chooses callback registration or error path",
+          "entry": "0xca7b0",
+          "reason": "boundary: before_original_MPR_diagnostic",
+          "stop_pc": "0xc8c70",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca7b0",
+            "0xca7b4",
+            "0xca7b8",
+            "0xca7bc",
+            "0xca7c0",
+            "0xca7c4",
+            "0xca7c8",
+            "0xca7cc",
+            "0xca7d0",
+            "0xca7d4",
+            "0xca7d8",
+            "0xca7dc",
+            "0xca7e0",
+            "0xca7e4",
+            "0xc8c70"
+          ],
+          "stores": [
+            {
+              "pc": "0xca7bc",
+              "address": "0x1001fe35",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca7c0",
+              "address": "0x1001fe36",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca7c4",
+              "address": "0x1001fe34",
+              "size": 1,
+              "value": 3
+            },
+            {
+              "pc": "0xca7cc",
+              "address": "0x1001fe37",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca7d0",
+              "address": "0x1001fe30",
+              "size": 2,
+              "value": 8464
+            },
+            {
+              "pc": "0xca7d4",
+              "address": "0x1001fe32",
+              "size": 2,
+              "value": 609
+            },
+            {
+              "pc": "0xca7e0",
+              "address": "0x1001fe38",
+              "size": 4,
+              "value": 2
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        },
+        {
+          "label": "independent post-error-diagnostic original pointer/code handoff before fanout",
+          "entry": "0xca7e8",
+          "reason": "boundary: before_original_error_fanout",
+          "stop_pc": "0xfc29c",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca7e8",
+            "0xca7ec",
+            "0xca7f0",
+            "0xfc29c"
+          ],
+          "stores": [],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        }
+      ],
+      "actual_owner_active_records_error_delivery_and_recording_instance_proven": false,
+      "all_thread_lock_unlock_logging_error_fanout_and_callback_bodies_unexecuted": true
+    },
+    {
+      "seed": 195,
+      "declared_Codec_return": 0,
+      "outcome": "four_error_callback_pointers_prepared",
+      "callback_record_stride": 96,
+      "callback_record_count": 4,
+      "callback_symbol": "mpr::NotifyMovieRecError",
+      "callback_ELF_VA": "0xd714c",
+      "events": [
+        {
+          "label": "original ExecEncStart prologue before diagnostic, declared callback-record pointer",
+          "entry": "0xca6e4",
+          "reason": "boundary: before_original_MPR_diagnostic",
+          "stop_pc": "0xc8c70",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca6e4",
+            "0xca6e8",
+            "0xca6ec",
+            "0xca6f0",
+            "0xca6f4",
+            "0xca6f8",
+            "0xca6fc",
+            "0xca700",
+            "0xca704",
+            "0xca708",
+            "0xca70c",
+            "0xca710",
+            "0xca714",
+            "0xca718",
+            "0xca71c",
+            "0xca720",
+            "0xca724",
+            "0xca728",
+            "0xca72c",
+            "0xca730",
+            "0xca734",
+            "0xca738",
+            "0xc8c70"
+          ],
+          "stores": [
+            {
+              "pc": "0xca6ec",
+              "address": "0x1001fdf0",
+              "size": 8,
+              "value": 940323280
+            },
+            {
+              "pc": "0xca6ec",
+              "address": "0x1001fdf8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0xca6f4",
+              "address": "0x1001fe00",
+              "size": 8,
+              "value": 940323120
+            },
+            {
+              "pc": "0xca6f4",
+              "address": "0x1001fe08",
+              "size": 8,
+              "value": 940323136
+            },
+            {
+              "pc": "0xca704",
+              "address": "0x1001fe10",
+              "size": 8,
+              "value": 940323152
+            },
+            {
+              "pc": "0xca704",
+              "address": "0x1001fe18",
+              "size": 8,
+              "value": 940323168
+            },
+            {
+              "pc": "0xca70c",
+              "address": "0x1001ff02",
+              "size": 2,
+              "value": 608
+            },
+            {
+              "pc": "0xca714",
+              "address": "0x1001fe20",
+              "size": 8,
+              "value": 940323184
+            },
+            {
+              "pc": "0xca714",
+              "address": "0x1001fe28",
+              "size": 8,
+              "value": 940323200
+            },
+            {
+              "pc": "0xca71c",
+              "address": "0x1001ff05",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca724",
+              "address": "0x1001ff04",
+              "size": 1,
+              "value": 4
+            },
+            {
+              "pc": "0xca72c",
+              "address": "0x1001ff06",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca730",
+              "address": "0x1001ff07",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca734",
+              "address": "0x1001ff00",
+              "size": 2,
+              "value": 8464
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        },
+        {
+          "label": "independent declared Codec return; native caller chooses callback registration or error path",
+          "entry": "0xca7b0",
+          "reason": "boundary: before_original_callback_records_lock",
+          "stop_pc": "0x7dfa0",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca7b0",
+            "0xca7b4",
+            "0xca80c",
+            "0xca810",
+            "0xca814",
+            "0xca818",
+            "0xfc4c0",
+            "0xfc4c4",
+            "0xfc4c8",
+            "0xfc4cc",
+            "0xfc4d0",
+            "0xfc51c",
+            "0xfc520",
+            "0xfc524",
+            "0xfc528",
+            "0xfc52c",
+            "0xfc530",
+            "0x7dfa0"
+          ],
+          "stores": [
+            {
+              "pc": "0xfc4c0",
+              "address": "0x1001fdb0",
+              "size": 8,
+              "value": 268566000
+            },
+            {
+              "pc": "0xfc4c0",
+              "address": "0x1001fdb8",
+              "size": 8,
+              "value": 829468
+            },
+            {
+              "pc": "0xfc4c8",
+              "address": "0x1001fdc0",
+              "size": 8,
+              "value": 285216768
+            },
+            {
+              "pc": "0xfc4c8",
+              "address": "0x1001fdc8",
+              "size": 8,
+              "value": 268566272
+            },
+            {
+              "pc": "0xfc4cc",
+              "address": "0x1001fdd0",
+              "size": 8,
+              "value": 268566128
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        },
+        {
+          "label": "independent post-lock native four callback-pointer stores before unlock",
+          "entry": "0xfc534",
+          "reason": "boundary: before_original_Codec_normalLock_unlock",
+          "stop_pc": "0x80ef0",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xfc534",
+            "0xfc538",
+            "0xfc53c",
+            "0xfc540",
+            "0xfc544",
+            "0xfc548",
+            "0x80ef0"
+          ],
+          "stores": [
+            {
+              "pc": "0xfc534",
+              "address": "0x11008010",
+              "size": 8,
+              "value": 880972
+            },
+            {
+              "pc": "0xfc53c",
+              "address": "0x11008070",
+              "size": 8,
+              "value": 880972
+            },
+            {
+              "pc": "0xfc540",
+              "address": "0x110080d0",
+              "size": 8,
+              "value": 880972
+            },
+            {
+              "pc": "0xfc544",
+              "address": "0x11008130",
+              "size": 8,
+              "value": 880972
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        }
+      ],
+      "actual_owner_active_records_error_delivery_and_recording_instance_proven": false,
+      "all_thread_lock_unlock_logging_error_fanout_and_callback_bodies_unexecuted": true
+    },
+    {
+      "seed": 195,
+      "declared_Codec_return": 2,
+      "outcome": "same_record_pointer_and_error_code_before_fanout",
+      "callback_record_stride": 96,
+      "callback_record_count": 4,
+      "callback_symbol": "mpr::NotifyMovieRecError",
+      "callback_ELF_VA": "0xd714c",
+      "events": [
+        {
+          "label": "original ExecEncStart prologue before diagnostic, declared callback-record pointer",
+          "entry": "0xca6e4",
+          "reason": "boundary: before_original_MPR_diagnostic",
+          "stop_pc": "0xc8c70",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca6e4",
+            "0xca6e8",
+            "0xca6ec",
+            "0xca6f0",
+            "0xca6f4",
+            "0xca6f8",
+            "0xca6fc",
+            "0xca700",
+            "0xca704",
+            "0xca708",
+            "0xca70c",
+            "0xca710",
+            "0xca714",
+            "0xca718",
+            "0xca71c",
+            "0xca720",
+            "0xca724",
+            "0xca728",
+            "0xca72c",
+            "0xca730",
+            "0xca734",
+            "0xca738",
+            "0xc8c70"
+          ],
+          "stores": [
+            {
+              "pc": "0xca6ec",
+              "address": "0x1001fdf0",
+              "size": 8,
+              "value": 940323280
+            },
+            {
+              "pc": "0xca6ec",
+              "address": "0x1001fdf8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0xca6f4",
+              "address": "0x1001fe00",
+              "size": 8,
+              "value": 940323120
+            },
+            {
+              "pc": "0xca6f4",
+              "address": "0x1001fe08",
+              "size": 8,
+              "value": 940323136
+            },
+            {
+              "pc": "0xca704",
+              "address": "0x1001fe10",
+              "size": 8,
+              "value": 940323152
+            },
+            {
+              "pc": "0xca704",
+              "address": "0x1001fe18",
+              "size": 8,
+              "value": 940323168
+            },
+            {
+              "pc": "0xca70c",
+              "address": "0x1001ff02",
+              "size": 2,
+              "value": 608
+            },
+            {
+              "pc": "0xca714",
+              "address": "0x1001fe20",
+              "size": 8,
+              "value": 940323184
+            },
+            {
+              "pc": "0xca714",
+              "address": "0x1001fe28",
+              "size": 8,
+              "value": 940323200
+            },
+            {
+              "pc": "0xca71c",
+              "address": "0x1001ff05",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca724",
+              "address": "0x1001ff04",
+              "size": 1,
+              "value": 4
+            },
+            {
+              "pc": "0xca72c",
+              "address": "0x1001ff06",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca730",
+              "address": "0x1001ff07",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca734",
+              "address": "0x1001ff00",
+              "size": 2,
+              "value": 8464
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        },
+        {
+          "label": "independent declared Codec return; native caller chooses callback registration or error path",
+          "entry": "0xca7b0",
+          "reason": "boundary: before_original_MPR_diagnostic",
+          "stop_pc": "0xc8c70",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca7b0",
+            "0xca7b4",
+            "0xca7b8",
+            "0xca7bc",
+            "0xca7c0",
+            "0xca7c4",
+            "0xca7c8",
+            "0xca7cc",
+            "0xca7d0",
+            "0xca7d4",
+            "0xca7d8",
+            "0xca7dc",
+            "0xca7e0",
+            "0xca7e4",
+            "0xc8c70"
+          ],
+          "stores": [
+            {
+              "pc": "0xca7bc",
+              "address": "0x1001fe35",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca7c0",
+              "address": "0x1001fe36",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca7c4",
+              "address": "0x1001fe34",
+              "size": 1,
+              "value": 3
+            },
+            {
+              "pc": "0xca7cc",
+              "address": "0x1001fe37",
+              "size": 1,
+              "value": 0
+            },
+            {
+              "pc": "0xca7d0",
+              "address": "0x1001fe30",
+              "size": 2,
+              "value": 8464
+            },
+            {
+              "pc": "0xca7d4",
+              "address": "0x1001fe32",
+              "size": 2,
+              "value": 609
+            },
+            {
+              "pc": "0xca7e0",
+              "address": "0x1001fe38",
+              "size": 4,
+              "value": 2
+            }
+          ],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        },
+        {
+          "label": "independent post-error-diagnostic original pointer/code handoff before fanout",
+          "entry": "0xca7e8",
+          "reason": "boundary: before_original_error_fanout",
+          "stop_pc": "0xfc29c",
+          "return_u32_if_returned": null,
+          "pcs": [
+            "0xca7e8",
+            "0xca7ec",
+            "0xca7f0",
+            "0xfc29c"
+          ],
+          "stores": [],
+          "original_imports_and_returns": [],
+          "stack_outside2048_unchanged": true,
+          "scratch_outside_outputs_unchanged": true,
+          "images_outside_declared_data_outputs_unchanged": true,
+          "native_saved_registers_preserved": false,
+          "actual_lock_check_log_setter_completion_or_device_executed": false
+        }
+      ],
+      "actual_owner_active_records_error_delivery_and_recording_instance_proven": false,
+      "all_thread_lock_unlock_logging_error_fanout_and_callback_bodies_unexecuted": true
+    }
+  ],
+  "camera_Windows_UU_operations": false,
+  "actual_Start_hardware_or_recovery_proven": false,
+  "bounded_phases": 12
+}

@@ -1,0 +1,161 @@
+{
+  "scope": "Offline host fixtures/static cross compilation; no VM/runner/browser/service/QMP",
+  "steps": [
+    {
+      "step": "prepare",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/prepare_sources.py"
+      ],
+      "source_sha256": "56802bdc6fbb80b5d4342251428b24622639588be422751ed59f6b36eee3190c",
+      "exit": 0,
+      "stdout": "receipts/offline-prepare.stdout",
+      "stderr": "receipts/offline-prepare.stderr"
+    },
+    {
+      "step": "actual-binding",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/bind_inputs.py"
+      ],
+      "source_sha256": "02f5ef2eb7d39bda6c93bc464b1200c7d4f14e2fd1c98fa61184b4e90a9681fb",
+      "exit": 0,
+      "stdout": "receipts/offline-actual-binding.stdout",
+      "stderr": "receipts/offline-actual-binding.stderr"
+    },
+    {
+      "step": "baseline-recompile",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/rebuild_baselines.py"
+      ],
+      "source_sha256": "033cf24ba624fe2cda76e5311c1b425051bb52a0796367b2fc2a4805cc79e4bf",
+      "exit": 0,
+      "stdout": "receipts/offline-baseline-recompile.stdout",
+      "stderr": "receipts/offline-baseline-recompile.stderr"
+    },
+    {
+      "step": "cross-compile",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build_candidate.py"
+      ],
+      "source_sha256": "23f95a5f340b42b0a2e7c53f75071a78c808da9d3627f10c4562ac3b192ce052",
+      "exit": 0,
+      "stdout": "receipts/offline-cross-compile.stdout",
+      "stderr": "receipts/offline-cross-compile.stderr"
+    },
+    {
+      "step": "source-control-flow",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/check_control_flow.py"
+      ],
+      "source_sha256": "bdf02e00f4a2fc55f68b075e3899ba32032c86dab227586b4cd14e9ac2e47fb5",
+      "exit": 0,
+      "stdout": "receipts/offline-source-control-flow.stdout",
+      "stderr": "receipts/offline-source-control-flow.stderr"
+    },
+    {
+      "step": "assembly-audit",
+      "argv": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage4-windows-collab/mac-verification/.venv/bin/python",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/audit_assembly.py"
+      ],
+      "source_sha256": "55dca73caff596eb6367c20bb723189f0214ea279a2692a4938059a0b431fe11",
+      "exit": 0,
+      "stdout": "receipts/offline-assembly-audit.stdout",
+      "stderr": "receipts/offline-assembly-audit.stderr"
+    },
+    {
+      "step": "host-wrapper",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/run_host.py"
+      ],
+      "source_sha256": "564a23aed53cecbe8c9d1675565c3133955292c4c479cb3e635330f9286bec6e",
+      "exit": 0,
+      "stdout": "receipts/offline-host-wrapper.stdout",
+      "stderr": "receipts/offline-host-wrapper.stderr"
+    },
+    {
+      "step": "host-collector",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/run_collector_host.py"
+      ],
+      "source_sha256": "118b33de884cac39428cd48e8af5fdc31fe3313f10a6efdaf30d11f96815c108",
+      "exit": 0,
+      "stdout": "receipts/offline-host-collector.stdout",
+      "stderr": "receipts/offline-host-collector.stderr"
+    },
+    {
+      "step": "parser-tests",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/test_parser.py"
+      ],
+      "source_sha256": "143da37d4b9a836cce84dcddb8a28bcaf8550cce7fdff318ce52a4a8951517f4",
+      "exit": 0,
+      "stdout": "receipts/offline-parser-tests.stdout",
+      "stderr": "receipts/offline-parser-tests.stderr"
+    },
+    {
+      "step": "host-UI-cost",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/run_ui_host.py"
+      ],
+      "source_sha256": "f5e642aeb42034fe9beff5688455516e1b086acc9a9bab0108055a1233831832",
+      "exit": 0,
+      "stdout": "receipts/offline-host-UI-cost.stdout",
+      "stderr": "receipts/offline-host-UI-cost.stderr"
+    },
+    {
+      "step": "parser-compatibility-CLI",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/check_parser_compatibility.py"
+      ],
+      "source_sha256": "b8c2e5b3cdc8cc2d9f99c787f2bcb7b4e43e010598744ab2f9aa9867e791b9cc",
+      "exit": 0,
+      "stdout": "receipts/offline-parser-compatibility-CLI.stdout",
+      "stderr": "receipts/offline-parser-compatibility-CLI.stderr"
+    },
+    {
+      "step": "host-wrapper-cost",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/run_cost_host.py"
+      ],
+      "source_sha256": "43b2575a0827d679397064bb9b775a299300d75c31f61662801a25a088896c79",
+      "exit": 0,
+      "stdout": "receipts/offline-host-wrapper-cost.stdout",
+      "stderr": "receipts/offline-host-wrapper-cost.stderr"
+    },
+    {
+      "step": "instance-contract",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/test_instance_contract.py"
+      ],
+      "source_sha256": "66cd4353ce48da08587e563d91a04a53bf2f21ce23a977ebfcf4975062d61e59",
+      "exit": 0,
+      "stdout": "receipts/offline-instance-contract.stdout",
+      "stderr": "receipts/offline-instance-contract.stderr"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "status": "PASSED",
+  "positive_cases": {
+    "user_try2_70588c4c_replay": {
+      "frame_372": {
+        "op": "0x1005",
+        "token": "0x401",
+        "reply": "0x6005"
+      },
+      "frame_373": {
+        "op": "0x1003",
+        "token": "0x402",
+        "phys": "0x43feb5100",
+        "all_zero": true,
+        "reply": "0x6003"
+      },
+      "frame_378": {
+        "op": "0x1005",
+        "token": "0x402",
+        "reply": "0x6005"
+      }
+    },
+    "internal_47e2924a_replay": {
+      "frame_1310": {
+        "op": "0x1005",
+        "token": "0x402",
+        "reply": "0x6005"
+      },
+      "frame_1311": {
+        "op": "0x1003",
+        "token": "0x401",
+        "phys": "0x43ae96100",
+        "all_zero": true,
+        "reply": "0x6003"
+      },
+      "frame_1314": {
+        "op": "0x1005",
+        "token": "0x401",
+        "reply": "0x6005"
+      }
+    }
+  },
+  "negative_cases": [
+    {
+      "case": "0x1000_hide_count_17_gt_16",
+      "rejected": true,
+      "av_cam_check": "0xffffffc0012ee420 cmp w1, #0x10"
+    },
+    {
+      "case": "0x1001_widget_id_256_ge_256",
+      "rejected": true,
+      "av_cam_check": "0xffffffc0012ee314 cmp w1, #0x100"
+    },
+    {
+      "case": "0x1003_without_0x1002_pair",
+      "rejected": true,
+      "av_cam_check": "0xffffffc0012ef014 WaitAndExecuteUpdateExec"
+    }
+  ]
+}

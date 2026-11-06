@@ -1,0 +1,50 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 16f1998: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 16f199c: 910003fd     	mov	x29, sp
+ 16f19a0: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 16f19a4: 911c4013     	add	x19, x0, #0x710
+ 16f19a8: f90013f5     	str	x21, [sp, #0x20]
+ 16f19ac: 97fa870d     	bl	0x15935e0 <_ZN8UXEngine6wgtsysEv@plt>
+ 16f19b0: 97fa88c0     	bl	0x1593cb0 <_ZN2ux6wgtsys12WidgetSystem17updateCurrentTimeEv@plt>
+ 16f19b4: aa1303e0     	mov	x0, x19
+ 16f19b8: 528080e1     	mov	w1, #0x407              // =1031
+ 16f19bc: 942a08b3     	bl	0x2173c88 <Application_System_Init+0xa840f8>
+ 16f19c0: 53001c15     	uxtb	w21, w0
+ 16f19c4: 97fa8707     	bl	0x15935e0 <_ZN8UXEngine6wgtsysEv@plt>
+ 16f19c8: 97fa843e     	bl	0x1592ac0 <_ZN2ux6wgtsys12WidgetSystem12processEventEv@plt>
+ 16f19cc: 72001c1f     	tst	w0, #0xff
+ 16f19d0: 54ffffa1     	b.ne	0x16f19c4 <Application_System_Init+0x1e34>
+ 16f19d4: 97fa8127     	bl	0x1591e70 <_ZN8UXEngine6resmgrEv@plt>
+ 16f19d8: 52800154     	mov	w20, #0xa               // =10
+ 16f19dc: 52800000     	mov	w0, #0x0                // =0
+ 16f19e0: 97fa86e8     	bl	0x1593580 <_ZN2ux6resmgr15ResourceManager15processCommandsEj@plt>
+ 16f19e4: 97fa86ff     	bl	0x15935e0 <_ZN8UXEngine6wgtsysEv@plt>
+ 16f19e8: 97fa8866     	bl	0x1593b80 <_ZNK2ux6wgtsys12WidgetSystem12isFrameDelayEv@plt>
+ 16f19ec: 72001c1f     	tst	w0, #0xff
+ 16f19f0: 54000221     	b.ne	0x16f1a34 <Application_System_Init+0x1ea4>
+ 16f19f4: 34000075     	cbz	w21, 0x16f1a00 <Application_System_Init+0x1e70>
+ 16f19f8: aa1303e0     	mov	x0, x19
+ 16f19fc: 942a0457     	bl	0x2172b58 <Application_System_Init+0xa82fc8>
+ 16f1a00: 52800000     	mov	w0, #0x0                // =0
+ 16f1a04: 9461ed86     	bl	0x2f6d01c <Application_System_Init+0x187d48c>
+ 16f1a08: 97fa86f6     	bl	0x15935e0 <_ZN8UXEngine6wgtsysEv@plt>
+ 16f1a0c: 97fa86a1     	bl	0x1593490 <_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv@plt>
+ 16f1a10: 52800020     	mov	w0, #0x1                // =1
+ 16f1a14: 9461ed82     	bl	0x2f6d01c <Application_System_Init+0x187d48c>
+ 16f1a18: 97fa814e     	bl	0x1591f50 <_ZN8UXEngine6gfxengEv@plt>
+ 16f1a1c: 97fa87d1     	bl	0x1593960 <_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv@plt>
+ 16f1a20: f94013f5     	ldr	x21, [sp, #0x20]
+ 16f1a24: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 16f1a28: 52800040     	mov	w0, #0x2                // =2
+ 16f1a2c: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 16f1a30: 1461ed7b     	b	0x2f6d01c <Application_System_Init+0x187d48c>
+ 16f1a34: 97fa86eb     	bl	0x15935e0 <_ZN8UXEngine6wgtsysEv@plt>
+ 16f1a38: 97fa8702     	bl	0x1593640 <_ZN2ux6wgtsys12WidgetSystem11updateFrameEv@plt>
+ 16f1a3c: 71000694     	subs	w20, w20, #0x1
+ 16f1a40: 54fffda0     	b.eq	0x16f19f4 <Application_System_Init+0x1e64>
+ 16f1a44: 17ffffe8     	b	0x16f19e4 <Application_System_Init+0x1e54>

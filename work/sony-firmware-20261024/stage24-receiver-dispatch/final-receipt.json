@@ -1,0 +1,71 @@
+{
+  "schema": "fx3-stage24-receiver-dispatch/1",
+  "created_utc": "2026-10-25T20:53:43.653878+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage24-receiver-dispatch/README.md",
+      "bytes": 7115,
+      "sha256": "4bc682f9bff1d9b597315fffda4481826e2453f8e47375ce84386fd6ec4c02a0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage24-receiver-dispatch/coordinator-observations.json",
+      "bytes": 2184,
+      "sha256": "5f8997d2bc3b943c8fa4ed2c687e2e67ed798ca7d578a30db948d006f467cef0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage24-receiver-dispatch/goal-status-after.json",
+      "bytes": 34875,
+      "sha256": "79275521c9b0c56186b3a986a971d8067fd2fe77786755b03ee0a20726f9aedb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage24-receiver-dispatch/goal-status-before.json",
+      "bytes": 33360,
+      "sha256": "f5763903829516d1291ecb79e2367a992a1cfced60a76d10a8cc261abb336942"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage24-receiver-dispatch/receiver_dispatch.py",
+      "bytes": 15438,
+      "sha256": "fcd3aac0d4a39d765462e7a0311fc7b35e75a6ae0bc65a1a4075020627c22fde"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage24-receiver-dispatch/run-20261025/receiver-dispatch-results.json",
+      "bytes": 178904,
+      "sha256": "d3e5f6120fdaa8e79152b68ada4766d162472bc4d2f1b3c56e441363694dfaf7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage24-receiver-dispatch/run-20261025/source-receipt.json",
+      "bytes": 2497,
+      "sha256": "615228bd3e7ecaa6cd868a5451e121e0cf8dcb2396ebcbfb293178d7ac68cc4f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage24-receiver-dispatch/run-20261025/summary.json",
+      "bytes": 500,
+      "sha256": "bff822dac0803bccf42c864f70c4cc8574da3e0ec1f1c41b988304c3a0e1b30f"
+    }
+  ],
+  "scope": "Bounded original branches on independent fixtures; no full receiver, controller outputs, singleton/mutex, allocation/constructor, state change, backup, transport, MC or hardware execution.",
+  "previous_manifest_sha256": "55161d6b40048ca299707220a3231bd51e2bbaaa7bc6c04eb4f9ed1ff57f8892",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage24-receiver-dispatch/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage24-receiver-dispatch/goal-status-after.json",
+    "before_sha256": "f5763903829516d1291ecb79e2367a992a1cfced60a76d10a8cc261abb336942",
+    "after_sha256": "79275521c9b0c56186b3a986a971d8067fd2fe77786755b03ee0a20726f9aedb",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "bounded_guest_original_branches": true,
+    "one_original_ABS64_data_slot_materialized_in_guest": true,
+    "native_controller_mutex_allocation_constructor_or_state_change": false,
+    "user_requested_local_Orca_status_checks": 2,
+    "outgoing_messages_or_other_owner_file_changes": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 接收序列与掩码范围](<work/sony-firmware-20261024/stage24-receiver-dispatch/README.md>)：43个边界用例确认普通MAIN/proxy同选usecase1，格式掩码已绑定解码启动；MC编码校验及实际Open/Start仍未验证。"
+}

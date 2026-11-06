@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "modern_reference": {
+    "url": "https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable/+/refs/tags/v6.1/include/uapi/asm-generic/unistd.h?format=TEXT",
+    "path": "source-reference/modern-v6.1-asm-generic-unistd.h",
+    "bytes": 31480,
+    "sha256": "d66d575161ba8c07a8ff4dcbf3c772afdc83a234844c815821b3932891938f01",
+    "scope": "modern generic numbering reference ONLY, not FX3 kernel capability"
+  },
+  "rows": [
+    {
+      "name": "pidfd_send_signal",
+      "modern_v6_1_generic_number": 424,
+      "outside_saved_FX3_native_dispatch": true
+    },
+    {
+      "name": "pidfd_open",
+      "modern_v6_1_generic_number": 434,
+      "outside_saved_FX3_native_dispatch": true
+    },
+    {
+      "name": "pidfd_getfd",
+      "modern_v6_1_generic_number": 438,
+      "outside_saved_FX3_native_dispatch": true
+    }
+  ],
+  "source_sha256": "b469e86afa5ca27f04355b5e27b8aa0e8d528e8ad54a30adc4b814010d7788ed",
+  "saved_FX3_audit_sha256": "82e5c4dfa3c17a0b4f5d108396668cd6b2dfa798f8b38c0898cfb08d3ca93128",
+  "absence_of_all_vendor_custom_equivalent_interfaces_proven": false,
+  "syscalls_or_device_operations": 0
+}

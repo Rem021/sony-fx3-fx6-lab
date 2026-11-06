@@ -1,0 +1,154 @@
+{
+  "AP_default_FA0080_sha256": "7211bc043617837927604e0f1900a987d31d483920323fdc653c1348d28bac5b",
+  "AP_default_descriptors": [
+    {
+      "index": 0,
+      "start": "0x401000000",
+      "end_inclusive": "0x401ffffff",
+      "partition": 3,
+      "mode": "0x5000000",
+      "path": "\\av-cam.bin",
+      "overlaps_default_AP_staging": false
+    },
+    {
+      "index": 1,
+      "start": "0x400001000",
+      "end_inclusive": "0x400001fff",
+      "partition": 2,
+      "mode": "0x1000000",
+      "path": "\\kemco.txt",
+      "overlaps_default_AP_staging": false
+    },
+    {
+      "index": 2,
+      "start": "0x408000000",
+      "end_inclusive": "0x408ffffff",
+      "partition": 3,
+      "mode": "0x1000000",
+      "path": "\\initrd.img",
+      "overlaps_default_AP_staging": false
+    },
+    {
+      "index": 3,
+      "start": "0x400080000",
+      "end_inclusive": "0x4005fffff",
+      "partition": 3,
+      "mode": "0x81000000",
+      "path": "\\vmlinux.bin",
+      "overlaps_default_AP_staging": false
+    },
+    {
+      "index": 4,
+      "start": "0x400002000",
+      "end_inclusive": "0x400005fff",
+      "partition": 2,
+      "mode": "0x1000000",
+      "path": "\\cxd90057.dtb",
+      "overlaps_default_AP_staging": false
+    },
+    {
+      "index": 5,
+      "start": "0xfe380000",
+      "end_inclusive": "0xfe3bffff",
+      "partition": 2,
+      "mode": "0x8000000",
+      "path": "\\bt_conf.cnf",
+      "overlaps_default_AP_staging": false
+    },
+    {
+      "index": 6,
+      "start": "0xfe310000",
+      "end_inclusive": "0xfe31ffff",
+      "partition": 3,
+      "mode": "0x8000000",
+      "path": "\\btfw32a.tlv",
+      "overlaps_default_AP_staging": false
+    },
+    {
+      "index": 7,
+      "start": "0xfe320000",
+      "end_inclusive": "0xfe32ffff",
+      "partition": 3,
+      "mode": "0x8000000",
+      "path": "\\btnv32.bin",
+      "overlaps_default_AP_staging": false
+    },
+    {
+      "index": 8,
+      "start": "0xfe300000",
+      "end_inclusive": "0xfe30ffff",
+      "partition": 3,
+      "mode": "0x8000001",
+      "path": "\\wole_app.bin",
+      "overlaps_default_AP_staging": false
+    }
+  ],
+  "instruction_checks": [
+    {
+      "VA": "0xfe04f618",
+      "bytes": "410b0094",
+      "instruction": "bl #0xfe05231c"
+    },
+    {
+      "VA": "0xfe04f640",
+      "bytes": "370b0094",
+      "instruction": "bl #0xfe05231c"
+    },
+    {
+      "VA": "0xfe052354",
+      "bytes": "00108052",
+      "instruction": "mov w0, #0x80"
+    },
+    {
+      "VA": "0xfe052360",
+      "bytes": "401fa072",
+      "instruction": "movk w0, #0xfa, lsl #16"
+    },
+    {
+      "VA": "0xfe05236c",
+      "bytes": "d3230094",
+      "instruction": "bl #0xfe05b2b8"
+    },
+    {
+      "VA": "0xfe059928",
+      "bytes": "170340f9",
+      "instruction": "ldr x23, [x24]"
+    },
+    {
+      "VA": "0xfe05992c",
+      "bytes": "181340f9",
+      "instruction": "ldr x24, [x24, #0x20]"
+    }
+  ],
+  "source_windows": [
+    {
+      "begin": "0xfe04f5f0",
+      "end_exclusive": "0xfe04f6cc",
+      "original_bytes_sha256": "19f1c5bd48cf3ade695a87d35b2e695f8643a499113f15b5489faf381a0b328a",
+      "listing": "listings/reference-clear-reboot-dispatch.txt"
+    },
+    {
+      "begin": "0xfe05231c",
+      "end_exclusive": "0xfe0523a0",
+      "original_bytes_sha256": "cea741c0125af86f723c7955b982f7b93398d50c8361b8478f0ef670e46e9c33",
+      "listing": "listings/reference-AP-descriptor-query.txt"
+    },
+    {
+      "begin": "0xfe059908",
+      "end_exclusive": "0xfe0599d0",
+      "original_bytes_sha256": "1d829d35a37f93227b48e41f4c2c90f94e987457cbdea4d684c38f43e4f6004e",
+      "listing": "listings/reference-MMC-zero-fill-candidate.txt"
+    }
+  ],
+  "clear_reboot_label_not_a_whole_staging_zeroing_proof": true,
+  "clear_reboot_calls_config_loader_that_queries_AP_FA0080": true,
+  "AP_default_descriptors_overlap_staging": false,
+  "MMC_zero_fill_diagnostic_at": "0xfe065921",
+  "MMC_zero_fill_code_at": "0xfe059908",
+  "MMC_zero_fill_target": "descriptor X24+0; length X24+0x20",
+  "MMC_zero_fill_bound_to_FA019A": false,
+  "candidate_hardware_helper_calls_executed": false,
+  "any_prior_whole_boot_staging_initialization_proved": false,
+  "actual_target_FX3_AP_loader_obtained": false,
+  "goal_complete": false
+}

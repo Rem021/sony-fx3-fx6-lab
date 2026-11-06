@@ -1,0 +1,115 @@
+{
+  "schema": "fx3-stage53-native-frame-fill/1",
+  "created_utc": "2026-10-26T04:37:03.639910+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/README.md",
+      "bytes": 6232,
+      "sha256": "eb46c369f0ff5998c5313198e1c8aee58f7a0b568dff32888cd561cb6281398e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/coordinator-observations.json",
+      "bytes": 977,
+      "sha256": "4addc278c0b19279b0ac84014a0061626ee6e4662470760e1111646cb7f295d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/finalize_stage53.py",
+      "bytes": 15074,
+      "sha256": "3d8ba295866f2c2e2456be14656042e4c1adb5874e2e4856fc3d8787907e10c1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/goal-status-after.json",
+      "bytes": 126665,
+      "sha256": "27bb68ca2ac754151d3e3f3df6ce57df31f97df37a4e9a787e26d22b9328ae7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/goal-status-before.json",
+      "bytes": 121387,
+      "sha256": "415f2d003a8bebb4c40054c4d9eab48657d0bf0bb3b1eb7c1ba37878ad42fb6d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/native_frame_fill.py",
+      "bytes": 13373,
+      "sha256": "91ef904e479a77ce4a31f015ec109d4334d49c57eddd91f9cfc95a101e8e6de2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-20261025/attempt-failure.json",
+      "bytes": 1064,
+      "sha256": "71712429e7be78589e015d6f4b6056c2fd5bd8ae9b2b182d949285f946f06080"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-20261025/attempt-source.py",
+      "bytes": 11613,
+      "sha256": "d297a4e71103af3eff11a221d7732dbad7d07e35306135bbefe31a1d26ad498e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-20261025/last-phase-at-failure.json",
+      "bytes": 6240,
+      "sha256": "88b58098ba4a4887b5d4c15141d94d8c32ee1d32abd77b5a23afd5798863b613"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-coupled-geometry-20261025/executed-source.py",
+      "bytes": 13373,
+      "sha256": "91ef904e479a77ce4a31f015ec109d4334d49c57eddd91f9cfc95a101e8e6de2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-coupled-geometry-20261025/native-frame-fill-results.json",
+      "bytes": 4418280,
+      "sha256": "d975ff1672614382577edb0a5be70e90528283319ed6954b3f98cbcf98e49b7f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-coupled-geometry-20261025/source-receipt.json",
+      "bytes": 503,
+      "sha256": "03371a1ddc7a9593b67f679ecd985c772364c03ec6175117e29450907943213e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-yc-export-range-20261025/executed-source.py",
+      "bytes": 11613,
+      "sha256": "27c5f40ab5d443f1955dc60421ed834c1f0cbfcb5494efff1e4ff105aec69d74"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-yc-export-range-20261025/native-frame-fill-results.json",
+      "bytes": 4388941,
+      "sha256": "40a791ac70529474aa9da6e31eb2326f4a9fea5a304500dae5bf1a65ef00712e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/run-yc-export-range-20261025/source-receipt.json",
+      "bytes": 503,
+      "sha256": "f754a1d4261666b79b3b5f248fcba462750d4b1d9e2c54a3dbaf8961ef5b46e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/scope-corrections.json",
+      "bytes": 2723,
+      "sha256": "60276541b8535c7ac770c1580164f4d8739f0916eb141885792c6c4dfd9e6be2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage53-native-frame-fill/summary.json",
+      "bytes": 3333,
+      "sha256": "1d8a46d8ffab3a2753b2c9a0e72380a5960f3c066d3fb4a45bb40661b7bf33af"
+    }
+  ],
+  "previous_manifest_sha256": "7effd8b0d61f02bc41110d473031f8dcabdd8171102adbd9c957362cd4e17dfc",
+  "scope": "112 bounded original fragments: SSYC/typed tag generation and serialization, complete frame fill and independent geometry packing on unchanged native-filled records. Stage52 format-offset label corrected; no actual MAIN/wholeStart/Hal/hardware/recovery.",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage53-native-frame-fill/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage53-native-frame-fill/goal-status-after.json",
+    "before_sha256": "415f2d003a8bebb4c40054c4d9eab48657d0bf0bb3b1eb7c1ba37878ad42fb6d",
+    "after_sha256": "27bb68ca2ac754151d3e3f3df6ce57df31f97df37a4e9a787e26d22b9328ae7b",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-25 FX3 原标签生成与完整帧填充](<work/sony-firmware-20261024/stage53-native-frame-fill/README.md>)：112段原执行接通typed标签序列化/完整fill/独立几何消费；更正格式偏移+28，返回1不等整帧有效，真实MAIN、完整启动/硬件与恢复仍待验收。",
+  "readme_index_before_sha256": "859c96528aace589870c7a786d39dce56f3d65c3df8a62200d8d976257b200d0",
+  "readme_index_after_sha256": "f2dde8720044dcb11e5e8b9c7222bf68bc22efcf796f218a866341d8b8083c17",
+  "operations": {
+    "original_guest_code_unchanged": true,
+    "RAM_inputs_object_links_backing_storage_and_ownership_are_fixtures": true,
+    "native_output_PC_return_log_lock_notification_or_HAL_adapter": false,
+    "new_loadable_camera_module": false,
+    "UU_Windows_camera_interfaces_auth_modes_drivers_files_modules_WBI_flash": false,
+    "real_hardware_recording_backup_restore_or_independent_recovery": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

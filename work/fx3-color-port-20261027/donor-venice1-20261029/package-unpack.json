@@ -1,0 +1,110 @@
+{
+  "download_sha256": "7e2a1135653fb17d9b6ec741e316e90cd5f53c07cde32959ca0c513342e6be25",
+  "zip_entries": [
+    {
+      "path": "MPC-3610_V630/MPC-3610_UpdateManual.pdf",
+      "bytes": 292020,
+      "compressed_bytes": 253066,
+      "CRC32": "0x735f1430",
+      "CRC_checked": true
+    },
+    {
+      "path": "MPC-3610_V630/MPC-3610_V630_firmware.bin",
+      "bytes": 187985920,
+      "compressed_bytes": 188031377,
+      "CRC32": "0xde07cde8",
+      "CRC_checked": true
+    },
+    {
+      "path": "MPC-3610_V630/MPC-3610_V630_firmware.md5",
+      "bytes": 61,
+      "compressed_bytes": 61,
+      "CRC32": "0x5ed57a2",
+      "CRC_checked": true
+    },
+    {
+      "path": "MPC-3610_V630/MPC-3610_V630_Readme.txt",
+      "bytes": 305,
+      "compressed_bytes": 160,
+      "CRC32": "0x8127afd6",
+      "CRC_checked": true
+    },
+    {
+      "path": "MPC-3610_V630/MPC-3610_V630_ReleaseNote.pdf",
+      "bytes": 622984,
+      "compressed_bytes": 588976,
+      "CRC32": "0xe8773f7f",
+      "CRC_checked": true
+    }
+  ],
+  "selected_originals": {
+    ".bin": {
+      "path": "originals/MPC-3610_V630_firmware.bin",
+      "bytes": 187985920,
+      "sha256": "f27a0c8ef9a3841964b7ee1fa2dcbdc91830451536c2469459b81293a183dc78"
+    },
+    ".md5": {
+      "path": "originals/MPC-3610_V630_firmware.md5",
+      "bytes": 61,
+      "sha256": "87245593a46c86e4d0c42779b04312b40f52aa2e09b694a95a60e520514f1fff"
+    },
+    ".txt": {
+      "path": "originals/MPC-3610_V630_Readme.txt",
+      "bytes": 305,
+      "sha256": "2c2a391f7ea77986ac1d0abf53c08f56a71c51b4261d2588333246574a5ec4d8"
+    }
+  },
+  "firmware_md5_expected": "57bf1bc31f354bcb96e59596bc129098",
+  "firmware_md5_matches": true,
+  "outer_format": "uncompressed tar",
+  "outer_members": [
+    {
+      "path": "property.xml",
+      "bytes": 136,
+      "type": "regular",
+      "header_offset": 0,
+      "data_offset": 512,
+      "output": "outer-members/property.xml",
+      "sha256": "3aa81a54f3d1d41111088130f468866599afdaf825b6d9318df963b1789e366f",
+      "first64_hex": "3c3f786d6c2076657273696f6e3d22312e302220656e636f64696e673d225554462d38223f3e0a3c70726f70657274793e0a20203c5061636b61676554797065"
+    },
+    {
+      "path": "VENICE",
+      "bytes": 0,
+      "type": "directory",
+      "header_offset": 1024,
+      "data_offset": 1536
+    },
+    {
+      "path": "VENICE/DATA23213",
+      "bytes": 187973304,
+      "type": "regular",
+      "header_offset": 1536,
+      "data_offset": 2048,
+      "output": "outer-members/VENICE/DATA23213",
+      "sha256": "93d01601322e3d1931a76b1c6f4f3bfdfb9a0745cfc0ec4eecb253c694b30d5c",
+      "first64_hex": "4290abacfa6bd70eed6c19bac1815a326f9edbd906c08af67caa19eb5c4249050ce43b7afd4f36f9241e70baa65ec0a4972820e6c214e1af01317753ba5ed349"
+    },
+    {
+      "path": "VENICE/property.xml",
+      "bytes": 233,
+      "type": "regular",
+      "header_offset": 187975680,
+      "data_offset": 187976192,
+      "output": "outer-members/VENICE/property.xml",
+      "sha256": "097156e1f07aa03955277a452d6ea9ff9e11f6f9f861f2128f3981b5bec81079",
+      "first64_hex": "3c3f786d6c2076657273696f6e3d22312e302220656e636f64696e673d225554462d38223f3e0a3c42696e6172795061636b50726f70657274793e0a20203c50"
+    }
+  ],
+  "XML": [
+    {
+      "path": "property.xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<property>\n  <PackageType>multiproduct</PackageType>\n  <ProductID>VENICE</ProductID>\n</property>\n"
+    },
+    {
+      "path": "VENICE/property.xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<BinaryPackProperty>\n  <PackageType>multiversion</PackageType>\n  <ProductID>VENICE</ProductID>\n  <ProductCodeVersion href=\"VER630\" enctype=\"type3\">630</ProductCodeVersion>\n</BinaryPackProperty>\n"
+    }
+  ],
+  "scope": "ZIP CRC and same-package MD5 plus regular tar-member extraction only. No decrypted inner format, executable, full ISP, foreign-model compatibility or flashing is implied."
+}

@@ -1,0 +1,59 @@
+{
+  "native_object": {
+    "argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/iokit_wire.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/artifacts-v2/iokit-wire-native.o"
+    ],
+    "sha256": "dcc49fc483f3c305702b712df72f69a28cb077e6b3392b8bea97d832d14a3fd1",
+    "compiler_stderr": "",
+    "undefined_symbols": "___memcpy_chk\n___memset_chk\n___stack_chk_fail\n___stack_chk_guard\n_bzero\n_clock_gettime\n_geteuid\n_getpid\n_memcmp\n_memcpy\n_memset\n"
+  },
+  "fixture": {
+    "argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-DFX3_IOKIT_WIRE_FIXTURE",
+      "-dynamiclib",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/iokit_wire.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/fake_iokit.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/artifacts-v2/fake-iokit.dylib"
+    ],
+    "sha256": "325f82158ed9fb43f0f7d2f8b93f123e9a0f472c348e99a0ed74903888517684",
+    "compiler_stderr": "",
+    "undefined_symbols": "___memcpy_chk\n___memset_chk\n___stack_chk_fail\n___stack_chk_guard\n_bzero\n_calloc\n_clock_gettime\n_free\n_getpid\n_memcmp\n_memcpy\n_memset\n_usleep\n",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/artifacts-v2/fake-iokit.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/artifacts-v2/fake-iokit.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "sources": [
+    {
+      "path": "iokit_wire.h",
+      "sha256": "523f9f8bfa10668ed04df5e580d38440b9b1486b035de0ceba3f81bd42a0d645"
+    },
+    {
+      "path": "iokit_wire.c",
+      "sha256": "1f2e967a46fe43c5bdadb33e5effb2db31fad13bda0a40e590cca7343c9056f4"
+    },
+    {
+      "path": "fake_iokit.c",
+      "sha256": "756359c4aed4201ac81116620c1e686f20557e047e4cf8d07fefe06f0b63e612"
+    }
+  ],
+  "native_object_linked_or_loaded": false,
+  "new_root_or_USB_operations": 0
+}

@@ -1,0 +1,47 @@
+{
+  "created_utc": "2026-10-26T03:17:22.153959+00:00",
+  "reviewer": "same agent original-byte/source/AST/trace/hash review; no independent implementation/replay",
+  "prior_stage_files_verified": 9,
+  "provider_stage_files_verified": 21,
+  "executed_source_receipts_match_current_sources": true,
+  "native_hook_AST_has_no_register_or_memory_output_replacement": true,
+  "MIPS_kseg_CPU_mapping_uses_normal_Unicorn_backend_not_host_adapter": true,
+  "memory_access_hooks_report_physical_addresses_in_observed_backend": true,
+  "all_four_positive_and53_unwritten_controls_same_PC_sequence_and16byte_read_set": true,
+  "negative_native_errors_and_other_codec_offset_e_witness_verified": true,
+  "actual_packed_rate_nonread_and_allzero_allFF_controls_verified": true,
+  "unchanged_stage48_common_error_not_hidden_or_repaired_in_history": true,
+  "host_geometry_control_not_native_input_producer_or_sensor_timing": true,
+  "original_VCD_and_avcam_path_command_table_config_call_anchors_verified": true,
+  "first_attempt": {
+    "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/run-20261025/attempt-failure.json",
+    "classification": "observer address-space assertion, not VCD or camera fault",
+    "observed_reproduction": {
+      "store_hook_physical_address": "0x02007ff0",
+      "PC": "0x801a8598",
+      "SP": "0x82007fe0",
+      "size": 4
+    },
+    "correction": "Only hook range checks/accounting changed from virtual to physical; original CPU mapping/instructions/input/return untouched.",
+    "failed_executed_source_preserved": true
+  },
+  "public_reference_scope": [
+    {
+      "url": "https://github.com/unicorn-engine/unicorn/blob/master/docs/FAQ.md",
+      "claim": "MIPS kseg physical mapping and physical uc_mem_map versus virtual emu_start"
+    },
+    {
+      "url": "https://github.com/unicorn-engine/unicorn/blob/master/include/unicorn/unicorn.h",
+      "claim": "MIPS32 and little-endian modes"
+    },
+    {
+      "url": "https://github.com/unicorn-engine/unicorn/blob/master/samples/sample_mips.c",
+      "claim": "Official MIPS examples, read as tool-use reference only"
+    }
+  ],
+  "initial_unavailable_reference": "Two attempted Python sample paths returned404; no source used from them.",
+  "no_UU_Windows_active_camera_service_driver_media_module_WBI_or_flash": true,
+  "configuration_predicate_return0_is_not_16M_numeric_validation_or_hardware_acceptance": true,
+  "same_body_backup_restore_or_independent_recovery_verified": false,
+  "outcome": "PASS_WITH_RUNTIME_START_INPUT_AND_DEVICE_GAPS"
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "fx6-hybrid-upm-renamed-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal21.cpio",
+  "source_sha256": "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal29.cpio",
+  "output_sha256": "8ef0a7803ce336400cbeab455c1ba584c73712349434814814dbd546bc2e69da",
+  "fixed_bytes": 453184500,
+  "output_bytes": 453184500,
+  "target": {
+    "name": "usr/kmod/upm.ko",
+    "old_bytes": 453896,
+    "old_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+    "new_bytes": 414720,
+    "new_sha256": "87e36f1205ff348995334a5283468100ab46d632c320143b4652c7087e9be6fb"
+  },
+  "replaced_member_count": 1,
+  "scope": "Only the named CPIO member payload/header size changed; all other member bytes copied; trailing padding zeros to fixed length."
+}

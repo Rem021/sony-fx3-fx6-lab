@@ -1,0 +1,43 @@
+{
+  "historical_engine_only": true,
+  "buffer_formula": "M = uint32(-P) & 0x40000000; C = M - P - 3*0x80000, for successful allocation and positive page size P",
+  "page_size_examples_not_hardware_measurements": [
+    {
+      "assumed_positive_page_size": 4096,
+      "allocation_bytes": 1073741824,
+      "firmware_buffer_bytes": 1072164864,
+      "hex_capacity": "0x3fe7f000",
+      "measured_live_page_size": false
+    },
+    {
+      "assumed_positive_page_size": 16384,
+      "allocation_bytes": 1073741824,
+      "firmware_buffer_bytes": 1072152576,
+      "hex_capacity": "0x3fe7c000",
+      "measured_live_page_size": false
+    },
+    {
+      "assumed_positive_page_size": 65536,
+      "allocation_bytes": 1073741824,
+      "firmware_buffer_bytes": 1072103424,
+      "hex_capacity": "0x3fe70000",
+      "measured_live_page_size": false
+    }
+  ],
+  "length_contract": "searchFDAT reads big-endian uint32 L and rejects L > current empty buffer; SetBuffSize stores zero-extended L at object+0x540. ReadDataWithoutCopy returns N <= min(L, contiguous capacity, available bytes). Under normal initialized buffer state, 0 <= N < 2^30.",
+  "signed_interval": "If Pdata is returned pointer, digest length is uint32(N-256), signature pointer Pdata+N-256, signature length 256. IV is subsequently read from Pdata+N-272. For N>=272, signed bytes and IV use the same returned N and the uint32 digest length does not wrap.",
+  "data_identity_contract": "ReadDataWithoutCopy returns current ring read pointer without advancing it or reducing queued count. updateData subsequently invokes ReadData on this ring and readFromBuffer advances that same pointer/count. This is static same-buffer routing, not proof of runtime immutability or race freedom.",
+  "admission_decision": "VerifySignature requires RSA_verify result exactly 1, returns 0 after cleanup, and execWriteFirm continues past 0x96bc only for returned 0. Other shown paths allocate/throw ApiException; exception unwind and real write completion were not executed.",
+  "normal_length_truncation_bypass_supported": false,
+  "whole_modified_firmware_admission_proven": false,
+  "not_exhaustive_malformed_input_safety": [
+    "searchFDAT does not establish an N>=272 minimum at the shown size gate; N<256 can underflow the hash length and N<272 can place IV before returned data.",
+    "Initial magic read and later header-info read do not check exact positive byte counts at all shown sites; some Seek boolean results are not checked by callers.",
+    "No whole malformed input was submitted to original code or a camera; no conclusion that those gaps yield control or installation.",
+    "Current installed 7.02 updater and actual concurrency/allocation state remain uncaptured. Historical ABI is not asserted to match it."
+  ],
+  "private_keys_or_signing": false,
+  "original_code_execution": false,
+  "device_actions": 0,
+  "modified_package_created": false
+}

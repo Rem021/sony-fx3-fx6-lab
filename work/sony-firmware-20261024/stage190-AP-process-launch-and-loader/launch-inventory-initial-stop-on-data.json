@@ -1,0 +1,1754 @@
+{
+  "status": "STATIC_AP_PROCESS_LAUNCH_AND_ROOT_LOADER_INVENTORY",
+  "AP_image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "root_image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+  "ELFs_reverified": 532,
+  "launch_files": [
+    {
+      "paths": [
+        "/bin/checkServerCert"
+      ],
+      "inode": 80969,
+      "bytes": 742432,
+      "sha256": "8e1920f4764d6426a8901ba14334cfcda9cda215b29f337b3e7a08021f1ab1f5",
+      "needed": [
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libSTMcmdexecute.so",
+        "libCurlResourcePermission.so",
+        "libInfraNetworkCommon.so",
+        "libutil_date.so",
+        "libcurl.so.4",
+        "libcrypto.so.3",
+        "libresolv.so.2",
+        "libssl.so.3",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/bin/im.elf"
+      ],
+      "inode": 80972,
+      "bytes": 40920,
+      "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+      "needed": [
+        "libjemalloc_ds.so.2",
+        "libIMDB.so",
+        "libbackup.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libSTMcmdexecute.so",
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/bin/iperf"
+      ],
+      "inode": 80973,
+      "bytes": 86792,
+      "sha256": "15b469c8bcd30156d7b0dcafe86112bb87cd151c10e86c7c29d585e02d1e1154",
+      "needed": [
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/bin/myftm"
+      ],
+      "inode": 80982,
+      "bytes": 351472,
+      "sha256": "9ea80fdbe98f99ec75a595ecb475dc8e7237b479ea46a76120430ad250380413",
+      "needed": [
+        "libnl-genl-3.so.200",
+        "libnl-3.so.200",
+        "librt.so.1",
+        "libz.so.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "system",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/bin/ssh-keygen"
+      ],
+      "inode": 80988,
+      "bytes": 416976,
+      "sha256": "c3aaf1e24721fa78308c7daadca29de29e6d3c384e632754422f155054373fa9",
+      "needed": [
+        "libcrypto.so.3",
+        "libdl.so.2",
+        "libutil.so.1",
+        "libz.so.1",
+        "libcrypt.so.1",
+        "libresolv.so.2",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execlp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x21810",
+          "instruction": "bl #0x7b50",
+          "destination": "0x7b50",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x219a8",
+          "instruction": "bl #0x8380",
+          "destination": "0x8380",
+          "target": "execlp",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/bin/wpa_cli"
+      ],
+      "inode": 80990,
+      "bytes": 92928,
+      "sha256": "65b3b7292e71e6989a9851b02434b4e9621fe4f5cb2849bc3c2a946a6222e45e",
+      "needed": [
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "librt.so.1",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/bin/bootin.elf"
+      ],
+      "inode": 80994,
+      "bytes": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "needed": [
+        "libbackup.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execve",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/bin/openssl"
+      ],
+      "inode": 81008,
+      "bytes": 2860040,
+      "sha256": "eb816737b775a6786a44410ded6e7b2279e79dc042c4f14dfeac6475c9e4175a",
+      "needed": [
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/bin/wpa_supplicant"
+      ],
+      "inode": 81011,
+      "bytes": 1380160,
+      "sha256": "1b6a22d3cf107849df46977fb8fa45e00f8c7ab86ded58fb6400fe6a3ff6ae4f",
+      "needed": [
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "librt.so.1",
+        "libnl-3.so.200",
+        "libnl-genl-3.so.200",
+        "libdl.so.2",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libblkid.so.1.1.0"
+      ],
+      "inode": 95145,
+      "bytes": 229864,
+      "sha256": "70bdf9d5523985d4688e2a3af194ccc3bb54107962bbf52e5ef87230ecdf5398",
+      "needed": [
+        "libuuid.so.1",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execvp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x2020c",
+          "instruction": "bl #0x8090",
+          "destination": "0x8090",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x202c4",
+          "instruction": "bl #0x8340",
+          "destination": "0x8340",
+          "target": "execv",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x2079c",
+          "instruction": "bl #0x8090",
+          "destination": "0x8090",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x207f0",
+          "instruction": "bl #0x8340",
+          "destination": "0x8340",
+          "target": "execv",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x23d5c",
+          "instruction": "bl #0x8090",
+          "destination": "0x8090",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x23dc0",
+          "instruction": "bl #0x8090",
+          "destination": "0x8090",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x23f4c",
+          "instruction": "bl #0x8590",
+          "destination": "0x8590",
+          "target": "execvp",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libmount.so.1.1.0"
+      ],
+      "inode": 95156,
+      "bytes": 255392,
+      "sha256": "328cb1414b62c22216913d35973d14c0ce6c0e2e5376fdad89ebdc528207dc81",
+      "needed": [
+        "libblkid.so.1",
+        "libuuid.so.1",
+        "librt.so.1",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execvp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x1f918",
+          "instruction": "bl #0x9f50",
+          "destination": "0x9f50",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x21400",
+          "instruction": "bl #0x9f50",
+          "destination": "0x9f50",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x21598",
+          "instruction": "bl #0xa510",
+          "destination": "0xa510",
+          "target": "execv",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x24c1c",
+          "instruction": "bl #0x9f50",
+          "destination": "0x9f50",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "mnt_context_do_umount",
+              "VA": "0x24b98",
+              "bytes": 2664
+            }
+          ]
+        },
+        {
+          "VA": "0x24da8",
+          "instruction": "bl #0xa510",
+          "destination": "0xa510",
+          "target": "execv",
+          "containing_dynamic_symbols": [
+            {
+              "name": "mnt_context_do_umount",
+              "VA": "0x24b98",
+              "bytes": 2664
+            }
+          ]
+        },
+        {
+          "VA": "0x2aa84",
+          "instruction": "bl #0x9f50",
+          "destination": "0x9f50",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x2aae8",
+          "instruction": "bl #0x9f50",
+          "destination": "0x9f50",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x2ac74",
+          "instruction": "bl #0xa870",
+          "destination": "0xa870",
+          "target": "execvp",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libcurl.so.4.8.0"
+      ],
+      "inode": 95208,
+      "bytes": 526520,
+      "sha256": "89da555593250b45c669f8a2eb29a5acbb13acc0250e8468a61d7b75c1eca959",
+      "needed": [
+        "libssh2.so.1",
+        "libssl.so.3",
+        "libcrypto.so.3",
+        "libz.so.1",
+        "libanl.so.1",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execl",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x1b0c0",
+          "instruction": "bl #0xf0f0",
+          "destination": "0xf0f0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1b140",
+          "instruction": "bl #0xe210",
+          "destination": "0xe210",
+          "target": "execl",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1b294",
+          "instruction": "bl #0xe210",
+          "destination": "0xe210",
+          "target": "execl",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libGetLog.so"
+      ],
+      "inode": 95260,
+      "bytes": 178832,
+      "sha256": "6b977765c055f083127626e866ca0a6369fb52567a841b03ff57198e2187ac77",
+      "needed": [
+        "libssl.so.3",
+        "libz.so.1",
+        "libsencore.so",
+        "libInfraUsbCmn.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execl",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x3204",
+          "instruction": "bl #0x2ca0",
+          "destination": "0x2ca0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x3250",
+          "instruction": "bl #0x2870",
+          "destination": "0x2870",
+          "target": "execl",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libglib-2.0.so.0.6400.6"
+      ],
+      "inode": 95284,
+      "bytes": 1102952,
+      "sha256": "8d967daebbe190386235317282a2a476ffe29cabd25cdfb6f9e9fc3c58f5a354",
+      "needed": [
+        "libpcre.so.1",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execvp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "posix_spawnp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execve",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "posix_spawn",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x1c3d4",
+          "instruction": "bl #0x1b8f0",
+          "destination": "0x1b8f0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1c440",
+          "instruction": "bl #0x1bdd0",
+          "destination": "0x1bdd0",
+          "target": "execvp",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x22930",
+          "instruction": "bl #0x1b8f0",
+          "destination": "0x1b8f0",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "g_on_error_stack_trace",
+              "VA": "0x228e8",
+              "bytes": 184
+            }
+          ]
+        },
+        {
+          "VA": "0x77aa8",
+          "instruction": "bl #0x1b8f0",
+          "destination": "0x1b8f0",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "g_test_trap_fork",
+              "VA": "0x77a60",
+              "bytes": 536
+            }
+          ]
+        },
+        {
+          "VA": "0x9c138",
+          "instruction": "bl #0x1bfe0",
+          "destination": "0x1bfe0",
+          "target": "execve",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9c148",
+          "instruction": "bl #0x1bbc0",
+          "destination": "0x1bbc0",
+          "target": "execv",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9c4f4",
+          "instruction": "bl #0x1c0a0",
+          "destination": "0x1c0a0",
+          "target": "posix_spawn",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9c624",
+          "instruction": "bl #0x1bf20",
+          "destination": "0x1bf20",
+          "target": "posix_spawnp",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9c80c",
+          "instruction": "bl #0x1bfe0",
+          "destination": "0x1bfe0",
+          "target": "execve",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9c920",
+          "instruction": "bl #0x1bbc0",
+          "destination": "0x1bbc0",
+          "target": "execv",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9ca10",
+          "instruction": "bl #0x1bfe0",
+          "destination": "0x1bfe0",
+          "target": "execve",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9ca90",
+          "instruction": "bl #0x1bbc0",
+          "destination": "0x1bbc0",
+          "target": "execv",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9ce68",
+          "instruction": "bl #0x1b8f0",
+          "destination": "0x1b8f0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x9d050",
+          "instruction": "bl #0x1b8f0",
+          "destination": "0x1b8f0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": [
+        "/bin/sh"
+      ]
+    },
+    {
+      "paths": [
+        "/lib/libpopt.so.0.0.0"
+      ],
+      "inode": 95302,
+      "bytes": 43976,
+      "sha256": "7127f8849529a3f79710012d7ad33baa949f7426fdcba0f5f171c2b03f05bc2f",
+      "needed": [
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execvp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x4dd8",
+          "instruction": "bl #0x21c0",
+          "destination": "0x21c0",
+          "target": "execvp",
+          "containing_dynamic_symbols": [
+            {
+              "name": "poptGetNextOpt",
+              "VA": "0x4288",
+              "bytes": 3516
+            }
+          ]
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libmpr.so"
+      ],
+      "inode": 95303,
+      "bytes": 3517008,
+      "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+      "needed": [
+        "libexpat.so.1",
+        "libsecvlt.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "system",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x9c0ac",
+          "instruction": "bl #0x80f50",
+          "destination": "0x80f50",
+          "target": "system",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN3mpr3dbg11remainMovieEiPPc",
+              "VA": "0x9bd74",
+              "bytes": 1352
+            }
+          ]
+        },
+        {
+          "VA": "0x9c23c",
+          "instruction": "bl #0x80f50",
+          "destination": "0x80f50",
+          "target": "system",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN3mpr3dbg11remainMovieEiPPc",
+              "VA": "0x9bd74",
+              "bytes": 1352
+            }
+          ]
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libJiritsu.so"
+      ],
+      "inode": 95349,
+      "bytes": 225200,
+      "sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x6cb0",
+          "instruction": "bl #0x6610",
+          "destination": "0x6610",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN13CShellExecute12ExecShellNewEPc",
+              "VA": "0x6c8c",
+              "bytes": 156
+            }
+          ]
+        },
+        {
+          "VA": "0x6cd0",
+          "instruction": "bl #0x5bc0",
+          "destination": "0x5bc0",
+          "target": "execv",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN13CShellExecute12ExecShellNewEPc",
+              "VA": "0x6c8c",
+              "bytes": 156
+            }
+          ]
+        }
+      ],
+      "selected_strings": [
+        "/bin/sh",
+        "/bin/date -s %02d%02d%02d%02d%04d.%02d"
+      ]
+    },
+    {
+      "paths": [
+        "/lib/libCertificateManager.so"
+      ],
+      "inode": 95350,
+      "bytes": 186472,
+      "sha256": "b4ed2680bb4b000b2078f3172ad229e001cd3f91bf767f9df01d6c83363d32d6",
+      "needed": [
+        "libcurl.so.4",
+        "libcrypto.so.3",
+        "libresolv.so.2",
+        "libssl.so.3",
+        "libCurlResourcePermission.so",
+        "libInfraNetworkCommon.so",
+        "libSTMcmdexecute.so",
+        "libutil_date.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execl",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x22a90",
+          "instruction": "bl #0x12c90",
+          "destination": "0x12c90",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN7network18CertificateManager16CertFileVerifier7execCmdEPPcPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE",
+              "VA": "0x22a08",
+              "bytes": 536
+            }
+          ]
+        },
+        {
+          "VA": "0x25330",
+          "instruction": "bl #0x12c90",
+          "destination": "0x12c90",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN7network18CertificateManager19FsysFileReadWrapper11fsckExecuteEv",
+              "VA": "0x25304",
+              "bytes": 236
+            }
+          ]
+        },
+        {
+          "VA": "0x25354",
+          "instruction": "bl #0x11a60",
+          "destination": "0x11a60",
+          "target": "execl",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN7network18CertificateManager19FsysFileReadWrapper11fsckExecuteEv",
+              "VA": "0x25304",
+              "bytes": 236
+            }
+          ]
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/security/pam_exec.so"
+      ],
+      "inode": 95355,
+      "bytes": 14480,
+      "sha256": "440b052eb91a8019a7f8a0a8edb8045025333d3064a1090a521537d818cfa802",
+      "needed": [
+        "libpam.so.0",
+        "libdl.so.2",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execve",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x1580",
+          "instruction": "bl #0xfd0",
+          "destination": "0xfd0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1ab4",
+          "instruction": "bl #0x10e0",
+          "destination": "0x10e0",
+          "target": "execve",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/security/pam_unix.so"
+      ],
+      "inode": 95358,
+      "bytes": 43592,
+      "sha256": "545ea25c469ce9ae29445a721e284e190138f6a79910ab9df6b67a525379e2b7",
+      "needed": [
+        "libpam.so.0",
+        "libdl.so.2",
+        "libcrypt.so.1",
+        "libnsl.so.1",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execve",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x27bc",
+          "instruction": "bl #0x1fa0",
+          "destination": "0x1fa0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x2838",
+          "instruction": "bl #0x22a0",
+          "destination": "0x22a0",
+          "target": "execve",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x29a0",
+          "instruction": "bl #0x1fa0",
+          "destination": "0x1fa0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x3ea8",
+          "instruction": "bl #0x1fa0",
+          "destination": "0x1fa0",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x4028",
+          "instruction": "bl #0x22a0",
+          "destination": "0x22a0",
+          "target": "execve",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/appFw.so"
+      ],
+      "inode": 95387,
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "needed": [
+        "libNetCommon.so",
+        "libGOConnectionManager.so",
+        "AdjChkConfig.so",
+        "libqrencode.so",
+        "libInfraSKD.so",
+        "libCertificateManager.so",
+        "libssl.so.3",
+        "libpng.so.16",
+        "libjsoncpp.so.24",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execl",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x2f6ae64",
+          "instruction": "b #0x1592150",
+          "destination": "0x1592150",
+          "target": "execl",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libgio-2.0.so.0.6400.6"
+      ],
+      "inode": 95523,
+      "bytes": 1612120,
+      "sha256": "af8c548281a25be8753976cb2ca389e3b038f62af5a4756a385d1bb301dd96e3",
+      "needed": [
+        "libglib-2.0.so.0",
+        "libgobject-2.0.so.0",
+        "libgmodule-2.0.so.0",
+        "libz.so.1",
+        "libmount.so.1",
+        "libresolv.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x134458",
+          "instruction": "bl #0x39f00",
+          "destination": "0x39f00",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": [
+        "/bin/sh"
+      ]
+    },
+    {
+      "paths": [
+        "/lib/libupdatercommon.so"
+      ],
+      "inode": 95566,
+      "bytes": 56032,
+      "sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execve",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0xa058",
+          "instruction": "bl #0x6e10",
+          "destination": "0x6e10",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN7Updater15ExternalCommand7ExecuteEPKPcS3_",
+              "VA": "0xa040",
+              "bytes": 140
+            }
+          ]
+        },
+        {
+          "VA": "0xa074",
+          "instruction": "bl #0x6ce0",
+          "destination": "0x6ce0",
+          "target": "execve",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_ZN7Updater15ExternalCommand7ExecuteEPKPcS3_",
+              "VA": "0xa040",
+              "bytes": 140
+            }
+          ]
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/lib/libNetService.so"
+      ],
+      "inode": 95581,
+      "bytes": 959216,
+      "sha256": "f15d2524cf64015f903b1325b5e545278de8f4ca7010bd9517e93c83a0911278",
+      "needed": [
+        "libbkdmn.so",
+        "libNetCommon.so",
+        "libInfraAccessLogWrapper.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execvp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0xaf0ac",
+          "instruction": "bl #0x59500",
+          "destination": "0x59500",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_Z14WCMProcessExecP7WCMProcPKcPS2_mPiPK17WCMProcessOptions",
+              "VA": "0xaefac",
+              "bytes": 636
+            }
+          ]
+        },
+        {
+          "VA": "0xaf13c",
+          "instruction": "bl #0x55860",
+          "destination": "0x55860",
+          "target": "execvp",
+          "containing_dynamic_symbols": [
+            {
+              "name": "_Z14WCMProcessExecP7WCMProcPKcPS2_mPiPK17WCMProcessOptions",
+              "VA": "0xaefac",
+              "bytes": 636
+            }
+          ]
+        },
+        {
+          "VA": "0xb5cdc",
+          "instruction": "bl #0x59500",
+          "destination": "0x59500",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "os_exec",
+              "VA": "0xb5cbc",
+              "bytes": 288
+            }
+          ]
+        },
+        {
+          "VA": "0xb5d7c",
+          "instruction": "bl #0x55a70",
+          "destination": "0x55a70",
+          "target": "execv",
+          "containing_dynamic_symbols": [
+            {
+              "name": "os_exec",
+              "VA": "0xb5cbc",
+              "bytes": 288
+            }
+          ]
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/sbin/tcpdump"
+      ],
+      "inode": 60722,
+      "bytes": 2830168,
+      "sha256": "8400a9066f36b5532c3c6e87b05713ab74f0a537841ff97633b3130e05dd635c",
+      "needed": [
+        "libpcap.so.1",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execlp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/sbin/dhcpcd"
+      ],
+      "inode": 60724,
+      "bytes": 1262664,
+      "sha256": "57970b6ad79d9813b15bdb580cde3294a0ba178d1b345a96dd1712c8d38043b2",
+      "needed": [
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "posix_spawn",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/sbin/usbmuxd"
+      ],
+      "inode": 60726,
+      "bytes": 186624,
+      "sha256": "288f4aa7c57410ffdb466859f74016f1ad84ed12bd8291085fd2df096b744bdd",
+      "needed": [
+        "libplist.so.3",
+        "libusb-1.0.so.0",
+        "libimobiledevice.so.6",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/sbin/dhcpd"
+      ],
+      "inode": 60727,
+      "bytes": 13433528,
+      "sha256": "0c1336c7e44a58adf6ccee2f7a452c9b7189d749d22d029e602b0b6e3fcc34c2",
+      "needed": [
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0x40f8d4",
+          "instruction": "bl #0x404b80",
+          "destination": "0x404b80",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": []
+    },
+    {
+      "paths": [
+        "/sbin/sshd"
+      ],
+      "inode": 60728,
+      "bytes": 767408,
+      "sha256": "a6b871ef0da3990ea0d25d7996ee79c3bfc29385d4eb1670892814c0e1472534",
+      "needed": [
+        "libpam.so.0",
+        "libcrypto.so.3",
+        "libdl.so.2",
+        "libutil.so.1",
+        "libz.so.1",
+        "libcrypt.so.1",
+        "libresolv.so.2",
+        "libc.so.6"
+      ],
+      "launch_symbols": [
+        {
+          "name": "execv",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execlp",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execl",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "popen",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "execve",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "fork",
+          "VA": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        }
+      ],
+      "direct_calls": [
+        {
+          "VA": "0xdc40",
+          "instruction": "bl #0xa8e0",
+          "destination": "0xa8e0",
+          "target": "execv",
+          "containing_dynamic_symbols": [
+            {
+              "name": "main",
+              "VA": "0xc748",
+              "bytes": 10300
+            }
+          ]
+        },
+        {
+          "VA": "0xe750",
+          "instruction": "bl #0xb780",
+          "destination": "0xb780",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "main",
+              "VA": "0xc748",
+              "bytes": 10300
+            }
+          ]
+        },
+        {
+          "VA": "0xe98c",
+          "instruction": "bl #0xb780",
+          "destination": "0xb780",
+          "target": "fork",
+          "containing_dynamic_symbols": [
+            {
+              "name": "main",
+              "VA": "0xc748",
+              "bytes": 10300
+            }
+          ]
+        },
+        {
+          "VA": "0xfa8c",
+          "instruction": "bl #0xb780",
+          "destination": "0xb780",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0xffb8",
+          "instruction": "bl #0xa8e0",
+          "destination": "0xa8e0",
+          "target": "execv",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x19a28",
+          "instruction": "bl #0xb780",
+          "destination": "0xb780",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x19ba4",
+          "instruction": "bl #0xb160",
+          "destination": "0xb160",
+          "target": "execve",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1e460",
+          "instruction": "bl #0xabf0",
+          "destination": "0xabf0",
+          "target": "popen",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1e4f8",
+          "instruction": "bl #0xb160",
+          "destination": "0xb160",
+          "target": "execve",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1e5dc",
+          "instruction": "bl #0xaa20",
+          "destination": "0xaa20",
+          "target": "execl",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1e768",
+          "instruction": "bl #0xabf0",
+          "destination": "0xabf0",
+          "target": "popen",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1e830",
+          "instruction": "bl #0xabf0",
+          "destination": "0xabf0",
+          "target": "popen",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x1f3f4",
+          "instruction": "bl #0xb780",
+          "destination": "0xb780",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x201e0",
+          "instruction": "bl #0xb780",
+          "destination": "0xb780",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x2d068",
+          "instruction": "bl #0xb780",
+          "destination": "0xb780",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x4f8d0",
+          "instruction": "bl #0xb780",
+          "destination": "0xb780",
+          "target": "fork",
+          "containing_dynamic_symbols": []
+        },
+        {
+          "VA": "0x4fa68",
+          "instruction": "bl #0xa910",
+          "destination": "0xa910",
+          "target": "execlp",
+          "containing_dynamic_symbols": []
+        }
+      ],
+      "selected_strings": [
+        "/bin/sh",
+        "/bin/sh /etc/ssh/sshrc"
+      ]
+    }
+  ],
+  "root_files": [
+    {
+      "path": "/bin/busybox",
+      "inode": 33,
+      "inode_type": 32768,
+      "bytes": 423000,
+      "sha256": "c3297a7086efe9a001c39fa98d74d125992cf3225cf353ab6ff2238d827c7799",
+      "elf_type": "ET_EXEC",
+      "machine": "EM_AARCH64",
+      "entry": "0x4069a0",
+      "interp": [
+        "/lib/ld-linux-aarch64.so.1"
+      ],
+      "needed": [
+        "libcrypt.so.1",
+        "libc.so.6"
+      ],
+      "preload_literal_offsets": []
+    },
+    {
+      "path": "/bin/sh",
+      "inode": 48,
+      "inode_type": 40960,
+      "bytes": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91",
+      "symlink_text_only": "busybox"
+    },
+    {
+      "path": "/bin/date",
+      "inode": 58,
+      "inode_type": 40960,
+      "bytes": 7,
+      "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91",
+      "symlink_text_only": "busybox"
+    },
+    {
+      "path": "/lib/libc-2.25.so",
+      "inode": 92,
+      "inode_type": 32768,
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "elf_type": "ET_DYN",
+      "machine": "EM_AARCH64",
+      "entry": "0x1fb38",
+      "interp": [
+        "/lib/ld-linux-aarch64.so.1"
+      ],
+      "needed": [
+        "ld-linux-aarch64.so.1"
+      ],
+      "preload_literal_offsets": []
+    },
+    {
+      "path": "/lib/ld-linux-aarch64.so.1",
+      "inode": 93,
+      "inode_type": 40960,
+      "bytes": 10,
+      "sha256": "c4d8ce90c4e8d0aac6bd8545e39dd098049cfa702dba2dd788bdccec0e24c616",
+      "symlink_text_only": "ld-2.25.so"
+    },
+    {
+      "path": "/lib/libc.so.6",
+      "inode": 96,
+      "inode_type": 40960,
+      "bytes": 12,
+      "sha256": "e453935786dc5cbb3c2b341c0853e19a34c69018625d9fc618413dfce851f3b2",
+      "symlink_text_only": "libc-2.25.so"
+    },
+    {
+      "path": "/lib/ld-2.25.so",
+      "inode": 97,
+      "inode_type": 32768,
+      "bytes": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+      "elf_type": "ET_DYN",
+      "machine": "EM_AARCH64",
+      "entry": "0xd00",
+      "interp": [],
+      "needed": [],
+      "preload_literal_offsets": [
+        101352
+      ]
+    }
+  ],
+  "scope": "Only exact dynamic launch names and direct branches. Raw syscalls, indirect branches, constructed command names, other partitions and runtime modifications are not ruled out.",
+  "original_Sony_or_public_client_execution": false,
+  "new_camera_operations": 0
+}

@@ -1,0 +1,31 @@
+{
+  "before": {
+    "start": "2026-11-04 09:07:27",
+    "end": "2026-11-04 09:22:27",
+    "exit": 0,
+    "timeout": false,
+    "event_lines": []
+  },
+  "predicate": "process == \"kernel\" AND (eventMessage CONTAINS[c] \"unmounting volume KAFU2T\" OR eventMessage CONTAINS[c] \"mount-complete volume KAFU2T\" OR eventMessage CONTAINS[c] \"unclean unmount\" OR eventMessage CONTAINS[c] \"failed to finish all transactions\" OR eventMessage CONTAINS[c] \"cableChangeOccurred\" OR eventMessage CONTAINS[c] \"Extreme 55AE\" OR eventMessage CONTAINS[c] \"m_connectionActive\")",
+  "during_after": [
+    {
+      "start": "2026-11-04 09:23:00",
+      "end": "2026-11-04 09:25:00",
+      "exit": 0,
+      "timeout": false,
+      "stderr": "",
+      "stdout_sha256": "9f56fca152030dba9e8ee76dee4fc8967ab667507b5878f0f9ab819d55b6b9a6",
+      "event_lines": []
+    },
+    {
+      "start": "2026-11-04 09:25:00",
+      "end": "2026-11-04 09:26:40",
+      "exit": 0,
+      "timeout": false,
+      "stderr": "",
+      "stdout_sha256": "9f56fca152030dba9e8ee76dee4fc8967ab667507b5878f0f9ab819d55b6b9a6",
+      "event_lines": []
+    }
+  ],
+  "scope": "exact predicate only, not full storage proof"
+}

@@ -1,0 +1,784 @@
+{
+  "created_utc": "2026-11-02T17:12:41.301144+00:00",
+  "duration_seconds": 50.70411333302036,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93-r5-current-frame-export/candidate.json",
+  "candidate_sha256": "3f7bf1d12a3f94c955be7f6b8b87712432e9c4b01ca39201430056a708f58b02",
+  "observer_source_snapshot": [
+    {
+      "name": "run_candidate93_r5.py",
+      "sha256": "6518e889cc65d64c30783fc8bfb9a9ae36ee9dcd8ff5063cb4feaaacdbc93fce"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "key_readback93_v2_frame.py",
+      "sha256": "e157cd7cbd4a70a5adc54ce0543381c2f4d10641d1dab18db520665bb93704e6"
+    },
+    {
+      "name": "gate_input93_v2.py",
+      "sha256": "1744316d7fcc73e688e90fe0b07a8f2ebea8876d7bd9f302b31fb64bdc06c5fb"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap93r5frame-19bbfb81",
+  "requested_seconds": 300,
+  "qemu_pid": 15979,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93-r5-current-frame-export/guest.dtb",
+      "sha256": "90351dcfa11fa66720f9cf00ce178dd9fdf11cba792b857ae0116a051407ee24"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93-r5-current-frame-export/guest.cpio",
+      "sha256": "62b07faa9277ef749bd5e4d807a0318a195c766a7e47db5a517d2681135ce4e8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93-r5-current-frame-export/candidate.json",
+      "sha256": "3f7bf1d12a3f94c955be7f6b8b87712432e9c4b01ca39201430056a708f58b02"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.20074258299428038,
+      "rss_vsz_kib": "949632 495711136"
+    },
+    {
+      "elapsed_seconds": 0.46892841599765234,
+      "rss_vsz_kib": "1108208 495711136"
+    },
+    {
+      "elapsed_seconds": 0.7313916250132024,
+      "rss_vsz_kib": "1109376 495711136"
+    },
+    {
+      "elapsed_seconds": 0.9941482499998529,
+      "rss_vsz_kib": "1114944 495711136"
+    },
+    {
+      "elapsed_seconds": 1.2511086250015069,
+      "rss_vsz_kib": "1162944 495711136"
+    },
+    {
+      "elapsed_seconds": 1.513147541001672,
+      "rss_vsz_kib": "1186176 495711136"
+    },
+    {
+      "elapsed_seconds": 1.7772213330026716,
+      "rss_vsz_kib": "1293616 495711136"
+    },
+    {
+      "elapsed_seconds": 2.034652916016057,
+      "rss_vsz_kib": "1295504 495711136"
+    },
+    {
+      "elapsed_seconds": 2.300196500000311,
+      "rss_vsz_kib": "1306336 495711136"
+    },
+    {
+      "elapsed_seconds": 2.5621890829934273,
+      "rss_vsz_kib": "1297648 495711136"
+    },
+    {
+      "elapsed_seconds": 2.828005415998632,
+      "rss_vsz_kib": "1294112 495711136"
+    },
+    {
+      "elapsed_seconds": 3.102165749995038,
+      "rss_vsz_kib": "1257568 495711136"
+    },
+    {
+      "elapsed_seconds": 3.375675500021316,
+      "rss_vsz_kib": "1253584 495711136"
+    },
+    {
+      "elapsed_seconds": 3.645430958014913,
+      "rss_vsz_kib": "1253632 495711136"
+    },
+    {
+      "elapsed_seconds": 3.9141122500004712,
+      "rss_vsz_kib": "1249664 495711136"
+    },
+    {
+      "elapsed_seconds": 4.181098166009178,
+      "rss_vsz_kib": "1245552 495711136"
+    },
+    {
+      "elapsed_seconds": 4.451821082999231,
+      "rss_vsz_kib": "1241568 495711136"
+    },
+    {
+      "elapsed_seconds": 4.7109363750205375,
+      "rss_vsz_kib": "1237744 495711136"
+    },
+    {
+      "elapsed_seconds": 4.985726083017653,
+      "rss_vsz_kib": "1236416 495711136"
+    },
+    {
+      "elapsed_seconds": 5.256899250001879,
+      "rss_vsz_kib": "1229984 495711136"
+    },
+    {
+      "elapsed_seconds": 5.52093829101068,
+      "rss_vsz_kib": "1229984 495711136"
+    },
+    {
+      "elapsed_seconds": 5.793436541018309,
+      "rss_vsz_kib": "1227120 495711136"
+    },
+    {
+      "elapsed_seconds": 6.064891083020484,
+      "rss_vsz_kib": "1227120 495711136"
+    },
+    {
+      "elapsed_seconds": 6.33678970800247,
+      "rss_vsz_kib": "1227120 495711136"
+    },
+    {
+      "elapsed_seconds": 6.606977125018602,
+      "rss_vsz_kib": "1227120 495711136"
+    },
+    {
+      "elapsed_seconds": 6.880646541016176,
+      "rss_vsz_kib": "1227120 495711136"
+    },
+    {
+      "elapsed_seconds": 7.153693583008135,
+      "rss_vsz_kib": "1227120 495711136"
+    },
+    {
+      "elapsed_seconds": 7.426484124996932,
+      "rss_vsz_kib": "1227120 495711136"
+    },
+    {
+      "elapsed_seconds": 7.698419708001893,
+      "rss_vsz_kib": "1227168 495711136"
+    },
+    {
+      "elapsed_seconds": 7.9755547500099055,
+      "rss_vsz_kib": "1227168 495711136"
+    },
+    {
+      "elapsed_seconds": 8.247628291021101,
+      "rss_vsz_kib": "1227168 495711136"
+    },
+    {
+      "elapsed_seconds": 8.521888916002354,
+      "rss_vsz_kib": "1227168 495711136"
+    },
+    {
+      "elapsed_seconds": 8.791776458005188,
+      "rss_vsz_kib": "1227168 495711136"
+    },
+    {
+      "elapsed_seconds": 9.054278458002955,
+      "rss_vsz_kib": "1227168 495711136"
+    },
+    {
+      "elapsed_seconds": 9.327526250010123,
+      "rss_vsz_kib": "1227168 495711136"
+    },
+    {
+      "elapsed_seconds": 9.596896708011627,
+      "rss_vsz_kib": "1227168 495711136"
+    },
+    {
+      "elapsed_seconds": 9.860865416005254,
+      "rss_vsz_kib": "1228448 495711136"
+    },
+    {
+      "elapsed_seconds": 10.119813833007356,
+      "rss_vsz_kib": "1242624 495711136"
+    },
+    {
+      "elapsed_seconds": 10.386470541008748,
+      "rss_vsz_kib": "1252848 495711136"
+    },
+    {
+      "elapsed_seconds": 10.654777250019833,
+      "rss_vsz_kib": "1261968 495711136"
+    },
+    {
+      "elapsed_seconds": 10.92546162501094,
+      "rss_vsz_kib": "1263264 495711136"
+    },
+    {
+      "elapsed_seconds": 11.191651875007665,
+      "rss_vsz_kib": "1271872 495711136"
+    },
+    {
+      "elapsed_seconds": 11.459522624994861,
+      "rss_vsz_kib": "1281040 495711136"
+    },
+    {
+      "elapsed_seconds": 11.728420708008343,
+      "rss_vsz_kib": "1282928 495711136"
+    },
+    {
+      "elapsed_seconds": 11.995906500000274,
+      "rss_vsz_kib": "1284304 495711136"
+    },
+    {
+      "elapsed_seconds": 12.271683124999981,
+      "rss_vsz_kib": "1285440 495711136"
+    },
+    {
+      "elapsed_seconds": 12.55255545800901,
+      "rss_vsz_kib": "1285872 495711136"
+    },
+    {
+      "elapsed_seconds": 12.835619958001189,
+      "rss_vsz_kib": "1286432 495711136"
+    },
+    {
+      "elapsed_seconds": 13.110853165999288,
+      "rss_vsz_kib": "1286592 495711136"
+    },
+    {
+      "elapsed_seconds": 13.395796416007215,
+      "rss_vsz_kib": "1286880 495711136"
+    },
+    {
+      "elapsed_seconds": 13.682488207996357,
+      "rss_vsz_kib": "1287392 495711136"
+    },
+    {
+      "elapsed_seconds": 13.972088583017467,
+      "rss_vsz_kib": "1291440 495711136"
+    },
+    {
+      "elapsed_seconds": 14.261965250014327,
+      "rss_vsz_kib": "1308944 495711136"
+    },
+    {
+      "elapsed_seconds": 14.555739416013239,
+      "rss_vsz_kib": "1312464 495711136"
+    },
+    {
+      "elapsed_seconds": 14.845547500008252,
+      "rss_vsz_kib": "1312768 495711136"
+    },
+    {
+      "elapsed_seconds": 15.135840250004549,
+      "rss_vsz_kib": "1313088 495711136"
+    },
+    {
+      "elapsed_seconds": 15.431135666003684,
+      "rss_vsz_kib": "1313856 495711136"
+    },
+    {
+      "elapsed_seconds": 15.728193415998248,
+      "rss_vsz_kib": "1314720 495711136"
+    },
+    {
+      "elapsed_seconds": 16.026303125021514,
+      "rss_vsz_kib": "1317024 495711136"
+    },
+    {
+      "elapsed_seconds": 16.317076500010444,
+      "rss_vsz_kib": "1317280 495711136"
+    },
+    {
+      "elapsed_seconds": 16.615121708018705,
+      "rss_vsz_kib": "1317456 495711136"
+    },
+    {
+      "elapsed_seconds": 16.914204083004734,
+      "rss_vsz_kib": "1320064 495711136"
+    },
+    {
+      "elapsed_seconds": 17.217468000017107,
+      "rss_vsz_kib": "1320448 495711136"
+    },
+    {
+      "elapsed_seconds": 17.517760874994565,
+      "rss_vsz_kib": "1320864 495711136"
+    },
+    {
+      "elapsed_seconds": 17.82247208300396,
+      "rss_vsz_kib": "1362336 495711136"
+    },
+    {
+      "elapsed_seconds": 18.131339000014123,
+      "rss_vsz_kib": "1400192 495711136"
+    },
+    {
+      "elapsed_seconds": 18.433192374999635,
+      "rss_vsz_kib": "1403952 495711136"
+    },
+    {
+      "elapsed_seconds": 18.738238791003823,
+      "rss_vsz_kib": "1406032 495711136"
+    },
+    {
+      "elapsed_seconds": 19.04543250001734,
+      "rss_vsz_kib": "1416224 495719328"
+    },
+    {
+      "elapsed_seconds": 19.365612333000172,
+      "rss_vsz_kib": "1417760 495719328"
+    },
+    {
+      "elapsed_seconds": 19.676332583010662,
+      "rss_vsz_kib": "1419104 495719328"
+    },
+    {
+      "elapsed_seconds": 19.987749000021722,
+      "rss_vsz_kib": "1421776 495719328"
+    },
+    {
+      "elapsed_seconds": 20.30554766600835,
+      "rss_vsz_kib": "1423664 495719328"
+    },
+    {
+      "elapsed_seconds": 20.626393875019858,
+      "rss_vsz_kib": "1438528 495719328"
+    },
+    {
+      "elapsed_seconds": 20.940792000008514,
+      "rss_vsz_kib": "1448096 495719328"
+    },
+    {
+      "elapsed_seconds": 21.255386875011027,
+      "rss_vsz_kib": "1453776 495719328"
+    },
+    {
+      "elapsed_seconds": 21.57354020801722,
+      "rss_vsz_kib": "1458208 495719328"
+    },
+    {
+      "elapsed_seconds": 21.891221875004703,
+      "rss_vsz_kib": "1458640 495719328"
+    },
+    {
+      "elapsed_seconds": 22.208178875007434,
+      "rss_vsz_kib": "1458672 495719328"
+    },
+    {
+      "elapsed_seconds": 22.52107570800581,
+      "rss_vsz_kib": "1459296 495719328"
+    },
+    {
+      "elapsed_seconds": 22.837379375007004,
+      "rss_vsz_kib": "1459424 495719328"
+    },
+    {
+      "elapsed_seconds": 23.161178625014145,
+      "rss_vsz_kib": "1459424 495719328"
+    },
+    {
+      "elapsed_seconds": 23.477047332999064,
+      "rss_vsz_kib": "1459792 495719328"
+    },
+    {
+      "elapsed_seconds": 23.794466000021202,
+      "rss_vsz_kib": "1466240 495719328"
+    },
+    {
+      "elapsed_seconds": 24.108363208011724,
+      "rss_vsz_kib": "1480544 495719328"
+    },
+    {
+      "elapsed_seconds": 24.424472333019366,
+      "rss_vsz_kib": "1495984 495719328"
+    },
+    {
+      "elapsed_seconds": 24.743194541020785,
+      "rss_vsz_kib": "1506016 495719328"
+    },
+    {
+      "elapsed_seconds": 25.06545604101848,
+      "rss_vsz_kib": "1510480 495719328"
+    },
+    {
+      "elapsed_seconds": 25.38424708301318,
+      "rss_vsz_kib": "1517008 495719328"
+    },
+    {
+      "elapsed_seconds": 25.702249041001778,
+      "rss_vsz_kib": "1523952 495719328"
+    },
+    {
+      "elapsed_seconds": 26.02823462500237,
+      "rss_vsz_kib": "1527120 495719328"
+    },
+    {
+      "elapsed_seconds": 26.358111208013725,
+      "rss_vsz_kib": "1527632 495719328"
+    },
+    {
+      "elapsed_seconds": 26.686307708005188,
+      "rss_vsz_kib": "1530480 495719328"
+    },
+    {
+      "elapsed_seconds": 27.02124441601336,
+      "rss_vsz_kib": "1531792 495719328"
+    },
+    {
+      "elapsed_seconds": 27.349951915995916,
+      "rss_vsz_kib": "1532752 495719328"
+    },
+    {
+      "elapsed_seconds": 27.67576949999784,
+      "rss_vsz_kib": "1532768 495719328"
+    },
+    {
+      "elapsed_seconds": 28.00648920799722,
+      "rss_vsz_kib": "1534096 495719328"
+    },
+    {
+      "elapsed_seconds": 28.358157708018553,
+      "rss_vsz_kib": "1535712 495719328"
+    },
+    {
+      "elapsed_seconds": 28.6996490409947,
+      "rss_vsz_kib": "1550656 495719328"
+    },
+    {
+      "elapsed_seconds": 29.033712625008775,
+      "rss_vsz_kib": "1566432 495719328"
+    },
+    {
+      "elapsed_seconds": 29.369390166015364,
+      "rss_vsz_kib": "1571680 495719328"
+    },
+    {
+      "elapsed_seconds": 29.70292966600391,
+      "rss_vsz_kib": "1574640 495719328"
+    },
+    {
+      "elapsed_seconds": 30.04331804101821,
+      "rss_vsz_kib": "1607104 495735712"
+    },
+    {
+      "elapsed_seconds": 30.39380816600169,
+      "rss_vsz_kib": "1610560 495735712"
+    },
+    {
+      "elapsed_seconds": 30.735305166017497,
+      "rss_vsz_kib": "1610640 495735712"
+    },
+    {
+      "elapsed_seconds": 31.072850124997785,
+      "rss_vsz_kib": "1612944 495735712"
+    },
+    {
+      "elapsed_seconds": 31.4110571659985,
+      "rss_vsz_kib": "1614240 495735712"
+    },
+    {
+      "elapsed_seconds": 31.758062375010923,
+      "rss_vsz_kib": "1615824 495735712"
+    },
+    {
+      "elapsed_seconds": 32.09932158299489,
+      "rss_vsz_kib": "1615888 495735712"
+    },
+    {
+      "elapsed_seconds": 32.44692708301591,
+      "rss_vsz_kib": "1615984 495735712"
+    },
+    {
+      "elapsed_seconds": 32.796273375017336,
+      "rss_vsz_kib": "1616032 495735712"
+    },
+    {
+      "elapsed_seconds": 33.14909141600947,
+      "rss_vsz_kib": "1616160 495735712"
+    },
+    {
+      "elapsed_seconds": 33.50395795801887,
+      "rss_vsz_kib": "1616224 495735712"
+    },
+    {
+      "elapsed_seconds": 33.85225774999708,
+      "rss_vsz_kib": "1617264 495735712"
+    },
+    {
+      "elapsed_seconds": 34.20549987500999,
+      "rss_vsz_kib": "1633232 495735712"
+    },
+    {
+      "elapsed_seconds": 34.58717025001533,
+      "rss_vsz_kib": "1633760 495735712"
+    },
+    {
+      "elapsed_seconds": 34.944294665998314,
+      "rss_vsz_kib": "1633936 495735712"
+    },
+    {
+      "elapsed_seconds": 35.292740458011394,
+      "rss_vsz_kib": "1633968 495735712"
+    },
+    {
+      "elapsed_seconds": 36.3709160410217,
+      "rss_vsz_kib": "1634048 495735712"
+    },
+    {
+      "elapsed_seconds": 36.73054874999798,
+      "rss_vsz_kib": "1634096 495735712"
+    },
+    {
+      "elapsed_seconds": 37.08886241601431,
+      "rss_vsz_kib": "1634128 495735712"
+    },
+    {
+      "elapsed_seconds": 37.98450449999655,
+      "rss_vsz_kib": "1634128 495735712"
+    },
+    {
+      "elapsed_seconds": 38.346624750003684,
+      "rss_vsz_kib": "1634128 495735712"
+    },
+    {
+      "elapsed_seconds": 39.41344475001097,
+      "rss_vsz_kib": "1634240 495735712"
+    },
+    {
+      "elapsed_seconds": 39.77739679100341,
+      "rss_vsz_kib": "1635856 495735712"
+    },
+    {
+      "elapsed_seconds": 40.14269941599923,
+      "rss_vsz_kib": "1635872 495735712"
+    },
+    {
+      "elapsed_seconds": 40.503456000005826,
+      "rss_vsz_kib": "1635904 495735712"
+    },
+    {
+      "elapsed_seconds": 41.22356783301802,
+      "rss_vsz_kib": "1636384 495735712"
+    },
+    {
+      "elapsed_seconds": 41.58687095800997,
+      "rss_vsz_kib": "1636512 495735712"
+    },
+    {
+      "elapsed_seconds": 42.60479366601794,
+      "rss_vsz_kib": "1636512 495735712"
+    },
+    {
+      "elapsed_seconds": 43.07007300000987,
+      "rss_vsz_kib": "1636528 495735712"
+    },
+    {
+      "elapsed_seconds": 43.44422016601311,
+      "rss_vsz_kib": "1636528 495735712"
+    },
+    {
+      "elapsed_seconds": 43.81025529099861,
+      "rss_vsz_kib": "1636528 495735712"
+    },
+    {
+      "elapsed_seconds": 44.742234958015615,
+      "rss_vsz_kib": "1636576 495735712"
+    },
+    {
+      "elapsed_seconds": 45.11611395800719,
+      "rss_vsz_kib": "1636624 495735712"
+    },
+    {
+      "elapsed_seconds": 45.49040004101698,
+      "rss_vsz_kib": "1636640 495735712"
+    },
+    {
+      "elapsed_seconds": 46.14877570801764,
+      "rss_vsz_kib": "1636640 495735712"
+    },
+    {
+      "elapsed_seconds": 46.52569866599515,
+      "rss_vsz_kib": "1636640 495735712"
+    },
+    {
+      "elapsed_seconds": 47.602025208005216,
+      "rss_vsz_kib": "1636656 495735712"
+    },
+    {
+      "elapsed_seconds": 48.075902708020294,
+      "rss_vsz_kib": "1636656 495735712"
+    },
+    {
+      "elapsed_seconds": 48.455464458005736,
+      "rss_vsz_kib": "1636672 495735712"
+    },
+    {
+      "elapsed_seconds": 48.84880662499927,
+      "rss_vsz_kib": "1636672 495735712"
+    }
+  ],
+  "printk_ring_decode": {
+    "exit": 0,
+    "stdout": "records 1135 first 0 next 88156\n",
+    "stderr": ""
+  },
+  "read_only_guest_memory_snapshots": [
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-reserved-ram.bin",
+      "scope": "Quiesced original Backup RAM only; not persistence/API acceptance",
+      "present": true,
+      "actual_bytes": 2232320,
+      "sha256": "014f6690d8803d7b1c492c2c19f956349364bac909732a01f7a3b0c63793c2d3"
+    },
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-after-shutdown.bin",
+      "scope": "AP88 final quiescedreservedBackup; shutdowncompletion separatelyverified; notAP89 input yet",
+      "present": true,
+      "actual_bytes": 2232320,
+      "sha256": "014f6690d8803d7b1c492c2c19f956349364bac909732a01f7a3b0c63793c2d3"
+    },
+    {
+      "address": 17674797056,
+      "size": 65536,
+      "name": "capid-reserved-ram.bin",
+      "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "2bde59e9a95f1dea99311cea8330e866b17ce3654158dbbbe226c9ef13df57e1"
+    },
+    {
+      "address": 17675845632,
+      "size": 1048576,
+      "name": "dmm-virtual-ram.bin",
+      "scope": "Quiesced explicit virtual two-slot DMM backing only; no originalCP/capture acceptance",
+      "present": true,
+      "actual_bytes": 1048576,
+      "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58"
+    },
+    {
+      "address": 17676894208,
+      "size": 65536,
+      "name": "adf-muted-ram.bin",
+      "scope": "Explicit muted software backing; original_sound=0",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17678991360,
+      "size": 65536,
+      "name": "ui-gate-counters.bin",
+      "scope": "Observer-only counters and boot records, double-bank published snapshot; no behavior model",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "428af3635f688a4f4c2edfdc3290e77408e4da1719e346a09e5ab8aaffafba95"
+    },
+    {
+      "address": 17680039936,
+      "size": 589824,
+      "name": "face-dmm-reserved-ram.bin",
+      "scope": "Independent virtual face-registration byte storage; actual local-to-remote copy; no recognition/physical camera acceptance",
+      "present": true,
+      "actual_bytes": 589824,
+      "sha256": "250480ecefa3655c774b6a4e5d4eb16675ee4f181c2285c25020fac6e3aaf3b5"
+    },
+    {
+      "address": 17683185664,
+      "size": 16777216,
+      "name": "osd-ring-final.bin",
+      "scope": "Software OSD snapshot ring; no CP panel/compositor acceptance",
+      "present": true,
+      "actual_bytes": 16777216,
+      "sha256": "5848a6f20ac67e3ba97cd3e4357cc7dfaa3095167f62bdea5a04d5a26b875d13"
+    },
+    {
+      "address": 18252255232,
+      "size": 1310720,
+      "name": "gpe-surface-545.bin",
+      "scope": "Quiesced originalDMM545 surface after software uniform model; no UI acceptance",
+      "present": true,
+      "actual_bytes": 1310720,
+      "sha256": "f11d9cf8bf506a7a4500862866bff937837323291d48361241b9615bb67b02dd"
+    }
+  ],
+  "guest_exception_markers": [],
+  "markers": {
+    "FX3_AP89_BACKUP_REPLAY_VERIFIED": true,
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": true,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY93_READY": true,
+    "FX3_GPE_NATIVE_TARGET": true,
+    "FX3_OSD_FRAME_TARGET_VALID": true
+  },
+  "guest_warning_lines": [],
+  "menu_verified": false,
+  "classification": "OBSERVATION_ONLY_REVIEW_GUEST_LOGS",
+  "physical_devices_host_disks_network": 0,
+  "early_stop_reason": "AP90 first new GPE rejection; quiesce and review without further changes",
+  "receipt_scope": "AP93-r5 RMemptycorev2/providerV3 setupplan unchanged. GPEv18 retainsv17nativeOpen type403 target/coremath; adds snapshot-owned lifecycle-guarded targettuple acquire/recheck/release. OSDv6 currentoriginalFB/nativebitmap readlease+raster+lifecycle guards, exacttoken/type403/epoch/state/originalfields+CPUphysicalspan validated; legacy545 procidentityretained. Host ringV2 512Bheader carries fullregisteredtargettuple separatefrommap/descriptor, directQMPphysicalreadback requires tuple/geometry+SHAequalnativecommittedsnapshot. Noaddressallowlist, nooriginalstate/callbackwrite. Authorized firstsetup DOWN_UP_ENTER, thereafter perpagehostconfirmed defaults<=12, standbyMENU/nav, eachstepPNG; localsoftwarekeygateonly. No hardwarepixeloracle or menuclaim before actualframefeedback."
+}

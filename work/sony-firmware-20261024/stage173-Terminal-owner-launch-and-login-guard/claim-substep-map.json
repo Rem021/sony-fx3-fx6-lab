@@ -1,0 +1,44 @@
+{
+  "schema": "fx3-claim-result-substeps/1",
+  "steps": [
+    {
+      "phase": 101,
+      "name": "claim_device_open"
+    },
+    {
+      "phase": 102,
+      "name": "create_interface_iterator"
+    },
+    {
+      "phase": 103,
+      "name": "create_interface_plugin"
+    },
+    {
+      "phase": 104,
+      "name": "query_interface650_hresult"
+    },
+    {
+      "phase": 105,
+      "name": "get_interface_number"
+    },
+    {
+      "phase": 106,
+      "name": "get_alternate_setting"
+    },
+    {
+      "phase": 107,
+      "name": "get_num_endpoints"
+    },
+    {
+      "phase": 108,
+      "name": "interface_open"
+    },
+    {
+      "phase": 109,
+      "name": "get_pipe_properties_in_order_1_then_2"
+    }
+  ],
+  "raw_codes_are_int32": true,
+  "phase109_pipe_order": "1 then 2",
+  "recorded_in_existing_result_event_array_and_SHA": true
+}

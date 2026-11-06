@@ -1,0 +1,392 @@
+{
+  "CP_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "declared_optional_hardware_flag": 0,
+  "bootstrap_body": {
+    "entry": "0x1083a4",
+    "args": [],
+    "declared_optional_flag": 0,
+    "boundary": {
+      "reason": "before_CPU_setup_call",
+      "PC": "0x108728"
+    },
+    "original_instructions": 66848,
+    "original_RAM_writes": 7299,
+    "flag_reads": 1,
+    "first_trace": [
+      "0x1083a4",
+      "0x1083a8",
+      "0x1083ac",
+      "0x1083b0",
+      "0x1083b4",
+      "0x1083b8",
+      "0x1083bc",
+      "0x108a04",
+      "0x108a08",
+      "0x108a0c",
+      "0x108a10",
+      "0x108a14",
+      "0x108a18",
+      "0x108a1c",
+      "0x108a20",
+      "0x108a24",
+      "0x108a28",
+      "0x108a2c",
+      "0x108a30",
+      "0x108a34",
+      "0x108a38",
+      "0x108a3c",
+      "0x108a40",
+      "0x108a44"
+    ],
+    "registers": [
+      "0x108d94",
+      "0x0",
+      "0x14f4000",
+      "0x1000"
+    ]
+  },
+  "partial_MMU_init": {
+    "entry": "0x553d48",
+    "args": [
+      "0x14007c8"
+    ],
+    "declared_optional_flag": 0,
+    "boundary": {
+      "reason": "before_privileged_or_hardware_operation",
+      "PC": "0x5541e4",
+      "instruction": "dsb sy"
+    },
+    "original_instructions": 1122,
+    "original_RAM_writes": 333,
+    "flag_reads": 0,
+    "first_trace": [
+      "0x553d48",
+      "0x553d4c",
+      "0x553d50",
+      "0x553d54",
+      "0x553d58",
+      "0x553d5c",
+      "0x553d60",
+      "0x553d64",
+      "0x553d68",
+      "0x553d6c",
+      "0x553d70",
+      "0x553d74",
+      "0x553d78",
+      "0x553d7c",
+      "0x553d80",
+      "0x553d84",
+      "0x553d88",
+      "0x553d8c",
+      "0x553d90",
+      "0x553d94",
+      "0x553d98",
+      "0x553d9c",
+      "0x553da0",
+      "0x553da4"
+    ],
+    "registers": [
+      "0x14ec000",
+      "0x0",
+      "0x28",
+      "0x2"
+    ]
+  },
+  "cases": [
+    {
+      "address": "0x9a08e00",
+      "original_attribute_query": {
+        "entry": "0x54bbd0",
+        "args": [
+          "0x9a08e00",
+          "0x20008000"
+        ],
+        "declared_optional_flag": 0,
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x30000000"
+        },
+        "original_instructions": 47,
+        "original_RAM_writes": 0,
+        "flag_reads": 0,
+        "first_trace": [
+          "0x54bbd0",
+          "0x54bbd4",
+          "0x54bbd8",
+          "0x54bbdc",
+          "0x54bbe0",
+          "0x54bbe4",
+          "0x54bbe8",
+          "0x54bbec",
+          "0x54bbf0",
+          "0x554ebc",
+          "0x554ec0",
+          "0x554ec4",
+          "0x554ec8",
+          "0x554ecc",
+          "0x554ed0",
+          "0x554ed4",
+          "0x554ed8",
+          "0x554edc",
+          "0x554ee0",
+          "0x554ee4",
+          "0x554ee8",
+          "0x554eec",
+          "0x554ef0",
+          "0x554ef4"
+        ],
+        "registers": [
+          "0x0",
+          "0x0",
+          "0x20008000",
+          "0x9a10c12"
+        ]
+      },
+      "output_word": "0x0",
+      "original_pointer_check": {
+        "entry": "0x53894c",
+        "args": [
+          "0x9a08e00"
+        ],
+        "declared_optional_flag": 0,
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x30000000"
+        },
+        "original_instructions": 63,
+        "original_RAM_writes": 0,
+        "flag_reads": 0,
+        "first_trace": [
+          "0x53894c",
+          "0x538950",
+          "0x538954",
+          "0x538958",
+          "0x53895c",
+          "0x538960",
+          "0x538964",
+          "0x54bbd0",
+          "0x54bbd4",
+          "0x54bbd8",
+          "0x54bbdc",
+          "0x54bbe0",
+          "0x54bbe4",
+          "0x54bbe8",
+          "0x54bbec",
+          "0x54bbf0",
+          "0x554ebc",
+          "0x554ec0",
+          "0x554ec4",
+          "0x554ec8",
+          "0x554ecc",
+          "0x554ed0",
+          "0x554ed4",
+          "0x554ed8"
+        ],
+        "registers": [
+          "0x9a08e00",
+          "0x0",
+          "0x2000efec",
+          "0x9a10c12"
+        ]
+      },
+      "scope": "A software-table snapshot before the first MMU-init barrier; not fully initialized/live CPU mapping or a readable physical buffer."
+    },
+    {
+      "address": "0x128000",
+      "original_attribute_query": {
+        "entry": "0x54bbd0",
+        "args": [
+          "0x128000",
+          "0x20008000"
+        ],
+        "declared_optional_flag": 0,
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x30000000"
+        },
+        "original_instructions": 66,
+        "original_RAM_writes": 0,
+        "flag_reads": 0,
+        "first_trace": [
+          "0x54bbd0",
+          "0x54bbd4",
+          "0x54bbd8",
+          "0x54bbdc",
+          "0x54bbe0",
+          "0x54bbe4",
+          "0x54bbe8",
+          "0x54bbec",
+          "0x54bbf0",
+          "0x554ebc",
+          "0x554ec0",
+          "0x554ec4",
+          "0x554ec8",
+          "0x554ecc",
+          "0x554ed0",
+          "0x554ed4",
+          "0x554ed8",
+          "0x554edc",
+          "0x554ee0",
+          "0x554ee4",
+          "0x554ee8",
+          "0x554eec",
+          "0x554ef0",
+          "0x554ef4"
+        ],
+        "registers": [
+          "0x0",
+          "0x0",
+          "0x20008000",
+          "0xf"
+        ]
+      },
+      "output_word": "0xf",
+      "original_pointer_check": {
+        "entry": "0x53894c",
+        "args": [
+          "0x128000"
+        ],
+        "declared_optional_flag": 0,
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x30000000"
+        },
+        "original_instructions": 82,
+        "original_RAM_writes": 0,
+        "flag_reads": 0,
+        "first_trace": [
+          "0x53894c",
+          "0x538950",
+          "0x538954",
+          "0x538958",
+          "0x53895c",
+          "0x538960",
+          "0x538964",
+          "0x54bbd0",
+          "0x54bbd4",
+          "0x54bbd8",
+          "0x54bbdc",
+          "0x54bbe0",
+          "0x54bbe4",
+          "0x54bbe8",
+          "0x54bbec",
+          "0x54bbf0",
+          "0x554ebc",
+          "0x554ec0",
+          "0x554ec4",
+          "0x554ec8",
+          "0x554ecc",
+          "0x554ed0",
+          "0x554ed4",
+          "0x554ed8"
+        ],
+        "registers": [
+          "0x0",
+          "0x0",
+          "0x2000efec",
+          "0xf"
+        ]
+      },
+      "scope": "A software-table snapshot before the first MMU-init barrier; not fully initialized/live CPU mapping or a readable physical buffer."
+    },
+    {
+      "address": "0x0",
+      "original_attribute_query": {
+        "entry": "0x54bbd0",
+        "args": [
+          "0x0",
+          "0x20008000"
+        ],
+        "declared_optional_flag": 0,
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x30000000"
+        },
+        "original_instructions": 24,
+        "original_RAM_writes": 0,
+        "flag_reads": 0,
+        "first_trace": [
+          "0x54bbd0",
+          "0x54bbd4",
+          "0x54bbd8",
+          "0x54bbdc",
+          "0x54bbe0",
+          "0x54bbe4",
+          "0x54bbe8",
+          "0x54bbec",
+          "0x54bbf0",
+          "0x554ebc",
+          "0x554ec0",
+          "0x554ec4",
+          "0x554ec8",
+          "0x554ecc",
+          "0x554ed0",
+          "0x554ed4",
+          "0x554ed8",
+          "0x554edc",
+          "0x554ee0",
+          "0x554ee4",
+          "0x554ee8",
+          "0x554eec",
+          "0x554ef0",
+          "0x55500c"
+        ],
+        "registers": [
+          "0xffffffe6",
+          "0x0",
+          "0x20008000",
+          "0x0"
+        ]
+      },
+      "output_word": "0x0",
+      "original_pointer_check": {
+        "entry": "0x53894c",
+        "args": [
+          "0x0"
+        ],
+        "declared_optional_flag": 0,
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x30000000"
+        },
+        "original_instructions": 36,
+        "original_RAM_writes": 0,
+        "flag_reads": 0,
+        "first_trace": [
+          "0x53894c",
+          "0x538950",
+          "0x538954",
+          "0x538958",
+          "0x53895c",
+          "0x538960",
+          "0x538964",
+          "0x54bbd0",
+          "0x54bbd4",
+          "0x54bbd8",
+          "0x54bbdc",
+          "0x54bbe0",
+          "0x54bbe4",
+          "0x54bbe8",
+          "0x54bbec",
+          "0x54bbf0",
+          "0x554ebc",
+          "0x554ec0",
+          "0x554ec4",
+          "0x554ec8",
+          "0x554ecc",
+          "0x554ed0",
+          "0x554ed4",
+          "0x554ed8"
+        ],
+        "registers": [
+          "0x0",
+          "0x0",
+          "0x2000efec",
+          "0x0"
+        ]
+      },
+      "scope": "A software-table snapshot before the first MMU-init barrier; not fully initialized/live CPU mapping or a readable physical buffer."
+    }
+  ],
+  "scope": "All table and attribute words are produced/read by original instructions, without a fabricated MMU/attribute reply. The actual full startup poll, hardware flag, CPU setup, barrier/TLB state and completion of MMU init are not verified. No DmmCfg bytes loaded at0x09a08e00, buffer allocation, physical pixels, native Sony execution or device action."
+}

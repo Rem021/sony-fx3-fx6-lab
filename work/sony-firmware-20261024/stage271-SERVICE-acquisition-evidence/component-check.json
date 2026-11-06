@@ -1,0 +1,79 @@
+{
+  "status": "ACQUISITION_EVIDENCE_COMPONENT_SERIALIZER_DECODER_PASS",
+  "scope": "real C serializer, real ordinary-user files/fsync, artificial peer and acquisition metadata",
+  "rows": [
+    {
+      "case": "real-C-serialization-203",
+      "status": "PASS",
+      "metadata": {
+        "step": 203,
+        "name": "device_open",
+        "raw_return": -536870203
+      },
+      "camera_and_peer_artificial": true,
+      "actual_device_API_used": false
+    },
+    {
+      "case": "real-C-serialization-210",
+      "status": "PASS",
+      "metadata": {
+        "step": 210,
+        "name": "interface_open",
+        "raw_return": -536870203
+      },
+      "camera_and_peer_artificial": true,
+      "actual_device_API_used": false
+    },
+    {
+      "case": "real-C-serialization-0",
+      "status": "PASS",
+      "metadata": {
+        "step": 0,
+        "name": "not_reached",
+        "raw_return": 0
+      },
+      "camera_and_peer_artificial": true,
+      "actual_device_API_used": false
+    },
+    {
+      "case": "metadata-counterexamples",
+      "status": "PASS",
+      "variants": [
+        "unknown-step",
+        "raw-mismatch",
+        "reserved",
+        "success-without-native-step",
+        "before-call-with-substep",
+        "actual-legacy-failure-must-not-invent-substep",
+        "legacy-protocol-rejected-by-v4"
+      ],
+      "saved_bytes_do_not_recreate_live_origin": true
+    }
+  ],
+  "build_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage268-fixed-manual-recovered-communication02",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage271-SERVICE-acquisition-evidence/flow_journal.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage271-SERVICE-acquisition-evidence/test_emit.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage271-SERVICE-acquisition-evidence/artifacts/emit-check"
+  ],
+  "compile_stderr": "",
+  "binary_sha256": "d2c5f356e75668446d3b9255a914129fa6a386f203cd502a895bba0582e46533",
+  "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage271-SERVICE-acquisition-evidence/artifacts/emit-check:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n",
+  "new_root_or_USB_operations": 0,
+  "camera_backend_executed": false,
+  "new_native_entry_or_launch_package": false,
+  "whole_controller_integration_proven": false
+}

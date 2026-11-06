@@ -1,0 +1,53 @@
+{
+  "status": "STOPPED_ON_REFERENCE_SECOND_GROUP_ASSUMPTION",
+  "actual": [
+    16,
+    18,
+    16,
+    18,
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "expected_old": [
+    16,
+    18,
+    16,
+    18,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "original_descriptor_u32": [
+    0,
+    67,
+    4,
+    0,
+    0,
+    0,
+    68,
+    0,
+    4,
+    0
+  ],
+  "formal_result_written": false,
+  "finding": "Original 1a2fc4 uses inclusive zero endpoints even when count0; ceil((0-0+1)/2)*2=2, with recursion skipped. Correct the independent reference, do not change guest output."
+}

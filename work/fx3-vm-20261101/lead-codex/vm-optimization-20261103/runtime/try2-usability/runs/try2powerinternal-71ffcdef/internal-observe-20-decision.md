@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/internal-preview-20.png using image tool. Main1 2/59 orange focus, Main2 visible below; 59.94p ISO100 AWB PP11 tiles Next: DOWN to Main2 for read-only menu browse; no tile selected

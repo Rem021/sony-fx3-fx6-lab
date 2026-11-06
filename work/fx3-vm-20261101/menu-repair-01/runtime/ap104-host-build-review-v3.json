@@ -1,0 +1,72 @@
+{
+  "authority": [
+    "msg_b94a0dacc3e4",
+    "msg_45f1419f7e5e"
+  ],
+  "tests": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/check_native104_v2.py",
+      "exit": 0,
+      "stdout": "AP104_NATIVE_T05_CHECKSUM_CPU_BIND_SINGLE_THREAD_VCONT_ACK_ONLY_ASYNC_PASS\n",
+      "stderr": ""
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/check_gate104_v4.py",
+      "exit": 0,
+      "stdout": "AP104_NATIVE_STOP_CPU_OWNER_EPOCH_REUSE_CLEAR_FIRST_ERROR_USER_CALL_PAIRING_READONLY_PASS\n",
+      "stderr": ""
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/check_restore103_v2.py",
+      "exit": 0,
+      "stdout": "AP103_V2_BOUND_ACK_BYTES_DELAY_NEGATIVES_AND_PREBIND_NO_RESUME_PASS\n",
+      "stderr": ""
+    }
+  ],
+  "sources": {
+    "gdb_native104_v2.py": "23c4770338fdb8dc6b41cd1a9ab534f2339efd67cdc3b444a5a04540ab58eb81",
+    "gate_input104_v4.py": "ffde25db151f22eca5531b5292429dde5683dc49783b9f7183002d4b22798673",
+    "run_candidate104_v5.py": "f19e7d40188293d76e09a6621a69ebb6232a4b751cc50a86163770165985f056",
+    "restore_api103_v2.py": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168",
+    "gdb_sysregs104_v2.py": "55404f4a333dd8dbd89b50f2e4d8a0d9075ab77203e331bbb66d5852a3f08f73",
+    "ap104-r2-observer-ready/candidate.json": "4a30144ca93d224127f704e06e1e0fb6966acfdf969220c3aa96ee28cae9afb9",
+    "helpers/fx3-file100-observer-v2.c": "288f6946cbd43dd4a8bf82aa5b71dca3a93d9626ba2456202161e3e394bcb9f6",
+    "helpers/fx3-file100-observer-v2": "044d08549217523c645035e02ae74b1e76b73db17a61d13b0ff4ecd05a3987e0",
+    "helpers/fx3-gpe-observe-v25-complete104.c": "54b0bde37888376f372eb26d4241054277cbda6af5636a3a17def0ff86f63e70",
+    "helpers/fx3-gpe-observe-v25-complete104.so": "c8fadf6473ccfd301187a70f984f8b3ff1492827ee4a08787b818d9a3e8aa92e"
+  },
+  "passive_contract": "No completion order/condition/result/argument change; no original memory or register writes; original stopped CPU only, native original instruction step",
+  "bounded_cleanup": "20s ack plus exact API16 when bound; no resume before binding when bytes already original and no pending request",
+  "fair_service": "Continuous native stop events cannot starve serial parsing, probe installations, screenshots or stop marker; services each250ms at latest loop opportunity",
+  "native_validation_calibration": {
+    "run": "ap104v4trace600-6450b8c8",
+    "records": 6470,
+    "keys": 0,
+    "API_ack_original16_seconds": 1.5503595410264097,
+    "status": "calibration intentionally stopped; later probe-installation starvation corrected in runner-v5; not600s UI acceptance"
+  },
+  "current_probe_test": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/check_gate104_v5.py",
+    "exit": 0,
+    "stdout": "AP104_NATIVE_STOP_CPU_OWNER_EPOCH_REUSE_CLEAR_FIRST_ERROR_USER_CALL_PAIRING_READONLY_PASS\n",
+    "stderr": ""
+  },
+  "final_host_sources": {
+    "gdb_native104_v2.py": "23c4770338fdb8dc6b41cd1a9ab534f2339efd67cdc3b444a5a04540ab58eb81",
+    "gate_input104_v5.py": "9225993e89ec7a8b929f6d6474547a282def47a0afe995c0fb7c6870853154c5",
+    "run_candidate104_v6.py": "de4fffba3f7f1d039e1bc3d0dbeeba5d3e4b3cb5150e863f8acb6f23a38af367",
+    "restore_api103_v2.py": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168",
+    "gdb_sysregs104_v2.py": "55404f4a333dd8dbd89b50f2e4d8a0d9075ab77203e331bbb66d5852a3f08f73",
+    "analyze_completion104_v2.py": "364f983d7e2ccd950ba085cabe579368f55b241333ae2b39cee984db37452e3e"
+  },
+  "probe_scope": {
+    "active_points": 29,
+    "original_owner_stores": 3,
+    "original_first_unfetched": 1,
+    "native_completion_sites": 4,
+    "original_Backup_sites": 21,
+    "omitted_optional_read_only_probe": "completion_alloc_owner_read +3480; no owner write/clear omitted",
+    "all_device_and_completion_semantics_unchanged": true
+  },
+  "original_repeat_reason": "v6 media observer near-address pool allocation failure at first M point; no model/guard change, identical runner/candidate retry"
+}

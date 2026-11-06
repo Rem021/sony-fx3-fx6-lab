@@ -1,0 +1,240 @@
+[
+  {
+    "call": "0xd6748",
+    "owner": "_ZN3mpr18EnqueueExecEncOpenERNS_12MovieRecInfoE",
+    "near": [
+      "0xd6730 ldr     w1, [x19, #0x1e0]",
+      "0xd6734 str     w0, [x29, #0x7a4]",
+      "0xd6738 str     w1, [x29, #0x7b4]",
+      "0xd673c ldr     w1, [x19, #0x40]",
+      "0xd6740 strh    w1, [x29, #0x7b8]",
+      "0xd6744 mov     w1, #0",
+      "0xd6748 bl      #0x7d9d0",
+      "0xd674c str     w0, [x29, #0x7bc]",
+      "0xd6750 ldr     w1, [x19, #0x1f4]",
+      "0xd6754 ldr     w0, [x19, #0x1f0]",
+      "0xd6758 str     w1, [x29, #0x7c4]"
+    ]
+  },
+  {
+    "call": "0xd6784",
+    "owner": "_ZN3mpr18EnqueueExecEncOpenERNS_12MovieRecInfoE",
+    "near": [
+      "0xd676c str     w1, [x29, #0x7cc]",
+      "0xd6770 ldr     w1, [x19, #0x208]",
+      "0xd6774 str     w1, [x29, #0x7d0]",
+      "0xd6778 ldr     w1, [x19, #0x44]",
+      "0xd677c strh    w1, [x29, #0x7d4]",
+      "0xd6780 mov     w1, #1",
+      "0xd6784 bl      #0x7d9d0",
+      "0xd6788 str     w0, [x29, #0x7d8]",
+      "0xd678c ldrb    w0, [x19, #0x91]",
+      "0xd6790 mov     x1, x20",
+      "0xd6794 strb    w0, [x29, #0x7dc]"
+    ]
+  },
+  {
+    "call": "0xd6904",
+    "owner": "_ZN3mpr19EnqueueExecEncStartERNS_12MovieRecInfoEhRNS_15RecSequenceInfoE",
+    "near": [
+      "0xd68ec str     w0, [x29, #0x54]",
+      "0xd68f0 ldr     w0, [x19, #0x1e0]",
+      "0xd68f4 str     w0, [x29, #0x58]",
+      "0xd68f8 ldr     w0, [x19, #0x40]",
+      "0xd68fc strh    w0, [x29, #0x5c]",
+      "0xd6900 ldr     w0, [x19, #0x1c8]",
+      "0xd6904 bl      #0x7d9d0",
+      "0xd6908 str     w0, [x29, #0x60]",
+      "0xd690c ldr     w0, [x19, #0x208]",
+      "0xd6910 mov     w1, #1",
+      "0xd6914 str     w0, [x29, #0x64]"
+    ]
+  },
+  {
+    "call": "0xd691c",
+    "owner": "_ZN3mpr19EnqueueExecEncStartERNS_12MovieRecInfoEhRNS_15RecSequenceInfoE",
+    "near": [
+      "0xd6904 bl      #0x7d9d0",
+      "0xd6908 str     w0, [x29, #0x60]",
+      "0xd690c ldr     w0, [x19, #0x208]",
+      "0xd6910 mov     w1, #1",
+      "0xd6914 str     w0, [x29, #0x64]",
+      "0xd6918 ldr     w0, [x19, #0x1f0]",
+      "0xd691c bl      #0x7d9d0",
+      "0xd6920 str     w0, [x29, #0x68]",
+      "0xd6924 ldrb    w0, [x19, #0x91]",
+      "0xd6928 mov     x1, x21",
+      "0xd692c strb    w0, [x29, #0x6c]"
+    ]
+  },
+  {
+    "call": "0xd6a44",
+    "owner": "_ZN3mpr18EnqueueExecEncStopERNS_12MovieRecInfoEPjjb",
+    "near": [
+      "0xd6a2c strb    w0, [x29, #0x50]",
+      "0xd6a30 mov     x0, x24",
+      "0xd6a34 bl      #0x82d60",
+      "0xd6a38 strb    w0, [x29, #0x51]",
+      "0xd6a3c ldr     w0, [x20, #0x1c8]",
+      "0xd6a40 mov     w1, #0",
+      "0xd6a44 bl      #0x7d9d0",
+      "0xd6a48 str     w0, [x29, #0x54]",
+      "0xd6a4c ldr     w0, [x20, #0x1f0]",
+      "0xd6a50 mov     w1, #1",
+      "0xd6a54 bl      #0x7d9d0"
+    ]
+  },
+  {
+    "call": "0xd6a54",
+    "owner": "_ZN3mpr18EnqueueExecEncStopERNS_12MovieRecInfoEPjjb",
+    "near": [
+      "0xd6a3c ldr     w0, [x20, #0x1c8]",
+      "0xd6a40 mov     w1, #0",
+      "0xd6a44 bl      #0x7d9d0",
+      "0xd6a48 str     w0, [x29, #0x54]",
+      "0xd6a4c ldr     w0, [x20, #0x1f0]",
+      "0xd6a50 mov     w1, #1",
+      "0xd6a54 bl      #0x7d9d0",
+      "0xd6a58 str     w0, [x29, #0x58]",
+      "0xd6a5c ldr     x0, [x20, #0xa48]",
+      "0xd6a60 mov     x1, x19",
+      "0xd6a64 strb    w23, [x29, #0x5c]"
+    ]
+  },
+  {
+    "call": "0xd6e2c",
+    "owner": "_ZN3mpr19EnqueueExecEncCloseERNS_12MovieRecInfoEj",
+    "near": [
+      "0xd6e14 ldr     x0, [x0, #0x4c8]",
+      "0xd6e18 str     x0, [x1]",
+      "0xd6e1c mov     w1, #0",
+      "0xd6e20 ldrb    w0, [x19, #0x1ee]",
+      "0xd6e24 strb    w0, [x29, #0x50]",
+      "0xd6e28 ldr     w0, [x19, #0x1c8]",
+      "0xd6e2c bl      #0x7d9d0",
+      "0xd6e30 str     w0, [x29, #0x54]",
+      "0xd6e34 ldr     w0, [x19, #0x1f0]",
+      "0xd6e38 mov     w1, #1",
+      "0xd6e3c bl      #0x7d9d0"
+    ]
+  },
+  {
+    "call": "0xd6e3c",
+    "owner": "_ZN3mpr19EnqueueExecEncCloseERNS_12MovieRecInfoEj",
+    "near": [
+      "0xd6e24 strb    w0, [x29, #0x50]",
+      "0xd6e28 ldr     w0, [x19, #0x1c8]",
+      "0xd6e2c bl      #0x7d9d0",
+      "0xd6e30 str     w0, [x29, #0x54]",
+      "0xd6e34 ldr     w0, [x19, #0x1f0]",
+      "0xd6e38 mov     w1, #1",
+      "0xd6e3c bl      #0x7d9d0",
+      "0xd6e40 str     w0, [x29, #0x58]",
+      "0xd6e44 ldr     w0, [x19, #0x274]",
+      "0xd6e48 mov     x1, x20",
+      "0xd6e4c str     w23, [x29, #0x70]"
+    ]
+  },
+  {
+    "call": "0xd6f9c",
+    "owner": "_ZN3mpr17EnqueueExecEncThmERNS_12MovieRecInfoEPjjS2_jhhPN10MovieError12MovieError_tE",
+    "near": [
+      "0xd6f84 bl      #0x82d60",
+      "0xd6f88 strb    w0, [x29, #0x72]",
+      "0xd6f8c ldr     w0, [x20, #0x1c8]",
+      "0xd6f90 mov     w1, #0",
+      "0xd6f94 strb    w23, [x29, #0x73]",
+      "0xd6f98 strb    w22, [x29, #0x74]",
+      "0xd6f9c bl      #0x7d9d0",
+      "0xd6fa0 str     w0, [x29, #0x78]",
+      "0xd6fa4 ldr     w0, [x20, #0x1f0]",
+      "0xd6fa8 mov     w1, #1",
+      "0xd6fac bl      #0x7d9d0"
+    ]
+  },
+  {
+    "call": "0xd6fac",
+    "owner": "_ZN3mpr17EnqueueExecEncThmERNS_12MovieRecInfoEPjjS2_jhhPN10MovieError12MovieError_tE",
+    "near": [
+      "0xd6f94 strb    w23, [x29, #0x73]",
+      "0xd6f98 strb    w22, [x29, #0x74]",
+      "0xd6f9c bl      #0x7d9d0",
+      "0xd6fa0 str     w0, [x29, #0x78]",
+      "0xd6fa4 ldr     w0, [x20, #0x1f0]",
+      "0xd6fa8 mov     w1, #1",
+      "0xd6fac bl      #0x7d9d0",
+      "0xd6fb0 str     w0, [x29, #0x7c]",
+      "0xd6fb4 ldr     x0, [x20, #0xa48]",
+      "0xd6fb8 mov     x1, x19",
+      "0xd6fbc str     x26, [x29, #0x88]"
+    ]
+  },
+  {
+    "call": "0xd70cc",
+    "owner": "_ZN3mpr17EnqueueExecEncCutERNS_12MovieRecInfoEPjjhNS_5Codec11MarkingTypeE",
+    "near": [
+      "0xd70b4 mov     x0, x25",
+      "0xd70b8 bl      #0x82d60",
+      "0xd70bc strb    w0, [x29, #0x61]",
+      "0xd70c0 ldr     w0, [x20, #0x1c8]",
+      "0xd70c4 mov     w1, #0",
+      "0xd70c8 strb    w23, [x29, #0x62]",
+      "0xd70cc bl      #0x7d9d0",
+      "0xd70d0 str     w0, [x29, #0x64]",
+      "0xd70d4 ldr     w0, [x20, #0x1f0]",
+      "0xd70d8 mov     w1, #1",
+      "0xd70dc bl      #0x7d9d0"
+    ]
+  },
+  {
+    "call": "0xd70dc",
+    "owner": "_ZN3mpr17EnqueueExecEncCutERNS_12MovieRecInfoEPjjhNS_5Codec11MarkingTypeE",
+    "near": [
+      "0xd70c4 mov     w1, #0",
+      "0xd70c8 strb    w23, [x29, #0x62]",
+      "0xd70cc bl      #0x7d9d0",
+      "0xd70d0 str     w0, [x29, #0x64]",
+      "0xd70d4 ldr     w0, [x20, #0x1f0]",
+      "0xd70d8 mov     w1, #1",
+      "0xd70dc bl      #0x7d9d0",
+      "0xd70e0 stp     w0, w22, [x29, #0x68]",
+      "0xd70e4 ldr     x0, [x20, #0xa48]",
+      "0xd70e8 mov     x1, x19",
+      "0xd70ec str     x0, [x29, #0x70]"
+    ]
+  },
+  {
+    "call": "0xd73e4",
+    "owner": "_ZN3mpr25EnqueueExecSetEssenceMarkERNS_12MovieRecInfoEPjjhNS_5Codec11MarkingTypeENS_15EssenceMarkTypeE",
+    "near": [
+      "0xd73cc ldr     x0, [x0, #0xeb8]",
+      "0xd73d0 str     x0, [x1]",
+      "0xd73d4 mov     w1, #0",
+      "0xd73d8 ldrb    w0, [x20, #0x1ee]",
+      "0xd73dc strb    w0, [x29, #0x50]",
+      "0xd73e0 ldr     w0, [x20, #0x1c8]",
+      "0xd73e4 bl      #0x7d9d0",
+      "0xd73e8 str     w0, [x29, #0x54]",
+      "0xd73ec ldr     w0, [x20, #0x1f0]",
+      "0xd73f0 mov     w1, #1",
+      "0xd73f4 bl      #0x7d9d0"
+    ]
+  },
+  {
+    "call": "0xd73f4",
+    "owner": "_ZN3mpr25EnqueueExecSetEssenceMarkERNS_12MovieRecInfoEPjjhNS_5Codec11MarkingTypeENS_15EssenceMarkTypeE",
+    "near": [
+      "0xd73dc strb    w0, [x29, #0x50]",
+      "0xd73e0 ldr     w0, [x20, #0x1c8]",
+      "0xd73e4 bl      #0x7d9d0",
+      "0xd73e8 str     w0, [x29, #0x54]",
+      "0xd73ec ldr     w0, [x20, #0x1f0]",
+      "0xd73f0 mov     w1, #1",
+      "0xd73f4 bl      #0x7d9d0",
+      "0xd73f8 stp     w0, w23, [x29, #0x58]",
+      "0xd73fc ldr     x0, [x20, #0xa48]",
+      "0xd7400 mov     x1, x19",
+      "0xd7404 str     w22, [x29, #0x64]"
+    ]
+  }
+]

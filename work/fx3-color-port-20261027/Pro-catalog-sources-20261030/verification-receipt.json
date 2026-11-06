@@ -1,0 +1,93 @@
+{
+  "created_utc": "2026-10-30T16:29:41.705309+00:00",
+  "status": "PASS_SCOPED_CATALOG_AND_PREFIX_EVIDENCE_NOT_FLASH_READINESS",
+  "catalogue_API_JSON_requests_verified": 12,
+  "registered_ILME_models_returned": 12,
+  "registered_FX5_family_models": 2,
+  "FX5_family_empty_queries": 4,
+  "named_positive_control_models": [
+    "ILME-FX6V",
+    "ILME-FX3",
+    "MPC-3628",
+    "MPC-3610"
+  ],
+  "positive_control_note": "FX3 returned one 7.02 payload item plus one instructions-only item; do not count it as two firmware binaries.",
+  "global_support_route_note": "Observed professional FX5 support link went via sony.co.jp global entry to Sony UK product URL; direct captures were HTTP403, not a proof of absent downloads.",
+  "old_combo_archive_directory_entries": 13,
+  "range_identity_warning": "Initial prefix and suffix ETags differ. No single verified whole archive was assembled.",
+  "AXSR7_prefix_bytes": 3996,
+  "AXSR7_prefix_msfirm_structural_result": "False for the pinned isMsFirm zero-middle-header prerequisite. No key or cipher attempts; not a global decoder-absence claim.",
+  "AXSR7_complete_member_or_loader_obtained": false,
+  "VENICE_new_private_inner_recovered": false,
+  "requirements_preserved": [
+    {
+      "id": "FX5_full_private_donor",
+      "status": "missing",
+      "proof_required": "Complete readable private system/menu payload and dependencies"
+    },
+    {
+      "id": "VENICE_complete_ISP_color_chain",
+      "status": "incomplete",
+      "proof_required": "Readable private inner plus full realtime ISP/sensor calibration/data-domain mapping"
+    },
+    {
+      "id": "RAM_chip_and_DMM_runtime",
+      "status": "incomplete",
+      "proof_required": "Normal hardware initialization and actual buffers/capacity/payload linked to allocation"
+    },
+    {
+      "id": "CMOS_RAW_and_calibration",
+      "status": "unproven",
+      "proof_required": "Reachable original acquisition and actual RAW samples/domain validation"
+    },
+    {
+      "id": "professional_menu_and_MAIN_recording",
+      "status": "incomplete",
+      "proof_required": "Whole professional UI/control route and target recording output"
+    },
+    {
+      "id": "exact_modified_target_firmware",
+      "status": "missing",
+      "proof_required": "Concrete classic FX3 target package carrying the requested full change"
+    },
+    {
+      "id": "classic_FX3_7_02_modified_package_admission",
+      "status": "unproven",
+      "proof_required": "Reproducible acceptance evidence for modified whole package, not original signature/repacking"
+    },
+    {
+      "id": "normal_boot_support_and_independent_recovery",
+      "status": "unproven",
+      "proof_required": "Target compatibility and independent recovery evidence sufficient for readiness"
+    },
+    {
+      "id": "stop_before_actual_flash",
+      "status": "preserved",
+      "proof_required": "No target flashing; not a substitute for earlier requirements"
+    }
+  ],
+  "signature_evidence_reused": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/official-key-rsa-verification-results.json",
+      "sha256": "323965d979d40bf71497fb4311cffe55e924fde6c431ded07662c304d10d503b",
+      "original_tests_replayed": false
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/native-openssl-verification-results.json",
+      "sha256": "896f3344b01324b5d4603d117e1cba6068bfd98cdf85eea43a3bf2892316c519",
+      "original_tests_replayed": false
+    }
+  ],
+  "prior_sealed_files_verified": 37,
+  "previous_goal_turn_classification": "progress: discovered anonymous professional catalogue endpoints and successful FX6 controls before interruption",
+  "current_goal_turn_classification": "progress: registered target-path queries, scoped positive/negative metadata and an independently rejected format candidate change further donor investigation",
+  "readiness_change": "none",
+  "full_objective_preserved": true,
+  "goal_complete": false,
+  "native_goal_status": "active",
+  "modified_or_flashable_firmware_produced": false,
+  "device_actions": 0,
+  "Sony_native_programs_or_downloaded_source_executed": false,
+  "signing_key_work": false,
+  "other_owner_files_written_or_tools_run": false
+}

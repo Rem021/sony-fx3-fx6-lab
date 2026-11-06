@@ -1,0 +1,6 @@
+fe058a64 08609852 mov      w8, #0xc300
+fe058a68 c8c4bf72 movk     w8, #0xfe26, lsl #16
+fe058a6c 080140b9 ldr      w8, [x8]
+fe058a70 1f010071 cmp      w8, #0
+fe058a74 e0079f1a cset     w0, ne
+fe058a78 c0035fd6 ret      

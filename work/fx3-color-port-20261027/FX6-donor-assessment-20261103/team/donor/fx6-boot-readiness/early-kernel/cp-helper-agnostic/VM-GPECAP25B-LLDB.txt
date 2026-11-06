@@ -1,0 +1,28 @@
+(lldb) process connect connect://127.0.0.1:1234
+Process 1 stopped
+* thread #1, stop reason = signal SIGTRAP
+       frame #0: 0xffffff8008097988 
+->  0xffffff8008097988: ret    
+    0xffffff800809798c: nop    
+    0xffffff8008097990: mrs    x2, TPIDR_EL0
+    0xffffff8008097994: mrs    x3, TPIDRRO_EL0
+Target 0: (No executable module.) stopped.
+(lldb) breakpoint set --address 0x7f79a739c8
+Breakpoint 1: address = 0x0000007f79a739c8
+(lldb) continue
+Process 1 resuming
+Process 1 stopped
+* thread #4, stop reason = signal SIGINT
+       frame #0: 0xffffff8008097988 
+->  0xffffff8008097988: ret    
+    0xffffff800809798c: nop    
+    0xffffff8008097990: mrs    x2, TPIDR_EL0
+    0xffffff8008097994: mrs    x3, TPIDRRO_EL0
+Target 0: (No executable module.) stopped.
+(lldb) bt
+* thread #4, stop reason = signal SIGINT
+   * frame #0: 0xffffff8008097988 
+     frame #1: 0xffffff80080d8778 
+     frame #2: 0xffffff800808f758 
+(lldb) detach
+Process 1 detached

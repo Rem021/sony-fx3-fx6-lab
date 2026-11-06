@@ -1,0 +1,1 @@
+Viewed /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/mss-all-commands-v8/test-fixtures/try2mssallinternal-success-fixture/view-step-01-seq-5-2914275caea5.png using image tool. English standby Next: MENU open

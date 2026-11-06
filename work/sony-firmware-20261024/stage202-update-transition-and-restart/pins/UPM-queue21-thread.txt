@@ -1,0 +1,32 @@
+00000378 fd7bbda9 stp      x29, x30, [sp, #-0x30]!
+0000037c fd030091 mov      x29, sp
+00000380 f35301a9 stp      x19, x20, [sp, #0x10]
+00000384 34048052 mov      w20, #0x21
+00000388 5412b072 movk     w20, #0x8092, lsl #16
+0000038c a1830091 add      x1, x29, #0x20
+00000390 20048052 mov      w0, #0x21
+00000394 02008012 mov      w2, #-1
+00000398 4012b072 movk     w0, #0x8092, lsl #16
+0000039c 00000094 bl       #0x39c ; relocation {'symbol': 'osal_rcv_msg_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000003a0 e603002a mov      w6, w0
+000003a4 a4a30091 add      x4, x29, #0x28
+000003a8 05018052 mov      w5, #8
+000003ac 43328052 mov      w3, #0x192
+000003b0 62028052 mov      w2, #0x13
+000003b4 41008052 mov      w1, #2
+000003b8 00008052 mov      w0, #0
+000003bc a6000034 cbz      w6, #0x3d0
+000003c0 b41b0529 stp      w20, w6, [x29, #0x28]
+000003c4 00000094 bl       #0x3c4 ; relocation {'symbol': 'upm_blog_writeonce', 'section': '.text', 'symbol_value': '0x12b40', 'addend': '0x0', 'type': 283}
+000003c8 f1ffff17 b        #0x38c
+000003cc 1f2003d5 nop      
+000003d0 b31340f9 ldr      x19, [x29, #0x20]
+000003d4 e00313aa mov      x0, x19
+000003d8 00000094 bl       #0x3d8 ; relocation {'symbol': 'osal_get_msg_src', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000003dc e103002a mov      w1, w0
+000003e0 e00313aa mov      x0, x19
+000003e4 00000094 bl       #0x3e4 ; relocation {'symbol': 'k_upm_api_off_factor_async', 'section': '.text', 'symbol_value': '0x9628', 'addend': '0x0', 'type': 283}
+000003e8 a11340f9 ldr      x1, [x29, #0x20]
+000003ec e003142a mov      w0, w20
+000003f0 00000094 bl       #0x3f0 ; relocation {'symbol': 'osal_free_msg', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000003f4 e6ffff17 b        #0x38c

@@ -1,0 +1,32 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000198314 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm>:
+  198c30: 912523a0     	add	x0, x29, #0x948
+  198c34: 912403a7     	add	x7, x29, #0x900
+  198c38: 912413a2     	add	x2, x29, #0x904
+  198c3c: 912403a1     	add	x1, x29, #0x900
+  198c40: a9007c1f     	stp	xzr, xzr, [x0]
+  198c44: b945ae60     	ldr	w0, [x19, #0x5ac]
+  198c48: 293f7cff     	stp	wzr, wzr, [x7, #-0x8]
+  198c4c: 29007cff     	stp	wzr, wzr, [x7]
+  198c50: f90493bf     	str	xzr, [x29, #0x920]
+  198c54: f90497bf     	str	xzr, [x29, #0x928]
+  198c58: f904afbf     	str	xzr, [x29, #0x958]
+  198c5c: 97fd6589     	bl	0xf2280 <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_@plt>
+  198c60: b94903a0     	ldr	w0, [x29, #0x900]
+  198c64: b94907a1     	ldr	w1, [x29, #0x904]
+  198c68: 1e230008     	ucvtf	s8, w0
+  198c6c: 1e230020     	ucvtf	s0, w1
+  198c70: b9092ba0     	str	w0, [x29, #0x928]
+  198c74: b945ae60     	ldr	w0, [x19, #0x5ac]
+  198c78: b9092fa1     	str	w1, [x29, #0x92c]
+  198c7c: 1e201908     	fdiv	s8, s8, s0
+  198c80: 97fd6c50     	bl	0xf3dc0 <_ZN3mpr5pconv20IsInterlaceFrameRateEN9DefStruct9FrameRateE@plt>
+  198c84: 72001c1f     	tst	w0, #0xff
+  198c88: 54000060     	b.eq	0x198c94 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm+0x980>
+  198c8c: 1e2c1000     	fmov	s0, #0.50000000
+  198c90: 1e200908     	fmul	s8, s8, s0
+  198c94: aa1403e0     	mov	x0, x20

@@ -1,0 +1,11 @@
+{
+  "tool": "functions.exec_command + view_image within same functions.exec",
+  "start_and_wait": "sole Start; wrapper polls 180s and original End on error",
+  "image_return": "after successful wrapper completion load screenshot_path with view_image and emit image; no semantic default",
+  "runtime_lifetime": "Orca managed interactive terminal term_cea7a565-2efb-4c05-9feb-6fb1fbd270c1; frozen launch_prepare Popen(start_new_session=True), runner stdout/stderr regular files; terminal shell remains alive after launch wrapper exits",
+  "permissions": "danger-full-access; approval never; no sandbox override requested",
+  "agent_uid": 501,
+  "runner_ps": "47314     1 47314 Ss   /Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python -B /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/run_trial_v25_diag_r3.py --port 0 --max-minutes 8 --max-steps 32 --snapshot-tail --gate-publish-interval 64 --pre-input-snapshot-step 2\n",
+  "model_image_receive_time": "unknown",
+  "qmp_reference": "https://www.qemu.org/docs/master/interop/qmp-spec.html"
+}

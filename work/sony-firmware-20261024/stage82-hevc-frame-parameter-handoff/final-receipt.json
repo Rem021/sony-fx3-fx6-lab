@@ -1,0 +1,94 @@
+{
+  "schema": "fx3-stage82-hevc-frame-handoff/1",
+  "created_utc": "2026-10-27T05:28:51.546800+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/README.md",
+      "bytes": 3783,
+      "sha256": "8b7b4208864fd02a2ec606403aeda2925842a84c04e4496fcb60c6a2e21ce213"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/completed-evidence-review.json",
+      "bytes": 773,
+      "sha256": "9e55581119c2c4bd1562bce3640310d07eeef8ea904e45805d445bc18f1b6e87"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/coordinator-observations.json",
+      "bytes": 620,
+      "sha256": "465d3bbf367090d266e11a971c7c5f9689a063e5af50bed4376c94fef23469d5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/frame_handoff.py",
+      "bytes": 12336,
+      "sha256": "64df9f910a617116ab96fa83cdba3d8a377e1c835b73a2429d7283dc5c38c89d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/goal-status-after.json",
+      "bytes": 250506,
+      "sha256": "5be82597f19a7b7754d8945cf235d8b86c912d75345c0d20b1aa0b7acc481ac6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/goal-status-before.json",
+      "bytes": 247778,
+      "sha256": "70b4088e67640fa8e86f98ee5318f3a4cc1760ccfd0e4d1d1de44ecd3a5cd224"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/review_and_seal.py",
+      "bytes": 11754,
+      "sha256": "f8f22218f99419e83d8f76c05439411c0ed55b38a993960d6e2fed1556e6875e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/run-20261026/executed-source.py",
+      "bytes": 11928,
+      "sha256": "5b02919fd9acc1251520a4ce483b4eb78bbfe1022368ac40acd7ea47c32dec86"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/run-20261026/frame-handoff-results.json",
+      "bytes": 668955,
+      "sha256": "b398ec4a632a8b16da4f51cb7ed31a2684f274951d6356e20c065d2dee89c378"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/run-poststate-checks-20261026/executed-source.py",
+      "bytes": 12336,
+      "sha256": "64df9f910a617116ab96fa83cdba3d8a377e1c835b73a2429d7283dc5c38c89d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/run-poststate-checks-20261026/frame-handoff-results.json",
+      "bytes": 669523,
+      "sha256": "2ef5c5e6fdb52172b4e018ce3649d2145ce4fb94c1832388f47641d40b6eeca5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/summary.json",
+      "bytes": 773,
+      "sha256": "9e55581119c2c4bd1562bce3640310d07eeef8ea904e45805d445bc18f1b6e87"
+    }
+  ],
+  "previous_manifest_sha256": "26f40c19ae81f315d2656a9bf7f6ab066205703409871b07d5a870f6f3acfd5e",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "70b4088e67640fa8e86f98ee5318f3a4cc1760ccfd0e4d1d1de44ecd3a5cd224",
+    "after_sha256": "5be82597f19a7b7754d8945cf235d8b86c912d75345c0d20b1aa0b7acc481ac6"
+  },
+  "readme_index_entry": "- [2026-10-26 FX3 HEVC帧参数交接与旧副本](<work/sony-firmware-20261024/stage82-hevc-frame-parameter-handoff/README.md>)：目标字经原156+48字节交接进独立缓冲，源gate清零而副本保留；8普通/2顺序14阶段。非实际调度/码率算法/硬件或恢复证据，仅Mac。",
+  "readme_index_before_sha256": "8475a88c355b673b9bad5d6025ac61ea5172616fa58b19f0a6f1015b7a624658",
+  "readme_index_after_sha256": "f72c4efa32c7d561e9cf064f4e1c2d0d94275891f187058882d5cae5c150c289",
+  "operations": {
+    "created_utc": "2026-10-27T05:28:51.546800+00:00",
+    "status": "PASS_NATIVE_HEVC_FRAME_HANDOFF_AND_DECLARED_OLD_PACKET_RETENTION",
+    "prior_sealed_files_verified": 10,
+    "ordinary_cases": 8,
+    "declared_sequential_cases": 2,
+    "bounded_phases": 14,
+    "native_copy156_and48_target_lands_at_buffer64": true,
+    "source_gate_cleared_frame_bit_and_copy_persist": true,
+    "native20M_source_update_preserves_prepared16M_packet_in_declared_order": true,
+    "original_predicate_full_callback_actual_order_hardware_rate_control_recording_or_recovery_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false,
+    "review_scope": "Same agent source/PC/whole-region review; no independent emulator or camera acceptance."
+  },
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

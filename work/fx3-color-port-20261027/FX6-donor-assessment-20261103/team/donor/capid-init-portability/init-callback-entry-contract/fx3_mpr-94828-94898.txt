@@ -1,0 +1,34 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000940f4 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi>:
+   94828: f94aeec1     	ldr	x1, [x22, #0x15d8]
+   9482c: b4000061     	cbz	x1, 0x94838 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0x744>
+   94830: aa1603e0     	mov	x0, x22
+   94834: d63f0020     	blr	x1
+   94838: aa1303e0     	mov	x0, x19
+   9483c: 97ff9f6d     	bl	0x7c5f0 <pthread_mutex_lock@plt>
+   94840: f94012a1     	ldr	x1, [x21, #0x20]
+   94844: 9282bbe3     	mov	x3, #-0x15e0            // =-5600
+   94848: f9400aa0     	ldr	x0, [x21, #0x10]
+   9484c: 8b030021     	add	x1, x1, x3
+   94850: eb01001f     	cmp	x0, x1
+   94854: 540000e0     	b.eq	0x94870 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0x77c>
+   94858: d282bc02     	mov	x2, #0x15e0             // =5600
+   9485c: 8b020000     	add	x0, x0, x2
+   94860: f9000aa0     	str	x0, [x21, #0x10]
+   94864: aa1303e0     	mov	x0, x19
+   94868: 97ffa412     	bl	0x7d8b0 <pthread_mutex_unlock@plt>
+   9486c: 17ffffc3     	b	0x94778 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0x684>
+   94870: f9400ea0     	ldr	x0, [x21, #0x18]
+   94874: 97ffaa47     	bl	0x7f190 <_ZdlPv@plt>
+   94878: f94016a0     	ldr	x0, [x21, #0x28]
+   9487c: d282bc01     	mov	x1, #0x15e0             // =5600
+   94880: 91002002     	add	x2, x0, #0x8
+   94884: f9400400     	ldr	x0, [x0, #0x8]
+   94888: f9001762     	str	x2, [x27, #0x28]
+   9488c: 8b010002     	add	x2, x0, x1
+   94890: f9000f60     	str	x0, [x27, #0x18]
+   94894: f9001362     	str	x2, [x27, #0x20]

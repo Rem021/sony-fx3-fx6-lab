@@ -1,0 +1,27 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap93-r5-current-frame-export/candidate.json",
+  "base_sha256": "3f7bf1d12a3f94c955be7f6b8b87712432e9c4b01ca39201430056a708f58b02",
+  "changed_CPIO_members": [
+    "simulation/fx3-gpe-observe-v7.so",
+    "simulation/fx3-rm-empty-provider-v3-setup.so"
+  ],
+  "init_unchanged": true,
+  "RM_core_v2_unchanged": true,
+  "originals_unchanged": true,
+  "DTB_only_initrd_end_changed": true,
+  "helpers": {
+    "fx3-gpe-observe-v19-child-stretch.c": "0078869b594c1ce7607626b564a778cc9a609ece96c3b3f750e422229df2e1be",
+    "fx3-gpe-backend-v4.c": "205794caecfda2c07d0d22f3d6f1dd6fa16fc756265b19bb79d2436ec36b6e2e",
+    "fx3-gpe-backend-v4.h": "462c4d50a52381c4452038b2d09d2761e0a51c28bb62a82f34a2f286077cf0f6",
+    "fx3-gpe-resource-v4-child.inc": "c1d644414d966f67b7781f3b9922703f0c0102f2879f5a502c77b87a1afd1510",
+    "fx3-gpe-compaction-v1.S": "b465c89b3df6294bc0703a202d57a189ad1f3eb386d290caa71c32df52464615",
+    "fx3-rm-empty-provider-v4-up-enter.c": "8e8c7748ae5de50c518b88a5d2f8d12d4870045b55618fdfc1f25e79bb30f3e6",
+    "fx3-rm-key-gate-v3-up-enter.inc": "f6c13de13f7fa22d0d353484cdc8070fa4c7de156209fff0853d4bfda7b18eb9",
+    "fx3-input94-plan-v1.h": "eb6dee2ba2f0455fb820e74539a387c39dfcb4f0b0536e3189dc7e5686e3c5ff",
+    "fx3-gpe-observe-v19-child-stretch.so": "92baeb212625b0e78ab32721b13b654e350fa0b320e9a6ecd2cd0514fb9c12db",
+    "fx3-rm-empty-provider-v4-up-enter.so": "91a19f2fdbf61f353c85b03ae3c4be3e3604a726617b205a5d779fba272928a4"
+  },
+  "host_checks": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap94-host-check.json",
+  "input_plan_C_ASan_UBSan_and_host": true,
+  "authority": "msg_fd22adc6ac57"
+}

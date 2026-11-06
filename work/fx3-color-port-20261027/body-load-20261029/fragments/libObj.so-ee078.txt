@@ -1,0 +1,128 @@
+000ee078 mov        w0, #-0x7f
+000ee07c strb       w0, [x19, #1]
+000ee080 strb       wzr, [x19, #4]
+000ee084 strb       wzr, [x19, #5]
+000ee088 str        wzr, [x19, #8]
+000ee08c str        xzr, [x19, #0x10]
+000ee090 str        w1, [x19, #0x18]
+000ee094 b          #0xedca8
+000ee098 adrp       x1, #0x1dd000
+000ee09c adrp       x0, #0x1dd000
+000ee0a0 strb       w21, [x19, #0x1c]
+000ee0a4 add        x1, x1, #0x969 ; literal '/setting/updater'
+000ee0a8 add        x0, x0, #0x9af ; literal '[UDTR0604] UD_SET_MD command error : not umounted %s\n'
+000ee0ac b          #0xedf78
+000ee0b0 stp        x29, x30, [sp, #-0xa0]!
+000ee0b4 adrp       x0, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ee0b8 add        x0, x0, #0x5be ; literal '/root/IAMUPDATER'
+000ee0bc mov        x29, sp
+000ee0c0 stp        x19, x20, [sp, #0x10]
+000ee0c4 add        x1, x29, #0x20
+000ee0c8 adrp       x20, #0x262000
+000ee0cc bl         #0x1bce48
+000ee0d0 ldr        x20, [x20, #0xdc0]
+000ee0d4 mov        x3, #0x231
+000ee0d8 movk       x3, #0x4b, lsl #16
+000ee0dc adrp       x2, #0xed000
+000ee0e0 adrp       x1, #0x2ce000
+000ee0e4 add        x2, x2, #0xc44
+000ee0e8 add        x1, x1, #0x1a0
+000ee0ec str        w0, [x20]
+000ee0f0 mov        w0, w3
+000ee0f4 bl         #0x577f0 ; osal_reg_sync_msg_queue_cb
+000ee0f8 mov        w19, w0
+000ee0fc cbz        w0, #0xee120
+000ee100 mov        w1, w0
+000ee104 adrp       x0, #0x1dd000
+000ee108 add        x0, x0, #0xa4a ; literal '[UDTR0604] regist err func_cb_sync() SENSER:%d\n'
+000ee10c bl         #0x57cd0 ; printf
+000ee110 mov        w0, w19
+000ee114 ldp        x19, x20, [sp, #0x10]
+000ee118 ldp        x29, x30, [sp], #0xa0
+000ee11c ret        
+000ee120 ldr        w0, [x20]
+000ee124 cbz        w0, #0xee110
+000ee128 adrp       x20, #0x261000
+000ee12c mov        w0, #0x4b0000
+000ee130 ldr        x20, [x20, #0xf60]
+000ee134 mov        x1, x20
+000ee138 bl         #0x56c70 ; Backup_read
+000ee13c cmp        w0, #0
+000ee140 mov        w19, w0
+000ee144 b.gt       #0xee158
+000ee148 mov        w1, w0
+000ee14c adrp       x0, #0x1dd000
+000ee150 add        x0, x0, #0xa7a ; literal '[UDTR0604] Backup_read() error %d\n'
+000ee154 b          #0xee10c
+000ee158 ldrb       w0, [x20]
+000ee15c sub        w0, w0, #1
+000ee160 uxtb       w0, w0
+000ee164 cmp        w0, #1
+000ee168 b.hi       #0xee110
+000ee16c mov        x3, #0x376
+000ee170 adrp       x2, #0xed000
+000ee174 movk       x3, #0x4b, lsl #16
+000ee178 adrp       x1, #0x2ce000
+000ee17c add        x2, x2, #0x990
+000ee180 add        x1, x1, #0x198
+000ee184 mov        w0, w3
+000ee188 bl         #0x57c50 ; osal_reg_msg_queue_cb
+000ee18c mov        w19, w0
+000ee190 cbz        w0, #0xee110
+000ee194 mov        w1, w0
+000ee198 adrp       x0, #0x1dd000
+000ee19c add        x0, x0, #0xa9d ; literal '[UDTR0604] regist err func_cb() LSI_TRANSFER:%d\n'
+000ee1a0 b          #0xee10c
+000ee1a4 adrp       x0, #0x2ce000
+000ee1a8 stp        x29, x30, [sp, #-0x20]!
+000ee1ac mov        x29, sp
+000ee1b0 ldr        x1, [x0, #0x1a0]
+000ee1b4 mov        w0, #0x231
+000ee1b8 movk       w0, #0x4b, lsl #16
+000ee1bc stp        x19, x20, [sp, #0x10]
+000ee1c0 bl         #0x56f60 ; osal_unreg_msg_queue_cb
+000ee1c4 mov        w19, w0
+000ee1c8 cbz        w0, #0xee1ec
+000ee1cc mov        w1, w0
+000ee1d0 adrp       x0, #0x1dd000
+000ee1d4 add        x0, x0, #0x9e5 ; literal '[UDTR0604] unregist err func_cb_sync() SENSER:%d\n'
+000ee1d8 bl         #0x57cd0 ; printf
+000ee1dc mov        w0, w19
+000ee1e0 ldp        x19, x20, [sp, #0x10]
+000ee1e4 ldp        x29, x30, [sp], #0x20
+000ee1e8 ret        
+000ee1ec adrp       x0, #0x262000
+000ee1f0 ldr        x0, [x0, #0xdc0]
+000ee1f4 ldr        w0, [x0]
+000ee1f8 cbz        w0, #0xee1dc
+000ee1fc adrp       x0, #0x2ce000
+000ee200 mov        x20, x0
+000ee204 ldr        x1, [x0, #0x198]
+000ee208 cbz        x1, #0xee1dc
+000ee20c mov        w0, #0x376
+000ee210 movk       w0, #0x4b, lsl #16
+000ee214 bl         #0x56f60 ; osal_unreg_msg_queue_cb
+000ee218 mov        w19, w0
+000ee21c cbz        w0, #0xee230
+000ee220 mov        w1, w0
+000ee224 adrp       x0, #0x1dd000
+000ee228 add        x0, x0, #0xa17 ; literal '[UDTR0604] unregist err func_cb() LSI_TRANSFER:%d\n'
+000ee22c bl         #0x57cd0 ; printf
+000ee230 str        xzr, [x20, #0x198]
+000ee234 b          #0xee1dc
+000ee238 stp        x29, x30, [sp, #-0x40]!
+000ee23c mov        x29, sp
+000ee240 str        x21, [sp, #0x20]
+000ee244 mov        x21, x1
+000ee248 ldr        x1, [x0, #0x118]
+000ee24c stp        x19, x20, [sp, #0x10]
+000ee250 mov        x19, x0
+000ee254 cbnz       x1, #0xee264
+000ee258 ldr        x1, [x0]
+000ee25c ldr        x1, [x1, #0x20]
+000ee260 blr        x1
+000ee264 ldr        x0, [x19, #0x10]
+000ee268 mov        x2, #0x14
+000ee26c add        x0, x0, #1
+000ee270 str        x0, [x19, #0x10]
+000ee274 udiv       x1, x0, x2

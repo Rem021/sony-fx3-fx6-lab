@@ -1,0 +1,91 @@
+{
+  "status": "cancelled_unqueued_alarm_only",
+  "scope": "explicit_unqueued_alarm_cleanup_only",
+  "session": "fx3-deadline-operator-r21-b83358633d9e-ccf2a6e7",
+  "tab": null,
+  "binding": {
+    "attempt_id": "c75de8c6-2738-41ff-998b-a35c8cce19da",
+    "document_time_origin": 1793835724436,
+    "launch_request_id": "bb9c2485-fe65-40d5-92d5-db1d5365fd86",
+    "key": 427,
+    "base_step": 0,
+    "expected_step": 1,
+    "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+    "content_generation": 1,
+    "sequence": 211,
+    "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f"
+  },
+  "review": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/recovery-review/review-result.json",
+  "target": "亲看拒绝提示与当前 NO CARD 图；仅清除未入队旧 alarm，不批准画面或发键",
+  "host_start_ns": 419428982980833,
+  "guest_keys_sent": 0,
+  "confirm_calls": 0,
+  "new_alarm_calls": 0,
+  "eval_may_have_started": true,
+  "browser_result": {
+    "alarm_cancel_receipt": {
+      "current": {
+        "armed_ms": 10655.100000023842,
+        "cancelled_ms": 19022.200000047684,
+        "deadline_ms": 20000,
+        "due_ms": 30655.10000002384,
+        "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f",
+        "state": "cancelled"
+      },
+      "deadline_ms": 20000,
+      "documentTimeOrigin": 1793835724436,
+      "events": [
+        {
+          "event": "installed",
+          "performance_ms": 936.100000023842,
+          "script_SHA256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+          "wall_UTC": "2026-11-04T23:42:05.371Z"
+        },
+        {
+          "due_ms": 30655.10000002384,
+          "event": "armed",
+          "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f",
+          "performance_ms": 10655.200000047684,
+          "wall_UTC": "2026-11-04T23:42:15.091Z"
+        },
+        {
+          "elapsed_ms": 8367.100000023842,
+          "event": "cancelled",
+          "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f",
+          "performance_ms": 19022.200000047684,
+          "wall_UTC": "2026-11-04T23:42:23.458Z"
+        }
+      ],
+      "expectedLaunchId": "bb9c2485-fe65-40d5-92d5-db1d5365fd86",
+      "expectedURL": "http://127.0.0.1:51442/",
+      "sealed": false,
+      "version": 1
+    },
+    "attempt_id": "c75de8c6-2738-41ff-998b-a35c8cce19da",
+    "cancel_invoked": true,
+    "current_frame": {
+      "generation": 2,
+      "sequence": 212,
+      "sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+    },
+    "due_ms": 30655.10000002384,
+    "elapsed_ms": 8367.100000023842,
+    "historical_review_not_current": false,
+    "no_confirm_visual": true,
+    "no_guest_key": true,
+    "no_visual_approval": true,
+    "nonce": "68a8332d-5712-481c-a333-03e298cd8a4f",
+    "old_review": {
+      "generation": 2,
+      "sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+    },
+    "performance_ms": 19022.30000001192,
+    "server_atomic_permission": false,
+    "status": "cancelled_unqueued_alarm_only"
+  },
+  "alarm_cleanup_status": "confirmed_cancelled",
+  "current_screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/recovery-cancel/current-after-cancel.png",
+  "current_screenshot_sha256": "d1fd8dd6c74c43fee2e3fc94bb5e1a1dc1cc26ab0c0d88aaeef4bbf3bc79752e",
+  "current_screenshot_status": "delivered_requires_separate_operator_review",
+  "host_end_ns": 419429026301833
+}

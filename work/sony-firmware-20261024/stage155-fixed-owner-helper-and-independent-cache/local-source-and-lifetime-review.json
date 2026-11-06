@@ -1,0 +1,62 @@
+{
+  "created_utc": "2026-10-28T09:17:46.166998+00:00",
+  "status": "PASS_LOCAL_REVIEW_NOT_LIVE_LAUNCH_OR_CAMERA_ACCEPTANCE",
+  "production_sources": [
+    {
+      "path": "owner_trial.h",
+      "sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "236fe4c122372a13f8a5b3d4ae25bc4ccc1b7e14af47363fcde4e62e0a999afc"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "3cbe21a3da869124265be7b4481d309c9dd979e17785b7d2c54cce92115d0995"
+    },
+    {
+      "path": "entry_shared.h",
+      "sha256": "a7a6703f358e125050b8ee6d41593c3f1f81f2ab7dc75a086d02e7a280bf84d6"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "2a7d66aa1afb97d6400a382ec3984c676d31f9ee1d548f9bafacd397a959a269"
+    },
+    {
+      "path": "entry_binding.py",
+      "sha256": "b499d84936eefa143fe087936dcba6e81af0c2947515386cb4cc4c1dae11cd27"
+    },
+    {
+      "path": "cache_observer.py",
+      "sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971"
+    },
+    {
+      "path": "admin_launch.applescript",
+      "sha256": "237ef186f73c0663b8f9d21246ad6d79fecf12efcac89b9db4ca90732b477623"
+    }
+  ],
+  "no_matching_helper_processes_currently_present": true,
+  "fixture_test_process_count": 14,
+  "all_fixture_processes_terminal_by_Popen": true,
+  "real_native_or_administrator_script_executed": false,
+  "USB_active_or_driver_operations": 0,
+  "authorized_cached_metadata_queries": 1,
+  "same_agent_local_review_only": true,
+  "critical_remaining": [
+    "No live parent/osascript relay supervisor or root helper reconnection has been implemented. Relay PID is not proof of actual helper identity or lifetime.",
+    "Atomic single-use claim is per shared file only. It does not bind a physical grant to one build/target across newly created files.",
+    "AppleScript takes helper path as an argument. Caller must fix and verify exact helper/script paths and hashes before invocation; wrapper alone is not a fixed executable security boundary.",
+    "Executable/shared files currently reside on a user-writable external volume with owners disabled. Root launch must handle path replacement, file identity and immutable grant/binary identity; no hardened install is implemented.",
+    "Independent cache observer has passed own fixtures and one cache collection only; it has not observed actual driver handoff, restore or functional camera behavior.",
+    "Native code refuses mounted/unknown media but full preflight, automount race and postflight orchestration remain unverified.",
+    "No backup, restore, independent rescue, HEVC original clip or persistent patch package has been created or accepted."
+  ]
+}

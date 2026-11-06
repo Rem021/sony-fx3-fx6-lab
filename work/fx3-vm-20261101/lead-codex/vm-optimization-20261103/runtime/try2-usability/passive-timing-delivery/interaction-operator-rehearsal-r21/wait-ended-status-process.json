@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-operator-r21-b83358633d9e-ccf2a6e7",
+    "eval",
+    "--stdin"
+  ],
+  "start": {
+    "UTC": "2026-11-04T23:42:36.445280+00:00",
+    "host_ns": 419441977144875
+  },
+  "end": {
+    "UTC": "2026-11-04T23:42:36.666892+00:00",
+    "host_ns": 419442198771041
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"black_after_ready_count\": 0,\n  \"browser_ready\": true,\n  \"busy\": false,\n  \"error\": null,\n  \"events\": [],\n  \"final_receipt_id\": \"Js3JOKrKWg89_gn4dcHTFw\",\n  \"frame\": {\n    \"PNG_sha256\": \"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\",\n    \"all_zero_pixels\": false,\n    \"content_generation\": 3,\n    \"height\": 480,\n    \"sequence\": 213,\n    \"width\": 640\n  },\n  \"input_received\": true,\n  \"launch_request_id\": \"bb9c2485-fe65-40d5-92d5-db1d5365fd86\",\n  \"launch_status\": \"running\",\n  \"max_steps\": 8,\n  \"message\": \"OFFLINE FIXTURE ended; no VM lifecycle claim\",\n  \"phase\": \"finished\",\n  \"ready\": false,\n  \"remaining_seconds\": 566,\n  \"render_valid\": true,\n  \"result\": {\n    \"actual_guest_inputs\": 0,\n    \"scope\": \"offline simulation only\"\n  },\n  \"review_confirmation\": null,\n  \"review_required\": true,\n  \"review_step\": 1,\n  \"steps\": 1,\n  \"visual_change_observed\": true,\n  \"visual_state\": \"visual_pending\"\n}\n",
+  "stderr": ""
+}

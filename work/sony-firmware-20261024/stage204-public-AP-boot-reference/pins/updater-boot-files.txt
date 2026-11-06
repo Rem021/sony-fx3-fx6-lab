@@ -1,0 +1,27 @@
+fe04f2c8 340500b4 cbz      x20, #0xfe04f36c
+fe04f2cc 150500b4 cbz      x21, #0xfe04f36c
+fe04f2d0 a00000d0 adrp     x0, #0xfe065000
+fe04f2d4 00580491 add      x0, x0, #0x116
+fe04f2d8 e10314aa mov      x1, x20
+fe04f2dc d12a0094 bl       #0xfe059e20
+fe04f2e0 1f000071 cmp      w0, #0
+fe04f2e4 4d060054 b.le     #0xfe04f3ac
+fe04f2e8 a00000d0 adrp     x0, #0xfe065000
+fe04f2ec 00ac0391 add      x0, x0, #0xeb
+fe04f2f0 e10315aa mov      x1, x21
+fe04f2f4 cb2a0094 bl       #0xfe059e20
+fe04f2f8 1f000071 cmp      w0, #0
+fe04f2fc 2d060054 b.le     #0xfe04f3c0
+fe04f300 f70000b4 cbz      x23, #0xfe04f31c
+fe04f304 a00000d0 adrp     x0, #0xfe065000
+fe04f308 000c0591 add      x0, x0, #0x143
+fe04f30c e10317aa mov      x1, x23
+fe04f310 c42a0094 bl       #0xfe059e20
+fe04f314 1f000071 cmp      w0, #0
+fe04f318 ed050054 b.le     #0xfe04f3d4
+fe04f31c a00000d0 adrp     x0, #0xfe065000
+fe04f320 002c0291 add      x0, x0, #0x8b
+fe04f324 e10316aa mov      x1, x22
+fe04f328 be2a0094 bl       #0xfe059e20
+fe04f32c 1f000071 cmp      w0, #0
+fe04f330 ec020054 b.gt     #0xfe04f38c

@@ -1,0 +1,32 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx/compat",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-gpe-observe-v15-earlybind.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v15-earlybind.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx/fx3-gpe-backend-v2.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v15-earlybind.so"
+  ],
+  "exit": 0,
+  "previous_source_sha256": "07b8580003c075d3636751e10923af2da666e1b4012132a7d9d51f0463acd457",
+  "source_sha256": "c62c8174f19e4d3858b9a31f5bd31215b401a2e8ee7978cb0d67d7b01f1a52ae",
+  "output_sha256": "4e66d1733f15f7963315ddca42e658b494bfddad443530f322a031ae6da345d6",
+  "scope": "Only exactoriginal gpe0_info297c0/entrydcb0 or gpe1_info297e8/entrydce4 creation gateduntil existing setup/GOT binding armed. Originalosal_create_thread args/result/errno forwarded; raster/nativeFIFO/completion identicalv14guard; noMMIOmodel."
+}

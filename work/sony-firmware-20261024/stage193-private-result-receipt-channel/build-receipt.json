@@ -1,0 +1,214 @@
+{
+  "schema": 1,
+  "owner_ABI": 4,
+  "entry_schema": 3,
+  "native_build_released": false,
+  "native_helper_executed": false,
+  "administrator_or_camera_operations": 0,
+  "SDK": "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+  "builds": {
+    "fixture": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-DFX3_ENTRY_FIXTURE",
+        "-DFX3_OWNER_CHANNEL_FIXTURE",
+        "-DFX3_IOKIT_WIRE_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_core.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_entry_main.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_channel.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/iokit_wire.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/native_session.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_receipt.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_fixture.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/fake_iokit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/owner-fixture-helper"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/owner-fixture-helper",
+      "sha256": "2bca277a8e7ccc5a8e5fa12d6a6d47c4d3b49a92d55a1e1a5241db59df99cf85",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/owner-fixture-helper:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+    },
+    "native": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_core.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_entry_main.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_channel.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/iokit_wire.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/native_session.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_receipt.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_iokit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/host_login.c",
+        "-framework",
+        "Security",
+        "-lbsm",
+        "-framework",
+        "IOKit",
+        "-framework",
+        "CoreFoundation",
+        "-framework",
+        "DiskArbitration",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/owner-native-helper"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/owner-native-helper",
+      "sha256": "3e025c2735800a8bc84d8a241bbb3aa739fd65eb3f338d232458b2dc07b40556",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/owner-native-helper:\n\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.0.55)\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.63)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+    },
+    "ipc": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-dynamiclib",
+        "-DFX3_ENTRY_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/entry_support.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/entry-ipc.dylib"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/entry-ipc.dylib",
+      "sha256": "d5ba39ee144a2819b09c2ccad84b28cf56d87f795db74278e7f08a76d4956c81",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/entry-ipc.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage193-private-result-receipt-channel/artifacts/entry-ipc.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+    }
+  },
+  "sources": [
+    {
+      "path": "entry_shared.h",
+      "sha256": "e1e0e36943297f26c3e8be260025a13213e78aa07e128cf154f9f9e906cfff76"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "entry_target.h",
+      "sha256": "f00c0d5e3620ea60bab79d4e4e503188be4eb4d12270c7bc8a19c3afeb904f44"
+    },
+    {
+      "path": "fake_iokit.c",
+      "sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19"
+    },
+    {
+      "path": "frame_io.c",
+      "sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f"
+    },
+    {
+      "path": "frame_io.h",
+      "sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a"
+    },
+    {
+      "path": "global_guard.c",
+      "sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526"
+    },
+    {
+      "path": "global_guard.h",
+      "sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828"
+    },
+    {
+      "path": "host_login.c",
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "host_login.h",
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "iokit_wire.c",
+      "sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94"
+    },
+    {
+      "path": "iokit_wire.h",
+      "sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b"
+    },
+    {
+      "path": "native_session.c",
+      "sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1"
+    },
+    {
+      "path": "native_session.h",
+      "sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f"
+    },
+    {
+      "path": "owner_channel.c",
+      "sha256": "9fa0c710f704ec493b04f187a584755fa836477fd4ff27183760e050d3310a4e"
+    },
+    {
+      "path": "owner_channel.h",
+      "sha256": "0d6670fe09e69ad9c72616607c5f76e40cb135f14f8b006e2353f66d61d2af00"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "d0fe9e5f9f8e65be2fc4e4ba2e9cdd4681fed79dc17b8a16914f6689922a5118"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "a17ef8bd7c2e564cd58215648cc66c0bb000023952f0c85b14c1e2cda883c9aa"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "f0a0f75cb793d648f8a801cb1978b358c93e825cd78a2a7b9ef0cc81b5b024b2"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "owner_receipt.c",
+      "sha256": "eef18e2305d77a2a3ff7d0c5fba3650160a68e70d6cd8d5984b61b85e2c1c655"
+    },
+    {
+      "path": "owner_receipt.h",
+      "sha256": "aadca48d8d336d2e788ccc21c9f09a13bc8b30c5962cc8c5b45fec5285145fb0"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    }
+  ]
+}

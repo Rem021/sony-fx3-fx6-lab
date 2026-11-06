@@ -1,0 +1,55 @@
+{
+  "scope": "host-only; no ELF execution, QEMU, guest adaptation, camera or media writes",
+  "original_pins": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/capid-init-portability/callback-fields.json": "aef19dda30c2120538ad4ed66b536b25f01eb94c8326239658b0f5953ff660a5",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/mpr-observation.json": "fa8e834e999aafb573118ee34de89b1d7b38111fc13ef1c7122ddef774ef31e2"
+  },
+  "source_sha256": {
+    "init_adapter.py": "93ceae9c19962105bebb5518c86f2fa4868229a1d3da8488d9fc96cfaddf6adf",
+    "audit.py": "035c25292d666104381acbaecb8ded188d58f31a432b6202934aa792c364b439",
+    "replay.py": "91aac4efe2a440e5ec20cd7e72c6ccbc44fbe72a5b07c127fc9cde46c61e40ad",
+    "test_adapter.py": "f2fb387cb5d4bae00074114de795eaedf640a2d621aada5d8c4d9946c8da1985",
+    "seal.py": "3c9c792798f60bb50c96539c09d7f9b7ae5f3ccc2b030f7a698b74a80e22ce51",
+    "README.md": "4957ea4486d59c6bf8e2e7fcc2f38a28d908288d9dda13c87ea5f51649e58a51"
+  },
+  "output_sha256": {
+    "audit.json": "4a6ee0043f44a9fd7ae2c2a36628a17874459d6e753581132626e8d5a91273ac",
+    "replay.json": "f9e649db5e4ca744ddd6051ed03d98e376b92db8d51e5fa4cde7cd8119db7412"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "audit.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"verified_callback_loads\": {\"fx3_mpr\": 57, \"fx6_mpr\": 75}, \"actual_count\": 2, \"actual_slots\": [4096, 4112, 0, 0], \"callback_nonnull_common\": 46, \"callback_nonnull_extra\": 10}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "replay.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"count\": 2, \"slots\": [4096, 4112, 0, 0], \"common_nonnull\": 46, \"extra_nonnull\": 10, \"reject_reasons\": 50, \"preview\": false}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-m",
+        "unittest",
+        "-v",
+        "test_adapter"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_active_sentinel_rejected (test_adapter.TestProjection.test_active_sentinel_rejected) ... ok\ntest_callback_nonnull_not_zeroed (test_adapter.TestProjection.test_callback_nonnull_not_zeroed) ... ok\ntest_count_five_rejected (test_adapter.TestProjection.test_count_five_rejected) ... ok\ntest_duplicate_id_rejected (test_adapter.TestProjection.test_duplicate_id_rejected) ... ok\ntest_genuine_count_and_four_slots (test_adapter.TestProjection.test_genuine_count_and_four_slots) ... ok\ntest_invalid_input_rejected (test_adapter.TestProjection.test_invalid_input_rejected) ... ok\ntest_mxf_not_portable (test_adapter.TestProjection.test_mxf_not_portable) ... ok\ntest_unsupported_callback_still_rejected_with_mode (test_adapter.TestProjection.test_unsupported_callback_still_rejected_with_mode) ... ok\ntest_xavcs_fixture_still_guest_rejected (test_adapter.TestProjection.test_xavcs_fixture_still_guest_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 9 tests in 0.004s\n\nOK\n"
+    }
+  ],
+  "result": "9 host tests passed; genuine snapshot structurally projected and guest conversion rejected"
+}

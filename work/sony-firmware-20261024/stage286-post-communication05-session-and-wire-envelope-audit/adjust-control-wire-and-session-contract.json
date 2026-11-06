@@ -1,0 +1,351 @@
+{
+  "status": "POST_COMMUNICATION05_ADJUST_CONTROL_WIRE_AND_SESSION_CONTRACT_PINNED",
+  "stage285_real_hardware_baseline": {
+    "grant_id": "fx3-702-service-access-communication-20261101-05",
+    "terminal_status": "HOST_RETURN_CONTROLLED_PORT_ASSOCIATION",
+    "private_record_phase": "COMPLETE",
+    "native_return": 0,
+    "flow_frame_count": 124,
+    "read0_request_bytes": 12,
+    "read0_response_header_bytes": 12,
+    "read0_response_header_version": 3,
+    "read0_response_body_bytes": 88,
+    "post_stop_msc_return_verified": true,
+    "driver_release_0da1_9_verified": true,
+    "user_screen_confirmed_normal": true,
+    "achieved_auth_table": "A or B (level 2 or 3 proven on hardware because pFunc 0x10 ProductInfo is absent from table C)"
+  },
+  "adjust_control_wire_protocol": {
+    "pFunc": 64,
+    "handler": "_Z17AdjustControlFuncPK12SenserPacket",
+    "handler_VA": "0x10344",
+    "present_in_pFunc_tables": [
+      "A",
+      "B",
+      "C"
+    ],
+    "category_0x1001_gate": {
+      "table_flags_mask": "0x4000 (flags 0x4001..0x4013)",
+      "auth_level_check_VA": "0xfe20..0xfe4c",
+      "allowed_auth_levels": [
+        2,
+        3
+      ],
+      "level_1_rejected": true,
+      "hardware_satisfaction": "Proven in Stage 285 via pFunc 0x10 read0 success (which also requires level 2 or 3)"
+    },
+    "senser_request_envelope": {
+      "header_bytes": 12,
+      "header_layout": "<IHHBBBB (size, pFunc=0x0040, seq, version, flag=0, reserved=0, res=0)",
+      "adjust_Selector_bytes": 4,
+      "adjust_selector_layout": "<HH (category=0x1001, command)",
+      "inline_payload_read_in_TransactionStart": "min(size - 4, 0x124) bytes read into this+0x40 at 0xfc74..0xfc8c",
+      "remaining_payload_read_in_SenserThread": "if size - 4 > 0x124, Phase 1 allocates DMM and SenserThread reads remaining bytes into MemoryData before Command::Execute (DoExecute)"
+    },
+    "senser_response_envelope": {
+      "header_bytes": 12,
+      "header_layout": "<IHHBBBB (payload_size, pFunc=0x0040, seq, version=3, flag, reserved=0, res)",
+      "producer": "_Z12SendResponseP12SenserPacketP10PacketData (0xb4c0)",
+      "version_byte_at_offset_8": 3,
+      "res_byte_at_offset_11": "1 on normal PacketData response; 0x82 (-0x7e) or error code on failure"
+    },
+    "three_phase_osal_lifecycle": {
+      "phase_1_init": {
+        "caller": "SubsystemCommunicationCommand::TransactionStart (0xff9c..0x10038)",
+        "osal_msg_byte0": 1,
+        "send_file_behavior": "cmd_high_capacity_send_file (0xabc4) frees any prior *0x46bd0, creates DmmMgr(CheckUnitType(2*(size-4))), stores at *0x46bd0, returns 0x10 -> packet_set_process_req_raw_data (msg[0]=2) -> ReceiveOsalMessage maps/DMAs inline payload into DMM and sets next phase = 4",
+        "get_file_behavior": "cmd_high_capacity_get_file (0xb0dc) frees any prior *0x46bd0, creates DmmMgr(CheckUnitType(size-4)), stores at *0x46bd0, returns 0x10 -> packet_set_process_req_raw_data (msg[0]=2) -> ReceiveOsalMessage copies 3-byte inner request into DMM and sets next phase = 4"
+      },
+      "phase_4_execute": {
+        "caller": "SubsystemCommunicationCommand::DoExecute (0xf9f0..0xf9c8)",
+        "osal_msg_byte0": 4,
+        "send_file_behavior": "Dispatches command 6..16 (15=adj_cmd_set_file_path, 16=adj_cmd_set_file2), writes 4-byte business status at [msg+0x1c], frees DMM buffer and destroys *0x46bd0 (0xac68..0xac88), returns 0 -> packet_set_process_end (msg[0]=8, size=4) -> ReceiveOsalMessage sets phase=0x10 (or 0 if no out-of-line DMM) and returns 4-byte status buffer",
+        "get_file_behavior": "Dispatches command 8..17 (17=adj_cmd_get_file2), allocates DMM for response (4-byte status + payload), returns 0x11 -> packet_set_process_res_raw_data (msg[0]=8, dmm_addr, total_size) -> ReceiveOsalMessage DMAs/copies response from DMM into host reply buffer and sets next phase = 0x10"
+      },
+      "phase_16_cleanup": {
+        "caller": "SubsystemCommunicationCommand::~SubsystemCommunicationCommand (0xfaa4..0xfad4)",
+        "osal_msg_byte0": 16,
+        "behavior": "When phase==0x10 (after get_file Phase 4), sends msg[0]=0x10 to libJiritsu -> cmd_high_capacity_get_file (0xb214) calls dmm_free(), destroys *0x46bd0, zeroes *0x46bd0, returns 0x12 -> packet_set_fin_del_data (msg[0]=0x20), then FreeOsalMsg and Inconcurrent::resource_t::unlock()"
+      }
+    }
+  },
+  "concurrency_and_state_ownership": {
+    "senser_worker_threads": {
+      "count": 2,
+      "spawner": "WorkerThreadManager::run_workers (0xc34c) spawns worker 0 and worker 1 running SenserThread (0xb7ac)",
+      "usb_receive_serialization": "Serialize(SenserIfReceive, ...) holds a mutex across each USB receive, and Inconcurrent::resource_t::lock (0xdd00) serializes AdjustControlFunc instances inside libsencore.so",
+      "single_host_client_implication": "When our root helper holds exclusive IOKit USBDeviceOpenSeize on 054C:0336 and sends requests strictly sequentially (waiting for each 12B response header + payload before sending the next request), two SenserThread workers never concurrently execute AdjustControlFunc from USB"
+    },
+    "queue_0x016f0480_writers": {
+      "libsencore_records": 19,
+      "other_internal_camera_producers_proven_absent": false,
+      "implication": "Sequential USB requests prevent USB-side interleaving across SET_FILE_PATH (15) -> SET_FILE2 (16) / GET_FILE2 (17), while single-command operations (or in-memory slot 0xFF operations) avoid multi-step path dependencies"
+    },
+    "operation_modes_comparison": {
+      "operation_0_filesystem": {
+        "byte_0x28": 0,
+        "calls_sys_mount": true,
+        "mount_source": "/dev/nflasha6",
+        "mount_target": "/tmp/jiritsu",
+        "consumes_selected_path_0x467c8": true,
+        "set_file2_dlopen_trigger": "Only when resolved path equals /tmp/jiritsu/libJit.so AND /tmp/jbusy exists (0x9754..0x977c, 0x98d0..0x9928)"
+      },
+      "operation_1_media": {
+        "byte_0x28": 1,
+        "calls_sys_media_mount_on_get": true,
+        "base_path": "/mnt",
+        "consumes_selected_path_0x467c8": true
+      },
+      "operation_0xFF_ram_slot": {
+        "byte_0x28": 255,
+        "calls_sys_mount": false,
+        "touches_filesystem": false,
+        "uses_selected_path_0x467c8_for_lookup": false,
+        "clears_selected_path_0x467c8_on_exit": true,
+        "backing_store": "In-memory slot table at *0x46bd8 (allocated in jiritsu_init 0x6e58..0x6e74), indexed by slot byte [x19, #0x29], max 5 MiB (0x500000), mode [x19, #0x2a] <= 0x11",
+        "does_not_call_dlopen": true
+      }
+    }
+  },
+  "stage244_conditions_reevaluation": {
+    "condition_1_bounded_native_control_session_and_same_body_identity": {
+      "status": "SATISFIED_ON_HARDWARE_IN_STAGE285",
+      "evidence": "Stage 285 (fx3-702-service-access-communication-20261101-05) completed MSC->SERVICE->read0(12B+12B+88B)->STOP->same-port MSC return->0da1:9 release->COMPLETE with user screen confirmation."
+    },
+    "condition_2_exclusive_state_ownership_or_bounded_return_route": {
+      "status": "STATICALLY_PINNED_SINGLE_CLIENT_AND_SLOT_0xFF_DISTINCTION",
+      "evidence": "Inconcurrent::resource_t::lock (0xdd00..0xdd78) + sequential single-client USB requests prevent USB worker interleaving, and DMM lifecycle (Phase 1 -> Phase 4 -> Phase 16) is self-contained per command. Furthermore, operation 0xFF provides a pure RAM cache-slot read/write path without sys_mount, whereas operation 0 (including /tmp/jiritsu/libJit.so dlopen) calls sys_mount(\"/dev/nflasha6\", \"/tmp/jiritsu\")."
+    },
+    "condition_3_precise_side_effect_contract_and_exit_receipts": {
+      "status": "SERVICE_EXIT_PROVEN_MOUNT_SIDE_EFFECT_REMAINS_DISTINCT",
+      "evidence": "SERVICE session exit and automatic MSC return (when camera USB mode is fixed to Mass Storage) are proven on hardware in Stage 285. Any future candidate that uses operation 0 (sys_mount) or dlopen (/tmp/jiritsu/libJit.so) must explicitly account for /tmp/jbusy and /tmp/jiritsu mount behavior rather than claiming zero-side-effect read-only operation."
+    }
+  },
+  "sources": [
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libsencore.so",
+      "sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+      "bytes": 377328
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "bytes": 225200
+    }
+  ],
+  "captured_functions_count": 22,
+  "instruction_checks_count": 53,
+  "queue_016f0480_records": [
+    {
+      "table_index": 1490,
+      "VA": "0x319a8",
+      "category": "0x1001",
+      "flags": "0x4001",
+      "command_low_byte": 1,
+      "name": "JIRITSU_MODE",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb2b8"
+    },
+    {
+      "table_index": 1491,
+      "VA": "0x319f0",
+      "category": "0x1001",
+      "flags": "0x4002",
+      "command_low_byte": 2,
+      "name": "JIRITSU_MOUNT",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb2f8"
+    },
+    {
+      "table_index": 1492,
+      "VA": "0x31a38",
+      "category": "0x1001",
+      "flags": "0x4003",
+      "command_low_byte": 3,
+      "name": "JIRITSU_FORMAT",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb314"
+    },
+    {
+      "table_index": 1493,
+      "VA": "0x31a80",
+      "category": "0x1001",
+      "flags": "0x4004",
+      "command_low_byte": 4,
+      "name": "JIRITSU_START",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb330"
+    },
+    {
+      "table_index": 1494,
+      "VA": "0x31ac8",
+      "category": "0x1001",
+      "flags": "0x4005",
+      "command_low_byte": 5,
+      "name": "JIRITSU_DEBUG",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb34c"
+    },
+    {
+      "table_index": 1495,
+      "VA": "0x31b10",
+      "category": "0x1001",
+      "flags": "0x4006",
+      "command_low_byte": 6,
+      "name": "JIRITSU_FIRMUP",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb368"
+    },
+    {
+      "table_index": 1496,
+      "VA": "0x31b58",
+      "category": "0x1001",
+      "flags": "0x4007",
+      "command_low_byte": 7,
+      "name": "JIRITSU_SET_FILE",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb384"
+    },
+    {
+      "table_index": 1497,
+      "VA": "0x31ba0",
+      "category": "0x1001",
+      "flags": "0x4008",
+      "command_low_byte": 8,
+      "name": "JIRITSU_GET_FILE",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb390"
+    },
+    {
+      "table_index": 1498,
+      "VA": "0x31be8",
+      "category": "0x1001",
+      "flags": "0x4009",
+      "command_low_byte": 9,
+      "name": "JIRITSU_FILE_DELETE",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb3ac"
+    },
+    {
+      "table_index": 1499,
+      "VA": "0x31c30",
+      "category": "0x1001",
+      "flags": "0x400a",
+      "command_low_byte": 10,
+      "name": "JIRITSU_GET_FILELIST",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb3c8"
+    },
+    {
+      "table_index": 1500,
+      "VA": "0x31c78",
+      "category": "0x1001",
+      "flags": "0x400b",
+      "command_low_byte": 11,
+      "name": "JIRITSU_GET_FILE_HASH",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb3d4"
+    },
+    {
+      "table_index": 1501,
+      "VA": "0x31cc0",
+      "category": "0x1001",
+      "flags": "0x400c",
+      "command_low_byte": 12,
+      "name": "JIRITSU_COMPARE_MEDIA",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb3e0"
+    },
+    {
+      "table_index": 1502,
+      "VA": "0x31d08",
+      "category": "0x1001",
+      "flags": "0x400d",
+      "command_low_byte": 13,
+      "name": "JIRITSU_GET_VERSION",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb3ec"
+    },
+    {
+      "table_index": 1503,
+      "VA": "0x31d50",
+      "category": "0x1001",
+      "flags": "0x400e",
+      "command_low_byte": 14,
+      "name": "JIRITSU_FACTORY",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb40c"
+    },
+    {
+      "table_index": 1504,
+      "VA": "0x31d98",
+      "category": "0x1001",
+      "flags": "0x400f",
+      "command_low_byte": 15,
+      "name": "JIRITSU_SET_FILE_PATH",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb42c"
+    },
+    {
+      "table_index": 1505,
+      "VA": "0x31de0",
+      "category": "0x1001",
+      "flags": "0x4010",
+      "command_low_byte": 16,
+      "name": "JIRITSU_SET_FILE2",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb438"
+    },
+    {
+      "table_index": 1506,
+      "VA": "0x31e28",
+      "category": "0x1001",
+      "flags": "0x4011",
+      "command_low_byte": 17,
+      "name": "JIRITSU_GET_FILE2",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb444"
+    },
+    {
+      "table_index": 1507,
+      "VA": "0x31e70",
+      "category": "0x1001",
+      "flags": "0x4012",
+      "command_low_byte": 18,
+      "name": "JIRITSU_FILE_DELETE2",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": true,
+      "jiritsu_outer_target": "0xb450"
+    },
+    {
+      "table_index": 1508,
+      "VA": "0x31eb8",
+      "category": "0x1001",
+      "flags": "0x13",
+      "command_low_byte": 19,
+      "name": "JIRITSU_TEST_UI_VIEW",
+      "queue": "0x16f0480",
+      "requires_level_2_or_3": false,
+      "jiritsu_outer_target": "0xb2b8"
+    }
+  ],
+  "original_code_executed": false,
+  "new_live_usb_or_root_operations": 0
+}

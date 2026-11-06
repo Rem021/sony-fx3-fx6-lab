@@ -1,0 +1,80 @@
+{
+  "created_utc": "2026-10-27T09:41:00.478625+00:00",
+  "preserved_failed_attempts": [
+    {
+      "directory": "run-initial-20261027",
+      "source_sha256": "2c8a62c129f94695237e60f04fa3c89dfe857c7a771e1412a713796995854071",
+      "failure_sha256": "6bf45b72d3cb9602320dd0d9358d388d927c7e95e1698037b56bd0c366eca487",
+      "classification": "harness_error",
+      "explanation": "Non-null assertion incorrectly excluded original null descriptors; corrected to original skip branch."
+    },
+    {
+      "directory": "run-corrected-null-descriptors-20261027",
+      "source_sha256": "eafb538a8cec6b1a51376ff422726ad5211ee1187aad227cfc1f4c0ff95a4f21",
+      "failure_sha256": "910e6ef53c83da9c4c91a76fea9fc8c0a4f2b845d28aedc2cb91d2e609d9ad7c",
+      "classification": "harness_error",
+      "explanation": "Inherited current-entry stop caused immediate pause at80061f3c; diagnostic reproduction showed one CODE observation and original boot-table boundary."
+    },
+    {
+      "directory": "run-corrected-current-entry-stop-20261027",
+      "source_sha256": "9ce2f1a174fc5434cf8d95479f1f4e7150423fa9da1afb6ebd6b5d61305a2de9",
+      "failure_sha256": "724d72cdda6f07eaeb60e923704c3cf50445b73b8c9f747c858b1fc4bb11e8e2",
+      "classification": "harness_error",
+      "explanation": "Allowed-code list omitted pure RAM auxiliary block62090..620bc; original code disassembled and range added, no instructions patched."
+    }
+  ],
+  "source_diffs": [
+    [
+      "--- \n",
+      "+++ \n",
+      "@@ -73,7 +73,8 @@\n",
+      "     def init_trace(self):",
+      "         b=self.want[BSS_PA];intervals=[]",
+      "         for i,r in enumerate(self.descriptors):",
+      "-            assert r[0]==i and r[1]!=0",
+      "+            assert r[0]==i",
+      "+            if not r[1]:continue",
+      "             at=r[1]-IMAGE-BSS_PA;n=16 if i==0 else r[2]*r[3]+8",
+      "             assert at>=0 and at+n<=BSS_SIZE",
+      "             b[at:at+n]=bytes(n)",
+      "@@ -83,7 +84,7 @@\n",
+      "         assert all(a1==b0 for (_,a1),(b0,_) in zip(intervals,intervals[1:]))",
+      "         base=SP_TRACE-0x40",
+      "         for off,value in ((0x28,0),(0x20,0),(0x30,old.TRAP),(0x2c,0),(0x24,0)):self.save(base+off,value)",
+      "-        event=self.run('original69 trace descriptor buffers initialized to CACHE boundary',0x61f3c,sp=SP_TRACE)",
+      "+        event=self.run('original69-entry trace table initializes62 buffers to CACHE boundary',0x61f3c,sp=SP_TRACE)",
+      "         assert event['stop']==STOPS[0x61ffc]",
+      "         at=TRACE_CONTROL-IMAGE-BSS_PA",
+      "         assert old.word(b,at)==TRACE_CONTROL+8 and b[at+4:at+8]==bytes(4)"
+    ],
+    [
+      "--- \n",
+      "+++ \n",
+      "@@ -48,7 +48,7 @@\n",
+      "         for name,value in {**initial,**regs}.items():self.uc.reg_write(getattr(reg,'UC_MIPS_REG_'+name.upper()),value)",
+      "         self.reason=None;self.pcs=[];self.interrupts=[];self.indirect=[];self.entries=[]",
+      "         self.stops=dict(STOPS)",
+      "-        if entry in (0x7af58,0x12f84c):self.stops.pop(entry)",
+      "+        self.stops.pop(entry,None)",
+      "         self.uc.emu_start(IMAGE+entry,0,timeout=20000000,count=0)",
+      "         assert self.reason in set(self.stops.values())|{'returned_via_original_jr_ra'} and not self.interrupts,self.reason",
+      "         image=bytearray(self.blob)"
+    ],
+    [
+      "--- \n",
+      "+++ \n",
+      "@@ -31,7 +31,7 @@\n",
+      " ",
+      "     def code(self,uc,pc,size,user):",
+      "         off=pc-IMAGE",
+      "-        if 0x61f3c<=off<=0x61ffc or 0x67f08<=off<0x67fa8 or 0x12f84c<=off<=0x12f880:",
+      "+        if 0x61f3c<=off<=0x61ffc or 0x62090<=off<0x620c0 or 0x67f08<=off<0x67fa8 or 0x12f84c<=off<=0x12f880:",
+      "             self.pcs.append(pc)",
+      "             if off in self.stops:self.reason=self.stops[off];uc.emu_stop();return",
+      "             assert len(self.pcs)<300000"
+    ]
+  ],
+  "formal_result": "work/sony-firmware-20261024/stage98-native-trace-buffer-origin-and-recovery-scope/run-corrected-native-buffer-block-20261027/trace-origin-results.json",
+  "no_firmware_instruction_trace_disable_or_timer_input_change": true,
+  "firmware_defect_or_device_brick_claimed": false
+}

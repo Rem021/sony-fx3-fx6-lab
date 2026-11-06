@@ -1,0 +1,18 @@
+{
+  "schema": "fx6-hybrid-fbreal-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal54.cpio",
+  "source_sha256": "54aa6f8de8f63e897b95d09e6a6ad9873d69c537b664ac343698f0fbeef6a925",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal57.cpio",
+  "output_sha256": "c2fa7fd1f854660cebc7118d131e689ac3a4806456452ce0b40fc4687e3c8223",
+  "fixed_bytes": 453184500,
+  "output_bytes": 453184500,
+  "target": {
+    "name": "usr/lib/libgrm-fbinit9.so",
+    "old_bytes": 7552,
+    "old_sha256": "ca4d57ea9e1b4eff2fce97acebd6e4bea4234b6a4520f03dbfd54039f65c3c80",
+    "new_bytes": 8128,
+    "new_sha256": "985cae3335a475ae6c8b6a41ff351e2b8bb75d49defa675f22afa8804fd4ac1f"
+  },
+  "replaced_member_count": 1,
+  "scope": "Only the named CPIO member payload/header size changed; all other member bytes copied; trailing padding zeros to fixed length."
+}

@@ -1,0 +1,66 @@
+{
+  "reason": "Initial expected IDs assumed low-bit-first search. Original CLZ(~bitmap) followed by 31-minus selects the highest free bit, so initial IDs are 0x601f then0x601e. Preserve actual outputs and correct expected values, without altering original memory algorithms.",
+  "formal_cases": 0,
+  "first_result": {
+    "boundary": {
+      "operation": "before_message_buffer_allocation",
+      "pc": "0x49f80c",
+      "registers": [
+        "0x61003c",
+        "0x5000ecd8",
+        "0xd8",
+        "0x0"
+      ],
+      "original_lr": "0x44f9db",
+      "native_call": false,
+      "resource_reply_supplied": false,
+      "cpu_register_value_supplied": false,
+      "stack_words": [
+        "0x5000ed28",
+        "0x117adf0",
+        "0x0",
+        "0x5000ecd8"
+      ]
+    },
+    "returned": false,
+    "raw_r0": "0x61003c"
+  },
+  "first_dynamic_metadata": [
+    {
+      "raw_return": "0x0",
+      "output_pointer": "0x53000000",
+      "output_word": "0x8"
+    }
+  ],
+  "first_snapshot": {
+    "free_metadata_bytes": 704,
+    "used_metadata_blocks": 5,
+    "bitmap_first_words": [
+      "0x80000000",
+      "0x0",
+      "0x0",
+      "0x0"
+    ],
+    "original_lazy_object_count": 1,
+    "original_index_block_count": 3,
+    "lazy_root_pointer": "0x53000080"
+  },
+  "two_original_ids": [
+    "0x9005601f",
+    "0x9005601e"
+  ],
+  "second_snapshot": {
+    "free_metadata_bytes": 576,
+    "used_metadata_blocks": 7,
+    "bitmap_first_words": [
+      "0xc0000000",
+      "0x0",
+      "0x0",
+      "0x0"
+    ],
+    "original_lazy_object_count": 2,
+    "original_index_block_count": 3,
+    "lazy_root_pointer": "0x53000080"
+  },
+  "capture_correction": "The first diagnostic capture used final r5, which is a slot context pointer, and read its flag8. The actual output pointer is saved at dynamic-function sp+0x20. The two direct IDs read at the declared output slots remain actual original results and prove high-bit-first allocation."
+}

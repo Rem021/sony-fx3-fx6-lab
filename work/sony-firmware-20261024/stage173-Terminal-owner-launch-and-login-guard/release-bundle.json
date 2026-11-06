@@ -1,0 +1,110 @@
+{
+  "schema": "fx3-owned-interface-Terminal-login-trial-bundle/1",
+  "grant_id": "fx3-702-msc-owner-20261029-05",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "scope": "One separately approved Terminal/sudo ownership/return diagnostic; early console501 GUI/audit admission; same IOKit calls as04. No Sony commands or camera files/firmware.",
+  "files": [
+    {
+      "path": "artifacts/entry-ipc.dylib",
+      "sha256": "724def2b8a4fa2c5125cef51013a8e2f248ffb2a6ce86569368c1aa3991f8439"
+    },
+    {
+      "path": "artifacts/owner-fixture-helper",
+      "sha256": "7b24dfe8c7e30bba112ff0bcd4222be03989b1b19c17ba4936a0197bad76f9ca"
+    },
+    {
+      "path": "artifacts/owner-native-helper",
+      "sha256": "fa7b5da122b67f25349551edb1870fbe93dd870c7043721cb0a46e735346625d"
+    },
+    {
+      "path": "build_helpers.py",
+      "sha256": "8708ef42db6a0ef50ab7b6f4d8998e50329ba5f4edbf6ac41752a349162bd61d"
+    },
+    {
+      "path": "helper-build-receipt.json",
+      "sha256": "1b4e7581b18d8c393ae2db7e5379f1225ef1cf38a666f159ae7f1edd4cc06797"
+    },
+    {
+      "path": "cache_observer.py",
+      "sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971"
+    },
+    {
+      "path": "entry_binding.py",
+      "sha256": "2748a25a6488112f3139a3ac169e298ee0d972b51616e3bfbd5cb939b95aaef7"
+    },
+    {
+      "path": "entry_shared.h",
+      "sha256": "43d4be1b325bcc5a8940054e9d6e8f917c72022537b34458f094398e26616948"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "00dff89176cbe9073f102aebeefb354a770316c5e3a866e93ac2aece8b4d296c"
+    },
+    {
+      "path": "entry_target.h",
+      "sha256": "b1bff3d00de0e77be6ae82d95a14f6b57423ce249930d26daf1f66785203d3df"
+    },
+    {
+      "path": "launch_policy.py",
+      "sha256": "c8150ec97a6296c342dbc4d54203a5e1216beb50b39cebabd9b5d25e579d0812"
+    },
+    {
+      "path": "owner_binding.py",
+      "sha256": "b8f5e4170ef40e38c9d05c09909a99204b49baab476de1b1e4beeed2ed6d8a6f"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "b2c5ed7078fd78782ab2720250df9efb38fb12a4283faf85722625dffac58ad2"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "aba073e7df59e076df15568789a5de697f2b73dd95bcd525985e33582eb26e55"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "7b33b03256f3c226ade7049c10a9e3f42790b9240d8291a60fbd600170f34fae"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "owner_supervisor.py",
+      "sha256": "a49e4bdb3f8f28ab2c9d359d3ef6ee852d38de73c160c7c3384746028c1263df"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    },
+    {
+      "path": "host_login.h",
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "host_login.c",
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "claim-substep-map.json",
+      "sha256": "4337453147fdd9c5a628210d722aa1ff321414b65c0b874e408673d5216b2864"
+    },
+    {
+      "path": "terminal-command-example.command",
+      "sha256": "e49cd762cde30c845cb6ab5b12728bb080652cfc6de7fc85442f20099cb1d281"
+    },
+    {
+      "path": "root-bootstrap-example.sh",
+      "sha256": "4505b073e8483924b69114299de2153c270dcbaeea30d0e88102017e98d5d59d"
+    }
+  ]
+}

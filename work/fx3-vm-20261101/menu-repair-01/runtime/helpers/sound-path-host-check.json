@@ -1,0 +1,19 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-pthread",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-sound-path-transport.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-sound-path-transport"
+  ],
+  "exit": 0,
+  "stdout": "AP80B1_PATH_PASS captured_path3_only/580000/muted_sink/state/lease/ownership/rollback/allocfail/length/allbyte/foreign_source_PID/no_playback\n",
+  "stderr": "FX3_ADF_PATH_COMMIT source=0x803061c0 path=3 status=0x580000 lease=1 request_free=0 original_sound=0 playback_enabled=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x328 lease=1 result=0\nFX3_ADF_PATH_CONSUMED lease=1 path=3 result=0\nFX3_ADF_PATH_COMMIT source=0x803061c0 path=3 status=0x580000 lease=3 request_free=0 original_sound=0 playback_enabled=0\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x328 lease=3 result=0\nFX3_ADF_PATH_CONSUMED lease=3 path=3 result=0\n",
+  "source_sha256": "e94894bd0cfd069be3ac040b64313c819cee7a4325b3561003a78a59231c841d"
+}

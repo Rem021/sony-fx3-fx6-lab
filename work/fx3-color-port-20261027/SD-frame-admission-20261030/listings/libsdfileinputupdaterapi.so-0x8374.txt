@@ -1,0 +1,248 @@
+_ZN7Updater25SDFileInputUpdaterManager12BurnFirmwareEv
+00008374 stp       x29, x30, [sp, #-0x80]!
+00008378 mov       x29, sp
+0000837c stp       x21, x22, [sp, #0x20]
+00008380 add       x21, x29, #0x68
+00008384 stp       x19, x20, [sp, #0x10]
+00008388 mov       x19, x0
+0000838c mov       x0, x21
+00008390 stp       x23, x24, [sp, #0x30]
+00008394 stp       x25, x26, [sp, #0x40]
+00008398 bl        #0x7680 ; _ZN7Updater15FsysFileHandlerC1Ev
+0000839c add       x1, x19, #0x5c
+000083a0 mov       x0, x21
+000083a4 mov       w2, #0
+000083a8 bl        #0x7130 ; _ZN7Updater15FsysFileHandler4OpenEPKcj
+000083ac tst       w0, #0xff
+000083b0 b.ne      #0x8440
+000083b4 bl        #0x75b0 ; __errno_location
+000083b8 ldr       w4, [x0]
+000083bc adrp      x2, #0xa000
+000083c0 adrp      x0, #0xa000
+000083c4 mov       w1, #0x12
+000083c8 add       x2, x2, #0xf5b
+000083cc add       x0, x0, #0xfa4
+000083d0 mov       w3, #0xca
+000083d4 movk      w1, #3, lsl #16
+000083d8 bl        #0x7910 ; printf
+000083dc b         #0x8400
+000083e0 mov       x20, #0
+000083e4 cmp       x1, #1
+000083e8 b.ne      #0x86a0
+000083ec bl        #0x7100 ; __cxa_begin_catch
+000083f0 mov       x1, x0
+000083f4 mov       x0, x19
+000083f8 bl        #0x72a0 ; _ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE
+000083fc b         #0x8680
+00008400 mov       x0, #0x10
+00008404 bl        #0x71a0 ; __cxa_allocate_exception
+00008408 adrp      x1, #0x1d000
+0000840c adrp      x2, #0x1d000
+00008410 ldr       x1, [x1, #0xf50]
+00008414 ldr       x2, [x2, #0xf70]
+00008418 add       x1, x1, #0x10
+0000841c str       x1, [x0]
+00008420 mov       w1, #0x12
+00008424 movk      w1, #3, lsl #16
+00008428 str       w1, [x0, #8]
+0000842c adrp      x1, #0x1d000
+00008430 strb      wzr, [x0, #0xc]
+00008434 ldr       x1, [x1, #0xfc8]
+00008438 bl        #0x77b0 ; __cxa_throw
+0000843c b         #0x83e0
+00008440 mov       x0, x21
+00008444 mov       x1, #0
+00008448 bl        #0x7060 ; _ZN7Updater15FsysFileHandler4SeekEl
+0000844c b         #0x8454
+00008450 b         #0x83e0
+00008454 ldr       x0, [x19, #0x28]
+00008458 ldr       x1, [x0]
+0000845c ldr       x1, [x1, #0x20]
+00008460 blr       x1
+00008464 b         #0x846c
+00008468 b         #0x83e0
+0000846c ldr       x0, [x19, #0x20]
+00008470 ldr       x1, [x0]
+00008474 ldr       x1, [x1, #0x28]
+00008478 blr       x1
+0000847c mov       x20, x0
+00008480 ldr       x0, [x19, #0x10]
+00008484 bl        #0x75f0 ; _ZN7Updater26CommonUpdaterManagerStatus3RunEv
+00008488 b         #0x8490
+0000848c b         #0x83e0
+00008490 ldr       x0, [x19, #0x40]
+00008494 ldr       x1, [x0]
+00008498 ldr       x2, [x1, #0x28]
+0000849c mov       x1, x21
+000084a0 blr       x2
+000084a4 adrp      x2, #0xa000
+000084a8 adrp      x24, #0xa000
+000084ac add       x26, x2, #0xf5b
+000084b0 add       x24, x24, #0xef6
+000084b4 mov       x23, x2
+000084b8 ldr       x0, [x19, #0x10]
+000084bc bl        #0x75e0 ; _ZN7Updater26CommonUpdaterManagerStatus9IsRunningEv
+000084c0 tst       w0, #0xff
+000084c4 b.ne      #0x8504
+000084c8 mov       x0, x21
+000084cc bl        #0x73b0 ; _ZN7Updater15FsysFileHandler5CloseEv
+000084d0 tst       w0, #0xff
+000084d4 b.ne      #0x8610
+000084d8 bl        #0x75b0 ; __errno_location
+000084dc ldr       w4, [x0]
+000084e0 adrp      x2, #0xa000
+000084e4 adrp      x0, #0xa000
+000084e8 mov       w1, #0x12
+000084ec add       x2, x2, #0xf5b
+000084f0 add       x0, x0, #0xfa4
+000084f4 mov       w3, #0xe2
+000084f8 movk      w1, #3, lsl #16
+000084fc bl        #0x7910 ; printf
+00008500 b         #0x85d4
+00008504 add       x25, x20, #0x18
+00008508 ldr       x1, [x20, #0x18]
+0000850c ldr       x2, [x25, #8]
+00008510 mov       x0, x21
+00008514 bl        #0x7280 ; _ZN7Updater15FsysFileHandler4ReadEPvm
+00008518 mov       x22, x0
+0000851c mov       x4, x0
+00008520 mov       x2, x26
+00008524 mov       x0, x24
+00008528 mov       w3, #0xd5
+0000852c mov       w1, #0
+00008530 bl        #0x7910 ; printf
+00008534 cmp       x22, #0
+00008538 b.ge      #0x85a0
+0000853c bl        #0x75b0 ; __errno_location
+00008540 ldr       w4, [x0]
+00008544 adrp      x0, #0xa000
+00008548 mov       w1, #0x12
+0000854c add       x2, x23, #0xf5b
+00008550 add       x0, x0, #0xfa4
+00008554 mov       w3, #0xd7
+00008558 movk      w1, #3, lsl #16
+0000855c bl        #0x7910 ; printf
+00008560 mov       x0, #0x10
+00008564 bl        #0x71a0 ; __cxa_allocate_exception
+00008568 adrp      x1, #0x1d000
+0000856c adrp      x2, #0x1d000
+00008570 ldr       x1, [x1, #0xf50]
+00008574 ldr       x2, [x2, #0xf70]
+00008578 add       x1, x1, #0x10
+0000857c str       x1, [x0]
+00008580 mov       w1, #0x12
+00008584 movk      w1, #3, lsl #16
+00008588 str       w1, [x0, #8]
+0000858c adrp      x1, #0x1d000
+00008590 strb      wzr, [x0, #0xc]
+00008594 ldr       x1, [x1, #0xfc8]
+00008598 bl        #0x77b0 ; __cxa_throw
+0000859c b         #0x83e4
+000085a0 ldr       x0, [x19, #0x28]
+000085a4 cset      w3, eq
+000085a8 mov       x2, x22
+000085ac ldr       x1, [x0]
+000085b0 ldr       x4, [x1, #0x30]
+000085b4 ldr       x1, [x25]
+000085b8 blr       x4
+000085bc cbnz      x22, #0x84b8
+000085c0 ldr       x0, [x19, #0x38]
+000085c4 ldr       x1, [x0]
+000085c8 ldr       x1, [x1, #0x50]
+000085cc blr       x1
+000085d0 b         #0x84c8
+000085d4 mov       x0, #0x10
+000085d8 bl        #0x71a0 ; __cxa_allocate_exception
+000085dc adrp      x1, #0x1d000
+000085e0 adrp      x2, #0x1d000
+000085e4 ldr       x1, [x1, #0xf50]
+000085e8 ldr       x2, [x2, #0xf70]
+000085ec add       x1, x1, #0x10
+000085f0 str       x1, [x0]
+000085f4 mov       w1, #0x12
+000085f8 movk      w1, #3, lsl #16
+000085fc str       w1, [x0, #8]
+00008600 adrp      x1, #0x1d000
+00008604 strb      wzr, [x0, #0xc]
+00008608 ldr       x1, [x1, #0xfc8]
+0000860c bl        #0x77b0 ; __cxa_throw
+00008610 ldr       x0, [x19, #0x10]
+00008614 bl        #0x73a0 ; _ZN7Updater26CommonUpdaterManagerStatus12WaitCompleteEv
+00008618 ldr       x0, [x19, #0x28]
+0000861c ldr       x1, [x0]
+00008620 ldr       x1, [x1, #0x28]
+00008624 blr       x1
+00008628 ldr       x0, [x19, #0x10]
+0000862c bl        #0x7820 ; _ZNK7Updater26CommonUpdaterManagerStatus8HasErrorEv
+00008630 tst       w0, #0xff
+00008634 mov       w22, #0
+00008638 b.eq      #0x8690
+0000863c ldr       x0, [x19, #0x10]
+00008640 bl        #0x7470 ; _ZNK7Updater26CommonUpdaterManagerStatus8GetErrorEv
+00008644 mov       x1, x0
+00008648 mov       x0, x19
+0000864c bl        #0x72a0 ; _ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE
+00008650 b         #0x868c
+00008654 mov       w22, #4
+00008658 mov       x0, x21
+0000865c bl        #0x7580 ; _ZN7Updater15FsysFileHandlerD1Ev
+00008660 mov       w0, w22
+00008664 ldp       x19, x20, [sp, #0x10]
+00008668 ldp       x21, x22, [sp, #0x20]
+0000866c ldp       x23, x24, [sp, #0x30]
+00008670 ldp       x25, x26, [sp, #0x40]
+00008674 ldp       x29, x30, [sp], #0x80
+00008678 ret       
+0000867c b         #0x83e0
+00008680 mov       x0, x19
+00008684 bl        #0x7250 ; _ZN7Updater25SDFileInputUpdaterManager29resetFirmwareWithoutExceptionEv
+00008688 bl        #0x7750 ; __cxa_end_catch
+0000868c mov       w22, #4
+00008690 cbz       x20, #0x8658
+00008694 mov       x0, x20
+00008698 bl        #0x7390 ; _ZN7Updater15BufferContainer4FreeEv
+0000869c b         #0x8658
+000086a0 bl        #0x7100 ; __cxa_begin_catch
+000086a4 adrp      x0, #0x1d000
+000086a8 add       x1, x29, #0x58
+000086ac ldr       x0, [x0, #0xf50]
+000086b0 add       x0, x0, #0x10
+000086b4 str       x0, [x29, #0x58]
+000086b8 mov       w0, #0x25
+000086bc movk      w0, #3, lsl #16
+000086c0 str       w0, [x29, #0x60]
+000086c4 mov       x0, x19
+000086c8 strb      wzr, [x29, #0x64]
+000086cc bl        #0x72a0 ; _ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE
+000086d0 mov       x0, x19
+000086d4 bl        #0x7250 ; _ZN7Updater25SDFileInputUpdaterManager29resetFirmwareWithoutExceptionEv
+000086d8 bl        #0x7750 ; __cxa_end_catch
+000086dc b         #0x868c
+000086e0 mov       x19, x0
+000086e4 bl        #0x7750 ; __cxa_end_catch
+000086e8 mov       x0, x21
+000086ec bl        #0x7580 ; _ZN7Updater15FsysFileHandlerD1Ev
+000086f0 mov       x0, x19
+000086f4 bl        #0x7830 ; _Unwind_Resume
+000086f8 mov       x19, x0
+000086fc bl        #0x7750 ; __cxa_end_catch
+00008700 b         #0x86e8
+00008704 bl        #0x7100 ; __cxa_begin_catch
+00008708 adrp      x0, #0x1d000
+0000870c add       x1, x29, #0x58
+00008710 ldr       x0, [x0, #0xf50]
+00008714 add       x0, x0, #0x10
+00008718 str       x0, [x29, #0x58]
+0000871c mov       w0, #0x25
+00008720 movk      w0, #3, lsl #16
+00008724 str       w0, [x29, #0x60]
+00008728 mov       x0, x19
+0000872c strb      wzr, [x29, #0x64]
+00008730 bl        #0x72a0 ; _ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE
+00008734 bl        #0x7750 ; __cxa_end_catch
+00008738 b         #0x8654
+0000873c mov       x19, x0
+00008740 bl        #0x7750 ; __cxa_end_catch
+00008744 b         #0x86e8
+00008748 mov       x19, x0
+0000874c b         #0x86e8

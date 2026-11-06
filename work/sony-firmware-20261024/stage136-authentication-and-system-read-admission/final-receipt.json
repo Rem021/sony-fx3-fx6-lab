@@ -1,0 +1,128 @@
+{
+  "schema": "fx3-stage136-auth-and-read-admission/1",
+  "created_utc": "2026-10-27T20:17:21.017052+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/README.md",
+      "bytes": 5138,
+      "sha256": "a62eed5782012c44da5bbd284bb5e562b8041473c74460011dd46cd16a7b18f8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/audit_authentication.py",
+      "bytes": 7376,
+      "sha256": "94f13d2e0dfdd0fffc3589453b36289a820c497c53a1c692a8944476aeb82098"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/authentication-publication-review.json",
+      "bytes": 127373,
+      "sha256": "e8cc6815e51661cbbf8719e1706cc081c45123d4400afcdd8c5623cd2c1580ac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/completed-evidence-review.json",
+      "bytes": 2037,
+      "sha256": "48c8bc9bf07759250625e15fd67a703a4aaa1470c7a4a07deb1ed5d6f4aeb305"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/goal-status-after.json",
+      "bytes": 437088,
+      "sha256": "4d95823e35a33db03e5968928382c71819f4ff8f99108ef49b740c75b8710c6b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/goal-status-before.json",
+      "bytes": 434591,
+      "sha256": "2d1c1669262625daec9a540d752dd6c7a9f5b5ab249e119780512888debcda46"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/readme-after.md",
+      "bytes": 49523,
+      "sha256": "738ccc7482c2b7cd7848b6e82439886da183962f7d1b43a90110f76c5757b599"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/readme-before.md",
+      "bytes": 49223,
+      "sha256": "62654765df2b67600fa8d4d899da59bee2e858215eb371abf402f16426fca586"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/review_and_seal.py",
+      "bytes": 9754,
+      "sha256": "54f540a34685497bbefeda73405f4bb257461cca79f10a977e8b1f0a0ab40d2c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/review_read_admission.py",
+      "bytes": 5803,
+      "sha256": "3f8624795b624a7d4f91b484b0d2c373435e8307be8facb02662d61ed0035aa4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage136-authentication-and-system-read-admission/system-read-admission-review.json",
+      "bytes": 104779,
+      "sha256": "41d2b3984b87d5ec2b8e5aababcda329bfb457e5947f87c77f8999c28873208f"
+    }
+  ],
+  "member_count": 11,
+  "previous_manifest_sha256": "af16faee7623b7d3e729502911664aa6826a04bb067e04a09194b46791197da5",
+  "allowed_goal_keys_changed": [
+    "latest_stage",
+    "latest_stage_evidence",
+    "next_safe_offline_actions",
+    "prepared_first_device_trial",
+    "progress_audit",
+    "research_activity",
+    "updated_utc"
+  ],
+  "mutable_project_heads_not_manifest_members": true,
+  "mutable_progress": {
+    "before_sha256": "2d1c1669262625daec9a540d752dd6c7a9f5b5ab249e119780512888debcda46",
+    "after_sha256": "4d95823e35a33db03e5968928382c71819f4ff8f99108ef49b740c75b8710c6b",
+    "readme_before_sha256": "62654765df2b67600fa8d4d899da59bee2e858215eb371abf402f16426fca586",
+    "readme_after_sha256": "738ccc7482c2b7cd7848b6e82439886da183962f7d1b43a90110f76c5757b599"
+  },
+  "operations": {
+    "status": "PASS_STATIC_AUTHENTICATION_AND_SYSTEM_READ_ADMISSION_NOT_ACTIVE_RELEASE",
+    "created_utc": "2026-10-27T20:17:21.017052+00:00",
+    "previous_manifest_members_verified": 79,
+    "static_original_functions": 19,
+    "worker_vtable_slots_verified": 7,
+    "new_Sony_execution_or_device_operations": 0,
+    "fixed_inert_drafts": 2,
+    "live_read_or_auth_ready": false,
+    "all16_requirements_authorization_and_user_constraints_unchanged": true,
+    "old_prepared_trial_and_source_evidence_preserved": true,
+    "stage75_backend_and_stage117_frontend_pins": [
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/resource_alias.c",
+        "bytes": 7493,
+        "sha256": "69d8dc8eb8f4ca03c71918fd07b51070749e2f7a561e4e3fb23cab2a7cf5d150"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/run-20261026/resource_alias.a64.o",
+        "bytes": 4384,
+        "sha256": "88fa4d56540eb579e1b5ebd401aaf5ce4346a675be856765ffedced288718a87"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/channel_adapter.c",
+        "bytes": 2140,
+        "sha256": "100c9d097660c3bfdcba8a5101bd81890fdee2722ebb1605169c04104e24f7f4"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage75-private-preset-storage/run-20261026/channel_adapter.a64.o",
+        "bytes": 2144,
+        "sha256": "0f67a495ef93841234cacf6f9565a018e983fe08e82dd1075ce961f44cae65b5"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage117-native-audio-proxy-admission/scoped_frontend.a64.o",
+        "bytes": 1920,
+        "sha256": "673da2d23b9c0736a36ebc515258a9e94ebe5018c355afaf81ffd40ce923b407"
+      },
+      {
+        "path": "work/sony-firmware-20261024/stage117-native-audio-proxy-admission/scoped_frontend.c",
+        "bytes": 3152,
+        "sha256": "264c95ec3fb63e5c6843cf6cfa557f8e9ad7f5acceb1b03333b2701d507e3d5a"
+      }
+    ],
+    "canonical_equals_after": true,
+    "same_agent_review_not_live_authentication_or_recovery": true,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

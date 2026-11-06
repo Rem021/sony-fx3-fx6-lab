@@ -1,0 +1,101 @@
+{
+  "schema": "fx3-stage127-DMM-layout-node-producer/1",
+  "created_utc": "2026-10-27T17:46:29.655739+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/README.md",
+      "bytes": 4580,
+      "sha256": "3bb10d492300e209b0bb8bc8d5689eb9a6eeb7a72e57c1c70bce454fa65582ec"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/completed-evidence-review.json",
+      "bytes": 551,
+      "sha256": "702634a49dee4fdfde1a6f5d2571fb2f437b9dbce2f0d5b38c463a2da5b8e062"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/diagnostic-contract.json",
+      "bytes": 13034,
+      "sha256": "075bfbe34ba8c8f44fdb1161dd82cf101867bb5c9dfb051131605ce0808e7413"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/dmm_response.py",
+      "bytes": 14835,
+      "sha256": "98552cbd10c11d71ee77e39b057e4a8b09541c23d55a14802b74a28a851ccd92"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/goal-status-after.json",
+      "bytes": 408573,
+      "sha256": "bb98d2950272b301360d21519d658bd0277cf2800adb58f4b3674cf0336b678a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/goal-status-before.json",
+      "bytes": 405011,
+      "sha256": "d9c88671fc64519196c77ec86c51509ff7073899064849a57ada35806c56d267"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/review_and_seal.py",
+      "bytes": 15055,
+      "sha256": "66d0f6435e28292754e75ef0b79ee7fa747f9d4e83c0090bfb3edfb547854b85"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/run-original-DMM-layout-20261027/DMM-response-results.json",
+      "bytes": 704311,
+      "sha256": "6514412b6f7ba3d66f35182ad3fce97b1cd86f2788c502aaf356c97dd403ac92"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/run-original-DMM-layout-20261027/executed-source.py",
+      "bytes": 14377,
+      "sha256": "9149495ae9f7dfd598a1a94bb2cc64c5948e31f724f46f09fbb67771efe5709c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/run-zeroed-BufferTable-20261027/DMM-response-results.json",
+      "bytes": 704522,
+      "sha256": "8e64610817b945a95db271cb80702db1713d879cad3d6ba8722b0b5f7361d302"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/run-zeroed-BufferTable-20261027/executed-source.py",
+      "bytes": 14835,
+      "sha256": "98552cbd10c11d71ee77e39b057e4a8b09541c23d55a14802b74a28a851ccd92"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/source-and-scope-audit.json",
+      "bytes": 115093,
+      "sha256": "60416afd44d1080604487d26f801040f705f1579b186186f9b6359a931548690"
+    }
+  ],
+  "previous_manifest_sha256": "1519ccb3d34b2961f0fe96a1af17e3fe2cf1e8b3a3fd4d5482f61f470fe67ae9",
+  "operations": {
+    "status": "PASS_NATIVE_DMM_LAYOUT_AND_NODE_CONSTRUCTION_NOT_ALLOCATION_OR_RECORDING",
+    "created_utc": "2026-10-27T17:46:29.655739+00:00",
+    "formal_bounded_phases": 140,
+    "response_cases": 9,
+    "node_cases": 2,
+    "native_nodes": 17,
+    "preserved_first_run": true,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "stage117_frontend_and_stage75_backend_unchanged": true,
+    "actual_camera_Windows_UU_or_service_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "d9c88671fc64519196c77ec86c51509ff7073899064849a57ada35806c56d267",
+    "after_sha256": "bb98d2950272b301360d21519d658bd0277cf2800adb58f4b3674cf0336b678a"
+  },
+  "readme_index_before_sha256": "a8e0f46b470a40e4d691972af6e1e7ac5805f35dea70b12cef50aea4c5e67a1d",
+  "readme_index_after_sha256": "ed05840b2442faf209f268581931d42da28a4c37fde8484ad9dd6c7bbde9b206",
+  "readme_index_entry": "- [2026-10-27 FX3 DMM回复边界与原节点生产](<work/sony-firmware-20261024/stage127-native-DMM-response-and-node-producer/README.md>)：140正式片段、17原节点接SetMemTbl；人工9/10块输入暴露布局重叠/复制边界，候选保守拒绝，真实分配/映射/主录与恢复未验。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

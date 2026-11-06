@@ -1,0 +1,34 @@
+{
+  "schema": "fx3-stage25-coordinator-review/1",
+  "created_utc": "2026-10-25T21:18:37.977487+00:00",
+  "status": "PASS_ARTIFACT_AND_STATIC_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent structural/source-byte/hash review, no independent replay or real camera verification.",
+  "previous_stage_files_verified": 8,
+  "pinned_originals_verified_before_and_after": 5,
+  "A64_static_region_instruction_records_rechecked_against_original": 729,
+  "avcam_typeinfo_pointer_chains": 6,
+  "avcam_local_ADRP_ADD_references": 10,
+  "raw_address_model_is_not_runtime_loader_or_MMU_acceptance": true,
+  "cpapp_fourth_descriptor_and_trailing_bytes_unresolved": true,
+  "unsupported_diagnostic_bound_here_to_channel_selector_ff_not_dimensions": true,
+  "same_MC_constants_do_not_prove_registered_MAIN_receiver": true,
+  "failed_and_superseded_attempts_preserved": "supersession.json",
+  "user_requested_Orca_check": {
+    "count": 1,
+    "pending_messages": 0,
+    "request_id": "ce7770ca-04e7-409e-9272-69ce34a7e52d",
+    "outgoing_messages_or_lifecycle_mutations": false
+  },
+  "web_search_scope": "Primary-repository query for REA/Sony av-cam and ORIL did not yield an applicable raw-image specification. No online secondary claim used to establish the address model.",
+  "unverified": [
+    "Actual MC registration, upstream MAIN payload binding, enc_open handler and all validation/replies",
+    "VCD variant selection, loader, resource allocation and hardware Open/Start",
+    "Native safe points, same-body health backup, restricted restore/readback, independent recovery and WBI/cold boot",
+    "Actual main bitstream/container/audio/timestamps, long recording, temperature and regression"
+  ],
+  "native_or_guest_firmware_executed": false,
+  "new_Windows_UU_attempts": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

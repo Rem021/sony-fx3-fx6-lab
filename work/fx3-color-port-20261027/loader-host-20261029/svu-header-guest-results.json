@@ -1,0 +1,177 @@
+{
+  "source_DLL_sha256": "a96aecd93432bded2d90a116338082fffe42d302af899bd18f547d2e91e365c8",
+  "fragment_VA": "0x1001fbb0",
+  "fragment_file_offset": 126896,
+  "fragment_bytes": "803e560f8586010000807e01550f857c010000807e02017450",
+  "fragment_SHA256": "793c8bffd6d20b79bca8748b767397043d25d144889ec5ea77c07dc36d7a2d94",
+  "disassembly": [
+    {
+      "VA": "0x1001fbb0",
+      "bytes": "803e56",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [esi], 0x56"
+    },
+    {
+      "VA": "0x1001fbb3",
+      "bytes": "0f8586010000",
+      "mnemonic": "jne",
+      "operands": "0x1001fd3f"
+    },
+    {
+      "VA": "0x1001fbb9",
+      "bytes": "807e0155",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [esi + 1], 0x55"
+    },
+    {
+      "VA": "0x1001fbbd",
+      "bytes": "0f857c010000",
+      "mnemonic": "jne",
+      "operands": "0x1001fd3f"
+    },
+    {
+      "VA": "0x1001fbc3",
+      "bytes": "807e0201",
+      "mnemonic": "cmp",
+      "operands": "byte ptr [esi + 2], 1"
+    },
+    {
+      "VA": "0x1001fbc7",
+      "bytes": "7450",
+      "mnemonic": "je",
+      "operands": "0x1001fc19"
+    }
+  ],
+  "cases": [
+    {
+      "name": "SNC_original_SVU_prefix",
+      "input_first16_hex": "5655010000000000056225505a03c58d",
+      "expected": "prefix_accepted_before_timestamp",
+      "observed": "prefix_accepted_before_timestamp",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fbb9",
+        "0x1001fbbd",
+        "0x1001fbc3",
+        "0x1001fbc7",
+        "0x1001fc19"
+      ],
+      "instructions_before_stop": 6,
+      "original_code_and_input_unchanged": true
+    },
+    {
+      "name": "synthetic_VU_version2",
+      "input_first16_hex": "56550200000000000000000000000000",
+      "expected": "unsupported_version_branch",
+      "observed": "unsupported_version_branch",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fbb9",
+        "0x1001fbbd",
+        "0x1001fbc3",
+        "0x1001fbc7",
+        "0x1001fbc9"
+      ],
+      "instructions_before_stop": 6,
+      "original_code_and_input_unchanged": true
+    },
+    {
+      "name": "synthetic_wrong_first",
+      "input_first16_hex": "58550100000000000000000000000000",
+      "expected": "invalid_signature_branch",
+      "observed": "invalid_signature_branch",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fd3f"
+      ],
+      "instructions_before_stop": 2,
+      "original_code_and_input_unchanged": true
+    },
+    {
+      "name": "synthetic_wrong_second",
+      "input_first16_hex": "56580100000000000000000000000000",
+      "expected": "invalid_signature_branch",
+      "observed": "invalid_signature_branch",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fbb9",
+        "0x1001fbbd",
+        "0x1001fd3f"
+      ],
+      "instructions_before_stop": 4,
+      "original_code_and_input_unchanged": true
+    },
+    {
+      "name": "VENICE_V201",
+      "input_first16_hex": "12ad2f68b8cd7b37e77d8cb5b2f39d23",
+      "expected": "invalid_signature_branch",
+      "observed": "invalid_signature_branch",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fd3f"
+      ],
+      "instructions_before_stop": 2,
+      "original_code_and_input_unchanged": true
+    },
+    {
+      "name": "VENICE_V630",
+      "input_first16_hex": "4290abacfa6bd70eed6c19bac1815a32",
+      "expected": "invalid_signature_branch",
+      "observed": "invalid_signature_branch",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fd3f"
+      ],
+      "instructions_before_stop": 2,
+      "original_code_and_input_unchanged": true
+    },
+    {
+      "name": "VENICE2_v392",
+      "input_first16_hex": "42f88b3374a709188a07ad36da99f9ed",
+      "expected": "invalid_signature_branch",
+      "observed": "invalid_signature_branch",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fd3f"
+      ],
+      "instructions_before_stop": 2,
+      "original_code_and_input_unchanged": true
+    },
+    {
+      "name": "VENICE2_v410",
+      "input_first16_hex": "4cfb3123b35b1f35af75c8389902a383",
+      "expected": "invalid_signature_branch",
+      "observed": "invalid_signature_branch",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fd3f"
+      ],
+      "instructions_before_stop": 2,
+      "original_code_and_input_unchanged": true
+    },
+    {
+      "name": "VENICE2_v500",
+      "input_first16_hex": "6f8a07bf2182fb4404a85eaaaaecb69c",
+      "expected": "invalid_signature_branch",
+      "observed": "invalid_signature_branch",
+      "trace": [
+        "0x1001fbb0",
+        "0x1001fbb3",
+        "0x1001fd3f"
+      ],
+      "instructions_before_stop": 2,
+      "original_code_and_input_unchanged": true
+    }
+  ],
+  "native_Sony_programs_executed": 0,
+  "device_actions": 0,
+  "scope": "Isolated RAM execution of original six-instruction header fragment only. Caller read/alloc/constructor and later timestamp/decryption excluded. Passing VU1 is not a valid whole SVU file, successful firmware parse or flashing acceptance. Rejection here is not proof the entire host tool lacks another reader."
+}

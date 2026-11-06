@@ -1,0 +1,1 @@
+Initial static result preserved. The old field name could be read as absence proof. Current source renames it to actual_file_existence_or_auth_modification_verified=False; no camera observation was made in either pass.

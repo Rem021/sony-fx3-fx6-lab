@@ -1,0 +1,129 @@
+{
+  "scope": "historical FX3 VM guest RAM snapshots only; AP89 is replay from AP88 RAM and not an independent natural camera sample; invalid checksum is preserved, not repaired",
+  "sources": {
+    "AP88_shutdown_RAM": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap88cpr4-e71668cb/backup-after-shutdown.bin",
+      "sha256": "38cf44637c44d3f47d7b8541dddf7ecc443e262f40dec3aec59f7b94d5b8b38f",
+      "size": 2232320,
+      "zero_tail_bytes": 2580,
+      "records": [
+        {
+          "record_file_offset": 0,
+          "record_bytes": 857900,
+          "subsystem_count": 819,
+          "property_count": 35668,
+          "data_relative_offset": 219200,
+          "data_bytes": 638700,
+          "checksum_stored": 25877467,
+          "checksum_computed": 25879088,
+          "checksum_matches": false,
+          "all_entry_bounds_checked": true,
+          "id": "0x02ae0000",
+          "selected": {
+            "present": true,
+            "property_index": 29174,
+            "attribute": 0,
+            "encoded_pointer": 17358138,
+            "length": 1,
+            "max_length": 1,
+            "table_file_offset": 180214,
+            "prefix_file_offset": 580922,
+            "data_file_offset": 580922,
+            "prefix_bytes": 0,
+            "raw_hex": "00",
+            "raw_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        {
+          "record_file_offset": 860160,
+          "record_bytes": 1369580,
+          "subsystem_count": 819,
+          "property_count": 31197,
+          "data_relative_offset": 192384,
+          "data_bytes": 1177196,
+          "checksum_stored": 155466673,
+          "checksum_computed": 155466673,
+          "checksum_matches": true,
+          "all_entry_bounds_checked": true,
+          "id": "0x02ae0000",
+          "selected": {
+            "present": true,
+            "property_index": 30617,
+            "attribute": 0,
+            "encoded_pointer": 17641628,
+            "length": 1,
+            "max_length": 1,
+            "table_file_offset": 1049032,
+            "prefix_file_offset": 1724572,
+            "data_file_offset": 1724572,
+            "prefix_bytes": 0,
+            "raw_hex": "00",
+            "raw_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        }
+      ]
+    },
+    "AP89_replay_RAM": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap89replay-b736403b/backup-reserved-ram.bin",
+      "sha256": "ece9dbb93d3856705fdf1169c9730043e2e03fba5f3a3f0dd3cbcd20659d6d3f",
+      "size": 2232320,
+      "zero_tail_bytes": 2580,
+      "records": [
+        {
+          "record_file_offset": 0,
+          "record_bytes": 857900,
+          "subsystem_count": 819,
+          "property_count": 35668,
+          "data_relative_offset": 219200,
+          "data_bytes": 638700,
+          "checksum_stored": 25877467,
+          "checksum_computed": 25877502,
+          "checksum_matches": false,
+          "all_entry_bounds_checked": true,
+          "id": "0x02ae0000",
+          "selected": {
+            "present": true,
+            "property_index": 29174,
+            "attribute": 0,
+            "encoded_pointer": 17358138,
+            "length": 1,
+            "max_length": 1,
+            "table_file_offset": 180214,
+            "prefix_file_offset": 580922,
+            "data_file_offset": 580922,
+            "prefix_bytes": 0,
+            "raw_hex": "00",
+            "raw_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        },
+        {
+          "record_file_offset": 860160,
+          "record_bytes": 1369580,
+          "subsystem_count": 819,
+          "property_count": 31197,
+          "data_relative_offset": 192384,
+          "data_bytes": 1177196,
+          "checksum_stored": 155466673,
+          "checksum_computed": 155466673,
+          "checksum_matches": true,
+          "all_entry_bounds_checked": true,
+          "id": "0x02ae0000",
+          "selected": {
+            "present": true,
+            "property_index": 30617,
+            "attribute": 0,
+            "encoded_pointer": 17641628,
+            "length": 1,
+            "max_length": 1,
+            "table_file_offset": 1049032,
+            "prefix_file_offset": 1724572,
+            "data_file_offset": 1724572,
+            "prefix_bytes": 0,
+            "raw_hex": "00",
+            "raw_sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+          }
+        }
+      ]
+    }
+  }
+}

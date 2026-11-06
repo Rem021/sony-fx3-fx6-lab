@@ -1,0 +1,23 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap81skd-b9850378",
+  "request": "FX3_BOOT_TAIL_REQUEST tid=327 destination=0x90050004 op=4 source=0x81cf61c2 bytes=48 observed=38 flow=1 truncated=0 raw=c261cf81a0a0a0a001003000180000003000000000000000001000001800020000000000020000000100000000000000 attempt_only=1 reply_added_here=0",
+  "raw": "c261cf81a0a0a0a001003000180000003000000000000000001000001800020000000000020000000100000000000000",
+  "stack": [
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=0 fp=0x7f34ed9290 lr=0x7f940c5f20 module=/usr/lib/dataflowInfraFramework.so relative=0x33f20",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=1 fp=0x7f34ed92f0 lr=0x7f4af6fab8 module=/usr/lib/appFw.so relative=0x2e10ab8",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=2 fp=0x7f34ed9340 lr=0x7f4af6fdec module=/usr/lib/appFw.so relative=0x2e10dec",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=3 fp=0x7f34ed9520 lr=0x7f4af70180 module=/usr/lib/appFw.so relative=0x2e11180",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=4 fp=0x7f34ed95b0 lr=0x7f4b01d5ec module=/usr/lib/appFw.so relative=0x2ebe5ec",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=5 fp=0x7f34ed9620 lr=0x7f4b01db40 module=/usr/lib/appFw.so relative=0x2ebeb40",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=6 fp=0x7f34ed96e0 lr=0x7f4af40fb0 module=/usr/lib/appFw.so relative=0x2de1fb0",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=7 fp=0x7f34ed9730 lr=0x7f4ae70e50 module=/usr/lib/appFw.so relative=0x2d11e50",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=8 fp=0x7f34ed9750 lr=0x7f4ae8e40c module=/usr/lib/appFw.so relative=0x2d2f40c",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=9 fp=0x7f34ed97a0 lr=0x7f4ad366fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=10 fp=0x7f34ed9850 lr=0x7f4b0d0ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=11 fp=0x7f34ed98d0 lr=0x7f9cb83184 module=/usr/lib/libosal_utm.so relative=0x1184",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=12 fp=0x7f34ed98f0 lr=0x7f9cb2d020 module=/lib/libpthread.so.0 relative=0x7020",
+    "FX3_BOOT_TAIL_FRAME destination=0x90050004 seq=38 depth=13 fp=0x7f34ed9940 lr=0x7f9c40cdbc module=/lib/libc.so.6 relative=0xc8dbc"
+  ],
+  "reply_added": false,
+  "register_scope": "packet args plus original FP/LR frames; full sleeping TID regs not yet captured"
+}

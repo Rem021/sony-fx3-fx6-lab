@@ -1,0 +1,30 @@
+[
+  {
+    "script": "vfx_resource_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_RESOURCE_RESOLVER_SDK_AND_MLUT_ADMISSION owner cases 32 successful sets 14 failure probes 17\n",
+    "stderr": "",
+    "created_utc": "2026-10-28T09:28:51.321093+00:00"
+  },
+  {
+    "script": "cp_mlut_dma_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_CP_DISPATCH_ID22_DMA_ALL_RESOURCE_GROUPS groups 7 entries per group 70 original instructions 62462\n",
+    "stderr": "",
+    "created_utc": "2026-10-28T09:29:37.141999+00:00"
+  },
+  {
+    "script": "cp_control_sdk_guest.py",
+    "exit_code": 0,
+    "stdout": "PASS_ORIGINAL_CP_CONTROLLER_THROUGH_ORIGINAL_SDK groups 7 error paths 6 original instructions 7379\n",
+    "stderr": "",
+    "created_utc": "2026-10-28T09:28:51.874705+00:00"
+  },
+  {
+    "script": "static_inventory.py",
+    "exit_code": 0,
+    "stdout": "PASS_PINNED_RESOURCE_AND_DMA_SOURCE_INVENTORY source slices 23 slot candidates 41\n",
+    "stderr": "",
+    "created_utc": "2026-10-28T09:28:52.824715+00:00"
+  }
+]

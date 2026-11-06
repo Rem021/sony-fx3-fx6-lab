@@ -1,0 +1,171 @@
+{
+  "status": "confirmed_and_cancelled",
+  "session": "fx3-deadline-r23-9710706aa341",
+  "url": "http://127.0.0.1:60889/",
+  "launch_id": "920ab44f-c731-4322-84f1-fdeb50fa4b9b",
+  "alarm_nonce": "c6576e0d-730b-4e93-9192-1b35d903aa79",
+  "step": 4,
+  "reviewed_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+  "target": "已实际查看本步新PNG：帮助页关闭，返回完整Setup > Area/Date 45/59，橙色Language且值English；步骤4语义符合。",
+  "host_invoked_UTC": "2026-11-05T00:56:46.014045+00:00",
+  "host_monotonic_invoked": 423891.541615583,
+  "eval_may_have_started": true,
+  "retries": 0,
+  "guest_keys_sent_by_helper": 0,
+  "tab_id": null,
+  "host_preflight_UTC": "2026-11-05T00:56:46.020917+00:00",
+  "browser_result": {
+    "cancelled": {
+      "current": {
+        "armed_ms": 123071.10000002384,
+        "cancelled_ms": 132365,
+        "deadline_ms": 20000,
+        "due_ms": 143071.10000002384,
+        "nonce": "c6576e0d-730b-4e93-9192-1b35d903aa79",
+        "state": "cancelled"
+      },
+      "deadline_ms": 20000,
+      "documentTimeOrigin": 1793840073791.9,
+      "events": [
+        {
+          "event": "installed",
+          "performance_ms": 18643.30000001192,
+          "script_SHA256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+          "wall_UTC": "2026-11-05T00:54:52.435Z"
+        },
+        {
+          "due_ms": 93115.80000001192,
+          "event": "armed",
+          "nonce": "058f913e-b137-4429-8cf0-0ad21c57d634",
+          "performance_ms": 73115.80000001192,
+          "wall_UTC": "2026-11-05T00:55:46.907Z"
+        },
+        {
+          "elapsed_ms": 11978.80000001192,
+          "event": "cancelled",
+          "nonce": "058f913e-b137-4429-8cf0-0ad21c57d634",
+          "performance_ms": 85094.60000002384,
+          "wall_UTC": "2026-11-05T00:55:58.886Z"
+        },
+        {
+          "due_ms": 111365.5,
+          "event": "armed",
+          "nonce": "ac612b76-1de5-48b6-bfb9-ea3a8a687399",
+          "performance_ms": 91365.5,
+          "wall_UTC": "2026-11-05T00:56:05.157Z"
+        },
+        {
+          "elapsed_ms": 9231.399999976158,
+          "event": "cancelled",
+          "nonce": "ac612b76-1de5-48b6-bfb9-ea3a8a687399",
+          "performance_ms": 100596.89999997616,
+          "wall_UTC": "2026-11-05T00:56:14.388Z"
+        },
+        {
+          "due_ms": 126544.19999998808,
+          "event": "armed",
+          "nonce": "85637cd5-f13b-4d47-b22e-cb01db48bd54",
+          "performance_ms": 106544.30000001192,
+          "wall_UTC": "2026-11-05T00:56:20.336Z"
+        },
+        {
+          "elapsed_ms": 8758.5,
+          "event": "cancelled",
+          "nonce": "85637cd5-f13b-4d47-b22e-cb01db48bd54",
+          "performance_ms": 115302.69999998808,
+          "wall_UTC": "2026-11-05T00:56:29.094Z"
+        },
+        {
+          "due_ms": 143071.10000002384,
+          "event": "armed",
+          "nonce": "c6576e0d-730b-4e93-9192-1b35d903aa79",
+          "performance_ms": 123071.10000002384,
+          "wall_UTC": "2026-11-05T00:56:36.863Z"
+        },
+        {
+          "elapsed_ms": 9293.899999976158,
+          "event": "cancelled",
+          "nonce": "c6576e0d-730b-4e93-9192-1b35d903aa79",
+          "performance_ms": 132365,
+          "wall_UTC": "2026-11-05T00:56:46.157Z"
+        }
+      ],
+      "expectedLaunchId": "920ab44f-c731-4322-84f1-fdeb50fa4b9b",
+      "expectedURL": "http://127.0.0.1:60889/",
+      "sealed": false,
+      "version": 1
+    },
+    "click_invoked": true,
+    "current_frame": {
+      "PNG_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "content_generation": 30,
+      "sequence": 797
+    },
+    "events": [
+      {
+        "event": "invoked",
+        "performance_ms": 132234.89999997616,
+        "reviewed_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+        "step": 4,
+        "target": "已实际查看本步新PNG：帮助页关闭，返回完整Setup > Area/Date 45/59，橙色Language且值English；步骤4语义符合。",
+        "wall_UTC": "2026-11-05T00:56:46.026Z"
+      },
+      {
+        "content_generation": 30,
+        "due_ms": 143071.10000002384,
+        "event": "precondition_passed",
+        "performance_ms": 132235.19999998808,
+        "png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+        "sequence": 793,
+        "wall_UTC": "2026-11-05T00:56:46.027Z"
+      },
+      {
+        "event": "confirm_click_invoked",
+        "pending_confirm": {
+          "PNG_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+          "content_generation": 30,
+          "observed_sequence": 793,
+          "request_id": "c0354aef-3e8e-497e-b657-5e63313f0143",
+          "step": 4
+        },
+        "performance_ms": 132235.60000002384,
+        "wall_UTC": "2026-11-05T00:56:46.027Z"
+      },
+      {
+        "confirmation": {
+          "PNG_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+          "content_generation": 30,
+          "guest_input_written": false,
+          "observed_sequence": 793,
+          "request_id": "c0354aef-3e8e-497e-b657-5e63313f0143",
+          "step": 4
+        },
+        "current_generation": 30,
+        "current_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+        "current_sequence": 797,
+        "event": "matching_ack_and_current_frame_ready",
+        "performance_ms": 132365,
+        "wall_UTC": "2026-11-05T00:56:46.157Z"
+      },
+      {
+        "due_ms": 143071.10000002384,
+        "elapsed_ms": 9293.899999976158,
+        "event": "cancel_returned",
+        "performance_ms": 132365,
+        "state": "cancelled",
+        "wall_UTC": "2026-11-05T00:56:46.157Z"
+      }
+    ],
+    "expected": {
+      "PNG_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+      "content_generation": 30,
+      "observed_sequence": 793,
+      "request_id": "c0354aef-3e8e-497e-b657-5e63313f0143",
+      "step": 4
+    },
+    "reason": "matched_historical_receipt_and_current_input_gate",
+    "status": "confirmed_and_cancelled"
+  },
+  "host_return_UTC": "2026-11-05T00:56:46.159483+00:00",
+  "host_monotonic_return": 423891.6868975
+}

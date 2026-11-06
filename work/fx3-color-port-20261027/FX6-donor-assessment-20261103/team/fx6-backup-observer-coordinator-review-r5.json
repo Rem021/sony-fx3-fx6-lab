@@ -1,0 +1,29 @@
+{
+  "timestamp_utc": "2026-11-05T18:28:37.174457+00:00",
+  "task": "task_3d797ea658d3",
+  "dispatch": "ctx_d639ad6a1ef6",
+  "status": "four_stop_component_review_accepted_two_runtime_closure_items",
+  "manifest": {
+    "count": 221,
+    "all_match": true,
+    "sha256": "1e6b85c68339882cce78f1fcbd76ca79681f59d0eca2648258586ac767222c7d"
+  },
+  "accepted": [
+    "actual Observer/QMP/RSP/Sysregs four-stop fixture now traverses both entries and returns",
+    "initial prelaunch and quit-before-wait fixes present",
+    "host cleanup and guest restore fields separated"
+  ],
+  "remaining": [
+    {
+      "item": "stop-only CLI",
+      "evidence": "run_stop_only.py approved branch only prints READY_FOR_REVIEW and returns 3; no HostRunner invocation"
+    },
+    {
+      "item": "shared deadline",
+      "evidence": "actual RSP poll_stop with 0.05s remaining and peer partial $T05 waited 1.020s; _one hardcoded time.monotonic()+1.0"
+    }
+  ],
+  "required": "wire default-disabled stop-only entry with fake-only CLI E2E; clamp actual packet/send/connect to phase deadlines and test partial packets and expired deadlines",
+  "VM_authorized": false,
+  "VM_started": false
+}

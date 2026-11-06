@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/deadline_cli.py",
+    "arm",
+    "--session",
+    "fx3-deadline-operator-r21b-b83358633d9e-74ca3f17",
+    "--url",
+    "http://127.0.0.1:52524/",
+    "--launch-id",
+    "eaf767d2-d2fb-421f-a062-dc70cfb5de25",
+    "--nonce",
+    "c9c50d56-6b22-4834-bf04-9cfa9abfdd28"
+  ],
+  "start": {
+    "UTC": "2026-11-04T23:50:50.534533+00:00",
+    "host_ns": 419936066268041
+  },
+  "end": {
+    "UTC": "2026-11-04T23:50:50.589559+00:00",
+    "host_ns": 419936121303458
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"current\": {\n    \"armed_ms\": 17719.80000001192,\n    \"deadline_ms\": 20000,\n    \"due_ms\": 37719.80000001192,\n    \"nonce\": \"c9c50d56-6b22-4834-bf04-9cfa9abfdd28\",\n    \"state\": \"armed\"\n  },\n  \"deadline_ms\": 20000,\n  \"documentTimeOrigin\": 1793836232863.8,\n  \"events\": [\n    {\n      \"event\": \"installed\",\n      \"performance_ms\": 943.3000000119208,\n      \"script_SHA256\": \"f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab\",\n      \"wall_UTC\": \"2026-11-04T23:50:33.806Z\"\n    },\n    {\n      \"due_ms\": 37719.80000001192,\n      \"event\": \"armed\",\n      \"nonce\": \"c9c50d56-6b22-4834-bf04-9cfa9abfdd28\",\n      \"performance_ms\": 17719.899999976158,\n      \"wall_UTC\": \"2026-11-04T23:50:50.583Z\"\n    }\n  ],\n  \"expectedLaunchId\": \"eaf767d2-d2fb-421f-a062-dc70cfb5de25\",\n  \"expectedURL\": \"http://127.0.0.1:52524/\",\n  \"sealed\": false,\n  \"version\": 1\n}\n",
+  "stderr": ""
+}

@@ -1,0 +1,24 @@
+From 941fb6a200bc1e265bd844d555d3867732f76692 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Milo=C5=A1=20Komar=C4=8Devi=C4=87?=
+ <4973094+kmilos@users.noreply.github.com>
+Date: Tue, 28 Jul 2026 10:50:44 +0200
+Subject: [PATCH] Sony ILME-FX5 placeholder
+
+---
+ data/cameras.xml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/data/cameras.xml b/data/cameras.xml
+index a2d8c3b39..5e874773c 100644
+--- a/data/cameras.xml
++++ b/data/cameras.xml
+@@ -14461,6 +14461,9 @@
+ 			</ColorMatrix>
+ 		</ColorMatrices>
+ 	</Camera>
++	<Camera make="SONY" model="ILME-FX5" supported="unknown-no-samples">
++		<ID make="Sony" model="ILME-FX5">Sony ILME-FX5</ID>
++	</Camera>
+ 	<Camera make="SONY" model="ILME-FX30">
+ 		<ID make="Sony" model="ILME-FX30">Sony ILME-FX30</ID>
+ 		<CFA width="2" height="2">

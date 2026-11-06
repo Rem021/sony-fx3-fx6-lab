@@ -1,0 +1,23 @@
+000179e0 stp        x29, x30, [sp, #-0x20]!
+000179e4 mov        x2, x1
+000179e8 mov        x29, sp
+000179ec stp        x19, x20, [sp, #0x10]
+000179f0 mov        x20, x1
+000179f4 ldr        x1, [x0]
+000179f8 mov        x19, x0
+000179fc ldr        x3, [x1, #0x50]
+00017a00 ldr        x1, [x0, #8]
+00017a04 blr        x3
+00017a08 tst        w0, #0xff
+00017a0c b.ne       #0x17a30
+00017a10 ldr        x0, [x19]
+00017a14 mov        x2, x20
+00017a18 ldr        x1, [x19, #0x10]
+00017a1c ldr        x3, [x0, #0x50]
+00017a20 mov        x0, x19
+00017a24 ldp        x19, x20, [sp, #0x10]
+00017a28 ldp        x29, x30, [sp], #0x20
+00017a2c br         x3
+00017a30 ldp        x19, x20, [sp, #0x10]
+00017a34 ldp        x29, x30, [sp], #0x20
+00017a38 ret        

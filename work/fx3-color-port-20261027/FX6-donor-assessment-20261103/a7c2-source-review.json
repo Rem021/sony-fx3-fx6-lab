@@ -1,0 +1,65 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/ef7db116e13e37be91e9af20360dc9bba8d64a9b/src/fl23/core.py",
+    "sha256": "b8d415bd2067e024f485ddd7e92f7aa760b9a9fb43ea1ae17d188757a22b4be0",
+    "matches": [
+      {
+        "line": 18,
+        "text": "PROGRAMS=['appFw.so','cpapp-b.bin']"
+      },
+      {
+        "line": 23,
+        "text": "NATIVE_PATHS={'libJit.so','a7c2.install.request','a7c2.install.result','a7c2.probe.result',"
+      }
+    ]
+  },
+  {
+    "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/ef7db116e13e37be91e9af20360dc9bba8d64a9b/src/fl23/transport.py",
+    "sha256": "014a66840fde1308f1c86f634a930b4846078ef41b28b8a419a97c1b43bb1539",
+    "matches": []
+  },
+  {
+    "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/ef7db116e13e37be91e9af20360dc9bba8d64a9b/src/fl23/layout.py",
+    "sha256": "edd2384e884114d44aa071c2ea1418b5688eaf4829ae802aaa5998a4cd6ffe5a",
+    "matches": [
+      {
+        "line": 22,
+        "text": "PROGRAM_FILES = {'appFw.so': 'appFw.so.bin', 'cpapp-b.bin': 'cpapp-b.bin.bin'}"
+      }
+    ]
+  },
+  {
+    "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/ef7db116e13e37be91e9af20360dc9bba8d64a9b/src/fl23/workflow.py",
+    "sha256": "2933d3d8b91e53164103cf25a7fe9182f84103d0e20dce476b7729e107eae13d",
+    "matches": [
+      {
+        "line": 91,
+        "text": "names = ['libJit.so', 'a7c2-preview-staged.so', result]"
+      },
+      {
+        "line": 114,
+        "text": "created.extend(['libJit.so', result])"
+      },
+      {
+        "line": 117,
+        "text": "session.temp('libJit.so', blob)"
+      },
+      {
+        "line": 166,
+        "text": "(0, core.PROGRAMS[0], '/usr/lib/appFw.so')]:"
+      },
+      {
+        "line": 211,
+        "text": "(0, core.PROGRAMS[0], '/usr/lib/appFw.so')]:"
+      },
+      {
+        "line": 224,
+        "text": "(0, core.PROGRAMS[0], '/usr/lib/appFw.so')]:"
+      },
+      {
+        "line": 358,
+        "text": "(self.root / 'original' / layout.PROGRAM_FILES['appFw.so']).read_bytes(), 0)"
+      }
+    ]
+  }
+]

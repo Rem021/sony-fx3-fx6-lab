@@ -1,0 +1,15 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 21dfa40: b8216a63     	str	w3, [x19, x1]
+ 21dfa44: b8401000     	ldur	w0, [x0, #0x1]
+ 21dfa48: b8001040     	stur	w0, [x2, #0x1]
+ 21dfa4c: 941d9e51     	bl	0x2947390 <Application_System_Init+0x1257800>
+ 21dfa50: 39400000     	ldrb	w0, [x0]
+ 21dfa54: 39284a80     	strb	w0, [x20, #0xa12]
+ 21dfa58: 941d9e53     	bl	0x29473a4 <Application_System_Init+0x1257814>
+ 21dfa5c: b9400003     	ldr	w3, [x0]
+ 21dfa60: d2934261     	mov	x1, #0x9a13             // =39443

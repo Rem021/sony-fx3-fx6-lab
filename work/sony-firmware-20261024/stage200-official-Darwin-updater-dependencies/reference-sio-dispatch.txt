@@ -1,0 +1,57 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x1200 fd7bbba9 stp      x29, x30, [sp, #-0x50]!
+0x1204 22e88c52 mov      w2, #0x6741
+0x1208 8200a872 movk     w2, #0x4004, lsl #16
+0x120c fd030091 mov      x29, sp
+0x1210 f35301a9 stp      x19, x20, [sp, #0x10]
+0x1214 f55b02a9 stp      x21, x22, [sp, #0x20]
+0x1218 f76303a9 stp      x23, x24, [sp, #0x30]
+0x121c f96b04a9 stp      x25, x26, [sp, #0x40]
+0x1220 030440f9 ldr      x3, [x0, #8]
+0x1224 200040b9 ldr      w0, [x1]
+0x1228 1f00026b cmp      w0, w2
+0x122c 730040f9 ldr      x19, [x3]
+0x1230 80070054 b.eq     #0x1320
+0x1234 42040011 add      w2, w2, #1
+0x1238 1f00026b cmp      w0, w2
+0x123c e0050054 b.eq     #0x12f8
+0x1240 02e88c52 mov      w2, #0x6740
+0x1244 8200a872 movk     w2, #0x4004, lsl #16
+0x1248 1f00026b cmp      w0, w2
+0x124c 20010054 b.eq     #0x1270
+0x1250 a0028012 mov      w0, #-0x16
+0x1254 f35341a9 ldp      x19, x20, [sp, #0x10]
+0x1258 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x125c f76343a9 ldp      x23, x24, [sp, #0x30]
+0x1260 f96b44a9 ldp      x25, x26, [sp, #0x40]
+0x1264 fd7bc5a8 ldp      x29, x30, [sp], #0x50
+0x1268 c0035fd6 ret      
+0x126c 1f2003d5 nop      
+0x1270 d6220058 ldr      x22, #0x16c8
+0x1274 f40301aa mov      x20, x1
+0x1278 c00240b9 ldr      w0, [x22]
+0x127c a0060035 cbnz     w0, #0x1350
+0x1280 c0220058 ldr      x0, #0x16d8
+0x1284 01188052 mov      w1, #0xc0
+0x1288 0148a072 movk     w1, #0x240, lsl #16
+0x128c 001840f9 ldr      x0, [x0, #0x30]
+0x1290 00000094 bl       #0x1290 ; relocation {"symbol": "kmem_cache_alloc", "addend": 0}
+0x1294 f50300aa mov      x21, x0
+0x1298 02188052 mov      w2, #0xc0
+0x129c 010480d2 mov      x1, #0x20
+0x12a0 0248a072 movk     w2, #0x240, lsl #16
+0x12a4 00000094 bl       #0x12a4 ; relocation {"symbol": "kmalloc_add_trace", "addend": 0}
+0x12a8 810640f9 ldr      x1, [x20, #8]
+0x12ac 004138d5 mrs      x0, sp_el0
+0x12b0 020440f9 ldr      x2, [x0, #8]
+0x12b4 e00301aa mov      x0, x1
+0x12b8 008000b1 adds     x0, x0, #0x20
+0x12bc e283829a csel     x2, xzr, x2, hi
+0x12c0 00309fda csinv    x0, x0, xzr, lo
+0x12c4 1f0002fa sbcs     xzr, x0, x2
+0x12c8 e0879f9a cset     x0, ls
+0x12cc 020480d2 mov      x2, #0x20
+0x12d0 000500b5 cbnz     x0, #0x1370
+0x12d4 a002008b add      x0, x21, x0
+0x12d8 01008052 mov      w1, #0
+0x12dc 00000094 bl       #0x12dc ; relocation {"symbol": "memset", "addend": 0}

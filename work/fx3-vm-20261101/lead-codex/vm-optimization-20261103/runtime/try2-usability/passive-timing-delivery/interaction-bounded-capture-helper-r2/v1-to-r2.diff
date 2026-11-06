@@ -1,0 +1,285 @@
+--- v1/bounded_capture.js
++++ r2/bounded_capture.js
+@@ -9,41 +9,86 @@
+   const started = performance.now();
+   const events = [];
+   const stamp = (kind, extra = {}) => events.push({kind, performance_ms:performance.now(), wall_UTC:new Date().toISOString(), ...extra});
+-  const fail = reason => {throw Error(reason);};
++  const fail = (reason, diagnostics = {}) => {const error=Error(reason);error.diagnostics=diagnostics;throw error;};
+   const digest = async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)))].map(x=>x.toString(16).padStart(2,'0')).join('');
++  function diagnostics() {
++    const s=typeof lastStatus==='object' ? lastStatus : null;
++    const h=helper && typeof helper.status==='function' ? helper.status() : null;
++    return {phase:s?.phase, error:s?.error, steps:s?.steps, status_busy:s?.busy,
++      host_busy:typeof busy==='boolean'?busy:null, awaiting_step:typeof awaitingStep==='undefined'?null:awaitingStep,
++      delivery_unknown:typeof deliveryUnknown==='boolean'?deliveryUnknown:null,
++      explicit_rejection:typeof explicitRejection==='undefined'?null:explicitRejection,
++      review_required:s?.review_required, review_step:s?.review_step,
++      input_received:s?.input_received, render_valid:s?.render_valid,
++      frame_sequence:s?.frame?.sequence, frame_generation:s?.frame?.content_generation,
++      frame_sha:s?.frame?.PNG_sha256,
++      displayed_sequence:typeof displayed==='number'?displayed:null,
++      displayed_generation:typeof displayedGeneration==='number'?displayedGeneration:null,
++      shown_sha:typeof shownSHA==='string'?shownSHA:null,
++      alarm_state:h?.current?.state, alarm_nonce:h?.current?.nonce,
++      remaining_ms:h?.current?.due_ms-performance.now()};
++  }
+   function identity() {
+-    if (window.top !== window || document !== doc || performance.timeOrigin !== origin ||
+-        location.href !== c.url || !lastStatus || lastStatus.launch_request_id !== c.launch_id ||
+-        document.title !== 'FX3 固件菜单试用' ||
+-        window.__fx3InteractionDeadlineV1 !== helper ||
+-        !helper || typeof helper.status !== 'function') fail('page_or_document_identity');
++    if (window.top !== window || document !== doc || performance.timeOrigin !== origin)
++      fail('document_changed', diagnostics());
++    if (location.href !== c.url || document.title !== 'FX3 固件菜单试用')
++      fail('url_or_title_changed', diagnostics());
++    if (!lastStatus || lastStatus.launch_request_id !== c.launch_id)
++      fail('launch_identity_changed', diagnostics());
++    if (window.__fx3InteractionDeadlineV1 !== helper || !helper || typeof helper.status !== 'function')
++      fail('deadline_helper_changed', diagnostics());
+     const h = helper.status();
+     if (h.version !== 1 || h.expectedURL !== c.url || h.expectedLaunchId !== c.launch_id ||
+-        h.documentTimeOrigin !== origin || h.deadline_ms !== DEADLINE_MS || h.sealed ||
+-        h.current?.nonce !== c.nonce || h.current?.state !== 'armed' ||
+-        !Number.isFinite(h.current.due_ms) ||
+-        performance.now() >= h.current.due_ms) fail('alarm_identity_or_due');
++        h.documentTimeOrigin !== origin || h.deadline_ms !== DEADLINE_MS)
++      fail('alarm_contract_changed', diagnostics());
++    if (h.sealed || h.current?.nonce !== c.nonce || h.current?.state !== 'armed')
++      fail('alarm_nonce_or_state_changed', diagnostics());
++    if (!Number.isFinite(h.current.due_ms) || performance.now() >= h.current.due_ms)
++      fail('alarm_due_expired', diagnostics());
+     if (initial_due === null) initial_due = h.current.due_ms;
+-    if (h.current.due_ms !== initial_due) fail('alarm_due_changed');
++    if (h.current.due_ms !== initial_due) fail('alarm_due_changed', diagnostics());
+     return h;
+   }
+   function state() {
+     const h = identity(), s = lastStatus, img = document.querySelector('#frame');
+-    if (s.phase !== 'ready' || s.error || s.busy || !s.render_valid ||
+-        !s.review_required || !s.input_received || s.review_step !== 1 || s.steps !== 1 ||
+-        busy || ending || finished || renderFault || deliveryUnknown || reviewUnknown ||
+-        reviewAwaiting || pendingConfirm !== null ||
+-        launchUnknown || awaitingStep !== null || img !== image)
+-      fail('phase_or_input_gate_not_ready');
++    if (s.phase !== 'ready' || ending || finished) fail('phase_not_ready_or_terminal', diagnostics());
++    if (s.error) fail('native_or_status_error', diagnostics());
++    if (renderFault) fail('render_fault', diagnostics());
++    if (deliveryUnknown || reviewUnknown || launchUnknown) fail('delivery_or_launch_unknown', diagnostics());
++    if (explicitRejection?.kind==='key') fail('explicit_key_rejection', diagnostics());
++    if (explicitRejection?.kind==='confirm' || reviewAwaiting || pendingConfirm !== null)
++      fail('unexpected_confirmation_state', diagnostics());
++    if (img !== image) fail('image_element_changed', diagnostics());
++    if (!Number.isSafeInteger(s.steps) || s.steps < 0 || s.steps > 1 ||
++        (awaitingStep !== null && awaitingStep !== 1)) fail('unexpected_step_or_awaiting_step', diagnostics());
++    if (s.render_valid === false) fail('render_invalid', diagnostics());
++    if (s.steps===0) {
++      if (awaitingStep!==1 || s.review_required || s.input_received)
++        fail('step_zero_without_expected_menu_pending', diagnostics());
++      return {kind:'accepted_menu_waiting_for_status', diagnostics:diagnostics()};
++    }
++    if (!s.review_required) {
++      if (!s.busy || s.input_received || s.review_step!==null)
++        fail('step_one_without_expected_processing_or_review', diagnostics());
++      return {kind:'step_one_processing', diagnostics:diagnostics()};
++    }
++    if (s.review_step!==1 || s.input_received!==true || s.busy)
++      fail('step_one_review_identity_or_status_busy', diagnostics());
++    if (busy && awaitingStep===1)
++      return {kind:'step_one_ack_handler_finishing', diagnostics:diagnostics()};
++    if (busy) fail('unexpected_host_busy_after_review', diagnostics());
++    if (awaitingStep!==null) return {kind:'step_one_page_awaiting_refresh', diagnostics:diagnostics()};
+     const frame = s.frame;
+     if (!frame || !Number.isSafeInteger(frame.content_generation) || frame.content_generation <= 0 ||
+         !Number.isSafeInteger(frame.sequence) || frame.sequence <= 0)
+-      fail('frame_metadata_invalid');
++      fail('frame_metadata_invalid', diagnostics());
+     // A status update may lead image.onload. Wait for the original PAGE to load it.
+     if (!img.complete || img.naturalWidth <= 0 || shownSHA !== frame.PNG_sha256 ||
+-        displayedGeneration !== frame.content_generation || displayed !== frame.sequence)
+-      return null;
++        displayedGeneration !== frame.content_generation || displayed !== frame.sequence ||
++        confirmButton.disabled)
++      return {kind:'step_one_image_or_confirm_loading', diagnostics:diagnostics()};
+     return {performance_ms:performance.now(), wall_UTC:new Date().toISOString(),
++      kind:'ready_loaded_review',
+       launch_id:s.launch_request_id, step:s.steps, review_step:s.review_step,
+       sequence:displayed, content_generation:displayedGeneration,
+       png_sha256:shownSHA, frame_sequence:frame.sequence,
+@@ -64,9 +109,14 @@
+     if (await digest(canonical) !== PAGE_SHA) fail('PAGE_fingerprint');
+     const h=identity(), limit=Math.min(started+MAX_WAIT_MS,h.current.due_ms-CONFIRM_RESERVE_MS);
+     if (limit <= performance.now()) fail('insufficient_confirm_reserve');
++    let last_kind=null;
+     while (performance.now() < limit) {
+       const s=state();
+-      if (s && s.png_sha256 === MENU_SHA) {
++      if (s.kind !== last_kind) {
++        stamp('state_transition', {state:s.kind, diagnostics:s.diagnostics || diagnostics()});
++        last_kind=s.kind;
++      }
++      if (s.kind === 'ready_loaded_review' && s.png_sha256 === MENU_SHA) {
+         if (h.current.due_ms-performance.now() < CONFIRM_RESERVE_MS) fail('confirm_reserve_exhausted');
+         stamp('reference_loaded', {sequence:s.sequence, generation:s.content_generation});
+         return {status:'ready_for_screenshot', before:s, waited_ms:performance.now()-started,
+@@ -77,8 +127,9 @@
+     return {status:'no_qualified_screenshot',reason:'reference_not_loaded_before_bound',
+       waited_ms:performance.now()-started,events};
+   } catch (error) {
+-    stamp('refused',{reason:String(error)});
++    const detail=error.diagnostics || diagnostics();
++    stamp('refused',{reason:String(error), diagnostics:detail});
+     return {status:'no_qualified_screenshot',reason:String(error),
+-      waited_ms:performance.now()-started,events};
++      diagnostics:detail, waited_ms:performance.now()-started,events};
+   }
+ })
+--- v1/capture_after.js
++++ r2/capture_after.js
+@@ -22,6 +22,7 @@
+     step:result.step === 1 && result.review_step === 1,
+     review:result.review_required === true && result.input_received === true,
+     render:result.render_valid === true && result.image_complete === true && result.image_width > 0,
++    confirm_ready:!confirmButton.disabled,
+     sequence:result.sequence >= c.sequence && result.sequence === result.frame_sequence,
+     generation:result.content_generation === c.content_generation &&
+       result.frame_generation === c.content_generation,
+--- v1/offline_browser_test.py
++++ r2/offline_browser_test.py
+@@ -4,6 +4,7 @@
+ import importlib.util
+ import json
+ import subprocess
++import threading
+ import time
+ import uuid
+ from pathlib import Path
+@@ -168,6 +169,89 @@
+     finally: f.close()
+ 
+ 
++def case_actual_menu_click_delayed_status():
++    """Real PAGE click/HTTP202, then delayed TrialState step/review and 7s target."""
++    label = 'actual-menu-click'
++    launch = str(uuid.uuid4())
++    state = page.TrialState('offline-r2-accepted-menu', 3600, 4096)
++    state.update(phase='ready', ready=True, launch_status='running',
++                 launch_request_id=launch, message='offline accepted MENU fixture', steps=0)
++    partial = INTERMEDIATE.read_bytes()
++    state.publish(partial, {'sequence':212, 'PNG_sha256':sha(partial),
++                            'all_zero_pixels':False, 'width':960, 'height':640})
++    events = []
++    timers = []
++    counts = {'key_http_202':0, 'confirm':0}
++    original = state.submit
++    original_confirm = state.confirm_visual
++
++    def stamp(name, **extra):
++        from datetime import datetime, timezone
++        events.append({'event':name, 'UTC':datetime.now(timezone.utc).isoformat(),
++                       'host_monotonic':time.monotonic(), **extra})
++
++    def menu_submit(body):
++        code, reply = original(body)
++        stamp('MENU_HTTP_result', code=code, body=body)
++        if code == 202:
++            counts['key_http_202'] += 1
++            assert body['key'] == 427 and state.take() is not None
++            def accepted_status():
++                state.update(steps=1)
++                state.require_visual_review(1, 'visual_pending', True)
++                stamp('step1_review_published')
++            def complete_target():
++                data = COMPLETE.read_bytes()
++                state.publish(data, {'sequence':213, 'PNG_sha256':sha(data),
++                                     'all_zero_pixels':False, 'width':960, 'height':640})
++                stamp('complete_reference_published', sha=sha(data))
++            for delay, callback in ((.4, accepted_status), (7.0, complete_target)):
++                t = threading.Timer(delay, callback);t.start();timers.append(t)
++        return code, reply
++
++    def count_confirm(body):
++        counts['confirm'] += 1
++        return original_confirm(body)
++
++    state.submit = menu_submit
++    state.confirm_visual = count_confirm
++    server, thread = page.start_server(state, 0)
++    url = state.url + '/'
++    try:
++        browser('open', url)
++        browser('set', 'viewport', '1280', '1200')
++        wait(lambda: js('({ok:!!lastStatus&&lastStatus.steps===0&&shownSHA===lastStatus.frame?.PNG_sha256&&!keys.find(b=>b.dataset.key==="427").disabled})')['ok'])
++        h = js(DEADLINE.read_text() + '(' + json.dumps({'expectedURL':url,
++                                                       'expectedLaunchId':launch}) + ')')
++        assert h['deadline_ms'] == 20000
++        nonce = str(uuid.uuid4())
++        arm = js('window.__fx3InteractionDeadlineV1.arm(' + json.dumps(nonce) + ')')
++        assert arm['current']['state'] == 'armed'
++        stamp('alarm_armed', due_ms=arm['current']['due_ms'])
++        browser('click', 'button.key[data-key="427"]')  # Original PAGE button, one click.
++        wait(lambda: counts['key_http_202'] == 1, 2)
++        initial = js('({status_steps:lastStatus.steps,awaitingStep,hostBusy:busy,review:lastStatus.review_required})')
++        stamp('capture_invoked', initial=initial)
++        r = capture(SESSION, url, launch, nonce, EVIDENCE / label)
++        stamp('capture_returned', status=r['status'])
++        assert r['status'] == 'qualified_screenshot_for_operator_review', r
++        assert r['before_eval']['before']['step'] == 1 and r['before_eval']['before']['review_step'] == 1
++        transitions = [e['state'] for e in r['before_eval']['events'] if e['kind']=='state_transition']
++        assert 'accepted_menu_waiting_for_status' in transitions, transitions
++        assert 'ready_loaded_review' in transitions, transitions
++        assert counts == {'key_http_202':1, 'confirm':0}
++        assert r['guest_keys_sent'] == r['confirm_calls'] == r['alarm_mutations'] == 0
++        assert js('window.__fx3InteractionDeadlineV1.status().current.state') == 'armed'
++        RESULT['cases'][label] = {'capture':r, 'initial_page':initial, 'fixture_counts':counts,
++                                  'fixture_events':events, 'state_transitions':transitions}
++    finally:
++        for t in timers: t.join(timeout=2)
++        try: browser('close')
++        except Exception: pass
++        server.shutdown();server.server_close();thread.join(timeout=2)
++        assert not thread.is_alive()
++
++
+ if __name__ == '__main__':
+     try:
+         case_transition()
+@@ -175,6 +259,7 @@
+         case_wrong_nonce()
+         case_expired()
+         case_screenshot_changed()
++        case_actual_menu_click_delayed_status()
+         RESULT['passed'] = True
+     except BaseException as e:
+         RESULT['passed'] = False
+--- v1/seal.py
++++ r2/seal.py
+@@ -16,6 +16,9 @@
+     'original_explicit_confirm_JS': base / 'interaction-explicit-confirm-helper/explicit_confirm.js',
+     'intermediate_firmware_PNG': run / 'trial-step-01-key-1ab.png',
+     'complete_reference_firmware_PNG': run / 'trial-final.png',
++    'frozen_v1_capture_JS': base / 'interaction-bounded-capture-helper/bounded_capture.js',
++    'failed_operator_rehearsal_report': base / 'interaction-operator-rehearsal/REPORT.md',
++    'failed_operator_capture_receipt': base / 'interaction-operator-rehearsal/menu-capture-01/capture-result.json',
+ }
+ (here / 'SOURCE-FREEZE.json').write_text(json.dumps({
+     'scope':'offline bounded first-MENU capture source',
+--- v1/OPERATION.md
++++ r2/OPERATION.md
+@@ -1,4 +1,6 @@
+ # 第 1 键 MENU 的有界只读取图辅助
++
++**r2 差异：**原 PAGE 在 MENU HTTP202 后可短暂保持 `steps=0,awaitingStep=1`，到下一次 status 才消费 step1 review。r2 在同一原 8 秒/20 秒闹钟预算内等待这一明确暂态；旧 v1 误把它立即拒绝。此文档中的工具仍未部署。
+ 
+ 此目录是未部署的离线候选。它只为**已经授权并武装原 20,000ms 闹钟的单个自有页面**等待已知第 1 键 MENU 完整菜单参考 PNG，然后做一次网页截图和前后身份核验。参考固件 PNG 来自既有 run `v25gate-n64-r17-c33f8c46/trial-final.png`，SHA256 为 `60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292`。网页截图文件的 SHA 是另一种身份，不能填进原显式确认工具的 `--png-sha`。
+ 
+@@ -15,7 +17,7 @@
+ 
+ 成功仅返回 `qualified_screenshot_for_operator_review`，其新目录含 `menu-reference-page.png` 和 `capture-result.json`。辅助在原 r17 PAGE、同 document/launch/nonce/due、step=1 的 review、已加载图与状态 SHA+generation 一致、无错误/停止/未知请求时，至多等 8 秒找到参考图。原闹钟还须剩余至少 8 秒；截图之后再核一次，SHA 与 generation 不得变化，sequence 可随同内容前进。参考图**只触发取图**，不代表这次画面的语义已经由人验收。
+ 
+-Agent 须让**同一个工具返回**附上图像，而非等待固定 6 秒后再另开一轮取图。例如在 `functions.exec` 中先运行以上 CLI，解析其 JSON 后，成功时立即 `await tools.view_image({path: result.screenshot_path})` 并 `image(view.image_url)`；再亲自看图。这样一次工具调用包含 CLI 和图像返回，但最终语义判断仍由操作员完成。可读 `capture-result.json` 的 `timeline` 逐项比较 tab、等待 eval、截图、后验 eval、回执写入的 UTC/host monotonic 时间。**这不是 8 秒总耗时硬上限**：8 秒只约束浏览器内等待；CLI/截图可额外耗时，截图后若不足 8 秒余量，结果必须不合格，原闹钟不会被延期或取消。
++Agent 须让**同一个工具返回**附上图像，而非等待固定 6 秒后再另开一轮取图。例如在 `functions.exec` 中先运行以上 CLI，解析其 JSON 后，**同时**核 CLI `exit_code===0`、`result.status==='qualified_screenshot_for_operator_review'`、本次 `result.screenshot_path` 存在，才调用 `await tools.view_image({path: result.screenshot_path})` 并 `image(view.image_url)`；再亲自看图。任一条件失败都传播拒绝状态，不打开旧图。旧演练 `capture_once.py` 即使 helper 失败也 exit0 属调用方缺陷，本目录不修改冻结脚本。这样一次工具调用包含 CLI 和图像返回，但最终语义判断仍由操作员完成。可读 `capture-result.json` 的 `timeline` 逐项比较 tab、等待 eval、截图、后验 eval、回执写入的 UTC/host monotonic 时间。**这不是 8 秒总耗时硬上限**：8 秒只约束浏览器内等待；CLI/截图可额外耗时，截图后若不足 8 秒余量，结果必须不合格，原闹钟不会被延期或取消。
+ 
+ 亲看当前新截图中的完整固件菜单，核 `before_eval`、`after_eval` 与图像内容后，才另行显式调用旧 `../interaction-explicit-confirm-helper/explicit_confirm_cli.py`，且须使用本次已审固件 PNG SHA 和相同 nonce。当前辅助没有 arm、guest key、confirm、cancel、End 或直接 HTTP POST 接口；失败不会重试、改 alarm 或自动确认。失败时可能留下一个**不合格**网页截图，不可据此发下一键。若已出现错误/未知送达/过期，按现有人工 End 和清理规约处理。
+ 

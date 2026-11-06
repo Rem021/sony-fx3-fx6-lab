@@ -1,0 +1,23 @@
+{
+  "reviewed_utc": "2026-10-30T00:35:45.442642+00:00",
+  "status": "PINNED_PRIMARY_BINARY_AND_SOURCE_WITH_NETWORK_LIMITS",
+  "primary_reference": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/tree/e85e137fc3b88b7cb26e69faa9f1304184678ff7",
+  "reference_capture": "../stage204-public-AP-boot-reference/source-capture.json",
+  "reference_payload_capture": "../stage205-FX3-hardware-profile-differences/payload-source-capture.json",
+  "official_GPL": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+  "GPL_capture": "clock-source-capture.json",
+  "source_scope": "Own inspection of current official NOR and main kernel bytes; public A7IV source/ROM is reference only, not current FX3 same-body attestation",
+  "network_searches": [
+    {
+      "query": "CXD90057 SIO clock / F1005000 SIO clock on GitHub",
+      "result": "no search results; no global absence inference"
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/e85e137fc3b88b7cb26e69faa9f1304184678ff7/payloads/fastboot/src/darwin.c",
+      "result": "web cache miss; already pinned local source used"
+    }
+  ],
+  "no_new_exact_FX3_recovery_success_or_latest_support_claim": true,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

@@ -1,0 +1,269 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/mss-all-key-contrast/run_trial_v19_mss_key_contrast_preinput_stop.py	2026-11-03 09:15:14
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/run_trial_v20_passive_timing.py	2026-11-03 09:40:39
+@@ -23,7 +23,8 @@
+ import uuid
+ from cpio_audit import audit
+ from trial_ring_usability import TrialRingReader
+-from trial_web_v3_usability import TrialState, start_server, KEYS
++from trial_web_v20_passive_timing import TrialState, start_server, KEYS
++from pending_visual_v20 import classify as classify_visual, late_change
+ from trial_log_v4_mss import FullLogMonitor
+ from trial_health_v2 import evaluate as evaluate_health
+ from gate_input_usability import InputGate,valid_command
+@@ -32,6 +33,7 @@
+ 
+ ROOT = Path(__file__).resolve().parents[5] / "menu-repair-01/runtime"
+ OUT = Path(__file__).resolve().parent.parent
++HERE = Path(__file__).resolve().parent
+ BASE = ROOT.parent
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+ VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+@@ -79,13 +81,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = Path(__file__).resolve().parent / 'STATE-v19.json'
++    path = HERE / 'STATE-v20.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = Path(__file__).resolve().parent / 'STATE-v19.json.tmp'
++    temp = HERE / 'STATE-v20.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -115,29 +117,29 @@
+ def main():
+     ap = argparse.ArgumentParser(description='FX3 固件菜单本机试用')
+     ap.add_argument('--port', type=int, default=8765, help='127.0.0.1 本地端口，默认8765')
+-    ap.add_argument('--max-minutes', type=int, default=15, help='本轮诊断上限，1..15分钟；默认15分钟')
+-    ap.add_argument('--max-steps', type=int, default=32, help='底层协议容量固定32；诊断实际最多12键')
++    ap.add_argument('--max-minutes', type=int, default=60, help='会话上限，1..120分钟；默认60分钟')
++    ap.add_argument('--max-steps', type=int, default=4096, help='会话按键上限，32..4096；默认4096')
+     ap.add_argument('--internal-hoststep', action='store_true', help='内部逐键文件门；不启动网页服务，不构成浏览器验收')
+     ap.add_argument('--exit-at-phase', choices=['pre-bind', 'bound-before-first-frame'], help='有界退出边界验证')
+     ns = ap.parse_args()
+-    if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 15 or ns.max_steps != 32 or not ns.internal_hoststep:
+-        ap.error('本版只允许内部逐键诊断：端口0..65535，会话1..15分钟，底层协议容量32，实际最多12键')
+-    if not valid_command(1, 0x1ab, 100, 0, 0, ns.max_steps) or not valid_command(12, 0x30, 100, 11, 0, ns.max_steps):
++    if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 120 or not 32 <= ns.max_steps <= 4096:
++        ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
++    if not valid_command(1, 0x1ab, 100, 0, 0, ns.max_steps) or not valid_command(32, 0x30, 100, 31, 0, ns.max_steps):
+         raise RuntimeError('InputGate capacity contract rejected before QEMU startup')
+-    ns.candidate = OUT/'vmopt-20261103-try2-mss-all-v3/candidate.json'
++    ns.candidate = HERE/'vmopt-20261103-try2-passive-timing-v4/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2mssallinternal-keycontrast-v19' if ns.internal_hoststep else 'disabled'
++    ns.label = 'try2passivetiming-internal-v20' if ns.internal_hoststep else 'try2passivetiming-web-v20'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-mss-all-v3'):
++    if not candidate_path.is_relative_to(HERE / 'vmopt-20261103-try2-passive-timing-v4'):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+-    if digest(candidate_path) != '2382063eacb5f185e8553c2596be2c644654efe7234adc1e4578f7464ab99a05':
++    if digest(candidate_path) != '90adc5fda97a4b26293e4763da1ed3d5eec22eaf2f0115292c1b720c5049e9aa':
+         raise RuntimeError('TRY2 manifest identity changed')
+     candidate = json.loads(candidate_path.read_text())
+     if candidate.get('try2_contract', {}).get('ready_before_CP_binding') is not True:
+@@ -153,7 +155,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-mss-all-v3') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-mss-all-v3'):
++    if not dtb.resolve().is_relative_to(HERE / 'vmopt-20261103-try2-passive-timing-v4') or not initrd.resolve().is_relative_to(HERE / 'vmopt-20261103-try2-passive-timing-v4'):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+@@ -192,7 +194,7 @@
+         if (address, size) == (0x41da00000, 0x10000):
+             snapshots.append({'address': address, 'size': size, 'name': 'adf-muted-ram.bin', 'scope': 'Explicit muted software backing; original_sound=0'})
+     cpio_report = audit(initrd, FROZEN / 'share/fx3-original-app-loader-probe.cpio')
+-    audit_path = OUT / ('preflight-' + digest(initrd)[:16] + '.json')
++    audit_path = HERE / ('preflight-' + digest(initrd)[:16] + '.json')
+     if not audit_path.exists():
+         audit_path.write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')
+     if not cpio_report['safe_to_unpack']:
+@@ -217,8 +219,8 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v3_usability.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
+-        source = Path(__file__) if name == Path(__file__).name else (OUT / name if (OUT / name).exists() else ROOT / name)
++    for name in [Path(__file__).name, 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v20_passive_timing.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
++        source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+     (run / 'cpio-audit.json').write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')
+@@ -295,6 +297,7 @@
+     s = f = None
+     native_file_reads = []
+     step_captures = []
++    visual_records = []
+     shutdown = {'attempted': False, 'API16_restored': False, 'quit_sent': False}
+     stop_cause = None
+     log_monitor = FullLogMonitor(run/'serial.log', candidate.get('required_markers', []))
+@@ -386,6 +389,9 @@
+             host_step = 0
+             rejected_visual_identities = set()
+             current_command = None
++            last_nochange_frame = None
++            last_nochange_key = None
++            ambiguous_current_step = None
+             up_seen = {}
+             last_ring_poll = 0
+             last_metrics = 0
+@@ -412,6 +418,7 @@
+                     break
+                 if log_monitor.native_power_off_events:
+                     early_stop_reason = 'native_model_power_off_observed: ' + log_monitor.native_power_off_events[-1]
++                    trial.update(visual_state='native_shutdown')
+                     trial.fail(early_stop_reason)
+                     # No more input. Let the preallocated passive observer export its two records.
+                     flush_deadline = min(deadline, time.monotonic()+0.5)
+@@ -422,10 +429,12 @@
+                     break
+                 if phaseA_capture is not None and len(log_monitor.native_shutdown_events) > shutdown_count_at_ready:
+                     early_stop_reason = 'native_shutdown_after_ready_without_user_power_key: ' + log_monitor.native_shutdown_events[-1]
++                    trial.update(visual_state='native_shutdown')
+                     trial.fail(early_stop_reason)
+                     break
+                 if phaseA_capture is not None and len(log_monitor.native_power_off_events) > power_off_count_at_ready:
+                     early_stop_reason = 'native_model_power_off_after_ready_without_user_power_key: ' + log_monitor.native_power_off_events[-1]
++                    trial.update(visual_state='native_shutdown')
+                     trial.fail(early_stop_reason)
+                     break
+                 if log_monitor.offset > 480*1024*1024:
+@@ -438,6 +447,20 @@
+                 if time.monotonic()-last_ring_poll >= .4:
+                     ring_reader.poll()
+                     last_ring_poll = time.monotonic()
++                    if late_change(last_nochange_frame, ring_reader.current_record):
++                        visual_records.append({'state': 'late_visual_change', 'after_step': host_step - (1 if current_command is not None else 0),
++                                               'sequence': ring_reader.current_record['sequence'],
++                                               'PNG_sha256': ring_reader.current_record['PNG_sha256'],
++                                               'attribution': 'unknown', 'host_monotonic': time.monotonic()})
++                        last_nochange_frame = None
++                        last_nochange_key = None
++                        if current_command is not None:
++                            ambiguous_current_step = host_step
++                            trial.update(visual_state='visual_pending',
++                                         message='画面发生变化；与前次无变化键的归因未知，等待本次原生回执。')
++                            continue
++                        trial.update(visual_state='late_visual_change',
++                                     message='出现迟到画面，请查看新的 PNG 后再决定按键；归因未知。')
+                     if phaseA_capture is not None and trial.black_after_ready:
+                         early_stop_reason = 'render: native committed all-zero pixels after ready; legitimate black/sleep semantics unknown'
+                         trial.fail(early_stop_reason)
+@@ -497,37 +520,67 @@
+ 
+                 for match in re.finditer(r'FX3_SYNTH_KEY step=(\d+) key=(0x[0-9a-f]+) status=0 [^\n]*result=0 ', serial_now):
+                     up_seen.setdefault(int(match[1]), (time.monotonic(), int(match[2], 0)))
+-                frame_changed = (current_command is not None and ring_reader.current_record is not None
+-                                 and ring_reader.current_record.get('PNG_sha256') != current_command['before_command_png_sha256'])
+                 both_native_events = (current_command is not None and all(
+                     re.search(r'FX3_KEY_INPUT_RECV step=%d key=%s status=%d [^\n]*native_result=0' % (host_step, hex(current_command['key']), status), serial_now)
+                     for status in (0, 1)))
+-                unchanged_wait = 180 if current_command is not None and current_command['key'] == 0x1ab else 6
+-                if (current_command is not None and host_step in up_seen and both_native_events
+-                        and time.monotonic()-up_seen[host_step][0] >= 1
+-                        and (frame_changed or time.monotonic()-up_seen[host_step][0] >= unchanged_wait)):
++                visual = classify_visual(current_command, host_step, up_seen, both_native_events,
++                                         ring_reader.current_record, time.monotonic())
++                if current_command is not None and visual.state == 'unknown_ack':
++                    early_stop_reason = native_input_deadline_error(current_command, host_step, up_seen,
++                                                                    both_native_events, time.monotonic()) or visual.fault
++                    trial.update(visual_state='unknown_ack')
++                    trial.fail(early_stop_reason)
++                    break
++                if current_command is not None and visual.state == 'visual_pending':
++                    trial.update(visual_state='visual_pending', input_received=True)
++                if current_command is not None and visual.state in ('visual_changed', 'no_change_observed'):
+                     captured = ring_reader.evidence('step-%02d-key-%03x' % (host_step, current_command['key']), host_step, current_command['key'])
+                     if captured.get('error'):
+                         raise RuntimeError('按键后未取得已校验提交帧')
+                     step_captures.append(captured)
+                     (run/'trial-step-readbacks.json').write_text(json.dumps(step_captures, ensure_ascii=False, indent=2)+'\n')
++                    visual_records.append({'step': host_step, 'state': visual.state, 'input_received': True,
++                                           'visual_change_observed': visual.visual_change_observed,
++                                           'before_sequence': current_command['before_command_sequence'],
++                                           'before_png_sha256': current_command['before_command_png_sha256'],
++                                           'observed_sequence': captured['sequence'],
++                                           'observed_png_sha256': captured['PNG_sha256'],
++                                           'ack_host_monotonic': up_seen[host_step][0],
++                                           'decision_host_monotonic': time.monotonic(),
++                                           'downstream_handler_completed': 'unknown',
++                                           'pixel_attribution': ('unknown_due_to_prior_no_change' if ambiguous_current_step == host_step
++                                                                 else 'observed_after_this_input_not_proven_caused')})
++                    (run/'trial-visual-outcomes.json').write_text(json.dumps(visual_records, ensure_ascii=False, indent=2)+'\n')
+                     with trial.lock:
+-                        trial.events.append('%02d · %s · 固件已接收，帧 %s%s' % (host_step, current_command['label'], captured['sequence'], '' if frame_changed else '（画面未变）'))
++                        trial.events.append('%02d · %s · 原生队列已接收，帧 %s%s' % (host_step, current_command['label'], captured['sequence'], '' if visual.visual_change_observed else '（观察期内像素未变，处理完成未知）'))
+                         trial.busy = False
++                    if visual.state == 'no_change_observed':
++                        last_nochange_frame = dict(ring_reader.current_record)
++                        last_nochange_key = current_command['key']
++                    else:
++                        last_nochange_frame = None
++                        last_nochange_key = None
+                     current_command = None
++                    ambiguous_current_step = None
++                    trial.update(visual_state=visual.state, input_received=True,
++                                 visual_change_observed=visual.visual_change_observed)
+                     trial.update(message='固件提交全黑画面，已暂停按键；可结束试用。' if not trial.render_valid
+                                  else '本轮已达按键上限，请结束后重新启动。' if host_step == ns.max_steps
+-                                 else '画面已更新，可以继续操作。' if frame_changed
+-                                 else '按键已接收，像素未变；请观察后再继续。')
+-                missing_input_error = native_input_deadline_error(
+-                    current_command, host_step, up_seen, both_native_events, time.monotonic())
+-                if missing_input_error:
+-                    raise RuntimeError(missing_input_error)
++                                 else 'MENU 已被原生队列接收，仍须等完整菜单或故障/预算；此时内部下一键会被拒绝。' if ns.internal_hoststep and last_nochange_key == 0x1ab
++                                 else '画面已更新；请查看后再决定下一键。' if visual.visual_change_observed
++                                 else '原生队列已接收，观察期内画面未变；请复看当前图，处理完成仍未知。')
+ 
+                 proposed = trial.take() if current_command is None and not ns.internal_hoststep else None
+                 if ns.internal_hoststep and current_command is None and phaseA_capture is not None and trial.render_valid:
+                     request_path = run/'INTERNAL_STEP.json'
+-                    if request_path.exists():
++                    if request_path.exists() and last_nochange_frame is not None and last_nochange_key == 0x1ab:
++                        stale = run/('internal-stale-menu-pending-%02d-%s.json' % (host_step+1, uuid.uuid4().hex[:8]))
++                        request_path.rename(stale)
++                        (run/(stale.stem+'-receipt.json')).write_text(json.dumps({
++                            'status': 'stale_no_guest_write', 'reason': 'menu_visual_pending_after_bounded_no_change',
++                            'sent_steps_unchanged': host_step, 'next_step_unchanged': host_step+1,
++                            'new_human_review_required_after_full_menu_or_fault': True}, ensure_ascii=False, indent=2)+'\n')
++                    elif request_path.exists():
+                         if request_path.is_symlink() or request_path.stat().st_size > 4096:
+                             raise RuntimeError('内部逐键请求文件身份/大小无效')
+                         request = json.loads(request_path.read_text())
+@@ -585,7 +638,9 @@
+                                            before_command_png_sha256=ring_reader.current_record['PNG_sha256'], sent_monotonic=time.monotonic())
+                     with (run/'trial-input-events.jsonl').open('a') as events:
+                         events.write(json.dumps(dict(current_command, gate=sent), ensure_ascii=False)+'\n')
+-                    trial.update(steps=host_step, message='按键已发送，等待固件画面…')
++                    trial.update(steps=host_step, visual_state='input_pending',
++                                 input_received=False, visual_change_observed=False,
++                                 message='按键已发送，等待原生接收和画面…')
+ 
+                 if time.monotonic()-last_metrics >= 5:
+                     st = subprocess.run(['ps', '-o', 'rss=,vsz=', '-p', str(p.pid)], capture_output=True, text=True)
+@@ -691,7 +746,10 @@
+                'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+                'models_identical_to_frozen_AP101_r4': False, 'authority': 'msg_3a52a0ab7e46',
+                'observer_source_snapshot': observer_sources, 'run': str(run),
+-               'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps, 'diagnostic_actual_step_limit': 12, 'stop_cause': stop_cause,
++               'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps,
++               'diagnostic_actual_step_limit': 12 if ns.internal_hoststep else None,
++               'visual_outcomes': visual_records, 'visual_state_at_end': trial.visual_state,
++               'stop_cause': stop_cause,
+                'internal_hoststep_mode': ns.internal_hoststep, 'HTTP_key_source_used': not ns.internal_hoststep,
+                'qemu_pid': None if p is None else p.pid, 'qemu_exit': None if p is None else p.returncode,
+                'process_reaped': p is not None and p.poll() is not None, 'PID_absent': pid_absent,

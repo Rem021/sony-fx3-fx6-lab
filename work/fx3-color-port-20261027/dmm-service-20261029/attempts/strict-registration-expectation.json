@@ -1,0 +1,9 @@
+{
+  "case": "strict registration expectation",
+  "outcome": "registration success assertion failed",
+  "observed_boundary": "0x52c488 before MPIDR read",
+  "reason": "Original lock/context entry needs CPU affinity even for registration. Strict mode correctly cannot complete registration with an unknown affinity register.",
+  "correction": "Strict case asserts the observed original CPU-affinity boundary and zero metadata consumption; it is not reported as a completed registration.",
+  "counted_as_passing_case": false,
+  "context_or_affinity_return_supplied": false
+}

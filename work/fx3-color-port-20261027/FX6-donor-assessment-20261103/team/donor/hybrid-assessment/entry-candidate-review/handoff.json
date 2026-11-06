@@ -1,0 +1,78 @@
+{
+  "status": "PLAN_ONLY_NOT_EXECUTED",
+  "requires_runtime_owner_after_mss": true,
+  "candidate_cpio": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-entry-candidate/guest-two-entry.cpio",
+  "candidate_sha256": "ff2f927de24b801d334ce9111fb486fb2af85d24c509ab20c43eda0a69ffdc40",
+  "fixed_baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "exact_member_allowlist": {
+    "usr/bin/bootin.elf": {
+      "fx3_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "fx6_sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+      "bytes": 23960
+    },
+    "usr/bin/im.elf": {
+      "fx3_sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+      "fx6_sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+      "bytes": 40920
+    }
+  },
+  "old_gate_expected": {
+    "original_elf_count": 20,
+    "changed_or_missing": [
+      "usr/bin/bootin.elf",
+      "usr/bin/im.elf"
+    ],
+    "safe_to_unpack": false,
+    "do_not_disable_globally": true
+  },
+  "isolated_gate": "Require this review.py PASS and original parent-order errors empty; treat only the exact two ELF identity differences as allowed in a separate runner copy, preserving all other audit failures",
+  "frozen_argv_indices": {
+    "serial": 20,
+    "candidate_initrd_loader": 31,
+    "dtb_loader": 33,
+    "kernel": 29
+  },
+  "only_host_path_changes": [
+    "argv[20] file:<new unique serial.log path> under owner-allocated run directory",
+    "argv[31] loader file path to candidate, same addr=0x440000000 force-raw=on",
+    "relative QMP/GDB socket paths resolved in owner-allocated new run directory"
+  ],
+  "must_match_baseline": [
+    "QEMU binary",
+    "FX3 kernel argv[29]",
+    "full DTB argv[33]",
+    "machine/cpu/smp/memory",
+    "model_env",
+    "remaining argv words",
+    "original /init and 17 preload payloads",
+    "Backup and all other CPIO members"
+  ],
+  "budget_host_seconds": 180,
+  "input_policy": "no directional keys or synthetic events",
+  "observe_in_order": [
+    "FX3_TRACE_ABI_VERIFY_RC",
+    "FX3_TRACE_ABI_LIST_RC",
+    "FX3_TRACE_ABI_TRUE_RC",
+    "FX3_TRACE_ABI_NOT_READY if present",
+    "FX3_AP_NATURAL_BOOTIN_BEGIN",
+    "first actual im.elf process/maps marker",
+    "first available FX3_BOOT_QUEUE_SEND with pid/source/raw/caller if naturally emitted; attribute FX3 AP traffic separately"
+  ],
+  "stop": [
+    "first genuine fault, loader nonzero, module/observer refusal, or first bounded IM/IPC evidence",
+    "if IPC marker absent by time budget mark unknown; do not synthesize"
+  ],
+  "cleanup": [
+    "use existing owner API16 restore path",
+    "stop and reap only own QEMU/runner children",
+    "confirm both existing run locks free",
+    "store command, hashes, serial, RCs, host/API16/locks in fresh run directory",
+    "never overwrite historical serial"
+  ],
+  "interpretation": [
+    "FX3 appFw/libObj remain; menu appearance is not FX6 AP",
+    "IM PT_LOAD identical; no new FX6 IM runtime logic proven",
+    "no FX6 AV or CP in candidate",
+    "static audit is not runtime success"
+  ]
+}

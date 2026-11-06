@@ -1,0 +1,63 @@
+{
+  "body_library_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+  "common_library_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+  "cases": [
+    {
+      "input_key": "0100_config",
+      "declared_index": 39321,
+      "result_type": "vtable for Updater::CommonKeyTag",
+      "instructions": 440,
+      "total_instructions": 526
+    },
+    {
+      "input_key": "0700_part_image",
+      "declared_index": 39321,
+      "result_type": "vtable for Updater::CommonKeyTag",
+      "instructions": 465,
+      "total_instructions": 551
+    },
+    {
+      "input_key": "9999_program",
+      "declared_index": 39321,
+      "result_type": "vtable for Updater::CommonKeyTag",
+      "instructions": 448,
+      "total_instructions": 534
+    },
+    {
+      "input_key": "9999_unknown",
+      "declared_index": 39321,
+      "result_type": "vtable for Updater::CommonKeyTag",
+      "instructions": 448,
+      "total_instructions": 534
+    },
+    {
+      "input_key": "config",
+      "declared_index": 39321,
+      "result_type": "vtable for Updater::ConfigKeyTag",
+      "instructions": 176,
+      "total_instructions": 262
+    },
+    {
+      "input_key": "part_image",
+      "declared_index": 39321,
+      "result_type": "vtable for Updater::PartitionImageKeyTag",
+      "instructions": 272,
+      "total_instructions": 358
+    },
+    {
+      "input_key": "program",
+      "declared_index": 39321,
+      "result_type": "vtable for Updater::CommonKeyTag",
+      "instructions": 408,
+      "total_instructions": 494
+    },
+    {
+      "input_key": "unknown",
+      "declared_index": 39321,
+      "result_type": "vtable for Updater::CommonKeyTag",
+      "instructions": 408,
+      "total_instructions": 494
+    }
+  ],
+  "scope": "Original KeyTagFactory plus original StringHandler methods and BaseKeyTag construction run with resolved source ELF relocations in synthetic RAM. Host shims are memory allocation and bounded libc byte/string operations only. These are direct key-string inputs, not tar parsing, mode-6 file extraction, XML execution, process launch, normal external admission or a flash test."
+}

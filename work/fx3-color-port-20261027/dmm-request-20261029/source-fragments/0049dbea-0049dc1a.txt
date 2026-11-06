@@ -1,0 +1,16 @@
+0049dbea mov        r0, r4
+0049dbec mov        r1, r5
+0049dbee bl         #0xa87206
+0049dbf2 movw       r0, #0xf9c0
+0049dbf6 movs       r6, #0
+0049dbf8 adds       r1, r4, r5
+0049dbfa mov.w      r2, #0x80000
+0049dbfe movt       r0, #0x147
+0049dc02 str        r6, [r0]
+0049dc04 strd       r1, r1, [r0, #8]
+0049dc08 str        r6, [r4, r5]
+0049dc0a movw       r4, #0x80
+0049dc0e movw       r5, #0x7140
+0049dc12 str        r2, [r1, #4]
+0049dc14 str        r2, [r0, #0x10]
+0049dc16 strd       r2, r2, [r0, #0x18]

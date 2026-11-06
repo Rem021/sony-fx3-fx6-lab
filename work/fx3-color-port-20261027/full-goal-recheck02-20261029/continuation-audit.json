@@ -1,0 +1,100 @@
+{
+  "created_utc": "2026-10-29T22:25:34.834477+00:00",
+  "previous_audit_receipt_sha256": "42bebcdf0ff0c2ab163b66f12c5a943cc58a1aea1662684b19ac42b80f4b61b6",
+  "previous_sealed_files_reverified": 17,
+  "previous_goal_turn_classification": "no_progress",
+  "current_goal_turn_classification": "no_progress",
+  "same_impasse_repeated_consecutive_goal_turns": 2,
+  "full_objective_preserved": true,
+  "unchanged_requirements": [
+    {
+      "id": "FX5_full_private_donor",
+      "status": "missing",
+      "proof_required": "Complete readable private system/menu payload and dependencies"
+    },
+    {
+      "id": "VENICE_complete_ISP_color_chain",
+      "status": "incomplete",
+      "proof_required": "Readable private inner plus full realtime ISP/sensor calibration/data-domain mapping"
+    },
+    {
+      "id": "RAM_chip_and_DMM_runtime",
+      "status": "incomplete",
+      "proof_required": "Normal hardware initialization and actual buffers/capacity/payload linked to allocation"
+    },
+    {
+      "id": "CMOS_RAW_and_calibration",
+      "status": "unproven",
+      "proof_required": "Reachable original acquisition and actual RAW samples/domain validation"
+    },
+    {
+      "id": "professional_menu_and_MAIN_recording",
+      "status": "incomplete",
+      "proof_required": "Whole professional UI/control route and target recording output"
+    },
+    {
+      "id": "exact_modified_target_firmware",
+      "status": "missing",
+      "proof_required": "Concrete classic FX3 target package carrying the requested full change"
+    },
+    {
+      "id": "classic_FX3_7_02_modified_package_admission",
+      "status": "unproven",
+      "proof_required": "Reproducible acceptance evidence for modified whole package, not original signature/repacking"
+    },
+    {
+      "id": "normal_boot_support_and_independent_recovery",
+      "status": "unproven",
+      "proof_required": "Target compatibility and independent recovery evidence sufficient for readiness"
+    },
+    {
+      "id": "stop_before_actual_flash",
+      "status": "preserved",
+      "proof_required": "No target flashing; not a substitute for earlier requirements"
+    }
+  ],
+  "shared_blocker": "No accessible readable complete private donor ISP and no validated classic FX3 7.02 modified-package admission path in current reviewed materials. Device/capture/recovery execution remains outside this task ownership.",
+  "public_primary_heads_current_and_unchanged": 3,
+  "public_head_observation": "public-head-check.json",
+  "VENICE_tracked_worktree": {
+    "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware",
+    "HEAD": "28f74ffe76ee845ec7b51cf4ae5229a56688a4bd",
+    "porcelain_status": "",
+    "scope": "Tracked/untracked git status only; ignored directories or other locations not globally excluded."
+  },
+  "current_recovery_report": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/README.md",
+    "bytes": 6877,
+    "sha256": "2e2fb741f61ec16f8aa1a08572714143dd4c0a001bdf1565feb8473a0535e477",
+    "manifest_sha256": "ee031302fc65b97425c90fc7bde2bc1c1578ffd07620d406aa8ebe508e9f0aad",
+    "goal_complete": false,
+    "persistent_write_release": false,
+    "conclusion": "Darwin sender/dependencies, still requires already executable AP environment; not independent AP recovery."
+  },
+  "recovery_release_metadata": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-recovery-adapter/releases/release.json",
+    "sha256": "036f40cf10393e9182a5499c5a1a534e6cd60968c131e228b546795db73be1a7",
+    "version": "0.4.0",
+    "hardware_validated": false,
+    "flashable": false,
+    "camera_loader_or_launch_backend_included": false
+  },
+  "public_metadata_job": {
+    "exec_session_id": 29655,
+    "confirmed_terminal": true,
+    "exit_code": 0
+  },
+  "current_live_goal_wait_handle": null,
+  "external_changes_that_can_unblock": [
+    "Readable complete private donor or verified decoder",
+    "Applicable target admission/loading evidence",
+    "Current same-model boot/recovery evidence from its authorized owner"
+  ],
+  "new_target_artifact_or_admission_evidence_obtained": false,
+  "goal_complete": false,
+  "persistent_goal_status": "active",
+  "device_actions": 0,
+  "other_owner_files_written": false,
+  "modified_firmware_produced": false,
+  "flashable_package_produced": false
+}

@@ -1,0 +1,86 @@
+{
+  "schema": "fx3-owned-interface-trial-bundle/1",
+  "grant_id": "fx3-702-msc-owner-20261028-02",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "scope": "one explicitly approved owner handoff and return only; internal user staging and root-private verified installation; no Sony protocol, authentication, camera file or firmware writes",
+  "files": [
+    {
+      "path": "artifacts/entry-ipc.dylib",
+      "sha256": "ff42b90998ea0cb8d934af697971c851c6596dc4765877ece916424052a2fe5c"
+    },
+    {
+      "path": "artifacts/owner-fixture-helper",
+      "sha256": "c1e593752e9deba1893b24e3223486d3bad7311d47087a1b4477f29149f3f430"
+    },
+    {
+      "path": "artifacts/owner-native-helper",
+      "sha256": "1182295ad4405fc30773673467ae2d6b1bb8b3ca26343a6e02c76a1dc9fd9e0b"
+    },
+    {
+      "path": "build_helpers.py",
+      "sha256": "be59e0667fde180bbbf26b913a611730a24877732f6f54d2d635981c855e1273"
+    },
+    {
+      "path": "cache_observer.py",
+      "sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971"
+    },
+    {
+      "path": "entry_binding.py",
+      "sha256": "43d71bf10a4e1e584be8aceaefe183f930eb350ab73962a216d01de6104c68d5"
+    },
+    {
+      "path": "entry_shared.h",
+      "sha256": "43d4be1b325bcc5a8940054e9d6e8f917c72022537b34458f094398e26616948"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "b422998c1d635cbee1615589206e26bad4c50f3f795605b3756f969bfd0915f7"
+    },
+    {
+      "path": "entry_target.h",
+      "sha256": "3dfb7905411bdb5d62a5f8f926ddfa5d04750e4989dacde4ee95dd7d44d653e1"
+    },
+    {
+      "path": "launch_policy.py",
+      "sha256": "73e119d1b8392fecb58ee0eccc4e0fe7888ed15e8e1c7f51b222f83aa4d2a30d"
+    },
+    {
+      "path": "owner_binding.py",
+      "sha256": "b8f5e4170ef40e38c9d05c09909a99204b49baab476de1b1e4beeed2ed6d8a6f"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "c9d7b7cbec73f4d6388a85fe9f727cea1ef6718a748fd4d4abd24a1e3c9571b4"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "aba073e7df59e076df15568789a5de697f2b73dd95bcd525985e33582eb26e55"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "236fe4c122372a13f8a5b3d4ae25bc4ccc1b7e14af47363fcde4e62e0a999afc"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "owner_supervisor.py",
+      "sha256": "8a53b67629ddc68cdbaf37f8ced95a99cb8c08476e9f0d9d8426add41802f7de"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    }
+  ]
+}

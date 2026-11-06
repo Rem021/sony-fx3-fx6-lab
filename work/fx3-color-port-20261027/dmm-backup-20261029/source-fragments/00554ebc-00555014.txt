@@ -1,0 +1,86 @@
+00554ebc push         {fp, lr}
+00554ec0 mov          ip, r0
+00554ec4 mov          r0, #0
+00554ec8 cmp          r3, #0
+00554ecc str          r0, [r2]
+00554ed0 add          r0, ip, r3, lsl #2
+00554ed4 mov          r3, ip
+00554ed8 addge        r3, r0, #0x218
+00554edc ldr          r0, [r3]
+00554ee0 lsr          r3, r1, #0x14
+00554ee4 ldr          r3, [r0, r3, lsl #2]
+00554ee8 mvn          r0, #0x19
+00554eec ands         lr, r3, #3
+00554ef0 beq          #0x55500c
+00554ef4 cmp          lr, #1
+00554ef8 bne          #0x554f9c
+00554efc mvn          lr, #0xff
+00554f00 bne          #0x554f1c
+00554f04 ldr          lr, [ip, #0x210]
+00554f08 bfc          r3, #0, #0xa
+00554f0c sub          lr, r3, lr
+00554f10 movw         r3, #0xff00
+00554f14 movt         r3, #0x3fff
+00554f18 and          lr, r3, lr, lsr #2
+00554f1c ubfx         r1, r1, #0xc, #8
+00554f20 ldr          r3, [ip, #4]
+00554f24 orr          r1, lr, r1
+00554f28 ldr          r1, [r3, r1, lsl #2]
+00554f2c tst          r1, #3
+00554f30 beq          #0x55500c
+00554f34 mov          r0, #4
+00554f38 ubfx         r3, r1, #9, #1
+00554f3c and          ip, r0, r1, lsr #1
+00554f40 mov          r0, r3
+00554f44 bfi          r0, r1, #1, #1
+00554f48 orr          ip, r0, ip
+00554f4c mov          r0, #8
+00554f50 and          r0, r0, r1, lsl #1
+00554f54 orr          r0, ip, r0
+00554f58 eor          ip, r0, #2
+00554f5c movw         r0, #0x20d
+00554f60 and          r0, r1, r0
+00554f64 cmp          r0, #1
+00554f68 beq          #0x554f7c
+00554f6c and          r0, r1, #0xd
+00554f70 cmp          r0, #1
+00554f74 movne        r3, ip
+00554f78 str          r3, [r2]
+00554f7c tst          r1, #0x400
+00554f80 and          r1, r1, #0x1c0
+00554f84 mov          r0, #0
+00554f88 orreq        ip, ip, #0x10
+00554f8c streq        ip, [r2]
+00554f90 cmp          r1, #0x40
+00554f94 beq          #0x555004
+00554f98 b            #0x55500c
+00554f9c mov          r0, #4
+00554fa0 and          ip, r0, r3, lsr #1
+00554fa4 mov          r0, #2
+00554fa8 and          r1, r0, r3, lsr #3
+00554fac ubfx         r0, r3, #0xf, #1
+00554fb0 orr          r1, r1, r0
+00554fb4 orr          ip, r1, ip
+00554fb8 mov          r1, #8
+00554fbc and          r1, r1, r3, lsl #1
+00554fc0 orr          r1, ip, r1
+00554fc4 eor          ip, r1, #2
+00554fc8 movw         r1, #0x801c
+00554fcc and          r1, r3, r1
+00554fd0 cmp          r1, #0x10
+00554fd4 beq          #0x554fe8
+00554fd8 and          r1, r3, #0x1c
+00554fdc cmp          r1, #0x10
+00554fe0 movne        r0, ip
+00554fe4 str          r0, [r2]
+00554fe8 tst          r3, #0x10000
+00554fec and          r1, r3, #0x7000
+00554ff0 mov          r0, #0
+00554ff4 orreq        ip, ip, #0x10
+00554ff8 streq        ip, [r2]
+00554ffc cmp          r1, #0x1000
+00555000 popne        {fp, pc}
+00555004 orr          r1, ip, #0x20
+00555008 str          r1, [r2]
+0055500c pop          {fp, pc}
+00555010 push         {r4, r5, r6, lr}

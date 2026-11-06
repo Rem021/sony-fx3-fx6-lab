@@ -1,0 +1,40 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0xa054, 0xa0e8) raw slice SHA256 459e6773af4034cd7ec1bb029a0262a7dbb3274aeca785774f9fe8186da87896
+    a054: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+    a058: 910003fd     	mov	x29, sp
+    a05c: a90153f3     	stp	x19, x20, [sp, #0x10]
+    a060: aa0003f4     	mov	x20, x0
+    a064: f9400400     	ldr	x0, [x0, #0x8]
+    a068: aa0203f3     	mov	x19, x2
+    a06c: f90013f5     	str	x21, [sp, #0x20]
+    a070: aa0103f5     	mov	x21, x1
+    a074: aa0203e1     	mov	x1, x2
+    a078: 97fff3f2     	bl	0x7040 <Updater::SDFileInputBodyLoaderModule::GetCurrentFirmwareInfo(UpdaterAPI::firmware_information_t::information&)@plt>
+    a07c: f9400280     	ldr	x0, [x20]
+    a080: 91006262     	add	x2, x19, #0x18
+    a084: aa1503e1     	mov	x1, x21
+    a088: f9402803     	ldr	x3, [x0, #0x50]
+    a08c: aa1403e0     	mov	x0, x20
+    a090: b0000014     	adrp	x20, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a094: 9112d694     	add	x20, x20, #0x4b5
+    a098: d63f0060     	blr	x3
+    a09c: 29409664     	ldp	w4, w5, [x19, #0x4]
+    a0a0: b0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a0a4: 29419e66     	ldp	w6, w7, [x19, #0xc]
+    a0a8: aa1403e2     	mov	x2, x20
+    a0ac: 91133c00     	add	x0, x0, #0x4cf
+    a0b0: 528006a3     	mov	w3, #0x35               // =53
+    a0b4: 52800001     	mov	w1, #0x0                // =0
+    a0b8: 97fff616     	bl	0x7910 <printf@plt>
+    a0bc: f94013f5     	ldr	x21, [sp, #0x20]
+    a0c0: aa1403e2     	mov	x2, x20
+    a0c4: b0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a0c8: 29439664     	ldp	w4, w5, [x19, #0x1c]
+    a0cc: 91144400     	add	x0, x0, #0x511
+    a0d0: 29449e66     	ldp	w6, w7, [x19, #0x24]
+    a0d4: 528006c3     	mov	w3, #0x36               // =54
+    a0d8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    a0dc: 52800001     	mov	w1, #0x0                // =0
+    a0e0: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+    a0e4: 17fff60b     	b	0x7910 <printf@plt>

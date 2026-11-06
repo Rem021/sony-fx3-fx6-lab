@@ -1,0 +1,56 @@
+fe04a3b0 ffc300d1 sub      sp, sp, #0x30
+fe04a3b4 fd7b02a9 stp      x29, x30, [sp, #0x20]
+fe04a3b8 fd830091 add      x29, sp, #0x20
+fe04a3bc f55b01a9 stp      x21, x22, [sp, #0x10]
+fe04a3c0 f35300a9 stp      x19, x20, [sp]
+fe04a3c4 f60300aa mov      x22, x0
+fe04a3c8 7c040094 bl       #0xfe04b5b8
+fe04a3cc 140040f9 ldr      x20, [x0]
+fe04a3d0 c0220091 add      x0, x22, #8
+fe04a3d4 003c0091 add      x0, x0, #0xf
+fe04a3d8 13ec7c92 and      x19, x0, #0xfffffffffffffff0
+fe04a3dc 150080d2 mov      x21, #0
+fe04a3e0 7f0216eb cmp      x19, x22
+fe04a3e4 a9040054 b.ls     #0xfe04a478
+fe04a3e8 e30314aa mov      x3, x20
+fe04a3ec 620440f9 ldr      x2, [x3, #8]
+fe04a3f0 5f0000f1 cmp      x2, #0
+fe04a3f4 80030054 b.eq     #0xfe04a464
+fe04a3f8 400040f9 ldr      x0, [x2]
+fe04a3fc 1f0013eb cmp      x0, x19
+fe04a400 a3020054 b.lo     #0xfe04a454
+fe04a404 61420091 add      x1, x19, #0x10
+fe04a408 1f0001eb cmp      x0, x1
+fe04a40c 43010054 b.lo     #0xfe04a434
+fe04a410 4000138b add      x0, x2, x19
+fe04a414 410440f9 ldr      x1, [x2, #8]
+fe04a418 010400f9 str      x1, [x0, #8]
+fe04a41c 410040f9 ldr      x1, [x2]
+fe04a420 210013cb sub      x1, x1, x19
+fe04a424 010000f9 str      x1, [x0]
+fe04a428 600400f9 str      x0, [x3, #8]
+fe04a42c 530000f9 str      x19, [x2]
+fe04a430 03000014 b        #0xfe04a43c
+fe04a434 400440f9 ldr      x0, [x2, #8]
+fe04a438 600400f9 str      x0, [x3, #8]
+fe04a43c 40200091 add      x0, x2, #8
+fe04a440 f35340a9 ldp      x19, x20, [sp]
+fe04a444 f55b41a9 ldp      x21, x22, [sp, #0x10]
+fe04a448 fd7b42a9 ldp      x29, x30, [sp, #0x20]
+fe04a44c ffc30091 add      sp, sp, #0x30
+fe04a450 c0035fd6 ret      
+fe04a454 e30302aa mov      x3, x2
+fe04a458 620440f9 ldr      x2, [x3, #8]
+fe04a45c 5f0000f1 cmp      x2, #0
+fe04a460 c1fcff54 b.ne     #0xfe04a3f8
+fe04a464 e10313aa mov      x1, x19
+fe04a468 e00314aa mov      x0, x20
+fe04a46c 5f040094 bl       #0xfe04b5e8
+fe04a470 1f000071 cmp      w0, #0
+fe04a474 a1fbff54 b.ne     #0xfe04a3e8
+fe04a478 e00315aa mov      x0, x21
+fe04a47c f35340a9 ldp      x19, x20, [sp]
+fe04a480 f55b41a9 ldp      x21, x22, [sp, #0x10]
+fe04a484 fd7b42a9 ldp      x29, x30, [sp, #0x20]
+fe04a488 ffc30091 add      sp, sp, #0x30
+fe04a48c c0035fd6 ret      

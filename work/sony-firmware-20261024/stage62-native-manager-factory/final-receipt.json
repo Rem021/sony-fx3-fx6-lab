@@ -1,0 +1,99 @@
+{
+  "schema": "fx3-stage62-native-manager-factory/1",
+  "created_utc": "2026-10-26T11:44:56.384373+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/README.md",
+      "bytes": 6227,
+      "sha256": "179a278a512341b0003bc69d9a4b301489af236c8ff3ea2c25b2f1cc2486d316"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/audit_provider.py",
+      "bytes": 3683,
+      "sha256": "6448164f6be0a04260304bd43c9a773db629eb3254209f4311b8fb7371f9c744"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/coordinator-observations.json",
+      "bytes": 1019,
+      "sha256": "910773c0a252407e1e6979c5ac0c380392f2840d02b4a993147c78dbe07e7adb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/finalize_stage62.py",
+      "bytes": 13856,
+      "sha256": "11c688007f4ee34254a9f39aa074ecda198a721f91949814b35d70299288a5c9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/goal-status-after.json",
+      "bytes": 172668,
+      "sha256": "afc751ca6f91baee9996fec212525e76eab050f0675e9d217a62431e3bbab662"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/goal-status-before.json",
+      "bytes": 168464,
+      "sha256": "39af3e0d1387a593e031b7155560db0bf05400035ef890a53991d69b7c1c3944"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/manager_factory.py",
+      "bytes": 12758,
+      "sha256": "46a5a58710b838508c8434be21e30de9265ac6058796ad385e2830dd058f13a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/provider-source-audit.json",
+      "bytes": 53771,
+      "sha256": "2f458a03b20c34875c50a64ea225e1ff8cad8e8d709e457391d45b146dc46e66"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/run-20261026/executed-source.py",
+      "bytes": 12094,
+      "sha256": "55025758567721adaf1bab38f12a277182d08ffe65df331fe261aae012de95c5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/run-20261026/manager-factory-results.json",
+      "bytes": 51239148,
+      "sha256": "28faae228ee68bf6fdc063a14bb1218e1426891b360aa9c2cfc9c2dcf3d86691"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/run-20261026/source-receipt.json",
+      "bytes": 712,
+      "sha256": "db320bb6fa72d987e1a87a4a76f0135fc7487891df5dac26a6872e0533fcf49f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/run-object-isolation-20261026/executed-source.py",
+      "bytes": 12758,
+      "sha256": "46a5a58710b838508c8434be21e30de9265ac6058796ad385e2830dd058f13a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/run-object-isolation-20261026/manager-factory-results.json",
+      "bytes": 51240741,
+      "sha256": "0b6de78c797db7e3db1c6bf58b85eee7fd75534f5d7b601155e0eb87f8668136"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/run-object-isolation-20261026/source-receipt.json",
+      "bytes": 712,
+      "sha256": "3f571600f8c36ef84a9f3bc4a2f5d270252da47a8dcc717e8b1d9d15bdf51088"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage62-native-manager-factory/summary.json",
+      "bytes": 934,
+      "sha256": "9b511aa476e612f2e820610aa520c693ec384a835bc721a87e27eab0b4c593fa"
+    }
+  ],
+  "previous_manifest_sha256": "459907b4abbd2324a3ee068a45666982ffc66191544dcded9d4f3775d45db7b1",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "39af3e0d1387a593e031b7155560db0bf05400035ef890a53991d69b7c1c3944",
+    "after_sha256": "afc751ca6f91baee9996fec212525e76eab050f0675e9d217a62431e3bbab662"
+  },
+  "readme_index_entry": "- [2026-10-26 FX3 原管理对象与factory队列](<work/sony-firmware-20261024/stage62-native-manager-factory/README.md>)：原manager、6+2构造/绑定及空闲队列21段通过，9次对象外隔离；请求进到未执行资源提供者，真实OSAL/硬件/主录与恢复未验收。",
+  "readme_index_before_sha256": "ccb58bd5e5add0665869012b8a94fd10a3cad45594fdf5c592e89c6f1624c984",
+  "readme_index_after_sha256": "99fa610b289a9bf3f41da8c41257cad612bb9013cb99ba38eb82f27604285b54",
+  "operations": {
+    "original_firmware_unchanged": true,
+    "Sony_loadable_payload_exported": false,
+    "UU_Windows_camera_interface_auth_mode_driver_files_module_WBI_flash": false,
+    "actual_provider_threads_Hal_recording_backup_restore_or_independent_rescue": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

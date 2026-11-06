@@ -1,0 +1,43 @@
+000cdbbc fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+000cdbc0 3f000071 cmp      w1, #0
+000cdbc4 4418407a ccmp     w2, #0, #4, ne
+000cdbc8 fd030091 mov      x29, sp
+000cdbcc 0418407a ccmp     w0, #0, #4, ne
+000cdbd0 f35301a9 stp      x19, x20, [sp, #0x10]
+000cdbd4 f37f8012 mov      w19, #-0x400
+000cdbd8 f55b02a9 stp      x21, x22, [sp, #0x20]
+000cdbdc c0030054 b.eq     #0xcdc54
+000cdbe0 f503012a mov      w21, w1
+000cdbe4 f603002a mov      w22, w0
+000cdbe8 a1e30091 add      x1, x29, #0x38
+000cdbec 20048052 mov      w0, #0x21
+000cdbf0 f403022a mov      w20, w2
+000cdbf4 23008052 mov      w3, #1
+000cdbf8 02028052 mov      w2, #0x10
+000cdbfc 4012b072 movk     w0, #0x8092, lsl #16
+000cdc00 f421fe97 bl       #0x563d0 ; osal_valloc_msg_wait
+000cdc04 f303002a mov      w19, w0
+000cdc08 60020035 cbnz     w0, #0xcdc54
+000cdc0c a01f40f9 ldr      x0, [x29, #0x38]
+000cdc10 01058052 mov      w1, #0x28
+000cdc14 410fb072 movk     w1, #0x807a, lsl #16
+000cdc18 ce1efe97 bl       #0x55750 ; osal_set_msg_src
+000cdc1c a11f40f9 ldr      x1, [x29, #0x38]
+000cdc20 20288052 mov      w0, #0x141
+000cdc24 4012a072 movk     w0, #0x92, lsl #16
+000cdc28 20580029 stp      w0, w22, [x1]
+000cdc2c 20048052 mov      w0, #0x21
+000cdc30 35500129 stp      w21, w20, [x1, #8]
+000cdc34 4012b072 movk     w0, #0x8092, lsl #16
+000cdc38 e620fe97 bl       #0x55fd0 ; osal_snd_msg
+000cdc3c f303002a mov      w19, w0
+000cdc40 a0000034 cbz      w0, #0xcdc54
+000cdc44 a11f40f9 ldr      x1, [x29, #0x38]
+000cdc48 20048052 mov      w0, #0x21
+000cdc4c 4012b072 movk     w0, #0x8092, lsl #16
+000cdc50 dc27fe97 bl       #0x57bc0 ; osal_free_msg
+000cdc54 e003132a mov      w0, w19
+000cdc58 f35341a9 ldp      x19, x20, [sp, #0x10]
+000cdc5c f55b42a9 ldp      x21, x22, [sp, #0x20]
+000cdc60 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+000cdc64 c0035fd6 ret      

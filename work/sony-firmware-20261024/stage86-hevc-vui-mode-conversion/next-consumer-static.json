@@ -1,0 +1,126 @@
+{
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "instruction_contexts": [
+    {
+      "file_offset": "0x15d7b8",
+      "bytes": "2120a002",
+      "text": "move $a0, $s5"
+    },
+    {
+      "file_offset": "0x15d7bc",
+      "bytes": "21280002",
+      "text": "move $a1, $s0"
+    },
+    {
+      "file_offset": "0x15d7c0",
+      "bytes": "da044390",
+      "text": "lbu $v1, 0x4da($v0)"
+    },
+    {
+      "file_offset": "0x15d7c4",
+      "bytes": "7000028e",
+      "text": "lw $v0, 0x70($s0)"
+    },
+    {
+      "file_offset": "0x15d7c8",
+      "bytes": "4408627c",
+      "text": "ins $v0, $v1, 1, 1"
+    },
+    {
+      "file_offset": "0x15d7cc",
+      "bytes": "d878050c",
+      "text": "jal 0x8015e360"
+    },
+    {
+      "file_offset": "0x15d7d0",
+      "bytes": "700002ae",
+      "text": "sw $v0, 0x70($s0)"
+    },
+    {
+      "file_offset": "0x131ac0",
+      "bytes": "1000848e",
+      "text": "lw $a0, 0x10($s4)"
+    },
+    {
+      "file_offset": "0x131ac4",
+      "bytes": "1000a6a3",
+      "text": "sb $a2, 0x10($sp)"
+    },
+    {
+      "file_offset": "0x131ac8",
+      "bytes": "1400a4af",
+      "text": "sw $a0, 0x14($sp)"
+    },
+    {
+      "file_offset": "0x131acc",
+      "bytes": "36002392",
+      "text": "lbu $v1, 0x36($s1)"
+    },
+    {
+      "file_offset": "0x131ad0",
+      "bytes": "0800a78c",
+      "text": "lw $a3, 8($a1)"
+    },
+    {
+      "file_offset": "0x131ad4",
+      "bytes": "0400a68c",
+      "text": "lw $a2, 4($a1)"
+    },
+    {
+      "file_offset": "0x131ad8",
+      "bytes": "1000a28f",
+      "text": "lw $v0, 0x10($sp)"
+    },
+    {
+      "file_offset": "0x131adc",
+      "bytes": "2b180300",
+      "text": "sltu $v1, $zero, $v1"
+    },
+    {
+      "file_offset": "0x131ae0",
+      "bytes": "840024ae",
+      "text": "sw $a0, 0x84($s1)"
+    },
+    {
+      "file_offset": "0x131ae4",
+      "bytes": "21206000",
+      "text": "move $a0, $v1"
+    },
+    {
+      "file_offset": "0x131ae8",
+      "bytes": "800022ae",
+      "text": "sw $v0, 0x80($s1)"
+    },
+    {
+      "file_offset": "0x131aec",
+      "bytes": "880026ae",
+      "text": "sw $a2, 0x88($s1)"
+    },
+    {
+      "file_offset": "0x131af0",
+      "bytes": "8c0027ae",
+      "text": "sw $a3, 0x8c($s1)"
+    },
+    {
+      "file_offset": "0x131af4",
+      "bytes": "900020ae",
+      "text": "sw $zero, 0x90($s1)"
+    },
+    {
+      "file_offset": "0x131af8",
+      "bytes": "da0403a2",
+      "text": "sb $v1, 0x4da($s0)"
+    },
+    {
+      "file_offset": "0x131afc",
+      "bytes": "35002292",
+      "text": "lbu $v0, 0x35($s1)"
+    }
+  ],
+  "direct_SB_imm4da_hits_first2MiB": [
+    "0x131af8"
+  ],
+  "candidate_flow": "other object byte36 -> boolean -> frame4da -> parameter source70 bit1 (configa4 bit1 under known copy offsets)",
+  "producer_and_consumer_object_binding_full_control_flow_or_execution_proven": false,
+  "scope": "Static candidate only; immediate SB scan is not exhaustive for adjusted bases, widths, aliases or code outside first2MiB."
+}

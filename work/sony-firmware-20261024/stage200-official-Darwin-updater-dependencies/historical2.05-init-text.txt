@@ -1,0 +1,481 @@
+# Original ELF VA, every4B alignment includes possible data; locators only, not measured camera PC.
+0x400be0 000000b0 adrp     x0, #0x401000
+0x400be4 fd7bb7a9 stp      x29, x30, [sp, #-0x90]!
+0x400be8 00800e91 add      x0, x0, #0x3a0 ; source string candidate '/dev/sio'
+0x400bec fd030091 mov      x29, sp
+0x400bf0 f55b02a9 stp      x21, x22, [sp, #0x20]
+0x400bf4 010040f9 ldr      x1, [x0]
+0x400bf8 00204039 ldrb     w0, [x0, #8]
+0x400bfc a13b00f9 str      x1, [x29, #0x70]
+0x400c00 a0e30139 strb     w0, [x29, #0x78]
+0x400c04 801a8052 mov      w0, #0xd4
+0x400c08 201fa072 movk     w0, #0xf9, lsl #16
+0x400c0c f76303a9 stp      x23, x24, [sp, #0x30]
+0x400c10 f35301a9 stp      x19, x20, [sp, #0x10]
+0x400c14 f96b04a9 stp      x25, x26, [sp, #0x40]
+0x400c18 fb7305a9 stp      x27, x28, [sp, #0x50]
+0x400c1c bfe70139 strb     wzr, [x29, #0x79]
+0x400c20 bfc30079 strh     wzr, [x29, #0x60]
+0x400c24 d7ffff97 bl       #0x400b80 ; import Backup_read_4Byte
+0x400c28 f503002a mov      w21, w0
+0x400c2c 20168052 mov      w0, #0xb1
+0x400c30 201fa072 movk     w0, #0xf9, lsl #16
+0x400c34 d3ffff97 bl       #0x400b80 ; import Backup_read_4Byte
+0x400c38 f603002a mov      w22, w0
+0x400c3c a00d8052 mov      w0, #0x6d
+0x400c40 201fa072 movk     w0, #0xf9, lsl #16
+0x400c44 cfffff97 bl       #0x400b80 ; import Backup_read_4Byte
+0x400c48 f703002a mov      w23, w0
+0x400c4c 80008052 mov      w0, #4
+0x400c50 41008052 mov      w1, #2
+0x400c54 bf8300b9 str      wzr, [x29, #0x80]
+0x400c58 a0130239 strb     w0, [x29, #0x84]
+0x400c5c 000000b0 adrp     x0, #0x401000
+0x400c60 00801091 add      x0, x0, #0x420 ; source string candidate '/dev/gpio'
+0x400c64 97ffff97 bl       #0x400ac0 ; import open
+0x400c68 4005f837 tbnz     w0, #0x1f, #0x400d10
+0x400c6c 21018052 mov      w1, #9
+0x400c70 a2030291 add      x2, x29, #0x80
+0x400c74 f303002a mov      w19, w0
+0x400c78 74008052 mov      w20, #3
+0x400c7c a18f00b9 str      w1, [x29, #0x8c]
+0x400c80 41008052 mov      w1, #2
+0x400c84 a1230239 strb     w1, [x29, #0x88]
+0x400c88 41e088d2 mov      x1, #0x4702
+0x400c8c 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400c90 9cffff97 bl       #0x400b00 ; import ioctl
+0x400c94 b4230239 strb     w20, [x29, #0x88]
+0x400c98 a2030291 add      x2, x29, #0x80
+0x400c9c 41e088d2 mov      x1, #0x4702
+0x400ca0 e003132a mov      w0, w19
+0x400ca4 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400ca8 96ffff97 bl       #0x400b00 ; import ioctl
+0x400cac 40008052 mov      w0, #2
+0x400cb0 a2030291 add      x2, x29, #0x80
+0x400cb4 41e088d2 mov      x1, #0x4702
+0x400cb8 a08f00b9 str      w0, [x29, #0x8c]
+0x400cbc 20008052 mov      w0, #1
+0x400cc0 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400cc4 a0230239 strb     w0, [x29, #0x88]
+0x400cc8 e003132a mov      w0, w19
+0x400ccc 8dffff97 bl       #0x400b00 ; import ioctl
+0x400cd0 b4230239 strb     w20, [x29, #0x88]
+0x400cd4 a2030291 add      x2, x29, #0x80
+0x400cd8 41e088d2 mov      x1, #0x4702
+0x400cdc e003132a mov      w0, w19
+0x400ce0 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400ce4 87ffff97 bl       #0x400b00 ; import ioctl
+0x400ce8 bf230239 strb     wzr, [x29, #0x88]
+0x400cec c0008052 mov      w0, #6
+0x400cf0 a2030291 add      x2, x29, #0x80
+0x400cf4 41e088d2 mov      x1, #0x4702
+0x400cf8 a08f00b9 str      w0, [x29, #0x8c]
+0x400cfc e003132a mov      w0, w19
+0x400d00 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400d04 7fffff97 bl       #0x400b00 ; import ioctl
+0x400d08 e003132a mov      w0, w19
+0x400d0c 99ffff97 bl       #0x400b70 ; import close
+0x400d10 010000b0 adrp     x1, #0x401000
+0x400d14 e203152a mov      w2, w21
+0x400d18 21a81091 add      x1, x1, #0x42a
+0x400d1c a0830191 add      x0, x29, #0x60
+0x400d20 940000d0 adrp     x20, #0x412000
+0x400d24 950000d0 adrp     x21, #0x412000
+0x400d28 72ffff97 bl       #0x400af0 ; import sprintf
+0x400d2c a1830191 add      x1, x29, #0x60
+0x400d30 a0c30191 add      x0, x29, #0x70
+0x400d34 a3ffff97 bl       #0x400bc0 ; import strcat
+0x400d38 a0c30191 add      x0, x29, #0x70
+0x400d3c 41008052 mov      w1, #2
+0x400d40 60ffff97 bl       #0x400ac0 ; import open
+0x400d44 80ba01b9 str      w0, [x20, #0x1b8]
+0x400d48 e403002a mov      w4, w0
+0x400d4c 0002f836 tbz      w0, #0x1f, #0x400d8c
+0x400d50 010000b0 adrp     x1, #0x401000
+0x400d54 000000b0 adrp     x0, #0x401000
+0x400d58 a3c30191 add      x3, x29, #0x70
+0x400d5c 21c00e91 add      x1, x1, #0x3b0 ; source string candidate 'device_initialize'
+0x400d60 00b41091 add      x0, x0, #0x42d ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver open failed [%s], ERRMSG[%d]\n'
+0x400d64 e20e8052 mov      w2, #0x77
+0x400d68 13008012 mov      w19, #-1
+0x400d6c 99ffff97 bl       #0x400bd0 ; import printf
+0x400d70 010000b0 adrp     x1, #0x401000
+0x400d74 000000b0 adrp     x0, #0x401000
+0x400d78 e303132a mov      w3, w19
+0x400d7c 02228052 mov      w2, #0x110
+0x400d80 21401091 add      x1, x1, #0x410 ; source string candidate 'darwin_com_init'
+0x400d84 00681a91 add      x0, x0, #0x69a ; source string candidate '[UD_COM_PIC] %s:%d:device_initialize() failed, ERRMSG[%d]\n'
+0x400d88 5f000014 b        #0x400f04
+0x400d8c 41e88cd2 mov      x1, #0x6742
+0x400d90 62028052 mov      w2, #0x13
+0x400d94 8100a8f2 movk     x1, #0x4004, lsl #16
+0x400d98 5affff97 bl       #0x400b00 ; import ioctl
+0x400d9c f303002a mov      w19, w0
+0x400da0 80010034 cbz      w0, #0x400dd0
+0x400da4 80ba41b9 ldr      w0, [x20, #0x1b8]
+0x400da8 72ffff97 bl       #0x400b70 ; import close
+0x400dac 65ffff97 bl       #0x400b40 ; import __errno_location
+0x400db0 030040b9 ldr      w3, [x0]
+0x400db4 010000b0 adrp     x1, #0x401000
+0x400db8 000000b0 adrp     x0, #0x401000
+0x400dbc 21c00e91 add      x1, x1, #0x3b0 ; source string candidate 'device_initialize'
+0x400dc0 00a41191 add      x0, x0, #0x469 ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver ioctl(SIO_BAUD) failed, ERRMSG[%d]\n'
+0x400dc4 c20f8052 mov      w2, #0x7e
+0x400dc8 82ffff97 bl       #0x400bd0 ; import printf
+0x400dcc e9ffff17 b        #0x400d70
+0x400dd0 80ba41b9 ldr      w0, [x20, #0x1b8]
+0x400dd4 21e88cd2 mov      x1, #0x6741
+0x400dd8 02008252 mov      w2, #0x1000
+0x400ddc 8100a8f2 movk     x1, #0x4004, lsl #16
+0x400de0 48ffff97 bl       #0x400b00 ; import ioctl
+0x400de4 f303002a mov      w19, w0
+0x400de8 60010034 cbz      w0, #0x400e14
+0x400dec 80ba41b9 ldr      w0, [x20, #0x1b8]
+0x400df0 60ffff97 bl       #0x400b70 ; import close
+0x400df4 53ffff97 bl       #0x400b40 ; import __errno_location
+0x400df8 030040b9 ldr      w3, [x0]
+0x400dfc 010000b0 adrp     x1, #0x401000
+0x400e00 000000b0 adrp     x0, #0x401000
+0x400e04 82108052 mov      w2, #0x84
+0x400e08 21c00e91 add      x1, x1, #0x3b0 ; source string candidate 'device_initialize'
+0x400e0c 00ac1291 add      x0, x0, #0x4ab ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver ioctl(SIO_CONTROL) failed, ERRMSG[%d]\n'
+0x400e10 eeffff17 b        #0x400dc8
+0x400e14 e203172a mov      w2, w23
+0x400e18 e103162a mov      w1, w22
+0x400e1c a0c20691 add      x0, x21, #0x1b0
+0x400e20 43008052 mov      w3, #2
+0x400e24 4bffff97 bl       #0x400b50 ; import UdtrGpioOpen
+0x400e28 f303002a mov      w19, w0
+0x400e2c e0110034 cbz      w0, #0x401068
+0x400e30 80ba41b9 ldr      w0, [x20, #0x1b8]
+0x400e34 4fffff97 bl       #0x400b70 ; import close
+0x400e38 42ffff97 bl       #0x400b40 ; import __errno_location
+0x400e3c 030040b9 ldr      w3, [x0]
+0x400e40 010000b0 adrp     x1, #0x401000
+0x400e44 000000b0 adrp     x0, #0x401000
+0x400e48 62118052 mov      w2, #0x8b
+0x400e4c 21c00e91 add      x1, x1, #0x3b0 ; source string candidate 'device_initialize'
+0x400e50 00c01391 add      x0, x0, #0x4f0 ; source string candidate '[UD_COM_PIC] %s:%d:Gpio CS port open failed, ERRNO[%d]\n'
+0x400e54 ddffff17 b        #0x400dc8
+0x400e58 16c30491 add      x22, x24, #0x130
+0x400e5c e00316aa mov      x0, x22
+0x400e60 10010094 bl       #0x4012a0
+0x400e64 c0fe0079 strh     w0, [x22, #0x7e]
+0x400e68 a0da40f9 ldr      x0, [x21, #0x1b0]
+0x400e6c 01008052 mov      w1, #0
+0x400e70 28ffff97 bl       #0x400b10 ; import UdtrGpioWrite
+0x400e74 f303002a mov      w19, w0
+0x400e78 00010034 cbz      w0, #0x400e98
+0x400e7c e303002a mov      w3, w0
+0x400e80 82138052 mov      w2, #0x9c
+0x400e84 010000b0 adrp     x1, #0x401000
+0x400e88 000000b0 adrp     x0, #0x401000
+0x400e8c 21200f91 add      x1, x1, #0x3c8 ; source string candidate 'darwin_send_data'
+0x400e90 00a01491 add      x0, x0, #0x528 ; source string candidate '[UD_COM_PIC] %s:%d:GPIO write failed, ERRMSG[%d]\n'
+0x400e94 0e000014 b        #0x400ecc
+0x400e98 80ba41b9 ldr      w0, [x20, #0x1b8]
+0x400e9c e10316aa mov      x1, x22
+0x400ea0 021080d2 mov      x2, #0x80
+0x400ea4 3bffff97 bl       #0x400b90 ; import write
+0x400ea8 f303002a mov      w19, w0
+0x400eac 0003f836 tbz      w0, #0x1f, #0x400f0c
+0x400eb0 24ffff97 bl       #0x400b40 ; import __errno_location
+0x400eb4 030040b9 ldr      w3, [x0]
+0x400eb8 010000b0 adrp     x1, #0x401000
+0x400ebc 000000b0 adrp     x0, #0x401000
+0x400ec0 21200f91 add      x1, x1, #0x3c8 ; source string candidate 'darwin_send_data'
+0x400ec4 00681591 add      x0, x0, #0x55a ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver write failed, ERRMSG[%d]\n'
+0x400ec8 42148052 mov      w2, #0xa2
+0x400ecc 41ffff97 bl       #0x400bd0 ; import printf
+0x400ed0 010000b0 adrp     x1, #0x401000
+0x400ed4 000000b0 adrp     x0, #0x401000
+0x400ed8 e303132a mov      w3, w19
+0x400edc 21e00f91 add      x1, x1, #0x3f8 ; source string candidate 'darwin_change_state'
+0x400ee0 00541b91 add      x0, x0, #0x6d5 ; source string candidate '[UD_COM_PIC] %s:%d:darwin_send_data() failed, ERRMSG[%d]\n'
+0x400ee4 621e8052 mov      w2, #0xf3
+0x400ee8 3affff97 bl       #0x400bd0 ; import printf
+0x400eec 010000b0 adrp     x1, #0x401000
+0x400ef0 000000b0 adrp     x0, #0x401000
+0x400ef4 e303132a mov      w3, w19
+0x400ef8 21401091 add      x1, x1, #0x410 ; source string candidate 'darwin_com_init'
+0x400efc 00741991 add      x0, x0, #0x65d ; source string candidate '[UD_COM_PIC] %s:%d:darwin_change_state() failed, ERRMSG[%d]\n'
+0x400f00 c2228052 mov      w2, #0x116
+0x400f04 33ffff97 bl       #0x400bd0 ; import printf
+0x400f08 2c000014 b        #0x400fb8
+0x400f0c a0da40f9 ldr      x0, [x21, #0x1b0]
+0x400f10 21008052 mov      w1, #1
+0x400f14 fffeff97 bl       #0x400b10 ; import UdtrGpioWrite
+0x400f18 f303002a mov      w19, w0
+0x400f1c 200d0034 cbz      w0, #0x4010c0
+0x400f20 e303002a mov      w3, w0
+0x400f24 02158052 mov      w2, #0xa8
+0x400f28 d7ffff17 b        #0x400e84
+0x400f2c dcc20291 add      x28, x22, #0xb0
+0x400f30 80ba41b9 ldr      w0, [x20, #0x1b8]
+0x400f34 e1031caa mov      x1, x28
+0x400f38 021080d2 mov      x2, #0x80
+0x400f3c e9feff97 bl       #0x400ae0 ; import read
+0x400f40 f303002a mov      w19, w0
+0x400f44 2005f836 tbz      w0, #0x1f, #0x400fe8
+0x400f48 fefeff97 bl       #0x400b40 ; import __errno_location
+0x400f4c 030040b9 ldr      w3, [x0]
+0x400f50 010000b0 adrp     x1, #0x401000
+0x400f54 000000b0 adrp     x0, #0x401000
+0x400f58 21800f91 add      x1, x1, #0x3e0 ; source string candidate 'darwin_recv_data'
+0x400f5c 00481691 add      x0, x0, #0x592 ; source string candidate '[UD_COM_PIC] %s:%d:SIO driver read failed, ERRMSG[%d]\n'
+0x400f60 82178052 mov      w2, #0xbc
+0x400f64 1bffff97 bl       #0x400bd0 ; import printf
+0x400f68 000000b0 adrp     x0, #0x401000
+0x400f6c e303132a mov      w3, w19
+0x400f70 e10317aa mov      x1, x23
+0x400f74 003c1c91 add      x0, x0, #0x70f ; source string candidate '[UD_COM_PIC] %s:%d:darwin_recv_data() failed, ERRMSG[%d]\n'
+0x400f78 421f8052 mov      w2, #0xfa
+0x400f7c 15ffff97 bl       #0x400bd0 ; import printf
+0x400f80 e0031a2a mov      w0, w26
+0x400f84 d6c20291 add      x22, x22, #0xb0
+0x400f88 eafeff97 bl       #0x400b30 ; import usleep
+0x400f8c c0064039 ldrb     w0, [x22, #1]
+0x400f90 1f100071 cmp      w0, #4
+0x400f94 00010054 b.eq     #0x400fb4
+0x400f98 e00319aa mov      x0, x25
+0x400f9c a9000094 bl       #0x401240
+0x400fa0 a13740f9 ldr      x1, [x29, #0x68]
+0x400fa4 a04340f9 ldr      x0, [x29, #0x80]
+0x400fa8 000001cb sub      x0, x0, x1
+0x400fac 1f001beb cmp      x0, x27
+0x400fb0 49f5ff54 b.ls     #0x400e58
+0x400fb4 d3f9ff35 cbnz     w19, #0x400eec
+0x400fb8 80ba41b9 ldr      w0, [x20, #0x1b8]
+0x400fbc edfeff97 bl       #0x400b70 ; import close
+0x400fc0 a0da40f9 ldr      x0, [x21, #0x1b0]
+0x400fc4 e7feff97 bl       #0x400b60 ; import UdtrGpioClose
+0x400fc8 e003132a mov      w0, w19
+0x400fcc f35341a9 ldp      x19, x20, [sp, #0x10]
+0x400fd0 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x400fd4 f76343a9 ldp      x23, x24, [sp, #0x30]
+0x400fd8 f96b44a9 ldp      x25, x26, [sp, #0x40]
+0x400fdc fb7345a9 ldp      x27, x28, [sp, #0x50]
+0x400fe0 fd7bc9a8 ldp      x29, x30, [sp], #0x90
+0x400fe4 c0035fd6 ret      
+0x400fe8 a0da40f9 ldr      x0, [x21, #0x1b0]
+0x400fec 21008052 mov      w1, #1
+0x400ff0 c8feff97 bl       #0x400b10 ; import UdtrGpioWrite
+0x400ff4 f303002a mov      w19, w0
+0x400ff8 80000034 cbz      w0, #0x401008
+0x400ffc e303002a mov      w3, w0
+0x401000 42188052 mov      w2, #0xc2
+0x401004 39000014 b        #0x4010e8
+0x401008 e0031caa mov      x0, x28
+0x40100c a5000094 bl       #0x4012a0
+0x401010 033c0053 uxth     w3, w0
+0x401014 84ff4079 ldrh     w4, [x28, #0x7e]
+0x401018 7f00046b cmp      w3, w4
+0x40101c 20010054 b.eq     #0x401040
+0x401020 01000090 adrp     x1, #0x401000
+0x401024 00000090 adrp     x0, #0x401000
+0x401028 21800f91 add      x1, x1, #0x3e0 ; source string candidate 'darwin_recv_data'
+0x40102c 00241791 add      x0, x0, #0x5c9 ; source string candidate '[UD_COM_PIC] %s:%d:crc error : crc_cal = 0x%x, prx_buf->crc = 0x%x\n'
+0x401030 02198052 mov      w2, #0xc8
+0x401034 e7feff97 bl       #0x400bd0 ; import printf
+0x401038 13008012 mov      w19, #-1
+0x40103c cbffff17 b        #0x400f68
+0x401040 c3c24239 ldrb     w3, [x22, #0xb0]
+0x401044 7f400071 cmp      w3, #0x10
+0x401048 c0f9ff54 b.eq     #0x400f80
+0x40104c 01000090 adrp     x1, #0x401000
+0x401050 00000090 adrp     x0, #0x401000
+0x401054 04028052 mov      w4, #0x10
+0x401058 021a8052 mov      w2, #0xd0
+0x40105c 21800f91 add      x1, x1, #0x3e0 ; source string candidate 'darwin_recv_data'
+0x401060 00341891 add      x0, x0, #0x60d ; source string candidate '[UD_COM_PIC] %s:%d:com id error : com_id_fld = 0x%x, COM_ID_NOTIFY_REG = 0x%x \n'
+0x401064 f4ffff17 b        #0x401034
+0x401068 980000b0 adrp     x24, #0x412000
+0x40106c 021080d2 mov      x2, #0x80
+0x401070 17c30491 add      x23, x24, #0x130
+0x401074 01008052 mov      w1, #0
+0x401078 e00317aa mov      x0, x23
+0x40107c b9430291 add      x25, x29, #0x90
+0x401080 fb6f98d2 mov      x27, #0xc37f
+0x401084 1aa88152 mov      w26, #0xd40
+0x401088 3b39a0f2 movk     x27, #0x1c9, lsl #16
+0x40108c 7a00a072 movk     w26, #3, lsl #16
+0x401090 90feff97 bl       #0x400ad0 ; import memset
+0x401094 20028052 mov      w0, #0x11
+0x401098 00c30439 strb     w0, [x24, #0x130]
+0x40109c 80008052 mov      w0, #4
+0x4010a0 e0060039 strb     w0, [x23, #1]
+0x4010a4 a0a30191 add      x0, x29, #0x68
+0x4010a8 17000090 adrp     x23, #0x401000
+0x4010ac f7e20f91 add      x23, x23, #0x3f8 ; source string candidate 'darwin_change_state'
+0x4010b0 64000094 bl       #0x401240
+0x4010b4 a03740f9 ldr      x0, [x29, #0x68]
+0x4010b8 200f1ff8 str      x0, [x25, #-0x10]!
+0x4010bc b9ffff17 b        #0x400fa0
+0x4010c0 e0031a2a mov      w0, w26
+0x4010c4 960000b0 adrp     x22, #0x412000
+0x4010c8 9afeff97 bl       #0x400b30 ; import usleep
+0x4010cc a0da40f9 ldr      x0, [x21, #0x1b0]
+0x4010d0 01008052 mov      w1, #0
+0x4010d4 8ffeff97 bl       #0x400b10 ; import UdtrGpioWrite
+0x4010d8 f303002a mov      w19, w0
+0x4010dc 80f2ff34 cbz      w0, #0x400f2c
+0x4010e0 e303132a mov      w3, w19
+0x4010e4 c2168052 mov      w2, #0xb6
+0x4010e8 01000090 adrp     x1, #0x401000
+0x4010ec 00000090 adrp     x0, #0x401000
+0x4010f0 21800f91 add      x1, x1, #0x3e0 ; source string candidate 'darwin_recv_data'
+0x4010f4 00a01491 add      x0, x0, #0x528 ; source string candidate '[UD_COM_PIC] %s:%d:GPIO write failed, ERRMSG[%d]\n'
+0x4010f8 9bffff17 b        #0x400f64
+0x4010fc 00000000 udf      #0
+0x401100 1d0080d2 mov      x29, #0
+0x401104 1e0080d2 mov      x30, #0
+0x401108 e50300aa mov      x5, x0
+0x40110c e10340f9 ldr      x1, [sp]
+0x401110 e2230091 add      x2, sp, #8
+0x401114 e6030091 mov      x6, sp
+0x401118 c0000058 ldr      x0, #0x401130
+0x40111c e3000058 ldr      x3, #0x401138
+0x401120 04010058 ldr      x4, #0x401140
+0x401124 7ffeff97 bl       #0x400b20 ; import __libc_start_main
+0x401128 9efeff97 bl       #0x400ba0 ; import abort
+0x40112c 00000000 udf      #0
+0x401134 00000000 udf      #0
+0x40113c 00000000 udf      #0
+0x401144 00000000 udf      #0
+0x401148 80000090 adrp     x0, #0x411000
+0x40114c 00f047f9 ldr      x0, [x0, #0xfe0]
+0x401150 400000b4 cbz      x0, #0x401158
+0x401154 97feff17 b        #0x400bb0 ; import __gmon_start__
+0x401158 c0035fd6 ret      
+0x40115c 00000000 udf      #0
+0x401160 810000b0 adrp     x1, #0x412000
+0x401164 800000b0 adrp     x0, #0x412000
+0x401168 21a00291 add      x1, x1, #0xa8
+0x40116c 00a00291 add      x0, x0, #0xa8
+0x401170 211c0091 add      x1, x1, #7
+0x401174 210000cb sub      x1, x1, x0
+0x401178 3f3800f1 cmp      x1, #0xe
+0x40117c a9000054 b.ls     #0x401190
+0x401180 01000090 adrp     x1, #0x401000
+0x401184 21c441f9 ldr      x1, [x1, #0x388]
+0x401188 410000b4 cbz      x1, #0x401190
+0x40118c 20001fd6 br       x1
+0x401190 c0035fd6 ret      
+0x401194 1f2003d5 nop      
+0x401198 810000b0 adrp     x1, #0x412000
+0x40119c 800000b0 adrp     x0, #0x412000
+0x4011a0 21a00291 add      x1, x1, #0xa8
+0x4011a4 00a00291 add      x0, x0, #0xa8
+0x4011a8 210000cb sub      x1, x1, x0
+0x4011ac 21fc4393 asr      x1, x1, #3
+0x4011b0 21fc418b add      x1, x1, x1, lsr #63
+0x4011b4 21fc4193 asr      x1, x1, #1
+0x4011b8 c10000b4 cbz      x1, #0x4011d0
+0x4011bc 02000090 adrp     x2, #0x401000
+0x4011c0 42c841f9 ldr      x2, [x2, #0x390]
+0x4011c4 620000b4 cbz      x2, #0x4011d0
+0x4011c8 40001fd6 br       x2
+0x4011cc 1f2003d5 nop      
+0x4011d0 c0035fd6 ret      
+0x4011d4 1f2003d5 nop      
+0x4011d8 fd7bbea9 stp      x29, x30, [sp, #-0x20]!
+0x4011dc fd030091 mov      x29, sp
+0x4011e0 f30b00f9 str      x19, [sp, #0x10]
+0x4011e4 930000b0 adrp     x19, #0x412000
+0x4011e8 60a24239 ldrb     w0, [x19, #0xa8]
+0x4011ec 80000035 cbnz     w0, #0x4011fc
+0x4011f0 dcffff97 bl       #0x401160
+0x4011f4 20008052 mov      w0, #1
+0x4011f8 60a20239 strb     w0, [x19, #0xa8]
+0x4011fc f30b40f9 ldr      x19, [sp, #0x10]
+0x401200 fd7bc2a8 ldp      x29, x30, [sp], #0x20
+0x401204 c0035fd6 ret      
+0x401208 80000090 adrp     x0, #0x411000
+0x40120c 00803591 add      x0, x0, #0xd60
+0x401210 010040f9 ldr      x1, [x0]
+0x401214 610000b5 cbnz     x1, #0x401220
+0x401218 e0ffff17 b        #0x401198
+0x40121c 1f2003d5 nop      
+0x401220 01000090 adrp     x1, #0x401000
+0x401224 21cc41f9 ldr      x1, [x1, #0x398]
+0x401228 81ffffb4 cbz      x1, #0x401218
+0x40122c fd7bbfa9 stp      x29, x30, [sp, #-0x10]!
+0x401230 fd030091 mov      x29, sp
+0x401234 20003fd6 blr      x1
+0x401238 fd7bc1a8 ldp      x29, x30, [sp], #0x10
+0x40123c d7ffff17 b        #0x401198
+0x401240 c00200b4 cbz      x0, #0x401298
+0x401244 fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+0x401248 fd030091 mov      x29, sp
+0x40124c a1030191 add      x1, x29, #0x40
+0x401250 f30b00f9 str      x19, [sp, #0x10]
+0x401254 f30300aa mov      x19, x0
+0x401258 00048052 mov      w0, #0x20
+0x40125c bf7f02a9 stp      xzr, xzr, [x29, #0x20]
+0x401260 200c1eb8 str      w0, [x1, #-0x20]!
+0x401264 40088052 mov      w0, #0x42
+0x401268 7f0200f9 str      xzr, [x19]
+0x40126c 2012a072 movk     w0, #0x91, lsl #16
+0x401270 bf7f03a9 stp      xzr, xzr, [x29, #0x30]
+0x401274 0ffeff97 bl       #0x400ab0 ; import osal_snd_sync_direct
+0x401278 1f000071 cmp      w0, #0
+0x40127c a13740b9 ldr      w1, [x29, #0x34]
+0x401280 2000801a csel     w0, w1, w0, eq
+0x401284 a11f40f9 ldr      x1, [x29, #0x38]
+0x401288 610200f9 str      x1, [x19]
+0x40128c f30b40f9 ldr      x19, [sp, #0x10]
+0x401290 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+0x401294 c0035fd6 ret      
+0x401298 e07f8012 mov      w0, #-0x400
+0x40129c c0035fd6 ret      
+0x4012a0 030080d2 mov      x3, #0
+0x4012a4 e1ff9f52 mov      w1, #0xffff
+0x4012a8 26048252 mov      w6, #0x1021
+0x4012ac 04686338 ldrb     w4, [x0, x3]
+0x4012b0 02018052 mov      w2, #8
+0x4012b4 257c0f53 lsr      w5, w1, #0xf
+0x4012b8 21381f53 ubfiz    w1, w1, #1, #0xf
+0x4012bc bf1c446b cmp      w5, w4, lsr #7
+0x4012c0 40000054 b.eq     #0x4012c8
+0x4012c4 2100064a eor      w1, w1, w6
+0x4012c8 42040051 sub      w2, w2, #1
+0x4012cc 84181f53 ubfiz    w4, w4, #1, #7
+0x4012d0 421c0053 uxtb     w2, w2
+0x4012d4 02ffff35 cbnz     w2, #0x4012b4
+0x4012d8 63040091 add      x3, x3, #1
+0x4012dc 7ff801f1 cmp      x3, #0x7e
+0x4012e0 61feff54 b.ne     #0x4012ac
+0x4012e4 e003012a mov      w0, w1
+0x4012e8 c0035fd6 ret      
+0x4012ec 00000000 udf      #0
+0x4012f0 fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+0x4012f4 fd030091 mov      x29, sp
+0x4012f8 f55b02a9 stp      x21, x22, [sp, #0x20]
+0x4012fc 95000090 adrp     x21, #0x411000
+0x401300 f35301a9 stp      x19, x20, [sp, #0x10]
+0x401304 94000090 adrp     x20, #0x411000
+0x401308 b5423591 add      x21, x21, #0xd50
+0x40130c 94623591 add      x20, x20, #0xd58
+0x401310 940215cb sub      x20, x20, x21
+0x401314 f76303a9 stp      x23, x24, [sp, #0x30]
+0x401318 f60302aa mov      x22, x2
+0x40131c f803002a mov      w24, w0
+0x401320 f70301aa mov      x23, x1
+0x401324 d5fdff97 bl       #0x400a78
+0x401328 94fe4393 asr      x20, x20, #3
+0x40132c 540100b4 cbz      x20, #0x401354
+0x401330 130080d2 mov      x19, #0
+0x401334 a37a73f8 ldr      x3, [x21, x19, lsl #3]
+0x401338 e20316aa mov      x2, x22
+0x40133c e10317aa mov      x1, x23
+0x401340 e003182a mov      w0, w24
+0x401344 73060091 add      x19, x19, #1
+0x401348 60003fd6 blr      x3
+0x40134c 9f0213eb cmp      x20, x19
+0x401350 21ffff54 b.ne     #0x401334
+0x401354 f35341a9 ldp      x19, x20, [sp, #0x10]
+0x401358 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x40135c f76343a9 ldp      x23, x24, [sp, #0x30]
+0x401360 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+0x401364 c0035fd6 ret      
+0x401368 c0035fd6 ret      

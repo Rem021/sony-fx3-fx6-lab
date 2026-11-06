@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage23-encoder-boundary/encoder_boundary.py\", line 258, in main\n    try:run(out)\n        ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage23-encoder-boundary/encoder_boundary.py\", line 228, in run\n    'static_regions':[{'name':n,'image':im.path.name,'start':hex(s),'end_exclusive':hex(e),'instructions':im.dump(s,e)} for n,im,s,e in regions],\n                                                                                                          ^^^^^^^\nAttributeError: 'Native' object has no attribute 'dump'\n",
+  "passing_result": false
+}

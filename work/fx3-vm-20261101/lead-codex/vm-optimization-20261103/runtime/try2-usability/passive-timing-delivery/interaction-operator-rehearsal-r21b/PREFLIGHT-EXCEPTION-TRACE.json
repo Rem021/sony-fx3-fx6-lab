@@ -1,0 +1,28 @@
+[
+  {
+    "action_called": "preflight_exception"
+  },
+  {
+    "write_called": "FAILURE.json",
+    "value": {
+      "action": "preflight_exception",
+      "error": "RuntimeError('intentional pre-timer exception; no browser/arm')",
+      "UTC": "2026-11-04T23:50:03.171710+00:00",
+      "host_ns": 419888703709541
+    }
+  },
+  {
+    "End_cleanup_callback_called": true,
+    "browser_calls": 0,
+    "arm_calls": 0,
+    "key_calls": 0,
+    "confirm_calls": 0
+  },
+  {
+    "write_called": "FAILURE-CLEANUP-DISPATCH.json",
+    "value": {
+      "returncode": 0,
+      "mock_only": true
+    }
+  }
+]

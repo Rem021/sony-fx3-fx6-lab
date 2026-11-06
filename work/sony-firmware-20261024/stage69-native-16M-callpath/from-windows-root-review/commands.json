@@ -1,0 +1,13 @@
+{
+  "commands": [
+    {
+      "id": "01-current-root",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /connected /instanceid <NODE_SHA256:1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd> /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T17:50:01.622Z",
+      "finished_utc": "2026-10-26T17:50:01.877Z",
+      "exit_code": 0,
+      "stdout_private": "private/01-current-root.stdout.txt",
+      "stderr_private": "private/01-current-root.stderr.txt"
+    }
+  ]
+}

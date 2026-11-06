@@ -1,0 +1,20 @@
+0094aaa2 push       {r7, lr}
+0094aaa4 mov        r7, sp
+0094aaa6 bl         #0x94cfea
+0094aaaa cmp        r0, #1
+0094aaac bne        #0x94aabe
+0094aaae movw       r0, #0xdd48
+0094aab2 movt       r0, #0x138
+0094aab6 ldr        r0, [r0]
+0094aab8 ldrb.w     r0, [r0, #0x26]
+0094aabc b          #0x94aaca
+0094aabe bl         #0x94cfea
+0094aac2 cmp        r0, #2
+0094aac4 bne        #0x94aad2
+0094aac6 bl         #0x948542
+0094aaca cmp        r0, #1
+0094aacc it         ne
+0094aace movne      r0, #0
+0094aad0 pop        {r7, pc}
+0094aad2 movs       r0, #0
+0094aad4 pop        {r7, pc}

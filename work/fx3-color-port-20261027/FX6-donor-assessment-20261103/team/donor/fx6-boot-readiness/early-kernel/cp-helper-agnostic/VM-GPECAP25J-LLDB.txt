@@ -1,0 +1,22 @@
+(lldb) process connect connect://127.0.0.1:1234
+Process 1 stopped
+* thread #1, stop reason = signal SIGTRAP
+       frame #0: 0xffffff80084a40a8 
+->  0xffffff80084a40a8: mrs    x1, SP_EL0
+    0xffffff80084a40ac: ldr    w0, [x1, #0x10]
+    0xffffff80084a40b0: sub    w0, w0, #0x1
+    0xffffff80084a40b4: str    w0, [x1, #0x10]
+Target 0: (No executable module.) stopped.
+(lldb) breakpoint set --address 0x7fa36ae964
+Breakpoint 1: address = 0x0000007fa36ae964
+(lldb) continue
+Process 1 resuming
+Process 1 stopped
+* thread #4, stop reason = signal SIGINT
+       frame #0: 0xffffff8008097988 
+Target 0: (No executable module.) stopped.
+(lldb) bt
+* thread #4, stop reason = signal SIGINT
+   * frame #0: 0xffffff8008097988 
+(lldb) detach
+error: Detach failed: Sending disconnect packet failed.

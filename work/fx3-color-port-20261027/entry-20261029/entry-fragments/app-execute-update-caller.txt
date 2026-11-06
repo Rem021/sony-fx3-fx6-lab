@@ -1,0 +1,128 @@
+02ddfdd0 bl         #0x2f6ea24
+02ddfdd4 mov        x1, x20
+02ddfdd8 mov        x0, x19
+02ddfddc bl         #0x2eae280
+02ddfde0 ldp        x19, x20, [sp, #0x10]
+02ddfde4 mov        w1, #5
+02ddfde8 ldp        x29, x30, [sp], #0x20
+02ddfdec mov        w0, #0x19
+02ddfdf0 b          #0x2f6eae8
+02ddfdf4 stp        x29, x30, [sp, #-0x20]!
+02ddfdf8 mov        x29, sp
+02ddfdfc stp        x19, x20, [sp, #0x10]
+02ddfe00 mov        x19, x0
+02ddfe04 mov        x20, x1
+02ddfe08 mov        w0, #0x19
+02ddfe0c mov        w1, #6
+02ddfe10 bl         #0x2f6ea24
+02ddfe14 mov        x1, x20
+02ddfe18 mov        x0, x19
+02ddfe1c bl         #0x2eae4b0
+02ddfe20 ldp        x19, x20, [sp, #0x10]
+02ddfe24 mov        w1, #6
+02ddfe28 ldp        x29, x30, [sp], #0x20
+02ddfe2c mov        w0, #0x19
+02ddfe30 b          #0x2f6eae8
+02ddfe34 stp        x29, x30, [sp, #-0x20]!
+02ddfe38 mov        x29, sp
+02ddfe3c stp        x19, x20, [sp, #0x10]
+02ddfe40 mov        x19, x0
+02ddfe44 mov        x20, x1
+02ddfe48 mov        w0, #0x19
+02ddfe4c mov        w1, #7
+02ddfe50 bl         #0x2f6ea24
+02ddfe54 mov        x1, x20
+02ddfe58 mov        x0, x19
+02ddfe5c bl         #0x2eae698
+02ddfe60 ldp        x19, x20, [sp, #0x10]
+02ddfe64 mov        w1, #7
+02ddfe68 ldp        x29, x30, [sp], #0x20
+02ddfe6c mov        w0, #0x19
+02ddfe70 b          #0x2f6eae8
+02ddfe74 stp        x29, x30, [sp, #-0x20]!
+02ddfe78 mov        x29, sp
+02ddfe7c stp        x19, x20, [sp, #0x10]
+02ddfe80 mov        x19, x0
+02ddfe84 mov        x20, x1
+02ddfe88 mov        w0, #0x19
+02ddfe8c mov        w1, #8
+02ddfe90 bl         #0x2f6ea24
+02ddfe94 mov        x1, x20
+02ddfe98 mov        x0, x19
+02ddfe9c bl         #0x2eae880
+02ddfea0 ldp        x19, x20, [sp, #0x10]
+02ddfea4 mov        w1, #8
+02ddfea8 ldp        x29, x30, [sp], #0x20
+02ddfeac mov        w0, #0x19
+02ddfeb0 b          #0x2f6eae8
+02ddfeb4 stp        x29, x30, [sp, #-0x20]!
+02ddfeb8 mov        x29, sp
+02ddfebc stp        x19, x20, [sp, #0x10]
+02ddfec0 mov        x19, x0
+02ddfec4 mov        x20, x1
+02ddfec8 mov        w0, #0x19
+02ddfecc mov        w1, #9
+02ddfed0 bl         #0x2f6ea24
+02ddfed4 mov        x1, x20
+02ddfed8 mov        x0, x19
+02ddfedc bl         #0x2eaeaf0
+02ddfee0 ldp        x19, x20, [sp, #0x10]
+02ddfee4 mov        w1, #9
+02ddfee8 ldp        x29, x30, [sp], #0x20
+02ddfeec mov        w0, #0x19
+02ddfef0 b          #0x2f6eae8
+02ddfef4 stp        x29, x30, [sp, #-0x20]!
+02ddfef8 mov        x29, sp
+02ddfefc stp        x19, x20, [sp, #0x10]
+02ddff00 mov        x19, x0
+02ddff04 mov        x20, x1
+02ddff08 mov        w0, #0x19
+02ddff0c mov        w1, #0xa
+02ddff10 bl         #0x2f6ea24
+02ddff14 mov        x1, x20
+02ddff18 mov        x0, x19
+02ddff1c bl         #0x2eaec48
+02ddff20 ldp        x19, x20, [sp, #0x10]
+02ddff24 mov        w1, #0xa
+02ddff28 ldp        x29, x30, [sp], #0x20
+02ddff2c mov        w0, #0x19
+02ddff30 b          #0x2f6eae8
+02ddff34 stp        x29, x30, [sp, #-0x20]!
+02ddff38 mov        x29, sp
+02ddff3c stp        x19, x20, [sp, #0x10]
+02ddff40 mov        x19, x0
+02ddff44 mov        x20, x1
+02ddff48 mov        w0, #0x19
+02ddff4c mov        w1, #0xb
+02ddff50 bl         #0x2f6ea24
+02ddff54 mov        x1, x20
+02ddff58 mov        x0, x19
+02ddff5c bl         #0x2eaeda0
+02ddff60 ldp        x19, x20, [sp, #0x10]
+02ddff64 mov        w1, #0xb
+02ddff68 ldp        x29, x30, [sp], #0x20
+02ddff6c mov        w0, #0x19
+02ddff70 b          #0x2f6eae8
+02ddff74 stp        x29, x30, [sp, #-0x10]!
+02ddff78 mov        w1, #0
+02ddff7c mov        w0, #0x1a
+02ddff80 mov        x29, sp
+02ddff84 bl         #0x2f6ea24
+02ddff88 bl         #0x2eb1c14
+02ddff8c ldp        x29, x30, [sp], #0x10
+02ddff90 mov        w1, #0
+02ddff94 mov        w0, #0x1a
+02ddff98 b          #0x2f6eae8
+02ddff9c stp        x29, x30, [sp, #-0x10]!
+02ddffa0 mov        w1, #1
+02ddffa4 mov        w0, #0x1a
+02ddffa8 mov        x29, sp
+02ddffac bl         #0x2f6ea24
+02ddffb0 bl         #0x2eb1ed8
+02ddffb4 ldp        x29, x30, [sp], #0x10
+02ddffb8 mov        w1, #1
+02ddffbc mov        w0, #0x1a
+02ddffc0 b          #0x2f6eae8
+02ddffc4 stp        x29, x30, [sp, #-0x10]!
+02ddffc8 mov        w1, #3
+02ddffcc mov        w0, #0x1a

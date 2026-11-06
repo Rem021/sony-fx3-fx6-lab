@@ -1,0 +1,124 @@
+{
+  "created_utc": "2026-10-28T07:18:56.830573+00:00",
+  "compile_argv": [
+    "xcrun",
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-fvisibility=hidden",
+    "-dynamiclib",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage153-Mac-owned-interface-trial/owner_core.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage153-Mac-owned-interface-trial/owner_iokit.c",
+    "-framework",
+    "IOKit",
+    "-framework",
+    "CoreFoundation",
+    "-framework",
+    "DiskArbitration",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage153-Mac-owned-interface-trial/owner-iokit.dylib"
+  ],
+  "compiler_stdout": "",
+  "compiler_stderr": "",
+  "sdk": "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+  "sources": [
+    {
+      "path": "owner_trial.h",
+      "bytes": 1967,
+      "sha256": "7caa2ae5ec8d4759374bca0e916389de77e2688f4ec09abb41abd94c35012943"
+    },
+    {
+      "path": "owner_core.c",
+      "bytes": 5721,
+      "sha256": "2e5715c305ac6bdcb8a9ef7411b63094c0890910ade9d3995d62d30218b6bef1"
+    },
+    {
+      "path": "owner_iokit.c",
+      "bytes": 10632,
+      "sha256": "47cadfc4db97852602bd1de6e6565476aa4ba2ca8feacbc7d01c4611037f35e7"
+    },
+    {
+      "path": "owner_binding.py",
+      "bytes": 3792,
+      "sha256": "fae662bfc36d7c9247c2aecac14d4ee52cb1cf6bb9f8d607e419be513d918872"
+    }
+  ],
+  "native_dylib_sha256": "c313aa2ca54142a5148c4742b9f1ab6dc6385fe1bebeb04f3870e46d2e191735",
+  "native_dylib_bytes": 36528,
+  "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage153-Mac-owned-interface-trial/owner-iokit.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage153-Mac-owned-interface-trial/owner-iokit.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.63)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+  "exported_symbols": [
+    "_fx3_owner_run"
+  ],
+  "forbidden_explicit_API_names_absent": [
+    "USBDeviceRequest",
+    "DeviceRequestTO",
+    "ReadPipe",
+    "WritePipe",
+    "SetConfiguration",
+    "ResetDevice",
+    "SetSuspend",
+    "SetAlternateInterface"
+  ],
+  "SDK_header_audit": [
+    {
+      "path": "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Versions/A/Headers/usb/IOUSBLib.h",
+      "sha256": "16acc674ebc759d00904e8ae1cd2137b5f814d54fe237c5193cf6549131d542a",
+      "inspection_encoding": "latin-1",
+      "checked_markers": [
+        "except when you are passing the kUSBReEnumerateCaptureDeviceBit",
+        "non-mass storage interfaces",
+        "run with root privileges"
+      ],
+      "matches": [
+        {
+          "line": 1466,
+          "text": "of the Device Firmware Update Class specification.  The device must be open to use this function, except when you are passing the kUSBReEnumerateCaptureDeviceBit or"
+        },
+        {
+          "line": 1468,
+          "text": "the IOKit's IOServiceAuthorize() APIs or (2) run with root privileges."
+        },
+        {
+          "line": 1473,
+          "text": "the IOKit's IOServiceAuthorize() APIs or (2) run with root privileges.  Using that bit will terminate any kernel drivers for all non-mass storage interfaces"
+        },
+        {
+          "line": 4412,
+          "text": "drivers for ALL IOUSBInterfaces.  This call will then allow a client to load a driver for just one of the interfaces.  The client must have the \"com.apple.vm.device-access\" entitlement or run with root privileges to call this API."
+        }
+      ]
+    },
+    {
+      "path": "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Versions/A/Headers/usb/USB.h",
+      "sha256": "db2fd1e52d669e4367e30bef6a099d6a3708c3a7b615cc1ece791daff46376d5",
+      "inspection_encoding": "latin-1",
+      "checked_markers": [
+        "any drivers attached to a Mass Storage Class IOUSBInterface",
+        "kUSBReEnumerateCaptureDeviceMask",
+        "kUSBReEnumerateReleaseDeviceMask"
+      ],
+      "matches": [
+        {
+          "line": 1094,
+          "text": "any drivers attached to a Mass Storage Class IOUSBInterface.  A client needs to have the appropriate permissions in order to specify this bit.  See IOUSBLib.h"
+        },
+        {
+          "line": 1103,
+          "text": "kUSBReEnumerateCaptureDeviceMask = ( 1 << kUSBReEnumerateCaptureDeviceBit),"
+        },
+        {
+          "line": 1104,
+          "text": "kUSBReEnumerateReleaseDeviceMask = ( 1 << kUSBReEnumerateReleaseDeviceBit)"
+        }
+      ]
+    }
+  ],
+  "deprecation_warnings_disabled_for_legacy_IOKit_API": true,
+  "actual_native_candidate_loaded_or_run": false,
+  "new_device_operations": 0,
+  "MSC_driver_exclusion_is_documented_not_actual_OS_behavior_verified": true,
+  "explicit_Seize_and_capture_release_masks_require_new_driver_scope": true
+}

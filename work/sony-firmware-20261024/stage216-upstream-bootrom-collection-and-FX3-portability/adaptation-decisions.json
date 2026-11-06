@@ -1,0 +1,36 @@
+{
+  "schema": "fx3-stage216-portability-decisions-v1",
+  "upstream_model": "ZV-E10 gen1 ARMv7; not FX3",
+  "no_upstream_code_executed": true,
+  "reuse_designs": [
+    "bounded capture",
+    "double capture with comparison",
+    "explicit source image provenance and health",
+    "full byte readback against source",
+    "separate source, write, verification and cold-boot receipts"
+  ],
+  "reject_direct_ports": [
+    "ARMv7 helper ABI/syscalls",
+    "ZV-E10 ROM range0xffff0000+24KiB",
+    "tmp_bt mount identity",
+    "terminal enable ACK as FX3 shell proof",
+    "ZV-E10 mode newline or one-byte repair",
+    "ZV-E10 physical/relative partition offsets",
+    "default zero readback origin",
+    "same target/reference as device equality proof",
+    "sampled verification as complete recovery",
+    "floor64KiB verification of arbitrary lengths",
+    "QEMU app/UI as FX3 encoding or recovery evidence"
+  ],
+  "hardware_injection_required_by_reviewed_independent_route": true,
+  "user_RP2040_or_serial_tool_present": false,
+  "pure_PC_USB_independent_route_demonstrated": false,
+  "SD_recovery_reclassified_as_source_derived_candidate_not_hardware_proven": true,
+  "selected_FX3_mode_parser_requires_newline_after_ASCII3": false,
+  "actual_single_byte_mode_boot_health_verified": false,
+  "source_view_loaded_driver_same_body_and_address_basis_still_required": true,
+  "independent_FX3_boot_or_restore_proven": false,
+  "existing_release05_unchanged": true,
+  "camera_operations": 0,
+  "persistent_write_release": false
+}

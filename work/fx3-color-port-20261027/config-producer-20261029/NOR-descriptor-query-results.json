@@ -1,0 +1,207 @@
+{
+  "NOR_source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "base": "0xfe049000",
+  "cases": [
+    {
+      "bank": 0,
+      "record_sha256": "33789a7a4d648c9a0bd74bd332de395500bdf0f363839f1d770393a3a3191da5",
+      "original_initializer": {
+        "entry": "0xfe04d63c",
+        "arguments": [
+          "0x100000000"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 22,
+        "nonstack_RAM_writes": 3,
+        "first_trace": [
+          "0xfe04d63c",
+          "0xfe04d640",
+          "0xfe04d644",
+          "0xfe04d648",
+          "0xfe04d64c",
+          "0xfe04d650",
+          "0xfe04d654",
+          "0xfe04d658",
+          "0xfe04d65c",
+          "0xfe04d660",
+          "0xfe04d664",
+          "0xfe04d668",
+          "0xfe04d66c",
+          "0xfe04d670",
+          "0xfe04d674",
+          "0xfe04d678"
+        ]
+      },
+      "original_query": {
+        "entry": "0xfe04c7b4",
+        "arguments": [
+          "0xfa0080",
+          "0x300000000"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0x2400",
+          "0x10006cdf4",
+          "0xffffffffffffffff",
+          "0x0"
+        ],
+        "original_instructions": 5282,
+        "nonstack_RAM_writes": 2304,
+        "first_trace": [
+          "0xfe04c7b4",
+          "0xfe04c7b8",
+          "0xfe04c7bc",
+          "0xfe04c7c0",
+          "0xfe04d51c",
+          "0xfe04d520",
+          "0xfe04d524",
+          "0xfe04d528",
+          "0xfe04d52c",
+          "0xfe04d530",
+          "0xfe04d534",
+          "0xfe04d538",
+          "0xfe04d53c",
+          "0xfe04d540",
+          "0xfe04d544",
+          "0xfe04d548"
+        ]
+      },
+      "output_bytes": 9216,
+      "output_sha256": "7211bc043617837927604e0f1900a987d31d483920323fdc653c1348d28bac5b",
+      "exact_original_payload_equal": true,
+      "following_16_byte_canary_unchanged": true
+    },
+    {
+      "bank": 1,
+      "record_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+      "original_initializer": {
+        "entry": "0xfe04d63c",
+        "arguments": [
+          "0x100000000"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 22,
+        "nonstack_RAM_writes": 3,
+        "first_trace": [
+          "0xfe04d63c",
+          "0xfe04d640",
+          "0xfe04d644",
+          "0xfe04d648",
+          "0xfe04d64c",
+          "0xfe04d650",
+          "0xfe04d654",
+          "0xfe04d658",
+          "0xfe04d65c",
+          "0xfe04d660",
+          "0xfe04d664",
+          "0xfe04d668",
+          "0xfe04d66c",
+          "0xfe04d670",
+          "0xfe04d674",
+          "0xfe04d678"
+        ]
+      },
+      "original_query": {
+        "entry": "0xfe04c7b4",
+        "arguments": [
+          "0xfa0080",
+          "0x300000000"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0x2400",
+          "0x100064c4c",
+          "0xffffffffffffffff",
+          "0x0"
+        ],
+        "original_instructions": 5282,
+        "nonstack_RAM_writes": 2304,
+        "first_trace": [
+          "0xfe04c7b4",
+          "0xfe04c7b8",
+          "0xfe04c7bc",
+          "0xfe04c7c0",
+          "0xfe04d51c",
+          "0xfe04d520",
+          "0xfe04d524",
+          "0xfe04d528",
+          "0xfe04d52c",
+          "0xfe04d530",
+          "0xfe04d534",
+          "0xfe04d538",
+          "0xfe04d53c",
+          "0xfe04d540",
+          "0xfe04d544",
+          "0xfe04d548"
+        ]
+      },
+      "output_bytes": 9216,
+      "output_sha256": "33e39fc7bf35447d97f4ce2bf8d8251cee79453fdd6175cce0c6136f48c93ad6",
+      "exact_original_payload_equal": true,
+      "following_16_byte_canary_unchanged": true
+    }
+  ],
+  "strict_whole_configuration_entry": {
+    "entry": "0xfe0545dc",
+    "arguments": [
+      "0x5000000",
+      "0x300003000"
+    ],
+    "boundary": {
+      "reason": "unmapped_external_state",
+      "PC": "0xfe058a6c",
+      "address": "0xfe26c300",
+      "bytes": 4
+    },
+    "registers": [
+      "0x5000000",
+      "0x300003000",
+      "0x0",
+      "0x0"
+    ],
+    "original_instructions": 15,
+    "nonstack_RAM_writes": 3,
+    "first_trace": [
+      "0xfe0545dc",
+      "0xfe0545e0",
+      "0xfe0545e4",
+      "0xfe0545e8",
+      "0xfe0545ec",
+      "0xfe0545f0",
+      "0xfe0545f4",
+      "0xfe0545f8",
+      "0xfe0545fc",
+      "0xfe054600",
+      "0xfe054604",
+      "0xfe054608",
+      "0xfe058a64",
+      "0xfe058a68",
+      "0xfe058a6c"
+    ]
+  },
+  "scope": "Original ARM64 BK4 initializer and 9216-byte query, with original records as explicit model inputs and no query/lock/file reply adapters. Strict whole loader stops at unknown backup-ready state. No normal record selection, FAT read, physical write, cache setup, camera/USB access, native Sony process or full boot."
+}

@@ -1,0 +1,49 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000129ae4 <_ZN3mpr14IntegEventMainEPv>:
+  129c2c: d2800780     	mov	x0, #0x3c               // =60
+  129c30: 97ff1a34     	bl	0xf0500 <malloc@plt>
+  129c34: aa0003f3     	mov	x19, x0
+  129c38: a9007c1f     	stp	xzr, xzr, [x0]
+  129c3c: a9017c1f     	stp	xzr, xzr, [x0, #0x10]
+  129c40: a9027c1f     	stp	xzr, xzr, [x0, #0x20]
+  129c44: aa1703e0     	mov	x0, x23
+  129c48: f9001a7f     	str	xzr, [x19, #0x30]
+  129c4c: b9003a7f     	str	wzr, [x19, #0x38]
+  129c50: 97ff2350     	bl	0xf2990 <pthread_mutex_lock@plt>
+  129c54: aa1303e0     	mov	x0, x19
+  129c58: 52800001     	mov	w1, #0x0                // =0
+  129c5c: 97ff10b9     	bl	0xedf40 <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb@plt>
+  129c60: 39401260     	ldrb	w0, [x19, #0x4]
+  129c64: 350000c0     	cbnz	w0, 0x129c7c <_ZN3mpr14IntegEventMainEPv+0x198>
+  129c68: 39405260     	ldrb	w0, [x19, #0x14]
+  129c6c: 35000080     	cbnz	w0, 0x129c7c <_ZN3mpr14IntegEventMainEPv+0x198>
+  129c70: 39409260     	ldrb	w0, [x19, #0x24]
+  129c74: 35000040     	cbnz	w0, 0x129c7c <_ZN3mpr14IntegEventMainEPv+0x198>
+  129c78: 3940c260     	ldrb	w0, [x19, #0x30]
+  129c7c: d0007b21     	adrp	x1, 0x108f000
+  129c80: f9479021     	ldr	x1, [x1, #0xf20]
+  129c84: 39400022     	ldrb	w2, [x1]
+  129c88: 3900003f     	strb	wzr, [x1]
+  129c8c: 90007b21     	adrp	x1, 0x108d000
+  129c90: 7100005f     	cmp	w2, #0x0
+  129c94: 1a820000     	csel	w0, w0, w2, eq
+  129c98: f9426021     	ldr	x1, [x1, #0x4c0]
+  129c9c: 39400021     	ldrb	w1, [x1]
+  129ca0: 35000061     	cbnz	w1, 0x129cac <_ZN3mpr14IntegEventMainEPv+0x1c8>
+  129ca4: f9440ac1     	ldr	x1, [x22, #0x810]
+  129ca8: b900003f     	str	wzr, [x1]
+  129cac: 34000100     	cbz	w0, 0x129ccc <_ZN3mpr14IntegEventMainEPv+0x1e8>
+  129cb0: aa1303e1     	mov	x1, x19
+  129cb4: 52820520     	mov	w0, #0x1029             // =4137
+  129cb8: 97ff0d5e     	bl	0xed230 <_ZN3mpr14SendIssueEventENS_5EVTIDEm@plt>
+  129cbc: f9455f00     	ldr	x0, [x24, #0xab8]
+  129cc0: aa1403f5     	mov	x21, x20
+  129cc4: 97ff0b77     	bl	0xecaa0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+  129cc8: 17ffffd6     	b	0x129c20 <_ZN3mpr14IntegEventMainEPv+0x13c>
+  129ccc: aa1303e0     	mov	x0, x19
+  129cd0: 97ff2dc8     	bl	0xf53f0 <free@plt>
+  129cd4: 17fffffa     	b	0x129cbc <_ZN3mpr14IntegEventMainEPv+0x1d8>

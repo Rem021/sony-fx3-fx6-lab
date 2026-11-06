@@ -1,0 +1,11 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 1cd8074: 90009061     	adrp	x1, 0x2ee4000
+ 1cd8078: f942d421     	ldr	x1, [x1, #0x5a8]
+ 1cd807c: 91004021     	add	x1, x1, #0x10
+ 1cd8080: f9000001     	str	x1, [x0]
+ 1cd8084: 17ff20f0     	b	0x1ca0444 <Application_System_Init+0x1095400>

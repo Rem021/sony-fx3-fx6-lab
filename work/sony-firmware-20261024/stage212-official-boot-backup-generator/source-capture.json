@@ -1,0 +1,51 @@
+{
+  "source_image": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/original-members/udtrbody.squashfs",
+  "source_image_sha256": "62e86fad175e0326969d5f1cea29d780feb496ce8034acd2c9c3954320d8ccaa",
+  "files": [
+    {
+      "path_in_image": "/bin/bksb.elf",
+      "bytes": 18568,
+      "sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "output": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf"
+    },
+    {
+      "path_in_image": "/bin/body_common.sh",
+      "bytes": 137,
+      "sha256": "e50af3525f040a9a3ac62d4804958e5db49eb2c7aabc1445bcb15b420c176195",
+      "output": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/body_common.sh"
+    },
+    {
+      "path_in_image": "/bin/loader_writer.sh",
+      "bytes": 2424,
+      "sha256": "ff5f25c1e32e52fe3053ab987cf8bb38bfb96597194f9d85be67d90e48f1d342",
+      "output": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh"
+    },
+    {
+      "path_in_image": "/bin/nor_loader_writer.sh",
+      "bytes": 9106,
+      "sha256": "78b794fc52c5e104a899a6bf23278bd211e4a4f3c987a505bc43d648fcb5c2d6",
+      "output": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh"
+    },
+    {
+      "path_in_image": "/bin/pformat.elf",
+      "bytes": 1631008,
+      "sha256": "3ce2a76f477e937369f8e5b6dde2cdcb838645b53492b9a184ee16bbed389e21",
+      "output": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/pformat.elf"
+    },
+    {
+      "path_in_image": "/bin/ud_nor_pformat.elf",
+      "bytes": 10336,
+      "sha256": "065955c5e6f34f622c9d35490bc3bfc84e3daeb6de882cda1cc9a7b63a15f9da",
+      "output": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/ud_nor_pformat.elf"
+    },
+    {
+      "path_in_image": "/config/common.src",
+      "bytes": 2546,
+      "sha256": "96f3bddf603788409af69fead42f6686e3701ad6f4aa2ccd3af0ef4ba986d7d2",
+      "output": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/config/common.src"
+    }
+  ],
+  "source_label": "official7.02 Ubody; no installed current-body p1 attestation",
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

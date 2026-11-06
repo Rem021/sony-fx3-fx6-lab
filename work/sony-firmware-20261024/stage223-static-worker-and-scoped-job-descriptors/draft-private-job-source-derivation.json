@@ -1,0 +1,18 @@
+{
+  "base_stage": "stage221-private-IPC-entry-gate",
+  "base_hashes": {
+    "boot_module.c": "7f5711e1b8a617d36cdf0df4ed74ba16cbb6016fed40ca9da977316e1bf937c2",
+    "inner_boot_reader.c": "a1459db35501716dc414b45479aaa25c1ddb252ec440bd24258c4db7dbd78683",
+    "handoff_impl.inc": "34aa6e8979b4e30ddeec50912eb6da28c45d2920c83a19cee59e6b980445385c",
+    "ipc_gate.inc": "159dc5cb16b937f02f0399939831370c58242779d9bbc8a71d2bee6c1ee55725"
+  },
+  "changes": [
+    "own static entry instead of constructor/shared-library status",
+    "strict dynamic FD arguments",
+    "running image compared to inherited parent-selected image inode",
+    "private job directory via inherited descriptor",
+    "IPC version2 binds job dev/ino",
+    "own image/job descriptor close checked before DONE"
+  ],
+  "formal_source_release_unchanged": true
+}

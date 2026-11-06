@@ -1,0 +1,36 @@
+from pathlib import Path
+import json,re,sys,hashlib,subprocess,collections
+R=Path(__file__).resolve().parent;name=sys.argv[1];run=R/'runs'/name
+subprocess.run([sys.executable,str(R/'review_cp88.py'),name],check=True)
+p=R/(name+'-review.json');v=json.loads(p.read_text());serial=(run/'serial.log').read_bytes().decode(errors='replace');lines=serial.split('\n');receipt=json.loads((run/'receipt.json').read_text());v['AP92_executed']=True;v['AP89_boot_executed']=True;v['symbol_lookup_error']='symbol lookup error:' in serial;v['synthetic_keys']=bool(re.search(r'FX3_SYNTH_KEY.*(SEND|INJECT)',serial));records=[]
+for i,line in enumerate(lines):
+ if 'FX3_MEDIA_' in line:
+  text=line[line.index('FX3_MEDIA_'):].rstrip('\r');fields=dict(re.findall(r'([A-Za-z_][A-Za-z_0-9]*)=([^\s]+)',text));records.append({'LF_line':i+1,'marker':text.split()[0],'fields':fields,'text':text})
+by=collections.defaultdict(list)
+for x in records:by[x['marker']].append(x)
+raw=by['FX3_MEDIA_RAW'];points=by['FX3_MEDIA_POINT'];bound=by['FX3_MEDIA_BOUND'];notifies=by['FX3_MEDIA_NOTIFY'];wire=[{'LF_line':i+1,'text':x,'tag':m[1],'raw':m[2],'tid':int(re.search(r'tid=(\d+)',x)[1]),'source':re.search(r'source=([^\s]+)',x)[1]} for i,x in enumerate(lines) if (m:=re.search(r'FX3_BOOT_QUEUE_SEND .*bytes=28 .*raw=((?:02|03)000100)([0-9a-f]{48}) ',x))]
+# Complete raw strings include the captured first4 bytes.
+for x in wire:x['raw']=x['tag']+x['raw'];x['event']=hex(int.from_bytes(bytes.fromhex(x['tag']),'little'))
+params={}
+for x in by['FX3_MEDIA_PARAM']:params.setdefault(x['fields']['id'],[]).append(x)
+mounts=[]
+for x in by['FX3_MEDIA_MOUNT_RETURN']:
+ tid=x['fields']['tid'];related=[z for z in records if z['fields'].get('tid')==tid];paths=[z for z in related if z['marker']=='FX3_MEDIA_RAW' and z['fields'].get('tag')=='MCMN_DRV_OPEN_PATH21'];path=bytes.fromhex(paths[-1]['fields']['raw']).split(b'\0')[0].decode() if paths else None;queries=[z for z in related if z['marker']=='FX3_MEDIA_RAW' and z['fields'].get('tag')=='MEDIA_COMMON_QUERY_REPLY_E4'];q=bytes.fromhex(queries[-1]['fields']['raw']) if queries else b''
+ mounts.append({'return':x,'device_path':path,'Common_query_return':[z for z in related if z['marker']=='FX3_MEDIA_COMMON_QUERY_RETURN'],'Common_full228B':queries,'Common_query_mediaID':hex(int.from_bytes(q[24:28],'little')) if len(q)==228 else None,'Common_valid':q[28] if len(q)==228 else None,'original_drv_open_return':[z for z in related if z['marker']=='FX3_MEDIA_DRV_OPEN_RETURN'],'converted_return':[z for z in related if z['marker']=='FX3_MEDIA_MOUNT_CONVERTED_RETURN']})
+stats={'records':records,'counts':dict(collections.Counter(x['marker'] for x in records)),'bound':bound,'FRONT_callbacks':[x for x in points if x['fields']['point']=='0xe6dc'],'RM_requests':[x for x in raw if x['fields']['tag']=='RM_ENTRY_HEADER24'],'RM_return':by['FX3_MEDIA_RM_RETURN'],'RM_actual_sends':[x for x in points if x['fields']['point']=='0xf274'],'RM_replies_before_free':[x for x in raw if x['fields']['tag']=='RM_NATIVE_REPLY_BEFORE_FREE'],'native_init_timeout':by['FX3_MEDIA_INIT_TIMEOUT'],'native_default_ports':[x for x in raw if x['fields']['tag']=='THREAD_INIT_AFTER_DEFAULT_OBJECTS_PORTS'],'Start_records':[x for x in raw if x['fields']['tag']=='START_INITIAL_RECORD'],'Start_ports':[x for x in raw if x['fields']['tag']=='START_INITIAL_PORTS'],'Start_requests':[x for x in raw if x['fields']['tag']=='START_INITIAL_REQUEST6'],'Start_actual_notify_branches':by['FX3_MEDIA_START_NOTIFY'],'native_notifications':notifies,'original_insert_messages':wire,'insert_send_stack_observed_by_new_weak_hook':False,'weak_hook_gap_reason':'No FX3_MEDIA_WIRE marker although existing capid BOOT_QUEUE_SEND captured both native28B messages; underlying binding/read cause not diagnosed in this run. Lead msg_394ac6fda280 waived extra runtime; native D adapter/notify stacks still recorded.','parameter_changes':params,'mounts':mounts,'no_empty_slot_provider':True,'native_provenance':'Observed ThreadInit wait110 -> native default initialization -> StartInOut state0, fa24/status0 andfa3c/status1 for1000/1010; absence of FRONT callback only in this bounded window','minimum_empty_protocol':'RM queue was absent: original helper returned80000004 before send. FullRMreply/slotconfig/FRONTenvelope notclosed; do not invent.'}
+media=R/(name+'-media-observation.json');media.write_text(json.dumps(stats,ensure_ascii=False,indent=2)+'\n');v['media_observation']=str(media)
+gpe=[]
+for i,line in enumerate(lines):
+ if 'FX3_GPE_CMD op=' not in line:continue
+ f=dict(re.findall(r'([A-Za-z_][A-Za-z_0-9]*)=([^\s]+)',line[line.index('FX3_GPE_CMD'):]))
+ if not all(k in f for k in ['op','seq','fmt','src_fmt','flags','dst_phys','src_phys','result','reason']):continue
+ for k in ['seq','fmt','src_fmt','flags','dst_phys','src_phys','result','reason']:f[k]=int(f[k],0)
+ f['LF_line']=i+1;f['dst_in_545']=0x43feb5000<=f['dst_phys']<0x43fff5000;f['src_in_545']=0x43feb5000<=f['src_phys']<0x43fff5000;gpe.append(f)
+groups=collections.Counter((f['op'],f['fmt'],f['src_fmt'],f['flags'],f['dst_in_545'],f['src_in_545'],f['result']) for f in gpe);raws=[m[1] for m in re.finditer(r'FX3_GPE_RAW_PARAMS op=BitBlit seq=\d+ read=1 len=144 raw_hex=([0-9a-f]{288})(?![0-9a-f])',serial)];base=json.loads((R/'ap90r2parent-f5c66d0b-gpe-statistics.json').read_text());gstats={'complete':len(gpe),'records':gpe,'groups':[dict(zip(['op','dst_fmt','src_fmt','flags','dst_in_545','src_in_545','result','count'],[*k,n])) for k,n in sorted(groups.items())],'raw_BitBlit_count':len(raws),'raw_BitBlit_equal_AP90':raws==[f['raw_hex'] for f in base['full_raw']]};gp=R/(name+'-gpe-statistics.json');gp.write_text(json.dumps(gstats,indent=2)+'\n');v['GPE_statistics']=str(gp)
+pixels={};bp=run/'gpe-surface-545.bin'
+if bp.exists():
+ data=bp.read_bytes()[0x100:0x100+640*480*2];unique=len({data[j:j+2] for j in range(0,len(data),2)});pixels={'physical':'0x43feb5100','bytes':len(data),'geometry':[640,480],'logical_fmt':0,'unique_pixels':unique,'sha256':hashlib.sha256(data).hexdigest(),'equal_AP90_warning':hashlib.sha256(data).hexdigest()=='fba3e9413bd407b9f113d0792706af6d263319b42286e5ddd1f101239b05b460','independent_QMP':True}
+ if unique>1:
+  from PIL import Image
+  rgba=[tuple(((int.from_bytes(data[j:j+2],'little')>>k)&15)*17 for k in [12,8,4,0]) for j in range(0,len(data),2)];img=Image.new('RGBA',(640,480));img.putdata(rgba);png=run/'ap92-QMP-logical-fmt0.png';assert not png.exists();img.save(png);pixels['PNG']=str(png)
+v['QMP_readback']=pixels;v['new_observer_rejections']=by['FX3_MEDIA_BIND_REJECT'];v['mounts_count']=len(mounts);v['new_observer_wire_gap_declared']=True;v['unused_r2_candidate_executed']=False;p.write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n');print(json.dumps({'receipt':{k:v[k] for k in ['duration_seconds','qemu_exit','process_reaped','PID_absent','inputs_unchanged','missing_markers_combined_serial_and_printk','receipt_serial_only_missing','im_alive_last_complete_maps','early_stop_reason']},'media_counts':stats['counts'],'mounts':[(x['return']['fields'],x['device_path']) for x in mounts],'insert28B':wire,'gpe_groups':gstats['groups'],'gpe_equal_AP90':gstats['raw_BitBlit_equal_AP90'],'pixels':pixels},ensure_ascii=False,indent=2))

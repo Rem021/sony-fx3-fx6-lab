@@ -1,0 +1,58 @@
+{
+  "path": "/bin/crypter.elf",
+  "inode": 81004,
+  "bytes": 10352,
+  "sha256": "638eeba2fc720fa807f62fb6f1c65c72e106ed164d16747b0c56e40512c78402",
+  "machine": "EM_AARCH64",
+  "needed": [
+    "libSysDef.so",
+    "libMWF.so",
+    "libInfraFsys.so",
+    "libInfraMediaCommon.so",
+    "libbackup.so",
+    "libosal_uipc.so",
+    "libosal_utm.so",
+    "libfileinputupdaterapi.so",
+    "libcryptfileinputupdaterapi.so",
+    "libupdatercommon.so",
+    "libupdatercorecommon.so",
+    "libupdatertalk.so",
+    "libpthread.so.0",
+    "libstdc++.so.6",
+    "libm.so.6",
+    "libdl.so.2",
+    "libgcc_s.so.1",
+    "libc.so.6",
+    "librt.so.1"
+  ],
+  "hits": [
+    {
+      "token": "GetCryptFileInputModeUpdater",
+      "offsets": [
+        1869,
+        4554
+      ]
+    },
+    {
+      "token": "libcryptfileinputupdaterapi.so",
+      "offsets": [
+        1838
+      ]
+    },
+    {
+      "token": "libfileinputupdaterapi.so",
+      "offsets": [
+        1812
+      ]
+    }
+  ],
+  "symbols": [
+    {
+      "name": "GetCryptFileInputModeUpdater",
+      "va": "0x0",
+      "bytes": 0,
+      "section": "SHN_UNDEF"
+    }
+  ],
+  "format": "ELF"
+}

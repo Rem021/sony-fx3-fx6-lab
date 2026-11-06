@@ -1,0 +1,18 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-pthread",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-peaking85.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-peaking85"
+  ],
+  "exit": 0,
+  "stdout": "PEAKING85_PASS independent12B_status590000_golden/exact16B/16_byte_mutations_short_long_wrongsource_reject/duplicate_one_reply/send_alloc_failure_rollback/own_reply_freed/original_request_untouched/native_consumption_pending_hardware\n",
+  "stderr": "FX3_PEAKING_COMMIT selector=3 peaking=0 level=1 mag=0 color_type=0 Y=235 Cb=128 Cr=128 status=0x590000 source=0x803061c0 lease=1 generation=1 software_config_accepted=1 pending_hardware=1 physical_peaking=0 request_caller_owned=1\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x152 lease=1 result=0\nFX3_PEAKING_CONSUMED lease=1 result=0 pending_hardware=1\n"
+}

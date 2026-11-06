@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-r26-49f0c1c3663b",
+    "eval",
+    "--stdin"
+  ],
+  "start": {
+    "UTC": "2026-11-05T02:36:58.852105+00:00",
+    "host_ns": 429904365343916
+  },
+  "end": {
+    "UTC": "2026-11-05T02:36:58.869636+00:00",
+    "host_ns": 429904382890083
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"canonical_sha\": \"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\",\n  \"lastStatus\": {\n    \"black_after_ready_count\": 0,\n    \"browser_ready\": true,\n    \"busy\": false,\n    \"error\": null,\n    \"events\": [],\n    \"final_receipt_id\": null,\n    \"frame\": null,\n    \"input_received\": false,\n    \"launch_request_id\": null,\n    \"launch_status\": \"awaiting\",\n    \"max_steps\": 32,\n    \"message\": \"浏览器已连接后，请点击“开始本轮模拟器”；此时尚未启动 guest。\",\n    \"phase\": \"awaiting_launch\",\n    \"ready\": false,\n    \"remaining_seconds\": 478,\n    \"render_valid\": false,\n    \"result\": null,\n    \"review_confirmation\": null,\n    \"review_protocol_unknown\": false,\n    \"review_required\": false,\n    \"review_snapshot_present\": false,\n    \"review_step\": null,\n    \"run_incarnation\": \"9bb295cb-055a-4b02-b5fb-03ef4b6d77e1\",\n    \"steps\": 0,\n    \"visual_change_observed\": false,\n    \"visual_state\": \"idle\"\n  },\n  \"viewport\": [\n    1280,\n    1200\n  ]\n}\n",
+  "stderr": ""
+}

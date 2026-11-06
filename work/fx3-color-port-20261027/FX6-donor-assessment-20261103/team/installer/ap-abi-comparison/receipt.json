@@ -1,0 +1,398 @@
+{
+  "schema": "fx3-fx6-ap-abi-comparison-v1",
+  "level": "static original bytes",
+  "libraries": {
+    "appFw.so": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+        "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 799,
+        "exports": 1,
+        "needed": [
+          "libNetCommon.so",
+          "libGOConnectionManager.so",
+          "AdjChkConfig.so",
+          "libqrencode.so",
+          "libInfraSKD.so",
+          "libCertificateManager.so",
+          "libssl.so.3",
+          "libpng.so.16",
+          "libjsoncpp.so.24",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libdl.so.2",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ]
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+        "original_path": "/lib/appFw.so",
+        "stored_path": "lib/appFw.so",
+        "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 909,
+        "exports": 1,
+        "needed": [
+          "libexpat.so.1",
+          "libqrencode.so",
+          "libopus.so.0",
+          "libSoundTouch.so.1",
+          "libjsoncpp.so.24",
+          "libpng.so.16",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libdl.so.2",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ]
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 215,
+      "exports_only_fx6_count": 0,
+      "imports_only_fx3_count": 105,
+      "exports_only_fx3_count": 0
+    },
+    "libIMDB.so": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libIMDB.so",
+        "sha256": "6ceaea432bc7c4645897c2f1272941b33b0c04115ec62ffa000b37faf3d8517d",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 6,
+        "exports": 13
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libIMDB.so",
+        "original_path": "/lib/libIMDB.so",
+        "stored_path": "lib/libIMDB.so",
+        "sha256": "a088ef303793497a443e89d6de4c8f12e07ec791c945f54e2dc1b52cd42db896",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 6,
+        "exports": 13
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 0,
+      "exports_only_fx6_count": 0,
+      "imports_only_fx3_count": 0,
+      "exports_only_fx3_count": 0
+    },
+    "libmpr.so": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so",
+        "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 356,
+        "exports": 3541
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so",
+        "original_path": "/lib/libmpr.so",
+        "stored_path": "lib/libmpr.so",
+        "sha256": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 497,
+        "exports": 4271
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 216,
+      "exports_only_fx6_count": 1169,
+      "imports_only_fx3_count": 75,
+      "exports_only_fx3_count": 439
+    },
+    "libInfraSKD.so": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libInfraSKD.so",
+        "sha256": "7d1fbd9a53794def916ca3ff2fc3a00f295268bb0f4ea7c07d0e8356d2840f9b",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 139,
+        "exports": 6
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraSKD.so",
+        "original_path": "/lib/libInfraSKD.so",
+        "stored_path": "lib/libInfraSKD.so",
+        "sha256": "5fa0074bb572b0c3b1e742d775b2c3e53b286392a4a10c739470cdd0d886eec3",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 137,
+        "exports": 6176
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 2,
+      "exports_only_fx6_count": 6174,
+      "imports_only_fx3_count": 4,
+      "exports_only_fx3_count": 4
+    },
+    "libInfraAvbbc.so": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libInfraAvbbc.so",
+        "sha256": "87a2246084567abca0e43228b5289bc728839a13ab4251e92828ea4c463e3c26",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 197,
+        "exports": 5293
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libInfraAvbbc.so",
+        "original_path": "/lib/libInfraAvbbc.so",
+        "stored_path": "lib/libInfraAvbbc.so",
+        "sha256": "4ea694694cd791b1e5bc09c7a550ef2bea101c33c31c3875017829a969a5bcab",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 218,
+        "exports": 5266
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 24,
+      "exports_only_fx6_count": 79,
+      "imports_only_fx3_count": 3,
+      "exports_only_fx3_count": 106
+    },
+    "dataflowInfraFramework.so": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/dataflowInfraFramework.so",
+        "sha256": "5d6a9be3ba359cffb1a1894bb667071e0f0e2fe2749b6c5e36ce8364e57eae2a",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 27,
+        "exports": 1814
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/dataflowInfraFramework.so",
+        "original_path": "/lib/dataflowInfraFramework.so",
+        "stored_path": "lib/dataflowInfraFramework.so",
+        "sha256": "8b8b8a74d2caf1ce69279e54390512a8ffa885a5e601267d8c2c8c394d8c744e",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 27,
+        "exports": 1838
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 0,
+      "exports_only_fx6_count": 30,
+      "imports_only_fx3_count": 0,
+      "exports_only_fx3_count": 6
+    },
+    "libbackup.so": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libbackup.so",
+        "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 17,
+        "exports": 64
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libbackup.so",
+        "original_path": "/lib/libbackup.so",
+        "stored_path": "lib/libbackup.so",
+        "sha256": "e003e2d8a1f42fdf629dda012a01f225940c016b2ab4dbf482a761378e8d286f",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 17,
+        "exports": 65
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 0,
+      "exports_only_fx6_count": 1,
+      "imports_only_fx3_count": 0,
+      "exports_only_fx3_count": 0
+    },
+    "libosal_uipc.so": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libosal_uipc.so",
+        "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 43,
+        "exports": 87
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libosal_uipc.so",
+        "original_path": "/lib/libosal_uipc.so",
+        "stored_path": "lib/libosal_uipc.so",
+        "sha256": "fe248d226863722b2ab911ca70195c616566b8cb96a2ab13b920ee25202a7b9a",
+        "elf_type": 3,
+        "machine": 183,
+        "imports": 43,
+        "exports": 87
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 0,
+      "exports_only_fx6_count": 0,
+      "imports_only_fx3_count": 0,
+      "exports_only_fx3_count": 0
+    },
+    "im.elf": {
+      "fx3": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/bin/im.elf",
+        "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+        "elf_type": 2,
+        "machine": 183,
+        "imports": 85,
+        "exports": 11,
+        "needed": [
+          "libjemalloc_ds.so.2",
+          "libIMDB.so",
+          "libbackup.so",
+          "libosal_utm.so",
+          "libosal_uipc.so",
+          "libdl.so.2",
+          "libpthread.so.0",
+          "libSTMcmdexecute.so",
+          "libssl.so.3",
+          "libcrypto.so.3",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ]
+      },
+      "fx6": {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/im.elf",
+        "original_path": "/bin/im.elf",
+        "stored_path": "bin/im.elf",
+        "sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+        "elf_type": 2,
+        "machine": 183,
+        "imports": 85,
+        "exports": 11,
+        "needed": [
+          "libjemalloc_ds.so.2",
+          "libIMDB.so",
+          "libbackup.so",
+          "libosal_utm.so",
+          "libosal_uipc.so",
+          "libdl.so.2",
+          "libpthread.so.0",
+          "libSTMcmdexecute.so",
+          "libssl.so.3",
+          "libcrypto.so.3",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ]
+      },
+      "same_sha256": false,
+      "imports_only_fx6_count": 0,
+      "exports_only_fx6_count": 0,
+      "imports_only_fx3_count": 0,
+      "exports_only_fx3_count": 0
+    }
+  },
+  "imdb_app_entry": {
+    "fx3": {
+      "index": 143,
+      "va": "0x1f670",
+      "file_offset": "0xf670",
+      "kind": "0x20000004",
+      "target_mask": "0xffffff9f",
+      "path": "appFw.so",
+      "init": "Application_System_Init",
+      "path_relocation": {
+        "section": ".rela.dyn",
+        "type": 1027,
+        "symbol_index": 0,
+        "addend": 47452
+      },
+      "init_relocation": {
+        "section": ".rela.dyn",
+        "type": 1027,
+        "symbol_index": 0,
+        "addend": 47461
+      }
+    },
+    "fx6": {
+      "index": 151,
+      "va": "0x213e8",
+      "file_offset": "0x113e8",
+      "kind": "0x20000004",
+      "target_mask": "0xffffff9f",
+      "path": "appFw.so",
+      "init": "Application_System_Init",
+      "path_relocation": {
+        "section": ".rela.dyn",
+        "type": 1027,
+        "symbol_index": 0,
+        "addend": 50855
+      },
+      "init_relocation": {
+        "section": ".rela.dyn",
+        "type": 1027,
+        "symbol_index": 0,
+        "addend": 50864
+      }
+    }
+  },
+  "bounded_colorimetry_edge": {
+    "caller_va": "0x20d1f64",
+    "builder_va": "0x20fa4f0",
+    "builder_input_va": "0x20fa500",
+    "source_field": "[x19+0x4c] uint32",
+    "source_load_va": "0x20fa668",
+    "conversion_call_va": "0x20fa66c",
+    "conversion_target_va": "0x20ee044",
+    "setter_call_va": "0x20fa678",
+    "setter_plt_va": "0xb18160",
+    "setter_jump_slot_va": "0x2ef19b8",
+    "setter_relocation": {
+      "section": ".rela.plt",
+      "type": 1026,
+      "symbol_index": 349,
+      "addend": 0
+    },
+    "provider": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/dataflowInfraFramework.so",
+    "provider_sha256": "8b8b8a74d2caf1ce69279e54390512a8ffa885a5e601267d8c2c8c394d8c744e",
+    "provider_va": "0x382ec",
+    "consumer_write": "strb w1,[x0,#0x1d]",
+    "fx3_provider_va": "0x37968",
+    "fx3_setter_same_8_bytes": true,
+    "input_meaning": "YcStateInfo colorimetry enum, not proven Cine EI or white balance setting",
+    "ipc_or_av_consumption": "not bound"
+  },
+  "cine_ei_candidate": {
+    "diagnostic_string_va": "0x25364f8",
+    "diagnostic_xref_va": "0x1a6845c",
+    "diagnostic_call_va": "0x1a68470",
+    "diagnostic_target_va": "0x2167784",
+    "status": "function-name diagnostic reference only; setter and IPC not identified"
+  },
+  "direct_app_dependencies_delta": {
+    "fx6_only": [
+      "libSoundTouch.so.1",
+      "libexpat.so.1",
+      "libopus.so.0"
+    ],
+    "fx3_only": [
+      "AdjChkConfig.so",
+      "libCertificateManager.so",
+      "libGOConnectionManager.so",
+      "libInfraSKD.so",
+      "libNetCommon.so",
+      "libssl.so.3"
+    ]
+  },
+  "scope": "ELF architecture/import-export names are screening, not binary ABI equivalence",
+  "requested_cine_ei_or_wb_to_ipc_closed": false,
+  "unknown": [
+    "Cine EI/white balance producer to IPC/AV consumer not yet bound",
+    "FX6 private ISP ABI and FX3 sensor coupling",
+    "runtime mixing and cold-start identity"
+  ],
+  "install_ready": false
+}

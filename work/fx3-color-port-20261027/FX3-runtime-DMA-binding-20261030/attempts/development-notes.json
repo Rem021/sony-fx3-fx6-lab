@@ -1,0 +1,8 @@
+{
+  "initial_guest_assertion": "The invalidation path fell through from __dma_inv_area to separately named __inval_cache_range; the range guard stopped before that original symbol. Three diagnostic prefixes are preserved alongside this note.",
+  "correction": "Captured and SHA-verified the exact 80-byte fallthrough range from the same original kernel, then included it explicitly; no helper stub or hardware reply was added.",
+  "initial_selected_source_error": "AttributeError: NoneType object has no attribute iter_symbols, because the shared library has .dynsym and no .symtab.",
+  "dependent_probe_before_capture_completed": "FileNotFoundError for selected-consumers.json; failure occurred before guest execution. The dependency was completed before the successful final run.",
+  "source_recovery": "Previously captured module bytes were retained and checked for equality. Static/dynamic symbol tables are now separately handled; missing userland provider is kept unresolved.",
+  "final_guest_scope": "12 final cases, 158 original instructions, zero cache/system instructions, helper replies, hardware replies or device actions. Earlier diagnostic prefixes are not represented as kernel/runtime acceptance."
+}

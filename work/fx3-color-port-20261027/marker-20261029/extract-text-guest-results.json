@@ -1,0 +1,289 @@
+{
+  "body_library_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+  "common_library_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+  "header_sha256": "3492b1fe273ebf57ed7c89c65a7f89b4f3fbf2224793e93f440484f986af7daa",
+  "expected_payload_sha256": "f03f61ae042fb0ceb1f2ee3fae65f9ac517bb10280c250cfb8d08f6653b71b1a",
+  "cases": [
+    {
+      "parse": {
+        "parse_result": 0,
+        "parser_instructions": 4639,
+        "block_requests": 1,
+        "normalized_name": "program/probe.txt",
+        "index": 1,
+        "result_type": "vtable for Updater::CommonKeyTag",
+        "factory_instructions": 401
+      },
+      "extract_return": 1,
+      "extract_instructions": 189,
+      "total_instructions": 5913,
+      "declared_file_bytes": 29,
+      "declared_file_mode": "0o644",
+      "supplied_payload_bytes": 29,
+      "consumed_bytes": 29,
+      "sink_bytes": 29,
+      "sink_sha256": "f03f61ae042fb0ceb1f2ee3fae65f9ac517bb10280c250cfb8d08f6653b71b1a",
+      "content_equal_expected": true,
+      "explicit_close_observed": true,
+      "events": [
+        {
+          "adapter": "SkipCurrentBlock",
+          "result": true
+        },
+        {
+          "adapter": "XML IsKey fixture",
+          "name": "program/probe.txt",
+          "result": false
+        },
+        {
+          "adapter": "FileHandler constructor"
+        },
+        {
+          "adapter": "RAM sink Open",
+          "path": "/tmp_updater/updater/update/program/probe.txt",
+          "flags": "0xc1",
+          "mode": "0o644"
+        },
+        {
+          "adapter": "ReadDataWithoutCopy",
+          "requested": 29,
+          "available": 29,
+          "offset": 0
+        },
+        {
+          "adapter": "RAM sink WriteAll",
+          "bytes": 29
+        },
+        {
+          "adapter": "SkipBlock",
+          "bytes": 29
+        },
+        {
+          "adapter": "RAM sink Close"
+        },
+        {
+          "adapter": "RAM sink destructor",
+          "explicit_close_preceded": true
+        }
+      ],
+      "case": "whole_payload"
+    },
+    {
+      "parse": {
+        "parse_result": 0,
+        "parser_instructions": 4639,
+        "block_requests": 1,
+        "normalized_name": "program/probe.txt",
+        "index": 1,
+        "result_type": "vtable for Updater::CommonKeyTag",
+        "factory_instructions": 401
+      },
+      "extract_return": 1,
+      "extract_instructions": 299,
+      "total_instructions": 6023,
+      "declared_file_bytes": 29,
+      "declared_file_mode": "0o644",
+      "supplied_payload_bytes": 29,
+      "consumed_bytes": 29,
+      "sink_bytes": 29,
+      "sink_sha256": "f03f61ae042fb0ceb1f2ee3fae65f9ac517bb10280c250cfb8d08f6653b71b1a",
+      "content_equal_expected": true,
+      "explicit_close_observed": true,
+      "events": [
+        {
+          "adapter": "SkipCurrentBlock",
+          "result": true
+        },
+        {
+          "adapter": "XML IsKey fixture",
+          "name": "program/probe.txt",
+          "result": false
+        },
+        {
+          "adapter": "FileHandler constructor"
+        },
+        {
+          "adapter": "RAM sink Open",
+          "path": "/tmp_updater/updater/update/program/probe.txt",
+          "flags": "0xc1",
+          "mode": "0o644"
+        },
+        {
+          "adapter": "ReadDataWithoutCopy",
+          "requested": 29,
+          "available": 5,
+          "offset": 0
+        },
+        {
+          "adapter": "RAM sink WriteAll",
+          "bytes": 5
+        },
+        {
+          "adapter": "SkipBlock",
+          "bytes": 5
+        },
+        {
+          "adapter": "ReadDataWithoutCopy",
+          "requested": 24,
+          "available": 5,
+          "offset": 5
+        },
+        {
+          "adapter": "RAM sink WriteAll",
+          "bytes": 5
+        },
+        {
+          "adapter": "SkipBlock",
+          "bytes": 5
+        },
+        {
+          "adapter": "ReadDataWithoutCopy",
+          "requested": 19,
+          "available": 5,
+          "offset": 10
+        },
+        {
+          "adapter": "RAM sink WriteAll",
+          "bytes": 5
+        },
+        {
+          "adapter": "SkipBlock",
+          "bytes": 5
+        },
+        {
+          "adapter": "ReadDataWithoutCopy",
+          "requested": 14,
+          "available": 5,
+          "offset": 15
+        },
+        {
+          "adapter": "RAM sink WriteAll",
+          "bytes": 5
+        },
+        {
+          "adapter": "SkipBlock",
+          "bytes": 5
+        },
+        {
+          "adapter": "ReadDataWithoutCopy",
+          "requested": 9,
+          "available": 5,
+          "offset": 20
+        },
+        {
+          "adapter": "RAM sink WriteAll",
+          "bytes": 5
+        },
+        {
+          "adapter": "SkipBlock",
+          "bytes": 5
+        },
+        {
+          "adapter": "ReadDataWithoutCopy",
+          "requested": 4,
+          "available": 4,
+          "offset": 25
+        },
+        {
+          "adapter": "RAM sink WriteAll",
+          "bytes": 4
+        },
+        {
+          "adapter": "SkipBlock",
+          "bytes": 4
+        },
+        {
+          "adapter": "RAM sink Close"
+        },
+        {
+          "adapter": "RAM sink destructor",
+          "explicit_close_preceded": true
+        }
+      ],
+      "case": "five_byte_segments"
+    },
+    {
+      "parse": {
+        "parse_result": 0,
+        "parser_instructions": 4639,
+        "block_requests": 1,
+        "normalized_name": "program/probe.txt",
+        "index": 1,
+        "result_type": "vtable for Updater::CommonKeyTag",
+        "factory_instructions": 401
+      },
+      "extract_return": 0,
+      "extract_instructions": 170,
+      "total_instructions": 5894,
+      "declared_file_bytes": 29,
+      "declared_file_mode": "0o644",
+      "supplied_payload_bytes": 0,
+      "consumed_bytes": 0,
+      "sink_bytes": 0,
+      "sink_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "content_equal_expected": false,
+      "explicit_close_observed": false,
+      "events": [
+        {
+          "adapter": "SkipCurrentBlock",
+          "result": true
+        },
+        {
+          "adapter": "XML IsKey fixture",
+          "name": "program/probe.txt",
+          "result": false
+        },
+        {
+          "adapter": "FileHandler constructor"
+        },
+        {
+          "adapter": "RAM sink Open",
+          "path": "/tmp_updater/updater/update/program/probe.txt",
+          "flags": "0xc1",
+          "mode": "0o644"
+        },
+        {
+          "adapter": "ReadDataWithoutCopy",
+          "requested": 29,
+          "available": 0,
+          "offset": 0
+        },
+        {
+          "adapter": "RAM sink destructor",
+          "explicit_close_preceded": false
+        }
+      ],
+      "case": "missing_payload"
+    },
+    {
+      "parse": {
+        "parse_result": 0,
+        "parser_instructions": 4639,
+        "block_requests": 1,
+        "normalized_name": "program/probe.txt",
+        "index": 1,
+        "result_type": "vtable for Updater::CommonKeyTag",
+        "factory_instructions": 401
+      },
+      "extract_return": 0,
+      "extract_instructions": 69,
+      "total_instructions": 5793,
+      "declared_file_bytes": 29,
+      "declared_file_mode": "0o644",
+      "supplied_payload_bytes": 29,
+      "consumed_bytes": 0,
+      "sink_bytes": 0,
+      "sink_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "content_equal_expected": false,
+      "explicit_close_observed": false,
+      "events": [
+        {
+          "adapter": "SkipCurrentBlock",
+          "result": false
+        }
+      ],
+      "case": "header_skip_failure"
+    }
+  ],
+  "scope": "Original header parsing/normalization/factory/StringHandler concat/BaseKeyTag::Extract/NewFirmwareFile construction/BaseNewFirmwareFile::Extract/type dispatch/normal-file extraction execute in Unicorn synthetic RAM. The declared file is harmless text mode 0644. XML IsKey is an explicit false fixture, not the original XML dispatcher. Input-buffer and FileHandler boundaries are strict memory adapters. No host target path is opened, full TAR or updater container produced, original updater script run, native target library loaded, USB or camera accessed. No controller action mode, outer validation, real loader admission or firmware flashing is established."
+}

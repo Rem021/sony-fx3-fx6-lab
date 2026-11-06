@@ -1,0 +1,107 @@
+{
+  "checks": [
+    "command0 takes reply path after remove wrapper success",
+    "command2 compare and EQ branch",
+    "command4 compare and EQ branch",
+    "command6 compare and EQ branch",
+    "other commands including5/7 reach command-error path",
+    "4/6 share create-specific-flag path",
+    "remove wrapper precedes command switch; flag creation calls open wrapper",
+    "registration BL points to ELF relocation-named osal_reg_msg_queue_cb PLT",
+    "unsupported command logs and frees; no reply allocation on that local path",
+    "complete selected callback has listed direct BL sites and no BLR"
+  ],
+  "check_count": 10,
+  "selected_callback_direct_calls": [
+    {
+      "at": "0xed9ac",
+      "target": "0x55660"
+    },
+    {
+      "at": "0xed9c8",
+      "target": "0xed8cc"
+    },
+    {
+      "at": "0xed9d8",
+      "target": "0x55660"
+    },
+    {
+      "at": "0xed9e4",
+      "target": "0x55660"
+    },
+    {
+      "at": "0xed9fc",
+      "target": "0xed940"
+    },
+    {
+      "at": "0xeda34",
+      "target": "0xed940"
+    },
+    {
+      "at": "0xeda48",
+      "target": "0x57cd0"
+    },
+    {
+      "at": "0xeda84",
+      "target": "0x57cd0"
+    },
+    {
+      "at": "0xeda94",
+      "target": "0x57bc0"
+    },
+    {
+      "at": "0xedaa0",
+      "target": "0x562d0"
+    },
+    {
+      "at": "0xedab4",
+      "target": "0x563d0"
+    },
+    {
+      "at": "0xedac4",
+      "target": "0x55fd0"
+    }
+  ],
+  "decoder": "independent fixed AArch64 word masks/sign-extension; no instruction interpreter or emulated callee",
+  "branch_conditions": "static ordinary return paths only; successful helper/flag operations are conditions, not observed results",
+  "historical_reference_identity": [
+    {
+      "path": "/usr/bin/ud_send_lsi.elf",
+      "identical": true,
+      "identical_after_build_id_note_zeroed": true,
+      "current_body_attestation": false
+    },
+    {
+      "path": "/usr/kmod/osal_uipc.ko",
+      "identical": false,
+      "identical_after_build_id_note_zeroed": false,
+      "current_body_attestation": false
+    },
+    {
+      "path": "/usr/kmod/pci_ep_cp.ko",
+      "identical": false,
+      "identical_after_build_id_note_zeroed": true,
+      "current_body_attestation": false
+    },
+    {
+      "path": "/usr/kmod/pcie-if.ko",
+      "identical": false,
+      "identical_after_build_id_note_zeroed": true,
+      "current_body_attestation": false
+    },
+    {
+      "path": "/usr/kmod/pciedma.ko",
+      "identical": false,
+      "identical_after_build_id_note_zeroed": false,
+      "current_body_attestation": false
+    },
+    {
+      "path": "/usr/lib/libosal_uipc.so",
+      "identical": true,
+      "identical_after_build_id_note_zeroed": true,
+      "current_body_attestation": false
+    }
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

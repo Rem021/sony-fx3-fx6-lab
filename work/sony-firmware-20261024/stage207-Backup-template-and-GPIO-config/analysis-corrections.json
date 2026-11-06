@@ -1,0 +1,12 @@
+{
+  "status": "CORRECTIONS_BEFORE_SEAL",
+  "template_result_original_sha256": "3c985c3410063e3542594a738a7e236d7e86d265b02d0cd5712273c3305f4fbb",
+  "format_capture_original_sha256": "5f8620f2587f2b0a22e6e8f87b5c1679ec89773d622eace991a4eaf7af495434",
+  "corrections": [
+    "First output aggregated only record0 and stored selected_source_record=0. Both valid records must be reported; no runtime selection has been established, so this field is now null.",
+    "Download-phase no-module-execution claim is scoped to capture phase. Later host-only PMCA parser/util executed on read-only memory buffers, as independently recorded. No Sony/guest/device code executed.",
+    "GPIO string helper initially requested160 bytes across a file-backed PT_LOAD boundary; it now bounds to the owning segment and requires a terminator.",
+    "Historical GPIO difference classification initially assumed a GNU build-ID note; this library has no such section. Actual differences are7 bytes within .comment, while .text and .rodata are equal. The source files were not changed."
+  ],
+  "root_or_device_operations": 0
+}

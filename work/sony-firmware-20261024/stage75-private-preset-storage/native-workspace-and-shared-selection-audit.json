@@ -1,0 +1,18 @@
+{
+  "created_utc": "2026-10-27T03:44:04.066362+00:00",
+  "native_workspace": {
+    "offset": "0xe010",
+    "length": 256,
+    "native_function": "0x226364",
+    "original_copy_source_offset": "0x3d8798",
+    "original_copy_source_sha256": "3db1692cedc51add5d432677468d49c1ef2db4b6eb7208d76bf7ead70915d180",
+    "original_direct_callsite": "0x21ebb8",
+    "original_diagnostic": "[ENCHANDLER]create_imola_enc_start_param() stream_type... err"
+  },
+  "important_remaining_shared_state": "Moving the copy does not protect COMMON+e000 selected pointer. Original function clears/replaces it; runtime exclusion, config epoch and all consumers still require proof.",
+  "independent_native_entry_is_not_actual_target_mode_or_concurrency_proof": true,
+  "dedicated_slot_is_harness_storage_not_a_camera_allocation": true,
+  "single_controller_identity": "113a0000; wrong controller rejected before dereference",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

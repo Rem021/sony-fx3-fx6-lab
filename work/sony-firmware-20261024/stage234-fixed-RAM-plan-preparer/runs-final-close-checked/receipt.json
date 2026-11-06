@@ -1,0 +1,2743 @@
+{
+  "schema": "fx3-fixed-RAM-plan-preparer-own-ARM64-model-v1",
+  "status": "PASS",
+  "tests": 7,
+  "failures": 0,
+  "errors": 0,
+  "details": [],
+  "build": {
+    "schema": "fx3-restricted-own-ET_DYN-v1",
+    "sha256": "48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3",
+    "bytes": 131864,
+    "segments": [
+      {
+        "flags": 4,
+        "offset": 0,
+        "va": 0,
+        "filesz": 32768,
+        "memsz": 32768
+      },
+      {
+        "flags": 5,
+        "offset": 32768,
+        "va": 32768,
+        "filesz": 8936,
+        "memsz": 8936
+      },
+      {
+        "flags": 4,
+        "offset": 65536,
+        "va": 65536,
+        "filesz": 936,
+        "memsz": 936
+      },
+      {
+        "flags": 6,
+        "offset": 98304,
+        "va": 98304,
+        "filesz": 32768,
+        "memsz": 32768
+      },
+      {
+        "flags": 6,
+        "offset": 131072,
+        "va": 131072,
+        "filesz": 0,
+        "memsz": 8
+      }
+    ],
+    "exports": {
+      "fx3_prepare_state": {
+        "va": 39684,
+        "bytes": 12
+      },
+      "fx3_prepare_reason": {
+        "va": 39696,
+        "bytes": 12
+      }
+    },
+    "dynamic_tags": [
+      [
+        4,
+        66424
+      ],
+      [
+        5,
+        66312
+      ],
+      [
+        6,
+        66352
+      ],
+      [
+        10,
+        38
+      ],
+      [
+        11,
+        24
+      ],
+      [
+        7,
+        66448
+      ],
+      [
+        8,
+        24
+      ],
+      [
+        9,
+        24
+      ],
+      [
+        25,
+        98304
+      ],
+      [
+        27,
+        8
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "runtime_relocations": [
+      {
+        "offset": 98304,
+        "type": 1027,
+        "symbol": 0,
+        "addend": 32768
+      }
+    ],
+    "init_array": [
+      98304
+    ],
+    "has_DT_NEEDED_or_imports": false,
+    "initialization_behavior_verified_by_inspector": false,
+    "constructor_effect_authenticated_by_metadata": false,
+    "child_identity_guard_implemented": false,
+    "actual_Sony_loader_acceptance_verified": false,
+    "actual_body_or_loaded_driver_identity_verified": false,
+    "camera_transfer_or_launch_backend": false,
+    "camera_operations": 0,
+    "camera_identity_verified": false,
+    "hardware_validated": false,
+    "flashable": false,
+    "independent_recovery_proven": false,
+    "object_sha256": "98a37a221e999690fac23df25ba16ceb65869a58cfae5ba8e079c0a2c55cbbc0",
+    "link_relocations": [
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 32804,
+        "target": 131072,
+        "before": 2415919126,
+        "after": 2415919318
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 32812,
+        "target": 131076,
+        "before": 2415919127,
+        "after": 2415919319
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 32820,
+        "target": 131072,
+        "before": 3103785672,
+        "after": 3103785672
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 32828,
+        "target": 131076,
+        "before": 3103785727,
+        "after": 3103786751
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 32972,
+        "target": 65861,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 32976,
+        "target": 65861,
+        "before": 2432696353,
+        "after": 2433029153
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33144,
+        "target": 65536,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33148,
+        "target": 65552,
+        "before": 2415919114,
+        "after": 2415919178
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 33156,
+        "target": 65536,
+        "before": 1035993344,
+        "after": 1035993344
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 33160,
+        "target": 65552,
+        "before": 1035993409,
+        "after": 1035994433
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33376,
+        "target": 65916,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 33380,
+        "target": 65916,
+        "before": 2432696353,
+        "after": 2433085473
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33468,
+        "target": 0,
+        "before": 2415919125,
+        "after": 2432696277
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 33472,
+        "target": 0,
+        "before": 2432697013,
+        "after": 2432697013
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33476,
+        "target": 65736,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 33484,
+        "target": 65736,
+        "before": 4248830209,
+        "after": 4248855809
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33488,
+        "target": 65728,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 33492,
+        "target": 65728,
+        "before": 4248830210,
+        "after": 4248854786
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33936,
+        "target": 66240,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 33940,
+        "target": 66240,
+        "before": 2432696353,
+        "after": 2433417249
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34060,
+        "target": 0,
+        "before": 2415919114,
+        "after": 2432696266
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34064,
+        "target": 0,
+        "before": 2432696650,
+        "after": 2432696650
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34092,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34096,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34128,
+        "target": 65893,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34132,
+        "target": 65893,
+        "before": 2432696353,
+        "after": 2433061921
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34280,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34284,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34308,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34312,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34328,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34332,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34348,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34352,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34364,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34368,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34384,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34388,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34424,
+        "target": 65616,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34428,
+        "target": 65600,
+        "before": 2415919113,
+        "after": 2415919177
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 34432,
+        "target": 65616,
+        "before": 1035993346,
+        "after": 1035998466
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34436,
+        "target": 65568,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 34452,
+        "target": 65568,
+        "before": 1035993346,
+        "after": 1035995394
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34456,
+        "target": 65584,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 34460,
+        "target": 65584,
+        "before": 1035993344,
+        "after": 1035996416
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 34476,
+        "target": 65600,
+        "before": 1035993376,
+        "after": 1035997472
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34572,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34576,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34592,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34596,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34612,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34616,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34628,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34632,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34644,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34648,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34692,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34696,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34712,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34716,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34732,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34736,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34752,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34756,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34772,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34776,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34816,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34820,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34836,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34840,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34856,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34860,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34876,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34880,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34896,
+        "target": 0,
+        "before": 2415919113,
+        "after": 2432696265
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34900,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 35032,
+        "target": 0,
+        "before": 2415919117,
+        "after": 2432696269
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 35036,
+        "target": 0,
+        "before": 2432696749,
+        "after": 2432696749
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 35112,
+        "target": 0,
+        "before": 2415919117,
+        "after": 2432696269
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 35116,
+        "target": 0,
+        "before": 2432696749,
+        "after": 2432696749
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 35188,
+        "target": 0,
+        "before": 2415919116,
+        "after": 2432696268
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 35192,
+        "target": 0,
+        "before": 2432696716,
+        "after": 2432696716
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 35888,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 35892,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36036,
+        "target": 65776,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 36040,
+        "target": 65776,
+        "before": 2432696353,
+        "after": 2432942113
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36120,
+        "target": 131076,
+        "before": 3103785704,
+        "after": 3103786728
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36124,
+        "target": 131072,
+        "before": 3103785674,
+        "after": 3103785674
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36180,
+        "target": 131072,
+        "before": 3107979976,
+        "after": 3107979976
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36328,
+        "target": 131072,
+        "before": 3103785672,
+        "after": 3103785672
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36384,
+        "target": 65787,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 36388,
+        "target": 65787,
+        "before": 2432696353,
+        "after": 2432953377
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36436,
+        "target": 131072,
+        "before": 3103785672,
+        "after": 3103785672
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36440,
+        "target": 131076,
+        "before": 3103785705,
+        "after": 3103786729
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36612,
+        "target": 65744,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 36620,
+        "target": 65744,
+        "before": 4248830208,
+        "after": 4248856832
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36624,
+        "target": 65752,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 36632,
+        "target": 65752,
+        "before": 4248830209,
+        "after": 4248857857
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36660,
+        "target": 0,
+        "before": 2415919112,
+        "after": 2432696264
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 36664,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36912,
+        "target": 65811,
+        "before": 2415919105,
+        "after": 4026531873
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 36916,
+        "target": 65811,
+        "before": 2432696353,
+        "after": 2432977953
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36940,
+        "target": 65760,
+        "before": 2415919112,
+        "after": 4026531880
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 36948,
+        "target": 65760,
+        "before": 4248830208,
+        "after": 4248858880
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36952,
+        "target": 65768,
+        "before": 2415919112,
+        "after": 4026531880
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 37012,
+        "target": 65768,
+        "before": 4248830209,
+        "after": 4248859905
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37088,
+        "target": 0,
+        "before": 2415919112,
+        "after": 4043308968
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37092,
+        "target": 0,
+        "before": 2432696584,
+        "after": 2432696584
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37268,
+        "target": 0,
+        "before": 2415919113,
+        "after": 4043308969
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37272,
+        "target": 0,
+        "before": 2432696617,
+        "after": 2432696617
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37452,
+        "target": 65824,
+        "before": 2415919105,
+        "after": 4026531873
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37456,
+        "target": 65824,
+        "before": 2432696353,
+        "after": 2432991265
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37520,
+        "target": 65811,
+        "before": 2415919105,
+        "after": 4026531873
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37524,
+        "target": 65811,
+        "before": 2432696353,
+        "after": 2432977953
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37528,
+        "target": 65839,
+        "before": 2415919107,
+        "after": 4026531875
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37532,
+        "target": 65839,
+        "before": 2432696419,
+        "after": 2433006691
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 37632,
+        "target": 131076,
+        "before": 3103785704,
+        "after": 3103786728
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 37636,
+        "target": 131072,
+        "before": 3103785674,
+        "after": 3103785674
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38004,
+        "target": 65632,
+        "before": 2415919113,
+        "after": 4026531881
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38008,
+        "target": 65648,
+        "before": 2415919114,
+        "after": 4026531882
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 38016,
+        "target": 65632,
+        "before": 1035993376,
+        "after": 1035999520
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 38020,
+        "target": 65648,
+        "before": 1035993409,
+        "after": 1036000577
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38940,
+        "target": 65664,
+        "before": 2415919113,
+        "after": 4026531881
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 38952,
+        "target": 65664,
+        "before": 1035993376,
+        "after": 1036001568
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38956,
+        "target": 65680,
+        "before": 2415919113,
+        "after": 4026531881
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 38964,
+        "target": 65680,
+        "before": 1035993377,
+        "after": 1036002593
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39136,
+        "target": 65839,
+        "before": 2415919105,
+        "after": 4026531873
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 39140,
+        "target": 65839,
+        "before": 2432696353,
+        "after": 2433006625
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39684,
+        "target": 131072,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39688,
+        "target": 131072,
+        "before": 3107979520,
+        "after": 3107979520
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39696,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39700,
+        "target": 131076,
+        "before": 3107979520,
+        "after": 3107980544
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 40720,
+        "target": 65876,
+        "before": 2415919114,
+        "after": 4026531882
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 40724,
+        "target": 65876,
+        "before": 2432696650,
+        "after": 2433044810
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 41284,
+        "target": 65984,
+        "before": 2415919121,
+        "after": 3489660977
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 41288,
+        "target": 65984,
+        "before": 2432696881,
+        "after": 2433155633
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 41548,
+        "target": 65696,
+        "before": 2415919112,
+        "after": 3489660968
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 41552,
+        "target": 65712,
+        "before": 2415919114,
+        "after": 3489660970
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 41560,
+        "target": 65696,
+        "before": 1035993344,
+        "after": 1036003584
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 41564,
+        "target": 65712,
+        "before": 1035993409,
+        "after": 1036004673
+      }
+    ],
+    "initializer_symbol": "fx3_module_init",
+    "initializer_va": 32768,
+    "initializer_bytes": 4908,
+    "initializer_code_sha256": "a5b65651ddb3f81cbe4387b2cdbb0173b621299dae5c3cfdafcf7e01a90f5e64",
+    "normalized_image_sha256": "0b47b928ba9f56759cc47f26d2f777c1f6289525755327727a2378845c473ea0",
+    "normalization_field": {
+      "offset": 4352,
+      "bytes": 32
+    },
+    "embedded_config_offset": 4096,
+    "embedded_config_sha256": "a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb4",
+    "expected_worker_sha256": "c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ec",
+    "expected_worker_bytes": 131864,
+    "fixed_synthetic_associations_only": true,
+    "normalized_self_consistency_is_authentication_or_live_body_attestation": false,
+    "no_child_lifecycle_in_this_component": true,
+    "full_host_binary_sha256_required_before_any_future_transfer": true,
+    "prepare_only_no_child_source_USB_or_firmware_backend": true,
+    "role": "own fixed synthetic RAM-plan preparation constructor",
+    "source_pins": {
+      "prepare.c": "f46fb6ba33f931008f692a6dc8261b2439b75f832a781191d9d170a61d8ad9f3",
+      "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+      "parent_ipc.inc": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044"
+    },
+    "build_argv": [
+      "/usr/bin/xcrun",
+      "clang",
+      "-target",
+      "aarch64-linux-gnu",
+      "-std=c11",
+      "-O2",
+      "-fPIC",
+      "-fvisibility=hidden",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-fno-stack-protector",
+      "-fno-unwind-tables",
+      "-fno-asynchronous-unwind-tables",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/prepare.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/built/module.o"
+    ],
+    "header_injections": [
+      {
+        "offset": 4096,
+        "bytes": 256
+      },
+      {
+        "offset": 4352,
+        "bytes": 32
+      }
+    ],
+    "source_initializer_creates_RAM_plan": true,
+    "private_staging_and_no_replace_publication_implemented": true,
+    "actual_target_renameat2_or_tmpfs_verified": false,
+    "source_or_worker_execution_backend": false,
+    "actual_target_global_namespace_or_IPC_verified": false,
+    "persistent_restart_completion_reconstruction": false,
+    "exclusive_authority_or_full_loaded_image_attested": false
+  },
+  "cases": [
+    {
+      "name": "normal",
+      "result": [
+        1,
+        0
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": 0,
+            "published": true,
+            "dev": 9,
+            "ino": 2011
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "e41a657b8ae2380d57ee0f9e8f9e09ab2d80fd3c9050bded93117f61fe3515a3",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000db070000000000000000000000000000000000000000000000000000000000000000000000000000000000005aefdeea",
+            "dev": 9,
+            "ino": 2012
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2011
+          }
+        },
+        "clock_calls": 3
+      }
+    },
+    {
+      "name": "replay",
+      "result": [
+        2,
+        11
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": 0,
+            "published": true,
+            "dev": 9,
+            "ino": 2011
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "e41a657b8ae2380d57ee0f9e8f9e09ab2d80fd3c9050bded93117f61fe3515a3",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000db070000000000000000000000000000000000000000000000000000000000000000000000000000000000005aefdeea",
+            "dev": 9,
+            "ino": 2012
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2011
+          }
+        },
+        "clock_calls": 3
+      }
+    },
+    {
+      "name": "wrong-parent",
+      "result": [
+        4,
+        0
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [],
+        "remaining_new_FDs": [],
+        "files": {},
+        "clock_calls": 0
+      }
+    },
+    {
+      "name": "image-file",
+      "result": [
+        4,
+        0
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [],
+        "remaining_new_FDs": [],
+        "files": {},
+        "clock_calls": 0
+      }
+    },
+    {
+      "name": "bad-loaded-config",
+      "result": [
+        4,
+        0
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [],
+        "remaining_new_FDs": [],
+        "files": {},
+        "clock_calls": 0
+      }
+    },
+    {
+      "name": "bad-loaded-RO",
+      "result": [
+        4,
+        0
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [],
+        "remaining_new_FDs": [],
+        "files": {},
+        "clock_calls": 0
+      }
+    },
+    {
+      "name": "non-RAM",
+      "result": [
+        2,
+        10
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [],
+        "remaining_new_FDs": [],
+        "files": {},
+        "clock_calls": 0
+      }
+    },
+    {
+      "name": "unsafe-root",
+      "result": [
+        2,
+        10
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [],
+        "remaining_new_FDs": [],
+        "files": {},
+        "clock_calls": 0
+      }
+    },
+    {
+      "name": "claim-mode",
+      "result": [
+        2,
+        12
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [],
+        "remaining_new_FDs": [],
+        "files": {},
+        "clock_calls": 0
+      }
+    },
+    {
+      "name": "restrictive-mode",
+      "result": [
+        2,
+        14
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 256,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 256,
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "hex": "",
+            "dev": 9,
+            "ino": 2087
+          }
+        },
+        "clock_calls": 1
+      }
+    },
+    {
+      "name": "clock-invalid",
+      "result": [
+        2,
+        13
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [],
+        "remaining_new_FDs": [],
+        "files": {},
+        "clock_calls": 1
+      }
+    },
+    {
+      "name": "expired-before-publish",
+      "result": [
+        2,
+        16
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2108
+          },
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "9c733fcc24e2b5aabb4de205d78368d478c8f03dee8d36267ef249230ebc1c28",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb4010000000000000009000000000000003c080000000000000000000000000000000000000000000000000000000000000000000000000000000000001b65c166",
+            "dev": 9,
+            "ino": 2109
+          }
+        },
+        "clock_calls": 2
+      }
+    },
+    {
+      "name": "clock-backwards",
+      "result": [
+        2,
+        16
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2120
+          },
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "ffb949a05115e173fdcba2a3bfe04fdfd5f5f64d066a30d6cbda8e184d5be4da",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb4010000000000000009000000000000004808000000000000000000000000000000000000000000000000000000000000000000000000000000000000f92881ce",
+            "dev": 9,
+            "ino": 2121
+          }
+        },
+        "clock_calls": 2
+      }
+    },
+    {
+      "name": "short-plan-write",
+      "result": [
+        2,
+        14
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 120,
+            "sha256": "4db4273017910cc266fedc05766ca4e45354bb12951742f750fd9eeea4e1dccc",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45",
+            "dev": 9,
+            "ino": 2132
+          }
+        },
+        "clock_calls": 1
+      }
+    },
+    {
+      "name": "plan-fsync",
+      "result": [
+        2,
+        14
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2143
+          }
+        },
+        "clock_calls": 1
+      }
+    },
+    {
+      "name": "plan-readback",
+      "result": [
+        2,
+        14
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2154
+          }
+        },
+        "clock_calls": 1
+      }
+    },
+    {
+      "name": "report-write",
+      "result": [
+        2,
+        15
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2165
+          },
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "hex": "",
+            "dev": 9,
+            "ino": 2166
+          }
+        },
+        "clock_calls": 1
+      }
+    },
+    {
+      "name": "pending-close",
+      "result": [
+        2,
+        14
+      ],
+      "summary": {
+        "publications": [],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [
+          14
+        ],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2177
+          }
+        },
+        "clock_calls": 1
+      }
+    },
+    {
+      "name": "existing-plan",
+      "result": [
+        2,
+        17
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": -17,
+            "published": false
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 25,
+            "sha256": "ce9efc1752232cc05167221d650d2fb024f45eb8efd8bcbb05bf5344110e2286",
+            "hex": "6f726967696e616c20706c616e206d7573742072656d61696e",
+            "dev": 9,
+            "ino": 2187
+          },
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2189
+          },
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "28869dbae7c5d660c443a207773db8f8ce090ddded32fcc81efbb31c522ec940",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb4010000000000000009000000000000008d0800000000000000000000000000000000000000000000000000000000000000000000000000000000000040b69808",
+            "dev": 9,
+            "ino": 2190
+          }
+        },
+        "clock_calls": 2
+      }
+    },
+    {
+      "name": "publish-race",
+      "result": [
+        2,
+        17
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": -17,
+            "published": false
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2201
+          },
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "f069b2c13dc7543a73856d7dca26bee7c1a602710e745704052bbfd483011d5e",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb40100000000000000090000000000000099080000000000000000000000000000000000000000000000000000000000000000000000000000000000002bdb286f",
+            "dev": 9,
+            "ino": 2202
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 23,
+            "sha256": "3b922061c60c4442a7a7d778a69287fcda39d99252f92caab2c3f2731ace3ff6",
+            "hex": "726163696e6720706c616e206d7573742072656d61696e",
+            "dev": 9,
+            "ino": 2203
+          }
+        },
+        "clock_calls": 2
+      }
+    },
+    {
+      "name": "rename-unsupported",
+      "result": [
+        2,
+        17
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": -38,
+            "published": false
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2214
+          },
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "349a407f05d4c4904fb390b0ec2f63013f4b8bd343cac6c7b037e1c73be83db4",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000a608000000000000000000000000000000000000000000000000000000000000000000000000000000000000302480b9",
+            "dev": 9,
+            "ino": 2215
+          }
+        },
+        "clock_calls": 2
+      }
+    },
+    {
+      "name": "post-publish-corrupt",
+      "result": [
+        2,
+        18
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": 0,
+            "published": true,
+            "dev": 9,
+            "ino": 2226
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "0f565d5225b530f27403d36ad3de42592591dd614f8c7989cb136da21ad1132c",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000b2080000000000000000000000000000000000000000000000000000000000000000000000000000000000005b4930de",
+            "dev": 9,
+            "ino": 2227
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "8dbf9a606c96cbd2ea3c3e4d41d2f7d4681c1f3a08c4b1ca8f9dc7bd4723af7a",
+            "hex": "475833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2226
+          }
+        },
+        "clock_calls": 2
+      }
+    },
+    {
+      "name": "post-publish-inode",
+      "result": [
+        2,
+        18
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": 0,
+            "published": true,
+            "dev": 9,
+            "ino": 2238
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "adb9dae6b23b5774651c102ef7c187d515cfca24f45967ccd738d96d0cacab6a",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000be08000000000000000000000000000000000000000000000000000000000000000000000000000000000000826da0fc",
+            "dev": 9,
+            "ino": 2239
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2240
+          }
+        },
+        "clock_calls": 2
+      }
+    },
+    {
+      "name": "post-publish-root-close",
+      "result": [
+        2,
+        20
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": 0,
+            "published": true,
+            "dev": 9,
+            "ino": 2251
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [
+          12
+        ],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "92102cc1f7f4f23bf0c60c160a8afa377f1dd54a7295a9c4e93aeeb70d74f267",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000cb080000000000000000000000000000000000000000000000000000000000000000000000000000000000000218c87e",
+            "dev": 9,
+            "ino": 2252
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2251
+          }
+        },
+        "clock_calls": 2
+      }
+    },
+    {
+      "name": "expire-after-publish",
+      "result": [
+        2,
+        21
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": 0,
+            "published": true,
+            "dev": 9,
+            "ino": 2263
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "6326c7a137a4660ac8b72803ed683c2a6353f418c8b6214681283cf11a422e77",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000d70800000000000000000000000000000000000000000000000000000000000000000000000000000000000038b04893",
+            "dev": 9,
+            "ino": 2264
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2263
+          }
+        },
+        "clock_calls": 3
+      }
+    },
+    {
+      "name": "expire-during-final-close",
+      "result": [
+        2,
+        21
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": 0,
+            "published": true,
+            "dev": 9,
+            "ino": 2275
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "6d324fd1c5392f93e00605daf747be5d1cf37bc2f5d3c7804ad707705b4cc481",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000e308000000000000000000000000000000000000000000000000000000000000000000000000000000000000d4c2a8b1",
+            "dev": 9,
+            "ino": 2276
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2275
+          }
+        },
+        "clock_calls": 3
+      }
+    },
+    {
+      "name": "worker-start-handoff",
+      "result": [
+        1,
+        0
+      ],
+      "summary": {
+        "publications": [
+          {
+            "result": 0,
+            "published": true,
+            "dev": 9,
+            "ino": 2287
+          }
+        ],
+        "forbidden_syscalls": [],
+        "created_modes": [
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/plan.pending",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          },
+          {
+            "path": "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged",
+            "requested": 384,
+            "actual": 384,
+            "access": 2
+          }
+        ],
+        "remaining_new_FDs": [
+          23,
+          24
+        ],
+        "files": {
+          "/tmp_wbshd/fx3-plan-preparation-v1/prepare.staged": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "6e8031a519c3e4b35a9fb2b15c704b5cc52eafe91954d8f5979d9de892d4af92",
+            "hex": "4658335052455053544147454431000001000000010000004101000009030000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000a02484e647618c54352904b15aa9d64445e6050a6772a5281cf2fd7f0ac27cb401000000000000000900000000000000ef080000000000000000000000000000000000000000000000000000000000000000000000000000000000000de63893",
+            "dev": 9,
+            "ino": 2288
+          },
+          "/tmp_wbshd/fx3-entry-plan-v1.bin": {
+            "mode": 384,
+            "bytes": 256,
+            "sha256": "b3a33f2db28ce47a1fe35e81430120defc7fd7f064e058a46461ba80b64bb779",
+            "hex": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddc711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ece8cd9a3b00000000e825e2330e000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000088778489",
+            "dev": 9,
+            "ino": 2287
+          }
+        },
+        "clock_calls": 3
+      }
+    }
+  ],
+  "debug": [
+    {
+      "name": "normal",
+      "errors": [],
+      "trace": [
+        63,
+        80,
+        57,
+        113,
+        276,
+        56,
+        44,
+        80,
+        63,
+        63,
+        80,
+        57,
+        57,
+        57,
+        113
+      ]
+    },
+    {
+      "name": "wrong-parent",
+      "errors": [],
+      "trace": [
+        175,
+        56,
+        80,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        57
+      ]
+    },
+    {
+      "name": "image-file",
+      "errors": [],
+      "trace": [
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        57
+      ]
+    },
+    {
+      "name": "bad-loaded-config",
+      "errors": [],
+      "trace": [
+        56,
+        80,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        80,
+        57
+      ]
+    },
+    {
+      "name": "bad-loaded-RO",
+      "errors": [],
+      "trace": [
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        80,
+        57,
+        56,
+        80,
+        63,
+        63,
+        57
+      ]
+    },
+    {
+      "name": "non-RAM",
+      "errors": [],
+      "trace": [
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        80,
+        57,
+        56,
+        44,
+        57
+      ]
+    },
+    {
+      "name": "unsafe-root",
+      "errors": [],
+      "trace": [
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        80,
+        57,
+        56,
+        44,
+        80,
+        57
+      ]
+    },
+    {
+      "name": "claim-mode",
+      "errors": [],
+      "trace": [
+        63,
+        63,
+        63,
+        63,
+        80,
+        57,
+        56,
+        44,
+        80,
+        34,
+        56,
+        44,
+        80,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "restrictive-mode",
+      "errors": [],
+      "trace": [
+        57,
+        56,
+        44,
+        80,
+        34,
+        56,
+        44,
+        80,
+        113,
+        56,
+        44,
+        80,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "clock-invalid",
+      "errors": [],
+      "trace": [
+        63,
+        63,
+        63,
+        80,
+        57,
+        56,
+        44,
+        80,
+        34,
+        56,
+        44,
+        80,
+        113,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "expired-before-publish",
+      "errors": [],
+      "trace": [
+        178,
+        56,
+        44,
+        80,
+        64,
+        82,
+        80,
+        62,
+        63,
+        63,
+        80,
+        57,
+        113,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "clock-backwards",
+      "errors": [],
+      "trace": [
+        178,
+        56,
+        44,
+        80,
+        64,
+        82,
+        80,
+        62,
+        63,
+        63,
+        80,
+        57,
+        113,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "short-plan-write",
+      "errors": [],
+      "trace": [
+        56,
+        44,
+        80,
+        34,
+        56,
+        44,
+        80,
+        113,
+        56,
+        44,
+        80,
+        64,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "plan-fsync",
+      "errors": [],
+      "trace": [
+        44,
+        80,
+        34,
+        56,
+        44,
+        80,
+        113,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "plan-readback",
+      "errors": [],
+      "trace": [
+        44,
+        80,
+        113,
+        56,
+        44,
+        80,
+        64,
+        82,
+        80,
+        62,
+        63,
+        63,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "report-write",
+      "errors": [],
+      "trace": [
+        80,
+        62,
+        63,
+        63,
+        80,
+        57,
+        172,
+        178,
+        56,
+        44,
+        80,
+        64,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "pending-close",
+      "errors": [],
+      "trace": [
+        80,
+        113,
+        56,
+        44,
+        80,
+        64,
+        82,
+        80,
+        62,
+        63,
+        63,
+        80,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "existing-plan",
+      "errors": [],
+      "trace": [
+        56,
+        44,
+        80,
+        64,
+        82,
+        80,
+        62,
+        63,
+        63,
+        80,
+        57,
+        113,
+        276,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "publish-race",
+      "errors": [],
+      "trace": [
+        56,
+        44,
+        80,
+        64,
+        82,
+        80,
+        62,
+        63,
+        63,
+        80,
+        57,
+        113,
+        276,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "rename-unsupported",
+      "errors": [],
+      "trace": [
+        56,
+        44,
+        80,
+        64,
+        82,
+        80,
+        62,
+        63,
+        63,
+        80,
+        57,
+        113,
+        276,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "post-publish-corrupt",
+      "errors": [],
+      "trace": [
+        62,
+        63,
+        63,
+        80,
+        57,
+        113,
+        276,
+        56,
+        44,
+        80,
+        63,
+        63,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "post-publish-inode",
+      "errors": [],
+      "trace": [
+        82,
+        80,
+        62,
+        63,
+        63,
+        80,
+        57,
+        113,
+        276,
+        56,
+        44,
+        80,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "post-publish-root-close",
+      "errors": [],
+      "trace": [
+        63,
+        63,
+        80,
+        57,
+        113,
+        276,
+        56,
+        44,
+        80,
+        63,
+        63,
+        80,
+        57,
+        57,
+        57
+      ]
+    },
+    {
+      "name": "expire-after-publish",
+      "errors": [],
+      "trace": [
+        63,
+        80,
+        57,
+        113,
+        276,
+        56,
+        44,
+        80,
+        63,
+        63,
+        80,
+        57,
+        57,
+        57,
+        113
+      ]
+    },
+    {
+      "name": "expire-during-final-close",
+      "errors": [],
+      "trace": [
+        63,
+        80,
+        57,
+        113,
+        276,
+        56,
+        44,
+        80,
+        63,
+        63,
+        80,
+        57,
+        57,
+        57,
+        113
+      ]
+    },
+    {
+      "name": "worker-start-handoff",
+      "errors": [],
+      "trace": [
+        63,
+        80,
+        57,
+        113,
+        276,
+        56,
+        44,
+        80,
+        63,
+        63,
+        80,
+        57,
+        57,
+        57,
+        113
+      ]
+    }
+  ],
+  "source_hashes": {
+    "prepare.c": "f46fb6ba33f931008f692a6dc8261b2439b75f832a781191d9d170a61d8ad9f3",
+    "prepare_build.py": "8d8a832af549361cf200f23d2195b209d1c70ec0289dd4888b3e0936123c4ee9",
+    "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+    "parent_ipc.inc": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044",
+    "model_prepare.py": "2cf06a6a5f2a77aab9d5372ef4cd820e3d91f141a3b19a502601e5b52312acd0",
+    "test_prepare.py": "ab0b46d2aedf9ed3bb4f3adc32a19940f7b806b12101f0701fb19b7a45c92768"
+  },
+  "only_own_ARM64_executed": true,
+  "actual_Linux_processes_or_threads_created": false,
+  "original_Sony_Linux_or_glibc_executed": false,
+  "new_device_operations": 0,
+  "boot_device_card_or_recording_source_reads": 0,
+  "actual_tmpfs_renameat2_loader_body_or_host_transport_verified": false,
+  "synthetic_association_fields_only": true,
+  "START_to_OBSERVE_transition_implemented": false,
+  "full_boot_worker_integrated": false,
+  "first_flash_released": false,
+  "goal_complete": false
+}

@@ -1,0 +1,386 @@
+{
+  "serial_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-e2699e9d/serial.log",
+  "serial_sha256": "4ad839a286f692e470d6aa29b138e54ce73256d1d596f51bcc86159116055f13",
+  "steps": [
+    {
+      "step": 1,
+      "key": 427,
+      "native_down_up_done_verified": true,
+      "original_lines": [
+        {
+          "line": 42551,
+          "raw_latin1": "FX3_SYNTH_KEY step=1 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=53931604000 host_gate=1\r\n"
+        },
+        {
+          "line": 42553,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=27948190000 wait_return_ns=53930890000 wait_enter_step=0 wait_return_step=1 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 42626,
+          "raw_latin1": "FX3_SYNTH_KEY step=1 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=54056203008 host_gate=1\r\n"
+        },
+        {
+          "line": 42632,
+          "raw_latin1": "FX3_KEY95_STEP_DONE step=1 key=0x1ab requested_hold_ms=100 measured_down_up_ns=130610000 elapsed_ns=138284992 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+        },
+        {
+          "line": 42639,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=53945343008 wait_return_ns=54055367008 wait_enter_step=1 wait_return_step=1 tid=261 downstream_processing_unproven=1\r\n"
+        }
+      ],
+      "screenshot": {
+        "status": "qualified_screenshot_for_operator_review",
+        "validated_new_screenshot": true,
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341/step-01-attempt-01/capture/menu-reference-page.png",
+        "screenshot_file_sha256": "5a9c813b5dad7b2a12de8f01e26566c788ddec32516bb1420e87aa1972ffe25e",
+        "firmware_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "firmware_generation": 27,
+        "firmware_sequence": 158,
+        "firmware_step": 1,
+        "step": 1,
+        "attempt_number": 1,
+        "attempt_id": "e1297349-a5e9-43ac-8b77-f74171756ef8",
+        "nonce": "058f913e-b137-4429-8cf0-0ad21c57d634",
+        "UTC": "2026-11-05T00:55:51.600666+00:00",
+        "host_ns": 423837128166500
+      },
+      "actual_visual_judgement": {
+        "target": "已实际查看本步新PNG：完整Setup > Area/Date 45/59，橙色选中Area/Date/Time Setting，上方Language English，下方NTSC/PAL Selector；步骤1语义符合。",
+        "semantic_passed": true,
+        "source": "operation_agent_explicit_screenshot_review",
+        "model_received_at": "unknown",
+        "model_review_completed_at": "unknown",
+        "UTC": "2026-11-05T00:55:58.473533+00:00",
+        "host_ns": 423844001017041
+      },
+      "confirm_status": "confirmed_and_cancelled",
+      "complete": true
+    },
+    {
+      "step": 2,
+      "key": 3,
+      "native_down_up_done_verified": true,
+      "original_lines": [
+        {
+          "line": 67530,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=2 key=0x3 status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=54153679008 wait_return_ns=72141100000 wait_enter_step=1 wait_return_step=2 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 67535,
+          "raw_latin1": "FX3_SYNTH_KEY step=2 key=0x3 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=72145398000 host_gate=1\r\n"
+        },
+        {
+          "line": 67709,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=2 key=0x3 status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=72149804000 wait_return_ns=72266919008 wait_enter_step=2 wait_return_step=2 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 67711,
+          "raw_latin1": "FX3_SYNTH_KEY step=2 key=0x3 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=72268438000 host_gate=1\r\n"
+        },
+        {
+          "line": 67712,
+          "raw_latin1": "FX3_KEY95_STEP_DONE step=2 key=0x3 requested_hold_ms=100 measured_down_up_ns=120993008 elapsed_ns=133608992 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+        }
+      ],
+      "screenshot": {
+        "status": "qualified_screenshot_for_operator_review",
+        "validated_new_screenshot": true,
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341/step-02-attempt-02/capture/menu-reference-page.png",
+        "screenshot_file_sha256": "6f1b8cdb4acda44d2bf6b6ce4f0d00af4f1c73125d9c200b93e8d20a999aca4a",
+        "firmware_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+        "firmware_generation": 28,
+        "firmware_sequence": 300,
+        "firmware_step": 2,
+        "step": 2,
+        "attempt_number": 2,
+        "attempt_id": "d40e90b6-9e52-4893-a62c-3f8a5c0940f4",
+        "nonce": "ac612b76-1de5-48b6-bfb9-ea3a8a687399",
+        "UTC": "2026-11-05T00:56:07.553320+00:00",
+        "host_ns": 423853080789500
+      },
+      "actual_visual_judgement": {
+        "target": "已实际查看本步新PNG：Setup > Area/Date，橙色光标上移到Language，右侧English；步骤2语义符合。",
+        "semantic_passed": true,
+        "source": "operation_agent_explicit_screenshot_review",
+        "model_received_at": "unknown",
+        "model_review_completed_at": "unknown",
+        "UTC": "2026-11-05T00:56:14.236164+00:00",
+        "host_ns": 423859763622833
+      },
+      "confirm_status": "confirmed_and_cancelled",
+      "complete": true
+    },
+    {
+      "step": 3,
+      "key": 504,
+      "native_down_up_done_verified": true,
+      "original_lines": [
+        {
+          "line": 81689,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=3 key=0x1f8 status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=72276942000 wait_return_ns=87260595008 wait_enter_step=2 wait_return_step=3 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 81697,
+          "raw_latin1": "FX3_SYNTH_KEY step=3 key=0x1f8 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=87268110000 host_gate=1\r\n"
+        },
+        {
+          "line": 81931,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=3 key=0x1f8 status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=87274682000 wait_return_ns=87415161008 wait_enter_step=3 wait_return_step=3 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 81933,
+          "raw_latin1": "FX3_SYNTH_KEY step=3 key=0x1f8 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=87417207008 host_gate=1\r\n"
+        },
+        {
+          "line": 81934,
+          "raw_latin1": "FX3_KEY95_STEP_DONE step=3 key=0x1f8 requested_hold_ms=100 measured_down_up_ns=146136000 elapsed_ns=180940992 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+        }
+      ],
+      "screenshot": {
+        "status": "qualified_screenshot_for_operator_review",
+        "validated_new_screenshot": true,
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341/step-03-attempt-03/capture/menu-reference-page.png",
+        "screenshot_file_sha256": "bc63676bb720863ced5513542c51fc0cf726d24a9c1d6f613629463c88b20c8c",
+        "firmware_png_sha256": "74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808",
+        "firmware_generation": 29,
+        "firmware_sequence": 492,
+        "firmware_step": 3,
+        "step": 3,
+        "attempt_number": 3,
+        "attempt_id": "4a23ddb2-ed96-41b3-a83d-cefc5730ce79",
+        "nonce": "85637cd5-f13b-4d47-b22e-cb01db48bd54",
+        "UTC": "2026-11-05T00:56:22.254852+00:00",
+        "host_ns": 423867782298708
+      },
+      "actual_visual_judgement": {
+        "target": "已实际查看本步新PNG：Language帮助页，橙色Language标题，正文Selects the display language.，右下OK；步骤3语义符合。",
+        "semantic_passed": true,
+        "source": "operation_agent_explicit_screenshot_review",
+        "model_received_at": "unknown",
+        "model_review_completed_at": "unknown",
+        "UTC": "2026-11-05T00:56:28.807667+00:00",
+        "host_ns": 423874335101958
+      },
+      "confirm_status": "confirmed_and_cancelled",
+      "complete": true
+    },
+    {
+      "step": 4,
+      "key": 427,
+      "native_down_up_done_verified": true,
+      "original_lines": [
+        {
+          "line": 102496,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=4 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=87424858000 wait_return_ns=103657509008 wait_enter_step=3 wait_return_step=4 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 102501,
+          "raw_latin1": "FX3_SYNTH_KEY step=4 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=103663422000 host_gate=1\r\n"
+        },
+        {
+          "line": 102567,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=4 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=103661966000 wait_return_ns=103802074000 wait_enter_step=4 wait_return_step=4 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 102571,
+          "raw_latin1": "FX3_SYNTH_KEY step=4 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=103807059008 host_gate=1\r\n"
+        },
+        {
+          "line": 102572,
+          "raw_latin1": "FX3_KEY95_STEP_DONE step=4 key=0x1ab requested_hold_ms=100 measured_down_up_ns=141803008 elapsed_ns=170590992 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+        }
+      ],
+      "screenshot": {
+        "status": "qualified_screenshot_for_operator_review",
+        "validated_new_screenshot": true,
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341/step-04-attempt-04/capture/menu-reference-page.png",
+        "screenshot_file_sha256": "6fc474548aa7ee6649f36e7ed3b3a77aa7222eefb4f9b4f0579ef963e1aaf77d",
+        "firmware_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+        "firmware_generation": 30,
+        "firmware_sequence": 687,
+        "firmware_step": 4,
+        "step": 4,
+        "attempt_number": 4,
+        "attempt_id": "c9ab9acf-86ab-4ae3-914f-3648ad0fe734",
+        "nonce": "c6576e0d-730b-4e93-9192-1b35d903aa79",
+        "UTC": "2026-11-05T00:56:39.417221+00:00",
+        "host_ns": 423884944637375
+      },
+      "actual_visual_judgement": {
+        "target": "已实际查看本步新PNG：帮助页关闭，返回完整Setup > Area/Date 45/59，橙色Language且值English；步骤4语义符合。",
+        "semantic_passed": true,
+        "source": "operation_agent_explicit_screenshot_review",
+        "model_received_at": "unknown",
+        "model_review_completed_at": "unknown",
+        "UTC": "2026-11-05T00:56:45.961456+00:00",
+        "host_ns": 423891488860458
+      },
+      "confirm_status": "confirmed_and_cancelled",
+      "complete": true
+    },
+    {
+      "step": 5,
+      "key": 428,
+      "native_down_up_done_verified": true,
+      "original_lines": [
+        {
+          "line": 115098,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=5 key=0x1ac status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=103808548000 wait_return_ns=119702098000 wait_enter_step=4 wait_return_step=5 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 115114,
+          "raw_latin1": "FX3_SYNTH_KEY step=5 key=0x1ac status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=119718392000 host_gate=1\r\n"
+        },
+        {
+          "line": 115161,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=5 key=0x1ac status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=119709075008 wait_return_ns=119829889008 wait_enter_step=5 wait_return_step=5 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 115166,
+          "raw_latin1": "FX3_SYNTH_KEY step=5 key=0x1ac status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=119837132000 host_gate=1\r\n"
+        },
+        {
+          "line": 115167,
+          "raw_latin1": "FX3_KEY95_STEP_DONE step=5 key=0x1ac requested_hold_ms=100 measured_down_up_ns=115532000 elapsed_ns=139202000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+        }
+      ],
+      "screenshot": {
+        "status": "qualified_screenshot_for_operator_review",
+        "validated_new_screenshot": true,
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341/step-05-attempt-05/capture/menu-reference-page.png",
+        "screenshot_file_sha256": "d668eda22af21a55c869aea56698027d53a1f0a20b40e28d758bd7e0f2a909a7",
+        "firmware_png_sha256": "5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7",
+        "firmware_generation": 31,
+        "firmware_sequence": 909,
+        "firmware_step": 5,
+        "step": 5,
+        "attempt_number": 5,
+        "attempt_id": "9dc31894-6ab8-415d-8cfa-052fd8e9efff",
+        "nonce": "968bd401-2f34-4a48-978b-78eefddc8247",
+        "UTC": "2026-11-05T00:56:56.089838+00:00",
+        "host_ns": 423901617226375
+      },
+      "actual_visual_judgement": {
+        "target": "已实际查看本步新PNG：Language列表打开，English为橙色当前项并有选中圆点，其下日本語、Français、Deutsch、Italiano、Español；仅查看，未选其它值，步骤5符合。",
+        "semantic_passed": true,
+        "source": "operation_agent_explicit_screenshot_review",
+        "model_received_at": "unknown",
+        "model_review_completed_at": "unknown",
+        "UTC": "2026-11-05T00:57:03.879500+00:00",
+        "host_ns": 423909406874500
+      },
+      "confirm_status": "confirmed_and_cancelled",
+      "complete": true
+    },
+    {
+      "step": 6,
+      "key": 427,
+      "native_down_up_done_verified": true,
+      "original_lines": [
+        {
+          "line": 128559,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=6 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=119861569008 wait_return_ns=136613845008 wait_enter_step=5 wait_return_step=6 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 128563,
+          "raw_latin1": "FX3_SYNTH_KEY step=6 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=136615644000 host_gate=1\r\n"
+        },
+        {
+          "line": 128656,
+          "raw_latin1": "FX3_SYNTH_KEY step=6 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=136746767008 host_gate=1\r\n"
+        },
+        {
+          "line": 128657,
+          "raw_latin1": "FX3_KEY95_STEP_DONE step=6 key=0x1ab requested_hold_ms=100 measured_down_up_ns=105948000 elapsed_ns=139369008 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+        },
+        {
+          "line": 128658,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=6 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=136636055008 wait_return_ns=136747799008 wait_enter_step=6 wait_return_step=6 tid=261 downstream_processing_unproven=1\r\n"
+        }
+      ],
+      "screenshot": {
+        "status": "qualified_screenshot_for_operator_review",
+        "validated_new_screenshot": true,
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341/step-06-attempt-06/capture/menu-reference-page.png",
+        "screenshot_file_sha256": "9abec399e881ef76bf8ecf79a2cbd32e2ab06b78781ff02e741ca7fb0bd485a2",
+        "firmware_png_sha256": "c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2",
+        "firmware_generation": 32,
+        "firmware_sequence": 1139,
+        "firmware_step": 6,
+        "step": 6,
+        "attempt_number": 6,
+        "attempt_id": "efd0f47d-7072-4535-876e-2b7394dbbe18",
+        "nonce": "652328fb-38b4-41e2-a467-18282da1c8fd",
+        "UTC": "2026-11-05T00:57:11.635265+00:00",
+        "host_ns": 423917162628833
+      },
+      "actual_visual_judgement": {
+        "target": "已实际查看本步新PNG：Language列表取消关闭，返回Setup > Area/Date，橙色Language且值仍English；步骤6语义符合。",
+        "semantic_passed": true,
+        "source": "operation_agent_explicit_screenshot_review",
+        "model_received_at": "unknown",
+        "model_review_completed_at": "unknown",
+        "UTC": "2026-11-05T00:57:18.029699+00:00",
+        "host_ns": 423923557050166
+      },
+      "confirm_status": "confirmed_and_cancelled",
+      "complete": true
+    },
+    {
+      "step": 7,
+      "key": 427,
+      "native_down_up_done_verified": true,
+      "original_lines": [
+        {
+          "line": 139522,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=7 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=136772893008 wait_return_ns=150780128000 wait_enter_step=6 wait_return_step=7 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 139527,
+          "raw_latin1": "FX3_SYNTH_KEY step=7 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=150789794000 host_gate=1\r\n"
+        },
+        {
+          "line": 139597,
+          "raw_latin1": "FX3_KEY_INPUT_RECV step=7 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=150788848000 wait_return_ns=150903079008 wait_enter_step=7 wait_return_step=7 tid=261 downstream_processing_unproven=1\r\n"
+        },
+        {
+          "line": 139602,
+          "raw_latin1": "FX3_SYNTH_KEY step=7 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=150909279008 host_gate=1\r\n"
+        },
+        {
+          "line": 139603,
+          "raw_latin1": "FX3_KEY95_STEP_DONE step=7 key=0x1ab requested_hold_ms=100 measured_down_up_ns=113477008 elapsed_ns=133036000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1\r\n"
+        }
+      ],
+      "screenshot": {
+        "status": "qualified_screenshot_for_operator_review",
+        "validated_new_screenshot": true,
+        "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341/step-07-attempt-07/capture/menu-reference-page.png",
+        "screenshot_file_sha256": "a8a01fd0012c2d101a72a10058cbc8b2a23d75610aaae03e55a659550a15fc1e",
+        "firmware_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+        "firmware_generation": 33,
+        "firmware_sequence": 1373,
+        "firmware_step": 7,
+        "step": 7,
+        "attempt_number": 7,
+        "attempt_id": "653a7fa5-d637-4be8-a741-a1abc826b441",
+        "nonce": "5189c742-1652-4833-847a-bf907a61ca5a",
+        "UTC": "2026-11-05T00:57:25.916174+00:00",
+        "host_ns": 423931443512291
+      },
+      "actual_visual_judgement": {
+        "target": "已实际查看本步新PNG：完整菜单关闭，恢复黑底待机，HD Fixed-59.94fps、NO CARD、AF-C、AWB等图标，无菜单；步骤7语义符合。",
+        "semantic_passed": true,
+        "source": "operation_agent_explicit_screenshot_review",
+        "model_received_at": "unknown",
+        "model_review_completed_at": "unknown",
+        "UTC": "2026-11-05T00:57:35.148506+00:00",
+        "host_ns": 423940675828916
+      },
+      "confirm_status": "refused",
+      "complete": false
+    }
+  ],
+  "raw_line_subset_sha256": "1acd82b78cf8003a770c62196d9e03176796b8252da69648ad723b16f5ab5e29",
+  "raw_serial_retained": true
+}

@@ -1,0 +1,23 @@
+{
+  "status": "CURRENT_ASSEMBLY_REPLAY_MATCHES",
+  "changes": {
+    "parent.c": {
+      "seed_sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5",
+      "current_sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5",
+      "difference": ""
+    },
+    "collector.c": {
+      "seed_sha256": "175c95310663f7b2388d7ac9a0a0bc668af86044ca332a71dfc8f7659bea345e",
+      "current_sha256": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b",
+      "difference": "--- seed/collector.c\n+++ current/collector.c\n@@ -15,7 +15,7 @@\n static void p32(u8 *p,u32 v){for(u32 i=0;i<4;i++)p[i]=(u8)(v>>(8*i));}\n static u32 g32(const u8 *p){u32 v=0;for(u32 i=0;i<4;i++)v|=(u32)p[i]<<(8*i);return v;}\n static u64 g64(const u8 *p){u64 v=0;for(u32 i=0;i<8;i++)v|=(u64)p[i]<<(8*i);return v;}\n-static int tick(u64 *out){long t[2]={0,0};if(sc(113,1,(long)t,0,0,0,0)||t[0]<0||t[1]<0||t[1]>=1000000000L)return 0;*out=(u64)t[0]*collector_job.issued+(u64)t[1];return 1;}\n+static int tick(u64 *out){long t[2]={0,0};if(sc(113,1,(long)t,0,0,0,0)||t[0]<0||t[1]<0||t[1]>=1000000000L)return 0;*out=(u64)t[0]*1000000000ULL+(u64)t[1];return 1;}\n static void sleep10(void){long t[2]={0,10000000};(void)sc(101,(long)t,0,0,0,0,0);}\n static int close1(long *fd){if(*fd<0)return 1;long x=*fd;*fd=-1;return sc(57,x,0,0,0,0,0)==0;}\n static void die(long code){sc(93,code,0,0,0,0,0);for(;;){}}\n"
+    },
+    "assemble_source.py": {
+      "seed_sha256": "ebe62f1589250b462d574e727a9e2307dd190fd4a39f4bbbbbcf4f06ebf4340a",
+      "current_sha256": "ecb88cd82dff7abc5cdc16f76eba740d3d45a2fed8fb32f6dcd11c51496ad1d8",
+      "difference": "--- seed/assemble_source.py\n+++ current/assemble_source.py\n@@ -1,5 +1,6 @@\n \"\"\"Compose reviewed OWN receiver/collector pieces, no original-code execution.\"\"\"\n from pathlib import Path\n+import sys\n from hashlib import sha256\n import json\n H=Path(__file__).resolve().parent;B=H.parent;R=H.parents[2];P=B/'stage239-parent-SCM-anchor-receiver'\n@@ -29,11 +30,11 @@\n for start in ['static void p64(', 'static u32 crc(']:\n  a=collector.index(start);z=collector.index('\\n',a);collector=collector[:a]+collector[z+1:]\n collector=collector.replace('!=321','!=(long)collector_job.parent_pid').replace('status_guard(self,321)','status_guard(self,(long)collector_job.parent_pid)')\n-collector=collector.replace('3000000000ULL','collector_job.expires').replace('1000000000ULL','collector_job.issued')\n+collector=collector.replace('3000000000ULL','collector_job.expires').replace('begun<1000000000ULL','begun<collector_job.issued')\n collector=replace(collector,'__attribute__((visibility(\"default\"))) int fx3_isolated_collector_core(void){','__attribute__((visibility(\"hidden\"))) int fx3_isolated_collector_core(long incoming,const struct bridge_job *job){\\n bj_copy(&collector_job,job,sizeof(collector_job));')\n collector=replace(collector,'long channel=53,anchor=','long channel=incoming,anchor=')\n collector=replace(collector,'recv1(channel,321,hello)','recv1(channel,(long)collector_job.parent_pid,hello)')\n-out={'parent.c':parent,'collector.c':collector}\n-for n,s in out.items():(H/n).open('x').write(s)\n-(H/'source-assembly.json').open('x').write(json.dumps(dict(inputs={n:dict(path=str((P/n).relative_to(R)),sha256=pins[n]) for n in pins},outputs={n:sha256(s.encode()).hexdigest() for n,s in out.items()},own_sources_only=True,changes=['runtime job and packetv3','runtime caller/FD/expiry','parent restores saved mask only after exact sentinel','explicit channel handoff ownership']),indent=2)+'\\n')\n+out={'parent.c':parent,'collector.c':collector};dest=Path(sys.argv[1]) if len(sys.argv)>1 else H\n+for n,s in out.items():(dest/n).open('x').write(s)\n+(dest/'source-assembly.json').open('x').write(json.dumps(dict(inputs={n:dict(path=str((P/n).relative_to(R)),sha256=pins[n]) for n in pins},outputs={n:sha256(s.encode()).hexdigest() for n,s in out.items()},own_sources_only=True,changes=['runtime job and packetv3','runtime caller/FD/expiry','parent restores saved mask only after exact sentinel','explicit channel handoff ownership']),indent=2)+'\\n')\n print('assembled parent and collector from pinned OWN sources')\n"
+    }
+  },
+  "original_source_assembly_json_is_seed_not_current_output_record": true,
+  "clock_unit_conversion_seed_bug_corrected_before_first_build": true,
+  "current_assembly_receipt": "assembly-replay-receipt.json"
+}

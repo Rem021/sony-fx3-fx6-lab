@@ -1,0 +1,22 @@
+{
+  "schema": "fx6-map-snapshot-protocol-tests-v1",
+  "status": "PASS_OFFLINE_C_PROTOCOL",
+  "tests": 13,
+  "cases": [
+    "c_reader_compiles_stdlib_only",
+    "c_single_read_fixture_decodes_with_digest_and_lines",
+    "console_noise_ignored_not_stitched",
+    "mixed_pid_frames_rejected",
+    "missing_end_rejected",
+    "data_out_of_order_rejected",
+    "digest_mismatch_rejected",
+    "length_mismatch_rejected",
+    "cap_overflow_rejected",
+    "unterminated_maps_rejected",
+    "old_real_log_source_rejected_not_protocol_success",
+    "identity_change_rejected",
+    "duplicate_conflict_rejected"
+  ],
+  "c_source_sha256": "000ea65d2cec8a4b5815ac2e4463054c7eb530be73be5b62a1564e6aefdcd351",
+  "fixture_sha256": "715f83a3578e3eff9032ede50143387ee7d7359f12fed7e3f074cebd42908e9a"
+}

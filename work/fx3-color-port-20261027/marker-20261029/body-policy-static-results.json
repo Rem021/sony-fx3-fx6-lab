@@ -1,0 +1,1870 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+  "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+  "functions": [
+    {
+      "va": "0x13138",
+      "label": "Updater::BaseKeyTag::Extract(Updater::BodyInformation*, Updater::PackedFirmwareBuffer*, Updater::NewFirmwareFileInformation_t const&)",
+      "bytes": 204,
+      "sha256": "638018e916f84426cf6e768686078ddff698d83a8e74ab097bbbd30c1ce5d5a3",
+      "literals": [
+        {
+          "site": "0x131bc",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x131c4",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x13188",
+          "target": "0x10650",
+          "label": "Updater::NewFirmwareFile::NewFirmwareFile(Updater::NewFirmwareFileInformation_t)"
+        },
+        {
+          "site": "0x13198",
+          "target": "0xfe70",
+          "label": "Updater::BaseNewFirmwareFile::Extract(Updater::PackedFirmwareBuffer*, Updater::XmlConfigHandler*)"
+        },
+        {
+          "site": "0x131cc",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x131d4",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x13200",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        }
+      ],
+      "disassembly": "body-policy-fragments/13138.txt"
+    },
+    {
+      "va": "0x1444c",
+      "label": "Updater::PartitionImageKeyTag::Extract(Updater::BodyInformation*, Updater::PackedFirmwareBuffer*, Updater::NewFirmwareFileInformation_t const&)",
+      "bytes": 368,
+      "sha256": "e7bc0ea53503c3af3b5eec1f82856de2f9938dda736fc1d6d73c68a7d61ba022",
+      "literals": [
+        {
+          "site": "0x14554",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x1455c",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x14484",
+          "target": "0x1454c",
+          "label": null
+        },
+        {
+          "site": "0x14490",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x14498",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x144a4",
+          "target": "0xfec0",
+          "label": "Updater::StringHandler::GetSize() const"
+        },
+        {
+          "site": "0x144b4",
+          "target": "0x100a0",
+          "label": "Updater::StringHandler::SetString(char const*, unsigned long)"
+        },
+        {
+          "site": "0x144fc",
+          "target": "0x10370",
+          "label": "Updater::NewFirmwareImageFile::NewFirmwareImageFile(Updater::NewFirmwareFileInformation_t)"
+        },
+        {
+          "site": "0x1450c",
+          "target": "0xfe70",
+          "label": "Updater::BaseNewFirmwareFile::Extract(Updater::PackedFirmwareBuffer*, Updater::XmlConfigHandler*)"
+        },
+        {
+          "site": "0x14510",
+          "target": "0x14598",
+          "label": null
+        },
+        {
+          "site": "0x1451c",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x14524",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x14534",
+          "target": "0xfec0",
+          "label": "Updater::StringHandler::GetSize() const"
+        },
+        {
+          "site": "0x14560",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x14568",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x14594",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x145a0",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        }
+      ],
+      "disassembly": "body-policy-fragments/1444c.txt"
+    },
+    {
+      "va": "0x14234",
+      "label": "Updater::UpdaterKeyTag::Extract(Updater::BodyInformation*, Updater::PackedFirmwareBuffer*, Updater::NewFirmwareFileInformation_t const&)",
+      "bytes": 536,
+      "sha256": "2516e073e97eef1f9cc7c7c7f15c2b79526a0eae11b2aaf376c648fa3f084ad3",
+      "literals": [
+        {
+          "site": "0x14364",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x14368",
+          "va": "0x1bbb3",
+          "text": "UdrAPI,%d,%s:%d,\"\"UpdaterExtract Skip\"\"\n"
+        },
+        {
+          "site": "0x143dc",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x143e4",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x14278",
+          "target": "0x143d4",
+          "label": null
+        },
+        {
+          "site": "0x14284",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x1428c",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x14298",
+          "target": "0xfec0",
+          "label": "Updater::StringHandler::GetSize() const"
+        },
+        {
+          "site": "0x142a8",
+          "target": "0x100a0",
+          "label": "Updater::StringHandler::SetString(char const*, unsigned long)"
+        },
+        {
+          "site": "0x142f0",
+          "target": "0x10370",
+          "label": "Updater::NewFirmwareImageFile::NewFirmwareImageFile(Updater::NewFirmwareFileInformation_t)"
+        },
+        {
+          "site": "0x14374",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x14390",
+          "target": "0x14420",
+          "label": null
+        },
+        {
+          "site": "0x14398",
+          "target": "0x1437c",
+          "label": null
+        },
+        {
+          "site": "0x143a4",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x143ac",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x143bc",
+          "target": "0xfec0",
+          "label": "Updater::StringHandler::GetSize() const"
+        },
+        {
+          "site": "0x143e8",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x143f0",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x1441c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x14428",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        }
+      ],
+      "disassembly": "body-policy-fragments/14234.txt"
+    },
+    {
+      "va": "0x1371c",
+      "label": "Updater::ConfigKeyTag::PostExecute(Updater::BodyInformation*)",
+      "bytes": 360,
+      "sha256": "15dd3cb570ec41261c9a96e6e64257d8f368081fc5e9606ac5ab606be9ed126c",
+      "literals": [
+        {
+          "site": "0x13748",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x13750",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x137d8",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x137dc",
+          "va": "0x1b881",
+          "text": "UdrAPI,%d,%s:%d,\"\"%s\"\"\n"
+        },
+        {
+          "site": "0x13870",
+          "va": "0x1ba94",
+          "text": "config/uconfig.xml"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x13758",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x13760",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x1378c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13794",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x1379c",
+          "target": "0x1b4c8",
+          "label": null
+        },
+        {
+          "site": "0x137c4",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x137e8",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x137f0",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x13824",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13830",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x13838",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x13840",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x13858",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x13860",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x1387c",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x13880",
+          "target": "0x13790",
+          "label": null
+        }
+      ],
+      "disassembly": "body-policy-fragments/1371c.txt"
+    },
+    {
+      "va": "0x194dc",
+      "label": "Updater::FlagFirmwareInformationHandler::isAccessoryMode()",
+      "bytes": 40,
+      "sha256": "b7523a93d4bcd14cc479f6734142598b62eba793dfc636c2c009c64c9fcf3917",
+      "literals": [
+        {
+          "site": "0x194e4",
+          "va": "0x1c488",
+          "text": "/root/IAMUPDATER"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x194f0",
+          "target": "0x1b4c8",
+          "label": null
+        }
+      ],
+      "disassembly": "body-policy-fragments/194dc.txt"
+    },
+    {
+      "va": "0x173e8",
+      "label": "Updater::XmlConfigHandler::LoadConfig(Updater::StringHandler const&)",
+      "bytes": 128,
+      "sha256": "fc4dffbad7670f94cbfdb10c27ca52e0f76a71dedabc7d85d91b9e2537d86407",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1741c",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x17424",
+          "target": "0xfcf0",
+          "label": "Updater::Xml::DomDocument::DomDocument()"
+        },
+        {
+          "site": "0x17430",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x1744c",
+          "target": "0x106f0",
+          "label": "Updater::Xml::DomDocument::loadFile(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x1745c",
+          "target": "0x10190",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x17464",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "disassembly": "body-policy-fragments/173e8.txt"
+    },
+    {
+      "va": "0x17a3c",
+      "label": "Updater::XmlConfigHandler::Execute()",
+      "bytes": 324,
+      "sha256": "d838812a4bcdf921dcd67050c26209cd882bd60a28e3a49e88cf3c2be8f36f8b",
+      "literals": [
+        {
+          "site": "0x17a78",
+          "va": "0x1bf3a",
+          "text": "thread"
+        },
+        {
+          "site": "0x17b0c",
+          "va": "0x1bf13",
+          "text": "XmlConfigHandler.cpp"
+        },
+        {
+          "site": "0x17b14",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x17ad4",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x17ae4",
+          "target": "0x10530",
+          "label": "strcmp"
+        },
+        {
+          "site": "0x17af4",
+          "target": "0x102a0",
+          "label": "Updater::Plugin::Execute(Updater::UPDATER_ACTION_MODE, Updater::Xml::DomNode const*)"
+        },
+        {
+          "site": "0x17af8",
+          "target": "0x17a80",
+          "label": null
+        },
+        {
+          "site": "0x17b1c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x17b24",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x17b50",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x17b68",
+          "target": "0x17a80",
+          "label": null
+        }
+      ],
+      "disassembly": "body-policy-fragments/17a3c.txt"
+    },
+    {
+      "va": "0x177cc",
+      "label": "Updater::XmlConfigHandler::executeGuard(Updater::StringHandler const&, Updater::Xml::DomNode const*)",
+      "bytes": 532,
+      "sha256": "5aab578f89c62529a5f3a17696d01808226417f5429bbaead57ab78ed86f098e",
+      "literals": [
+        {
+          "site": "0x177f8",
+          "va": "0x1befd",
+          "text": "guard"
+        },
+        {
+          "site": "0x17810",
+          "va": "0x1bf03",
+          "text": "function"
+        },
+        {
+          "site": "0x17878",
+          "va": "0x1bf0c",
+          "text": "module"
+        },
+        {
+          "site": "0x17974",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x17814",
+          "target": "0x10000",
+          "label": "Updater::Xml::DomNode::FirstChild(char const*) const"
+        },
+        {
+          "site": "0x1783c",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x1784c",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x1785c",
+          "target": "0x105e0",
+          "label": "Updater::DllPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+        },
+        {
+          "site": "0x17890",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x178c4",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x178cc",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x178ec",
+          "target": "0x17948",
+          "label": null
+        },
+        {
+          "site": "0x178f4",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x17904",
+          "target": "0x101c0",
+          "label": "Updater::ShellPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+        },
+        {
+          "site": "0x17908",
+          "target": "0x17860",
+          "label": null
+        },
+        {
+          "site": "0x1791c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x17924",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x17950",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x1795c",
+          "target": "0xff30",
+          "label": "Updater::Xml::DomNode::getNextSibling(char const*) const"
+        },
+        {
+          "site": "0x17964",
+          "target": "0x1781c",
+          "label": null
+        },
+        {
+          "site": "0x1797c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x17980",
+          "target": "0x178c8",
+          "label": null
+        },
+        {
+          "site": "0x179c0",
+          "target": "0x17800",
+          "label": null
+        }
+      ],
+      "disassembly": "body-policy-fragments/177cc.txt"
+    },
+    {
+      "va": "0x187a4",
+      "label": "Updater::ShellPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)",
+      "bytes": 864,
+      "sha256": "d7f6348ed9a81a579c006aa670fde027029d4cc7dc60b9d3619178ea08dac6c8",
+      "literals": [
+        {
+          "site": "0x187d4",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x187dc",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x1882c",
+          "va": "0x1bf0c",
+          "text": "module"
+        },
+        {
+          "site": "0x18854",
+          "va": "0x1c0e0",
+          "text": "param"
+        },
+        {
+          "site": "0x188b8",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x188bc",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x18928",
+          "va": "0x1c006",
+          "text": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE="
+        },
+        {
+          "site": "0x189c0",
+          "va": "0x1c1c0",
+          "text": "Execute"
+        },
+        {
+          "site": "0x189c4",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x189c8",
+          "va": "0x1c0b5",
+          "text": "[%s] %s @ %d ignore system error errno(%d)"
+        },
+        {
+          "site": "0x189ec",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x189f0",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x18a7c",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x18a80",
+          "va": "0x1b881",
+          "text": "UdrAPI,%d,%s:%d,\"\"%s\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x187e0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x187e8",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18814",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18838",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x18860",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x1886c",
+          "target": "0x1887c",
+          "label": null
+        },
+        {
+          "site": "0x1888c",
+          "target": "0x10530",
+          "label": "strcmp"
+        },
+        {
+          "site": "0x188a0",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x188c8",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x188d0",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18904",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x1890c",
+          "target": "0x18a48",
+          "label": null
+        },
+        {
+          "site": "0x18934",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x18940",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x18954",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18968",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x18970",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18974",
+          "target": "0x104b0",
+          "label": "system"
+        },
+        {
+          "site": "0x18978",
+          "target": "0x189a0",
+          "label": null
+        },
+        {
+          "site": "0x18980",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18998",
+          "target": "0x103c0",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x1899c",
+          "target": "0x1896c",
+          "label": null
+        },
+        {
+          "site": "0x189a4",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x189d0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x189d4",
+          "target": "0x18acc",
+          "label": null
+        },
+        {
+          "site": "0x189fc",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18a04",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18a38",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18a44",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18a4c",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18a54",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x18a68",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18a8c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18a94",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18ac8",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18ad4",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18adc",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18b00",
+          "target": "0x187cc",
+          "label": null
+        }
+      ],
+      "disassembly": "body-policy-fragments/187a4.txt"
+    },
+    {
+      "va": "0x19194",
+      "label": "Updater::BuildInPlugin::execute(char const*, Updater::UPDATER_ACTION_MODE)",
+      "bytes": 668,
+      "sha256": "207bed6046152857b6c6507982d339d2a019c80d3d8b4d80d86104a8b5ee1bec",
+      "literals": [
+        {
+          "site": "0x191cc",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x191d0",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x1923c",
+          "va": "0x1c006",
+          "text": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE="
+        },
+        {
+          "site": "0x192a4",
+          "va": "0x1c1c8",
+          "text": "execute"
+        },
+        {
+          "site": "0x192a8",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x192ac",
+          "va": "0x1c0b5",
+          "text": "[%s] %s @ %d ignore system error errno(%d)"
+        },
+        {
+          "site": "0x192d0",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x192d4",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x19364",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x19368",
+          "va": "0x1b881",
+          "text": "UdrAPI,%d,%s:%d,\"\"%s\"\"\n"
+        },
+        {
+          "site": "0x193c0",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x193c8",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x191b4",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x191dc",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x191e4",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x19218",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x19220",
+          "target": "0x1932c",
+          "label": null
+        },
+        {
+          "site": "0x19248",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x19254",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x1925c",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x19274",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x1927c",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x19280",
+          "target": "0x104b0",
+          "label": "system"
+        },
+        {
+          "site": "0x19288",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x192b4",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x192b8",
+          "target": "0x19410",
+          "label": null
+        },
+        {
+          "site": "0x192e0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x192e8",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x1931c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x19328",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x19330",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x19338",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x19350",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x19374",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x1937c",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x193b0",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x193d0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x193d8",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x1940c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x19414",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x1941c",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        }
+      ],
+      "disassembly": "body-policy-fragments/19194.txt"
+    },
+    {
+      "va": "0x19430",
+      "label": "Updater::BuildInPlugin::StartUpdate(Updater::UPDATER_ACTION_MODE)",
+      "bytes": 64,
+      "sha256": "f2bd8f3550fe8c2736c7e316e2fafb23b0af18477ce5c2dc684e8f061f320434",
+      "literals": [
+        {
+          "site": "0x19440",
+          "va": "0x1c122",
+          "text": "/tmp_updater/updater/bodyfs/bin/startupdate.sh"
+        },
+        {
+          "site": "0x1944c",
+          "va": "0x1c122",
+          "text": "/tmp_updater/updater/bodyfs/bin/startupdate.sh"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x19450",
+          "target": "0x1b4c8",
+          "label": null
+        },
+        {
+          "site": "0x19460",
+          "target": "0x10100",
+          "label": "Updater::BuildInPlugin::execute(char const*, Updater::UPDATER_ACTION_MODE)"
+        }
+      ],
+      "disassembly": "body-policy-fragments/19430.txt"
+    },
+    {
+      "va": "0x19470",
+      "label": "Updater::BuildInPlugin::EndUpdate(Updater::UPDATER_ACTION_MODE)",
+      "bytes": 64,
+      "sha256": "b99ba5ae1099f01a9eac7bd411b2a01db66e2b4dae75527a9c0e56668442ac7a",
+      "literals": [
+        {
+          "site": "0x19480",
+          "va": "0x1c151",
+          "text": "/tmp_updater/updater/bodyfs/bin/endupdate.sh"
+        },
+        {
+          "site": "0x1948c",
+          "va": "0x1c151",
+          "text": "/tmp_updater/updater/bodyfs/bin/endupdate.sh"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x19490",
+          "target": "0x1b4c8",
+          "label": null
+        },
+        {
+          "site": "0x194a0",
+          "target": "0x10100",
+          "label": "Updater::BuildInPlugin::execute(char const*, Updater::UPDATER_ACTION_MODE)"
+        }
+      ],
+      "disassembly": "body-policy-fragments/19470.txt"
+    },
+    {
+      "va": "0x19bdc",
+      "label": "Updater::FlagFirmwareInformationHandler::StartUpdate()",
+      "bytes": 940,
+      "sha256": "3bb58c55f0f419d6af97c387a8e11ccf1a6d75c04bc50b137699d4af5f13289d",
+      "literals": [
+        {
+          "site": "0x19c24",
+          "va": "0x1bb6e",
+          "text": "/tmp_updater/updater/current"
+        },
+        {
+          "site": "0x19c34",
+          "va": "0x1b85f",
+          "text": "/dev/nflasha2"
+        },
+        {
+          "site": "0x19c6c",
+          "va": "0x1c375",
+          "text": "FlagFirmwareInformationHandler.cpp"
+        },
+        {
+          "site": "0x19c70",
+          "va": "0x1b881",
+          "text": "UdrAPI,%d,%s:%d,\"\"%s\"\"\n"
+        },
+        {
+          "site": "0x19cd8",
+          "va": "0x1bb2e",
+          "text": "updater"
+        },
+        {
+          "site": "0x19ddc",
+          "va": "0x1b856",
+          "text": "/setting"
+        },
+        {
+          "site": "0x19de0",
+          "va": "0x1b5b3",
+          "text": "vfat"
+        },
+        {
+          "site": "0x19de4",
+          "va": "0x1b84b",
+          "text": "posix_attr"
+        },
+        {
+          "site": "0x19e0c",
+          "va": "0x1b856",
+          "text": "/setting"
+        },
+        {
+          "site": "0x19e70",
+          "va": "0x1c375",
+          "text": "FlagFirmwareInformationHandler.cpp"
+        },
+        {
+          "site": "0x19e74",
+          "va": "0x1b881",
+          "text": "UdrAPI,%d,%s:%d,\"\"%s\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x19c00",
+          "target": "0x10010",
+          "label": "Updater::MountPoint::MountPoint()"
+        },
+        {
+          "site": "0x19c28",
+          "target": "0xffa0",
+          "label": "Updater::MountPoint::Initialize(char const*)"
+        },
+        {
+          "site": "0x19c3c",
+          "target": "0xfcd0",
+          "label": "Updater::MountPoint::Mount(char const*, unsigned int)"
+        },
+        {
+          "site": "0x19c7c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x19c84",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x19cb8",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x19cc0",
+          "target": "0x19f2c",
+          "label": null
+        },
+        {
+          "site": "0x19ccc",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x19ce8",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x19cf0",
+          "target": "0x10250",
+          "label": "Updater::DirectoryHandler::Create(Updater::StringHandler const&)"
+        },
+        {
+          "site": "0x19d2c",
+          "target": "0x105b0",
+          "label": "Updater::ModeFlagFile::ModeFlagFile(char const*)"
+        },
+        {
+          "site": "0x19d34",
+          "target": "0x10800",
+          "label": "Updater::BaseFlagFile::Create()"
+        },
+        {
+          "site": "0x19d40",
+          "target": "0x10230",
+          "label": "Updater::Mode3FlagFile::Mode3FlagFile(char const*)"
+        },
+        {
+          "site": "0x19d48",
+          "target": "0x10800",
+          "label": "Updater::BaseFlagFile::Create()"
+        },
+        {
+          "site": "0x19d50",
+          "target": "0x10610",
+          "label": "Updater::Mode3FlagFile::~Mode3FlagFile()"
+        },
+        {
+          "site": "0x19d58",
+          "target": "0xfdd0",
+          "label": "Updater::ModeFlagFile::~ModeFlagFile()"
+        },
+        {
+          "site": "0x19d64",
+          "target": "0x100d0",
+          "label": "Updater::CompleteFlagFile::CompleteFlagFile(char const*)"
+        },
+        {
+          "site": "0x19d68",
+          "target": "0x19e40",
+          "label": null
+        },
+        {
+          "site": "0x19d78",
+          "target": "0x105b0",
+          "label": "Updater::ModeFlagFile::ModeFlagFile(char const*)"
+        },
+        {
+          "site": "0x19d80",
+          "target": "0x10800",
+          "label": "Updater::BaseFlagFile::Create()"
+        },
+        {
+          "site": "0x19d8c",
+          "target": "0x102d0",
+          "label": "Updater::Mode5FlagFile::Mode5FlagFile(char const*)"
+        },
+        {
+          "site": "0x19d94",
+          "target": "0x10800",
+          "label": "Updater::BaseFlagFile::Create()"
+        },
+        {
+          "site": "0x19d9c",
+          "target": "0x10130",
+          "label": "Updater::Mode5FlagFile::~Mode5FlagFile()"
+        },
+        {
+          "site": "0x19da0",
+          "target": "0x19d54",
+          "label": null
+        },
+        {
+          "site": "0x19db0",
+          "target": "0x105b0",
+          "label": "Updater::ModeFlagFile::ModeFlagFile(char const*)"
+        },
+        {
+          "site": "0x19db8",
+          "target": "0x10800",
+          "label": "Updater::BaseFlagFile::Create()"
+        },
+        {
+          "site": "0x19dc4",
+          "target": "0x10240",
+          "label": "Updater::Mode6FlagFile::Mode6FlagFile(char const*)"
+        },
+        {
+          "site": "0x19dcc",
+          "target": "0x10800",
+          "label": "Updater::BaseFlagFile::Create()"
+        },
+        {
+          "site": "0x19df4",
+          "target": "0x10020",
+          "label": "mount"
+        },
+        {
+          "site": "0x19e10",
+          "target": "0x10500",
+          "label": "umount"
+        },
+        {
+          "site": "0x19e18",
+          "target": "0x10300",
+          "label": "Updater::Mode6FlagFile::~Mode6FlagFile()"
+        },
+        {
+          "site": "0x19e20",
+          "target": "0x19d58",
+          "label": null
+        },
+        {
+          "site": "0x19e2c",
+          "target": "0x105b0",
+          "label": "Updater::ModeFlagFile::ModeFlagFile(char const*)"
+        },
+        {
+          "site": "0x19e34",
+          "target": "0x10800",
+          "label": "Updater::BaseFlagFile::Create()"
+        },
+        {
+          "site": "0x19e3c",
+          "target": "0x19d58",
+          "label": null
+        },
+        {
+          "site": "0x19e44",
+          "target": "0x10090",
+          "label": "Updater::BaseFlagFile::IsValid()"
+        },
+        {
+          "site": "0x19e54",
+          "target": "0x104d0",
+          "label": "Updater::MountPoint::Umount()"
+        },
+        {
+          "site": "0x19e80",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x19e84",
+          "target": "0x19e94",
+          "label": null
+        },
+        {
+          "site": "0x19e8c",
+          "target": "0xfcb0",
+          "label": "Updater::BaseFlagFile::Delete()"
+        },
+        {
+          "site": "0x19e90",
+          "target": "0x19e50",
+          "label": null
+        },
+        {
+          "site": "0x19e98",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x19ecc",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x19ed8",
+          "target": "0xfbe0",
+          "label": "Updater::CompleteFlagFile::~CompleteFlagFile()"
+        },
+        {
+          "site": "0x19edc",
+          "target": "0x19f24",
+          "label": null
+        },
+        {
+          "site": "0x19ee4",
+          "target": "0xfbe0",
+          "label": "Updater::CompleteFlagFile::~CompleteFlagFile()"
+        },
+        {
+          "site": "0x19eec",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x19ef4",
+          "target": "0xfbb0",
+          "label": "Updater::MountPoint::~MountPoint()"
+        },
+        {
+          "site": "0x19f18",
+          "target": "0x10610",
+          "label": "Updater::Mode3FlagFile::~Mode3FlagFile()"
+        },
+        {
+          "site": "0x19f20",
+          "target": "0xfdd0",
+          "label": "Updater::ModeFlagFile::~ModeFlagFile()"
+        },
+        {
+          "site": "0x19f28",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x19f30",
+          "target": "0xfbb0",
+          "label": "Updater::MountPoint::~MountPoint()"
+        },
+        {
+          "site": "0x19f38",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x19f40",
+          "target": "0x19f1c",
+          "label": null
+        },
+        {
+          "site": "0x19f4c",
+          "target": "0x10130",
+          "label": "Updater::Mode5FlagFile::~Mode5FlagFile()"
+        },
+        {
+          "site": "0x19f50",
+          "target": "0x19f1c",
+          "label": null
+        },
+        {
+          "site": "0x19f54",
+          "target": "0x19f3c",
+          "label": null
+        },
+        {
+          "site": "0x19f60",
+          "target": "0x10300",
+          "label": "Updater::Mode6FlagFile::~Mode6FlagFile()"
+        },
+        {
+          "site": "0x19f68",
+          "target": "0x19f20",
+          "label": null
+        },
+        {
+          "site": "0x19f70",
+          "target": "0x19f64",
+          "label": null
+        },
+        {
+          "site": "0x19f7c",
+          "target": "0x19f20",
+          "label": null
+        },
+        {
+          "site": "0x19f84",
+          "target": "0x19f24",
+          "label": null
+        }
+      ],
+      "disassembly": "body-policy-fragments/19bdc.txt"
+    },
+    {
+      "va": "0x13c8c",
+      "label": "Updater::UpdaterKeyTag::PreExecute(Updater::BodyInformation*)",
+      "bytes": 884,
+      "sha256": "cc7319eb8bbc80f9c0665e55d7eddd10970814448f3c1f480da4454589718078",
+      "literals": [
+        {
+          "site": "0x13cbc",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x13cc0",
+          "va": "0x1bb49",
+          "text": "UdrAPI,%d,%s:%d,\"\"UpdaterPre Skip\"\"\n"
+        },
+        {
+          "site": "0x13cf4",
+          "va": "0x1bb6e",
+          "text": "/tmp_updater/updater/current"
+        },
+        {
+          "site": "0x13d08",
+          "va": "0x1b85f",
+          "text": "/dev/nflasha2"
+        },
+        {
+          "site": "0x13d30",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x13d34",
+          "va": "0x1bb8b",
+          "text": "UdrAPI,%d,%s:%d,\"\"%d\"\"\n"
+        },
+        {
+          "site": "0x13d9c",
+          "va": "0x1bb2e",
+          "text": "updater"
+        },
+        {
+          "site": "0x13dcc",
+          "va": "0x1bba3",
+          "text": "updater/uincomp"
+        },
+        {
+          "site": "0x13e10",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x13e14",
+          "va": "0x1bb8b",
+          "text": "UdrAPI,%d,%s:%d,\"\"%d\"\"\n"
+        },
+        {
+          "site": "0x13ea8",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x13eac",
+          "va": "0x1bb8b",
+          "text": "UdrAPI,%d,%s:%d,\"\"%d\"\"\n"
+        },
+        {
+          "site": "0x13f18",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x13f1c",
+          "va": "0x1bb8b",
+          "text": "UdrAPI,%d,%s:%d,\"\"%d\"\"\n"
+        },
+        {
+          "site": "0x13f8c",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x13f90",
+          "va": "0x1bb8b",
+          "text": "UdrAPI,%d,%s:%d,\"\"%d\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x13ccc",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x13cf0",
+          "target": "0x10010",
+          "label": "Updater::MountPoint::MountPoint()"
+        },
+        {
+          "site": "0x13cfc",
+          "target": "0xffa0",
+          "label": "Updater::MountPoint::Initialize(char const*)"
+        },
+        {
+          "site": "0x13d10",
+          "target": "0xfcd0",
+          "label": "Updater::MountPoint::Mount(char const*, unsigned int)"
+        },
+        {
+          "site": "0x13d1c",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x13d40",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x13d48",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x13d7c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13d84",
+          "target": "0x13e74",
+          "label": null
+        },
+        {
+          "site": "0x13d90",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x13dac",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x13db4",
+          "target": "0x10250",
+          "label": "Updater::DirectoryHandler::Create(Updater::StringHandler const&)"
+        },
+        {
+          "site": "0x13dc0",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x13dd8",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x13de0",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x13dec",
+          "target": "0xfd40",
+          "label": "open"
+        },
+        {
+          "site": "0x13dfc",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x13e20",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x13e28",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x13e5c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13e68",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x13e70",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x13e78",
+          "target": "0xfbb0",
+          "label": "Updater::MountPoint::~MountPoint()"
+        },
+        {
+          "site": "0x13e80",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x13e84",
+          "target": "0x10220",
+          "label": "fsync"
+        },
+        {
+          "site": "0x13e90",
+          "target": "0x104f0",
+          "label": "close"
+        },
+        {
+          "site": "0x13e94",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x13eb8",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x13ec0",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x13ef4",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13efc",
+          "target": "0x104f0",
+          "label": "close"
+        },
+        {
+          "site": "0x13f04",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x13f28",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x13f30",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x13f64",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13f6c",
+          "target": "0x104d0",
+          "label": "Updater::MountPoint::Umount()"
+        },
+        {
+          "site": "0x13f78",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x13f9c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x13fa4",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x13fd8",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13fe0",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x13fe8",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x13ff0",
+          "target": "0xfbb0",
+          "label": "Updater::MountPoint::~MountPoint()"
+        },
+        {
+          "site": "0x13ff4",
+          "target": "0x13cd0",
+          "label": null
+        },
+        {
+          "site": "0x13ffc",
+          "target": "0x13e6c",
+          "label": null
+        }
+      ],
+      "disassembly": "body-policy-fragments/13c8c.txt"
+    }
+  ],
+  "scope": "Original symbol/unwind bounded functions and read-only literal references only. Config tags and shell command generation are not permission to run scripts; no write/mount/backup/shell/device or native target loading is executed."
+}

@@ -1,0 +1,11 @@
+{
+  "reason": "over-specific expected MOV width alias before inspecting actual original function bytes",
+  "expected_hex": "000080d2c0035fd6",
+  "actual_hex": "20008052c0035fd6",
+  "instructions": [
+    "mov w0, #1",
+    "ret "
+  ],
+  "hardware_operations": 0,
+  "reason_correction": "Initial null-return assumption was wrong in value as well as register width; original function returns w0=1. Do not infer channel activation from this acknowledgement."
+}

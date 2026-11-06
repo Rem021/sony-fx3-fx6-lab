@@ -1,0 +1,50 @@
+{
+  "created_utc": "2026-10-27T04:48:56.410797+00:00",
+  "scope": "STATIC_AND_BOUNDED_DECLARED_CONTEXT_NOT_PHYSICAL_APPLICATION",
+  "outer_translation": {
+    "offset": "18fd58",
+    "MMIO_load_offset": "18fd6c",
+    "address": "BE000064",
+    "executed": false
+  },
+  "existing_handle_branch": {
+    "entry": "19bda4",
+    "copy_bytes": 292,
+    "destination_start": "declared buffer+1c",
+    "destination_target_word": "+28",
+    "valid_hardware_request_or_real_allocation_proven": false
+  },
+  "missing_handle": {
+    "stop_before": "19bdd8",
+    "unknown_GP_state_not_read": true,
+    "unexecuted_undecoded_words": [
+      {
+        "offset": "0x19bde0",
+        "bytes": "26000070",
+        "asm": null
+      },
+      {
+        "offset": "0x19be0c",
+        "bytes": "26000970",
+        "asm": null
+      },
+      {
+        "offset": "0x19be74",
+        "bytes": "26000070",
+        "asm": null
+      },
+      {
+        "offset": "0x19bea4",
+        "bytes": "26000370",
+        "asm": null
+      }
+    ]
+  },
+  "timing": {
+    "stop_before": "1a085c",
+    "native_argument8_hex": "80a90300481f0000",
+    "hardware_frame_rate_or_exact30_proven": false
+  },
+  "upper_pending_completion_and_buffer_consumers_executed": false,
+  "same_body_health_backup_or_independent_recovery_proven": false
+}

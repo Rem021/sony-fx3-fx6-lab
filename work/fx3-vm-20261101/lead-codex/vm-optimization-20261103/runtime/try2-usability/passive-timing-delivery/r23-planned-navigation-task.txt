@@ -1,0 +1,31 @@
+FX3｜r23 显式自动导航合同及操作工具（仅准备和离线验证，无VM）
+
+目标仍是固定FX3模拟器中原固件菜单完整可用，最终必须取得真实八步及连续交互证据；本任务不以离线通过替代该目标。用户授权持续优化，协调员据r22证据明确调整本次后续测试的操作模式，不要求用户实时操作。你负责实现并离线验证新模式，不能在此任务启动guest、部署或自行开展真实VM。
+
+根=/Volumes/KAFU2T/AI/Projects/Mac。TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery。只写新建DEL/r23-planned-navigation，写前核UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。原r21/r21c/r22、已部署r10、协调ledger不可改。没有物理相机/USB/SD/刷写/FX6权限；不另派代理。
+
+已核：r22正式msg_9c80aee91091，139项SHA256SUMS 127a27b31e8a0ae2ff09e8a8bdbb4601990b8faa563c6e63b761a8e3c4a4c1b6，REPORT b89c66c246906f1b280174b9ebd7e4a1c14cc9b99321a5bcb775efa72cf7c108；17离线用例通过。r21c固定平台待机正常，首次点击因旧静图gen9在8.26s后已过期而大概率被guard拒绝；HAR可见gen8→20首见变化0.404–1.619s，具体原始eval谓词未知。
+
+明确的新测试合同（协调员已决定，仅新独立任务生效）：
+- 采用预定义自动导航脚本＋逐键真实后置图审阅。它不是人/流式视觉在点击瞬间的连续视觉操作，也不宣称点击时原生input-context等于此前静图。不得伪造manual/operator-reviewed-current或用新generation改写旧图身份。
+- 之前helper的“当前loaded generation必须等于数秒前静图generation”是测试工具自定前置约束，不是用户要求、原固件规则或FX3平台配置。本新脚本不把旧图当一次输入许可；输入依据是冻结的八步测试计划、明确执行单步调用、上一真实步骤已核菜单后置条件及确认、当前PAGE原准入。旧试验均保留failed，不追溯通过。此处属于可逆隔离VM测试模式调整，不修改用户部署运行政策。
+- 固定八步仍完整：1 MENU→完整Setup>Area/Date橙色Area/Date/Time Setting；2 UP→Language English；3 C4→语言帮助；4 MENU→返回Language；5 OK→查看English语言列表，不选择其它语言；6 MENU→取消；7 MENU→关闭到待机；8 MENU→重开菜单。不得跳过困难步、换容易路径或按结果临时补键。
+- 每步只在操作代理明确调用该计划step时发一个原PAGE DOM按钮click。第1步需实际看到合格待机图；第2–8步需前一步真实截图语义确认及原explicit_confirm成功。静图是过去观测，不是点击时同代际证明。每次动作回执明确 scripted_navigation=true、visual_review_at_click=false、plan_sha/step/previous_confirm/nonce/document/launch/click-time_frame。
+- 点击时仍必须原PAGE已ready、valid loaded、无busy/pending/review/unknown/error/stop，精确独占文档/launch和原20s alarm nonce；从当前原PAGE状态同步捕获点击frame及计划参数，立即最多一次原DOM click，不await再改绑。原PAGE自身handler保留点击时frame及server GET/POST判断；原server SHA/gen gate完全不改，不直接POST、不预排多个键、不自动重试、不延迟等画面匹配再偷偷发键。脚本决策来自计划，不借“看了旧图”冒充当前已看。
+- 每accepted键之后仍返回与该step/attempt/nonce对应的合格真实截图给代理实际看图，下一独立调用原explicit_confirm且20s窗口不延长；语义不符/原生错误/unknown/失败立即原End，不能继续下一键。HTTP202/脚本click本身都不能计作菜单通过。
+- 之后真实VM预算保持唯一一轮8分钟、8accepted、10显式attempt、2有归因未入队恢复且每step最多1。当前任务只准备工具与合同。已有r21 PAGE明确not_posted/完整requestID拒绝可以沿用原恢复链，新nonce新显式调用；helper自身preflight_not_clicked本任务默认End，不实现额外恢复。unknown始终End。
+
+实现要求：
+1. 新建有明确命名的 planned_navigation_click.py/JS 和冻结NAVIGATION-PLAN.json（或同类）。不要直接改r22 operator_click的语义或命名。只改新派生脚本：去除“人工旧图同代际”作为许可的两项，增加脚本计划/step/前步确认的绑定，其余r22诊断和unknown持久回执、fsync预算、23项中其余实际准入继续；保留原PAGE/server全部字节。不要把planned/frame字段仍命名为reviewed。
+2. 接入新的本地操作wrapper，复用r21c已通过的operate/later_capture/capture_validation/untimed_image/cleanup等必要源和真实__main__接线；明确哪些更改是模式差分。每步capture/confirm的图像来源绑定不能倒退；confirm记录精确已看图，下一planned action不伪称当前同图。
+3. 准备所有真实运行所需CLI参数/路径模板、source冻结流程、逐attempt目录与一轮ledger，但本任务不能起runner/QEMU。之后将另派单次实际操作任务，届时按taskID建立新运行准备目录。
+4. 原runtime仍DEL/v25-r21-recovery-integration，PAGE canonical SHA f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab；CPU4*cortex-a35/5120MiB/MTTCG/noicount、原kernel/DTB/N64 CPIO/实际bf4d QEMU全不动。三个既有非冻结runtime输出例外仍按r21c before/after记录，不在本离线任务写它们。
+
+针对性离线验证（不泛化重跑旧套件）：
+- 固定原PAGE/TrialState+动态fake backend，回放两种PNG及约0.4–1.6s观测变化，模拟8.26s外部工具等待，再明确执行单个planned key。证明不拿旧静图gen重新标当前审阅，动作绑定当时PAGE实际loaded frame；一次click、最多一次key POST、server门继续独立判定。
+- 需区分：8.26s后新显式脚本动作允许使用当前状态（不是旧human intent复活）；旧nonce/错plan/错step/前步未确认仍拒绝；A→B→A计代继续不变；click后server变化原409仍0入队；unknown后不重发；停止/无效图0click。
+- 每键仍需后置检查才可执行下一步；用实际CLI __main__或真实调用入口证明未确认step2被拒绝。对跨步捕图/confirm用既有回执schema核真实参数，不为此虚构真人看图通过。
+- 保留实际20秒alarm，不设置长timer使fixture看似可用。无需人看2x2fixture；标注脚本自动模式。fixture不能作为真实八步语义证据。
+- 服务/自有browser只一个测试会话，清理验证PID/port。首次测试失败保留原始证据，修具体问题后才重复必要检查。
+
+交付简洁REPORT、CONTRACT（明确模式/证据边界/八步验收定义）、最小差分与准备说明、原输入前后hash、针对性回执与SHA清单。结果只为离线harness passed/failed；八步真实菜单、人类连续视觉体验、长时稳定性和FX6均仍未验。不要因缺真人流式视觉而要求用户醒来操作：这是明确授权的自动导航测试，不是宣称具备该能力。

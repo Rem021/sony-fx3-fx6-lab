@@ -1,0 +1,88 @@
+{
+  "status": "interim_review_not_acceptance",
+  "UTC": "2026-11-05T08:10:35.038426+00:00",
+  "scope": "current return-failure source and existing offline receipts, no execution or VM",
+  "files": {
+    "return-tools/return_adapter.py": {
+      "sha256": "8749018865bc11963b79957805d301b34da1470d93c4779778a729706ae7bb8a",
+      "bytes": 7857
+    },
+    "return-tools/show_result.mjs": {
+      "sha256": "f4279573abd855789c5828b7a85d540b951708f623fdcdd9a885e5eab7cc0408",
+      "bytes": 2638
+    },
+    "return-tools/short_tool.mjs": {
+      "sha256": "de0dd5938268c02a8a9c1a776e4b2c97b4d4eaa21c827aa9ffcb26d8d82afb96",
+      "bytes": 692
+    },
+    "tests/test_return.py": {
+      "sha256": "f14676c1629dc0490b626103326ade8ce528ffe554a57148a8c902aa2b3bec29",
+      "bytes": 2652
+    },
+    "tests/test_return_node.mjs": {
+      "sha256": "90169ae1d5a1cff534e08eb3050376f01a6ab9b1b442c26e3caccfc6208bc355",
+      "bytes": 1426
+    },
+    "RETURN-TESTS.json": {
+      "sha256": "4100ae7e64595b40418a9be205687bc4e13f57ff07fdd65e02d5b2c9a898f302",
+      "bytes": 1355
+    },
+    "receipts/return-node.stdout": {
+      "sha256": "0b4f6e48c2301414d69c143567a7da945ba9f4ca12c37f69eacba94e35a89dd7",
+      "bytes": 144
+    },
+    "receipts/return-node.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "runtime-wrapper/cleanup.py": {
+      "sha256": "f5b428fa9879952a2481b01298f1215d1b4339265a89fb71f834436d1c17c2bc",
+      "bytes": 8165
+    },
+    "runtime-wrapper/cleanup_evidence.py": {
+      "sha256": "512c9211406c5fd9c1c15e805e499d2e1c3c33149c97ac1e98cc1891b0f5213c",
+      "bytes": 17715
+    }
+  },
+  "adapter_test_hash_matches_current": true,
+  "return_receipt_checks": [
+    {
+      "case": "adapter_output",
+      "actual_child_exit": 19,
+      "failed_result": true,
+      "no_image": true,
+      "current_call_id": true,
+      "cleanup_status": "completed",
+      "stdout_matches": true,
+      "stderr_matches": true
+    },
+    {
+      "case": "adapter_no_cleanup_output",
+      "actual_child_exit": 23,
+      "failed_result": true,
+      "no_image": true,
+      "current_call_id": true,
+      "cleanup_status": "unknown",
+      "stdout_matches": true,
+      "stderr_matches": true
+    }
+  ],
+  "node_report": {
+    "passed": true,
+    "cases": 5,
+    "adapter": "actual r39",
+    "original_action_still_failed": true,
+    "no_images": true,
+    "unknown_exit_does_not_read_summary": true
+  },
+  "open_review": {
+    "message": "msg_65bdcb794e26",
+    "topic": "bad completion reference must not suppress necessary End of independently verified active owned launch",
+    "status": "awaiting worker correction or evidence"
+  },
+  "limitations": [
+    "worker still editing; final freeze and all changed-scope tests not accepted",
+    "native browser/process/port mocked in offline fixtures",
+    "no runtime or deployment claim"
+  ]
+}

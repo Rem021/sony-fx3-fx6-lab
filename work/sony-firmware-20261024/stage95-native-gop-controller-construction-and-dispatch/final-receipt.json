@@ -1,0 +1,92 @@
+{
+  "schema": "fx3-stage95-native-controller-construction-dispatch/1",
+  "created_utc": "2026-10-27T08:59:40.342900+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/README.md",
+      "bytes": 6120,
+      "sha256": "1fa10f106d8b486eebbf4c5fb6f0c93fb5b7117a6ee7ab6a56214a96479cd04b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/completed-evidence-review.json",
+      "bytes": 1009,
+      "sha256": "6d40f1cb8e1b9287da83a5d570dc1a688648cde3969a17d61ce49f9dab833a29"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/controller_dispatch.py",
+      "bytes": 16110,
+      "sha256": "5c17ea13ba31f436610f3ffe485b80a206412b96aef6d61042563974cfc9b79f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/goal-status-after.json",
+      "bytes": 285020,
+      "sha256": "6fda602b993d9fd5ee1415e911f0503aeb17bd9ddb84c25966a01c92fbdd3967"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/goal-status-before.json",
+      "bytes": 281561,
+      "sha256": "4ae0c3f8ece5f394e08bbc48a5781e514b404edd0d62f0f06bbaf43446f8c0f6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/native-provenance-and-boundaries.json",
+      "bytes": 4721,
+      "sha256": "9da854b08adf1f87bbf1e98b860c2fcfbe8694f1fea9f5e60b28cd9214c93052"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/review_and_seal.py",
+      "bytes": 20003,
+      "sha256": "162b047eb8635f61649f82a9005dee6c18d75644fb72949dfe944681088470ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/run-corrected-geometry-argument-20261027/controller-dispatch-results.json",
+      "bytes": 13328400,
+      "sha256": "f1a605fc382d7f9fd38458eebc6de961f50891577984967aeeecffcad4d3b08d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/run-corrected-geometry-argument-20261027/executed-source.py",
+      "bytes": 16110,
+      "sha256": "5c17ea13ba31f436610f3ffe485b80a206412b96aef6d61042563974cfc9b79f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/run-initial-20261027/executed-source.py",
+      "bytes": 16108,
+      "sha256": "fa9cab34e2301493ff747ce5c9684c79f1b1f31258d7675cae08a0c68af54b73"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/run-initial-20261027/failed-attempt.json",
+      "bytes": 857,
+      "sha256": "fd3c09ff9d0bf54510c219e3e14d2f2cffa1c754740d402ac23a27eb86cde8b9"
+    }
+  ],
+  "previous_manifest_sha256": "7ba9bbe1637028b1ca79aa81fc5d71501c8a4e151818661c94757c79cd111efd",
+  "operations": {
+    "status": "PASS_ORIGINAL_CONTROLLER_VTABLE_HEAP_DISPATCH_AND_BOUND_CALLBACK_BOUNDARIES",
+    "created_utc": "2026-10-27T08:59:40.342900+00:00",
+    "prior_sealed_files_verified": 10,
+    "cases": 14,
+    "formal_phases": 232,
+    "pre_binding_complete_constructors": 10,
+    "pre_binding_private_heap_allocations": 8,
+    "original_bound_callback_stops": 4,
+    "actual_slot38_dispatches": 6,
+    "base_noop_returns": 2,
+    "update_enabled_stops_before_reference_sharing": 4,
+    "normal_runtime_construction_or_MAIN_proven": false,
+    "preserved_failed_attempts": 1,
+    "failed_attempt_classification": "Harness missing existing mode argument; one call corrected, no firmware/input semantics changed.",
+    "review_scope": "Same-agent source and stored-output review with exact complete object/heap/pool checks; execution harness checks image, all regions, full stack. Not an independent engine or real-device acceptance.",
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "4ae0c3f8ece5f394e08bbc48a5781e514b404edd0d62f0f06bbaf43446f8c0f6",
+    "after_sha256": "6fda602b993d9fd5ee1415e911f0503aeb17bd9ddb84c25966a01c92fbdd3967"
+  },
+  "readme_index_before_sha256": "68efd0b6c4edb6acd7ae7c9a97305ec270988b243718c4046ed2de7e847609ea",
+  "readme_index_after_sha256": "35a2670bdca836680a5623d34e299732c9381d4153226f38371f1f8439b40097",
+  "readme_index_entry": "- [2026-10-27 FX3 原控制对象构造、虚分派与锁回调边界](<work/sony-firmware-20261024/stage95-native-gop-controller-construction-and-dispatch/README.md>)：14场景232阶段；原vtable与堆构造、按类实际分派只在前置回调状态通过，原绑定锁回调后停RTOS，更新停引用。基类仅返回，非实际MAIN/编码恢复，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

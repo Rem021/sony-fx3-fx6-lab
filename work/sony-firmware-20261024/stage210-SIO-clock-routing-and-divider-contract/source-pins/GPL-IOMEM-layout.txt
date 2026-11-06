@@ -1,0 +1,7 @@
+typedef struct UDIF_IOMEM {
+	UDIF_U8		name[8];
+	UDIF_PA		phys;
+	UDIF_SIZE	size;
+	UDIF_VA		virt;
+	UDIF_U32	flags;
+} UDIF_IOMEM;

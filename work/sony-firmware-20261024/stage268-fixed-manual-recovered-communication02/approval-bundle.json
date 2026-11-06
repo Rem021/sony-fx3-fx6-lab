@@ -1,0 +1,465 @@
+{
+  "schema": 3,
+  "grant_id": "fx3-702-recovered-communication-20261101-02",
+  "scope": "MANUAL_RECOVERED_MSC_SERVICE_AUTH_READ0_CONTROLLED_PORT_RETURN",
+  "maximum_helper_invocations": 1,
+  "physical_port_registryID": 4294968654,
+  "host_manual_recovery_journal_append": true,
+  "preserve_old_journal": true,
+  "global_guard_path": "/private/var/root/fx3-owner-trials/global-fx3-owner.journal",
+  "firmware_write": false,
+  "module_upload": false,
+  "authentication_may_change_history_or_mode": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5368,
+      "sha256": "af6c9434237a23f0c1030819a7c5bf28416e3884da2ea7cf5d07335a18e79237"
+    },
+    {
+      "path": "SonyCommunication.command.txt",
+      "bytes": 2213,
+      "sha256": "942cb7239b59527258244a0d376a8852078ec2deae6bf21e09283c664fdcac3e"
+    },
+    {
+      "path": "artifacts/cache-source-probe",
+      "bytes": 35840,
+      "sha256": "578e84b6a8b707b6ade9cb3d5bc2f106f2a52e7d0c0850ab2fd7ada296b170c1"
+    },
+    {
+      "path": "artifacts/entry-ipc.dylib",
+      "bytes": 37088,
+      "sha256": "9fc520d424ac4e788f476d1aee4330506fbbb0c9d8ea732c994f12bf1de006c8"
+    },
+    {
+      "path": "artifacts/permit-unit",
+      "bytes": 55304,
+      "sha256": "984caaac662c5a5b73b0d2b444a6f72a147b9b217ef3655d2c15e6d10900d8b2"
+    },
+    {
+      "path": "artifacts/service-fixture-helper",
+      "bytes": 330744,
+      "sha256": "832c72f9916c04cda7542ecf61998a4eea06318965714213f39799df4198baaf"
+    },
+    {
+      "path": "artifacts/service-native-helper",
+      "bytes": 128264,
+      "sha256": "dff1d0706af1a110c03fb231f7a551c153c410e4b4d319db175903df11942b91"
+    },
+    {
+      "path": "build-receipt.json",
+      "bytes": 22037,
+      "sha256": "d27c03b611415e6923f8d3183cd0eeb98c26af07b77a4c4c14deb335a9556c73"
+    },
+    {
+      "path": "build.py",
+      "bytes": 3304,
+      "sha256": "0adb6778498dd4e9ed4cdf006c19997cb068834a60704490c48baf9fbe279a5a"
+    },
+    {
+      "path": "cache_parser.py",
+      "bytes": 3393,
+      "sha256": "340485159e4e8b80897300cfbdc91930bcf06d819faab6f69ea03da8a8e82771"
+    },
+    {
+      "path": "cache_preflight.py",
+      "bytes": 1123,
+      "sha256": "db4179aa39b69a6cb674dda22e5ed91341905c1d2ed9fb0b4475d2b612a0bd06"
+    },
+    {
+      "path": "cached_port_probe.c",
+      "bytes": 1866,
+      "sha256": "615ab3333feec1897b9882c078b8bab36e550a53cd25bba91427194b1bd06b66"
+    },
+    {
+      "path": "controller_ipc.py",
+      "bytes": 7086,
+      "sha256": "c5cac5926654c13c5ec1206fa71374520447278d8e86970fe6e50531f889438c"
+    },
+    {
+      "path": "derived_profile_fixture.h",
+      "bytes": 885,
+      "sha256": "70407bb51be3836540fc36eb6ba53dbf09c7574a78abf84bab3931465c4ee06f"
+    },
+    {
+      "path": "descriptor_policy.c",
+      "bytes": 2296,
+      "sha256": "1b954d64782ca51e77855089e070b99b6b555ffc2bcf47e85f0cac17aee0e7f1"
+    },
+    {
+      "path": "descriptor_policy.h",
+      "bytes": 528,
+      "sha256": "1c12bdfe98029a907a48b695083d3568cc84dd7959d54ca92598ac2eb2052e75"
+    },
+    {
+      "path": "descriptor_unit.c",
+      "bytes": 3387,
+      "sha256": "de2739e56cb4668141655d22eafa7929de58fc24f7339011efc0ccd55d59c926"
+    },
+    {
+      "path": "entry_shared.h",
+      "bytes": 1542,
+      "sha256": "6d9a0588fd840491f95c7b06f3e24bfbd717118aed650da8f83a9085234c513b"
+    },
+    {
+      "path": "entry_support.c",
+      "bytes": 5210,
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "entry_target.h",
+      "bytes": 1078,
+      "sha256": "1bfda5150811e41d006f83b3d07005bc61d21cb2355b67ade720dc039fe7d3eb"
+    },
+    {
+      "path": "fake_iokit.c",
+      "bytes": 6220,
+      "sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19"
+    },
+    {
+      "path": "fixed-material.json",
+      "bytes": 648,
+      "sha256": "be861f0d60f864611d6a8db4e99c3d8444a0193c585f29dcb9bd986cdf5d383d"
+    },
+    {
+      "path": "fixed-plan.json",
+      "bytes": 3352,
+      "sha256": "55e163c34fff25582b0d31a94dd639b19bbf23c654409bc933a12f039081e2b6"
+    },
+    {
+      "path": "fixed-prior-evidence.json",
+      "bytes": 1101,
+      "sha256": "e20b0c2fd478b0dc30758f90c67aadd193f694a4995a572dfc5c8f8f47e8b5af"
+    },
+    {
+      "path": "fixed_launch.py",
+      "bytes": 6692,
+      "sha256": "c930ae5135f6b26b8cdeff708782528dec3ae7e40171d8bf3da20adf03e526a7"
+    },
+    {
+      "path": "flow_fixture.c",
+      "bytes": 5383,
+      "sha256": "3d91770ebc070895f3fcafd59544127e48a02f8ed393b15f26776c7367b1d025"
+    },
+    {
+      "path": "flow_journal.c",
+      "bytes": 4324,
+      "sha256": "5e2d2cdf411ef7811a6195ed78bdb59759ae1c274c12588b029626ce56c6183c"
+    },
+    {
+      "path": "flow_native.inc",
+      "bytes": 1968,
+      "sha256": "f0b85a9128d3651aa733f6edaa77c0f5d55850861ee64789ddf279d08be112df"
+    },
+    {
+      "path": "flow_receiver.py",
+      "bytes": 14527,
+      "sha256": "c8ff6465d16153d209eb41204ce8155fe6ce2a74aaca7358a350c874260643c6"
+    },
+    {
+      "path": "frame_io.c",
+      "bytes": 2864,
+      "sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f"
+    },
+    {
+      "path": "frame_io.h",
+      "bytes": 369,
+      "sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a"
+    },
+    {
+      "path": "fresh-target-cache.json",
+      "bytes": 534,
+      "sha256": "59405947e51d74afafa84ce86695ee97777fa7ff29ba251c6e23b0fbe50d75f7"
+    },
+    {
+      "path": "global_guard.c",
+      "bytes": 9433,
+      "sha256": "b8c1e75240aa7b27c39a9c2c1ddbd71f5aac163f74f5ceb678dc6315b616bfce"
+    },
+    {
+      "path": "global_guard.h",
+      "bytes": 2066,
+      "sha256": "5ae1addb1c793287cdc142f532747313a3851814c3174f9a2eeea0e8ba020311"
+    },
+    {
+      "path": "helper_hello.c",
+      "bytes": 2595,
+      "sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719"
+    },
+    {
+      "path": "helper_hello.h",
+      "bytes": 172,
+      "sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e"
+    },
+    {
+      "path": "host_login.c",
+      "bytes": 1837,
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "host_login.h",
+      "bytes": 533,
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "host_transport.c",
+      "bytes": 6261,
+      "sha256": "f23869555886de838de5048685b9f326ba94a6439896a0bc90e8df1e4a29f95c"
+    },
+    {
+      "path": "host_transport.h",
+      "bytes": 1035,
+      "sha256": "49b1e885a7e2b97706d59a52a50118b79790ba89472fe37550e01705836cb919"
+    },
+    {
+      "path": "idle_held.c",
+      "bytes": 1515,
+      "sha256": "3cbf43dd727c1fc93bf94bf1caffd24601e0282476666386c010f0447164ae92"
+    },
+    {
+      "path": "idle_held.h",
+      "bytes": 582,
+      "sha256": "764f7f01cb15f8f73965f1245387a75efb0af82fc74204d58bbb9f28af26d861"
+    },
+    {
+      "path": "iokit_adapter.c",
+      "bytes": 22282,
+      "sha256": "2c381ed2607b16f8292ddeb7665ccdc53a22b2b9b30f06bba6ecbfe79b2ceb34"
+    },
+    {
+      "path": "iokit_adapter.h",
+      "bytes": 2229,
+      "sha256": "6ae4ef0aaacb7df5017b6cbb0e37c0605304282a5920ef2f4e68d5738bf22bc8"
+    },
+    {
+      "path": "iokit_wire.c",
+      "bytes": 10822,
+      "sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94"
+    },
+    {
+      "path": "iokit_wire.h",
+      "bytes": 2060,
+      "sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b"
+    },
+    {
+      "path": "make_package.py",
+      "bytes": 4809,
+      "sha256": "5fb9767fbf96a3126678545a8c30d582fae8cb0bb1f5993d42efbae2ddcec630"
+    },
+    {
+      "path": "manual_recovery_binding.h",
+      "bytes": 1412,
+      "sha256": "42983f2f947372285dac4b804da53ef87d2b9255cdd1752571e4e4cb5c95ef4b"
+    },
+    {
+      "path": "native_factory.py",
+      "bytes": 5988,
+      "sha256": "d5072373dbd5478d0a8408a3b4c028975b07b796b8e2258bc47f7afbf13e9018"
+    },
+    {
+      "path": "native_recovery_cache.c",
+      "bytes": 3541,
+      "sha256": "17709ab0fb58b6a97569512eb36336bf75544e8bbabc487f63df563ab018e6b6"
+    },
+    {
+      "path": "native_recovery_cache.h",
+      "bytes": 498,
+      "sha256": "d44311cabd2db20e34141634d445996965da244eaf7e802732808c2d414d6a3f"
+    },
+    {
+      "path": "native_session.c",
+      "bytes": 8575,
+      "sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1"
+    },
+    {
+      "path": "native_session.h",
+      "bytes": 1106,
+      "sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f"
+    },
+    {
+      "path": "owner_channel.c",
+      "bytes": 6002,
+      "sha256": "1f7706a24149671b6b10f8a71467037176228f1073c011f6e4209cbde8598519"
+    },
+    {
+      "path": "owner_channel.h",
+      "bytes": 1055,
+      "sha256": "e5b9af14aea46dac8eff94a40acfc5edc22305799e44e4204558a8f592a668a0"
+    },
+    {
+      "path": "owner_core.c",
+      "bytes": 7401,
+      "sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "bytes": 20622,
+      "sha256": "1a47d3ce04e53b5f90bc2b9443381e488c2e63d8ebb516a4e1ad29c0485f68e7"
+    },
+    {
+      "path": "owner_fixture.c",
+      "bytes": 8631,
+      "sha256": "400b0ad41457324da0da5766e27427a0716ce766155a268b08ebdc384f204da6"
+    },
+    {
+      "path": "owner_iokit.c",
+      "bytes": 16341,
+      "sha256": "fe7744b535915d690347f3b1c2762d77f5169ae4d0cf79382ebeb762514aae35"
+    },
+    {
+      "path": "owner_ipc.c",
+      "bytes": 3175,
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "owner_receipt.c",
+      "bytes": 2839,
+      "sha256": "a0be822633205d930d1b2258eeafbe6dd6cb3ede7be083f80bba04d768be93ca"
+    },
+    {
+      "path": "owner_receipt.h",
+      "bytes": 548,
+      "sha256": "151c3552e357e5457ac1a4770400f84a16ccdd72cac0f5f1ebd79b7e82dc990e"
+    },
+    {
+      "path": "owner_trial.h",
+      "bytes": 2432,
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    },
+    {
+      "path": "permit.bin",
+      "bytes": 96,
+      "sha256": "44b04fb1edff8f3215ab9969c7f40ba4f06fc581bacdaf72781e96f41aab26f0"
+    },
+    {
+      "path": "permit_unit.c",
+      "bytes": 1563,
+      "sha256": "de112dfceeb3397e39aeb44f5ea3c1d9d13c1ba46278c72e09327814aa703576"
+    },
+    {
+      "path": "port_anchor.c",
+      "bytes": 1171,
+      "sha256": "926bd1035e4782b505371ea7b934d47ab6e85d06ef45e24d7794cfccd12984fa"
+    },
+    {
+      "path": "port_anchor.h",
+      "bytes": 291,
+      "sha256": "a95919691814f7e3fc8efd431867f1fd03a6fdc27a2dcbd71d2c17ccb3580c6d"
+    },
+    {
+      "path": "preparation-notes.json",
+      "bytes": 303,
+      "sha256": "8d959dd98340b48693ae1679fbd25e1b4a7c674ff8ccfc12f517fc5bff02b8e4"
+    },
+    {
+      "path": "public_material.h",
+      "bytes": 7919,
+      "sha256": "27710f438e5fc28ed48bb3f1e62a4d6f44d4e1c2ff5aa1dfd8d41e075c64594d"
+    },
+    {
+      "path": "receipt_receiver.py",
+      "bytes": 13549,
+      "sha256": "3319297228ef228606940190f0e1917f6125071ac7eabbe833e02f32e778c7f5"
+    },
+    {
+      "path": "recovery_fixture.c",
+      "bytes": 2423,
+      "sha256": "a0b61371364e0cd0f6c186bfb0e63344850931159d6e985662fe99be74d6ae82"
+    },
+    {
+      "path": "recovery_fixture.h",
+      "bytes": 334,
+      "sha256": "7eb250eeaf5f60db748bcba4e762987055ea301db8b170ae960c4d0c1e6b7e4b"
+    },
+    {
+      "path": "recovery_seed.c",
+      "bytes": 2256,
+      "sha256": "a8244165c4e02ee37944245016bcbb96f79c4a76e792281897184771acad14e1"
+    },
+    {
+      "path": "root-body-render-only.sh.txt",
+      "bytes": 1628,
+      "sha256": "94e23bd154fce3faea24d3edcd14302d4a388baa40b5a88fb77b9ad90b85bec3"
+    },
+    {
+      "path": "service_flow.c",
+      "bytes": 4311,
+      "sha256": "5de22bcb43dd593ad4e497b0e3ab3a00cc0174597082878c165aa272cffec63f"
+    },
+    {
+      "path": "service_flow.h",
+      "bytes": 1511,
+      "sha256": "a6a60ae4d462a5cebc05eefda8a3f2b5c6f31ca16c9915ae56284559d30c45f0"
+    },
+    {
+      "path": "service_profile.h",
+      "bytes": 362,
+      "sha256": "f9848173cdf768d6add8de485d742b95b169ea106124df6544b8deb72af37873"
+    },
+    {
+      "path": "status_permit.c",
+      "bytes": 2257,
+      "sha256": "7d8bc93a15913e27ae1a4e49c8dbce317049d2d9b584ad2955205b9327f84fb0"
+    },
+    {
+      "path": "status_permit.h",
+      "bytes": 338,
+      "sha256": "c9728b63c77e3e8ab35bfb13ccb7343a2cb494130c709e47ad1525cba73033ce"
+    },
+    {
+      "path": "stream.c",
+      "bytes": 11808,
+      "sha256": "1221dc5adfe86f012e4ea15b2b117b3d3f9ab3e0af67ec82b23b8a81d2f58849"
+    },
+    {
+      "path": "stream.h",
+      "bytes": 3958,
+      "sha256": "6ad0fc7cee4807c89c1249f8b57144e435b5a7be6ba75d17954ea11c2bf65e78"
+    },
+    {
+      "path": "supervisor.py",
+      "bytes": 16024,
+      "sha256": "21857f4e89446a76f2d2d6bd090631dd5fd57bec3d8eb4c5a4fbdc9729faddd0"
+    },
+    {
+      "path": "target_binding.h",
+      "bytes": 702,
+      "sha256": "2adec0760bfe1f3a4f3b107f7e2f6b142278800914dd0fc0da9202689de9daf3"
+    },
+    {
+      "path": "test_manual_entry.py",
+      "bytes": 5269,
+      "sha256": "1e5131e3ba89eeb244270389c8298c65bcfb9881bef416b8837b382a2ad73c0a"
+    },
+    {
+      "path": "test_package.py",
+      "bytes": 6199,
+      "sha256": "b34d46614df9df93e48d683dc55c55e45112cf2bb24db8d1c8836159aa30c92b"
+    },
+    {
+      "path": "transition_identity.c",
+      "bytes": 3864,
+      "sha256": "2d504dd4594a0d40805787dacab972733571948c047ca02e7ff974ff5df343f0"
+    },
+    {
+      "path": "transition_identity.h",
+      "bytes": 580,
+      "sha256": "b642f9a9413cec1180eb2f994f723765e14e9269f740caea01388563d482aec0"
+    },
+    {
+      "path": "transition_limits.h",
+      "bytes": 282,
+      "sha256": "77366e1830422e1292a9ffc56878800d72bf15a9497e3a6019f285c72f8f3617"
+    },
+    {
+      "path": "transition_unit.c",
+      "bytes": 3160,
+      "sha256": "68ffb240f80062f127d23f1275f3b9f78d2d4e533b5a9d1dbd1a4ec8251d291f"
+    },
+    {
+      "path": "upstream-LICENSE.txt",
+      "bytes": 1072,
+      "sha256": "a485f27d0b22eb7fd9b9419795695d0a1750ea32c961d11c1dd8ddade564dedf"
+    }
+  ]
+}

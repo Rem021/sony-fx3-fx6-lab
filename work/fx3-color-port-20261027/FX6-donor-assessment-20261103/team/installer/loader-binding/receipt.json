@@ -1,0 +1,100 @@
+{
+  "schema": "fx3-original-loader-binding-v1",
+  "level": "static original bytes plus prior bounded proof",
+  "sources": {
+    "init2": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/init2",
+      "bytes": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb"
+    },
+    "fstab": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha7/sbin/initrc/fstab",
+      "bytes": 1085,
+      "sha256": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0"
+    },
+    "bootin": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/bootin.elf",
+      "bytes": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2"
+    },
+    "im": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/im.elf",
+      "bytes": 40920,
+      "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91"
+    },
+    "ap": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    "cp": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "bytes": 15980568,
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba"
+    },
+    "spi": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/loader_spi.bin",
+      "bytes": 39184,
+      "sha256": "314d372d0d2b9883c3b9dc04b40389edb3100e6d5ef529633cc427c3d0cab72e"
+    }
+  },
+  "ap_boot_chain": {
+    "init2_calls": [
+      {
+        "line": 46,
+        "text": "busybox mount -a -T $FSTAB"
+      },
+      {
+        "line": 48,
+        "text": "[ -r $FSTAB_EXT ] && busybox mount -a -T $FSTAB_EXT"
+      },
+      {
+        "line": 55,
+        "text": "if [ \"$MODE\" != \"0\" ] ; then"
+      },
+      {
+        "line": 64,
+        "text": "    /usr/bin/bootin.elf &"
+      }
+    ],
+    "bootin_im_path_offsets": [
+      "0x399a",
+      "0x3f48"
+    ],
+    "mounted_usr": "nflasha15 ext2 ro",
+    "ap_projection": {
+      "partition": 15,
+      "path": "/lib/appFw.so",
+      "inode": 95387,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    "im_elf_sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+    "appFw_reader": "not bound by these original init/bootin/im bytes"
+  },
+  "cp_chain": {
+    "partition": 8,
+    "filesystem": "vfat",
+    "path": "/cpapp-b.bin",
+    "config_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/config-producer-20261029/original-files/pformat_config.txt",
+    "config_sha256": "21cd5b29dd165c322f5b00bb057802c377ff94af15f95881e150a32130302ece",
+    "config_load": "0x00108000",
+    "spi_words_at_file_offsets": {
+      "0x5aac": "00009052",
+      "0x5ab0": "0002a072",
+      "0x5ab4": "e10314aa",
+      "0x41bc": "bbfeff17",
+      "0x3ca8": "810000b4",
+      "0x3cd8": "e0039fd6"
+    },
+    "prior_static_handoff_target": "0x108000",
+    "reader": "loader_spi handoff target consistent with cpapp config; exact file reader not bound"
+  },
+  "unknown": [
+    "current camera boot path/version selection",
+    "appFw.so actual dlopen/loader caller and in-memory identity",
+    "cpapp-b.bin exact reader and active slot",
+    "WBI image selection and cold-start behavior",
+    "any installed bytes or executable patch window"
+  ],
+  "install_ready": false
+}

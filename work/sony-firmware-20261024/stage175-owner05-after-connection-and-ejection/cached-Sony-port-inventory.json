@@ -1,0 +1,82 @@
+{
+  "observed_utc": "2026-10-29T11:32:29.889419+00:00",
+  "query": "IORegistry cache only; all Sony VID054c rows to clarify fixed target absence",
+  "USB_host_device_count": 2,
+  "Sony_rows": [
+    {
+      "idVendor": 1356,
+      "idProduct": 3489,
+      "locationID": 17825792,
+      "USB Product Name": "ILME-FX3",
+      "USB Vendor Name": "Sony",
+      "IOObjectClass": "IOUSBHostDevice",
+      "bDeviceClass": 0,
+      "bDeviceSubClass": 0,
+      "bDeviceProtocol": 0,
+      "locationID_hex": "0x01100000",
+      "cached_interfaces": [
+        {
+          "bInterfaceNumber": 0,
+          "bInterfaceClass": 8,
+          "bInterfaceSubClass": 6,
+          "bInterfaceProtocol": 80
+        },
+        {
+          "bInterfaceProtocol": 80
+        }
+      ]
+    },
+    {
+      "idVendor": 1356,
+      "idProduct": 3489,
+      "locationID": 17825792,
+      "USB Product Name": "ILME-FX3",
+      "USB Vendor Name": "Sony",
+      "IOObjectClass": "IOUSBHostInterface",
+      "locationID_hex": "0x01100000",
+      "cached_interfaces": [
+        {
+          "bInterfaceNumber": 0,
+          "bInterfaceClass": 8,
+          "bInterfaceSubClass": 6,
+          "bInterfaceProtocol": 80
+        },
+        {
+          "bInterfaceProtocol": 80
+        }
+      ]
+    },
+    {
+      "idVendor": 1356,
+      "idProduct": 3489,
+      "locationID": 17825792,
+      "USB Product Name": "ILME-FX3",
+      "IOObjectClass": "IOUSBMassStorageInterfaceNub",
+      "locationID_hex": "0x01100000",
+      "cached_interfaces": [
+        {
+          "bInterfaceNumber": 0,
+          "bInterfaceClass": 8,
+          "bInterfaceSubClass": 6,
+          "bInterfaceProtocol": 80
+        },
+        {
+          "bInterfaceProtocol": 80
+        }
+      ]
+    },
+    {
+      "idVendor": 1356,
+      "idProduct": 3489,
+      "USB Product Name": "ILME-FX3",
+      "IOObjectClass": "IOUSBMassStorageDriverNub",
+      "cached_interfaces": [
+        {
+          "bInterfaceProtocol": 80
+        }
+      ]
+    }
+  ],
+  "raw_tree_or_serial_or_unrelated_product_names_saved": false,
+  "active_USB_operations": 0
+}

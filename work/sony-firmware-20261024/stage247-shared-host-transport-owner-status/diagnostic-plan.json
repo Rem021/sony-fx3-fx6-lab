@@ -1,0 +1,56 @@
+{
+  "schema": "fx3-owner-status-only-diagnostic-draft-v1",
+  "status": "DRAFT_NOT_RELEASED",
+  "goal": "Observe-only owner acquisition and return; no Sony command or firmware modification.",
+  "source_grant_id": "fx3-702-owner-status-20261030-11",
+  "authorized": false,
+  "native_entry_released": false,
+  "target": {
+    "VID": "054C",
+    "PID": "0DA1",
+    "model": "ILME-FX3",
+    "location_hex": "0x01100000",
+    "registryID": 4294982508,
+    "cache_only": true,
+    "firmware_hash_verified": false,
+    "registry_ID_not_yet_a_runtime_admission_pin": true,
+    "private_same_unit_tag_materialized": false
+  },
+  "host_commands": [
+    {
+      "opcode": 1,
+      "name": "OBSERVE"
+    },
+    {
+      "opcode": 6,
+      "name": "STATUS"
+    },
+    {
+      "opcode": 5,
+      "name": "END"
+    }
+  ],
+  "allowed_USB_vendor_control_or_bulk_transfers": 0,
+  "root_helper_invocations_proposed_max": 1,
+  "work_budget_ms": 20000,
+  "final_observation_budget_ms": 30000,
+  "budgets_cannot_interrupt_blocked_calls": true,
+  "proposed_flow": [
+    "validate new fixed approval, root installation and live parent identity",
+    "HELLO self-image and parent ACK before owner actions",
+    "verify current target, no mounted/unknown camera media",
+    "explicit one-time capture may disconnect the storage driver",
+    "claim interface0 and verify81/02 bulk endpoint to pipe mapping",
+    "OBSERVE, STATUS, END are local owner commands; no Sony USB request",
+    "close interface, release captured device, close device, verify same-target driver baseline",
+    "deliver private live result and independently observe original helper exit"
+  ],
+  "outstanding_before_any_execution": [
+    "implement native frame preparation and root supervisor factory; current factory always denies",
+    "replace fixture-only target tags with explicit same-unit binding and current-target admission",
+    "freeze new one-time build/nonce/package and obtain its specific administrator plus USB capture/return approval"
+  ],
+  "on_inflight_or_unknown": "retain original process/context, no forced kill/reset/retry or fabricated success",
+  "success_is_not_camera_authentication_backup_restore_MAIN_HEVC_or_first_flash": true,
+  "previous195_HOST_ONLY_authorization_consumed_and_not_reused": true
+}

@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-25-key-030.png using image tool. Shooting>Shutter/Silent 9/59 orange category; Silent Mode and Release w/o Lens listed Next: DOWN to Audio Recording for another distinct page; no shutter or lens setting selected

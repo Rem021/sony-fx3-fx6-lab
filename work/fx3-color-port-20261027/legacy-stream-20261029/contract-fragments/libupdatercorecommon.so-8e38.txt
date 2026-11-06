@@ -1,0 +1,38 @@
+00008e38 stp        x29, x30, [sp, #-0x10]!
+00008e3c mov        x8, x1
+00008e40 mov        w6, #0x55
+00008e44 mov        x7, x2
+00008e48 mov        x29, sp
+00008e4c ldrb       w1, [x0, #0x10]
+00008e50 ldr        x5, [x0, #8]
+00008e54 cmp        w1, #0
+00008e58 mov        w1, #0x50
+00008e5c csel       w6, w6, w1, ne
+00008e60 add        x0, x5, #0x38
+00008e64 bl         #0x8930
+00008e68 mov        w0, w0
+00008e6c mov        x1, #0
+00008e70 cmp        x1, x0
+00008e74 mov        w4, w1
+00008e78 b.eq       #0x8ec8
+00008e7c cmp        x1, #0x1c
+00008e80 b.eq       #0x8ec8
+00008e84 add        x1, x1, #1
+00008e88 add        x2, x5, x1, lsl #4
+00008e8c ldrb       w2, [x2, #0x30]
+00008e90 cmp        w2, w6
+00008e94 b.ne       #0x8e70
+00008e98 ubfiz      x4, x4, #4, #0x1c
+00008e9c add        x0, x4, #0x44
+00008ea0 add        x0, x5, x0
+00008ea4 bl         #0x8930
+00008ea8 str        w0, [x8]
+00008eac add        x0, x4, #0x48
+00008eb0 add        x0, x5, x0
+00008eb4 bl         #0x8930
+00008eb8 str        w0, [x7]
+00008ebc mov        w0, #1
+00008ec0 ldp        x29, x30, [sp], #0x10
+00008ec4 ret        
+00008ec8 mov        w0, #0
+00008ecc b          #0x8ec0

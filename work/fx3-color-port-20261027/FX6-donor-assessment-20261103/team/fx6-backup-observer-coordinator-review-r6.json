@@ -1,0 +1,22 @@
+{
+  "timestamp_utc": "2026-11-05T18:34:45.154257+00:00",
+  "task": "task_d6eb303d4240",
+  "dispatch": "ctx_2b28a6b92c1d",
+  "manifest": {
+    "count": 279,
+    "all_match": true,
+    "sha256": "80c66f95654770ca49b32a9a3da148f53fc96c14f1ca82608c696ffabcbff6d6"
+  },
+  "status": "entry_and_partial_packet_fix_verified_final_failure_paths_require_fix",
+  "accepted": [
+    "stop-only CLI now invokes HostRunner",
+    "same partial-packet 50ms budget reproduced TimeoutError in 12ms rather than 1.02s"
+  ],
+  "remaining": [
+    "run_stop_only catches preflight/UUID failure and mkdir+overwrites receipt without volume guard/run ownership; also fallback writes on rejected root",
+    "cleanup sets RSP cleanup phase only after observer.cleanup z1, preventing allowed total-budget cleanup when observation budget expired",
+    "stop-only success predicate ignores input_unchanged_after false/unknown and postflight error"
+  ],
+  "VM_authorized": false,
+  "VM_started": false
+}

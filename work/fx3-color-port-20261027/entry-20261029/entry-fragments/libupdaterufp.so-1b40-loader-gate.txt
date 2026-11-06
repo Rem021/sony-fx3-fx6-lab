@@ -1,0 +1,67 @@
+00001b40 stp        x29, x30, [sp, #-0x30]!
+00001b44 mov        w3, #1
+00001b48 mov        w2, #0x60
+00001b4c mov        x29, sp
+00001b50 stp        x19, x20, [sp, #0x10]
+00001b54 add        x1, x29, #0x28
+00001b58 mov        x20, x0
+00001b5c mov        w0, #0x8246
+00001b60 movk       w0, #0xe1, lsl #16
+00001b64 bl         #0x13e0 ; osal_valloc_msg_wait
+00001b68 cbnz       w0, #0x1c04
+00001b6c ldr        x19, [x29, #0x28]
+00001b70 mov        w1, #1
+00001b74 ldr        w0, [x20]
+00001b78 movk       w1, #0x2000, lsl #16
+00001b7c str        w0, [x19]
+00001b80 ldr        w0, [x20, #8]
+00001b84 str        xzr, [x19, #0x58]
+00001b88 str        w0, [x19, #8]
+00001b8c ldr        w0, [x20]
+00001b90 cmp        w0, w1
+00001b94 b.ne       #0x1c10
+00001b98 ldrh       w0, [x20, #0x18]
+00001b9c strh       w0, [x19, #0x18]
+00001ba0 ldr        w0, [x20, #0x1c]
+00001ba4 str        w0, [x19, #0x1c]
+00001ba8 ldr        w0, [x20, #0x20]
+00001bac str        w0, [x19, #0x20]
+00001bb0 mov        x0, x19
+00001bb4 mov        w1, #0x8290
+00001bb8 movk       w1, #0x4b, lsl #16
+00001bbc bl         #0x1320 ; osal_set_msg_src
+00001bc0 ldr        x1, [x29, #0x28]
+00001bc4 mov        w0, #0x8246
+00001bc8 movk       w0, #0xe1, lsl #16
+00001bcc bl         #0x15a0 ; osal_snd_sync_msg
+00001bd0 cbnz       w0, #0x1bf4
+00001bd4 mov        w0, #1
+00001bd8 ldr        w1, [x20]
+00001bdc movk       w0, #0x2000, lsl #16
+00001be0 cmp        w1, w0
+00001be4 b.ne       #0x1bf4
+00001be8 adrp       x0, #0x15000
+00001bec ldr        x1, [x19, #0x10]
+00001bf0 str        x1, [x0, #0x1f8]
+00001bf4 ldr        x1, [x29, #0x28]
+00001bf8 mov        w0, #0x8246
+00001bfc movk       w0, #0xe1, lsl #16
+00001c00 bl         #0x15f0 ; osal_free_msg
+00001c04 ldp        x19, x20, [sp, #0x10]
+00001c08 ldp        x29, x30, [sp], #0x30
+00001c0c ret        
+00001c10 mov        w1, #2
+00001c14 movk       w1, #0x2000, lsl #16
+00001c18 cmp        w0, w1
+00001c1c b.ne       #0x1bb0
+00001c20 ldr        x0, [x20, #0x10]
+00001c24 str        x0, [x19, #0x10]
+00001c28 ldr        x0, [x20, #0x20]
+00001c2c str        x0, [x19, #0x20]
+00001c30 ldr        w0, [x20, #0x30]
+00001c34 str        w0, [x19, #0x30]
+00001c38 ldr        w0, [x20, #0x18]
+00001c3c str        w0, [x19, #0x18]
+00001c40 ldr        w0, [x20, #0x2c]
+00001c44 str        w0, [x19, #0x2c]
+00001c48 b          #0x1bb0

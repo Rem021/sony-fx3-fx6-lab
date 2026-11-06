@@ -1,0 +1,585 @@
+{
+  "created_utc": "2026-10-29T19:51:10.153994+00:00",
+  "stage": "loader-host-20261029",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "bytes": 2332015,
+      "sha256": "be477f9b85548b792498fbaceaaecd5b0a0797b3cebffaa85adf4d884f2e5834"
+    },
+    {
+      "path": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "bytes": 10971632,
+      "sha256": "cd509a816f8caf84a3151928976d5a9c0b17780927b08110ee162537fbcc4139"
+    },
+    {
+      "path": "README.md",
+      "bytes": 8602,
+      "sha256": "5ec212346a9877ed78d60192821fe49bec78faf85e7c7d4ecb2326265465c510"
+    },
+    {
+      "path": "archive-tool-receipt.json",
+      "bytes": 1067,
+      "sha256": "3c7f5ce68e93447613a2e38edbb8978bc19b62b5821d70c61a2f01f6f3998353"
+    },
+    {
+      "path": "attempts/bsdtar-CAB-component-failure.json",
+      "bytes": 491,
+      "sha256": "57bcd2e149ea340269021b4c30283b8af38ab51e4869b0c52484845f46b84371"
+    },
+    {
+      "path": "attempts/olefile-source-partial-and-license-fetch.json",
+      "bytes": 436,
+      "sha256": "8a77ca3d25b215f27807f1a88bc7c2cef0b26be4917947d48fcc8ac6f6a26330"
+    },
+    {
+      "path": "attempts/olefile-wheel-timeout.json",
+      "bytes": 420,
+      "sha256": "c708a963bb43e3d121f3c7449918999b5f86f4e7ed0c26762ed54fe67b6e394f"
+    },
+    {
+      "path": "capture_host_archive.py",
+      "bytes": 2260,
+      "sha256": "1b0e14a9284e32380ea8a1a406964254386160e66d02a0ea1e271df3b08b63ef"
+    },
+    {
+      "path": "capture_host_sources.py",
+      "bytes": 2018,
+      "sha256": "69ef4e58189f574f51f79c1c773a289c77dc29997ca924fd8879d117724b5c29"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 672,
+      "sha256": "1cd151bca8c58efdb2178d7cdee120c6f0e5846ce0d71192e640e71297e2c6e0"
+    },
+    {
+      "path": "download_host_tool.py",
+      "bytes": 1785,
+      "sha256": "c8fa3da8144c34a5d6a9ee0cca82aabc0fc90edbc90f6626535bc18194087d52"
+    },
+    {
+      "path": "download_public_sources.py",
+      "bytes": 2046,
+      "sha256": "aa1e196a884640abd076d5bfb2afb65b9b7d24088d0d7e980582d7b4199e825f"
+    },
+    {
+      "path": "extract_host_components.py",
+      "bytes": 2389,
+      "sha256": "f96c6d5a706d53a667972dda2544191a393f5d4bb647b704a688015ed8c79e82"
+    },
+    {
+      "path": "extract_host_components_7zip.py",
+      "bytes": 2685,
+      "sha256": "c0db56fbad3ceef3011146e4a27dd1ddce8e6d37a1948846b070d60941e02f25"
+    },
+    {
+      "path": "extract_setup_stream.py",
+      "bytes": 3642,
+      "sha256": "a35e46c0cad0c03df383604e71b9e58ecad6b73bdef6d53b22edfe385157318f"
+    },
+    {
+      "path": "fetch_archive_tool.py",
+      "bytes": 1926,
+      "sha256": "6ed8f5b680deb68169014c1e8e05acb308406fe114e4f7c1cdb2caedb35378e5"
+    },
+    {
+      "path": "fetch_ole_source.py",
+      "bytes": 1524,
+      "sha256": "3cb9cc91d70e8d8f97985f2857cd54b2ca0e46634eb1916094bf5bec6c921f39"
+    },
+    {
+      "path": "get_ole_reader.py",
+      "bytes": 1862,
+      "sha256": "7c1d2319e7f88b57b5755732f688bda6d48eb1534eb0672a97410338bfc5754c"
+    },
+    {
+      "path": "host-PE-interfaces.json",
+      "bytes": 793418,
+      "sha256": "a12e32ff612a6ffab52fc084911873cf1f596ba9951fbafd3f9681d7172354b1"
+    },
+    {
+      "path": "host-archive-pages.json",
+      "bytes": 6348,
+      "sha256": "4f012a6136de3728e26a56a6ddd9f67a180e4c4f22c8df70805f94f075bd5d69"
+    },
+    {
+      "path": "host-component-review.json",
+      "bytes": 10442,
+      "sha256": "fc4d66e238be91ef055a6ccd7562a43eac93fc8869246cfaa32e656395ec498c"
+    },
+    {
+      "path": "host-components/libeay32_tool.dll",
+      "bytes": 1317376,
+      "sha256": "cf4d95808ab1c6f16d1714bbeb65500b3fa8344ed94377cd73e47b63fbee80ef"
+    },
+    {
+      "path": "host-components/rcpp4.dll",
+      "bytes": 602112,
+      "sha256": "45f712430e11f1bead75b327cbad209498afef5db3866a1763c9d4f29cd8fc5c"
+    },
+    {
+      "path": "host-components/sncatdcv_tool.dll",
+      "bytes": 564224,
+      "sha256": "af0e2d6e3b79afdfb5d9abbc7b820acde7cc8f9522762c6bbc6df454b90f3af8"
+    },
+    {
+      "path": "host-components/sncaudiodmo_tool.dll",
+      "bytes": 263168,
+      "sha256": "dd348d786ec68e23a61dd0ba2d306f456828f0b9cf6199d3376ec7e42895420e"
+    },
+    {
+      "path": "host-components/sncaudup_tool.dll",
+      "bytes": 601088,
+      "sha256": "072c63f9f41c24f16a05040d0dd86a4ecd555e03119b8dcfca9312666171d170"
+    },
+    {
+      "path": "host-components/snccgiw_drv.pak",
+      "bytes": 501659,
+      "sha256": "737677bc9fcc06319642f5907559cfe8e328bac8035695989d95f5661d22c460"
+    },
+    {
+      "path": "host-components/snccgiw_tool.dll",
+      "bytes": 3609088,
+      "sha256": "900cdfc914d95dc90fb44f545569a25d40a0b15c72468ca007aecdcccd8a8976"
+    },
+    {
+      "path": "host-components/snccore_tool.dll",
+      "bytes": 919552,
+      "sha256": "b371b990d31bce5a6724f9b4008ce373240d1894fb8f22de795a3739b3b7ddec"
+    },
+    {
+      "path": "host-components/sncstrm_tool.dll",
+      "bytes": 992768,
+      "sha256": "b01dfac739cec659a75cd2943a75683df65100ea928c04442f9945e21751703f"
+    },
+    {
+      "path": "host-components/snctoolbox.exe",
+      "bytes": 8813056,
+      "sha256": "cd5a6e99a33136ad102087932dd375313b7d9299bb2f3e1ce3cf93f262250566"
+    },
+    {
+      "path": "host-components/snctoolboxcn.dll",
+      "bytes": 5105664,
+      "sha256": "d2231eb78919a4b9a02cba92b59b252d766bea8f3393f428a9d1eaf72dfbd2c2"
+    },
+    {
+      "path": "host-components/snctoolboxen.dll",
+      "bytes": 5169152,
+      "sha256": "e5e25f73f69a4363860fdc1e1788a6e3fa10fabed8f83196b75bcb1611803832"
+    },
+    {
+      "path": "host-components/snctoolboxfr.dll",
+      "bytes": 5196288,
+      "sha256": "4cd6484a9757ebfc834465f5dad69eccbfd87a33a2091512b57eef345d54b08b"
+    },
+    {
+      "path": "host-components/snctoolboxge.dll",
+      "bytes": 5184512,
+      "sha256": "9d4bb560c49f14b575ceac3b581840ae83b68df60526b37a609e7feddea39f4a"
+    },
+    {
+      "path": "host-components/snctoolboxit.dll",
+      "bytes": 5192192,
+      "sha256": "4cb851827b9b99112c886319fa0f96efaf1514476182bfba3ea7b199265bb531"
+    },
+    {
+      "path": "host-components/snctoolboxjp.dll",
+      "bytes": 5124096,
+      "sha256": "446fdace069c7843c0c3f4516f42312efde48f6cf11d5fb597e45222f3a28713"
+    },
+    {
+      "path": "host-components/snctoolboxkr.dll",
+      "bytes": 5118976,
+      "sha256": "03010550a86e97495544095ad0fccd3f00d1363fce663613e1e6c9d15dab16f0"
+    },
+    {
+      "path": "host-components/snctoolboxpt.dll",
+      "bytes": 5190656,
+      "sha256": "34d759abea1e86fde9b8854b544f30573715a30d537e4cc45ddf19deb3e6de26"
+    },
+    {
+      "path": "host-components/snctoolboxsp.dll",
+      "bytes": 5197312,
+      "sha256": "f891cfd27759ef04424e13ee3ad09b9fb2bac591b3b863a5567c25ce2628c783"
+    },
+    {
+      "path": "host-components/snctoolboxtw.dll",
+      "bytes": 5100544,
+      "sha256": "98f6cd4e8a2fd6ff0bac277860b3f7a9eb707086028f4f2bdb03dc1966aa28a4"
+    },
+    {
+      "path": "host-components/sncverup_tool.dll",
+      "bytes": 905216,
+      "sha256": "a96aecd93432bded2d90a116338082fffe42d302af899bd18f547d2e91e365c8"
+    },
+    {
+      "path": "host-components/sncverup_tool.svu",
+      "bytes": 90318160,
+      "sha256": "767d4b3e70bf99d390b25a65613faaf0162ebfb8d0ca011584743f62db92b325"
+    },
+    {
+      "path": "host-components/sncvideo_tool.dll",
+      "bytes": 1064960,
+      "sha256": "6ebb347ff57fcef4dd98a599ca7090f37436b93d11bef024809ecf25ae742be9"
+    },
+    {
+      "path": "host-components/sonyjvtd_tool.dll",
+      "bytes": 1005568,
+      "sha256": "f31c2406c094a707e07389307460bf3977227b7a802dd7968d762a1ef6b02cd2"
+    },
+    {
+      "path": "host-components/sonynetworkcamera6_tool.dll",
+      "bytes": 10224128,
+      "sha256": "c3419d7bd5e4c87f1c276aa3b092721667bcd2a0da49b4b70065f09f96746421"
+    },
+    {
+      "path": "host-components/ssleay32_tool.dll",
+      "bytes": 333824,
+      "sha256": "27d9e9f92ba6938edf8c74a8164a0ceaabdb82559aad2f58f13c83b46674c46f"
+    },
+    {
+      "path": "host-extracted/0x0409.ini",
+      "bytes": 22480,
+      "sha256": "8b76df0ffc9a226b532b60936765b852b89780c6e475c152f7c320e085e43948"
+    },
+    {
+      "path": "host-extracted/SNC toolbox.msi",
+      "bytes": 121112576,
+      "sha256": "ad631b592ff73733136e74f56ecd9fe6a61e1074767e7ab63575c46bc90c8549"
+    },
+    {
+      "path": "host-extracted/Setup.ini",
+      "bytes": 5164,
+      "sha256": "364f9b7cfd7e9ba4ece2001ea3001648b44bbc88b806c7329a80e1727360a6d6"
+    },
+    {
+      "path": "host-installer-structure.json",
+      "bytes": 1040,
+      "sha256": "0814bc3e03cc57019d788c2073fe782ab7936c18d0c262da1eca1457d1671049"
+    },
+    {
+      "path": "host-source-pages.json",
+      "bytes": 5400,
+      "sha256": "1bff1f7d905f2031b2cf6e5b415302e3c3e4f70725f07ec46ac7bb26ae8e68b3"
+    },
+    {
+      "path": "host-tool-ZIP-inventory.json",
+      "bytes": 639,
+      "sha256": "4a4da8d4c67da3586221333eb92191e3e6bd98cedf1e1f32d34bc3ff2ad793f3"
+    },
+    {
+      "path": "host-tool-download.json",
+      "bytes": 1088,
+      "sha256": "11da7e132f3d85d2c08bc127e38abce3970f0e2e44143753d0c358f26bba9f75"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 339,
+      "sha256": "268598eb6f887f012b5191442bf070782114c133dca3d36e7a1ab3b367699ce7"
+    },
+    {
+      "path": "inspect_host_installer.py",
+      "bytes": 2014,
+      "sha256": "c3e3298cac2897184fbc67bfe9fae1697182042b64090efd5cfb0d15c08c5832"
+    },
+    {
+      "path": "legacy-source-pages.json",
+      "bytes": 495,
+      "sha256": "a2e1502b6d114920431958eec8e42942a71d12dfd9e2f6f8bd3093b92ca4f16b"
+    },
+    {
+      "path": "msi-cabinets/cabinet-001.cab",
+      "bytes": 115710745,
+      "sha256": "04d0d4067a27d0f0342912685b8fe9aa2917e6067a114bae3006eb55150e5e57"
+    },
+    {
+      "path": "msi-streams.json",
+      "bytes": 25296,
+      "sha256": "e8057acf7bc524b427a93083eeeeb61649620693adeb86fca944880f3f2a984c"
+    },
+    {
+      "path": "originals/SNCToolboxV1.6.1.0.zip",
+      "bytes": 119665922,
+      "sha256": "ec18e66965423093fab8edf535446524b8b6df49a51300e2a0382fdd3f867b2e"
+    },
+    {
+      "path": "originals/SncToolbox_Setup.exe",
+      "bytes": 119508225,
+      "sha256": "52feb1eac680e2da5ed17da333e979b9985b293a363596cf2bc1f35764cce1a7"
+    },
+    {
+      "path": "pe_reader.py",
+      "bytes": 3143,
+      "sha256": "dadc8334e377d1d9c2fd23565ab58d26a30462af5c00f560e7177757ad0fe250"
+    },
+    {
+      "path": "public-source-rpms.json",
+      "bytes": 3778,
+      "sha256": "1aca403f44b8a04a5c03ee26ee6b042ca8fd338ef8d3d141a97127a19132dc2f"
+    },
+    {
+      "path": "read_msi_cabinets.py",
+      "bytes": 2289,
+      "sha256": "e46aae2a778827875a00ca06da222dcbc02e00072d41f87d78ddfd4d62a507fe"
+    },
+    {
+      "path": "reference/ISx.c",
+      "bytes": 30668,
+      "sha256": "3581ed63c8bfd68d10ed4b73c47a74c00685f6dd45683a8b501c1721d8aa81bc"
+    },
+    {
+      "path": "reference/LICENSE",
+      "bytes": 1068,
+      "sha256": "00e34ef4659cf9b9e37e5c714d5a4648f037351a536b31c4a7764e137a1e7dab"
+    },
+    {
+      "path": "reference/olefile/LICENSE.txt",
+      "bytes": 2846,
+      "sha256": "cf1498d5b834b3758a89d06d224a1502c54a28b3a852f46130b761deaa4890d1"
+    },
+    {
+      "path": "reference/olefile/dependency-receipt.json",
+      "bytes": 1169,
+      "sha256": "5fab722dbc4ddead35860dce90eb802f4d362bb05f5be93210a5de04b938b481"
+    },
+    {
+      "path": "reference/olefile/olefile/__init__.py",
+      "bytes": 967,
+      "sha256": "719e959251c94a8332354270e733ff8638781bf1ec6a9f921902a0b055692456"
+    },
+    {
+      "path": "reference/olefile/olefile/olefile.py",
+      "bytes": 122759,
+      "sha256": "17256b61ff3108dcc2ac3e6c6af8b61d359fa1c3ed647424be556331b892e93d"
+    },
+    {
+      "path": "reference/source-receipt.json",
+      "bytes": 822,
+      "sha256": "5ccf24ed34887b2404ffc550dba8a4d480f530d22f96d0d754c09240784eddb3"
+    },
+    {
+      "path": "review_host_pe.py",
+      "bytes": 1749,
+      "sha256": "e08d3d20f5ad021f5f84262cc5727196f475c228bff0118e0d208e2fa36e31aa"
+    },
+    {
+      "path": "setup-stream-unpack.json",
+      "bytes": 2268,
+      "sha256": "bbf9b8b36cec6c09f54b9632baabc46c49cd40289d0cbf2cfb90d8b874425909"
+    },
+    {
+      "path": "snc-index.html",
+      "bytes": 10150,
+      "sha256": "b01afc5db5632bc02268eba801ecc06591009a6f55262456a5b5a50b8abda672"
+    },
+    {
+      "path": "snc-japan-archive-metadata.raw.json",
+      "bytes": 307,
+      "sha256": "65c3d3db6d68a11fbc358516f69057a346c0781760bc6a861fd9b55184993011"
+    },
+    {
+      "path": "snc-japan-archived.html",
+      "bytes": 26779,
+      "sha256": "186d6645221c19d7041efeccb3e63647d85bc3d14e869f0da18970e06a8eb9c0"
+    },
+    {
+      "path": "source-excerpts/CVE-2012-0060-1.patch",
+      "bytes": 1250,
+      "sha256": "2ef1340c1abbb09753b8346344ce739b87c4106ce1e2a8db8ebb97cf32e54604"
+    },
+    {
+      "path": "source-excerpts/CVE-2012-0060-2.patch",
+      "bytes": 4011,
+      "sha256": "53729531a31d4320d2df792370bb86d0e50e89acde1c1980e35e0939275e555d"
+    },
+    {
+      "path": "source-excerpts/CVE-2012-0061.patch",
+      "bytes": 1841,
+      "sha256": "73c4de5279c1666f63fef4d287a239661e875a2b5d98b77578a34448eaf2e62f"
+    },
+    {
+      "path": "source-excerpts/CVE-2012-0815.patch",
+      "bytes": 1821,
+      "sha256": "0058a2dff9d0645c77a1c3e363a30dfdf80e106533dd441ddbbbc482752c3297"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-CVE-2021-28831.patch",
+      "bytes": 840,
+      "sha256": "6a274d1515969c30e0902e3928b45ac1308bdfe93da17864ca8686b1ad373294"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-CVE-2021-42374.patch",
+      "bytes": 1894,
+      "sha256": "09b7aff97351350f1aefa504f100d7b48e783195ea45234839057b0c08a077b7"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-CVE-2021-42378-to-CVE-2021-42386.patch",
+      "bytes": 9281,
+      "sha256": "08f323624d71e22b26bf2b41a68ea6921a38988dfbb88ba6a3cc1a3b98ac2d15"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-devel.patch",
+      "bytes": 1562,
+      "sha256": "b1119b4a53bcaeae666dfa1fc77f48273f2821931c082bb03f8167201af8a1b1"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-halt-without-init.patch",
+      "bytes": 831,
+      "sha256": "330bb2baeb5f9ad1eda226e02f970c1564c33c2a9711368390b8d56fc5f40fb1"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-logger.patch",
+      "bytes": 1340,
+      "sha256": "d391afdfd85fd39e2e4ce8a0a431b105bc9d1737ba60707a90b79b03362b73ae"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-make.patch",
+      "bytes": 1740,
+      "sha256": "078a731e9dceb5a2f9d38486b2070964be86f1de064ce525eff417093302b913"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-nfs-cp.patch",
+      "bytes": 581,
+      "sha256": "e848c2ad463119a2efc6dabe4dcc4b0fb58d3c3aa07324cb8c114eedaefb4751"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-sfdisk-error-exit.patch",
+      "bytes": 7368,
+      "sha256": "7f1c9a28830f74dea335bc94cc53dadab381ce08b28e2f42cf290c8ac3c72db4"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3-sfdisk.patch",
+      "bytes": 95058,
+      "sha256": "bee577d3eb2533c0ab01a9d225021a82ce74637170365e984049fa36d0e591a0"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3_CVE-2018-20679.patch",
+      "bytes": 5364,
+      "sha256": "f81245a96783a100b33238dcee3d7e60b704e61589b8d880847d305fef5ef9f6"
+    },
+    {
+      "path": "source-excerpts/busybox-1.29.3_CVE-2019-5747.patch",
+      "bytes": 2354,
+      "sha256": "5b3f5749bd5746b46320280045443e94647611beffbbd75774cae970a60a9f27"
+    },
+    {
+      "path": "source-excerpts/dotconfig",
+      "bytes": 30698,
+      "sha256": "ee9466638ed86798de40d55ef51cc8d259768e3da29ecd30be287431da9dd618"
+    },
+    {
+      "path": "source-excerpts/rpm-4.4.2.1-configure-beecrypt.patch",
+      "bytes": 649,
+      "sha256": "4918be4c989d3729474f0a7a8bda5075735ef666b45fc922b22eb69756887d4d"
+    },
+    {
+      "path": "source-excerpts/rpm-4.4.2.1-fpic.patch",
+      "bytes": 352,
+      "sha256": "d49725982f7e677a5e17837d93e545ed3704fc576bea9e62ed0dd213e6e80af7"
+    },
+    {
+      "path": "source-excerpts/rpm-4.4.2.3-CVE-2013-6435.patch",
+      "bytes": 535,
+      "sha256": "40f4980dce58a32d61f553f0ed7a6388c65cfdeb3b44e5d6e45d73a2bb609b2f"
+    },
+    {
+      "path": "source-excerpts/rpm-4.4.2.3-CVE-2014-8118.patch",
+      "bytes": 445,
+      "sha256": "97400bf623c0b4d44db871a1c5c70b83514b89e2f4fa473960db8cfceb62a07b"
+    },
+    {
+      "path": "source-excerpts/sony-target-dev-busybox.spec",
+      "bytes": 22893,
+      "sha256": "0ccbf5c00be25e79e67a28c9ac0d2410601a952cfd0ea40dbff274c0a9978097"
+    },
+    {
+      "path": "source-excerpts/sony-target-dev-rpm.spec",
+      "bytes": 5918,
+      "sha256": "d67154f90f7c57c3e879d8ca3be9e898ece05ebfd9de6f09e59f3ddee7f6cc87"
+    },
+    {
+      "path": "source-patch-review.json",
+      "bytes": 14826,
+      "sha256": "31504f6ab0d43a22fdf45a7e0fc7eb969fc35b70f2fefdd7b636983ee8012db9"
+    },
+    {
+      "path": "svu-header-guest-results.json",
+      "bytes": 5156,
+      "sha256": "df224a2d90b749f6b613d5b91c8efbd3f068d1f2e516935996fc9c58495222f5"
+    },
+    {
+      "path": "svu-header-source-pins.json",
+      "bytes": 2292,
+      "sha256": "a9825bc8dc85506b6ea2ff78de156e43f8e40cd1e8903a06e177a560205c7cff"
+    },
+    {
+      "path": "svu_header_guest.py",
+      "bytes": 4659,
+      "sha256": "a253505a769d873f73b829db312dadc3457b436eb005579beb396b6a5b6fc6bc"
+    },
+    {
+      "path": "tools/7z2605-mac.tar.xz",
+      "bytes": 1868068,
+      "sha256": "12ef6830317743cfd3f0ab1724bde43fcc270d8b6d8564f8c12c2a2b7f993570"
+    },
+    {
+      "path": "tools/7zz",
+      "bytes": 6072912,
+      "sha256": "8e495531e1b2b8cb169ca583493922d4ab386007756418c15b95f07f642c35fb"
+    },
+    {
+      "path": "tools/License.txt",
+      "bytes": 6029,
+      "sha256": "1790374e5352329cedb46ee3808930a88e9ca2f08b82b10fcf5cf605d2c301b1"
+    },
+    {
+      "path": "tools/readme.txt",
+      "bytes": 3863,
+      "sha256": "945cf82ec2dafc287cccf1fc7159962379f4fd49a10758116fd3d7d2be3b8635"
+    },
+    {
+      "path": "validate_and_seal.py",
+      "bytes": 8636,
+      "sha256": "2a19cb9649c060d86c63428e15b5c0f7eb4546f6f59f3ff019bdf10b8ad89077"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 859,
+      "sha256": "1a61cb386135ddd728081ab72889cb6196a1b4970502e3955eef775ee9e43143"
+    }
+  ],
+  "validation": {
+    "status": "PASS_HOST_READER_FORMAT_BOUNDARY_CHECKPOINT",
+    "previous_files_verified": 32,
+    "official_host_ZIP_bytes": 119665922,
+    "ZIP_CRC_entries": 4,
+    "InstallShield_members_zlib_checked": 3,
+    "MSI_streams": 76,
+    "CAB_members": 83,
+    "host_components": 26,
+    "host_component_bytes": 173615339,
+    "private_wrapper_marker_hits": 0,
+    "PE_interfaces_reviewed": 5,
+    "upgrade_DLL_named_exports": 23,
+    "original_x86_fragment_bytes": 25,
+    "original_x86_fragment_instructions": 6,
+    "guest_cases": 9,
+    "VENICE_prefixes_rejected_at_SVU_branch": 5,
+    "GPL_source_RPMs": 2,
+    "source_specs_configs_patches": 23,
+    "complete_VENICE_reader_recovered": false,
+    "whole_ISP_recovered": false,
+    "native_Sony_programs_executed": 0,
+    "device_actions": 0,
+    "modified_firmware_produced": false,
+    "flashable_package_produced": false,
+    "goal_complete": false
+  },
+  "other_owner_files_written": false,
+  "device_actions": 0,
+  "full_modified_firmware_emitted": false,
+  "flashable_package_produced": false,
+  "persistent_goal_status": "active",
+  "goal_complete": false
+}

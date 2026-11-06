@@ -1,0 +1,168 @@
+{
+  "status": "PASS_STATIC_FIRMWARE_SIDE_CONTRACT_NO_PATCH",
+  "sources": {
+    "fx6_image": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/vmlinux.bin",
+      "sha256": "bc4925e701ae363c797f22ef28f29dc48fd17af7f25a3f64d7d0824312c0dab9"
+    },
+    "fx3_image": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    "fx6_symbols": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/kernel-provider-binding/fx6-kernel-symbol-catalog.json",
+      "sha256": "f81602bb6d754eccdd7b2c17af371ee2e03cc01fad86dff3552936bd1f9a6166"
+    },
+    "fx3_symbols": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/work/kernel-symbol-catalog.json",
+      "sha256": "b37c6b7d4315f65234cd6b64c3be4a3d7c6e0d2cca66204e27cb5c575000a51e"
+    },
+    "liro_closure": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/liro-closure.json",
+      "sha256": "e2c617cdd786c3536eeaca8090ac59b8367abf2e98af8281fa82b9dfbb5cf7a6"
+    },
+    "helper_source": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-v5-native101.c",
+      "sha256": "b0de532abb5c688f360f46d862abe1c8c1b2114f8448b5e3a91573cd9987b4c0"
+    },
+    "helper_sync_header": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-sync101-v1.h",
+      "sha256": "6f2116440d17db50f7c35b57f7ab967ce304318a431649a76885c096bd87ee96"
+    },
+    "helper_core_header": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-reset-core-v2-sync100.h",
+      "sha256": "ffa767cec3bdd7f94fa9aaf985024535f550446a2cd8ec7524fd10dc63701e47"
+    },
+    "software_gate": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/software-first-gate.json",
+      "sha256": "6adcb2c4c5192759445c733e02a615cd2667820b1f8d1c6f4701368046166006"
+    }
+  },
+  "original_backup_consumer": {
+    "module_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+    "sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+    "function": "backupfile_get_cp_data",
+    "function_text_offset": "0x7030",
+    "call_instruction_text_offset": "0x70bc",
+    "return_pc_text_offset": "0x70c0",
+    "call_instruction_file_offset": "0x7124",
+    "relocation": "R_AARCH64_CALL26 pcidma_transfer_async"
+  },
+  "kernel_functions": {
+    "fx3": {
+      "pcidma_address": "0xffffff80083220c8",
+      "pcidma_file_offset": "0x2a20c8",
+      "pcidma_size": 360,
+      "pcidma_sha256": "79e3709314cac4fc2836d1a98ec3fe4ab37aa5f4b3dd26afcfdea34215152a50",
+      "pcidma_first16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "fallback_null_target": "0xffffff8008322228",
+      "fallback_nonnul_target": "0xffffff80083220d8",
+      "patch_text_address": "0xffffff800808b268",
+      "patch_text_file_offset": "0xb268",
+      "patch_text_size": 216,
+      "patch_text_sha256": "ff73586d0d23f8b2dc91eebd6cd556e41b1b848cf7b8bc590946e66e1d63aff9"
+    },
+    "fx6": {
+      "pcidma_address": "0xffffff8008322f70",
+      "pcidma_file_offset": "0x2a2f70",
+      "pcidma_size": 360,
+      "pcidma_sha256": "fdfe11374ab8a1be5a3b35f179e77ca0d2cbb6b8bb1d3709e7da4d4fc4d7630b",
+      "pcidma_first16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "fallback_null_target": "0xffffff80083230d0",
+      "fallback_nonnul_target": "0xffffff8008322f80",
+      "patch_text_address": "0xffffff800808b268",
+      "patch_text_file_offset": "0xb268",
+      "patch_text_size": 216,
+      "patch_text_sha256": "d3191aa89bef0c9ce9bdea7f05733e25bd91ea337a4020fdc42b513546e9e9ea"
+    }
+  },
+  "pcidma_differing_instruction_words": [
+    {
+      "offset": "0x68",
+      "fx3_word_le": "a2023491",
+      "fx6_word_le": "a2023891"
+    },
+    {
+      "offset": "0xbc",
+      "fx3_word_le": "b5023491",
+      "fx6_word_le": "b5023891"
+    },
+    {
+      "offset": "0xd0",
+      "fx3_word_le": "60050094",
+      "fx6_word_le": "44050094"
+    },
+    {
+      "offset": "0xd8",
+      "fx3_word_le": "12070694",
+      "fx6_word_le": "f60a0694"
+    },
+    {
+      "offset": "0x13c",
+      "fx3_word_le": "a5070694",
+      "fx6_word_le": "890b0694"
+    }
+  ],
+  "pcidma_add_immediate_differences": [
+    {
+      "function_offset": "0x68",
+      "fx3_immediate": "0xd00",
+      "fx6_immediate": "0xe00"
+    },
+    {
+      "function_offset": "0xbc",
+      "fx3_immediate": "0xd00",
+      "fx6_immediate": "0xe00"
+    }
+  ],
+  "patch_text_differing_instruction_offsets": [
+    "0x60",
+    "0x88",
+    "0xc8"
+  ],
+  "old_fx3_address_in_fx6_image": {
+    "address": "0xffffff80083220c8",
+    "owner_symbol": "watchdog_touch_exception",
+    "owner_start": "0xffffff8008321ff0",
+    "owner_end_exclusive": "0xffffff8008322180",
+    "file_offset": "0x2a20c8",
+    "first16_hex": "620000b9c20e805223300091620000b9",
+    "first16_sha256": "aa3345b315e4e4653a2cd06d352434aab0b9ce4834853e309a18766eb923eb63",
+    "equals_helper_pinned_first16": false
+  },
+  "fallback_targets_in_fx6_image": [
+    {
+      "address": "0xffffff8008322228",
+      "symbol": "subsys_new_mm",
+      "symbol_start": "0xffffff8008322180",
+      "symbol_end_exclusive": "0xffffff8008322280",
+      "file_offset": "0x2a2228"
+    },
+    {
+      "address": "0xffffff80083220d8",
+      "symbol": "watchdog_touch_exception",
+      "symbol_start": "0xffffff8008321ff0",
+      "symbol_end_exclusive": "0xffffff8008322180",
+      "file_offset": "0x2a20d8"
+    }
+  ],
+  "helper_contract": {
+    "lookup_must_return_fixed_address": "0xffffff80083220c8",
+    "then_reads_and_patches_exact_first16": true,
+    "patch_function_name": "aarch64_insn_patch_text",
+    "patch_function_body_same_sha": false,
+    "hardcoded_fallback_targets": [
+      "0xffffff8008322228",
+      "0xffffff80083220d8"
+    ],
+    "targeted_backup_return_pc_relative_to_module": "backupfile_get_cp_data+0x90",
+    "other_calls_forward_via_pinned_fallback": true,
+    "target_descriptor_40B_fields": "source=0x404000000; destination=0x4040d2000; length=1369580; callback=backupfile_cb_getcp; full schema in original header lines 55-76",
+    "synthetic_cp_bank_header_required": "BK4 magic at +12; 819 groups, 31197 rows, data start 192384; see pinned helper core header"
+  },
+  "minimal_firmware_diff_feasible_now": false,
+  "reason": "old FX3 patch address is live FX6 watchdog_touch_exception code; both native fallback targets and full function body differ, so an export alias or one-address change would overwrite/branch into unrelated code",
+  "runtime_lookup_observed": false,
+  "runtime_module_load_observed": false,
+  "firmware_image_modified": false
+}

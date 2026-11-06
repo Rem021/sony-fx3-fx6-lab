@@ -1,0 +1,245 @@
+{
+  "source": "A7IV2.00 public SRAM, locator pass only",
+  "xrefs": [
+    {
+      "adrp": "0xfe04d5cc",
+      "add": "0xfe04d5ec",
+      "target": "0xfe0661dd",
+      "text": "CFG:[REG] *0x%08x = 0x%08x"
+    },
+    {
+      "adrp": "0xfe04d5d0",
+      "add": "0xfe04d5f0",
+      "target": "0xfe0661f9",
+      "text": "CFG:[REG] *0x%08x &= 0x%08x"
+    },
+    {
+      "adrp": "0xfe04d5d4",
+      "add": "0xfe04d5f4",
+      "target": "0xfe066216",
+      "text": "CFG:[REG] *0x%08x |= 0x%08x"
+    },
+    {
+      "adrp": "0xfe04f1d8",
+      "add": "0xfe04f1dc",
+      "target": "0xfe065153",
+      "text": "\\boot\\loadaddr.txt"
+    },
+    {
+      "adrp": "0xfe04f1f4",
+      "add": "0xfe04f1fc",
+      "target": "0xfe065153",
+      "text": "\\boot\\loadaddr.txt"
+    },
+    {
+      "adrp": "0xfe04f2d0",
+      "add": "0xfe04f2d4",
+      "target": "0xfe065116",
+      "text": "\\boot\\vmlinux.bin"
+    },
+    {
+      "adrp": "0xfe04f2e8",
+      "add": "0xfe04f2ec",
+      "target": "0xfe0650eb",
+      "text": "\\boot\\initrd.img"
+    },
+    {
+      "adrp": "0xfe04f304",
+      "add": "0xfe04f308",
+      "target": "0xfe065143",
+      "text": "\\boot\\kemco.txt"
+    },
+    {
+      "adrp": "0xfe04f31c",
+      "add": "0xfe04f320",
+      "target": "0xfe06508b",
+      "text": "\\boot\\cxd90057.dtb"
+    },
+    {
+      "adrp": "0xfe04f34c",
+      "add": "0xfe04f354",
+      "target": "0xfe065153",
+      "text": "\\boot\\loadaddr.txt"
+    },
+    {
+      "adrp": "0xfe050efc",
+      "add": "0xfe050f04",
+      "target": "0xfe0655e8",
+      "text": "CFG:Failed to read file [path=%s]"
+    },
+    {
+      "adrp": "0xfe051fb0",
+      "add": "0xfe051fb4",
+      "target": "0xfe065e70",
+      "text": "CFG:Set PORT [sz=%d]"
+    },
+    {
+      "adrp": "0xfe052008",
+      "add": "0xfe05200c",
+      "target": "0xfe065e5b",
+      "text": "CFG:Set INT [sz=%d]"
+    },
+    {
+      "adrp": "0xfe05205c",
+      "add": "0xfe052060",
+      "target": "0xfe065e46",
+      "text": "CFG:Set REG [sz=%d]"
+    },
+    {
+      "adrp": "0xfe052154",
+      "add": "0xfe052158",
+      "target": "0xfe065e2a",
+      "text": "CFG:load files [number=%d]"
+    },
+    {
+      "adrp": "0xfe052190",
+      "add": "0xfe0521b0",
+      "target": "0xfe065f4e",
+      "text": "CFG:Load file [entry=%2d/%2d][P=%2d:A=0x%09lX:E=0x%09lX:C=0x%08X:%s]"
+    },
+    {
+      "adrp": "0xfe052194",
+      "add": "0xfe0521b4",
+      "target": "0xfe065faa",
+      "text": "CFG:Skip Load file [%s]"
+    },
+    {
+      "adrp": "0xfe052198",
+      "add": "0xfe0521b8",
+      "target": "0xfe065df6",
+      "text": "CFG:Load file %s to 0x%09lX (0x%09lX)"
+    },
+    {
+      "adrp": "0xfe05219c",
+      "add": "0xfe0521bc",
+      "target": "0xfe066149",
+      "text": "CFG:Mount Partition %2d -> %2d"
+    },
+    {
+      "adrp": "0xfe0523ac",
+      "add": "0xfe0523b4",
+      "target": "0xfe065e86",
+      "text": "CFG:Load files [sz=%d]"
+    },
+    {
+      "adrp": "0xfe052474",
+      "add": "0xfe05247c",
+      "target": "0xfe065f0e",
+      "text": "CFG:Parse file (mode=0x%08X)[P=0x%X:A=0x%lX:E=0x%lX:C=0x%X:%s]"
+    },
+    {
+      "adrp": "0xfe052504",
+      "add": "0xfe05250c",
+      "target": "0xfe065fd9",
+      "text": "CFG:Load file [%s]"
+    },
+    {
+      "adrp": "0xfe052558",
+      "add": "0xfe05255c",
+      "target": "0xfe065fed",
+      "text": "CFG:[START] load file [%s]"
+    },
+    {
+      "adrp": "0xfe05257c",
+      "add": "0xfe052580",
+      "target": "0xfe065e1d",
+      "text": "CFG:[ END ]"
+    },
+    {
+      "adrp": "0xfe0525c4",
+      "add": "0xfe0525cc",
+      "target": "0xfe066169",
+      "text": "CFG:Not applicable. skip"
+    },
+    {
+      "adrp": "0xfe052648",
+      "add": "0xfe052658",
+      "target": "0xfe065f94",
+      "text": "CFG:Wake cpu[%ld:%s]"
+    },
+    {
+      "adrp": "0xfe0527cc",
+      "add": "0xfe0527d0",
+      "target": "0xfe065e2a",
+      "text": "CFG:load files [number=%d]"
+    },
+    {
+      "adrp": "0xfe05296c",
+      "add": "0xfe052974",
+      "target": "0xfe065df6",
+      "text": "CFG:Load file %s to 0x%09lX (0x%09lX)"
+    },
+    {
+      "adrp": "0xfe05298c",
+      "add": "0xfe052994",
+      "target": "0xfe065faa",
+      "text": "CFG:Skip Load file [%s]"
+    },
+    {
+      "adrp": "0xfe052ac4",
+      "add": "0xfe052ad0",
+      "target": "0xfe065d66",
+      "text": "CFG:%s %20s : to 0x%lX from 0x%lX (0x%lX)"
+    },
+    {
+      "adrp": "0xfe052b34",
+      "add": "0xfe052b40",
+      "target": "0xfe065dc3",
+      "text": "CFG:%s() %20s : to 0x%09lX from 0x%09lX (0x%09lX)"
+    },
+    {
+      "adrp": "0xfe052b5c",
+      "add": "0xfe052b60",
+      "target": "0xfe065d37",
+      "text": "CFG:need_to_escape==1->Skip CP_ESCAPE(GP_LOG)"
+    },
+    {
+      "adrp": "0xfe052b90",
+      "add": "0xfe052b9c",
+      "target": "0xfe065dc3",
+      "text": "CFG:%s() %20s : to 0x%09lX from 0x%09lX (0x%09lX)"
+    },
+    {
+      "adrp": "0xfe052c5c",
+      "add": "0xfe052c60",
+      "target": "0xfe065e2a",
+      "text": "CFG:load files [number=%d]"
+    },
+    {
+      "adrp": "0xfe052c98",
+      "add": "0xfe052cb8",
+      "target": "0xfe065f4e",
+      "text": "CFG:Load file [entry=%2d/%2d][P=%2d:A=0x%09lX:E=0x%09lX:C=0x%08X:%s]"
+    },
+    {
+      "adrp": "0xfe052c9c",
+      "add": "0xfe052cbc",
+      "target": "0xfe066149",
+      "text": "CFG:Mount Partition %2d -> %2d"
+    },
+    {
+      "adrp": "0xfe052e2c",
+      "add": "0xfe052e34",
+      "target": "0xfe065d91",
+      "text": "CFG:transfer %s, to 0x%09lX from 0x%09lX (0x%lX)"
+    },
+    {
+      "adrp": "0xfe052e4c",
+      "add": "0xfe052e54",
+      "target": "0xfe066009",
+      "text": "CFG:Skip transfer file [%s]"
+    },
+    {
+      "adrp": "0xfe05898c",
+      "add": "0xfe058990",
+      "target": "0xfe065b4c",
+      "text": "MMC_E:Load partition error"
+    },
+    {
+      "adrp": "0xfe0596f0",
+      "add": "0xfe0596f4",
+      "target": "0xfe065b09",
+      "text": "LBI:[START] load boot image"
+    }
+  ]
+}

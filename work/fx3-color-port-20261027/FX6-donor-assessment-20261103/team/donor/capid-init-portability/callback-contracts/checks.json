@@ -1,0 +1,73 @@
+{
+  "status": "PASS_OFFLINE_PROJECTION_ONLY",
+  "cases": [
+    {
+      "status": 0,
+      "input_sha256": "ff09a8d174272f1bb5835161e8a9d58c905d0ef17a078e847723701fa9cf869e",
+      "result": {
+        "opaque_u32_at_c": 4275878552,
+        "zero_test_at_8": 1
+      }
+    },
+    {
+      "status": 1,
+      "input_sha256": "efbffb3ae841be048131d8c4fff1fd26987f2e68fa950143494fecdd1bd19c0b",
+      "result": {
+        "opaque_u32_at_c": 4275878552,
+        "zero_test_at_8": 0
+      }
+    },
+    {
+      "status": 4294967295,
+      "input_sha256": "ad6bb115c9547ff766212645ea6ceefc2d8ff7ebc92e9a7d439254ce3ec4b8f4",
+      "result": {
+        "opaque_u32_at_c": 4275878552,
+        "zero_test_at_8": 0
+      }
+    },
+    {
+      "status": 2147483648,
+      "input_sha256": "df86e05c717b11811a6db50b6efe16b525ccbfa8331e78728f49757e1ce6c3ef",
+      "result": {
+        "opaque_u32_at_c": 4275878552,
+        "zero_test_at_8": 0
+      }
+    }
+  ],
+  "rejections": [
+    {
+      "kind": "mpr_Init",
+      "length": 656,
+      "reason": "callback/Init contract not closed"
+    },
+    {
+      "kind": "unknown_callback",
+      "length": 20,
+      "reason": "callback/Init contract not closed"
+    },
+    {
+      "kind": "load_still_observed_fields",
+      "length": 19,
+      "reason": "only the observed 20-byte dispatch copy domain is supported"
+    },
+    {
+      "kind": "load_still_observed_fields",
+      "length": 21,
+      "reason": "only the observed 20-byte dispatch copy domain is supported"
+    },
+    {
+      "kind": "load_still_observed_fields",
+      "length": 20,
+      "reason": "immutable bytes required"
+    }
+  ],
+  "full_adapter_accepted": false,
+  "original_hashes_unchanged": true,
+  "parent_reports_unchanged": true,
+  "counterexamples": [
+    "same symbol PbGps: FX3 memcpy 0x90 from arg+4 vs FX6 RET",
+    "u16 representable 0x30c and 0x5a0 does not establish semantic range",
+    "Init registration GOT windows are not callback invocations",
+    "pointer or same field offset is not compatibility proof"
+  ]
+}

@@ -1,0 +1,45 @@
+_ZN7Updater15FsysFileHandler4SeekEliPm
+00008e44 stp       x29, x30, [sp, #-0x20]!
+00008e48 mov       x29, sp
+00008e4c ldr       x0, [x0, #8]
+00008e50 str       x19, [sp, #0x10]
+00008e54 cbnz      x0, #0x8eb0
+00008e58 mov       w19, #0x1a
+00008e5c adrp      x2, #0xa000
+00008e60 movk      w19, #3, lsl #16
+00008e64 adrp      x0, #0xa000
+00008e68 add       x2, x2, #0x6cc
+00008e6c mov       w1, w19
+00008e70 add       x0, x0, #0x61e
+00008e74 mov       w3, #0x59
+00008e78 bl        #0x6fd0 ; printf
+00008e7c mov       x0, #0x10
+00008e80 bl        #0x6b20 ; __cxa_allocate_exception
+00008e84 str       w19, [x0, #8]
+00008e88 adrp      x1, #0x1c000
+00008e8c adrp      x2, #0x1c000
+00008e90 strb      wzr, [x0, #0xc]
+00008e94 ldr       x1, [x1, #0xf18]
+00008e98 ldr       x2, [x2, #0xf40]
+00008e9c add       x1, x1, #0x10
+00008ea0 str       x1, [x0]
+00008ea4 adrp      x1, #0x1c000
+00008ea8 ldr       x1, [x1, #0xfd0]
+00008eac bl        #0x6f10 ; __cxa_throw
+00008eb0 bl        #0x6d60 ; Fsys_Seek
+00008eb4 mov       w1, #1
+00008eb8 cbz       w0, #0x8ee4
+00008ebc mov       w4, w0
+00008ec0 adrp      x2, #0xa000
+00008ec4 adrp      x0, #0xa000
+00008ec8 add       x2, x2, #0x6cc
+00008ecc mov       w1, #0x22
+00008ed0 add       x0, x0, #0x6fc
+00008ed4 movk      w1, #3, lsl #16
+00008ed8 mov       w3, #0x5c
+00008edc bl        #0x6fd0 ; printf
+00008ee0 mov       w1, #0
+00008ee4 mov       w0, w1
+00008ee8 ldr       x19, [sp, #0x10]
+00008eec ldp       x29, x30, [sp], #0x20
+00008ef0 ret       

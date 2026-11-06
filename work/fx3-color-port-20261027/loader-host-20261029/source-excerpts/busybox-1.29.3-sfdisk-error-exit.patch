@@ -1,0 +1,217 @@
+diff -Naur busybox-1.29.3_orig/util-linux/sfdisk.c busybox-1.29.3/util-linux/sfdisk.c
+--- busybox-1.29.3_orig/util-linux/sfdisk.c	2018-10-09 14:27:39.528495950 +0530
++++ busybox-1.29.3/util-linux/sfdisk.c	2018-10-09 14:36:02.904511296 +0530
+@@ -49,6 +49,10 @@
+ 
+ #define _(x) x
+ 
++#ifdef  __SSLIBC__
++#define rindex(a,b) strrchr((a),(b))
++#endif
++
+ #include <stdio.h>
+ #include <stdlib.h>		/* atoi, free */
+ #include <stdarg.h>		/* varargs */
+@@ -376,7 +380,7 @@
+ 	return 0;
+ 
+     if (!(s = (struct sector *) malloc(sizeof(struct sector))))
+-	fprintf(stderr,_("out of memory - giving up\n"));
++	bb_error_msg_and_die("out of memory - giving up\n");
+ 
+     if (read(fd, s->data, sizeof(s->data)) != sizeof(s->data)) {
+ 	if (errno)		/* 0 in case we read past end-of-disk */
+@@ -1023,7 +1027,7 @@
+ 	pno = linux_to_index(pnum, z);
+     }
+     if (!(pno >= 0 && pno < z->partno))
+-      fprintf(stderr,_("%s: no such partition\n"), pnam);
++      bb_error_msg_and_die("%s: no such partition\n", pnam);
+     return pno;
+ }
+ 
+@@ -1353,9 +1357,9 @@
+     /* Have at least 4 partitions been defined? */
+     if (partno < 4) {
+ 	 if (!partno)
+-	      fprintf(stderr,_("no partition table present.\n"));
++	      bb_error_msg_and_die("no partition table present.\n");
+ 	 else
+-	      fprintf(stderr,_("strange, only %d partitions defined.\n"), partno);
++	      bb_error_msg_and_die("strange, only %d partitions defined.\n", partno);
+ 	 return 0;
+     }
+ 
+@@ -1812,7 +1816,7 @@
+     }
+     if (save_sector_file) {
+ 	if (!save_sectors(dev, fd)) {
+-	    fprintf(stderr,_("Failed saving the old sectors - aborting\n"));
++	    bb_error_msg_and_die("Failed saving the old sectors - aborting\n");
+ 	    return 0;
+ 	}
+     }
+@@ -1894,7 +1898,7 @@
+ 	return RD_EOF;
+     }
+     if (!(lp = index(lp, '\n')))
+-      fprintf(stderr,_("long or incomplete input line - quitting\n"));
++      bb_error_msg_and_die("long or incomplete input line - quitting\n");
+     *lp = 0;
+ 
+     /* remove comments, if any */
+@@ -1930,20 +1934,20 @@
+ 			while(isalnum(*ip)) 	/* 0x07FF */
+ 			  ip++;
+ 		    } else
+-		      fprintf(stderr,_("input error: `=' expected after %s field\n"),
++		      bb_error_msg_and_die("input error: `=' expected after %s field\n",
+ 			    d->fldname);
+ 		    if (fno <= d->fldno)
+ 		      fno = d->fldno + 1;
+ 		    if (*ip == 0)
+ 		      return fno;
+ 		    if (*ip != ',' && *ip != ';')
+-		      fprintf(stderr,_("input error: unexpected character %c after %s field\n"),
++		      bb_error_msg_and_die("input error: unexpected character %c after %s field\n",
+ 			    *ip, d->fldname);
+ 		    *ip = 0;
+ 		    goto nxtfld;
+ 		}
+ 	    }
+-	    fprintf(stderr,_("unrecognized input: %s\n"), ip);
++	    bb_error_msg_and_die("unrecognized input: %s\n", ip);
+     }
+ 
+     /* split line into fields */
+@@ -2387,7 +2391,7 @@
+ 
+     while (!(i = read_line(pno, ep, dev, interactive, z)))
+       if (!interactive)
+-	fprintf(stderr,_("bad input\n"));
++	bb_error_msg_and_die("bad input\n");
+     if (i < 0) {
+ 	p->ep = ep;
+ 	return 0;
+@@ -2672,6 +2676,21 @@
+     char *activatearg = 0;
+     char *unhidearg = 0;
+ 
++    if (argc < 1)
++      bb_error_msg_and_die("no command?\n");
++    if ((progn = rindex(argv[0], '/')) == NULL)
++      progn = argv[0];
++    else
++      progn++;
++    if (!strcmp(progn, "activate"))
++      activate = 1;             /* equivalent to `sfdisk -A' */
++#if 0                           /* not important enough to deserve a name */
++    else if (!strcmp(progn, "unhide"))
++      unhide = 1;               /* equivalent to `sfdisk -U' */
++#endif
++    else
++      fdisk = 1;
++
+     while ((c = getopt_long (argc, argv, short_opts, long_opts, NULL)) != -1) {
+ 	switch (c) {
+ 	  case 'b':
+@@ -2830,18 +2849,18 @@
+     }
+     if (do_id) {
+         if ((do_id & PRINT_ID) != 0 && optind != argc-2)
+-	  fprintf(stderr,_("usage: sfdisk --print-id device partition-number\n"));
++	  bb_error_msg_and_die("usage: sfdisk --print-id device partition-number\n");
+ 	else if ((do_id & CHANGE_ID) != 0 && optind != argc-3)
+-	  fprintf(stderr,_("usage: sfdisk --change-id device partition-number Id\n"));
++	  bb_error_msg_and_die("usage: sfdisk --change-id device partition-number Id\n");
+ 	else if (optind != argc-3 && optind != argc-2)
+-	  fprintf(stderr,_("usage: sfdisk --id device partition-number [Id]\n"));
++	  bb_error_msg_and_die("usage: sfdisk --id device partition-number [Id]\n");
+ 	do_change_id(argv[optind], argv[optind+1],
+ 		     (optind == argc-2) ? 0 : argv[optind+2]);
+ 	exit(exit_status);
+     }
+       
+     if (optind != argc-1)
+-      fprintf(stderr,_("can specify only one device (except with -l or -s)\n"));
++      bb_error_msg_and_die("can specify only one device (except with -l or -s)\n");
+     dev = argv[optind];
+ 
+     if (opt_reread)
+@@ -2867,9 +2886,9 @@
+     if (fd < 0 && !silent) {
+ 	perror(dev);
+ 	if (rw)
+-		fprintf(stderr,_("cannot open %s read-write\n"), dev);
++		bb_error_msg_and_die("cannot open %s read-write\n", dev);
+ 	else
+-		fprintf(stderr,_("cannot open %s for reading\n"), dev);
++		bb_error_msg_and_die("cannot open %s for reading\n", dev);
+     }
+     return fd;
+ }
+@@ -2959,7 +2978,7 @@
+     if (disksize(fd, &size)) {
+ 	if (!silent) {
+ 	    perror(dev);
+-	    fprintf(stderr,_("Cannot get size of %s\n"), dev);
++	    bb_error_msg_and_die("Cannot get size of %s\n", dev);
+ 	}
+ 	return;
+     }
+@@ -3078,7 +3097,7 @@
+     if (id == 0x11 || id == 0x14 || id == 0x16 || id == 0x17)
+       id -= 0x10;
+     else
+-      fprintf(stderr,_("partition %s has id %x and is not hidden\n"), pnam, id);
++      bb_error_msg_and_die("partition %s has id %x and is not hidden\n", pnam, id);
+     z->partitions[pno].p.sys_type = id;
+ }
+ 
+@@ -3135,7 +3154,7 @@
+     }
+     i = strtoul(id, NULL, 16);
+     if (i > 255)
+-      fprintf(stderr,_("Bad Id %lx\n"), i);
++      bb_error_msg_and_die("Bad Id %lx\n", i);
+     z->partitions[pno].p.sys_type = i;
+ 
+     if (write_partitions(dev, fd, z))
+@@ -3167,7 +3186,7 @@
+ 
+     if (stat(dev, &statbuf) < 0) {
+ 	perror(dev);
+-	fprintf(stderr,_("Fatal error: cannot find %s\n"), dev);
++	bb_error_msg_and_die("Fatal error: cannot find %s\n", dev);
+     }
+     if (!S_ISBLK(statbuf.st_mode)) {
+ 	printf(_("Warning: %s is not a block device\n"), dev);
+@@ -3199,7 +3218,7 @@
+     out_partitions(dev, z);
+ 
+     if (one_only && (one_only_pno = linux_to_index(one_only, z)) < 0)
+-      fprintf(stderr,_("Partition %d does not exist, cannot change it\n"), one_only);
++      bb_error_msg_and_die("Partition %d does not exist, cannot change it\n", one_only);
+ 
+     z = &newp;
+ 
+@@ -3212,8 +3231,8 @@
+ 
+ 	if (!partitions_ok(z) && !force) {
+ 	    if (!interactive)
+-	      fprintf(stderr,_("I don't like these partitions - nothing changed.\n"
+-		      "(If you really want this, use the --force option.)\n"));
++	      bb_error_msg_and_die("I don't like these partitions - nothing changed.\n"
++		      "(If you really want this, use the --force option.)\n");
+ 	    else
+ 	      printf(_("I don't like this - probably you should answer No\n"));
+ 	}
+@@ -3229,7 +3248,7 @@
+ 	    if (c == EOF)
+ 		printf(_("\nsfdisk: premature end of input\n"));
+ 	    if (c == EOF || answer == 'q' || answer == 'Q') {
+-		fprintf(stderr,_("Quitting - nothing changed\n"));
++		bb_error_msg_and_die("Quitting - nothing changed\n");
+ 	    } else if (answer == 'n' || answer == 'N') {
+ 		continue;
+ 	    } else if (answer == 'y' || answer == 'Y') {

@@ -1,0 +1,26 @@
+{
+  "schema": "fx3-r46-page-identity-v1",
+  "source_base": "v25-r21-recovery-integration/trial_web_v22_navigation_review.py",
+  "source_base_sha256": "1459d5b7afd792e291e51f54fd37e6730335c34d39ebf0988a9eba6384d0d521",
+  "original_canonical_script_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+  "patched_canonical_script_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+  "changed_lines": [
+    {
+      "old": "h.deadline_ms!==20000",
+      "new": "h.deadline_ms!==60000"
+    },
+    {
+      "old": "h.current.due_ms!==h.current.armed_ms+20000",
+      "new": "h.current.due_ms!==h.current.armed_ms+60000"
+    }
+  ],
+  "scope": "recovery eligibility budget only; click freshness/identity/confirm/unqueued gates unchanged; not wired into any run",
+  "binding_sites_requiring_new_hash_if_enabled": [
+    "operator-helpers/deadline.js SCRIPT_SHA",
+    "operator-helpers/planned_navigation_click.py PAGE_SHA",
+    "PAGE-IDENTITY.json canonical_script_sha256",
+    "r44 candidate SOURCE-FREEZE/CORE-SOURCE-FREEZE self-hash",
+    "trial_web_r24_review_snapshot.py PAGE_SCRIPT_SHA is computed at import"
+  ],
+  "enabled": false
+}

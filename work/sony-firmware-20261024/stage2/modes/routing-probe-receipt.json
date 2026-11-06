@@ -1,0 +1,70 @@
+{
+  "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "main_hs_hd_enum": false,
+  "converter_hs4k_routes": [
+    {
+      "enum": 0,
+      "label": "REC_FRAME_RATE_60P",
+      "jump_byte": "0x53",
+      "table_va": "0x39895ac",
+      "target": "0x2e69304",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 1,
+      "label": "REC_FRAME_RATE_50P",
+      "jump_byte": "0x53",
+      "table_va": "0x39895ad",
+      "target": "0x2e69304",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 2,
+      "label": "REC_FRAME_RATE_30P",
+      "jump_byte": "0xa",
+      "table_va": "0x39895ae",
+      "target": "0x2e691e0",
+      "route": "assert/notify_model_system_error",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 3,
+      "label": "REC_FRAME_RATE_25P",
+      "jump_byte": "0xa",
+      "table_va": "0x39895af",
+      "target": "0x2e691e0",
+      "route": "assert/notify_model_system_error",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 4,
+      "label": "REC_FRAME_RATE_24P",
+      "jump_byte": "0x51",
+      "table_va": "0x39895b0",
+      "target": "0x2e692fc",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 5,
+      "label": "REC_FRAME_RATE_120P",
+      "jump_byte": "0x0",
+      "table_va": "0x39895b1",
+      "target": "0x2e691b8",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    },
+    {
+      "enum": 6,
+      "label": "REC_FRAME_RATE_100P",
+      "jump_byte": "0x0",
+      "table_va": "0x39895b2",
+      "target": "0x2e691b8",
+      "route": "quality-selection",
+      "scope": "non-template converter used by GetMovieRecStatus/GetMovieRemain"
+    }
+  ],
+  "output": "work/sony-firmware-20261024/stage2/modes/routing-evidence.json"
+}

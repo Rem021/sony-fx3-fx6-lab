@@ -1,0 +1,48 @@
+{
+  "status": "POST_STOP_096F_TRANSITION_COMPATIBILITY_PASS",
+  "checks": 5,
+  "rows": [
+    {
+      "case": "c-transition-unit-096f-and-bounds",
+      "status": "PASS",
+      "stdout": "PASS bounded association:absent SERVICE serial and companion logical port;096F return-window BUSY and original return serial;unarmed/wrong port/copied or wrong serial/reused node/deadline/sample bounds",
+      "sha256": "c2b9c61856f76dd158b3af6a8c9220934097852c3fada430c9970ed76026860f"
+    },
+    {
+      "case": "post-stop-096f-transient-complete",
+      "status": "PASS",
+      "frames": 87,
+      "op63_statuses": [
+        2,
+        2,
+        0
+      ],
+      "return_node": 300,
+      "complete": true
+    },
+    {
+      "case": "post-stop-096f-wrong-serial-held",
+      "status": "PASS",
+      "frames": 82,
+      "op63_statuses": [
+        1
+      ],
+      "held": true
+    },
+    {
+      "case": "post-stop-096f-persistent-menu-held",
+      "status": "PASS",
+      "frames": 131,
+      "op63_busy_samples": 50,
+      "held": true
+    },
+    {
+      "case": "saved-frame-096f-forgeries-denied",
+      "status": "PASS",
+      "variants": 6
+    }
+  ],
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_root_or_USB_operations": 0
+}

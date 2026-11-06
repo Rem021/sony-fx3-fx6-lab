@@ -1,0 +1,21 @@
+{
+  "time": "2026-11-05T18:47:12.715253+00:00",
+  "task": "task_17c0a14d5ec7",
+  "manifest_sha256": "b37fd3866cc4d1c8d3431a7990fcedeb9e9b106968da40d39e918c9cac1380d9",
+  "manifest_count": 13,
+  "all_match": true,
+  "status": "assert_detection_accepted_semantics_need_narrowing",
+  "independent_in_memory_probes": [
+    {
+      "input": "boot started with newline",
+      "actual": "complete=true complete_no_fault_marker rc0",
+      "issue": "newline only proves final line termination, not full run capture"
+    },
+    {
+      "input": "assert at unrelated.cpp:1 with newline",
+      "actual": "assert_reported_nonfatal fatal=false",
+      "issue": "format alone does not prove return or nonfatal execution"
+    }
+  ],
+  "VM_started": false
+}

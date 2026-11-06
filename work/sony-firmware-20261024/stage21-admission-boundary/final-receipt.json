@@ -1,0 +1,80 @@
+{
+  "schema": "fx3-stage21-admission-boundary/1",
+  "created_utc": "2026-10-25T20:05:06.731724+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/README.md",
+      "bytes": 8267,
+      "sha256": "973dbd1c18418c549d8ece53d91319fcd54410bbbe13197e115230840593e54e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/admission_boundary.py",
+      "bytes": 17311,
+      "sha256": "a742c7d6cfff94374a9720d97dd33fa0996cd13b4fd19780fe8457081a27c67e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/coordinator-observations.json",
+      "bytes": 1880,
+      "sha256": "5b1314947f53016a06b75818ee1ff86e0cd2cb3a41fc3b8ed083a6c1ba75449a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/goal-status-after.json",
+      "bytes": 29632,
+      "sha256": "5d25d8090cfbaff9a074836e6eccace4d351794e6b4a9c8c3fc33c564e791b7d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/goal-status-before.json",
+      "bytes": 27627,
+      "sha256": "d45e3245f814f003295784dea3aa0f4e30dd6c24f03fb57326fe75affe433043"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/run-20261025/attempt-failure.json",
+      "bytes": 937,
+      "sha256": "9850155e43d769e073a39c067abfee35e095adfac5ea05c99a657725f9f5a0b3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/run-20261025/attempt-source.py",
+      "bytes": 17252,
+      "sha256": "79ceed362e0086a129f299b428d78e19926db7b6bf7427ddbdcadc0b668443f1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/run-corrected-20261025/admission-boundary-results.json",
+      "bytes": 323800,
+      "sha256": "4025f9a06e66dd609ac5a967862663a7dfbe388f5aa1d3104db4634dcc1ffb8b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/run-corrected-20261025/source-receipt.json",
+      "bytes": 2312,
+      "sha256": "5d302bb187ad2e7f5afa15a5d39e670636659bf8181da6be2869cfe4b92e5a9f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage21-admission-boundary/run-corrected-20261025/summary.json",
+      "bytes": 784,
+      "sha256": "e9df85a3accf78d9f7a770885cd0462ec4a6d98b984c91ad6d510eb73bb2b554"
+    }
+  ],
+  "scope": "All executable PT_LOAD direct B/BL references to these fixed targets, plus confirmed original data references. Not complete indirect reachability, caller ownership or all-class admission coverage.",
+  "previous_manifest_sha256": "995db4f064cd64029e2f73a5a4d9a2dd75f47e2bbdd4729530893aa6f960b175",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage21-admission-boundary/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage21-admission-boundary/goal-status-after.json",
+    "before_sha256": "d45e3245f814f003295784dea3aa0f4e30dd6c24f03fb57326fe75affe433043",
+    "after_sha256": "5d25d8090cfbaff9a074836e6eccace4d351794e6b4a9c8c3fc33c564e791b7d",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "bounded_guest_fragments": true,
+    "existing_guest_marker_reused": true,
+    "native_thread_lock_token_allocator_list_hook_notify_shutdown": false,
+    "new_remote_attempts": false,
+    "Windows_task_dispatched_or_executed": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "firmware_payload_or_patchfile_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 构造与入队边界](<work/sony-firmware-20261024/stage21-admission-boundary/README.md>)：17个阶段及3个原判断对照显示队列外标记对象需单独观察；明确入口与整组停止边界，实际门禁、卸载及恢复仍未验证。"
+}

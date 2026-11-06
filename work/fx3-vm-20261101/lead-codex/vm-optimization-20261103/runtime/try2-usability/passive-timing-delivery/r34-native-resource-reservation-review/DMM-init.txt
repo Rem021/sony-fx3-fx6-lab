@@ -1,0 +1,190 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review/dmm.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000000b330 <dmm_ext_ctrl_Init>:
+    b330: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+    b334: 91001c21     	add	x1, x1, #0x7
+    b338: 927df021     	and	x1, x1, #0xfffffffffffffff8
+    b33c: 910003fd     	mov	x29, sp
+    b340: a90153f3     	stp	x19, x20, [sp, #0x10]
+    b344: 91409823     	add	x3, x1, #0x26, lsl #12  // =0x26000
+    b348: 580014d4     	ldr	x20, 0xb5e0 <dmm_ext_ctrl_Init+0x2b0>
+    b34c: 91200063     	add	x3, x3, #0x800
+    b350: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    b354: 91002062     	add	x2, x3, #0x8
+    b358: 58001495     	ldr	x21, 0xb5e8 <dmm_ext_ctrl_Init+0x2b8>
+    b35c: 91004064     	add	x4, x3, #0x10
+    b360: 2a0003f6     	mov	w22, w0
+    b364: 91006060     	add	x0, x3, #0x18
+    b368: f902ca81     	str	x1, [x20, #0x590]
+    b36c: d2884201     	mov	x1, #0x4210             // =16912
+    b370: f902ce82     	str	x2, [x20, #0x598]
+    b374: 8b010042     	add	x2, x2, x1
+    b378: a90002a4     	stp	x4, x0, [x21]
+    b37c: d2858304     	mov	x4, #0x2c18             // =11288
+    b380: 91004040     	add	x0, x2, #0x10
+    b384: f9000ea3     	str	x3, [x21, #0x18]
+    b388: 8b040063     	add	x3, x3, x4
+    b38c: 91002041     	add	x1, x2, #0x8
+    b390: f9000aa3     	str	x3, [x21, #0x10]
+    b394: 91402403     	add	x3, x0, #0x9, lsl #12   // =0x9000
+    b398: f9012a81     	str	x1, [x20, #0x250]
+    b39c: 91004061     	add	x1, x3, #0x10
+    b3a0: f9001ea2     	str	x2, [x21, #0x38]
+    b3a4: 91002062     	add	x2, x3, #0x8
+    b3a8: f90012a0     	str	x0, [x21, #0x20]
+    b3ac: 91008060     	add	x0, x3, #0x20
+    b3b0: f902c683     	str	x3, [x20, #0x588]
+    b3b4: 91208063     	add	x3, x3, #0x820
+    b3b8: f902d282     	str	x2, [x20, #0x5a0]
+    b3bc: f902d681     	str	x1, [x20, #0x5a8]
+    b3c0: f90016a0     	str	x0, [x21, #0x28]
+    b3c4: f90022a3     	str	x3, [x21, #0x40]
+    b3c8: 94000000     	bl	0xb3c8 <dmm_ext_ctrl_Init+0x98>
+		000000000000b3c8:  R_AARCH64_CALL26	dmm_ext_tbl_Init
+    b3cc: 13003c13     	sxth	w19, w0
+    b3d0: 35000593     	cbnz	w19, 0xb480 <dmm_ext_ctrl_Init+0x150>
+    b3d4: 710006df     	cmp	w22, #0x1
+    b3d8: 54000540     	b.eq	0xb480 <dmm_ext_ctrl_Init+0x150>
+    b3dc: f9400ea3     	ldr	x3, [x21, #0x18]
+    b3e0: d2800008     	mov	x8, #0x0                // =0
+    b3e4: f942ce82     	ldr	x2, [x20, #0x598]
+    b3e8: 12800009     	mov	w9, #-0x1               // =-1
+    b3ec: f942ca80     	ldr	x0, [x20, #0x590]
+    b3f0: a9402aa1     	ldp	x1, x10, [x21]
+    b3f4: b900007f     	str	wzr, [x3]
+    b3f8: b900005f     	str	wzr, [x2]
+    b3fc: aa0003e7     	mov	x7, x0
+    b400: b900003f     	str	wzr, [x1]
+    b404: f902da80     	str	x0, [x20, #0x5b0]
+    b408: 14000003     	b	0xb414 <dmm_ext_ctrl_Init+0xe4>
+    b40c: d503201f     	nop
+    b410: 54000420     	b.eq	0xb494 <dmm_ext_ctrl_Init+0x164>
+    b414: f828795f     	str	xzr, [x10, x8, lsl #3]
+    b418: 11000501     	add	w1, w8, #0x1
+    b41c: a9047cff     	stp	xzr, xzr, [x7, #0x40]
+    b420: aa0703e0     	mov	x0, x7
+    b424: a9007cff     	stp	xzr, xzr, [x7]
+    b428: 91000508     	add	x8, x8, #0x1
+    b42c: a9057cff     	stp	xzr, xzr, [x7, #0x50]
+    b430: a9017cff     	stp	xzr, xzr, [x7, #0x10]
+    b434: a9027cff     	stp	xzr, xzr, [x7, #0x20]
+    b438: a9037cff     	stp	xzr, xzr, [x7, #0x30]
+    b43c: a9067cff     	stp	xzr, xzr, [x7, #0x60]
+    b440: 790000e1     	strh	w1, [x7]
+    b444: b90040e9     	str	w9, [x7, #0x40]
+    b448: 2909a4e9     	stp	w9, w9, [x7, #0x4c]
+    b44c: 9101c0e7     	add	x7, x7, #0x70
+    b450: 97fffb8c     	bl	0xa280 <dmm_unit_tbl_GetUnitTbl+0x18>
+    b454: 13003c13     	sxth	w19, w0
+    b458: f116011f     	cmp	x8, #0x580
+    b45c: 34fffdb3     	cbz	w19, 0xb410 <dmm_ext_ctrl_Init+0xe0>
+    b460: f94016a0     	ldr	x0, [x21, #0x28]
+    b464: d2810002     	mov	x2, #0x800              // =2048
+    b468: 52800001     	mov	w1, #0x0                // =0
+    b46c: 94000000     	bl	0xb46c <dmm_ext_ctrl_Init+0x13c>
+		000000000000b46c:  R_AARCH64_CALL26	memset
+    b470: f94022a0     	ldr	x0, [x21, #0x40]
+    b474: d2858202     	mov	x2, #0x2c10             // =11280
+    b478: 52800001     	mov	w1, #0x0                // =0
+    b47c: 94000000     	bl	0xb47c <dmm_ext_ctrl_Init+0x14c>
+		000000000000b47c:  R_AARCH64_CALL26	memset
+    b480: 2a1303e0     	mov	w0, w19
+    b484: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    b488: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    b48c: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+    b490: d65f03c0     	ret
+    b494: f94016a0     	ldr	x0, [x21, #0x28]
+    b498: d2810002     	mov	x2, #0x800              // =2048
+    b49c: 52800001     	mov	w1, #0x0                // =0
+    b4a0: 94000000     	bl	0xb4a0 <dmm_ext_ctrl_Init+0x170>
+		000000000000b4a0:  R_AARCH64_CALL26	memset
+    b4a4: f94022a0     	ldr	x0, [x21, #0x40]
+    b4a8: d2858202     	mov	x2, #0x2c10             // =11280
+    b4ac: 52800001     	mov	w1, #0x0                // =0
+    b4b0: 94000000     	bl	0xb4b0 <dmm_ext_ctrl_Init+0x180>
+		000000000000b4b0:  R_AARCH64_CALL26	memset
+    b4b4: f9401ea3     	ldr	x3, [x21, #0x38]
+    b4b8: f9412a82     	ldr	x2, [x20, #0x250]
+    b4bc: f94012a0     	ldr	x0, [x21, #0x20]
+    b4c0: f900007f     	str	xzr, [x3]
+    b4c4: 91402401     	add	x1, x0, #0x9, lsl #12   // =0x9000
+    b4c8: f900005f     	str	xzr, [x2]
+    b4cc: a9007c1f     	stp	xzr, xzr, [x0]
+    b4d0: 91004000     	add	x0, x0, #0x10
+    b4d4: eb00003f     	cmp	x1, x0
+    b4d8: 54ffffa1     	b.ne	0xb4cc <dmm_ext_ctrl_Init+0x19c>
+    b4dc: f942c680     	ldr	x0, [x20, #0x588]
+    b4e0: 12800015     	mov	w21, #-0x1              // =-1
+    b4e4: b9000015     	str	w21, [x0]
+    b4e8: 94000000     	bl	0xb4e8 <dmm_ext_ctrl_Init+0x1b8>
+		000000000000b4e8:  R_AARCH64_CALL26	dmm_ext_tbl_GetRootExtentTbl
+    b4ec: b4000740     	cbz	x0, 0xb5d4 <dmm_ext_ctrl_Init+0x2a4>
+    b4f0: f9400008     	ldr	x8, [x0]
+    b4f4: b9400900     	ldr	w0, [x8, #0x8]
+    b4f8: 6b15001f     	cmp	w0, w21
+    b4fc: 54000480     	b.eq	0xb58c <dmm_ext_ctrl_Init+0x25c>
+    b500: 5280002a     	mov	w10, #0x1               // =1
+    b504: 1400001e     	b	0xb57c <dmm_ext_ctrl_Init+0x24c>
+    b508: 79400d02     	ldrh	w2, [x8, #0x6]
+    b50c: 91005108     	add	x8, x8, #0x14
+    b510: f942c683     	ldr	x3, [x20, #0x588]
+    b514: d3607c42     	lsl	x2, x2, #32
+    b518: f9000402     	str	x2, [x0, #0x8]
+    b51c: b85ec102     	ldur	w2, [x8, #-0x14]
+    b520: b9001002     	str	w2, [x0, #0x10]
+    b524: b85f8102     	ldur	w2, [x8, #-0x8]
+    b528: b9001402     	str	w2, [x0, #0x14]
+    b52c: b85fc102     	ldur	w2, [x8, #-0x4]
+    b530: f900141f     	str	xzr, [x0, #0x28]
+    b534: b9000402     	str	w2, [x0, #0x4]
+    b538: f9001c1f     	str	xzr, [x0, #0x38]
+    b53c: b85f4102     	ldur	w2, [x8, #-0xc]
+    b540: 29087c15     	stp	w21, wzr, [x0, #0x40]
+    b544: b9003002     	str	w2, [x0, #0x30]
+    b548: 2909541f     	stp	wzr, w21, [x0, #0x48]
+    b54c: b9400062     	ldr	w2, [x3]
+    b550: 31000c5f     	cmn	w2, #0x3
+    b554: 1a828542     	csinc	w2, w10, w2, hi
+    b558: b9000062     	str	w2, [x3]
+    b55c: 7900041f     	strh	wzr, [x0, #0x2]
+    b560: b9005002     	str	w2, [x0, #0x50]
+    b564: 97fffcbf     	bl	0xa860 <dmm_unit_tbl_GetUnitTbl+0x5f8>
+    b568: 13003c00     	sxth	w0, w0
+    b56c: 35000300     	cbnz	w0, 0xb5cc <dmm_ext_ctrl_Init+0x29c>
+    b570: b9400900     	ldr	w0, [x8, #0x8]
+    b574: 3100041f     	cmn	w0, #0x1
+    b578: 540000a0     	b.eq	0xb58c <dmm_ext_ctrl_Init+0x25c>
+    b57c: 97fffb5d     	bl	0xa2f0 <dmm_unit_tbl_GetUnitTbl+0x88>
+    b580: b5fffc40     	cbnz	x0, 0xb508 <dmm_ext_ctrl_Init+0x1d8>
+    b584: 128ca013     	mov	w19, #-0x6501           // =-25857
+    b588: 17ffffbe     	b	0xb480 <dmm_ext_ctrl_Init+0x150>
+    b58c: f942d284     	ldr	x4, [x20, #0x5a0]
+    b590: 12800002     	mov	w2, #-0x1               // =-1
+    b594: f942d683     	ldr	x3, [x20, #0x5a8]
+    b598: aa0303e0     	mov	x0, x3
+    b59c: 91004061     	add	x1, x3, #0x10
+    b5a0: 7900009f     	strh	wzr, [x4]
+    b5a4: 78002402     	strh	w2, [x0], #0x2
+    b5a8: eb00003f     	cmp	x1, x0
+    b5ac: 54ffffc1     	b.ne	0xb5a4 <dmm_ext_ctrl_Init+0x274>
+    b5b0: 79400080     	ldrh	w0, [x4]
+    b5b4: 7820787f     	strh	wzr, [x3, x0, lsl #1]
+    b5b8: 2a1303e0     	mov	w0, w19
+    b5bc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    b5c0: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    b5c4: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+    b5c8: d65f03c0     	ret
+    b5cc: 2a0003f3     	mov	w19, w0
+    b5d0: 17ffffac     	b	0xb480 <dmm_ext_ctrl_Init+0x150>
+    b5d4: 2a1503f3     	mov	w19, w21
+    b5d8: 17ffffaa     	b	0xb480 <dmm_ext_ctrl_Init+0x150>
+    b5dc: d503201f     	nop
+    b5e0: 00 00 00 00  	.word	0x00000000
+		000000000000b5e0:  R_AARCH64_ABS64	.bss+0x16ddd8
+    b5e4: 00 00 00 00  	.word	0x00000000
+    b5e8: 00 00 00 00  	.word	0x00000000
+		000000000000b5e8:  R_AARCH64_ABS64	.bss+0x16ccd8
+    b5ec: 00 00 00 00  	.word	0x00000000

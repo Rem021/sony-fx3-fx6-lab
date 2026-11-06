@@ -1,0 +1,200 @@
+{
+  "schema": "fx3-r47-runtime-integration-delta-v1",
+  "generated_utc": "2026-11-05T12:04:50.406991+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "non_git_root": true,
+  "input_pins": {
+    "r44_source43_sha256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+    "r44_core38_sha256": "b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1",
+    "r46_sha256sums_sha256": "46fec31b6c727803e05937f38a23050dee70cae6bf01934e5545ec9201b8fa96",
+    "r46_entries": 32,
+    "r46_cleanup_sha256": "ed3edbb402529acfa84a6fb18ce96720b48cb7b7c1edc1cbc622da9c92b7a1cb",
+    "r46_cleanup_evidence_sha256": "b9c511e2c4ecf1ff24a0446a6a462dce86776b58ac983c73db12f811261a00dc",
+    "r46_page_canonical_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "r46_original_page_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+    "r42_candidate_sha256": "857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806",
+    "r42_cpio_sha256": "59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63",
+    "r42_cpio_bytes": 453213884,
+    "r45_cleanup_status": "unknown",
+    "r45_run_status": "failed",
+    "r45_step8": "not_posted"
+  },
+  "profile": {
+    "name": "r47-runtime-integration-60s",
+    "label": "v47runtime-n64-r47",
+    "approved_host": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r47-runtime-integration-candidate",
+    "package": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package",
+    "package_candidate_sha256": "857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806",
+    "package_cpio_sha256": "59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63"
+  },
+  "source_core": {
+    "source_members": 44,
+    "core_members": 39,
+    "source_sha256": "981664fb7c563162e84ac0feaa82a0ebf0ae8bc361df74d11519e29499831e76",
+    "core_sha256": "c87cb75380013efd940a653da015d2116b8caf159db4a818ac377546b9349dc2",
+    "base_page_member": "trial_web_v22_navigation_review.py",
+    "base_page_old_frozen_sha256": "1459d5b7afd792e291e51f54fd37e6730335c34d39ebf0988a9eba6384d0d521",
+    "base_page_new_sha256": "8a40a4a67bdbe4ce8712d1a4ef78c893ffc2ea625fb6f0966d1a4e4136ba1be7"
+  },
+  "page": {
+    "original_canonical_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+    "candidate_canonical_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "original_full_PAGE_sha256": "f2c0eb2d4282ff53403f29b7650403f336b6ffd74c71c05390676193af962ff7",
+    "candidate_full_PAGE_sha256": "551cbd919f61858ba8542a3a46d7eab3894162c915038d92d5a16317bc3c719b",
+    "trial_web_BASE_local": true,
+    "base_python_server_behavior_unchanged": true,
+    "snapshot_ttl": 20.0
+  },
+  "changed_files": [
+    {
+      "path": "runtime-wrapper/cleanup.py",
+      "reason": "r46 cleanup integration",
+      "old_sha256": "7c567bd53ad86b7d55db4b84640e018e80443328e53a7576b4e025c9073ea3e8",
+      "new_sha256": "ed3edbb402529acfa84a6fb18ce96720b48cb7b7c1edc1cbc622da9c92b7a1cb"
+    },
+    {
+      "path": "runtime-wrapper/cleanup_evidence.py",
+      "reason": "r46 strict armed evidence integration",
+      "old_sha256": "a293ab051ca2f744bb8189e708a1a3bcc1360b252d63253141198e78d2dd2a5d",
+      "new_sha256": "b9c511e2c4ecf1ff24a0446a6a462dce86776b58ac983c73db12f811261a00dc"
+    },
+    {
+      "path": "trial_web_r24_review_snapshot.py",
+      "reason": "BASE changed from old frozen v25 root to local HERE",
+      "old_sha256": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+      "new_sha256": "201d14b0daaede2ec582dc9e3f63e021845daa0db2d205f5896077a7736b618c"
+    },
+    {
+      "path": "r35_package_selection.py",
+      "reason": "new APPROVED_HOST/PROFILE/LABEL",
+      "old_sha256": "2b98bcbdb49765dbfc0ae405e2cb8695e78951e65978f05952bf7ffc371915a6",
+      "new_sha256": "2b14b69b218ace83c6f83bafe0008e56ab7f514f9624a9e8866004e82bd955b0"
+    },
+    {
+      "path": "PAGE-IDENTITY.json",
+      "reason": "new canonical f9a428 and full PAGE 551cbd",
+      "old_sha256": "7f4b2f3a3f9c86fdb3193a2177135955f3aa000a135e819eba08493c0cf41a0a",
+      "new_sha256": "0246146d402ee732429afcdd0230615799c0f82a52e875ac555dc07a485ece4e"
+    },
+    {
+      "path": "operator-helpers/deadline.js",
+      "reason": "SCRIPT_SHA -> f9a428",
+      "old_sha256": "cfe09ab87d14de6f5597b1ced23f3a52dafacdce0ee3ed126514d55f9be454f4",
+      "new_sha256": "1df9ed6c41d08813feb46afc09fafc94c92de36ef5f483b1aa2dae55ac7672a0"
+    },
+    {
+      "path": "operator-helpers/recovery_cancel.js",
+      "reason": "PAGE_SHA -> f9a428",
+      "old_sha256": "bdb3548b3221c6f74a7c7df2ea2cbf33e443d7238c96d4fcb89e4943b592f623",
+      "new_sha256": "bea4d08fd94dd30fd6dcf590230987561f1bf513821a60010249d2535b951020"
+    },
+    {
+      "path": "operator-helpers/recovery_readonly.js",
+      "reason": "PAGE fingerprint -> f9a428",
+      "old_sha256": "93cb7af2378265b041a7dda7bdfbaa206a58b46dfbb980e50dd1d78b23e1fb59",
+      "new_sha256": "3bf1ead1c90a266352c3117247b8cbe2d1776174595e5bfe8ed60d989591dd6b"
+    },
+    {
+      "path": "operator-helpers/planned_navigation_click.py",
+      "reason": "PAGE_SHA -> f9a428",
+      "old_sha256": "65b373ca8f65660d8af85700554f0bf86ec7d76bd3cff15073ae53a511b7c65f",
+      "new_sha256": "4e10797ea512faebfcab32c0a3785ae1e3174eb1aa42f4d114de8e9ffe60ad77"
+    },
+    {
+      "path": "runtime-wrapper/untimed_image.py",
+      "reason": "inline PAGE fingerprint -> f9a428",
+      "old_sha256": "b400adf1aff0d599950a76908d3dd18bd8396d7ffaf7f3c8716b973de7286d34",
+      "new_sha256": "b6b2577b82d64d1680cfbfe8d4c35ceb449b4f95b2010318ab7a868b92539954"
+    },
+    {
+      "path": "runtime-wrapper/later_capture.py",
+      "reason": "inline PAGE fingerprint -> f9a428",
+      "old_sha256": "ca6c1b2b64ef9ff3672d39d112b598062a1ff8c613d2ee8f7daa5dedbff01f8f",
+      "new_sha256": "1bcaa615bb356f6c5d763b3ca711524cc22d5edc2d374fa966026f0702af57b2"
+    },
+    {
+      "path": "runtime-wrapper/launch_prepare.py",
+      "reason": "prestart PAGE assert -> f9a428",
+      "old_sha256": "110c2fb6a4df630ce4fcb3564a52aeb5bb157a3d4c148fcc18d57ce7e9fc579f",
+      "new_sha256": "d3eae919624e6dc3523c0a6c1453ec3cd16e203a7a0ca2b10c3c06d6cc85b107"
+    },
+    {
+      "path": "return-tools/return_adapter.py",
+      "reason": "CORE_FREEZE_SHA -> new 39-member core; OPERATE_SHA unchanged",
+      "old_sha256": "ce5faeadc6a7fdc53472d7102cc5111c32d007704c9ed6513d9b6535957313e2",
+      "new_sha256": "6a1eb32fcde5fa2b83904eae3c87b88c0d72a03ab1998f6d8360eec5a5b39f2e"
+    },
+    {
+      "path": "SOURCE-FREEZE.json",
+      "reason": "44 real members (base PAGE added; return-tools + core freeze)",
+      "old_sha256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+      "new_sha256": "981664fb7c563162e84ac0feaa82a0ebf0ae8bc361df74d11519e29499831e76"
+    },
+    {
+      "path": "CORE-SOURCE-FREEZE.json",
+      "reason": "39 real members (base PAGE added)",
+      "old_sha256": "b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1",
+      "new_sha256": "c87cb75380013efd940a653da015d2116b8caf159db4a818ac377546b9349dc2"
+    }
+  ],
+  "new_files": [
+    {
+      "path": "trial_web_v22_navigation_review.py",
+      "sha256": "8a40a4a67bdbe4ce8712d1a4ef78c893ffc2ea625fb6f0966d1a4e4136ba1be7",
+      "source": "patched copy of v25-r21-recovery-integration/trial_web_v22_navigation_review.py; only two recovery budget literals 20000->60000"
+    }
+  ],
+  "binding_sites_updated": [
+    "trial_web_v22_navigation_review.py local PAGE",
+    "trial_web_r24_review_snapshot.py BASE=HERE",
+    "PAGE-IDENTITY.json canonical+full",
+    "operator-helpers/deadline.js SCRIPT_SHA",
+    "operator-helpers/recovery_cancel.js PAGE_SHA",
+    "operator-helpers/recovery_readonly.js PAGE fingerprint",
+    "operator-helpers/planned_navigation_click.py PAGE_SHA",
+    "runtime-wrapper/untimed_image.py inline fingerprint",
+    "runtime-wrapper/later_capture.py inline fingerprint",
+    "runtime-wrapper/launch_prepare.py prestart assert",
+    "return-tools/return_adapter.py CORE_FREEZE_SHA",
+    "SOURCE/CORE self freeze",
+    "r35_package_selection.py APPROVED_HOST/PROFILE/LABEL",
+    "prepare_run.py inherits new profile via r35"
+  ],
+  "tests": {
+    "suite_cases": 9,
+    "suite_passed": 9,
+    "cleanup_closed_loop_cases": 7,
+    "page_runtime_cases": 4,
+    "import_only": true,
+    "binding_inventory": true,
+    "package_pin": true,
+    "prepare_only": true,
+    "preflight": true,
+    "input_seal_inputs": 51,
+    "input_seal_unchanged": true,
+    "r46_manifest_32_ok": 32,
+    "r45_manifest_554_ok": 554,
+    "r45_manifest_150_ok": 150,
+    "receipts": [
+      "receipts/test-run.json",
+      "receipts/cleanup-closed-loop-tests.json",
+      "receipts/page-runtime-tests.json",
+      "receipts/page-import-only.json",
+      "receipts/binding-inventory.json",
+      "receipts/package-pin.json",
+      "receipts/prepare-only.json",
+      "receipts/input-seal-before.json",
+      "receipts/input-seal-after.json",
+      "receipts/input-seal-compare.json"
+    ]
+  },
+  "r46_report_correction": {
+    "first_cleanup": "4302ff41-653d-4ae5-9b79-f713120ab9e2 at 2026-11-05T11:28:12.079540Z",
+    "second_cleanup": "0687a34f-8dcd-4d62-b4a0-b1c0037830b1 at 2026-11-05T11:28:20.641615Z",
+    "note": "r46 REPORT had first/second reversed; this report uses source invocation timestamps and changes no diagnosis"
+  },
+  "enabled_for_real_run": false,
+  "no_vm_browser_server_qmp_guest_deployment": true,
+  "package_copied_or_written": false,
+  "original_r45_failed_cleanup_unknown_retained": true
+}

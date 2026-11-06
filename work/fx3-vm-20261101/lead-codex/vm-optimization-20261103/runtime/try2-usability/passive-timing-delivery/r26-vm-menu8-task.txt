@@ -1,0 +1,23 @@
+FX3｜r26先观察后固定的真实八步菜单验证
+根=/Volumes/KAFU2T/AI/Projects/Mac；TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery；CAND=DEL/r26-postkey-observation-candidate。
+目标：原固定FX3平台上的完整八步真实菜单及资源回收，验证晚到界面不再被首张过渡图提前固定。历史r25 8accepted/7confirm仍失败，不追补。r26离线MOCK不是VM/固件性能证明。部署仍r10。
+本正式任务授权唯一一次VM/一次Start，首个合格待机≤180秒，总≤8分钟，8accepted/10显式attempt/2归因未入队恢复且每步最多一次。仅本task独占数据目录和唯一browser session；不改源码、平台、输入门、20秒alarm、部署或历史。无FX6、相机、USB、SD、刷写、另派代理操作。
+固定4×cortex-a35/5120MiB/MTTCG/noicount；kernel da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c、DTB 5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b、N64CPIO aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9、QEMU bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d不变。执行前核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B、无其他runner/QEMU、outputs/fx3-vm/.run.lock与menu-repair-01/runtime/.run.lock空闲，不抢占。
+先读r26最终README/CONTRACT/VM-OPERATIONS及wrapper，核本正式spec附列的manifest/sourcefreeze/REPORT/CONTRACT hashes；完整r25清单594项、r24清单151项、r21清单145项（含清单自身）/source40/fixed14及实际模块import前后保持一致。CAND prepare_run生成DEL/r26-vm-本task短id独占目录，FX3_NAV_RUN_DIR始终指它；不得写旧runtime三处自然输出。
+启动模板以最终准备材料为准：run_trial_r24_review_snapshot.py --port 0 --max-minutes 8 --max-steps 32 --snapshot-tail --gate-publish-interval 64 --pre-input-snapshot-step 2。32只是既有最后确认ready机制，计划仍8accepted。持久shell会话、每次工具返回真实PNG的展示通路、异常End均须启动前准备好。
+Start后实际看新合格待机图，再独立standby_review。每一步单独click，仅一次原PAGE按键；accepted返回qualified_unpinned_postkey_observation。实际查看返回的完整browser screenshot；若合法过渡尚未到完整目标，在同原20秒期限内可另一次明确observe并填写刚看过的过渡判断，返回新图后实际再看。最多3次观察含click首次，没有自动重试/轮询命中/补键/延时暗发。
+实际观察到完整目标后，另一次明确pin调用原单次capture，返回qualified_review_snapshot和新的精确固定PNG。必须重新实际看这个固定PNG，再独立confirm。不能用观察图替代固定图判断；固定后语义不符/不确定、unknown、失效、到期、身份变化、任一确认失败均立即reject/End，不observe或repin。原20秒从click前arm覆盖所有工具/等待/模型审阅至confirm或End；不得扩时、重武装或插入报告调试协调消息。
+固定八步不跳不替代：1 MENU完整Setup>Area/Date橙色Area/Date/Time Setting；2 UP到Language English；3 C4语言帮助；4 MENU返回Language；5 OK查看English列表不修改语言；6 MENU取消列表；7 MENU关闭待机；8 MENU重开完整菜单。每步完整固定图实际语义审阅及精确confirm才计通过，8accepted不等于8通过。
+若原PAGE明确not_posted或精确requestID拒绝未入队，click返回qualified_recovery_observation，则沿原r25链实际看取消前观察→独立recovery_cancel→实际看取消后新观察→独立recovery_review→新nonce的独立planned click。每步最多一次总最多两次；unknown/no-click不明、已接收失败不得借恢复重发。恢复图无postkey确认/下一键许可。
+正常完成或任一失败后立即原End，逐项留API16原字节与guest ACK/20秒预算、QMP quit ACK、exit/reap、runner/QEMU/browser PID absent、双锁free、port closed、网页finalACK。保留所有HTTP请求、原native down/up/done、每张观察和固定PNG、明确语义判断、run/launch/document/step/attempt/nonce/snapshot/confirm身份、拒绝导出原字节（零也保留）、原argv与模块来源/全部输入前后hash。时间不可测写unknown，v5tail非事务不冒充终态。
+交付REPORT/RESULT/SHA，八步和完整清理均通过方可整轮passed，否则failed/partial并注明精确步骤。不要重跑已接受离线矩阵，不泛化60分钟/4096键/所有菜单/录像/实机/FX6。不得写协调ledger或部署入口。
+
+正式封存：worker_done msg_d493e3af6d67 succeeded。协调端独立核验1277项SHA全部匹配、33生产源freeze匹配；16组浏览器和15组server离线测试通过，实际prepare/preflight/import、912历史输入前后及所有fixture清理通过。以下每个hash启动前核对，任一不符即停报，不改候选。
+SHA256SUMS=9f6c4c047f8dc2bbb253d880b174a09e7701448bc645554b93fea1bac0d52fd2
+REPORT.md=a3e3e6fe83f67a9aa15a05a5394d1cd6daf587890697c4fe8aee267ff9712300
+CANDIDATE-SOURCE-FREEZE.json=09137904d57fe25378d6cfc5fb0beff74724b212d7f00e522745958e1867073c
+CONTRACT.md=ebc19eb761e4a6d61590ccfd2cd523ecd1b147a5808fe68d1fa9b679b3731c1a
+README.md=dd90528c9617580c0266c135894f1aba950aa2a637f26501d4208a7729bbf121
+VM-OPERATIONS.md=6af68a8cd41decd6eecb197894f4412e1b5e7b65bd2f8e71e0f2b3f530529098
+
+操作通路：尽量在同一工具调用返回所述动作结果和该结果路径的实际PNG，减少无关开销；不得在看图前预先排队pin/confirm/下一键。每个observe/pin/confirm仍独立由实际上一图判断发起，不自动判断。浏览器20秒原alarm持续有效。最后8步通过后也必须正常End核全套回收。禁止部署。本正式任务取代未执行草稿，仅授权上述唯一真实轮。

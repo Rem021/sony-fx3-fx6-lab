@@ -1,0 +1,59 @@
+{
+  "created_utc": "2026-10-28T09:17:46.166998+00:00",
+  "ABI": 3,
+  "state": "FIXED_NATIVE_ENTRY_COMPILED_OWN_FIXTURE_TESTED_LIVE_PARENT_AND_RELEASE_MISSING",
+  "native_candidate": {
+    "path": "artifacts/owner-native-helper",
+    "sha256": "69c1756640281aec4cc98b83c354c8f8ba754c06f045ab6ec89379588bd09796",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-DFX3_APPROVED_JOB_ROOT=\"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/runs/\"",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_ipc.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/entry_support.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_entry_main.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_iokit.c",
+      "-framework",
+      "IOKit",
+      "-framework",
+      "CoreFoundation",
+      "-framework",
+      "DiskArbitration",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/owner-native-helper"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/artifacts/owner-native-helper:\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.63)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "verified": {
+    "C_core_checks": 37,
+    "fixed_fixture_executable_checks": 13,
+    "fixed_fixture_process_count": 14,
+    "independent_observer_fixture_checks": 14,
+    "per_shared_file_replay_denied": true,
+    "wrong_body_denied_before_userclient": true,
+    "clock_domain": "CLOCK_MONOTONIC"
+  },
+  "missing_before_physical_trial": [
+    "No live parent/osascript relay supervisor or root helper reconnection has been implemented. Relay PID is not proof of actual helper identity or lifetime.",
+    "Atomic single-use claim is per shared file only. It does not bind a physical grant to one build/target across newly created files.",
+    "AppleScript takes helper path as an argument. Caller must fix and verify exact helper/script paths and hashes before invocation; wrapper alone is not a fixed executable security boundary.",
+    "Executable/shared files currently reside on a user-writable external volume with owners disabled. Root launch must handle path replacement, file identity and immutable grant/binary identity; no hardened install is implemented.",
+    "Independent cache observer has passed own fixtures and one cache collection only; it has not observed actual driver handoff, restore or functional camera behavior.",
+    "Native code refuses mounted/unknown media but full preflight, automount race and postflight orchestration remain unverified."
+  ],
+  "flashing_gates": [
+    "No backup, restore, independent rescue, HEVC original clip or persistent patch package has been created or accepted."
+  ],
+  "Mac_owner_trial_released": false,
+  "authorization_changed": false,
+  "active_camera_operations": 0,
+  "cached_metadata_queries": 1
+}

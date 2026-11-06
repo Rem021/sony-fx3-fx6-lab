@@ -1,0 +1,42 @@
+{
+  "schema": "fx6-early-kernel-candidate-v1",
+  "status": "WITHDRAWN_DO_NOT_RUN_FIXED_FX3_PLATFORM_CONSTRAINT",
+  "withdrawn_reason": "User requires the existing FX3 DTB and initrd unchanged; this exploratory candidate changed bootargs, initrd-end and init payload.",
+  "image": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/vmlinux.bin",
+    "sha256": "bc4925e701ae363c797f22ef28f29dc48fd17af7f25a3f64d7d0824312c0dab9",
+    "bytes": 6610952
+  },
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+    "bytes": 36163584
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/fx6-virt-early.dtb",
+    "sha256": "a1d0494b9f5c116872bef8b4151dcb6d514388445153f24163819e94fc3ae363",
+    "bytes": 9491
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/minimal-initrd.cpio",
+    "sha256": "1351de617d8a58cab2e9bf435f0e2b066cb195ea89dc1a72c756a44c61a738ae",
+    "bytes": 1860816
+  },
+  "bootargs": "console=ttyAMA0 earlycon=pl011,0x09000000 rdinit=/init init=/init nokaslr ignore_loglevel loglevel=8 panic=-1",
+  "initrd_load_address": "0x440000000",
+  "dtb_load_address": "0x400002000",
+  "machine": "virt,gic-version=2,secure=off",
+  "cpu": "cortex-a35",
+  "smp": 4,
+  "memory_mib": 5120,
+  "model_env": {
+    "FX3_VM_ESRAM_RAM": "1",
+    "FX3_VM_HIGH_DDR": "1",
+    "FX3_VM_SONY_TIMER": "1",
+    "FX3_VM_SCU_REQUEST": "1",
+    "FX3_VM_GPIO_BANK5": "1"
+  },
+  "maximum_seconds": 180,
+  "stop_marker": "FX6_EARLY_INIT_REACHED",
+  "boot_result": "UNTESTED"
+}

@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-04-key-030.png using image tool. Setup>Operation Customize; orange category focus, Custom Key/Dial items visible Next: DOWN to Dial Customize to continue checking Setup categories for Power Setting Option; no item activated or edited

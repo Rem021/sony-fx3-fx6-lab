@@ -1,0 +1,15 @@
+set -euC
+cd /
+umask 077
+[ "$(/usr/bin/id -u)" = 0 ] || exit 77
+if [ ! -e /private/var/root/fx3-owner-trials ]; then /bin/mkdir -m 700 /private/var/root/fx3-owner-trials; fi
+[ ! -L /private/var/root/fx3-owner-trials ] && [ -d /private/var/root/fx3-owner-trials ] || exit 78
+[ "$(/usr/bin/stat -f %u:%Lp /private/var/root/fx3-owner-trials)" = 0:700 ] || exit 78
+/bin/mkdir -m 700 /private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01
+/usr/bin/install -m 500 /private/tmp/fx3-702-service-diagnostic-20261031-01/source-helper /private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/helper
+actual=$(/usr/bin/shasum -a 256 /private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/helper)
+[ "$actual" = '6ec773d560d7209861cf5f1859a7ef9d61166cfa37b49f404454f28ead676e7d  /private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/helper' ] || exit 78
+/usr/bin/install -m 400 /private/tmp/fx3-702-service-diagnostic-20261031-01/source-permit /private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/permit.bin
+actual=$(/usr/bin/shasum -a 256 /private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/permit.bin)
+[ "$actual" = 'defe882767303db4b454eb0f8cb57045bbf80d92e6afc50c665669ae0a92b516  /private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/permit.bin' ] || exit 78
+exec /private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/helper /private/tmp/fx3-702-service-diagnostic-20261031-01/shared.bin dce9e1307b0f2cbb5aa52298f88ea804 2>&1

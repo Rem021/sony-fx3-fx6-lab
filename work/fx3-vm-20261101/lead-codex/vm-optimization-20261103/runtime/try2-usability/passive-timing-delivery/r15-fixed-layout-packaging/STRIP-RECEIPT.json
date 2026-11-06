@@ -1,0 +1,31 @@
+{
+  "variants": [
+    {
+      "variant": "N1",
+      "raw_bytes": 60544,
+      "stripped_bytes": 20400,
+      "stripped_sha256": "f95d91c1c5f3ca41303edf0df9fa25b574f0c70f903f163b8aaef36c36a4b1b4",
+      "audit_passed": true,
+      "static_sections_removed": [
+        ".strtab",
+        ".symtab"
+      ]
+    },
+    {
+      "variant": "N64",
+      "raw_bytes": 61624,
+      "stripped_bytes": 20576,
+      "stripped_sha256": "54092d471ade3a599adbd563e75cb4c140ccc34b8e7245f65aeeba42aa6aa1fc",
+      "audit_passed": true,
+      "static_sections_removed": [
+        ".strtab",
+        ".symtab"
+      ]
+    }
+  ],
+  "originals_unchanged": true,
+  "original_debug_ELFs_retained": true,
+  "method_authority": "Orca msg_b4a35376625d",
+  "no_VM": true,
+  "no_CPIO": true
+}

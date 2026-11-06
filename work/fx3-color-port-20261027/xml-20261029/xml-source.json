@@ -1,0 +1,1668 @@
+{
+  "image": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+  "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "original_path": "/lib/libul_xml.so",
+  "inode": 95256,
+  "bytes": 72784,
+  "sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+  "output": "original-members/libul_xml.so",
+  "symbols": [
+    {
+      "symbol": "",
+      "label": "",
+      "va": "0x71d8",
+      "bytes": 0
+    },
+    {
+      "symbol": "",
+      "label": "",
+      "va": "0x206e8",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode9LastChildEPKc",
+      "label": "Updater::Xml::DomNode::LastChild(char const*) const",
+      "va": "0x85a4",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml14DomDeclarationE",
+      "label": "typeinfo for Updater::Xml::DomDeclaration",
+      "va": "0x20760",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclarationC1EPKcS3_S3_",
+      "label": "Updater::Xml::DomDeclaration::DomDeclaration(char const*, char const*, char const*)",
+      "va": "0x9ba4",
+      "bytes": 200
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomCommentaSERKS1_",
+      "label": "Updater::Xml::DomComment::operator=(Updater::Xml::DomComment const&)",
+      "va": "0x9a50",
+      "bytes": 44
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElementC1EPKc",
+      "label": "Updater::Xml::DomElement::DomElement(char const*)",
+      "va": "0x9f08",
+      "bytes": 132
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclarationaSERKS1_",
+      "label": "Updater::Xml::DomDeclaration::operator=(Updater::Xml::DomDeclaration const&)",
+      "va": "0x9d34",
+      "bytes": 44
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomUnknownD2Ev",
+      "label": "Updater::Xml::DomUnknown::~DomUnknown()",
+      "va": "0x8288",
+      "bytes": 20
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElementD1Ev",
+      "label": "Updater::Xml::DomElement::~DomElement()",
+      "va": "0xa040",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode8IdentifyEPKcNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomNode::Identify(char const*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xb870",
+      "bytes": 560
+    },
+    {
+      "symbol": "_ZN7Updater3Xml12DomAttribute11SetIntValueEi",
+      "label": "Updater::Xml::DomAttribute::SetIntValue(int)",
+      "va": "0x9954",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml4testE",
+      "label": "typeinfo for Updater::Xml::test",
+      "va": "0x20790",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlStringaSEPKc",
+      "label": "Updater::Xml::TiXmlString::operator=(char const*)",
+      "va": "0x7c8c",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml12DomAttribute5ParseEPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomAttribute::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xb69c",
+      "bytes": 468
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode20getFirstChildElementEv",
+      "label": "Updater::Xml::DomNode::getFirstChildElement() const",
+      "va": "0x8700",
+      "bytes": 88
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode13toDeclarationEv",
+      "label": "Updater::Xml::DomNode::toDeclaration()",
+      "va": "0x7a58",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode11RemoveChildEPS1_",
+      "label": "Updater::Xml::DomNode::RemoveChild(Updater::Xml::DomNode*)",
+      "va": "0x84e8",
+      "bytes": 120
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocument13toDomDocumentEv",
+      "label": "Updater::Xml::DomDocument::toDomDocument()",
+      "va": "0xa918",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11DomDocument5printEP8_IO_FILEi",
+      "label": "Updater::Xml::DomDocument::print(_IO_FILE*, int) const",
+      "va": "0x93e4",
+      "bytes": 128
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode6toTextEv",
+      "label": "Updater::Xml::DomNode::toText() const",
+      "va": "0x7a20",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11DomDocument8SaveFileEv",
+      "label": "Updater::Xml::DomDocument::SaveFile() const",
+      "va": "0x9274",
+      "bytes": 12
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase7IsAlphaEhNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::IsAlpha(unsigned char, Updater::Xml::TiXmlEncoding)",
+      "va": "0xabe0",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode15IterateChildrenEPKS1_",
+      "label": "Updater::Xml::DomNode::IterateChildren(Updater::Xml::DomNode const*) const",
+      "va": "0x85e8",
+      "bytes": 72
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode15IterateChildrenEPKcPKS1_",
+      "label": "Updater::Xml::DomNode::IterateChildren(char const*, Updater::Xml::DomNode const*) const",
+      "va": "0x8674",
+      "bytes": 72
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclarationC2EPKcS3_S3_",
+      "label": "Updater::Xml::DomDeclaration::DomDeclaration(char const*, char const*, char const*)",
+      "va": "0x9ba4",
+      "bytes": 200
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml9DomHandle8getChildEPKci",
+      "label": "Updater::Xml::DomHandle::getChild(char const*, int) const",
+      "va": "0xa7a4",
+      "bytes": 108
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode17InsertBeforeChildEPS1_RKS1_",
+      "label": "Updater::Xml::DomNode::InsertBeforeChild(Updater::Xml::DomNode*, Updater::Xml::DomNode const&)",
+      "va": "0x8ab8",
+      "bytes": 204
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElement9ClearThisEv",
+      "label": "Updater::Xml::DomElement::ClearThis()",
+      "va": "0x9fec",
+      "bytes": 84
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocument5ParseEPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomDocument::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xbaa0",
+      "bytes": 564
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml7DomNodeE",
+      "label": "typeinfo name for Updater::Xml::DomNode",
+      "va": "0xcc38",
+      "bytes": 23
+    },
+    {
+      "symbol": "_ZN7Updater3XmlplERKNS0_11TiXmlStringES3_",
+      "label": "Updater::Xml::operator+(Updater::Xml::TiXmlString const&, Updater::Xml::TiXmlString const&)",
+      "va": "0xca68",
+      "bytes": 136
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml12DomAttributeE",
+      "label": "vtable for Updater::Xml::DomAttribute",
+      "va": "0x20ce0",
+      "bytes": 48
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlString7reserveEm",
+      "label": "Updater::Xml::TiXmlString::reserve(unsigned long)",
+      "va": "0xc878",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml7DomNodeE",
+      "label": "typeinfo for Updater::Xml::DomNode",
+      "va": "0x20700",
+      "bytes": 24
+    },
+    {
+      "symbol": "_init",
+      "label": "_init",
+      "va": "0x71d8",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomTextD1Ev",
+      "label": "Updater::Xml::DomText::~DomText()",
+      "va": "0x8330",
+      "bytes": 20
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode16InsertAfterChildEPS1_RKS1_",
+      "label": "Updater::Xml::DomNode::InsertAfterChild(Updater::Xml::DomNode*, Updater::Xml::DomNode const&)",
+      "va": "0x8b84",
+      "bytes": 204
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomText6toTextEv",
+      "label": "Updater::Xml::DomText::toText() const",
+      "va": "0x7a70",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement12getAttributeEPKcPd",
+      "label": "Updater::Xml::DomElement::getAttribute(char const*, double*) const",
+      "va": "0xa558",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement19queryUlongAttributeEPKcPj",
+      "label": "Updater::Xml::DomElement::queryUlongAttribute(char const*, unsigned int*) const",
+      "va": "0xa5d4",
+      "bytes": 60
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase8ReadTextEPKcPNS0_11TiXmlStringEbS3_bNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::ReadText(char const*, Updater::Xml::TiXmlString*, bool, char const*, bool, Updater::Xml::TiXmlEncoding)",
+      "va": "0xb418",
+      "bytes": 468
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement12getAttributeEPKcPi",
+      "label": "Updater::Xml::DomElement::getAttribute(char const*, int*) const",
+      "va": "0xa518",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclarationD0Ev",
+      "label": "Updater::Xml::DomDeclaration::~DomDeclaration()",
+      "va": "0x8308",
+      "bytes": 40
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElement12SetAttributeEPKci",
+      "label": "Updater::Xml::DomElement::SetAttribute(char const*, int)",
+      "va": "0xa29c",
+      "bytes": 84
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocument8loadFileENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomDocument::loadFile(Updater::Xml::TiXmlEncoding)",
+      "va": "0x919c",
+      "bytes": 16
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode9toElementEv",
+      "label": "Updater::Xml::DomNode::toElement() const",
+      "va": "0x7a08",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode9toCommentEv",
+      "label": "Updater::Xml::DomNode::toComment()",
+      "va": "0x7a40",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomComment9toCommentEv",
+      "label": "Updater::Xml::DomComment::toComment()",
+      "va": "0x7a6c",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11DomDocument5CloneEv",
+      "label": "Updater::Xml::DomDocument::Clone() const",
+      "va": "0x938c",
+      "bytes": 88
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase7GetCharEPKcPcPiNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::GetChar(char const*, char*, int*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xb210",
+      "bytes": 224
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode12ReplaceChildEPS1_RKS1_",
+      "label": "Updater::Xml::DomNode::ReplaceChild(Updater::Xml::DomNode*, Updater::Xml::DomNode const&)",
+      "va": "0x8448",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclarationD2Ev",
+      "label": "Updater::Xml::DomDeclaration::~DomDeclaration()",
+      "va": "0x82c4",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElement18SetDoubleAttributeEPKcd",
+      "label": "Updater::Xml::DomElement::SetDoubleAttribute(char const*, double)",
+      "va": "0xa2f0",
+      "bytes": 80
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml14DomDeclaration5printEP8_IO_FILEi",
+      "label": "Updater::Xml::DomDeclaration::print(_IO_FILE*, int) const",
+      "va": "0x7a78",
+      "bytes": 16
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase18condenseWhiteSpaceE",
+      "label": "Updater::Xml::DomBase::condenseWhiteSpace",
+      "va": "0x21378",
+      "bytes": 1
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode13toDomDocumentEv",
+      "label": "Updater::Xml::DomNode::toDomDocument() const",
+      "va": "0x7a00",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomComment9toCommentEv",
+      "label": "Updater::Xml::DomComment::toComment() const",
+      "va": "0x7a68",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml14DomDeclaration5printEP8_IO_FILEiPNS0_11TiXmlStringE",
+      "label": "Updater::Xml::DomDeclaration::print(_IO_FILE*, int, Updater::Xml::TiXmlString*) const",
+      "va": "0x7d14",
+      "bytes": 440
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml11DomDocumentE",
+      "label": "typeinfo for Updater::Xml::DomDocument",
+      "va": "0x20c28",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml11DomDocumentE",
+      "label": "vtable for Updater::Xml::DomDocument",
+      "va": "0x20c40",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml10DomUnknownE",
+      "label": "typeinfo name for Updater::Xml::DomUnknown",
+      "va": "0xccc8",
+      "bytes": 27
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement20queryStringAttributeEPKcPPc",
+      "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const",
+      "va": "0xa64c",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml7DomTextE",
+      "label": "vtable for Updater::Xml::DomText",
+      "va": "0x20a28",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentD0Ev",
+      "label": "Updater::Xml::DomDocument::~DomDocument()",
+      "va": "0xa97c",
+      "bytes": 40
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomComment6CopyToEPS1_",
+      "label": "Updater::Xml::DomComment::CopyTo(Updater::Xml::DomComment*) const",
+      "va": "0x99f0",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute11getPreviousEv",
+      "label": "Updater::Xml::DomAttribute::getPrevious() const",
+      "va": "0x96f0",
+      "bytes": 36
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode10FirstChildEPKc",
+      "label": "Updater::Xml::DomNode::FirstChild(char const*) const",
+      "va": "0x8560",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomUnknown5CloneEv",
+      "label": "Updater::Xml::DomUnknown::Clone() const",
+      "va": "0x9de0",
+      "bytes": 108
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml7DomBaseE",
+      "label": "typeinfo name for Updater::Xml::DomBase",
+      "va": "0xcc20",
+      "bytes": 23
+    },
+    {
+      "symbol": "_ZN7Updater3Xml12DomAttributeD0Ev",
+      "label": "Updater::Xml::DomAttribute::~DomAttribute()",
+      "va": "0xa9d8",
+      "bytes": 40
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElementC1ERKS1_",
+      "label": "Updater::Xml::DomElement::DomElement(Updater::Xml::DomElement const&)",
+      "va": "0xa3d0",
+      "bytes": 132
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml4testE",
+      "label": "vtable for Updater::Xml::test",
+      "va": "0x207a8",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute15queryUlongValueEPj",
+      "label": "Updater::Xml::DomAttribute::queryUlongValue(unsigned int*) const",
+      "va": "0x98ec",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement12getAttributeEPKc",
+      "label": "Updater::Xml::DomElement::getAttribute(char const*) const",
+      "va": "0xa4ec",
+      "bytes": 44
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml7DomBaseE",
+      "label": "typeinfo for Updater::Xml::DomBase",
+      "va": "0x206f0",
+      "bytes": 16
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomText6CopyToEPS1_",
+      "label": "Updater::Xml::DomText::CopyTo(Updater::Xml::DomText*) const",
+      "va": "0x9ae8",
+      "bytes": 44
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomUnknown9toUnknownEv",
+      "label": "Updater::Xml::DomUnknown::toUnknown() const",
+      "va": "0x7a90",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode25getNextSiblingSameElementEv",
+      "label": "Updater::Xml::DomNode::getNextSiblingSameElement() const",
+      "va": "0x887c",
+      "bytes": 108
+    },
+    {
+      "symbol": "_ZN7Updater3Xml15DomAttributeSet3AddEPNS0_12DomAttributeE",
+      "label": "Updater::Xml::DomAttributeSet::Add(Updater::Xml::DomAttribute*)",
+      "va": "0xa150",
+      "bytes": 100
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomText5CloneEv",
+      "label": "Updater::Xml::DomText::Clone() const",
+      "va": "0x9b14",
+      "bytes": 144
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode6toTextEv",
+      "label": "Updater::Xml::DomNode::toText()",
+      "va": "0x7a50",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomCommentC2ERKS1_",
+      "label": "Updater::Xml::DomComment::DomComment(Updater::Xml::DomComment const&)",
+      "va": "0x99f4",
+      "bytes": 92
+    },
+    {
+      "symbol": "_ZN7Updater3Xml4testC2Ev",
+      "label": "Updater::Xml::test::test()",
+      "va": "0xa8e0",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode14InsertEndChildERKS1_",
+      "label": "Updater::Xml::DomNode::InsertEndChild(Updater::Xml::DomNode const&)",
+      "va": "0x8a44",
+      "bytes": 116
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement17queryIntAttributeEPKcPi",
+      "label": "Updater::Xml::DomElement::queryIntAttribute(char const*, int*) const",
+      "va": "0xa598",
+      "bytes": 60
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclarationC2ERKS1_",
+      "label": "Updater::Xml::DomDeclaration::DomDeclaration(Updater::Xml::DomDeclaration const&)",
+      "va": "0x9cb0",
+      "bytes": 132
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode5ClearEv",
+      "label": "Updater::Xml::DomNode::Clear()",
+      "va": "0x8408",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11DomDocument8SaveFileEPKc",
+      "label": "Updater::Xml::DomDocument::SaveFile(char const*) const",
+      "va": "0x921c",
+      "bytes": 88
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentD2Ev",
+      "label": "Updater::Xml::DomDocument::~DomDocument()",
+      "va": "0xa948",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode9toUnknownEv",
+      "label": "Updater::Xml::DomNode::toUnknown()",
+      "va": "0x7a48",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml12DomAttributeD2Ev",
+      "label": "Updater::Xml::DomAttribute::~DomAttribute()",
+      "va": "0xa9a4",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement7getTextEv",
+      "label": "Updater::Xml::DomElement::getText() const",
+      "va": "0x8c50",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement6AcceptEPNS0_12TiXmlVisitorE",
+      "label": "Updater::Xml::DomElement::Accept(Updater::Xml::TiXmlVisitor*) const",
+      "va": "0x7a98",
+      "bytes": 144
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomText6toTextEv",
+      "label": "Updater::Xml::DomText::toText()",
+      "va": "0x7a74",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement5CloneEv",
+      "label": "Updater::Xml::DomElement::Clone() const",
+      "va": "0xa480",
+      "bytes": 108
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode15PreviousSiblingEPKc",
+      "label": "Updater::Xml::DomNode::PreviousSibling(char const*) const",
+      "va": "0x86bc",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomCommentD1Ev",
+      "label": "Updater::Xml::DomComment::~DomComment()",
+      "va": "0x836c",
+      "bytes": 20
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement6CopyToEPS1_",
+      "label": "Updater::Xml::DomElement::CopyTo(Updater::Xml::DomElement*) const",
+      "va": "0xa340",
+      "bytes": 144
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml7DomTextE",
+      "label": "typeinfo name for Updater::Xml::DomText",
+      "va": "0xcc90",
+      "bytes": 23
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentC1Ev",
+      "label": "Updater::Xml::DomDocument::DomDocument()",
+      "va": "0x8c90",
+      "bytes": 152
+    },
+    {
+      "symbol": "_ZN7Updater3XmlplEPKcRKNS0_11TiXmlStringE",
+      "label": "Updater::Xml::operator+(char const*, Updater::Xml::TiXmlString const&)",
+      "va": "0xcb80",
+      "bytes": 140
+    },
+    {
+      "symbol": "_ZN7Updater3Xml12DomAttributeC1Ev",
+      "label": "Updater::Xml::DomAttribute::DomAttribute()",
+      "va": "0xaa64",
+      "bytes": 48
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml9DomHandle8getChildEi",
+      "label": "Updater::Xml::DomHandle::getChild(int) const",
+      "va": "0xa764",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomParsingData5StampEPKcNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomParsingData::Stamp(char const*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xac10",
+      "bytes": 484
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml7DomTextE",
+      "label": "typeinfo for Updater::Xml::DomText",
+      "va": "0x20748",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlString6appendEPKcm",
+      "label": "Updater::Xml::TiXmlString::append(char const*, unsigned long)",
+      "va": "0xc9f0",
+      "bytes": 120
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute16queryDoubleValueEPd",
+      "label": "Updater::Xml::DomAttribute::queryDoubleValue(double*) const",
+      "va": "0x9920",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase9PutStringERKNS0_11TiXmlStringEPS2_",
+      "label": "Updater::Xml::DomBase::PutString(Updater::Xml::TiXmlString const&, Updater::Xml::TiXmlString*)",
+      "va": "0x7f30",
+      "bytes": 476
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomUnknown5printEP8_IO_FILEi",
+      "label": "Updater::Xml::DomUnknown::print(_IO_FILE*, int) const",
+      "va": "0x7b88",
+      "bytes": 112
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode12LinkEndChildEPS1_",
+      "label": "Updater::Xml::DomNode::LinkEndChild(Updater::Xml::DomNode*)",
+      "va": "0x8938",
+      "bytes": 268
+    },
+    {
+      "symbol": "_ZN7Updater3Xml15DomAttributeSetD2Ev",
+      "label": "Updater::Xml::DomAttributeSet::~DomAttributeSet()",
+      "va": "0x9e7c",
+      "bytes": 140
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute5printEP8_IO_FILEiPNS0_11TiXmlStringE",
+      "label": "Updater::Xml::DomAttribute::print(_IO_FILE*, int, Updater::Xml::TiXmlString*) const",
+      "va": "0x9714",
+      "bytes": 420
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement9toElementEv",
+      "label": "Updater::Xml::DomElement::toElement() const",
+      "va": "0x7a60",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11DomDocument6CopyToEPS1_",
+      "label": "Updater::Xml::DomDocument::CopyTo(Updater::Xml::DomDocument*) const",
+      "va": "0x9280",
+      "bytes": 104
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocument8SetErrorEiPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xb5ec",
+      "bytes": 176
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNodeD0Ev",
+      "label": "Updater::Xml::DomNode::~DomNode()",
+      "va": "0x83a8",
+      "bytes": 40
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomUnknown5ParseEPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomUnknown::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xbcd4",
+      "bytes": 272
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase9GetEntityEPKcPcPiNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::GetEntity(char const*, char*, int*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xafc0",
+      "bytes": 592
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement5printEP8_IO_FILEi",
+      "label": "Updater::Xml::DomElement::print(_IO_FILE*, int) const",
+      "va": "0x9508",
+      "bytes": 488
+    },
+    {
+      "symbol": "_ZN7Updater3Xml15DomAttributeSet6RemoveEPNS0_12DomAttributeE",
+      "label": "Updater::Xml::DomAttributeSet::Remove(Updater::Xml::DomAttribute*)",
+      "va": "0x9f8c",
+      "bytes": 96
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute13queryIntValueEPi",
+      "label": "Updater::Xml::DomAttribute::queryIntValue(int*) const",
+      "va": "0x98b8",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase14SkipWhiteSpaceEPKcNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::SkipWhiteSpace(char const*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xadf4",
+      "bytes": 216
+    },
+    {
+      "symbol": "_ZN7Updater3Xml15DomAttributeSetC1Ev",
+      "label": "Updater::Xml::DomAttributeSet::DomAttributeSet()",
+      "va": "0x9e4c",
+      "bytes": 48
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode21getNextSiblingElementEv",
+      "label": "Updater::Xml::DomNode::getNextSiblingElement() const",
+      "va": "0x87c0",
+      "bytes": 88
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml9DomHandle13getFirstChildEv",
+      "label": "Updater::Xml::DomHandle::getFirstChild() const",
+      "va": "0xa68c",
+      "bytes": 36
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode13toDeclarationEv",
+      "label": "Updater::Xml::DomNode::toDeclaration() const",
+      "va": "0x7a28",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNodeD2Ev",
+      "label": "Updater::Xml::DomNode::~DomNode()",
+      "va": "0x8238",
+      "bytes": 80
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomUnknownD1Ev",
+      "label": "Updater::Xml::DomUnknown::~DomUnknown()",
+      "va": "0x8288",
+      "bytes": 20
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml10DomUnknownE",
+      "label": "typeinfo for Updater::Xml::DomUnknown",
+      "va": "0x20778",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElementD0Ev",
+      "label": "Updater::Xml::DomElement::~DomElement()",
+      "va": "0xa080",
+      "bytes": 40
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElementaSERKS1_",
+      "label": "Updater::Xml::DomElement::operator=(Updater::Xml::DomElement const&)",
+      "va": "0xa454",
+      "bytes": 44
+    },
+    {
+      "symbol": "_edata",
+      "label": "_edata",
+      "va": "0x21460",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml10DomUnknownE",
+      "label": "vtable for Updater::Xml::DomUnknown",
+      "va": "0x20b70",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclaration13toDeclarationEv",
+      "label": "Updater::Xml::DomDeclaration::toDeclaration()",
+      "va": "0x7a8c",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElement15RemoveAttributeEPKc",
+      "label": "Updater::Xml::DomElement::RemoveAttribute(char const*)",
+      "va": "0xa100",
+      "bytes": 80
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode9toCommentEv",
+      "label": "Updater::Xml::DomNode::toComment() const",
+      "va": "0x7a10",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElement12SetAttributeEPKcS3_",
+      "label": "Updater::Xml::DomElement::SetAttribute(char const*, char const*)",
+      "va": "0xa1b4",
+      "bytes": 232
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentC2ERKS1_",
+      "label": "Updater::Xml::DomDocument::DomDocument(Updater::Xml::DomDocument const&)",
+      "va": "0x92e8",
+      "bytes": 120
+    },
+    {
+      "symbol": "_ZN7Updater3XmlplERKNS0_11TiXmlStringEPKc",
+      "label": "Updater::Xml::operator+(Updater::Xml::TiXmlString const&, char const*)",
+      "va": "0xcaf0",
+      "bytes": 144
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase11StringEqualEPKcS3_bNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::StringEqual(char const*, char const*, bool, Updater::Xml::TiXmlEncoding)",
+      "va": "0xb2f0",
+      "bytes": 296
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElementD2Ev",
+      "label": "Updater::Xml::DomElement::~DomElement()",
+      "va": "0xa040",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode6CopyToEPS1_",
+      "label": "Updater::Xml::DomNode::CopyTo(Updater::Xml::DomNode*) const",
+      "va": "0x83d0",
+      "bytes": 56
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomTextC2EPKc",
+      "label": "Updater::Xml::DomText::DomText(char const*)",
+      "va": "0xaa94",
+      "bytes": 92
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentC2EPKc",
+      "label": "Updater::Xml::DomDocument::DomDocument(char const*)",
+      "va": "0x8d28",
+      "bytes": 168
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase11errorStringE",
+      "label": "Updater::Xml::DomBase::errorString",
+      "va": "0x21388",
+      "bytes": 136
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml12DomAttributeE",
+      "label": "typeinfo for Updater::Xml::DomAttribute",
+      "va": "0x20c10",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml14DomDeclaration5CloneEv",
+      "label": "Updater::Xml::DomDeclaration::Clone() const",
+      "va": "0x9d60",
+      "bytes": 124
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomComment5printEP8_IO_FILEi",
+      "label": "Updater::Xml::DomComment::print(_IO_FILE*, int) const",
+      "va": "0x7bf8",
+      "bytes": 148
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentC1ERKS1_",
+      "label": "Updater::Xml::DomDocument::DomDocument(Updater::Xml::DomDocument const&)",
+      "va": "0x92e8",
+      "bytes": 120
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomTextD0Ev",
+      "label": "Updater::Xml::DomText::~DomText()",
+      "va": "0x8344",
+      "bytes": 40
+    },
+    {
+      "symbol": "_ZN7Updater3Xml12DomAttribute14SetDoubleValueEd",
+      "label": "Updater::Xml::DomAttribute::SetDoubleValue(double)",
+      "va": "0x9998",
+      "bytes": 64
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11DomDocument6AcceptEPNS0_12TiXmlVisitorE",
+      "label": "Updater::Xml::DomDocument::Accept(Updater::Xml::TiXmlVisitor*) const",
+      "va": "0x9464",
+      "bytes": 128
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml10DomCommentE",
+      "label": "typeinfo name for Updater::Xml::DomComment",
+      "va": "0xcc70",
+      "bytes": 27
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlStringpLERKS1_",
+      "label": "Updater::Xml::TiXmlString::operator+=(Updater::Xml::TiXmlString const&)",
+      "va": "0x7d04",
+      "bytes": 16
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml9DomHandle20getFirstChildElementEPKc",
+      "label": "Updater::Xml::DomHandle::getFirstChildElement(char const*) const",
+      "va": "0xa728",
+      "bytes": 60
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode14GetDomDocumentEv",
+      "label": "Updater::Xml::DomNode::GetDomDocument() const",
+      "va": "0x88e8",
+      "bytes": 80
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomTextD2Ev",
+      "label": "Updater::Xml::DomText::~DomText()",
+      "va": "0x8330",
+      "bytes": 20
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode21getNextSiblingElementEPKc",
+      "label": "Updater::Xml::DomNode::getNextSiblingElement(char const*) const",
+      "va": "0x8818",
+      "bytes": 100
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomTextC1EPKc",
+      "label": "Updater::Xml::DomText::DomText(char const*)",
+      "va": "0xaa94",
+      "bytes": 92
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml9DomHandle15getChildElementEPKci",
+      "label": "Updater::Xml::DomHandle::getChildElement(char const*, int) const",
+      "va": "0xa874",
+      "bytes": 108
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml10DomElementE",
+      "label": "typeinfo name for Updater::Xml::DomElement",
+      "va": "0xcc50",
+      "bytes": 27
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomUnknown6AcceptEPNS0_12TiXmlVisitorE",
+      "label": "Updater::Xml::DomUnknown::Accept(Updater::Xml::TiXmlVisitor*) const",
+      "va": "0x7b70",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentC1EPKc",
+      "label": "Updater::Xml::DomDocument::DomDocument(char const*)",
+      "va": "0x8d28",
+      "bytes": 168
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocument8loadFileEP8_IO_FILENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomDocument::loadFile(_IO_FILE*, Updater::Xml::TiXmlEncoding)",
+      "va": "0x8dd0",
+      "bytes": 680
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml11DomDocumentE",
+      "label": "typeinfo name for Updater::Xml::DomDocument",
+      "va": "0xd650",
+      "bytes": 28
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml9DomHandle13getFirstChildEPKc",
+      "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const",
+      "va": "0xa6b0",
+      "bytes": 60
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlString4nposE",
+      "label": "Updater::Xml::TiXmlString::npos",
+      "va": "0xdf40",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclaration5ParseEPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomDeclaration::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xc080",
+      "bytes": 640
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode9toUnknownEv",
+      "label": "Updater::Xml::DomNode::toUnknown() const",
+      "va": "0x7a18",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomText6AcceptEPNS0_12TiXmlVisitorE",
+      "label": "Updater::Xml::DomText::Accept(Updater::Xml::TiXmlVisitor*) const",
+      "va": "0x7b40",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase18ConvertUTF32ToUTF8EjPcPi",
+      "label": "Updater::Xml::DomBase::ConvertUTF32ToUTF8(unsigned int, char*, int*)",
+      "va": "0xaaf0",
+      "bytes": 240
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclarationD1Ev",
+      "label": "Updater::Xml::DomDeclaration::~DomDeclaration()",
+      "va": "0x82c4",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlStringaSERKS1_",
+      "label": "Updater::Xml::TiXmlString::operator=(Updater::Xml::TiXmlString const&)",
+      "va": "0x7cc0",
+      "bytes": 16
+    },
+    {
+      "symbol": "__end__",
+      "label": "__end__",
+      "va": "0x21480",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase7ToLowerEiNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::ToLower(int, Updater::Xml::TiXmlEncoding)",
+      "va": "0xaa44",
+      "bytes": 32
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomUnknown6CopyToEPS1_",
+      "label": "Updater::Xml::DomUnknown::CopyTo(Updater::Xml::DomUnknown*) const",
+      "va": "0x9ddc",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml15DomAttributeSet4FindEPKc",
+      "label": "Updater::Xml::DomAttributeSet::Find(char const*) const",
+      "va": "0xa0a8",
+      "bytes": 88
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute8IntValueEv",
+      "label": "Updater::Xml::DomAttribute::IntValue() const",
+      "va": "0x99d8",
+      "bytes": 12
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNodeC1ENS1_8NodeTypeE",
+      "label": "Updater::Xml::DomNode::DomNode(Updater::Xml::DomNode::NodeType)",
+      "va": "0x8200",
+      "bytes": 56
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElement9ReadValueEPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomElement::ReadValue(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xc358",
+      "bytes": 412
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml9DomHandle15getChildElementEi",
+      "label": "Updater::Xml::DomHandle::getChildElement(int) const",
+      "va": "0xa810",
+      "bytes": 100
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml14DomDeclaration6CopyToEPS1_",
+      "label": "Updater::Xml::DomDeclaration::CopyTo(Updater::Xml::DomDeclaration*) const",
+      "va": "0x9c6c",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute11DoubleValueEv",
+      "label": "Updater::Xml::DomAttribute::DoubleValue() const",
+      "va": "0x99e4",
+      "bytes": 12
+    },
+    {
+      "symbol": "_ZN7Updater3Xml4testC1Ev",
+      "label": "Updater::Xml::test::test()",
+      "va": "0xa8e0",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomUnknown9toUnknownEv",
+      "label": "Updater::Xml::DomUnknown::toUnknown()",
+      "va": "0x7a94",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml4testE",
+      "label": "typeinfo name for Updater::Xml::test",
+      "va": "0xcce8",
+      "bytes": 20
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomCommentC1ERKS1_",
+      "label": "Updater::Xml::DomComment::DomComment(Updater::Xml::DomComment const&)",
+      "va": "0x99f4",
+      "bytes": 92
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute5printEP8_IO_FILEi",
+      "label": "Updater::Xml::DomAttribute::print(_IO_FILE*, int) const",
+      "va": "0xa91c",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase10IsAlphaNumEhNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::IsAlphaNum(unsigned char, Updater::Xml::TiXmlEncoding)",
+      "va": "0xabf8",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml14DomDeclarationE",
+      "label": "typeinfo name for Updater::Xml::DomDeclaration",
+      "va": "0xcca8",
+      "bytes": 31
+    },
+    {
+      "symbol": "_ZN7Updater3Xml14DomDeclarationC1ERKS1_",
+      "label": "Updater::Xml::DomDeclaration::DomDeclaration(Updater::Xml::DomDeclaration const&)",
+      "va": "0x9cb0",
+      "bytes": 132
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentD1Ev",
+      "label": "Updater::Xml::DomDocument::~DomDocument()",
+      "va": "0xa948",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElementC2ERKS1_",
+      "label": "Updater::Xml::DomElement::DomElement(Updater::Xml::DomElement const&)",
+      "va": "0xa3d0",
+      "bytes": 132
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase12IsWhiteSpaceEc",
+      "label": "Updater::Xml::DomBase::IsWhiteSpace(char)",
+      "va": "0xaa00",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZN7Updater3Xml12DomAttributeD1Ev",
+      "label": "Updater::Xml::DomAttribute::~DomAttribute()",
+      "va": "0xa9a4",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentaSERKS1_",
+      "label": "Updater::Xml::DomDocument::operator=(Updater::Xml::DomDocument const&)",
+      "va": "0x9360",
+      "bytes": 44
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlStringpLEc",
+      "label": "Updater::Xml::TiXmlString::operator+=(char)",
+      "va": "0xa924",
+      "bytes": 36
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode9toElementEv",
+      "label": "Updater::Xml::DomNode::toElement()",
+      "va": "0x7a38",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase6entityE",
+      "label": "Updater::Xml::DomBase::entity",
+      "va": "0x21410",
+      "bytes": 80
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml14DomDeclaration13toDeclarationEv",
+      "label": "Updater::Xml::DomDeclaration::toDeclaration() const",
+      "va": "0x7a88",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNode13toDomDocumentEv",
+      "label": "Updater::Xml::DomNode::toDomDocument()",
+      "va": "0x7a30",
+      "bytes": 8
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml9DomHandle20getFirstChildElementEv",
+      "label": "Updater::Xml::DomHandle::getFirstChildElement() const",
+      "va": "0xa6ec",
+      "bytes": 60
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlString4quitEv",
+      "label": "Updater::Xml::TiXmlString::quit()",
+      "va": "0x7f10",
+      "bytes": 32
+    },
+    {
+      "symbol": "__bss_start",
+      "label": "__bss_start",
+      "va": "0x21460",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode20getFirstChildElementEPKc",
+      "label": "Updater::Xml::DomNode::getFirstChildElement(char const*) const",
+      "va": "0x8758",
+      "bytes": 104
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomCommentD0Ev",
+      "label": "Updater::Xml::DomComment::~DomComment()",
+      "va": "0x8380",
+      "bytes": 40
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase13utf8ByteTableE",
+      "label": "Updater::Xml::DomBase::utf8ByteTable",
+      "va": "0xd728",
+      "bytes": 1024
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml10DomCommentE",
+      "label": "typeinfo for Updater::Xml::DomComment",
+      "va": "0x20730",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomText5BlankEv",
+      "label": "Updater::Xml::DomText::Blank() const",
+      "va": "0xc300",
+      "bytes": 88
+    },
+    {
+      "symbol": "__bss_start__",
+      "label": "__bss_start__",
+      "va": "0x21460",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11DomDocument13toDomDocumentEv",
+      "label": "Updater::Xml::DomDocument::toDomDocument() const",
+      "va": "0xa914",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNodeC2ENS1_8NodeTypeE",
+      "label": "Updater::Xml::DomNode::DomNode(Updater::Xml::DomNode::NodeType)",
+      "va": "0x8200",
+      "bytes": 56
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomNode14getNextSiblingEPKc",
+      "label": "Updater::Xml::DomNode::getNextSibling(char const*) const",
+      "va": "0x8630",
+      "bytes": 68
+    },
+    {
+      "symbol": "_end",
+      "label": "_end",
+      "va": "0x21480",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomComment5CloneEv",
+      "label": "Updater::Xml::DomComment::Clone() const",
+      "va": "0x9a7c",
+      "bytes": 108
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml10DomCommentE",
+      "label": "vtable for Updater::Xml::DomComment",
+      "va": "0x20988",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomText5ParseEPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomText::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xbed0",
+      "bytes": 432
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml12DomAttribute7getNextEv",
+      "label": "Updater::Xml::DomAttribute::getNext() const",
+      "va": "0x94e4",
+      "bytes": 36
+    },
+    {
+      "symbol": "_ZTSN7Updater3Xml12DomAttributeE",
+      "label": "typeinfo name for Updater::Xml::DomAttribute",
+      "va": "0xd630",
+      "bytes": 29
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomComment5ParseEPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomComment::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xbde4",
+      "bytes": 236
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomComment6AcceptEPNS0_12TiXmlVisitorE",
+      "label": "Updater::Xml::DomComment::Accept(Updater::Xml::TiXmlVisitor*) const",
+      "va": "0x7b28",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomCommentD2Ev",
+      "label": "Updater::Xml::DomComment::~DomComment()",
+      "va": "0x836c",
+      "bytes": 20
+    },
+    {
+      "symbol": "_ZN7Updater3Xml15DomAttributeSetD1Ev",
+      "label": "Updater::Xml::DomAttributeSet::~DomAttributeSet()",
+      "va": "0x9e7c",
+      "bytes": 140
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlString6assignEPKcm",
+      "label": "Updater::Xml::TiXmlString::assign(char const*, unsigned long)",
+      "va": "0xc918",
+      "bytes": 216
+    },
+    {
+      "symbol": "_ZTIN7Updater3Xml10DomElementE",
+      "label": "typeinfo for Updater::Xml::DomElement",
+      "va": "0x20718",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11TiXmlStringixEm",
+      "label": "Updater::Xml::TiXmlString::operator[](unsigned long) const",
+      "va": "0x7ecc",
+      "bytes": 68
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlString8nullrep_E",
+      "label": "Updater::Xml::TiXmlString::nullrep_",
+      "va": "0x21468",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentC2Ev",
+      "label": "Updater::Xml::DomDocument::DomDocument()",
+      "va": "0x8c90",
+      "bytes": 152
+    },
+    {
+      "symbol": "_bss_end__",
+      "label": "_bss_end__",
+      "va": "0x21480",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElement9toElementEv",
+      "label": "Updater::Xml::DomElement::toElement()",
+      "va": "0x7a64",
+      "bytes": 4
+    },
+    {
+      "symbol": "_ZN7Updater3Xml12DomAttributeC2Ev",
+      "label": "Updater::Xml::DomAttribute::DomAttribute()",
+      "va": "0xaa64",
+      "bytes": 48
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElementC2EPKc",
+      "label": "Updater::Xml::DomElement::DomElement(char const*)",
+      "va": "0x9f08",
+      "bytes": 132
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomBase8ReadNameEPKcPNS0_11TiXmlStringENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomBase::ReadName(char const*, Updater::Xml::TiXmlString*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xaecc",
+      "bytes": 244
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml10DomElementE",
+      "label": "vtable for Updater::Xml::DomElement",
+      "va": "0x208e8",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml11DomDocument8SaveFileEP8_IO_FILE",
+      "label": "Updater::Xml::DomDocument::SaveFile(_IO_FILE*) const",
+      "va": "0x91ac",
+      "bytes": 112
+    },
+    {
+      "symbol": "__bss_end__",
+      "label": "__bss_end__",
+      "va": "0x21480",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml10DomElement20queryDoubleAttributeEPKcPd",
+      "label": "Updater::Xml::DomElement::queryDoubleAttribute(char const*, double*) const",
+      "va": "0xa610",
+      "bytes": 60
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocument8loadFileEPKcNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomDocument::loadFile(char const*, Updater::Xml::TiXmlEncoding)",
+      "va": "0x9078",
+      "bytes": 292
+    },
+    {
+      "symbol": "_ZN7Updater3Xml7DomNodeD1Ev",
+      "label": "Updater::Xml::DomNode::~DomNode()",
+      "va": "0x8238",
+      "bytes": 80
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml14DomDeclaration6AcceptEPNS0_12TiXmlVisitorE",
+      "label": "Updater::Xml::DomDeclaration::Accept(Updater::Xml::TiXmlVisitor*) const",
+      "va": "0x7b58",
+      "bytes": 24
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomUnknownD0Ev",
+      "label": "Updater::Xml::DomUnknown::~DomUnknown()",
+      "va": "0x829c",
+      "bytes": 40
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11TiXmlStringpLEPKc",
+      "label": "Updater::Xml::TiXmlString::operator+=(char const*)",
+      "va": "0x7cd0",
+      "bytes": 52
+    },
+    {
+      "symbol": "_ZN7Updater3Xml10DomElement5ParseEPKcPNS0_14DomParsingDataENS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomElement::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "va": "0xc4f4",
+      "bytes": 804
+    },
+    {
+      "symbol": "_fini",
+      "label": "_fini",
+      "va": "0xcc0c",
+      "bytes": 0
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml7DomNodeE",
+      "label": "vtable for Updater::Xml::DomNode",
+      "va": "0x20848",
+      "bytes": 160
+    },
+    {
+      "symbol": "_ZNK7Updater3Xml7DomText5printEP8_IO_FILEi",
+      "label": "Updater::Xml::DomText::print(_IO_FILE*, int) const",
+      "va": "0x810c",
+      "bytes": 244
+    },
+    {
+      "symbol": "_ZN7Updater3Xml15DomAttributeSetC2Ev",
+      "label": "Updater::Xml::DomAttributeSet::DomAttributeSet()",
+      "va": "0x9e4c",
+      "bytes": 48
+    },
+    {
+      "symbol": "_ZTVN7Updater3Xml14DomDeclarationE",
+      "label": "vtable for Updater::Xml::DomDeclaration",
+      "va": "0x20ac8",
+      "bytes": 168
+    }
+  ],
+  "imports": [
+    {
+      "symbol": "",
+      "label": ""
+    },
+    {
+      "symbol": "_Znam",
+      "label": "operator new[](unsigned long)"
+    },
+    {
+      "symbol": "fputs",
+      "label": "fputs"
+    },
+    {
+      "symbol": "memcpy",
+      "label": "memcpy"
+    },
+    {
+      "symbol": "fread",
+      "label": "fread"
+    },
+    {
+      "symbol": "tolower",
+      "label": "tolower"
+    },
+    {
+      "symbol": "isalnum",
+      "label": "isalnum"
+    },
+    {
+      "symbol": "strlen",
+      "label": "strlen"
+    },
+    {
+      "symbol": "fprintf",
+      "label": "fprintf"
+    },
+    {
+      "symbol": "ftell",
+      "label": "ftell"
+    },
+    {
+      "symbol": "fclose",
+      "label": "fclose"
+    },
+    {
+      "symbol": "isspace",
+      "label": "isspace"
+    },
+    {
+      "symbol": "__assert_fail",
+      "label": "__assert_fail"
+    },
+    {
+      "symbol": "strchr",
+      "label": "strchr"
+    },
+    {
+      "symbol": "__cxa_finalize",
+      "label": "__cxa_finalize"
+    },
+    {
+      "symbol": "_ZTVN10__cxxabiv117__class_type_infoE",
+      "label": "vtable for __cxxabiv1::__class_type_info"
+    },
+    {
+      "symbol": "atof",
+      "label": "atof"
+    },
+    {
+      "symbol": "atoi",
+      "label": "atoi"
+    },
+    {
+      "symbol": "_Znwm",
+      "label": "operator new(unsigned long)"
+    },
+    {
+      "symbol": "strncmp",
+      "label": "strncmp"
+    },
+    {
+      "symbol": "_ZdlPvm",
+      "label": "operator delete(void*, unsigned long)"
+    },
+    {
+      "symbol": "fputc",
+      "label": "fputc"
+    },
+    {
+      "symbol": "snprintf",
+      "label": "snprintf"
+    },
+    {
+      "symbol": "_Jv_RegisterClasses",
+      "label": "_Jv_RegisterClasses"
+    },
+    {
+      "symbol": "memmove",
+      "label": "memmove"
+    },
+    {
+      "symbol": "isalpha",
+      "label": "isalpha"
+    },
+    {
+      "symbol": "_ZdaPv",
+      "label": "operator delete[](void*)"
+    },
+    {
+      "symbol": "_ZTVN10__cxxabiv120__si_class_type_infoE",
+      "label": "vtable for __cxxabiv1::__si_class_type_info"
+    },
+    {
+      "symbol": "fopen",
+      "label": "fopen"
+    },
+    {
+      "symbol": "__cxa_throw_bad_array_new_length",
+      "label": "__cxa_throw_bad_array_new_length"
+    },
+    {
+      "symbol": "strcmp",
+      "label": "strcmp"
+    },
+    {
+      "symbol": "__gxx_personality_v0",
+      "label": "__gxx_personality_v0"
+    },
+    {
+      "symbol": "_ITM_deregisterTMCloneTable",
+      "label": "_ITM_deregisterTMCloneTable"
+    },
+    {
+      "symbol": "_Unwind_Resume",
+      "label": "_Unwind_Resume"
+    },
+    {
+      "symbol": "ferror",
+      "label": "ferror"
+    },
+    {
+      "symbol": "__gmon_start__",
+      "label": "__gmon_start__"
+    },
+    {
+      "symbol": "__cxa_pure_virtual",
+      "label": "__cxa_pure_virtual"
+    },
+    {
+      "symbol": "_ITM_registerTMCloneTable",
+      "label": "_ITM_registerTMCloneTable"
+    },
+    {
+      "symbol": "fseek",
+      "label": "fseek"
+    },
+    {
+      "symbol": "sscanf",
+      "label": "sscanf"
+    }
+  ],
+  "scope": "Read-only ext2 member extraction and ELF metadata, no mount/native execution/device operation."
+}

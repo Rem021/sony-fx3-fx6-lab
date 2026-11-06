@@ -1,0 +1,315 @@
+{
+  "scope": "Static forwarding proof and upstream packet layout, not device capability or complete auth flow",
+  "core_functions": [
+    {
+      "name": "_ZN8DeviceIo4openEPKci",
+      "VA": "0x15350",
+      "bytes": 108,
+      "sha256": "4768c6e4851334b22fb4858aaef5db2d2f45656b84cb4b66b37c46790fe22618",
+      "instructions": [
+        {
+          "pc": "0x15350",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15354",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15358",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1535c",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15360",
+          "bytes": "e00301aa",
+          "asm": "mov x0, x1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15364",
+          "bytes": "e103022a",
+          "asm": "mov w1, w2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15368",
+          "bytes": "620240b9",
+          "asm": "ldr w2, [x19]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1536c",
+          "bytes": "5f040031",
+          "asm": "cmn w2, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15370",
+          "bytes": "a1010054",
+          "asm": "b.ne #0x153a4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15374",
+          "bytes": "73d3ff97",
+          "asm": "bl #0xa140",
+          "PLT_symbol": "open"
+        },
+        {
+          "pc": "0x15378",
+          "bytes": "1f040031",
+          "asm": "cmn w0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1537c",
+          "bytes": "f403002a",
+          "asm": "mov w20, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15380",
+          "bytes": "41000054",
+          "asm": "b.ne #0x15388",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15384",
+          "bytes": "2effff97",
+          "asm": "bl #0x1503c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15388",
+          "bytes": "9f060031",
+          "asm": "cmn w20, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1538c",
+          "bytes": "740200b9",
+          "asm": "str w20, [x19]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15390",
+          "bytes": "a0000054",
+          "asm": "b.eq #0x153a4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15394",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15398",
+          "bytes": "22008052",
+          "asm": "mov w2, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1539c",
+          "bytes": "41008052",
+          "asm": "mov w1, #2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x153a0",
+          "bytes": "98d4ff97",
+          "asm": "bl #0xa600",
+          "PLT_symbol": "_ZN8DeviceIo5fcntlEii"
+        },
+        {
+          "pc": "0x153a4",
+          "bytes": "600240b9",
+          "asm": "ldr w0, [x19]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x153a8",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x153ac",
+          "bytes": "1f040031",
+          "asm": "cmn w0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x153b0",
+          "bytes": "e0079f1a",
+          "asm": "cset w0, ne",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x153b4",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x153b8",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "name": "_ZNK8DeviceIo5writeEPKvm",
+      "VA": "0x150f0",
+      "bytes": 52,
+      "sha256": "3c3741ebd7b63b6d5a53b9160c9ca259c1b0693665dea6ce76c898d6f807941e",
+      "instructions": [
+        {
+          "pc": "0x150f0",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x150f4",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x150f8",
+          "bytes": "000040b9",
+          "asm": "ldr w0, [x0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x150fc",
+          "bytes": "f30b00f9",
+          "asm": "str x19, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15100",
+          "bytes": "64d6ff97",
+          "asm": "bl #0xaa90",
+          "PLT_symbol": "write"
+        },
+        {
+          "pc": "0x15104",
+          "bytes": "1f0400b1",
+          "asm": "cmn x0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15108",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1510c",
+          "bytes": "41000054",
+          "asm": "b.ne #0x15114",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15110",
+          "bytes": "cbffff97",
+          "asm": "bl #0x1503c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15114",
+          "bytes": "e003132a",
+          "asm": "mov w0, w19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15118",
+          "bytes": "f30b40f9",
+          "asm": "ldr x19, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x1511c",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0x15120",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    }
+  ],
+  "open_flags_forwarded_unchanged": true,
+  "hasp_flags": {
+    "raw": "0x101241",
+    "Linux_interpretation": [
+      "O_WRONLY",
+      "O_CREAT",
+      "O_TRUNC",
+      "O_SYNC"
+    ],
+    "source": "https://github.com/torvalds/linux/blob/v4.9/include/uapi/asm-generic/fcntl.h"
+  },
+  "upstream_methods": [
+    {
+      "path": "upstream/sony.py",
+      "function": "_sendFileControlPacket",
+      "line_start": 997,
+      "line_end": 1004,
+      "source": "def _sendFileControlPacket(self, cmd, filename, data=b'', outFile=None):\n  filename = filename.encode('latin1')\n  filename += b'\\0' * (4 - len(filename) % 4)\n  header = self.FileControlHeader.pack(cmd=cmd, filenameSize=len(filename))\n  res, data = self.dev.sendSenserPacket(self.SONY_PFUNC_FileControl, header + filename + data, outFile)\n  if res != 1:\n   raise Exception('Senser file control error %d' % res)\n  return data"
+    },
+    {
+      "path": "upstream/sony.py",
+      "function": "_sendMemoryDumpPacket",
+      "line_start": 1006,
+      "line_end": 1011,
+      "source": "def _sendMemoryDumpPacket(self, base, size, data=b'', outFile=None):\n  header = self.MemoryDumpHeader.pack(base=base, size=size)\n  res, data = self.dev.sendSenserPacket(self.SONY_PFUNC_MemoryDump, header + data, outFile)\n  if res not in [0, 1]:\n   raise Exception('Senser memory dump error %d' % res)\n  return data"
+    },
+    {
+      "path": "upstream/sony.py",
+      "function": "readFile",
+      "line_start": 1016,
+      "line_end": 1017,
+      "source": "def readFile(self, filename, outFile=None):\n  return self._sendFileControlPacket(self.SONY_FILE_CONTROL_READ, filename, b'', outFile)"
+    },
+    {
+      "path": "upstream/sony.py",
+      "function": "readMemory",
+      "line_start": 1025,
+      "line_end": 1026,
+      "source": "def readMemory(self, base, size, outFile=None):\n  return self._sendMemoryDumpPacket(base, size, b'', outFile)"
+    },
+    {
+      "path": "upstream/usb-commands.py",
+      "function": "senserShellCommand",
+      "line_start": 656,
+      "line_end": 710,
+      "source": "def senserShellCommand(driverName=None, complete=None):\n if driverName is None and sys.platform != 'win32':\n  driverName = 'libusb'\n with importDriver(driverName) as driver:\n  device = getDevice(driver)\n  if device and isinstance(device, SonyMscExtCmdDevice):\n   if not isinstance(device.driver, GenericUsbDriver):\n    print('Error: Only libusb drivers are supported for switching to service mode.')\n    if sys.platform == 'win32':\n     print('Please use Zadig to install the libusb-win32 driver for the mass storage device.')\n    return\n\n   print('Switching to service mode')\n   dev = SonySenserAuthDevice(device.driver)\n   dev.start()\n   dev.authenticate()\n\n   device = None\n   print('')\n   print('Waiting for camera to switch...')\n   for i in range(10):\n    time.sleep(.5)\n    try:\n     devices = list(listDevices(driver, True))\n     if len(devices) == 1 and isinstance(devices[0], SonySenserDevice):\n      device = devices[0]\n      break\n    except:\n     pass\n   else:\n    print('Operation timed out. Please run this command again when your camera has connected.')\n\n  if device and isinstance(device, SonySenserDevice):\n   if not isinstance(device.driver, GenericUsbDriver):\n    print('Error: Only libusb drivers are supported for service mode.')\n    if sys.platform == 'win32':\n     print('Please use Zadig to install the libusb-win32 driver for the service mode device.')\n    return\n\n   print('Authenticating')\n   dev = SonySenserAuthDevice(device.driver)\n   dev.start()\n   dev.authenticate()\n   try:\n    if complete:\n     complete(SonySenserCamera(device))\n    else:\n     print('Starting service shell...')\n     print('')\n     CameraShell(SenserPlatformBackend(SonySenserCamera(device))).run()\n   finally:\n    dev.stop()\n   print('Done')\n  elif device:\n   print('Error: Cannot use camera in this mode. Please switch to mass storage mode.')"
+    }
+  ],
+  "upstream_file_read": "pFunc ff01 command2, filename only; transport fragmentation is not device file-range bounding",
+  "upstream_memory_read": "pFunc ff03 base/size; no evidence of FX3 stock receiver or body-valid ranges",
+  "upstream_serviceshell": "starts/authenticates, switches service, re-enumerates and authenticates again before shell",
+  "do_not_run_PMCA_device_enumeration_import_or_shell_under_cached_metadata_authority": true,
+  "conditional_history_write_not_proof_every_authentication_writes_or_actual_target_file_exists": true,
+  "device_code_IO_or_Sony_execution": false
+}

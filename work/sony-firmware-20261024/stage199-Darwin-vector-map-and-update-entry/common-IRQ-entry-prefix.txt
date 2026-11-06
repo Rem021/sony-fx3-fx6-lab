@@ -1,0 +1,21 @@
+# Source-layout map0x4200; no runtime PC, physical trace or execution claim.
+0x6eaa [file+0x2caa] 10b5 push      {r4, lr}
+0x6eac [file+0x2cac] 3048 ldr       r0, [pc, #0xc0]
+0x6eae [file+0x2cae] 0068 ldr       r0, [r0]
+0x6eb0 [file+0x2cb0] 4ff00003 mov.w     r3, #0
+0x6eb4 [file+0x2cb4] c0f30804 ubfx      r4, r0, #0, #9
+0x6eb8 [file+0x2cb8] 1a46 mov       r2, r3
+0x6eba [file+0x2cba] e1b2 uxtb      r1, r4
+0x6ebc [file+0x2cbc] 4ff0d000 mov.w     r0, #0xd0
+0x6ec0 [file+0x2cc0] fff730fc bl        #0x6724
+0x6ec4 [file+0x2cc4] 2b48 ldr       r0, [pc, #0xac]
+0x6ec6 [file+0x2cc6] 00eb8400 add.w     r0, r0, r4, lsl #2
+0x6eca [file+0x2cca] 50f8040c ldr       r0, [r0, #-0x4]
+0x6ece [file+0x2cce] 8047 blx       r0
+0x6ed0 [file+0x2cd0] 2948 ldr       r0, [pc, #0xa4]
+0x6ed2 [file+0x2cd2] 1249 ldr       r1, [pc, #0x48]
+0x6ed4 [file+0x2cd4] d0f80002 ldr.w     r0, [r0, #0x200]
+0x6ed8 [file+0x2cd8] 8842 cmp       r0, r1
+0x6eda [file+0x2cda] 0bd0 beq       #0x6ef4
+0x6edc [file+0x2cdc] 1048 ldr       r0, [pc, #0x40]
+0x6ede [file+0x2cde] 0069 ldr       r0, [r0, #0x10]

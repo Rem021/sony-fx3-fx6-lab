@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage63-resource-message-boundary/resource_message.py\", line 208, in main\n    try:run(out)\n        ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage63-resource-message-boundary/resource_message.py\", line 183, in run\n    cases=[one_case(assets,'target FH priorA5',inp[0][1],0xa5,386),\n           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage63-resource-message-boundary/resource_message.py\", line 142, in one_case\n    assert e['reason']=='boundary: before_unbound_osal_valloc_msg_wait_indirect_branch',e['reason']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: boundary: before_message_object_constructor_and_transport\n",
+  "passing_result": false
+}

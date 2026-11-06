@@ -1,0 +1,109 @@
+{
+  "schema": "fx6-cp-helper-agnostic-build-v1",
+  "created_utc": "2026-11-05T11:43:00.308060+00:00",
+  "scope": "offline CP helper address-agnostic candidate; no VM/insmod/CPIO install",
+  "source": {
+    "fx6_cp_backup_sync100_agnostic.c": "b0de532abb5c688f360f46d862abe1c8c1b2114f8448b5e3a91573cd9987b4c0",
+    "fx3-backup-sync101-v1.h": "7492720dc22ca10e9b3a5463ac43a434f346f6fc8dfc70ca83baba0d3faa3173",
+    "fx6-cp-backup-sync100-agnostic-module-unit.c": "68e56592df0b68b08edc4230d2720865b19f11db65cc9d5aa3b16693c85956c5",
+    "host_test_agnostic.c": "5da1e4926ce7b59e8f368cfd0ac2a7b0542dbf26a033fed7342fa34772695364"
+  },
+  "compiler": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+  "module": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/fx6-cp-backup-sync100-agnostic-g0.ko",
+    "bytes": 66552,
+    "sha256": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa",
+    "elf": "ELF64 AArch64 relocatable",
+    "module_name": "fx6_cp_backup_sync100_agnostic_v1",
+    "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+    "depends": "osal_uipc"
+  },
+  "cpio": {
+    "schema": "fx6-cp-helper-agnostic-cpio-verify-v1",
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+    "source_bytes": 453184500,
+    "source_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+    "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-cp-helper-agnostic.cpio",
+    "output_bytes": 453184500,
+    "output_sha256": "11adfbcec5fc1a73e60c96ed7cebb361ce53498d0b110793bf665da1b69756c0",
+    "member_count": 1141,
+    "target_member": "simulation/fx3-cp-backup-reset-v1.ko",
+    "target_old_bytes": 190648,
+    "target_new_bytes": 66552,
+    "target_old_sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca",
+    "target_new_sha256": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa",
+    "all_other_members_byte_identical": true,
+    "target_header_only_size_changed": true,
+    "trailer_present": true,
+    "trailing_bytes_after_trailer": 124096,
+    "trailing_all_zero": true,
+    "fixed_length_preserved": true,
+    "verdict": "pass_offline_member_replacement"
+  },
+  "host_tests": {
+    "fx3": {
+      "exit": 0,
+      "stdout": "FX6_CP_AGNOSTIC_HOST_PASS exact40B/schema/order/native4096/sourceQ/tailzero/lockSuspend1/unlockSuspend1/wholebank_snapshot_realcopy_readback/nativecallbackonce/duplicate_no_callback/unlock_does_not_mask_DMAfailure/alloc_send_rollback/retry/same_numeric_Q_allowed/checksum_refresh/payload_integrity/40_descriptor_mutations/native_non_target_forward/binding_failure_restore/cleanup_restore",
+      "stdout_sha256": "bebecb2085d6e66b3b3d9c37779e23e1ac1af03e60da1699a63ffeb9edb3121c"
+    },
+    "fx6": {
+      "exit": 0,
+      "stdout": "FX6_CP_AGNOSTIC_HOST_PASS exact40B/schema/order/native4096/sourceQ/tailzero/lockSuspend1/unlockSuspend1/wholebank_snapshot_realcopy_readback/nativecallbackonce/duplicate_no_callback/unlock_does_not_mask_DMAfailure/alloc_send_rollback/retry/same_numeric_Q_allowed/checksum_refresh/payload_integrity/40_descriptor_mutations/native_non_target_forward/binding_failure_restore/cleanup_restore",
+      "stdout_sha256": "bebecb2085d6e66b3b3d9c37779e23e1ac1af03e60da1699a63ffeb9edb3121c"
+    }
+  },
+  "checks": [
+    "entry16_fx3_eq_fx6",
+    "first_0x200_fx3_eq_fx6",
+    "fallback_offsets_0x160_0x10",
+    "no_fixed_absolute_fallback",
+    "module_abi_elf_aarch64",
+    "modinfo_vermagic_depends",
+    "cpio_fixed_length_453184500",
+    "only_target_member_changed",
+    "target_payload_new_helper",
+    "host_fx3_pass",
+    "host_fx6_pass"
+  ],
+  "VM_executed": true,
+  "QEMU_started": false,
+  "insmod_executed": true,
+  "limitations": [
+    "No guest binding or CP/AP execution proof",
+    "Host test uses mocks and bank fixture; not kernel runtime",
+    "A single bounded VM run is still required before any boot claim"
+  ],
+  "vm_run": {
+    "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-fc2ad401",
+    "outcome": "cp_helper_bound_ap_bootin_started",
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "locks_released": true,
+    "elapsed_seconds": 18.25742212496698,
+    "cp_bind": true,
+    "cp_module_init_returned_zero": true,
+    "raw_cp_insmod_rc0_present": true,
+    "ap_natural_bootin_begin": true,
+    "ap_launch_pid": 227,
+    "ap_initialized": false,
+    "menu": false,
+    "serial_sha256": "cd7f42b0f1e15670b0e4b47bf8276477c5c1fd520b933dd457087725e4dce800",
+    "run_receipt_sha256": "0612635e002a5aa1fbb39c1d40eda90fdb2550d2835c1aa202d7225e25a165a8",
+    "result_sha256": "6bdf4a6b970ba2a8e28ee69a43b0b79ac010b321b63b547c9e1bd58c739c8748"
+  },
+  "goal_complete": false,
+  "hybrid_run": {
+    "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-6e83a14a",
+    "outcome": "fx6_appfw_executed_assert1075",
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "locks_released": true,
+    "elapsed_seconds": 180.1637028750265,
+    "cp_bind": true,
+    "fx6_appfw_loaded": true,
+    "assert1075": true,
+    "menu": false,
+    "serial_sha256": "961baa1b05446f8af09413f4cee141a6b069b3afd4dc244a2c7d2258996ba17c",
+    "result_sha256": "46e30cffd9afe8a519be2dcae1727ba48f88ebf71aa2b3896bc5663d8329e643"
+  }
+}

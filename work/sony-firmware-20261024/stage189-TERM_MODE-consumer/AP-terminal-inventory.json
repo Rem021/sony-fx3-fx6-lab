@@ -1,0 +1,1351 @@
+{
+  "status": "STATIC_AP_TERMINAL_CANDIDATE_INVENTORY",
+  "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "ELFs_reverified": 532,
+  "message_literal": "0x003d025f",
+  "pattern": "term(?:inal|mode|ctl|control|io|_mode|_ctrl|_ctl|_io|_change)|/dev/(?:ptmx|pts/|ttyGS|ttyUSB)",
+  "records": [
+    {
+      "paths": [
+        "/bin/ulogio.elf"
+      ],
+      "inode": 80992,
+      "sha256": "974d9a5b4321c1f66639a52c7e28ba4d6fb1f6a78bf4c91dff31e6478b5937c2",
+      "literal_mid_offsets": [],
+      "term_count": 6,
+      "term_matches": [
+        {
+          "offset": 16396,
+          "text": "terminal"
+        },
+        {
+          "offset": 16426,
+          "text": "terminal"
+        },
+        {
+          "offset": 16460,
+          "text": "terminal"
+        },
+        {
+          "offset": 17711,
+          "text": "terminal"
+        },
+        {
+          "offset": 17750,
+          "text": "terminal"
+        },
+        {
+          "offset": 17787,
+          "text": "terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/bin/btconfig"
+      ],
+      "inode": 80998,
+      "sha256": "a895f095adee0e28bb01f9cbc8468ccb545820eeb982d9ea566ba26eafdc5a14",
+      "literal_mid_offsets": [],
+      "term_count": 3,
+      "term_matches": [
+        {
+          "offset": 165181,
+          "text": "termio"
+        },
+        {
+          "offset": 165275,
+          "text": "termio"
+        },
+        {
+          "offset": 189944,
+          "text": "termio"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/bin/ulogio"
+      ],
+      "inode": 81005,
+      "sha256": "fb20192e41ced6b3f92ead4cedb0a895dcbab991e1e3ec8988d9d05557ad1b7d",
+      "literal_mid_offsets": [],
+      "term_count": 6,
+      "term_matches": [
+        {
+          "offset": 16396,
+          "text": "terminal"
+        },
+        {
+          "offset": 16426,
+          "text": "terminal"
+        },
+        {
+          "offset": 16460,
+          "text": "terminal"
+        },
+        {
+          "offset": 17711,
+          "text": "terminal"
+        },
+        {
+          "offset": 17750,
+          "text": "terminal"
+        },
+        {
+          "offset": 17787,
+          "text": "terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/bin/adjstctl.elf"
+      ],
+      "inode": 81006,
+      "sha256": "f6f5da0190e2075cbb3d00731a18a00dcdd50b0fe1fc9bc23ac8132f723b29e4",
+      "literal_mid_offsets": [
+        67668,
+        67740,
+        67812,
+        67884,
+        67956,
+        68028,
+        68100,
+        68172,
+        68244,
+        68316,
+        68388,
+        68460,
+        68532,
+        68604,
+        68676,
+        68748,
+        68820,
+        68892,
+        68964,
+        69036,
+        69108
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 67964,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/bin/openssl"
+      ],
+      "inode": 81008,
+      "sha256": "eb816737b775a6786a44410ded6e7b2279e79dc042c4f14dfeac6475c9e4175a",
+      "literal_mid_offsets": [],
+      "term_count": 3,
+      "term_matches": [
+        {
+          "offset": 597952,
+          "text": "terminal"
+        },
+        {
+          "offset": 640080,
+          "text": "terminal"
+        },
+        {
+          "offset": 1852524,
+          "text": "terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/kmod/usbserial.ko"
+      ],
+      "inode": 70846,
+      "sha256": "17797a56dcdd43c0a3a269a65f867210baaf232667f922323813df7106874897",
+      "literal_mid_offsets": [],
+      "term_count": 3,
+      "term_matches": [
+        {
+          "offset": 26577,
+          "text": "termio"
+        },
+        {
+          "offset": 26817,
+          "text": "termio"
+        },
+        {
+          "offset": 27096,
+          "text": "termio"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "tty_termios_baud_rate",
+          "va": 0,
+          "bytes": 0,
+          "section": "SHN_UNDEF",
+          "kind": "STT_NOTYPE"
+        },
+        {
+          "name": "tty_termios_copy_hw",
+          "va": 0,
+          "bytes": 0,
+          "section": "SHN_UNDEF",
+          "kind": "STT_NOTYPE"
+        },
+        {
+          "name": "tty_std_termios",
+          "va": 0,
+          "bytes": 0,
+          "section": "SHN_UNDEF",
+          "kind": "STT_NOTYPE"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/kmod/usb_wwan.ko"
+      ],
+      "inode": 70859,
+      "sha256": "634b61eebd6c0a51cc4a5889e24fcee041b1a57672ee2be06e2355fc61c2f1b2",
+      "literal_mid_offsets": [],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 9117,
+          "text": "termio"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "tty_termios_baud_rate",
+          "va": 0,
+          "bytes": 0,
+          "section": "SHN_UNDEF",
+          "kind": "STT_NOTYPE"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/kmod/usbg_sen.ko"
+      ],
+      "inode": 70862,
+      "sha256": "1a7294dd9d3babde3f1e8cc2ac4aa12f54356f61995993bbc18ace095ed0cbf2",
+      "literal_mid_offsets": [],
+      "term_count": 11,
+      "term_matches": [
+        {
+          "offset": 19685,
+          "text": "termio"
+        },
+        {
+          "offset": 22292,
+          "text": "termio"
+        },
+        {
+          "offset": 22310,
+          "text": "termio"
+        },
+        {
+          "offset": 22356,
+          "text": "termio"
+        },
+        {
+          "offset": 22374,
+          "text": "termio"
+        },
+        {
+          "offset": 22420,
+          "text": "termio"
+        },
+        {
+          "offset": 22437,
+          "text": "termio"
+        },
+        {
+          "offset": 22486,
+          "text": "termio"
+        },
+        {
+          "offset": 22502,
+          "text": "termio"
+        },
+        {
+          "offset": 22550,
+          "text": "termio"
+        },
+        {
+          "offset": 22566,
+          "text": "termio"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/kmod/cdc-acm.ko"
+      ],
+      "inode": 70885,
+      "sha256": "8145706fda2386aa70632a7b18b7b3cb67f00147a5b5ff87369b6c370a74dfe1",
+      "literal_mid_offsets": [],
+      "term_count": 2,
+      "term_matches": [
+        {
+          "offset": 27839,
+          "text": "termio"
+        },
+        {
+          "offset": 28235,
+          "text": "termio"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "tty_termios_baud_rate",
+          "va": 0,
+          "bytes": 0,
+          "section": "SHN_UNDEF",
+          "kind": "STT_NOTYPE"
+        },
+        {
+          "name": "tty_std_termios",
+          "va": 0,
+          "bytes": 0,
+          "section": "SHN_UNDEF",
+          "kind": "STT_NOTYPE"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/kmod/usb_f_uvc.ko"
+      ],
+      "inode": 70927,
+      "sha256": "a23970925fa91ed7712f14bf7de8ac62ff9d63e9bcbfeecc94b37085d48c5ccc",
+      "literal_mid_offsets": [],
+      "term_count": 6,
+      "term_matches": [
+        {
+          "offset": 30632,
+          "text": "terminal"
+        },
+        {
+          "offset": 31225,
+          "text": "Terminal"
+        },
+        {
+          "offset": 31249,
+          "text": "Terminal"
+        },
+        {
+          "offset": 31286,
+          "text": "Terminal"
+        },
+        {
+          "offset": 31297,
+          "text": "Terminal"
+        },
+        {
+          "offset": 31313,
+          "text": "Terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/kmod/snd-usb-audio.ko"
+      ],
+      "inode": 70950,
+      "sha256": "09ebddd0fb77b3c98810358c381766e59a3322f3e803cb454bd100bbc0f5cab2",
+      "literal_mid_offsets": [],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 117791,
+          "text": "Terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/kmod/ppp_async.ko"
+      ],
+      "inode": 70961,
+      "sha256": "7054633b0ca8529f89ffb37fdd995661ac977e34bf8b7d6ecac6841ee3fc53de",
+      "literal_mid_offsets": [],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 10688,
+          "text": "termio"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "tty_termios_baud_rate",
+          "va": 0,
+          "bytes": 0,
+          "section": "SHN_UNDEF",
+          "kind": "STT_NOTYPE"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/lib/libprocps.so.6.0.0"
+      ],
+      "inode": 95150,
+      "sha256": "1054e7b3907eb029ba14e24f2ae319e3603bcb0ee99f37af0e2d3b9b7d7481cf",
+      "literal_mid_offsets": [],
+      "term_count": 3,
+      "term_matches": [
+        {
+          "offset": 49048,
+          "text": "/dev/pts/"
+        },
+        {
+          "offset": 49160,
+          "text": "/dev/ttyUSB"
+        },
+        {
+          "offset": 49408,
+          "text": "/dev/pts/"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/lib/libInfraBluetoothCore.so"
+      ],
+      "inode": 95171,
+      "sha256": "fcfb4a0086220c53a002394d268c3fb423f6cbf925beaca8ec34a409b3de566b",
+      "literal_mid_offsets": [],
+      "term_count": 2,
+      "term_matches": [
+        {
+          "offset": 32553,
+          "text": "termio"
+        },
+        {
+          "offset": 32598,
+          "text": "termio"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "g_default_termios_uart",
+          "va": 330816,
+          "bytes": 13,
+          "section": 23,
+          "kind": "STT_OBJECT"
+        },
+        {
+          "name": "default_termios_uart",
+          "va": 330792,
+          "bytes": 13,
+          "section": 23,
+          "kind": "STT_OBJECT"
+        },
+        {
+          "name": "g_termios",
+          "va": 430424,
+          "bytes": 60,
+          "section": 24,
+          "kind": "STT_OBJECT"
+        },
+        {
+          "name": "termios",
+          "va": 331112,
+          "bytes": 60,
+          "section": 24,
+          "kind": "STT_OBJECT"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/lib/libcurl.so.4.8.0"
+      ],
+      "inode": 95208,
+      "sha256": "89da555593250b45c669f8a2eb29a5acbb13acc0250e8468a61d7b75c1eca959",
+      "literal_mid_offsets": [],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 483675,
+          "text": "TERMINAL"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/lib/libnl-route-3.so.200.20.0"
+      ],
+      "inode": 95232,
+      "sha256": "4afcb397599e7a9170065afe7c68aaf57a291c61a9b257a5085caa6f8d5894a5",
+      "literal_mid_offsets": [],
+      "term_count": 2,
+      "term_matches": [
+        {
+          "offset": 42807,
+          "text": "terminal"
+        },
+        {
+          "offset": 274128,
+          "text": "TERMINAL"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "rtnl_u32_set_cls_terminal",
+          "va": 162376,
+          "bytes": 120,
+          "section": 11,
+          "kind": "STT_FUNC"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/lib/libGetLog.so"
+      ],
+      "inode": 95260,
+      "sha256": "6b977765c055f083127626e866ca0a6369fb52567a841b03ff57198e2187ac77",
+      "literal_mid_offsets": [
+        87956,
+        88028,
+        88100,
+        88172,
+        88244,
+        88316,
+        88388,
+        88460,
+        88532,
+        88604,
+        88676,
+        88748,
+        88820,
+        88892,
+        88964,
+        89036,
+        89108,
+        89180,
+        89252,
+        89324,
+        89396
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 88252,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/lib/libsencore.so"
+      ],
+      "inode": 95306,
+      "sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+      "literal_mid_offsets": [
+        156804,
+        156876,
+        156948,
+        157020,
+        157092,
+        157164,
+        157236,
+        157308,
+        157380,
+        157452,
+        157524,
+        157596,
+        157668,
+        157740,
+        157812,
+        157884,
+        157956,
+        158028,
+        158100,
+        158172,
+        158244,
+        282476,
+        282548,
+        282620,
+        282692,
+        282764,
+        282836,
+        282908,
+        282980,
+        283052,
+        283124,
+        283196,
+        283268,
+        283340,
+        283412,
+        283484,
+        283556,
+        283628,
+        283700,
+        283772,
+        283844,
+        283916
+      ],
+      "term_count": 3,
+      "term_matches": [
+        {
+          "offset": 16611,
+          "text": "terminal"
+        },
+        {
+          "offset": 157100,
+          "text": "TERM_MODE"
+        },
+        {
+          "offset": 282772,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "terminal_change_function_is_disabled",
+          "va": 440736,
+          "bytes": 1,
+          "section": 23,
+          "kind": "STT_OBJECT"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/lib/libInfraAdjMedia.so"
+      ],
+      "inode": 95311,
+      "sha256": "caae47cd50a72816f75515724828a0d136985844fe3b9a13ad0fda15b08dbf11",
+      "literal_mid_offsets": [
+        213580,
+        213652,
+        213724,
+        213796,
+        213868,
+        213940,
+        214012,
+        214084,
+        214156,
+        214228,
+        214300,
+        214372,
+        214444,
+        214516,
+        214588,
+        214660,
+        214732,
+        214804,
+        214876,
+        214948,
+        215020
+      ],
+      "term_count": 2,
+      "term_matches": [
+        {
+          "offset": 213876,
+          "text": "TERM_MODE"
+        },
+        {
+          "offset": 282874,
+          "text": "terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/lib/libJiritsu.so"
+      ],
+      "inode": 95349,
+      "sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "literal_mid_offsets": [
+        134148,
+        134220,
+        134292,
+        134364,
+        134436,
+        134508,
+        134580,
+        134652,
+        134724,
+        134796,
+        134868,
+        134940,
+        135012,
+        135084,
+        135156,
+        135228,
+        135300,
+        135372,
+        135444,
+        135516,
+        135588
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 134444,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/lib/libstdc++.so.6.0.22"
+      ],
+      "inode": 95361,
+      "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+      "literal_mid_offsets": [],
+      "term_count": 2,
+      "term_matches": [
+        {
+          "offset": 277789,
+          "text": "terminal"
+        },
+        {
+          "offset": 286919,
+          "text": "terminal"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "_ZNSbIwSt11char_traitsIwESaIwEE4_Rep11_S_terminalE",
+          "va": 1273964,
+          "bytes": 4,
+          "section": 13,
+          "kind": "STT_OBJECT"
+        },
+        {
+          "name": "_ZNSs4_Rep11_S_terminalE",
+          "va": 1273569,
+          "bytes": 1,
+          "section": 13,
+          "kind": "STT_OBJECT"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/lib/libosal_ulogio.so"
+      ],
+      "inode": 95388,
+      "sha256": "b31f6e90f37841ab0249a36cc4b3224610f77ae8bc2b9995f9268c2c0131f474",
+      "literal_mid_offsets": [],
+      "term_count": 2,
+      "term_matches": [
+        {
+          "offset": 30871,
+          "text": "terminal"
+        },
+        {
+          "offset": 37891,
+          "text": "terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/lib/libgio-2.0.so.0.6400.6"
+      ],
+      "inode": 95523,
+      "sha256": "af8c548281a25be8753976cb2ca389e3b038f62af5a4756a385d1bb301dd96e3",
+      "literal_mid_offsets": [],
+      "term_count": 7,
+      "term_matches": [
+        {
+          "offset": 1383312,
+          "text": "TERMINAL"
+        },
+        {
+          "offset": 1383334,
+          "text": "terminal"
+        },
+        {
+          "offset": 1475880,
+          "text": "Terminal"
+        },
+        {
+          "offset": 1476750,
+          "text": "terminal"
+        },
+        {
+          "offset": 1476773,
+          "text": "terminal"
+        },
+        {
+          "offset": 1476790,
+          "text": "terminal"
+        },
+        {
+          "offset": 1476874,
+          "text": "terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/lib/libncurses.so.6.2"
+      ],
+      "inode": 95545,
+      "sha256": "2c43df13b2737697ce019b8ae1a20cb0ea6c1575cf4ad430877c6e500bb59d4a",
+      "literal_mid_offsets": [],
+      "term_count": 15,
+      "term_matches": [
+        {
+          "offset": 263590,
+          "text": "terminal"
+        },
+        {
+          "offset": 290498,
+          "text": "terminal"
+        },
+        {
+          "offset": 299434,
+          "text": "terminal"
+        },
+        {
+          "offset": 299456,
+          "text": "terminal"
+        },
+        {
+          "offset": 299510,
+          "text": "terminal"
+        },
+        {
+          "offset": 299558,
+          "text": "terminal"
+        },
+        {
+          "offset": 299662,
+          "text": "terminal"
+        },
+        {
+          "offset": 309280,
+          "text": "terminal"
+        },
+        {
+          "offset": 316208,
+          "text": "terminal"
+        },
+        {
+          "offset": 316379,
+          "text": "terminal"
+        },
+        {
+          "offset": 318738,
+          "text": "terminal"
+        },
+        {
+          "offset": 319659,
+          "text": "terminal"
+        },
+        {
+          "offset": 319680,
+          "text": "terminal"
+        },
+        {
+          "offset": 319712,
+          "text": "terminal"
+        },
+        {
+          "offset": 319816,
+          "text": "terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/lib/libcrypto.so.3"
+      ],
+      "inode": 95562,
+      "sha256": "893a37bd6f5a19069362e7c54c023ac9b93eb5d3c976dc45a82502fb4317a8d4",
+      "literal_mid_offsets": [],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 3116439,
+          "text": "Terminal"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/sbin/tcpdump"
+      ],
+      "inode": 60722,
+      "sha256": "8400a9066f36b5532c3c6e87b05713ab74f0a537841ff97633b3130e05dd635c",
+      "literal_mid_offsets": [],
+      "term_count": 3,
+      "term_matches": [
+        {
+          "offset": 1081296,
+          "text": "Terminal"
+        },
+        {
+          "offset": 1119931,
+          "text": "TERMINAL"
+        },
+        {
+          "offset": 1119984,
+          "text": "TERMINAL"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/sbin/dhcpd"
+      ],
+      "inode": 60727,
+      "sha256": "0c1336c7e44a58adf6ccee2f7a452c9b7189d749d22d029e602b0b6e3fcc34c2",
+      "literal_mid_offsets": [],
+      "term_count": 7,
+      "term_matches": [
+        {
+          "offset": 2189968,
+          "text": "terminal"
+        },
+        {
+          "offset": 8532086,
+          "text": "termio"
+        },
+        {
+          "offset": 8538593,
+          "text": "termio"
+        },
+        {
+          "offset": 8538695,
+          "text": "termio"
+        },
+        {
+          "offset": 9005034,
+          "text": "terminal"
+        },
+        {
+          "offset": 9018457,
+          "text": "termio"
+        },
+        {
+          "offset": 13400740,
+          "text": "terminal"
+        }
+      ],
+      "symbols": [
+        {
+          "name": "cfg_doc_terminal",
+          "va": 5893440,
+          "bytes": 140,
+          "section": 12,
+          "kind": "STT_FUNC"
+        }
+      ]
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_START_HDMI_INPUT_SUB.so"
+      ],
+      "inode": 34410,
+      "sha256": "c00c16b56cc6f10822df6d9456f59478b2aa17f2e37ad7e7b0e0bf9f81fb3274",
+      "literal_mid_offsets": [
+        81797,
+        81869,
+        81941,
+        82013,
+        82085,
+        82157,
+        82229,
+        82301,
+        82373,
+        82445,
+        82517,
+        82589,
+        82661,
+        82733,
+        82805,
+        82877,
+        82949,
+        83021,
+        83093,
+        83165,
+        83237
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 82093,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_STOP_HDMI.so"
+      ],
+      "inode": 34412,
+      "sha256": "a724baa944faaabd408010f7ae4be59a0e6485f65167269e2263bc645436d3e4",
+      "literal_mid_offsets": [
+        77621,
+        77693,
+        77765,
+        77837,
+        77909,
+        77981,
+        78053,
+        78125,
+        78197,
+        78269,
+        78341,
+        78413,
+        78485,
+        78557,
+        78629,
+        78701,
+        78773,
+        78845,
+        78917,
+        78989,
+        79061
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 77917,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_STOP_HDMI_INPUT.so"
+      ],
+      "inode": 34413,
+      "sha256": "9529d1263ae48851fb6ac182fc890ee2695ea5729d732203c9faf9aec710160c",
+      "literal_mid_offsets": [
+        81909,
+        81981,
+        82053,
+        82125,
+        82197,
+        82269,
+        82341,
+        82413,
+        82485,
+        82557,
+        82629,
+        82701,
+        82773,
+        82845,
+        82917,
+        82989,
+        83061,
+        83133,
+        83205,
+        83277,
+        83349
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 82205,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_START_HDMI_INPUT.so"
+      ],
+      "inode": 34415,
+      "sha256": "f2d4b3ea7c3505007fdaa5b638e05bb5155268939cf6c80663d5bb6c03efd61f",
+      "literal_mid_offsets": [
+        77674,
+        77746,
+        77818,
+        77890,
+        77962,
+        78034,
+        78106,
+        78178,
+        78250,
+        78322,
+        78394,
+        78466,
+        78538,
+        78610,
+        78682,
+        78754,
+        78826,
+        78898,
+        78970,
+        79042,
+        79114
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 77970,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_STOP_PANELEVF.so"
+      ],
+      "inode": 34416,
+      "sha256": "1091d6c5163873cf8625ef53ca0971188cc4544fb07b9e8cbed08ee0b191f80b",
+      "literal_mid_offsets": [
+        73349,
+        73421,
+        73493,
+        73565,
+        73637,
+        73709,
+        73781,
+        73853,
+        73925,
+        73997,
+        74069,
+        74141,
+        74213,
+        74285,
+        74357,
+        74429,
+        74501,
+        74573,
+        74645,
+        74717,
+        74789
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 73645,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_START_VIDEO.so"
+      ],
+      "inode": 34417,
+      "sha256": "02d738f38ba31f1e97fa3df166045d721caf70014f796af208cb33abebae5e99",
+      "literal_mid_offsets": [
+        73349,
+        73421,
+        73493,
+        73565,
+        73637,
+        73709,
+        73781,
+        73853,
+        73925,
+        73997,
+        74069,
+        74141,
+        74213,
+        74285,
+        74357,
+        74429,
+        74501,
+        74573,
+        74645,
+        74717,
+        74789
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 73645,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_START_HDMI.so"
+      ],
+      "inode": 34422,
+      "sha256": "d3bd33195afd2fcb516082c60c592be72c6345fd80eec19898f4a2878f8771c7",
+      "literal_mid_offsets": [
+        77626,
+        77698,
+        77770,
+        77842,
+        77914,
+        77986,
+        78058,
+        78130,
+        78202,
+        78274,
+        78346,
+        78418,
+        78490,
+        78562,
+        78634,
+        78706,
+        78778,
+        78850,
+        78922,
+        78994,
+        79066
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 77922,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_START_HDMI_SUB.so"
+      ],
+      "inode": 34426,
+      "sha256": "a115c98594476c657b1a5cc3e1a10ba91290acdad3917065169455446158997f",
+      "literal_mid_offsets": [
+        77573,
+        77645,
+        77717,
+        77789,
+        77861,
+        77933,
+        78005,
+        78077,
+        78149,
+        78221,
+        78293,
+        78365,
+        78437,
+        78509,
+        78581,
+        78653,
+        78725,
+        78797,
+        78869,
+        78941,
+        79013
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 77869,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_STOP_VIDEO.so"
+      ],
+      "inode": 34428,
+      "sha256": "10e6e69dbf391d1fdbc9c9e4860fcb8418f46596bce63deb12ac0fd3212c6fe5",
+      "literal_mid_offsets": [
+        73349,
+        73421,
+        73493,
+        73565,
+        73637,
+        73709,
+        73781,
+        73853,
+        73925,
+        73997,
+        74069,
+        74141,
+        74213,
+        74285,
+        74357,
+        74429,
+        74501,
+        74573,
+        74645,
+        74717,
+        74789
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 73645,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    },
+    {
+      "paths": [
+        "/scenario/AVBB_SCN_START_PANELEVF.so"
+      ],
+      "inode": 34434,
+      "sha256": "3437057b3cd9ee04463b748636db2a4ce1bdd0202e102a8e9116de6af7941566",
+      "literal_mid_offsets": [
+        77573,
+        77645,
+        77717,
+        77789,
+        77861,
+        77933,
+        78005,
+        78077,
+        78149,
+        78221,
+        78293,
+        78365,
+        78437,
+        78509,
+        78581,
+        78653,
+        78725,
+        78797,
+        78869,
+        78941,
+        79013
+      ],
+      "term_count": 1,
+      "term_matches": [
+        {
+          "offset": 77869,
+          "text": "TERM_MODE"
+        }
+      ],
+      "symbols": []
+    }
+  ],
+  "scope": "symbols/literals only; absence is not proof against inline, external partitions, RTOS or dynamic dispatch",
+  "camera_operations": 0
+}

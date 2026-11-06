@@ -1,0 +1,68 @@
+{
+  "status": "PASS_HOST_JS_STATE_MACHINE",
+  "cases": [
+    {
+      "name": "baseline reproduction: hung status request prevents the next poll",
+      "passed": true
+    },
+    {
+      "name": "baseline reproduction: disconnect after stop falsely marks session finished",
+      "passed": true
+    },
+    {
+      "name": "status fetch hang times out and polling resumes",
+      "passed": true
+    },
+    {
+      "name": "status body hang is included in timeout",
+      "passed": true
+    },
+    {
+      "name": "frame body hang is included in timeout",
+      "passed": true
+    },
+    {
+      "name": "image decode hang has a separate deadline",
+      "passed": true
+    },
+    {
+      "name": "lost key acknowledgement never retries or infers delivery from counters",
+      "passed": true
+    },
+    {
+      "name": "explicit rejected key is recoverable with a fresh status",
+      "passed": true
+    },
+    {
+      "name": "accepted key stays locked until its step completes",
+      "passed": true
+    },
+    {
+      "name": "stop acknowledged then disconnected is not reported as resource cleanup",
+      "passed": true
+    },
+    {
+      "name": "lost stop acknowledgement remains unknown and never retries automatically",
+      "passed": true
+    },
+    {
+      "name": "final status receipt does not depend on loading a final image",
+      "passed": true
+    },
+    {
+      "name": "HTTP500 mutation failure is ambiguous rather than a safe retry",
+      "passed": true
+    },
+    {
+      "name": "final receipt is displayed before its matching delivery acknowledgement",
+      "passed": true
+    },
+    {
+      "name": "lost final delivery ACK never overwrites final status or retries keys",
+      "passed": true
+    }
+  ],
+  "javascript_sha256": "4d5ff910296850aeee7c28152d4423507c42f7ccfe561344828d823a844c639d",
+  "baseline_python_sha256": "1335ac18a7f29291182255ae88cd100d6df289f5266507ca7adfcca8675187f4",
+  "scope": "Node VM with mocked DOM/network and virtual deadlines; no browser rendering, QEMU, guest input or resource-cleanup acceptance"
+}

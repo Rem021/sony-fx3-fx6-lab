@@ -1,0 +1,12 @@
+FX3_ROOT_CACHE_CLARIFICATION
+交叉核对已找到1个与旧FX3根摘要相同的当前USB存储节点及3条Sony DSC磁盘节点。这里“不唯一则停止”指USB根节点；多个磁盘子节点是后续需要如实计数的对象，不是3台相机。不要重跑CIM或旧精确硬件ID筛选。
+
+保存并完成当前public报告后，在同一已核验本机系统C盘普通项目outputs中新建 fx3-current-root-cache-20261026T172200Z/{private,public}；存在则停止，继续校验无reparse/网络/相机存储重定向。
+
+只使用当前CIM私有结果中Present=True、Status=OK、ConfigManagerErrorCode=0、Service=USBSTOR、VID/PID054C:0DA1、且节点摘要等于旧FX3根摘要的USB节点；若这个USB级根节点恰好唯一，执行PnPUtil /enum-devices /connected /instanceid <该实际根ID> /deviceids /relations /services /stack /drivers /interfaces /properties，以及 /enum-devicetree <该根ID> /connected /services /stack /drivers /interfaces。这与此前/deviceid筛选不同，是对新CIM实际节点的精确查询。
+
+只对本次设备树中该根的当前磁盘子节点补同样的/enum-devices /connected /instanceid元数据，最多16个相关节点。不要任意选一个磁盘作为后续协议目标。记录父子SHA256、各接口类别及启用状态、各节点Present/Started/问题码、驱动与Address/UINumber缓存值；缺失字段UNKNOWN。
+
+所有原始ID/序列/接口路径留Windows private，public用同一uppercase UTF8 SHA256。用文件工具写summary.txt、receipt.json、nodes.json、commands.json、private-sha256.json；另提供public文件的SHA256清单（清单不包含自己）。不要再搜索全仓库/网页或重做旧材料哈希。
+
+仍仅缓存元数据：不打开相机/磁盘/卷接口，不执行SCSI/INQUIRY/PTP/认证，不切模式、不改驱动/权限/执行策略，不刷新/扫描或重启设备，不读卡/素材/相机文件，不上传模块/WBI/刷写，不自动重试。若USB根本身不唯一或任一必要条件不满足，保存原因并停止对应分支；不把驱动退出0当协议可用证明。

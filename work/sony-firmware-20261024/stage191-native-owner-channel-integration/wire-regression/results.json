@@ -1,0 +1,4069 @@
+{
+  "status": "PASS_SDK_TYPED_IOKIT_FAKE_VTABLE_AND_INERT_CONTROLLER_ONLY",
+  "cases": [
+    {
+      "name": "control-0",
+      "result": {
+        "token": "68b76b5008de09ba115bdbc947ba8526-3",
+        "status": "CONTROL_OK",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 0,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-1",
+      "result": {
+        "token": "0f31830d3db96406b5ecd2b9ec42661b-3",
+        "status": "CONTROL_STALL",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 3,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854449,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "STALL",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-2",
+      "result": {
+        "token": "69a0e0e9346e86d5e976b936393b7609-3",
+        "status": "CONTROL_TIMEOUT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 4,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854447,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "TIMEOUT",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-3",
+      "result": {
+        "token": "764a99042fe995325db7010322fb8203-3",
+        "status": "DISCONNECTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 5,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870208,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "GONE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-13",
+      "result": {
+        "token": "bdad811a2c38f35f87bc798fd965f79b-3",
+        "status": "INVALID_NATIVE_COUNT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 8,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 1,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BAD_COUNT",
+            "actual_count_known": true,
+            "transferred": 1
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-15",
+      "result": {
+        "token": "966ae55adc45dac9f072506396b4669a-3",
+        "status": "CONTROL_ERROR",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 6,
+            "requested": 0,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870212,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "ERROR",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-8",
+      "result": {
+        "token": "147b71f4764b769f5f3fa804bbf2f8b2-3",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 10,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-9",
+      "result": {
+        "token": "5160230f426ce5ad81c85b4e9abf0b79-3",
+        "status": "CLOCK_INVALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 11,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CLOCK",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-10",
+      "result": {
+        "token": "a898c384591cbb565dfebf186d8609a4-3",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 12,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-11",
+      "result": {
+        "token": "55b39be2f8ac41fb98d41a07ede8f02c-3",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 12,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-16",
+      "result": {
+        "token": "4c49078f09c9d8d9df8fd9dec1c32014-3",
+        "status": "CANCEL_REQUESTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 17,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CANCEL",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "control-17",
+      "result": {
+        "token": "6734c4fbccc5ce2c0c03251db8351b64-3",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 10,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-1",
+      "result": {
+        "token": "a3c963792421c737bc105338b8301bde-4",
+        "status": "BULK_STALL",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 3,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854449,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "STALL",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-2",
+      "result": {
+        "token": "bcdeb90eb4750b87388b565155772e5a-4",
+        "status": "BULK_TIMEOUT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 4,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854447,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "TIMEOUT",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-3",
+      "result": {
+        "token": "ee1c3043cdc81e189e9d8f32497ef10e-4",
+        "status": "DISCONNECTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 5,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870208,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "GONE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-7",
+      "result": {
+        "token": "041827bac7d2d3289bccc98cdd93d05e-4",
+        "status": "BUFFER_OR_OUTBOUND_MUTATION",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 9,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 0,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BUFFER",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-8",
+      "result": {
+        "token": "7942375708b67a584ee61e6e3a50324b-4",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 10,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-9",
+      "result": {
+        "token": "810c0ed4aeb068f26bc89482616c2632-4",
+        "status": "CLOCK_INVALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 11,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CLOCK",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-10",
+      "result": {
+        "token": "5d9541f64d5fe8433d47bcafa792d077-4",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 12,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-11",
+      "result": {
+        "token": "5b499a8d8ce6591be71e5e52f71436bd-4",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 12,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-15",
+      "result": {
+        "token": "2058d9120af10d75fd7cf2618d5eb76c-4",
+        "status": "BULK_ERROR",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 6,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870212,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "ERROR",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-16",
+      "result": {
+        "token": "02e19516d6440e69cf7f7360846ac837-4",
+        "status": "CANCEL_REQUESTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 17,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CANCEL",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-17",
+      "result": {
+        "token": "d41dbc9f0a458711468174a2341dff19-4",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 10,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-2-fault-4",
+      "result": {
+        "token": "fda870bb87ff72e79cb7e997c59f5fe2-4",
+        "status": "BUFFER_OR_OUTBOUND_MUTATION",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 9,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 0,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BUFFER",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-1",
+      "result": {
+        "token": "07c54f28a8451b740e56b6d4aa1eb2bf-4",
+        "status": "BULK_STALL",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 3,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854449,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "STALL",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-2",
+      "result": {
+        "token": "722d6a46ca0d8f138d245a8cc99d85ef-4",
+        "status": "BULK_TIMEOUT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 4,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536854447,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "TIMEOUT",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-3",
+      "result": {
+        "token": "e7b5c74bce4e8a37dfc92334ee2ed642-4",
+        "status": "DISCONNECTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 5,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870208,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "GONE",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-7",
+      "result": {
+        "token": "fe95175959ef6ec41c35aa5fc3447464-4",
+        "status": "BUFFER_OR_OUTBOUND_MUTATION",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 9,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 0,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BUFFER",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-8",
+      "result": {
+        "token": "c35a0ea744edfa94010268c16d41208d-4",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 10,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-9",
+      "result": {
+        "token": "461d582630fb5b5a4769fe0d59dfa687-4",
+        "status": "CLOCK_INVALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 11,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CLOCK",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-10",
+      "result": {
+        "token": "628568a8fc9c70bf97174d669a8c3553-4",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 12,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-11",
+      "result": {
+        "token": "5101185e86a6029aef48ba8ce90766dc-4",
+        "status": "OWNER_LOST",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 12,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 0,
+            "body_effect_proven": 0,
+            "adapter_status": "OWNER",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-15",
+      "result": {
+        "token": "defc0f8351a3b9374a120d9f7dd3248f-4",
+        "status": "BULK_ERROR",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 6,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": -536870212,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "ERROR",
+            "actual_count_known": false,
+            "transferred": null
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-16",
+      "result": {
+        "token": "400f4991cafe67cf5f8b17b15b8d7b8b-4",
+        "status": "CANCEL_REQUESTED",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 17,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "CANCEL",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-17",
+      "result": {
+        "token": "a610cbc73c696fa68ad9bdcdfe5b5d22-4",
+        "status": "LATE_RETURN",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 10,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "LATE",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-5",
+      "result": {
+        "token": "f875377b7618b941383d519d06f4d24e-4",
+        "status": "SHORT_TRANSFER",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 7,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 515,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "SHORT",
+            "actual_count_known": true,
+            "transferred": 515
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "bulk-3-fault-6",
+      "result": {
+        "token": "a7d5cb69662dec0479470035416725e7-4",
+        "status": "INVALID_NATIVE_COUNT",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 8,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 517,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "BAD_COUNT",
+            "actual_count_known": true,
+            "transferred": 517
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "IOKit-pipe-index-and-unknown-write-count-False",
+      "result": {
+        "token": "5cd13b2df7c8598ca43475222bd06b7a-4",
+        "status": "AUTH_REPLY_VALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 516,
+        "protocol_reply_accepted": true,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "IOKit-pipe-index-and-unknown-write-count-True",
+      "result": {
+        "token": "b6680593a162cf67a31a98f35b7e2538-4",
+        "status": "AUTH_REPLY_VALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 516,
+        "protocol_reply_accepted": true,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "submillisecond-positive-timeout"
+    },
+    {
+      "name": "binding-reject-handle"
+    },
+    {
+      "name": "binding-reject-handle"
+    },
+    {
+      "name": "binding-reject-ep_in"
+    },
+    {
+      "name": "binding-reject-max_packet"
+    },
+    {
+      "name": "binding-reject-authentication_endpoint_roles_reviewed"
+    },
+    {
+      "name": "binding-reject-exclusive_ownership_confirmed"
+    },
+    {
+      "name": "unregistered-forked-disposed-contexts-rejected-before-dereference"
+    },
+    {
+      "name": "live-denied-before-native-lookup-even-with-synthetic-authority"
+    },
+    {
+      "name": "auth-shape-rejected-wire"
+    },
+    {
+      "name": "auth-shape-rejected-wire"
+    },
+    {
+      "name": "auth-shape-rejected-wire"
+    },
+    {
+      "name": "auth-shape-rejected-wire"
+    },
+    {
+      "name": "auth-shape-rejected-kind"
+    },
+    {
+      "name": "real-blocked-fake-C-call-retains-owner-and-refuses-cleanup",
+      "result": {
+        "token": "14247c967481a43a9bae72a90a4ed53c-4",
+        "status": "AUTH_REPLY_VALID",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 2,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 0,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": false,
+            "transferred": null
+          },
+          {
+            "operation": 3,
+            "abi": 1,
+            "status": 0,
+            "requested": 516,
+            "actual_known": 1,
+            "reported_count": 516,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 516
+          }
+        ],
+        "response_bytes": 516,
+        "protocol_reply_accepted": true,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    },
+    {
+      "name": "explicit-single-STOP-only-after-new-owner-observation",
+      "result": {
+        "token": "858062b12f3728f422ceda5fa9eb265a-6",
+        "status": "CONTROL_OK",
+        "backend_finished": true,
+        "calls": [
+          {
+            "operation": 1,
+            "abi": 1,
+            "status": 0,
+            "requested": 0,
+            "actual_known": 1,
+            "reported_count": 0,
+            "timeout_ms": 1000,
+            "native_returned": 1,
+            "raw_return": 0,
+            "buffer_ok": 1,
+            "owner_ok": 1,
+            "body_effect_proven": 0,
+            "adapter_status": "OK",
+            "actual_count_known": true,
+            "transferred": 0
+          }
+        ],
+        "response_bytes": 0,
+        "protocol_reply_accepted": false,
+        "device_effect_or_queue_worker_completion_proven": false
+      }
+    }
+  ],
+  "inert_flows": [
+    {
+      "MSC_reference_family": 2,
+      "fixture_calls": [
+        3,
+        14,
+        14
+      ],
+      "actions": [
+        {
+          "phase": "START_MSC",
+          "token": "4a25ffe744f8eea31098157bb568381c-3",
+          "status": "CONTROL_OK",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 1,
+              "abi": 1,
+              "status": 0,
+              "requested": 0,
+              "actual_known": 1,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 0
+            }
+          ],
+          "response_bytes": 0,
+          "protocol_reply_accepted": false,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "4a25ffe744f8eea31098157bb568381c-4",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "4a25ffe744f8eea31098157bb568381c-6",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "4a25ffe744f8eea31098157bb568381c-7",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "4a25ffe744f8eea31098157bb568381c-9",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "4a25ffe744f8eea31098157bb568381c-10",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "4a25ffe744f8eea31098157bb568381c-12",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "4a25ffe744f8eea31098157bb568381c-13",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "START_SERVICE",
+          "token": "4a25ffe744f8eea31098157bb568381c-17",
+          "status": "CONTROL_OK",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 1,
+              "abi": 1,
+              "status": 0,
+              "requested": 0,
+              "actual_known": 1,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 0
+            }
+          ],
+          "response_bytes": 0,
+          "protocol_reply_accepted": false,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "4a25ffe744f8eea31098157bb568381c-18",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "4a25ffe744f8eea31098157bb568381c-20",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "4a25ffe744f8eea31098157bb568381c-21",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "4a25ffe744f8eea31098157bb568381c-23",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "4a25ffe744f8eea31098157bb568381c-24",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "4a25ffe744f8eea31098157bb568381c-26",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "4a25ffe744f8eea31098157bb568381c-27",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "STOP",
+          "token": "4a25ffe744f8eea31098157bb568381c-28",
+          "status": "CONTROL_OK",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 1,
+              "abi": 1,
+              "status": 0,
+              "requested": 0,
+              "actual_known": 1,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 0
+            }
+          ],
+          "response_bytes": 0,
+          "protocol_reply_accepted": false,
+          "device_effect_or_queue_worker_completion_proven": false
+        }
+      ],
+      "controller_report": {
+        "phase": "FLOW_FINISHED",
+        "starts": {
+          "MSC": 1,
+          "SERVICE": 1
+        },
+        "auth_exchanges": {
+          "MSC": 7,
+          "SERVICE": 7
+        },
+        "stop_attempts": 1,
+        "evidence": {
+          "normal_USB": true,
+          "driver_restored": true,
+          "closed_driver_observed": true,
+          "physical_operation": true,
+          "worker_completion": false
+        },
+        "errors": [],
+        "ledger": [
+          {
+            "event": "intent_before_dispatch",
+            "phase": "CAPTURE",
+            "token": "4a25ffe744f8eea31098157bb568381c-1",
+            "kind": "CAPTURE",
+            "wire_bytes": 0,
+            "deadline": 4.0
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "CAPTURE",
+            "token": "4a25ffe744f8eea31098157bb568381c-1",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_CAPTURED",
+            "token": "4a25ffe744f8eea31098157bb568381c-2",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.01
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_CAPTURED",
+            "token": "4a25ffe744f8eea31098157bb568381c-2",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "START_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-3",
+            "kind": "START_MSC",
+            "wire_bytes": 8,
+            "deadline": 4.02
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "START_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-3",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-4",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.03
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-4",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-5",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.04
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-5",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-6",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.05
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-6",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-7",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.0600000000000005
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-7",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-8",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.07
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-8",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-9",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.08
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-9",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-10",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.09
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-10",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-11",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.1
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-11",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-12",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.11
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-12",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-13",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.12
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "4a25ffe744f8eea31098157bb568381c-13",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-14",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.13
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-14",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "CLOSE_STALE",
+            "token": "4a25ffe744f8eea31098157bb568381c-15",
+            "kind": "CLOSE_STALE",
+            "wire_bytes": 0,
+            "deadline": 4.14
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "CLOSE_STALE",
+            "token": "4a25ffe744f8eea31098157bb568381c-15",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OPEN_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-16",
+            "kind": "OPEN_SERVICE",
+            "wire_bytes": 0,
+            "deadline": 4.15
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OPEN_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-16",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "START_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-17",
+            "kind": "START_SERVICE",
+            "wire_bytes": 8,
+            "deadline": 4.16
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "START_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-17",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-18",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.17
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-18",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-19",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.18
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-19",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-20",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.1899999999999995
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-20",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-21",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.2
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-21",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-22",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.21
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-22",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-23",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.22
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-23",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-24",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.23
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-24",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-25",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.24
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "4a25ffe744f8eea31098157bb568381c-25",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-26",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.25
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-26",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-27",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.26
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "4a25ffe744f8eea31098157bb568381c-27",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "STOP",
+            "token": "4a25ffe744f8eea31098157bb568381c-28",
+            "kind": "STOP",
+            "wire_bytes": 8,
+            "deadline": 4.27
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "STOP",
+            "token": "4a25ffe744f8eea31098157bb568381c-28",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_NORMAL",
+            "token": "4a25ffe744f8eea31098157bb568381c-29",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.28
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_NORMAL",
+            "token": "4a25ffe744f8eea31098157bb568381c-29",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "RESTORE",
+            "token": "4a25ffe744f8eea31098157bb568381c-30",
+            "kind": "RESTORE",
+            "wire_bytes": 0,
+            "deadline": 4.29
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "RESTORE",
+            "token": "4a25ffe744f8eea31098157bb568381c-30",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_DRIVER",
+            "token": "4a25ffe744f8eea31098157bb568381c-31",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.3
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_DRIVER",
+            "token": "4a25ffe744f8eea31098157bb568381c-31",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DISPOSE",
+            "token": "4a25ffe744f8eea31098157bb568381c-32",
+            "kind": "DISPOSE",
+            "wire_bytes": 0,
+            "deadline": 4.3100000000000005
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DISPOSE",
+            "token": "4a25ffe744f8eea31098157bb568381c-32",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_CLOSED",
+            "token": "4a25ffe744f8eea31098157bb568381c-33",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.32
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_CLOSED",
+            "token": "4a25ffe744f8eea31098157bb568381c-33",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "external_physical_receipt_not_H265_or_recovery_acceptance",
+            "phase": "FLOW_FINISHED"
+          }
+        ],
+        "body_identity_logged": false,
+        "wire_challenge_or_digest_logged": false,
+        "actual_hardware_acceptance": false,
+        "live_transport_implemented": false,
+        "live_release": false,
+        "goal_complete": false,
+        "persistent_write_release": false
+      },
+      "all_body_mode_driver_and_physical_evidence_synthetic": true
+    },
+    {
+      "MSC_reference_family": 8,
+      "fixture_calls": [
+        3,
+        14,
+        14
+      ],
+      "actions": [
+        {
+          "phase": "START_MSC",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-3",
+          "status": "CONTROL_OK",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 1,
+              "abi": 1,
+              "status": 0,
+              "requested": 0,
+              "actual_known": 1,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 0
+            }
+          ],
+          "response_bytes": 0,
+          "protocol_reply_accepted": false,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-4",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-6",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-7",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-9",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-10",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-12",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_MSC",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-13",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "START_SERVICE",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-17",
+          "status": "CONTROL_OK",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 1,
+              "abi": 1,
+              "status": 0,
+              "requested": 0,
+              "actual_known": 1,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 0
+            }
+          ],
+          "response_bytes": 0,
+          "protocol_reply_accepted": false,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-18",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-20",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-21",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-23",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-24",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-26",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "AUTH_SERVICE",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-27",
+          "status": "AUTH_REPLY_VALID",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 2,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 0,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": false,
+              "transferred": null
+            },
+            {
+              "operation": 3,
+              "abi": 1,
+              "status": 0,
+              "requested": 516,
+              "actual_known": 1,
+              "reported_count": 516,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 516
+            }
+          ],
+          "response_bytes": 516,
+          "protocol_reply_accepted": true,
+          "device_effect_or_queue_worker_completion_proven": false
+        },
+        {
+          "phase": "STOP",
+          "token": "ac2c56abb56ec61d92d728518a2cfbde-28",
+          "status": "CONTROL_OK",
+          "backend_finished": true,
+          "calls": [
+            {
+              "operation": 1,
+              "abi": 1,
+              "status": 0,
+              "requested": 0,
+              "actual_known": 1,
+              "reported_count": 0,
+              "timeout_ms": 1000,
+              "native_returned": 1,
+              "raw_return": 0,
+              "buffer_ok": 1,
+              "owner_ok": 1,
+              "body_effect_proven": 0,
+              "adapter_status": "OK",
+              "actual_count_known": true,
+              "transferred": 0
+            }
+          ],
+          "response_bytes": 0,
+          "protocol_reply_accepted": false,
+          "device_effect_or_queue_worker_completion_proven": false
+        }
+      ],
+      "controller_report": {
+        "phase": "FLOW_FINISHED",
+        "starts": {
+          "MSC": 1,
+          "SERVICE": 1
+        },
+        "auth_exchanges": {
+          "MSC": 7,
+          "SERVICE": 7
+        },
+        "stop_attempts": 1,
+        "evidence": {
+          "normal_USB": true,
+          "driver_restored": true,
+          "closed_driver_observed": true,
+          "physical_operation": true,
+          "worker_completion": false
+        },
+        "errors": [],
+        "ledger": [
+          {
+            "event": "intent_before_dispatch",
+            "phase": "CAPTURE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-1",
+            "kind": "CAPTURE",
+            "wire_bytes": 0,
+            "deadline": 4.0
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "CAPTURE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-1",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_CAPTURED",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-2",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.01
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_CAPTURED",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-2",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "START_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-3",
+            "kind": "START_MSC",
+            "wire_bytes": 8,
+            "deadline": 4.02
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "START_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-3",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-4",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.03
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-4",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-5",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.04
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-5",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-6",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.05
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-6",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-7",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.0600000000000005
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-7",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-8",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.07
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-8",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-9",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.08
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-9",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-10",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.09
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-10",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-11",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.1
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-11",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-12",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.11
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-12",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-13",
+            "kind": "AUTH_MSC",
+            "wire_bytes": 516,
+            "deadline": 4.12
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_MSC",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-13",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-14",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.13
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-14",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "CLOSE_STALE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-15",
+            "kind": "CLOSE_STALE",
+            "wire_bytes": 0,
+            "deadline": 4.14
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "CLOSE_STALE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-15",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OPEN_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-16",
+            "kind": "OPEN_SERVICE",
+            "wire_bytes": 0,
+            "deadline": 4.15
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OPEN_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-16",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "START_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-17",
+            "kind": "START_SERVICE",
+            "wire_bytes": 8,
+            "deadline": 4.16
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "START_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-17",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-18",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.17
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-18",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-19",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.18
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-19",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-20",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.1899999999999995
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-20",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-21",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.2
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-21",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-22",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.21
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-22",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-23",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.22
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-23",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-24",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.23
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-24",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-25",
+            "kind": "DERIVE_DIGEST",
+            "wire_bytes": 0,
+            "deadline": 4.24
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DERIVE_DIGEST",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-25",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-26",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.25
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-26",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-27",
+            "kind": "AUTH_SERVICE",
+            "wire_bytes": 516,
+            "deadline": 4.26
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "AUTH_SERVICE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-27",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "STOP",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-28",
+            "kind": "STOP",
+            "wire_bytes": 8,
+            "deadline": 4.27
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "STOP",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-28",
+            "outcome": "ok",
+            "raw_return": 0
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_NORMAL",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-29",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.28
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_NORMAL",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-29",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "RESTORE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-30",
+            "kind": "RESTORE",
+            "wire_bytes": 0,
+            "deadline": 4.29
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "RESTORE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-30",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_DRIVER",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-31",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.3
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_DRIVER",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-31",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "DISPOSE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-32",
+            "kind": "DISPOSE",
+            "wire_bytes": 0,
+            "deadline": 4.3100000000000005
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "DISPOSE",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-32",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "intent_before_dispatch",
+            "phase": "OBS_CLOSED",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-33",
+            "kind": "OBSERVE_CACHE",
+            "wire_bytes": 0,
+            "deadline": 4.32
+          },
+          {
+            "event": "transport_receipt_not_completion",
+            "phase": "OBS_CLOSED",
+            "token": "ac2c56abb56ec61d92d728518a2cfbde-33",
+            "outcome": "ok",
+            "raw_return": null
+          },
+          {
+            "event": "external_physical_receipt_not_H265_or_recovery_acceptance",
+            "phase": "FLOW_FINISHED"
+          }
+        ],
+        "body_identity_logged": false,
+        "wire_challenge_or_digest_logged": false,
+        "actual_hardware_acceptance": false,
+        "live_transport_implemented": false,
+        "live_release": false,
+        "goal_complete": false,
+        "persistent_write_release": false
+      },
+      "all_body_mode_driver_and_physical_evidence_synthetic": true
+    }
+  ],
+  "real_USB_or_camera_operations": 0,
+  "root_admin_or_privacy_changes": 0,
+  "case_count": 55,
+  "flow_count": 2,
+  "sources": {
+    "iokit_wire.h": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b",
+    "iokit_wire.c": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94",
+    "fake_iokit.c": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19",
+    "iokit_wire.py": "004bd34be5f0a310407436cea37bb6668951f5d3ce965f9d4983f05493c4d9d0",
+    "iokit_fixture_api.py": "779570de5d88bb0bdfec9c879bac6f57c2f022b6330f79d2bae31008912b9595",
+    "test_iokit_wire.py": "4a1f13d770d41a0b0daef2bcf4f3e2e8c5469daf10a3336d79b31fcd014c9ded"
+  }
+}

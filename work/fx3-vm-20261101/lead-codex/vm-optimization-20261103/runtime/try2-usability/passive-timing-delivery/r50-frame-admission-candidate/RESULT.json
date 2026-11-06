@@ -1,0 +1,580 @@
+{
+  "schema": "fx3-r50-result-v1",
+  "task": "task_0cce6dde0290",
+  "dispatch": "ctx_89f797a305ca",
+  "status": "succeeded_offline_candidate",
+  "menu_pass": false,
+  "runtime_contact": false,
+  "new_vm_browser_server_qmp_guest": false,
+  "deployment": false,
+  "default_entry_changed": false,
+  "external_fx6_contact": false,
+  "integrated": false,
+  "writes_only_r50": true,
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "source_dependencies": {
+    "r47_page_identity": "0246146d402ee732429afcdd0230615799c0f82a52e875ac555dc07a485ece4e",
+    "r47_final_canonical": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "r47_final_served": "a90a82c1b4b30d12ef298272f65cb643a74c8c491a02e88a71fdb14851f3cb5b",
+    "r47_planned_navigation_click": "6e120517b1c785bb3eb277268908801465dd55dc0bda5901cfaa2be4fc7175e0",
+    "r47_base_page": "8a40a4a67bdbe4ce8712d1a4ef78c893ffc2ea625fb6f0966d1a4e4136ba1be7",
+    "r47_assembly": "201d14b0daaede2ec582dc9e3f63e021845daa0db2d205f5896077a7736b618c",
+    "r49_review": "3140405db7efef9b7b00da5296b4ba820a1978b687ecef2c322948899b229484",
+    "r48_run_SHA256SUMS": "4640192527daa51c3bdb006a64d768016714657a3254256f4e773b120eb6428f"
+  },
+  "target_a_obs_v2": {
+    "implemented_as_isolated_candidate": true,
+    "integrated": false,
+    "baseline_full_PAGE_sha256": "551cbd919f61858ba8542a3a46d7eab3894162c915038d92d5a16317bc3c719b",
+    "candidate_full_PAGE_sha256": "9406948426e8899e3f6b122fd752ba128ad2c2327d5b417ce155dd44a6b765f1",
+    "baseline_canonical_script_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "candidate_canonical_script_sha256": "70d08c79c3d20216b36ae1cef6c58584a45d1727ec3fcb99a2eae2608c974205",
+    "candidate_served_script_sha256": "75c1e967769c0c9a52b27e4c052c73849bcc93709f82715b20d76a182f349833",
+    "diff_path": "candidate/DIFF-obs-v2.patch",
+    "diff_sha256": "7825a9ce831474fe941bc69e112428421604a08cb202d4148aad6f745322c3dc",
+    "diff_added_lines": 52,
+    "diff_removed_lines": 4,
+    "condition_block_unchanged": true,
+    "reason_unchanged": true,
+    "token_counts": {
+      "frame_loaded_for_preflight": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "frame_loaded_for_last_status": {
+        "baseline": 2,
+        "candidate": 2
+      },
+      "status_request": {
+        "baseline": 2,
+        "candidate": 2
+      },
+      "key_post": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "reason": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "recovery_eligibility": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "confirm_handler": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "pin_handler": {
+        "baseline": 1,
+        "candidate": 1
+      }
+    },
+    "static_checks": {
+      "no_extra_status_request": true,
+      "no_extra_key_post": true,
+      "no_extra_frame_loaded_call": true,
+      "confirm_handler_unchanged": true,
+      "pin_handler_unchanged": true,
+      "recovery_eligibility_unchanged": true,
+      "recorder_runs_only_on_combined_rejection": true
+    },
+    "observation_schema": "fx3-frame-admission-obs-v2",
+    "record_scope": "only the unchanged combined preflight freshness/identity rejection",
+    "recorded_fields": [
+      "clicked SHA/gen/seq and click monotonic",
+      "displayed SHA/gen/seq and display monotonic",
+      "lastStatus SHA/gen/seq and status monotonic",
+      "fresh preflight SHA/gen/seq and request start/end",
+      "all predicate values in source order",
+      "first true term and evaluated prefix",
+      "sequence observed only"
+    ],
+    "equivalence_replay": {
+      "receipt": "receipts/admission-compare.json",
+      "cases": [
+        {
+          "case": "r48_attempt1_gen19_120_to_gen20_128",
+          "equal": {
+            "key_posts": true,
+            "outcome": true,
+            "reason": true,
+            "mutation": true,
+            "confirm_disabled": true,
+            "pin_disabled": true,
+            "fetch_counts": true
+          }
+        },
+        {
+          "case": "r48_attempt2_gen43_231_to_gen44_235",
+          "equal": {
+            "key_posts": true,
+            "outcome": true,
+            "reason": true,
+            "mutation": true,
+            "confirm_disabled": true,
+            "pin_disabled": true,
+            "fetch_counts": true
+          }
+        },
+        {
+          "case": "step_identity_changed_direct",
+          "equal": {
+            "key_posts": true,
+            "outcome": true,
+            "reason": true,
+            "mutation": true,
+            "confirm_disabled": true,
+            "pin_disabled": true,
+            "fetch_counts": true
+          }
+        },
+        {
+          "case": "lifecycle_phase_stopping_direct",
+          "equal": {
+            "key_posts": true,
+            "outcome": true,
+            "reason": true,
+            "mutation": true,
+            "confirm_disabled": true,
+            "pin_disabled": true,
+            "fetch_counts": true
+          }
+        },
+        {
+          "case": "accepted_same_frame",
+          "equal": {
+            "key_posts": true,
+            "outcome": true,
+            "reason": true,
+            "mutation": true,
+            "confirm_disabled": true,
+            "pin_disabled": true,
+            "fetch_counts": true
+          }
+        }
+      ],
+      "expired_recovery": {
+        "baseline": {
+          "eligible": {
+            "eligible": false,
+            "reason": "document_or_alarm_mismatch"
+          },
+          "key_posts": 0
+        },
+        "candidate": {
+          "eligible": {
+            "eligible": false,
+            "reason": "document_or_alarm_mismatch"
+          },
+          "key_posts": 0
+        },
+        "equal": true
+      },
+      "baseline": {
+        "page_sha256": "a90a82c1b4b30d12ef298272f65cb643a74c8c491a02e88a71fdb14851f3cb5b",
+        "canonical_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+        "page_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r47-runtime-integration-candidate/receipts/final-served-script.txt"
+      },
+      "candidate": {
+        "page_sha256": "75c1e967769c0c9a52b27e4c052c73849bcc93709f82715b20d76a182f349833",
+        "canonical_sha256": "70d08c79c3d20216b36ae1cef6c58584a45d1727ec3fcb99a2eae2608c974205",
+        "page_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r50-frame-admission-candidate/candidate/PAGE-script-obs-v2.served.js"
+      }
+    },
+    "no_extra_network": true,
+    "no_extra_key_posts": true,
+    "no_condition_change": true,
+    "sequence_in_gate": false,
+    "key_post_counts_equal": true,
+    "confirm_disabled_equal": true,
+    "pin_disabled_equal": true,
+    "not_integrated_note": "patch base PAGE source/assembly and re-bind canonical/full PAGE hashes; no r47 source/runner changed here"
+  },
+  "target_b_preclick_prototype": {
+    "implemented": true,
+    "disabled_by_default": true,
+    "integrated": false,
+    "prototype_path": "prototype/preclick_sync.js",
+    "prototype_sha256": "ff595fbe12185c9cb02f768540f8ac124c25938915319b828dc606f9f9379a06",
+    "config": {
+      "maxWaitMs": 200,
+      "sampleIntervalMs": 50,
+      "requiredStableSamples": 2,
+      "maxAttempts": 3,
+      "reserveMs": 500
+    },
+    "scenarios": [
+      {
+        "case": "same_frame_normal",
+        "baseline": {
+          "protocol": "PAGE_baseline",
+          "outcome": "accepted",
+          "reason": null,
+          "key_posts": 1,
+          "key_clicks": 1,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": null,
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "prototype": {
+          "protocol": "preclick_allowed_then_PAGE",
+          "outcome": "accepted",
+          "reason": null,
+          "key_posts": 1,
+          "key_clicks": 1,
+          "status_reads": 2,
+          "waited_ms": 50.5,
+          "sync_reason": "readonly_frame_matched",
+          "samples": 2,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "improvement": "none: both accepted; prototype adds bounded reads/latency",
+        "key_posts_equal": true,
+        "confirm_equal": true
+      },
+      {
+        "case": "r48_attempt1_changed",
+        "baseline": {
+          "protocol": "PAGE_baseline",
+          "outcome": "not_posted",
+          "reason": "preflight_identity_or_lifecycle_changed",
+          "key_posts": 0,
+          "key_clicks": 1,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": null,
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "prototype": {
+          "protocol": "preclick_refused",
+          "outcome": null,
+          "reason": null,
+          "key_posts": 0,
+          "key_clicks": 0,
+          "status_reads": 1,
+          "waited_ms": 0.25,
+          "sync_reason": "displayed_frame_superseded",
+          "samples": 1,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "improvement": "none for admission acceptance; changed frame refused earlier (no PAGE attempt/recovery); policy/accounting difference; no auto-rebind",
+        "key_posts_equal": true,
+        "confirm_equal": true
+      },
+      {
+        "case": "r48_attempt2_changed",
+        "baseline": {
+          "protocol": "PAGE_baseline",
+          "outcome": "not_posted",
+          "reason": "preflight_identity_or_lifecycle_changed",
+          "key_posts": 0,
+          "key_clicks": 1,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": null,
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "prototype": {
+          "protocol": "preclick_refused",
+          "outcome": null,
+          "reason": null,
+          "key_posts": 0,
+          "key_clicks": 0,
+          "status_reads": 1,
+          "waited_ms": 0.25,
+          "sync_reason": "displayed_frame_superseded",
+          "samples": 1,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "improvement": "none for admission acceptance; changed frame refused earlier (no PAGE attempt/recovery); policy/accounting difference; no auto-rebind",
+        "key_posts_equal": true,
+        "confirm_equal": true
+      },
+      {
+        "case": "prepared_then_changed_before_PAGE",
+        "baseline": {
+          "protocol": "PAGE_baseline",
+          "outcome": "not_posted",
+          "reason": "preflight_identity_or_lifecycle_changed",
+          "key_posts": 0,
+          "key_clicks": 1,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": null,
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "prototype": {
+          "protocol": "preclick_allowed_then_PAGE",
+          "outcome": "not_posted",
+          "reason": "preflight_identity_or_lifecycle_changed",
+          "key_posts": 0,
+          "key_clicks": 1,
+          "status_reads": 2,
+          "waited_ms": 50.5,
+          "sync_reason": "readonly_frame_matched",
+          "samples": 2,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "improvement": "none: original PAGE freshness still rejects; prototype adds latency",
+        "key_posts_equal": true,
+        "confirm_equal": true
+      },
+      {
+        "case": "never_ready_bounded",
+        "baseline": {
+          "protocol": "PAGE_baseline",
+          "outcome": "not_posted",
+          "reason": "preflight_identity_or_lifecycle_changed",
+          "key_posts": 0,
+          "key_clicks": 1,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": null,
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "prototype": {
+          "protocol": "preclick_refused",
+          "outcome": null,
+          "reason": null,
+          "key_posts": 0,
+          "key_clicks": 0,
+          "status_reads": 3,
+          "waited_ms": 100.75,
+          "sync_reason": "status_not_ready",
+          "samples": 3,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "improvement": "none: both no key; prototype spends bounded reads/waited time",
+        "key_posts_equal": true,
+        "confirm_equal": true
+      },
+      {
+        "case": "expired_arm",
+        "baseline": {
+          "protocol": "PAGE_baseline",
+          "outcome": null,
+          "reason": null,
+          "key_posts": 0,
+          "key_clicks": 0,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": null,
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "prototype": {
+          "protocol": "preclick_refused",
+          "outcome": null,
+          "reason": null,
+          "key_posts": 0,
+          "key_clicks": 0,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": "expired_or_no_window",
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "improvement": "none: both no key; prototype refuses before click",
+        "key_posts_equal": true,
+        "confirm_equal": true
+      },
+      {
+        "case": "identity_changed",
+        "baseline": {
+          "protocol": "PAGE_baseline",
+          "outcome": null,
+          "reason": null,
+          "key_posts": 0,
+          "key_clicks": 0,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": null,
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "prototype": {
+          "protocol": "preclick_refused",
+          "outcome": null,
+          "reason": null,
+          "key_posts": 0,
+          "key_clicks": 0,
+          "status_reads": 0,
+          "waited_ms": 0,
+          "sync_reason": "identity_changed",
+          "samples": 0,
+          "confirm_disabled": true,
+          "pin_disabled": true
+        },
+        "improvement": "none: both no key; prototype refuses before click",
+        "key_posts_equal": true,
+        "confirm_equal": true
+      }
+    ],
+    "summary": {
+      "no_changed_frame_accepted": true,
+      "same_frame_only_accepted": [
+        "same_frame_normal"
+      ],
+      "all_key_posts_equal": true,
+      "all_confirm_equal": true,
+      "one_click_max": true,
+      "benefit": "No scenario gained admission of a changed frame. Same-frame only accepted, with added latency. Changed-frame prototype refused before PAGE, avoiding a PAGE not_posted attempt but changing attempt/recovery accounting; this is not a demonstrated menu/admission improvement."
+    },
+    "comparison_receipt": "receipts/preclick-compare.json",
+    "comparison_receipt_sha256": "d4ff8c4f1b94048c1646bb8aaed38cd86b111c6e51b5c6052e012f3ca09c5c5d",
+    "conclusion": "No changed-frame scenario gained admission; only same-frame accepted, with added latency. Changed-frame pre-click refusal changes attempt/recovery accounting. Not a demonstrated improvement; keep disabled and do not integrate.",
+    "preserves": [
+      "original PAGE final freshness gate",
+      "full identity gates",
+      "60s arm (no reset)",
+      "native12/snapshot20/total8min",
+      "original recovery counts",
+      "one caller click at most once"
+    ]
+  },
+  "candidate_build": {
+    "schema": "fx3-r50-candidate-build-v1",
+    "baseline": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "candidate": "70d08c79c3d20216b36ae1cef6c58584a45d1727ec3fcb99a2eae2608c974205",
+    "full_baseline": "551cbd919f61858ba8542a3a46d7eab3894162c915038d92d5a16317bc3c719b",
+    "full_candidate": "9406948426e8899e3f6b122fd752ba128ad2c2327d5b417ce155dd44a6b765f1",
+    "served_candidate": "75c1e967769c0c9a52b27e4c052c73849bcc93709f82715b20d76a182f349833",
+    "diff_sha256": "7825a9ce831474fe941bc69e112428421604a08cb202d4148aad6f745322c3dc",
+    "changed_lines": 98,
+    "anchors_all_once": true,
+    "not_integrated": true
+  },
+  "static_audit": {
+    "schema": "fx3-r50-candidate-static-audit-v1",
+    "baseline_canonical_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "candidate_canonical_sha256": "70d08c79c3d20216b36ae1cef6c58584a45d1727ec3fcb99a2eae2608c974205",
+    "candidate_script_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r50-frame-admission-candidate/candidate/PAGE-script-obs-v2.canonical.js",
+    "condition_block_unchanged": true,
+    "condition_block_sha256": "102b41a9033c69ccddc4c603c10b49595acec9c8ef84c60548a11d8cd9a6e847",
+    "reason_unchanged": true,
+    "token_counts": {
+      "frame_loaded_for_preflight": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "frame_loaded_for_last_status": {
+        "baseline": 2,
+        "candidate": 2
+      },
+      "status_request": {
+        "baseline": 2,
+        "candidate": 2
+      },
+      "key_post": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "reason": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "recovery_eligibility": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "confirm_handler": {
+        "baseline": 1,
+        "candidate": 1
+      },
+      "pin_handler": {
+        "baseline": 1,
+        "candidate": 1
+      }
+    },
+    "recorder_only_added": true,
+    "recorder_forbidden_calls": [],
+    "diff_added_lines": 52,
+    "diff_removed_lines": 4,
+    "diff_stats": {
+      "changed_hunks": 5,
+      "added": 52,
+      "removed": 4
+    },
+    "checks": {
+      "no_extra_status_request": true,
+      "no_extra_key_post": true,
+      "no_extra_frame_loaded_call": true,
+      "confirm_handler_unchanged": true,
+      "pin_handler_unchanged": true,
+      "recovery_eligibility_unchanged": true,
+      "recorder_runs_only_on_combined_rejection": true
+    },
+    "note": "Recorder computes frameLoadedFor-equivalent booleans from captured values without calling frameLoadedFor; original if expression and reason are textually unchanged. Diff includes only insertion/line-extension; no key/confirm/network code changed."
+  },
+  "test_run": {
+    "path": "receipts/test-run.json",
+    "cases": 5,
+    "failed": 0,
+    "passed": true
+  },
+  "input_seal": {
+    "before": "receipts/before-input-seal.json",
+    "after": "receipts/after-input-seal.json",
+    "compare": "receipts/input-seal-compare.json",
+    "count": 16,
+    "unchanged": true
+  },
+  "receipts": {
+    "admission-compare.json": "99b7f8963738008ffbfae57729ab453400fbc0e82603bcdf73dedbe87051bfd3",
+    "after-input-seal.json": "6d53db155846297b9d618016ab0b2df9228fa75987a60314702931b0fd6e7f11",
+    "before-input-seal.json": "a122bfef634b73b749e4a2e1128265bc5767f8707aaf2242f6c1e655e3eb3a76",
+    "candidate-build.json": "46834dba485bfee2d3bf13296d73d34a5c5211095c694e9270cdef79a5d2440c",
+    "candidate-static-audit.json": "b17263b1386f4d0aea3d3fb9e6cd5301dc04f3cd088a1cc8889493bcac43c5f5",
+    "input-seal-compare.json": "4717f95947a99ef5db57ad228e67eda2b0798aa73c74f78519a02094d636b8e3",
+    "preclick-compare.json": "d4ff8c4f1b94048c1646bb8aaed38cd86b111c6e51b5c6052e012f3ca09c5c5d",
+    "test-run.json": "5a63bbf109fe26ba76b3e1c19b528bbc61875d0a0af6dd3930879982c0f04035"
+  },
+  "source_hashes": {
+    "r47_page_identity": "0246146d402ee732429afcdd0230615799c0f82a52e875ac555dc07a485ece4e",
+    "r47_final_canonical": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
+    "r47_final_served": "a90a82c1b4b30d12ef298272f65cb643a74c8c491a02e88a71fdb14851f3cb5b",
+    "r47_planned_navigation_click": "6e120517b1c785bb3eb277268908801465dd55dc0bda5901cfaa2be4fc7175e0",
+    "r47_base_page": "8a40a4a67bdbe4ce8712d1a4ef78c893ffc2ea625fb6f0966d1a4e4136ba1be7",
+    "r47_assembly": "201d14b0daaede2ec582dc9e3f63e021845daa0db2d205f5896077a7736b618c",
+    "r49_review": "3140405db7efef9b7b00da5296b4ba820a1978b687ecef2c322948899b229484",
+    "r48_run_SHA256SUMS": "4640192527daa51c3bdb006a64d768016714657a3254256f4e773b120eb6428f"
+  },
+  "constraints": {
+    "step_arm_seconds": 60,
+    "native_seconds": 12,
+    "snapshot_ttl_seconds": 20,
+    "total_minutes": 8,
+    "recovery_counts": "unchanged",
+    "no_cpio_copy": true,
+    "no_full_run_package": true,
+    "old_failures_unchanged": "r48 failed; r45 failed/cleanup unknown",
+    "no_new_vm_authorization": true
+  },
+  "limitations": [
+    "fake DOM/fake clock tests, not real browser/network timing",
+    "obs_v2 candidate is isolated final-script artifact, not integrated/imported source",
+    "preclick latency synthetic (read count/interval), not measured network latency",
+    "no actual visual confirmation run in fake DOM",
+    "no menu/speed/FX6/CPU/FIFO claim"
+  ]
+}

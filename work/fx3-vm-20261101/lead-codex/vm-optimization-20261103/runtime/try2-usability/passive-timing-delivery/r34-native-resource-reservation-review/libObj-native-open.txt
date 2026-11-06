@@ -1,0 +1,175 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review/libObj.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000101e2c <GetLogicalAddress>:
+  1031b0: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+  1031b4: 910003fd     	mov	x29, sp
+  1031b8: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  1031bc: aa0103f5     	mov	x21, x1
+  1031c0: b9400821     	ldr	w1, [x1, #0x8]
+  1031c4: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1031c8: aa0003f3     	mov	x19, x0
+  1031cc: 528000a0     	mov	w0, #0x5                // =5
+  1031d0: f9001bf7     	str	x23, [sp, #0x30]
+  1031d4: 97fffbb0     	bl	0x102094 <GetLogicalAddress+0x268>
+  1031d8: b9402261     	ldr	w1, [x19, #0x20]
+  1031dc: 7100043f     	cmp	w1, #0x1
+  1031e0: 540007c1     	b.ne	0x1032d8 <GetLogicalAddress+0x14ac>
+  1031e4: 910103b7     	add	x23, x29, #0x40
+  1031e8: aa1703e0     	mov	x0, x23
+  1031ec: 97fffe87     	bl	0x102c08 <GetLogicalAddress+0xddc>
+  1031f0: f94027b4     	ldr	x20, [x29, #0x48]
+  1031f4: d0000ae0     	adrp	x0, 0x261000 <_ZTIN2ux6wgtlay23AnimationPartsConverterE+0x14e8>
+  1031f8: b9400aa1     	ldr	w1, [x21, #0x8]
+  1031fc: f9443400     	ldr	x0, [x0, #0x868]
+  103200: 91004000     	add	x0, x0, #0x10
+  103204: f90023a0     	str	x0, [x29, #0x40]
+  103208: 2a0103e0     	mov	w0, w1
+  10320c: f9001e60     	str	x0, [x19, #0x38]
+  103210: 91002280     	add	x0, x20, #0x8
+  103214: b9000a81     	str	w1, [x20, #0x8]
+  103218: b94012a1     	ldr	w1, [x21, #0x10]
+  10321c: 39001001     	strb	w1, [x0, #0x4]
+  103220: f94002a1     	ldr	x1, [x21]
+  103224: b40001e1     	cbz	x1, 0x103260 <GetLogicalAddress+0x1434>
+  103228: 91003680     	add	x0, x20, #0xd
+  10322c: d28001e2     	mov	x2, #0xf                // =15
+  103230: 97fd4e38     	bl	0x56b10 <strncpy@plt>
+  103234: f94002a1     	ldr	x1, [x21]
+  103238: 9100a260     	add	x0, x19, #0x28
+  10323c: d28001e2     	mov	x2, #0xf                // =15
+  103240: 97fd4e34     	bl	0x56b10 <strncpy@plt>
+  103244: 3900729f     	strb	wzr, [x20, #0x1c]
+  103248: 3900de7f     	strb	wzr, [x19, #0x37]
+  10324c: f9402ba0     	ldr	x0, [x29, #0x50]
+  103250: b4000400     	cbz	x0, 0x1032d0 <GetLogicalAddress+0x14a4>
+  103254: aa1703e0     	mov	x0, x23
+  103258: 97ffffd3     	bl	0x1031a4 <GetLogicalAddress+0x1378>
+  10325c: 14000004     	b	0x10326c <GetLogicalAddress+0x1440>
+  103260: 3900141f     	strb	wzr, [x0, #0x5]
+  103264: 3900a27f     	strb	wzr, [x19, #0x28]
+  103268: 17fffff9     	b	0x10324c <GetLogicalAddress+0x1420>
+  10326c: f94027a0     	ldr	x0, [x29, #0x48]
+  103270: b9402016     	ldr	w22, [x0, #0x20]
+  103274: 35000176     	cbnz	w22, 0x1032a0 <GetLogicalAddress+0x1474>
+  103278: 91008294     	add	x20, x20, #0x20
+  10327c: f9400e80     	ldr	x0, [x20, #0x18]
+  103280: a9408a81     	ldp	x1, x2, [x20, #0x8]
+  103284: f9000a60     	str	x0, [x19, #0x10]
+  103288: b9402280     	ldr	w0, [x20, #0x20]
+  10328c: b9004260     	str	w0, [x19, #0x40]
+  103290: 91012260     	add	x0, x19, #0x48
+  103294: 97ffd918     	bl	0xf96f4 <GRM_fbrmRectblitYUV+0x5db0>
+  103298: 52800200     	mov	w0, #0x10               // =16
+  10329c: b9002260     	str	w0, [x19, #0x20]
+  1032a0: aa1703e0     	mov	x0, x23
+  1032a4: 97fffdc5     	bl	0x1029b8 <GetLogicalAddress+0xb8c>
+  1032a8: b9400aa1     	ldr	w1, [x21, #0x8]
+  1032ac: aa1303e2     	mov	x2, x19
+  1032b0: 528000c0     	mov	w0, #0x6                // =6
+  1032b4: 97fffb81     	bl	0x1020b8 <GetLogicalAddress+0x28c>
+  1032b8: f9401bf7     	ldr	x23, [sp, #0x30]
+  1032bc: 2a1603e0     	mov	w0, w22
+  1032c0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  1032c4: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  1032c8: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+  1032cc: d65f03c0     	ret
+  1032d0: 1284e1d6     	mov	w22, #-0x270f           // =-9999
+  1032d4: 17fffff3     	b	0x1032a0 <GetLogicalAddress+0x1474>
+  1032d8: 12800056     	mov	w22, #-0x3              // =-3
+  1032dc: 17fffff3     	b	0x1032a8 <GetLogicalAddress+0x147c>
+  1032e0: aa0003f3     	mov	x19, x0
+  1032e4: aa1703e0     	mov	x0, x23
+  1032e8: 97fffdb4     	bl	0x1029b8 <GetLogicalAddress+0xb8c>
+  1032ec: aa1303e0     	mov	x0, x19
+  1032f0: 97fd5178     	bl	0x578d0 <_Unwind_Resume@plt>
+  1032f4: a9b97bfd     	stp	x29, x30, [sp, #-0x70]!
+  1032f8: 910003fd     	mov	x29, sp
+  1032fc: a90153f3     	stp	x19, x20, [sp, #0x10]
+  103300: aa0003f3     	mov	x19, x0
+  103304: 528000e0     	mov	w0, #0x7                // =7
+  103308: a90363f7     	stp	x23, x24, [sp, #0x30]
+  10330c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  103310: aa0103f7     	mov	x23, x1
+  103314: f90023f9     	str	x25, [sp, #0x40]
+  103318: aa0203f8     	mov	x24, x2
+  10331c: aa0303f5     	mov	x21, x3
+  103320: 2a0403f9     	mov	w25, w4
+  103324: 97fffb65     	bl	0x1020b8 <GetLogicalAddress+0x28c>
+  103328: b9402260     	ldr	w0, [x19, #0x20]
+  10332c: 7100041f     	cmp	w0, #0x1
+  103330: 540001c0     	b.eq	0x103368 <GetLogicalAddress+0x153c>
+  103334: 12800055     	mov	w21, #-0x3              // =-3
+  103338: aa1303e3     	mov	x3, x19
+  10333c: aa1803e2     	mov	x2, x24
+  103340: aa1703e1     	mov	x1, x23
+  103344: 52800100     	mov	w0, #0x8                // =8
+  103348: 97fffb66     	bl	0x1020e0 <GetLogicalAddress+0x2b4>
+  10334c: f94023f9     	ldr	x25, [sp, #0x40]
+  103350: 2a1503e0     	mov	w0, w21
+  103354: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  103358: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  10335c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+  103360: a8c77bfd     	ldp	x29, x30, [sp], #0x70
+  103364: d65f03c0     	ret
+  103368: 924006e0     	and	x0, x23, #0x3
+  10336c: f110031f     	cmp	x24, #0x400
+  103370: fa408800     	ccmp	x0, #0x0, #0x0, hi
+  103374: 54fffe01     	b.ne	0x103334 <GetLogicalAddress+0x1508>
+  103378: aa1803e2     	mov	x2, x24
+  10337c: aa1703e1     	mov	x1, x23
+  103380: 91012260     	add	x0, x19, #0x48
+  103384: 97ffd8dc     	bl	0xf96f4 <GRM_fbrmRectblitYUV+0x5db0>
+  103388: f9403a60     	ldr	x0, [x19, #0x70]
+  10338c: b4fffd40     	cbz	x0, 0x103334 <GetLogicalAddress+0x1508>
+  103390: 910143b6     	add	x22, x29, #0x50
+  103394: 52800061     	mov	w1, #0x3                // =3
+  103398: aa1603e0     	mov	x0, x22
+  10339c: 97fffe1b     	bl	0x102c08 <GetLogicalAddress+0xddc>
+  1033a0: f9402fb4     	ldr	x20, [x29, #0x58]
+  1033a4: f0000ae0     	adrp	x0, 0x262000
+  1033a8: f9435000     	ldr	x0, [x0, #0x6a0]
+  1033ac: f9000697     	str	x23, [x20, #0x8]
+  1033b0: 91004000     	add	x0, x0, #0x10
+  1033b4: f9002ba0     	str	x0, [x29, #0x50]
+  1033b8: 91002280     	add	x0, x20, #0x8
+  1033bc: 39004019     	strb	w25, [x0, #0x10]
+  1033c0: f9000418     	str	x24, [x0, #0x8]
+  1033c4: b4000215     	cbz	x21, 0x103404 <GetLogicalAddress+0x15d8>
+  1033c8: aa1503e1     	mov	x1, x21
+  1033cc: 91006680     	add	x0, x20, #0x19
+  1033d0: d28001e2     	mov	x2, #0xf                // =15
+  1033d4: 97fd4dcf     	bl	0x56b10 <strncpy@plt>
+  1033d8: aa1503e1     	mov	x1, x21
+  1033dc: 9100a260     	add	x0, x19, #0x28
+  1033e0: d28001e2     	mov	x2, #0xf                // =15
+  1033e4: 97fd4dcb     	bl	0x56b10 <strncpy@plt>
+  1033e8: 3900a29f     	strb	wzr, [x20, #0x28]
+  1033ec: 3900de7f     	strb	wzr, [x19, #0x37]
+  1033f0: f94033a0     	ldr	x0, [x29, #0x60]
+  1033f4: b4000220     	cbz	x0, 0x103438 <GetLogicalAddress+0x160c>
+  1033f8: aa1603e0     	mov	x0, x22
+  1033fc: 97ffff6a     	bl	0x1031a4 <GetLogicalAddress+0x1378>
+  103400: 14000004     	b	0x103410 <GetLogicalAddress+0x15e4>
+  103404: 3900441f     	strb	wzr, [x0, #0x11]
+  103408: 3900a27f     	strb	wzr, [x19, #0x28]
+  10340c: 17fffff9     	b	0x1033f0 <GetLogicalAddress+0x15c4>
+  103410: f9402fa0     	ldr	x0, [x29, #0x58]
+  103414: b9403015     	ldr	w21, [x0, #0x30]
+  103418: 350000b5     	cbnz	w21, 0x10342c <GetLogicalAddress+0x1600>
+  10341c: f9401e80     	ldr	x0, [x20, #0x38]
+  103420: f9000a60     	str	x0, [x19, #0x10]
+  103424: 52800200     	mov	w0, #0x10               // =16
+  103428: b9002260     	str	w0, [x19, #0x20]
+  10342c: aa1603e0     	mov	x0, x22
+  103430: 97fffd71     	bl	0x1029f4 <GetLogicalAddress+0xbc8>
+  103434: 17ffffc1     	b	0x103338 <GetLogicalAddress+0x150c>
+  103438: 1284e1d5     	mov	w21, #-0x270f           // =-9999
+  10343c: 17fffffc     	b	0x10342c <GetLogicalAddress+0x1600>
+  103440: aa0003f3     	mov	x19, x0
+  103444: aa1603e0     	mov	x0, x22
+  103448: 97fffd6b     	bl	0x1029f4 <GetLogicalAddress+0xbc8>
+  10344c: aa1303e0     	mov	x0, x19
+  103450: 97fd5120     	bl	0x578d0 <_Unwind_Resume@plt>

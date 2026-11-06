@@ -1,0 +1,28 @@
+0057b7be push       {r4, r5, r6, r7, lr}
+0057b7c0 add        r7, sp, #0xc
+0057b7c2 str        fp, [sp, #-0x4]!
+0057b7c6 mov        r4, r0
+0057b7c8 mov        r5, r1
+0057b7ca movs       r6, #0
+0057b7cc add.w      r0, r4, #8
+0057b7d0 strd       r6, r6, [r4]
+0057b7d4 mov        r1, r4
+0057b7d6 stm        r0!, {r2, r5, r6}
+0057b7d8 str        r6, [r4, #0x14]
+0057b7da strb       r6, [r4, #0x18]
+0057b7dc mov        r0, r2
+0057b7de mov        r2, r3
+0057b7e0 bl         #0x44f9c4
+0057b7e4 cmp        r0, #0
+0057b7e6 mov        r1, r5
+0057b7e8 it         ne
+0057b7ea strne      r6, [r4]
+0057b7ec it         eq
+0057b7ee ldreq      r6, [r4]
+0057b7f0 mov        r0, r6
+0057b7f2 bl         #0xa878d2
+0057b7f6 ldr        r0, [r4]
+0057b7f8 str        r0, [r4, #0x10]
+0057b7fa mov        r0, r4
+0057b7fc ldr        fp, [sp], #4
+0057b800 pop        {r4, r5, r6, r7, pc}

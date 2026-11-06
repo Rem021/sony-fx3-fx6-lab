@@ -1,0 +1,64 @@
+{
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap99r2cpdate600-9391e358/date98-trace-final.bin",
+  "bytes": 24576,
+  "sha256": "3b9f18415fdd701c8c082902864856ef5b10ad41d1dcf15ef3c6f46c1b1bc0e6",
+  "header": [
+    3544394725368021316,
+    1,
+    64,
+    320,
+    1,
+    0,
+    0,
+    0
+  ],
+  "records": [
+    {
+      "slot": 0,
+      "sequence": 4,
+      "published_stable": true,
+      "event": 1,
+      "kind": "original_user_sync",
+      "pid": 229,
+      "tid": 424,
+      "destination": "0x80900141",
+      "bytes": 32,
+      "pointer": "0x7f8271ba80",
+      "caller": "0x7ed5f25498",
+      "state": "native_call_returned",
+      "native_return": 0,
+      "unchanged_fallback_branch_value": null,
+      "native_return_observed": true,
+      "native_errno": 2,
+      "before_captured": true,
+      "after_captured": true,
+      "before_method": 2,
+      "after_method": 2,
+      "before_raw": "00000000e50701010000000000000000000000001c0200000000000001000000",
+      "after_raw": "00000000e50701010000000000000000000000001c0200000000000001000000",
+      "start_ns": 25374712000,
+      "end_ns": 25422336000,
+      "live_before": {
+        "force_current": 1,
+        "force_next": 1,
+        "force_valid": true,
+        "date_current": 0,
+        "date_next": 0,
+        "date_read_mask": 3
+      },
+      "live_after": {
+        "force_current": 1,
+        "force_next": 1,
+        "force_valid": true,
+        "date_current": 0,
+        "date_next": 0,
+        "date_read_mask": 3
+      },
+      "original_state_writes": false,
+      "CP_reply_added": false
+    }
+  ],
+  "status": "bound",
+  "event_count": 1,
+  "dropped": 0
+}

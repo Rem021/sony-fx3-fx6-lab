@@ -1,0 +1,45 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2bcd224: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 2bcd228: 910003fd     	mov	x29, sp
+ 2bcd22c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2bcd230: aa0803f4     	mov	x20, x8
+ 2bcd234: f9400013     	ldr	x19, [x0]
+ 2bcd238: aa1303e0     	mov	x0, x19
+ 2bcd23c: 97fffff3     	bl	0x2bcd208 <Application_System_Init+0x14dd678>
+ 2bcd240: f9400a60     	ldr	x0, [x19, #0x10]
+ 2bcd244: f9000a7f     	str	xzr, [x19, #0x10]
+ 2bcd248: f9000280     	str	x0, [x20]
+ 2bcd24c: aa1403e0     	mov	x0, x20
+ 2bcd250: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2bcd254: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 2bcd258: d65f03c0     	ret
+ 2bcd25c: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 2bcd260: 910003fd     	mov	x29, sp
+ 2bcd264: f9000bf3     	str	x19, [sp, #0x10]
+ 2bcd268: aa0003f3     	mov	x19, x0
+ 2bcd26c: 9000d980     	adrp	x0, 0x46fd000
+ 2bcd270: f9401000     	ldr	x0, [x0, #0x20]
+ 2bcd274: 91004000     	add	x0, x0, #0x10
+ 2bcd278: f9000260     	str	x0, [x19]
+ 2bcd27c: 91070260     	add	x0, x19, #0x1c0
+ 2bcd280: 97ffffac     	bl	0x2bcd130 <Application_System_Init+0x14dd5a0>
+ 2bcd284: aa1303e0     	mov	x0, x19
+ 2bcd288: f9400bf3     	ldr	x19, [sp, #0x10]
+ 2bcd28c: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 2bcd290: 17f1dc44     	b	0x28443a0 <Application_System_Init+0x1154810>
+ 2bcd294: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 2bcd298: 910003fd     	mov	x29, sp
+ 2bcd29c: f9000bf3     	str	x19, [sp, #0x10]
+ 2bcd2a0: aa0003f3     	mov	x19, x0
+ 2bcd2a4: 97ffffee     	bl	0x2bcd25c <Application_System_Init+0x14dd6cc>
+ 2bcd2a8: aa1303e0     	mov	x0, x19
+ 2bcd2ac: f9400bf3     	ldr	x19, [sp, #0x10]
+ 2bcd2b0: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 2bcd2b4: d2803b01     	mov	x1, #0x1d8              // =472
+ 2bcd2b8: 17a7176a     	b	0x1593060 <_ZdlPvm@plt>
+ 2bcd2bc: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!

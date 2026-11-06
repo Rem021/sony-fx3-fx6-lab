@@ -1,0 +1,44 @@
+{
+  "scope": "Actual production lock-acquisition blocks; disposable host files only; no QEMU",
+  "source_sha256": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/run_trial_v3.py": "82103cadaae614343582d749428ebac678c43413798bb8146acf562969324277",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v18_preinput_stop.py": "f8d5800f245a02dfa28964c11fe78e9db5c4849f073d1fa783c806dcdc6b6492"
+  },
+  "cases": [
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/run_trial_v3.py",
+      "busy_index": 0,
+      "error_type": "BlockingIOError",
+      "error": "[Errno 35] Resource temporarily unavailable",
+      "active_owner_preserved": true,
+      "first_lock_released_before_outer_exit": null
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/run_trial_v3.py",
+      "busy_index": 1,
+      "error_type": "BlockingIOError",
+      "error": "[Errno 35] Resource temporarily unavailable",
+      "active_owner_preserved": true,
+      "first_lock_released_before_outer_exit": false
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v18_preinput_stop.py",
+      "busy_index": 0,
+      "error_type": "RuntimeError",
+      "error": "已有 FX3 试用或验证正在运行，请等待其结束后重试。不会抢锁或停止其他会话。",
+      "active_owner_preserved": true,
+      "first_lock_released_before_outer_exit": null
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v18_preinput_stop.py",
+      "busy_index": 1,
+      "error_type": "RuntimeError",
+      "error": "已有 FX3 试用或验证正在运行，请等待其结束后重试。不会抢锁或停止其他会话。",
+      "active_owner_preserved": true,
+      "first_lock_released_before_outer_exit": true
+    }
+  ],
+  "old_screenshot_root_cause_proven": false,
+  "screenshot_error_reproduced_by_lock_contention": true,
+  "current_default_entry_changed": false
+}

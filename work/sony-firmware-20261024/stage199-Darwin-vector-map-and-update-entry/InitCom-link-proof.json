@@ -1,0 +1,148 @@
+{
+  "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+  "source_layout_base": "0x4200",
+  "selected_ranges": [
+    {
+      "name": "InitCom-entry-prefix",
+      "start": "0x4e5c",
+      "end_exclusive": "0x4e98",
+      "bytes": 60,
+      "sha256": "157d29a52887203d2dfb383870edffca3de6e0d705ea3a3c41432da10054036b",
+      "instruction_count": 24
+    },
+    {
+      "name": "InitCom-receive-and-command",
+      "start": "0x4ef0",
+      "end_exclusive": "0x4fd8",
+      "bytes": 232,
+      "sha256": "7de495dd20c88d0f118c3a914e8b25ed73d5de894031984cd3c0a8e47c48f032",
+      "instruction_count": 92
+    },
+    {
+      "name": "InitCom-update-return-hop",
+      "start": "0x50a8",
+      "end_exclusive": "0x50aa",
+      "bytes": 2,
+      "sha256": "248366e7e2c8d7aeb685b56a29476a3710fa59fc58e0e87e971b09b770006e79",
+      "instruction_count": 1
+    },
+    {
+      "name": "InitCom-return",
+      "start": "0x51b6",
+      "end_exclusive": "0x51d0",
+      "bytes": 26,
+      "sha256": "1c5a8d1a5aba27a93901822a33c11c2afc043e31b1131abfa64f60d298f770f0",
+      "instruction_count": 10
+    },
+    {
+      "name": "InitCom-event-producer",
+      "start": "0x18004",
+      "end_exclusive": "0x1805e",
+      "bytes": 90,
+      "sha256": "886b4d7fba1f5f88b9c7d87723df57e8db456b9182ae87dff23d801f4bbf5c71",
+      "instruction_count": 37
+    },
+    {
+      "name": "SVC-event-entries",
+      "start": "0x454c",
+      "end_exclusive": "0x4554",
+      "bytes": 8,
+      "sha256": "d1667fff6c0ed33abf41a85eacd9b3cd6c3ee9f9924379fea19c06ba1c448fb8",
+      "instruction_count": 4
+    },
+    {
+      "name": "internal-SIO-prefix",
+      "start": "0x52a4",
+      "end_exclusive": "0x52d8",
+      "bytes": 52,
+      "sha256": "ea5c39b92c62c3ac648994fe883a0f040e8fb65062aea469c25c029f740b5ae0",
+      "instruction_count": 22
+    }
+  ],
+  "extends_local_consumer_evidence": "update-control-proof.json",
+  "conditional_InitCom_arm": {
+    "function": "0x4e5c",
+    "callee_output_pointer_register": "r6",
+    "preconditions": [
+      "internal TxRx52a4 returns0",
+      "CRC comparison takes equal arm",
+      "ordinary ABI return and r4 preservation"
+    ],
+    "received_frame_command_offset": "sp+0x14",
+    "command": 17,
+    "received_subvalue_offset": "sp+0x15",
+    "subvalue": 4,
+    "output_byte": 4,
+    "normal_return_for_selected_arm": 0,
+    "other_commands_or_all_error_paths_proven": false
+  },
+  "conditional_local_producer": {
+    "function": "0x18004",
+    "input_SVC_number": 12,
+    "input_selector_argument": 3,
+    "input_halfword0_required": 10,
+    "InitCom_output_pointer": "sp",
+    "after_return0_and_output4": {
+      "output_halfwords": [
+        0,
+        4
+      ],
+      "packed_word": "0x00040000",
+      "SVC_number": 11,
+      "selector_argument": 0
+    },
+    "SVC_queue_implementation_or_delivery_verified": false
+  },
+  "local_producer_for_Seton_halfwords_identified_conditionally": true,
+  "source_bound_raw_fields": {
+    "0x4f00": "0x4",
+    "0x4fc0": "0x7030",
+    "0x4fcc": "0x7830",
+    "0x4fce": "0x2804",
+    "0x51c8": "0x4620",
+    "0x18006": "0xac01",
+    "0x18008": "0x2500",
+    "0x18012": "0x8820",
+    "0x18014": "0x280a",
+    "0x18040": "0x4668",
+    "0x18046": "0x2800",
+    "0x1804a": "0x8025",
+    "0x18050": "0x8060",
+    "0x18052": "0x2000",
+    "0x18054": "0x9901",
+    "0x454c": "0xdf0b",
+    "0x4550": "0xdf0c"
+  },
+  "raw_BL_targets": [
+    {
+      "site": "0x4efc",
+      "target": "0x52a4"
+    },
+    {
+      "site": "0x4f20",
+      "target": "0xbda4"
+    },
+    {
+      "site": "0x1800e",
+      "target": "0x4550"
+    },
+    {
+      "site": "0x18042",
+      "target": "0x4e5c"
+    },
+    {
+      "site": "0x18056",
+      "target": "0x454c"
+    }
+  ],
+  "unclosed": [
+    "external/other-controller sender of internal Cmd11/sub4",
+    "transport52a4 physical controller and complete status behavior",
+    "SVC delivery and whole-path runtime reachability",
+    "MCU bootloader original at0/4 and corrupt-core independent entry",
+    "AP p1/p3 selector, actual USB rescue and reverse write"
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "source_unchanged": true
+}

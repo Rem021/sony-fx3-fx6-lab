@@ -1,0 +1,86 @@
+02eacf18 stp        x29, x30, [sp, #-0x50]!
+02eacf1c mov        x29, sp
+02eacf20 stp        x19, x20, [sp, #0x10]
+02eacf24 mov        w20, w2
+02eacf28 stp        x21, x22, [sp, #0x20]
+02eacf2c mov        w2, w1
+02eacf30 mov        x22, x0
+02eacf34 mov        x21, x1
+02eacf38 mov        w0, w20
+02eacf3c add        x1, x29, #0x48
+02eacf40 stp        x23, x24, [sp, #0x30]
+02eacf44 mov        w23, w3
+02eacf48 mov        w3, #1
+02eacf4c uxtb       w24, w4
+02eacf50 bl         #0x1594120 ; osal_valloc_msg_wait
+02eacf54 cbz        w0, #0x2eacfbc
+02eacf58 adrp       x22, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eacf5c adrp       x21, #0x3966000 ; literal '.output_yc_size        = 0x%x'
+02eacf60 adrp       x20, #0x3973000 ; literal 'uint32_t)'
+02eacf64 add        x22, x22, #0x488 ; literal 'send_sync_msg'
+02eacf68 add        x21, x21, #0xd47 ; literal '[INFRA_WRAPPER]'
+02eacf6c add        x20, x20, #0xc22 ; literal '%s%s(%d) ret = 0x%08X'
+02eacf70 mov        w4, w0
+02eacf74 mov        w19, w0
+02eacf78 mov        x2, x22 ; literal 'send_sync_msg'
+02eacf7c mov        x1, x21 ; literal '[INFRA_WRAPPER]'
+02eacf80 mov        x0, x20 ; literal '%s%s(%d) ret = 0x%08X'
+02eacf84 mov        w3, #0x44
+02eacf88 bl         #0x2f6fe3c
+02eacf8c mov        w4, w19
+02eacf90 mov        x2, x22 ; literal 'send_sync_msg'
+02eacf94 mov        x1, x21 ; literal '[INFRA_WRAPPER]'
+02eacf98 mov        x0, x20 ; literal '%s%s(%d) ret = 0x%08X'
+02eacf9c mov        w3, #0x44
+02eacfa0 bl         #0x2f6be48
+02eacfa4 mov        w0, w19
+02eacfa8 ldp        x19, x20, [sp, #0x10]
+02eacfac ldp        x21, x22, [sp, #0x20]
+02eacfb0 ldp        x23, x24, [sp, #0x30]
+02eacfb4 ldp        x29, x30, [sp], #0x50
+02eacfb8 ret        
+02eacfbc cbz        w23, #0x2eacfcc
+02eacfc0 ldr        x0, [x29, #0x48]
+02eacfc4 mov        w1, w23
+02eacfc8 bl         #0x1591e00 ; osal_set_msg_src
+02eacfcc ldr        x0, [x29, #0x48]
+02eacfd0 mov        x2, x21
+02eacfd4 mov        x1, x22
+02eacfd8 bl         #0x1591c40 ; memcpy
+02eacfdc ldr        x1, [x29, #0x48]
+02eacfe0 mov        w0, w20
+02eacfe4 bl         #0x1593de0 ; osal_snd_sync_msg
+02eacfe8 mov        w19, w0
+02eacfec cbz        w0, #0x2ead048
+02eacff0 adrp       x23, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eacff4 adrp       x22, #0x3966000 ; literal '.output_yc_size        = 0x%x'
+02eacff8 adrp       x21, #0x3973000 ; literal 'uint32_t)'
+02eacffc add        x23, x23, #0x488 ; literal 'send_sync_msg'
+02ead000 add        x22, x22, #0xd47 ; literal '[INFRA_WRAPPER]'
+02ead004 add        x21, x21, #0xc22 ; literal '%s%s(%d) ret = 0x%08X'
+02ead008 mov        w4, w0
+02ead00c mov        x2, x23 ; literal 'send_sync_msg'
+02ead010 mov        x1, x22 ; literal '[INFRA_WRAPPER]'
+02ead014 mov        x0, x21 ; literal '%s%s(%d) ret = 0x%08X'
+02ead018 mov        w3, #0x54
+02ead01c bl         #0x2f6fe3c
+02ead020 mov        x1, x22 ; literal '[INFRA_WRAPPER]'
+02ead024 mov        x0, x21 ; literal '%s%s(%d) ret = 0x%08X'
+02ead028 mov        w4, w19
+02ead02c mov        x2, x23 ; literal 'send_sync_msg'
+02ead030 mov        w3, #0x54
+02ead034 bl         #0x2f6be48
+02ead038 ldr        x1, [x29, #0x48]
+02ead03c mov        w0, w20
+02ead040 bl         #0x15943d0 ; osal_free_msg
+02ead044 b          #0x2eacfa4
+02ead048 cbz        w24, #0x2ead05c
+02ead04c ldr        x1, [x29, #0x48]
+02ead050 mov        x2, x21
+02ead054 mov        x0, x22
+02ead058 bl         #0x1591c40 ; memcpy
+02ead05c ldr        x1, [x29, #0x48]
+02ead060 mov        w0, w20
+02ead064 bl         #0x15943d0 ; osal_free_msg
+02ead068 mov        w0, #0
+02ead06c b          #0x2eacfa8

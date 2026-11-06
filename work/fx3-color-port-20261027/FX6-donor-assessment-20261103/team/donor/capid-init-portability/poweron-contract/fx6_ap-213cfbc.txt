@@ -1,0 +1,87 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 213cfbc: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 213cfc0: 910003fd     	mov	x29, sp
+ 213cfc4: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 213cfc8: aa0003f4     	mov	x20, x0
+ 213cfcc: d2800300     	mov	x0, #0x18               // =24
+ 213cfd0: aa0103f3     	mov	x19, x1
+ 213cfd4: 97a76ec3     	bl	0xb18ae0 <_Znwm@plt>
+ 213cfd8: aa0003e2     	mov	x2, x0
+ 213cfdc: aa0003ea     	mov	x10, x0
+ 213cfe0: a9400268     	ldp	x8, x0, [x19]
+ 213cfe4: f800845f     	str	xzr, [x2], #0x8
+ 213cfe8: a9000048     	stp	x8, x0, [x2]
+ 213cfec: f9400680     	ldr	x0, [x20, #0x8]
+ 213cff0: 2a0803e8     	mov	w8, w8
+ 213cff4: 9ac00909     	udiv	x9, x8, x0
+ 213cff8: 9b00a129     	msub	x9, x9, x0, x8
+ 213cffc: aa1403e0     	mov	x0, x20
+ 213d000: aa0903e1     	mov	x1, x9
+ 213d004: 97ffbfd0     	bl	0x212cf44 <Application_System_Init+0x1521f00>
+ 213d008: b4000160     	cbz	x0, 0x213d034 <Application_System_Init+0x1531ff0>
+ 213d00c: f9400013     	ldr	x19, [x0]
+ 213d010: b4000133     	cbz	x19, 0x213d034 <Application_System_Init+0x1531ff0>
+ 213d014: aa0a03e0     	mov	x0, x10
+ 213d018: 97a76a32     	bl	0xb178e0 <_ZdlPv@plt>
+ 213d01c: 52800001     	mov	w1, #0x0                // =0
+ 213d020: aa1303e0     	mov	x0, x19
+ 213d024: 92400021     	and	x1, x1, #0x1
+ 213d028: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 213d02c: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 213d030: d65f03c0     	ret
+ 213d034: aa0903e1     	mov	x1, x9
+ 213d038: aa0a03e3     	mov	x3, x10
+ 213d03c: aa0803e2     	mov	x2, x8
+ 213d040: aa1403e0     	mov	x0, x20
+ 213d044: 97fff9b0     	bl	0x213b704 <Application_System_Init+0x15306c0>
+ 213d048: aa0003f3     	mov	x19, x0
+ 213d04c: 52800021     	mov	w1, #0x1                // =1
+ 213d050: 17fffff4     	b	0x213d020 <Application_System_Init+0x1531fdc>
+ 213d054: d1400fff     	sub	sp, sp, #0x3, lsl #12   // =0x3000
+ 213d058: d11503ff     	sub	sp, sp, #0x540
+ 213d05c: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+ 213d060: 910003fd     	mov	x29, sp
+ 213d064: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 213d068: 9101a3b3     	add	x19, x29, #0x68
+ 213d06c: aa1303e0     	mov	x0, x19
+ 213d070: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 213d074: 910123b4     	add	x20, x29, #0x48
+ 213d078: f9001bf7     	str	x23, [sp, #0x30]
+ 213d07c: aa0103f7     	mov	x23, x1
+ 213d080: 910203b5     	add	x21, x29, #0x80
+ 213d084: 97ed8cc9     	bl	0x1ca03a8 <Application_System_Init+0x1095364>
+ 213d088: 9286a4f6     	mov	x22, #-0x3528           // =-13608
+ 213d08c: aa1303e1     	mov	x1, x19
+ 213d090: aa1403e0     	mov	x0, x20
+ 213d094: 97ff2916     	bl	0x21074ec <Application_System_Init+0x14fc4a8>
+ 213d098: aa1503e0     	mov	x0, x21
+ 213d09c: d286a002     	mov	x2, #0x3500             // =13568
+ 213d0a0: 52800001     	mov	w1, #0x0                // =0
+ 213d0a4: 97a7690b     	bl	0xb174d0 <memset@plt>
+ 213d0a8: f90043b3     	str	x19, [x29, #0x80]
+ 213d0ac: d001d800     	adrp	x0, 0x5c3f000
+ 213d0b0: 9111e000     	add	x0, x0, #0x478
+ 213d0b4: f90023a0     	str	x0, [x29, #0x40]
+ 213d0b8: 97ab3187     	bl	0xc096d4 <.text+0xef4e4>
+ 213d0bc: f90033b5     	str	x21, [x29, #0x60]
+ 213d0c0: 52820800     	mov	w0, #0x1040             // =4160
+ 213d0c4: b9005ba0     	str	w0, [x29, #0x58]
+ 213d0c8: d286b000     	mov	x0, #0x3580             // =13696
+ 213d0cc: 8b0003a0     	add	x0, x29, x0
+ 213d0d0: 8b160015     	add	x21, x0, x22
+ 213d0d4: b001d800     	adrp	x0, 0x5c3e000
+ 213d0d8: aa1503e1     	mov	x1, x21
+ 213d0dc: 91222000     	add	x0, x0, #0x888
+ 213d0e0: 97ffffb7     	bl	0x213cfbc <Application_System_Init+0x1531f78>
+ 213d0e4: 910103a0     	add	x0, x29, #0x40
+ 213d0e8: 97ab514f     	bl	0xc11624 <Application_System_Init+0x65e0>
+ 213d0ec: d286b001     	mov	x1, #0x3580             // =13696
+ 213d0f0: 8b0103a0     	add	x0, x29, x1
+ 213d0f4: f836681f     	str	xzr, [x0, x22]
+ 213d0f8: 52801080     	mov	w0, #0x84               // =132
+ 213d0fc: b9005ba0     	str	w0, [x29, #0x58]

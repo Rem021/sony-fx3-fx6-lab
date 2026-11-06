@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage22-lifetime-registry/lifetime_registry.py\", line 338, in main\n    try:run(out)\n        ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage22-lifetime-registry/lifetime_registry.py\", line 291, in run\n    good=bounded_schedules(Registry);late=bounded_schedules(LateReservation);early=bounded_schedules(EarlyRetirement)\n                                                                                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage22-lifetime-registry/lifetime_registry.py\", line 212, in bounded_schedules\n    assert nr.complete_retire(key);nt[i]=5;label='worker destructor/free returned P%d'%i\n           ~~~~~~~~~~~~~~~~~~^^^^^\nAssertionError\n",
+  "passing_result": false
+}

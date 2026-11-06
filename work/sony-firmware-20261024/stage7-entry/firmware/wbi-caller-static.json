@@ -1,0 +1,158 @@
+[
+  {
+    "pc": "0x13174",
+    "target": "0x118ac",
+    "context": [
+      {
+        "va": "0x1314c",
+        "bytes": "11feff17",
+        "instruction": "b #0x12990"
+      },
+      {
+        "va": "0x13150",
+        "bytes": "f30300aa",
+        "instruction": "mov x19, x0"
+      },
+      {
+        "va": "0x13154",
+        "bytes": "fcffff17",
+        "instruction": "b #0x13144"
+      },
+      {
+        "va": "0x13158",
+        "bytes": "e10313aa",
+        "instruction": "mov x1, x19"
+      },
+      {
+        "va": "0x1315c",
+        "bytes": "20008052",
+        "instruction": "mov w0, #1"
+      },
+      {
+        "va": "0x13160",
+        "bytes": "c6fdff17",
+        "instruction": "b #0x12878"
+      },
+      {
+        "va": "0x13164",
+        "bytes": "e10313aa",
+        "instruction": "mov x1, x19"
+      },
+      {
+        "va": "0x13168",
+        "bytes": "40008052",
+        "instruction": "mov w0, #2"
+      },
+      {
+        "va": "0x1316c",
+        "bytes": "c3fdff17",
+        "instruction": "b #0x12878"
+      },
+      {
+        "va": "0x13170",
+        "bytes": "e00313aa",
+        "instruction": "mov x0, x19"
+      },
+      {
+        "va": "0x13174",
+        "bytes": "cef9ff97",
+        "instruction": "bl #0x118ac"
+      },
+      {
+        "va": "0x13178",
+        "bytes": "5dfdff17",
+        "instruction": "b #0x126ec"
+      },
+      {
+        "va": "0x1317c",
+        "bytes": "e10313aa",
+        "instruction": "mov x1, x19"
+      },
+      {
+        "va": "0x13180",
+        "bytes": "a0008052",
+        "instruction": "mov w0, #5"
+      },
+      {
+        "va": "0x13184",
+        "bytes": "66fcff97",
+        "instruction": "bl #0x1231c"
+      }
+    ]
+  },
+  {
+    "range": [
+      "0x12600",
+      "0x12708"
+    ],
+    "disassembly": [
+      "12600: add x20, x20, x19",
+      "12604: ldr w0, [x20, #4]",
+      "12608: bl #0xaa00",
+      "1260c: mov w0, #-1",
+      "12610: str w0, [x20, #4]",
+      "12614: b #0x124a0",
+      "12618: adrp x1, #0x54000",
+      "1261c: mov w2, w23",
+      "12620: add x1, x1, #0xe17",
+      "12624: mov w0, #-0x7f",
+      "12628: bl #0xa450",
+      "1262c: b #0x1243c",
+      "12630: stp x29, x30, [sp, #-0x120]!",
+      "12634: adrp x1, #0x54000",
+      "12638: add x1, x1, #0x930",
+      "1263c: mov x29, sp",
+      "12640: ldrh w3, [x0, #0x26]",
+      "12644: ldrh w2, [x0, #0x24]",
+      "12648: stp x19, x20, [sp, #0x10]",
+      "1264c: mov x19, x0",
+      "12650: mov w0, #-0x7d",
+      "12654: stp x21, x22, [sp, #0x20]",
+      "12658: stp x23, x24, [sp, #0x30]",
+      "1265c: stp x25, x26, [sp, #0x40]",
+      "12660: stp x27, x28, [sp, #0x50]",
+      "12664: bl #0xa400",
+      "12668: ldrh w3, [x19, #0x26]",
+      "1266c: ldrh w2, [x19, #0x24]",
+      "12670: and w0, w3, #0x1800",
+      "12674: cmp w0, #0x800",
+      "12678: b.ne #0x12708",
+      "1267c: adrp x0, #0x36000",
+      "12680: mov x4, #0",
+      "12684: add x1, x0, #0x180",
+      "12688: add x1, x1, #2",
+      "1268c: ldurh w6, [x1, #-2]",
+      "12690: cmp w6, w2",
+      "12694: b.ne #0x126a4",
+      "12698: ldrh w6, [x1]",
+      "1269c: cmp w6, w3",
+      "126a0: b.eq #0x13198",
+      "126a4: add x4, x4, #1",
+      "126a8: add x1, x1, #0x48",
+      "126ac: cmp x4, #0x6c6",
+      "126b0: b.ne #0x1268c",
+      "126b4: adrp x1, #0x54000",
+      "126b8: mov w0, #-0x7f",
+      "126bc: add x1, x1, #0xa4e",
+      "126c0: bl #0xa400",
+      "126c4: b #0x131f4",
+      "126c8: mov w0, #8",
+      "126cc: strb wzr, [x19, #4]",
+      "126d0: strb wzr, [x19, #5]",
+      "126d4: strb w0, [x19]",
+      "126d8: mov w0, #1",
+      "126dc: strh wzr, [x19, #6]",
+      "126e0: strb w0, [x19, #1]",
+      "126e4: str wzr, [x19, #8]",
+      "126e8: str xzr, [x19, #0x10]",
+      "126ec: ldp x19, x20, [sp, #0x10]",
+      "126f0: ldp x21, x22, [sp, #0x20]",
+      "126f4: ldp x23, x24, [sp, #0x30]",
+      "126f8: ldp x25, x26, [sp, #0x40]",
+      "126fc: ldp x27, x28, [sp, #0x50]",
+      "12700: ldp x29, x30, [sp], #0x120",
+      "12704: ret "
+    ],
+    "original24": "9402138b800640b9fee0ff9700008012800600b9a3ffff17"
+  }
+]

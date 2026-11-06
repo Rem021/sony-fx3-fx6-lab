@@ -1,0 +1,118 @@
+{
+  "schema": "fx3-fixed-slot-guests-final-verification/v1",
+  "utc": "2026-11-04T20:16:31.240046+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "tool_sha256": "b5b9bf75763b193575a007074e6701d1a1541ba9d3658ae32a164fc350eca8bc",
+  "original_source_cpio_sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83",
+  "original_candidate_sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518",
+  "original_dtb_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+  "original_dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+  "source_manifest_adaptation_sha256": "05aded60ec6ecabb67381eca1f9ea8b3311599725c9d8e2cbb022db72b077d7d",
+  "source_manifest_exact_JSON_mapping": true,
+  "frozen_r15_sources_checked": 31,
+  "frozen_r15_delivery_files_checked": 54,
+  "prior_inputs_checked": [
+    {
+      "name": "r14_guest_C",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-v14.c",
+      "sha256": "f1bd05b39ac054e4ffef74f4821858ee3a7f2f241689f28b68ff6c039be4212a"
+    },
+    {
+      "name": "r14_assembly",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r14-low-overhead-gate/fx3-ui-gate-probes-v1.S",
+      "sha256": "b82a530c86ad3d37e06ba37828c72942c3c9188d904ed2b3a3bee89ebf9f62a1"
+    },
+    {
+      "name": "r13_runner",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r13-preinput-observation/run_trial_v25_diag_r3.py",
+      "sha256": "ae0ed0b45dd748db94979e126dfef5ea8232c99001799fac9cd5836619b54cc6"
+    },
+    {
+      "name": "r14_protocol_decision",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r14-snapshot-protocol-review/DECISION.md",
+      "sha256": "05cff9f1aa5edc2945c339cde0f52a00e9bb1a968c67e1950fe48d4d12dc37a5"
+    }
+  ],
+  "original_debug_ELFs_and_frozen_inputs_unchanged": true,
+  "source_member_count": 1140,
+  "trailer_end": 453213884,
+  "outputs": {
+    "N1": {
+      "candidate_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N1/candidate.json",
+      "candidate_sha256": "ce047a951a5e7af08d19312d4e9d6440080e159c857e41edf90ce66607a31563",
+      "cpio_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N1/guest.cpio",
+      "cpio_sha256": "77081424fa73f9737434b7d0c5d2f6dc2b21215ffcc9cb3a95281dac9d4b521c",
+      "cpio_bytes": 453213884,
+      "helper_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/fx3-ui-gate-v15-n1-linker-strip.so",
+      "helper_sha256": "da4eef557353223542cfab4d0e9f9b91a42a3c77a886f42f791867d0e2a45d92",
+      "helper_bytes": 22048,
+      "original_debug_helper_sha256": "5faeb996c4c7386383a9e07ab5cc9f65c5e9e80217e5e777f15df7d26b9c8dbc",
+      "padded_slot_sha256": "26f338bc21d32a7b5d1deac70260ec25da747f0b0d38f91604eef11ca92a1148",
+      "zero_padding_bytes": 36808,
+      "allowed_change": {
+        "offset": 451339648,
+        "bytes": 58856
+      },
+      "static_generation_complete": true,
+      "outside_slot_every_byte_equal_proven_by_write": true,
+      "independent_output_hash_matched": true,
+      "independent_full_index_matched": true,
+      "independent_slot_bytes_matched": true,
+      "candidate_changed_top_level_fields": [
+        "fixed_layout_diagnostic_contract",
+        "initrd"
+      ],
+      "other_candidate_fields_equal": true,
+      "original_dtb_reference_equal": true,
+      "complete_receipt_sha256": "d4d248614c59e693763358700fdcbbab24bd71e1afa784abd7f6c382a0a12688",
+      "historical_incomplete_marker_superseded_by_COMPLETE": true,
+      "runtime_validated": false
+    },
+    "N64": {
+      "candidate_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64/candidate.json",
+      "candidate_sha256": "96666a719b1a4cf576e4d2d7ec461e10f5ce1143650450719e5273d75d970672",
+      "cpio_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64/guest.cpio",
+      "cpio_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+      "cpio_bytes": 453213884,
+      "helper_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/fx3-ui-gate-v15-n64-linker-strip.so",
+      "helper_sha256": "3ea77f9bc94ca3f4c5edb863b20bbe1245ebde1d868e61243bf0b0d8cc3511b2",
+      "helper_bytes": 22160,
+      "original_debug_helper_sha256": "ea47aa2d2b437700f00e64d8f3c0db7cf164c2c81f90bdedfb528a0430784574",
+      "padded_slot_sha256": "6673b9beaf8a2adfbc2c68dc7337df369e484bd58ede10edff3519dcf8d258df",
+      "zero_padding_bytes": 36696,
+      "allowed_change": {
+        "offset": 451339648,
+        "bytes": 58856
+      },
+      "static_generation_complete": true,
+      "outside_slot_every_byte_equal_proven_by_write": true,
+      "independent_output_hash_matched": true,
+      "independent_full_index_matched": true,
+      "independent_slot_bytes_matched": true,
+      "candidate_changed_top_level_fields": [
+        "fixed_layout_diagnostic_contract",
+        "initrd"
+      ],
+      "other_candidate_fields_equal": true,
+      "original_dtb_reference_equal": true,
+      "complete_receipt_sha256": "e63d79eedd6816375dea92ecf15e2d4296a44a3e30a980ab5802097af36289b5",
+      "historical_incomplete_marker_superseded_by_COMPLETE": true,
+      "runtime_validated": false
+    }
+  },
+  "write_order": [
+    "N1",
+    "N64"
+  ],
+  "verification_large_file_order": [
+    "source",
+    "N1",
+    "N64"
+  ],
+  "no_parallel_large_file_operations": true,
+  "VM_started": false,
+  "host_source_or_pins_changed": false,
+  "deployed": false,
+  "packaging_static_validation_passed": true,
+  "runtime_validated": false
+}

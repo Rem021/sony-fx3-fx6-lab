@@ -1,0 +1,115 @@
+{
+  "serial_sha256": "54dd1237d678dfd5aa2cd03d0b087a5a45a438d69ab63c7365c587a6272270ec",
+  "serial_bytes": 81321567,
+  "host_start_monotonic_from_step19": 282622.550665749,
+  "intervals": [
+    {
+      "seq": 6329,
+      "qid": "0x808261c1",
+      "enter_ns": 996418472000,
+      "complete_ns": 996454584000,
+      "complete_result": "1",
+      "cmd_return_ns": 996490057008,
+      "allocate_ns": 991432711008,
+      "alloc_event": "1379",
+      "alloc_to_enter_ms": 4985.760992,
+      "enter_to_complete_ms": 36.112,
+      "alloc_to_complete_ms": 5021.872992,
+      "complete_to_cmd_return_ms": 35.473008,
+      "estimated_host_elapsed_s": [
+        1013.417,
+        1018.508
+      ],
+      "host_mapping": "linear interpolation between host InputGate and guest key-down observations; approximate, no common clock proof",
+      "nearby_qmp_requests": [
+        {
+          "elapsed_s": 1017.48338,
+          "command": "stop",
+          "hmp_file": null
+        },
+        {
+          "elapsed_s": 1017.494224,
+          "command": "human-monitor-command",
+          "hmp_file": "osd-ring-header-live.bin"
+        },
+        {
+          "elapsed_s": 1017.497797,
+          "command": "human-monitor-command",
+          "hmp_file": "osd-ring-live.bin"
+        },
+        {
+          "elapsed_s": 1017.848627,
+          "command": "human-monitor-command",
+          "hmp_file": "ap102-date-row-late3-ring-header.bin"
+        },
+        {
+          "elapsed_s": 1017.853557,
+          "command": "human-monitor-command",
+          "hmp_file": "ap102-date-row-late3-ring-slot.bin"
+        },
+        {
+          "elapsed_s": 1018.104016,
+          "command": "human-monitor-command",
+          "hmp_file": "date99-clock-date-row-late3.bin"
+        },
+        {
+          "elapsed_s": 1018.108033,
+          "command": "human-monitor-command",
+          "hmp_file": "date98-trace-date-row-late3.bin"
+        },
+        {
+          "elapsed_s": 1018.109948,
+          "command": "cont",
+          "hmp_file": null
+        },
+        {
+          "elapsed_s": 1018.592354,
+          "command": "human-monitor-command",
+          "hmp_file": "osd-ring-header-live.bin"
+        }
+      ]
+    },
+    {
+      "seq": 7545,
+      "qid": "0x808261c0",
+      "enter_ns": 1225848214000,
+      "complete_ns": 1225865192000,
+      "complete_result": "1",
+      "cmd_return_ns": 1225870836000,
+      "allocate_ns": 1220214193008,
+      "alloc_event": "1439",
+      "alloc_to_enter_ms": 5634.020992,
+      "enter_to_complete_ms": 16.978,
+      "alloc_to_complete_ms": 5650.998992,
+      "complete_to_cmd_return_ms": 5.644,
+      "estimated_host_elapsed_s": [
+        1246.645,
+        1252.385
+      ],
+      "host_mapping": "linear interpolation between host InputGate and guest key-down observations; approximate, no common clock proof",
+      "nearby_qmp_requests": [
+        {
+          "elapsed_s": 1247.2627,
+          "command": "stop",
+          "hmp_file": null
+        },
+        {
+          "elapsed_s": 1247.266278,
+          "command": "cont",
+          "hmp_file": null
+        },
+        {
+          "elapsed_s": 1247.57007,
+          "command": "human-monitor-command",
+          "hmp_file": "osd-ring-header-live.bin"
+        },
+        {
+          "elapsed_s": 1247.571617,
+          "command": "human-monitor-command",
+          "hmp_file": "osd-ring-live.bin"
+        }
+      ]
+    }
+  ],
+  "kernel_error_separate_clock": "[38320.919593] is printk kernel time; not subtracted from user ns or QMP elapsed"
+}

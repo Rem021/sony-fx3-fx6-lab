@@ -1,0 +1,32 @@
+_ZN7Updater12BaseFirmware9WriteDataEPKhmb
+0000bc6c ldr       x0, [x0, #8]
+0000bc70 cbnz      x0, #0xbcd8
+0000bc74 stp       x29, x30, [sp, #-0x20]!
+0000bc78 adrp      x2, #0xd000
+0000bc7c adrp      x0, #0xd000
+0000bc80 add       x2, x2, #0x921
+0000bc84 mov       x29, sp
+0000bc88 str       x19, [sp, #0x10]
+0000bc8c mov       w19, #0x1a
+0000bc90 movk      w19, #3, lsl #16
+0000bc94 add       x0, x0, #0x4b2
+0000bc98 mov       w1, w19
+0000bc9c mov       w3, #0x37
+0000bca0 bl        #0x8cf0 ; printf
+0000bca4 mov       x0, #0x10
+0000bca8 bl        #0x8590 ; __cxa_allocate_exception
+0000bcac str       w19, [x0, #8]
+0000bcb0 adrp      x1, #0x20000
+0000bcb4 adrp      x2, #0x20000
+0000bcb8 strb      wzr, [x0, #0xc]
+0000bcbc ldr       x1, [x1, #0xf10]
+0000bcc0 ldr       x2, [x2, #0xf30]
+0000bcc4 add       x1, x1, #0x10
+0000bcc8 str       x1, [x0]
+0000bccc adrp      x1, #0x20000
+0000bcd0 ldr       x1, [x1, #0xfc8]
+0000bcd4 bl        #0x8be0 ; __cxa_throw
+0000bcd8 ldr       x4, [x0]
+0000bcdc uxtb      w3, w3
+0000bce0 ldr       x4, [x4, #0x30]
+0000bce4 br        x4

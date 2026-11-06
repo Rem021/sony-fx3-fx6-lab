@@ -1,0 +1,6 @@
+{
+  "exit": 0,
+  "stdout": "HDMI registration: envelope, routing, thirteen fields, wire bytes, leases, repeat registration, allocation/send/free failures passed\n",
+  "stderr": "FX3_HDMI_REG_COMMIT observer=0x802a0116 reply_destination=0x81cf6187 reply=0x104131de0 lease=1 slots=13 request_free=0 hardware_verified=0\nFX3_HDMI_REG_NATIVE_FREE destination=0x81cf6187 expected=0x81cf6187 reply=0x104131de0 lease=1 result=0\nFX3_HDMI_REG_COMMIT observer=0x802a0117 reply_destination=0x81cf6187 reply=0x104131de0 lease=2 slots=13 request_free=0 hardware_verified=0\nFX3_HDMI_REG_NATIVE_FREE destination=0x81cf6187 expected=0x81cf6187 reply=0x104131de0 lease=2 result=0\nFX3_HDMI_REG_COMMIT observer=0x802a0116 reply_destination=0x81cf6187 reply=0x104131de0 lease=1 slots=13 request_free=0 hardware_verified=0\nFX3_HDMI_REG_NATIVE_FREE destination=0x81cf6188 expected=0x81cf6187 reply=0x104131de0 lease=1 result=-1021\nFX3_HDMI_REG_COMMIT observer=0x802a0116 reply_destination=0x81cf6187 reply=0x104131de0 lease=1 slots=13 request_free=-1021 hardware_verified=0\n",
+  "asan_ubsan": true
+}

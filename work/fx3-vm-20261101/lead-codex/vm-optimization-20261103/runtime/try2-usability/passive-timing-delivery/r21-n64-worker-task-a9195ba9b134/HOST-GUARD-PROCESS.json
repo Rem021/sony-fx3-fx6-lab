@@ -1,0 +1,7 @@
+{
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 9, in <module>\n    try:operate.run_action('host-only')\n        ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r21-n64-worker-task-a9195ba9b134/operate.py\", line 60, in run_action\n    event('operator_tool_'+action+'_entry');v=_run_action(action);event('operator_tool_'+action+'_return_prepared',**v);print(json.dumps(v,ensure_ascii=False));return v\n                                              ~~~~~~~~~~~^^^^^^^^\n  File \"<string>\", line 5, in injected\n    def injected(action):trace.append('actual action');raise RuntimeError('intentional host-only guard test')\n                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: intentional host-only guard test\n",
+  "expected_nonzero": true,
+  "no_browser_arm_guest": true
+}

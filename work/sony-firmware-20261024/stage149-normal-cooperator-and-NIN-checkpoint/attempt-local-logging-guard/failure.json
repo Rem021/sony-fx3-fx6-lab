@@ -1,0 +1,7 @@
+{
+  "status": "REJECTED_UNREVIEWED_GUEST_PATH",
+  "phase": "event_callback",
+  "PC": "0x100ea070",
+  "reason": "Original libObj callback reaches local logging helper before NIN. Logging was only bridged at core PLT, so the closed-world code guard stopped. Add explicit CPU logging bridges for two reviewed local log helpers; do not broaden unrestricted original execution.",
+  "new_device_operations": 0
+}

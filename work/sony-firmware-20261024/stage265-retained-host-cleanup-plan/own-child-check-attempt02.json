@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/bound_signal.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/test_own_child.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/artifacts/own-child-test"
+  ],
+  "compile_return": 0,
+  "compile_stderr": "",
+  "signals_to_current_helper_or_observer": 0,
+  "new_root_or_USB_operations": 0,
+  "test_return": -6,
+  "test_stdout": "",
+  "test_stderr": "Assertion failed: (rc==-1 && error==ESRCH && waitpid(child,&status,WNOHANG)==0), function main, file test_own_child.c, line 22.\n"
+}

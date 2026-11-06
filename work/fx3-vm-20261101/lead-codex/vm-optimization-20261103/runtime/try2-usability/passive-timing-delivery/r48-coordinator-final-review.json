@@ -1,0 +1,52 @@
+{
+  "reviewed_at": "2026-11-05T15:44:28.051328+00:00",
+  "status": "failed",
+  "task": "task_f9c618eedbad",
+  "dispatch": "ctx_df9d59d4ecda",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r47-runtime-integration-candidate/run-inputs/f9c618eedbad",
+  "manifest_verified": {
+    "count": 187,
+    "sha256": "4640192527daa51c3bdb006a64d768016714657a3254256f4e773b120eb6428f",
+    "mismatches": []
+  },
+  "native_key_hashes_verified": 5,
+  "before_after_groups_counts_candidate_directory_equal": true,
+  "starts": 1,
+  "menu_steps_confirmed": 0,
+  "accepted_keys": 0,
+  "attempts": 2,
+  "recoveries": 1,
+  "cleanup": "completed",
+  "audit": "collected_only",
+  "independent_current_probes": {
+    "runner_44250_absent": true,
+    "qemu_44381_absent": true,
+    "browser_44256_absent": true,
+    "port_50102_errno": 61
+  },
+  "actual_argv_reviewed_fixed_platform": true,
+  "images_actually_viewed": [
+    "initial-standby/current.png",
+    "step-01-attempt-01/recovery-review/observation.png",
+    "step-01-attempt-01/recovery-cancel/observation/observation.png"
+  ],
+  "visual_correction": "All three show standby, no menu. NO CARD is visible in initial and recovery-after, absent in recovery-before; worker blanket NO CARD description is imprecise. This does not prove the cause of the frame race.",
+  "HAR_independent_review": {
+    "POST_paths": [
+      "/api/start",
+      "/api/stop",
+      "/api/final-ack"
+    ],
+    "api_key_POST_count": 0,
+    "attempt1_frame_transition": "gen19 seq120 e014 -> gen20 seq128 2914",
+    "attempt2_frame_transition": "gen43 seq231 e014 -> gen44 seq235 2914",
+    "inference": "frame freshness changes are consistent with preflight refusal; exact causal branch to be replayed offline"
+  },
+  "limitations": [
+    "menu eight-step acceptance failed",
+    "only this run cleanup and one recovery path gained runtime evidence",
+    "locks free evidence is historical cleanup/audit probe; unrelated later run may hold them",
+    "FX6 not evaluated in this run",
+    "single authorized Start consumed; no new runtime authorization"
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "fx6-coordinator-readonly-refresh-v1",
+  "reviewed_at": "2026-11-05T16:11:14.193613+00:00",
+  "goal_turn_classification": "progress: independently audited newer primary-line evidence and corrected unified status",
+  "scope": "read-only existing artifacts; no implementation or VM launched by coordinator",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-66ed0f78",
+  "run_receipt_sha256": "42a1e5df0cdd6297c270dce905658f0e156c295d7780a0fb5f6b6605e0a17411",
+  "candidate_sha256": "d318102606785debe0808f2e42750b28181f56dc876ef46f12050d8a87af5802",
+  "candidate_receipt_match": true,
+  "log_hashes_verified": {
+    "serial.log": true,
+    "host-stdout.log": true,
+    "host-stderr.log": true
+  },
+  "platform": {
+    "baseline": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+      "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669"
+    },
+    "platform_parameters_equal": true,
+    "model_env_equal": true,
+    "command_differences": [
+      {
+        "index": 20,
+        "baseline": "file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/serial.log",
+        "candidate": "file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/runs/cp-bind-66ed0f78/serial.log"
+      },
+      {
+        "index": 31,
+        "baseline": "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio,addr=0x440000000,force-raw=on",
+        "candidate": "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal46.cpio,addr=0x440000000,force-raw=on"
+      }
+    ],
+    "kernel_hash_matches": true,
+    "dtb_hash_matches": true,
+    "qemu_hash_matches": true,
+    "proof_limit": "retained command and candidate artifacts verified; no contemporaneous ps capture reviewed"
+  },
+  "initrd_hash_verified": true,
+  "cpio_members_independently_hashed": {
+    "usr/lib/appFw.so": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+    "usr/kmod/upm.ko": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+    "usr/kmod/backup.ko": "6ae178d5390f847415fcc57236b8d49e33c486f043e906598eb2af81f7fec11e",
+    "simulation/fx3-cp-backup-reset-v1.ko": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa"
+  },
+  "observations": {
+    "duration_seconds": 180.16620550001971,
+    "application_library_mapping_and_stack_markers": true,
+    "screen_create_marker_count": 0,
+    "menu_marker_count": 0,
+    "native_receipt_result": "AP_MARKER_OBSERVED_MENU_NOT_PROVEN",
+    "native_reported_exit": 0,
+    "native_reported_reaped": true
+  },
+  "diagnostic_patch_limitations": {
+    "appfw": {
+      "member": "usr/lib/appFw.so",
+      "sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+      "patch": "0x2159c50 future::get helper -> mov w0,#0; ret"
+    },
+    "upm": {
+      "member": "usr/kmod/upm.ko",
+      "sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994",
+      "patch": "upm_senser_dfs_measurement+0x4a0 blr x2 -> mov w0,#0"
+    },
+    "backup": {
+      "member": "usr/kmod/backup.ko",
+      "sha256": "6ae178d5390f847415fcc57236b8d49e33c486f043e906598eb2af81f7fec11e",
+      "patched_instruction": "0x75c brk #0x3e8 -> b 0x700"
+    },
+    "interpretation": "skipping original execution or replacing result with zero weakens functional evidence; neither no-fault duration nor AP markers prove successful initialization/menu or faithful subsystem behavior"
+  },
+  "authorization_scope": "run command claims broad authorization from another agent context; not independently established here and not reused to authorize new actions",
+  "not_achieved": [
+    "usable FX6 menu on fixed FX3 platform",
+    "eight-step FX6 UI acceptance",
+    "original functional initialization across patched subsystems",
+    "physical camera deployment"
+  ],
+  "next_action": "Keep primary milestone incomplete; require behavior-preserving initialization and genuine menu/render/input evidence, not additional success stubs. r50 FX3 offline candidate worker remains separate."
+}

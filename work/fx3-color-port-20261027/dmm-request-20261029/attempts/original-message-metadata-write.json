@@ -1,0 +1,5 @@
+{
+  "formal_cases": 0,
+  "observed_error": "AssertionError: 0x49fd66",
+  "reason": "The original message allocator reached its exclusive-halfword queue-context count write in the metadata RAM region. The predecessor admitted only its earlier metadata producers. Add this source-reviewed new producer within the same explicit RAM bounds, without stubbing the counter or allocator result."
+}

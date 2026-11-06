@@ -1,0 +1,16 @@
+00019430 stp        x29, x30, [sp, #-0xa0]!
+00019434 mov        x29, sp
+00019438 stp        x19, x20, [sp, #0x10]
+0001943c adrp       x19, #0x1c000
+00019440 add        x19, x19, #0x122 ; literal '/tmp_updater/updater/bodyfs/bin/startupdate.sh'
+00019444 mov        w20, w0
+00019448 add        x1, x29, #0x20
+0001944c mov        x0, x19 ; literal '/tmp_updater/updater/bodyfs/bin/startupdate.sh'
+00019450 bl         #0x1b4c8
+00019454 cbnz       w0, #0x19464
+00019458 mov        w1, w20
+0001945c mov        x0, x19
+00019460 bl         #0x10100 ; Updater::BuildInPlugin::execute
+00019464 ldp        x19, x20, [sp, #0x10]
+00019468 ldp        x29, x30, [sp], #0xa0
+0001946c ret        

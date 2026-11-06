@@ -1,0 +1,184 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+  "candidate_only": true,
+  "normal_ABI_call_clobber_assumption": true,
+  "not_a_complete_control_flow_or_alias_proof": true,
+  "hits": [
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe0534e8",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf900d4",
+        "x1": "0xfe06a938",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe053510",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf900d0",
+        "x1": "0xfe06a944",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe053534",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf900c8",
+        "x1": "0xfe06a928",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "store",
+      "instruction": "0xfe053578",
+      "mnemonic": "str",
+      "operands": "w11, [x9, #0x930]",
+      "address": "0xfe06a930",
+      "source_register_values": [
+        null
+      ],
+      "base_origin": "0xfe053560"
+    },
+    {
+      "kind": "store",
+      "instruction": "0xfe05357c",
+      "mnemonic": "str",
+      "operands": "w8, [x10, #0x92c]",
+      "address": "0xfe06a92c",
+      "source_register_values": [
+        null
+      ],
+      "base_origin": "0xfe053564"
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe053580",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf900b1",
+        "x1": "0xfe06a940",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe0535ac",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf9006d",
+        "x1": "0xfe06a93c",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe0535d4",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0x51002c",
+        "x1": "0xfe06a934",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe053f2c",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf9046b",
+        "x1": "0xfe06a924",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe053f40",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf9046c",
+        "x1": "0xfe06a920",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "store",
+      "instruction": "0xfe05b180",
+      "mnemonic": "str",
+      "operands": "x0, [x24, #0x948]",
+      "address": "0xfe06a948",
+      "source_register_values": [
+        null
+      ],
+      "base_origin": "0xfe05b0d0"
+    },
+    {
+      "kind": "store",
+      "instruction": "0xfe05b230",
+      "mnemonic": "str",
+      "operands": "xzr, [x8, #0x948]",
+      "address": "0xfe06a948",
+      "source_register_values": [
+        0
+      ],
+      "base_origin": "0xfe05b224"
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe060b70",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf909cf",
+        "x1": "0xfe06a95c",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe060b84",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf909d0",
+        "x1": "0xfe06a958",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe060bb8",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf909d1",
+        "x1": "0xfe06a954",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe060bcc",
+      "target": "#0xfe05b2b8",
+      "args": {
+        "x0": "0xf909d2",
+        "x1": "0xfe06a950",
+        "x2": null,
+        "x3": null
+      }
+    }
+  ]
+}

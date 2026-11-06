@@ -1,0 +1,91 @@
+{
+  "schema": "fx3-stage126-buffer-to-Open/1",
+  "created_utc": "2026-10-27T17:29:59.678815+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/README.md",
+      "bytes": 3810,
+      "sha256": "e0bf074b93e4a1e293ef9727ba944e99bf169984db8710c13590fbb02899289f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/buffer_open.py",
+      "bytes": 9480,
+      "sha256": "eb3a3333d1314e1493253ff16188e3f9cca3e10a0e9758992729f4fe19d0dea0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/completed-evidence-review.json",
+      "bytes": 551,
+      "sha256": "436d48ea4330b4d8eacbe13f64653ed470aab243dcfeece95495553169e69ed4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/diagnostic-contract.json",
+      "bytes": 11526,
+      "sha256": "301d0e7878acb119c038f7ecc38097b245128af931d597f4dfb4a05af480c850"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/goal-status-after.json",
+      "bytes": 405011,
+      "sha256": "d9c88671fc64519196c77ec86c51509ff7073899064849a57ada35806c56d267"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/goal-status-before.json",
+      "bytes": 400912,
+      "sha256": "0e73b3d3fb558b89bc5e9410044c5e970871eea622e31791bd7d287c9fb446c9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/review_and_seal.py",
+      "bytes": 12462,
+      "sha256": "dcd1136935e2550754c8cb91a21267c379752d7fa605cf70e718787aa2633a9a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/run-native-buffer-Open-20261027/buffer-Open-results.json",
+      "bytes": 1346841,
+      "sha256": "bf88c632846aa86391d70b77f42d004839d2ac569f155aa81b2d487d77f6bea4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/run-native-buffer-Open-20261027/executed-source.py",
+      "bytes": 9480,
+      "sha256": "eb3a3333d1314e1493253ff16188e3f9cca3e10a0e9758992729f4fe19d0dea0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/source-and-scope-audit.json",
+      "bytes": 134497,
+      "sha256": "091a5c3d29804e69854aa0c8882c875399d5e6dac7fac7c0551ae312321e3a5a"
+    }
+  ],
+  "previous_manifest_sha256": "5e14a37c9444c476c7da652d26a540dcc65c588ba960d419824a3f61d45de337",
+  "operations": {
+    "status": "PASS_NATIVE_DMM_BUFFER_FIELDS_TO_OPEN_CALLER_NOT_PHYSICAL_ALLOCATION",
+    "created_utc": "2026-10-27T17:29:59.678815+00:00",
+    "previous_manifest_members_verified": 10,
+    "cases": 8,
+    "single_stream_cases": 4,
+    "dual_branch_stop_cases": 4,
+    "bounded_phases": 160,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "stage117_frontend_and_stage75_backend_unchanged": true,
+    "actual_camera_Windows_UU_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "0e73b3d3fb558b89bc5e9410044c5e970871eea622e31791bd7d287c9fb446c9",
+    "after_sha256": "d9c88671fc64519196c77ec86c51509ff7073899064849a57ada35806c56d267"
+  },
+  "readme_index_before_sha256": "346385aecc2a255b2f14c65c5598a97c9721969456cab8ed9b17548630ec7f41",
+  "readme_index_after_sha256": "a8e0f46b470a40e4d691972af6e1e7ac5805f35dea70b12cef50aea4c5e67a1d",
+  "readme_index_entry": "- [2026-10-27 FX3 缓冲字段到原Open调用者](<work/sony-firmware-20261024/stage126-native-DMM-buffer-to-Open/README.md>)：8例160片段接原SetMemTbl/Enqueue与单流clear98构建，补特定旧值依赖；人工区域/元数据非物理分配，实录及恢复未验。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

@@ -1,0 +1,330 @@
+{
+  "status": "PASS_STATIC_ABI_PRECHECK_ONLY",
+  "sources": {
+    "fx6_image": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/vmlinux.bin",
+      "sha256": "bc4925e701ae363c797f22ef28f29dc48fd17af7f25a3f64d7d0824312c0dab9"
+    },
+    "fx6_symbols": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/kernel-provider-binding/fx6-kernel-symbol-catalog.json",
+      "sha256": "f81602bb6d754eccdd7b2c17af371ee2e03cc01fad86dff3552936bd1f9a6166"
+    },
+    "fx6_exports": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/kernel-provider-binding/export-crosscheck.json",
+      "sha256": "e9cd948f230d66b6e1aca689b5f96bf94e9ad98d91f10ee9bf72a018d4b133ad"
+    },
+    "fx3_image": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    "fx3_symbols": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/work/kernel-symbol-catalog.json",
+      "sha256": "b37c6b7d4315f65234cd6b64c3be4a3d7c6e0d2cca66204e27cb5c575000a51e"
+    },
+    "fx3_exports": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/run-symbol-verification/export-crosscheck.json",
+      "sha256": "c3e33ad1d45276727dc7ee9c287bdbd3e440e32b1724816c74ba897641aae6f6"
+    }
+  },
+  "fx3_modules_in_fixed_cpio": {
+    "/usr/kmod/liro.ko": {
+      "sha256": "b4bd80cc614751e0092ee19e89cb90632db580bc01f23f1a1df23544e9b10186",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    },
+    "/usr/kmod/osal_uipc.ko": {
+      "sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    },
+    "/usr/kmod/osal_utm.ko": {
+      "sha256": "f6679c6481adaa0cffb5e27dbf949f5d8168ca4200f4cb245e900544977b5f1c",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    },
+    "/usr/kmod/backup.ko": {
+      "sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    },
+    "/usr/kmod/dmm.ko": {
+      "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    },
+    "/kmod/dma330.ko": {
+      "sha256": "9ba277f011b3ddcfbc3fa610d22b63ae3be1e0ded385b42ff2c7cf0a83e520ab",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    },
+    "/usr/kmod/pcieatu.ko": {
+      "sha256": "08c61d2d889f4fc8e7219ddc269fb8170a090ffb4e207cf52ed1afce6fb82c35",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    },
+    "/usr/kmod/icdt.ko": {
+      "sha256": "9cb41cfbd876c8f1b719328fa97056b91b9ef19ef8984eca74488085a2487471",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    },
+    "/kmod/devno.ko": {
+      "sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "vermagic": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "has___versions": false,
+      "has___kcrctab": false
+    }
+  },
+  "module_count": 9,
+  "vermagic": {
+    "fx3": {
+      "file_offset": 4432208,
+      "text": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "sha256": "8183c509d8c8ef6983366a13093f655714defd642cf0e31334fc709a307348e5"
+    },
+    "fx6": {
+      "file_offset": 4432208,
+      "text": "4.9.337-scel+ SMP preempt mod_unload aarch64",
+      "sha256": "8183c509d8c8ef6983366a13093f655714defd642cf0e31334fc709a307348e5"
+    }
+  },
+  "kernel_crc_table_spans": {
+    "fx3": {
+      "ordinary": {
+        "start": "0xffffff800860e198",
+        "end": "0xffffff800860e198",
+        "bytes": 0
+      },
+      "_gpl": {
+        "start": "0xffffff800860e198",
+        "end": "0xffffff800860e198",
+        "bytes": 0
+      },
+      "_gpl_future": {
+        "start": "0xffffff800860e198",
+        "end": "0xffffff800860e198",
+        "bytes": 0
+      },
+      "_unused": {
+        "start": "0xffffff800860e198",
+        "end": "0xffffff800860e198",
+        "bytes": 0
+      },
+      "_unused_gpl": {
+        "start": "0xffffff800860e198",
+        "end": "0xffffff800860e198",
+        "bytes": 0
+      }
+    },
+    "fx6": {
+      "ordinary": {
+        "start": "0xffffff800860e5a0",
+        "end": "0xffffff800860e5a0",
+        "bytes": 0
+      },
+      "_gpl": {
+        "start": "0xffffff800860e5a0",
+        "end": "0xffffff800860e5a0",
+        "bytes": 0
+      },
+      "_gpl_future": {
+        "start": "0xffffff800860e5a0",
+        "end": "0xffffff800860e5a0",
+        "bytes": 0
+      },
+      "_unused": {
+        "start": "0xffffff800860e5a0",
+        "end": "0xffffff800860e5a0",
+        "bytes": 0
+      },
+      "_unused_gpl": {
+        "start": "0xffffff800860e5a0",
+        "end": "0xffffff800860e5a0",
+        "bytes": 0
+      }
+    }
+  },
+  "module___versions_present_count": 0,
+  "unique_original_kernel_imports": 121,
+  "fx6_export_name_present_count": 121,
+  "fx6_missing_export_names": [],
+  "changed_export_target_address_count": 108,
+  "changed_export_target_address_names": [
+    "PDE_DATA",
+    "__arch_copy_from_user",
+    "__arch_copy_to_user",
+    "__const_udelay",
+    "__get_free_pages",
+    "__init_rwsem",
+    "__init_waitqueue_head",
+    "__kmalloc",
+    "__mutex_init",
+    "__refrigerator",
+    "__udif_cache_ctrl",
+    "__udif_free_irq",
+    "__udif_kfree",
+    "__udif_kmalloc",
+    "__udif_request_irq",
+    "_raw_spin_lock",
+    "_raw_spin_lock_irqsave",
+    "_raw_spin_unlock",
+    "_raw_spin_unlock_irqrestore",
+    "arch_p32_to_p64",
+    "arch_phys_to_cache",
+    "arch_phys_to_cachetype",
+    "arch_phys_to_memtype",
+    "arch_phys_to_noncache",
+    "arch_phys_to_va",
+    "arch_va_to_cache",
+    "arch_va_to_cachetype",
+    "arch_va_to_memtype",
+    "arch_va_to_noncache",
+    "arch_va_to_phys",
+    "boot_time_add",
+    "clear_bit",
+    "complete",
+    "down_read",
+    "down_write",
+    "dump_stack",
+    "filp_close",
+    "filp_open",
+    "find_next_zero_bit",
+    "free_pages",
+    "freezing_slow_path",
+    "hwtimer_del_timer",
+    "hwtimer_init_timer",
+    "hwtimer_mod_timer",
+    "hwtimer_read_clock",
+    "hwtimer_read_clock_cpu",
+    "hwtimer_schedule_timeout",
+    "kern_path",
+    "kernel_write",
+    "kfree",
+    "kimage_voffset",
+    "kmalloc_add_trace",
+    "kmem_cache_alloc",
+    "kthread_bind",
+    "kthread_create_on_node",
+    "memcpy",
+    "memset",
+    "memstart_addr",
+    "msleep",
+    "mutex_lock",
+    "mutex_unlock",
+    "path_put",
+    "pcidma_transfer_async",
+    "pm_get_state",
+    "pm_is_mem_alive",
+    "preempt_schedule",
+    "printk",
+    "proc_create_data",
+    "proc_mkdir",
+    "remap_pfn_range",
+    "remove_proc_entry",
+    "schedule",
+    "schedule_timeout",
+    "scnprintf",
+    "set_bit",
+    "simple_strtoul",
+    "snprintf",
+    "strcspn",
+    "strlen",
+    "strncmp",
+    "strncpy",
+    "strnlen",
+    "strspn",
+    "strstr",
+    "subsys_free_irq",
+    "subsys_request_irq",
+    "tmonitor_dump",
+    "tmonitor_start",
+    "tmonitor_stop",
+    "tmonitor_write",
+    "udif_cdev_register",
+    "udif_cdev_unregister",
+    "udif_create_proc",
+    "udif_devices",
+    "udif_driver_register",
+    "udif_driver_unregister",
+    "udif_perr_enable",
+    "udif_remove_proc",
+    "up_read",
+    "up_write",
+    "vfree",
+    "vfs_read",
+    "vfs_stat",
+    "vfs_write",
+    "vmalloc",
+    "wait_for_completion",
+    "wake_up_process",
+    "yield"
+  ],
+  "critical_export_code_prefixes": {
+    "udif_driver_register": {
+      "fx3": {
+        "symbol_file_offset": 3253544,
+        "address": "0xffffff800839a528",
+        "first32_sha256": "12df4c1d8e4366530348d0105bc2e60694b181520c67ddb13edae73a58cade12",
+        "first32_hex": "fd7bb3a9441100f084003091c3118052fd030091f35301a9f403012af55b02a9"
+      },
+      "fx6": {
+        "symbol_file_offset": 3257256,
+        "address": "0xffffff800839b3a8",
+        "first32_sha256": "79c7b0ec9303a19eacc4a171f08fa8ca6a2044e39387f04be153e7e016587986",
+        "first32_hex": "fd7bb3a9441100f084200091c3118052fd030091f35301a9f403012af55b02a9"
+      }
+    },
+    "pcidma_transfer_async": {
+      "fx3": {
+        "symbol_file_offset": 2760904,
+        "address": "0xffffff80083220c8",
+        "first32_sha256": "65eb42727e89bfd745f3c40a2625bb10bd7ef8f01de5f5a881525976c4eb07f2",
+        "first32_hex": "000b00b4fd7bbba9fd030091f35301a9f40300aaf55b02a9f76303a9f96b04a9"
+      },
+      "fx6": {
+        "symbol_file_offset": 2764656,
+        "address": "0xffffff8008322f70",
+        "first32_sha256": "65eb42727e89bfd745f3c40a2625bb10bd7ef8f01de5f5a881525976c4eb07f2",
+        "first32_hex": "000b00b4fd7bbba9fd030091f35301a9f40300aaf55b02a9f76303a9f96b04a9"
+      }
+    },
+    "__udif_request_irq": {
+      "fx3": {
+        "symbol_file_offset": 3239504,
+        "address": "0xffffff8008396e50",
+        "first32_sha256": "96be239dc25e49bb16017bdd230fd3b761e1088d0e0584984aee8ede884922ad",
+        "first32_hex": "fd7bbda9fd030091f35301a9f51300f9c00300b4f30300aa001040b920050034"
+      },
+      "fx6": {
+        "symbol_file_offset": 3243216,
+        "address": "0xffffff8008397cd0",
+        "first32_sha256": "96be239dc25e49bb16017bdd230fd3b761e1088d0e0584984aee8ede884922ad",
+        "first32_hex": "fd7bbda9fd030091f35301a9f51300f9c00300b4f30300aa001040b920050034"
+      }
+    },
+    "arch_phys_to_noncache": {
+      "fx3": {
+        "symbol_file_offset": 3258032,
+        "address": "0xffffff800839b6b0",
+        "first32_sha256": "c84987fa082d7452b8d14909fbca8fa57d6f9f7b45b0293c27195f829f69a7ff",
+        "first32_hex": "fd7bbea9e20300aafd030091f30b00f9800700b4e0775eb2e18340b24000008b"
+      },
+      "fx6": {
+        "symbol_file_offset": 3261744,
+        "address": "0xffffff800839c530",
+        "first32_sha256": "c84987fa082d7452b8d14909fbca8fa57d6f9f7b45b0293c27195f829f69a7ff",
+        "first32_hex": "fd7bbea9e20300aafd030091f30b00f9800700b4e0775eb2e18340b24000008b"
+      }
+    }
+  },
+  "CONFIG_MODVERSIONS_exact_build_config_recovered": false,
+  "ABI_layout_or_behavior_compatible_proven": false,
+  "module_load_on_FX6_kernel_tested": false
+}

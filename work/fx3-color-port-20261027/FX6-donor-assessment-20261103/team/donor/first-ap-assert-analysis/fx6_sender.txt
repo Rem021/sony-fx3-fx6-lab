@@ -1,0 +1,58 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 20ef720: 910183b6     	add	x22, x29, #0x60
+ 20ef724: 2a1703e2     	mov	w2, w23
+ 20ef728: 2a1303e0     	mov	w0, w19
+ 20ef72c: 52800023     	mov	w3, #0x1                // =1
+ 20ef730: f81f8edf     	str	xzr, [x22, #-0x8]!
+ 20ef734: aa1603e1     	mov	x1, x22
+ 20ef738: 97a8a82a     	bl	0xb197e0 <osal_valloc_msg_wait@plt>
+ 20ef73c: 340000e0     	cbz	w0, 0x20ef758 <Application_System_Init+0x14e4714>
+ 20ef740: f0002882     	adrp	x2, 0x2602000
+ 20ef744: 90002880     	adrp	x0, 0x25ff000
+ 20ef748: 91106042     	add	x2, x2, #0x418
+ 20ef74c: 91284400     	add	x0, x0, #0xa11
+ 20ef750: 528085a1     	mov	w1, #0x42d              // =1069
+ 20ef754: 9401e00c     	bl	0x2167784 <Application_System_Init+0x155c740>
+ 20ef758: f9402fba     	ldr	x26, [x29, #0x58]
+ 20ef75c: b50000fa     	cbnz	x26, 0x20ef778 <Application_System_Init+0x14e4734>
+ 20ef760: f0002882     	adrp	x2, 0x2602000
+ 20ef764: 90002880     	adrp	x0, 0x25ff000
+ 20ef768: 91106042     	add	x2, x2, #0x418
+ 20ef76c: 91284400     	add	x0, x0, #0xa11
+ 20ef770: 528085e1     	mov	w1, #0x42f              // =1071
+ 20ef774: 9401e004     	bl	0x2167784 <Application_System_Init+0x155c740>
+ 20ef778: 93407ee2     	sxtw	x2, w23
+ 20ef77c: aa1403e1     	mov	x1, x20
+ 20ef780: aa1a03e0     	mov	x0, x26
+ 20ef784: 97a8a03f     	bl	0xb17880 <memcpy@plt>
+ 20ef788: b94053a1     	ldr	w1, [x29, #0x50]
+ 20ef78c: f9402fa0     	ldr	x0, [x29, #0x58]
+ 20ef790: 97a8a138     	bl	0xb17c70 <osal_set_msg_src@plt>
+ 20ef794: f9402fa1     	ldr	x1, [x29, #0x58]
+ 20ef798: 2a1303e0     	mov	w0, w19
+ 20ef79c: 97a8aa61     	bl	0xb1a120 <osal_snd_msg@plt>
+ 20ef7a0: 340000e0     	cbz	w0, 0x20ef7bc <Application_System_Init+0x14e4778>
+ 20ef7a4: f0002882     	adrp	x2, 0x2602000
+ 20ef7a8: 90002880     	adrp	x0, 0x25ff000
+ 20ef7ac: 91106042     	add	x2, x2, #0x418
+ 20ef7b0: 91284400     	add	x0, x0, #0xa11
+ 20ef7b4: 52808661     	mov	w1, #0x433              // =1075
+ 20ef7b8: 9401dff3     	bl	0x2167784 <Application_System_Init+0x155c740>
+ 20ef7bc: b94053a0     	ldr	w0, [x29, #0x50]
+ 20ef7c0: aa1603e1     	mov	x1, x22
+ 20ef7c4: 12800002     	mov	w2, #-0x1               // =-1
+ 20ef7c8: 97a8a9be     	bl	0xb19ec0 <osal_rcv_msg_tmo@plt>
+ 20ef7cc: f9402fb3     	ldr	x19, [x29, #0x58]
+ 20ef7d0: 93407f22     	sxtw	x2, w25
+ 20ef7d4: aa1503e0     	mov	x0, x21
+ 20ef7d8: aa1303e1     	mov	x1, x19
+ 20ef7dc: 97a8a029     	bl	0xb17880 <memcpy@plt>
+ 20ef7e0: b94053a0     	ldr	w0, [x29, #0x50]
+ 20ef7e4: aa1303e1     	mov	x1, x19
+ 20ef7e8: 97a8a956     	bl	0xb19d40 <osal_free_msg@plt>
+ 20ef7ec: 17ffffc2     	b	0x20ef6f4 <Application_System_Init+0x14e46b0>

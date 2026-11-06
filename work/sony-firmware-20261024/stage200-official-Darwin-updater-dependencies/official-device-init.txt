@@ -1,0 +1,79 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x4012c8 fd7bbda9 stp      x29, x30, [sp, #-0x30]!
+0x4012cc fd030091 mov      x29, sp
+0x4012d0 f35301a9 stp      x19, x20, [sp, #0x10]
+0x4012d4 740200d0 adrp     x20, #0x44f000
+0x4012d8 f55b02a9 stp      x21, x22, [sp, #0x20]
+0x4012dc f503012a mov      w21, w1
+0x4012e0 41008052 mov      w1, #2
+0x4012e4 f30300aa mov      x19, x0
+0x4012e8 f603022a mov      w22, w2
+0x4012ec 09feff97 bl       #0x400b10
+0x4012f0 80d201b9 str      w0, [x20, #0x1d0]
+0x4012f4 e001f836 tbz      w0, #0x1f, #0x401330
+0x4012f8 e403002a mov      w4, w0
+0x4012fc 01000090 adrp     x1, #0x401000
+0x401300 00000090 adrp     x0, #0x401000
+0x401304 e30313aa mov      x3, x19
+0x401308 21c02491 add      x1, x1, #0x930
+0x40130c 006c2e91 add      x0, x0, #0xb9b
+0x401310 221a8052 mov      w2, #0xd1
+0x401314 13008012 mov      w19, #-1
+0x401318 42feff97 bl       #0x400c20
+0x40131c e003132a mov      w0, w19
+0x401320 f35341a9 ldp      x19, x20, [sp, #0x10]
+0x401324 f55b42a9 ldp      x21, x22, [sp, #0x20]
+0x401328 fd7bc3a8 ldp      x29, x30, [sp], #0x30
+0x40132c c0035fd6 ret      
+0x401330 41e88cd2 mov      x1, #0x6742
+0x401334 62028052 mov      w2, #0x13
+0x401338 8100a8f2 movk     x1, #0x4004, lsl #16
+0x40133c 05feff97 bl       #0x400b50
+0x401340 f303002a mov      w19, w0
+0x401344 80010034 cbz      w0, #0x401374
+0x401348 80d241b9 ldr      w0, [x20, #0x1d0]
+0x40134c 1dfeff97 bl       #0x400bc0
+0x401350 10feff97 bl       #0x400b90
+0x401354 030040b9 ldr      w3, [x0]
+0x401358 01000090 adrp     x1, #0x401000
+0x40135c 00000090 adrp     x0, #0x401000
+0x401360 21c02491 add      x1, x1, #0x930
+0x401364 005c2f91 add      x0, x0, #0xbd7
+0x401368 021b8052 mov      w2, #0xd8
+0x40136c 2dfeff97 bl       #0x400c20
+0x401370 ebffff17 b        #0x40131c
+0x401374 80d241b9 ldr      w0, [x20, #0x1d0]
+0x401378 21e88cd2 mov      x1, #0x6741
+0x40137c 02008252 mov      w2, #0x1000
+0x401380 8100a8f2 movk     x1, #0x4004, lsl #16
+0x401384 f3fdff97 bl       #0x400b50
+0x401388 f303002a mov      w19, w0
+0x40138c 60010034 cbz      w0, #0x4013b8
+0x401390 80d241b9 ldr      w0, [x20, #0x1d0]
+0x401394 0bfeff97 bl       #0x400bc0
+0x401398 fefdff97 bl       #0x400b90
+0x40139c 030040b9 ldr      w3, [x0]
+0x4013a0 01000090 adrp     x1, #0x401000
+0x4013a4 00000090 adrp     x0, #0x401000
+0x4013a8 c21b8052 mov      w2, #0xde
+0x4013ac 21c02491 add      x1, x1, #0x930
+0x4013b0 00643091 add      x0, x0, #0xc19
+0x4013b4 eeffff17 b        #0x40136c
+0x4013b8 600200d0 adrp     x0, #0x44f000
+0x4013bc e203162a mov      w2, w22
+0x4013c0 e103152a mov      w1, w21
+0x4013c4 00200791 add      x0, x0, #0x1c8
+0x4013c8 43008052 mov      w3, #2
+0x4013cc f5fdff97 bl       #0x400ba0
+0x4013d0 f303002a mov      w19, w0
+0x4013d4 40faff34 cbz      w0, #0x40131c
+0x4013d8 80d241b9 ldr      w0, [x20, #0x1d0]
+0x4013dc f9fdff97 bl       #0x400bc0
+0x4013e0 ecfdff97 bl       #0x400b90
+0x4013e4 030040b9 ldr      w3, [x0]
+0x4013e8 01000090 adrp     x1, #0x401000
+0x4013ec 00000090 adrp     x0, #0x401000
+0x4013f0 a21c8052 mov      w2, #0xe5
+0x4013f4 21c02491 add      x1, x1, #0x930
+0x4013f8 00783191 add      x0, x0, #0xc5e
+0x4013fc dcffff17 b        #0x40136c

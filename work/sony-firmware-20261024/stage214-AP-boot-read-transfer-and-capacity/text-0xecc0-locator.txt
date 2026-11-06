@@ -1,0 +1,60 @@
+0000ecc0: fd7bb3a9 stp x29, x30, [sp, #-0xd0]!
+0000ecc4: fd030091 mov x29, sp
+0000ecc8: f35301a9 stp x19, x20, [sp, #0x10]
+0000eccc: 14800091 add x20, x0, #0x20
+0000ecd0: f55b02a9 stp x21, x22, [sp, #0x20]
+0000ecd4: f76303a9 stp x23, x24, [sp, #0x30]
+0000ecd8: f96b04a9 stp x25, x26, [sp, #0x40]
+0000ecdc: fb7305a9 stp x27, x28, [sp, #0x50]
+0000ece0: 9ffe0029 stp wzr, wzr, [x20, #4]
+0000ece4: 9f0e00b9 str wzr, [x20, #0xc]
+0000ece8: 022040b9 ldr w2, [x0, #0x20]
+0000ecec: 230040f9 ldr x3, [x1]
+0000ecf0: 5f000071 cmp w2, #0
+0000ecf4: 6d090054 b.le #0xee20
+0000ecf8: 820a40f9 ldr x2, [x20, #0x10]
+0000ecfc: 04038052 mov w4, #0x18
+0000ed00: 164080d2 mov x22, #0x200
+0000ed04: 19f00691 add x25, x0, #0x1bc
+0000ed08: 430000f9 str x3, [x2]
+0000ed0c: 820640b9 ldr w2, [x20, #4]
+0000ed10: 830a40f9 ldr x3, [x20, #0x10]
+0000ed14: 420c249b smaddl x2, w2, w4, x3
+0000ed18: 560800f9 str x22, [x2, #0x10]
+0000ed1c: 820640b9 ldr w2, [x20, #4]
+0000ed20: 42040011 add w2, w2, #1
+0000ed24: 820600b9 str w2, [x20, #4]
+0000ed28: 02a440f9 ldr x2, [x0, #0x148]
+0000ed2c: 170840f9 ldr x23, [x0, #0x10]
+0000ed30: 58000012 and w24, w2, #1
+0000ed34: 22050037 tbnz w2, #0, #0xedd8
+0000ed38: f30300aa mov x19, x0
+0000ed3c: bbe30191 add x27, x29, #0x78
+0000ed40: 1c200891 add x28, x0, #0x208
+0000ed44: 1a018052 mov w26, #8
+0000ed48: 35008052 mov w21, #1
+0000ed4c: a13700f9 str x1, [x29, #0x68]
+0000ed50: 600a42b9 ldr w0, [x19, #0x208]
+0000ed54: a0050035 cbnz w0, #0xee08
+0000ed58: bb4f00f9 str x27, [x29, #0x98]
+0000ed5c: e30317aa mov x3, x23
+0000ed60: bfa300b9 str wzr, [x29, #0xa0]
+0000ed64: e20319aa mov x2, x25
+0000ed68: bf7f1929 stp wzr, wzr, [x29, #0xc8]
+0000ed6c: a1230291 add x1, x29, #0x88
+0000ed70: b5030179 strh w21, [x29, #0x80]
+0000ed74: e00313aa mov x0, x19
+0000ed78: bfd71129 stp wzr, w21, [x29, #0x8c]
+0000ed7c: ba230239 strb w26, [x29, #0x88]
+0000ed80: b55b0f29 stp w21, w22, [x29, #0x78]
+0000ed84: e50240f9 ldr x5, [x23]
+0000ed88: bf0c00b9 str wzr, [x5, #0xc]
+0000ed8c: e50240f9 ldr x5, [x23]
+0000ed90: b40000f9 str x20, [x5]
+0000ed94: e50240f9 ldr x5, [x23]
+0000ed98: bf0800b9 str wzr, [x5, #8]
+0000ed9c: e40240f9 ldr x4, [x23]
+0000eda0: 9f0800f9 str xzr, [x4, #0x10]
+0000eda4: 31fcff97 bl #0xde68
+0000eda8: e503002a mov w5, w0
+0000edac: e003f836 tbz w0, #0x1f, #0xee28

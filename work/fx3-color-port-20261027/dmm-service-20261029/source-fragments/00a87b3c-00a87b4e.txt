@@ -1,0 +1,6 @@
+00a87b3c cbz          r0, #0xa87b44
+00a87b3e ldr          r0, [r0, #-0x8]
+00a87b42 bx           lr
+00a87b44 movw         r0, #0xfc00
+00a87b48 movt         r0, #0xffff
+00a87b4c bx           lr

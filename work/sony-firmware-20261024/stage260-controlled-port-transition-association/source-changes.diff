@@ -1,0 +1,688 @@
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/build.py
++++ stage260-controlled-port-transition-association/build.py
+@@ -7,10 +7,10 @@
+ assert v.get('VolumeUUID')=='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ out=H/'artifacts';out.mkdir(mode=0o700);(H/'runs').mkdir(mode=0o700,exist_ok=True)
+ base=['/usr/bin/xcrun','clang','-std=c11','-O1','-g','-Wall','-Wextra','-Werror','-Wno-deprecated-declarations','-fvisibility=hidden']
+-shared=[str(H/n)for n in ['owner_core.c','owner_ipc.c','entry_support.c','owner_entry_main.c','owner_channel.c','host_transport.c','iokit_wire.c','native_session.c','global_guard.c','frame_io.c','owner_receipt.c','helper_hello.c','status_permit.c','stream.c','descriptor_policy.c','flow_journal.c','service_flow.c']]
++shared=[str(H/n)for n in ['owner_core.c','owner_ipc.c','entry_support.c','owner_entry_main.c','owner_channel.c','host_transport.c','iokit_wire.c','native_session.c','global_guard.c','frame_io.c','owner_receipt.c','helper_hello.c','status_permit.c','stream.c','transition_identity.c','descriptor_policy.c','flow_journal.c','service_flow.c']]
+ commands={
+     'fixture':base+['-fsanitize=address,undefined','-fno-sanitize-recover=all','-DFX3_ENTRY_FIXTURE','-DFX3_OWNER_CHANNEL_FIXTURE','-DFX3_IOKIT_WIRE_FIXTURE',*shared,str(H/'owner_fixture.c'),str(H/'fake_iokit.c'),str(H/'flow_fixture.c'),'-o',str(out/'service-fixture-helper')],
+-    'native':base+[*shared,str(H/'owner_iokit.c'),str(H/'iokit_adapter.c'),str(H/'host_login.c'),'-framework','Security','-lbsm','-framework','IOKit','-framework','CoreFoundation','-framework','DiskArbitration','-o',str(out/'service-native-helper')],
++    'native':base+[*shared,str(H/'owner_iokit.c'),str(H/'iokit_adapter.c'),str(H/'port_anchor.c'),str(H/'host_login.c'),'-framework','Security','-lbsm','-framework','IOKit','-framework','CoreFoundation','-framework','DiskArbitration','-o',str(out/'service-native-helper')],
+     'ipc':base+['-dynamiclib','-DFX3_ENTRY_FIXTURE',str(H/'owner_ipc.c'),str(H/'entry_support.c'),'-o',str(out/'entry-ipc.dylib')]
+ }
+ builds={}
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/entry_shared.h
++++ stage260-controlled-port-transition-association/entry_shared.h
+@@ -1,8 +1,8 @@
+ #ifndef FX3_ENTRY_SHARED_H
+ #define FX3_ENTRY_SHARED_H
+ #include "owner_trial.h"
+-#define FX3_ENTRY_SCHEMA 5u
+-#define FX3_ENTRY_SCOPE 0x53564333u
++#define FX3_ENTRY_SCHEMA 6u
++#define FX3_ENTRY_SCOPE 0x53564334u
+ #define FX3_ENTRY_BLOCK_BYTES 4096u
+ typedef struct {
+     uint32_t schema,mode,owner_uid,scope;
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/entry_target.h
++++ stage260-controlled-port-transition-association/entry_target.h
+@@ -1,13 +1,13 @@
+ #define FX3_NATIVE_RELEASED 0
+-#define FX3_GRANT_ID "fx3-702-service-speed-candidate-20261101-01"
+-#define FX3_FIXED_JOB_DIR "/private/tmp/fx3-702-service-speed-candidate-20261101-01"
+-#define FX3_FIXED_FRAME "/private/tmp/fx3-702-service-speed-candidate-20261101-01/shared.bin"
++#define FX3_GRANT_ID "fx3-702-port-transition-candidate-20261101-01"
++#define FX3_FIXED_JOB_DIR "/private/tmp/fx3-702-port-transition-candidate-20261101-01"
++#define FX3_FIXED_FRAME "/private/tmp/fx3-702-port-transition-candidate-20261101-01/shared.bin"
+ #define FX3_ROOT_BASE "/private/var/root/fx3-owner-trials"
+-#define FX3_ROOT_GRANT_DIR "/private/var/root/fx3-owner-trials/fx3-702-service-speed-candidate-20261101-01"
+-#define FX3_INSTALLED_HELPER "/private/var/root/fx3-owner-trials/fx3-702-service-speed-candidate-20261101-01/helper"
+-#define FX3_ROOT_ENTRY_LEASE "/private/var/root/fx3-owner-trials/fx3-702-service-speed-candidate-20261101-01/entry.once"
+-#define FX3_FIXED_PEER_PATH "/private/tmp/fx3-702-service-speed-candidate-20261101-01/peer.sock"
+-#define FX3_FIXTURE_JOB_ROOT "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/runs/"
+-#define FX3_FIXTURE_SOCKET_ROOT "/private/tmp/fx3-fixture-ipc259/"
++#define FX3_ROOT_GRANT_DIR "/private/var/root/fx3-owner-trials/fx3-702-port-transition-candidate-20261101-01"
++#define FX3_INSTALLED_HELPER "/private/var/root/fx3-owner-trials/fx3-702-port-transition-candidate-20261101-01/helper"
++#define FX3_ROOT_ENTRY_LEASE "/private/var/root/fx3-owner-trials/fx3-702-port-transition-candidate-20261101-01/entry.once"
++#define FX3_FIXED_PEER_PATH "/private/tmp/fx3-702-port-transition-candidate-20261101-01/peer.sock"
++#define FX3_FIXTURE_JOB_ROOT "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage260-controlled-port-transition-association/runs/"
++#define FX3_FIXTURE_SOCKET_ROOT "/private/tmp/fx3-fixture-ipc260/"
+ 
+ #define FX3_GLOBAL_GUARD "/private/var/root/fx3-owner-trials/global-fx3-owner.journal"
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/fixed_launch.py
++++ stage260-controlled-port-transition-association/fixed_launch.py
+@@ -83,7 +83,7 @@
+     return command(body,JOB,nonce),body
+ 
+ def native_authority(goal):
+-    raise R.Rejected("SERVICE serial is suppressed in the reviewed default route; independent transition association is not implemented; no staging")
++    raise R.Rejected("controlled physical-port association is a new unreleased scope; no fixed live material or staging")
+     # Preserved old renderer is unreachable.
+     raw=(HERE/'approval-bundle.json').read_bytes();b=json.loads(raw);digest=sha256(raw).hexdigest()
+     if os.getuid()!=501 or os.geteuid()!=501 or b['grant_id']!=R.GRANT_ID or b['scope']!='MSC_OWNER_STATUS_ONLY' or \
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/flow_fixture.c
++++ stage260-controlled-port-transition-association/flow_fixture.c
+@@ -2,6 +2,7 @@
+ #include "service_flow.h"
+ #include "entry_shared.h"
+ #include "descriptor_policy.h"
++#include "transition_identity.h"
+ #include "derived_profile_fixture.h"
+ #include <CommonCrypto/CommonDigest.h>
+ #include <stdlib.h>
+@@ -33,9 +34,17 @@
+ static const fx3_stream_ops stream_ops={now,control,put,get,dispose};
+ static int take(void *p,fx3_service_flow *f){
+     fake_flow *b=p;f->current=b->initial;if(fx3_route_init(&f->route,&b->initial))return FX3T_DENIED;
++    if(fx3_witness_init(&f->route.witness,&b->initial,f->journal->nonce))return FX3T_DENIED;
+     int rc=fx3_stream_bind(&f->route,&f->msc,&b->initial,1,f->deadline,&stream_ops,&b->msc);if(!rc)f->taken=1;return rc;
+ }
+-static int observe(void *p,uint32_t mode,fx3_identity *out){fake_flow *b=p;*out=b->initial;out->registry_id=mode==2?200:300;out->pid=mode==2?0x0336:0x0da1;return FX3T_OK;}
++static int observe(void *p,fx3_service_flow *f,uint32_t mode,fx3_identity *out){
++    (void)f;fake_flow *b=p;*out=b->initial;out->registry_id=mode==2?200:300;out->pid=mode==2?0x0336:0x0da1;
++    if(mode==2){out->identity_kind=FX3_ID_CONTROLLED_PORT;memset(out->serial_tag,0,32);out->location=0x01200000;out->logical_port=502;
++        if(b->option&268435456)out->physical_port++;
++        if(b->option&1073741824){out->identity_kind=FX3_ID_SERIAL;memset(out->serial_tag,'B',32);}
++    }else if(b->option&536870912)memset(out->serial_tag,'B',32);
++    return FX3T_OK;
++}
+ static int open_service(void *p,fx3_service_flow *f,const fx3_identity *id){
+     fake_flow *b=p;int rc=fx3_stream_bind(&f->route,&f->service,id,2,f->deadline,&stream_ops,&b->service);if(rc)return rc;
+     uint8_t raw[128]={9,2,32,0,1,1,0,0x80,50, 9,4,0,0,2,255,255,255,0, 7,5,6,2,0,2,0, 7,5,0x85,2,0,2,0};uint32_t n=32;
+@@ -53,7 +62,8 @@
+ static const fx3_flow_ops flow_ops={take,observe,open_service,driver_return,now,pause};
+ int fx3_fixture_service_run(fx3_service_flow *f,fx3_owner_result *report,fx3_owner_control *control_,const fx3_owner_config *cfg,uint32_t option){
+     fake_flow *b=calloc(1,sizeof(*b));if(!b)return -1;
+-    b->initial.registry_id=100;b->initial.location=cfg->location;b->initial.vid=0x054c;b->initial.pid=0x0da1;memcpy(b->initial.body_tag,cfg->expected_body_tag,32);
++    b->initial.registry_id=100;b->initial.location=cfg->location;b->initial.vid=0x054c;b->initial.pid=0x0da1;
++    b->initial.identity_kind=FX3_ID_SERIAL;b->initial.physical_port=500;b->initial.logical_port=501;memcpy(b->initial.serial_tag,cfg->expected_body_tag,32);
+     b->option=option;b->msc.mode=1;b->service.mode=2;b->service.fail=(option&4194304)!=0;b->msc.stop_on_write=(option&16777216)!=0;b->msc.control=control_;
+     f->journal=fx3_flow_current_journal();f->owner=report;f->control=control_;f->deadline=cfg->work_deadline_ns;memcpy(f->key,cfg->privacy_key,32);
+     int rc=fx3_flow_run(f,&flow_ops,b);if(!f->retained)free(b);return rc;
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/flow_journal.c
++++ stage260-controlled-port-transition-association/flow_journal.c
+@@ -25,22 +25,27 @@
+     if(point==0 && atomic_load(&f->control->stop_requested))return -1;
+     if(point==0){atomic_store(&f->owner->wire_pending,op);if(op==1){atomic_store(&f->owner->vendor_attempted,1);f->owner->persistent_camera_or_vendor_commands=1;}}
+     else if(point==1 && call && call->returned)atomic_store(&f->owner->wire_pending,0);
+-    uint8_t wire[516]={0},*p=wire+4;p32(wire,512);memcpy(p,"FX3FLOW2",8);p32(p+8,2);p32(p+12,point);
++    uint8_t wire[676]={0},*p=wire+4;p32(wire,672);memcpy(p,"FX3FLOW3",8);p32(p+8,3);p32(p+12,point);
+     p64(p+16,++j->sequence);p32(p+24,op);p32(p+28,call?(uint32_t)call->status:0);
+     p32(p+32,j->uid);p32(p+36,j->pid);p64(p+40,j->sec);p64(p+48,j->usec);memcpy(p+56,j->nonce,16);memcpy(p+72,j->grant_hash,32);
+     if(call){p32(p+104,call->returned);p32(p+108,call->count_known);p32(p+112,call->count);p32(p+116,(uint32_t)call->raw_return);}
+     p32(p+120,atomic_load(&f->owner->wire_pending));p32(p+124,atomic_load(&f->owner->vendor_attempted));
+     p32(p+128,f->route.phase);p32(p+132,f->taken);p32(p+136,f->normal_seen);p32(p+140,f->objects_disposed);p32(p+144,f->retained);p32(p+148,f->finished);p32(p+248,f->driver_returned);
+-    p64(p+152,f->route.generation);p64(p+160,f->current.registry_id);p32(p+168,f->current.location);p32(p+172,f->current.vid|((uint32_t)f->current.pid<<16));memcpy(p+176,f->current.body_tag,32);
++    p64(p+152,f->route.generation);p64(p+160,f->current.registry_id);p32(p+168,f->current.location);p32(p+172,f->current.vid|((uint32_t)f->current.pid<<16));memcpy(p+176,f->current.serial_tag,32);
+     p32(p+208,f->read.bytes);p32(p+212,f->read.reply_valid);memcpy(p+216,f->read.opaque_hmac,32);
+     p32(p+252,f->service.control_only);p32(p+256,f->service.descriptor_length);p32(p+260,f->service.descriptor_copied);
+     memcpy(p+264,f->service.descriptor_hash,32);memcpy(p+296,&f->service.observed_profile,sizeof(fx3_profile));
+     p32(p+308,(uint32_t)f->service.acquire_policy_return);p32(p+312,f->service.configurations|((uint32_t)f->service.active_configuration<<8));
+     memcpy(p+320,f->service.descriptor,128);
+-    memcpy(p+448,j->previous,32);CC_SHA256(p,480,p+480);
+-    size_t at=0;while(at<512){ssize_t n=write(j->fd,p+at,512-at);if(n<=0){j->failed=1;return -1;}at+=(size_t)n;}
++    const fx3_port_witness *w=&f->route.witness;
++    p64(p+448,f->current.physical_port);p64(p+456,f->current.logical_port);p32(p+464,f->current.identity_kind);p32(p+468,w->flags);
++    memcpy(p+472,w->nonce,16);p64(p+488,w->source_node);p64(p+496,w->service_node);p64(p+504,w->return_node);
++    p64(p+512,w->armed_ns);p64(p+520,w->deadline_ns);p64(p+528,w->service_ns);p64(p+536,w->return_ns);
++    p32(p+544,w->state);p32(p+548,w->observations);memcpy(p+552,w->origin_serial_tag,32);p64(p+584,w->last_ns);
++    memcpy(p+608,j->previous,32);CC_SHA256(p,640,p+640);
++    size_t at=0;while(at<672){ssize_t n=write(j->fd,p+at,672-at);if(n<=0){j->failed=1;return -1;}at+=(size_t)n;}
+     if(fsync(j->fd)){j->failed=1;return -1;}
+-    memcpy(j->previous,p+480,32);
++    memcpy(j->previous,p+640,32);
+     if(fx3_receipt_send_bytes(j->peer,wire,sizeof(wire),j->peer->deadline_ns)){j->failed=1;return -1;}
+     return 0;
+ }
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/flow_native.inc
++++ stage260-controlled-port-transition-association/flow_native.inc
+@@ -1,22 +1,18 @@
+ /* Included inside native owner: objects are transferred, never re-imported. */
++#include "transition_identity.h"
+ static int flow_take(void *opaque,fx3_service_flow *f){
+     native_owner *p=opaque;fx3_identity id={0};
+-    int rc=fx3_usb_cached_identity(p->config->location,0x0da1,p->config->privacy_key,&id);
+-    if(rc || id.registry_id!=p->report->before.registry_id || memcmp(id.body_tag,p->config->expected_body_tag,32))return FX3T_DENIED;
++    int rc=fx3_usb_unique_msc_source(p->config->location,p->config->privacy_key,&id);
++    if(rc || id.registry_id!=p->report->before.registry_id || memcmp(id.serial_tag,p->config->expected_body_tag,32))return FX3T_DENIED;
+     f->current=id;if(fx3_route_init(&f->route,&id))return FX3T_DENIED;
++    if(!f->journal || fx3_witness_init(&f->route.witness,&id,f->journal->nonce))return FX3T_DENIED;
+     rc=fx3_usb_take_msc(&f->route,&f->msc,&id,p->config->privacy_key,&p->device,&p->interface,f->deadline);
+     if(!p->device && !p->interface && f->msc.route){p->transferred=1;p->device_open=p->interface_open=0;f->taken=1;}
+     return rc;
+ }
+-static int flow_observe(void *opaque,uint32_t mode,fx3_identity *out){
+-    native_owner *p=opaque;uint16_t pid=mode==2?0x0336:0x0da1;
+-    int rc=fx3_usb_cached_identity(p->config->location,pid,p->config->privacy_key,out);
+-    if(rc==FX3T_DENIED){
+-        fx3_identity previous={0};int other=fx3_usb_cached_identity(p->config->location,mode==2?0x0da1:0x0336,p->config->privacy_key,&previous);
+-        if(!other && !memcmp(previous.body_tag,p->config->expected_body_tag,32))return FX3T_BUSY;
+-        if(other==FX3T_GONE)return FX3T_GONE;
+-    }
+-    return rc;
++static int flow_observe(void *opaque,fx3_service_flow *f,uint32_t mode,fx3_identity *out){
++    native_owner *p=opaque;
++    return fx3_usb_transition_snapshot(&f->route,mode,p->config->privacy_key,out);
+ }
+ static int flow_open(void *opaque,fx3_service_flow *f,const fx3_identity *id){
+     native_owner *p=opaque;
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/flow_receiver.py
++++ stage260-controlled-port-transition-association/flow_receiver.py
+@@ -1,6 +1,6 @@
+ """Strict per-helper flow frames, after live kernel peer/self-image checking.
+ 
+-The supervisor saves each raw512B frame before calling this decoder.
++The supervisor saves each raw672B frame before calling this decoder.
+ No saved file is itself a live origin proof or a camera acceptance result.
+ """
+ from hashlib import sha256
+@@ -40,6 +40,66 @@
+         self.previous=bytes(32);self.count=0;self.pending=None;self.complete=False;self.terminal=False;self.rows=[]
+         self.calls={};self.body_bytes=0;self.body_tag=None;self.location=None;self.nodes={};self.pending_subject=None
+         self.control_only=False;self.descriptor=None
++        self.port=None;self.source_node=None;self.service_node=None;self.return_node=None;self.service_kind=0
++        self.witness_state=0;self.observations=0;self.window=None
++
++    def association(self,data,op,point,status):
++        physical,logical=struct.unpack_from('<QQ',data,448);kind,flags=struct.unpack_from('<II',data,464)
++        source,service,returned_node,armed,deadline,service_ns,return_ns=struct.unpack_from('<7Q',data,488)
++        state,observations=struct.unpack_from('<II',data,544);origin=data[552:584];last=struct.unpack_from('<Q',data,584)[0]
++        registry,location,product=struct.unpack_from('<QII',data,160);vid=product&65535;pid=product>>16;tag=data[176:208]
++        if any(data[592:608]) or state>6 or observations>20 or kind>2:raise R.Rejected('association fields')
++        if not state:
++            if any(data[448:608]) or self.witness_state or point in (0,1):raise R.Rejected('uninitialized association')
++            return
++        if data[472:488]!=self.nonce or not source or origin==bytes(32):raise R.Rejected('association source scope')
++        if self.source_node is None:
++            if state!=1 or pid!=0x0da1 or kind!=1 or tag!=origin or registry!=source or not physical or not logical or not location:
++                raise R.Rejected('MSC serial baseline required before transition')
++            self.source_node=source;self.port=physical;self.location=location;self.body_tag=origin
++        if source!=self.source_node or origin!=self.body_tag:raise R.Rejected('origin serial context changed')
++        before=self.witness_state
++        if state!=before and not(before==0 and state==1):
++            transition={(1,2):(60,2),(2,3):(61,2),(3,4):(62,2),(4,5):(63,2)}
++            if state!=6 and transition.get((before,state))!=(op,point):raise R.Rejected('association transition without marker')
++        if state in (1,2,3,4,5) and flags!={1:1,2:3,3:7,4:15,5:31}[state]:raise R.Rejected('association flags')
++        if state==1:
++            if any([service,returned_node,armed,deadline,service_ns,return_ns,last,observations]):raise R.Rejected('premature transition fields')
++        elif state!=6:
++            if not armed or not armed<deadline or deadline-armed>2_000_000_000 or not armed<=last<deadline:
++                raise R.Rejected('transition window')
++            if state in (3,4,5) and (not service or service==source or not service_ns):raise R.Rejected('missing service observation')
++            if state==5 and (not returned_node or returned_node in (source,service) or not armed<=return_ns<deadline):raise R.Rejected('missing returned MSC observation')
++        if (op,point) in [(60,2),(62,2)]:
++            if observations or self.pending is not None:raise R.Rejected('armed transition while call pending')
++            if op==60 and any(self.calls.get((0x0da1,k),0)!=n for k,n in {1:1,2:7,3:7,8:1}.items()):raise R.Rejected('transition before MSC exchange/disposal')
++            if op==62 and (self.calls.get((0x0336,8),0)!=1 or self.calls.get((0x0336,7),0)+self.calls.get((0x0336,10),0)!=1):raise R.Rejected('return before SERVICE end/disposal')
++            self.window=(armed,deadline);self.observations=0
++        elif op in (61,63) and point==2:
++            if observations!=self.observations+1:raise R.Rejected('missing cache sample')
++            self.observations=observations
++        elif observations!=self.observations:raise R.Rejected('cache sample count changed outside observation')
++        if state in (2,3,4,5) and self.window!=(armed,deadline):raise R.Rejected('transition deadline changed')
++        if service:
++            if self.service_node not in (None,service):raise R.Rejected('service node changed')
++            self.service_node=service
++        if state!=6 and registry:
++            if physical!=self.port or not logical or vid!=0x054c:raise R.Rejected('physical anchor changed')
++            if pid==0x0336:
++                if kind==2:
++                    if any(tag):raise R.Rejected('fabricated SERVICE serial tag')
++                elif kind!=1 or tag!=origin:raise R.Rejected('unexpected SERVICE serial')
++                if state in (3,4):
++                    if registry!=service or self.service_kind not in (0,kind):raise R.Rejected('service subject changed')
++                    self.service_kind=kind
++            elif pid!=0x0da1 or kind!=1 or tag!=origin or location!=self.location:raise R.Rejected('MSC serial or location changed')
++            elif state==5:
++                if registry!=returned_node:raise R.Rejected('returned node differs')
++                self.return_node=registry
++            elif registry!=source:raise R.Rejected('unexpected MSC node before return')
++        if point in (0,1) and (state==6 or not registry or not physical or not logical or (pid==0x0336 and state!=3) or (pid==0x0da1 and state not in (1,5))):
++            raise R.Rejected('I/O subject lacks valid association')
++        self.witness_state=state
+ 
+     def descriptor_record(self,data):
+         control,total,copied=struct.unpack_from('<III',data,252)
+@@ -58,31 +118,30 @@
+         self.control_only=bool(control);self.descriptor=data[252:448]
+ 
+     def accept(self,data):
+-        if len(data)!=512 or data[:8]!=b'FX3FLOW2' or self.terminal:raise R.Rejected('flow size/magic/terminal')
++        if len(data)!=672 or data[:8]!=b'FX3FLOW3' or self.terminal:raise R.Rejected('flow size/magic/terminal')
+         schema,point,sequence,op,status=struct.unpack_from('<IIQII',data,8)
+-        if schema!=2 or point not in range(4) or sequence!=self.count+1 or sequence>512:raise R.Rejected('flow schema/sequence')
++        if schema!=3 or point not in range(4) or sequence!=self.count+1 or sequence>512:raise R.Rejected('flow schema/sequence')
+         if struct.unpack_from('<IIQQ',data,32)!=(self.identity.uid,self.identity.pid,self.identity.sec,self.identity.usec):raise R.Rejected('flow helper incarnation')
+         if data[56:72]!=self.nonce or data[72:104]!=self.grant:raise R.Rejected('flow nonce/grant')
+-        if data[448:480]!=self.previous or sha256(data[:480]).digest()!=data[480:]:raise R.Rejected('flow chain/digest')
++        if data[608:640]!=self.previous or sha256(data[:640]).digest()!=data[640:]:raise R.Rejected('flow chain/digest')
+         if self.descriptor is not None and data[252:448]!=self.descriptor:raise R.Rejected('descriptor changed after binding')
+         returned,known,count,raw,pending,vendor=struct.unpack_from('<IIIiII',data,104)
+         if status>8 or returned>1 or known>1 or vendor>1:raise R.Rejected('flow bounded native fields')
++        self.association(data,op,point,status)
+         if point==0:
+             if self.pending is not None or op not in range(1,12) or pending!=op or returned or known or count or raw:raise R.Rejected('flow call-before')
+             registry,location,product=struct.unpack_from('<QII',data,160);vid=product&65535;pid=product>>16;tag=data[176:208]
+-            if not registry or not location or vid!=0x054c or pid not in (0x0da1,0x0336) or tag==bytes(32):raise R.Rejected('flow current-node identity')
+-            if self.body_tag is None:self.body_tag=tag;self.location=location
+-            if self.body_tag!=tag or self.location!=location:raise R.Rejected('flow body/port changed')
++            if not registry or not location or vid!=0x054c or pid not in (0x0da1,0x0336):raise R.Rejected('flow current-node association')
+             if pid in self.nodes and self.nodes[pid]!=registry and op!=9:raise R.Rejected('flow stale generation')
+             if op!=9:self.nodes[pid]=registry
+-            self.pending_subject=data[152:208]
++            self.pending_subject=(data[152:208],data[448:472])
+             self.pending=op
+         elif point==1:
+             if self.pending!=op or op not in range(1,12):raise R.Rejected('flow unmatched return')
+             if op==11:
+-                if data[160:208]!=self.pending_subject[8:]:raise R.Rejected('discovery changed physical subject')
++                if data[160:208]!=self.pending_subject[0][8:] or data[448:472]!=self.pending_subject[1]:raise R.Rejected('discovery changed physical subject')
+                 if status==0:self.descriptor_record(data)
+-            elif data[152:208]!=self.pending_subject:raise R.Rejected('flow return changed call subject')
++            elif (data[152:208],data[448:472])!=self.pending_subject:raise R.Rejected('flow return changed call subject')
+             if returned:
+                 if pending:raise R.Rejected('returned call still marked pending')
+                 self.pending=None
+@@ -95,6 +154,7 @@
+             taken,normal,disposed,retained,finished=struct.unpack_from('<5I',data,132)
+             driver=struct.unpack_from('<I',data,248)[0]
+             if op in (50,52):
++                if self.witness_state!=5 or not self.return_node or not self.service_kind:raise R.Rejected('complete flow lacks return serial observation')
+                 if self.pending is not None or (taken,normal,disposed,retained,finished,driver)!=(1,1,1,0,1,1):raise R.Rejected('flow incomplete terminal state')
+                 expected_service={11:1,10:1,8:1}if op==52 else{11:1,1:1,2:7,3:7,4:1,5:1,7:1,8:1}
+                 for pid,expected in [(0x0da1,{1:1,2:7,3:7,8:1,9:1}),(0x0336,expected_service)]:
+@@ -106,7 +166,8 @@
+                 self.complete=True
+             elif op!=51:raise R.Rejected('flow terminal kind')
+             self.terminal=True
+-        self.count=sequence;self.previous=data[480:]
++        self.count=sequence;self.previous=data[640:]
+         self.rows.append(dict(sequence=sequence,op=op,point=point,status=status,returned=returned,count=count,raw_return=raw,
++                              identity_basis='CONTROLLED_PHYSICAL_PORT' if self.service_kind==2 else 'SERIAL_CONTEXT',
+                               camera_authentication_proven=False,camera_threads_proven=False))
+         return self.rows[-1]
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/iokit_adapter.c
++++ stage260-controlled-port-transition-association/iokit_adapter.c
+@@ -8,6 +8,8 @@
+ #include <CommonCrypto/CommonHMAC.h>
+ #include <CommonCrypto/CommonDigest.h>
+ #include "descriptor_policy.h"
++#include "transition_identity.h"
++#include "port_anchor.h"
+ #include <stdlib.h>
+ #include <string.h>
+ #include <time.h>
+@@ -19,49 +21,69 @@
+     fx3_profile profile;
+     int device_open,interface_open;
+ };
+-static int equal_identity(const fx3_identity *a,const fx3_identity *b){return a->registry_id==b->registry_id && a->location==b->location && a->vid==b->vid && a->pid==b->pid && !memcmp(a->body_tag,b->body_tag,32);}
++static int equal_identity(const fx3_identity *a,const fx3_identity *b){return a->registry_id==b->registry_id && a->location==b->location && a->vid==b->vid && a->pid==b->pid && a->physical_port==b->physical_port && a->logical_port==b->logical_port && a->identity_kind==b->identity_kind && !memcmp(a->serial_tag,b->serial_tag,32);}
+ static uint64_t clock_ns(void *unused){(void)unused;struct timespec t;if(clock_gettime(CLOCK_MONOTONIC,&t))return 0;return (uint64_t)t.tv_sec*1000000000ull+(uint64_t)t.tv_nsec;}
+ static int scalar(io_registry_entry_t entry,CFStringRef name,uint32_t *out){
+     CFTypeRef value=IORegistryEntryCreateCFProperty(entry,name,kCFAllocatorDefault,0);int64_t n=0;
+     int ok=value && CFGetTypeID(value)==CFNumberGetTypeID() && CFNumberGetValue(value,kCFNumberSInt64Type,&n) && n>=0 && n<=UINT32_MAX;
+     if(value)CFRelease(value);if(ok)*out=(uint32_t)n;return ok;
+ }
+-static int identity(io_service_t entry,const uint8_t key[32],fx3_identity *out){
++static int identity(io_service_t entry,const uint8_t key[32],int allow_service_empty,fx3_identity *out){
+     uint32_t vid=0,pid=0,loc=0;char serial[256]={0};memset(out,0,sizeof(*out));
+-    if(!scalar(entry,CFSTR("idVendor"),&vid) || !scalar(entry,CFSTR("idProduct"),&pid) || !scalar(entry,CFSTR("locationID"),&loc) || vid>65535 || pid>65535)return FX3T_SHAPE;
++    if(!scalar(entry,CFSTR("idVendor"),&vid) || !scalar(entry,CFSTR("idProduct"),&pid) || !scalar(entry,CFSTR("locationID"),&loc) || vid!=0x54c || (pid!=0x0da1 && pid!=0x0336) ||
++       fx3_cached_port_anchor(entry,&out->physical_port,&out->logical_port))return FX3T_SHAPE;
+     CFTypeRef value=IORegistryEntryCreateCFProperty(entry,CFSTR("USB Serial Number"),kCFAllocatorDefault,0);
+-    int ok=value && CFGetTypeID(value)==CFStringGetTypeID() && CFStringGetCString(value,serial,sizeof(serial),kCFStringEncodingUTF8) && serial[0];
+-    if(value)CFRelease(value);
++    int typed=!value || (CFGetTypeID(value)==CFStringGetTypeID() && CFStringGetCString(value,serial,sizeof(serial),kCFStringEncodingUTF8));
++    if(value)CFRelease(value);int ok=typed;
++    if(ok && serial[0]){out->identity_kind=FX3_ID_SERIAL;CCHmac(kCCHmacAlgSHA256,key,32,serial,strlen(serial),out->serial_tag);}
++    else if(ok && allow_service_empty && pid==0x0336)out->identity_kind=FX3_ID_CONTROLLED_PORT;
++    else ok=0;
+     if(ok && pid==0x0da1){
+         value=IORegistryEntryCreateCFProperty(entry,CFSTR("USB Product Name"),kCFAllocatorDefault,0);
+         ok=value && CFGetTypeID(value)==CFStringGetTypeID() && CFEqual(value,CFSTR("ILME-FX3"));if(value)CFRelease(value);
+     }
+-    if(ok){out->vid=(uint16_t)vid;out->pid=(uint16_t)pid;out->location=loc;CCHmac(kCCHmacAlgSHA256,key,32,serial,strlen(serial),out->body_tag);}
+     volatile char *wipe=serial;for(unsigned i=0;i<sizeof(serial);i++)wipe[i]=0;
+     if(!ok || IORegistryEntryGetRegistryEntryID(entry,&out->registry_id))return FX3T_SHAPE;
+-    return FX3T_OK;
+-}
+-static int find(uint32_t location,uint16_t pid,const uint8_t key[32],fx3_identity *out,io_service_t *selected){
+-    if(geteuid()!=0 || !key || !out || !selected || (pid!=0x0da1 && pid!=0x0336))return FX3T_DENIED;
+-    *selected=IO_OBJECT_NULL;io_iterator_t it=IO_OBJECT_NULL;
++    out->vid=(uint16_t)vid;out->pid=(uint16_t)pid;out->location=loc;return FX3T_OK;
++}
++static int find_at(uint32_t location,uint16_t pid,uint64_t physical,int allow_service_empty,const uint8_t key[32],fx3_identity *out,io_service_t *selected){
++    if(geteuid()!=0 || !key || !out || !selected || (pid!=0 && pid!=0x0da1 && pid!=0x0336) || (!physical && !location))return FX3T_DENIED;
++    memset(out,0,sizeof(*out));*selected=IO_OBJECT_NULL;io_iterator_t it=IO_OBJECT_NULL;
+     if(IOServiceGetMatchingServices(kIOMainPortDefault,IOServiceMatching("IOUSBHostDevice"),&it))return FX3T_IO;
+     unsigned count=0;io_service_t entry;int rc=FX3T_GONE;
+     while((entry=IOIteratorNext(it))){
+-        uint32_t actual_location=0,vid=0,product=0;
+-        if(scalar(entry,CFSTR("locationID"),&actual_location) && actual_location==location){
++        uint32_t actual_location=0,vid=0,product=0;uint64_t anchor=0,logical=0;
++        int match=physical?(!fx3_cached_port_anchor(entry,&anchor,&logical) && anchor==physical):(scalar(entry,CFSTR("locationID"),&actual_location) && actual_location==location);
++        if(match){
+             count++;
+-            if(count==1 && scalar(entry,CFSTR("idVendor"),&vid) && scalar(entry,CFSTR("idProduct"),&product) && vid==0x054c && product==pid){
+-                rc=identity(entry,key,out);if(!rc){*selected=entry;entry=IO_OBJECT_NULL;}
++            if(count==1 && scalar(entry,CFSTR("idVendor"),&vid) && scalar(entry,CFSTR("idProduct"),&product) && vid==0x054c &&
++               (pid?product==pid:(product==0x0da1 || product==0x0336))){
++                rc=identity(entry,key,allow_service_empty,out);if(!rc){*selected=entry;entry=IO_OBJECT_NULL;}
+             }else rc=FX3T_DENIED;
+         }
+         if(entry)IOObjectRelease(entry);
+     }
+     IOObjectRelease(it);
+-    if(count!=1 || rc){if(*selected)IOObjectRelease(*selected);*selected=IO_OBJECT_NULL;return count>1?FX3T_DENIED:rc;}
++    if(count!=1 || rc){if(*selected)IOObjectRelease(*selected);*selected=IO_OBJECT_NULL;memset(out,0,sizeof(*out));return count>1?FX3T_DENIED:rc;}
+     return FX3T_OK;
+ }
++static int find(uint32_t location,uint16_t pid,const uint8_t key[32],fx3_identity *out,io_service_t *selected){return find_at(location,pid,0,0,key,out,selected);}
+ int fx3_usb_cached_identity(uint32_t location,uint16_t pid,const uint8_t key[32],fx3_identity *out){
++    if(pid!=0x0da1)return FX3T_DENIED;
+     io_service_t entry=IO_OBJECT_NULL;int rc=find(location,pid,key,out,&entry);if(entry)IOObjectRelease(entry);return rc;
++}
++int fx3_usb_unique_msc_source(uint32_t location,const uint8_t key[32],fx3_identity *out){
++    fx3_identity initial={0};int rc=fx3_usb_cached_identity(location,0x0da1,key,&initial);if(rc)return rc;
++    io_service_t entry=IO_OBJECT_NULL;rc=find_at(0,0,initial.physical_port,1,key,out,&entry);
++    if(entry)IOObjectRelease(entry);
++    if(rc || !equal_identity(&initial,out))return rc?rc:FX3T_DENIED;return FX3T_OK;
++}
++int fx3_usb_transition_snapshot(const fx3_route *route,uint32_t mode,const uint8_t key[32],fx3_identity *out){
++    if(!route || !route->initialized || route->failed || route->active ||
++       !((mode==2 && route->phase==1 && route->witness.state==FX3_W_ENTER_ARMED)||(mode==1 && route->phase==2 && route->witness.state==FX3_W_RETURN_ARMED)))return FX3T_DENIED;
++    io_service_t entry=IO_OBJECT_NULL;
++    int rc=find_at(0,0,route->witness.physical_port,1,key,out,&entry);
++    if(entry)IOObjectRelease(entry);return rc;
+ }
+ static fx3_call result(IOReturn rc,uint32_t known,uint32_t n){
+     int status=rc==0?FX3T_OK:rc==kIOUSBPipeStalled?FX3T_STALL:
+@@ -136,7 +158,7 @@
+     /* Initial MSC comes only from the established owner transfer, which
+      * performs its own ejection/capture checks. Never claim a mounted MSC. */
+     if(geteuid()!=0 || mode!=FX3_MODE_SERVICE || !stream || stream->route || fx3_route_candidate(route,expected_identity,mode) || !expected_ok(expected_profile,mode))return FX3T_DENIED;
+-    fx3_identity actual;io_service_t service=IO_OBJECT_NULL;int rc=find(expected_identity->location,expected_identity->pid,key,&actual,&service);
++    fx3_identity actual;io_service_t service=IO_OBJECT_NULL;int rc=find_at(0,expected_identity->pid,route->witness.physical_port,1,key,&actual,&service);
+     if(rc)return rc;
+     if(!equal_identity(&actual,expected_identity)){IOObjectRelease(service);return FX3T_DENIED;}
+     fx3_native_usb *p=calloc(1,sizeof(*p));if(!p){IOObjectRelease(service);return FX3T_IO;}p->service=service;
+@@ -200,7 +222,7 @@
+ int fx3_usb_discover_service(fx3_route *route,fx3_stream *stream,const fx3_identity *expected,const uint8_t key[32],uint64_t deadline){
+     if(geteuid()!=0 || !stream || stream->route || fx3_route_candidate(route,expected,2))return FX3T_DENIED;
+     fx3_identity actual;io_service_t service=IO_OBJECT_NULL;
+-    int rc=find(expected->location,0x0336,key,&actual,&service);
++    int rc=find_at(0,0x0336,route->witness.physical_port,1,key,&actual,&service);
+     if(rc)return rc;
+     if(!equal_identity(&actual,expected)){IOObjectRelease(service);return FX3T_DENIED;}
+     fx3_native_usb *p=calloc(1,sizeof(*p));if(!p){IOObjectRelease(service);return FX3T_IO;}p->service=service;
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/iokit_adapter.h
++++ stage260-controlled-port-transition-association/iokit_adapter.h
+@@ -6,6 +6,10 @@
+ /* No launch/authorization/capture policy is supplied by this library.
+  * All functions below require a separately approved fixed root caller. */
+ int fx3_usb_cached_identity(uint32_t,uint16_t,const uint8_t [32],fx3_identity *);
++int fx3_usb_unique_msc_source(uint32_t,const uint8_t [32],fx3_identity *);
++/* Cache-only snapshots at the previously established physical USB-C anchor.
++ * Only available while the corresponding bounded transition is armed. */
++int fx3_usb_transition_snapshot(const fx3_route *,uint32_t,const uint8_t [32],fx3_identity *);
+ /* expected is required, including the SERVICE endpoint pair. This component
+  * has no default0336 profile and does not promote a fixture profile. */
+ int fx3_usb_open(fx3_route *,fx3_stream *,const fx3_identity *,uint32_t,
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/owner_entry_main.c
++++ stage260-controlled-port-transition-association/owner_entry_main.c
+@@ -102,7 +102,7 @@
+     if(strncmp(argv[4],FX3_FIXTURE_SOCKET_ROOT,strlen(FX3_FIXTURE_SOCKET_ROOT)))return denied("fixture_socket_path",65);
+ #else
+     /* This candidate has no approved SERVICE profile or grant. */
+-    if(!FX3_SERVICE_DISCOVERY_READY || !FX3_NATIVE_SERVICE_RELEASED)return denied("discovery_candidate_no_live_release",77);
++    if(!FX3_SERVICE_DISCOVERY_READY || !FX3_NATIVE_SERVICE_RELEASED || !FX3_CONTROLLED_PORT_ASSOCIATION_RELEASED)return denied("transition_candidate_no_live_release",77);
+     if(argc!=3)return denied("fixed_frame_and_nonce_required",64);
+     if(geteuid()!=0)return denied("administrator_required",77);
+     fx3_host_login host_login;
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/owner_iokit.c
++++ stage260-controlled-port-transition-association/owner_iokit.c
+@@ -257,6 +257,11 @@
+         if(owner->service)IOObjectRelease(owner->service);
+         free(owner);return fx3_owner_core(NULL,r,control,NULL,NULL);
+     }
++    fx3_identity source={0};
++    if(fx3_usb_unique_msc_source(c->location,c->privacy_key,&source) || source.registry_id!=initial.registry_id || memcmp(source.serial_tag,initial.body_tag,32)){
++        if(owner->service)IOObjectRelease(owner->service);
++        free(owner);return fx3_owner_core(NULL,r,control,NULL,NULL);
++    }
+     memcpy(owner->bound_config.expected_body_tag,initial.body_tag,32);
+     int result=fx3_owner_core(&owner->bound_config,r,control,&ops,owner);
+     if(result==FX3_RETAINED)return result; /* private return code; keep heap objects alive */
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/owner_receipt.c
++++ stage260-controlled-port-transition-association/owner_receipt.c
+@@ -18,8 +18,8 @@
+        m->phase<FX3_RECEIPT_COMPLETE || m->phase>FX3_RECEIPT_HELD || m->frame_failed>1 || m->ran>1 ||
+        r->abi!=FX3_OWNER_ABI || r->event_count>FX3_OWNER_EVENTS)return -1;
+     uint8_t frame[FX3_RECEIPT_BYTES+4]={0},*p=frame+4;
+-    put32(frame,FX3_RECEIPT_BYTES);memcpy(p,"FX3RCPT3",8);
+-    put32(p+8,3);put32(p+12,m->phase);put32(p+16,FX3_RECEIPT_BYTES);put32(p+20,FX3_OWNER_ABI);
++    put32(frame,FX3_RECEIPT_BYTES);memcpy(p,"FX3RCPT4",8);
++    put32(p+8,4);put32(p+12,m->phase);put32(p+16,FX3_RECEIPT_BYTES);put32(p+20,FX3_OWNER_ABI);
+     put32(p+24,m->uid);put32(p+28,m->pid);put64(p+32,m->sec);put64(p+40,m->usec);
+     memcpy(p+48,m->nonce,16);CC_SHA256(m->grant,(CC_LONG)strlen(m->grant),p+64);
+     put32(p+96,sizeof(*r));put32(p+100,(uint32_t)m->native_return);put32(p+104,(uint32_t)m->guard_return);
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/receipt_receiver.py
++++ stage260-controlled-port-transition-association/receipt_receiver.py
+@@ -16,7 +16,7 @@
+ 
+ BYTES=1024
+ RESULT_BYTES=728
+-GRANT_ID='fx3-702-service-speed-candidate-20261101-01'
++GRANT_ID='fx3-702-port-transition-candidate-20261101-01'
+ LIVE_PATH='/private/var/root/fx3-owner-trials/'+GRANT_ID+'/helper'
+ 
+ class Rejected(ValueError):pass
+@@ -76,10 +76,10 @@
+ 
+ def decode_record(data,identity,nonce,grant_id=GRANT_ID):
+     """Pure format check. This function alone proves no transport identity."""
+-    if len(data)!=BYTES or data[:8]!=b'FX3RCPT3':raise Rejected('receipt size or magic')
++    if len(data)!=BYTES or data[:8]!=b'FX3RCPT4':raise Rejected('receipt size or magic')
+     version,phase,size,abi,uid,pid=struct.unpack_from('<6I',data,8)
+     sec,usec=struct.unpack_from('<QQ',data,32)
+-    if (version,size,abi)!=(3,BYTES,4) or phase not in (1,2):raise Rejected('receipt version or phase')
++    if (version,size,abi)!=(4,BYTES,4) or phase not in (1,2):raise Rejected('receipt version or phase')
+     if (uid,pid,sec,usec)!=(identity.uid,identity.pid,identity.sec,identity.usec):raise Rejected('receipt incarnation')
+     if len(nonce)!=16 or data[48:64]!=nonce:raise Rejected('receipt nonce')
+     if data[64:96]!=sha256(grant_id.encode('ascii')).digest():raise Rejected('receipt grant')
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/service_flow.c
++++ stage260-controlled-port-transition-association/service_flow.c
+@@ -1,15 +1,18 @@
+ /* Actual bounded C orchestration used by native and fake providers alike.
+  * Peer/single-use approval and original ownership are supplied by the entry. */
+ #include "service_flow.h"
++#include "transition_identity.h"
+ #include <string.h>
+ static int healthy(fx3_service_flow *f,const fx3_flow_ops *o,void *p){uint64_t n=o->now(p);return n && n<f->deadline && !atomic_load(&f->control->stop_requested) && f->journal && !f->journal->failed;}
+ static int audit(void *p,uint32_t op,uint32_t point,const fx3_call *call){return fx3_flow_emit(p,op,point,call);}
+ static void attach(fx3_service_flow *f,fx3_stream *s){s->audit=audit;s->audit_context=f;}
+ static int observe(fx3_service_flow *f,const fx3_flow_ops *o,void *p,uint32_t mode){
+     for(unsigned n=0;n<20 && healthy(f,o,p);n++){
+-        fx3_identity id={0};int rc=o->observe(p,mode,&id);
++        fx3_identity id={0};int raw=o->observe(p,f,mode,&id);
++        int rc=fx3_witness_sample(&f->route.witness,mode,raw,&id,o->now(p));
++        f->current=id;fx3_call sampled={.status=rc,.raw_return=raw,.returned=1};
++        if(fx3_flow_emit(f,mode==2?61:63,2,&sampled))return FX3T_UNKNOWN;
+         if(rc==FX3T_OK){
+-            if(id.location!=f->route.initial.location || id.vid!=0x54c || memcmp(id.body_tag,f->route.initial.body_tag,32))return FX3T_DENIED;
+             if(mode==2 && fx3_route_candidate(&f->route,&id,2))return FX3T_DENIED;
+             f->current=id;return fx3_flow_emit(f,40+mode,2,NULL)?FX3T_UNKNOWN:FX3T_OK;
+         }
+@@ -23,11 +26,13 @@
+     f->retained=1;
+     if(fx3_flow_emit(f,30,2,NULL))return -1;
+     int rc=o->take_msc(p,f);if(rc || !f->taken)goto held;
++    if(fx3_flow_emit(f,31,2,NULL))goto held;
+     attach(f,&f->msc);
+     if(!healthy(f,o,p))goto held;
+     rc=fx3_stream_start(&f->msc);if(rc!=FX3T_OK && rc!=FX3T_STALL)goto held;
+     if(fx3_stream_exchange_fixed(&f->msc))goto held;
+     if(fx3_stream_retire(&f->msc))goto held;
++    if(fx3_witness_arm(&f->route.witness,2,o->now(p),f->deadline) || fx3_flow_emit(f,60,2,NULL))goto held;
+     if(observe(f,o,p,2))goto held;
+     if(!healthy(f,o,p))goto held;
+     if(fx3_flow_emit(f,11,0,NULL))goto held;
+@@ -47,6 +52,7 @@
+     }
+     if(fx3_stream_retire(&f->service))goto held;
+     f->objects_disposed=1;
++    if(fx3_witness_arm(&f->route.witness,1,o->now(p),f->deadline) || fx3_flow_emit(f,62,2,NULL))goto held;
+     if(observe(f,o,p,1))goto held;
+     f->normal_seen=1;
+     if(!healthy(f,o,p))goto held;
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/service_flow.h
++++ stage260-controlled-port-transition-association/service_flow.h
+@@ -6,7 +6,7 @@
+ typedef struct fx3_service_flow fx3_service_flow;
+ typedef struct {
+     int (*take_msc)(void *,fx3_service_flow *);
+-    int (*observe)(void *,uint32_t,fx3_identity *);
++    int (*observe)(void *,fx3_service_flow *,uint32_t,fx3_identity *);
+     int (*open_service)(void *,fx3_service_flow *,const fx3_identity *);
+     fx3_call (*driver_return)(void *,fx3_service_flow *,const fx3_identity *);
+     uint64_t (*now)(void *);
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/service_profile.h
++++ stage260-controlled-port-transition-association/service_profile.h
+@@ -4,4 +4,5 @@
+  * No fixed endpoint numbers, guessed SERVICE profile or live release. */
+ #define FX3_SERVICE_DISCOVERY_READY 1
+ #define FX3_NATIVE_SERVICE_RELEASED 0
++#define FX3_CONTROLLED_PORT_ASSOCIATION_RELEASED 0
+ #endif
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/status_permit.c
++++ stage260-controlled-port-transition-association/status_permit.c
+@@ -13,7 +13,7 @@
+ int fx3_status_permit_bytes(const uint8_t *p,size_t n,const uint8_t nonce[16]){
+     static const uint8_t magic[16]="FX3SERVICEPERM1";
+     uint8_t hash[32];
+-    if(!p || !nonce || n!=96 || memcmp(p,magic,16) || get32(p+16)!=1 || get32(p+20)!=0x53564333 ||
++    if(!p || !nonce || n!=96 || memcmp(p,magic,16) || get32(p+16)!=1 || get32(p+20)!=0x53564334 ||
+        memcmp(p+24,nonce,16) || memcmp(nonce,FX3_FIXED_NONCE,16) || get32(p+40)!=FX3_FIXED_LOCATION ||
+        get32(p+44)!=1 || get64(p+48)!=FX3_CACHED_REGISTRY_ID || get64(p+56))return 0;
+     CC_SHA256(p,64,hash);return !memcmp(hash,p+64,32);
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/stream.c
++++ stage260-controlled-port-transition-association/stream.c
+@@ -1,6 +1,7 @@
+ /* Fixed authentication exchanges and read0 only. No file, mode fallback,
+  * firmware writer, loader, retry, reset or thread-completion assertion. */
+ #include "stream.h"
++#include "transition_identity.h"
+ #include <CommonCrypto/CommonHMAC.h>
+ #include <CommonCrypto/CommonDigest.h>
+ #include <string.h>
+@@ -10,16 +11,17 @@
+ static const uint8_t read0_packet[17]={5,0,0,0,0x10,0,1,0,0,0,0,0,0,0,0x1f,0,0};
+ static int zero(const uint8_t *p,unsigned n){uint8_t x=0;while(n--)x|=*p++;return !x;}
+ static void wipe(void *p,unsigned n){volatile uint8_t *v=p;while(n--)*v++=0;}
+-static int same(const fx3_identity *a,const fx3_identity *b){return a->location==b->location && a->vid==0x054c && b->vid==0x054c && !memcmp(a->body_tag,b->body_tag,32);}
+-static int identity_ok(const fx3_identity *a){return a && a->registry_id && a->location && a->vid==0x054c && !zero(a->body_tag,32);}
++static int same(const fx3_identity *a,const fx3_identity *b){return a->location==b->location && a->vid==0x054c && b->vid==0x054c && a->physical_port==b->physical_port && a->identity_kind==FX3_ID_SERIAL && b->identity_kind==FX3_ID_SERIAL && !memcmp(a->serial_tag,b->serial_tag,32);}
++static int identity_ok(const fx3_identity *a){return a && a->registry_id && a->location && a->physical_port && a->logical_port && a->vid==0x054c && ((a->identity_kind==FX3_ID_SERIAL && !zero(a->serial_tag,32)) || (a->identity_kind==FX3_ID_CONTROLLED_PORT && zero(a->serial_tag,32)));}
+ int fx3_route_init(fx3_route *r,const fx3_identity *a){
+-    if(!r || r->initialized || !identity_ok(a) || a->pid!=0x0da1)return FX3T_DENIED;
++    if(!r || r->initialized || !identity_ok(a) || a->pid!=0x0da1 || a->identity_kind!=FX3_ID_SERIAL)return FX3T_DENIED;
+     memset(r,0,sizeof(*r));r->initial=*a;r->initialized=1;atomic_init(&r->return_pending,0);return FX3T_OK;
+ }
+ int fx3_route_candidate(const fx3_route *r,const fx3_identity *a,uint32_t mode){
+-    if(!r || !r->initialized || r->failed || r->active || !identity_ok(a) || !same(a,&r->initial))return FX3T_DENIED;
++    if(!r || !r->initialized || r->failed || r->active || !identity_ok(a))return FX3T_DENIED;
+     if(!((r->phase==0 && mode==1 && a->pid==0x0da1 && a->registry_id==r->initial.registry_id) ||
+-         (r->phase==1 && mode==2 && a->pid==0x0336)))return FX3T_DENIED;
++         (r->phase==1 && mode==2 && fx3_witness_matches(&r->witness,a,2))))return FX3T_DENIED;
++    if(mode==1 && !same(a,&r->initial))return FX3T_DENIED;
+     for(unsigned i=0;i<r->phase;i++)if(a->registry_id==r->used_registry[i])return FX3T_DENIED;
+     return FX3T_OK;
+ }
+@@ -175,7 +177,7 @@
+     rc=returned(s,s->ops.control(s->backend,stop_packet,ms),10);return leave(s,rc);
+ }
+ int fx3_route_observe_return(fx3_route *r,const fx3_identity *a){
+-    if(!r || r->failed || r->active || r->phase!=2 || !identity_ok(a) || a->pid!=0x0da1 || !same(a,&r->initial))return FX3T_DENIED;
++    if(!r || r->failed || r->active || r->phase!=2 || !identity_ok(a) || a->pid!=0x0da1 || !same(a,&r->initial) || !fx3_witness_matches(&r->witness,a,1))return FX3T_DENIED;
+     if(a->registry_id==r->used_registry[0] || a->registry_id==r->used_registry[1])return FX3T_DENIED;
+     r->used_registry[2]=a->registry_id;r->phase=3;return FX3T_OK;
+ }
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/stream.h
++++ stage260-controlled-port-transition-association/stream.h
+@@ -5,12 +5,23 @@
+ #define FX3_MODE_MSC 1u
+ #define FX3_MODE_SERVICE 2u
+ enum { FX3T_OK=0,FX3T_DENIED,FX3T_BUSY,FX3T_STALL,FX3T_TIMEOUT,FX3T_GONE,FX3T_IO,FX3T_SHAPE,FX3T_UNKNOWN };
++enum { FX3_ID_SERIAL=1,FX3_ID_CONTROLLED_PORT=2 };
+ typedef struct {
+     uint64_t registry_id;
+     uint32_t location;
+     uint16_t vid,pid;
+-    uint8_t body_tag[32];
++    uint8_t serial_tag[32];
++    uint64_t physical_port,logical_port;
++    uint32_t identity_kind;
+ } fx3_identity;
++enum {FX3_W_SOURCE=1,FX3_W_ENTER_ARMED,FX3_W_SERVICE,FX3_W_RETURN_ARMED,FX3_W_RETURNED,FX3_W_FAILED};
++typedef struct {
++    uint32_t state,observations,service_kind,flags;
++    uint64_t source_node,service_node,return_node,physical_port;
++    uint64_t armed_ns,deadline_ns,service_ns,return_ns,last_ns;
++    uint32_t initial_location;
++    uint8_t nonce[16],origin_serial_tag[32];
++} fx3_port_witness;
+ typedef struct {
+     uint8_t number,alternate,cls,subclass,protocol,endpoints,in_address,out_address;
+     uint16_t max_packet;
+@@ -33,6 +44,7 @@
+     _Atomic uint32_t return_pending;
+     uint64_t generation,used_registry[3];
+     fx3_identity initial;
++    fx3_port_witness witness;
+ } fx3_route;
+ typedef struct {
+     fx3_route *route;
+--- work/sony-firmware-20261024/stage259-original-SERVICE-identity-and-speed-policy/supervisor.py
++++ stage260-controlled-port-transition-association/supervisor.py
+@@ -10,7 +10,7 @@
+ import controller_ipc as I
+ import fixed_launch as P
+ import receipt_receiver as R
+-HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2];SOCKET_ROOT=Path('/private/tmp/fx3-fixture-ipc259')
++HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2];SOCKET_ROOT=Path('/private/tmp/fx3-fixture-ipc260')
+ 
+ def put(path,value):
+     data=(json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode()
+@@ -101,7 +101,7 @@
+         if self.hello is None:
+             if len(data)!=160:raise R.Rejected('self-image HELLO required first')
+             self._hello(data);return
+-        if len(data)==512:
++        if len(data)==672:
+             raw_file(self.directory/("flow-%04d.bin"%len(self.flow_frames)),data)
+             self.flow_state.accept(data)
+             self.flow_frames.append(data)
+@@ -157,7 +157,7 @@
+             self.buffer.extend(data)
+             if len(self.buffer)<4:continue
+             count=struct.unpack_from('<I',self.buffer)[0]
+-            if count not in (160,512,676,1024):raise R.Rejected('host stream frame length')
++            if count not in (160,672,676,1024):raise R.Rejected('host stream frame length')
+             if len(self.buffer)==count+4:
+                 message=bytes(self.buffer[4:]);self.buffer.clear();self._message(message)
+ 
+@@ -191,7 +191,11 @@
+             state.update(R.observe_completion(self.receipt,self.verified,self.ipc.probe))
+             if state["status"]=="HOST_RETURN_CAMERA_STATE_UNVERIFIED" and self.flow_state.control_only:
+                 state["status"]="HOST_CONTROL_RETURN_CAPABILITY_UNTESTED"
++            elif state["status"]=="HOST_RETURN_CAMERA_STATE_UNVERIFIED" and self.flow_state.service_kind==2:
++                state["status"]="HOST_RETURN_CONTROLLED_PORT_ASSOCIATION"
+             state["bounded_service_read_observed"]=bool(self.flow_state.complete and not self.flow_state.control_only)
++            state["SERVICE_serial_identity_observed"]=self.flow_state.service_kind==1
++            state["physical_camera_identity_authenticated"]=False
+         return state
+ 
+     def wait(self,seconds=3):

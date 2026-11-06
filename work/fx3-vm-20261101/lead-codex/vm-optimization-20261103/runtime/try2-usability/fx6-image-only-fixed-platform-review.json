@@ -1,0 +1,72 @@
+{
+  "schema": "fx6-image-only-fixed-fx3-owner-review-v1",
+  "utc": "2026-11-03T13:26:09.335852+00:00",
+  "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "manifest_sha256": "42cddf844eb37a4712feb59a0c595ab9746eee21b37b210a7f81741bdb16797c",
+  "fixed_runner_sha256": "12b0e6118ac7a46ea4f91d26f97d6753f5c448e987bd647ab57d2459718d4d08",
+  "runs": {
+    "fixed-fx3-0b8eaf59": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-0b8eaf59",
+      "receipt_sha256": "f946ef3cdd740ff5efb9df6eafc66cb496cd3d5744ee5fa50a6d288d80f80a4b",
+      "command_sha256": "c3bc011fb131a1d5494d024ff90bf7ed61658300c6d038d25b8268950bfdc0af",
+      "exact_expected_args": true,
+      "qemu_pid": 55532,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "reason": "error",
+      "error": "OSError('AF_UNIX path too long')",
+      "elapsed_seconds": 5.1536953750182875,
+      "serial_bytes": 0,
+      "serial_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "serial_lines": [],
+      "version_line_present": false
+    },
+    "fixed-fx3-9581d529": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-9581d529",
+      "receipt_sha256": "18890489ebb215641b43213b380d7eb06367ffb5861a020f1d5254395910b921",
+      "command_sha256": "0268eafb28707c06a33e0ea35b6d5edf6e2c34b824ccff2ea8f7971f13ffed10",
+      "exact_expected_args": true,
+      "qemu_pid": 58280,
+      "qemu_exit": 0,
+      "process_reaped": true,
+      "reason": "first_serial_line",
+      "error": null,
+      "elapsed_seconds": 0.3231070829788223,
+      "serial_bytes": 470,
+      "serial_sha256": "24b010d7d6aafb4fa84d5c34dec3b9d73bd93d88f40e9c8a0f2c23f01da005b3",
+      "serial_lines": [
+        "[    0.085312] Booting Linux on physical CPU 0x0",
+        "[    0.112468] Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u24-002) (gcc version 6.4.0 (20240928 (Sony CE Linux 14.0.2.0)) ) #1 SMP PREEMPT Wed Aug 5 15:24:28 JST 2026",
+        "[    0.116593] Boot CPU: AArch64 Processor [411fd040]",
+        "[    0.213437] random: crng init done",
+        "[    0.247500] invalid cmdline override @ 0x400001000. Using default cmdline.",
+        "[    0.280468] earlycon: pl11 at MMIO 0x0000000009000000 (options '')"
+      ],
+      "version_line_present": true
+    }
+  },
+  "postrun_locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_after_both_runs": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_after_both_runs": true
+    }
+  ],
+  "postrun_pids": [
+    {
+      "pid": 55532,
+      "absent": true,
+      "ps": ""
+    },
+    {
+      "pid": 58280,
+      "absent": true,
+      "ps": ""
+    }
+  ],
+  "guest_result": "FX6 kernel emitted Linux version on unchanged FX3 VM platform; first serial stop only, no AP/CP/AV acceptance",
+  "fixed_platform_changed": false
+}

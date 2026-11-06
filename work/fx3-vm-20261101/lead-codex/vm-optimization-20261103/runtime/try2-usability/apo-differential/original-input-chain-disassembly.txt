@@ -1,0 +1,346 @@
+## input.ko original physical producer .text 0x12f0..0x13e4 source=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/d9fcf59b62f9960878f5ea433d350112f4a03fb9c6cd9d30154fb3e3ff54a057
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/d9fcf59b62f9960878f5ea433d350112f4a03fb9c6cd9d30154fb3e3ff54a057:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+    12f0: a9b97bfd     	stp	x29, x30, [sp, #-0x70]!
+    12f4: 910003fd     	mov	x29, sp
+    12f8: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    12fc: 2a0103f5     	mov	w21, w1
+    1300: a90363f7     	stp	x23, x24, [sp, #0x30]
+    1304: 910143a1     	add	x1, x29, #0x50
+    1308: 2a0003f8     	mov	w24, w0
+    130c: 52800400     	mov	w0, #0x20               // =32
+    1310: 2a0203f6     	mov	w22, w2
+    1314: 2a0303f7     	mov	w23, w3
+    1318: 52800282     	mov	w2, #0x14               // =20
+    131c: 52800023     	mov	w3, #0x1                // =1
+    1320: 72b00f40     	movk	w0, #0x807a, lsl #16
+    1324: a90153f3     	stp	x19, x20, [sp, #0x10]
+    1328: f90023f9     	str	x25, [sp, #0x40]
+    132c: 94000000     	bl	0x132c <.text+0x132c>
+    1330: 340003c0     	cbz	w0, 0x13a8 <.text+0x13a8>
+    1334: 58000a33     	ldr	x19, 0x1478 <.text+0x1478>
+    1338: 2a0003e1     	mov	w1, w0
+    133c: b9400260     	ldr	w0, [x19]
+    1340: 350008e0     	cbnz	w0, 0x145c <.text+0x145c>
+    1344: b9413260     	ldr	w0, [x19, #0x130]
+    1348: 34000140     	cbz	w0, 0x1370 <.text+0x1370>
+    134c: 12800014     	mov	w20, #-0x1              // =-1
+    1350: 2a1403e0     	mov	w0, w20
+    1354: f94023f9     	ldr	x25, [sp, #0x40]
+    1358: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    135c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    1360: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    1364: a8c77bfd     	ldp	x29, x30, [sp], #0x70
+    1368: d65f03c0     	ret
+    136c: d503201f     	nop
+    1370: 580008c0     	ldr	x0, 0x1488 <.text+0x1488>
+    1374: 52800101     	mov	w1, #0x8                // =8
+    1378: 12800014     	mov	w20, #-0x1              // =-1
+    137c: 97ffff73     	bl	0x1148 <.text+0x1148>
+    1380: 52800020     	mov	w0, #0x1                // =1
+    1384: b9013260     	str	w0, [x19, #0x130]
+    1388: 2a1403e0     	mov	w0, w20
+    138c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    1390: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    1394: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    1398: f94023f9     	ldr	x25, [sp, #0x40]
+    139c: a8c77bfd     	ldp	x29, x30, [sp], #0x70
+    13a0: d65f03c0     	ret
+    13a4: d503201f     	nop
+    13a8: f9402ba0     	ldr	x0, [x29, #0x50]
+    13ac: 528004a1     	mov	w1, #0x25               // =37
+    13b0: 72a00821     	movk	w1, #0x41, lsl #16
+    13b4: 52800034     	mov	w20, #0x1               // =1
+    13b8: 94000000     	bl	0x13b8 <.text+0x13b8>
+    13bc: 580005f3     	ldr	x19, 0x1478 <.text+0x1478>
+    13c0: f9402ba2     	ldr	x2, [x29, #0x50]
+    13c4: 52800400     	mov	w0, #0x20               // =32
+    13c8: 72b00f40     	movk	w0, #0x807a, lsl #16
+    13cc: b901327f     	str	wzr, [x19, #0x130]
+    13d0: 29007c55     	stp	w21, wzr, [x2]
+    13d4: 29015c56     	stp	w22, w23, [x2, #0x8]
+    13d8: f9402ba1     	ldr	x1, [x29, #0x50]
+    13dc: b9001054     	str	w20, [x2, #0x10]
+    13e0: 94000000     	bl	0x13e0 <.text+0x13e0>
+## libObj original physical receiver 0xcb640..0xcb7a0 source=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000cb244 <_ZN10InfraInput14RmEventKeyListEiP18_InfraInputKeyListi>:
+   cb640: aa1703e1     	mov	x1, x23
+   cb644: 52800400     	mov	w0, #0x20               // =32
+   cb648: 12800002     	mov	w2, #-0x1               // =-1
+   cb64c: 72b00f40     	movk	w0, #0x807a, lsl #16
+   cb650: 97fe2ad0     	bl	0x56190 <osal_rcv_msg_tmo@plt>
+   cb654: b9407261     	ldr	w1, [x19, #0x70]
+   cb658: 11000421     	add	w1, w1, #0x1
+   cb65c: b9007261     	str	w1, [x19, #0x70]
+   cb660: 34000180     	cbz	w0, 0xcb690 <_ZN10InfraInput14RmEventKeyListEiP18_InfraInputKeyListi+0x44c>
+   cb664: f0000807     	adrp	x7, 0x1ce000
+   cb668: 2a0003e4     	mov	w4, w0
+   cb66c: 912918e7     	add	x7, x7, #0xa46
+   cb670: 52800006     	mov	w6, #0x0                // =0
+   cb674: 52800005     	mov	w5, #0x0                // =0
+   cb678: 52ae0003     	mov	w3, #0x70000000         // =1879048192
+   cb67c: 528003a2     	mov	w2, #0x1d               // =29
+   cb680: 52800001     	mov	w1, #0x0                // =0
+   cb684: 52800f40     	mov	w0, #0x7a               // =122
+   cb688: 97ffb7c0     	bl	0xb9588 <TYPESET_init+0x1094>
+   cb68c: 17ffffed     	b	0xcb640 <_ZN10InfraInput14RmEventKeyListEiP18_InfraInputKeyListi+0x3fc>
+   cb690: f94043b9     	ldr	x25, [x29, #0x80]
+   cb694: b50001f9     	cbnz	x25, 0xcb6d0 <_ZN10InfraInput14RmEventKeyListEiP18_InfraInputKeyListi+0x48c>
+   cb698: f0000807     	adrp	x7, 0x1ce000
+   cb69c: 52800006     	mov	w6, #0x0                // =0
+   cb6a0: 912a04e7     	add	x7, x7, #0xa81
+   cb6a4: 52800005     	mov	w5, #0x0                // =0
+   cb6a8: 52800004     	mov	w4, #0x0                // =0
+   cb6ac: 52ae0003     	mov	w3, #0x70000000         // =1879048192
+   cb6b0: 528003a2     	mov	w2, #0x1d               // =29
+   cb6b4: 52800001     	mov	w1, #0x0                // =0
+   cb6b8: 52800f40     	mov	w0, #0x7a               // =122
+   cb6bc: 97ffb7b3     	bl	0xb9588 <TYPESET_init+0x1094>
+   cb6c0: f94043a1     	ldr	x1, [x29, #0x80]
+   cb6c4: 2a1503e0     	mov	w0, w21
+   cb6c8: 97fe313e     	bl	0x57bc0 <osal_free_msg@plt>
+   cb6cc: 17ffffdd     	b	0xcb640 <_ZN10InfraInput14RmEventKeyListEiP18_InfraInputKeyListi+0x3fc>
+   cb6d0: aa1903e0     	mov	x0, x25
+   cb6d4: 9000085a     	adrp	x26, 0x1d3000
+   cb6d8: 97fe2afe     	bl	0x562d0 <osal_get_msg_src@plt>
+   cb6dc: 6b15001f     	cmp	w0, w21
+   cb6e0: 2a0003f6     	mov	w22, w0
+   cb6e4: 54000381     	b.ne	0xcb754 <_ZN10InfraInput14RmEventKeyListEiP18_InfraInputKeyListi+0x510>
+   cb6e8: f94043a1     	ldr	x1, [x29, #0x80]
+   cb6ec: 97fe3135     	bl	0x57bc0 <osal_free_msg@plt>
+   cb6f0: f0000823     	adrp	x3, 0x1d2000
+   cb6f4: 912b4344     	add	x4, x26, #0xad0
+   cb6f8: 91393863     	add	x3, x3, #0xe4e
+   cb6fc: 52800062     	mov	w2, #0x3                // =3
+   cb700: 52800001     	mov	w1, #0x0                // =0
+   cb704: 52800f40     	mov	w0, #0x7a               // =122
+   cb708: 97ffb729     	bl	0xb93ac <TYPESET_init+0xeb8>
+   cb70c: f0000827     	adrp	x7, 0x1d2000
+   cb710: 52800006     	mov	w6, #0x0                // =0
+   cb714: 9128cce7     	add	x7, x7, #0xa33
+   cb718: 52800005     	mov	w5, #0x0                // =0
+   cb71c: 52800004     	mov	w4, #0x0                // =0
+   cb720: 52800003     	mov	w3, #0x0                // =0
+   cb724: 528003a2     	mov	w2, #0x1d               // =29
+   cb728: 52800001     	mov	w1, #0x0                // =0
+   cb72c: 52800f40     	mov	w0, #0x7a               // =122
+   cb730: 97ffb796     	bl	0xb9588 <TYPESET_init+0x1094>
+   cb734: 97fe2f7b     	bl	0x57520 <osal_exit_thread@plt>
+   cb738: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   cb73c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   cb740: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   cb744: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+   cb748: a94573fb     	ldp	x27, x28, [sp, #0x50]
+   cb74c: a8cd7bfd     	ldp	x29, x30, [sp], #0xd0
+   cb750: d65f03c0     	ret
+   cb754: a9400720     	ldp	x0, x1, [x25]
+   cb758: f0000823     	adrp	x3, 0x1d2000
+   cb75c: a9000680     	stp	x0, x1, [x20]
+   cb760: 912b4344     	add	x4, x26, #0xad0
+   cb764: 9128f463     	add	x3, x3, #0xa3d
+   cb768: 52800039     	mov	w25, #0x1               // =1
+   cb76c: 29521ba7     	ldp	w7, w6, [x29, #0x90]
+   cb770: 52800062     	mov	w2, #0x3                // =3
+   cb774: 295123a5     	ldp	w5, w8, [x29, #0x88]
+   cb778: 52800001     	mov	w1, #0x0                // =0
+   cb77c: 52800f40     	mov	w0, #0x7a               // =122
+   cb780: 290d1ba7     	stp	w7, w6, [x29, #0x68]
+   cb784: 290c23a5     	stp	w5, w8, [x29, #0x60]
+   cb788: 2953efbc     	ldp	w28, w27, [x29, #0x9c]
+   cb78c: b9009bb9     	str	w25, [x29, #0x98]
+   cb790: 97ffb707     	bl	0xb93ac <TYPESET_init+0xeb8>
+   cb794: f0000823     	adrp	x3, 0x1d2000
+   cb798: 52800082     	mov	w2, #0x4                // =4
+   cb79c: 9129a863     	add	x3, x3, #0xa6a
+## libObj original internal forward 0xcbb20..0xcbb70 source=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000cb244 <_ZN10InfraInput14RmEventKeyListEiP18_InfraInputKeyListi>:
+   cbb20: 52815543     	mov	w3, #0xaaa              // =2730
+   cbb24: 528003a2     	mov	w2, #0x1d               // =29
+   cbb28: 52800001     	mov	w1, #0x0                // =0
+   cbb2c: 52800f40     	mov	w0, #0x7a               // =122
+   cbb30: 97ffb696     	bl	0xb9588 <TYPESET_init+0x1094>
+   cbb34: f9403260     	ldr	x0, [x19, #0x60]
+   cbb38: aa1403e1     	mov	x1, x20
+   cbb3c: 94001020     	bl	0xcfbbc <_Z16PhyKeyConfigFreePv+0x2004>
+   cbb40: 2a1603e5     	mov	w5, w22
+   cbb44: aa1403e2     	mov	x2, x20
+   cbb48: 52900981     	mov	w1, #0x804c             // =32844
+   cbb4c: aa1303e0     	mov	x0, x19
+   cbb50: 52800004     	mov	w4, #0x0                // =0
+   cbb54: 52800383     	mov	w3, #0x1c               // =28
+   cbb58: 72a00f41     	movk	w1, #0x7a, lsl #16
+   cbb5c: 94000710     	bl	0xcd79c <_ZN10InfraInput12SetKeyRepeatEibii+0x1c08>
+   cbb60: 72001c1f     	tst	w0, #0xff
+   cbb64: 54ffd6e0     	b.eq	0xcb640 <_ZN10InfraInput14RmEventKeyListEiP18_InfraInputKeyListi+0x3fc>
+   cbb68: b9407660     	ldr	w0, [x19, #0x74]
+   cbb6c: 11000400     	add	w0, w0, #0x1
+## libObj original event consumer 0xc90b8..0xc9140 source=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libObj.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000c8d74 <infra_input_res>:
+   c90b8: a94006a0     	ldp	x0, x1, [x21]
+   c90bc: a9000680     	stp	x0, x1, [x20]
+   c90c0: a94106a0     	ldp	x0, x1, [x21, #0x10]
+   c90c4: a9010680     	stp	x0, x1, [x20, #0x10]
+   c90c8: 2a0203e0     	mov	w0, w2
+   c90cc: f94027a1     	ldr	x1, [x29, #0x48]
+   c90d0: 97fe3abc     	bl	0x57bc0 <osal_free_msg@plt>
+   c90d4: d2800001     	mov	x1, #0x0                // =0
+   c90d8: d2800a02     	mov	x2, #0x50               // =80
+   c90dc: b9404260     	ldr	w0, [x19, #0x40]
+   c90e0: 6b01001f     	cmp	w0, w1
+   c90e4: 5400020d     	b.le	0xc9124 <infra_input_res+0x3b0>
+   c90e8: f9402660     	ldr	x0, [x19, #0x48]
+   c90ec: 9b020020     	madd	x0, x1, x2, x0
+   c90f0: b94063a3     	ldr	w3, [x29, #0x60]
+   c90f4: b9400404     	ldr	w4, [x0, #0x4]
+   c90f8: 6b03009f     	cmp	w4, w3
+   c90fc: 54000101     	b.ne	0xc911c <infra_input_res+0x3a8>
+   c9100: b9401403     	ldr	w3, [x0, #0x14]
+   c9104: 91003000     	add	x0, x0, #0xc
+   c9108: b9006fa3     	str	w3, [x29, #0x6c]
+   c910c: a9401684     	ldp	x4, x5, [x20]
+   c9110: a9001404     	stp	x4, x5, [x0]
+   c9114: a9411684     	ldp	x4, x5, [x20, #0x10]
+   c9118: a9011404     	stp	x4, x5, [x0, #0x10]
+   c911c: 91000421     	add	x1, x1, #0x1
+   c9120: 17ffffef     	b	0xc90dc <infra_input_res+0x368>
+   c9124: 3940c2c0     	ldrb	w0, [x22, #0x30]
+   c9128: 34000060     	cbz	w0, 0xc9134 <infra_input_res+0x3c0>
+   c912c: 3940f260     	ldrb	w0, [x19, #0x3c]
+   c9130: 34fff3e0     	cbz	w0, 0xc8fac <infra_input_res+0x238>
+   c9134: aa1403e2     	mov	x2, x20
+   c9138: aa1303e1     	mov	x1, x19
+   c913c: aa1603e0     	mov	x0, x22
+## appFw original key callback registration 0x16ef2a0..0x16ef334 source=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000001594680 <.text>:
+ 16ef2a0: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 16ef2a4: 910003fd     	mov	x29, sp
+ 16ef2a8: f9000bf3     	str	x19, [sp, #0x10]
+ 16ef2ac: aa0003f3     	mov	x19, x0
+ 16ef2b0: 97fa91dc     	bl	0x1593a20 <_ZN10InfraInput11GetInstanceEv@plt>
+ 16ef2b4: f9400e62     	ldr	x2, [x19, #0x18]
+ 16ef2b8: 91002261     	add	x1, x19, #0x8
+ 16ef2bc: 97fa8a49     	bl	0x1591be0 <_ZN10InfraInput11SetCallbackEPiPFviP16_InfraInputEventE@plt>
+ 16ef2c0: 97fa91d8     	bl	0x1593a20 <_ZN10InfraInput11GetInstanceEv@plt>
+ 16ef2c4: b9400a61     	ldr	w1, [x19, #0x8]
+ 16ef2c8: f000c522     	adrp	x2, 0x2f96000
+ 16ef2cc: 910c4042     	add	x2, x2, #0x310
+ 16ef2d0: 52800383     	mov	w3, #0x1c               // =28
+ 16ef2d4: 97fa945b     	bl	0x1594440 <_ZN10InfraInput15SetEventKeyListEiP18_InfraInputKeyListi@plt>
+ 16ef2d8: 97fa91d2     	bl	0x1593a20 <_ZN10InfraInput11GetInstanceEv@plt>
+ 16ef2dc: f9400e62     	ldr	x2, [x19, #0x18]
+ 16ef2e0: 91003261     	add	x1, x19, #0xc
+ 16ef2e4: 97fa8a3f     	bl	0x1591be0 <_ZN10InfraInput11SetCallbackEPiPFviP16_InfraInputEventE@plt>
+ 16ef2e8: 97fa91ce     	bl	0x1593a20 <_ZN10InfraInput11GetInstanceEv@plt>
+ 16ef2ec: f000c522     	adrp	x2, 0x2f96000
+ 16ef2f0: b9400e61     	ldr	w1, [x19, #0xc]
+ 16ef2f4: 91118042     	add	x2, x2, #0x460
+ 16ef2f8: 528087c3     	mov	w3, #0x43e              // =1086
+ 16ef2fc: 97fa9451     	bl	0x1594440 <_ZN10InfraInput15SetEventKeyListEiP18_InfraInputKeyListi@plt>
+ 16ef300: b9401260     	ldr	w0, [x19, #0x10]
+ 16ef304: 350001a0     	cbnz	w0, 0x16ef338 <.text+0x15acb8>
+ 16ef308: 97fa91c6     	bl	0x1593a20 <_ZN10InfraInput11GetInstanceEv@plt>
+ 16ef30c: f9400e62     	ldr	x2, [x19, #0x18]
+ 16ef310: 91004261     	add	x1, x19, #0x10
+ 16ef314: 97fa8a33     	bl	0x1591be0 <_ZN10InfraInput11SetCallbackEPiPFviP16_InfraInputEventE@plt>
+ 16ef318: 97fa91c2     	bl	0x1593a20 <_ZN10InfraInput11GetInstanceEv@plt>
+ 16ef31c: b9401261     	ldr	w1, [x19, #0x10]
+ 16ef320: d000c542     	adrp	x2, 0x2f99000
+ 16ef324: f9400bf3     	ldr	x19, [sp, #0x10]
+ 16ef328: 911d2042     	add	x2, x2, #0x748
+ 16ef32c: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 16ef330: 52800023     	mov	w3, #0x1                // =1
+## appFw original 20B to 0x5503e0 wrapper 0x16f11e8..0x16f12f0 source=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 16f11e8: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+ 16f11ec: 52807c00     	mov	w0, #0x3e0              // =992
+ 16f11f0: 52800023     	mov	w3, #0x1                // =1
+ 16f11f4: 52800282     	mov	w2, #0x14               // =20
+ 16f11f8: 910003fd     	mov	x29, sp
+ 16f11fc: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 16f1200: aa0103f3     	mov	x19, x1
+ 16f1204: 910103a1     	add	x1, x29, #0x40
+ 16f1208: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 16f120c: 72a00aa0     	movk	w0, #0x55, lsl #16
+ 16f1210: f81f8c3f     	str	xzr, [x1, #-0x8]!
+ 16f1214: 97fa8bc3     	bl	0x1594120 <osal_valloc_msg_wait@plt>
+ 16f1218: 34000500     	cbz	w0, 0x16f12b8 <Application_System_Init+0x1728>
+ 16f121c: b000c574     	adrp	x20, 0x2f9e000
+ 16f1220: f000c4b6     	adrp	x22, 0x2f88000 <Application_System_Init+0x1898470>
+ 16f1224: 9121f694     	add	x20, x20, #0x87d
+ 16f1228: 913bb2d6     	add	x22, x22, #0xeec
+ 16f122c: aa1403e1     	mov	x1, x20
+ 16f1230: aa1603e0     	mov	x0, x22
+ 16f1234: 528052a2     	mov	w2, #0x295              // =661
+ 16f1238: b000c573     	adrp	x19, 0x2f9e000
+ 16f123c: b0010555     	adrp	x21, 0x379a000
+ 16f1240: 9125e273     	add	x19, x19, #0x978
+ 16f1244: 9461fafe     	bl	0x2f6fe3c <Application_System_Init+0x18802ac>
+ 16f1248: 911886b5     	add	x21, x21, #0x621
+ 16f124c: aa1303e1     	mov	x1, x19
+ 16f1250: aa1503e0     	mov	x0, x21
+ 16f1254: 9461fafa     	bl	0x2f6fe3c <Application_System_Init+0x18802ac>
+ 16f1258: aa1403e1     	mov	x1, x20
+ 16f125c: aa1603e0     	mov	x0, x22
+ 16f1260: 528052a2     	mov	w2, #0x295              // =661
+ 16f1264: 9461eaf9     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 16f1268: aa1303e1     	mov	x1, x19
+ 16f126c: aa1503e0     	mov	x0, x21
+ 16f1270: 9461eaf6     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 16f1274: 528052a2     	mov	w2, #0x295              // =661
+ 16f1278: f000c4a0     	adrp	x0, 0x2f88000 <Application_System_Init+0x1898470>
+ 16f127c: aa1403e1     	mov	x1, x20
+ 16f1280: 913bf000     	add	x0, x0, #0xefc
+ 16f1284: 97fa854f     	bl	0x15927c0 <printf@plt>
+ 16f1288: f000c4a0     	adrp	x0, 0x2f88000 <Application_System_Init+0x1898470>
+ 16f128c: aa1303e1     	mov	x1, x19
+ 16f1290: 913c3400     	add	x0, x0, #0xf0d
+ 16f1294: 97fa854b     	bl	0x15927c0 <printf@plt>
+ 16f1298: 5290d400     	mov	w0, #0x86a0             // =34464
+ 16f129c: 72a00020     	movk	w0, #0x1, lsl #16
+ 16f12a0: 97fa8708     	bl	0x1592ec0 <usleep@plt>
+ 16f12a4: 945f3843     	bl	0x2ebf3b0 <Application_System_Init+0x17cf820>
+ 16f12a8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 16f12ac: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 16f12b0: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+ 16f12b4: d65f03c0     	ret
+ 16f12b8: f9401fa0     	ldr	x0, [x29, #0x38]
+ 16f12bc: a9400e62     	ldp	x2, x3, [x19]
+ 16f12c0: a9000c02     	stp	x2, x3, [x0]
+ 16f12c4: b9401261     	ldr	w1, [x19, #0x10]
+ 16f12c8: b9001001     	str	w1, [x0, #0x10]
+ 16f12cc: 52802501     	mov	w1, #0x128              // =296
+ 16f12d0: f9401fa0     	ldr	x0, [x29, #0x38]
+ 16f12d4: 72a01061     	movk	w1, #0x83, lsl #16
+ 16f12d8: 97fa82ca     	bl	0x1591e00 <osal_set_msg_src@plt>
+ 16f12dc: f9401fa1     	ldr	x1, [x29, #0x38]
+ 16f12e0: 52807c00     	mov	w0, #0x3e0              // =992
+ 16f12e4: 72a00aa0     	movk	w0, #0x55, lsl #16
+ 16f12e8: 97fa870a     	bl	0x1592f10 <osal_snd_msg@plt>
+ 16f12ec: 34fffde0     	cbz	w0, 0x16f12a8 <Application_System_Init+0x1718>

@@ -1,0 +1,36 @@
+00003cd8 fd7bbaa9 stp      x29, x30, [sp, #-0x60]!
+00003cdc fd030091 mov      x29, sp
+00003ce0 f35301a9 stp      x19, x20, [sp, #0x10]
+00003ce4 b30000d0 adrp     x19, #0x19000
+00003ce8 a4030191 add      x4, x29, #0x40
+00003cec f4fe9f92 mov      x20, #-0xfff8
+00003cf0 bf7f05a9 stp      xzr, xzr, [x29, #0x50]
+00003cf4 1400b0f2 movk     x20, #0x8000, lsl #16
+00003cf8 73e647f9 ldr      x19, [x19, #0xfc8]
+00003cfc f51300f9 str      x21, [sp, #0x20]
+00003d00 b5c30091 add      x21, x29, #0x30
+00003d04 a03300b9 str      w0, [x29, #0x30]
+00003d08 a48703a9 stp      x4, x1, [x29, #0x38]
+00003d0c a28f04a9 stp      x2, x3, [x29, #0x48]
+00003d10 600240b9 ldr      w0, [x19]
+00003d14 e20315aa mov      x2, x21
+00003d18 e10314aa mov      x1, x20
+00003d1c 05faff97 bl       #0x2530 ; ioctl
+00003d20 1f040031 cmn      w0, #1
+00003d24 e0000035 cbnz     w0, #0x3d40
+00003d28 66fcff97 bl       #0x2ec0
+00003d2c 00008052 mov      w0, #0
+00003d30 f35341a9 ldp      x19, x20, [sp, #0x10]
+00003d34 f51340f9 ldr      x21, [sp, #0x20]
+00003d38 fd7bc6a8 ldp      x29, x30, [sp], #0x60
+00003d3c c0035fd6 ret      
+00003d40 c0000054 b.eq     #0x3d58
+00003d44 1ff40f31 cmn      w0, #0x3fd
+00003d48 40feff54 b.eq     #0x3d10
+00003d4c 20ffff35 cbnz     w0, #0x3d30
+00003d50 f6ffff17 b        #0x3d28
+00003d54 1f2003d5 nop      
+00003d58 56faff97 bl       #0x26b0 ; __errno_location
+00003d5c 000040b9 ldr      w0, [x0]
+00003d60 e003004b neg      w0, w0
+00003d64 f8ffff17 b        #0x3d44

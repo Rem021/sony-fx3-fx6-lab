@@ -1,0 +1,21 @@
+# Original FX3 core bytes under source map0x4200. No execution.
+0x4b06 [file+0x906] 374d ldr       r5, [pc, #0xdc]
+0x4b08 [file+0x908] 374f ldr       r7, [pc, #0xdc]
+0x4b0a [file+0x90a] 3069 ldr       r0, [r6, #0x10]
+0x4b0c [file+0x90c] 8007 lsls      r0, r0, #0x1e
+0x4b0e [file+0x90e] 03d5 bpl       #0x4b18
+0x4b10 [file+0x910] 36a0 adr       r0, #0xd8
+0x4b12 [file+0x912] 2968 ldr       r1, [r5]
+0x4b14 [file+0x914] 33f0e2fb bl        #0x382dc
+0x4b18 [file+0x918] 2868 ldr       r0, [r5]
+0x4b1a [file+0x91a] 07eb0014 add.w     r4, r7, r0, lsl #4
+0x4b1e [file+0x91e] 2068 ldr       r0, [r4]
+0x4b20 [file+0x920] 8047 blx       r0
+0x4b22 [file+0x922] 6068 ldr       r0, [r4, #4]
+0x4b24 [file+0x924] 8047 blx       r0
+0x4b26 [file+0x926] a168 ldr       r1, [r4, #8]
+0x4b28 [file+0x928] 8847 blx       r1
+0x4b2a [file+0x92a] 2860 str       r0, [r5]
+0x4b2c [file+0x92c] e068 ldr       r0, [r4, #0xc]
+0x4b2e [file+0x92e] 8047 blx       r0
+0x4b30 [file+0x930] ebe7 b         #0x4b0a

@@ -1,0 +1,19 @@
+{
+  "status": "STATIC_RECOVERY_ROUTE_REFINED_NOT_DEVICE_PROVEN",
+  "new_facts": [
+    "exact original FAT-open normal-return CFG118instructions returns-408; independent A64 raw branch/MOVN encoding agrees",
+    "one exact writer of shared word0xfe170028 is result-bit from UPDATE_MIRA labeled early hardware-register leaf"
+  ],
+  "GPIO_leaf": "writes masks at0xf102e008/0xf102e024 before sampling0xf102e010 bit1; NOT executed here",
+  "scope_limits": [
+    "normal ABI returns from calls assumed; no claim callees always return or code is never replaced at runtime",
+    "linear address references are candidates and not a complete alias/initialization proof",
+    "hardware register address is not a board pad/button mapping or test instruction",
+    "COMMON ordering applies only if that path reaches enabled table entries; not every WBI/hot/cold route proven",
+    "predicate/SPI field4or7 is not mapped to loader mode3/p1/p3 or Fastboot; remote selection still missing"
+  ],
+  "next_static_target": "complete0xfe054c88 SPI state consumer and first SPI input/bootdata import, preserving distinct integer domains",
+  "pending_host01": "195 bundle unchanged; no new reply/approval, no fixed job or administrator request; question not resent",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

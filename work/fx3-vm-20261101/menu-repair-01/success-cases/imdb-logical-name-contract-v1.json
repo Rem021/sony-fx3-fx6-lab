@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "created_utc": "2026-11-01T11:44:00.899372+00:00",
+  "upstream_commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "question": "Must every IMDB module name correspond to a separate host-extracted .so?",
+  "source_verified_facts": [
+    {
+      "file": "runtime/analysis/prepare-assets.py",
+      "lines": [
+        413,
+        427
+      ],
+      "behavior": "debugfs rdump full original initrd root and nflasha15 usr; no per-IMDB-name synthetic files created"
+    },
+    {
+      "file": "runtime/analysis/prepare-assets.py",
+      "lines": [
+        147,
+        165
+      ],
+      "behavior": "specific ten named original mask fields changed; type fields are not rewritten in this filter"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "lines": [
+        1283,
+        1360
+      ],
+      "behavior": "calls real_dlopen(name,flags), strips DEEPBIND, then binds known original symbol pointers; no failed-name virtual handle or generic appFw fallback"
+    },
+    {
+      "file": "runtime/analysis/menu-observe.c",
+      "lines": [
+        11410,
+        11439
+      ],
+      "behavior": "dlsym interposer first obtains real original symbol, then observes/hooks specific known exports"
+    }
+  ],
+  "safe_inference": "An IMDB logical-name list is not itself a DT_NEEDED file-requirement list. Keep original entries/type/dispatch; derive actual file requirements from original loader branches and real dlopen trace.",
+  "not_verified_here": {
+    "numeric_types": [
+      "0x20000001",
+      "0x20000002",
+      "0x20000004"
+    ],
+    "meaning": "unknown from this retrieved public source; do not guess enum based on module name",
+    "FX3_original_im_switch": "owned by original-uipc binary researcher"
+  },
+  "forbidden_shortcuts": [
+    "delete all IMDB entries without standalone files",
+    "create empty stub .so files",
+    "return invented dlopen handles",
+    "mark every logical name ENOENT as missing hardware"
+  ],
+  "runtime_implementation_owner": "fx3_vm_host only; no original AP run by source researcher"
+}

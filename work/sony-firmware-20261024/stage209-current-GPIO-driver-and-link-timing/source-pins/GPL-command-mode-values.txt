@@ -1,0 +1,14 @@
+#define GPIOMODE_INPUT                  (0x00000004U)
+#define GPIOMODE_OUTPUT_H               (0x00000008U)
+#define GPIOMODE_OUTPUT_L               (0x00000010U)
+
+#define GPIO_CMD_READ                   (0xC0104700U)
+#define GPIO_CMD_WRITE                  (0xC0104701U)
+#define GPIO_CMD_SET_MODE               (0xC0104702U)
+#define GPIO_CMD_GET_MODE               (0xC0104703U)
+
+#define GPIO_PORT_MAX                   UDIF_NR_GPIO
+#define GPIO_PORT_0                     0U
+#define GPIO_PORT_1                     1U
+#define GPIO_PORT_2                     2U
+#define GPIO_PORT_3                     3U

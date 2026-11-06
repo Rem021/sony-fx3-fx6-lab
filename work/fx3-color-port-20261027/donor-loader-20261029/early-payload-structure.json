@@ -1,0 +1,256 @@
+{
+  "original_payload_bytes": 169621368,
+  "original_payload_sha256": "498d047ca2f6f11d54c502a399e2c5a9f4740e6fae4913eba1aaaf486349c785",
+  "entropy_first_1MiB": 7.999836581212004,
+  "magic_candidates": {
+    "ELF": [],
+    "XZ": [],
+    "SquashFS": [],
+    "UBI": [],
+    "CPIO": [],
+    "tar_ustar": [],
+    "ZIP": [],
+    "zstd": []
+  },
+  "compressed_candidates": [
+    {
+      "kind": "gzip",
+      "offset": 92098621,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: unknown header flags set"
+    },
+    {
+      "kind": "gzip",
+      "offset": 94542432,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: unknown header flags set"
+    },
+    {
+      "kind": "gzip",
+      "offset": 99358346,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: unknown header flags set"
+    },
+    {
+      "kind": "gzip",
+      "offset": 113244120,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: unknown header flags set"
+    },
+    {
+      "kind": "gzip",
+      "offset": 129863390,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: unknown header flags set"
+    },
+    {
+      "kind": "gzip",
+      "offset": 148922930,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: header crc mismatch"
+    },
+    {
+      "kind": "gzip",
+      "offset": 154658982,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: unknown header flags set"
+    },
+    {
+      "kind": "gzip",
+      "offset": 163307192,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: unknown header flags set"
+    },
+    {
+      "kind": "gzip",
+      "offset": 166483145,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Error -3 while decompressing data: unknown header flags set"
+    },
+    {
+      "kind": "bzip2",
+      "offset": 2896686,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Invalid data stream"
+    },
+    {
+      "kind": "bzip2",
+      "offset": 8888227,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Invalid data stream"
+    },
+    {
+      "kind": "bzip2",
+      "offset": 21076626,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Invalid data stream"
+    },
+    {
+      "kind": "bzip2",
+      "offset": 22175723,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Invalid data stream"
+    },
+    {
+      "kind": "bzip2",
+      "offset": 70494456,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Invalid data stream"
+    },
+    {
+      "kind": "bzip2",
+      "offset": 94963220,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Invalid data stream"
+    },
+    {
+      "kind": "bzip2",
+      "offset": 111946296,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Invalid data stream"
+    },
+    {
+      "kind": "bzip2",
+      "offset": 114796797,
+      "input_limit_bytes": 1048576,
+      "output_limit_bytes": 16777216,
+      "complete_stream": false,
+      "rejection": "Invalid data stream"
+    }
+  ],
+  "valid_complete_compressed_streams": 0,
+  "clear_markers": {
+    "WhiteBalance": [],
+    "S-Gamut3": [],
+    "demosaic": [],
+    "BinaryPackProperty": [],
+    "ProductCodeVersion": []
+  },
+  "footer_comparison": [
+    {
+      "version": "VENICE_V201",
+      "XML_type": "type3",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/donor-loader-20261029/outer-members/VENICE/DATA23213",
+      "sha256": "498d047ca2f6f11d54c502a399e2c5a9f4740e6fae4913eba1aaaf486349c785",
+      "bytes": 169621368,
+      "footer_little_endian_u64": 169621057,
+      "footer_last8_hex": "2020202020202020",
+      "N_minus_L": 311,
+      "rounded_residuals": {
+        "8": 304,
+        "16": 296,
+        "32": 280
+      },
+      "fits_old_round8_plus296": false,
+      "fits_round16_plus296": true
+    },
+    {
+      "version": "VENICE_V630",
+      "XML_type": "type3",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/donor-venice1-20261029/outer-members/VENICE/DATA23213",
+      "sha256": "93d01601322e3d1931a76b1c6f4f3bfdfb9a0745cfc0ec4eecb253c694b30d5c",
+      "bytes": 187973304,
+      "footer_little_endian_u64": 187973003,
+      "footer_last8_hex": "2020202020202020",
+      "N_minus_L": 301,
+      "rounded_residuals": {
+        "8": 296,
+        "16": 296,
+        "32": 280
+      },
+      "fits_old_round8_plus296": true,
+      "fits_round16_plus296": true
+    },
+    {
+      "version": "VENICE2_v392",
+      "XML_type": "type4",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v392/BERLIN/DATA23213",
+      "sha256": "9153710c8a3b9e12d0aed67f6cc22f3a5b0dd63bc99ec3488c2269b6dced3096",
+      "bytes": 287442920,
+      "footer_little_endian_u64": 287442620,
+      "footer_last8_hex": "2020202020202020",
+      "N_minus_L": 300,
+      "rounded_residuals": {
+        "8": 296,
+        "16": 296,
+        "32": 296
+      },
+      "fits_old_round8_plus296": true,
+      "fits_round16_plus296": true
+    },
+    {
+      "version": "VENICE2_v410",
+      "XML_type": "type4",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v410/BERLIN/DATA23213",
+      "sha256": "2b9247384af40a933868ffec6e7c9d433570003414d33f05396fc53235def982",
+      "bytes": 286877016,
+      "footer_little_endian_u64": 286876716,
+      "footer_last8_hex": "2020202020202020",
+      "N_minus_L": 300,
+      "rounded_residuals": {
+        "8": 296,
+        "16": 296,
+        "32": 280
+      },
+      "fits_old_round8_plus296": true,
+      "fits_round16_plus296": true
+    },
+    {
+      "version": "VENICE2_v500",
+      "XML_type": "type4",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v500/BERLIN/DATA23213",
+      "sha256": "662a93a061d17691bf4d243788c94a4dff7b97c92b48e6eeddf87f4c3f5d0019",
+      "bytes": 287401488,
+      "footer_little_endian_u64": 287401186,
+      "footer_last8_hex": "2020202020202020",
+      "N_minus_L": 302,
+      "rounded_residuals": {
+        "8": 296,
+        "16": 288,
+        "32": 272
+      },
+      "fits_old_round8_plus296": true,
+      "fits_round16_plus296": false
+    }
+  ],
+  "correction": {
+    "old_scope": "Four previously inspected payloads satisfy round8(L)+296; original sealed observations remain valid.",
+    "new_counterexample": "VENICE V2.01 type3: N=169621368, L=169621057; round8 residual304, not296.",
+    "universal_round8_rule_supported": false,
+    "universal_round16_rule_supported": false,
+    "limited_observation": "Two type3 samples fit round16(L)+296; three type4 samples fit round8(L)+296. This is not a proven format or cipher."
+  },
+  "scope": "Host-only structural measurements of pinned original payloads; high entropy, alignment and absent markers do not identify encryption or signature. No cipher/key trials, private signing material, native Sony execution, device actions, whole ISP recovery or modified firmware."
+}

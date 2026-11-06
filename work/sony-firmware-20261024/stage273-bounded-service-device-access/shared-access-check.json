@@ -1,0 +1,56 @@
+{
+  "status": "BOUNDED_SHARED_SERVICE_FULL_FAKE_FLOW_PASS",
+  "rows": [
+    {
+      "case": "shared-normal",
+      "status": "PASS",
+      "observed_status": "HOST_RETURN_CONTROLLED_PORT_ASSOCIATION",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 2,
+        "device_open_raw": -536870203
+      },
+      "real_helper_kernel_peer_and_private_receipt": true,
+      "device_driver_and_cache_are_artificial": true
+    },
+    {
+      "case": "shared-control-only-denied",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "acquisition": {
+        "step": 206,
+        "name": "configuration_descriptor",
+        "raw_return": 0,
+        "device_open_disposition": 2,
+        "device_open_raw": -536870203
+      },
+      "real_helper_kernel_peer_and_private_receipt": true,
+      "device_driver_and_cache_are_artificial": true
+    },
+    {
+      "case": "shared-interface-conflict",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "acquisition": {
+        "step": 210,
+        "name": "interface_open",
+        "raw_return": -536870203,
+        "device_open_disposition": 2,
+        "device_open_raw": -536870203
+      },
+      "real_helper_kernel_peer_and_private_receipt": true,
+      "device_driver_and_cache_are_artificial": true
+    },
+    {
+      "case": "device-open-capability-metadata-forgeries-denied",
+      "status": "PASS",
+      "variants": 3
+    }
+  ],
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_root_or_USB_operations": 0,
+  "real_IOKit_or_camera_success_proven": false
+}

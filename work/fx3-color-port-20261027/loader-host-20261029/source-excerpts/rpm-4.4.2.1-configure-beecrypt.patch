@@ -1,0 +1,23 @@
+From: ra <ra@sm.sony.co.jp>
+
+if beecrypt library is not existed, configure will exit. As beecrypt
+is no needed to compile popt, This patch is used to continue
+configure.
+---
+ configure
+ 1 files changed
+
+Index: rpm-4.4.2.1/configure
+===================================================================
+--- rpm-4.4.2.1.orig/configure
++++ rpm-4.4.2.1/configure
+@@ -26523,8 +26523,7 @@ _ACEOF
+ 
+    if test -z "${WITH_BEECRYPT_LIB}" ; then
+        { { echo "$as_me:$LINENO: error: rpm requires beecrypt" >&5
+-echo "$as_me: error: rpm requires beecrypt" >&2;}
+-   { (exit 1); exit 1; }; }
++echo "$as_me: error: rpm requires beecrypt" >&2;} }
+    fi
+ 
+ fi

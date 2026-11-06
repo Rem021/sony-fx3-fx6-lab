@@ -1,0 +1,24 @@
+{
+  "schema": "fx6-hybrid-atomicdiag-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal21.cpio",
+  "source_sha256": "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal40.cpio",
+  "output_sha256": "1b09a169fd0727f3e2840ceb97917094e600223401b8d3933e3a40e824a9f6fe",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 21195,
+    "new_bytes": 21221,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libatomicdiag.so",
+      "bytes": 4216,
+      "sha256": "4bd110396fe3e4eacea92d0a9be854700361cf17df5adfd9e42990cf58a62d53"
+    }
+  ],
+  "source_member_count": 1158
+}

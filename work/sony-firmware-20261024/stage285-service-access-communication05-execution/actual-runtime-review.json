@@ -1,0 +1,1639 @@
+{
+  "schema": "fx3-stage285-actual-runtime-review-v1",
+  "stage": "stage285-service-access-communication05-execution",
+  "grant_id": "fx3-702-service-access-communication-20261101-05",
+  "approval_bundle_sha256": "3c9e849dfcd3effaa8643b484026388e31d860146af1d58d4937bc7e5b369abd",
+  "single_use_consumed": true,
+  "automatic_retry_performed": false,
+  "verified_helper": {
+    "identity": {
+      "uid": 0,
+      "pid": 97419,
+      "sec": 1793583724,
+      "usec": 936700,
+      "path": "/private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05/helper",
+      "image_sha256": ""
+    },
+    "nonce": "9e125520812544b363fed4654a9a6167",
+    "relay_pid": 97373,
+    "snapshot_only_after_restart": true
+  },
+  "observer_identity": {
+    "identity": {
+      "uid": 501,
+      "pid": 97367,
+      "sec": 1793583717,
+      "usec": 76211,
+      "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+      "image_sha256": "104402c76823baa218defcdb2a96c2e3d94302dd12cabf0db3c1f39cd620cb64"
+    },
+    "snapshot_only_after_restart": true
+  },
+  "live_self_image": {
+    "image_sha256": "9fafccf36203a451f39246f83da37806e113078b709fb25156c3bf74e4e9043d",
+    "kernel_peer_and_self_image_checked": true
+  },
+  "independent_pid_probes_after_completion": {
+    "97419": null,
+    "97367": null
+  },
+  "flow_frame_count": 124,
+  "milestone_summary": {
+    "manual_recovery_admission": {
+      "succeeded": true,
+      "before_count": 11,
+      "prior_tail_hash": "a0bc40aacde34261ed5581b71f63924076b7d125ca8af1e5ab762fc46b64aefe",
+      "recovered_hash": "0dc52556e023a913ccfff7b872e06c3f0b7ac974a109771dca4cf587fef48590",
+      "source_node": 4296570640
+    },
+    "msc_0da1_session": {
+      "succeeded": true,
+      "source_node": 4296570640,
+      "start_control_status": 0,
+      "out_rounds": 7,
+      "in_rounds": 7,
+      "disposed": true
+    },
+    "service_0336_acquisition_and_auth": {
+      "succeeded": true,
+      "service_node": 4296580674,
+      "port_node": 4294968654,
+      "device_open_disposition": 1,
+      "device_open_raw": 0,
+      "start_control_status": 0,
+      "out_rounds": 7,
+      "in_rounds": 7
+    },
+    "service_read0_request_12b": {
+      "succeeded": true,
+      "frame": "flow-0076.bin",
+      "sequence": 77,
+      "status": 0
+    },
+    "service_read0_response_header_12b": {
+      "succeeded": true,
+      "frame": "flow-0078.bin",
+      "sequence": 79,
+      "status": 0,
+      "count": 12,
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    "service_read0_response_body_88b": {
+      "succeeded": true,
+      "frame": "flow-0080.bin",
+      "sequence": 81,
+      "status": 0,
+      "count": 88,
+      "body_bytes": 88,
+      "body_hmac": "9525427324dae85ee8de0a04ddfbe091a8c66f73d80a6291d822e749c91a439a"
+    },
+    "service_stop_and_dispose": {
+      "succeeded": true,
+      "stop_frame": "flow-0082.bin",
+      "stop_sequence": 83,
+      "stop_status": 3,
+      "stop_raw_return": -536854449,
+      "dispose_frame": "flow-0084.bin",
+      "dispose_sequence": 85,
+      "dispose_status": 0,
+      "dispose_raw_return": 0
+    },
+    "post_stop_msc_return_and_driver_release": {
+      "succeeded": true,
+      "return_window_armed_frame": "flow-0085.bin",
+      "busy_samples": 2,
+      "gone_samples": 31,
+      "returned_msc_poll_frame": "flow-0119.bin",
+      "associated_msc_return_frame": "flow-0120.bin",
+      "returned_msc_node_during_poll": 4296580719,
+      "driver_return_request_frames": [
+        "flow-0121.bin",
+        "flow-0122.bin"
+      ],
+      "driver_return_status": 0,
+      "driver_return_raw": 0,
+      "flow_complete_frame": "flow-0123.bin",
+      "flow_complete_sequence": 124
+    }
+  },
+  "private_record": {
+    "phase": "COMPLETE",
+    "native_return": 0,
+    "global_guard_result": 0,
+    "frame_io_failed": false,
+    "owner_ran": true,
+    "result": {
+      "abi": 4,
+      "status": 0,
+      "event_count": 23,
+      "capture_attempted": 1,
+      "claim_attempted": 1,
+      "interface_claimed": 1,
+      "clock_invalid": 0,
+      "cleanup_error": 0,
+      "active_call_pending": 0,
+      "persistent_camera_or_vendor_commands": 1,
+      "owner_retained": 0,
+      "session_state": 0,
+      "wire_pending": 0,
+      "vendor_attempted": 1
+    },
+    "result_sha256": "dae75fa1180982d7fd0445ce69ea5cd6aa09b86920f557b8e1894c8e76bed1e5",
+    "record_sha256": "213d2fc7ab658b4e51abbaf352bdaca59cc5e9989c8a0ee570e8d05e88b5e856",
+    "transport_peer_verified": true,
+    "physical_camera_acceptance": false,
+    "manual_recovery": {
+      "schema": 1,
+      "stage": 2,
+      "prior_tail_hash": "a0bc40aacde34261ed5581b71f63924076b7d125ca8af1e5ab762fc46b64aefe",
+      "recovered_hash": "0dc52556e023a913ccfff7b872e06c3f0b7ac974a109771dca4cf587fef48590",
+      "source_node": 4296570640,
+      "physical_port": 4294968654,
+      "location": 17825792,
+      "before_count": 11
+    }
+  },
+  "live_final_summary": {
+    "status": "HOST_RETURN_CONTROLLED_PORT_ASSOCIATION",
+    "helper_terminal_observed": true,
+    "physical_camera_acceptance": false,
+    "automatic_retry": false,
+    "new_trial_authorized": false,
+    "relay_returncode": 0,
+    "relay_is_not_helper_identity": true,
+    "bounded_service_read_observed": true,
+    "SERVICE_serial_identity_observed": false,
+    "physical_camera_identity_authenticated": false
+  },
+  "post_return_msc_cache": {
+    "recorded_utc": "2026-11-02T01:44:21.307435+00:00",
+    "scope": "existing IORegistry properties, kernel topology and mount metadata only",
+    "candidate_count": 1,
+    "returned_msc_device": {
+      "VID": 1356,
+      "PID": 3489,
+      "registryID": 4296580734,
+      "locationID": 17825792,
+      "location_hex": "0x01100000",
+      "model": "ILME-FX3",
+      "physical_port_registryID": 4294968654,
+      "logical_port_registryID": 4294969719
+    },
+    "same_body_as_stage285_HMAC_in_memory": true,
+    "raw_serial_or_key_saved": false,
+    "storage_driver_classes": [
+      "IOBlockStorageDriver",
+      "IOBlockStorageServices",
+      "IOSCSILogicalUnitNub",
+      "IOSCSIPeripheralDeviceType00",
+      "IOUSBMassStorageDriver",
+      "IOUSBMassStorageDriverNub",
+      "IOUSBMassStorageInterfaceNub"
+    ],
+    "cached_media_BSD_names": [
+      "disk10",
+      "disk10s1"
+    ],
+    "mounted_camera_media": [
+      "disk10s1"
+    ],
+    "active_USB_requests": 0
+  },
+  "key_frames_tail": [
+    {
+      "index": 74,
+      "file": "flow-0074.bin",
+      "sha256": "a39ad90a2ae7c66b00bd5af06d93283cb6eb446eebae175f7527efd27f58fc22",
+      "sequence": 75,
+      "point": 1,
+      "op": 3,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 516,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": null
+    },
+    {
+      "index": 75,
+      "file": "flow-0075.bin",
+      "sha256": "8bfa3c2ca952ef1173212572269172f0926db5338f98f0d502e0b92bbec64a8f",
+      "sequence": 76,
+      "point": 0,
+      "op": 4,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": null
+    },
+    {
+      "index": 76,
+      "file": "flow-0076.bin",
+      "sha256": "86178f8829d862550d28354980cffba7a09b2269562bcac7f95473973a1e4a7b",
+      "sequence": 77,
+      "point": 1,
+      "op": 4,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": null
+    },
+    {
+      "index": 77,
+      "file": "flow-0077.bin",
+      "sha256": "152938118bbeb3a7e079a310d295230c07b41feb1993ed5a49ca1ea20897682c",
+      "sequence": 78,
+      "point": 0,
+      "op": 5,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": null
+    },
+    {
+      "index": 78,
+      "file": "flow-0078.bin",
+      "sha256": "dfd7ac01c8fc4907164b6e7cd7b5bdb6f9365c719f8dc85c9a802d80f6ee9f74",
+      "sequence": 79,
+      "point": 1,
+      "op": 5,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 12,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 79,
+      "file": "flow-0079.bin",
+      "sha256": "90d26c6a6228669a4129e90010116512c5822a393ab8fd581e14eb7191ccf120",
+      "sequence": 80,
+      "point": 0,
+      "op": 6,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 80,
+      "file": "flow-0080.bin",
+      "sha256": "aad556a98ea1a99515057598ea0d3f3b06df2ee6f10ecf315a7c00b90c28c65c",
+      "sequence": 81,
+      "point": 1,
+      "op": 6,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 88,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 81,
+      "file": "flow-0081.bin",
+      "sha256": "969103fe568294fc09e1558261acf8ebea02fe0fb550d6334e1b70dcb6663eb2",
+      "sequence": 82,
+      "point": 0,
+      "op": 7,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 82,
+      "file": "flow-0082.bin",
+      "sha256": "3c98d1118bcb1d2d49de99b91d83ea5c5cba342db05d945e91f8fb252e4dbb03",
+      "sequence": 83,
+      "point": 1,
+      "op": 7,
+      "status": 3,
+      "raw_return": -536854449,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 83,
+      "file": "flow-0083.bin",
+      "sha256": "39b534986e887e936805a4678caf8c8c213e1a542ddda46c0f9fc59ec5f168de",
+      "sequence": 84,
+      "point": 0,
+      "op": 8,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 84,
+      "file": "flow-0084.bin",
+      "sha256": "521c5a0f401cb61ff4afd083a697e988c36c8bd1b53160ec5fbf4c98c4896415",
+      "sequence": 85,
+      "point": 1,
+      "op": 8,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 85,
+      "file": "flow-0085.bin",
+      "sha256": "99b091c5234661e66a81b4704217b13fb4bd390e1c1eecce84306f4466b52e34",
+      "sequence": 86,
+      "point": 2,
+      "op": 62,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 86,
+      "file": "flow-0086.bin",
+      "sha256": "1705eacb872e416f0a904411dd6a5cc32501525a7b955d1a84288b47d783d5bf",
+      "sequence": 87,
+      "point": 2,
+      "op": 63,
+      "status": 2,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 87,
+      "file": "flow-0087.bin",
+      "sha256": "377af05bb4dc949585f543ecf916e7d92dff5e030ea15ce18d9567e44ce984b0",
+      "sequence": 88,
+      "point": 2,
+      "op": 63,
+      "status": 2,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0336",
+      "registry_id": 4296580674,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 88,
+      "file": "flow-0088.bin",
+      "sha256": "889200021b9436a86663ec88f6a5559e1da80050a2fbd3a0d231ccf93918c775",
+      "sequence": 89,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 89,
+      "file": "flow-0089.bin",
+      "sha256": "a0beffd78c72808014f090a14fa64d581d3197ca14e50305bd8bba7398c17db9",
+      "sequence": 90,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 90,
+      "file": "flow-0090.bin",
+      "sha256": "f1d753a86b6a1b27d7c424a8f56526671dddd18e50b88e447024006a54f45386",
+      "sequence": 91,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 91,
+      "file": "flow-0091.bin",
+      "sha256": "9e28334b53f104f3bbbe01faa87cb7e9b23f9e65566c8a7ebd7af92bb73e42d1",
+      "sequence": 92,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 92,
+      "file": "flow-0092.bin",
+      "sha256": "11d2c3b8dba9809e912569da97b09c6d73b1160bcf6275db98b8a03bcde1eae9",
+      "sequence": 93,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 93,
+      "file": "flow-0093.bin",
+      "sha256": "2271b981319a5f9b432848e825948c5f0340653918f864a37831db6bee068cdf",
+      "sequence": 94,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 94,
+      "file": "flow-0094.bin",
+      "sha256": "ad51cc23a802b738dea084f84a903b40fe0df79f90eb756769814bb86d19a2a8",
+      "sequence": 95,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 95,
+      "file": "flow-0095.bin",
+      "sha256": "e1b018fb7d028228a88090df4f25883840167d60c840545a0cc8a82f2400cbf3",
+      "sequence": 96,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 96,
+      "file": "flow-0096.bin",
+      "sha256": "24ac5c28744224ac607f7ec92a099a20f44dfeec13b7603be1316f5a5070f279",
+      "sequence": 97,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 97,
+      "file": "flow-0097.bin",
+      "sha256": "266491c947f0b78f760d95f3ad1a213bd01b36d0875fed04148028a1fe199397",
+      "sequence": 98,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 98,
+      "file": "flow-0098.bin",
+      "sha256": "f95628240cac778147b17304982d17a1601ef20f33eacdb516b65f82645bb3d9",
+      "sequence": 99,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 99,
+      "file": "flow-0099.bin",
+      "sha256": "9268c1d8e2a403125cde06bdd815d10aaaa3c04b68a8e3be39a23bb23d763400",
+      "sequence": 100,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 100,
+      "file": "flow-0100.bin",
+      "sha256": "c5ea5d2d2fe2578126f9ca089183369d19af849766e68f342f71d8067e7e7e3f",
+      "sequence": 101,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 101,
+      "file": "flow-0101.bin",
+      "sha256": "558a4f113834662bd3cf40939e636d5e1ac0a545ef0a77eee00bbf1a90aafda0",
+      "sequence": 102,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 102,
+      "file": "flow-0102.bin",
+      "sha256": "4a1f3388b93ce4f14ab05e6a7085f42968d43390fd99fde6c7795c8d90b64933",
+      "sequence": 103,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 103,
+      "file": "flow-0103.bin",
+      "sha256": "4fbbebe20fcf70361dffc067826965f33b8921f535b1786f0199d0482595c61a",
+      "sequence": 104,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 104,
+      "file": "flow-0104.bin",
+      "sha256": "78a7ea0703f875885ade677a97b094a0d1b5c2f9566cf3e9ecfbaff6aa0e13ff",
+      "sequence": 105,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 105,
+      "file": "flow-0105.bin",
+      "sha256": "f1475fac0ee30642242e0ce0dd2d41330c497cf1d79fb7c201371947df6a1622",
+      "sequence": 106,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 106,
+      "file": "flow-0106.bin",
+      "sha256": "d3dc701a794e02a750d35bc24a62029c80931969e1b60730c88f3871925a939c",
+      "sequence": 107,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 107,
+      "file": "flow-0107.bin",
+      "sha256": "45952c68164f1a48be35e790255ee01c6d4111ff8473591d960029142e23a1f5",
+      "sequence": 108,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 108,
+      "file": "flow-0108.bin",
+      "sha256": "f8da4bb0ae48f71d4fd3c87a8d707b04e26ed4a52007562ab1d21c5d8678b609",
+      "sequence": 109,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 109,
+      "file": "flow-0109.bin",
+      "sha256": "38b74acb011bc40cdd7fdf6af5a44b79acbb83ddc294ec59a2c6c8c505844770",
+      "sequence": 110,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 110,
+      "file": "flow-0110.bin",
+      "sha256": "975d90c5764629a38252491094c7df721907fd6f6224f4ad2b0ccf2ebdc40af3",
+      "sequence": 111,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 111,
+      "file": "flow-0111.bin",
+      "sha256": "ba432bef2445dcde64c876b542ce35d9ee598942c45636e0de526db437444b9f",
+      "sequence": 112,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 112,
+      "file": "flow-0112.bin",
+      "sha256": "518feb9a0f3ca606b1f6f841df46cde84b6e05f5485e58c3bc6d8f518f880814",
+      "sequence": 113,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 113,
+      "file": "flow-0113.bin",
+      "sha256": "ebc9802b6da636eef6045eded1e5ff58886bbb4a80f35128b11b154acc3e37d5",
+      "sequence": 114,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 114,
+      "file": "flow-0114.bin",
+      "sha256": "fc005df1c7ac2dc99fe1247621dabf85141914ad9d8bb06c69f017cc2b4008b7",
+      "sequence": 115,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 115,
+      "file": "flow-0115.bin",
+      "sha256": "2eb762c364816e49769ab2638a6933c1f87df6f49443da55d7fb13c072e37a7a",
+      "sequence": 116,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 116,
+      "file": "flow-0116.bin",
+      "sha256": "0a27e817e4f2c821374b393b32f762c7068fcf67bd3e8aac920eaf4834fd40b7",
+      "sequence": 117,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 117,
+      "file": "flow-0117.bin",
+      "sha256": "72ad98eafedcc22c9514c395a4e558817db7ad31dab3cc37f7524c5344d6e28f",
+      "sequence": 118,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 118,
+      "file": "flow-0118.bin",
+      "sha256": "94a67c8e15682268dd1d16f7f994fa0721cdfda521316c7a430b77fcd4533b52",
+      "sequence": 119,
+      "point": 2,
+      "op": 63,
+      "status": 5,
+      "raw_return": 5,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x0000",
+      "pid_hex": "0x0000",
+      "registry_id": 0,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 119,
+      "file": "flow-0119.bin",
+      "sha256": "455a1ed1fba2d797b9ce39ab744e25333a3b7f7a5124504479efbcd6e483448f",
+      "sequence": 120,
+      "point": 2,
+      "op": 63,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0da1",
+      "registry_id": 4296580719,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 120,
+      "file": "flow-0120.bin",
+      "sha256": "366f39d138b39fb22da644fd3a9f6d359f834fff9b4ab86e3375748c9e0415e0",
+      "sequence": 121,
+      "point": 2,
+      "op": 41,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0da1",
+      "registry_id": 4296580719,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 121,
+      "file": "flow-0121.bin",
+      "sha256": "b9fecdaa4b4927da4f49a05c75b62dab0ca52dc9446b716dc22415cfa891c34b",
+      "sequence": 122,
+      "point": 0,
+      "op": 9,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0da1",
+      "registry_id": 4296580719,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 122,
+      "file": "flow-0122.bin",
+      "sha256": "86efe13dca3c5e81e1d956f01b6a7ab2542b0e894930b680c6285781f585adad",
+      "sequence": 123,
+      "point": 1,
+      "op": 9,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 1,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0da1",
+      "registry_id": 4296580719,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    },
+    {
+      "index": 123,
+      "file": "flow-0123.bin",
+      "sha256": "d190cd5644cf489cb720fcd46d7cd136ebb49a1ce969659f8cb2df03803e92c8",
+      "sequence": 124,
+      "point": 3,
+      "op": 50,
+      "status": 0,
+      "raw_return": 0,
+      "returned": 0,
+      "count": 0,
+      "vid_hex": "0x054c",
+      "pid_hex": "0x0da1",
+      "registry_id": 4296580719,
+      "identity_basis": "CONTROLLED_PHYSICAL_PORT",
+      "acquisition": {
+        "step": 114,
+        "name": "pipe_4",
+        "raw_return": 0,
+        "device_open_disposition": 1,
+        "device_open_raw": 0
+      },
+      "read0_header": {
+        "reason": 1,
+        "name": "ok",
+        "mask": 0,
+        "fields": []
+      }
+    }
+  ]
+}

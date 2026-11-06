@@ -1,0 +1,13 @@
+DRAFT ONLY — NO VM AUTHORITY. 待r24正式交付、最终源/清单/准备核验完成后另写正式授权版本。
+FX3｜r24固定审阅快照真实八步菜单验收
+根=/Volumes/KAFU2T/AI/Projects/Mac；TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery；CAND=DEL/r24-review-snapshot-candidate。
+目标：完整八步真实FX3菜单及资源回收，不把离线mock、HTTP202或按键ACK当作菜单成功。原r23失败保留，部署仍r10。候选采用历史按键后固定审阅副本；下一键仍必须经过原实时输入门。scripted_navigation=true、visual_review_at_click=false，不声称实时人工视觉。
+正式授权时只允一次VM/一次Start，首个合格待机图≤180秒，总≤8分钟，8accepted/10显式attempt，至多2个有精确归因未入队的恢复且每步至多1个。unknown、原生错误、语义不符、快照无效或确认失败立即End，不追加Start，不改源码或补其它键。
+固定4×cortex-a35/5120MiB/MTTCG/noicount；原kernel da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c、DTB 5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b、N64 CPIO aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9、实际QEMU bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d不变。没有FX6、相机、USB、SD、刷写、部署或另派代理权限。
+准备前核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B、无其他runner/QEMU、outputs/fx3-vm/.run.lock与menu-repair-01/runtime/.run.lock空闲，不抢占。使用CAND prepare_run创建DEL/r24-vm-本task短id独占数据目录及唯一fx3-deadline-*session。FX3_NAV_RUN_DIR始终指此目录，所有自然状态/preflight输出也在本task数据目录；原r21三个旧runtime输出本轮无必要写入。先读最终PREPARATION/CONTRACT与必要wrapper，核全部冻结r21 SHA256SUMS145行包括manifest自身、source40、fixed14、实际QEMU及r24最终源码。核实际import来自候选→冻结r21→旧兼容目录并符合hash。
+启动命令以最终准备模板为准：候选run_trial_r24_review_snapshot.py --port 0 --max-minutes 8 --max-steps 32 --snapshot-tail --gate-publish-interval 64 --pre-input-snapshot-step 2。32仅保留最后确认的既有ready机制，计划只8accepted。使用可靠持久shell会话，启动前备好每次操作同一工具返回实际PNG的通路与异常End路径。
+Start后合格待机截图真实展示给操作代理，亲看再独立standby_review。每步明确调用click，候选建立并返回精确按键后固定审阅PNG；操作代理必须实际查看该文件，判断预期语义后下一独立调用confirm。保留每步snapshot_id、run/launch/document/step/attempt、PNG SHA/gen/seq、native接收观察下界、confirm请求身份和历史回执；实时画面更新不得被当作已审阅副本。原20秒alarm不延长；arm至confirm/End只做必要步骤，勿插报告/调试/协调。
+固定八步：1 MENU完整Setup>Area/Date、橙色Area/Date/Time Setting；2 UP Language English；3 C4语言帮助；4 MENU返回Language；5 OK只查看English列表不修改语言；6 MENU取消列表；7 MENU关闭到待机；8 MENU重开完整菜单。每步语义都必须实际看图；snapshot身份校验/JSON断言不代替看图。错误即End，无容易路径替代，不跳步骤。
+仅原PAGE明确not_posted或精确requestID拒绝未入队，且最终r24恢复工具已通过准备核验时，允许原归因恢复链：看恢复图→独立cancel→看新图→独立recovery_review→新nonce/新明确计划动作；不自动重试、不等待旧SHA重现后偷发键。helper no-click/unknown和确认失败均End。快照过期或撤销不能重建复活，确认响应丢失不重发。
+全部八步或任一失败后正常End；逐项留API16原字节及guest ACK/20秒预算、QMP quit ACK、exit/reap、runner/QEMU PID absent、双锁free、端口closed、网页finalACK、自有browser关闭证据。保留原生down/up/done原行、每张完整PNG与实际语义判断、所有HTTP请求、拒绝导出原字节（零拒绝也保留）、真实argv/模块来源/全部输入前后hash。v5 tail仍非事务快照，不冒充最终状态；模型实际收图/审阅时刻不能测得则写unknown。
+交付简洁REPORT/RESULT/SHA清单，八步及清理全通过才能本轮passed，否则failed/partial说明精确步骤和未验项。不重复已过离线矩阵、不泛化4096键/60分钟/全菜单/录像/实机/FX6验收。不得写协调ledger或部署入口。正式r24清单/源hash待协调员补齐，当前草稿不可执行。

@@ -1,0 +1,20 @@
+FX3_PNP_ARGUMENT_AUDIT_OFFLINE_ONLY
+目的：解释不同时间的CIM Present=True与PnPUtil零匹配；先核对现有记录，不能据此推断物理断线或工具故障。
+
+本任务不执行任何新设备查询。不要重跑PnPUtil、CIM、SetupAPI或PS1，不scan/refresh，不打开相机/磁盘/卷接口，不SCSI/PTP/认证，不读卡、切模式、改驱动/策略/权限、上传模块/WBI/刷写。仅分析本机普通C盘项目的已保存文件和本会话此前自己的实际调用记录。
+
+已有结果根：
+C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-presence-crosscheck-20261026T165500Z
+C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-current-root-cache-20261026T172200Z
+
+只核对上述CIM private结果、根选择private JSON、实际命令receipt private JSON、stdout/stderr和其public报告；不要搜索其他聊天、用户素材、驱动或全仓库。旧文件保持原样，原始ID和可能含序列的路径不贴聊天或public。
+
+检查：
+1. JSON解码后的真实实例ID与源CIM/根选择/实际传参是否一致，统一uppercase UTF8 SHA256比较。区分JSON文本里的转义、WQL里的转义、PowerShell/进程实际参数字符。公开只写摘要、字符长度、反斜杠数量/连续数量、首尾空白/引号有无，不输出原ID或序列。不要仅看到JSON双反斜杠就判错。
+2. 复核你刚才自己的工具调用：程序路径、原生参数数组或最终commandline、shell包裹、/connected与/instanceid值。如果日志未记录实际argv或无法证明最后一层解析，标UNKNOWN，不把手写public命令字符串当实际argv证明。必要时仅用字符串/CommandLineToArgvW离线解析已有字符串，不启动PnPUtil或任何设备枚举。
+3. 原始stdout解码、字节数、行数、退出码和“无设备”提示是否一致；是否发生解析漏节点、参数错误或权限错误。依证据区分 confirmed / not found in inspected records / UNKNOWN。
+4. 保留两次查询的不同时间（CIM17:15，PnPUtil17:50 UTC），不能把它们当同一时刻的矛盾。若查明传参问题，仅提出修正后的缓存查询计划，不自行执行；若不能查明，准确给出下一步最少需要的缓存证据。
+
+新结果另存 outputs/fx3-pnp-argument-audit-20261026T181000Z/{private,public}。创建前确认本机系统C盘NTFS普通目录、无reparse/网络/相机存储重定向；目录存在则停止，不覆盖。无需提权、绕执行策略或安装工具。
+
+用文件工具保存 public/summary.txt、receipt.json、comparison.json、private-sha256.json、public-sha256.json（公开哈希清单不包含自己）。私有推导留本机private；记录实际读过的文件、观察时间和不能证明的内容。只计算本任务输出文件哈希，避免重做全历史材料校验。最终聊天只给结论和public路径，不贴原始标识。

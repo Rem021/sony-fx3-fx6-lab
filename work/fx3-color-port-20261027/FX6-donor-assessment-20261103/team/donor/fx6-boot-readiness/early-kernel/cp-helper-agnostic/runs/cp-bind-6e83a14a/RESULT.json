@@ -1,0 +1,46 @@
+{
+  "schema": "fx6-hybrid-fx6kernel-run-result-v1",
+  "outcome": "fx6_appfw_executed_assert1075",
+  "goal_complete": false,
+  "run_dir": "runs/cp-bind-6e83a14a",
+  "one_VM_one_Start": true,
+  "vm": {
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "locks_released": true,
+    "elapsed_seconds": 180.1637028750265,
+    "maximum_seconds": 180
+  },
+  "cp_bind": {
+    "fx6_api": "0xffffff8008322f70",
+    "backend_bound": true,
+    "module_init_returned_zero": true,
+    "cp_insmod_rc0": true
+  },
+  "fx6_appfw": {
+    "loaded_map": true,
+    "profile_frames": true,
+    "provider_caller": true,
+    "assert": true,
+    "assert_function": "void infra_wrapper_bb::detail::send_and_wait_cmp_i(OSAL_ID, const void*, int32_t, void*, int32_t)",
+    "request_destination": "0x92840747",
+    "request_source": "0x81cf6196",
+    "request_bytes": 10,
+    "request_raw": "0d202d030a0001800000",
+    "send_succeeded": false,
+    "screen_create": false,
+    "menu": false
+  },
+  "stop": {
+    "reason": "assert1075_after_send_failure",
+    "known_boundary": true,
+    "note": "FX6 appFw is executing and hits the known CAPID send/reply assert; no menu proof"
+  },
+  "hashes": {
+    "serial_sha256": "961baa1b05446f8af09413f4cee141a6b069b3afd4dc244a2c7d2258996ba17c",
+    "receipt_sha256": "452eafdf79fb01a0971765541ed8e16b7ae9be5dcf2c9a0e2d141db55d16d22f",
+    "command_sha256": "3078b2a7f9fc72b9a84bf49dc4dfdcc00e172d1a3724f97e3207ab7a4e3e9b79"
+  },
+  "next": "resolve CAPID initialization/reply before the FX6 AP 10B request; do not hand-fill initialized=1 or fake 0x132d without field-level proof",
+  "created_utc": "2026-11-05T13:28:49.557721+00:00"
+}

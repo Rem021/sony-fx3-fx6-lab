@@ -1,0 +1,286 @@
+00006698 fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+0000669c fd030091 mov      x29, sp
+000066a0 f35301a9 stp      x19, x20, [sp, #0x10]
+000066a4 f40300aa mov      x20, x0
+000066a8 f55b02a9 stp      x21, x22, [sp, #0x20]
+000066ac 20288052 mov      w0, #0x141
+000066b0 f303012a mov      w19, w1
+000066b4 4012a072 movk     w0, #0x92, lsl #16
+000066b8 810240b9 ldr      w1, [x20]
+000066bc 3f00006b cmp      w1, w0
+000066c0 000c0054 b.eq     #0x6840
+000066c4 a02d8052 mov      w0, #0x16d
+000066c8 4012a072 movk     w0, #0x92, lsl #16
+000066cc 3f00006b cmp      w1, w0
+000066d0 011b0054 b.ne     #0x6a30
+000066d4 60178052 mov      w0, #0xbb
+000066d8 01008012 mov      w1, #-1
+000066dc 4012a072 movk     w0, #0x92, lsl #16
+000066e0 00000094 bl       #0x66e0 ; relocation {'symbol': 'osal_wai_sem_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000066e4 60178052 mov      w0, #0xbb
+000066e8 4012a072 movk     w0, #0x92, lsl #16
+000066ec 00000094 bl       #0x66ec ; relocation {'symbol': 'osal_sig_sem', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000066f0 00000094 bl       #0x66f0 ; relocation {'symbol': 'get_max_off_factor', 'section': '.text', 'symbol_value': '0x5970', 'addend': '0x0', 'type': 283}
+000066f4 f50300aa mov      x21, x0
+000066f8 60178052 mov      w0, #0xbb
+000066fc 01008012 mov      w1, #-1
+00006700 4012a072 movk     w0, #0x92, lsl #16
+00006704 b51b00b4 cbz      x21, #0x6a78
+00006708 00000094 bl       #0x6708 ; relocation {'symbol': 'osal_wai_sem_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+0000670c 60178052 mov      w0, #0xbb
+00006710 4012a072 movk     w0, #0x92, lsl #16
+00006714 00000094 bl       #0x6714 ; relocation {'symbol': 'osal_sig_sem', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006718 800640b9 ldr      w0, [x20, #4]
+0000671c 1f640271 cmp      w0, #0x99
+00006720 00180054 b.eq     #0x6a20
+00006724 80388052 mov      w0, #0x1c4
+00006728 01008012 mov      w1, #-1
+0000672c 4012a072 movk     w0, #0x92, lsl #16
+00006730 00000094 bl       #0x6730 ; relocation {'symbol': 'osal_wai_sem_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006734 f31e0058 ldr      x19, #0x6b10 ; literal relocation {'symbol': '', 'section': '.data', 'symbol_value': '0x0', 'addend': '0xa8', 'type': 257}
+00006738 a00641a9 ldp      x0, x1, [x21, #0x10]
+0000673c 62a20291 add      x2, x19, #0xa8
+00006740 630240f9 ldr      x3, [x19]
+00006744 600603a9 stp      x0, x1, [x19, #0x30]
+00006748 7f0002eb cmp      x3, x2
+0000674c 600604a9 stp      x0, x1, [x19, #0x40]
+00006750 00160054 b.eq     #0x6a10
+00006754 400400a9 stp      x0, x1, [x2]
+00006758 620200f9 str      x2, [x19]
+0000675c 09fbff97 bl       #0x5380
+00006760 b5e30091 add      x21, x29, #0x38
+00006764 80388052 mov      w0, #0x1c4
+00006768 4012a072 movk     w0, #0x92, lsl #16
+0000676c 00000094 bl       #0x676c ; relocation {'symbol': 'osal_sig_sem', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006770 00448852 mov      w0, #0x4220
+00006774 e10315aa mov      x1, x21
+00006778 23008052 mov      w3, #1
+0000677c 02028052 mov      w2, #0x10
+00006780 4012b072 movk     w0, #0x8092, lsl #16
+00006784 00000094 bl       #0x6784 ; relocation {'symbol': 'osal_valloc_msg_wait', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006788 c0110034 cbz      w0, #0x69c0
+0000678c 00000094 bl       #0x678c ; relocation {'symbol': 'k_upm_off_seq_set_timeout', 'section': '.text', 'symbol_value': '0x6188', 'addend': '0x0', 'type': 283}
+00006790 613640b9 ldr      w1, [x19, #0x34]
+00006794 22028052 mov      w2, #0x11
+00006798 401c0058 ldr      x0, #0x6b20 ; literal relocation {'symbol': '', 'section': '.rodata.str1.8', 'symbol_value': '0x0', 'addend': '0x9f0', 'type': 257}
+0000679c 629e00b9 str      w2, [x19, #0x9c]
+000067a0 00000094 bl       #0x67a0 ; relocation {'symbol': 'upm_off_timetag_num', 'section': '.text', 'symbol_value': '0x5a78', 'addend': '0x0', 'type': 283}
+000067a4 00000094 bl       #0x67a4 ; relocation {'symbol': 'k_upm_off_seq_exit_active', 'section': '.text', 'symbol_value': '0x6460', 'addend': '0x0', 'type': 283}
+000067a8 812b8052 mov      w1, #0x15c
+000067ac 402d8052 mov      w0, #0x16a
+000067b0 04008052 mov      w4, #0
+000067b4 03008052 mov      w3, #0
+000067b8 02008052 mov      w2, #0
+000067bc 4112a072 movk     w1, #0x92, lsl #16
+000067c0 8012a072 movk     w0, #0x94, lsl #16
+000067c4 00000094 bl       #0x67c4 ; relocation {'symbol': 'upm_c3p_msg_async', 'section': '.text', 'symbol_value': '0x14060', 'addend': '0x0', 'type': 283}
+000067c8 05008052 mov      w5, #0
+000067cc 040080d2 mov      x4, #0
+000067d0 03268052 mov      w3, #0x130
+000067d4 82018052 mov      w2, #0xc
+000067d8 41008052 mov      w1, #2
+000067dc 00008052 mov      w0, #0
+000067e0 00000094 bl       #0x67e0 ; relocation {'symbol': 'upm_blog_writeonce', 'section': '.text', 'symbol_value': '0x12b40', 'addend': '0x0', 'type': 283}
+000067e4 60178052 mov      w0, #0xbb
+000067e8 01008012 mov      w1, #-1
+000067ec 4012a072 movk     w0, #0x92, lsl #16
+000067f0 00000094 bl       #0x67f0 ; relocation {'symbol': 'osal_wai_sem_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000067f4 60178052 mov      w0, #0xbb
+000067f8 4012a072 movk     w0, #0x92, lsl #16
+000067fc 00000094 bl       #0x67fc ; relocation {'symbol': 'osal_sig_sem', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006800 743e40b9 ldr      w20, [x19, #0x3c]
+00006804 e10315aa mov      x1, x21
+00006808 002d8052 mov      w0, #0x168
+0000680c 23008052 mov      w3, #1
+00006810 02028052 mov      w2, #0x10
+00006814 4012b072 movk     w0, #0x8092, lsl #16
+00006818 76d64629 ldp      w22, w21, [x19, #0x34]
+0000681c 00000094 bl       #0x681c ; relocation {'symbol': 'osal_valloc_msg_wait', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006820 f303002a mov      w19, w0
+00006824 e0090034 cbz      w0, #0x6960
+00006828 e003132a mov      w0, w19
+0000682c f35341a9 ldp      x19, x20, [sp, #0x10]
+00006830 f55b42a9 ldp      x21, x22, [sp, #0x20]
+00006834 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+00006838 c0035fd6 ret      
+0000683c 1f2003d5 nop      
+00006840 e40314aa mov      x4, x20
+00006844 85008052 mov      w5, #4
+00006848 e3258052 mov      w3, #0x12f
+0000684c 82018052 mov      w2, #0xc
+00006850 41008052 mov      w1, #2
+00006854 00008052 mov      w0, #0
+00006858 00000094 bl       #0x6858 ; relocation {'symbol': 'upm_blog_writeonce', 'section': '.text', 'symbol_value': '0x12b40', 'addend': '0x0', 'type': 283}
+0000685c 60178052 mov      w0, #0xbb
+00006860 01008012 mov      w1, #-1
+00006864 4012a072 movk     w0, #0x92, lsl #16
+00006868 00000094 bl       #0x6868 ; relocation {'symbol': 'osal_wai_sem_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+0000686c 60178052 mov      w0, #0xbb
+00006870 4012a072 movk     w0, #0x92, lsl #16
+00006874 00000094 bl       #0x6874 ; relocation {'symbol': 'osal_sig_sem', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006878 800640b9 ldr      w0, [x20, #4]
+0000687c 1f640271 cmp      w0, #0x99
+00006880 c0130054 b.eq     #0x6af8
+00006884 e103132a mov      w1, w19
+00006888 e00314aa mov      x0, x20
+0000688c 00000094 bl       #0x688c ; relocation {'symbol': 'add_off_factor', 'section': '.text', 'symbol_value': '0x5b10', 'addend': '0x0', 'type': 283}
+00006890 80388052 mov      w0, #0x1c4
+00006894 01008012 mov      w1, #-1
+00006898 4012a072 movk     w0, #0x92, lsl #16
+0000689c 00000094 bl       #0x689c ; relocation {'symbol': 'osal_wai_sem_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000068a0 93130058 ldr      x19, #0x6b10 ; literal relocation {'symbol': '', 'section': '.data', 'symbol_value': '0x0', 'addend': '0xa8', 'type': 257}
+000068a4 820e40a9 ldp      x2, x3, [x20]
+000068a8 60a20291 add      x0, x19, #0xa8
+000068ac 620e03a9 stp      x2, x3, [x19, #0x30]
+000068b0 610240f9 ldr      x1, [x19]
+000068b4 841640a9 ldp      x4, x5, [x20]
+000068b8 3f0000eb cmp      x1, x0
+000068bc 641604a9 stp      x4, x5, [x19, #0x40]
+000068c0 40110054 b.eq     #0x6ae8
+000068c4 020c00a9 stp      x2, x3, [x0]
+000068c8 600200f9 str      x0, [x19]
+000068cc adfaff97 bl       #0x5380
+000068d0 b5e30091 add      x21, x29, #0x38
+000068d4 80388052 mov      w0, #0x1c4
+000068d8 4012a072 movk     w0, #0x92, lsl #16
+000068dc 00000094 bl       #0x68dc ; relocation {'symbol': 'osal_sig_sem', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000068e0 00448852 mov      w0, #0x4220
+000068e4 e10315aa mov      x1, x21
+000068e8 23008052 mov      w3, #1
+000068ec 02028052 mov      w2, #0x10
+000068f0 4012b072 movk     w0, #0x8092, lsl #16
+000068f4 00000094 bl       #0x68f4 ; relocation {'symbol': 'osal_valloc_msg_wait', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000068f8 000d0034 cbz      w0, #0x6a98
+000068fc 00000094 bl       #0x68fc ; relocation {'symbol': 'k_upm_off_seq_set_timeout', 'section': '.text', 'symbol_value': '0x6188', 'addend': '0x0', 'type': 283}
+00006900 21028052 mov      w1, #0x11
+00006904 a0100058 ldr      x0, #0x6b18 ; literal relocation {'symbol': '', 'section': '.rodata.str1.8', 'symbol_value': '0x0', 'addend': '0x9d0', 'type': 257}
+00006908 619e00b9 str      w1, [x19, #0x9c]
+0000690c 810640b9 ldr      w1, [x20, #4]
+00006910 00000094 bl       #0x6910 ; relocation {'symbol': 'upm_off_timetag_num', 'section': '.text', 'symbol_value': '0x5a78', 'addend': '0x0', 'type': 283}
+00006914 00000094 bl       #0x6914 ; relocation {'symbol': 'k_upm_off_seq_exit_active', 'section': '.text', 'symbol_value': '0x6460', 'addend': '0x0', 'type': 283}
+00006918 812b8052 mov      w1, #0x15c
+0000691c 402d8052 mov      w0, #0x16a
+00006920 04008052 mov      w4, #0
+00006924 03008052 mov      w3, #0
+00006928 02008052 mov      w2, #0
+0000692c 4112a072 movk     w1, #0x92, lsl #16
+00006930 8012a072 movk     w0, #0x94, lsl #16
+00006934 00000094 bl       #0x6934 ; relocation {'symbol': 'upm_c3p_msg_async', 'section': '.text', 'symbol_value': '0x14060', 'addend': '0x0', 'type': 283}
+00006938 e10315aa mov      x1, x21
+0000693c 002d8052 mov      w0, #0x168
+00006940 23008052 mov      w3, #1
+00006944 02028052 mov      w2, #0x10
+00006948 4012b072 movk     w0, #0x8092, lsl #16
+0000694c 96d64029 ldp      w22, w21, [x20, #4]
+00006950 940e40b9 ldr      w20, [x20, #0xc]
+00006954 00000094 bl       #0x6954 ; relocation {'symbol': 'osal_valloc_msg_wait', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006958 f303002a mov      w19, w0
+0000695c 60f6ff35 cbnz     w0, #0x6828
+00006960 a01f40f9 ldr      x0, [x29, #0x38]
+00006964 21048052 mov      w1, #0x21
+00006968 4112b072 movk     w1, #0x8092, lsl #16
+0000696c 00000094 bl       #0x696c ; relocation {'symbol': 'osal_set_msg_src', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006970 a11f40f9 ldr      x1, [x29, #0x38]
+00006974 62288052 mov      w2, #0x143
+00006978 4212a072 movk     w2, #0x92, lsl #16
+0000697c 002d8052 mov      w0, #0x168
+00006980 4012b072 movk     w0, #0x8092, lsl #16
+00006984 22580029 stp      w2, w22, [x1]
+00006988 35500129 stp      w21, w20, [x1, #8]
+0000698c a11f40f9 ldr      x1, [x29, #0x38]
+00006990 00000094 bl       #0x6990 ; relocation {'symbol': 'osal_snd_sync_msg', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006994 f303002a mov      w19, w0
+00006998 a11f40f9 ldr      x1, [x29, #0x38]
+0000699c 002d8052 mov      w0, #0x168
+000069a0 4012b072 movk     w0, #0x8092, lsl #16
+000069a4 00000094 bl       #0x69a4 ; relocation {'symbol': 'osal_free_msg', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000069a8 e003132a mov      w0, w19
+000069ac f35341a9 ldp      x19, x20, [sp, #0x10]
+000069b0 f55b42a9 ldp      x21, x22, [sp, #0x20]
+000069b4 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+000069b8 c0035fd6 ret      
+000069bc 1f2003d5 nop      
+000069c0 d4328052 mov      w20, #0x196
+000069c4 a01f40f9 ldr      x0, [x29, #0x38]
+000069c8 5412b072 movk     w20, #0x8092, lsl #16
+000069cc e103142a mov      w1, w20
+000069d0 00000094 bl       #0x69d0 ; relocation {'symbol': 'osal_set_msg_src', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000069d4 a11f40f9 ldr      x1, [x29, #0x38]
+000069d8 62408052 mov      w2, #0x203
+000069dc 4212a072 movk     w2, #0x92, lsl #16
+000069e0 00448852 mov      w0, #0x4220
+000069e4 4012b072 movk     w0, #0x8092, lsl #16
+000069e8 22500029 stp      w2, w20, [x1]
+000069ec 3f7c0129 stp      wzr, wzr, [x1, #8]
+000069f0 a11f40f9 ldr      x1, [x29, #0x38]
+000069f4 00000094 bl       #0x69f4 ; relocation {'symbol': 'osal_snd_sync_msg', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+000069f8 a11f40f9 ldr      x1, [x29, #0x38]
+000069fc 00448852 mov      w0, #0x4220
+00006a00 4012b072 movk     w0, #0x8092, lsl #16
+00006a04 00000094 bl       #0x6a04 ; relocation {'symbol': 'osal_free_msg', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006a08 61ffff17 b        #0x678c
+00006a0c 1f2003d5 nop      
+00006a10 62e20291 add      x2, x19, #0xb8
+00006a14 600401a9 stp      x0, x1, [x3, #0x10]
+00006a18 620200f9 str      x2, [x19]
+00006a1c 50ffff17 b        #0x675c
+00006a20 00fa8052 mov      w0, #0x7d0
+00006a24 00000094 bl       #0x6a24 ; relocation {'symbol': 'msleep', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006a28 3fffff17 b        #0x6724
+00006a2c 1f2003d5 nop      
+00006a30 c0070058 ldr      x0, #0x6b28 ; literal relocation {'symbol': '', 'section': '.rodata.str1.8', 'symbol_value': '0x0', 'addend': '0xa10', 'type': 257}
+00006a34 f37f8012 mov      w19, #-0x400
+00006a38 00000094 bl       #0x6a38 ; relocation {'symbol': 'upm_off_timetag_num', 'section': '.text', 'symbol_value': '0x5a78', 'addend': '0x0', 'type': 283}
+00006a3c e40314aa mov      x4, x20
+00006a40 85008052 mov      w5, #4
+00006a44 23268052 mov      w3, #0x131
+00006a48 82018052 mov      w2, #0xc
+00006a4c 41008052 mov      w1, #2
+00006a50 00008052 mov      w0, #0
+00006a54 00000094 bl       #0x6a54 ; relocation {'symbol': 'upm_blog_writeonce', 'section': '.text', 'symbol_value': '0x12b40', 'addend': '0x0', 'type': 283}
+00006a58 60178052 mov      w0, #0xbb
+00006a5c 01008012 mov      w1, #-1
+00006a60 4012a072 movk     w0, #0x92, lsl #16
+00006a64 00000094 bl       #0x6a64 ; relocation {'symbol': 'osal_wai_sem_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006a68 60178052 mov      w0, #0xbb
+00006a6c 4012a072 movk     w0, #0x92, lsl #16
+00006a70 00000094 bl       #0x6a70 ; relocation {'symbol': 'osal_sig_sem', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006a74 6dffff17 b        #0x6828
+00006a78 00000094 bl       #0x6a78 ; relocation {'symbol': 'osal_wai_sem_tmo', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006a7c 13008052 mov      w19, #0
+00006a80 60178052 mov      w0, #0xbb
+00006a84 4012a072 movk     w0, #0x92, lsl #16
+00006a88 00000094 bl       #0x6a88 ; relocation {'symbol': 'osal_sig_sem', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006a8c 00000094 bl       #0x6a8c ; relocation {'symbol': 'clear_hcrn', 'section': '.text', 'symbol_value': '0x5d00', 'addend': '0x0', 'type': 283}
+00006a90 66ffff17 b        #0x6828
+00006a94 1f2003d5 nop      
+00006a98 d6328052 mov      w22, #0x196
+00006a9c a01f40f9 ldr      x0, [x29, #0x38]
+00006aa0 5612b072 movk     w22, #0x8092, lsl #16
+00006aa4 e103162a mov      w1, w22
+00006aa8 00000094 bl       #0x6aa8 ; relocation {'symbol': 'osal_set_msg_src', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006aac a11f40f9 ldr      x1, [x29, #0x38]
+00006ab0 62408052 mov      w2, #0x203
+00006ab4 4212a072 movk     w2, #0x92, lsl #16
+00006ab8 00448852 mov      w0, #0x4220
+00006abc 4012b072 movk     w0, #0x8092, lsl #16
+00006ac0 22580029 stp      w2, w22, [x1]
+00006ac4 3f7c0129 stp      wzr, wzr, [x1, #8]
+00006ac8 a11f40f9 ldr      x1, [x29, #0x38]
+00006acc 00000094 bl       #0x6acc ; relocation {'symbol': 'osal_snd_sync_msg', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006ad0 a11f40f9 ldr      x1, [x29, #0x38]
+00006ad4 00448852 mov      w0, #0x4220
+00006ad8 4012b072 movk     w0, #0x8092, lsl #16
+00006adc 00000094 bl       #0x6adc ; relocation {'symbol': 'osal_free_msg', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006ae0 87ffff17 b        #0x68fc
+00006ae4 1f2003d5 nop      
+00006ae8 60e20291 add      x0, x19, #0xb8
+00006aec 220c01a9 stp      x2, x3, [x1, #0x10]
+00006af0 600200f9 str      x0, [x19]
+00006af4 76ffff17 b        #0x68cc
+00006af8 00fa8052 mov      w0, #0x7d0
+00006afc 00000094 bl       #0x6afc ; relocation {'symbol': 'msleep', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006b00 00000094 bl       #0x6b00 ; relocation {'symbol': 'ssboot_is_profiling', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006b04 00ecff34 cbz      w0, #0x6884
+00006b08 00000094 bl       #0x6b08 ; relocation {'symbol': 'ssboot_optimizer_stop_profiling', 'section': 'SHN_UNDEF', 'symbol_value': '0x0', 'addend': '0x0', 'type': 283}
+00006b0c 5effff17 b        #0x6884

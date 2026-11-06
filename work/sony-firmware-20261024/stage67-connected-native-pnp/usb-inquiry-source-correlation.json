@@ -1,0 +1,592 @@
+{
+  "created_utc": "2026-10-26T17:10:09.584323+00:00",
+  "script_sha256": "ef9cf4bc64659621b7e077e71caa4183e72813e5415ffc3bc00aecfd19abd30a",
+  "original_components": "work/sony-firmware-20261024/stage67-connected-native-pnp/usb-original-extraction.json",
+  "static_inquiry_templates": [
+    {
+      "name": "INQUIRY_DATA_SD",
+      "ELF_symbol_value": "0x35d30",
+      "bytes": 48,
+      "sha256": "a377e029f133fc51468296b1e97704d7b1c8905dd846870bd7111862bf4dbd5a",
+      "peripheral_type": 0,
+      "additional_length": 42,
+      "vendor": "Sony",
+      "initial_product": "blank spaces",
+      "initial_revision": "1.00",
+      "actual_runtime_reply_not_observed": true
+    },
+    {
+      "name": "INQUIRY_DATA_MS",
+      "ELF_symbol_value": "0x35cf0",
+      "bytes": 61,
+      "sha256": "bae246f23f9c1ba5cb4c9988eb751d79ef532578ddcad143913132ad67b289ba",
+      "peripheral_type": 0,
+      "additional_length": 51,
+      "vendor": "Sony",
+      "initial_product": "blank spaces",
+      "initial_revision": "1.00",
+      "actual_runtime_reply_not_observed": true
+    },
+    {
+      "name": "INQUIRY_DATA_DEFAULT",
+      "ELF_symbol_value": "0x35cc0",
+      "bytes": 41,
+      "sha256": "9c849a775be31edd96297404a25c954c849c96b741f145853f6a5e0ddb253777",
+      "peripheral_type": 0,
+      "additional_length": 31,
+      "vendor": "Sony",
+      "initial_product": "blank spaces",
+      "initial_revision": "1.00",
+      "actual_runtime_reply_not_observed": true
+    }
+  ],
+  "static_pointer_aliases": [
+    {
+      "name": "INQUIRY_DATA_SSD",
+      "size": 8,
+      "initial_bytes": "0000000000000000",
+      "relocation": "R_AARCH64_ABS64",
+      "static_ELF_target": "INQUIRY_DATA_DEFAULT",
+      "runtime_interposition_not_observed": true
+    },
+    {
+      "name": "INQUIRY_DATA_NVME",
+      "size": 8,
+      "initial_bytes": "0000000000000000",
+      "relocation": "R_AARCH64_ABS64",
+      "static_ELF_target": "INQUIRY_DATA_DEFAULT",
+      "runtime_interposition_not_observed": true
+    },
+    {
+      "name": "INQUIRY_DATA_NAND",
+      "size": 8,
+      "initial_bytes": "0000000000000000",
+      "relocation": "R_AARCH64_ABS64",
+      "static_ELF_target": "INQUIRY_DATA_DEFAULT",
+      "runtime_interposition_not_observed": true
+    },
+    {
+      "name": "INQUIRY_DATA_HDD",
+      "size": 8,
+      "initial_bytes": "0000000000000000",
+      "relocation": "R_AARCH64_ABS64",
+      "static_ELF_target": "INQUIRY_DATA_DEFAULT",
+      "runtime_interposition_not_observed": true
+    },
+    {
+      "name": "INQUIRY_DATA_BUILT_IN_MS",
+      "size": 8,
+      "initial_bytes": "0000000000000000",
+      "relocation": "R_AARCH64_ABS64",
+      "static_ELF_target": "INQUIRY_DATA_DEFAULT",
+      "runtime_interposition_not_observed": true
+    }
+  ],
+  "original_functions": [
+    {
+      "name": "inquiry_std",
+      "section": ".text",
+      "section_offset": "0x6d60",
+      "bytes": 632,
+      "sha256": "173f6136162f4fcd3025ef67adc7325a33f723c4564f7fdecd4d5c59a7a0c277",
+      "CALL26_relocations": [
+        {
+          "offset": "0x6ed0",
+          "symbol": "memcpy",
+          "addend": 0
+        }
+      ],
+      "executed": false
+    },
+    {
+      "name": "checkExtCommand",
+      "section": ".text",
+      "section_offset": "0xa048",
+      "bytes": 152,
+      "sha256": "2670c7e173c7d3aeb4db60964d72b3c7faa5471f388c464292307b67dcd20e84",
+      "CALL26_relocations": [
+        {
+          "offset": "0xa0b0",
+          "symbol": "storage_detect_ExtCommand",
+          "addend": 0
+        }
+      ],
+      "executed": false
+    },
+    {
+      "name": "storage_detect_ExtCommand",
+      "section": ".text",
+      "section_offset": "0x2420",
+      "bytes": 80,
+      "sha256": "cba9a61e1cb2f5bb214a6900728369f6e8a99d0669c5a1ce9e673cbe7d9f4a2f",
+      "CALL26_relocations": [
+        {
+          "offset": "0x2464",
+          "symbol": "usb_event_add_queue",
+          "addend": 0
+        }
+      ],
+      "executed": false
+    }
+  ],
+  "public_source_label": "FX3 7.00; selected correspondence only, not exact7.02 build proof",
+  "source_archive_sha256": "bb2d9cc676fef6aaf2f8f6703c4e041c133da0e7101b5afd33800eaf7c156d0f",
+  "selected_source": [
+    {
+      "member": "include/uapi/linux/usb/specific_gadget/usbg_storage.h",
+      "bytes": 8149,
+      "sha256": "37ca808f12db8dbe051e4fb4099b93c3c7e5e44cbe8229b7d57bc3ac9b44f4f6",
+      "excerpts": [
+        [
+          33,
+          "typedef struct {"
+        ],
+        [
+          34,
+          "    char            *devNode;           /* Device Node Name             */"
+        ],
+        [
+          35,
+          "    unsigned int    drvType;            /* Drive Type                   */"
+        ],
+        [
+          36,
+          "    uint32_t        inquiryDataLen;     /* Inquiry Data Size            */"
+        ],
+        [
+          37,
+          "    char            *pInquiryData;      /* Inquiry Data Pointer         */"
+        ],
+        [
+          38,
+          "    uint32_t        blockNum;           /* Max Block Num                */"
+        ],
+        [
+          39,
+          "    uint32_t        blockLength;        /* Block Length                 */"
+        ],
+        [
+          40,
+          "    char            forceWP;            /* Forced Write Protect         */"
+        ],
+        [
+          41,
+          "    char            driveRemovable;     /* Removable Drive              */"
+        ],
+        [
+          42,
+          "    char            driveLock;          /* Drive Lock ON/OFF            */"
+        ],
+        [
+          43,
+          "    char            flushEnable;        /* Flush Enable/Disable         */"
+        ],
+        [
+          44,
+          "    char            preventEnable;      /* Prevent Enable/Disable       */"
+        ],
+        [
+          45,
+          "    unsigned char   vpdSerialData[USB_SERIAL_A_SIZE];  /* VPD Serial Data              */"
+        ],
+        [
+          46,
+          "} GSTORAGE__InfoInitDrive;"
+        ],
+        [
+          47,
+          ""
+        ],
+        [
+          48,
+          "typedef struct {"
+        ],
+        [
+          49,
+          "    unsigned char\topCode;             /* ExtCommand OP code           */"
+        ],
+        [
+          50,
+          "} GSTORAGE__InfoInitExtCmd;"
+        ],
+        [
+          51,
+          ""
+        ],
+        [
+          52,
+          "typedef struct {"
+        ],
+        [
+          53,
+          "    int                     num;                /* Max LUN Num          */"
+        ],
+        [
+          54,
+          "    GSTORAGE__InfoInitDrive **ppInfoDrives;     /* Drive Information    */"
+        ],
+        [
+          55,
+          ""
+        ],
+        [
+          56,
+          "    int                      extCmdNum;         /* ExtCommand Entry Num   */"
+        ],
+        [
+          57,
+          "    GSTORAGE__InfoInitExtCmd **ppInfoExtCmd;    /* ExtCommand Information */"
+        ],
+        [
+          58,
+          ""
+        ],
+        [
+          59,
+          "    uintptr_t               PhySendBuf;"
+        ],
+        [
+          60,
+          "    uintptr_t               PhyReceiveBuf;"
+        ],
+        [
+          61,
+          "    uintptr_t               PhySendReadBuf0[4];"
+        ],
+        [
+          62,
+          "    uintptr_t               PhySendReadBuf1[4];"
+        ],
+        [
+          63,
+          ""
+        ],
+        [
+          64,
+          "} GSTORAGE__InfoInit;"
+        ],
+        [
+          89,
+          "typedef struct {"
+        ],
+        [
+          90,
+          "\tint\t\t\t\tlun;\t\t\t/* LUN\t\t*/"
+        ],
+        [
+          91,
+          "\tunsigned char\tCDB[ 12 ];\t\t/* CDB\t\t*/"
+        ],
+        [
+          92,
+          "} GSTORAGE__ExtCmdCDB;"
+        ]
+      ]
+    },
+    {
+      "member": "drivers/usb/gadget/specific_gadget/usbg_storage/usbg_storage_cmd_std.c",
+      "bytes": 124082,
+      "sha256": "665d59f14467bf42a64f772923f074e11faec9cdec3623c94bc092423b4c2ea4",
+      "excerpts": [
+        [
+          313,
+          "GSTORAGE__Status inquiry_std( GSTORAGE_DRV__CmdContext *pCmdCtx )"
+        ],
+        [
+          314,
+          "{"
+        ],
+        [
+          315,
+          "    GSTORAGE__Status         ret = GSTORAGE__SUCCESS;"
+        ],
+        [
+          316,
+          "    GSTORAGE_CMD__CdbInquiry *pCdb;"
+        ],
+        [
+          317,
+          "    GSTORAGE_CMD__DatVPD *pData;"
+        ],
+        [
+          318,
+          "    unsigned int bufLen = pCmdCtx->expectDatLen;"
+        ],
+        [
+          319,
+          "    unsigned int execLen;"
+        ],
+        [
+          320,
+          "    unsigned int allocLen;"
+        ],
+        [
+          321,
+          "    unsigned int pageCode;"
+        ],
+        [
+          322,
+          "    unsigned int maxLen = 0;"
+        ],
+        [
+          323,
+          ""
+        ],
+        [
+          324,
+          "    GS_DET( GS_OUT__CMD_STD, \"func Req\" );"
+        ],
+        [
+          325,
+          ""
+        ],
+        [
+          326,
+          "    /* set buffer pointer */"
+        ],
+        [
+          327,
+          "    pCdb = ( GSTORAGE_CMD__CdbInquiry * )pCmdCtx->pCdb;"
+        ],
+        [
+          328,
+          ""
+        ],
+        [
+          329,
+          "    allocLen = ( (unsigned int)pCdb->AL[ 0 ] << 8 ) + "
+        ],
+        [
+          330,
+          "                 (unsigned int)pCdb->AL[ 1 ];"
+        ],
+        [
+          331,
+          ""
+        ],
+        [
+          332,
+          "    if ( ( pCmdCtx->dio == DATA_IN ) || ( pCmdCtx->dio == DATA_NON ) ){"
+        ],
+        [
+          333,
+          "        if ( ( ( pCdb->f1_evpd == 0 ) && ( pCdb->pageCode != 0x00 ) )"
+        ],
+        [
+          334,
+          "            || ( pCdb->f1_link == 1 ) || ( pCdb->f1_naca == 1 ) ){"
+        ],
+        [
+          335,
+          "            /* invalid filed in cdb */"
+        ],
+        [
+          336,
+          "            pCmdCtx->totalTransLen = 0;"
+        ],
+        [
+          337,
+          "            pCmdCtx->status        = GSTORAGE_CMD__STATUS_FAIL;"
+        ],
+        [
+          338,
+          "            setSense( &pCmdCtx->pUnitCtx->sense, GSTORAGE_CMD__SK_INVALID_FIELD );"
+        ],
+        [
+          339,
+          "        }"
+        ],
+        [
+          340,
+          "        else {"
+        ],
+        [
+          341,
+          "            if ( pCdb->f1_evpd == 0 ) {"
+        ],
+        [
+          342,
+          "                execLen = ( allocLen < pCmdCtx->pUnitCtx->pDrive->inquiryDataLen ) ?"
+        ],
+        [
+          343,
+          "                    allocLen : pCmdCtx->pUnitCtx->pDrive->inquiryDataLen;"
+        ],
+        [
+          344,
+          "                if ( bufLen < execLen ){"
+        ],
+        [
+          345,
+          "                    /* PhaseError\\xc0\\xdf\\xc4\\xea */"
+        ],
+        [
+          346,
+          "                    pCmdCtx->totalTransLen = 0;"
+        ],
+        [
+          347,
+          "                    pCmdCtx->status = GSTORAGE_CMD__STATUS_FATAL;"
+        ],
+        [
+          348,
+          "                    setSense( &pCmdCtx->pUnitCtx->sense, GSTORAGE_CMD__SK_NO_SENSE );"
+        ],
+        [
+          349,
+          "                }"
+        ],
+        [
+          350,
+          "                else {"
+        ],
+        [
+          351,
+          "                    memcpy( pCmdCtx->pData, pCmdCtx->pUnitCtx->pDrive->pInquiryData, execLen );"
+        ],
+        [
+          352,
+          "                    /* set output data */"
+        ],
+        [
+          353,
+          "                    pCmdCtx->totalTransLen = execLen;"
+        ],
+        [
+          354,
+          "                    pCmdCtx->status        = GSTORAGE_CMD__STATUS_PASS;"
+        ],
+        [
+          355,
+          "                    setSense( &pCmdCtx->pUnitCtx->sense, GSTORAGE_CMD__SK_NO_SENSE );"
+        ],
+        [
+          356,
+          "                }"
+        ],
+        [
+          3093,
+          "GSTORAGE__Status checkExtCommand( GSTORAGE_DRV__CmdContext *pCmdCtx )"
+        ],
+        [
+          3094,
+          "{"
+        ],
+        [
+          3095,
+          "    unsigned int    ret;"
+        ],
+        [
+          3096,
+          "    int             i;"
+        ],
+        [
+          3097,
+          ""
+        ],
+        [
+          3098,
+          "    GS_DET( GS_OUT__CMD_STD, \"func Req\" );"
+        ],
+        [
+          3099,
+          ""
+        ],
+        [
+          3100,
+          "    ret = GSTORAGE__NON_DETECT;"
+        ],
+        [
+          3101,
+          ""
+        ],
+        [
+          3102,
+          "    if( pCmdCtx->dio == DATA_NON ) {"
+        ],
+        [
+          3103,
+          "        for( i = 0; i < pCmdCtx->pUnitCtx->pDevCtx->extCmdNum; i++ ) {"
+        ],
+        [
+          3104,
+          "            if( pCmdCtx->pCdb->opCode == pCmdCtx->pUnitCtx->pDevCtx->pExtCmd[ i ]->opCode ) {"
+        ],
+        [
+          3105,
+          "                GS_DBG( GS_OUT__EXTCOMMAND, \"ext command detect! lun = %d, OPcode = 0x%02X\","
+        ],
+        [
+          3106,
+          "                        pCmdCtx->pCbw->cbwLun, pCmdCtx->pCdb->opCode );"
+        ],
+        [
+          3107,
+          "                storage_detect_ExtCommand( pCmdCtx->pCbw->cbwLun, pCmdCtx->pCdb );"
+        ],
+        [
+          3108,
+          "                /* set output data */"
+        ],
+        [
+          3109,
+          "                /* PASS\\xa4\\xce\\xc0\\xdf\\xc4\\xea */"
+        ],
+        [
+          3110,
+          "                pCmdCtx->totalTransLen = 0;"
+        ],
+        [
+          3111,
+          "                pCmdCtx->status        = GSTORAGE_CMD__STATUS_PASS;"
+        ],
+        [
+          3112,
+          "                setSense( &pCmdCtx->pUnitCtx->sense, GSTORAGE_CMD__SK_NO_SENSE );"
+        ],
+        [
+          3113,
+          "                ret = GSTORAGE__DETECT;"
+        ],
+        [
+          3114,
+          "                break;"
+        ],
+        [
+          3115,
+          "            }"
+        ],
+        [
+          3116,
+          "        }"
+        ],
+        [
+          3117,
+          "    }"
+        ],
+        [
+          3118,
+          ""
+        ],
+        [
+          3119,
+          "    return ret;"
+        ]
+      ]
+    }
+  ],
+  "correlations": [
+    "Reference standard EVPD0 INQUIRY copies bounded per-drive configured inquiryData; original7.02 inquiry_std has one CALL26 relocation to memcpy.",
+    "Three initial byte-array templates have revision1.00 and blank product; five eight-byte data symbols are ABS64 aliases to DEFAULT, not five extra response headers.",
+    "Reference init structure supplies num and per-drive information, and extension event explicitly carries lun. One USB parent does not specify a unique logical-unit endpoint."
+  ],
+  "next_action_constraints": [
+    "Do not interpret a standard INQUIRY revision as proof of firmware7.02 or a same-body program hash.",
+    "Do not choose one among multiple current disk interfaces from common vendor/product/revision data alone.",
+    "Current active driver, dynamic initialization/product data, target LUN and actual reply remain unverified."
+  ],
+  "camera_interface_auth_mode_driver_media_or_firmware_access": false,
+  "downloaded_source_original_modules_or_kernel_executed": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

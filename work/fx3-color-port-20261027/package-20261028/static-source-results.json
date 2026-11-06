@@ -1,0 +1,475 @@
+{
+  "status": "PASS_PINNED_UPDATER_HELPERS_AND_BOUNDARIES",
+  "source_spans": [
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZN7Updater10CrcChecker12makeCrcTableEv",
+      "va": "0x42e4",
+      "file_offset": "0x42e4",
+      "bytes": 80,
+      "sha256": "a1573b9afcfb8677ca18117bdd0d642d78eb88750aa1634a13dde776ee057309",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-000042e4-00004334.txt",
+      "plt_calls": []
+    },
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZN7Updater10CrcChecker6VerifyEPNS_11FileHandlerEj",
+      "va": "0x4408",
+      "file_offset": "0x4408",
+      "bytes": 256,
+      "sha256": "f5599c0e3b6d09417d09e8aa2326f2b56f7f510634add897f1e46fa208fb6356",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-00004408-00004508.txt",
+      "plt_calls": [
+        {
+          "caller": "0x44a0",
+          "plt": "0x3620",
+          "symbol": "memcmp"
+        },
+        {
+          "caller": "0x44f0",
+          "plt": "0x38b0",
+          "symbol": "printf"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZN7Updater28CryptFileInputUpdaterManager10searchFDATEPNS_11FileHandlerE",
+      "va": "0x3bb8",
+      "file_offset": "0x3bb8",
+      "bytes": 556,
+      "sha256": "f775ea95668d05cce95f8625862b8d34830f19facd325f2c9b89c86e49181982",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-00003bb8-00003de4.txt",
+      "plt_calls": [
+        {
+          "caller": "0x3c5c",
+          "plt": "0x3620",
+          "symbol": "memcmp"
+        },
+        {
+          "caller": "0x3ca0",
+          "plt": "0x3770",
+          "symbol": "__errno_location"
+        },
+        {
+          "caller": "0x3cb8",
+          "plt": "0x3770",
+          "symbol": "__errno_location"
+        },
+        {
+          "caller": "0x3cdc",
+          "plt": "0x38b0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0x3ce4",
+          "plt": "0x3610",
+          "symbol": "__cxa_allocate_exception"
+        },
+        {
+          "caller": "0x3d10",
+          "plt": "0x3820",
+          "symbol": "__cxa_throw"
+        },
+        {
+          "caller": "0x3d44",
+          "plt": "0x3620",
+          "symbol": "memcmp"
+        },
+        {
+          "caller": "0x3d60",
+          "plt": "0x38b0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0x3d78",
+          "plt": "0x38b0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0x3dd4",
+          "plt": "0x38b0",
+          "symbol": "printf"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZN7Updater10CrcCheckerC1Ev",
+      "va": "0x4508",
+      "file_offset": "0x4508",
+      "bytes": 24,
+      "sha256": "fd8dc50ae7d4949af93a44d6b7922bd265f365e6577953884e27c56d50f91c3c",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-00004508-00004520.txt",
+      "plt_calls": [
+        {
+          "caller": "0x451c",
+          "plt": "0x3580",
+          "symbol": "_ZN7Updater10CrcChecker12makeCrcTableEv"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZN7Updater10CrcCheckerD0Ev",
+      "va": "0x43e0",
+      "file_offset": "0x43e0",
+      "bytes": 40,
+      "sha256": "fc21fea427729593d75c34d85df52d1537f36d5fc37ecb3c0c2f4bbaa93c99a6",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-000043e0-00004408.txt",
+      "plt_calls": [
+        {
+          "caller": "0x43f0",
+          "plt": "0x36a0",
+          "symbol": "_ZN7Updater10CrcCheckerD1Ev"
+        },
+        {
+          "caller": "0x4404",
+          "plt": "0x3710",
+          "symbol": "_ZdlPvm"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZN7Updater10CrcCheckerD1Ev",
+      "va": "0x42e0",
+      "file_offset": "0x42e0",
+      "bytes": 4,
+      "sha256": "110f46b5b35c069160560c6ad6786f647dd44e8760a52a46fc22dbbcd7630b91",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-000042e0-000042e4.txt",
+      "plt_calls": []
+    },
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZN7Updater28CryptFileInputUpdaterManager10verifyFileEPNS_11FileHandlerE",
+      "va": "0x3ec8",
+      "file_offset": "0x3ec8",
+      "bytes": 252,
+      "sha256": "93779329c30a68bb6347c68ee85ca19d4b0fb54d1184f816a5eda484ea8a4049",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-00003ec8-00003fc4.txt",
+      "plt_calls": [
+        {
+          "caller": "0x3efc",
+          "plt": "0x3740",
+          "symbol": "_ZN7Updater10CrcCheckerC1Ev"
+        },
+        {
+          "caller": "0x3f88",
+          "plt": "0x36c0",
+          "symbol": "_ZN7Updater10CrcChecker6VerifyEPNS_11FileHandlerEj"
+        },
+        {
+          "caller": "0x3f94",
+          "plt": "0x36a0",
+          "symbol": "_ZN7Updater10CrcCheckerD1Ev"
+        },
+        {
+          "caller": "0x3fb8",
+          "plt": "0x36a0",
+          "symbol": "_ZN7Updater10CrcCheckerD1Ev"
+        },
+        {
+          "caller": "0x3fc0",
+          "plt": "0x3850",
+          "symbol": "_Unwind_Resume"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZThn8_N7Updater28CryptFileInputUpdaterManager10verifyFileEPNS_11FileHandlerE",
+      "va": "0x3fc4",
+      "file_offset": "0x3fc4",
+      "bytes": 8,
+      "sha256": "69ffcb4c0e99099534fd8b8dfd1fa72f826584c888dd083acf7935918dc89464",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-00003fc4-00003fcc.txt",
+      "plt_calls": []
+    },
+    {
+      "library": "libraries/libcryptfileinputupdaterapi.so",
+      "library_sha256": "1e5768eb912645b57776014f16de3004ce7b8b10eb7337612efab49e93f7f3a9",
+      "symbol": "_ZN7Updater10CrcChecker7CalcCRCEPNS_11FileHandlerEj",
+      "va": "0x4334",
+      "file_offset": "0x4334",
+      "bytes": 172,
+      "sha256": "1e9767e3ad5baa5c04c8df1ebef828f5870ae3dbb89e3ce1b692718a0f93dd7a",
+      "disassembly": "disassembly/libcryptfileinputupdaterapi.so-00004334-000043e0.txt",
+      "plt_calls": []
+    },
+    {
+      "library": "libraries/libupdatercorecommon.so",
+      "library_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "symbol": "_ZN7Updater15DecryptorModule6calSumEv",
+      "va": "0xa8a0",
+      "file_offset": "0xa8a0",
+      "bytes": 40,
+      "sha256": "9e5d0bb7724e23c3b666d79cceb2ef028976106c0074efe469dc1923f831ea43",
+      "disassembly": "disassembly/libupdatercorecommon.so-0000a8a0-0000a8c8.txt",
+      "plt_calls": []
+    },
+    {
+      "library": "libraries/libupdatercorecommon.so",
+      "library_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "symbol": "_ZN7Updater15DecryptorModule8getHdSumEv",
+      "va": "0xa8e0",
+      "file_offset": "0xa8e0",
+      "bytes": 8,
+      "sha256": "68a994c3a1ca912556a76099975330a8c7c4284e740c7fbf3743f0788cc55bac",
+      "disassembly": "disassembly/libupdatercorecommon.so-0000a8e0-0000a8e8.txt",
+      "plt_calls": []
+    },
+    {
+      "library": "libraries/libupdatercorecommon.so",
+      "library_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "symbol": "_ZN7Updater15DecryptorModule12getHdEndFlagEv",
+      "va": "0xa8c8",
+      "file_offset": "0xa8c8",
+      "bytes": 12,
+      "sha256": "ef2a69eaffa028fbffea3a984836f05faffdf658f286d586c7bff4eba0d34787",
+      "disassembly": "disassembly/libupdatercorecommon.so-0000a8c8-0000a8d4.txt",
+      "plt_calls": []
+    },
+    {
+      "library": "libraries/libupdatercorecommon.so",
+      "library_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "symbol": "_ZN7Updater15DecryptorModule9verifySumEv",
+      "va": "0xa8e8",
+      "file_offset": "0xa8e8",
+      "bytes": 216,
+      "sha256": "ca9a08b106a683e1445c412dc23d0b46c6c1f472aac4ef45eba71ce235e210da",
+      "disassembly": "disassembly/libupdatercorecommon.so-0000a8e8-0000a9c0.txt",
+      "plt_calls": [
+        {
+          "caller": "0xa8f8",
+          "plt": "0x7d50",
+          "symbol": "_ZN7Updater15DecryptorModule13getHdDataSizeEv"
+        },
+        {
+          "caller": "0xa930",
+          "plt": "0x81e0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0xa938",
+          "plt": "0x7b70",
+          "symbol": "__cxa_allocate_exception"
+        },
+        {
+          "caller": "0xa964",
+          "plt": "0x8100",
+          "symbol": "__cxa_throw"
+        },
+        {
+          "caller": "0xa96c",
+          "plt": "0x7cf0",
+          "symbol": "_ZN7Updater15DecryptorModule6calSumEv"
+        },
+        {
+          "caller": "0xa978",
+          "plt": "0x7c10",
+          "symbol": "_ZN7Updater15DecryptorModule8getHdSumEv"
+        },
+        {
+          "caller": "0xa9ac",
+          "plt": "0x81e0",
+          "symbol": "printf"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libupdatercorecommon.so",
+      "library_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "symbol": "_ZN7Updater15DecryptorModule13getHdDataSizeEv",
+      "va": "0xa8d4",
+      "file_offset": "0xa8d4",
+      "bytes": 12,
+      "sha256": "0e7307975e26d164f417b130e172fa7b35079c733d8cd3147a1736cf77872dbc",
+      "disassembly": "disassembly/libupdatercorecommon.so-0000a8d4-0000a8e0.txt",
+      "plt_calls": []
+    },
+    {
+      "library": "libraries/libupdatercorecommon.so",
+      "library_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "symbol": "_ZN7Updater15DecryptorModule7decryptEv",
+      "va": "0xa780",
+      "file_offset": "0xa780",
+      "bytes": 192,
+      "sha256": "1ab59febe24178d922d14cef4503d0f515c8eea74e5367ce789a9fb577a3b738",
+      "disassembly": "disassembly/libupdatercorecommon.so-0000a780-0000a840.txt",
+      "plt_calls": [
+        {
+          "caller": "0xa7c0",
+          "plt": "0x81e0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0xa7c8",
+          "plt": "0x7b70",
+          "symbol": "__cxa_allocate_exception"
+        },
+        {
+          "caller": "0xa7f4",
+          "plt": "0x8100",
+          "symbol": "__cxa_throw"
+        },
+        {
+          "caller": "0xa820",
+          "plt": "0x8140",
+          "symbol": "Dec_Scramble"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libupdatercorecommon.so",
+      "library_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "symbol": "_ZN7Updater15DecryptorModule7executeEv",
+      "va": "0xaa54",
+      "file_offset": "0xaa54",
+      "bytes": 476,
+      "sha256": "449242d061dc1fe6817643c583047ef073c6edf9b3c37ae800e6065e70f388ec",
+      "disassembly": "disassembly/libupdatercorecommon.so-0000aa54-0000ac30.txt",
+      "plt_calls": [
+        {
+          "caller": "0xaa84",
+          "plt": "0x81e0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0xaa8c",
+          "plt": "0x8090",
+          "symbol": "_ZN7Updater10BaseModule12ThreadStatus9IsRunningEv"
+        },
+        {
+          "caller": "0xaa9c",
+          "plt": "0x7ea0",
+          "symbol": "_ZN7Updater15DecryptorModule10updateDataEv"
+        },
+        {
+          "caller": "0xaae4",
+          "plt": "0x81e0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0xaaec",
+          "plt": "0x7b70",
+          "symbol": "__cxa_allocate_exception"
+        },
+        {
+          "caller": "0xab1c",
+          "plt": "0x8100",
+          "symbol": "__cxa_throw"
+        },
+        {
+          "caller": "0xab34",
+          "plt": "0x7a80",
+          "symbol": "_ZN7Updater15DecryptorModule9verifySumEv"
+        },
+        {
+          "caller": "0xab3c",
+          "plt": "0x7dc0",
+          "symbol": "_ZN7Updater15DecryptorModule12getHdEndFlagEv"
+        },
+        {
+          "caller": "0xab80",
+          "plt": "0x81e0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0xab88",
+          "plt": "0x7b70",
+          "symbol": "__cxa_allocate_exception"
+        },
+        {
+          "caller": "0xabac",
+          "plt": "0x7b60",
+          "symbol": "_ZN7Updater15DecryptorModule7setDataEv"
+        },
+        {
+          "caller": "0xabd0",
+          "plt": "0x8090",
+          "symbol": "_ZN7Updater10BaseModule12ThreadStatus9IsRunningEv"
+        },
+        {
+          "caller": "0xabf0",
+          "plt": "0x81e0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0xac14",
+          "plt": "0x81e0",
+          "symbol": "printf"
+        },
+        {
+          "caller": "0xac1c",
+          "plt": "0x8090",
+          "symbol": "_ZN7Updater10BaseModule12ThreadStatus9IsRunningEv"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libupdatertalk.so",
+      "library_sha256": "8f7f7b8a334277f49be200b69cba36a689690a00be238ed9394d0aa2d7c541e5",
+      "symbol": "Dec_ScrambleInit",
+      "va": "0x8c0",
+      "file_offset": "0x8c0",
+      "bytes": 24,
+      "sha256": "7c16b3804f245e7ee3bfeb0de818b5564ff3617783a4d2e952c4afb12ed9ac61",
+      "disassembly": "disassembly/libupdatertalk.so-000008c0-000008d8.txt",
+      "plt_calls": [
+        {
+          "caller": "0x8d4",
+          "plt": "0x790",
+          "symbol": "AES_set_decrypt_key"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libupdatertalk.so",
+      "library_sha256": "8f7f7b8a334277f49be200b69cba36a689690a00be238ed9394d0aa2d7c541e5",
+      "symbol": "Dec_Scramble",
+      "va": "0x8d8",
+      "file_offset": "0x8d8",
+      "bytes": 52,
+      "sha256": "06a613e0a619807195ee1886fbbeb1691ce4cc6de84251e679543e046ab99060",
+      "disassembly": "disassembly/libupdatertalk.so-000008d8-0000090c.txt",
+      "plt_calls": [
+        {
+          "caller": "0x8f4",
+          "plt": "0x770",
+          "symbol": "AES_decrypt"
+        }
+      ]
+    },
+    {
+      "library": "libraries/libInfraCryptCore.so",
+      "library_sha256": "6ab55d0af36396c01ae1784c44bfdb208adc9dee055f91b6ac0cb654e8f6534c",
+      "symbol": "icc_verifyDataCore",
+      "va": "0x6beb0",
+      "file_offset": "0x6beb0",
+      "bytes": 1280,
+      "sha256": "5d28e278f743a20d1e7f5719c914dc3b5c3392e8600c61268e5fe988a24a386d",
+      "disassembly": "disassembly/libInfraCryptCore.so-0006beb0-0006c3b0.txt",
+      "plt_calls": []
+    }
+  ],
+  "exclusions": [
+    {
+      "library": "libCryptoController.so",
+      "reason": "Symbol namespace is DefInfraVericLiveStreaming. Crypto naming alone does not establish firmware update verification."
+    },
+    {
+      "library": "libInfraCryptCore.so",
+      "reason": "CodeMeter protection and generic verification entry are present; no FDAT tail input or call path to this verifier has been established. Mere presence is not proof of a manufacturer signature gate."
+    }
+  ],
+  "remaining": "Locate the actual fourth-generation CBC/256-byte-tail consumer before claiming re-encryption plus checksums produces an accepted update. Raw WBI string candidates are not function or scene identification."
+}

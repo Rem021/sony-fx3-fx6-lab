@@ -1,0 +1,28 @@
+00000d30 tbnz       w0, #0x1f, #0xd70
+00000d34 mov        w2, #0
+00000d38 tbz        w0, #0x1e, #0xd68
+00000d3c mrs        x2, sp_el0
+00000d40 ubfx       x0, x0, #0x10, #0xe
+00000d44 ldr        x2, [x2, #8]
+00000d48 adds       x1, x1, x0
+00000d4c csel       x2, xzr, x2, hi
+00000d50 csinv      x1, x1, xzr, lo
+00000d54 sbcs       xzr, x1, x2
+00000d58 cset       x1, ls
+00000d5c mov        w2, #-0xe
+00000d60 cmp        x1, #0
+00000d64 csel       w2, wzr, w2, ne
+00000d68 mov        w0, w2
+00000d6c ret        
+00000d70 mrs        x2, sp_el0
+00000d74 ubfx       x4, x0, #0x10, #0xe
+00000d78 mov        x3, x1
+00000d7c ldr        x2, [x2, #8]
+00000d80 adds       x3, x3, x4
+00000d84 csel       x2, xzr, x2, hi
+00000d88 csinv      x3, x3, xzr, lo
+00000d8c sbcs       xzr, x3, x2
+00000d90 cset       x3, ls
+00000d94 cbnz       x3, #0xd34
+00000d98 mov        w2, #-0xe
+00000d9c b          #0xd68

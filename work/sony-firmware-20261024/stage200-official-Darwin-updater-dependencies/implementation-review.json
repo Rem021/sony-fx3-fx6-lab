@@ -1,0 +1,25 @@
+{
+  "status": "OFFICIAL_7_02_DARWIN_AP_SENDER_LOCATED_NOT_AP_BOOTSTRAP",
+  "new_facts": [
+    "current7.02 Ubody ELF constructor writes0x11/4 in128B frame and calls camera SIO/GPIO; entry main bound from original_start literal",
+    "reference P1 SIO recognizes request0x40046740 with32B args; selected128B success path returns128, not0",
+    "2.04/2.05 reference init helper identical; SIO modules differ only GNU build-id bytes, not current-body attestation",
+    "historical helper can return0 on selected expired-timer path without target state4; ordinary init wrapper ignores result and exits0",
+    "MCU CRC routine uses register peripheral0x40039000, no guessed hardware emulation used"
+  ],
+  "limits": [
+    "source field match and selected driver paths only; no physical transport/MCU CRC equivalence/current p1 identity",
+    "official route assumes running camera Linux environment, libraries, SIO/GPIO and Backup configuration; does not bootstrap dead AP",
+    "historical wrapper/driver observations are not a current-body error diagnosis",
+    "same-body p1/boot0, independent inverse write and MAIN HD HEVC recording/long-record acceptance remain unverified"
+  ],
+  "scope_counts": {
+    "captured_locator_original_files": 30,
+    "selected_code_slices": 14,
+    "original_or_guest_executions": 0,
+    "root_or_device_operations": 0
+  },
+  "pending_root01": "same195 bundle, no specific response, job absent, no launch or repeated question",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

@@ -1,0 +1,118 @@
+[
+  {
+    "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/ef7db116e13e37be91e9af20360dc9bba8d64a9b/src/fl23/native/installer.c",
+    "sha256": "a73aec5e12c76d5c6450822b1d8b9b2b4b0d9f252b222218e392e6bffcba2478",
+    "matches": [
+      {
+        "line": 2,
+        "text": "* arbitrary files, process memory writes, shell, Backup settings or WBI."
+      },
+      {
+        "line": 26,
+        "text": "static u8 buffer[65536],mounts[8192],checkbytes[4096];"
+      },
+      {
+        "line": 32,
+        "text": "i64 status,rollback,remount,readonly,cleanup,euid,pid;"
+      },
+      {
+        "line": 37,
+        "text": "static i64 fd[2]={-1,-1};static int mounted_rw=0;"
+      },
+      {
+        "line": 38,
+        "text": "static const char *path(u32 i) {return i?\"/cp/cpapp-b.bin\":\"/usr/lib/appFw.so\";}"
+      },
+      {
+        "line": 67,
+        "text": "static i64 mount_state(int wanted_ro) {"
+      },
+      {
+        "line": 68,
+        "text": "i64 file=op(\"/proc/mounts\",0);if(file<0)return file;"
+      },
+      {
+        "line": 69,
+        "text": "i64 n=sc(63,file,(i64)mounts,sizeof(mounts),0,0,0);i64 c=closefd(&file);"
+      },
+      {
+        "line": 70,
+        "text": "if(c)return c;if(n<=0 || n>=(i64)sizeof(mounts))return -75;"
+      },
+      {
+        "line": 71,
+        "text": "const u8 prefix[]=\"/dev/nflasha15 /usr ext2 \";u32 size=sizeof(prefix)-1;"
+      },
+      {
+        "line": 73,
+        "text": "for(u32 i=0;i+size+3<=(u32)n;i++)if((i==0||mounts[i-1]=='\\n')&&same(mounts+i,prefix,size)) {"
+      },
+      {
+        "line": 75,
+        "text": "if(mounts[i+size]!='r'||mounts[i+size+1]!=a||mounts[i+size+2]!=',')return -30;"
+      },
+      {
+        "line": 80,
+        "text": "static i64 remount(int ro) {"
+      },
+      {
+        "line": 82,
+        "text": "if(v)return v;return mount_state(ro);"
+      },
+      {
+        "line": 130,
+        "text": "r.phase=1;r.status=mount_state(1);if(r.status)return;"
+      },
+      {
+        "line": 138,
+        "text": "/* Mark restoration as required before attempting the mount. Even a"
+      },
+      {
+        "line": 140,
+        "text": "mounted_rw=1;r.remount=remount(0);if(r.remount) {r.status=r.remount;return;}"
+      },
+      {
+        "line": 158,
+        "text": "if(mounted_rw) {r.readonly=remount(1);if(r.readonly&&!r.status)r.status=r.readonly;}"
+      },
+      {
+        "line": 159,
+        "text": "else {r.readonly=mount_state(1);if(r.readonly&&!r.status)r.status=r.readonly;}"
+      }
+    ]
+  },
+  {
+    "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/ef7db116e13e37be91e9af20360dc9bba8d64a9b/src/fl23/native/wbi.c",
+    "sha256": "f35ce9b4d22d86534664ebc3d0492e6e3bd0ee7234d58bdfad2488192e090585",
+    "matches": [
+      {
+        "line": 19,
+        "text": "_Static_assert(sizeof(struct Report)==192,\"WBI result ABI\");"
+      },
+      {
+        "line": 32,
+        "text": "i64 fd=op(\"/tmp/jiritsu/a7c2.wbi.request\",0);"
+      },
+      {
+        "line": 35,
+        "text": "const u8 magic[]=\"A7WBI001\";"
+      },
+      {
+        "line": 42,
+        "text": "if(n!=6||!same(r.before_dev,(const u8*)\"*wbi4\\n\",6)) {r.status=n<0?n:-22;return;}"
+      },
+      {
+        "line": 44,
+        "text": "i64 log=op(\"/dev/kmsg\",0x800);"
+      },
+      {
+        "line": 58,
+        "text": "const u8 marker[]=\"dropped wbi\";"
+      },
+      {
+        "line": 74,
+        "text": "i64 fd=op(\"/tmp/jiritsu/a7c2.wbi.result\",0x241);"
+      }
+    ]
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "scope": "host-only synthetic RGBA; no guest/UI/save/exit acceptance",
+  "small_random_cases": 3300,
+  "cases": [
+    {
+      "case": "uniform",
+      "bytes": 1228800,
+      "result": false,
+      "old_median_ms": 26.4046,
+      "candidate_median_ms": 0.0746,
+      "speedup": 353.95,
+      "input_sha256_unchanged": true
+    },
+    {
+      "case": "late_change",
+      "bytes": 1228800,
+      "result": true,
+      "old_median_ms": 26.2728,
+      "candidate_median_ms": 0.0582,
+      "speedup": 451.42,
+      "input_sha256_unchanged": true
+    },
+    {
+      "case": "early_change",
+      "bytes": 1228800,
+      "result": true,
+      "old_median_ms": 0.0003,
+      "candidate_median_ms": 0.0318,
+      "speedup": 0.01,
+      "input_sha256_unchanged": true
+    }
+  ],
+  "counterexample_checked": "trailing 1-3 bytes make the old scan true when length exceeds 4",
+  "source_bytes_written": false
+}

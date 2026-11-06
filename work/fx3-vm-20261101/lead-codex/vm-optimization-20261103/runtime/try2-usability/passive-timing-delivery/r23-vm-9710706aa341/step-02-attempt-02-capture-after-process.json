@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-r23-9710706aa341",
+    "eval",
+    "--stdin"
+  ],
+  "start": {
+    "UTC": "2026-11-05T00:56:07.527556+00:00",
+    "host_ns": 423853055027708
+  },
+  "end": {
+    "UTC": "2026-11-05T00:56:07.540240+00:00",
+    "host_ns": 423853067718791
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"UTC\": \"2026-11-05T00:56:07.539Z\",\n  \"checks\": {\n    \"armed\": true,\n    \"due\": true,\n    \"image\": true,\n    \"launch\": true,\n    \"margin\": true,\n    \"nonce\": true,\n    \"origin\": true,\n    \"phase\": true,\n    \"review\": true,\n    \"same_content\": true,\n    \"sequence\": true,\n    \"url\": true\n  },\n  \"content_generation\": 28,\n  \"due_token\": \"111365.50000000000\",\n  \"frame\": {\n    \"CP_composition_panel_acceptance\": false,\n    \"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\",\n    \"QMP_read_only\": true,\n    \"all_zero_pixels\": false,\n    \"committed_slot\": 3,\n    \"content_generation\": 28,\n    \"epoch\": 1,\n    \"fnv64\": \"0x5062f6e199bb547d\",\n    \"guest_native_lease_released_before_ring_commit\": true,\n    \"height\": 480,\n    \"host_monotonic\": 423852.576789,\n    \"native_bitmap_format\": 1,\n    \"native_format\": 0,\n    \"native_identity\": {\n      \"FB\": \"0x7f50001160\",\n      \"FB_format\": 1,\n      \"allocation\": \"0x50001340\",\n      \"bitmap\": \"0x7f4000c260\",\n      \"bits_cpu_VA\": \"0x7ee3db2100\",\n      \"config_hash\": \"0x2ee89f740e872b\",\n      \"entry\": \"0x7f50001198\",\n      \"map_begin\": \"0x7ee3db2000\",\n      \"map_end\": \"0x7ee3e49000\",\n      \"map_offset\": \"0x43feb5000\",\n      \"metadata_physical\": \"0x402\",\n      \"publish_sem\": \"0x288604a\"\n    },\n    \"nonuniform_pixels\": true,\n    \"physical\": \"0x43feb5100\",\n    \"pixel_source_sequence\": 299,\n    \"registered_target\": {\n      \"captured_physical\": \"0x43feb5100\",\n      \"epoch\": 2,\n      \"identity\": \"0x0\",\n      \"kind\": 1,\n      \"native_token\": \"0x402\",\n      \"object\": \"0x0\",\n      \"parent_bytes\": 1310720,\n      \"parent_physical\": \"0x43feb5000\",\n      \"valid_during_native_read_lease_and_raster_lifecycle_guards\": true,\n      \"version\": 1,\n      \"vptr\": \"0x0\"\n    },\n    \"sequence\": 300,\n    \"sha256\": \"8a3407f4d0a8b52bbcd8cba8bf4ab6fc594073aea79994e86cecf63bc4551a49\",\n    \"span\": 614400,\n    \"stride_pixels\": 640,\n    \"token\": \"0x402\",\n    \"update_id\": \"0x1005\",\n    \"width\": 640\n  },\n  \"performance_ms\": 93747,\n  \"qualified\": true,\n  \"remaining_ms\": 17618.5,\n  \"sequence\": 300,\n  \"shownSHA\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\"\n}\n",
+  "stderr": ""
+}

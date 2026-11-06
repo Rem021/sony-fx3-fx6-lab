@@ -1,0 +1,62 @@
+0031ad10 fd7bbea9 stp      x29, x30, [sp, #-0x20]!
+0031ad14 fd030091 mov      x29, sp
+0031ad18 f30b00f9 str      x19, [sp, #0x10]
+0031ad1c 600500b4 cbz      x0, #0x31adc8
+0031ad20 020040f9 ldr      x2, [x0]
+0031ad24 a20300b4 cbz      x2, #0x31ad98
+0031ad28 211c0053 uxtb     w1, w1
+0031ad2c 3f040071 cmp      w1, #1
+0031ad30 88060054 b.hi     #0x31ae00
+0031ad34 a1010035 cbnz     w1, #0x31ad68
+0031ad38 9f3e03d5 dsb      st
+0031ad3c 031040b9 ldr      w3, [x0, #0x10]
+0031ad40 21008052 mov      w1, #1
+0031ad44 020440f9 ldr      x2, [x0, #8]
+0031ad48 2020c31a lsl      w0, w1, w3
+0031ad4c 400000b9 str      w0, [x2]
+0031ad50 13008052 mov      w19, #0
+0031ad54 e003132a mov      w0, w19
+0031ad58 f30b40f9 ldr      x19, [sp, #0x10]
+0031ad5c fd7bc2a8 ldp      x29, x30, [sp], #0x20
+0031ad60 c0035fd6 ret      
+0031ad64 1f2003d5 nop      
+0031ad68 9f3e03d5 dsb      st
+0031ad6c 031040b9 ldr      w3, [x0, #0x10]
+0031ad70 21008052 mov      w1, #1
+0031ad74 020040f9 ldr      x2, [x0]
+0031ad78 2020c31a lsl      w0, w1, w3
+0031ad7c 400000b9 str      w0, [x2]
+0031ad80 13008052 mov      w19, #0
+0031ad84 e003132a mov      w0, w19
+0031ad88 f30b40f9 ldr      x19, [sp, #0x10]
+0031ad8c fd7bc2a8 ldp      x29, x30, [sp], #0x20
+0031ad90 c0035fd6 ret      
+0031ad94 1f2003d5 nop      
+0031ad98 001900f0 adrp     x0, #0x63d000
+0031ad9c 13008052 mov      w19, #0
+0031ada0 00204fb9 ldr      w0, [x0, #0xf20]
+0031ada4 80fdff34 cbz      w0, #0x31ad54
+0031ada8 e10a00b0 adrp     x1, #0x477000
+0031adac 201200d0 adrp     x0, #0x560000
+0031adb0 21400391 add      x1, x1, #0xd0
+0031adb4 00c03191 add      x0, x0, #0xc70
+0031adb8 42058052 mov      w2, #0x2a
+0031adbc 26060494 bl       #0x41c654
+0031adc0 e5ffff17 b        #0x31ad54
+0031adc4 1f2003d5 nop      
+0031adc8 001900f0 adrp     x0, #0x63d000
+0031adcc b3028012 mov      w19, #-0x16
+0031add0 00204fb9 ldr      w0, [x0, #0xf20]
+0031add4 00fcff34 cbz      w0, #0x31ad54
+0031add8 231200d0 adrp     x3, #0x560000
+0031addc e10a00b0 adrp     x1, #0x477000
+0031ade0 201200d0 adrp     x0, #0x560000
+0031ade4 63c03091 add      x3, x3, #0xc30
+0031ade8 21400391 add      x1, x1, #0xd0
+0031adec 00003191 add      x0, x0, #0xc40
+0031adf0 02058052 mov      w2, #0x28
+0031adf4 18060494 bl       #0x41c654
+0031adf8 d7ffff17 b        #0x31ad54
+0031adfc 1f2003d5 nop      
+0031ae00 b3028012 mov      w19, #-0x16
+0031ae04 d4ffff17 b        #0x31ad54

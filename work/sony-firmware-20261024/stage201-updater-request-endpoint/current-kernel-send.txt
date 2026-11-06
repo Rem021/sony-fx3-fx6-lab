@@ -1,0 +1,130 @@
+00003bf8 fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+00003bfc fd030091 mov      x29, sp
+00003c00 f35301a9 stp      x19, x20, [sp, #0x10]
+00003c04 f303002a mov      w19, w0
+00003c08 f55b02a9 stp      x21, x22, [sp, #0x20]
+00003c0c f76303a9 stp      x23, x24, [sp, #0x30]
+00003c10 7f3a40f2 tst      x19, #0x7fff
+00003c14 61010054 b.ne     #0x3c40
+00003c18 400f0058 ldr      x0, #0x3e00
+00003c1c 000040f9 ldr      x0, [x0]
+00003c20 005c4039 ldrb     w0, [x0, #0x17]
+00003c24 e0090035 cbnz     w0, #0x3d60
+00003c28 e07f8012 mov      w0, #-0x400
+00003c2c f35341a9 ldp      x19, x20, [sp, #0x10]
+00003c30 f55b42a9 ldp      x21, x22, [sp, #0x20]
+00003c34 f76343a9 ldp      x23, x24, [sp, #0x30]
+00003c38 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+00003c3c c0035fd6 ret      
+00003c40 7f0271f2 tst      x19, #0x8000
+00003c44 f70301aa mov      x23, x1
+00003c48 240840fa ccmp     x1, #0, #4, eq
+00003c4c 183c0012 and      w24, w0, #0xffff
+00003c50 c0feff54 b.eq     #0x3c28
+00003c54 f5031eaa mov      x21, x30
+00003c58 366000d1 sub      x22, x1, #0x18
+00003c5c e008f837 tbnz     w0, #0x1f, #0x3d78
+00003c60 1fff0071 cmp      w24, #0x3f
+00003c64 a9060054 b.ls     #0x3d38
+00003c68 e003182a mov      w0, w24
+00003c6c 33fbff97 bl       #0x2938
+00003c70 f40300aa mov      x20, x0
+00003c74 a00600b4 cbz      x0, #0x3d48
+00003c78 80024039 ldrb     w0, [x20]
+00003c7c c0011836 tbz      w0, #3, #0x3cb4
+00003c80 831a40f9 ldr      x3, [x20, #0x30]
+00003c84 c30900b4 cbz      x3, #0x3dbc
+00003c88 626e0012 and      w2, w19, #0xfffffff
+00003c8c a3000034 cbz      w3, #0x3ca0
+00003c90 407c1053 lsr      w0, w2, #0x10
+00003c94 1f000071 cmp      w0, #0
+00003c98 6410427a ccmp     w3, w2, #4, ne
+00003c9c c0000054 b.eq     #0x3cb4
+00003ca0 810b0058 ldr      x1, #0x3e10
+00003ca4 e40315aa mov      x4, x21
+00003ca8 000c0058 ldr      x0, #0x3e28
+00003cac 21400091 add      x1, x1, #0x10
+00003cb0 00000094 bl       #0x3cb0 ; relocation {'symbol': 'printk', 'addend': 0, 'type': 283}
+00003cb4 801e40f9 ldr      x0, [x20, #0x38]
+00003cb8 00000094 bl       #0x3cb8 ; relocation {'symbol': 'osal_lock', 'addend': 0, 'type': 283}
+00003cbc 800a40f9 ldr      x0, [x20, #0x10]
+00003cc0 800700b4 cbz      x0, #0x3db0
+00003cc4 820e40f9 ldr      x2, [x20, #0x18]
+00003cc8 e3125f38 ldurb    w3, [x23, #-0xf]
+00003ccc 63140012 and      w3, w3, #0x3f
+00003cd0 41244039 ldrb     w1, [x2, #9]
+00003cd4 21140012 and      w1, w1, #0x3f
+00003cd8 7f00016b cmp      w3, w1
+00003cdc 6d040054 b.le     #0x3d68
+00003ce0 84420091 add      x4, x20, #0x10
+00003ce4 02244039 ldrb     w2, [x0, #9]
+00003ce8 42140012 and      w2, w2, #0x3f
+00003cec 7f00026b cmp      w3, w2
+00003cf0 8c000054 b.gt     #0x3d00
+00003cf4 e40300aa mov      x4, x0
+00003cf8 000040f9 ldr      x0, [x0]
+00003cfc 40ffffb5 cbnz     x0, #0x3ce4
+00003d00 e0821ef8 stur     x0, [x23, #-0x18]
+00003d04 800040f9 ldr      x0, [x4]
+00003d08 800500b4 cbz      x0, #0x3db8
+00003d0c 960000f9 str      x22, [x4]
+00003d10 80024039 ldrb     w0, [x20]
+00003d14 60040836 tbz      w0, #1, #0x3da0
+00003d18 801e40f9 ldr      x0, [x20, #0x38]
+00003d1c 00000094 bl       #0x3d1c ; relocation {'symbol': 'osal_unlock', 'addend': 0, 'type': 283}
+00003d20 00008052 mov      w0, #0
+00003d24 f35341a9 ldp      x19, x20, [sp, #0x10]
+00003d28 f55b42a9 ldp      x21, x22, [sp, #0x20]
+00003d2c f76343a9 ldp      x23, x24, [sp, #0x30]
+00003d30 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+00003d34 c0035fd6 ret      
+00003d38 80060058 ldr      x0, #0x3e08
+00003d3c 002c388b add      x0, x0, w24, uxth #3
+00003d40 140840f9 ldr      x20, [x0, #0x10]
+00003d44 b4f9ffb5 cbnz     x20, #0x3c78
+00003d48 e003182a mov      w0, w24
+00003d4c 67fcff97 bl       #0x2ee8
+00003d50 f40300aa mov      x20, x0
+00003d54 20f9ffb5 cbnz     x0, #0x3c78
+00003d58 c07f8012 mov      w0, #-0x3ff
+00003d5c b4ffff17 b        #0x3c2c
+00003d60 000021d4 brk      #0x800
+00003d64 1f2003d5 nop      
+00003d68 560000f9 str      x22, [x2]
+00003d6c 960e00f9 str      x22, [x20, #0x18]
+00003d70 ff821ef8 stur     xzr, [x23, #-0x18]
+00003d74 e7ffff17 b        #0x3d10
+00003d78 7f0a64f2 tst      x19, #0x70000000
+00003d7c 20f7ff54 b.eq     #0x3c60
+00003d80 42040058 ldr      x2, #0x3e08
+00003d84 422c42f9 ldr      x2, [x2, #0x458]
+00003d88 e20200b4 cbz      x2, #0x3de4
+00003d8c 420040f9 ldr      x2, [x2]
+00003d90 a20200b4 cbz      x2, #0x3de4
+00003d94 40003fd6 blr      x2
+00003d98 a5ffff17 b        #0x3c2c
+00003d9c 1f2003d5 nop      
+00003da0 e00314aa mov      x0, x20
+00003da4 51feff97 bl       #0x36e8
+00003da8 dcffff17 b        #0x3d18
+00003dac 1f2003d5 nop      
+00003db0 960a00f9 str      x22, [x20, #0x10]
+00003db4 eeffff17 b        #0x3d6c
+00003db8 000021d4 brk      #0x800
+00003dbc a1020058 ldr      x1, #0x3e10
+00003dc0 e203182a mov      w2, w24
+00003dc4 e0020058 ldr      x0, #0x3e20
+00003dc8 21400091 add      x1, x1, #0x10
+00003dcc 00000094 bl       #0x3dcc ; relocation {'symbol': 'printk', 'addend': 0, 'type': 283}
+00003dd0 80010058 ldr      x0, #0x3e00
+00003dd4 000040f9 ldr      x0, [x0]
+00003dd8 005c4039 ldrb     w0, [x0, #0x17]
+00003ddc 60f2ff34 cbz      w0, #0x3c28
+00003de0 000021d4 brk      #0x800
+00003de4 61010058 ldr      x1, #0x3e10
+00003de8 e203182a mov      w2, w24
+00003dec 60010058 ldr      x0, #0x3e18
+00003df0 21400091 add      x1, x1, #0x10
+00003df4 00000094 bl       #0x3df4 ; relocation {'symbol': 'printk', 'addend': 0, 'type': 283}
+00003df8 00008052 mov      w0, #0
+00003dfc 8cffff17 b        #0x3c2c

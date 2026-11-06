@@ -1,0 +1,24 @@
+004285c4 push       {r4, r6, r7, lr}
+004285c6 add        r7, sp, #8
+004285c8 mov        r4, r0
+004285ca bl         #0x9d41a8
+004285ce cmp        r0, #1
+004285d0 bne        #0x428604
+004285d2 movw       r0, #0xd00f
+004285d6 movt       r0, #0x147
+004285da ldrb.w     r0, [r0, #0x23]
+004285de lsls       r0, r0, #0x1c
+004285e0 bpl        #0x4285e8
+004285e2 adr        r0, #0x24
+004285e4 blx        #0x53cfa8
+004285e8 movw       r0, #0x15d8
+004285ec ldr        r1, [r4, r0]
+004285ee movw       r0, #0x1248
+004285f2 adds       r2, r4, r0
+004285f4 movw       r0, #0x1410
+004285f8 adds       r3, r4, r0
+004285fa mov        r0, r4
+004285fc pop.w      {r4, r6, r7, lr}
+00428600 b.w        #0x428438
+00428604 pop        {r4, r6, r7, pc}
+00428606 nop        

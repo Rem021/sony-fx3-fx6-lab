@@ -1,0 +1,76 @@
+{
+  "status": "STATIC_VERIFIED_NOT_RUN",
+  "source_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "candidate_sha256": "8abed37418a0f07e8193228ca2242f185103b6b5f98959b98821bbeeb3ad3b5d",
+  "candidate_bytes": 453184500,
+  "source_member_count": 1140,
+  "candidate_member_count": 1141,
+  "existing_changes": [
+    {
+      "name": "usr/lib/appFw.so",
+      "changed_fields": [
+        "payload_sha256"
+      ],
+      "source_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "candidate_sha256": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1"
+    }
+  ],
+  "added_member": {
+    "name": "usr/lib/libfx6diag.so",
+    "sha256": "b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b",
+    "bytes": 18944,
+    "header": "3037303730313030663664316136303030303831656430303030303030303030303030303030303030303030303130303030303030303030303034613030303030303030303030303030303030303030303030303030303030303030303030303030303031363030303030303030"
+  },
+  "bridge_sha256": "b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b",
+  "ap_sha256": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1",
+  "bootin_im_members_unchanged": true,
+  "trailer_source_end": 424689212,
+  "trailer_candidate_end": 424708288,
+  "zero_tail_bytes": 28476212,
+  "frozen_manifest_sha256": "eea49cc38f64953484cab6b3b3baef7a973100706b5dc9edb4efc1b6de384ec8",
+  "frozen_parent_receipt_sha256": "6948587909e9d80b64c05922aaa21e75ab5ad8de5667644ed83ca0a559ffeb4d",
+  "frozen_manifest_keys": [
+    "all_other_member_header_payload_and_order_fixed",
+    "candidate_bytes",
+    "candidate_path",
+    "candidate_sha256",
+    "exact_three_member_allowlist",
+    "frozen_dtb_initrd_range",
+    "frozen_platform_sha256",
+    "historical_20_ELF_gate_exact_rejections",
+    "runtime_policy",
+    "runtime_unknowns",
+    "source_path",
+    "source_sha256",
+    "state"
+  ],
+  "frozen_parent_status": "BUILT_AND_INDEPENDENTLY_STATIC_VERIFIED_NOT_RUN",
+  "builder_platform_paths_written": false,
+  "ap_byte_differences": 75,
+  "ap_difference_ranges": [
+    {
+      "offset": 49363,
+      "length": 33,
+      "meaning": "Init unique symbol + bridge DT_NEEDED name"
+    },
+    {
+      "offset": 52804,
+      "length": 41,
+      "meaning": "EnterRec unique symbol"
+    },
+    {
+      "offset": 49090800,
+      "length": 16,
+      "meaning": "spare DT_NULL to DT_NEEDED"
+    }
+  ],
+  "fx3_baseline_three_ELF_only_expected_identity_exceptions": [
+    "usr/bin/bootin.elf",
+    "usr/bin/im.elf",
+    "usr/lib/appFw.so"
+  ],
+  "bsdtar_listing": {
+    "count": 1141,
+    "same_order": true
+  }
+}

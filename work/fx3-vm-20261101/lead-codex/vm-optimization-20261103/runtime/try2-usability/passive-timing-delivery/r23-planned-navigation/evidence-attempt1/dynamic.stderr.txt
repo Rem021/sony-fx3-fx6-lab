@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/test_dynamic.py", line 116, in <module>
+    execute('dynamic_8_26_second_new_explicit_action','click_invoked',dynamic=True)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-planned-navigation/test_dynamic.py", line 96, in execute
+    assert elapsed>=8.26 and frame['content_generation']>before['gen'] and frame['PNG_sha256']==before['sha']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

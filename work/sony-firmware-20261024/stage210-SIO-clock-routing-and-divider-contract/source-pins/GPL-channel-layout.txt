@@ -1,0 +1,5 @@
+typedef struct UDIF_CHANNELS {
+	UDIF_IOMEM	iomem;
+	UDIF_INTRPT	intr;
+	UDIF_CLOCK	clock;
+} UDIF_CHANNELS;

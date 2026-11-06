@@ -1,0 +1,1104 @@
+Your VENICE 2 Sensor Questions Answered | Sony Cine
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-569SPVC');
+window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied',
+      'ad_storage': 'denied',
+      'wait_for_update': 500
+    });
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true; /* j.setAttribute('class','optanon-category-C0002');*/ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-569SPVC');
+var utag_data = { website_platform : "regional:marketing" };
+(function(a,b,c,d){ a='https://tags.tiqcdn.com/utag/sony-marketing/sna/prod/utag.js'; b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true;
+d.setAttribute('class','optanon-category-C0002');
+a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a); })();
+let pageZuid = "7-eafb8ea2f4-50kb1p";
+let setZuid = "6-407cf8-m6f0fq";
+let parentZuid = "7-82b1e8-rr7bc5";
+let pageTemplate = "default";
+let pageName = "default";
+let urlpart = window.location.href.split('?')[0].replace(/\/$/,'').split('/').pop();
+
+
+switch (true){
+
+//homepage
+case (pageZuid == "7-b94418-w6mplc"):
+pageName = "home";
+pageTemplate = "home";
+
+break;
+
+
+// all articles /explore
+case (pageZuid == "7-caf7a3bed7-7scm4f"):
+pageName = "articles";
+pageTemplate = "list";
+break;
+
+// article rollup page
+case (setZuid == "6-bc95a0b4fc-zw3h2m"):
+// category path page aka Article Types rollup
+case (setZuid == "6-dc508c-s596bz"):
+pageName = urlpart;
+pageTemplate = "list";
+break;
+
+//individual article page
+case (setZuid == "6-407cf8-m6f0fq"):
+pageName = urlpart;
+pageTemplate = "article";
+break;
+
+
+// events landing page /calendar
+case (pageZuid == "7-98c6c8cbb5-d7cplg"):
+pageName = "events";
+pageTemplate = "list";
+break;
+
+//individual event page
+case (setZuid == "6-f2b2fdbc8a-z3wfk9"):
+pageName = urlpart;
+pageTemplate = "event";
+break;
+
+// shot on sony
+case (pageZuid == "7-639ee8-5cqs91"):
+pageName = "shot-on-sony";
+pageTemplate = "list";
+break;
+
+//search page
+case (pageZuid == "7-f0e9b5f688-995qpf"):
+pageName = "search";
+pageTemplate = "search";
+break;
+
+//promos page
+case (pageZuid == "7-daff97ba9c-hk0pb9"):
+pageName = "promos";
+pageTemplate = "article";
+break;
+
+
+//Gear landing page
+case (pageZuid == "7-761f54-1wg8cq"):
+case (pageZuid == "7-c4f9ecd8ec-lwr30g"):
+pageName = "gear";
+pageTemplate = "list";
+break;
+
+//camera comparison page
+case (pageZuid == "7-b4e1b988cb-2m3ttv"):
+pageName = "camera-comparison";
+pageTemplate = "list";
+break;
+
+//airpeak - deprecated, no longer unstyled
+
+//Venice product page
+case (pageZuid == "7-a4dccfa0a3-dnfdt7"):
+pageName = "venice";
+pageTemplate = "pdp";
+break;
+
+//Venice2 product page
+case (pageZuid == "7-828d82d5d6-cfw21n"):
+pageName = "venice-2";
+pageTemplate = "pdp";
+break;
+
+//Burano product page
+case (pageZuid == "7-84928a9aeb-wx5r7g"):
+pageName = "burano";
+pageTemplate = "pdp";
+break;
+
+// ..resources/software landing page
+case (pageZuid == "7-a0a1afa6eb-tz9lmh"):
+pageName = "software";
+pageTemplate = "list";
+break;
+
+// ..resources/dmpc landing page
+case (pageZuid == "7-653a80-fqcmnm"):
+pageName = "dmpc";
+pageTemplate = "article";
+break;
+
+// FAQ
+case (pageZuid == "7-94accf97a3-6w0ntk"):
+pageName = "faq";
+pageTemplate = "list";
+break;
+
+// ../resources/videos/
+case (pageZuid == "7-f4b1b483c9-h9fx3s"):
+pageName = "videos";
+pageTemplate = "list";
+break;
+
+// /testfootage
+case (pageZuid == "7-bae2a4fbae-zxd2kb"):
+pageName = "test-footage";
+pageTemplate = "list";
+break;
+
+// ../resources/luts/
+case (pageZuid == "7-2ecc20-nwn0cx"):
+pageName = "luts";
+pageTemplate = "list";
+break;
+
+// ../resources
+case (pageZuid == "7-f47e5c-4jwr8w"):
+pageName = "tools";
+pageTemplate = "list";
+break;
+
+// frameline generator
+case (pageZuid == "7-90c689acd3-z2lzh1"):
+pageName = urlpart;
+pageTemplate = "tools";
+break;
+
+// ../resources/simulators
+case (pageZuid == "7-d2a5bccce2-9q0l8x"):
+pageName = "menu-simulators";
+pageTemplate = "list";
+break;
+
+//individual menu simulator
+case (setZuid == "6-c885bfd28a-79gkp1"):
+pageName = urlpart;
+pageTemplate = "menu-simulator";
+break;
+
+
+// file size calculator
+case (pageZuid == "7-13dee0-xfb4st"):
+pageName = "file-size-calculator";
+pageTemplate = "tools";
+break;
+
+
+//search
+case (pageZuid == "7-f0e9b5f688-995qpf"):
+pageName = "search";
+pageTemplate = "search";
+break;
+
+default:
+pageName = "your-venice-2-sensor-questions-answered";
+pageTemplate = "article";
+
+}
+
+
+
+
+	if (typeof window.buildSonyDataLayer === 'undefined') {
+		window.buildSonyDataLayer = function() {
+			var sony = {};
+			sony.digitalData = {};
+
+			sony.digitalData.page = {};
+			sony.digitalData.page.country = 'US';
+			sony.digitalData.page.language = 'en';
+			sony.digitalData.page.section = 'usa';
+			sony.digitalData.page.currency = 'USD';
+
+			sony.digitalData.page.name = pageName;
+			sony.digitalData.page.pageTemplate = pageTemplate;
+
+			return sony;
+		};
+	}
+.sc-nav__nav-link, .sc-footer__footer-link { text-transform: uppercase; }
+	.icon-search:before {
+		content: "\e919";
+		font-size:20px;
+	}
+
+.cine-navbar__nav-item__link {
+    color: white;
+    text-decoration: none;
+    position: relative;
+    font-size: .75rem;
+    border-width: 0;
+}
+
+.shedule-demo-btn {
+  background-color: #F9BB3F;
+  border-radius: 50px;
+  color: #000;
+  padding: 0px 14px;
+  display: inline;
+  text-transform: uppercase;
+  font-family: SSTProBold;
+  font-size: 14px;
+  cursor:pointer;
+}
+
+.shedule-demo-btn:hover {
+	background-color:#fff;
+}
+.shedule-demo-btn:active {
+	background-color:#ddd;
+}
+
+.shedule-demo-btn a {
+  font-family: SSTProBold;
+}
+
+.au-mobile-nav__item .shedule-demo-btn a {
+  height:auto;
+}
+
+@media (max-width: 576px) {
+ .shedule-demo-btn {
+		padding: 0px 10px;
+		font-size: 13px;
+	}
+}
+
+
+@media(max-width: 768px) {
+    .cine-navbar__nav-item__link {
+        margin:0
+    }
+}
+
+.cine-navbar__nav-item__link:after {
+    content: '';
+    position: absolute;
+    left:0;
+    bottom: -25%;
+    background-color: white;
+    height: 2px;
+    width: 0;
+    transition:width .2s ease-in-out;
+}
+
+.cine-navbar__nav-item__link.active {
+    text-decoration: none;
+    color: white;
+    font-family: "SSTProHeavy",Arial,Helvetica,sans-serif
+}
+
+.cine-navbar__nav-item__link:hover {
+    text-decoration: none
+}
+
+.cine-navbar__nav-item__link:hover:after {
+    width: 100%
+}
+
+.cine-navbar__nav-item__link--logo {
+    margin: 0
+}
+
+@media(min-width: 768px) {
+    .cine-navbar__nav-item__link--logo {
+        margin:0 1rem
+    }
+}
+
+.cine-navbar__nav-item__link--logo:hover:after {
+    width: 0
+}
+
+.cine-navbar__nav-item__link--logo.active:after {
+    width: 0
+}
+
+.cine-navbar__nav-item__link h3 {
+    font-size: 25px;
+    border-left: 1px solid #868e96;
+    margin-top: -4px
+}
+.bg-dark {
+    background-color: #030010 !important;
+}
+.cine-navbar__nav-item__link {
+    text-transform: uppercase;
+}
+/** START: Navbar **/
+.cine-navbar__nav-item {
+    z-index: 4000;
+}
+.cine-navbar {
+    height: 80px;
+    overflow: hidden;
+    width: 100%;
+    top: 0;
+    z-index: 3000;
+    overflow: visible;
+}
+.cine-navbar__logo a:hover {
+    opacity: 0.7;
+    text-decoration: none;
+    color: inherit;
+}
+.cine-navbar__logo-icon {
+    font-size: 23px;
+}
+.cine-navbar__nav {
+    height: 100%;
+}
+.cine-navbar__nav .text-light,
+.cine-navbar__nav .form-group--material .instruction-label,
+.form-group--material .cine-navbar__nav .instruction-label,
+.cine-navbar__nav .au-gear-modal__brand-nav,
+.cine-navbar__nav .au-bootstrap-modal .modal-subtitle,
+.au-bootstrap-modal .cine-navbar__nav .modal-subtitle {
+    color: #868e96 !important;
+}
+.cine-navbar__nav-item {
+    position: relative;
+    font-size: 14px;
+    padding: 0 16px;
+    overflow-y: inherit;
+    height: 100%;
+    list-style: none;
+    list-style-type: none;
+}
+.cine-navbar__nav-item__link {
+    font-family: "SSTProRoman", Arial, Helvetica, sans-serif;
+    /* padding: 10px 0; */
+}
+.cine-navbar__nav-item__link--last {
+    min-width: 50px;
+    text-align: center;
+}
+.cine-navbar__nav-item__link:hover {
+    cursor: default;
+}
+.cine-navbar__nav-item__search {
+    padding: 0 10px;
+}
+
+.cine-navbar__nav-item:hover .cine-navbar__sub-menu {
+    visibility: visible;
+    opacity: 1;
+}
+.cine-navbar__au-logo {
+    font-size: 14px;
+}
+@media (min-width: 992px) {
+    .cine-navbar__au-logo {
+        font-size: 12px;
+    }
+}
+.cine-navbar__sub-menu {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: auto;
+    padding-top: 0px !important; /* override pb-3 */
+    /* -webkit-transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out; */
+    list-style: none;
+    min-width: 230px;
+}
+.cine-navbar__sub-menu--last {
+    min-width: 150px;
+}
+.cine-navbar__sub-menu a {
+    font-family: "SSTProRoman", Arial, Helvetica, sans-serif;
+    text-transform: none;
+}
+.cine-navbar__sub-menu a:hover {
+    text-decoration: none;
+    color: #cfd4d8;
+}
+.cine-navbar__hamburger {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+}
+.cine-navbar__hamburger span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: #fff;
+    border-radius: 2px;
+    opacity: 1;
+    right: 0;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.25s ease-in-out;
+    transition: 0.25s ease-in-out;
+}
+.cine-navbar__hamburger span:nth-child(1) {
+    top: 12px;
+    -webkit-transform-origin: right center;
+    transform-origin: right center;
+}
+.cine-navbar__hamburger span:nth-child(2) {
+    top: 21px;
+    right: 0px;
+    width: 65%;
+    -webkit-transform-origin: center right;
+    transform-origin: center right;
+}
+.cine-navbar__hamburger--open span:nth-child(1) {
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    right: 6px;
+    top: 5px;
+}
+.cine-navbar__hamburger--open span:nth-child(2) {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    top: 32px;
+    right: 6px;
+    width: 100%;
+}
+@media screen and (max-width: 1145px) and (min-width: 992px) {
+    .cine-navbar .cine-navbar__logo-icon--full {
+        height: 24px;
+        max-width: 36px;
+        overflow: hidden;
+    }
+}
+@media (max-width: 991px) {
+    .cine-navbar {
+        position: fixed;
+        height: 64px;
+    }
+}
+
+/** START: Mobile Nav **/
+.au-mobile-nav {
+    background-color: #030010;
+    position: fixed;
+    top: -100vh;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-height: 100vh;
+    overflow-y: auto;
+    z-index: 1060;
+    opacity: 0;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    padding-right: 5%;
+    padding-left: 5%;
+    padding-top: 32px;
+}
+.au-mobile-nav--open {
+    opacity: 1;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.au-mobile-nav--open .au-translate-mobile {
+    display: block;
+}
+.au-mobile-nav__list {
+    display: block;
+    list-style: none;
+    text-align: right;
+    float: right;
+    padding: 0 5%;
+    margin-bottom: 52px;
+}
+.au-mobile-nav__item {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    height: 32px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    clear: both;
+}
+.au-mobile-nav__item a {
+    text-decoration: none;
+    display: block;
+    height: px;
+    line-height: 1.1;
+}
+.au-mobile-nav__sub-menu {
+    list-style: none;
+    display: block;
+    float: right;
+    position: relative;
+}
+.au-mobile-nav__sub-menu:after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    content: "";
+    height: calc(100% - 35px);
+    width: 1px;
+    background-color: #fff;
+}
+.au-mobile-nav__sub-menu-item {
+    display: block;
+    clear: both;
+    padding-right: 24px;
+    height: 32px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    position: relative;
+}
+.au-mobile-nav__sub-menu-item:after {
+    position: absolute;
+    width: 10px;
+    content: "";
+    right: 0;
+    top: 12px;
+    height: 1px;
+    background-color: #fff;
+}
+.au-mobile-nav__sub-menu-item a {
+    text-decoration: none;
+    height: 32px;
+    display: block;
+    font-family: "SSTProRoman", Arial, Helvetica, sans-serif;
+}
+.au-mobile-nav .text-charcoal {
+    color: #868e96;
+}
+@media (max-width: 767px) {
+    .au-mobile-nav {
+        padding-top: 16px;
+    }
+    .au-mobile-nav__item {
+        height: 24px;
+    }
+    .au-mobile-nav__item a {
+        height: 24px;
+    }
+}
+
+/** END: Mobile Nav **/
+
+.sc-nav__nav-link--logo:hover {
+    color: #fff;
+}
+.cine-navbar__nav-item:hover .cine-navbar__nav-item__link {
+    /* border-top:3px solid #000;  */
+    /* border-bottom:3px solid #fff; */
+    /* transition:none; // overrides site.css:  .a { border-color .3s ease-in-out; }
+  transition: border-color .3s ease-in-out; */
+}
+.cine-navbar__nav-item__link {
+
+}
+
+a {
+    transition: none; /* border-color .3s ease-in-out; */
+}
+/** ICONS **/
+@font-face {
+  font-family: 'cine-logotype';
+  src:  url('https://078lmb1x.media.zestyio.com/ftm-logotype.eot?xor693');
+  src:  url('https://078lmb1x.media.zestyio.com/ftm-logotype.eot?xor693#iefix') format('embedded-opentype'),
+    url('https://078lmb1x.media.zestyio.com/ftm-logotype.ttf?xor693') format('truetype'),
+    url('https://078lmb1x.media.zestyio.com/ftm-logotype.woff?xor693') format('woff'),
+    url('https://078lmb1x.media.zestyio.com/ftm-logotype.svg?xor693#ftm-logotype') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="cine-logotype-"], [class*=" cine-logotype-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'cine-logotype' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.cine-logotype-sony-logo:before {
+  content: "\e90b";
+}
+
+.cine-logotype-sony-logo {
+  color: white;
+}
+Schedule a Demo
+Venice 2
+Articles
+Interviews
+Technical Guides
+Case Studies
+Behind the Scenes
+News & Updates
+Explore
+Shot On Sony
+Events
+Cinema
+Resources
+White Papers
+Tools
+LUTs
+Setup Files
+Test Footage
+Simulators
+Videos
+FAQ
+DMPC
+Software
+Cinema
+Gear
+Camera Comparison
+BURANO
+VENICE 2
+VENICE
+Dealers
+Promos
+Virtual Production
+Sign Up
+Venice 2
+Articles
+Interviews
+Technical Guides
+Case Studies
+Behind the Scenes
+News & Updates
+Explore
+Shot On Sony
+Events
+Cinema
+Resources
+White Papers
+Tools
+LUTs
+Setup Files
+Test Footage
+Simulators
+Videos
+FAQ
+DMPC
+Software
+All Resources
+Cinema
+Gear
+Camera Comparison
+BURANO
+VENICE 2
+VENICE
+Dealers
+Promos
+Virtual Production
+Sign Up
+Search
+Schedule a Demo
+window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-64960145-2', {'send_page_view': false});
+
+	$(document).ready(function() {
+      $('.slider_container').on('afterChange', function (event, slick, direction) {
+        
+          dataLayer.push({"event": "sliderSwipe"});
+          console.log("Added sliderSwipe event to datalayer c/o header");
+        
+      });
+
+  });
+.sc-article__first-body {
+		position: relative;
+		max-width: 620px;
+		padding-left: 1rem;
+		padding-right: 1rem;
+		margin-left: 0;
+		margin-right: 0;
+	}
+	@media (max-width: 992px) {
+		main.sc-article {
+			margin-top: 64px !important
+		}
+	}
+https://77snszqv.media.zestyio.com/Sensor-only-1920.jpg
+.sc-article__first-body {
+		max-width: initial;
+	
+	}
+	section div.subsection {
+		max-width: 620px;
+		margin: 0 auto;
+	}
+	.sc-article__image-text-section__content p, .sc-article__first-body__content p {
+		margin-bottom: 0rem;
+		padding-bottom: 1rem;
+	}
+12.02.2021
+12-02-2021
+			 -
+Gear, Technology
+Your VENICE 2 Sensor Questions Answered
+By:
+SonyCine Team
+Q: Is the sensor of VENICE 2 6K the same sensor as the original VENICE? Is there any difference as an image sensor block (OHB block: Optical Head Block)?
+A:
+The VENICE 2 6K
+sensor block is the same one used in the original VENICE. Customers who own the original VENICE can install and operate the OHB on VENICE 2.
+Q: Are both CMOS image sensors manufactured in-house by Sony?
+A: Yes, the sensors are made in-house by Sony.
+Q: Is the CMOS image sensor installed in VENICE the same as Alpha?
+A: No, it's not. The installed 8.6K full-frame sensor is a unique sensor newly developed for VENICE 2 8K. In addition, the 6K full-frame sensor installed in VENICE 2 6K is the same sensor as the original VENICE, and it is a unique sensor developed only for VENICE.
+Q: What is the specific difference between the Alpha sensor and the sensor for cinema cameras?
+A: We cannot explain in detail, but sensors for cinema production have different specifications from the Alpha sensor or sensors for photography.
+Q: Why are the two sensors different in Base ISO? (VENICE 2 8K: 800/3200, 6K: 500/2500)
+A: The appropriate ISO sensitivity is different for each photo site. In the process of determining the sensitivity of the 8K sensor, we aimed for ISO 800, which is widely accepted and used for shooting.
+Q: Does the sensor have a global shutter sensor?
+A: We cannot answer in detail, but we decided to use the rolling shutter format after careful evaluation. However, both sensors used in this camera have a Fast Shutter, and it is possible to shoot with less motion distortion than a camera equipped with a general CMOS image sensor.
+Q:
+Is it possible for the user to change out a sensor block (OHB block) when on location?
+A: Yes. Like the current VENICE, when using the Extension System, the user can remove it while on location and replace it with another OHB block. A cleanroom is not required. The OHB block and camera body side are designed to eliminate contamination from dust and dirt. That said, the 8.6K sensor can only be used with the VENICE 2.
+Q: Can I purchase only the sensor block (OHB block)?
+A. Not at this time, but the 6K OHB can be purchased from Sony spares division.
+Q: Can I purchase just the new VENICE 2 body?
+A. Not at this time
+Q: Do you have any plans for trade promotion with the original VENICE?
+A. We are currently working on a trade-in program. Stay tuned to sonycine.com for details.
+Q: Why can't I use the 8K sensor with the original VENICE body? Can it be physically attached?
+A: The internal processing in the camera body is different, and the original VENICE cannot handle the increased data rate of the 8.6K sensor, therefore, it is not supported. In addition, the physical size of the heat sync on the back of the 8K OHB block is also different, so it cannot be attached to the original VENICE.
+Q: Is the color reproduction the same between the original VENICE and the VENICE 2?
+A: VENICE 2 8K color reproduction is optimized to the same color reproduction as the original VENICE or VENICE 2 6K sensor.
+Q: Are the optical filters in front of the sensor the same?
+A: The UV cut / infrared cut filter characteristics are the same. Regarding the optical low-pass filter, since the pixel pitch differs between 6K and 8K sensors, we have developed and built the optimum filter for each.
+Q: What is X-OCN?
+A: It is an abbreviation of "eXtended tonal range Original Camera Negative." The "extended tonal range" was named for "faithfully recording the fine gradations output from the camera." There are three main user benefits of X-OCN. (1) Image quality (2) Data size (3) High degree of freedom in post-production.
+(1) By processing and recording the Bayer data output from the camera with 16-bit scene linear so as not to impair the dynamic range of the imager, post-production and flexible high image quality was maintained as the optimum format for HDR production. In addition, color grading can be performed.
+(2) X-OCN ST can achieve quality comparable to F55RAW with a data size of about 70% of Sony's F55RAW. In addition, X-OCN LT, which can record at 40% of the data size of F55RAW, has almost the same data size as XAVC 4K Class 480 (XAVC 4K high image quality mode).
+(3) As with RAW, you can freely adjust and change the ISO sensitivity and white balance after shooting, and you can freely reflect the intention of the production.
+Q: Is X-OCN different from RAW?
+A:
+X-OCN benefits from advancements in compression technology that were not
+available when Sony RAW was developed. It is both more efficient and can achieve
+higher image fidelity at comparable data rates.
+Q: Is it possible to use the VENICE 2 for RAW recording that was supported by R7?
+A: VENICE 2 does not support it. Originally, RAW was available only for 4K17: 9 and 3.8K 16: 9 in VENICE, but considering the frequency of use in the market, VENICE 2 will only support X-OCN.
+.homepage__title {
+  font-size: 0.76rem;
+  line-height: 18px;
+  text-align: center;
+  font-weight: 300;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-family: var(--font1) !important;
+}
+.homepage__card h4 {
+  font-family: 'SSTProMedium';
+  line-height: 25px;
+  font-size: 22px;
+}
+Recommended Articles
+2024-12-27
+Interviews & Behind The Scenes
+New Ways to Get the Old Look
+Phedon Papamichael, ASC found freedom shooting the Bob Dylan drama A Complete Unknown on the Sony VENICE 2
+2022-01-07
+Case Study
+Let These Real-World DPs Tell You What Makes Sony VENICE 2 So Special
+We chat with some amazing DPs about what makes Sony VENICE 2 so special for cinematographers.
+2021-11-17
+Gear
+The New VENICE 2 8K Sensor – Tech Rundown and First Impressions
+Sony has once again raised the bar with the introduction of their new VENICE 2, which comes equipped with a newly developed 8.6K, 50MP full-frame sensor boasting a real-world 16 stops of total latitude, high-speed readout, and a dual base ISO of 800 and 3200. Sony designed this new 36 x 24‑mm image sensor speciﬁcally to carry forward what has resonated with users of the original VENICE - sensitivity, exposure latitude and color rendition - and to meet the continuing demands and performance required of high-end cinematography.
+The new 8K sensor can capture images up to a maximum resolution of 8640 x 5760 and offers powerful oversampling for incredible 4K images. The VENICE 2 sensor also exceeds the BT.2020 color space and boasts a color range wider than DCI-P3.
+2022-12-15
+Interviews & Behind The Scenes
+Shot on VENICE: Behind the Scenes of Top Gun: Maverick
+An up-close look at how VENICE played an important role in the making of Top Gun: Maverick
+2022-04-08
+Gear
+Global Cinematography Industry Raves about Sony Electronics’ VENICE 2
+The Sony VENICE 2 flagship digital cinema camera ships worldwide with version 2 updates planned in early 2023
+ 
+
+Otto Nemenz delivers the first Sony VENICE 2 to the set of a Paramount series.
+Keslow delivers its first cameras to Oscar-winning cinematographer Claudio Miranda, ASC, ACC for a feature film production.
+Panavision delivers its first cameras to Gonzalo Amat, ASC for a high-profile television series.
+Demand is high as cameras receive positive feedback from multiple tests­­­­­­­­.
+2021-09-03
+Case Study
+Justine Bateman Shoots VENICE 2 Extension System to Get Intimate for Violet
+In Violet, writer and director Justine Bateman delves deep into what empowers the voice in our heads to push us into making fear-based decisions. Olivia Munn stars as Violet while Justin Theroux embodies The Voice. Immersively captured by cinematographer Mark Williams, Violet is a film that creates a palatable experience for the audience as they follow the successful but tragically unhappy main character through conflict after conflict to the roots of her fears. Violet will have its international premiere at the Toronto International Film Festival in September and go on to theatrical release later this year.
+MORE ARTICLES
+#signupModal {
+    z-index: 6000;
+  }
+ABOUT
+This is the official website for Sony Professional Cinema.
+Here you'll find behind the scenes videos from your favorite TV shows and feature films, expert interviews, technical guides and resources. Have a story idea or a question? Send us a message!
+Press Inquiries:
+Allison Mandara
+allison.mandara@sony.com
+NAVIGATION
+VENICE 2
+TOOLS
+EXPLORE
+GEAR
+SEARCH
+SIGN UP
+SOCIAL
+Go to RSS Feed
+© 2026 SONY ELECTRONICS INC (SEL). All Rights Reserved. |
+SEL Terms & Conditions
+|
+SEL Privacy Policy
+|
+CA Privacy Notice
+|
+Your Privacy Choices
+|
+Manage Cookies
+|
+Sony.com
+|
+Professional Products & Solutions
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "Your VENICE 2 Sensor Questions Answered",
+    "creator": ["SonyCine Team"],
+    "publisher": {
+      "@type": "Organization",
+      "name": "SonyCine || Sony Electronics, Inc.",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://77snszqv.media.zestyio.com/icon-large-512.png"
+      }
+    },
+    "description": "Q:&nbsp;Is the sensor of VENICE 2 6K the same sensor as the original VENICE? Is there any difference as an image sensor block (OHB block: Optical Head Block)?&nbsp;\n&nbsp;\nA: The VENICE 2 6K sensor block is the same one used in the original VENICE. Customers who own the original VENICE can install and operate the OHB on VENICE 2.&nbsp;\n&nbsp;\nQ:&nbsp;Are both CMOS",
+    "url": "https://sony-cinematography.com/articles/your-venice-2-sensor-questions-answered/",
+    "thumbnailUrl": "https://77snszqv.media.zestyio.com/Sensor-only-1920.jpg",
+    "image": "https://77snszqv.media.zestyio.com/Sensor-only-1920.jpg",
+    "datePublished": "2021-12-02T00:00:00+00:00",
+    "articleSection": "Gear",
+    "keywords": ["Technology", "Cinema Line", "VENICE Extension System"],
+    "gear": ["VENICE 2"],
+    "abstract": "Q:&nbsp;Is the sensor of VENICE 2 6K the same sensor as the original VENICE? Is there any difference as an image sensor block (OHB block: Optical Head Block)?&nbsp;\n&nbsp;\nA: The VENICE 2 6K sensor block is the same one used in the original VENICE. Customers who own the original VENICE can install and operate the OHB on VENICE 2.&nbsp;\n&nbsp;\nQ:&nbsp;Are both CMOS",
+    "sdDatePublished":"2025-02-06T22:17:46+00:00"
+  }
+$(document).ready(function () {
+    Navbar.init();
+    $('.manage-cookies').on('click',function(){
+        OneTrust.ToggleInfoDisplay();
+    })
+});
+
+var Navbar = (function() {
+
+    function init() {
+        bindClickEvents();
+    }
+
+    function bindClickEvents() {
+        $('.cine-navbar__hamburger').on('click', function(e) {
+            $(this).toggleClass('cine-navbar__hamburger--open');
+            $('.au-mobile-nav').toggleClass('au-mobile-nav--open');
+            $('body').toggleClass('no-scroll');
+            $('html').toggleClass('no-scroll');
+        });
+/*
+        $('#alphaSearchDrop').add('#alphaSearchDropMobile').on('click', function(e) {
+            e.preventDefault();
+
+            if($('.au-mobile-nav').hasClass('au-mobile-nav--open')) {
+                $('.au-mobile-nav').removeClass('au-mobile-nav--open');
+                $('.cine-navbar__hamburger').removeClass('cine-navbar__hamburger--open');
+            }
+            $('.cine-navbar__nav li').not('.cine-navbar__nav-item--search').toggleClass('au-slide--right');
+            $('.cine-navbar .au-close').toggleClass('au-slide--right--hidden');
+            $('.cine-navbar__nav-item__search').toggle();
+            $('.au-search--dropdown').toggleClass('au-search--dropdown--open');
+            $('#navbarSearchInput').focus();
+        });
+*/
+        $('.au-mobile-nav__item').click(function(e) {
+            if($(this).has('.au-mobile-nav__sub-menu')) {
+                $(this).find('.au-mobile-nav__sub-menu').toggleClass('d-none');
+            }
+        });
+
+        $('.au-mobile-nav__sub-menu').click(function(e) {
+            e.stopPropagation();
+        });
+    }
+
+    return {
+        init: init
+    }
+})();
+/*  // I think this was remnant from SAU
+(function () {
+    $(function () {
+        $('[data-bs-toggle="popover"]').popover();
+    });
+})();
+*/
+var FixedNavSidebar = (function () {
+    function init(sidebarId, heightOffset) {
+        // Activate ScrollSpy
+         $("body").scrollspy({target: sidebarId, offset: heightOffset});
+    }
+
+    return {
+        init: init
+    }
+
+})();
+function OptanonWrapper() {
+    /* Code to fire when OT loads */
+    OneTrust.OnConsentChanged(function(){
+        console.log("Consent changed")
+        Cookies.remove('youtube_cookie_allowed');
+    })
+    var groups = OnetrustActiveGroups; // e.g. ",C0001,C0002,"
+    gtag('consent', 'update', {
+        'analytics_storage': groups.indexOf('C0002') > -1 ? 'granted' : 'denied',
+        'ad_storage':        groups.indexOf('C0004') > -1 ? 'granted' : 'denied'
+    });
+
+}
+console.log("ActionIQ script active")
+!(function() {
+  var analytics = (window.analytics = window.analytics || [])
+  if (!analytics.initialize) {
+    if (analytics.invoked) {
+      window.console && console.error && console.error('MetaRouter snippet included twice.')
+    } else {
+      analytics.invoked = !0
+      analytics.methods = [
+        'trackSubmit',
+        'trackClick',
+        'trackLink',
+        'trackForm',
+        'pageview',
+        'identify',
+        'reset',
+        'group',
+        'track',
+        'ready',
+        'alias',
+        'debug',
+        'page',
+        'once',
+        'off',
+        'on',
+        'addSourceMiddleware',
+        'addIntegrationMiddleware',
+        'setAnonymousId',
+        'addDestinationMiddleware',
+      ]
+      analytics.factory = function(e) {
+        return function() {
+          var t = Array.prototype.slice.call(arguments)
+          t.unshift(e)
+          analytics.push(t)
+          return analytics
+        }
+      }
+      for (var e = 0; e < analytics.methods.length; e++) {
+        var key = analytics.methods[e]
+        analytics[key] = analytics.factory(key)
+      }
+      analytics.load = function(key, e) {
+        var t = document.createElement('script')
+        t.type = 'text/javascript'
+        t.async = !0
+        t.src = ("https:"===document.location.protocol?"https://":"http://")+"sony-cinematography.com/assets/scripts/"+key+".js"
+        var n = document.getElementsByTagName('script')[0]
+        n.parentNode.insertBefore(t, n)
+        analytics._loadOptions = e
+      }
+      analytics.SNIPPET_VERSION = '4.13.1'
+      analytics.load("sony-cinematography-prod")
+      analytics.page()
+    }
+  }
+})()
+$(document).ready(function() {
+  // Find all iframe elements on the page
+  var iframes = $('iframe');
+
+  // Loop through each iframe and check the src attribute
+  iframes.each(function() {
+    var currentSrc = $(this).attr('src');
+
+    // Check if the src attribute contains "instagram.com"
+    if (currentSrc && currentSrc.includes('instagram.com') && !currentSrc.includes('www.instagram.com')) {
+      var newSrc = currentSrc.replace('instagram.com', 'www.instagram.com');
+
+      // Update the src attribute
+      $(this).attr('src', newSrc);
+      console.log("updated frame");
+
+           // Wait for 500 milliseconds and then reload the iframe
+      setTimeout(function() {
+        $(this).attr('src', newSrc);
+      }.bind(this), 1500);
+    }
+  });
+});
+/* Youtube cookie control */ 
+	$(document).ready(function(){
+		window.addEventListener("message", (messageEvent) => {
+			// console.debug('Parent received "message" event: ', messageEvent);
+			if (messageEvent.data === 'cookies_approved') {
+				$('iframe').each((index, element) => {
+					element.contentWindow.postMessage('youtube_cookie_allowed', '*');
+				})
+				Cookies.set('youtube_cookie_allowed',true);
+				console.log(`Youtube cookie is set`);
+			} else if (messageEvent.data === 'youtube_frame_loaded') {
+				if(Cookies.get('youtube_cookie_allowed')) {
+					console.log(`Sending youtube_cookie_allowed messge to iframe`);
+					$('iframe').each((index, element) => {
+						element.contentWindow.postMessage('youtube_cookie_allowed', '*');
+					})
+				}
+			} else if (messageEvent.data.substring(27) == "youtube_player_state_change") {
+				// var stateId = messageEvent.data.split(":")[1];
+				// console.log("Youtube player state: " + stateId)
+			}
+		}, false);
+	});
+$(document).ready(function () {
+		if (!document.querySelector('.instagram-media')) return;
+
+		if (window.instgrm) {
+			window.instgrm.Embeds.process();
+		} else if (!document.querySelector('script[src*="instagram.com/embed.js"]')) {
+			var igScript = document.createElement('script');
+			igScript.src = 'https://www.instagram.com/embed.js';
+			igScript.async = true;
+			document.body.appendChild(igScript);
+		}
+
+		/* embed.js swaps each blockquote for an iframe after load, so watch for them */
+		function titleInstagramFrames() {
+			document.querySelectorAll('iframe.instagram-media:not([title])').forEach(function (frame) {
+				frame.title = 'Instagram post';
+			});
+		}
+		titleInstagramFrames();
+		new MutationObserver(titleInstagramFrames).observe(document.querySelector('main') || document.body, { childList: true, subtree: true });
+	});

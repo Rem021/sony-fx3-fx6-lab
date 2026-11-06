@@ -1,0 +1,39 @@
+--- runs/ap-ro-e8cd913a/observer-run_once.py
++++ run_once.py
+@@ -217,7 +217,7 @@
+     if qmp is not None:qmp.close()
+ 
+ def main():
+-    if sha(HERE/'readonly_probe.py') != 'd8f3887aac7af4d256f787ea8a554c5f230fe4988c7b602b94714c32118962a0':
++    if sha(HERE/'readonly_probe.py') != '7da87fbb920bfa6a9516421d1224813056ff991a2c950552c4ccdadc662bbade':
+         raise RuntimeError('observer implementation changed; re-audit before runtime')
+     if sha(HERE/'two_phase_identity.py') != IDENTITY_SHA:
+         raise RuntimeError('two-phase identity implementation changed; re-audit before runtime')
+--- runs/ap-ro-e8cd913a/observer-readonly_probe.py
++++ readonly_probe.py
+@@ -209,9 +209,22 @@
+         if v.startswith('O') and v!='OK':return None
+         raise ValueError('unexpected asynchronous RSP '+v[:40])
+     def select_thread(self,stop):
+-        m=re.search(r'(?:^|;)thread:((?:p[0-9a-f]+\.)?[0-9a-f]+);',stop,re.I)
+-        if not stop.startswith('T05') or not m:raise ValueError('unknown CPU stop '+stop[:80])
+-        tid=m[1]
++        # T05 is the signal header, immediately followed by n:r; fields.
++        # QEMU's first field is normally `thread:02;` with no leading `;`.
++        if not stop.startswith('T05') or not stop.endswith(';') or len(stop)>1024:
++            raise ValueError('unknown CPU stop '+stop[:80])
++        fields=stop[3:-1].split(';')
++        parsed=[]
++        for field in fields:
++            if ':' not in field:raise ValueError('malformed CPU stop field '+field[:40])
++            key,value=field.split(':',1)
++            if not re.fullmatch(r'[A-Za-z0-9_]+',key) or not value:
++                raise ValueError('malformed CPU stop field '+field[:40])
++            parsed.append((key,value))
++        tids=[value for key,value in parsed if key=='thread']
++        if len(tids)!=1 or not re.fullmatch(r'(?:p[0-9a-f]+\.)?[0-9a-f]+',tids[0],re.I):
++            raise ValueError('unknown CPU stop '+stop[:80])
++        tid=tids[0]
+         if self.command('Hg'+tid)!='OK' or self.command('Hc'+tid)!='OK':raise ValueError('CPU selection failed')
+         return tid
+     def regs(self):

@@ -1,0 +1,66 @@
+{
+  "status": "FAILED_NO_PASSING_RESULT",
+  "created_utc": "2026-10-27T15:26:49.008016+00:00",
+  "source": "work/sony-firmware-20261024/stage116-scoped-MAIN-frontend/frontend_trial.py",
+  "source_sha256": "c4df152000620aa6a819702c8122a1d13297cd7227d0bea6d7657e8b0bc3b54c",
+  "C_source_sha256": "dca863a403ba41a9505d5e30801dc44497df05c6aeec02aa5b247a56757e6348",
+  "object_sha256": "c367712df40a18f7eefd50d384483190a14689d45706f0287ec6da86a140d951",
+  "own_link_veneers": [
+    {
+      "own_object_call_offset": "0x228",
+      "symbol": "sony_type",
+      "veneer": "0x4001000",
+      "original_target": "0xc9e84",
+      "veneer_scope": "Own native LDR/BR address veneer only; original target executes and returns itself."
+    },
+    {
+      "own_object_call_offset": "0x238",
+      "symbol": "sony_ctor",
+      "veneer": "0x4001010",
+      "original_target": "0x9a2ac",
+      "veneer_scope": "Own native LDR/BR address veneer only; original target executes and returns itself."
+    },
+    {
+      "own_object_call_offset": "0x248",
+      "symbol": "sony_copy",
+      "veneer": "0x4001020",
+      "original_target": "0x2007aad0",
+      "veneer_scope": "Own native LDR/BR address veneer only; original target executes and returns itself."
+    }
+  ],
+  "positive_cases": [],
+  "negative_cases": [],
+  "app_callsite_cases": [
+    {
+      "seed": 165,
+      "site": "0x2e6f7bc",
+      "original_param_pointer": "0x11001000",
+      "events": [
+        {
+          "label": "independent original app callsite passes whole parameter pointer",
+          "entry": "0x2e6f7b8",
+          "reason": "boundary: before_original_APP_SetMovieRecParam_import",
+          "stop_pc": "0x15944f0",
+          "SP_after": "0x10020000",
+          "FP_after": "0x0",
+          "pcs": [
+            "0x2e6f7b8",
+            "0x2e6f7bc",
+            "0x15944f0"
+          ],
+          "stores": [],
+          "whole_stack_outside_declared_frame_unchanged": true,
+          "whole_scratch_outside_declared_outputs_unchanged": true,
+          "mapped_original_ELF_guest_readonly_and_no_patch_or_resolution_requested": true,
+          "imports_logs_or_return_adapters_executed": false
+        }
+      ],
+      "actual_prior_app_full_construction_or_adapter_interposition_proven": false
+    }
+  ],
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "Windows_UU_camera_operations": false,
+  "real_frontend_hook_synchronization_MAIN_file_or_recovery_proven": false,
+  "error": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage116-scoped-MAIN-frontend/frontend_trial.py\", line 185, in run\n    for n in (0,48):j['positive_cases'].append(trial(seed,site,n))\n                                               ~~~~~^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage116-scoped-MAIN-frontend/frontend_trial.py\", line 132, in trial\n    ev.append(setter_copy(m,DST,auxsize,'independent original saved-param and auxiliary-data copy'))\n              ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage116-scoped-MAIN-frontend/frontend_trial.py\", line 108, in setter_copy\n    return m.phase(label,0xf1088,image_outputs=[(GLOBAL,GLOBAL+0x1bd),(AUXSTORE,AUXSTORE+auxsize)],\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        x20=source,x23=GLOBAL,x19=0x38c000,x22=0x38c000)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage116-scoped-MAIN-frontend/frontend_trial.py\", line 63, in phase\n    assert self.reason=='returned' or self.reason and self.reason.startswith('boundary: '),self.reason\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: write outside stack/scratch 38c810+8\n"
+}

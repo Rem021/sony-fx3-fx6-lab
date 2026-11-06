@@ -1,0 +1,116 @@
+{
+  "status": "confirmed_and_cancelled",
+  "receipt_schema": "fx3-r24-snapshot-confirm-v1",
+  "launch_id": "c008fda8-6c61-441e-9664-92d451ffac28",
+  "alarm_nonce": "93615104-b6b9-4edd-8ff9-a0cb767fcfd9",
+  "step": 3,
+  "attempt_id": "1c42dc6b-6b32-4d01-a729-8a3f86ab47ee",
+  "reviewed_png_sha256": "74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808",
+  "target": "已亲看本步固定PNG：橙色Language标题，下方Selects the display language.帮助文字和右下OK，符合C4语言帮助。",
+  "retries": 0,
+  "guest_keys_sent_by_helper": 0,
+  "eval_may_have_started": true,
+  "browser_result": {
+    "cancelled": {
+      "current": {
+        "armed_ms": 106328.5,
+        "cancelled_ms": 112502.69999998808,
+        "deadline_ms": 20000,
+        "due_ms": 126328.5,
+        "nonce": "93615104-b6b9-4edd-8ff9-a0cb767fcfd9",
+        "state": "cancelled"
+      },
+      "deadline_ms": 20000,
+      "documentTimeOrigin": 1793842568306.2,
+      "events": [
+        {
+          "event": "installed",
+          "performance_ms": 16200.19999998808,
+          "script_SHA256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+          "wall_UTC": "2026-11-05T01:36:24.506Z"
+        },
+        {
+          "due_ms": 96044.5,
+          "event": "armed",
+          "nonce": "88969fb8-e700-4498-a271-a6bbb2d48cf6",
+          "performance_ms": 76044.5,
+          "wall_UTC": "2026-11-05T01:37:24.350Z"
+        },
+        {
+          "elapsed_ms": 11103.80000001192,
+          "event": "cancelled",
+          "nonce": "88969fb8-e700-4498-a271-a6bbb2d48cf6",
+          "performance_ms": 87148.30000001192,
+          "wall_UTC": "2026-11-05T01:37:35.454Z"
+        },
+        {
+          "due_ms": 114646.10000002384,
+          "event": "armed",
+          "nonce": "4a2569f1-010b-45f0-9a27-c2c5a3ae1762",
+          "performance_ms": 94646.10000002384,
+          "wall_UTC": "2026-11-05T01:37:42.952Z"
+        },
+        {
+          "elapsed_ms": 5601.5,
+          "event": "cancelled",
+          "nonce": "4a2569f1-010b-45f0-9a27-c2c5a3ae1762",
+          "performance_ms": 100247.60000002384,
+          "wall_UTC": "2026-11-05T01:37:48.554Z"
+        },
+        {
+          "due_ms": 126328.5,
+          "event": "armed",
+          "nonce": "93615104-b6b9-4edd-8ff9-a0cb767fcfd9",
+          "performance_ms": 106328.60000002384,
+          "wall_UTC": "2026-11-05T01:37:54.635Z"
+        },
+        {
+          "elapsed_ms": 6174.199999988079,
+          "event": "cancelled",
+          "nonce": "93615104-b6b9-4edd-8ff9-a0cb767fcfd9",
+          "performance_ms": 112502.69999998808,
+          "wall_UTC": "2026-11-05T01:38:00.809Z"
+        }
+      ],
+      "expectedLaunchId": "c008fda8-6c61-441e-9664-92d451ffac28",
+      "expectedURL": "http://127.0.0.1:49966/",
+      "sealed": false,
+      "version": 1
+    },
+    "click_invoked": true,
+    "expected": {
+      "PNG_sha256": "74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808",
+      "attempt_id": "1c42dc6b-6b32-4d01-a729-8a3f86ab47ee",
+      "content_generation": 35,
+      "document_id": "1bad66ad-84ed-4c97-8b9f-5e3ea8224f04",
+      "launch_id": "c008fda8-6c61-441e-9664-92d451ffac28",
+      "observed_sequence": 576,
+      "pin_request_id": "6a59dee1-08ee-4342-87b9-1f003f0011a4",
+      "request_id": "73d6742e-2697-4d1b-8fa6-329558c6ff04",
+      "run_incarnation": "049f6bf0-a48b-43d7-80dd-2c3e22484a18",
+      "schema": "fx3-review-snapshot-v1",
+      "snapshot_id": "7a8274b4-6375-4cbb-a315-2ea4b9f5ac93",
+      "step": 3
+    },
+    "guest_keys_sent": 0,
+    "historical_snapshot": {
+      "PNG_sha256": "74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808",
+      "attempt_id": "1c42dc6b-6b32-4d01-a729-8a3f86ab47ee",
+      "byte_length": 12828,
+      "content_generation": 35,
+      "document_id": "1bad66ad-84ed-4c97-8b9f-5e3ea8224f04",
+      "launch_id": "c008fda8-6c61-441e-9664-92d451ffac28",
+      "native_receive_floor_sequence": 571,
+      "native_receive_observed_host_monotonic": 426360.556586375,
+      "observation_scope": "new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim",
+      "observed_sequence": 576,
+      "pin_request_id": "6a59dee1-08ee-4342-87b9-1f003f0011a4",
+      "run_incarnation": "049f6bf0-a48b-43d7-80dd-2c3e22484a18",
+      "schema": "fx3-review-snapshot-v1",
+      "snapshot_id": "7a8274b4-6375-4cbb-a315-2ea4b9f5ac93",
+      "step": 3
+    },
+    "receipt_schema": "fx3-r24-snapshot-confirm-v1",
+    "status": "confirmed_and_cancelled"
+  }
+}

@@ -1,0 +1,5 @@
+00400a98 stp        x29, x30, [sp, #-0x10]!
+00400a9c mov        x29, sp
+00400aa0 bl         #0x400f68
+00400aa4 ldp        x29, x30, [sp], #0x10
+00400aa8 ret        

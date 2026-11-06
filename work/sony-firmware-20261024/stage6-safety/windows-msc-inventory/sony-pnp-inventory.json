@@ -1,0 +1,48 @@
+{
+  "captured_utc": "2026-10-25T09:54:17.7315333Z",
+  "task_scope": "Present Sony cached PnP inventory only; camera MSC connection is user-reported",
+  "query_sources": [
+    "Win32_PnPEntity, Present TRUE and VID_054C filter",
+    "Win32_PnPSignedDriver, VID_054C filter",
+    "Cached DEVPKEY_Device_BusReportedDeviceDesc for selected Sony nodes"
+  ],
+  "sony_camera_candidate_nodes": [
+    {
+      "name": "USB 大容量存储设备",
+      "bus_reported_description": "ILME-FX3",
+      "vid": "054C",
+      "pid": "0DA1",
+      "interface_number": null,
+      "present": true,
+      "pnp_class": "USB",
+      "driver_provider": "Microsoft",
+      "driver_version": "10.0.26100.9444",
+      "driver_service": "USBSTOR",
+      "driver_is_signed": true,
+      "status": "OK",
+      "config_manager_error_code": 0,
+      "cached_description_property_read": true,
+      "camera_model_name_matches": true
+    }
+  ],
+  "omitted_previously_identified_non_camera_sony_node_count": 4,
+  "access_evidence": {
+    "cached_enumeration_only": true,
+    "camera_interface_opened": false,
+    "driver_handle_access_tested": false,
+    "authenticated_service_access_tested": false,
+    "camera_commands_issued": false,
+    "storage_cards_enumerated": false,
+    "card_media_read": false,
+    "connection_mode_changed": false,
+    "driver_install_or_change": false,
+    "firmware_written": false,
+    "body_firmware_version_read_back": false
+  },
+  "previous_inventory_preservation": {
+    "path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-readonly-collaboration-20261025T085826Z\\host-inventory.json",
+    "sha256_before": "fb0b5739a3fc4a9a6719b0e17240f128f78f4d4983b72d38229055db3096f734",
+    "sha256_after": "fb0b5739a3fc4a9a6719b0e17240f128f78f4d4983b72d38229055db3096f734",
+    "unchanged": true
+  }
+}

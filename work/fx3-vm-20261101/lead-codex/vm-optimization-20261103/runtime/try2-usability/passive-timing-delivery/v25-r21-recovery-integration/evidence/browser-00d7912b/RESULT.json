@@ -1,0 +1,105 @@
+{
+  "passed": true,
+  "scope": "offline Chrome fixture, no VM or real operator semantic review",
+  "cases": {
+    "wrong_attempt_nonce_PAGE_no_cancel": {
+      "attempt": {
+        "cancel_invoked": false,
+        "performance_ms": 3781.400000035763,
+        "reason": "review_receipt",
+        "status": "refused"
+      },
+      "nonce": {
+        "cancel_invoked": false,
+        "performance_ms": 3791.400000035763,
+        "reason": "review_receipt",
+        "status": "refused"
+      },
+      "PAGE": {
+        "cancel_invoked": false,
+        "performance_ms": 3799.400000035763,
+        "reason": "PAGE_fingerprint",
+        "status": "refused"
+      }
+    },
+    "old_alarm_cancelled_cannot_repeat": {
+      "result": {
+        "cancel_invoked": false,
+        "performance_ms": 3879.900000035763,
+        "reason": "attempt_alarm_binding",
+        "status": "refused"
+      }
+    },
+    "historical_review_B_current_A_cancel_only": {
+      "result": {
+        "alarm_cancel_receipt": {
+          "current": {
+            "armed_ms": 2927.800000011921,
+            "cancelled_ms": 3821.400000035763,
+            "deadline_ms": 20000,
+            "due_ms": 22927.80000001192,
+            "nonce": "e3c1fa35-5306-43d2-b639-71ad59747509",
+            "state": "cancelled"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793834914590.5,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 2919.5,
+              "script_SHA256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+              "wall_UTC": "2026-11-04T23:28:37.509Z"
+            },
+            {
+              "due_ms": 22927.80000001192,
+              "event": "armed",
+              "nonce": "e3c1fa35-5306-43d2-b639-71ad59747509",
+              "performance_ms": 2927.800000011921,
+              "wall_UTC": "2026-11-04T23:28:37.518Z"
+            },
+            {
+              "elapsed_ms": 893.6000000238419,
+              "event": "cancelled",
+              "nonce": "e3c1fa35-5306-43d2-b639-71ad59747509",
+              "performance_ms": 3821.400000035763,
+              "wall_UTC": "2026-11-04T23:28:38.411Z"
+            }
+          ],
+          "expectedLaunchId": "1df608d8-ee1b-4ed1-952f-5489ff13600d",
+          "expectedURL": "http://127.0.0.1:49412/",
+          "sealed": false,
+          "version": 1
+        },
+        "attempt_id": "43f0ef1c-6f64-4bb1-bfe0-73ab336262b1",
+        "cancel_invoked": true,
+        "current_frame": {
+          "generation": 3,
+          "sequence": 3,
+          "sha": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9"
+        },
+        "due_ms": 22927.80000001192,
+        "elapsed_ms": 893.6000000238419,
+        "historical_review_not_current": true,
+        "no_confirm_visual": true,
+        "no_guest_key": true,
+        "no_visual_approval": true,
+        "nonce": "e3c1fa35-5306-43d2-b639-71ad59747509",
+        "old_review": {
+          "generation": 2,
+          "sha": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1"
+        },
+        "performance_ms": 3822.600000023842,
+        "server_atomic_permission": false,
+        "status": "cancelled_unqueued_alarm_only"
+      },
+      "key_posts": 1,
+      "confirm_posts": 0,
+      "guest_steps": 0
+    },
+    "separate_explicit_new_click": {
+      "key_posts": 2,
+      "confirm_posts": 0,
+      "pending": 1
+    }
+  }
+}

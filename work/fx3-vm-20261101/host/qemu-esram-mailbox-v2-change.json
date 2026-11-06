@@ -1,0 +1,6 @@
+{
+  "source_after_sha256": "c33a5db59d40d9b7c29993c453b851b5c5587b26e94b3b122c7d8e7d5a1a4c4c",
+  "patch_sha256": "a5f30ec592a6bdc614f626d402cf5563169859b7145f9a603067eebc4dbc1619",
+  "correction": "MemoryRegion RAM owner NULL like existing virt secure RAM; MachineState is not DeviceState. p03 QEMU assertion preserved and no guest instruction ran.",
+  "model_scope": "4KiB zero RAM mailbox [0xfe005000,0xfe006000); no other alias/stub"
+}

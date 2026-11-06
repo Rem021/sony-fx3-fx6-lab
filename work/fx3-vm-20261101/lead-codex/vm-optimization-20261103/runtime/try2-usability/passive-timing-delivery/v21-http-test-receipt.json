@@ -1,0 +1,14 @@
+{
+  "status": "PASS_V21_LOOPBACK_HTTP",
+  "checks": [
+    "actual v21 page contains bounded request and final ACK client",
+    "five-state fields exposed while final receipt remains hidden before finish",
+    "immutable PNG bytes and identity header agree",
+    "one authenticated key pending; duplicate blocked",
+    "late stop cannot rewrite final result; wrong or unauthenticated ACK rejected",
+    "terminal result remains reachable beyond old 2s window; matching ACK closes bounded wait"
+  ],
+  "web_sha256": "b2dc6b3a61e884c4e2ace56651eafb6e75455e693b02fb1082884fb69816d804",
+  "guest_started": false,
+  "server_thread_reaped": true
+}

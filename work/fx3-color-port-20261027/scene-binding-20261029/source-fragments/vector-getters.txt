@@ -1,0 +1,12 @@
+009d5ea8 movw       r0, #0xb6c0
+009d5eac movt       r0, #0x118
+009d5eb0 bx         lr
+009d5eb2 movw       r2, #0xb788
+009d5eb6 movw       r1, #0xb6c0
+009d5eba cmp        r0, #0
+009d5ebc movt       r2, #0x118
+009d5ec0 movt       r1, #0x118
+009d5ec4 it         ne
+009d5ec6 movne      r1, r2
+009d5ec8 mov        r0, r1
+009d5eca bx         lr

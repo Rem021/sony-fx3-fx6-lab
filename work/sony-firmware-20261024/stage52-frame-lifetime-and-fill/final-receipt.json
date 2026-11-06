@@ -1,0 +1,101 @@
+{
+  "schema": "fx3-stage52-frame-lifetime-and-fill/1",
+  "created_utc": "2026-10-26T04:25:43.327634+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/README.md",
+      "bytes": 6614,
+      "sha256": "0f9b4bef67e354f2cc4e2d9d330b2568e850d5df0ccaf92c1f2c3fa15e8792c2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/coordinator-observations.json",
+      "bytes": 1122,
+      "sha256": "21d53161b9eb84b37d19e8d3f73615c09b9d9988ab5ecf1813272bd219fa8de7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/finalize_stage52.py",
+      "bytes": 15737,
+      "sha256": "63615f097e3183db0e6ff561f5f42a116e9e28f39811b8a9b52c3356670b965a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/frame_lifetime.py",
+      "bytes": 14150,
+      "sha256": "1aaf34a4db437d69e580e885749fbef1280c5add929913411237af0b302dbe69"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/goal-status-after.json",
+      "bytes": 121387,
+      "sha256": "415f2d003a8bebb4c40054c4d9eab48657d0bf0bb3b1eb7c1ba37878ad42fb6d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/goal-status-before.json",
+      "bytes": 116597,
+      "sha256": "83213af80e00a7ce047d3f7b02022a5bc79efe7834c7efea3363fe07abaee2d0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/restore-observation-contract.json",
+      "bytes": 2964,
+      "sha256": "52449bfce0e997dd29a0e61e067edb83c58171c120f6ab5f02c7f08d26713e4e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/run-20261025/attempt-failure.json",
+      "bytes": 596,
+      "sha256": "45416960c8584e9f97c3cdbf23a55ed482df177ce1c89c0808e71aa7a5c7d11f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/run-20261025/attempt-source.py",
+      "bytes": 14150,
+      "sha256": "d0c27158f8439a5a26f5d98e7eebe0d55a195e6b2aa3b634b71f973b47c8f7c0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/run-20261025/last-phase-at-failure.json",
+      "bytes": 5762,
+      "sha256": "cb3e1cdecb70004c44d85451908d841dcdf78777d644bd71b9322adcee6f7021"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/run-bounded-string-compare-20261025/executed-source.py",
+      "bytes": 14150,
+      "sha256": "1aaf34a4db437d69e580e885749fbef1280c5add929913411237af0b302dbe69"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/run-bounded-string-compare-20261025/frame-lifetime-results.json",
+      "bytes": 8899054,
+      "sha256": "f88be30929a0bed79a29a8c093cce9163f96acb827290ff66aabd77a6c1057e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/run-bounded-string-compare-20261025/source-receipt.json",
+      "bytes": 503,
+      "sha256": "ca0e350de9a51c6ffe8a15f608156c2488bcdb07d4924c78ebfa00bb78815d7d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/summary.json",
+      "bytes": 1599,
+      "sha256": "96fb31fc972fb263b63d7f95f9d1cba8aac1c84090678b2b4c314e87b901e95b"
+    }
+  ],
+  "previous_manifest_sha256": "c1fe9d89c021510bd231a77be57dfbfed9deba55e6c699ceb42063a9e1bde3d3",
+  "scope": "193 bounded original fragments: independent queue/slot lifetime, native return/dequeue/reuse, unexecuted optional notification boundary, source tag lookup/copy and native validity. No full event fill/runtime owner/epoch/Start/HAL/recording/recovery.",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/goal-status-after.json",
+    "before_sha256": "83213af80e00a7ce047d3f7b02022a5bc79efe7834c7efea3363fe07abaee2d0",
+    "after_sha256": "415f2d003a8bebb4c40054c4d9eab48657d0bf0bb3b1eb7c1ba37878ad42fb6d",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-25 FX3 帧槽归还、队列与标签来源](<work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/README.md>)：193段原执行区分queue0与槽归还，复借清记录；原标签复制生成几何，通知/代次/完整填充、硬件与恢复仍待验收。",
+  "readme_index_before_sha256": "a7e7281e4d372bd6aa78206e43e8db38baa112635a2f043960770fb652223f8a",
+  "readme_index_after_sha256": "859c96528aace589870c7a786d39dce56f3d65c3df8a62200d8d976257b200d0",
+  "operations": {
+    "original_guest_code_unchanged": true,
+    "map_owner_tag_and_controlled_order_are_fixtures": true,
+    "native_output_PC_return_log_lock_notification_or_HAL_adapter": false,
+    "real_camera_late_callback_or_ABA_bug_claimed": false,
+    "new_loadable_camera_module": false,
+    "UU_Windows_camera_interfaces_auth_modes_drivers_files_modules_WBI_flash": false,
+    "real_hardware_recording_backup_restore_or_independent_recovery": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

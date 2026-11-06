@@ -1,0 +1,22 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap33-hdmi-registration/candidate33.json",
+  "base_sha256": "b483e0c0788da1afa6c8603d0cf26f82211858e3bd4555d7d64e85414345db63",
+  "helper": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v7.so",
+  "helper_sha256": "8a57a90595ea176201b5792a0b2e83c4fc3ce6b24a0360ece92399fdb21dde8a",
+  "helper_source_sha256": "7c6850b4351a218f089421ffd11befc7695f7b77eb07734c115c9f8341778e73",
+  "entries": 1112,
+  "changes": [
+    "add GPE/app observer v6 with explicit Bluetooth unavailable policy",
+    "init preload/environment",
+    "DTB chosen initrd-end matches actualcpio"
+  ],
+  "retained": "all AP32 archive members unchanged except init; original firmware files/metadata retained",
+  "cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap35-bt-error/guest.cpio",
+    "sha256": "87b6585e8bbf31d6b2a4b99cdd2fbaf399f70e0d33483a72999c2f0174cf91dc"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap35-bt-error/guest.dtb",
+    "sha256": "85ac70798059551a1ee3172db4df93360fa0df9352ae4ad87aa3e5dc5bfe4533"
+  }
+}

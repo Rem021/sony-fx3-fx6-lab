@@ -1,0 +1,93 @@
+0000b6cc stp      x29, x30, [sp, #-0x90]!
+0000b6d0 mov      x29, sp
+0000b6d4 stp      x19, x20, [sp, #0x10]
+0000b6d8 add      x19, x29, #0x60
+0000b6dc mov      x0, x19
+0000b6e0 adrp     x20, #0xc000
+0000b6e4 str      x21, [sp, #0x20]
+0000b6e8 bl       #0x7cd0 ; _ZN7Updater10MountPointC1Ev
+0000b6ec add      x1, x20, #0x781
+0000b6f0 mov      x0, x19
+0000b6f4 bl       #0x7c60 ; _ZN7Updater10MountPoint10InitializeEPKc
+0000b6f8 adrp     x21, #0xc000
+0000b6fc mov      x0, x19
+0000b700 add      x1, x21, #0x79e
+0000b704 mov      w2, #0x410
+0000b708 bl       #0x7ae0 ; _ZN7Updater10MountPoint5MountEPKcj
+0000b70c tst      w0, #0xff
+0000b710 b.ne     #0xb77c
+0000b714 adrp     x2, #0xc000
+0000b718 adrp     x0, #0xc000
+0000b71c mov      w1, #0xe
+0000b720 add      x4, x21, #0x79e
+0000b724 add      x2, x2, #0x76d
+0000b728 add      x0, x0, #0x7ac
+0000b72c mov      w3, #0x3a
+0000b730 movk     w1, #3, lsl #16
+0000b734 bl       #0x81e0 ; printf
+0000b738 mov      x0, #0x10
+0000b73c bl       #0x7b70 ; __cxa_allocate_exception
+0000b740 adrp     x1, #0x1e000
+0000b744 adrp     x2, #0x1e000
+0000b748 ldr      x1, [x1, #0xf20]
+0000b74c ldr      x2, [x2, #0xf40]
+0000b750 add      x1, x1, #0x10
+0000b754 str      x1, [x0]
+0000b758 mov      w1, #0xe
+0000b75c movk     w1, #3, lsl #16
+0000b760 str      w1, [x0, #8]
+0000b764 adrp     x1, #0x1e000
+0000b768 strb     wzr, [x0, #0xc]
+0000b76c ldr      x1, [x1, #0xfc8]
+0000b770 bl       #0x8100 ; __cxa_throw
+0000b774 mov      x20, x0
+0000b778 b        #0xb810
+0000b77c add      x21, x29, #0x38
+0000b780 add      x1, x20, #0x781
+0000b784 mov      x0, x21
+0000b788 bl       #0x8030 ; _ZN7Updater12ModeFlagFileC1EPKc
+0000b78c mov      x0, x21
+0000b790 bl       #0x8170 ; _ZN7Updater12BaseFlagFile6CreateEv
+0000b794 mov      x0, x19
+0000b798 bl       #0x7fd0 ; _ZN7Updater10MountPoint6UmountEv
+0000b79c tst      w0, #0xff
+0000b7a0 b.ne     #0xb820
+0000b7a4 adrp     x2, #0xc000
+0000b7a8 adrp     x0, #0xc000
+0000b7ac mov      w1, #0xf
+0000b7b0 add      x4, x20, #0x781
+0000b7b4 add      x2, x2, #0x76d
+0000b7b8 add      x0, x0, #0x7ac
+0000b7bc mov      w3, #0x3f
+0000b7c0 movk     w1, #3, lsl #16
+0000b7c4 bl       #0x81e0 ; printf
+0000b7c8 mov      x0, #0x10
+0000b7cc bl       #0x7b70 ; __cxa_allocate_exception
+0000b7d0 adrp     x1, #0x1e000
+0000b7d4 adrp     x2, #0x1e000
+0000b7d8 ldr      x1, [x1, #0xf20]
+0000b7dc ldr      x2, [x2, #0xf40]
+0000b7e0 add      x1, x1, #0x10
+0000b7e4 str      x1, [x0]
+0000b7e8 mov      w1, #0xf
+0000b7ec movk     w1, #3, lsl #16
+0000b7f0 str      w1, [x0, #8]
+0000b7f4 adrp     x1, #0x1e000
+0000b7f8 strb     wzr, [x0, #0xc]
+0000b7fc ldr      x1, [x1, #0xfc8]
+0000b800 bl       #0x8100 ; __cxa_throw
+0000b804 mov      x20, x0
+0000b808 mov      x0, x21
+0000b80c bl       #0x7ba0 ; _ZN7Updater12ModeFlagFileD1Ev
+0000b810 mov      x0, x19
+0000b814 bl       #0x7a30 ; _ZN7Updater10MountPointD1Ev
+0000b818 mov      x0, x20
+0000b81c bl       #0x8150 ; _Unwind_Resume
+0000b820 mov      x0, x21
+0000b824 bl       #0x7ba0 ; _ZN7Updater12ModeFlagFileD1Ev
+0000b828 mov      x0, x19
+0000b82c bl       #0x7a30 ; _ZN7Updater10MountPointD1Ev
+0000b830 ldr      x21, [sp, #0x20]
+0000b834 ldp      x19, x20, [sp, #0x10]
+0000b838 ldp      x29, x30, [sp], #0x90
+0000b83c ret      

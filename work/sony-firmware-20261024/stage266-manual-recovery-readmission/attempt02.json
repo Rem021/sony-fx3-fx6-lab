@@ -1,0 +1,32 @@
+{
+  "argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-DFX3_ENTRY_FIXTURE",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/global_guard.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/guard_test.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/entry_support.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/owner_ipc.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/artifacts/guard-test"
+  ],
+  "compile_return": 0,
+  "compile_stderr": "",
+  "new_root_or_USB_operations": 0,
+  "test_return": 0,
+  "stdout": "{\"groups\":7,\"bad_cache_variants\":12,\"old_prefix_unchanged\":true,\"camera_and_root_operations\":0}\n",
+  "stderr": ""
+}

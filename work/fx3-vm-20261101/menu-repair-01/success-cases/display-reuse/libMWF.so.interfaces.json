@@ -1,0 +1,279 @@
+{
+  "guest_path": "/usr/lib/libMWF.so",
+  "local_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libMWF.so",
+  "bytes": 353120,
+  "sha256": "06a80e89d1bba839bf4ea83492fb1fe0490037a8c8c46bf21d7ac46657d47a26",
+  "dynsym_total": 1463,
+  "defined_total": 1360,
+  "source_exact_matches": [
+    {
+      "name": "_ZN3MWF12EventWrapper11SendAndRecvEPviS1_i",
+      "value": "0x2593c",
+      "size": 268,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    }
+  ],
+  "selected_dynsym": [
+    {
+      "name": "osal_set_msg_src",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_snd_msg",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_valloc_msg_wait",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "osal_free_msg",
+      "value": "0x0",
+      "size": 0,
+      "bind": 1,
+      "type": 0,
+      "defined": false,
+      "section_index": 0
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIbLNS_5Param4TypeE39EE7GetSizeEv",
+      "value": "0x2c9fc",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIjLNS_5Param4TypeE38EE7GetSizeEv",
+      "value": "0x2c270",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIsLNS_5Param4TypeE42EE7GetSizeEv",
+      "value": "0x2bacc",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateItLNS_5Param4TypeE43EE7GetSizeEv",
+      "value": "0x2bd58",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIhLNS_5Param4TypeE37EE7GetSizeEv",
+      "value": "0x2b840",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIaLNS_5Param4TypeE36EE7GetSizeEv",
+      "value": "0x2b5cc",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF6Struct7GetSizeEv",
+      "value": "0x2f748",
+      "size": 24,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIlLNS_5Param4TypeE45EE7GetSizeEv",
+      "value": "0x2c4fc",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateImLNS_5Param4TypeE46EE7GetSizeEv",
+      "value": "0x2c788",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZN3MWF12EventWrapper11SendAndRecvEPviS1_i",
+      "value": "0x2593c",
+      "size": 268,
+      "bind": 1,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIcLNS_5Param4TypeE35EE7GetSizeEv",
+      "value": "0x2b358",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    },
+    {
+      "name": "_ZNK3MWF19ParamArray_TemplateIiLNS_5Param4TypeE44EE7GetSizeEv",
+      "value": "0x2bfe4",
+      "size": 24,
+      "bind": 2,
+      "type": 2,
+      "defined": true,
+      "section_index": 10
+    }
+  ],
+  "selected_relocations": [
+    {
+      "section": ".rela.plt",
+      "offset": "0x641e0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_set_msg_src"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x641f0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIsLNS_5Param4TypeE42EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64220",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF6Struct7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64490",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIlLNS_5Param4TypeE45EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64620",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIhLNS_5Param4TypeE37EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64650",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_snd_msg"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64668",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIiLNS_5Param4TypeE44EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64890",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_valloc_msg_wait"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64b70",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateItLNS_5Param4TypeE43EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64d70",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIaLNS_5Param4TypeE36EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64de0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIbLNS_5Param4TypeE39EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x64ea0",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZN3MWF12EventWrapper11SendAndRecvEPviS1_i"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x65428",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateImLNS_5Param4TypeE46EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x655e8",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "osal_free_msg"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x65640",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIcLNS_5Param4TypeE35EE7GetSizeEv"
+    },
+    {
+      "section": ".rela.plt",
+      "offset": "0x65650",
+      "type": 1026,
+      "addend": 0,
+      "symbol": "_ZNK3MWF19ParamArray_TemplateIjLNS_5Param4TypeE38EE7GetSizeEv"
+    }
+  ]
+}

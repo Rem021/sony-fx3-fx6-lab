@@ -1,0 +1,110 @@
+000022e0 stp        x29, x30, [sp, #-0x170]!
+000022e4 mov        x2, #0x100
+000022e8 mov        w1, #0
+000022ec mov        x29, sp
+000022f0 stp        x19, x20, [sp, #0x10]
+000022f4 add        x19, x29, #0x70
+000022f8 mov        x0, x19
+000022fc stp        x21, x22, [sp, #0x20]
+00002300 stp        x23, x24, [sp, #0x30]
+00002304 adrp       x20, #0x15000
+00002308 bl         #0x1380 ; memset
+0000230c str        wzr, [x29, #0x4c]
+00002310 adrp       x4, #0x3000
+00002314 adrp       x3, #0x15000
+00002318 adrp       x2, #0x3000
+0000231c add        x4, x4, #0xda7 ; literal 'LENSDATA.DAT'
+00002320 add        x3, x3, #0x218
+00002324 add        x2, x2, #0xe2d ; literal '%s/%s'
+00002328 mov        x0, x19
+0000232c mov        x1, #0xff
+00002330 bl         #0x14c0 ; snprintf
+00002334 mov        x0, x19
+00002338 bl         #0x1530 ; udtr_write_firm_from_media
+0000233c uxth       w19, w0
+00002340 cbz        w19, #0x2360
+00002344 str        wzr, [x20, #0x204]
+00002348 mov        w0, w19
+0000234c ldp        x19, x20, [sp, #0x10]
+00002350 ldp        x21, x22, [sp, #0x20]
+00002354 ldp        x23, x24, [sp, #0x30]
+00002358 ldp        x29, x30, [sp], #0x170
+0000235c ret        
+00002360 mov        w0, #1
+00002364 add        x1, x29, #0x58
+00002368 str        w0, [x20, #0x204]
+0000236c adrp       x0, #0x15000
+00002370 add        x0, x0, #0x188
+00002374 ldp        x2, x3, [x0, #0x30]
+00002378 ldr        x0, [x0, #0x40]
+0000237c stp        x2, x3, [x1]
+00002380 mov        w3, #0
+00002384 str        x0, [x29, #0x68]
+00002388 adrp       x0, #0x3000
+0000238c add        x0, x0, #0xd70 ; literal '/usr/bin/crypter.elf'
+00002390 mov        w2, #3
+00002394 bl         #0x1450 ; stm_system
+00002398 mov        w19, w0
+0000239c bl         #0x14f0 ; __errno_location
+000023a0 ldr        w0, [x0]
+000023a4 cmp        w0, #0xa
+000023a8 b.eq       #0x23c4
+000023ac tst        x19, #0x7f
+000023b0 b.eq       #0x23bc
+000023b4 mov        w19, #2
+000023b8 b          #0x2348
+000023bc ubfx       x19, x19, #8, #8
+000023c0 cbnz       w19, #0x23b4
+000023c4 adrp       x19, #0x3000
+000023c8 adrp       x22, #0x3000
+000023cc add        x19, x19, #0xdb4 ; literal '/tmp_updater/updater/update/accsy/ACCYFIRM.BIN'
+000023d0 mov        x0, x19 ; literal '/tmp_updater/updater/update/accsy/ACCYFIRM.BIN'
+000023d4 bl         #0x1520 ; udtr_get_file_size
+000023d8 mov        w21, w0
+000023dc tbz        w0, #0x1f, #0x23f0
+000023e0 add        x0, x22, #0xde3
+000023e4 bl         #0x1550 ; umount
+000023e8 str        wzr, [x20, #0x204]
+000023ec b          #0x23b4
+000023f0 add        x24, x29, #0x50
+000023f4 add        x23, x29, #0x48
+000023f8 add        x4, x29, #0x4c
+000023fc mov        x3, x24
+00002400 mov        x2, x23
+00002404 mov        w1, #0
+00002408 mov        w0, #0x1b2
+0000240c bl         #0x1310 ; udtr_alloc_dmm
+00002410 cbnz       w0, #0x23e0
+00002414 ldr        x1, [x29, #0x50]
+00002418 mov        w2, w21
+0000241c mov        x0, x19
+00002420 bl         #0x13a0 ; udtr_copy2dmm
+00002424 tst        w0, #0xffff
+00002428 b.eq       #0x2438
+0000242c ldr        w0, [x29, #0x48]
+00002430 bl         #0x1590 ; udtr_free_dmm
+00002434 b          #0x23e0
+00002438 add        x0, x22, #0xde3
+0000243c bl         #0x1550 ; umount
+00002440 str        wzr, [x20, #0x204]
+00002444 mov        x1, x24
+00002448 mov        x0, x23
+0000244c bl         #0x21b8
+00002450 tst        w0, #0xffff
+00002454 b.eq       #0x2464
+00002458 ldr        w0, [x29, #0x48]
+0000245c bl         #0x1590 ; udtr_free_dmm
+00002460 b          #0x23b4
+00002464 bl         #0x1dbc
+00002468 bl         #0x1330 ; udtr_conv_stat2err
+0000246c uxth       w19, w0
+00002470 cbz        w19, #0x2480
+00002474 ldr        w0, [x29, #0x48]
+00002478 bl         #0x1590 ; udtr_free_dmm
+0000247c b          #0x2348
+00002480 ldr        w0, [x29, #0x48]
+00002484 mov        w2, w21
+00002488 ldr        x1, [x29, #0x50]
+0000248c bl         #0x19f8
+00002490 cbnz       w0, #0x23b4
+00002494 b          #0x2348

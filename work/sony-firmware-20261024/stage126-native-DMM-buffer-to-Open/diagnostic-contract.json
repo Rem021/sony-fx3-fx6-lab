@@ -1,0 +1,257 @@
+{
+  "schema": "fx3-offline-status-diagnostic-candidate/8",
+  "status": "UNDEPLOYABLE_UNAUTHORIZED_DEVICE_USE",
+  "model": "classic ILME-FX3",
+  "firmware_sample": "7.02",
+  "address_kind": "ELF virtual addresses; actual process base and same-body identity missing",
+  "candidate_reader": {
+    "symbol": "mpr::GetMovieRecStatusInternal",
+    "ELF_entry": "0xf3f7c",
+    "output_bytes": 136,
+    "scope": "native reader/copy/unlock call order only; runtime pthread and caller context unverified"
+  },
+  "exclude_from_read_only_diagnostic": [
+    "GetMovieRecStatusForUpdate",
+    "SetMovieRecStatus",
+    "UnlockMovieRecStatus",
+    "SetMovieRecParam",
+    "RecStart",
+    "RecStop",
+    "mpr::msidconv::GetSlotID (may register new media mapping)"
+  ],
+  "status_header": 83,
+  "constructor_zero_body_does_not_mean_idle": true,
+  "state_and_parameter_queries_do_not_provide_atomic_joint_snapshot": true,
+  "three_sync_objects": {
+    "status_rwlock": "0x38d478",
+    "parameter_rwlock": "0x38cc30",
+    "integration_API_mutex": "0x372190"
+  },
+  "shared_integration_mutex_covers_all_async_writers_or_epoch": false,
+  "auxiliary_parameter_pointer_policy": "Collect length/pointer metadata only; no dereference until actual bounded region, lifetime and synchronization proven.",
+  "next_runtime_acceptance_requirements": [
+    "exact same-body loaded program identity/base and ABI",
+    "authorized non-device-writing observation route",
+    "normal caller/thread context and lock order/reentrancy",
+    "real valid entries, media/slot and state semantics",
+    "full immutable value/auxiliary ownership snapshot and actual record instance relation",
+    "all Start/Stop/async completion and config writers mapped into a verified synchronization/lifetime contract",
+    "distinguish selected slot byte from hardware completion for same recording instance",
+    "verify existing media-to-slot mapping without introducing converter registration side effects",
+    "normal Start reply producer and event/status content for same actual instance",
+    "actual callback-record allocation/registration/reuse and execRecMovie serialization",
+    "do not use thumbnailId as configuration epoch or return0 as hardware success",
+    "separate execqueue block lifetime from external384-byte callback records; do not reclaim either from a queue-empty or local return observation alone",
+    "observe in-flight callback entry/return and capture owned instance data before actual record free; do not gate on aggregate0, callback-pointer0 or event100a alone",
+    "capture all relevant record counts/index provenance, actual Close dispatch/reply and each buffer/DMM cleanup outcome; mode-word0 or completed Close task alone cannot release the runtime gate",
+    "bind actual DMM mode flags and full healthy parameter source; verify allocation/buffer geometry/ownership and downstream MAIN16M acceptance, not only type-only mode equality or free bool",
+    "verify actual DMM-produced node addresses/sizes/leases and full healthy Model metadata before using buffer/Open field lineage; original clear98 removes old-fill dependence only in the tested single-stream caller"
+  ],
+  "runtime_idle_epoch_or_record_start_admission_available": false,
+  "camera_interface_or_code_load_or_persistent_write_permitted": false,
+  "actual_MAIN_hardware_recording_backup_restore_or_rescue_proven": false,
+  "refined_in_stage": "stage126-native-DMM-buffer-to-Open",
+  "slot_state_evidence": {
+    "first_byte_offset": "0x0c",
+    "stride_bytes": 16,
+    "count": 4,
+    "producer": "GetStartSlotId accepted slot/boolean records, before this RecStart queue calls",
+    "not_encoder_Open_Start_completion_or_actual_idle": true,
+    "all_input_indices_in_this_run_declared_0_to_3": true
+  },
+  "media_ID_to_slot_policy": "Do not call GetSlotID for supposedly read-only resolution. Preserve raw IDs; require separately proven existing association and bounds; reject unknown/full/sentinel indices.",
+  "GetSlotID_body": {
+    "entry_ELF": "0x9a95c",
+    "record_count": 4,
+    "record_stride": "0x80",
+    "ID_offset": "0x7c",
+    "new_ID_can_write_first_free_slot": true,
+    "full_no_match_return_u32": 4294967295,
+    "actual_current_table_not_observed": true
+  },
+  "Start_observation": {
+    "single_stream_request": {
+      "CodecType": 32,
+      "declared_FileFormat": 15,
+      "count": 1,
+      "ViewId": 0
+    },
+    "reply_storage_bytes": 48,
+    "wire_valid_length_and_allocation_lease_not_proven": true,
+    "expected_factor": 4099,
+    "synthetic_matching_reply": {
+      "MID": 1248,
+      "subcode": 3,
+      "factor": 4099
+    },
+    "post_wait_bool_and_API_return_do_not_check_declared_reply_status14": true,
+    "capture_fields_required": [
+      "native API return",
+      "actual wait/error state",
+      "expected event and raw reply event",
+      "reply status+14",
+      "actual valid payload length and allocation/owned snapshot lifetime",
+      "real request/callback-record/recording-instance identity",
+      "later async error/completion and actual encoded file"
+    ],
+    "Start5a_source": "request+1; static Enqueue source is ConvertWriterIdListForShotId",
+    "Start5c_source": "request+2 from s_thumbnailId; thumbnail identifier, not config epoch",
+    "callback_records": {
+      "request_pointer_offset": "0x30",
+      "static_Enqueue_origin": "MovieRecInfo+0xa48",
+      "count": 4,
+      "stride": "0x60",
+      "callback_offset": "0x10",
+      "on_declared_API_zero": "prepare NotifyMovieRecError pointers",
+      "on_declared_nonzero": "same pointer/error-code handoff before fanout",
+      "actual_owner_lifetime_active_entries_and_instance_binding_proven": false
+    }
+  },
+  "legacy_run_label_correction": {
+    "field": "sequence_byte_at_Start5c",
+    "correct_meaning": "thumbnail_id_at_Start5c",
+    "reason": "Original s_thumbnailId GOT relocation and byte handoff; raw executed source/result retained without rewriting.",
+    "does_not_rename_other_independent_STOP_seq_id_fields": true
+  },
+  "callback_record_lifetime": {
+    "allocator_ELF": "0xfbf84",
+    "allocation_bytes": 384,
+    "record_count": 4,
+    "record_stride": 96,
+    "constructor_unwritten_padding_bytes": 28,
+    "lookup_register_ELF": "0xfc074",
+    "release_wrapper_ELF": "0xfbff8",
+    "actual_allocator_or_record_lifetime_proven": false,
+    "queue_descriptor_bytes": 36512,
+    "descriptor_callback_pointer_offset": "0x30",
+    "descriptor_function_pointer_offset": "0x8e98",
+    "worker_original_indirect_target_in_guest": "mpr::ExecEncStart",
+    "copied_pointer_does_not_mean_owned_snapshot": true,
+    "queue_pop_delete_argument_is_queue_block_in_declared_case": true,
+    "queue_empty_or_pop_not_all_async_callbacks_complete": true,
+    "required_before_runtime_reclamation": [
+      "actual record allocation/instance and active-key association",
+      "all queued/current descriptors and producers observed",
+      "all asynchronous error/completion callbacks finished or safely unregistered",
+      "complete cancel/stop and worker lifetime contract",
+      "actual same-body backup/restore readback and independent rescue requirements remain"
+    ]
+  },
+  "record_result_and_finish": {
+    "aggregate_ELF": "0xfc3a0",
+    "aggregate_scope": "first nonzero of four result words at record+8; no active/callback tests in executed scan",
+    "aggregate_zero_is_not_global_quiescence": true,
+    "single_error_handler_ELF": "0xfc168",
+    "callback_pointer_cleared_before_unlock_and_actual_call": true,
+    "zero_callback_pointer_is_not_callback_return_proof": true,
+    "notifier_symbol": "mpr::NotifyAllMovieWriteFinishedParam",
+    "notifier_ELF": "0xcb508",
+    "record_free_call_precedes_event_preparation": true,
+    "event_type": 4106,
+    "event_payload_bytes": 8,
+    "event_payload_scope": "type and aggregate result only; not record snapshot or config epoch",
+    "capture_record_information_before_free_with_verified_allocation_lease": true,
+    "source_MovieRecInfo_pointer_clear_or_queued_Close_does_not_prove_release_completion": true,
+    "actual_upstream_gate_full_Close_all_async_callbacks_and_recovery_proven": false
+  },
+  "Close_observation": {
+    "counter_symbol": "mpr::s_recordCounter",
+    "counter_bytes": 4,
+    "counter_elements_are_bytes": true,
+    "Close_sum_uses_s_movieRecInfo_index_list": true,
+    "tested_list_count": 1,
+    "tested_valid_indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "control_word_request24_static_origin": "MovieRecInfo+a6c",
+    "remaining_nonzero_can_bypass_Codec_Close": true,
+    "counter_is_not_proven_reference_count_of_all_hardware_consumers": true,
+    "single_Close_call": {
+      "CodecType": 32,
+      "declared_FileFormat": 15,
+      "count": 1,
+      "ViewId": 0,
+      "parameter_bytes": 16,
+      "reply_storage_bytes": 48
+    },
+    "expected_factor": 4102,
+    "synthetic_matching_reply": {
+      "MID": 1248,
+      "subcode": 9,
+      "factor": 4102
+    },
+    "mode_word_cleared_in_both_declared_DMM_false_and_true_tail": true,
+    "mode_word_zero_or_Close_task_return_not_shutdown_or_DMM_free_proof": true,
+    "observed_nested_lock_order": "ExecEncClose integration-record lock then record-counter lock; actual locks/reentrancy and complete hierarchy unverified",
+    "observe_actual_Codec_reply_DMM_and_stream_buffer_delete_results": true,
+    "actual_global_quiescence_recovery_proven": false
+  },
+  "frontend_DMM_selection": {
+    "reused_frontend_stage": "stage117-native-audio-proxy-admission",
+    "source_result_sha256": "c7046deaaca85b1b7f4778b468936e7125bf621419fce255af488dcb3a0a5120",
+    "native_param_value_copy_bytes": 445,
+    "native_Model_parameter_offset": "0x58",
+    "original_type": 5,
+    "candidate_type": 6,
+    "paired_cases": 16,
+    "observed_modes": [
+      21,
+      25,
+      31,
+      32
+    ],
+    "all_paired_modes_equal": true,
+    "Model_word0_inputs": [
+      1,
+      2
+    ],
+    "word0_actual_business_source_unproven": true,
+    "earlier_parameter_initialization_complete_and_natural_menu_reachability_proven": false,
+    "same_mode_does_not_establish_physical_allocation_size_owner_or_encoder_support": true,
+    "actual_DMM_allocation_or_usable_MAIN_recording_proven": false
+  },
+  "DMM_free_return_scope": {
+    "valid_observed_modes": "original table selected; stopped before RemoveAreaExtList",
+    "positive_out_of_range_mode39_native_return": 1,
+    "negative_mode_minus1_native_return": 0,
+    "true_can_come_from_no_removal_range_branch": true,
+    "no_claim_real_callers_use_invalid_mode_or_actual_leak": true
+  },
+  "buffer_to_Open_lineage": {
+    "mode_unit_counts": {
+      "21": 7,
+      "25": 10,
+      "31": 13,
+      "32": 19
+    },
+    "original_unit_table_rows_preserved": true,
+    "actual_runtime_nodes_are_declared_not_allocator_outputs": true,
+    "native_SetMemTbl_output_bytes": 1888,
+    "native_Enqueue_prefix_matches_BufferTable": true,
+    "declared_Model_metadata40_44": "[1,proxy_enabled] supplied independently of sealed frontend parameter bytes",
+    "single_stream_original_clear_bytes": 152,
+    "single_stream_known_old_fill_independence_modes": [
+      21,
+      25
+    ],
+    "single_stream_core": {
+      "geometry": [
+        1920,
+        1080
+      ],
+      "video_byte66": 15,
+      "quality_byte82": 22,
+      "chroma94": 0,
+      "depth95": 1
+    },
+    "dual_stream_setup_unexecuted_modes": [
+      31,
+      32
+    ],
+    "numeric_address_field_propagation_not_DMA_MMU_or_ownership_proof": true,
+    "complete_valid_Open_or_16M_MAIN_encoding_proven": false
+  }
+}

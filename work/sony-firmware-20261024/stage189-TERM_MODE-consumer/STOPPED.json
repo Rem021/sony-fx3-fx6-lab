@@ -1,0 +1,19 @@
+{
+  "status": "STOPPED_AFTER_USER_CLEARED_PERSISTENT_GOAL",
+  "stopped_utc": "2026-10-29T18:01:27.824839+00:00",
+  "latest_sealed_stage": "stage188-static-ELF-link-and-explicit-entry",
+  "retained_release": "outputs/fx3-recovery-adapter/releases/fx3-recovery-adapter-0.4.0.zip",
+  "completed_before_stop": [
+    "stage188 static Linux ELF +47 local tests sealed",
+    "stage189 readonly AP inventory532 ELFs completed"
+  ],
+  "partial_findings_not_final_conclusions": [
+    "TERM_MODE record0x003d025f/family0601/801f; actual consumer remains unbound",
+    "Core HostCommunicationCommand uses /var/fifo/sen_host_req/res; do not assume TERM_MODE selects it without proving branch"
+  ],
+  "no_new_goal_created_or_resumed": true,
+  "new_camera_or_USB_operations": 0,
+  "firmware_written": false,
+  "no_pending_device_calls_or_tool_commands": true,
+  "canonical_GOAL_STATUS_retained_as_last_research_snapshot_not_active_goal": true
+}

@@ -1,0 +1,81 @@
+{
+  "evidence_level": "static extracted binaries only; candidate identification is not algorithm recovery",
+  "candidates": [
+    {
+      "path": "nflasha15-files/lib/appFw.so",
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "elf": {
+        "class": 64,
+        "endian": "little",
+        "type": 3,
+        "machine": 183,
+        "machine_name": "AArch64"
+      },
+      "reason": "AP application ELF with Colorimetry state entry and UI symbols; control/menu candidate, not pixel processor",
+      "symbols": {
+        "dynsym_count": 913,
+        "examples": [
+          "_ZN26C_DataflowInfra_StdData_YC24SetEntry_ImageOutTimInfoEP37C_DataflowInfra_Entry_ImageOutTimInfo",
+          "_ZN19DataflowInfraSender9SendASyncEjP16DataflowInfraMsg",
+          "_ZN37C_DataflowInfra_Entry_ImageOutTimInfoD1Ev",
+          "_ZN35C_DataflowInfra_Entry_ImageSizeInfoD1Ev",
+          "_ZN35C_DataflowInfra_Entry_ImageSizeInfo18SetData_ValidSizeXEt",
+          "_ZN37C_DataflowInfra_Entry_ImageOutTimInfoC1Ev",
+          "_ZN33C_DataflowInfra_Entry_YcStateInfo22SetData_CopyProtectionEh",
+          "_ZN16DataflowInfraMsgC1Ev",
+          "_ZN35C_DataflowInfra_Entry_ImageSizeInfo11SetData_AllEPN19DataflowInfra_StdYc22PIN_YC_IMAGE_SIZE_INFOE",
+          "_ZN33C_DataflowInfra_Entry_YcStateInfo16SetData_ScanlineEh",
+          "_ZN35C_DataflowInfra_Entry_ImageSizeInfo18SetData_UnitHandleEj",
+          "_ZN16DataflowInfraMsg12SetGlobalMsgEPvt"
+        ]
+      }
+    },
+    {
+      "path": "nflasha15-files/lib/libmpr.so",
+      "sha256": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e",
+      "elf": {
+        "class": 64,
+        "endian": "little",
+        "type": 3,
+        "machine": 183,
+        "machine_name": "AArch64"
+      },
+      "reason": "media pipeline ELF exposes VideoParamComb ColorFormat and still RawInfo/RawSet symbol families; recording/control candidate, demosaic unproven",
+      "symbols": {
+        "dynsym_count": 4771,
+        "examples": [
+          "_ZN3mpr11stillrecord5_freeERKNS_18recordStillInParamEPNS_18recordStillParam_tERA2_PN9DefStruct7JpgInfoERA2_PNS6_7RawInfoERA2_PNS6_7HifInfoERA2_N5still8common_tEb",
+          "_ZN3mpr3dbg6RawSetD0Ev",
+          "_ZTVN3mpr3dbg6RawSetE",
+          "_ZN3mpr17GetVideoParamCombEN9DefStruct10VideoCodecENS0_15VideoResolutionENS0_11ColorFormatENS0_13VideoBitDepthENS0_12GopStructureE",
+          "_ZN3mpr3dbg6RawSetD1Ev",
+          "_ZN3mpr11stillrecord24_add_if_for_scn_transferEPKNS_18recordStillInParamENS_9StillTypeEPN9DefStruct7JpgInfoEPNS5_7RawInfoEPNS5_7HifInfoEPNS_18recordStillParam_tEPhPP8libstillPS4_PbSJ_P10dmm_munmap",
+          "_ZN3mpr3dbg6RawSetD2Ev",
+          "_ZN3mpr3dbg6RawSet4nextEPNS_17StillPictureParamE",
+          "_ZN3mpr11stillrecord7_shrareERKNS_18recordStillInParamEPNS_18recordStillParam_tERA2_PN9DefStruct7JpgInfoERA2_PNS6_7RawInfoERA2_PNS6_7HifInfoERA2_N5still8common_tEbPP10dmm_munmap",
+          "_ZN3mpr11stillrecord14_make_add_if_tEPKNS_18recordStillInParamENS_9StillTypeEPN9DefStruct7JpgInfoEPNS5_7RawInfoEPNS5_7HifInfoEPNS_18recordStillParam_tEPhbbPN5still8add_if_tEPNS0_13sidb_update_tEP10dmm_munmap",
+          "_ZN3mpr11stillrecord6_cacheERKNS_18recordStillInParamEPNS_18recordStillParam_tERA2_PN9DefStruct7JpgInfoERA2_PNS6_7RawInfoERA2_PNS6_7HifInfoERA2_N5still8common_tERA2_P8libstillbPP10dmm_munmap"
+        ]
+      }
+    },
+    {
+      "path": "fat-files/nflasha8/cpapp-b.bin",
+      "sha256": "60de0ab5544749dd50d8245f573c0994573fef349186efe20b502c42e3289668",
+      "elf": null,
+      "reason": "CP-named image from nflasha8; code format, processor, ISP function and boundaries unproven"
+    },
+    {
+      "path": "fat-files/nflasha3/av-cam.bin",
+      "sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+      "elf": null,
+      "reason": "AV/camera-named image from nflasha3; code format, processor and sensor pipeline function unproven"
+    },
+    {
+      "path": "tree/0700_part_image/dev/nflasha5",
+      "sha256": "d33f0bd9c305cd9217815cd1e1a4fd86ea48b28ddbbbe6c581c8665dc5fde2d1",
+      "elf": null,
+      "reason": "WBI2 static memory image, 1197 section records; not reconstructed or attributed to ISP"
+    }
+  ],
+  "next_precise_action": "Map CP/AV image headers and AP exported/imported IPC edges, then verify candidate functions against fixed RAW input/output; no module recovery claimed"
+}

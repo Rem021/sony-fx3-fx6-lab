@@ -1,0 +1,993 @@
+{
+  "source": {
+    "path_in_image": "/kmod/crypt-emmc.ko",
+    "inode": 72,
+    "bytes": 14592,
+    "sha256": "521589c8eac8b851f1cab29f95f449c7bbaf31639a01331d3bf0ca8866b488b8",
+    "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/crypt-emmc.ko"
+  },
+  "elf_type": "ET_REL",
+  "functions_and_objects": [
+    {
+      "name": "udif_cryptEmmc",
+      "offset": 16,
+      "bytes": 128,
+      "section": ".data",
+      "kind": "STT_OBJECT"
+    },
+    {
+      "name": "__this_module",
+      "offset": 0,
+      "bytes": 768,
+      "section": ".gnu.linkonce.this_module",
+      "kind": "STT_OBJECT"
+    },
+    {
+      "name": "cleanup_module",
+      "offset": 0,
+      "bytes": 40,
+      "section": ".exit.text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "cryptEmmc_setParam",
+      "offset": 1592,
+      "bytes": 20,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "init_module",
+      "offset": 0,
+      "bytes": 40,
+      "section": ".init.text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "cryptEmmc_lock",
+      "offset": 2216,
+      "bytes": 136,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "cryptEmmc_reset",
+      "offset": 2496,
+      "bytes": 132,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "g_aes_xts",
+      "offset": 16,
+      "bytes": 40,
+      "section": ".bss",
+      "kind": "STT_OBJECT"
+    },
+    {
+      "name": "DRV_NMdbg_level",
+      "offset": 0,
+      "bytes": 4,
+      "section": ".data",
+      "kind": "STT_OBJECT"
+    },
+    {
+      "name": "cryptEmmc_setKey",
+      "offset": 1616,
+      "bytes": 584,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "cryptEmmc_pio_read",
+      "offset": 248,
+      "bytes": 140,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "aes_xts_init",
+      "offset": 2368,
+      "bytes": 108,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "cryptEmmc_setKeyCovertly",
+      "offset": 136,
+      "bytes": 92,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "cryptEmmc_wrapper_reset",
+      "offset": 3344,
+      "bytes": 28,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "cryptEmmc_pio_write",
+      "offset": 400,
+      "bytes": 328,
+      "section": ".text",
+      "kind": "STT_FUNC"
+    },
+    {
+      "name": "cryptEmmc_mutex",
+      "offset": 64,
+      "bytes": 40,
+      "section": ".bss",
+      "kind": "STT_OBJECT"
+    },
+    {
+      "name": "DRV_NMnum_ident",
+      "offset": 56,
+      "bytes": 4,
+      "section": ".bss",
+      "kind": "STT_OBJECT"
+    }
+  ],
+  "selected_strings": [
+    {
+      "file_offset": 4108,
+      "text": "/home/jp10239/git-work/build/git_root/BuildWorkSpace/Etools-Crypt-eMMC_191H/driver/cryptEmmc.c"
+    },
+    {
+      "file_offset": 4203,
+      "text": "/home/jp10239/git-work/build/git_root/BuildWorkSpace/Etools-Crypt-eMMC_191H/driver/cryptEmmc.c"
+    },
+    {
+      "file_offset": 4298,
+      "text": "/home/jp10239/git-work/build/git_root/BuildWorkSpace/Etools-Crypt-eMMC_191H/driver/dev_cryptEmmc.c"
+    },
+    {
+      "file_offset": 4456,
+      "text": "drv_cryptEmmc_resume (%p, %d, %p)"
+    },
+    {
+      "file_offset": 4497,
+      "text": " cryptEmmc_hw_init Failed(%d)."
+    },
+    {
+      "file_offset": 4528,
+      "text": "&cryptEmmc_mutex"
+    },
+    {
+      "file_offset": 4545,
+      "text": "cryptEmmc_reset"
+    },
+    {
+      "file_offset": 4561,
+      "text": "cryptEmmc_pio_read"
+    },
+    {
+      "file_offset": 4580,
+      "text": "cryptEmmc_pio_write"
+    },
+    {
+      "file_offset": 4600,
+      "text": "cryptEmmc_lock"
+    },
+    {
+      "file_offset": 4615,
+      "text": "cryptEmmc_setParam"
+    },
+    {
+      "file_offset": 4634,
+      "text": "cryptEmmc_setKey"
+    },
+    {
+      "file_offset": 4651,
+      "text": "udif_cryptEmmc"
+    },
+    {
+      "file_offset": 4666,
+      "text": "cryptEmmc_wrapper_reset"
+    },
+    {
+      "file_offset": 4690,
+      "text": "cryptEmmc_setKeyCovertly"
+    },
+    {
+      "file_offset": 4720,
+      "text": "description=Crypto-eMMC specific function"
+    },
+    {
+      "file_offset": 4875,
+      "text": "description=Crypto-eMMC specific function"
+    },
+    {
+      "file_offset": 5200,
+      "text": "crypt-emmc"
+    },
+    {
+      "file_offset": 5400,
+      "text": "crypt_emmc"
+    },
+    {
+      "file_offset": 9211,
+      "text": "udif_cryptEmmc"
+    },
+    {
+      "file_offset": 9291,
+      "text": "cryptEmmc_setParam"
+    },
+    {
+      "file_offset": 9322,
+      "text": "cryptEmmc_lock"
+    },
+    {
+      "file_offset": 9337,
+      "text": "cryptEmmc_reset"
+    },
+    {
+      "file_offset": 9379,
+      "text": "cryptEmmc_setKey"
+    },
+    {
+      "file_offset": 9396,
+      "text": "cryptEmmc_pio_read"
+    },
+    {
+      "file_offset": 9495,
+      "text": "cryptEmmc_setKeyCovertly"
+    },
+    {
+      "file_offset": 9533,
+      "text": "cryptEmmc_wrapper_reset"
+    },
+    {
+      "file_offset": 9557,
+      "text": "cryptEmmc_pio_write"
+    },
+    {
+      "file_offset": 9577,
+      "text": "cryptEmmc_mutex"
+    }
+  ],
+  "relocations": [
+    {
+      "section": ".text",
+      "offset": 120,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 128,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 216,
+      "type": 283,
+      "symbol": "cryptEmmc_setKey",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 392,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": ".text",
+      "offset": 720,
+      "type": 283,
+      "symbol": "printk",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 728,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": ".text",
+      "offset": 736,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 924,
+      "type": 283,
+      "symbol": "printk",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 1568,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": ".text",
+      "offset": 1576,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 1584,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2056,
+      "type": 283,
+      "symbol": "cryptEmmc_pio_read",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2104,
+      "type": 283,
+      "symbol": "cryptEmmc_pio_write",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2200,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2208,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": ".text",
+      "offset": 2296,
+      "type": 283,
+      "symbol": "mutex_lock",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2344,
+      "type": 283,
+      "symbol": "mutex_unlock",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2352,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2360,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": ".text",
+      "offset": 2480,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2488,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": ".text",
+      "offset": 2536,
+      "type": 283,
+      "symbol": "aes_xts_init",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2632,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2640,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": ".text",
+      "offset": 2728,
+      "type": 283,
+      "symbol": "printk",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2748,
+      "type": 283,
+      "symbol": "cryptEmmc_setKeyCovertly",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2820,
+      "type": 283,
+      "symbol": "aes_xts_init",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2836,
+      "type": 283,
+      "symbol": "printk",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2848,
+      "type": 257,
+      "symbol": "",
+      "addend": 56
+    },
+    {
+      "section": ".text",
+      "offset": 2856,
+      "type": 257,
+      "symbol": "",
+      "addend": 104
+    },
+    {
+      "section": ".text",
+      "offset": 2864,
+      "type": 257,
+      "symbol": "g_aes_xts",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 2872,
+      "type": 257,
+      "symbol": "",
+      "addend": 96
+    },
+    {
+      "section": ".text",
+      "offset": 2988,
+      "type": 283,
+      "symbol": "cryptEmmc_setKeyCovertly",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3040,
+      "type": 283,
+      "symbol": "cryptEmmc_setKeyCovertly",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3116,
+      "type": 283,
+      "symbol": "aes_xts_init",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3132,
+      "type": 283,
+      "symbol": "printk",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3160,
+      "type": 257,
+      "symbol": "g_aes_xts",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3168,
+      "type": 257,
+      "symbol": "",
+      "addend": 104
+    },
+    {
+      "section": ".text",
+      "offset": 3176,
+      "type": 257,
+      "symbol": "",
+      "addend": 96
+    },
+    {
+      "section": ".text",
+      "offset": 3228,
+      "type": 283,
+      "symbol": "__mutex_init",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3304,
+      "type": 257,
+      "symbol": "g_aes_xts",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3312,
+      "type": 257,
+      "symbol": "",
+      "addend": 104
+    },
+    {
+      "section": ".text",
+      "offset": 3320,
+      "type": 257,
+      "symbol": "",
+      "addend": 128
+    },
+    {
+      "section": ".text",
+      "offset": 3328,
+      "type": 257,
+      "symbol": "cryptEmmc_mutex",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3336,
+      "type": 257,
+      "symbol": "",
+      "addend": 8
+    },
+    {
+      "section": ".text",
+      "offset": 3352,
+      "type": 283,
+      "symbol": "cryptEmmc_reset",
+      "addend": 0
+    },
+    {
+      "section": ".text",
+      "offset": 3360,
+      "type": 283,
+      "symbol": "cryptEmmc_setKeyCovertly",
+      "addend": 0
+    },
+    {
+      "section": ".init.text",
+      "offset": 28,
+      "type": 283,
+      "symbol": "udif_driver_register",
+      "addend": 0
+    },
+    {
+      "section": ".init.text",
+      "offset": 40,
+      "type": 257,
+      "symbol": "",
+      "addend": 8
+    },
+    {
+      "section": ".exit.text",
+      "offset": 28,
+      "type": 283,
+      "symbol": "udif_driver_unregister",
+      "addend": 0
+    },
+    {
+      "section": ".exit.text",
+      "offset": 40,
+      "type": 257,
+      "symbol": "",
+      "addend": 8
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 0,
+      "type": 257,
+      "symbol": "cryptEmmc_lock",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 8,
+      "type": 257,
+      "symbol": "",
+      "addend": 55
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 16,
+      "type": 257,
+      "symbol": "cryptEmmc_pio_read",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 24,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 32,
+      "type": 257,
+      "symbol": "cryptEmmc_pio_write",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 40,
+      "type": 257,
+      "symbol": "",
+      "addend": 35
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 48,
+      "type": 257,
+      "symbol": "cryptEmmc_reset",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 56,
+      "type": 257,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 64,
+      "type": 257,
+      "symbol": "cryptEmmc_setKey",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 72,
+      "type": 257,
+      "symbol": "",
+      "addend": 89
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 80,
+      "type": 257,
+      "symbol": "cryptEmmc_setKeyCovertly",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 88,
+      "type": 257,
+      "symbol": "",
+      "addend": 145
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 96,
+      "type": 257,
+      "symbol": "cryptEmmc_setParam",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 104,
+      "type": 257,
+      "symbol": "",
+      "addend": 70
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 112,
+      "type": 257,
+      "symbol": "cryptEmmc_wrapper_reset",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 120,
+      "type": 257,
+      "symbol": "",
+      "addend": 121
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 128,
+      "type": 257,
+      "symbol": "udif_cryptEmmc",
+      "addend": 0
+    },
+    {
+      "section": "__ksymtab",
+      "offset": 136,
+      "type": 257,
+      "symbol": "",
+      "addend": 106
+    },
+    {
+      "section": ".rodata",
+      "offset": 0,
+      "type": 257,
+      "symbol": "",
+      "addend": 144
+    },
+    {
+      "section": ".rodata",
+      "offset": 8,
+      "type": 257,
+      "symbol": "",
+      "addend": 16
+    },
+    {
+      "section": ".rodata",
+      "offset": 272,
+      "type": 257,
+      "symbol": "udif_devices",
+      "addend": 720
+    },
+    {
+      "section": ".altinstructions",
+      "offset": 0,
+      "type": 261,
+      "symbol": "",
+      "addend": 236
+    },
+    {
+      "section": ".altinstructions",
+      "offset": 4,
+      "type": 261,
+      "symbol": "",
+      "addend": 0
+    },
+    {
+      "section": "__bug_table",
+      "offset": 0,
+      "type": 261,
+      "symbol": "",
+      "addend": 724
+    },
+    {
+      "section": "__bug_table",
+      "offset": 4,
+      "type": 261,
+      "symbol": ".L2\u00021",
+      "addend": 4
+    },
+    {
+      "section": "__bug_table",
+      "offset": 12,
+      "type": 261,
+      "symbol": "",
+      "addend": 928
+    },
+    {
+      "section": "__bug_table",
+      "offset": 16,
+      "type": 261,
+      "symbol": ".L2\u00022",
+      "addend": 4
+    },
+    {
+      "section": "__bug_table",
+      "offset": 24,
+      "type": 261,
+      "symbol": "",
+      "addend": 3296
+    },
+    {
+      "section": "__bug_table",
+      "offset": 28,
+      "type": 261,
+      "symbol": ".L2\u00021",
+      "addend": 4
+    },
+    {
+      "section": "__param",
+      "offset": 0,
+      "type": 257,
+      "symbol": "",
+      "addend": 288
+    },
+    {
+      "section": "__param",
+      "offset": 8,
+      "type": 257,
+      "symbol": "__this_module",
+      "addend": 0
+    },
+    {
+      "section": "__param",
+      "offset": 16,
+      "type": 257,
+      "symbol": "param_ops_uint",
+      "addend": 0
+    },
+    {
+      "section": "__param",
+      "offset": 32,
+      "type": 257,
+      "symbol": "",
+      "addend": 8
+    },
+    {
+      "section": "__param",
+      "offset": 40,
+      "type": 257,
+      "symbol": "",
+      "addend": 304
+    },
+    {
+      "section": "__param",
+      "offset": 48,
+      "type": 257,
+      "symbol": "__this_module",
+      "addend": 0
+    },
+    {
+      "section": "__param",
+      "offset": 56,
+      "type": 257,
+      "symbol": "param_ops_uint",
+      "addend": 0
+    },
+    {
+      "section": "__param",
+      "offset": 72,
+      "type": 257,
+      "symbol": "",
+      "addend": 116
+    },
+    {
+      "section": "__param",
+      "offset": 80,
+      "type": 257,
+      "symbol": "",
+      "addend": 312
+    },
+    {
+      "section": "__param",
+      "offset": 88,
+      "type": 257,
+      "symbol": "__this_module",
+      "addend": 0
+    },
+    {
+      "section": "__param",
+      "offset": 96,
+      "type": 257,
+      "symbol": "param_ops_uint",
+      "addend": 0
+    },
+    {
+      "section": "__param",
+      "offset": 112,
+      "type": 257,
+      "symbol": "",
+      "addend": 104
+    },
+    {
+      "section": "__param",
+      "offset": 120,
+      "type": 257,
+      "symbol": "",
+      "addend": 328
+    },
+    {
+      "section": "__param",
+      "offset": 128,
+      "type": 257,
+      "symbol": "__this_module",
+      "addend": 0
+    },
+    {
+      "section": "__param",
+      "offset": 136,
+      "type": 257,
+      "symbol": "param_ops_uint",
+      "addend": 0
+    },
+    {
+      "section": "__param",
+      "offset": 152,
+      "type": 257,
+      "symbol": "",
+      "addend": 112
+    },
+    {
+      "section": ".data",
+      "offset": 56,
+      "type": 257,
+      "symbol": "",
+      "addend": 272
+    },
+    {
+      "section": ".data",
+      "offset": 72,
+      "type": 257,
+      "symbol": "",
+      "addend": 144
+    },
+    {
+      "section": ".data",
+      "offset": 112,
+      "type": 257,
+      "symbol": "udif_cryptEmmc",
+      "addend": 96
+    },
+    {
+      "section": ".data",
+      "offset": 120,
+      "type": 257,
+      "symbol": "udif_cryptEmmc",
+      "addend": 96
+    },
+    {
+      "section": ".data",
+      "offset": 144,
+      "type": 257,
+      "symbol": "",
+      "addend": 3184
+    },
+    {
+      "section": ".data",
+      "offset": 152,
+      "type": 257,
+      "symbol": "",
+      "addend": 2648
+    },
+    {
+      "section": ".data",
+      "offset": 160,
+      "type": 257,
+      "symbol": "",
+      "addend": 2880
+    },
+    {
+      "section": ".data",
+      "offset": 184,
+      "type": 257,
+      "symbol": "",
+      "addend": 2696
+    },
+    {
+      "section": ".gnu.linkonce.this_module",
+      "offset": 344,
+      "type": 257,
+      "symbol": "init_module",
+      "addend": 0
+    },
+    {
+      "section": ".gnu.linkonce.this_module",
+      "offset": 696,
+      "type": 257,
+      "symbol": "cleanup_module",
+      "addend": 0
+    }
+  ]
+}

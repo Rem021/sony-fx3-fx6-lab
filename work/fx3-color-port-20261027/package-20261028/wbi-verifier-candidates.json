@@ -1,0 +1,983 @@
+{
+  "scope": "Raw WBI string candidates only, not live mappings or verifier function identification.",
+  "rows": [
+    {
+      "token": "BODYDATA",
+      "hits": [
+        {
+          "file_offset": "0x1cf6ff1",
+          "nearby_strings": [
+            "LENSDATA.DAT",
+            "/tmp_updater/updater/update/accsy/ACCYFIRM.BIN",
+            "/tmp_updater",
+            "/BODYDATA.DAT",
+            "size=5M",
+            "tmpfs",
+            "ufp_reboot",
+            "/setting/updater/dat4",
+            "%s/%s",
+            "posix_attr",
+            "/dev/nflasha1",
+            "/mnt/dat2",
+            "/mnt/dat3",
+            "/dev/mem"
+          ]
+        }
+      ]
+    },
+    {
+      "token": "FDAT",
+      "hits": [
+        {
+          "file_offset": "0x1cf706f",
+          "nearby_strings": [
+            "/updater/dat4",
+            "%s/%s",
+            "posix_attr",
+            "/dev/nflasha1",
+            "/mnt/dat2",
+            "/mnt/dat3",
+            "/dev/mem"
+          ]
+        }
+      ]
+    },
+    {
+      "token": "fdat",
+      "hits": [
+        {
+          "file_offset": "0x5a7c3e",
+          "nearby_strings": [
+            "ace_page_cache_page",
+            "filemap_write_and_wait_range",
+            "filemap_write_and_wait",
+            "filemap_fdatawait",
+            "filemap_fdatawait_range",
+            "filemap_flush",
+            "filemap_fdatawrite_range",
+            "filemap_fdatawrite",
+            "filemap_check_errors",
+            "delete_from_page_cache",
+            "mempool_free_pages",
+            "mempo"
+          ]
+        },
+        {
+          "file_offset": "0x5a7c50",
+          "nearby_strings": [
+            "filemap_write_and_wait_range",
+            "filemap_write_and_wait",
+            "filemap_fdatawait",
+            "filemap_fdatawait_range",
+            "filemap_flush",
+            "filemap_fdatawrite_range",
+            "filemap_fdatawrite",
+            "filemap_check_errors",
+            "delete_from_page_cache",
+            "mempool_free_pages",
+            "mempool_alloc_pages"
+          ]
+        },
+        {
+          "file_offset": "0x5a7c76",
+          "nearby_strings": [
+            "_write_and_wait",
+            "filemap_fdatawait",
+            "filemap_fdatawait_range",
+            "filemap_flush",
+            "filemap_fdatawrite_range",
+            "filemap_fdatawrite",
+            "filemap_check_errors",
+            "delete_from_page_cache",
+            "mempool_free_pages",
+            "mempool_alloc_pages",
+            "mempool_kfree",
+            "mempool_kmalloc",
+            "mempool_fre"
+          ]
+        },
+        {
+          "file_offset": "0x5a7c8f",
+          "nearby_strings": [
+            "datawait",
+            "filemap_fdatawait_range",
+            "filemap_flush",
+            "filemap_fdatawrite_range",
+            "filemap_fdatawrite",
+            "filemap_check_errors",
+            "delete_from_page_cache",
+            "mempool_free_pages",
+            "mempool_alloc_pages",
+            "mempool_kfree",
+            "mempool_kmalloc",
+            "mempool_free_slab",
+            "mempool_alloc_slab"
+          ]
+        },
+        {
+          "file_offset": "0xdde0a7",
+          "nearby_strings": [
+            "pthread_attr_init",
+            "pthread_attr_setdetachstate",
+            "pthread_create",
+            "__libc_pwrite",
+            "fdatasync",
+            "aio_init",
+            "calloc",
+            "realloc",
+            "__pthread_get_minstack",
+            "pthread_attr_setstacksize",
+            "sigfillset",
+            "pthread_attr_destroy",
+            "aio_read",
+            "aio_read64",
+            "aio_return",
+            "aio_return64"
+          ]
+        },
+        {
+          "file_offset": "0x1ef4359",
+          "nearby_strings": [
+            "_open64",
+            "__getpid",
+            "__gconv_open",
+            "__xmknodat",
+            "re_compile_pattern",
+            "__strdup",
+            "sigfillset",
+            "fdatasync",
+            "tmpfile64",
+            "__wcstoull_l",
+            "pmap_getmaps",
+            "setlinebuf",
+            "getnetbyaddr",
+            "__swprintf_chk",
+            "asctime_r",
+            "svcudp_enablecache",
+            "getnetname",
+            "addmntent",
+            "__isprint_l",
+            "argz_create"
+          ]
+        },
+        {
+          "file_offset": "0x3864f59",
+          "nearby_strings": [
+            "_open64",
+            "__getpid",
+            "__gconv_open",
+            "__xmknodat",
+            "re_compile_pattern",
+            "__strdup",
+            "sigfillset",
+            "fdatasync",
+            "tmpfile64",
+            "__wcstoull_l",
+            "pmap_getmaps",
+            "setlinebuf",
+            "getnetbyaddr",
+            "__swprintf_chk",
+            "asctime_r",
+            "svcudp_enablecache",
+            "getnetname",
+            "addmntent",
+            "__isprint_l",
+            "argz_create"
+          ]
+        },
+        {
+          "file_offset": "0x39c68a7",
+          "nearby_strings": [
+            "pthread_attr_init",
+            "pthread_attr_setde",
+            "pthread_create",
+            "__libc_pwrite",
+            "fdatasync",
+            "aio_init",
+            "calloc",
+            "__pthread_get_minstack",
+            "pthread_attr_setstacksize",
+            "sigfil@",
+            "read_attr_destroy",
+            "aio_read",
+            "aio_read64",
+            "aio_return",
+            "aio_ret"
+          ]
+        },
+        {
+          "file_offset": "0x4cc6509",
+          "nearby_strings": [
+            "m_deinit",
+            "os_setenv",
+            "os_unsetenv",
+            "os_readfile",
+            "fseek",
+            "ftell",
+            "os_file_exists",
+            "access",
+            "os_fdatasync",
+            "fflush",
+            "fileno",
+            "os_zalloc",
+            "calloc",
+            "os_memcmp_const",
+            "os_memdup",
+            "os_exec",
+            "execv",
+            "libbkdmn.so",
+            "libNetCommon.so",
+            "libInfraAccessLogWrapper.so",
+            "libpthread.so.0",
+            "libstdc"
+          ]
+        },
+        {
+          "file_offset": "0x5c2f799",
+          "nearby_strings": [
+            "timensat",
+            "__strtof_l",
+            "strstr",
+            "writev",
+            "__towupper_l",
+            "ungetc",
+            "calloc",
+            "getppid",
+            "truncate64",
+            "fdatasync",
+            "symlink",
+            "__uselocale",
+            "__wctype_l",
+            "localtime_r",
+            "statvfs",
+            "printf",
+            "chmod",
+            "inet_pton",
+            "strdup",
+            "bind_textdomain_codeset",
+            "__strtod_l",
+            "stdin",
+            "__cxa_atexit",
+            "abort",
+            "btowc"
+          ]
+        },
+        {
+          "file_offset": "0x6391799",
+          "nearby_strings": [
+            "timensat",
+            "__strtof_l",
+            "strstr",
+            "writev",
+            "__towupper_l",
+            "ungetc",
+            "calloc",
+            "getppid",
+            "truncate64",
+            "fdatasync",
+            "symlink",
+            "__uselocale",
+            "__wctype_l",
+            "localtime_r",
+            "statvfs",
+            "printf",
+            "chmod",
+            "inet_pton",
+            "strdup",
+            "bind_textdomain_codeset",
+            "__strtod_l",
+            "stdin",
+            "__cxa_atexit",
+            "abort",
+            "btowc"
+          ]
+        },
+        {
+          "file_offset": "0x6eb8818",
+          "nearby_strings": [
+            "strchrnul",
+            "swapoff",
+            "syslog",
+            "pread64",
+            "symlink",
+            "cfsetispeed",
+            "reboot",
+            "execlp",
+            "pmap_getport",
+            "fdatasync",
+            "fgets",
+            "sched_setaffinity",
+            "getpwnam",
+            "getppid",
+            "strlen",
+            "ungetc",
+            "pivot_root",
+            "prctl",
+            "xdr_enum",
+            "setitimer",
+            "sigemptyset",
+            "openlog",
+            "getaddrinfo",
+            "getchar_unlocked",
+            "memset"
+          ]
+        },
+        {
+          "file_offset": "0x74338a7",
+          "nearby_strings": [
+            "pthread_attr_init",
+            "pthread_attr_setdetachstate",
+            "pthread_create",
+            "__libc_pwrite",
+            "fdatasync",
+            "aio_init",
+            "calloc",
+            "realloc",
+            "__pthread_get_minstack",
+            "pthread_attr_setstacksize",
+            "sigfillset",
+            "pthread_attr_destroy",
+            "aio_read",
+            "aio_read64",
+            "aio_return",
+            "aio_return64"
+          ]
+        },
+        {
+          "file_offset": "0x74c7818",
+          "nearby_strings": [
+            "strchrnul",
+            "swapoff",
+            "syslog",
+            "pread64",
+            "symlink",
+            "cfsetispeed",
+            "reboot",
+            "execlp",
+            "pmap_getport",
+            "fdatasync",
+            "fgets",
+            "sched_setaffinity",
+            "getpwnam",
+            "getppid",
+            "strlen",
+            "ungetc",
+            "pivot_root",
+            "prctl",
+            "xdr_enum",
+            "setitimer",
+            "sigemptyset",
+            "openlog",
+            "getaddrinfo",
+            "getchar_unlocked",
+            "memset"
+          ]
+        },
+        {
+          "file_offset": "0x8091018",
+          "nearby_strings": [
+            "strchrnul",
+            "swapoff",
+            "syslog",
+            "pread64",
+            "symlink",
+            "cfsetispeed",
+            "reboot",
+            "execlp",
+            "pmap_getport",
+            "fdatasync",
+            "fgets",
+            "sched_setaffinity",
+            "getpwnam",
+            "getppid",
+            "strlen",
+            "ungetc",
+            "pivot_root",
+            "prctl",
+            "xdr_enum",
+            "setitimer",
+            "sigemptyset",
+            "openlog",
+            "getaddrinfo",
+            "getchar_unlocked",
+            "memset"
+          ]
+        }
+      ]
+    },
+    {
+      "token": "RSA_verify",
+      "hits": [
+        {
+          "file_offset": "0x1bbbba8",
+          "nearby_strings": [
+            "et_default_method",
+            "RSA_null_method",
+            "RSA_padding_add_PKCS1_type_2",
+            "RSA_X931_hash_id",
+            "RSA_verify_PKCS1_PSS_mgf1",
+            "RSA_verify",
+            "RSA_padding_add_PKCS1_PSS_mgf1",
+            "RSA_sign_ASN1_OCTET_STRING",
+            "RSA_sign",
+            "RSA_print",
+            "RSA_print_fp",
+            "RSA_verify_PKCS1_PSS",
+            "RSA_padding_"
+          ]
+        },
+        {
+          "file_offset": "0x1bbbbc2",
+          "nearby_strings": [
+            "_method",
+            "RSA_padding_add_PKCS1_type_2",
+            "RSA_X931_hash_id",
+            "RSA_verify_PKCS1_PSS_mgf1",
+            "RSA_verify",
+            "RSA_padding_add_PKCS1_PSS_mgf1",
+            "RSA_sign_ASN1_OCTET_STRING",
+            "RSA_sign",
+            "RSA_print",
+            "RSA_print_fp",
+            "RSA_verify_PKCS1_PSS",
+            "RSA_padding_add_PKCS1_PSS",
+            "RSA_verify_A"
+          ]
+        },
+        {
+          "file_offset": "0x1bbbc27",
+          "nearby_strings": [
+            "g_add_PKCS1_PSS_mgf1",
+            "RSA_sign_ASN1_OCTET_STRING",
+            "RSA_sign",
+            "RSA_print",
+            "RSA_print_fp",
+            "RSA_verify_PKCS1_PSS",
+            "RSA_padding_add_PKCS1_PSS",
+            "RSA_verify_ASN1_OCTET_STRING",
+            "RSA_X931_derive_ex",
+            "RSA_X931_generate_key_ex",
+            "SEED_encrypt",
+            "SEED_decrypt",
+            "SHA224",
+            "SHA256"
+          ]
+        },
+        {
+          "file_offset": "0x1bbbc56",
+          "nearby_strings": [
+            "RSA_sign",
+            "RSA_print",
+            "RSA_print_fp",
+            "RSA_verify_PKCS1_PSS",
+            "RSA_padding_add_PKCS1_PSS",
+            "RSA_verify_ASN1_OCTET_STRING",
+            "RSA_X931_derive_ex",
+            "RSA_X931_generate_key_ex",
+            "SEED_encrypt",
+            "SEED_decrypt",
+            "SHA224",
+            "SHA256",
+            "SHA384",
+            "SHA512",
+            "SHA1_Transform",
+            "SHA256_Transform"
+          ]
+        },
+        {
+          "file_offset": "0x1e8bfa8",
+          "nearby_strings": [
+            "pkey_rsa_sign",
+            "crypto/rsa/rsa_pmeth.c",
+            "RSA_print_fp",
+            "crypto/rsa/rsa_prn.c",
+            "RSA_verify_PKCS1_PSS_mgf1",
+            "RSA_padding_add_PKCS1_PSS_mgf1",
+            "crypto/rsa/rsa_pss.c",
+            "expected: %d retrieved: %d",
+            "RSA_sign"
+          ]
+        },
+        {
+          "file_offset": "0x1e8c060",
+          "nearby_strings": [
+            "sa/rsa_pss.c",
+            "expected: %d retrieved: %d",
+            "RSA_sign_ASN1_OCTET_STRING",
+            "RSA_verify_ASN1_OCTET_STRING",
+            "crypto/rsa/rsa_saos.c",
+            "SHA2-224",
+            "SHA2-384",
+            "SHA2-512",
+            "SHA2-512/224",
+            "SHA2-512/256"
+          ]
+        },
+        {
+          "file_offset": "0x47287d6",
+          "nearby_strings": [
+            "CDSA_SIG_get0",
+            "ECDSA_SIG_free",
+            "EVP_MD_CTX_new",
+            "EVP_get_digestbyname",
+            "EVP_DigestInit",
+            "RSA_verify",
+            "ECDSA_SIG_new",
+            "ECDSA_SIG_set0",
+            "ECDSA_do_verify",
+            "PEM_read_bio_ECPrivateKey",
+            "EC_KEY_generate_key",
+            "EC_GROUP_get_degree",
+            "ECDH_compute_key",
+            "EVP_DigestSignInit"
+          ]
+        },
+        {
+          "file_offset": "0x5571900",
+          "nearby_strings": [
+            "rsa_pss_keygen_md",
+            "rsa_pss_keygen_saltlen",
+            "rsa_oaep_md",
+            "rsa_oaep_label",
+            "RSA_verify_PKCS1_PSS_mgf1",
+            "RSA_padding_add_PKCS1_PSS_mgf1",
+            "crypto/rsa/rsa_pss.c",
+            "expected: %d retrieved: %d",
+            "RSA_sign"
+          ]
+        },
+        {
+          "file_offset": "0x55719b8",
+          "nearby_strings": [
+            "sa/rsa_pss.c",
+            "expected: %d retrieved: %d",
+            "RSA_sign_ASN1_OCTET_STRING",
+            "RSA_verify_ASN1_OCTET_STRING",
+            "crypto/rsa/rsa_saos.c",
+            "SHA2-224",
+            "SHA2-256",
+            "SHA2-384",
+            "SHA2-512",
+            "SHA2-512/224",
+            "SHA2-512/256"
+          ]
+        },
+        {
+          "file_offset": "0x5f36d40",
+          "nearby_strings": [
+            "rsa_pss_keygen_md",
+            "rsa_pss_keygen_saltlen",
+            "rsa_oaep_md",
+            "rsa_oaep_label",
+            "RSA_verify_PKCS1_PSS_mgf1",
+            "RSA_padding_add_PKCS1_PSS_mgf1",
+            "crypto/rsa/rsa_pss.c",
+            "expected: %d retrieved: %d",
+            "RSA_sign"
+          ]
+        },
+        {
+          "file_offset": "0x5f36df8",
+          "nearby_strings": [
+            "sa/rsa_pss.c",
+            "expected: %d retrieved: %d",
+            "RSA_sign_ASN1_OCTET_STRING",
+            "RSA_verify_ASN1_OCTET_STRING",
+            "crypto/rsa/rsa_saos.c",
+            "SHA2-224",
+            "SHA2-256",
+            "SHA2-384",
+            "SHA2-512",
+            "SHA2-512/224",
+            "SHA2-512/256"
+          ]
+        }
+      ]
+    },
+    {
+      "token": "RSA_public_decrypt",
+      "hits": [
+        {
+          "file_offset": "0x1bbb483",
+          "nearby_strings": [
+            "_method",
+            "RSA_PKCS1_OpenSSL",
+            "RSA_get0_pss_params",
+            "RSA_check_key",
+            "RSA_private_encrypt",
+            "RSA_public_decrypt",
+            "RSA_blinding_off",
+            "RSA_setup_blinding",
+            "RSA_blinding_on",
+            "RSA_generate_key",
+            "RSA_generate_key_ex",
+            "RSA_generate_multi_prime_key",
+            "RSA_set_method",
+            "RSA_new_"
+          ]
+        },
+        {
+          "file_offset": "0x1c71f15",
+          "nearby_strings": [
+            "EC_KEY_get0_public_key",
+            "EVP_aes_128_gcm",
+            "ECDSA_do_verify",
+            "RSA_meth_dup",
+            "RSA_free",
+            "RSA_public_decrypt",
+            "X509_free",
+            "EVP_des_ede3_cbc",
+            "EC_METHOD_get_field_type",
+            "PEM_write_bio_ECPrivateKey",
+            "RSA_new",
+            "BIO_free",
+            "EC_KEY_get0_group",
+            "ECDSA_SIG_get0",
+            "EC_GROUP_get"
+          ]
+        }
+      ]
+    },
+    {
+      "token": "EVP_DigestVerify",
+      "hits": [
+        {
+          "file_offset": "0xd55cf3",
+          "nearby_strings": [
+            "stbyname",
+            "EVP_VerifyFinal",
+            "ASN1_item_verify_ctx",
+            "OBJ_find_sigid_algs",
+            "EVP_PKEY_is_a",
+            "EVP_DigestVerifyInit",
+            "EVP_DigestVerify",
+            "ASN1_item_verify_ex",
+            "ASN1_item_verify",
+            "EVP_PKEY_asn1_get_count",
+            "OPENSSL_sk_num",
+            "EVP_PKEY_asn1_get0",
+            "EVP_PKEY_asn1_find",
+            "ENGINE_g"
+          ]
+        },
+        {
+          "file_offset": "0xd55d08",
+          "nearby_strings": [
+            "ASN1_item_verify_ctx",
+            "OBJ_find_sigid_algs",
+            "EVP_PKEY_is_a",
+            "EVP_DigestVerifyInit",
+            "EVP_DigestVerify",
+            "ASN1_item_verify_ex",
+            "ASN1_item_verify",
+            "EVP_PKEY_asn1_get_count",
+            "OPENSSL_sk_num",
+            "EVP_PKEY_asn1_get0",
+            "EVP_PKEY_asn1_find",
+            "ENGINE_get_pkey_asn1_meth_eng"
+          ]
+        },
+        {
+          "file_offset": "0xe5a3b7",
+          "nearby_strings": [
+            "_PKEY_encrypt_init",
+            "EVP_DigestInit",
+            "EVP_PKEY_CTX_ctrl",
+            "EVP_PKEY_encrypt",
+            "EVP_Digest",
+            "EVP_DigestVerifyInit_ex",
+            "EVP_DigestVerify",
+            "EVP_PKEY_CTX_set_rsa_padding",
+            "EVP_PKEY_CTX_set_rsa_pss_saltlen",
+            "EVP_PKEY_param_check_quick",
+            "EVP_PKEY_public_check",
+            "i2d_X509"
+          ]
+        },
+        {
+          "file_offset": "0xe5a3cf",
+          "nearby_strings": [
+            "igestInit",
+            "EVP_PKEY_CTX_ctrl",
+            "EVP_PKEY_encrypt",
+            "EVP_Digest",
+            "EVP_DigestVerifyInit_ex",
+            "EVP_DigestVerify",
+            "EVP_PKEY_CTX_set_rsa_padding",
+            "EVP_PKEY_CTX_set_rsa_pss_saltlen",
+            "EVP_PKEY_param_check_quick",
+            "EVP_PKEY_public_check",
+            "i2d_X509",
+            "BUF_reverse",
+            "EVP_DigestV"
+          ]
+        },
+        {
+          "file_offset": "0xe5a464",
+          "nearby_strings": [
+            "s_saltlen",
+            "EVP_PKEY_param_check_quick",
+            "EVP_PKEY_public_check",
+            "i2d_X509",
+            "BUF_reverse",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestVerifyFinal",
+            "EVP_PKEY_get_bn_param",
+            "EVP_EncryptUpdate",
+            "EVP_EncryptFinal",
+            "EVP_EncryptInit_ex",
+            "ASN1_item_new",
+            "EVP_PKEY_decrypt_init"
+          ]
+        },
+        {
+          "file_offset": "0xe5a47b",
+          "nearby_strings": [
+            "m_check_quick",
+            "EVP_PKEY_public_check",
+            "i2d_X509",
+            "BUF_reverse",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestVerifyFinal",
+            "EVP_PKEY_get_bn_param",
+            "EVP_EncryptUpdate",
+            "EVP_EncryptFinal",
+            "EVP_EncryptInit_ex",
+            "ASN1_item_new",
+            "EVP_PKEY_decrypt_init",
+            "EVP_PKEY_decrypt",
+            "OSSL_PARA"
+          ]
+        },
+        {
+          "file_offset": "0x2e384f5",
+          "nearby_strings": [
+            "EVP_DigestSignInit_ex",
+            "EVP_PKEY_sign",
+            "EVP_SignFinal_ex",
+            "CMS_SignerInfo_verify",
+            "EVP_DigestVerifyInit_ex",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestVerifyFinal",
+            "CMS_SignerInfo_verify_content",
+            "EVP_PKEY_verify_init",
+            "EVP_PKEY_CTX_set_signature_md",
+            "EVP_PKEY_v"
+          ]
+        },
+        {
+          "file_offset": "0x2e3850d",
+          "nearby_strings": [
+            "EVP_PKEY_sign",
+            "EVP_SignFinal_ex",
+            "CMS_SignerInfo_verify",
+            "EVP_DigestVerifyInit_ex",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestVerifyFinal",
+            "CMS_SignerInfo_verify_content",
+            "EVP_PKEY_verify_init",
+            "EVP_PKEY_CTX_set_signature_md",
+            "EVP_PKEY_verify",
+            "CMS_add_smimecap"
+          ]
+        },
+        {
+          "file_offset": "0x2e38524",
+          "nearby_strings": [
+            "gnFinal_ex",
+            "CMS_SignerInfo_verify",
+            "EVP_DigestVerifyInit_ex",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestVerifyFinal",
+            "CMS_SignerInfo_verify_content",
+            "EVP_PKEY_verify_init",
+            "EVP_PKEY_CTX_set_signature_md",
+            "EVP_PKEY_verify",
+            "CMS_add_smimecap",
+            "CMS_add_simple_smimecap"
+          ]
+        },
+        {
+          "file_offset": "0x47288d2",
+          "nearby_strings": [
+            "EVP_PKEY_CTX_new",
+            "EVP_PKEY_derive_init",
+            "EVP_PKEY_derive_set_peer",
+            "EVP_PKEY_derive",
+            "EVP_DigestVerifyInit",
+            "EVP_DigestVerify",
+            "BIO_ctrl",
+            "PEM_read_bio_PrivateKey",
+            "EVP_PKEY_get_id",
+            "BN_rand",
+            "BN_mod_exp",
+            "libssh2_keepalive_config",
+            "libssh2_init",
+            "libssh2_exit"
+          ]
+        },
+        {
+          "file_offset": "0x47288e7",
+          "nearby_strings": [
+            "_PKEY_derive_init",
+            "EVP_PKEY_derive_set_peer",
+            "EVP_PKEY_derive",
+            "EVP_DigestVerifyInit",
+            "EVP_DigestVerify",
+            "BIO_ctrl",
+            "PEM_read_bio_PrivateKey",
+            "EVP_PKEY_get_id",
+            "BN_rand",
+            "BN_mod_exp",
+            "libssh2_keepalive_config",
+            "libssh2_init",
+            "libssh2_exit",
+            "calloc",
+            "libssl.so.3",
+            "libcr"
+          ]
+        },
+        {
+          "file_offset": "0x5560e58",
+          "nearby_strings": [
+            "do_sigver_init",
+            "EVP_DigestSignUpdate",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestSignFinal",
+            "EVP_DigestVerifyFinal",
+            "crypto/evp/m_sigver.c",
+            "evp_pkey_get0_RSA_int",
+            "evp_pkey_get0_EC_KEY_int",
+            "crypto/e"
+          ]
+        },
+        {
+          "file_offset": "0x5560e88",
+          "nearby_strings": [
+            "r_init",
+            "EVP_DigestSignUpdate",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestSignFinal",
+            "EVP_DigestVerifyFinal",
+            "crypto/evp/m_sigver.c",
+            "evp_pkey_get0_RSA_int",
+            "evp_pkey_get0_EC_KEY_int",
+            "crypto/evp/p_legacy.c",
+            "evp_pkey_get0_DSA_int",
+            "EVP_PKEY"
+          ]
+        },
+        {
+          "file_offset": "0x5c477e6",
+          "nearby_strings": [
+            "_strncpy",
+            "BIO_new_mem_buf",
+            "PEM_read_bio_PUBKEY",
+            "BIO_free",
+            "EVP_MD_CTX_new",
+            "EVP_sha256",
+            "EVP_DigestVerifyInit",
+            "EVP_MD_CTX_free",
+            "EVP_PKEY_free",
+            "EVP_DigestVerifyUpdate",
+            "base64_decode",
+            "EVP_DigestVerifyFinal",
+            "EVP_CIPHER_CTX_new",
+            "EVP_aes_128_cbc",
+            "EVP_DecryptInit"
+          ]
+        },
+        {
+          "file_offset": "0x5c47819",
+          "nearby_strings": [
+            "EVP_MD_CTX_new",
+            "EVP_sha256",
+            "EVP_DigestVerifyInit",
+            "EVP_MD_CTX_free",
+            "EVP_PKEY_free",
+            "EVP_DigestVerifyUpdate",
+            "base64_decode",
+            "EVP_DigestVerifyFinal",
+            "EVP_CIPHER_CTX_new",
+            "EVP_aes_128_cbc",
+            "EVP_DecryptInit_ex",
+            "EVP_DecryptUpdate",
+            "EVP_DecryptFinal_ex",
+            "EVP_CIPHE"
+          ]
+        },
+        {
+          "file_offset": "0x5c4783e",
+          "nearby_strings": [
+            "stVerifyInit",
+            "EVP_MD_CTX_free",
+            "EVP_PKEY_free",
+            "EVP_DigestVerifyUpdate",
+            "base64_decode",
+            "EVP_DigestVerifyFinal",
+            "EVP_CIPHER_CTX_new",
+            "EVP_aes_128_cbc",
+            "EVP_DecryptInit_ex",
+            "EVP_DecryptUpdate",
+            "EVP_DecryptFinal_ex",
+            "EVP_CIPHER_CTX_free",
+            "multiOS_sprintf",
+            "multiOS_me"
+          ]
+        },
+        {
+          "file_offset": "0x5f166f8",
+          "nearby_strings": [
+            "do_sigver_init",
+            "EVP_DigestSignUpdate",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestSignFinal",
+            "EVP_DigestVerifyFinal",
+            "crypto/evp/m_sigver.c",
+            "evp_pkey_get0_DSA_int",
+            "EVP_PKEY_get_raw_private_key",
+            "EVP_PKEY"
+          ]
+        },
+        {
+          "file_offset": "0x5f16728",
+          "nearby_strings": [
+            "r_init",
+            "EVP_DigestSignUpdate",
+            "EVP_DigestVerifyUpdate",
+            "EVP_DigestSignFinal",
+            "EVP_DigestVerifyFinal",
+            "crypto/evp/m_sigver.c",
+            "evp_pkey_get0_DSA_int",
+            "EVP_PKEY_get_raw_private_key",
+            "EVP_PKEY_get_raw_public_key",
+            "new_cmac_key_int"
+          ]
+        }
+      ]
+    },
+    {
+      "token": "AES_cbc_encrypt",
+      "hits": [
+        {
+          "file_offset": "0xc7db59",
+          "nearby_strings": [
+            "gisterTMCloneTable",
+            "_ITM_registerTMCloneTable",
+            "__cxa_finalize",
+            "_Jv_RegisterClasses",
+            "AES_cbc_encrypt",
+            "AES_decrypt",
+            "CRYPTO_cbc128_decrypt",
+            "AES_encrypt",
+            "CRYPTO_cbc128_encrypt",
+            "AES_cfb128_encrypt",
+            "CRYPTO_cfb128_encrypt",
+            "AES_cfb1_encrypt",
+            "CRYPTO_cfb128_1_en"
+          ]
+        }
+      ]
+    }
+  ]
+}

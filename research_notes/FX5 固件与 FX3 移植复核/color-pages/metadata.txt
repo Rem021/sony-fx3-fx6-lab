@@ -1,0 +1,53 @@
+| Help Guide for Creators | Using metadata in post-production
+Help Guide for Creators
+JavaScript is disabled.
+Please enable JavaScript and reload the page.
+Back
+Back to Top
+Print
+Using metadata in post-production
+With Flexible ISO, Cine EI, or Cine EI Quick, material is recorded with S-Log3, but by using a Sony viewer (Catalyst Browse
+*1
+or Catalyst Prepare
+*1
+) or the Catalyst Prepare Plugin in post-production, you can reproduce the monitoring conditions at the time of shooting from metadata embedded in the video file (by applying an exposure index and LUT
+*2
+).
+*1
+Supported as of version 2022.1
+*2
+Only with [Embed LUT File] under [Log Shooting Setting] set to [On].
+Applying the LUT that was used for monitoring during shooting to the movie
+When you shoot movies with [Embed LUT File] under [Log Shooting Setting] set to [On], the LUT file (A) is embedded in the movie file as illustrated below. In addition, the LUT file (B) is also saved on the recording media as a separate file in the directory "M4ROOT/GENERAL/LUT."
+When the post-production tool supports the Catalyst Prepare Plugin:
+The LUT file (A) embedded in the movie file is automatically imported.
+When the post-production tool does not support the Catalyst Prepare Plugin:
+The LUT file (B) saved on the recording media can be imported manually.
+Note
+When [Embed LUT File] is set to [Off], the LUT file is not embedded in the movie file and not saved on the recording media.
+Go to Page Top
+Image Production Basics
+Shooting workflows in image production
+Gamma and Knee
+What is S-Log?
+What is HDR?
+Color Space
+Gamut
+Detail
+Log shooting (models with a [Log Shooting Setting] menu)
+Log shooting
+Flexible ISO
+Cine EI
+Cine EI Quick
+What is Base ISO?
+Using the Exposure Index in shooting
+Using LUTs in shooting
+Using metadata in post-production
+Using Picture Profile
+What is Picture Profile?
+Setting basic contrast/coloring (Gamma/Color Mode)
+Adjusting contrast (Black Level/Black Gamma/Knee)
+Adjusting coloring (Saturation/Color Phase/Color Depth)
+Emphasizing image edges (Detail)
+C-198-100-18(1)
+Copyright 2015 Sony Corporation

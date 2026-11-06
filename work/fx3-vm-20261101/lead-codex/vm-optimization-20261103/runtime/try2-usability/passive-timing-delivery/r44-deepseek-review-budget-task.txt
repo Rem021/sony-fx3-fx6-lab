@@ -1,0 +1,14 @@
+任务：FX3｜r44 离线审阅期限候选，由 DeepSeek 主负责，协调器验收。
+这是独立 FX3 原固件的宿主审阅流程改进，不是 FX6 被拦截任务的重试。禁止实施、重述或绕过此前被提供方拦截的 FX6 实现；不触碰该实现源文件。
+目标：准备可供用户审批的60秒整步审阅期限候选，绝不实际启用新运行政策。本项目 AGENTS.md 明确“不改变项目运行政策”；本任务仅授权隔离离线准备与宿主验证。不得启动任何VM、浏览器服务、guest、QMP、部署、相机、USB、SD、刷写。不得修改现有运行入口、固定FX3硬件配置、CPIO、内核、DTB、QEMU或冻结旧输入。
+根目录：/Volumes/KAFU2T/AI/Projects/Mac。操作前核实卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。根目录不是Git仓库；不用新克隆/整树复制。
+唯一写入目录：ROOT/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r44-review-budget-candidate。不可编辑协调ledger、根README、历史目录或旧清单。
+DEL=ROOT/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery。
+输入：DEL/r42-command-timing-runner，SOURCE43清单SHA256 6f8d7e926ae6a1387c42cb43f8e4c95ca74e3c51572a8dac1bee783868a89652，CORE38清单SHA256 0760035499c8362eef3ee24c819d3b8f6cbed3bf156bf4ee8b09adc187b1ba68。只复制必要源码（约43项），不复制历史run/tests矩阵/CPIO。准确文件名自行列目录确认。
+复用封存包DEL/r42-command-timing-package，无新包：candidate SHA857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806；CPIO SHA59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63。不更改包绑定，不降级回退。
+依据：DEL/r42-command-timing-runner/run-inputs/r43-vm-53cced835047/REPORT.md和RESULT.json。r43唯一运行137.83s，完整菜单observe2在arm+17.56s，20秒alarm原End，独立pin到+33.486s才进入而被拒绝，1accepted/0pin/0confirm，failed必须保留；回收通过。这不是固件绘图超时证明，也不是性能改善证明。
+实现范围：仅独立候选operator-helpers/deadline.js整步DEADLINE_MS 20_000改60_000，及所有依赖整步预算的严格身份/恢复/清理guard与自身冻结hash/profile绑定。必须先检索语义，禁止把所有20数字全局替换。已知依赖：recovery_cancel.js,snapshot_read.js,recovery_readonly.js,planned_navigation_click.js,postkey_read.js,snapshot_confirm.js,recovery_observation.py,runtime-wrapper/cleanup.py,runtime-wrapper/operate.py。可能有其余项，按实际源码核查。新候选自有profile/标签与hash，原r42字节不改。不要伪造原CORE相同；区分改动与未改动条目。
+保留边界：run_trial_r24_review_snapshot.py native_input_deadline_error独立12秒接收检查以及调用逻辑保持原字节；trial_web_r24_review_snapshot.py PAGE/server以及SNAPSHOT_TTL=20.0原字节；API16 restore20秒；启动180秒，总运行8分钟；8accepted/10attempt/2recoveries。首观察arm+5秒不改。必须保持独立observe→实际看图→pin→实际看固定图→confirm，不自动判断/confirm，不合并人为审阅。严格nonce/document/launch/PAGE身份；单次从arm算60秒，不延长重复arm/恢复/confirm期限；晚cancel先expiry。所有原End与幂等回收逻辑保持。
+验证：仅必要离线fake-clock/宿主测试，证明20秒仍armed、60秒到期一次原End、正确nonce在60前可cancel、迟cancel先expiry、重复arm不能延长、错身份拒绝、所有相关guard一致接受60000且拒绝旧预算；以hash/限定源码diff证明native12和snapshot20未改。不要跑旧11915文件矩阵。可做有副作用阻断的import/prepare/preflight绑定检查，不允许真正运行runner/启动服务。不要为不通过的原逻辑降级校验。
+交付：REPORT.md、POLICY-CHANGE.md（旧20秒→候选60秒的具体范围、其余保留项、用户批准后未来确切调用命令，但现在不得运行）、精确diff、输入前后hash、候选SOURCE/CORE清单、有限测试完整回执、SHA256SUMS。清楚写离线通过不等于VM通过或提速；请求用户审批仅由协调器在复核后发起。若发现依赖不明，报告具体缺口，不扩范围。
+完成后用Orca worker_done回报真实结果与证据。用户希望保留工作帖便于直接查看。

@@ -1,0 +1,39 @@
+{
+  "status": "offline_cleanup_candidate_accepted_not_runtime_validated",
+  "reviewed_utc": "2026-11-05T08:26:37.551159+00:00",
+  "worker_done": "msg_078fd2cf03fe",
+  "task": "task_f02ee53c27b9",
+  "dispatch": "ctx_0891bdba0ed8",
+  "manifest_sha256": "7a3f5006d6b693207ab0ef58daac919a56668da0d95e9863888389cac059a8f5",
+  "delivery_entries_independently_hashed": 11915,
+  "delivery_mismatches": [],
+  "source_count": 43,
+  "source_freeze_sha256": "3f4d9894d2bfdd1bf15f2c01132006c78f8331220f8e8da1bcee4adcbd37ff43",
+  "core_count": 38,
+  "core_freeze_sha256": "642149dac737315d19dc6910804538eec6df79a43261527c06fcaf23d374bd50",
+  "unchanged_original_files_byte_compared": 32,
+  "offline_check_groups": 10,
+  "check_scripts_sha_match_current": true,
+  "cleanup_fixture_cases": 40,
+  "binding_rejection_cases": 6,
+  "review_issue": "msg_65bdcb794e26 resolved by archived invalid-index plus current owned-live End branch and positive/negative fixtures",
+  "tested_domains": {
+    "files_and_flock": "real host APFS",
+    "native_browser_process_port": "mock",
+    "imports": "actual modules with action mains not called"
+  },
+  "original_inputs": {
+    "worker_verified": 1398,
+    "current_task_observed_pins": 192,
+    "inherited_r37_historical_pins": 1206,
+    "coordinator_rehashed_all_large_inputs": false
+  },
+  "limitations": [
+    "no VM/browser/service/QMP/guest/camera run",
+    "no deployment",
+    "r38 remains failed",
+    "menu latency and zero-first-frame root cause unresolved",
+    "FX6 boot not achieved"
+  ],
+  "report_sha256": "23a3606e490969be0a376362f290b60758a8bf608add1074924084b5075ad44a"
+}

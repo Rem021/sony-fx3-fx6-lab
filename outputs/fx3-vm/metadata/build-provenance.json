@@ -1,0 +1,80 @@
+{
+  "qemu_source": {
+    "created_utc": "2026-11-01T09:58:37.023192+00:00",
+    "records": [
+      {
+        "formula": "pcre2",
+        "version": "10.49",
+        "tag": "arm64_golden_gate",
+        "url": "https://ghcr.io/v2/homebrew/core/pcre2/blobs/sha256:5cac44323243138490ca74a2499fd347fa836df6b5fffa789944be12110e91ff",
+        "sha256": "5cac44323243138490ca74a2499fd347fa836df6b5fffa789944be12110e91ff",
+        "bytes": 2465105,
+        "source_metadata": "https://formulae.brew.sh/api/formula/pcre2.json"
+      },
+      {
+        "formula": "gettext",
+        "version": "1.0",
+        "tag": "arm64_golden_gate",
+        "url": "https://ghcr.io/v2/homebrew/core/gettext/blobs/sha256:4db034aa2ae4b1f18d86906707ece14c895198090ad028d2fb1ae4fbeb3ca6fd",
+        "sha256": "4db034aa2ae4b1f18d86906707ece14c895198090ad028d2fb1ae4fbeb3ca6fd",
+        "bytes": 10286856,
+        "source_metadata": "https://formulae.brew.sh/api/formula/gettext.json"
+      },
+      {
+        "formula": "glib",
+        "version": "2.90.1",
+        "tag": "arm64_golden_gate",
+        "url": "https://ghcr.io/v2/homebrew/core/glib/blobs/sha256:5ccb7a549258ed35cddc280882a11a854bd0ef1b2329a1ce77e43e39d2d98e3a",
+        "sha256": "5ccb7a549258ed35cddc280882a11a854bd0ef1b2329a1ce77e43e39d2d98e3a",
+        "bytes": 9441777,
+        "source_metadata": "https://formulae.brew.sh/api/formula/glib.json"
+      },
+      {
+        "formula": "pkgconf",
+        "version": "3.0.10",
+        "tag": "arm64_golden_gate",
+        "url": "https://ghcr.io/v2/homebrew/core/pkgconf/blobs/sha256:b58197e979bb9d4fd7ccdb1d74ca838745473a2e48efcfb76f6cde66ff5ff81e",
+        "sha256": "b58197e979bb9d4fd7ccdb1d74ca838745473a2e48efcfb76f6cde66ff5ff81e",
+        "bytes": 194200,
+        "source_metadata": "https://formulae.brew.sh/api/formula/pkgconf.json"
+      },
+      {
+        "source": "QEMU",
+        "version": "11.1.2",
+        "url": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+        "sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+        "bytes": 141815216,
+        "identity_reference": "upstream SOURCE-ORIGINS.json pinned b3d7c1f; no Sony patch applied"
+      }
+    ]
+  },
+  "internal_dtc": {
+    "source": "https://gitlab.com/qemu-project/dtc.git",
+    "head": "b6910bec11614980a21e46fbccc35934b671bd81",
+    "wrap_sha256": "932ca47fc50a6932207a6fc82e15d07d848e93c4ff9abcd0cc34c15f40a30885",
+    "used_by_qemu_configure": "internal fdt; obtained by Meson wrap during configure, fixed upstream revision",
+    "homebrew_dtc_bottle": "downloaded as alternative; not selected by configure"
+  },
+  "compile_command": {
+    "args": [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2/configure",
+      "--target-list=aarch64-softmmu",
+      "--without-default-features",
+      "--enable-tcg",
+      "--enable-fdt",
+      "--disable-docs",
+      "--disable-tools",
+      "--disable-guest-agent",
+      "--disable-werror",
+      "--python=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build-venv/bin/python"
+    ],
+    "PKG_CONFIG_PATH": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/pkgconfig",
+    "PKG_CONFIG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/pkgconf/3.0.10/bin/pkgconf"
+  },
+  "runtime_relocation": "metadata/runtime-relocation.json",
+  "models": "source-patches/fx3-esram-high-ddr.patch",
+  "source_member_provenance": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/application-loader-probe.json",
+  "blacklist_evidence": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/minimal-linux-blacklist-evidence.json",
+  "no_original_ELF_modified": true,
+  "not_a_full_signed_firmware_package": true
+}

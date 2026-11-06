@@ -1,0 +1,50 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b3f40 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm>:
+   b3f40: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+   b3f44: 7100041f     	cmp	w0, #0x1
+   b3f48: 910003fd     	mov	x29, sp
+   b3f4c: a90363f7     	stp	x23, x24, [sp, #0x30]
+   b3f50: 2a0003f8     	mov	w24, w0
+   b3f54: a9046bf9     	stp	x25, x26, [sp, #0x40]
+   b3f58: d2800017     	mov	x23, #0x0               // =0
+   b3f5c: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b3f60: 2a0103f9     	mov	w25, w1
+   b3f64: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   b3f68: a90573fb     	stp	x27, x28, [sp, #0x50]
+   b3f6c: 54000121     	b.ne	0xb3f90 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x50>
+   b3f70: aa0303e0     	mov	x0, x3
+   b3f74: aa0203f4     	mov	x20, x2
+   b3f78: aa0303f3     	mov	x19, x3
+   b3f7c: 97ff3689     	bl	0x819a0 <malloc@plt>
+   b3f80: aa0003f7     	mov	x23, x0
+   b3f84: aa1303e2     	mov	x2, x19
+   b3f88: aa1403e1     	mov	x1, x20
+   b3f8c: 97ff1e91     	bl	0x7b9d0 <memcpy@plt>
+   b3f90: f0001236     	adrp	x22, 0x2fa000
+   b3f94: d0001234     	adrp	x20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b3f98: f9458ec0     	ldr	x0, [x22, #0xb18]
+   b3f9c: 91002000     	add	x0, x0, #0x8
+   b3fa0: 97ff2194     	bl	0x7c5f0 <pthread_mutex_lock@plt>
+   b3fa4: f943629c     	ldr	x28, [x20, #0x6c0]
+   b3fa8: f9402381     	ldr	x1, [x28, #0x40]
+   b3fac: f9401b80     	ldr	x0, [x28, #0x30]
+   b3fb0: d1004021     	sub	x1, x1, #0x10
+   b3fb4: eb01001f     	cmp	x0, x1
+   b3fb8: 54000280     	b.eq	0xb4008 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0xc8>
+   b3fbc: b4000060     	cbz	x0, 0xb3fc8 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x88>
+   b3fc0: 29006418     	stp	w24, w25, [x0]
+   b3fc4: f9000417     	str	x23, [x0, #0x8]
+   b3fc8: f9436294     	ldr	x20, [x20, #0x6c0]
+   b3fcc: 91004000     	add	x0, x0, #0x10
+   b3fd0: f9458ed6     	ldr	x22, [x22, #0xb18]
+   b3fd4: f9001a80     	str	x0, [x20, #0x30]
+   b3fd8: 9100e2c0     	add	x0, x22, #0x38
+   b3fdc: 97ff3755     	bl	0x81d30 <pthread_cond_signal@plt>
+   b3fe0: 910022c0     	add	x0, x22, #0x8
+   b3fe4: 97ff2633     	bl	0x7d8b0 <pthread_mutex_unlock@plt>
+   b3fe8: 52800000     	mov	w0, #0x0                // =0
+   b3fec: a94153f3     	ldp	x19, x20, [sp, #0x10]

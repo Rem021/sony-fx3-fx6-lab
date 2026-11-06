@@ -1,0 +1,30 @@
+0000ec10: 00000094 bl #0xec10 ; {'section': '.text', 'offset': 60432, 'type': 283, 'symbol': 'emmc_dump', 'symbol_section': '.text', 'symbol_value': 23424, 'addend': 0}
+0000ec14: 20050058 ldr x0, #0xecb8
+0000ec18: e103132a mov w1, w19
+0000ec1c: 00000094 bl #0xec1c ; {'section': '.text', 'offset': 60444, 'type': 283, 'symbol': 'panic', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0000ec20: e00314aa mov x0, x20
+0000ec24: 02018052 mov w2, #8
+0000ec28: 61168052 mov w1, #0xb3
+0000ec2c: bbffff97 bl #0xeb18
+0000ec30: e403002a mov w4, w0
+0000ec34: 2001f837 tbnz w0, #0x1f, #0xec58
+0000ec38: 810642b9 ldr w1, [x20, #0x204]
+0000ec3c: 800240f9 ldr x0, [x20]
+0000ec40: 825640f9 ldr x2, [x20, #0xa8]
+0000ec44: e5f8ff97 bl #0xcfd8
+0000ec48: e403002a mov w4, w0
+0000ec4c: 2001f837 tbnz w0, #0x1f, #0xec70
+0000ec50: 9fd202b9 str wzr, [x20, #0x2d0]
+0000ec54: e9ffff17 b #0xebf8
+0000ec58: 40020058 ldr x0, #0xeca0
+0000ec5c: e30318aa mov x3, x24
+0000ec60: e10316aa mov x1, x22
+0000ec64: e2dc8152 mov w2, #0xee7
+0000ec68: 00000094 bl #0xec68 ; {'section': '.text', 'offset': 60520, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0000ec6c: e3ffff17 b #0xebf8
+0000ec70: c0010058 ldr x0, #0xeca8
+0000ec74: e30318aa mov x3, x24
+0000ec78: e10316aa mov x1, x22
+0000ec7c: c2dd8152 mov w2, #0xeee
+0000ec80: 00000094 bl #0xec80 ; {'section': '.text', 'offset': 60544, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0000ec84: ddffff17 b #0xebf8

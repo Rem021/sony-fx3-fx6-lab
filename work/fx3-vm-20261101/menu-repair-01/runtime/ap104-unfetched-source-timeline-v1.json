@@ -1,0 +1,570 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c",
+  "serial_SHA256": "546cb84e55fe55b57c820a71334d53d43548ab8001b440e99c33c737ceef9845",
+  "input_original_ELF": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libgpe.so",
+  "ELF_SHA256": "363879687bd43a69734187eb28f721ce6080209a95c62b04c833a4a117f12464",
+  "libgpe_runtime_base": "0x7f7c16b000",
+  "QID": "0x808261c0",
+  "primary_flush_seq": 1207,
+  "native_clock": "CLOCK_MONOTONIC from existing user wrappers; kernel printk clock not mixed",
+  "claim_return_ns": 350103662992,
+  "release_enter_ns": 355213540000,
+  "release_return_ns": 355389662000,
+  "first_zero_completion_attempt_ns": 400101364000,
+  "first_zero_completion_return_ns": 400115166000,
+  "claim_to_release_return_ns": 5285999008,
+  "release_return_to_first_zero_attempt_ns": 44711702000,
+  "primary_alloc_result": -1018,
+  "primary_alloc_errno": 1018,
+  "secondary_native_Main_PLT": {
+    "caller_relative": "0x9c50",
+    "status": 5,
+    "alloc_result": -1018,
+    "SendDrawComp_bool": 0,
+    "errno": 1018
+  },
+  "native_SyncCallback_PLT_path_logged_count": 0,
+  "source_conclusion": "ReceiveDrawComp setsw3=1; helper retains timeout0x1388 at d798 and calls osal_rcv_msg_tmo at d7a8; CMF releases dynamic queue at a41c after success or failure. Observed5.286s to release and latefirst completion support receive-budget expiry, not duplicate-zero as this first fault cause.",
+  "boundary": "Direct ReceiveDrawComp entry/return not interposed. No kernel owner-read in light mode; release APIsucceeded and original code proves its clear operation. Absence of another zero log is limited to recovered rows, not global negative proof.",
+  "raw_timeline": [
+    {
+      "line": 211774,
+      "text": "FX3_GPE104_DYNAMIC_ENTER tid=279 tpidr=0x7f527ff730 event=485 ns=350101216992 flags=0x2a module=0x82 argument=0x7f527fe6cc caller=0x7f7c1753b4 native_call_follows=1"
+    },
+    {
+      "line": 211776,
+      "text": "FX3_GPE104_DYNAMIC_RETURN tid=279 tpidr=0x7f527ff730 event=485 ns=350103662992 flags=0x2a module=0x82 QID=0x808261c0 QID_available=1 result=0 errno=0 caller=0x7f7c1753b4 owner_from_separate_kernel_probe=1 no_stat_msgq=1 no_extra_dynamic_id=1"
+    },
+    {
+      "line": 214332,
+      "text": "FX3_GPE104_DYNAMIC_ENTER tid=279 tpidr=0x7f527ff730 event=486 ns=355213540000 flags=0x4a module=0 argument=0x808261c0 caller=0x7f7c175420 native_call_follows=1"
+    },
+    {
+      "line": 214333,
+      "text": "FX3_GPE104_DYNAMIC_RETURN tid=279 tpidr=0x7f527ff730 event=486 ns=355389662000 flags=0x4a module=0 QID=0x808261c0 QID_available=1 result=0 errno=1022 caller=0x7f7c175420 owner_from_separate_kernel_probe=1 no_stat_msgq=1 no_extra_dynamic_id=1"
+    },
+    {
+      "line": 226228,
+      "text": "FX3_GPE104_COMPLETE_ENTER tid=280 tpidr=0x7f51fff730 event=487 ns=400101364000 seq=1207 op=4 async=0 completion_source=0x808261c0 status=0 bytes=4 call_path=adapter_explicit_SendDrawComp real_function=0x7f7c178888 unchanged=1"
+    },
+    {
+      "line": 226229,
+      "text": "FX3_LIGHT104_ALLOC_ENTER tid=280 tpidr=0x7f51fff730 event=2584 ns=400103372992 QID=0x808261c0 bytes=4 wait=1 out=0x7f51fed0b8 caller=0x7fa122e6b4 caller_relative=0 caller_is_libgpe=0 unchanged=1"
+    },
+    {
+      "line": 226231,
+      "text": "[12516.305843] [K]**UIPC ERROR** alloc_msg: alloc_msg() for unfetched dynamic queue QID[808261c0] size[4]"
+    },
+    {
+      "line": 226234,
+      "text": "FX3_LIGHT104_ALLOC_RETURN tid=280 tpidr=0x7f51fff730 event=2584 ns=400111168992 QID=0x808261c0 result=-1018 errno=1018 message=(nil) message_available=0 unchanged=1"
+    },
+    {
+      "line": 226236,
+      "text": "FX3_GPE104_COMPLETE_RETURN tid=280 tpidr=0x7f51fff730 event=487 ns=400115166000 seq=1207 completion_source=0x808261c0 result=0 errno=1018 real_function_returned=1 unchanged=1"
+    },
+    {
+      "line": 226255,
+      "text": "FX3_GPE104_CMD_RETURN tid=280 tpidr=0x7f51fff730 ns=400157592000 seq=1207 op=4 completion_source=0x808261c0 result=5 errno=1018 call_path=adapter_return_to_original_Main unchanged=1"
+    },
+    {
+      "line": 226258,
+      "text": "FX3_LIGHT104_SENDCOMP_ENTER tid=280 tpidr=0x7f51fff730 event=2585 ns=400168432000 QID=0x808261c0 bytes=4 status=0x5 status_available=1 caller=0x7f7c174c50 caller_relative=0x9c50 caller_is_libgpe=1 call_path=original_Main_failure_SendDrawComp_PLT adapter_seq_unavailable_here=1 unchanged=1"
+    },
+    {
+      "line": 226259,
+      "text": "FX3_LIGHT104_ALLOC_ENTER tid=280 tpidr=0x7f51fff730 event=2586 ns=400171966000 QID=0x808261c0 bytes=4 wait=1 out=0x7f51ffe5b8 caller=0x7fa122e6b4 caller_relative=0 caller_is_libgpe=0 unchanged=1"
+    },
+    {
+      "line": 226260,
+      "text": "[12518.405687] [K]**UIPC ERROR** alloc_msg: alloc_msg() for unfetched dynamic queue QID[808261c0] size[4]"
+    },
+    {
+      "line": 226263,
+      "text": "FX3_LIGHT104_ALLOC_RETURN tid=280 tpidr=0x7f51fff730 event=2586 ns=400177374992 QID=0x808261c0 result=-1018 errno=1018 message=(nil) message_available=0 unchanged=1"
+    },
+    {
+      "line": 226266,
+      "text": "FX3_LIGHT104_SENDCOMP_RETURN tid=280 tpidr=0x7f51fff730 event=2585 ns=400185742992 QID=0x808261c0 result=0 errno=1018 unchanged=1"
+    }
+  ],
+  "source_blocks": [
+    {
+      "VA": "0xd89c",
+      "bytes": "e40301aae10302aae203002ae00304aa23008052b1ffff17",
+      "instructions": [
+        {
+          "VA": "0xd89c",
+          "bytes": "e40301aa",
+          "mnemonic": "mov",
+          "operands": "x4, x1",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd8a0",
+          "bytes": "e10302aa",
+          "mnemonic": "mov",
+          "operands": "x1, x2",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd8a4",
+          "bytes": "e203002a",
+          "mnemonic": "mov",
+          "operands": "w2, w0",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd8a8",
+          "bytes": "e00304aa",
+          "mnemonic": "mov",
+          "operands": "x0, x4",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd8ac",
+          "bytes": "23008052",
+          "mnemonic": "mov",
+          "operands": "w3, #1",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd8b0",
+          "bytes": "b1ffff17",
+          "mnemonic": "b",
+          "operands": "#0xd774",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "VA": "0xd774",
+      "bytes": "fd7bbca97f1c0072fd030091f55b02a9f50301aaf35301a9f60300aaf303022aa1e30091027182524100005402008012e003132a06edff97a0010034e203002a",
+      "instructions": [
+        {
+          "VA": "0xd774",
+          "bytes": "fd7bbca9",
+          "mnemonic": "stp",
+          "operands": "x29, x30, [sp, #-0x40]!",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd778",
+          "bytes": "7f1c0072",
+          "mnemonic": "tst",
+          "operands": "w3, #0xff",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd77c",
+          "bytes": "fd030091",
+          "mnemonic": "mov",
+          "operands": "x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd780",
+          "bytes": "f55b02a9",
+          "mnemonic": "stp",
+          "operands": "x21, x22, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd784",
+          "bytes": "f50301aa",
+          "mnemonic": "mov",
+          "operands": "x21, x1",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd788",
+          "bytes": "f35301a9",
+          "mnemonic": "stp",
+          "operands": "x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd78c",
+          "bytes": "f60300aa",
+          "mnemonic": "mov",
+          "operands": "x22, x0",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd790",
+          "bytes": "f303022a",
+          "mnemonic": "mov",
+          "operands": "w19, w2",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd794",
+          "bytes": "a1e30091",
+          "mnemonic": "add",
+          "operands": "x1, x29, #0x38",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd798",
+          "bytes": "02718252",
+          "mnemonic": "mov",
+          "operands": "w2, #0x1388",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd79c",
+          "bytes": "41000054",
+          "mnemonic": "b.ne",
+          "operands": "#0xd7a4",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd7a0",
+          "bytes": "02008012",
+          "mnemonic": "mov",
+          "operands": "w2, #-1",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd7a4",
+          "bytes": "e003132a",
+          "mnemonic": "mov",
+          "operands": "w0, w19",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd7a8",
+          "bytes": "06edff97",
+          "mnemonic": "bl",
+          "operands": "#0x8bc0",
+          "PLT_symbol": "osal_rcv_msg_tmo"
+        },
+        {
+          "VA": "0xd7ac",
+          "bytes": "a0010034",
+          "mnemonic": "cbz",
+          "operands": "w0, #0xd7e0",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xd7b0",
+          "bytes": "e203002a",
+          "mnemonic": "mov",
+          "operands": "w2, w0",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "VA": "0xa3d4",
+      "bytes": "fd7bbda9820080d2fd030091a1c30091f30b00f9f303002a3fcc1fb8f4fbff971f1c0072c100005482008052c104805260008052a22f00b9a9faff97e203132a0100805240098052edfaff97f30b40f9a02f40b9fd7bc3a8c0035fd6",
+      "instructions": [
+        {
+          "VA": "0xa3d4",
+          "bytes": "fd7bbda9",
+          "mnemonic": "stp",
+          "operands": "x29, x30, [sp, #-0x30]!",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3d8",
+          "bytes": "820080d2",
+          "mnemonic": "mov",
+          "operands": "x2, #4",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3dc",
+          "bytes": "fd030091",
+          "mnemonic": "mov",
+          "operands": "x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3e0",
+          "bytes": "a1c30091",
+          "mnemonic": "add",
+          "operands": "x1, x29, #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3e4",
+          "bytes": "f30b00f9",
+          "mnemonic": "str",
+          "operands": "x19, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3e8",
+          "bytes": "f303002a",
+          "mnemonic": "mov",
+          "operands": "w19, w0",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3ec",
+          "bytes": "3fcc1fb8",
+          "mnemonic": "str",
+          "operands": "wzr, [x1, #-4]!",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3f0",
+          "bytes": "f4fbff97",
+          "mnemonic": "bl",
+          "operands": "#0x93c0",
+          "PLT_symbol": "_ZN5mpgpe7message15ReceiveDrawCompEjPvm"
+        },
+        {
+          "VA": "0xa3f4",
+          "bytes": "1f1c0072",
+          "mnemonic": "tst",
+          "operands": "w0, #0xff",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3f8",
+          "bytes": "c1000054",
+          "mnemonic": "b.ne",
+          "operands": "#0xa410",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa3fc",
+          "bytes": "82008052",
+          "mnemonic": "mov",
+          "operands": "w2, #4",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa400",
+          "bytes": "c1048052",
+          "mnemonic": "mov",
+          "operands": "w1, #0x26",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa404",
+          "bytes": "60008052",
+          "mnemonic": "mov",
+          "operands": "w0, #3",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa408",
+          "bytes": "a22f00b9",
+          "mnemonic": "str",
+          "operands": "w2, [x29, #0x2c]",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa40c",
+          "bytes": "a9faff97",
+          "mnemonic": "bl",
+          "operands": "#0x8eb0",
+          "PLT_symbol": "gpe_blog_error"
+        },
+        {
+          "VA": "0xa410",
+          "bytes": "e203132a",
+          "mnemonic": "mov",
+          "operands": "w2, w19",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa414",
+          "bytes": "01008052",
+          "mnemonic": "mov",
+          "operands": "w1, #0",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa418",
+          "bytes": "40098052",
+          "mnemonic": "mov",
+          "operands": "w0, #0x4a",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa41c",
+          "bytes": "edfaff97",
+          "mnemonic": "bl",
+          "operands": "#0x8fd0",
+          "PLT_symbol": "osal_dynamic_id"
+        },
+        {
+          "VA": "0xa420",
+          "bytes": "f30b40f9",
+          "mnemonic": "ldr",
+          "operands": "x19, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa424",
+          "bytes": "a02f40b9",
+          "mnemonic": "ldr",
+          "operands": "w0, [x29, #0x2c]",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa428",
+          "bytes": "fd7bc3a8",
+          "mnemonic": "ldp",
+          "operands": "x29, x30, [sp], #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0xa42c",
+          "bytes": "c0035fd6",
+          "mnemonic": "ret",
+          "operands": "",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "VA": "0x9c3c",
+      "bytes": "00030035a04b40b9e10315aa820080d201fdff9713000014",
+      "instructions": [
+        {
+          "VA": "0x9c3c",
+          "bytes": "00030035",
+          "mnemonic": "cbnz",
+          "operands": "w0, #0x9c9c",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0x9c40",
+          "bytes": "a04b40b9",
+          "mnemonic": "ldr",
+          "operands": "w0, [x29, #0x48]",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0x9c44",
+          "bytes": "e10315aa",
+          "mnemonic": "mov",
+          "operands": "x1, x21",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0x9c48",
+          "bytes": "820080d2",
+          "mnemonic": "mov",
+          "operands": "x2, #4",
+          "PLT_symbol": null
+        },
+        {
+          "VA": "0x9c4c",
+          "bytes": "01fdff97",
+          "mnemonic": "bl",
+          "operands": "#0x9050",
+          "PLT_symbol": "_ZN5mpgpe7message12SendDrawCompEjPKvm"
+        },
+        {
+          "VA": "0x9c50",
+          "bytes": "13000014",
+          "mnemonic": "b",
+          "operands": "#0x9c9c",
+          "PLT_symbol": null
+        }
+      ]
+    }
+  ],
+  "lifecycle": {
+    "passed": true,
+    "reason": "guest_acknowledged_and_original_bytes_verified",
+    "timeout_seconds": 20,
+    "elapsed_seconds": 1.3085815419908613,
+    "request_bytes": 8,
+    "request_issued": true,
+    "existing_request_reused": false,
+    "request_physical": "0x41d400030",
+    "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+    "requires_ack_and_original_bytes_after_request": true,
+    "already_original_without_pending_request_never_resumed": false,
+    "original_guest_code_written_by_host": false,
+    "guest_left_stopped": true,
+    "exception": null,
+    "attempts": [
+      {
+        "attempt": 0,
+        "elapsed_seconds": 0.0019378340221010149,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-000-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-000-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 0,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "cc2d608bfd41899231845e370a7934739080c6683ca2d3df6fa320884e7bec85"
+      },
+      {
+        "attempt": 1,
+        "elapsed_seconds": 0.26552037498913705,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-001-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-001-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "7f59d64ffdb0032c74b86c1592eb6b4a81fc24d3c1c1da06bf435e5bf33ce0a2"
+      },
+      {
+        "attempt": 2,
+        "elapsed_seconds": 0.5281259589828551,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-002-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-002-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "7f59d64ffdb0032c74b86c1592eb6b4a81fc24d3c1c1da06bf435e5bf33ce0a2"
+      },
+      {
+        "attempt": 3,
+        "elapsed_seconds": 0.7945366250351071,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-003-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-003-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "7f59d64ffdb0032c74b86c1592eb6b4a81fc24d3c1c1da06bf435e5bf33ce0a2"
+      },
+      {
+        "attempt": 4,
+        "elapsed_seconds": 1.051619167032186,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-004-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-004-api16.bin",
+        "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+        "api16_original": false,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 0,
+        "header_SHA256": "7f59d64ffdb0032c74b86c1592eb6b4a81fc24d3c1c1da06bf435e5bf33ce0a2"
+      },
+      {
+        "attempt": 5,
+        "elapsed_seconds": 1.3083093340392224,
+        "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-005-header.bin",
+        "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/restore103-005-api16.bin",
+        "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+        "api16_original": true,
+        "header_identity": true,
+        "shutdown_control": 269229737,
+        "restore_status": 0,
+        "restore_seen": 1,
+        "header_SHA256": "a797774ff32f6877b181b1d4c855e235d328963232584662a8ebf2cd4c994406"
+      }
+    ]
+  }
+}

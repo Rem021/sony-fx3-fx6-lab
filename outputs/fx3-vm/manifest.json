@@ -1,0 +1,86 @@
+{
+  "schema": "fx3-mac-vm-minimal-research-v1",
+  "created_utc": "2026-11-01T10:26:42.033486+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "platform": "macOS arm64 TCG; not a Linux host VM",
+  "kernel": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "bytes": 6610952,
+    "modified": false
+  },
+  "runtime_sha256": {
+    "bin/qemu-system-aarch64": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+    "lib/libglib-2.0.0.dylib": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2",
+    "lib/libpcre2-8.0.dylib": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110",
+    "lib/libintl.8.dylib": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8",
+    "share/virt-minimal-linux-probe02.dtb": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476",
+    "share/virt-original-app-loader-probe01.dtb": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047",
+    "share/fx3-minimal-original-userspace-v2.cpio": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c",
+    "share/fx3-original-app-loader-probe.cpio": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+  },
+  "run_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs",
+  "binary": "bin/qemu-system-aarch64",
+  "memory_mib": 2048,
+  "model_env": {
+    "FX3_VM_ESRAM_RAM": "1",
+    "FX3_VM_HIGH_DDR": "1"
+  },
+  "disabled_initcalls": [
+    "__boottime___udif_init_udif_hwtimer",
+    "__boottime___udif_init_udif_wdt",
+    "__boottime___udif_init_udif_fusb_otg",
+    "__boottime___udif_init_udif_pcie",
+    "__boottime___udif_init_udif_ddrc",
+    "__boottime___udif_init_pcidma",
+    "__boottime_sony_usb_init"
+  ],
+  "profiles": {
+    "minimal-linux": {
+      "dtb": "share/virt-minimal-linux-probe02.dtb",
+      "initrd": "share/fx3-minimal-original-userspace-v2.cpio",
+      "required_markers": [
+        "FX3_ORIGINAL_BUSYBOX_REACHED",
+        "4.9.337-scel+",
+        "FX3_VM_PROBE_END"
+      ],
+      "scope": "original kernel plus original BusyBox/loader/libc/libcrypt; custom init only prints uname and sleeps; seven unsupported hardware initcalls disabled"
+    },
+    "app-loader": {
+      "dtb": "share/virt-original-app-loader-probe01.dtb",
+      "initrd": "share/fx3-original-app-loader-probe.cpio",
+      "required_markers": [
+        "FX3_LD_VERIFY_RC_bootin=0",
+        "FX3_LD_LIST_RC_bootin=0",
+        "FX3_LD_VERIFY_RC_im=0",
+        "FX3_LD_LIST_RC_im=0",
+        "FX3_APPLICATION_LOADER_PROBE_END"
+      ],
+      "scope": "20 original ELF files / 88 dependency edges; original loader verify/list only; no app main/constructor or original init"
+    }
+  },
+  "claims": {
+    "full_camera_vm": false,
+    "camera_menu": false,
+    "sensor_isp_recording": false,
+    "firmware_flash_readiness": false
+  },
+  "source_cpio": {
+    "virt-minimal-linux-probe02.dtb": {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    "virt-original-app-loader-probe01.dtb": {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    "fx3-minimal-original-userspace-v2.cpio": {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    "fx3-original-app-loader-probe.cpio": {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    }
+  }
+}

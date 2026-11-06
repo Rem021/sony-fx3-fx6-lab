@@ -1,0 +1,43 @@
+# Analyst label; exact original configured VA, not runtime PC. No execution.
+0xfe053c78 [file+0xac78] f40f1ef8 str      x20, [sp, #-0x20]!
+0xfe053c7c [file+0xac7c] f37b01a9 stp      x19, x30, [sp, #0x10]
+0xfe053c80 [file+0xac80] 730000d0 adrp     x19, #0xfe061000
+0xfe053c84 [file+0xac84] 68ea4fb9 ldr      w8, [x19, #0xfe8]
+0xfe053c88 [file+0xac88] 1f050071 cmp      w8, #1
+0xfe053c8c [file+0xac8c] 20010054 b.eq     #0xfe053cb0
+0xfe053c90 [file+0xac90] 1f090071 cmp      w8, #2
+0xfe053c94 [file+0xac94] 61000054 b.ne     #0xfe053ca0
+0xfe053c98 [file+0xac98] e0031f2a mov      w0, wzr
+0xfe053c9c [file+0xac9c] 06000014 b        #0xfe053cb4
+0xfe053ca0 [file+0xaca0] 14058052 mov      w20, #0x28
+0xfe053ca4 [file+0xaca4] f4c2bf72 movk     w20, #0xfe17, lsl #16
+0xfe053ca8 [file+0xaca8] 880240b9 ldr      w8, [x20]
+0xfe053cac [file+0xacac] a8000034 cbz      w8, #0xfe053cc0
+0xfe053cb0 [file+0xacb0] e0030032 mov      w0, #1
+0xfe053cb4 [file+0xacb4] f37b41a9 ldp      x19, x30, [sp, #0x10]
+0xfe053cb8 [file+0xacb8] f40742f8 ldr      x20, [sp], #0x20
+0xfe053cbc [file+0xacbc] c0035fd6 ret      
+0xfe053cc0 [file+0xacc0] e0031f32 mov      w0, #2
+0xfe053cc4 [file+0xacc4] 92100094 bl       #0xfe057f0c
+0xfe053cc8 [file+0xacc8] e803002a mov      w8, w0
+0xfe053ccc [file+0xaccc] 20010034 cbz      w0, #0xfe053cf0
+0xfe053cd0 [file+0xacd0] 410000f0 adrp     x1, #0xfe05e000
+0xfe053cd4 [file+0xacd4] 420000f0 adrp     x2, #0xfe05e000
+0xfe053cd8 [file+0xacd8] 21203591 add      x1, x1, #0xd48
+0xfe053cdc [file+0xacdc] 42e43691 add      x2, x2, #0xdb9
+0xfe053ce0 [file+0xace0] e0070032 mov      w0, #3
+0xfe053ce4 [file+0xace4] e303082a mov      w3, w8
+0xfe053ce8 [file+0xace8] 33090094 bl       #0xfe0561b4
+0xfe053cec [file+0xacec] ebffff17 b        #0xfe053c98
+0xfe053cf0 [file+0xacf0] 400000f0 adrp     x0, #0xfe05e000
+0xfe053cf4 [file+0xacf4] 00ac3691 add      x0, x0, #0xdab
+0xfe053cf8 [file+0xacf8] aa100094 bl       #0xfe057fa0
+0xfe053cfc [file+0xacfc] a000f837 tbnz     w0, #0x1f, #0xfe053d10
+0xfe053d00 [file+0xad00] e0030032 mov      w0, #1
+0xfe053d04 [file+0xad04] 60ea0fb9 str      w0, [x19, #0xfe8]
+0xfe053d08 [file+0xad08] 800200b9 str      w0, [x20]
+0xfe053d0c [file+0xad0c] eaffff17 b        #0xfe053cb4
+0xfe053d10 [file+0xad10] e8031f32 mov      w8, #2
+0xfe053d14 [file+0xad14] e0031f2a mov      w0, wzr
+0xfe053d18 [file+0xad18] 68ea0fb9 str      w8, [x19, #0xfe8]
+0xfe053d1c [file+0xad1c] e6ffff17 b        #0xfe053cb4

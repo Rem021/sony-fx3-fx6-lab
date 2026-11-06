@@ -1,0 +1,22 @@
+00407a7c movw       r0, #0x32b4
+00407a80 movt       r0, #0x13c
+00407a84 ldrb       r0, [r0, #3]
+00407a86 cmp        r0, #1
+00407a88 beq        #0x407a94
+00407a8a ldr.w      r0, [fp, #0x10]
+00407a8e ldr        r0, [r0, #0x34]
+00407a90 cmp        r0, #2
+00407a92 bne        #0x407abc
+00407a94 movw       r3, #0xfc09
+00407a98 movs       r0, #1
+00407a9a movs       r1, #0
+00407a9c strd       r1, r0, [sp]
+00407aa0 movt       r3, #0x40
+00407aa4 mov.w      r0, #0x9000
+00407aa8 strd       sl, r6, [sp, #8]
+00407aac mov        r1, r8
+00407aae mov        r2, r5
+00407ab0 bl         #0x9d1038
+00407ab4 add        sp, #0x14
+00407ab6 pop.w      {r8, sb, sl, fp}
+00407aba pop        {r4, r5, r6, r7, pc}

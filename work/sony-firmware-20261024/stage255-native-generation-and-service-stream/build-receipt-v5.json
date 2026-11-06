@@ -1,0 +1,96 @@
+{
+  "builds": {
+    "native": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-dynamiclib",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c",
+        "-framework",
+        "IOKit",
+        "-framework",
+        "CoreFoundation",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v5/fx3-generation-stream.dylib"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v5/fx3-generation-stream.dylib",
+      "sha256": "368fd0e4f68f67063593ae65564543fc3ed403b40e613e1ac84bd499b358f42d",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v5/fx3-generation-stream.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v5/fx3-generation-stream.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.1.8)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "unit": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/stream.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/unit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v5/stream-unit"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v5/stream-unit",
+      "sha256": "f473de56974efec71d6c384d38af006a0a8c221a1c87c3a28a8ab423900fa5bf",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts-v5/stream-unit:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    }
+  },
+  "sources": [
+    {
+      "path": "digest_vectors.h",
+      "bytes": 1524,
+      "sha256": "67664b519ba26de6ed01728c8a1b7d6fb9200b20fb6aea5c9d0b19a624a0a478"
+    },
+    {
+      "path": "iokit_adapter.c",
+      "bytes": 15757,
+      "sha256": "9419eff4f994d30973b275c1a562b22d54fd03b1e99f82598cb1d70014c8f0e3"
+    },
+    {
+      "path": "iokit_adapter.h",
+      "bytes": 1578,
+      "sha256": "2b885815c36f2c0f01561995c776d7958abe4e9e9ed307523bf363520265e65b"
+    },
+    {
+      "path": "public_material.h",
+      "bytes": 7919,
+      "sha256": "27710f438e5fc28ed48bb3f1e62a4d6f44d4e1c2ff5aa1dfd8d41e075c64594d"
+    },
+    {
+      "path": "stream.c",
+      "bytes": 10110,
+      "sha256": "88f0aeea80feb3c5666186c9ed575558cacdde18695f758ba649ecba0397e9b1"
+    },
+    {
+      "path": "stream.h",
+      "bytes": 2925,
+      "sha256": "772f3e426359e789568f751002869e1ece8cdd4c9154ba69e1d70e7ef7b01c7b"
+    },
+    {
+      "path": "unit.c",
+      "bytes": 8918,
+      "sha256": "24fd22f5af744ff0c57149d09febcc90ef0ff1ff63695ebabc6dcf0498a25b94"
+    }
+  ],
+  "native_library_executed": false,
+  "USB_cache_or_admin_operations": 0
+}

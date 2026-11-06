@@ -1,0 +1,22 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000011b964 <_ZNSt11__copy_moveILb0ELb1ESt26random_access_iterator_tagE8__copy_mIN3mpr16MovieEncodeTable8MetaInfoEEEPT_PKS6_S9_S7_>:
+  11bb50: 390153b8     	strb	w24, [x29, #0x54]
+  11bb54: 7900a3b7     	strh	w23, [x29, #0x50]
+  11bb58: 390157bf     	strb	wzr, [x29, #0x55]
+  11bb5c: 39015bbf     	strb	wzr, [x29, #0x56]
+  11bb60: 39015fbf     	strb	wzr, [x29, #0x57]
+  11bb64: 97ffe7b2     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  11bb68: 9104c260     	add	x0, x19, #0x130
+  11bb6c: 79004a7f     	strh	wzr, [x19, #0x24]
+  11bb70: 3900c27f     	strb	wzr, [x19, #0x30]
+  11bb74: d2802002     	mov	x2, #0x100              // =256
+  11bb78: 52800001     	mov	w1, #0x0                // =0
+  11bb7c: f900067f     	str	xzr, [x19, #0x8]
+  11bb80: b900127f     	str	wzr, [x19, #0x10]
+  11bb84: f9000e7f     	str	xzr, [x19, #0x18]
+  11bb88: b900227f     	str	wzr, [x19, #0x20]
+  11bb8c: f900167f     	str	xzr, [x19, #0x28]

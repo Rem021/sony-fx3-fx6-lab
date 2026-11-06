@@ -1,0 +1,15 @@
+{
+  "scope": "Guest harness development, not device/firmware failures.",
+  "corrected_checks": [
+    {
+      "observed": "SDK error probe reached VA 0xa4d310, outside first diagnostic boundary list.",
+      "correction": "Declared diagnostic no-op boundary now includes both 0xa4d310 and 0xa4d314."
+    },
+    {
+      "observed": "DMA handler reached register diagnostic function VA 0xa195fc under declared diagnostic control 1.",
+      "correction": "Use supported diagnostic control raw value 3; original branch suppresses the MMIO dump. No hardware window was mapped or read."
+    }
+  ],
+  "manual_probe_note": "One transient Python inventory command had an unmatched closing parenthesis; corrected before any file write.",
+  "final_results": "See validation-results.json."
+}

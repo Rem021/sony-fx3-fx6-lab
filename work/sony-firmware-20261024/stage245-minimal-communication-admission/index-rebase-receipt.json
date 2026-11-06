@@ -1,0 +1,7 @@
+{
+  "initial_guard": "stopped before head writes because shared root README changed",
+  "observed_change": "an unrelated Mac storage cleanup index entry was appended",
+  "resolution": "fresh read root README and preserve appended entry; compare again immediately before updating",
+  "goal_and_roadmap_match_prior_stage": true,
+  "device_operations": 0
+}

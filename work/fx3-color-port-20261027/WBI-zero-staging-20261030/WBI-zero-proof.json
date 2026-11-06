@@ -1,0 +1,218 @@
+{
+  "created_utc": "2026-10-30T11:53:06.900224+00:00",
+  "previous_receipt_sha256": "8b87f71b12bd74f998be1c8bc4f45131bc246346a7543570356fdf5011590748",
+  "previous_files_reverified": 27,
+  "AP_reference_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+  "AP_reference_model": "A7 IV v2.00, not current FX3 AP boot",
+  "original_FX3_WBI_sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+  "section_queries": [
+    {
+      "name": "AP_primary_declared_staging",
+      "start": "0x412000000",
+      "end_exclusive": "0x414a00000",
+      "bytes": 44040192,
+      "overlapping_any_WBI_records": [],
+      "overlapping_zero_records": []
+    },
+    {
+      "name": "AP_primary_actual_transfer_projection",
+      "start": "0x412000000",
+      "end_exclusive": "0x4132f1e00",
+      "bytes": 19865088,
+      "overlapping_any_WBI_records": [],
+      "overlapping_zero_records": []
+    },
+    {
+      "name": "AP_secondary_source_projection",
+      "start": "0x414a00000",
+      "end_exclusive": "0x415901000",
+      "bytes": 15732736,
+      "overlapping_any_WBI_records": [],
+      "overlapping_zero_records": []
+    }
+  ],
+  "nearest_WBI_neighbors": {
+    "left": {
+      "index": 1398,
+      "record_file_offset": "0xc72cf80",
+      "record_sha256": "4f2e205585a2ccb033e0cce6db257291f1b1cdf86e41f28d67c169ba1d852194",
+      "physical_start": "0x410e64000",
+      "physical_end_exclusive": "0x4110c4000",
+      "stored_bytes": 0,
+      "original_bytes": 2490368,
+      "flag": 1,
+      "stored_file_offset": null,
+      "metadata_xor_verified": true
+    },
+    "right": {
+      "index": 1185,
+      "record_file_offset": "0xc729a40",
+      "record_sha256": "19ec874ba30a3ca0fe8c9b29ede2ac628d5f8edc15c389abab23f5950d3bd13d",
+      "physical_start": "0x41a000000",
+      "physical_end_exclusive": "0x41a1c7000",
+      "stored_bytes": 1863680,
+      "original_bytes": 1863680,
+      "flag": 0,
+      "stored_file_offset": "0x68dc200",
+      "metadata_xor_verified": true
+    }
+  },
+  "no_record_gap": {
+    "start": "0x4110c4000",
+    "end_exclusive": "0x41a000000",
+    "bytes": 150192128
+  },
+  "original_reference_fragments": [
+    {
+      "record": {
+        "index": 1,
+        "record_file_offset": "0xc717240",
+        "record_sha256": "29a6acf9c0649543097ccbf5b49f8d37a12347b35c115f9b45c0f69af9f3bb2e",
+        "physical_start": "0x40000e000",
+        "physical_end_exclusive": "0x400010000",
+        "stored_bytes": 8192,
+        "original_bytes": 8192,
+        "flag": 0,
+        "stored_file_offset": "0xc200",
+        "metadata_xor_verified": true
+      },
+      "metadata_source_page_sha256": "893d95038f7a4e81aa29b1d8a52c92c6995a0bd3a4bcebddc532728219fdd55e",
+      "prefix_after_unexecuted_metadata_read": {
+        "entry": "0xfe0597d0",
+        "boundary": {
+          "reason": "before_original_stored_record_diagnostic",
+          "PC": "0xfe059834"
+        },
+        "instructions": 88,
+        "trace_sha256": "e28b6101574190a5ce323e971c9a21b7a0fb4601c5cc117b0394182d02f22030",
+        "reached_entries": [
+          "0xfe04b444",
+          "0xfe04c170"
+        ],
+        "X0": "0x8",
+        "X1": "0xfe065aa6",
+        "X2": "0x1",
+        "X3": "0x40000e000",
+        "RAM_write_operations": 19,
+        "BK4_global_writes": []
+      },
+      "original_64B_record_copy_exact": true,
+      "metadata_read_success_reply_supplied": false
+    },
+    {
+      "record": {
+        "index": 44,
+        "record_file_offset": "0xc717d00",
+        "record_sha256": "189bb76735b3f2ce7fb42d233d96149e50dae221ad274902e9aa3393e02aec11",
+        "physical_start": "0x40293d000",
+        "physical_end_exclusive": "0x40293e000",
+        "stored_bytes": 0,
+        "original_bytes": 4096,
+        "flag": 1,
+        "stored_file_offset": null,
+        "metadata_xor_verified": true
+      },
+      "metadata_source_page_sha256": "04b2232b6b33d94946379c6cce9eb60a458115331df8460586943e3d0a0448b6",
+      "prefix_after_unexecuted_metadata_read": {
+        "entry": "0xfe0597d0",
+        "boundary": {
+          "reason": "before_original_zero_record_diagnostic",
+          "PC": "0xfe059924"
+        },
+        "instructions": 86,
+        "trace_sha256": "4ea1311adbc62a31b3ea56f8ce5327ce5a2ffc39e14ba5b6fd3ecaa9982abf84",
+        "reached_entries": [
+          "0xfe04b444",
+          "0xfe04c170"
+        ],
+        "X0": "0x8",
+        "X1": "0xfe065921",
+        "X2": "0x40293d000",
+        "X3": "0x40293dfff",
+        "RAM_write_operations": 19,
+        "BK4_global_writes": []
+      },
+      "original_64B_record_copy_exact": true,
+      "metadata_read_success_reply_supplied": false
+    }
+  ],
+  "independent_after_diagnostic_fragment": {
+    "entry": "0xfe059928",
+    "boundary": {
+      "reason": "before_original_DMA_init_helper",
+      "PC": "0xfe056298"
+    },
+    "instructions": 6,
+    "trace_sha256": "ed2f14120ee13383e6d092fc84d253aa3b584d6c5bb1cd1e8ed1ca8f15fff75a",
+    "reached_entries": [],
+    "X0": "0x0",
+    "X1": "0x0",
+    "X2": "0xd00d0002",
+    "X3": "0xd00d0003",
+    "RAM_write_operations": 2,
+    "BK4_global_writes": [],
+    "destination": "0x40293d000",
+    "original_bytes": 4096,
+    "DMA_init_executed": false,
+    "scope": "Independent entry after unresolved diagnostic; no diagnostic reply or DMA success is supplied."
+  },
+  "official_reference_source_cuts": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/reference-source/linux-kernel/include/linux/warmboot.h",
+      "sha256": "ccd4d6b7b1e73ebab557dc0c99bf454aea20da5b31a6975c7605483f2bcaf5a1",
+      "source_label": "official FX3Ver7.00 GPL reference; exact7.02 producer not attested",
+      "line_start": 80,
+      "line_end": 90,
+      "text": "struct wb_section {\n\tunsigned long addr;\n\tunsigned long rlen;//real length\n\tunsigned long cksum;\n\tunsigned long flag;\n#define WBI_SH_ZERO 0x01\n\tunsigned long olen;//original length, not compressed\n\tunsigned long virt;//just for linux\n\tunsigned long meta_cksum;\n\tunsigned long __padding;\n};"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/reference-source/linux-kernel/kernel/power/wbi_raw.c",
+      "sha256": "7e3e7c718fa285aba18115aa7b663860cc848432030db38acb2c0718db0ee1e8",
+      "source_label": "official FX3Ver7.00 GPL reference; exact7.02 producer not attested",
+      "line_start": 101,
+      "line_end": 111,
+      "text": "\t/* write sections */\n\tfor (i = 0, p = s; i < n; i++, p++) {\n\t\tint rest, nsect;\n\t\tvoid *va;\n\n\t\tp->rlen = (p->flag & WBI_SH_ZERO) ? 0: p->olen;\n\t\tINIT_CKSUM(p->meta_cksum);\n\t\twbi_calc_cksum(&p->meta_cksum, (void *)p,\n\t\t\t       offsetof(struct wb_section, meta_cksum));\n\t\tif (p->flag & WBI_SH_ZERO)\n\t\t\tcontinue;"
+    }
+  ],
+  "source_windows": [
+    {
+      "begin": "0xfe0597d0",
+      "end_exclusive": "0xfe059844",
+      "original_bytes_sha256": "d934ee2028404a48f9a7d1f9f4633fda127d716eeef4f28ce4c7730c78988aac",
+      "listing": "listings/reference-WBI-table-copy-and-flag-dispatch.txt"
+    },
+    {
+      "begin": "0xfe059908",
+      "end_exclusive": "0xfe0599d0",
+      "original_bytes_sha256": "1d829d35a37f93227b48e41f4c2c90f94e987457cbdea4d684c38f43e4f6004e",
+      "listing": "listings/reference-WBI-zero-fill-branch.txt"
+    },
+    {
+      "begin": "0xfe059728",
+      "end_exclusive": "0xfe0597d0",
+      "original_bytes_sha256": "e62bd8e57f55898741a689b8b77fe3f50e9a494c3c42b9cfec9c86bda4401986",
+      "listing": "listings/reference-WBI-table-read-loop.txt"
+    },
+    {
+      "begin": "0xfe0596e4",
+      "end_exclusive": "0xfe059728",
+      "original_bytes_sha256": "da8ef1e82f02fc4c34f1c0537a9909e18591c61b2f964a7044aeb7ebadf00e87",
+      "listing": "listings/reference-WBI-load-entry.txt"
+    }
+  ],
+  "selected_flag1_semantics": "Official WBI_SH_ZERO=1; no stored section data, reference AP routes bit0 to its zero-fill-labelled DMA branch.",
+  "any_staging_initialization_by_this_WBI_proved": false,
+  "any_earlier_whole_boot_initialization_ruled_out": false,
+  "boundaries": {
+    "WBI_restored": false,
+    "zero_RAM_synthesized": false,
+    "metadata_block_read_or_DMA_executed": false,
+    "helper_substitutions_or_fake_success_replies": 0,
+    "device_operations": 0,
+    "originals_modified": false,
+    "other_owner_files_written": false,
+    "current_FX3_AP_or_Backup_obtained": false,
+    "full_private_ISP_RAW_or_flashable_modified_package_produced": false,
+    "goal_complete": false
+  }
+}

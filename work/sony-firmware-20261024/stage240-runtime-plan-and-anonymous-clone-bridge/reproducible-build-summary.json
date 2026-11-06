@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "binary_sha256": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+  "bytes": 262144,
+  "source_pins": {
+    "bridge.c": "e57c209764d0fb276ed6a88fa4c735e6a70d7843badab1feaa58238dd3e4a4a9",
+    "bridge_job.h": "bdce44720340a3cd4fd90e04942d07f86f2b1a557990a1d07762971da3da0c0a",
+    "collector.c": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b",
+    "parent.c": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5",
+    "sha_impl.inc": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4"
+  },
+  "tested_source_hashes": {
+    "bridge.c": "e57c209764d0fb276ed6a88fa4c735e6a70d7843badab1feaa58238dd3e4a4a9",
+    "parent.c": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5",
+    "collector.c": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b",
+    "bridge_job.h": "bdce44720340a3cd4fd90e04942d07f86f2b1a557990a1d07762971da3da0c0a",
+    "sha_impl.inc": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4",
+    "bridge_build.py": "6c02ec06b94020e380a185141229f52c52d549e984c7c900aa2c6685ea6ec3f0",
+    "model_bridge.py": "9292d90006753b237ab907e504565fc2a99d94ea783085f239f45a6162b51980",
+    "test_bridge.py": "2e109bc5e3495421825c27ef60c25ddc7ae4b67f1dda9fa57733e900874593b4"
+  },
+  "builds": [
+    "build-first/build.json",
+    "reproducible-build/build.json"
+  ],
+  "deployable": false
+}

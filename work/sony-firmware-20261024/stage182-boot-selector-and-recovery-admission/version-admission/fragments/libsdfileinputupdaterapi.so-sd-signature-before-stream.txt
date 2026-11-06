@@ -1,0 +1,157 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0x95b8, 0x9820) raw slice SHA256 d193fa6eba735234b5b17e465e85f7195468dfee7a7ec415eb8dfb647b6555c9
+    95b8: d10383ff     	sub	sp, sp, #0xe0
+    95bc: 52800803     	mov	w3, #0x40               // =64
+    95c0: 52800001     	mov	w1, #0x0                // =0
+    95c4: a9017bfd     	stp	x29, x30, [sp, #0x10]
+    95c8: 910043fd     	add	x29, sp, #0x10
+    95cc: a90253f3     	stp	x19, x20, [sp, #0x20]
+    95d0: d0000014     	adrp	x20, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    95d4: aa0003f3     	mov	x19, x0
+    95d8: a9035bf5     	stp	x21, x22, [sp, #0x30]
+    95dc: d0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    95e0: 91099e96     	add	x22, x20, #0x267
+    95e4: aa1603e2     	mov	x2, x22
+    95e8: 910343b5     	add	x21, x29, #0xd0
+    95ec: 91029000     	add	x0, x0, #0xa4
+    95f0: a90463f7     	stp	x23, x24, [sp, #0x40]
+    95f4: a9056bf9     	stp	x25, x26, [sp, #0x50]
+    95f8: f90033fb     	str	x27, [sp, #0x60]
+    95fc: f81b0ebf     	str	xzr, [x21, #-0x50]!
+    9600: 97fff8c4     	bl	0x7910 <printf@plt>
+    9604: f9400260     	ldr	x0, [x19]
+    9608: f9405001     	ldr	x1, [x0, #0xa0]
+    960c: aa1303e0     	mov	x0, x19
+    9610: d63f0020     	blr	x1
+    9614: d0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    9618: aa1603e2     	mov	x2, x22
+    961c: 9103d000     	add	x0, x0, #0xf4
+    9620: 52800843     	mov	w3, #0x42               // =66
+    9624: 52800001     	mov	w1, #0x0                // =0
+    9628: 97fff8ba     	bl	0x7910 <printf@plt>
+    962c: f9402660     	ldr	x0, [x19, #0x48]
+    9630: f942a262     	ldr	x2, [x19, #0x540]
+    9634: f9400001     	ldr	x1, [x0]
+    9638: f9402423     	ldr	x3, [x1, #0x48]
+    963c: aa1503e1     	mov	x1, x21
+    9640: d63f0060     	blr	x3
+    9644: aa0003f5     	mov	x21, x0
+    9648: aa0003e4     	mov	x4, x0
+    964c: d0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    9650: aa1603e2     	mov	x2, x22
+    9654: 91085800     	add	x0, x0, #0x216
+    9658: 52800001     	mov	w1, #0x0                // =0
+    965c: 528008a3     	mov	w3, #0x45               // =69
+    9660: 910223b6     	add	x22, x29, #0x88
+    9664: 97fff8ab     	bl	0x7910 <printf@plt>
+    9668: aa1603e0     	mov	x0, x22
+    966c: 97fff7c9     	bl	0x7590 <Updater::SignatureVerification::SignatureVerification()@plt>
+    9670: 510402a1     	sub	w1, w21, #0x100
+    9674: f94043a0     	ldr	x0, [x29, #0x80]
+    9678: b9009ba1     	str	w1, [x29, #0x98]
+    967c: d10402a1     	sub	x1, x21, #0x100
+    9680: f9004ba0     	str	x0, [x29, #0x90]
+    9684: 8b010000     	add	x0, x0, x1
+    9688: f90053a0     	str	x0, [x29, #0xa0]
+    968c: 52802000     	mov	w0, #0x100              // =256
+    9690: d0000002     	adrp	x2, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    9694: b900aba0     	str	w0, [x29, #0xa8]
+    9698: 91058842     	add	x2, x2, #0x162
+    969c: a94907a0     	ldp	x0, x1, [x29, #0x90]
+    96a0: a90607a0     	stp	x0, x1, [x29, #0x60]
+    96a4: a94a07a0     	ldp	x0, x1, [x29, #0xa0]
+    96a8: a90707a0     	stp	x0, x1, [x29, #0x70]
+    96ac: 910183a1     	add	x1, x29, #0x60
+    96b0: aa1603e0     	mov	x0, x22
+    96b4: 97fff6ab     	bl	0x7160 <Updater::SignatureVerification::VerifySignature(Updater::verify_info_t, char const*)@plt>
+    96b8: 2a0003f7     	mov	w23, w0
+    96bc: 34000380     	cbz	w0, 0x972c <Updater::SDDecryptorModule::execWriteFirm()+0x174>
+    96c0: d0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    96c4: 52800041     	mov	w1, #0x2                // =2
+    96c8: 91099e82     	add	x2, x20, #0x267
+    96cc: 9105ec00     	add	x0, x0, #0x17b
+    96d0: 52800a03     	mov	w3, #0x50               // =80
+    96d4: 72a00061     	movk	w1, #0x3, lsl #16
+    96d8: 97fff88e     	bl	0x7910 <printf@plt>
+    96dc: d2800200     	mov	x0, #0x10               // =16
+    96e0: 97fff6b0     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    96e4: 900000a1     	adrp	x1, 0x1d000
+    96e8: 900000a2     	adrp	x2, 0x1d000
+    96ec: f947a821     	ldr	x1, [x1, #0xf50]
+    96f0: f947b842     	ldr	x2, [x2, #0xf70]
+    96f4: 91004021     	add	x1, x1, #0x10
+    96f8: f9000001     	str	x1, [x0]
+    96fc: 52800041     	mov	w1, #0x2                // =2
+    9700: 72a00061     	movk	w1, #0x3, lsl #16
+    9704: b9000801     	str	w1, [x0, #0x8]
+    9708: 900000a1     	adrp	x1, 0x1d000
+    970c: 3900301f     	strb	wzr, [x0, #0xc]
+    9710: f947e421     	ldr	x1, [x1, #0xfc8]
+    9714: 97fff827     	bl	0x77b0 <__cxa_throw@plt>
+    9718: aa0003f3     	mov	x19, x0
+    971c: aa1603e0     	mov	x0, x22
+    9720: 97fff700     	bl	0x7320 <Updater::SignatureVerification::~SignatureVerification()@plt>
+    9724: aa1303e0     	mov	x0, x19
+    9728: 97fff842     	bl	0x7830 <_Unwind_Resume@plt>
+    972c: aa1603e0     	mov	x0, x22
+    9730: 9115227a     	add	x26, x19, #0x548
+    9734: d0000019     	adrp	x25, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    9738: 910243b8     	add	x24, x29, #0x90
+    973c: 9106b739     	add	x25, x25, #0x1ad
+    9740: d2800016     	mov	x22, #0x0               // =0
+    9744: 97fff6f7     	bl	0x7320 <Updater::SignatureVerification::~SignatureVerification()@plt>
+    9748: d280081b     	mov	x27, #0x40              // =64
+    974c: f94043a0     	ldr	x0, [x29, #0x80]
+    9750: d10442a1     	sub	x1, x21, #0x110
+    9754: f9029e61     	str	x1, [x19, #0x538]
+    9758: 8b010000     	add	x0, x0, x1
+    975c: a9400400     	ldp	x0, x1, [x0]
+    9760: a9097fbf     	stp	xzr, xzr, [x29, #0x90]
+    9764: a9000740     	stp	x0, x1, [x26]
+    9768: a90a7fbf     	stp	xzr, xzr, [x29, #0xa0]
+    976c: a90b7fbf     	stp	xzr, xzr, [x29, #0xb0]
+    9770: a90c7fbf     	stp	xzr, xzr, [x29, #0xc0]
+    9774: 8b160261     	add	x1, x19, x22
+    9778: 93407ee0     	sxtw	x0, w23
+    977c: aa1903e2     	mov	x2, x25
+    9780: 910006d6     	add	x22, x22, #0x1
+    9784: 39552023     	ldrb	w3, [x1, #0x548]
+    9788: cb000361     	sub	x1, x27, x0
+    978c: 8b000300     	add	x0, x24, x0
+    9790: 97fff764     	bl	0x7520 <snprintf@plt>
+    9794: 0b0002f7     	add	w23, w23, w0
+    9798: f10042df     	cmp	x22, #0x10
+    979c: 54fffec1     	b.ne	0x9774 <Updater::SDDecryptorModule::execWriteFirm()+0x1bc>
+    97a0: 91099e97     	add	x23, x20, #0x267
+    97a4: d0000000     	adrp	x0, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    97a8: aa1803e4     	mov	x4, x24
+    97ac: aa1703e2     	mov	x2, x23
+    97b0: 9106cc00     	add	x0, x0, #0x1b3
+    97b4: 52800b83     	mov	w3, #0x5c               // =92
+    97b8: 52800001     	mov	w1, #0x0                // =0
+    97bc: 97fff855     	bl	0x7910 <printf@plt>
+    97c0: b0000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    97c4: aa1703e2     	mov	x2, x23
+    97c8: 913f7c00     	add	x0, x0, #0xfdf
+    97cc: 52800be3     	mov	w3, #0x5f               // =95
+    97d0: 52800001     	mov	w1, #0x0                // =0
+    97d4: 97fff84f     	bl	0x7910 <printf@plt>
+    97d8: f90003f6     	str	x22, [sp]
+    97dc: aa1a03e7     	mov	x7, x26
+    97e0: 91156265     	add	x5, x19, #0x558
+    97e4: 91004276     	add	x22, x19, #0x10
+    97e8: d2800006     	mov	x6, #0x0                // =0
+    97ec: d2800004     	mov	x4, #0x0                // =0
+    97f0: d2800103     	mov	x3, #0x8                // =8
+    97f4: d2800002     	mov	x2, #0x0                // =0
+    97f8: 52800061     	mov	w1, #0x3                // =3
+    97fc: 52800040     	mov	w0, #0x2                // =2
+    9800: 97fffe9e     	bl	0x9278 <Updater::SDDecryptorModule::DecScrambleWrapper(unsigned char*)+0x8>
+    9804: aa1603e0     	mov	x0, x22
+    9808: 97fff7da     	bl	0x7770 <Updater::BaseModule::ThreadStatus::IsRunning()@plt>
+    980c: 72001c1f     	tst	w0, #0xff
+    9810: 54000b20     	b.eq	0x9974 <Updater::SDDecryptorModule::execWriteFirm()+0x3bc>
+    9814: aa1303e0     	mov	x0, x19
+    9818: 97fff746     	bl	0x7530 <Updater::DecryptorModule::updateData()@plt>
+    981c: f9425a60     	ldr	x0, [x19, #0x4b0]

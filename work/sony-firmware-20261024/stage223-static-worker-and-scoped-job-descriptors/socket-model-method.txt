@@ -1,0 +1,71 @@
+    def socket_call(self,u,nr,args):
+        self.ipc_calls.append(dict(number=nr,args=args))
+        a,b,c,d,e,f=args
+        def put(address,fmt,*values):u.mem_write(address,struct.pack(fmt,*values))
+        def read(address,n):return bytes(u.mem_read(address,n))
+        if nr==209:
+            assert (a,b)==(self.socket_fd,1)
+            if c==3:
+                assert struct.unpack('<I',read(e,4))[0]==4
+                put(d,'<I',1 if self.ipc_fault=='stream' else 2);put(e,'<I',4);return 0
+            assert c==17 and struct.unpack('<I',read(e,4))[0]==12
+            pid=self.ppid+1 if self.ipc_fault=='peer-pid' else self.ppid
+            uid=501 if self.ipc_fault=='peer-uid' else 0;gid=20 if self.ipc_fault=='peer-gid' else 0
+            put(d,'<III',pid,uid,gid);put(e,'<I',8 if self.ipc_fault=='peer-size' else 12);return 0
+        if nr==204:
+            assert a==self.socket_fd and struct.unpack('<I',read(c,4))[0]==110
+            put(b,'<H',2 if self.ipc_fault=='not-unix' else 1);put(c,'<I',10 if self.ipc_fault=='named' else 2);return 0
+        if nr==208:
+            assert (a,b,c,e)==(self.socket_fd,1,16,4) and read(d,4)==struct.pack('<I',1)
+            self.owned_mutations.append('SO_PASSCRED');return -5 if self.ipc_fault=='passcred-error' else 0
+        if nr==73:
+            assert b==1 and d==0 and e==8
+            fd,events,revents=struct.unpack('<ihh',read(a,8));assert fd==self.socket_fd and events==1 and revents==0
+            sec,ns=struct.unpack('<qq',read(c,16));assert 0<=sec<=1 and 0<=ns<1000000000
+            self.polls+=1
+            if self.ipc_fault=='go-block' and self.polls==2:
+                self.entered.set();assert self.release.wait(timeout=10);self.now+=2_000_000_000
+            if self.ipc_fault=='poll-error':return -5
+            if not self.messages:return 0
+            put(a+6,'<h',17 if self.ipc_fault=='poll-hup' else 1);return 1
+        if nr in (211,212):
+            assert a==self.socket_fd
+            fields=struct.unpack('<QI4xQQQQI4x',read(b,56));name,namelen,iov,iovlen,control,controllen,flags=fields
+            assert name==namelen==0 and iovlen==1
+            base,size=struct.unpack('<QQ',read(iov,16));assert size==320
+            if nr==211:
+                assert c==0x4040 and control==controllen==0
+                packet=read(base,320);decoded=P.decode(packet);assert decoded['hand']==self.hand
+                self.sent.append(dict(kind=decoded['kind'],result=decoded['result'],sha256=sha256(packet).hexdigest()))
+                if decoded['kind']==2:
+                    assert self.source_opens==[] and self.source_reads==[]
+                    if self.ipc_fault=='ready-short':return 319
+                    if self.ipc_fault=='ready-error':return -32
+                    if self.ipc_fault!='no-go':
+                        hand=self.hand
+                        if self.ipc_fault=='go-differs':
+                            altered=bytearray(hand);altered[32]^=1;hand=bytes(altered)
+                        self.messages.append(P.packet(3,hand))
+                elif self.ipc_fault=='done-short':return 319
+                return 320
+            assert c==0x40000040 and controllen==256 and self.messages
+            packet=self.messages.pop(0);which=len(self.received);self.received.append(P.decode(packet)['kind'])
+            credpid=self.ppid+1 if self.ipc_fault=='message-pid' else self.ppid
+            creduid=501 if self.ipc_fault=='message-uid' else 0
+            credentials=cmsg(2,struct.pack('<III',credpid,creduid,0));ancillary=credentials
+            if self.ipc_fault=='no-credentials':ancillary=b''
+            if self.ipc_fault=='double-credentials':ancillary+=credentials
+            if self.ipc_fault in ('rights','rights-truncated','rights-error'):
+                ancillary+=cmsg(1,struct.pack('<ii',350,351))
+                for fd in (350,351):
+                    self.fds[fd]={'kind':'injected','real':None,'data':None,'pos':0,'path':None};self.injected.append(fd)
+            if self.ipc_fault=='unknown-control':ancillary+=cmsg(7,b'')
+            if self.ipc_fault=='bad-control-size':ancillary=struct.pack('<QII',15,1,2)+b'\0'*16
+            if self.ipc_fault=='packet-reserved':
+                altered=bytearray(packet);altered[288]=1;struct.pack_into('<I',altered,316,zlib.crc32(altered[:316]));packet=bytes(altered)
+            if self.ipc_fault=='packet-crc':packet=packet[:-1]+bytes([packet[-1]^1])
+            u.mem_write(base,packet);u.mem_write(control,ancillary)
+            outflags=8 if self.ipc_fault in ('control-truncated','rights-truncated') else 32 if self.ipc_fault=='packet-truncated' else 0x40000000
+            put(b+40,'<Q',len(ancillary));put(b+48,'<I',outflags)
+            return -5 if self.ipc_fault=='rights-error' else 319 if self.ipc_fault=='packet-short' else 320
+        raise AssertionError('unexpected IPC syscall')

@@ -1,0 +1,21 @@
+ 2e51734: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 2e51738: 90004a40     	adrp	x0, 0x3799000
+ 2e5173c: 91203c00     	add	x0, x0, #0x80f
+ 2e51740: 5280bb83     	mov	w3, #0x5dc              // =1500
+ 2e51744: 910003fd     	mov	x29, sp
+ 2e51748: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e5174c: 90005a14     	adrp	x20, 0x3991000
+ 2e51750: b00058b3     	adrp	x19, 0x3966000
+ 2e51754: 91142294     	add	x20, x20, #0x508
+ 2e51758: 91351e73     	add	x19, x19, #0xd47
+ 2e5175c: aa1403e2     	mov	x2, x20
+ 2e51760: aa1303e1     	mov	x1, x19
+ 2e51764: 940479ea     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e51768: aa1403e2     	mov	x2, x20
+ 2e5176c: aa1303e1     	mov	x1, x19
+ 2e51770: f0005600     	adrp	x0, 0x3914000
+ 2e51774: 5280bba3     	mov	w3, #0x5dd              // =1501
+ 2e51778: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2e5177c: 9107a800     	add	x0, x0, #0x1ea
+ 2e51780: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 2e51784: 140479e2     	b	0x2f6ff0c <Application_System_Init+0x188037c>

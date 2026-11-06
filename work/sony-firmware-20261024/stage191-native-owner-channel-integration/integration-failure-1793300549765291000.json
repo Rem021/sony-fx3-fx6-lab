@@ -1,0 +1,136 @@
+{
+  "results": [
+    {
+      "name": "observe_end_real_peer",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.6055797089939006
+    },
+    {
+      "name": "fragmented_stream",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07227620802586898
+    },
+    {
+      "name": "reversed_pipe_map",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.054840249998960644
+    },
+    {
+      "name": "without_storage_driver",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05210512498160824
+    },
+    {
+      "name": "nonce_mismatch",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05311970796901733
+    },
+    {
+      "name": "generation_mismatch",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05046545900404453
+    },
+    {
+      "name": "zero_id",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.051794541999697685
+    },
+    {
+      "name": "expired_deadline",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05309841700363904
+    },
+    {
+      "name": "bad_stream_size_0",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05022804101463407
+    },
+    {
+      "name": "bad_stream_size_571",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.04647037497488782
+    },
+    {
+      "name": "bad_stream_size_573",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.049321957980282605
+    },
+    {
+      "name": "bad_stream_size_4294967295",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.048307917022611946
+    },
+    {
+      "name": "SCM_RIGHTS_rejected_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05087366595398635
+    },
+    {
+      "name": "large_SCM_RIGHTS_rejected_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.04855641699396074
+    },
+    {
+      "name": "max_accepted_test_SCM_RIGHTS_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.04839216702384874
+    },
+    {
+      "name": "wrong_kernel_peer_pid_before_owner",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.03729279100662097
+    },
+    {
+      "name": "wrong_peer_birth_before_owner",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.03729729098267853
+    },
+    {
+      "name": "native_scope_denies_START",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.053535374987404794
+    },
+    {
+      "name": "fake_auth_STOP_not_body_exit",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.15079975000116974
+    },
+    {
+      "name": "fake_auth_reversed_endpoints",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.14079741697059944
+    },
+    {
+      "name": "fake_auth_without_STOP_retains",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.14380254200659692
+    },
+    {
+      "name": "blocked_native_op_1_no_cleanup",
+      "status": "FAIL",
+      "error": "AssertionError()",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 134, in case\n    try:fn();results.append({'name':name,'status':'PASS','processes':Job.serial-before,'seconds':time.monotonic()-start})\n        ~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 226, in <lambda>\n    for op in (1,2,3):case(f'blocked_native_op_{op}_no_cleanup',lambda op=op:blocked(op))\n                                                                             ~~~~~~~^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 177, in blocked\n    assert value(j.ptr,4)==op and not completed(j.ptr) and j.proc.poll() is None\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    }
+  ]
+}

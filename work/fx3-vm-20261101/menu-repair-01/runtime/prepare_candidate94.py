@@ -1,0 +1,27 @@
+from pathlib import Path
+import json,hashlib,struct,importlib.util,subprocess,plistlib,re
+R=Path(__file__).resolve().parent;H=R/'helpers';D=R/'ap94-child-stretch';assert not D.exists();assert plistlib.loads(subprocess.check_output(['diskutil','info','-plist','/Volumes/KAFU2T']))['VolumeUUID']=='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+sha=lambda b:hashlib.sha256(b).hexdigest()
+# Regressions checked against separately generated prior candidate oracle.
+log=(H/'check-gpe94-regression.log').read_text();got=re.findall(r'REF90 index=\d+ fnv=(0x[0-9a-f]+)',log);expected=[x['fnv64'] for x in json.loads((R/'ap90-synthetic-73-reference.json').read_text())['commands']];assert got==expected and len(got)==73
+vhost=json.loads((R/'ap94-host-check.json').read_text());vhost['73_independent_reference_FNV_equal']=True
+for check in vhost['checks']:check['log_sha256']=sha(Path(check['log']).read_bytes())
+vhost['compaction_assembly_test']=str(R/'ap94-compaction-probe-host-check.json');(R/'ap94-host-check.json').write_text(json.dumps(vhost,indent=2)+'\n')
+# Exhaustive legal input prefix + disallowed order / limits, same algorithm in C and host.
+s=(H/'fx3-input94-plan-v1.h').read_text();src='#include <assert.h>\n'+s+'\nint main(void){struct plan93 p={1,0,0,0};assert(plan93_accept(&p,1,0x30));assert(!plan93_accept(&p,1,3));assert(!plan93_accept(&p,2,0x1ac));for(unsigned n=3;n<15;n++)assert(!plan93_accept(&p,n,0x1ac));assert(plan93_accept(&p,15,0x1ac));assert(!plan93_accept(&p,15,0x1ab));unsigned nav[4]={0x30,0x30,0x1af,0x1ac};for(unsigned n=16;n<=19;n++)assert(!plan93_accept(&p,n,nav[n-16]));assert(plan93_accept(&p,20,0x1ac));return 0;}\n';cp=H/'check-input94.c';cp.write_text(src);subprocess.run(['clang','-fsanitize=address,undefined',str(cp),'-o',str(H/'check-input94')],check=True);subprocess.run([str(H/'check-input94')],check=True)
+sp=importlib.util.spec_from_file_location('gate94',R/'gate_input94.py');m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);assert m.valid_plan([3,0x1ac]+[0x1ac]*12+[0x1ab,0x30,0x30,0x1af,0x1ac]);assert not m.valid_plan([0x30]);assert not m.valid_plan([3,0x1ac]+[0x1ac]*13)
+base=R/'ap93-r5-current-frame-export/candidate.json';v=json.loads(base.read_text());data=Path(v['initrd']['path']).read_bytes();assert sha(data)==v['initrd']['sha256'];off=0;entries=[];changed=[]
+replacements={'simulation/fx3-gpe-observe-v7.so':'fx3-gpe-observe-v19-child-stretch.so','simulation/fx3-rm-empty-provider-v3-setup.so':'fx3-rm-empty-provider-v4-up-enter.so'}
+while True:
+ f=[int(data[off+6+i*8:off+14+i*8],16) for i in range(13)];name=data[off+110:off+110+f[11]-1].decode();off=(off+110+f[11]+3)&~3;b=data[off:off+f[6]];off=(off+f[6]+3)&~3
+ if name=='TRAILER!!!':break
+ if name in replacements:b=(H/replacements[name]).read_bytes();changed.append(name)
+ entries.append((name,f,b))
+assert set(changed)==set(replacements);D.mkdir();out=bytearray()
+def add(n,f,b,i):
+ f=f.copy();raw=n.encode()+b'\0';f[0]=i;f[6]=len(b);f[11]=len(raw);out.extend(b'070701'+''.join(f'{x:08x}' for x in f).encode()+raw);out.extend(b'\0'*(-len(out)%4));out.extend(b);out.extend(b'\0'*(-len(out)%4))
+for i,(n,f,b) in enumerate(entries,1):add(n,f,b,i)
+add('TRAILER!!!',[0]*13,b'',len(entries)+1);cp=D/'guest.cpio';cp.write_bytes(out);sp=importlib.util.spec_from_file_location('fdt',R.parents[1]/'fx3-audit/prepare_virt_dtb.py');m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);tree,p,res,meta=m.parse(Path(v['dtb']['path']).read_bytes());chosen=next(n for k,n in tree['items'] if k=='node' and n['name']=='chosen');chosen['items']=[(k,(q[0],struct.pack('>Q',0x440000000+len(out)))) if k=='prop' and q[0]=='linux,initrd-end' else (k,q) for k,q in chosen['items']];dt=D/'guest.dtb';dt.write_bytes(m.encode(tree,res,meta));v['dtb']={'path':str(dt),'sha256':sha(dt.read_bytes())};v['initrd']={'path':str(cp),'sha256':sha(out)};v['required_markers']=list(dict.fromkeys(v['required_markers']+['FX3_GPE_COMPACTION_BOUND','FX3_GPE_CHILD_REGISTER','FX3_GPE_DRAW_INTERVAL']));v['scope']='AP94 baselineAP93r5. GPEv19 active child ledger from original103550 success/free10364c entry/close revoke; parent originalidentity+epoch+class and everyrow checks. flags0 fmt0 selector0 K255 rotation0 exactfullclip integer4x nearest replacement approx_blend0, raw input selector/P73 unchanged. Original545/native403/OSDv6 frame target contract unchanged. Seven compaction entry probes observe only, bitmap binding and queuedABA/compaction protection uncovered. RM corev2 unchanged; providerV4 input sequence UP3 then manually confirmed ENTER1ac, each setupdefault<=12 actualPNG, standby MENU1ab then DOWN/DOWN/RIGHT/ENTER, gaps>=4s. No original UI state or callback write. No camera/network/hardware oracle claim.'
+(D/'candidate.json').write_text(json.dumps(v,indent=2)+'\n')
+source_names=['fx3-gpe-observe-v19-child-stretch.c','fx3-gpe-backend-v4.c','fx3-gpe-backend-v4.h','fx3-gpe-resource-v4-child.inc','fx3-gpe-compaction-v1.S','fx3-rm-empty-provider-v4-up-enter.c','fx3-rm-key-gate-v3-up-enter.inc','fx3-input94-plan-v1.h']+list(replacements.values())
+(D/'build-receipt.json').write_text(json.dumps({'base':str(base),'base_sha256':sha(base.read_bytes()),'changed_CPIO_members':changed,'init_unchanged':True,'RM_core_v2_unchanged':True,'originals_unchanged':True,'DTB_only_initrd_end_changed':True,'helpers':{n:sha((H/n).read_bytes()) for n in source_names},'host_checks':str(R/'ap94-host-check.json'),'input_plan_C_ASan_UBSan_and_host':True,'authority':'msg_fd22adc6ac57'},indent=2)+'\n');print(D/'candidate.json')

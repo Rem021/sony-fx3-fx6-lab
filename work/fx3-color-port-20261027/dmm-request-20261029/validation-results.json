@@ -1,0 +1,46 @@
+{
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "av_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "previous_receipt_sha256": "4a899628f47fe3ca66c66d0d00fa39637427fd43a14aac57bc781cb665330cb6",
+  "previous_files_verified": 27,
+  "python_ast_files": 3,
+  "source_windows": 8,
+  "DmmWrapper_literal_pins": 4,
+  "candidate_CP_literals": 3,
+  "candidate_AV_literals": 2,
+  "case_counts": {
+    "original_request": 3,
+    "strict_context": 1,
+    "allocation_negative": 2,
+    "original_length_guard": 1,
+    "total": 7
+  },
+  "unreplied_boundaries_verified": 6,
+  "critical_adapters_declared": {
+    "enter": 55,
+    "exit": 54
+  },
+  "original_message_payload_bytes": 216,
+  "original_payload_written_bytes": 14,
+  "remaining_fixture_payload_bytes": 202,
+  "original_variable_pool_bytes": 524288,
+  "local_links_verified": 11,
+  "boundary": {
+    "native_target_execution": false,
+    "device_actions": 0,
+    "message_allocation_pointers_fabricated": 0,
+    "dynamic_ID_results_fabricated": 0,
+    "submission_executed": false,
+    "provider_replies_supplied": 0,
+    "QID_receiver_proven": false,
+    "unit_4af_layout_proven": false,
+    "physical_image_buffers": false,
+    "MAIN_recording_pixels": false,
+    "complete_donor_ISP": false,
+    "firmware_output": false,
+    "modified_firmware_flashable": false,
+    "goal_complete": false,
+    "termination_condition_met": false
+  },
+  "conclusion": "Original RAM pool/message allocation and 14 core DmmWrapper AllocNew request bytes verified before submission. Static reply checks and unbound DMM candidates are not provider responses or full image/firmware acceptance."
+}

@@ -1,0 +1,88 @@
+{
+  "schema": "fx3-stage15-private-activation/1",
+  "created_utc": "2026-10-25T18:15:44.480111+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/README.md",
+      "bytes": 6356,
+      "sha256": "984c50c4672be0882198e332889d2396711ac8eb8638e4942325b45749c620d1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/coordinator-observations.json",
+      "bytes": 898,
+      "sha256": "526316677ac2270a6d391f51eda7892eab36d0a88f60cd025f61781077770392"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/goal-status-after.json",
+      "bytes": 16111,
+      "sha256": "a6d37f49cabaa10517a258af9b8fb1ade9dfdf992c9d8847011cb9baac2fd24d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/goal-status-before.json",
+      "bytes": 14184,
+      "sha256": "41e1934adb0aea2d5fe65144bb8fe7adf1bd85a1de5855d4aacb4a3c19314d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/private_activation.py",
+      "bytes": 17547,
+      "sha256": "230a0cc373f09f95d76cbb277ebdcb51393fd221095a0a1985d8785db697d3d9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+      "bytes": 3663335,
+      "sha256": "ac06061e03bf71f25bc0423f002e8d4bc6bee2188b7da07f61b26f4db839a95f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/run-20261025/source-receipt.json",
+      "bytes": 1665,
+      "sha256": "1d08d6ef46bda7a577f18b20b3aa97e7cf610f30ec94f5d704f2fab0ac6507dd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/run-20261025/summary.json",
+      "bytes": 770,
+      "sha256": "303d7ea4fa97475e00646eb241b90a435b5bd8f6d38534965ce6973d195dc620"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json",
+      "bytes": 395606,
+      "sha256": "0a22168010a88e1e6b21ee60afc88163982c580a66ab8736d8bea7a8a0946eda"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/source-receipt.json",
+      "bytes": 1179,
+      "sha256": "a5495e5c6f05ad7a8aea43b2cbf500d734529a9be1789bfb95e13eb901c22c43"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/summary.json",
+      "bytes": 294,
+      "sha256": "78cbe7100b5bfd3208c1f6b4d633e93923b9c15b692108d0db9ba0fb3aef9515"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage15-private-activation/snapshot_boundaries.py",
+      "bytes": 4827,
+      "sha256": "f5fad2aca36e1051fd7ab35755777b60f982aac31de5c7c3ed9f85a2e9c0be05"
+    }
+  ],
+  "scope": "Bounded guest-only activation variant and independent input-snapshot counterexamples",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "41e1934adb0aea2d5fe65144bb8fe7adf1bd85a1de5855d4aacb4a3c19314d11",
+    "after_sha256": "a6d37f49cabaa10517a258af9b8fb1ade9dfdf992c9d8847011cb9baac2fd24d",
+    "before_snapshot": "work/sony-firmware-20261024/stage15-private-activation/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage15-private-activation/goal-status-after.json",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_function_emulation": true,
+    "new_remote_attempts": false,
+    "Windows_task_dispatched_or_executed": false,
+    "camera_interface_auth_driver_file_module_WBI_or_write": false,
+    "firmware_payload_or_patchfile_exported": false
+  },
+  "synchronization_menu_persistence_hardware_or_restore_accepted": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 独立激活与配置一致性](<work/sony-firmware-20261024/stage15-private-activation/README.md>)：合法模型保留通过局部对照；开关与模式快照负例明确同步缺口，未形成上机或救砖方案。"
+}

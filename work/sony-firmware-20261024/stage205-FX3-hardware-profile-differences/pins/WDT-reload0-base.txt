@@ -1,0 +1,4 @@
+00008d32 feb5 push     {r1, r2, r3, r4, r5, r6, r7, lr}
+00008d34 8e4d ldr      r5, [pc, #0x238]
+00008d36 02ac add      r4, sp, #8
+00008d38 95f8ef00 ldrb.w   r0, [r5, #0xef]

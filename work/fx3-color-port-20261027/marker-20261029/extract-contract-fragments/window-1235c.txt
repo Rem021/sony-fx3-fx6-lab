@@ -1,0 +1,8 @@
+0001235c add        x24, x29, #0xd8
+00012360 mov        x0, x24
+00012364 bl         #0x10580 ; Updater::StringHandler::StringHandler
+00012368 adrp       x1, #0x1b000
+0001236c mov        x0, x24
+00012370 add        x1, x1, #0x81e ; literal '/tmp_updater/updater/update'
+00012374 bl         #0x104e0 ; Updater::StringHandler::SetString
+00012378 mov        x0, x24

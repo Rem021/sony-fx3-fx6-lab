@@ -1,0 +1,61 @@
+{
+  "binding_input_sha256": "228f01a8c4abb892cce69ef18428bda96940992bb8ba2eb1acb1efaaa52ca68b",
+  "positive": {
+    "scope": "offline declarative adapter, no live callback or DMA",
+    "input_contract": {
+      "provider_status": 4,
+      "provider_word": "0x30",
+      "event_kind": 0,
+      "look": 22,
+      "ip": 0
+    },
+    "fx6_original_branch": {
+      "mode": 3,
+      "override_flag": 0,
+      "builder_call_offset": "0x2a74e4",
+      "descriptor_va": "0xffffffc001aa2ca0"
+    },
+    "fx3_backend_boundary": {
+      "event_fields": {
+        "u32_at_0": 0,
+        "u32_at_4": 22,
+        "u32_at_8": 0
+      },
+      "builder_call_offset": "0x2c4300",
+      "local_descriptor_va": "0xffffffc001b05638",
+      "descriptor_count": 70,
+      "descriptor_payload_sha256": "8147502e4d8131c2a90678bd735ad55e1c82cd2a2d3dcfd85756ce4d0dd61c74",
+      "event_callback_at_0x10": "unbound; required before execution",
+      "provider_registration": "unbound; no live FX3/FX6 provider table address"
+    },
+    "not_executable_as_firmware": true
+  },
+  "negatives": [
+    {
+      "case": "override_word_0x31",
+      "rejected": true,
+      "reason": "provider word does not route to look22/mode3 without override"
+    },
+    {
+      "case": "ip_1",
+      "rejected": true,
+      "reason": "unproved event kind/look/IP route"
+    },
+    {
+      "case": "other_look",
+      "rejected": true,
+      "reason": "unproved event kind/look/IP route"
+    },
+    {
+      "case": "failed_provider",
+      "rejected": true,
+      "reason": "provider word does not route to look22/mode3 without override"
+    },
+    {
+      "case": "different_event_kind",
+      "rejected": true,
+      "reason": "unproved event kind/look/IP route"
+    }
+  ],
+  "fixture_warning": "0x30 and event kind0/look22/ip0 are explicit synthetic inputs, not observed natural FX6 MAIN/monitor selection"
+}

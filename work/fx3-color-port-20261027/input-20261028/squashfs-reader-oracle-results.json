@@ -1,0 +1,400 @@
+{
+  "status": "PASS_INDEPENDENT_SQUASHFS_ORACLE_702",
+  "source_sha256": "62e86fad175e0326969d5f1cea29d780feb496ce8034acd2c9c3954320d8ccaa",
+  "independent_parser": "PySquashfsImage 0.9.0 previously sealed results",
+  "entries": 65,
+  "regular_files": 58,
+  "checks": [
+    {
+      "path": "/",
+      "type": "directory",
+      "mode_matches": true,
+      "content_or_link_matches": false
+    },
+    {
+      "path": "/bin",
+      "type": "directory",
+      "mode_matches": true,
+      "content_or_link_matches": false
+    },
+    {
+      "path": "/bin/bksb.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/body_common.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/chkfirm.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/chknandcapa.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/edisx.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/edit_mount.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/endufp.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/endupdate.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/filecheck.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/getledval.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/keep_big_backup.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/loader_writer.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/nor_loader_writer.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/pformat.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/spicom.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/startupdate.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/uc_crc32sum.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/uc_mkfs.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_cp_firmup.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_darwin_firmup.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_fsys_format.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_get_addr_from_infosec.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_get_boot_device.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_get_boot_ext.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_get_data_from_mis.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_get_power_ic_type.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_get_uudtype.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_init_sio_port_setting.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_init_spi_port_setting.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_ioex_sel_en.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_keep_backup.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_lerase.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_nor_pformat.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_parallel_spirom_firmup.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_pd_firmup.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_spicom_boot.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_spirom_firmup.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ud_wbi_drop.elf",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/ul_crc32sumprfile.so",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_ca_firm.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_crc32sum.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_crc32sum_appli.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_crc32sum_backup.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_crc32sum_updater.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_crc32sumprfile.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_front_firmup.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_i2c_updater.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_mkfs.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_spi_firmup.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bin/us_zynq_firmup.sh",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/bodylib",
+      "type": "directory",
+      "mode_matches": true,
+      "content_or_link_matches": false
+    },
+    {
+      "path": "/bodylib/libupdaterbody.so",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/config",
+      "type": "directory",
+      "mode_matches": true,
+      "content_or_link_matches": false
+    },
+    {
+      "path": "/config/body_version",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/config/chassis",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/config/common.src",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/config/config.xml",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/cp",
+      "type": "directory",
+      "mode_matches": true,
+      "content_or_link_matches": false
+    },
+    {
+      "path": "/cp/tomco.txt",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/cp/udtrcp.bin",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    },
+    {
+      "path": "/usr",
+      "type": "directory",
+      "mode_matches": true,
+      "content_or_link_matches": false
+    },
+    {
+      "path": "/usr/lib",
+      "type": "directory",
+      "mode_matches": true,
+      "content_or_link_matches": false
+    },
+    {
+      "path": "/usr/lib/libupdatercommon.so",
+      "type": "file",
+      "mode_matches": true,
+      "content_or_link_matches": true
+    }
+  ],
+  "scope": "New bounded stdlib parser independently reproduces all 65 previously decompressed entries and complete original file hashes/link targets/modes; no source files modified or extracted code executed."
+}

@@ -1,0 +1,31 @@
+{
+  "status": "CURRENT_FINAL_BUILD_NEW_VENDOR_SCOPE_AND_HELD_RECEIPTS_PASS",
+  "checks": 2,
+  "rows": [
+    {
+      "case": "final-scope-normal",
+      "status": "PASS",
+      "observed_status": "HOST_RETURN_CAMERA_STATE_UNVERIFIED",
+      "fixture_helper_sha256": "2a505ff784f4d8e0cf7f9b2fa8b5b7a61bc6939998bdaa309d117ffacb04e287",
+      "frames": 80,
+      "vendor_scope_flags": [
+        1,
+        1
+      ],
+      "directory": "runs/final-scope-normal"
+    },
+    {
+      "case": "final-scope-stall",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "fixture_helper_sha256": "2a505ff784f4d8e0cf7f9b2fa8b5b7a61bc6939998bdaa309d117ffacb04e287",
+      "frames": 41,
+      "vendor_scope_flags": [
+        1,
+        1
+      ],
+      "directory": "runs/final-scope-stall"
+    }
+  ],
+  "native_IOKit_or_root_executed": false
+}

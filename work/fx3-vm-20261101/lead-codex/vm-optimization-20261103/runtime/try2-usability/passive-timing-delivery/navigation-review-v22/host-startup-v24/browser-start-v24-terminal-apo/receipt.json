@@ -1,0 +1,36 @@
+{
+  "scenario": "terminal-apo",
+  "web_sha256": "357b6d200fe01813bc1a0fe25ac3fabf5c537a23df314686122ec4699dfe2714",
+  "requests": [
+    {
+      "path": "/",
+      "method": "GET",
+      "backend_status": 200
+    },
+    {
+      "path": "/api/status",
+      "method": "GET",
+      "backend_status": 200
+    },
+    {
+      "path": "/favicon.ico",
+      "method": "GET",
+      "backend_status": 404
+    },
+    {
+      "path": "/api/final-ack",
+      "method": "POST",
+      "backend_status": 200
+    }
+  ],
+  "accepted_count": 0,
+  "guest_started": false,
+  "final_delivery": {
+    "acknowledged": true,
+    "wait_seconds": 6.458023563027382e-06,
+    "end_reason": "browser_ack",
+    "maximum_wait_seconds": 0,
+    "scope": "browser_receipt_delivery_only"
+  },
+  "threads_reaped": true
+}

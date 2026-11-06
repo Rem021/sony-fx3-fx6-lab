@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-r24-a2792c17db55",
+    "eval",
+    "--stdin"
+  ],
+  "start": {
+    "UTC": "2026-11-05T01:39:09.433905+00:00",
+    "host_ns": 426434955219500
+  },
+  "end": {
+    "UTC": "2026-11-05T01:39:09.441400+00:00",
+    "host_ns": 426434962731833
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"attempt\": {\n    \"alarm_due_ms\": 193231.69999998808,\n    \"alarm_nonce\": \"1dc21e50-7029-4c7e-b974-14dd06001161\",\n    \"attempt_id\": \"99f68a04-a042-428a-956d-5f1685573322\",\n    \"base_step\": 7,\n    \"created_monotonic_ms\": 173301.5,\n    \"document_time_origin\": 1793842568306.2,\n    \"expected_step\": 8,\n    \"frame\": {\n      \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\",\n      \"content_generation\": 55,\n      \"sequence\": 1513\n    },\n    \"key\": 427,\n    \"launch_request_id\": \"c008fda8-6c61-441e-9664-92d451ffac28\",\n    \"mutation_called\": false,\n    \"outcome\": \"not_posted\",\n    \"reason\": \"preflight_identity_or_lifecycle_changed\",\n    \"updated_monotonic_ms\": 173303.10000002384\n  },\n  \"frame\": {\n    \"CP_composition_panel_acceptance\": false,\n    \"PNG_sha256\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\",\n    \"QMP_read_only\": true,\n    \"all_zero_pixels\": false,\n    \"committed_slot\": 5,\n    \"content_generation\": 66,\n    \"epoch\": 1,\n    \"fnv64\": \"0x2846744330ced770\",\n    \"guest_native_lease_released_before_ring_commit\": true,\n    \"height\": 480,\n    \"host_monotonic\": 426434.928277625,\n    \"native_bitmap_format\": 1,\n    \"native_format\": 0,\n    \"native_identity\": {\n      \"FB\": \"0x7f54001160\",\n      \"FB_format\": 1,\n      \"allocation\": \"0x54001340\",\n      \"bitmap\": \"0x7f486ab410\",\n      \"bits_cpu_VA\": \"0x7ee133f100\",\n      \"config_hash\": \"0xf3028c5bda01134\",\n      \"entry\": \"0x7f54001198\",\n      \"map_begin\": \"0x7ee133f000\",\n      \"map_end\": \"0x7ee13d6000\",\n      \"map_offset\": \"0x43feb5000\",\n      \"metadata_physical\": \"0x402\",\n      \"publish_sem\": \"0x2886049\"\n    },\n    \"nonuniform_pixels\": true,\n    \"physical\": \"0x43feb5100\",\n    \"pixel_source_sequence\": 1617,\n    \"registered_target\": {\n      \"captured_physical\": \"0x43feb5100\",\n      \"epoch\": 2,\n      \"identity\": \"0x0\",\n      \"kind\": 1,\n      \"native_token\": \"0x402\",\n      \"object\": \"0x0\",\n      \"parent_bytes\": 1310720,\n      \"parent_physical\": \"0x43feb5000\",\n      \"valid_during_native_read_lease_and_raster_lifecycle_guards\": true,\n      \"version\": 1,\n      \"vptr\": \"0x0\"\n    },\n    \"sequence\": 1622,\n    \"sha256\": \"b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051\",\n    \"span\": 614400,\n    \"stride_pixels\": 640,\n    \"token\": \"0x402\",\n    \"update_id\": \"0x1005\",\n    \"width\": 640\n  },\n  \"gen\": 66,\n  \"origin\": 1793842568306.2,\n  \"performance_ms\": 181133.39999997616,\n  \"seq\": 1622,\n  \"sha\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\",\n  \"step\": 7\n}\n",
+  "stderr": ""
+}

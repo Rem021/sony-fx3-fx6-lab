@@ -1,0 +1,250 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0x8374, 0x8750) raw slice SHA256 a2b7de0ef1f1476f5481be664b677ea08edd274c78567497f46cef2a281e6536
+    8374: a9b87bfd     	stp	x29, x30, [sp, #-0x80]!
+    8378: 910003fd     	mov	x29, sp
+    837c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    8380: 9101a3b5     	add	x21, x29, #0x68
+    8384: a90153f3     	stp	x19, x20, [sp, #0x10]
+    8388: aa0003f3     	mov	x19, x0
+    838c: aa1503e0     	mov	x0, x21
+    8390: a90363f7     	stp	x23, x24, [sp, #0x30]
+    8394: a9046bf9     	stp	x25, x26, [sp, #0x40]
+    8398: 97fffcba     	bl	0x7680 <Updater::FsysFileHandler::FsysFileHandler()@plt>
+    839c: 91017261     	add	x1, x19, #0x5c
+    83a0: aa1503e0     	mov	x0, x21
+    83a4: 52800002     	mov	w2, #0x0                // =0
+    83a8: 97fffb62     	bl	0x7130 <Updater::FsysFileHandler::Open(char const*, unsigned int)@plt>
+    83ac: 72001c1f     	tst	w0, #0xff
+    83b0: 54000481     	b.ne	0x8440 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0xcc>
+    83b4: 97fffc7f     	bl	0x75b0 <__errno_location@plt>
+    83b8: b9400004     	ldr	w4, [x0]
+    83bc: d0000002     	adrp	x2, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    83c0: d0000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    83c4: 52800241     	mov	w1, #0x12               // =18
+    83c8: 913d6c42     	add	x2, x2, #0xf5b
+    83cc: 913e9000     	add	x0, x0, #0xfa4
+    83d0: 52801943     	mov	w3, #0xca               // =202
+    83d4: 72a00061     	movk	w1, #0x3, lsl #16
+    83d8: 97fffd4e     	bl	0x7910 <printf@plt>
+    83dc: 14000009     	b	0x8400 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x8c>
+    83e0: d2800014     	mov	x20, #0x0               // =0
+    83e4: f100043f     	cmp	x1, #0x1
+    83e8: 540015c1     	b.ne	0x86a0 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x32c>
+    83ec: 97fffb45     	bl	0x7100 <__cxa_begin_catch@plt>
+    83f0: aa0003e1     	mov	x1, x0
+    83f4: aa1303e0     	mov	x0, x19
+    83f8: 97fffbaa     	bl	0x72a0 <Updater::SDFileInputUpdaterManager::blinkLED(Updater::ApiException const&)@plt>
+    83fc: 140000a1     	b	0x8680 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x30c>
+    8400: d2800200     	mov	x0, #0x10               // =16
+    8404: 97fffb67     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    8408: b00000a1     	adrp	x1, 0x1d000
+    840c: b00000a2     	adrp	x2, 0x1d000
+    8410: f947a821     	ldr	x1, [x1, #0xf50]
+    8414: f947b842     	ldr	x2, [x2, #0xf70]
+    8418: 91004021     	add	x1, x1, #0x10
+    841c: f9000001     	str	x1, [x0]
+    8420: 52800241     	mov	w1, #0x12               // =18
+    8424: 72a00061     	movk	w1, #0x3, lsl #16
+    8428: b9000801     	str	w1, [x0, #0x8]
+    842c: b00000a1     	adrp	x1, 0x1d000
+    8430: 3900301f     	strb	wzr, [x0, #0xc]
+    8434: f947e421     	ldr	x1, [x1, #0xfc8]
+    8438: 97fffcde     	bl	0x77b0 <__cxa_throw@plt>
+    843c: 17ffffe9     	b	0x83e0 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x6c>
+    8440: aa1503e0     	mov	x0, x21
+    8444: d2800001     	mov	x1, #0x0                // =0
+    8448: 97fffb06     	bl	0x7060 <Updater::FsysFileHandler::Seek(long)@plt>
+    844c: 14000002     	b	0x8454 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0xe0>
+    8450: 17ffffe4     	b	0x83e0 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x6c>
+    8454: f9401660     	ldr	x0, [x19, #0x28]
+    8458: f9400001     	ldr	x1, [x0]
+    845c: f9401021     	ldr	x1, [x1, #0x20]
+    8460: d63f0020     	blr	x1
+    8464: 14000002     	b	0x846c <Updater::SDFileInputUpdaterManager::BurnFirmware()+0xf8>
+    8468: 17ffffde     	b	0x83e0 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x6c>
+    846c: f9401260     	ldr	x0, [x19, #0x20]
+    8470: f9400001     	ldr	x1, [x0]
+    8474: f9401421     	ldr	x1, [x1, #0x28]
+    8478: d63f0020     	blr	x1
+    847c: aa0003f4     	mov	x20, x0
+    8480: f9400a60     	ldr	x0, [x19, #0x10]
+    8484: 97fffc5b     	bl	0x75f0 <Updater::CommonUpdaterManagerStatus::Run()@plt>
+    8488: 14000002     	b	0x8490 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x11c>
+    848c: 17ffffd5     	b	0x83e0 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x6c>
+    8490: f9402260     	ldr	x0, [x19, #0x40]
+    8494: f9400001     	ldr	x1, [x0]
+    8498: f9401422     	ldr	x2, [x1, #0x28]
+    849c: aa1503e1     	mov	x1, x21
+    84a0: d63f0040     	blr	x2
+    84a4: d0000002     	adrp	x2, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    84a8: d0000018     	adrp	x24, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    84ac: 913d6c5a     	add	x26, x2, #0xf5b
+    84b0: 913bdb18     	add	x24, x24, #0xef6
+    84b4: aa0203f7     	mov	x23, x2
+    84b8: f9400a60     	ldr	x0, [x19, #0x10]
+    84bc: 97fffc49     	bl	0x75e0 <Updater::CommonUpdaterManagerStatus::IsRunning()@plt>
+    84c0: 72001c1f     	tst	w0, #0xff
+    84c4: 54000201     	b.ne	0x8504 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x190>
+    84c8: aa1503e0     	mov	x0, x21
+    84cc: 97fffbb9     	bl	0x73b0 <Updater::FsysFileHandler::Close()@plt>
+    84d0: 72001c1f     	tst	w0, #0xff
+    84d4: 540009e1     	b.ne	0x8610 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x29c>
+    84d8: 97fffc36     	bl	0x75b0 <__errno_location@plt>
+    84dc: b9400004     	ldr	w4, [x0]
+    84e0: d0000002     	adrp	x2, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    84e4: d0000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    84e8: 52800241     	mov	w1, #0x12               // =18
+    84ec: 913d6c42     	add	x2, x2, #0xf5b
+    84f0: 913e9000     	add	x0, x0, #0xfa4
+    84f4: 52801c43     	mov	w3, #0xe2               // =226
+    84f8: 72a00061     	movk	w1, #0x3, lsl #16
+    84fc: 97fffd05     	bl	0x7910 <printf@plt>
+    8500: 14000035     	b	0x85d4 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x260>
+    8504: 91006299     	add	x25, x20, #0x18
+    8508: f9400e81     	ldr	x1, [x20, #0x18]
+    850c: f9400722     	ldr	x2, [x25, #0x8]
+    8510: aa1503e0     	mov	x0, x21
+    8514: 97fffb5b     	bl	0x7280 <Updater::FsysFileHandler::Read(void*, unsigned long)@plt>
+    8518: aa0003f6     	mov	x22, x0
+    851c: aa0003e4     	mov	x4, x0
+    8520: aa1a03e2     	mov	x2, x26
+    8524: aa1803e0     	mov	x0, x24
+    8528: 52801aa3     	mov	w3, #0xd5               // =213
+    852c: 52800001     	mov	w1, #0x0                // =0
+    8530: 97fffcf8     	bl	0x7910 <printf@plt>
+    8534: f10002df     	cmp	x22, #0x0
+    8538: 5400034a     	b.ge	0x85a0 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x22c>
+    853c: 97fffc1d     	bl	0x75b0 <__errno_location@plt>
+    8540: b9400004     	ldr	w4, [x0]
+    8544: d0000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    8548: 52800241     	mov	w1, #0x12               // =18
+    854c: 913d6ee2     	add	x2, x23, #0xf5b
+    8550: 913e9000     	add	x0, x0, #0xfa4
+    8554: 52801ae3     	mov	w3, #0xd7               // =215
+    8558: 72a00061     	movk	w1, #0x3, lsl #16
+    855c: 97fffced     	bl	0x7910 <printf@plt>
+    8560: d2800200     	mov	x0, #0x10               // =16
+    8564: 97fffb0f     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    8568: b00000a1     	adrp	x1, 0x1d000
+    856c: b00000a2     	adrp	x2, 0x1d000
+    8570: f947a821     	ldr	x1, [x1, #0xf50]
+    8574: f947b842     	ldr	x2, [x2, #0xf70]
+    8578: 91004021     	add	x1, x1, #0x10
+    857c: f9000001     	str	x1, [x0]
+    8580: 52800241     	mov	w1, #0x12               // =18
+    8584: 72a00061     	movk	w1, #0x3, lsl #16
+    8588: b9000801     	str	w1, [x0, #0x8]
+    858c: b00000a1     	adrp	x1, 0x1d000
+    8590: 3900301f     	strb	wzr, [x0, #0xc]
+    8594: f947e421     	ldr	x1, [x1, #0xfc8]
+    8598: 97fffc86     	bl	0x77b0 <__cxa_throw@plt>
+    859c: 17ffff92     	b	0x83e4 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x70>
+    85a0: f9401660     	ldr	x0, [x19, #0x28]
+    85a4: 1a9f17e3     	cset	w3, eq
+    85a8: aa1603e2     	mov	x2, x22
+    85ac: f9400001     	ldr	x1, [x0]
+    85b0: f9401824     	ldr	x4, [x1, #0x30]
+    85b4: f9400321     	ldr	x1, [x25]
+    85b8: d63f0080     	blr	x4
+    85bc: b5fff7f6     	cbnz	x22, 0x84b8 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x144>
+    85c0: f9401e60     	ldr	x0, [x19, #0x38]
+    85c4: f9400001     	ldr	x1, [x0]
+    85c8: f9402821     	ldr	x1, [x1, #0x50]
+    85cc: d63f0020     	blr	x1
+    85d0: 17ffffbe     	b	0x84c8 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x154>
+    85d4: d2800200     	mov	x0, #0x10               // =16
+    85d8: 97fffaf2     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    85dc: b00000a1     	adrp	x1, 0x1d000
+    85e0: b00000a2     	adrp	x2, 0x1d000
+    85e4: f947a821     	ldr	x1, [x1, #0xf50]
+    85e8: f947b842     	ldr	x2, [x2, #0xf70]
+    85ec: 91004021     	add	x1, x1, #0x10
+    85f0: f9000001     	str	x1, [x0]
+    85f4: 52800241     	mov	w1, #0x12               // =18
+    85f8: 72a00061     	movk	w1, #0x3, lsl #16
+    85fc: b9000801     	str	w1, [x0, #0x8]
+    8600: b00000a1     	adrp	x1, 0x1d000
+    8604: 3900301f     	strb	wzr, [x0, #0xc]
+    8608: f947e421     	ldr	x1, [x1, #0xfc8]
+    860c: 97fffc69     	bl	0x77b0 <__cxa_throw@plt>
+    8610: f9400a60     	ldr	x0, [x19, #0x10]
+    8614: 97fffb63     	bl	0x73a0 <Updater::CommonUpdaterManagerStatus::WaitComplete()@plt>
+    8618: f9401660     	ldr	x0, [x19, #0x28]
+    861c: f9400001     	ldr	x1, [x0]
+    8620: f9401421     	ldr	x1, [x1, #0x28]
+    8624: d63f0020     	blr	x1
+    8628: f9400a60     	ldr	x0, [x19, #0x10]
+    862c: 97fffc7d     	bl	0x7820 <Updater::CommonUpdaterManagerStatus::HasError() const@plt>
+    8630: 72001c1f     	tst	w0, #0xff
+    8634: 52800016     	mov	w22, #0x0               // =0
+    8638: 540002c0     	b.eq	0x8690 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x31c>
+    863c: f9400a60     	ldr	x0, [x19, #0x10]
+    8640: 97fffb8c     	bl	0x7470 <Updater::CommonUpdaterManagerStatus::GetError() const@plt>
+    8644: aa0003e1     	mov	x1, x0
+    8648: aa1303e0     	mov	x0, x19
+    864c: 97fffb15     	bl	0x72a0 <Updater::SDFileInputUpdaterManager::blinkLED(Updater::ApiException const&)@plt>
+    8650: 1400000f     	b	0x868c <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x318>
+    8654: 52800096     	mov	w22, #0x4               // =4
+    8658: aa1503e0     	mov	x0, x21
+    865c: 97fffbc9     	bl	0x7580 <Updater::FsysFileHandler::~FsysFileHandler()@plt>
+    8660: 2a1603e0     	mov	w0, w22
+    8664: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    8668: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    866c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    8670: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+    8674: a8c87bfd     	ldp	x29, x30, [sp], #0x80
+    8678: d65f03c0     	ret
+    867c: 17ffff59     	b	0x83e0 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x6c>
+    8680: aa1303e0     	mov	x0, x19
+    8684: 97fffaf3     	bl	0x7250 <Updater::SDFileInputUpdaterManager::resetFirmwareWithoutException()@plt>
+    8688: 97fffc32     	bl	0x7750 <__cxa_end_catch@plt>
+    868c: 52800096     	mov	w22, #0x4               // =4
+    8690: b4fffe54     	cbz	x20, 0x8658 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x2e4>
+    8694: aa1403e0     	mov	x0, x20
+    8698: 97fffb3e     	bl	0x7390 <Updater::BufferContainer::Free()@plt>
+    869c: 17ffffef     	b	0x8658 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x2e4>
+    86a0: 97fffa98     	bl	0x7100 <__cxa_begin_catch@plt>
+    86a4: b00000a0     	adrp	x0, 0x1d000
+    86a8: 910163a1     	add	x1, x29, #0x58
+    86ac: f947a800     	ldr	x0, [x0, #0xf50]
+    86b0: 91004000     	add	x0, x0, #0x10
+    86b4: f9002fa0     	str	x0, [x29, #0x58]
+    86b8: 528004a0     	mov	w0, #0x25               // =37
+    86bc: 72a00060     	movk	w0, #0x3, lsl #16
+    86c0: b90063a0     	str	w0, [x29, #0x60]
+    86c4: aa1303e0     	mov	x0, x19
+    86c8: 390193bf     	strb	wzr, [x29, #0x64]
+    86cc: 97fffaf5     	bl	0x72a0 <Updater::SDFileInputUpdaterManager::blinkLED(Updater::ApiException const&)@plt>
+    86d0: aa1303e0     	mov	x0, x19
+    86d4: 97fffadf     	bl	0x7250 <Updater::SDFileInputUpdaterManager::resetFirmwareWithoutException()@plt>
+    86d8: 97fffc1e     	bl	0x7750 <__cxa_end_catch@plt>
+    86dc: 17ffffec     	b	0x868c <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x318>
+    86e0: aa0003f3     	mov	x19, x0
+    86e4: 97fffc1b     	bl	0x7750 <__cxa_end_catch@plt>
+    86e8: aa1503e0     	mov	x0, x21
+    86ec: 97fffba5     	bl	0x7580 <Updater::FsysFileHandler::~FsysFileHandler()@plt>
+    86f0: aa1303e0     	mov	x0, x19
+    86f4: 97fffc4f     	bl	0x7830 <_Unwind_Resume@plt>
+    86f8: aa0003f3     	mov	x19, x0
+    86fc: 97fffc15     	bl	0x7750 <__cxa_end_catch@plt>
+    8700: 17fffffa     	b	0x86e8 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x374>
+    8704: 97fffa7f     	bl	0x7100 <__cxa_begin_catch@plt>
+    8708: b00000a0     	adrp	x0, 0x1d000
+    870c: 910163a1     	add	x1, x29, #0x58
+    8710: f947a800     	ldr	x0, [x0, #0xf50]
+    8714: 91004000     	add	x0, x0, #0x10
+    8718: f9002fa0     	str	x0, [x29, #0x58]
+    871c: 528004a0     	mov	w0, #0x25               // =37
+    8720: 72a00060     	movk	w0, #0x3, lsl #16
+    8724: b90063a0     	str	w0, [x29, #0x60]
+    8728: aa1303e0     	mov	x0, x19
+    872c: 390193bf     	strb	wzr, [x29, #0x64]
+    8730: 97fffadc     	bl	0x72a0 <Updater::SDFileInputUpdaterManager::blinkLED(Updater::ApiException const&)@plt>
+    8734: 97fffc07     	bl	0x7750 <__cxa_end_catch@plt>
+    8738: 17ffffc7     	b	0x8654 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x2e0>
+    873c: aa0003f3     	mov	x19, x0
+    8740: 97fffc04     	bl	0x7750 <__cxa_end_catch@plt>
+    8744: 17ffffe9     	b	0x86e8 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x374>
+    8748: aa0003f3     	mov	x19, x0
+    874c: 17ffffe7     	b	0x86e8 <Updater::SDFileInputUpdaterManager::BurnFirmware()+0x374>

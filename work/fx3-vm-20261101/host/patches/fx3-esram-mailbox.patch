@@ -1,0 +1,21 @@
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3151,6 +3151,18 @@
+     memory_region_add_subregion(sysmem, vms->memmap[VIRT_MEM].base,
+                                 machine->ram);
+ 
++    /* FX3 offline probe only: architecturally addressed ESRAM as zeroed RAM.
++     * This is not an MMIO success stub or a physical camera compatibility claim.
++     * The original kernel's cxd900xx_smp_init writes secondary boot words here.
++     */
++    if (g_strcmp0(g_getenv("FX3_VM_ESRAM_RAM"), "1") == 0) {
++        MemoryRegion *fx3_esram = g_new0(MemoryRegion, 1);
++        memory_region_init_ram(fx3_esram, OBJECT(machine), "fx3.esram-mailbox-probe",
++                               0x00001000, &error_fatal);
++        memory_region_add_subregion(sysmem, 0xfe005000, fx3_esram);
++    }
++
++
+     cxl_fmws_update_mmio();
+ 
+     virt_flash_fdt(vms, sysmem, secure_sysmem ?: sysmem);

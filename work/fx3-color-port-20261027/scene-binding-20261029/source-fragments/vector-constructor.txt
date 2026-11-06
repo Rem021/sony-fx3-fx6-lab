@@ -1,0 +1,93 @@
+009d7210 add.w      r2, r0, #0xd30
+009d7214 str        r0, [r1]
+009d7216 movw       r3, #0x4540
+009d721a str        r2, [r1, #4]
+009d721c addw       r2, r0, #0xd88
+009d7220 str        r2, [r1, #8]
+009d7222 add.w      r2, r0, #0xde0
+009d7226 str        r2, [r1, #0xc]
+009d7228 movw       r2, #0x2758
+009d722c add        r2, r0
+009d722e str        r2, [r1, #0x10]
+009d7230 movw       r2, #0x3b78
+009d7234 add        r2, r0
+009d7236 str        r2, [r1, #0x14]
+009d7238 movw       r2, #0x3c08
+009d723c add        r2, r0
+009d723e str        r2, [r1, #0x24]
+009d7240 movw       r2, #0x3e04
+009d7244 add        r2, r0
+009d7246 str        r2, [r1, #0x1c]
+009d7248 movw       r2, #0x3ed0
+009d724c add        r2, r0
+009d724e str        r2, [r1, #0x18]
+009d7250 movw       r2, #0x3f68
+009d7254 add        r2, r0
+009d7256 str        r2, [r1, #0x20]
+009d7258 movw       r2, #0x3f78
+009d725c add        r2, r0
+009d725e str        r2, [r1, #0x28]
+009d7260 movw       r2, #0x3f94
+009d7264 add        r2, r0
+009d7266 str        r2, [r1, #0x2c]
+009d7268 movw       r2, #0x409c
+009d726c add        r2, r0
+009d726e str        r2, [r1, #0x30]
+009d7270 movw       r2, #0x43b4
+009d7274 add        r2, r0
+009d7276 str        r2, [r1, #0x34]
+009d7278 movw       r2, #0x4518
+009d727c add        r2, r0
+009d727e str        r2, [r1, #0x38]
+009d7280 movw       r2, #0x5098
+009d7284 ldr        r2, [r0, r2]
+009d7286 str        r2, [r1, #0x58]
+009d7288 movw       r2, #0x50a0
+009d728c add        r2, r0
+009d728e str        r2, [r1, #0x5c]
+009d7290 movw       r2, #0x5078
+009d7294 ldr        r2, [r0, r2]
+009d7296 str        r2, [r1, #0x60]
+009d7298 movw       r2, #0x3b6c
+009d729c add        r2, r0
+009d729e str        r2, [r1, #0x68]
+009d72a0 movw       r2, #0x3bab
+009d72a4 add        r2, r0
+009d72a6 str        r2, [r1, #0x70]
+009d72a8 movw       r2, #0x44f8
+009d72ac add        r2, r0
+009d72ae str        r2, [r1, #0x78]
+009d72b0 movw       r2, #0x3f60
+009d72b4 add        r2, r0
+009d72b6 str.w      r2, [r1, #0x80]
+009d72ba movw       r2, #0x3dfc
+009d72be add        r2, r0
+009d72c0 str.w      r2, [r1, #0x84]
+009d72c4 movw       r2, #0x3258
+009d72c8 add        r2, r0
+009d72ca str.w      r2, [r1, #0x8c]
+009d72ce add.w      r2, r0, #0x4080
+009d72d2 str.w      r2, [r1, #0x90]
+009d72d6 movw       r2, #0x3ba0
+009d72da add        r2, r0
+009d72dc str.w      r2, [r1, #0x98]
+009d72e0 movw       r2, #0x43b0
+009d72e4 add        r2, r0
+009d72e6 str.w      r2, [r1, #0x9c]
+009d72ea movw       r2, #0x3bac
+009d72ee add        r2, r0
+009d72f0 str.w      r2, [r1, #0xa4]
+009d72f4 movw       r2, #0x3c06
+009d72f8 add        r2, r0
+009d72fa str.w      r2, [r1, #0xa8]
+009d72fe movw       r2, #0x44f4
+009d7302 add        r2, r0
+009d7304 str.w      r2, [r1, #0xac]
+009d7308 movw       r2, #0x3eb8
+009d730c add        r2, r0
+009d730e str.w      r2, [r1, #0xb4]
+009d7312 movw       r2, #0x3f38
+009d7316 add        r2, r0
+009d7318 add        r0, r3
+009d731a strd       r2, r0, [r1, #0xbc]
+009d731e bx         lr

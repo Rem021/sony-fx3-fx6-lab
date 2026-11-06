@@ -1,0 +1,7 @@
+_ZN7Updater15FsysFileHandlerC2Ev
+00008be4 adrp      x1, #0x1c000
+00008be8 strb      wzr, [x0, #0x10]
+00008bec ldr       x1, [x1, #0xf68]
+00008bf0 add       x1, x1, #0x10
+00008bf4 stp       x1, xzr, [x0]
+00008bf8 ret       

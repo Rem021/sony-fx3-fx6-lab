@@ -1,0 +1,182 @@
+--- v23/trial_web_v22_navigation_review.py
++++ v24/trial_web_v22_navigation_review.py
+@@ -28,6 +28,10 @@
+         self.review_required = False
+         self.review_step = None
+         self.review_confirmation = None
++        self.browser_ready = False
++        self.launch_request_id = None
++        self.launch_status = 'awaiting'
++        self.launch_event = threading.Event()
+         self.content_generation = 0
+         self.steps = 0
+         self.max_steps = max_steps
+@@ -78,6 +82,8 @@
+                     'visual_change_observed': self.visual_change_observed,
+                     'review_required': self.review_required, 'review_step': self.review_step,
+                     'review_confirmation': self.review_confirmation,
++                    'browser_ready': self.browser_ready, 'launch_request_id': self.launch_request_id,
++                    'launch_status': self.launch_status,
+                     'render_valid': self.render_valid,
+                     'black_after_ready_count': len(self.black_after_ready),
+                     'frame': self.frame, 'result': self.result,
+@@ -165,6 +171,28 @@
+             self.stop.set()
+             return 202, {'stopping': True}
+ 
++    def acknowledge_browser_ready(self):
++        with self.lock:
++            if self.phase != 'awaiting_launch' or self.stop.is_set():
++                return 409, {'error':'启动前握手已结束。'}
++            self.browser_ready = True
++            return 200, {'browser_ready':True}
++
++    def request_launch(self, body):
++        with self.lock:
++            request_id = body.get('request_id')
++            if not isinstance(request_id,str) or len(request_id)!=36 or any(c not in '0123456789abcdef-' for c in request_id):
++                return 400, {'error':'启动请求身份无效。'}
++            if self.launch_request_id == request_id and not self.stop.is_set() and self.phase not in ('stopping','finished'):
++                return 200, {'accepted':True,'request_id':request_id,'guest_spawned_by_http':False}
++            if self.launch_request_id or self.phase != 'awaiting_launch' or self.stop.is_set() or not self.browser_ready:
++                return 409, {'error':'启动请求已存在、页面未就绪或本轮已结束。'}
++            self.launch_request_id = request_id
++            self.launch_status = 'accepted'
++            self.message = '启动请求已接收；正在检查运行锁。'
++            self.launch_event.set()
++            return 202, {'accepted':True,'request_id':request_id,'guest_spawned_by_http':False}
++
+     def acknowledge_final(self, body):
+         with self.lock:
+             if self.phase != 'finished' or body.get('receipt_id') != self.final_receipt_id:
+@@ -200,22 +228,25 @@
+ button:active{background:#5f738d}button:disabled{opacity:.4;cursor:wait}.up{grid-column:2}.left{grid-column:1}.down{grid-column:2}
+ .wide{display:flex;gap:10px}.wide button{flex:1}#end{width:100%;margin-top:22px;background:#68383c}
+ #confirm{width:100%;margin-top:12px;background:#365b48}#review{min-height:2.5em}
+-#status{color:#eee;min-height:3em}#error{color:#ffb0ab;white-space:pre-wrap;overflow-wrap:anywhere}
++#status{color:#eee;min-height:3em}#failure-summary{color:#ffb0ab}#error{color:#ffb0ab;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}
+ .small{font-size:13px}#events{padding-left:20px;font-size:13px;color:#bdc2cd}details{margin-top:20px}summary{cursor:pointer;color:#bdc2cd}
+-</style><h1>FX3 固件菜单试用</h1><p>等待待机画面出现后，按 MENU 打开菜单。首次打开 MENU 可能较慢；每次按键后，请等画面更新再继续。原生省电设置与本轮时间上限分开生效。</p>
+-<div class="layout"><div class="screen"><span id="placeholder">正在启动固件…</span><img id="frame" alt="固件最新提交画面"></div>
+-<div class="controls"><div id="status" role="status">正在连接…</div><p id="meta" class="small"></p><div id="error" role="alert"></div>
++</style><h1>FX3 固件菜单试用</h1><p>先确认本机网页可用，再点击“开始本轮模拟器”。待机画面出现后才可按 MENU；每次按键后亲看当前图并确认。原生省电设置与本轮时间上限分开生效。</p>
++<div class="layout"><div class="screen"><span id="placeholder">等待您开始本轮…</span><img id="frame" alt="固件最新提交画面"></div>
++<div class="controls"><div id="status" role="status">正在连接…</div><p id="meta" class="small"></p><p id="failure-summary" role="alert"></p>
+ <div class="pad"><button class="key up" data-key="3" disabled>↑ 上</button><button class="key left" data-key="21" disabled>← 左</button><button class="key" data-key="428" disabled>确定</button><button class="key" data-key="431" disabled>右 →</button><button class="key down" data-key="48" disabled>↓ 下</button></div>
+ <div class="wide"><button class="key" data-key="427" disabled>MENU</button><button class="key" data-key="504" disabled>删除 / C4</button></div>
+ <p id="review" class="small" role="status"></p><button id="confirm" disabled>我已看清当前完整画面，继续</button>
+-<button id="end">结束试用</button><ol id="events"></ol></div></div>
++<button id="start" disabled>开始本轮模拟器</button><button id="end">结束试用</button><ol id="events"></ol></div></div>
++<details id="diagnostics" hidden><summary>诊断详情</summary><pre id="error"></pre></details>
+ <details open><summary>当前限制</summary><p class="small">当前为实验候选，持续操作仍可能触发原生省电关机，尚未通过完整使用验收。当前固定副本已在冷启动观察到 English；图标与橙色焦点仍需逐屏观察；无实时取景，画面来自软件 OSD 采样，尚未证明原 CP 多画面层合成。每轮默认最多 4096 次按键、最长 60 分钟；以启动参数为准。关闭网页不会结束模拟器，请点击“结束试用”或在启动终端按 Ctrl-C。</p></details>
+ <script>
+ const token=__TOKEN__;
+ let displayed=0,shown=0,shownSHA='',displayedGeneration=0,busy=false,ending=false,finished=false;
+ let lastURL=null,renderFault=null,lastStatus=null,awaitingStep=null,deliveryUnknown=false,reviewAwaiting=false,reviewUnknown=false,pendingConfirm=null;
+ const image=document.querySelector('#frame'),statusEl=document.querySelector('#status');
+-const err=document.querySelector('#error'),endButton=document.querySelector('#end');
++const err=document.querySelector('#error'),endButton=document.querySelector('#end'),startButton=document.querySelector('#start');
++const failureSummary=document.querySelector('#failure-summary'),diagnostics=document.querySelector('#diagnostics');
++let launchPending=null,launchUnknown=false,browserReadySent=false;
+ const confirmButton=document.querySelector('#confirm'),reviewEl=document.querySelector('#review');
+ const keys=[...document.querySelectorAll('.key')];
+ 
+@@ -238,7 +269,7 @@
+ }
+ async function post(path,body){return (await request(path,{method:'POST',
+  headers:{'Content-Type':'application/json','X-Trial-Token':token},body:JSON.stringify(body)})).body;}
+-function disableKeys(){keys.forEach(b=>b.disabled=true);confirmButton.disabled=true;}
++function disableKeys(){keys.forEach(b=>b.disabled=true);confirmButton.disabled=true;startButton.disabled=true;}
+ function enableKeys(s){
+  const visual=!!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&
+    displayedGeneration===s.frame.content_generation&&s.render_valid&&!renderFault;
+@@ -278,14 +309,20 @@
+  if(finished)return;
+  try{
+    const s=(await request('/api/status')).body;lastStatus=s;
+-   statusEl.textContent=s.message+(s.visual_state==='visual_pending'?'（输入已接收，仍在观察画面）':'');err.textContent=s.error||'';
++   statusEl.textContent=s.message+(s.visual_state==='visual_pending'?'（输入已接收，仍在观察画面）':'');
++   diagnostics.hidden=!s.error;err.textContent=s.error||'';
++   failureSummary.textContent=s.error?(s.error.startsWith('native_model_power_off_observed')?
++     '原生省电关机：本轮已结束，健康检查未通过。':'检测到错误；请展开“诊断详情”查看原始回执。'):'';
+    reviewEl.textContent=s.review_required?'原生按键已接收，效果待您看图确认。请只在当前画面完整且符合预期时点继续；无需再按一次固件键。':'';
+-   document.querySelector('#meta').textContent=`按键 ${s.steps}/${s.max_steps} · 剩余 ${Math.ceil(s.remaining_seconds/60)} 分钟 · 提交帧 ${s.frame?s.frame.sequence:'等待中'}`;
++   document.querySelector('#meta').textContent=s.phase==='finished'?
++     `按键 ${s.steps}/${s.max_steps} · 已结束${s.result&&Number.isFinite(s.result.duration_seconds)?` · 实际 ${Math.round(s.result.duration_seconds)} 秒`:''} · 最后提交帧 ${s.frame?s.frame.sequence:'无'}`:
++     `按键 ${s.steps}/${s.max_steps} · 剩余 ${Math.ceil(s.remaining_seconds/60)} 分钟 · 提交帧 ${s.frame?s.frame.sequence:'等待中'}`;
+    document.querySelector('#events').replaceChildren(...s.events.map(e=>{
+      const li=document.createElement('li');li.textContent=e;return li;
+    }));
+    // A final server receipt remains authoritative even if its last image is unavailable.
+    if(s.phase==='finished'){
++     if(!s.frame)document.querySelector('#placeholder').textContent='本轮已结束';
+      finished=true;disableKeys();endButton.disabled=true;
+      // Confirm delivery only after displaying the authoritative final status.
+      // A lost ACK never overrides that status or initiates another operation.
+@@ -293,18 +330,34 @@
+      return;
+    }
+    if(s.phase==='stopping'){ending=true;disableKeys();}
++   if(s.phase==='awaiting_launch'&&!browserReadySent){
++     browserReadySent=true;
++     try{await post('/api/browser-ready',{});}catch(e){browserReadySent=false;}
++   }
++   if(launchPending&&s.launch_request_id===launchPending&&
++      ['accepted','starting','running'].includes(s.launch_status)){
++     launchUnknown=false;launchPending=null;
++   }
++   startButton.disabled=s.phase!=='awaiting_launch'||!s.browser_ready||!!s.launch_request_id||
++     !!launchPending||launchUnknown||ending||!!renderFault;
++   if(launchUnknown){
++     diagnostics.hidden=false;
++     err.textContent='启动回执未知；只读状态仍未匹配本次请求，请等待或结束本轮。';
++     failureSummary.textContent='启动请求结果未知，已暂停再次启动；请等待状态确认或结束本轮。';
++   }
+    if(awaitingStep!==null&&!busy&&!deliveryUnknown&&s.steps>=awaitingStep&&!s.busy){
+      awaitingStep=null;deliveryUnknown=false;
+    }
+    if((reviewAwaiting||reviewUnknown)&&confirmationMatches(s,pendingConfirm)){
+      reviewAwaiting=false;reviewUnknown=false;pendingConfirm=null;
+    }
+-   if(deliveryUnknown)err.textContent='按键是否送达尚未确认，已暂停新按键；请结束本轮后重新启动。';
+-   if(reviewUnknown)err.textContent='画面确认请求结果未知，已暂停新按键；请结束本轮后重新启动。';
++   if(deliveryUnknown)failureSummary.textContent='按键是否送达尚未确认，已暂停新按键；请结束本轮后重新启动。';
++   if(reviewUnknown)failureSummary.textContent='画面确认请求结果未知，已暂停新按键；请结束本轮后重新启动。';
+    if(s.frame&&(s.frame.sequence!==shown||s.frame.content_generation!==displayedGeneration))await showFrame(s);
+    renderFault=null;enableKeys(s);
+  }catch(e){
+    renderFault=e.message;disableKeys();err.textContent=renderFault;
++   diagnostics.hidden=false;failureSummary.textContent='网页画面或状态读取失败；本轮暂停新按键，请查看诊断详情。';
+    if(ending){
+      statusEl.textContent='结束状态尚未确认，请查看启动终端；必要时在终端按 Ctrl-C。';
+      endButton.disabled=false;
+@@ -324,6 +377,16 @@
+    err.textContent=e.message;
+  }finally{busy=false;}
+ });
++startButton.onclick=async()=>{
++ if(startButton.disabled||!lastStatus||lastStatus.phase!=='awaiting_launch')return;
++ const id=crypto.randomUUID().toLowerCase();launchPending=id;startButton.disabled=true;
++ try{const ack=await post('/api/start',{request_id:id});
++   if(ack.accepted!==true||ack.request_id!==id||ack.guest_spawned_by_http!==false)throw Error('启动回执不完整。');
++ }catch(e){if(launchPending===id){
++   launchUnknown=true;diagnostics.hidden=false;err.textContent=e.message;
++   failureSummary.textContent='启动请求结果未知，已暂停再次启动；请等待状态确认或结束本轮。';
++ }}
++};
+ confirmButton.onclick=async()=>{
+  if(confirmButton.disabled||!lastStatus||!lastStatus.frame||displayed<=0)return;
+  const confirmation={request_id:crypto.randomUUID().toLowerCase(),step:lastStatus.review_step,
+@@ -419,6 +482,12 @@
+             if self.path == '/api/key':
+                 code, result = state.submit(body)
+                 return self.reply(code, result)
++            if self.path == '/api/browser-ready':
++                code, result = state.acknowledge_browser_ready()
++                return self.reply(code, result)
++            if self.path == '/api/start':
++                code, result = state.request_launch(body)
++                return self.reply(code, result)
+             if self.path == '/api/confirm-visual':
+                 code, result = state.confirm_visual(body)
+                 return self.reply(code, result)

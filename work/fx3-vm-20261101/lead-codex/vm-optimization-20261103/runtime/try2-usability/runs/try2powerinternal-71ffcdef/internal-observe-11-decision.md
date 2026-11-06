@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/internal-preview-11.png using image tool. Setup>Power Setting Option; Power Save Start Time shows 5 Min, orange focus; Auto Power OFF Temp. shows Standard Next: MENU closes the native menu after read-only inspection; no setting value is changed

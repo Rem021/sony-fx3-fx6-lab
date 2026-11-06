@@ -1,0 +1,28 @@
+{
+  "result": "PASS",
+  "python": "3.14.6",
+  "fx6_av_sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+  "fx3_comparison_only_sha256": {
+    "initializer-guest-results.json": "29c76396ae58e8caca2bd96e0eb0408854c163e60556b5d27b4da9d6bd76ab95",
+    "look-consumer-guest-results.json": "6443be58aaa2a547aa7488a7551452ab4ce995bc108e8cb9244f7892b7b84a4f"
+  },
+  "artifact_sha256": {
+    "analyze.py": "555ebc130c07cee121ba99becc9c31b5a3f913373bca872f4884d2aaf9eae6dc",
+    "replay_caller.py": "519274e938e11ac1b9d0cc06c57350e3189752b3ce1cdb30c85958715eb6ef74",
+    "prepare.sh": "41352c7b0d2847dedfb7f1794046fc52e118d84e20125bd078017d33f6676eb7",
+    "static-evidence.json": "9db38bfaa4f21b34d1501818001118cf71560287d53dd1d94e6a76c1e35c4c0a",
+    "caller-replay.json": "ea43f9e1ba8f7825312e583dbf3b826fc84e9ffd8e718b9311f523ed154d8cda"
+  },
+  "checks": {
+    "direct_dma_calls": 5,
+    "direct_event_dispatch_calls": 1,
+    "bounded_cpu_cases": 5,
+    "fixture_look22_ip0_instructions": 219,
+    "runtime_provider_slots": [
+      "0x3c0",
+      "0x4c0"
+    ],
+    "hardware_submitted": false
+  },
+  "scope": "static original-byte index and bounded CPU guest to pre-builder call, synthetic event/mode state; no VM, device, DMA submit, pixel proof"
+}

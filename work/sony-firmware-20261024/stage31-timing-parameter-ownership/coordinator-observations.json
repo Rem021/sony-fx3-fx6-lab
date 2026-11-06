@@ -1,0 +1,42 @@
+{
+  "schema": "fx3-stage31-coordinator-review/1",
+  "created_utc": "2026-10-25T22:25:29.728495+00:00",
+  "status": "PASS_ARTIFACT_SOURCE_BYTE_AND_TIMING_OWNERSHIP_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent structural/source-byte/hash review; no independent replay or real camera verification.",
+  "prior_manifest_files_verified": {
+    "stage25-mc-image-map": 15,
+    "stage26-mc-open-routing": 11,
+    "stage28-main-frontend-binding": 8,
+    "stage30-frontend-pending-consumption": 9
+  },
+  "raw_instruction_records_checked": 238,
+  "Open_action_scenarios": 8,
+  "writer_order_scenarios": 1,
+  "bounded_phases": 11,
+  "target_video98_and_outer_identity_preserved_before_input_if": true,
+  "nominal_rate_scalar_is_not_hardware_clock_or_exact30": true,
+  "timing_branch_not_codec_support_proof": true,
+  "invalid_codec_only_reaches_same_boundary": true,
+  "shared_whole_packet_and_FileFormat_writes_confirmed": true,
+  "writer_order_is_artificial_prefix_experiment_not_runtime_race_or_full_config": true,
+  "fixture_fields_are_partial_original_constructor_contract_not_whole_init": true,
+  "native_output_adapters": false,
+  "guest_stores_only_stack_and_fixture": true,
+  "primary_source_refreshed": {
+    "date": "2026-10-25",
+    "url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000882045.html",
+    "product": "ILME-FX3 Ver.2 or later",
+    "supports": "Official1920x1080 HEVC42010 16/9Mbps proxy baseline only; not MAIN modification or recovery."
+  },
+  "unverified": [
+    "Actual configuration/Open state order, live generations/objects and complete SET_REC_FORMAT action",
+    "Input_if preparation/commands, physical buffers/resources/VCD, full errors and hardware Open/Start",
+    "Actual source/OSAL/pointer transport and clock/transition/task hooks",
+    "Native safe points/complete references, healthy same-body backup, restricted restore/readback, independent recovery and WBI/cold boot",
+    "Actual MAIN media/audio/timebase/sync/long-run/temperature/regression"
+  ],
+  "camera_or_remote_access_attempted": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

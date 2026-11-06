@@ -1,0 +1,566 @@
+{
+  "status": "COMPLETED_SOURCE_CLEANUP_RUNTIME_UNCHANGED",
+  "created_utc": "2026-11-01T10:47:39.879028+00:00",
+  "authorization": "Parent supplied the coordinated closeout cleanup window; user AGENTS requires third-party source copies removed after recording URL/commit.",
+  "volume": {
+    "VolumeUUID": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+    "MountPoint": "/Volumes/KAFU2T",
+    "DeviceIdentifier": "disk7s1"
+  },
+  "sources": [
+    {
+      "name": "QEMU",
+      "version": "11.1.2",
+      "url": "https://download.qemu.org/qemu-11.1.2.tar.xz",
+      "sha256": "731b5681e4bb18be313231579b8efd0296c5b015fa36dc533874b639ba838016",
+      "commit": null,
+      "identity": "Official release archive, fixed SHA; not a Git checkout"
+    },
+    {
+      "name": "embedded DTC",
+      "url": "https://gitlab.com/qemu-project/dtc.git",
+      "commit": "b6910bec11614980a21e46fbccc35934b671bd81"
+    }
+  ],
+  "deleted_scopes": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2",
+      "regular_files": 79055,
+      "regular_file_bytes": 699706434,
+      "directories": 6339,
+      "symlinks": 71,
+      "symlink_text_bytes": 1399,
+      "other_entries": 0
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/downloads/qemu-11.1.2.tar.xz",
+      "regular_files": 1,
+      "regular_file_bytes": 141815216,
+      "directories": 0,
+      "symlinks": 0,
+      "symlink_text_bytes": 0,
+      "other_entries": 0
+    }
+  ],
+  "nested_dtc_scope_included_in_qemu_totals_do_not_add_again": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2/subprojects/dtc",
+    "regular_files": 336,
+    "regular_file_bytes": 1150912,
+    "directories": 18,
+    "symlinks": 0,
+    "symlink_text_bytes": 0,
+    "other_entries": 0
+  },
+  "deleted_regular_file_count": 79056,
+  "deleted_logical_regular_file_bytes": 841521650,
+  "byte_accounting": "Logical st_size sum, not claimed APFS physical free-space delta; symlinks recorded separately; directories include each deleted root.",
+  "deleted_paths_verified_absent": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/downloads/qemu-11.1.2.tar.xz"
+  ],
+  "retained": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/patches",
+      "reason": "Original own model patches retained unchanged"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support",
+      "reason": "Independent complete patch, source audit, license texts and reconstruction notes"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build",
+      "reason": "Original compile products, generated build files, logs and metadata; retained local cache; no formal runtime dependency"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/build-venv",
+      "reason": "Local Meson/Ninja/Python build tools"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps",
+      "reason": "Local binary build dependencies and tool cache, original formulas/license metadata"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/pkgconfig",
+      "reason": "Local build dependency configuration"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/downloads",
+      "reason": "Only binary Homebrew bottle/tool caches remain; no QEMU source archive"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/metadata",
+      "reason": "Pinned download/dependency source metadata"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs",
+      "reason": "All original VM run logs, raw traces, observations and receipts"
+    }
+  ],
+  "preserved_support_files": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/README.md",
+      "sha256": "f6b4495ded6d10e4397325032613984f561e058aede821d12ad04a79b22f49ed",
+      "bytes": 1770
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/library-license-sources.json",
+      "sha256": "332edbf83dd4e08661fe4594acd2c6452e37d0b3131428200c0f264bd9060521",
+      "bytes": 4717
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/DTC-BSD-2-Clause",
+      "sha256": "6313108c23efffa36948f8b2cff1560a5935373b527b0e1a837cc77e6ed1bacd",
+      "bytes": 1641
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/DTC-GPL",
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "bytes": 18092
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/DTC-README.license",
+      "sha256": "78e1e1ce5728a990d59c7de61d4741c49185d5129daf783b386380a214328d68",
+      "bytes": 2903
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/LGPL-2.1-standard-text",
+      "sha256": "31c90ce76b6f5aab90a205851e71d5c27e31c0aa3d7017a4383b98a6fe3f1faa",
+      "bytes": 26415
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/PCRE2-COPYING",
+      "sha256": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+      "bytes": 97
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/PCRE2-LICENCE.md",
+      "sha256": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811",
+      "bytes": 4011
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/QEMU-COPYING",
+      "sha256": "dd3ce02338c3a48abb6ba59b48809f7108a8bd242cb0cc8be90daafa30707c28",
+      "bytes": 17880
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/QEMU-LICENSE",
+      "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e",
+      "bytes": 1177
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/qemu-original-to-fx3-complete.patch",
+      "sha256": "23052b0e06f3adc6a3500d22aad8ea51688a49fa6d09f0693fb435954d1fbba7",
+      "bytes": 1180
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/source-delta-audit.json",
+      "sha256": "dca94e377904f62de9e52e94b84aeebb345b15041445c29b1b4af677e4d3e173",
+      "bytes": 1971
+    }
+  ],
+  "frozen_files_before": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/COPYING-QEMU",
+      "sha256": "dd3ce02338c3a48abb6ba59b48809f7108a8bd242cb0cc8be90daafa30707c28",
+      "bytes": 17880
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/README.md",
+      "sha256": "d5c27c8e6de0a103928ad8d089936f9e4b12b879b3ce37c13968a2e9d6bbb1dc",
+      "bytes": 4694
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+      "bytes": 35732432
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2",
+      "bytes": 1354928
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8",
+      "bytes": 210848
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110",
+      "bytes": 570784
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/manifest.json",
+      "sha256": "284c7e6c1c1aa65fa83439c4a02598eff1074fb17a5a697a6bfecf72646b6165",
+      "bytes": 4047
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/build-provenance.json",
+      "sha256": "2714f6b0ba29bef4aa0a4517c50e4f01ea76f3b5c9018ff51beeea874182dbdb",
+      "bytes": 3735
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/final-runtime-validation.json",
+      "sha256": "f80f337b41db1a2b20cb27255d048af75d3e2c4098905f8cad916fb031a527b9",
+      "bytes": 3747
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/rpath-removal.json",
+      "sha256": "681970d5374c4b2d98809f5162c4769b67dafe32a4411f2aafeb08c9e3704259",
+      "bytes": 597
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/runtime-relocation-before-rpath-removal.json",
+      "sha256": "7d11aac540f0d829b7b67d1c35766e5c990f71d80526c0afdc4c8e12f1888664",
+      "bytes": 5120
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/runtime-relocation.json",
+      "sha256": "4aa1f00a5a25ae9f7822e114f77f47fb40e2a0bd36293d454e664169e7fe7c66",
+      "bytes": 5451
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/run_probe.py",
+      "sha256": "e878e9c859d4b2200228e15dfcb8bfbee4190ec1480a6677f4b33cc248a3fd4a",
+      "bytes": 7196
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c",
+      "bytes": 1860580
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+      "bytes": 8693220
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476",
+      "bytes": 8409
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047",
+      "bytes": 8409
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/source-patches/fx3-esram-high-ddr.patch",
+      "sha256": "23052b0e06f3adc6a3500d22aad8ea51688a49fa6d09f0693fb435954d1fbba7",
+      "bytes": 1180
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/启动FX3最小研究虚拟机.command",
+      "sha256": "7c2d9f94ed1f010e050f54fa4f384147d5e17f9a9de0eb121ab2cae02af8d4b9",
+      "bytes": 169
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/file-manifest.json",
+      "sha256": "855823d31add76a6ae2d6977e94429840f34d84f3e2b5b8bafd9601b4fbf6311",
+      "bytes": 3477
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/writer-ready.json",
+      "sha256": "33ff6dbda4b6f3cfb8c0f2966ce2e5fa7599e3a9e3af315446cfc3cc967090eb",
+      "bytes": 811
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-receipt.json",
+      "sha256": "0199f4a164cec37568cc25bb7349f7bf5a1bea1d25df8688bd38e14e684783a6",
+      "bytes": 2076
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/internal-dtc-receipt.json",
+      "sha256": "2802775ca3fc4e1c4d9a2c0d3ec4dd52bd8ad139591720428b47f019f8d21b24",
+      "bytes": 388
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/final-deployment-summary.json",
+      "sha256": "f80f337b41db1a2b20cb27255d048af75d3e2c4098905f8cad916fb031a527b9",
+      "bytes": 3747
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/research_notes/FX3 Mac 虚拟机部署研究/host-deployment.md",
+      "sha256": "d3595a6ff60cf908dc3f01cb4277cff8629a438fb17eacbe68b1a35d0d7f20bd",
+      "bytes": 11886
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "bytes": 6610952
+    }
+  ],
+  "frozen_files_after": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/COPYING-QEMU",
+      "sha256": "dd3ce02338c3a48abb6ba59b48809f7108a8bd242cb0cc8be90daafa30707c28",
+      "bytes": 17880
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/README.md",
+      "sha256": "d5c27c8e6de0a103928ad8d089936f9e4b12b879b3ce37c13968a2e9d6bbb1dc",
+      "bytes": 4694
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+      "bytes": 35732432
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2",
+      "bytes": 1354928
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8",
+      "bytes": 210848
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110",
+      "bytes": 570784
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/manifest.json",
+      "sha256": "284c7e6c1c1aa65fa83439c4a02598eff1074fb17a5a697a6bfecf72646b6165",
+      "bytes": 4047
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/build-provenance.json",
+      "sha256": "2714f6b0ba29bef4aa0a4517c50e4f01ea76f3b5c9018ff51beeea874182dbdb",
+      "bytes": 3735
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/final-runtime-validation.json",
+      "sha256": "f80f337b41db1a2b20cb27255d048af75d3e2c4098905f8cad916fb031a527b9",
+      "bytes": 3747
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/rpath-removal.json",
+      "sha256": "681970d5374c4b2d98809f5162c4769b67dafe32a4411f2aafeb08c9e3704259",
+      "bytes": 597
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/runtime-relocation-before-rpath-removal.json",
+      "sha256": "7d11aac540f0d829b7b67d1c35766e5c990f71d80526c0afdc4c8e12f1888664",
+      "bytes": 5120
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/runtime-relocation.json",
+      "sha256": "4aa1f00a5a25ae9f7822e114f77f47fb40e2a0bd36293d454e664169e7fe7c66",
+      "bytes": 5451
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/run_probe.py",
+      "sha256": "e878e9c859d4b2200228e15dfcb8bfbee4190ec1480a6677f4b33cc248a3fd4a",
+      "bytes": 7196
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c",
+      "bytes": 1860580
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+      "bytes": 8693220
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476",
+      "bytes": 8409
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047",
+      "bytes": 8409
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/source-patches/fx3-esram-high-ddr.patch",
+      "sha256": "23052b0e06f3adc6a3500d22aad8ea51688a49fa6d09f0693fb435954d1fbba7",
+      "bytes": 1180
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/启动FX3最小研究虚拟机.command",
+      "sha256": "7c2d9f94ed1f010e050f54fa4f384147d5e17f9a9de0eb121ab2cae02af8d4b9",
+      "bytes": 169
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/file-manifest.json",
+      "sha256": "855823d31add76a6ae2d6977e94429840f34d84f3e2b5b8bafd9601b4fbf6311",
+      "bytes": 3477
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/writer-ready.json",
+      "sha256": "33ff6dbda4b6f3cfb8c0f2966ce2e5fa7599e3a9e3af315446cfc3cc967090eb",
+      "bytes": 811
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-receipt.json",
+      "sha256": "0199f4a164cec37568cc25bb7349f7bf5a1bea1d25df8688bd38e14e684783a6",
+      "bytes": 2076
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/internal-dtc-receipt.json",
+      "sha256": "2802775ca3fc4e1c4d9a2c0d3ec4dd52bd8ad139591720428b47f019f8d21b24",
+      "bytes": 388
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/final-deployment-summary.json",
+      "sha256": "f80f337b41db1a2b20cb27255d048af75d3e2c4098905f8cad916fb031a527b9",
+      "bytes": 3747
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/research_notes/FX3 Mac 虚拟机部署研究/host-deployment.md",
+      "sha256": "d3595a6ff60cf908dc3f01cb4277cff8629a438fb17eacbe68b1a35d0d7f20bd",
+      "bytes": 11886
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "bytes": 6610952
+    }
+  ],
+  "frozen_files_all_identical": true,
+  "runtime_macho_closure_after": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+      "dependencies": [
+        {
+          "path": "/usr/lib/libz.1.dylib",
+          "system": true
+        },
+        {
+          "path": "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+          "system": true
+        },
+        {
+          "path": "/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit",
+          "system": true
+        },
+        {
+          "path": "/usr/lib/libSystem.B.dylib",
+          "system": true
+        },
+        {
+          "path": "@loader_path/../lib/libglib-2.0.0.dylib",
+          "system": false,
+          "resolved": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+          "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+        }
+      ],
+      "LC_RPATH_count": 0,
+      "signature_verified": true,
+      "otool_L": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64:\n\t/usr/lib/libz.1.dylib (compatibility version 1.0.0, current version 1.2.12)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.1.8)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n\t@loader_path/../lib/libglib-2.0.0.dylib (compatibility version 9001.0.0, current version 9001.1.0)\n",
+      "codesign_stdout": ""
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2",
+      "dependencies": [
+        {
+          "path": "@loader_path/libglib-2.0.0.dylib",
+          "system": false,
+          "resolved": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+          "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+        },
+        {
+          "path": "/usr/lib/libiconv.2.dylib",
+          "system": true
+        },
+        {
+          "path": "@loader_path/libintl.8.dylib",
+          "system": false,
+          "resolved": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+          "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+        },
+        {
+          "path": "/usr/lib/libSystem.B.dylib",
+          "system": true
+        },
+        {
+          "path": "@loader_path/libpcre2-8.0.dylib",
+          "system": false,
+          "resolved": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+          "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+        },
+        {
+          "path": "/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation",
+          "system": true
+        },
+        {
+          "path": "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+          "system": true
+        },
+        {
+          "path": "/usr/lib/libobjc.A.dylib",
+          "system": true
+        }
+      ],
+      "LC_RPATH_count": 0,
+      "signature_verified": true,
+      "otool_L": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib:\n\t@loader_path/libglib-2.0.0.dylib (compatibility version 9001.0.0, current version 9001.1.0)\n\t/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)\n\t@loader_path/libintl.8.dylib (compatibility version 13.0.0, current version 13.6.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n\t@loader_path/libpcre2-8.0.dylib (compatibility version 17.0.0, current version 17.1.0)\n\t/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 5027.0.69)\n\t/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (compatibility version 1.0.0, current version 1226.0.0)\n\t/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)\n",
+      "codesign_stdout": ""
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110",
+      "dependencies": [
+        {
+          "path": "@loader_path/libpcre2-8.0.dylib",
+          "system": false,
+          "resolved": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+          "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+        },
+        {
+          "path": "/usr/lib/libSystem.B.dylib",
+          "system": true
+        }
+      ],
+      "LC_RPATH_count": 0,
+      "signature_verified": true,
+      "otool_L": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib:\n\t@loader_path/libpcre2-8.0.dylib (compatibility version 17.0.0, current version 17.1.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+      "codesign_stdout": ""
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8",
+      "dependencies": [
+        {
+          "path": "@loader_path/libintl.8.dylib",
+          "system": false,
+          "resolved": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+          "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+        },
+        {
+          "path": "/usr/lib/libiconv.2.dylib",
+          "system": true
+        },
+        {
+          "path": "/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation",
+          "system": true
+        },
+        {
+          "path": "/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices",
+          "system": true
+        },
+        {
+          "path": "/usr/lib/libSystem.B.dylib",
+          "system": true
+        }
+      ],
+      "LC_RPATH_count": 0,
+      "signature_verified": true,
+      "otool_L": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib:\n\t@loader_path/libintl.8.dylib (compatibility version 13.0.0, current version 13.6.0)\n\t/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.69)\n\t/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (compatibility version 1.0.0, current version 1226.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+      "codesign_stdout": ""
+    }
+  ],
+  "runtime_non_system_macho_file_count": 4,
+  "runtime_dependency_on_deleted_sources": false,
+  "runtime_rerun_performed": false,
+  "task_qemu_processes_remaining": [],
+  "original_receipts_notes_modified": false,
+  "reconstruction": "Fixed URL/SHA plus complete saved patch and pinned DTC commit; see source-cleanup-support/README.md. No post-cleanup rebuild claimed."
+}

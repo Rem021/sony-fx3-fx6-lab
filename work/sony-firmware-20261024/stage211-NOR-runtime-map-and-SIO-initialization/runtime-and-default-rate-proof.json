@@ -1,0 +1,235 @@
+{
+  "status": "FIRST_ZERO_WRITER_AND_OFFICIAL_DEFAULT_RATE3_REFERENCE_CONSUMER_BOUND",
+  "C_initialization": {
+    "table_start": "0xfe061450",
+    "table_end": "0xfe061470",
+    "record_count": 1,
+    "source_argument": "0xfe061e00",
+    "destination": "0xfe061e00",
+    "bytes": 7480,
+    "handler": "0xfe04c750",
+    "write_unit_bytes": 4,
+    "clear_end_exclusive": "0xfe063b38",
+    "clears_current_SIO_rate_and_channel_CS_fields": true,
+    "only_conditional_source_path_not_device_execution": true,
+    "later_rate_initialization_proven": false
+  },
+  "rate_default": {
+    "Backup_ID": "0x51002c",
+    "classic_templates": 11,
+    "records": 22,
+    "all_values": 3,
+    "reference_init_call": "0xfe0535d4",
+    "reference_rate_field": "0xfe06a934",
+    "reference_BKSB_rate_value": 3,
+    "reference_read_failure_returns": 2,
+    "reference_has_fallback_rate3": false,
+    "current_list_contains_ID": true,
+    "current_FX3_NOR_consumer_of_this_ID_proven": false,
+    "current_body_value_read": false
+  },
+  "current_package_catalog": {
+    "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/current-updater-asset-audit.json",
+    "source_sha256": "34f9e2973078b4658545b7acce3bcf8cbf799cc0ca831c7a29f2ca8e61183f84",
+    "list_member": {
+      "name": "LdrBkupList.txt",
+      "bytes": 650,
+      "type": "0",
+      "offset_data": 102912,
+      "sha256": "ae537183ecce42fbe9589c01f7ee4a19929fa2fc1cb09e48eda9ef2ab6f5dd88",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/LdrBkupList.txt"
+    },
+    "NOR_inner_archive": {
+      "name": "0750_nor_loader/loader_nor.tar",
+      "size": 112640,
+      "type": "0",
+      "tar_header_offset": 798652928,
+      "data_offset_in_tar": 798653440,
+      "fdat_data_offset": 799907328,
+      "header_checksum_matches": true,
+      "sha256": "913d1a3271f855b90192d84fbbdb224533c8d8493833d0c194b3d14fdad4dd3f",
+      "crc32": "591893a8",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/tar-selected/0750_nor_loader/loader_nor.tar"
+    },
+    "LdrBkup_bin_members": [],
+    "scope": "outer saved package inventory and four-member NOR archive only; no device file/interface query"
+  },
+  "independent_PMCA_property_cases": 154,
+  "selected_original_ranges": [
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe04c6f0",
+      "end_exclusive": "0xfe04c738",
+      "bytes": 72,
+      "sha256": "86e40c386a2866c52cbf16bbaa1175bda4eb470c9ea2fa39007a16b11621fb75",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/FX3-region-initializer.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe04c740",
+      "end_exclusive": "0xfe04c750",
+      "bytes": 16,
+      "sha256": "dd666ca7264d3a752f3dfc6f73039f9365c45cb4e5bb10e0a4c1ca986bfef926",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/FX3-region-table-literals.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe061450",
+      "end_exclusive": "0xfe061470",
+      "bytes": 32,
+      "sha256": "d9cd7afb27f54ed586749aaf039a901d14fbe63a5558b0d7b37e05a5c7de8f4d",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/FX3-region-record.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe04c750",
+      "end_exclusive": "0xfe04c76c",
+      "bytes": 28,
+      "sha256": "f3e9d0b2261741215ce25063a8d4dfe00f3a712b79b0a76823e8862540b2181a",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/FX3-bounded-zero-loop.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe04a134",
+      "end_exclusive": "0xfe04a150",
+      "bytes": 28,
+      "sha256": "a9bd44a0a29db8e228832e0f6186f555f34d446197faef15a8a5d5deac92ce47",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/FX3-runtime-to-main-prefix.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe0523b0",
+      "end_exclusive": "0xfe05241c",
+      "bytes": 108,
+      "sha256": "9dec3901e0145177676a947716b865349ee833368ad97f4d0b9c1b4cb1d3730c",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/FX3-rate-consumer.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe0535c4",
+      "end_exclusive": "0xfe0535e0",
+      "bytes": 28,
+      "sha256": "a3d77bcc62203521cba6d70c313aec00991e44b34964fef8e937783b65f4f4d4",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-rate-property-input.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe0537dc",
+      "end_exclusive": "0xfe0537e4",
+      "bytes": 8,
+      "sha256": "4bd999cc1d266e5d7538c15f97fd1c991468be061ddac32a0e1007963fab2986",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-rate-read-failure.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe053844",
+      "end_exclusive": "0xfe05385c",
+      "bytes": 24,
+      "sha256": "4b2e8a91d6693c5efa844bbcf3b401aae32283a5a12233fd32e6d862ef618225",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-init-return.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe04ddd0",
+      "end_exclusive": "0xfe04de0c",
+      "bytes": 60,
+      "sha256": "d143d46559a6da899dc0e2a085d90a00fd735fbf31df0eddaf87bf5d6aeb35d5",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-rate-field-consumer.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe05b2b8",
+      "end_exclusive": "0xfe05b3c8",
+      "bytes": 272,
+      "sha256": "172f2ac16e3677d438e90abc7cde1b0bbb6eab4dd9fee872f2b7e92bf267131d",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-BKSB-property-reader.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe05aeac",
+      "end_exclusive": "0xfe05aebc",
+      "bytes": 16,
+      "sha256": "37685855d9ed599f21de8378280fb09cc94b74cffa89a7498facd1f19d9374a4",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-BKSB-pointer-getter.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe040110",
+      "end_exclusive": "0xfe040114",
+      "bytes": 4,
+      "sha256": "b6598673b333c107fdd8f74e1c65e8ef40fdf1fe24a7420b52aaca5d40fc80b3",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-BKSB-pointer-cell.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe048800",
+      "end_exclusive": "0xfe048b20",
+      "bytes": 800,
+      "sha256": "99f3b4b31ccafc0c22ffbaf2298f232b789d5400339c39b7c9ef01b41ae4c700",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-BKSB-header-and-table.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe048b48",
+      "end_exclusive": "0xfe048b4c",
+      "bytes": 4,
+      "sha256": "9d9f290527a6be626a8f5985b26e19b237b44872b03631811df4416fc1713178",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage211-NOR-runtime-map-and-SIO-initialization/pins/A7IV-BKSB-rate-word.txt"
+    }
+  ],
+  "limits": [
+    "Public default3 and peer consumer justify an offline candidate, not current-body configuration or SIO Hz",
+    "Zeroing path is an initial source producer; it does not establish the later intended rate",
+    "Current NOR path loading the final rate and startup Backup state remain unresolved",
+    "Public reference BKSB is not current FX3 same-body Backup",
+    "No source/candidate code was run on the camera; no independent recovery or flash acceptance"
+  ],
+  "Sony_code_or_guest_execution": false,
+  "third_party_host_parser_execution_on_readonly_buffers": true,
+  "root_or_device_operations": 0
+}

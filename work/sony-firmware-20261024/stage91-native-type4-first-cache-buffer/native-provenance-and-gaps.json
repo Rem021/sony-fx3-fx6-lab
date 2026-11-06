@@ -1,0 +1,165 @@
+{
+  "created_utc": "2026-10-27T07:53:24.651516+00:00",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "original_descriptor_hex": "0400000040c1c2000000010080000000",
+  "instructions": [
+    {
+      "VA": "0x8005d49c",
+      "word_hex": "c0a290af",
+      "instruction": "sw $s0, -0x5d40($gp)",
+      "meaning": "original runtime registry pointer store"
+    },
+    {
+      "VA": "0x8005d978",
+      "word_hex": "14000525",
+      "instruction": "addiu $a1, $t0, 0x14",
+      "meaning": "original factory arena argument"
+    },
+    {
+      "VA": "0x8005d980",
+      "word_hex": "9374010c",
+      "instruction": "jal 0x8005d24c",
+      "meaning": "original factory call"
+    },
+    {
+      "VA": "0x8005d988",
+      "word_hex": "c0a2888f",
+      "instruction": "lw $t0, -0x5d40($gp)",
+      "meaning": "original returned provider binding"
+    },
+    {
+      "VA": "0x8005d304",
+      "word_hex": "00009abc",
+      "instruction": "cache 0x1a, ($a0)",
+      "meaning": "unexecuted cache maintenance"
+    },
+    {
+      "VA": "0x8005d318",
+      "word_hex": "07000292",
+      "instruction": "lbu $v0, 7($s0)",
+      "meaning": "original post-cache load and tail"
+    },
+    {
+      "VA": "0x80060570",
+      "word_hex": "1b00a300",
+      "instruction": "divu $zero, $a1, $v1",
+      "meaning": "original pool size/count divide"
+    },
+    {
+      "VA": "0x8006057c",
+      "word_hex": "cd010000",
+      "instruction": "break 0, 7",
+      "meaning": "calibrated annulled BREAK or actual divide-zero trap"
+    },
+    {
+      "VA": "0x800605a4",
+      "word_hex": "340045ae",
+      "instruction": "sw $a1, 0x34($s2)",
+      "meaning": "native block size store"
+    },
+    {
+      "VA": "0x80060610",
+      "word_hex": "000051ac",
+      "instruction": "sw $s1, ($v0)",
+      "meaning": "native physical backing address store"
+    },
+    {
+      "VA": "0x8006062c",
+      "word_hex": "0c0052ac",
+      "instruction": "sw $s2, 0xc($v0)",
+      "meaning": "native provider ownership pointer store"
+    },
+    {
+      "VA": "0x8005ef98",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "original verified allocation virtual call"
+    },
+    {
+      "VA": "0x800606d0",
+      "word_hex": "e0ffbd27",
+      "instruction": "addiu $sp, $sp, -0x20",
+      "meaning": "original fixed-pool allocator"
+    },
+    {
+      "VA": "0x80060028",
+      "word_hex": "06004010",
+      "instruction": "beqz $v0, 0x80060044",
+      "meaning": "empty free-list branch"
+    },
+    {
+      "VA": "0x80060034",
+      "word_hex": "1c0004a6",
+      "instruction": "sh $a0, 0x1c($s0)",
+      "meaning": "native free-count decrement"
+    },
+    {
+      "VA": "0x80060730",
+      "word_hex": "080043a0",
+      "instruction": "sb $v1, 8($v0)",
+      "meaning": "native allocated reference byte1"
+    },
+    {
+      "VA": "0x80140d04",
+      "word_hex": "c4a28487",
+      "instruction": "lh $a0, -0x5d3c($gp)",
+      "meaning": "unexecuted cache caller GP/IRQ acquire"
+    },
+    {
+      "VA": "0x80140d54",
+      "word_hex": "201c027c",
+      "instruction": "seb $v1, $v0",
+      "meaning": "native existing-handle reference decrement"
+    },
+    {
+      "VA": "0x80140d7c",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "original verified free virtual call"
+    },
+    {
+      "VA": "0x80140d88",
+      "word_hex": "1c010524",
+      "instruction": "addiu $a1, $zero, 0x11c",
+      "meaning": "original cache request size11c"
+    },
+    {
+      "VA": "0x80140d98",
+      "word_hex": "000062ae",
+      "instruction": "sw $v0, ($s3)",
+      "meaning": "original allocated handle store"
+    },
+    {
+      "VA": "0x80140d9c",
+      "word_hex": "0b800200",
+      "instruction": "movn $s0, $zero, $v0",
+      "meaning": "original allocation status conditional clear"
+    },
+    {
+      "VA": "0x80140da0",
+      "word_hex": "1000a587",
+      "instruction": "lh $a1, 0x10($sp)",
+      "meaning": "unexecuted IRQ release prefix"
+    },
+    {
+      "VA": "0x80140dd8",
+      "word_hex": "8b000016",
+      "instruction": "bnez $s0, 0x80141008",
+      "meaning": "original status branch to error or transfer"
+    },
+    {
+      "VA": "0x80140e40",
+      "word_hex": "0000e2ac",
+      "instruction": "sw $v0, ($a3)",
+      "meaning": "original metadata copy store"
+    }
+  ],
+  "explicit_unexecuted_intervals": [
+    "registration checks/IRQ before 5d978",
+    "5d304 through 5d314 cache loop",
+    "140d04 through 140d3c GP/IRQ acquire",
+    "140da0 through 140dd4 GP/IRQ release"
+  ],
+  "initial_arena_RAM_source_frame_and_payload_declared": true,
+  "coherence_or_actual_runtime_sync_proven": false
+}

@@ -1,0 +1,193 @@
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap94child-ad25d7a1-review.json
+{"qemu_exit": 0, "process_reaped": true, "PID_absent": true, "inputs_unchanged": true, "missing_markers_combined_serial_and_printk": [], "receipt_serial_only_missing": [], "im_alive_last_complete_maps": {"pid": 228, "uptime": 36.65, "byte_offset": 3301078, "im_maps_lines": ["00400000-00409000 r-xp 00000000 00:02 2120                               /usr/bin/im.elf", "00418000-00419000 r--p 00008000 00:02 2120                               /usr/bin/im.elf", "00419000-0041a000 rw-p 00009000 00:02 2120                               /usr/bin/im.elf"]}, "early_stop_reason": "AP90 first new GPE rejection; quiesce and review without further changes"}
+{
+  "run": "ap94child-ad25d7a1",
+  "receipt": {
+    "duration_seconds": 39.837481124995975,
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "PID_absent": true,
+    "inputs_unchanged": true,
+    "missing_markers_combined_serial_and_printk": [],
+    "im_alive_last_complete_maps": {
+      "pid": 228,
+      "uptime": 36.65,
+      "byte_offset": 3301078,
+      "im_maps_lines": [
+        "00400000-00409000 r-xp 00000000 00:02 2120                               /usr/bin/im.elf",
+        "00418000-00419000 r--p 00008000 00:02 2120                               /usr/bin/im.elf",
+        "00419000-0041a000 rw-p 00009000 00:02 2120                               /usr/bin/im.elf"
+      ]
+    },
+    "early_stop_reason": "AP90 first new GPE rejection; quiesce and review without further changes"
+  },
+  "request_reply_checks": [
+    {
+      "command": 9,
+      "request_LF_line": 5823,
+      "reply_LF_line": 5828,
+      "request_bytes": 136,
+      "reply_bytes": 136,
+      "same_header_except_length_and_status": true,
+      "reply_queue_current_request": "0x80af615f",
+      "status": "0x0",
+      "payload_matches": true
+    },
+    {
+      "command": 3,
+      "request_LF_line": 6716,
+      "reply_LF_line": 6747,
+      "request_bytes": 28,
+      "reply_bytes": 28,
+      "same_header_except_length_and_status": true,
+      "reply_queue_current_request": "0x80af615f",
+      "status": "0x0",
+      "payload_matches": true
+    }
+  ],
+  "native_Start_branches": [
+    [
+      10919,
+      "2"
+    ],
+    [
+      11027,
+      "2"
+    ]
+  ],
+  "notifications": [
+    {
+      "eid": "23",
+      "tid": "403",
+      "mediaID": "0x1000",
+      "destination": "0x1cfe09d",
+      "status": "0",
+      "hold": "0",
+      "RemoveCnt": "1",
+      "extra16": "0",
+      "native": "1",
+      "synthetic": "0"
+    },
+    {
+      "eid": "32",
+      "tid": "403",
+      "mediaID": "0x1010",
+      "destination": "0x1cfe09b",
+      "status": "0",
+      "hold": "0",
+      "RemoveCnt": "1",
+      "extra16": "0",
+      "native": "1",
+      "synthetic": "0"
+    }
+  ],
+  "native_Mount_count": 0,
+  "native_timeouts": 0,
+  "all_leases_free_once0": true,
+  "key_events": 2,
+  "gpe": [
+    {
+      "op": "BitBlit",
+      "dst_fmt": 0,
+      "src_fmt": 0,
+      "flags": 281474976710657,
+      "dst_in_545": false,
+      "src_in_545": false,
+      "result": 0,
+      "count": 20
+    },
+    {
+      "op": "BitBlit",
+      "dst_fmt": 0,
+      "src_fmt": 0,
+      "flags": 281474976710657,
+      "dst_in_545": true,
+      "src_in_545": false,
+      "result": 0,
+      "count": 63
+    },
+    {
+      "op": "BitBlit",
+      "dst_fmt": 0,
+      "src_fmt": 2,
+      "flags": 281474977628161,
+      "dst_in_545": false,
+      "src_in_545": false,
+      "result": 0,
+      "count": 2
+    },
+    {
+      "op": "BitBlit",
+      "dst_fmt": 0,
+      "src_fmt": 2,
+      "flags": 281474977628161,
+      "dst_in_545": true,
+      "src_in_545": false,
+      "result": 0,
+      "count": 6
+    },
+    {
+      "op": "FillRect",
+      "dst_fmt": 0,
+      "src_fmt": 0,
+      "flags": 255,
+      "dst_in_545": false,
+      "src_in_545": false,
+      "result": 0,
+      "count": 1
+    },
+    {
+      "op": "FillRect",
+      "dst_fmt": 0,
+      "src_fmt": 0,
+      "flags": 255,
+      "dst_in_545": true,
+      "src_in_545": false,
+      "result": 0,
+      "count": 1
+    },
+    {
+      "op": "FillRect",
+      "dst_fmt": 0,
+      "src_fmt": 0,
+      "flags": 511,
+      "dst_in_545": false,
+      "src_in_545": false,
+      "result": 0,
+      "count": 1
+    },
+    {
+      "op": "FillRect",
+      "dst_fmt": 0,
+      "src_fmt": 0,
+      "flags": 511,
+      "dst_in_545": true,
+      "src_in_545": false,
+      "result": 0,
+      "count": 1
+    },
+    {
+      "op": "Flush",
+      "dst_fmt": 0,
+      "src_fmt": 0,
+      "flags": 0,
+      "dst_in_545": false,
+      "src_in_545": false,
+      "result": 0,
+      "count": 1
+    }
+  ],
+  "pixels": {
+    "physical": "0x43feb5100",
+    "bytes": 614400,
+    "geometry": [
+      640,
+      480
+    ],
+    "logical_fmt": 0,
+    "unique_pixels": 14,
+    "sha256": "2485079bdfe8c91590235540c1929a813f03a96b17cae33b32d53539e77e708e",
+    "independent_QMP": true,
+    "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap94child-ad25d7a1/ap94-legacy545-QMP-logical-fmt0.png"
+  }
+}

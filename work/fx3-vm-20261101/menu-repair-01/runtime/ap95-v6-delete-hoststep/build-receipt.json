@@ -1,0 +1,26 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap94-r4-object-source-policy/candidate.json",
+  "base_sha256": "580302ecf6b62773adc08724e12ef99fb9d84f92a1e3dcfb77cedbd6136d75df",
+  "changed_CPIO_members": [
+    "simulation/fx3-rm-empty-provider-v3-setup.so"
+  ],
+  "all_other_member_bodies_and_init_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "host_checks": [
+    {
+      "name": "check-hoststep95-v6-core",
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-hoststep95-v6-core.log",
+      "sha256": "c5ea827ad482e2ed330fdbda5d47d723194a85953c8417d5fb6fd0682e0cc66c"
+    },
+    {
+      "name": "check-hoststep95-v6-worker",
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-hoststep95-v6-worker.log",
+      "sha256": "3d457f07a9b1edc0211f0d716bd4c86a79e0e21b137707dab4139abd13812ba8"
+    }
+  ],
+  "audit_sha256": "4ab624e2cc34b99fb21f2ee7996e7f070166ef928cbcb216dbd2b966a27c6020",
+  "provider_sha256": "689808926e6de6712367698c0f89306e0cda6cc52e981bb73dc20a1dab4110a1",
+  "candidate_sha256": "822d1a281d61bc9c4b6e32b38f1abc28e0cd98f3e219aa0a281b531b68328d14"
+}

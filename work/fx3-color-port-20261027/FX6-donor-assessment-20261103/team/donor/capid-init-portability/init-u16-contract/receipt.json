@@ -1,0 +1,357 @@
+{
+  "status": "STATIC_U16_ROLE_AND_CONDITIONAL_XAVCS_CONVERSION_PROVEN_RUNTIME_ADAPTER_NOT_APPROVED",
+  "inputs": {
+    "fx6_ap": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067"
+    },
+    "fx3_ap": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    "helper": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.so",
+      "sha256": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e"
+    },
+    "fx3_mpr": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so",
+      "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c"
+    },
+    "fx6_mpr": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so",
+      "sha256": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e"
+    }
+  },
+  "old_deliveries": [
+    {
+      "manifest": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/capid-init-portability/delivery-manifest.json",
+      "sha256": "30577852dda73a3d49e081259e0c42f7b55d358770533d75f767bfd7e37163dd",
+      "files_checked": 36,
+      "all_match": true
+    },
+    {
+      "manifest": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/capid-init-portability/callback-contracts/receipt.json",
+      "sha256": "7326a0bfb6d3bdc359fab97e7e15e7eb0739f1da13620a6789806d09e6b5969d",
+      "files_checked": 125,
+      "all_match": true
+    },
+    {
+      "manifest": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/capid-init-portability/poweron-contract/receipt.json",
+      "sha256": "c86dd1b83b55b9431d69226acc26670b46bac51b631eac6a736690ab68f7b41b",
+      "files_checked": 104,
+      "all_match": true
+    }
+  ],
+  "originals_unchanged": true,
+  "instructions_verified": 2370,
+  "disassembly_excerpts": 61,
+  "offline_result": "PASS: 5 initializer inputs, 7 threshold cases, conditional Mxf interlace counterexample, 7 converter rejections",
+  "stubs": [],
+  "elf_function_execution": false,
+  "vm_or_device_run": false,
+  "platform_or_firmware_mutation": false,
+  "decision": {
+    "fx6_xavcs_native_effective_u16": 780,
+    "fx6_mxf_native_effective_u16": 1440,
+    "global_init_conversion_permitted": false,
+    "direct_1440_preserves_xavcs_threshold": false,
+    "conditional_two_byte_conversion": "a005 -> 0c03 only with known source Xavcs constructor 0x1b3284 and target 0x11b9dc",
+    "mxf_conversion": "explicitly rejected"
+  },
+  "remaining_edges": [
+    "actual Init call, GOT and return",
+    "concrete MovieRecInfo+0x27c from GetMovieRecParam+0x1dc at EnterRec and constructor/initializer identity",
+    "cross-writer frame-rate/counter domain and event side effects if Mxf requested",
+    "global alias exclusion beyond the two identified queued-record x2 producer edges is not claimed"
+  ],
+  "artifacts": {
+    "README.md": {
+      "sha256": "337b1dd21dc0606cf1af6ba82ae28a6eabb48297d40ac56948c1c2d17af63d28",
+      "size": 15728
+    },
+    "collect.py": {
+      "sha256": "ec021f5666284a3dc2c12546e8d1dbc65f1135fea9f001d35de9801b29cc947a",
+      "size": 2811
+    },
+    "fixture-results.json": {
+      "sha256": "742a3218aaf4e87dc1ba04b18b7207d215e1c3ac0e27aa5cd83006aaff81f522",
+      "size": 9406
+    },
+    "fx3-offset24-region-survey.txt": {
+      "sha256": "652638c0f03db67267687d0afecb1974b73832075497efafd01dc2b8c3185e17",
+      "size": 1455
+    },
+    "fx3_ap-2e58ee4-2e58eec.txt": {
+      "sha256": "6b2ddc9c481f172b830a127acb7cc9391ecaf8c405bf477b1607b6f5b30c17e0",
+      "size": 320
+    },
+    "fx3_mpr-115b20-115be0.txt": {
+      "sha256": "7321d6c8fc6dab92c61b9177fc391c271defd16a22061e7358f604b285e41a09",
+      "size": 2789
+    },
+    "fx3_mpr-116874-116960.txt": {
+      "sha256": "f7af44a69ace11e306b493edadd1b44a14cff89b706bbaf976a60771d16852ac",
+      "size": 3135
+    },
+    "fx3_mpr-11703c-117058.txt": {
+      "sha256": "dc035c434558a3de782b6ea9490b6d87f270d6a5ba4028012f09f10ba86985e9",
+      "size": 783
+    },
+    "fx3_mpr-117600-117688.txt": {
+      "sha256": "0991ee8fd3454eed3c58a072a7cff6c5c5912094e9b430e36c7a1032f9a5de94",
+      "size": 2167
+    },
+    "fx3_mpr-118150-1181a0.txt": {
+      "sha256": "6702859f14c1ebca9d43ec645d3cdcb1d64a4c2cfaaaa716fb0ed150114aeb15",
+      "size": 1658
+    },
+    "fx3_mpr-11975c-1198e0.txt": {
+      "sha256": "264f372c865509be7a22ed5ba005b1949da2176a460fa024ec3a1d2e03b30f60",
+      "size": 5530
+    },
+    "fx3_mpr-119bf0-119c24.txt": {
+      "sha256": "cc4338903e26e38a79d2fd615c9e5044ba0cd04cd4e166ece2c42eabf8666f4c",
+      "size": 1097
+    },
+    "fx3_mpr-119c20-119ca0.txt": {
+      "sha256": "82ac0070c1cad728f1d967f27bbbb6db5a78047618dc196f528f17d6e875ad51",
+      "size": 2469
+    },
+    "fx3_mpr-11b9dc-11bb60.txt": {
+      "sha256": "12c4a4cbc1d901e00243dcb230ed47823fa6c9dac852b8be69c69b5e8852d021",
+      "size": 5800
+    },
+    "fx3_mpr-11bb50-11bb90.txt": {
+      "sha256": "d78be96d6f3e7eb1c71f4fd80f5e502da4dd222a5e30ed8a46ba320c74b75d3f",
+      "size": 1253
+    },
+    "fx3_mpr-11c788-11c7cc.txt": {
+      "sha256": "62578c84f95ba34b1e66ce600c62c689a0fb2fef01886f4b30eb286a96987cff",
+      "size": 1144
+    },
+    "fx3_mpr-11c7cc-11c7f4.txt": {
+      "sha256": "53ba653583d4c583a6a203cfe1694f7fe792d83e0ca28d6bfc031f2ab48435bc",
+      "size": 797
+    },
+    "fx3_mpr-11c7f0-11c8a0.txt": {
+      "sha256": "bf0e5af06c65dc6f0f16ed666e2db71f8f427f6ad96895cb8566e57b6f4a1184",
+      "size": 2568
+    },
+    "fx3_mpr-11c8f0-11c944.txt": {
+      "sha256": "e97df6a633548f959cc4550237368504059efcd035095c0e1a16fc7de3130d98",
+      "size": 1332
+    },
+    "fx3_mpr-11d15c-11d180.txt": {
+      "sha256": "91374e5dba840761e7b9db21de0ce5e4c3e17a84eea773702099e43e33bea26c",
+      "size": 747
+    },
+    "fx3_mpr-11dba0-11dbe4.txt": {
+      "sha256": "3b1b7d078d11264e3dd40e3d25550ef6c5b9e36283fdd8787bd9d762dbf18b0c",
+      "size": 1178
+    },
+    "fx3_mpr-11dbc0-11dc20.txt": {
+      "sha256": "667bc571d06baa4a573eb970bc755f2b7937dad89fff7e9d31526d495fb2958e",
+      "size": 1521
+    },
+    "fx3_mpr-11faa8-11fb48.txt": {
+      "sha256": "3294dff44e666aa06996eb63b453ddb8ef1c4a5e3686ab19c340a3d9398d001f",
+      "size": 2730
+    },
+    "fx3_mpr-24-all-direct-accesses.txt": {
+      "sha256": "d367f5f5a456cd5d21194114a05dba7f8b8f581ab39d3b0dbc706c4ef754413c",
+      "size": 2711
+    },
+    "fx3_mpr-28234c-282390.txt": {
+      "sha256": "ca42c3fc174b49b8ee745fc5c30a752e426592c9d1fbd50cd196a6a07c99de2c",
+      "size": 1097
+    },
+    "fx3_mpr-2c0de8-2c0e98.txt": {
+      "sha256": "ae6013938861be45659ddbe2e91356c3d71d0eb3d948a3b7326c2eaf94f40f40",
+      "size": 3296
+    },
+    "fx3_mpr-b7060-b70a4.txt": {
+      "sha256": "3908649ff85c7d2f4fb9af33cfac284aa0f6decaaa4f8cda967be6eb352a9ffb",
+      "size": 1332
+    },
+    "fx3_mpr-d6004-d614c.txt": {
+      "sha256": "3cb6af69cfd4adfbb8a3643927da7625b3b9216d3bd3204df9a960e1ec12b4e1",
+      "size": 4798
+    },
+    "fx3_mpr-d6128-d6154.txt": {
+      "sha256": "15429acaeef395b6ae4a9a27357c46e36924016de35815c8df43fa27fe72463e",
+      "size": 904
+    },
+    "fx3_mpr-d6ac4-d6c2c.txt": {
+      "sha256": "f32f81cd68c38dcb78df20d049378ba0f0237d1c1fd6fd3a00168661468ab0d0",
+      "size": 5241
+    },
+    "fx3_mpr-da760-da870.txt": {
+      "sha256": "d3f8f83686b1debdae2247fec2c833a33e12d5f8e25e15f751ba0f1020282194",
+      "size": 3913
+    },
+    "fx3_mpr-da760-da950.txt": {
+      "sha256": "77c0e32f440b10c1bfdd3ccd90bd95e825c48ec88afb7a92a26d603e0499257b",
+      "size": 6912
+    },
+    "fx3_mpr-full.txt": {
+      "sha256": "97197c6f7eb7c6e741d390b1f7d7b1e35c4ce62e11fac79963fe1c02ce2c26ce",
+      "size": 36375300
+    },
+    "fx6-offset1454-survey.txt": {
+      "sha256": "5303218cdf4bf8b21ab9a46a53b7a757ebe1a8f09d1f020bcb6500c2c009cb39",
+      "size": 5651
+    },
+    "fx6_ap-212f498-212f4a0.txt": {
+      "sha256": "0fff179c5304e27ad607fb685e969e03c07c7dcee00c50d368956c52da6acd1b",
+      "size": 349
+    },
+    "fx6_mpr-12bd30-12bd48.txt": {
+      "sha256": "743f115b22b2ca68bccc840a7a6b747dacabc5390364fa2e947f3a50ffbc631c",
+      "size": 562
+    },
+    "fx6_mpr-146b48-146cd8.txt": {
+      "sha256": "5a413853f316d5946e0bf1eb7b3ab88d5d483089fd1186d705b6019a7c597b6a",
+      "size": 5492
+    },
+    "fx6_mpr-146cd8-146d88.txt": {
+      "sha256": "ce8eaa83897e345b9118bc25d138bf34392ecfc67682a8c93230823223c8b04e",
+      "size": 2694
+    },
+    "fx6_mpr-151570-15159c.txt": {
+      "sha256": "2205df478cbf09ba40d8f53b51b22ad8ff935758795e74cef3381c1d6e102eb5",
+      "size": 825
+    },
+    "fx6_mpr-155d78-155e04.txt": {
+      "sha256": "e9edfdd8f27ba8706f968ad15be1bd48d31f95db3880c51c67cffa5d5026a9ab",
+      "size": 2075
+    },
+    "fx6_mpr-1575e4-157640.txt": {
+      "sha256": "eff1db4d05a1441c31acc8c01d699cb877345ad96fc5f4573b06a7cbf4b02141",
+      "size": 1456
+    },
+    "fx6_mpr-157640-1576c8.txt": {
+      "sha256": "3147bfd45a852281c332d77733c231cc8e7d3c2d615b98567822cf227304060a",
+      "size": 2052
+    },
+    "fx6_mpr-157800-157830.txt": {
+      "sha256": "b0271e14f9c33caa9c00e0e32515cd9d7a9f535e7c4524f2057ea13f34f20914",
+      "size": 966
+    },
+    "fx6_mpr-157840-157a24.txt": {
+      "sha256": "4b3456a07c869374af18a9092fd0085204330d21d38007b30f3300c77d7b5c9d",
+      "size": 7023
+    },
+    "fx6_mpr-1578e0-157a34.txt": {
+      "sha256": "7bf50f88126aa5288af990ccc71bc64914919871748f0e63285a9670d49a81f2",
+      "size": 4693
+    },
+    "fx6_mpr-157a18-157a50.txt": {
+      "sha256": "af98035b6323d1d413f4d19635fa28e8ff74697a554f7394939a3c8deb4f3521",
+      "size": 982
+    },
+    "fx6_mpr-15d564-15d730.txt": {
+      "sha256": "672e14db38c6ef9edbb386620a251df47f7055965da371f9f747558d77ff3e4d",
+      "size": 6734
+    },
+    "fx6_mpr-15d730-15d9fc.txt": {
+      "sha256": "ab4c6ae6c935c907a68c1611a62518d7dbcc2a0714605d16dae053e4467e7abe",
+      "size": 9775
+    },
+    "fx6_mpr-15d8c4-15d8e8.txt": {
+      "sha256": "1adee11603cf6f8a54d575508a702ee9e05ea09d7b28419a7cefff6937517370",
+      "size": 735
+    },
+    "fx6_mpr-1832cc-183318.txt": {
+      "sha256": "6fcc25e952ccfa4663f692a8c25a8c360546d15e49e25512bc8860b898089c63",
+      "size": 1462
+    },
+    "fx6_mpr-183340-183400.txt": {
+      "sha256": "62ceac6bb7f655de6d3ea2f2c73d90d20ff33f19a3a76e474aad89fc67e812d0",
+      "size": 3466
+    },
+    "fx6_mpr-1940b4-1942a0.txt": {
+      "sha256": "812c345114893ad14fc9a6daf9f08ddb3c3e0fa36270ef9993fd1437c46800d7",
+      "size": 7120
+    },
+    "fx6_mpr-198420-198478.txt": {
+      "sha256": "90a7de31445364b93a4616449edbb11c84ac31ba1e052c0a07df6813b115ce42",
+      "size": 2276
+    },
+    "fx6_mpr-198c30-198c98.txt": {
+      "sha256": "72d219d20d3cff4ac145b81ea3cf83211affb9ed5fd757c0d44b7c0cda07ce83",
+      "size": 1734
+    },
+    "fx6_mpr-199470-199550.txt": {
+      "sha256": "4c7264c2f64d098b01cb7bb341ec0a1f1eb5bce417205d99586f9bcc96275720",
+      "size": 4246
+    },
+    "fx6_mpr-199de4-199e30.txt": {
+      "sha256": "57a1a4e63ac240a916738c7c02db732afe2feccffe2bc4b39489f9e03d8b7ae1",
+      "size": 1258
+    },
+    "fx6_mpr-199fdc-19a018.txt": {
+      "sha256": "0fcf4ef6703eb2214a93a686110bb1dd9244171ad622a954d8a94c4847442580",
+      "size": 1141
+    },
+    "fx6_mpr-1b0ed4-1b10e0.txt": {
+      "sha256": "f1da1cacd342e977c42cd043114505b5e61efd04552be1955e0919bb7e500c8b",
+      "size": 7601
+    },
+    "fx6_mpr-1b3284-1b3430.txt": {
+      "sha256": "a7916d2da7ffcde779efa6ab9620fec1cc2b6651b18eeed627fc5afb185acba4",
+      "size": 6331
+    },
+    "fx6_mpr-1b33dc-1b3414.txt": {
+      "sha256": "4855be190f9fdb95f10dedbd268ab33017c787a9d5ba8e008e339870ce2875b2",
+      "size": 1034
+    },
+    "fx6_mpr-1b44c0-1b44e8.txt": {
+      "sha256": "e90da51bc699c6c12e3d5cfa7f8ac9f37cff062afc40991c7ad0b7bf83927f3b",
+      "size": 795
+    },
+    "fx6_mpr-1b4f20-1b4f98.txt": {
+      "sha256": "43afb8dc5003d92fbb58277a209a7fab2b16887d2641803cf4a64b0a16d6d752",
+      "size": 1805
+    },
+    "fx6_mpr-1b6778-1b6850.txt": {
+      "sha256": "61563cbf32fee0741c4a1c5d21ade2d0e6d668517432fcb820dbb5a7d9387bec",
+      "size": 3427
+    },
+    "fx6_mpr-74-all-direct-accesses.txt": {
+      "sha256": "c305dcfd1e9b4a2c23a3c82a22c73baa9795a34945d9399d2eb7187a89ad9776",
+      "size": 985
+    },
+    "fx6_mpr-78-all-direct-accesses.txt": {
+      "sha256": "787a5773bdc6299c080edf73c5bd5872548535ac3d15ad29a6860675750cacfc",
+      "size": 1015
+    },
+    "fx6_mpr-cc00c0-cc0170.txt": {
+      "sha256": "3c39ca85dfcadc27ce685140243353a7cde3b1d268b7157c3beaa6a574b925b8",
+      "size": 3325
+    },
+    "fx6_mpr-cc0400-cc0410.txt": {
+      "sha256": "3bfe57925e30f141a572d565b5447ac01830057bcc910acd1bd4b9772d08c472",
+      "size": 426
+    },
+    "fx6_mpr-full.txt": {
+      "sha256": "542a6c5b181cde0c15a41d0bcb2b706975144e194e189921e7e3b288be47fdbb",
+      "size": 170116891
+    },
+    "instruction-evidence.json": {
+      "sha256": "696cbff2bbbb0188ce143230157e0c923460a7e324dddf961cc20c691da2ec5b",
+      "size": 670175
+    },
+    "offline_fixture.py": {
+      "sha256": "12d0b483eed2d1596149e7f39b21de58473e9076737da1101867eec2d4679ba0",
+      "size": 7043
+    },
+    "seal.py": {
+      "sha256": "ccdf03f1fcd8e6f8c9922b6bd4abec9dc35db7dce6fa8da10ec0d80811299356",
+      "size": 2678
+    },
+    "trace.py": {
+      "sha256": "c5134fcbadc9a8f5a07f94f665ad0c3f9ed14f324a4c8304591d4cc65700e9ff",
+      "size": 1135
+    }
+  }
+}

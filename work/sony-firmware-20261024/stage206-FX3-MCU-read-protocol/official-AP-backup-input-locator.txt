@@ -1,0 +1,61 @@
+00400c30 000000b0 adrp     x0, #0x401000
+00400c34 fd7bafa9 stp      x29, x30, [sp, #-0x110]!
+00400c38 00802491 add      x0, x0, #0x920
+00400c3c fd030091 mov      x29, sp
+00400c40 f55b02a9 stp      x21, x22, [sp, #0x20]
+00400c44 f50301aa mov      x21, x1
+00400c48 010040f9 ldr      x1, [x0]
+00400c4c 00204039 ldrb     w0, [x0, #8]
+00400c50 a14300f9 str      x1, [x29, #0x80]
+00400c54 a0230239 strb     w0, [x29, #0x88]
+00400c58 801a8052 mov      w0, #0xd4
+00400c5c 201fa072 movk     w0, #0xf9, lsl #16
+00400c60 f35301a9 stp      x19, x20, [sp, #0x10]
+00400c64 f96b04a9 stp      x25, x26, [sp, #0x40]
+00400c68 740200f0 adrp     x20, #0x44f000
+00400c6c f76303a9 stp      x23, x24, [sp, #0x30]
+00400c70 fb7305a9 stp      x27, x28, [sp, #0x50]
+00400c74 bf270239 strb     wzr, [x29, #0x89]
+00400c78 bfe30079 strh     wzr, [x29, #0x70]
+00400c7c d5ffff97 bl       #0x400bd0
+00400c80 f303002a mov      w19, w0
+00400c84 20168052 mov      w0, #0xb1
+00400c88 201fa072 movk     w0, #0xf9, lsl #16
+00400c8c d1ffff97 bl       #0x400bd0
+00400c90 f903002a mov      w25, w0
+00400c94 a00d8052 mov      w0, #0x6d
+00400c98 201fa072 movk     w0, #0xf9, lsl #16
+00400c9c cdffff97 bl       #0x400bd0
+00400ca0 fa03002a mov      w26, w0
+00400ca4 010000b0 adrp     x1, #0x401000
+00400ca8 e203132a mov      w2, w19
+00400cac 21583291 add      x1, x1, #0xc96
+00400cb0 a0c30191 add      x0, x29, #0x70
+00400cb4 bf7700b9 str      wzr, [x29, #0x74]
+00400cb8 a2ffff97 bl       #0x400b40
+00400cbc a1c30191 add      x1, x29, #0x70
+00400cc0 a0030291 add      x0, x29, #0x80
+00400cc4 d3ffff97 bl       #0x400c10
+00400cc8 e2031a2a mov      w2, w26
+00400ccc e103192a mov      w1, w25
+00400cd0 a0030291 add      x0, x29, #0x80
+00400cd4 7d010094 bl       #0x4012c8
+00400cd8 f303002a mov      w19, w0
+00400cdc e0080034 cbz      w0, #0x400df8
+00400ce0 e303002a mov      w3, w0
+00400ce4 010000b0 adrp     x1, #0x401000
+00400ce8 000000b0 adrp     x0, #0x401000
+00400cec 21a02691 add      x1, x1, #0x9a8
+00400cf0 00542791 add      x0, x0, #0x9d5
+00400cf4 c2358052 mov      w2, #0x1ae
+00400cf8 caffff97 bl       #0x400c20
+00400cfc 600200f0 adrp     x0, #0x44f000
+00400d00 760200f0 adrp     x22, #0x44f000
+00400d04 00d041b9 ldr      w0, [x0, #0x1d0]
+00400d08 aeffff97 bl       #0x400bc0
+00400d0c 600200f0 adrp     x0, #0x44f000
+00400d10 00e440f9 ldr      x0, [x0, #0x1c8]
+00400d14 a7ffff97 bl       #0x400bb0
+00400d18 80020391 add      x0, x20, #0xc0
+00400d1c 740200f0 adrp     x20, #0x44f000
+00400d20 1c084079 ldrh     w28, [x0, #4]

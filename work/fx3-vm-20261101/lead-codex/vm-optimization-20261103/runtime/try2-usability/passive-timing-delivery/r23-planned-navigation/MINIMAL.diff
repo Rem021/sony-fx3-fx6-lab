@@ -1,0 +1,526 @@
+--- /dev/null
++++ r23/runtime-wrapper/audit_after.py
+@@ -0,0 +1,19 @@
++"""Read-only fixed-input audit plus copies of the three authorized runtime outputs into this run; never a menu-success assertion."""
++from common import *
++from preflight import verify
++
++def main():
++ cleanup=read('CLEANUP.json')
++ assert cleanup['runner_alive'] is False and cleanup['port_closed'] is True and not cleanup['errors']
++ verify('INPUTS-AFTER.json')
++ after=HERE/'authorized-outputs-after';after.mkdir()
++ rows=[]
++ for row in read('OUTPUT-BOUNDARY-BEFORE.json')['allowed_outputs']:
++  p=Path(row['path']);assert p.parent==FROZEN and not p.is_symlink()
++  entry={'path':str(p),'exists':p.exists(),'symlink':False,'in_frozen_sums':False}
++  if p.exists():
++   target=after/p.name;target.write_bytes(p.read_bytes());entry.update(sha256=sha(p),bytes=p.stat().st_size,copied_to=str(target))
++  rows.append(entry)
++ write('OUTPUT-BOUNDARY-AFTER.json',{'allowed_outputs':rows,**stamp()})
++ print(json.dumps({'status':'collected_only','menu_acceptance':'requires independent real eight-step visual/native evidence review'}))
++if __name__=='__main__':main()
+--- r21c/common.py
++++ r23/runtime-wrapper/common.py
+@@ -1,7 +1,14 @@
+ import datetime,hashlib,json,os,subprocess,threading,time
+ from pathlib import Path
+-HERE=Path(__file__).resolve().parent
+-CFG=json.loads((HERE/'config.json').read_text());FROZEN=Path(CFG['frozen_root']);OPS=FROZEN/'operator-helpers'
++SOURCE=Path(__file__).resolve().parent
++HERE=Path(os.environ['FX3_NAV_RUN_DIR']).resolve()
++CFG=json.loads((HERE/'config.json').read_text());FROZEN=Path(CFG['frozen_root']);OPS=FROZEN/'operator-helpers';CANDIDATE_OPS=SOURCE.parent/'operator-helpers'
++assert FROZEN.resolve()==(SOURCE.parent.parent/'v25-r21-recovery-integration').resolve()
++assert CFG['plan_sha']==hashlib.sha256((SOURCE.parent/'NAVIGATION-PLAN.json').read_bytes()).hexdigest()
++assert CFG['steps']==json.loads((SOURCE.parent/'NAVIGATION-PLAN.json').read_text())['steps']
++assert CFG['scripted_navigation'] is True and CFG['visual_review_at_click'] is False
++for _file,_sha in json.loads((HERE/'LOCAL-SOURCE-FREEZE.json').read_text()).items():
++ assert hashlib.sha256(Path(_file).read_bytes()).hexdigest()==_sha,('source_freeze_changed',_file)
+ ENV={**os.environ,'PYTHONDONTWRITEBYTECODE':'1','AGENT_BROWSER_NO_VERSION_CHECK':'1'}
+ def stamp():return {'UTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'host_ns':time.monotonic_ns()}
+ def write(name,data):
+@@ -39,7 +46,7 @@
+ 
+ def browser(name,args,source=None,timeout=20):return run(name,['agent-browser','--session',CFG['session'],*args],source,timeout)
+ def ev(name,source):return json.loads(browser(name,['eval','--stdin'],source))
+-def helper(name,file,args,watch=False):return json.loads(run(name,['python3',str(OPS/file),*args],watch=watch))
++def helper(name,file,args,watch=False):return json.loads(run(name,['python3',str((CANDIDATE_OPS if file=='planned_navigation_click.py' else OPS)/file),*args],watch=watch))
+ def identity():return read('runtime.json')
+ def dl(name,action,nonce=None):
+  c=identity();a=[action,'--session',CFG['session'],'--url',c['url'],'--launch-id',c['launch_id']]
+--- r21c/later_capture.py
++++ r23/runtime-wrapper/later_capture.py
+@@ -6,10 +6,10 @@
+ def main():
+  c=json.loads(Path(sys.argv[1]).read_text());out=Path(sys.argv[2]);out.mkdir()
+  ev(c['prefix']+'-identity-before',current_guard(c))
+- before=ev(c['prefix']+'-capture-before',(HERE/'capture_review.js').read_text()+'('+json.dumps(c)+')');(out/'before.json').write_text(json.dumps(before,indent=2)+'\n')
++ before=ev(c['prefix']+'-capture-before',(SOURCE/'capture_review.js').read_text()+'('+json.dumps(c)+')');(out/'before.json').write_text(json.dumps(before,indent=2)+'\n')
+  assert before.get('status')=='ready_for_screenshot',before
+  shot=out/'menu-reference-page.png';browser(c['prefix']+'-screenshot',['screenshot',str(shot)],timeout=8)
+- after=ev(c['prefix']+'-capture-after',(HERE/'capture_after.js').read_text()+'('+json.dumps({**c,'before':before['before']})+')');(out/'after.json').write_text(json.dumps(after,indent=2)+'\n')
++ after=ev(c['prefix']+'-capture-after',(SOURCE/'capture_after.js').read_text()+'('+json.dumps({**c,'before':before['before']})+')');(out/'after.json').write_text(json.dumps(after,indent=2)+'\n')
+  assert after.get('qualified'),after
+  ev(c['prefix']+'-identity-after',current_guard(c))
+  r={'status':'qualified_screenshot_for_operator_review','screenshot_path':str(shot),'screenshot_file_sha256':sha(shot),'before_eval':before,'after_eval':after,'attempt_id':c['attempt_id'],'scope':'read_only_current_loaded_review; semantic judgement by operator only'}
+--- r21c/launch_prepare.py
++++ r23/runtime-wrapper/launch_prepare.py
+@@ -44,7 +44,7 @@
+  v=ev('PAGE-before-Start',r'''(async()=>{const s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');return {canonical_sha:await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;')),lastStatus,viewport:[innerWidth,innerHeight]};})()''')
+  assert v['canonical_sha']=='f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab' and v['lastStatus']['phase']=='awaiting_launch' and v['viewport']==[1280,1200]
+  tabs=json.loads(browser('owned-tab-prestart',['tab','--json']))['data']['tabs'];assert len(tabs)==1 and tabs[0]['url']==url
+- assert not (HERE/'ledger.json').exists();write('ledger.json',{'attempts':[],'recoveries':[]})
+- browser('prestart-screenshot',['screenshot',str(HERE/'prestart.png')]);write('PRESTART-READY.json',{'passed':True,'actual_cli_steps':[{'step':x['step'],'click_command':['python3','-B',str(HERE/'operate.py'),'click',str(x['step']),x['target']],'confirm_command':['python3','-B',str(HERE/'operate.py'),'confirm','亲看并确认 '+x['target']]} for x in CFG['steps']],'bindings':'one exclusive step-N-attempt-N dir / new nonce generated before arm; helper CLI arguments fully wired from runtime.json','cancel_command':['python3','-B',str(HERE/'operate.py'),'recovery_cancel','仅取消同nonce未入队alarm'],'end_command':['python3','-B',str(HERE/'cleanup.py')],'tab':tabs[0],**stamp()})
+- write('LOCAL-SOURCE-FREEZE.json',{p.name:sha(p) for p in HERE.iterdir() if p.suffix in ('.py','.js')});print(json.dumps({'status':'web_prepared_guest_not_started','run':str(run),'url':url,'session':CFG['session']}))
++ assert read('ledger.json')=={'attempts':[],'recoveries':[]}
++ browser('prestart-screenshot',['screenshot',str(HERE/'prestart.png')]);write('PRESTART-READY.json',{'passed':True,'scripted_navigation':True,'visual_review_at_click':False,'plan_sha':CFG['plan_sha'],'standby_review_command':['python3','-B',str(SOURCE/'operate.py'),'standby_review','代理实际看合格待机图后填判断'],'actual_cli_steps':[{'step':x['step'],'planned_click_command':['python3','-B',str(SOURCE/'operate.py'),'click',str(x['step']),x['target']],'confirm_command':['python3','-B',str(SOURCE/'operate.py'),'confirm','代理实际审阅本步新截图后确认 '+x['target']]} for x in CFG['steps']],'bindings':'one exclusive step-N-attempt-N dir / new nonce generated before arm; helper CLI arguments fully wired from runtime.json','cancel_command':['python3','-B',str(SOURCE/'operate.py'),'recovery_cancel','仅取消同nonce未入队alarm'],'end_command':['python3','-B',str(SOURCE/'cleanup.py')],'tab':tabs[0],**stamp()})
++ print(json.dumps({'status':'web_prepared_guest_not_started','run':str(run),'url':url,'session':CFG['session']}))
+ if __name__=='__main__':main()
+--- r21c/operate.py
++++ r23/runtime-wrapper/operate.py
+@@ -1,5 +1,7 @@
+ """One explicit tool call per click/capture, confirm, or recovery cancel; no retry."""
+ import sys
++sys.path.insert(0,str(__import__("pathlib").Path(__file__).resolve().parents[1]/"operator-helpers"))
++from planned_prerequisite import prerequisite,PLAN_SHA
+ from common import *
+ from capture_validation import validate_capture
+ from later_capture import current_guard
+@@ -8,20 +10,42 @@
+ def savepath(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+ def argbase(c,nonce):return ['--session',CFG['session'],'--url',c['url'],'--launch-id',c['launch_id'],'--nonce',nonce]
+ def failcleanup():
+- p=subprocess.run(['python3','-B',str(HERE/'cleanup.py')],env=ENV,text=True,capture_output=True,timeout=100)
++ p=subprocess.run(['python3','-B',str(SOURCE/'cleanup.py')],env=ENV,text=True,capture_output=True,timeout=100)
+  return {'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr}
++def prerequisite_record(step,cap_path,target,confirmation=None):
++ c=identity();cap=json.loads(Path(cap_path).read_text())
++ origin=(cap['before']['origin'] if step==0 else json.loads(Path(confirmation).read_text())['browser_result']['cancelled']['documentTimeOrigin'])
++ v={'schema':'fx3-planned-prerequisite-v1','plan_sha':PLAN_SHA,'completed_step':step,'launch_id':c['launch_id'],
++    'document_time_origin':origin,'observation_path':str(cap_path),'observation_sha256':sha(cap_path),
++    'semantic_review':{'passed':True,'source':'operation_agent_explicit_screenshot_review','target':target,**stamp()}}
++ if confirmation:v.update(confirmation_path=str(confirmation),confirmation_sha256=sha(confirmation))
++ path=HERE/('step-%02d-prerequisite.json'%step);savepath(path,v)
++ prerequisite(path,step+1,c['launch_id'])
++ return path
++
+ def _run_action(action):
+  c=identity()
++ if action=='standby_review':
++  target=sys.argv[2];assert target.strip()
++  cap_path=HERE/'initial-standby/capture-result.json';cap=json.loads(cap_path.read_text())
++  assert cap['firmware']['step']==0 and cap['status']=='qualified_current_screenshot'
++  return {'status':'initial_standby_review_recorded','prerequisite_path':str(prerequisite_record(0,cap_path,target)),
++          'scripted_navigation':True,'visual_review_at_click':False}
++ if action=='recovery_review':
++  target=sys.argv[2];assert target.strip();v=read('pending-recovery-review.json')
++  cap=json.loads(Path(v['capture_result']).read_text());assert sha(cap['screenshot_path'])==cap['screenshot_sha256']
++  v.update(status='explicit_recovery_image_reviewed',review_target=target,**stamp());write('pending-recovery-review.json',v)
++  return {'status':v['status']}
+  if action=='click':
+   step=int(sys.argv[2]);target=sys.argv[3];row=CFG['steps'][step-1];assert 1<=step<=8 and target.strip()
+-  if step>1:assert read('step-%02d-confirm.json'%(step-1))['status']=='confirmed_and_cancelled'
++  prior_path=HERE/('step-%02d-prerequisite.json'%(step-1));prior=prerequisite(prior_path,step,c['launch_id'])
+   ledger=read('ledger.json') if (HERE/'ledger.json').exists() else {'attempts':[],'recoveries':[]}
+   assert len(ledger['attempts'])<10
+-  prior=read('current-reviewed.json');assert prior['step']==step-1
++  if (HERE/'pending-recovery-review.json').exists():assert read('pending-recovery-review.json')['status']=='explicit_recovery_image_reviewed'
+   attempt=len(ledger['attempts'])+1;folder=HERE/('step-%02d-attempt-%02d'%(step,attempt));folder.mkdir();nonce=str(__import__('uuid').uuid4());prefix=folder.name
+-  a={**row,'attempt_number':attempt,'nonce':nonce,'path':str(folder),'operator_target':target,'host_wall_ns':time.time_ns(),**stamp()};savepath(folder/'identity.json',a);write('current-attempt.json',a)
+-  arm=dl(prefix+'-arm','arm',nonce);assert arm['deadline_ms']==20000 and arm['current']['state']=='armed'
+-  r=helper(prefix+'-click','operator_click.py',['--session',CFG['session'],'--url',c['url'],'--launch',c['launch_id'],'--nonce',nonce,'--key',str(row['key']),'--reviewed-sha',prior['sha'],'--reviewed-generation',str(prior['gen']),'--target',target,'--ledger',str(HERE/'ledger.json'),'--receipt',str(folder/'click-receipt.json')],watch=True)
++  a={**row,'attempt_number':attempt,'nonce':nonce,'path':str(folder),'scripted_action_target':target,'scripted_navigation':True,'visual_review_at_click':False,'plan_sha':PLAN_SHA,'host_wall_ns':time.time_ns(),**stamp()};savepath(folder/'identity.json',a);write('current-attempt.json',a)
++  arm=dl(prefix+'-arm','arm',nonce);assert arm['deadline_ms']==20000 and arm['current']['state']=='armed' and arm['current']['nonce']==nonce
++  r=helper(prefix+'-click','planned_navigation_click.py',['--session',CFG['session'],'--url',c['url'],'--launch',c['launch_id'],'--nonce',nonce,'--plan-sha',PLAN_SHA,'--step',str(step),'--prerequisite-path',str(prior_path),'--ledger',str(HERE/'ledger.json'),'--receipt',str(folder/'click-receipt.json')],watch=True)
+   assert r['status']=='click_invoked'
+   aid=r['result']['attempt_id'];a['attempt_id']=aid;savepath(folder/'identity.json',a);write('current-attempt.json',a)
+   outcome=wait_readonly(prefix+'-attributed-outcome','(()=>{const a=fx3KeyAttemptOutcome();if(a?.attempt_id!=='+json.dumps(aid)+')throw Error("wrong_attempt");return ["accepted","not_posted","explicit_rejected_unqueued","delivery_unknown"].includes(a.outcome)?a:null})()');savepath(folder/'outcome.json',outcome)
+@@ -38,23 +62,29 @@
+    ev(prefix+'-capture-current-attempt',current_guard(cfg))
+    process=read(prefix+'-capture-process.json');valid=validate_capture(process['returncode'],process['stdout'],out)
+   else:
+-   raw=run(prefix+'-capture',['python3','-B',str(HERE/'later_capture.py'),str(folder/'capture-config.json'),str(out)],timeout=18)
++   raw=run(prefix+'-capture',['python3','-B',str(SOURCE/'later_capture.py'),str(folder/'capture-config.json'),str(out)],timeout=18)
+    process=read(prefix+'-capture-process.json');valid=validate_capture(process['returncode'],raw,out)
+   assert Path(valid['screenshot_path']).stat().st_mtime_ns>=a['host_wall_ns']
+   assert valid['firmware_step']==step
+   valid.update(step=step,attempt_number=attempt,attempt_id=aid,nonce=nonce,**stamp());savepath(folder/'validated-image-return.json',valid);write('current-return.json',valid);return valid
+  if action=='confirm':
+-  target=sys.argv[2];a=read('current-attempt.json');folder=Path(a['path']);cap=json.loads((folder/'validated-image-return.json').read_text());assert cap['validated_new_screenshot'] and cap['attempt_id']==a['attempt_id'];step=a['step']
+-  savepath(folder/'visual-judgement.json',{'target':target,'semantic_passed':True,'model_received_at':'unknown','model_review_completed_at':'unknown',**stamp()})
++  target=sys.argv[2];a=read('current-attempt.json');folder=Path(a['path']);cap=json.loads((folder/'validated-image-return.json').read_text());assert cap['validated_new_screenshot'] and cap['attempt_id']==a['attempt_id'] and cap['nonce']==a['nonce'] and cap['firmware_step']==a['step']==cap['step'];step=a['step']
++  assert target.strip()
++  savepath(folder/'visual-judgement.json',{'target':target,'semantic_passed':True,'source':'operation_agent_explicit_screenshot_review','model_received_at':'unknown','model_review_completed_at':'unknown',**stamp()})
+   ev(folder.name+'-confirm-current-attempt',current_guard({**c,'step':step,'nonce':a['nonce'],'attempt_id':a['attempt_id']}))
+   r=helper(folder.name+'-confirm','explicit_confirm_cli.py',[*argbase(c,a['nonce']),'--step',str(step),'--png-sha',cap['firmware_png_sha256'],'--target',target,'--receipt',str(folder/'explicit-confirm-receipt.json')]);assert r['status']=='confirmed_and_cancelled'
+-  write('step-%02d-confirm.json'%step,r);write('current-reviewed.json',{'step':step,'sha':cap['firmware_png_sha256'],'gen':cap['firmware_generation'],'seq':cap['firmware_sequence'],'review_basis':'exact operator-reviewed screenshot identity; later DOM never promoted','target':target});return {'status':r['status'],'step':step,'elapsed_ms':r['browser_result']['cancelled']['events'][-1].get('elapsed_ms')}
++  expected=r['browser_result']['expected']
++  assert expected['step']==step and expected['PNG_sha256']==cap['firmware_png_sha256'] and expected['content_generation']==cap['firmware_generation'] and expected['observed_sequence']>=cap['firmware_sequence']
++  assert r['launch_id']==c['launch_id'] and r['alarm_nonce']==a['nonce'] and r['step']==step
++  write('step-%02d-confirm.json'%step,r)
++  prerequisite_record(step,folder/'validated-image-return.json',target,folder/'explicit-confirm-receipt.json')
++  return {'status':r['status'],'step':step,'elapsed_ms':r['browser_result']['cancelled']['events'][-1].get('elapsed_ms')}
+  if action=='recovery_cancel':
+   a=read('current-attempt.json');folder=Path(a['path']);out=folder/'recovery-cancel';target=sys.argv[2]
+   r=helper(folder.name+'-recovery-cancel','recovery_tools.py',['cancel',*argbase(c,a['nonce']),'--binding',str(folder/'binding.json'),'--out',str(out),'--review',str(folder/'recovery-review/review-result.json'),'--target',target,'--ledger',str(HERE/'ledger.json')],watch=True)
+   assert r['status']=='cancelled_unqueued_alarm_only';p=Path(r['current_screenshot_path']);assert p==out/'current-after-cancel.png' and p.is_file() and not p.is_symlink() and sha(p)==r['current_screenshot_sha256'] and p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+   # Capture result supplies a new image; next separate operator call must review it.
+-  fresh=snapshot(folder.name+'-cancel-pinned',folder/'cancel-pinned',a['step']-1);write('current-reviewed.json',{**fresh['firmware'],'review_basis':'pinned cancel screenshot pending next explicit operator click review'});value={**fresh,'status':r['status']};write('current-return.json',value);return value
++  fresh=snapshot(folder.name+'-cancel-pinned',folder/'cancel-pinned',a['step']-1);write('pending-recovery-review.json',{'status':'requires_separate_explicit_review','capture_result':str(folder/'cancel-pinned/capture-result.json')});value={**fresh,'status':r['status']};write('current-return.json',value);return value
+  raise ValueError(action)
+ def run_action(action):
+  try:
+--- r21c/preflight.py
++++ r23/runtime-wrapper/preflight.py
+@@ -24,17 +24,11 @@
+    import shutil
+    shutil.copyfile(p,out/f);row.update(sha256=sha(p),bytes=p.stat().st_size,copied_to=str(out/f))
+   writes.append(row)
+- write('OUTPUT-BOUNDARY-BEFORE.json',{'coordinator_message':'msg_82796ff62714','allowed_outputs':writes})
+- for p in HERE.glob('*.py'):ast.parse(p.read_text())
+- from later_capture import current_guard
+- code=current_guard({'url':'http://127.0.0.1:1/','launch_id':'host-only','nonce':'host-only','step':2,'attempt_id':'host-only'})
+- p=subprocess.run(['node','--check'],input=code,text=True,capture_output=True);assert p.returncode==0,p.stderr
+- for f in ('capture_review.js','capture_after.js'):
+-  p=subprocess.run(['node','--check'],input=(HERE/f).read_text()+'({})',text=True,capture_output=True);assert p.returncode==0,p.stderr
+- for f in ('operator_click.py','recovery_tools.py','explicit_confirm_cli.py','bounded_capture_cli.py','deadline_cli.py'):
++ write('OUTPUT-BOUNDARY-BEFORE.json',{'authorization':'r23 planned-navigation task: same three existing non-frozen runtime output exceptions; record only before/after','allowed_outputs':writes})
++ for p in SOURCE.glob('*.py'):ast.parse(p.read_text())
++ for f in ('recovery_tools.py','explicit_confirm_cli.py','bounded_capture_cli.py','deadline_cli.py'):
+   run('parser-'+f,['python3','-B',str(OPS/f),'--help'])
+- run('actual-cli-host-tests',['python3','-B',str(HERE/'host_cli_checks.py')],timeout=30)
+- assert read('HOST-CLI-RESULT.json')['passed']
+- write('LOCAL-SOURCE-FREEZE.json',{p.name:sha(p) for p in HERE.iterdir() if p.suffix in ('.py','.js')})
+- write('PREFLIGHT-RESULT.json',{'passed':True,'scope':'host parameters, source identities, actual __main__ CLI dispatch, cleanup branches; no timed fixture','browser_calls':0,'guest_starts':0,**stamp()});print(json.dumps({'passed':True}))
++ run('parser-planned-navigation',['python3','-B',str(CANDIDATE_OPS/'planned_navigation_click.py'),'--help'])
++ write('PREFLIGHT-RESULT.json',{'passed':True,'scope':'pinned input and CLI parser preparation only; no browser or guest',**stamp()})
++ print(json.dumps({'passed':True}))
+ if __name__=='__main__':main()
+--- r21c/start_and_wait.py
++++ r23/runtime-wrapper/start_and_wait.py
+@@ -5,7 +5,7 @@
+ 
+ def main():
+  assert read('PRESTART-READY.json')['passed'];assert not (HERE/'Start-once').exists()
+- for f,h in read('LOCAL-SOURCE-FREEZE.json').items():assert sha(HERE/f)==h
++ for f,h in read('LOCAL-SOURCE-FREEZE.json').items():assert sha(f)==h
+  exclusive('EXCLUSIVE-BEFORE-Start.json',allow_self=True)
+  (HERE/'Start-once').open('x').close();start_monotonic=time.monotonic();browser('Start-original-button',['click','#start'])
+  c=identity();launch=wait_readonly('launch-identity','lastStatus?.launch_request_id&&({launch_id:lastStatus.launch_request_id})')['launch_id'];c['launch_id']=launch;write('runtime.json',c)
+@@ -19,10 +19,10 @@
+   if state['error'] or state['finished']:raise RuntimeError('startup failed: '+json.dumps(state))
+   time.sleep(1)
+  else:raise RuntimeError('first frame not ready by 180 seconds')
+- image=snapshot('initial-standby',HERE/'initial-standby',0);write('current-reviewed.json',{**image['firmware'],'review_basis':'initial screenshot pending explicit operator MENU call'});write('FIRST-FRAME-PASS.json',{'passed':True,**stamp()})
++ image=snapshot('initial-standby',HERE/'initial-standby',0);write('current-observation.json',{**image['firmware'],'basis':'historical screenshot pending separate standby_review; no current-generation permission'});write('FIRST-FRAME-PASS.json',{'passed':True,**stamp()})
+  cmd=json.loads((Path(c['run'])/'command.json').read_text());session=json.loads((Path(c['run'])/'trial-session.json').read_text());pid=session['qemu_pid'];actual=subprocess.check_output(['ps','-p',str(pid),'-o','command='],text=True).strip();assert str(cmd['args'][0]) in actual and sha(cmd['args'][0])=='bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d';write('ACTUAL-RUNNING-ARGV.json',{'pid':pid,'ps_command':actual,'command_json_args':cmd['args'],'qemu_sha256':sha(cmd['args'][0]),**stamp()});print(json.dumps(image))
+ if __name__=='__main__':
+  try:main()
+  except BaseException as e:
+   write('STARTUP-FAILURE.json',{'error':repr(e),**stamp()})
+-  p=subprocess.run(['python3','-B',str(HERE/'cleanup.py')],capture_output=True,text=True,env=ENV,timeout=100);write('STARTUP-FAILURE-CLEANUP.json',{'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr});raise
++  p=subprocess.run(['python3','-B',str(SOURCE/'cleanup.py')],capture_output=True,text=True,env=ENV,timeout=100);write('STARTUP-FAILURE-CLEANUP.json',{'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr});raise
+--- r22/operator-helpers/operator_click.py
++++ r23/operator-helpers/planned_navigation_click.py
+@@ -1,20 +1,22 @@
+ #!/usr/bin/env python3
+-"""Offline r22 candidate: attributed pre-click refusal; original PAGE click only, no recovery."""
++"""Explicit planned single-step navigation; historical review is not click-time visual permission."""
+ import argparse,fcntl,hashlib,json,os,subprocess,time,uuid
+ from pathlib import Path
+-from recovery_tools import check,call
++from recovery_tools import call,SESSION,UUID
++from urllib.parse import urlsplit
++from planned_prerequisite import PLAN_SHA,plan,prerequisite
+ HERE=Path(__file__).resolve().parent
+ PAGE_SHA='f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab'
+ KEYS=(3,48,21,431,428,427,504)
+-IDENTITY_CHECKS=set('document_unchanged time_origin_unchanged exact_url top_level one_inline_script script_unchanged_during_digest page_fingerprint launch_identity'.split())
+-PREFLIGHT_CHECKS=set('status_present phase_ready server_ready server_no_error server_not_busy server_no_review steps_under_eight page_not_busy page_not_ending page_not_finished delivery_known review_known review_not_awaiting no_awaiting_step no_render_fault frame_loaded reviewed_sha_matches reviewed_generation_matches alarm_nonce_matches alarm_armed alarm_due_in_future key_exists key_enabled'.split())
++IDENTITY_CHECKS=set('document_unchanged time_origin_unchanged exact_url top_level one_inline_script script_unchanged_during_digest page_fingerprint launch_identity prerequisite_document'.split())
++PREFLIGHT_CHECKS=set('status_present phase_ready server_ready server_no_error server_not_busy server_no_review steps_under_eight page_not_busy page_not_ending page_not_finished delivery_known review_known review_not_awaiting no_awaiting_step no_render_fault frame_loaded plan_matches plan_step_matches server_step_matches previous_confirm_matches alarm_document_matches alarm_nonce_matches alarm_armed alarm_due_in_future key_exists key_enabled'.split())
+ def bound_result(value,config):
+  """A typed, request-bound reply is required; malformed/foreign replies stay unknown."""
+- if type(value) is not dict or value.get('schema')!='fx3-operator-preclick-v1':return False
++ if type(value) is not dict or value.get('schema')!='fx3-planned-navigation-v1':return False
+  s=value.get('snapshot'); checks=value.get('checks'); failed=value.get('failed_checks')
+  if type(s) is not dict or type(checks) is not dict or type(failed) is not list:return False
+- page=s.get('page');alarm=s.get('alarm');reviewed=s.get('reviewed')
+- if not all(type(x) is dict for x in (page,alarm,reviewed)):return False
++ page=s.get('page');alarm=s.get('alarm')
++ if not all(type(x) is dict for x in (page,alarm)):return False
+  return (s.get('identity_trusted') is True and set(page)==IDENTITY_CHECKS and
+          set(checks)==PREFLIGHT_CHECKS and all(v is True for v in page.values()) and
+          s.get('key')==config['key'] and s.get('launch')==config['launch'] and
+@@ -23,14 +25,26 @@
+          s.get('document_time_origin')==s.get('digest_document_time_origin') and
+          type(s.get('document_time_origin')) in (int,float) and
+          alarm.get('expected_nonce')==config['nonce'] and
+-         reviewed=={'sha256':config['sha'],'generation':config['gen']} and
++         value.get('scripted_navigation') is True and value.get('visual_review_at_click') is False and
++         value.get('plan_sha')==config['plan_sha'] and value.get('plan_step')==config['step'] and
++         s.get('plan_sha')==config['plan_sha'] and s.get('plan_step')==config['step'] and
++         s.get('prerequisite_sha256')==config['prerequisite']['prerequisite_sha256'] and
++         s.get('previous_confirm')==config['prerequisite']['previous_confirm'] and
+          all(type(v) is bool for v in checks.values()) and checks and
+          all(type(k) is str for k in failed) and len(failed)==len(set(failed)) and
+          set(failed)=={k for k,v in checks.items() if not v})
+-def click(session,url,launch,nonce,key,reviewed_sha,reviewed_generation,target,ledger,receipt):
+- if key not in KEYS or not target.strip() or len(target)>500 or len(reviewed_sha)!=64 or reviewed_generation<1:raise ValueError('operator explicit inputs')
+- binding={'launch_request_id':launch,'nonce':nonce,'attempt_id':'00000000-0000-4000-8000-000000000000','base_step':0,'expected_step':1,'key':key,'PNG_sha256':reviewed_sha,'content_generation':reviewed_generation,'sequence':1}
+- tab=check(session,url,launch,nonce,binding)
++def click(session,url,launch,nonce,plan_sha,step,prerequisite_path,ledger,receipt):
++ nav=plan(plan_sha)
++ if type(step) is not int or not 1<=step<=8:raise ValueError('plan_step_out_of_range')
++ key=nav['steps'][step-1]['key'];target=nav['steps'][step-1]['target']
++ previous=prerequisite(prerequisite_path,step,launch)
++ u=urlsplit(url)
++ if (not SESSION.fullmatch(session) or not UUID.fullmatch(launch) or not UUID.fullmatch(nonce) or
++     u.scheme!='http' or u.hostname!='127.0.0.1' or not u.port or u.path!='/' or u.query or u.fragment or
++     url!=f'http://127.0.0.1:{u.port}/'):raise ValueError('owned_tab_URL_launch_nonce')
++ tabs=json.loads(call(session,['tab','--json']))['data']['tabs']
++ if len(tabs)!=1 or tabs[0]['url']!=url:raise ValueError('one_owned_tab_exact_URL')
++ tab=tabs[0].get('id')
+  ledger=Path(ledger);receipt=Path(receipt)
+  if not ledger.parent.is_dir() or not receipt.parent.is_dir():raise ValueError('existing receipt parents')
+  with ledger.open('a+') as f:
+@@ -38,16 +52,17 @@
+   if len(state['attempts'])>=10:raise ValueError('10 explicit attempts reached')
+   if any(x.get('status')!='click_invoked' for x in state['attempts']):raise ValueError('previous click outcome unknown; End required')
+   if any(x.get('status')!='cancelled_unqueued_alarm_only' or x.get('current_screenshot_status')!='delivered_requires_separate_operator_review' for x in state['recoveries']):raise ValueError('recovery outcome or new screenshot unknown; End required')
+-  script=(HERE/'operator_preflight.js').read_text()
+-  config={'url':url,'launch':launch,'nonce':nonce,'key':key,'sha':reviewed_sha,'gen':reviewed_generation,'page_sha':PAGE_SHA}
+-  record={'status':'unknown','session':session,'tab':tab,'target':target,'key':key,'host_start_ns':time.monotonic_ns(),'eval_may_have_started':True,'guest_keys_sent_directly_by_cli':0}
++  script=(HERE/'planned_navigation_click.js').read_text()
++  config={'url':url,'launch':launch,'nonce':nonce,'key':key,'plan_sha':plan_sha,'step':step,'prerequisite':previous,'page_sha':PAGE_SHA}
++  record={'status':'unknown','scripted_navigation':True,'visual_review_at_click':False,'plan_sha':plan_sha,'plan_step':step,'nonce':nonce,'launch':launch,'document_time_origin':previous['document_time_origin'],'click_time_frame':None,'previous_confirm':previous['previous_confirm'],'session':session,'tab':tab,'target':target,'key':key,'host_start_ns':time.monotonic_ns(),'eval_may_have_started':True,'guest_keys_sent_directly_by_cli':0}
+   receipt.open('x').write(json.dumps(record,indent=2)+'\n')
+-  reservation={'status':'reserved_unknown','reservation_id':str(uuid.uuid4()),'key':key,'host_ns':time.monotonic_ns()}
++  reservation={'status':'reserved_unknown','reservation_id':str(uuid.uuid4()),'key':key,'plan_sha':plan_sha,'plan_step':step,'host_ns':time.monotonic_ns()}
+   state['attempts'].append(reservation)
+   f.seek(0);f.truncate();f.write(json.dumps(state,indent=2)+'\n');f.flush();os.fsync(f.fileno())
+   try:
+    value=json.loads(call(session,['eval','--stdin'],source=script+'('+json.dumps(config)+')',timeout=12))
+    record['result']=value
++   if bound_result(value,config):record['click_time_frame']=value['snapshot']['click_time_frame']
+    if (bound_result(value,config) and
+        value.get('status')=='preflight_not_clicked' and value.get('click_called') is False and
+        value.get('decision')=='refuse_before_click' and value.get('failed_checks') and
+@@ -62,7 +77,11 @@
+   reservation.update(status=record['status'],attempt_id=result.get('attempt_id'),step=result.get('step'))
+   f.seek(0);f.truncate();f.write(json.dumps(state,indent=2)+'\n');f.flush();os.fsync(f.fileno());record['host_end_ns']=time.monotonic_ns();receipt.write_text(json.dumps(record,indent=2)+'\n');return record
+ if __name__=='__main__':
+- p=argparse.ArgumentParser()
+- for k in ('session','url','launch','nonce','key','reviewed-sha','reviewed-generation','target','ledger','receipt'):
+-  p.add_argument('--'+k,required=True,type=int if k in ('key','reviewed-generation') else str)
+- a=p.parse_args();x=click(a.session,a.url,a.launch,a.nonce,a.key,a.reviewed_sha,a.reviewed_generation,a.target,a.ledger,a.receipt);print(json.dumps(x,indent=2));raise SystemExit(0 if x['status']=='click_invoked' else 2)
++ p=argparse.ArgumentParser(description=__doc__)
++ for k in ('session','url','launch','nonce','plan-sha','step','prerequisite-path','ledger','receipt'):
++  p.add_argument('--'+k,required=True,type=int if k=='step' else str)
++ a=p.parse_args()
++ try:r=click(a.session,a.url,a.launch,a.nonce,a.plan_sha,a.step,a.prerequisite_path,a.ledger,a.receipt)
++ except (ValueError,KeyError,TypeError,FileNotFoundError) as e:
++  print(json.dumps({'status':'host_preflight_refused','reason':str(e),'scripted_navigation':True,'visual_review_at_click':False}));raise SystemExit(2)
++ print(json.dumps(r,indent=2));raise SystemExit(0 if r['status']=='click_invoked' else 2)
+--- r22/operator-helpers/operator_preflight.js
++++ r23/operator-helpers/planned_navigation_click.js
+@@ -1,4 +1,6 @@
+ (async c => {
++  const PLAN_SHA="4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f";
++  const PLAN_KEYS=[427,3,504,427,428,427,427,427];
+   'use strict';
+   // Only document/script identity is sampled before await. It is not decision state.
+   const docBefore = document, originBefore = performance.timeOrigin;
+@@ -27,7 +29,8 @@
+     script_unchanged_during_digest: scriptsBefore.length === 1 && scripts[0] === scriptBefore &&
+       scriptBefore.textContent === textBefore,
+     page_fingerprint: hash === c.page_sha,
+-    launch_identity: !!s && s.launch_request_id === c.launch
++    launch_identity: !!s && s.launch_request_id === c.launch,
++    prerequisite_document: performance.timeOrigin === c.prerequisite.document_time_origin
+   };
+   const checks = {
+     status_present: !!s,
+@@ -46,8 +49,14 @@
+     no_awaiting_step: awaitingStep === null,
+     no_render_fault: !renderFault,
+     frame_loaded: !!s && frameLoadedFor(s),
+-    reviewed_sha_matches: shownSHA === c.sha,
+-    reviewed_generation_matches: displayedGeneration === c.gen,
++    plan_matches: c.plan_sha === PLAN_SHA,
++    plan_step_matches: Number.isInteger(c.step) && c.step >= 1 && c.step <= 8 && PLAN_KEYS[c.step-1] === c.key,
++    server_step_matches: s?.steps === c.step-1,
++    previous_confirm_matches: c.prerequisite.completed_step === c.step-1 &&
++      (c.step === 1 ? c.prerequisite.previous_confirm === null :
++        !!c.prerequisite.previous_confirm && confirmationMatches(s,c.prerequisite.previous_confirm.expected)),
++    alarm_document_matches: h?.version === 1 && h.deadline_ms === 20000 && !h.sealed &&
++      h.expectedURL === c.url && h.expectedLaunchId === c.launch && h.documentTimeOrigin === performance.timeOrigin,
+     alarm_nonce_matches: alarm?.nonce === c.nonce,
+     alarm_armed: alarm?.state === 'armed',
+     // Explicit finite check fails closed on malformed due_ms (no change to 20 seconds).
+@@ -73,13 +82,16 @@
+       displayed_sequence: finite(displayed), shown_sequence: finite(shown)},
+     status_frame: {sha256: sha(s?.frame?.PNG_sha256), generation: finite(s?.frame?.content_generation),
+       sequence: finite(s?.frame?.sequence)},
+-    reviewed: {sha256: sha(c.sha), generation: finite(c.gen)},
++    scripted_navigation: true, visual_review_at_click: false,
++    plan_sha: c.plan_sha, plan_step: c.step, previous_confirm: c.prerequisite.previous_confirm,
++    prerequisite_sha256: c.prerequisite.prerequisite_sha256,
++    click_time_frame: {PNG_sha256:sha(shownSHA),content_generation:finite(displayedGeneration),sequence:finite(displayed)},
+     alarm: {expected_nonce: id(c.nonce), nonce: id(alarm?.nonce),
+       state: ['armed','expired','cancelled'].includes(alarm?.state) ? alarm.state : null,
+       armed_ms: finite(alarm?.armed_ms), due_ms: finite(alarm?.due_ms), now_ms: now},
+     key: c.key, key_exists: checks.key_exists, key_enabled: checks.key_enabled
+   };
+-  const result = {schema:'fx3-operator-preclick-v1', snapshot, checks,
++  const result = {schema:'fx3-planned-navigation-v1',scripted_navigation:true,visual_review_at_click:false,plan_sha:c.plan_sha,plan_step:c.step, snapshot, checks,
+     failed_checks:[...identityFailures.map(k => 'identity.' + k), ...failed],
+     server_atomic_permission:false};
+   // Identity failure never becomes a known no-click receipt, even if this code did not click.
+--- /dev/null
++++ r23/operator-helpers/planned_prerequisite.py
+@@ -0,0 +1,49 @@
++"""Historical visual evidence and original confirmation, never a current-frame permit."""
++import hashlib,json,math
++from pathlib import Path
++HERE=Path(__file__).resolve().parent
++PLAN_SHA='4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f'
++def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
++def plan(sha256):
++ p=HERE.parent/'NAVIGATION-PLAN.json'
++ if sha256!=PLAN_SHA or sha(p)!=PLAN_SHA:raise ValueError('plan_sha_mismatch')
++ return json.loads(p.read_text())
++def file(p):
++ p=Path(p)
++ if not p.is_absolute() or p.is_symlink() or not p.is_file():raise ValueError('evidence_regular_absolute_file')
++ return p
++
++def prerequisite(path,step,launch):
++ p=file(path);v=json.loads(p.read_text())
++ if (v.get('schema')!='fx3-planned-prerequisite-v1' or v.get('plan_sha')!=PLAN_SHA or
++     type(v.get('completed_step')) is not int or v['completed_step']!=step-1 or v.get('launch_id')!=launch or
++     v.get('semantic_review',{}).get('passed') is not True or
++     v['semantic_review'].get('source')!='operation_agent_explicit_screenshot_review' or
++     not v['semantic_review'].get('target','').strip() or
++     type(v.get('document_time_origin')) not in (int,float) or not math.isfinite(v['document_time_origin'])):
++  raise ValueError('previous_visual_review_or_step_missing')
++ obs=file(v['observation_path']);cap=json.loads(obs.read_text())
++ if sha(obs)!=v['observation_sha256']:raise ValueError('observation_receipt_hash')
++ shot=file(cap['screenshot_path'])
++ if not shot.read_bytes().startswith(b'\x89PNG\r\n\x1a\n'):raise ValueError('observation_not_png')
++ image_sha=cap.get('screenshot_file_sha256',cap.get('screenshot_sha256'))
++ if sha(shot)!=image_sha:raise ValueError('observation_image_hash')
++ if step==1:
++  if cap.get('status')!='qualified_current_screenshot' or cap['firmware']['step']!=0 or cap['before']['origin']!=v['document_time_origin']:raise ValueError('initial_standby_observation')
++  previous=None
++ else:
++  if (cap.get('validated_new_screenshot') is not True or cap.get('step')!=step-1 or
++      cap.get('firmware_step')!=step-1 or not cap.get('attempt_id') or not cap.get('nonce')):raise ValueError('previous_capture_attempt_binding')
++  cp=file(v['confirmation_path']);cr=json.loads(cp.read_text())
++  if sha(cp)!=v['confirmation_sha256']:raise ValueError('previous_confirm_hash')
++  br=cr.get('browser_result',{});ex=br.get('expected',{});cancel=br.get('cancelled',{});current=cancel.get('current',{})
++  if (cr.get('status')!='confirmed_and_cancelled' or cr.get('step')!=step-1 or cr.get('launch_id')!=launch or
++      cr.get('alarm_nonce')!=cap['nonce'] or cr.get('reviewed_png_sha256')!=cap['firmware_png_sha256'] or
++      ex.get('step')!=step-1 or ex.get('PNG_sha256')!=cap['firmware_png_sha256'] or
++      ex.get('content_generation')!=cap['firmware_generation'] or ex.get('observed_sequence',0)<cap['firmware_sequence'] or
++      not ex.get('request_id') or current.get('state')!='cancelled' or current.get('nonce')!=cap['nonce'] or
++      cancel.get('documentTimeOrigin')!=v['document_time_origin']):raise ValueError('previous_original_confirm_binding')
++  previous={'expected':ex,'receipt_sha256':sha(cp),'attempt_id':cap['attempt_id'],'nonce':cap['nonce']}
++ return {'completed_step':step-1,'document_time_origin':v['document_time_origin'],
++         'launch_id':launch,'prerequisite_sha256':sha(p),'previous_confirm':previous,
++         'historical_observation_sha256':sha(obs),'historical_image_sha256':image_sha}
+--- /dev/null
++++ r23/NAVIGATION-PLAN.json
+@@ -0,0 +1,55 @@
++{
++  "schema": "fx3-scripted-navigation-plan-v1",
++  "scripted_navigation": true,
++  "visual_review_at_click": false,
++  "steps": [
++    {
++      "step": 1,
++      "key": 427,
++      "target": "完整Setup > Area/Date，橙色Area/Date/Time Setting"
++    },
++    {
++      "step": 2,
++      "key": 3,
++      "target": "UP到Language English"
++    },
++    {
++      "step": 3,
++      "key": 504,
++      "target": "C4语言帮助"
++    },
++    {
++      "step": 4,
++      "key": 427,
++      "target": "MENU返回Language"
++    },
++    {
++      "step": 5,
++      "key": 428,
++      "target": "OK查看English语言列表但不改值"
++    },
++    {
++      "step": 6,
++      "key": 427,
++      "target": "MENU取消"
++    },
++    {
++      "step": 7,
++      "key": 427,
++      "target": "MENU关闭到待机"
++    },
++    {
++      "step": 8,
++      "key": 427,
++      "target": "MENU重开完整菜单"
++    }
++  ],
++  "runtime_budget": {
++    "minutes": 8,
++    "accepted_keys": 8,
++    "explicit_attempts": 10,
++    "attributed_unqueued_recoveries": 2,
++    "recoveries_per_step": 1
++  },
++  "key_effect_requires_separate_post_visual_review": true
++}
+--- /dev/null
++++ r23/prepare_run.py
+@@ -0,0 +1,34 @@
++#!/usr/bin/env python3
++"""Create task-specific run inputs only; this command NEVER starts a browser/runner/guest."""
++import argparse,hashlib,json,os,plistlib,re,subprocess
++from pathlib import Path
++ROOT=Path(__file__).resolve().parent
++DEL=ROOT.parent
++FROZEN=DEL/'v25-r21-recovery-integration'
++def main():
++ p=argparse.ArgumentParser(description=__doc__)
++ for k in ('run-dir','task-id','dispatch-id','session'):p.add_argument('--'+k,required=True)
++ a=p.parse_args()
++ assert plistlib.loads(subprocess.check_output(['diskutil','info','-plist','/Volumes/KAFU2T']))['VolumeUUID']=='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
++ out=Path(a.run_dir).resolve();assert out.is_relative_to(DEL) and out!=ROOT and re.fullmatch(r'fx3-deadline-[A-Za-z0-9_-]+',a.session)
++ assert a.task_id.startswith('task_') and a.dispatch_id.startswith('ctx_') and a.task_id.removeprefix('task_') in out.name
++ out.mkdir() # exclusive; never overwrite a prior run
++ plan=json.loads((ROOT/'NAVIGATION-PLAN.json').read_text())
++ cfg={'session':a.session,'frozen_root':str(FROZEN),'task_id':a.task_id,'dispatch_id':a.dispatch_id,
++      'scripted_navigation':True,'visual_review_at_click':False,'scope':'one future explicitly authorized VM; 8 steps/10 attempts/2 unqueued recoveries',
++      'plan_sha':hashlib.sha256((ROOT/'NAVIGATION-PLAN.json').read_bytes()).hexdigest(),'steps':plan['steps']}
++ def put(n,v):(out/n).write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n')
++ put('config.json',cfg)
++ files=[ROOT/'NAVIGATION-PLAN.json',ROOT/'prepare_run.py',*sorted((ROOT/'operator-helpers').glob('*.*')),*sorted((ROOT/'runtime-wrapper').glob('*.*'))]
++ put('LOCAL-SOURCE-FREEZE.json',{str(f):hashlib.sha256(f.read_bytes()).hexdigest() for f in files if f.is_file()})
++ put('ledger.json',{'attempts':[],'recoveries':[]})
++ wrapper=ROOT/'runtime-wrapper'
++ commands={name:['python3','-B',str(wrapper/name)] for name in ('preflight.py','launch_prepare.py','start_and_wait.py','cleanup.py','audit_after.py')}
++ commands['standby_review']=['python3','-B',str(wrapper/'operate.py'),'standby_review','实际看图后填入待机语义判断']
++ commands['steps']=[{'planned_click':['python3','-B',str(wrapper/'operate.py'),'click',str(s['step']),s['target']],
++                     'confirm_after_actual_image_review':['python3','-B',str(wrapper/'operate.py'),'confirm','实际看本步新图后填入语义判断：'+s['target']]} for s in plan['steps']]
++ commands['recovery_cancel']=['python3','-B',str(wrapper/'operate.py'),'recovery_cancel','实际看归因未入队新图后的判断']
++ commands['recovery_review']=['python3','-B',str(wrapper/'operate.py'),'recovery_review','实际看cancel后新图后的判断']
++ put('CLI-TEMPLATES.json',{'env':{'FX3_NAV_RUN_DIR':str(out)},'commands':commands,'warning':'templates only; no command executed by prepare_run'})
++ print(json.dumps({'status':'prepared_only_no_process_started','run_dir':str(out),'config':cfg},ensure_ascii=False))
++if __name__=='__main__':main()

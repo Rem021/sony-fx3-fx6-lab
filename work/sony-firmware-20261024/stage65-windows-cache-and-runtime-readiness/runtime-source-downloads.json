@@ -1,0 +1,701 @@
+{
+  "created_utc": "2026-10-26T15:34:59.534627+00:00",
+  "schema": "fx3-public-gpl-reference-download/2",
+  "source_script_sha256": "472badfc456b6a0aeef0330955511059a068e453975c512b5f3cb0b8cf6b2bae",
+  "official_model_page": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+  "notice_read": "https://oss.sony.net/Products/Linux/notice.html",
+  "resume_prefix_preserved_and_all_ranges_exact": true,
+  "camera_or_downloaded_code_execution": false,
+  "files": [
+    {
+      "url": "https://prodgpl.blob.core.windows.net/download/B2B/ILME-FX3_Ver.7.00/linux-kernel.tar.gz",
+      "path": "work/sony-firmware-20261024/stage65-windows-cache-and-runtime-readiness/work/vendor-source-reference/range-resume-20261026/linux-kernel.complete.tar.gz",
+      "bytes": 109987145,
+      "sha256": "bb2d9cc676fef6aaf2f8f6703c4e041c133da0e7101b5afd33800eaf7c156d0f",
+      "official_content_md5_verified": true,
+      "archive_members": 43921,
+      "relevant_members": [
+        {
+          "name": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_nfs_ssp.dts",
+          "bytes": 1587,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057.dtsi",
+          "bytes": 28387,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_set.dts",
+          "bytes": 1535,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_nfs.dts",
+          "bytes": 1596,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057-memmap.dtsi",
+          "bytes": 1480,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_set2.dts",
+          "bytes": 1892,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_set_ssp.dts",
+          "bytes": 1526,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/configs/cxd90057_set_defconfig",
+          "bytes": 86732,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/configs/cxd90057_nfs_defconfig",
+          "bytes": 88427,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/configs/cxd90057_ipv4_fpu_set_defconfig",
+          "bytes": 85801,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/configs/cxd90057_ipv4_fpu_nfs_defconfig",
+          "bytes": 87766,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/configs/cxd90057_fpu_set_defconfig",
+          "bytes": 86771,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/configs/cxd90057_fpu_nfs_defconfig",
+          "bytes": 88482,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/configs/cxd90057_ice_nfs_defconfig",
+          "bytes": 82570,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/configs/cxd90057_ice_set_defconfig",
+          "bytes": 80041,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/include/asm/current.h",
+          "bytes": 351,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/include/asm/thread_info.h",
+          "bytes": 3542,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm64/kernel/head.S",
+          "bytes": 23943,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm/boot/compressed/head.S",
+          "bytes": 36403,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm/include/asm/thread_info.h",
+          "bytes": 5321,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/arch/arm/kernel/head.S",
+          "bytes": 19235,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/uapi/linux/usb/specific_gadget/usb_ioctl_current.h",
+          "bytes": 1137,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/asm-generic/current.h",
+          "bytes": 217,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/usb/specific_gadget/usb_ioctl_current.h",
+          "bytes": 891,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif",
+          "bytes": 0,
+          "regular_file": false
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/file.h",
+          "bytes": 1936,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/export.h",
+          "bytes": 1547,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/wait.h",
+          "bytes": 4045,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/malloc.h",
+          "bytes": 1997,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/list.h",
+          "bytes": 3669,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/dmac.h",
+          "bytes": 2294,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/mmap.h",
+          "bytes": 1775,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/device.h",
+          "bytes": 4258,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/mutex.h",
+          "bytes": 1872,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/poll.h",
+          "bytes": 1779,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/spinlock.h",
+          "bytes": 2644,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/driver.h",
+          "bytes": 3018,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/macros.h",
+          "bytes": 3012,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/workqueue.h",
+          "bytes": 1648,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/bdev.h",
+          "bytes": 4391,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/print.h",
+          "bytes": 1496,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/string.h",
+          "bytes": 1490,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/boottime.h",
+          "bytes": 1926,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/tasklet.h",
+          "bytes": 1981,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/proc.h",
+          "bytes": 2696,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/module.h",
+          "bytes": 2442,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/atomic.h",
+          "bytes": 1693,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/sg.h",
+          "bytes": 1709,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/irq.h",
+          "bytes": 2132,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/pm.h",
+          "bytes": 1416,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/delay.h",
+          "bytes": 1453,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/cache.h",
+          "bytes": 1920,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/io.h",
+          "bytes": 2773,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/devnode.h",
+          "bytes": 1642,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/uaccess.h",
+          "bytes": 1504,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/bitops.h",
+          "bytes": 1785,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/types.h",
+          "bytes": 2895,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/timer.h",
+          "bytes": 1389,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/udif/cdev.h",
+          "bytes": 3372,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/include/linux/thread_info.h",
+          "bytes": 3981,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/usb/f_usb/udif_usb_otg_if.h",
+          "bytes": 2839,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/usb/f_usb/udif_usb_otg.h",
+          "bytes": 5195,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/usb/f_usb/udif_usb_otg_gpioint.c",
+          "bytes": 3167,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/usb/f_usb/udif_usb_otg_gpioint.h",
+          "bytes": 915,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/usb/f_usb/udif_usb_otg.c",
+          "bytes": 25243,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif",
+          "bytes": 0,
+          "regular_file": false
+        },
+        {
+          "name": "linux-kernel/drivers/udif/udif.c",
+          "bytes": 1502,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/malloc.c",
+          "bytes": 4485,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/Kconfig",
+          "bytes": 483,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/proc.c",
+          "bytes": 5177,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/driver.c",
+          "bytes": 13936,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/Makefile",
+          "bytes": 206,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/cdev.c",
+          "bytes": 7896,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/device.c",
+          "bytes": 3978,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/bdev.c",
+          "bytes": 15579,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/io.c",
+          "bytes": 3406,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/internal.h",
+          "bytes": 1482,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx",
+          "bytes": 0,
+          "regular_file": false
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/sleep.S",
+          "bytes": 3216,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/entry_el3.S",
+          "bytes": 3063,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/devno.c",
+          "bytes": 63,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/params.c",
+          "bytes": 4684,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/gic.c",
+          "bytes": 3384,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/resume.S",
+          "bytes": 2063,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/gpio.c",
+          "bytes": 1997,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include",
+          "bytes": 0,
+          "regular_file": false
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach",
+          "bytes": 0,
+          "regular_file": false
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-ddrc.h",
+          "bytes": 3037,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/noncache.h",
+          "bytes": 5642,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/bootram.h",
+          "bytes": 1654,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-octrl.h",
+          "bytes": 1807,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-srst.h",
+          "bytes": 1946,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/uart.h",
+          "bytes": 3192,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-pci.h",
+          "bytes": 1527,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/debug-macro.S",
+          "bytes": 652,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-clk.h",
+          "bytes": 2170,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/platform.h",
+          "bytes": 3821,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/head_init.h",
+          "bytes": 2453,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/errind.h",
+          "bytes": 1758,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/moduleparam.h",
+          "bytes": 1790,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-scu.h",
+          "bytes": 1486,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/gic_export.h",
+          "bytes": 3070,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/irqs.h",
+          "bytes": 3360,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/pcie_export.h",
+          "bytes": 3362,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif",
+          "bytes": 0,
+          "regular_file": false
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif/platform.h",
+          "bytes": 2859,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif/clock.h",
+          "bytes": 2476,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif/cache.h",
+          "bytes": 1491,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif/io.h",
+          "bytes": 1614,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif/devno.h",
+          "bytes": 3705,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif/timer.h",
+          "bytes": 1749,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/pm.h",
+          "bytes": 1978,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/pm_export.h",
+          "bytes": 1608,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-smc.h",
+          "bytes": 1529,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/pm_macro.S",
+          "bytes": 3814,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-wdt.h",
+          "bytes": 1451,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/dma32.h",
+          "bytes": 1213,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/include/mach/regs-gpio.h",
+          "bytes": 1559,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/warm.c",
+          "bytes": 3467,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/adrs_conv.c",
+          "bytes": 8134,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/Makefile",
+          "bytes": 502,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/timestamp.c",
+          "bytes": 2973,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/error.c",
+          "bytes": 12108,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/clock.c",
+          "bytes": 4167,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/boot.S",
+          "bytes": 3039,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/platform.c",
+          "bytes": 19859,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/dma-mapping.c",
+          "bytes": 2094,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/pm_core.c",
+          "bytes": 10713,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/ddr.c",
+          "bytes": 4082,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/cache.c",
+          "bytes": 1559,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/pcie.c",
+          "bytes": 34244,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/mach-cxd900xx/mmap.c",
+          "bytes": 3128,
+          "regular_file": true
+        },
+        {
+          "name": "linux-kernel/drivers/udif/irq.c",
+          "bytes": 3728,
+          "regular_file": true
+        }
+      ],
+      "source_version_label": "ILME-FX3 Ver.7.00; not a verified 7.02 source match",
+      "source_executed": false,
+      "archive_extracted": false
+    },
+    {
+      "url": "https://prodgpl.blob.core.windows.net/download/B2B/ILME-FX3_Ver.7.00/elpspacc.tar.gz",
+      "path": "work/sony-firmware-20261024/stage65-windows-cache-and-runtime-readiness/work/vendor-source-reference/elpspacc.tar.gz",
+      "bytes": 43358,
+      "sha256": "58dd75442cdb87de14591ee02a8ee14e3b94221a480b1175c06a8e2fe09932b4",
+      "official_content_md5_verified": true,
+      "archive_members": 47,
+      "relevant_members": [],
+      "source_version_label": "ILME-FX3 Ver.7.00; not a verified 7.02 source match",
+      "source_executed": false,
+      "archive_extracted": false
+    }
+  ]
+}

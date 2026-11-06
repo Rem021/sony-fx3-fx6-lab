@@ -1,0 +1,32 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x1648 610280b9 ldrsw    x1, [x19]
+0x164c 007b61b8 ldr      w0, [x24, x1, lsl #2]
+0x1650 40f9ff35 cbnz     w0, #0x1578
+0x1654 b41240b9 ldr      w20, [x21, #0x10]
+0x1658 a00640f9 ldr      x0, [x21, #8]
+0x165c 827e4093 sxtw     x2, w20
+0x1660 034138d5 mrs      x3, sp_el0
+0x1664 e40300aa mov      x4, x0
+0x1668 630440f9 ldr      x3, [x3, #8]
+0x166c 840002ab adds     x4, x4, x2
+0x1670 e383839a csel     x3, xzr, x3, hi
+0x1674 84309fda csinv    x4, x4, xzr, lo
+0x1678 9f0003fa sbcs     xzr, x4, x3
+0x167c e4879f9a cset     x4, ls
+0x1680 040100b5 cbnz     x4, #0x16a0
+0x1684 a0018012 mov      w0, #-0xe
+0x1688 5f0000f1 cmp      x2, #0
+0x168c 9402801a csel     w20, w20, w0, eq
+0x1690 beffff17 b        #0x1588
+0x1694 14008012 mov      w20, #-1
+0x1698 620280b9 ldrsw    x2, [x19]
+0x169c 95ffff17 b        #0x14f0
+0x16a0 0117018b add      x1, x24, x1, lsl #5
+0x16a4 212840f9 ldr      x1, [x1, #0x50]
+0x16a8 00000094 bl       #0x16a8 ; relocation {"symbol": "__arch_copy_to_user", "addend": 0}
+0x16ac e20300aa mov      x2, x0
+0x16b0 610280b9 ldrsw    x1, [x19]
+0x16b4 f4ffff17 b        #0x1684
+0x16b8 010480d2 mov      x1, #0x20
+0x16bc 200000cb sub      x0, x1, x0
+0x16c0 05ffff17 b        #0x12d4

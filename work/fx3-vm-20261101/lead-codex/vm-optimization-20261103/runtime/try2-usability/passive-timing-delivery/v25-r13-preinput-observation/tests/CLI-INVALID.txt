@@ -1,0 +1,8 @@
+usage: run_trial_v25_diag_r3.py [-h] [--port PORT] [--max-minutes MAX_MINUTES]
+                                [--max-steps MAX_STEPS]
+                                [--launch-wait-seconds LAUNCH_WAIT_SECONDS]
+                                [--internal-hoststep]
+                                [--exit-at-phase {pre-bind,bound-before-first-frame}]
+                                [--review-procdiag-r4e]
+                                [--pre-input-snapshot-step PRE_INPUT_SNAPSHOT_STEP]
+run_trial_v25_diag_r3.py: error: 预输入只读快照step必须为1..max_steps

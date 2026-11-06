@@ -1,0 +1,11 @@
+{
+  "error": "initial whole-text Capstone iteration did not reach waitpid site; completeness assumption rejected",
+  "correction": "scan all 4-byte BL-shaped text words independently, then decode each matching site; does not assume all text bytes are instructions",
+  "initial_script_sha256": "828211c2c40babddc4e14f9e4725ce02a7853edc3d2881ebc0a26c0bbae06aa4",
+  "no_original_code_executed": true,
+  "whole_text_va": 4203664,
+  "whole_text_bytes": 19792,
+  "decoded_instruction_count": 436,
+  "last_whole_text_decoded_pc": 4205404,
+  "waitpid_site_reached": false
+}

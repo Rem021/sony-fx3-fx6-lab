@@ -1,0 +1,71 @@
+{
+  "recorded_utc": "2026-11-01T17:30:59.320367+00:00",
+  "status": "POST_STOP_096F_TRANSITION_COMPATIBILITY_INTEGRATED_OFFLINE_NATIVE_CLOSED",
+  "protocol_flow_magic": "FX3FLOW6",
+  "protocol_flow_schema": 6,
+  "entry_schema": 10,
+  "entry_scope_magic": "0x53564338 (SVC8)",
+  "offline_grant_id": "fx3-offline-service-access-283",
+  "post_stop_096f_policy": {
+    "pid": "0x054c:0x096f",
+    "product_string": "USB Bus-powered Device",
+    "allowed_window_state": "FX3_W_RETURN_ARMED (mode=1, state=4)",
+    "required_identity": "same physical_port, same initial_location, fresh registry_id not in (source_node, service_node), exact origin_serial_tag HMAC match",
+    "sample_return": "FX3T_BUSY (2) while awaiting 054C:0DA1 Mass Storage return",
+    "enter_window_mode2_policy": "FX3T_DENIED (1)",
+    "io_subject_policy": "never allowed as point in (0,1) call subject"
+  },
+  "raw_header_or_auth_or_hasp_bytes_exported": false,
+  "body_limit_bytes_retained": 88,
+  "automatic_retry_enabled": false,
+  "source_delta_vs278": {
+    "entry_target.h": {
+      "before": "812128fb3c7bbe74a9c112f8abbc9dc199393e6706b84d5cb142a923565f99f5",
+      "after": "75453c7f99d1afe673d87023f4da06426eec2acaf4bc42ee0cf6af1f4a3f1aaf"
+    },
+    "flow_fixture.c": {
+      "before": "180aba982c82796027f013b554ddc72ccb461b7afaddd4f54a56a85966743aa3",
+      "after": "7f7ecb875961f352dc77f43d5276dc4da56269a8ded6ce4c4f56f269c2b6010e"
+    },
+    "flow_receiver.py": {
+      "before": "ee00540aa4fe09f5a5fc53fb1421c12454d84d6c472b7dd82c7f4e882988cea1",
+      "after": "66fc224adfbba94b1f68a10351b9784247d5bf25f9083f62a2e0bae5d344edda"
+    },
+    "iokit_adapter.c": {
+      "before": "cf268381777e5e1d2f2837b88b5e088a4ed808347ee76403f17080d43c64d50d",
+      "after": "87cc0afb25bd485d94b3cab2d234f7dc9d52134ef867ed691d7fbd60d3890d60"
+    },
+    "receipt_receiver.py": {
+      "before": "5271131a00410a97fbb34270779371475089c7c9f8ae769fb8d2aa27850c6f11",
+      "after": "5d7846ec4c7dd6f3a946add006f89adb4e73724578d181a46505969adc0de408"
+    },
+    "supervisor.py": {
+      "before": "f0bb378014cd1042457a3b97346e86771d5a83c67c075bcba49f1e6959e99068",
+      "after": "a339559e27efd03c47c8e9acff68987fdce2bfb1bb15471eb309e2d372fb14e1"
+    },
+    "transition_identity.c": {
+      "before": "2d504dd4594a0d40805787dacab972733571948c047ca02e7ff974ff5df343f0",
+      "after": "057b3b5f8171648923990c904edd3fb69a8d3fe89e26926809c645fee7c073c2"
+    },
+    "transition_unit.c": {
+      "before": "68ffb240f80062f127d23f1275f3b9f78d2d4e533b5a9d1dbd1a4ec8251d291f",
+      "after": "07b36f00cdc7be31c53de3e1a97c57add99f60860948370525eeccf742660cda"
+    }
+  },
+  "new_sources_vs278": {
+    "test_post_stop_096f.py": {
+      "before": null,
+      "after": "0e74b29899bca226c3fb711128c44a7c90b03606b502e158516a0b60d453059f"
+    }
+  },
+  "component_unit_cases": 12,
+  "full_controller_process_groups": 8,
+  "acquisition_groups": 5,
+  "shared_access_groups": 4,
+  "header_localization_groups": 11,
+  "post_stop_096f_groups": 5,
+  "native_production_helper_built_or_executed": false,
+  "new_live_package_ready": false,
+  "actual_root_journal_modified": false,
+  "new_admin_or_USB_operations": 0
+}

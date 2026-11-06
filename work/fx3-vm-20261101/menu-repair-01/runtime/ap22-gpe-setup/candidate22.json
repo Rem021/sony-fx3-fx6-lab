@@ -1,0 +1,31 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap22-gpe-setup/guest.dtb",
+    "sha256": "678fffc827175c04cc8526bd7cd00ac1844d0d9d3ae7304bd7ca0d90ff0c73da"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap22-gpe-setup/guest.cpio",
+    "sha256": "e28d8f26faac376812d5e30c45df94cbb535dac6f80d1ef11a604debcc4fded6"
+  },
+  "required_markers": [
+    "FX3_CPUSET_READY",
+    "FX3_BACKUP_INSMOD_RC=0",
+    "FX3_ULOGIO_INSMOD_RC=0",
+    "FX3_AP_NATURAL_BOOTIN_BEGIN",
+    "FX3_UTIMER_RC=0",
+    "FX3_STREAM_RC=0",
+    "FX3_STREAM2_RC=0",
+    "FX3_DMM_RC=0",
+    "FX3_GRM_MA_RC=0",
+    "FX3_GPE_BOUND count=5"
+  ],
+  "scope": "Natural original FX3 bootin target=qemu[space] dmode=3 with full original rootfs7/usr15/appli projection. File presence is not execution. Five original service modules only preloaded; explicit derived IMDB upstream ten-service filter plus FX3-only ResourceBluetooth exclusion after observed GPIO fault. No manufactured menu/ACK, no physical devices/network/host disk. Original library idle init allowed; independent updater/Jiritsu workflow not invoked. Timer-only QEMU; original hwtimer and utimer/stream/stream2/DMM startup profile. No CP or hardware compatibility claim. FX3 GPE diagnostic binding only: original command FIFO, five symbol-derived slots, unsupported workers return5 without writes/callbacks. No software raster acceptance.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/build/qemu-system-aarch64",
+    "sha256": "f20d944821a857aecb17f58492bf76ef02a1f6b019562e107cf3731602aade19"
+  },
+  "timer_model": true
+}

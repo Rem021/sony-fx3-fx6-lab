@@ -1,0 +1,167 @@
+{
+  "created_utc": "2026-10-27T08:24:50.173411+00:00",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "instructions": [
+    {
+      "VA": "0x801f8550",
+      "word_hex": "14008224",
+      "instruction": "addiu $v0, $a0, 0x14",
+      "meaning": "complete original frame constructor entry"
+    },
+    {
+      "VA": "0x801f8740",
+      "word_hex": "c80400ae",
+      "instruction": "sw $zero, 0x4c8($s0)",
+      "meaning": "native fresh parameter-handle zero store"
+    },
+    {
+      "VA": "0x801f87b8",
+      "word_hex": "0800e003",
+      "instruction": "jr $ra",
+      "meaning": "original complete frame constructor return"
+    },
+    {
+      "VA": "0x801318b0",
+      "word_hex": "040002a6",
+      "instruction": "sh $v0, 4($s0)",
+      "meaning": "native frame width-unit store"
+    },
+    {
+      "VA": "0x801318bc",
+      "word_hex": "060003a6",
+      "instruction": "sh $v1, 6($s0)",
+      "meaning": "native frame height-unit store"
+    },
+    {
+      "VA": "0x801318f4",
+      "word_hex": "100004a6",
+      "instruction": "sh $a0, 0x10($s0)",
+      "meaning": "native frame pixel-width store"
+    },
+    {
+      "VA": "0x801318f8",
+      "word_hex": "120005a6",
+      "instruction": "sh $a1, 0x12($s0)",
+      "meaning": "native frame pixel-height store"
+    },
+    {
+      "VA": "0x80131a50",
+      "word_hex": "8000228e",
+      "instruction": "lw $v0, 0x80($s1)",
+      "meaning": "old owner record load before update"
+    },
+    {
+      "VA": "0x80131ac4",
+      "word_hex": "1000a6a3",
+      "instruction": "sb $a2, 0x10($sp)",
+      "meaning": "native single-byte flag scratch store"
+    },
+    {
+      "VA": "0x80131ad8",
+      "word_hex": "1000a28f",
+      "instruction": "lw $v0, 0x10($sp)",
+      "meaning": "native full-word scratch load retains padding"
+    },
+    {
+      "VA": "0x80131ae8",
+      "word_hex": "800022ae",
+      "instruction": "sw $v0, 0x80($s1)",
+      "meaning": "native owner record update"
+    },
+    {
+      "VA": "0x80131dc4",
+      "word_hex": "23104300",
+      "instruction": "subu $v0, $v0, $v1",
+      "meaning": "native owner98 state update"
+    },
+    {
+      "VA": "0x80131c1c",
+      "word_hex": "0000b2ae",
+      "instruction": "sw $s2, ($s5)",
+      "meaning": "native source parameter handle assignment before reference"
+    },
+    {
+      "VA": "0x80131c20",
+      "word_hex": "c4a28487",
+      "instruction": "lh $a0, -0x5d3c($gp)",
+      "meaning": "unexecuted GP/reference increment boundary"
+    },
+    {
+      "VA": "0x80131cf4",
+      "word_hex": "0800e003",
+      "instruction": "jr $ra",
+      "meaning": "original no-update frame producer return"
+    },
+    {
+      "VA": "0x801441e4",
+      "word_hex": "3800628c",
+      "instruction": "lw $v0, 0x38($v1)",
+      "meaning": "unexecuted external virtual-table lookup"
+    },
+    {
+      "VA": "0x8018cdf0",
+      "word_hex": "3a0023a6",
+      "instruction": "sh $v1, 0x3a($s1)",
+      "meaning": "original height units-minus-one store"
+    },
+    {
+      "VA": "0x8018ce6c",
+      "word_hex": "1e61060c",
+      "instruction": "jal 0x80198478",
+      "meaning": "original vertical crop helper JAL"
+    },
+    {
+      "VA": "0x801984cc",
+      "word_hex": "0b404400",
+      "instruction": "movn $t0, $v0, $a0",
+      "meaning": "native crop unit selection"
+    },
+    {
+      "VA": "0x80198500",
+      "word_hex": "1b006800",
+      "instruction": "divu $zero, $v1, $t0",
+      "meaning": "native vertical crop division"
+    },
+    {
+      "VA": "0x8018ce78",
+      "word_hex": "470022a2",
+      "instruction": "sb $v0, 0x47($s1)",
+      "meaning": "native crop result byte store"
+    },
+    {
+      "VA": "0x80144074",
+      "word_hex": "05000424",
+      "instruction": "addiu $a0, $zero, 5",
+      "meaning": "static frame allocation type5"
+    },
+    {
+      "VA": "0x80144078",
+      "word_hex": "f0040524",
+      "instruction": "addiu $a1, $zero, 0x4f0",
+      "meaning": "static frame request size4f0"
+    },
+    {
+      "VA": "0x8014407c",
+      "word_hex": "cf7b010c",
+      "instruction": "jal 0x8005ef3c",
+      "meaning": "static frame allocation dispatcher call not executed here"
+    }
+  ],
+  "type5_descriptor": {
+    "file_offset": "0x2132d0",
+    "words": [
+      5,
+      12828992,
+      161792,
+      128
+    ],
+    "block_bytes": 1264
+  },
+  "stage84_manifest_sha256": "33cfb85162fe38893b0acb62282eee5b5ba1813cf103316892aa887e7917c667",
+  "stage84_sealed_files_verified": 17,
+  "classification_helper_height_is_not_frame_pixel_height": true,
+  "numeric1088_minus_native_crop4_times_native_unit2_matches1080": true,
+  "actual_same_MAIN_instance_SPS_bitstream_or_hardware_proven": false,
+  "frame_type5_allocation_and_new_parameter_reference_unexecuted": true,
+  "owner_history_fields_and_flag_padding_not_validated_as_camera_values": true
+}

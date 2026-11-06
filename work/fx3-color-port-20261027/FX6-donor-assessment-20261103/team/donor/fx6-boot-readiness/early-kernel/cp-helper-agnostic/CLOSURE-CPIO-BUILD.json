@@ -1,0 +1,64 @@
+{
+  "schema": "fx6-hybrid-closure-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal7.cpio",
+  "source_sha256": "cf260f1137c28ca5130d92410d4c5d57adaaea4fcd09171bb108343583d8c12f",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal8.cpio",
+  "output_sha256": "8feec85e3d4230d1713a89db81235c12fdd74a0b9246e49ba5d7dc16237348fd",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 20854,
+    "new_bytes": 21119,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libux_core.so",
+      "bytes": 232960,
+      "sha256": "c72d52b41e09d547dd4129fb2af271e2ac52b62dee2d8f27a362ce6dcc35003d"
+    },
+    {
+      "name": "usr/lib/libtriones.so",
+      "bytes": 10240,
+      "sha256": "c63607fb5b62c28223c48aad66566a149e59a4a5452875ab88006f2fa810f75d"
+    },
+    {
+      "name": "usr/lib/libandromeda.so",
+      "bytes": 180928,
+      "sha256": "0c92115e0f4ef84fe7fbc18909ee830e49e6c7a2b4c7be1e6be9ddb237e75d33"
+    },
+    {
+      "name": "usr/lib/libgemini-grm.so",
+      "bytes": 51800,
+      "sha256": "f47c8f3ecff0710d2c246d7d0c0ccdb5381a9f39b1b8d68464d184c0be8070b9"
+    },
+    {
+      "name": "usr/lib/libgemini.so",
+      "bytes": 51696,
+      "sha256": "09bebbfe8546f8a669b649d2cd01321edc8828e4fbc2f00342fe4082d504fa07"
+    },
+    {
+      "name": "usr/lib/libalcor.so",
+      "bytes": 52392,
+      "sha256": "b8ea8375a89138dc40ee0cbba30e8f1edcbacd803a4f27921d1d61fd77271c97"
+    },
+    {
+      "name": "usr/lib/libtextrm.so",
+      "bytes": 56848,
+      "sha256": "18603acc4c300d4511b9dd8ae8bfab1f619122aa2aef2b03db1c9a89695144a4"
+    },
+    {
+      "name": "usr/lib/libwtle.so",
+      "bytes": 342232,
+      "sha256": "7e537aa32e8cb996a5dfcb00f244fe636ccca202ebad8cc893e06dfd49fba991"
+    },
+    {
+      "name": "usr/lib/libitype.so",
+      "bytes": 229488,
+      "sha256": "01d5fa17927024d52a341195c749810017c0af6c158b6b0966db1be29d81a513"
+    }
+  ],
+  "source_member_count": 1146
+}

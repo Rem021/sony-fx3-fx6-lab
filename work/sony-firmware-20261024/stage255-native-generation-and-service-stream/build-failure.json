@@ -1,0 +1,27 @@
+{
+  "native": {
+    "argv": [
+      "/usr/bin/xcrun",
+      "clang",
+      "-std=c11",
+      "-O1",
+      "-g",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-dynamiclib",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/stream.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c",
+      "-framework",
+      "IOKit",
+      "-framework",
+      "CoreFoundation",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/artifacts/fx3-generation-stream.dylib"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c:23:41: error: call to undeclared function 'CFNumberGetTypeID'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n   23 |     int ok=value && CFGetTypeID(value)==CFNumberGetTypeID() && CFNumberGetValue(value,kCFNumberSInt64Type,&n) && n>=0 && n<=UINT32_MAX;\n      |                                         ^\n/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c:23:41: note: did you mean 'CFNullGetTypeID'?\n/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFBase.h:622:10: note: 'CFNullGetTypeID' declared here\n  622 | CFTypeID CFNullGetTypeID(void);\n      |          ^\n/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c:23:64: error: call to undeclared function 'CFNumberGetValue'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]\n   23 |     int ok=value && CFGetTypeID(value)==CFNumberGetTypeID() && CFNumberGetValue(value,kCFNumberSInt64Type,&n) && n>=0 && n<=UINT32_MAX;\n      |                                                                ^\n/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage255-native-generation-and-service-stream/iokit_adapter.c:23:87: error: use of undeclared identifier 'kCFNumberSInt64Type'\n   23 |     int ok=value && CFGetTypeID(value)==CFNumberGetTypeID() && CFNumberGetValue(value,kCFNumberSInt64Type,&n) && n>=0 && n<=UINT32_MAX;\n      |                                                                                       ^~~~~~~~~~~~~~~~~~~\n3 errors generated.\n"
+  }
+}

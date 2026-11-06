@@ -1,0 +1,172 @@
+{
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "previous_receipt_sha256": "7bde51a229f4915d542756ff348a07b1eb6cc8a07a61b34a7a433967b5166ea9",
+  "previous_files_verified": 29,
+  "source_fragments": [
+    {
+      "va": "0x9cf02c",
+      "file_offset": "0x8c702c",
+      "bytes": 112,
+      "sha256": "d8208774b45a042bbe6a89fab77e99d885fdcb396df8abe944a9f88c99a101ba",
+      "listing": "source-fragments/guest-9cf02c.txt"
+    },
+    {
+      "va": "0x9cecb8",
+      "file_offset": "0x8c6cb8",
+      "bytes": 140,
+      "sha256": "561d5319e70027f37616db0b48fdca1c495d1422faf2da275f7b075c0c31c7aa",
+      "listing": "source-fragments/guest-9cecb8.txt"
+    },
+    {
+      "va": "0x9e6c5e",
+      "file_offset": "0x8dec5e",
+      "bytes": 76,
+      "sha256": "fcdaed8241b535f646bde19a7ee89b91655d0af16373c62ebd8ee1fc832016fa",
+      "listing": "source-fragments/guest-9e6c5e.txt"
+    },
+    {
+      "va": "0x403a78",
+      "file_offset": "0x2fba78",
+      "bytes": 548,
+      "sha256": "94aa7ae69c5290586add6da7ff6b37b085ab1cdcffed11298ce7e969c5145260",
+      "listing": "source-fragments/guest-403a78.txt"
+    },
+    {
+      "va": "0x403cd0",
+      "file_offset": "0x2fbcd0",
+      "bytes": 70,
+      "sha256": "ea6057f41987a1c6728e8f50aee0c92500a0e40dd7c1571df58086de67a20c64",
+      "listing": "source-fragments/guest-403cd0.txt"
+    },
+    {
+      "va": "0x403d54",
+      "file_offset": "0x2fbd54",
+      "bytes": 160,
+      "sha256": "381c71e9aae116f033915b54e00df7f807433f7700d88634da1e68e435a728ac",
+      "listing": "source-fragments/guest-403d54.txt"
+    },
+    {
+      "va": "0x44f004",
+      "file_offset": "0x347004",
+      "bytes": 128,
+      "sha256": "0fa0027273ccc849dfe01cec7e0916771e716a74095a864942082d15ad64c0b6",
+      "listing": "source-fragments/guest-44f004.txt"
+    },
+    {
+      "va": "0x44d710",
+      "file_offset": "0x345710",
+      "bytes": 34,
+      "sha256": "93d683e1ce1baa4722e4bd512a5b898a348c8523b2320d9595e9f76daf395435",
+      "listing": "source-fragments/guest-44d710.txt"
+    },
+    {
+      "va": "0x44e934",
+      "file_offset": "0x346934",
+      "bytes": 32,
+      "sha256": "b02551a38acc5403084dfb83b0f2ee1a2cf7bb0f7aee6a772dfa4187685fb1ce",
+      "listing": "source-fragments/guest-44e934.txt"
+    },
+    {
+      "va": "0x9d4c5e",
+      "file_offset": "0x8ccc5e",
+      "bytes": 52,
+      "sha256": "a26329ec2806078c7ec5df08f8e5c7411f46818031f330ba644a0daf7ac4c94c",
+      "listing": "source-fragments/guest-9d4c5e.txt"
+    },
+    {
+      "va": "0x66a736",
+      "file_offset": "0x562736",
+      "bytes": 16,
+      "sha256": "0b53bd29d6dfef5caccf44bb082930e33e659ca70916865d3bbef4d796c58f8a",
+      "listing": "source-fragments/guest-66a736.txt"
+    },
+    {
+      "va": "0x9cee38",
+      "file_offset": "0x8c6e38",
+      "bytes": 248,
+      "sha256": "fcd3baad5df5aa54c1758ace215d9a26a7331057bffaa955c7009e2ea41823da",
+      "listing": "source-fragments/guest-9cee38.txt"
+    },
+    {
+      "va": "0x428438",
+      "file_offset": "0x320438",
+      "bytes": 352,
+      "sha256": "fbcd27032dc79b88455b8ea11b6dd1b1a08af5fd0bf98de4bfb4e575b83650c2",
+      "listing": "source-fragments/caller-image-descriptor-bridge.txt"
+    },
+    {
+      "va": "0x44de7c",
+      "file_offset": "0x345e7c",
+      "bytes": 32,
+      "sha256": "789035d50066af4017e88f5f3c266ed92fcac67fd201fda69a85dc3849354b20",
+      "listing": "source-fragments/owned-release-handle-prefix.txt"
+    },
+    {
+      "va": "0x4a0398",
+      "file_offset": "0x398398",
+      "bytes": 210,
+      "sha256": "a9445a714ff9bec526160d02658108b8bb644373ef879f864f662b752297e808",
+      "listing": "source-fragments/common-handle-bitmap-selection.txt"
+    }
+  ],
+  "config_tables": [
+    {
+      "va": "0xf1b620",
+      "bytes": 16,
+      "words": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "sha256": "7e8d5b72d290ba59f0edbe3d6f961eea1a534c250a6ef2cac5b85c0c2111735f",
+      "label": "file-backed-group-enable-counts",
+      "scope": "Initial file bytes only; mutable at runtime, not a current camera readback"
+    },
+    {
+      "va": "0xf1b630",
+      "bytes": 16,
+      "words": [
+        2,
+        2,
+        60,
+        1
+      ],
+      "sha256": "fc96c5d77f8bede044e28cbe59a40d90aabc40c9550319f76a0d559824cbde1d",
+      "label": "file-backed-active-entry-counts",
+      "scope": "Initial file bytes only; mutable at runtime, not a current camera readback"
+    }
+  ],
+  "registry": {
+    "va": "0x1172e70",
+    "record_bytes": 136,
+    "records": 240,
+    "group_count": 4,
+    "reserved_records_per_group": 60,
+    "group_stride": "0x1fe0",
+    "group3_va": "0x1178e10",
+    "bytes": 32640
+  },
+  "corrected_interpretations": [
+    {
+      "va": "0x9cecb8",
+      "previous": "before_original_frame_query",
+      "current": "Frame/subframe-threshold cleanup; no output image pointer or query-success contract."
+    },
+    {
+      "va": "0x403a78",
+      "previous": "before_original_image_query",
+      "current": "Reuse-or-acquire path: held descriptor/status/key checks, allocation wrapper if needed, 0x50-byte descriptor copy with output ownership byte forced to zero."
+    },
+    {
+      "va": "0x4a032c",
+      "current": "Shared handle-table operation boundary. Flags 0x2a, argument5, in/out stack pointer. No claim of native service send/receive or meaning of every handle flag."
+    }
+  ],
+  "public_reference": {
+    "url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000876510.html",
+    "retrieved_local_date": "2026-10-29",
+    "relevance": "PPLUT recording support is documented; it does not identify these private CP registry groups or validate a VENICE transplant."
+  },
+  "scope": "Pinned static windows and initial configuration, separate from guest and physical acceptance. No MAIN routing, physical pixel buffers, entire donor ISP, signed modified output or flashability."
+}

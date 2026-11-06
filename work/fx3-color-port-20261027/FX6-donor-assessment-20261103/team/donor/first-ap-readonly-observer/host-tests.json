@@ -1,0 +1,27 @@
+{
+  "status": "PASS_NO_QEMU",
+  "cases": [
+    "historical_maps_ptload_bias_positive",
+    "wrong_offset_cross_pid_and_incomplete_maps_rejected",
+    "current_run_early_CAP_complete_AP_absent_and_truncation_negative",
+    "real_pre_call_profile_base_and_missing_mixed_rejection",
+    "current_cpu_ELF_header_PHDR_original_word_positive_and_negatives",
+    "rsp_fragment_ack_async_and_command_allowlist",
+    "rsp_bad_checksum_nack_and_abort",
+    "rsp_bounded_timeout",
+    "rsp_unsolicited_stop_fragmented",
+    "wrong_pc_and_unattributed_cpu_rejected",
+    "z1_cleanup_success_and_failure_visible",
+    "failed_z1_no_guest_resume_or_restore_write",
+    "same_request_tls_return_and_model_capture",
+    "resume_ACK_then_fragmented_early_T05_and_outbound_silence",
+    "resume_late_T05_not_a_2s_command_reply",
+    "resume_ACK_timeout_disconnect_NACK_wrong_order_no_retry",
+    "QMP_debug_crosscheck_without_RSP_fails_closed_or_preserves_T05",
+    "real_RSP_select_thread_first_later_multiprocess_and_rejections"
+  ],
+  "historical_serial_sha256": "7fd297d60c72a1211fa44a0103ae69fabec0c72c422be6c34519c2636db3a43f",
+  "observer_sha256": "7da87fbb920bfa6a9516421d1224813056ff991a2c950552c4ccdadc662bbade",
+  "identity_sha256": "d164c95a14e0d906083e6bbbd05facb4827cc1d4a59dbfc784830ebc2cd6de68",
+  "runner_sha256": "73afe6576ad8207f33551f7581e70d64b41101894b361cc0abd6434f66081761"
+}

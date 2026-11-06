@@ -1,0 +1,83 @@
+{
+  "status": "PASS_BOUNDED_CBC_REENCODING_AND_BLOCK_CHECKSUM_VECTORS",
+  "constants_source": "https://raw.githubusercontent.com/DavidBuchanan314/fwtool.py/3955d7890fc38daf942bb52827599bfe35de4a14/fwtool/sony/constants.py",
+  "constants_source_sha256": "f9ff02a3889b587cd5bad5f4362fb73fee2f8f3591fc3ed6003eb8ac92d0622a",
+  "native_crypto": "/usr/lib/system/libcommonCrypto.dylib CCCrypt",
+  "official_package_sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+  "samples": [
+    {
+      "block": 0,
+      "last": false,
+      "payload_bytes": 1020,
+      "original_cipher_sha256": "e30022b02c06ada666466c4358074535acf414dfc5b686755bbf2c2b0811ee98",
+      "recreated_bytes_match": true,
+      "experimental_cipher_sha256": "c754e46907aa209a246ea843c2174e61e6f3d50d86d43b7edbb39c6adf1f9ec0",
+      "experimental_roundtrip": true,
+      "original_u16_checksum": 22913,
+      "experimental_u16_checksum": 22912
+    },
+    {
+      "block": 1,
+      "last": false,
+      "payload_bytes": 1020,
+      "original_cipher_sha256": "c3e8b8a9d6f03ca1cee12b3e6fdcc9d6b438eda8065739e297333603fcf18272",
+      "recreated_bytes_match": true,
+      "experimental_cipher_sha256": "295d75ae75cb1b775cb6e0f5c917e4c59b6e37e5100935e03756c1672b6e3b0e",
+      "experimental_roundtrip": true,
+      "original_u16_checksum": 28099,
+      "experimental_u16_checksum": 28100
+    },
+    {
+      "block": 256,
+      "last": false,
+      "payload_bytes": 1020,
+      "original_cipher_sha256": "b91e00764ee69a8d31314dd92a764b3439f886bbd73eab6e139482cb6ce733ce",
+      "recreated_bytes_match": true,
+      "experimental_cipher_sha256": "87828ab15f8c0665bd78f096fc004c6e8edd7afeb93df18ac4b385c9e0d180ec",
+      "experimental_roundtrip": true,
+      "original_u16_checksum": 28341,
+      "experimental_u16_checksum": 28340
+    },
+    {
+      "block": 396424,
+      "last": false,
+      "payload_bytes": 1020,
+      "original_cipher_sha256": "0d20d8a79f4a6d9518d478c8d420e2468987f51a982e1bb2f230cddc6ad12035",
+      "recreated_bytes_match": true,
+      "experimental_cipher_sha256": "8edc3960da1177cb7ea2ff58b33fa89df9a9a582af08bf3645232869cdd13cc8",
+      "experimental_roundtrip": true,
+      "original_u16_checksum": 38004,
+      "experimental_u16_checksum": 38005
+    },
+    {
+      "block": 792846,
+      "last": false,
+      "payload_bytes": 1020,
+      "original_cipher_sha256": "c0faa94f0a0dd36973a63aec21e5776c1ded39a4488f331b3d62739c7387b80c",
+      "recreated_bytes_match": true,
+      "experimental_cipher_sha256": "50b182e623d83c809de8b52d150fd43896830529e1ded4a1750069b3ef4a44af",
+      "experimental_roundtrip": true,
+      "original_u16_checksum": 4422,
+      "experimental_u16_checksum": 4423
+    },
+    {
+      "block": 792847,
+      "last": true,
+      "payload_bytes": 572,
+      "original_cipher_sha256": "99a00cea6356e06e453bd6379b0b3503c0ca189f999cbef87df3c22a2ee9216b",
+      "recreated_bytes_match": true,
+      "experimental_cipher_sha256": "33bc75ee849d9c990bba20cc2f7168cb9f8a255c480ec7cd3d275949d29eef52",
+      "experimental_roundtrip": true,
+      "original_u16_checksum": 33116,
+      "experimental_u16_checksum": 33372
+    }
+  ],
+  "tail": {
+    "bytes": 272,
+    "iv_bytes": 16,
+    "remaining_bytes": 256,
+    "sha256": "4eef5a1f11f23ff6437242bc1ae555bf0c4c636af7da963a5eaa2b075da97b51",
+    "meaning": "The remaining 256 bytes are retained as uninterpreted verification material. No signature scheme or camera acceptance is established."
+  },
+  "scope": "Six isolated vectors only, including the legacy ECB header half-block and CBC boundaries. Original cipher bytes reproduced exactly. Encryption primitive and per-block checksum are not proof of a signed, model-compatible, accepted or bootable firmware package. No full modified FDAT/UFU emitted."
+}

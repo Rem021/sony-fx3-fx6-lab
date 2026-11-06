@@ -1,0 +1,1028 @@
+{
+  "created_utc": "2026-10-26T15:51:38.752463+00:00",
+  "status": "SELECTED_VENDOR_SOURCE_AND_ORIGINAL_BINARY_RUNTIME_ABI_CROSSCHECK",
+  "source_script_sha256": "9a22753dcdce38a07f1ecb929151de725f5c77546c8fb3a7684812fc34198893",
+  "official_model_page": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+  "source_label": "FX3 7.00",
+  "source_kernel_version": "4.9.337",
+  "original_binary": "FX3 7.02 pinned kernel Image",
+  "whole_source_build_or_7_02_exact_source_match_verified": false,
+  "archive_sha256": "bb2d9cc676fef6aaf2f8f6703c4e041c133da0e7101b5afd33800eaf7c156d0f",
+  "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "source_members": {
+    "Makefile": {
+      "archive_member": "linux-kernel/Makefile",
+      "bytes": 65128,
+      "sha256": "fb781eef261d086f560125ebb071737061f659aefc95c714b1c4e1bda88c3eaa"
+    },
+    "arch/arm64/include/asm/current.h": {
+      "archive_member": "linux-kernel/arch/arm64/include/asm/current.h",
+      "bytes": 351,
+      "sha256": "949cc9d25d90413da463d9608ff5999fa0d2d1f69afc648337f2d332939ae109"
+    },
+    "arch/arm64/include/asm/thread_info.h": {
+      "archive_member": "linux-kernel/arch/arm64/include/asm/thread_info.h",
+      "bytes": 3542,
+      "sha256": "07dcba7ae8d40d7a1b7a72242deb5482ca082dc6fad59ccd6317662cf833d892"
+    },
+    "arch/arm64/include/asm/memory.h": {
+      "archive_member": "linux-kernel/arch/arm64/include/asm/memory.h",
+      "bytes": 8483,
+      "sha256": "5298fca4a3ec67f2415b960af78bb047c4d5b59687c973118372c3d394e7a153"
+    },
+    "arch/arm64/kernel/head.S": {
+      "archive_member": "linux-kernel/arch/arm64/kernel/head.S",
+      "bytes": 23943,
+      "sha256": "4f0ed4fbb1df57778fe9a806f53b98c5c57f17fd519e24728640353a332d5832"
+    },
+    "include/linux/sched.h": {
+      "archive_member": "linux-kernel/include/linux/sched.h",
+      "bytes": 107981,
+      "sha256": "a50e379a6d45d318bc1f44e115f8e4efe8e9c62bbc543c4564f3ad20b68fdd99"
+    },
+    "include/linux/sched/prio.h": {
+      "archive_member": "linux-kernel/include/linux/sched/prio.h",
+      "bytes": 1717,
+      "sha256": "3badba134ac48e4e399937893def5770df0122c56ef8c119331d00c3df8935ef"
+    },
+    "include/linux/udif/driver.h": {
+      "archive_member": "linux-kernel/include/linux/udif/driver.h",
+      "bytes": 3018,
+      "sha256": "a2bde770cf31d79f7cf22d28ec91ac00934cc2713394a351733ec09539efd38e"
+    },
+    "drivers/udif/driver.c": {
+      "archive_member": "linux-kernel/drivers/udif/driver.c",
+      "bytes": 13936,
+      "sha256": "cd71ca30db42cd9ff938ffc4c1587a7388b4ba652299fe20c0207dcfcfa095c0"
+    },
+    "arch/arm64/configs/cxd90057_set_defconfig": {
+      "archive_member": "linux-kernel/arch/arm64/configs/cxd90057_set_defconfig",
+      "bytes": 86732,
+      "sha256": "eb2e59b9b6bedd9d27c1b607bba77ba40f76a270dabde0986e82c0d558c0293f"
+    },
+    "arch/arm64/boot/dts/cxd/cxd90057_set.dts": {
+      "archive_member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057_set.dts",
+      "bytes": 1535,
+      "sha256": "f3714ed982621c68f64e39723d576642ffd7cdc4b77d48d0a9825a20600eb492"
+    },
+    "arch/arm64/boot/dts/cxd/cxd90057-memmap.dtsi": {
+      "archive_member": "linux-kernel/arch/arm64/boot/dts/cxd/cxd90057-memmap.dtsi",
+      "bytes": 1480,
+      "sha256": "f5ac7227828ee057bd5c3985d86070b38ad13f539ad5b6873c4f5dd2001431e5"
+    }
+  },
+  "selected_excerpts": [
+    {
+      "member": "arch/arm64/include/asm/current.h",
+      "lines": [
+        [
+          10,
+          "struct task_struct;"
+        ],
+        [
+          11,
+          ""
+        ],
+        [
+          12,
+          "static __always_inline struct task_struct *get_current(void)"
+        ],
+        [
+          13,
+          "{"
+        ],
+        [
+          14,
+          "\treturn (struct task_struct *)read_sysreg(sp_el0);"
+        ],
+        [
+          15,
+          "}"
+        ],
+        [
+          16,
+          ""
+        ],
+        [
+          17,
+          "#define current get_current()"
+        ]
+      ]
+    },
+    {
+      "member": "arch/arm64/include/asm/thread_info.h",
+      "lines": [
+        [
+          34,
+          "typedef unsigned long mm_segment_t;"
+        ],
+        [
+          35,
+          ""
+        ],
+        [
+          36,
+          "/*"
+        ],
+        [
+          37,
+          " * low level task data that entry.S needs immediate access to."
+        ],
+        [
+          38,
+          " * __switch_to() assumes cpu_context follows immediately after cpu_domain."
+        ],
+        [
+          39,
+          " */"
+        ],
+        [
+          40,
+          "struct thread_info {"
+        ],
+        [
+          41,
+          "\tunsigned long\t\tflags;\t\t/* low level flags */"
+        ],
+        [
+          42,
+          "\tmm_segment_t\t\taddr_limit;\t/* address limit */"
+        ],
+        [
+          43,
+          "\tint\t\t\tpreempt_count;\t/* 0 => preemptable, <0 => bug */"
+        ],
+        [
+          44,
+          "};"
+        ],
+        [
+          45,
+          ""
+        ],
+        [
+          46,
+          "#define INIT_THREAD_INFO(tsk)\t\t\t\t\t\t\\"
+        ],
+        [
+          47,
+          "{\t\t\t\t\t\t\t\t\t\\"
+        ],
+        [
+          48,
+          "\t.preempt_count\t= INIT_PREEMPT_COUNT,\t\t\t\t\\"
+        ],
+        [
+          49,
+          "\t.addr_limit\t= KERNEL_DS,\t\t\t\t\t\\"
+        ],
+        [
+          50,
+          "}"
+        ]
+      ]
+    },
+    {
+      "member": "include/linux/sched.h",
+      "lines": [
+        [
+          1495,
+          "struct task_struct {"
+        ],
+        [
+          1496,
+          "#ifdef CONFIG_THREAD_INFO_IN_TASK"
+        ],
+        [
+          1497,
+          "\t/*"
+        ],
+        [
+          1498,
+          "\t * For reasons of header soup (see current_thread_info()), this"
+        ],
+        [
+          1499,
+          "\t * must be the first element of task_struct."
+        ],
+        [
+          1500,
+          "\t */"
+        ],
+        [
+          1501,
+          "\tstruct thread_info thread_info;"
+        ],
+        [
+          1502,
+          "# ifdef CONFIG_EJ"
+        ],
+        [
+          1503,
+          "\t/* for private thread_info space */"
+        ],
+        [
+          1504,
+          "\tvoid *____private;"
+        ],
+        [
+          1505,
+          "# endif /* CONFIG_EJ */"
+        ],
+        [
+          1506,
+          "#endif"
+        ],
+        [
+          1507,
+          "\tvolatile long state;\t/* -1 unrunnable, 0 runnable, >0 stopped */"
+        ],
+        [
+          1508,
+          "\tvoid *stack;"
+        ],
+        [
+          1509,
+          "\tatomic_t usage;"
+        ],
+        [
+          1510,
+          "\tunsigned int flags;\t/* per process flags, defined below */"
+        ],
+        [
+          1511,
+          "\tunsigned int ptrace;"
+        ]
+      ]
+    },
+    {
+      "member": "arch/arm64/kernel/head.S",
+      "lines": [
+        [
+          441,
+          "/*"
+        ],
+        [
+          442,
+          " * The following fragment of code is executed with the MMU enabled."
+        ],
+        [
+          443,
+          " *"
+        ],
+        [
+          444,
+          " *   x0 = __PHYS_OFFSET"
+        ],
+        [
+          445,
+          " */"
+        ],
+        [
+          446,
+          "__primary_switched:"
+        ],
+        [
+          447,
+          "\tadrp\tx4, init_thread_union"
+        ],
+        [
+          448,
+          "\tadd\tsp, x4, #THREAD_SIZE"
+        ],
+        [
+          449,
+          "\tadr_l\tx5, init_task"
+        ],
+        [
+          450,
+          "\tmsr\tsp_el0, x5\t\t\t// Save thread_info"
+        ],
+        [
+          451,
+          ""
+        ],
+        [
+          452,
+          "\tadr_l\tx8, vectors\t\t\t// load VBAR_EL1 with virtual"
+        ],
+        [
+          453,
+          "\tmsr\tvbar_el1, x8\t\t\t// vector table address"
+        ],
+        [
+          454,
+          "\tisb"
+        ],
+        [
+          455,
+          ""
+        ],
+        [
+          456,
+          "\tstp\txzr, x30, [sp, #-16]!"
+        ],
+        [
+          457,
+          "\tmov\tx29, sp"
+        ],
+        [
+          458,
+          ""
+        ],
+        [
+          459,
+          "\tstr_l\tx21, __fdt_pointer, x5\t\t// Save FDT pointer"
+        ],
+        [
+          460,
+          ""
+        ],
+        [
+          461,
+          "\tldr_l\tx4, kimage_vaddr\t\t// Save the offset between"
+        ],
+        [
+          462,
+          "\tsub\tx4, x4, x0\t\t\t// the kernel virtual and"
+        ],
+        [
+          463,
+          "\tstr_l\tx4, kimage_voffset, x5\t\t// physical mappings"
+        ],
+        [
+          464,
+          ""
+        ],
+        [
+          465,
+          "\t// Clear BSS"
+        ],
+        [
+          466,
+          "\tadr_l\tx0, __bss_start"
+        ],
+        [
+          467,
+          "\tmov\tx1, xzr"
+        ],
+        [
+          468,
+          "\tadr_l\tx2, __bss_stop"
+        ],
+        [
+          469,
+          "\tsub\tx2, x2, x0"
+        ],
+        [
+          470,
+          "\tbl\t__pi_memset"
+        ],
+        [
+          471,
+          "\tdsb\tishst\t\t\t\t// Make zero page visible to PTW"
+        ],
+        [
+          472,
+          ""
+        ],
+        [
+          473,
+          "#ifdef CONFIG_KASAN"
+        ],
+        [
+          474,
+          "\tbl\tkasan_early_init"
+        ],
+        [
+          475,
+          "#endif"
+        ]
+      ]
+    },
+    {
+      "member": "include/linux/udif/driver.h",
+      "lines": [
+        [
+          35,
+          "typedef\tUDIF_ERR (*UDIF_MODULE_INIT_CB)(UDIF_VP);"
+        ],
+        [
+          36,
+          "typedef\tUDIF_ERR (*UDIF_MODULE_CB)(const UDIF_DEVICE *, UDIF_CH, UDIF_VP);"
+        ],
+        [
+          37,
+          ""
+        ],
+        [
+          38,
+          "typedef struct UDIF_DRIVER_OPS {"
+        ],
+        [
+          39,
+          "\tconst UDIF_MODULE_INIT_CB init;"
+        ],
+        [
+          40,
+          "\tconst UDIF_MODULE_INIT_CB exit;"
+        ],
+        [
+          41,
+          "\tconst UDIF_MODULE_CB\tprobe;"
+        ],
+        [
+          42,
+          "\tconst UDIF_MODULE_CB\tremove;"
+        ],
+        [
+          43,
+          "\tconst UDIF_MODULE_CB\tsuspend;"
+        ],
+        [
+          44,
+          "\tconst UDIF_MODULE_CB\tresume;"
+        ],
+        [
+          45,
+          "\tconst UDIF_MODULE_CB\tshutdown;"
+        ],
+        [
+          46,
+          "} UDIF_DRIVER_OPS;"
+        ],
+        [
+          47,
+          ""
+        ],
+        [
+          48,
+          "#define UDIF_CH_MASK_DEFAULT (-1U)"
+        ],
+        [
+          49,
+          ""
+        ],
+        [
+          50,
+          "typedef struct UDIF_DEVICES {"
+        ],
+        [
+          51,
+          "\tconst UDIF_DEVICE\t*dev;"
+        ],
+        [
+          52,
+          "\tconst UDIF_U32\t\tch_mask;"
+        ],
+        [
+          53,
+          "} UDIF_DEVICES;"
+        ],
+        [
+          54,
+          ""
+        ],
+        [
+          55,
+          "typedef struct UDIF_DRIVER UDIF_DRIVER;"
+        ],
+        [
+          56,
+          ""
+        ],
+        [
+          57,
+          "struct UDIF_DRIVER {"
+        ],
+        [
+          58,
+          "\tUDIF_LIST\t\tlist;"
+        ],
+        [
+          59,
+          "\tconst UDIF_U8\t\tname[12];"
+        ],
+        [
+          60,
+          "\tconst UDIF_U8\t\tver[12];"
+        ],
+        [
+          61,
+          "\tconst UDIF_DEVICES\t*devs;"
+        ],
+        [
+          62,
+          "\tUDIF_UINT\t\tnr_devs;"
+        ],
+        [
+          63,
+          "\tUDIF_DRIVER_OPS\t\t*ops;"
+        ],
+        [
+          64,
+          "\tconst UDIF_VP\t\tdata;"
+        ],
+        [
+          65,
+          "#ifdef CONFIG_OSAL_UDIF_THREAD"
+        ],
+        [
+          66,
+          "\tUDIF_VP\t\t\tth;"
+        ],
+        [
+          67,
+          "\tstruct completion\tcom;"
+        ],
+        [
+          68,
+          "\tUDIF_DRIVER\t\t**depends;"
+        ],
+        [
+          69,
+          "\tUDIF_UINT\t\tnr_depends;"
+        ],
+        [
+          70,
+          "#endif"
+        ]
+      ]
+    },
+    {
+      "member": "drivers/udif/driver.c",
+      "lines": [
+        [
+          192,
+          ""
+        ],
+        [
+          193,
+          "static UDIF_ERR __udif_driver_init(UDIF_DRIVER *drv)"
+        ],
+        [
+          194,
+          "{"
+        ],
+        [
+          195,
+          "\tUDIF_ERR ret = UDIF_ERR_OK;"
+        ],
+        [
+          196,
+          "\tUDIF_UINT success;;"
+        ],
+        [
+          197,
+          ""
+        ],
+        [
+          198,
+          "\tif (!drv->devs)"
+        ],
+        [
+          199,
+          "\t\tdrv->nr_devs = 0;"
+        ],
+        [
+          200,
+          ""
+        ],
+        [
+          201,
+          "\tif (drv->ops) {"
+        ],
+        [
+          202,
+          "\t\tudif_timetag(UDM_SID, UDIF_TAGID_BEGIN, drv->name);"
+        ],
+        [
+          203,
+          "\t\tif (drv->ops->init) {"
+        ],
+        [
+          204,
+          "\t\t\tret = drv->ops->init(drv->data);"
+        ],
+        [
+          205,
+          "\t\t\tif (unlikely(ret)) {"
+        ],
+        [
+          206,
+          "\t\t\t\tUDIF_PERR(\"%s init error %d\\n\", drv->name, ret);"
+        ],
+        [
+          207,
+          "\t\t\t\tgoto end;"
+        ],
+        [
+          208,
+          "\t\t\t}"
+        ],
+        [
+          209,
+          "\t\t}"
+        ],
+        [
+          210,
+          ""
+        ],
+        [
+          211,
+          "\t\tret = udif_driver_call_fn(drv, drv->ops->probe, &success);"
+        ],
+        [
+          212,
+          "\t\tif (unlikely(ret))"
+        ],
+        [
+          213,
+          "\t\t\t__udif_driver_exit(drv, success);"
+        ],
+        [
+          214,
+          ""
+        ],
+        [
+          215,
+          "\t\tudif_timetag(UDM_SID, UDIF_TAGID_END, drv->name);"
+        ],
+        [
+          216,
+          "\t}"
+        ]
+      ]
+    },
+    {
+      "member": "drivers/udif/driver.c",
+      "lines": [
+        [
+          337,
+          "#define UDIF_REGISTER_PRIO (MAX_RT_PRIO - 70)"
+        ],
+        [
+          338,
+          ""
+        ],
+        [
+          339,
+          "int udif_driver_register(UDIF_DRIVER **drv, UDIF_U32 n)"
+        ],
+        [
+          340,
+          "{"
+        ],
+        [
+          341,
+          "\tUDIF_U32 i;"
+        ],
+        [
+          342,
+          "\tint ret;"
+        ],
+        [
+          343,
+          "\tstruct udif_thread_t th = {"
+        ],
+        [
+          344,
+          "#ifdef CONFIG_LOCKDEP"
+        ],
+        [
+          345,
+          "\t\t.com = COMPLETION_INITIALIZER_ONSTACK(th.com),"
+        ],
+        [
+          346,
+          "#else"
+        ],
+        [
+          347,
+          "\t\t.com = COMPLETION_INITIALIZER(th.com),"
+        ],
+        [
+          348,
+          "#endif"
+        ],
+        [
+          349,
+          "\t\t.prio = { .sched_priority = UDIF_REGISTER_PRIO },"
+        ],
+        [
+          350,
+          "\t\t.num = UDIF_ATOMIC_INIT(n),"
+        ],
+        [
+          351,
+          "\t\t.result = UDIF_ERR_OK,"
+        ],
+        [
+          352,
+          "\t};"
+        ],
+        [
+          353,
+          ""
+        ],
+        [
+          354,
+          "\tudif_timetag(UDM_SID, UDIF_TAGID_BEGIN, \"unified register thread\");"
+        ],
+        [
+          355,
+          ""
+        ],
+        [
+          356,
+          "\tfor (i = 0; i < n; i++) {"
+        ],
+        [
+          357,
+          "\t\tstruct task_struct *tsk;"
+        ],
+        [
+          358,
+          ""
+        ],
+        [
+          359,
+          "\t\tif (unlikely(!drv[i])) {"
+        ],
+        [
+          360,
+          "\t\t\tUDIF_PERR(\"invalid driver i = %d\\n\", i);"
+        ],
+        [
+          361,
+          "\t\t\treturn -EINVAL;"
+        ],
+        [
+          362,
+          "\t\t}"
+        ],
+        [
+          363,
+          ""
+        ],
+        [
+          364,
+          "\t\tdrv[i]->th = &th;"
+        ],
+        [
+          365,
+          "\t\ttsk = kthread_create(udif_thread, drv[i],"
+        ],
+        [
+          366,
+          "\t\t\t\t     \"udm_%s\", drv[i]->name);"
+        ],
+        [
+          367,
+          "\t\tif (IS_ERR(tsk)) {"
+        ],
+        [
+          368,
+          "\t\t\tprintk(KERN_ERR \"%s: udm_%s create failed\\n\","
+        ],
+        [
+          369,
+          "\t\t\t       __func__, drv[i]->name);"
+        ],
+        [
+          370,
+          "\t\t\tcontinue;"
+        ],
+        [
+          371,
+          "\t\t}"
+        ],
+        [
+          372,
+          "\t\twake_up_process(tsk);"
+        ],
+        [
+          373,
+          "\t}"
+        ],
+        [
+          374,
+          ""
+        ],
+        [
+          375,
+          "\tret = wait_for_completion_timeout(&th.com, 5*60*HZ); /* 5 min */"
+        ],
+        [
+          376,
+          "\tif (unlikely(!ret)) {"
+        ],
+        [
+          377,
+          "\t\tUDIF_PERR(\"timeout: driver register\\n\");"
+        ],
+        [
+          378,
+          "\t\tth.result = -ETIMEDOUT;"
+        ],
+        [
+          379,
+          "\t}"
+        ],
+        [
+          380,
+          ""
+        ],
+        [
+          381,
+          "\tif (unlikely(th.result))"
+        ],
+        [
+          382,
+          "\t\tudif_driver_unregister(drv, n);"
+        ],
+        [
+          383,
+          ""
+        ],
+        [
+          384,
+          "\tudif_timetag(UDM_SID, UDIF_TAGID_END, \"unified register thread\");"
+        ],
+        [
+          385,
+          ""
+        ],
+        [
+          386,
+          "\treturn th.result;"
+        ]
+      ]
+    }
+  ],
+  "reference_config": {
+    "CONFIG_THREAD_INFO_IN_TASK": "y",
+    "CONFIG_EJ": "y",
+    "CONFIG_OSAL_UDIF_THREAD": "y",
+    "CONFIG_ARM64_4K_PAGES": "y",
+    "CONFIG_PREEMPT": "y",
+    "CONFIG_SMP": "y",
+    "CONFIG_HZ": "100",
+    "CONFIG_MAX_USER_RT_PRIO": "160"
+  },
+  "current_context_correlation": {
+    "original_init_context_pointer": "0xffffff800868c500",
+    "plus10_original_preempt_word": 1,
+    "vendor_private_slot_explains_stack_offset": "0x28",
+    "original_stack_base": "0xffffff8008680000",
+    "original_SP": "0xffffff8008684000",
+    "stack_bytes": 16384,
+    "native_prefix_cases": 2,
+    "actual_scheduled_client_context_observed": false
+  },
+  "driver_init_ABI": {
+    "original_driver_symbol_bytes": 128,
+    "ops_field_offset": "0x38",
+    "callback_data_field_offset": "0x40",
+    "original_callback_data_value": "0x0",
+    "first_ops_callback": "0xffffff800a289000",
+    "actual_kernel_callback_prefix_not_executed": [
+      {
+        "offset": "0x31a22c",
+        "va": "0xffffff800839a22c",
+        "bytes": "601e40f9",
+        "asm": "ldr x0, [x19, #0x38]"
+      },
+      {
+        "offset": "0x31a230",
+        "va": "0xffffff800839a230",
+        "bytes": "010040f9",
+        "asm": "ldr x1, [x0]"
+      },
+      {
+        "offset": "0x31a234",
+        "va": "0xffffff800839a234",
+        "bytes": "c10000b4",
+        "asm": "cbz x1, #0xffffff800839a24c"
+      },
+      {
+        "offset": "0x31a238",
+        "va": "0xffffff800839a238",
+        "bytes": "602240f9",
+        "asm": "ldr x0, [x19, #0x40]"
+      },
+      {
+        "offset": "0x31a23c",
+        "va": "0xffffff800839a23c",
+        "bytes": "20003fd6",
+        "asm": "blr x1"
+      }
+    ],
+    "register_argument_is_driver_pointer_array": true,
+    "init_callback_argument_is_driver_data_not_driver_object": true
+  },
+  "original_registration_services_not_executed": [
+    {
+      "symbol": "kthread_create_on_node",
+      "original_BL": "0xffffff800839a608",
+      "decoded_target": "0xffffff80080bcf00",
+      "original_export_candidate": {
+        "entry_offset": "0x57d9f8",
+        "value": "0xffffff80080bcf00",
+        "value_within_kernel_file": true,
+        "valid_sorted_name_neighbors": [
+          {
+            "entry_offset": "0x57d9e8",
+            "name": "kthread_bind",
+            "value": "0xffffff80080bd880",
+            "value_within_kernel_file": true
+          },
+          {
+            "entry_offset": "0x57d9f8",
+            "name": "kthread_create_on_node",
+            "value": "0xffffff80080bcf00",
+            "value_within_kernel_file": true
+          },
+          {
+            "entry_offset": "0x57da08",
+            "name": "kthread_create_worker",
+            "value": "0xffffff80080bdc98",
+            "value_within_kernel_file": true
+          }
+        ]
+      }
+    },
+    {
+      "symbol": "wake_up_process",
+      "original_BL": "0xffffff800839a5d8",
+      "decoded_target": "0xffffff80080c57a8",
+      "original_export_candidate": {
+        "entry_offset": "0x584068",
+        "value": "0xffffff80080c57a8",
+        "value_within_kernel_file": true,
+        "valid_sorted_name_neighbors": [
+          {
+            "entry_offset": "0x584058",
+            "name": "wake_up_bit",
+            "value": "0xffffff80080d7f00",
+            "value_within_kernel_file": true
+          },
+          {
+            "entry_offset": "0x584068",
+            "name": "wake_up_process",
+            "value": "0xffffff80080c57a8",
+            "value_within_kernel_file": true
+          },
+          {
+            "entry_offset": "0x584078",
+            "name": "walk_stackframe",
+            "value": "0xffffff8008089398",
+            "value_within_kernel_file": true
+          }
+        ]
+      }
+    },
+    {
+      "symbol": "wait_for_completion_timeout",
+      "original_BL": "0xffffff800839a63c",
+      "decoded_target": "0xffffff80084a1250",
+      "original_export_candidate": {
+        "entry_offset": "0x583fd8",
+        "value": "0xffffff80084a1250",
+        "value_within_kernel_file": true,
+        "valid_sorted_name_neighbors": [
+          {
+            "entry_offset": "0x583fc8",
+            "name": "wait_for_completion_killable_timeout",
+            "value": "0xffffff80084a12d0",
+            "value_within_kernel_file": true
+          },
+          {
+            "entry_offset": "0x583fd8",
+            "name": "wait_for_completion_timeout",
+            "value": "0xffffff80084a1250",
+            "value_within_kernel_file": true
+          },
+          {
+            "entry_offset": "0x583fe8",
+            "name": "wait_for_key_construction",
+            "value": "0xffffff80082330b8",
+            "value_within_kernel_file": true
+          }
+        ]
+      }
+    }
+  ],
+  "threaded_registration_correlation": {
+    "original_priority_immediate": 90,
+    "reference_config_160_minus70": 90,
+    "original_completion_timeout_jiffies": 30000,
+    "reference_5min_times_HZ100": 30000,
+    "real_thread_completion_scheduler_or_timeout_execution": false
+  },
+  "reference_DTS_present": true,
+  "complete_BIONZ_ISP_sensor_HEVC_hardware_emulator_verified": false,
+  "next_gate": "Driver registration creates/wakes actual kernel threads and waits for completion. Initial task bytes or a lock return cannot replace Linux scheduling, allocator, driver callbacks or real device state.",
+  "camera_operations_or_downloaded_source_execution": false,
+  "goal_complete": false
+}

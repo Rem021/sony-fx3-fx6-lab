@@ -1,0 +1,170 @@
+{
+  "claim_test_compile": [
+    "/usr/bin/clang",
+    "-O2",
+    "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/claim_fixture.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/host-claim"
+  ],
+  "host_real_O_EXCL_process_restarts": [
+    {
+      "argv": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/host-claim",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/claim-1793861069769163000.identity",
+        "0"
+      ],
+      "exit": 0,
+      "stdout": "CLAIM rc=0 maps=1 actual_host_O_EXCL=1 mock_physical_map=1\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/host-claim",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/claim-1793861069769163000.identity",
+        "-1"
+      ],
+      "exit": 0,
+      "stdout": "CLAIM rc=-1 maps=0 actual_host_O_EXCL=1 mock_physical_map=1\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/host-claim",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/claim-1793861069769163000.identity",
+        "-1"
+      ],
+      "exit": 0,
+      "stdout": "CLAIM rc=-1 maps=0 actual_host_O_EXCL=1 mock_physical_map=1\n",
+      "stderr": ""
+    }
+  ],
+  "claim_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/claim-1793861069769163000.identity",
+  "claim_sha256": "9c481ac6120c517c130c39a234509244f9ad4a500a1819aa065df9fabe070489",
+  "history": [
+    {
+      "run": "r31",
+      "one_UI_BOUND_before_cut": true,
+      "early_same_process_map_evidence": [
+        {
+          "pid": 241,
+          "round": 2,
+          "osd_map_lines": [
+            "7faeb26000-7faeb29000 r--p 00000000 00:02 3186                           /simulation/fx3-osd-headless-v5.so",
+            "7faeb29000-7faeb38000 ---p 00003000 00:02 3186                           /simulation/fx3-osd-headless-v5.so",
+            "7faeb38000-7faeb3e000 r-xp 00002000 00:02 3186                           /simulation/fx3-osd-headless-v5.so",
+            "7faeb3e000-7faeb4d000 ---p 00018000 00:02 3186                           /simulation/fx3-osd-headless-v5.so",
+            "7faeb4d000-7faeb4e000 r--p 00007000 00:02 3186                           /simulation/fx3-osd-headless-v5.so",
+            "7faeb4e000-7faeb5d000 ---p 00028000 00:02 3186                           /simulation/fx3-osd-headless-v5.so",
+            "7faeb5d000-7faeb5e000 rw-p 00007000 00:02 3186                           /simulation/fx3-osd-headless-v5.so"
+          ],
+          "ui_map_lines": [
+            "7fae86f000-7fae871000 r--p 00000000 00:02 3179                           /simulation/fx3-ui-gate-v1.so",
+            "7fae871000-7fae880000 ---p 00002000 00:02 3179                           /simulation/fx3-ui-gate-v1.so",
+            "7fae880000-7fae884000 r-xp 00001000 00:02 3179                           /simulation/fx3-ui-gate-v1.so",
+            "7fae884000-7fae893000 ---p 00015000 00:02 3179                           /simulation/fx3-ui-gate-v1.so",
+            "7fae893000-7fae895000 r--p 00004000 00:02 3179                           /simulation/fx3-ui-gate-v1.so",
+            "7fae895000-7fae8a4000 ---p 00026000 00:02 3179                           /simulation/fx3-ui-gate-v1.so",
+            "7fae8a4000-7fae8a5000 rw-p 00005000 00:02 3179                           /simulation/fx3-ui-gate-v1.so"
+          ]
+        }
+      ],
+      "limits": "historical, not a future loader/lifetime guarantee"
+    },
+    {
+      "run": "r28",
+      "one_UI_BOUND_before_cut": true,
+      "early_same_process_map_evidence": [
+        {
+          "pid": 237,
+          "round": 1,
+          "osd_map_lines": [
+            "7f89209000-7f8920c000 r--p 00000000 00:02 3188                           /simulation/fx3-osd-headless-v5.so",
+            "7f8920c000-7f8921b000 ---p 00003000 00:02 3188                           /simulation/fx3-osd-headless-v5.so",
+            "7f8921b000-7f89221000 r-xp 00002000 00:02 3188                           /simulation/fx3-osd-headless-v5.so",
+            "7f89221000-7f89230000 ---p 00018000 00:02 3188                           /simulation/fx3-osd-headless-v5.so",
+            "7f89230000-7f89231000 r--p 00007000 00:02 3188                           /simulation/fx3-osd-headless-v5.so",
+            "7f89231000-7f89240000 ---p 00028000 00:02 3188                           /simulation/fx3-osd-headless-v5.so",
+            "7f89240000-7f89241000 rw-p 00007000 00:02 3188                           /simulation/fx3-osd-headless-v5.so"
+          ],
+          "ui_map_lines": [
+            "7f88f52000-7f88f54000 r--p 00000000 00:02 3181                           /simulation/fx3-ui-gate-v1.so",
+            "7f88f54000-7f88f63000 ---p 00002000 00:02 3181                           /simulation/fx3-ui-gate-v1.so",
+            "7f88f63000-7f88f67000 r-xp 00001000 00:02 3181                           /simulation/fx3-ui-gate-v1.so",
+            "7f88f67000-7f88f76000 ---p 00015000 00:02 3181                           /simulation/fx3-ui-gate-v1.so",
+            "7f88f76000-7f88f78000 r--p 00004000 00:02 3181                           /simulation/fx3-ui-gate-v1.so",
+            "7f88f78000-7f88f87000 ---p 00026000 00:02 3181                           /simulation/fx3-ui-gate-v1.so",
+            "7f88f87000-7f88f88000 rw-p 00005000 00:02 3181                           /simulation/fx3-ui-gate-v1.so"
+          ]
+        }
+      ],
+      "limits": "historical, not a future loader/lifetime guarantee"
+    },
+    {
+      "run": "r26",
+      "one_UI_BOUND_before_cut": true,
+      "early_same_process_map_evidence": [
+        {
+          "pid": 237,
+          "round": 1,
+          "osd_map_lines": [
+            "7f8fc0c000-7f8fc0f000 r--p 00000000 00:02 3196                           /simulation/fx3-osd-headless-v5.so",
+            "7f8fc0f000-7f8fc1e000 ---p 00003000 00:02 3196                           /simulation/fx3-osd-headless-v5.so",
+            "7f8fc1e000-7f8fc24000 r-xp 00002000 00:02 3196                           /simulation/fx3-osd-headless-v5.so",
+            "7f8fc24000-7f8fc33000 ---p 00018000 00:02 3196                           /simulation/fx3-osd-headless-v5.so",
+            "7f8fc33000-7f8fc34000 r--p 00007000 00:02 3196                           /simulation/fx3-osd-headless-v5.so",
+            "7f8fc34000-7f8fc43000 ---p 00028000 00:02 3196                           /simulation/fx3-osd-headless-v5.so",
+            "7f8fc43000-7f8fc44000 rw-p 00007000 00:02 3196                           /simulation/fx3-osd-headless-v5.so"
+          ],
+          "ui_map_lines": [
+            "7f8f955000-7f8f957000 r--p 00000000 00:02 3189                           /simulation/fx3-ui-gate-v1.so",
+            "7f8f957000-7f8f966000 ---p 00002000 00:02 3189                           /simulation/fx3-ui-gate-v1.so",
+            "7f8f966000-7f8f96a000 r-xp 00001000 00:02 3189                           /simulation/fx3-ui-gate-v1.so",
+            "7f8f96a000-7f8f979000 ---p 00015000 00:02 3189                           /simulation/fx3-ui-gate-v1.so",
+            "7f8f979000-7f8f97b000 r--p 00004000 00:02 3189                           /simulation/fx3-ui-gate-v1.so",
+            "7f8f97b000-7f8f98a000 ---p 00026000 00:02 3189                           /simulation/fx3-ui-gate-v1.so",
+            "7f8f98a000-7f8f98b000 rw-p 00005000 00:02 3189                           /simulation/fx3-ui-gate-v1.so"
+          ]
+        }
+      ],
+      "limits": "historical, not a future loader/lifetime guarantee"
+    },
+    {
+      "run": "r26b",
+      "one_UI_BOUND_before_cut": true,
+      "early_same_process_map_evidence": [
+        {
+          "pid": 237,
+          "round": 1,
+          "osd_map_lines": [
+            "7f913d8000-7f913db000 r--p 00000000 00:02 4206                           /simulation/fx3-osd-headless-v5.so",
+            "7f913db000-7f913ea000 ---p 00003000 00:02 4206                           /simulation/fx3-osd-headless-v5.so",
+            "7f913ea000-7f913f0000 r-xp 00002000 00:02 4206                           /simulation/fx3-osd-headless-v5.so",
+            "7f913f0000-7f913ff000 ---p 00018000 00:02 4206                           /simulation/fx3-osd-headless-v5.so",
+            "7f913ff000-7f91400000 r--p 00007000 00:02 4206                           /simulation/fx3-osd-headless-v5.so",
+            "7f91400000-7f9140f000 ---p 00028000 00:02 4206                           /simulation/fx3-osd-headless-v5.so",
+            "7f9140f000-7f91410000 rw-p 00007000 00:02 4206                           /simulation/fx3-osd-headless-v5.so"
+          ],
+          "ui_map_lines": [
+            "7f91121000-7f91123000 r--p 00000000 00:02 4199                           /simulation/fx3-ui-gate-v1.so",
+            "7f91123000-7f91132000 ---p 00002000 00:02 4199                           /simulation/fx3-ui-gate-v1.so",
+            "7f91132000-7f91136000 r-xp 00001000 00:02 4199                           /simulation/fx3-ui-gate-v1.so",
+            "7f91136000-7f91145000 ---p 00015000 00:02 4199                           /simulation/fx3-ui-gate-v1.so",
+            "7f91145000-7f91147000 r--p 00004000 00:02 4199                           /simulation/fx3-ui-gate-v1.so",
+            "7f91147000-7f91156000 ---p 00026000 00:02 4199                           /simulation/fx3-ui-gate-v1.so",
+            "7f91156000-7f91157000 rw-p 00005000 00:02 4199                           /simulation/fx3-ui-gate-v1.so"
+          ]
+        }
+      ],
+      "limits": "historical, not a future loader/lifetime guarantee"
+    }
+  ],
+  "contract": [
+    "Fresh exact fixed guest uses the original unchanged preload line",
+    "Only callbacks installed after successful original bind_ram may export",
+    "Original global O_EXCL claim persists until End; no authorized unlink/reset/uninstall/reload remapping",
+    "Initial active preload module remains loaded; added same-process module cannot install because original claim exists",
+    "Foreign TGID cannot touch even CLONE_VM shared diagnostic BSS",
+    "External host run identity scopes serial and End cutoff; PID/init stamps alone are not global identity"
+  ]
+}

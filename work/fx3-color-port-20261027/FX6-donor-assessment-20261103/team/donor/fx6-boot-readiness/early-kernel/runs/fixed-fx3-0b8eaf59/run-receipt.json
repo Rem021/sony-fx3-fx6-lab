@@ -1,0 +1,31 @@
+{
+  "schema": "fx6-image-only-frozen-fx3-run-v1",
+  "utc": "2026-11-03T13:18:47.903913+00:00",
+  "manifest_sha256": "42cddf844eb37a4712feb59a0c595ab9746eee21b37b210a7f81741bdb16797c",
+  "reason": "error",
+  "first_serial_line": null,
+  "linux_version_marker": false,
+  "startup_probe": {},
+  "elapsed_seconds": 5.1536953750182875,
+  "maximum_seconds": 180,
+  "qemu_pid": 55532,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "locks_released": true,
+  "logs": {
+    "serial.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "host-stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "host-stderr.log": {
+      "bytes": 89,
+      "sha256": "d40cfe4c18f4b2095954edde30416a499760bf1422affc34bca22e13a6c66158"
+    }
+  },
+  "error": "OSError('AF_UNIX path too long')",
+  "firmware_AP_CP_AV_result": "NOT_TESTED"
+}

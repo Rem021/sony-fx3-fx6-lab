@@ -1,0 +1,90 @@
+{
+  "checked_utc": "2026-10-30T12:00:28.792376+00:00",
+  "sources": [
+    {
+      "label": "a7iv-commit",
+      "url": "https://api.github.com/repos/leogenot/sony-a7iv-feature-research/commits?per_page=1",
+      "error": {
+        "urllib": {
+          "type": "HTTPError",
+          "message": "HTTP Error 403: rate limit exceeded"
+        },
+        "curl_exit": 56,
+        "curl_stderr": "curl: (56) The requested URL returned error: 403\n"
+      }
+    },
+    {
+      "label": "a6000-commit",
+      "url": "https://api.github.com/repos/nicolvus/a6000-fw-decomp/commits?per_page=1",
+      "error": {
+        "urllib": {
+          "type": "HTTPError",
+          "message": "HTTP Error 403: rate limit exceeded"
+        },
+        "curl_exit": 56,
+        "curl_stderr": "curl: (56) The requested URL returned error: 403\n"
+      }
+    },
+    {
+      "label": "fwtool-commit",
+      "url": "https://api.github.com/repos/ma1co/fwtool.py/commits?per_page=1",
+      "error": {
+        "urllib": {
+          "type": "HTTPError",
+          "message": "HTTP Error 403: rate limit exceeded"
+        },
+        "curl_exit": 56,
+        "curl_stderr": "curl: (56) The requested URL returned error: 403\n"
+      }
+    },
+    {
+      "label": "reloaded-commit",
+      "url": "https://api.github.com/repos/masterflai/pmca-re-reloaded/commits?per_page=1",
+      "error": {
+        "urllib": {
+          "type": "HTTPError",
+          "message": "HTTP Error 403: rate limit exceeded"
+        },
+        "curl_exit": 56,
+        "curl_stderr": "curl: (56) The requested URL returned error: 403\n"
+      }
+    },
+    {
+      "label": "FX5-JP",
+      "url": "https://support.sony.jp/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx5/downloads",
+      "path": "references/FX5-JP.source.txt",
+      "bytes": 611727,
+      "sha256": "178dd753aab25ffe3f75ff192cffb2099b667e4704553f43b4dba05f5188c59c",
+      "transport": {
+        "method": "urllib_default_TLS",
+        "HTTP_status": 200
+      }
+    },
+    {
+      "label": "FX5-US",
+      "url": "https://www.sony.com/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx5/downloads",
+      "error": {
+        "urllib": {
+          "type": "HTTPError",
+          "message": "HTTP Error 403: Forbidden"
+        },
+        "curl_exit": 56,
+        "curl_stderr": "curl: (56) The requested URL returned error: 403\n"
+      }
+    },
+    {
+      "label": "FX5-OSS",
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX5.html",
+      "path": "references/FX5-OSS.source.txt",
+      "bytes": 22357,
+      "sha256": "31d454aed7d74033a4d315bea158db1209251a968f7d907f5c44815571b1c957",
+      "transport": {
+        "method": "urllib_default_TLS",
+        "HTTP_status": 200
+      }
+    }
+  ],
+  "heads": {},
+  "source_executed": false,
+  "device_actions": 0
+}

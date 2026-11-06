@@ -1,0 +1,89 @@
+{
+  "schema": "fx3-stage92-native-geometry-and-IRQ-scope/1",
+  "created_utc": "2026-10-27T08:08:09.772595+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/README.md",
+      "bytes": 5611,
+      "sha256": "2f5de44a1762c03c8dfffb0e53ac9c650715bec30f274814c7f25a078ef50c07"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/completed-evidence-review.json",
+      "bytes": 761,
+      "sha256": "15b0d4ff0f0bcb8df48125070679391b90d0fca52c9094ce1faa29c029fd5abe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/fetch_encoding_reference.py",
+      "bytes": 1699,
+      "sha256": "5620469c92008d22139832938be30fe490e73ca9f528f7cf9f1c89b780d1a00f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/geometry_builder.py",
+      "bytes": 12470,
+      "sha256": "846fb414c110f18a53dd8b4e87cc54d77fcae55940d076e654c4eefcda1400e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/goal-status-after.json",
+      "bytes": 274636,
+      "sha256": "6254df46b7c499a01976425f84bf4431fba02c7caf519f445c3a3e6cca4985e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/goal-status-before.json",
+      "bytes": 272327,
+      "sha256": "b145f4a1725aca7bf3d3d1830ce458e7b48087d769d52d6067b3ce9baeb9bdc2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/native-provenance-and-IRQ-boundaries.json",
+      "bytes": 4288,
+      "sha256": "b938b7b48b21823a6e9e3ee80ca21877320bf51ccbd7cf48c3f2632e6aa02d0b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/public-encoding-reference.json",
+      "bytes": 863,
+      "sha256": "e17da460a376ab1fc761344e92cfa9443b8baaecc6af508ea952208d66a52930"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/review_and_seal.py",
+      "bytes": 13061,
+      "sha256": "b60547075d82552f6db4c77cf68e30187b3405f251c9d78e3e7fc11d8e2f85b3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/run-initial-20261027/executed-source.py",
+      "bytes": 12470,
+      "sha256": "846fb414c110f18a53dd8b4e87cc54d77fcae55940d076e654c4eefcda1400e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/run-initial-20261027/geometry-builder-results.json",
+      "bytes": 649034,
+      "sha256": "2da5a80a8ba7a93c7697086571c2606064240a04af581892ba6d939e2470b364"
+    }
+  ],
+  "previous_manifest_sha256": "466c63970bff04d0f484433974280ccf1a4d3880620119e5cdecfe236a42a233",
+  "operations": {
+    "status": "PASS_COMPLETE_NATIVE_GEOMETRY_RETURNS_TO_ACTUAL_FRAME_CALLER",
+    "created_utc": "2026-10-27T08:08:09.772595+00:00",
+    "prior_sealed_files_verified": 14,
+    "formal_cases": 9,
+    "formal_phases": 27,
+    "observer_calibrations": 3,
+    "actual_caller_full_geometry_return_cases": 5,
+    "odd_units_native_ceil_control": 1,
+    "native_owner_mode_field_not_host_set": true,
+    "geometry_no_internal_body_gap": true,
+    "review_scope": "Same-agent source and saved-result review; exact all-page/full-stack checks by execution harness. No independent engine or camera acceptance.",
+    "actual_IRQ_scheduling_MAIN_cropped_height_hardware_or_recovery": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "b145f4a1725aca7bf3d3d1830ce458e7b48087d769d52d6067b3ce9baeb9bdc2",
+    "after_sha256": "6254df46b7c499a01976425f84bf4431fba02c7caf519f445c3a3e6cca4985e5"
+  },
+  "readme_index_before_sha256": "941241347efaf448229c7d9bf172e29f466c7655bfbcf745651f27418901232d",
+  "readme_index_after_sha256": "5490aac48c53ab5137305107573a6eb9be271312c6d09da1287c5603daeffff4",
+  "readme_index_entry": "- [2026-10-27 FX3 完整几何返回与IRQ适用范围](<work/sony-firmware-20261024/stage92-native-geometry-builder-and-IRQ-scope/README.md>)：原几何完整返回接实际帧JAL，9例27阶段；内部1920×1088不代替可见1080，真实模式/帧头/MAIN/IRQ及硬件恢复未验，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

@@ -1,0 +1,15 @@
+{
+  "preserved_failures": [
+    {"artifact": "attempts/initial-wbi2-failure.json", "reason": "Original WBI2 metadata order is not globally ascending in physical address. Replaced ordering assumption with sorted overlap validation."},
+    {"artifact": "attempts/libarchive-3.7.4-failure.json", "reason": "System CAB LZX decoder stopped mid-member; full independent libmspack extraction succeeded and all preserved partial bytes match."},
+    {"artifact": "attempts/network-source-failures.json", "reason": "Pinned public format source became unreachable through TLS after sparse inventory completed. Candidate updater partition extraction has not started."},
+    {"artifact": "attempts/snapshot-identity-initial-failure.json", "reason": "Protected disk dynamic-table addresses are not mapped in original snapshot. Original 144-entry symbol prefix and strings were independently matched at restored earlier addresses before any functions were identified."},
+    {"artifact": "attempts/link-map-initial-failure.json", "reason": "One module name points to an invalid snapshot PTE. Preserved unknown name and retained strict reciprocal link validation; no missing memory was filled."}
+  ],
+  "additional_static_read_boundary": "An exploratory disassembly request at 0x340958 extended past the ELF PT_LOAD file-backed end 0x340a64 and stopped. Later disassembly was restricted to the original backed range. No firmware execution occurred.",
+  "rsa_probe_limit": "Fifteen big-endian public RSA / PKCS1 v1.5 trials on three original trailers found no valid padding. This does not establish a different trailer format or remove any validation requirement.",
+  "no_sony_code_executed": true,
+  "no_private_rsa_parameters_read_or_derived": true,
+  "no_device_actions": true,
+  "no_full_modified_firmware_emitted": true
+}

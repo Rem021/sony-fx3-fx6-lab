@@ -1,0 +1,15 @@
+{
+  "created_utc": "2026-10-27T05:05:54.641409+00:00",
+  "status": "LOCAL_MIPS_MEMORY_HOOK_REPLAY_CAUTION",
+  "observed_engine": "Unicorn2.1.4 MIPS32_24KC on this Mac",
+  "same_original_bytes_and_inputs": true,
+  "no_hook_and_CODE_only_return_normally": true,
+  "global_memory_hooks_reproduce_duplicate_entry_stack_shift": true,
+  "exact_upstream_cause_or_all_architectures_affected_proven": false,
+  "formal_observer": "CODE + invalid-access stops + whole-region postchecks; no read/write access trace.",
+  "Sony_code_data_PC_results_or_runtime_returns_modified_to_pass": false,
+  "historical_scope": "Retain historical MIPS traces; revalidate with corrected observation before extending new paths or relying on instruction counts/order. Current target/292-byte copy replayed here; other historical ranges not reaccepted.",
+  "A64_or_static_evidence_invalidated_by_this_result": false,
+  "background_primary_source": "https://github.com/unicorn-engine/unicorn/blob/master/docs/FAQ.md",
+  "background_limit": "FAQ describes hook/PC sync and MIPS mappings; not evidence identifying this local failure as a specific upstream bug."
+}

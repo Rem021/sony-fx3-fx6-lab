@@ -1,0 +1,36 @@
+{
+  "lines": [
+    {
+      "path": "reference/aaelf64-2025Q1.rst",
+      "sha256": "6ffa88bcaf204f7443dceb2c1d0aace377f2c33e91c248473b0d6640e788657b",
+      "line": 1793,
+      "text": "  | 1027       | 183        | R\\_<CLS>\\_RELATIVE          | Delta(S) + A                       | See note below                            |"
+    },
+    {
+      "path": "reference/aaelf64-2025Q1.rst",
+      "sha256": "6ffa88bcaf204f7443dceb2c1d0aace377f2c33e91c248473b0d6640e788657b",
+      "line": 1840,
+      "text": "``R_<CLS>_RELATIVE`` represents a relative adjustment to the place based on the load address of the object relative to its original link address. All symbols defined in the same segment will have the same relative adjustment. If ``S`` is the null symbol (ELF symbol index 0) then the adjustment is based on the segment defining the place. On systems where all segments are mapped contiguously the adjustment will be the same for each relocation, thus adjustment never needs to resolve the symbol. This relocation represents an optimization; a static linker can use it to replace ``R_<CLS>_GLOB_DAT`` when the symbol is known at static link time to always resolve to the current link unit."
+    },
+    {
+      "path": "reference/glibc-2.25-dl-init.c",
+      "sha256": "c2be0cc3bf2b5a5b50cdd03eb889402109ffd87643f6c6a3001d139b5ff7e421",
+      "line": 68,
+      "text": "      jm = l->l_info[DT_INIT_ARRAYSZ]->d_un.d_val / sizeof (ElfW(Addr));"
+    },
+    {
+      "path": "reference/glibc-2.25-dl-init.c",
+      "sha256": "c2be0cc3bf2b5a5b50cdd03eb889402109ffd87643f6c6a3001d139b5ff7e421",
+      "line": 72,
+      "text": "\t((init_t) addrs[j]) (argc, argv, env);"
+    },
+    {
+      "path": "reference/glibc-2.25-dl-machine.h",
+      "sha256": "3e3fa0b48555fe38eba40c8e1ee1fc1b66c199fffdc772e1c5413a81850a0e85",
+      "line": 264,
+      "text": "      *reloc_addr = map->l_addr + reloc->r_addend;"
+    }
+  ],
+  "standard_source_used_as_Sony_runtime_evidence": false,
+  "upstream_code_executed": false
+}

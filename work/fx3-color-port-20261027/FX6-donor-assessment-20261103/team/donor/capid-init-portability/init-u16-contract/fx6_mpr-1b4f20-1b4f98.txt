@@ -1,0 +1,36 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001b42f4 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj>:
+  1b4f20: 912403b7     	add	x23, x29, #0x900
+  1b4f24: 8b150340     	add	x0, x26, x21
+  1b4f28: 52800035     	mov	w21, #0x1               // =1
+  1b4f2c: 52846216     	mov	w22, #0x2310            // =8976
+  1b4f30: 97fcf06c     	bl	0xf10e0 <pthread_mutex_unlock@plt>
+  1b4f34: 3926ffbf     	strb	wzr, [x29, #0x9bf]
+  1b4f38: 912983a0     	add	x0, x29, #0xa60
+  1b4f3c: 912773a2     	add	x2, x29, #0x9dc
+  1b4f40: 912763a1     	add	x1, x29, #0x9d8
+  1b4f44: a9007c1f     	stp	xzr, xzr, [x0]
+  1b4f48: 12800000     	mov	w0, #-0x1               // =-1
+  1b4f4c: 392703a0     	strb	w0, [x29, #0x9c0]
+  1b4f50: b945af40     	ldr	w0, [x26, #0x5ac]
+  1b4f54: 2919feff     	stp	wzr, wzr, [x23, #0xcc]
+  1b4f58: 291afeff     	stp	wzr, wzr, [x23, #0xd4]
+  1b4f5c: b909dfbf     	str	wzr, [x29, #0x9dc]
+  1b4f60: f9050fbf     	str	xzr, [x29, #0xa18]
+  1b4f64: f9053bbf     	str	xzr, [x29, #0xa70]
+  1b4f68: 97fcf4c6     	bl	0xf2280 <_ZN3mpr5pconv31ConvertFrameRateToNumerAndDenomEN9DefStruct9FrameRateEPjS3_@plt>
+  1b4f6c: b949dba0     	ldr	w0, [x29, #0x9d8]
+  1b4f70: d2801502     	mov	x2, #0xa8               // =168
+  1b4f74: b949dfa1     	ldr	w1, [x29, #0x9dc]
+  1b4f78: 1e230008     	ucvtf	s8, w0
+  1b4f7c: 1e230020     	ucvtf	s0, w1
+  1b4f80: b90a1ba0     	str	w0, [x29, #0xa18]
+  1b4f84: 913b03a0     	add	x0, x29, #0xec0
+  1b4f88: b90a1fa1     	str	w1, [x29, #0xa1c]
+  1b4f8c: 52800001     	mov	w1, #0x0                // =0
+  1b4f90: 1e201908     	fdiv	s8, s8, s0
+  1b4f94: 97fce6d3     	bl	0xeeae0 <memset@plt>

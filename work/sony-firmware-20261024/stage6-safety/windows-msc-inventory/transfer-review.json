@@ -1,0 +1,26 @@
+{
+  "reviewed_utc": "2026-10-25T10:00:18.660991+00:00",
+  "remote_directory": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-pnp-readonly-20261025T095416Z",
+  "received_via_UU_ui_confirmed": true,
+  "files": [
+    {
+      "name": "inventory_cached_sony_pnp.ps1",
+      "bytes": 5673,
+      "sha256": "87f575decd19e45c9c82bb718ed9f280597956744e43119da79541012ad37ea9"
+    },
+    {
+      "name": "PNP-READONLY-RESULT.txt",
+      "bytes": 780,
+      "sha256": "e53a0733293eca156be81877024325ae8f5e7164c67bef45762abfc1dd2de0c8"
+    },
+    {
+      "name": "sony-pnp-inventory.json",
+      "bytes": 1866,
+      "sha256": "01b5b580eb4378a40c8e9ea751be9201ccca8a52e8efe8a415015c6fc93ff415"
+    }
+  ],
+  "script_review": "CIM PnP and installed-driver metadata, cached bus description, old-receipt hashing, new result output only; no direct camera API, USB handle, authentication, card enumeration, mode/driver/firmware change in received script",
+  "previous_local_receipt_sha256": "fb0b5739a3fc4a9a6719b0e17240f128f78f4d4983b72d38229055db3096f734",
+  "previous_receipt_preservation_verified": true,
+  "scope": "Normal MSC PnP binding only; actual camera firmware and unique body fingerprint remain unverified"
+}

@@ -1,0 +1,88 @@
+{
+ "schema": "fx3-r40-review-revision-manifest/v1",
+ "revision": "review-revision-1",
+ "based_on": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-deepseek-menu-timing",
+ "original_sealed_untouched": true,
+ "original_sealed_hashes": {
+  "REPORT.md": "37bde41762ed15bd2c8bce365444d48415e4b1ecd9e831be130980bd9602b797",
+  "results.json": "33a6714978f33cf2ee5abb4df72d5b000fb38bb627e28bc8a0f4e582fb081df8",
+  "analyze_menu_timing.py": "7184d9bf85cd25b37e3e8708cb3d7702d2978e0edabfab42ecf6f5ccc62629a5",
+  "input-manifest-before.json": "541f7f2eca8bc328c8f06427efc3006718745711b1aae3188c84b317e692ea3f"
+ },
+ "input_manifest_sha256": "e4db93f34d05c6c76740507ccb8b926eb8a6c5f6ec7242f15c16f4bd5b39b9f9",
+ "input_count": 38,
+ "review_points": {
+  "host_merge_suggestion": "removed; outside current observe->visual decision->pin->fixed PNG->confirm contract; not implemented; no 11.53 s saving claimed",
+  "clock_mapping": "no definite guest<->host mapping; d_i variation only; conditional interval not calibration",
+  "gap_semantics": "completion-side logs only; absence of a recorded completion does not exclude an in-flight command"
+ },
+ "suggestions_count": 2,
+ "files": [
+  {
+   "path": "README.md",
+   "bytes": 1452,
+   "sha256": "d48654c38d28a1e2e649ea807fdfa4d7b70cf521b0482daf56af4f1f1a02d0de"
+  },
+  {
+   "path": "REPORT.diff",
+   "bytes": 23347,
+   "sha256": "bdf672eb8d22d91a2c41253d4e8673020c492ce48f873160a9a2ee65710dc9a4"
+  },
+  {
+   "path": "REPORT.md",
+   "bytes": 27139,
+   "sha256": "b4c80ebaf05981830019776ae9e07488d08c0fa98c64dd42d43358c7a3c07b00"
+  },
+  {
+   "path": "REVISION-NOTES.md",
+   "bytes": 6831,
+   "sha256": "6a2bcfd460f5510fa785cac82f5d2af5f6155d29b038112e71a9f21b2c4eb009"
+  },
+  {
+   "path": "analyze_menu_timing.py",
+   "bytes": 51933,
+   "sha256": "efb431ae6c95de7af2f20b0312660d78e00517777b45481f9f1b4aad1e165d26"
+  },
+  {
+   "path": "data/commands.csv",
+   "bytes": 29814,
+   "sha256": "93174f69bb6bbb5883fb4aac00746d8117a9a74156061b3516290dc224e18df1"
+  },
+  {
+   "path": "data/complete.csv",
+   "bytes": 2518,
+   "sha256": "9aff6f67a7891bab852d944305a58d15fb6f2d6c2a2312676066d97b0eb5dc1a"
+  },
+  {
+   "path": "data/dynamic.csv",
+   "bytes": 25639,
+   "sha256": "f9555617cc9917109681bcdd88c58bf4eefd363d8cde3aaad4fbd130b7a78d1f"
+  },
+  {
+   "path": "data/osd-commits.csv",
+   "bytes": 20923,
+   "sha256": "63873054ec293297e1b51f0c317a98e7473631a49fd4f44ed8510a4047344a7b"
+  },
+  {
+   "path": "data/ring-frames.csv",
+   "bytes": 1096,
+   "sha256": "ed496861c4bccc26063549ebe466d09be58472750f88742dd3b63a62cd30ceeb"
+  },
+  {
+   "path": "input-manifest-after.json",
+   "bytes": 13022,
+   "sha256": "541f7f2eca8bc328c8f06427efc3006718745711b1aae3188c84b317e692ea3f"
+  },
+  {
+   "path": "input-manifest-before.json",
+   "bytes": 13022,
+   "sha256": "541f7f2eca8bc328c8f06427efc3006718745711b1aae3188c84b317e692ea3f"
+  },
+  {
+   "path": "results.json",
+   "bytes": 364835,
+   "sha256": "825586d98d49d9edf600519f84a64cfe3b1bef2644ecb6b0e7d27644f1b7d7de"
+  }
+ ],
+ "note": "Hashes exclude this manifest and SHA256SUMS files. Original r40 directory files were not modified."
+}

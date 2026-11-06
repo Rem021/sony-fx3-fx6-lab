@@ -1,0 +1,235 @@
+{
+  "time": "2026-11-05T07:52:37.422898+00:00",
+  "run": "v35diag-n64-r36-r37-4d245250",
+  "parser_sha256": "03313c7c83d0951a77500c9b2aeb27e41e85d197a846a00bf72d8d1fc28be393",
+  "startup_observation_sha256": "4aac217dd2a6b7da73ae44941e16a3074d063719883d8d345e1061fdff477595",
+  "serial_sha256": "bb607c0e10b3b843f41bf02a0295428060b70a68f091501bab1634d142c11a70",
+  "boundaries": {
+    "first_preserved_completed_qualified_startup": {
+      "predicates": {
+        "phaseA_unobserved": true,
+        "replay_input_verified": true,
+        "screen_open_observed": true,
+        "validated_ring_present": true,
+        "screen_quiet_10s": true,
+        "media_branches_exact": true,
+        "media_notifications_exact": true,
+        "native_free_sizes_present": true,
+        "key96_ready": true,
+        "front_full_body": true,
+        "expected_raw_message": true,
+        "last_screen_allowed": true,
+        "nonuniform_pixels": true
+      },
+      "evaluation_complete": true,
+      "stage": "startup",
+      "host_received_ns": 448245490926416,
+      "serial_offset": 3625023,
+      "last_screen_observed_host_monotonic": 448235.456426833,
+      "qualified": true,
+      "validated_ring_identity": {
+        "sequence": 26,
+        "epoch": 1,
+        "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+        "pixel_source_sequence": 24,
+        "host_monotonic": 448245.145426458
+      }
+    },
+    "pre_cleanup_host_consumed": {
+      "stage": "cleanup",
+      "host_received_ns": 448281125050125,
+      "serial_offset": 7101605
+    },
+    "full_serial_bytes": 7124818
+  },
+  "independent_parser_results": {
+    "startup": {
+      "scope": "as_of_each_complete_original_log_only_not_End_state",
+      "records": [
+        {
+          "words": [
+            889258072,
+            1379087617,
+            237,
+            1,
+            2467195120,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            237,
+            2467152112,
+            3,
+            1,
+            184,
+            1,
+            2336413338
+          ],
+          "identity": [
+            237,
+            2467152112,
+            3,
+            237,
+            2467195120,
+            3
+          ],
+          "publication": "no_captured_attempt_as_of_log",
+          "bind": "no_captured_bind_as_of_log",
+          "capture_loss": false,
+          "budget_terminal": false,
+          "ordinal": 1,
+          "offset": 1417536
+        },
+        {
+          "words": [
+            889258072,
+            1379087617,
+            237,
+            1,
+            2467195120,
+            3,
+            2,
+            4099,
+            0,
+            2,
+            0,
+            3,
+            1380209487,
+            843533897,
+            0,
+            237,
+            2467152112,
+            3,
+            2,
+            368,
+            1,
+            2685779380
+          ],
+          "identity": [
+            237,
+            2467152112,
+            3,
+            237,
+            2467195120,
+            3
+          ],
+          "publication": "original_send_returned_zero",
+          "bind": "original_bind_succeeded_magic_observed",
+          "capture_loss": false,
+          "budget_terminal": false,
+          "ordinal": 2,
+          "offset": 3061859
+        }
+      ],
+      "unknown": [
+        {
+          "offset": 3624829,
+          "reason": "partial_line_at_End"
+        }
+      ],
+      "overall": "observations_available",
+      "host_run_id": "v35diag-n64-r36-r37-4d245250",
+      "serial_sha256": "bb607c0e10b3b843f41bf02a0295428060b70a68f091501bab1634d142c11a70",
+      "end_byte": 3625023,
+      "identity_scope": "caller supplied single host run; wire PID/init instances are not global runID"
+    },
+    "pre_cleanup": {
+      "scope": "as_of_each_complete_original_log_only_not_End_state",
+      "records": [
+        {
+          "words": [
+            889258072,
+            1379087617,
+            237,
+            1,
+            2467195120,
+            3,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            237,
+            2467152112,
+            3,
+            1,
+            184,
+            1,
+            2336413338
+          ],
+          "identity": [
+            237,
+            2467152112,
+            3,
+            237,
+            2467195120,
+            3
+          ],
+          "publication": "no_captured_attempt_as_of_log",
+          "bind": "no_captured_bind_as_of_log",
+          "capture_loss": false,
+          "budget_terminal": false,
+          "ordinal": 1,
+          "offset": 1417536
+        },
+        {
+          "words": [
+            889258072,
+            1379087617,
+            237,
+            1,
+            2467195120,
+            3,
+            2,
+            4099,
+            0,
+            2,
+            0,
+            3,
+            1380209487,
+            843533897,
+            0,
+            237,
+            2467152112,
+            3,
+            2,
+            368,
+            1,
+            2685779380
+          ],
+          "identity": [
+            237,
+            2467152112,
+            3,
+            237,
+            2467195120,
+            3
+          ],
+          "publication": "original_send_returned_zero",
+          "bind": "original_bind_succeeded_magic_observed",
+          "capture_loss": false,
+          "budget_terminal": false,
+          "ordinal": 2,
+          "offset": 3061859
+        }
+      ],
+      "unknown": [],
+      "overall": "observations_available",
+      "host_run_id": "v35diag-n64-r36-r37-4d245250",
+      "serial_sha256": "bb607c0e10b3b843f41bf02a0295428060b70a68f091501bab1634d142c11a70",
+      "end_byte": 7101605,
+      "identity_scope": "caller supplied single host run; wire PID/init instances are not global runID"
+    }
+  },
+  "interpretation": "Two real records precede first qualified startup; later record captures original send rc0 and bind success/magic. No inferred repair, guest End atomicity, future reliability or FX6 boot."
+}

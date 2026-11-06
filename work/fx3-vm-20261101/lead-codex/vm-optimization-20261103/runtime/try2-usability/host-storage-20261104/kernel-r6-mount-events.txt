@@ -1,0 +1,5 @@
+Timestamp               Ty Process[PID:TID]
+2026-11-04 07:34:40.386 Df kernel[0:eaf6ee] (apfs) apfs_log_op_with_proc:3290: disk7s1 unmounting volume KAFU2T, requested by: kernel_task (pid 0); parent: kernel_task (pid 0)
+2026-11-04 07:34:40.389 Df kernel[0:eaf6ee] (apfs) apfs_vfsop_unmount:3578: disk7s1 failed to finish all transactions before unmount! (err 6)
+2026-11-04 07:34:42.939 Df kernel[0:eaf994] (apfs) nx_mount:1508: disk7 reloading after unclean unmount, checkpoint xid 129061, superblock xid 128555
+2026-11-04 07:34:42.958 Df kernel[0:eaf994] (apfs) apfs_log_op_with_proc:3290: disk7s1 mount-complete volume KAFU2T, requested by: mount_apfs (pid 33541); parent: mount (pid 33540)

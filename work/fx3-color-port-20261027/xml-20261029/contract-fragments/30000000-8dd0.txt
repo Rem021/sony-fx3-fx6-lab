@@ -1,0 +1,170 @@
+00008dd0 stp        x29, x30, [sp, #-0x60]!
+00008dd4 mov        x29, sp
+00008dd8 stp        x19, x20, [sp, #0x10]
+00008ddc stp        x21, x22, [sp, #0x20]
+00008de0 stp        x23, x24, [sp, #0x30]
+00008de4 stp        x25, x26, [sp, #0x40]
+00008de8 cbnz       x1, #0x8e20
+00008dec mov        w4, #0
+00008df0 mov        x3, #0
+00008df4 mov        x2, #0
+00008df8 mov        w1, #2
+00008dfc mov        w19, #0
+00008e00 bl         #0x7550 ; Updater::Xml::DomDocument::SetError
+00008e04 mov        w0, w19
+00008e08 ldp        x19, x20, [sp, #0x10]
+00008e0c ldp        x21, x22, [sp, #0x20]
+00008e10 ldp        x23, x24, [sp, #0x30]
+00008e14 ldp        x25, x26, [sp, #0x40]
+00008e18 ldp        x29, x30, [sp], #0x60
+00008e1c ret        
+00008e20 mov        x23, x1
+00008e24 mov        x21, x0
+00008e28 mov        w24, w2
+00008e2c bl         #0x7760 ; Updater::Xml::DomNode::Clear
+00008e30 mov        w0, #-1
+00008e34 mov        w2, #2
+00008e38 mov        x1, #0
+00008e3c stp        w0, w0, [x21, #8]
+00008e40 mov        x0, x23
+00008e44 bl         #0x7890 ; fseek
+00008e48 mov        x0, x23
+00008e4c bl         #0x7350 ; ftell
+00008e50 mov        x19, x0
+00008e54 mov        x0, x23
+00008e58 mov        w2, #0
+00008e5c mov        x1, #0
+00008e60 bl         #0x7890 ; fseek
+00008e64 cbnz       x19, #0x8e84
+00008e68 mov        x0, x21
+00008e6c mov        w4, #0
+00008e70 mov        x3, #0
+00008e74 mov        x2, #0
+00008e78 mov        w1, #0xd
+00008e7c bl         #0x7550 ; Updater::Xml::DomDocument::SetError
+00008e80 b          #0x8e04
+00008e84 adrp       x0, #0x20000
+00008e88 add        x20, x29, #0x60
+00008e8c mov        x1, x19
+00008e90 ldr        x0, [x0, #0xf80]
+00008e94 str        x0, [x20, #-8]!
+00008e98 mov        x0, x20
+00008e9c bl         #0x7330 ; Updater::Xml::TiXmlString::reserve
+00008ea0 add        x0, x19, #1
+00008ea4 bl         #0x7210 ; operator new[]
+00008ea8 mov        x3, x23
+00008eac mov        x1, x19
+00008eb0 strb       wzr, [x0]
+00008eb4 mov        x2, #1
+00008eb8 mov        x22, x0
+00008ebc bl         #0x7280 ; fread
+00008ec0 cmp        x0, #1
+00008ec4 b.eq       #0x8eec
+00008ec8 mov        x0, x22
+00008ecc bl         #0x7690 ; operator delete[]
+00008ed0 mov        x0, x21
+00008ed4 mov        w4, #0
+00008ed8 mov        x3, #0
+00008edc mov        x2, #0
+00008ee0 mov        w1, #2
+00008ee4 bl         #0x7550 ; Updater::Xml::DomDocument::SetError
+00008ee8 b          #0x905c
+00008eec add        x23, x22, x19
+00008ef0 strb       wzr, [x22, x19]
+00008ef4 mov        x1, x22
+00008ef8 mov        x19, x22
+00008efc add        x26, x29, #0x57
+00008f00 mov        w25, #0xa
+00008f04 ldrb       w0, [x19]
+00008f08 cbz        w0, #0x9004
+00008f0c cmp        x19, x23
+00008f10 b.lo       #0x8f3c
+00008f14 adrp       x3, #0xc000
+00008f18 adrp       x1, #0xc000
+00008f1c adrp       x0, #0xc000
+00008f20 add        x3, x3, #0xf80 ; literal 'bool Updater::Xml::DomDocument::loadFile(FILE*, Updater::Xml::TiXmlEncoding)'
+00008f24 add        x1, x1, #0xe2a ; literal 'ul_xml.cpp'
+00008f28 add        x0, x0, #0xcff ; literal 'p < (buf+length)'
+00008f2c mov        w2, #0x37b
+00008f30 bl         #0x73f0 ; __assert_fail
+00008f34 mov        x19, x1
+00008f38 b          #0x8f04
+00008f3c cmp        w0, #0xa
+00008f40 b.ne       #0x8f80
+00008f44 sub        x2, x19, x1
+00008f48 mov        x0, x20
+00008f4c add        x2, x2, #1
+00008f50 bl         #0x7640 ; Updater::Xml::TiXmlString::append
+00008f54 add        x1, x19, #1
+00008f58 cmp        x23, x1
+00008f5c b.hs       #0x8f34
+00008f60 adrp       x3, #0xc000
+00008f64 mov        w2, #0x382
+00008f68 add        x3, x3, #0xf80 ; literal 'bool Updater::Xml::DomDocument::loadFile(FILE*, Updater::Xml::TiXmlEncoding)'
+00008f6c adrp       x1, #0xc000
+00008f70 adrp       x0, #0xc000
+00008f74 add        x1, x1, #0xe2a ; literal 'ul_xml.cpp'
+00008f78 add        x0, x0, #0xd10 ; literal 'p <= (buf+length)'
+00008f7c b          #0x8f30
+00008f80 cmp        w0, #0xd
+00008f84 b.ne       #0x8ffc
+00008f88 sub        x2, x19, x1
+00008f8c cmp        x2, #0
+00008f90 b.gt       #0x8fac
+00008f94 mov        x1, x26
+00008f98 mov        x0, x20
+00008f9c mov        x2, #1
+00008fa0 strb       w25, [x29, #0x57]
+00008fa4 bl         #0x7640 ; Updater::Xml::TiXmlString::append
+00008fa8 b          #0x8fb8
+00008fac mov        x0, x20
+00008fb0 bl         #0x7640 ; Updater::Xml::TiXmlString::append
+00008fb4 b          #0x8f94
+00008fb8 ldrb       w0, [x19, #1]
+00008fbc cmp        w0, #0xa
+00008fc0 b.ne       #0x8fe0
+00008fc4 add        x1, x19, #2
+00008fc8 cmp        x23, x1
+00008fcc b.hs       #0x8f34
+00008fd0 adrp       x3, #0xc000
+00008fd4 mov        w2, #0x390
+00008fd8 add        x3, x3, #0xf80 ; literal 'bool Updater::Xml::DomDocument::loadFile(FILE*, Updater::Xml::TiXmlEncoding)'
+00008fdc b          #0x8f6c
+00008fe0 add        x1, x19, #1
+00008fe4 cmp        x23, x1
+00008fe8 b.hs       #0x8f34
+00008fec adrp       x3, #0xc000
+00008ff0 mov        w2, #0x396
+00008ff4 add        x3, x3, #0xf80 ; literal 'bool Updater::Xml::DomDocument::loadFile(FILE*, Updater::Xml::TiXmlEncoding)'
+00008ff8 b          #0x8f6c
+00008ffc add        x19, x19, #1
+00009000 b          #0x8f04
+00009004 cmp        x19, x1
+00009008 b.ne       #0x9038
+0000900c mov        x0, x22
+00009010 bl         #0x7690 ; operator delete[]
+00009014 ldr        x0, [x21]
+00009018 mov        w3, w24
+0000901c ldr        x1, [x29, #0x58]
+00009020 mov        x2, #0
+00009024 add        x1, x1, #0x10
+00009028 ldr        x4, [x0, #0x18]
+0000902c mov        x0, x21
+00009030 blr        x4
+00009034 b          #0x9048
+00009038 sub        x2, x19, x1
+0000903c mov        x0, x20
+00009040 bl         #0x7640 ; Updater::Xml::TiXmlString::append
+00009044 b          #0x900c
+00009048 ldrb       w19, [x21, #0x50]
+0000904c eor        w19, w19, #1
+00009050 mov        x0, x20
+00009054 bl         #0x7560 ; Updater::Xml::TiXmlString::quit
+00009058 b          #0x8e04
+0000905c mov        w19, #0
+00009060 b          #0x9050
+00009064 mov        x19, x0
+00009068 mov        x0, x20
+0000906c bl         #0x7560 ; Updater::Xml::TiXmlString::quit
+00009070 mov        x0, x19
+00009074 bl         #0x7800 ; _Unwind_Resume

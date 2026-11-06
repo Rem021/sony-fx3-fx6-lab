@@ -1,0 +1,212 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-preset-context-v6-save102.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000132cc <install>:
+   132cc: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+   132d0: f9000bfb     	str	x27, [sp, #0x10]
+   132d4: a90267fa     	stp	x26, x25, [sp, #0x20]
+   132d8: a9035ff8     	stp	x24, x23, [sp, #0x30]
+   132dc: a90457f6     	stp	x22, x21, [sp, #0x40]
+   132e0: a9054ff4     	stp	x20, x19, [sp, #0x50]
+   132e4: 910003fd     	mov	x29, sp
+   132e8: b9400028     	ldr	w8, [x1]
+   132ec: 6b02011f     	cmp	w8, w2
+   132f0: 54000681     	b.ne	0x133c0 <install+0xf4>
+   132f4: aa0003e8     	mov	x8, x0
+   132f8: f9400000     	ldr	x0, [x0]
+   132fc: aa0103f3     	mov	x19, x1
+   13300: b50006c0     	cbnz	x0, 0x133d8 <install+0x10c>
+   13304: aa0803f8     	mov	x24, x8
+   13308: 5297fff9     	mov	w25, #0xbfff            // =49151
+   1330c: 529bfffa     	mov	w26, #0xdfff            // =57343
+   13310: 9274ce68     	and	x8, x19, #0xfffffffffffff000
+   13314: aa0303f7     	mov	x23, x3
+   13318: 2a0203f6     	mov	w22, w2
+   1331c: 72a0fff9     	movk	w25, #0x7ff, lsl #16
+   13320: 72a07ffa     	movk	w26, #0x3ff, lsl #16
+   13324: 91404114     	add	x20, x8, #0x10, lsl #12 // =0x10000
+   13328: d1404115     	sub	x21, x8, #0x10, lsl #12 // =0x10000
+   1332c: 5280dffb     	mov	w27, #0x6ff             // =1791
+   13330: 14000005     	b	0x13344 <install+0x78>
+   13334: d100077b     	sub	x27, x27, #0x1
+   13338: 91404294     	add	x20, x20, #0x10, lsl #12 // =0x10000
+   1333c: d14042b5     	sub	x21, x21, #0x10, lsl #12 // =0x10000
+   13340: b400055b     	cbz	x27, 0x133e8 <install+0x11c>
+   13344: aa1503e0     	mov	x0, x21
+   13348: 52840001     	mov	w1, #0x2000             // =8192
+   1334c: 52800062     	mov	w2, #0x3                // =3
+   13350: 52800443     	mov	w3, #0x22               // =34
+   13354: 12800004     	mov	w4, #-0x1               // =-1
+   13358: aa1f03e5     	mov	x5, xzr
+   1335c: 94000279     	bl	0x13d40 <mmap@plt>
+   13360: b100041f     	cmn	x0, #0x1
+   13364: 540000e0     	b.eq	0x13380 <install+0xb4>
+   13368: cb130008     	sub	x8, x0, x19
+   1336c: 8b1a0108     	add	x8, x8, x26
+   13370: eb19011f     	cmp	x8, x25
+   13374: 540002a3     	b.lo	0x133c8 <install+0xfc>
+   13378: 52840001     	mov	w1, #0x2000             // =8192
+   1337c: 9400027d     	bl	0x13d70 <munmap@plt>
+   13380: aa1403e0     	mov	x0, x20
+   13384: 52840001     	mov	w1, #0x2000             // =8192
+   13388: 52800062     	mov	w2, #0x3                // =3
+   1338c: 52800443     	mov	w3, #0x22               // =34
+   13390: 12800004     	mov	w4, #-0x1               // =-1
+   13394: aa1f03e5     	mov	x5, xzr
+   13398: 9400026a     	bl	0x13d40 <mmap@plt>
+   1339c: b100041f     	cmn	x0, #0x1
+   133a0: 54fffca0     	b.eq	0x13334 <install+0x68>
+   133a4: cb130008     	sub	x8, x0, x19
+   133a8: 8b1a0108     	add	x8, x8, x26
+   133ac: eb19011f     	cmp	x8, x25
+   133b0: 540000c3     	b.lo	0x133c8 <install+0xfc>
+   133b4: 52840001     	mov	w1, #0x2000             // =8192
+   133b8: 9400026e     	bl	0x13d70 <munmap@plt>
+   133bc: 17ffffde     	b	0x13334 <install+0x68>
+   133c0: 12800020     	mov	w0, #-0x2               // =-2
+   133c4: 14000089     	b	0x135e8 <install+0x31c>
+   133c8: aa1803e8     	mov	x8, x24
+   133cc: 2a1603e2     	mov	w2, w22
+   133d0: aa1703e3     	mov	x3, x23
+   133d4: f9000300     	str	x0, [x24]
+   133d8: f940050a     	ldr	x10, [x8, #0x8]
+   133dc: 91020149     	add	x9, x10, #0x80
+   133e0: f140093f     	cmp	x9, #0x2, lsl #12       // =0x2000
+   133e4: 54000069     	b.ls	0x133f0 <install+0x124>
+   133e8: 12800040     	mov	w0, #-0x3               // =-3
+   133ec: 1400007f     	b	0x135e8 <install+0x31c>
+   133f0: 8b0a0014     	add	x20, x0, x10
+   133f4: b26593ea     	mov	x10, #-0x8000000        // =-134217728
+   133f8: b26493eb     	mov	x11, #-0xfffffff        // =-268435455
+   133fc: cb130295     	sub	x21, x20, x19
+   13400: 8b0a02aa     	add	x10, x21, x10
+   13404: eb0b015f     	cmp	x10, x11
+   13408: 54000062     	b.hs	0x13414 <install+0x148>
+   1340c: 128000e0     	mov	w0, #-0x8               // =-8
+   13410: 14000076     	b	0x135e8 <install+0x31c>
+   13414: 2a0203f8     	mov	w24, w2
+   13418: 52840001     	mov	w1, #0x2000             // =8192
+   1341c: 528000e2     	mov	w2, #0x7                // =7
+   13420: aa0303f7     	mov	x23, x3
+   13424: aa0803f6     	mov	x22, x8
+   13428: f9000509     	str	x9, [x8, #0x8]
+   1342c: 94000255     	bl	0x13d80 <mprotect@plt>
+   13430: 34000060     	cbz	w0, 0x1343c <install+0x170>
+   13434: 12800060     	mov	w0, #-0x4               // =-4
+   13438: 1400006c     	b	0x135e8 <install+0x31c>
+   1343c: b0ffff68     	adrp	x8, 0x0 <syscall>
+   13440: 91006289     	add	x9, x20, #0x18
+   13444: 6f00e400     	movi	v0.2d, #0000000000000000
+   13448: 3dc29501     	ldr	q1, [x8, #0xa50]
+   1344c: 91001268     	add	x8, x19, #0x4
+   13450: 5288fe0a     	mov	w10, #0x47f0            // =18416
+   13454: eb090109     	subs	x9, x8, x9
+   13458: 72b5182a     	movk	w10, #0xa8c1, lsl #16
+   1345c: aa1403eb     	mov	x11, x20
+   13460: 11000d2c     	add	w12, w9, #0x3
+   13464: b8010d6a     	str	w10, [x11, #0x10]!
+   13468: 1a894189     	csel	w9, w12, w9, mi
+   1346c: 52a2800c     	mov	w12, #0x14000000        // =335544320
+   13470: aa1403ea     	mov	x10, x20
+   13474: 33026d2c     	bfxil	w12, w9, #2, #26
+   13478: 3d800281     	str	q1, [x20]
+   1347c: 2a1803e9     	mov	w9, w24
+   13480: ad030280     	stp	q0, q0, [x20, #0x60]
+   13484: 2902b298     	stp	w24, w12, [x20, #0x14]
+   13488: 528403ec     	mov	w12, #0x201f            // =8223
+   1348c: 72baa06c     	movk	w12, #0xd503, lsl #16
+   13490: 3d801680     	str	q0, [x20, #0x50]
+   13494: f8030d53     	str	x19, [x10, #0x30]!
+   13498: b9001e8c     	str	w12, [x20, #0x1c]
+   1349c: 9000008c     	adrp	x12, 0x23000 <preset_epoch+0x22fc8>
+   134a0: f9478d8c     	ldr	x12, [x12, #0xf18]
+   134a4: a903de8b     	stp	x11, x23, [x20, #0x38]
+   134a8: 528003eb     	mov	w11, #0x1f              // =31
+   134ac: f900268b     	str	x11, [x20, #0x48]
+   134b0: a902328a     	stp	x10, x12, [x20, #0x20]
+   134b4: 1207170a     	and	w10, w24, #0x7e000000
+   134b8: 52a6800c     	mov	w12, #0x34000000        // =872415232
+   134bc: 6b0c015f     	cmp	w10, w12
+   134c0: 52a2800a     	mov	w10, #0x14000000        // =335544320
+   134c4: 54000281     	b.ne	0x13514 <install+0x248>
+   134c8: 53037d28     	lsr	w8, w9, #3
+   134cc: 52a0008b     	mov	w11, #0x40000           // =262144
+   134d0: 6a49157f     	tst	w11, w9, lsr #5
+   134d4: 528003eb     	mov	w11, #0x1f              // =31
+   134d8: 121e4908     	and	w8, w8, #0x1ffffc
+   134dc: 72b6a00b     	movk	w11, #0xb500, lsl #16
+   134e0: b26ba90c     	orr	x12, x8, #0xffffffffffe00000
+   134e4: 0a0b0129     	and	w9, w9, w11
+   134e8: 9a8c0108     	csel	x8, x8, x12, eq
+   134ec: 321a0129     	orr	w9, w9, #0x40
+   134f0: 8b080268     	add	x8, x19, x8
+   134f4: b9001689     	str	w9, [x20, #0x14]
+   134f8: cb140108     	sub	x8, x8, x20
+   134fc: f1007108     	subs	x8, x8, #0x1c
+   13500: 11000d0c     	add	w12, w8, #0x3
+   13504: 1a884188     	csel	w8, w12, w8, mi
+   13508: 33026d0a     	bfxil	w10, w8, #2, #26
+   1350c: b9001e8a     	str	w10, [x20, #0x1c]
+   13510: 14000015     	b	0x13564 <install+0x298>
+   13514: 531a7d2a     	lsr	w10, w9, #26
+   13518: 7100955f     	cmp	w10, #0x25
+   1351c: 54000241     	b.ne	0x13564 <install+0x298>
+   13520: 1200652a     	and	w10, w9, #0x3ffffff
+   13524: 53196529     	ubfx	w9, w9, #25, #1
+   13528: 52a2800b     	mov	w11, #0x14000000        // =335544320
+   1352c: 531e754a     	lsl	w10, w10, #2
+   13530: f9002a88     	str	x8, [x20, #0x50]
+   13534: 7100013f     	cmp	w9, #0x0
+   13538: b2648d49     	orr	x9, x10, #0xfffffffff0000000
+   1353c: 9a890149     	csel	x9, x10, x9, eq
+   13540: 8b130129     	add	x9, x9, x19
+   13544: cb140129     	sub	x9, x9, x20
+   13548: f1006129     	subs	x9, x9, #0x18
+   1354c: 11000d2a     	add	w10, w9, #0x3
+   13550: 1a894149     	csel	w9, w10, w9, mi
+   13554: 52803fca     	mov	w10, #0x1fe             // =510
+   13558: 33026d2b     	bfxil	w11, w9, #2, #26
+   1355c: 72ab000a     	movk	w10, #0x5800, lsl #16
+   13560: 2902ae8a     	stp	w10, w11, [x20, #0x14]
+   13564: aa1403e0     	mov	x0, x20
+   13568: 52801001     	mov	w1, #0x80               // =128
+   1356c: 94000026     	bl	0x13604 <sync_code>
+   13570: f94002c0     	ldr	x0, [x22]
+   13574: 52840001     	mov	w1, #0x2000             // =8192
+   13578: 528000a2     	mov	w2, #0x5                // =5
+   1357c: 94000201     	bl	0x13d80 <mprotect@plt>
+   13580: 34000060     	cbz	w0, 0x1358c <install+0x2c0>
+   13584: 12800080     	mov	w0, #-0x5               // =-5
+   13588: 14000018     	b	0x135e8 <install+0x31c>
+   1358c: 9274ce60     	and	x0, x19, #0xfffffffffffff000
+   13590: 52820001     	mov	w1, #0x1000             // =4096
+   13594: 528000e2     	mov	w2, #0x7                // =7
+   13598: 940001fa     	bl	0x13d80 <mprotect@plt>
+   1359c: 34000060     	cbz	w0, 0x135a8 <install+0x2dc>
+   135a0: 128000a0     	mov	w0, #-0x6               // =-6
+   135a4: 14000011     	b	0x135e8 <install+0x31c>
+   135a8: 11000ea8     	add	w8, w21, #0x3
+   135ac: f10002bf     	cmp	x21, #0x0
+   135b0: 52a28009     	mov	w9, #0x14000000         // =335544320
+   135b4: 1a954108     	csel	w8, w8, w21, mi
+   135b8: aa1303e0     	mov	x0, x19
+   135bc: 52800081     	mov	w1, #0x4                // =4
+   135c0: 33026d09     	bfxil	w9, w8, #2, #26
+   135c4: b9000269     	str	w9, [x19]
+   135c8: 9400000f     	bl	0x13604 <sync_code>
+   135cc: 9274ce60     	and	x0, x19, #0xfffffffffffff000
+   135d0: 52820001     	mov	w1, #0x1000             // =4096
+   135d4: 528000a2     	mov	w2, #0x5                // =5
+   135d8: 940001ea     	bl	0x13d80 <mprotect@plt>
+   135dc: 128000c8     	mov	w8, #-0x7               // =-7
+   135e0: 7100001f     	cmp	w0, #0x0
+   135e4: 1a8803e0     	csel	w0, wzr, w8, eq
+   135e8: a9454ff4     	ldp	x20, x19, [sp, #0x50]
+   135ec: f9400bfb     	ldr	x27, [sp, #0x10]
+   135f0: a94457f6     	ldp	x22, x21, [sp, #0x40]
+   135f4: a9435ff8     	ldp	x24, x23, [sp, #0x30]
+   135f8: a94267fa     	ldp	x26, x25, [sp, #0x20]
+   135fc: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+   13600: d65f03c0     	ret

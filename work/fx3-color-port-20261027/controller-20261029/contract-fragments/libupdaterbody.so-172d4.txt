@@ -1,0 +1,19 @@
+000172d4 stp        x29, x30, [sp, #-0x20]!
+000172d8 and        x2, x1, #0x1ff
+000172dc cmp        x2, #0
+000172e0 mov        x29, sp
+000172e4 ldr        x0, [x0, #8]
+000172e8 str        x19, [sp, #0x10]
+000172ec mov        x19, x1
+000172f0 add        x1, x1, #0x200
+000172f4 sub        x1, x1, x2
+000172f8 csel       x19, x1, x19, ne
+000172fc ldr        x1, [x0]
+00017300 ldr        x2, [x1, #0x50]
+00017304 mov        x1, x19
+00017308 blr        x2
+0001730c cmp        x19, x0
+00017310 cset       w0, eq
+00017314 ldr        x19, [sp, #0x10]
+00017318 ldp        x29, x30, [sp], #0x20
+0001731c ret        

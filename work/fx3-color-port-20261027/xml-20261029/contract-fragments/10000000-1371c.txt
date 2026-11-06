@@ -1,0 +1,90 @@
+0001371c stp        x29, x30, [sp, #-0xc0]!
+00013720 mov        x29, sp
+00013724 stp        x19, x20, [sp, #0x10]
+00013728 cbz        x1, #0x13738
+0001372c ldr        x0, [x1, #0x20]
+00013730 mov        x20, x1
+00013734 cbnz       x0, #0x13850
+00013738 mov        w19, #0x1a
+0001373c adrp       x2, #0x1b000
+00013740 movk       w19, #3, lsl #16
+00013744 adrp       x0, #0x1b000
+00013748 add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+0001374c mov        w1, w19
+00013750 add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00013754 mov        w3, #0x63
+00013758 bl         #0x10930 ; printf
+0001375c mov        x0, #0x10
+00013760 bl         #0xfd80 ; __cxa_allocate_exception
+00013764 str        w19, [x0, #8]
+00013768 adrp       x1, #0x31000
+0001376c adrp       x2, #0x31000
+00013770 strb       wzr, [x0, #0xc]
+00013774 ldr        x1, [x1, #0xe30]
+00013778 ldr        x2, [x2, #0xe88]
+0001377c add        x1, x1, #0x10
+00013780 str        x1, [x0]
+00013784 adrp       x1, #0x31000
+00013788 ldr        x1, [x1, #0xfc0]
+0001378c bl         #0x10700 ; __cxa_throw
+00013790 mov        x0, x19
+00013794 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00013798 add        x1, x29, #0x40
+0001379c bl         #0x1b4c8
+000137a0 cbnz       w0, #0x1383c
+000137a4 ldr        x0, [x20, #0x20]
+000137a8 ldr        x1, [x0]
+000137ac ldr        x2, [x1, #0x20]
+000137b0 mov        x1, x19
+000137b4 blr        x2
+000137b8 tst        w0, #0xff
+000137bc b.ne       #0x1383c
+000137c0 mov        x0, x19
+000137c4 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+000137c8 mov        x4, x0
+000137cc adrp       x2, #0x1b000
+000137d0 adrp       x0, #0x1b000
+000137d4 mov        w1, #2
+000137d8 add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+000137dc add        x0, x0, #0x881 ; literal 'UdrAPI,%d,%s:%d,""%s""\n'
+000137e0 mov        w3, #0x6f
+000137e4 movk       w1, #3, lsl #16
+000137e8 bl         #0x10930 ; printf
+000137ec mov        x0, #0x10
+000137f0 bl         #0xfd80 ; __cxa_allocate_exception
+000137f4 adrp       x1, #0x31000
+000137f8 adrp       x2, #0x31000
+000137fc ldr        x1, [x1, #0xe30]
+00013800 ldr        x2, [x2, #0xe88]
+00013804 add        x1, x1, #0x10
+00013808 str        x1, [x0]
+0001380c mov        w1, #2
+00013810 movk       w1, #3, lsl #16
+00013814 str        w1, [x0, #8]
+00013818 adrp       x1, #0x31000
+0001381c strb       wzr, [x0, #0xc]
+00013820 ldr        x1, [x1, #0xfc0]
+00013824 bl         #0x10700 ; __cxa_throw
+00013828 mov        x20, x0
+0001382c mov        x0, x19
+00013830 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00013834 mov        x0, x20
+00013838 bl         #0x107a0 ; _Unwind_Resume
+0001383c mov        x0, x19
+00013840 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00013844 ldp        x19, x20, [sp, #0x10]
+00013848 ldp        x29, x30, [sp], #0xc0
+0001384c ret        
+00013850 add        x19, x29, #0x20
+00013854 mov        x0, x19
+00013858 bl         #0x10580 ; Updater::StringHandler::StringHandler
+0001385c ldr        x0, [x20, #8]
+00013860 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00013864 adrp       x3, #0x1b000
+00013868 adrp       x2, #0x1b000
+0001386c mov        x1, x0
+00013870 add        x3, x3, #0xa94 ; literal 'config/uconfig.xml'
+00013874 add        x2, x2, #0xc18
+00013878 mov        x0, x19
+0001387c bl         #0x10850 ; Updater::StringHandler::SetString
+00013880 b          #0x13790

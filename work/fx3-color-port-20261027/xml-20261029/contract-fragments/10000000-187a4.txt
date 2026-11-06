@@ -1,0 +1,216 @@
+000187a4 stp        x29, x30, [sp, #-0x90]!
+000187a8 cmp        x1, #0
+000187ac ccmp       x2, #0, #4, ne
+000187b0 mov        x29, sp
+000187b4 stp        x19, x20, [sp, #0x10]
+000187b8 str        x21, [sp, #0x20]
+000187bc b.ne       #0x18818
+000187c0 mov        w19, #0x1a
+000187c4 mov        w3, #0x41
+000187c8 movk       w19, #3, lsl #16
+000187cc adrp       x2, #0x1c000
+000187d0 adrp       x0, #0x1b000
+000187d4 add        x2, x2, #0x117 ; literal 'Plugin.cpp'
+000187d8 mov        w1, w19
+000187dc add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+000187e0 bl         #0x10930 ; printf
+000187e4 mov        x0, #0x10
+000187e8 bl         #0xfd80 ; __cxa_allocate_exception
+000187ec str        w19, [x0, #8]
+000187f0 adrp       x1, #0x31000
+000187f4 adrp       x2, #0x31000
+000187f8 strb       wzr, [x0, #0xc]
+000187fc ldr        x1, [x1, #0xe30]
+00018800 ldr        x2, [x2, #0xe88]
+00018804 add        x1, x1, #0x10
+00018808 str        x1, [x0]
+0001880c adrp       x1, #0x31000
+00018810 ldr        x1, [x1, #0xfc0]
+00018814 bl         #0x10700 ; __cxa_throw
+00018818 mov        x20, x2
+0001881c add        x2, x29, #0x90
+00018820 mov        x21, x1
+00018824 adrp       x1, #0x1b000
+00018828 mov        w19, w0
+0001882c add        x1, x1, #0xf0c ; literal 'module'
+00018830 mov        x0, x20
+00018834 str        xzr, [x2, #-0x50]!
+00018838 bl         #0x10760 ; Updater::Xml::DomElement::queryStringAttribute
+0001883c cbnz       w0, #0x18af4
+00018840 ldr        x0, [x29, #0x40]
+00018844 ldrb       w0, [x0]
+00018848 cbz        w0, #0x18af4
+0001884c add        x2, x29, #0x90
+00018850 adrp       x1, #0x1c000
+00018854 add        x1, x1, #0xe0 ; literal 'param'
+00018858 mov        x0, x20
+0001885c str        xzr, [x2, #-0x48]!
+00018860 bl         #0x10760 ; Updater::Xml::DomElement::queryStringAttribute
+00018864 cbz        w0, #0x18870
+00018868 str        xzr, [x29, #0x48]
+0001886c b          #0x1887c
+00018870 ldr        x0, [x29, #0x48]
+00018874 ldrb       w0, [x0]
+00018878 cbz        w0, #0x18868
+0001887c ldr        x1, [x29, #0x48]
+00018880 cbz        x1, #0x18898
+00018884 adrp       x0, #0x1c000
+00018888 add        x0, x0, #1
+0001888c bl         #0x10530 ; strcmp
+00018890 cbnz       w0, #0x18898
+00018894 str        x21, [x29, #0x48]
+00018898 add        x21, x29, #0x50
+0001889c mov        x0, x21
+000188a0 bl         #0x10580 ; Updater::StringHandler::StringHandler
+000188a4 cmp        w19, #9
+000188a8 b.ls       #0x18910
+000188ac adrp       x2, #0x1c000
+000188b0 adrp       x0, #0x1b000
+000188b4 mov        w1, #0x1a
+000188b8 add        x2, x2, #0x117 ; literal 'Plugin.cpp'
+000188bc add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+000188c0 mov        w3, #0x56
+000188c4 movk       w1, #3, lsl #16
+000188c8 bl         #0x10930 ; printf
+000188cc mov        x0, #0x10
+000188d0 bl         #0xfd80 ; __cxa_allocate_exception
+000188d4 adrp       x1, #0x31000
+000188d8 adrp       x2, #0x31000
+000188dc ldr        x1, [x1, #0xe30]
+000188e0 ldr        x2, [x2, #0xe88]
+000188e4 add        x1, x1, #0x10
+000188e8 str        x1, [x0]
+000188ec mov        w1, #0x1a
+000188f0 movk       w1, #3, lsl #16
+000188f4 str        w1, [x0, #8]
+000188f8 adrp       x1, #0x31000
+000188fc strb       wzr, [x0, #0xc]
+00018900 ldr        x1, [x1, #0xfc0]
+00018904 bl         #0x10700 ; __cxa_throw
+00018908 mov        x19, x0
+0001890c b          #0x18a48
+00018910 add        x2, x29, #0x90
+00018914 adrp       x3, #0x1c000
+00018918 adrp       x1, #0x1c000
+0001891c strh       wzr, [x29, #0x38]
+00018920 add        w19, w19, #0x30
+00018924 add        x3, x3, #4
+00018928 add        x1, x1, #6 ; literal 'export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE='
+0001892c mov        x0, x21
+00018930 strb       w19, [x2, #-0x58]!
+00018934 bl         #0x10850 ; Updater::StringHandler::SetString
+00018938 add        x20, x29, #0x70
+0001893c mov        x0, x20
+00018940 bl         #0x10580 ; Updater::StringHandler::StringHandler
+00018944 ldr        x0, [x29, #0x48]
+00018948 adrp       x19, #0x1c000
+0001894c cbnz       x0, #0x1897c
+00018950 mov        x0, x21
+00018954 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00018958 ldr        x3, [x29, #0x40]
+0001895c mov        x1, x0
+00018960 add        x2, x19, #0xb3
+00018964 mov        x0, x20
+00018968 bl         #0x10850 ; Updater::StringHandler::SetString
+0001896c mov        x0, x20
+00018970 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00018974 bl         #0x104b0 ; system
+00018978 b          #0x189a0
+0001897c mov        x0, x21
+00018980 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00018984 add        x4, x19, #0xb3
+00018988 mov        x1, x0
+0001898c ldp        x3, x5, [x29, #0x40]
+00018990 mov        x2, x4
+00018994 mov        x0, x20
+00018998 bl         #0x103c0 ; Updater::StringHandler::SetString
+0001899c b          #0x1896c
+000189a0 mov        w19, w0
+000189a4 bl         #0x103d0 ; __errno_location
+000189a8 ldr        w4, [x0]
+000189ac cmp        w4, #0xa
+000189b0 b.ne       #0x189d8
+000189b4 adrp       x2, #0x1c000
+000189b8 adrp       x1, #0x1c000
+000189bc adrp       x0, #0x1c000
+000189c0 add        x2, x2, #0x1c0 ; literal 'Execute'
+000189c4 add        x1, x1, #0x117 ; literal 'Plugin.cpp'
+000189c8 add        x0, x0, #0xb5 ; literal '[%s] %s @ %d ignore system error errno(%d)'
+000189cc mov        w3, #0x65
+000189d0 bl         #0x10930 ; printf
+000189d4 b          #0x18acc
+000189d8 tst        x19, #0x7f
+000189dc b.eq       #0x18a58
+000189e0 adrp       x2, #0x1c000
+000189e4 adrp       x0, #0x1b000
+000189e8 mov        w1, #0xd
+000189ec add        x2, x2, #0x117 ; literal 'Plugin.cpp'
+000189f0 add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+000189f4 mov        w3, #0x6a
+000189f8 movk       w1, #3, lsl #16
+000189fc bl         #0x10930 ; printf
+00018a00 mov        x0, #0x10
+00018a04 bl         #0xfd80 ; __cxa_allocate_exception
+00018a08 adrp       x1, #0x31000
+00018a0c adrp       x2, #0x31000
+00018a10 ldr        x1, [x1, #0xe30]
+00018a14 ldr        x2, [x2, #0xe88]
+00018a18 add        x1, x1, #0x10
+00018a1c str        x1, [x0]
+00018a20 mov        w1, #0xd
+00018a24 movk       w1, #3, lsl #16
+00018a28 str        w1, [x0, #8]
+00018a2c adrp       x1, #0x31000
+00018a30 strb       wzr, [x0, #0xc]
+00018a34 ldr        x1, [x1, #0xfc0]
+00018a38 bl         #0x10700 ; __cxa_throw
+00018a3c mov        x19, x0
+00018a40 mov        x0, x20
+00018a44 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00018a48 mov        x0, x21
+00018a4c bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00018a50 mov        x0, x19
+00018a54 bl         #0x107a0 ; _Unwind_Resume
+00018a58 ubfx       x19, x19, #8, #8
+00018a5c cmp        w19, #0x7f
+00018a60 b.ne       #0x18ad0
+00018a64 mov        x0, x20
+00018a68 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00018a6c mov        x4, x0
+00018a70 adrp       x2, #0x1c000
+00018a74 adrp       x0, #0x1b000
+00018a78 mov        w1, #0xd
+00018a7c add        x2, x2, #0x117 ; literal 'Plugin.cpp'
+00018a80 add        x0, x0, #0x881 ; literal 'UdrAPI,%d,%s:%d,""%s""\n'
+00018a84 mov        w3, #0x6f
+00018a88 movk       w1, #3, lsl #16
+00018a8c bl         #0x10930 ; printf
+00018a90 mov        x0, #0x10
+00018a94 bl         #0xfd80 ; __cxa_allocate_exception
+00018a98 adrp       x1, #0x31000
+00018a9c adrp       x2, #0x31000
+00018aa0 ldr        x1, [x1, #0xe30]
+00018aa4 ldr        x2, [x2, #0xe88]
+00018aa8 add        x1, x1, #0x10
+00018aac str        x1, [x0]
+00018ab0 mov        w1, #0xd
+00018ab4 movk       w1, #3, lsl #16
+00018ab8 str        w1, [x0, #8]
+00018abc adrp       x1, #0x31000
+00018ac0 strb       wzr, [x0, #0xc]
+00018ac4 ldr        x1, [x1, #0xfc0]
+00018ac8 bl         #0x10700 ; __cxa_throw
+00018acc mov        w19, #0
+00018ad0 mov        x0, x20
+00018ad4 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00018ad8 mov        x0, x21
+00018adc bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00018ae0 ldr        x21, [sp, #0x20]
+00018ae4 mov        w0, w19
+00018ae8 ldp        x19, x20, [sp, #0x10]
+00018aec ldp        x29, x30, [sp], #0x90
+00018af0 ret        
+00018af4 mov        w19, #2
+00018af8 mov        w3, #0x45
+00018afc movk       w19, #3, lsl #16
+00018b00 b          #0x187cc

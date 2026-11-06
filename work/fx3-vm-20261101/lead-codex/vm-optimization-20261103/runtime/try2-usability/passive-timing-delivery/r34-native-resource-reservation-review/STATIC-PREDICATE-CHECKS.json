@@ -1,0 +1,45 @@
+{
+  "scope": "Python integer arithmetic of decoded original predicates only; no guest execution, mock native call, or allocator success proof",
+  "checked_original_words": [
+    {
+      "VA": "0x103368",
+      "file_offset": "0x103368",
+      "instruction_word": "0x924006e0",
+      "matched": true
+    },
+    {
+      "VA": "0x10336c",
+      "file_offset": "0x10336c",
+      "instruction_word": "0xf110031f",
+      "matched": true
+    },
+    {
+      "VA": "0x103370",
+      "file_offset": "0x103370",
+      "instruction_word": "0xfa408800",
+      "matched": true
+    },
+    {
+      "VA": "0xf9794",
+      "file_offset": "0xf9794",
+      "instruction_word": "0x52800062",
+      "matched": true
+    },
+    {
+      "VA": "0xf97bc",
+      "file_offset": "0xf97bc",
+      "instruction_word": "0x97fd74b1",
+      "matched": true
+    }
+  ],
+  "checks": {
+    "UI_physical_4_aligned": true,
+    "UI_bytes_gt_0x400": true,
+    "UI_in_first_f96f4_band": true,
+    "native_file_flags_match_compiled_uc_mask": true,
+    "mmap_phys_end_below_48bits": true,
+    "size_0x400_fails_explicit_gate": true,
+    "misaligned_address_fails_explicit_gate": true
+  },
+  "count": 7
+}

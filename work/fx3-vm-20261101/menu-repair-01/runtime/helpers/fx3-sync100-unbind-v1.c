@@ -1,0 +1,4 @@
+typedef unsigned long U;extern U kallsyms_lookup_name(const char*);extern int printk(const char*,...);
+int init_module(void){int(*fn)(void)=(void*)kallsyms_lookup_name("fx3_sync100_shutdown");if(!fn){printk("FX3_SYNC100_UNBIND_HELPER result=-7 reason=no_symbol\n");return -7;}int rc=fn();printk("FX3_SYNC100_UNBIND_HELPER result=%d primary_module_resident=1\n",rc);return rc;}
+void cleanup_module(void){}
+__asm__(".section .modinfo,\"a\"\n.asciz \"license=GPL\"\n.asciz \"author=FX3 VM compatibility model\"\n.asciz \"depends=\"\n.asciz \"vermagic=4.9.337-scel+ SMP preempt mod_unload aarch64\"\n.section .gnu.linkonce.this_module,\"aw\"\n.balign 64\n.global __this_module\n.type __this_module,%object\n__this_module:\n.zero 24\n.asciz \"fx3_sync100_unbind_v1\"\n.zero 0x158-(.-__this_module)\n.quad init_module\n.zero 0x2b8-(.-__this_module)\n.quad cleanup_module\n.zero 0x300-(.-__this_module)\n.size __this_module, .-__this_module\n");

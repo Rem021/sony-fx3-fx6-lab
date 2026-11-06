@@ -1,0 +1,52 @@
+{
+  "task_id": "task_65a5481d9762",
+  "dispatch_id": "ctx_8eeb14b71177",
+  "outcome": "succeeded",
+  "scope": "independent read-only r35 text/JSON review",
+  "reported_findings": [
+    {
+      "id": "F1",
+      "priority_when_found": "P2",
+      "status": "closed_in_followup_source_and_host_receipt_scope",
+      "title": "bind-first category suppressed later first publication export",
+      "found_source_sha256": "d3ec88635bf5ea1c5b66890bb9c5c81c4205ea150ee0db17ffe0a03aadb07664",
+      "fixed_source_sha256": "8b12932497189be9163f2c98ff7273ff097380c62c6142ef0196f4a68669986b",
+      "native_reachability_proven": false,
+      "compiled_C_or_guest_reexecuted_by_reviewer": false
+    }
+  ],
+  "additional_confirmed_open_code_defects": 0,
+  "existing_overlong_line_issue": "source_fix_and_coordinator_two_case_host_CLI_receipt_reviewed; not re-reported as new",
+  "reviewer_model_cases": 120,
+  "final_artifact_or_guest_acceptance": false,
+  "next_gate": "coordinator checks final stable source/test/host receipt/AArch64 build/assembly hash binding after sole implementation owner finishes",
+  "report_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx3-r35-review/REVIEW.md",
+  "snapshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx3-r35-review/snapshot.json",
+  "artifacts": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx3-r35-review/REVIEW.md",
+      "sha256": "f660d9b2f5079152b04d9d9eb126b90ed44685dc4ee1c5161cb810ff93f1ff8b",
+      "bytes": 12976
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx3-r35-review/snapshot.json",
+      "sha256": "d2101f1fab87d5976fdf8e40f033d5b4b0442d5c7e58cf61ec59cbd9bbfe2daf",
+      "bytes": 27502
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx3-r35-review/phase-key-trace.json",
+      "sha256": "ec0b2da98677d7527b93998711ae5686797aad2c0e4b90304e46a54b1da7f042",
+      "bytes": 1289
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx3-r35-review/static_phase_review.py",
+      "sha256": "a69b097aa5fd0e7b4eb8a8de8b8f522230ee88cac600ace3fdb3a16041cc335a",
+      "bytes": 4000
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx3-r35-review/phase-fix-model.json",
+      "sha256": "7d5162a33740cb360a44e306602b45171b6d97c75e3740924307d01a83ee545e",
+      "bytes": 193924
+    }
+  ]
+}

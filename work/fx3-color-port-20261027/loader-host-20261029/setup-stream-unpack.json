@@ -1,0 +1,57 @@
+{
+  "source_sha256": "52feb1eac680e2da5ed17da333e979b9985b293a363596cf2bc1f35764cce1a7",
+  "stream_offset": 1061888,
+  "stream_type": 3,
+  "files": 3,
+  "parsed_end": 119508225,
+  "source_bytes": 119508225,
+  "members": [
+    {
+      "index": 0,
+      "name": "0x0409.ini",
+      "header_offset": 1061934,
+      "data_offset": 1061978,
+      "encoded_bytes": 4607,
+      "flags": 6,
+      "InstallShield_obfuscation": "name-derived public ISx byte transform; key index resets every1024 bytes",
+      "zlib_complete": true,
+      "zlib_adler_checked": true,
+      "encoded_sha256": "b98189abda0386ae41429273b310dcecfde4c52e77c94c4fb3a2f351599c20cf",
+      "bytes": 22480,
+      "sha256": "8b76df0ffc9a226b532b60936765b852b89780c6e475c152f7c320e085e43948",
+      "output": "host-extracted/0x0409.ini"
+    },
+    {
+      "index": 1,
+      "name": "SNC toolbox.msi",
+      "header_offset": 1066585,
+      "data_offset": 1066639,
+      "encoded_bytes": 118440220,
+      "flags": 6,
+      "InstallShield_obfuscation": "name-derived public ISx byte transform; key index resets every1024 bytes",
+      "zlib_complete": true,
+      "zlib_adler_checked": true,
+      "encoded_sha256": "f31d249e34bef2bbdd36a71bf7d0c36af7d9ea609ea8940738c3340cc50fd7fd",
+      "bytes": 121112576,
+      "sha256": "ad631b592ff73733136e74f56ecd9fe6a61e1074767e7ab63575c46bc90c8549",
+      "output": "host-extracted/SNC toolbox.msi"
+    },
+    {
+      "index": 2,
+      "name": "Setup.ini",
+      "header_offset": 119506859,
+      "data_offset": 119506901,
+      "encoded_bytes": 1324,
+      "flags": 6,
+      "InstallShield_obfuscation": "name-derived public ISx byte transform; key index resets every1024 bytes",
+      "zlib_complete": true,
+      "zlib_adler_checked": true,
+      "encoded_sha256": "50fa168b528fd504bd7dafbbfede924c0053524c0eeef9f5c8ee97b8e83ffb82",
+      "bytes": 5164,
+      "sha256": "364f9b7cfd7e9ba4ece2001ea3001648b44bbc88b806c7329a80e1727360a6d6",
+      "output": "host-extracted/Setup.ini"
+    }
+  ],
+  "reference_commit": "3c4177ddd0519244490ff8e78d380110c8dacdc8",
+  "scope": "Static host-installer unpack only; this public InstallShield transform is not a VENICE type3 decoder. No native Sony execution, MSI actions, installation, host privilege change or devices."
+}

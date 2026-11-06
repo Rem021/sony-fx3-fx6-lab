@@ -1,0 +1,42 @@
+000edae0 mov      w3, w0
+000edae4 adrp     x0, #0x262000
+000edae8 ldr      x0, [x0, #0xdc0]
+000edaec ldr      w0, [x0]
+000edaf0 cbz      w0, #0xedb80
+000edaf4 adrp     x0, #0x261000
+000edaf8 ldr      x0, [x0, #0xf60]
+000edafc ldrb     w1, [x0]
+000edb00 mov      w0, #0
+000edb04 sub      w1, w1, #1
+000edb08 uxtb     w1, w1
+000edb0c cmp      w1, #1
+000edb10 b.hi     #0xedb80
+000edb14 stp      x29, x30, [sp, #-0x50]!
+000edb18 adrp     x2, #0x1f0000
+000edb1c add      x2, x2, #0xddc
+000edb20 mov      x1, #0x14
+000edb24 mov      x29, sp
+000edb28 str      x19, [sp, #0x10]
+000edb2c add      x19, x29, #0x20
+000edb30 mov      x0, x19
+000edb34 bl       #0x56d20 ; snprintf
+000edb38 str      xzr, [x29, #0x48]
+000edb3c adrp     x0, #0x1dd000
+000edb40 add      x1, x29, #0x38
+000edb44 add      x0, x0, #0xace
+000edb48 mov      w3, #0
+000edb4c mov      w2, #3
+000edb50 stp      x0, x19, [x29, #0x38]
+000edb54 bl       #0x56940 ; stm_system
+000edb58 ubfx     x19, x0, #8, #8
+000edb5c cbz      w19, #0xedb74
+000edb60 adrp     x0, #0x1dd000
+000edb64 mov      w1, w19
+000edb68 add      x0, x0, #0xae7
+000edb6c bl       #0x57cd0 ; printf
+000edb70 mov      w0, w19
+000edb74 ldr      x19, [sp, #0x10]
+000edb78 ldp      x29, x30, [sp], #0x50
+000edb7c ret      
+000edb80 ret      
+000edb84 stp      x29, x30, [sp, #-0x20]!

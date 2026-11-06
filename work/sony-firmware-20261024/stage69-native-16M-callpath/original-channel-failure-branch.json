@@ -1,0 +1,147 @@
+{
+  "avcam_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "static_only": true,
+  "instructions": [
+    {
+      "offset": "0x21eeb4",
+      "va": "0xffffffc00121eeb4",
+      "bytes": "a8fbff97",
+      "asm": "bl #0xffffffc00121dd54"
+    },
+    {
+      "offset": "0x21eeb8",
+      "va": "0xffffffc00121eeb8",
+      "bytes": "c0010037",
+      "asm": "tbnz w0, #0, #0xffffffc00121eef0"
+    },
+    {
+      "offset": "0x21eebc",
+      "va": "0xffffffc00121eebc",
+      "bytes": "9b790194",
+      "asm": "bl #0xffffffc00127d528"
+    },
+    {
+      "offset": "0x21eec0",
+      "va": "0xffffffc00121eec0",
+      "bytes": "65ae50b9",
+      "asm": "ldr w5, [x19, #0x10ac]"
+    },
+    {
+      "offset": "0x21eec4",
+      "va": "0xffffffc00121eec4",
+      "bytes": "e6100090",
+      "asm": "adrp x6, #0xffffffc00143a000"
+    },
+    {
+      "offset": "0x21eec8",
+      "va": "0xffffffc00121eec8",
+      "bytes": "c6b82091",
+      "asm": "add x6, x6, #0x82e"
+    },
+    {
+      "offset": "0x21eecc",
+      "va": "0xffffffc00121eecc",
+      "bytes": "010d8052",
+      "asm": "mov w1, #0x68"
+    },
+    {
+      "offset": "0x21eed0",
+      "va": "0xffffffc00121eed0",
+      "bytes": "e4070032",
+      "asm": "mov w4, #3"
+    },
+    {
+      "offset": "0x21eed4",
+      "va": "0xffffffc00121eed4",
+      "bytes": "c7958152",
+      "asm": "mov w7, #0xcae"
+    },
+    {
+      "offset": "0x21eed8",
+      "va": "0xffffffc00121eed8",
+      "bytes": "e2031f2a",
+      "asm": "mov w2, wzr"
+    },
+    {
+      "offset": "0x21eedc",
+      "va": "0xffffffc00121eedc",
+      "bytes": "e3031f2a",
+      "asm": "mov w3, wzr"
+    },
+    {
+      "offset": "0x21eee0",
+      "va": "0xffffffc00121eee0",
+      "bytes": "e81000f0",
+      "asm": "adrp x8, #0xffffffc00143d000"
+    },
+    {
+      "offset": "0x21eee4",
+      "va": "0xffffffc00121eee4",
+      "bytes": "08911d91",
+      "asm": "add x8, x8, #0x764"
+    },
+    {
+      "offset": "0x21eee8",
+      "va": "0xffffffc00121eee8",
+      "bytes": "e80300f9",
+      "asm": "str x8, [sp]"
+    },
+    {
+      "offset": "0x21eeec",
+      "va": "0xffffffc00121eeec",
+      "bytes": "9f790194",
+      "asm": "bl #0xffffffc00127d568"
+    },
+    {
+      "offset": "0x21eef0",
+      "va": "0xffffffc00121eef0",
+      "bytes": "683248f9",
+      "asm": "ldr x8, [x19, #0x1060]"
+    },
+    {
+      "offset": "0x21eef4",
+      "va": "0xffffffc00121eef4",
+      "bytes": "880e00f9",
+      "asm": "str x8, [x20, #0x18]"
+    },
+    {
+      "offset": "0x21eef8",
+      "va": "0xffffffc00121eef8",
+      "bytes": "686a50b9",
+      "asm": "ldr w8, [x19, #0x1068]"
+    },
+    {
+      "offset": "0x21eefc",
+      "va": "0xffffffc00121eefc",
+      "bytes": "882200b9",
+      "asm": "str w8, [x20, #0x20]"
+    },
+    {
+      "offset": "0x21ef00",
+      "va": "0xffffffc00121ef00",
+      "bytes": "683a48f9",
+      "asm": "ldr x8, [x19, #0x1070]"
+    },
+    {
+      "offset": "0x21ef04",
+      "va": "0xffffffc00121ef04",
+      "bytes": "881600f9",
+      "asm": "str x8, [x20, #0x28]"
+    },
+    {
+      "offset": "0x21ef08",
+      "va": "0xffffffc00121ef08",
+      "bytes": "687a50b9",
+      "asm": "ldr w8, [x19, #0x1078]"
+    },
+    {
+      "offset": "0x21ef0c",
+      "va": "0xffffffc00121ef0c",
+      "bytes": "883200b9",
+      "asm": "str w8, [x20, #0x30]"
+    }
+  ],
+  "conclusion": "Local false branch after channel-preparation return emits diagnostics then joins the same output-field copying path; a zero return alone is not proof of original resource cleanup or a safe rejection ABI.",
+  "our_rejection_boundary_is_not_original_cleanup": true,
+  "executed_false_branch_or_actual_recovery": false
+}

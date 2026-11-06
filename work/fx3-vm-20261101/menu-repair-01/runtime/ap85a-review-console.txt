@@ -1,0 +1,80 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap85osdring-85e55c0e",
+  "healthy_observation": false,
+  "cpu_profile": {
+    "smp": 4,
+    "tcg_thread": "multi",
+    "icount_profile": null
+  },
+  "cpu_boot_lines": [
+    {
+      "line": 117,
+      "text": "[   16.123937] CPU1: Booted secondary processor [411fd040]"
+    },
+    {
+      "line": 119,
+      "text": "[   19.123781] CPU2: Booted secondary processor [411fd040]"
+    },
+    {
+      "line": 121,
+      "text": "[   22.184468] CPU3: Booted secondary processor [411fd040]"
+    },
+    {
+      "line": 122,
+      "text": "[   22.190531] Brought up 4 CPUs"
+    },
+    {
+      "line": 123,
+      "text": "[   22.223937] SMP: Total of 4 processors activated."
+    },
+    {
+      "line": 125,
+      "text": "[   22.575750] CPU: All CPU(s) started at EL1"
+    }
+  ],
+  "cpu_online_readback": [
+    "0-3",
+    "0-3",
+    "0-3"
+  ],
+  "real_proc_uptime_samples": [
+    {
+      "sample": 1,
+      "guest_proc_uptime_seconds": 14.01,
+      "guest_idle_seconds": 34.84,
+      "host_elapsed_first_observed_seconds": 14.686266000004252,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    },
+    {
+      "sample": 2,
+      "guest_proc_uptime_seconds": 26.04,
+      "guest_idle_seconds": 80.79,
+      "host_elapsed_first_observed_seconds": 26.651971083017997,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    },
+    {
+      "sample": 3,
+      "guest_proc_uptime_seconds": 38.3,
+      "guest_idle_seconds": 127.32,
+      "host_elapsed_first_observed_seconds": 38.89494545801426,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    }
+  ],
+  "speed_observations": {
+    "peak_all": 0,
+    "last_a18": 0,
+    "backlog_skip": 0,
+    "time_pass": 0,
+    "time_skip": 0,
+    "dequeue_total": 0,
+    "timer_dequeue": 0,
+    "mirror_skip": 0,
+    "actual_UI_updates": 0,
+    "timer_production_probe_hits": 0
+  },
+  "key_threads_sampled_CPUs": [
+    0
+  ],
+  "GPE_approx_blend_marker_count": 0
+}
+AppFw last: {"tid": 308, "name": "AppFw", "allowed_list": "0-2", "state": "S (sleeping)", "syscall": "29 0x3 0xffffffff80000007 0x7ee75026c0 0x7ee7505830 0x0 0x0 0x7ee7502300 0x7f9785dcbc", "stack": ["[<ffffff80080879fc>] __switch_to+0x5c/0x80", "[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]", "[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]", "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]", "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0", "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838", "[<ffffff800819e954>] SyS_ioctl+0x44/0x80", "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c", "[<ffffffffffffffff>] 0xffffffffffffffff"], "last_cpu": 0, "cgroup": ["1:cpuset:/cpu0_1_2_3rt"], "raw": "Name:\tAppFw\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t221\nNgid:\t0\nPid:\t308\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 2971932 kB\nVmSize:\t 2971932 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t   98928 kB\nVmRSS:\t   98928 kB\nRssAnon:\t   39940 kB\nRssFile:\t     424 kB\nRssShmem:\t   58564 kB\nVmData:\t  822088 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   90764 kB\nVmPTE:\t     824 kB\nVmPMD:\t      24 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t81\nSigQ:\t0/4655\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t7\nCpus_allowed_list:\t0-2\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t16\nnonvoluntary_ctxt_switches:\t25\n29 0x3 0xffffffff80000007 0x7ee75026c0 0x7ee7505830 0x0 0x0 0x7ee7502300 0x7f9785dcbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c23cc>] osal_rcv_msg_tmo+0x234/0x328 [osal_uipc]\n[<ffffff80004bf034>] osal_unlock+0xe54/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\nFX3_TASK_AFFINITY_308_BEGIN\n308 (AppFw) S 1 0 0 0 -1 4194624 242 0 0 0 34 187 0 0 -2 0 81 0 1077 3043258368 24732 18446744073709551615 4194304 4229451 549076643280 0 0 0 0 4102 196608 1 0 0 -1 0 1 2 0 0 0 4295760 4298576 4300800 549076646385 549076646445 549076646445 549076647912 0\n1:cpuset:/cpu0_1_2_3rt\nFX3_TASK_AFFINITY_308_END\n"}

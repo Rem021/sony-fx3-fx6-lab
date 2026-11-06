@@ -1,0 +1,51 @@
+{
+  "created_utc": "2026-10-30T16:23:21.647399+00:00",
+  "records": [
+    {
+      "member_basename": "AXS-R7_V600_firmware.f.bin",
+      "local_header_offset": 321079,
+      "requested_bytes": 4096,
+      "full_member_downloaded": false,
+      "request_If_Match": "\"dc96c8d-614b8390d211d\"",
+      "started_utc": "2026-10-30T16:23:21.236680+00:00",
+      "http_status": 206,
+      "http_date": "Fri, 30 Oct 2026 16:23:21 GMT",
+      "response_ETag": "\"dc96c8d-614b8390d211d\"",
+      "Content_Range": "bytes 321079-325174/231304333",
+      "path": "combo-member-prefixes-prefix-etag/AXS-R7_V600_firmware.f.bin.range4096.bin",
+      "bytes": 4096,
+      "sha256": "cb2bddb0cefcd27509a8c8f3089849f6354a3c171d9ad5258bf7f38ceb6c15c0",
+      "result": "MEMBER_PREFIX_ONLY",
+      "local_header_matches_central_directory": true,
+      "payload_prefix_path": "combo-member-prefixes-prefix-etag/AXS-R7_V600_firmware.f.bin.payload-prefix.bin",
+      "payload_prefix_bytes": 3996,
+      "payload_prefix_sha256": "e9832cec38f16165c47be0f04ca607984eda094b8a13441b35e32be335a090df",
+      "first16_hex": "000001354158532d5237000000000000",
+      "response_ETag_matches_requested": true,
+      "tar_ustar_at_257": false,
+      "tar_prefix_members": []
+    },
+    {
+      "member_basename": "MPC-3610_V610_firmware.bin",
+      "local_header_offset": 30219315,
+      "requested_bytes": 4096,
+      "full_member_downloaded": false,
+      "request_If_Match": "\"dc96c8d-614b8390d211d\"",
+      "started_utc": "2026-10-30T16:23:21.526995+00:00",
+      "http_status": 412,
+      "http_date": "Fri, 30 Oct 2026 16:23:21 GMT",
+      "response_ETag": "\"dc96c8d-614b8390db2fc\"",
+      "Content_Range": null,
+      "path": "combo-member-prefixes-prefix-etag/MPC-3610_V610_firmware.bin.range4096.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": "RANGE_OR_OBJECT_PRECONDITION_NOT_SATISFIED"
+    }
+  ],
+  "earlier_range_ETags_equal": false,
+  "identity_warning": "The initial prefix and suffix had different ETags. Do not claim a single verified whole archive or assemble a flashable file from these ranges.",
+  "CRC_of_whole_members_verified": false,
+  "complete_private_loader_or_ISP_obtained": false,
+  "device_actions": 0,
+  "If_Match_selection": "Observed original prefix version"
+}

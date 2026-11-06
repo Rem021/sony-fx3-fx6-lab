@@ -1,0 +1,12 @@
+--- r3:/init
++++ r4:/init
+@@ -329,6 +329,9 @@
+   /bin/busybox sleep 1
+  done) &
+  echo FX3_BACKUP_CP_LIVE_OBSERVER_PID=$!
++ echo "$!" > /tmp/fx3-proc97-observer.identity
++ /simulation/fx3-procdiag-v1 &
++ echo FX3_PROCDIAG_V1_PID=$!
+ 
+  for early in 1 2 3 4 5; do
+   /bin/busybox sleep 1

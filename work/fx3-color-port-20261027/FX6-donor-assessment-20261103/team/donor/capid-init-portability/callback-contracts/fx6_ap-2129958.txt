@@ -1,0 +1,19 @@
+ 2129958: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 212995c: 910003fd     	mov	x29, sp
+ 2129960: f9000bf3     	str	x19, [sp, #0x10]
+ 2129964: aa0003f3     	mov	x19, x0
+ 2129968: d2800300     	mov	x0, #0x18               // =24
+ 212996c: 97e5151d     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 2129970: 52800322     	mov	w2, #0x19               // =25
+ 2129974: b9000002     	str	w2, [x0]
+ 2129978: b9400a62     	ldr	w2, [x19, #0x8]
+ 212997c: b9000402     	str	w2, [x0, #0x4]
+ 2129980: b9400e62     	ldr	w2, [x19, #0xc]
+ 2129984: b9000802     	str	w2, [x0, #0x8]
+ 2129988: f9400a62     	ldr	x2, [x19, #0x10]
+ 212998c: f9000802     	str	x2, [x0, #0x10]
+ 2129990: 97e516c7     	bl	0x1a6f4ac <Application_System_Init+0xe64468>
+ 2129994: f9400bf3     	ldr	x19, [sp, #0x10]
+ 2129998: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 212999c: 52801e60     	mov	w0, #0xf3               // =243
+ 21299a0: 140403d3     	b	0x222a8ec <Application_System_Init+0x161f8a8>

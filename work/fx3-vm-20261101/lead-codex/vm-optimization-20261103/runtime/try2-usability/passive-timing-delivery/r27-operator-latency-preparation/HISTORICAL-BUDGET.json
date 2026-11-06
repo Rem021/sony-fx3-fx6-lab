@@ -1,0 +1,64 @@
+{
+  "original_alarm_seconds": 20,
+  "source": "r26b immutable host/process timeline",
+  "child_rows": [
+    {
+      "action": "standby_review",
+      "includes_failure_cleanup": false,
+      "adapter_child_seconds": 0.061301,
+      "child_code": 0,
+      "wrapper_entry_to_return_seconds": 0.000982208,
+      "child_launch_to_wrapper_entry_seconds": 0.05495808,
+      "wrapper_return_to_child_exit_seconds": 0.005200896
+    },
+    {
+      "action": "click",
+      "includes_failure_cleanup": false,
+      "adapter_child_seconds": 2.671192,
+      "child_code": 0,
+      "wrapper_entry_to_return_seconds": 2.620079167,
+      "child_launch_to_wrapper_entry_seconds": 0.045201152,
+      "wrapper_return_to_child_exit_seconds": 0.005756928
+    },
+    {
+      "action": "observe",
+      "includes_failure_cleanup": false,
+      "adapter_child_seconds": 0.225769,
+      "child_code": 0,
+      "wrapper_entry_to_return_seconds": 0.162666916,
+      "child_launch_to_wrapper_entry_seconds": 0.057413888,
+      "wrapper_return_to_child_exit_seconds": 0.00552832
+    },
+    {
+      "action": "pin",
+      "includes_failure_cleanup": true,
+      "adapter_child_seconds": 2.353122,
+      "child_code": 1
+    }
+  ],
+  "observed_return_to_next_entry_seconds": [
+    9.709404125,
+    9.03171625
+  ],
+  "sum_two_observed_gaps_seconds": 18.741120375,
+  "pin_entry_after_arm_source_seconds": 21.472289,
+  "armed_to_first_wrapper_observation_return_seconds": 2.567882080078125,
+  "conditional_single_observation_two_review_gap_budget_seconds": 21.309002455078126,
+  "conditional_over_20_seconds": 1.3090024550781258,
+  "bound_assumptions": "Use the two observed wrapper-boundary gaps as representative required observation-review and fixed-image-review gaps; delete extra observe; assign zero pin+confirm cost and zero transport beyond measured gaps; not a prediction or exact model duration.",
+  "unknown": [
+    "tool image serialization/delivery completion",
+    "model image receive time",
+    "model review completion",
+    "scheduler delay",
+    "exact cost of the extra functions.wait",
+    "real pin and confirm duration because neither completed"
+  ],
+  "yield_evidence": {
+    "click_cell_id": "11",
+    "pin_cell_id": "13",
+    "only_same_cell_wait_used": true,
+    "no_action_reexecuted": true
+  },
+  "claim": "No reasonable headroom at r26b observed call-gap level under these assumptions; not a universal lower bound on all future model calls."
+}

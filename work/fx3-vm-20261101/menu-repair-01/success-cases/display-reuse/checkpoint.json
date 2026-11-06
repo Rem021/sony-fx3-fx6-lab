@@ -1,0 +1,30 @@
+{
+  "created_utc": "2026-11-01T12:08:44.315929+00:00",
+  "phase": "display/interfaces + startup resolved + LIRO state gap",
+  "completed": [
+    "same FX3 original ELF symbols and relocations verified",
+    "AP OSD request and completion dispatch static paths verified",
+    "Lz77 RTTI relocation graph derived from FX3 bytes",
+    "direct serial snapshot vs ramfb/QMP requirements separated",
+    "full shell/profile default chain and standard pre-bootin order read",
+    "fixed memory/initrd reference obtained and handed off"
+  ],
+  "not_completed": [
+    "no original FX3 UI frame",
+    "no guest hook built/loaded by this agent",
+    "no input/table runtime validation",
+    "LIRO absent-state cause in private successful A7C2 run remains unresolved"
+  ],
+  "receipts": [
+    "fx3-display-static-proof.json",
+    "display-hook-contract-v1.json",
+    "startup-resolved-contract-v1.json",
+    "startup-wrapper-fetch-receipt.json",
+    "menu-control-fetch-receipt.json",
+    "natural-checker-fetch-receipt.json",
+    "kernel-loader-source-receipt.json",
+    "kernel-loader-source-retry.json"
+  ],
+  "third_party_source_retained_until_root_menu_acceptance": true,
+  "sole_runtime_owner": "/root/fx3_vm_host"
+}

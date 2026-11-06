@@ -1,0 +1,22 @@
+{
+  "status": "NAIVE_ZERO_IS_UNSAFE_FIXED_NONZERO_REJECTS",
+  "cases": [
+    {
+      "actual_original_exit_status": 9,
+      "ptrace_permitted": false,
+      "original_kernel_would_emit_exit_code_field": 0,
+      "naive_accept_zero": true,
+      "correct_fixed_nonzero_observer_accepts": false
+    },
+    {
+      "actual_original_exit_status": 17408,
+      "ptrace_permitted": false,
+      "original_kernel_would_emit_exit_code_field": 0,
+      "naive_accept_zero": true,
+      "correct_fixed_nonzero_observer_accepts": false
+    }
+  ],
+  "kernel_contract_sha256": "4cfe6abf67120ce6e06482e2c5d52e55497f6ad0b2437e6be50c099611e11303",
+  "scoped_test_receipt": "runs-object-observer-final/receipt.json",
+  "not_actual_camera_observation": true
+}

@@ -1,0 +1,1453 @@
+{
+  "status": "PASS_OFFICIAL_AP_CONFIG_BOOT_SOURCE_AND_20_UNIT_BINDINGS_NOT_DEVICE_ACCEPTANCE",
+  "created_utc": "2026-10-27T18:11:46.864373+00:00",
+  "source_sha256": "7628b438cdbefd26ff6ec7374d61d2c9a148c36593c7393e6486bb0164d77fbb",
+  "official_AP": {
+    "sha256": "48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1",
+    "bytes": 66796,
+    "offline_fixed_package_configuration_accepted": true,
+    "device_compatibility_actual_loading_or_runtime_allocation_proven": false,
+    "camera_operations_authorized": false,
+    "version": "for ilc32g12m-ipsxmp     2025/06/20 15:43:19",
+    "unit_count": 603,
+    "target_count": 20,
+    "target_matches": 20,
+    "missing_target_units": [],
+    "target_extent_counts": {
+      "700": 1,
+      "701": 1,
+      "822": 1,
+      "823": 1,
+      "922": 1,
+      "939": 1,
+      "962": 1,
+      "963": 1,
+      "966": 1,
+      "974": 1,
+      "975": 1,
+      "985": 1,
+      "986": 1,
+      "987": 1,
+      "991": 1,
+      "1243": 1,
+      "1244": 1,
+      "1245": 1,
+      "1246": 1,
+      "528413": 1
+    },
+    "max_extent_list_in_complete_file": 8,
+    "rejection": []
+  },
+  "config_checks": [
+    {
+      "label": "official_AP",
+      "result": {
+        "sha256": "48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1",
+        "bytes": 66796,
+        "offline_fixed_package_configuration_accepted": true,
+        "device_compatibility_actual_loading_or_runtime_allocation_proven": false,
+        "camera_operations_authorized": false,
+        "version": "for ilc32g12m-ipsxmp     2025/06/20 15:43:19",
+        "unit_count": 603,
+        "target_count": 20,
+        "target_matches": 20,
+        "missing_target_units": [],
+        "target_extent_counts": {
+          "700": 1,
+          "701": 1,
+          "822": 1,
+          "823": 1,
+          "922": 1,
+          "939": 1,
+          "962": 1,
+          "963": 1,
+          "966": 1,
+          "974": 1,
+          "975": 1,
+          "985": 1,
+          "986": 1,
+          "987": 1,
+          "991": 1,
+          "1243": 1,
+          "1244": 1,
+          "1245": 1,
+          "1246": 1,
+          "528413": 1
+        },
+        "max_extent_list_in_complete_file": 8,
+        "rejection": []
+      }
+    },
+    {
+      "label": "CP_config",
+      "result": {
+        "sha256": "820dc02b6a001636b93fff51d90baaced1ba75cf9bbaa90600dfc7fd7a705166",
+        "bytes": 43320,
+        "offline_fixed_package_configuration_accepted": false,
+        "device_compatibility_actual_loading_or_runtime_allocation_proven": false,
+        "camera_operations_authorized": false,
+        "version": "for ilc8g8g-ipsxcp       2025/02/10 10:35:08",
+        "unit_count": 348,
+        "target_count": 20,
+        "target_matches": 0,
+        "missing_target_units": [
+          700,
+          701,
+          822,
+          823,
+          922,
+          939,
+          962,
+          963,
+          966,
+          974,
+          975,
+          985,
+          986,
+          987,
+          991,
+          1243,
+          1244,
+          1245,
+          1246,
+          528413
+        ],
+        "target_extent_counts": {},
+        "max_extent_list_in_complete_file": 1,
+        "rejection": [
+          "not_exact_pinned_official_AP_config",
+          "different_config_version_or_domain",
+          "missing_target_unit_types"
+        ]
+      }
+    },
+    {
+      "label": "changed_last_version_byte",
+      "result": {
+        "sha256": "1a97e79cf879d6a3e430940858494ddade1811f4d69dcd881a5dea64869e33e0",
+        "bytes": 66796,
+        "offline_fixed_package_configuration_accepted": false,
+        "device_compatibility_actual_loading_or_runtime_allocation_proven": false,
+        "camera_operations_authorized": false,
+        "version": "for ilc32g12m-ipsxmp     2025/06/20 15:43:18",
+        "unit_count": 603,
+        "target_count": 20,
+        "target_matches": 20,
+        "missing_target_units": [],
+        "target_extent_counts": {
+          "700": 1,
+          "701": 1,
+          "822": 1,
+          "823": 1,
+          "922": 1,
+          "939": 1,
+          "962": 1,
+          "963": 1,
+          "966": 1,
+          "974": 1,
+          "975": 1,
+          "985": 1,
+          "986": 1,
+          "987": 1,
+          "991": 1,
+          "1243": 1,
+          "1244": 1,
+          "1245": 1,
+          "1246": 1,
+          "528413": 1
+        },
+        "max_extent_list_in_complete_file": 8,
+        "rejection": [
+          "not_exact_pinned_official_AP_config",
+          "different_config_version_or_domain"
+        ]
+      }
+    },
+    {
+      "label": "truncated_last_byte",
+      "result": {
+        "sha256": "8d6e91f6ec9b675164847c51f8d197fa9988d955806705c2c7eddc94e96cd843",
+        "bytes": 66795,
+        "offline_fixed_package_configuration_accepted": false,
+        "device_compatibility_actual_loading_or_runtime_allocation_proven": false,
+        "camera_operations_authorized": false,
+        "rejection": [
+          "invalid_or_incomplete_layout"
+        ],
+        "parse_error": "truncated_config_at_0x104c0"
+      }
+    },
+    {
+      "label": "short_header",
+      "result": {
+        "sha256": "41681f90ae14d87dee5d37d19500fc21d85c2b3e7b0dd697a27c36d03e3606ba",
+        "bytes": 79,
+        "offline_fixed_package_configuration_accepted": false,
+        "device_compatibility_actual_loading_or_runtime_allocation_proven": false,
+        "camera_operations_authorized": false,
+        "rejection": [
+          "invalid_or_incomplete_layout"
+        ],
+        "parse_error": "truncated_config_at_0x0"
+      }
+    },
+    {
+      "label": "appended_byte",
+      "result": {
+        "sha256": "9c096d0e2bddc869b5ffaf89b10242046b76cbb55aaaf0b724adc41d331d64ed",
+        "bytes": 66797,
+        "offline_fixed_package_configuration_accepted": false,
+        "device_compatibility_actual_loading_or_runtime_allocation_proven": false,
+        "camera_operations_authorized": false,
+        "rejection": [
+          "invalid_or_incomplete_layout"
+        ],
+        "parse_error": "unexpected_trailing_bytes"
+      }
+    }
+  ],
+  "mode_unit_bindings": [
+    {
+      "declared_mode": 21,
+      "rows": [
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x368988",
+            "unit_type": 974,
+            "buffer_kind": 6,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf328",
+          "AP_extent_types": [
+            1310
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x368998",
+            "unit_type": 822,
+            "buffer_kind": 3,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xed88",
+          "AP_extent_types": [
+            1140
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3689a8",
+            "unit_type": 701,
+            "buffer_kind": 4,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xe92c",
+          "AP_extent_types": [
+            978
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3689b8",
+            "unit_type": 823,
+            "buffer_kind": 0,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xed98",
+          "AP_extent_types": [
+            1141
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3689c8",
+            "unit_type": 939,
+            "buffer_kind": 13,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf248",
+          "AP_extent_types": [
+            1267
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3689d8",
+            "unit_type": 985,
+            "buffer_kind": 15,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3a8",
+          "AP_extent_types": [
+            1321
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3689e8",
+            "unit_type": 1243,
+            "buffer_kind": 19,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfce8",
+          "AP_extent_types": [
+            1641
+          ]
+        }
+      ],
+      "every_referenced_unit_exists": true,
+      "every_referenced_unit_has_one_extent_in_official_AP_file": true,
+      "actual_runtime_mode_and_allocation_unproven": true
+    },
+    {
+      "declared_mode": 25,
+      "rows": [
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3691a8",
+            "unit_type": 974,
+            "buffer_kind": 6,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf328",
+          "AP_extent_types": [
+            1310
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3691b8",
+            "unit_type": 700,
+            "buffer_kind": 3,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xe91c",
+          "AP_extent_types": [
+            977
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3691c8",
+            "unit_type": 701,
+            "buffer_kind": 4,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xe92c",
+          "AP_extent_types": [
+            978
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3691d8",
+            "unit_type": 823,
+            "buffer_kind": 0,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xed98",
+          "AP_extent_types": [
+            1141
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3691e8",
+            "unit_type": 922,
+            "buffer_kind": 1,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf198",
+          "AP_extent_types": [
+            1244
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3691f8",
+            "unit_type": 939,
+            "buffer_kind": 13,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf248",
+          "AP_extent_types": [
+            1267
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369208",
+            "unit_type": 985,
+            "buffer_kind": 15,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3a8",
+          "AP_extent_types": [
+            1321
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369218",
+            "unit_type": 991,
+            "buffer_kind": 16,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3f8",
+          "AP_extent_types": [
+            1327
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369228",
+            "unit_type": 1243,
+            "buffer_kind": 19,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfce8",
+          "AP_extent_types": [
+            1641
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369238",
+            "unit_type": 1244,
+            "buffer_kind": 20,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfcf8",
+          "AP_extent_types": [
+            1642
+          ]
+        }
+      ],
+      "every_referenced_unit_exists": true,
+      "every_referenced_unit_has_one_extent_in_official_AP_file": true,
+      "actual_runtime_mode_and_allocation_unproven": true
+    },
+    {
+      "declared_mode": 31,
+      "rows": [
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369528",
+            "unit_type": 974,
+            "buffer_kind": 6,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf328",
+          "AP_extent_types": [
+            1310
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369538",
+            "unit_type": 700,
+            "buffer_kind": 3,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xe91c",
+          "AP_extent_types": [
+            977
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369548",
+            "unit_type": 701,
+            "buffer_kind": 4,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xe92c",
+          "AP_extent_types": [
+            978
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369558",
+            "unit_type": 823,
+            "buffer_kind": 0,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xed98",
+          "AP_extent_types": [
+            1141
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369568",
+            "unit_type": 975,
+            "buffer_kind": 7,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf338",
+          "AP_extent_types": [
+            1311
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369578",
+            "unit_type": 966,
+            "buffer_kind": 5,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf2d8",
+          "AP_extent_types": [
+            1300
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369588",
+            "unit_type": 528413,
+            "buffer_kind": 9,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xdf94",
+          "AP_extent_types": [
+            156
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369598",
+            "unit_type": 962,
+            "buffer_kind": 2,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf298",
+          "AP_extent_types": [
+            1296
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3695a8",
+            "unit_type": 939,
+            "buffer_kind": 13,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf248",
+          "AP_extent_types": [
+            1267
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3695b8",
+            "unit_type": 985,
+            "buffer_kind": 15,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3a8",
+          "AP_extent_types": [
+            1321
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3695c8",
+            "unit_type": 986,
+            "buffer_kind": 17,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3b8",
+          "AP_extent_types": [
+            1322
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3695d8",
+            "unit_type": 1243,
+            "buffer_kind": 19,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfce8",
+          "AP_extent_types": [
+            1641
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3695e8",
+            "unit_type": 1245,
+            "buffer_kind": 21,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfd08",
+          "AP_extent_types": [
+            1643
+          ]
+        }
+      ],
+      "every_referenced_unit_exists": true,
+      "every_referenced_unit_has_one_extent_in_official_AP_file": true,
+      "actual_runtime_mode_and_allocation_unproven": true
+    },
+    {
+      "declared_mode": 32,
+      "rows": [
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369608",
+            "unit_type": 974,
+            "buffer_kind": 6,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf328",
+          "AP_extent_types": [
+            1310
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369618",
+            "unit_type": 700,
+            "buffer_kind": 3,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xe91c",
+          "AP_extent_types": [
+            977
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369628",
+            "unit_type": 701,
+            "buffer_kind": 4,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xe92c",
+          "AP_extent_types": [
+            978
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369638",
+            "unit_type": 823,
+            "buffer_kind": 0,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xed98",
+          "AP_extent_types": [
+            1141
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369648",
+            "unit_type": 922,
+            "buffer_kind": 1,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf198",
+          "AP_extent_types": [
+            1244
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369658",
+            "unit_type": 975,
+            "buffer_kind": 7,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf338",
+          "AP_extent_types": [
+            1311
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369668",
+            "unit_type": 966,
+            "buffer_kind": 5,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf2d8",
+          "AP_extent_types": [
+            1300
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369678",
+            "unit_type": 528413,
+            "buffer_kind": 9,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xdf94",
+          "AP_extent_types": [
+            156
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369688",
+            "unit_type": 962,
+            "buffer_kind": 2,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf298",
+          "AP_extent_types": [
+            1296
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369698",
+            "unit_type": 963,
+            "buffer_kind": 11,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf2a8",
+          "AP_extent_types": [
+            1297
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3696a8",
+            "unit_type": 939,
+            "buffer_kind": 13,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf248",
+          "AP_extent_types": [
+            1267
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3696b8",
+            "unit_type": 985,
+            "buffer_kind": 15,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3a8",
+          "AP_extent_types": [
+            1321
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3696c8",
+            "unit_type": 991,
+            "buffer_kind": 16,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3f8",
+          "AP_extent_types": [
+            1327
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3696d8",
+            "unit_type": 986,
+            "buffer_kind": 17,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3b8",
+          "AP_extent_types": [
+            1322
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3696e8",
+            "unit_type": 987,
+            "buffer_kind": 18,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xf3c8",
+          "AP_extent_types": [
+            1323
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x3696f8",
+            "unit_type": 1243,
+            "buffer_kind": 19,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfce8",
+          "AP_extent_types": [
+            1641
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369708",
+            "unit_type": 1244,
+            "buffer_kind": 20,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfcf8",
+          "AP_extent_types": [
+            1642
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369718",
+            "unit_type": 1245,
+            "buffer_kind": 21,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfd08",
+          "AP_extent_types": [
+            1643
+          ]
+        },
+        {
+          "original_MPR_row": {
+            "original_table_row": "0x369728",
+            "unit_type": 1246,
+            "buffer_kind": 22,
+            "original_area_word8": 0,
+            "flag12": 0,
+            "tail14": 0
+          },
+          "AP_config_unit_offset": "0xfd18",
+          "AP_extent_types": [
+            1644
+          ]
+        }
+      ],
+      "every_referenced_unit_exists": true,
+      "every_referenced_unit_has_one_extent_in_official_AP_file": true,
+      "actual_runtime_mode_and_allocation_unproven": true
+    }
+  ],
+  "unit_extent_candidate_definitions": [
+    {
+      "unit_type": 700,
+      "unit_offset": "0xe91c",
+      "extent_types": [
+        977
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x747c",
+          "group_type": 1117,
+          "selector_word12": 125,
+          "record_offset": "0x74cc",
+          "raw_words": [
+            0,
+            13,
+            977,
+            608174080,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 701,
+      "unit_offset": "0xe92c",
+      "extent_types": [
+        978
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x7148",
+          "group_type": 36,
+          "selector_word12": 119,
+          "record_offset": "0x71c0",
+          "raw_words": [
+            0,
+            13,
+            978,
+            18874368,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 822,
+      "unit_offset": "0xed88",
+      "extent_types": [
+        1140
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x756c",
+          "group_type": 1117,
+          "selector_word12": 127,
+          "record_offset": "0x75bc",
+          "raw_words": [
+            0,
+            13,
+            1140,
+            608174080,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 823,
+      "unit_offset": "0xed98",
+      "extent_types": [
+        1141
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x5f50",
+          "group_type": 1711,
+          "selector_word12": 87,
+          "record_offset": "0x5fa0",
+          "raw_words": [
+            0,
+            13,
+            1141,
+            301989888,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 922,
+      "unit_offset": "0xf198",
+      "extent_types": [
+        1244
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x6298",
+          "group_type": 1711,
+          "selector_word12": 94,
+          "record_offset": "0x62e8",
+          "raw_words": [
+            0,
+            13,
+            1244,
+            301989888,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 939,
+      "unit_offset": "0xf248",
+      "extent_types": [
+        1267
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x17c",
+          "group_type": 29,
+          "selector_word12": 1,
+          "record_offset": "0x3c0",
+          "raw_words": [
+            0,
+            13,
+            1267,
+            4096,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 962,
+      "unit_offset": "0xf298",
+      "extent_types": [
+        1296
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x6130",
+          "group_type": 1285,
+          "selector_word12": 91,
+          "record_offset": "0x6180",
+          "raw_words": [
+            0,
+            13,
+            1296,
+            75497472,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 963,
+      "unit_offset": "0xf2a8",
+      "extent_types": [
+        1297
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x6400",
+          "group_type": 1285,
+          "selector_word12": 97,
+          "record_offset": "0x6450",
+          "raw_words": [
+            0,
+            13,
+            1297,
+            75497472,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 966,
+      "unit_offset": "0xf2d8",
+      "extent_types": [
+        1300
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x7a30",
+          "group_type": 1525,
+          "selector_word12": 134,
+          "record_offset": "0x7a80",
+          "raw_words": [
+            0,
+            13,
+            1300,
+            33554432,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 974,
+      "unit_offset": "0xf328",
+      "extent_types": [
+        1310
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x22d8",
+          "group_type": 33,
+          "selector_word12": 19,
+          "record_offset": "0x2490",
+          "raw_words": [
+            0,
+            13,
+            1310,
+            11534336,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 975,
+      "unit_offset": "0xf338",
+      "extent_types": [
+        1311
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x1acc",
+          "group_type": 1260,
+          "selector_word12": 13,
+          "record_offset": "0x1ec8",
+          "raw_words": [
+            0,
+            13,
+            1311,
+            8388608,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 985,
+      "unit_offset": "0xf3a8",
+      "extent_types": [
+        1321
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x67fc",
+          "group_type": 51,
+          "selector_word12": 104,
+          "record_offset": "0x684c",
+          "raw_words": [
+            0,
+            13,
+            1321,
+            72695808,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 986,
+      "unit_offset": "0xf3b8",
+      "extent_types": [
+        1322
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x6478",
+          "group_type": 47,
+          "selector_word12": 98,
+          "record_offset": "0x64c8",
+          "raw_words": [
+            0,
+            13,
+            1322,
+            27254784,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 987,
+      "unit_offset": "0xf3c8",
+      "extent_types": [
+        1323
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x6478",
+          "group_type": 47,
+          "selector_word12": 98,
+          "record_offset": "0x64dc",
+          "raw_words": [
+            0,
+            13,
+            1323,
+            27254784,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 991,
+      "unit_offset": "0xf3f8",
+      "extent_types": [
+        1327
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x59d8",
+          "group_type": 1739,
+          "selector_word12": 78,
+          "record_offset": "0x5a50",
+          "raw_words": [
+            0,
+            13,
+            1327,
+            72695808,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 1243,
+      "unit_offset": "0xfce8",
+      "extent_types": [
+        1641
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x689c",
+          "group_type": 51,
+          "selector_word12": 105,
+          "record_offset": "0x68ec",
+          "raw_words": [
+            0,
+            13,
+            1641,
+            80740352,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 1244,
+      "unit_offset": "0xfcf8",
+      "extent_types": [
+        1642
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x5b18",
+          "group_type": 1261,
+          "selector_word12": 80,
+          "record_offset": "0x5bb8",
+          "raw_words": [
+            0,
+            13,
+            1642,
+            80740352,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 1245,
+      "unit_offset": "0xfd08",
+      "extent_types": [
+        1643
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x7148",
+          "group_type": 36,
+          "selector_word12": 119,
+          "record_offset": "0x71ac",
+          "raw_words": [
+            0,
+            13,
+            1643,
+            30408704,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 1246,
+      "unit_offset": "0xfd18",
+      "extent_types": [
+        1644
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x8e30",
+          "group_type": 72,
+          "selector_word12": 158,
+          "record_offset": "0x8e94",
+          "raw_words": [
+            0,
+            13,
+            1644,
+            30408704,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    },
+    {
+      "unit_type": 528413,
+      "unit_offset": "0xdf94",
+      "extent_types": [
+        156
+      ],
+      "candidate_definition_rows": [
+        {
+          "config_group_kind": "rules",
+          "header_offset": "0x6478",
+          "group_type": 47,
+          "selector_word12": 98,
+          "record_offset": "0x64f0",
+          "raw_words": [
+            0,
+            13,
+            156,
+            524288,
+            271
+          ]
+        }
+      ],
+      "actual_active_rule_address_size_and_owner_unproven": true
+    }
+  ],
+  "startup_source_excerpts": {
+    "driver_config_selection": [
+      {
+        "line": 1,
+        "text": "DMMCFG_FILE=/setting/DmmCfg.bin"
+      },
+      {
+        "line": 2,
+        "text": "if [ ! -e $DMMCFG_FILE ] ; then"
+      },
+      {
+        "line": 3,
+        "text": "    DMMCFG_FILE=/setting/DmmConfig.bin"
+      },
+      {
+        "line": 24,
+        "text": "insmod /usr/kmod/dmm.ko DmmConfig=$DMMCFG_FILE"
+      }
+    ],
+    "mounts": [
+      {
+        "line": 1,
+        "text": "/dev/nflasha2\t/setting vfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0"
+      },
+      {
+        "line": 3,
+        "text": "/dev/nflasha8\t/cp\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0"
+      }
+    ],
+    "init2_driver_source": [
+      {
+        "line": 60,
+        "text": "    [ -r $INITRC_DIR/insmod_drv2     ] && . $INITRC_DIR/insmod_drv2"
+      }
+    ]
+  },
+  "actual_fallback_file_exists_or_loaded_hash_unproven": true,
+  "AP_file_is_separate_from_CP_config_in_partition8": true,
+  "new_native_execution_cases": 0,
+  "scripts_camera_Windows_UU_or_host_services_executed": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

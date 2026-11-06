@@ -1,0 +1,108 @@
+{
+  "schema": "fx3-stage104-native-media-start/1",
+  "created_utc": "2026-10-27T11:41:09.216135+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/README.md",
+      "bytes": 7225,
+      "sha256": "c7618813b74fdb1281414cf72b72fff78310a9c81a631b032eb69a6def57f716"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/completed-evidence-review.json",
+      "bytes": 551,
+      "sha256": "ab98b7f58fd7f2cc42204ee0a94e1f0aaf66ead583428f5a447df6e0151be3db"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/goal-status-after.json",
+      "bytes": 314881,
+      "sha256": "05bf7f75adfc01a35c35e6bbd68067c1f2b29893d3ab05cd47b427b44a30f827"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/goal-status-before.json",
+      "bytes": 311969,
+      "sha256": "f07ecefdc8ff9e3b21864a49f6732e5c8973461b48f363955c2ed8268bab7da3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/movie_start.py",
+      "bytes": 11802,
+      "sha256": "146281d636a76a2a4a4615c4fa7547fdfa529ccf3a72a36ec54d792334cd2112"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/review_and_seal.py",
+      "bytes": 14084,
+      "sha256": "a78cab3a4a1e34b82a20f5ed84e4a9090df0b8b528866d8e95934a9c82659a90"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/run-consumer-bound-20261027/executed-source.py",
+      "bytes": 11802,
+      "sha256": "146281d636a76a2a4a4615c4fa7547fdfa529ccf3a72a36ec54d792334cd2112"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/run-consumer-bound-20261027/movie-start-results.json",
+      "bytes": 237765,
+      "sha256": "673f3bec7862c80fc001b159bac508e8d1aaed519ce79e7fddac508202ae1494"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/run-initial-20261027/attempt-failure.json",
+      "bytes": 626,
+      "sha256": "58bab729c5836351b83d176d1af5c034260cb6c591334a74b53f0cbb2b967c8e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/run-initial-20261027/executed-source.py",
+      "bytes": 10966,
+      "sha256": "7cf3021984274f421445479762201c2782f596541981e8a9faee554b7d34d015"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/run-trace-call-bound-20261027/executed-source.py",
+      "bytes": 10966,
+      "sha256": "71a905bb472f85dc2928c9b269affe2549ba9814440d13ab6421a633558eeebf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/run-trace-call-bound-20261027/movie-start-results.json",
+      "bytes": 215529,
+      "sha256": "4ed052d68fa99cf9e6cf554bf77d362bd6a9133f5b828d35276e55ca76e10245"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage104-native-card-recording-start-routing/source-and-scope-audit.json",
+      "bytes": 34331,
+      "sha256": "0fd262c046600dcfa97f2c4c422011c44c57eda81fbe911f9f9a223c870e6fcb"
+    }
+  ],
+  "previous_manifest_sha256": "9e056f460eb6b843f588cbbfb156dc128efc2a51f3187bfb0f5e1046304e5a98",
+  "operations": {
+    "status": "PASS_SHARED_MOVIE_EVENT_SEPARATED_FROM_ORIGINAL_MPR_MEDIA_RECORDING_START",
+    "created_utc": "2026-10-27T11:41:09.216135+00:00",
+    "prior_files_verified": 11,
+    "bounded_phases": 82,
+    "caller_cases": 4,
+    "event_cases": 2,
+    "prepare_cases": 8,
+    "start_cases": 14,
+    "MPR_cases": 6,
+    "formal_source_matches_executed_copy": true,
+    "static_imports_to_definitions_verified": 4,
+    "same_agent_review_not_independent_engine": true,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "f07ecefdc8ff9e3b21864a49f6732e5c8973461b48f363955c2ed8268bab7da3",
+    "after_sha256": "05bf7f75adfc01a35c35e6bbd68067c1f2b29893d3ab05cd47b427b44a30f827"
+  },
+  "readme_index_before_sha256": "072d24d5a145fa861c2e238687ae56c026fa4952df14fb4f8380b5f302845d1c",
+  "readme_index_after_sha256": "1f314b35797fa524aa47fa423b7343d38cce577779c2e2d9ba8648149c140fde",
+  "readme_index_entry": "- [2026-10-27 FX3 共享movie事件与MPR介质录制启动](<work/sony-firmware-20261024/stage104-native-card-recording-start-routing/README.md>)：普通录制另有Prepare/RecStart链，原介质构包及检查前缀82阶段；共享事件不是编码器复用证明。目标主录/恢复未验收，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "selected_original_ranges": [
+    {
+      "source": "/lib/libosal_uipc.so",
+      "source_sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0x6b78",
+      "end_exclusive": "0x6dac",
+      "bytes": 564,
+      "sha256": "2e7f2e3ace2fa828baaa58914089f73f1f72d137237fbb2412c4278c0c687369",
+      "disassembly": "user-register-API.txt"
+    },
+    {
+      "source": "/lib/libosal_uipc.so",
+      "source_sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0x3cd8",
+      "end_exclusive": "0x3d68",
+      "bytes": 144,
+      "sha256": "62965ee066fc8dfa7412932cb550e19039fb5953ce736afec202b0b0952c15aa",
+      "disassembly": "user-register-ioctl.txt"
+    },
+    {
+      "source": "/kmod/osal_uipc.ko",
+      "source_sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+      "address_kind": "section_offset",
+      "section": ".text",
+      "start": "0xe90",
+      "end_exclusive": "0xfc4",
+      "bytes": 308,
+      "sha256": "b65313d4315de5188600bbe103c2d1c68cce84a2bd8e6af59ecffb48a4f2ee5d",
+      "disassembly": "kernel-register-from-user.txt"
+    }
+  ],
+  "route": [
+    "libObj registers0x004b0376; bit15 is0, so user API takes branch6ba4->6ce0->u_osal_reg_msg_queue_cb",
+    "user helper builds async registration payload and ioctl low32 request0x80000008",
+    "kernel registration-from-user stores userspace callback/opaque context in node, selects async reg_msg_queue_cb with uxth(w19) at0xfa8",
+    "sender0x804b0376 has bit31 set but bits30..28 zero, so kernel send takes local low16 queue0x0376; no remote public hook at this branch",
+    "kernel pending proxy and libosal userspace callback dispatch precede business function; registration must actually succeed and service remain alive"
+  ],
+  "kernel_direct_reg_API_slice_is_context_not_actual_user_registration_entry": true,
+  "actual_runtime_registration_observed": false,
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

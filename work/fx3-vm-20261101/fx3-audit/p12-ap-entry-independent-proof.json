@@ -1,0 +1,40 @@
+{
+  "status": "ORIGINAL_IM_EXEC_ATTEMPT_BLOCKED_AT_MISSING_UIPC_DEVICE",
+  "source_run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/p12-im-entry",
+  "receipt_sha256": "35595a64e56ebb4acbe200b3297b28f3a4890d424cb4953a4b625dea38ca808d",
+  "serial_sha256": "66cdd4bd423609171c64a1a3201532a58c0ee1237c2368bf6b092c1b83f569f7",
+  "qemu_runtime_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+  "input_hashes_verified": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-original-im-entry-probe01.dtb",
+      "sha256": "a55ceedf89927ea38a0dbd38c0fe204e216ba190fa72d2bf2969c80cfa010be1"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/fx3-original-im-entry-probe.cpio",
+      "sha256": "916e5b041dbb338b916b99479225da3f9d1e5955d019c085b3f48607b20e770a"
+    }
+  ],
+  "exec_argv": [
+    "/usr/bin/im.elf",
+    "target=qemu"
+  ],
+  "observed_guest_pid": 102,
+  "observed_error": "open /dev/uipc error: : No such file or directory",
+  "error_literal_provider": {
+    "original_guest_library": "/usr/lib/libosal_uipc.so",
+    "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+    "file_offset": "0x8c80",
+    "literal": "open /dev/uipc error: "
+  },
+  "wait_rc_observed": 133,
+  "signal_or_exit_cause_inferred": false,
+  "syscall_trace_obtained": false,
+  "reached_original_ap_main_or_qemu_parser_at_runtime": "not proven; output may originate from dynamic-load constructor or later startup",
+  "menu_display_or_capture_verified": false,
+  "candidate_added_to_default_runtime_manifest": false,
+  "observed_boundary": "The original vendor library used by im attempted its UIPC device path and reported ENOENT. This is concrete missing guest runtime environment; no successful ioctl/shared-memory/CP exchange was supplied or inferred."
+}

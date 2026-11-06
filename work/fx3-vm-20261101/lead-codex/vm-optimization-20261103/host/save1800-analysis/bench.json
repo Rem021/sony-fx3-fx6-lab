@@ -1,0 +1,53 @@
+{
+  "serial_sha256": "54dd1237d678dfd5aa2cd03d0b087a5a45a438d69ab63c7365c587a6272270ec",
+  "serial_bytes": 81321567,
+  "decoded_chars": 80644240,
+  "old_first_read_cpu_ms": 62.706,
+  "candidate_first_read_cpu_ms": 201.825,
+  "old_repeat_read_cpu_ms": 57.875,
+  "candidate_repeat_poll_cpu_ms": 0.118,
+  "old_actual_regex_cpu_ms": 4404.142,
+  "candidate_actual_regex_cpu_ms": 4340.46,
+  "old_two_reject_regex_cpu_ms": 3827.71,
+  "guarded_two_reject_cpu_ms": 249.104,
+  "two_rejects_equal": true,
+  "actual_regex_equal": true,
+  "actual_regex_event_counts": {
+    "opens": 19,
+    "keys_up": 20,
+    "branches": 2,
+    "notify": 2,
+    "freed": 43,
+    "uptime": 0
+  },
+  "old_repeat_file_bytes": 81321567,
+  "candidate_repeat_anchor_bytes": 64,
+  "retained_decoded_chars": 80644240,
+  "frames": [
+    {
+      "stem": "osd-frame-000001",
+      "raw_sha256": "f98398b87e07035b4ca0c3e353f20b42f85e3aa7a75e762e4c40fd3723c3e52a",
+      "raw_bytes": 614400,
+      "rgba_bytes": 1228800,
+      "old_200_cpu_ms": 91.573,
+      "candidate_200_cpu_ms": 5.933
+    },
+    {
+      "stem": "osd-frame-000023",
+      "raw_sha256": "f98398b87e07035b4ca0c3e353f20b42f85e3aa7a75e762e4c40fd3723c3e52a",
+      "raw_bytes": 614400,
+      "rgba_bytes": 1228800,
+      "old_200_cpu_ms": 95.273,
+      "candidate_200_cpu_ms": 5.734
+    },
+    {
+      "stem": "osd-frame-004680",
+      "raw_sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+      "raw_bytes": 614400,
+      "rgba_bytes": 1228800,
+      "old_200_cpu_ms": 66.331,
+      "candidate_200_cpu_ms": 5.834
+    }
+  ],
+  "scope": "full 81.3MB corpus single pass and one unchanged repeat; not a recorded 607-poll run, no guest timing proof"
+}

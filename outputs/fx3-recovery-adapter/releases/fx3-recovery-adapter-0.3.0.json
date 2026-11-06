@@ -1,0 +1,93 @@
+{
+  "version": "0.3.0",
+  "archive": "outputs/fx3-recovery-adapter/releases/fx3-recovery-adapter-0.3.0.zip",
+  "archive_bytes": 51251,
+  "archive_sha256": "fa6b178b439013e2ac0a501ce2ef0a7fabc085b1612642b17eb277dc5b64c0b8",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 9647,
+      "sha256": "9280000fa43a31f94412cbf52e3fa68356149f8822254ecaf0bc83ac3a0c4a5e"
+    },
+    {
+      "path": "NOTICE.md",
+      "bytes": 2482,
+      "sha256": "27e5fd868cebf2a031ad430699c5223742cf318ee9caa26ba00590d9439af42a"
+    },
+    {
+      "path": "fx3_recovery/__init__.py",
+      "bytes": 97,
+      "sha256": "e575f15b97552139a58f7cffa88f877ed6f85e4e6222a74039cf5007ba038dee"
+    },
+    {
+      "path": "fx3_recovery/__main__.py",
+      "bytes": 4394,
+      "sha256": "dfeb660fbca1621ad639147709ed337c1c16f48ab5d545d4ff336f553b0e287c"
+    },
+    {
+      "path": "fx3_recovery/capture.py",
+      "bytes": 18689,
+      "sha256": "7660b8adb472cc4de170c2ca039b8df7709fcd1a39289a7c81010fe1fca7e159"
+    },
+    {
+      "path": "fx3_recovery/engine.py",
+      "bytes": 13266,
+      "sha256": "8a0eba48de3439a927dfbd3d35e857e1f50c639b7d34150480f454147e5312ed"
+    },
+    {
+      "path": "fx3_recovery/fat.py",
+      "bytes": 6833,
+      "sha256": "8ea3c9f11178475393bf2e6946e0ec9d1b1aa89ffecff05085eae3ce17144642"
+    },
+    {
+      "path": "fx3_recovery/files.py",
+      "bytes": 3143,
+      "sha256": "200e867ed94949706f33255cf6b3d5ec86a5e137921b18d23090c772755d6c34"
+    },
+    {
+      "path": "fx3_recovery/profiles.py",
+      "bytes": 2029,
+      "sha256": "dd25cd336b9effa7fff8c01e2ae5e48ee440e63636a6e26eb46cf928fbe52ecd"
+    },
+    {
+      "path": "fx3_recovery/squash.py",
+      "bytes": 10812,
+      "sha256": "23dabb17066c9626a523d5146276c6d7c480b862dcc970b0319b9d8566c43c6a"
+    },
+    {
+      "path": "fx3_recovery/worker.py",
+      "bytes": 4563,
+      "sha256": "26c7bd85990b3ce4b0113eeb280ed977ee82b37306c9f6a4073bef4c12b5811c"
+    },
+    {
+      "path": "tests/test_adapter.py",
+      "bytes": 11143,
+      "sha256": "2c6796f9f6065abe840a901a475529e0a76896cf49eff851be399a7fc0ae6afd"
+    },
+    {
+      "path": "tests/test_capture.py",
+      "bytes": 17139,
+      "sha256": "17e97981fa4e3a9770290eedf2331e35b300491b7e1b42fc021302c507d11e64"
+    },
+    {
+      "path": "tests/test_worker.py",
+      "bytes": 20353,
+      "sha256": "825979d9c9877dc2ce76ebbef90a9a33bc10911e6eaf6554cfac3ca79f4b0105"
+    },
+    {
+      "path": "native/README.md",
+      "bytes": 4226,
+      "sha256": "0bb58dbc6b2e0510a7cf8cf2b0851b21fdbd89766596c3ee4ee938bff53ebda3"
+    },
+    {
+      "path": "native/fx3_p1_reader.c",
+      "bytes": 11792,
+      "sha256": "22d6e613fb2c33861eac93653c7148e34ad22dd3b5b14ac0d4c75d5b903efb29"
+    }
+  ],
+  "source_only": true,
+  "worker_C_candidate_included": true,
+  "camera_loader_or_launch_backend_included": false,
+  "native_binary_or_Sony_firmware_included": false,
+  "hardware_validated": false
+}

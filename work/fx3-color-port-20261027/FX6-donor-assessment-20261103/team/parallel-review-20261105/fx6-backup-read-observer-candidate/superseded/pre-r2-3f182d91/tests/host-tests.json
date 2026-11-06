@@ -1,0 +1,22 @@
+{
+  "status": "PASS_NO_QEMU_FAKE_RSP",
+  "fixture": "fake RSP + target serial map + target appFw bytes; NOT real CPU/menu",
+  "cases": [
+    "current_epoch5_mapping_and_entry_return_capture",
+    "second_key_0x02cf0218_entry_return_capture",
+    "old_ASLR_fixture_not_accepted_by_live_identity",
+    "wrong_ELF_PHDR_machine_word_rejected",
+    "wrong_entry_LR_or_PC_rejected",
+    "wrong_return_frame_rejected",
+    "wrong_return_TID_rejected",
+    "wrong_return_TLS_rejected",
+    "wrong_return_address_rejected",
+    "read_failure_rejected",
+    "timeout_rejected",
+    "residual_breakpoint_cleanup_visible_no_resume",
+    "truncated_or_incomplete_map_rejected_without_fallback",
+    "lost_Z1_ack_remains_possibly_installed_no_resume"
+  ],
+  "count": 14,
+  "core_sha256": "cb54669ab993a1ece400f92e3f4394fa0f63f6f4d4363395fcf6c63c20c23099"
+}

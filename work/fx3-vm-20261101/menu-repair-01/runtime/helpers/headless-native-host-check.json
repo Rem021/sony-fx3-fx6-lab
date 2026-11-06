@@ -1,0 +1,17 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-headless-native-capture-v1.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-headless-native-capture-v1"
+  ],
+  "exit": 0,
+  "stdout": "HEADLESS_CAPTURE_PASS actual_capture_and_ring_code/19_native_lease_paths/all_releases_balanced/original_acquired_sem_ids/zero_ACK_on_failure/copy_byte_equal/8slot_commit_overwrite_hash\n",
+  "stderr": "FX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=0 raster_guard=0 span=614400 result=-1 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=0 raster_guard=0 span=614400 result=-4 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4f read_lease=0 raster_guard=0 span=614400 result=-4 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=0 raster_guard=0 span=614400 result=-1 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=0 raster_guard=0 span=614400 result=-5 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=0 span=614400 result=-6 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=-7 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=-7 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=-8 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=-9 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x59 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=-9 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1\nFX3_OSD_HEADLESS_LEASE fb=0x64 bitmap=0xc8 sem88=0x58 sem78=0x4e read_lease=1 raster_guard=1 span=614400 result=0 original_publish_sem_untouched=1\n",
+  "tested_source_sha256": "1b86147c5bed0dcfec900c150aa5dfc6ba35ddfabb74d6bb75014cc6d18d2d34",
+  "scope": "Exact native capture/ring_commit functions extracted unchanged; native API/identity/extent mocked; VM native dispatch pending"
+}

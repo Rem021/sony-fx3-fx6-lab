@@ -1,0 +1,602 @@
+{
+  "fixture_only": true,
+  "native_visual_process_port": "mock",
+  "files_flock": "real APFS test directories only",
+  "cases": [
+    {
+      "test": "success_repeat_and_actual_audit",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-repeat-420aad24",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "first": {
+        "call_id": "5acec7f9-0c38-408a-9a2a-9cc11302e52c",
+        "receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-repeat-420aad24/cleanup-calls/5acec7f9-0c38-408a-9a2a-9cc11302e52c/result.json",
+        "receipt_sha256": "1e36d32e974b7ad3c3894cbe181c4ee7beb21ef55b9225f8c114309ea6f21306",
+        "manifest_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-repeat-420aad24/cleanup-calls/5acec7f9-0c38-408a-9a2a-9cc11302e52c/MANIFEST.json",
+        "manifest_sha256": "a1c218ecb8db0f666d82319f3d2bd43cc55fa9be39263cb00d06e8cc5c34f431"
+      },
+      "second": {
+        "call_id": "35b8df19-79b6-4de9-9ce4-3288fffcc95d",
+        "receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-repeat-420aad24/cleanup-calls/35b8df19-79b6-4de9-9ce4-3288fffcc95d/result.json",
+        "receipt_sha256": "c2c8d711d686310a6941162607aeda8d7e8108de68cf8ab2c9698d5836aef5a5",
+        "manifest_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-repeat-420aad24/cleanup-calls/35b8df19-79b6-4de9-9ce4-3288fffcc95d/MANIFEST.json",
+        "manifest_sha256": "4e97536f9ec43321cbb7a307ef686afd5706e7cb2f38dd7a033c5113b8234455"
+      },
+      "first_bytes_unchanged": true
+    },
+    {
+      "test": "partial_end-fail_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-end-fail-828e295c",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 4,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "partial_transport_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-transport-31fc9ced",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 4,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "partial_stage-write-fail_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-stage-write-fail-84db5ff6",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 4,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "partial_invocation-write-fail_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-invocation-write-fail-5fb54d8a",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 4,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "partial_exclusive-stage-collision_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-exclusive-stage-collision-5b97f8a2",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 4,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "partial_armed_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-armed-de41459b",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 3,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "partial_malformed-alarm_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-malformed-alarm-ffef3292",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 3,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "partial_result-write-fail_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-result-write-fail-cb5863ed",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 4,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "partial_index-write-fail_then_explicit_cleanup",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-index-write-fail-657f5de8",
+      "mock_counts": {
+        "browser": 14,
+        "End": 2,
+        "HAR": 2,
+        "close": 2,
+        "deadline": 4,
+        "failure_dispatch_once": 0
+      },
+      "original_unknown": true,
+      "retry_is_new_explicit_cleanup_not_input": true
+    },
+    {
+      "test": "reject_missing-result",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-missing-result-da163426",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_corrupt-result",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-corrupt-result-654eca5f",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_corrupt-manifest",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-corrupt-manifest-f163932c",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_missing-ACK",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-missing-ACK-65d2af7d",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_corrupt-PNG",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-corrupt-PNG-0474825a",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_corrupt-public-stdout",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-corrupt-public-stdout-ed986ad1",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_wrong-run-ref",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-wrong-run-ref-40ad76ae",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_wrong-source-ref",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-wrong-source-ref-be390611",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_wrong-session",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-wrong-session-d157c23e",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_wrong-launch",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-wrong-launch-ee89c548",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_wrong-run",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-wrong-run-97187bef",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('exact_regular_file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-wrong-run-97187bef/native-runs/v35diag-n64-r36-r39-other/command.json')"
+      ]
+    },
+    {
+      "test": "reject_native-changed",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-native-changed-c2e0934d",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('invalid completion evidence; current resources closed; no browser revisit')"
+      ]
+    },
+    {
+      "test": "reject_resource-fail",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-resource-fail-cb75eacc",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('current_resources_not_proven_live')"
+      ]
+    },
+    {
+      "test": "reject_runner-live",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-runner-live-b960eac2",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('current_resources_not_proven_live')"
+      ]
+    },
+    {
+      "test": "reject_qemu-live",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-qemu-live-8f2e22d3",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('current_resources_not_proven_live')"
+      ]
+    },
+    {
+      "test": "reject_port-live",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-port-live-bbfd9c6e",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('current_resources_not_proven_live')"
+      ]
+    },
+    {
+      "test": "reject_port-fail",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-port-fail-3e6cc97a",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('current_resources_not_proven_live')"
+      ]
+    },
+    {
+      "test": "reject_lock-held",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-lock-held-0c57fa64",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "status": "unknown",
+      "reason": [
+        "cleanup incomplete: ValueError('current_resources_not_proven_live')"
+      ]
+    },
+    {
+      "test": "concurrent_single_real_flock_owner",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-concurrent-c48b148f",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "busy_seconds": 0.059729249973315746,
+      "owner_exit": 0
+    },
+    {
+      "test": "owner_process_exit_releases_fd_same_inode",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-interrupted-78f7da42",
+      "mock_counts": {
+        "browser": 8,
+        "End": 2,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      }
+    },
+    {
+      "test": "actual_operate_guard_dispatch_preserves_original_failure",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-operate-failure-a4e04da5",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 1
+      },
+      "operate_exit": 19
+    },
+    {
+      "test": "prelaunch_still_End_close_no_completion_certificate",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-prelaunch-41e0d8a8",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      }
+    },
+    {
+      "test": "symlink_lock_unknown_no_unowned_action",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-symlink-owner-65e2be54",
+      "mock_counts": {
+        "browser": 0,
+        "End": 0,
+        "HAR": 0,
+        "close": 0,
+        "deadline": 0,
+        "failure_dispatch_once": 0
+      }
+    },
+    {
+      "test": "invalid_index_live_owned_End_then_preserved_broken-index-live",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-broken-index-live-e403eda4",
+      "mock_counts": {
+        "browser": 8,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "archived_sha256": "9ffcc74a4582e31aa7845c1e12cb7057f63a831ea884e87286cf57cfa5e26a2a",
+      "current_cleanup_completed": true
+    },
+    {
+      "test": "invalid_index_live_owned_End_then_preserved_cross-index-live",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-cross-index-live-7d5eb387",
+      "mock_counts": {
+        "browser": 8,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      },
+      "archived_sha256": "08d972d18fe40dfefaf716b40be711214cf08cbc6d69b7722237d4cdf0d02784",
+      "current_cleanup_completed": true
+    },
+    {
+      "test": "invalid_index_without_current_ownership_wrong-current-owner",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-wrong-current-owner-562892a6",
+      "mock_counts": {
+        "browser": 0,
+        "End": 0,
+        "HAR": 0,
+        "close": 0,
+        "deadline": 0,
+        "failure_dispatch_once": 0
+      },
+      "End_required": true
+    },
+    {
+      "test": "invalid_index_without_current_ownership_wrong-current-page",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-wrong-current-page-e9ad85df",
+      "mock_counts": {
+        "browser": 1,
+        "End": 0,
+        "HAR": 0,
+        "close": 0,
+        "deadline": 0,
+        "failure_dispatch_once": 0
+      },
+      "End_required": true
+    },
+    {
+      "test": "first_cleanup_cannot_certify_bad-native-ACK",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-bad-native-ACK-e332760d",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      }
+    },
+    {
+      "test": "first_cleanup_cannot_certify_bad-native-reap",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-bad-native-reap-b702efd6",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      }
+    },
+    {
+      "test": "first_cleanup_cannot_certify_bad-native-source",
+      "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run-inputs/fixture-f02ee53c27b9-bad-native-source-63acfd81",
+      "mock_counts": {
+        "browser": 7,
+        "End": 1,
+        "HAR": 1,
+        "close": 1,
+        "deadline": 2,
+        "failure_dispatch_once": 0
+      }
+    }
+  ],
+  "passed": true
+}

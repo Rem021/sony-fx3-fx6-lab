@@ -1,0 +1,38 @@
+00009064 stp        x29, x30, [sp, #-0x160]!
+00009068 mov        x29, sp
+0000906c stp        x25, x26, [sp, #0x40]
+00009070 mov        x25, x0
+00009074 stp        x19, x20, [sp, #0x10]
+00009078 mov        x19, x0
+0000907c stp        x21, x22, [sp, #0x20]
+00009080 ldr        x1, [x25], #0x10
+00009084 stp        x23, x24, [sp, #0x30]
+00009088 stp        x27, x28, [sp, #0x50]
+0000908c ldr        x1, [x1, #0x98]
+00009090 blr        x1
+00009094 mov        x0, x25
+00009098 bl         #0x8090 ; Updater::BaseModule::ThreadStatus::IsRunning()
+0000909c uxtb       w22, w0
+000090a0 cbz        w22, #0x935c
+000090a4 adrp       x0, #0xc000
+000090a8 add        x1, x29, #0xe0
+000090ac add        x0, x0, #0x2cc
+000090b0 adrp       x20, #0xc000
+000090b4 add        x21, x29, #0x90
+000090b8 add        x20, x20, #0x299
+000090bc bl         #0xc1a8
+000090c0 cmp        w0, #0
+000090c4 adrp       x0, #0xc000
+000090c8 add        x0, x0, #0x2b6
+000090cc csel       x20, x20, x0, eq
+000090d0 mov        x0, x21
+000090d4 bl         #0x7f90 ; Updater::LoopMountPoint::LoopMountPoint()
+000090d8 adrp       x1, #0xc000
+000090dc mov        x0, x21
+000090e0 add        x1, x1, #0x2dd
+000090e4 bl         #0x7fa0 ; Updater::LoopMountPoint::Initialize(char const*)
+000090e8 mov        x1, x20
+000090ec mov        x0, x21
+000090f0 mov        w2, #0x401
+000090f4 bl         #0x7d70 ; Updater::LoopMountPoint::Mount(char const*, unsigned int)
+000090f8 tst        w0, #0xff

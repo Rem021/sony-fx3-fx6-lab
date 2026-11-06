@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "-c",
+    "import json,os,runpy,sys\nfrom pathlib import Path\nr=Path(sys.argv[1]).resolve()\ng=runpy.run_path(str(r/'run_trial_r24_review_snapshot.py'),run_name='r30_import_only')\nmods={name:str(Path(sys.modules[name].__file__).resolve()) for name in ('startup_observation','trial_ring_cached','trial_log_v4_mss','qmp_line_transport','gate_input_usability','runtime_resource_guard','trial_web_r24_review_snapshot')}\nfor name in ('startup_observation','trial_ring_cached','trial_log_v4_mss','trial_web_r24_review_snapshot'):assert Path(mods[name]).parent==r\nfor name in ('qmp_line_transport','gate_input_usability','runtime_resource_guard'):assert Path(mods[name]).parent==r.parent/'v25-r21-recovery-integration'\nassert g['ACTIVE_GUARD'] is None and g['ACTIVE_STARTUP_OBSERVATION'] is None\nprint(json.dumps({'mode':'import_only_main_not_called','modules':mods,'run_dir':os.environ['FX3_NAV_RUN_DIR']}))",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate"
+  ],
+  "start": {
+    "UTC": "2026-11-05T04:41:37.654830+00:00",
+    "host_ns": 437383145145916
+  },
+  "end": {
+    "UTC": "2026-11-05T04:41:42.374266+00:00",
+    "host_ns": 437387864798708
+  },
+  "returncode": 0,
+  "stdout": "{\"mode\": \"import_only_main_not_called\", \"modules\": {\"startup_observation\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/startup_observation.py\", \"trial_ring_cached\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/trial_ring_cached.py\", \"trial_log_v4_mss\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/trial_log_v4_mss.py\", \"qmp_line_transport\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/qmp_line_transport.py\", \"gate_input_usability\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/gate_input_usability.py\", \"runtime_resource_guard\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/runtime_resource_guard.py\", \"trial_web_r24_review_snapshot\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/trial_web_r24_review_snapshot.py\"}, \"run_dir\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r31-vm-22ac221f3da6\"}\n",
+  "stderr": ""
+}

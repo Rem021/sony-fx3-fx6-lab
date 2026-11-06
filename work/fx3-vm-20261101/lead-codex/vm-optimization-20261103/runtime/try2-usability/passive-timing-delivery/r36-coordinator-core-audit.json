@@ -1,0 +1,212 @@
+{
+  "time": "2026-11-05T07:04:33.016953+00:00",
+  "status": "offline_packaging_accepted_not_runtime_ready",
+  "ELF": {
+    "ui": {
+      "raw_sha256": "8fbad11e585a88ba55fc657785b6bc132bd12ee20ac3a31f23c603b1b1b322d1",
+      "release_sha256": "87267da03bbc5f05b81aa559a4a1c713d1e7462bdb4602a571405dc048bba4fe",
+      "release_bytes": 23400,
+      "program_headers_identical": true,
+      "alloc_sections_identical": 20,
+      "PT_LOAD_identical_except_section_table_header_fields": 4,
+      "exact_header_byte_differences": [
+        40,
+        41,
+        42,
+        60,
+        62
+      ]
+    },
+    "osd": {
+      "raw_sha256": "1a0761b8c73fb04502406686499ff01f3683bcc767ce1503fae3e6bbb996bf21",
+      "release_sha256": "51685bf707f7c1947c81936de03a0694b2228228792e732ee177c788acd09837",
+      "release_bytes": 34960,
+      "program_headers_identical": true,
+      "alloc_sections_identical": 21,
+      "PT_LOAD_identical_except_section_table_header_fields": 4,
+      "exact_header_byte_differences": [
+        40,
+        41,
+        42,
+        60,
+        62
+      ]
+    }
+  },
+  "archive": {
+    "bytes": 453213884,
+    "members": 1140,
+    "changed_slots": [
+      [
+        451339648,
+        451398504,
+        "simulation/fx3-ui-gate-v1.so"
+      ],
+      [
+        452021916,
+        452130916,
+        "simulation/fx3-osd-headless-v5.so"
+      ]
+    ],
+    "outside_slots_byte_identical": true,
+    "exact_release_zero_padding": true,
+    "output_sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff"
+  },
+  "candidate_changed_fields": [
+    "r36_fixed_slot_diagnostic_contract",
+    "initrd"
+  ],
+  "candidate_sha256": "0bf214178ab8e60d1ac7755e1d1b2fcc0d2c325ff8473abd50402f09ab81fab4",
+  "runtime_ready": false,
+  "VM_started": false,
+  "accepted_utc": "2026-11-05T07:08:25.426705+00:00",
+  "final_message": "msg_4603a44d305c",
+  "delivery_manifest_sha256": "9a06c51caa6bc3517bedb9db06a72452fe4a12156ed3838034821caf151ecf03",
+  "delivery_items_verified": 36,
+  "delivery_items": [
+    {
+      "path": "ARCHIVE-DIFF.json",
+      "sha256": "49098b4dcad0b5677910bd6199ea4a5edf67c217230f719d3f571ca1a64b2bca"
+    },
+    {
+      "path": "CONSTRUCTOR-PROOF.json",
+      "sha256": "d41e644bd08b69fadc982571b02ee511ac3225cfd5a21c2858e52013c82c6e37"
+    },
+    {
+      "path": "DEPENDENCIES.json",
+      "sha256": "ae8d262478a4587be67c3f77db14a26282f53e9cf769d8fa18ceb2f8fc1b96c8"
+    },
+    {
+      "path": "EXECUTION.json",
+      "sha256": "5a7e779b21a6931ef9daf0d7fb4018cec5708c2a60a7f0d58babe1270a8d92ab"
+    },
+    {
+      "path": "INPUTS.json",
+      "sha256": "060c207645418578d4111b6d6172fbaf62c77bccf49ca5e3a84389dd24d9f130"
+    },
+    {
+      "path": "MANIFEST.json",
+      "sha256": "518b43e6703ef04bc24829c3735fb9bde9d1ab58b0f9e33ffe4739676fdb9a53"
+    },
+    {
+      "path": "PACKAGE-COMPLETE.json",
+      "sha256": "20e9d5422c1e62d17099a25b0a1a0ac12d9e571292aec958d04a29adb1808a7e"
+    },
+    {
+      "path": "PACKAGE.INCOMPLETE.json",
+      "sha256": "8277c591d984f5d5708c6bb462b246da7e9a97dd9fd83fc16d73e1e293d02b16"
+    },
+    {
+      "path": "PLAN.md",
+      "sha256": "38aaee7e7dff912bb1ed83445d33d3218d475e1520a6d95788ba248eb61f2c54"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d9d8a87f18a472eb1eebdad6977e6d5341c84a3e7f53dc074f6f8e012f168060"
+    },
+    {
+      "path": "RELEASE-COMPLETE.json",
+      "sha256": "700021919beff85667fe066234fc62796432d05db124028059531d79ae4afc63"
+    },
+    {
+      "path": "RELEASES.json",
+      "sha256": "61624cf25e31ca602d56b718cd94aad8c6e4dba8343f0ef1af4255d5ea53ed60"
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "340d425f80e1444be77d770d287822b190700e441ef55314d9ef33db8953ea73"
+    },
+    {
+      "path": "TESTS.json",
+      "sha256": "6184014b32521d95ed749abab1acdb9bd42a0cb969e6277781836a375fec5d3f"
+    },
+    {
+      "path": "TOOL.json",
+      "sha256": "a07e00e7884e3957c15a84b8c2906e5e8c57b665f537a0f41c69bdaba7622c10"
+    },
+    {
+      "path": "WRITE-SCOPE.json",
+      "sha256": "64a02adfaa9b58afb1f344a45c75177a78d752056e5d410662f32ab859240cbc"
+    },
+    {
+      "path": "candidate.json",
+      "sha256": "0bf214178ab8e60d1ac7755e1d1b2fcc0d2c325ff8473abd50402f09ab81fab4"
+    },
+    {
+      "path": "guest.cpio",
+      "sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff"
+    },
+    {
+      "path": "member-comparison.json",
+      "sha256": "e6d5b5ba71e9c084afcb946cc2a7b318c5bb7c26e3fa7377310c0e2e84d994b5"
+    },
+    {
+      "path": "osd-ELF-AUDIT.json",
+      "sha256": "e88f4b66f6167f9eddb1287c22806de0cdb098494c8a22f2050106c672ac9b06"
+    },
+    {
+      "path": "package_r36.py",
+      "sha256": "0362d3eb2f828b3681c1f7aa3b5701f5d81a53be4be8777b338f4d688b4d6e67"
+    },
+    {
+      "path": "raw/fx3-osd-r35.so",
+      "sha256": "1a0761b8c73fb04502406686499ff01f3683bcc767ce1503fae3e6bbb996bf21"
+    },
+    {
+      "path": "raw/fx3-ui-r35.so",
+      "sha256": "8fbad11e585a88ba55fc657785b6bc132bd12ee20ac3a31f23c603b1b1b322d1"
+    },
+    {
+      "path": "receipts/osd-release-command.json",
+      "sha256": "76d14f4a949801da5d08f3196692ee12e08bdae2a7eff66ac03686b1b267ed54"
+    },
+    {
+      "path": "receipts/osd-release.INCOMPLETE.json",
+      "sha256": "706ca630ce3a56c676489659b985e695d98c30b385d1ff06d73943490e362b6a"
+    },
+    {
+      "path": "receipts/osd-release.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "receipts/osd-release.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "receipts/r35-BUILD-input.json",
+      "sha256": "e813bf9c2b7dcaa379d54af2bd6b6d1e86312d389199722ee77b6d1510606a8d"
+    },
+    {
+      "path": "receipts/ui-release-command.json",
+      "sha256": "9150a7c5654dcd52a6d15223d0f04ecd5a4f6463f1ffc39b1de0f327b4f8b1bd"
+    },
+    {
+      "path": "receipts/ui-release.INCOMPLETE.json",
+      "sha256": "aa9caf0c0386ce29e5dbd37bc9c539811030af68a0ebab6299fbf64811d89d73"
+    },
+    {
+      "path": "receipts/ui-release.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "receipts/ui-release.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "release/fx3-osd-r35.so",
+      "sha256": "51685bf707f7c1947c81936de03a0694b2228228792e732ee177c788acd09837"
+    },
+    {
+      "path": "release/fx3-ui-r35.so",
+      "sha256": "87267da03bbc5f05b81aa559a4a1c713d1e7462bdb4602a571405dc048bba4fe"
+    },
+    {
+      "path": "source-index.json",
+      "sha256": "589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a"
+    },
+    {
+      "path": "ui-ELF-AUDIT.json",
+      "sha256": "a8f0e17cf2f46853b6aeeddb6bf0895a5caf99db073823b4a9788ff6504252b9"
+    }
+  ]
+}

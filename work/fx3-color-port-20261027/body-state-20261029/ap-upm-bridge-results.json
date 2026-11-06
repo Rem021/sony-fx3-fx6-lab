@@ -1,0 +1,1144 @@
+{
+  "ap_sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdatertalk.so",
+      "sha256": "8f7f7b8a334277f49be200b69cba36a689690a00be238ed9394d0aa2d7c541e5"
+    }
+  ],
+  "upm_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+  "ram_container_sha256": "8073649e9f15723c139cb6d65484d60b054ed30b59325e09b0dfd0e2e4a7df7a",
+  "cases": [
+    {
+      "returned": true,
+      "return_value": 0,
+      "boundary": null,
+      "copied_model_word": "0x91a00080",
+      "file_cursor": 532,
+      "file_events": [
+        {
+          "adapter": "RAM readonly Fsys_Open"
+        },
+        {
+          "adapter": "RAM relative seek",
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 8,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 12,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 16,
+          "requested": 516,
+          "returned": 516
+        },
+        {
+          "adapter": "RAM Fsys_Close"
+        }
+      ],
+      "original_global_writes": [
+        {
+          "address": "0x40015208",
+          "bytes": 4,
+          "value": 2443182208,
+          "pc": "0x40002fb4"
+        },
+        {
+          "address": "0x4001520c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40002fc4"
+        },
+        {
+          "address": "0x40015210",
+          "bytes": 2,
+          "value": 1794,
+          "pc": "0x40002fd0"
+        },
+        {
+          "address": "0x400151f4",
+          "bytes": 4,
+          "value": 1,
+          "pc": "0x40002ff4"
+        },
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 0,
+          "pc": "0x40001e04"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e08"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e0c"
+        },
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 1793,
+          "pc": "0x40001ed4"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 2443182208,
+          "pc": "0x40001ed8"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001edc"
+        },
+        {
+          "address": "0x400151f0",
+          "bytes": 4,
+          "value": 1,
+          "pc": "0x40002588"
+        }
+      ],
+      "instructions": 1147,
+      "case": "ac_connected",
+      "declared_cp_state": {
+        "kind": 2,
+        "ready": 1,
+        "error": 0,
+        "present": 1,
+        "special": 0,
+        "version": 1793,
+        "model": 2443182208,
+        "region": 0
+      },
+      "declared_upm_power_cache": {
+        "type": 1,
+        "jack": 1,
+        "other_words": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_ap_power_flag": 1,
+      "original_ap_metadata_checks": [
+        {
+          "result": "0x1",
+          "normalized_model": "0x91a00080",
+          "normalized_region": "0x0",
+          "normalized_version": "0x701"
+        }
+      ],
+      "cp_entry_counts": {
+        "receive_thread": 1,
+        "lens_handler": 3,
+        "lens_kind_getter": 9,
+        "reply_size_and_route": 3,
+        "reply_allocation_and_send": 3,
+        "error_path": 2,
+        "ready_path": 1
+      },
+      "cp_ram_bus": [
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 8
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "0300000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 118,
+            "reply_hex": "0300000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "0300000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009100"
+        },
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 12
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "010000000000000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 124,
+            "reply_hex": "010000000000000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "010000000000000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009200"
+        },
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 20
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "0000000000000000000000000000000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 220,
+            "reply_hex": "0000000000000000010791a08000000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "0000000000000000010791a08000000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009300"
+        }
+      ],
+      "power_ram_bus": [
+        {
+          "adapter": "RAM declared dynamic channel allocation",
+          "channel": "0x192002a"
+        },
+        {
+          "adapter": "RAM AP power request allocation",
+          "bytes": 208
+        },
+        {
+          "adapter": "RAM AP-to-UPM delivery",
+          "request_hex": "03000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00920118007777000000001900777700000000140077770000000015007777000000000093005000000000",
+          "source": "0x11d0000"
+        },
+        {
+          "adapter": "RAM UPM-to-AP delivery",
+          "source": "0x80920021",
+          "reply_hex": "000000000000000000000000000000000000000000000000000000000100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "adapter": "RAM AP power message free",
+          "unit": "0x192002a"
+        },
+        {
+          "adapter": "RAM dynamic channel release",
+          "channel": "0x192002a"
+        }
+      ],
+      "upm_execution": {
+        "instructions": 174,
+        "entries": {
+          "receiver_thread": 1,
+          "reply_wrapper": 2,
+          "command3_handler": 1,
+          "factor7_power_copy": 1
+        },
+        "events": [
+          {
+            "adapter": "RAM allocation",
+            "target": "0x928708f7",
+            "bytes": 16
+          },
+          {
+            "adapter": "RAM startup notification sink",
+            "target": "0x928708f7",
+            "source": "0x80920021",
+            "payload_hex": "5a019200010000000000000000000000"
+          },
+          {
+            "adapter": "RAM kernel receive",
+            "source": "0x11d0000",
+            "request_hex": "03000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00920118007777000000001900777700000000140077770000000015007777000000000093005000000000"
+          },
+          {
+            "adapter": "RAM input free"
+          },
+          {
+            "adapter": "RAM allocation",
+            "target": "0x192002a",
+            "bytes": 156
+          },
+          {
+            "adapter": "RAM power reply",
+            "target": "0x192002a",
+            "source": "0x80920021",
+            "payload_hex": "000000000000000000000000000000000000000000000000000000000100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ],
+        "declared_cached_power_state": {
+          "type": 1,
+          "jack": 1,
+          "other_words": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "returned": false,
+      "return_value": null,
+      "boundary": {
+        "operation": "before_native_Backup_read",
+        "pc": "0x400014b0",
+        "item": "0x920017",
+        "native_call": false
+      },
+      "copied_model_word": "0x91a00080",
+      "file_cursor": 532,
+      "file_events": [
+        {
+          "adapter": "RAM readonly Fsys_Open"
+        },
+        {
+          "adapter": "RAM relative seek",
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 8,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 12,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 16,
+          "requested": 516,
+          "returned": 516
+        },
+        {
+          "adapter": "RAM Fsys_Close"
+        }
+      ],
+      "original_global_writes": [
+        {
+          "address": "0x40015208",
+          "bytes": 4,
+          "value": 2443182208,
+          "pc": "0x40002fb4"
+        },
+        {
+          "address": "0x4001520c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40002fc4"
+        },
+        {
+          "address": "0x40015210",
+          "bytes": 2,
+          "value": 1794,
+          "pc": "0x40002fd0"
+        },
+        {
+          "address": "0x400151f4",
+          "bytes": 4,
+          "value": 1,
+          "pc": "0x40002ff4"
+        },
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 0,
+          "pc": "0x40001e04"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e08"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e0c"
+        },
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 1793,
+          "pc": "0x40001ed4"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 2443182208,
+          "pc": "0x40001ed8"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001edc"
+        }
+      ],
+      "instructions": 1110,
+      "case": "battery",
+      "declared_cp_state": {
+        "kind": 2,
+        "ready": 1,
+        "error": 0,
+        "present": 1,
+        "special": 0,
+        "version": 1793,
+        "model": 2443182208,
+        "region": 0
+      },
+      "declared_upm_power_cache": {
+        "type": 2,
+        "jack": 2,
+        "other_words": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_ap_power_flag": 0,
+      "original_ap_metadata_checks": [
+        {
+          "result": "0x1",
+          "normalized_model": "0x91a00080",
+          "normalized_region": "0x0",
+          "normalized_version": "0x701"
+        }
+      ],
+      "cp_entry_counts": {
+        "receive_thread": 1,
+        "lens_handler": 3,
+        "lens_kind_getter": 9,
+        "reply_size_and_route": 3,
+        "reply_allocation_and_send": 3,
+        "error_path": 2,
+        "ready_path": 1
+      },
+      "cp_ram_bus": [
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 8
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "0300000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 118,
+            "reply_hex": "0300000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "0300000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009100"
+        },
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 12
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "010000000000000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 124,
+            "reply_hex": "010000000000000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "010000000000000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009200"
+        },
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 20
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "0000000000000000000000000000000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 220,
+            "reply_hex": "0000000000000000010791a08000000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "0000000000000000010791a08000000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009300"
+        }
+      ],
+      "power_ram_bus": [
+        {
+          "adapter": "RAM declared dynamic channel allocation",
+          "channel": "0x192002a"
+        },
+        {
+          "adapter": "RAM AP power request allocation",
+          "bytes": 208
+        },
+        {
+          "adapter": "RAM AP-to-UPM delivery",
+          "request_hex": "03000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00920118007777000000001900777700000000140077770000000015007777000000000093005000000000",
+          "source": "0x11d0000"
+        },
+        {
+          "adapter": "RAM UPM-to-AP delivery",
+          "source": "0x80920021",
+          "reply_hex": "000000000000000000000000000000000000000000000000000000000200000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "adapter": "RAM AP power message free",
+          "unit": "0x192002a"
+        },
+        {
+          "adapter": "RAM dynamic channel release",
+          "channel": "0x192002a"
+        }
+      ],
+      "upm_execution": {
+        "instructions": 174,
+        "entries": {
+          "receiver_thread": 1,
+          "reply_wrapper": 2,
+          "command3_handler": 1,
+          "factor7_power_copy": 1
+        },
+        "events": [
+          {
+            "adapter": "RAM allocation",
+            "target": "0x928708f7",
+            "bytes": 16
+          },
+          {
+            "adapter": "RAM startup notification sink",
+            "target": "0x928708f7",
+            "source": "0x80920021",
+            "payload_hex": "5a019200010000000000000000000000"
+          },
+          {
+            "adapter": "RAM kernel receive",
+            "source": "0x11d0000",
+            "request_hex": "03000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00920118007777000000001900777700000000140077770000000015007777000000000093005000000000"
+          },
+          {
+            "adapter": "RAM input free"
+          },
+          {
+            "adapter": "RAM allocation",
+            "target": "0x192002a",
+            "bytes": 156
+          },
+          {
+            "adapter": "RAM power reply",
+            "target": "0x192002a",
+            "source": "0x80920021",
+            "payload_hex": "000000000000000000000000000000000000000000000000000000000200000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ],
+        "declared_cached_power_state": {
+          "type": 2,
+          "jack": 2,
+          "other_words": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "returned": false,
+      "return_value": null,
+      "boundary": {
+        "operation": "before_native_Backup_read",
+        "pc": "0x400014b0",
+        "item": "0x920017",
+        "native_call": false
+      },
+      "copied_model_word": "0x91a00080",
+      "file_cursor": 532,
+      "file_events": [
+        {
+          "adapter": "RAM readonly Fsys_Open"
+        },
+        {
+          "adapter": "RAM relative seek",
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 8,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 12,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 16,
+          "requested": 516,
+          "returned": 516
+        },
+        {
+          "adapter": "RAM Fsys_Close"
+        }
+      ],
+      "original_global_writes": [
+        {
+          "address": "0x40015208",
+          "bytes": 4,
+          "value": 2443182208,
+          "pc": "0x40002fb4"
+        },
+        {
+          "address": "0x4001520c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40002fc4"
+        },
+        {
+          "address": "0x40015210",
+          "bytes": 2,
+          "value": 1794,
+          "pc": "0x40002fd0"
+        },
+        {
+          "address": "0x400151f4",
+          "bytes": 4,
+          "value": 1,
+          "pc": "0x40002ff4"
+        },
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 0,
+          "pc": "0x40001e04"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e08"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e0c"
+        },
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 1793,
+          "pc": "0x40001ed4"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 2443182208,
+          "pc": "0x40001ed8"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001edc"
+        }
+      ],
+      "instructions": 1112,
+      "case": "ac_jack_ng",
+      "declared_cp_state": {
+        "kind": 2,
+        "ready": 1,
+        "error": 0,
+        "present": 1,
+        "special": 0,
+        "version": 1793,
+        "model": 2443182208,
+        "region": 0
+      },
+      "declared_upm_power_cache": {
+        "type": 1,
+        "jack": 2,
+        "other_words": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_ap_power_flag": 0,
+      "original_ap_metadata_checks": [
+        {
+          "result": "0x1",
+          "normalized_model": "0x91a00080",
+          "normalized_region": "0x0",
+          "normalized_version": "0x701"
+        }
+      ],
+      "cp_entry_counts": {
+        "receive_thread": 1,
+        "lens_handler": 3,
+        "lens_kind_getter": 9,
+        "reply_size_and_route": 3,
+        "reply_allocation_and_send": 3,
+        "error_path": 2,
+        "ready_path": 1
+      },
+      "cp_ram_bus": [
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 8
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "0300000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 118,
+            "reply_hex": "0300000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "0300000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009100"
+        },
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 12
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "010000000000000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 124,
+            "reply_hex": "010000000000000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "010000000000000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009200"
+        },
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 20
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "0000000000000000000000000000000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 220,
+            "reply_hex": "0000000000000000010791a08000000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "0000000000000000010791a08000000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009300"
+        }
+      ],
+      "power_ram_bus": [
+        {
+          "adapter": "RAM declared dynamic channel allocation",
+          "channel": "0x192002a"
+        },
+        {
+          "adapter": "RAM AP power request allocation",
+          "bytes": 208
+        },
+        {
+          "adapter": "RAM AP-to-UPM delivery",
+          "request_hex": "03000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00920118007777000000001900777700000000140077770000000015007777000000000093005000000000",
+          "source": "0x11d0000"
+        },
+        {
+          "adapter": "RAM UPM-to-AP delivery",
+          "source": "0x80920021",
+          "reply_hex": "000000000000000000000000000000000000000000000000000000000100000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "adapter": "RAM AP power message free",
+          "unit": "0x192002a"
+        },
+        {
+          "adapter": "RAM dynamic channel release",
+          "channel": "0x192002a"
+        }
+      ],
+      "upm_execution": {
+        "instructions": 174,
+        "entries": {
+          "receiver_thread": 1,
+          "reply_wrapper": 2,
+          "command3_handler": 1,
+          "factor7_power_copy": 1
+        },
+        "events": [
+          {
+            "adapter": "RAM allocation",
+            "target": "0x928708f7",
+            "bytes": 16
+          },
+          {
+            "adapter": "RAM startup notification sink",
+            "target": "0x928708f7",
+            "source": "0x80920021",
+            "payload_hex": "5a019200010000000000000000000000"
+          },
+          {
+            "adapter": "RAM kernel receive",
+            "source": "0x11d0000",
+            "request_hex": "03000000000000000700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002a00920118007777000000001900777700000000140077770000000015007777000000000093005000000000"
+          },
+          {
+            "adapter": "RAM input free"
+          },
+          {
+            "adapter": "RAM allocation",
+            "target": "0x192002a",
+            "bytes": 156
+          },
+          {
+            "adapter": "RAM power reply",
+            "target": "0x192002a",
+            "source": "0x80920021",
+            "payload_hex": "000000000000000000000000000000000000000000000000000000000100000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ],
+        "declared_cached_power_state": {
+          "type": 1,
+          "jack": 2,
+          "other_words": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    {
+      "returned": true,
+      "return_value": 7,
+      "boundary": null,
+      "copied_model_word": "0x91a00080",
+      "file_cursor": 532,
+      "file_events": [
+        {
+          "adapter": "RAM readonly Fsys_Open"
+        },
+        {
+          "adapter": "RAM relative seek",
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 8,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 12,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 16,
+          "requested": 516,
+          "returned": 516
+        },
+        {
+          "adapter": "RAM Fsys_Close"
+        }
+      ],
+      "original_global_writes": [
+        {
+          "address": "0x40015208",
+          "bytes": 4,
+          "value": 2443182208,
+          "pc": "0x40002fb4"
+        },
+        {
+          "address": "0x4001520c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40002fc4"
+        },
+        {
+          "address": "0x40015210",
+          "bytes": 2,
+          "value": 1794,
+          "pc": "0x40002fd0"
+        },
+        {
+          "address": "0x400151f4",
+          "bytes": 4,
+          "value": 1,
+          "pc": "0x40002ff4"
+        },
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 0,
+          "pc": "0x40001e04"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e08"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e0c"
+        },
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 1793,
+          "pc": "0x40001ed4"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 2443182209,
+          "pc": "0x40001ed8"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001edc"
+        }
+      ],
+      "instructions": 1019,
+      "case": "model_mismatch_before_power",
+      "declared_cp_state": {
+        "kind": 2,
+        "ready": 1,
+        "error": 0,
+        "present": 1,
+        "special": 0,
+        "version": 1793,
+        "model": 2443182209,
+        "region": 0
+      },
+      "declared_upm_power_cache": {
+        "type": 1,
+        "jack": 1,
+        "other_words": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_ap_power_flag": 0,
+      "original_ap_metadata_checks": [
+        {
+          "result": "0x140",
+          "normalized_model": "0x91a00081",
+          "normalized_region": "0x0",
+          "normalized_version": "0x701"
+        }
+      ],
+      "cp_entry_counts": {
+        "receive_thread": 1,
+        "lens_handler": 3,
+        "lens_kind_getter": 9,
+        "reply_size_and_route": 3,
+        "reply_allocation_and_send": 3,
+        "error_path": 2,
+        "ready_path": 1
+      },
+      "cp_ram_bus": [
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 8
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "0300000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 118,
+            "reply_hex": "0300000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "0300000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009100"
+        },
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 12
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "010000000000000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 124,
+            "reply_hex": "010000000000000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "010000000000000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009200"
+        },
+        {
+          "adapter": "RAM AP allocation",
+          "target": "0x912503d0",
+          "bytes": 20
+        },
+        {
+          "adapter": "RAM AP-to-CP delivery",
+          "request_hex": "0000000000000000000000000000000000000000",
+          "source": "0x11d0000",
+          "cp": {
+            "instructions": 220,
+            "reply_hex": "0000000000000000010791a08100000000000000"
+          }
+        },
+        {
+          "adapter": "RAM CP-to-AP delivery",
+          "reply_hex": "0000000000000000010791a08100000000000000"
+        },
+        {
+          "adapter": "RAM AP free",
+          "unit": "0x11d0000",
+          "pointer": "0x50009300"
+        }
+      ],
+      "power_ram_bus": [],
+      "upm_execution": null
+    }
+  ],
+  "scope": "Three independent guest CPUs execute original AP lens-preparation/checks, original CP lens replies, and original UPM kernel receiver/command3/factor7/reply code. Original UPM cached-state bytes reach original AP power comparisons; type1/jack1 follows original flag store and converted prepare return0. Synthetic lens identity/state, framework power cache, dynamic channel, memory message transport and allocation success remain explicit inputs. No real device state, kernel initialization, IPC/session, file admission, native module/target code, staging, crypter execution or flash is proven. Other power cases stop before Backup_read without fabricated backup bytes. This is lens prepare only, not body update or a modified firmware package."
+}

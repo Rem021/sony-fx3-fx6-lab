@@ -1,0 +1,80 @@
+00003034 cbz        x0, #0x3170
+00003038 stp        x29, x30, [sp, #-0x40]!
+0000303c mov        x29, sp
+00003040 ldr        w2, [x0]
+00003044 str        x19, [sp, #0x10]
+00003048 mov        x19, x0
+0000304c cmp        w2, #9
+00003050 b.eq       #0x30c4
+00003054 cmp        w2, #0xc
+00003058 b.eq       #0x3158
+0000305c cmp        w2, #3
+00003060 b.ne       #0x30a8
+00003064 adrp       x0, #0x25000
+00003068 adrp       x3, #0x15000
+0000306c add        x1, x29, #0x28
+00003070 add        x3, x3, #0x188
+00003074 ldr        w0, [x0, #0x2b8]
+00003078 cmp        w0, #1
+0000307c adrp       x0, #0x3000
+00003080 b.ne       #0x30b4
+00003084 ldp        x4, x5, [x3]
+00003088 mov        x6, x1
+0000308c ldr        x3, [x3, #0x10]
+00003090 add        x0, x0, #0xd61
+00003094 stp        x4, x5, [x6]
+00003098 str        x3, [x29, #0x38]
+0000309c mov        w3, #0
+000030a0 bl         #0x1450 ; stm_system
+000030a4 bl         #0x2094
+000030a8 ldr        x19, [sp, #0x10]
+000030ac ldp        x29, x30, [sp], #0x40
+000030b0 ret        
+000030b4 add        x3, x3, #0x18
+000030b8 add        x6, x29, #0x28
+000030bc ldp        x4, x5, [x3]
+000030c0 b          #0x308c
+000030c4 bl         #0x2728
+000030c8 tst        w0, #0xffff
+000030cc strh       w0, [x19, #4]
+000030d0 b.ne       #0x30a8
+000030d4 adrp       x2, #0x15000
+000030d8 mov        w1, #2
+000030dc add        x2, x2, #0x218
+000030e0 movk       w1, #0x4b, lsl #16
+000030e4 mov        w0, #0x4b
+000030e8 bl         #0x15c0 ; Backup_write
+000030ec cmp        w0, #0
+000030f0 b.gt       #0x3100
+000030f4 mov        w0, #2
+000030f8 strh       w0, [x19, #4]
+000030fc b          #0x30a8
+00003100 mov        w0, #0x4b
+00003104 bl         #0x1420 ; Backup_sync_subsystem
+00003108 adrp       x0, #0x15000
+0000310c ldr        w0, [x0, #0x1f4]
+00003110 cmp        w0, #1
+00003114 b.eq       #0x30a8
+00003118 adrp       x0, #0x15000
+0000311c add        x1, x29, #0x28
+00003120 add        x0, x0, #0x188
+00003124 add        x0, x0, #0x48
+00003128 ldp        x2, x3, [x0]
+0000312c ldr        x0, [x0, #0x10]
+00003130 stp        x2, x3, [x1]
+00003134 mov        w3, #0
+00003138 str        x0, [x29, #0x38]
+0000313c adrp       x0, #0x3000
+00003140 add        x0, x0, #0xd61 ; literal '/usr/bin/up.sh'
+00003144 mov        w2, #3
+00003148 bl         #0x1450 ; stm_system
+0000314c bl         #0x1f64
+00003150 bl         #0x1ffc
+00003154 b          #0x30a4
+00003158 bl         #0x2f48
+0000315c tst        w0, #0xffff
+00003160 strh       w0, [x19, #4]
+00003164 b.ne       #0x30a8
+00003168 bl         #0x22e0
+0000316c b          #0x30f8
+00003170 ret        

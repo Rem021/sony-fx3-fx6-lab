@@ -1,0 +1,8 @@
+_ZN7Updater15BufferContainer4FreeEv
+0000acd8 mov       x1, x0
+0000acdc ldr       x0, [x0, #0x28]
+0000ace0 cbz       x0, #0xacf0
+0000ace4 ldr       x2, [x0]
+0000ace8 ldr       x2, [x2, #0x18]
+0000acec br        x2
+0000acf0 ret       

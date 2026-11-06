@@ -1,0 +1,22 @@
+# FX3｜r41命令入口最小计时候选（仅离线）
+目标是改善FX3原固件菜单性能的可归因测量，为后续实际优化定位命令执行与命令间等待。用户主目标FX6-on-fixed-FX3不变，FX6被提供方拒绝实现仍不重试/不转交。本任务独立FX3性能支线。
+
+背景：r39已离线接受，原源码/r36包/固定平台不变；r40修订接受了r38菜单日志分解。MENU up 60791491008到frame200 post-commit日志70286425008共9494934000ns，完成序号176/244/245/314/315/390划分的间隔无法判断其中是否已有长命令执行。原GPE实际使用v26-perf/backendv9，已有优化已在运行，不能作为新方案重新引入。现有v2-profile104使用0x41d640000物理reservation和大量阶段clock，不适合直接套用此窄任务。
+
+先读项目AGENTS/README。写前核验卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。唯一可写 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate，独占创建。不改其他候选/原件/共享README/ledger；不复制整个runtime/CPIO/DTB；不创建新VM/设备/工作树。
+
+入口输入：
+- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-coordinator-final-review.json
+- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-deepseek-menu-timing/review-revision-1/REPORT.md、results.json、原脚本
+- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-observe-v26-perf.c
+- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-complete104-observe-v1.h 与 fx3-gpe-command-wait102-v1.h
+- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/GPE-SOURCE-BINDING.json、/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/MANIFEST.json/source-index.json（只读必要成员与编译绑定）
+
+实现范围：
+1. 从实际绑定的v26来源隔离派生最小候选。在command()适配器入口用一个stack局部量记录guest CLOCK_MONOTONIC，严格保存/恢复进入时errno。每次command最多新增一次clock_gettime；失败返回0/不可用明确标unknown。不要新BSS/TLS/共享内存/固定物理地址/映射/锁/线程/定时器/IO/额外dprintf行；不使用旧profile物理区。
+2. 把该入口值传至现有gpe104_command_return，附加到既有FX3_GPE104_CMD_RETURN同一行末尾，既有字段/seq/op/tid/errno及现有ns采样顺序保持。覆盖正常done和gpe102_take失败的早return。只测适配器入口到原返回标记，明确不含进入command以前原FIFO排队，也不等于CPU时间，打印ns晚于取样的偏差须说明。
+3. 原draw模型、像素、资源验证、生命周期/锁、原返回码/errno、callback/SendDrawComp次数与顺序、失败拒绝、native原函数调用全部不变。源diff仅必要位置/头文件；保持老原件。compile路径改到自有目录/引用原冻结include可用，真正依赖逐项pin。
+4. 解析新增字段只在自有分析脚本。必须按完整记录、seq/tid/op对应；缺entry、0值、end<entry、重复/截断/混入其他记录均unknown，不把未知变0耗时。对同线程有序完整记录区分entry→return和前return→后entry，不跨线程相减冒充串行时间；不做guest↔host换算。给原r38日志兼容回放应产生missing-entry/unknown，绝不伪造已有数据。
+5. 做与改变相称的有界离线验证：编译实际候选路径的host seam并验证成功/拒绝/锁失败/clock失败、errno与原调用次数/顺序、原前缀字段保留；原件与候选必要结构/AST差异复核；解析正反例。不能只写与实现同构的无效test。测新增clock/字符数量与有限host成本，明确host非QEMU。若可复用现有实际AArch64构建recipe则只在自有目录cross-build并报告ELF尺寸/依赖/预期slot容量，但不重打包或改CPIO，不执行guest。若缺关键编译/等价证据就明确阻塞，不发明替代绑定。
+6. 最小交付：REPORT.md、源码diff、候选源码/ELF（可构建才有）、验证回执、输入前后hash、SHA256SUMS、未来单次测量需核验事项。仅pin实际使用源码/回执，不重跑1398项历史输入或大矩阵；不复制fixture洪泛，不制造新万项清单。保留本任务失败原证据。
+7. 不VM/QEMU/浏览器/服务/QMP/guest/相机/USB，不部署，不放宽20秒或自动pin/confirm，不宣称性能已改善或FX6开机。完成worker_done回报离线结果；本任务不授权Start或修改运行政策。任何提供方拒绝报原错误不换模型重试。

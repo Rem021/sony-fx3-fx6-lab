@@ -1,0 +1,57 @@
+--- 272/iokit_adapter.c
++++ 273/iokit_adapter.c
+@@ -10,6 +10,8 @@
+ #include "descriptor_policy.h"
+ #include "transition_identity.h"
+ #include "port_anchor.h"
++#include "device_access.h"
++_Static_assert((int32_t)kIOReturnExclusiveAccess==FX3_DEVICE_EXCLUSIVE_ERROR,"SDK exclusive-access value");
+ #include <stdlib.h>
+ #include <string.h>
+ #include <time.h>
+@@ -19,7 +21,7 @@
+     IOUSBDeviceInterface650 **device;
+     IOUSBInterfaceInterface650 **interface;
+     fx3_profile profile;
+-    int device_open,interface_open;
++    int device_open,interface_open,service_shared_control;
+ };
+ static int equal_identity(const fx3_identity *a,const fx3_identity *b){return a->registry_id==b->registry_id && a->location==b->location && a->vid==b->vid && a->pid==b->pid && a->physical_port==b->physical_port && a->logical_port==b->logical_port && a->identity_kind==b->identity_kind && !memcmp(a->serial_tag,b->serial_tag,32);}
+ static uint64_t clock_ns(void *unused){(void)unused;struct timespec t;if(clock_gettime(CLOCK_MONOTONIC,&t))return 0;return (uint64_t)t.tv_sec*1000000000ull+(uint64_t)t.tv_nsec;}
+@@ -92,7 +94,7 @@
+     return(fx3_call){status,(int32_t)rc,1,known,n};
+ }
+ static fx3_call control(void *opaque,const uint8_t setup[8],uint32_t ms){
+-    fx3_native_usb *p=opaque;if(geteuid()!=0 || !p || !p->device || !p->device_open)return(fx3_call){FX3T_DENIED,0,1,0,0};
++    fx3_native_usb *p=opaque;if(geteuid()!=0 || !p || !fx3_fixed_control_allowed(p->device!=NULL,p->device_open,p->interface_open,p->service_shared_control,setup))return(fx3_call){FX3T_DENIED,0,1,0,0};
+     IOUSBDevRequestTO q={0};q.bmRequestType=setup[0];q.bRequest=setup[1];q.wValue=(uint16_t)(setup[2]|setup[3]<<8);q.wIndex=(uint16_t)(setup[4]|setup[5]<<8);
+     q.noDataTimeout=q.completionTimeout=ms;
+     IOReturn raw=(*p->device)->DeviceRequestTO(p->device,&q);fx3_call c=result(raw,raw==0,q.wLenDone);if(q.wLenDone)c.status=FX3T_SHAPE;return c;
+@@ -234,7 +236,12 @@
+     if(!plugin)goto failed;
+     stream->acquire_step=202;hr=(*plugin)->QueryInterface(plugin,CFUUIDGetUUIDBytes(kIOUSBDeviceInterfaceID650),(LPVOID *)&p->device);stream->acquire_raw_return=(int32_t)hr;(*plugin)->Release(plugin);plugin=NULL;
+     if(hr || !p->device)goto failed;
+-    RECORD(203,(*p->device)->USBDeviceOpen(p->device));p->device_open=1;
++    stream->acquire_step=203;raw=(*p->device)->USBDeviceOpen(p->device);
++    stream->acquire_raw_return=stream->acquire_device_open_raw=(int32_t)raw;
++    stream->acquire_device_open_disposition=fx3_device_open_disposition((int32_t)raw);
++    if(!stream->acquire_device_open_disposition)goto failed;
++    p->device_open=stream->acquire_device_open_disposition==FX3_DEVICE_OWNED;
++
+     RECORD(204,(*p->device)->GetNumberOfConfigurations(p->device,&stream->configurations));
+     RECORD(205,(*p->device)->GetConfiguration(p->device,&stream->active_configuration));
+     if(stream->configurations){
+@@ -265,7 +272,13 @@
+     if(rc==FX3T_SHAPE)goto known_control_only;
+     if(rc!=FX3T_OK)goto failed;
+     stream->observed_profile=p->profile;stream->control_only=0;
++    p->service_shared_control=!p->device_open && p->interface_open;
+ known_control_only:
++    if(stream->control_only && !p->device_open){
++        stream->acquire_policy_return=FX3T_DENIED;stream->failed=route->failed=1;
++        stream->last_call=(fx3_call){FX3T_DENIED,0,1,0,0};
++        atomic_store(&stream->busy,0);return FX3T_DENIED;
++    }
+     if(clock_ns(NULL)>=deadline){raw=kIOReturnTimeout;goto failed;}
+     atomic_store(&stream->busy,0);return FX3T_OK;
+ failed:

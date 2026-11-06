@@ -1,0 +1,506 @@
+{
+  "original_files": {
+    "/usr/lib/appFw.so": {
+      "name": "usr/lib/appFw.so",
+      "guest_path": "/usr/lib/appFw.so",
+      "partition": 15,
+      "image_path": "/lib/appFw.so",
+      "inode": 95387,
+      "source_size": 79015712,
+      "mode": 33133,
+      "uid": 57285,
+      "gid": 1000,
+      "atime": 1766624663,
+      "ctime": 1766624663,
+      "mtime": 1766624381,
+      "deletion_time": 0,
+      "nlink": 1,
+      "inode_flags": 0,
+      "raw_inode_sha256": "4b4794ca9129a36148cfd57e190ed78cbcdea1113ffb00b9850378c8c25836c8",
+      "raw_inode_hex": "6d81c5df20afb504978d4c69978d4c697d8c4c6900000000e80301003a5d020000000000000000000adb06000bdb06000cdb06000ddb06000edb06000fdb060010db060011db060012db060013db060014db060015db060016db060017dc0600bc2a0100f2b0eca3000000000000000000000000000000000000000000000000",
+      "reason": [
+        "Full original filesystem projection; presence is not execution"
+      ],
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "type": "regular",
+      "local_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+      "payload_origin": "projection-v3-original-bytes-reused",
+      "is_elf": true,
+      "cpio_ino": 397
+    },
+    "/usr/kmod/dmm.ko": {
+      "name": "usr/kmod/dmm.ko",
+      "guest_path": "/usr/kmod/dmm.ko",
+      "partition": 15,
+      "image_path": "/kmod/dmm.ko",
+      "inode": 70916,
+      "source_size": 118336,
+      "mode": 33261,
+      "uid": 57285,
+      "gid": 1000,
+      "atime": 1766624663,
+      "ctime": 1766624663,
+      "mtime": 1766624412,
+      "deletion_time": 0,
+      "nlink": 1,
+      "inode_flags": 0,
+      "raw_inode_sha256": "b840fac4bc489dd3a839ca2521a3307ca083e7c5ab9f7f1df0c8ae953f29c2df",
+      "raw_inode_hex": "ed81c5df40ce0100978d4c69978d4c699c8c4c6900000000e8030100ea0000000000000000000000f6890400f7890400f8890400f9890400fa890400fb890400fc890400fd890400fe890400ff890400008a0400018a0400028a04000000000000000000c0afeca3000000000000000000000000000000000000000000000000",
+      "reason": [
+        "Full original filesystem projection; presence is not execution"
+      ],
+      "bytes": 118336,
+      "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "type": "regular",
+      "local_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "payload_origin": "new-original-content-addressed-payload",
+      "is_elf": true,
+      "cpio_ino": 288
+    }
+  },
+  "blocks": {
+    "0x2e4f0a8": [
+      {
+        "va": "0x2e4f0a8",
+        "bytes": "a03340f9",
+        "instruction": "ldr x0, [x29, #0x60]"
+      },
+      {
+        "va": "0x2e4f0ac",
+        "bytes": "01048052",
+        "instruction": "mov w1, #0x20"
+      },
+      {
+        "va": "0x2e4f0b0",
+        "bytes": "1f7c00a9",
+        "instruction": "stp xzr, xzr, [x0]"
+      },
+      {
+        "va": "0x2e4f0b4",
+        "bytes": "01000079",
+        "instruction": "strh w1, [x0]"
+      },
+      {
+        "va": "0x2e4f0b8",
+        "bytes": "150400b9",
+        "instruction": "str w21, [x0, #4]"
+      },
+      {
+        "va": "0x2e4f0bc",
+        "bytes": "1f7c01a9",
+        "instruction": "stp xzr, xzr, [x0, #0x10]"
+      },
+      {
+        "va": "0x2e4f0c0",
+        "bytes": "192c0079",
+        "instruction": "strh w25, [x0, #0x16]"
+      },
+      {
+        "va": "0x2e4f0c4",
+        "bytes": "a15b40b9",
+        "instruction": "ldr w1, [x29, #0x58]"
+      },
+      {
+        "va": "0x2e4f0c8",
+        "bytes": "180c00b9",
+        "instruction": "str w24, [x0, #0xc]"
+      },
+      {
+        "va": "0x2e4f0cc",
+        "bytes": "1f1000f9",
+        "instruction": "str xzr, [x0, #0x20]"
+      },
+      {
+        "va": "0x2e4f0d0",
+        "bytes": "a03340f9",
+        "instruction": "ldr x0, [x29, #0x60]"
+      },
+      {
+        "va": "0x2e4f0d4",
+        "bytes": "4b0b9d97",
+        "instruction": "bl #0x1591e00"
+      },
+      {
+        "va": "0x2e4f0d8",
+        "bytes": "a13340f9",
+        "instruction": "ldr x1, [x29, #0x60]"
+      },
+      {
+        "va": "0x2e4f0dc",
+        "bytes": "e003162a",
+        "instruction": "mov w0, w22"
+      },
+      {
+        "va": "0x2e4f0e0",
+        "bytes": "8c0f9d97",
+        "instruction": "bl #0x1592f10"
+      }
+    ],
+    "0x2e4f150": [
+      {
+        "va": "0x2e4f150",
+        "bytes": "a05b40b9",
+        "instruction": "ldr w0, [x29, #0x58]"
+      },
+      {
+        "va": "0x2e4f154",
+        "bytes": "e203182a",
+        "instruction": "mov w2, w24"
+      },
+      {
+        "va": "0x2e4f158",
+        "bytes": "a1a30191",
+        "instruction": "add x1, x29, #0x68"
+      },
+      {
+        "va": "0x2e4f15c",
+        "bytes": "210f9d97",
+        "instruction": "bl #0x1592de0"
+      },
+      {
+        "va": "0x2e4f160",
+        "bytes": "f503002a",
+        "instruction": "mov w21, w0"
+      }
+    ],
+    "0x2e4f1ac": [
+      {
+        "va": "0x2e4f1ac",
+        "bytes": "b53740f9",
+        "instruction": "ldr x21, [x29, #0x68]"
+      },
+      {
+        "va": "0x2e4f1b0",
+        "bytes": "a506c079",
+        "instruction": "ldrsh w5, [x21, #2]"
+      },
+      {
+        "va": "0x2e4f1b4",
+        "bytes": "bf000071",
+        "instruction": "cmp w5, #0"
+      },
+      {
+        "va": "0x2e4f1b8",
+        "bytes": "2a040054",
+        "instruction": "b.ge #0x2e4f23c"
+      }
+    ],
+    "0x2e4f22c": [
+      {
+        "va": "0x2e4f22c",
+        "bytes": "a05b40b9",
+        "instruction": "ldr w0, [x29, #0x58]"
+      },
+      {
+        "va": "0x2e4f230",
+        "bytes": "a13740f9",
+        "instruction": "ldr x1, [x29, #0x68]"
+      },
+      {
+        "va": "0x2e4f234",
+        "bytes": "67149d97",
+        "instruction": "bl #0x15943d0"
+      },
+      {
+        "va": "0x2e4f238",
+        "bytes": "93ffff17",
+        "instruction": "b #0x2e4f084"
+      },
+      {
+        "va": "0x2e4f23c",
+        "bytes": "a00e40f9",
+        "instruction": "ldr x0, [x21, #0x18]"
+      },
+      {
+        "va": "0x2e4f240",
+        "bytes": "600600f9",
+        "instruction": "str x0, [x19, #8]"
+      },
+      {
+        "va": "0x2e4f244",
+        "bytes": "a02240b9",
+        "instruction": "ldr w0, [x21, #0x20]"
+      },
+      {
+        "va": "0x2e4f248",
+        "bytes": "601200b9",
+        "instruction": "str w0, [x19, #0x10]"
+      },
+      {
+        "va": "0x2e4f24c",
+        "bytes": "a00e40b9",
+        "instruction": "ldr w0, [x21, #0xc]"
+      },
+      {
+        "va": "0x2e4f250",
+        "bytes": "600600b9",
+        "instruction": "str w0, [x19, #4]"
+      },
+      {
+        "va": "0x2e4f254",
+        "bytes": "c0feff54",
+        "instruction": "b.eq #0x2e4f22c"
+      }
+    ],
+    "0x2e4f2b0": [
+      {
+        "va": "0x2e4f2b0",
+        "bytes": "350ca072",
+        "instruction": "movk w21, #0x61, lsl #16"
+      },
+      {
+        "va": "0x2e4f2b4",
+        "bytes": "80078052",
+        "instruction": "mov w0, #0x3c"
+      },
+      {
+        "va": "0x2e4f2b8",
+        "bytes": "9f0271f2",
+        "instruction": "tst x20, #0x8000"
+      },
+      {
+        "va": "0x2e4f2bc",
+        "bytes": "200cb272",
+        "instruction": "movk w0, #0x9061, lsl #16"
+      },
+      {
+        "va": "0x2e4f2c0",
+        "bytes": "a1430191",
+        "instruction": "add x1, x29, #0x50"
+      },
+      {
+        "va": "0x2e4f2c4",
+        "bytes": "b502801a",
+        "instruction": "csel w21, w21, w0, eq"
+      },
+      {
+        "va": "0x2e4f2c8",
+        "bytes": "23008052",
+        "instruction": "mov w3, #1"
+      },
+      {
+        "va": "0x2e4f2cc",
+        "bytes": "e003152a",
+        "instruction": "mov w0, w21"
+      },
+      {
+        "va": "0x2e4f2d0",
+        "bytes": "02058052",
+        "instruction": "mov w2, #0x28"
+      },
+      {
+        "va": "0x2e4f2d4",
+        "bytes": "93139d97",
+        "instruction": "bl #0x1594120"
+      }
+    ],
+    "dmm_unit_ctrl_MakeHandle": [
+      {
+        "va": "0x9fb8",
+        "bytes": "ff4300d1",
+        "instruction": "sub sp, sp, #0x10"
+      },
+      {
+        "va": "0x9fbc",
+        "bytes": "e2134079",
+        "instruction": "ldrh w2, [sp, #8]"
+      },
+      {
+        "va": "0x9fc0",
+        "bytes": "02240033",
+        "instruction": "bfxil w2, w0, #0, #0xa"
+      },
+      {
+        "va": "0x9fc4",
+        "bytes": "e2130079",
+        "instruction": "strh w2, [sp, #8]"
+      },
+      {
+        "va": "0x9fc8",
+        "bytes": "e0134079",
+        "instruction": "ldrh w0, [sp, #8]"
+      },
+      {
+        "va": "0x9fcc",
+        "bytes": "00380012",
+        "instruction": "and w0, w0, #0x7fff"
+      },
+      {
+        "va": "0x9fd0",
+        "bytes": "e0130079",
+        "instruction": "strh w0, [sp, #8]"
+      },
+      {
+        "va": "0x9fd4",
+        "bytes": "e0134079",
+        "instruction": "ldrh w0, [sp, #8]"
+      },
+      {
+        "va": "0x9fd8",
+        "bytes": "20101633",
+        "instruction": "bfi w0, w1, #0xa, #5"
+      },
+      {
+        "va": "0x9fdc",
+        "bytes": "e0130079",
+        "instruction": "strh w0, [sp, #8]"
+      },
+      {
+        "va": "0x9fe0",
+        "bytes": "e0134079",
+        "instruction": "ldrh w0, [sp, #8]"
+      },
+      {
+        "va": "0x9fe4",
+        "bytes": "ff430091",
+        "instruction": "add sp, sp, #0x10"
+      },
+      {
+        "va": "0x9fe8",
+        "bytes": "003c0053",
+        "instruction": "uxth w0, w0"
+      },
+      {
+        "va": "0x9fec",
+        "bytes": "c0035fd6",
+        "instruction": "ret "
+      }
+    ],
+    "dmm_unit_ctrl_GetUnit": [
+      {
+        "va": "0x9d50",
+        "bytes": "ff4300d1",
+        "instruction": "sub sp, sp, #0x10"
+      },
+      {
+        "va": "0x9d54",
+        "bytes": "003c0053",
+        "instruction": "uxth w0, w0"
+      },
+      {
+        "va": "0x9d58",
+        "bytes": "e0130079",
+        "instruction": "strh w0, [sp, #8]"
+      },
+      {
+        "va": "0x9d5c",
+        "bytes": "e2134079",
+        "instruction": "ldrh w2, [sp, #8]"
+      },
+      {
+        "va": "0x9d60",
+        "bytes": "e0030079",
+        "instruction": "strh w0, [sp]"
+      },
+      {
+        "va": "0x9d64",
+        "bytes": "422440d3",
+        "instruction": "ubfx x2, x2, #0, #0xa"
+      },
+      {
+        "va": "0x9d68",
+        "bytes": "e3034079",
+        "instruction": "ldrh w3, [sp]"
+      },
+      {
+        "va": "0x9d6c",
+        "bytes": "403c0053",
+        "instruction": "uxth w0, w2"
+      },
+      {
+        "va": "0x9d70",
+        "bytes": "1ffc0f71",
+        "instruction": "cmp w0, #0x3ff"
+      },
+      {
+        "va": "0x9d74",
+        "bytes": "63384ad3",
+        "instruction": "ubfx x3, x3, #0xa, #5"
+      },
+      {
+        "va": "0x9d78",
+        "bytes": "80010054",
+        "instruction": "b.eq #0x9da8"
+      },
+      {
+        "va": "0x9d7c",
+        "bytes": "e4010058",
+        "instruction": "ldr x4, #0x9db8"
+      },
+      {
+        "va": "0x9d80",
+        "bytes": "050e8052",
+        "instruction": "mov w5, #0x70"
+      },
+      {
+        "va": "0x9d84",
+        "bytes": "3f0000f1",
+        "instruction": "cmp x1, #0"
+      },
+      {
+        "va": "0x9d88",
+        "bytes": "841040f9",
+        "instruction": "ldr x4, [x4, #0x20]"
+      },
+      {
+        "va": "0x9d8c",
+        "bytes": "0010a59b",
+        "instruction": "umaddl x0, w0, w5, x4"
+      },
+      {
+        "va": "0x9d90",
+        "bytes": "042c4039",
+        "instruction": "ldrb w4, [x0, #0xb]"
+      },
+      {
+        "va": "0x9d94",
+        "bytes": "8010437a",
+        "instruction": "ccmp w4, w3, #0, ne"
+      },
+      {
+        "va": "0x9d98",
+        "bytes": "81000054",
+        "instruction": "b.ne #0x9da8"
+      },
+      {
+        "va": "0x9d9c",
+        "bytes": "22000079",
+        "instruction": "strh w2, [x1]"
+      },
+      {
+        "va": "0x9da0",
+        "bytes": "ff430091",
+        "instruction": "add sp, sp, #0x10"
+      },
+      {
+        "va": "0x9da4",
+        "bytes": "c0035fd6",
+        "instruction": "ret "
+      },
+      {
+        "va": "0x9da8",
+        "bytes": "000080d2",
+        "instruction": "mov x0, #0"
+      },
+      {
+        "va": "0x9dac",
+        "bytes": "ff430091",
+        "instruction": "add sp, sp, #0x10"
+      },
+      {
+        "va": "0x9db0",
+        "bytes": "c0035fd6",
+        "instruction": "ret "
+      }
+    ]
+  },
+  "native_request": "FX3_PROVIDER_REQUEST destination=0x9061003c bytes=40 source=0x81cf6186 caller=0x7f327ee0e4 raw=200000003a06000000000000ffffffff000000000000010000000000000000000000000000000000 dispatch_pending=1",
+  "facts": [
+    "NativeAP40B op20/unit63a/option1/source81cf6186; destination9061003c",
+    "OwnappFw+2e4f0e4 is originalsendreturn; waitsoriginalqueue, reads signedstatus+2, address+18,size+20,handle+c andcallsoriginalfree",
+    "OwnappFw+2e4f2b8 testsbit15 tochoose local61003c vs remote9061003c",
+    "OwnkernelMakeHandle uses10bitindex/5bitgeneration, clearsbit15 forlocalhandles"
+  ],
+  "model_scope": "Portedexplicit upstreamvirtualtwo-slotunit63a512KiB storage, ownFDT+kernelreserve41d900000/1MiB, noA7C2physical/creatorPC. CPgenerationimplementation andoriginalCPunitphysicalgeometry notclaimed. OriginalCP notexecuted."
+}

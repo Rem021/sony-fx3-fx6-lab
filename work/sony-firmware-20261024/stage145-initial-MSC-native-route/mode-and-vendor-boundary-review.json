@@ -1,0 +1,339 @@
+{
+  "status": "ORIGINAL_CALLBACK_RETURNS_THRU_AFTER_QUEUE_ATTEMPT_GPL_CORE_MAY_STALL_NOT_EXACT_702_CORE_RUNTIME_PROOF",
+  "original_module": {
+    "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/original-components/kmod/usbg_sen.ko",
+    "bytes": 58080,
+    "sha256": "1a7294dd9d3babde3f1e8cc2ac4aa12f54356f61995993bbc18ace095ed0cbf2"
+  },
+  "original_callback_instructions": [
+    {
+      "offset": "0x0",
+      "asm": "stp x29, x30, [sp, #-0x40]!",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x4",
+      "asm": "mov x29, sp",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x8",
+      "asm": "stp x19, x20, [sp, #0x10]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xc",
+      "asm": "stp x21, x22, [sp, #0x20]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x10",
+      "asm": "ldr x20, [x0, #0x20]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x14",
+      "asm": "mov w0, #-1",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x18",
+      "asm": "str w0, [x29, #0x3c]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x1c",
+      "asm": "ldr x0, [x20, #0x178]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x20",
+      "asm": "ldr x19, [x0]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x24",
+      "asm": "cbz x19, #0xa0",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x28",
+      "asm": "mov x0, x19",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x2c",
+      "asm": "mov x2, #8",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x30",
+      "asm": "mov x22, x1",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x34",
+      "asm": "bl #0x34",
+      "relocation_symbol": "memcmp"
+    },
+    {
+      "offset": "0x38",
+      "asm": "mov w21, w0",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x3c",
+      "asm": "cbz w0, #0x6c",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x40",
+      "asm": "mov x1, x22",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x44",
+      "asm": "add x0, x19, #8",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x48",
+      "asm": "mov x2, #8",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x4c",
+      "asm": "bl #0x4c",
+      "relocation_symbol": "memcmp"
+    },
+    {
+      "offset": "0x50",
+      "asm": "cbz w0, #0x68",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x54",
+      "asm": "ldp x19, x20, [sp, #0x10]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x58",
+      "asm": "mov w0, #2",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x5c",
+      "asm": "ldp x21, x22, [sp, #0x20]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x60",
+      "asm": "ldp x29, x30, [sp], #0x40",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x64",
+      "asm": "ret ",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x68",
+      "asm": "mov w21, #1",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x6c",
+      "asm": "add x0, x20, #0x70",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x70",
+      "asm": "bl #0x70",
+      "relocation_symbol": "usb_gadgetcore_stop_other_driver"
+    },
+    {
+      "offset": "0x74",
+      "asm": "mov w3, w0",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x78",
+      "asm": "cbnz w0, #0xb4",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x7c",
+      "asm": "add x5, x29, #0x40",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x80",
+      "asm": "ldr x1, [x20, #0x40]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x84",
+      "asm": "mov w4, #4",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x88",
+      "asm": "mov w3, #7",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x8c",
+      "asm": "mov w0, #0",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x90",
+      "asm": "str w21, [x5, #-4]!",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x94",
+      "asm": "ldr x2, [x20]",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0x98",
+      "asm": "bl #0x98",
+      "relocation_symbol": "usb_event_add_queue"
+    },
+    {
+      "offset": "0x9c",
+      "asm": "b #0x54",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xa0",
+      "asm": "ldr x2, #0xc8",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xa4",
+      "asm": "ldr x1, #0xd0",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xa8",
+      "asm": "ldr x0, #0xd8",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xac",
+      "asm": "bl #0xac",
+      "relocation_symbol": "printk"
+    },
+    {
+      "offset": "0xb0",
+      "asm": "b #0x54",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xb4",
+      "asm": "ldr x2, #0xc8",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xb8",
+      "asm": "ldr x1, #0xd0",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xbc",
+      "asm": "ldr x0, #0xe0",
+      "relocation_symbol": null
+    },
+    {
+      "offset": "0xc0",
+      "asm": "bl #0xc0",
+      "relocation_symbol": "printk"
+    },
+    {
+      "offset": "0xc4",
+      "asm": "b #0x54",
+      "relocation_symbol": null
+    }
+  ],
+  "original_queue_return_checked": false,
+  "original_callback_returns_constant_2": true,
+  "reference_THRU_value": 2,
+  "reference_STALL_value": 1,
+  "reference_source_snippets": [
+    {
+      "path": "work/sony-firmware-20261024/stage145-initial-MSC-native-route/work/official-kernel-reference/linux-kernel/include/linux/usb/gcore/usb_gadgetcore.h",
+      "first_line": 58,
+      "last_line": 65,
+      "text": "// for start_ext_info\n#define USB_GCORE_STARTEXT_NORMAL 0\n#define USB_GCORE_STARTEXT_BYDUAL 1\n// ep_set_halt() / ep_clear_halt() return value\n#define USB_GADGETCORE_STALL        1\n#define USB_GADGETCORE_THRU         2\n\n// for special function driver alt num"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage145-initial-MSC-native-route/work/official-kernel-reference/linux-kernel/drivers/usb/gcore/usb_gcore_setup.c",
+      "first_line": 516,
+      "last_line": 551,
+      "text": "\n        /* ��������FuncDrv��õ����vendor()��Ƥ� */\n        list_for_each_entry(tmp_func_drv, &g_core->func_list, list){\n            if(tmp_func_drv->func_drv->vendor){\n                PVERBOSE(\" vendor() to %s\\n\", \n                         tmp_func_drv->func_drv->function ?\n                         tmp_func_drv->func_drv->function : \"\");\n                /*\n                 * vendor() of function driver may call usb_ep_dequeue()\n                 * which requires irq unlocked. it is by linux 4.9.\n                 */\n                spin_unlock_irq(&g_core->lock_setup);\n                rc = tmp_func_drv->func_drv->vendor(tmp_func_drv->func_drv,\n                                                       ctrl, g_core->ep0);\n                spin_lock_irq(&g_core->lock_setup);\n                if(rc == 0){\n                    /* 0���֤�FuncDrv������Ф����ǽ�λ */\n                    /* EP0��Halt���֤������� */\n                    clear_halt_ep0(g_core);\n                    goto exit;\n                }else if(rc == USB_GADGETCORE_STALL){\n                    /* STALL���֤�FuncDrv������Ф����ǽ�λ */\n                    PVERBOSE(\"  --->rc: USB_GADGETCORE_STALL\\n\");\n                    rc = -EINVAL;\n                    goto exit;\n                }\n                PVERBOSE(\"  --->rc: USB_GADGETCORE_THRU\\n\");\n            }\n        }\n        /* �ɤ�FuncDrv������򤷤ʤ�����Stall�ˤ��� */\n        rc = -EINVAL;\n    }\n    \nexit:\n    return rc;\n}"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage145-initial-MSC-native-route/work/official-kernel-reference/linux-kernel/drivers/usb/gcore/usb_gcore_setup.c",
+      "first_line": 2399,
+      "last_line": 2413,
+      "text": "    }else if((ctrl->bRequestType & USB_TYPE_MASK) == USB_TYPE_VENDOR){\n        PDEBUG(\"VENDOR SPECIFIC REQUEST\\n\");\n        \n        rc = delayed_setup_enqueue(CMD_SET_VENDOR, g_core, ctrl);\n\n        if (!rc) {\n          PDEBUG(\"%s VENDOR queued\\n\", __FUNCTION__);\n          /*\n           * dwc3 performs 2-stage controll xfer if ctrl->wLength is zero.\n           * so it shall be delayed status\n           */\n          if (!ctrl->wLength) rc = USB_GADGET_DELAYED_STATUS;\n        }\n        else {\n          DEBUG_ERR(\"%s delayed_setup_enqueue(VENDOR) err=%d\\n\","
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage145-initial-MSC-native-route/work/official-kernel-reference/linux-kernel/drivers/usb/gcore/usb_gcore_setup.c",
+      "first_line": 2549,
+      "last_line": 2566,
+      "text": "\t\t\trc = setup_class_specific(g_core, ctrl);\n\t\t\tbreak;\n\t\tcase CMD_SET_VENDOR:\n\t\t\trc = setup_vendor_specific(g_core, ctrl);\n\t\t\tbreak;\n\t\tcase CMD_DISCONNECT:\n\t\t\tspin_unlock_irq(&g_core->lock_setup);\n\t\t\t_setup_disconnect(g_core);\n\t\t\tspin_lock_irq(&g_core->lock_setup);\n\t\t\tbreak;\n\t\tdefault:\n\t\t\tbreak;\n\t}\n\n\tif (respond && rc >= 0)\n\t\trc = setup_response(g_core, ctrl, rc);\n\n\t/* set ep0 stall on error */"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage145-initial-MSC-native-route/work/official-kernel-reference/linux-kernel/drivers/usb/gcore/usb_gcore_main.c",
+      "first_line": 1004,
+      "last_line": 1028,
+      "text": "    /* �ꥹ�Ȥ�������FunctionDriver�ʳ���õ�� */\n    list_for_each_entry_safe(tmp_func_drv, n, &g_core->func_list, list){\n        if( ( tmp_func_drv->func_drv            != func_drv ) &&\n            ( tmp_func_drv->func_drv->config    !=     0xFF ) &&\n            ( tmp_func_drv->func_drv->interface !=     0xFF ) &&\n            ( tmp_func_drv->started             !=        0 ) ){\n            /* �����Ǿ��ΰ��פ���FuncDrv��stop()���Τ����� */\n            PVERBOSE(\" stop() to %s\\n\", \n                     tmp_func_drv->func_drv->function ?\n                     tmp_func_drv->func_drv->function : \"\");\n            DEBUG_PRINT(\"stop() to \\\"%s\\\"\", \n                     tmp_func_drv->func_drv->function ?\n                     tmp_func_drv->func_drv->function : \"\");\n            tmp_func_drv->started = 0;\n            spin_unlock_irq(&g_core->lock);\n            tmp_func_drv->func_drv->stop(tmp_func_drv->func_drv);\n            spin_lock_irq(&g_core->lock);\n            \n            eps = tmp_func_drv->ep_list.ep;\n            \n            /* FuncDrv��EP�ꥹ�Ȥ��� */\n            for(i = 0; i < tmp_func_drv->ep_list.num_ep; i++){\n                ep_ctrl_delete_ep(g_core, *(eps+i));\n            }\n            DEBUG_FREE(eps);"
+    }
+  ],
+  "reference_other_recipient_visits_all_registered_vendor_callbacks": true,
+  "if_all_callbacks_THRU_reference_returns_EINVAL_even_after_queue_attempt": true,
+  "reference_vendor_request_uses_delayed_work_and_later_setup_response": true,
+  "actual_702_gcore_runtime_registration_order_and_wire_STALL_proven": false,
+  "transport_or_control_ACK_does_not_prove_queue_admission_consumption_or_worker_completion": true,
+  "completed_STALL_must_not_be_conflated_with_no_effect_or_automatic_retry": true,
+  "stage140_generic_START_error_goes_to_cleanup_not_authentication": true,
+  "stage140_error_semantics_not_silently_changed_by_this_stage": true,
+  "adopted_unsealed143_evidence_pins": [
+    {
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/MSC-original-candidates.json",
+      "bytes": 3470,
+      "sha256": "d60a1f911b5873093a4537302cb0c80c05252e25c23b0379fd87c83be6f43904"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/inspect_MSC_candidates.py",
+      "bytes": 2543,
+      "sha256": "76a1b3e2bb0b33e27e32415506a3dab6fedea066adb4b86ac103b53acd37b3fa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/work/original-candidates/kmod/usbg_storage.ko",
+      "bytes": 104288,
+      "sha256": "b43130dbc3d9b72dc03c3acb7993639e1cefcbb43621fef809f6f617cb30b255"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/work/original-candidates/lib/libUsbControl.so",
+      "bytes": 135424,
+      "sha256": "2bf51f28fd5066e56afc8bbb02ddbaa96b36f57ff2a823cecf9f901781754ed9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/work/original-candidates/lib/libusbcmd.so",
+      "bytes": 27208,
+      "sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage143-mode-specific-authentication/README.md",
+      "bytes": 2590,
+      "sha256": "03fabab28f2b89c8ce925458813ddeda31f7dd6717459e0312ca2314169cdac9"
+    }
+  ],
+  "initial_MSC_digest_verifier_not_located": true,
+  "downloaded_native_USB_or_Sony_code_executed": false,
+  "camera_or_Windows_operations": 0
+}

@@ -1,0 +1,26 @@
+{
+  "status": "PREPARED_NOT_RELEASED_FOR_REAL_USB",
+  "probe_id": "stage142-fx3-msc-descriptors-v1",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489
+  },
+  "cached_target_time": "2026-10-27T21:41:14.348187+00:00",
+  "fresh_cache_must_match_before_worker": true,
+  "native_library": {
+    "path": "work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/artifacts/private-libusb/lib/libusb-1.0.0.dylib",
+    "bytes": 148448,
+    "sha256": "e6ec28209bb4397a88b358b575f0674fca8ae2a74aa3bee6c5dc67a6b022dde5"
+  },
+  "explicit_device_GET_DESCRIPTOR_budget": 1,
+  "configuration_descriptor_and_interface_metadata_APIs": true,
+  "total_OS_generated_wire_requests_not_measured_or_guaranteed": true,
+  "worker_deadline_seconds": 15,
+  "kill_completion_wait_seconds": 2,
+  "one_shot_claim_retained_even_if_USB_result_unknown": true,
+  "no_device_open_interface_claim_or_driver_detach": true,
+  "no_vendor_authentication_service_mode_media_or_firmware_commands": true,
+  "native_library_loaded_by_this_plan": false,
+  "goal_complete": false
+}

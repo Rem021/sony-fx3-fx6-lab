@@ -1,0 +1,106 @@
+{
+  "schema": "fx3-stage229-Jiritsu-lifecycle-seal-v1",
+  "created_utc": "2026-10-30T13:22:40.150069+00:00",
+  "previous_manifest_sha256": "3ccae9487a0c2aa1c1f2b33669af0c223bfe6a95bc18ec2d8cec856945d244d5",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/README.md",
+      "bytes": 4311,
+      "sha256": "40a5429e9d56d1c6ad78dbd24eb9d92d7cc064e8ac02f8129846e461ebf091df"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/audit_contract-first.py",
+      "bytes": 8432,
+      "sha256": "715c3a658fb1f416b170f03fd965670dbe896525850af7d2f72913c96f3a8a2f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/audit_contract-path-first.py",
+      "bytes": 8448,
+      "sha256": "b339f18a99ce339755466d3c418e1fe8296e064c067ea1dd672fb117453a9383"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/audit_contract.py",
+      "bytes": 8462,
+      "sha256": "f420c603d2bab7fdd7a73d77d992d2e986dcfbcd9c064027dc377e43a68425ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/first-audit-failure.json",
+      "bytes": 336,
+      "sha256": "d7b50e20d532a9b79db42a961b6caf48b36ed692a024f18c47dd7136a135d336"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/goal-status-after.json",
+      "bytes": 481966,
+      "sha256": "f1b79d906829a960b07c6a87365e6da2212a9aade25a152bd56f434e645f7b54"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/goal-status-before.json",
+      "bytes": 478770,
+      "sha256": "5bac577f587e1bba168727c7fb1a8f4fd58433c0baa6637775a548cb896c4d45"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/native-goal-observed.json",
+      "bytes": 384,
+      "sha256": "a8a839e98b0e2f7b20637f9fe94021b67181602e41ce7f1528b8793a06329d9e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/plugin-lifecycle-audit.json",
+      "bytes": 9943,
+      "sha256": "8f060e686da9b3f04ae38ffbde8e54371f7b608f10e8c97066b9c6a4eb0b70cf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/readme-after.md",
+      "bytes": 100643,
+      "sha256": "0ab51cdee0ab75232b62808ea813a9a1a062960e9ebb59dab6100de226e7dd3b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/readme-before.md",
+      "bytes": 100207,
+      "sha256": "d9f1e8062c085bf0a005c7437559b7b0df6c84cd15423adcd6e0c0e6596303ad"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/readme-rebased-before.md",
+      "bytes": 100207,
+      "sha256": "d9f1e8062c085bf0a005c7437559b7b0df6c84cd15423adcd6e0c0e6596303ad"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/seal_stage.py",
+      "bytes": 9211,
+      "sha256": "109406fb5fd72b864d949a6319ca349adc3be6e09ba68512e765cac8983f1bb9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/second-audit-failure.json",
+      "bytes": 280,
+      "sha256": "847bd72f5b70fa0f82aeead94374db9db8a26010d6077d5c9ca1bba621577c31"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/selected-functions.json",
+      "bytes": 98768,
+      "sha256": "a379a4b1103da4aadeccc2db1e8dab71a510b6ad65b7495eda2234e32b230923"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage229-Jiritsu-plugin-lifecycle-contract/verification-receipt.json",
+      "bytes": 1288,
+      "sha256": "b56f76a1ee7559355173d922d54b368b607140ed16176798086fe5b8d41f52f5"
+    }
+  ],
+  "member_count": 16,
+  "mutable_heads_not_manifest_members": true,
+  "goal_before_sha256": "5bac577f587e1bba168727c7fb1a8f4fd58433c0baa6637775a548cb896c4d45",
+  "goal_after_sha256": "f1b79d906829a960b07c6a87365e6da2212a9aade25a152bd56f434e645f7b54",
+  "status": "STATIC_ACTUAL_PLUGIN_ABI_AND_STOP_COMPLETION_LIMITS_PINNED",
+  "original_whole_functions": 8,
+  "manual_PLT_checks": 22,
+  "ABI_instruction_checks": 29,
+  "symbol_string_address_checks": 4,
+  "queue_only_borrowed_pointers": true,
+  "RunScriptI_synchronous_on_service_thread": true,
+  "stop_state_or_timeout_is_thread_exit_proof": false,
+  "actual_thread_or_plugin_or_USB_completion_verified": false,
+  "new_device_admin_auth_upload_or_firmware_writes": 0,
+  "all16_requirements_and_authorizations_unchanged": true,
+  "formal23_sources_release04_05_unchanged": true,
+  "root195_pending_unlaunched": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

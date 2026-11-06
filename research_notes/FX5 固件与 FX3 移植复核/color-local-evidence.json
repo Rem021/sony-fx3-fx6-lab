@@ -1,0 +1,101 @@
+{
+  "created_utc": "2026-10-28T06:02:22.700445+00:00",
+  "scope": "read only static local files; no vendor binary executed",
+  "worktree": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware",
+  "git": {
+    "root": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware",
+    "branch": "codex/venice-color-fidelity",
+    "head": "28f74ffe76ee845ec7b51cf4ae5229a56688a4bd",
+    "status": "?? work/venice-component-contract-2026-10-27/"
+  },
+  "zip": {
+    "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/MPC-3628_3626_V500.zip",
+    "bytes": 862640780,
+    "sha256": "04972a7e6635f33236443889727c580f833a02322d5b2c12df7e69d5533c7610",
+    "matches_prior": true,
+    "official_url": "https://download.pro.sony/26/07/Dg7f1deef3/MPC-3628_3626_V500.zip"
+  },
+  "bin": {
+    "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/package/MPC-3626_3628_V500/MPC-3628_3626_V500_firmware.bin",
+    "bytes": 287406080,
+    "sha256": "7925b25bfb80ca447a672e2640074d48f22cce9f20d6fa5459bbb347f2f13c76"
+  },
+  "tar_members": [
+    {
+      "name": "BERLIN",
+      "size": 0,
+      "data_offset": 512
+    },
+    {
+      "name": "BERLIN/DATA23213",
+      "size": 287401488,
+      "data_offset": 1024
+    },
+    {
+      "name": "BERLIN/property.xml",
+      "size": 233,
+      "data_offset": 287403520
+    },
+    {
+      "name": "property.xml",
+      "size": 136,
+      "data_offset": 287404544
+    }
+  ],
+  "properties": {
+    "BERLIN/property.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<BinaryPackProperty>\n  <PackageType>multiversion</PackageType>\n  <ProductID>BERLIN</ProductID>\n  <ProductCodeVersion href=\"VER500\" enctype=\"type4\">500</ProductCodeVersion>\n</BinaryPackProperty>\n",
+    "property.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<property>\n  <PackageType>multiproduct</PackageType>\n  <ProductID>BERLIN</ProductID>\n</property>\n"
+  },
+  "inner": {
+    "sha256": "662a93a061d17691bf4d243788c94a4dff7b97c92b48e6eeddf87f4c3f5d0019",
+    "bytes": 287401488,
+    "first_1MiB_entropy_bits_per_byte": 7.999852384150263,
+    "cipher_identified": false,
+    "decrypted": false
+  },
+  "evidence_files": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/reports/venice-firmware-2026-10-23/REPORT.md",
+      "bytes": 206678,
+      "sha256": "b24218c46fe17267172f35f0519b24e5fff787f4c9180068d5d86ec85156475c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/reports/venice-firmware-2026-10-23/GOAL.md",
+      "bytes": 32919,
+      "sha256": "b4e3511e78168055a3b34f4bd09925fb5b5ede017c6275d57c3b5f51a3e755cf"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/reports/venice-photo-match-2026-10-25/VENICE-COMPONENT-CONTRACT-2026-10-27.md",
+      "bytes": 24836,
+      "sha256": "55281399708b935edcbcb9459dbb4ee73e1298809ff8181ea1ffd14c078cbba4"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/llvc-physical-01/completion-audit.json",
+      "bytes": 5785,
+      "sha256": "8bf6b0af209b3db1777828e4e51efe2a3ccafc404c62fdd37ca335cf59b5c7df"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/tools/sony_color/SonyLLVCCode.swift",
+      "bytes": 10167,
+      "sha256": "8405e3abcca4d3016e5f2d399e0b5f1448e5019a724be5689e03c66c72ef893d"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/tools/sony_color/SonyDebayerWorkingTransfer.swift",
+      "bytes": 2995,
+      "sha256": "9c045b86f7a4394323c40bc3369b81facf625e32ac9be7f3622bd8265a2b2c97"
+    }
+  ],
+  "historic_physical_audit": {
+    "status": "passed",
+    "runtimeCompletionProven": true,
+    "build": "497",
+    "sourceCommit": "0c673ad84943b165487925ee0c1fd01ce9aecab6",
+    "outstandingWithinRuntimeScope": [],
+    "independentBoundaries": [
+      "explicit supplied curve; formula not recovered",
+      "one pinned GX-8 first-frame profile only",
+      "no iPhone sensor/ISP/AWB or Sony camera equivalence",
+      "HDR/video/performance/subjective camera quality outside this runtime goal"
+    ]
+  }
+}

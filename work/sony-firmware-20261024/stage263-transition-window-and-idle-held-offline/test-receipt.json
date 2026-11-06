@@ -1,0 +1,116 @@
+{
+  "status": "OFFLINE_TARGETED_REGRESSIONS_PASS",
+  "checks": 6,
+  "rows": [
+    {
+      "case": "service-at-3200ms-return-at-3600ms",
+      "status": "PASS",
+      "frames": 153,
+      "result": {
+        "scenario": 0,
+        "flow_return": 0,
+        "frames": 153,
+        "virtual_elapsed_ms": 6800,
+        "opens": 1,
+        "STOPs": 1,
+        "flow_object_classifier": 4294967295,
+        "actual_camera": false
+      },
+      "virtual_native_provider": true,
+      "live_peer_origin": false,
+      "actual_camera": false
+    },
+    {
+      "case": "no-service-in-five-seconds",
+      "status": "PASS",
+      "frames": 86,
+      "result": {
+        "scenario": 1,
+        "flow_return": -1,
+        "frames": 86,
+        "virtual_elapsed_ms": 5000,
+        "opens": 0,
+        "STOPs": 0,
+        "flow_object_classifier": 0,
+        "actual_camera": false
+      },
+      "virtual_native_provider": true,
+      "live_peer_origin": false,
+      "actual_camera": false
+    },
+    {
+      "case": "wrong-physical-anchor",
+      "status": "PASS",
+      "frames": 40,
+      "result": {
+        "scenario": 2,
+        "flow_return": -1,
+        "frames": 40,
+        "virtual_elapsed_ms": 300,
+        "opens": 0,
+        "STOPs": 0,
+        "flow_object_classifier": 0,
+        "actual_camera": false
+      },
+      "virtual_native_provider": true,
+      "live_peer_origin": false,
+      "actual_camera": false
+    },
+    {
+      "case": "overall-deadline-still-three-seconds",
+      "status": "PASS",
+      "frames": 66,
+      "result": {
+        "scenario": 3,
+        "flow_return": -1,
+        "frames": 66,
+        "virtual_elapsed_ms": 3000,
+        "opens": 0,
+        "STOPs": 0,
+        "flow_object_classifier": 0,
+        "actual_camera": false
+      },
+      "virtual_native_provider": true,
+      "live_peer_origin": false,
+      "actual_camera": false
+    },
+    {
+      "case": "decoder-denies-window-over-5s-and-sample51-even-after-rehash",
+      "status": "PASS",
+      "variants": 2
+    },
+    {
+      "case": "host-only-child-exit-does-not-clear-durable-UNKNOWN",
+      "status": "PASS",
+      "compile_argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-DFX3_ENTRY_FIXTURE",
+        "-I",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/global_unknown_fixture.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01/owner_ipc.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/artifacts/unknown-fixture"
+      ],
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/artifacts/unknown-fixture:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n",
+      "journal_bytes": 512
+    }
+  ],
+  "run_directory": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/runs/attempt02",
+  "camera_recovery_proven": false,
+  "cooperative_exit_integrated": false,
+  "native_helper_built_or_run": false,
+  "new_root_or_USB_operations": 0
+}

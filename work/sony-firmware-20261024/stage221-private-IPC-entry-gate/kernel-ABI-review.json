@@ -1,0 +1,421 @@
+{
+  "reference": "Linux4.9 public headers, not live Sony observation",
+  "source_files": 5,
+  "checks": [
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^struct user_msghdr",
+      "lines": [
+        {
+          "line": 57,
+          "text": "struct user_msghdr {"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "msg_name;",
+      "lines": [
+        {
+          "line": 48,
+          "text": "\tvoid\t\t*msg_name;\t/* ptr to socket address structure */"
+        },
+        {
+          "line": 58,
+          "text": "\tvoid\t\t__user *msg_name;\t/* ptr to socket address structure */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "msg_namelen;",
+      "lines": [
+        {
+          "line": 49,
+          "text": "\tint\t\tmsg_namelen;\t/* size of socket address structure */"
+        },
+        {
+          "line": 59,
+          "text": "\tint\t\tmsg_namelen;\t\t/* size of socket address structure */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "msg_iov;",
+      "lines": [
+        {
+          "line": 60,
+          "text": "\tstruct iovec\t__user *msg_iov;\t/* scatter/gather array */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "msg_iovlen;",
+      "lines": [
+        {
+          "line": 61,
+          "text": "\t__kernel_size_t\tmsg_iovlen;\t\t/* # elements in msg_iov */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "msg_control;",
+      "lines": [
+        {
+          "line": 51,
+          "text": "\tvoid\t\t*msg_control;\t/* ancillary data */"
+        },
+        {
+          "line": 62,
+          "text": "\tvoid\t\t__user *msg_control;\t/* ancillary data */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "msg_controllen;",
+      "lines": [
+        {
+          "line": 52,
+          "text": "\t__kernel_size_t\tmsg_controllen;\t/* ancillary data buffer length */"
+        },
+        {
+          "line": 63,
+          "text": "\t__kernel_size_t\tmsg_controllen;\t\t/* ancillary data buffer length */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "msg_flags;",
+      "lines": [
+        {
+          "line": 53,
+          "text": "\tunsigned int\tmsg_flags;\t/* flags on received message */"
+        },
+        {
+          "line": 64,
+          "text": "\tunsigned int\tmsg_flags;\t\t/* flags on received message */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^struct cmsghdr",
+      "lines": [
+        {
+          "line": 79,
+          "text": "struct cmsghdr {"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "cmsg_len;",
+      "lines": [
+        {
+          "line": 80,
+          "text": "\t__kernel_size_t\tcmsg_len;\t/* data byte count, including hdr */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "cmsg_level;",
+      "lines": [
+        {
+          "line": 81,
+          "text": "        int\t\tcmsg_level;\t/* originating protocol */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "cmsg_type;",
+      "lines": [
+        {
+          "line": 82,
+          "text": "        int\t\tcmsg_type;\t/* protocol-specific type */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define\\s+SCM_RIGHTS",
+      "lines": [
+        {
+          "line": 149,
+          "text": "#define\tSCM_RIGHTS\t0x01\t\t/* rw: access rights (array of int) */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define SCM_CREDENTIALS",
+      "lines": [
+        {
+          "line": 150,
+          "text": "#define SCM_CREDENTIALS 0x02\t\t/* rw: struct ucred\t\t*/"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define AF_UNIX",
+      "lines": [
+        {
+          "line": 161,
+          "text": "#define AF_UNIX\t\t1\t/* Unix domain sockets \t\t*/"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define MSG_CTRUNC",
+      "lines": [
+        {
+          "line": 267,
+          "text": "#define MSG_CTRUNC\t8"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define MSG_TRUNC",
+      "lines": [
+        {
+          "line": 269,
+          "text": "#define MSG_TRUNC\t0x20"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define MSG_DONTWAIT",
+      "lines": [
+        {
+          "line": 270,
+          "text": "#define MSG_DONTWAIT\t0x40\t/* Nonblocking io\t\t */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define MSG_EOR",
+      "lines": [
+        {
+          "line": 271,
+          "text": "#define MSG_EOR         0x80\t/* End of record */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define MSG_NOSIGNAL",
+      "lines": [
+        {
+          "line": 278,
+          "text": "#define MSG_NOSIGNAL\t0x4000\t/* Do not generate SIGPIPE */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-layout.h",
+      "source_sha256": "3eed8ee9be2acfefe0fb714c3964012402456ed12089e4f3826601b6eb8e1df2",
+      "pattern": "^#define MSG_CMSG_CLOEXEC",
+      "lines": [
+        {
+          "line": 286,
+          "text": "#define MSG_CMSG_CLOEXEC 0x40000000\t/* Set close_on_exec for file"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-options.h",
+      "source_sha256": "ea6e9573cab4fb1f0dd262dac449b5b04ce1628121e2a68700b6c12f58cafb18",
+      "pattern": "^#define SOL_SOCKET",
+      "lines": [
+        {
+          "line": 7,
+          "text": "#define SOL_SOCKET\t1"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-options.h",
+      "source_sha256": "ea6e9573cab4fb1f0dd262dac449b5b04ce1628121e2a68700b6c12f58cafb18",
+      "pattern": "^#define SO_TYPE",
+      "lines": [
+        {
+          "line": 11,
+          "text": "#define SO_TYPE\t\t3"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-options.h",
+      "source_sha256": "ea6e9573cab4fb1f0dd262dac449b5b04ce1628121e2a68700b6c12f58cafb18",
+      "pattern": "^#define SO_PASSCRED",
+      "lines": [
+        {
+          "line": 27,
+          "text": "#define SO_PASSCRED\t16"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-options.h",
+      "source_sha256": "ea6e9573cab4fb1f0dd262dac449b5b04ce1628121e2a68700b6c12f58cafb18",
+      "pattern": "^#define SO_PEERCRED",
+      "lines": [
+        {
+          "line": 28,
+          "text": "#define SO_PEERCRED\t17"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unistd.h",
+      "source_sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "pattern": "^#define __NR_ppoll ",
+      "lines": [
+        {
+          "line": 227,
+          "text": "#define __NR_ppoll 73"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unistd.h",
+      "source_sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "pattern": "^#define __NR_getsockname ",
+      "lines": [
+        {
+          "line": 565,
+          "text": "#define __NR_getsockname 204"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unistd.h",
+      "source_sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "pattern": "^#define __NR_setsockopt ",
+      "lines": [
+        {
+          "line": 573,
+          "text": "#define __NR_setsockopt 208"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unistd.h",
+      "source_sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "pattern": "^#define __NR_getsockopt ",
+      "lines": [
+        {
+          "line": 575,
+          "text": "#define __NR_getsockopt 209"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unistd.h",
+      "source_sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "pattern": "^#define __NR_sendmsg ",
+      "lines": [
+        {
+          "line": 579,
+          "text": "#define __NR_sendmsg 211"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unistd.h",
+      "source_sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "pattern": "^#define __NR_recvmsg ",
+      "lines": [
+        {
+          "line": 581,
+          "text": "#define __NR_recvmsg 212"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/socket-types.h",
+      "source_sha256": "7ef68bc9f03e33aa848fcfcb77dcb6d694944021f688287e84cc29d62f5ed282",
+      "pattern": "^\\s*SOCK_DGRAM\\s*= 2,",
+      "lines": [
+        {
+          "line": 66,
+          "text": "\tSOCK_DGRAM\t= 2,"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unix-address.h",
+      "source_sha256": "bce13a5e6b6f978588107d1ca7b40839e2304295d98b93610bd87556aec603d5",
+      "pattern": "^#define UNIX_PATH_MAX\\s+108",
+      "lines": [
+        {
+          "line": 6,
+          "text": "#define UNIX_PATH_MAX\t108"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unix-address.h",
+      "source_sha256": "bce13a5e6b6f978588107d1ca7b40839e2304295d98b93610bd87556aec603d5",
+      "pattern": "sun_family;",
+      "lines": [
+        {
+          "line": 9,
+          "text": "\t__kernel_sa_family_t sun_family; /* AF_UNIX */"
+        }
+      ]
+    },
+    {
+      "path": "kernel-reference/unix-address.h",
+      "source_sha256": "bce13a5e6b6f978588107d1ca7b40839e2304295d98b93610bd87556aec603d5",
+      "pattern": "sun_path\\[UNIX_PATH_MAX\\]",
+      "lines": [
+        {
+          "line": 10,
+          "text": "\tchar sun_path[UNIX_PATH_MAX];\t/* pathname */"
+        }
+      ]
+    }
+  ],
+  "native_user_msghdr_layout_check": "reference-layout-check.json",
+  "new_syscall_registers": 6,
+  "target_root_credentials_or_IPC_or_parent_observed": false,
+  "source_urls": [
+    "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/linux/socket.h",
+    "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/asm-generic/socket.h",
+    "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/asm-generic/unistd.h",
+    "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/linux/net.h",
+    "https://raw.githubusercontent.com/torvalds/linux/v4.9/include/uapi/linux/un.h"
+  ]
+}

@@ -1,0 +1,724 @@
+{
+  "created_utc": "2026-10-27T14:37:13.483916+00:00",
+  "status": "FAILED_NO_PASSING_RESULT",
+  "source": "work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/mapping_guards.py",
+  "source_sha256": "f523ee20645d59e960a4fe502e9cb3537000574a738794273f5dc111808ee047",
+  "module_sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+  "local_ABS64_relocations": [
+    {
+      "section": ".text",
+      "offset": "0x5b8",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".rodata",
+      "original_addend": "0x318",
+      "guest_value": "0x61000318"
+    },
+    {
+      "section": ".text",
+      "offset": "0x7b8",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".bss",
+      "original_addend": "0x50",
+      "guest_value": "0x62000050"
+    },
+    {
+      "section": ".text",
+      "offset": "0xb48",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".bss",
+      "original_addend": "0x50",
+      "guest_value": "0x62000050"
+    },
+    {
+      "section": ".text",
+      "offset": "0xd68",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".bss",
+      "original_addend": "0x50",
+      "guest_value": "0x62000050"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x340",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x14b8",
+      "guest_value": "0x600014b8"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x348",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x14a0",
+      "guest_value": "0x600014a0"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x350",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x1488",
+      "guest_value": "0x60001488"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x358",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x1408",
+      "guest_value": "0x60001408"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x360",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x13c0",
+      "guest_value": "0x600013c0"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x368",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x1288",
+      "guest_value": "0x60001288"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x370",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x10d0",
+      "guest_value": "0x600010d0"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x378",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0xfd0",
+      "guest_value": "0x60000fd0"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x380",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0xe90",
+      "guest_value": "0x60000e90"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x388",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0xe78",
+      "guest_value": "0x60000e78"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x390",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0xc70",
+      "guest_value": "0x60000c70"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x398",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x778",
+      "guest_value": "0x60000778"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x3a0",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x7c0",
+      "guest_value": "0x600007c0"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x3a8",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x890",
+      "guest_value": "0x60000890"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x3b0",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0xe60",
+      "guest_value": "0x60000e60"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x3b8",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0x760",
+      "guest_value": "0x60000760"
+    },
+    {
+      "section": ".rodata",
+      "offset": "0x3c0",
+      "type": "R_AARCH64_ABS64",
+      "target_section": ".text",
+      "original_addend": "0xb50",
+      "guest_value": "0x60000b50"
+    }
+  ],
+  "dispatch_cases": [
+    {
+      "seed": 40,
+      "declared_opcode": "0x80000008",
+      "declared_mapping_present": true,
+      "declared_owner_matches": true,
+      "declared_user_record_pointer": "0x11005000",
+      "declared_address_limit": "0x10000000000",
+      "outcome": "original_table_target_before_call",
+      "events": [
+        {
+          "label": "original ioctl dispatcher entry and user-record range guard",
+          "entry_offset": "0x4d8",
+          "reason": "boundary: before_dispatch_user_copy",
+          "stop_pc": "0x60000530",
+          "pcs": [
+            "0x600004d8",
+            "0x600004dc",
+            "0x600004e0",
+            "0x600004e4",
+            "0x600004e8",
+            "0x600004ec",
+            "0x600004f0",
+            "0x600004f4",
+            "0x600004f8",
+            "0x600004fc",
+            "0x60000500",
+            "0x60000504",
+            "0x60000508",
+            "0x6000050c",
+            "0x60000520",
+            "0x60000524",
+            "0x60000528",
+            "0x6000052c",
+            "0x60000530"
+          ],
+          "stores": [
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 939688400
+            },
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 939688240
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 939688256
+            }
+          ],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        },
+        {
+          "label": "independent copied-record input; original opcode/mapping/owner guards and table",
+          "entry_offset": "0x538",
+          "reason": "boundary: before_original_dispatch_BLR",
+          "stop_pc": "0x60000580",
+          "pcs": [
+            "0x60000538",
+            "0x6000053c",
+            "0x60000540",
+            "0x60000544",
+            "0x60000548",
+            "0x6000054c",
+            "0x60000550",
+            "0x60000554",
+            "0x60000558",
+            "0x6000055c",
+            "0x60000560",
+            "0x60000564",
+            "0x60000568",
+            "0x6000056c",
+            "0x60000570",
+            "0x60000574",
+            "0x60000578",
+            "0x6000057c",
+            "0x60000580"
+          ],
+          "stores": [],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        }
+      ],
+      "actual_copy_dispatch_registration_mapping_or_process_binding_proven": false
+    },
+    {
+      "seed": 40,
+      "declared_opcode": "0x8000000a",
+      "declared_mapping_present": true,
+      "declared_owner_matches": true,
+      "declared_user_record_pointer": "0x11005000",
+      "declared_address_limit": "0x10000000000",
+      "outcome": "original_table_target_before_call",
+      "events": [
+        {
+          "label": "original ioctl dispatcher entry and user-record range guard",
+          "entry_offset": "0x4d8",
+          "reason": "boundary: before_dispatch_user_copy",
+          "stop_pc": "0x60000530",
+          "pcs": [
+            "0x600004d8",
+            "0x600004dc",
+            "0x600004e0",
+            "0x600004e4",
+            "0x600004e8",
+            "0x600004ec",
+            "0x600004f0",
+            "0x600004f4",
+            "0x600004f8",
+            "0x600004fc",
+            "0x60000500",
+            "0x60000504",
+            "0x60000508",
+            "0x6000050c",
+            "0x60000520",
+            "0x60000524",
+            "0x60000528",
+            "0x6000052c",
+            "0x60000530"
+          ],
+          "stores": [
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 939688400
+            },
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 939688240
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 939688256
+            }
+          ],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        },
+        {
+          "label": "independent copied-record input; original opcode/mapping/owner guards and table",
+          "entry_offset": "0x538",
+          "reason": "boundary: before_original_dispatch_BLR",
+          "stop_pc": "0x60000580",
+          "pcs": [
+            "0x60000538",
+            "0x6000053c",
+            "0x60000540",
+            "0x60000544",
+            "0x60000548",
+            "0x6000054c",
+            "0x60000550",
+            "0x60000554",
+            "0x60000558",
+            "0x6000055c",
+            "0x60000560",
+            "0x60000564",
+            "0x60000568",
+            "0x6000056c",
+            "0x60000570",
+            "0x60000574",
+            "0x60000578",
+            "0x6000057c",
+            "0x60000580"
+          ],
+          "stores": [],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        }
+      ],
+      "actual_copy_dispatch_registration_mapping_or_process_binding_proven": false
+    },
+    {
+      "seed": 40,
+      "declared_opcode": "0x8000000b",
+      "declared_mapping_present": true,
+      "declared_owner_matches": true,
+      "declared_user_record_pointer": "0x11005000",
+      "declared_address_limit": "0x10000000000",
+      "outcome": "original_table_target_before_call",
+      "events": [
+        {
+          "label": "original ioctl dispatcher entry and user-record range guard",
+          "entry_offset": "0x4d8",
+          "reason": "boundary: before_dispatch_user_copy",
+          "stop_pc": "0x60000530",
+          "pcs": [
+            "0x600004d8",
+            "0x600004dc",
+            "0x600004e0",
+            "0x600004e4",
+            "0x600004e8",
+            "0x600004ec",
+            "0x600004f0",
+            "0x600004f4",
+            "0x600004f8",
+            "0x600004fc",
+            "0x60000500",
+            "0x60000504",
+            "0x60000508",
+            "0x6000050c",
+            "0x60000520",
+            "0x60000524",
+            "0x60000528",
+            "0x6000052c",
+            "0x60000530"
+          ],
+          "stores": [
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 939688400
+            },
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 939688240
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 939688256
+            }
+          ],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        },
+        {
+          "label": "independent copied-record input; original opcode/mapping/owner guards and table",
+          "entry_offset": "0x538",
+          "reason": "boundary: before_original_dispatch_BLR",
+          "stop_pc": "0x60000580",
+          "pcs": [
+            "0x60000538",
+            "0x6000053c",
+            "0x60000540",
+            "0x60000544",
+            "0x60000548",
+            "0x6000054c",
+            "0x60000550",
+            "0x60000554",
+            "0x60000558",
+            "0x6000055c",
+            "0x60000560",
+            "0x60000564",
+            "0x60000568",
+            "0x6000056c",
+            "0x60000570",
+            "0x60000574",
+            "0x60000578",
+            "0x6000057c",
+            "0x60000580"
+          ],
+          "stores": [],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        }
+      ],
+      "actual_copy_dispatch_registration_mapping_or_process_binding_proven": false
+    },
+    {
+      "seed": 40,
+      "declared_opcode": "0x8000000d",
+      "declared_mapping_present": true,
+      "declared_owner_matches": true,
+      "declared_user_record_pointer": "0x11005000",
+      "declared_address_limit": "0x10000000000",
+      "outcome": "original_table_target_before_call",
+      "events": [
+        {
+          "label": "original ioctl dispatcher entry and user-record range guard",
+          "entry_offset": "0x4d8",
+          "reason": "boundary: before_dispatch_user_copy",
+          "stop_pc": "0x60000530",
+          "pcs": [
+            "0x600004d8",
+            "0x600004dc",
+            "0x600004e0",
+            "0x600004e4",
+            "0x600004e8",
+            "0x600004ec",
+            "0x600004f0",
+            "0x600004f4",
+            "0x600004f8",
+            "0x600004fc",
+            "0x60000500",
+            "0x60000504",
+            "0x60000508",
+            "0x6000050c",
+            "0x60000520",
+            "0x60000524",
+            "0x60000528",
+            "0x6000052c",
+            "0x60000530"
+          ],
+          "stores": [
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 939688400
+            },
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 939688240
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 939688256
+            }
+          ],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        },
+        {
+          "label": "independent copied-record input; original opcode/mapping/owner guards and table",
+          "entry_offset": "0x538",
+          "reason": "boundary: before_original_dispatch_BLR",
+          "stop_pc": "0x60000580",
+          "pcs": [
+            "0x60000538",
+            "0x6000053c",
+            "0x60000540",
+            "0x60000544",
+            "0x60000548",
+            "0x6000054c",
+            "0x60000550",
+            "0x60000554",
+            "0x60000558",
+            "0x6000055c",
+            "0x60000560",
+            "0x60000564",
+            "0x60000568",
+            "0x6000056c",
+            "0x60000570",
+            "0x60000574",
+            "0x60000578",
+            "0x6000057c",
+            "0x60000580"
+          ],
+          "stores": [],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        }
+      ],
+      "actual_copy_dispatch_registration_mapping_or_process_binding_proven": false
+    },
+    {
+      "seed": 40,
+      "declared_opcode": "0x80000010",
+      "declared_mapping_present": true,
+      "declared_owner_matches": true,
+      "declared_user_record_pointer": "0x11005000",
+      "declared_address_limit": "0x10000000000",
+      "outcome": "original_table_target_before_call",
+      "events": [
+        {
+          "label": "original ioctl dispatcher entry and user-record range guard",
+          "entry_offset": "0x4d8",
+          "reason": "boundary: before_dispatch_user_copy",
+          "stop_pc": "0x60000530",
+          "pcs": [
+            "0x600004d8",
+            "0x600004dc",
+            "0x600004e0",
+            "0x600004e4",
+            "0x600004e8",
+            "0x600004ec",
+            "0x600004f0",
+            "0x600004f4",
+            "0x600004f8",
+            "0x600004fc",
+            "0x60000500",
+            "0x60000504",
+            "0x60000508",
+            "0x6000050c",
+            "0x60000520",
+            "0x60000524",
+            "0x60000528",
+            "0x6000052c",
+            "0x60000530"
+          ],
+          "stores": [
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd0",
+              "size": 8,
+              "value": 939688400
+            },
+            {
+              "pc": "0x600004d8",
+              "address": "0x1001ffd8",
+              "size": 8,
+              "value": 301989888
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe0",
+              "size": 8,
+              "value": 939688240
+            },
+            {
+              "pc": "0x600004e0",
+              "address": "0x1001ffe8",
+              "size": 8,
+              "value": 939688256
+            }
+          ],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        },
+        {
+          "label": "independent copied-record input; original opcode/mapping/owner guards and table",
+          "entry_offset": "0x538",
+          "reason": "boundary: before_original_dispatch_BLR",
+          "stop_pc": "0x60000580",
+          "pcs": [
+            "0x60000538",
+            "0x6000053c",
+            "0x60000540",
+            "0x60000544",
+            "0x60000548",
+            "0x6000054c",
+            "0x60000550",
+            "0x60000554",
+            "0x60000558",
+            "0x6000055c",
+            "0x60000560",
+            "0x60000564",
+            "0x60000568",
+            "0x6000056c",
+            "0x60000570",
+            "0x60000574",
+            "0x60000578",
+            "0x6000057c",
+            "0x60000580"
+          ],
+          "stores": [],
+          "return_u32_if_returned": null,
+          "all_mapped_images_unchanged": true,
+          "scratch_outside_declared_outputs_unchanged": true,
+          "stack_outside_declared2048_bytes_unchanged": true,
+          "SP_EL0_fixture_unchanged": true,
+          "saved_registers_verified_on_full_native_return": false,
+          "executed_external_services_or_return_adapters": false
+        }
+      ],
+      "actual_copy_dispatch_registration_mapping_or_process_binding_proven": false
+    }
+  ],
+  "allocation_entry_cases": [],
+  "mapping_flows": [],
+  "free_range_cases": [],
+  "mmap_length_cases": [],
+  "mmap_status_cases": [],
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "Windows_UU_camera_operations": false,
+  "real_ioctl_kernel_services_mapping_hardware_or_recovery_proven": false,
+  "error": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/mapping_guards.py\", line 268, in run\n    result['dispatch_cases'].append(dispatch(seed,**kw))\n                                    ~~~~~~~~^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/mapping_guards.py\", line 133, in dispatch\n    events.append(m.phase('independent copied-record input; original opcode/mapping/owner guards and table',0x538))\n                  ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage113-native-uipc-mapping-guards/mapping_guards.py\", line 99, in phase\n    assert not self.calls\n           ^^^^^^^^^^^^^^\nAssertionError\n"
+}

@@ -1,0 +1,23 @@
+{
+  "repository": "ma1co/Sony-PMCA-RE",
+  "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+  "commit_date": "2022-08-18T12:46:04Z",
+  "source_url": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/sony.py",
+  "raw_source_url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/sony.py",
+  "sha256": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e",
+  "setTerminalEnable_first_line": 1031,
+  "setTerminalEnable_excerpt": [
+    " def setTerminalEnable(self, enable):",
+    "  self._sendProductInfoPacket(*self.SONY_PRODUCT_INFO_TERM_CHANGE, dump8(1 if enable else 0))",
+    "  try:",
+    "   self._sendAdjustControlPacket(*self.SONY_ADJUST_SENSER_TERM_MODE, dump8(2 if enable else 0))",
+    "  except:",
+    "   pass",
+    "",
+    " def readBackup(self, id):",
+    "  return self._sendAdjustControlPacket(*self.SONY_ADJUST_BACKUP_READ, dump32le(id))"
+  ],
+  "interpretation": "setTerminalEnable ignores ADJUST exceptions; return without exception is not evidence that TERM_MODE succeeded on FX3.",
+  "public_client_executed_or_imported": false,
+  "new_camera_operations": 0
+}

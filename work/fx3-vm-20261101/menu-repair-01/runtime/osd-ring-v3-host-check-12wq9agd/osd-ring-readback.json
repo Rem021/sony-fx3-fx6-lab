@@ -1,0 +1,178 @@
+{
+  "scope": "Passive QMP guest software snapshot ring; host export never gates guest ACK; overwritten intermediate frames may be unavailable",
+  "frames": [
+    {
+      "sequence": 1,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1,
+      "token": "0x7b",
+      "physical": "0x43feb5100",
+      "native_bitmap_format": 1,
+      "native_format": 0,
+      "native_format_domain": "Mapped GPE format; original bitmap enum recorded separately",
+      "width": 2,
+      "height": 2,
+      "stride_pixels": 2,
+      "span": 8,
+      "fnv64": "0x27cfd3a6d622cff5",
+      "sha256": "983a81106a57aba52682db97963fe05b8e4a654d2cf082d66bbabb21f5008324",
+      "native_identity": {
+        "FB": "0x64",
+        "bitmap": "0xc8",
+        "entry": "0x12c",
+        "allocation": "0x221",
+        "metadata_physical": "0x7b",
+        "FB_format": 1,
+        "publish_sem": "0x4a",
+        "config_hash": "0x2c",
+        "bits_cpu_VA": "0x1100",
+        "map_begin": "0x1000",
+        "map_end": "0x2000",
+        "map_offset": "0x43feb5000"
+      },
+      "descriptor": "00200000000000000050eb3f040000000000000000000000000000000000000000000000",
+      "nonuniform_pixels": true,
+      "retained_on_host": true,
+      "QMP_read_only": true,
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "views": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/osd-ring-v3-host-check-12wq9agd/osd-frame-000001-format0-RGBA-opaque.png",
+          "sha256": "1f662118af55eff80c2c7dc0a5e61ab553861a8ebb269a1ab407dae7bdf98d0e",
+          "format": 0,
+          "width": 2,
+          "height": 2,
+          "stride_pixels": 2,
+          "native_format_matches": true,
+          "component_order": "RGBA",
+          "alpha": "opaque hypothesis",
+          "colors": "Unverified nibble/byte interpretation",
+          "H_V_flip": false,
+          "inside_owned_span": true
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/osd-ring-v3-host-check-12wq9agd/osd-frame-000001-format1-RGBA-opaque.png",
+          "sha256": "2b5b2501a46e2d932910fae06f3051487c755f53c24a8d92a0e492f1519797b7",
+          "format": 1,
+          "width": 1,
+          "height": 2,
+          "stride_pixels": 1,
+          "native_format_matches": false,
+          "component_order": "RGBA",
+          "alpha": "opaque hypothesis",
+          "colors": "Unverified nibble/byte interpretation",
+          "H_V_flip": false,
+          "inside_owned_span": true
+        }
+      ]
+    }
+  ],
+  "polls": [
+    {
+      "host_monotonic": 200197.666441541,
+      "global_words": [
+        3550892908024714063,
+        1,
+        123,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        8,
+        1572864,
+        65536,
+        0,
+        0
+      ],
+      "final": false
+    },
+    {
+      "host_monotonic": 200197.671347791,
+      "global_words": [
+        3550892908024714063,
+        1,
+        123,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        8,
+        1572864,
+        65536,
+        0,
+        0
+      ],
+      "final": true
+    },
+    {
+      "host_monotonic": 200197.67316075,
+      "global_words": [
+        3550892908024714063,
+        1,
+        123,
+        1,
+        2,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        8,
+        1572864,
+        65536,
+        0,
+        0
+      ],
+      "final": false
+    }
+  ],
+  "rejected_torn_samples": [
+    {
+      "slot": 0,
+      "reason": "uncommitted/invalid header",
+      "words": [
+        2,
+        1,
+        1,
+        4099,
+        1,
+        123,
+        18252255488,
+        0,
+        2,
+        2,
+        2,
+        8,
+        2868744201168932853,
+        100,
+        200,
+        300,
+        545,
+        123,
+        1,
+        74,
+        44,
+        1,
+        4352,
+        4096,
+        8192,
+        18252255232
+      ]
+    }
+  ],
+  "sequence_gaps": [],
+  "first_nonuniform_found": true,
+  "retention": "first30 sequences plus every30 and first nonuniform; ring overwrite allowed",
+  "host_write_to_guest": false
+}

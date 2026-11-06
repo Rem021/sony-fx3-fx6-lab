@@ -1,0 +1,398 @@
+{
+  "created_utc": "2026-10-27T11:00:28.895441+00:00",
+  "original_app_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "producer": {
+    "public_wrapper_VA": "0x2dd1d54",
+    "detail_function_VA": "0x2df20cc",
+    "bounded_packet_body_entry": "0x2df213c",
+    "direct_send_callsite": "0x2df21e8",
+    "detail_type_string": "void infra_wrapper_bb::detail::mc_enc_set_qos(const infra_wrapper_bb::mc_enc_set_qos_in_t&, infra_wrapper_bb::mc_enc_set_qos_out_t&)",
+    "bps_diagnostic_string": "%s%s(%d) ENC_SET_QOS_PARAM target_bit_rate          : %u[bps]",
+    "native_scaling": "32bit MUL: (input_word*1000)&0xffffffff",
+    "complete80_byte_packet_only_not_normal_call_or_send": true
+  },
+  "literal_direct_branch_scan": {
+    "section": ".text",
+    "VA": "0x1594680",
+    "bytes": 27215176,
+    "method": "Aligned A64 B/BL immediate targets only; no all-call-graph or indirect reachability claim.",
+    "wrapper_target": "0x2dd1d54",
+    "matches": [
+      "0x2d9c204",
+      "0x2db1bdc"
+    ]
+  },
+  "callers": [
+    {
+      "callsite": "0x2d9c204",
+      "name_string": "virtual void model::sequence_set_srt_streaming_target_bitrate::run()",
+      "string_VA": "0x3955fd8",
+      "input_word": "object+0x1b8"
+    },
+    {
+      "callsite": "0x2db1bdc",
+      "name_string": "void model::sequence_start_streaming_output::streaming_start()",
+      "string_VA": "0x395b610",
+      "input_word": "object+0x61c"
+    }
+  ],
+  "OSAL_prefix": {
+    "entry": "0x2de7070",
+    "first_PLT": "0x1593d20",
+    "first_symbol": "osal_subsystem_id",
+    "later_unexecuted_tail_symbol": "osal_dynamic_id",
+    "observed_prefix_only_fields": [
+      0,
+      2
+    ],
+    "channel_or_valid_reply_identity_not_inferred": true
+  },
+  "sender_static_imports": [
+    {
+      "PLT": "0x15932c0",
+      "symbol": "_ZN16DataflowInfraMsgC1Ev"
+    },
+    {
+      "PLT": "0x15925f0",
+      "symbol": "_ZN16DataflowInfraMsg14SetDataflowMsgEPvt"
+    },
+    {
+      "PLT": "0x1593c60",
+      "symbol": "_ZN16DataflowInfraMsg10SetReplyIdEj"
+    },
+    {
+      "PLT": "0x15926f0",
+      "symbol": "_ZN16DataflowInfraMsg8SetSrcIdEj"
+    },
+    {
+      "PLT": "0x15927a0",
+      "symbol": "_ZN19DataflowInfraSenderC1Ev"
+    },
+    {
+      "PLT": "0x1594520",
+      "symbol": "_ZN19DataflowInfraSender9SendASyncEjP16DataflowInfraMsg"
+    }
+  ],
+  "fixed_send_argument": "0x8057060a",
+  "actual_target_instance_and_transport_unproven": true,
+  "listings": [
+    {
+      "ELF_VA_range": [
+        "0x2df20cc",
+        "0x2df21ec"
+      ],
+      "original_bytes_sha256": "77d2afd081caaa6b18ef8b4de9775c57b3b5e78761bdd3a5aa7cd56bff2f62d7",
+      "original_disassembly": [
+        "02df20cc: stp x29, x30, [sp, #-0xc0]!",
+        "02df20d0: mov w3, #0x3d4c",
+        "02df20d4: mov x29, sp",
+        "02df20d8: stp x21, x22, [sp, #0x20]",
+        "02df20dc: adrp x22, #0x3967000",
+        "02df20e0: adrp x21, #0x3966000",
+        "02df20e4: stp x19, x20, [sp, #0x10]",
+        "02df20e8: stp x25, x26, [sp, #0x40]",
+        "02df20ec: add x20, x22, #0x860",
+        "02df20f0: add x19, x21, #0xd47",
+        "02df20f4: mov x25, x0",
+        "02df20f8: adrp x0, #0x3799000",
+        "02df20fc: stp x23, x24, [sp, #0x30]",
+        "02df2100: mov x2, x20",
+        "02df2104: add x0, x0, #0x80f",
+        "02df2108: mov x24, x1",
+        "02df210c: mov x1, x19",
+        "02df2110: add x23, x29, #0x50",
+        "02df2114: bl #0x2f6ff0c",
+        "02df2118: mov x0, x23",
+        "02df211c: mov w1, #2",
+        "02df2120: bl #0x2de7070",
+        "02df2124: adrp x0, #0x3964000",
+        "02df2128: mov x2, x20",
+        "02df212c: mov x1, x19",
+        "02df2130: add x0, x0, #0x2de",
+        "02df2134: mov w3, #0x3d50",
+        "02df2138: bl #0x2f6ff0c",
+        "02df213c: stp xzr, xzr, [x29, #0x70]",
+        "02df2140: mov w0, #0x2003",
+        "02df2144: ldr w4, [x25]",
+        "02df2148: stp xzr, xzr, [x29, #0x80]",
+        "02df214c: mov x2, x20",
+        "02df2150: strh w0, [x29, #0x70]",
+        "02df2154: mov w0, #0x10a",
+        "02df2158: mov x1, x19",
+        "02df215c: mov w3, #0x3d6d",
+        "02df2160: strh w0, [x29, #0x72]",
+        "02df2164: mov w0, #0x50",
+        "02df2168: stp xzr, xzr, [x29, #0x90]",
+        "02df216c: strh w0, [x29, #0x74]",
+        "02df2170: mov w0, #1",
+        "02df2174: stp xzr, xzr, [x29, #0xa0]",
+        "02df2178: strh w0, [x29, #0x76]",
+        "02df217c: strb w0, [x29, #0x7c]",
+        "02df2180: mov w0, #0x3e8",
+        "02df2184: stp xzr, xzr, [x29, #0xb0]",
+        "02df2188: mul w0, w4, w0",
+        "02df218c: str w0, [x29, #0x80]",
+        "02df2190: adrp x0, #0x3964000",
+        "02df2194: add x0, x0, #0x2fd",
+        "02df2198: bl #0x2f6ff0c",
+        "02df219c: ldrb w4, [x29, #0x7c]",
+        "02df21a0: adrp x0, #0x3964000",
+        "02df21a4: mov x2, x20",
+        "02df21a8: mov x1, x19",
+        "02df21ac: add x0, x0, #0x33c",
+        "02df21b0: mov w3, #0x3d6e",
+        "02df21b4: bl #0x2f6ff0c",
+        "02df21b8: adrp x0, #0x3964000",
+        "02df21bc: ldr w4, [x29, #0x80]",
+        "02df21c0: mov x2, x20",
+        "02df21c4: mov x1, x19",
+        "02df21c8: add x0, x0, #0x375",
+        "02df21cc: mov w3, #0x3d6f",
+        "02df21d0: bl #0x2f6ff0c",
+        "02df21d4: ldr w2, [x29, #0x50]",
+        "02df21d8: mov w3, #0x60a",
+        "02df21dc: add x0, x29, #0x70",
+        "02df21e0: movk w3, #0x8057, lsl #16",
+        "02df21e4: mov w1, #0x50",
+        "02df21e8: bl #0x2e109d0"
+      ]
+    },
+    {
+      "ELF_VA_range": [
+        "0x2df227c",
+        "0x2df22d8"
+      ],
+      "original_bytes_sha256": "836116276adf52850cc614c9e5979aee1d4b3ed3086d6bbe2c5ec0ae23d25cc7",
+      "original_disassembly": [
+        "02df227c: ldr w2, [x29, #0x50]",
+        "02df2280: add x0, x29, #0x58",
+        "02df2284: mov w1, #0x18",
+        "02df2288: str xzr, [x29, #0x68]",
+        "02df228c: stp xzr, xzr, [x0]",
+        "02df2290: bl #0x2e10c80",
+        "02df2294: ldr w0, [x29, #0x64]",
+        "02df2298: bl #0x2de4814",
+        "02df229c: str w0, [x24]",
+        "02df22a0: adrp x0, #0x3914000",
+        "02df22a4: add x2, x22, #0x860",
+        "02df22a8: add x1, x21, #0xd47",
+        "02df22ac: add x0, x0, #0x1ea",
+        "02df22b0: mov w3, #0x3d7d",
+        "02df22b4: bl #0x2f6ff0c",
+        "02df22b8: mov x0, x23",
+        "02df22bc: bl #0x2de5340",
+        "02df22c0: ldp x19, x20, [sp, #0x10]",
+        "02df22c4: ldp x21, x22, [sp, #0x20]",
+        "02df22c8: ldp x23, x24, [sp, #0x30]",
+        "02df22cc: ldp x25, x26, [sp, #0x40]",
+        "02df22d0: ldp x29, x30, [sp], #0xc0",
+        "02df22d4: ret "
+      ]
+    },
+    {
+      "ELF_VA_range": [
+        "0x2dd1d54",
+        "0x2dd1d94"
+      ],
+      "original_bytes_sha256": "916286440d3c18442074b021ddb487c06fc00be97cd660ed31625019a491bd42",
+      "original_disassembly": [
+        "02dd1d54: stp x29, x30, [sp, #-0x20]!",
+        "02dd1d58: mov x29, sp",
+        "02dd1d5c: stp x19, x20, [sp, #0x10]",
+        "02dd1d60: mov x19, x0",
+        "02dd1d64: mov x20, x1",
+        "02dd1d68: mov w0, #0",
+        "02dd1d6c: mov w1, #0x92",
+        "02dd1d70: bl #0x2f6ea24",
+        "02dd1d74: mov x1, x20",
+        "02dd1d78: mov x0, x19",
+        "02dd1d7c: bl #0x2df20cc",
+        "02dd1d80: ldp x19, x20, [sp, #0x10]",
+        "02dd1d84: mov w1, #0x92",
+        "02dd1d88: ldp x29, x30, [sp], #0x20",
+        "02dd1d8c: mov w0, #0",
+        "02dd1d90: b #0x2f6eae8"
+      ]
+    },
+    {
+      "ELF_VA_range": [
+        "0x2de7070",
+        "0x2de70a8"
+      ],
+      "original_bytes_sha256": "22dbac8e362d932988545c310420536359a6fa9f85a74c4d889e2a8cdcee92cb",
+      "original_disassembly": [
+        "02de7070: stp x29, x30, [sp, #-0x20]!",
+        "02de7074: mov x29, sp",
+        "02de7078: stp x19, x20, [sp, #0x10]",
+        "02de707c: mov w20, w1",
+        "02de7080: stp wzr, w1, [x0]",
+        "02de7084: mov x19, x0",
+        "02de7088: bl #0x1593d20",
+        "02de708c: uxth w1, w0",
+        "02de7090: mov w0, #0x28",
+        "02de7094: mov x2, x19",
+        "02de7098: orr w0, w20, w0",
+        "02de709c: ldp x19, x20, [sp, #0x10]",
+        "02de70a0: ldp x29, x30, [sp], #0x20",
+        "02de70a4: b #0x1592b40"
+      ]
+    },
+    {
+      "ELF_VA_range": [
+        "0x2d9c1b4",
+        "0x2d9c210"
+      ],
+      "original_bytes_sha256": "30195f4fd0935c79053a62e01dc59f0815941607dc27c6cb89eed923775e92be",
+      "original_disassembly": [
+        "02d9c1b4: stp x29, x30, [sp, #-0x40]!",
+        "02d9c1b8: mov w3, #0xc",
+        "02d9c1bc: mov x29, sp",
+        "02d9c1c0: stp x19, x20, [sp, #0x10]",
+        "02d9c1c4: adrp x19, #0x3955000",
+        "02d9c1c8: adrp x20, #0x379b000",
+        "02d9c1cc: stp x21, x22, [sp, #0x20]",
+        "02d9c1d0: add x19, x19, #0xfd8",
+        "02d9c1d4: mov x21, x0",
+        "02d9c1d8: add x20, x20, #0x146",
+        "02d9c1dc: adrp x0, #0x3799000",
+        "02d9c1e0: mov x2, x19",
+        "02d9c1e4: mov x1, x20",
+        "02d9c1e8: add x0, x0, #0x80f",
+        "02d9c1ec: bl #0x2f6ff74",
+        "02d9c1f0: ldr w0, [x21, #0x1b8]",
+        "02d9c1f4: add x1, x29, #0x40",
+        "02d9c1f8: str w0, [x29, #0x30]",
+        "02d9c1fc: add x0, x29, #0x30",
+        "02d9c200: str wzr, [x1, #-8]!",
+        "02d9c204: bl #0x2dd1d54",
+        "02d9c208: ldr w6, [x29, #0x38]",
+        "02d9c20c: cbz w6, #0x2d9c2dc"
+      ]
+    },
+    {
+      "ELF_VA_range": [
+        "0x2db1708",
+        "0x2db1760"
+      ],
+      "original_bytes_sha256": "afd5b55bfec19fa582e45758121a120988a5d5f90f2aae1b08d6775dd9d4eda3",
+      "original_disassembly": [
+        "02db1708: sub sp, sp, #0x4b0",
+        "02db170c: mov w3, #0x19a",
+        "02db1710: stp x29, x30, [sp, #-0x60]!",
+        "02db1714: mov x29, sp",
+        "02db1718: stp x21, x22, [sp, #0x20]",
+        "02db171c: adrp x21, #0x395b000",
+        "02db1720: stp x23, x24, [sp, #0x30]",
+        "02db1724: adrp x23, #0x379b000",
+        "02db1728: stp x25, x26, [sp, #0x40]",
+        "02db172c: add x25, x23, #0x146",
+        "02db1730: stp x19, x20, [sp, #0x10]",
+        "02db1734: mov x19, x0",
+        "02db1738: stp x27, x28, [sp, #0x50]",
+        "02db173c: adrp x0, #0x3799000",
+        "02db1740: add x27, x21, #0x610",
+        "02db1744: mov x1, x25",
+        "02db1748: mov x2, x27",
+        "02db174c: add x0, x0, #0x80f",
+        "02db1750: add x26, x19, #0x670",
+        "02db1754: add x20, x29, #0xa0",
+        "02db1758: add x22, x29, #0x80",
+        "02db175c: bl #0x2f6ff74"
+      ]
+    },
+    {
+      "ELF_VA_range": [
+        "0x2db1bb0",
+        "0x2db1be8"
+      ],
+      "original_bytes_sha256": "240fbef4d505d7e9f608d14ee0b62d2f237356d416ebc1c27e5059326791e9bc",
+      "original_disassembly": [
+        "02db1bb0: adrp x0, #0x395b000",
+        "02db1bb4: mov x2, x25",
+        "02db1bb8: mov x1, x24",
+        "02db1bbc: add x0, x0, #0x2df",
+        "02db1bc0: mov w3, #0x228",
+        "02db1bc4: bl #0x2f6ff0c",
+        "02db1bc8: str wzr, [x29, #0xa0]",
+        "02db1bcc: ldr w0, [x19, #0x61c]",
+        "02db1bd0: mov x1, x20",
+        "02db1bd4: str w0, [x29, #0x80]",
+        "02db1bd8: mov x0, x22",
+        "02db1bdc: bl #0x2dd1d54",
+        "02db1be0: ldr w4, [x29, #0xa0]",
+        "02db1be4: cbz w4, #0x2db1c1c"
+      ]
+    },
+    {
+      "ELF_VA_range": [
+        "0x2e109d0",
+        "0x2e10abc"
+      ],
+      "original_bytes_sha256": "0063ecb0646341bbcbdd44684f77eea2672306715861b6207c8c1795e7f8d28f",
+      "original_disassembly": [
+        "02e109d0: stp x29, x30, [sp, #-0x1e0]!",
+        "02e109d4: mov x29, sp",
+        "02e109d8: stp x19, x20, [sp, #0x10]",
+        "02e109dc: add x19, x29, #0x48",
+        "02e109e0: stp x21, x22, [sp, #0x20]",
+        "02e109e4: mov x22, x0",
+        "02e109e8: mov x0, x19",
+        "02e109ec: stp x23, x24, [sp, #0x30]",
+        "02e109f0: mov w20, w2",
+        "02e109f4: mov w23, w1",
+        "02e109f8: mov w21, w3",
+        "02e109fc: bl #0x15932c0",
+        "02e10a00: mov w2, w23",
+        "02e10a04: mov x1, x22",
+        "02e10a08: mov x0, x19",
+        "02e10a0c: bl #0x15925f0",
+        "02e10a10: cbz w0, #0x2e10a84",
+        "02e10a14: adrp x22, #0x3973000",
+        "02e10a18: adrp x21, #0x3966000",
+        "02e10a1c: adrp x20, #0x3973000",
+        "02e10a20: add x22, x22, #0xf00",
+        "02e10a24: add x21, x21, #0xd47",
+        "02e10a28: add x20, x20, #0xc22",
+        "02e10a2c: mov w4, w0",
+        "02e10a30: mov w23, w0",
+        "02e10a34: mov x2, x22",
+        "02e10a38: mov x1, x21",
+        "02e10a3c: mov x0, x20",
+        "02e10a40: mov w3, #0xe2",
+        "02e10a44: bl #0x2f6fe3c",
+        "02e10a48: mov w4, w23",
+        "02e10a4c: mov x2, x22",
+        "02e10a50: mov x1, x21",
+        "02e10a54: mov x0, x20",
+        "02e10a58: mov w3, #0xe2",
+        "02e10a5c: bl #0x2f6be48",
+        "02e10a60: mov w20, #1",
+        "02e10a64: mov x0, x19",
+        "02e10a68: bl #0x1593660",
+        "02e10a6c: mov w0, w20",
+        "02e10a70: ldp x19, x20, [sp, #0x10]",
+        "02e10a74: ldp x21, x22, [sp, #0x20]",
+        "02e10a78: ldp x23, x24, [sp, #0x30]",
+        "02e10a7c: ldp x29, x30, [sp], #0x1e0",
+        "02e10a80: ret ",
+        "02e10a84: mov w1, w20",
+        "02e10a88: mov x0, x19",
+        "02e10a8c: bl #0x1593c60",
+        "02e10a90: mov w1, w20",
+        "02e10a94: mov x0, x19",
+        "02e10a98: add x20, x29, #0x40",
+        "02e10a9c: bl #0x15926f0",
+        "02e10aa0: mov x0, x20",
+        "02e10aa4: bl #0x15927a0",
+        "02e10aa8: mov x2, x19",
+        "02e10aac: mov w1, w21",
+        "02e10ab0: mov x0, x20",
+        "02e10ab4: bl #0x1594520",
+        "02e10ab8: mov w24, w0"
+      ]
+    }
+  ],
+  "scope": "Actual original native packet body plus explicit-byte handoff. Original source call sites are streaming/SRT; missing OSAL/logs/transport/state/instance prove no card MAIN capability yet.",
+  "previous_converter_table_absence_stands": "stage101 only excluded this local libInfraAvbbc table; the newly located app direct packet producer is a distinct original path.",
+  "upstream_natural_target_MAIN_HEVC_actual_media_or_recovery_proven": false
+}

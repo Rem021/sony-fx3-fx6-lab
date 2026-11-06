@@ -1,0 +1,40 @@
+{
+  "schema": "fx3-stage29-coordinator-review/1",
+  "created_utc": "2026-10-25T22:03:41.900341+00:00",
+  "status": "PASS_ARTIFACT_SOURCE_BYTE_AND_FRONTEND_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent structural/source-byte/hash review; no independent replay or real camera verification.",
+  "prior_manifest_files_verified": {
+    "stage25-mc-image-map": 15,
+    "stage26-mc-open-routing": 11,
+    "stage28-main-frontend-binding": 8
+  },
+  "raw_instruction_records_checked": 544,
+  "scenario_counts": {
+    "frontend_flows": 7,
+    "post_subevent_suffix": 1,
+    "rebuild_frame_helper": 4,
+    "rebuild_dimensions": 2
+  },
+  "bounded_phases_including_constructor_fragments": 22,
+  "failed_fixture_preserved": "run-20261025/failure-explanation.json",
+  "returned_frontend1_is_not_hardware_success": true,
+  "different_source_0x810b0768_is_fixture_not_observed_sender": true,
+  "numeric_state2_preserves_packet_only_before_unexecuted_subevent": true,
+  "post_subevent_raw88_store_does_not_prove_prior_subevent_has_no_effects": true,
+  "SET_REC_FORMAT_is_separate_recording_format_message_not_merely_input_description": true,
+  "identity_table_absence_of15_18_not_global_capability_rejection": true,
+  "exact30_default_enum5_not_actual60fps_or_global_rejection": true,
+  "read_only_return_instrumentation_and_no_native_output_adapters": true,
+  "unverified": [
+    "Actual source/OSAL/physical pointer transport and live frontend state",
+    "Pending consumption, configuration subevents0x13dd50/0x13dfa0, SET_REC_FORMAT producer/order/merge and full parameter retention",
+    "Timing/clock/resources/VCD/error replies and hardware Open/Start",
+    "Complete source/pending lifetimes, native task/transition safe points and safe restore",
+    "Same-body healthy backup, restricted restore/readback, independent recovery and WBI/cold boot",
+    "Actual MAIN media/audio/timebase/sync/long-run/temperature and regression"
+  ],
+  "camera_or_remote_access_attempted": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

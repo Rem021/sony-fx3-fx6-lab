@@ -1,0 +1,226 @@
+[
+  {
+    "path": "owner_core.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_core.c",
+    "source_sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d",
+    "final_sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d",
+    "diff": ""
+  },
+  {
+    "path": "owner_ipc.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_ipc.c",
+    "source_sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2",
+    "final_sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2",
+    "diff": ""
+  },
+  {
+    "path": "entry_support.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/entry_support.c",
+    "source_sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360",
+    "final_sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360",
+    "diff": ""
+  },
+  {
+    "path": "owner_entry_main.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_entry_main.c",
+    "source_sha256": "5a8e47dd4be3183660e8772a5b6c8efbed219353457b46ec2ccdc73854842e3b",
+    "final_sha256": "9cdc71a4186f971fbd8abb1f1387c3dbdfaa97a5a05e7086ae2c88872152862c",
+    "diff": "--- \n+++ \n@@ -3,6 +3,7 @@\n #include \"entry_shared.h\"\n #include \"owner_channel.h\"\n #include \"entry_target.h\"\n+#include \"target_binding.h\"\n #include \"frame_io.h\"\n #include \"global_guard.h\"\n #include \"owner_receipt.h\"\n@@ -187,7 +188,7 @@\n #endif\n     g->work_deadline_ns=work_deadline;g->final_deadline_ns=final_deadline;\n     context.work_deadline=work_deadline;\n-    fx3_owner_config config={.abi=FX3_OWNER_ABI,.arm=FX3_OWNER_ARM,.location=0x02100000,.capture_permitted=1,.vid=0x054c,.pid=0x0da1,\n+    fx3_owner_config config={.abi=FX3_OWNER_ABI,.arm=FX3_OWNER_ARM,.location=FX3_FIXED_LOCATION,.capture_permitted=1,.vid=0x054c,.pid=0x0da1,\n         .work_deadline_ns=work_deadline,.final_deadline_ns=final_deadline};\n     memcpy(config.privacy_key,privacy_key,32);memcpy(config.expected_body_tag,expected_tag,32);\n     g->native_return=FX3_DENIED;f->result.abi=FX3_OWNER_ABI;f->result.status=FX3_DENIED;\n@@ -196,7 +197,7 @@\n         .generation=17,.scope=1,.fd=-1};\n     memcpy(channel.nonce,nonce,16);\n #ifdef FX3_ENTRY_FIXTURE\n-    channel.path=argv[4];channel.scope=(option&4096)?2:1;\n+    channel.path=argv[4];channel.scope=1;\n     if(option&1048576)channel.peer_pid=(uint32_t)getpid();\n     if(option&2097152)++channel.peer_sec;\n #else\n"
+  },
+  {
+    "path": "owner_channel.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_channel.c",
+    "source_sha256": "9fa0c710f704ec493b04f187a584755fa836477fd4ff27183760e050d3310a4e",
+    "final_sha256": "1f7706a24149671b6b10f8a71467037176228f1073c011f6e4209cbde8598519",
+    "diff": "--- \n+++ \n@@ -13,22 +13,6 @@\n #include <unistd.h>\n \n enum { C_IDLE=0,C_RUNNING=1,C_CLEAN=2,C_HELD=3,C_FAILED=4 };\n-int fx3_channel_peer(const fx3_channel_config *c) {\n-    uid_t uid=(uid_t)-1;gid_t group=(gid_t)-1;pid_t pid=0;socklen_t size=sizeof(pid);\n-    uint32_t actual_uid=0;uint64_t sec=0,usec=0;\n-    if(!c || c->fd<0)return 0;\n-    struct pollfd readiness={.fd=c->fd,.events=POLLIN};\n-    if(poll(&readiness,1,0)<0 || readiness.revents&(POLLHUP|POLLERR|POLLNVAL))return 0;\n-    if(readiness.revents&POLLIN) {\n-        int available=0;socklen_t bytes=sizeof(available);\n-        if(getsockopt(c->fd,SOL_SOCKET,SO_NREAD,&available,&bytes) || bytes!=sizeof(available) || available<=0)return 0;\n-    }\n-    return !getpeereid(c->fd,&uid,&group) && uid==c->peer_uid &&\n-        !getsockopt(c->fd,SOL_LOCAL,LOCAL_PEERPID,&pid,&size) && size==sizeof(pid) &&\n-        pid>0 && (uint32_t)pid==c->peer_pid &&\n-        !fx3_entry_pid_info(c->peer_pid,&actual_uid,&sec,&usec) && actual_uid==c->peer_uid &&\n-        sec==c->peer_sec && usec==c->peer_usec;\n-}\n static int wait_fd(int fd,short events,uint64_t deadline,_Atomic uint32_t *stop) {\n     for(;;) {\n         uint64_t now=fx3_entry_clock_ns();if(!now || now>=deadline || (stop && atomic_load(stop)))return -1;\n@@ -39,32 +23,6 @@\n         if(n && p.revents&events)return 0;\n         if(n && p.revents&(POLLHUP|POLLERR))return -1;\n     }\n-}\n-int fx3_channel_connect(fx3_channel_config *c) {\n-    if(!c || c->fd!=-1 || !c->path || !c->peer_pid || !c->peer_sec || c->peer_usec>=1000000 ||\n-       !c->generation || !c->deadline_ns || c->scope<1 || c->scope>2)return -1;\n-#ifndef FX3_OWNER_CHANNEL_FIXTURE\n-    if(geteuid()!=0 || c->peer_uid!=501 || c->scope!=1)return -1; /* no live authentication release */\n-#endif\n-    struct sockaddr_un address={.sun_family=AF_UNIX};size_t length=strlen(c->path);\n-    struct stat before,after;\n-    if(!length || length>=sizeof(address.sun_path) || lstat(c->path,&before) || !S_ISSOCK(before.st_mode) ||\n-       before.st_uid!=c->peer_uid || (before.st_mode&0777)!=0600 || before.st_nlink!=1)return -1;\n-    memcpy(address.sun_path,c->path,length+1);address.sun_len=(uint8_t)(offsetof(struct sockaddr_un,sun_path)+length+1);\n-    int fd=socket(AF_UNIX,SOCK_STREAM,0);if(fd<0)return -1;\n-    int flags=fcntl(fd,F_GETFL),yes=1;\n-    if(flags<0 || fcntl(fd,F_SETFL,flags|O_NONBLOCK) || fcntl(fd,F_SETFD,FD_CLOEXEC) ||\n-       setsockopt(fd,SOL_SOCKET,SO_NOSIGPIPE,&yes,sizeof(yes))) {close(fd);return -1;}\n-    int rc=connect(fd,(struct sockaddr *)&address,address.sun_len);\n-    if(rc && errno==EINPROGRESS) {\n-        int error=0;socklen_t n=sizeof(error);\n-        if(wait_fd(fd,POLLOUT,c->deadline_ns,NULL) || getsockopt(fd,SOL_SOCKET,SO_ERROR,&error,&n) || error) {close(fd);return -1;}\n-    }else if(rc) {close(fd);return -1;}\n-    c->fd=fd;\n-    if(lstat(c->path,&after) || before.st_dev!=after.st_dev || before.st_ino!=after.st_ino || !fx3_channel_peer(c)) {\n-        c->fd=-1;close(fd);return -1;\n-    }\n-    return 0;\n }\n static int peer_callback(void *p) {return fx3_channel_peer(&((fx3_channel_runtime *)p)->config);}\n static uint64_t clock_callback(void *unused) {(void)unused;return fx3_entry_clock_ns();}\n@@ -125,7 +83,7 @@\n     return 1;\n }\n int fx3_channel_run(fx3_channel_runtime *r,const fx3_channel_config *cfg,const fx3_io_owner *owner,fx3_owner_result *report) {\n-    if(!r || r->initialized || !cfg || !owner || !report || !fx3_channel_peer(cfg))return -1;\n+    if(!r || r->initialized || !cfg || cfg->scope!=1 || !owner || !report || !fx3_channel_peer(cfg))return -1;\n     r->config=*cfg;r->report=report;\n     if(fx3_io_bind(&r->wire,owner))return -1;\n     r->initialized=1;\n@@ -137,7 +95,7 @@\n         uint8_t prefix[4],request[FX3_REQUEST_BYTES],response[FX3_RESPONSE_BYTES+4];\n         if(receive_exact(r,prefix,4) || get32(prefix)!=FX3_REQUEST_BYTES || receive_exact(r,request,sizeof(request))) {outcome=-1;break;}\n         uint32_t op=get32(request+32);\n-        if(cfg->scope==1 && op!=FX3S_OBSERVE && op!=FX3S_STATUS && op!=FX3S_END) {outcome=-1;break;}\n+        if(op!=FX3S_OBSERVE && op!=FX3S_STATUS && op!=FX3S_END) {outcome=-1;break;}\n #ifdef FX3_OWNER_CHANNEL_FIXTURE\n         if(cfg->before_request)cfg->before_request(cfg->fixture);\n #endif\n"
+  },
+  {
+    "path": "iokit_wire.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/iokit_wire.c",
+    "source_sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94",
+    "final_sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94",
+    "diff": ""
+  },
+  {
+    "path": "native_session.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/native_session.c",
+    "source_sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1",
+    "final_sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1",
+    "diff": ""
+  },
+  {
+    "path": "global_guard.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/global_guard.c",
+    "source_sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526",
+    "final_sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526",
+    "diff": ""
+  },
+  {
+    "path": "frame_io.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/frame_io.c",
+    "source_sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f",
+    "final_sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f",
+    "diff": ""
+  },
+  {
+    "path": "owner_receipt.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_receipt.c",
+    "source_sha256": "10eaa35cab22efa3ee9d5277c99760c04de276412c77900ae3758b010ef52a35",
+    "final_sha256": "793c87a9e7ee7f0f1e90a15e2b005b707f71b08a1f6921a9c73cf5c6daeaab7f",
+    "diff": "--- \n+++ \n@@ -13,39 +13,6 @@\n _Static_assert(offsetof(fx3_owner_result,before)==56,\"receipt v1 result offsets\");\n static void put32(uint8_t *p,uint32_t x) {for(unsigned i=0;i<4;++i)p[i]=(uint8_t)(x>>(i*8));}\n static void put64(uint8_t *p,uint64_t x) {for(unsigned i=0;i<8;++i)p[i]=(uint8_t)(x>>(i*8));}\n-int fx3_receipt_peer_ack(const fx3_channel_config *peer,uint64_t deadline) {\n-    if(!peer)return -1;\n-    uint8_t data[24]={0};size_t at=0;\n-    while(at<sizeof(data)) {\n-        uint64_t now=fx3_entry_clock_ns();if(!now || now>=deadline || !fx3_channel_peer(peer))return -1;\n-        union {struct cmsghdr align;uint8_t bytes[CMSG_SPACE(512*sizeof(int))];} control={0};\n-        struct iovec io={data+at,1};\n-        struct msghdr msg={.msg_iov=&io,.msg_iovlen=1,.msg_control=control.bytes,.msg_controllen=sizeof(control.bytes)};\n-        ssize_t n=recvmsg(peer->fd,&msg,MSG_DONTWAIT);\n-        if(n<0 && (errno==EAGAIN || errno==EINTR)) {\n-            struct pollfd ready={.fd=peer->fd,.events=POLLIN};\n-            int rc=poll(&ready,1,10);\n-            if(rc<0 && errno!=EINTR)return -1;\n-            continue;\n-        }\n-        int reject=msg.msg_controllen!=0 || (msg.msg_flags&(MSG_TRUNC|MSG_CTRUNC));\n-        for(struct cmsghdr *c=CMSG_FIRSTHDR(&msg);c;c=CMSG_NXTHDR(&msg,c)) {\n-            size_t available=(size_t)((uint8_t *)msg.msg_control+msg.msg_controllen-(uint8_t *)c);\n-            if(available<sizeof(*c) || c->cmsg_len<CMSG_LEN(0))return -1;\n-            size_t total=c->cmsg_len<available?c->cmsg_len:available;\n-            if(c->cmsg_level==SOL_SOCKET && c->cmsg_type==SCM_RIGHTS && total>=CMSG_LEN(0)) {\n-                size_t bytes=total-CMSG_LEN(0);\n-                for(size_t k=0;k+sizeof(int)<=bytes;k+=sizeof(int)) {\n-                    int fd=-1;memcpy(&fd,(uint8_t *)CMSG_DATA(c)+k,sizeof(fd));if(fd>=0)close(fd);\n-                }\n-            }\n-            if(c->cmsg_len>available)return -1;\n-        }\n-        if(reject || n!=1)return -1;\n-        at+=(size_t)n;\n-    }\n-    return memcmp(data,\"FX3ACK01\",8) || memcmp(data+8,peer->nonce,16)?-1:0;\n-}\n int fx3_receipt_send(const fx3_channel_config *peer,const fx3_receipt_meta *m,const fx3_owner_result *r,uint64_t deadline) {\n     if(!peer || !m || !r || !m->nonce || !m->grant || !m->pid || !m->sec || m->usec>=1000000 ||\n        m->phase<FX3_RECEIPT_COMPLETE || m->phase>FX3_RECEIPT_HELD || m->frame_failed>1 || m->ran>1 ||\n@@ -67,22 +34,3 @@\n     CC_SHA256(p+160,sizeof(*r),p+120);CC_SHA256(p,992,p+992);\n     return fx3_receipt_send_bytes(peer,frame,sizeof(frame),deadline);\n }\n-int fx3_receipt_send_bytes(const fx3_channel_config *peer,const uint8_t *frame,size_t bytes,uint64_t deadline) {\n-    if(!peer || !frame || !bytes || bytes>1028)return -1;\n-    size_t at=0;\n-    while(at<bytes) {\n-        uint64_t now=fx3_entry_clock_ns();\n-        if(!now || now>=deadline || !fx3_channel_peer(peer))return -1;\n-        struct pollfd ready={.fd=peer->fd,.events=POLLOUT};\n-        uint64_t remain=(deadline-now+999999)/1000000;\n-        int n=poll(&ready,1,remain>20?20:(int)remain);\n-        if(n<0 && errno==EINTR)continue;\n-        if(n<0 || ready.revents&(POLLHUP|POLLERR|POLLNVAL))return -1;\n-        if(!n || !(ready.revents&POLLOUT))continue;\n-        ssize_t sent=send(peer->fd,frame+at,bytes-at,MSG_DONTWAIT);\n-        if(sent<0 && (errno==EAGAIN || errno==EINTR))continue;\n-        if(sent<=0)return -1;\n-        at+=(size_t)sent;\n-    }\n-    return 0; /* Delivery is not a camera completion or a release permission. */\n-}\n"
+  },
+  {
+    "path": "owner_iokit.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_iokit.c",
+    "source_sha256": "f0a0f75cb793d648f8a801cb1978b358c93e825cd78a2a7b9ef0cc81b5b024b2",
+    "final_sha256": "f0a0f75cb793d648f8a801cb1978b358c93e825cd78a2a7b9ef0cc81b5b024b2",
+    "diff": ""
+  },
+  {
+    "path": "owner_fixture.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_fixture.c",
+    "source_sha256": "a17ef8bd7c2e564cd58215648cc66c0bb000023952f0c85b14c1e2cda883c9aa",
+    "final_sha256": "9e34e6f13b01799061b84f4d6f86658d195f5935385ec42fe62d9ffab9ca11fe",
+    "diff": "--- \n+++ \n@@ -1,5 +1,6 @@\n /* Own provider fixture: no IOKit headers/framework, USB library or device API. */\n #include \"owner_trial.h\"\n+#include \"target_binding.h\"\n #include \"owner_channel.h\"\n #include \"entry_shared.h\"\n #include <string.h>\n@@ -37,7 +38,7 @@\n     unsigned phase=f.result->active_call_pending;\n     ++f.snapshots;\n     memset(s,0,sizeof(*s));\n-    s->registry_id=phase==P_AFTER?101:100; s->media_count=2; s->vid=0x054c; s->pid=0x0da1; s->location=0x02100000;\n+    s->registry_id=phase==P_AFTER?101:100; s->media_count=2; s->vid=0x054c; s->pid=0x0da1; s->location=FX3_FIXED_LOCATION;\n     s->storage_driver_count=(f.option&NO_DRIVER)?0:(f.captured?0:3);\n     memcpy(s->body_tag,fixture_body_tag,32);\n     if (f.option&NULL_TAG) memset(s->body_tag,0,32);\n"
+  },
+  {
+    "path": "fake_iokit.c",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/fake_iokit.c",
+    "source_sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19",
+    "final_sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19",
+    "diff": ""
+  },
+  {
+    "path": "entry_shared.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/entry_shared.h",
+    "source_sha256": "e1e0e36943297f26c3e8be260025a13213e78aa07e128cf154f9f9e906cfff76",
+    "final_sha256": "e1e0e36943297f26c3e8be260025a13213e78aa07e128cf154f9f9e906cfff76",
+    "diff": ""
+  },
+  {
+    "path": "entry_target.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/entry_target.h",
+    "source_sha256": "b424f54c7bfcfd650cdf403c967d6a3eb48790f964df465caec4684586a0176b",
+    "final_sha256": "1602334aa75ee5900aac186d9209720d955500ab088478c8922c4a9831213dff",
+    "diff": "--- \n+++ \n@@ -1,13 +1,13 @@\n #define FX3_NATIVE_RELEASED 0\n-#define FX3_GRANT_ID \"fx3-702-supervised-owner-20261029-10\"\n-#define FX3_FIXED_JOB_DIR \"/private/tmp/fx3-702-supervised-owner-20261029-10\"\n-#define FX3_FIXED_FRAME \"/private/tmp/fx3-702-supervised-owner-20261029-10/shared.bin\"\n+#define FX3_GRANT_ID \"fx3-702-owner-status-20261030-11\"\n+#define FX3_FIXED_JOB_DIR \"/private/tmp/fx3-702-owner-status-20261030-11\"\n+#define FX3_FIXED_FRAME \"/private/tmp/fx3-702-owner-status-20261030-11/shared.bin\"\n #define FX3_ROOT_BASE \"/private/var/root/fx3-owner-trials\"\n-#define FX3_ROOT_GRANT_DIR \"/private/var/root/fx3-owner-trials/fx3-702-supervised-owner-20261029-10\"\n-#define FX3_INSTALLED_HELPER \"/private/var/root/fx3-owner-trials/fx3-702-supervised-owner-20261029-10/helper\"\n-#define FX3_ROOT_ENTRY_LEASE \"/private/var/root/fx3-owner-trials/fx3-702-supervised-owner-20261029-10/entry.once\"\n-#define FX3_FIXED_PEER_PATH \"/private/tmp/fx3-702-supervised-owner-20261029-10/peer.sock\"\n-#define FX3_FIXTURE_JOB_ROOT \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage194-supervised-fixed-launch/runs/\"\n-#define FX3_FIXTURE_SOCKET_ROOT \"/Volumes/KAFU2T/AI/Projects/Mac/work/ipc194/\"\n+#define FX3_ROOT_GRANT_DIR \"/private/var/root/fx3-owner-trials/fx3-702-owner-status-20261030-11\"\n+#define FX3_INSTALLED_HELPER \"/private/var/root/fx3-owner-trials/fx3-702-owner-status-20261030-11/helper\"\n+#define FX3_ROOT_ENTRY_LEASE \"/private/var/root/fx3-owner-trials/fx3-702-owner-status-20261030-11/entry.once\"\n+#define FX3_FIXED_PEER_PATH \"/private/tmp/fx3-702-owner-status-20261030-11/peer.sock\"\n+#define FX3_FIXTURE_JOB_ROOT \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/runs/\"\n+#define FX3_FIXTURE_SOCKET_ROOT \"/private/tmp/fx3-fixture-ipc247/\"\n \n #define FX3_GLOBAL_GUARD \"/private/var/root/fx3-owner-trials/global-fx3-owner.journal\"\n"
+  },
+  {
+    "path": "owner_trial.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_trial.h",
+    "source_sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be",
+    "final_sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be",
+    "diff": ""
+  },
+  {
+    "path": "owner_channel.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_channel.h",
+    "source_sha256": "0d6670fe09e69ad9c72616607c5f76e40cb135f14f8b006e2353f66d61d2af00",
+    "final_sha256": "19ba22cdaca7b1475000d294a9c46ff35fa9029e7597d1e61aaa49642bed7e32",
+    "diff": "--- \n+++ \n@@ -2,19 +2,8 @@\n #define FX3_OWNER_CHANNEL_H\n #include \"owner_trial.h\"\n #include \"native_session.h\"\n-/* Private root-side config; never serialized or imported from a request. */\n-typedef struct {\n-    const char *path;\n-    uint32_t peer_uid,peer_pid;\n-    uint64_t peer_sec,peer_usec,deadline_ns,generation;\n-    uint8_t nonce[16];\n-    uint32_t scope; /* 1=observe/status/end only; 2=bounded MSC (fixture only). */\n-    int fd;\n-#ifdef FX3_OWNER_CHANNEL_FIXTURE\n-    void (*before_request)(void *);\n-    void *fixture;\n-#endif\n-} fx3_channel_config;\n+/* Shared base protocol is the HOST_ONLY transport validated in246. */\n+#include \"host_transport.h\"\n typedef struct {\n     fx3_io_context wire;\n     fx3_native_session session;\n"
+  },
+  {
+    "path": "iokit_wire.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/iokit_wire.h",
+    "source_sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b",
+    "final_sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b",
+    "diff": ""
+  },
+  {
+    "path": "native_session.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/native_session.h",
+    "source_sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f",
+    "final_sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f",
+    "diff": ""
+  },
+  {
+    "path": "global_guard.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/global_guard.h",
+    "source_sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828",
+    "final_sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828",
+    "diff": ""
+  },
+  {
+    "path": "frame_io.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/frame_io.h",
+    "source_sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a",
+    "final_sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a",
+    "diff": ""
+  },
+  {
+    "path": "owner_receipt.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/owner_receipt.h",
+    "source_sha256": "9f8b5d2305e8eac37bccb302b5c86c7aa6aa67e39c8c08a2505735c46f90c31c",
+    "final_sha256": "34af5854c5f933765778777d14a430cb3a98c0d60b7b7cb11ef1c1e94ceb294e",
+    "diff": "--- \n+++ \n@@ -3,14 +3,6 @@\n #include \"owner_channel.h\"\n #define FX3_RECEIPT_BYTES 1024u\n enum { FX3_RECEIPT_COMPLETE=1, FX3_RECEIPT_HELD=2 };\n-typedef struct {\n-    uint32_t phase,uid,pid;\n-    uint64_t sec,usec;\n-    const uint8_t *nonce;\n-    const char *grant;\n-    int32_t native_return,guard_return;\n-    uint32_t frame_failed,ran;\n-} fx3_receipt_meta;\n /* Only private entry state is accepted. No frame/file flag authorizes cleanup. */\n int fx3_receipt_send(const fx3_channel_config *,const fx3_receipt_meta *,const fx3_owner_result *,uint64_t);\n int fx3_receipt_peer_ack(const fx3_channel_config *,uint64_t);\n"
+  },
+  {
+    "path": "helper_hello.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/helper_hello.h",
+    "source_sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e",
+    "final_sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e",
+    "diff": ""
+  },
+  {
+    "path": "host_login.h",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/host_login.h",
+    "source_sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0",
+    "final_sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0",
+    "diff": ""
+  },
+  {
+    "path": "controller_ipc.py",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/controller_ipc.py",
+    "source_sha256": "25014a0432135f32b918e8466cf758072723a921ce620a01f717e0daea5d329c",
+    "final_sha256": "e1b0892524658dec27e16166b04efdd29d448c544dd1457969b57bdedb090d99",
+    "diff": "--- \n+++ \n@@ -7,7 +7,7 @@\n HERE=Path(__file__).resolve().parent\n \n def build():\n-    b=json.loads((HERE/'build-receipt-v2.json').read_text())\n+    b=json.loads((HERE/'build-receipt-current-port.json').read_text())\n     for m in b['sources']:\n         if sha256((HERE/m['path']).read_bytes()).hexdigest()!=m['sha256']:raise R.Rejected('fixed build source changed')\n     for m in b['builds'].values():\n"
+  },
+  {
+    "path": "receipt_receiver.py",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/receipt_receiver.py",
+    "source_sha256": "88e77424e5351994c23d3ebf0232275a2e28e0ea4deec4a22a1ebd269dcc659b",
+    "final_sha256": "0ba684069d8dd6310534e3e5016530a4fa58d74c15745fac5847d34074a3e840",
+    "diff": "--- \n+++ \n@@ -16,7 +16,7 @@\n \n BYTES=1024\n RESULT_BYTES=728\n-GRANT_ID='fx3-702-supervised-owner-20261029-10'\n+GRANT_ID='fx3-702-owner-status-20261030-11'\n LIVE_PATH='/private/var/root/fx3-owner-trials/'+GRANT_ID+'/helper'\n \n class Rejected(ValueError):pass\n"
+  },
+  {
+    "path": "supervisor.py",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/supervisor.py",
+    "source_sha256": "23364117b2f00b7cff1d2bada38b4614bb787bb28beae446d5e95ce1a2abe1e5",
+    "final_sha256": "0b3d9c2e30714c5df31e5ad308a429d1488945d4a47d3e8c9ac21a1448e4bf21",
+    "diff": "--- \n+++ \n@@ -10,7 +10,7 @@\n import controller_ipc as I\n import fixed_launch as P\n import receipt_receiver as R\n-HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2];SOCKET_ROOT=ROOT/'work/ipc194'\n+HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2];SOCKET_ROOT=Path('/private/tmp/fx3-fixture-ipc247')\n \n def put(path,value):\n     data=(json.dumps(value,ensure_ascii=False,indent=2)+'\\n').encode()\n@@ -29,7 +29,7 @@\n \n class Job:\n     @classmethod\n-    def fixture(cls,*,name=None,block=0,fail=0,vendor_fixture=False,bad_digest=False,early_relay=False,guard=None):\n+    def fixture(cls,*,name=None,block=0,fail=0,vendor_fixture=False,bad_digest=False,early_relay=False,guard=None,fixture_option=0):\n         if os.getuid()!=os.geteuid() or os.getuid()==0:raise R.Rejected('unprivileged fixture only')\n         v=plistlib.loads(subprocess.check_output(['/usr/sbin/diskutil','info','-plist','/Volumes/KAFU2T']))\n         if v['VolumeUUID']!='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B':raise R.Rejected('wrong external volume')\n@@ -40,7 +40,7 @@\n         SOCKET_ROOT.mkdir(mode=0o700,exist_ok=True);self.sockdir=SOCKET_ROOT/secrets.token_hex(5);self.sockdir.mkdir(mode=0o700)\n         self.sockpath=self.sockdir/'s';assert len(os.fsencode(self.sockpath))<104\n         self.server=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM);self.server.bind(str(self.sockpath));os.chmod(self.sockpath,0o600);self.server.listen(1);self.server.setblocking(False)\n-        self.frame=I.Frame(self.directory/'shared.bin',self.ipc,block=block,fail=fail,option=4096 if vendor_fixture else 0)\n+        self.frame=I.Frame(self.directory/'shared.bin',self.ipc,block=block,fail=fail,option=(4096 if vendor_fixture else 0)|fixture_option)\n         m=self.ipc.build['builds']['fixture'];self.expected_digest=m['sha256'];self.expected_path=str(self.directory/'installed/helper')\n         source=P.private_copy(m['path'],m['sha256'],self.directory)\n         self.guard=Path(guard) if guard is not None else self.directory/'global.journal'\n@@ -81,7 +81,7 @@\n         raw_file(self.directory/'live-self-image.bin',data)\n         put(self.directory/'live-self-image.json',self.hello)\n         self.receiver.acknowledge()\n-        self.ops=[(1,b''),(5,b'')]\n+        self.ops=[(1,b''),(6,b''),(5,b'')]\n         if self.vendor_fixture:self.ops=[(1,b''),(2,bytes.fromhex('4301ff37aad70000')),(5,b'')]\n         self.conn.settimeout(.2)\n         try:\n"
+  },
+  {
+    "path": "fixed_launch.py",
+    "original_source": "work/sony-firmware-20261024/stage194-supervised-fixed-launch/fixed_launch.py",
+    "source_sha256": "dcbedd1fe345001c76046f28787bd5b74332c3ec254c9a7671bcdf779650ac1f",
+    "final_sha256": "67a28f2db807cc4127deecad3fbd8d820aad0756ce2ac162136c05add5ed5167",
+    "diff": "--- \n+++ \n@@ -8,7 +8,7 @@\n JOB=Path('/private/tmp')/R.GRANT_ID\n ROOT_BASE=Path('/private/var/root/fx3-owner-trials')\n ROOT_DIR=ROOT_BASE/R.GRANT_ID\n-TARGET={'locationID':0x02100000,'VID':0x054c,'PID':0x0da1,'model':'ILME-FX3','firmware':'7.02'}\n+TARGET={'locationID':0x01100000,'VID':0x054c,'PID':0x0da1,'model':'ILME-FX3','firmware':'7.02'}\n \n def private_copy(source,expected,directory):\n     directory=Path(directory)\n@@ -79,4 +79,4 @@\n def native_authority(goal):\n     # 05 and all old generic flags are insufficient. No native launch API is\n     # exposed by this offline candidate, even if old JSON says authorized.\n-    raise R.Rejected('candidate10 not released; new fixed bundle/device/driver/admin approval and root validation required')\n+    raise R.Rejected('candidate11 not released; new fixed target/device/driver/admin scope required; old grants are consumed')\n"
+  },
+  {
+    "path": "helper_hello.c",
+    "original_source": "work/sony-firmware-20261024/stage195-root-host-validation-plan/helper_hello.c",
+    "source_sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719",
+    "final_sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719",
+    "diff": ""
+  },
+  {
+    "path": "host_login.c",
+    "original_source": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_login.c",
+    "source_sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834",
+    "final_sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834",
+    "diff": ""
+  },
+  {
+    "path": "host_transport.c",
+    "original_source": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_transport.c",
+    "source_sha256": "393749d0348df3220ee563da404ba61f9148455d8073de61187a3278e7e5d303",
+    "final_sha256": "0e226578e2593f7660d515ea57993118eaedc4f66d7b849816bd20ffa9af3099",
+    "diff": "--- \n+++ \n@@ -43,7 +43,7 @@\n int fx3_channel_connect(fx3_channel_config *c) {\n     if(!c || c->fd!=-1 || !c->path || !c->peer_pid || !c->peer_sec || c->peer_usec>=1000000 ||\n        !c->generation || !c->deadline_ns || c->scope<1 || c->scope>2)return -1;\n-#ifndef HOST_FIXTURE\n+#ifndef FX3_OWNER_CHANNEL_FIXTURE\n     if(geteuid()!=0 || c->peer_uid!=501 || c->scope!=1)return -1; /* no live authentication release */\n #endif\n     struct sockaddr_un address={.sun_family=AF_UNIX};size_t length=strlen(c->path);\n"
+  },
+  {
+    "path": "host_transport.h",
+    "original_source": "work/sony-firmware-20261024/stage195-root-host-validation-plan/host_transport.h",
+    "source_sha256": "e94e5d8bd968c4477ea7886630129d1df4e353cb55438f18c3ccf3ea7cde15a6",
+    "final_sha256": "757c0d5e834f853c41a9f7a09747403ca3670d97800d4d8bcc520e5747bb4889",
+    "diff": "--- \n+++ \n@@ -11,6 +11,10 @@\n     uint8_t nonce[16];\n     uint32_t scope;\n     int fd;\n+#ifdef FX3_OWNER_CHANNEL_FIXTURE\n+    void (*before_request)(void *);\n+    void *fixture;\n+#endif\n } fx3_channel_config;\n typedef struct {\n     uint32_t phase,uid,pid;\n"
+  }
+]

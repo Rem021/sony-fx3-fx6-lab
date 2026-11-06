@@ -1,0 +1,703 @@
+{
+  "schema": "fx6-r50-backup-read-result-v3",
+  "task": "task_568d9012fa77",
+  "dispatch": "ctx_be16af1121ff",
+  "status": "succeeded_read_contract_kernel_helper_only",
+  "bootability_status": "not_demonstrated",
+  "menu_verified": false,
+  "runtime_contact": false,
+  "new_vm_browser_server_qmp_guest": false,
+  "source_or_candidate_modified": false,
+  "old_audit_modified": false,
+  "camera_usb_sd_touched": false,
+  "external_process_contact": false,
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "module": {
+    "target_member": "usr/kmod/backup.ko",
+    "sha256": "6ae178d5390f847415fcc57236b8d49e33c486f043e906598eb2af81f7fec11e",
+    "local_exact_match": true,
+    "outer": {
+      "addr": "0x1eb8",
+      "file": "0x1f20",
+      "relocs": [
+        "0x1ee8 down_read",
+        "0x1f08 up_read"
+      ],
+      "return": "returns inner w0; no buffer clearing"
+    },
+    "inner": {
+      "addr": "0x760",
+      "file": "0x7c8",
+      "no_symbol": "local helper; called only from outer Backup_nread in this path",
+      "data_search": "0x788 Data_SearchId",
+      "data_size": "0x794 Data_GetSize",
+      "capacity_arg": "w24=w2",
+      "actual_size": "w22=Data_GetSize(desc)",
+      "branch": "0x79c cmp w22,w24; 0x7a4 ccmp w23,#1,#0,gt; 0x7a8 b.eq 0x848",
+      "ccmp_semantics": "actual==capacity => GT false => CCMP sets NZCV=0 => Z=0 => b.eq NOT taken. Only actual>capacity && w23==1 enters 0x848.",
+      "copy_len": "w19=w22 actual size; at 0x7c4 w2=w19; NOT capacity",
+      "return": "w0=w22 actual, or -1 missing"
+    }
+  },
+  "read_contract": {
+    "capacity4_record1": {
+      "actual": 1,
+      "branch": "cmp 1,4 -> LT; CCMP condition GT false -> NZCV=0; b.eq false; 0x7ac",
+      "copy_path": "pointer-dependent: user 0x7f0 (access check + __arch_copy_to_user) or kernel 0x7cc memcpy",
+      "bytes_written": "actual 1 if user copy succeeds; 0 if access check fails; return still 1",
+      "high3": "untouched; caller initialized 4-byte 1 => 01 00 00 00; low byte 00/01, high3 00",
+      "return": 1
+    },
+    "capacity4_record4": {
+      "actual": 4,
+      "branch": "4==4 -> GT false; CCMP sets NZCV=0; Z=0; b.eq false; 0x7ac (NOT 0x848)",
+      "copy_path": "pointer-dependent user/kernel; actual 4",
+      "bytes_written": "4 if copy succeeds; 0 if access check fails; return still 4",
+      "high3": "overwritten by record tail on successful copy",
+      "return": 4
+    },
+    "capacity4_record5_flag1": {
+      "actual": 5,
+      "branch": "5>4 -> GT true; CCMP w23(1),#1 -> Z=1; b.eq 0x848",
+      "then": "0x848 diagnostic/0x6d8 then b 0x7ac; w19 remains actual 5; no safe truncation inferred",
+      "return": 5,
+      "not_target": true
+    },
+    "capacity4_record5_flag0": {
+      "actual": 5,
+      "branch": "5>4 GT true; CCMP w23(0),#1 -> Z=0; b.eq false; 0x7ac",
+      "copy_len": "actual 5 > capacity 4; no truncation",
+      "not_target": true
+    },
+    "missing_id": {
+      "actual": null,
+      "branch": "Data_SearchId returns 0 -> 0x868 w22=-1 -> 0x7d0",
+      "bytes_written": 0,
+      "buffer": "untouched; caller initial 1 remains",
+      "return": -1
+    },
+    "zero_length": {
+      "actual": 0,
+      "branch": "0<4 -> CCMP false -> 0x7ac; w2=0",
+      "bytes_written": 0,
+      "buffer": "untouched",
+      "return": 0,
+      "note": "not observed on target IDs"
+    }
+  },
+  "ccmp_host_test": {
+    "schema": "fx6-ccmp-host-test-v1",
+    "host": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "compiler": "Apple clang",
+    "compile_cmd": [
+      "clang",
+      "-arch",
+      "arm64",
+      "-O0",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-read-contract/tests/ccmp_test",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-read-contract/tests/ccmp_test.s",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-read-contract/tests/ccmp_driver.c"
+    ],
+    "compile_stdout": "",
+    "compile_stderr": "",
+    "run_stdout": "actual=0 cap=4 flag=0 b.eq=0\nactual=0 cap=4 flag=1 b.eq=0\nactual=1 cap=4 flag=0 b.eq=0\nactual=1 cap=4 flag=1 b.eq=0\nactual=4 cap=4 flag=0 b.eq=0\nactual=4 cap=4 flag=1 b.eq=0\nactual=5 cap=4 flag=0 b.eq=0\nactual=5 cap=4 flag=1 b.eq=1\n",
+    "cases": [
+      {
+        "actual": 0,
+        "capacity": 4,
+        "flag": 0,
+        "beq": 0
+      },
+      {
+        "actual": 0,
+        "capacity": 4,
+        "flag": 1,
+        "beq": 0
+      },
+      {
+        "actual": 1,
+        "capacity": 4,
+        "flag": 0,
+        "beq": 0
+      },
+      {
+        "actual": 1,
+        "capacity": 4,
+        "flag": 1,
+        "beq": 0
+      },
+      {
+        "actual": 4,
+        "capacity": 4,
+        "flag": 0,
+        "beq": 0
+      },
+      {
+        "actual": 4,
+        "capacity": 4,
+        "flag": 1,
+        "beq": 0
+      },
+      {
+        "actual": 5,
+        "capacity": 4,
+        "flag": 0,
+        "beq": 0
+      },
+      {
+        "actual": 5,
+        "capacity": 4,
+        "flag": 1,
+        "beq": 1
+      }
+    ],
+    "expected": "b.eq only when actual>capacity && flag==1; actual==capacity gives CCMP NZCV=0, Z=0",
+    "all_match": true,
+    "source_hashes": {
+      "ccmp_test.s": "9682b3cbc40b0b8d5ecceee90e9eb00d03ca2b696c733ec8da12458afc07cb61",
+      "ccmp_driver.c": "9aa04ab7a007e2cdab63e5f3d9fc41ea359757e396eb3ffc76548bcc91057577"
+    },
+    "binary_sha256": "93bba2171e5dbe8c7a3e79f45967a3c70c17ab13c60956b5392059cf9c63778c",
+    "semantics": "finite host integer test; no firmware/system registers/VM"
+  },
+  "pointer_paths": {
+    "threshold": "0x7fffffffff",
+    "user": "x20 <= threshold -> 0x7f0: Data_GetDataPt; range/access check; if check fails 0x7d0 returns actual WITHOUT copy; if passes 0x824 __arch_copy_to_user; return value of copy is not inspected; 0x828 sets w0=actual",
+    "kernel": "x20 > threshold -> 0x7bc Data_GetDataPt; 0x7cc memcpy actual; return actual",
+    "appfw": "appFw buffer is a local stack slot; no runtime pointer capture; code selects by x20, so path/actual write count is not proven. Do not assume memcpy path.",
+    "return_vs_write": "return actual != guaranteed bytes written on user path (access-check skip or copy failure still returns actual)."
+  },
+  "appfw_caller": {
+    "buffer_init": "0x11f675c [b0]=0; 0x11f6760-0x11f6768 stp w0,w0 sets each 4-byte slot to 1 (high3=00)",
+    "thunks": "0x2169784 key0x02cf0214, 0x21697d4 key0x02cf0218, w2=4",
+    "return_ignored": true
+  },
+  "single_byte_claim": {
+    "claim": "single-byte 00/01 read remains legal",
+    "holds_for_this_appfw_caller": "conditional: only if high3 initialized 00 and the 1-byte user copy succeeds or is skipped without changing low byte; buffer remains a valid 0/1",
+    "not_generic": "not a guarantee for arbitrary buffers, failed user copy, or arbitrary values",
+    "target_actual": "target record is length4 16/19; if user copy succeeds it overwrites 4 bytes and is invalid; if access check fails, buffer remains 1 and this assertion may not fire. No runtime pointer/value capture; static+serial supports the invalid-value path but does not prove write count."
+  },
+  "producer_chain": {
+    "setting_backup_all_92fe": true,
+    "cpio_hashes": {
+      "base_guest_cpio": [
+        "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+        2229740,
+        "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+      ],
+      "guest_three_entry": [
+        "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+        2229740,
+        "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+      ],
+      "guest_cp_helper_agnostic": [
+        "11adfbcec5fc1a73e60c96ed7cebb361ce53498d0b110793bf665da1b69756c0",
+        2229740,
+        "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+      ],
+      "guest_hybrid_fx6kernel": [
+        "1cc4f88e77d97c1905ed3018564ff89c38451fc94506ebf0d2da7812709fbdeb",
+        2229740,
+        "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+      ],
+      "grmreal21": [
+        "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+        2229740,
+        "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+      ],
+      "grmreal41": [
+        "c1f154730c5d463b293ba3bb840a44eb66e101dda65d42d9e0a7207b512c634a",
+        2229740,
+        "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+      ],
+      "grmreal46": [
+        "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+        2229740,
+        "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+      ]
+    },
+    "build_chain": {
+      "CPIO-BUILD.json": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+        "source_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+        "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-cp-helper-agnostic.cpio",
+        "output_sha256": "11adfbcec5fc1a73e60c96ed7cebb361ce53498d0b110793bf665da1b69756c0",
+        "target": {
+          "name": "simulation/fx3-cp-backup-reset-v1.ko",
+          "old_bytes": 190648,
+          "old_sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca",
+          "new_bytes": 66552,
+          "new_sha256": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa"
+        },
+        "replaced_member_count": 1
+      },
+      "HYBRID-CPIO-BUILD.json": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-ap-candidate/guest-three-entry.cpio",
+        "source_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+        "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel.cpio",
+        "output_sha256": "1cc4f88e77d97c1905ed3018564ff89c38451fc94506ebf0d2da7812709fbdeb",
+        "target": {
+          "name": "simulation/fx3-cp-backup-reset-v1.ko",
+          "old_bytes": 190648,
+          "old_sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca",
+          "new_bytes": 66552,
+          "new_sha256": "7e8d859ecb0fc66c5e05909ae5688b966838a6aa7bb0a478b6b4139177004aaa"
+        },
+        "replaced_member_count": 1
+      },
+      "APPFWFUTURE-CPIO-BUILD.json": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal21.cpio",
+        "source_sha256": "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+        "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal41.cpio",
+        "output_sha256": "c1f154730c5d463b293ba3bb840a44eb66e101dda65d42d9e0a7207b512c634a",
+        "target": {
+          "name": "usr/lib/appFw.so",
+          "old_bytes": 50520424,
+          "old_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+          "new_bytes": 50520424,
+          "new_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be"
+        },
+        "replaced_member_count": 1
+      },
+      "BACKUPBUG-CPIO-BUILD.json": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal19.cpio",
+        "source_sha256": "2a0a54a76a85c3f73c0a87c4d731c04a2a4cc7b25c8ad11bc5929fa8dc67f3fe",
+        "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal20.cpio",
+        "output_sha256": "9ef8987d45459b102565efa7dfa8fbd581fb46b78ac2d6a8abe3ae4017d6ff00",
+        "target": {
+          "name": "usr/kmod/backup.ko",
+          "old_bytes": 144976,
+          "old_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+          "new_bytes": 144976,
+          "new_sha256": "6ae178d5390f847415fcc57236b8d49e33c486f043e906598eb2af81f7fec11e"
+        },
+        "replaced_member_count": 1
+      },
+      "UPMCALLSITE-CPIO-BUILD.json": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal41.cpio",
+        "source_sha256": "c1f154730c5d463b293ba3bb840a44eb66e101dda65d42d9e0a7207b512c634a",
+        "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal46.cpio",
+        "output_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+        "target": {
+          "name": "usr/kmod/upm.ko",
+          "old_bytes": 453896,
+          "old_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+          "new_bytes": 453896,
+          "new_sha256": "5be2aa0b6d6c0a31bb7802400fcd688a980583a08e945245adad7700b9882994"
+        },
+        "replaced_member_count": 1
+      }
+    },
+    "build_scope": {
+      "CPIO-BUILD": "replaces only simulation/fx3-cp-backup-reset-v1.ko; copies all other members",
+      "HYBRID-CPIO-BUILD": "replaces named appFw member; copies all other members",
+      "APPFWFUTURE": "replaces only appFw; copies all other members",
+      "BACKUPBUG": "replaces only backup.ko; copies all other members",
+      "UPMCALLSITE": "replaces only upm.ko; copies all other members"
+    },
+    "runtime_load": {
+      "init_member": "init",
+      "init_sha256": "642ce1c6c66764c1c5c5212b056cab96a29ac1f0b21c76a265f43d71fbd43913",
+      "init_static_mounts_rootfs": true,
+      "init_references_Backup_bin": true,
+      "init_has_copy_or_write": false,
+      "init_backup_lines": [
+        " /bin/busybox insmod /simulation/fx3-cp-backup-reset-v1.ko",
+        " backup_cp_rc=$?",
+        " echo FX3_BACKUP_CP_INSMOD_RC=$backup_cp_rc",
+        " if [ \"$backup_cp_rc\" != 0 ]; then echo FX3_BACKUP_CP_OWNER_FAILED; while true; do /bin/busybox sleep 1; done; fi",
+        " /bin/busybox ls -l /setting/Backup.bin /usr/kmod/backup.ko",
+        " /bin/busybox sha256sum /setting/Backup.bin /usr/kmod/backup.ko",
+        " /bin/busybox insmod /usr/kmod/backup.ko Backup_load=1 Backup_save=0",
+        " backup_rc=$?",
+        " echo FX3_BACKUP_INSMOD_RC=$backup_rc",
+        " /bin/busybox ls -l /dev/backup",
+        " /bin/busybox ls -l /sys/module/backup/parameters",
+        " /bin/busybox cat /sys/module/backup/parameters/Backup_load /sys/module/backup/parameters/Backup_save",
+        " /bin/busybox sha256sum /setting/Backup.bin",
+        " if [ \"$backup_rc\" != 0 ]; then",
+        " echo FX3_BACKUP102_TEXT_BASE=$(/bin/busybox cat /sys/module/backup/sections/.text)",
+        " echo FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN bounded_seconds=8 original_backupfile_load=1 AP_not_started=1 RAM_replay_absent=1 source_SHA_by_actual_O_RDONLY_export=1",
+        " FX3_TOUCH_PANEL=headless_touch_config FX3_RM_EMPTY=cache-replay-v1 FX3_MEDIA_OBSERVE=passive-v1 FX3_OSD_QUEUE_OWNER=native-receiver-v1 FX3_DISPLAY_OBSERVE=passive-v1 FX3_SYS_UUD=audited-run-preset-v1 FX3_SYS_TCMODE=headless-mode0-v1 FX3_OSD_LIFETIME=observe-v1 FX3_PEAKING=headless-config-v1 FX3_OSD_HEADLESS=software-ring-v1 FX3_CAPID_STORAGE=reserved-v1 FX3_BOOT_TAIL=audited-panel-hdmi-v1 FX3_HDMI_BOOT=disconnected-inactive-v1 FX3_SKD_HW=unavailable-rom-v1 FX3_PANEL_CONFIG=captured-enum2-consumer-v1 FX3_DIGITAL_LEVEL=disabled-sensor-op3-v1 FX3_BOOT_DEFERRED=muted-path3-v1 FX3_PIN_GRAPH=empty-owned-mode1-v1 FX3_BOOT_REPLY=timecode-getfunc-muted-v1 FX3_ADF_FILE=muted-user-v1 FX3_ADF_MUTED=silent-storage-v1 FX3_LCD_OSD=captured-v1 FX3_RELEASE_INHIBIT=idle-only-v1 FX3_MONITOR_LUT=inactive-identity-v1 FX3_CEC_POWER=software-disconnected-v1 FX3_HDMI_TC=inactive-disabled-v1 FX3_SA_ADDRESS=source-ranges-v1 FX3_VDF_OBSERVE=1 FX3_HDMI_AUDIO=inactive-format-v1 FX3_HDMI_PHOTO=inactive-preset-v1 FX3_REMOTE_DMM=two-slot-storage-v1 FX3_DISPLAY_INFO=software-640x480-v1 FX3_VDF_CONFIG=acceptance-shadow-v1 FX3_VDF_PLANE=double-cache-v1 FX3_HDMI_REGISTRATION=software-v1 FX3_CP_VERSION_TRANSPORT=unavailable-v1 LD_LIBRARY_PATH=/simulation:/usr/lib:/lib LD_PRELOAD=/usr/lib/libgrm-fbinit9.so:/usr/lib/libux_wgtlay.so:/usr/lib/libuxengine.so:/usr/lib/libux_core.so:/usr/lib/libtriones.so:/usr/lib/libandromeda.so:/usr/lib/libgemini-grm.so:/usr/lib/libgemini.so:/usr/lib/libalcor.so:/usr/lib/libtextrm.so:/usr/lib/libwtle.so:/usr/lib/libitype.so:/usr/lib/libstella.so:/usr/lib/liblibra.so:/usr/lib/libgrm.so:/usr/lib/libstella.so:/usr/lib/liblibra.so:/usr/lib/libgrm.so:/usr/lib/liblibra.so:/usr/lib/libgrm.so:/usr/lib/libgrm.so:/simulation/fx3-skd-hw-unavailable-v1.so:/simulation/fx3-capid-v1.so:/simulation/fx3-osd-headless-v5.so:/simulation/fx3-osd-lifetime-v2.so:/simulation/fx3-preset-context-v2-screen.so:/simulation/fx3-timecode-capture-v1.so:/simulation/fx3-hdmi-registration-v1.so:/simulation/fx3-gpe-observe-v7.so:/simulation/signal-observe-v2.so:/simulation/ioctl-trace.so:/simulation/fx3-icrypt-observe-v1.so:/simulation/fx3-timer-observe-v1.so:/simulation/fx3-ui-gate-v1.so:/usr/lib/libInfraCrypt.so:/simulation/fx3-backup-return-v1.so:/simulation/fx3-rm-empty-provider-v3-setup.so:/simulation/fx3-media-observe-v3-uipc.so /usr/bin/bootin.elf 'target=qemu ' dmode=3 &"
+      ],
+      "backup_module_load": "/usr/kmod/backup.ko Backup_load=1 Backup_save=0 (init script)",
+      "serial_evidence": {
+        "observer_ready": "line 1018 FX3_FILE100_OBSERVER_READY native_path=/setting/Backup.bin O_RDONLY=1 no_native_data_writes=1",
+        "backup_insmod": "line 1041 FX3_BACKUP_INSMOD_BEGIN; line 1045 FX3_BACKUP_INSMOD_RC=0",
+        "backup_seed": "line 1037 FX3_BACKUP_ORIGINAL_SEED_BEGIN; line 1038 size 2229740"
+      },
+      "writer_observed": false,
+      "note": "static rootfs file loaded read-only; no runtime import/copy/write observed"
+    },
+    "producer_status": "The 92fe file is embedded byte-for-byte in fixed FX3 base guest.cpio and all hybrid CPIOs (including target); the build scripts replace only named members. Exact upstream author/source of the base image is not in these scripts; Backup-generation4-fixed.bin has the same hash. No runtime writer is observed."
+  },
+  "fx3_consumer": {
+    "fx3_appFw_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "model_api_cpp_string_offset": 58310472,
+    "set_model_for_boot_screen_string_present": false,
+    "backup_nread_string_count": 3,
+    "key_literal_counts": {
+      "0x2cf0214": {
+        "le": 0,
+        "be": 1
+      },
+      "0x2cf0218": {
+        "le": 0,
+        "be": 0
+      }
+    },
+    "status": "no direct same-function consumer closure; shared data risk cannot be excluded"
+  },
+  "migration_dry_run": {
+    "schema": "fx6-backup-migration-dry-run-v1",
+    "source_backup": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+    "source_sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+    "status": "blocked_by_unresolved_fx3_consumer_semantics",
+    "affected": [
+      {
+        "id": "0x2cf0214",
+        "record_file_offset": 0,
+        "record_bytes": 857900,
+        "data_file_offset": 594516,
+        "length": 4,
+        "current_raw": "16161616",
+        "current_u32_le": 370546198,
+        "table_file_offset": 183496,
+        "encoded_pointer": "0x4091254"
+      },
+      {
+        "id": "0x2cf0218",
+        "record_file_offset": 0,
+        "record_bytes": 857900,
+        "data_file_offset": 594530,
+        "length": 4,
+        "current_raw": "19191919",
+        "current_u32_le": 421075225,
+        "table_file_offset": 183520,
+        "encoded_pointer": "0x4091262"
+      }
+    ],
+    "checksum": {
+      "field_file_offset": 32,
+      "field_bytes": 4,
+      "computed_scope": [
+        [
+          0,
+          32
+        ],
+        [
+          36,
+          857900
+        ]
+      ],
+      "record_start": 0,
+      "record_end": 857900,
+      "current_checksum": 25879547,
+      "current_checksum_matches": true
+    },
+    "pure_data_scope": {
+      "changed_offsets_minimal": [
+        32,
+        33,
+        34,
+        35,
+        594516,
+        594517,
+        594518,
+        594519,
+        594530,
+        594531,
+        594532,
+        594533
+      ],
+      "changed_bytes_minimal": 12,
+      "all_other_bytes_can_remain_identical": true,
+      "record_lengths_preserved": true,
+      "table_entries_preserved": true,
+      "note": "scope is for same-length 4-byte data edits plus record checksum; if FX6 1-byte layout is required, table/length/header bytes change and this scope is insufficient."
+    },
+    "candidate_values": null,
+    "values_chosen": false,
+    "file_written": false,
+    "cpio_written": false,
+    "blockers": [
+      "FX3 consumer semantics for 0x02cf0214/0x02cf0218 are not closed; same IDs/data exist in FX3 seed",
+      "normal FX6 producer/migration contract not implemented",
+      "no runtime proof that changing these values leads to screen/menu"
+    ],
+    "note": "Dry-run only: identifies record/data/checksum scope; does NOT choose values or generate/install a modified Backup/CPIO. Blocked until consumer contract is closed."
+  },
+  "sufficient_for_next_step": "Kernel helper static read contract is documented; the appFw user-provider-to-kernel-inner chain remains open. Not enough for migration or a claim that appFw uses this helper.",
+  "known": [
+    "inner cmp/ccmp/b.eq: actual==capacity does NOT take 0x848; CCMP sets NZCV=0 when GT false",
+    "actual>capacity && w23=1 reaches 0x848; actual>capacity does not truncate and is not target",
+    "missing returns -1 and writes nothing",
+    "copy length is actual size, not capacity",
+    "capacity4/len1 copy/return 1; len4 copy/return 4 under successful copy path",
+    "two pointer paths: x20<=0x7fffffffff uses user __arch_copy_to_user and can return actual without copy on access-check failure; x20>threshold uses memcpy",
+    "return actual != guaranteed bytes written on user path",
+    "appFw slots initialized 4-byte 1 (high3 zero); single-byte 00/01 only conditionally legal",
+    "92fe present in fixed FX3 base/all hybrid CPIOs; build scripts replace named members only",
+    "init reads/hash/insmod backup; no runtime Backup write observed",
+    "FX3 appFw has no set_model_for_boot_screen string; shared consumer risk not closed",
+    "appFw DT_NEEDED does not include libbackup; im.elf and bootin.elf do; appFw Backup_nread is UND",
+    "libbackup.so defines Backup_nread at 0x24b0 and backup_sync_msg at 0x1a10; wrapper uses 0x3e014d via osal_snd_sync_msg",
+    "libosal_uipc exports osal_snd_sync_msg/valloc/free; global resolution from im/bootin needed",
+    "fx3-backup-return preload does not define Backup_nread or backup_sync_msg; ioctl-trace defines ioctl; no direct nread interception",
+    "kernel backup_async_recv uses 0x3e0811; user 0x3e014d receiver/dispatch to kernel Backup_nread not located"
+  ],
+  "inference": [
+    "target 4B 16/19 can invalidate appFw slots only if the user copy succeeds; failure/access skip would leave 1, but serial asserts support invalid values reaching the check",
+    "FX6 1B 00/01 should be legal for this caller under high3-zero initialization and successful copy; not runtime-captured",
+    "92fe upstream generation not closed",
+    "libbackup is the likely provider, but actual binding/dispatch to reviewed kernel inner is not closed"
+  ],
+  "unknown": [
+    "actual appFw x20 pointer path and user-copy success",
+    "exact bytes actually written for target keys",
+    "actual>capacity semantics/no truncation",
+    "FX3 consumer semantics for same IDs",
+    "upstream generator/importer of 92fe",
+    "whether correction leads to screen/menu",
+    "which endpoint receives 0x3e014d and whether it reaches kernel Backup_nread inner",
+    "libosal_uipc ioctl/read path and ioctl-trace effect on actual transport",
+    "runtime loader binding of libbackup for appFw"
+  ],
+  "limitations": {
+    "offline_only": true,
+    "static_disassembly": true,
+    "host_ccmp_test": true,
+    "no_firmware_or_vm": true,
+    "no_runtime_register_or_pointer_capture": true,
+    "migration_not_written": true
+  },
+  "input_seal": {
+    "count": 18,
+    "provider_count": 11,
+    "unchanged": true,
+    "path": "receipts/input-seal-compare.json",
+    "provider_path": "receipts/provider-input-compare.json"
+  },
+  "test_run": {
+    "path": "receipts/test-run.json",
+    "cases": 5,
+    "failed": 0,
+    "passed": true,
+    "provider_analysis": "receipts/provider-analysis-run.json"
+  },
+  "receipts": {
+    "after-input-seal.json": "392f0279b8f66f55470b57825f55bd92407326405a5efec936b769df0f5b5578",
+    "after-provider-input-seal.json": "278ccab59b22503c10ca16790031d21780fc6e184cf38eec996e256cc11c4ea5",
+    "before-input-seal.json": "0ebc58d7eba02687142f40b39172ad44dfa7046ccd218ad20eb9e447cbaca910",
+    "before-provider-input-seal.json": "6c8701669f80771b01cffaa297288b92774dcfa2a4720ec9b23cd6062fc11c77",
+    "ccmp-host-test.json": "00442cfae6459c178de1d910352dcf704245a816e1cee4e3c0c6721f23060af4",
+    "input-seal-compare.json": "a48cb80666fc9af6ccec5c6437b0c954e6185222cc9a7115b9c9695d1b26cd25",
+    "migration-dry-run.json": "1e9d2a52f9c69b839f3f872a11f7c38810afc733e966df93da0fc87a6f35b43b",
+    "producer-chain.json": "3e3c4ad319ac8b90efec7bb8f194da969064c8ce858d26e48d167c1bd0e9345c",
+    "provider-analysis-run.json": "a020034b4f988891a23fbe61022f5da7844fd254875daffe22f18ead92656f97",
+    "provider-chain.json": "c22abffa20952fdabbb56abfe26c6b2ff062d4441e77528d8890a963415ebce0",
+    "provider-input-compare.json": "c9b0ae80bf6c430bd06759efd5e411c7eff984fddf7b58dca79a0ed3143e9efd",
+    "reader-semantics.json": "a2bd60207bc97ff799da8e5bab9c53f6eac0df7a7c209864aca8a3bab58e2aaa"
+  },
+  "disassembly": {
+    "outer": "receipts/disasm-backup-nread-outer.txt",
+    "inner": "receipts/disasm-backup-nread-inner.txt",
+    "relocs": "receipts/relocs-backup-nread.txt"
+  },
+  "ccmp_host_test_path": "receipts/ccmp-host-test.json",
+  "input_seal_path": "receipts/input-seal-compare.json",
+  "provider_chain": {
+    "schema": "fx6-user-provider-chain-v1",
+    "appFw": {
+      "sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+      "needed": [
+        "libexpat.so.1",
+        "libqrencode.so",
+        "libopus.so.0",
+        "libSoundTouch.so.1",
+        "libjsoncpp.so.24",
+        "libpng.so.16",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "backup_nread": "0000000000000000      D  *UND*\t0000000000000000              Backup_nread"
+    },
+    "hosts": {
+      "im.elf": {
+        "sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+        "needed": [
+          "libjemalloc_ds.so.2",
+          "libIMDB.so",
+          "libbackup.so",
+          "libosal_utm.so",
+          "libosal_uipc.so",
+          "libdl.so.2",
+          "libpthread.so.0",
+          "libSTMcmdexecute.so",
+          "libssl.so.3",
+          "libcrypto.so.3",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ]
+      },
+      "bootin.elf": {
+        "sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+        "needed": [
+          "libbackup.so",
+          "libosal_utm.so",
+          "libosal_uipc.so",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libdl.so.2",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ]
+      }
+    },
+    "libbackup": {
+      "path": "usr/lib/libbackup.so",
+      "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "symbols": {
+        "Backup_nread": "00000000000024b0 g    DF .text\t0000000000000044              Backup_nread",
+        "backup_sync_msg": "0000000000001a10 g    DF .text\t000000000000015c              backup_sync_msg",
+        "osal_snd_sync_msg": "0000000000000000      D  *UND*\t0000000000000000              osal_snd_sync_msg",
+        "osal_valloc_msg_wait": "0000000000000000      D  *UND*\t0000000000000000              osal_valloc_msg_wait",
+        "osal_free_msg": "0000000000000000      D  *UND*\t0000000000000000              osal_free_msg"
+      },
+      "backup_nread_vma": "0x24b0",
+      "backup_sync_msg_vma": "0x1a10",
+      "wrapper_observed": "Backup_nread writes key/capacity/buffer and calls backup_sync_msg with w1=0x3e014d,w2=0x1f,w3=3; return status in [x29+0x1c]"
+    },
+    "transport": {
+      "libosal_uipc": {
+        "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+        "symbols": {
+          "osal_snd_sync_msg": "0000000000006458 g    DF .text\t000000000000000c              osal_snd_sync_msg",
+          "osal_valloc_msg_wait": "00000000000067b0 g    DF .text\t00000000000001c0              osal_valloc_msg_wait",
+          "osal_free_msg": "0000000000006970 g    DF .text\t0000000000000168              osal_free_msg",
+          "osal_snd_msg": "0000000000003a10 g    DF .text\t0000000000000088              u_osal_snd_msg"
+        },
+        "needed": [
+          "libdl.so.2",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ]
+      },
+      "path": "libbackup.backup_sync_msg -> osal_valloc_msg_wait/osal_snd_sync_msg/osal_free_msg; libosal_uipc exports osal_snd_sync_msg; libbackup does not NEEDED libosal but im/bootin DO => global-scope resolution candidate; exact loader binding not captured"
+    },
+    "preloads": {
+      "fx3-backup-return-v1.so": {
+        "sha256": "68e13aafa30376e96804e3d2e73d3e760f466a96090ae17055ecab129561f8e9",
+        "defined_relevant": {
+          "Backup_nread": false,
+          "backup_sync_msg": false,
+          "Backup_write": true,
+          "Backup_reset": true,
+          "Backup_sync": true,
+          "ioctl": false,
+          "open": false,
+          "read": false,
+          "write": true,
+          "dlopen": false
+        },
+        "defines_Backup_nread": false,
+        "defines_backup_sync_msg": false,
+        "needed": []
+      },
+      "ioctl-trace.so": {
+        "sha256": "f2799333d67b4b118634e273f50f7d48106a228c1c40132075d923f040ca0b74",
+        "defined_relevant": {
+          "Backup_nread": false,
+          "backup_sync_msg": false,
+          "Backup_write": false,
+          "Backup_reset": false,
+          "Backup_sync": false,
+          "ioctl": true,
+          "open": false,
+          "read": false,
+          "write": false,
+          "dlopen": false
+        },
+        "defines_Backup_nread": false,
+        "defines_backup_sync_msg": false,
+        "needed": [
+          "libc.so.6",
+          "libdl.so.2"
+        ]
+      },
+      "fx3-icrypt-observe-v1.so": {
+        "sha256": "2a62c7977f5b16825d01421598d58ec611b3e3c1a0d091ef75ac35944638b3ff",
+        "defined_relevant": {
+          "Backup_nread": false,
+          "backup_sync_msg": false,
+          "Backup_write": false,
+          "Backup_reset": false,
+          "Backup_sync": false,
+          "ioctl": false,
+          "open": true,
+          "read": false,
+          "write": false,
+          "dlopen": true
+        },
+        "defines_Backup_nread": false,
+        "defines_backup_sync_msg": false,
+        "needed": [
+          "libc.so.6",
+          "libdl.so.2"
+        ]
+      }
+    },
+    "kernel": {
+      "path": "usr/kmod/backup.ko",
+      "sha256": "6ae178d5390f847415fcc57236b8d49e33c486f043e906598eb2af81f7fec11e",
+      "Backup_nread_vma": "0x1eb8",
+      "inner_vma": "0x760",
+      "backup_sync_msg_vma": "0x40e8",
+      "backup_async_recv_vma": "0x7500",
+      "observation": "kernel backup_async_recv uses UIPC msg 0x3e0811; user backup_sync_msg uses 0x3e014d; no receiver mapping for 0x3e014d to Backup_nread located in this bounded audit"
+    },
+    "provider_closed": false,
+    "unknown_jump": [
+      "user libbackup Backup_nread -> backup_sync_msg -> osal_snd_sync_msg(0x3e014d) endpoint",
+      "which kernel/user handler receives 0x3e014d and whether it calls kernel Backup_nread/inner 0x760",
+      "whether libosal_uipc ioctl/read path or ioctl-trace interposition is used",
+      "actual runtime binding of libbackup in appFw global scope"
+    ],
+    "conclusion": "libbackup is the user provider of Backup_nread and im/bootin load it; preloads do not define Backup_nread. The user->kernel inner dispatch is not closed, so do not claim appFw actually reaches the reviewed kernel helper."
+  },
+  "provider_chain_closed": false,
+  "appFw_provider_to_kernel_verified": false,
+  "read_contract_scope": "kernel backup.ko inner helper static semantics only; not proof that appFw reaches it via libbackup/UIPC",
+  "provider_unknown": [
+    "user libbackup Backup_nread -> backup_sync_msg -> osal_snd_sync_msg(0x3e014d) endpoint",
+    "which kernel/user handler receives 0x3e014d and whether it calls kernel Backup_nread/inner 0x760",
+    "whether libosal_uipc ioctl/read path or ioctl-trace interposition is used",
+    "actual runtime binding of libbackup in appFw global scope"
+  ]
+}

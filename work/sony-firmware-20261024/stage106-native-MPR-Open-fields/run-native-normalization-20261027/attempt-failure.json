@@ -1,0 +1,4 @@
+{
+  "passing_result": false,
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage106-native-MPR-Open-fields/mpr_open.py\", line 222, in main\n    classified=[classify(blob,p) for p in produced]\n                ~~~~~~~~^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage106-native-MPR-Open-fields/mpr_open.py\", line 192, in classify\n    events.append(e);assert e['reason']=='returned';value=m.uc.reg_read(r.reg.UC_ARM64_REG_X0)\n                            ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

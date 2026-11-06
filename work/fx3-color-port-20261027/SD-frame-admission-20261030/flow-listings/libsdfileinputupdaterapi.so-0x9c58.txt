@@ -1,0 +1,8 @@
+_ZN7Updater13BufferManagerC2Ev
+00009c58 adrp      x1, #0x1d000
+00009c5c stp       xzr, xzr, [x0, #0x10]
+00009c60 stp       xzr, xzr, [x0, #0x20]
+00009c64 ldr       x1, [x1, #0xf78]
+00009c68 add       x1, x1, #0x10
+00009c6c stp       x1, xzr, [x0]
+00009c70 ret       

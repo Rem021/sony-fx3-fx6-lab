@@ -1,0 +1,91 @@
+{
+  "created_utc": "2026-10-30T17:30:05.985074+00:00",
+  "previous_goal_turn_classification": "progress",
+  "previous_sealed_files_verified": 508,
+  "previous_seal_sha256": "d422aa7d85a2f0543ced3e873540b87839e15fc3e2422ab6df348acfb047dcd1",
+  "this_goal_turn_classification": "no progress",
+  "consecutive_no_progress_turns": 1,
+  "fresh_streak_after_last_material_progress": "work/fx3-color-port-20261027/AXSM-host-reader-20261030",
+  "old_blocked_audit_counts_reused": false,
+  "public_tool_heads_unchanged": true,
+  "own_A7IV_reference_sha256": "bab857f82c23d19dea9b857e08ea56b19ff93de3c153f5c5cb099767d36abd75",
+  "peer_latest_terminal_receipt": {
+    "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/verification-receipt.json",
+    "sha256": "0e3b48609e7ba273a5e695bf6ffc716ca01979dd0e994d8bd7b33432fb5fd18b",
+    "status": "OWN_NOOP_CONSTRUCTOR_CHILD_AND_RELOAD_OBSERVER_MODEL_PASS_NOT_DEPLOYABLE",
+    "full_boot_capture_worker_integrated": false,
+    "probe_deployable": false,
+    "real_Sony_kernel_loader_credentials_cache_or_recovery_verified": false
+  },
+  "peer_next_directory_observation": {
+    "path": "work/sony-firmware-20261024/stage232-plan-writer-and-command-thread-contract",
+    "exists": true,
+    "README_present": false,
+    "verification_receipt_present": false,
+    "final_receipt_present": false,
+    "running_job_handle_verified": false
+  },
+  "requirements": [
+    {
+      "id": "FX5_full_private_donor",
+      "status": "missing",
+      "proof_required": "Complete readable private system/menu payload and dependencies",
+      "current_evidence_assessment": "Still no complete readable private donor artifact. Reuse the same-day registered-model catalogue queries and known positive controls; no universal absence claim."
+    },
+    {
+      "id": "VENICE_complete_ISP_color_chain",
+      "status": "incomplete",
+      "proof_required": "Readable private inner plus full realtime ISP/sensor calibration/data-domain mapping",
+      "current_evidence_assessment": "Existing type3/type4 inners remain opaque; AXS prefix model and rejected host-reader branch do not recover sensor ISP."
+    },
+    {
+      "id": "RAM_chip_and_DMM_runtime",
+      "status": "incomplete",
+      "proof_required": "Normal hardware initialization and actual buffers/capacity/payload linked to allocation",
+      "current_evidence_assessment": "Paired source and original FX3 DMA bindings exist; physical chip identity, actual initialized capacity and live target buffers remain unverified."
+    },
+    {
+      "id": "CMOS_RAW_and_calibration",
+      "status": "unproven",
+      "proof_required": "Reachable original acquisition and actual RAW samples/domain validation",
+      "current_evidence_assessment": "No validated real target sensor RAW acquisition/calibration sample path."
+    },
+    {
+      "id": "professional_menu_and_MAIN_recording",
+      "status": "incomplete",
+      "proof_required": "Whole professional UI/control route and target recording output",
+      "current_evidence_assessment": "No complete FX5 professional control graph bound to actual FX3 main recording pixels."
+    },
+    {
+      "id": "exact_modified_target_firmware",
+      "status": "missing",
+      "proof_required": "Concrete classic FX3 target package carrying the requested full change",
+      "current_evidence_assessment": "No exact full target-modified firmware with all required functions/color chain is produced."
+    },
+    {
+      "id": "classic_FX3_7_02_modified_package_admission",
+      "status": "unproven",
+      "proof_required": "Reproducible acceptance evidence for modified whole package, not original signature/repacking",
+      "current_evidence_assessment": "Original package RSA mathematics and historical engine path are known; current installed 7.02 modified-package acceptance is not."
+    },
+    {
+      "id": "normal_boot_support_and_independent_recovery",
+      "status": "unproven",
+      "proof_required": "Target compatibility and independent recovery evidence sufficient for readiness",
+      "current_evidence_assessment": "Peer stage231 explicitly NOT_DEPLOYABLE and real loader/cache/recovery unverified; stage232 has no terminal receipt at observation."
+    },
+    {
+      "id": "stop_before_actual_flash",
+      "status": "preserved",
+      "proof_required": "No target flashing; not a substitute for earlier requirements",
+      "current_evidence_assessment": "Preserved, not a substitute for the other requirements."
+    }
+  ],
+  "whole_goal_complete": false,
+  "common_blocker": "No readable complete required private donor/applicable decoder and no verified current FX3 modified-image admission, normal boot and independent recovery.",
+  "native_status_change_requested": false,
+  "new_device_actions": 0,
+  "peer_files_changed": false,
+  "modified_firmware_created": false,
+  "confirmation_pending_for_this_task": false
+}

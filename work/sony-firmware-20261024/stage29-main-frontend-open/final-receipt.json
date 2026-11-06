@@ -1,0 +1,86 @@
+{
+  "schema": "fx3-stage29-main-frontend-open/1",
+  "created_utc": "2026-10-25T22:03:41.900341+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/README.md",
+      "bytes": 6949,
+      "sha256": "40da4401bc1c752a3e61e0b9d4ca2de9205c216d23d846bb43e870e5a2203c5d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/coordinator-observations.json",
+      "bytes": 2067,
+      "sha256": "68bdaccdecdbfa7cf61b4d73935c2e231629177edf27429f9720f37c9a9c740e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/frontend_open.py",
+      "bytes": 13393,
+      "sha256": "901b1c704b251f3bf6b6bd568bd5434689047959e2d5cba0037a0db43a4e01b2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/goal-status-after.json",
+      "bytes": 44432,
+      "sha256": "df0ff7b4f685e959bab0431a026c0cef17fa9984ab2ca6e0c3c3ec68e430dda3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/goal-status-before.json",
+      "bytes": 42193,
+      "sha256": "9e4bedcd618d766de8ffaa5021edb475f8e1e217498f7679e3b199a7408055aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/run-20261025/attempt-failure.json",
+      "bytes": 1223,
+      "sha256": "da46a2530bb0d56fa4767969a7a56d80084867b70143cba56a7c8c03ebe4e1d9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/run-20261025/attempt-source.py",
+      "bytes": 13124,
+      "sha256": "887f8d3086801c06918296ca26ab854c790fef76ac71b95a1e9158c39657feda"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/run-20261025/failure-explanation.json",
+      "bytes": 521,
+      "sha256": "06db41ce49089d232d4ff8262c73a9c1e13df255831b8c77b6159876f2889bcf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/frontend-open-results.json",
+      "bytes": 240652,
+      "sha256": "8612df8532b79d0ae6d12ccbd02b239430d99ec3f9a6696c60858d0b9dc0f567"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/source-receipt.json",
+      "bytes": 981,
+      "sha256": "3e08f08638b76cb1757cdf26ebea306cee66faf0ec05640afd11e0b8ab5f1f0b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/summary.json",
+      "bytes": 450,
+      "sha256": "08652e6c0066fc10dcc568a2aa9327e844aea62fbeddf5f7989eb7dd46e85b7f"
+    }
+  ],
+  "previous_manifest_sha256": "0b156a8f81a1de1b4077638b5325dda8a396fce249f43a072e444c2d8359e96c",
+  "effective_run": "run-corrected-20261025",
+  "scope": "14scenarios of original frontend queue/copy, independent post-subevent suffix and rebuild helper fragments. Not full MAIN reconfiguration/order/merge, hardware or restore.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage29-main-frontend-open/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage29-main-frontend-open/goal-status-after.json",
+    "before_sha256": "9e4bedcd618d766de8ffaa5021edb475f8e1e217498f7679e3b199a7408055aa",
+    "after_sha256": "df0ff7b4f685e959bab0431a026c0cef17fa9984ab2ca6e0c3c3ec68e430dda3",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "read_only_raw_return_instrumentation": true,
+    "native_output_adapters": false,
+    "actual_configuration_subevents_timing_clock_resources_hardware": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 主录前端排队与参数保留](<work/sony-firmware-20261024/stage29-main-frontend-open/README.md>)：原局部分支可排队返回1或保留目标0x98参数；SET_REC_FORMAT为另一路重建，29.97/精确30帮助函数结果不同，完整合并/硬件及恢复仍未验证。"
+}

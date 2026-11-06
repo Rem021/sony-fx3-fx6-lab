@@ -1,0 +1,287 @@
+{
+  "target": "void lib::backup_get_language(model::setting_language_t&)",
+  "xref": {
+    "code": [
+      {
+        "va": "0x2ec06d8",
+        "kind": "adrp-add",
+        "start": "0x2ec06d0"
+      }
+    ],
+    "pointers": []
+  },
+  "blocks": [
+    [
+      {
+        "va": "0x2ec06b0",
+        "raw": "bfffff17",
+        "asm": "b #0x2ec05ac",
+        "symbol": ""
+      },
+      {
+        "va": "0x2ec06b4",
+        "raw": "345700b0",
+        "asm": "adrp x20, #0x39a5000"
+      },
+      {
+        "va": "0x2ec06b8",
+        "raw": "56060090",
+        "asm": "adrp x22, #0x2f88000"
+      },
+      {
+        "va": "0x2ec06bc",
+        "raw": "94b63191",
+        "asm": "add x20, x20, #0xc6d"
+      },
+      {
+        "va": "0x2ec06c0",
+        "raw": "d6b23b91",
+        "asm": "add x22, x22, #0xeec"
+      },
+      {
+        "va": "0x2ec06c4",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x2ec06c8",
+        "raw": "e00316aa",
+        "asm": "mov x0, x22"
+      },
+      {
+        "va": "0x2ec06cc",
+        "raw": "824a8052",
+        "asm": "mov w2, #0x254"
+      },
+      {
+        "va": "0x2ec06d0",
+        "raw": "335700b0",
+        "asm": "adrp x19, #0x39a5000"
+      },
+      {
+        "va": "0x2ec06d4",
+        "raw": "d54600d0",
+        "asm": "adrp x21, #0x379a000"
+      },
+      {
+        "va": "0x2ec06d8",
+        "raw": "73c23291",
+        "asm": "add x19, x19, #0xcb0"
+      },
+      {
+        "va": "0x2ec06dc",
+        "raw": "d8bd0294",
+        "asm": "bl #0x2f6fe3c",
+        "symbol": ""
+      },
+      {
+        "va": "0x2ec06e0",
+        "raw": "b5861891",
+        "asm": "add x21, x21, #0x621"
+      },
+      {
+        "va": "0x2ec06e4",
+        "raw": "e10313aa",
+        "asm": "mov x1, x19"
+      },
+      {
+        "va": "0x2ec06e8",
+        "raw": "e00315aa",
+        "asm": "mov x0, x21"
+      },
+      {
+        "va": "0x2ec06ec",
+        "raw": "d4bd0294",
+        "asm": "bl #0x2f6fe3c",
+        "symbol": ""
+      },
+      {
+        "va": "0x2ec06f0",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x2ec06f4",
+        "raw": "e00316aa",
+        "asm": "mov x0, x22"
+      },
+      {
+        "va": "0x2ec06f8",
+        "raw": "824a8052",
+        "asm": "mov w2, #0x254"
+      },
+      {
+        "va": "0x2ec06fc",
+        "raw": "d3ad0294",
+        "asm": "bl #0x2f6be48",
+        "symbol": ""
+      },
+      {
+        "va": "0x2ec0700",
+        "raw": "e10313aa",
+        "asm": "mov x1, x19"
+      },
+      {
+        "va": "0x2ec0704",
+        "raw": "e00315aa",
+        "asm": "mov x0, x21"
+      },
+      {
+        "va": "0x2ec0708",
+        "raw": "d0ad0294",
+        "asm": "bl #0x2f6be48",
+        "symbol": ""
+      },
+      {
+        "va": "0x2ec070c",
+        "raw": "40060090",
+        "asm": "adrp x0, #0x2f88000"
+      },
+      {
+        "va": "0x2ec0710",
+        "raw": "e10314aa",
+        "asm": "mov x1, x20"
+      },
+      {
+        "va": "0x2ec0714",
+        "raw": "00f03b91",
+        "asm": "add x0, x0, #0xefc"
+      },
+      {
+        "va": "0x2ec0718",
+        "raw": "824a8052",
+        "asm": "mov w2, #0x254"
+      },
+      {
+        "va": "0x2ec071c",
+        "raw": "29489b97",
+        "asm": "bl #0x15927c0",
+        "symbol": "printf"
+      },
+      {
+        "va": "0x2ec0720",
+        "raw": "40060090",
+        "asm": "adrp x0, #0x2f88000"
+      },
+      {
+        "va": "0x2ec0724",
+        "raw": "e10313aa",
+        "asm": "mov x1, x19"
+      },
+      {
+        "va": "0x2ec0728",
+        "raw": "00343c91",
+        "asm": "add x0, x0, #0xf0d"
+      },
+      {
+        "va": "0x2ec072c",
+        "raw": "25489b97",
+        "asm": "bl #0x15927c0",
+        "symbol": "printf"
+      },
+      {
+        "va": "0x2ec0730",
+        "raw": "00d49052",
+        "asm": "mov w0, #0x86a0"
+      },
+      {
+        "va": "0x2ec0734",
+        "raw": "2000a072",
+        "asm": "movk w0, #1, lsl #16"
+      },
+      {
+        "va": "0x2ec0738",
+        "raw": "e2499b97",
+        "asm": "bl #0x1592ec0",
+        "symbol": "usleep"
+      },
+      {
+        "va": "0x2ec073c",
+        "raw": "1dfbff97",
+        "asm": "bl #0x2ebf3b0",
+        "symbol": ""
+      },
+      {
+        "va": "0x2ec0740",
+        "raw": "96ffff17",
+        "asm": "b #0x2ec0598",
+        "symbol": ""
+      },
+      {
+        "va": "0x2ec0744",
+        "raw": "fd7bbca9",
+        "asm": "stp x29, x30, [sp, #-0x40]!"
+      },
+      {
+        "va": "0x2ec0748",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2ec074c",
+        "raw": "010040b9",
+        "asm": "ldr w1, [x0]"
+      },
+      {
+        "va": "0x2ec0750",
+        "raw": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x2ec0754",
+        "raw": "3f840071",
+        "asm": "cmp w1, #0x21"
+      },
+      {
+        "va": "0x2ec0758",
+        "raw": "f55b02a9",
+        "asm": "stp x21, x22, [sp, #0x20]"
+      },
+      {
+        "va": "0x2ec075c",
+        "raw": "bfff0039",
+        "asm": "strb wzr, [x29, #0x3f]"
+      },
+      {
+        "va": "0x2ec0760",
+        "raw": "280a0054",
+        "asm": "b.hi #0x2ec08a4"
+      },
+      {
+        "va": "0x2ec0764",
+        "raw": "205700b0",
+        "asm": "adrp x0, #0x39a5000"
+      },
+      {
+        "va": "0x2ec0768",
+        "raw": "00b02b91",
+        "asm": "add x0, x0, #0xaec"
+      },
+      {
+        "va": "0x2ec076c",
+        "raw": "00486138",
+        "asm": "ldrb w0, [x0, w1, uxtw]"
+      },
+      {
+        "va": "0x2ec0770",
+        "raw": "61000010",
+        "asm": "adr x1, #0x2ec077c"
+      },
+      {
+        "va": "0x2ec0774",
+        "raw": "2088208b",
+        "asm": "add x0, x1, w0, sxtb #2"
+      },
+      {
+        "va": "0x2ec0778",
+        "raw": "00001fd6",
+        "asm": "br x0"
+      },
+      {
+        "va": "0x2ec077c",
+        "raw": "20008052",
+        "asm": "mov w0, #1"
+      }
+    ]
+  ]
+}

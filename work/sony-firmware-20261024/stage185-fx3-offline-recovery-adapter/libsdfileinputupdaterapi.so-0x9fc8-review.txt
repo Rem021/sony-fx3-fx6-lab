@@ -1,0 +1,37 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000009fc8 <Updater::SDUUDConditionChecker::SkipContentsInformation(Updater::FsysFileHandler&)>:
+    9fc8: f9400002     	ldr	x2, [x0]
+    9fcc: f9402c42     	ldr	x2, [x2, #0x58]
+    9fd0: d61f0040     	br	x2
+
+0000000000009fd4 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)>:
+    9fd4: b9400422     	ldr	w2, [x1, #0x4]
+    9fd8: 52800000     	mov	w0, #0x0                // =0
+    9fdc: b9401c23     	ldr	w3, [x1, #0x1c]
+    9fe0: 6b02007f     	cmp	w3, w2
+    9fe4: 540000e3     	b.lo	0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    9fe8: 52800020     	mov	w0, #0x1                // =1
+    9fec: 540000a1     	b.ne	0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    9ff0: b9400820     	ldr	w0, [x1, #0x8]
+    9ff4: b9402022     	ldr	w2, [x1, #0x20]
+    9ff8: 6b00005f     	cmp	w2, w0
+    9ffc: 1a9f97e0     	cset	w0, hi
+    a000: d65f03c0     	ret
+
+000000000000a004 <Updater::SDUUDConditionChecker::isModelOK(UpdaterAPI::firmware_information_t&)>:
+    a004: b9400c20     	ldr	w0, [x1, #0xc]
+    a008: b9402422     	ldr	w2, [x1, #0x24]
+    a00c: 6b00005f     	cmp	w2, w0
+    a010: 1a9f17e0     	cset	w0, eq
+    a014: d65f03c0     	ret
+
+000000000000a018 <Updater::SDUUDConditionChecker::isRegionOK(UpdaterAPI::firmware_information_t&)>:
+    a018: b9401020     	ldr	w0, [x1, #0x10]
+    a01c: b9402822     	ldr	w2, [x1, #0x28]
+    a020: 6b00005f     	cmp	w2, w0
+    a024: 1a9f17e0     	cset	w0, eq
+    a028: d65f03c0     	ret

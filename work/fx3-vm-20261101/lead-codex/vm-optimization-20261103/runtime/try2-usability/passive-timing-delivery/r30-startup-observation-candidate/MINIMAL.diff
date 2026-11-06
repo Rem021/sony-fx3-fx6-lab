@@ -1,0 +1,447 @@
+--- /dev/null
++++ r30/startup_observation.py
+@@ -0,0 +1,177 @@
++"""Bounded host-only startup evidence; never returns an admission decision.
++
++No guest, QMP, serial-file read, sleeps, environment dump or per-poll disk write.
++All observation exceptions are contained. Token offsets use raw new bytes only.
++"""
++import collections
++import json
++import struct
++import time
++from pathlib import Path
++
++MARKERS = (
++ b'FX3_BACKUP_INSMOD_RC=0', b'FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN',
++ b'FX3_AP_NATURAL_BOOTIN_BEGIN', b'FX3_SYNC100_BACKEND_BOUND',
++ b'FX3_FILE103_READY_CONFIRMED', b'FX3_KEY96_READY',
++ b'FX3_AP89_SCREEN_OPEN_ENTER ', b'FX3_AP89_SCREEN_CREATE ',
++ b'FX3_UI_CONFIG_DONE ', b'FX3_TIMER_ENTRY ', b'FX3_UI_FILL_EXEC ',
++ b'FX3_OSD_HEADLESS_COPY ', b'FX3_OSD_FRAME_TARGET_VALID ', b'FX3_OSD102_COMMIT ',
++)
++PREDICATES = ('phaseA_unobserved','replay_input_verified','screen_open_observed',
++ 'validated_ring_present','screen_quiet_10s','media_branches_exact',
++ 'media_notifications_exact','native_free_sizes_present','key96_ready',
++ 'front_full_body','expected_raw_message','last_screen_allowed','nonuniform_pixels')
++TAIL = max(map(len, MARKERS))-1
++MAX_BYTES = 256*1024
++
++class Changes:
++    """Fixed initial/first-kind/last plus a bounded recent transition deque."""
++    def __init__(self, limit):
++        self.initial = self.last = None
++        self.recent = collections.deque(maxlen=limit)
++        self.first_kind = {}
++        self.count = self.transitions = self.evicted = self.first_kind_omitted = 0
++        self.key = None
++    def add(self, key, row):
++        self.count += 1
++        if self.initial is None: self.initial = row
++        if key != self.key:
++            self.transitions += 1
++            if len(self.recent)==self.recent.maxlen: self.evicted += 1
++            self.recent.append(row)
++            if key not in self.first_kind:
++                if len(self.first_kind)<32: self.first_kind[key]=row
++                else: self.first_kind_omitted += 1
++        self.key, self.last = key, row
++    def data(self):
++        return {'observations':self.count,'transitions':self.transitions,
++          'recent_limit':self.recent.maxlen,'evicted_transitions':self.evicted,
++          'first_kind_omitted':self.first_kind_omitted,'initial':self.initial,
++          'first_kinds':list(self.first_kind.values()),'recent':list(self.recent),'last':self.last}
++
++class StartupObservation:
++    def __init__(self, run, *, clock=time.monotonic_ns):
++        self.path = Path(run)/'startup-observation.json'
++        self.clock = clock
++        self.stage = 'startup'
++        self.serial_offset = self.serial_chunks = self.serial_bytes = 0
++        self.carry = b''
++        self.markers = {}
++        self.header = Changes(48)
++        self.ready = Changes(32)
++        self.phases = Changes(8)
++        self.errors = collections.Counter()
++        self.header_counts = collections.Counter()
++        self.active_ready = None
++        self.flush_attempted = self.saved = False
++        self.phase('startup')
++    def _error(self, area):
++        self.errors[area] += 1 # fixed caller labels, no exception text or environment
++    def stamp(self):
++        try: return self.clock()
++        except Exception: self._error('clock'); return None
++    def phase(self, stage):
++        try:
++            self.stage=stage
++            self.phases.add(stage,{'stage':stage,'host_received_ns':self.clock(),'serial_offset':self.serial_offset})
++        except Exception: self._error('phase')
++    def serial_chunk(self, start, chunk, end):
++        try:
++            received=self.clock(); self.serial_chunks+=1; self.serial_bytes+=len(chunk)
++            # A gap cannot join two unrelated byte spans into a fictitious token.
++            if start!=self.serial_offset: self._error('serial_gap');self.carry=b''
++            prefix=self.carry+chunk[:TAIL] # <=2*TAIL transient; no full chunk copy
++            origin=start-len(self.carry)
++            for token in MARKERS:
++                name=token.decode('ascii')
++                if name not in self.markers:
++                    a=prefix.find(token)
++                    b=chunk.find(token)
++                    offsets=([origin+a] if a>=0 else [])+([start+b] if b>=0 else [])
++                    if offsets:
++                        off=min(offsets)
++                        self.markers[name]={'byte_offset':off,'token_bytes':len(token),
++                          'host_first_complete_token_received_ns':received,
++                          'serial_chunk_start':start,'serial_chunk_end':end,'stage':self.stage,
++                          'line_complete_received_ns':None,
++                          'semantics':'first complete literal token; no guest occurrence time or full record/semantic acceptance claim'}
++                row=self.markers.get(name)
++                if row is not None and row['line_complete_received_ns'] is None:
++                    at=max(0,row['byte_offset']+row['token_bytes']-start)
++                    if chunk.find(b'\n',at)>=0:row['line_complete_received_ns']=received
++            self.carry=chunk[-TAIL:] if len(chunk)>=TAIL else (self.carry+chunk)[-TAIL:]
++            self.serial_offset=end
++        except Exception: self._error('serial')
++    def header_read(self, *, before_ns, after_ns, request_id_before, request_id_after,
++                    returned, file_length, prefix, source, outcome, exception_type=None):
++        try:
++            words=list(struct.unpack_from('<16Q',prefix)) if prefix is not None and len(prefix)>=128 else None
++            if outcome!='returned': kind=outcome
++            elif len(returned)!=256: kind='short' if file_length is None or file_length<256 else 'wrong_length'
++            elif words[0]!=0x32474e495244534f: kind='bad_magic'
++            elif words[1]!=2: kind='bad_version'
++            elif words[4]==0: kind='valid_seq0'
++            else: kind='valid_positive'
++            self.header_counts[kind]+=1
++            row={'kind':kind,'stage':self.stage,'serial_offset':self.serial_offset,
++              'host_read_before_ns':before_ns,'host_read_after_ns':after_ns,
++              'request_id_before':request_id_before,'request_id_after':request_id_after,
++              'request_id':request_id_after if isinstance(request_id_after,int) and isinstance(request_id_before,int) and request_id_after>request_id_before else None,
++              'returned_length':len(returned),'file_length_at_original_gate':file_length,
++              'raw_16Q':words,'words_source':source,'exception_type':exception_type,
++              'semantics':'host read observation only; no guest/server/browser atomic claim'}
++            self.header.add(self.stage+':'+kind,row)
++        except Exception: self._error('header')
++    def begin_ready(self):
++        try:
++            self.active_ready={'predicates':{k:'not_evaluated' for k in PREDICATES},'evaluation_complete':False}
++        except Exception: self._error('ready_begin')
++    def predicate(self, name, value):
++        # Return the very same value object: the original BoolOp owns truth testing.
++        try:
++            t=type(value)
++            observed=value if t is bool else bool(len(value)) if t in (dict,list,tuple,str,bytes) else value is not None if value is None else 'unknown_type'
++            if self.active_ready is not None and name in PREDICATES:self.active_ready['predicates'][name]=observed
++        except Exception: self._error('predicate')
++        return value
++    def end_ready(self, *, qualified, last_screen_observed_at, frame):
++        try:
++            row=self.active_ready
++            row.update(evaluation_complete=True,stage=self.stage,host_received_ns=self.clock(),
++                serial_offset=self.serial_offset,last_screen_observed_host_monotonic=last_screen_observed_at,
++                qualified=qualified,validated_ring_identity=self._frame(frame))
++            key=self.stage+':'+str(tuple(row['predicates'].values()))+':'+str(qualified)
++            self.ready.add(key,row);self.active_ready=None
++        except Exception: self._error('ready_end')
++    @staticmethod
++    def _frame(frame):
++        if type(frame) is not dict:return None
++        return {k:frame.get(k) for k in ('sequence','epoch','PNG_sha256','pixel_source_sequence','host_monotonic')}
++    def status(self):
++        return {'schema':'fx3-startup-observation-r30-v1','path':str(self.path),
++          'flush_attempted':self.flush_attempted,'saved':self.saved,'errors':dict(self.errors)}
++    def data(self):
++        return {**self.status(),'stage':self.stage,'limits':{'header_recent':48,'ready_recent':32,'phase_recent':8,
++          'first_kind_per_stream':32,'marker_whitelist':len(MARKERS),'serial_carry_bytes':TAIL,'file_bytes':MAX_BYTES},
++          'header_counts':dict(self.header_counts),'headers':self.header.data(),'ready':self.ready.data(),
++          'phases':self.phases.data(),'markers':self.markers,'ready_incomplete':self.active_ready,
++          'serial':{'chunks':self.serial_chunks,'bytes':self.serial_bytes,'consumed_offset':self.serial_offset,'carry_bytes':len(self.carry)},
++          'write_policy':'one bounded replace after original cleanup; no fsync/poll writes; abrupt host death may lose all observation evidence'}
++    def flush(self):
++        if self.flush_attempted:return
++        self.flush_attempted=True
++        try:
++            self.phase('after_cleanup')
++            value=self.data();value['saved']=True
++            raw=(json.dumps(value,separators=(',',':'))+'\n').encode()
++            if len(raw)>MAX_BYTES:
++                self._error('serialization_limit')
++                # Explicitly retain first/last/boundaries and drop recent transition arrays.
++                value=self.data();value['saved']=True;value['serialization_truncated']=True
++                for name in ('headers','ready','phases'):
++                    stream=value[name];stream['serialization_omitted_recent']=len(stream['recent']);stream['recent']=[]
++                raw=(json.dumps(value,separators=(',',':'))+'\n').encode()
++            if len(raw)>MAX_BYTES:raise ValueError('bounded_observation_limit')
++            temp=self.path.with_suffix('.json.tmp');temp.write_bytes(raw);temp.replace(self.path)
++            self.saved=True
++        except Exception:self._error('write')
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/trial_ring_cached.py
++++ r30/trial_ring_cached.py
+@@ -36,13 +36,59 @@
+ 
+ 
+ class TrialRingReader(RingReader):
+-    def __init__(self, run, qmp, state):
++    def __init__(self, run, qmp, state, *, startup_observation=None, request_sequence=None):
++        self.startup_observation = startup_observation
++        self.request_sequence = request_sequence
+         super().__init__(run, qmp)
+         # One immutable raw/PNG entry, never frame metadata or RGBA storage.
+         self._pixel_cache = None
+         self.cache_hits = self.cache_misses = 0
+         self.state = state
+         self.current_png = self.current_raw = self.current_record = None
++
++    def _request_sequence(self):
++        try: return self.request_sequence() if self.request_sequence is not None else None
++        except Exception: return None
++
++    def read(self, address, n, name):
++        if self.startup_observation is None or name != 'osd-ring-header-live.bin' or address != BASE or n != 0x100:
++            return super().read(address, n, name)
++        # Same QMP call and original file/size return gate as RingReader.read.
++        # Wrong-size bytes do NOT become reader input. A diagnostic-only <=128B
++        # prefix peek of that same exported host file can supply available 16Q.
++        ob = self.startup_observation
++        before = ob.stamp(); request_before = self._request_sequence()
++        head = b''; size = None; prefix = None; source = 'unavailable'; outcome = 'returned'; exception_type = None
++        p = self.run/name
++        in_qmp = True
++        try:
++            response = self.qmp('human-monitor-command', {'command-line':f'pmemsave {hex(address)} {hex(n)} "{p}"'})
++            in_qmp = False
++            qmp_error = 'error' in response
++            if not qmp_error and p.exists():
++                size = p.stat().st_size
++                if size == n:
++                    head = p.read_bytes()
++                    prefix = head[:128]; source = 'original_returned_header'
++                else:
++                    try:
++                        with p.open('rb') as f: prefix = f.read(128)
++                        source = 'diagnostic_only_wrong_length_prefix_original_return_remains_empty'
++                    except Exception:
++                        source = 'diagnostic_prefix_unavailable'
++            elif qmp_error:
++                outcome = 'qmp_error_response' # original code returns b'', does not throw
++            else:
++                outcome = 'missing_export'
++            return head
++        except BaseException as error:
++            exception_type = type(error).__name__
++            outcome = 'qmp_exception' if in_qmp else 'host_read_exception'
++            raise # same original exception object; no retry or request appended
++        finally:
++            ob.header_read(before_ns=before, after_ns=ob.stamp(),
++                request_id_before=request_before, request_id_after=self._request_sequence(),
++                returned=head, file_length=size, prefix=prefix, source=source, outcome=outcome, exception_type=exception_type)
+ 
+     def poll(self, final=False):
+         head = self.read(BASE, 0x100, 'osd-ring-header-live.bin')
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/trial_log_v4_mss.py
++++ r30/trial_log_v4_mss.py
+@@ -17,7 +17,8 @@
+ 
+ 
+ class FullLogMonitor:
+-    def __init__(self, path, markers=()):
++    def __init__(self, path, markers=(), *, startup_observation=None):
++        self.startup_observation = startup_observation
+         self.path = path
+         self.offset = 0
+         self.partial = ''
+@@ -37,8 +38,11 @@
+             return ''
+         with self.path.open('rb') as f:
+             f.seek(self.offset)
++            chunk_start = self.offset
+             chunk = f.read()
+             self.offset = f.tell()
++        if self.startup_observation is not None:
++            self.startup_observation.serial_chunk(chunk_start, chunk, self.offset)
+         text = self.overlap + chunk.decode(errors='replace')
+         for marker in self.markers:
+             if marker in text:
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/run_trial_r24_review_snapshot.py
++++ r30/run_trial_r24_review_snapshot.py
+@@ -25,6 +25,7 @@
+ import uuid
+ from cpio_audit import audit
+ from trial_ring_cached import TrialRingReader
++from startup_observation import StartupObservation
+ from trial_web_r24_review_snapshot import TrialState, start_server, wait_for_final_receipt, KEYS
+ from pending_visual_v20 import classify as classify_visual, late_change
+ from trial_log_v4_mss import FullLogMonitor
+@@ -55,6 +56,7 @@
+ ACTIVE_GUARD = None
+ # Retain evidence even if main unwinds after a cleanup/persistence failure.
+ ACTIVE_HOST_JOURNAL = None
++ACTIVE_STARTUP_OBSERVATION = None
+ 
+ 
+ def digest(path):
+@@ -135,7 +137,7 @@
+ 
+ 
+ def main():
+-    global ACTIVE_GUARD, ACTIVE_HOST_JOURNAL
++    global ACTIVE_GUARD, ACTIVE_HOST_JOURNAL, ACTIVE_STARTUP_OBSERVATION
+     ACTIVE_HOST_JOURNAL = []
+     ap = argparse.ArgumentParser(description='FX3 固件菜单本机试用')
+     ap.add_argument('--port', type=int, default=8765, help='127.0.0.1 本地端口，默认8765')
+@@ -264,7 +266,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_r24_review_snapshot.py','review_page_r24.js','confirm_page_r24.js','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py','optional_paused_snapshots.py','pre_input_observation.py','snapshot_tail_v15.py','web_rejection_receipt.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_r24_review_snapshot.py','review_page_r24.js','confirm_page_r24.js','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','startup_observation.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py','optional_paused_snapshots.py','pre_input_observation.py','snapshot_tail_v15.py','web_rejection_receipt.py']:
+         source = HERE / name if (HERE / name).exists() else (HERE.parent/'v25-r21-recovery-integration'/name if (HERE.parent/'v25-r21-recovery-integration'/name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name))
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -345,7 +347,10 @@
+     visual_records = []
+     shutdown = {'attempted': False, 'API16_restored': False, 'quit_sent': False}
+     stop_cause = None
+-    log_monitor = FullLogMonitor(run/'serial.log', candidate.get('required_markers', []))
++    startup_observation = StartupObservation(run)
++    ACTIVE_STARTUP_OBSERVATION = startup_observation
++    log_monitor = FullLogMonitor(run/'serial.log', candidate.get('required_markers', []),
++                                 startup_observation=startup_observation)
+ 
+     def terminated(signum, frame):
+         nonlocal stop_cause
+@@ -430,7 +435,8 @@
+                     if transport.send_unknown:
+                         raise  # a possibly partial send forbids further commands
+             qmp('cont')
+-            ring_reader = TrialRingReader(run, qmp, trial)
++            ring_reader = TrialRingReader(run, qmp, trial, startup_observation=startup_observation,
++                                          request_sequence=lambda: transport.sequence)
+             input_gate = InputGate(run, delete_key=0x1f8, max_steps=ns.max_steps,
+                                    socket_path=guard.alias.path('g'))
+             guard.set_input_gate(input_gate)
+@@ -569,15 +575,23 @@
+                 if len(opens) != last_screen_count:
+                     last_screen_count = len(opens)
+                     last_screen_observed_at = time.monotonic()
+-                if phaseA_capture is None and replay_input_verified and opens and ring_reader.current_record and time.monotonic()-last_screen_observed_at >= 10:
++                startup_observation.begin_ready()
++                if (startup_observation.predicate('phaseA_unobserved', phaseA_capture is None)
++                        and startup_observation.predicate('replay_input_verified', replay_input_verified)
++                        and startup_observation.predicate('screen_open_observed', opens)
++                        and startup_observation.predicate('validated_ring_present', ring_reader.current_record)
++                        and startup_observation.predicate('screen_quiet_10s', time.monotonic()-last_screen_observed_at >= 10)):
+                     branches = re.findall(r'FX3_MEDIA_START_BRANCH [^\n]*state=(\d+)', serial_now)
+                     notify = re.findall(r'FX3_MEDIA_NOTIFY [^\n]*mediaID=(0x[0-9a-f]+) [^\n]*status=(\d+)', serial_now)
+                     freed = re.findall(r'FX3_RM_NATIVE_FREE [^\n]*bytes=(\d+) [^\n]*result=0 ', serial_now)
+-                    valid = (branches == ['2', '2'] and sorted(notify) == [('0x1000', '0'), ('0x1010', '0')]
+-                             and all(str(n) in freed for n in (136, 28, 7)) and 'FX3_KEY96_READY' in serial_now
+-                             and 'FRONT_FULL_BODY' in serial_now and 'raw=02000007000000 ' in serial_now
+-                             and opens[-1][1] not in ('0x2ae', '0x2af', '0x2c7')
+-                             and ring_reader.current_record['nonuniform_pixels'])
++                    valid = (startup_observation.predicate('media_branches_exact', branches == ['2', '2'])
++                             and startup_observation.predicate('media_notifications_exact', sorted(notify) == [('0x1000', '0'), ('0x1010', '0')])
++                             and startup_observation.predicate('native_free_sizes_present', all(str(n) in freed for n in (136, 28, 7)))
++                             and startup_observation.predicate('key96_ready', 'FX3_KEY96_READY' in serial_now)
++                             and startup_observation.predicate('front_full_body', 'FRONT_FULL_BODY' in serial_now)
++                             and startup_observation.predicate('expected_raw_message', 'raw=02000007000000 ' in serial_now)
++                             and startup_observation.predicate('last_screen_allowed', opens[-1][1] not in ('0x2ae', '0x2af', '0x2c7'))
++                             and startup_observation.predicate('nonuniform_pixels', ring_reader.current_record['nonuniform_pixels']))
+                     if valid:
+                         phaseA_capture = ring_reader.evidence('standby-ready')
+                         shutdown_count_at_ready = len(log_monitor.native_shutdown_events)
+@@ -588,6 +602,8 @@
+                             'native_file_load_verified': True, 'QMP': phaseA_capture,
+                         }, ensure_ascii=False, indent=2)+'\n')
+                         trial.update(phase='ready', ready=True, message='固件已就绪。按 MENU 打开菜单。')
++                startup_observation.end_ready(qualified=phaseA_capture is not None,
++                    last_screen_observed_at=last_screen_observed_at, frame=ring_reader.current_record)
+                 if phaseA_capture is None and time.monotonic() > next_frame_wait:
+                     trial.update(message='固件仍在启动，请稍候；首次进入界面可能需要几分钟。')
+                     next_frame_wait = time.monotonic()+120
+@@ -751,6 +767,7 @@
+             stop_cause = 'host_error'
+             trial.fail(error)
+         finally:
++            startup_observation.phase('cleanup')
+             trial.update(ready=False, phase='stopping', message='正在恢复原 API、退出模拟器并回收资源…')
+             trial.stop.set()
+             if p is not None and p.poll() is None and qmp is not None:
+@@ -932,6 +949,7 @@
+                       and all(x['free_at_close'] for x in lock_status)
+                       and shutdown.get('API16_restored') and shutdown.get('native_unbind_return') == 0
+                       and shutdown.get('quit_sent'))
++    startup_observation.flush() # after original native reap and lock-release checks; never gates health
+     protocol_pass, render_pass, health_pass = evaluate_health(
+         lifecycle=lifecycle_pass, observer_error=error, serial_failure=log_monitor.failure,
+         markers_complete=phase_exit_hit if ns.exit_at_phase else all(log_monitor.markers.values()),
+@@ -943,6 +961,7 @@
+                'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+                'models_identical_to_frozen_AP101_r4': False, 'authority': 'task_ee5eb31bb981_offline_candidate',
+                'observer_source_snapshot': observer_sources, 'run': str(run),
++               'startup_observation': startup_observation.status(),
+                'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps,
+                'diagnostic_actual_step_limit': 12 if ns.internal_hoststep else None,
+                'visual_outcomes': visual_records, 'visual_state_at_end': trial.visual_state,
+@@ -1048,6 +1067,8 @@
+                 if not ACTIVE_GUARD.closed:
+                     print('Cleanup pending: QEMU reap unconfirmed; runner retains locks.', file=sys.stderr, flush=True)
+                     time.sleep(guard_retry_seconds)
++        if ACTIVE_STARTUP_OBSERVATION is not None:
++            ACTIVE_STARTUP_OBSERVATION.flush() # finally: after original resource guard, including KeyboardInterrupt
+     return code
+ 
+ 
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/prepare_run.py
++++ r30/prepare_run.py
+@@ -19,7 +19,7 @@
+       'plan_sha':hashlib.sha256((ROOT/'NAVIGATION-PLAN.json').read_bytes()).hexdigest(),'steps':plan['steps']}
+  def put(n,v):(out/n).write_text(json.dumps(v,ensure_ascii=False,indent=2)+'\n')
+  put('config.json',cfg)
+- files=[ROOT/'NAVIGATION-PLAN.json',ROOT/'prepare_run.py',ROOT/'PAGE-IDENTITY.json',ROOT/'trial_web_r24_review_snapshot.py',ROOT/'run_trial_r24_review_snapshot.py',ROOT/'review_page_r24.js',ROOT/'confirm_page_r24.js',*sorted((ROOT/'operator-helpers').glob('*.*')),*sorted((ROOT/'runtime-wrapper').glob('*.*')),*sorted((ROOT/'return-tools').glob('*.*')),ROOT/'CORE-SOURCE-FREEZE.json']
++ files=[ROOT/'startup_observation.py',ROOT/'trial_ring_cached.py',ROOT/'trial_log_v4_mss.py',ROOT/'NAVIGATION-PLAN.json',ROOT/'prepare_run.py',ROOT/'PAGE-IDENTITY.json',ROOT/'trial_web_r24_review_snapshot.py',ROOT/'run_trial_r24_review_snapshot.py',ROOT/'review_page_r24.js',ROOT/'confirm_page_r24.js',*sorted((ROOT/'operator-helpers').glob('*.*')),*sorted((ROOT/'runtime-wrapper').glob('*.*')),*sorted((ROOT/'return-tools').glob('*.*')),ROOT/'CORE-SOURCE-FREEZE.json']
+  put('LOCAL-SOURCE-FREEZE.json',{str(f):hashlib.sha256(f.read_bytes()).hexdigest() for f in files if f.is_file()})
+  put('ledger.json',{'attempts':[],'recoveries':[]})
+  wrapper=ROOT/'runtime-wrapper'
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/preflight.py
++++ r30/runtime-wrapper/preflight.py
+@@ -7,6 +7,7 @@
+  root=Path('/Volumes/KAFU2T/AI/Projects/Mac');groups={}
+  def group(label,pairs):
+   groups[label]=[{'path':str(p),'expected':h,'actual':sha(p),'match':sha(p)==h} for p,h in pairs];assert all(r['match'] for r in groups[label])
++ group('r30_local_core',[(SOURCE.parent/f,h) for f,h in json.loads((SOURCE.parent/'CORE-SOURCE-FREEZE.json').read_text()).items()])
+  group('pins',[(FROZEN/'SHA256SUMS','dcbbb11fc1942a480b8624e53d769e29b93fec3c884401811cc0599fea3b02ef'),(FROZEN/'SOURCE-FREEZE.json','31ee6b1d00fecfc5ac53e874b144230d2430208277c295d74c4a804fbe1135ec')])
+  group('r25_manifest',[(SOURCE.parent.parent/'r25-recovery-observation-candidate/SHA256SUMS','c2d44926c77b0d102075c697e7812385f1782bc6ace67b9aaa7fe11ad83023e7')])
+  r25=SOURCE.parent.parent/'r25-recovery-observation-candidate'
+@@ -29,6 +30,17 @@
+  for f in ('recovery_tools.py','deadline_cli.py','review_snapshot_cli.py','postkey_observation.py'):
+   run('parser-'+f,['python3','-B',str(CANDIDATE_OPS/f),'--help'])
+  run('parser-planned-navigation',['python3','-B',str(CANDIDATE_OPS/'planned_navigation_click.py'),'--help'])
++ code='''import json,os,runpy,sys
++from pathlib import Path
++r=Path(sys.argv[1]).resolve()
++g=runpy.run_path(str(r/'run_trial_r24_review_snapshot.py'),run_name='r30_import_only')
++mods={name:str(Path(sys.modules[name].__file__).resolve()) for name in ('startup_observation','trial_ring_cached','trial_log_v4_mss','qmp_line_transport','gate_input_usability','runtime_resource_guard','trial_web_r24_review_snapshot')}
++for name in ('startup_observation','trial_ring_cached','trial_log_v4_mss','trial_web_r24_review_snapshot'):assert Path(mods[name]).parent==r
++for name in ('qmp_line_transport','gate_input_usability','runtime_resource_guard'):assert Path(mods[name]).parent==r.parent/'v25-r21-recovery-integration'
++assert g['ACTIVE_GUARD'] is None and g['ACTIVE_STARTUP_OBSERVATION'] is None
++print(json.dumps({'mode':'import_only_main_not_called','modules':mods,'run_dir':os.environ['FX3_NAV_RUN_DIR']}))'''
++ binding=json.loads(run('r30-import-only',['python3','-B','-c',code,str(SOURCE.parent)]))
++ write('ACTUAL-DEPENDENCY-BINDING.json',binding)
+  write('PREFLIGHT-RESULT.json',{'passed':True,'scope':'pinned input and CLI parser preparation only; no browser or guest',**stamp()})
+  print(json.dumps({'passed':True}))
+ if __name__=='__main__':main()
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/return-tools/return_adapter.py
++++ r30/return-tools/return_adapter.py
+@@ -5,7 +5,7 @@
+ FROZEN=Path(__file__).resolve().parents[1]
+ OPERATE=FROZEN/'runtime-wrapper/operate.py'
+ OPERATE_SHA='97e41bc5687fd6c9397fcca639355624c70e368761e1e24ad4329a85d9408741'
+-CORE_FREEZE_SHA='a253a42c1f6aa56a929df85890a0d13e2e4e043bccafa8fa134f6a70d78e4cd4'
++CORE_FREEZE_SHA='3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9'
+ VOLUME='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ MAX_SUMMARY_BYTES=4096
+ ACTIONS={'click':3,'observe':2,'pin':2,'confirm':2,'standby_review':2,'recovery_review':2,'recovery_cancel':2,'reject':2}

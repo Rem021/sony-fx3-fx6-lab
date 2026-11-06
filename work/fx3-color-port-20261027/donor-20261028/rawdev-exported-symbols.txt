@@ -1,0 +1,101 @@
+000000000000de30 T sony_raw_dev::SonyRawDev::initialize(sony_raw_dev::RawDevControl5 const*)
+000000000000de3c T sony_raw_dev::SonyRawDev::initialize(sony_raw_dev::RawDevControl6 const*)
+000000000000ded8 T sony_raw_dev::SonyRawDev::deinitialize()
+000000000000dea8 T sony_raw_dev::SonyRawDev::setSharpness(int)
+000000000000de88 T sony_raw_dev::SonyRawDev::setProcessMode(unsigned int)
+000000000000dec0 T sony_raw_dev::SonyRawDev::setOutputOrigin(sony_raw_dev::ORIGIN)
+000000000000dea0 T sony_raw_dev::SonyRawDev::setWhiteBalance(unsigned int, unsigned int, int, int, sony_raw_dev::WHITE_BALANCE_MODE, unsigned int, float)
+000000000000dbf0 T sony_raw_dev::SonyRawDev::create()
+000000000000dc78 T sony_raw_dev::SonyRawDev::destroy(sony_raw_dev::SonyRawDev*)
+000000000000de50 T sony_raw_dev::SonyRawDev::develop(void const*, unsigned int, sony_raw_dev::RawDevBuffer*)
+000000000000de90 T sony_raw_dev::SonyRawDev::setKelvin(unsigned int)
+000000000000de98 T sony_raw_dev::SonyRawDev::setKelvin(unsigned int, sony_raw_dev::WHITE_BALANCE_MODE)
+000000000000dc8c T sony_raw_dev::SonyRawDev::SonyRawDev()
+000000000000dce0 T sony_raw_dev::SonyRawDev::SonyRawDev()
+000000000000ddac T sony_raw_dev::SonyRawDev::~SonyRawDev()
+000000000000dd70 T sony_raw_dev::SonyRawDev::~SonyRawDev()
+000000000000dd34 T sony_raw_dev::SonyRawDev::~SonyRawDev()
+000000000000a02c T sony_raw_dev::ColorAdjustment::initialize(sony_raw_dev::ColorAdjControl const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*)
+000000000000a034 T sony_raw_dev::ColorAdjustment::initialize(sony_raw_dev::ColorAdjControl const*, sony_raw_dev::RawDevControlColorConv const*)
+000000000000a024 T sony_raw_dev::ColorAdjustment::initialize(sony_raw_dev::ColorAdjControl2 const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*)
+000000000000a0ac T sony_raw_dev::ColorAdjustment::deinitialize()
+000000000000a054 T sony_raw_dev::ColorAdjustment::setParameter(sony_raw_dev::RawDevControlColorConv const*)
+000000000000a07c T sony_raw_dev::ColorAdjustment::enableProfile()
+000000000000a090 T sony_raw_dev::ColorAdjustment::enableClProfile()
+000000000000a05c T sony_raw_dev::ColorAdjustment::setOutputOrigin(sony_raw_dev::ORIGIN)
+000000000000a0a4 T sony_raw_dev::ColorAdjustment::disableClProfile()
+000000000000a064 T sony_raw_dev::ColorAdjustment::setMarkerSetting(float, float)
+000000000000a04c T sony_raw_dev::ColorAdjustment::adjust(sony_raw_dev::RawDevBuffer*, sony_raw_dev::RawDevBuffer*)
+0000000000009e50 T sony_raw_dev::ColorAdjustment::create()
+0000000000009f08 T sony_raw_dev::ColorAdjustment::destroy(sony_raw_dev::ColorAdjustment*)
+0000000000009ebc T sony_raw_dev::ColorAdjustment::ColorAdjustment()
+0000000000009f70 T sony_raw_dev::ColorAdjustment::ColorAdjustment()
+0000000000009f40 T sony_raw_dev::ColorAdjustment::~ColorAdjustment()
+0000000000009fbc T sony_raw_dev::ColorAdjustment::~ColorAdjustment()
+000000000001d9ac T sony_raw_dev::SonyRawDevInternal::initialize(sony_raw_dev::RawDevControlEx const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*)
+000000000001d984 T sony_raw_dev::SonyRawDevInternal::initialize(sony_raw_dev::RawDevControlEx2 const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*)
+000000000001d994 T sony_raw_dev::SonyRawDevInternal::initialize(sony_raw_dev::RawDevControlEx3 const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*)
+000000000001da5c T sony_raw_dev::SonyRawDevInternal::deinitialize()
+000000000001d9c4 T sony_raw_dev::SonyRawDevInternal::setParameter(sony_raw_dev::RawDevControlColorConv const*)
+000000000001d9f4 T sony_raw_dev::SonyRawDevInternal::setSharpness(int)
+000000000001da2c T sony_raw_dev::SonyRawDevInternal::enableProfile()
+000000000001d9cc T sony_raw_dev::SonyRawDevInternal::setProcessMode(unsigned int)
+000000000001da40 T sony_raw_dev::SonyRawDevInternal::enableClProfile()
+000000000001da0c T sony_raw_dev::SonyRawDevInternal::setOutputOrigin(sony_raw_dev::ORIGIN)
+000000000001d9e4 T sony_raw_dev::SonyRawDevInternal::setWhiteBalance(unsigned int, unsigned int, int, int, sony_raw_dev::WHITE_BALANCE_MODE, unsigned int, float)
+000000000001da54 T sony_raw_dev::SonyRawDevInternal::disableClProfile()
+000000000001da14 T sony_raw_dev::SonyRawDevInternal::setMarkerSetting(float, float)
+000000000001d9ec T sony_raw_dev::SonyRawDevInternal::setWhiteBalanceGain(bool, float, float, float)
+000000000001d7a8 T sony_raw_dev::SonyRawDevInternal::create()
+000000000001d860 T sony_raw_dev::SonyRawDevInternal::destroy(sony_raw_dev::SonyRawDevInternal*)
+000000000001d9bc T sony_raw_dev::SonyRawDevInternal::process(sony_raw_dev::RawDevBuffer*, sony_raw_dev::RawDevBuffer*)
+000000000001d9d4 T sony_raw_dev::SonyRawDevInternal::setKelvin(unsigned int)
+000000000001d9dc T sony_raw_dev::SonyRawDevInternal::setKelvin(unsigned int, sony_raw_dev::WHITE_BALANCE_MODE)
+000000000001d814 T sony_raw_dev::SonyRawDevInternal::SonyRawDevInternal()
+000000000001d8c8 T sony_raw_dev::SonyRawDevInternal::SonyRawDevInternal()
+000000000001d898 T sony_raw_dev::SonyRawDevInternal::~SonyRawDevInternal()
+000000000001d914 T sony_raw_dev::SonyRawDevInternal::~SonyRawDevInternal()
+000000000000ded0 T sony_raw_dev::SonyRawDev::getVersion(char*, unsigned long) const
+000000000000de10 T sony_raw_dev::SonyRawDev::getAttribute(sony_raw_dev::RawDevControl5 const*, sony_raw_dev::RawDevAttribute*) const
+000000000000de20 T sony_raw_dev::SonyRawDev::getAttribute(sony_raw_dev::RawDevControl6 const*, sony_raw_dev::RawDevAttribute*) const
+000000000000dec8 T sony_raw_dev::SonyRawDev::getLastError(char*, unsigned long) const
+000000000000de48 T sony_raw_dev::SonyRawDev::isInitialized() const
+000000000000dde8 T sony_raw_dev::SonyRawDev::getBitstreamSize(void const*, sony_raw_dev::OUTPUT_RESOLUTION, sony_raw_dev::DEBAYER_QUALITY, unsigned int*) const
+000000000000ddf0 T sony_raw_dev::SonyRawDev::getBitstreamSize(void const*, sony_raw_dev::ImageSizeInfo const*, sony_raw_dev::OUTPUT_RESOLUTION, sony_raw_dev::DEBAYER_QUALITY, unsigned int*) const
+000000000000ddf8 T sony_raw_dev::SonyRawDev::getBitstreamType(void const*, unsigned int, sony_raw_dev::BITSTREAM_TYPE*) const
+000000000000de00 T sony_raw_dev::SonyRawDev::getBitstreamGroup(void const*, unsigned int, sony_raw_dev::BITSTREAM_GROUP*) const
+000000000000de08 T sony_raw_dev::SonyRawDev::isDeviceSupported(sony_raw_dev::DEVICE_MODE, void*, bool*) const
+000000000000deb8 T sony_raw_dev::SonyRawDev::isVPmodeSupported(bool*) const
+000000000000deb0 T sony_raw_dev::SonyRawDev::isSharpnessSupported(bool*) const
+000000000000a074 T sony_raw_dev::ColorAdjustment::getVersion(char*, unsigned long) const
+0000000000009ff4 T sony_raw_dev::ColorAdjustment::getAttribute(sony_raw_dev::ColorAdjControl const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*, sony_raw_dev::RawDevAttribute2*) const
+000000000000a010 T sony_raw_dev::ColorAdjustment::getAttribute(sony_raw_dev::ColorAdjControl const*, sony_raw_dev::RawDevControlColorConv const*, sony_raw_dev::RawDevAttribute*) const
+0000000000009ffc T sony_raw_dev::ColorAdjustment::getAttribute(sony_raw_dev::ColorAdjControl const*, sony_raw_dev::RawDevControlColorConv const*, sony_raw_dev::RawDevAttribute2*) const
+0000000000009fec T sony_raw_dev::ColorAdjustment::getAttribute(sony_raw_dev::ColorAdjControl2 const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*, sony_raw_dev::RawDevAttribute2*) const
+000000000000a06c T sony_raw_dev::ColorAdjustment::getLastError(char*, unsigned long) const
+000000000000a044 T sony_raw_dev::ColorAdjustment::isInitialized() const
+000000000001da24 T sony_raw_dev::SonyRawDevInternal::getVersion(char*, unsigned long) const
+000000000001d9a4 T sony_raw_dev::SonyRawDevInternal::getAttribute(sony_raw_dev::RawDevControlEx const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*, sony_raw_dev::RawDevAttribute2*) const
+000000000001d97c T sony_raw_dev::SonyRawDevInternal::getAttribute(sony_raw_dev::RawDevControlEx2 const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*, sony_raw_dev::RawDevAttribute2*) const
+000000000001d98c T sony_raw_dev::SonyRawDevInternal::getAttribute(sony_raw_dev::RawDevControlEx3 const*, sony_raw_dev::RawDevControlResizer const*, sony_raw_dev::RawDevControlColorConv const*, sony_raw_dev::RawDevAttribute2*) const
+000000000001da1c T sony_raw_dev::SonyRawDevInternal::getLastError(char*, unsigned long) const
+000000000001d9b4 T sony_raw_dev::SonyRawDevInternal::isInitialized() const
+000000000001d94c T sony_raw_dev::SonyRawDevInternal::getBitstreamSize(void const*, sony_raw_dev::ImageSizeInfo const*, int, sony_raw_dev::DEBAYER_QUALITY, unsigned int*) const
+000000000001d944 T sony_raw_dev::SonyRawDevInternal::getBitstreamSize(void const*, int, sony_raw_dev::DEBAYER_QUALITY, unsigned int*) const
+000000000001d954 T sony_raw_dev::SonyRawDevInternal::getBitstreamType(void const*, unsigned int, sony_raw_dev::BITSTREAM_TYPE*) const
+000000000001d95c T sony_raw_dev::SonyRawDevInternal::getBitstreamType(void const*, unsigned int, int*) const
+000000000001d964 T sony_raw_dev::SonyRawDevInternal::getBitstreamGroup(void const*, unsigned int, sony_raw_dev::BITSTREAM_GROUP*) const
+000000000001d96c T sony_raw_dev::SonyRawDevInternal::getBitstreamGroup(void const*, unsigned int, int*) const
+000000000001d974 T sony_raw_dev::SonyRawDevInternal::isDeviceSupported(sony_raw_dev::DEVICE_MODE, void*, bool*) const
+000000000001d99c T sony_raw_dev::SonyRawDevInternal::isDeviceSupported(void*, bool*) const
+000000000001da04 T sony_raw_dev::SonyRawDevInternal::isVPmodeSupported(bool*) const
+000000000001d9fc T sony_raw_dev::SonyRawDevInternal::isSharpnessSupported(bool*) const
+00000000001ac3e0 S typeinfo for sony_raw_dev::SonyRawDev
+0000000000110d11 S typeinfo name for sony_raw_dev::SonyRawDev
+00000000001ac310 S vtable for sony_raw_dev::SonyRawDev
+000000000000db7c T _createSonyRawDev
+000000000000dc64 T _destroySonyRawDev
+000000000001b1d4 T _getSonyRawDevColorOptLut3d
+000000000001682c T _getSonyRawDevColorOptLut3dEx
+000000000001b23c T _getSonyRawDevGamutMatrix
+000000000001b2fc T _getSonyRawDevGamutMatrixEx

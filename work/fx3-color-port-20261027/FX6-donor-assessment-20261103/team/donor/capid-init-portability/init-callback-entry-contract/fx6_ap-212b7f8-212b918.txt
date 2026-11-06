@@ -1,0 +1,78 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 212b7f8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 212b7fc: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 212b800: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 212b804: d65f03c0     	ret
+ 212b808: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 212b80c: d28020c2     	mov	x2, #0x106              // =262
+ 212b810: 910003fd     	mov	x29, sp
+ 212b814: f9000bf3     	str	x19, [sp, #0x10]
+ 212b818: aa0003f3     	mov	x19, x0
+ 212b81c: 97a7b7fd     	bl	0xb19810 <strncpy@plt>
+ 212b820: 39441660     	ldrb	w0, [x19, #0x105]
+ 212b824: 34000120     	cbz	w0, 0x212b848 <Application_System_Init+0x1520804>
+ 212b828: f9400bf3     	ldr	x19, [sp, #0x10]
+ 212b82c: f00027c2     	adrp	x2, 0x2626000
+ 212b830: d00008c0     	adrp	x0, 0x2245000 <Application_System_Init+0x1639fbc>
+ 212b834: 913f2042     	add	x2, x2, #0xfc8
+ 212b838: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 212b83c: 91248c00     	add	x0, x0, #0x923
+ 212b840: 52800201     	mov	w1, #0x10               // =16
+ 212b844: 1400efd0     	b	0x2167784 <Application_System_Init+0x155c740>
+ 212b848: f9400bf3     	ldr	x19, [sp, #0x10]
+ 212b84c: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 212b850: d65f03c0     	ret
+ 212b854: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 212b858: 910003fd     	mov	x29, sp
+ 212b85c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 212b860: aa0003f4     	mov	x20, x0
+ 212b864: d2802300     	mov	x0, #0x118              // =280
+ 212b868: f90013f5     	str	x21, [sp, #0x20]
+ 212b86c: 97e50d5d     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 212b870: aa0003f3     	mov	x19, x0
+ 212b874: 52803c00     	mov	w0, #0x1e0              // =480
+ 212b878: 91002275     	add	x21, x19, #0x8
+ 212b87c: 91002281     	add	x1, x20, #0x8
+ 212b880: b9000260     	str	w0, [x19]
+ 212b884: b9400680     	ldr	w0, [x20, #0x4]
+ 212b888: b9000660     	str	w0, [x19, #0x4]
+ 212b88c: 39467280     	ldrb	w0, [x20, #0x19c]
+ 212b890: 39045260     	strb	w0, [x19, #0x114]
+ 212b894: aa1503e0     	mov	x0, x21
+ 212b898: 97ffffdc     	bl	0x212b808 <Application_System_Init+0x15207c4>
+ 212b89c: aa1503e0     	mov	x0, x21
+ 212b8a0: 97fff7b8     	bl	0x2129780 <Application_System_Init+0x151e73c>
+ 212b8a4: f94013f5     	ldr	x21, [sp, #0x20]
+ 212b8a8: b9011260     	str	w0, [x19, #0x110]
+ 212b8ac: aa1303e0     	mov	x0, x19
+ 212b8b0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 212b8b4: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 212b8b8: 17e50efd     	b	0x1a6f4ac <Application_System_Init+0xe64468>
+ 212b8bc: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 212b8c0: 910003fd     	mov	x29, sp
+ 212b8c4: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 212b8c8: aa0003f4     	mov	x20, x0
+ 212b8cc: d2802780     	mov	x0, #0x13c              // =316
+ 212b8d0: f90013f5     	str	x21, [sp, #0x20]
+ 212b8d4: 97e50d43     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 212b8d8: aa0003f3     	mov	x19, x0
+ 212b8dc: 52803be0     	mov	w0, #0x1df              // =479
+ 212b8e0: b9000260     	str	w0, [x19]
+ 212b8e4: b9400680     	ldr	w0, [x20, #0x4]
+ 212b8e8: b9000660     	str	w0, [x19, #0x4]
+ 212b8ec: b941be80     	ldr	w0, [x20, #0x1bc]
+ 212b8f0: b9013660     	str	w0, [x19, #0x134]
+ 212b8f4: b941c280     	ldr	w0, [x20, #0x1c0]
+ 212b8f8: b9013a60     	str	w0, [x19, #0x138]
+ 212b8fc: d2800000     	mov	x0, #0x0                // =0
+ 212b900: 8b000281     	add	x1, x20, x0
+ 212b904: 39467022     	ldrb	w2, [x1, #0x19c]
+ 212b908: 8b000261     	add	x1, x19, x0
+ 212b90c: 91000400     	add	x0, x0, #0x1
+ 212b910: f100801f     	cmp	x0, #0x20
+ 212b914: 39045022     	strb	w2, [x1, #0x114]

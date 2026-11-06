@@ -1,0 +1,2354 @@
+{
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "cases": [
+    {
+      "case": "original_NRV_context1_DMM_packet",
+      "context": 1,
+      "initialization": {
+        "original_fragment": "0x49dbea..0x49dc1a",
+        "declared_entry_registers": {
+          "r4": "0x53000000",
+          "r5": 1024
+        },
+        "declared_RAM_base": "0x53000000",
+        "declared_bytes": 1024,
+        "original_free_chain": [
+          "0x53000000",
+          "0x53000040",
+          "0x53000080",
+          "0x530000c0",
+          "0x53000100",
+          "0x53000140",
+          "0x53000180",
+          "0x530001c0",
+          "0x53000200",
+          "0x53000240",
+          "0x53000280",
+          "0x530002c0",
+          "0x53000300",
+          "0x53000340",
+          "0x53000380",
+          "0x530003c0"
+        ],
+        "original_variable_pool_base": "0x53000400",
+        "original_variable_pool_bytes": 524288,
+        "original_variable_pool_header": [
+          "0x0",
+          "0x0",
+          "0x53000400",
+          "0x53000400",
+          "0x80000",
+          "0x0",
+          "0x80000",
+          "0x80000"
+        ],
+        "scope": "Original initializer fragment and called metadata initializer, with declared base and metadata extent; fixed512KiB variable-pool size comes from original instructions. Not normal boot execution or current camera RAM."
+      },
+      "result": {
+        "boundary": {
+          "operation": "before_original_DMM_submission",
+          "pc": "0xa878ca",
+          "registers": [
+            "0x61003c",
+            "0x53080318",
+            "0x1",
+            "0x0"
+          ],
+          "original_lr": "0x44d7e9",
+          "native_call": false,
+          "submission_executed": false,
+          "service_reply_supplied": false,
+          "payload_pointer": "0x53080318",
+          "payload_bytes": 216,
+          "payload_hex": "2000a7a7af040000a7a7a7a700000000a7a7a7a755000100a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+          "header_hex": "a7a7a7a7a7a7a7a7040101001f600590d800000055555555",
+          "original_payload_write_mask": "010100000101010100000000010101010000000001010101000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "original_payload_written_bytes": 14,
+          "unwritten_payload_fill": "0xa7",
+          "original_payload_fields": {
+            "word0": "0x20",
+            "key4": "0x4af",
+            "wordC": "0x0",
+            "word14": "0x55",
+            "word16": "0x1"
+          },
+          "original_header_fields": {
+            "block_count": 4,
+            "flags": "0x1",
+            "reference_count": 1,
+            "reply_ID": "0x9005601f",
+            "length": 216,
+            "guard": "0x55555555"
+          },
+          "tail_guard": "0x77777777"
+        },
+        "returned": false,
+        "raw_r0": "0x61003c"
+      },
+      "snapshot": {
+        "free_metadata_bytes": 576,
+        "used_metadata_blocks": 7,
+        "bitmap_first_words": [
+          "0x80000000",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_lazy_object_count": 2,
+        "original_index_block_count": 3,
+        "lazy_root_pointer": "0x53000080",
+        "variable_pool": {
+          "header": [
+            "0x0",
+            "0x0",
+            "0x53000400",
+            "0x53000400",
+            "0x80000",
+            "0x0",
+            "0x7ff00",
+            "0x7ff00"
+          ],
+          "free_bytes": 524032,
+          "first_free_block_size": 524032
+        }
+      },
+      "original_message_allocation_returns": [
+        {
+          "pc": "0x49f8d2",
+          "raw_return": "0x0",
+          "output_pointer": "0x5000ecd8",
+          "output_word": "0x53080318"
+        }
+      ],
+      "packet_entries": [
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x49f80c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x49fc4c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x4a0980",
+          "registers": [
+            "0x147f9c0",
+            "0x100",
+            "0x0",
+            "0x5000ec48"
+          ]
+        }
+      ],
+      "original_dynamic_ID_results": [
+        {
+          "raw_return": "0x0",
+          "output_pointer": "0x5000ecf8",
+          "output_word": "0x9005601f",
+          "slot_context_pointer": "0x53000000"
+        }
+      ],
+      "message_writes": [
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc02"
+        },
+        {
+          "va": "0x147f9c8",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x147f9cc",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x53000400",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc08"
+        },
+        {
+          "va": "0x53000404",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc12"
+        },
+        {
+          "va": "0x147f9d0",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc14"
+        },
+        {
+          "va": "0x147f9d8",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9dc",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x80000000",
+          "pc": "0xa870d6"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x80000000",
+          "pc": "0xa870e2"
+        },
+        {
+          "va": "0x53000404",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a09e2"
+        },
+        {
+          "va": "0x147f9d8",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a0ac2"
+        },
+        {
+          "va": "0x147f9dc",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a0ace"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0xa870f2"
+        },
+        {
+          "va": "0x53080308",
+          "bytes": 1,
+          "value": "0x4",
+          "pc": "0x49fd32"
+        },
+        {
+          "va": "0x53080309",
+          "bytes": 1,
+          "value": "0xa7",
+          "pc": "0x49fd46"
+        },
+        {
+          "va": "0x53080310",
+          "bytes": 4,
+          "value": "0xd8",
+          "pc": "0x49fd4c"
+        },
+        {
+          "va": "0x53080314",
+          "bytes": 4,
+          "value": "0x55555555",
+          "pc": "0x49fd4c"
+        },
+        {
+          "va": "0x530803f0",
+          "bytes": 4,
+          "value": "0x77777777",
+          "pc": "0x49fd58"
+        },
+        {
+          "va": "0x53000142",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x49fd66",
+          "region": "software_metadata"
+        },
+        {
+          "va": "0x53080309",
+          "bytes": 1,
+          "value": "0x1",
+          "pc": "0x49fd96"
+        },
+        {
+          "va": "0x5308030a",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x49fd9a"
+        },
+        {
+          "va": "0x5308030c",
+          "bytes": 4,
+          "value": "0xa5a5a5a5",
+          "pc": "0x49fda0"
+        },
+        {
+          "va": "0x5308030c",
+          "bytes": 4,
+          "value": "0x9005601f",
+          "pc": "0xa878d2"
+        },
+        {
+          "va": "0x53080318",
+          "bytes": 2,
+          "value": "0x20",
+          "pc": "0x44d776"
+        },
+        {
+          "va": "0x5308031c",
+          "bytes": 4,
+          "value": "0x4af",
+          "pc": "0x44d77c"
+        },
+        {
+          "va": "0x53080324",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x44d780"
+        },
+        {
+          "va": "0x5308032c",
+          "bytes": 2,
+          "value": "0x55",
+          "pc": "0x44d784"
+        },
+        {
+          "va": "0x5308032e",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x44d788"
+        }
+      ],
+      "critical_adapters": [
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        }
+      ],
+      "inherited_context_adapters": [
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ]
+      ],
+      "scope": "Original descriptor-allocation client, message allocators, metadata and variable pools, container and DmmWrapper fields execute under explicit environment fixtures. Unwritten payload bytes retain a7 fixture fill. Stops before submission; no provider reply, image handle or pixels supplied."
+    },
+    {
+      "case": "original_NRV_context5_DMM_packet",
+      "context": 5,
+      "initialization": {
+        "original_fragment": "0x49dbea..0x49dc1a",
+        "declared_entry_registers": {
+          "r4": "0x53000000",
+          "r5": 1024
+        },
+        "declared_RAM_base": "0x53000000",
+        "declared_bytes": 1024,
+        "original_free_chain": [
+          "0x53000000",
+          "0x53000040",
+          "0x53000080",
+          "0x530000c0",
+          "0x53000100",
+          "0x53000140",
+          "0x53000180",
+          "0x530001c0",
+          "0x53000200",
+          "0x53000240",
+          "0x53000280",
+          "0x530002c0",
+          "0x53000300",
+          "0x53000340",
+          "0x53000380",
+          "0x530003c0"
+        ],
+        "original_variable_pool_base": "0x53000400",
+        "original_variable_pool_bytes": 524288,
+        "original_variable_pool_header": [
+          "0x0",
+          "0x0",
+          "0x53000400",
+          "0x53000400",
+          "0x80000",
+          "0x0",
+          "0x80000",
+          "0x80000"
+        ],
+        "scope": "Original initializer fragment and called metadata initializer, with declared base and metadata extent; fixed512KiB variable-pool size comes from original instructions. Not normal boot execution or current camera RAM."
+      },
+      "result": {
+        "boundary": {
+          "operation": "before_original_DMM_submission",
+          "pc": "0xa878ca",
+          "registers": [
+            "0x61003c",
+            "0x53080318",
+            "0x1",
+            "0x0"
+          ],
+          "original_lr": "0x44d7e9",
+          "native_call": false,
+          "submission_executed": false,
+          "service_reply_supplied": false,
+          "payload_pointer": "0x53080318",
+          "payload_bytes": 216,
+          "payload_hex": "2000a7a7af040000a7a7a7a700000000a7a7a7a755000100a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+          "header_hex": "a7a7a7a7a7a7a7a7040101001f600590d800000055555555",
+          "original_payload_write_mask": "010100000101010100000000010101010000000001010101000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "original_payload_written_bytes": 14,
+          "unwritten_payload_fill": "0xa7",
+          "original_payload_fields": {
+            "word0": "0x20",
+            "key4": "0x4af",
+            "wordC": "0x0",
+            "word14": "0x55",
+            "word16": "0x1"
+          },
+          "original_header_fields": {
+            "block_count": 4,
+            "flags": "0x1",
+            "reference_count": 1,
+            "reply_ID": "0x9005601f",
+            "length": 216,
+            "guard": "0x55555555"
+          },
+          "tail_guard": "0x77777777"
+        },
+        "returned": false,
+        "raw_r0": "0x61003c"
+      },
+      "snapshot": {
+        "free_metadata_bytes": 576,
+        "used_metadata_blocks": 7,
+        "bitmap_first_words": [
+          "0x80000000",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_lazy_object_count": 2,
+        "original_index_block_count": 3,
+        "lazy_root_pointer": "0x53000080",
+        "variable_pool": {
+          "header": [
+            "0x0",
+            "0x0",
+            "0x53000400",
+            "0x53000400",
+            "0x80000",
+            "0x0",
+            "0x7ff00",
+            "0x7ff00"
+          ],
+          "free_bytes": 524032,
+          "first_free_block_size": 524032
+        }
+      },
+      "original_message_allocation_returns": [
+        {
+          "pc": "0x49f8d2",
+          "raw_return": "0x0",
+          "output_pointer": "0x5000ecd8",
+          "output_word": "0x53080318"
+        }
+      ],
+      "packet_entries": [
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x49f80c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x49fc4c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x4a0980",
+          "registers": [
+            "0x147f9c0",
+            "0x100",
+            "0x0",
+            "0x5000ec48"
+          ]
+        }
+      ],
+      "original_dynamic_ID_results": [
+        {
+          "raw_return": "0x0",
+          "output_pointer": "0x5000ecf8",
+          "output_word": "0x9005601f",
+          "slot_context_pointer": "0x53000000"
+        }
+      ],
+      "message_writes": [
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc02"
+        },
+        {
+          "va": "0x147f9c8",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x147f9cc",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x53000400",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc08"
+        },
+        {
+          "va": "0x53000404",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc12"
+        },
+        {
+          "va": "0x147f9d0",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc14"
+        },
+        {
+          "va": "0x147f9d8",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9dc",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x80000000",
+          "pc": "0xa870d6"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x80000000",
+          "pc": "0xa870e2"
+        },
+        {
+          "va": "0x53000404",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a09e2"
+        },
+        {
+          "va": "0x147f9d8",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a0ac2"
+        },
+        {
+          "va": "0x147f9dc",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a0ace"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0xa870f2"
+        },
+        {
+          "va": "0x53080308",
+          "bytes": 1,
+          "value": "0x4",
+          "pc": "0x49fd32"
+        },
+        {
+          "va": "0x53080309",
+          "bytes": 1,
+          "value": "0xa7",
+          "pc": "0x49fd46"
+        },
+        {
+          "va": "0x53080310",
+          "bytes": 4,
+          "value": "0xd8",
+          "pc": "0x49fd4c"
+        },
+        {
+          "va": "0x53080314",
+          "bytes": 4,
+          "value": "0x55555555",
+          "pc": "0x49fd4c"
+        },
+        {
+          "va": "0x530803f0",
+          "bytes": 4,
+          "value": "0x77777777",
+          "pc": "0x49fd58"
+        },
+        {
+          "va": "0x53000142",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x49fd66",
+          "region": "software_metadata"
+        },
+        {
+          "va": "0x53080309",
+          "bytes": 1,
+          "value": "0x1",
+          "pc": "0x49fd96"
+        },
+        {
+          "va": "0x5308030a",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x49fd9a"
+        },
+        {
+          "va": "0x5308030c",
+          "bytes": 4,
+          "value": "0xa5a5a5a5",
+          "pc": "0x49fda0"
+        },
+        {
+          "va": "0x5308030c",
+          "bytes": 4,
+          "value": "0x9005601f",
+          "pc": "0xa878d2"
+        },
+        {
+          "va": "0x53080318",
+          "bytes": 2,
+          "value": "0x20",
+          "pc": "0x44d776"
+        },
+        {
+          "va": "0x5308031c",
+          "bytes": 4,
+          "value": "0x4af",
+          "pc": "0x44d77c"
+        },
+        {
+          "va": "0x53080324",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x44d780"
+        },
+        {
+          "va": "0x5308032c",
+          "bytes": 2,
+          "value": "0x55",
+          "pc": "0x44d784"
+        },
+        {
+          "va": "0x5308032e",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x44d788"
+        }
+      ],
+      "critical_adapters": [
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        }
+      ],
+      "inherited_context_adapters": [
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ]
+      ],
+      "scope": "Original descriptor-allocation client, message allocators, metadata and variable pools, container and DmmWrapper fields execute under explicit environment fixtures. Unwritten payload bytes retain a7 fixture fill. Stops before submission; no provider reply, image handle or pixels supplied."
+    },
+    {
+      "case": "original_NRV_context7_DMM_packet",
+      "context": 7,
+      "initialization": {
+        "original_fragment": "0x49dbea..0x49dc1a",
+        "declared_entry_registers": {
+          "r4": "0x53000000",
+          "r5": 1024
+        },
+        "declared_RAM_base": "0x53000000",
+        "declared_bytes": 1024,
+        "original_free_chain": [
+          "0x53000000",
+          "0x53000040",
+          "0x53000080",
+          "0x530000c0",
+          "0x53000100",
+          "0x53000140",
+          "0x53000180",
+          "0x530001c0",
+          "0x53000200",
+          "0x53000240",
+          "0x53000280",
+          "0x530002c0",
+          "0x53000300",
+          "0x53000340",
+          "0x53000380",
+          "0x530003c0"
+        ],
+        "original_variable_pool_base": "0x53000400",
+        "original_variable_pool_bytes": 524288,
+        "original_variable_pool_header": [
+          "0x0",
+          "0x0",
+          "0x53000400",
+          "0x53000400",
+          "0x80000",
+          "0x0",
+          "0x80000",
+          "0x80000"
+        ],
+        "scope": "Original initializer fragment and called metadata initializer, with declared base and metadata extent; fixed512KiB variable-pool size comes from original instructions. Not normal boot execution or current camera RAM."
+      },
+      "result": {
+        "boundary": {
+          "operation": "before_original_DMM_submission",
+          "pc": "0xa878ca",
+          "registers": [
+            "0x61003c",
+            "0x53080318",
+            "0x1",
+            "0x0"
+          ],
+          "original_lr": "0x44d7e9",
+          "native_call": false,
+          "submission_executed": false,
+          "service_reply_supplied": false,
+          "payload_pointer": "0x53080318",
+          "payload_bytes": 216,
+          "payload_hex": "2000a7a7af040000a7a7a7a700000000a7a7a7a755000100a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+          "header_hex": "a7a7a7a7a7a7a7a7040101001f600590d800000055555555",
+          "original_payload_write_mask": "010100000101010100000000010101010000000001010101000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+          "original_payload_written_bytes": 14,
+          "unwritten_payload_fill": "0xa7",
+          "original_payload_fields": {
+            "word0": "0x20",
+            "key4": "0x4af",
+            "wordC": "0x0",
+            "word14": "0x55",
+            "word16": "0x1"
+          },
+          "original_header_fields": {
+            "block_count": 4,
+            "flags": "0x1",
+            "reference_count": 1,
+            "reply_ID": "0x9005601f",
+            "length": 216,
+            "guard": "0x55555555"
+          },
+          "tail_guard": "0x77777777"
+        },
+        "returned": false,
+        "raw_r0": "0x61003c"
+      },
+      "snapshot": {
+        "free_metadata_bytes": 576,
+        "used_metadata_blocks": 7,
+        "bitmap_first_words": [
+          "0x80000000",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_lazy_object_count": 2,
+        "original_index_block_count": 3,
+        "lazy_root_pointer": "0x53000080",
+        "variable_pool": {
+          "header": [
+            "0x0",
+            "0x0",
+            "0x53000400",
+            "0x53000400",
+            "0x80000",
+            "0x0",
+            "0x7ff00",
+            "0x7ff00"
+          ],
+          "free_bytes": 524032,
+          "first_free_block_size": 524032
+        }
+      },
+      "original_message_allocation_returns": [
+        {
+          "pc": "0x49f8d2",
+          "raw_return": "0x0",
+          "output_pointer": "0x5000ecd8",
+          "output_word": "0x53080318"
+        }
+      ],
+      "packet_entries": [
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x49f80c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x49fc4c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x4a0980",
+          "registers": [
+            "0x147f9c0",
+            "0x100",
+            "0x0",
+            "0x5000ec48"
+          ]
+        }
+      ],
+      "original_dynamic_ID_results": [
+        {
+          "raw_return": "0x0",
+          "output_pointer": "0x5000ecf8",
+          "output_word": "0x9005601f",
+          "slot_context_pointer": "0x53000000"
+        }
+      ],
+      "message_writes": [
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc02"
+        },
+        {
+          "va": "0x147f9c8",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x147f9cc",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x53000400",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc08"
+        },
+        {
+          "va": "0x53000404",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc12"
+        },
+        {
+          "va": "0x147f9d0",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc14"
+        },
+        {
+          "va": "0x147f9d8",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9dc",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x80000000",
+          "pc": "0xa870d6"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x80000000",
+          "pc": "0xa870e2"
+        },
+        {
+          "va": "0x53000404",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a09e2"
+        },
+        {
+          "va": "0x147f9d8",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a0ac2"
+        },
+        {
+          "va": "0x147f9dc",
+          "bytes": 4,
+          "value": "0x7ff00",
+          "pc": "0x4a0ace"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0xa870f2"
+        },
+        {
+          "va": "0x53080308",
+          "bytes": 1,
+          "value": "0x4",
+          "pc": "0x49fd32"
+        },
+        {
+          "va": "0x53080309",
+          "bytes": 1,
+          "value": "0xa7",
+          "pc": "0x49fd46"
+        },
+        {
+          "va": "0x53080310",
+          "bytes": 4,
+          "value": "0xd8",
+          "pc": "0x49fd4c"
+        },
+        {
+          "va": "0x53080314",
+          "bytes": 4,
+          "value": "0x55555555",
+          "pc": "0x49fd4c"
+        },
+        {
+          "va": "0x530803f0",
+          "bytes": 4,
+          "value": "0x77777777",
+          "pc": "0x49fd58"
+        },
+        {
+          "va": "0x53000142",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x49fd66",
+          "region": "software_metadata"
+        },
+        {
+          "va": "0x53080309",
+          "bytes": 1,
+          "value": "0x1",
+          "pc": "0x49fd96"
+        },
+        {
+          "va": "0x5308030a",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x49fd9a"
+        },
+        {
+          "va": "0x5308030c",
+          "bytes": 4,
+          "value": "0xa5a5a5a5",
+          "pc": "0x49fda0"
+        },
+        {
+          "va": "0x5308030c",
+          "bytes": 4,
+          "value": "0x9005601f",
+          "pc": "0xa878d2"
+        },
+        {
+          "va": "0x53080318",
+          "bytes": 2,
+          "value": "0x20",
+          "pc": "0x44d776"
+        },
+        {
+          "va": "0x5308031c",
+          "bytes": 4,
+          "value": "0x4af",
+          "pc": "0x44d77c"
+        },
+        {
+          "va": "0x53080324",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x44d780"
+        },
+        {
+          "va": "0x5308032c",
+          "bytes": 2,
+          "value": "0x55",
+          "pc": "0x44d784"
+        },
+        {
+          "va": "0x5308032e",
+          "bytes": 2,
+          "value": "0x1",
+          "pc": "0x44d788"
+        }
+      ],
+      "critical_adapters": [
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        }
+      ],
+      "inherited_context_adapters": [
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ]
+      ],
+      "scope": "Original descriptor-allocation client, message allocators, metadata and variable pools, container and DmmWrapper fields execute under explicit environment fixtures. Unwritten payload bytes retain a7 fixture fill. Stops before submission; no provider reply, image handle or pixels supplied."
+    },
+    {
+      "case": "strict_context_after_original_pool_fragment",
+      "initialization": {
+        "original_fragment": "0x49dbea..0x49dc1a",
+        "declared_entry_registers": {
+          "r4": "0x53000000",
+          "r5": 1024
+        },
+        "declared_RAM_base": "0x53000000",
+        "declared_bytes": 1024,
+        "original_free_chain": [
+          "0x53000000",
+          "0x53000040",
+          "0x53000080",
+          "0x530000c0",
+          "0x53000100",
+          "0x53000140",
+          "0x53000180",
+          "0x530001c0",
+          "0x53000200",
+          "0x53000240",
+          "0x53000280",
+          "0x530002c0",
+          "0x53000300",
+          "0x53000340",
+          "0x53000380",
+          "0x530003c0"
+        ],
+        "original_variable_pool_base": "0x53000400",
+        "original_variable_pool_bytes": 524288,
+        "original_variable_pool_header": [
+          "0x0",
+          "0x0",
+          "0x53000400",
+          "0x53000400",
+          "0x80000",
+          "0x0",
+          "0x80000",
+          "0x80000"
+        ],
+        "scope": "Original initializer fragment and called metadata initializer, with declared base and metadata extent; fixed512KiB variable-pool size comes from original instructions. Not normal boot execution or current camera RAM."
+      },
+      "result": {
+        "boundary": {
+          "operation": "before_cpu_affinity_register",
+          "pc": "0x52c488",
+          "registers": [
+            "0x200001d3",
+            "0x200001d3",
+            "0x148e80c",
+            "0x5000ed28"
+          ],
+          "original_lr": "0xa87095",
+          "native_call": false,
+          "resource_reply_supplied": false,
+          "affinity_register_value_supplied": false
+        },
+        "returned": false,
+        "raw_r0": "0x200001d3"
+      },
+      "snapshot": {
+        "free_metadata_bytes": 1024,
+        "used_metadata_blocks": 0,
+        "bitmap_first_words": [
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_lazy_object_count": 0,
+        "original_index_block_count": 0,
+        "lazy_root_pointer": "0x0",
+        "variable_pool": {
+          "header": [
+            "0x0",
+            "0x0",
+            "0x53000400",
+            "0x53000400",
+            "0x80000",
+            "0x0",
+            "0x80000",
+            "0x80000"
+          ],
+          "free_bytes": 524288,
+          "first_free_block_size": 524288
+        }
+      },
+      "critical_adapters": [],
+      "inherited_context_adapters": []
+    },
+    {
+      "case": "variable_pool_exhausted",
+      "initialization": {
+        "original_fragment": "0x49dbea..0x49dc1a",
+        "declared_entry_registers": {
+          "r4": "0x53000000",
+          "r5": 1024
+        },
+        "declared_RAM_base": "0x53000000",
+        "declared_bytes": 1024,
+        "original_free_chain": [
+          "0x53000000",
+          "0x53000040",
+          "0x53000080",
+          "0x530000c0",
+          "0x53000100",
+          "0x53000140",
+          "0x53000180",
+          "0x530001c0",
+          "0x53000200",
+          "0x53000240",
+          "0x53000280",
+          "0x530002c0",
+          "0x53000300",
+          "0x53000340",
+          "0x53000380",
+          "0x530003c0"
+        ],
+        "original_variable_pool_base": "0x53000400",
+        "original_variable_pool_bytes": 524288,
+        "original_variable_pool_header": [
+          "0x0",
+          "0x0",
+          "0x53000400",
+          "0x53000400",
+          "0x80000",
+          "0x0",
+          "0x80000",
+          "0x80000"
+        ],
+        "scope": "Original initializer fragment and called metadata initializer, with declared base and metadata extent; fixed512KiB variable-pool size comes from original instructions. Not normal boot execution or current camera RAM."
+      },
+      "declared_busy_variable_lock": false,
+      "declared_variable_pool_exhausted": true,
+      "result": {
+        "boundary": {
+          "operation": "before_resource_exhaustion_notification",
+          "pc": "0x49e0ac",
+          "registers": [
+            "0x61003c",
+            "0x0",
+            "0x0",
+            "0x147f9c8"
+          ],
+          "original_lr": "0x49f883",
+          "native_call": false,
+          "resource_reply_supplied": false,
+          "affinity_register_value_supplied": false
+        },
+        "returned": false,
+        "raw_r0": "0x61003c"
+      },
+      "snapshot": {
+        "free_metadata_bytes": 576,
+        "used_metadata_blocks": 7,
+        "bitmap_first_words": [
+          "0x80000000",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_lazy_object_count": 2,
+        "original_index_block_count": 3,
+        "lazy_root_pointer": "0x53000080",
+        "variable_pool": {
+          "header": [
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x53000400",
+            "0x80000",
+            "0x0",
+            "0x0",
+            "0x0"
+          ],
+          "free_bytes": 0,
+          "first_free_block_size": 524288
+        }
+      },
+      "critical_adapters": [
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        }
+      ],
+      "inherited_context_adapters": [
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ]
+      ],
+      "original_dynamic_ID_results": [
+        {
+          "raw_return": "0x0",
+          "output_pointer": "0x5000ecf8",
+          "output_word": "0x9005601f",
+          "slot_context_pointer": "0x53000000"
+        }
+      ],
+      "message_writes": [
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc02"
+        },
+        {
+          "va": "0x147f9c8",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x147f9cc",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x53000400",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc08"
+        },
+        {
+          "va": "0x53000404",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc12"
+        },
+        {
+          "va": "0x147f9d0",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc14"
+        },
+        {
+          "va": "0x147f9d8",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9dc",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x80000000",
+          "pc": "0xa870d6"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x80000000",
+          "pc": "0xa870e2"
+        },
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0xa870f2"
+        },
+        {
+          "va": "0x53000141",
+          "bytes": 1,
+          "value": "0x2",
+          "pc": "0x49fd20",
+          "region": "software_metadata"
+        }
+      ],
+      "packet_entries": [
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x49f80c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x49fc4c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x4a0980",
+          "registers": [
+            "0x147f9c0",
+            "0x100",
+            "0x0",
+            "0x5000ec48"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "variable_pool_lock_busy",
+      "initialization": {
+        "original_fragment": "0x49dbea..0x49dc1a",
+        "declared_entry_registers": {
+          "r4": "0x53000000",
+          "r5": 1024
+        },
+        "declared_RAM_base": "0x53000000",
+        "declared_bytes": 1024,
+        "original_free_chain": [
+          "0x53000000",
+          "0x53000040",
+          "0x53000080",
+          "0x530000c0",
+          "0x53000100",
+          "0x53000140",
+          "0x53000180",
+          "0x530001c0",
+          "0x53000200",
+          "0x53000240",
+          "0x53000280",
+          "0x530002c0",
+          "0x53000300",
+          "0x53000340",
+          "0x53000380",
+          "0x530003c0"
+        ],
+        "original_variable_pool_base": "0x53000400",
+        "original_variable_pool_bytes": 524288,
+        "original_variable_pool_header": [
+          "0x0",
+          "0x0",
+          "0x53000400",
+          "0x53000400",
+          "0x80000",
+          "0x0",
+          "0x80000",
+          "0x80000"
+        ],
+        "scope": "Original initializer fragment and called metadata initializer, with declared base and metadata extent; fixed512KiB variable-pool size comes from original instructions. Not normal boot execution or current camera RAM."
+      },
+      "declared_busy_variable_lock": true,
+      "declared_variable_pool_exhausted": false,
+      "result": {
+        "boundary": {
+          "operation": "before_busy_spin_wait",
+          "pc": "0xa870c4",
+          "registers": [
+            "0x80000000",
+            "0x100",
+            "0x0",
+            "0x5000ec48"
+          ],
+          "original_lr": "0xa870c3",
+          "native_call": false,
+          "resource_reply_supplied": false,
+          "affinity_register_value_supplied": false
+        },
+        "returned": false,
+        "raw_r0": "0x80000000"
+      },
+      "snapshot": {
+        "free_metadata_bytes": 576,
+        "used_metadata_blocks": 7,
+        "bitmap_first_words": [
+          "0x80000000",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_lazy_object_count": 2,
+        "original_index_block_count": 3,
+        "lazy_root_pointer": "0x53000080",
+        "variable_pool": {
+          "header": [
+            "0x80000000",
+            "0x0",
+            "0x53000400",
+            "0x53000400",
+            "0x80000",
+            "0x0",
+            "0x80000",
+            "0x80000"
+          ],
+          "free_bytes": 524288,
+          "first_free_block_size": 524288
+        }
+      },
+      "critical_adapters": [
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53ffec",
+          "operation": "declared_critical_exit",
+          "declared_return": 0
+        },
+        {
+          "va": "0x53fea0",
+          "operation": "declared_critical_enter",
+          "declared_return": 0
+        }
+      ],
+      "inherited_context_adapters": [
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ],
+        [
+          "declared_context_query",
+          0
+        ]
+      ],
+      "original_dynamic_ID_results": [
+        {
+          "raw_return": "0x0",
+          "output_pointer": "0x5000ecf8",
+          "output_word": "0x9005601f",
+          "slot_context_pointer": "0x53000000"
+        }
+      ],
+      "message_writes": [
+        {
+          "va": "0x147f9c0",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc02"
+        },
+        {
+          "va": "0x147f9c8",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x147f9cc",
+          "bytes": 4,
+          "value": "0x53000400",
+          "pc": "0x49dc04"
+        },
+        {
+          "va": "0x53000400",
+          "bytes": 4,
+          "value": "0x0",
+          "pc": "0x49dc08"
+        },
+        {
+          "va": "0x53000404",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc12"
+        },
+        {
+          "va": "0x147f9d0",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc14"
+        },
+        {
+          "va": "0x147f9d8",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        },
+        {
+          "va": "0x147f9dc",
+          "bytes": 4,
+          "value": "0x80000",
+          "pc": "0x49dc16"
+        }
+      ],
+      "packet_entries": [
+        {
+          "pc": "0x44d710",
+          "registers": [
+            "0x4af",
+            "0x1",
+            "0x0",
+            "0x5000ed28"
+          ]
+        },
+        {
+          "pc": "0x49f80c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x49fc4c",
+          "registers": [
+            "0x61003c",
+            "0x5000ecd8",
+            "0xd8",
+            "0x0"
+          ]
+        },
+        {
+          "pc": "0x4a0980",
+          "registers": [
+            "0x147f9c0",
+            "0x100",
+            "0x0",
+            "0x5000ec48"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "original_message_length_limit",
+      "declared_payload_bytes": 4097,
+      "result": {
+        "boundary": null,
+        "returned": true,
+        "raw_r0": "0xfffffc00"
+      },
+      "output_sentinel_unchanged": true,
+      "critical_adapters": [],
+      "inherited_context_adapters": []
+    }
+  ],
+  "source_spans": [
+    {
+      "va": "0x49dbea",
+      "bytes": 48,
+      "sha256": "431b980d7f1d6d2d1c7c441b0a0eda8f4e971d0849008ec4ed7ac09fe286804f"
+    },
+    {
+      "va": "0x49f80c",
+      "bytes": 204,
+      "sha256": "ea49128ba8932c6ccf32d918f0a7e821e37f12c9a1b5da9cecd16e6a9a6a1190"
+    },
+    {
+      "va": "0x49fc4c",
+      "bytes": 420,
+      "sha256": "0c6f935f7f8599fc7451ea1efa9c0335764e516ca4dd27af8d882cebab7ea843"
+    },
+    {
+      "va": "0x4a0980",
+      "bytes": 366,
+      "sha256": "1fec23519c3b0ff4752f5c27a3e353751f8bdc1b901733c2959f1d6348eff946"
+    },
+    {
+      "va": "0x44d710",
+      "bytes": 216,
+      "sha256": "40e90cd3a11cd7c37b94b8f9529e3968b558248465ab9e30f067befb3f672321"
+    },
+    {
+      "va": "0xa878d2",
+      "bytes": 6,
+      "sha256": "31b09f60674e9bd0bc4a9b40761a692cc1bebd5a9b642cc52526f7e3bdf7967d"
+    }
+  ],
+  "scope": "Original DmmWrapper AllocNew request construction in Unicorn RAM only: original metadata/variable-pool initialization fragment, original allocation and framing, under declared RAM, context0, initial IRQ mask1 and critical enter/exit0. No allocation pointer, dynamic-ID or provider response is fabricated by a hook. Strict case stops before MPIDR; successful packet cases stop before submission. Does not prove queue receiver identity, main recording binding, physical DMA/buffers/CMOS RAW, full donor colour pipeline or modified firmware admission. No native/device/USB/real IPC action."
+}

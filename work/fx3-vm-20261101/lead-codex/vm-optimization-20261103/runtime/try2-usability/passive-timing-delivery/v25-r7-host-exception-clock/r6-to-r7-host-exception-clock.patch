@@ -1,0 +1,100 @@
+--- a/run_trial_v25_diag_r3.py
++++ b/run_trial_v25_diag_r3.py
+@@ -37,6 +37,7 @@
+ from qmp_line_transport import QmpLineTransport
+ from runtime_resource_guard import RuntimeResourceGuard
+ from startup_qmp_v1 import startup_handshake, is_proven_prelaunch
++from host_exception_clock import write_host_first_exception, write_host_journal
+ 
+ ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
+ OUT = Path(__file__).resolve().parents[2]
+@@ -45,20 +46,8 @@
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+ VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ ACTIVE_GUARD = None
+-
+-
+-def write_host_first_exception(run, journal, exc, transport=None):
+-    record = {'type': type(exc).__name__, 'error': repr(exc),
+-              'traceback': traceback.format_exc(),
+-              'host_monotonic': time.monotonic(),
+-              'qmp_send_unknown': bool(transport.send_unknown) if transport is not None else None,
+-              'qmp_buffered_bytes': len(transport.buffer) if transport is not None else None}
+-    try:
+-        (run/'host-first-exception.json').write_text(json.dumps(record, indent=2)+'\n')
+-    except Exception as write_exc:
+-        journal.append({'host_first_exception_write_error': repr(write_exc),
+-                        'first_exception': record})
+-    return record
++# Retain evidence even if main unwinds after a cleanup/persistence failure.
++ACTIVE_HOST_JOURNAL = None
+ 
+ 
+ def digest(path):
+@@ -139,7 +128,8 @@
+ 
+ 
+ def main():
+-    global ACTIVE_GUARD
++    global ACTIVE_GUARD, ACTIVE_HOST_JOURNAL
++    ACTIVE_HOST_JOURNAL = []
+     ap = argparse.ArgumentParser(description='FX3 固件菜单本机试用')
+     ap.add_argument('--port', type=int, default=8765, help='127.0.0.1 本地端口，默认8765')
+     ap.add_argument('--max-minutes', type=int, default=60, help='会话上限，1..120分钟；默认60分钟')
+@@ -247,7 +237,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -298,7 +288,7 @@
+                'seconds': ns.seconds, 'smp':ns.smp,'tcg_thread':ns.tcg_thread,'guest_original_thresholds_unchanged':True,'software_OSD_completion_explicit':True,'AP86B_native_CP_receiver_ownership_explicit':True, 'icount_profile': None if ns.icount_shift is None else f'shift={ns.icount_shift},align=off,sleep=off', 'trace_prefix_seconds': ns.trace_seconds,
+                'read_only_guest_memory_snapshots': snapshots}
+     (run / 'command.json').write_text(json.dumps(command, ensure_ascii=False, indent=2) + '\n')
+-    journal = []
++    journal = ACTIVE_HOST_JOURNAL
+     samples = []
+     error = None
+     early_stop_reason = None
+@@ -714,10 +704,10 @@
+             if stop_cause is None:
+                 stop_cause = 'health_failure' if early_stop_reason else ('end_trial_button' if trial.stop.is_set() else 'maximum_duration' if p.poll() is None else 'qemu_exited')
+         except (Exception, KeyboardInterrupt) as exc:
++            write_host_first_exception(run, journal, exc, transport)
+             error = repr(exc)
+             stop_cause = 'host_error'
+             trial.fail(error)
+-            write_host_first_exception(run, journal, exc, transport)
+         finally:
+             trial.update(ready=False, phase='stopping', message='正在恢复原 API、退出模拟器并回收资源…')
+             trial.stop.set()
+@@ -813,7 +803,7 @@
+                         pass
+ 
+     log_monitor.poll()
+-    (run/'qmp.json').write_text(json.dumps(journal, ensure_ascii=False, indent=2)+'\n')
++    write_host_journal(run, journal)
+     (run/'trial-native-file-readbacks.json').write_text(json.dumps(native_file_reads, indent=2)+'\n')
+     (run/'trial-cleanup-phase.json').write_text(json.dumps(shutdown, ensure_ascii=False, indent=2)+'\n')
+     unchanged = all(path.is_file() and digest(path) == h for path, h in checks)
+@@ -926,6 +916,8 @@
+     try:
+         code = main_func()
+     except Exception as exc:
++        if ACTIVE_GUARD is not None and ACTIVE_HOST_JOURNAL is not None:
++            write_host_first_exception(ACTIVE_GUARD.run, ACTIVE_HOST_JOURNAL, exc)
+         uncaught = {'type': type(exc).__name__, 'message': str(exc),
+                     'traceback': __import__('traceback').format_exc(),
+                     'cwd_at_failure': None}
+@@ -944,6 +936,8 @@
+                 try:
+                     ACTIVE_GUARD.finalize(reason=reason, diagnostics=first, reap_wait=reap_wait)
+                 except Exception as guard_exc:
++                    if ACTIVE_HOST_JOURNAL is not None:
++                        write_host_first_exception(ACTIVE_GUARD.run, ACTIVE_HOST_JOURNAL, guard_exc)
+                     print('Resource guard failure, retaining process and locks:', repr(guard_exc), file=sys.stderr, flush=True)
+                     code = 2
+                 first = False

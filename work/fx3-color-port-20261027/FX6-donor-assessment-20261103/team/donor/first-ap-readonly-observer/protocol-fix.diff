@@ -1,0 +1,137 @@
+--- runs/ap-ro-c714785a/observer-run_once.py
++++ run_once.py
+@@ -37,6 +37,8 @@
+ HIST_SHA='7fd297d60c72a1211fa44a0103ae69fabec0c72c422be6c34519c2636db3a43f'
+ SYSREG_SHA='55404f4a333dd8dbd89b50f2e4d8a0d9075ab77203e331bbb66d5852a3f08f73'
+ IDENTITY_SHA='d164c95a14e0d906083e6bbbd05facb4827cc1d4a59dbfc784830ebc2cd6de68'
++QEMU_GDB_SHA='a03d5b7aa6a2188f4eebda464a6e6d7914dacfb0898136323c5c857c829cba6a'
++QEMU_SYSTEM_SHA='196af474a5aacefab3394162b10537efcf9dbd55e2ec2fa291a0cbd71877352f'
+ MAX_HITS=2
+ 
+ def _lineage(serial):
+@@ -55,6 +57,7 @@
+         self.breakpoints=set();self.records=[];self.stage='unarmed';self.audio=None
+         self.cap_entry=mapping['cap']['bias']+0x1e730
+         self.ap_return=None
++        self.resume_acks=[];self.qmp_statuses=[];self.last_qmp_check=0.0
+     def save(self):
+         clean=[]
+         for x in self.records:
+@@ -62,12 +65,33 @@
+         (self.run/'readonly-observation.json').write_text(json.dumps({
+             'stage':self.stage,'mapping':self.mapping,'breakpoints_still_installed':[hex(x) for x in self.breakpoints],
+             'records':clean,'linux_process_attribution': 'requires live TLS+request+same AP mapping; unknown until captured',
+-            'policy':'RSP Z1/z1, read-only g/p/m/XML and memory-mode toggles only; no guest write, no Z0, no keys',
++            'resume_acks':self.resume_acks,'qmp_statuses':self.qmp_statuses,
++            'policy':'RSP addressless c after Z1, Z1/z1 and stopped-only g/p/m/XML; no guest write, no Z0, no keys',
+         },indent=2)+'\n')
++    def resume(self):
++        ack=self.rsp.send_continue()
++        self.resume_acks.append({'stage':self.stage,**ack})
++        self.save()
++    def check_qmp_without_rsp(self):
++        now=time.monotonic()
++        if now-self.last_qmp_check<.25:return None
++        self.last_qmp_check=now
++        status=self.qmp.call('query-status').get('status')
++        if not self.qmp_statuses or status!=self.qmp_statuses[-1]['status']:
++            self.qmp_statuses.append({'stage':self.stage,'status':status})
++            self.save()
++        if status=='running':return None
++        # A stop packet can be in flight when QMP first reports debug.
++        event=self.rsp.poll_stop(.5)
++        if event:return event
++        self.stage='qmp_'+str(status)+'_without_rsp_stop'
++        self.save()
++        raise RuntimeError('QMP '+str(status)+' without RSP stop packet')
+     def arm(self):
+         self.qmp.call('stop')
+         status=self.qmp.call('query-status')
+         if status.get('status')!='paused':raise RuntimeError('QMP did not quiesce all CPUs before Z1')
++        self.qmp_statuses.append({'stage':'arm','status':status['status']})
+         self.rsp=RSP.connect(self.run)
+         if self.rsp.command('Qqemu.PhyMemMode:1')!='OK' or self.rsp.command('qqemu.PhyMemMode')!='1':
+             raise RuntimeError('GDB physical mode baseline unavailable')
+@@ -85,7 +109,7 @@
+         while self.rsp.stops:
+             stale=self.rsp.stops.popleft()
+             if not stale.startswith(('T02','S02')):raise RuntimeError('unexpected startup RSP stop '+stale)
+-        self.qmp.call('cont')
++        self.resume()
+     def read(self,addr,n):return self.rsp.virtual_read(addr,n)
+     def ap_frame_anchor(self,fp):
+         """Find the native call frame whose saved LR is this AP send return PC."""
+@@ -103,7 +127,10 @@
+         return None,frames
+     def process_stop(self,stop,serial):
+         if len(self.records)>=MAX_HITS:raise RuntimeError('hit budget exceeded')
+-        if self.qmp.call('query-status').get('status')!='debug':raise RuntimeError('RSP stop/QMP status mismatch')
++        qmp_status=self.qmp.call('query-status').get('status')
++        self.qmp_statuses.append({'stage':self.stage,'status':qmp_status,'rsp_stop':stop})
++        self.save()
++        if qmp_status!='debug':raise RuntimeError('RSP stop/QMP status mismatch')
+         expected=self.cap_entry if self.stage=='await_audio_entry' else self.ap_return
+         origin='cap' if self.stage=='await_audio_entry' else 'ap'
+         row=confirm_hit(self.rsp,stop,self.mapping,expected,origin)
+@@ -144,7 +171,7 @@
+             self.breakpoints.add(self.ap_return)
+             if self.rsp.command(f'z1,{self.cap_entry:x},4')!='OK':raise RuntimeError('audio entry z1 rejected')
+             self.breakpoints.remove(self.cap_entry)
+-            self.stage='await_same_call_return';self.save();self.qmp.call('cont');return False
++            self.stage='await_same_call_return';self.save();self.resume();return False
+         if (self.audio is None or native is None or hex(tls)!=self.audio['tpidr_el0']
+                 or regs[29]!=int(self.audio['ap_frame_anchor'],16)):
+             row['attribution']='unknown_return_TID';self.records.append(row);self.stage='unknown_hit_stop';self.save();return True
+@@ -190,13 +217,16 @@
+     if qmp is not None:qmp.close()
+ 
+ def main():
+-    if sha(HERE/'readonly_probe.py') != 'fec9ce951a078522b73766dbc7e0390563a5d1a581d9caa451b7c92de87b2a0c':
++    if sha(HERE/'readonly_probe.py') != 'd8f3887aac7af4d256f787ea8a554c5f230fe4988c7b602b94714c32118962a0':
+         raise RuntimeError('observer implementation changed; re-audit before runtime')
+     if sha(HERE/'two_phase_identity.py') != IDENTITY_SHA:
+         raise RuntimeError('two-phase identity implementation changed; re-audit before runtime')
+     for p,h in [(PARENT/'run_ap_once.py',PARENT_SHA),(AP_ELF,AP_SHA),(CAP_ELF,CAP_SHA),
+                 (HISTORICAL,HIST_SHA),(FX3_RUNTIME/'gdb_sysregs104_v2.py',SYSREG_SHA)]:
+         if sha(p)!=h:raise RuntimeError('frozen input drift '+str(p))
++    qsrc=FX3_RUNTIME/'qemu-display-build/sources/qemu-11.1.2/gdbstub'
++    for p,h in [(qsrc/'gdbstub.c',QEMU_GDB_SHA),(qsrc/'system.c',QEMU_SYSTEM_SHA)]:
++        if sha(p)!=h:raise RuntimeError('QEMU GDB protocol source drift '+str(p))
+     tests=json.loads((HERE/'host-tests.json').read_text())
+     if (tests.get('status')!='PASS_NO_QEMU' or tests.get('observer_sha256')!=sha(HERE/'readonly_probe.py')
+             or tests.get('identity_sha256')!=IDENTITY_SHA or tests.get('runner_sha256')!=sha(__file__)):
+@@ -256,6 +286,7 @@
+                             probe=Probe(run,qmp,mapping);probe.arm()
+                     else:
+                         event=probe.rsp.poll_stop(.05)
++                        if event is None:event=probe.check_qmp_without_rsp()
+                         if event:
+                             serial=(run/'serial.log').read_bytes()
+                             if probe.process_stop(event,serial):stop=probe.stage;break
+--- runs/ap-ro-c714785a/observer-readonly_probe.py
++++ readonly_probe.py
+@@ -183,6 +183,24 @@
+             if response.startswith('O') and response!='OK' and re.fullmatch(r'O(?:[0-9a-fA-F]{2})+',response):continue
+             return response
+     packet=command
++    def send_continue(self,timeout=2.0):
++        """Resume all CPUs with addressless `c`; ACK is not a stop reply.
++
++        QEMU's pinned system gdbstub sets allow_stop_reply only while handling
++        this command.  A stop packet may follow the ACK immediately or much
++        later; leave it unread for poll_stop and the identity gates.
++        """
++        self.sock.sendall(rsp_packet('c'))
++        deadline=time.monotonic()+timeout
++        while True:
++            if time.monotonic()>deadline:raise TimeoutError('RSP continue ACK timeout')
++            self.sock.settimeout(min(.1,max(.001,deadline-time.monotonic())))
++            try:c=self.sock.recv(1)
++            except socket.timeout:continue
++            if not c:raise ConnectionError('RSP closed before continue ACK')
++            if c==b'+':return {'command':'c','ack':'+'}
++            if c==b'-':raise ValueError('RSP continue checksum rejected')
++            raise ValueError('RSP continue response before ACK '+repr(c))
+     def poll_stop(self,timeout=.05):
+         if self.stops:return self.stops.popleft()
+         if not select.select([self.sock],[],[],timeout)[0]:return None

@@ -1,0 +1,96 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+  "candidate_only": true,
+  "normal_ABI_call_clobber_assumption": true,
+  "not_a_complete_control_flow_or_alias_proof": true,
+  "hits": [
+    {
+      "kind": "store",
+      "instruction": "0xfe0548f8",
+      "mnemonic": "str",
+      "operands": "x8, [x9, #0x5f8]",
+      "address": "0xfe0625f8",
+      "source_register_values": [
+        null
+      ],
+      "base_origin": "0xfe0548f4"
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe054e2c",
+      "target": "#0xfe058b7c",
+      "args": {
+        "x0": "0xf9046b",
+        "x1": "0xfe0625c8",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe054e40",
+      "target": "#0xfe058b7c",
+      "args": {
+        "x0": "0xf9046c",
+        "x1": "0xfe0625c4",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "store",
+      "instruction": "0xfe058af4",
+      "mnemonic": "str",
+      "operands": "xzr, [x8, #0x5e0]",
+      "address": "0xfe0625e0",
+      "source_register_values": [
+        0
+      ],
+      "base_origin": "0xfe058ae8"
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe05b96c",
+      "target": "#0xfe058b7c",
+      "args": {
+        "x0": "0xf909d1",
+        "x1": "0xfe0625f4",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe05b980",
+      "target": "#0xfe058b7c",
+      "args": {
+        "x0": "0xf909d2",
+        "x1": "0xfe0625f0",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe05b9b8",
+      "target": "#0xfe058b7c",
+      "args": {
+        "x0": "0xf909cf",
+        "x1": "0xfe0625ec",
+        "x2": null,
+        "x3": null
+      }
+    },
+    {
+      "kind": "call_with_target_pointer",
+      "instruction": "0xfe05b9cc",
+      "target": "#0xfe058b7c",
+      "args": {
+        "x0": "0xf909d0",
+        "x1": "0xfe0625e8",
+        "x2": null,
+        "x3": null
+      }
+    }
+  ]
+}

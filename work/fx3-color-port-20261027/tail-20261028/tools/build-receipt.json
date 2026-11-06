@@ -1,0 +1,23 @@
+{
+  "command": [
+    "clang",
+    "-O2",
+    "-std=c99",
+    "-DHAVE_FSEEKO=1",
+    "-DHAVE_INTTYPES_H=1",
+    "-DSIZEOF_OFF_T=8",
+    "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/work-third-party/libmspack/mspack",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/extract_cab_mspack.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/work-third-party/libmspack/mspack/system.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/work-third-party/libmspack/mspack/cabd.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/work-third-party/libmspack/mspack/lzxd.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/work-third-party/libmspack/mspack/mszipd.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/work-third-party/libmspack/mspack/qtmd.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/tools/extract-cab-mspack"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.27.1)\nTarget: arm64-apple-darwin27.2.0\nThread model: posix\nInstalledDir: /Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "stdout": "",
+  "stderr": "",
+  "binary_sha256": "64011457695e51e4b8d98981f8c1d9e5785c56277c6aab1e44be08c824249d7f"
+}

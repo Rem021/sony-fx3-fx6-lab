@@ -1,0 +1,128 @@
+{
+  "created_utc": "2026-10-28T11:13:18.032553+00:00",
+  "status": "BLOCKED_AUDIT_PASSED_PENDING_GOAL_TOOL_UPDATE",
+  "previous_goal_turn_classification": "progress",
+  "current_goal_turn_classification": "no_progress",
+  "same_blocker": "FX3 volume remains mounted; approved stage156 explicitly requires manual Finder ejection and excludes automatic unmount.",
+  "consecutive_goal_turn_checkpoints": [
+    159,
+    160,
+    161,
+    162
+  ],
+  "prior_evidence": [
+    {
+      "stage": 159,
+      "path": "stage159-authorized-owner-trial-preflight/cached-preflight-result.json",
+      "observation": "disk10s1 mounted; manual ejection requested"
+    },
+    {
+      "stage": 160,
+      "path": "stage160-LSDA-selected-read-error-and-close-review/README.md",
+      "observation": "same precondition; current thread cache recheck still mounted"
+    },
+    {
+      "stage": 161,
+      "path": "stage161-bounded-read-import-inventory/README.md",
+      "observation": "same precondition; final thread cache identified mounted PMHOME"
+    }
+  ],
+  "current_authoritative_observation": {
+    "exact_target_count": 1,
+    "VID": 1356,
+    "PID": 3489,
+    "locationID": 34603008,
+    "model_matches": true,
+    "mounted_volumes": [
+      {
+        "source": "/dev/disk10s1",
+        "volume_label": "PMHOME"
+      }
+    ],
+    "source": "current ioreg cache and existing mount table"
+  },
+  "not_a_verified_process_wait": true,
+  "matching_trial_supervisor_or_helper_processes": [],
+  "approved_grant": "fx3-702-msc-owner-20261028-01",
+  "approved_bundle_sha256": "e099d58b73261c076491fc0c08c9b1b4b72f5a844fe3af22b3d8060110a956a4",
+  "authorization_already_received": true,
+  "requires_no_reapproval": true,
+  "runtime_release": false,
+  "physical_claim_absent": true,
+  "shared_job_absent": true,
+  "why_no_safe_meaningful_next_step_now": "The fixed reviewable trial is prepared. The next critical evidence is actual USB ownership/return, which requires the specified manual ejection. More synthetic cases cannot establish real entry, driver return, body backup or restore; no active interface/authentication/file/module operation can bypass this precondition within the granted scope.",
+  "unresolved_requirements": [
+    {
+      "id": "G01",
+      "status": "partial"
+    },
+    {
+      "id": "G02",
+      "status": "offline_profile_requires_resource_quality_alignment"
+    },
+    {
+      "id": "G03",
+      "status": "proven_within_official_sample_scope"
+    },
+    {
+      "id": "G04",
+      "status": "proven_within_static_normal_path_scope"
+    },
+    {
+      "id": "G05",
+      "status": "missing"
+    },
+    {
+      "id": "G06",
+      "status": "proven_within_synthetic_bytes_scope"
+    },
+    {
+      "id": "G07",
+      "status": "missing"
+    },
+    {
+      "id": "G08",
+      "status": "partial"
+    },
+    {
+      "id": "G09",
+      "status": "partial"
+    },
+    {
+      "id": "G10",
+      "status": "partial"
+    },
+    {
+      "id": "G11",
+      "status": "missing"
+    },
+    {
+      "id": "G12",
+      "status": "missing"
+    },
+    {
+      "id": "G13",
+      "status": "missing"
+    },
+    {
+      "id": "G14",
+      "status": "missing"
+    },
+    {
+      "id": "G15",
+      "status": "missing"
+    },
+    {
+      "id": "G16",
+      "status": "partial"
+    }
+  ],
+  "offline_open_leads_not_hardware_evidence": [
+    "ReadDeviceData has no validated live service/instance binding",
+    "actual same-body backup/restore, independent rescue and target recording remain absent"
+  ],
+  "resume_condition": "Manually eject PMHOME and all FX3 volumes; leave camera powered/USB connected/MSC; confirm completion. Recheck current cache and use the existing fixed single-use grant.",
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "new_root_or_active_device_operations": 0
+}

@@ -1,0 +1,8 @@
+    if (s.phase !== 'ready' || s.error || s.busy || !s.render_valid || !s.frame ||
+        !s.review_required || !s.input_received || s.review_step !== c.step || s.steps !== c.step ||
+        s.frame.PNG_sha256 !== c.png_sha || shownSHA !== c.png_sha || displayed <= 0 ||
+        displayedGeneration !== s.frame.content_generation || img !== image ||
+        !img.complete || img.naturalWidth <= 0 || b !== confirmButton || b.disabled || b.hidden ||
+        typeof b.onclick !== 'function' || busy || ending || finished || renderFault ||
+        awaitingStep !== null || deliveryUnknown || reviewAwaiting || reviewUnknown ||
+        pendingConfirm !== null || launchUnknown) fail('current_review_or_loaded_image_not_ready');

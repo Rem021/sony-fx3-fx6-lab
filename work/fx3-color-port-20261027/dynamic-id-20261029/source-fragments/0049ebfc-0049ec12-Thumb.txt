@@ -1,0 +1,7 @@
+0049ebfc movw       r0, #0xbe00
+0049ec00 movt       r0, #0x100
+0049ec04 bl         #0xa870e6
+0049ec08 mov        r0, r5
+0049ec0a add        sp, #0x18
+0049ec0c ldr        r8, [sp], #4
+0049ec10 pop        {r4, r5, r6, r7, pc}

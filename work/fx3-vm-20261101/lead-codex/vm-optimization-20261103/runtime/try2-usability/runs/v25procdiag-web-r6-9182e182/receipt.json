@@ -1,0 +1,848 @@
+{
+  "created_utc": "2026-11-04T15:26:46.503730+00:00",
+  "duration_seconds": 507.9306703329785,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r4-postmortem-host/vmopt-20261104-v25-procdiag-r4e/candidate.json",
+  "candidate_sha256": "ced1644fbcecc542c3d90f16be2a461876e7f3af92ff639c793742f090136d22",
+  "models_identical_to_frozen_AP101_r4": false,
+  "authority": "task_ee5eb31bb981_offline_candidate",
+  "observer_source_snapshot": [
+    {
+      "name": "run_trial_v25_diag_r3.py",
+      "sha256": "2101edb5eb9c7789faa5c753e206fe315df87307df0695d290a95e718fb4846c"
+    },
+    {
+      "name": "terminal_status_v23.py",
+      "sha256": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75"
+    },
+    {
+      "name": "pending_visual_v20.py",
+      "sha256": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "gate_input_usability.py",
+      "sha256": "3c612905bb53861e8a3804aaa0696ba14d376646b37f52894b0c1ad7ed508104"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_web_v22_navigation_review.py",
+      "sha256": "3cf9544f08fbdf62dee46420170f5fb85dfae1c656b8a24c062c7b055d64fde1"
+    },
+    {
+      "name": "trial_ring_cached.py",
+      "sha256": "9309794feded60291d6748bd4d19ab98a909e7ba73c91233a2ffb983551f9e11"
+    },
+    {
+      "name": "trial_log_v4_mss.py",
+      "sha256": "4d57629fc8bf1c8d158bfcf101915b9edd626f7bfb11c55fc78fe634ef7d6645"
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    },
+    {
+      "name": "quiesced_diag_readback.py",
+      "sha256": "5baed5d2b0a93d7768124dca2341100e8f10840b76445950143f7306745f84be"
+    },
+    {
+      "name": "parse_v25_diag_r3.py",
+      "sha256": "c232254a1991894e8a6a0446ee7a516ba7491211bfcf894852b56008345dcb9a"
+    },
+    {
+      "name": "qmp_line_transport.py",
+      "sha256": "2686ee46ff1ce06b12650f4cb3c86ebe9d64fdeafc9e6ce8176a64c4b5ded0c3"
+    },
+    {
+      "name": "procdiag_readback.py",
+      "sha256": "0f6d479e7a1072f45ede37562bde66f22bea9c682886345a6b36f38ba92312f4"
+    },
+    {
+      "name": "runtime_resource_guard.py",
+      "sha256": "6bb095d299b695818708360c355d6c3b4f6a7eff0112e03474b474b180051680"
+    },
+    {
+      "name": "startup_qmp_v1.py",
+      "sha256": "efba2c336e063e18208f21df6e3bf9ae462abb1fef5ed0ec618f009004b67c74"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25procdiag-web-r6-9182e182",
+  "maximum_seconds": 1800,
+  "maximum_steps": 4096,
+  "diagnostic_actual_step_limit": null,
+  "visual_outcomes": [],
+  "visual_state_at_end": "idle",
+  "stop_cause": "host_error",
+  "internal_hoststep_mode": false,
+  "HTTP_key_source_used": true,
+  "qemu_pid": 26345,
+  "qemu_exit": -9,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+      "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r4-postmortem-host/vmopt-20261104-v25-procdiag-r4e/guest.cpio",
+      "sha256": "439f9089d3e36b6a5ee0d3f16a170a608761f315a4a2169d1d859cb0f66952db"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r4-postmortem-host/vmopt-20261104-v25-procdiag-r4e/candidate.json",
+      "sha256": "ced1644fbcecc542c3d90f16be2a461876e7f3af92ff639c793742f090136d22"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true
+    }
+  ],
+  "host_observer_error": "QmpDeadline('QMP recv deadline expired; partial line preserved')",
+  "memory_samples": [
+    {
+      "elapsed_seconds": 1.6823390829958953,
+      "rss_vsz_kib": "536960 495714064"
+    },
+    {
+      "elapsed_seconds": 6.710875624965411,
+      "rss_vsz_kib": "222576 495714064"
+    },
+    {
+      "elapsed_seconds": 11.783063333015889,
+      "rss_vsz_kib": "50832 495714064"
+    },
+    {
+      "elapsed_seconds": 18.302852707973216,
+      "rss_vsz_kib": "18896 495714064"
+    },
+    {
+      "elapsed_seconds": 23.339466582983732,
+      "rss_vsz_kib": "31280 495714064"
+    },
+    {
+      "elapsed_seconds": 28.359878540970385,
+      "rss_vsz_kib": "85152 495714064"
+    },
+    {
+      "elapsed_seconds": 33.42866525001591,
+      "rss_vsz_kib": "71984 495714064"
+    },
+    {
+      "elapsed_seconds": 38.48114020796493,
+      "rss_vsz_kib": "66752 495714064"
+    },
+    {
+      "elapsed_seconds": 43.52728495799238,
+      "rss_vsz_kib": "50032 495714064"
+    },
+    {
+      "elapsed_seconds": 48.559747499995865,
+      "rss_vsz_kib": "79584 495714064"
+    },
+    {
+      "elapsed_seconds": 53.57564445800381,
+      "rss_vsz_kib": "68512 495714064"
+    },
+    {
+      "elapsed_seconds": 58.63614433299517,
+      "rss_vsz_kib": "73456 495714064"
+    },
+    {
+      "elapsed_seconds": 63.687169249984436,
+      "rss_vsz_kib": "100096 495714064"
+    },
+    {
+      "elapsed_seconds": 68.75805429101456,
+      "rss_vsz_kib": "78336 495714064"
+    },
+    {
+      "elapsed_seconds": 73.81546008301666,
+      "rss_vsz_kib": "66976 495714064"
+    },
+    {
+      "elapsed_seconds": 78.89849325001705,
+      "rss_vsz_kib": "71152 495722256"
+    },
+    {
+      "elapsed_seconds": 83.9491358330124,
+      "rss_vsz_kib": "70432 495722256"
+    },
+    {
+      "elapsed_seconds": 89.01080562500283,
+      "rss_vsz_kib": "73344 495722256"
+    },
+    {
+      "elapsed_seconds": 94.07419587497134,
+      "rss_vsz_kib": "71472 495722256"
+    },
+    {
+      "elapsed_seconds": 99.1074519159738,
+      "rss_vsz_kib": "69376 495722256"
+    },
+    {
+      "elapsed_seconds": 104.12745566596277,
+      "rss_vsz_kib": "68416 495722256"
+    },
+    {
+      "elapsed_seconds": 109.1577289159759,
+      "rss_vsz_kib": "78688 495722256"
+    },
+    {
+      "elapsed_seconds": 114.17284733301494,
+      "rss_vsz_kib": "65648 495722256"
+    },
+    {
+      "elapsed_seconds": 119.20447395800147,
+      "rss_vsz_kib": "64576 495722256"
+    },
+    {
+      "elapsed_seconds": 124.24903962499229,
+      "rss_vsz_kib": "71152 495722256"
+    },
+    {
+      "elapsed_seconds": 129.27601812500507,
+      "rss_vsz_kib": "66736 495722256"
+    },
+    {
+      "elapsed_seconds": 134.3111174160149,
+      "rss_vsz_kib": "71120 495722256"
+    },
+    {
+      "elapsed_seconds": 139.33246937498916,
+      "rss_vsz_kib": "73984 495722256"
+    },
+    {
+      "elapsed_seconds": 144.36377145798178,
+      "rss_vsz_kib": "68576 495722256"
+    },
+    {
+      "elapsed_seconds": 149.40989850001642,
+      "rss_vsz_kib": "76784 495722256"
+    },
+    {
+      "elapsed_seconds": 154.42619645799277,
+      "rss_vsz_kib": "73904 495722256"
+    },
+    {
+      "elapsed_seconds": 159.44884845800698,
+      "rss_vsz_kib": "82464 495722256"
+    },
+    {
+      "elapsed_seconds": 164.4758848749916,
+      "rss_vsz_kib": "93888 495722256"
+    },
+    {
+      "elapsed_seconds": 169.50290033296915,
+      "rss_vsz_kib": "105808 495722256"
+    },
+    {
+      "elapsed_seconds": 174.5143502500141,
+      "rss_vsz_kib": "107856 495722256"
+    },
+    {
+      "elapsed_seconds": 179.54324724996695,
+      "rss_vsz_kib": "118384 495722256"
+    },
+    {
+      "elapsed_seconds": 184.590645957971,
+      "rss_vsz_kib": "90816 495722256"
+    },
+    {
+      "elapsed_seconds": 189.63629175000824,
+      "rss_vsz_kib": "73328 495722256"
+    },
+    {
+      "elapsed_seconds": 194.68394312501187,
+      "rss_vsz_kib": "89808 495722256"
+    },
+    {
+      "elapsed_seconds": 199.77003729098942,
+      "rss_vsz_kib": "92080 495722256"
+    },
+    {
+      "elapsed_seconds": 204.801862082968,
+      "rss_vsz_kib": "97072 495722256"
+    },
+    {
+      "elapsed_seconds": 209.83339379099198,
+      "rss_vsz_kib": "87168 495722256"
+    },
+    {
+      "elapsed_seconds": 214.89974675001577,
+      "rss_vsz_kib": "136800 495722256"
+    },
+    {
+      "elapsed_seconds": 219.95465558301657,
+      "rss_vsz_kib": "148960 495722256"
+    },
+    {
+      "elapsed_seconds": 225.00269612501143,
+      "rss_vsz_kib": "108224 495722256"
+    },
+    {
+      "elapsed_seconds": 230.0466941659688,
+      "rss_vsz_kib": "163360 495738640"
+    },
+    {
+      "elapsed_seconds": 235.089548457996,
+      "rss_vsz_kib": "93152 495738640"
+    },
+    {
+      "elapsed_seconds": 240.14024379098555,
+      "rss_vsz_kib": "89184 495738640"
+    },
+    {
+      "elapsed_seconds": 245.188227540988,
+      "rss_vsz_kib": "104128 495738640"
+    },
+    {
+      "elapsed_seconds": 250.26736404100666,
+      "rss_vsz_kib": "100592 495738640"
+    },
+    {
+      "elapsed_seconds": 255.28910566598643,
+      "rss_vsz_kib": "106320 495738640"
+    },
+    {
+      "elapsed_seconds": 260.322902957967,
+      "rss_vsz_kib": "110864 495738640"
+    },
+    {
+      "elapsed_seconds": 265.3722208329709,
+      "rss_vsz_kib": "106576 495738640"
+    },
+    {
+      "elapsed_seconds": 270.3930148750078,
+      "rss_vsz_kib": "110128 495738640"
+    },
+    {
+      "elapsed_seconds": 275.4552571660024,
+      "rss_vsz_kib": "109136 495738640"
+    },
+    {
+      "elapsed_seconds": 280.48672874999465,
+      "rss_vsz_kib": "95680 495738640"
+    },
+    {
+      "elapsed_seconds": 285.5254632079741,
+      "rss_vsz_kib": "106640 495738640"
+    },
+    {
+      "elapsed_seconds": 290.5939682080061,
+      "rss_vsz_kib": "111712 495738640"
+    },
+    {
+      "elapsed_seconds": 295.65813654096564,
+      "rss_vsz_kib": "109472 495738640"
+    },
+    {
+      "elapsed_seconds": 300.71434083301574,
+      "rss_vsz_kib": "108320 495738640"
+    },
+    {
+      "elapsed_seconds": 305.77215716597857,
+      "rss_vsz_kib": "112000 495738640"
+    },
+    {
+      "elapsed_seconds": 310.80552683299175,
+      "rss_vsz_kib": "107392 495738640"
+    },
+    {
+      "elapsed_seconds": 315.84679350000806,
+      "rss_vsz_kib": "107920 495738640"
+    },
+    {
+      "elapsed_seconds": 320.8551523750066,
+      "rss_vsz_kib": "108256 495738640"
+    },
+    {
+      "elapsed_seconds": 325.8997733750148,
+      "rss_vsz_kib": "116752 495738640"
+    },
+    {
+      "elapsed_seconds": 330.9348139159847,
+      "rss_vsz_kib": "113520 495738640"
+    },
+    {
+      "elapsed_seconds": 336.34549237496685,
+      "rss_vsz_kib": "112640 495738640"
+    },
+    {
+      "elapsed_seconds": 341.3834485000116,
+      "rss_vsz_kib": "118784 495738640"
+    },
+    {
+      "elapsed_seconds": 346.44875029096147,
+      "rss_vsz_kib": "118560 495738640"
+    },
+    {
+      "elapsed_seconds": 351.5044448749977,
+      "rss_vsz_kib": "111424 495738640"
+    },
+    {
+      "elapsed_seconds": 356.7453633749974,
+      "rss_vsz_kib": "98176 495738640"
+    },
+    {
+      "elapsed_seconds": 361.8969612499932,
+      "rss_vsz_kib": "105984 495738640"
+    },
+    {
+      "elapsed_seconds": 367.9415385409957,
+      "rss_vsz_kib": "110128 495738640"
+    },
+    {
+      "elapsed_seconds": 373.1431832080125,
+      "rss_vsz_kib": "94496 495738640"
+    },
+    {
+      "elapsed_seconds": 378.24428329098737,
+      "rss_vsz_kib": "104176 495738640"
+    },
+    {
+      "elapsed_seconds": 383.28290266596014,
+      "rss_vsz_kib": "108880 495738640"
+    },
+    {
+      "elapsed_seconds": 388.3157943749684,
+      "rss_vsz_kib": "106080 495738640"
+    },
+    {
+      "elapsed_seconds": 393.38676437496906,
+      "rss_vsz_kib": "105168 495738640"
+    },
+    {
+      "elapsed_seconds": 398.42950845800806,
+      "rss_vsz_kib": "107504 495738640"
+    },
+    {
+      "elapsed_seconds": 403.5386989999679,
+      "rss_vsz_kib": "94144 495738640"
+    },
+    {
+      "elapsed_seconds": 408.59272474999307,
+      "rss_vsz_kib": "107744 495738640"
+    },
+    {
+      "elapsed_seconds": 413.63560716598295,
+      "rss_vsz_kib": "103024 495738640"
+    },
+    {
+      "elapsed_seconds": 418.666555874981,
+      "rss_vsz_kib": "99392 495738640"
+    },
+    {
+      "elapsed_seconds": 423.7090187499998,
+      "rss_vsz_kib": "104928 495738640"
+    },
+    {
+      "elapsed_seconds": 428.7387995409663,
+      "rss_vsz_kib": "106192 495738640"
+    },
+    {
+      "elapsed_seconds": 433.8005972499959,
+      "rss_vsz_kib": "98656 495738640"
+    },
+    {
+      "elapsed_seconds": 438.8656090410077,
+      "rss_vsz_kib": "106496 495738640"
+    },
+    {
+      "elapsed_seconds": 443.9001862909645,
+      "rss_vsz_kib": "107088 495738640"
+    },
+    {
+      "elapsed_seconds": 448.93192737497156,
+      "rss_vsz_kib": "104112 495738640"
+    }
+  ],
+  "early_stop_reason": null,
+  "full_serial_bytes_inspected": 6922449,
+  "serial_health_failure": null,
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": false,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY96_READY": true,
+    "FX3_OSD_FRAME_TARGET_VALID": false,
+    "FX3_GPE_COMPACTION_BOUND": true,
+    "FX3_GPE_DRAW_INTERVAL": false,
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": true,
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": true,
+    "FX3_KEY96_POLL": true,
+    "FX3_KEY96_THREAD_BEGIN": true,
+    "FX3_PANEL_CONFIG_V2_COMMIT": true,
+    "FX3_PROC97_STATUS_BEGIN": true,
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": true,
+    "FX3_DATE98_KERNEL_OBSERVE_READY": true,
+    "FX3_DATE99_WORKER_READY": true,
+    "FX3_DATE99_CONSUMER_BOUND": true,
+    "FX3_SYNC100_BACKEND_BOUND": true,
+    "FX3_FILE100_OBSERVER_READY": true,
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": true,
+    "FX3_BACKUP_INSMOD_RC=0": true,
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": true,
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": true,
+    "FX3_LDEC103_SELFTEST_RC=0": true,
+    "FX3_GPE104_LIB_BIND": true,
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": true,
+    "FX3_FILE103_READY_CONFIRMED": true,
+    "FX3_POWER_OBSERVER_BOUND": true,
+    "FX3_MSS_OBSERVER_BOUND": true
+  },
+  "marker_evidence": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": {
+      "method": "literal",
+      "marker": "FX3_GPE_EARLY_THREAD_GATE gpe=0"
+    },
+    "FX3_PRESET_CONTEXT_BOUND": {
+      "method": "literal",
+      "marker": "FX3_PRESET_CONTEXT_BOUND"
+    },
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_PRESET_CONTEXT_SELFTEST_PASS"
+    },
+    "FX3_AP89_UUD_DECISION": {
+      "method": "literal",
+      "marker": "FX3_AP89_UUD_DECISION"
+    },
+    "FX3_AP89_SCREEN_CREATE": {
+      "method": "literal",
+      "marker": "FX3_AP89_SCREEN_CREATE"
+    },
+    "FX3_AP_IM_ENDMAPS_": {
+      "method": "literal",
+      "marker": "FX3_AP_IM_ENDMAPS_"
+    },
+    "registration_origin=malloc_parent_v1": {
+      "method": "literal",
+      "marker": "registration_origin=malloc_parent_v1"
+    },
+    "FX3_GPE_RESOURCE_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_RESOURCE_BOUND"
+    },
+    "FX3_GPE_RESOURCE_REGISTER": {
+      "method": "literal",
+      "marker": "FX3_GPE_RESOURCE_REGISTER"
+    },
+    "FX3_GPE_SCOPE": {
+      "method": "not_observed"
+    },
+    "FX3_RM_BOUND": {
+      "method": "literal",
+      "marker": "FX3_RM_BOUND"
+    },
+    "FX3_RM_FRONT_TRANSFER": {
+      "method": "literal",
+      "marker": "FX3_RM_FRONT_TRANSFER"
+    },
+    "FX3_RM_REPLY_TRANSFER": {
+      "method": "literal",
+      "marker": "FX3_RM_REPLY_TRANSFER"
+    },
+    "FX3_RM_NATIVE_FREE": {
+      "method": "literal",
+      "marker": "FX3_RM_NATIVE_FREE"
+    },
+    "FX3_MEDIA_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_SELFTEST_PASS"
+    },
+    "FX3_MEDIA_BOUND module=D": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_BOUND module=D"
+    },
+    "FX3_MEDIA_FRONT": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_FRONT"
+    },
+    "FRONT_FULL_BODY": {
+      "method": "literal",
+      "marker": "FRONT_FULL_BODY"
+    },
+    "FX3_MEDIA_START_BRANCH": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_START_BRANCH"
+    },
+    "FX3_MEDIA_NOTIFY": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_NOTIFY"
+    },
+    "FX3_KEY96_READY": {
+      "method": "literal",
+      "marker": "FX3_KEY96_READY"
+    },
+    "FX3_OSD_FRAME_TARGET_VALID": {
+      "method": "not_observed"
+    },
+    "FX3_GPE_COMPACTION_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_COMPACTION_BOUND"
+    },
+    "FX3_GPE_DRAW_INTERVAL": {
+      "method": "not_observed"
+    },
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_SCREEN_AUTHORITY_BOUND"
+    },
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": {
+      "method": "literal",
+      "marker": "FX3_AP_SNAPSHOT_DMM_SKIPPED"
+    },
+    "FX3_KEY96_POLL": {
+      "method": "literal",
+      "marker": "FX3_KEY96_POLL"
+    },
+    "FX3_KEY96_THREAD_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_KEY96_THREAD_BEGIN"
+    },
+    "FX3_PANEL_CONFIG_V2_COMMIT": {
+      "method": "literal",
+      "marker": "FX3_PANEL_CONFIG_V2_COMMIT"
+    },
+    "FX3_PROC97_STATUS_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_PROC97_STATUS_BEGIN"
+    },
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_PROC97_ALL_THREAD_STAT_BEGIN"
+    },
+    "FX3_DATE98_KERNEL_OBSERVE_READY": {
+      "method": "literal",
+      "marker": "FX3_DATE98_KERNEL_OBSERVE_READY"
+    },
+    "FX3_DATE99_WORKER_READY": {
+      "method": "literal",
+      "marker": "FX3_DATE99_WORKER_READY"
+    },
+    "FX3_DATE99_CONSUMER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_DATE99_CONSUMER_BOUND"
+    },
+    "FX3_SYNC100_BACKEND_BOUND": {
+      "method": "literal",
+      "marker": "FX3_SYNC100_BACKEND_BOUND"
+    },
+    "FX3_FILE100_OBSERVER_READY": {
+      "method": "literal",
+      "marker": "FX3_FILE100_OBSERVER_READY"
+    },
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN"
+    },
+    "FX3_BACKUP_INSMOD_RC=0": {
+      "method": "literal",
+      "marker": "FX3_BACKUP_INSMOD_RC=0"
+    },
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0"
+    },
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS"
+    },
+    "FX3_LDEC103_SELFTEST_RC=0": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_SELFTEST_RC=0"
+    },
+    "FX3_GPE104_LIB_BIND": {
+      "method": "literal",
+      "marker": "FX3_GPE104_LIB_BIND"
+    },
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": {
+      "method": "literal",
+      "marker": "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0"
+    },
+    "FX3_FILE103_READY_CONFIRMED": {
+      "method": "literal",
+      "marker": "FX3_FILE103_READY_CONFIRMED"
+    },
+    "FX3_POWER_OBSERVER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_POWER_OBSERVER_BOUND"
+    },
+    "FX3_MSS_OBSERVER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_MSS_OBSERVER_BOUND"
+    }
+  },
+  "date99_raw_serial_evidence": {
+    "literal_consumer_bound": {
+      "serial_byte_range": [
+        81261,
+        81286
+      ],
+      "raw": "FX3_DATE99_CONSUMER_BOUND"
+    },
+    "worker": {
+      "serial_byte_range": [
+        81143,
+        81244
+      ],
+      "raw": "FX3_DATE99_WORKER_READY serialized=1 native_OSAL_waitable_thread=1 synthetic_cp_clock=1 original_CP=0"
+    },
+    "registered_branch": {
+      "serial_byte_range": [
+        81444,
+        81561
+      ],
+      "raw": "FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=0x909005c5 original_other_destinations_unchanged=1"
+    },
+    "owner_result_zero": null,
+    "accept": {
+      "serial_byte_range": [
+        94069,
+        94196
+      ],
+      "raw": "FX3_DATE99_ACCEPT transaction=1 reason=4 source=0x809005c5 original_request_queue_owned=1 deferred_worker=1 no_reentrant_wait=1"
+    },
+    "clock_commit": {
+      "serial_byte_range": [
+        95067,
+        95346
+      ],
+      "raw": "FX3_DATE99_CLOCK_COMMIT transaction=1 generation=1 reason=4 valid_UTC=1 AP_type=0 UTC_base_ms=1609426800004 mono_basis_ns=8292912000 now_ns=8294246000 RTT_ns=2668000 readback_UTC_ms=1609426800005 software_clock_advances=1 synthetic_cp_clock=1 original_CP=0 physical_RTC_written=0"
+    },
+    "retired": {
+      "serial_byte_range": [
+        95444,
+        95580
+      ],
+      "raw": "FX3_DATE99_RETIRED transaction=1 reason=4 result=0 native_request_free=0 type4_sent=0 generation=1 original_owner_destination=0x909005c5"
+    },
+    "reject": null,
+    "literal_present": true,
+    "semantic_evidence": {
+      "method": "literal",
+      "marker": "FX3_DATE99_CONSUMER_BOUND"
+    }
+  },
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": false,
+    "quit_sent": false,
+    "pre_cleanup_status_error": "QmpDeadline('QMP recv deadline expired; partial line preserved')",
+    "snapshot_error": "QmpDeadline('QMP recv deadline expired; partial line preserved')",
+    "diag_snapshot": {
+      "consistent": false,
+      "error": "QmpDeadline('QMP recv deadline expired; partial line preserved')"
+    },
+    "restore_error": "QmpDeadline('QMP recv deadline expired; partial line preserved')",
+    "quit_error": "QmpDeadline('QMP recv deadline expired; partial line preserved')"
+  },
+  "lifecycle_pass": false,
+  "diagnostic_readback_pass": false,
+  "protocol_pass": false,
+  "render_pass": false,
+  "black_frame_semantics": "unknown; an all-zero committed panel cannot satisfy this visual trial",
+  "native_shutdown_after_ready": false,
+  "native_shutdown_original_lines": [],
+  "native_shutdown_count_at_ready": 0,
+  "native_model_power_off_after_ready": false,
+  "native_model_power_off_original_lines": [],
+  "native_model_power_off_count_at_ready": 0,
+  "health_pass": false,
+  "requested_exit_phase": null,
+  "requested_exit_phase_hit": false,
+  "key_steps": 0,
+  "step_captures": [],
+  "standby_ready": false,
+  "menu_verified": false,
+  "visual_acceptance_separate_from_health": true,
+  "render_valid_at_end": false,
+  "black_after_ready": [],
+  "render_observation_ok": false,
+  "browser_visual_acceptance": null,
+  "physical_device_operations": 0,
+  "remote_network_connections": 0,
+  "HTTP_loopback_only": true,
+  "scope": "TRY2 original FX3 menu software model with improved icon and focus presentation; no camera, live view, or exact compositor claim"
+}

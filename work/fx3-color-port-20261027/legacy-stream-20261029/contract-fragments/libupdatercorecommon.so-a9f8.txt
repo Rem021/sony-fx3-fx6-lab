@@ -1,0 +1,23 @@
+0000a9f8 stp        x29, x30, [sp, #-0x30]!
+0000a9fc mov        x29, sp
+0000aa00 stp        x19, x20, [sp, #0x10]
+0000aa04 mov        x19, x0
+0000aa08 stp        x21, x22, [sp, #0x20]
+0000aa0c bl         #0x7d50 ; Updater::DecryptorModule::getHdDataSize
+0000aa10 mov        w22, w0
+0000aa14 ldr        x20, [x19, #0x50]
+0000aa18 ldr        x0, [x20]
+0000aa1c ldr        x21, [x0, #0x30]
+0000aa20 ldr        x0, [x19]
+0000aa24 ldr        x1, [x0, #0x98]
+0000aa28 mov        x0, x19
+0000aa2c blr        x1
+0000aa30 mov        w3, w0
+0000aa34 uxth       w2, w22
+0000aa38 add        x1, x19, #0xb4
+0000aa3c mov        x0, x20
+0000aa40 mov        x4, x21
+0000aa44 ldp        x19, x20, [sp, #0x10]
+0000aa48 ldp        x21, x22, [sp, #0x20]
+0000aa4c ldp        x29, x30, [sp], #0x30
+0000aa50 br         x4

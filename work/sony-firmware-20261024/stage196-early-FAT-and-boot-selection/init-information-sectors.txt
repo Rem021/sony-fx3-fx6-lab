@@ -1,0 +1,14 @@
+0xfe052970 [file+0x9970] f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+0xfe052974 [file+0x9974] f30300aa mov      x19, x0
+0xfe052978 [file+0x9978] cb170094 bl       #0xfe0588a4
+0xfe05297c [file+0x997c] e803002a mov      w8, w0
+0xfe052980 [file+0x9980] 60ba01b9 str      w0, [x19, #0x1b8]
+0xfe052984 [file+0x9984] e0000034 cbz      w0, #0xfe0529a0
+0xfe052988 [file+0x9988] 61000090 adrp     x1, #0xfe05e000
+0xfe05298c [file+0x998c] 21cc1a91 add      x1, x1, #0x6b3
+0xfe052990 [file+0x9990] e0070032 mov      w0, #3
+0xfe052994 [file+0x9994] e203082a mov      w2, w8
+0xfe052998 [file+0x9998] 070e0094 bl       #0xfe0561b4
+0xfe05299c [file+0x999c] 60ba41b9 ldr      w0, [x19, #0x1b8]
+0xfe0529a0 [file+0x99a0] f37bc1a8 ldp      x19, x30, [sp], #0x10
+0xfe0529a4 [file+0x99a4] c0035fd6 ret      

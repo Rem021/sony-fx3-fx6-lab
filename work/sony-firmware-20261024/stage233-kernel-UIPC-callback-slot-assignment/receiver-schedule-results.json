@@ -1,0 +1,859 @@
+{
+  "schema": "fx3-stage233-conditional-receiver-interleavings-own-ARM64-v1",
+  "status": "PASS",
+  "schedules": 16,
+  "same_slot_observed": 4,
+  "different_slot_HELD48": 12,
+  "source_audit_sha256": "950ac65de016cffd6a03c93f52c6a2749a14dd9d687fb8c6cf84e6d766f73582",
+  "own_binary": {
+    "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/runs-bounded-verified/built/parent-module.so",
+    "bytes": 131864,
+    "sha256": "c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ec"
+  },
+  "own_model": {
+    "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/model_entry.py",
+    "sha256": "c1787e53acdc812ef9202007d03b6a4b0bf9e58b8ec8e720e36f26f01583f48a"
+  },
+  "script_sha256": "e1932d7bf85f4571628aeb30eece2ac211d41b49a9cce062e6d476a57d567d89",
+  "cases": [
+    {
+      "first_slot": 0,
+      "second_slot": 0,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 0,
+          "synthetic_tid": 777,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 0,
+          "synthetic_tid": 777,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        3,
+        0
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "other_thread_rejected": false,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 0,
+      "second_slot": 1,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 0,
+          "synthetic_tid": 777,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 1,
+          "synthetic_tid": 778,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 0,
+      "second_slot": 2,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 0,
+          "synthetic_tid": 777,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 2,
+          "synthetic_tid": 779,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 0,
+      "second_slot": 3,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 0,
+          "synthetic_tid": 777,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 3,
+          "synthetic_tid": 780,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 1,
+      "second_slot": 0,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 1,
+          "synthetic_tid": 778,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 0,
+          "synthetic_tid": 777,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 1,
+      "second_slot": 1,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 1,
+          "synthetic_tid": 778,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 1,
+          "synthetic_tid": 778,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        3,
+        0
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "other_thread_rejected": false,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 1,
+      "second_slot": 2,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 1,
+          "synthetic_tid": 778,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 2,
+          "synthetic_tid": 779,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 1,
+      "second_slot": 3,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 1,
+          "synthetic_tid": 778,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 3,
+          "synthetic_tid": 780,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 2,
+      "second_slot": 0,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 2,
+          "synthetic_tid": 779,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 0,
+          "synthetic_tid": 777,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 2,
+      "second_slot": 1,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 2,
+          "synthetic_tid": 779,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 1,
+          "synthetic_tid": 778,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 2,
+      "second_slot": 2,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 2,
+          "synthetic_tid": 779,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 2,
+          "synthetic_tid": 779,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        3,
+        0
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "other_thread_rejected": false,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 2,
+      "second_slot": 3,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 2,
+          "synthetic_tid": 779,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 3,
+          "synthetic_tid": 780,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 3,
+      "second_slot": 0,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 3,
+          "synthetic_tid": 780,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 0,
+          "synthetic_tid": 777,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 3,
+      "second_slot": 1,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 3,
+          "synthetic_tid": 780,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 1,
+          "synthetic_tid": 778,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 3,
+      "second_slot": 2,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 3,
+          "synthetic_tid": 780,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 2,
+          "synthetic_tid": 779,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        2,
+        48
+      ],
+      "waits": [],
+      "other_thread_rejected": true,
+      "child_original_file_mappings_removed": true
+    },
+    {
+      "first_slot": 3,
+      "second_slot": 3,
+      "synthetic_trace": [
+        {
+          "event": "append",
+          "command": "START",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 3,
+          "synthetic_tid": 780,
+          "command": "START"
+        },
+        {
+          "event": "append",
+          "command": "OBSERVE",
+          "wake_slots": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "event": "receive_head",
+          "slot": 3,
+          "synthetic_tid": 780,
+          "command": "OBSERVE"
+        }
+      ],
+      "start": [
+        1,
+        0
+      ],
+      "own_child_exit": 0,
+      "observation": [
+        3,
+        0
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "other_thread_rejected": false,
+      "child_original_file_mappings_removed": true
+    }
+  ],
+  "all_four_slots_active_on_camera_assumed_for_conditional_example_only": true,
+  "actual_active_count_or_scheduler_measured": false,
+  "whole_kernel_or_ioctl_or_driver_simulated": false,
+  "original_im_bytes_only_used_for_fake_profile_file_never_executed": true,
+  "only_own_ARM64_executed": true,
+  "actual_Linux_processes_or_threads_created": false,
+  "new_device_operations": 0,
+  "complete_boot_backup_or_recovery_verified": false,
+  "existing231_thread_guard_removed": false,
+  "goal_complete": false,
+  "first_flash_released": false
+}

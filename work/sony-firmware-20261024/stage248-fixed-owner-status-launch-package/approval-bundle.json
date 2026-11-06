@@ -1,0 +1,262 @@
+{
+  "schema": 1,
+  "grant_id": "fx3-702-owner-status-20261030-11",
+  "scope": "MSC_OWNER_STATUS_ONLY",
+  "maximum_helper_invocations": 1,
+  "approved": false,
+  "executed": false,
+  "root_private_fixed_permit_required": true,
+  "Sony_auth_file_or_firmware_commands": 0,
+  "files": [
+    {
+      "path": "OwnerStatus.command.txt",
+      "bytes": 2048,
+      "sha256": "aa86a9ff11bc8e79c7c8177268a25019e3c2ab88383f17daa116ffaa0cd44aae"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4198,
+      "sha256": "92281770286858400a80bc9d9ee288a5b5e685e3661195334c05c702f0133945"
+    },
+    {
+      "path": "artifacts/entry-ipc.dylib",
+      "bytes": 37088,
+      "sha256": "c5e3297d25ed9cf1816638349a553f912197362708eefaa57b6624eb910a4136"
+    },
+    {
+      "path": "artifacts/owner-fixture-helper",
+      "bytes": 218056,
+      "sha256": "f89f661cbea6248eba6169a69622a4dbc9b795eaec4299aaad7a738464119578"
+    },
+    {
+      "path": "artifacts/owner-native-helper",
+      "bytes": 85152,
+      "sha256": "65daada1f1cae3e19e6b6ccda848bc62ce736ad1f060b7143ac8e36486e554b4"
+    },
+    {
+      "path": "artifacts/permit-unit",
+      "bytes": 55304,
+      "sha256": "998687a8941fb3726d53ef2cbd3af14a62eb1a6c285cbad3b8e5b4641e236fff"
+    },
+    {
+      "path": "build-receipt.json",
+      "bytes": 14120,
+      "sha256": "4e1b4e2d827825e57b7d98770493416a47ec2c27e641f8711ccc9e2578edac0a"
+    },
+    {
+      "path": "cache_parser.py",
+      "bytes": 3393,
+      "sha256": "340485159e4e8b80897300cfbdc91930bcf06d819faab6f69ea03da8a8e82771"
+    },
+    {
+      "path": "controller_ipc.py",
+      "bytes": 7073,
+      "sha256": "db983317c4597083886057fcddbc6e1982e30ece42aae6471aa77e05d0d3839a"
+    },
+    {
+      "path": "entry_shared.h",
+      "bytes": 1542,
+      "sha256": "e1e0e36943297f26c3e8be260025a13213e78aa07e128cf154f9f9e906cfff76"
+    },
+    {
+      "path": "entry_support.c",
+      "bytes": 5210,
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "entry_target.h",
+      "bytes": 996,
+      "sha256": "83c678bb6a8e11d5a970120eb1505a6bb067b095b0d0589895b88f6dfe095441"
+    },
+    {
+      "path": "fake_iokit.c",
+      "bytes": 6220,
+      "sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19"
+    },
+    {
+      "path": "fixed-material.json",
+      "bytes": 698,
+      "sha256": "8e675dc7cdc983b8b6540befe7544e53cc404c733bb1b1b2a32b89b74aa83830"
+    },
+    {
+      "path": "fixed-plan.json",
+      "bytes": 1894,
+      "sha256": "f9f99c7036fca008180c5ae49fa387097a059a9d8293bcf75029ec93a2c2919c"
+    },
+    {
+      "path": "fixed_launch.py",
+      "bytes": 6236,
+      "sha256": "139228696b92af88cc67e8678c59adab39b4d8f6601951f5fd220a9c4e49376f"
+    },
+    {
+      "path": "frame_io.c",
+      "bytes": 2864,
+      "sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f"
+    },
+    {
+      "path": "frame_io.h",
+      "bytes": 369,
+      "sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a"
+    },
+    {
+      "path": "global_guard.c",
+      "bytes": 4515,
+      "sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526"
+    },
+    {
+      "path": "global_guard.h",
+      "bytes": 625,
+      "sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828"
+    },
+    {
+      "path": "helper_hello.c",
+      "bytes": 2595,
+      "sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719"
+    },
+    {
+      "path": "helper_hello.h",
+      "bytes": 172,
+      "sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e"
+    },
+    {
+      "path": "host_login.c",
+      "bytes": 1837,
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "host_login.h",
+      "bytes": 533,
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "host_transport.c",
+      "bytes": 6229,
+      "sha256": "0e226578e2593f7660d515ea57993118eaedc4f66d7b849816bd20ffa9af3099"
+    },
+    {
+      "path": "host_transport.h",
+      "bytes": 963,
+      "sha256": "757c0d5e834f853c41a9f7a09747403ca3670d97800d4d8bcc520e5747bb4889"
+    },
+    {
+      "path": "iokit_wire.c",
+      "bytes": 10822,
+      "sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94"
+    },
+    {
+      "path": "iokit_wire.h",
+      "bytes": 2060,
+      "sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b"
+    },
+    {
+      "path": "native_factory.py",
+      "bytes": 3880,
+      "sha256": "cdc0195309051492deae3fc81d04cfa9804e0c82d0425c5f04a36018f32f74a6"
+    },
+    {
+      "path": "native_session.c",
+      "bytes": 8575,
+      "sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1"
+    },
+    {
+      "path": "native_session.h",
+      "bytes": 1106,
+      "sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f"
+    },
+    {
+      "path": "owner_channel.c",
+      "bytes": 6002,
+      "sha256": "1f7706a24149671b6b10f8a71467037176228f1073c011f6e4209cbde8598519"
+    },
+    {
+      "path": "owner_channel.h",
+      "bytes": 787,
+      "sha256": "19ba22cdaca7b1475000d294a9c46ff35fa9029e7597d1e61aaa49642bed7e32"
+    },
+    {
+      "path": "owner_core.c",
+      "bytes": 7401,
+      "sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "bytes": 18324,
+      "sha256": "d24db15a1ff236d4b17307fcb8e0c64036ac0e9327482a4167aad9bf0fca3baa"
+    },
+    {
+      "path": "owner_fixture.c",
+      "bytes": 7349,
+      "sha256": "9e34e6f13b01799061b84f4d6f86658d195f5935385ec42fe62d9ffab9ca11fe"
+    },
+    {
+      "path": "owner_iokit.c",
+      "bytes": 14445,
+      "sha256": "675690bd6575c8940e5bfbfc68422b042f8e707cef5d82443645777e5b8c827e"
+    },
+    {
+      "path": "owner_ipc.c",
+      "bytes": 3175,
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "owner_receipt.c",
+      "bytes": 2311,
+      "sha256": "793c87a9e7ee7f0f1e90a15e2b005b707f71b08a1f6921a9c73cf5c6daeaab7f"
+    },
+    {
+      "path": "owner_receipt.h",
+      "bytes": 518,
+      "sha256": "34af5854c5f933765778777d14a430cb3a98c0d60b7b7cb11ef1c1e94ceb294e"
+    },
+    {
+      "path": "owner_trial.h",
+      "bytes": 2432,
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    },
+    {
+      "path": "permit.bin",
+      "bytes": 96,
+      "sha256": "55e7966f02d7738b66d1214bfd32369439fb820dff7f84427c6f05d624c334aa"
+    },
+    {
+      "path": "permit_unit.c",
+      "bytes": 1563,
+      "sha256": "de112dfceeb3397e39aeb44f5ea3c1d9d13c1ba46278c72e09327814aa703576"
+    },
+    {
+      "path": "receipt_receiver.py",
+      "bytes": 11378,
+      "sha256": "0ba684069d8dd6310534e3e5016530a4fa58d74c15745fac5847d34074a3e840"
+    },
+    {
+      "path": "root-body-render-only.sh.txt",
+      "bytes": 1507,
+      "sha256": "94b8cf3e264a44a16cd129ffda94fb95b2f9010b1d22774436066ffcf5261013"
+    },
+    {
+      "path": "run_approved_status.py",
+      "bytes": 1435,
+      "sha256": "a87650e6bfa954370de35aca1b1312a6dbf1cd7962a7127f34b87736c8dd9d68"
+    },
+    {
+      "path": "status_permit.c",
+      "bytes": 2227,
+      "sha256": "5d77f9cdec459764d94f0d7e92c1425dec9a0e59dfac63e231b1279c3ce54f9e"
+    },
+    {
+      "path": "status_permit.h",
+      "bytes": 338,
+      "sha256": "c9728b63c77e3e8ab35bfb13ccb7343a2cb494130c709e47ad1525cba73033ce"
+    },
+    {
+      "path": "supervisor.py",
+      "bytes": 12095,
+      "sha256": "cade8959c7142a5a308dd00d40f5924678aa4984874137644e69e8ebf96b0d72"
+    },
+    {
+      "path": "target_binding.h",
+      "bytes": 674,
+      "sha256": "45442750fdd0b4a2f74d68cac1805729f9e3503b65ae7ba1f70e8b09b6a6cddd"
+    }
+  ]
+}

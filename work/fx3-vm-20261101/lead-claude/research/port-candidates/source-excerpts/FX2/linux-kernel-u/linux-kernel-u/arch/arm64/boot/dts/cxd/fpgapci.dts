@@ -1,0 +1,110 @@
+/*
+ * arch/arm64/boot/dts/cxd/fpgapci.dts
+ *
+ * CXD900XX DTS
+ *
+ * Copyright 2018 Sony Corporation
+ *
+ *  This program is free software; you can redistribute  it and/or modify it
+ *  under  the terms of  the GNU General  Public License as published by the
+ *  Free Software Foundation;  version 2 of the  License.
+ *
+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *  You should have received a copy of the  GNU General Public License along
+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
+ *
+ */
+
+/dts-v1/;
+
+#include "fpga2.dtsi"
+
+/ {
+	model = "CXD900XX FPGA V8.8(24MHz)";
+	compatible = "cxd,cxd900xx-fpga";
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+		bootargs = "earlycon console=ttyAMA0,115200n8 root=/dev/ram0 rootfstype=ext2 rw noatime keepinitrd init=/sbin/init boottime=0x20000@0x01fc0000 klog.addr=0x01fe0000 klog.size=0x20000 slab_max_order=0 stack_usage=1 threadirqs manage.irqd=129 page_alloc.minkb=128 ramdisk_size=131072 pcie_pme=nomsi pcie_hp=nomsi";
+		linux,initrd-start = <0x0 0x10000000>;
+		linux,initrd-end   = <0x0 0x18000000>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		pcie_ep_reserved:buffer@0 {
+			reg = <0x0 0xB0000000 0x0 0x10000000>;
+		};
+	};
+
+	soc {
+		pcie_n_ep: pcie_n_ep {
+			compatible = "cxd900xx-pcie-ep";
+			memory-region = <&pcie_ep_reserved>;
+			reg = <0x0 0xF6400000 0x0 0x400000>,
+			      <0x0 0xF6500000 0x0 0x010000>,
+			      <0x0 0xF1100000 0x0 0x40000>;
+			reg-names = "ctrlreg", "ctrlreg_shadow", "phy_reg";
+			num-lanes = <4>;
+			num-ib-windows = <8>;
+			num-ob-windows = <8>;
+			resets = <&rst CXD900XX_RST_PCIEX1_N_PWRUP>,
+				 <&rst CXD900XX_RST_PCIEX1_N_BUTTON>,
+				 <&rst CXD900XX_RST_PCIEX1_N_PE>,
+				 <&rst CXD900XX_RST_PCIEX1_N_APB>,
+				 <&rst CXD900XX_RST_AXI2AVB_PCI>,
+				 <&rst CXD900XX_RST_AXI2AVB_PCI_I0>;
+			reset-names="rst_pwrup","rst_button","rst_pe","rst_apb","rst_axi2avb_pci","rst_axi2avb_pci_i0";
+			clocks = <&clk CXD_CLK_GATE_PCIE_N_PCLK>,
+				 <&clk CXD_CLK_GATE_PCIE_N_DBI_CLK>,
+				 <&clk CXD_CLK_GATE_PCIE_N_SLV_CLK>,
+				 <&clk CXD_CLK_GATE_PCIE_N_MST_CLK>,
+				 <&clk CXD_CLK_GATE_PCIE_N_AUX_CLK>,
+				 <&clk CXD_CLK_GATE_X2V_PCEI0>,
+				 <&clk CXD_CLK_GATE_X2V_PCEI1>;
+			clock-names = "apb_pclk", "dbi_aclk", "slv_aclk", "mstr_aclk", "aux_clk", "axi2avb_pcie0", "axi2avb_pcie0";
+			status = "disabled";
+		};
+
+		pcie_i_ep: pcie_i_ep {
+			compatible = "cxd900xx-pcie-ep";
+			memory-region = <&pcie_ep_reserved>;
+			reg = <0x0 0xF7000000 0x0 0x400000>,
+			      <0x0 0xF7100000 0x0 0x010000>,
+			      <0x0 0xF11C0000 0x0 0x40000>;
+			reg-names = "ctrlreg", "ctrlreg_shadow", "phy_reg";
+			num-lanes = <4>;
+			num-ib-windows = <8>;
+			num-ob-windows = <8>;
+			resets = <&rst CXD900XX_RST_PCIEX4_I_PWRUP>,
+				 <&rst CXD900XX_RST_PCIEX4_I_BUTTON>,
+				 <&rst CXD900XX_RST_PCIEX4_I_PE>,
+				 <&rst CXD900XX_RST_PCIEX4_I_APB>,
+				 <&rst CXD900XX_RST_AXI2AVB_PCI>,
+				 <&rst CXD900XX_RST_AXI2AVB_PCI_I0>;
+			reset-names="rst_pwrup","rst_button","rst_pe","rst_apb","rst_axi2avb_pci","rst_axi2avb_pci_i0";
+			clocks = <&clk CXD_CLK_GATE_PCIE_I_PCLK>,
+				 <&clk CXD_CLK_GATE_PCIE_I_DBI_CLK>,
+				 <&clk CXD_CLK_GATE_PCIE_I_SLV_CLK>,
+				 <&clk CXD_CLK_GATE_PCIE_I_MST_CLK>,
+				 <&clk CXD_CLK_GATE_PCIE_I_AUX_CLK>,
+				 <&clk CXD_CLK_GATE_X2V_PCEI0>,
+				 <&clk CXD_CLK_GATE_X2V_PCEI1>;
+			clock-names = "apb_pclk", "dbi_aclk", "slv_aclk", "mstr_aclk", "aux_clk", "axi2avb_pcie0", "axi2avb_pcie0";
+			status = "disabled";
+		};
+	};
+};

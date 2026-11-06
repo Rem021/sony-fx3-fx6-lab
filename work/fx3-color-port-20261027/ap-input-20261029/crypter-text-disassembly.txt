@@ -1,0 +1,228 @@
+00400bc0 stp        x29, x30, [sp, #-0x80]!
+00400bc4 mov        x29, sp
+00400bc8 stp        x19, x20, [sp, #0x10]
+00400bcc mov        x19, #1
+00400bd0 stp        x21, x22, [sp, #0x20]
+00400bd4 adrp       x20, #0x412000
+00400bd8 str        w0, [x29, #0x7c]
+00400bdc adrp       x0, #0x401000
+00400be0 add        x0, x0, #0x128
+00400be4 stp        x23, x24, [sp, #0x30]
+00400be8 adrp       x21, #0x401000
+00400bec adrp       x22, #0x412000
+00400bf0 adrp       x23, #0x401000
+00400bf4 adrp       x24, #0x401000
+00400bf8 str        x0, [x29, #0x70]
+00400bfc adrp       x0, #0x401000
+00400c00 stp        x25, x26, [sp, #0x40]
+00400c04 add        x0, x0, #0x139
+00400c08 stp        x27, x28, [sp, #0x50]
+00400c0c add        x21, x21, #0x13d
+00400c10 mov        x28, x1
+00400c14 add        x22, x22, #0xa4
+00400c18 mov        w26, w19
+00400c1c add        x23, x23, #0x12f
+00400c20 add        x24, x24, #0x134
+00400c24 add        x20, x20, #0x94
+00400c28 adrp       x25, #0x412000
+00400c2c str        x0, [x29, #0x68]
+00400c30 ldr        w0, [x29, #0x7c]
+00400c34 cmp        w0, w19
+00400c38 b.le       #0x400cd4
+00400c3c ldr        x27, [x28, x19, lsl #3]
+00400c40 mov        x2, #6
+00400c44 ldr        x1, [x29, #0x70]
+00400c48 mov        x0, x27
+00400c4c bl         #0x400b40 ; strncmp
+00400c50 cbnz       w0, #0x400c94
+00400c54 add        x27, x27, #6
+00400c58 mov        x1, x23
+00400c5c mov        x0, x27
+00400c60 mov        x2, #4
+00400c64 bl         #0x400b40 ; strncmp
+00400c68 cbnz       w0, #0x400c78
+00400c6c str        wzr, [x20]
+00400c70 add        x19, x19, #1
+00400c74 b          #0x400c30
+00400c78 mov        x1, x24
+00400c7c mov        x0, x27
+00400c80 mov        x2, #4
+00400c84 bl         #0x400b40 ; strncmp
+00400c88 cbnz       w0, #0x400c70
+00400c8c str        w26, [x20]
+00400c90 b          #0x400c70
+00400c94 ldr        x1, [x29, #0x68]
+00400c98 mov        x0, x27
+00400c9c mov        x2, #3
+00400ca0 bl         #0x400b40 ; strncmp
+00400ca4 cbnz       w0, #0x400cc4
+00400ca8 mov        x1, x21
+00400cac add        x0, x27, #3
+00400cb0 mov        x2, #4
+00400cb4 bl         #0x400b40 ; strncmp
+00400cb8 cbnz       w0, #0x400c70
+00400cbc str        w26, [x22]
+00400cc0 b          #0x400c70
+00400cc4 ldr        x0, [x25, #0x98]
+00400cc8 cbnz       x0, #0x400c70
+00400ccc str        x27, [x25, #0x98]
+00400cd0 b          #0x400c70
+00400cd4 adrp       x22, #0x412000
+00400cd8 ldr        x0, [x22, #0x98]
+00400cdc cbnz       x0, #0x400cfc
+00400ce0 adrp       x0, #0x412000
+00400ce4 ldr        x1, [x0, #0x88]
+00400ce8 adrp       x0, #0x401000
+00400cec add        x0, x0, #0x142
+00400cf0 bl         #0x400ad0 ; fputs
+00400cf4 mov        w19, #1
+00400cf8 b          #0x400d38
+00400cfc adrp       x21, #0x412000
+00400d00 bl         #0x400b60 ; mcmn_init
+00400d04 mov        w0, #0
+00400d08 ldr        w19, [x21, #0xa4]
+00400d0c cmp        w19, #1
+00400d10 b.ne       #0x400db4
+00400d14 bl         #0x400b30 ; Fsys_Init
+00400d18 mov        x20, #0
+00400d1c cbz        w0, #0x400d58
+00400d20 mov        w2, w0
+00400d24 adrp       x0, #0x412000
+00400d28 adrp       x1, #0x401000
+00400d2c add        x1, x1, #0x15d
+00400d30 ldr        x0, [x0, #0x88]
+00400d34 bl         #0x400ae0 ; fprintf
+00400d38 mov        w0, w19
+00400d3c ldp        x19, x20, [sp, #0x10]
+00400d40 ldp        x21, x22, [sp, #0x20]
+00400d44 ldp        x23, x24, [sp, #0x30]
+00400d48 ldp        x25, x26, [sp, #0x40]
+00400d4c ldp        x27, x28, [sp, #0x50]
+00400d50 ldp        x29, x30, [sp], #0x80
+00400d54 ret        
+00400d58 adrp       x19, #0x401000
+00400d5c adrp       x23, #0x412000
+00400d60 add        x19, x19, #0x110
+00400d64 add        x24, x23, #0xa0
+00400d68 ldr        x0, [x20, x19]
+00400d6c cbz        x0, #0x400d8c
+00400d70 mov        x2, x24
+00400d74 mov        x3, #0
+00400d78 mov        w1, #0
+00400d7c add        x20, x20, #8
+00400d80 bl         #0x400b80 ; Fsys_Mount
+00400d84 ldrb       w0, [x24]
+00400d88 cbz        w0, #0x400d68
+00400d8c ldrb       w3, [x23, #0xa0]
+00400d90 cbz        w3, #0x400dfc
+00400d94 adrp       x2, #0x401000
+00400d98 adrp       x0, #0x412000
+00400d9c add        x2, x2, #0x181
+00400da0 add        x0, x0, #0xa8
+00400da4 mov        x1, #0x400
+00400da8 mov        w19, #1
+00400dac bl         #0x400b70 ; snprintf
+00400db0 tbnz       w0, #0x1f, #0x400d38
+00400db4 adrp       x20, #0x412000
+00400db8 sxtw       x0, w0
+00400dbc ldr        x3, [x22, #0x98]
+00400dc0 add        x20, x20, #0xa8
+00400dc4 adrp       x2, #0x401000
+00400dc8 mov        x1, #0x400
+00400dcc sub        x1, x1, x0
+00400dd0 add        x2, x2, #0x1b9
+00400dd4 add        x0, x20, x0
+00400dd8 bl         #0x400b70 ; snprintf
+00400ddc bl         #0x400b90 ; GetCryptFileInputModeUpdater
+00400de0 mov        x19, x0
+00400de4 cbnz       x0, #0x400e10
+00400de8 adrp       x0, #0x412000
+00400dec ldr        x1, [x0, #0x88]
+00400df0 adrp       x0, #0x401000
+00400df4 add        x0, x0, #0x1bc
+00400df8 b          #0x400cf0
+00400dfc adrp       x0, #0x412000
+00400e00 ldr        x1, [x0, #0x88]
+00400e04 adrp       x0, #0x401000
+00400e08 add        x0, x0, #0x186
+00400e0c b          #0x400cf0
+00400e10 ldr        x1, [x0]
+00400e14 ldr        x2, [x1, #0x10]
+00400e18 adrp       x1, #0x412000
+00400e1c ldr        w1, [x1, #0x94]
+00400e20 blr        x2
+00400e24 cbz        w0, #0x400e3c
+00400e28 adrp       x0, #0x412000
+00400e2c ldr        x1, [x0, #0x88]
+00400e30 adrp       x0, #0x401000
+00400e34 add        x0, x0, #0x1ee
+00400e38 b          #0x400cf0
+00400e3c ldr        x0, [x19]
+00400e40 mov        x1, x20
+00400e44 ldr        x2, [x0, #0x20]
+00400e48 mov        x0, x19
+00400e4c blr        x2
+00400e50 cbz        w0, #0x400e68
+00400e54 adrp       x0, #0x412000
+00400e58 ldr        x1, [x0, #0x88]
+00400e5c adrp       x0, #0x401000
+00400e60 add        x0, x0, #0x20e
+00400e64 b          #0x400cf0
+00400e68 ldr        x0, [x19]
+00400e6c ldr        x1, [x0, #0x18]
+00400e70 mov        x0, x19
+00400e74 blr        x1
+00400e78 cbz        w0, #0x400e90
+00400e7c adrp       x0, #0x412000
+00400e80 ldr        x1, [x0, #0x88]
+00400e84 adrp       x0, #0x401000
+00400e88 add        x0, x0, #0x230
+00400e8c b          #0x400cf0
+00400e90 mov        x0, x19
+00400e94 bl         #0x400b50 ; ReleaseMsCryptFileInputUpdater
+00400e98 ldr        w0, [x21, #0xa4]
+00400e9c cmp        w0, #1
+00400ea0 b.eq       #0x400eac
+00400ea4 mov        w19, #0
+00400ea8 b          #0x400d38
+00400eac mov        x0, x20
+00400eb0 bl         #0x400af0 ; Fsys_Remove
+00400eb4 cbz        w0, #0x400ed0
+00400eb8 mov        w2, w0
+00400ebc adrp       x0, #0x412000
+00400ec0 adrp       x1, #0x401000
+00400ec4 add        x1, x1, #0x24e
+00400ec8 ldr        x0, [x0, #0x88]
+00400ecc bl         #0x400ae0 ; fprintf
+00400ed0 adrp       x0, #0x412000
+00400ed4 mov        w1, #0
+00400ed8 ldrb       w0, [x0, #0xa0]
+00400edc bl         #0x400b00 ; Fsys_Unmount
+00400ee0 cbz        w0, #0x400efc
+00400ee4 mov        w2, w0
+00400ee8 adrp       x0, #0x412000
+00400eec adrp       x1, #0x401000
+00400ef0 add        x1, x1, #0x274
+00400ef4 ldr        x0, [x0, #0x88]
+00400ef8 bl         #0x400ae0 ; fprintf
+00400efc bl         #0x400b10 ; Fsys_Exit
+00400f00 cbz        w0, #0x400ea4
+00400f04 mov        w2, w0
+00400f08 adrp       x0, #0x412000
+00400f0c adrp       x1, #0x401000
+00400f10 add        x1, x1, #0x29b
+00400f14 ldr        x0, [x0, #0x88]
+00400f18 bl         #0x400ae0 ; fprintf
+00400f1c b          #0x400ea4
+00400f20 mov        x29, #0
+00400f24 mov        x30, #0
+00400f28 mov        x5, x0
+00400f2c ldr        x1, [sp]
+00400f30 add        x2, sp, #8
+00400f34 mov        x6, sp
+00400f38 ldr        x0, #0x400f50
+00400f3c ldr        x3, #0x400f58
+00400f40 ldr        x4, #0x400f60
+00400f44 bl         #0x400b20 ; __libc_start_main
+00400f48 bl         #0x400ba0 ; abort
+00400f4c udf        #0

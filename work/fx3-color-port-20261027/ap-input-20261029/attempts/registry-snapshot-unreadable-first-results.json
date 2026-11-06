@@ -1,0 +1,69 @@
+{
+  "registry_sha256": "6ceaea432bc7c4645897c2f1272941b33b0c04115ec62ffa000b37faf3d8517d",
+  "registry_pointers": [
+    {
+      "slot": "0x1fc20",
+      "target": "0xbd26",
+      "text": "libupdaterufp.so"
+    },
+    {
+      "slot": "0x1fc28",
+      "target": "0xbd37",
+      "text": "udtr_ufp_init"
+    },
+    {
+      "slot": "0x1fc30",
+      "target": "0xbd45",
+      "text": "udtr_ufp_exit"
+    }
+  ],
+  "snapshot_source_sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+  "root_physical_address": "0x40867a000",
+  "link_map_module": {
+    "link_map_va": "0xc1fcf0",
+    "base": "0x7f3f455000",
+    "dynamic_va": "0x7f3f469d58",
+    "name": "/usr/lib/libupdaterufp.so",
+    "name_pointer": "0xc1fcc0",
+    "name_read_error": null
+  },
+  "library_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+  "checks": [
+    {
+      "label": "ELF_header",
+      "relative_va": "0x0",
+      "bytes": 64,
+      "match": false,
+      "error": "invalid descriptor"
+    },
+    {
+      "label": ".dynsym",
+      "relative_va": "0x208",
+      "bytes": 1560,
+      "match": false,
+      "error": "invalid descriptor"
+    },
+    {
+      "label": ".dynstr",
+      "relative_va": "0x820",
+      "bytes": 986,
+      "match": false,
+      "error": "invalid descriptor"
+    },
+    {
+      "label": ".text",
+      "relative_va": "0x1600",
+      "bytes": 10056,
+      "match": false,
+      "error": "invalid descriptor"
+    },
+    {
+      "label": ".rodata",
+      "relative_va": "0x3d58",
+      "bytes": 293,
+      "match": false,
+      "error": "invalid descriptor"
+    }
+  ],
+  "scope": "Read-only original AP registry and original stored WBI page-table translation. Only ELF metadata, original code and literal strings read; no key derivation, snapshot execution, live body state or proof that a request was dispatched."
+}

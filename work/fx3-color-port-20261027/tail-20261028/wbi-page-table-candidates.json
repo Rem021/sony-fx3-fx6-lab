@@ -1,0 +1,43 @@
+{
+  "status": "STRUCTURAL_AARCH64_39BIT_PAGE_TABLE_CANDIDATES",
+  "target_physical_address": "0x40ece2000",
+  "source_sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+  "leaf_candidates": [
+    {
+      "descriptor_physical_address": "0x4087f87c8",
+      "table_physical_address": "0x4087f8000",
+      "index": 249,
+      "value": "0xa800040ece2f53",
+      "file_offset": "0x36529c8"
+    }
+  ],
+  "chains": [
+    {
+      "leaf": {
+        "descriptor_physical_address": "0x4087f87c8",
+        "table_physical_address": "0x4087f8000",
+        "index": 249,
+        "value": "0xa800040ece2f53",
+        "file_offset": "0x36529c8"
+      },
+      "middle": {
+        "descriptor_physical_address": "0x40840fcf8",
+        "table_physical_address": "0x40840f000",
+        "index": 415,
+        "value": "0x4087f8003",
+        "file_offset": "0x328eef8"
+      },
+      "root": {
+        "descriptor_physical_address": "0x40867afe8",
+        "table_physical_address": "0x40867a000",
+        "index": 509,
+        "value": "0x40840f003",
+        "file_offset": "0x34e31e8"
+      },
+      "root_physical_address": "0x40867a000",
+      "userspace_va_candidate": "0x7f73ef9000",
+      "header_roundtrip_matches": true
+    }
+  ],
+  "scope": "Original stored WBI2 data, 4 KiB granule and 39-bit VA hypotheses. A recursive descriptor shape and header roundtrip alone do not establish process identity, active TTBR, correct non-header mappings, decrypted SKD code or update verification."
+}

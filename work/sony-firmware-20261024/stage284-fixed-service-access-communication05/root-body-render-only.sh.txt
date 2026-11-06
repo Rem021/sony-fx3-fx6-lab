@@ -1,0 +1,15 @@
+set -euC
+cd /
+umask 077
+[ "$(/usr/bin/id -u)" = 0 ] || exit 77
+if [ ! -e /private/var/root/fx3-owner-trials ]; then /bin/mkdir -m 700 /private/var/root/fx3-owner-trials; fi
+[ ! -L /private/var/root/fx3-owner-trials ] && [ -d /private/var/root/fx3-owner-trials ] || exit 78
+[ "$(/usr/bin/stat -f %u:%Lp /private/var/root/fx3-owner-trials)" = 0:700 ] || exit 78
+/bin/mkdir -m 700 /private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05
+/usr/bin/install -m 500 /private/tmp/fx3-702-service-access-communication-20261101-05/source-helper /private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05/helper
+actual=$(/usr/bin/shasum -a 256 /private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05/helper)
+[ "$actual" = '9fafccf36203a451f39246f83da37806e113078b709fb25156c3bf74e4e9043d  /private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05/helper' ] || exit 78
+/usr/bin/install -m 400 /private/tmp/fx3-702-service-access-communication-20261101-05/source-permit /private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05/permit.bin
+actual=$(/usr/bin/shasum -a 256 /private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05/permit.bin)
+[ "$actual" = '619f3bc4f30a1f9046694a1efefed517594bd5f9d99c64939f200bd973d9224d  /private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05/permit.bin' ] || exit 78
+exec /private/var/root/fx3-owner-trials/fx3-702-service-access-communication-20261101-05/helper /private/tmp/fx3-702-service-access-communication-20261101-05/shared.bin 9e125520812544b363fed4654a9a6167 2>&1

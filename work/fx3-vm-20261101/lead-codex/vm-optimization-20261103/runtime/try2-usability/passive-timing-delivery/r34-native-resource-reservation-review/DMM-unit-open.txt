@@ -1,0 +1,102 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review/dmm.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+    91e0: 00 00 00 00  	.word	0x00000000
+		00000000000091e0:  R_AARCH64_ABS64	.bss+0x165c90
+    91e4: 00 00 00 00  	.word	0x00000000
+
+00000000000091e8 <dmm_unit_ctrl_Open>:
+    91e8: d10043ff     	sub	sp, sp, #0x10
+    91ec: 53003c00     	uxth	w0, w0
+    91f0: 790013e0     	strh	w0, [sp, #0x8]
+    91f4: 794013e6     	ldrh	w6, [sp, #0x8]
+    91f8: 790003e0     	strh	w0, [sp]
+    91fc: 120024c6     	and	w6, w6, #0x3ff
+    9200: 794003e0     	ldrh	w0, [sp]
+    9204: 710ffcdf     	cmp	w6, #0x3ff
+    9208: d34a3800     	ubfx	x0, x0, #10, #5
+    920c: 540009c0     	b.eq	0x9344 <dmm_unit_ctrl_Open+0x15c>
+    9210: 58000a04     	ldr	x4, 0x9350 <dmm_unit_ctrl_Open+0x168>
+    9214: 52800e05     	mov	w5, #0x70               // =112
+    9218: f9401084     	ldr	x4, [x4, #0x20]
+    921c: 9ba510c6     	umaddl	x6, w6, w5, x4
+    9220: 39402cc4     	ldrb	w4, [x6, #0xb]
+    9224: 6b00009f     	cmp	w4, w0
+    9228: 54000781     	b.ne	0x9318 <dmm_unit_ctrl_Open+0x130>
+    922c: 794018c0     	ldrh	w0, [x6, #0xc]
+    9230: 34000600     	cbz	w0, 0x92f0 <dmm_unit_ctrl_Open+0x108>
+    9234: 7100081f     	cmp	w0, #0x2
+    9238: 53003c21     	uxth	w1, w1
+    923c: 54000169     	b.ls	0x9268 <dmm_unit_ctrl_Open+0x80>
+    9240: 71000c1f     	cmp	w0, #0x3
+    9244: 54000561     	b.ne	0x92f0 <dmm_unit_ctrl_Open+0x108>
+    9248: 52820020     	mov	w0, #0x1001             // =4097
+    924c: 6b00003f     	cmp	w1, w0
+    9250: 54000240     	b.eq	0x9298 <dmm_unit_ctrl_Open+0xb0>
+    9254: 7900007f     	strh	wzr, [x3]
+    9258: 12866000     	mov	w0, #-0x3301            // =-13057
+    925c: 910043ff     	add	sp, sp, #0x10
+    9260: d65f03c0     	ret
+    9264: d503201f     	nop
+    9268: 7100103f     	cmp	w1, #0x4
+    926c: 540005a0     	b.eq	0x9320 <dmm_unit_ctrl_Open+0x138>
+    9270: 54000488     	b.hi	0x9300 <dmm_unit_ctrl_Open+0x118>
+    9274: 7100043f     	cmp	w1, #0x1
+    9278: 540004a8     	b.hi	0x930c <dmm_unit_ctrl_Open+0x124>
+    927c: 394024c0     	ldrb	w0, [x6, #0x9]
+    9280: 7103fc1f     	cmp	w0, #0xff
+    9284: 54000360     	b.eq	0x92f0 <dmm_unit_ctrl_Open+0x108>
+    9288: 52800041     	mov	w1, #0x2                // =2
+    928c: 11000400     	add	w0, w0, #0x1
+    9290: 390024c0     	strb	w0, [x6, #0x9]
+    9294: 790018c1     	strh	w1, [x6, #0xc]
+    9298: 79401cc1     	ldrh	w1, [x6, #0xe]
+    929c: 52800000     	mov	w0, #0x0                // =0
+    92a0: 79000061     	strh	w1, [x3]
+    92a4: 34000201     	cbz	w1, 0x92e4 <dmm_unit_ctrl_Open+0xfc>
+    92a8: 8b202cc4     	add	x4, x6, w0, uxth #3
+    92ac: 91004042     	add	x2, x2, #0x10
+    92b0: 11000400     	add	w0, w0, #0x1
+    92b4: f9400885     	ldr	x5, [x4, #0x10]
+    92b8: 53003c00     	uxth	w0, w0
+    92bc: b94010a7     	ldr	w7, [x5, #0x10]
+    92c0: f94004a1     	ldr	x1, [x5, #0x8]
+    92c4: 8b070021     	add	x1, x1, x7
+    92c8: f81f0041     	stur	x1, [x2, #-0x10]
+    92cc: f9400881     	ldr	x1, [x4, #0x10]
+    92d0: b9401421     	ldr	w1, [x1, #0x14]
+    92d4: b81f8041     	stur	w1, [x2, #-0x8]
+    92d8: 79400061     	ldrh	w1, [x3]
+    92dc: 6b00003f     	cmp	w1, w0
+    92e0: 54fffe48     	b.hi	0x92a8 <dmm_unit_ctrl_Open+0xc0>
+    92e4: 52800000     	mov	w0, #0x0                // =0
+    92e8: 910043ff     	add	sp, sp, #0x10
+    92ec: d65f03c0     	ret
+    92f0: 7900007f     	strh	wzr, [x3]
+    92f4: 12800000     	mov	w0, #-0x1               // =-1
+    92f8: 910043ff     	add	sp, sp, #0x10
+    92fc: d65f03c0     	ret
+    9300: 52820020     	mov	w0, #0x1001             // =4097
+    9304: 6b00003f     	cmp	w1, w0
+    9308: 54fffc80     	b.eq	0x9298 <dmm_unit_ctrl_Open+0xb0>
+    930c: 7900007f     	strh	wzr, [x3]
+    9310: 12800060     	mov	w0, #-0x4               // =-4
+    9314: 17ffffd2     	b	0x925c <dmm_unit_ctrl_Open+0x74>
+    9318: 12804080     	mov	w0, #-0x205             // =-517
+    931c: 17ffffd0     	b	0x925c <dmm_unit_ctrl_Open+0x74>
+    9320: 394024c0     	ldrb	w0, [x6, #0x9]
+    9324: 35fff980     	cbnz	w0, 0x9254 <dmm_unit_ctrl_Open+0x6c>
+    9328: 394028c0     	ldrb	w0, [x6, #0xa]
+    932c: 35fffe20     	cbnz	w0, 0x92f0 <dmm_unit_ctrl_Open+0x108>
+    9330: 52800061     	mov	w1, #0x3                // =3
+    9334: 52800020     	mov	w0, #0x1                // =1
+    9338: 790018c1     	strh	w1, [x6, #0xc]
+    933c: 390024c0     	strb	w0, [x6, #0x9]
+    9340: 17ffffd6     	b	0x9298 <dmm_unit_ctrl_Open+0xb0>
+    9344: 12802080     	mov	w0, #-0x105             // =-261
+    9348: 17ffffc5     	b	0x925c <dmm_unit_ctrl_Open+0x74>
+    934c: d503201f     	nop
+    9350: 00 00 00 00  	.word	0x00000000
+		0000000000009350:  R_AARCH64_ABS64	.bss+0x165c90
+    9354: 00 00 00 00  	.word	0x00000000

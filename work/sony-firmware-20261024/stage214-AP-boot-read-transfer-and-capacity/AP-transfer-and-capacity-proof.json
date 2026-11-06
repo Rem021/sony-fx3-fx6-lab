@@ -1,0 +1,592 @@
+{
+  "status": "STATIC_BOOT_CAPACITY_SOURCE_AND_SELECTED_READ_CRYPTO_CONTEXT_BOUND",
+  "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+  "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+  "raw_ranges": [
+    {
+      "label": "EXT_CSD_CMD8_request",
+      "section": ".text",
+      "start": 60608,
+      "end_exclusive": 60844,
+      "file_offset": 60712,
+      "bytes": 236,
+      "sha256": "75b8cc7eeff305972d228f856989b27a472ad6c8fd758962ac699e6a56d9cc75",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/EXT_CSD_CMD8_request.bin",
+      "relocations": [],
+      "note": "Builds one512B CMD8 read into cached response buffer; optional crypto argument cleared."
+    },
+    {
+      "label": "EXT_CSD_cache_owner",
+      "section": ".text",
+      "start": 61528,
+      "end_exclusive": 61568,
+      "file_offset": 61632,
+      "bytes": 40,
+      "sha256": "ab3b6998cada6bfbeb539acc7b0660bde3de39c9a75ce333607f1e4010a51c7e",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/EXT_CSD_cache_owner.bin",
+      "relocations": [],
+      "note": "state.bss+5c0 and cache pointer state+e8; invokes CMD8 helperecc0."
+    },
+    {
+      "label": "boot_multiplier_copy",
+      "section": ".text",
+      "start": 61932,
+      "end_exclusive": 61964,
+      "file_offset": 62036,
+      "bytes": 32,
+      "sha256": "3ec35a9cfede3b9627a1575ff03ab8e3e138b1b5eae8e7ea68e7512834cdd7a8",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/boot_multiplier_copy.bin",
+      "relocations": [],
+      "note": "Copies cached EXT_CSD bytee2 to state+dc."
+    },
+    {
+      "label": "boot_capacity_getter",
+      "section": ".text",
+      "start": 83360,
+      "end_exclusive": 83384,
+      "file_offset": 83464,
+      "bytes": 24,
+      "sha256": "0e6e8aeabbc74a3e597dee8f2ac494820ba99090d6860eeb90cab5a6fc266b21",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/boot_capacity_getter.bin",
+      "relocations": [
+        {
+          "section": ".text",
+          "offset": 83376,
+          "type": 257,
+          "symbol": "",
+          "symbol_section": ".bss",
+          "symbol_value": 0,
+          "addend": 1472
+        }
+      ],
+      "note": "Unsigned byte state+dc shifted17, pointer relocated to.bss+5c0."
+    },
+    {
+      "label": "sequence_optional_argument",
+      "section": ".text",
+      "start": 77676,
+      "end_exclusive": 77700,
+      "file_offset": 77780,
+      "bytes": 24,
+      "sha256": "5f46659b2cdc94f429a0a9440110405028d926812bd133ac87e926b780f3c6d1",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/sequence_optional_argument.bin",
+      "relocations": [],
+      "note": "Passes original optional argument asx4 to lower read data helper10ec0."
+    },
+    {
+      "label": "multi_read_request_context",
+      "section": ".text",
+      "start": 69564,
+      "end_exclusive": 69592,
+      "file_offset": 69668,
+      "bytes": 28,
+      "sha256": "8c726e78f3b1352fce82f4dfca1637c3764fadbe82e102c492006b01afd37ef3",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/multi_read_request_context.bin",
+      "relocations": [],
+      "note": "Copies saved optional argument into request+10 before lower executor."
+    },
+    {
+      "label": "single_read_request_context",
+      "section": ".text",
+      "start": 69904,
+      "end_exclusive": 69944,
+      "file_offset": 70008,
+      "bytes": 40,
+      "sha256": "09b03d07ab5e1b93f63decd191ebe9ac5b60748b0785b34d8295ee073dcabd79",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/single_read_request_context.bin",
+      "relocations": [],
+      "note": "CMD17 branch preserves same saved optional argument in request+10."
+    },
+    {
+      "label": "executor_ops_data_call",
+      "section": ".text",
+      "start": 57004,
+      "end_exclusive": 57040,
+      "file_offset": 57108,
+      "bytes": 36,
+      "sha256": "a7f7b3e746429db36e0ffffe9eb0f8b9abb2338f5f503523a4fccf958ec3e8e0",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/executor_ops_data_call.bin",
+      "relocations": [],
+      "note": "Calls sequence ops+10; bound by va_emmc_ops relocation."
+    },
+    {
+      "label": "sequence_ops_data_pointer",
+      "section": ".data",
+      "start": 224,
+      "end_exclusive": 232,
+      "file_offset": 176472,
+      "bytes": 8,
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/sequence_ops_data_pointer.bin",
+      "relocations": [
+        {
+          "section": ".data",
+          "offset": 224,
+          "type": 257,
+          "symbol": "va_emmc_exec_emmc_data_cmd",
+          "symbol_section": ".text",
+          "symbol_value": 19720,
+          "addend": 0
+        }
+      ],
+      "note": "Relocation va_emmc_exec_emmc_data_cmd."
+    },
+    {
+      "label": "host_ops_initialization",
+      "section": ".init.text",
+      "start": 864,
+      "end_exclusive": 904,
+      "file_offset": 102256,
+      "bytes": 40,
+      "sha256": "6f1cda5e42630fe58a2d66d2fecf224a77538b39f4fbe842f0b58bb27f7e5f45",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/host_ops_initialization.bin",
+      "relocations": [
+        {
+          "section": ".init.text",
+          "offset": 896,
+          "type": 257,
+          "symbol": "",
+          "symbol_section": ".data",
+          "symbol_value": 0,
+          "addend": 8
+        }
+      ],
+      "note": "Literal.data+8 plus30h selects.data+38 host operations at state+10."
+    },
+    {
+      "label": "VA_to_host_data_call",
+      "section": ".text",
+      "start": 19848,
+      "end_exclusive": 19876,
+      "file_offset": 19952,
+      "bytes": 28,
+      "sha256": "8fb42174bc116989e7548091065089c6352b843b545081e2f13bf686def314f7",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/VA_to_host_data_call.bin",
+      "relocations": [],
+      "note": "Host operations+28 -> sdhci data command."
+    },
+    {
+      "label": "host_ops_data_pointer",
+      "section": ".data",
+      "start": 56,
+      "end_exclusive": 160,
+      "file_offset": 176304,
+      "bytes": 104,
+      "sha256": "39f37f8d1931b3bdf767e7510dd69509fbf23af1f7654933d0a4d291cbdd4418",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/host_ops_data_pointer.bin",
+      "relocations": [
+        {
+          "section": ".data",
+          "offset": 56,
+          "type": 257,
+          "symbol": "",
+          "symbol_section": ".data",
+          "symbol_value": 0,
+          "addend": 8
+        },
+        {
+          "section": ".data",
+          "offset": 64,
+          "type": 257,
+          "symbol": "sdhci_emmc_init",
+          "symbol_section": ".init.text",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 72,
+          "type": 257,
+          "symbol": "sdhci_emmc_exit",
+          "symbol_section": ".text",
+          "symbol_value": 8232,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 80,
+          "type": 257,
+          "symbol": "sdhci_emmc_reset",
+          "symbol_section": ".text",
+          "symbol_value": 15712,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 88,
+          "type": 257,
+          "symbol": "sdhci_emmc_exec_cmd",
+          "symbol_section": ".text",
+          "symbol_value": 8304,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 96,
+          "type": 257,
+          "symbol": "sdhci_emmc_exec_data_cmd",
+          "symbol_section": ".text",
+          "symbol_value": 15896,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 120,
+          "type": 257,
+          "symbol": "sdhci_emmc_read_busy_status",
+          "symbol_section": ".text",
+          "symbol_value": 12944,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 128,
+          "type": 257,
+          "symbol": "sdhci_emmc_wait_busy_cleared",
+          "symbol_section": ".text",
+          "symbol_value": 13000,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 136,
+          "type": 257,
+          "symbol": "sdhci_emmc_get_host_setting",
+          "symbol_section": ".text",
+          "symbol_value": 14272,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 144,
+          "type": 257,
+          "symbol": "sdhci_emmc_set_host_params",
+          "symbol_section": ".text",
+          "symbol_value": 15080,
+          "addend": 0
+        },
+        {
+          "section": ".data",
+          "offset": 152,
+          "type": 257,
+          "symbol": "sdhci_emmc_tuning_request",
+          "symbol_section": ".text",
+          "symbol_value": 14712,
+          "addend": 0
+        }
+      ],
+      "note": "Current table.data+38, data command at+28=.data60."
+    },
+    {
+      "label": "host_optional_context_install",
+      "section": ".text",
+      "start": 16024,
+      "end_exclusive": 16052,
+      "file_offset": 16128,
+      "bytes": 28,
+      "sha256": "698da7dba84c9a67ffe4a9ac8a270472b78dee2e6d985d14f90caa850ce8ea64",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/host_optional_context_install.bin",
+      "relocations": [
+        {
+          "section": ".text",
+          "offset": 16048,
+          "type": 283,
+          "symbol": "sdhci_emmc_exec_cmd",
+          "symbol_section": ".text",
+          "symbol_value": 8304,
+          "addend": 0
+        }
+      ],
+      "note": "Takes request+10 and installs it in host state+98 before exec_cmd."
+    },
+    {
+      "label": "optional_callback_reset_skip",
+      "section": ".text",
+      "start": 8736,
+      "end_exclusive": 8768,
+      "file_offset": 8840,
+      "bytes": 32,
+      "sha256": "0277088d132262bd0eea731345821b15ce181b2ee4e8ff6d5a1a7d31f9c8a75d",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/optional_callback_reset_skip.bin",
+      "relocations": [],
+      "note": "NULL host context skips optional reset callback+10."
+    },
+    {
+      "label": "optional_callback_transfer_skip",
+      "section": ".text",
+      "start": 8928,
+      "end_exclusive": 8964,
+      "file_offset": 9032,
+      "bytes": 36,
+      "sha256": "4af447942f8360337819b8663f9f91acbfe33f1a99aed114335bce34de69cbd0",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/optional_callback_transfer_skip.bin",
+      "relocations": [],
+      "note": "NULL host context skips optional transfer callback+18."
+    },
+    {
+      "label": "optional_callback_wait_skip",
+      "section": ".text",
+      "start": 9840,
+      "end_exclusive": 9872,
+      "file_offset": 9944,
+      "bytes": 32,
+      "sha256": "5087bfc77f41a5401a661eb9def165fcffcdd6aae47f59b404eeb9842aba402b",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/optional_callback_wait_skip.bin",
+      "relocations": [],
+      "note": "NULL host context skips optional wait callback+20."
+    },
+    {
+      "label": "partition_type_to_access",
+      "section": ".text",
+      "start": 53520,
+      "end_exclusive": 53624,
+      "file_offset": 53624,
+      "bytes": 104,
+      "sha256": "8f269cdaf8a607a459cb1d66813461d6b652ac8d363003db23efb94bb1ca6411",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/partition_type_to_access.bin",
+      "relocations": [
+        {
+          "section": ".text",
+          "offset": 53560,
+          "type": 283,
+          "symbol": "printk",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".text",
+          "offset": 53616,
+          "type": 257,
+          "symbol": "",
+          "symbol_section": ".rodata",
+          "symbol_value": 0,
+          "addend": 2968
+        }
+      ],
+      "note": "Switch dispatcher: selected kinds0/1/2 -> masks0/1/2;8/9 ->0."
+    },
+    {
+      "label": "partition_type_jump_table",
+      "section": ".rodata",
+      "start": 2968,
+      "end_exclusive": 2978,
+      "file_offset": 115824,
+      "bytes": 10,
+      "sha256": "a252819d8c200ddb12dc9aa0f73cc8b7920c87f734b72410c2be8ec05dac9152",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/partition_type_jump_table.bin",
+      "relocations": [],
+      "note": "Ten signed relative branch bytes."
+    },
+    {
+      "label": "partition_switch_set_retry_and_panic",
+      "section": ".text",
+      "start": 63000,
+      "end_exclusive": 63224,
+      "file_offset": 63104,
+      "bytes": 224,
+      "sha256": "27a7ca2421c0ef054477e324ec12fb849203e452d937e2b4eea56be3907c1f37",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/partition_switch_set_retry_and_panic.bin",
+      "relocations": [
+        {
+          "section": ".text",
+          "offset": 63196,
+          "type": 283,
+          "symbol": "printk",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".text",
+          "offset": 63200,
+          "type": 283,
+          "symbol": "emmc_dump",
+          "symbol_section": ".text",
+          "symbol_value": 23424,
+          "addend": 0
+        },
+        {
+          "section": ".text",
+          "offset": 63208,
+          "type": 283,
+          "symbol": "panic",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        }
+      ],
+      "note": "Validates cached PARTITION_CONFIG, sets target access mask with CMD6, retries after error, panics on selected repeated failures."
+    },
+    {
+      "label": "partition_switch_clear_previous",
+      "section": ".text",
+      "start": 63240,
+      "end_exclusive": 63292,
+      "file_offset": 63344,
+      "bytes": 52,
+      "sha256": "5b74662068ffb292b873ed6055a8a067a1ec17dd1d1141ca1c2a620328c4c42c",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/partition_switch_clear_previous.bin",
+      "relocations": [],
+      "note": "Clears previous nonzero mask using mode2,indexB3 before setting target."
+    },
+    {
+      "label": "CMD6_argument_builder",
+      "section": ".text",
+      "start": 59880,
+      "end_exclusive": 60016,
+      "file_offset": 59984,
+      "bytes": 136,
+      "sha256": "a5345d72f21f041050ce2aa893ef5ead26262354a9389fd104441874c8b7c64d",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/CMD6_argument_builder.bin",
+      "relocations": [],
+      "note": "CMD6 index6; argument=(access<<24)|(index<<16)|(value<<8)."
+    },
+    {
+      "label": "CMD6_set_bits_wrapper",
+      "section": ".text",
+      "start": 60072,
+      "end_exclusive": 60112,
+      "file_offset": 60176,
+      "bytes": 40,
+      "sha256": "371226d8c8e09c3487c9ae65f9ba600ffedbcb18645986afb0505e0cfb324464",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/CMD6_set_bits_wrapper.bin",
+      "relocations": [],
+      "note": "Uses access mode1,setbits; B3 index and mask supplied by caller."
+    },
+    {
+      "label": "boot_configuration_upper_bits_guard",
+      "section": ".text",
+      "start": 60296,
+      "end_exclusive": 60352,
+      "file_offset": 60400,
+      "bytes": 56,
+      "sha256": "55a898883bd731f77e04c4ddc062f458b68d176e1338fd4ca45befe817ca5f91",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/boot_configuration_upper_bits_guard.bin",
+      "relocations": [],
+      "note": "Requires (byte&f8)==8 in selected read call with repair flag0."
+    },
+    {
+      "label": "boot_configuration_failure_panic",
+      "section": ".text",
+      "start": 60432,
+      "end_exclusive": 60448,
+      "file_offset": 60536,
+      "bytes": 16,
+      "sha256": "d165bcebff990c90febaee0519c9e92731d9dfbe8940313f7e0c86da1d3e6982",
+      "raw": "work/sony-firmware-20261024/stage214-AP-boot-read-transfer-and-capacity/pins/boot_configuration_failure_panic.bin",
+      "relocations": [
+        {
+          "section": ".text",
+          "offset": 60432,
+          "type": 283,
+          "symbol": "emmc_dump",
+          "symbol_section": ".text",
+          "symbol_value": 23424,
+          "addend": 0
+        },
+        {
+          "section": ".text",
+          "offset": 60444,
+          "type": 283,
+          "symbol": "panic",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        }
+      ],
+      "note": "Selected invalid boot configuration guard path calls panic, not a normal read error."
+    }
+  ],
+  "source_lines": [
+    {
+      "path": "GPL/include/linux/mmc/mmc.h",
+      "line": 297,
+      "text": "#define EXT_CSD_PART_CONFIG\t\t179\t/* R/W */"
+    },
+    {
+      "path": "GPL/include/linux/mmc/mmc.h",
+      "line": 319,
+      "text": "#define EXT_CSD_BOOT_MULT\t\t226\t/* RO */"
+    },
+    {
+      "path": "GPL/include/linux/mmc/mmc.h",
+      "line": 445,
+      "text": "#define MMC_SWITCH_MODE_SET_BITS\t0x01\t/* Set bits which are 1 in value */"
+    },
+    {
+      "path": "GPL/include/linux/mmc/mmc.h",
+      "line": 446,
+      "text": "#define MMC_SWITCH_MODE_CLEAR_BITS\t0x02\t/* Clear bits which are 1 in value */"
+    },
+    {
+      "path": "GPL/drivers/mmc/core/mmc.c",
+      "line": 446,
+      "text": "\t\t\t\tpart_size = ext_csd[EXT_CSD_BOOT_MULT] << 17;"
+    }
+  ],
+  "capacity": {
+    "source_register": "EXT_CSD[226] BOOT_MULT",
+    "state_cache_offset": "0xdc",
+    "bytes_formula": "unsignedEXT_CSD[226]<<17",
+    "actual_body_value": null,
+    "CMD8_response_and_standard_register_mapping_bound": true
+  },
+  "read_view": {
+    "boot_descriptor_optional_context_null_basis": "stage213 AP-storage-contract-proof.json",
+    "single_and_multi_read_preserve_null_context": true,
+    "sequence_and_host_function_pointer_tables_bound": true,
+    "controller_optional_reset_transfer_wait_callbacks_skipped_when_null": true,
+    "skip_branches": [
+      {
+        "offset": 8740,
+        "zero_register": "x0",
+        "target": 8768
+      },
+      {
+        "offset": 8932,
+        "zero_register": "x0",
+        "target": 8964
+      },
+      {
+        "offset": 9844,
+        "zero_register": "x0",
+        "target": 10136
+      }
+    ],
+    "software_path_scope": "Selected boot block read omits the identified eMMC decrypt callbacks; ordinary DMA address-mapping callbacks still exist.",
+    "actual_body_bytes_or_end_to_end_raw_restore_verified": false,
+    "arbitrary_driver_aliases_or_hardware_crypto_absence_proven": false,
+    "all_boot_components_plaintext_claimed": false
+  },
+  "access_switch": {
+    "software_kind_access_mask": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "8": 0,
+      "9": 0
+    },
+    "register": "EXT_CSD[179] PARTITION_CONFIG",
+    "clears_previous_mask_with_mode": 2,
+    "sets_target_mask_with_mode": 1,
+    "command_index": 6,
+    "selected_masks_only_affect_low3bits": true,
+    "selected_guard_requires_upper_bits": "(PARTITION_CONFIG &0xf8)==8",
+    "access_selection_state_may_change_during_file_read": true,
+    "error_paths_include_kernel_panic": true,
+    "explicit_previous_partition_restoration_after_read_proven": false,
+    "automatic_recovery_or_power_cycle_effect_proven": false
+  },
+  "raw_word_checks": 9,
+  "relocation_checks": 6,
+  "limits": [
+    "All paths are static conditions in official7.02 main modules, not measured current p1/body behavior.",
+    "No command sequence has been sent; predicted register masks are not actual card receipts.",
+    "No claim entire read operation is state-free, or all error paths return normally.",
+    "Selected optional decrypt callbacks are closed; actual byte view, restoration and independent entry require their own evidence."
+  ],
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "persistent_write_release": false
+}

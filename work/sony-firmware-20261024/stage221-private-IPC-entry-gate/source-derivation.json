@@ -1,0 +1,41 @@
+{
+  "module_source": "work/sony-firmware-20261024/stage219-bound-handoff-and-request-claims/boot_module.c",
+  "module_before_sha256": "0cb09f2ccfe6f7dedaaa031ec1ffe1c1ff936b7b64779be2ff0603bcdc17ad8f",
+  "module_sha256": "7f5711e1b8a617d36cdf0df4ed74ba16cbb6016fed40ca9da977316e1bf937c2",
+  "module_changes": [
+    {
+      "offset_in_previous": 408,
+      "before": "static const u8 shell_command[]=\"/bin/sh\\0-c\\0/bin/date -s 070421422017.26\";",
+      "after": "static const u8 shell_command[]=\"/bin/sh\\0-c\\0:\";"
+    },
+    {
+      "offset_in_previous": 4197,
+      "before": "#include \"handoff_impl.inc\"",
+      "after": "#include \"handoff_impl.inc\"\n#include \"ipc_gate.inc\""
+    },
+    {
+      "offset_in_previous": 4450,
+      "before": "__attribute__((visibility(\"default\"))) int fx3_boot_read_window(void){\n    if(__atomic_exchange_n(&guard_used,1,__ATOMIC_ACQ_REL))return G_REPLAY;\n    if(module_initialized!=0x4658334d4f443031ULL)return G_INIT;\n    int result=g_filter();if(result)return result;\n    u8 bound_request[128];u64 deadline=0;\n    result=h_bind_and_claim(bound_request,&deadline);if(result)return result;\n    result=fx3_inner_boot_read_window(bound_request,deadline);\n    if(!result){u64 now=0;if(!tick(&now)||now>=deadline)return G_EXPIRED;}\n    return result;\n}\n",
+      "after": "__attribute__((visibility(\"default\"))) int fx3_boot_read_window(void){\n    if(__atomic_exchange_n(&guard_used,1,__ATOMIC_ACQ_REL))return G_REPLAY;\n    if(module_initialized!=0x4658334d4f443031ULL)return G_INIT;\n    struct ipc_context gate;zero((u8 *)&gate,sizeof(gate));int permitted=0;\n    int result=ipc_begin(&gate);if(result)goto done;\n    result=g_filter();if(result)goto done;\n    u8 bound_request[128];u64 deadline=0;\n    result=h_bind_and_claim(bound_request,&deadline,gate.hand);if(result)goto done;\n    result=ipc_permission(&gate);if(result)goto done;permitted=1;\n    result=fx3_inner_boot_read_window(bound_request,deadline);\n    if(!result){u64 now=0;if(!tick(&now)||now>=deadline)result=G_EXPIRED;}\ndone:return ipc_finish(&gate,result,permitted);\n}\n"
+    }
+  ],
+  "handoff_before_sha256": "5788e13bcd0335ac3928433d8cb54d6b3e1eb0a587cc9845ae9dbee3f3d04fee",
+  "handoff_sha256": "34aa6e8979b4e30ddeec50912eb6da28c45d2920c83a19cee59e6b980445385c",
+  "handoff_changes": [
+    {
+      "offset_in_previous": 3349,
+      "before": "static int h_bind_and_claim(u8 bound_request[128],u64 *operation_deadline){",
+      "after": "static int h_bind_and_claim(u8 bound_request[128],u64 *operation_deadline,const u8 expected_hand[256]){"
+    },
+    {
+      "offset_in_previous": 3816,
+      "before": "    result=G_BIND;\n    if(!equal(hand,hand_magic,16)",
+      "after": "    result=G_BIND;\n    if(!expected_hand||!equal(hand,expected_hand,256))goto done;\n    if(!equal(hand,hand_magic,16)"
+    }
+  ],
+  "inner_source_sha256": "a1459db35501716dc414b45479aaa25c1ddb252ec440bd24258c4db7dbd78683",
+  "all_other_module_and_handoff_bytes_preserved": true,
+  "ipc_gate_sha256": "159dc5cb16b937f02f0399939831370c58242779d9bbc8a71d2bee6c1ee55725",
+  "initial_poll_budget_refinement_before_execution": true,
+  "negative_recv_also_closes_received_rights": true
+}

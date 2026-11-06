@@ -1,0 +1,24 @@
+{
+  "checked_utc": "2026-11-04T15:39:31.191089+00:00",
+  "argv": [
+    "/usr/bin/log",
+    "show",
+    "--start",
+    "2026-11-04 07:34:35",
+    "--end",
+    "2026-11-04 07:34:45",
+    "--style",
+    "compact",
+    "--predicate",
+    "process == \"kernel\" AND (eventMessage CONTAINS[c] \"unmounting volume KAFU2T\" OR eventMessage CONTAINS[c] \"mount-complete volume KAFU2T\" OR (eventMessage CONTAINS[c] \"disk7\" AND (eventMessage CONTAINS[c] \"unclean unmount\" OR eventMessage CONTAINS[c] \"failed to finish all transactions\")))"
+  ],
+  "exit_code": 0,
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "stdout_sha256": "ca08beb42a9f7c3b3b739ae0e1bdd0ba2d45a08e1397c3b2f542f7047119bba1",
+  "scope": "read-only host log query; no disk repair/remount/test performed",
+  "earlier_80m_query": "timed out after45s; narrowed to exact10s window",
+  "notes": [
+    "r6 QMP timeout and first-exception write ENOENT coincide with kernel unmount/remount",
+    "physical disappearance cause and earlier no-frame remain unknown"
+  ]
+}

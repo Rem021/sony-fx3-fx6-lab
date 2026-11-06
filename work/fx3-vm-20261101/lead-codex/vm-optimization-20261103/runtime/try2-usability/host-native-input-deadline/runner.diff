@@ -1,0 +1,53 @@
+--- run_trial_v15_startup_receipt.py
++++ run_trial_v16_input_deadline.py
+@@ -78,15 +78,26 @@
+ 
+ 
+ def checkpoint(value):
+-    path = OUT / 'web-startup-receipt-STATE.json'
++    path = OUT / 'web-input-deadline-STATE.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = OUT / 'web-startup-receipt-STATE.json.tmp'
++    temp = OUT / 'web-input-deadline-STATE.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
++
++
++def native_input_deadline_error(command, step, up_seen, both_native_events, now):
++    """Bound missing sender AND native-consumer evidence, without resending a key."""
++    if command is None or now-command['sent_monotonic'] <= 12:
++        return None
++    if step not in up_seen:
++        return '按键 12 秒内未得到原生 key-up 回执'
++    if not both_native_events:
++        return '按键 12 秒内原程序按下/抬起接收证据不完整，停止本轮；不会自动重发。'
++    return None
+ 
+ 
+ def main():
+@@ -105,7 +116,7 @@
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2startupinternal' if ns.internal_hoststep else 'try2startup'
++    ns.label = 'try2inputinternal' if ns.internal_hoststep else 'try2input'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+@@ -493,8 +504,10 @@
+                                  else '本轮已达按键上限，请结束后重新启动。' if host_step == ns.max_steps
+                                  else '画面已更新，可以继续操作。' if frame_changed
+                                  else '按键已接收，像素未变；请观察后再继续。')
+-                if current_command is not None and host_step not in up_seen and time.monotonic()-current_command['sent_monotonic'] > 12:
+-                    raise RuntimeError('按键 12 秒内未得到原生 key-up 回执')
++                missing_input_error = native_input_deadline_error(
++                    current_command, host_step, up_seen, both_native_events, time.monotonic())
++                if missing_input_error:
++                    raise RuntimeError(missing_input_error)
+ 
+                 proposed = trial.take() if current_command is None and not ns.internal_hoststep else None
+                 if ns.internal_hoststep and current_command is None and phaseA_capture is not None and trial.render_valid:

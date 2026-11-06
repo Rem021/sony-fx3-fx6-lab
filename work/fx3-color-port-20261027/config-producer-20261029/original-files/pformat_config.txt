@@ -1,0 +1,85 @@
+#
+# IPS-X : Information Sector parameters
+#
+
+load_param {
+    awake_start    = 4
+    awake_memaddr  = 0xFE040800
+    awake_entry    = 0xFE049000
+    awake_loadsize = 0x00021800
+
+    bp_entry       = 0xFE049000
+    bp_loadsize    = 0x00021800
+}
+
+# Loader2
+file_param{
+    path    = "loader_nor.bin"
+    load    = 0xFE049000
+    start   = 72
+    size    = 200
+
+    update  = 1
+    enc     = 1
+}
+
+# Loader Backup
+file_param{
+    path    = "LdrBkup.bin"
+    load    = 0xFE048800
+    start   = 68
+    size    = 4
+
+    ldrinfo = 2
+    update  = 1
+    enc     = 1
+}
+
+# DGU
+file_param{
+    path    = "DGU.bin"
+    load    = 0xFE040800
+    start   = 4
+    size    = 64
+
+    ldrinfo = 0
+    update  = 1
+    enc     = 1
+}
+
+# MIS
+file_param{
+    path    = "MIS.bin"
+    load    = 0xFE080000
+    start   = 512
+    size    = 256
+
+    ldrinfo = 1
+    update  = 1
+    ddr = 1
+}
+
+# TOPPERS
+file_param{
+    path    = "cpapp-b.bin"
+    load    = 0x00108000
+    start   = 4096
+    size    = 0
+
+    ldrinfo = 3
+    update  = 1
+    ddr = 1
+}
+
+# PCIe Patch
+file_param{
+    path    = "pcie_phy_fw.bin"
+    load    = 0xFE0A0000
+    start   = 768
+    size    = 0
+
+    ldrinfo = 4
+    update  = 1
+    ddr     = 1
+}
+

@@ -1,0 +1,22 @@
+{
+  "task_id": "task_ce0dcb803309",
+  "dispatch_id": "ctx_311e50951924",
+  "writes_restricted_to": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate",
+  "runtime_source_changes": [],
+  "new_guest_helper_or_CPIO": false,
+  "host_subprocesses": [
+    "python3 -B audits",
+    "xcrun clang host fixture compile (exit0)",
+    "host mock fixture (exit0)",
+    "xcrun llvm-objdump read-only ELF analysis",
+    "diskutil info -plist read-only volume verification",
+    "orca orchestration status/check"
+  ],
+  "VM_Start_service_browser_QMP_guest_hardware_commands": [],
+  "fixture_ports": [],
+  "fixture_browser_sessions": [],
+  "host_tests_complete": true,
+  "guest_tests": false,
+  "original_input_verifier_exit": 1,
+  "known_drift_source": "msg_8d4c13ba6a19"
+}

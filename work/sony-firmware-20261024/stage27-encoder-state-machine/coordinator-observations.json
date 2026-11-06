@@ -1,0 +1,33 @@
+{
+  "schema": "fx3-stage27-coordinator-review/1",
+  "created_utc": "2026-10-25T21:42:03.743278+00:00",
+  "status": "PASS_ARTIFACT_SOURCE_BYTE_AND_STATE_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent structural/source-byte/hash review; no independent replay or real camera verification.",
+  "previous_stage_files_verified": 11,
+  "raw_map_dependency_stage_files_verified": 15,
+  "original_raw_instruction_records_checked": 240,
+  "state_processor_cases": 10,
+  "independent_action_entry_cases": 2,
+  "diagnostic_function_audit": "Two own-body direct-call/store scans; no runtime logger or universal no-side-effect claim.",
+  "state_guard_and_next_are_not_format_acceptance": true,
+  "post_transition_fragment_excludes_actual_transition_hooks": true,
+  "raw_processor_return_capture_is_read_only": true,
+  "busy_queue_copy_precedes_full_count_check": true,
+  "embedded_pointer_not_rebased_in_this_copy_only": true,
+  "no_use_after_free_drop_or_firmware_bug_claim_without_full_lifecycle": true,
+  "unknown_event_tail_0x18_is_synthetic_untyped_fixture": true,
+  "native_output_adapters": false,
+  "guest_stores_only_fixture_and_stack": true,
+  "unverified": [
+    "Live interface behind owner+0x20 /vtable+0x10 at0x17b794 and actual Open action",
+    "Actual state exit/entry/task hooks, full queue consumption, completion and parameter lifetime",
+    "OSAL register, real sender, physical/shared address transport, resources/VCD selection and hardware replies",
+    "Same-body healthy backup, native safe points, restricted restore/readback, independent recovery and WBI/cold boot",
+    "Actual main recording, full HEVC media/audio/timebase/sync/long-run/thermal and regression"
+  ],
+  "new_Windows_UU_attempts": false,
+  "camera_or_remote_access_attempted": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

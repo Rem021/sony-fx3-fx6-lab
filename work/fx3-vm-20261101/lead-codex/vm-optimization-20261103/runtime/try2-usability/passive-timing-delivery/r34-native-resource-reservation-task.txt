@@ -1,0 +1,17 @@
+r34：FX3原生资源边界只读审查（新分析任务，不是重试r33实现）
+
+目标：为FX3可靠性支线回答r33唯一优先布局问题：实际N64内libObj native resource open到DMM的路径，是否可能使UI64KiB reserve成为GPE可写parent。FX6仍是主线，但本任务不处理被提供方拒绝的FX6实现，不执行或改写该候选。固定FX3硬件及所有运行策略保持不变。
+
+已验收证据：r33正式worker_done msg_151e336b83ea，outcome failed；49项交付协调复核一致，SHA256SUMS b16584e9f19853663eab579a8d040a787e606f24289a7748ee75f9bc3958c894。r33/LAYOUT.md、NEXT-DATA.md、REPORT.md提供入口。r33 host反例的native open/mmap均mock，不能视为真实覆盖。现有四轮日志未观察到UI重叠，不足以证明不存在。保留这些限制。
+
+输入：沿用同目录r16-fixed-slot-guests/guest-N64，CPIO SHA aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9；实际成员usr/lib/libObj.so（2876600B，c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae），usr/kmod/dmm.ko（118336B，1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a）。用ACTUAL-MEMBERS.json和实际CPIO验证，不从相邻机型借语义。先复用现有DMM/kernel分析及官方GPL源绑定，避免重复穷举。
+
+本次限定交付：
+1. 从libObj原hook入口0x1031b0确认函数边界、type403分支、phys/bytes来源、调用边及数据布局；追到确有证据关联的DMM ioctl/申请/导入/显式物理映射分支。只写已证路径，未决间接调用与缺失返回条件明确unknown。
+2. 核实固定kernel的memrsv对这个DMM路径实际有什么约束；证明依赖的源/二进制/配置必须绑定实际成员。不能用cmdline或Linux一般常识替代原路径证据。
+3. 给出决策：已证相关路径排除UI reserve / 已证原生可接受此类范围 / 未知及精确最小缺口。有限反例不得冒充真实可达性；不需要无限穷尽所有固件，遇到关键缺证即交付明确边界。只分析相关native-open路径，不扩展为漏洞研究、绕过或固件改造。
+4. 如果发现原ABI允许显式映射该保留区，报告诊断存储选址不合适及原证据；不修改GPE/DMM、内存布局或任何门。跨模块BSS collector/probe设计留待该结论评审，本任务不实施。
+
+允许：只读解析/反汇编现有CPIO/ELF和相关既有分析，必要时仅抽取上述成员到新输出目录；宿主离线分析脚本。禁止VM/Start/浏览器/服务/QMP/guest命令/物理相机/USB/SD/刷写，不运行guest ELF，不编译运行helper，不修改部署/原源码/CPIO/README/ledger。不写网络消息给其他代理。不得以扩大硬件保留区解决问题。
+
+输出仅 /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review 。写入前核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B；来源清单、地址/字节证据、分析脚本、REPORT、NEXT最小数据项及SHA清单。输入结束核对仅必要技术材料，共享README不要误列运行冻结；若技术输入漂移报告，不覆盖。分析交付完整可succeeded，但必须与存储准入/实现/运行成功分开。最终worker_done，结果不足仍可作为明确的分析结论，不追加未经审查的实现。

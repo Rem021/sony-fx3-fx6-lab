@@ -1,0 +1,55 @@
+0xfe043b98: 08084039 ldrb w8, [x0, #2]
+0xfe043b9c: 08050012 and w8, w8, #3
+0xfe043ba0: 28000039 strb w8, [x1]
+0xfe043ba4: 08044079 ldrh w8, [x0, #2]
+0xfe043ba8: 08090253 ubfx w8, w8, #2, #1
+0xfe043bac: 28040039 strb w8, [x1, #1]
+0xfe043bb0: 08044079 ldrh w8, [x0, #2]
+0xfe043bb4: 08110353 ubfx w8, w8, #3, #2
+0xfe043bb8: 28080039 strb w8, [x1, #2]
+0xfe043bbc: 08044079 ldrh w8, [x0, #2]
+0xfe043bc0: 08190553 ubfx w8, w8, #5, #2
+0xfe043bc4: 280c0039 strb w8, [x1, #3]
+0xfe043bc8: 08044079 ldrh w8, [x0, #2]
+0xfe043bcc: 081d0753 ubfx w8, w8, #7, #1
+0xfe043bd0: 28100039 strb w8, [x1, #4]
+0xfe043bd4: 080c4039 ldrb w8, [x0, #3]
+0xfe043bd8: 08010012 and w8, w8, #1
+0xfe043bdc: 28140039 strb w8, [x1, #5]
+0xfe043be0: 08044079 ldrh w8, [x0, #2]
+0xfe043be4: 08350c53 ubfx w8, w8, #0xc, #2
+0xfe043be8: 28180039 strb w8, [x1, #6]
+0xfe043bec: 08044079 ldrh w8, [x0, #2]
+0xfe043bf0: 08390e53 ubfx w8, w8, #0xe, #1
+0xfe043bf4: 28480039 strb w8, [x1, #0x12]
+0xfe043bf8: 08044079 ldrh w8, [x0, #2]
+0xfe043bfc: 08310c53 ubfx w8, w8, #0xc, #1
+0xfe043c00: 281c0039 strb w8, [x1, #7]
+0xfe043c04: 08044079 ldrh w8, [x0, #2]
+0xfe043c08: 08350d53 ubfx w8, w8, #0xd, #1
+0xfe043c0c: 28200039 strb w8, [x1, #8]
+0xfe043c10: 08044079 ldrh w8, [x0, #2]
+0xfe043c14: 08350c53 ubfx w8, w8, #0xc, #2
+0xfe043c18: 28240039 strb w8, [x1, #9]
+0xfe043c1c: 08044079 ldrh w8, [x0, #2]
+0xfe043c20: 08390e53 ubfx w8, w8, #0xe, #1
+0xfe043c24: 28280039 strb w8, [x1, #0xa]
+0xfe043c28: 08044079 ldrh w8, [x0, #2]
+0xfe043c2c: 087d0f53 lsr w8, w8, #0xf
+0xfe043c30: 282c0039 strb w8, [x1, #0xb]
+0xfe043c34: 08044079 ldrh w8, [x0, #2]
+0xfe043c38: 08310c53 ubfx w8, w8, #0xc, #1
+0xfe043c3c: 28300039 strb w8, [x1, #0xc]
+0xfe043c40: 08044079 ldrh w8, [x0, #2]
+0xfe043c44: 08310c53 ubfx w8, w8, #0xc, #1
+0xfe043c48: 28340039 strb w8, [x1, #0xd]
+0xfe043c4c: 08044079 ldrh w8, [x0, #2]
+0xfe043c50: 087d0f53 lsr w8, w8, #0xf
+0xfe043c54: 28380039 strb w8, [x1, #0xe]
+0xfe043c58: 08044079 ldrh w8, [x0, #2]
+0xfe043c5c: 08350d53 ubfx w8, w8, #0xd, #1
+0xfe043c60: 283c0039 strb w8, [x1, #0xf]
+0xfe043c64: 08044079 ldrh w8, [x0, #2]
+0xfe043c68: 087d0e53 lsr w8, w8, #0xe
+0xfe043c6c: 28400039 strb w8, [x1, #0x10]
+0xfe043c70: c0035fd6 ret 

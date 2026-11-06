@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "name": "check-gpe94-child",
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe94-child.log",
+      "log_sha256": "c22fa4add3ac399d0b094196d43132dfa7f878cda39f6a61a45a89a6835bba43"
+    },
+    {
+      "name": "check-gpe94-regression",
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe94-regression.log",
+      "log_sha256": "b084ccda2da60d3f7753d9a14930eefd7700da67069b4a26e0afe63f12d68101"
+    }
+  ],
+  "proof_replay_sha256": "331cd0acab44d79634d297d7662cf0f46af0304add1f4071c2ee31455febb4a6",
+  "audit_12_python_guard_model_vectors_replayed": true,
+  "C_vectors": {
+    "pixel": 2,
+    "admission_actual_contract": 10,
+    "additional_prewrite_reject": 9
+  },
+  "limitations": [
+    "bitmap command binding unproven",
+    "queued ABA uncovered; reuse new epoch observed but raw FIFO lacks epoch sidecar",
+    "compaction observation only, never blocked"
+  ],
+  "authority": "msg_fd22adc6ac57",
+  "73_independent_reference_FNV_equal": true,
+  "compaction_assembly_test": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap94-compaction-probe-host-check.json"
+}

@@ -1,0 +1,191 @@
+00003ed8 tst      x0, #0x7fff
+00003edc b.ne     #0x3ef8
+00003ee0 ldr      x0, #0x41d8
+00003ee4 ldr      x0, [x0]
+00003ee8 ldrb     w0, [x0, #0x17]
+00003eec cbnz     w0, #0x40f0
+00003ef0 mov      w0, #-0x400
+00003ef4 ret      
+00003ef8 stp      x29, x30, [sp, #-0x60]!
+00003efc mov      x29, sp
+00003f00 stp      x21, x22, [sp, #0x20]
+00003f04 and      w22, w0, #0xffff
+00003f08 stp      x19, x20, [sp, #0x10]
+00003f0c stp      x23, x24, [sp, #0x30]
+00003f10 stp      x25, x26, [sp, #0x40]
+00003f14 stp      x27, x28, [sp, #0x50]
+00003f18 tbnz     w0, #0xf, #0x4050
+00003f1c mov      w21, w0
+00003f20 mov      x0, x1
+00003f24 mov      x19, x1
+00003f28 mov      x24, x30
+00003f2c bl       #0x3f2c ; ('uipc_check_handle', '0x0')
+00003f30 cbnz     w0, #0x4050
+00003f34 ldr      x25, #0x41d8
+00003f38 sub      x23, x19, #0x18
+00003f3c ldr      x0, [x25]
+00003f40 ldrb     w0, [x0, #0x14]
+00003f44 cbz      w0, #0x3f78
+00003f48 ldp      w0, w5, [x19, #-8]
+00003f4c mov      w6, #0x55555555
+00003f50 add      x26, x23, #0x14
+00003f54 cmp      w5, w6
+00003f58 add      w0, w0, #3
+00003f5c and      w20, w0, #0xfffffffc
+00003f60 add      x27, x20, x19
+00003f64 b.ne     #0x41a4
+00003f68 ldr      w5, [x19, w20, uxtw]
+00003f6c mov      w0, #0x77777777
+00003f70 cmp      w5, w0
+00003f74 b.ne     #0x4098
+00003f78 tbnz     w21, #0x1f, #0x40c4
+00003f7c cmp      w22, #0x3f
+00003f80 b.ls     #0x4070
+00003f84 mov      w0, w22
+00003f88 bl       #0x2af0
+00003f8c mov      x20, x0
+00003f90 cbz      x0, #0x4080
+00003f94 ldrb     w0, [x20]
+00003f98 tbz      w0, #3, #0x4120
+00003f9c ldr      x3, [x20, #0x30]
+00003fa0 cbz      x3, #0x4180
+00003fa4 ldr      x0, [x25]
+00003fa8 and      w2, w21, #0xfffffff
+00003fac ldrb     w0, [x0, #0x14]
+00003fb0 cbz      w0, #0x40f8
+00003fb4 cmp      w3, w2
+00003fb8 b.ne     #0x410c
+00003fbc ldur     w0, [x19, #-0xc]
+00003fc0 bl       #0x2d70
+00003fc4 ldr      x0, [x20, #0x38]
+00003fc8 bl       #0x3fc8 ; ('osal_lock', '0x0')
+00003fcc ldr      x0, [x20, #0x10]
+00003fd0 cbz      x0, #0x4158
+00003fd4 ldr      x3, [x20, #0x18]
+00003fd8 ldurb    w1, [x19, #-0xf]
+00003fdc and      w1, w1, #0x3f
+00003fe0 ldrb     w2, [x3, #9]
+00003fe4 and      w2, w2, #0x3f
+00003fe8 cmp      w1, w2
+00003fec b.le     #0x4130
+00003ff0 add      x3, x20, #0x10
+00003ff4 ldrb     w2, [x0, #9]
+00003ff8 and      w2, w2, #0x3f
+00003ffc cmp      w1, w2
+00004000 b.gt     #0x4010
+00004004 mov      x3, x0
+00004008 ldr      x0, [x0]
+0000400c cbnz     x0, #0x3ff4
+00004010 stur     x0, [x19, #-0x18]
+00004014 ldr      x0, [x3]
+00004018 cbz      x0, #0x4160
+0000401c str      x23, [x3]
+00004020 ldrb     w0, [x20]
+00004024 tbz      w0, #1, #0x4144
+00004028 ldr      x0, [x20, #0x38]
+0000402c bl       #0x402c ; ('osal_unlock', '0x0')
+00004030 mov      w0, #0
+00004034 ldp      x19, x20, [sp, #0x10]
+00004038 ldp      x21, x22, [sp, #0x20]
+0000403c ldp      x23, x24, [sp, #0x30]
+00004040 ldp      x25, x26, [sp, #0x40]
+00004044 ldp      x27, x28, [sp, #0x50]
+00004048 ldp      x29, x30, [sp], #0x60
+0000404c ret      
+00004050 mov      w0, #-0x400
+00004054 ldp      x19, x20, [sp, #0x10]
+00004058 ldp      x21, x22, [sp, #0x20]
+0000405c ldp      x23, x24, [sp, #0x30]
+00004060 ldp      x25, x26, [sp, #0x40]
+00004064 ldp      x27, x28, [sp, #0x50]
+00004068 ldp      x29, x30, [sp], #0x60
+0000406c ret      
+00004070 ldr      x0, #0x41f8
+00004074 add      x0, x0, w22, uxth #3
+00004078 ldr      x20, [x0, #0x10]
+0000407c cbnz     x20, #0x3f94
+00004080 mov      w0, w22
+00004084 bl       #0x3090
+00004088 mov      x20, x0
+0000408c cbnz     x0, #0x3f94
+00004090 mov      w0, #-0x3ff
+00004094 b        #0x4054
+00004098 ldr      x28, #0x41e0
+0000409c ldr      x0, #0x41f0
+000040a0 mov      x4, x27
+000040a4 mov      x3, x26
+000040a8 add      x1, x28, #0x30
+000040ac mov      w2, w21
+000040b0 mov      w6, #0x77777777
+000040b4 bl       #0x40b4 ; ('printk', '0x0')
+000040b8 mov      w0, w21
+000040bc bl       #0x40bc ; ('dump_trace', '0x0')
+000040c0 tbz      w21, #0x1f, #0x3f7c
+000040c4 tst      x21, #0x70000000
+000040c8 b.eq     #0x3f7c
+000040cc ldr      x0, #0x41f8
+000040d0 ldr      x0, [x0, #0x458]
+000040d4 cbz      x0, #0x4164
+000040d8 ldr      x2, [x0]
+000040dc cbz      x2, #0x4164
+000040e0 mov      x1, x19
+000040e4 mov      w0, w21
+000040e8 blr      x2
+000040ec b        #0x4054
+000040f0 brk      #0x800
+000040f4 nop      
+000040f8 cbz      w3, #0x410c
+000040fc lsr      w0, w2, #0x10
+00004100 cmp      w0, #0
+00004104 ccmp     w3, w2, #4, ne
+00004108 b.eq     #0x3fc4
+0000410c ldr      x1, #0x41e0
+00004110 mov      x4, x24
+00004114 ldr      x0, #0x4210
+00004118 add      x1, x1, #0x48
+0000411c bl       #0x411c ; ('printk', '0x0')
+00004120 ldr      x0, [x25]
+00004124 ldrb     w0, [x0, #0x14]
+00004128 cbz      w0, #0x3fc4
+0000412c b        #0x3fbc
+00004130 str      x23, [x3]
+00004134 str      x23, [x20, #0x18]
+00004138 stur     xzr, [x19, #-0x18]
+0000413c ldrb     w0, [x20]
+00004140 tbnz     w0, #1, #0x4028
+00004144 mov      w1, w22
+00004148 mov      x0, x20
+0000414c bl       #0x3898
+00004150 b        #0x4028
+00004154 nop      
+00004158 str      x23, [x20, #0x10]
+0000415c b        #0x4134
+00004160 brk      #0x800
+00004164 ldr      x1, #0x41e0
+00004168 mov      w2, w22
+0000416c ldr      x0, #0x4200
+00004170 add      x1, x1, #0x48
+00004174 bl       #0x4174 ; ('printk', '0x0')
+00004178 mov      w0, #0
+0000417c b        #0x4054
+00004180 ldr      x1, #0x41e0
+00004184 mov      w2, w22
+00004188 ldr      x0, #0x4208
+0000418c add      x1, x1, #0x48
+00004190 bl       #0x4190 ; ('printk', '0x0')
+00004194 ldr      x0, [x25]
+00004198 ldrb     w0, [x0, #0x17]
+0000419c cbz      w0, #0x4050
+000041a0 brk      #0x800
+000041a4 ldr      x28, #0x41e0
+000041a8 mov      x4, x27
+000041ac ldr      x0, #0x41e8
+000041b0 mov      x3, x26
+000041b4 mov      w2, w21
+000041b8 add      x1, x28, #0x30
+000041bc bl       #0x41bc ; ('printk', '0x0')
+000041c0 ldr      w5, [x20, x19]
+000041c4 mov      w0, #0x77777777
+000041c8 cmp      w5, w0
+000041cc b.eq     #0x40b8
+000041d0 b        #0x409c

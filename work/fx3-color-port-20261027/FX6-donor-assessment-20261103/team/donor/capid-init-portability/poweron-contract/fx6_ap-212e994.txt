@@ -1,0 +1,101 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 212e994: f9400022     	ldr	x2, [x1]
+ 212e998: a9007c02     	stp	x2, xzr, [x0]
+ 212e99c: f9400422     	ldr	x2, [x1, #0x8]
+ 212e9a0: f900043f     	str	xzr, [x1, #0x8]
+ 212e9a4: f9000402     	str	x2, [x0, #0x8]
+ 212e9a8: f9400822     	ldr	x2, [x1, #0x10]
+ 212e9ac: f900003f     	str	xzr, [x1]
+ 212e9b0: f900083f     	str	xzr, [x1, #0x10]
+ 212e9b4: f9000802     	str	x2, [x0, #0x10]
+ 212e9b8: d65f03c0     	ret
+ 212e9bc: b9400c02     	ldr	w2, [x0, #0xc]
+ 212e9c0: 7101fc5f     	cmp	w2, #0x7f
+ 212e9c4: 54000108     	b.hi	0x212e9e4 <Application_System_Init+0x15239a0>
+ 212e9c8: 8b224803     	add	x3, x0, w2, uxtw #2
+ 212e9cc: 11000442     	add	w2, w2, #0x1
+ 212e9d0: b9001061     	str	w1, [x3, #0x10]
+ 212e9d4: b9400401     	ldr	w1, [x0, #0x4]
+ 212e9d8: b9000c02     	str	w2, [x0, #0xc]
+ 212e9dc: 11000421     	add	w1, w1, #0x1
+ 212e9e0: b9000401     	str	w1, [x0, #0x4]
+ 212e9e4: d65f03c0     	ret
+ 212e9e8: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+ 212e9ec: 910003fd     	mov	x29, sp
+ 212e9f0: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 212e9f4: aa0003f3     	mov	x19, x0
+ 212e9f8: 91092014     	add	x20, x0, #0x248
+ 212e9fc: aa1403e0     	mov	x0, x20
+ 212ea00: 29017e62     	stp	w2, wzr, [x19, #0x8]
+ 212ea04: 29007e61     	stp	w1, wzr, [x19]
+ 212ea08: 29027e7f     	stp	wzr, wzr, [x19, #0x10]
+ 212ea0c: 97a7a5fd     	bl	0xb18200 <pthread_mutexattr_init@plt>
+ 212ea10: aa1403e0     	mov	x0, x20
+ 212ea14: 52800001     	mov	w1, #0x0                // =0
+ 212ea18: 97a7a616     	bl	0xb18270 <pthread_mutexattr_settype@plt>
+ 212ea1c: aa1403e1     	mov	x1, x20
+ 212ea20: 91086260     	add	x0, x19, #0x218
+ 212ea24: 97a7a5c3     	bl	0xb18130 <pthread_mutex_init@plt>
+ 212ea28: 90006dc0     	adrp	x0, 0x2ee6000
+ 212ea2c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 212ea30: f9424800     	ldr	x0, [x0, #0x490]
+ 212ea34: b9400001     	ldr	w1, [x0]
+ 212ea38: 11000421     	add	w1, w1, #0x1
+ 212ea3c: b9000001     	str	w1, [x0]
+ 212ea40: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+ 212ea44: d65f03c0     	ret
+ 212ea48: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+ 212ea4c: 910003fd     	mov	x29, sp
+ 212ea50: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 212ea54: 91086016     	add	x22, x0, #0x218
+ 212ea58: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 212ea5c: aa0003f3     	mov	x19, x0
+ 212ea60: aa1603e0     	mov	x0, x22
+ 212ea64: a90363f7     	stp	x23, x24, [sp, #0x30]
+ 212ea68: 91006274     	add	x20, x19, #0x18
+ 212ea6c: 52800017     	mov	w23, #0x0               // =0
+ 212ea70: aa1403f5     	mov	x21, x20
+ 212ea74: 97a7abd7     	bl	0xb199d0 <pthread_mutex_lock@plt>
+ 212ea78: 90006dc0     	adrp	x0, 0x2ee6000
+ 212ea7c: f9424800     	ldr	x0, [x0, #0x490]
+ 212ea80: b9400001     	ldr	w1, [x0]
+ 212ea84: 51000421     	sub	w1, w1, #0x1
+ 212ea88: b9000001     	str	w1, [x0]
+ 212ea8c: b9401260     	ldr	w0, [x19, #0x10]
+ 212ea90: 6b0002ff     	cmp	w23, w0
+ 212ea94: 54000162     	b.hs	0x212eac0 <Application_System_Init+0x1523a7c>
+ 212ea98: f94002b8     	ldr	x24, [x21]
+ 212ea9c: b40000d8     	cbz	x24, 0x212eab4 <Application_System_Init+0x1523a70>
+ 212eaa0: aa1803e0     	mov	x0, x24
+ 212eaa4: 97ffffe9     	bl	0x212ea48 <Application_System_Init+0x1523a04>
+ 212eaa8: aa1803e0     	mov	x0, x24
+ 212eaac: d2804a01     	mov	x1, #0x250              // =592
+ 212eab0: 97a7a16c     	bl	0xb17060 <_ZdlPvm@plt>
+ 212eab4: 110006f7     	add	w23, w23, #0x1
+ 212eab8: 910022b5     	add	x21, x21, #0x8
+ 212eabc: 17fffff4     	b	0x212ea8c <Application_System_Init+0x1523a48>
+ 212eac0: 90006dd5     	adrp	x21, 0x2ee6000
+ 212eac4: 52800017     	mov	w23, #0x0               // =0
+ 212eac8: f944ceb5     	ldr	x21, [x21, #0x998]
+ 212eacc: b9401660     	ldr	w0, [x19, #0x14]
+ 212ead0: 6b0002ff     	cmp	w23, w0
+ 212ead4: 54000162     	b.hs	0x212eb00 <Application_System_Init+0x1523abc>
+ 212ead8: f9400280     	ldr	x0, [x20]
+ 212eadc: b40000c0     	cbz	x0, 0x212eaf4 <Application_System_Init+0x1523ab0>
+ 212eae0: b94002a1     	ldr	w1, [x21]
+ 212eae4: 51000421     	sub	w1, w1, #0x1
+ 212eae8: b90002a1     	str	w1, [x21]
+ 212eaec: d2804201     	mov	x1, #0x210              // =528
+ 212eaf0: 97a7a15c     	bl	0xb17060 <_ZdlPvm@plt>
+ 212eaf4: 110006f7     	add	w23, w23, #0x1
+ 212eaf8: 91002294     	add	x20, x20, #0x8
+ 212eafc: 17fffff4     	b	0x212eacc <Application_System_Init+0x1523a88>
+ 212eb00: aa1603e0     	mov	x0, x22
+ 212eb04: 97a7aa93     	bl	0xb19550 <pthread_mutex_unlock@plt>
+ 212eb08: aa1603e0     	mov	x0, x22
+ 212eb0c: 97a7a101     	bl	0xb16f10 <pthread_mutex_destroy@plt>

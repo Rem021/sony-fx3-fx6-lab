@@ -1,0 +1,2699 @@
+{
+  "created_utc": "2026-10-26T17:38:57.743640+00:00",
+  "status": "PASS_BOUNDED_ORIGINAL_INQUIRY_HANDLER_RAM_ONLY",
+  "script_sha256": "c76b33ab2322e285fcb4aa25fbb16b90210eb668990f5c8e563442e962200c43",
+  "original_module_sha256": "b43130dbc3d9b72dc03c3acb7993639e1cefcbb43621fef809f6f617cb30b255",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "original_template_library_sha256": "6caefd0677ee01cc6cdd54555f4422b03a86d12304c60f5372de18315bdd4396",
+  "module_function_section_offset": "0x6d60",
+  "function_bytes": 632,
+  "function_unrelocated_sha256": "173f6136162f4fcd3025ef67adc7325a33f723c4564f7fdecd4d5c59a7a0c277",
+  "guest_CALL26_relocation": {
+    "section_offset": "0x6ed0",
+    "original": "0x94000000",
+    "relocated": "0x9747a3ec",
+    "resolved_memcpy_candidate": {
+      "entry_offset": "0x57de98",
+      "value": "0xffffff800826fe80",
+      "value_within_kernel_file": true,
+      "valid_sorted_name_neighbors": [
+        {
+          "entry_offset": "0x57de88",
+          "name": "memcmp",
+          "value": "0xffffff800826fc90",
+          "value_within_kernel_file": true
+        },
+        {
+          "entry_offset": "0x57de98",
+          "name": "memcpy",
+          "value": "0xffffff800826fe80",
+          "value_within_kernel_file": true
+        },
+        {
+          "entry_offset": "0x57dea8",
+          "name": "memdup_user",
+          "value": "0xffffff8008154c78",
+          "value_within_kernel_file": true
+        }
+      ]
+    }
+  },
+  "kernel_memcpy_body_bytes": 340,
+  "kernel_memcpy_body_sha256": "65867b7d041ae86db565dd834de421af4c61d053b76a7b4d15f4bfd668fb25c7",
+  "templates": [
+    {
+      "name": "INQUIRY_DATA_DEFAULT",
+      "bytes": 41,
+      "sha256": "9c849a775be31edd96297404a25c954c849c96b741f145853f6a5e0ddb253777"
+    },
+    {
+      "name": "INQUIRY_DATA_MS",
+      "bytes": 61,
+      "sha256": "bae246f23f9c1ba5cb4c9988eb751d79ef532578ddcad143913132ad67b289ba"
+    },
+    {
+      "name": "INQUIRY_DATA_SD",
+      "bytes": 48,
+      "sha256": "a377e029f133fc51468296b1e97704d7b1c8905dd846870bd7111862bf4dbd5a"
+    }
+  ],
+  "case_count": 40,
+  "status_counts": {
+    "0": 21,
+    "2": 16,
+    "1": 3
+  },
+  "actual_memcpy_body_used": true,
+  "return_or_memcpy_adapter": false,
+  "memory_and_instruction_guards": true,
+  "cases": [
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 0,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 35,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 96,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 35,
+      "instructions": 52,
+      "command_status": 0,
+      "transferred": 4,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          4
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050000",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 96,
+      "instructions": 52,
+      "command_status": 0,
+      "transferred": 4,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          4
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050000",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 35,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 96,
+      "instructions": 65,
+      "command_status": 0,
+      "transferred": 36,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          36
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050000",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050008",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050010",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050018",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050020",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 35,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 96,
+      "instructions": 68,
+      "command_status": 0,
+      "transferred": 41,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          41
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050000",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050008",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050010",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050018",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff08",
+          "address": "0x10050020",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff2c",
+          "address": "0x10050028",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 0,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 35,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 96,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 35,
+      "instructions": 52,
+      "command_status": 0,
+      "transferred": 4,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          4
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050000",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 96,
+      "instructions": 52,
+      "command_status": 0,
+      "transferred": 4,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          4
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050000",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 35,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 96,
+      "instructions": 65,
+      "command_status": 0,
+      "transferred": 36,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          36
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050000",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050008",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050010",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050018",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050020",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 35,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_MS",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 96,
+      "instructions": 73,
+      "command_status": 0,
+      "transferred": 61,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          61
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826feec",
+          "address": "0x10050000",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826feec",
+          "address": "0x10050008",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050010",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050018",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050020",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050028",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff08",
+          "address": "0x10050030",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050038",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800826ff2c",
+          "address": "0x1005003c",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 0,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 35,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 0,
+      "declared_capacity": 96,
+      "instructions": 50,
+      "command_status": 0,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          0
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 35,
+      "instructions": 52,
+      "command_status": 0,
+      "transferred": 4,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          4
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050000",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 4,
+      "declared_capacity": 96,
+      "instructions": 52,
+      "command_status": 0,
+      "transferred": 4,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          4
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050000",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 35,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 36,
+      "declared_capacity": 96,
+      "instructions": 65,
+      "command_status": 0,
+      "transferred": 36,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          36
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050000",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050008",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050010",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050018",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826ff14",
+          "address": "0x10050020",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 0,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 35,
+      "instructions": 36,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086df8",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086dfc",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e00",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e04",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086e08",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_SD",
+      "variant": "standard",
+      "allocation": 96,
+      "declared_capacity": 96,
+      "instructions": 66,
+      "command_status": 0,
+      "transferred": 48,
+      "sense_hex": "000000",
+      "actual_original_memcpy_calls": [
+        [
+          "0x10050000",
+          "0x10040000",
+          48
+        ]
+      ],
+      "writes": [
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dcc",
+          "address": "0x10060fe8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff0",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086dd4",
+          "address": "0x10060ff8",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826feec",
+          "address": "0x10050000",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826feec",
+          "address": "0x10050008",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050010",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fef4",
+          "address": "0x10050018",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050020",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800826fefc",
+          "address": "0x10050028",
+          "bytes": 8
+        },
+        {
+          "pc": "0xffffff800b086ed4",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086edc",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086ee0",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee4",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086ee8",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "invalid_page",
+      "allocation": 96,
+      "declared_capacity": 96,
+      "instructions": 24,
+      "command_status": 1,
+      "transferred": 0,
+      "sense_hex": "052400",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086d7c",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d80",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086d84",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d88",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d8c",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "link",
+      "allocation": 96,
+      "declared_capacity": 96,
+      "instructions": 28,
+      "command_status": 1,
+      "transferred": 0,
+      "sense_hex": "052400",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086d7c",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d80",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086d84",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d88",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d8c",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "naca",
+      "allocation": 96,
+      "declared_capacity": 96,
+      "instructions": 28,
+      "command_status": 1,
+      "transferred": 0,
+      "sense_hex": "052400",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086d7c",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d80",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086d84",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d88",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d8c",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    },
+    {
+      "template": "INQUIRY_DATA_DEFAULT",
+      "variant": "data_out",
+      "allocation": 96,
+      "declared_capacity": 96,
+      "instructions": 14,
+      "command_status": 2,
+      "transferred": 0,
+      "sense_hex": "052000",
+      "actual_original_memcpy_calls": [],
+      "writes": [
+        {
+          "pc": "0xffffff800b086d7c",
+          "address": "0x10000030",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d80",
+          "address": "0x10000034",
+          "bytes": 4
+        },
+        {
+          "pc": "0xffffff800b086d84",
+          "address": "0x10010068",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d88",
+          "address": "0x10010069",
+          "bytes": 1
+        },
+        {
+          "pc": "0xffffff800b086d8c",
+          "address": "0x1001006a",
+          "bytes": 1
+        }
+      ],
+      "RAM_guards_passed": true
+    }
+  ],
+  "scope": [
+    "Already-dispatched inquiry_std only, using declared per-drive context and original initial templates.",
+    "Actual original kernel memcpy bytes run in emulator; symbol resolution is static, not live kernel state.",
+    "Standard positive cases copy min(allocation, configured template length) and clear sense; negative guards fail locally.",
+    "All inputs, addresses, direction and capacity are fixtures, not captured USB/LUN state.",
+    "This does not execute command dispatch, extension handling, USB transport, hardware drivers, media or a Linux boot.",
+    "It does not verify the active camera driver, dynamic INQUIRY data, body firmware version or physical LUN selection."
+  ],
+  "camera_handles_commands_media_auth_modes_modules_WBI_flash": false,
+  "Windows_device_control": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

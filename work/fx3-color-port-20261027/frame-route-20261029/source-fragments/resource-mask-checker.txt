@@ -1,0 +1,20 @@
+009cfbac movw       r1, #0x38f8
+009cfbb0 movs       r2, #0
+009cfbb2 movt       r1, #0x13c
+009cfbb6 adds       r1, #4
+009cfbb8 ldrb       r3, [r0, r2]
+009cfbba cbz        r3, #0x9cfbca
+009cfbbc ldrh       r3, [r1, #-0x4]
+009cfbc0 cbnz       r3, #0x9cfbd6
+009cfbc2 ldrb       r3, [r1, #1]
+009cfbc4 cbz        r3, #0x9cfbd6
+009cfbc6 ldrb       r3, [r1]
+009cfbc8 cbnz       r3, #0x9cfbd6
+009cfbca adds       r1, #0x40
+009cfbcc adds       r2, #1
+009cfbce cmp        r2, #0x47
+009cfbd0 blo        #0x9cfbb8
+009cfbd2 movs       r0, #1
+009cfbd4 bx         lr
+009cfbd6 movs       r0, #0
+009cfbd8 bx         lr

@@ -1,0 +1,162 @@
+RANGE 0x9628 0x97a0
+00009628 stp     x29, x30, [sp, #-0x20]!
+0000962c mov     w3, #0x150
+00009630 movk    w3, #0x92, lsl #16
+00009634 mov     x29, sp
+00009638 str     x19, [sp, #0x10]
+0000963c mov     x19, x0
+00009640 ldr     w2, [x0]
+00009644 cmp     w2, w3
+00009648 b.eq    #0x975c
+0000964c b.ls    #0x96a0
+00009650 mov     w0, #0x16c
+00009654 movk    w0, #0x92, lsl #16
+00009658 cmp     w2, w0
+0000965c b.eq    #0x9698
+00009660 b.ls    #0x9770
+00009664 mov     w0, #0x16e
+00009668 movk    w0, #0x92, lsl #16
+0000966c cmp     w2, w0
+00009670 b.ls    #0x975c
+00009674 mov     w0, #0x2108
+00009678 movk    w0, #0x92, lsl #16
+0000967c cmp     w2, w0
+00009680 b.ne    #0x9704
+00009684 mov     x0, x19
+00009688 bl      #0x9688 ; {'symbol': 'k_upm_req_c_hot', 'addend': '0x0', 'type': 283}
+0000968c ldr     x19, [sp, #0x10]
+00009690 ldp     x29, x30, [sp], #0x20
+00009694 ret     
+00009698 bl      #0x9698 ; {'symbol': 'dump_off_factor_spool', 'addend': '0x0', 'type': 283}
+0000969c b       #0x9684
+000096a0 mov     w3, #0x144
+000096a4 movk    w3, #0x92, lsl #16
+000096a8 cmp     w2, w3
+000096ac b.eq    #0x975c
+000096b0 b.hi    #0x96d8
+000096b4 mov     w3, #0x108
+000096b8 movk    w3, #0x92, lsl #16
+000096bc cmp     w2, w3
+000096c0 b.ne    #0x9748
+000096c4 bl      #0x96c4 ; {'symbol': 'k_upm_req_c_hot', 'addend': '0x0', 'type': 283}
+000096c8 ldr     x19, [sp, #0x10]
+000096cc ldp     x29, x30, [sp], #0x20
+000096d0 ret     
+000096d4 nop     
+000096d8 mov     w0, #0x14a
+000096dc movk    w0, #0x92, lsl #16
+000096e0 cmp     w2, w0
+000096e4 b.eq    #0x975c
+000096e8 add     w0, w0, #4
+000096ec cmp     w2, w0
+000096f0 b.eq    #0x975c
+000096f4 mov     w0, #0x146
+000096f8 movk    w0, #0x92, lsl #16
+000096fc cmp     w2, w0
+00009700 b.eq    #0x975c
+00009704 mov     x4, x19
+00009708 mov     w5, #4
+0000970c mov     w3, #0x123
+00009710 mov     w2, #0xc
+00009714 mov     w1, #2
+00009718 mov     w0, #0
+0000971c bl      #0x971c ; {'symbol': 'upm_blog_writeonce', 'addend': '0x0', 'type': 283}
+00009720 mov     w0, #0xbb
+00009724 mov     w1, #-1
+00009728 movk    w0, #0x92, lsl #16
+0000972c bl      #0x972c ; {'symbol': 'osal_wai_sem_tmo', 'addend': '0x0', 'type': 283}
+00009730 mov     w0, #0xbb
+00009734 movk    w0, #0x92, lsl #16
+00009738 bl      #0x9738 ; {'symbol': 'osal_sig_sem', 'addend': '0x0', 'type': 283}
+0000973c ldr     x19, [sp, #0x10]
+00009740 ldp     x29, x30, [sp], #0x20
+00009744 ret     
+00009748 b.lo    #0x9704
+0000974c sub     w2, w2, #0x920, lsl #12
+00009750 sub     w2, w2, #0x141
+00009754 cmp     w2, #1
+00009758 b.hi    #0x9704
+0000975c mov     x0, x19
+00009760 bl      #0x9760 ; {'symbol': 'k_upm_off_factor_handler', 'addend': '0x0', 'type': 283}
+00009764 ldr     x19, [sp, #0x10]
+00009768 ldp     x29, x30, [sp], #0x20
+0000976c ret     
+00009770 mov     w0, #0x155
+00009774 movk    w0, #0x92, lsl #16
+00009778 cmp     w2, w0
+0000977c b.eq    #0x975c
+00009780 add     w0, w0, #6
+00009784 cmp     w2, w0
+00009788 b.eq    #0x975c
+0000978c mov     w0, #0x153
+00009790 movk    w0, #0x92, lsl #16
+00009794 cmp     w2, w0
+00009798 b.ne    #0x9704
+0000979c b       #0x975c
+RANGE 0x5138 0x5240
+00005138 stp     x29, x30, [sp, #-0x40]!
+0000513c mov     w1, #0x2108
+00005140 movk    w1, #0x92, lsl #16
+00005144 mov     x29, sp
+00005148 ldr     w0, [x0]
+0000514c cmp     w0, w1
+00005150 b.eq    #0x5198
+00005154 mov     w1, #0x108
+00005158 movk    w1, #0x92, lsl #16
+0000515c cmp     w0, w1
+00005160 mov     w0, #0xbb
+00005164 mov     w1, #-1
+00005168 movk    w0, #0x92, lsl #16
+0000516c b.ne    #0x5228
+00005170 bl      #0x5170 ; {'symbol': 'osal_wai_sem_tmo', 'addend': '0x0', 'type': 283}
+00005174 mov     w0, #0xbb
+00005178 movk    w0, #0x92, lsl #16
+0000517c bl      #0x517c ; {'symbol': 'osal_sig_sem', 'addend': '0x0', 'type': 283}
+00005180 bl      #0x5180 ; {'symbol': 'k_upm_cpu2_online', 'addend': '0x0', 'type': 283}
+00005184 bl      #0x5184 ; {'symbol': 'k_upm_liro_start', 'addend': '0x0', 'type': 283}
+00005188 bl      #0x5188 ; {'symbol': 'k_upm_snd_dmm_release_cipa_code', 'addend': '0x0', 'type': 283}
+0000518c mov     w0, #0
+00005190 ldp     x29, x30, [sp], #0x40
+00005194 ret     
+00005198 mov     w0, #0xbb
+0000519c mov     w1, #-1
+000051a0 movk    w0, #0x92, lsl #16
+000051a4 bl      #0x51a4 ; {'symbol': 'osal_wai_sem_tmo', 'addend': '0x0', 'type': 283}
+000051a8 mov     w0, #0xbb
+000051ac movk    w0, #0x92, lsl #16
+000051b0 bl      #0x51b0 ; {'symbol': 'osal_sig_sem', 'addend': '0x0', 'type': 283}
+000051b4 str     wzr, [x29, #0x20]
+000051b8 ldr     x3, #0x5240 ; literal {'symbol': '', 'addend': '0x8a0', 'type': 257}
+000051bc add     x0, x29, #0x18
+000051c0 ldr     x2, #0x5248 ; literal {'symbol': 'upm_cipa_sus_polling_tsk', 'addend': '0x0', 'type': 257}
+000051c4 mov     w1, #0x92
+000051c8 str     x3, [x29, #0x18]
+000051cc strh    w1, [x29, #0x38]
+000051d0 stp     x2, xzr, [x29, #0x28]
+000051d4 bl      #0x51d4 ; {'symbol': 'osal_create_thread', 'addend': '0x0', 'type': 283}
+000051d8 mov     w1, w0
+000051dc str     w1, [x29, #0x14]
+000051e0 mov     w0, #0
+000051e4 tbz     w1, #0x1f, #0x5190
+000051e8 add     x4, x29, #0x14
+000051ec mov     w5, #4
+000051f0 mov     w3, #0x87
+000051f4 mov     w2, #3
+000051f8 mov     w1, #2
+000051fc bl      #0x51fc ; {'symbol': 'upm_blog_writeonce', 'addend': '0x0', 'type': 283}
+00005200 mov     w0, #0xbb
+00005204 mov     w1, #-1
+00005208 movk    w0, #0x92, lsl #16
+0000520c bl      #0x520c ; {'symbol': 'osal_wai_sem_tmo', 'addend': '0x0', 'type': 283}
+00005210 mov     w0, #0xbb
+00005214 movk    w0, #0x92, lsl #16
+00005218 bl      #0x5218 ; {'symbol': 'osal_sig_sem', 'addend': '0x0', 'type': 283}
+0000521c ldr     w0, [x29, #0x14]
+00005220 b       #0x5190
+00005224 nop     
+00005228 bl      #0x5228 ; {'symbol': 'osal_wai_sem_tmo', 'addend': '0x0', 'type': 283}
+0000522c mov     w0, #0xbb
+00005230 movk    w0, #0x92, lsl #16
+00005234 bl      #0x5234 ; {'symbol': 'osal_sig_sem', 'addend': '0x0', 'type': 283}
+00005238 mov     w0, #-0x400
+0000523c b       #0x5190

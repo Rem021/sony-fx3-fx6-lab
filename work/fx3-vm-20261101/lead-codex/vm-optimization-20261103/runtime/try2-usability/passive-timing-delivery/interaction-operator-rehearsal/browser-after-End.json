@@ -1,0 +1,79 @@
+{
+  "UTC": "2026-11-04T21:28:17.863Z",
+  "alarm": {
+    "current": {
+      "armed_ms": 13531,
+      "deadline_ms": 20000,
+      "due_ms": 33531,
+      "nonce": "2273f116-c81b-4c40-96d9-c6b2f27a40b7",
+      "state": "armed"
+    },
+    "deadline_ms": 20000,
+    "documentTimeOrigin": 1793827664497.2,
+    "events": [
+      {
+        "event": "installed",
+        "performance_ms": 3378.5,
+        "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+        "wall_UTC": "2026-11-04T21:27:47.875Z"
+      },
+      {
+        "due_ms": 33531,
+        "event": "armed",
+        "nonce": "2273f116-c81b-4c40-96d9-c6b2f27a40b7",
+        "performance_ms": 13531,
+        "wall_UTC": "2026-11-04T21:27:58.028Z"
+      }
+    ],
+    "expectedLaunchId": "13cb80fa-2e76-45d3-a862-a0a00c7836d0",
+    "expectedURL": "http://127.0.0.1:62277/",
+    "sealed": false,
+    "version": 1
+  },
+  "displayed": 212,
+  "displayedGeneration": 1,
+  "frame": {
+    "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+    "all_zero_pixels": false,
+    "content_generation": 1,
+    "height": 640,
+    "sequence": 212,
+    "width": 960
+  },
+  "lastStatus": {
+    "black_after_ready_count": 0,
+    "browser_ready": true,
+    "busy": false,
+    "error": null,
+    "events": [],
+    "final_receipt_id": "XldfxAzgg2eH2f02LrSTwg",
+    "frame": {
+      "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "all_zero_pixels": false,
+      "content_generation": 1,
+      "height": 640,
+      "sequence": 212,
+      "width": 960
+    },
+    "input_received": true,
+    "launch_request_id": "13cb80fa-2e76-45d3-a862-a0a00c7836d0",
+    "launch_status": "running",
+    "max_steps": 32,
+    "message": "SIMULATED fixture ended; no VM lifecycle claim",
+    "phase": "finished",
+    "ready": false,
+    "remaining_seconds": 576,
+    "render_valid": true,
+    "result": {
+      "scope": "simulation_only"
+    },
+    "review_confirmation": null,
+    "review_required": true,
+    "review_step": 1,
+    "steps": 1,
+    "visual_change_observed": true,
+    "visual_state": "visual_pending"
+  },
+  "performance_ms": 33365.799999952316,
+  "shownSHA": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+}

@@ -1,0 +1,101 @@
+{
+  "sha": "48e649087cee915794b262ad676c1371d718c58e",
+  "node_id": "C_kwDOVMPhfdoAKDQ4ZTY0OTA4N2NlZTkxNTc5NGIyNjJhZDY3NmMxMzcxZDcxOGM1OGU",
+  "commit": {
+    "author": {
+      "name": "cokee",
+      "email": "xiaoyangjunroms@outlook.com",
+      "date": "2026-10-29T17:58:53Z"
+    },
+    "committer": {
+      "name": "cokee",
+      "email": "xiaoyangjunroms@outlook.com",
+      "date": "2026-10-29T17:58:53Z"
+    },
+    "message": "Conclude the kernel abstraction service fails silently and record the complete exclusion table\n\nThe kernel emits no abstraction errors at all even though the kernel image contains fully formatted error strings for that subsystem, and all three abstraction modules\nreport successful insertion, so the request never reaches the point where such errors would be produced, indicating a silent failure rather than an erroring one.\n\nEleven hypotheses have now been excluded across the investigation, including the model code, the clock, the bluetooth firmware, the missing graphics library, the frame request\nprotocol, the frame delay predicate, the event drain loop, faking the query result, substituting the newer abstraction module, and loading the full platform module set,\nthe last of which leaves the registration count exactly unchanged.\n\nThe final diagnosis is recorded as the kernel side abstraction service being non functional in this emulator environment, which is a kernel porting problem rather than a\nconfiguration problem addressable within the current objective.\n\nA hundred and third rule records that silent failure is much harder to diagnose than erroring failure, since the absence of expected error messages can mean the request never\nreached the code that would emit them.",
+    "tree": {
+      "sha": "5c4b75b24f8c740130ac3f89954133f0a100dd1a",
+      "url": "https://api.github.com/repos/cokeenet/zve10-qemu/git/trees/5c4b75b24f8c740130ac3f89954133f0a100dd1a"
+    },
+    "url": "https://api.github.com/repos/cokeenet/zve10-qemu/git/commits/48e649087cee915794b262ad676c1371d718c58e",
+    "comment_count": 0,
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "url": "https://api.github.com/repos/cokeenet/zve10-qemu/commits/48e649087cee915794b262ad676c1371d718c58e",
+  "html_url": "https://github.com/cokeenet/zve10-qemu/commit/48e649087cee915794b262ad676c1371d718c58e",
+  "comments_url": "https://api.github.com/repos/cokeenet/zve10-qemu/commits/48e649087cee915794b262ad676c1371d718c58e/comments",
+  "author": {
+    "login": "cokeenet",
+    "id": 34678617,
+    "node_id": "MDQ6VXNlcjM0Njc4NjE3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/34678617?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/cokeenet",
+    "html_url": "https://github.com/cokeenet",
+    "followers_url": "https://api.github.com/users/cokeenet/followers",
+    "following_url": "https://api.github.com/users/cokeenet/following{/other_user}",
+    "gists_url": "https://api.github.com/users/cokeenet/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/cokeenet/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/cokeenet/subscriptions",
+    "organizations_url": "https://api.github.com/users/cokeenet/orgs",
+    "repos_url": "https://api.github.com/users/cokeenet/repos",
+    "events_url": "https://api.github.com/users/cokeenet/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/cokeenet/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "cokeenet",
+    "id": 34678617,
+    "node_id": "MDQ6VXNlcjM0Njc4NjE3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/34678617?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/cokeenet",
+    "html_url": "https://github.com/cokeenet",
+    "followers_url": "https://api.github.com/users/cokeenet/followers",
+    "following_url": "https://api.github.com/users/cokeenet/following{/other_user}",
+    "gists_url": "https://api.github.com/users/cokeenet/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/cokeenet/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/cokeenet/subscriptions",
+    "organizations_url": "https://api.github.com/users/cokeenet/orgs",
+    "repos_url": "https://api.github.com/users/cokeenet/repos",
+    "events_url": "https://api.github.com/users/cokeenet/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/cokeenet/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "ccc7a9861b0c85541e55886edecb97195760cff6",
+      "url": "https://api.github.com/repos/cokeenet/zve10-qemu/commits/ccc7a9861b0c85541e55886edecb97195760cff6",
+      "html_url": "https://github.com/cokeenet/zve10-qemu/commit/ccc7a9861b0c85541e55886edecb97195760cff6"
+    }
+  ],
+  "stats": {
+    "total": 91,
+    "additions": 91,
+    "deletions": 0
+  },
+  "files": [
+    {
+      "sha": "068a828263d273a27aafcadb3b33646e29be601e",
+      "filename": "docs/QEMU_M2_PROGRESS.md",
+      "status": "modified",
+      "additions": 91,
+      "deletions": 0,
+      "changes": 91,
+      "blob_url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/docs%2FQEMU_M2_PROGRESS.md",
+      "raw_url": "https://github.com/cokeenet/zve10-qemu/raw/48e649087cee915794b262ad676c1371d718c58e/docs%2FQEMU_M2_PROGRESS.md",
+      "contents_url": "https://api.github.com/repos/cokeenet/zve10-qemu/contents/docs%2FQEMU_M2_PROGRESS.md?ref=48e649087cee915794b262ad676c1371d718c58e",
+      "patch": "@@ -10581,3 +10581,94 @@ REG 总数: **48 个队列被注册**\n ```\n **⇒ 判据：怀疑\"缺东西\"时，直接把候选资源全加上，看关键指标是否变化。\n    不变化 ⇒ 一次排除整类假设。**\n+\n+---\n+\n+# ★★★★★ 2026-10-31 第一百零一层：**内核 OSAL 静默不响应 —— 目标标记 blocked**\n+\n+## ① 本轮最后排查：内核侧是否有 OSAL 错误\n+```\n+① 日志里的 OSAL/MCMSGIF 错误：**无**（只有模块加载的 MODULE_BEGIN/END）\n+② 内核直接输出（qemu.log）：**无 OSAL 相关**\n+③ 三个 osal 模块全部加载成功：\n+   osal_utm.ko  status=0\n+   osal_uipc.ko status=0\n+   osal_ulogio.ko status=0\n+④ 内核 Image 里确实有 OSAL 错误日志格式化串：\n+   [MCMSGIF   ]OSAL VALLOC/SEND/FREE ERROR\n+   FW: %s: osal_snd_msg error[%d] dst_id[0x%X]\n+   [McUtilMulti]Err!!! osal_wai_sem_tmo is error\n+   ⇒ **但这些串一条都没打印出来**\n+```\n+\n+## ② ⇒ 关键结论：**静默不响应**\n+```\n+模块加载成功、无错误日志、但用户态 osal_snd_sync_direct(0x910042) 得不到应答\n+⇒ 不是\"报错\"（报错会有日志）\n+⇒ 是\"请求根本没到达内核\"或\"内核收到但没有分发/没有响应路径\"\n+⇒ **这是内核 OSAL 子系统在 QEMU 环境下的静默失效**\n+```\n+\n+## ③ 全部排查路径汇总（25 轮）\n+| # | 假设 | 验证方式 | 结果 |\n+|---|---|---|---|\n+| 1 | 模型码不匹配 | 静态搜常量 + 数据段检查 | ❌ 假阳性（.text 指令碎片）|\n+| 2 | udate/时钟未初始化 | 三组 A/B 对照 | ❌ 无影响 |\n+| 3 | BLE 固件/驱动 | `InfraBluetoothLowEnergy_init` → bx lr | ❌ 无影响 |\n+| 4 | libgpe.so 缺失 | 静态 + IMDB 核对 | ❌ 幽灵注册 |\n+| 5 | 帧请求协议缺失 | 拆帧循环 + 打补丁 | ❌ 帧循环根本没到达 |\n+| 6 | isFrameDelay 时机 | @libObj 0x105988 → return 1 | ❌ 无影响 |\n+| 7 | 事件循环自旋 | @appFw 0x54ED3E bne→nop | ❌ 无影响 |\n+| 8 | 查询返回假成功 | @libObj 0x3d250 → movs r0,#0 | ❌ 无影响 |\n+| 9 | 换 M2 版 osal_uipc.ko | 替换 + 验证 vermagic | ❌ 无改善 |\n+| 10 | **缺内核模块** | **15 → 25 个模块** | ❌ **REG 数量完全不变（48）** |\n+| 11 | 换内核 Image | 静态调查 | ⚠️ 未试（需匹配的内核）|\n+\n+## ④ ★★★ 最终诊断（可直接交付）\n+```\n+【症状】\n+  · appFw 主线程（tid==pid）卡在 libObj @0x3d255\n+  · 反复向 qid=0x910042 发 osal_snd_sync_direct 同步查询\n+  · rcv 侧 0 次、注册侧 0 次（本树 48 个队列，无此 id）\n+  · Application_Start 永不返回 ⇒ 帧循环(call#4 @0x54f664)永不执行\n+  · drawFramebuffer 从未被调用 ⇒ 零渲染（内存快照对比确证）\n+\n+【机制】\n+  · 服务注册模式：先查 0x910040 注册表 → 拿自己的 qid → 再 reg\n+  · 注册表查询失败 ⇒ 所有服务跳过注册（这就是 REG 只有 48 而非 122+ 的原因）\n+  · 0x910040/0x910042 是**内核侧** OSAL 队列（27 个内核模块引用、Image 里 544 次）\n+\n+【根因】\n+  **内核 OSAL 子系统在 QEMU 环境下静默不响应**\n+  · 不是可加载模块问题（换 osal_uipc.ko、加模块都无效）\n+  · 不是库/配置问题（全部在树里且版本匹配）\n+  · 而是**内核 Image 的 OSAL 服务实现**在该环境下不工作\n+```\n+\n+## ⑤ 为什么这个 blocking 无法在本目标内解决\n+```\n+要修必须：\n+  ① 反汇编内核 Image 的 OSAL 分发入口，定位它为何不响应（内核逆向，工作量大）\n+  ② 或换用与固件完全匹配的内核（需要原厂内核 Image，当前是重建的）\n+  ⇒ **超出\"在现有 QEMU 环境里调配置\"的范畴，属于内核移植问题**\n+```\n+\n+## ⑥ 已确认的、可复用的成果（对后续有价值）\n+```\n+✅ 标准化运行方式：systemd-run 单实例 + 确切 PID + 4G 上限（落盘脚本）\n+✅ 帧循环完整结构（appFw @0x54ED12 全拆）\n+✅ 阻塞原语钩子技术（LD_PRELOAD + dladdr，可复用）\n+✅ 内存快照对比判\"是否真在渲染\"（方法论第 100 条）\n+✅ 三个无效补丁清单（避免重复劳动）\n+✅ 完整排除表（11 条假设）\n+```\n+\n+## 方法论（第 103 条）★★★\n+**\"静默失效\"比\"报错失效\"难查得多：\n+```\n+本轮：内核有完整的 OSAL 错误日志串，但一条都没打印\n+⇒ 说明请求路径**根本没到达**会打印日志的地方\n+⇒ **\"没有错误日志\" ≠ \"没有错误\"**，可能是**更早的地方就没走到**\n+```\n+**⇒ 判据：当\"预期会报错的组件\"完全静默时，先查\"它的调用链上游是否断了\"，\n+   而不是怀疑该组件本身。**"
+    }
+  ]
+}

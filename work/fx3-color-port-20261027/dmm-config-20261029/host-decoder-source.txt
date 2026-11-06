@@ -1,0 +1,39 @@
+def decode_cfg(raw):
+    offset=0
+    def take(n):
+        nonlocal offset
+        if not 0<=n<=len(raw)-offset:raise ValueError('truncated_config_at_'+hex(offset))
+        a=offset;offset+=n;return a,raw[a:offset]
+    groups={}
+    for phase,limit in (('roots',2),('rules',1024)):
+        out=[]
+        for _ in range(limit+1):
+            a,h=take(0x50);kind,selector=struct.unpack_from('<II',h,8)
+            if kind==0xffffffff:break
+            rows=[]
+            for _ in range(0xc01):
+                at,r=take(0x14);vals=list(struct.unpack('<5I',r))
+                if vals[2]==0xffffffff:break
+                rows.append({'offset':hex(at),'words':vals})
+            else:raise ValueError('row_terminator_missing')
+            out.append({'header_offset':hex(a),'header_bytes':h.hex(),'type':kind,'selector':selector,'rows':rows})
+        else:raise ValueError('group_terminator_missing')
+        groups[phase]=out
+    units=[]
+    for _ in range(0x401):
+        a,h=take(8);kind,attr=struct.unpack('<II',h)
+        if kind==0xffffffff:break
+        refs=[]
+        for _ in range(0xc01):
+            at,b=take(4);v=struct.unpack('<I',b)[0]
+            if v==0xffffffff:break
+            refs.append(v)
+        else:raise ValueError('unit_list_terminator_missing')
+        units.append({'header_offset':hex(a),'unit_type':kind,'attribute_word':attr,'extent_types':refs})
+    else:raise ValueError('unit_table_terminator_missing')
+    at,version=take(44)
+    if offset!=len(raw):raise ValueError('unexpected_trailing_bytes')
+    if len({u['unit_type'] for u in units})!=len(units):raise ValueError('duplicate_unit_type')
+    return {'roots':groups['roots'],'rules':groups['rules'],'units':units,'version_offset':hex(at),
+        'version_ascii':version.decode('ascii'),'total_consumed_bytes':offset,
+        'layout_inferred_from_pinned_native_init_not_full_native_parser_execution':True}

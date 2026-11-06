@@ -1,0 +1,35 @@
+{
+  "schema": "camera-free-host-login-audit-plan/1",
+  "grant_id": "fx3-host-audit-20261028-01",
+  "authorized": false,
+  "released": false,
+  "bundle_sha256": "7204be8281541c4ec157c9be23282a4f3e54e03b53bb21d77d5ef649bd19f4c8",
+  "probe_sha256": "86ee5e828e78b1ecf41e040567c86f57449fa9e17a055e92354bfd23f3fd03c5",
+  "console_uid": 501,
+  "purpose": "Compare regular Terminal and sudo/root self login/audit identity before proposing any further camera attempt. This does not test or grant TCC removable-volume access.",
+  "user_action": "Open one Terminal window through the fixed prepared command and complete sudo verification yourself; do not send the password to the agent.",
+  "host_paths": {
+    "private_user_job": "/private/tmp/fx3-host-audit-20261028-01",
+    "private_root_job": "/private/var/root/fx3-host-audits/fx3-host-audit-20261028-01",
+    "source": "/private/tmp/fx3-host-audit-20261028-01/probe",
+    "root_probe": "/private/var/root/fx3-host-audits/fx3-host-audit-20261028-01/probe"
+  },
+  "operations": [
+    "User-only exclusive fixed SHA copies to internal private0700 directory; executable0500 and command0700",
+    "One sudo fixed bootstrap creates root-private0700 directory and installs fixed probe root0500; hash verified before exec",
+    "Probe root mode validates self/root paths and consumes exclusive0400 entry.once",
+    "Read only own PID/UID/EUID, audit UID/session, Security session graphic/TTY flags; JSON output under user-private directory"
+  ],
+  "forbidden": [
+    "Any USB/IOKit camera call, file on camera or removable volume, or driver operation",
+    "TCC database or privacy setting access/change, Full Disk Access or removable-volume permission request",
+    "New signing entitlements, sandbox exceptions, audit identity/session setter, persistent daemon or service",
+    "Reading or collecting password, other applications data, terminal addresses or network addresses",
+    "Reuse consumed host grant or any camera01/02/03/04 grant"
+  ],
+  "failure_policy": "Any staged attempt consumes this host grant. Cancellation or missing root JSON stays unconfirmed; no automatic retry. Root completion must not be inferred from open/Terminal-launch exit0.",
+  "acceptance": "Compare user/root JSON identities and API statuses. GUI/auid retention alone does not prove future camera TCC permission or working interface.",
+  "root_or_camera_executed": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

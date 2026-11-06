@@ -1,0 +1,121 @@
+{
+  "status": "HOST_RECOVERY_JOURNAL_OWN_PROCESS_CHECKS_PASS",
+  "groups": 6,
+  "invalid_cache_variants": 12,
+  "legacy_reader_cases": [
+    {
+      "file": "runs/attempt01/migrate-OWNED.journal",
+      "result": "legacy reader rejects v2:2",
+      "bytes_unchanged": true
+    },
+    {
+      "file": "runs/attempt01/migrate-UNKNOWN.journal",
+      "result": "legacy reader rejects v2:2",
+      "bytes_unchanged": true
+    },
+    {
+      "file": "runs/attempt01/crash-after-recovery-record.journal",
+      "result": "legacy reader rejects v2:2",
+      "bytes_unchanged": true
+    }
+  ],
+  "legacy_compile_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-DFX3_ENTRY_FIXTURE",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/legacy_probe.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/global_guard.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/entry_support.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/owner_ipc.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/artifacts/legacy-probe"
+  ],
+  "native_compile_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit",
+    "-c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/global_guard.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/artifacts/global-guard-native-unreleased.o"
+  ],
+  "native_code_executed": false,
+  "native_recovery_cache_verifier_integrated": false,
+  "actual_root_journal_read_or_write": false,
+  "new_root_or_USB_operations": 0,
+  "sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/global_guard.c",
+      "sha256": "58e8d8187bf9518e81910ee156b096123b9935c666b18e531570ddb0671b9e1c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/global_guard.h",
+      "sha256": "32a6900b7f376bb69581ad9c8cd1fef03cab0ab4830477ee2c9dd49852269ed2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/guard_test.c",
+      "sha256": "7e62fcdf65a5a348db5d49420604ccfbbcda1f90f5e2a88013c604d75475a1d9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/legacy_probe.c",
+      "sha256": "245e70cb333a35bfc13f9211b774c57fa4a057f437b4cb8769e3520624e88e44"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/entry_support.c",
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/owner_ipc.c",
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/entry_shared.h",
+      "sha256": "6770a7a58f1d5b30fc7b8c869b1ec79120a8297d1debddabdeea5435cc382753"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/owner_trial.h",
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/global_guard.c",
+      "sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/global_guard.h",
+      "sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828"
+    }
+  ],
+  "binaries": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/artifacts/guard-test",
+      "sha256": "9c9e6f840c4c9cd5bfe37ebb5d1e83c0234e4ca7417d416e0a9731caa460f909",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/artifacts/guard-test:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/artifacts/legacy-probe",
+      "sha256": "79eb2a7e2956a279e279967c4fe5dfa59dcd1bc697c8fc799cad8bc823c59c7e",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage266-manual-recovery-readmission/artifacts/legacy-probe:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    }
+  ]
+}

@@ -1,0 +1,2632 @@
+{
+  "case_counts": {
+    "xml-guest-results.json": 4,
+    "dispatch-guest-results.json": 3,
+    "post-config-guest-results.json": 3
+  },
+  "unique_function_bodies_entered": [
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x10af4",
+      "runtime_va": "0x10010af4",
+      "bytes": 128,
+      "sha256": "c10314ea5da70d7015bd501d6dc52374dccbec531152ca62d8b712d35dd91dbc",
+      "label": "BaseQueue::GetAndPop()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x148c0",
+      "runtime_va": "0x100148c0",
+      "bytes": 8,
+      "sha256": "dfb556a413c8bda5332942d0202e8d5f1e52f45158aec3676294cf11ad5909cb",
+      "label": "BaseContainer::GetNext() const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x174e8",
+      "runtime_va": "0x100174e8",
+      "bytes": 224,
+      "sha256": "fb48664c51517b645117b6c64d1e6ef526cb0f37ff96f4ea11dce643616eb967",
+      "label": "Updater::XmlConfigHandler::CheckGuardResult(Updater::StringHandler const&)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x185cc",
+      "runtime_va": "0x100185cc",
+      "bytes": 84,
+      "sha256": "f2a31a9b00f07e5daa36cbb9bb9f418206f2318236decce95ead8b0d7b9e2f82",
+      "label": "Updater::ThreadPlugin::ThreadPlugin(Updater::UPDATER_ACTION_MODE, Updater::CallbackInterface*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x10b74",
+      "runtime_va": "0x10010b74",
+      "bytes": 96,
+      "sha256": "2ff9f36dc56e04d3f850c72ade29ec53f7f97f0dd9c6f29541ce7a86b0bf1a7e",
+      "label": "BaseQueue::Push(BaseContainer*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17c94",
+      "runtime_va": "0x10017c94",
+      "bytes": 356,
+      "sha256": "b8808592807f8da1e087a04236bee80a434ef7230743681de4bc9e23310fe133",
+      "label": "Updater::XmlConfigHandler::Initialize(Updater::CallbackInterface*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x179e0",
+      "runtime_va": "0x100179e0",
+      "bytes": 92,
+      "sha256": "229639542e45a2a14ba03b23e7d4c36f3f0b197c4aac40cfa7a19e2ff408cbe4",
+      "label": "Updater::XmlConfigHandler::IsKey(Updater::StringHandler const&)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x176c0",
+      "runtime_va": "0x100176c0",
+      "bytes": 268,
+      "sha256": "26d25d007f376932f57929f4fd1be09f1afc06713a382f1f5df1d853c2ec34fc",
+      "label": "Updater::XmlConfigHandler::checkGuardResult(Updater::Xml::DomDocument*, Updater::StringHandler const&)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x1371c",
+      "runtime_va": "0x1001371c",
+      "bytes": 360,
+      "sha256": "15dd3cb570ec41261c9a96e6e64257d8f368081fc5e9606ac5ab606be9ed126c",
+      "label": "Updater::ConfigKeyTag::PostExecute(Updater::BodyInformation*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17c74",
+      "runtime_va": "0x10017c74",
+      "bytes": 32,
+      "sha256": "3b2732bdfa43dd6398687c6ee2280c52b670ddbd39b4c02b01773c04ab274233",
+      "label": "Updater::XmlConfigHandler::XmlConfigHandler(Updater::UPDATER_ACTION_MODE)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x148b8",
+      "runtime_va": "0x100148b8",
+      "bytes": 8,
+      "sha256": "ab203c9f462e14bd4e997db2460790fd1a22f16c02c4fcef69fd84fcdc395371",
+      "label": "BaseContainer::SetPrevious(BaseContainer*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x184bc",
+      "runtime_va": "0x100184bc",
+      "bytes": 272,
+      "sha256": "8d0da9f0cb6d3e6f6f66d0ba45c941440131bce0bd24387eb541c770418be807",
+      "label": "Updater::ThreadPlugin::Initialize()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17e2c",
+      "runtime_va": "0x10017e2c",
+      "bytes": 40,
+      "sha256": "567b887016094b8169cf7ad704d5b8538a5027c0fba40f4baee5a634c64d29c2",
+      "label": "Updater::ExecutionQueue::GetAndPop()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x148c8",
+      "runtime_va": "0x100148c8",
+      "bytes": 8,
+      "sha256": "303da3301898a95e86f40a0e005bc411a134e5d7bc97e044157001606ef01a2a",
+      "label": "BaseContainer::SetNext(BaseContainer*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17e54",
+      "runtime_va": "0x10017e54",
+      "bytes": 16,
+      "sha256": "a590f729998dd5f2a7d4f2ee2cadc44d530000fac332d5a959b61d409ae3cfbb",
+      "label": "Updater::ExecutionQueue::Push(BaseContainer*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x173e8",
+      "runtime_va": "0x100173e8",
+      "bytes": 128,
+      "sha256": "fc4dffbad7670f94cbfdb10c27ca52e0f76a71dedabc7d85d91b9e2537d86407",
+      "label": "Updater::XmlConfigHandler::LoadConfig(Updater::StringHandler const&)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x187a4",
+      "runtime_va": "0x100187a4",
+      "bytes": 864,
+      "sha256": "d7f6348ed9a81a579c006aa670fde027029d4cc7dc60b9d3619178ea08dac6c8",
+      "label": "Updater::ShellPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17a3c",
+      "runtime_va": "0x10017a3c",
+      "bytes": 324,
+      "sha256": "d838812a4bcdf921dcd67050c26209cd882bd60a28e3a49e88cf3c2be8f36f8b",
+      "label": "Updater::XmlConfigHandler::Execute()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17e0c",
+      "runtime_va": "0x10017e0c",
+      "bytes": 24,
+      "sha256": "8887a268cb028e922bbfe905ab833427c8c876556bb962aeea89591bed48e5be",
+      "label": "Updater::ExecutionContainer::Free()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17e24",
+      "runtime_va": "0x10017e24",
+      "bytes": 8,
+      "sha256": "70b6226cdde2aa2e19c7cef1812dc4f3cd14b63d0b93bca2e70ec7210fcf097f",
+      "label": "Updater::ExecutionQueue::GetContainerCounter()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17e64",
+      "runtime_va": "0x10017e64",
+      "bytes": 64,
+      "sha256": "d5ba68414cd7648dbe94a4f4925244f9a99d0b5c7b71eb7c2ba488001cbf840a",
+      "label": "Updater::ExecutionQueue::Free()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17e04",
+      "runtime_va": "0x10017e04",
+      "bytes": 8,
+      "sha256": "f289023bfc90be5c90aa1a98a40c5b356af639e69af0399f5914b2202364955c",
+      "label": "Updater::ExecutionContainer::GetNode() const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x1847c",
+      "runtime_va": "0x1001847c",
+      "bytes": 64,
+      "sha256": "185749023e0c05207b9327b07872deaecb3922b6dcb8bb0e894161a24b45b385",
+      "label": "Updater::ThreadIdQueue::ThreadIdQueue()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x177cc",
+      "runtime_va": "0x100177cc",
+      "bytes": 532,
+      "sha256": "5aab578f89c62529a5f3a17696d01808226417f5429bbaead57ab78ed86f098e",
+      "label": "Updater::XmlConfigHandler::executeGuard(Updater::StringHandler const&, Updater::Xml::DomNode const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17468",
+      "runtime_va": "0x10017468",
+      "bytes": 128,
+      "sha256": "529b218a9ada481b5a8f6b8e92817d3e96b6ef76155d0b0d92b725f0bb8bc02b",
+      "label": "Updater::XmlConfigHandler::LoadUserConfig(Updater::StringHandler const&)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x175c8",
+      "runtime_va": "0x100175c8",
+      "bytes": 248,
+      "sha256": "10a4549c71e1fa0d71a5bc7cb14c992be96b35224d3cd7a85a124e33547669a2",
+      "label": "Updater::XmlConfigHandler::isKey(Updater::Xml::DomDocument*, Updater::StringHandler const&)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17dfc",
+      "runtime_va": "0x10017dfc",
+      "bytes": 8,
+      "sha256": "e2049e634203975b3ab577fcedd5fcebf7eb16547f254b69f38a7efd4d28f8c7",
+      "label": "Updater::ExecutionContainer::SetNode(Xml::DomNode const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x18e28",
+      "runtime_va": "0x10018e28",
+      "bytes": 540,
+      "sha256": "b73062c28bf37cccf52682e125e1f55126843c1c83f959ac4646d3b9c382d9b8",
+      "label": "Updater::Plugin::Execute(Updater::UPDATER_ACTION_MODE, Updater::Xml::DomNode const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17f24",
+      "runtime_va": "0x10017f24",
+      "bytes": 80,
+      "sha256": "6b8d78d33a178a58ba76b2eaf4c7474d29042d6a97aa752304b9f29e3fa6bf9b",
+      "label": "Updater::FreeExecutionQueue::GetAndPop()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7b7c",
+      "runtime_va": "0x20007b7c",
+      "bytes": 40,
+      "sha256": "de2978310e3f723a38abdf6da22e66faa257737d02be9c3a43e0089f668b978e",
+      "label": "Updater::StringHandler::~StringHandler()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7b5c",
+      "runtime_va": "0x20007b5c",
+      "bytes": 32,
+      "sha256": "34032acf842f1b6606f3e873fa0b96ba0168fc616d1bdbe2179a65bdbcbc7396",
+      "label": "Updater::StringHandler::~StringHandler()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7de0",
+      "runtime_va": "0x20007de0",
+      "bytes": 72,
+      "sha256": "cdb34708158af7db70e9e97901c0262d2edd047efef7eceac57b39fb9ce51155",
+      "label": "Updater::StringHandler::adjustBuffer(unsigned long)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x8108",
+      "runtime_va": "0x20008108",
+      "bytes": 24,
+      "sha256": "4822bcf7042efdf30d30879aec55ff8b246424ccefd699bf17f7ca9d73fe9f19",
+      "label": "Updater::StringHandler::StringHandler()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7e7c",
+      "runtime_va": "0x20007e7c",
+      "bytes": 140,
+      "sha256": "64875d18a2cacc01c832f95875a16307b4d55de7e3bc1130be5fea80138717c4",
+      "label": "Updater::StringHandler::IsEqual(char const*) const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x8120",
+      "runtime_va": "0x20008120",
+      "bytes": 112,
+      "sha256": "eff2d6d29de22b7e0eb5ab9297a8fcccb97b317ca61a7afb17322dd5da526a34",
+      "label": "Updater::StringHandler::GetCharString() const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7b48",
+      "runtime_va": "0x20007b48",
+      "bytes": 20,
+      "sha256": "46946e96ae0542d9da0bc8a9b8f40c90f2becc01929b2a681868aa6e1ab38e96",
+      "label": "Updater::StringHandler::eraseString()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7aac",
+      "runtime_va": "0x20007aac",
+      "bytes": 96,
+      "sha256": "9b2c6e37c1369390669c852bab4eb66ff3887a0917c2a8d47a812a3440978e49",
+      "label": "Updater::StringHandler::SetString(char const*, unsigned long)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7e28",
+      "runtime_va": "0x20007e28",
+      "bytes": 84,
+      "sha256": "c5e4011ef37fd73f75d69d8bceda67dac98969e301f8ac6bc052e71e9ce31a89",
+      "label": "Updater::StringHandler::combineString(char const*, unsigned long)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7cac",
+      "runtime_va": "0x20007cac",
+      "bytes": 308,
+      "sha256": "66969588f51aa0bb62083212dc1e04c354b9eff33e404ff0e7da04c7e4bacfcc",
+      "label": "Updater::StringHandler::SetString(char const*, char const*, char const*, char const*, char const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7ba4",
+      "runtime_va": "0x20007ba4",
+      "bytes": 60,
+      "sha256": "b010764fb8ebd9adea44a193163121f0e071912ee227972fddc78e250de87704",
+      "label": "Updater::StringHandler::SetString(char const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/libupdatercommon.so",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "va": "0x7be0",
+      "runtime_va": "0x20007be0",
+      "bytes": 204,
+      "sha256": "c536effc43c5c7dc03e1319fe98f75972142b7319f025cfd1d9c5d392fac165b",
+      "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x9f08",
+      "runtime_va": "0x30009f08",
+      "bytes": 132,
+      "sha256": "5b47fc7d1aa745ea61dff3172ce719ed1c1621178ac709d712eece177cbdc5e8",
+      "label": "Updater::Xml::DomElement::DomElement(char const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xb870",
+      "runtime_va": "0x3000b870",
+      "bytes": 560,
+      "sha256": "e3f4844a0224ce95cd6808d02318255f26001d935ca759825fcc3fd82e60a4c5",
+      "label": "Updater::Xml::DomNode::Identify(char const*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x7c8c",
+      "runtime_va": "0x30007c8c",
+      "bytes": 52,
+      "sha256": "9cc5d4960dd991ee2fe2d88c2a36ad1fdb47e0b3a6356d1ad21b43a9a5e8a3a9",
+      "label": "Updater::Xml::TiXmlString::operator=(char const*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xb69c",
+      "runtime_va": "0x3000b69c",
+      "bytes": 468,
+      "sha256": "498f408d1181319c525a9a574186b96cd583368339e2ea22e37c1c37a00d0bbf",
+      "label": "Updater::Xml::DomAttribute::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x7a58",
+      "runtime_va": "0x30007a58",
+      "bytes": 8,
+      "sha256": "d3c844a0173107453aa9896cdb7276470625501e7ff067cd764c7a160ece5ca3",
+      "label": "Updater::Xml::DomNode::toDeclaration()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xabe0",
+      "runtime_va": "0x3000abe0",
+      "bytes": 24,
+      "sha256": "17b5bedee541ae61da0a738c279a2ef3dfd8a40b4527997842c4b77ee2cbf23b",
+      "label": "Updater::Xml::DomBase::IsAlpha(unsigned char, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xbaa0",
+      "runtime_va": "0x3000baa0",
+      "bytes": 564,
+      "sha256": "53b9bee878292ae995168a46f5ea88f2f5d66c515f1c004d310dfaabe9d952bc",
+      "label": "Updater::Xml::DomDocument::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xc878",
+      "runtime_va": "0x3000c878",
+      "bytes": 160,
+      "sha256": "d01c0f3f3f0fbbb9ddffa2b70d8012d444eefb8d10267fbb28496a19cdbfaa13",
+      "label": "Updater::Xml::TiXmlString::reserve(unsigned long)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xb418",
+      "runtime_va": "0x3000b418",
+      "bytes": 468,
+      "sha256": "4bd780beb016053307073f5fd0edd68b74973a24c34e95314a7cd4665d283ba7",
+      "label": "Updater::Xml::DomBase::ReadText(char const*, Updater::Xml::TiXmlString*, bool, char const*, bool, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xb210",
+      "runtime_va": "0x3000b210",
+      "bytes": 224,
+      "sha256": "9f6bd05852014a88f0b03c5c26b2989108c586aa50ed90c093f7a057785d43d6",
+      "label": "Updater::Xml::DomBase::GetChar(char const*, char*, int*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x7a00",
+      "runtime_va": "0x30007a00",
+      "bytes": 8,
+      "sha256": "d3c844a0173107453aa9896cdb7276470625501e7ff067cd764c7a160ece5ca3",
+      "label": "Updater::Xml::DomNode::toDomDocument() const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa64c",
+      "runtime_va": "0x3000a64c",
+      "bytes": 64,
+      "sha256": "055cbc350211cb2f121714a5c4ef798e9f9f45a9d6f760987c204da8a04413a8",
+      "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8560",
+      "runtime_va": "0x30008560",
+      "bytes": 68,
+      "sha256": "112894148869b3caf90a6d20de825e38890703b7778c1bf4893be5f8b6db2df6",
+      "label": "Updater::Xml::DomNode::FirstChild(char const*) const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa9d8",
+      "runtime_va": "0x3000a9d8",
+      "bytes": 40,
+      "sha256": "def27f1b8cfd082880485c606955a141489d357e6f896b71a25a420417aeab6a",
+      "label": "Updater::Xml::DomAttribute::~DomAttribute()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa150",
+      "runtime_va": "0x3000a150",
+      "bytes": 100,
+      "sha256": "1acad6ee022b808a74814255b4af7f6db2c205370fd5fc8cc770f27c5ccf4939",
+      "label": "Updater::Xml::DomAttributeSet::Add(Updater::Xml::DomAttribute*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8408",
+      "runtime_va": "0x30008408",
+      "bytes": 64,
+      "sha256": "c298badb1621722f4716b8d2c1379988d5d5035ba37837c7b7afa43f0aa908cd",
+      "label": "Updater::Xml::DomNode::Clear()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa9a4",
+      "runtime_va": "0x3000a9a4",
+      "bytes": 52,
+      "sha256": "5f928b0880b7983266a6e1a16ad8c2b4b35d13d3d68cdd53761d35e0e42e7e50",
+      "label": "Updater::Xml::DomAttribute::~DomAttribute()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8c90",
+      "runtime_va": "0x30008c90",
+      "bytes": 152,
+      "sha256": "0a8b14240b693f0676efd726d8c59bfe59dedce8f76103ae393d93b5b82c2843",
+      "label": "Updater::Xml::DomDocument::DomDocument()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xaa64",
+      "runtime_va": "0x3000aa64",
+      "bytes": 48,
+      "sha256": "18d1eaac8367442c090dfe00d653c44697f8ea800430a4da1261e87111868aeb",
+      "label": "Updater::Xml::DomAttribute::DomAttribute()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xac10",
+      "runtime_va": "0x3000ac10",
+      "bytes": 484,
+      "sha256": "1b6df403c067e11a2f76b87bf6bb73f94a0c97329841e69eb81c70a2966f4990",
+      "label": "Updater::Xml::DomParsingData::Stamp(char const*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xc9f0",
+      "runtime_va": "0x3000c9f0",
+      "bytes": 120,
+      "sha256": "efe96eaf5b401632d8de8f726055705bea4e9205707e91f6c96135e6e7edfd6d",
+      "label": "Updater::Xml::TiXmlString::append(char const*, unsigned long)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8938",
+      "runtime_va": "0x30008938",
+      "bytes": 268,
+      "sha256": "23fcc8fe20c844025cb67dd0a110415a84adf79a0b71ad3a6eb2125ef436bb8a",
+      "label": "Updater::Xml::DomNode::LinkEndChild(Updater::Xml::DomNode*)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x7a60",
+      "runtime_va": "0x30007a60",
+      "bytes": 4,
+      "sha256": "110f46b5b35c069160560c6ad6786f647dd44e8760a52a46fc22dbbcd7630b91",
+      "label": "Updater::Xml::DomElement::toElement() const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xb5ec",
+      "runtime_va": "0x3000b5ec",
+      "bytes": 176,
+      "sha256": "e344b3b1c60d5046a9ba5464356143d3950179f5f060c79530a5d42a61ab0844",
+      "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xadf4",
+      "runtime_va": "0x3000adf4",
+      "bytes": 216,
+      "sha256": "a7369c7485bc309012a7638cfb3673c0e17b2f7ca7cd6471dc6423b382de065a",
+      "label": "Updater::Xml::DomBase::SkipWhiteSpace(char const*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x9e4c",
+      "runtime_va": "0x30009e4c",
+      "bytes": 48,
+      "sha256": "b5fb6c7d68d17f5a444ecfeab003d3df9d673753e446b034acdf065360e777a7",
+      "label": "Updater::Xml::DomAttributeSet::DomAttributeSet()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x7a8c",
+      "runtime_va": "0x30007a8c",
+      "bytes": 4,
+      "sha256": "110f46b5b35c069160560c6ad6786f647dd44e8760a52a46fc22dbbcd7630b91",
+      "label": "Updater::Xml::DomDeclaration::toDeclaration()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xb2f0",
+      "runtime_va": "0x3000b2f0",
+      "bytes": 296,
+      "sha256": "1d745b861c9364542965802f39fd0bc23da7682036e86be7a4d8bc8c5d449142",
+      "label": "Updater::Xml::DomBase::StringEqual(char const*, char const*, bool, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x88e8",
+      "runtime_va": "0x300088e8",
+      "bytes": 80,
+      "sha256": "079e67bab52b53e58deb94e77e5a8cb025c17455b0e2cf2aef39a54e1d825e7d",
+      "label": "Updater::Xml::DomNode::GetDomDocument() const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8dd0",
+      "runtime_va": "0x30008dd0",
+      "bytes": 680,
+      "sha256": "1bb6693fe06f31a4eb1a557da9ef807b5e28fd44c1feab638a15b50be494f7d8",
+      "label": "Updater::Xml::DomDocument::loadFile(_IO_FILE*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa6b0",
+      "runtime_va": "0x3000a6b0",
+      "bytes": 60,
+      "sha256": "fda975680d3582f56b85e09250497e05de6be0122207f621ce8d0bb9d202beeb",
+      "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xc080",
+      "runtime_va": "0x3000c080",
+      "bytes": 640,
+      "sha256": "c18926b0fd0536eae38a7dc2a00532c7034ec6bb510a247e09d2b40daa7ff857",
+      "label": "Updater::Xml::DomDeclaration::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x7cc0",
+      "runtime_va": "0x30007cc0",
+      "bytes": 16,
+      "sha256": "3525e42d49dcc0a3b109cde2b55fd2e963557710c4b632f106b3051e93619eb9",
+      "label": "Updater::Xml::TiXmlString::operator=(Updater::Xml::TiXmlString const&)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xaa44",
+      "runtime_va": "0x3000aa44",
+      "bytes": 32,
+      "sha256": "7d77fd85066199610b07918fb94865b80c5aba059e7945124e3477a9f1368280",
+      "label": "Updater::Xml::DomBase::ToLower(int, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa0a8",
+      "runtime_va": "0x3000a0a8",
+      "bytes": 88,
+      "sha256": "260fc7aeca8f4b37814f42bfc65a5fd8288d8617e10698d540796f4075a049cd",
+      "label": "Updater::Xml::DomAttributeSet::Find(char const*) const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8200",
+      "runtime_va": "0x30008200",
+      "bytes": 56,
+      "sha256": "7ddece787e56bd7f786b2f1f1bab58e1efb7d27b073b5e8aacf334fbc3bdc762",
+      "label": "Updater::Xml::DomNode::DomNode(Updater::Xml::DomNode::NodeType)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xc358",
+      "runtime_va": "0x3000c358",
+      "bytes": 412,
+      "sha256": "a41a030a26b6319ab3e130727c3f1c33b4bbd4c28e58ac76920ebf3601945277",
+      "label": "Updater::Xml::DomElement::ReadValue(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xabf8",
+      "runtime_va": "0x3000abf8",
+      "bytes": 24,
+      "sha256": "c88882490be548b236078b04d6a52e2e04429e5f285a9688bd1553d49dec518b",
+      "label": "Updater::Xml::DomBase::IsAlphaNum(unsigned char, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xaa00",
+      "runtime_va": "0x3000aa00",
+      "bytes": 68,
+      "sha256": "7c2f84eb6893329010860fc0d94de197078ebcb6dd62499488452c443ba18ab6",
+      "label": "Updater::Xml::DomBase::IsWhiteSpace(char)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x7f10",
+      "runtime_va": "0x30007f10",
+      "bytes": 32,
+      "sha256": "a3897e275b01e7c6ac741d7a09acb0657c77d1d350407b1dddb3b0c0a1108d5b",
+      "label": "Updater::Xml::TiXmlString::quit()"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa914",
+      "runtime_va": "0x3000a914",
+      "bytes": 4,
+      "sha256": "110f46b5b35c069160560c6ad6786f647dd44e8760a52a46fc22dbbcd7630b91",
+      "label": "Updater::Xml::DomDocument::toDomDocument() const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8630",
+      "runtime_va": "0x30008630",
+      "bytes": 68,
+      "sha256": "03b01131ffe715d37d757199efea209181edffe891bc2fc69a1a552e7b4d6874",
+      "label": "Updater::Xml::DomNode::getNextSibling(char const*) const"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xc918",
+      "runtime_va": "0x3000c918",
+      "bytes": 216,
+      "sha256": "44a41a297e045cd42373db9be838942c77587589c00d0212e5299dee1555c0a5",
+      "label": "Updater::Xml::TiXmlString::assign(char const*, unsigned long)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xaecc",
+      "runtime_va": "0x3000aecc",
+      "bytes": 244,
+      "sha256": "7dec472946dcd1dd609d67494edeb7c9fe20f6e88221d24c0caf01649215e04b",
+      "label": "Updater::Xml::DomBase::ReadName(char const*, Updater::Xml::TiXmlString*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x9078",
+      "runtime_va": "0x30009078",
+      "bytes": 292,
+      "sha256": "71a6a8c3589af4bb0da25b650b242d038426907b9dd71cd6f3262938f0ebdeab",
+      "label": "Updater::Xml::DomDocument::loadFile(char const*, Updater::Xml::TiXmlEncoding)"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xc4f4",
+      "runtime_va": "0x3000c4f4",
+      "bytes": 804,
+      "sha256": "2e2daeb3f189088157be3693dbd07d01e508e86d9456cba50245a5ce4c1e9ef5",
+      "label": "Updater::Xml::DomElement::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+    }
+  ],
+  "selected_fragments": [
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x1371c",
+      "bytes": 360,
+      "sha256": "15dd3cb570ec41261c9a96e6e64257d8f368081fc5e9606ac5ab606be9ed126c",
+      "label": "Updater::ConfigKeyTag::PostExecute(Updater::BodyInformation*)",
+      "disassembly": "contract-fragments/10000000-1371c.txt",
+      "literals": [
+        {
+          "site": "0x13748",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x13750",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x137d8",
+          "va": "0x1bacd",
+          "text": "KeyTags.cpp"
+        },
+        {
+          "site": "0x137dc",
+          "va": "0x1b881",
+          "text": "UdrAPI,%d,%s:%d,\"\"%s\"\"\n"
+        },
+        {
+          "site": "0x13870",
+          "va": "0x1ba94",
+          "text": "config/uconfig.xml"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x13758",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x13760",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x1378c",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13794",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x1379c",
+          "target": "0x1b4c8",
+          "label": null
+        },
+        {
+          "site": "0x137c4",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x137e8",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x137f0",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x13824",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x13830",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x13838",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x13840",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x13858",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x13860",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x1387c",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x13880",
+          "target": "0x13790",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17468",
+      "bytes": 128,
+      "sha256": "529b218a9ada481b5a8f6b8e92817d3e96b6ef76155d0b0d92b725f0bb8bc02b",
+      "label": "Updater::XmlConfigHandler::LoadUserConfig(Updater::StringHandler const&)",
+      "disassembly": "contract-fragments/10000000-17468.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1749c",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x174a4",
+          "target": "0xfcf0",
+          "label": "Updater::Xml::DomDocument::DomDocument()"
+        },
+        {
+          "site": "0x174b0",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x174cc",
+          "target": "0x106f0",
+          "label": "Updater::Xml::DomDocument::loadFile(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x174dc",
+          "target": "0x10190",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x174e4",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x174e8",
+      "bytes": 224,
+      "sha256": "fb48664c51517b645117b6c64d1e6ef526cb0f37ff96f4ea11dce643616eb967",
+      "label": "Updater::XmlConfigHandler::CheckGuardResult(Updater::StringHandler const&)",
+      "disassembly": "contract-fragments/10000000-174e8.txt",
+      "literals": [
+        {
+          "site": "0x17524",
+          "va": "0x1bf13",
+          "text": "XmlConfigHandler.cpp"
+        },
+        {
+          "site": "0x1752c",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x17534",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x1753c",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x17568",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x175c8",
+      "bytes": 248,
+      "sha256": "10a4549c71e1fa0d71a5bc7cb14c992be96b35224d3cd7a85a124e33547669a2",
+      "label": "Updater::XmlConfigHandler::isKey(Updater::Xml::DomDocument*, Updater::StringHandler const&)",
+      "disassembly": "contract-fragments/10000000-175c8.txt",
+      "literals": [
+        {
+          "site": "0x175f4",
+          "va": "0x1bb2e",
+          "text": "updater"
+        },
+        {
+          "site": "0x1761c",
+          "va": "0x1bf28",
+          "text": "programs"
+        },
+        {
+          "site": "0x17624",
+          "va": "0x1bf31",
+          "text": "proc"
+        },
+        {
+          "site": "0x17634",
+          "va": "0x1bf31",
+          "text": "proc"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x17608",
+          "target": "0x108e0",
+          "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const"
+        },
+        {
+          "site": "0x17628",
+          "target": "0x108e0",
+          "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const"
+        },
+        {
+          "site": "0x17638",
+          "target": "0x108e0",
+          "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const"
+        },
+        {
+          "site": "0x17660",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x17670",
+          "target": "0xff30",
+          "label": "Updater::Xml::DomNode::getNextSibling(char const*) const"
+        },
+        {
+          "site": "0x17678",
+          "target": "0x17640",
+          "label": null
+        },
+        {
+          "site": "0x176b4",
+          "target": "0x1769c",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x176c0",
+      "bytes": 268,
+      "sha256": "26d25d007f376932f57929f4fd1be09f1afc06713a382f1f5df1d853c2ec34fc",
+      "label": "Updater::XmlConfigHandler::checkGuardResult(Updater::Xml::DomDocument*, Updater::StringHandler const&)",
+      "disassembly": "contract-fragments/10000000-176c0.txt",
+      "literals": [
+        {
+          "site": "0x176f4",
+          "va": "0x1bb2e",
+          "text": "updater"
+        },
+        {
+          "site": "0x17718",
+          "va": "0x1bf28",
+          "text": "programs"
+        },
+        {
+          "site": "0x17720",
+          "va": "0x1bf31",
+          "text": "proc"
+        },
+        {
+          "site": "0x17730",
+          "va": "0x1bf31",
+          "text": "proc"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x17708",
+          "target": "0x108e0",
+          "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const"
+        },
+        {
+          "site": "0x17724",
+          "target": "0x108e0",
+          "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const"
+        },
+        {
+          "site": "0x17734",
+          "target": "0x108e0",
+          "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const"
+        },
+        {
+          "site": "0x1775c",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x1778c",
+          "target": "0xff30",
+          "label": "Updater::Xml::DomNode::getNextSibling(char const*) const"
+        },
+        {
+          "site": "0x17794",
+          "target": "0x1773c",
+          "label": null
+        },
+        {
+          "site": "0x177b0",
+          "target": "0x17784",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x177cc",
+      "bytes": 532,
+      "sha256": "5aab578f89c62529a5f3a17696d01808226417f5429bbaead57ab78ed86f098e",
+      "label": "Updater::XmlConfigHandler::executeGuard(Updater::StringHandler const&, Updater::Xml::DomNode const*)",
+      "disassembly": "contract-fragments/10000000-177cc.txt",
+      "literals": [
+        {
+          "site": "0x177f8",
+          "va": "0x1befd",
+          "text": "guard"
+        },
+        {
+          "site": "0x17810",
+          "va": "0x1bf03",
+          "text": "function"
+        },
+        {
+          "site": "0x17878",
+          "va": "0x1bf0c",
+          "text": "module"
+        },
+        {
+          "site": "0x17974",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x17814",
+          "target": "0x10000",
+          "label": "Updater::Xml::DomNode::FirstChild(char const*) const"
+        },
+        {
+          "site": "0x1783c",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x1784c",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x1785c",
+          "target": "0x105e0",
+          "label": "Updater::DllPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+        },
+        {
+          "site": "0x17890",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x178c4",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x178cc",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x178ec",
+          "target": "0x17948",
+          "label": null
+        },
+        {
+          "site": "0x178f4",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x17904",
+          "target": "0x101c0",
+          "label": "Updater::ShellPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+        },
+        {
+          "site": "0x17908",
+          "target": "0x17860",
+          "label": null
+        },
+        {
+          "site": "0x1791c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x17924",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x17950",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x1795c",
+          "target": "0xff30",
+          "label": "Updater::Xml::DomNode::getNextSibling(char const*) const"
+        },
+        {
+          "site": "0x17964",
+          "target": "0x1781c",
+          "label": null
+        },
+        {
+          "site": "0x1797c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x17980",
+          "target": "0x178c8",
+          "label": null
+        },
+        {
+          "site": "0x179c0",
+          "target": "0x17800",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x179e0",
+      "bytes": 92,
+      "sha256": "229639542e45a2a14ba03b23e7d4c36f3f0b197c4aac40cfa7a19e2ff408cbe4",
+      "label": "Updater::XmlConfigHandler::IsKey(Updater::StringHandler const&)",
+      "disassembly": "contract-fragments/10000000-179e0.txt",
+      "literals": [],
+      "calls": [],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17a3c",
+      "bytes": 324,
+      "sha256": "d838812a4bcdf921dcd67050c26209cd882bd60a28e3a49e88cf3c2be8f36f8b",
+      "label": "Updater::XmlConfigHandler::Execute()",
+      "disassembly": "contract-fragments/10000000-17a3c.txt",
+      "literals": [
+        {
+          "site": "0x17a78",
+          "va": "0x1bf3a",
+          "text": "thread"
+        },
+        {
+          "site": "0x17b0c",
+          "va": "0x1bf13",
+          "text": "XmlConfigHandler.cpp"
+        },
+        {
+          "site": "0x17b14",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x17ad4",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x17ae4",
+          "target": "0x10530",
+          "label": "strcmp"
+        },
+        {
+          "site": "0x17af4",
+          "target": "0x102a0",
+          "label": "Updater::Plugin::Execute(Updater::UPDATER_ACTION_MODE, Updater::Xml::DomNode const*)"
+        },
+        {
+          "site": "0x17af8",
+          "target": "0x17a80",
+          "label": null
+        },
+        {
+          "site": "0x17b1c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x17b24",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x17b50",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x17b68",
+          "target": "0x17a80",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17c74",
+      "bytes": 32,
+      "sha256": "3b2732bdfa43dd6398687c6ee2280c52b670ddbd39b4c02b01773c04ab274233",
+      "label": "Updater::XmlConfigHandler::XmlConfigHandler(Updater::UPDATER_ACTION_MODE)",
+      "disassembly": "contract-fragments/10000000-17c74.txt",
+      "literals": [],
+      "calls": [],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x17c94",
+      "bytes": 356,
+      "sha256": "b8808592807f8da1e087a04236bee80a434ef7230743681de4bc9e23310fe133",
+      "label": "Updater::XmlConfigHandler::Initialize(Updater::CallbackInterface*)",
+      "disassembly": "contract-fragments/10000000-17c94.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x17cc8",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x17d28",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x17db4",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x17dc4",
+          "target": "0xfd10",
+          "label": "Updater::ThreadPlugin::ThreadPlugin(Updater::UPDATER_ACTION_MODE, Updater::CallbackInterface*)"
+        },
+        {
+          "site": "0x17ddc",
+          "target": "0x108a0",
+          "label": "Updater::ThreadPlugin::Initialize()"
+        },
+        {
+          "site": "0x17dec",
+          "target": "0x10190",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x17df4",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x1847c",
+      "bytes": 64,
+      "sha256": "185749023e0c05207b9327b07872deaecb3922b6dcb8bb0e894161a24b45b385",
+      "label": "Updater::ThreadIdQueue::ThreadIdQueue()",
+      "disassembly": "contract-fragments/10000000-1847c.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x184b8",
+          "target": "0xff00",
+          "label": "pthread_mutex_init"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x184bc",
+      "bytes": 272,
+      "sha256": "8d0da9f0cb6d3e6f6f66d0ba45c941440131bce0bd24387eb541c770418be807",
+      "label": "Updater::ThreadPlugin::Initialize()",
+      "disassembly": "contract-fragments/10000000-184bc.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1851c",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x18560",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x18598",
+          "target": "0x10140",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0x185a0",
+          "target": "0x10510",
+          "label": "Updater::ThreadIdQueue::ThreadIdQueue()"
+        },
+        {
+          "site": "0x185c0",
+          "target": "0x10190",
+          "label": "operator delete(void*, unsigned long)"
+        },
+        {
+          "site": "0x185c8",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x185cc",
+      "bytes": 84,
+      "sha256": "f2a31a9b00f07e5daa36cbb9bb9f418206f2318236decce95ead8b0d7b9e2f82",
+      "label": "Updater::ThreadPlugin::ThreadPlugin(Updater::UPDATER_ACTION_MODE, Updater::CallbackInterface*)",
+      "disassembly": "contract-fragments/10000000-185cc.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x18608",
+          "target": "0xff00",
+          "label": "pthread_mutex_init"
+        },
+        {
+          "site": "0x1861c",
+          "target": "0xff00",
+          "label": "pthread_mutex_init"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x187a4",
+      "bytes": 864,
+      "sha256": "d7f6348ed9a81a579c006aa670fde027029d4cc7dc60b9d3619178ea08dac6c8",
+      "label": "Updater::ShellPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)",
+      "disassembly": "contract-fragments/10000000-187a4.txt",
+      "literals": [
+        {
+          "site": "0x187d4",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x187dc",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x1882c",
+          "va": "0x1bf0c",
+          "text": "module"
+        },
+        {
+          "site": "0x18854",
+          "va": "0x1c0e0",
+          "text": "param"
+        },
+        {
+          "site": "0x188b8",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x188bc",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x18928",
+          "va": "0x1c006",
+          "text": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE="
+        },
+        {
+          "site": "0x189c0",
+          "va": "0x1c1c0",
+          "text": "Execute"
+        },
+        {
+          "site": "0x189c4",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x189c8",
+          "va": "0x1c0b5",
+          "text": "[%s] %s @ %d ignore system error errno(%d)"
+        },
+        {
+          "site": "0x189ec",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x189f0",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x18a7c",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x18a80",
+          "va": "0x1b881",
+          "text": "UdrAPI,%d,%s:%d,\"\"%s\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x187e0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x187e8",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18814",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18838",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x18860",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x1886c",
+          "target": "0x1887c",
+          "label": null
+        },
+        {
+          "site": "0x1888c",
+          "target": "0x10530",
+          "label": "strcmp"
+        },
+        {
+          "site": "0x188a0",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x188c8",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x188d0",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18904",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x1890c",
+          "target": "0x18a48",
+          "label": null
+        },
+        {
+          "site": "0x18934",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x18940",
+          "target": "0x10580",
+          "label": "Updater::StringHandler::StringHandler()"
+        },
+        {
+          "site": "0x18954",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18968",
+          "target": "0x10850",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x18970",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18974",
+          "target": "0x104b0",
+          "label": "system"
+        },
+        {
+          "site": "0x18978",
+          "target": "0x189a0",
+          "label": null
+        },
+        {
+          "site": "0x18980",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18998",
+          "target": "0x103c0",
+          "label": "Updater::StringHandler::SetString(char const*, char const*, char const*, char const*, char const*)"
+        },
+        {
+          "site": "0x1899c",
+          "target": "0x1896c",
+          "label": null
+        },
+        {
+          "site": "0x189a4",
+          "target": "0x103d0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x189d0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x189d4",
+          "target": "0x18acc",
+          "label": null
+        },
+        {
+          "site": "0x189fc",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18a04",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18a38",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18a44",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18a4c",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18a54",
+          "target": "0x107a0",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x18a68",
+          "target": "0xffd0",
+          "label": "Updater::StringHandler::GetCharString() const"
+        },
+        {
+          "site": "0x18a8c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18a94",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18ac8",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x18ad4",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18adc",
+          "target": "0x10770",
+          "label": "Updater::StringHandler::~StringHandler()"
+        },
+        {
+          "site": "0x18b00",
+          "target": "0x187cc",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x18e28",
+      "bytes": 540,
+      "sha256": "b73062c28bf37cccf52682e125e1f55126843c1c83f959ac4646d3b9c382d9b8",
+      "label": "Updater::Plugin::Execute(Updater::UPDATER_ACTION_MODE, Updater::Xml::DomNode const*)",
+      "disassembly": "contract-fragments/10000000-18e28.txt",
+      "literals": [
+        {
+          "site": "0x18ee8",
+          "va": "0x1bf0c",
+          "text": "module"
+        },
+        {
+          "site": "0x18fd4",
+          "va": "0x1c117",
+          "text": "Plugin.cpp"
+        },
+        {
+          "site": "0x18fdc",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x19024",
+          "va": "0x1b62e",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x18e58",
+          "target": "0x18fcc",
+          "label": null
+        },
+        {
+          "site": "0x18e6c",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x18e80",
+          "target": "0x18fcc",
+          "label": null
+        },
+        {
+          "site": "0x18ea8",
+          "target": "0x18fcc",
+          "label": null
+        },
+        {
+          "site": "0x18ebc",
+          "target": "0x10530",
+          "label": "strcmp"
+        },
+        {
+          "site": "0x18ed0",
+          "target": "0x105e0",
+          "label": "Updater::DllPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+        },
+        {
+          "site": "0x18efc",
+          "target": "0x10760",
+          "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const"
+        },
+        {
+          "site": "0x18f30",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18f38",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18f58",
+          "target": "0x18fa4",
+          "label": null
+        },
+        {
+          "site": "0x18f60",
+          "target": "0x101c0",
+          "label": "Updater::ShellPlugin::Execute(Updater::UPDATER_ACTION_MODE, char const*, Updater::Xml::DomElement const*)"
+        },
+        {
+          "site": "0x18f64",
+          "target": "0x18ed4",
+          "label": null
+        },
+        {
+          "site": "0x18f78",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18f80",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x18fac",
+          "target": "0x19014",
+          "label": null
+        },
+        {
+          "site": "0x18fe0",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x18fe8",
+          "target": "0xfd80",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x19014",
+          "target": "0x10700",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x1902c",
+          "target": "0x10930",
+          "label": "printf"
+        },
+        {
+          "site": "0x19030",
+          "target": "0x18f34",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8c90",
+      "bytes": 152,
+      "sha256": "0a8b14240b693f0676efd726d8c59bfe59dedce8f76103ae393d93b5b82c2843",
+      "label": "Updater::Xml::DomDocument::DomDocument()",
+      "disassembly": "contract-fragments/30000000-8c90.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x8cac",
+          "target": "0x7320",
+          "label": "Updater::Xml::DomNode::DomNode(Updater::Xml::DomNode::NodeType)"
+        },
+        {
+          "site": "0x8cf4",
+          "target": "0x7880",
+          "label": "Updater::Xml::TiXmlString::operator=(char const*)"
+        },
+        {
+          "site": "0x8d14",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0x8d1c",
+          "target": "0x7470",
+          "label": "Updater::Xml::DomNode::~DomNode()"
+        },
+        {
+          "site": "0x8d24",
+          "target": "0x7800",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x8dd0",
+      "bytes": 680,
+      "sha256": "1bb6693fe06f31a4eb1a557da9ef807b5e28fd44c1feab638a15b50be494f7d8",
+      "label": "Updater::Xml::DomDocument::loadFile(_IO_FILE*, Updater::Xml::TiXmlEncoding)",
+      "disassembly": "contract-fragments/30000000-8dd0.txt",
+      "literals": [
+        {
+          "site": "0x8f20",
+          "va": "0xcf80",
+          "text": "bool Updater::Xml::DomDocument::loadFile(FILE*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x8f24",
+          "va": "0xce2a",
+          "text": "ul_xml.cpp"
+        },
+        {
+          "site": "0x8f28",
+          "va": "0xccff",
+          "text": "p < (buf+length)"
+        },
+        {
+          "site": "0x8f68",
+          "va": "0xcf80",
+          "text": "bool Updater::Xml::DomDocument::loadFile(FILE*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x8f74",
+          "va": "0xce2a",
+          "text": "ul_xml.cpp"
+        },
+        {
+          "site": "0x8f78",
+          "va": "0xcd10",
+          "text": "p <= (buf+length)"
+        },
+        {
+          "site": "0x8fd8",
+          "va": "0xcf80",
+          "text": "bool Updater::Xml::DomDocument::loadFile(FILE*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x8ff4",
+          "va": "0xcf80",
+          "text": "bool Updater::Xml::DomDocument::loadFile(FILE*, Updater::Xml::TiXmlEncoding)"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x8e00",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x8e2c",
+          "target": "0x7760",
+          "label": "Updater::Xml::DomNode::Clear()"
+        },
+        {
+          "site": "0x8e44",
+          "target": "0x7890",
+          "label": "fseek"
+        },
+        {
+          "site": "0x8e4c",
+          "target": "0x7350",
+          "label": "ftell"
+        },
+        {
+          "site": "0x8e60",
+          "target": "0x7890",
+          "label": "fseek"
+        },
+        {
+          "site": "0x8e7c",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x8e80",
+          "target": "0x8e04",
+          "label": null
+        },
+        {
+          "site": "0x8e9c",
+          "target": "0x7330",
+          "label": "Updater::Xml::TiXmlString::reserve(unsigned long)"
+        },
+        {
+          "site": "0x8ea4",
+          "target": "0x7210",
+          "label": "operator new[](unsigned long)"
+        },
+        {
+          "site": "0x8ebc",
+          "target": "0x7280",
+          "label": "fread"
+        },
+        {
+          "site": "0x8ecc",
+          "target": "0x7690",
+          "label": "operator delete[](void*)"
+        },
+        {
+          "site": "0x8ee4",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x8ee8",
+          "target": "0x905c",
+          "label": null
+        },
+        {
+          "site": "0x8f30",
+          "target": "0x73f0",
+          "label": "__assert_fail"
+        },
+        {
+          "site": "0x8f38",
+          "target": "0x8f04",
+          "label": null
+        },
+        {
+          "site": "0x8f50",
+          "target": "0x7640",
+          "label": "Updater::Xml::TiXmlString::append(char const*, unsigned long)"
+        },
+        {
+          "site": "0x8f7c",
+          "target": "0x8f30",
+          "label": null
+        },
+        {
+          "site": "0x8fa4",
+          "target": "0x7640",
+          "label": "Updater::Xml::TiXmlString::append(char const*, unsigned long)"
+        },
+        {
+          "site": "0x8fa8",
+          "target": "0x8fb8",
+          "label": null
+        },
+        {
+          "site": "0x8fb0",
+          "target": "0x7640",
+          "label": "Updater::Xml::TiXmlString::append(char const*, unsigned long)"
+        },
+        {
+          "site": "0x8fb4",
+          "target": "0x8f94",
+          "label": null
+        },
+        {
+          "site": "0x8fdc",
+          "target": "0x8f6c",
+          "label": null
+        },
+        {
+          "site": "0x8ff8",
+          "target": "0x8f6c",
+          "label": null
+        },
+        {
+          "site": "0x9000",
+          "target": "0x8f04",
+          "label": null
+        },
+        {
+          "site": "0x9010",
+          "target": "0x7690",
+          "label": "operator delete[](void*)"
+        },
+        {
+          "site": "0x9034",
+          "target": "0x9048",
+          "label": null
+        },
+        {
+          "site": "0x9040",
+          "target": "0x7640",
+          "label": "Updater::Xml::TiXmlString::append(char const*, unsigned long)"
+        },
+        {
+          "site": "0x9044",
+          "target": "0x900c",
+          "label": null
+        },
+        {
+          "site": "0x9054",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0x9058",
+          "target": "0x8e04",
+          "label": null
+        },
+        {
+          "site": "0x9060",
+          "target": "0x9050",
+          "label": null
+        },
+        {
+          "site": "0x906c",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0x9074",
+          "target": "0x7800",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0x9078",
+      "bytes": 292,
+      "sha256": "71a6a8c3589af4bb0da25b650b242d038426907b9dd71cd6f3262938f0ebdeab",
+      "label": "Updater::Xml::DomDocument::loadFile(char const*, Updater::Xml::TiXmlEncoding)",
+      "disassembly": "contract-fragments/30000000-9078.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x909c",
+          "target": "0x7300",
+          "label": "strlen"
+        },
+        {
+          "site": "0x90c0",
+          "target": "0x7210",
+          "label": "operator new[](unsigned long)"
+        },
+        {
+          "site": "0x90ec",
+          "target": "0x7250",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x90f8",
+          "target": "0x7400",
+          "label": "Updater::Xml::TiXmlString::operator=(Updater::Xml::TiXmlString const&)"
+        },
+        {
+          "site": "0x90fc",
+          "target": "0x9114",
+          "label": null
+        },
+        {
+          "site": "0x9100",
+          "target": "0x76d0",
+          "label": "__cxa_throw_bad_array_new_length"
+        },
+        {
+          "site": "0x9110",
+          "target": "0x90d8",
+          "label": null
+        },
+        {
+          "site": "0x9124",
+          "target": "0x76c0",
+          "label": "fopen"
+        },
+        {
+          "site": "0x913c",
+          "target": "0x7220",
+          "label": "Updater::Xml::DomDocument::loadFile(_IO_FILE*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x9148",
+          "target": "0x73d0",
+          "label": "fclose"
+        },
+        {
+          "site": "0x914c",
+          "target": "0x916c",
+          "label": null
+        },
+        {
+          "site": "0x9164",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x9170",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0x9190",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0x9198",
+          "target": "0x7800",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa64c",
+      "bytes": 64,
+      "sha256": "055cbc350211cb2f121714a5c4ef798e9f9f45a9d6f760987c204da8a04413a8",
+      "label": "Updater::Xml::DomElement::queryStringAttribute(char const*, char**) const",
+      "disassembly": "contract-fragments/30000000-a64c.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0xa660",
+          "target": "0x7380",
+          "label": "Updater::Xml::DomAttributeSet::Find(char const*) const"
+        },
+        {
+          "site": "0xa688",
+          "target": "0xa678",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xa6b0",
+      "bytes": 60,
+      "sha256": "fda975680d3582f56b85e09250497e05de6be0122207f621ce8d0bb9d202beeb",
+      "label": "Updater::Xml::DomHandle::getFirstChild(char const*) const",
+      "disassembly": "contract-fragments/30000000-a6b0.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0xa6c8",
+          "target": "0x7500",
+          "label": "Updater::Xml::DomNode::FirstChild(char const*) const"
+        },
+        {
+          "site": "0xa6e8",
+          "target": "0xa6d4",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xbaa0",
+      "bytes": 564,
+      "sha256": "53b9bee878292ae995168a46f5ea88f2f5d66c515f1c004d310dfaabe9d952bc",
+      "label": "Updater::Xml::DomDocument::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "disassembly": "contract-fragments/30000000-baa0.txt",
+      "literals": [
+        {
+          "site": "0xbba8",
+          "va": "0xd000",
+          "text": ":Xml::DomAttribute*)"
+        },
+        {
+          "site": "0xbbac",
+          "va": "0xd000",
+          "text": ":Xml::DomAttribute*)"
+        },
+        {
+          "site": "0xbbb4",
+          "va": "0xd693",
+          "text": "UTF-8"
+        },
+        {
+          "site": "0xbbb8",
+          "va": "0xd699",
+          "text": "UTF8"
+        },
+        {
+          "site": "0xbcb4",
+          "va": "0xd000",
+          "text": ":Xml::DomAttribute*)"
+        },
+        {
+          "site": "0xbcb8",
+          "va": "0xd000",
+          "text": ":Xml::DomAttribute*)"
+        },
+        {
+          "site": "0xbcbc",
+          "va": "0xd000",
+          "text": ":Xml::DomAttribute*)"
+        },
+        {
+          "site": "0xbcc0",
+          "va": "0xdc00",
+          "text": "virtual const char* Updater::Xml::DomDocument::Parse(const char*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xbcc4",
+          "va": "0xd6e4",
+          "text": "ul_xmlparser.cpp"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0xbadc",
+          "target": "0x7880",
+          "label": "Updater::Xml::TiXmlString::operator=(char const*)"
+        },
+        {
+          "site": "0xbb08",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xbb9c",
+          "target": "0x75f0",
+          "label": "Updater::Xml::DomBase::SkipWhiteSpace(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xbbd0",
+          "target": "0x7260",
+          "label": "Updater::Xml::DomNode::Identify(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xbc00",
+          "target": "0x77d0",
+          "label": "Updater::Xml::DomNode::LinkEndChild(Updater::Xml::DomNode*)"
+        },
+        {
+          "site": "0xbc24",
+          "target": "0x75f0",
+          "label": "Updater::Xml::DomBase::SkipWhiteSpace(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xbc3c",
+          "target": "0xbaf4",
+          "label": null
+        },
+        {
+          "site": "0xbc44",
+          "target": "0xbb44",
+          "label": null
+        },
+        {
+          "site": "0xbc54",
+          "target": "0xbc1c",
+          "label": null
+        },
+        {
+          "site": "0xbc68",
+          "target": "0x7480",
+          "label": "Updater::Xml::DomBase::StringEqual(char const*, char const*, bool, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xbc84",
+          "target": "0x7480",
+          "label": "Updater::Xml::DomBase::StringEqual(char const*, char const*, bool, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xbc94",
+          "target": "0xbc1c",
+          "label": null
+        },
+        {
+          "site": "0xbcd0",
+          "target": "0x73f0",
+          "label": "__assert_fail"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/xml-20261029/original-members/libul_xml.so",
+      "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+      "va": "0xc4f4",
+      "bytes": 804,
+      "sha256": "2e2daeb3f189088157be3693dbd07d01e508e86d9456cba50245a5ce4c1e9ef5",
+      "label": "Updater::Xml::DomElement::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)",
+      "disassembly": "contract-fragments/30000000-c4f4.txt",
+      "literals": [
+        {
+          "site": "0xc628",
+          "va": "0xd000",
+          "text": ":Xml::DomAttribute*)"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0xc524",
+          "target": "0x75f0",
+          "label": "Updater::Xml::DomBase::SkipWhiteSpace(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc530",
+          "target": "0x74d0",
+          "label": "Updater::Xml::DomNode::GetDomDocument() const"
+        },
+        {
+          "site": "0xc580",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc584",
+          "target": "0xc548",
+          "label": null
+        },
+        {
+          "site": "0xc598",
+          "target": "0x7530",
+          "label": "Updater::Xml::DomParsingData::Stamp(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc5c0",
+          "target": "0xc578",
+          "label": null
+        },
+        {
+          "site": "0xc5cc",
+          "target": "0x75f0",
+          "label": "Updater::Xml::DomBase::SkipWhiteSpace(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc5dc",
+          "target": "0x7790",
+          "label": "Updater::Xml::DomBase::ReadName(char const*, Updater::Xml::TiXmlString*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc604",
+          "target": "0xc57c",
+          "label": null
+        },
+        {
+          "site": "0xc614",
+          "target": "0x7210",
+          "label": "operator new[](unsigned long)"
+        },
+        {
+          "site": "0xc648",
+          "target": "0x7640",
+          "label": "Updater::Xml::TiXmlString::append(char const*, unsigned long)"
+        },
+        {
+          "site": "0xc65c",
+          "target": "0x7640",
+          "label": "Updater::Xml::TiXmlString::append(char const*, unsigned long)"
+        },
+        {
+          "site": "0xc674",
+          "target": "0x75f0",
+          "label": "Updater::Xml::DomBase::SkipWhiteSpace(char const*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc688",
+          "target": "0xc6e0",
+          "label": null
+        },
+        {
+          "site": "0xc6bc",
+          "target": "0xc6d0",
+          "label": null
+        },
+        {
+          "site": "0xc6d4",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc6d8",
+          "target": "0xc684",
+          "label": null
+        },
+        {
+          "site": "0xc6e4",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0xc6e8",
+          "target": "0xc54c",
+          "label": null
+        },
+        {
+          "site": "0xc704",
+          "target": "0x7740",
+          "label": "Updater::Xml::DomElement::ReadValue(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc728",
+          "target": "0x7480",
+          "label": "Updater::Xml::DomBase::StringEqual(char const*, char const*, bool, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc740",
+          "target": "0xc6e0",
+          "label": null
+        },
+        {
+          "site": "0xc758",
+          "target": "0xc6d0",
+          "label": null
+        },
+        {
+          "site": "0xc760",
+          "target": "0x7580",
+          "label": "operator new(unsigned long)"
+        },
+        {
+          "site": "0xc768",
+          "target": "0x7410",
+          "label": "Updater::Xml::DomAttribute::DomAttribute()"
+        },
+        {
+          "site": "0xc780",
+          "target": "0x7450",
+          "label": "Updater::Xml::DomAttribute::Parse(char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc7a0",
+          "target": "0xc684",
+          "label": null
+        },
+        {
+          "site": "0xc7b8",
+          "target": "0x7380",
+          "label": "Updater::Xml::DomAttributeSet::Find(char const*) const"
+        },
+        {
+          "site": "0xc7bc",
+          "target": "0xc7dc",
+          "label": null
+        },
+        {
+          "site": "0xc7d4",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0xc7d8",
+          "target": "0xc790",
+          "label": null
+        },
+        {
+          "site": "0xc7ec",
+          "target": "0x7880",
+          "label": "Updater::Xml::TiXmlString::operator=(char const*)"
+        },
+        {
+          "site": "0xc7f0",
+          "target": "0xc790",
+          "label": null
+        },
+        {
+          "site": "0xc7fc",
+          "target": "0x76e0",
+          "label": "Updater::Xml::DomAttributeSet::Add(Updater::Xml::DomAttribute*)"
+        },
+        {
+          "site": "0xc800",
+          "target": "0xc664",
+          "label": null
+        },
+        {
+          "site": "0xc80c",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0xc814",
+          "target": "0x7800",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "source_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "va": "0x1b4c8",
+      "bytes": 16,
+      "sha256": "22763fa6808a2ba6ff2e3050b192154fe7459e10b6ea504a4543f6599a3a6bd3",
+      "disassembly": "contract-fragments/stat-wrapper-window.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1b4d4",
+          "target": "0x10550",
+          "label": "__xstat"
+        }
+      ],
+      "bounds": "exact 16-byte stat wrapper window, not symbol/FDE identity"
+    }
+  ],
+  "scope": "Original file-backed bytes, source pins, symbol/FDE function bounds, recorded guest entry names and selected disassembly only. This records which sources supplied interpreted instructions; it does not attest real native loader selection or camera execution."
+}

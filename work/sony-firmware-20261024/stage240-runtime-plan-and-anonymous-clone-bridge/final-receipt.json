@@ -1,0 +1,474 @@
+{
+  "schema": "fx3-stage240-own-runtime-plan-anonymous-clone-bridge-seal-v1",
+  "created_utc": "2026-10-30T20:41:18.858832+00:00",
+  "previous_manifest_sha256": "dc360018c9e89354eed01e38b5d3e024e767a4a84288497a53a987bb94039a47",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/README.md",
+      "bytes": 6484,
+      "sha256": "b14d1c29f0297d8561c7525c64e170ec48010ed1550b148165708580a4fa01cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/assemble_source.py",
+      "bytes": 4176,
+      "sha256": "ecb88cd82dff7abc5cdc16f76eba740d3d45a2fed8fb32f6dcd11c51496ad1d8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/assembly-replay/collector.c",
+      "bytes": 9017,
+      "sha256": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/assembly-replay/parent.c",
+      "bytes": 10596,
+      "sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/assembly-replay/source-assembly.json",
+      "bytes": 852,
+      "sha256": "60c9fe69141175c6ddd62de8a32df2273329fa325e7bb1df36f7ad94a3fe6ad4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/assembly-replay-receipt.json",
+      "bytes": 368,
+      "sha256": "f8edff25f1f8c656a38b45d1acff1bcdf7c999f3df852ab8f6c1afa6dbfeb81f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/audit_bridge.py",
+      "bytes": 4954,
+      "sha256": "65a8c3e1dd0fa3f1f7bcaf438e979024531b0228bc644d77f1ed962b09126ef1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/bridge.c",
+      "bytes": 5426,
+      "sha256": "e57c209764d0fb276ed6a88fa4c735e6a70d7843badab1feaa58238dd3e4a4a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/bridge_build.py",
+      "bytes": 15624,
+      "sha256": "6c02ec06b94020e380a185141229f52c52d549e984c7c900aa2c6685ea6ec3f0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/bridge_job.h",
+      "bytes": 1938,
+      "sha256": "bdce44720340a3cd4fd90e04942d07f86f2b1a557990a1d07762971da3da0c0a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/bridge.c",
+      "bytes": 5426,
+      "sha256": "e57c209764d0fb276ed6a88fa4c735e6a70d7843badab1feaa58238dd3e4a4a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/bridge.elf",
+      "bytes": 262144,
+      "sha256": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/bridge.o",
+      "bytes": 8064,
+      "sha256": "c237bdbfd150ee3dbd142abe1fcd3eb8916db8cb03ed3604b2ea7ab6a59fe6bf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/bridge.o.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/bridge_job.h",
+      "bytes": 1938,
+      "sha256": "bdce44720340a3cd4fd90e04942d07f86f2b1a557990a1d07762971da3da0c0a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/build.json",
+      "bytes": 37000,
+      "sha256": "449e6867245666dc2dbdbfde284123d0b68494fee7de9a33ce2a0f7ac84e30de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/collector.c",
+      "bytes": 9017,
+      "sha256": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/collector.o",
+      "bytes": 9856,
+      "sha256": "450cf2fcdfef36ad97c96e653a8d0af0eb7e2e7436a7d6d60bec32a05ea1b63e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/collector.o.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/entry.o",
+      "bytes": 656,
+      "sha256": "f61aec3a15663041c30cdd2f7b28cc01c1321d52d1de2e12e0dbba8fcfa01fb7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/entry.s",
+      "bytes": 222,
+      "sha256": "bf2606018cb87b70389cbbf96b3a0721b467d851dff6462f80001c7201338fe7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/parent.c",
+      "bytes": 10596,
+      "sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/parent.o",
+      "bytes": 9784,
+      "sha256": "df896328f8ebb0ebc43c65aa3cf3dea1471132da3e8e91aa14fc8c9fb2953eb4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/parent.o.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/build-first/sha_impl.inc",
+      "bytes": 2453,
+      "sha256": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/builder-origin.json",
+      "bytes": 322,
+      "sha256": "f25883f5328d4a351a18a662e506e5a7a69202e021e681930567b5c40f47e28d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/collector.c",
+      "bytes": 9017,
+      "sha256": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/first-full-model.json",
+      "bytes": 4337,
+      "sha256": "07c954ceee82752051dcf1f84896e2dea1883edabea29a817b462532121a6ede"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/goal-status-after.json",
+      "bytes": 539797,
+      "sha256": "f29242b95f2025c3c4b4dee19283d4330edbe5f1ae8d8a0cf56f369174a0eda7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/goal-status-before.json",
+      "bytes": 533815,
+      "sha256": "e0efb98298c80bfebeebcbb29ed97e0fd78f54ea0aba5cddff7912ff0f132109"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/model_bridge.py",
+      "bytes": 15761,
+      "sha256": "9292d90006753b237ab907e504565fc2a99d94ea783085f239f45a6162b51980"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/native-goal-observed.json",
+      "bytes": 383,
+      "sha256": "1f6522039ddfa5f18c3b17aa83d80bb23aae0b050b4292faf37316f5038cd24c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/parent.c",
+      "bytes": 10596,
+      "sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/public-reference/YuuLuo--a7c2-service-preload-README.md",
+      "bytes": 2896,
+      "sha256": "3088b8667c21eca9bdda534e6719c0e5839c3f2d8085a39aef8ab98f58a5b7a1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/public-reference/chocotan--a7c2-re-README.md",
+      "bytes": 8364,
+      "sha256": "57f0207801e42d13a76c863e4653ef39c7b4e3a5b1c6822a0139417a18d10059"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/public-reference/cokeenet--zve10-qemu-README.md",
+      "bytes": 15309,
+      "sha256": "9223975eebf54105517609a3331e0d67adc1577f08a3730b657b27f5936e2311"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/public-reference-initial-attempt.json",
+      "bytes": 212,
+      "sha256": "e609334b66fd27f94aa439cb9f9d2e034b5dccab975d101e9ca6cae1ba00bd8a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/public-reference-recheck.json",
+      "bytes": 1677,
+      "sha256": "d8a65734bb54c0ef25ec9455e00e15148178014cc1fb9bee50127d0bb4eaf87a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/readme-after.md",
+      "bytes": 109354,
+      "sha256": "e551a7e73389a2db157f48e55307175fbb63676ddcf327330eff96c3aa7f2f18"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/readme-before.md",
+      "bytes": 108942,
+      "sha256": "fcb5f4e5772438e7b30946851fe11b74ca54a3319ff76dcf1d9b4eadb531173c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/readme-rebased-before.md",
+      "bytes": 108942,
+      "sha256": "fcb5f4e5772438e7b30946851fe11b74ca54a3319ff76dcf1d9b4eadb531173c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/relocation-audit.json",
+      "bytes": 20824,
+      "sha256": "2b4f0873be1f4f022b9a249b431e21dfb82ea138d07f7dbd7a71e9f12d0ab051"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/bridge.c",
+      "bytes": 5426,
+      "sha256": "e57c209764d0fb276ed6a88fa4c735e6a70d7843badab1feaa58238dd3e4a4a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/bridge.elf",
+      "bytes": 262144,
+      "sha256": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/bridge.o",
+      "bytes": 8064,
+      "sha256": "c237bdbfd150ee3dbd142abe1fcd3eb8916db8cb03ed3604b2ea7ab6a59fe6bf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/bridge.o.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/bridge_job.h",
+      "bytes": 1938,
+      "sha256": "bdce44720340a3cd4fd90e04942d07f86f2b1a557990a1d07762971da3da0c0a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/build.json",
+      "bytes": 37042,
+      "sha256": "482e2ba109f294295b1942a033889f55ecd6391b720b61211538877f2ee0a02c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/collector.c",
+      "bytes": 9017,
+      "sha256": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/collector.o",
+      "bytes": 9856,
+      "sha256": "450cf2fcdfef36ad97c96e653a8d0af0eb7e2e7436a7d6d60bec32a05ea1b63e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/collector.o.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/entry.o",
+      "bytes": 656,
+      "sha256": "f61aec3a15663041c30cdd2f7b28cc01c1321d52d1de2e12e0dbba8fcfa01fb7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/entry.s",
+      "bytes": 222,
+      "sha256": "bf2606018cb87b70389cbbf96b3a0721b467d851dff6462f80001c7201338fe7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/parent.c",
+      "bytes": 10596,
+      "sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/parent.o",
+      "bytes": 9784,
+      "sha256": "df896328f8ebb0ebc43c65aa3cf3dea1471132da3e8e91aa14fc8c9fb2953eb4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/parent.o.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build/sha_impl.inc",
+      "bytes": 2453,
+      "sha256": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/reproducible-build-summary.json",
+      "bytes": 1426,
+      "sha256": "88709713addf30b5cc0c31a83dca74b6b584f7795d18bd4e55a64e70e234f4e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/receipt.json",
+      "bytes": 76519,
+      "sha256": "ed1149fc01e1ee35b5b4a69a8f8e46dcca984c420d933f458d947a0c161e87f0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/source-snapshot/bridge.c",
+      "bytes": 5426,
+      "sha256": "e57c209764d0fb276ed6a88fa4c735e6a70d7843badab1feaa58238dd3e4a4a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/source-snapshot/bridge_build.py",
+      "bytes": 15624,
+      "sha256": "6c02ec06b94020e380a185141229f52c52d549e984c7c900aa2c6685ea6ec3f0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/source-snapshot/bridge_job.h",
+      "bytes": 1938,
+      "sha256": "bdce44720340a3cd4fd90e04942d07f86f2b1a557990a1d07762971da3da0c0a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/source-snapshot/collector.c",
+      "bytes": 9017,
+      "sha256": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/source-snapshot/model_bridge.py",
+      "bytes": 15680,
+      "sha256": "ae53a9cc6bab91c1eae73f6ff1e6e5570a2e9bdb49402ecb23eaf4991348707a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/source-snapshot/parent.c",
+      "bytes": 10596,
+      "sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/source-snapshot/sha_impl.inc",
+      "bytes": 2453,
+      "sha256": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge/source-snapshot/test_bridge.py",
+      "bytes": 5495,
+      "sha256": "71e1edd9c186c5470a53421d13b9847dde2ba474ff470da3a858f7861afd3f9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/receipt.json",
+      "bytes": 82729,
+      "sha256": "3ba829024e26b3b10a04a6546703f7151c9664f1cd73cd262a1ec97b976a2be6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/source-snapshot/bridge.c",
+      "bytes": 5426,
+      "sha256": "e57c209764d0fb276ed6a88fa4c735e6a70d7843badab1feaa58238dd3e4a4a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/source-snapshot/bridge_build.py",
+      "bytes": 15624,
+      "sha256": "6c02ec06b94020e380a185141229f52c52d549e984c7c900aa2c6685ea6ec3f0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/source-snapshot/bridge_job.h",
+      "bytes": 1938,
+      "sha256": "bdce44720340a3cd4fd90e04942d07f86f2b1a557990a1d07762971da3da0c0a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/source-snapshot/collector.c",
+      "bytes": 9017,
+      "sha256": "05bb63639ae9c3485dd0d0dbe40ef0494bd13f833f34d94d4ff23824f1cee20b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/source-snapshot/model_bridge.py",
+      "bytes": 15761,
+      "sha256": "9292d90006753b237ab907e504565fc2a99d94ea783085f239f45a6162b51980"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/source-snapshot/parent.c",
+      "bytes": 10596,
+      "sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/source-snapshot/sha_impl.inc",
+      "bytes": 2453,
+      "sha256": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/runs-bridge-verified/source-snapshot/test_bridge.py",
+      "bytes": 5557,
+      "sha256": "2e109bc5e3495421825c27ef60c25ddc7ae4b67f1dda9fa57733e900874593b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/seal_stage.py",
+      "bytes": 13519,
+      "sha256": "53a6fe70c46d8fe3ffa6e37d2adab2722d863ea6f55093f7a98063d388774867"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/seed-source/assemble_source.py",
+      "bytes": 4098,
+      "sha256": "ebe62f1589250b462d574e727a9e2307dd190fd4a39f4bbbbbcf4f06ebf4340a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/seed-source/collector.c",
+      "bytes": 9024,
+      "sha256": "175c95310663f7b2388d7ac9a0a0bc668af86044ca332a71dfc8f7659bea345e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/seed-source/parent.c",
+      "bytes": 10596,
+      "sha256": "2f18a988d8da1a8944f49627e5bdf78a31961c8fb4a6441a11ff273de47048e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/seed-source/source-assembly.json",
+      "bytes": 852,
+      "sha256": "4749638362825cf779f5efb76e9fbc36054fd3a38002d63249a04476932908f9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/sha-origin.json",
+      "bytes": 263,
+      "sha256": "1ccff8bb30cd8ec0aa0d727501c1b4fe45fe90e47dab37ac5e2778be24f07147"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/sha_impl.inc",
+      "bytes": 2453,
+      "sha256": "b87e78a63f863b8786f2340ade0d987f92986ba5ca1d6cfda6a29bbfb2c3b4d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/source-assembly.json",
+      "bytes": 852,
+      "sha256": "4749638362825cf779f5efb76e9fbc36054fd3a38002d63249a04476932908f9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/source-revisions.json",
+      "bytes": 4424,
+      "sha256": "d5a3a7a6ad79773244e4e80bfce72376802924bfbbad157778c3f354c13f490b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/test_bridge.py",
+      "bytes": 5557,
+      "sha256": "2e109bc5e3495421825c27ef60c25ddc7ae4b67f1dda9fa57733e900874593b4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage240-runtime-plan-and-anonymous-clone-bridge/verification-receipt.json",
+      "bytes": 1964,
+      "sha256": "45e413a1c320c55df4e49039be2828e69a1f445e8ca8f78c64b6ebf4e5952cdf"
+    }
+  ],
+  "member_count": 87,
+  "mutable_heads_not_manifest_members": true,
+  "goal_before_sha256": "e0efb98298c80bfebeebcbb29ed97e0fd78f54ea0aba5cddff7912ff0f132109",
+  "goal_after_sha256": "f29242b95f2025c3c4b4dee19283d4330edbe5f1ae8d8a0cf56f369174a0eda7",
+  "status": "OWN_RUNTIME_PLAN_AND_ANONYMOUS_CLONE_BRIDGE_CONDITIONAL_PASS_NOT_DEVICE_ADMITTED",
+  "own_checks": 8,
+  "own_model_cases": 27,
+  "relocation_references": 128,
+  "relocation_arithmetic_checks": 640,
+  "own_ELF_bytes": 262144,
+  "own_ELF_sha256": "0bf01a5c42ea6a7591d30954fea8448d65c45dae28ec2c20b6769e12f188b1b4",
+  "own_C_creates_outer_and_inner_channels_and_processes": true,
+  "runtime_PID_FD_plan_digest_and_expiry_bound": true,
+  "child_model_survives_original_file_and_plan_unmap_before_first_instruction": true,
+  "outer_SIGCHLD_inner_clone0_reaping_contract_modeled": true,
+  "image_hash_zero_normalizes_BSS_and_is_not_authorization": true,
+  "mask_restore_fault_leaves_changed_state_and_remains_HELD": true,
+  "actual_Sony_constructor_and_trusted_preparer_integrated": false,
+  "global_cross_reload_exclusion_and_endpoint_exclusivity_proven": false,
+  "prior_two_origin_and_domain_boundary_counterexamples_retained": true,
+  "actual_kernel_signal_cache_stack_and_resource_completion_proven": false,
+  "full_boot_worker_integrated": false,
+  "probe_deployable": false,
+  "stage235_candidate_unchanged_and_admission_still_failed": true,
+  "new_device_USB_cache_admin_auth_upload_or_firmware_writes": 0,
+  "original_Sony_glibc_Linux_driver_or_public_camera_code_executed": false,
+  "all16_requirements_and_authorizations_unchanged": true,
+  "formal23_sources_release04_05_unchanged": true,
+  "root195_pending_unlaunched": true,
+  "previous_goal_turn_classification": "progress:239 C parent receiver ACK and SCM source contract sealed",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

@@ -1,0 +1,250 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/trial_web_v21_final_timing.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/trial_web_v22_navigation_review.py
+@@ -25,6 +25,10 @@
+         self.visual_state = 'idle'
+         self.input_received = False
+         self.visual_change_observed = False
++        self.review_required = False
++        self.review_step = None
++        self.review_confirmation = None
++        self.content_generation = 0
+         self.steps = 0
+         self.max_steps = max_steps
+         self.render_valid = False
+@@ -48,6 +52,10 @@
+ 
+     def publish(self, png, frame):
+         with self.lock:
++            frame = dict(frame)
++            if self.frame is None or frame['PNG_sha256'] != self.frame['PNG_sha256']:
++                self.content_generation += 1
++            frame['content_generation'] = self.content_generation
+             if frame.get('all_zero_pixels', False) and self.ready and self.render_valid:
+                 self.black_after_ready.append({'sequence': frame['sequence'], 'pixel_source_sequence': frame['pixel_source_sequence'], 'host_monotonic': time.monotonic()})
+                 self.events.append('画面提交了全黑像素；已暂停按键，等待真实画面或结束试用。')
+@@ -62,11 +70,14 @@
+         with self.lock:
+             return {'phase': self.phase, 'message': self.message, 'error': self.error,
+                     'ready': bool(self.ready and not self.busy and not self.stop.is_set()
+-                                  and not self.error and self.render_valid and self.steps < self.max_steps),
++                                  and not self.error and not self.review_required
++                                  and self.render_valid and self.steps < self.max_steps),
+                     'busy': self.busy, 'steps': self.steps, 'max_steps': self.max_steps,
+                     'visual_state': self.visual_state,
+                     'input_received': self.input_received,
+                     'visual_change_observed': self.visual_change_observed,
++                    'review_required': self.review_required, 'review_step': self.review_step,
++                    'review_confirmation': self.review_confirmation,
+                     'render_valid': self.render_valid,
+                     'black_after_ready_count': len(self.black_after_ready),
+                     'frame': self.frame, 'result': self.result,
+@@ -81,11 +92,13 @@
+                 return 400, {'error': '仅支持页面上的七个按钮。'}
+             if type(sequence) is not int or sequence not in self.frames:
+                 return 409, {'error': '请等待当前画面显示后再按键。'}
+-            if not self.render_valid or not self.frame or self.frames[sequence]['PNG_sha256'] != self.frame['PNG_sha256']:
++            if (not self.render_valid or not self.frame
++                    or self.frames[sequence]['PNG_sha256'] != self.frame['PNG_sha256']
++                    or self.frames[sequence]['content_generation'] != self.content_generation):
+                 return 409, {'error': '当前画面已变化或不可用，请等待并查看最新画面。'}
+             if self.stop.is_set() or self.error or self.phase in ('stopping', 'finished'):
+                 return 409, {'error': '试用已停止接收按键。'}
+-            if not self.ready or self.busy or self.pending:
++            if not self.ready or self.busy or self.pending or self.review_required:
+                 return 409, {'error': '上一按键仍在处理，请稍候。'}
+             if self.steps >= self.max_steps:
+                 return 409, {'error': '本轮已达配置的按键上限，请结束后重新启动。'}
+@@ -94,6 +107,52 @@
+             self.pending.append(item)
+             self.busy = True
+             return 202, {'accepted': True, 'next_step': self.steps+1, 'key': hex(key)}
++
++    def require_visual_review(self, step, state, changed):
++        """Input ACK is known; pixel change alone cannot certify the intended page."""
++        with self.lock:
++            self.review_required = True
++            self.review_step = step
++            self.review_confirmation = None
++            self.busy = False
++            self.visual_state = state
++            self.input_received = True
++            self.visual_change_observed = changed
++            self.message = ('原生按键已接收，画面变化仍须确认；请等完整目标页面出现，'
++                            '看清当前画面后点“我已看图，继续”。'
++                            if changed else
++                            '原生按键已接收，有限观察期内画面未变；请看当前画面，'
++                            '确认这是合法无变化操作后再继续。处理完成仍未知。')
++
++    def confirm_visual(self, body):
++        """Clear only the host review gate. Never enqueue or write a guest key."""
++        with self.lock:
++            step, seq, generation, sha, request_id = (
++                body.get('step'), body.get('observed_sequence'),
++                body.get('content_generation'), body.get('PNG_sha256'), body.get('request_id'))
++            if (not isinstance(request_id, str) or not 16 <= len(request_id) <= 80
++                    or any(c not in '0123456789abcdef-' for c in request_id)):
++                return 400, {'error': '画面确认请求身份无效。'}
++            if (self.phase != 'ready' or self.stop.is_set() or self.error or self.busy
++                    or self.pending or not self.review_required or step != self.review_step):
++                return 409, {'error': '当前没有可确认的按键画面，或原生状态已经变化。'}
++            if (type(seq) is not int or type(generation) is not int or not isinstance(sha, str)
++                    or seq not in self.frames or not self.frame or not self.render_valid):
++                return 409, {'error': '请等待当前有效画面加载完成。'}
++            seen = self.frames[seq]
++            if (seen['PNG_sha256'] != sha or seen['content_generation'] != generation
++                    or self.frame['PNG_sha256'] != sha
++                    or self.content_generation != generation or seq > self.frame['sequence']):
++                return 409, {'error': '画面身份已过期；请重新查看最新画面后确认。'}
++            self.review_required = False
++            self.review_step = None
++            self.visual_state = 'user_confirmed'
++            self.review_confirmation = {'request_id': request_id, 'step': step,
++                                        'observed_sequence': seq, 'content_generation': generation,
++                                        'PNG_sha256': sha, 'guest_input_written': False}
++            self.events.append('%02d · 用户确认已加载的当前画面；没有发送新的固件按键。' % step)
++            self.message = '画面已由用户确认；可决定下一键。'
++            return 200, {'confirmed': True, **self.review_confirmation}
+ 
+     def request_stop(self):
+         with self.lock:
+@@ -140,6 +199,7 @@
+ button{background:#303743;color:#fff;border:1px solid #566171;border-radius:9px;padding:15px 10px;font:inherit;cursor:pointer;touch-action:manipulation}
+ button:active{background:#5f738d}button:disabled{opacity:.4;cursor:wait}.up{grid-column:2}.left{grid-column:1}.down{grid-column:2}
+ .wide{display:flex;gap:10px}.wide button{flex:1}#end{width:100%;margin-top:22px;background:#68383c}
++#confirm{width:100%;margin-top:12px;background:#365b48}#review{min-height:2.5em}
+ #status{color:#eee;min-height:3em}#error{color:#ffb0ab;white-space:pre-wrap;overflow-wrap:anywhere}
+ .small{font-size:13px}#events{padding-left:20px;font-size:13px;color:#bdc2cd}details{margin-top:20px}summary{cursor:pointer;color:#bdc2cd}
+ </style><h1>FX3 固件菜单试用</h1><p>等待待机画面出现后，按 MENU 打开菜单。首次打开 MENU 可能较慢；每次按键后，请等画面更新再继续。原生省电设置与本轮时间上限分开生效。</p>
+@@ -147,14 +207,16 @@
+ <div class="controls"><div id="status" role="status">正在连接…</div><p id="meta" class="small"></p><div id="error" role="alert"></div>
+ <div class="pad"><button class="key up" data-key="3" disabled>↑ 上</button><button class="key left" data-key="21" disabled>← 左</button><button class="key" data-key="428" disabled>确定</button><button class="key" data-key="431" disabled>右 →</button><button class="key down" data-key="48" disabled>↓ 下</button></div>
+ <div class="wide"><button class="key" data-key="427" disabled>MENU</button><button class="key" data-key="504" disabled>删除 / C4</button></div>
++<p id="review" class="small" role="status"></p><button id="confirm" disabled>我已看清当前完整画面，继续</button>
+ <button id="end">结束试用</button><ol id="events"></ol></div></div>
+ <details open><summary>当前限制</summary><p class="small">当前为实验候选，持续操作仍可能触发原生省电关机，尚未通过完整使用验收。当前固定副本已在冷启动观察到 English；图标与橙色焦点仍需逐屏观察；无实时取景，画面来自软件 OSD 采样，尚未证明原 CP 多画面层合成。每轮默认最多 4096 次按键、最长 60 分钟；以启动参数为准。关闭网页不会结束模拟器，请点击“结束试用”或在启动终端按 Ctrl-C。</p></details>
+ <script>
+ const token=__TOKEN__;
+-let displayed=0,shown=0,shownSHA='',busy=false,ending=false,finished=false;
+-let lastURL=null,renderFault=null,lastStatus=null,awaitingStep=null,deliveryUnknown=false;
++let displayed=0,shown=0,shownSHA='',displayedGeneration=0,busy=false,ending=false,finished=false;
++let lastURL=null,renderFault=null,lastStatus=null,awaitingStep=null,deliveryUnknown=false,reviewAwaiting=false,reviewUnknown=false,pendingConfirm=null;
+ const image=document.querySelector('#frame'),statusEl=document.querySelector('#status');
+ const err=document.querySelector('#error'),endButton=document.querySelector('#end');
++const confirmButton=document.querySelector('#confirm'),reviewEl=document.querySelector('#review');
+ const keys=[...document.querySelectorAll('.key')];
+ 
+ // Bound fetch AND body consumption. A lost mutation response is never retried.
+@@ -176,17 +238,29 @@
+ }
+ async function post(path,body){return (await request(path,{method:'POST',
+  headers:{'Content-Type':'application/json','X-Trial-Token':token},body:JSON.stringify(body)})).body;}
+-function disableKeys(){keys.forEach(b=>b.disabled=true);}
++function disableKeys(){keys.forEach(b=>b.disabled=true);confirmButton.disabled=true;}
+ function enableKeys(s){
+- const visual=!!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&s.render_valid&&!renderFault;
+- keys.forEach(b=>b.disabled=!s.ready||busy||ending||awaitingStep!==null||!visual);
++ const visual=!!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&
++   displayedGeneration===s.frame.content_generation&&s.render_valid&&!renderFault;
++ keys.forEach(b=>b.disabled=!s.ready||busy||ending||awaitingStep!==null||deliveryUnknown||reviewAwaiting||reviewUnknown||!visual);
++ confirmButton.disabled=!s.review_required||!s.input_received||busy||ending||
++   awaitingStep!==null||deliveryUnknown||reviewAwaiting||reviewUnknown||!visual;
++}
++function confirmationMatches(s,p){
++ const c=s.review_confirmation;
++ return !!p&&!!c&&s.phase==='ready'&&!s.review_required&&s.steps===p.step&&
++   c.request_id===p.request_id&&c.step===p.step&&c.observed_sequence===p.observed_sequence&&
++   c.content_generation===p.content_generation&&c.PNG_sha256===p.PNG_sha256&&
++   c.guest_input_written===false&&!!s.frame&&s.frame.content_generation===p.content_generation&&
++   s.frame.PNG_sha256===p.PNG_sha256;
+ }
+ async function showFrame(s){
+  if(!s.frame)return;
+- if(s.frame.PNG_sha256===shownSHA){displayed=shown=s.frame.sequence;return;}
++ if(s.frame.PNG_sha256===shownSHA&&s.frame.content_generation===displayedGeneration){displayed=shown=s.frame.sequence;return;}
+  const {response,body}=await request('/frame.png',{},'blob');
+  const seq=Number(response.headers.get('X-Frame-Sequence')),sha=response.headers.get('X-Frame-PNG-SHA256');
+- if(!Number.isSafeInteger(seq)||seq<=0||!sha)throw Error('画面身份缺失');
++ const generation=Number(response.headers.get('X-Frame-Content-Generation'));
++ if(!Number.isSafeInteger(seq)||seq<=0||!sha||!Number.isSafeInteger(generation)||generation<=0)throw Error('画面身份缺失');
+  const u=URL.createObjectURL(body);
+  try{await new Promise((resolve,reject)=>{
+    const timer=setTimeout(()=>settle(Error('画面加载超时，请结束试用或重新连接。')),8000);
+@@ -197,7 +271,7 @@
+    image.src=u;
+  });}catch(e){URL.revokeObjectURL(u);throw e;}
+  document.querySelector('#placeholder').hidden=true;
+- displayed=shown=seq;shownSHA=sha;
++ displayed=shown=seq;shownSHA=sha;displayedGeneration=generation;
+  if(lastURL)URL.revokeObjectURL(lastURL);lastURL=u;
+ }
+ async function tick(){
+@@ -205,6 +279,7 @@
+  try{
+    const s=(await request('/api/status')).body;lastStatus=s;
+    statusEl.textContent=s.message+(s.visual_state==='visual_pending'?'（输入已接收，仍在观察画面）':'');err.textContent=s.error||'';
++   reviewEl.textContent=s.review_required?'原生按键已接收，效果待您看图确认。请只在当前画面完整且符合预期时点继续；无需再按一次固件键。':'';
+    document.querySelector('#meta').textContent=`按键 ${s.steps}/${s.max_steps} · 剩余 ${Math.ceil(s.remaining_seconds/60)} 分钟 · 提交帧 ${s.frame?s.frame.sequence:'等待中'}`;
+    document.querySelector('#events').replaceChildren(...s.events.map(e=>{
+      const li=document.createElement('li');li.textContent=e;return li;
+@@ -221,8 +296,12 @@
+    if(awaitingStep!==null&&!busy&&!deliveryUnknown&&s.steps>=awaitingStep&&!s.busy){
+      awaitingStep=null;deliveryUnknown=false;
+    }
++   if((reviewAwaiting||reviewUnknown)&&confirmationMatches(s,pendingConfirm)){
++     reviewAwaiting=false;reviewUnknown=false;pendingConfirm=null;
++   }
+    if(deliveryUnknown)err.textContent='按键是否送达尚未确认，已暂停新按键；请结束本轮后重新启动。';
+-   if(s.frame&&s.frame.sequence!==shown)await showFrame(s);
++   if(reviewUnknown)err.textContent='画面确认请求结果未知，已暂停新按键；请结束本轮后重新启动。';
++   if(s.frame&&(s.frame.sequence!==shown||s.frame.content_generation!==displayedGeneration))await showFrame(s);
+    renderFault=null;enableKeys(s);
+  }catch(e){
+    renderFault=e.message;disableKeys();err.textContent=renderFault;
+@@ -245,6 +324,28 @@
+    err.textContent=e.message;
+  }finally{busy=false;}
+ });
++confirmButton.onclick=async()=>{
++ if(confirmButton.disabled||!lastStatus||!lastStatus.frame||displayed<=0)return;
++ const confirmation={request_id:crypto.randomUUID().toLowerCase(),step:lastStatus.review_step,
++   observed_sequence:displayed,content_generation:displayedGeneration,PNG_sha256:shownSHA};
++ pendingConfirm=confirmation;
++ reviewAwaiting=true;disableKeys();
++ try{
++   const ack=await post('/api/confirm-visual',confirmation);
++   if(ack.confirmed!==true||ack.request_id!==confirmation.request_id||
++      ack.step!==confirmation.step||ack.observed_sequence!==confirmation.observed_sequence||
++      ack.content_generation!==confirmation.content_generation||
++      ack.PNG_sha256!==confirmation.PNG_sha256||ack.guest_input_written!==false)
++     throw Error('画面确认回执不完整。');
++   err.textContent='';
++ }catch(e){
++   if(pendingConfirm===confirmation){
++     if(e.deliveryUnknown===false){reviewAwaiting=false;pendingConfirm=null;}
++     else reviewUnknown=true;
++     err.textContent=e.message;
++   }
++ }
++};
+ endButton.onclick=async()=>{
+  if(finished||endButton.disabled)return;
+  ending=true;disableKeys();endButton.disabled=true;
+@@ -297,7 +398,7 @@
+                     data, frame = state.png, state.frame
+                 if data is None:
+                     return self.reply(503, {'error': '画面尚未就绪。'})
+-                return self.reply(200, data, 'image/png', {'X-Frame-Sequence': str(frame['sequence']), 'X-Frame-PNG-SHA256': frame['PNG_sha256']})
++                return self.reply(200, data, 'image/png', {'X-Frame-Sequence': str(frame['sequence']), 'X-Frame-PNG-SHA256': frame['PNG_sha256'], 'X-Frame-Content-Generation': str(frame['content_generation'])})
+             return self.reply(404, {'error': '页面不存在。'})
+ 
+         def do_POST(self):
+@@ -318,6 +419,9 @@
+             if self.path == '/api/key':
+                 code, result = state.submit(body)
+                 return self.reply(code, result)
++            if self.path == '/api/confirm-visual':
++                code, result = state.confirm_visual(body)
++                return self.reply(code, result)
+             if self.path == '/api/stop':
+                 code, result = state.request_stop()
+                 return self.reply(code, result)

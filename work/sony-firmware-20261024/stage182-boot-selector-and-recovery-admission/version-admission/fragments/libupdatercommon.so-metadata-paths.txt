@@ -1,0 +1,74 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so
+# SHA256 537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797
+# VA [0x7618, 0x7734) raw slice SHA256 c7ee5bfff099aeb3e25dfe1a3e31c503d470cd4ea93df22488ec5de65aef5ae4
+    7618: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+    761c: 910003fd     	mov	x29, sp
+    7620: a90153f3     	stp	x19, x20, [sp, #0x10]
+    7624: aa0003f3     	mov	x19, x0
+    7628: b00000a0     	adrp	x0, 0x1c000
+    762c: f90013f5     	str	x21, [sp, #0x20]
+    7630: aa0103f4     	mov	x20, x1
+    7634: aa0203f5     	mov	x21, x2
+    7638: f947e400     	ldr	x0, [x0, #0xfc8]
+    763c: 91004000     	add	x0, x0, #0x10
+    7640: f8008660     	str	x0, [x19], #0x8
+    7644: aa1303e0     	mov	x0, x19
+    7648: 97fffe1a     	bl	0x6eb0 <Updater::StringHandler::StringHandler()@plt>
+    764c: f0000002     	adrp	x2, 0xa000 <Updater::DllHandler::Close()+0x6c>
+    7650: aa1503e3     	mov	x3, x21
+    7654: 91176042     	add	x2, x2, #0x5d8
+    7658: aa1403e1     	mov	x1, x20
+    765c: aa1303e0     	mov	x0, x19
+    7660: 97fffe48     	bl	0x6f80 <Updater::StringHandler::SetString(char const*, char const*, char const*)@plt>
+    7664: 14000006     	b	0x767c <Updater::BaseFirmwareInformationFile::BaseFirmwareInformationFile(char const*, char const*)+0x64>
+    7668: aa0003f4     	mov	x20, x0
+    766c: aa1303e0     	mov	x0, x19
+    7670: 97fffe2c     	bl	0x6f20 <Updater::StringHandler::~StringHandler()@plt>
+    7674: aa1403e0     	mov	x0, x20
+    7678: 97fffe32     	bl	0x6f40 <_Unwind_Resume@plt>
+    767c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    7680: f94013f5     	ldr	x21, [sp, #0x20]
+    7684: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+    7688: d65f03c0     	ret
+    768c: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+    7690: f0000002     	adrp	x2, 0xa000 <Updater::DllHandler::Close()+0x6c>
+    7694: 91171042     	add	x2, x2, #0x5c4
+    7698: 910003fd     	mov	x29, sp
+    769c: f9000bf3     	str	x19, [sp, #0x10]
+    76a0: aa0003f3     	mov	x19, x0
+    76a4: 97fffd23     	bl	0x6b30 <Updater::BaseFirmwareInformationFile::BaseFirmwareInformationFile(char const*, char const*)@plt>
+    76a8: b00000a0     	adrp	x0, 0x1c000
+    76ac: f9479800     	ldr	x0, [x0, #0xf30]
+    76b0: 91004000     	add	x0, x0, #0x10
+    76b4: f9000260     	str	x0, [x19]
+    76b8: f9400bf3     	ldr	x19, [sp, #0x10]
+    76bc: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    76c0: d65f03c0     	ret
+    76c4: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+    76c8: f0000002     	adrp	x2, 0xa000 <Updater::DllHandler::Close()+0x6c>
+    76cc: 91174442     	add	x2, x2, #0x5d1
+    76d0: 910003fd     	mov	x29, sp
+    76d4: f9000bf3     	str	x19, [sp, #0x10]
+    76d8: aa0003f3     	mov	x19, x0
+    76dc: 97fffd15     	bl	0x6b30 <Updater::BaseFirmwareInformationFile::BaseFirmwareInformationFile(char const*, char const*)@plt>
+    76e0: b00000a0     	adrp	x0, 0x1c000
+    76e4: f947d800     	ldr	x0, [x0, #0xfb0]
+    76e8: 91004000     	add	x0, x0, #0x10
+    76ec: f9000260     	str	x0, [x19]
+    76f0: f9400bf3     	ldr	x19, [sp, #0x10]
+    76f4: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    76f8: d65f03c0     	ret
+    76fc: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+    7700: f0000002     	adrp	x2, 0xa000 <Updater::DllHandler::Close()+0x6c>
+    7704: 9116fc42     	add	x2, x2, #0x5bf
+    7708: 910003fd     	mov	x29, sp
+    770c: f9000bf3     	str	x19, [sp, #0x10]
+    7710: aa0003f3     	mov	x19, x0
+    7714: 97fffd07     	bl	0x6b30 <Updater::BaseFirmwareInformationFile::BaseFirmwareInformationFile(char const*, char const*)@plt>
+    7718: b00000a0     	adrp	x0, 0x1c000
+    771c: f947c800     	ldr	x0, [x0, #0xf90]
+    7720: 91004000     	add	x0, x0, #0x10
+    7724: f9000260     	str	x0, [x19]
+    7728: f9400bf3     	ldr	x19, [sp, #0x10]
+    772c: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    7730: d65f03c0     	ret

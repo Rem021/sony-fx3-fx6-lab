@@ -1,0 +1,249 @@
+{
+  "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+  "source_layout_base": "0x4200",
+  "selected_ranges": [
+    {
+      "name": "state-dispatch-loop",
+      "start": "0x4b06",
+      "end_exclusive": "0x4b32",
+      "bytes": 44,
+      "sha256": "80b80662cab8686e68fd5b8b26bc470aab4af4d98d9206c179f45ccb06cfc256",
+      "instruction_count": 20
+    },
+    {
+      "name": "Init-main",
+      "start": "0x84ae",
+      "end_exclusive": "0x8572",
+      "bytes": 196,
+      "sha256": "ca3096dd56dce1493d0fc64def8441cc0b88737c371de1d5f5c855ccde85b2ed",
+      "instruction_count": 60
+    },
+    {
+      "name": "Init-next",
+      "start": "0x8572",
+      "end_exclusive": "0x858c",
+      "bytes": 26,
+      "sha256": "f683967712970a8327532493224b65f53250e87b129dbb3336beabba21aa8de1",
+      "instruction_count": 11
+    },
+    {
+      "name": "Seton-main",
+      "start": "0x86c8",
+      "end_exclusive": "0x883e",
+      "bytes": 374,
+      "sha256": "3b857269d5eaf33e601dabce9b17dfdee586cf7bbf9ff85c108c32df8bd71a30",
+      "instruction_count": 136
+    },
+    {
+      "name": "Seton-next",
+      "start": "0x883e",
+      "end_exclusive": "0x8858",
+      "bytes": 26,
+      "sha256": "fcda5ca985d2778ce434ed606cb179cacb39c17e562c98889242e8d3a8a5492e",
+      "instruction_count": 11
+    },
+    {
+      "name": "Seton-exit",
+      "start": "0x8858",
+      "end_exclusive": "0x88dc",
+      "bytes": 132,
+      "sha256": "fe3598ec70cc02e7fcb458395d9b14bd0b67821d87b2521df6ff565223817f68",
+      "instruction_count": 61
+    },
+    {
+      "name": "Upd-main",
+      "start": "0x99d0",
+      "end_exclusive": "0x9a26",
+      "bytes": 86,
+      "sha256": "af5ce7188d73cf768d66dbb693bc338784567db5ef11326d5421b01ffe6de6d7",
+      "instruction_count": 35
+    },
+    {
+      "name": "vector-transfer-leaf",
+      "start": "0x45dc",
+      "end_exclusive": "0x45f6",
+      "bytes": 26,
+      "sha256": "223f4ebca1eb93b81ba385a3af58d0e981e6dc3dd5045e8ff1c927d8e70b5018",
+      "instruction_count": 7
+    }
+  ],
+  "state_pointer_pool": {
+    "site": "0x4b06",
+    "pool": "0x4be4",
+    "register": 5,
+    "value": "0x200026d4"
+  },
+  "descriptor_pointer_pool": {
+    "site": "0x4b08",
+    "pool": "0x4be8",
+    "register": 7,
+    "value": "0x38b60"
+  },
+  "state_descriptors": [
+    {
+      "state": 0,
+      "analyst_label_from_source_logs": "Init",
+      "record": "0x38b60",
+      "functions_Thumb": [
+        "0x8379",
+        "0x84af",
+        "0x8573",
+        "0x858d"
+      ]
+    },
+    {
+      "state": 1,
+      "analyst_label_from_source_logs": "Seton",
+      "record": "0x38b70",
+      "functions_Thumb": [
+        "0x8619",
+        "0x86c9",
+        "0x883f",
+        "0x8859"
+      ]
+    },
+    {
+      "state": 2,
+      "analyst_label_from_source_logs": "On",
+      "record": "0x38b80",
+      "functions_Thumb": [
+        "0x88dd",
+        "0x8a21",
+        "0x8ab3",
+        "0x8acd"
+      ]
+    },
+    {
+      "state": 3,
+      "analyst_label_from_source_logs": "Exiton",
+      "record": "0x38b90",
+      "functions_Thumb": [
+        "0x94c5",
+        "0x95d7",
+        "0x96c9",
+        "0x96e3"
+      ]
+    },
+    {
+      "state": 4,
+      "analyst_label_from_source_logs": "Off",
+      "record": "0x38ba0",
+      "functions_Thumb": [
+        "0x9795",
+        "0x9867",
+        "0x990d",
+        "0x9927"
+      ]
+    },
+    {
+      "state": 5,
+      "analyst_label_from_source_logs": "Upd",
+      "record": "0x38bb0",
+      "functions_Thumb": [
+        "0x99cd",
+        "0x99d1",
+        "0x0",
+        "0x0"
+      ]
+    }
+  ],
+  "Seton_conditional_route": {
+    "input": "after ordinary receive return, halfword0=0 and halfword1=4",
+    "local_saved_result": 2,
+    "next_function": "0x883e",
+    "next_table_pool": {
+      "site": "0x8850",
+      "pool": "0x88cc",
+      "register": 0,
+      "value": "0x3a5a4"
+    },
+    "reachable_return_values_under_local_ABI_model": [
+      0,
+      1,
+      2
+    ],
+    "next_table_for_these_values": [
+      2,
+      3,
+      5
+    ],
+    "selected_next_state": 5,
+    "explicit_r4_writers": [
+      {
+        "site": "0x86d0",
+        "instruction": "mov r4, sp"
+      },
+      {
+        "site": "0x8798",
+        "instruction": "movs r4, #1"
+      },
+      {
+        "site": "0x87a2",
+        "instruction": "movs r4, #2"
+      },
+      {
+        "site": "0x87b2",
+        "instruction": "movs r4, #0"
+      },
+      {
+        "site": "0x8818",
+        "instruction": "pop {r3, r4, r5, r6, r7, pc}"
+      }
+    ],
+    "assumptions": [
+      "subcalls return normally and preserve r4 under ARM ABI",
+      "dispatcher/exit callbacks do not asynchronously overwrite selected state before next iteration"
+    ],
+    "externally_triggerable": false,
+    "producer_not_traced_by_this_consumer_slice": true,
+    "producer_trace_extension": "InitCom-link-proof.json"
+  },
+  "Init_normal_route": {
+    "return_value": 0,
+    "next_table_pool": {
+      "site": "0x8584",
+      "pool": "0x8608",
+      "register": 0,
+      "value": "0x3a5a0"
+    },
+    "selected_next_state": 1,
+    "ordinary_call_return_model_only": true
+  },
+  "Upd_transfer": {
+    "function": "0x99d0",
+    "label_source": "0x9a30",
+    "request_pool": {
+      "site": "0x99d4",
+      "pool": "0x9a28",
+      "register": 5,
+      "value": "0x20000700"
+    },
+    "writes": [
+      {
+        "address": "0x20000706",
+        "width_bits": 8,
+        "value": 4
+      },
+      {
+        "address": "0x20000707",
+        "width_bits": 8,
+        "value": 0
+      }
+    ],
+    "raw_BL_target": "0x45dc",
+    "vector_argument": 0,
+    "MSP_PSP_from_address": "0x0",
+    "PC_from_address": "0x4",
+    "outside_current_core_source_mapping": true,
+    "bootloader_original_bytes_obtained": false,
+    "AP_p1_p3_or_USB_fastboot_mapping_proven": false,
+    "independent_corrupt_core_restore_proven": false
+  },
+  "transfer_BL_locator_candidates": [
+    "0x9a1e"
+  ],
+  "locator_scope": "all2B aligned data may include non-code; not exhaustive indirect-call proof",
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "source_unchanged": true
+}

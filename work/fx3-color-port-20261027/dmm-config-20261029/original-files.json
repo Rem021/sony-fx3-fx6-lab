@@ -1,0 +1,600 @@
+{
+  "partition": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha8.img",
+  "partition_sha256": "3c751e784fe6790a4b455990d7c6e144c33cf51c643cf3bf9523f8a3bd5a6a2b",
+  "partition_bytes": 22450176,
+  "metadata": {
+    "kind": "FAT12",
+    "sector_size": 512,
+    "sectors_per_cluster": 32,
+    "root_offset": 49152,
+    "data_offset": 65536,
+    "cluster_count": 1366
+  },
+  "files": [
+    {
+      "path": "/DmmCfg.bin",
+      "cluster": 5,
+      "size": 43320,
+      "attributes": 32,
+      "type": 32768,
+      "output": "original-files/DmmCfg.bin",
+      "sha256": "820dc02b6a001636b93fff51d90baaced1ba75cf9bbaa90600dfc7fd7a705166",
+      "first96_hex": "000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010140008001f00000000002004",
+      "cluster_chain": [
+        {
+          "cluster": 5,
+          "partition_offset": "0x1c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 6,
+          "partition_offset": "0x20000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 7,
+          "partition_offset": "0x24000",
+          "bytes": 16384
+        }
+      ]
+    },
+    {
+      "path": "/cpImg.dat",
+      "cluster": 29,
+      "size": 1772736,
+      "attributes": 32,
+      "type": 32768,
+      "output": "original-files/cpImg.dat",
+      "sha256": "76af47a5f97470c396c9d0edc576e2bd31b808e8242d742f7722c6f9e90d91c9",
+      "first96_hex": "4350495201000000c00c1b001c00000014000000f4010000140000000005000020001400000000000000000000000000000500002000140000000000000000000000000000060000140020000000000000000000000000000006000014002000",
+      "cluster_chain": [
+        {
+          "cluster": 29,
+          "partition_offset": "0x7c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 30,
+          "partition_offset": "0x80000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 31,
+          "partition_offset": "0x84000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 32,
+          "partition_offset": "0x88000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 33,
+          "partition_offset": "0x8c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 34,
+          "partition_offset": "0x90000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 35,
+          "partition_offset": "0x94000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 36,
+          "partition_offset": "0x98000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 37,
+          "partition_offset": "0x9c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 38,
+          "partition_offset": "0xa0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 39,
+          "partition_offset": "0xa4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 40,
+          "partition_offset": "0xa8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 41,
+          "partition_offset": "0xac000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 42,
+          "partition_offset": "0xb0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 43,
+          "partition_offset": "0xb4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 44,
+          "partition_offset": "0xb8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 45,
+          "partition_offset": "0xbc000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 46,
+          "partition_offset": "0xc0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 47,
+          "partition_offset": "0xc4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 48,
+          "partition_offset": "0xc8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 49,
+          "partition_offset": "0xcc000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 50,
+          "partition_offset": "0xd0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 51,
+          "partition_offset": "0xd4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 52,
+          "partition_offset": "0xd8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 53,
+          "partition_offset": "0xdc000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 54,
+          "partition_offset": "0xe0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 55,
+          "partition_offset": "0xe4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 56,
+          "partition_offset": "0xe8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 57,
+          "partition_offset": "0xec000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 58,
+          "partition_offset": "0xf0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 59,
+          "partition_offset": "0xf4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 60,
+          "partition_offset": "0xf8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 61,
+          "partition_offset": "0xfc000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 62,
+          "partition_offset": "0x100000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 63,
+          "partition_offset": "0x104000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 64,
+          "partition_offset": "0x108000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 65,
+          "partition_offset": "0x10c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 66,
+          "partition_offset": "0x110000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 67,
+          "partition_offset": "0x114000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 68,
+          "partition_offset": "0x118000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 69,
+          "partition_offset": "0x11c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 70,
+          "partition_offset": "0x120000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 71,
+          "partition_offset": "0x124000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 72,
+          "partition_offset": "0x128000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 73,
+          "partition_offset": "0x12c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 74,
+          "partition_offset": "0x130000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 75,
+          "partition_offset": "0x134000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 76,
+          "partition_offset": "0x138000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 77,
+          "partition_offset": "0x13c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 78,
+          "partition_offset": "0x140000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 79,
+          "partition_offset": "0x144000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 80,
+          "partition_offset": "0x148000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 81,
+          "partition_offset": "0x14c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 82,
+          "partition_offset": "0x150000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 83,
+          "partition_offset": "0x154000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 84,
+          "partition_offset": "0x158000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 85,
+          "partition_offset": "0x15c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 86,
+          "partition_offset": "0x160000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 87,
+          "partition_offset": "0x164000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 88,
+          "partition_offset": "0x168000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 89,
+          "partition_offset": "0x16c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 90,
+          "partition_offset": "0x170000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 91,
+          "partition_offset": "0x174000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 92,
+          "partition_offset": "0x178000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 93,
+          "partition_offset": "0x17c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 94,
+          "partition_offset": "0x180000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 95,
+          "partition_offset": "0x184000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 96,
+          "partition_offset": "0x188000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 97,
+          "partition_offset": "0x18c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 98,
+          "partition_offset": "0x190000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 99,
+          "partition_offset": "0x194000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 100,
+          "partition_offset": "0x198000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 101,
+          "partition_offset": "0x19c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 102,
+          "partition_offset": "0x1a0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 103,
+          "partition_offset": "0x1a4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 104,
+          "partition_offset": "0x1a8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 105,
+          "partition_offset": "0x1ac000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 106,
+          "partition_offset": "0x1b0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 107,
+          "partition_offset": "0x1b4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 108,
+          "partition_offset": "0x1b8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 109,
+          "partition_offset": "0x1bc000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 110,
+          "partition_offset": "0x1c0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 111,
+          "partition_offset": "0x1c4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 112,
+          "partition_offset": "0x1c8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 113,
+          "partition_offset": "0x1cc000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 114,
+          "partition_offset": "0x1d0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 115,
+          "partition_offset": "0x1d4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 116,
+          "partition_offset": "0x1d8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 117,
+          "partition_offset": "0x1dc000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 118,
+          "partition_offset": "0x1e0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 119,
+          "partition_offset": "0x1e4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 120,
+          "partition_offset": "0x1e8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 121,
+          "partition_offset": "0x1ec000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 122,
+          "partition_offset": "0x1f0000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 123,
+          "partition_offset": "0x1f4000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 124,
+          "partition_offset": "0x1f8000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 125,
+          "partition_offset": "0x1fc000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 126,
+          "partition_offset": "0x200000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 127,
+          "partition_offset": "0x204000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 128,
+          "partition_offset": "0x208000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 129,
+          "partition_offset": "0x20c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 130,
+          "partition_offset": "0x210000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 131,
+          "partition_offset": "0x214000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 132,
+          "partition_offset": "0x218000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 133,
+          "partition_offset": "0x21c000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 134,
+          "partition_offset": "0x220000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 135,
+          "partition_offset": "0x224000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 136,
+          "partition_offset": "0x228000",
+          "bytes": 16384
+        },
+        {
+          "cluster": 137,
+          "partition_offset": "0x22c000",
+          "bytes": 16384
+        }
+      ]
+    }
+  ],
+  "scope": "Original bounded FAT reads with independent cluster-slice oracle. No file content interpreted as sensor/ISP or runtime state solely from its filename."
+}

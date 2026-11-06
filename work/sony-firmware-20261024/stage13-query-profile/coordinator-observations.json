@@ -1,0 +1,34 @@
+{
+  "recorded_utc": "2026-10-25T17:33:05.364716+00:00",
+  "scope": "stage13 code/tests and one CUA read-only availability observation",
+  "tests": {
+    "status": "PASS_CPU_ONLY_QUERY_PROFILE_COMPONENT",
+    "lookup_tests": 30,
+    "stock_HS_regressions": 19,
+    "target_queries": 37,
+    "control_pairs": 9,
+    "query_tuple_equals_setter_tuple": [
+      6,
+      6,
+      3
+    ],
+    "full_remaining_time_or_callers_executed": false,
+    "source_unchanged": true,
+    "goal_complete": false
+  },
+  "existing_output_refusal_test": {
+    "passed": true,
+    "result_artifacts_unchanged": 3
+  },
+  "UU": {
+    "observed_during_stage": "stage13",
+    "precise_observation_utc_recorded": false,
+    "app_reported_server_error": true,
+    "app_reported_device_offline": true,
+    "physical_PC_power_state": "not established",
+    "Windows_dispatch_or_file_transfer": false,
+    "new_availability_response_received": false
+  },
+  "camera_native_or_USB_actions": false,
+  "full_remaining_time_or_hardware_validation": false
+}

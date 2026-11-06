@@ -1,0 +1,22 @@
+FX3｜r26先观察界面再固定审阅快照（仅离线候选）
+根=/Volumes/KAFU2T/AI/Projects/Mac；TRY=work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability；DEL=TRY/passive-timing-delivery；BASE=DEL/r25-recovery-observation-candidate；只写新DEL/r26-postkey-observation-candidate，写前核卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。原r24/r25所有证据及源码、部署r10、协调ledger只读。没有真实QEMU/物理相机/USB/SD/FX6/部署权限；不再派代理。
+
+真实新证据：DEL/r25-vm-616a0bf15777及TRY/runs/v25gate-n64-r17-bd4c1126；运行已结束，operator正在封存勿修改。前7步真实confirm通过；第8次已accepted/native接收，但自动固定的首个post-native新帧gen76/seq1484/SHA2914275...仍是NO CARD待机。HAR 02:08:50.373 gen77/168a...过渡，02:08:51.991 gen78/c5452...才完整Setup>Area/Date橙色Language English；trial-final.png协调端和operator均亲看为完整菜单。当前8accepted/7confirm整体仍failed，不能追溯补确认。首次post-native新帧可来自独立闪烁动画；它不代表UI动作完成，已在原契约声明不能主张因果性，但自动pin时机仍不合适。
+
+目标不是扩大超时或补键，而是把观察界面与固定确认对象分为明确步骤。实现尽量小的独立候选：
+1. 显式planned click仍只调用原PAGE一次，原实时门禁/8步计划/预算不变。accepted后先返回“尚未固定的观察图”，不立即占用单次review snapshot。
+2. 增加独立只读observe操作：绑定同run/launch/document/step/attempt/nonce/native已接收的阶段与未过期alarm，返回真实新采集/导出的PNG及实际哈希和准确观察身份，不自动pin、不确认、不发键、不延长20s。观察图仅供判断过渡是否完成，不是输入许可，不冒充最终postkey确认或像素因果。
+3. 操作agent实际查看观察图。若仍是正常过渡，可在原20s期限内再单独observe；不能根据颜色/SHA白名单自动判通过或延迟偷偷点击。建议最多3次观察（含click后的首次），耗尽/unknown/错误/到期立即原End。不把旧r25“选定固定图语义失败后End”放宽成重建snapshot：观察图尚未固定，固定后仍单次、不可换图复活。
+4. 看到完整目标后，另一明确pin调用使用原r25 review_snapshot_cli capture / 原PAGE pin，返回新的精确不可变PNG。操作agent必须实际查看这张固定图，再独立confirm；不能把前一张观察图当固定图已看。固定图语义不符、身份变化、confirm未知仍End，禁止repin/补键。
+5. 前7步、初始待机/归因未入队恢复链仍完整；r25 recovery观察不能被用作postkey确认。两类观察schema/作用范围清楚分开。正常原PAGE/server/snapshot单次生命周期和原native/QEMU/平台尽可能逐字节复用，只改host操作流程及必要只读观察helper；如需要PAGE/server变更，先说明必要性而非静默扩范围。
+6. 保持固定4×cortex-a35/5120MiB/MTTCG/noicount和全部固件/平台；原NAVIGATION-PLAN SHA4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f、8accepted/10attempts/2归因恢复每步1次、20s alarm不变。目标仍完整真实八步及后续可用性，离线成功不等于完成。
+
+离线验收必须使用实际候选PAGE/server及真实wrapper __main__，明确native/语义MOCK：
+- 接收假native ACK后持续发布待机A/B动画，延迟约3.5s才发布菜单。首次观察确实待机但不pin不confirm，单独后续observe得到完整菜单，再独立pin、实际固定PNG回执、confirm，keyPOST恰1且没有补键；强制其可复现原r25过早pin问题。观察/人工审阅时间不能偷算为零，至少一个用例模拟真实工具/模型间隔并核20s原deadline。
+- 未pin直接confirm、观察图冒充固定图、wrong attempt/document/launch/step/nonce、变更/未知/End、超3观察/到期后重试、pin后再次observe或repin、丢失confirm回复均拒绝/End而不额外POST；身份/耗尽不得因为下一次读帧复活。
+- 每次返回观察图真实PNG来源、哈希与元数据绑定；不要伪造单一generation。若导出当前已加载PNG，可标历史观察并保留真实SHA；异步fetch前后document/attempt/alarm/fresh server生命周期复核，读取旧图绝不赋予输入许可。
+- r25归因未入队恢复→独立cancel→后观察→recovery_review→新nonce click→新observe/pin/confirm完整实际wrapper回归，保持失败End和预算。
+- 原postkey server核心负例及必要浏览器回归按变更覆盖，不无意义重复所有历史测试。
+- 完整prepare/preflight/import/sourcefreeze，包括新增文件。原r25 594项、r24 151、r21 145及固定平台输入前后不变；fixture自己独占浏览器/端口，结束核PID/端口。
+BASE正式交付msg_41ac8b965a9c；SHA256SUMS=c2d44926c77b0d102075c697e7812385f1782bc6ace67b9aaa7fe11ad83023e7；SOURCE FREEZE=15948aabd5090c3c7e32012a6d79cf9b6dc30fb6d9d0812e59fb0a0041d0b2ad，PAGE canonical852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b。保留所有真实失败原件，不覆盖改写。
+交付REPORT/CONTRACT/具体真实VM操作模板/必要差分及测试原件/SHA256SUMS，worker_done仅证明离线候选。不要启动真实VM；协调员核完再统一真实八步。

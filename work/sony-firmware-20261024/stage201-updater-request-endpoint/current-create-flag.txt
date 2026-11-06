@@ -1,0 +1,20 @@
+000ed940 fd7bbea9 stp      x29, x30, [sp, #-0x20]!
+000ed944 82248052 mov      w2, #0x124
+000ed948 41088052 mov      w1, #0x42
+000ed94c fd030091 mov      x29, sp
+000ed950 f30b00f9 str      x19, [sp, #0x10]
+000ed954 f30300aa mov      x19, x0
+000ed958 aea0fd97 bl       #0x55c10 ; open
+000ed95c 1f040031 cmn      w0, #1
+000ed960 80000054 b.eq     #0xed970
+000ed964 f30b40f9 ldr      x19, [sp, #0x10]
+000ed968 fd7bc2a8 ldp      x29, x30, [sp], #0x20
+000ed96c 4da6fd17 b        #0x572a0 ; close
+000ed970 80070090 adrp     x0, #0x1dd000
+000ed974 e10313aa mov      x1, x19
+000ed978 00dc1d91 add      x0, x0, #0x777
+000ed97c d5a8fd97 bl       #0x57cd0 ; printf
+000ed980 f30b40f9 ldr      x19, [sp, #0x10]
+000ed984 20008052 mov      w0, #1
+000ed988 fd7bc2a8 ldp      x29, x30, [sp], #0x20
+000ed98c c0035fd6 ret      

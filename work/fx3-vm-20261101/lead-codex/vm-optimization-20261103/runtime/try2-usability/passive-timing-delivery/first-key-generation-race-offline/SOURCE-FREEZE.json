@@ -1,0 +1,25 @@
+{
+  "scope": "offline host PAGE candidate only; no guest/runner/deployment changes",
+  "baseline": {
+    "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r12-confirmation-progress/trial_web_v22_navigation_review.py",
+    "sha256": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb"
+  },
+  "candidate": {
+    "path": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/first-key-generation-race-offline/trial_web_v22_navigation_review.py",
+    "sha256": "ee135617204a9c724a9e9b8cb5198b2785252de66b07b662105f03b1d130b26c"
+  },
+  "unchanged_server_gate": "TrialState definition and submit/publish functions byte-identical to r12 in full-file diff",
+  "tests": {
+    "browser_race_replay.py": "c8907051347729e52785f046a44aee46958afd1cfb310c63c1b58d05eb9aaec8",
+    "race_harness.py": "c4f9c1a1231fb7fb5f19f00441e7df20ae12ae0ef70f53b11516a4fca46be841"
+  },
+  "run_evidence": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/first-key-generation-race-offline/evidence/run-1793830208691/RESULT.json",
+  "page_script_sha256": {
+    "baseline": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+    "candidate": "d224a8f10786dc815520a8c11320f8625c1e969f9508bac39541c971ecfb9822"
+  },
+  "trialstate_ast_equal_to_baseline": true,
+  "input_evidence_sha256": "421dce55e33b14d4c0b015fee10c4e98e2cf0dc38b8e8e3cbc1c873686a6ebb5",
+  "diff_sha256": "94518143fd3c30bc683837808edf91d13868382fc78defe20c0b12e955546f39",
+  "final_browser_result_sha256": "8e69133627124c47dffa2b58ec61745243137dc2bf69a90b72d6040ddcd037ab"
+}

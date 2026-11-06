@@ -1,0 +1,28 @@
+_ZN7Updater10RingBufferC2Ev
+000097f8 stp       x29, x30, [sp, #-0x20]!
+000097fc mov       x1, #0
+00009800 mov       x29, sp
+00009804 str       x19, [sp, #0x10]
+00009808 mov       x19, x0
+0000980c adrp      x0, #0x1c000
+00009810 str       xzr, [x19, #0x28]
+00009814 ldr       x0, [x0, #0xf28]
+00009818 strb      wzr, [x19, #0x30]
+0000981c add       x0, x0, #0x10
+00009820 stp       xzr, xzr, [x19, #0x10]
+00009824 stp       x0, xzr, [x19]
+00009828 add       x0, x19, #0x38
+0000982c str       xzr, [x19, #0x20]
+00009830 strb      wzr, [x19, #0x31]
+00009834 bl        #0x6be0 ; pthread_mutex_init
+00009838 add       x0, x19, #0x68
+0000983c mov       x1, #0
+00009840 bl        #0x6b10 ; pthread_cond_init
+00009844 add       x0, x19, #0x98
+00009848 mov       x1, #0
+0000984c bl        #0x6be0 ; pthread_mutex_init
+00009850 add       x0, x19, #0xc8
+00009854 ldr       x19, [sp, #0x10]
+00009858 ldp       x29, x30, [sp], #0x20
+0000985c mov       x1, #0
+00009860 b         #0x6be0

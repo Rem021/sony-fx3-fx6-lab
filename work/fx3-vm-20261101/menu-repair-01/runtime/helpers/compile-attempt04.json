@@ -1,0 +1,31 @@
+{
+  "created_utc": "2026-11-01T11:17:52.221260+00:00",
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-ioctl-trace.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v4.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v4.so"
+  ],
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "source_sha256": "09f3e5ad6a18ff1e65302d92bb36e4aa454bcc34e8f704932931b1ffe124ecd7",
+  "explicit_original_glibc": true,
+  "bundled_libc_linked": false,
+  "observation": "Identical original return/errno pass-through; only safe observation backend changed to own /proc/self/mem pread with explicit read_errno; caller RA added. v3 guest showed self process_vm_readv unavailable but actual ioctl/mmap and ld ABI passed.",
+  "output_sha256": "b395d2ae32e9e4b6637d7c7129a2ff7fe001db79ab6fc7ce62f92599a9e9d5b1"
+}

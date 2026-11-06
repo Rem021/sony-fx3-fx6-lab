@@ -1,0 +1,14 @@
+009cfce8 cbz        r0, #0x9cfcf6
+009cfcea movw       r3, #0x4ab8
+009cfcee movt       r3, #0x13c
+009cfcf2 ldr        r3, [r3]
+009cfcf4 str        r3, [r0]
+009cfcf6 cbz        r1, #0x9cfd02
+009cfcf8 movw       r0, #0x4abc
+009cfcfc movt       r0, #0x13c
+009cfd00 str        r0, [r1]
+009cfd02 cbz        r2, #0x9cfd0e
+009cfd04 movw       r0, #0x5134
+009cfd08 movt       r0, #0x13c
+009cfd0c str        r0, [r2]
+009cfd0e bx         lr

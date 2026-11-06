@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-target",
+    "aarch64-linux-gnu",
+    "-std=c11",
+    "-ffreestanding",
+    "-fsyntax-only",
+    "work/sony-firmware-20261024/stage221-private-IPC-entry-gate/reference-layout-check.c"
+  ],
+  "returncode": 0,
+  "stderr": "",
+  "source_sha256": "93e85f3f5ecd2882bb36a6c31e6390d563d2275fd3a77ee931c0f624e5ae1b25",
+  "from_reference_header_struct": "struct user_msghdr {\n\tvoid\t\t__user *msg_name;\t/* ptr to socket address structure */\n\tint\t\tmsg_namelen;\t\t/* size of socket address structure */\n\tstruct iovec\t__user *msg_iov;\t/* scatter/gather array */\n\t__kernel_size_t\tmsg_iovlen;\t\t/* # elements in msg_iov */\n\tvoid\t\t__user *msg_control;\t/* ancillary data */\n\t__kernel_size_t\tmsg_controllen;\t\t/* ancillary data buffer length */\n\tunsigned int\tmsg_flags;\t\t/* flags on received message */\n};",
+  "code_executed": false,
+  "Sony_runtime_layout_verified": false
+}

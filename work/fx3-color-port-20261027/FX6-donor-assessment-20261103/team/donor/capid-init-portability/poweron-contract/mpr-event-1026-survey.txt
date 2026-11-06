@@ -1,0 +1,89 @@
+   b55ac: f9401fa1     	ldr	x1, [x29, #0x38]
+   b55b0: f9000261     	str	x1, [x19]
+   b55b4: f9400bf3     	ldr	x19, [sp, #0x10]
+   b55b8: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+   b55bc: d65f03c0     	ret
+   b55c0: 12807fe0     	mov	w0, #-0x400             // =-1024
+   b55c4: d65f03c0     	ret
+
+00000000000b55c8 <_ZN3mpr12PowerOffMainEPv>:
+   b55c8: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+   b55cc: 528204a3     	mov	w3, #0x1025             // =4133
+   b55d0: d2800182     	mov	x2, #0xc                // =12
+   b55d4: 910003fd     	mov	x29, sp
+   b55d8: b955d000     	ldr	w0, [x0, #0x15d0]
+   b55dc: 910043a1     	add	x1, x29, #0x10
+   b55e0: 290203a3     	stp	w3, w0, [x29, #0x10]
+   b55e4: 2a0303e0     	mov	w0, w3
+   b55e8: b9001bbf     	str	wzr, [x29, #0x18]
+   b55ec: 97ff3229     	bl	0x81e90 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm@plt>
+   b55f0: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+   b55f4: d65f03c0     	ret
+
+00000000000b55f8 <_ZN3mpr11PowerOnMainEPv>:
+   b55f8: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+   b55fc: 528204c3     	mov	w3, #0x1026             // =4134
+   b5600: d2800182     	mov	x2, #0xc                // =12
+   b5604: 910003fd     	mov	x29, sp
+   b5608: b955d000     	ldr	w0, [x0, #0x15d0]
+   b560c: 910043a1     	add	x1, x29, #0x10
+   b5610: 290203a3     	stp	w3, w0, [x29, #0x10]
+   b5614: 2a0303e0     	mov	w0, w3
+   b5618: b9001bbf     	str	wzr, [x29, #0x18]
+   b561c: 97ff321d     	bl	0x81e90 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm@plt>
+   b5620: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+   b5624: d65f03c0     	ret
+   b5628: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+   b562c: 910003fd     	mov	x29, sp
+   b5630: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   b5634: 2a0103f6     	mov	w22, w1
+   b5638: a90363f7     	stp	x23, x24, [sp, #0x30]
+   b563c: 910123a1     	add	x1, x29, #0x48
+   b5640: 2a0003f7     	mov	w23, w0
+   b5644: 52802d40     	mov	w0, #0x16a              // =362
+   b5648: a90153f3     	stp	x19, x20, [sp, #0x10]
+
+   f2d3c: d2800004     	mov	x4, #0x0                // =0
+   f2d40: 52800001     	mov	w1, #0x0                // =0
+   f2d44: 94010600     	bl	0x134544 <_ZN3mpr8datasize4initEv+0x10b0>
+   f2d48: 2a0003f4     	mov	w20, w0
+   f2d4c: 34000320     	cbz	w0, 0xf2db0 <_ZN3mpr37evtCheckDigitalSignatureFinishedParamC2Ev+0x778>
+   f2d50: d2820e91     	mov	x17, #0x1074            // =4212
+   f2d54: 52800060     	mov	w0, #0x3                // =3
+   f2d58: 8b1103a1     	add	x1, x29, x17
+   f2d5c: d2820eb2     	mov	x18, #0x1075            // =4213
+   f2d60: d2820ed5     	mov	x21, #0x1076            // =4214
+   f2d64: d2820ef6     	mov	x22, #0x1077            // =4215
+   f2d68: b9107bb4     	str	w20, [x29, #0x1078]
+   f2d6c: 52800059     	mov	w25, #0x2               // =2
+   f2d70: 39000020     	strb	w0, [x1]
+   f2d74: 8b1203a0     	add	x0, x29, x18
+   f2d78: 52800181     	mov	w1, #0xc                // =12
+   f2d7c: 52800174     	mov	w20, #0xb               // =11
+   f2d80: 3900001f     	strb	wzr, [x0]
+   f2d84: 8b1503a0     	add	x0, x29, x21
+   f2d88: 3900001f     	strb	wzr, [x0]
+   f2d8c: 8b1603a0     	add	x0, x29, x22
+   f2d90: 3900001f     	strb	wzr, [x0]
+   f2d94: 52842600     	mov	w0, #0x2130             // =8496
+   f2d98: 7920e3a0     	strh	w0, [x29, #0x1070]
+   f2d9c: 528204c0     	mov	w0, #0x1026             // =4134
+   f2da0: 7920e7a0     	strh	w0, [x29, #0x1072]
+   f2da4: aa1303e0     	mov	x0, x19
+   f2da8: 97fffc9c     	bl	0xf2018 <_ZN3mpr16SetStillRecParamERKNS_13stillRecParamE+0x108>
+   f2dac: 17ffff21     	b	0xf2a30 <_ZN3mpr37evtCheckDigitalSignatureFinishedParamC2Ev+0x3f8>
+   f2db0: 710006df     	cmp	w22, #0x1
+   f2db4: 54000501     	b.ne	0xf2e54 <_ZN3mpr37evtCheckDigitalSignatureFinishedParamC2Ev+0x81c>
+   f2db8: d282a700     	mov	x0, #0x1538             // =5432
+   f2dbc: 97fe31d9     	bl	0x7f520 <_Znwm@plt>
+   f2dc0: aa0003f5     	mov	x21, x0
+   f2dc4: 9405ef9e     	bl	0x26ec3c <_ZN7libheif3getEPN5still8get_if_tEN3mpr10StillImageE+0x1ba0>
+   f2dc8: 9105a3a1     	add	x1, x29, #0x168
+   f2dcc: aa1503e0     	mov	x0, x21
+   f2dd0: a9400f62     	ldp	x2, x3, [x27]
+   f2dd4: a9000c22     	stp	x2, x3, [x1]
+   f2dd8: a9410f62     	ldp	x2, x3, [x27, #0x10]
+   f2ddc: a9010c22     	stp	x2, x3, [x1, #0x10]
+   f2de0: a9420f62     	ldp	x2, x3, [x27, #0x20]
+   f2de4: a9020c22     	stp	x2, x3, [x1, #0x20]
+   f2de8: 52800002     	mov	w2, #0x0                // =0

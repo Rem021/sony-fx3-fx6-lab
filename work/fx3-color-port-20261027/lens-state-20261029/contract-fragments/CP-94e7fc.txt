@@ -1,0 +1,13 @@
+0094e7fc movw       r0, #0x2978
+0094e800 movt       r0, #0xf1
+0094e804 ldr        r0, [r0]
+0094e806 cmp        r0, #1
+0094e808 bne        #0x94e80e
+0094e80a b.w        #0x9481d2
+0094e80e push       {r7, lr}
+0094e810 mov        r7, sp
+0094e812 bl         #0x9484c0
+0094e816 cmp        r0, #0
+0094e818 it         ne
+0094e81a movne      r0, #1
+0094e81c pop        {r7, pc}

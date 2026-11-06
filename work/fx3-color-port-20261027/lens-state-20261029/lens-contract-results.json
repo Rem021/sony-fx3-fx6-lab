@@ -1,0 +1,718 @@
+{
+  "fragments": [
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x184c",
+      "bytes": 220,
+      "sha256": "453316944a67c52a1671ca9c75cb30323c1170c3ebff9c791c2de289ec6f04ee",
+      "disassembly": "contract-fragments/AP-ufp-184c.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1878",
+          "target": "0x13e0",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x1898",
+          "target": "0x1320",
+          "label": "osal_set_msg_src"
+        },
+        {
+          "site": "0x18a8",
+          "target": "0x1390",
+          "label": "osal_snd_msg"
+        },
+        {
+          "site": "0x18c0",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x18e4",
+          "target": "0x13c0",
+          "label": "osal_rcv_msg_tmo"
+        },
+        {
+          "site": "0x1904",
+          "target": "0x18c0",
+          "label": null
+        },
+        {
+          "site": "0x191c",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x1924",
+          "target": "0x18c4",
+          "label": null
+        }
+      ],
+      "bounds": "explicit private window"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x1928",
+      "bytes": 208,
+      "sha256": "59a231c93acd81e3f7f566fa1d51f5234bf3578b7c9199794c428c9da332bb80",
+      "disassembly": "contract-fragments/AP-ufp-1928.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1954",
+          "target": "0x13e0",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x1970",
+          "target": "0x1320",
+          "label": "osal_set_msg_src"
+        },
+        {
+          "site": "0x1980",
+          "target": "0x1390",
+          "label": "osal_snd_msg"
+        },
+        {
+          "site": "0x1998",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x19bc",
+          "target": "0x13c0",
+          "label": "osal_rcv_msg_tmo"
+        },
+        {
+          "site": "0x19dc",
+          "target": "0x1998",
+          "label": null
+        },
+        {
+          "site": "0x19ec",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x19f4",
+          "target": "0x199c",
+          "label": null
+        }
+      ],
+      "bounds": "explicit private window"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x1dbc",
+      "bytes": 424,
+      "sha256": "c1012df91b2c0968ef7e2088543691f73aaa7c377d7b2c44cef8d02033d8fead",
+      "disassembly": "contract-fragments/AP-ufp-1dbc.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1e10",
+          "target": "0x13e0",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x1e2c",
+          "target": "0x1320",
+          "label": "osal_set_msg_src"
+        },
+        {
+          "site": "0x1e3c",
+          "target": "0x1390",
+          "label": "osal_snd_msg"
+        },
+        {
+          "site": "0x1e50",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x1e58",
+          "target": "0x1ef8",
+          "label": null
+        },
+        {
+          "site": "0x1e68",
+          "target": "0x13c0",
+          "label": "osal_rcv_msg_tmo"
+        },
+        {
+          "site": "0x1e80",
+          "target": "0x1e50",
+          "label": null
+        },
+        {
+          "site": "0x1ecc",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x1f14",
+          "target": "0x1e50",
+          "label": null
+        },
+        {
+          "site": "0x1f60",
+          "target": "0x1ef8",
+          "label": null
+        }
+      ],
+      "bounds": "explicit private window"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x2498",
+      "bytes": 592,
+      "sha256": "9dd7adc2562188c1fa853f1521692cb96cbee58a6f38b12b9c3064b9dd200157",
+      "disassembly": "contract-fragments/AP-ufp-2498.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x24c0",
+          "target": "0x1380",
+          "label": "memset"
+        },
+        {
+          "site": "0x24d0",
+          "target": "0x14a0",
+          "label": "osal_dynamic_id"
+        },
+        {
+          "site": "0x24e8",
+          "target": "0x1300",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x2504",
+          "target": "0x13e0",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x2530",
+          "target": "0x1300",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x2540",
+          "target": "0x1390",
+          "label": "osal_snd_msg"
+        },
+        {
+          "site": "0x2558",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x2568",
+          "target": "0x14a0",
+          "label": "osal_dynamic_id"
+        },
+        {
+          "site": "0x25b4",
+          "target": "0x14b0",
+          "label": "Backup_read"
+        },
+        {
+          "site": "0x2610",
+          "target": "0x13e0",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x263c",
+          "target": "0x15a0",
+          "label": "osal_snd_sync_msg"
+        },
+        {
+          "site": "0x2650",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x2658",
+          "target": "0x258c",
+          "label": null
+        },
+        {
+          "site": "0x2670",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x268c",
+          "target": "0x258c",
+          "label": null
+        },
+        {
+          "site": "0x26a4",
+          "target": "0x13c0",
+          "label": "osal_rcv_msg_tmo"
+        },
+        {
+          "site": "0x26c0",
+          "target": "0x1300",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x26d0",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x26e0",
+          "target": "0x1300",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x26e4",
+          "target": "0x255c",
+          "label": null
+        }
+      ],
+      "bounds": "explicit private window"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x26e8",
+      "bytes": 64,
+      "sha256": "ea9f855959a5228fb4670a4d19043c614197c4409f0dff16b8d2ffd1546ce55e",
+      "disassembly": "contract-fragments/AP-ufp-26e8.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x26f0",
+          "target": "0x1dbc",
+          "label": null
+        },
+        {
+          "site": "0x26fc",
+          "target": "0x2498",
+          "label": null
+        },
+        {
+          "site": "0x271c",
+          "target": "0x1d58",
+          "label": null
+        }
+      ],
+      "bounds": "explicit private window"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x2f48",
+      "bytes": 236,
+      "sha256": "964e8dbd138bd158bfd88a8c57368add31db31dd81713e409073d0b5ca5b9cbe",
+      "disassembly": "contract-fragments/AP-ufp-2f48.txt",
+      "literals": [
+        {
+          "site": "0x2f7c",
+          "va": "0x3da7",
+          "text": "LENSDATA.DAT"
+        },
+        {
+          "site": "0x2f84",
+          "va": "0x3e2d",
+          "text": "%s/%s"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x2f68",
+          "target": "0x1380",
+          "label": "memset"
+        },
+        {
+          "site": "0x2f90",
+          "target": "0x14c0",
+          "label": "snprintf"
+        },
+        {
+          "site": "0x2f9c",
+          "target": "0x1410",
+          "label": "udtr_get_firm_info_inmedia"
+        },
+        {
+          "site": "0x2ffc",
+          "target": "0x1928",
+          "label": null
+        },
+        {
+          "site": "0x3008",
+          "target": "0x184c",
+          "label": null
+        },
+        {
+          "site": "0x3024",
+          "target": "0x26e8",
+          "label": null
+        },
+        {
+          "site": "0x3028",
+          "target": "0x1330",
+          "label": "udtr_conv_stat2err"
+        },
+        {
+          "site": "0x3030",
+          "target": "0x2fdc",
+          "label": null
+        }
+      ],
+      "bounds": "explicit private window"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x3cd0",
+      "bytes": 120,
+      "sha256": "3f4a89148d1b8e8982c9d80abbfe42ea5eb5a32591bd7c0a8e2a939dd3d42d4e",
+      "disassembly": "contract-fragments/AP-ufp-3cd0.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x3d04",
+          "target": "0x3d44",
+          "label": null
+        },
+        {
+          "site": "0x3d1c",
+          "target": "0x3cfc",
+          "label": null
+        }
+      ],
+      "bounds": "original function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/lens-state-20261029/original-members/libInfraLensCommunicator.so",
+      "source_sha256": "e61bf145f050dd037802871395c38d1c0471518130d5bcd2f621268da8c8f6ab",
+      "architecture": "AArch64",
+      "va": "0x1c68",
+      "bytes": 700,
+      "sha256": "ae44d4189d7a932f4c8f78603e1e5caccaa537adabf38fd52f3c59c3d84d938d",
+      "label": "LensCommunicator::GetMountedLensInfo(void*)",
+      "disassembly": "contract-fragments/AP-GetMountedLensInfo.txt",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1c9c",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1cac",
+          "target": "0x12b0",
+          "label": "memset"
+        },
+        {
+          "site": "0x1d00",
+          "target": "0x12f0",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x1d28",
+          "target": "0x1310",
+          "label": "LensCommunicator::SndSyncMsg(void*, unsigned int)"
+        },
+        {
+          "site": "0x1d70",
+          "target": "0x1430",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x1d88",
+          "target": "0x12f0",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x1d9c",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1dcc",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1dd0",
+          "target": "0x1de8",
+          "label": null
+        },
+        {
+          "site": "0x1de4",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1e10",
+          "target": "0x1430",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x1e14",
+          "target": "0x1da4",
+          "label": null
+        },
+        {
+          "site": "0x1e24",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1e28",
+          "target": "0x1de8",
+          "label": null
+        },
+        {
+          "site": "0x1e30",
+          "target": "0x1dc0",
+          "label": null
+        },
+        {
+          "site": "0x1e44",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1e48",
+          "target": "0x1de8",
+          "label": null
+        },
+        {
+          "site": "0x1e64",
+          "target": "0x1310",
+          "label": "LensCommunicator::SndSyncMsg(void*, unsigned int)"
+        },
+        {
+          "site": "0x1e78",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1e88",
+          "target": "0x1430",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x1e8c",
+          "target": "0x1da0",
+          "label": null
+        },
+        {
+          "site": "0x1ec4",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1ec8",
+          "target": "0x1dec",
+          "label": null
+        },
+        {
+          "site": "0x1ed8",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1edc",
+          "target": "0x1dec",
+          "label": null
+        },
+        {
+          "site": "0x1ef0",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1ef4",
+          "target": "0x1dec",
+          "label": null
+        },
+        {
+          "site": "0x1f08",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1f0c",
+          "target": "0x1dec",
+          "label": null
+        },
+        {
+          "site": "0x1f1c",
+          "target": "0x15b8",
+          "label": null
+        },
+        {
+          "site": "0x1f20",
+          "target": "0x1e04",
+          "label": null
+        }
+      ],
+      "bounds": "original symbol/FDE function"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x391b54",
+      "file_offset": "0x289b54",
+      "bytes": 94,
+      "sha256": "272a517c4ed434a2c8175c10b2b4417cea67a8b05797450fab8ebbf5bf7dda9a",
+      "disassembly": "contract-fragments/CP-391b54.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x38dddc",
+      "file_offset": "0x285ddc",
+      "bytes": 22,
+      "sha256": "128e1e2722a5b2d1aa861a2ce92cb98c8afb27a171a635254a8cfe71890ba6ee",
+      "disassembly": "contract-fragments/CP-38dddc.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x38ddf8",
+      "file_offset": "0x285df8",
+      "bytes": 728,
+      "sha256": "67f07fbba7b841a73a99b0750a0cb34f12bd8581b291f7dc1450bf10e4b43523",
+      "disassembly": "contract-fragments/CP-38ddf8.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x38e144",
+      "file_offset": "0x286144",
+      "bytes": 52,
+      "sha256": "6d7c3cf3e522598e3082ea9cdb9a4905188911672403404082c73610c928b458",
+      "disassembly": "contract-fragments/CP-38e144.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x391c60",
+      "file_offset": "0x289c60",
+      "bytes": 84,
+      "sha256": "bc9d335b68a9b83ccad65b1e6e9681923e60cdb9221f6b415a0b05f7cbf04d08",
+      "disassembly": "contract-fragments/CP-391c60.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0xa878d2",
+      "file_offset": "0x97f8d2",
+      "bytes": 12,
+      "sha256": "55d64c4262b25aed79c63b89c03082d4617ba2bd5180c3b3ce5d2db9a10a1d6e",
+      "disassembly": "contract-fragments/CP-a878d2.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x94cfea",
+      "file_offset": "0x844fea",
+      "bytes": 12,
+      "sha256": "c9d357951943cbdf74397bdf9bc8680512cf52952fd0e4eac458f004dee41caa",
+      "disassembly": "contract-fragments/CP-94cfea.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x94aaa2",
+      "file_offset": "0x842aa2",
+      "bytes": 52,
+      "sha256": "1391392b6e3ad12222e41254631e72fe596350725c20df5df36042547b8a94ac",
+      "disassembly": "contract-fragments/CP-94aaa2.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x94e7fc",
+      "file_offset": "0x8467fc",
+      "bytes": 34,
+      "sha256": "8fe7342403f16413a9fe02dc52de1facdc9ef959383a20424dd94d060d42312a",
+      "disassembly": "contract-fragments/CP-94e7fc.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x948538",
+      "file_offset": "0x840538",
+      "bytes": 46,
+      "sha256": "3039768dbcb6ab6f7cb197c6ca6f39d226f5b9d17e1b02ae70b98bbf93c2f004",
+      "disassembly": "contract-fragments/CP-948538.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    },
+    {
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x9484c0",
+      "file_offset": "0x8404c0",
+      "bytes": 12,
+      "sha256": "994fb08fe5be435b2ad623897e4cc7b2641a764a5ac18d0c9ec6d91eb08fa263",
+      "disassembly": "contract-fragments/CP-9484c0.txt",
+      "bounds": "explicit CP code window, not ELF symbol identity"
+    }
+  ],
+  "cp_data_tables": {
+    "command_switch": {
+      "va": "0x38ddf2",
+      "bytes": 5,
+      "sha256": "515c66b11d7a318a8c31360de778bedec77e258e4f9e49be1e76a9707a1f899a",
+      "targets": [
+        "0x38ddf8",
+        "0x38de4e",
+        "0x38de6c",
+        "0x38de9c",
+        "0x38df1c"
+      ]
+    },
+    "reply_bytes": {
+      "va": "0x38e178",
+      "bytes": 20,
+      "sha256": "21c08ad5b8224b53079547375e6038a4496a9dea8d0e9e99a288f45bae0af233",
+      "values": [
+        20,
+        12,
+        40,
+        8,
+        8
+      ]
+    }
+  },
+  "scope": "Original AP and CP bytes/pins, bounded code windows, explicit TBB/reply data tables, and source library method name. Tables are not disassembled as executed instructions. Runtime global inputs and OSAL bus remain synthetic; these sources do not prove actual device state, session, replies or firmware acceptance."
+}

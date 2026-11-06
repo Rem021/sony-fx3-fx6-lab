@@ -1,0 +1,44 @@
+{
+  "schema": "fx6-map-snapshot-producer-result-v1",
+  "task": "task_6b15f33d8164",
+  "dispatch": "ctx_d3e03abc555b",
+  "status": "OFFLINE_PROTOCOL_CANDIDATE_NOT_RUN",
+  "started": false,
+  "vm": false,
+  "guest_execution": false,
+  "cpio_built_or_installed": false,
+  "patch_applied": false,
+  "source_inventory": "INVENTORY.md",
+  "patch": "patch-init-map-snapshot.diff",
+  "reader": "fx3_map_snapshot.c",
+  "decoder": "decode_snapshot.py",
+  "protocol": {
+    "frame": "FX3MS1",
+    "single_read": true,
+    "cap_bytes": 262144,
+    "identity": "pid+starttime+seq",
+    "integrity": "bytes+lines+fnv1a64",
+    "snapshot_atomic": false,
+    "console_noise": "ignored_not_stitched"
+  },
+  "fixture": {
+    "bytes": 10563,
+    "lines": 105,
+    "status": "ACCEPTED_BOUNDED_SINGLE_READ_NOT_ATOMIC",
+    "file": "receipts/decoded-fixture.json"
+  },
+  "tests": {
+    "status": "PASS_OFFLINE_C_PROTOCOL",
+    "count": 13,
+    "file": "tests/test-protocol.json",
+    "sha256": "8a09e0a69f5deb96b066eccc606cb62d4407bd1e6a63ed6cf863e2ff07e5a79f"
+  },
+  "input_seal": {
+    "count": 5,
+    "unchanged": true,
+    "file": "receipts/input-compare.json"
+  },
+  "old_real_log": "rejected by fx6-backup-map-parser-candidate source contract; no actual admission",
+  "note": "offline protocol only; no CPIO/guest/live execution; no boot/menu claim",
+  "report": "REPORT.md"
+}

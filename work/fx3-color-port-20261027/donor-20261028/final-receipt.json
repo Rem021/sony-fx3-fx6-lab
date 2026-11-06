@@ -1,0 +1,482 @@
+{
+  "created_utc": "2026-10-29T10:34:12.912016+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "volume_free_bytes": 20347465728,
+  "previous_sealed_material": [
+    {
+      "checkpoint": "base",
+      "files": 1282,
+      "receipt_sha256": "53f5113cc79c57b9465f2556735534917cc0fe29c881661449dcd6ed499b9424"
+    },
+    {
+      "checkpoint": "route-20261028",
+      "files": 43,
+      "receipt_sha256": "bf96cb1d8a76bd5eec86947332c14ceb538b6cdf4b71890b672845bfcbea217d"
+    },
+    {
+      "checkpoint": "consumer-20261028",
+      "files": 35,
+      "receipt_sha256": "670c50f53a270c32288b7bf96ed17c21bd360bab0562e6dc93cf1998d9694199"
+    },
+    {
+      "checkpoint": "resource-20261028",
+      "files": 48,
+      "receipt_sha256": "43f12cedea38c47f36d2375f69d307312f66de6658a36cd0b1427358a298685c"
+    },
+    {
+      "checkpoint": "binding-20261028",
+      "files": 63,
+      "receipt_sha256": "8d2589a7ad5e638a0e235e8e364a3575d45bed01b882d7424045ccd3b5f3ee86"
+    },
+    {
+      "checkpoint": "package-20261028",
+      "files": 128,
+      "receipt_sha256": "8a503bda8c4a1a9239090ec2f9478538570b28537f8d081c5512733b5deb30e2"
+    },
+    {
+      "checkpoint": "tail-20261028",
+      "files": 105,
+      "receipt_sha256": "65a164460b03454d0c990879251ee9c79265144c25fbbb02c1185902b074362e"
+    },
+    {
+      "checkpoint": "input-20261028",
+      "files": 509,
+      "receipt_sha256": "f49bd30b46c82a992e58f36ec0a2a79733485e580578ed43441e62a6466b9064"
+    }
+  ],
+  "validation": {
+    "common_guest_change_reverification": [
+      {
+        "script": "art_matrix_guest.py",
+        "script_sha256": "b7c936df29f90ce609bca38a99a8c79bd2d95f8fa5ee6152178b4a80074b3c63",
+        "exit": 0,
+        "stdout": "{\"matrix_cases\": 138, \"register_cases\": 10, \"all_exact\": true, \"fx3_existing_matrix_same\": true}\n",
+        "stderr": ""
+      },
+      {
+        "script": "art_dispatch_guest.py",
+        "script_sha256": "a970b20756d9b81c23ca9b439bf87a60b80b37d03c0b047681752abcb95b72cf",
+        "exit": 0,
+        "stdout": "{\"cases\": 72, \"selected\": 38, \"ignored\": 34, \"exact_dispatch\": true}\n",
+        "stderr": ""
+      },
+      {
+        "script": "compare_matrix_serialization.py",
+        "script_sha256": "41fc83d48200ca2d6131894a664ab33d744b5713a6dd4b110210f548860ea3a6",
+        "exit": 0,
+        "stdout": "{\"cases\": 3, \"fx3_existing_words_matched\": 9, \"bytes\": 36, \"native_library_loaded\": false, \"camera_actions\": 0}\n",
+        "stderr": ""
+      }
+    ],
+    "existing_result_checks": {
+      "static_functions": 44,
+      "quantizer_cases": 138,
+      "register_label_cases": 10,
+      "dispatch_cases": 72,
+      "serialization_cases": 3,
+      "matching_fx3_words": 9,
+      "footer_versions": 3,
+      "loader_scan_files": 83
+    },
+    "source_worktree_after": {
+      "head": "28f74ffe76ee845ec7b51cf4ae5229a56688a4bd",
+      "branch": "codex/venice-color-fidelity",
+      "status": [
+        "?? work/venice-component-contract-2026-10-27/"
+      ]
+    }
+  },
+  "project_index_before_bytes": 62617,
+  "project_index_before_sha256": "a3a6c1f4532efa82ae7b004840a5be398b6509be336c5235f0d8ddfb76f0940a",
+  "project_index_prefix_unchanged": true,
+  "native_vendor_library_loads": 0,
+  "sony_updater_programs_executed": 0,
+  "guest_execution": "Bounded original ARM64 functions in synthetic Unicorn RAM with listed shims",
+  "camera_usb_phone_actions": 0,
+  "full_modified_firmware_emitted": false,
+  "flashable_package_produced": false,
+  "persistent_goal_status": "active",
+  "goal_completion_claimed": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7513,
+      "sha256": "bdb08903d0d7837bb814bea8cfb92de32420ec6178b5ad334fcc44a334756709"
+    },
+    {
+      "path": "art-dispatch-guest-results.json",
+      "bytes": 25307,
+      "sha256": "4dc54e2847006309b44dd05ca11aca7cd281f98e731233fb9f77489142d5e2e9"
+    },
+    {
+      "path": "art-generator-exported-symbols.txt",
+      "bytes": 205915,
+      "sha256": "bae244a43bfd9252b873c31ab182d2e3e3fdddacf5c206ed6d623e302a9ab2c5"
+    },
+    {
+      "path": "art-generator-selected-entrypoints.json",
+      "bytes": 18721,
+      "sha256": "2ac0d391700a7827b25197721c0d543118adf0275a779306de5a29dd6053803f"
+    },
+    {
+      "path": "art-generator-source.json",
+      "bytes": 434,
+      "sha256": "5cf429ca5ae174393d1d0990ef2a2d982e24fba843326da858f8e71f3a0e8da4"
+    },
+    {
+      "path": "art-mach-o-static-results.json",
+      "bytes": 7700,
+      "sha256": "17c4a98655c08bfdf37e03a00c47d49c313cfb6e2fc1f71b27ef2d4637be577b"
+    },
+    {
+      "path": "art-matrix-guest-results.json",
+      "bytes": 153365,
+      "sha256": "72ad49b894fc1544819f253c2d7e806f41225c59dc70dc028fd7e91544e3fa4f"
+    },
+    {
+      "path": "art_dispatch_guest.py",
+      "bytes": 4719,
+      "sha256": "a970b20756d9b81c23ca9b439bf87a60b80b37d03c0b047681752abcb95b72cf"
+    },
+    {
+      "path": "art_matrix_guest.py",
+      "bytes": 9219,
+      "sha256": "b7c936df29f90ce609bca38a99a8c79bd2d95f8fa5ee6152178b4a80074b3c63"
+    },
+    {
+      "path": "compare_matrix_serialization.py",
+      "bytes": 3669,
+      "sha256": "41fc83d48200ca2d6131894a664ab33d744b5713a6dd4b110210f548860ea3a6"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 830,
+      "sha256": "602d03057ee6f384eab35fce318c90c63dedcfbbc7b29236fa795c3bceb1c0e5"
+    },
+    {
+      "path": "disassembly/ART-setL1dParamData.txt",
+      "bytes": 5263,
+      "sha256": "747976813b6796e6247c37aa0b599b7535692684ef839f76c7e87e28554ef137"
+    },
+    {
+      "path": "disassembly/ART-setLmxParamData.txt",
+      "bytes": 3961,
+      "sha256": "15d3cf20057457b2374884d01af46c92f06acb7955e4673b99b5e6f6510fa17e"
+    },
+    {
+      "path": "disassembly/ART-setSt3dParamData.txt",
+      "bytes": 9610,
+      "sha256": "b1151072d7ec2bb939b1abbe1565d7aec2d9313d9609e050da741386b1dab50f"
+    },
+    {
+      "path": "disassembly/Venice-Lmx0-reg.txt",
+      "bytes": 6999,
+      "sha256": "17fff14007ab91d22ec5159d58235f74d6be24bd1f5ed7ccf0e184174359b3be"
+    },
+    {
+      "path": "disassembly/Venice-Lut1D0-RAM.txt",
+      "bytes": 1039,
+      "sha256": "6ae6b82b5fc0f3f78f9b2e193999cd84c8dceb7a265217588f7815ed4cd1f64e"
+    },
+    {
+      "path": "donor-footer-results.json",
+      "bytes": 21074,
+      "sha256": "ba416fa016488aa6ef7c87484c673b8b536fd8a9c9b2f8fa15db8155f87bcc5c"
+    },
+    {
+      "path": "donor-inner-source-inventory.json",
+      "bytes": 1950,
+      "sha256": "a3ad5ef456c521cdfc3698fbf4732559400c76fe14e79875f837a1a2e18612b8"
+    },
+    {
+      "path": "http/fx5-japan-support-receipt.json",
+      "bytes": 752,
+      "sha256": "efd9b1c6131a684c9376a2f50bf8a7bc1feb18458c1c6da60e09ca2333f36aed"
+    },
+    {
+      "path": "http/fx5-japan-support.headers",
+      "bytes": 477,
+      "sha256": "e7c49e74e1d08f9a9219cd4e1a208fdcc70489898eb770632d342d74cd9a2526"
+    },
+    {
+      "path": "http/fx5-japan-support.html",
+      "bytes": 648847,
+      "sha256": "eccdeb6aa2447f66fc5d80fa35722119139d4e360845773cd930f1def227136d"
+    },
+    {
+      "path": "inspect_art_registers.py",
+      "bytes": 2823,
+      "sha256": "3c9b95912e990bbf4cb4954642db1e042f8056845befd2aafc16344f4e6fd758"
+    },
+    {
+      "path": "loader-marker-scan-results.json",
+      "bytes": 28358,
+      "sha256": "9b3a30511dfff8ebe4dd6fea7f5357f834e51118e4925df3e99f6afc9ec9325f"
+    },
+    {
+      "path": "macho_static.py",
+      "bytes": 4505,
+      "sha256": "7292eb2fa4543915998a9ee1fcddf484d0a6c2dbe23d73952c4b91626e189080"
+    },
+    {
+      "path": "matrix-serialization-comparison.json",
+      "bytes": 5927,
+      "sha256": "2a19f69e26bd7255d5a5141bfea782ae2c86453c19bc4b0f856bd52e4c718c75"
+    },
+    {
+      "path": "probe_donor_footer.py",
+      "bytes": 3669,
+      "sha256": "f1fff9d0043052428a6a5e4d423f4fe0f2cce82e9a149d19d67127d176280a0b"
+    },
+    {
+      "path": "rawdev-exported-symbols.txt",
+      "bytes": 10280,
+      "sha256": "25726a9d2a33de35b819fa9bb2b8cfbf67dbbe513a55f7e883fab89baa833a1b"
+    },
+    {
+      "path": "register-disassembly/ArtColorConverter-converterInit-4308.txt",
+      "bytes": 17240,
+      "sha256": "667466a99a32328178d0297a5aa04d7db3f01251d6298fc022fc2cd3cba96c76"
+    },
+    {
+      "path": "register-disassembly/ArtColorConverter-converterInit-5c56b8.txt",
+      "bytes": 1377,
+      "sha256": "47ed544c38a32e1e151d39672f1cd2c1b335a90174726a65ccd2fb85044950ba"
+    },
+    {
+      "path": "register-disassembly/ArtColorConverter-converterInit-5c5758.txt",
+      "bytes": 799,
+      "sha256": "e32e639ffca5fb80e80b154a1a51aeabc7d033e5a0eb3bab9e1d5201f958638a"
+    },
+    {
+      "path": "register-disassembly/ArtModeController-generateModeTable-1bfc8.txt",
+      "bytes": 40610,
+      "sha256": "94f69a73f47004937bf35f7d63e9230bc633e70b4c3ad1c620f923bde6f10bf2"
+    },
+    {
+      "path": "register-disassembly/ArtModeController-generateModeTable-5c63e0.txt",
+      "bytes": 711,
+      "sha256": "6a179b2beb2388024b9e91cbe69df5ead39e73aac6efa66704c2856dfd9b532b"
+    },
+    {
+      "path": "register-disassembly/ArtModeController-generateModeTable-5c6428.txt",
+      "bytes": 711,
+      "sha256": "09d407142955667b31c70d1beb79164f12167a643f562a83910b662fb2b10f53"
+    },
+    {
+      "path": "register-disassembly/ArtModeController-setParamData-1b228.txt",
+      "bytes": 9798,
+      "sha256": "00b04d2ea385c860fed40666765be9f2c3b141b82fc3bc6a6ee16591a8a134df"
+    },
+    {
+      "path": "register-disassembly/Basic_Info-dec2hexa_keta-3e1fc.txt",
+      "bytes": 3371,
+      "sha256": "a141f146005bd661015f0381d30814a472347e9a7df018b6a2f122835e2841ae"
+    },
+    {
+      "path": "register-disassembly/Image_Setting-Binary_frame-4639c.txt",
+      "bytes": 7906,
+      "sha256": "f49817fb0eac7b79af1538bdd78d200a165b01a97670dc6a11ce0278b02f1e8a"
+    },
+    {
+      "path": "register-disassembly/Image_Setting-Mtx_bunkai-4130c.txt",
+      "bytes": 5285,
+      "sha256": "7b3d9a4b27d368c9f48fa3425f3e0774a89049fd13733c508c75bb866292ad45"
+    },
+    {
+      "path": "register-disassembly/Image_Setting-SET_MTX_data-3fef4.txt",
+      "bytes": 53095,
+      "sha256": "8820197966c55dba85787b14bc8cf7f9a8a8e9f7d5df382a4cdf26a38f822c84"
+    },
+    {
+      "path": "register-disassembly/Image_Setting-SET_MTX_data-5c7ac4.txt",
+      "bytes": 731,
+      "sha256": "172ad982fcd2d37bbfaaebba18522d8e358136ef18d6b57578ccdb452979455e"
+    },
+    {
+      "path": "register-disassembly/Image_Setting-SET_MTX_data-5c7b0c.txt",
+      "bytes": 731,
+      "sha256": "60f4218a6860d5cdf324e3979217427c005da7fa541ddb9b2c3fdcb832833ad6"
+    },
+    {
+      "path": "register-disassembly/Image_Setting-SET_MTX_data-5c7b54.txt",
+      "bytes": 731,
+      "sha256": "60c545de5feb0c80ca36f9e8beb9bbc9a8fdd948ae1b396e75badd3d898c119e"
+    },
+    {
+      "path": "register-disassembly/Matrix_Process-LMX_data2byte-46dd0.txt",
+      "bytes": 4678,
+      "sha256": "76c4d74795f1fd6bf371aad9a86a854eb8c0d18ce6ecc9154ad2dc1eb1a95fcc"
+    },
+    {
+      "path": "register-disassembly/Matrix_Process-Matrix_set-472c4.txt",
+      "bytes": 910,
+      "sha256": "acbf0a1167f6a0d16e05d7ed431bea1b63fa7d0444252edb2af6895f327e024a"
+    },
+    {
+      "path": "register-disassembly/Matrix_Process-Mtx_one2one-46994.txt",
+      "bytes": 8982,
+      "sha256": "95f3603a94d4388988153de7a85cbb9d95a6735a5230e38c6223fd48b218b916"
+    },
+    {
+      "path": "register-disassembly/Matrix_Process-getGamutTransformMatrix-46fdc.txt",
+      "bytes": 2134,
+      "sha256": "f4a36b35dd369bedffaf5983003cb9227b828dfce9d9390136ba6464c5fe5296"
+    },
+    {
+      "path": "register-disassembly/Matrix_Process-getGamutTransformMatrix-470cc.txt",
+      "bytes": 4441,
+      "sha256": "f4f1a7f7651b25efef5342ff153bd94465668864e6bdf3d26ab90f85bb723070"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-BittoBool-5c2be4.txt",
+      "bytes": 847,
+      "sha256": "2bd8b0c56f9afc6f6bd2eee22bcc0bf937059e8f447013e3025cbca2e92d166a"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-DEMTX_reg-5c4dd0.txt",
+      "bytes": 4237,
+      "sha256": "2b5ab40a5096e0111515758072c0dfa7fa72e4a207bc7ccbd12fad668c02eaef"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lmx0_reg-5c3b24.txt",
+      "bytes": 10732,
+      "sha256": "f81afbc4a23b056d0a7ab31cc44ba0c66f33a39924744a486979f1681862bd35"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lmx1_reg-5c3e8c.txt",
+      "bytes": 10732,
+      "sha256": "6858c4840038b76f16ce752ef48569a18d6bc1a2611b01c0e1ecf4182a800727"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lmx2_reg-5c41f4.txt",
+      "bytes": 10732,
+      "sha256": "3a318041fc02e9ec5c6fd680005fd891d63aaedc7caf6adb07cf0deebbbe41ac"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lmx3_reg-5c455c.txt",
+      "bytes": 10732,
+      "sha256": "ae7fd094307f48e48aa105b5979958a902965413b3681890d5adb97e64e5b8e5"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lmx4_reg-5c48c4.txt",
+      "bytes": 10732,
+      "sha256": "9925842a65b3ede670cab0f9528de9460d8936221a2b7fc76e926d11ce031107"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D0_RAM_regad-5c25a8.txt",
+      "bytes": 1546,
+      "sha256": "f7066fab5ede3685a378b731d910665ecdf87a2767b0add2976347dd72f91d88"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D0_point0-5c23a8.txt",
+      "bytes": 665,
+      "sha256": "372b91cc4ab94ddd978d958b7eea06f6e1ff2f172f218d821374ef49754d512b"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D0_point1-5c23f8.txt",
+      "bytes": 813,
+      "sha256": "96c098cd7f077739cc2578a29c9e0b14dea301f4b91766d60d3af4770a7abf6c"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D0_point2-5c245c.txt",
+      "bytes": 736,
+      "sha256": "c3b67238b2e61752a9f51442c056db5644111e35053a6ff34bbf59d3e7e2174e"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D0_point3-5c24b4.txt",
+      "bytes": 697,
+      "sha256": "aacf2c66f92b2fbfece83ff5f89075e5207c249448497a24bcd50d205235a434"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D0_reg-5c3234.txt",
+      "bytes": 7262,
+      "sha256": "04330f4f573d917eb7d08de71645bcf122c7fe640de88d392a18e3bda199c08d"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D1_RAM_regad-5c2628.txt",
+      "bytes": 1546,
+      "sha256": "e2b2a75b28cb29af97ae61d69a0fbcdd29525ba6909efd9b8c20eb43ce9fff52"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D1_reg-5c3478.txt",
+      "bytes": 7262,
+      "sha256": "232c97d5574b135176cc26e7e2411ff2cc8fee85cd2b011ff755eba13c553ab0"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D2_RAM_regad-5c26a8.txt",
+      "bytes": 1546,
+      "sha256": "bb57a1f5dd9c14f6a3cda70fe8dbcdd28bac2ce84d80431a758df8e909e6dab4"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D2_reg-5c36bc.txt",
+      "bytes": 7262,
+      "sha256": "ed8836edbf0adecd766b47d104c9d2300c28fe2d6be9531cdc3ab1c9587648f5"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D_PRE_regad-5c2508.txt",
+      "bytes": 1382,
+      "sha256": "f404d5d39e0d7179957d3d5793d3b3a1f0741d2d368af413efdc6c74b3d3e4df"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D_PRE_regpr-5c2c48.txt",
+      "bytes": 18048,
+      "sha256": "21706240c5b3f4260545ef8c9d35b5301da72ed71f7b29b7e7024da5249b56dc"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D_RAM_regpr-5c2728.txt",
+      "bytes": 12320,
+      "sha256": "b0e1d064a8db5c4a74f09ea4d6450ee42e834ba86e292d0af395bcf0aeeb3073"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut1D_ram-5c3900.txt",
+      "bytes": 5070,
+      "sha256": "5007ace996dda2d4b3b6551c3fa6597ab86ab4aa04c6887d770dee8804590ca9"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut3D_ram-5c4f08.txt",
+      "bytes": 5428,
+      "sha256": "d6d8b16a8540e186343e2c95cdf495d5fb21333eb48eba95460fb3b38bc955db"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut3D_ram-5c5150.txt",
+      "bytes": 5601,
+      "sha256": "46eba1acef6d87741841cdac7bed9f19e688cb4ed3ab824983f506ef30fa6f5d"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-Lut3D_reg-5c53a8.txt",
+      "bytes": 7935,
+      "sha256": "7bb38932671cabb9566a2c62d6223aa46a9891cb000020c49ced04288d0f84f2"
+    },
+    {
+      "path": "register-disassembly/Venice_regaddres-MTX_reg-5c4c2c.txt",
+      "bytes": 5204,
+      "sha256": "749831b8c5efce78d6c8b90ca81c6f82c13c9efdc793e6cb254cd565ae425d2d"
+    },
+    {
+      "path": "restart-audit-20261029.json",
+      "bytes": 646,
+      "sha256": "e85d9c40defb836756f9b428626da391d135305a718a6f70d944c73d1d613b4b"
+    },
+    {
+      "path": "scan_loader_markers.py",
+      "bytes": 1992,
+      "sha256": "5abf663cbbb2e116e0dff99c1429f275adadc9c8398894869e407c1940c99451"
+    },
+    {
+      "path": "validate_and_seal.py",
+      "bytes": 6090,
+      "sha256": "c7ee346c301bd57f98f60401800f87a791d0ddd634be5c2a136cc9b913c6af4a"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 1440,
+      "sha256": "83319fb8f6b709c0561b2703de21ac4af16b4e8132983721046e9854bad19d17"
+    },
+    {
+      "path": "venice-register-static-results.json",
+      "bytes": 214070,
+      "sha256": "15158150a9faedb76a841eb13c44724d7b2ae516dc0f00c51600194bc37fcc66"
+    }
+  ]
+}

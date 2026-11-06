@@ -1,0 +1,70 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000f6310 <.text>:
+  104228: a9b87bfd     	stp	x29, x30, [sp, #-0x80]!
+  10422c: 910003fd     	mov	x29, sp
+  104230: a90573fb     	stp	x27, x28, [sp, #0x50]
+  104234: aa0003fc     	mov	x28, x0
+  104238: 39401000     	ldrb	w0, [x0, #0x4]
+  10423c: a90153f3     	stp	x19, x20, [sp, #0x10]
+  104240: 52800093     	mov	w19, #0x4               // =4
+  104244: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  104248: a90363f7     	stp	x23, x24, [sp, #0x30]
+  10424c: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  104250: 35000040     	cbnz	w0, 0x104258 <.text+0xdf48>
+  104254: b9400393     	ldr	w19, [x28]
+  104258: f0007c56     	adrp	x22, 0x108f000
+  10425c: 52800618     	mov	w24, #0x30              // =48
+  104260: f0007c39     	adrp	x25, 0x108b000
+  104264: d2800a1a     	mov	x26, #0x50              // =80
+  104268: 9bb87e78     	umull	x24, w19, w24
+  10426c: f94676d6     	ldr	x22, [x22, #0xce8]
+  104270: 8b160316     	add	x22, x24, x22
+  104274: aa1603e0     	mov	x0, x22
+  104278: 97ffb9c6     	bl	0xf2990 <pthread_mutex_lock@plt>
+  10427c: 2a1303e1     	mov	w1, w19
+  104280: f9469725     	ldr	x5, [x25, #0xd28]
+  104284: 9282bde4     	mov	x4, #-0x15f0            // =-5616
+  104288: 9b1a7c21     	mul	x1, x1, x26
+  10428c: 8b0100a3     	add	x3, x5, x1
+  104290: f9402060     	ldr	x0, [x3, #0x40]
+  104294: f9401874     	ldr	x20, [x3, #0x30]
+  104298: 8b040000     	add	x0, x0, x4
+  10429c: eb00029f     	cmp	x20, x0
+  1042a0: 540004c0     	b.eq	0x104338 <.text+0xe028>
+  1042a4: b40001f4     	cbz	x20, 0x1042e0 <.text+0xdfd0>
+  1042a8: b9400380     	ldr	w0, [x28]
+  1042ac: 91004381     	add	x1, x28, #0x10
+  1042b0: d282ba02     	mov	x2, #0x15d0             // =5584
+  1042b4: b9000280     	str	w0, [x20]
+  1042b8: 39401380     	ldrb	w0, [x28, #0x4]
+  1042bc: 39001280     	strb	w0, [x20, #0x4]
+  1042c0: b9400b80     	ldr	w0, [x28, #0x8]
+  1042c4: b9000a80     	str	w0, [x20, #0x8]
+  1042c8: 91004280     	add	x0, x20, #0x10
+  1042cc: 97ffaebd     	bl	0xefdc0 <memcpy@plt>
+  1042d0: b955e380     	ldr	w0, [x28, #0x15e0]
+  1042d4: b915e280     	str	w0, [x20, #0x15e0]
+  1042d8: f94af780     	ldr	x0, [x28, #0x15e8]
+  1042dc: f90af680     	str	x0, [x20, #0x15e8]
+  1042e0: 2a1303f3     	mov	w19, w19
+  1042e4: d2800a00     	mov	x0, #0x50               // =80
+  1042e8: f9469739     	ldr	x25, [x25, #0xd28]
+  1042ec: d282be02     	mov	x2, #0x15f0             // =5616
+  1042f0: 9b006673     	madd	x19, x19, x0, x25
+  1042f4: f9401a60     	ldr	x0, [x19, #0x30]
+  1042f8: 8b020000     	add	x0, x0, x2
+  1042fc: f9001a60     	str	x0, [x19, #0x30]
+  104300: f0007c40     	adrp	x0, 0x108f000
+  104304: f9436000     	ldr	x0, [x0, #0x6c0]
+  104308: 8b180000     	add	x0, x0, x24
+  10430c: 97ffbef1     	bl	0xf3ed0 <pthread_cond_signal@plt>
+  104310: aa1603e0     	mov	x0, x22
+  104314: 97ffb373     	bl	0xf10e0 <pthread_mutex_unlock@plt>
+  104318: 52800000     	mov	w0, #0x0                // =0
+  10431c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  104320: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  104324: a94363f7     	ldp	x23, x24, [sp, #0x30]

@@ -1,0 +1,62 @@
+{
+  "status": "HOST_ONLY_ROOT_TRIAL_AND_AUTHENTICATED_READBACK_SCOPED_PASS",
+  "source": "live observer plus later integrity and kernel incarnation checks; archived user files alone do not recreate live trust",
+  "native_validation_user_response": "已完成本次原生验证",
+  "execution_process_exit_code": 0,
+  "host_helper_invocations": 2,
+  "records": {
+    "trial": {
+      "uid": 0,
+      "pid": 49237,
+      "record_sha256": "39dc3302fdc2b0f21ecbb6f0041bd8e0d843a33c527f5737967dc2f75390b439",
+      "bytes": 256
+    },
+    "readback": {
+      "uid": 0,
+      "pid": 49276,
+      "record_sha256": "e92c39d422983621962f5f81c6faab0e528b80f29402bf73925a092b6363fc9e",
+      "bytes": 384
+    }
+  },
+  "frame_completion": [
+    {
+      "mode": "trial",
+      "claimed": 1,
+      "completed": 1,
+      "result": 0,
+      "pid": 49237,
+      "ready": 1,
+      "ack": 1
+    },
+    {
+      "mode": "readback",
+      "claimed": 1,
+      "completed": 1,
+      "result": 0,
+      "pid": 49276,
+      "ready": 1,
+      "ack": 1
+    }
+  ],
+  "exit_observation": [
+    {
+      "mode": "trial",
+      "pid": 49237,
+      "original_helper_incarnation_present": false,
+      "current_PID_metadata": null
+    },
+    {
+      "mode": "readback",
+      "pid": 49276,
+      "original_helper_incarnation_present": false,
+      "current_PID_metadata": null
+    }
+  ],
+  "root_login_uid": 501,
+  "payload_bytes": 64,
+  "camera_or_USB_operations": 0,
+  "physical_camera_acceptance": false,
+  "authentication_firmware_or_recovery_acceptance": false,
+  "automatic_retry": false,
+  "authorization_consumed": true
+}

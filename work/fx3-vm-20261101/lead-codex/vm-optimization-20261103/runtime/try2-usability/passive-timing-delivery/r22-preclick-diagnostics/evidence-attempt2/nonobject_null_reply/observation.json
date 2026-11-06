@@ -1,0 +1,63 @@
+{
+  "receipt_status": "unknown",
+  "clicks": 0,
+  "keyPOST": 0,
+  "pending": 0,
+  "PAGE_attempt": null,
+  "rejections": {
+    "schema": "fx3-host-key-rejection-v1",
+    "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+    "capacity": 64,
+    "total": 1,
+    "truncated": 0,
+    "records": [
+      {
+        "host_monotonic_ns": 422123959238625,
+        "http_status": 409,
+        "reason": "frame_identity_or_render_invalid",
+        "failed_predicates": [
+          "sha_mismatch",
+          "generation_mismatch"
+        ],
+        "observed_sequence": 1,
+        "observed_cached": true,
+        "observed_png_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+        "observed_content_generation": 1,
+        "current_sequence": 2,
+        "current_png_sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a",
+        "current_content_generation": 2,
+        "render_valid": true,
+        "phase": "ready",
+        "ready": true,
+        "busy": false,
+        "pending_count": 0,
+        "review_required": false,
+        "steps": 0,
+        "stop_requested": false,
+        "error_present": false,
+        "request_id": "309b4623-0eb4-4269-9248-284bd5252bbf"
+      }
+    ]
+  },
+  "reserved_before_eval": [
+    {
+      "status": "reserved_unknown",
+      "reservation_id": "8501d16e-bf1f-43be-9789-8699b484fa7f",
+      "key": 427,
+      "host_ns": 422124343138416
+    }
+  ],
+  "ledger_final": {
+    "attempts": [
+      {
+        "status": "unknown",
+        "reservation_id": "8501d16e-bf1f-43be-9789-8699b484fa7f",
+        "key": 427,
+        "host_ns": 422124343138416,
+        "attempt_id": null,
+        "step": null
+      }
+    ],
+    "recoveries": []
+  }
+}

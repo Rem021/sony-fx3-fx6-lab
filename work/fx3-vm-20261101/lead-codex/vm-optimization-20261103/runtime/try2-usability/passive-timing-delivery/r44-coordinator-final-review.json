@@ -1,0 +1,45 @@
+{
+  "status": "accepted_offline_only",
+  "reviewed_utc": "2026-11-05T10:47:04.736661+00:00",
+  "original_task": "task_61af67c4ec25",
+  "documentation_task": "task_4cede7c132ee",
+  "worker_done": [
+    "msg_f6fc466e570b",
+    "msg_e713222c21f8"
+  ],
+  "correction_status": "msg_bdceddadb303",
+  "final_mail_read_status": "msg_f1facdb42498",
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r44-review-budget-candidate",
+  "manifest_SHA256": "70b72e515d72010870f990543a543874d61c4fe7868c5c7eccd0fd3da51b7ccb",
+  "manifest_entries_verified": 97,
+  "manifest_mismatches": 0,
+  "source43_SHA256": "3ab27924f456209af961412b876cefa9d23b7f0230b10bc160103a8ef58d995c",
+  "core38_SHA256": "b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1",
+  "source_and_core_member_hashes_verified": true,
+  "r42_source_members_unchanged": true,
+  "changed_entries": 14,
+  "changed_code_files": 13,
+  "unchanged_source_entries": 29,
+  "worker_test_receipts": {
+    "fake_clock": 14,
+    "guard_behavior": 6,
+    "host_binding": 10,
+    "pure_static": 12
+  },
+  "review_fixes_verified": [
+    "monotonic fake clock",
+    "before/after snapshots enclose final host suite",
+    "CORE38 actual member hash checks",
+    "index window synchronized to canonical receipt",
+    "raw adjacent snapshot scope corrected"
+  ],
+  "VM_executed": false,
+  "deployment_executed": false,
+  "policy_activation_authorized": false,
+  "limits": [
+    "Offline fake DOM and host import only; no true VM menu evidence",
+    "Does not prove performance improvement or FX6 boot",
+    "Native12s, snapshot20s, API16restore20s, startup180s,total8min,8accepted/10attempt/2recovery retained"
+  ],
+  "dispatch_metadata_issue": "ctx_f30df0a1aef2 readiness timeout and retained mail; delivery independently verified; no retry of VM or tests based on timeout"
+}

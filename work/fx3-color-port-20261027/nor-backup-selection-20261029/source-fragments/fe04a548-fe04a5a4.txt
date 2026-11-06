@@ -1,0 +1,23 @@
+fe04a548 ff8300d1 sub      sp, sp, #0x20
+fe04a54c fe0b00f9 str      x30, [sp, #0x10]
+fe04a550 f37700a9 stp      x19, x29, [sp]
+fe04a554 fd230091 add      x29, sp, #8
+fe04a558 f303002a mov      w19, w0
+fe04a55c 12040094 bl       #0xfe04b5a4
+fe04a560 000040f9 ldr      x0, [x0]
+fe04a564 00d87338 ldrb     w0, [x0, w19, sxtw #0]
+fe04a568 00001d12 and      w0, w0, #8
+fe04a56c 1f000071 cmp      w0, #0
+fe04a570 00010054 b.eq     #0xfe04a590
+fe04a574 7f7e0371 cmp      w19, #0xdf
+fe04a578 c0000054 b.eq     #0xfe04a590
+fe04a57c 60820051 sub      w0, w19, #0x20
+fe04a580 f37740a9 ldp      x19, x29, [sp]
+fe04a584 fe0b40f9 ldr      x30, [sp, #0x10]
+fe04a588 ff830091 add      sp, sp, #0x20
+fe04a58c c0035fd6 ret      
+fe04a590 e003132a mov      w0, w19
+fe04a594 f37740a9 ldp      x19, x29, [sp]
+fe04a598 fe0b40f9 ldr      x30, [sp, #0x10]
+fe04a59c ff830091 add      sp, sp, #0x20
+fe04a5a0 c0035fd6 ret      

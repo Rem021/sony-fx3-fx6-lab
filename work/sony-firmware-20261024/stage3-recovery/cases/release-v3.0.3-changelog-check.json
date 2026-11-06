@@ -1,0 +1,24 @@
+{
+  "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/v3.0.3/docs/en/changelog.md",
+  "checked_at_utc": "2026-10-25T06:53:41.099878+00:00",
+  "sha256": "1c553e6fbf00ee0fd560ae04be9cf1d1aef6ec3de69d1761a1c9d8f129512925",
+  "bytes": 60699,
+  "selected": [
+    {
+      "line": 5,
+      "text": "## 3.0.3 — USB recovery and sound workflow fixes — 2026-10-23"
+    },
+    {
+      "line": 10,
+      "text": "- The owner confirmed factory recovery works with cp-restore.2; its local transaction reached LOADED after the fresh-boot check. This is one-body physical evidence for recovery. The experimental OUT-fragmentation change remains withdrawn. The recipient has not yet physically tested this scoped revision."
+    },
+    {
+      "line": 307,
+      "text": "- Enumerate all Sony USB identities/interfaces without installing drivers for unknown PIDs. The reported `054C:0D68` remains unidentified; this body used normal/service `0E8A`/`0336`."
+    },
+    {
+      "line": 308,
+      "text": "- Expand individual/repeated six-slot imports, selective reset, mixed-slot preservation, interruption/mount cleanup and guided workflow tests. **The owner's factory recovery passed new-boot, complete readback, loaded-state and read-only mount verification; new one-click installation/every feature have not all passed physical shooting acceptance.** Development branch/local test bundle only."
+    }
+  ]
+}

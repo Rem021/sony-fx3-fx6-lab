@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/bound_signal.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/test_own_child.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/artifacts/own-child-test"
+  ],
+  "compile_return": 1,
+  "compile_stdout": "",
+  "compile_stderr": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/bound_signal.c:22:5: error: use of undeclared identifier 'task_audit_token_data_t'\n   22 |     task_audit_token_data_t data={0};mach_msg_type_number_t count=TASK_AUDIT_TOKEN_COUNT;\n      |     ^~~~~~~~~~~~~~~~~~~~~~~\n/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/bound_signal.c:23:54: error: use of undeclared identifier 'data'\n   23 |     kr=task_info(name,TASK_AUDIT_TOKEN,(task_info_t)&data,&count);\n      |                                                      ^~~~\n/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/bound_signal.c:26:40: error: use of undeclared identifier 'data'\n   26 |     audit_token_t token;memcpy(&token,&data,sizeof(token));\n      |                                        ^~~~\n3 errors generated.\n",
+  "signals_to_current_helper_or_observer": 0,
+  "new_root_or_USB_operations": 0
+}

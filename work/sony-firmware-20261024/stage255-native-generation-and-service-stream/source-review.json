@@ -1,0 +1,20 @@
+{
+  "status": "PUBLIC_STREAM_FRAMING_AND_SDK_RETURN_RULES_BOUND_TO_NATIVE_COMPONENT",
+  "public_source": "work/sony-firmware-20261024/stage252-MSC-service-entry-impact-and-admission/public/ma1co--Sony-PMCA-RE/pmca__usb__sony.py",
+  "public_source_sha256": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e",
+  "public_URL": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/sony.py#L847",
+  "SERVICE_header_bytes": 12,
+  "SERVICE_Hasp_body_bytes": 88,
+  "logical_reply_bytes": 100,
+  "actual_native_receive_shape": "12B header then positive-progress body reads totaling88B; never one100B receive",
+  "fixed_read_request_hex": "05000000100001000000000000001f0000",
+  "sdk_header": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/usb/IOUSBLib.h",
+  "sdk_header_sha256": "16acc674ebc759d00904e8ae1cd2137b5f814d54fe237c5193cf6549131d542a",
+  "SDK_reference": "USBDeviceReEnumerate doc: root Release option may be used without open; API return is not driver or camera-thread observation",
+  "only_reenumeration_option": "kUSBReEnumerateReleaseDeviceMask",
+  "native_SERVICE_profile_default": null,
+  "real_SERVICE_endpoint_number_packet_identity_unverified": true,
+  "cache_serial_HMAC_is_not_firmware_authentication": true,
+  "native_library_never_loaded_or_called": true,
+  "new_camera_or_USB_operations": 0
+}

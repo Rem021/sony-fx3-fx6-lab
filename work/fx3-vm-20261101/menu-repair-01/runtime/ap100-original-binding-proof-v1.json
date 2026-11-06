@@ -1,0 +1,415 @@
+{
+  "scope": "Static original kernel API and passive user point guards; no runtime acceptance",
+  "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "kernel_symbols": {
+    "pcidma_transfer_async": {
+      "address": "0xffffff80083220c8",
+      "first16": "000b00b4fd7bbba9fd030091f35301a9",
+      "instructions": [
+        {
+          "pc": "0xffffff80083220c8",
+          "bytes": "000b00b4",
+          "asm": "cbz x0, #0xffffff8008322228"
+        },
+        {
+          "pc": "0xffffff80083220cc",
+          "bytes": "fd7bbba9",
+          "asm": "stp x29, x30, [sp, #-0x50]!"
+        },
+        {
+          "pc": "0xffffff80083220d0",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "pc": "0xffffff80083220d4",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "pc": "0xffffff80083220d8",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0"
+        },
+        {
+          "pc": "0xffffff80083220dc",
+          "bytes": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]"
+        },
+        {
+          "pc": "0xffffff80083220e0",
+          "bytes": "f76303a9",
+          "asm": "stp x23, x24, [sp, #0x30]"
+        },
+        {
+          "pc": "0xffffff80083220e4",
+          "bytes": "f96b04a9",
+          "asm": "stp x25, x26, [sp, #0x40]"
+        },
+        {
+          "pc": "0xffffff80083220e8",
+          "bytes": "16004039",
+          "asm": "ldrb w22, [x0]"
+        },
+        {
+          "pc": "0xffffff80083220ec",
+          "bytes": "a0028012",
+          "asm": "mov w0, #-0x16"
+        },
+        {
+          "pc": "0xffffff80083220f0",
+          "bytes": "df120071",
+          "asm": "cmp w22, #4"
+        },
+        {
+          "pc": "0xffffff80083220f4",
+          "bytes": "c8080054",
+          "asm": "b.hi #0xffffff800832220c"
+        },
+        {
+          "pc": "0xffffff80083220f8",
+          "bytes": "98064039",
+          "asm": "ldrb w24, [x20, #1]"
+        },
+        {
+          "pc": "0xffffff80083220fc",
+          "bytes": "1f1f0071",
+          "asm": "cmp w24, #7"
+        },
+        {
+          "pc": "0xffffff8008322100",
+          "bytes": "68080054",
+          "asm": "b.hi #0xffffff800832220c"
+        },
+        {
+          "pc": "0xffffff8008322104",
+          "bytes": "820e40f9",
+          "asm": "ldr x2, [x20, #0x18]"
+        }
+      ]
+    },
+    "aarch64_insn_patch_text": {
+      "address": "0xffffff800808b268",
+      "first16": "fd7bbaa95f040071fd030091f35301a9",
+      "instructions": [
+        {
+          "pc": "0xffffff800808b268",
+          "bytes": "fd7bbaa9",
+          "asm": "stp x29, x30, [sp, #-0x60]!"
+        },
+        {
+          "pc": "0xffffff800808b26c",
+          "bytes": "5f040071",
+          "asm": "cmp w2, #1"
+        },
+        {
+          "pc": "0xffffff800808b270",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "pc": "0xffffff800808b274",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "pc": "0xffffff800808b278",
+          "bytes": "f303022a",
+          "asm": "mov w19, w2"
+        },
+        {
+          "pc": "0xffffff800808b27c",
+          "bytes": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]"
+        },
+        {
+          "pc": "0xffffff800808b280",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0"
+        },
+        {
+          "pc": "0xffffff800808b284",
+          "bytes": "f50301aa",
+          "asm": "mov x21, x1"
+        },
+        {
+          "pc": "0xffffff800808b288",
+          "bytes": "c0020054",
+          "asm": "b.eq #0xffffff800808b2e0"
+        },
+        {
+          "pc": "0xffffff800808b28c",
+          "bytes": "5f000071",
+          "asm": "cmp w2, #0"
+        },
+        {
+          "pc": "0xffffff800808b290",
+          "bytes": "b48704a9",
+          "asm": "stp x20, x1, [x29, #0x48]"
+        },
+        {
+          "pc": "0xffffff800808b294",
+          "bytes": "a27f0b29",
+          "asm": "stp w2, wzr, [x29, #0x58]"
+        },
+        {
+          "pc": "0xffffff800808b298",
+          "bytes": "a0028012",
+          "asm": "mov w0, #-0x16"
+        },
+        {
+          "pc": "0xffffff800808b29c",
+          "bytes": "ac000054",
+          "asm": "b.gt #0xffffff800808b2b0"
+        },
+        {
+          "pc": "0xffffff800808b2a0",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]"
+        },
+        {
+          "pc": "0xffffff800808b2a4",
+          "bytes": "f55b42a9",
+          "asm": "ldp x21, x22, [sp, #0x20]"
+        }
+      ]
+    },
+    "aarch64_insn_patch_text_sync": {
+      "address": "0xffffff800808b228",
+      "first16": "fd7bbda95f000071fd030091a08701a9",
+      "instructions": [
+        {
+          "pc": "0xffffff800808b228",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!"
+        },
+        {
+          "pc": "0xffffff800808b22c",
+          "bytes": "5f000071",
+          "asm": "cmp w2, #0"
+        },
+        {
+          "pc": "0xffffff800808b230",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "pc": "0xffffff800808b234",
+          "bytes": "a08701a9",
+          "asm": "stp x0, x1, [x29, #0x18]"
+        },
+        {
+          "pc": "0xffffff800808b238",
+          "bytes": "a27f0529",
+          "asm": "stp w2, wzr, [x29, #0x28]"
+        },
+        {
+          "pc": "0xffffff800808b23c",
+          "bytes": "2d010054",
+          "asm": "b.le #0xffffff800808b260"
+        },
+        {
+          "pc": "0xffffff800808b240",
+          "bytes": "c22f00f0",
+          "asm": "adrp x2, #0xffffff8008686000"
+        },
+        {
+          "pc": "0xffffff800808b244",
+          "bytes": "00000090",
+          "asm": "adrp x0, #0xffffff800808b000"
+        },
+        {
+          "pc": "0xffffff800808b248",
+          "bytes": "42e03a91",
+          "asm": "add x2, x2, #0xeb8"
+        },
+        {
+          "pc": "0xffffff800808b24c",
+          "bytes": "a1630091",
+          "asm": "add x1, x29, #0x18"
+        },
+        {
+          "pc": "0xffffff800808b250",
+          "bytes": "00a00491",
+          "asm": "add x0, x0, #0x128"
+        },
+        {
+          "pc": "0xffffff800808b254",
+          "bytes": "295f0294",
+          "asm": "bl #0xffffff8008122ef8"
+        },
+        {
+          "pc": "0xffffff800808b258",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30"
+        },
+        {
+          "pc": "0xffffff800808b25c",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "pc": "0xffffff800808b260",
+          "bytes": "a0028012",
+          "asm": "mov w0, #-0x16"
+        },
+        {
+          "pc": "0xffffff800808b264",
+          "bytes": "fdffff17",
+          "asm": "b #0xffffff800808b258"
+        }
+      ]
+    },
+    "kallsyms_lookup_name": {
+      "address": "0xffffff8008115d78",
+      "first16": "fd7bb5a9fd03009181040058f55b02a9",
+      "instructions": [
+        {
+          "pc": "0xffffff8008115d78",
+          "bytes": "fd7bb5a9",
+          "asm": "stp x29, x30, [sp, #-0xb0]!"
+        },
+        {
+          "pc": "0xffffff8008115d7c",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "pc": "0xffffff8008115d80",
+          "bytes": "81040058",
+          "asm": "ldr x1, #0xffffff8008115e10"
+        },
+        {
+          "pc": "0xffffff8008115d84",
+          "bytes": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]"
+        },
+        {
+          "pc": "0xffffff8008115d88",
+          "bytes": "f50300aa",
+          "asm": "mov x21, x0"
+        },
+        {
+          "pc": "0xffffff8008115d8c",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "pc": "0xffffff8008115d90",
+          "bytes": "14008052",
+          "asm": "mov w20, #0"
+        },
+        {
+          "pc": "0xffffff8008115d94",
+          "bytes": "130080d2",
+          "asm": "mov x19, #0"
+        },
+        {
+          "pc": "0xffffff8008115d98",
+          "bytes": "360040f9",
+          "asm": "ldr x22, [x1]"
+        },
+        {
+          "pc": "0xffffff8008115d9c",
+          "bytes": "d60000b5",
+          "asm": "cbnz x22, #0xffffff8008115db4"
+        },
+        {
+          "pc": "0xffffff8008115da0",
+          "bytes": "16000014",
+          "asm": "b #0xffffff8008115df8"
+        },
+        {
+          "pc": "0xffffff8008115da4",
+          "bytes": "1f2003d5",
+          "asm": "nop "
+        },
+        {
+          "pc": "0xffffff8008115da8",
+          "bytes": "73060091",
+          "asm": "add x19, x19, #1"
+        },
+        {
+          "pc": "0xffffff8008115dac",
+          "bytes": "7f0216eb",
+          "asm": "cmp x19, x22"
+        },
+        {
+          "pc": "0xffffff8008115db0",
+          "bytes": "40020054",
+          "asm": "b.eq #0xffffff8008115df8"
+        },
+        {
+          "pc": "0xffffff8008115db4",
+          "bytes": "a1c30091",
+          "asm": "add x1, x29, #0x30"
+        }
+      ]
+    }
+  },
+  "app_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "passive_points": [
+    {
+      "VA": "0x2d9e764",
+      "bytes": "a04b40b9",
+      "asm": "ldr w0, [x29, #0x48]"
+    },
+    {
+      "VA": "0x2b046f8",
+      "bytes": "8e39aa97",
+      "asm": "bl #0x1592d30"
+    },
+    {
+      "VA": "0x2b04728",
+      "bytes": "f51340f9",
+      "asm": "ldr x21, [sp, #0x20]"
+    },
+    {
+      "VA": "0x2b047cc",
+      "bytes": "5939aa97",
+      "asm": "bl #0x1592d30"
+    },
+    {
+      "VA": "0x2b047fc",
+      "bytes": "f51340f9",
+      "asm": "ldr x21, [sp, #0x20]"
+    },
+    {
+      "VA": "0x2b237f8",
+      "bytes": "e2c1a997",
+      "asm": "bl #0x1593f80"
+    },
+    {
+      "VA": "0x2b0473c",
+      "bytes": "22e07039",
+      "asm": "ldrb w2, [x1, #0xc38]"
+    }
+  ],
+  "new_module_undefined": [
+    "osal_wai_sem_tmo",
+    "osal_sig_sem",
+    "printk",
+    "probe_kernel_read",
+    "osal_dynamic_id",
+    "vmalloc",
+    "kallsyms_lookup_name",
+    "vfree",
+    "osal_wait_thread_exit",
+    "osal_create_waitable_thread",
+    "osal_reg_public",
+    "osal_unreg_public",
+    "arch_phys_to_va",
+    "osal_get_msg_src",
+    "osal_valloc_msg_wait",
+    "osal_msg_size",
+    "osal_set_msg_src",
+    "osal_snd_msg",
+    "osal_rcv_msg_tmo",
+    "osal_free_msg"
+  ],
+  "official_API_reference": "https://raw.githubusercontent.com/torvalds/linux/v4.9/arch/arm64/kernel/insn.c",
+  "tests": {
+    "check-sync100-backend-v1.log": "9dd7f29039e0f12a79a5c97c9a31d789006e00e71f7c90e4acd36d67eca589af",
+    "check-touch100-transport-v1.log": "884debcc615b7d5710e1f788717004a1fec2594b9b89d8b26d707178cc5a069b"
+  }
+}

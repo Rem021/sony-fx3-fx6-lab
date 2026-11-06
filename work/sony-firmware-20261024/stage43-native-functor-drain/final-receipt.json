@@ -1,0 +1,103 @@
+{
+  "schema": "fx3-stage43-native-functor-drain/1",
+  "created_utc": "2026-10-26T01:08:16.030357+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/README.md",
+      "bytes": 5182,
+      "sha256": "199cb519022636f5137dbdcdbf493bc9cdf8201f26db2be5b9a62a1affffb1f4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/coordinator-observations.json",
+      "bytes": 1787,
+      "sha256": "22e8cf36e667332b7ba4b86fc49c5743b0c6d898c31679d2f09d3a1498157188"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/functor_drain.py",
+      "bytes": 12580,
+      "sha256": "8adb8cea89226fc22370c4b5835ef998f55efbad41ea0ddae210cad263f02793"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/goal-status-after.json",
+      "bytes": 81358,
+      "sha256": "b25196fcffb93dc2fef15a8f34d57ca33b8b0bf055ad18f3244e166807aff9be"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/goal-status-before.json",
+      "bytes": 78963,
+      "sha256": "49318399c28f63231565ff44c475205918d507e5945e470c2e1a396d2b89770b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/next-code-exit-anchors.json",
+      "bytes": 2038,
+      "sha256": "041736ecf41bd8c1678d29705fff92bbdd0a00c5653ccd55aa1abb65ad434acd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/run-20261025/executed-source.py",
+      "bytes": 11885,
+      "sha256": "e26aeeaa4353a8eff9a8ac27bf5654a7680adbabe7020a6eb4563ac92ee065af"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/run-20261025/functor-drain-results.json",
+      "bytes": 116295,
+      "sha256": "ae10ebc58702a0c0e4725be4bcd4420d21b948d3429704d6227ad4a9b12ea004"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/run-20261025/source-receipt.json",
+      "bytes": 789,
+      "sha256": "18830793fae3bd2f38653e0c97bbbe6a2a8f3ca5006ae8af25d0afc95e8f3b47"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/run-20261025/summary.json",
+      "bytes": 651,
+      "sha256": "6d91c6c5d3fab51bf0c9c4d13582a72951f9ef8f85e7dba1ce0ffeee0a509e7c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/run-20261025-reviewed/executed-source.py",
+      "bytes": 12580,
+      "sha256": "8adb8cea89226fc22370c4b5835ef998f55efbad41ea0ddae210cad263f02793"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/run-20261025-reviewed/functor-drain-results.json",
+      "bytes": 142097,
+      "sha256": "0a9822d8f74656b995f390783400c2584d08ecc981018705e6c040774fdd1c1b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/run-20261025-reviewed/source-receipt.json",
+      "bytes": 789,
+      "sha256": "5b16b4355377213fad2b3fc8ba2df1eb35b77176f31aff0387c57e69bd5a3aa9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage43-native-functor-drain/run-20261025-reviewed/summary.json",
+      "bytes": 651,
+      "sha256": "6d91c6c5d3fab51bf0c9c4d13582a72951f9ef8f85e7dba1ce0ffeee0a509e7c"
+    }
+  ],
+  "previous_manifest_sha256": "f684956e041cc80761ff9f28dfc607850eb3add824e038b6ab46c6cf5aaa8ed7",
+  "scope": "11 original fragments. Original selected functor constructor stores and virtual dequeue/typed body under two ordered guest CPU contexts; queue/flags zero before code exit. START returns through original outer stack; invalid-order STOP stops before diagnostic. Real construction/runtime owner/locks/epoch/concurrency/HAL/global exit/recovery unbound.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage43-native-functor-drain/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage43-native-functor-drain/goal-status-after.json",
+    "before_sha256": "49318399c28f63231565ff44c475205918d507e5945e470c2e1a396d2b89770b",
+    "after_sha256": "b25196fcffb93dc2fef15a8f34d57ca33b8b0bf055ad18f3244e166807aff9be",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_code": true,
+    "original_image_RX_unchanged": true,
+    "runtime_or_diagnostic_output_adapters": false,
+    "guest_CPU_context_restore_preserves_RW_RAM": true,
+    "actual_runtime_clear_lock_wait_or_release_executed": false,
+    "real_threads_multicore_owner_epoch_Hal_verified": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "hardware_main_media_same_body_backup_restore_WBI_coldboot_or_rescue_verified": false,
+    "camera_loadable_module_or_device_firmware_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 原事件构造与代码退出](<work/sony-firmware-20261024/stage43-native-functor-drain/README.md>)：原虚表/出队调用确认标志全清时代码仍可未退出；受控START正文沿原栈返回，真实线程/合法STOP/硬件与恢复仍待验收。"
+}

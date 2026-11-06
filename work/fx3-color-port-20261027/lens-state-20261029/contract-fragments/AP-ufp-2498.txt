@@ -1,0 +1,148 @@
+00002498 sub        sp, sp, #0x220
+0000249c mov        x2, #0x98
+000024a0 mov        w1, #0
+000024a4 stp        x29, x30, [sp, #-0x40]!
+000024a8 mov        x29, sp
+000024ac stp        x19, x20, [sp, #0x10]
+000024b0 add        x20, x29, #0x58
+000024b4 mov        x0, x20
+000024b8 stp        x21, x22, [sp, #0x20]
+000024bc str        x23, [sp, #0x30]
+000024c0 bl         #0x1380 ; memset
+000024c4 add        x2, x29, #0x4c
+000024c8 mov        w1, #0x92
+000024cc mov        w0, #0x2a
+000024d0 bl         #0x14a0 ; osal_dynamic_id
+000024d4 cbnz       w0, #0x2654
+000024d8 mov        x1, x20
+000024dc add        x0, x29, #0x19c
+000024e0 mov        x2, #0x98
+000024e4 add        x21, x29, #0xf0
+000024e8 bl         #0x1300 ; memcpy
+000024ec ldr        w22, [x29, #0x4c]
+000024f0 mov        x1, x21
+000024f4 mov        w0, #0x871
+000024f8 mov        w3, #1
+000024fc mov        w2, #0xd0
+00002500 movk       w0, #0x8092, lsl #16
+00002504 bl         #0x13e0 ; osal_valloc_msg_wait
+00002508 mov        w19, w0
+0000250c cbnz       w0, #0x255c
+00002510 mov        w0, #3
+00002514 add        x1, x29, #0x190
+00002518 mov        x2, #0xd0
+0000251c str        w22, [x29, #0x234]
+00002520 str        w0, [x29, #0x190]
+00002524 mov        w0, #7
+00002528 str        w0, [x29, #0x198]
+0000252c ldr        x0, [x29, #0xf0]
+00002530 bl         #0x1300 ; memcpy
+00002534 ldr        x1, [x29, #0xf0]
+00002538 mov        w0, #0x871
+0000253c movk       w0, #0x8092, lsl #16
+00002540 bl         #0x1390 ; osal_snd_msg
+00002544 mov        w19, w0
+00002548 cbz        w0, #0x2690
+0000254c ldr        x1, [x29, #0xf0]
+00002550 mov        w0, #0x871
+00002554 movk       w0, #0x8092, lsl #16
+00002558 bl         #0x15f0 ; osal_free_msg
+0000255c ldr        w2, [x29, #0x4c]
+00002560 mov        w1, #0
+00002564 mov        w0, #0x4a
+00002568 bl         #0x14a0 ; osal_dynamic_id
+0000256c cbnz       w19, #0x2654
+00002570 ldp        w19, w1, [x29, #0x70]
+00002574 cmp        w19, #1
+00002578 b.ne       #0x25a8
+0000257c cmp        w1, #1
+00002580 b.ne       #0x25a8
+00002584 adrp       x0, #0x15000
+00002588 str        w1, [x0, #0x1f0]
+0000258c ldp        x19, x20, [sp, #0x10]
+00002590 mov        w0, w1
+00002594 ldp        x21, x22, [sp, #0x20]
+00002598 ldr        x23, [sp, #0x30]
+0000259c ldp        x29, x30, [sp], #0x40
+000025a0 add        sp, sp, #0x220
+000025a4 ret        
+000025a8 mov        x1, x21
+000025ac mov        w0, #0x17
+000025b0 movk       w0, #0x92, lsl #16
+000025b4 bl         #0x14b0 ; Backup_read
+000025b8 cmp        w0, #0
+000025bc mov        w1, #0x101
+000025c0 b.le       #0x258c
+000025c4 ldrb       w0, [x29, #0xf1]
+000025c8 cmp        w0, #0xff
+000025cc b.ne       #0x25e0
+000025d0 ldrb       w0, [x29, #0xf2]
+000025d4 mov        w1, #0x103
+000025d8 cmp        w0, #0xff
+000025dc b.eq       #0x258c
+000025e0 cmp        w19, #2
+000025e4 mov        w1, #0x101
+000025e8 b.ne       #0x258c
+000025ec mov        x0, #0x17
+000025f0 mov        x19, #0
+000025f4 movk       x0, #0x92, lsl #16
+000025f8 add        x1, x29, #0x190
+000025fc bfxil      x19, x0, #0, #0x20
+00002600 mov        w0, #0x44ab
+00002604 mov        w3, #1
+00002608 mov        w2, #0x10
+0000260c movk       w0, #0x8092, lsl #16
+00002610 bl         #0x13e0 ; osal_valloc_msg_wait
+00002614 cbnz       w0, #0x2654
+00002618 ldr        x20, [x29, #0x190]
+0000261c mov        w0, #0x111
+00002620 movk       w0, #0x92, lsl #16
+00002624 str        xzr, [x20]
+00002628 str        x19, [x20, #8]
+0000262c str        w0, [x20]
+00002630 mov        w0, #0x44ab
+00002634 ldr        x1, [x29, #0x190]
+00002638 movk       w0, #0x8092, lsl #16
+0000263c bl         #0x15a0 ; osal_snd_sync_msg
+00002640 cbz        w0, #0x265c
+00002644 ldr        x1, [x29, #0x190]
+00002648 mov        w0, #0x44ab
+0000264c movk       w0, #0x8092, lsl #16
+00002650 bl         #0x15f0 ; osal_free_msg
+00002654 mov        w1, #0x101
+00002658 b          #0x258c
+0000265c ldr        x19, [x20, #8]
+00002660 mov        w0, #0x44ab
+00002664 ldr        x1, [x29, #0x190]
+00002668 movk       w0, #0x8092, lsl #16
+0000266c lsr        x19, x19, #0x20
+00002670 bl         #0x15f0 ; osal_free_msg
+00002674 cmp        w19, #2
+00002678 mov        w1, #1
+0000267c b.eq       #0x258c
+00002680 cmp        w19, #3
+00002684 cset       w1, ne
+00002688 add        w1, w1, #0x100
+0000268c b          #0x258c
+00002690 ldr        w23, [x29, #0x4c]
+00002694 add        x1, x29, #0x50
+00002698 mov        w2, #-1
+0000269c str        xzr, [x29, #0x50]
+000026a0 mov        w0, w23
+000026a4 bl         #0x13c0 ; osal_rcv_msg_tmo
+000026a8 mov        w19, w0
+000026ac cbnz       w0, #0x255c
+000026b0 ldr        x22, [x29, #0x50]
+000026b4 mov        x0, x21
+000026b8 mov        x2, #0x9c
+000026bc mov        x1, x22
+000026c0 bl         #0x1300 ; memcpy
+000026c4 ldr        w19, [x22]
+000026c8 mov        x1, x22
+000026cc mov        w0, w23
+000026d0 bl         #0x15f0 ; osal_free_msg
+000026d4 add        x1, x29, #0xf4
+000026d8 mov        x0, x20
+000026dc mov        x2, #0x98
+000026e0 bl         #0x1300 ; memcpy
+000026e4 b          #0x255c

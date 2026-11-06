@@ -1,0 +1,365 @@
+{
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "original_record_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+  "original_header": {
+    "word4": "0xaaaaaaaa",
+    "byte8": 0,
+    "word2c": 0
+  },
+  "header_checker": {
+    "entry": "0xfe04c76c",
+    "arguments": [
+      "0x100000000"
+    ],
+    "boundary": {
+      "reason": "returned",
+      "PC": "0x400000000"
+    },
+    "registers": [
+      "0xfffffffa",
+      "0x0",
+      "0x0",
+      "0x0"
+    ],
+    "original_instructions": 19,
+    "nonstack_RAM_writes": 0,
+    "first_trace": [
+      "0xfe04c76c",
+      "0xfe04c770",
+      "0xfe04c774",
+      "0xfe04c778",
+      "0xfe04d444",
+      "0xfe04d448",
+      "0xfe04c77c",
+      "0xfe04c780",
+      "0xfe04c784",
+      "0xfe04d514",
+      "0xfe04d518",
+      "0xfe04c788",
+      "0xfe04c78c",
+      "0xfe04c790",
+      "0xfe04c794",
+      "0xfe04c798"
+    ]
+  },
+  "strict_file_header_choice": {
+    "entry": "0xfe04c7a8",
+    "arguments": [
+      "0x100000000",
+      "0x100400000"
+    ],
+    "boundary": {
+      "reason": "returned",
+      "PC": "0x400000000"
+    },
+    "registers": [
+      "0xffffffff",
+      "0x100400000",
+      "0x1",
+      "0x0"
+    ],
+    "original_instructions": 28,
+    "nonstack_RAM_writes": 0,
+    "first_trace": [
+      "0xfe04c7a8",
+      "0xfe04c7ac",
+      "0xfe04d584",
+      "0xfe04d588",
+      "0xfe04d58c",
+      "0xfe04d590",
+      "0xfe04d594",
+      "0xfe04d598",
+      "0xfe04d59c",
+      "0xfe04d5a0",
+      "0xfe04d5a4",
+      "0xfe04d5c4",
+      "0xfe04d5c8",
+      "0xfe04d5cc",
+      "0xfe04d604",
+      "0xfe04d608"
+    ]
+  },
+  "relaxed_helper_choice": {
+    "entry": "0xfe04d584",
+    "arguments": [
+      "0x100000000",
+      "0x100400000",
+      "0x0"
+    ],
+    "boundary": {
+      "reason": "returned",
+      "PC": "0x400000000"
+    },
+    "registers": [
+      "0x2",
+      "0x100400000",
+      "0x0",
+      "0x0"
+    ],
+    "original_instructions": 17,
+    "nonstack_RAM_writes": 0,
+    "first_trace": [
+      "0xfe04d584",
+      "0xfe04d588",
+      "0xfe04d58c",
+      "0xfe04d590",
+      "0xfe04d594",
+      "0xfe04d598",
+      "0xfe04d59c",
+      "0xfe04d5a0",
+      "0xfe04d5a4",
+      "0xfe04d5c4",
+      "0xfe04d5c8",
+      "0xfe04d5cc",
+      "0xfe04d604",
+      "0xfe04d608",
+      "0xfe04d60c",
+      "0xfe04d610"
+    ]
+  },
+  "no_headers": {
+    "entry": "0xfe04c7a8",
+    "arguments": [
+      "0x0",
+      "0x0"
+    ],
+    "boundary": {
+      "reason": "returned",
+      "PC": "0x400000000"
+    },
+    "registers": [
+      "0xffffffff",
+      "0x0",
+      "0x1",
+      "0x0"
+    ],
+    "original_instructions": 19,
+    "nonstack_RAM_writes": 0,
+    "first_trace": [
+      "0xfe04c7a8",
+      "0xfe04c7ac",
+      "0xfe04d584",
+      "0xfe04d5a8",
+      "0xfe04d5ac",
+      "0xfe04d5b0",
+      "0xfe04d5b4",
+      "0xfe04d5b8",
+      "0xfe04d5bc",
+      "0xfe04d5c0",
+      "0xfe04d5c4",
+      "0xfe04d5c8",
+      "0xfe04d5cc",
+      "0xfe04d604",
+      "0xfe04d608",
+      "0xfe04d61c"
+    ]
+  },
+  "header_input_scope": "Both chooser inputs are explicitly the same original CP template header copied into separate RAM locations, not real primary and backup files.",
+  "strict_whole_configuration_without_state": {
+    "entry": "0xfe0545dc",
+    "arguments": [
+      "0xc000000",
+      "0x300003000"
+    ],
+    "boundary": {
+      "reason": "before_unknown_backup_state_read",
+      "PC": "0xfe058a6c",
+      "address": "0xfe26c300",
+      "bytes": 4
+    },
+    "registers": [
+      "0xc000000",
+      "0x300003000",
+      "0x0",
+      "0x0"
+    ],
+    "original_instructions": 15,
+    "nonstack_RAM_writes": 3,
+    "first_trace": [
+      "0xfe0545dc",
+      "0xfe0545e0",
+      "0xfe0545e4",
+      "0xfe0545e8",
+      "0xfe0545ec",
+      "0xfe0545f0",
+      "0xfe0545f4",
+      "0xfe0545f8",
+      "0xfe0545fc",
+      "0xfe054600",
+      "0xfe054604",
+      "0xfe054608",
+      "0xfe058a64",
+      "0xfe058a68",
+      "0xfe058a6c"
+    ]
+  },
+  "original_state_initializer_prefix": {
+    "entry": "0xfe058adc",
+    "arguments": [],
+    "boundary": {
+      "reason": "unmapped_external_state",
+      "PC": "0xfe05889c",
+      "address": "0xfe040110",
+      "bytes": 4
+    },
+    "registers": [
+      "0x0",
+      "0x0",
+      "0x0",
+      "0x0"
+    ],
+    "original_instructions": 11,
+    "nonstack_RAM_writes": 3,
+    "first_trace": [
+      "0xfe058adc",
+      "0xfe058ae0",
+      "0xfe058ae4",
+      "0xfe058ae8",
+      "0xfe058aec",
+      "0xfe058af0",
+      "0xfe058af4",
+      "0xfe058af8",
+      "0xfe058894",
+      "0xfe058898",
+      "0xfe05889c"
+    ]
+  },
+  "initializer_prefix_state_words": [
+    0,
+    0,
+    0
+  ],
+  "independent_original_RAM_reuse_fragment": {
+    "entry": "0xfe058d40",
+    "arguments": [],
+    "boundary": {
+      "reason": "after_original_RAM_reuse_state_write_before_exit",
+      "PC": "0xfe058dfc"
+    },
+    "registers": [
+      "0x0",
+      "0x0",
+      "0x0",
+      "0x0"
+    ],
+    "original_instructions": 51,
+    "nonstack_RAM_writes": 4,
+    "first_trace": [
+      "0xfe058d40",
+      "0xfe058d44",
+      "0xfe04c76c",
+      "0xfe04c770",
+      "0xfe04c774",
+      "0xfe04c778",
+      "0xfe04d444",
+      "0xfe04d448",
+      "0xfe04c77c",
+      "0xfe04c780",
+      "0xfe04c784",
+      "0xfe04d514",
+      "0xfe04d518",
+      "0xfe04c788",
+      "0xfe04c78c",
+      "0xfe04c790"
+    ]
+  },
+  "original_helper_returns": [
+    {
+      "PC": "0xfe058d48",
+      "X0": "0xfffffffa"
+    },
+    {
+      "PC": "0xfe058d50",
+      "X0": "0x0"
+    }
+  ],
+  "original_RAM_reuse_state_words": [
+    3,
+    0,
+    0
+  ],
+  "original_wrapped_parameter_query": {
+    "entry": "0xfe058b7c",
+    "arguments": [
+      "0xfa0080",
+      "0x300000000"
+    ],
+    "boundary": {
+      "reason": "returned",
+      "PC": "0x400000000"
+    },
+    "registers": [
+      "0x2400",
+      "0x100064c4c",
+      "0xffffffffffffffff",
+      "0x0"
+    ],
+    "original_instructions": 5304,
+    "nonstack_RAM_writes": 2304,
+    "first_trace": [
+      "0xfe058b7c",
+      "0xfe058b80",
+      "0xfe058b84",
+      "0xfe058b88",
+      "0xfe058b8c",
+      "0xfe058b90",
+      "0xfe058b94",
+      "0xfe058b98",
+      "0xfe058b9c",
+      "0xfe058ba0",
+      "0xfe058ba4",
+      "0xfe058bf8",
+      "0xfe058bfc",
+      "0xfe058c00",
+      "0xfe04c7b4",
+      "0xfe04c7b8"
+    ]
+  },
+  "post_query_state_words": [
+    3,
+    0,
+    0
+  ],
+  "original_configuration_entry_after_fragment": {
+    "entry": "0xfe0545dc",
+    "arguments": [
+      "0xc000000",
+      "0x300003000"
+    ],
+    "boundary": {
+      "reason": "before_original_diagnostic_output",
+      "PC": "0xfe0561b4"
+    },
+    "registers": [
+      "0x6",
+      "0xfe05ef7e",
+      "0x2400",
+      "0x0"
+    ],
+    "original_instructions": 5349,
+    "nonstack_RAM_writes": 2307,
+    "first_trace": [
+      "0xfe0545dc",
+      "0xfe0545e0",
+      "0xfe0545e4",
+      "0xfe0545e8",
+      "0xfe0545ec",
+      "0xfe0545f0",
+      "0xfe0545f4",
+      "0xfe0545f8",
+      "0xfe0545fc",
+      "0xfe054600",
+      "0xfe054604",
+      "0xfe054608",
+      "0xfe058a64",
+      "0xfe058a68",
+      "0xfe058a6c",
+      "0xfe058a70"
+    ]
+  },
+  "original_configuration_load_buffer": "0xfe208000",
+  "copied_original_table_bytes": 9216,
+  "copied_original_table_sha256": "33e39fc7bf35447d97f4ce2bf8d8251cee79453fdd6175cce0c6136f48c93ad6",
+  "load_buffer_tail_unknown_bytes_not_claimed": 3072,
+  "scope": "Only bounded original ARM64 instructions in RAM. The state3 write is original code, not a supplied ready value, but its RAM-reuse fragment starts after unresolved normal lookup/handoff/logging. The original precheck return is observed as -6 and is not consumed before the separate BK4-marker initializer returns0. No complete normal startup, actual storage/file bytes at DMM target, CPU/cache/TLB maintenance, native Sony program, camera or USB operation."
+}

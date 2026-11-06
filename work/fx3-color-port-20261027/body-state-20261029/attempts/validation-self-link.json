@@ -1,0 +1,8 @@
+{
+  "attempt": "first validation run",
+  "result": "failed",
+  "error": "README links included validation-results.json before this validator had created that file",
+  "original_code_checks": "All preceding source, relocation and eleven guest-case assertions had passed; link validation failed before writing the result",
+  "correction": "Check existing report links first, emit validation-results.json, then explicitly verify that generated file exists. final-receipt.json is separately checked after sealing.",
+  "firmware_or_device_effect": false
+}

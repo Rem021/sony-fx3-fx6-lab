@@ -1,0 +1,95 @@
+{
+  "script_sha256": "11705d7bbcbe0d87416ccb0a939917578b4f6433948c50cec34f3171215e88a2",
+  "MPR_sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+  "runtime_libraries": [
+    {
+      "file": "work/sony-firmware-20261024/stage56-native-stop-name-flow/official-files/nflasha7/lib/libc-2.25.so",
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "guest_base_not_camera_load_address": "0x14000000",
+      "approved_original_functions": {
+        "strlen": {
+          "va": 336039488,
+          "relative_va": 495168,
+          "size": 320,
+          "type": "STT_FUNC"
+        },
+        "strnlen": {
+          "va": 336039844,
+          "relative_va": 495524,
+          "size": 196,
+          "type": "STT_FUNC"
+        },
+        "strncpy": {
+          "va": 336040488,
+          "relative_va": 496168,
+          "size": 96,
+          "type": "STT_FUNC"
+        },
+        "memset": {
+          "va": 336044928,
+          "relative_va": 500608,
+          "size": 472,
+          "type": "STT_FUNC"
+        },
+        "memcpy": {
+          "va": 336046800,
+          "relative_va": 502480,
+          "size": 524,
+          "type": "STT_FUNC"
+        },
+        "memmove": {
+          "va": 336046784,
+          "relative_va": 502464,
+          "size": 16,
+          "type": "STT_FUNC"
+        }
+      }
+    },
+    {
+      "file": "work/sony-firmware-20261024/stage56-native-stop-name-flow/official-files/nflasha15/lib/libstdc++.so.6.0.22",
+      "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+      "guest_base_not_camera_load_address": "0x16000000",
+      "approved_original_functions": {
+        "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE6appendERKS4_": {
+          "va": 370265104,
+          "relative_va": 1166352,
+          "size": 12,
+          "type": "STT_FUNC"
+        },
+        "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_appendEPKcm": {
+          "va": 370264904,
+          "relative_va": 1166152,
+          "size": 200,
+          "type": "STT_FUNC"
+        },
+        "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEaSEOS4_": {
+          "va": 370259960,
+          "relative_va": 1161208,
+          "size": 172,
+          "type": "STT_FUNC"
+        },
+        "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_": {
+          "va": 370258960,
+          "relative_va": 1160208,
+          "size": 244,
+          "type": "STT_FUNC"
+        },
+        "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE13_S_copy_charsEPcPKcS7_": {
+          "va": 370258872,
+          "relative_va": 1160120,
+          "size": 44,
+          "type": "STT_FUNC"
+        },
+        "_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv": {
+          "va": 370258200,
+          "relative_va": 1159448,
+          "size": 28,
+          "type": "STT_FUNC"
+        }
+      }
+    }
+  ],
+  "prior_manifest_sha256": "9d3122d7c42b808b0833571f1579de0aed740185f0b311ba06031679768f0da1",
+  "extraction_receipt_sha256": "f8bd99c796af735253108c8a87b91319c6a9063b60081925e9449de50601c605",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B"
+}

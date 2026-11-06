@@ -1,0 +1,88 @@
+{
+  "proof_sha256": "51c1b7c6752910b132d929851330844ab0e53e2da9ebf0df1ab03047685cd51e",
+  "checks": {
+    "passed": 4285,
+    "fill_cases": 160,
+    "blit_cases": 375,
+    "flag_cases": 120,
+    "conversion_cases": 6,
+    "png_cpu_cases": 4,
+    "flip_cpu_cases": 36,
+    "full_u8_alpha_sweep": 3584,
+    "result": "passed"
+  },
+  "libraries": {
+    "libgpe.so": {
+      "sha256": "363879687bd43a69734187eb28f721ce6080209a95c62b04c833a4a117f12464",
+      "blocks": 10,
+      "instructions_verified": 1318
+    },
+    "libObj.so": {
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "blocks": 11,
+      "instructions_verified": 1137
+    }
+  },
+  "cases": {
+    "cases": {
+      "count": 535,
+      "status_counts": {
+        "submission_intercepted": 362,
+        "original_assert": 26,
+        "returned": 147
+      }
+    },
+    "flag_cases": {
+      "count": 120,
+      "status_counts": {
+        "submission_intercepted": 120
+      }
+    },
+    "conversion_cases": {
+      "count": 6,
+      "status_counts": {
+        "original_assert": 2,
+        "returned": 4
+      }
+    },
+    "png_cpu_cases": {
+      "count": 4,
+      "status_counts": {
+        "CPU_result": 4
+      }
+    },
+    "flip_cpu_cases": {
+      "count": 36,
+      "status_counts": {
+        "CPU_result": 36
+      }
+    }
+  },
+  "gate": {
+    "verified_baseline": [
+      "Fill fmt0/1 selector0 K255 original packing",
+      "BitBlit fmt0/1 same-format no flags selector0 K255 existing P2 copy"
+    ],
+    "raw_register_programming": "fully specified for in-scope branches; not a pixel oracle",
+    "hardware_pixel_formula": null,
+    "reject_until_pixel_oracle": [
+      "Any blending enabled",
+      "Any cross-format conversion",
+      "Formats2/3/4",
+      "Any unimplemented generic primitive/flag"
+    ],
+    "candidate_only_formulas": {
+      "constant_lerp": "Q((K*S+(L-K)*D)/L); L and Q unconfirmed",
+      "straight_source_over": "a=Q(As*K/L); C=Q(Cs*a+Cd*(1-a)); alpha equation unconfirmed",
+      "premultiplied_source_over": "a=Q(As*K/L); C=Q(Cs*K/L+Cd*(1-a)); not proven",
+      "factor_code_mapping": "No public/device evidence assigns nibble 0/1/4/5/8/9/c to named factors"
+    }
+  },
+  "scope": "Read-only audit validation; no execution of original binaries or pixel engine",
+  "json_nodes_read": 67498,
+  "full_u8_alpha_sweep": {
+    "cases": 3584,
+    "stream_sha256": "968e20d235117219d5b3999458a417395e2c706973f99dbfa35e60e88a32451f",
+    "scope": "fmt0/1 Fill selectors0/1/2 and fast/generic BitBlit selectors0/1; all K=0..255"
+  }
+}

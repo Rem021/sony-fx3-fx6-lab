@@ -1,0 +1,156 @@
+02eae880 stp        x29, x30, [sp, #-0x60]!
+02eae884 mov        w3, #0x1c1
+02eae888 mov        x29, sp
+02eae88c stp        x19, x20, [sp, #0x10]
+02eae890 adrp       x19, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eae894 stp        x21, x22, [sp, #0x20]
+02eae898 adrp       x20, #0x3966000 ; literal '.output_yc_size        = 0x%x'
+02eae89c mov        x21, x0
+02eae8a0 adrp       x0, #0x392b000 ; literal '%s(%d) Success upm_power_save_reload(display, display)'
+02eae8a4 add        x0, x0, #0xfe4 ; literal '%s%s(%d) ================================'
+02eae8a8 add        x2, x19, #0xc18 ; literal 'execute_update'
+02eae8ac str        x25, [sp, #0x40]
+02eae8b0 mov        x25, x1
+02eae8b4 add        x1, x20, #0xd47 ; literal '[INFRA_WRAPPER]'
+02eae8b8 stp        x23, x24, [sp, #0x30]
+02eae8bc bl         #0x2f6ff0c
+02eae8c0 str        wzr, [x25]
+02eae8c4 bl         #0x2eadbb0
+02eae8c8 str        xzr, [x29, #0x58]
+02eae8cc ldr        w0, [x21]
+02eae8d0 cmp        w0, #1
+02eae8d4 b.eq       #0x2eae9e0
+02eae8d8 cbz        w0, #0x2eae974
+02eae8dc cmp        w0, #2
+02eae8e0 b.eq       #0x2eae9e8
+02eae8e4 adrp       x22, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eae8e8 adrp       x24, #0x2f88000
+02eae8ec add        x22, x22, #0xbdd ; literal 'infra_wrapper_updater.cpp'
+02eae8f0 add        x24, x24, #0xeec ; literal 'assert at %s:%d'
+02eae8f4 mov        x1, x22 ; literal 'infra_wrapper_updater.cpp'
+02eae8f8 mov        x0, x24 ; literal 'assert at %s:%d'
+02eae8fc mov        w2, #0x1d7
+02eae900 adrp       x21, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eae904 adrp       x23, #0x379a000
+02eae908 add        x21, x21, #0xc28 ; literal 'void infra_wrapper_updater::detail::execute_update(const infra_wrapper_updater::execute_update_in_t&, infra_wrapper_updater::execute_update_out_t&)'
+02eae90c bl         #0x2f6fe3c
+02eae910 add        x23, x23, #0x621 ; literal 'function:%s'
+02eae914 mov        x1, x21 ; literal 'void infra_wrapper_updater::detail::execute_update(const infra_wrapper_updater::execute_update_in_t&, infra_wrapper_updater::execute_update_out_t&)'
+02eae918 mov        x0, x23 ; literal 'function:%s'
+02eae91c bl         #0x2f6fe3c
+02eae920 mov        x1, x22 ; literal 'infra_wrapper_updater.cpp'
+02eae924 mov        x0, x24 ; literal 'assert at %s:%d'
+02eae928 mov        w2, #0x1d7
+02eae92c bl         #0x2f6be48
+02eae930 mov        x1, x21 ; literal 'void infra_wrapper_updater::detail::execute_update(const infra_wrapper_updater::execute_update_in_t&, infra_wrapper_updater::execute_update_out_t&)'
+02eae934 mov        x0, x23 ; literal 'function:%s'
+02eae938 bl         #0x2f6be48
+02eae93c adrp       x0, #0x2f88000
+02eae940 mov        x1, x22 ; literal 'infra_wrapper_updater.cpp'
+02eae944 add        x0, x0, #0xefc ; literal 'assert at %s:%d\n'
+02eae948 mov        w2, #0x1d7
+02eae94c bl         #0x15927c0 ; printf
+02eae950 adrp       x0, #0x2f88000
+02eae954 mov        x1, x21 ; literal 'void infra_wrapper_updater::detail::execute_update(const infra_wrapper_updater::execute_update_in_t&, infra_wrapper_updater::execute_update_out_t&)'
+02eae958 add        x0, x0, #0xf0d ; literal 'function:%s\n'
+02eae95c bl         #0x15927c0 ; printf
+02eae960 mov        w0, #0x86a0
+02eae964 movk       w0, #1, lsl #16
+02eae968 bl         #0x1592ec0 ; usleep
+02eae96c bl         #0x2ebf3b0
+02eae970 b          #0x2eae97c
+02eae974 mov        w0, #3
+02eae978 str        w0, [x29, #0x58]
+02eae97c mov        w3, #0x257
+02eae980 mov        w2, #0x233
+02eae984 add        x0, x29, #0x58
+02eae988 mov        w4, #1
+02eae98c movk       w3, #0x8087, lsl #16
+02eae990 movk       w2, #0x4b, lsl #16
+02eae994 mov        x1, #8
+02eae998 bl         #0x2eacf18
+02eae99c mov        w22, w0
+02eae9a0 cbnz       w0, #0x2eaea9c
+02eae9a4 ldrh       w4, [x29, #0x5c]
+02eae9a8 cbnz       w4, #0x2eae9f0
+02eae9ac adrp       x0, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eae9b0 add        x2, x19, #0xc18
+02eae9b4 add        x1, x20, #0xd47
+02eae9b8 add        x0, x0, #0x698 ; literal '%s%s(%d) [execute_update] GO_UPDATE'
+02eae9bc mov        w3, #0x1e1
+02eae9c0 str        wzr, [x25]
+02eae9c4 bl         #0x2f6ff0c
+02eae9c8 ldp        x19, x20, [sp, #0x10]
+02eae9cc ldp        x21, x22, [sp, #0x20]
+02eae9d0 ldp        x23, x24, [sp, #0x30]
+02eae9d4 ldr        x25, [sp, #0x40]
+02eae9d8 ldp        x29, x30, [sp], #0x60
+02eae9dc ret        
+02eae9e0 mov        w0, #9
+02eae9e4 b          #0x2eae978
+02eae9e8 mov        w0, #0xc
+02eae9ec b          #0x2eae978
+02eae9f0 sub        w1, w4, #1
+02eae9f4 cmp        w1, #8
+02eae9f8 b.hi       #0x2eaea94
+02eae9fc adrp       x0, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eaea00 add        x0, x0, #0x5ec
+02eaea04 ldrb       w0, [x0, w1, uxtw]
+02eaea08 adr        x1, #0x2eaea14
+02eaea0c add        x0, x1, w0, sxtb #2
+02eaea10 br         x0
+02eaea14 mov        w0, #3
+02eaea18 adrp       x21, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eaea1c add        x19, x19, #0xc18
+02eaea20 add        x20, x20, #0xd47
+02eaea24 add        x21, x21, #0x6bc ; literal "%s%s(%d) [execute_update] can't go update [err:%04x]"
+02eaea28 mov        x2, x19
+02eaea2c mov        x1, x20
+02eaea30 str        w0, [x25]
+02eaea34 mov        x0, x21 ; literal "%s%s(%d) [execute_update] can't go update [err:%04x]"
+02eaea38 mov        w3, #0x1f6
+02eaea3c bl         #0x2f6fe3c
+02eaea40 ldrh       w4, [x29, #0x5c]
+02eaea44 mov        x2, x19
+02eaea48 mov        x1, x20
+02eaea4c mov        x0, x21 ; literal "%s%s(%d) [execute_update] can't go update [err:%04x]"
+02eaea50 mov        w3, #0x1f6
+02eaea54 bl         #0x2f6be48
+02eaea58 b          #0x2eae9c8
+02eaea5c mov        w0, #4
+02eaea60 b          #0x2eaea18
+02eaea64 mov        w0, #5
+02eaea68 b          #0x2eaea18
+02eaea6c mov        w0, #6
+02eaea70 b          #0x2eaea18
+02eaea74 mov        w0, #7
+02eaea78 b          #0x2eaea18
+02eaea7c mov        w0, #8
+02eaea80 b          #0x2eaea18
+02eaea84 mov        w0, #9
+02eaea88 b          #0x2eaea18
+02eaea8c mov        w0, #1
+02eaea90 b          #0x2eaea18
+02eaea94 mov        w0, #2
+02eaea98 b          #0x2eaea18
+02eaea9c mov        w0, #2
+02eaeaa0 adrp       x21, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eaeaa4 add        x19, x19, #0xc18
+02eaeaa8 add        x20, x20, #0xd47
+02eaeaac add        x21, x21, #0x6f1 ; literal '%s%s(%d) [execute_update] %s: OsalErr = %d'
+02eaeab0 mov        w5, w22
+02eaeab4 mov        x4, x19
+02eaeab8 mov        x2, x19
+02eaeabc mov        x1, x20
+02eaeac0 str        w0, [x25]
+02eaeac4 mov        x0, x21 ; literal '%s%s(%d) [execute_update] %s: OsalErr = %d'
+02eaeac8 mov        w3, #0x1fc
+02eaeacc bl         #0x2f6fe3c
+02eaead0 mov        w5, w22
+02eaead4 mov        x4, x19
+02eaead8 mov        x2, x19
+02eaeadc mov        x1, x20
+02eaeae0 mov        x0, x21 ; literal '%s%s(%d) [execute_update] %s: OsalErr = %d'
+02eaeae4 mov        w3, #0x1fc
+02eaeae8 bl         #0x2f6be48
+02eaeaec b          #0x2eae9c8

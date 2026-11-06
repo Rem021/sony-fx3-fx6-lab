@@ -1,0 +1,55 @@
+{
+  "schema": "r36-two-fixed-slot-archive-diff/v1",
+  "source_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+  "output_sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff",
+  "archive_bytes": 453213884,
+  "member_count_without_trailer": 1140,
+  "trailer_end": 453213884,
+  "all_headers_names_order_modes_sizes_offsets_equal": true,
+  "outside_two_slots_every_byte_equal": true,
+  "changed_members": [
+    "simulation/fx3-ui-gate-v1.so",
+    "simulation/fx3-osd-headless-v5.so"
+  ],
+  "changed_byte_count_by_slot": {
+    "ui": 17883,
+    "osd": 69997
+  },
+  "slot_proofs": [
+    {
+      "tag": "ui",
+      "member": "simulation/fx3-ui-gate-v1.so",
+      "offset": 451339648,
+      "size": 58856,
+      "release_bytes": 23400,
+      "zero_tail_bytes": 35456,
+      "padded_slot_sha256": "5e918bf7848a003fc0e48e8ad92e22b50baa577c5ac89d5ac374a527bbc89d5c",
+      "exact_release_plus_zero_tail": true
+    },
+    {
+      "tag": "osd",
+      "member": "simulation/fx3-osd-headless-v5.so",
+      "offset": 452021916,
+      "size": 109000,
+      "release_bytes": 34960,
+      "zero_tail_bytes": 74040,
+      "padded_slot_sha256": "7adfef8f62aab866c6d3b16332ac3fd9e181848a1ec8a01bc1ba06f34c6bb0d0",
+      "exact_release_plus_zero_tail": true
+    }
+  ],
+  "init": {
+    "name": "init",
+    "header_offset": 3788,
+    "payload_offset": 3904,
+    "size": 20733,
+    "mode": 33261,
+    "header_equal": true,
+    "source_body_sha256": "8ad0be3aec240977060e25ba1193ad80f6ef596ffe47392e3d5b5b79c0ee4a05",
+    "output_body_sha256": "8ad0be3aec240977060e25ba1193ad80f6ef596ffe47392e3d5b5b79c0ee4a05",
+    "body_equal": true
+  },
+  "all_other_members_body_hash_equal": true,
+  "candidate_generated_count": 1,
+  "N1_generated": false,
+  "target_loaded_or_executed": false
+}

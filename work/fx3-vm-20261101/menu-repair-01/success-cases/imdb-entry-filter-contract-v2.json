@@ -1,0 +1,88 @@
+{
+  "version": 2,
+  "created_utc": "2026-11-01T11:40:20.796483+00:00",
+  "upstream_commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "source": "runtime/analysis/prepare-assets.py:147-165",
+  "actual_upstream_IMDB_filter": {
+    "operation": "for matched original service names, clear entry mask lower3 bits: mask & ~7",
+    "model_scope": "A7C II 2.01 ALLLANG, original IMDB hash and exact changed count10 checked",
+    "names": [
+      "libUsbBusPower.so",
+      "libInfraUsbCmn.so",
+      "libsensapi.so",
+      "libUsbControl.so",
+      "libBusPower.so",
+      "libHotplug.so",
+      "libInfraCrypt.so",
+      "libInfraMediaPwrMgr.so",
+      "libNetServiceTethering.so",
+      "libTetheringResource.so"
+    ],
+    "direct_named_Jiritsu_or_InfraUpdaterDPro_filter_found": false
+  },
+  "original_entry_observation": {
+    "original_bootin_args": "target=qemu dmode=3",
+    "guarantees_no_updater_execution": false,
+    "reason": "QEMU_NO_CP_UPDATER only gates a message transport; observe_updater_init explicitly forwards to real_updater_init"
+  },
+  "transport_gate": {
+    "source": "runtime/analysis/menu-observe.c:10437",
+    "flag": "QEMU_NO_CP_UPDATER",
+    "target": "0x912503d0",
+    "reported_behavior": "request not consumed; unavailable transport error",
+    "updater_init_prevented": false
+  },
+  "observer_updater_wrapper": {
+    "source": "runtime/analysis/menu-observe.c:6683-6698",
+    "symbols": [
+      "udtr_ufp_init",
+      "udtr_ufp_exit"
+    ],
+    "behavior": "log and call actual originals; no skip"
+  },
+  "file_exclusion_option": {
+    "source": "runtime/analysis/prepare-menu-initramfs.sh:8-13",
+    "option": "--without-updater",
+    "pruned_file": "./usr/lib/libupdaterufp.so",
+    "module_absence_is_declared_projection_policy": true,
+    "proof_updater_not_executed_in_arbitrary_other_path": false
+  },
+  "latest_94016a_owner_update": {
+    "source": "collaboration message from fx3_uipc_original, not independent binary audit here",
+    "reported_registration": "original im 0x402600 registers 0x0094016a callback0x402e08",
+    "reported_body": "0x9400e1, callback writes0x12345678",
+    "classification": "im self-service registration reported; no external service module assigned",
+    "existing_instance_probe": "hypothesis only, not confirmed business semantics"
+  },
+  "new_runtime_actions": 0,
+  "previous_version": "imdb-entry-filter-contract-v1.json",
+  "current_policy_status": "ROOT_CLARIFIED_NORMAL_GUEST_IDLE_INITIALIZATION_ALLOWED_NO_BLANKET_LIBRARY_BAN",
+  "historical_FX3_stricter_projection_requirements": [
+    "Use independently audited FX3 original IMDB record identity and target-mask semantics",
+    "Explicitly exclude Jiritsu/DPro roots from execution because parent scoped them out; record as a deliberate model policy",
+    "Do not turn policy-induced ENOENT into an alleged missing hardware driver",
+    "Do not claim the stricter filter is already demonstrated by the A7C2 success case",
+    "Keep exact dependency/entry reachability and original untouched baseline distinct"
+  ],
+  "historical_filter_requirement_status": "Superseded by root scope clarification; preserve as history, do not apply to current deployment",
+  "root_current_scope_clarification": {
+    "source": "root collaboration message, not untrusted webpage",
+    "normal_library_idle_init_and_IPC_registration": "within user-authorized normal FX3 VM goal, including original Jiritsu/updater dependency libraries",
+    "keep_original_dependencies_and_IMDB": "allowed; avoid policy-created ENOENT when reproducing successful startup",
+    "not_authorized_or_not_performed": [
+      "actual firmware update workflow",
+      "independent privileged execution payload",
+      "real camera/USB/phone/physical SD operations"
+    ],
+    "guest_runtime_constraints": [
+      "no NIC",
+      "no USB passthrough",
+      "no host disk-directory passthrough",
+      "no update-package payload provided to guest",
+      "writes confined to guest RAM or task virtual files"
+    ],
+    "constraints_are": "runtime design and execution-scope requirements; actual run receipts are separately owned by host",
+    "NO_CP_UPDATER": "retain explicit unavailable-update-transport semantics; ordinary init does not prove update function acceptance",
+    "success_claim_limit": "only validated initialization/IPC/menu levels; no claim of broader safety, update support or physical compatibility"
+  }
+}

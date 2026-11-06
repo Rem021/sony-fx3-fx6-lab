@@ -1,0 +1,26 @@
+{
+  "command": [
+    "/usr/bin/clang",
+    "--target=aarch64-none-elf",
+    "-std=c11",
+    "-O2",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-unwind-tables",
+    "-fno-vectorize",
+    "-fno-slp-vectorize",
+    "-mno-outline-atomics",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage74-rate-result-ABI-fix/channel_adapter.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage74-rate-result-ABI-fix/run-20261026/channel_adapter.a64.o"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": ""
+}

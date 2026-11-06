@@ -1,0 +1,243 @@
+{
+  "source_member": {
+    "path": "setting/DmmCfg.bin",
+    "bytes": 66796,
+    "sha256": "48c90ca08ae8174d376bf8cbb454a5544e3d024c317e5136fb31d4fb78572bb1",
+    "data_offset": 7126600
+  },
+  "version": "for ilc32g12m-ipsxmp     2025/06/20 15:43:19",
+  "parsed_bytes": 66796,
+  "unit_403": [
+    {
+      "offset": "0xf508",
+      "unit": 1027,
+      "attribute": 0,
+      "extents": [
+        1349
+      ]
+    }
+  ],
+  "unit_403_rules": [
+    {
+      "offset": "0x12e8",
+      "type": 34,
+      "selector": 10,
+      "header_hex": "0000000000000000220000000a00000001010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101",
+      "rows": [
+        {
+          "offset": "0x16d0",
+          "words": [
+            0,
+            12,
+            1349,
+            1310720,
+            271
+          ]
+        },
+        {
+          "offset": "0x1838",
+          "words": [
+            0,
+            12,
+            1349,
+            1310720,
+            271
+          ]
+        }
+      ]
+    }
+  ],
+  "root_rows": [
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0x50",
+      "raw_words": [
+        603979776,
+        262164,
+        29,
+        95420416,
+        1
+      ],
+      "physical": "0x424000000",
+      "bytes": "0x5b00000",
+      "end_exclusive": "0x429b00000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0x64",
+      "raw_words": [
+        699400192,
+        262164,
+        15,
+        110100480,
+        1
+      ],
+      "physical": "0x429b00000",
+      "bytes": "0x6900000",
+      "end_exclusive": "0x430400000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0x78",
+      "raw_words": [
+        809500672,
+        262164,
+        34,
+        264241152,
+        1
+      ],
+      "physical": "0x430400000",
+      "bytes": "0xfc00000",
+      "end_exclusive": "0x440000000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0x8c",
+      "raw_words": [
+        1073741824,
+        262164,
+        18,
+        1073741824,
+        1
+      ],
+      "physical": "0x440000000",
+      "bytes": "0x40000000",
+      "end_exclusive": "0x480000000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0xa0",
+      "raw_words": [
+        2147483648,
+        262164,
+        718,
+        2097152,
+        1
+      ],
+      "physical": "0x480000000",
+      "bytes": "0x200000",
+      "end_exclusive": "0x480200000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0xb4",
+      "raw_words": [
+        2149580800,
+        262164,
+        1260,
+        80740352,
+        1
+      ],
+      "physical": "0x480200000",
+      "bytes": "0x4d00000",
+      "end_exclusive": "0x484f00000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0xc8",
+      "raw_words": [
+        2230321152,
+        262164,
+        16,
+        990904320,
+        1
+      ],
+      "physical": "0x484f00000",
+      "bytes": "0x3b100000",
+      "end_exclusive": "0x4c0000000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0xdc",
+      "raw_words": [
+        3221225472,
+        262164,
+        1499,
+        990904320,
+        1
+      ],
+      "physical": "0x4c0000000",
+      "bytes": "0x3b100000",
+      "end_exclusive": "0x4fb100000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0xf0",
+      "raw_words": [
+        4212129792,
+        262164,
+        33,
+        82837504,
+        1
+      ],
+      "physical": "0x4fb100000",
+      "bytes": "0x4f00000",
+      "end_exclusive": "0x500000000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    },
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0x104",
+      "raw_words": [
+        4261412864,
+        17,
+        12,
+        7077888,
+        65536
+      ],
+      "physical": "0xfe000000",
+      "bytes": "0x6c0000",
+      "end_exclusive": "0xfe6c0000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    }
+  ],
+  "unit_403_root_rows": [
+    {
+      "group_type": 0,
+      "group_selector": 0,
+      "file_offset": "0x78",
+      "raw_words": [
+        809500672,
+        262164,
+        34,
+        264241152,
+        1
+      ],
+      "physical": "0x430400000",
+      "bytes": "0xfc00000",
+      "end_exclusive": "0x440000000",
+      "overlaps_UI": false,
+      "interpretation": "AP dmm.ko GetExtentAreaInfo low32 + u16@+6<<32; root table semantics require native-code binding"
+    }
+  ],
+  "root_overlap_count": 0,
+  "limits": "Static config geometry only; not runtime-selected mode, allocator proof, or complete native ABI reachability"
+}

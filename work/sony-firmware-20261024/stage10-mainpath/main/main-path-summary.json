@@ -1,0 +1,62 @@
+{
+  "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "new_proofs": {
+    "direct_setter_call": "0x2ddaebc -> 0x2e6e5d8",
+    "wrapper_entry": "0x2ddae94",
+    "wrapper_direct_call_sites": 12,
+    "normal_sequence_constructor_call": "0x2c5b5d0: builder(seq+0x1e0)",
+    "builder_constructor_entry": "0x2beea04",
+    "builder_conversion_tail": "0x2beecb0 -> 0x2beae8c",
+    "builder_conversion_identity": "void infra_wrapper_mpr::mpr_SetMovieRecParam_in_t_builder<ModelType>::determine_frame_rate_and_movie_quality_and_yuv_color_space(ModelType&) [with ModelType = model::sequence_set_movie_rec_param::scoped_read_model]",
+    "identity_string_VA": "0x39318b8",
+    "sequence_send_call": "0x2d94fb4: wrapper(seq+0x210, result)",
+    "builder_to_input_offset": "0x30",
+    "field_correspondence": {
+      "frame": [
+        "builder+0x40",
+        "input+0x10",
+        "movieRecParam+0x178"
+      ],
+      "format": [
+        "builder+0x44",
+        "input+0x14",
+        "movieRecParam+0x170"
+      ],
+      "quality": [
+        "builder+0x48",
+        "input+0x18",
+        "movieRecParam+0x174"
+      ],
+      "color": [
+        "builder+0x4c",
+        "input+0x1c",
+        "format-dependent VPC branch"
+      ]
+    },
+    "format_getter_chain": [
+      "0x2bd0fb0",
+      "0x2934c9c"
+    ],
+    "builder_initial_defaults_not_final": {
+      "frame": 15,
+      "quality": 24,
+      "color": 0
+    }
+  },
+  "execution": {
+    "bounded_guest_function_emulation": true,
+    "whole_builder_or_setter_execution": false,
+    "camera_native_execution": false,
+    "USB_or_GUI": false,
+    "syscall_MMIO_forwarding": false,
+    "persistent_camera_write": false,
+    "original_firmware_modified": false,
+    "patch_or_payload_output": false
+  },
+  "remaining": [
+    "typed model builder selection/gates not emulated",
+    "menu and status/remain conversion coherence not proven",
+    "full app setter and real MPR setter not executed",
+    "hardware Open/Start/bitstream not proven"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "fx3-r46-candidate-policy-v1",
+  "name": "r46-end-and-reopen-candidate",
+  "enabled": false,
+  "scope": "offline diagnosis and minimal isolated host/page candidate; no run, no deployment, no retroactive certification",
+  "boundaries": {
+    "VM": false,
+    "browser": false,
+    "server": false,
+    "QMP": false,
+    "guest": false,
+    "deployment": false,
+    "firmware_write": false,
+    "CPIO_write": false,
+    "runtime_policy_change": false
+  },
+  "preserved": {
+    "whole_step_deadline_seconds": 60,
+    "native_input_deadline_seconds": 12,
+    "snapshot_ttl_seconds": 20,
+    "API16_restore_seconds": 20,
+    "startup_seconds": 180,
+    "total_run_minutes": 8,
+    "accepted_keys": 8,
+    "explicit_attempts": 10,
+    "attributed_unqueued_recoveries": 2,
+    "fixed_platform": true,
+    "original_CPIO": true
+  },
+  "r45_failed_retained": true,
+  "original_cleanup_unknown": true,
+  "cleanup_candidate": {
+    "armed_requires_full_identity": true,
+    "armed_no_cancel_no_dispose": true,
+    "armed_preserves_dispose_not_invoked": true,
+    "nonarmed_requires_original_dispose": true,
+    "unknown_missing_or_tampered_refused": true,
+    "original_End_required": true,
+    "browser_before_active_and_after_closed_required": true,
+    "native_and_resource_receipts_required": true
+  },
+  "page_candidate": {
+    "enabled": false,
+    "original_recovery_budget_ms": 20000,
+    "candidate_recovery_budget_ms": 60000,
+    "reason": "the frozen PAGE recovery eligibility hard-codes the old 20s budget while the r44/r45 run installs a 60s alarm; minimal fix preserves every identity/freshness/confirm/unqueued gate",
+    "requires_new_self_bound_profile_and_page_hash": true,
+    "must_not_bypass_page_gate": true
+  },
+  "no_retry_or_reselection": true,
+  "not_a_substitute_for_blocked_FX6": true,
+  "next_run_requires": [
+    "coordinator decision and explicit authorization",
+    "self-bound new profile/hash if the page candidate is used",
+    "fresh VM/Start only in a future authorized round",
+    "keep r45 failed and cleanup unknown in all ledgers"
+  ]
+}

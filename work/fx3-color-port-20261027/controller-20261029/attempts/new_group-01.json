@@ -1,0 +1,22 @@
+{
+  "case": "new_group",
+  "error": "AssertionError(('outside selected original XML/config/string text', '0x1001525c'))",
+  "pc": "0x1001525c",
+  "steps": 196,
+  "system_requests": [],
+  "fs_events": [
+    {
+      "operation": "RAM directory create",
+      "path": "/tmp_updater/updater/update"
+    }
+  ],
+  "stat_events": [],
+  "ring_events": [],
+  "controller_entries": [
+    {
+      "entry": "Updater::UpdaterBody::Execute(Updater::RingBuffer*, Updater::CallbackInterface*)",
+      "pc": "0x100122a4",
+      "stream_position": 0
+    }
+  ]
+}

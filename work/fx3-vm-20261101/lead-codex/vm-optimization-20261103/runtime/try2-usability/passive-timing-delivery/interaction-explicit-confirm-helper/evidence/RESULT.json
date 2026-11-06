@@ -1,0 +1,13 @@
+{
+  "scope": "host fixture with real r17 PAGE and Chrome; no QEMU",
+  "page_pin": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+  "deadline_pin": "93af6b5ce6eb3f736eeed38320c990c6a05701cb6c883493589dadaf4bb57916",
+  "explicit_source_sha256": "700bf859dc5d2dbae4633562010886ab2e5f9ad1e9d824d3043aa81986827b69",
+  "cases": {},
+  "cleanup": {},
+  "passed": false,
+  "error": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-explicit-confirm-helper/offline_browser_test.py\", line 146, in <module>\n    case_basic()\n    ~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-explicit-confirm-helper/offline_browser_test.py\", line 113, in case_basic\n    r=f.invoke(label,**kw);assert r['status']=='refused' and f.counts['confirm']==0\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-explicit-confirm-helper/offline_browser_test.py\", line 93, in invoke\n    return operate(SESSION,self.url,self.launch,nonce or self.nonce,step or self.step,\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                   png_sha or sha(self.a),'MENU完整菜单已由操作员看清',path,source=source)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-explicit-confirm-helper/explicit_confirm_cli.py\", line 47, in operate\n    with receipt.open('x') as out:out.write(json.dumps(record,ensure_ascii=False,indent=2)+'\\n')\n         ~~~~~~~~~~~~^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 771, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileExistsError: [Errno 17] File exists: '/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-explicit-confirm-helper/evidence/basic-wrong-step-receipt.json'\n",
+  "source_sha256_after": "700bf859dc5d2dbae4633562010886ab2e5f9ad1e9d824d3043aa81986827b69",
+  "page_sha256_after": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+  "deadline_sha256_after": "93af6b5ce6eb3f736eeed38320c990c6a05701cb6c883493589dadaf4bb57916"
+}

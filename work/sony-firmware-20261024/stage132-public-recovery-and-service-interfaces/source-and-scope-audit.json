@@ -1,0 +1,517 @@
+{
+  "schema": "fx3-stage132-public-research-scope/1",
+  "created_utc": "2026-10-27T19:08:52.962726+00:00",
+  "target": "classic ILME-FX3 7.02; 1920x1080 30000/1001 HEVC42010 MAIN; exact30.000 separate",
+  "research_artifacts": [
+    {
+      "path": "reports/索尼 FX3 救砖与官方接口.md",
+      "bytes": 14211,
+      "sha256": "656025dea2b82d1fe703d6378eee1206a1df59f0ea3202960edcda30b3ee6583"
+    },
+    {
+      "path": "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md",
+      "bytes": 16170,
+      "sha256": "ff4c85973b9686b20de2ee9341216e3a7501761bcf7db3ea74b13733a2267101"
+    },
+    {
+      "path": "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md",
+      "bytes": 20117,
+      "sha256": "5bf225bea942bb70d49d4af342fef40bcc4464b1047eae4c165681eaa42e3715"
+    },
+    {
+      "path": "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md",
+      "bytes": 20520,
+      "sha256": "47b84834d6ad367b78047139d2f1559b59a5e8ba9be5573707ca393fbb3eeb0b"
+    }
+  ],
+  "public_sources": [
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/2328d18ce640e6c8cd9341efcf0043ce9042a135/payloads/fastboot/Makefile",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/2328d18ce640e6c8cd9341efcf0043ce9042a135/payloads/fastboot/README.md",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/2328d18ce640e6c8cd9341efcf0043ce9042a135/payloads/fastboot/src/fastboot.c#L388",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/2328d18ce640e6c8cd9341efcf0043ce9042a135/tools/uart_boot/Makefile",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/2328d18ce640e6c8cd9341efcf0043ce9042a135/tools/uart_boot/uart_boot.ino",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/tree/2328d18ce640e6c8cd9341efcf0043ce9042a135",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/fwtool.py/blob/3955d7890fc38daf942bb52827599bfe35de4a14/fwtool/sony/fdat.py#L191",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/fwtool.py/blob/3955d7890fc38daf942bb52827599bfe35de4a14/fwtool/sony/fdat.py#L211",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/MDHan/a7c2-fl23-macos",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/README.md",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/docs/en/development.md",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/docs/en/development.md#L86",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/docs/en/development.md#L88",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/docs/zh-CN/changelog.md",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/src/looks/looktool/checkpoint.py#L15",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/src/looks/looktool/checkpoint.py#L34",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/src/looks/looktool/devicesession.py#L29",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/28",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/28#issuecomment-6369627082",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31#issuecomment-6395018821",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31#issuecomment-6395226486",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31#issuecomment-6399306736",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31#issuecomment-6407606480",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31#issuecomment-6442900646",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/44",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/releases/tag/v3.0.3",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/commands/usb.py#L656",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/platform/backend/senser.py",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/sony.py#L939",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE/issues/715",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://github.com/ma1co/fwtool.py/pull/52",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://helpguide.sony.net/di-app/ca/v1/en/contents/CA_update_software.html",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://pro.sony/en_GB/digital-imaging/camera-remote-command-download",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://pro.sony/en_GB/digital-imaging/sdk-download",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://pro.sony/ue_US/support-services/professional-subscriptions",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://service.sony.com.cn/content/casch/contact-us.html",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://service.sony.com.cn/content/casch/download/firm/00002966.html",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://service.sony.com.cn/download/firm/00003048.html",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://service.sony.com.cn/products/di/ILME-FX3.html",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://service.sony.com.cn/service_station/index.htm",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://store.professionalshow.com/ImagesNoZoom/TECHDRAW/BA026/BA026118.jpg",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md"
+      ]
+    },
+    {
+      "url": "https://support.d-imaging.sony.co.jp/app/cameraremotecommand/en/index.html",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://support.d-imaging.sony.co.jp/app/imagingedge/en/",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://support.d-imaging.sony.co.jp/app/sdk/en/index.html",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://support.sony.jp/electronics/support/articles/00282342",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://support.sony.jp/electronics/support/articles/00405391",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://support.sony.jp/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx3/software/00379243",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.manualslib.com/manual/2053917/Sony-Dsc-Wx1.html?page=5",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://www.manualslib.com/manual/2054656/Sony-Hxr-Mc2500.html?page=23",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/174wsav/firmware_update_failed_now_camera_wont_turn_on/",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1edyf73/fx3_firmware_update/",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1ffv4hi/60_bricked_my_fx3/",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1fibhxz/help_new_fx3_fw_update_destroyed_my_camera/",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1fqgexj/in_need_of_the_fx3_ver_600_dat_update_file/",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1hu6qui/fx3_firmware_update_failed_camera_wont_turn_on/",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/FX3/comments/1jwp86i/602_firmware_update_bricked_fx3/",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/SonyAlpha/comments/1wh11m5/enabled_shutter_angle_on_my_a7iv_by_doing_some/",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.reddit.com/r/SonyAlpha/comments/xdp7ad/a7iv_firmware_update_failed/",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    },
+    {
+      "url": "https://www.sony-asia.com/electronics/support/interchangeable-lens-camcorders-ilme-series/ilme-fx3",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.co.in/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx3/software/00298560",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/service_interfaces.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.co.uk/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx3/software/00280266",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.com.cn/content/casch/serviceinfo/servicepolicy.html",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.com/electronics/support/articles/00199250",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.com/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx3/software/00298561",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.com/zh-cn/electronics/support/articles/00188708?showHeaderFooter=false",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.jp/professional/support/inquiry_b2b.html",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.jp/support/pro-cam/update/fail.html",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.sony.jp/support/repair.html",
+      "referenced_by": [
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/official_recovery.md"
+      ]
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=-NlrQcuYGBQ",
+      "referenced_by": [
+        "reports/索尼 FX3 救砖与官方接口.md",
+        "work/sony-firmware-20261024/research_notes/索尼 FX3 救砖与官方接口/community_cases.md"
+      ]
+    }
+  ],
+  "research_cutoff": "2026-10-27",
+  "new_network_requests_downloads_submissions": 0,
+  "conclusions": [
+    "7.02卡更新指定失败重试/同版或旧版DAT拒绝，与USB十五分钟FAQ分支分开。",
+    "旧FX3恢复和6.00/6.02换板均有一手后续；不外推7.02降级或芯片物理损坏。",
+    "A7CII #31已出现模式切换恢复；不再记作已证必须换板，不迁移为FX3操作。",
+    "Sony有维修技术资料体系，经典FX3具体工位工具和独立恢复适配仍未公开闭合。",
+    "SDK/Command有常规远程更新记录；最新FX3逐API适配未核验，独立救砖/裸闪存备份未证。",
+    "A7IV BootROM/RP2040/eMMC原始研究及boot0转换限制不等于FX3适配；fwtool解包不等于可安全重打包。",
+    "仅复用既有Mac缓存与130读路径副作用证据；无新增设备、健康备份、目标成片或FX3救援闭环。"
+  ],
+  "source_difference": "Chinese7.02 same-position wording: version error; US/JP: target-model mismatch. Preserve complete actual prompt.",
+  "open_evidence_gap": "Current FX3 SDK/Command per-API compatibility table not obtained.",
+  "stage131_unsealed_unchanged_not_depended_on": true,
+  "new_camera_USB_Windows_UI_API_calls": 0,
+  "authorization_expanded": false,
+  "new_hardware_analysis_or_simulation": false,
+  "safe_next_gates": [
+    "audited same-body healthy backup",
+    "model-specific independent entry and actual original-byte restore/readback",
+    "reversible RAM trial with real main-recording output/audio/timing/long-record validation",
+    "then assess persistent installation"
+  ],
+  "goal_complete": false,
+  "persistent_write_release": false
+}

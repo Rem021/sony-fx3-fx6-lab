@@ -1,0 +1,707 @@
+{
+  "schema": "fx3-stage239-own-C-parent-receiver-ACK-conditional-seal-v1",
+  "created_utc": "2026-10-30T20:02:30.942200+00:00",
+  "previous_manifest_sha256": "0e4a3d4c65cf571aca3743655ba6a72b1631d1e6c0614f5faf21617e61de431b",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/README.md",
+      "bytes": 5706,
+      "sha256": "458680ac21cc1fe124689963c98b2dad6894615994c51146b4a1a2c2556e0979"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/SCM-audit.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/SCM-audit.stdout.txt",
+      "bytes": 128,
+      "sha256": "a07838ed36fd10d28523803c12ed3b39e1b124e9c9f5efaf6d6bab1ea4efcdf0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/SCM-contract.json",
+      "bytes": 5647,
+      "sha256": "2abd2b71b9b813562a3a6d1bb0e4ca576d95e669d343dc598fba6230ac2bb70d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/audit_SCM_contract.py",
+      "bytes": 4722,
+      "sha256": "4fa4296ee23b35fe1910a967067becf586ced7289c79897a11ea8166111cbd12"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector/build.json",
+      "bytes": 13011,
+      "sha256": "61947613b9389e80a1f59ebfc235bbeba236a79ee35905ff5e4ab9ccc92fce6c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector/collector.elf",
+      "bytes": 262144,
+      "sha256": "6d21b74a7d5d26710b23bacf80c1541568293bc2ee7bf3d315656cbb8435f3e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector/entry.o",
+      "bytes": 688,
+      "sha256": "51f7ff12a02be9a0962d62ccecd7ea0fe9f75d0d4446eb164e2feca6911fe1e7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector/entry.s",
+      "bytes": 248,
+      "sha256": "71e1bf1797cd1df30da377c9928a2419ae30ebfcaee58882945cbe2167884d5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector/source.c",
+      "bytes": 9002,
+      "sha256": "0da8f6af40baaef141f9a192ff438c555226eaa8e4c84ad187eaa9729c7021a4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector/worker.o",
+      "bytes": 9264,
+      "sha256": "c18b6805eee46d080b49e63ca352eca4696ac4bc6ba7944c08081460c5c0dcbe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector-v2/build.json",
+      "bytes": 13490,
+      "sha256": "ed3b6f6f15b372d71b8f60d40f1e4e8a8a8e843cb9784ac4f8bc1e352884effe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector-v2/collector.elf",
+      "bytes": 262144,
+      "sha256": "919b38fd7d8ab14b3433579e596fe309a1e2f37ab0328d464d63f10d496b3c5b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector-v2/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector-v2/entry.o",
+      "bytes": 688,
+      "sha256": "51f7ff12a02be9a0962d62ccecd7ea0fe9f75d0d4446eb164e2feca6911fe1e7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector-v2/entry.s",
+      "bytes": 248,
+      "sha256": "71e1bf1797cd1df30da377c9928a2419ae30ebfcaee58882945cbe2167884d5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector-v2/source.c",
+      "bytes": 9228,
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-collector-v2/worker.o",
+      "bytes": 9472,
+      "sha256": "70d5e0b9e9e55a21619d12737d08a399376e725faa4e6b7ac95b026355284f98"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent/build.json",
+      "bytes": 9304,
+      "sha256": "a69d96aacf34cec0e7f746037111df2528885a9764fe5149b95024b2c51c0c66"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent/entry.o",
+      "bytes": 672,
+      "sha256": "9da7cbd97153d9fdad3245edc62d1e20025e570188b475d5876d5d9686b5af01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent/entry.s",
+      "bytes": 218,
+      "sha256": "b5d40eeae3b137b1763fe3a1bc387178a0d126dbbcb526c521739ddf0930ca14"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent/parent.elf",
+      "bytes": 262144,
+      "sha256": "9c511d4fc45ba2734b4bc07be656b619628ff3619c321dd8498a7d179887bf2e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent/source.c",
+      "bytes": 10248,
+      "sha256": "e798cca54e2319ecbe338f2cc86d23b1ae950197e1fe8631717852a7b3518472"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent/worker.o",
+      "bytes": 8360,
+      "sha256": "b45749b39767ba67a3d75590a30fdbe3c618baedd482706ba0b41d9bc1e1d8e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-current/build.json",
+      "bytes": 9336,
+      "sha256": "841616cba295e0342a25aa9ec26952413c71c48eb1e8021958905e90ba9283fc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-current/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-current/entry.o",
+      "bytes": 672,
+      "sha256": "9da7cbd97153d9fdad3245edc62d1e20025e570188b475d5876d5d9686b5af01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-current/entry.s",
+      "bytes": 218,
+      "sha256": "b5d40eeae3b137b1763fe3a1bc387178a0d126dbbcb526c521739ddf0930ca14"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-current/parent.elf",
+      "bytes": 262144,
+      "sha256": "0d018f7e9ca96784b33ffdbf4ccef90d6729966eb075bcf86385fdff60a7a969"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-current/source.c",
+      "bytes": 10264,
+      "sha256": "90f61b5f3fcbeb73b274df800e0dbc3a0e77af3eef1b79712c9fc154ff305b7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-current/worker.o",
+      "bytes": 8392,
+      "sha256": "e083f24daaa515002bafe84acd93b19fa082049d412445f56763beae6acf49ab"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v2/build.json",
+      "bytes": 9783,
+      "sha256": "701989cfa77f6a154aca3b153338149574f86a5e3e7ad5acd17b0ca1fa664508"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v2/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v2/entry.o",
+      "bytes": 672,
+      "sha256": "9da7cbd97153d9fdad3245edc62d1e20025e570188b475d5876d5d9686b5af01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v2/entry.s",
+      "bytes": 218,
+      "sha256": "b5d40eeae3b137b1763fe3a1bc387178a0d126dbbcb526c521739ddf0930ca14"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v2/parent.elf",
+      "bytes": 262144,
+      "sha256": "fd271b2642dfe7487c2ab11b12958b07dac6060c0df4e3f5e0063e79f647f5ac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v2/source.c",
+      "bytes": 10426,
+      "sha256": "554cbf8d5e66eaf73130bf49d813a8636f0bccb71de737d3b7358c018a78bcae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v2/worker.o",
+      "bytes": 8456,
+      "sha256": "747f14c7ced004d1281823fda7eecb40fce1c05e8098a8fac6cf3b39facffd72"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v3/build.json",
+      "bytes": 9783,
+      "sha256": "3cdc70496c8c90bb5eded2f99f92022c43a3d053710f6fd9d9f07746f37340a8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v3/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v3/entry.o",
+      "bytes": 672,
+      "sha256": "9da7cbd97153d9fdad3245edc62d1e20025e570188b475d5876d5d9686b5af01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v3/entry.s",
+      "bytes": 218,
+      "sha256": "b5d40eeae3b137b1763fe3a1bc387178a0d126dbbcb526c521739ddf0930ca14"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v3/parent.elf",
+      "bytes": 262144,
+      "sha256": "c8b96acf264c4c54af45b8bdbe1451c3aac5ac89092e249471f581c261186dad"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v3/source.c",
+      "bytes": 10439,
+      "sha256": "8182a5fd5637e041e9584a2a90ffa844dff8e1fb2a13108f1bbe7088d74fee5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v3/worker.o",
+      "bytes": 8472,
+      "sha256": "a60d0fc4abc8926dcb8b30d90671268a48647022497cf0b516ce96ac9158a01d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v4/build.json",
+      "bytes": 9783,
+      "sha256": "e525a8757398688ed4c681f0ab2568a58275ca0b37a0da239abd1cf9ef52cc22"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v4/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v4/entry.o",
+      "bytes": 672,
+      "sha256": "9da7cbd97153d9fdad3245edc62d1e20025e570188b475d5876d5d9686b5af01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v4/entry.s",
+      "bytes": 218,
+      "sha256": "b5d40eeae3b137b1763fe3a1bc387178a0d126dbbcb526c521739ddf0930ca14"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v4/parent.elf",
+      "bytes": 262144,
+      "sha256": "075f36d60f11ba537f6ef2b0515989805407b3dc11c146175501e927c58f25f7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v4/source.c",
+      "bytes": 10615,
+      "sha256": "82d224b92f4f19ac02f8d421fb7751fadd8a8afc6f925c8da17413b07e3f6771"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/build-parent-v4/worker.o",
+      "bytes": 8488,
+      "sha256": "9d09ced7d05423c2b5ee50426a74656e9d62b70df7046ee907fed94d14c734fa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/builder-origin.json",
+      "bytes": 257,
+      "sha256": "f2d9f68de580c5169446a1537378c912d11f6c5b76284b9b42377aa311d3b627"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/collector-ack.c",
+      "bytes": 9228,
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/collector-ack.c.pre-expiry-v2",
+      "bytes": 9002,
+      "sha256": "0da8f6af40baaef141f9a192ff438c555226eaa8e4c84ad187eaa9729c7021a4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/collector-origin.json",
+      "bytes": 281,
+      "sha256": "9693484a1bd343d90f08213f45e577db1db5c0ac618c6515cf282c4d43c0949c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/first-live-receiver-pair.json",
+      "bytes": 4383,
+      "sha256": "a79d15161c2c92753c27cc3e69489566ad6bd12e1763b28fa6c73e425bbbe8e8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/first-model-error.json",
+      "bytes": 246,
+      "sha256": "9ad7fc252009e93625470f6813ba74f4ea101e520b8fd6dee1457fdd2851559d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/goal-status-after.json",
+      "bytes": 533815,
+      "sha256": "e0efb98298c80bfebeebcbb29ed97e0fd78f54ea0aba5cddff7912ff0f132109"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/goal-status-before.json",
+      "bytes": 528121,
+      "sha256": "2bea9556272fdc1b2f4ad65826f4c1675d1f30d2094eccd27406a360c0f1bf49"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/model_receiver.pre-clock-fix.py",
+      "bytes": 9430,
+      "sha256": "b03d52e9a9029b0bda9b7498a67272ea826453fe2104803ac26b7e881732ea70"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/model_receiver.py",
+      "bytes": 10774,
+      "sha256": "1faacde2c358f4677774490b5d763bad4902dd83a79f9ee6775f31440577d3fe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/native-goal-observed.json",
+      "bytes": 384,
+      "sha256": "cac2cbebc9776cbd8dddfc0aa7478b6475257e3649f9ddb3eb39097c02dff3c2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/original-SCM-spans.json",
+      "bytes": 89997,
+      "sha256": "0ad325af5c3cc65cfb186605a30de19cdf8d1c6ae470fd6352d2033cb434bd03"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/parent_receiver.c",
+      "bytes": 10615,
+      "sha256": "82d224b92f4f19ac02f8d421fb7751fadd8a8afc6f925c8da17413b07e3f6771"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/parent_receiver.c.pre-expiry-v2",
+      "bytes": 10264,
+      "sha256": "90f61b5f3fcbeb73b274df800e0dbc3a0e77af3eef1b79712c9fc154ff305b7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/readme-after.md",
+      "bytes": 108942,
+      "sha256": "fcb5f4e5772438e7b30946851fe11b74ca54a3319ff76dcf1d9b4eadb531173c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/readme-before.md",
+      "bytes": 108544,
+      "sha256": "2de74a6e96574b8cea80b15b4de6507f3c96ca813d809eb5cad044c7a2d2a2a4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/readme-rebased-before.md",
+      "bytes": 108544,
+      "sha256": "2de74a6e96574b8cea80b15b4de6507f3c96ca813d809eb5cad044c7a2d2a2a4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/receiver_build.py",
+      "bytes": 15232,
+      "sha256": "c66c9255a7578bf29fdc54e31747ed64a9fa9941e0bee75cc8b29af9c944566f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-collector/build.json",
+      "bytes": 13478,
+      "sha256": "e57cfdb95efd5a0641cafac212430506428177ea093a81ee3596ebf84dea0020"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-collector/collector.elf",
+      "bytes": 262144,
+      "sha256": "919b38fd7d8ab14b3433579e596fe309a1e2f37ab0328d464d63f10d496b3c5b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-collector/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-collector/entry.o",
+      "bytes": 688,
+      "sha256": "51f7ff12a02be9a0962d62ccecd7ea0fe9f75d0d4446eb164e2feca6911fe1e7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-collector/entry.s",
+      "bytes": 248,
+      "sha256": "71e1bf1797cd1df30da377c9928a2419ae30ebfcaee58882945cbe2167884d5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-collector/source.c",
+      "bytes": 9228,
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-collector/worker.o",
+      "bytes": 9472,
+      "sha256": "70d5e0b9e9e55a21619d12737d08a399376e725faa4e6b7ac95b026355284f98"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent/build.json",
+      "bytes": 9771,
+      "sha256": "866a0c62d08146dd75196fb17a4f8e003eeea1616c8d06f2348279aeffa85c87"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent/entry.o",
+      "bytes": 672,
+      "sha256": "9da7cbd97153d9fdad3245edc62d1e20025e570188b475d5876d5d9686b5af01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent/entry.s",
+      "bytes": 218,
+      "sha256": "b5d40eeae3b137b1763fe3a1bc387178a0d126dbbcb526c521739ddf0930ca14"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent/parent.elf",
+      "bytes": 262144,
+      "sha256": "c8b96acf264c4c54af45b8bdbe1451c3aac5ac89092e249471f581c261186dad"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent/source.c",
+      "bytes": 10439,
+      "sha256": "8182a5fd5637e041e9584a2a90ffa844dff8e1fb2a13108f1bbe7088d74fee5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent/worker.o",
+      "bytes": 8472,
+      "sha256": "a60d0fc4abc8926dcb8b30d90671268a48647022497cf0b516ce96ac9158a01d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent-v4/build.json",
+      "bytes": 9783,
+      "sha256": "70d2bc4146bbc59b782de673f150e1bd64ae1ae05119b71d368d41cbf1be0980"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent-v4/compiler.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent-v4/entry.o",
+      "bytes": 672,
+      "sha256": "9da7cbd97153d9fdad3245edc62d1e20025e570188b475d5876d5d9686b5af01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent-v4/entry.s",
+      "bytes": 218,
+      "sha256": "b5d40eeae3b137b1763fe3a1bc387178a0d126dbbcb526c521739ddf0930ca14"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent-v4/parent.elf",
+      "bytes": 262144,
+      "sha256": "075f36d60f11ba537f6ef2b0515989805407b3dc11c146175501e927c58f25f7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent-v4/source.c",
+      "bytes": 10615,
+      "sha256": "82d224b92f4f19ac02f8d421fb7751fadd8a8afc6f925c8da17413b07e3f6771"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/repro-parent-v4/worker.o",
+      "bytes": 8488,
+      "sha256": "9d09ced7d05423c2b5ee50426a74656e9d62b70df7046ee907fed94d14c734fa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/reproducible-build-summary.json",
+      "bytes": 822,
+      "sha256": "688859149c7df59e3a80863e3542c8d7e859531bdd6cb1778a4c0cd262501d6b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/reproducible-build-verified-summary.json",
+      "bytes": 883,
+      "sha256": "f471c5a032d216e645bcf62774ba22b84a65f2f7661c630c7d705acc2acf2458"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-final/receipt.json",
+      "bytes": 158462,
+      "sha256": "fbb1339f7a4a03a7222a09acdfbebb6adb02b8dffdf73ede92bc36ba023b1fc2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-final/source-snapshot/collector-ack.c",
+      "bytes": 9228,
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-final/source-snapshot/model_receiver.py",
+      "bytes": 10318,
+      "sha256": "2de028366859c1f32cd5619d36a35179353447f62d40945eb9ac75b856de4f7a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-final/source-snapshot/parent_receiver.c",
+      "bytes": 10426,
+      "sha256": "554cbf8d5e66eaf73130bf49d813a8636f0bccb71de737d3b7358c018a78bcae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-final/source-snapshot/receiver_build.py",
+      "bytes": 15232,
+      "sha256": "c66c9255a7578bf29fdc54e31747ed64a9fa9941e0bee75cc8b29af9c944566f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-final/source-snapshot/test_receiver.py",
+      "bytes": 5591,
+      "sha256": "4d1d9b43e02bf089d5b41b48d58b5289957b5133f0996859d8920b58d88dd06b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v2/receipt.json",
+      "bytes": 153682,
+      "sha256": "829e9230f320df83a266d46ee57164d3ceaa981b0dc8e62f0f7d86abeeea1e3f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v2/source-snapshot/collector-ack.c",
+      "bytes": 9228,
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v2/source-snapshot/model_receiver.py",
+      "bytes": 9996,
+      "sha256": "2829e41aaa08ebd3fdad9f1c8765346c79453ad7d1b56b8dd3db03ec3efe09d6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v2/source-snapshot/parent_receiver.c",
+      "bytes": 10426,
+      "sha256": "554cbf8d5e66eaf73130bf49d813a8636f0bccb71de737d3b7358c018a78bcae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v2/source-snapshot/receiver_build.py",
+      "bytes": 15232,
+      "sha256": "c66c9255a7578bf29fdc54e31747ed64a9fa9941e0bee75cc8b29af9c944566f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v2/source-snapshot/test_receiver.py",
+      "bytes": 5535,
+      "sha256": "f387614a64aba1d12856b7ab545c46417c50c611a3866b9a75a53fe286299057"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v3/receipt.json",
+      "bytes": 160883,
+      "sha256": "880512e9d34854912bd1b1e42b426f4a625c62f435653ad943326881a0baf2fe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v3/source-snapshot/collector-ack.c",
+      "bytes": 9228,
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v3/source-snapshot/model_receiver.py",
+      "bytes": 10471,
+      "sha256": "abbbfdbf94698d6abe22dcb755c5a3fdbebae72516ee8620766f90c07dd936c4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v3/source-snapshot/parent_receiver.c",
+      "bytes": 10439,
+      "sha256": "8182a5fd5637e041e9584a2a90ffa844dff8e1fb2a13108f1bbe7088d74fee5c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v3/source-snapshot/receiver_build.py",
+      "bytes": 15232,
+      "sha256": "c66c9255a7578bf29fdc54e31747ed64a9fa9941e0bee75cc8b29af9c944566f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v3/source-snapshot/test_receiver.py",
+      "bytes": 5609,
+      "sha256": "923d04ae53e261f6180122749f4f45fc84687bc719c65bb7ee232afd4b14645d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v4/receipt.json",
+      "bytes": 163315,
+      "sha256": "ba79cb3557e7c8d946ed29268e4b9c7667689f76ed19cf00dff5990850338e7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v4/source-snapshot/collector-ack.c",
+      "bytes": 9228,
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v4/source-snapshot/model_receiver.py",
+      "bytes": 10592,
+      "sha256": "88ccfd47a2c412e0da1e7aa603d75d3e21a9d28f7f29ce9f4398b0b1b064c6ca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v4/source-snapshot/parent_receiver.c",
+      "bytes": 10615,
+      "sha256": "82d224b92f4f19ac02f8d421fb7751fadd8a8afc6f925c8da17413b07e3f6771"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v4/source-snapshot/receiver_build.py",
+      "bytes": 15232,
+      "sha256": "c66c9255a7578bf29fdc54e31747ed64a9fa9941e0bee75cc8b29af9c944566f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-v4/source-snapshot/test_receiver.py",
+      "bytes": 5644,
+      "sha256": "0e1db361c04abb9c1a67af70860fe0ae9141b857d537a13adac26edc9cacd489"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-verified/receipt.json",
+      "bytes": 162999,
+      "sha256": "e6c3babd4ad92d533077f3ea7a898e61eb4e370852eca0477db2c66385598976"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-verified/source-snapshot/collector-ack.c",
+      "bytes": 9228,
+      "sha256": "62bc2f808a181c0a134257ebc8264c553c6ec387c356850db2f0fc2e518dc24e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-verified/source-snapshot/model_receiver.py",
+      "bytes": 10774,
+      "sha256": "1faacde2c358f4677774490b5d763bad4902dd83a79f9ee6775f31440577d3fe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-verified/source-snapshot/parent_receiver.c",
+      "bytes": 10615,
+      "sha256": "82d224b92f4f19ac02f8d421fb7751fadd8a8afc6f925c8da17413b07e3f6771"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-verified/source-snapshot/receiver_build.py",
+      "bytes": 15232,
+      "sha256": "c66c9255a7578bf29fdc54e31747ed64a9fa9941e0bee75cc8b29af9c944566f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/runs-receiver-verified/source-snapshot/test_receiver.py",
+      "bytes": 5732,
+      "sha256": "80f62e9bfa216a086b7adb76e9bce5f7d744415180076a72ee41757142f4ff2a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/seal_stage.py",
+      "bytes": 15150,
+      "sha256": "ab617b86873587892685cea510c3927b454fa33a2b3df6a25441e7b22619cc54"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-capture.json",
+      "bytes": 987,
+      "sha256": "300461bfcce1a0ebf647dd3a50aea21e13534281a3cb7461a4b5a9d3ee25a8ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-origin.json",
+      "bytes": 293,
+      "sha256": "e3bb8ffb6573db373c69237575cc556d088aef7132499d216bff5ade40afedc5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/include__net__scm.h",
+      "bytes": 3526,
+      "sha256": "401ffe1a9d631f63f127367c5b11cb5456ce7cbba591242cfd57277b6f301a7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/net__core__scm.c",
+      "bytes": 8026,
+      "sha256": "8ff09a46141270cd10892e476d841b2a5a3f1ae4cf8399e6e2ce2526cf9485ac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-reference/net__unix__af_unix.c",
+      "bytes": 71066,
+      "sha256": "8132ddc195229915bb82930a6ddae96ade2d80e81d8edc4d9d5449f59d631056"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/source-revisions.json",
+      "bytes": 1241,
+      "sha256": "4b6d935017d665f60ebc5c4a38ebc62f823cb482cd54b82e224d705efb10bcd3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/test_receiver.py",
+      "bytes": 5732,
+      "sha256": "80f62e9bfa216a086b7adb76e9bce5f7d744415180076a72ee41757142f4ff2a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage239-parent-SCM-anchor-receiver/verification-receipt.json",
+      "bytes": 1775,
+      "sha256": "846330170e45c2e78332cbc1227dd3699568dc373f90d9d30d482bf90e137a0a"
+    }
+  ],
+  "member_count": 134,
+  "mutable_heads_not_manifest_members": true,
+  "goal_before_sha256": "2bea9556272fdc1b2f4ad65826f4c1675d1f30d2094eccd27406a360c0f1bf49",
+  "goal_after_sha256": "e0efb98298c80bfebeebcbb29ed97e0fd78f54ea0aba5cddff7912ff0f132109",
+  "status": "OWN_C_PARENT_RECEIVER_ACK_AND_OBJECT_OBSERVER_PASS_WITH_UNPROVEN_ENTRY_ORIGIN",
+  "own_checks": 9,
+  "own_model_cases": 41,
+  "native_static_checks": 44,
+  "native_spans": 3,
+  "source_ranges": 6,
+  "each_own_ELF_bytes": 262144,
+  "parent_sha256": "075f36d60f11ba537f6ef2b0515989805407b3dc11c146175501e927c58f25f7",
+  "collector_sha256": "919b38fd7d8ab14b3433579e596fe309a1e2f37ab0328d464d63f10d496b3c5b",
+  "own_C_parent_receiver_and_ACK_implemented": true,
+  "ACK_precedes_inner_worker_in_scope": true,
+  "fixed_synthetic_absolute_expiry_not_actual_plan": true,
+  "malformed_or_header_copy_failure_may_leave_unidentified_FDs_UNKNOWN": true,
+  "two_origin_and_domain_boundary_counterexamples_retained": true,
+  "authentic_Sony_creation_anonymous_image_and_full_plan_binding_proven": false,
+  "full_job_resources_or_USB_completion_proven": false,
+  "probe_deployable": false,
+  "stage235_candidate_unchanged_and_admission_still_failed": true,
+  "new_device_USB_cache_admin_auth_upload_or_firmware_writes": 0,
+  "original_Sony_glibc_Linux_driver_or_public_camera_code_executed": false,
+  "all16_requirements_and_authorizations_unchanged": true,
+  "formal23_sources_release04_05_unchanged": true,
+  "root195_pending_unlaunched": true,
+  "previous_goal_turn_classification": "progress:238 self-proc sender/nonzero exit object observer and 89-member seal",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

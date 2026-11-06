@@ -1,0 +1,98 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "ordered_same_thread_and_chunking",
+      "passed": true,
+      "duration_ns": [
+        60,
+        40
+      ],
+      "gap_ns": 30
+    },
+    {
+      "case": "missing",
+      "passed": true,
+      "unknown_reason": "missing_entry"
+    },
+    {
+      "case": "zero",
+      "passed": true,
+      "unknown_reason": "zero_entry_unknown"
+    },
+    {
+      "case": "negative_duration",
+      "passed": true,
+      "unknown_reason": "end_before_entry"
+    },
+    {
+      "case": "duplicate",
+      "passed": true,
+      "unknown_reason": "duplicate_or_conflicting_seq_tid_op"
+    },
+    {
+      "case": "conflicting_op",
+      "passed": true,
+      "unknown_reason": "duplicate_or_conflicting_seq_tid_op"
+    },
+    {
+      "case": "truncated",
+      "passed": true,
+      "unknown_reason": "incomplete_at_cutoff_or_EOF"
+    },
+    {
+      "case": "interleaved",
+      "passed": true,
+      "unknown_reason": "malformed_or_interleaved_record"
+    },
+    {
+      "case": "bad_prefix",
+      "passed": true,
+      "unknown_reason": "malformed_or_interleaved_record"
+    },
+    {
+      "case": "range",
+      "passed": true,
+      "unknown_reason": "entry_range"
+    },
+    {
+      "case": "zero_end",
+      "passed": true,
+      "unknown_reason": "end_unknown_or_range"
+    },
+    {
+      "case": "overlong",
+      "passed": true,
+      "unknown_reason": "overlong_or_truncated_record"
+    },
+    {
+      "case": "damaged_boundary_no_gap",
+      "passed": true
+    },
+    {
+      "case": "different_threads_never_subtracted",
+      "passed": true
+    },
+    {
+      "case": "seq_gap_and_overlap_unknown",
+      "passed": true
+    },
+    {
+      "case": "run_cutoff_boundary_not_joined",
+      "passed": true
+    },
+    {
+      "case": "actual_candidate_host_lines",
+      "passed": true
+    },
+    {
+      "case": "actual_r38_legacy_no_entry_unknown",
+      "passed": true,
+      "record_count": 391,
+      "reasons": {
+        "missing_entry": 346,
+        "malformed_or_interleaved_record": 45
+      }
+    }
+  ]
+}

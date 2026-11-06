@@ -1,0 +1,21 @@
+# Analyst label; exact original configured VA, not runtime PC. No execution.
+0xfe0542cc [file+0xb2cc] f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+0xfe0542d0 [file+0xb2d0] 08019c52 mov      w8, #0xe008
+0xfe0542d4 [file+0xb2d4] 4820be72 movk     w8, #0xf102, lsl #16
+0xfe0542d8 [file+0xb2d8] e9031f32 mov      w9, #2
+0xfe0542dc [file+0xb2dc] 090100b9 str      w9, [x8]
+0xfe0542e0 [file+0xb2e0] 091d00b9 str      w9, [x8, #0x1c]
+0xfe0542e4 [file+0xb2e4] 080940b9 ldr      w8, [x8, #8]
+0xfe0542e8 [file+0xb2e8] 410000f0 adrp     x1, #0xfe05f000
+0xfe0542ec [file+0xb2ec] 04029c52 mov      w4, #0xe010
+0xfe0542f0 [file+0xb2f0] 21501991 add      x1, x1, #0x654
+0xfe0542f4 [file+0xb2f4] 13050153 ubfx     w19, w8, #1, #1
+0xfe0542f8 [file+0xb2f8] e0071f32 mov      w0, #6
+0xfe0542fc [file+0xb2fc] 22028052 mov      w2, #0x11
+0xfe054300 [file+0xb300] e3030032 mov      w3, #1
+0xfe054304 [file+0xb304] 4420be72 movk     w4, #0xf102, lsl #16
+0xfe054308 [file+0xb308] e503132a mov      w5, w19
+0xfe05430c [file+0xb30c] aa070094 bl       #0xfe0561b4
+0xfe054310 [file+0xb310] e003132a mov      w0, w19
+0xfe054314 [file+0xb314] f37bc1a8 ldp      x19, x30, [sp], #0x10
+0xfe054318 [file+0xb318] c0035fd6 ret      

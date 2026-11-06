@@ -1,0 +1,14 @@
+{
+  "outcome": "failed",
+  "stage": "B accepted MENU bounded capture",
+  "cause": "Controlled fixture called require_visual_review(1, visual_pending, True), violating original runner final-review state contract",
+  "tool_exit": 2,
+  "exact_reason": "Error: step_one_review_visual_state_unexpected",
+  "retry_count": 0,
+  "actual_confirm_calls": 0,
+  "cleanup_dispose": "refused because B alarm remained armed; no retry/cancel invented",
+  "failure_cleanup_dispatch": "operate.run_action was imported in the tool script, so its __main__ cleanup handler did not run; operator sent next dedicated cleanup call after reading failure",
+  "coordinator_instruction_message": "msg_cb4489e73594",
+  "UTC": "2026-11-04T23:44:41.920387+00:00",
+  "host_ns": 419567452946125
+}

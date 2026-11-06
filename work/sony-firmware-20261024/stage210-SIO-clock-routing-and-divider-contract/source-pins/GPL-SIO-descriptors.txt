@@ -1,0 +1,21 @@
+/* SIO */
+#define SIO_NAME        "sio"
+#define SIO_IO_BASE(ch) (0xF1005000U + SIO_IO_SIZE * (ch))
+#define SIO_IO_SIZE     0x1000
+#define SIO_IRQ(ch)     IRQ_SIO(ch)
+
+static UDIF_CHANNELS sio[UDIF_NR_SIO] = {
+        [0] = {
+                .iomem = __UDIF_IOMEM_INIT(SIO_NAME "0", SIO_IO_BASE(0), SIO_IO_SIZE),
+                .intr = UDIF_INTRPT_INIT(SIO_NAME "0", SIO_IRQ(0), 0),
+        },
+        [1] = {
+                .iomem = __UDIF_IOMEM_INIT(SIO_NAME "1", SIO_IO_BASE(1), SIO_IO_SIZE),
+                .intr = UDIF_INTRPT_INIT(SIO_NAME "1", SIO_IRQ(1), 0),
+        },
+        [2] = {
+                .iomem = __UDIF_IOMEM_INIT(SIO_NAME "2", SIO_IO_BASE(2), SIO_IO_SIZE),
+                .intr = UDIF_INTRPT_INIT(SIO_NAME "2", SIO_IRQ(2), 0),
+        },
+};
+#endif /* !CONFIG_ARCH_CXD900XX_FPGA_V1_5 */

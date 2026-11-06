@@ -1,0 +1,86 @@
+{
+  "CP_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+  "CP_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "original_range_table_VA": "0xb54930",
+  "original_range_table_sha256": "07bcbcb8c6f77de1ebdf3bc0cc7f6b26f191cfb5de5cf3337af2844e952e6ab9",
+  "original_range_rows": [
+    [
+      "0x500000000",
+      "0x80000000",
+      "0x80000000",
+      "0x7e000000"
+    ],
+    [
+      "0x800000000",
+      "0x0",
+      "0x0",
+      "0x80000000"
+    ],
+    [
+      "0xfe000000",
+      "0xfe000000",
+      "0xfe000000",
+      "0x500000"
+    ],
+    [
+      "0xfe800000",
+      "0xfe800000",
+      "0xfe800000",
+      "0x500000"
+    ]
+  ],
+  "bindings": [
+    {
+      "original_load_descriptor": {
+        "index": 3,
+        "start": "0x809a08e00",
+        "end": "0x809a21dff",
+        "partition": 8,
+        "mode": "0x5000000",
+        "path": "\\DmmCfg.bin",
+        "record_offset": "0x1b0",
+        "original_record_sha256": "eb7ebe0f50723118cc53f645176e85eddebcf193cdd6cc301f85c1ffff8b3ef1"
+      },
+      "original_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/dmm-config-20261029/original-files/DmmCfg.bin",
+      "file_bytes": 43320,
+      "file_sha256": "820dc02b6a001636b93fff51d90baaced1ba75cf9bbaa90600dfc7fd7a705166",
+      "CP_constant_table_translation": "0x9a08e00",
+      "scope": "Original constant-table arithmetic only; no actual physical RAM or live CPU mapping is supplied."
+    },
+    {
+      "original_load_descriptor": {
+        "index": 2,
+        "start": "0x800100000",
+        "end": "0x800107fff",
+        "partition": 8,
+        "mode": "0x7000000",
+        "path": "\\tomco.txt",
+        "record_offset": "0x120",
+        "original_record_sha256": "f89b458872cd67b754550974ce946999751e915ad49a240a2f7eabb5450508c2"
+      },
+      "original_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/dmm-backup-20261029/tomco.txt",
+      "file_bytes": 710,
+      "file_sha256": "42f1785422bce152dbb21c4e82f42dd4b053a1729c7694e54b7cc9f118592722",
+      "CP_constant_table_translation": "0x100000",
+      "scope": "Original constant-table arithmetic only; no actual physical RAM or live CPU mapping is supplied."
+    },
+    {
+      "original_load_descriptor": {
+        "index": 6,
+        "start": "0x800108000",
+        "end": "0x800107fff",
+        "partition": 8,
+        "mode": "0x81000000",
+        "path": "\\cpapp-b.bin",
+        "record_offset": "0x360",
+        "original_record_sha256": "433c7c30b2cf23bfc492fa4c48b55f29383d245d14d179dbe1c5943e7e0bc058"
+      },
+      "original_file": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "file_bytes": 15980568,
+      "file_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "CP_constant_table_translation": "0x108000",
+      "scope": "Original constant-table arithmetic only; no actual physical RAM or live CPU mapping is supplied."
+    }
+  ],
+  "scope": "Links original file descriptors to previously used CP addresses through original CP table. It does not show normal boot selection, actual FAT I/O, cache/TLB synchronization, file bytes at candidate RAM or pixels."
+}

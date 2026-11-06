@@ -1,0 +1,47 @@
+{
+  "appFw_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "original_words": {
+    "0x2a8a884": {
+      "original_word": "0xd284cc07",
+      "offset": "0x2a8a884"
+    },
+    "0x2a8aa10": {
+      "original_word": "0x52800580",
+      "offset": "0x2a8aa10"
+    }
+  },
+  "old_source_sha256": "9a0f649bce77ea12514f893b5d031eb0ac324422c5cfe1d9bf1c42c9018dc2e1",
+  "new_source_sha256": "11d8bf8c1c817c7f83274ce79125a85e641f5053add6b5b8b531b1904cb1d39b",
+  "old_so_sha256": "179c74c396af95e920da7549e4ce4f8c6f9cb1bcc5ea8edf6800ff5040abeb44",
+  "new_so_sha256": "0fd9fdfcd7309a2d87b6c4690048cd7ffccfee8825e578b6c286d9fdca146197",
+  "runner_sha256": "5cda7cacd567630b9f25d8f2cb504732ae1959552bdb860f250ddf38bb6ed7b1",
+  "candidate_sha256": "d53363f076f5d0129c68e7489d407b0baab300bec62f487decf96a73e29d90a6",
+  "cpio_sha256": "1b72eed06a5d2104caba23a438b1eb3dd86c3e52fddd79d45aa116a078c814ae",
+  "dtb_sha256": "9281b0b9f98d0e75fab2d0909582e0ca584a7f0ca6be6d9eba5892944dd7b392",
+  "cpio_only_changed_member": "simulation/fx3-media-observe-v3-uipc.so",
+  "bounded_ring_records": 16,
+  "callback_logging": "preallocated ring, no dprintf in two original notification hook callbacks; 100ms sampler exports",
+  "runtime_hook_conservation": "NOT_YET_GUEST_VALIDATED; existing fx3_media_test selftest and original-word gates required at run",
+  "no_power_state_timeout_or_original_firmware_changes": true,
+  "offline_hook_control_flow": {
+    "hooked_instructions": {
+      "0x2a8a884": {
+        "bytes": "07cc84d2",
+        "mnemonic": "mov",
+        "operand": "x7, #0x2660",
+        "pc_relative": false,
+        "branch": false
+      },
+      "0x2a8aa10": {
+        "bytes": "80058052",
+        "mnemonic": "mov",
+        "operand": "w0, #0x2c",
+        "pc_relative": false,
+        "branch": false
+      }
+    },
+    "existing_trampoline_original_then_pc_plus4": true,
+    "probe_saves_and_restores_x20_and_nzcv": true,
+    "guest_selftest_pending": true
+  }
+}

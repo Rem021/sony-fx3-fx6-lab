@@ -1,0 +1,44 @@
+00008a74 stp        x29, x30, [sp, #-0x20]!
+00008a78 adrp       x1, #0xc000
+00008a7c add        x1, x1, #0x3e8 ; literal 'UDTRFIRM13BaseContainer'
+00008a80 mov        x2, #8
+00008a84 mov        x29, sp
+00008a88 str        x19, [sp, #0x10]
+00008a8c ldr        x19, [x0, #8]
+00008a90 mov        x0, x19
+00008a94 bl         #0x7b80 ; memcmp
+00008a98 mov        w1, #0
+00008a9c cbnz       w0, #0x8b0c
+00008aa0 adrp       x1, #0xc000
+00008aa4 add        x0, x19, #0xc
+00008aa8 add        x1, x1, #0x3e0 ; literal '0100'
+00008aac mov        x2, #4
+00008ab0 bl         #0x7b80 ; memcmp
+00008ab4 mov        w1, #0
+00008ab8 cbnz       w0, #0x8b0c
+00008abc mov        w3, #0x8320
+00008ac0 mov        x0, #0xc
+00008ac4 mov        w4, #-1
+00008ac8 movk       w3, #0xedb8, lsl #16
+00008acc ldrb       w1, [x19, x0]
+00008ad0 eor        w4, w4, w1
+00008ad4 mov        x1, #8
+00008ad8 lsr        w2, w4, #1
+00008adc tbz        w4, #0, #0x8b1c
+00008ae0 eor        w4, w2, w3
+00008ae4 subs       x1, x1, #1
+00008ae8 b.ne       #0x8ad8
+00008aec add        x0, x0, #1
+00008af0 cmp        x0, #0x200
+00008af4 b.ne       #0x8acc
+00008af8 add        x0, x19, #8
+00008afc bl         #0x8930
+00008b00 mvn        w4, w4
+00008b04 cmp        w4, w0
+00008b08 cset       w1, eq
+00008b0c mov        w0, w1
+00008b10 ldr        x19, [sp, #0x10]
+00008b14 ldp        x29, x30, [sp], #0x20
+00008b18 ret        
+00008b1c mov        w4, w2
+00008b20 b          #0x8ae4

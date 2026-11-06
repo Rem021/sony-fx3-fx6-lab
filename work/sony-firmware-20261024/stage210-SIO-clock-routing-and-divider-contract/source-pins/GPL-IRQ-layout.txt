@@ -1,0 +1,7 @@
+typedef struct UDIF_INTRPT {
+	UDIF_U8		name[16];
+	UDIF_IRQ	irq;
+	UDIF_U32	flags;
+	UDIF_INT_CB	hndl;
+	UDIF_VP		data;
+} UDIF_INTRPT;

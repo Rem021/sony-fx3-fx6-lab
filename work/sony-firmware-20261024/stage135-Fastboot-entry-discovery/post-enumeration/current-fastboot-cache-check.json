@@ -1,0 +1,376 @@
+{
+  "created_utc": "2026-10-27T19:49:49.651092+00:00",
+  "query": "IORegistry IOService IOUSBHostDevice cached properties only",
+  "standard_fastboot_interface_signature": {
+    "class": 255,
+    "subclass": 66,
+    "protocol": 3
+  },
+  "signature_source": "https://android.googlesource.com/platform/system/core/+/refs/heads/main/fastboot/fastboot.cpp",
+  "FX3_cached_records": [
+    {
+      "device": {
+        "tree_index_path": [
+          1
+        ],
+        "idVendor": 1356,
+        "idProduct": 3489,
+        "bDeviceClass": 0,
+        "bDeviceSubClass": 0,
+        "bDeviceProtocol": 0,
+        "USB Product Name": "ILME-FX3",
+        "USB Vendor Name": "Sony",
+        "IOObjectClass": "IOUSBHostDevice"
+      },
+      "descendants": [
+        {
+          "tree_index_path": [
+            1,
+            0
+          ],
+          "bDeviceClass": 0,
+          "bDeviceSubClass": 0,
+          "IOObjectClass": "AppleUSBHostCompositeDevice"
+        },
+        {
+          "tree_index_path": [
+            1,
+            1
+          ],
+          "IOObjectClass": "AppleUSBHostDeviceUserClient"
+        }
+      ],
+      "camera_identity_firmware_version_or_interface_access_proven": false
+    },
+    {
+      "device": {
+        "tree_index_path": [
+          1,
+          2
+        ],
+        "idVendor": 1356,
+        "idProduct": 3489,
+        "bInterfaceClass": 8,
+        "bInterfaceSubClass": 6,
+        "bInterfaceProtocol": 80,
+        "bInterfaceNumber": 0,
+        "USB Product Name": "ILME-FX3",
+        "USB Vendor Name": "Sony",
+        "IOObjectClass": "IOUSBHostInterface"
+      },
+      "descendants": [],
+      "camera_identity_firmware_version_or_interface_access_proven": false
+    },
+    {
+      "device": {
+        "tree_index_path": [
+          1,
+          2,
+          0
+        ],
+        "idVendor": 1356,
+        "idProduct": 3489,
+        "bInterfaceClass": 8,
+        "bInterfaceSubClass": 6,
+        "bInterfaceProtocol": 80,
+        "bInterfaceNumber": 0,
+        "USB Product Name": "ILME-FX3",
+        "IOObjectClass": "IOUSBMassStorageInterfaceNub"
+      },
+      "descendants": [],
+      "camera_identity_firmware_version_or_interface_access_proven": false
+    },
+    {
+      "device": {
+        "tree_index_path": [
+          1,
+          2,
+          0,
+          0
+        ],
+        "idVendor": 1356,
+        "idProduct": 3489,
+        "bInterfaceClass": 8,
+        "bInterfaceSubClass": 6,
+        "bInterfaceProtocol": 80,
+        "bInterfaceNumber": 0,
+        "USB Product Name": "ILME-FX3",
+        "IOObjectClass": "IOUSBMassStorageDriverNub"
+      },
+      "descendants": [
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0
+          ],
+          "bInterfaceProtocol": 80,
+          "IOObjectClass": "IOUSBMassStorageDriver"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOSCSILogicalUnitNub"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOSCSIPeripheralDeviceType00"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOBlockStorageServices"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOBlockStorageDriver"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            1
+          ],
+          "IOObjectClass": "IOSCSILogicalUnitNub"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          "IOObjectClass": "IOSCSIPeripheralDeviceType00"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOBlockStorageServices"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOBlockStorageDriver"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2
+          ],
+          "IOObjectClass": "IOSCSILogicalUnitNub"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2,
+            0
+          ],
+          "IOObjectClass": "IOSCSIPeripheralDeviceType00"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOBlockStorageServices"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOBlockStorageDriver"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOMedia"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOMediaBSDClient"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          "IOObjectClass": "IOFDiskPartitionScheme"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0
+          ],
+          "IOObjectClass": "IOMedia"
+        },
+        {
+          "tree_index_path": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          "IOObjectClass": "IOMediaBSDClient"
+        }
+      ],
+      "camera_identity_firmware_version_or_interface_access_proven": false
+    }
+  ],
+  "FX3_unique_cached_roots": 1,
+  "standard_fastboot_signature_node_count_all_vendors": 0,
+  "standard_fastboot_signature_node_count_Sony_vendor": 0,
+  "unrelated_device_names_serials_or_raw_tree_saved": false,
+  "known_fastboot_host_paths": [
+    {
+      "candidate": "/opt/homebrew/bin/fastboot",
+      "exists": false
+    },
+    {
+      "candidate": "/usr/local/bin/fastboot",
+      "exists": false
+    },
+    {
+      "candidate": "/Users/kafu/Library/Android/sdk/platform-tools/fastboot",
+      "exists": false
+    },
+    {
+      "candidate": "/Users/kafu/Android/Sdk/platform-tools/fastboot",
+      "exists": false
+    }
+  ],
+  "host_binary_execution_or_install": false,
+  "actual_fastboot_protocol_probe_or_mode_entry_executed": false,
+  "USB_open_claim_reset_auth_reboot_download_boot_flash_erase_OEM_or_media_read": false,
+  "scope": "Current cached interface presence only; no proof of entry impossibility or every possible custom interface",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

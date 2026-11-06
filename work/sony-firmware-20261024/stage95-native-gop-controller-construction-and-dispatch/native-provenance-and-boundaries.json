@@ -1,0 +1,167 @@
+{
+  "created_utc": "2026-10-27T08:59:40.342900+00:00",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "instructions": [
+    {
+      "VA": "0x80143ea4",
+      "word_hex": "000082ac",
+      "instruction": "sw $v0, ($a0)",
+      "meaning": "original base vtable installation"
+    },
+    {
+      "VA": "0x80145214",
+      "word_hex": "000022ae",
+      "instruction": "sw $v0, ($s1)",
+      "meaning": "original ring524 vtable installation"
+    },
+    {
+      "VA": "0x80144710",
+      "word_hex": "000002ae",
+      "instruction": "sw $v0, ($s0)",
+      "meaning": "original ringC4 vtable installation"
+    },
+    {
+      "VA": "0x80067d54",
+      "word_hex": "3ca382af",
+      "instruction": "sw $v0, -0x5cc4($gp)",
+      "meaning": "original heap-head global store"
+    },
+    {
+      "VA": "0x80069a74",
+      "word_hex": "0b004010",
+      "instruction": "beqz $v0, 0x80069aa4",
+      "meaning": "original heap split condition"
+    },
+    {
+      "VA": "0x80069ab8",
+      "word_hex": "080002ae",
+      "instruction": "sw $v0, 8($s0)",
+      "meaning": "original heap linked-list insertion"
+    },
+    {
+      "VA": "0x8000d540",
+      "word_hex": "40a382af",
+      "instruction": "sw $v0, -0x5cc0($gp)",
+      "meaning": "original allocator before-callback binding"
+    },
+    {
+      "VA": "0x8000d544",
+      "word_hex": "44a383af",
+      "instruction": "sw $v1, -0x5cbc($gp)",
+      "meaning": "original allocator after-callback binding"
+    },
+    {
+      "VA": "0x800699f4",
+      "word_hex": "40a3828f",
+      "instruction": "lw $v0, -0x5cc0($gp)",
+      "meaning": "original before-callback load"
+    },
+    {
+      "VA": "0x80069adc",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "original indirect call reaching lock wrapper in bound controls"
+    },
+    {
+      "VA": "0x8000d4c4",
+      "word_hex": "fa6e010c",
+      "instruction": "jal 0x8005bbe8",
+      "meaning": "unexecuted original lock wrapper call to RTOS"
+    },
+    {
+      "VA": "0x8000d4e0",
+      "word_hex": "a26f010c",
+      "instruction": "jal 0x8005be88",
+      "meaning": "unexecuted unlock wrapper call to RTOS"
+    },
+    {
+      "VA": "0x801441e4",
+      "word_hex": "3800628c",
+      "instruction": "lw $v0, 0x38($v1)",
+      "meaning": "original slot38 target load"
+    },
+    {
+      "VA": "0x801441e8",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "executed original class-specific virtual dispatch"
+    },
+    {
+      "VA": "0x801f87c0",
+      "word_hex": "0800e003",
+      "instruction": "jr $ra",
+      "meaning": "base receiver is only original return"
+    },
+    {
+      "VA": "0x80146508",
+      "word_hex": "8400c28c",
+      "instruction": "lw $v0, 0x84($a2)",
+      "meaning": "ring524 source RAW84 reference read"
+    },
+    {
+      "VA": "0x80146598",
+      "word_hex": "02002292",
+      "instruction": "lbu $v0, 2($s1)",
+      "meaning": "ring524 constructed-frame field2 read"
+    },
+    {
+      "VA": "0x801465a4",
+      "word_hex": "24006396",
+      "instruction": "lhu $v1, 0x24($s3)",
+      "meaning": "unexecuted unclassified RAW geometry read"
+    },
+    {
+      "VA": "0x80145104",
+      "word_hex": "8ed3040c",
+      "instruction": "jal 0x80134e38",
+      "meaning": "original ringC4 owner-forwarding call"
+    },
+    {
+      "VA": "0x80134e6c",
+      "word_hex": "80f04280",
+      "instruction": "lb $v0, -0xf80($v0)",
+      "meaning": "unexecuted trace-global read"
+    },
+    {
+      "VA": "0x80134ea4",
+      "word_hex": "ac00638c",
+      "instruction": "lw $v1, 0xac($v1)",
+      "meaning": "unexecuted trace timing MMIO read"
+    },
+    {
+      "VA": "0x80131c20",
+      "word_hex": "c4a28487",
+      "instruction": "lh $a0, -0x5d3c($gp)",
+      "meaning": "unexecuted new parameter reference boundary"
+    }
+  ],
+  "classes": {
+    "base": {
+      "entry": 1326744,
+      "vtable": 2368260,
+      "slot38": 2066368,
+      "request": 0
+    },
+    "ring524": {
+      "entry": 1331700,
+      "vtable": 2368100,
+      "slot38": 1336540,
+      "request": 1316
+    },
+    "ringC4": {
+      "entry": 1328884,
+      "vtable": 2368180,
+      "slot38": 1331452,
+      "request": 196
+    }
+  },
+  "original_source_path": "../../../../../../../../../../src/ipsx/release/spu/all/ctrl/video/enc/common/gop_vbb_ctrl.cxx",
+  "binding_function_direct_JAL_sites_first2MiB": [],
+  "binding_function_data_refs_after2MiB": [
+    "0x2130f0"
+  ],
+  "normal_boot_initializer_table_order_and_target_MAIN_class_selection_proven": false,
+  "heap_callbacks_zero_is_pre_binding_state_only": true,
+  "bound_callback_controls_stop_before_RTOScall": true,
+  "actual_IRQ_reference_lifetime_encoder_video_or_recovery_proven": false
+}

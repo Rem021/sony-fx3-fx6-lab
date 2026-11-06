@@ -1,0 +1,70 @@
+{
+  "created_utc": "2026-10-26T15:08:48.739816+00:00",
+  "state": "PREPARED_REVIEWED_WAITING_FOR_HOST_DIRECTORY_AND_TRANSFER",
+  "prior_sealed_files_verified": 23,
+  "canonical_latest_stage": "stage64-osal-offline-link",
+  "canonical_not_modified_for_unverified_remote_result": true,
+  "package_hashes_verified": {
+    "Fx3CachedAssociations.cs": "f14e6907e0e1077b3d92b38764c9aa66014563a781b4b732d8339bd4bcf0be2d",
+    "TASK.txt": "614f58d197821c3a2c71f4ef2f623d5f0d94598d091ff700315006c92a5cb773",
+    "sha256-manifest.json": "443dc5851f9fe097f0ab3a0f4c64c7fb2536651318081965ef3b557360f83c1e",
+    "Review-Fx3Msc.ps1": "7e9df2455522aede99c7dc32d987ae1421d1ea2739701089e474f3b2680e19c0"
+  },
+  "windows_output": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-cache-associations-20261026T144834Z",
+  "source_review": {
+    "reviewer": "Same agent manual source read plus import/hash/guard checks; not a Windows compiler or device test",
+    "native_libraries": [
+      "cfgmgr32.dll",
+      "setupapi.dll"
+    ],
+    "native_metadata_entry_points": [
+      "SetupDiGetClassDevsW",
+      "SetupDiEnumDeviceInterfaces",
+      "SetupDiGetDeviceInterfaceDetailW",
+      "SetupDiDestroyDeviceInfoList",
+      "CM_Get_Parent",
+      "CM_Get_DevNode_PropertyW",
+      "CM_Get_Device_ID_Size",
+      "CM_Get_Device_IDW",
+      "CM_Get_DevNode_Status"
+    ],
+    "no_device_handle_or_command_entry_points_in_CSharp": true,
+    "DryRun_returns_before_AddType": true,
+    "new_host_local_output_only": true,
+    "Windows_compilation_or_execution_verified": false,
+    "active_INQUIRY_source_in_package": false
+  },
+  "observed_UU": {
+    "connected_host": "DESKTOP-262CR7C",
+    "main_display": "PG34WCDM",
+    "user_now_allows_main_screen_while_computer_unused": true,
+    "virtual_screen_only_restriction_superseded_by_user": true,
+    "prior_virtual_screen_observation": "Desktop only; no FX3 Codex window visible",
+    "main_screen_observation": "UU and NVIDIA windows; existing FX3 session not yet located",
+    "remote_mouse_verified": true,
+    "remote_keyboard": "One Codex search appeared, subsequent text and paste attempts had no visible result",
+    "file_transfer": "Four local files selected via native keyboard; destination still existing outputs; transfer count remained legacy ten",
+    "new_destination_directory_verified": false,
+    "four_file_transfer_verified": false,
+    "Windows_task_dispatched_or_run_verified": false,
+    "user_relay": "User volunteered to relay text; supplied a host-local-directory-only prompt, awaiting result"
+  },
+  "fresh_public_recovery_observation": {
+    "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31",
+    "observed_date": "2026-10-26",
+    "page_comment_count_observed": 17,
+    "new_self_report": "Oct26 dt-nb reports success after Oct25 movie/P workaround; no independent verification",
+    "other_Oct26_comments": "Original author plans to try; another commenter discusses service/third-party quotes without confirmed restored outcome",
+    "repair_costs_or_outcomes_independently_verified": false,
+    "FX3_applicability_proven": false,
+    "reason_not_a_recovery_guarantee": "A7C2 still-path modification could leave movie boot usable; this project targets the FX3 movie path itself",
+    "attachments_downloaded_or_executed": false
+  },
+  "camera_operations": {
+    "interface_open_auth_mode_driver_media_file_module_WBI_flash": false,
+    "authorization": "Windows cached PnP metadata only",
+    "requirements_retained": 16,
+    "hardware_recording_or_same_body_recovery_verified": false,
+    "goal_complete": false
+  }
+}

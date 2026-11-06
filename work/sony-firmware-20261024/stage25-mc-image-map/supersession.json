@@ -1,0 +1,16 @@
+{
+  "created_utc": "2026-10-25T21:18:37.977487+00:00",
+  "effective_run": "run-reviewed-20261025",
+  "run-20261025": {
+    "status": "failed_script_assertion",
+    "reason": "MOVZ encoding had been incorrectly restricted to MOVN",
+    "source_and_failure_preserved": true
+  },
+  "run-corrected-20261025": {
+    "status": "superseded",
+    "reason": "Thumb example window was inside an ASCII string; replaced by validated prologue at0x7bc08",
+    "exact_source_recovered_and_receipt_hash_matched": true
+  },
+  "source_or_firmware_inputs_modified": false,
+  "no_firmware_executed": true
+}

@@ -1,0 +1,4 @@
+00008f90 f848 ldr      r0, [pc, #0x3e0]
+00008f92 90f83d10 ldrb.w   r1, [r0, #0x3d]
+00008f96 0120 movs     r0, #1
+00008f98 fdf7acfa bl       #0x64f4

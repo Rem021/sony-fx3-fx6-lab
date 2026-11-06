@@ -1,0 +1,153 @@
+{
+  "schema": "fx6-guest-veneer-readonly-gdb-v1",
+  "stop": "unknown_loader_return",
+  "host_error": null,
+  "elapsed_seconds": 38.5776543749962,
+  "qemu_exit": 0,
+  "qemu_reaped": true,
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": false,
+    "quit_sent": true,
+    "reason": "diagnostic_no_guest_resume_after_Z1_removal",
+    "API16_restore_skipped_to_preserve_fault_stop": true,
+    "guest_stopped": true
+  },
+  "breakpoint_cleanup": {
+    "attempted": true,
+    "results": [
+      {
+        "address": "0x405f10",
+        "reply": "OK"
+      }
+    ],
+    "all_removed": true,
+    "unremoved": []
+  },
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free": true
+    }
+  ],
+  "inputs_sha256_after": {
+    "baseline": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+    "source": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+    "candidate": "8abed37418a0f07e8193228ca2242f185103b6b5f98959b98821bbeeb3ad3b5d",
+    "ap": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1",
+    "bridge": "b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b",
+    "cap": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e"
+  },
+  "inputs_unchanged": true,
+  "serial": {
+    "available": true,
+    "bytes": 1291349,
+    "sha256": "89146ecfe10b1c676a72bcb725f30c8585ee2b04ff5a0d9d764c0aeabbcc20ed",
+    "first": {
+      "verify": {
+        "byte_range": [
+          85136,
+          85161
+        ],
+        "raw": "FX3_TRACE_ABI_VERIFY_RC=0"
+      },
+      "list": {
+        "byte_range": [
+          86694,
+          86717
+        ],
+        "raw": "FX3_TRACE_ABI_LIST_RC=0"
+      },
+      "true": {
+        "byte_range": [
+          86719,
+          86742
+        ],
+        "raw": "FX3_TRACE_ABI_TRUE_RC=0"
+      },
+      "not_ready": null,
+      "natural_bootin": {
+        "byte_range": [
+          97431,
+          97458
+        ],
+        "raw": "FX3_AP_NATURAL_BOOTIN_BEGIN"
+      },
+      "im_map": {
+        "byte_range": [
+          122574,
+          122662
+        ],
+        "raw": "00400000-00409000 r-xp 00000000 00:02 2308                               /usr/bin/im.elf"
+      },
+      "ap_guard": {
+        "byte_range": [
+          1290452,
+          1290520
+        ],
+        "raw": "FX3_MEDIA_BIND_REJECT module=A reason=parameter_getter_code id=0x6db"
+      }
+    },
+    "im_process_label_count": 0,
+    "synthetic_key_count": 0,
+    "fx3_boot_queue_not_fx6_AP_entry_evidence": true
+  },
+  "health": {
+    "lines": 7386,
+    "failure": null,
+    "diagnostics": [
+      {
+        "line": 7380,
+        "which": "fx3_media_ap_getter_guard",
+        "text": "FX3_MEDIA_BIND_REJECT module=A reason=parameter_getter_code id=0x6db"
+      },
+      {
+        "line": 7381,
+        "which": "fx3_ui_60_word_guard",
+        "text": "FX3_UI_GATE_BIND_FAIL id=0 reason=original_instruction"
+      },
+      {
+        "line": 7384,
+        "which": "fx3_timer_ap_prefix_guard",
+        "text": "FX3_TIMER_BIND_FAILED k=0 reason=prefix original_unchanged=1"
+      },
+      {
+        "line": 7386,
+        "which": "fx3_preset_48_word_guard",
+        "text": "FX3_PRESET_CONTEXT_BIND_REJECT point=0 reason=original_word"
+      }
+    ],
+    "loader_all_observations": {
+      "verify": [
+        {
+          "line": 1111,
+          "column": 0,
+          "value": 0
+        }
+      ],
+      "list": [
+        {
+          "line": 1138,
+          "column": 0,
+          "value": 0
+        }
+      ],
+      "true": [
+        {
+          "line": 1139,
+          "column": 0,
+          "value": 0
+        }
+      ]
+    },
+    "partial_line_bytes": 0
+  },
+  "probe_stage": "unknown_loader_return;cleanup",
+  "diagnostic_captured": false,
+  "lifecycle_healthy": false,
+  "API16_restore_policy": "SKIPPED_TO_AVOID_UNGUARDED_ASYNC_BRK"
+}

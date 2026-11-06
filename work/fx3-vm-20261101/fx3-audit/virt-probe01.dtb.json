@@ -1,0 +1,28 @@
+{
+  "input": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/virt-base.dtb",
+  "input_sha256": "2bfc50cac05cea2a062660318c14f32bf74d87b45728b55ef4badce4b2a45870",
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/virt-probe01.dtb",
+  "output_sha256": "a8cd5a3ec6d43d8769fbe76eb4db14d18ff0df689af2388bcaf8e631d4c067e3",
+  "bytes": 7994,
+  "only_changed_properties": [
+    [
+      "/chosen",
+      "bootargs"
+    ],
+    [
+      "/chosen",
+      "linux,initrd-end"
+    ],
+    [
+      "/chosen",
+      "linux,initrd-start"
+    ]
+  ],
+  "bootargs": "console=ttyAMA0 earlycon=pl011,0x09000000 rdinit=/init init=/init nokaslr ignore_loglevel loglevel=8 panic=-1",
+  "initrd_start": "0x48000000",
+  "initrd_end": "0x480e0a74",
+  "reserve_map_unchanged": true,
+  "nodes_before": 57,
+  "nodes_after": 57,
+  "original_fx3_kernel_changed": false
+}

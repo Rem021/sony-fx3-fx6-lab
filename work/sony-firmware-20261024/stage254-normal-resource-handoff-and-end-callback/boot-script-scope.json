@@ -1,0 +1,59 @@
+{
+  "status": "SELECTED_BOOT_SCRIPT_SCOPE_ONLY_RAMDsk_BACKING_UNRESOLVED",
+  "image": "work/sony-firmware-20261024/stage2/extraction/nflasha7.img",
+  "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+  "reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "file_inventory_sha256": "3602eb507584aed6d6d6f4e081e0f4b55e61b68ef2b24950310602c2667e1e18",
+  "selected_files": [
+    {
+      "path": "/sbin/init",
+      "inode": 144,
+      "bytes": 735,
+      "sha256": "c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e",
+      "text": "#!/bin/busybox sh\n\nINITRC_DIR=/sbin/initrc\nDEFAULT_MODE=0\nKMSG=/dev/kmsg\nBOOT_TIME=/proc/snsc_boot_time\nMODE_FILE=/setting/mode/dmode\nSEN_FILE=/setting/sen/smode\nNO_LDR_FILE=/sbin/NOLDR\nNO_LDR_MODE=0\n\nexport HOME=/\nexport PATH=/sbin:/bin:/usr/sbin:/usr/bin:$PATH\nexport TOPRC=/etc/toprc\nexport MALLOC_OPTIONS=gfffffffff\nexport MALLOC_MMAP_THRESHOLD_=131072\nexport MALLOC_CHECK_=3\nexport LT_ABORTREASON=0\nexport WBSHD=/tmp_wbshd/shared.XXXXXX\n\nbusybox mount -o rw -t proc proc /proc\nmkdir -p /dev/pts\n\n[ -r $INITRC_DIR/insmod_drv1  ] && . $INITRC_DIR/insmod_drv1\n[ -r $INITRC_DIR/setup_nflash ] && . $INITRC_DIR/setup_nflash\n[ -r $INITRC_DIR/setup_rootfs ] && . $INITRC_DIR/setup_rootfs\n\n/sbin/init2\n\nwhile true\ndo\n    ash --login\ndone\n"
+    },
+    {
+      "path": "/sbin/init2",
+      "inode": 139,
+      "bytes": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb",
+      "text": "#!/bin/busybox sh\n\nINITRC_DIR=/sbin/initrc\nDEFAULT_MODE=3\nKMSG=/dev/kmsg\nBOOT_TIME=/proc/snsc_boot_time\nMODE_FILE=/setting/mode/dmode\nSEN_FILE=/setting/sen/smode\nFSTAB=$INITRC_DIR/fstab\nFSTAB_EXT=$INITRC_DIR/fstab.ext\n\nsetup_bis()\n{\n    UPM_BOOTMODE=`cat /proc/udm/upm_bootmode`\n    echo \"upm_bootmode = $UPM_BOOTMODE\" > $KMSG\n    echo \"upm_bootmode = $UPM_BOOTMODE\" > $BOOT_TIME\n\n    [ \"$UPM_BOOTMODE\" != \"BIS\" ] && return 1\n\n    SSBIPROF_MNTSRC=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 1`\n    SSBIPROF_MNTTGT=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 2`\n    SSBIPROF_MNTOPT=`grep -v '^#' $FSTAB | grep /log | busybox cut -f 4`\n\n    busybox umount $SSBIPROF_MNTTGT\n    /sbin/mkdosfs -f 1 -s 32 $SSBIPROF_MNTSRC\n    busybox mount $SSBIPROF_MNTSRC $SSBIPROF_MNTTGT -o $SSBIPROF_MNTOPT\n\n    return 0\n}\n\nsetup_senser()\n{\n    [ -r $SEN_FILE ] || return 1\n\n#   echo $SEN_FILE found.\n    SEN_STR=`cat $SEN_FILE`\n    if   [ \"$SEN_STR\" == \"UU\" ] ; then\n        /usr/bin/sen.elf &\n    fi\n\n    return 0\n}\n\nbusybox mount -t sysfs none /sys\nbusybox mount -t debugfs none /sys/kernel/debug\nbusybox mount -a -T $FSTAB\n\n[ -r $FSTAB_EXT ] && busybox mount -a -T $FSTAB_EXT\n\nmount -t tmpfs none /tmp_wbshd\n\nMODE=\"$DEFAULT_MODE\"\n[ -r $MODE_FILE ] && MODE=`cat $MODE_FILE`\n\nif [ \"$MODE\" != \"0\" ] ; then\n    ### set_mindrv()\n    echo set > /proc/udm/drivers\n\n    [ -r $INITRC_DIR/setup_shielding ] && . $INITRC_DIR/setup_shielding\n    [ -r $INITRC_DIR/insmod_drv2     ] && . $INITRC_DIR/insmod_drv2\n\n    setup_bis || setup_senser\n\n    /usr/bin/bootin.elf &\nfi\n\n[ -r $INITRC_DIR/setup_console ] && . $INITRC_DIR/setup_console\n\nwhile true\ndo\n    ash --login\ndone\n"
+    },
+    {
+      "path": "/sbin/initrc/setup_rootfs",
+      "inode": 128,
+      "bytes": 593,
+      "sha256": "ee84d317484d8cb4a0f1e39d665f1f04f18bf4d193a36a6e9bf63f8666a6a34d",
+      "text": "ROOTFS_OLDTGT=\"/initrd\"\nFSTAB_ROOT=\"$INITRC_DIR/fstab.root\"\n\ndo_pivot_root()\n{\n\t[ -r $FSTAB_ROOT ] || return 1\n\tbusybox mount -a -T $FSTAB_ROOT\n\n\tROOTFS_MNTTGT=`busybox cut -f 2 $FSTAB_ROOT`\n\n\tcd $ROOTFS_MNTTGT\n\n\t/sbin/pivot_root . $ROOTFS_MNTTGT$ROOTFS_OLDTGT\n\n\tbusybox mount --move $ROOTFS_OLDTGT/proc /proc\n\tbusybox mount --move $ROOTFS_OLDTGT/dev  /dev\n\n\texec busybox chroot . /bin/ash -c \"busybox umount $ROOTFS_OLDTGT; freeramdisk /dev/ram0; /sbin/init2;\" < dev/console > dev/console 2>&1\n}\n\nbusybox mount | grep nfs >> /dev/null\nis_nfs=$?\nif [ \"$is_nfs\" != 0 ] ; then\n\tdo_pivot_root\nfi\n"
+    },
+    {
+      "path": "/sbin/initrc/fstab",
+      "inode": 132,
+      "bytes": 1085,
+      "sha256": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0",
+      "text": "/dev/nflasha2\t/setting vfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha3\t/system\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha8\t/cp\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha11\t/log\tvfat\trw,nodiratime,noatime,sync,posix_attr,batch_sync\t0\t0\n/dev/nflasha12\t/cert\tvfat\trw,nodiratime,noatime,sync,posix_attr,batch_sync\t0\t0\n/dev/nflasha18\t/lens\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha10\t/tmp\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha15\t/usr\text2\tro,nodiratime,noatime,sync\t0\t0\n\n#/dev/nflasha2\t/setting vfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha3\t/system\tvfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha8\t/cp\tvfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha11\t/log\tvfat\trw,nodiratime,noatime,sync,noexec,batch_sync\t0\t0\n#/dev/nflasha12\t/cert\tvfat\trw,nodiratime,noatime,sync,noexec,batch_sync\t0\t0\n#/dev/nflasha18\t/lens\tvfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha10\t/tmp\tvfat\trw,nodiratime,noatime,sync,noexec\t0\t0\n#/dev/nflasha15\t/usr\text2\tro,nodiratime,noatime,sync\t0\t0\n"
+    },
+    {
+      "path": "/sbin/initrc/fstab.ext",
+      "inode": 129,
+      "bytes": 134,
+      "sha256": "a77bdfb7bf15d3a1240bdefc4edb4469672f3258d6d8dba7dd4164e3fd2d51c3",
+      "text": "/dev/nflasha10\t/etc\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n/dev/nflasha10\t/var\tvfat\trw,nodiratime,noatime,sync,posix_attr\t0\t0\n"
+    },
+    {
+      "path": "/sbin/initrc/fstab.root",
+      "inode": 131,
+      "bytes": 58,
+      "sha256": "c77d93236b89349bcc24853756f960bb49411e922c9430ede70b5b2cb8b6a4b2",
+      "text": "/dev/nflasha7\t/rootfs\text2\tro,nodiratime,noatime,sync\t0\t0\n"
+    }
+  ],
+  "conclusions": [
+    "Selected fstab binds /tmp to nflasha10, not tmpfs. /tmp_wbshd is separately mounted tmpfs.",
+    "Selected init2 optionally starts /usr/bin/sen.elf when /setting/sen/smode contains UU. This is distinct from the auth AA mode-file tail.",
+    "No /ramdsk mount or symlink resolved in these six scripts or root image entry inventory; this bounded search does not establish its runtime backing.",
+    "Do not label authentication or /ramdsk/dev/mode effects RAM-only, transient or cold-boot reversible based on pathname."
+  ],
+  "not_run_or_mounted": true,
+  "camera_accesses": 0
+}

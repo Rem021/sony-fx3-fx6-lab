@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/usr/bin/log",
+    "show",
+    "--start",
+    "2026-11-04 06:51:30",
+    "--end",
+    "2026-11-04 06:51:50",
+    "--style",
+    "compact",
+    "--predicate",
+    "process == \"kernel\" AND (eventMessage CONTAINS[c] \"unmounting volume KAFU2T\" OR eventMessage CONTAINS[c] \"mount-complete volume KAFU2T\" OR eventMessage CONTAINS[c] \"cableChangeOccurred\" OR eventMessage CONTAINS[c] \"terminateDevice: destroying 0x0781/55ae\")"
+  ],
+  "exit_code": 0,
+  "serial_last_mtime_local": "2026-11-04T06:51:35.751192-08:00",
+  "scope": "read-only; mtime window is not a full runtime timeline"
+}

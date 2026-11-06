@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,re,hashlib,subprocess,os
+R=Path(__file__).resolve().parent;H=R/'helpers';audit=json.loads((R.parents[1]/'lead-claude/audits/pin-topology-2/pin-topology-2-proof.json').read_text());checks=[]
+for rel,record in audit['sources'].items():
+ p=R.parents[3]/rel;actual=hashlib.sha256(p.read_bytes()).hexdigest();assert actual==record['sha256'],rel;checks.append({'path':str(p),'sha256':actual})
+(R/'ap82-inputs-audit-check.json').write_text(json.dumps({'sources':checks,'new_endpoints':audit['software_extension']['new_endpoints'],'no_backup_mutation':True},indent=2)+'\n')
+old=(H/'fx3-pin-config-v1.h').read_text();keys=json.loads(re.search(r'pkeys\[22\]\[4\]=(.*?);',old)[1].replace('{','[').replace('}',']').replace('U','').replace('0x','"0x').replace(',',',') ) if False else [list(int(z,16) for z in re.findall(r'0x([a-f0-9]+)U',row)) for row in re.findall(r'\{([^{}]+)\}',old.split('static const unsigned pedges')[0])];assert len(keys)==22 and all(len(k)==4 for k in keys);newkeys=[[int(k[0],0),*k[1:]] for k in audit['software_extension']['new_endpoints']];assert not set(map(tuple,keys))&set(map(tuple,newkeys));keys+=newkeys;edges=[list(map(int,re.findall(r'\d+',row))) for row in re.findall(r'\{([^{}]+)\}',old.split('static const unsigned pedges')[1].split('=')[1])];assert len(edges)==11
+for req in audit['conditional_requests']:
+ if req['peer']:edges.append([keys.index([int(req['self'][0],0),*req['self'][1:]]),keys.index([int(req['peer'][0],0),*req['peer'][1:]])])
+assert len(keys)==28 and len(edges)==14;(H/'fx3-pin-config-v2.h').write_text('/* AP82 fixed FX3 table9ab2518 delta; original indices0..21 retained. */\n#define PG_PIN_COUNT 28\n#define PG_EDGE_COUNT 14\nstatic const unsigned pkeys[PG_PIN_COUNT][4]={'+','.join('{'+','.join(hex(z)+'U' for z in k)+'}' for k in keys)+'};\nstatic const unsigned pedges[PG_EDGE_COUNT][2]={'+','.join('{'+','.join(map(str,e))+'}' for e in edges)+'};\n')
+s=(H/'fx3-pin-core-v1.c').read_text().replace('fx3-pin-config-v1.h','fx3-pin-config-v2.h').replace('pins[22]','pins[PG_PIN_COUNT]').replace('<22','<PG_PIN_COUNT').replace('>=22','>=PG_PIN_COUNT').replace('i<11','i<PG_EDGE_COUNT').replace('owner==0x9284074a||owner==0x9080003b','owner==0x9284074a||owner==0x9080003b||owner==0x90050004');(H/'fx3-pin-core-v2.c').write_text(s)
+s=(H/'fx3-capid-v36.c').read_text().replace('fx3-pin-core-v1.c','fx3-pin-core-v2.c').replace('version=33 endpoint_whitelist=22 allowed_edges=11','version=37 endpoint_whitelist=28 allowed_edges=14').replace('endpoints=22 owners=8 edges_allowed=11','endpoints=28 owners=9 edges_allowed=14');(H/'fx3-capid-v37.c').write_text(s)
+# Independent audit fixtures (requests and projected replies); production derives replies from graph.
+fixtures=[]
+for q in audit['conditional_requests']:
+ fixtures.append({'owner':int(q['OSAL_destination'],0),'business':q['request_business_hex'],'reply':q['reply_envelope_hex']})
+(R/'ap82-static-fixtures.json').write_text(json.dumps(fixtures,indent=2)+'\n')
+a=[x.replace('fx3-capid-v36','fx3-capid-v37') for x in json.loads((H/'fx3-capid-v36-build.json').read_text())['args']];e=os.environ.copy();e.update(ZIG_GLOBAL_CACHE_DIR=str(R/'toolchains/zig-cache'),ZIG_LOCAL_CACHE_DIR=str(R/'toolchains/zig-local-cache'));p=subprocess.run(a,env=e,capture_output=True,text=True);assert not p.returncode,p.stderr;(H/'fx3-capid-v37-build.json').write_text(json.dumps({'args':a,'exit':0,'source_sha256':hashlib.sha256((H/'fx3-capid-v37.c').read_bytes()).hexdigest(),'output_sha256':hashlib.sha256((H/'fx3-capid-v37.so').read_bytes()).hexdigest(),'pins':28,'edges':14,'snapshot_bytes':3720},indent=2)+'\n');print('v37 graph28/14 built',edges[-3:])

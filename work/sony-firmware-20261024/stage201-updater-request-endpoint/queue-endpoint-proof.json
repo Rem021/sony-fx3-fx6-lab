@@ -1,0 +1,170 @@
+{
+  "source": "official7.02 main AP image, not measured runtime",
+  "selected_original_ranges": [
+    {
+      "source": "/lib/libObj.so",
+      "source_sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0xee0b0",
+      "end_exclusive": "0xee1a4",
+      "bytes": 244,
+      "sha256": "eb4468860a568a1d485a6e5c34e4bf2298f99643ba7d1275bc884e79965821f9",
+      "disassembly": "current-registration.txt"
+    },
+    {
+      "source": "/lib/libObj.so",
+      "source_sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0xed990",
+      "end_exclusive": "0xedae0",
+      "bytes": 336,
+      "sha256": "d537c7aec74d0199dfa5f5d928a1e85c66ca1c2096a1dc906695db7deea4e9d1",
+      "disassembly": "current-business-callback.txt"
+    },
+    {
+      "source": "/lib/libObj.so",
+      "source_sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0xed8cc",
+      "end_exclusive": "0xed940",
+      "bytes": 116,
+      "sha256": "893f5d61242232264da2518483b0e3a4e9c0ffc1bba4bf4b86b56d2b5bc47c1d",
+      "disassembly": "current-remove-wrapper.txt"
+    },
+    {
+      "source": "/lib/libObj.so",
+      "source_sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0xed940",
+      "end_exclusive": "0xed990",
+      "bytes": 80,
+      "sha256": "8de930ae3ef6be68d7b487ab0c1b8d8e43c29131043879f57efbaf545fc9ade2",
+      "disassembly": "current-create-flag.txt"
+    },
+    {
+      "source": "/lib/libObj.so",
+      "source_sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0xee1a4",
+      "end_exclusive": "0xee238",
+      "bytes": 148,
+      "sha256": "caf1f22924bc88367ee72c122dcd2a05b84e0d83b243a33fa4f8c5ac9b1210f4",
+      "disassembly": "current-unregister.txt"
+    },
+    {
+      "source": "/lib/libosal_uipc.so",
+      "source_sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0x32cc",
+      "end_exclusive": "0x3340",
+      "bytes": 116,
+      "sha256": "ad308344afc5307851cf7daeea8c94e003c2c66c56c66d6cc5cd4cb3364c3233",
+      "disassembly": "current-user-dispatch.txt"
+    },
+    {
+      "source": "/kmod/osal_uipc.ko",
+      "source_sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+      "address_kind": "section_offset",
+      "section": ".text",
+      "start": "0x4ae0",
+      "end_exclusive": "0x4c7c",
+      "bytes": 412,
+      "sha256": "e20a0244732cb322613f6c515869419eed3afcb8f6a696dd2c39a8c2c0f9d8dd",
+      "disassembly": "current-kernel-registration.txt"
+    },
+    {
+      "source": "/kmod/osal_uipc.ko",
+      "source_sha256": "6aa0f5c8c72f5f6cf9aa9c905fc3f3f75b8bea0dfebaf13deb632b0de088eb38",
+      "address_kind": "section_offset",
+      "section": ".text",
+      "start": "0x3bf8",
+      "end_exclusive": "0x3e00",
+      "bytes": 520,
+      "sha256": "2ae69061aea6232ae348a00592e9740ffe308241a473a93495e68d2e9379b166",
+      "disassembly": "current-kernel-send.txt"
+    },
+    {
+      "source": "/bin/ud_send_lsi.elf",
+      "source_sha256": "5fbcdb8d9795828febbf6ce9cb966aec2adeff6311577184e4fb8abecfd163e7",
+      "address_kind": "ELF_VA",
+      "section": null,
+      "start": "0x400a38",
+      "end_exclusive": "0x400adc",
+      "bytes": 164,
+      "sha256": "607aaaac8f1776fc252828137cec50fa67a715a726399eb048a1dd624edea472",
+      "disassembly": "current-helper-reply.txt"
+    }
+  ],
+  "strings": {
+    "0x1dd733": "/usr/bin/us_remove_modes.sh",
+    "0x1dd797": "/setting/updater/mode1",
+    "0x1dd7ae": "/setting/updater/mode3",
+    "0x1dd7c5": "/setting/updater/mode6",
+    "0x1dd81e": "/setting/updater/mode"
+  },
+  "registration": {
+    "export": "udtr_senser_init",
+    "entry": "0xee0b0",
+    "call": "0xee188",
+    "api": "osal_reg_msg_queue_cb",
+    "id": "0x004b0376",
+    "callback": "0xed990",
+    "context": "0x004b0376",
+    "handle_address": "0x2ce198",
+    "conditions": [
+      "nonzero service-registration result saved at a GOT-referenced global",
+      "Backup_read(0x004b0000) returns positive",
+      "first setting byte is1 or2"
+    ],
+    "actual_runtime_registration_observed": false
+  },
+  "queue_identity": {
+    "sender_id": "0x804b0376",
+    "registration_id": "0x004b0376",
+    "low16": "0x0376",
+    "kernel_send_takes_low16": true,
+    "kernel_registration_takes_low16": true,
+    "hardware_execution_observed": false
+  },
+  "callback_effects": {
+    "first_remove_command": "/usr/bin/us_remove_modes.sh",
+    "flag_open_flags": "0x42",
+    "flag_open_mode": "0x124",
+    "accepted_normal_paths": {
+      "0": [],
+      "2": [
+        "mode"
+      ],
+      "3": [
+        "mode",
+        "mode3"
+      ],
+      "4": [
+        "mode",
+        "mode1"
+      ],
+      "6": [
+        "mode",
+        "mode6"
+      ]
+    },
+    "other_command_path": "after successful remove wrapper: prints command error, frees incoming message; does not allocate reply",
+    "reply": "allocates4B reply, no payload store in this callback before send to original source id",
+    "direct_restart_or_AP_partition_load_call_in_selected_callback": false
+  },
+  "helper_reply_limit": "selected source accepts receive result0 or -1022 without checking a reply command/body; not proof of completed boot or accepted mode",
+  "direct_text_refs": [],
+  "limitations": [
+    "selected ordinary call paths only; dynamic registration timing, stm_system behavior, filesystem writes and cold boot not executed",
+    "callback uses libObj/im runtime, not independently established when im or main AP is unavailable",
+    "historical p1 providers are separate reference versions, not current installed p1"
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

@@ -1,0 +1,18 @@
+FX3_NATIVE_PNP_20261026T160454Z
+继续已授权的 Windows 缓存 PnP 只读盘点，改用 Windows 自带 PnPUtil 的枚举命令。不要重试被阻止的 PS1，不改变或绕过执行策略，不运行下载或自写的探针。
+
+沿用 C:/Users/owo/Documents/Codex/2026-10-16/rea-2。先复核输出路径属于本机系统 C 盘、普通目录且各级无 reparse/网络/相机存储重定向，另建 outputs/fx3-native-pnp-20261026T160454Z；若已存在则停止，不覆盖既有材料。
+
+只执行普通非提权的单条内置查询命令并保存各次原始输出、退出码及时间。可先单独 Get-ExecutionPolicy -List 记录策略，再 C:/Windows/System32/pnputil.exe /? 检查本机支持参数。不要生成并执行脚本，不使用 ExecutionPolicy Bypass/Set-ExecutionPolicy/Unblock-File/Invoke-Expression/编码执行或加载原 PS1 内容。
+
+Microsoft 官方语法：https://learn.microsoft.com/en-us/windows-hardware/drivers/devtest/pnputil-command-syntax
+支持后，查询：
+C:/Windows/System32/pnputil.exe /enum-devices /deviceid "USB\VID_054C&PID_0DA1" /deviceids /relations /services /stack /drivers /interfaces /properties
+
+仅根据这次输出中匹配 ILME-FX3 的节点关系，使用 /enum-devices /instanceid <实际节点ID>（相同元数据选项），或 /enum-devicetree <实际FX3根节点ID> /services /stack /drivers /interfaces，最多追踪16个关联节点。不要枚举其他无关设备。零结果、非当前连接、非唯一候选都如实记录，不扫描刷新设备、不自动重试、不要求用户切模式。权限或参数失败则保存错误并停止对应步骤，不提权、不安装工具。
+
+需要核对 USB(054C:0DA1)→USBSTOR/SCSI Disk 子节点关系、磁盘接口 GUID 53f56307-b6bf-11d0-94f2-00a0c91efb8b、当前连接/启用/问题状态、服务/驱动 INF/提供者/版本/签名。接口字符串只作为 PnP 缓存属性读取，绝不打开。缺项标 UNKNOWN，不能用旧结果补成 PASS。
+
+原始实例ID、序列号、容器ID和接口路径只保存 Windows 本机 private 子目录；不要贴进聊天或公开摘要。建立可传回的 public 子目录：summary.txt、receipt.json、命令与退出码清单和必要脱敏日志。关联实例ID用 uppercase UTF8 SHA256 摘要，父子关系用同一摘要表达；公开摘要保留 VID/PID、型号、候选数量、连接/问题状态、驱动与接口类别。记录观察时间及全部私有原始文件的SHA256，但不外传原始文件。
+
+禁止 CreateFile/DeviceIoControl、INQUIRY/SCSI/PTP/认证/服务或更新模式、读卡/素材/相机文件、驱动或权限变更、模块上传、WBI和刷写。此任务只查询系统现有元数据，不是硬件验证，也不扩大相机授权。完成后给出脱敏结论和 public 完整路径；保持既有四个输入与两次尝试的所有日志原样。

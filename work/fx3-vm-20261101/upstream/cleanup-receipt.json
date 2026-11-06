@@ -1,0 +1,361 @@
+{
+  "created_utc": "2026-11-01T10:41:05.006256+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "action": "remove only this task newly fetched selected-source reference tree after freeze",
+  "removed_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/upstream/selected-source",
+  "repository": "https://github.com/chocotan/a7c2-qemu",
+  "commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "source_receipt": "selected-source-receipt.json",
+  "host_executable_dependency_check": "rg of host *.py,*.sh,*.json,*.md for selected-source or fx3-vm-20261101/upstream returned no matches; parent confirmed research/runtime frozen",
+  "removed_file_count": 35,
+  "removed_bytes": 2060042,
+  "removed_files": [
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/README.md",
+      "status": 200,
+      "bytes": 6485,
+      "sha256": "214fa28865f0c57e40156125f674ea6eeee5d30283b5aebe85a4645f55b8c1a6",
+      "git_blob": "bc66f6085e8aac33e871cefbd769e681f8ccc572",
+      "matches_tree": true
+    },
+    {
+      "path": "PORTING-WIN-MAC.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/PORTING-WIN-MAC.md",
+      "status": 200,
+      "bytes": 5831,
+      "sha256": "8fde9e63721155ff2b863125c88d7aab6cea9c44600d4df6b555ea28909ea622",
+      "git_blob": "7fe4b9eb8718762a82b33834c269e8bdd44657f4",
+      "matches_tree": true
+    },
+    {
+      "path": "SOURCES.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/SOURCES.md",
+      "status": 200,
+      "bytes": 7498,
+      "sha256": "58d539fcd74a9ee15bb59a0d0e3b60f7969e04215ec20e7fbbb3e2f5bd76cb50",
+      "git_blob": "0299e7e16b05daf2e471e775b2737ef7926606b2",
+      "matches_tree": true
+    },
+    {
+      "path": "SOURCE-ORIGINS.json",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/SOURCE-ORIGINS.json",
+      "status": 200,
+      "bytes": 823644,
+      "sha256": "4c52abb1f86ed1599ac44756a0e18a586d617e3c9a382315ed35aa3df9deb9cb",
+      "git_blob": "4678c6ec7c61182105ce80530b99889364984125",
+      "matches_tree": true
+    },
+    {
+      "path": "source/manifest.json",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/source/manifest.json",
+      "status": 200,
+      "bytes": 32738,
+      "sha256": "4c07278cb8f31904400ae159a21146e893d0d7baabf4511eb95fa3157d451a93",
+      "git_blob": "ab779a2a103555f9b7a8b03df4ca4e685c799b7b",
+      "matches_tree": true
+    },
+    {
+      "path": "source/qemu-sony-native.patch",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/source/qemu-sony-native.patch",
+      "status": 200,
+      "bytes": 30215,
+      "sha256": "29a84ae7a23897af25279f3c438bef387a01d59137767e0362631d4c294f78f8",
+      "git_blob": "257afc3090eeeb0337a3bcad0da5e5c3199ab686",
+      "matches_tree": true
+    },
+    {
+      "path": "source/qemu-directory-sd.patch",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/source/qemu-directory-sd.patch",
+      "status": 200,
+      "bytes": 30505,
+      "sha256": "11bdc54d4ba81d57d33e7a2c7644d2ac596bed4133dcea5a48ee416e0f71772d",
+      "git_blob": "70f7e8fee8b568d4ebdb8605f314ecbfdde88300",
+      "matches_tree": true
+    },
+    {
+      "path": "source/qemu-sony-usb.patch",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/source/qemu-sony-usb.patch",
+      "status": 200,
+      "bytes": 2008,
+      "sha256": "589873aab03e3655745d26b3756e93b044148ccaf453ac22fd0fd9b01e90ff96",
+      "git_blob": "7fb63c0ce002d804803885b17ecf334078bbb15c",
+      "matches_tree": true
+    },
+    {
+      "path": "build-qemu.sh",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/build-qemu.sh",
+      "status": 200,
+      "bytes": 10235,
+      "sha256": "25d87a30040972ac366ec7f0a20d29c4c8ab9f60e2ca684aebbecaccde8d08d5",
+      "git_blob": "56687e417061b884d39fee678ae82f58a219425f",
+      "matches_tree": true
+    },
+    {
+      "path": "start.sh",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/start.sh",
+      "status": 200,
+      "bytes": 538,
+      "sha256": "71892c2c72896312b57c7a374ba51658182e71c0650e2acb806b4b90b673eb94",
+      "git_blob": "b6e6126ec7d40c20c0a1c79c359f4fabff132066",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/bodydata-launch.py",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/bodydata-launch.py",
+      "status": 200,
+      "bytes": 12254,
+      "sha256": "5d47ccb36058782f127413a7b5899dd8ec432af15f05729c1c72566793eb68ce",
+      "git_blob": "7b37af2bcb70dccb944977cf5d28a920c255e2be",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/prepare-assets.py",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/prepare-assets.py",
+      "status": 200,
+      "bytes": 27070,
+      "sha256": "e0cdeb67619978336c17661c0809f5d8c086173f184e6cbdacc03b17a313b633",
+      "git_blob": "a2cd3123b1cb6a6c6874535e27c34b2477149fa1",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/prepare-menu-initramfs.sh",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/prepare-menu-initramfs.sh",
+      "status": 200,
+      "bytes": 4550,
+      "sha256": "66c6373465668ea774b81153093cff8863e2e6fa79f482f97db75789ec8aa2bb",
+      "git_blob": "610402c32ee66088b0bed39d841689462dfdf6d8",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/qemu-kernel-probe.sh",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/qemu-kernel-probe.sh",
+      "status": 200,
+      "bytes": 24966,
+      "sha256": "68e8c4a272bf52b5328c30f97bdd3d7d6c0585e5b091e73c6cc6685436e108df",
+      "git_blob": "f550f8fc43178c6ec68804dc755bfbdf0ba5b0b1",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/qemu-menu-probe.py",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/qemu-menu-probe.py",
+      "status": 200,
+      "bytes": 194398,
+      "sha256": "9c037a75ae5c3b6a64af289b8bf22d4f176261810f8a6427341c0210e08beb15",
+      "git_blob": "640de75694bc53ccbb4959022c90092d5af2da89",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/menu-observe.c",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/menu-observe.c",
+      "status": 200,
+      "bytes": 668098,
+      "sha256": "56c8158267f1281e5ee13f0a8f653d20f2189769d7f5df4c65efa08ff20ede1f",
+      "git_blob": "0685bafd9076c076fdd7ff3fb0991737f5c35d4f",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/run-menu-probe.sh",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/run-menu-probe.sh",
+      "status": 200,
+      "bytes": 2226,
+      "sha256": "828b94ba48203559ea458f4efc9045d0dafb2b96fcdf45d68bfef1a55ea94eb7",
+      "git_blob": "b622f9ef01de552fa19a75a1dc44b1b689b578ba",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/build-observers.sh",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/build-observers.sh",
+      "status": 200,
+      "bytes": 12989,
+      "sha256": "f6dd02116c51456b056e90939de45cfc46abc28e4311f0edac38ca41ad5394d8",
+      "git_blob": "63fc37355ffa43ada81fe7e99bcf9ab331cf3da1",
+      "matches_tree": true
+    },
+    {
+      "path": "runtime/analysis/start-menu.py",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/start-menu.py",
+      "status": 200,
+      "bytes": 29181,
+      "sha256": "749b92b1d6f53bcf235b3631c3ffcde37c5439c7dbb4f8fb5842a0a8faeec60f",
+      "git_blob": "08085caab33aa5e7006286b038ffaf1c1600a6ea",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/01-firmware-assets.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/01-firmware-assets.md",
+      "status": 200,
+      "bytes": 7122,
+      "sha256": "fe4a9a5047d4cd6301bba2ff9b8e39f3cb390fae52cb314a07adfae63eb61349",
+      "git_blob": "e62309bff520d8a3bc7922f4797a4f4566767042",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/02-qemu-boot.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/02-qemu-boot.md",
+      "status": 200,
+      "bytes": 6832,
+      "sha256": "1df682afe6cdf4f767169565e4f6b6fbe62ad833962cacf62ab584674c682a8d",
+      "git_blob": "68c909c657e409d0cca6b83552002d9f08926d43",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/03-guest-environment.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/03-guest-environment.md",
+      "status": 200,
+      "bytes": 5074,
+      "sha256": "5a67df0cc09cc2b08185cfb9194a3c80de3fbe0525012923570d7ff1628ec032",
+      "git_blob": "7effc74b2412e8e9bdb9b7792c0d84f96ed63ca3",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/04-app-and-first-setup.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/04-app-and-first-setup.md",
+      "status": 200,
+      "bytes": 5400,
+      "sha256": "e95bb7a0f81b658d731fa8cb043652dedd8bc452380c9b6beb226b5e2e2be3ec",
+      "git_blob": "8277ad5a952b27684b68306c8f667075f1da817a",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/05-display.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/05-display.md",
+      "status": 200,
+      "bytes": 7924,
+      "sha256": "cd25ac8807f06f5f81e8a741052620349ac20548274b7bb1ef90cf98d9d7eff6",
+      "git_blob": "e6782dd77af23e4cfa3707af4837824d8daeda2f",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/06-input.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/06-input.md",
+      "status": 200,
+      "bytes": 8126,
+      "sha256": "4a7b0b12c65c3e79d1f042e3f2d9d3b6b10b3509f8c9d98e6580164af1fce50a",
+      "git_blob": "bfca4df9d665410463ce5eba6f8cb97692271160",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/07-storage.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/07-storage.md",
+      "status": 200,
+      "bytes": 9727,
+      "sha256": "301a87d5d87cfbe1a4c002496f611a35354420784401b836d60af38c6e3c6aad",
+      "git_blob": "c88c38b22926f4201dea9e3f2006877bf001c1e2",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/08-settings.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/08-settings.md",
+      "status": 200,
+      "bytes": 7562,
+      "sha256": "afd390e734a19e1db9795374493b8185495e1ed9d526756c4e4055554f53120c",
+      "git_blob": "fa7fda9e1c99d3f37cde72ff27e67d0e2e764ce1",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/09-network.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/09-network.md",
+      "status": 200,
+      "bytes": 6716,
+      "sha256": "dc62811df3cbd4ec9233a41a6d3d0f191b28023eda3113c725c5a5604ed47004",
+      "git_blob": "3cd0611f279d9f6aa0a1408a8ccdf5a9d98988fb",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/10-media-frontier.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/10-media-frontier.md",
+      "status": 200,
+      "bytes": 8032,
+      "sha256": "32fb251843a4661140339294d74df5e192b4e0d8b1fa0782cc3d92af0cbdc8d3",
+      "git_blob": "847bc16c3a4f189be6146af5e2c1fd7558063c9a",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/11-imaging-frontier.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/11-imaging-frontier.md",
+      "status": 200,
+      "bytes": 11570,
+      "sha256": "c367b96339bc29ec50db1ce529aef32eba5dbf0916a06832348cd80e130958ad",
+      "git_blob": "75a0dd367ac119d8bc32cad6960d38f53ec740ac",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/12-debugging.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/12-debugging.md",
+      "status": 200,
+      "bytes": 8774,
+      "sha256": "edfadc00cb767207880a9de6ac6c986676068a5b4f31b45a894d733acfc5fa2d",
+      "git_blob": "16b77df33b219d15eadf311f7360c4447486de5b",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/2026-10-29-current-progress.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/2026-10-29-current-progress.md",
+      "status": 200,
+      "bytes": 12222,
+      "sha256": "5108059dc9c2f88c7d64048bb7fc029f72f2584032d55b24a791c17099a6acb2",
+      "git_blob": "6349e68944068707dd88f3bad1b2c73a4a0bdfee",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/2026-10-31-current-progress.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/2026-10-31-current-progress.md",
+      "status": 200,
+      "bytes": 8575,
+      "sha256": "8b44513d3c88ab7bfbccc37690428dac594f035ec51a598f4933549c93a9e673",
+      "git_blob": "4f1c2f0c0b6a2355f467b0fc79c416304fdd8b85",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/README.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/README.md",
+      "status": 200,
+      "bytes": 18146,
+      "sha256": "58e59dfb9d828202b1cb4d89134715ffb09104b21949dfb92e4f435c76181a18",
+      "git_blob": "c9240c585129f33afe794ab7f6e84175e998da9a",
+      "matches_tree": true
+    },
+    {
+      "path": "docs/tech/functional-source-and-display.md",
+      "url": "https://raw.githubusercontent.com/chocotan/a7c2-qemu/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/docs/tech/functional-source-and-display.md",
+      "status": 200,
+      "bytes": 2811,
+      "sha256": "ae353424c6269da9c3c94fbeb69379a562bb71b03d9d8189446611b873687770",
+      "git_blob": "7562ffe87bb14c6971bbcaf2e5ffbe2defaee28e",
+      "matches_tree": true
+    }
+  ],
+  "retained_metadata": [
+    {
+      "original_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/upstream/selected-source/SOURCE-ORIGINS.json",
+      "retained_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/upstream/retained-source-metadata/SOURCE-ORIGINS.json",
+      "bytes": 823644,
+      "sha256": "4c52abb1f86ed1599ac44756a0e18a586d617e3c9a382315ed35aa3df9deb9cb",
+      "kind": "non-executable source origin/hash metadata"
+    },
+    {
+      "original_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/upstream/selected-source/source/manifest.json",
+      "retained_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/upstream/retained-source-metadata/source__manifest.json",
+      "bytes": 32738,
+      "sha256": "4c07278cb8f31904400ae159a21146e893d0d7baabf4511eb95fa3157d451a93",
+      "kind": "non-executable source origin/hash metadata"
+    }
+  ],
+  "retained_evidence": [
+    "scrapling-readme.md",
+    "source-state.json",
+    "upstream-commit.json",
+    "upstream-tree.json",
+    "selected-source-receipt.json",
+    "selected-interface-evidence.json",
+    "research-scope.json",
+    "adjacent/source-receipt.json",
+    "../research_notes/FX3 Mac 虚拟机部署研究/upstream.md"
+  ],
+  "adjacent_executable_sources_removed": 0,
+  "adjacent_note": "Only README Markdown and provenance JSON were fetched; no executable source existed there. Kept as requested webpage/research evidence.",
+  "old_research_or_host_source_files_touched": false,
+  "reacquisition": "Each removed file can be fetched again from its recorded immutable raw GitHub URL, then validated against the recorded Git blob and SHA256.",
+  "sealed_receipts_or_historical_notes_rewritten": false
+}

@@ -1,0 +1,30 @@
+{
+  "stage": 212,
+  "role_correction": {
+    "current_component": "official7.02 loader_nor.bin",
+    "new_binding": "nor_loader_writer.sh routes package through SPI peer and CP updater; actual hardware selection remains untested",
+    "prior_current_NOR_byte_evidence_preserved": [196,197,198,210,211],
+    "current_NOR_code_cannot_prove_AP_recovery_entry": true,
+    "historical_seals_modified": false,
+    "AP_default_rate_channel_port_bit_candidate_unchanged": [3,0,4,2],
+    "AP_candidate_basis": "official default first BK4 record and separate public A7IV AP boot evidence; not current CP NOR initialization"
+  },
+  "locator_refinement": {
+    "first_bksb_linear_disassembly_instructions": 450,
+    "reason": "linear disassembler stopped at inline literal data after CRT entry",
+    "replacement": "new per4byte word locators plus selected PT_LOAD-mapped byte pins; literals distinguished from executed code",
+    "full_CFG_or_runtime_execution_claimed": false
+  },
+  "layout_scope": {
+    "CP_property_list_count": 65,
+    "AP_records_missing_ids": ["0x5d000b","0x5d000c","0x5d0011","0x5d0012"],
+    "AP_partial_entry_offsets_are_hypothetical_only": true,
+    "AP_complete_BKSB_length_not_reported": true,
+    "CP_default_predicted_length": 1088,
+    "Sony_BKSB_binary_generated": false,
+    "AP_list_equivalence_or_same_body_identity_proven": false
+  },
+  "lost_status_scope": "selected pformat main write-call path only; not a claim every vendor update path loses all errors",
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

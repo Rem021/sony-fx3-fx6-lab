@@ -1,0 +1,11 @@
+Timestamp               Ty Process[PID:TID]
+2026-11-04 07:34:38.501 Df kernel[0:30f] (IOAccessoryManager) IOPort::_updateConnectionActive_block_invoke(): [Port-USB-C@1] m_connectionActive: NO, m_connectionCount: 10, m_connectionUUID: NULL
+2026-11-04 07:34:38.501 Df kernel[0:647] (IOUSBHostFamily) usb-drd0-port-ss@00200000: AppleUSBHostPort::cableChangeOccurred: powering off
+2026-11-04 07:34:38.502 Df kernel[0:e65620] (IOUSBHostFamily) usb-drd0-port-ss@00200000: AppleUSBHostPort::terminateDevice: destroying 0x0781/55ae/3001 (Extreme 55AE): port is powering off
+2026-11-04 07:34:38.502 Df kernel[0:642] (IOUSBHostFamily) usb-drd0-port-hs@00100000: AppleUSBHostPort::cableChangeOccurred: powering off
+2026-11-04 07:34:38.506 Df kernel[0:e65620] (IOUSBMassStorageDriver) USB device 078155AE00200000 - SanDisk, Extreme 55AE - detected termination of interfaceNub, currentPowerState 1, provider is IOUSBMassStorageInterfaceNub
+2026-11-04 07:34:38.532 Df kernel[0:dc7606] (IOAccessoryManager) IOPort::_updateConnectionActive_block_invoke(): [Port-USB-C@1] m_connectionActive: YES, m_connectionCount: 11, m_connectionUUID: 9B5CDF7A-D9A9-4EBE-A917-07318D00891A
+2026-11-04 07:34:38.825 Df kernel[0:eaea22] (IOUSBHostFamily) usb-drd0-port-hs@00100000: AppleUSBHostPort::cableChangeOccurred: powering on
+2026-11-04 07:34:38.835 Df kernel[0:eababf] (IOUSBHostFamily) usb-drd0-port-ss@00200000: AppleUSBHostPort::cableChangeOccurred: powering on
+2026-11-04 07:34:39.368 Df kernel[0:eaf32f] (IOUSBHostFamily) usb-drd0-port-ss@00200000: AppleUSBHostPort::enumerateDeviceComplete_block_invoke: enumerated 0x0781/55ae/3001 (Extreme 55AE / 1) at 10 Gbps
+2026-11-04 07:34:39.377 Df kernel[0:eafeb1] (IOUSBHostFamily) Extreme 55AE@00200000: IOUSBHostDevice::setConfigurationGated: AppleUSBHostCompositeDevice selected configuration 1

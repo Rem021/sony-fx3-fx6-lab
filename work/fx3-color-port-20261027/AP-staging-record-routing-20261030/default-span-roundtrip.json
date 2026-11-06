@@ -1,0 +1,128 @@
+{
+  "source": "0x412000000",
+  "destination": "0x808730000",
+  "length": "0x12f1e00",
+  "AP_declared_capacity": "0x2a00000",
+  "scope": "Default address arithmetic only. File slot sizes and firmware file sizes are different; neither tails nor holes are presumed initialized.",
+  "rows": [
+    {
+      "path": "\\sabin\\idt_cam.bin",
+      "original_row_sha256": "a90c4c95de634cbefd00a55606f0d512c17d80f92935f865fd8348918562de66",
+      "CP_start": "0x809139000",
+      "CP_end_exclusive": "0x809179000",
+      "declared_slot_bytes": 262144,
+      "projected_AP_start": "0x412a09000",
+      "projected_AP_end_exclusive": "0x412a49000",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": null
+    },
+    {
+      "path": "\\bonobo.bin",
+      "original_row_sha256": "87064e54b717a60fd03757a173c1c1fbd3eebfd7ad3e1a4cb2094284040e2531",
+      "CP_start": "0x809108000",
+      "CP_end_exclusive": "0x809139000",
+      "declared_slot_bytes": 200704,
+      "projected_AP_start": "0x4129d8000",
+      "projected_AP_end_exclusive": "0x412a09000",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": null
+    },
+    {
+      "path": "\\DmmCfg.bin",
+      "original_row_sha256": "eb7ebe0f50723118cc53f645176e85eddebcf193cdd6cc301f85c1ffff8b3ef1",
+      "CP_start": "0x809a08e00",
+      "CP_end_exclusive": "0x809a21e00",
+      "declared_slot_bytes": 102400,
+      "projected_AP_start": "0x4132d8e00",
+      "projected_AP_end_exclusive": "0x4132f1e00",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": {
+        "actual_bytes": 43320,
+        "sha256": "820dc02b6a001636b93fff51d90baaced1ba75cf9bbaa90600dfc7fd7a705166",
+        "declared_slot_tail_bytes": 59080,
+        "tail_initialization_proved": false
+      }
+    },
+    {
+      "path": "\\OldAmtCL.bin",
+      "original_row_sha256": "4b1883df000c32762ff44dd92dafb8d93ceb7c4875974b25fe8f2969789fd23d",
+      "CP_start": "0x808eb0000",
+      "CP_end_exclusive": "0x808f1ddd0",
+      "declared_slot_bytes": 450000,
+      "projected_AP_start": "0x412780000",
+      "projected_AP_end_exclusive": "0x4127eddd0",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": {
+        "actual_bytes": 161766,
+        "sha256": "40d17dbba34f0a31d281db4b487ece12b9d518838faa26afca5f7fdb83d3062e",
+        "declared_slot_tail_bytes": 288234,
+        "tail_initialization_proved": false
+      }
+    },
+    {
+      "path": "\\SysSound.bin",
+      "original_row_sha256": "48bbd946ee259f48b7f065ab66e9297d7ad37629253e07fc8ffbc1f4737c8ca7",
+      "CP_start": "0x8099e8e00",
+      "CP_end_exclusive": "0x809a08e00",
+      "declared_slot_bytes": 131072,
+      "projected_AP_start": "0x4132b8e00",
+      "projected_AP_end_exclusive": "0x4132d8e00",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": {
+        "actual_bytes": 33920,
+        "sha256": "10e6e39db9807828f6dfcc0dd879e9250a6626b4b1efd5f5e23621b6652b2b72",
+        "declared_slot_tail_bytes": 97152,
+        "tail_initialization_proved": false
+      }
+    },
+    {
+      "path": "\\defdet.bin",
+      "original_row_sha256": "996ea06ee7bddf9d0ba2bd7bf7997ed236ca129d9ebbc96f569f685a3cc3f136",
+      "CP_start": "0x809479000",
+      "CP_end_exclusive": "0x809979000",
+      "declared_slot_bytes": 5242880,
+      "projected_AP_start": "0x412d49000",
+      "projected_AP_end_exclusive": "0x413249000",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": null
+    },
+    {
+      "path": "\\cpImg.dat",
+      "original_row_sha256": "ae7d7b75dce8fd818c25e4dc233c83680197307da8e24f6333a5b10f84299dc6",
+      "CP_start": "0x809179000",
+      "CP_end_exclusive": "0x809479000",
+      "declared_slot_bytes": 3145728,
+      "projected_AP_start": "0x412a49000",
+      "projected_AP_end_exclusive": "0x412d49000",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": {
+        "actual_bytes": 1772736,
+        "sha256": "76af47a5f97470c396c9d0edc576e2bd31b808e8242d742f7722c6f9e90d91c9",
+        "declared_slot_tail_bytes": 1372992,
+        "tail_initialization_proved": false
+      }
+    },
+    {
+      "path": "\\psd.bin",
+      "original_row_sha256": "b9aaabb853468ed792d6417317c2cd7297eeaccbfbd953f0e39acfa9baa5b196",
+      "CP_start": "0x808730000",
+      "CP_end_exclusive": "0x808c30000",
+      "declared_slot_bytes": 5242880,
+      "projected_AP_start": "0x412000000",
+      "projected_AP_end_exclusive": "0x412500000",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": null
+    },
+    {
+      "path": "\\lensfile.bin",
+      "original_row_sha256": "7f1435874be5cbfe46e81af0dad2645c4aa214dce32c0320ad78cffd5a68bdb7",
+      "CP_start": "0x808c30000",
+      "CP_end_exclusive": "0x808cb0000",
+      "declared_slot_bytes": 524288,
+      "projected_AP_start": "0x412500000",
+      "projected_AP_end_exclusive": "0x412580000",
+      "CP_address_roundtrip_exact": true,
+      "member_in_original_update_p8": null
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+0052ee34 push         {r4, r5, r6, r7, r8, sb, sl, fp, lr}
+0052ee38 sub          sp, sp, #0x14
+0052ee3c mov          r1, r0
+0052ee40 mrs          r0, apsr
+0052ee44 movw         r3, #0xe80c
+0052ee48 orr          r2, r0, #0x80
+0052ee4c movt         r3, #0x148
+0052ee50 msr          cpsr_fc, r2
+0052ee54 mrc          p15, #0, r2, c0, c0, #5
+0052ee58 and          r2, r2, #3
+0052ee5c ldr          r2, [r3, r2, lsl #2]
+0052ee60 ldr          r2, [r2, #0x40]
+0052ee64 msr          cpsr_fc, r0

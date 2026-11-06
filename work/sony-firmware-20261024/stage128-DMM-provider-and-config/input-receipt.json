@@ -1,0 +1,44 @@
+{
+  "created_utc": "2026-10-27T17:48:39.456974+00:00",
+  "files": [
+    {
+      "original_partition": "work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+      "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "partition_crc32": "0xa208a5a6",
+      "partition_official_size_crc_matched": true,
+      "regular_file_entry": {
+        "path": "/kmod/dmm.ko",
+        "inode": 70916,
+        "mode": "0o100755",
+        "size": 118336,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage128-DMM-provider-and-config/inputs/dmm.ko",
+      "bytes": 118336,
+      "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+      "first64": "7f454c460201010000000000000000000100b700010000000000000000000000000000000000000000c70100000000000000000040000000000040001d001c00"
+    },
+    {
+      "original_partition": "work/sony-firmware-20261024/stage2/extraction/nflasha8.img",
+      "partition_sha256": "3c751e784fe6790a4b455990d7c6e144c33cf51c643cf3bf9523f8a3bd5a6a2b",
+      "partition_crc32": "0x93e5f241",
+      "partition_official_size_crc_matched": true,
+      "regular_file_entry": {
+        "path": "/DmmCfg.bin",
+        "cluster": 5,
+        "size": 43320,
+        "attributes": 32,
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage128-DMM-provider-and-config/inputs/DmmCfg.bin",
+      "bytes": 43320,
+      "sha256": "820dc02b6a001636b93fff51d90baaced1ba75cf9bbaa90600dfc7fd7a705166",
+      "first64": "00000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "source_reader": "work/sony-firmware-20261024/stage2/extraction/read_filesystems.py",
+  "source_reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "source_images_opened_read_only": true,
+  "mount_host_loader_or_camera_execution": false
+}

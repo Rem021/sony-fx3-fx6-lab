@@ -1,0 +1,2286 @@
+{
+  "created_utc": "2026-10-30T16:38:52.932367+00:00",
+  "source_libraries": [
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "bytes": 60584,
+      "sha256": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater25SDFileInputUpdaterManager10InitializeEPKcS2_",
+          "VA": "0x7d10",
+          "bytes": 636,
+          "sha256": "4dc07ad062b967ffc388486e44d2627a7807ead5cadb503e22bfd8f80b4e7f5b",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x7d10.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x7d10.txt",
+          "calls": [
+            {
+              "address": "0x7d30",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x7d38",
+              "kind": "direct",
+              "target": "0x70c0",
+              "symbol": "_ZN7Updater13BufferManagerC1Ev"
+            },
+            {
+              "address": "0x7d44",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x7d4c",
+              "kind": "direct",
+              "target": "0x7640",
+              "symbol": "_ZN7Updater12BaseFirmwareC1Ev"
+            },
+            {
+              "address": "0x7d58",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x7d68",
+              "kind": "direct",
+              "target": "0x71d0",
+              "symbol": "_ZN7Updater27SDFileInputBodyLoaderModuleC1ENS_19UPDATER_ACTION_MODEEb"
+            },
+            {
+              "address": "0x7d74",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x7d7c",
+              "kind": "direct",
+              "target": "0x7210",
+              "symbol": "_ZN7Updater17SDDecryptorModuleC1Ev"
+            },
+            {
+              "address": "0x7d88",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x7d90",
+              "kind": "direct",
+              "target": "0x7670",
+              "symbol": "_ZN7Updater21SDUUDConditionCheckerC1Ev"
+            },
+            {
+              "address": "0x7d9c",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x7da4",
+              "kind": "direct",
+              "target": "0x7720",
+              "symbol": "_ZN7Updater22SDLedProgressIndicatorC1Ev"
+            },
+            {
+              "address": "0x7db0",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x7dc0",
+              "kind": "direct",
+              "target": "0x77a0",
+              "symbol": "_ZN7Updater13SDFileManagerC1EPKcS2_"
+            },
+            {
+              "address": "0x7dd4",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x7df0",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x7e08",
+              "kind": "indirect",
+              "operand": "x22"
+            },
+            {
+              "address": "0x7e24",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x7e38",
+              "kind": "indirect",
+              "operand": "x22"
+            },
+            {
+              "address": "0x7e4c",
+              "kind": "indirect",
+              "operand": "x2"
+            },
+            {
+              "address": "0x7e60",
+              "kind": "indirect",
+              "operand": "x3"
+            },
+            {
+              "address": "0x7e70",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x7e80",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x7ea8",
+              "kind": "direct",
+              "target": "0x74b0",
+              "symbol": "_ZdlPvm"
+            },
+            {
+              "address": "0x7eb8",
+              "kind": "direct",
+              "target": "0x7100",
+              "symbol": "__cxa_begin_catch"
+            },
+            {
+              "address": "0x7ec4",
+              "kind": "direct",
+              "target": "0x72a0",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE"
+            },
+            {
+              "address": "0x7f2c",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x7f38",
+              "kind": "direct",
+              "target": "0x7100",
+              "symbol": "__cxa_begin_catch"
+            },
+            {
+              "address": "0x7f64",
+              "kind": "direct",
+              "target": "0x72a0",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE"
+            },
+            {
+              "address": "0x7f68",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x7f74",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x7f7c",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            },
+            {
+              "address": "0x7f84",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater25SDFileInputUpdaterManager18VerifyUUDConditionEv",
+          "VA": "0x81e0",
+          "bytes": 308,
+          "sha256": "6427e85ac0017c1df1bab518f6ef48097596300fb82acc604ea7b90d9c673833",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x81e0.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x81e0.txt",
+          "calls": [
+            {
+              "address": "0x8224",
+              "kind": "indirect",
+              "operand": "x3"
+            },
+            {
+              "address": "0x8250",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x8258",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x828c",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x8298",
+              "kind": "direct",
+              "target": "0x7100",
+              "symbol": "__cxa_begin_catch"
+            },
+            {
+              "address": "0x82a4",
+              "kind": "direct",
+              "target": "0x72a0",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE"
+            },
+            {
+              "address": "0x82a8",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x82c0",
+              "kind": "direct",
+              "target": "0x7100",
+              "symbol": "__cxa_begin_catch"
+            },
+            {
+              "address": "0x82ec",
+              "kind": "direct",
+              "target": "0x72a0",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE"
+            },
+            {
+              "address": "0x82f0",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x82fc",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x8304",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            },
+            {
+              "address": "0x830c",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater25SDFileInputUpdaterManager12BurnFirmwareEv",
+          "VA": "0x8374",
+          "bytes": 988,
+          "sha256": "a2b7de0ef1f1476f5481be664b677ea08edd274c78567497f46cef2a281e6536",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x8374.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x8374.txt",
+          "calls": [
+            {
+              "address": "0x8398",
+              "kind": "direct",
+              "target": "0x7680",
+              "symbol": "_ZN7Updater15FsysFileHandlerC1Ev"
+            },
+            {
+              "address": "0x83a8",
+              "kind": "direct",
+              "target": "0x7130",
+              "symbol": "_ZN7Updater15FsysFileHandler4OpenEPKcj"
+            },
+            {
+              "address": "0x83b4",
+              "kind": "direct",
+              "target": "0x75b0",
+              "symbol": "__errno_location"
+            },
+            {
+              "address": "0x83d8",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x83ec",
+              "kind": "direct",
+              "target": "0x7100",
+              "symbol": "__cxa_begin_catch"
+            },
+            {
+              "address": "0x83f8",
+              "kind": "direct",
+              "target": "0x72a0",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE"
+            },
+            {
+              "address": "0x8404",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x8438",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x8448",
+              "kind": "direct",
+              "target": "0x7060",
+              "symbol": "_ZN7Updater15FsysFileHandler4SeekEl"
+            },
+            {
+              "address": "0x8460",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x8478",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x8484",
+              "kind": "direct",
+              "target": "0x75f0",
+              "symbol": "_ZN7Updater26CommonUpdaterManagerStatus3RunEv"
+            },
+            {
+              "address": "0x84a0",
+              "kind": "indirect",
+              "operand": "x2"
+            },
+            {
+              "address": "0x84bc",
+              "kind": "direct",
+              "target": "0x75e0",
+              "symbol": "_ZN7Updater26CommonUpdaterManagerStatus9IsRunningEv"
+            },
+            {
+              "address": "0x84cc",
+              "kind": "direct",
+              "target": "0x73b0",
+              "symbol": "_ZN7Updater15FsysFileHandler5CloseEv"
+            },
+            {
+              "address": "0x84d8",
+              "kind": "direct",
+              "target": "0x75b0",
+              "symbol": "__errno_location"
+            },
+            {
+              "address": "0x84fc",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x8514",
+              "kind": "direct",
+              "target": "0x7280",
+              "symbol": "_ZN7Updater15FsysFileHandler4ReadEPvm"
+            },
+            {
+              "address": "0x8530",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x853c",
+              "kind": "direct",
+              "target": "0x75b0",
+              "symbol": "__errno_location"
+            },
+            {
+              "address": "0x855c",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x8564",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x8598",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x85b8",
+              "kind": "indirect",
+              "operand": "x4"
+            },
+            {
+              "address": "0x85cc",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x85d8",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x860c",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x8614",
+              "kind": "direct",
+              "target": "0x73a0",
+              "symbol": "_ZN7Updater26CommonUpdaterManagerStatus12WaitCompleteEv"
+            },
+            {
+              "address": "0x8624",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x862c",
+              "kind": "direct",
+              "target": "0x7820",
+              "symbol": "_ZNK7Updater26CommonUpdaterManagerStatus8HasErrorEv"
+            },
+            {
+              "address": "0x8640",
+              "kind": "direct",
+              "target": "0x7470",
+              "symbol": "_ZNK7Updater26CommonUpdaterManagerStatus8GetErrorEv"
+            },
+            {
+              "address": "0x864c",
+              "kind": "direct",
+              "target": "0x72a0",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE"
+            },
+            {
+              "address": "0x865c",
+              "kind": "direct",
+              "target": "0x7580",
+              "symbol": "_ZN7Updater15FsysFileHandlerD1Ev"
+            },
+            {
+              "address": "0x8684",
+              "kind": "direct",
+              "target": "0x7250",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager29resetFirmwareWithoutExceptionEv"
+            },
+            {
+              "address": "0x8688",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x8698",
+              "kind": "direct",
+              "target": "0x7390",
+              "symbol": "_ZN7Updater15BufferContainer4FreeEv"
+            },
+            {
+              "address": "0x86a0",
+              "kind": "direct",
+              "target": "0x7100",
+              "symbol": "__cxa_begin_catch"
+            },
+            {
+              "address": "0x86cc",
+              "kind": "direct",
+              "target": "0x72a0",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE"
+            },
+            {
+              "address": "0x86d4",
+              "kind": "direct",
+              "target": "0x7250",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager29resetFirmwareWithoutExceptionEv"
+            },
+            {
+              "address": "0x86d8",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x86e4",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x86ec",
+              "kind": "direct",
+              "target": "0x7580",
+              "symbol": "_ZN7Updater15FsysFileHandlerD1Ev"
+            },
+            {
+              "address": "0x86f4",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            },
+            {
+              "address": "0x86fc",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x8704",
+              "kind": "direct",
+              "target": "0x7100",
+              "symbol": "__cxa_begin_catch"
+            },
+            {
+              "address": "0x8730",
+              "kind": "direct",
+              "target": "0x72a0",
+              "symbol": "_ZN7Updater25SDFileInputUpdaterManager8blinkLEDERKNS_12ApiExceptionE"
+            },
+            {
+              "address": "0x8734",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            },
+            {
+              "address": "0x8740",
+              "kind": "direct",
+              "target": "0x7750",
+              "symbol": "__cxa_end_catch"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater21SDUUDConditionChecker10searchFDATERNS_15FsysFileHandlerE",
+          "VA": "0xa0e8",
+          "bytes": 632,
+          "sha256": "8ae509ad0a6421fdb40c6bdc5b6888c712a5786ca339f24253a8890a62c0ee6e",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0xa0e8.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0xa0e8.txt",
+          "calls": [
+            {
+              "address": "0xa154",
+              "kind": "direct",
+              "target": "0x7060",
+              "symbol": "_ZN7Updater15FsysFileHandler4SeekEl"
+            },
+            {
+              "address": "0xa164",
+              "kind": "direct",
+              "target": "0x7280",
+              "symbol": "_ZN7Updater15FsysFileHandler4ReadEPvm"
+            },
+            {
+              "address": "0xa178",
+              "kind": "direct",
+              "target": "0x71c0",
+              "symbol": "memcmp"
+            },
+            {
+              "address": "0xa180",
+              "kind": "direct",
+              "target": "0x75b0",
+              "symbol": "__errno_location"
+            },
+            {
+              "address": "0xa1a4",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xa1ac",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0xa1d8",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0xa200",
+              "kind": "direct",
+              "target": "0x7280",
+              "symbol": "_ZN7Updater15FsysFileHandler4ReadEPvm"
+            },
+            {
+              "address": "0xa210",
+              "kind": "direct",
+              "target": "0x75b0",
+              "symbol": "__errno_location"
+            },
+            {
+              "address": "0xa258",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0xa27c",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0xa29c",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xa2b0",
+              "kind": "direct",
+              "target": "0x71c0",
+              "symbol": "memcmp"
+            },
+            {
+              "address": "0xa2cc",
+              "kind": "direct",
+              "target": "0x7060",
+              "symbol": "_ZN7Updater15FsysFileHandler4SeekEl"
+            },
+            {
+              "address": "0xa2f0",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xa310",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xa324",
+              "kind": "indirect",
+              "operand": "x2"
+            },
+            {
+              "address": "0xa33c",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater21SDUUDConditionChecker21getUpdateFirmwareInfoEPKcRN10UpdaterAPI22firmware_information_t11informationE",
+          "VA": "0xa3fc",
+          "bytes": 568,
+          "sha256": "0c5da9a9779a76a641c1b102254e0cad92fb70d66fb8f1081c28c007c344fbeb",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0xa3fc.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0xa3fc.txt",
+          "calls": [
+            {
+              "address": "0xa428",
+              "kind": "direct",
+              "target": "0x7680",
+              "symbol": "_ZN7Updater15FsysFileHandlerC1Ev"
+            },
+            {
+              "address": "0xa438",
+              "kind": "direct",
+              "target": "0x7130",
+              "symbol": "_ZN7Updater15FsysFileHandler4OpenEPKcj"
+            },
+            {
+              "address": "0xa444",
+              "kind": "direct",
+              "target": "0x75b0",
+              "symbol": "__errno_location"
+            },
+            {
+              "address": "0xa468",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xa470",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0xa4a4",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0xa4b0",
+              "kind": "direct",
+              "target": "0x7580",
+              "symbol": "_ZN7Updater15FsysFileHandlerD1Ev"
+            },
+            {
+              "address": "0xa4b8",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            },
+            {
+              "address": "0xa4cc",
+              "kind": "indirect",
+              "operand": "x2"
+            },
+            {
+              "address": "0xa4d8",
+              "kind": "direct",
+              "target": "0x7060",
+              "symbol": "_ZN7Updater15FsysFileHandler4SeekEl"
+            },
+            {
+              "address": "0xa4ec",
+              "kind": "direct",
+              "target": "0x7280",
+              "symbol": "_ZN7Updater15FsysFileHandler4ReadEPvm"
+            },
+            {
+              "address": "0xa4fc",
+              "kind": "direct",
+              "target": "0x75b0",
+              "symbol": "__errno_location"
+            },
+            {
+              "address": "0xa520",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xa528",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0xa55c",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0xa570",
+              "kind": "indirect",
+              "operand": "x2"
+            },
+            {
+              "address": "0xa5a4",
+              "kind": "direct",
+              "target": "0x73b0",
+              "symbol": "_ZN7Updater15FsysFileHandler5CloseEv"
+            },
+            {
+              "address": "0xa5b0",
+              "kind": "direct",
+              "target": "0x75b0",
+              "symbol": "__errno_location"
+            },
+            {
+              "address": "0xa5d4",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xa5dc",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0xa610",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0xa618",
+              "kind": "direct",
+              "target": "0x7580",
+              "symbol": "_ZN7Updater15FsysFileHandlerD1Ev"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater13BufferManager10InitializeEv",
+          "VA": "0x9a48",
+          "bytes": 312,
+          "sha256": "ab0ece521f1ab5829e6f76aaa3d6e0e26510a9011c1c7dc7a9f9f0bb3990a066",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x9a48.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x9a48.txt",
+          "calls": [
+            {
+              "address": "0x9a64",
+              "kind": "direct",
+              "target": "0x7790",
+              "symbol": "sysconf"
+            },
+            {
+              "address": "0x9a90",
+              "kind": "direct",
+              "target": "0x7460",
+              "symbol": "mmap"
+            },
+            {
+              "address": "0x9aa8",
+              "kind": "direct",
+              "target": "0x7230",
+              "symbol": "memset"
+            },
+            {
+              "address": "0x9ab0",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x9adc",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x9ae4",
+              "kind": "direct",
+              "target": "0x7540",
+              "symbol": "_ZN7Updater15FreeBufferQueueC1Ev"
+            },
+            {
+              "address": "0x9b00",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x9b24",
+              "kind": "indirect",
+              "operand": "x2"
+            },
+            {
+              "address": "0x9b40",
+              "kind": "direct",
+              "target": "0x7480",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0x9b74",
+              "kind": "direct",
+              "target": "0x74b0",
+              "symbol": "_ZdlPvm"
+            },
+            {
+              "address": "0x9b7c",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater13BufferManager17GetFirmwareBufferEv",
+          "VA": "0x9a28",
+          "bytes": 8,
+          "sha256": "bd237e5d99f6462770946dd64c9d5273577f92aeb78154ba485fef49e0d73851",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x9a28.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x9a28.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater18UFPDecryptorModuleC2Ev",
+          "VA": "0x8b58",
+          "bytes": 124,
+          "sha256": "7b72694e39ac6b5933ceca109bed66aeca82a22d9ec30cab9f72717ed4324953",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x8b58.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x8b58.txt",
+          "calls": [
+            {
+              "address": "0x8b68",
+              "kind": "direct",
+              "target": "0x7340",
+              "symbol": "_ZN7Updater15DecryptorModuleC2Ev"
+            },
+            {
+              "address": "0x8b8c",
+              "kind": "direct",
+              "target": "0x72f0",
+              "symbol": "pthread_mutex_init"
+            },
+            {
+              "address": "0x8b98",
+              "kind": "direct",
+              "target": "0x7140",
+              "symbol": "pthread_cond_init"
+            },
+            {
+              "address": "0x8ba8",
+              "kind": "direct",
+              "target": "0x7230",
+              "symbol": "memset"
+            },
+            {
+              "address": "0x8bac",
+              "kind": "direct",
+              "target": "0x7620",
+              "symbol": "Dec_ScrambleInit"
+            },
+            {
+              "address": "0x8bbc",
+              "kind": "direct",
+              "target": "0x76b0",
+              "symbol": "_ZN7Updater15DecryptorModuleD2Ev"
+            },
+            {
+              "address": "0x8bc4",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater18UFPDecryptorModule30FirmwareCopyCompletionCallbackEv",
+          "VA": "0x8ad8",
+          "bytes": 52,
+          "sha256": "39aadc1f42f9eb6117d761044af0b7c6a66ae6292e08b651976dfc3d7bef15a4",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x8ad8.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x8ad8.txt",
+          "calls": [
+            {
+              "address": "0x8af0",
+              "kind": "direct",
+              "target": "0x70a0",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x8af8",
+              "kind": "direct",
+              "target": "0x73c0",
+              "symbol": "pthread_cond_broadcast"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater18UFPDecryptorModule29WaitForFirmwareCopyCompletionEv",
+          "VA": "0x8b0c",
+          "bytes": 76,
+          "sha256": "c5d755f6013ed22cdcf5299a98680f01660bdf80d05e6517596eab6a54741a2e",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x8b0c.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x8b0c.txt",
+          "calls": [
+            {
+              "address": "0x8b24",
+              "kind": "direct",
+              "target": "0x70a0",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x8b30",
+              "kind": "direct",
+              "target": "0x7850",
+              "symbol": "pthread_cond_wait"
+            },
+            {
+              "address": "0x8b4c",
+              "kind": "direct",
+              "target": "0x7270",
+              "symbol": "pthread_mutex_unlock"
+            },
+            {
+              "address": "0x8b54",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater17SDDecryptorModule11SetBuffSizeEm",
+          "VA": "0x91d0",
+          "bytes": 8,
+          "sha256": "85836cf210c024efcfad4dafdb96c510fb2aa1be17a9205570940e1b4858e0cb",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x91d0.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x91d0.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater17SDDecryptorModuleC2Ev",
+          "VA": "0x9534",
+          "bytes": 132,
+          "sha256": "6cc46fb53dae255774f528609b423e35d9aa6918a1fa5c502c506ea816117dd3",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x9534.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x9534.txt",
+          "calls": [
+            {
+              "address": "0x9544",
+              "kind": "direct",
+              "target": "0x76a0",
+              "symbol": "_ZN7Updater18UFPDecryptorModuleC2Ev"
+            },
+            {
+              "address": "0x956c",
+              "kind": "direct",
+              "target": "0x72f0",
+              "symbol": "pthread_mutex_init"
+            },
+            {
+              "address": "0x9578",
+              "kind": "direct",
+              "target": "0x7140",
+              "symbol": "pthread_cond_init"
+            },
+            {
+              "address": "0x9588",
+              "kind": "direct",
+              "target": "0x7230",
+              "symbol": "memset"
+            },
+            {
+              "address": "0x958c",
+              "kind": "direct",
+              "target": "0x7620",
+              "symbol": "Dec_ScrambleInit"
+            },
+            {
+              "address": "0x9590",
+              "kind": "direct",
+              "target": "0x7240",
+              "symbol": "SKData_Init"
+            },
+            {
+              "address": "0x95a0",
+              "kind": "direct",
+              "target": "0x7860",
+              "symbol": "_ZN7Updater18UFPDecryptorModuleD2Ev"
+            },
+            {
+              "address": "0x95a8",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater17SDDecryptorModule13execWriteFirmEv",
+          "VA": "0x95b8",
+          "bytes": 1084,
+          "sha256": "5fedb0735851485fb44b85035c07d25ac2ac290b93248b61cfec735566513f58",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x95b8.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x95b8.txt",
+          "calls": [
+            {
+              "address": "0x9600",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x9610",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x9628",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x9640",
+              "kind": "indirect",
+              "operand": "x3"
+            },
+            {
+              "address": "0x9664",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x966c",
+              "kind": "direct",
+              "target": "0x7590",
+              "symbol": "_ZN7Updater21SignatureVerificationC1Ev"
+            },
+            {
+              "address": "0x96b4",
+              "kind": "direct",
+              "target": "0x7160",
+              "symbol": "_ZN7Updater21SignatureVerification15VerifySignatureENS_13verify_info_tEPKc"
+            },
+            {
+              "address": "0x96d8",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x96e0",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x9714",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x9720",
+              "kind": "direct",
+              "target": "0x7320",
+              "symbol": "_ZN7Updater21SignatureVerificationD1Ev"
+            },
+            {
+              "address": "0x9728",
+              "kind": "direct",
+              "target": "0x7830",
+              "symbol": "_Unwind_Resume"
+            },
+            {
+              "address": "0x9744",
+              "kind": "direct",
+              "target": "0x7320",
+              "symbol": "_ZN7Updater21SignatureVerificationD1Ev"
+            },
+            {
+              "address": "0x9790",
+              "kind": "direct",
+              "target": "0x7520",
+              "symbol": "snprintf"
+            },
+            {
+              "address": "0x97bc",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x97d4",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x9800",
+              "kind": "direct",
+              "target": "0x9278",
+              "symbol": null
+            },
+            {
+              "address": "0x9808",
+              "kind": "direct",
+              "target": "0x7770",
+              "symbol": "_ZN7Updater10BaseModule12ThreadStatus9IsRunningEv"
+            },
+            {
+              "address": "0x9818",
+              "kind": "direct",
+              "target": "0x7530",
+              "symbol": "_ZN7Updater15DecryptorModule10updateDataEv"
+            },
+            {
+              "address": "0x9834",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x9860",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x9868",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x9898",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x98a8",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x98b0",
+              "kind": "direct",
+              "target": "0x7050",
+              "symbol": "_ZN7Updater15DecryptorModule9verifySumEv"
+            },
+            {
+              "address": "0x98b8",
+              "kind": "direct",
+              "target": "0x74c0",
+              "symbol": "_ZN7Updater15DecryptorModule12getHdEndFlagEv"
+            },
+            {
+              "address": "0x98cc",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x98fc",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x9904",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x9928",
+              "kind": "direct",
+              "target": "0x7180",
+              "symbol": "_ZN7Updater15DecryptorModule7setDataEv"
+            },
+            {
+              "address": "0x9938",
+              "kind": "indirect",
+              "operand": "x1"
+            },
+            {
+              "address": "0x9950",
+              "kind": "direct",
+              "target": "0x7770",
+              "symbol": "_ZN7Updater10BaseModule12ThreadStatus9IsRunningEv"
+            },
+            {
+              "address": "0x9970",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x99a0",
+              "kind": "direct",
+              "target": "0x9278",
+              "symbol": null
+            },
+            {
+              "address": "0x99b8",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x99e0",
+              "kind": "direct",
+              "target": "0x7770",
+              "symbol": "_ZN7Updater10BaseModule12ThreadStatus9IsRunningEv"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater17SDDecryptorModule7decryptEv",
+          "VA": "0x9418",
+          "bytes": 284,
+          "sha256": "cee2a911dc295a1aa638fa5e901cf5d19d405a165f8ca4f96ee5da62a33dec28",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0x9418.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0x9418.txt",
+          "calls": [
+            {
+              "address": "0x945c",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x9464",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x9490",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x94b4",
+              "kind": "direct",
+              "target": "0x7800",
+              "symbol": "Dec_Scramble"
+            },
+            {
+              "address": "0x950c",
+              "kind": "direct",
+              "target": "0x9278",
+              "symbol": null
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater21SignatureVerification15VerifySignatureENS_13verify_info_tEPKc",
+          "VA": "0xabf0",
+          "bytes": 372,
+          "sha256": "d68fbf3480a215b246d080693df50a4626ee1afb359ae8816a47339104e62564",
+          "raw": "original-spans/libsdfileinputupdaterapi.so-0xabf0.bin",
+          "listing": "listings/libsdfileinputupdaterapi.so-0xabf0.txt",
+          "calls": [
+            {
+              "address": "0xac0c",
+              "kind": "direct",
+              "target": "0x7610",
+              "symbol": "_ZN7Updater21SignatureVerification9verifyKeyEPKc"
+            },
+            {
+              "address": "0xac34",
+              "kind": "direct",
+              "target": "0x7910",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xac3c",
+              "kind": "direct",
+              "target": "0x71a0",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0xac68",
+              "kind": "direct",
+              "target": "0x77b0",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0xac78",
+              "kind": "direct",
+              "target": "0x7630",
+              "symbol": "fopen"
+            },
+            {
+              "address": "0xacb4",
+              "kind": "direct",
+              "target": "0x7920",
+              "symbol": "PEM_read_RSA_PUBKEY"
+            },
+            {
+              "address": "0xacf4",
+              "kind": "direct",
+              "target": "0x76d0",
+              "symbol": "SHA256"
+            },
+            {
+              "address": "0xad10",
+              "kind": "direct",
+              "target": "0x7310",
+              "symbol": "RSA_verify"
+            },
+            {
+              "address": "0xad44",
+              "kind": "direct",
+              "target": "0x78c0",
+              "symbol": "RSA_free"
+            },
+            {
+              "address": "0xad4c",
+              "kind": "direct",
+              "target": "0x7190",
+              "symbol": "fclose"
+            }
+          ]
+        }
+      ],
+      "vtables": [
+        {
+          "name": "_ZTVN7Updater18UFPDecryptorModuleE",
+          "VA": "0x1d870",
+          "bytes": 184,
+          "sha256": "d81bfb50e59a9abbe66f6ae0c6b45c7b9c0bc6eead2cf982118ac4d62b6ffeda",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater18UFPDecryptorModuleE",
+              "addend": 0,
+              "resolved_link_VA": "0x1d858"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModuleD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x875c"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModuleD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x879c"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule10InitializeEPNS_15BufferContainerEPS0_PNS_17CallbackInterfaceE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule8FinalizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule5StartENS_20COMMAND_PROCESS_MODEE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule4StopEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule9WriteDataEPKhmb",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule18GetEmptyBufferSizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x50",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule5ResetEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x58",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule14GetInformationEPN10UpdaterAPI22firmware_information_t11informationE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x60",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule30FirmwareCopyCompletionCallbackEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8ad8"
+            },
+            {
+              "offset_from_symbol": "0x68",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule11GetCompSizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x70",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule11resetModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8750"
+            },
+            {
+              "offset_from_symbol": "0x78",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule11startModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8754"
+            },
+            {
+              "offset_from_symbol": "0x80",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule10stopModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8758"
+            },
+            {
+              "offset_from_symbol": "0x88",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule7executeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x91b0"
+            },
+            {
+              "offset_from_symbol": "0x90",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule7cleanupEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x98",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule18getManagedThreadIDEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0xa0",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule7decryptEv",
+              "addend": 0,
+              "resolved_link_VA": "0x89ac"
+            },
+            {
+              "offset_from_symbol": "0xa8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule5IsEndEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8968"
+            },
+            {
+              "offset_from_symbol": "0xb0",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule29WaitForFirmwareCopyCompletionEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8b0c"
+            }
+          ]
+        },
+        {
+          "name": "_ZTVN7Updater15BufferContainerE",
+          "VA": "0x1da40",
+          "bytes": 64,
+          "sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater15BufferContainerE",
+              "addend": 0,
+              "resolved_link_VA": "0x1da28"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15BufferContainerD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9a1c"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15BufferContainerD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9a40"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZNK13BaseContainer11GetPreviousEv",
+              "addend": 0,
+              "resolved_link_VA": "0x99fc"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN13BaseContainer11SetPreviousEPS_",
+              "addend": 0,
+              "resolved_link_VA": "0x9a04"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZNK13BaseContainer7GetNextEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9a0c"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN13BaseContainer7SetNextEPS_",
+              "addend": 0,
+              "resolved_link_VA": "0x9a14"
+            }
+          ]
+        },
+        {
+          "name": "_ZTVN7Updater17SDDecryptorModuleE",
+          "VA": "0x1d940",
+          "bytes": 200,
+          "sha256": "6d9c54dee5660c46886f32d80e57e9dd0ffa57ee0cd2a762b036d9c8e0c3a33a",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater17SDDecryptorModuleE",
+              "addend": 0,
+              "resolved_link_VA": "0x1d928"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModuleD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x91d8"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModuleD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9248"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule10InitializeEPNS_15BufferContainerEPS0_PNS_17CallbackInterfaceE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule8FinalizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule5StartENS_20COMMAND_PROCESS_MODEE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule4StopEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule9WriteDataEPKhmb",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule18GetEmptyBufferSizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x50",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule5ResetEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x58",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule14GetInformationEPN10UpdaterAPI22firmware_information_t11informationE",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x60",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule30FirmwareCopyCompletionCallbackEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8ad8"
+            },
+            {
+              "offset_from_symbol": "0x68",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule11GetCompSizeEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x70",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule11resetModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8750"
+            },
+            {
+              "offset_from_symbol": "0x78",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule11startModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8754"
+            },
+            {
+              "offset_from_symbol": "0x80",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule10stopModuleEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8758"
+            },
+            {
+              "offset_from_symbol": "0x88",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule7executeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x99f4"
+            },
+            {
+              "offset_from_symbol": "0x90",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10BaseModule7cleanupEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0x98",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15DecryptorModule18getManagedThreadIDEv",
+              "addend": 0
+            },
+            {
+              "offset_from_symbol": "0xa0",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule7decryptEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9418"
+            },
+            {
+              "offset_from_symbol": "0xa8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule5IsEndEv",
+              "addend": 0,
+              "resolved_link_VA": "0x93d4"
+            },
+            {
+              "offset_from_symbol": "0xb0",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater18UFPDecryptorModule29WaitForFirmwareCopyCompletionEv",
+              "addend": 0,
+              "resolved_link_VA": "0x8b0c"
+            },
+            {
+              "offset_from_symbol": "0xb8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule11SetBuffSizeEm",
+              "addend": 0,
+              "resolved_link_VA": "0x91d0"
+            },
+            {
+              "offset_from_symbol": "0xc0",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater17SDDecryptorModule18DecScrambleWrapperEPh",
+              "addend": 0,
+              "resolved_link_VA": "0x9270"
+            }
+          ]
+        },
+        {
+          "name": "_ZTVN7Updater21SDUUDConditionCheckerE",
+          "VA": "0x1dc00",
+          "bytes": 112,
+          "sha256": "b5fdab78d8947eacc864bfeecb4d2100780e5afe1cd8efafb124887913ac49fa",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater21SDUUDConditionCheckerE",
+              "addend": 0,
+              "resolved_link_VA": "0x1dbf0"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionCheckerD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9fbc"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionCheckerD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xa02c"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker10InitializeEPNS_27SDFileInputBodyLoaderModuleEPNS_17SDDecryptorModuleE",
+              "addend": 0,
+              "resolved_link_VA": "0x9fc0"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker8FinalizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9fb8"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker16IsUUDConditionOKEPKcRN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0xa360"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker23SkipContentsInformationERNS_15FsysFileHandlerE",
+              "addend": 0,
+              "resolved_link_VA": "0x9fc8"
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker11isVersionOKERN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0x9fd4"
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker9isModelOKERN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0xa004"
+            },
+            {
+              "offset_from_symbol": "0x50",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker10isRegionOKERN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0xa018"
+            },
+            {
+              "offset_from_symbol": "0x58",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker22getFirmwareInformationEPKcRN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0xa054"
+            },
+            {
+              "offset_from_symbol": "0x60",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker21getUpdateFirmwareInfoEPKcRN10UpdaterAPI22firmware_information_t11informationE",
+              "addend": 0,
+              "resolved_link_VA": "0xa3fc"
+            },
+            {
+              "offset_from_symbol": "0x68",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker10searchFDATERNS_15FsysFileHandlerE",
+              "addend": 0,
+              "resolved_link_VA": "0xa0e8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "bytes": 72864,
+      "sha256": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater15BufferContainer4FreeEv",
+          "VA": "0xacd8",
+          "bytes": 28,
+          "sha256": "34c49ff1466eae40988fbbccf4afb4762f9e5536c38f779861ebfbf3ae942bde",
+          "raw": "original-spans/libupdatercorecommon.so-0xacd8.bin",
+          "listing": "listings/libupdatercorecommon.so-0xacd8.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater10BaseModule18GetEmptyBufferSizeEv",
+          "VA": "0xad44",
+          "bytes": 16,
+          "sha256": "b98f4a1813d072955d44d1d6764c722ea103e8004d03dec71a0cf4181eecd0fa",
+          "raw": "original-spans/libupdatercorecommon.so-0xad44.bin",
+          "listing": "listings/libupdatercorecommon.so-0xad44.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater10BaseModule10InitializeEPNS_15BufferContainerEPS0_PNS_17CallbackInterfaceE",
+          "VA": "0xb2dc",
+          "bytes": 164,
+          "sha256": "c0b1cfef7ebf4d71a15c2222b5b10342f19d752bce74e0af27e57212abe021f0",
+          "raw": "original-spans/libupdatercorecommon.so-0xb2dc.bin",
+          "listing": "listings/libupdatercorecommon.so-0xb2dc.txt",
+          "calls": [
+            {
+              "address": "0xb310",
+              "kind": "direct",
+              "target": "0x85f0",
+              "symbol": "__assert_fail"
+            },
+            {
+              "address": "0xb32c",
+              "kind": "direct",
+              "target": "0x8980",
+              "symbol": "_ZN7Updater10BaseModule12ThreadStatus4StopEv"
+            },
+            {
+              "address": "0xb334",
+              "kind": "direct",
+              "target": "0x87f0",
+              "symbol": "_Znwm"
+            },
+            {
+              "address": "0xb33c",
+              "kind": "direct",
+              "target": "0x8b60",
+              "symbol": "_ZN7Updater10RingBufferC1Ev"
+            },
+            {
+              "address": "0xb34c",
+              "kind": "direct",
+              "target": "0x8570",
+              "symbol": "_ZN7Updater10RingBuffer10InitializeEPhm"
+            },
+            {
+              "address": "0xb374",
+              "kind": "direct",
+              "target": "0x8810",
+              "symbol": "_ZdlPvm"
+            },
+            {
+              "address": "0xb37c",
+              "kind": "direct",
+              "target": "0x8c30",
+              "symbol": "_Unwind_Resume"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule10updateDataEv",
+          "VA": "0xb6a4",
+          "bytes": 56,
+          "sha256": "6be1613c3dc3a1e16d6eaf125cae807c47d403b4434dda1234f7df884b182fca",
+          "raw": "original-spans/libupdatercorecommon.so-0xb6a4.bin",
+          "listing": "listings/libupdatercorecommon.so-0xb6a4.txt",
+          "calls": [
+            {
+              "address": "0xb6c8",
+              "kind": "indirect",
+              "operand": "x3"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater15DecryptorModule7setDataEv",
+          "VA": "0xb6dc",
+          "bytes": 92,
+          "sha256": "f9b3376a326657657a199965ba58a973559a568cff08ca5d4e0b74eaa499e799",
+          "raw": "original-spans/libupdatercorecommon.so-0xb6dc.bin",
+          "listing": "listings/libupdatercorecommon.so-0xb6dc.txt",
+          "calls": [
+            {
+              "address": "0xb6f0",
+              "kind": "direct",
+              "target": "0x87c0",
+              "symbol": "_ZN7Updater15DecryptorModule13getHdDataSizeEv"
+            },
+            {
+              "address": "0xb710",
+              "kind": "indirect",
+              "operand": "x1"
+            }
+          ]
+        }
+      ],
+      "vtables": [
+        {
+          "name": "_ZTVN7Updater15BufferContainerE",
+          "VA": "0x209a0",
+          "bytes": 64,
+          "sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater15BufferContainerE",
+              "addend": 0,
+              "resolved_link_VA": "0x20988"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15BufferContainerD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xb914"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater15BufferContainerD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xb930"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZNK13BaseContainer11GetPreviousEv",
+              "addend": 0,
+              "resolved_link_VA": "0xaa08"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN13BaseContainer11SetPreviousEPS_",
+              "addend": 0,
+              "resolved_link_VA": "0xaa10"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZNK13BaseContainer7GetNextEv",
+              "addend": 0,
+              "resolved_link_VA": "0xaa18"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN13BaseContainer7SetNextEPS_",
+              "addend": 0,
+              "resolved_link_VA": "0xaa20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "bytes": 56032,
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater15FsysFileHandlerC2Ev",
+          "VA": "0x8be4",
+          "bytes": 24,
+          "sha256": "16d92f1c89b12cab8c08d3a27588755096946316c3d3fd79c93ff9b047d9bb7c",
+          "raw": "original-spans/libupdatercommon.so-0x8be4.bin",
+          "listing": "listings/libupdatercommon.so-0x8be4.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater15FsysFileHandler4ReadEPvm",
+          "VA": "0x8d8c",
+          "bytes": 184,
+          "sha256": "8ee2e0629d5f7658e5e4627c95a44640a86fb82759c3f34bc387e0992b8f6e2b",
+          "raw": "original-spans/libupdatercommon.so-0x8d8c.bin",
+          "listing": "listings/libupdatercommon.so-0x8d8c.txt",
+          "calls": [
+            {
+              "address": "0x8dc4",
+              "kind": "direct",
+              "target": "0x6fd0",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x8dcc",
+              "kind": "direct",
+              "target": "0x6b20",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x8df8",
+              "kind": "direct",
+              "target": "0x6f10",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x8e00",
+              "kind": "direct",
+              "target": "0x6cd0",
+              "symbol": "Fsys_Read"
+            },
+            {
+              "address": "0x8e30",
+              "kind": "direct",
+              "target": "0x6fd0",
+              "symbol": "printf"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater15FsysFileHandler4SeekEliPm",
+          "VA": "0x8e44",
+          "bytes": 176,
+          "sha256": "bb178657ddb8653cd19927d9d03f2a98eaa4362859d5a8273036578b41b5e88e",
+          "raw": "original-spans/libupdatercommon.so-0x8e44.bin",
+          "listing": "listings/libupdatercommon.so-0x8e44.txt",
+          "calls": [
+            {
+              "address": "0x8e78",
+              "kind": "direct",
+              "target": "0x6fd0",
+              "symbol": "printf"
+            },
+            {
+              "address": "0x8e80",
+              "kind": "direct",
+              "target": "0x6b20",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0x8eac",
+              "kind": "direct",
+              "target": "0x6f10",
+              "symbol": "__cxa_throw"
+            },
+            {
+              "address": "0x8eb0",
+              "kind": "direct",
+              "target": "0x6d60",
+              "symbol": "Fsys_Seek"
+            },
+            {
+              "address": "0x8edc",
+              "kind": "direct",
+              "target": "0x6fd0",
+              "symbol": "printf"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater15FsysFileHandler4SeekEl",
+          "VA": "0x8efc",
+          "bytes": 8,
+          "sha256": "fdee4c43eebfce433b3836c4f28ea8e17ff1111f4f16e39ed4b3130b0f5d06d9",
+          "raw": "original-spans/libupdatercommon.so-0x8efc.bin",
+          "listing": "listings/libupdatercommon.so-0x8efc.txt",
+          "calls": []
+        }
+      ],
+      "vtables": []
+    }
+  ],
+  "scope": "Original historical intermediate updater data, not a current-body engine capture. Static only; no original execution, helper stubs, hardware, signing, or modified firmware."
+}

@@ -1,0 +1,1 @@
+Viewed work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-6a05c56b/internal-observe-01.png using image tool. English standby HD 59.94fps, NO CARD, nonblack, no dialog; press MENU once to reproduce the prior native shutdown path without editing any setting

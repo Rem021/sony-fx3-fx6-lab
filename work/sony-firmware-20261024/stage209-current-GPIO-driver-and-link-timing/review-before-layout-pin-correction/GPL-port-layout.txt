@@ -1,0 +1,18 @@
+
+
+#ifdef __KERNEL__
+/* kernel-API */
+extern int gpio_get_data_bit(unsigned char port, unsigned int bit, unsigned int* data);
+extern int gpio_get_data_port(unsigned char port, unsigned int bitmask, unsigned int* data );
+extern int gpio_set_data_bit(unsigned char port, unsigned int bit, unsigned int data);
+extern int gpio_set_data_port(unsigned char port, unsigned int bitmask, unsigned int data);
+extern int gpio_set_mode_bit(unsigned char port, unsigned int bit, unsigned int mode);
+extern int gpio_set_mode_port(unsigned char port, unsigned int bitmask, unsigned int mode);
+extern int gpio_get_mode_bit(unsigned char port, unsigned int bit, unsigned int* mode);
+#endif /* __KERNEL__ */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /*__GPIO_H__*/

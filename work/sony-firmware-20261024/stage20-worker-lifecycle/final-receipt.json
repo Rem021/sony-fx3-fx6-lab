@@ -1,0 +1,69 @@
+{
+  "schema": "fx3-stage20-worker-lifecycle/1",
+  "created_utc": "2026-10-25T19:50:56.468187+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage20-worker-lifecycle/README.md",
+      "bytes": 7291,
+      "sha256": "3dba114b5f667e7c9bf19e00c543b12a30f1b7c3e11d49b001cd4eb18a78eb18"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage20-worker-lifecycle/coordinator-observations.json",
+      "bytes": 1866,
+      "sha256": "3c498c73636ea4b34751521733ffd69e44fcb8a42a4bb979521090376baaa62b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage20-worker-lifecycle/goal-status-after.json",
+      "bytes": 27627,
+      "sha256": "d45e3245f814f003295784dea3aa0f4e30dd6c24f03fb57326fe75affe433043"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage20-worker-lifecycle/goal-status-before.json",
+      "bytes": 26161,
+      "sha256": "e3d22e99990632ae07e0eee997e2277690202fc5835be9274bbd77c82da7ba1b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage20-worker-lifecycle/run-20261025/source-receipt.json",
+      "bytes": 1808,
+      "sha256": "f6904484716c0d9690d4c6eeacb32c2feab1b6c35bbc96e60a5cf02be4824863"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage20-worker-lifecycle/run-20261025/summary.json",
+      "bytes": 697,
+      "sha256": "2950bce1d0cef184387a477931f4b052df8a480358dd3acab5bd0c5e20d8b897"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage20-worker-lifecycle/run-20261025/worker-lifecycle-results.json",
+      "bytes": 100602,
+      "sha256": "e993f7be7dce8c65aed830d8fa6f22c37025bb7f90cbf532eb39599780c3f294"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage20-worker-lifecycle/worker_lifecycle.py",
+      "bytes": 17592,
+      "sha256": "9bbac89b8b678f262bd15d3093477ff29bee1cc71e4a52eea59523a28382a384"
+    }
+  ],
+  "scope": "Original instruction fragments on independent synthetic phase fixtures. Not a continuous worker execution, real lock, native task, future delivery, destructor, notify, safe unload, loader, recovery or device acceptance.",
+  "previous_manifest_sha256": "089d2528efd39a57316443df5c0af27eb6e0fe82af81bc41cb4053a4e304a612",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "e3d22e99990632ae07e0eee997e2277690202fc5835be9274bbd77c82da7ba1b",
+    "after_sha256": "d45e3245f814f003295784dea3aa0f4e30dd6c24f03fb57326fe75affe433043",
+    "before_snapshot": "work/sony-firmware-20261024/stage20-worker-lifecycle/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage20-worker-lifecycle/goal-status-after.json",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "bounded_guest_original_fragments": true,
+    "native_thread_lock_task_destructor_or_notify": false,
+    "new_remote_attempts": false,
+    "Windows_task_dispatched_or_executed": false,
+    "camera_interface_auth_driver_files_module_backend_WBI_or_write": false,
+    "firmware_payload_or_patchfile_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 工作线程与退出观察](<work/sony-firmware-20261024/stage20-worker-lifecycle/README.md>)：绑定当前对象的发布、任务调用和收尾顺序；21个边界片段及14个原等待判断通过，完整同步/退出及实机恢复仍未验证。"
+}

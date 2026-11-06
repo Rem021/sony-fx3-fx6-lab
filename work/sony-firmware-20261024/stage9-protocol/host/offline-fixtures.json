@@ -1,0 +1,55 @@
+{
+  "schema": "sony-candidate-offline-fixtures/1",
+  "kind": "own_synthetic_bytes_no_device_trace",
+  "target_route_verified": false,
+  "live_transport_supported": false,
+  "source_host_layout": {
+    "outer_struct": "<IHHBBBB",
+    "header_bytes": 12,
+    "size_excludes_header": true,
+    "pfunc": 64,
+    "inner_request_struct": "<HH",
+    "family": 4097,
+    "candidate_commands": [
+      15,
+      17
+    ],
+    "reply_payload_candidate": "u32 LE status then data; no command echo parsed"
+  },
+  "local_policy": {
+    "max_data_bytes": 65536,
+    "max_path_bytes": 510,
+    "single_complete_frame_only": true,
+    "no_traversal": true,
+    "nonzero_status_never_success": true,
+    "wire_read_request_has_no_client_length_limit": true
+  },
+  "golden": {
+    "setpath_sequence1_path_tmp_jiritsu_f_bin": "18000000400001000000000001100f00002f746d702f6a6972697473752f662e62696e00",
+    "read_sequence2": "0700000040000200000000000110110000ff00",
+    "setpath_ack_sequence1": "04000000400001000000000000000000",
+    "read_reply_sequence2_ABC": "07000000400002000000000000000000414243"
+  },
+  "validation": {
+    "command": "python3 -B verify_offline_codec.py",
+    "test_methods": 19,
+    "result": "OK",
+    "observed_runner_seconds": 0.003,
+    "scope": "own local implementation and synthetic fixtures only; not hardware verified",
+    "coordinator_independent_recheck": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 verify_offline_codec.py",
+      "tests": 19,
+      "result": "PASS",
+      "ast_review": "only dataclasses/struct; no device/system/file I/O calls in own codec",
+      "hardware_validation": false
+    }
+  },
+  "unverified_target_facts": [
+    "classic FX3 active outer route and final USB serializer",
+    "actual response header endianness and fields",
+    "error status list and missing status",
+    "chunk termination and ZLP behavior",
+    "service identity and endpoints",
+    "actual file path handling"
+  ]
+}

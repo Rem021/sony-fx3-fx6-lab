@@ -1,0 +1,90 @@
+{
+  "historical_source_scope": "Retrospective HTTP observation timing from real r25 VM; not exact native processing, pixel arrival, agent review time, or a new acceptance result",
+  "longest_key_POST_to_target_status_observed_seconds": 4.495687,
+  "step": 1,
+  "sampling_proposal": "Only a future offline host candidate: take first read-only image around arm+4.5 to5.0s, retain original 20s countdown and all identity gates, no automatic semantic completion/pin/confirm. Not implemented here.",
+  "measured_two_review_handoff_sum_seconds": 12.773257812499999,
+  "scenarios": [
+    {
+      "first_observation_available_at_arm_seconds": 4.5,
+      "subtotal_before_real_pin_confirm_and_other_tail_seconds": 17.2732578125,
+      "remaining_for_real_pin_confirm_and_other_tail_seconds": 2.726742187500001,
+      "with_known_r25_tail_components_range_seconds": [
+        17.4279415625,
+        17.6481136875
+      ]
+    },
+    {
+      "first_observation_available_at_arm_seconds": 5.0,
+      "subtotal_before_real_pin_confirm_and_other_tail_seconds": 17.7732578125,
+      "remaining_for_real_pin_confirm_and_other_tail_seconds": 2.226742187500001,
+      "with_known_r25_tail_components_range_seconds": [
+        17.9279415625,
+        18.1481136875
+      ]
+    }
+  ],
+  "historical_pin_confirm_components": {
+    "historical_rows": [
+      {
+        "step": 1,
+        "pin_post_tail_plus_confirm_guard_helper_seconds": 0.23857479100000004
+      },
+      {
+        "step": 2,
+        "pin_post_tail_plus_confirm_guard_helper_seconds": 0.318409459
+      },
+      {
+        "step": 3,
+        "pin_post_tail_plus_confirm_guard_helper_seconds": 0.15468375
+      },
+      {
+        "step": 4,
+        "pin_post_tail_plus_confirm_guard_helper_seconds": 0.290141708
+      },
+      {
+        "step": 5,
+        "pin_post_tail_plus_confirm_guard_helper_seconds": 0.374855875
+      },
+      {
+        "step": 6,
+        "pin_post_tail_plus_confirm_guard_helper_seconds": 0.31888729200000004
+      },
+      {
+        "step": 7,
+        "pin_post_tail_plus_confirm_guard_helper_seconds": 0.238484875
+      }
+    ],
+    "range_seconds": [
+      0.15468375,
+      0.374855875
+    ],
+    "capture_total_range_seconds": [
+      1.521441833,
+      4.531691042
+    ],
+    "do_not_double_count": "capture total includes pre-POST readiness wait. Its1.52..4.53s is not added wholesale after sampling at5s.",
+    "arm_to_key_POST_observed_seconds": 0.086541015625,
+    "latest_historical_target_status_mapped_to_arm_seconds": 4.582228015625001,
+    "sample_START_at_arm5_with_real_observe_child_proxy_seconds": 17.9990268125,
+    "plus_known_tail_components_range_seconds": [
+      18.1537105625,
+      18.3738826875
+    ],
+    "remaining_seconds_before_unmeasured_pin_pre_POST_flow_adapter_tail": [
+      1.6261173125000015,
+      1.8462894375000014
+    ],
+    "unknown_extra": "Standalone r26 pin pre-POST checks/readiness, flow guards, adapter/image-return tails and future model/scheduler distribution. Post-POST tail is not full standalone pin."
+  },
+  "two_observation_path_conditional_subtotal_seconds": 21.693821490234374,
+  "two_observation_assumption": "Use the smaller measured B handoff once more for the extra observe; real pin+confirm still set to zero; not a guaranteed lower bound.",
+  "limitations": [
+    "Historical 4.496s is HTTP observation, not exact render/native completion or a future upper bound",
+    "Sampling later raises probability of a complete first image but does not prove semantic correctness",
+    "Single B chain is not a latency distribution or stable runtime guarantee",
+    "Real pin/confirm and model/scheduler variability remain unmeasured",
+    "If first image is still transitional, only explicit extra observe or End remains; no repin or retry permission"
+  ],
+  "recommendation": "No new VM based on present evidence; later-first sampling is a narrow future offline proposal with only about2s unallocated budget, not a solved20s contract."
+}

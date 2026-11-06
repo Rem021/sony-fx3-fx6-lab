@@ -1,0 +1,14 @@
+00001e14 fd7bbea9 stp      x29, x30, [sp, #-0x20]!
+00001e18 e403002a mov      w4, w0
+00001e1c a1298052 mov      w1, #0x14d
+00001e20 23008052 mov      w3, #1
+00001e24 fd030091 mov      x29, sp
+00001e28 a5830091 add      x5, x29, #0x20
+00001e2c 82008052 mov      w2, #4
+00001e30 c107a072 movk     w1, #0x3e, lsl #16
+00001e34 bfcc1fb8 str      wzr, [x5, #-4]!
+00001e38 e00305aa mov      x0, x5
+00001e3c bdfdff97 bl       #0x1530
+00001e40 a01f40b9 ldr      w0, [x29, #0x1c]
+00001e44 fd7bc2a8 ldp      x29, x30, [sp], #0x20
+00001e48 c0035fd6 ret      

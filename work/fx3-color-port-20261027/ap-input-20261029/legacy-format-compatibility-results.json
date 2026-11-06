@@ -1,0 +1,44 @@
+{
+  "original_aes_wrapper_sha256": "8f7f7b8a334277f49be200b69cba36a689690a00be238ed9394d0aa2d7c541e5",
+  "key_symbol": "KeyArray",
+  "key_bytes": 16,
+  "key_sha256": "2646036bb22781536be710245c8cbb04b92842c587f845996ce8ab542592a25e",
+  "original_cipher_block_sha256": "e30022b02c06ada666466c4358074535acf414dfc5b686755bbf2c2b0811ee98",
+  "original_plain_fdat_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "first512_match": true,
+  "last512_match": false,
+  "expected_raw_block_sha256": "da32f41a242accc05c76b71a49a9ee44fc2261c3a7fedb3a8275447ca2a66a73",
+  "legacy_raw_block_sha256": "b3d6f3c4085b815d0f1bf4176d79fcade68b3715a59f931455d898a399f1a3a9",
+  "original_checksum_helper_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+  "original_checksum_helper_entry": "0xa8e8",
+  "expected_checksum": 22913,
+  "legacy_calculated_checksum": 63920,
+  "correct_original_block_result": {
+    "returned": true,
+    "exception": null,
+    "instructions": 3096,
+    "x0": 22913
+  },
+  "legacy_decrypted_original_block_result": {
+    "returned": false,
+    "exception": {
+      "code": "0x30002",
+      "declared_stop": "__cxa_throw entry; no native unwinder or recovery executed"
+    },
+    "instructions": 3117,
+    "x0": 1342185472
+  },
+  "in_memory_legacy_reencoding": {
+    "cipher_sha256": "6fb3f6bfe57b29dedff49d7280c7895ff43c816bc0fc34700c2b38b66396c27a",
+    "different_from_official_cipher": true,
+    "restored_original_plain_block": true,
+    "original_checksum_result": {
+      "returned": true,
+      "exception": null,
+      "instructions": 3096,
+      "x0": 22913
+    },
+    "output_written": false
+  },
+  "scope": "Source wrapper is statically AES-128 single-block decryption with no CBC chaining. Host CommonCrypto applies that rule to one original 1 KiB vector; original current AP checksum helper executes in bounded synthetic Unicorn RAM. This distinguishes formats, not all admission paths. No full legacy repack, modified firmware, native Sony program, body or device action."
+}

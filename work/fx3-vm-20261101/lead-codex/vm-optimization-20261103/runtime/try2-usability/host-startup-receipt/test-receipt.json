@@ -1,0 +1,59 @@
+{
+  "scope": "production startup and cleanup body; fake process only; real HTTP and flock",
+  "cases": [
+    {
+      "source": "run_trial_v14_final_receipt.py",
+      "scenario": "port_collision",
+      "baseline_bug_reproduced": "UnboundLocalError(\"cannot access local variable 'phaseA_capture' where it is not associated with a value\")",
+      "receipt_missing": true,
+      "real_qemu_started": false
+    },
+    {
+      "source": "run_trial_v14_final_receipt.py",
+      "scenario": "spawn_error",
+      "baseline_bug_reproduced": "UnboundLocalError(\"cannot access local variable 'phaseA_capture' where it is not associated with a value\")",
+      "receipt_missing": true,
+      "real_qemu_started": false
+    },
+    {
+      "source": "run_trial_v14_final_receipt.py",
+      "scenario": "early_exit",
+      "baseline_bug_reproduced": "UnboundLocalError(\"cannot access local variable 'phaseA_capture' where it is not associated with a value\")",
+      "receipt_missing": true,
+      "real_qemu_started": false
+    },
+    {
+      "source": "run_trial_v15_startup_receipt.py",
+      "scenario": "port_collision",
+      "passed": true,
+      "exit": 2,
+      "original_error": "OSError(48, 'Address already in use')",
+      "real_qemu_started": false,
+      "server_threads_closed": true,
+      "locks_free": true,
+      "health_pass": false
+    },
+    {
+      "source": "run_trial_v15_startup_receipt.py",
+      "scenario": "spawn_error",
+      "passed": true,
+      "exit": 2,
+      "original_error": "OSError('fixture process spawn denied')",
+      "real_qemu_started": false,
+      "server_threads_closed": true,
+      "locks_free": true,
+      "health_pass": false
+    },
+    {
+      "source": "run_trial_v15_startup_receipt.py",
+      "scenario": "early_exit",
+      "passed": true,
+      "exit": 2,
+      "original_error": "RuntimeError('QEMU startup exited; inspect host-stderr.log')",
+      "real_qemu_started": false,
+      "server_threads_closed": true,
+      "locks_free": true,
+      "health_pass": false
+    }
+  ]
+}

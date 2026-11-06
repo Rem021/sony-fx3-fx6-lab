@@ -1,0 +1,28 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap96v1replaydiag-0f72a1e0",
+  "created_utc": "2026-11-02T18:38:40.162788+00:00",
+  "run_still_active": true,
+  "pre_AP_QMP_input_proof": {
+    "sha256": "191924ef39d996171ae06ab4ca85e249b655b16db6b68fd1e2ddea45efc60bdc",
+    "expected": "191924ef39d996171ae06ab4ca85e249b655b16db6b68fd1e2ddea45efc60bdc",
+    "before_AP_bootin_marker": true,
+    "verified": true,
+    "bytes": 2232320,
+    "physical": "0x404000000",
+    "method": "QMPstop/pmemsave afterguesthelperremapSHA beforeAPlaunch;existingreservedRAMonly"
+  },
+  "boot_did_not_skip_language_page": true,
+  "phaseA_PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap96v1replaydiag-0f72a1e0/ap96-phaseA-before-SETUP.png",
+  "MENU_step1_records": [
+    "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0",
+    "FX3_SYNTH_KEY step=1 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=80407747008 host_gate=1",
+    "FX3_SYNTH_KEY step=1 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=80570542000 host_gate=1",
+    "FX3_KEY95_STEP_DONE step=1 key=0x1ab requested_hold_ms=100 measured_down_up_ns=150692000 elapsed_ns=358644000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1",
+    "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0"
+  ],
+  "MENU_PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap96v1replaydiag-0f72a1e0/ap96-step-01-key-1ab.png",
+  "poll_last": "FX3_KEY96_POLL tid=327 poll=16511 stage=1 failed=0 receiver_seen=1 done=1 control_step=1 key=0x1ab hold_ms=100 last_send=0 native_receiver_queue_exists=1 receiver_query_ns=153847458000 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=153909727008",
+  "shooting_standby_verified": false,
+  "menu_verified": false,
+  "next_action": "Lead decision required: continue original setup under diagnostic worker or stop for reboot-state audit"
+}

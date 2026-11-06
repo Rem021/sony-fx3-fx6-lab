@@ -1,0 +1,37 @@
+{
+  "scope": "actual Orca browser against historical PNG proxy; no QEMU, no guest input",
+  "status": "pass",
+  "rows": [
+    {
+      "scenario": "normal",
+      "module_sha256": "b2dc6b3a61e884c4e2ace56651eafb6e75455e693b02fb1082884fb69816d804",
+      "browser_png_sha256": "8fb14c7ebb81481f33cce6caf9a9ebd391e647a01870fbe1f9e6afd53727ffb0",
+      "key_requests": 1,
+      "frame_requests": 2,
+      "final_ack_requests": 1,
+      "server_threads_reaped": true,
+      "browser_final_acknowledged": true
+    },
+    {
+      "scenario": "frame-delay",
+      "module_sha256": "b2dc6b3a61e884c4e2ace56651eafb6e75455e693b02fb1082884fb69816d804",
+      "browser_png_sha256": "3e3b40947a1eda523297b0dafe39d4280d44f6cbbd67b500a6cb10352a5c2fc4",
+      "key_requests": 0,
+      "frame_requests": 2,
+      "final_ack_requests": 1,
+      "server_threads_reaped": true,
+      "browser_final_acknowledged": true,
+      "frame_retry_after_seconds": 8.409971999994013
+    },
+    {
+      "scenario": "key-ack-drop",
+      "module_sha256": "b2dc6b3a61e884c4e2ace56651eafb6e75455e693b02fb1082884fb69816d804",
+      "browser_png_sha256": "0ec9670907c483462ed36f59af751718c3515c495807c7347380409381884248",
+      "key_requests": 1,
+      "frame_requests": 2,
+      "final_ack_requests": 1,
+      "server_threads_reaped": true,
+      "browser_final_acknowledged": true
+    }
+  ]
+}

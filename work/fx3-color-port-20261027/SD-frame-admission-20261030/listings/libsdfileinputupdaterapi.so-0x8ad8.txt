@@ -1,0 +1,14 @@
+_ZN7Updater18UFPDecryptorModule30FirmwareCopyCompletionCallbackEv
+00008ad8 stp       x29, x30, [sp, #-0x20]!
+00008adc mov       x29, sp
+00008ae0 stp       x19, x20, [sp, #0x10]
+00008ae4 add       x19, x0, #0x4c0
+00008ae8 mov       x20, x0
+00008aec mov       x0, x19
+00008af0 bl        #0x70a0 ; pthread_mutex_lock
+00008af4 add       x0, x20, #0x4f0
+00008af8 bl        #0x73c0 ; pthread_cond_broadcast
+00008afc mov       x0, x19
+00008b00 ldp       x19, x20, [sp, #0x10]
+00008b04 ldp       x29, x30, [sp], #0x20
+00008b08 b         #0x7270

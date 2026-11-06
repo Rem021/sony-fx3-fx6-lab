@@ -1,0 +1,1437 @@
+{
+  "actual_Sony_loader_acceptance_verified": false,
+  "actual_body_or_loaded_driver_identity_verified": false,
+  "build_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-target",
+    "aarch64-linux-gnu",
+    "-std=c11",
+    "-O2",
+    "-fPIC",
+    "-fvisibility=hidden",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-unwind-tables",
+    "-fno-asynchronous-unwind-tables",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage221-private-IPC-entry-gate/boot_module.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage221-private-IPC-entry-gate/runs-final-v2/built/module.o"
+  ],
+  "bytes": 262936,
+  "camera_identity_verified": false,
+  "camera_operations": 0,
+  "camera_transfer_or_launch_backend": false,
+  "child_identity_guard_implemented": false,
+  "constructor_effect_authenticated_by_metadata": false,
+  "cross_request_global_exclusion_implemented": false,
+  "dynamic_tags": [
+    [
+      4,
+      132696
+    ],
+    [
+      5,
+      132584
+    ],
+    [
+      6,
+      132624
+    ],
+    [
+      10,
+      40
+    ],
+    [
+      11,
+      24
+    ],
+    [
+      7,
+      132720
+    ],
+    [
+      8,
+      24
+    ],
+    [
+      9,
+      24
+    ],
+    [
+      25,
+      196608
+    ],
+    [
+      27,
+      8
+    ],
+    [
+      0,
+      0
+    ]
+  ],
+  "exclusive_request_attestation_verified": false,
+  "exports": {
+    "fx3_boot_read_window": {
+      "bytes": 3976,
+      "va": 65576
+    },
+    "fx3_module_status": {
+      "bytes": 12,
+      "va": 65564
+    }
+  },
+  "fixed_shell_process_filter_implemented": true,
+  "flashable": false,
+  "global_target_keeper_integrated": false,
+  "handoff_implementation_sha256": "34aa6e8979b4e30ddeec50912eb6da28c45d2920c83a19cee59e6b980445385c",
+  "hardware_validated": false,
+  "has_DT_NEEDED_or_imports": false,
+  "independent_recovery_proven": false,
+  "init_array": [
+    196608
+  ],
+  "initialization_behavior_verified_by_inspector": false,
+  "initializer_bytes": 28,
+  "initializer_code_sha256": "5a72659fc25c120871751c19c6172b1961d40cb68f02e0fac8ec065cf1216223",
+  "initializer_symbol": "fx3_module_init",
+  "initializer_va": 65536,
+  "inner_reader_sha256": "a1459db35501716dc414b45479aaa25c1ddb252ec440bd24258c4db7dbd78683",
+  "ipc_gate_source_sha256": "159dc5cb16b937f02f0399939831370c58242779d9bbc8a71d2bee6c1ee55725",
+  "link_relocations": [
+    {
+      "after": 2415919496,
+      "before": 2415919112,
+      "file_offset": 65540,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 262144
+    },
+    {
+      "after": 4177527049,
+      "before": 4177527049,
+      "file_offset": 65556,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 262144
+    },
+    {
+      "after": 2415919496,
+      "before": 2415919112,
+      "file_offset": 65564,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 262144
+    },
+    {
+      "after": 4181721344,
+      "before": 4181721344,
+      "file_offset": 65568,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 262144
+    },
+    {
+      "after": 2415919496,
+      "before": 2415919112,
+      "file_offset": 65608,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 262152
+    },
+    {
+      "after": 2432704776,
+      "before": 2432696584,
+      "file_offset": 65612,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 262152
+    },
+    {
+      "after": 2415919496,
+      "before": 2415919112,
+      "file_offset": 65648,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 262144
+    },
+    {
+      "after": 4181721352,
+      "before": 4181721352,
+      "file_offset": 65656,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 262144
+    },
+    {
+      "after": 2415919240,
+      "before": 2415919112,
+      "file_offset": 66264,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131080
+    },
+    {
+      "after": 4248831232,
+      "before": 4248830208,
+      "file_offset": 66292,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131080
+    },
+    {
+      "after": 2415919240,
+      "before": 2415919112,
+      "file_offset": 66300,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131072
+    },
+    {
+      "after": 4248830209,
+      "before": 4248830209,
+      "file_offset": 66328,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131072
+    },
+    {
+      "after": 2415919241,
+      "before": 2415919113,
+      "file_offset": 66780,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131088
+    },
+    {
+      "after": 4248832288,
+      "before": 4248830240,
+      "file_offset": 66792,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131088
+    },
+    {
+      "after": 2415919233,
+      "before": 2415919105,
+      "file_offset": 67204,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131615
+    },
+    {
+      "after": 2433252385,
+      "before": 2432696353,
+      "file_offset": 67208,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131615
+    },
+    {
+      "after": 2415919240,
+      "before": 2415919112,
+      "file_offset": 67504,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131096
+    },
+    {
+      "after": 4248833281,
+      "before": 4248830209,
+      "file_offset": 67512,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131096
+    },
+    {
+      "after": 2415919232,
+      "before": 2415919104,
+      "file_offset": 67792,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131600
+    },
+    {
+      "after": 2433236992,
+      "before": 2432696320,
+      "file_offset": 67796,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131600
+    },
+    {
+      "after": 2415919234,
+      "before": 2415919106,
+      "file_offset": 67800,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131916
+    },
+    {
+      "after": 2433560642,
+      "before": 2432696386,
+      "file_offset": 67804,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131916
+    },
+    {
+      "after": 2415919234,
+      "before": 2415919106,
+      "file_offset": 67856,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131981
+    },
+    {
+      "after": 2433627202,
+      "before": 2432696386,
+      "file_offset": 67860,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131981
+    },
+    {
+      "after": 2415919232,
+      "before": 2415919104,
+      "file_offset": 68064,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131600
+    },
+    {
+      "after": 2433236992,
+      "before": 2432696320,
+      "file_offset": 68068,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131600
+    },
+    {
+      "after": 2415919233,
+      "before": 2415919105,
+      "file_offset": 68144,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131634
+    },
+    {
+      "after": 2433271841,
+      "before": 2432696353,
+      "file_offset": 68148,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131634
+    },
+    {
+      "after": 2415919233,
+      "before": 2415919105,
+      "file_offset": 68316,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131645
+    },
+    {
+      "after": 2433283105,
+      "before": 2432696353,
+      "file_offset": 68320,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131645
+    },
+    {
+      "after": 2415919240,
+      "before": 2415919112,
+      "file_offset": 68932,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131232
+    },
+    {
+      "after": 1036003585,
+      "before": 1035993345,
+      "file_offset": 68940,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131232
+    },
+    {
+      "after": 2415919240,
+      "before": 2415919112,
+      "file_offset": 68944,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131248
+    },
+    {
+      "after": 1036004609,
+      "before": 1035993345,
+      "file_offset": 68952,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131248
+    },
+    {
+      "after": 2415919233,
+      "before": 2415919105,
+      "file_offset": 69060,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131669
+    },
+    {
+      "after": 2433307681,
+      "before": 2432696353,
+      "file_offset": 69064,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131669
+    },
+    {
+      "after": 2415919240,
+      "before": 2415919112,
+      "file_offset": 69108,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131112
+    },
+    {
+      "after": 4248835330,
+      "before": 4248830210,
+      "file_offset": 69112,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131112
+    },
+    {
+      "after": 2415919240,
+      "before": 2415919112,
+      "file_offset": 69116,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131104
+    },
+    {
+      "after": 4248834306,
+      "before": 4248830210,
+      "file_offset": 69132,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131104
+    },
+    {
+      "after": 2415919496,
+      "before": 2415919112,
+      "file_offset": 69824,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 266252
+    },
+    {
+      "after": 2432708872,
+      "before": 2432696584,
+      "file_offset": 69828,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 266252
+    },
+    {
+      "after": 4026531937,
+      "before": 2415919105,
+      "file_offset": 69912,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131634
+    },
+    {
+      "after": 2433271841,
+      "before": 2432696353,
+      "file_offset": 69916,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131634
+    },
+    {
+      "after": 4026531937,
+      "before": 2415919105,
+      "file_offset": 69968,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131669
+    },
+    {
+      "after": 2433307681,
+      "before": 2432696353,
+      "file_offset": 69972,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131669
+    },
+    {
+      "after": 4026531944,
+      "before": 2415919112,
+      "file_offset": 70268,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131128
+    },
+    {
+      "after": 4248837378,
+      "before": 4248830210,
+      "file_offset": 70272,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131128
+    },
+    {
+      "after": 4026531944,
+      "before": 2415919112,
+      "file_offset": 70276,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131120
+    },
+    {
+      "after": 4248836354,
+      "before": 4248830210,
+      "file_offset": 70300,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131120
+    },
+    {
+      "after": 4026531937,
+      "before": 2415919105,
+      "file_offset": 70416,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 132304
+    },
+    {
+      "after": 2433957921,
+      "before": 2432696353,
+      "file_offset": 70420,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 132304
+    },
+    {
+      "after": 4026531944,
+      "before": 2415919112,
+      "file_offset": 70536,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131264
+    },
+    {
+      "after": 1036005633,
+      "before": 1035993345,
+      "file_offset": 70572,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131264
+    },
+    {
+      "after": 4026531937,
+      "before": 2415919105,
+      "file_offset": 70792,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131744
+    },
+    {
+      "after": 2433384481,
+      "before": 2432696353,
+      "file_offset": 70796,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131744
+    },
+    {
+      "after": 2415919489,
+      "before": 2415919105,
+      "file_offset": 70828,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 266256
+    },
+    {
+      "after": 2432712737,
+      "before": 2432696353,
+      "file_offset": 70832,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 266256
+    },
+    {
+      "after": 4026531944,
+      "before": 2415919112,
+      "file_offset": 71084,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131761
+    },
+    {
+      "after": 2433402120,
+      "before": 2432696584,
+      "file_offset": 71088,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131761
+    },
+    {
+      "after": 4026531945,
+      "before": 2415919113,
+      "file_offset": 71092,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131776
+    },
+    {
+      "after": 2433417513,
+      "before": 2432696617,
+      "file_offset": 71096,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131776
+    },
+    {
+      "after": 4026531945,
+      "before": 2415919113,
+      "file_offset": 71504,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131136
+    },
+    {
+      "after": 4248838432,
+      "before": 4248830240,
+      "file_offset": 71516,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131136
+    },
+    {
+      "after": 4026531948,
+      "before": 2415919116,
+      "file_offset": 71540,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131727
+    },
+    {
+      "after": 2433367436,
+      "before": 2432696716,
+      "file_offset": 71544,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131727
+    },
+    {
+      "after": 4026531946,
+      "before": 2415919114,
+      "file_offset": 71616,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131144
+    },
+    {
+      "after": 4248839488,
+      "before": 4248830272,
+      "file_offset": 71624,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131144
+    },
+    {
+      "after": 4026531937,
+      "before": 2415919105,
+      "file_offset": 71836,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131791
+    },
+    {
+      "after": 2433432609,
+      "before": 2432696353,
+      "file_offset": 71840,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131791
+    },
+    {
+      "after": 4026531944,
+      "before": 2415919112,
+      "file_offset": 71908,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131280
+    },
+    {
+      "after": 1036006656,
+      "before": 1035993344,
+      "file_offset": 71912,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131280
+    },
+    {
+      "after": 4026531944,
+      "before": 2415919112,
+      "file_offset": 71916,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131152
+    },
+    {
+      "after": 4248840457,
+      "before": 4248830217,
+      "file_offset": 71920,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131152
+    },
+    {
+      "after": 4026531944,
+      "before": 2415919112,
+      "file_offset": 71924,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131160
+    },
+    {
+      "after": 4248841480,
+      "before": 4248830216,
+      "file_offset": 71928,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131160
+    },
+    {
+      "after": 3489661321,
+      "before": 2415919113,
+      "file_offset": 72016,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 274448
+    },
+    {
+      "after": 2432713001,
+      "before": 2432696617,
+      "file_offset": 72020,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 274448
+    },
+    {
+      "after": 3489661322,
+      "before": 2415919114,
+      "file_offset": 72152,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 274448
+    },
+    {
+      "after": 2432713034,
+      "before": 2432696650,
+      "file_offset": 72156,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 274448
+    },
+    {
+      "after": 3489661313,
+      "before": 2415919105,
+      "file_offset": 72284,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 274480
+    },
+    {
+      "after": 2432745505,
+      "before": 2432696353,
+      "file_offset": 72288,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 274480
+    },
+    {
+      "after": 4026531949,
+      "before": 2415919117,
+      "file_offset": 72556,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131823
+    },
+    {
+      "after": 2433465773,
+      "before": 2432696749,
+      "file_offset": 72560,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131823
+    },
+    {
+      "after": 3489661316,
+      "before": 2415919108,
+      "file_offset": 72620,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 274480
+    },
+    {
+      "after": 2432745604,
+      "before": 2432696452,
+      "file_offset": 72624,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 274480
+    },
+    {
+      "after": 3489661313,
+      "before": 2415919105,
+      "file_offset": 72736,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 274480
+    },
+    {
+      "after": 2432745505,
+      "before": 2432696353,
+      "file_offset": 72740,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 274480
+    },
+    {
+      "after": 4026531944,
+      "before": 2415919112,
+      "file_offset": 72980,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131296
+    },
+    {
+      "after": 4026531948,
+      "before": 2415919116,
+      "file_offset": 72988,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131168
+    },
+    {
+      "after": 1036007682,
+      "before": 1035993346,
+      "file_offset": 72992,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131296
+    },
+    {
+      "after": 4026531937,
+      "before": 2415919105,
+      "file_offset": 73004,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131837
+    },
+    {
+      "after": 2433479713,
+      "before": 2432696353,
+      "file_offset": 73008,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131837
+    },
+    {
+      "after": 4248842626,
+      "before": 4248830338,
+      "file_offset": 73020,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131168
+    },
+    {
+      "after": 4026531945,
+      "before": 2415919113,
+      "file_offset": 73212,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131312
+    },
+    {
+      "after": 1036008737,
+      "before": 1035993377,
+      "file_offset": 73220,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131312
+    },
+    {
+      "after": 4026531945,
+      "before": 2415919113,
+      "file_offset": 73260,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131176
+    },
+    {
+      "after": 4248843553,
+      "before": 4248830241,
+      "file_offset": 73308,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131176
+    },
+    {
+      "after": 4026531948,
+      "before": 2415919116,
+      "file_offset": 73588,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131584
+    },
+    {
+      "after": 2433221004,
+      "before": 2432696716,
+      "file_offset": 73592,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131584
+    },
+    {
+      "after": 3489661032,
+      "before": 2415919112,
+      "file_offset": 74544,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131192
+    },
+    {
+      "after": 4248845570,
+      "before": 4248830210,
+      "file_offset": 74548,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131192
+    },
+    {
+      "after": 3489661032,
+      "before": 2415919112,
+      "file_offset": 74552,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131184
+    },
+    {
+      "after": 4248844546,
+      "before": 4248830210,
+      "file_offset": 74568,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131184
+    },
+    {
+      "after": 3489661037,
+      "before": 2415919117,
+      "file_offset": 74648,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131328
+    },
+    {
+      "after": 3489661038,
+      "before": 2415919118,
+      "file_offset": 74652,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131344
+    },
+    {
+      "after": 1036009888,
+      "before": 1035993504,
+      "file_offset": 74660,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131328
+    },
+    {
+      "after": 1036010945,
+      "before": 1035993537,
+      "file_offset": 74664,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131344
+    },
+    {
+      "after": 3489661032,
+      "before": 2415919112,
+      "file_offset": 75308,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131360
+    },
+    {
+      "after": 3489661033,
+      "before": 2415919113,
+      "file_offset": 75312,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131376
+    },
+    {
+      "after": 1036011776,
+      "before": 1035993344,
+      "file_offset": 75320,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131360
+    },
+    {
+      "after": 1036012833,
+      "before": 1035993377,
+      "file_offset": 75324,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131376
+    },
+    {
+      "after": 3489661032,
+      "before": 2415919112,
+      "file_offset": 75900,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131392
+    },
+    {
+      "after": 3489661034,
+      "before": 2415919114,
+      "file_offset": 75904,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131408
+    },
+    {
+      "after": 1036013824,
+      "before": 1035993344,
+      "file_offset": 75908,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131392
+    },
+    {
+      "after": 1036014913,
+      "before": 1035993409,
+      "file_offset": 75912,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131408
+    },
+    {
+      "after": 3489661307,
+      "before": 2415919131,
+      "file_offset": 75932,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 262156
+    },
+    {
+      "after": 2432709499,
+      "before": 2432697211,
+      "file_offset": 75936,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 262156
+    },
+    {
+      "after": 3489661034,
+      "before": 2415919114,
+      "file_offset": 76136,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131727
+    },
+    {
+      "after": 2433367370,
+      "before": 2432696650,
+      "file_offset": 76140,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131727
+    },
+    {
+      "after": 3489661034,
+      "before": 2415919114,
+      "file_offset": 77692,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131727
+    },
+    {
+      "after": 2433367370,
+      "before": 2432696650,
+      "file_offset": 77696,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131727
+    },
+    {
+      "after": 2952790129,
+      "before": 2415919121,
+      "file_offset": 78068,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 132048
+    },
+    {
+      "after": 2433696305,
+      "before": 2432696881,
+      "file_offset": 78072,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 132048
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 78864,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131424
+    },
+    {
+      "after": 1036015904,
+      "before": 1035993376,
+      "file_offset": 78876,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131424
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 78880,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131440
+    },
+    {
+      "after": 1036016929,
+      "before": 1035993377,
+      "file_offset": 78888,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131440
+    },
+    {
+      "after": 2952790113,
+      "before": 2415919105,
+      "file_offset": 79068,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131693
+    },
+    {
+      "after": 2433332257,
+      "before": 2432696353,
+      "file_offset": 79072,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131693
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 79216,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131456
+    },
+    {
+      "after": 1036017955,
+      "before": 1035993379,
+      "file_offset": 79224,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131456
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 79232,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131200
+    },
+    {
+      "after": 2952790122,
+      "before": 2415919114,
+      "file_offset": 79236,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131488
+    },
+    {
+      "after": 4248846628,
+      "before": 4248830244,
+      "file_offset": 79244,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131200
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 79248,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131472
+    },
+    {
+      "after": 1036018976,
+      "before": 1035993376,
+      "file_offset": 79300,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131472
+    },
+    {
+      "after": 1036020033,
+      "before": 1035993409,
+      "file_offset": 79308,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131488
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 79524,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131208
+    },
+    {
+      "after": 4248847648,
+      "before": 4248830240,
+      "file_offset": 79532,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131208
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 79544,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131727
+    },
+    {
+      "after": 2433367337,
+      "before": 2432696617,
+      "file_offset": 79548,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131727
+    },
+    {
+      "after": 2952790124,
+      "before": 2415919116,
+      "file_offset": 79608,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131712
+    },
+    {
+      "after": 2433352076,
+      "before": 2432696716,
+      "file_offset": 79612,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131712
+    },
+    {
+      "after": 2952790125,
+      "before": 2415919117,
+      "file_offset": 79644,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131216
+    },
+    {
+      "after": 4248848800,
+      "before": 4248830368,
+      "file_offset": 79648,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131216
+    },
+    {
+      "after": 2952790124,
+      "before": 2415919116,
+      "file_offset": 79656,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131224
+    },
+    {
+      "after": 4248849792,
+      "before": 4248830336,
+      "file_offset": 79672,
+      "kind": "LDST64_ABS_LO12_NC",
+      "target": 131224
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 80232,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131504
+    },
+    {
+      "after": 1036021025,
+      "before": 1035993377,
+      "file_offset": 80240,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131504
+    },
+    {
+      "after": 2952790123,
+      "before": 2415919115,
+      "file_offset": 80252,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131536
+    },
+    {
+      "after": 2952790122,
+      "before": 2415919114,
+      "file_offset": 80364,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131520
+    },
+    {
+      "after": 1036023137,
+      "before": 1035993441,
+      "file_offset": 80448,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131536
+    },
+    {
+      "after": 1036022080,
+      "before": 1035993408,
+      "file_offset": 80464,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131520
+    },
+    {
+      "after": 2952790113,
+      "before": 2415919105,
+      "file_offset": 80724,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131850
+    },
+    {
+      "after": 2433493025,
+      "before": 2432696353,
+      "file_offset": 80728,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131850
+    },
+    {
+      "after": 2952790138,
+      "before": 2415919130,
+      "file_offset": 80808,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131901
+    },
+    {
+      "after": 2433546074,
+      "before": 2432697178,
+      "file_offset": 80812,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131901
+    },
+    {
+      "after": 2952790120,
+      "before": 2415919112,
+      "file_offset": 80820,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131552
+    },
+    {
+      "after": 1036024064,
+      "before": 1035993344,
+      "file_offset": 80824,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131552
+    },
+    {
+      "after": 2952790120,
+      "before": 2415919112,
+      "file_offset": 80828,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131568
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 80832,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131881
+    },
+    {
+      "after": 2433525033,
+      "before": 2432696617,
+      "file_offset": 80836,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131881
+    },
+    {
+      "after": 2952790122,
+      "before": 2415919114,
+      "file_offset": 80840,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131867
+    },
+    {
+      "after": 2433510730,
+      "before": 2432696650,
+      "file_offset": 80844,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131867
+    },
+    {
+      "after": 1036025088,
+      "before": 1035993344,
+      "file_offset": 80852,
+      "kind": "LDST128_ABS_LO12_NC",
+      "target": 131568
+    },
+    {
+      "after": 2952790392,
+      "before": 2415919128,
+      "file_offset": 80856,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 262156
+    },
+    {
+      "after": 2432709400,
+      "before": 2432697112,
+      "file_offset": 80860,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 262156
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 80992,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 132372
+    },
+    {
+      "after": 2434027817,
+      "before": 2432696617,
+      "file_offset": 80996,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 132372
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 81404,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 132384
+    },
+    {
+      "after": 2434040105,
+      "before": 2432696617,
+      "file_offset": 81408,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 132384
+    },
+    {
+      "after": 2952790121,
+      "before": 2415919113,
+      "file_offset": 81476,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131881
+    },
+    {
+      "after": 2433525033,
+      "before": 2432696617,
+      "file_offset": 81480,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131881
+    },
+    {
+      "after": 2952790122,
+      "before": 2415919114,
+      "file_offset": 81488,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131867
+    },
+    {
+      "after": 2433510730,
+      "before": 2432696650,
+      "file_offset": 81492,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131867
+    },
+    {
+      "after": 3489661284,
+      "before": 2415919108,
+      "file_offset": 81612,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 266256
+    },
+    {
+      "after": 2432712836,
+      "before": 2432696452,
+      "file_offset": 81616,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 266256
+    },
+    {
+      "after": 2952790125,
+      "before": 2415919117,
+      "file_offset": 81648,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131814
+    },
+    {
+      "after": 2433456557,
+      "before": 2432696749,
+      "file_offset": 81652,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131814
+    },
+    {
+      "after": 2952790127,
+      "before": 2415919119,
+      "file_offset": 81660,
+      "kind": "ADR_PREL_PG_HI21",
+      "target": 131804
+    },
+    {
+      "after": 2433446383,
+      "before": 2432696815,
+      "file_offset": 81664,
+      "kind": "ADD_ABS_LO12_NC",
+      "target": 131804
+    }
+  ],
+  "module_source_sha256": "7f5711e1b8a617d36cdf0df4ed74ba16cbb6016fed40ca9da977316e1bf937c2",
+  "object_sha256": "cd90c6a2db378cf0847d000a445ed8a555ae06d9302f3aafd7fb151d303fc53b",
+  "private_inherited_datagram_gate_implemented": true,
+  "request_binding_and_pending_claims_implemented": true,
+  "runtime_relocations": [
+    {
+      "addend": 65536,
+      "offset": 196608,
+      "symbol": 0,
+      "type": 1027
+    }
+  ],
+  "safe_child_cmdline_bytes": 13,
+  "schema": "fx3-restricted-own-ET_DYN-v1",
+  "segments": [
+    {
+      "filesz": 65536,
+      "flags": 4,
+      "memsz": 65536,
+      "offset": 0,
+      "va": 0
+    },
+    {
+      "filesz": 17432,
+      "flags": 5,
+      "memsz": 17432,
+      "offset": 65536,
+      "va": 65536
+    },
+    {
+      "filesz": 1672,
+      "flags": 4,
+      "memsz": 1672,
+      "offset": 131072,
+      "va": 131072
+    },
+    {
+      "filesz": 65536,
+      "flags": 6,
+      "memsz": 65536,
+      "offset": 196608,
+      "va": 196608
+    },
+    {
+      "filesz": 0,
+      "flags": 6,
+      "memsz": 77904,
+      "offset": 262144,
+      "va": 262144
+    }
+  ],
+  "sha256": "23327fd5c43ecf44858f0705edc30db1ed795d1bc2272bf75bbeaf1ae8e8b3a3",
+  "source_initializer_calls_worker_or_syscall": false,
+  "worker_source_sha256": "06af135abf4e04ccb7cbc0727d4275ed4faf892fce6175f394a93aa7ce0aaaf5"
+}

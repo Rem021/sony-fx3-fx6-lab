@@ -1,0 +1,2510 @@
+{
+  "status": "PASS_PUBLIC_PROVIDER_WITH_ORIGINAL_FX3_VERIFIER_AND_INERT_CONTROLLER_NOT_LIVE_AUTH",
+  "provider_sha256": "715d9613c32a1a3bd09075c8a91be03c9e64d72fc7a96a9cac5814dfd30a0b9a",
+  "test_sha256": "b489a9a57bb98ec92582bddd6b0b5646c769ce3e74105bbf7cfe2ad7ea7674a5",
+  "original_core_sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+  "original_function_pins": [
+    {
+      "name": "_Z6xxstepPhS_i",
+      "VA": "0x15c1c",
+      "bytes": 324,
+      "sha256": "c383bfe9650fb4c91f04917a03d08250a6c265fdb9280b32e7fa8a3c35e13ffa"
+    },
+    {
+      "name": "_Z9CmdDecodePtPh",
+      "VA": "0x15b68",
+      "bytes": 52,
+      "sha256": "60f894ac16d10763ee078ca9711a7d0e80bde73c0d13656a3b2256eeead27718"
+    },
+    {
+      "name": "SEN_SSL_GenerateDigestData",
+      "VA": "0x1641c",
+      "bytes": 340,
+      "sha256": "f3d51abeebef5c6e4601ef5ad58fd007701504f89961e9c5217723e7cd5867bb"
+    }
+  ],
+  "native_verifier_cases": [
+    {
+      "name": "accept_round1_challenge0",
+      "native_round": 1,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "fe44f5f2b477ebcd515a1fc9f8e68928cc2ecf9d0dc493fd1025cfc1a7650e08"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "49369124149537ef11650ff3c6dd30d5ae8e75683717ff2ff764f00268a4ea98",
+          "right_fingerprint": "49369124149537ef11650ff3c6dd30d5ae8e75683717ff2ff764f00268a4ea98"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round1_challenge1",
+      "native_round": 1,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "f96163473d3738ff3af712156fe85efe8d41613d802192fb403ecc7b29c0cb2b"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "f0a9aee633c277c089f5d19cc5c5cfd43b84fe5f540f8ff6d5932db856adecc5",
+          "right_fingerprint": "f0a9aee633c277c089f5d19cc5c5cfd43b84fe5f540f8ff6d5932db856adecc5"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round1_challenge2",
+      "native_round": 1,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "0acb4b7749ac9aa36d67a2475122ba1ddf33fd6e7d678a8af089a6ae9c56ea60"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "94737f6ae81ff1bdfd3435cbe73b37e79ede7f7fe37748a29e4c16cd09862afa",
+          "right_fingerprint": "94737f6ae81ff1bdfd3435cbe73b37e79ede7f7fe37748a29e4c16cd09862afa"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round1_challenge3",
+      "native_round": 1,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "99e0706e4ecb81f74754b730fc239b6646b1cd12500922e1e5928bb26286450a"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "8fc1cfcfd241a8e419786f330d000c0c3e1ef92af591a5e2114f58be157a4d2f",
+          "right_fingerprint": "8fc1cfcfd241a8e419786f330d000c0c3e1ef92af591a5e2114f58be157a4d2f"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round1_challenge4",
+      "native_round": 1,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "3691993cfadb1e9a332f27e371594bd1f36e9731223071eea3482b54fa921d7c"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "cbf3228b03040294742b21994e5fd3bab0aad072ea8ae8a49f1e93f0fc6e3942",
+          "right_fingerprint": "cbf3228b03040294742b21994e5fd3bab0aad072ea8ae8a49f1e93f0fc6e3942"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round1_challenge5",
+      "native_round": 1,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "f8517c8fd100106124d3074416e5792e1e5f30f88eb55bc72c84a549380fb505"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "67b1084537508da76c30bc341ceca93e0f8ad1a8a1d18254f16fa8f50ee497fd",
+          "right_fingerprint": "67b1084537508da76c30bc341ceca93e0f8ad1a8a1d18254f16fa8f50ee497fd"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round1_challenge6",
+      "native_round": 1,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "758270999589e0d7edbab881a3eedaa136aa2e4c7c796406edef3960ffecfe0b"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "400cdda2e517519a6ef40320dce50114749ea28075c4337d2f2a8a0afaed587f",
+          "right_fingerprint": "400cdda2e517519a6ef40320dce50114749ea28075c4337d2f2a8a0afaed587f"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round1_challenge7",
+      "native_round": 1,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "6854a85bc0bbd357af5df67366f295514a5bfbd9382522177f41a244268ed4cb"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "9985ab8d3b66a3502adaacfd5d6f40498eb84362aa356d63909f57c07f34b657",
+          "right_fingerprint": "9985ab8d3b66a3502adaacfd5d6f40498eb84362aa356d63909f57c07f34b657"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_digest_bitflip_round1",
+      "native_round": 1,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "0acb4b7749ac9aa36d67a2475122ba1ddf33fd6e7d678a8af089a6ae9c56ea60"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "aa1d04eefdf949b9f1f95eb184abadec06f13b8bc45f055e59ab67a6ab843357",
+          "right_fingerprint": "94737f6ae81ff1bdfd3435cbe73b37e79ede7f7fe37748a29e4c16cd09862afa"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_wrong_material_round1",
+      "native_round": 1,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "0acb4b7749ac9aa36d67a2475122ba1ddf33fd6e7d678a8af089a6ae9c56ea60"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "02021ad0e551ffbb075de25472a52b759202ce2dd12f144a15b88dc0c98890f2",
+          "right_fingerprint": "94737f6ae81ff1bdfd3435cbe73b37e79ede7f7fe37748a29e4c16cd09862afa"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_changed_challenge_round1",
+      "native_round": 1,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "103398598ab25b30704c43bae4f49469fe9ef86010993ec8a2c88573588d92d4"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "94737f6ae81ff1bdfd3435cbe73b37e79ede7f7fe37748a29e4c16cd09862afa",
+          "right_fingerprint": "4e2f93b2f888ae3868032d048f0d37038e474c13bfbda53800f486b5bb8fb543"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round2_challenge0",
+      "native_round": 2,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "b6737a5a641ef144ac259248ebaf92d376ddf7830014254c4be64b6541ad25b8"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "214799b85ad7a30bacd9f195e0fdb597e388b5a57960c6e7bf1b786a3e0e4ef6",
+          "right_fingerprint": "214799b85ad7a30bacd9f195e0fdb597e388b5a57960c6e7bf1b786a3e0e4ef6"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round2_challenge1",
+      "native_round": 2,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "521b8e373b9f01b3fb97f691159004f47e05e4f53728380f86d39c6680b1fc88"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "4848d73781e3f97ddf592519d220be18fcc6b9e92f6a66af8de1b2603b04816c",
+          "right_fingerprint": "4848d73781e3f97ddf592519d220be18fcc6b9e92f6a66af8de1b2603b04816c"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round2_challenge2",
+      "native_round": 2,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "aef8b76429374d9affb9d3679705e23caa67d13cb422b7f6ce89f35a48b021d5"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "02021ad0e551ffbb075de25472a52b759202ce2dd12f144a15b88dc0c98890f2",
+          "right_fingerprint": "02021ad0e551ffbb075de25472a52b759202ce2dd12f144a15b88dc0c98890f2"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round2_challenge3",
+      "native_round": 2,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "e5ccf1112986ccc1eee558efea198164b21caa8b95fa1f517ab391db4cf38434"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "59b9d55aeda8e5dbe43906dc8725b75b5e9e20229262f34e484079b9a69c7e40",
+          "right_fingerprint": "59b9d55aeda8e5dbe43906dc8725b75b5e9e20229262f34e484079b9a69c7e40"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round2_challenge4",
+      "native_round": 2,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "f993c1beec86cf8a27a87609aa8a10c5f68af7fc89b0d22b95606f5df7b33252"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "908812bd40dd9174016946b8f2f4e0cb4cb37f289246ae7a0f6a01b83c2b26f6",
+          "right_fingerprint": "908812bd40dd9174016946b8f2f4e0cb4cb37f289246ae7a0f6a01b83c2b26f6"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round2_challenge5",
+      "native_round": 2,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "28a78b86975572e2d561f757f67685c39a3a4bbb9bd0baa89e7f87582bb2dcc3"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "d2b7b2eb5ed7bf86d77cc3393cbdc9d35f00138a6df6d7a79439d4e244b9132b",
+          "right_fingerprint": "d2b7b2eb5ed7bf86d77cc3393cbdc9d35f00138a6df6d7a79439d4e244b9132b"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round2_challenge6",
+      "native_round": 2,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "65653d2c37c62fc02a3287c7b018d06e61ebb4546d5235977c69f5db9bb3cb04"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "f015ea39df6bd74fb3a9ea58370db7a20ce793c84cf2133eeb300aef27e861d6",
+          "right_fingerprint": "f015ea39df6bd74fb3a9ea58370db7a20ce793c84cf2133eeb300aef27e861d6"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round2_challenge7",
+      "native_round": 2,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "8aaa7fddd429d6481b22ca776eba0feb36e24d7e099b4e8bcb9b9dc2884e2ea2"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "6cd79f98a5e8fad2d170b0e93311e9fabe5b59fe8082f724abf23fb0df551917",
+          "right_fingerprint": "6cd79f98a5e8fad2d170b0e93311e9fabe5b59fe8082f724abf23fb0df551917"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_digest_bitflip_round2",
+      "native_round": 2,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "aef8b76429374d9affb9d3679705e23caa67d13cb422b7f6ce89f35a48b021d5"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "b5ebeea386f20af48eb157d5d1674011c6b1c8842fbda1b7b273ddbb1910f726",
+          "right_fingerprint": "02021ad0e551ffbb075de25472a52b759202ce2dd12f144a15b88dc0c98890f2"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_wrong_material_round2",
+      "native_round": 2,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "aef8b76429374d9affb9d3679705e23caa67d13cb422b7f6ce89f35a48b021d5"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "b6c9f97f721b9e9987db2b1d55e81118ea088fb3d5d6f233707b68eba7d77421",
+          "right_fingerprint": "02021ad0e551ffbb075de25472a52b759202ce2dd12f144a15b88dc0c98890f2"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_changed_challenge_round2",
+      "native_round": 2,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "1b637e1b047b8eabe1016e1ba96a81b4e098c1d907f3a9e5a9ceee84de0dac29"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "02021ad0e551ffbb075de25472a52b759202ce2dd12f144a15b88dc0c98890f2",
+          "right_fingerprint": "986734a21ac69fdd14a70ff1c3638b3a766f6ccb31d8673dcb1c5f0d4af886c7"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round3_challenge0",
+      "native_round": 3,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "aed57f1dcd382afb02e131964e9dafe895ea64c4e9a4f0dad35314471d19f8ac"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "fbccb48ae05b3b40bbe2aecf803b61e6602550adda36285fd14e2eef5fce121b",
+          "right_fingerprint": "fbccb48ae05b3b40bbe2aecf803b61e6602550adda36285fd14e2eef5fce121b"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round3_challenge1",
+      "native_round": 3,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "60f11b14fcd328e842391b87631af61a47996da600ca2af194fd1504301bc2aa"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "ef7f25ff0f9d6c376f99f4fd506252d61fe068ee5d8a4f0bfb93b297b166d278",
+          "right_fingerprint": "ef7f25ff0f9d6c376f99f4fd506252d61fe068ee5d8a4f0bfb93b297b166d278"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round3_challenge2",
+      "native_round": 3,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "66f2536d00e0a8b910822bf521c5778c21fb3ed5f8b29e390112505a4bd9e415"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "b6c9f97f721b9e9987db2b1d55e81118ea088fb3d5d6f233707b68eba7d77421",
+          "right_fingerprint": "b6c9f97f721b9e9987db2b1d55e81118ea088fb3d5d6f233707b68eba7d77421"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round3_challenge3",
+      "native_round": 3,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "ce52596a15c40e4f8cde31793e484891797eb3985f242c3673162c1799feb614"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "0fef207558c8cc29253731aac78f43c98b78b3934f6a18282780a7079d1bb395",
+          "right_fingerprint": "0fef207558c8cc29253731aac78f43c98b78b3934f6a18282780a7079d1bb395"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round3_challenge4",
+      "native_round": 3,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "45bb3ce6f2d06f402c958e082b396b5a43a1535365cb0803c8e0aeedb55ccddb"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "4a01be9b66f17b22e89454ff62fd492594869b60cacdd9fc63032a3feb20fcc3",
+          "right_fingerprint": "4a01be9b66f17b22e89454ff62fd492594869b60cacdd9fc63032a3feb20fcc3"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round3_challenge5",
+      "native_round": 3,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "a3690954efd0526e91809d1546aef7e63b17ed0610b6a79ab9a5d8b29f11fdcc"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "ad118e38bbe3494e194b33608b16062297de9ceaa39426832e1e142904aeeb24",
+          "right_fingerprint": "ad118e38bbe3494e194b33608b16062297de9ceaa39426832e1e142904aeeb24"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round3_challenge6",
+      "native_round": 3,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "97e264a4fd134a96b58ae43161cb5f424dfc87ec67ee14b880491f125627a46c"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "28c5f1da4dc9641a829365f3912932ae670788bbdc14e286c507823a6d1e1a5c",
+          "right_fingerprint": "28c5f1da4dc9641a829365f3912932ae670788bbdc14e286c507823a6d1e1a5c"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "accept_round3_challenge7",
+      "native_round": 3,
+      "expected": 0,
+      "original_return": 0,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "261e0231007d57c975d9ef6a421582c3b8eae3f5e33f78377a383364b8cf6200"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": true,
+          "left_fingerprint": "2d9fb3c22903dd2220600b9dde3e8f0e2064bfd8c4c431075bb9fde933e60179",
+          "right_fingerprint": "2d9fb3c22903dd2220600b9dde3e8f0e2064bfd8c4c431075bb9fde933e60179"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_digest_bitflip_round3",
+      "native_round": 3,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "66f2536d00e0a8b910822bf521c5778c21fb3ed5f8b29e390112505a4bd9e415"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "383dafaf7044e76dc6e636d89a5e38d10936ed81b2ea7aead39f24f60e665e8a",
+          "right_fingerprint": "b6c9f97f721b9e9987db2b1d55e81118ea088fb3d5d6f233707b68eba7d77421"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_wrong_material_round3",
+      "native_round": 3,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "66f2536d00e0a8b910822bf521c5778c21fb3ed5f8b29e390112505a4bd9e415"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "94737f6ae81ff1bdfd3435cbe73b37e79ede7f7fe37748a29e4c16cd09862afa",
+          "right_fingerprint": "b6c9f97f721b9e9987db2b1d55e81118ea088fb3d5d6f233707b68eba7d77421"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_changed_challenge_round3",
+      "native_round": 3,
+      "expected": -2,
+      "original_return": -2,
+      "original_function_entries": 4,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "SEN_SSL_GenerateDigestData"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy",
+        "memcpy",
+        "SEN_SSL_GenerateDigestData",
+        "EVP_sha256",
+        "EVP_MD_CTX_new",
+        "EVP_DigestInit_ex",
+        "EVP_DigestUpdate",
+        "EVP_DigestFinal_ex",
+        "EVP_MD_CTX_free",
+        "memcpy",
+        "memcpy",
+        "memcmp"
+      ],
+      "hash_inputs": [
+        {
+          "bytes": 1024,
+          "fingerprint": "afc9461466f11b1646e5ec481453b66a7a167dddb51729772bf59c3ee565c6f6"
+        }
+      ],
+      "comparisons": [
+        {
+          "bytes": 32,
+          "equal": false,
+          "left_fingerprint": "b6c9f97f721b9e9987db2b1d55e81118ea088fb3d5d6f233707b68eba7d77421",
+          "right_fingerprint": "ede1c5554223f438a08e39275f8c89676bc54943405972e62e27adc11250cd89"
+        }
+      ],
+      "write_count": 78,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_native_round0",
+      "native_round": 0,
+      "expected": -3,
+      "original_return": -3,
+      "original_function_entries": 3,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy"
+      ],
+      "hash_inputs": [],
+      "comparisons": [],
+      "write_count": 11,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_native_round4",
+      "native_round": 4,
+      "expected": -3,
+      "original_return": -3,
+      "original_function_entries": 3,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh",
+        "memset",
+        "memcpy"
+      ],
+      "hash_inputs": [],
+      "comparisons": [],
+      "write_count": 11,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_legacy_challenge2",
+      "native_round": 1,
+      "expected": -1,
+      "original_return": -1,
+      "original_function_entries": 2,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh"
+      ],
+      "hash_inputs": [],
+      "comparisons": [],
+      "write_count": 8,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_client_command1",
+      "native_round": 1,
+      "expected": -1,
+      "original_return": -1,
+      "original_function_entries": 3,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh",
+        "_Z9CmdDecodePtPh"
+      ],
+      "hash_inputs": [],
+      "comparisons": [],
+      "write_count": 9,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    },
+    {
+      "name": "reject_inconsistent_response_salt",
+      "native_round": 1,
+      "expected": -1,
+      "original_return": -1,
+      "original_function_entries": 2,
+      "entered": [
+        "_Z6xxstepPhS_i",
+        "_Z9CmdDecodePtPh"
+      ],
+      "calls": [
+        "_Z9CmdDecodePtPh"
+      ],
+      "hash_inputs": [],
+      "comparisons": [],
+      "write_count": 8,
+      "write_bounds_checked": true,
+      "guards_callee_saved_SP_and_return_checked": true
+    }
+  ],
+  "native_verifier_case_count": 38,
+  "provider_invalid_input_cases": 7,
+  "AST_nonliteral_rejected": true,
+  "inert_controller_integration": {
+    "original_verifier_rounds": [
+      {
+        "mode": "MSC",
+        "round": 1,
+        "original_return": 0,
+        "original_function_entries": 4,
+        "entered": [
+          "_Z6xxstepPhS_i",
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "SEN_SSL_GenerateDigestData"
+        ],
+        "calls": [
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "memset",
+          "memcpy",
+          "memcpy",
+          "SEN_SSL_GenerateDigestData",
+          "EVP_sha256",
+          "EVP_MD_CTX_new",
+          "EVP_DigestInit_ex",
+          "EVP_DigestUpdate",
+          "EVP_DigestFinal_ex",
+          "EVP_MD_CTX_free",
+          "memcpy",
+          "memcpy",
+          "memcmp"
+        ],
+        "hash_inputs": [
+          {
+            "bytes": 1024,
+            "fingerprint": "fe44f5f2b477ebcd515a1fc9f8e68928cc2ecf9d0dc493fd1025cfc1a7650e08"
+          }
+        ],
+        "comparisons": [
+          {
+            "bytes": 32,
+            "equal": true,
+            "left_fingerprint": "49369124149537ef11650ff3c6dd30d5ae8e75683717ff2ff764f00268a4ea98",
+            "right_fingerprint": "49369124149537ef11650ff3c6dd30d5ae8e75683717ff2ff764f00268a4ea98"
+          }
+        ],
+        "write_count": 78,
+        "write_bounds_checked": true,
+        "guards_callee_saved_SP_and_return_checked": true
+      },
+      {
+        "mode": "MSC",
+        "round": 2,
+        "original_return": 0,
+        "original_function_entries": 4,
+        "entered": [
+          "_Z6xxstepPhS_i",
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "SEN_SSL_GenerateDigestData"
+        ],
+        "calls": [
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "memset",
+          "memcpy",
+          "memcpy",
+          "SEN_SSL_GenerateDigestData",
+          "EVP_sha256",
+          "EVP_MD_CTX_new",
+          "EVP_DigestInit_ex",
+          "EVP_DigestUpdate",
+          "EVP_DigestFinal_ex",
+          "EVP_MD_CTX_free",
+          "memcpy",
+          "memcpy",
+          "memcmp"
+        ],
+        "hash_inputs": [
+          {
+            "bytes": 1024,
+            "fingerprint": "521b8e373b9f01b3fb97f691159004f47e05e4f53728380f86d39c6680b1fc88"
+          }
+        ],
+        "comparisons": [
+          {
+            "bytes": 32,
+            "equal": true,
+            "left_fingerprint": "4848d73781e3f97ddf592519d220be18fcc6b9e92f6a66af8de1b2603b04816c",
+            "right_fingerprint": "4848d73781e3f97ddf592519d220be18fcc6b9e92f6a66af8de1b2603b04816c"
+          }
+        ],
+        "write_count": 78,
+        "write_bounds_checked": true,
+        "guards_callee_saved_SP_and_return_checked": true
+      },
+      {
+        "mode": "MSC",
+        "round": 3,
+        "original_return": 0,
+        "original_function_entries": 4,
+        "entered": [
+          "_Z6xxstepPhS_i",
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "SEN_SSL_GenerateDigestData"
+        ],
+        "calls": [
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "memset",
+          "memcpy",
+          "memcpy",
+          "SEN_SSL_GenerateDigestData",
+          "EVP_sha256",
+          "EVP_MD_CTX_new",
+          "EVP_DigestInit_ex",
+          "EVP_DigestUpdate",
+          "EVP_DigestFinal_ex",
+          "EVP_MD_CTX_free",
+          "memcpy",
+          "memcpy",
+          "memcmp"
+        ],
+        "hash_inputs": [
+          {
+            "bytes": 1024,
+            "fingerprint": "66f2536d00e0a8b910822bf521c5778c21fb3ed5f8b29e390112505a4bd9e415"
+          }
+        ],
+        "comparisons": [
+          {
+            "bytes": 32,
+            "equal": true,
+            "left_fingerprint": "b6c9f97f721b9e9987db2b1d55e81118ea088fb3d5d6f233707b68eba7d77421",
+            "right_fingerprint": "b6c9f97f721b9e9987db2b1d55e81118ea088fb3d5d6f233707b68eba7d77421"
+          }
+        ],
+        "write_count": 78,
+        "write_bounds_checked": true,
+        "guards_callee_saved_SP_and_return_checked": true
+      },
+      {
+        "mode": "SERVICE",
+        "round": 1,
+        "original_return": 0,
+        "original_function_entries": 4,
+        "entered": [
+          "_Z6xxstepPhS_i",
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "SEN_SSL_GenerateDigestData"
+        ],
+        "calls": [
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "memset",
+          "memcpy",
+          "memcpy",
+          "SEN_SSL_GenerateDigestData",
+          "EVP_sha256",
+          "EVP_MD_CTX_new",
+          "EVP_DigestInit_ex",
+          "EVP_DigestUpdate",
+          "EVP_DigestFinal_ex",
+          "EVP_MD_CTX_free",
+          "memcpy",
+          "memcpy",
+          "memcmp"
+        ],
+        "hash_inputs": [
+          {
+            "bytes": 1024,
+            "fingerprint": "99e0706e4ecb81f74754b730fc239b6646b1cd12500922e1e5928bb26286450a"
+          }
+        ],
+        "comparisons": [
+          {
+            "bytes": 32,
+            "equal": true,
+            "left_fingerprint": "8fc1cfcfd241a8e419786f330d000c0c3e1ef92af591a5e2114f58be157a4d2f",
+            "right_fingerprint": "8fc1cfcfd241a8e419786f330d000c0c3e1ef92af591a5e2114f58be157a4d2f"
+          }
+        ],
+        "write_count": 78,
+        "write_bounds_checked": true,
+        "guards_callee_saved_SP_and_return_checked": true
+      },
+      {
+        "mode": "SERVICE",
+        "round": 2,
+        "original_return": 0,
+        "original_function_entries": 4,
+        "entered": [
+          "_Z6xxstepPhS_i",
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "SEN_SSL_GenerateDigestData"
+        ],
+        "calls": [
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "memset",
+          "memcpy",
+          "memcpy",
+          "SEN_SSL_GenerateDigestData",
+          "EVP_sha256",
+          "EVP_MD_CTX_new",
+          "EVP_DigestInit_ex",
+          "EVP_DigestUpdate",
+          "EVP_DigestFinal_ex",
+          "EVP_MD_CTX_free",
+          "memcpy",
+          "memcpy",
+          "memcmp"
+        ],
+        "hash_inputs": [
+          {
+            "bytes": 1024,
+            "fingerprint": "f993c1beec86cf8a27a87609aa8a10c5f68af7fc89b0d22b95606f5df7b33252"
+          }
+        ],
+        "comparisons": [
+          {
+            "bytes": 32,
+            "equal": true,
+            "left_fingerprint": "908812bd40dd9174016946b8f2f4e0cb4cb37f289246ae7a0f6a01b83c2b26f6",
+            "right_fingerprint": "908812bd40dd9174016946b8f2f4e0cb4cb37f289246ae7a0f6a01b83c2b26f6"
+          }
+        ],
+        "write_count": 78,
+        "write_bounds_checked": true,
+        "guards_callee_saved_SP_and_return_checked": true
+      },
+      {
+        "mode": "SERVICE",
+        "round": 3,
+        "original_return": 0,
+        "original_function_entries": 4,
+        "entered": [
+          "_Z6xxstepPhS_i",
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "SEN_SSL_GenerateDigestData"
+        ],
+        "calls": [
+          "_Z9CmdDecodePtPh",
+          "_Z9CmdDecodePtPh",
+          "memset",
+          "memcpy",
+          "memcpy",
+          "SEN_SSL_GenerateDigestData",
+          "EVP_sha256",
+          "EVP_MD_CTX_new",
+          "EVP_DigestInit_ex",
+          "EVP_DigestUpdate",
+          "EVP_DigestFinal_ex",
+          "EVP_MD_CTX_free",
+          "memcpy",
+          "memcpy",
+          "memcmp"
+        ],
+        "hash_inputs": [
+          {
+            "bytes": 1024,
+            "fingerprint": "a3690954efd0526e91809d1546aef7e63b17ed0610b6a79ab9a5d8b29f11fdcc"
+          }
+        ],
+        "comparisons": [
+          {
+            "bytes": 32,
+            "equal": true,
+            "left_fingerprint": "ad118e38bbe3494e194b33608b16062297de9ceaa39426832e1e142904aeeb24",
+            "right_fingerprint": "ad118e38bbe3494e194b33608b16062297de9ceaa39426832e1e142904aeeb24"
+          }
+        ],
+        "write_count": 78,
+        "write_bounds_checked": true,
+        "guards_callee_saved_SP_and_return_checked": true
+      }
+    ],
+    "round_count": 6,
+    "controller_source_pin": {
+      "path": "work/sony-firmware-20261024/stage140-bounded-service-session-controller/session_controller.py",
+      "bytes": 17567,
+      "sha256": "b5d55f84e55e52b89a353fc5d315dab40bfda7b9990200d6de1dab071a8614b6"
+    },
+    "report": {
+      "phase": "FLOW_FINISHED",
+      "starts": {
+        "MSC": 1,
+        "SERVICE": 1
+      },
+      "auth_exchanges": {
+        "MSC": 7,
+        "SERVICE": 7
+      },
+      "stop_attempts": 1,
+      "evidence": {
+        "normal_USB": true,
+        "driver_restored": true,
+        "closed_driver_observed": true,
+        "physical_operation": true,
+        "worker_completion": false
+      },
+      "errors": [],
+      "ledger": [
+        {
+          "event": "intent_before_dispatch",
+          "phase": "CAPTURE",
+          "token": "0248ca93d55c088f15f2768d812d675d-1",
+          "kind": "CAPTURE",
+          "wire_bytes": 0,
+          "deadline": 3.0
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "CAPTURE",
+          "token": "0248ca93d55c088f15f2768d812d675d-1",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "OBS_CAPTURED",
+          "token": "0248ca93d55c088f15f2768d812d675d-2",
+          "kind": "OBSERVE_CACHE",
+          "wire_bytes": 0,
+          "deadline": 3.01
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "OBS_CAPTURED",
+          "token": "0248ca93d55c088f15f2768d812d675d-2",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "START_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-3",
+          "kind": "START_MSC",
+          "wire_bytes": 8,
+          "deadline": 3.02
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "START_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-3",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-4",
+          "kind": "AUTH_MSC",
+          "wire_bytes": 516,
+          "deadline": 3.03
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-4",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-5",
+          "kind": "DERIVE_DIGEST",
+          "wire_bytes": 0,
+          "deadline": 3.04
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-5",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-6",
+          "kind": "AUTH_MSC",
+          "wire_bytes": 516,
+          "deadline": 3.05
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-6",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-7",
+          "kind": "AUTH_MSC",
+          "wire_bytes": 516,
+          "deadline": 3.06
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-7",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-8",
+          "kind": "DERIVE_DIGEST",
+          "wire_bytes": 0,
+          "deadline": 3.07
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-8",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-9",
+          "kind": "AUTH_MSC",
+          "wire_bytes": 516,
+          "deadline": 3.08
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-9",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-10",
+          "kind": "AUTH_MSC",
+          "wire_bytes": 516,
+          "deadline": 3.09
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-10",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-11",
+          "kind": "DERIVE_DIGEST",
+          "wire_bytes": 0,
+          "deadline": 3.1
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-11",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-12",
+          "kind": "AUTH_MSC",
+          "wire_bytes": 516,
+          "deadline": 3.11
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-12",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-13",
+          "kind": "AUTH_MSC",
+          "wire_bytes": 516,
+          "deadline": 3.12
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_MSC",
+          "token": "0248ca93d55c088f15f2768d812d675d-13",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "OBS_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-14",
+          "kind": "OBSERVE_CACHE",
+          "wire_bytes": 0,
+          "deadline": 3.13
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "OBS_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-14",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "CLOSE_STALE",
+          "token": "0248ca93d55c088f15f2768d812d675d-15",
+          "kind": "CLOSE_STALE",
+          "wire_bytes": 0,
+          "deadline": 3.14
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "CLOSE_STALE",
+          "token": "0248ca93d55c088f15f2768d812d675d-15",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "OPEN_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-16",
+          "kind": "OPEN_SERVICE",
+          "wire_bytes": 0,
+          "deadline": 3.15
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "OPEN_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-16",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "START_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-17",
+          "kind": "START_SERVICE",
+          "wire_bytes": 8,
+          "deadline": 3.16
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "START_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-17",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-18",
+          "kind": "AUTH_SERVICE",
+          "wire_bytes": 516,
+          "deadline": 3.17
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-18",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-19",
+          "kind": "DERIVE_DIGEST",
+          "wire_bytes": 0,
+          "deadline": 3.18
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-19",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-20",
+          "kind": "AUTH_SERVICE",
+          "wire_bytes": 516,
+          "deadline": 3.19
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-20",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-21",
+          "kind": "AUTH_SERVICE",
+          "wire_bytes": 516,
+          "deadline": 3.2
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-21",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-22",
+          "kind": "DERIVE_DIGEST",
+          "wire_bytes": 0,
+          "deadline": 3.21
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-22",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-23",
+          "kind": "AUTH_SERVICE",
+          "wire_bytes": 516,
+          "deadline": 3.22
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-23",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-24",
+          "kind": "AUTH_SERVICE",
+          "wire_bytes": 516,
+          "deadline": 3.23
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-24",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-25",
+          "kind": "DERIVE_DIGEST",
+          "wire_bytes": 0,
+          "deadline": 3.24
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "DERIVE_DIGEST",
+          "token": "0248ca93d55c088f15f2768d812d675d-25",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-26",
+          "kind": "AUTH_SERVICE",
+          "wire_bytes": 516,
+          "deadline": 3.25
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-26",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-27",
+          "kind": "AUTH_SERVICE",
+          "wire_bytes": 516,
+          "deadline": 3.2600000000000002
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "AUTH_SERVICE",
+          "token": "0248ca93d55c088f15f2768d812d675d-27",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "STOP",
+          "token": "0248ca93d55c088f15f2768d812d675d-28",
+          "kind": "STOP",
+          "wire_bytes": 8,
+          "deadline": 3.27
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "STOP",
+          "token": "0248ca93d55c088f15f2768d812d675d-28",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "OBS_NORMAL",
+          "token": "0248ca93d55c088f15f2768d812d675d-29",
+          "kind": "OBSERVE_CACHE",
+          "wire_bytes": 0,
+          "deadline": 3.2800000000000002
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "OBS_NORMAL",
+          "token": "0248ca93d55c088f15f2768d812d675d-29",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "RESTORE",
+          "token": "0248ca93d55c088f15f2768d812d675d-30",
+          "kind": "RESTORE",
+          "wire_bytes": 0,
+          "deadline": 3.29
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "RESTORE",
+          "token": "0248ca93d55c088f15f2768d812d675d-30",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "OBS_DRIVER",
+          "token": "0248ca93d55c088f15f2768d812d675d-31",
+          "kind": "OBSERVE_CACHE",
+          "wire_bytes": 0,
+          "deadline": 3.3000000000000003
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "OBS_DRIVER",
+          "token": "0248ca93d55c088f15f2768d812d675d-31",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "DISPOSE",
+          "token": "0248ca93d55c088f15f2768d812d675d-32",
+          "kind": "DISPOSE",
+          "wire_bytes": 0,
+          "deadline": 3.31
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "DISPOSE",
+          "token": "0248ca93d55c088f15f2768d812d675d-32",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "intent_before_dispatch",
+          "phase": "OBS_CLOSED",
+          "token": "0248ca93d55c088f15f2768d812d675d-33",
+          "kind": "OBSERVE_CACHE",
+          "wire_bytes": 0,
+          "deadline": 3.3200000000000003
+        },
+        {
+          "event": "transport_receipt_not_completion",
+          "phase": "OBS_CLOSED",
+          "token": "0248ca93d55c088f15f2768d812d675d-33",
+          "outcome": "ok",
+          "raw_return": null
+        },
+        {
+          "event": "external_physical_receipt_not_H265_or_recovery_acceptance",
+          "phase": "FLOW_FINISHED"
+        }
+      ],
+      "body_identity_logged": false,
+      "wire_challenge_or_digest_logged": false,
+      "actual_hardware_acceptance": false,
+      "live_transport_implemented": false,
+      "live_release": false,
+      "goal_complete": false,
+      "persistent_write_release": false
+    },
+    "challenge_generation_final_auth_acceptance_mode_driver_and_physical_receipts_are_fixtures": true
+  },
+  "original_guest_function_entries": 169,
+  "original_guest_AArch64_executed": true,
+  "EVP_SHA256_and_C_memory_operations_are_CPU_bridges_not_original_camera_OpenSSL_execution": true,
+  "no_original_full_NinThread_or_live_authentication_executed": true,
+  "raw_public_material_not_printed": true,
+  "Sony_native_host_camera_or_driver_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

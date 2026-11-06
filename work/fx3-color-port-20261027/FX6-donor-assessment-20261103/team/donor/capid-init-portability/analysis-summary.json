@@ -1,0 +1,149 @@
+{
+  "hashes": {
+    "fx6_ap": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+    "fx3_ap": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "helper": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e",
+    "fx3_mpr": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c",
+    "fx6_mpr": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e"
+  },
+  "member": {
+    "name": "usr/lib/libmpr.so",
+    "fileoff": "0xa1c7d8c",
+    "size": 3517008,
+    "sha256": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c"
+  },
+  "xrefs": {
+    "fx6_ap": {
+      "direct_branches": [
+        {
+          "va": "0x1cd80fc",
+          "fileoff": "0x1cd80fc",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "f0df0f94",
+          "target": "0x20d00bc",
+          "kind": "BL"
+        },
+        {
+          "va": "0x1cd8580",
+          "fileoff": "0x1cd8580",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "1b161094",
+          "target": "0x20dddec",
+          "kind": "BL"
+        },
+        {
+          "va": "0x1cd86a4",
+          "fileoff": "0x1cd86a4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "8efeff97",
+          "target": "0x1cd80dc",
+          "kind": "BL"
+        },
+        {
+          "va": "0x1d53d24",
+          "fileoff": "0x1d53d24",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e6f00d94",
+          "target": "0x20d00bc",
+          "kind": "BL"
+        },
+        {
+          "va": "0x203b8d4",
+          "fileoff": "0x203b8d4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "fa510294",
+          "target": "0x20d00bc",
+          "kind": "BL"
+        },
+        {
+          "va": "0x203e9a4",
+          "fileoff": "0x203e9a4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "c6450294",
+          "target": "0x20d00bc",
+          "kind": "BL"
+        },
+        {
+          "va": "0x20d00e4",
+          "fileoff": "0x20d00e4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "2a850094",
+          "target": "0x20f158c",
+          "kind": "BL"
+        },
+        {
+          "va": "0x20dde14",
+          "fileoff": "0x20dde14",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "97450194",
+          "target": "0x212f470",
+          "kind": "BL"
+        },
+        {
+          "va": "0x212f7b8",
+          "fileoff": "0x212f7b8",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "429fa797",
+          "target": "0xb174c0",
+          "kind": "BL"
+        }
+      ],
+      "rela_addends": [
+        {
+          "relocation_fileoff": "0x98f790",
+          "target_va": "0x2ec5f00",
+          "type": 1027,
+          "addend": "0x1cd826c",
+          "raw": "005fec020000000003040000000000006c82cd0100000000"
+        }
+      ]
+    },
+    "fx3_ap": {
+      "direct_branches": [
+        {
+          "va": "0x2e58f3c",
+          "fileoff": "0x2e58f3c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "c1e29c97",
+          "target": "0x1591a40",
+          "kind": "BL"
+        }
+      ],
+      "rela_addends": []
+    },
+    "fx3_mpr": {
+      "direct_branches": [
+        {
+          "va": "0xb7014",
+          "fileoff": "0xb7014",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "0b19ff97",
+          "target": "0x7d440",
+          "kind": "BL"
+        }
+      ],
+      "rela_addends": []
+    },
+    "fx6_mpr": {
+      "direct_branches": [],
+      "rela_addends": []
+    }
+  },
+  "fixture": {
+    "fx6_correct_count": 2,
+    "fx3_misread_unrelocated_callback_low32": 34848224,
+    "fx3_gate_rejects_unrelocated_example": true,
+    "warning": "runtime bias/dispatch/actual init return unobserved; demonstrates layout only"
+  }
+}

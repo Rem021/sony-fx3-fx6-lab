@@ -1,0 +1,18 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic/src/fx3-osd-headless-v25.c	2026-11-04 05:12:35
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic/src/fx3-osd-headless-v25-r2.c	2026-11-04 05:12:35
+@@ -33,6 +33,7 @@
+       V25_WAIT_ENTER,V25_WAIT_RETURN,V25_SIGNAL_ENTER,V25_SIGNAL_RETURN};
+ static U v25_diag(unsigned event,U committed,U source,U id,U op,long rc,U epoch,U token,U link){
+  if(!ring)return 0;
++ int saved=*__errno_location();
+  U *header=(U *)(ring+0x2000);
+  U serial=__atomic_add_fetch(&header[2],1,__ATOMIC_RELAXED);
+  U *record=(U *)(ring+0x2040+(serial-1)%V25_DIAG_RECORDS*V25_DIAG_WORDS*sizeof(U));
+@@ -42,6 +43,7 @@
+  record[8]=(U)rc;record[9]=epoch;record[10]=token;record[11]=link;
+  __atomic_thread_fence(__ATOMIC_RELEASE);
+  __atomic_store_n(&record[0],serial,__ATOMIC_RELEASE);
++ *__errno_location()=saved;
+  return serial;
+ }
+ extern U fx3_gpe_observation_sequence102(void) __attribute__((weak));static __thread U copied_gpe102;

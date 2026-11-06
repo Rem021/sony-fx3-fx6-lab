@@ -1,0 +1,27 @@
+--- a/v25-r21-recovery-integration/trial_web_v22_navigation_review.py
++++ b/r47-runtime-integration-candidate/trial_web_v22_navigation_review.py
+@@ -480,11 +480,11 @@
+     a.frame.sequence!==binding.sequence||a.alarm_nonce!==binding.nonce||!a.alarm_nonce)
+    return deny('binding_mismatch');
+  if(document!==attemptDocument||performance.timeOrigin!==a.document_time_origin||
+-    !h||h.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedURL!==location.href||
++    !h||h.version!==1||h.sealed||h.deadline_ms!==60000||h.expectedURL!==location.href||
+     h.current?.state!=='armed'||h.current.nonce!==binding.nonce||
+     h.expectedLaunchId!==a.launch_request_id||h.documentTimeOrigin!==a.document_time_origin||
+     !Number.isFinite(h.current.armed_ms)||!Number.isFinite(h.current.due_ms)||
+-    h.current.due_ms!==h.current.armed_ms+20000||
++    h.current.due_ms!==h.current.armed_ms+60000||
+     h.current.due_ms!==a.alarm_due_ms||performance.now()>=h.current.due_ms)return deny('document_or_alarm_mismatch');
+  if(!['not_posted','explicit_rejected_unqueued'].includes(a.outcome)||
+     (a.outcome==='not_posted'&&a.mutation_called)||
+--- a/trial_web_r24_review_snapshot.py
++++ b/trial_web_r24_review_snapshot.py
+@@ -3,7 +3,7 @@
+ from pathlib import Path
+ from urllib.parse import urlsplit,parse_qs
+ HERE=Path(__file__).resolve().parent
+-BASE=HERE.parent/'v25-r21-recovery-integration'
++BASE=HERE
+ spec=importlib.util.spec_from_file_location('fx3_r24_original_web',BASE/'trial_web_v22_navigation_review.py')
+ base=importlib.util.module_from_spec(spec);spec.loader.exec_module(base)
+ KEYS=base.KEYS;wait_for_final_receipt=base.wait_for_final_receipt

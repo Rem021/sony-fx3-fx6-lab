@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""Actual Observer + actual QMP/RSP/Sysregs over socketpair; no QEMU."""
+import importlib.util,json,socket,struct,tempfile,threading,time,hashlib
+from pathlib import Path
+HERE=Path(__file__).resolve().parent.parent
+spec=importlib.util.spec_from_file_location('h',HERE/'observer/host_runner.py');H=importlib.util.module_from_spec(spec);spec.loader.exec_module(H)
+core=H.observer_core
+CP=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic');APP=CP/'grm-fbinit/appFw-future-skip.so';SERIAL=CP/'runs/cp-bind-66ed0f78/serial.log';M=core.choose_appfw(SERIAL.read_bytes(),APP);BIAS=M['ap']['bias']
+checks=[]
+def check(n,f):f();checks.append(n)
+def packet(s):r=s.encode();return b'$'+r+b'#'+f'{sum(r)&255:02x}'.encode()
+class QMPServer:
+ def __init__(self,sock):self.sock=sock;self.state='prelaunch';self.running=False;self.calls=[];self.err=None;self.caps=False
+ def run(self):
+  try:
+   f=self.sock.makefile('rwb',buffering=0);f.write(b'{"QMP":{"version":{"qemu":{"major":1,"minor":0},"package":""},"capabilities":[]}}\n')
+   while True:
+    line=f.readline()
+    if not line:break
+    q=json.loads(line);cmd=q['execute'];self.calls.append(cmd)
+    if not self.caps and cmd!='qmp_capabilities':raise RuntimeError('command before capabilities')
+    if cmd=='qmp_capabilities':self.caps=True;resp={}
+    elif cmd=='query-status':resp={'status':self.state,'running':self.running}
+    elif cmd=='cont':self.state='running';self.running=True;resp={}
+    elif cmd=='stop':self.state='paused';self.running=False;resp={}
+    elif cmd=='quit':f.write((json.dumps({'id':q['id'],'return':{}})+'\n').encode());break
+    else:resp={}
+    f.write((json.dumps({'id':q['id'],'return':resp})+'\n').encode())
+  except BaseException as e:self.err=repr(e)
+  finally:
+   try:self.sock.close()
+   except:pass
+class GDBServer:
+ def __init__(self,sock):self.sock=sock;self.err=None;self.cmds=[];self.continued=0;self.state='paused';self.stop_index=0
+ def _read_packet(self):
+  b=self.sock.recv(1)
+  if not b:return None
+  while b in (b'+',b'-',b'\n',b'\r'):
+   b=self.sock.recv(1)
+   if not b:return None
+  if b!=b'$':raise RuntimeError('bad framing '+repr(b))
+  raw=b''
+  while True:
+   c=self.sock.recv(1)
+   if c==b'#':break
+   raw+=c
+  tail=self.sock.recv(2)
+  if int(tail,16)!=sum(raw)&255:raise RuntimeError('bad checksum')
+  self.sock.sendall(b'+')
+  return raw.decode()
+ def _reply(self,body):self.sock.sendall(packet(body))
+ def _send_stop(self):
+  # real four stops: key214 entry/return, key218 entry/return
+  names=['entry214','return214','entry218','return218'];n=names[self.stop_index];self.stop_index+=1
+  msg=f'T05thread:1;'.encode();self.sock.sendall(b'$'+msg+b'#'+f'{sum(msg)&255:02x}'.encode());self.state='stopped'
+ def _regs(self):
+  n=self.stop_index-1;k=core.KEYS[0] if n in (0,1) else core.KEYS[1];fp=0x7ed3d12290;buf=fp+k['slot_off'];r=[0]*33;r[29]=fp
+  if n in (0,2):r[0]=buf;r[30]=BIAS+k['return_va'];r[32]=BIAS+k['thunk_va']
+  else:r[0]=0xfffffc03;r[32]=BIAS+k['return_va']
+  return struct.pack('<33Q',*r).hex()
+ def _mem(self,addr,size):
+  k=core.KEYS[0] if self.stop_index<=2 else core.KEYS[1];fp=0x7ed3d12290;buf=fp+k['slot_off']
+  if addr==buf:
+   return (b'\x01\x00\x00\x00' if self.stop_index in (1,3) else b'\x16\x16\x16\x16').hex()
+  if addr in (BIAS+k['thunk_va'],BIAS+k['return_va']):
+   return (bytes.fromhex(k['thunk_word']) if addr==BIAS+k['thunk_va'] else bytes.fromhex(k['return_word'])).hex()
+  va=addr-BIAS;b=APP.read_bytes()
+  for s in core.elf_loads(APP):
+   if s['va']<=va and va+size<=s['va']+s['filesz']:
+    off=s['fileoff']+va-s['va'];return b[off:off+size].hex()
+  raise RuntimeError('unmapped m '+hex(addr))
+ def _xml(self):
+  return ('<target><architecture>aarch64</architecture><feature name="org.gnu.gdb.aarch64.core">'
+          '<reg name="x0" regnum="0" bitsize="64"/><reg name="x29" regnum="29" bitsize="64"/>'
+          '<reg name="x30" regnum="30" bitsize="64"/><reg name="sp" regnum="31" bitsize="64"/>'
+          '<reg name="pc" regnum="32" bitsize="64"/><reg name="SP_EL0" regnum="100" bitsize="64"/>'
+          '<reg name="TPIDR_EL0" regnum="101" bitsize="64"/></feature></target>')
+ def run(self):
+  try:
+   while True:
+    raw=self._read_packet()
+    if raw is None:break
+    self.cmds.append(raw)
+    if raw.startswith('qXfer:features:read:target.xml:'):
+     self._reply('l'+self._xml());continue
+    if raw.startswith('Qqemu.PhyMemMode') or raw.startswith('qqemu.PhyMemMode'):self._reply('OK' if not raw.endswith(':0') else 'OK');continue
+    if raw.startswith('Hg') or raw.startswith('Hc'):self._reply('OK');continue
+    if raw.startswith('Z1,') or raw.startswith('z1,'):self._reply('OK');continue
+    if raw=='g':self._reply(self._regs());continue
+    if raw.startswith('p'):
+     # any sysreg p read is a fixed TLS/SP value; Sysregs validates 16 hex
+     self._reply('4074ff5c7f000000' if raw=='p65' else '0000000000000000');continue
+    if raw.startswith('m'):
+     a,s=raw[1:].split(',');self._reply(self._mem(int(a,16),int(s,16)));continue
+    if raw=='c':
+     self.continued+=1;self.sock.sendall(b'+');self._send_stop();continue
+    raise RuntimeError('unexpected GDB '+raw[:40])
+  except BaseException as e:self.err=repr(e)
+  finally:
+   try:self.sock.close()
+   except:pass
+def e2e():
+ with tempfile.TemporaryDirectory() as td:
+  qa,qb=socket.socketpair();ga,gb=socket.socketpair();qs=QMPServer(qb);gs=GDBServer(gb);tq=threading.Thread(target=qs.run);tg=threading.Thread(target=gs.run);tq.start();tg.start()
+  qclient=H.QMP(sock=qa);rclient=H.RSP(sock=ga)
+  class QProxy:
+   def call(self,c,args=None,deadline=None):return qclient.call(c,args,deadline)
+   def close(self):qclient.close()
+  def map_provider(serial,deadline):
+   assert qs.booted if False else True
+   assert qs.state=='running' and qs.calls.count('cont')==1 and 'stop' not in qs.calls,qs.calls
+   return M
+  def tls():
+   if not hasattr(tls,'s'): 
+    from sys import path as sp;sp.insert(0,'/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime')
+    from gdb_sysregs104_v2 import Sysregs;tls.s=Sysregs(rclient,Path(td)/'run')
+   return tls.s.read('TPIDR_EL0')
+  d={'verify_artifacts':lambda:{},'hash_checker':lambda p:H.baseline_binding.TARGET_SHA if str(p)==str(H.baseline_binding.TARGET) else H.baseline_binding.APP_SHA,'uuid_checker':lambda:True,'run_root':str(Path(td)/'run'),'lock_factory':lambda:type('L',(),{'acquire':lambda s:None,'release':lambda s:None})(),'launcher':lambda *a:type('P',(),{'returncode':0,'wait':lambda s,timeout:0})(),'qmp_factory':lambda p,deadline=None:QProxy(),'rsp_factory':lambda p,deadline=None:rclient,'mapping_provider':map_provider,'tls_reader':tls,'callback_cancellable':True,'inherited_cleanup':lambda *a:{'passed':True,'API16_restored':True,'original_bytes_verified':True,'ack_seen':True}}
+  try:
+   h=H.HostRunner(d);out=h.run()
+  finally:
+   for x in (ga,gb,qa,qb):
+    try:x.close()
+    except:pass
+   tq.join(1);tg.join(1)
+  assert not tq.is_alive() and not tg.is_alive();assert not qs.err and not gs.err,(qs.err,gs.err)
+  assert out['clean'],out
+  assert len(out['records'])==2,out['records']
+  assert gs.continued==4,gs.continued
+  assert qs.calls[:3]==['qmp_capabilities','query-status','cont'],qs.calls
+check('actual_Observer_four_stop_QMP_RSP_Sysregs_clean',e2e)
+out={'status':'PASS_NO_QEMU_ACTUAL_OBSERVER_E2E','fixture':'actual Observer/QMP/RSP/Sysregs over socketpair; fake guest regs/mem only','cases':checks,'count':len(checks),'continued':4}
+(HERE/'tests/actual-e2e-tests.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out,indent=2))

@@ -1,0 +1,333 @@
+{
+  "source_sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+  "windows": [
+    {
+      "reference_site": "0xecce0",
+      "range_start": "0xecca0",
+      "bytes": 512,
+      "sha256": "7138a0256ec7bd94d935217f55a35d339008f7a7ef691d93c7ac8985044c3f21",
+      "literals": [
+        {
+          "site": "0xeccd8",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xecce0",
+          "va": "0x1dc5be",
+          "text": "/root/IAMUPDATER"
+        },
+        {
+          "site": "0xeccf8",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xecd00",
+          "va": "0x1dc771",
+          "text": "/version.txt"
+        },
+        {
+          "site": "0xecd14",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xecd18",
+          "va": "0x1dc5cf",
+          "text": "[UDTR0604] UD_GET_RUNVER can not open version.txt: (fd = %d)\n"
+        },
+        {
+          "site": "0xecd50",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xecd54",
+          "va": "0x1dc60d",
+          "text": "[UDTR0604] UD_GET_RUNVER can not read major version: (ret = %d)\n"
+        },
+        {
+          "site": "0xece08",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xece0c",
+          "va": "0x1dc670",
+          "text": "/bin/umount"
+        },
+        {
+          "site": "0xece30",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xece34",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xece38",
+          "va": "0x1dc660",
+          "text": "umount_squashfs"
+        },
+        {
+          "site": "0xece3c",
+          "va": "0x1dc77e",
+          "text": "[UDTR0604] %s @ %d ignore system error errno(%d)"
+        },
+        {
+          "site": "0xece78",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xece7c",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xece8c",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xece90",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xece94",
+          "va": "0x1dc3f6",
+          "text": "/dev/nflasha1"
+        },
+        {
+          "site": "0xece9c",
+          "va": "0x1dc3e1",
+          "text": "posix_attr"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0xeccb4",
+          "target": "0xecc5c",
+          "label": null
+        },
+        {
+          "site": "0xeccc4",
+          "target": "0xecc68",
+          "label": null
+        },
+        {
+          "site": "0xeccec",
+          "target": "0x1bce48",
+          "label": null
+        },
+        {
+          "site": "0xecd04",
+          "target": "0x55c10",
+          "label": "open"
+        },
+        {
+          "site": "0xecd20",
+          "target": "0x57cd0",
+          "label": "printf"
+        },
+        {
+          "site": "0xecd38",
+          "target": "0xecdd0",
+          "label": null
+        },
+        {
+          "site": "0xecd44",
+          "target": "0x562a0",
+          "label": "read"
+        },
+        {
+          "site": "0xecd5c",
+          "target": "0x57cd0",
+          "label": "printf"
+        },
+        {
+          "site": "0xecd64",
+          "target": "0x572a0",
+          "label": "close"
+        },
+        {
+          "site": "0xecd68",
+          "target": "0xecd24",
+          "label": null
+        },
+        {
+          "site": "0xecd80",
+          "target": "0x56730",
+          "label": "atoi"
+        },
+        {
+          "site": "0xecd98",
+          "target": "0x56730",
+          "label": "atoi"
+        },
+        {
+          "site": "0xecdb0",
+          "target": "0x56730",
+          "label": "atoi"
+        },
+        {
+          "site": "0xecdbc",
+          "target": "0x572a0",
+          "label": "close"
+        },
+        {
+          "site": "0xece18",
+          "target": "0x56940",
+          "label": "stm_system"
+        },
+        {
+          "site": "0xece20",
+          "target": "0x56f00",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0xece44",
+          "target": "0x57cd0",
+          "label": "printf"
+        },
+        {
+          "site": "0xece70",
+          "target": "0xece4c",
+          "label": null
+        }
+      ],
+      "disassembly": "fragments/libObj.so-ecca0.txt"
+    },
+    {
+      "reference_site": "0xee0b8",
+      "range_start": "0xee078",
+      "bytes": 512,
+      "sha256": "cd10feda94e7eea1ef6064ef4708531499003f1eae694882422ec05aeffb2896",
+      "literals": [
+        {
+          "site": "0xee0a4",
+          "va": "0x1dd969",
+          "text": "/setting/updater"
+        },
+        {
+          "site": "0xee0a8",
+          "va": "0x1dd9af",
+          "text": "[UDTR0604] UD_SET_MD command error : not umounted %s\n"
+        },
+        {
+          "site": "0xee0b4",
+          "va": "0x1dc000",
+          "text": "Start[%d] (smode:%d)"
+        },
+        {
+          "site": "0xee0b8",
+          "va": "0x1dc5be",
+          "text": "/root/IAMUPDATER"
+        },
+        {
+          "site": "0xee108",
+          "va": "0x1dda4a",
+          "text": "[UDTR0604] regist err func_cb_sync() SENSER:%d\n"
+        },
+        {
+          "site": "0xee150",
+          "va": "0x1dda7a",
+          "text": "[UDTR0604] Backup_read() error %d\n"
+        },
+        {
+          "site": "0xee19c",
+          "va": "0x1dda9d",
+          "text": "[UDTR0604] regist err func_cb() LSI_TRANSFER:%d\n"
+        },
+        {
+          "site": "0xee1d4",
+          "va": "0x1dd9e5",
+          "text": "[UDTR0604] unregist err func_cb_sync() SENSER:%d\n"
+        },
+        {
+          "site": "0xee228",
+          "va": "0x1dda17",
+          "text": "[UDTR0604] unregist err func_cb() LSI_TRANSFER:%d\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0xee094",
+          "target": "0xedca8",
+          "label": null
+        },
+        {
+          "site": "0xee0ac",
+          "target": "0xedf78",
+          "label": null
+        },
+        {
+          "site": "0xee0cc",
+          "target": "0x1bce48",
+          "label": null
+        },
+        {
+          "site": "0xee0f4",
+          "target": "0x577f0",
+          "label": "osal_reg_sync_msg_queue_cb"
+        },
+        {
+          "site": "0xee10c",
+          "target": "0x57cd0",
+          "label": "printf"
+        },
+        {
+          "site": "0xee138",
+          "target": "0x56c70",
+          "label": "Backup_read"
+        },
+        {
+          "site": "0xee154",
+          "target": "0xee10c",
+          "label": null
+        },
+        {
+          "site": "0xee188",
+          "target": "0x57c50",
+          "label": "osal_reg_msg_queue_cb"
+        },
+        {
+          "site": "0xee1a0",
+          "target": "0xee10c",
+          "label": null
+        },
+        {
+          "site": "0xee1c0",
+          "target": "0x56f60",
+          "label": "osal_unreg_msg_queue_cb"
+        },
+        {
+          "site": "0xee1d8",
+          "target": "0x57cd0",
+          "label": "printf"
+        },
+        {
+          "site": "0xee214",
+          "target": "0x56f60",
+          "label": "osal_unreg_msg_queue_cb"
+        },
+        {
+          "site": "0xee22c",
+          "target": "0x57cd0",
+          "label": "printf"
+        },
+        {
+          "site": "0xee234",
+          "target": "0xee1dc",
+          "label": null
+        }
+      ],
+      "disassembly": "fragments/libObj.so-ee078.txt"
+    }
+  ],
+  "scope": "Two bounded static instruction windows with literal references. There are no matching unwind/symbol function bounds at these sites, so these are not full functions or a whole-program writer audit. No runtime rootfs status or vendor code execution."
+}

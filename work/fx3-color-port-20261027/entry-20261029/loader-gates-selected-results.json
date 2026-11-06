@@ -1,0 +1,885 @@
+{
+  "fragments": [
+    {
+      "library": "libupdatercorecommon.so",
+      "label": "Updater::BaseBodyLoaderModule::checkChassis()",
+      "va": "0x9ae8",
+      "source_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "bytes": 568,
+      "sha256": "290b671593e4934319e5a3ec495f1aaf3b5abb93ddc27e986f3743962650e5f9",
+      "literals": [
+        {
+          "site": "0x9b1c",
+          "va": "0xc343",
+          "text": "/tmp_updater/updater/bodyfs/config/chassis"
+        },
+        {
+          "site": "0x9b6c",
+          "va": "0xc36e",
+          "text": "/root/chassis"
+        },
+        {
+          "site": "0x9b8c",
+          "va": "0xc37c",
+          "text": "BaseBodyLoaderModule.cpp"
+        },
+        {
+          "site": "0x9b90",
+          "va": "0xc20a",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x9c28",
+          "va": "0xc37c",
+          "text": "BaseBodyLoaderModule.cpp"
+        },
+        {
+          "site": "0x9c2c",
+          "va": "0xc20a",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        },
+        {
+          "site": "0x9ca4",
+          "va": "0xc37c",
+          "text": "BaseBodyLoaderModule.cpp"
+        },
+        {
+          "site": "0x9ca8",
+          "va": "0xc20a",
+          "text": "UdrAPI,%d,%s:%d,\"\"\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x9b08",
+          "target": "0x80d0",
+          "label": "Updater::FileHandler::FileHandler()"
+        },
+        {
+          "site": "0x9b10",
+          "target": "0x80d0",
+          "label": "Updater::FileHandler::FileHandler()"
+        },
+        {
+          "site": "0x9b2c",
+          "target": "0x81d0",
+          "label": "Updater::FileHandler::Open(char const*, int)"
+        },
+        {
+          "site": "0x9b40",
+          "target": "0x8180",
+          "label": "Updater::FileHandler::~FileHandler()"
+        },
+        {
+          "site": "0x9b48",
+          "target": "0x8180",
+          "label": "Updater::FileHandler::~FileHandler()"
+        },
+        {
+          "site": "0x9b74",
+          "target": "0x81d0",
+          "label": "Updater::FileHandler::Open(char const*, int)"
+        },
+        {
+          "site": "0x9b9c",
+          "target": "0x81e0",
+          "label": "printf"
+        },
+        {
+          "site": "0x9ba4",
+          "target": "0x7b70",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x9bd8",
+          "target": "0x8100",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x9be4",
+          "target": "0x8180",
+          "label": "Updater::FileHandler::~FileHandler()"
+        },
+        {
+          "site": "0x9bec",
+          "target": "0x8180",
+          "label": "Updater::FileHandler::~FileHandler()"
+        },
+        {
+          "site": "0x9bf4",
+          "target": "0x8150",
+          "label": "_Unwind_Resume"
+        },
+        {
+          "site": "0x9c10",
+          "target": "0x8040",
+          "label": "Updater::FileHandler::ReadAll(unsigned char*, unsigned long, unsigned long*)"
+        },
+        {
+          "site": "0x9c38",
+          "target": "0x81e0",
+          "label": "printf"
+        },
+        {
+          "site": "0x9c40",
+          "target": "0x7b70",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x9c74",
+          "target": "0x8100",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x9c8c",
+          "target": "0x8040",
+          "label": "Updater::FileHandler::ReadAll(unsigned char*, unsigned long, unsigned long*)"
+        },
+        {
+          "site": "0x9cb4",
+          "target": "0x81e0",
+          "label": "printf"
+        },
+        {
+          "site": "0x9cbc",
+          "target": "0x7b70",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x9cf0",
+          "target": "0x8100",
+          "label": "__cxa_throw"
+        },
+        {
+          "site": "0x9d0c",
+          "target": "0x7b80",
+          "label": "memcmp"
+        },
+        {
+          "site": "0x9d14",
+          "target": "0x9b38",
+          "label": null
+        },
+        {
+          "site": "0x9d1c",
+          "target": "0x9be8",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libupdatercorecommon.so-9ae8-loader-gate.txt"
+    },
+    {
+      "library": "libupdaterufp.so",
+      "label": "bounded private fragment",
+      "va": "0x1b40",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "bytes": 268,
+      "sha256": "b3e1d14b7da0a43ab97e6c8d606c7d105a345448412b069809a9b23de400424b",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x1b64",
+          "target": "0x13e0",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x1bbc",
+          "target": "0x1320",
+          "label": "osal_set_msg_src"
+        },
+        {
+          "site": "0x1bcc",
+          "target": "0x15a0",
+          "label": "osal_snd_sync_msg"
+        },
+        {
+          "site": "0x1c00",
+          "target": "0x15f0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x1c48",
+          "target": "0x1bb0",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libupdaterufp.so-1b40-loader-gate.txt"
+    },
+    {
+      "library": "libupdaterufp.so",
+      "label": "bounded private fragment",
+      "va": "0x22e0",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "bytes": 440,
+      "sha256": "1aad9dad8232c41ab52201dc14b3326e6ad444a1a8948e8ee5785d3403d7d8d8",
+      "literals": [
+        {
+          "site": "0x231c",
+          "va": "0x3da7",
+          "text": "LENSDATA.DAT"
+        },
+        {
+          "site": "0x2324",
+          "va": "0x3e2d",
+          "text": "%s/%s"
+        },
+        {
+          "site": "0x238c",
+          "va": "0x3d70",
+          "text": "/usr/bin/crypter.elf"
+        },
+        {
+          "site": "0x23cc",
+          "va": "0x3db4",
+          "text": "/tmp_updater/updater/update/accsy/ACCYFIRM.BIN"
+        },
+        {
+          "site": "0x23d0",
+          "va": "0x3db4",
+          "text": "/tmp_updater/updater/update/accsy/ACCYFIRM.BIN"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x2308",
+          "target": "0x1380",
+          "label": "memset"
+        },
+        {
+          "site": "0x2330",
+          "target": "0x14c0",
+          "label": "snprintf"
+        },
+        {
+          "site": "0x2338",
+          "target": "0x1530",
+          "label": "udtr_write_firm_from_media"
+        },
+        {
+          "site": "0x2394",
+          "target": "0x1450",
+          "label": "stm_system"
+        },
+        {
+          "site": "0x239c",
+          "target": "0x14f0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x23b8",
+          "target": "0x2348",
+          "label": null
+        },
+        {
+          "site": "0x23d4",
+          "target": "0x1520",
+          "label": "udtr_get_file_size"
+        },
+        {
+          "site": "0x23e4",
+          "target": "0x1550",
+          "label": "umount"
+        },
+        {
+          "site": "0x23ec",
+          "target": "0x23b4",
+          "label": null
+        },
+        {
+          "site": "0x240c",
+          "target": "0x1310",
+          "label": "udtr_alloc_dmm"
+        },
+        {
+          "site": "0x2420",
+          "target": "0x13a0",
+          "label": "udtr_copy2dmm"
+        },
+        {
+          "site": "0x2430",
+          "target": "0x1590",
+          "label": "udtr_free_dmm"
+        },
+        {
+          "site": "0x2434",
+          "target": "0x23e0",
+          "label": null
+        },
+        {
+          "site": "0x243c",
+          "target": "0x1550",
+          "label": "umount"
+        },
+        {
+          "site": "0x244c",
+          "target": "0x21b8",
+          "label": null
+        },
+        {
+          "site": "0x245c",
+          "target": "0x1590",
+          "label": "udtr_free_dmm"
+        },
+        {
+          "site": "0x2460",
+          "target": "0x23b4",
+          "label": null
+        },
+        {
+          "site": "0x2464",
+          "target": "0x1dbc",
+          "label": null
+        },
+        {
+          "site": "0x2468",
+          "target": "0x1330",
+          "label": "udtr_conv_stat2err"
+        },
+        {
+          "site": "0x2478",
+          "target": "0x1590",
+          "label": "udtr_free_dmm"
+        },
+        {
+          "site": "0x247c",
+          "target": "0x2348",
+          "label": null
+        },
+        {
+          "site": "0x248c",
+          "target": "0x19f8",
+          "label": null
+        },
+        {
+          "site": "0x2494",
+          "target": "0x2348",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libupdaterufp.so-22e0-loader-gate.txt"
+    },
+    {
+      "library": "libupdaterufp.so",
+      "label": "bounded private fragment",
+      "va": "0x27c4",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "bytes": 1704,
+      "sha256": "b9ca764b6eb7ca82686fe73bda8c559164c9cef272bd8baf84dd46dcc50a4521",
+      "literals": [
+        {
+          "site": "0x2988",
+          "va": "0x3e06",
+          "text": "tmpfs"
+        },
+        {
+          "site": "0x298c",
+          "va": "0x3dfe",
+          "text": "size=5M"
+        },
+        {
+          "site": "0x2994",
+          "va": "0x3de3",
+          "text": "/tmp_updater"
+        },
+        {
+          "site": "0x2998",
+          "va": "0x3e06",
+          "text": "tmpfs"
+        },
+        {
+          "site": "0x29b0",
+          "va": "0x3d85",
+          "text": "/tmp_updater/Firm.dat"
+        },
+        {
+          "site": "0x2a40",
+          "va": "0x3e0c",
+          "text": "ufp_reboot"
+        },
+        {
+          "site": "0x2ca0",
+          "va": "0x3de3",
+          "text": "/tmp_updater"
+        },
+        {
+          "site": "0x2d40",
+          "va": "0x3d70",
+          "text": "/usr/bin/crypter.elf"
+        },
+        {
+          "site": "0x2d78",
+          "va": "0x3db4",
+          "text": "/tmp_updater/updater/update/accsy/ACCYFIRM.BIN"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x284c",
+          "target": "0x1b40",
+          "label": null
+        },
+        {
+          "site": "0x28ac",
+          "target": "0x2848",
+          "label": null
+        },
+        {
+          "site": "0x2950",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x29a0",
+          "target": "0x1400",
+          "label": "mount"
+        },
+        {
+          "site": "0x29b4",
+          "target": "0x1350",
+          "label": "open"
+        },
+        {
+          "site": "0x29c8",
+          "target": "0x1550",
+          "label": "umount"
+        },
+        {
+          "site": "0x29d0",
+          "target": "0x2b38",
+          "label": null
+        },
+        {
+          "site": "0x2a00",
+          "target": "0x1b40",
+          "label": null
+        },
+        {
+          "site": "0x2a60",
+          "target": "0x1340",
+          "label": "osal_create_waitable_thread"
+        },
+        {
+          "site": "0x2a64",
+          "target": "0x2850",
+          "label": null
+        },
+        {
+          "site": "0x2a98",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x2aac",
+          "target": "0x15b0",
+          "label": "Dec_Scramble"
+        },
+        {
+          "site": "0x2b10",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x2b30",
+          "target": "0x1928",
+          "label": null
+        },
+        {
+          "site": "0x2b5c",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x2b64",
+          "target": "0x184c",
+          "label": null
+        },
+        {
+          "site": "0x2bb8",
+          "target": "0x26e8",
+          "label": null
+        },
+        {
+          "site": "0x2bdc",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x2be8",
+          "target": "0x1c4c",
+          "label": null
+        },
+        {
+          "site": "0x2bf4",
+          "target": "0x2bd8",
+          "label": null
+        },
+        {
+          "site": "0x2c44",
+          "target": "0x14b0",
+          "label": "Backup_read"
+        },
+        {
+          "site": "0x2c54",
+          "target": "0x1580",
+          "label": "exit"
+        },
+        {
+          "site": "0x2c70",
+          "target": "0x2a94",
+          "label": null
+        },
+        {
+          "site": "0x2c88",
+          "target": "0x1560",
+          "label": "write"
+        },
+        {
+          "site": "0x2c94",
+          "target": "0x1540",
+          "label": "close"
+        },
+        {
+          "site": "0x2ca4",
+          "target": "0x1550",
+          "label": "umount"
+        },
+        {
+          "site": "0x2cb0",
+          "target": "0x2b38",
+          "label": null
+        },
+        {
+          "site": "0x2cfc",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x2d10",
+          "target": "0x1540",
+          "label": "close"
+        },
+        {
+          "site": "0x2d18",
+          "target": "0x2cec",
+          "label": null
+        },
+        {
+          "site": "0x2d48",
+          "target": "0x1450",
+          "label": "stm_system"
+        },
+        {
+          "site": "0x2d50",
+          "target": "0x14f0",
+          "label": "__errno_location"
+        },
+        {
+          "site": "0x2d80",
+          "target": "0x1520",
+          "label": "udtr_get_file_size"
+        },
+        {
+          "site": "0x2d90",
+          "target": "0x1550",
+          "label": "umount"
+        },
+        {
+          "site": "0x2db4",
+          "target": "0x1310",
+          "label": "udtr_alloc_dmm"
+        },
+        {
+          "site": "0x2dc0",
+          "target": "0x1550",
+          "label": "umount"
+        },
+        {
+          "site": "0x2dc8",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x2dd8",
+          "target": "0x13a0",
+          "label": "udtr_copy2dmm"
+        },
+        {
+          "site": "0x2de4",
+          "target": "0x1590",
+          "label": "udtr_free_dmm"
+        },
+        {
+          "site": "0x2de8",
+          "target": "0x2dbc",
+          "label": null
+        },
+        {
+          "site": "0x2df0",
+          "target": "0x1550",
+          "label": "umount"
+        },
+        {
+          "site": "0x2e00",
+          "target": "0x21b8",
+          "label": null
+        },
+        {
+          "site": "0x2e0c",
+          "target": "0x1590",
+          "label": "udtr_free_dmm"
+        },
+        {
+          "site": "0x2e10",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x2e14",
+          "target": "0x1dbc",
+          "label": null
+        },
+        {
+          "site": "0x2e24",
+          "target": "0x1590",
+          "label": "udtr_free_dmm"
+        },
+        {
+          "site": "0x2e34",
+          "target": "0x1c4c",
+          "label": null
+        },
+        {
+          "site": "0x2e38",
+          "target": "0x29ec",
+          "label": null
+        },
+        {
+          "site": "0x2e48",
+          "target": "0x19f8",
+          "label": null
+        },
+        {
+          "site": "0x2e50",
+          "target": "0x2e2c",
+          "label": null
+        },
+        {
+          "site": "0x2e64",
+          "target": "0x29f8",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libupdaterufp.so-27c4-loader-gate.txt"
+    },
+    {
+      "library": "libupdaterufp.so",
+      "label": "udtr_cmd_search_chank",
+      "va": "0x3a00",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "bytes": 252,
+      "sha256": "c1c91a9584b4a552edc80dab89086beb81727fab95172802838719a90b9ec97f",
+      "literals": [
+        {
+          "site": "0x3a64",
+          "va": "0x3e6f",
+          "text": "FDAT"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x3a34",
+          "target": "0x1490",
+          "label": "Fsys_Seek"
+        },
+        {
+          "site": "0x3a78",
+          "target": "0x1440",
+          "label": "Fsys_Read"
+        },
+        {
+          "site": "0x3ab0",
+          "target": "0x1440",
+          "label": "Fsys_Read"
+        },
+        {
+          "site": "0x3ac4",
+          "target": "0x1470",
+          "label": "strncmp"
+        },
+        {
+          "site": "0x3ad0",
+          "target": "0x3a40",
+          "label": null
+        },
+        {
+          "site": "0x3af0",
+          "target": "0x1490",
+          "label": "Fsys_Seek"
+        },
+        {
+          "site": "0x3af8",
+          "target": "0x3a3c",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libupdaterufp.so-3a00-loader-gate.txt"
+    },
+    {
+      "library": "libupdaterufp.so",
+      "label": "udtr_write_firm_from_media",
+      "va": "0x3bcc",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "bytes": 260,
+      "sha256": "c4c7656669880b1dd04bd8f213400a66c6986091103b195fdc2b2df36fe16afb",
+      "literals": [
+        {
+          "site": "0x3c6c",
+          "va": "0x3e06",
+          "text": "tmpfs"
+        },
+        {
+          "site": "0x3c70",
+          "va": "0x3de3",
+          "text": "/tmp_updater"
+        },
+        {
+          "site": "0x3c78",
+          "va": "0x3de3",
+          "text": "/tmp_updater"
+        },
+        {
+          "site": "0x3c7c",
+          "va": "0x3dfe",
+          "text": "size=5M"
+        },
+        {
+          "site": "0x3c80",
+          "va": "0x3e06",
+          "text": "tmpfs"
+        },
+        {
+          "site": "0x3c9c",
+          "va": "0x3d85",
+          "text": "/tmp_updater/Firm.dat"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x3bf8",
+          "target": "0x1370",
+          "label": "Fsys_Open"
+        },
+        {
+          "site": "0x3c08",
+          "target": "0x14e0",
+          "label": "udtr_cmd_search_chank"
+        },
+        {
+          "site": "0x3c28",
+          "target": "0x13f0",
+          "label": "Fsys_Close"
+        },
+        {
+          "site": "0x3c5c",
+          "target": "0x1440",
+          "label": "Fsys_Read"
+        },
+        {
+          "site": "0x3c88",
+          "target": "0x1400",
+          "label": "mount"
+        },
+        {
+          "site": "0x3ca0",
+          "target": "0x1350",
+          "label": "open"
+        },
+        {
+          "site": "0x3cb0",
+          "target": "0x1550",
+          "label": "umount"
+        },
+        {
+          "site": "0x3cb4",
+          "target": "0x3c20",
+          "label": null
+        },
+        {
+          "site": "0x3cc0",
+          "target": "0x1560",
+          "label": "write"
+        },
+        {
+          "site": "0x3cc8",
+          "target": "0x1540",
+          "label": "close"
+        },
+        {
+          "site": "0x3ccc",
+          "target": "0x3c24",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/libupdaterufp.so-3bcc-loader-gate.txt"
+    },
+    {
+      "library": "libupdatercommon.so",
+      "label": "Updater::DllHandler::Open(char const*, int)",
+      "va": "0x9e38",
+      "source_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+      "bytes": 144,
+      "sha256": "e1efe6dbf21aa378ee1eb78770874ca6277a44ad04637a969d645a28c8d0877d",
+      "literals": [
+        {
+          "site": "0x9e74",
+          "va": "0xa8df",
+          "text": "DllHandler.cpp"
+        },
+        {
+          "site": "0x9e7c",
+          "va": "0xa536",
+          "text": "UdrAPI,%d,%s:%d,\"\"%s\"\"\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x9e50",
+          "target": "0x6c20",
+          "label": "dlopen"
+        },
+        {
+          "site": "0x9e5c",
+          "target": "0x6ba0",
+          "label": "dlerror"
+        },
+        {
+          "site": "0x9e84",
+          "target": "0x6fd0",
+          "label": "printf"
+        },
+        {
+          "site": "0x9e8c",
+          "target": "0x6b20",
+          "label": "__cxa_allocate_exception"
+        },
+        {
+          "site": "0x9eb8",
+          "target": "0x6f10",
+          "label": "__cxa_throw"
+        }
+      ],
+      "disassembly": "entry-fragments/libupdatercommon.so-9e38-loader-gate.txt"
+    }
+  ],
+  "crypter_global": {
+    "source_sha256": "638eeba2fc720fa807f62fb6f1c65c72e106ed164d16747b0c56e40512c78402",
+    "file_chunk_global_va": "0x412094",
+    "section": ".bss",
+    "section_type": "SHT_NOBITS",
+    "init_array_pointers": [
+      "0x401028"
+    ],
+    "scope": "This global has no file-backed value. ELF zero-fill applies on a fresh load, but runtime initialization and main argument parsing are not executed in this static observation. Do not substitute this for actual FILE_CHUNK call arguments."
+  },
+  "scope": "Static original slices only. DllHandler calls dlopen directly at this helper layer; underlying dynamic loader/kernel policy remains unverified. Chassis filename comparison is not cryptographic authenticity. MSC completion reaches a crypter process request, but external reachability, command sequencing and whole container admission are not established."
+}

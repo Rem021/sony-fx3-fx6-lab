@@ -1,0 +1,35 @@
+FX3 Native PnP cached-only summary
+task_state=CACHED_ONLY_COMPLETE_NO_CURRENT_CONNECTED_CANDIDATE
+task_tag=FX3_NATIVE_PNP_20261026T160454Z
+observed_start_utc=2026-10-26T16:08:26.765Z
+observed_end_utc=2026-10-26T16:17:49.467Z
+observed_start_Asia_Shanghai=2026-10-27 00:08:26.765 +08:00
+observed_end_Asia_Shanghai=2026-10-27 00:17:49.467 +08:00
+
+本次仅使用系统自带 PnPUtil 的帮助与枚举命令，另记录 Get-ExecutionPolicy -List。共7条内置查询，退出码全部为0。未重试旧PS1、生成或执行探针、刷新设备。
+输出目录已核对为本机系统C盘NTFS普通目录，目标与各级父目录无重解析/网络/相机存储重定向。
+VID/PID=054C:0DA1；型号=ILME-FX3；匹配USB根节点1个，缓存USBSTOR磁盘节点3个；总追踪节点4个（上限16）。
+当前连接USB根节点=0；当前连接磁盘候选=0。
+四个节点都报告Disconnected、IsPresent=FALSE。HasProblem缓存值均为FALSE，具体ProblemCode和当前DevNode启动/启用状态未提供，记UNKNOWN。
+设备树缓存中USB接口及3个磁盘接口均为DISABLED。磁盘接口类别GUID=53f56307-b6bf-11d0-94f2-00a0c91efb8b。
+三个磁盘节点的DEVPKEY_Device_Parent摘要均与FX3 USB根节点摘要相同；父子关系另经本次设备树输出对应。
+binding_status=MISSING_CURRENT_CONNECTED_CANDIDATE；历史缓存磁盘候选非唯一（3个）。不能视作当前连接绑定或硬件可用性证明。
+
+USB缓存驱动：service=USBSTOR；INF=usbstor.inf；provider=Microsoft；version=10.0.26100.9444；PnPUtil报告signer=Microsoft Windows；status=Best Ranked / Installed。
+3个磁盘缓存驱动：service=disk；INF=disk.inf；provider=Microsoft；version=10.0.26100.9711；PnPUtil报告signer=Microsoft Windows；status=Best Ranked / Installed。
+以上均来自本次查询输出，未使用旧结果补齐缺项。独立签名验证、设备句柄访问及硬件验证未执行。
+
+执行策略快照：LocalMachine=RemoteSigned，其余列出的作用域为Undefined；未改变或绕过执行策略。查询进程沿用普通用户令牌，后续核对当前令牌Administrator=False。
+原始实例ID、序列相关数据、容器ID、接口路径与原始命令参数仅存private目录；public以uppercase UTF8 SHA256引用节点。
+16份私有文件的完整SHA256见private-file-sha256.json，其中包含每次原始stdout/stderr及私有节点索引、命令回执；私有文件未外传。
+既有四个输入和两次尝试所在目录的13个文件逐项哈希未变，见protected-files-before.json与protected-files-after.json。
+
+主机报告生成阶段曾因命令过长而被CreateProcess拒绝（os error 206），没有启动该写入进程。错误保存在report-generation-error.txt；随后用文件写入工具保存公开数据，没有重复PnPUtil查询。
+camera_device_handles=0；camera_commands=0；card_or_media_reads=0；authentication=false；mode_change=false；driver_or_permission_change=false；module_upload=false；WBI_or_flash=false；hardware_validation=NOT_PERFORMED。
+
+public_path=C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-native-pnp-20261026T160454Z/public
+命令、退出码与时间：commands.json
+脱敏节点、父子摘要与接口类别：node-relations.json
+脱敏提取日志：sanitized-enumeration.txt
+总回执：receipt.json
+注意：private目录保留在Windows本机；只传回public目录。

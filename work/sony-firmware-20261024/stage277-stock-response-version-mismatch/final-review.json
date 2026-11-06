@@ -1,0 +1,37 @@
+{
+  "recorded_utc": "2026-11-01T12:05:25.854183+00:00",
+  "status": "STOCK_RESPONSE_VERSION3_FIX_INTEGRATED_OFFLINE_NATIVE_CLOSED",
+  "original_static_response_version": 3,
+  "old_host_expected_response_version": 0,
+  "request_version_unchanged": 0,
+  "current_275_actual_header_bytes_not_saved": true,
+  "actual_failure_field_not_confirmed": true,
+  "only_C_host_semantic_change": "expected response header version0->3",
+  "fixture_response_updated_to_match_original_producer": true,
+  "fixture_path_rebound": true,
+  "source_delta_vs273": {
+    "entry_target.h": {
+      "before": "af233378a630c7dcc785b47cfa18d345c2885b45502b7e33c736e9dfc53c7734",
+      "after": "1372b7a89efab77eace697803a113eda0ada706755a9211bad4996a3169a21e1"
+    },
+    "flow_fixture.c": {
+      "before": "64f6b08d1ace640c0fc1bbbdcaba059284672cea4d957188d565625c19cd1c23",
+      "after": "d30dab29b7fdb245a2a32f795101ffc82495996347a53a6ae9f612ef48860c43"
+    },
+    "stream.c": {
+      "before": "1221dc5adfe86f012e4ea15b2b117b3d3f9ab3e0af67ec82b23b8a81d2f58849",
+      "after": "860b0460e204d1237c32070924f89390204407441802aed28dc123d2d012a54e"
+    }
+  },
+  "component_counterfactual_cases": 11,
+  "full_controller_process_groups": 8,
+  "acquisition_groups": 5,
+  "shared_access_groups": 4,
+  "production_entry_closed": true,
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_admin_or_USB_operations": 0,
+  "new_live_fixed_package_ready": false,
+  "actual_read0_body_or_STOP_success_proven": false,
+  "safe_first_flash_accepted": false
+}

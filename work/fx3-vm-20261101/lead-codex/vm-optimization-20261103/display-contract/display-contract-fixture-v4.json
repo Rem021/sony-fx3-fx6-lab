@@ -1,0 +1,105 @@
+{
+  "schema_version": "4.0.0",
+  "generated_by": "verify_display_contract_v4.py",
+  "osd_display_contract_fixture": {
+    "static_bounds_cases": {
+      "evidence_tier": "STATIC_ORIGINAL_CODE",
+      "cases": [
+        {
+          "check": "0x1000 hide_count > 16 rejected",
+          "av_cam_instruction": "0xffffffc0012ee420: cmp w8, #0x10; b.hi 0xffffffc0012ee470",
+          "passed": true
+        },
+        {
+          "check": "0x1001 widget_id w >= 256 rejected",
+          "av_cam_instruction": "0xffffffc0012ee314: cmp x8, #0x100; b.hs 0xffffffc0012ee39c",
+          "passed": true
+        },
+        {
+          "check": "FrameBuffer::swap (0xf33d0) non-atomic ldp/stp swaps fb+0x60 and fb+0x68",
+          "libobj_instruction": "0xf33ec ldp x0,x1,[x19,#0x60]; 0xf33f0 stp x1,x0,[x19,#0x60]",
+          "passed": true
+        }
+      ]
+    },
+    "runtime_trace_replay_cases": {
+      "evidence_tier": "RUNTIME_LOG_MEASURED",
+      "note": "Tokens 0x401 (0x43ae96100) and 0x402 (0x43feb5100) are measured from try2-70588c4c and try2gapinternal-47e2924a.",
+      "positive_replays": {
+        "user_try2_70588c4c_replay": {
+          "frame_372": {
+            "op": "0x1005",
+            "token": "0x401",
+            "reply": "0x6005"
+          },
+          "frame_373": {
+            "op": "0x1003",
+            "token": "0x402",
+            "phys": "0x43feb5100",
+            "all_zero": true,
+            "reply": "0x6003"
+          },
+          "frame_378": {
+            "op": "0x1005",
+            "token": "0x402",
+            "reply": "0x6005"
+          }
+        },
+        "internal_47e2924a_replay": {
+          "frame_1310": {
+            "op": "0x1005",
+            "token": "0x402",
+            "reply": "0x6005"
+          },
+          "frame_1311": {
+            "op": "0x1003",
+            "token": "0x401",
+            "phys": "0x43ae96100",
+            "all_zero": true,
+            "reply": "0x6003"
+          },
+          "frame_1314": {
+            "op": "0x1005",
+            "token": "0x401",
+            "reply": "0x6005"
+          }
+        }
+      }
+    },
+    "synthetic_model_assumption_cases": {
+      "evidence_tier": "MODEL_ASSUMPTION",
+      "cases": [
+        {
+          "assumption": "OsdTransModel.recv_1001 checks attr_count <= 16",
+          "rationale": "Defensive bound in Python fixture; av-cam.bin 0x2ee370 copies attr_count u32 words into the 88B slot without an explicit cmp w8, #0x10 before the loop."
+        },
+        {
+          "assumption": "OsdTransModel.recv_1003 requires pending_sub_op == 0x1003",
+          "rationale": "Abstracts av-cam.bin WaitAndExecuteUpdateExec (0x2ef014) synchronous queue receive into a single-threaded state check."
+        }
+      ]
+    }
+  },
+  "upm_mss_contract_fixture": {
+    "evidence_tier": "STATIC_ORIGINAL_CODE",
+    "verified_invariants": [
+      {
+        "invariant": "Special 20B message 0100150001000000050000000000000000000000 at 0x16f12ec is App::got_display_update_event(const ds_display_update_event&) -> QID 0x005503e0; neither 0x16f11e8 nor the 0x16f3750 classifier directly calls 0x2eaf294, while downstream presenter/sequence side effects require runtime observation of 0x80924220.",
+        "direct_send_in_0x16f11e8_or_0x16f3750": false,
+        "downstream_indirect_mss_call_statically_excluded": false
+      },
+      {
+        "invariant": "In appFw.so 0x2eaf294..0x2eaf354, 0x2eaf2fc (29006039: stp w25,w24,[x1]) and 0x2eaf300 (29015837: stp w23,w22,[x1,#8]) write [w25=entry_w1, w24=entry_w2, w23=entry_w3, w22=entry_w4] into the 16B wire buffer x1=[x29+0x58], while entry_w6 (w26) is passed to osal_set_msg_src at 0x2eaf2f0.",
+        "verified": true
+      },
+      {
+        "invariant": "Out of 53 total R_AARCH64_CALL26 osal_snd_sync_msg sites and 22 total R_AARCH64_CALL26 upm_c3p_msg_async sites in upm.ko .text (sh_offset=0x68, sh_size=0x2d978), exactly 12 synchronous osal_snd_sync_msg sites (0x0130, 0x0e38, 0x0fd8, 0x614c, 0x69f4, 0x6acc, 0x6ed4, 0x700c, 0x7164, 0x88c4, 0xa2d0, 0xaa44) and 5 asynchronous upm_c3p_msg_async sites (0x08a8, 0x24b4, 0x2510, 0x2680, 0x2720) set destination QID w0=0x80924220 (while passing source/stopper QIDs such as 0x80920021 or 0x80920196 in payload word1 and osal_set_msg_src).",
+        "verified": true
+      },
+      {
+        "invariant": "upm.ko .text+0x2598 -> 0x2310 -> 0x2468..0x2490 on 0x00920202 (MSS_del_stopper) requires status==1 (STOPPED) and stopper_list ([x20+0x40]) becoming NULL; it then resets request_list ([x20+0x30]) states to 1, sets elapsed_sec=0, status=2, and starts the timer for min_req->timeout_sec (the current minimum registered request, NOT unconditionally 300s).",
+        "verified": true
+      }
+    ]
+  }
+}

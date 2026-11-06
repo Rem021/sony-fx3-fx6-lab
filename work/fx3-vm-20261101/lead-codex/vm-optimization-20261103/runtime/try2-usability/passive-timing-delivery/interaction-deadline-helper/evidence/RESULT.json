@@ -1,0 +1,793 @@
+{
+  "module": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r12-confirmation-progress/trial_web_v22_navigation_review.py",
+  "module_SHA256_before": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+  "short_deadline_ms": 1200,
+  "source_SHA256": "1c22588340874a2bd4a4ee5bbb68a120854af31a1352236c0a3dcadd4108a974",
+  "cases": {
+    "uncancelled_once": {
+      "helper": {
+        "current": {
+          "armed_ms": 966.6999999880792,
+          "deadline_ms": 1200,
+          "due_ms": 2166.699999988079,
+          "elapsed_ms": 1201.5,
+          "nonce": "54e13615-c5c3-4235-9f59-e1a38be49396",
+          "state": "expired"
+        },
+        "deadline_ms": 1200,
+        "documentTimeOrigin": 1793818049459.9,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 905.100000023842,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:30.362Z"
+          },
+          {
+            "due_ms": 2166.699999988079,
+            "event": "armed",
+            "nonce": "54e13615-c5c3-4235-9f59-e1a38be49396",
+            "performance_ms": 966.6999999880792,
+            "wall_UTC": "2026-11-04T18:47:30.426Z"
+          },
+          {
+            "elapsed_ms": 1201.5,
+            "event": "end_click",
+            "nonce": "54e13615-c5c3-4235-9f59-e1a38be49396",
+            "performance_ms": 2168.300000011921,
+            "wall_UTC": "2026-11-04T18:47:31.628Z"
+          }
+        ],
+        "expectedLaunchId": "85047860-50f5-430e-b88a-4153d4ba5e74",
+        "expectedURL": "http://127.0.0.1:55756/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 1,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "stopping",
+        "stop_event": true
+      },
+      "browser": {
+        "endDisabled": true,
+        "ending": true,
+        "finished": false,
+        "menuDisabled": true,
+        "phase": "stopping"
+      },
+      "extra": {
+        "server_elapsed_since_before_arm_eval_ms": 1267.9730410454795
+      },
+      "screenshot": "uncancelled_once.png",
+      "screenshot_SHA256": "1a47edb184c365a74cef2e8dcd612f49cccd535308e14f593fe224a1f9a37941",
+      "passed": true
+    },
+    "timely_cancel": {
+      "helper": {
+        "current": {
+          "armed_ms": 761.1999999880791,
+          "cancelled_ms": 1018.6999999880792,
+          "deadline_ms": 1200,
+          "due_ms": 1961.199999988079,
+          "nonce": "cbdc5727-c340-43ce-b5b6-4ce5d708b630",
+          "state": "cancelled"
+        },
+        "deadline_ms": 1200,
+        "documentTimeOrigin": 1793818052976,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 597.1999999880791,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:33.573Z"
+          },
+          {
+            "due_ms": 1961.199999988079,
+            "event": "armed",
+            "nonce": "cbdc5727-c340-43ce-b5b6-4ce5d708b630",
+            "performance_ms": 761.3000000119209,
+            "wall_UTC": "2026-11-04T18:47:33.737Z"
+          },
+          {
+            "elapsed_ms": 257.5,
+            "event": "cancelled",
+            "nonce": "cbdc5727-c340-43ce-b5b6-4ce5d708b630",
+            "performance_ms": 1018.8000000119208,
+            "wall_UTC": "2026-11-04T18:47:33.994Z"
+          },
+          {
+            "event": "disposed",
+            "performance_ms": 2438.199999988079,
+            "wall_UTC": "2026-11-04T18:47:35.414Z"
+          }
+        ],
+        "expectedLaunchId": "1f71ad26-2b2b-45cf-96ba-95e1c1de0a5c",
+        "expectedURL": "http://127.0.0.1:55774/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 0,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "ready",
+        "stop_event": false
+      },
+      "browser": {
+        "endDisabled": false,
+        "ending": false,
+        "finished": false,
+        "menuDisabled": false,
+        "phase": "ready"
+      },
+      "extra": {
+        "armed": {
+          "current": {
+            "armed_ms": 761.1999999880791,
+            "deadline_ms": 1200,
+            "due_ms": 1961.199999988079,
+            "nonce": "cbdc5727-c340-43ce-b5b6-4ce5d708b630",
+            "state": "armed"
+          },
+          "deadline_ms": 1200,
+          "documentTimeOrigin": 1793818052976,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 597.1999999880791,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T18:47:33.573Z"
+            },
+            {
+              "due_ms": 1961.199999988079,
+              "event": "armed",
+              "nonce": "cbdc5727-c340-43ce-b5b6-4ce5d708b630",
+              "performance_ms": 761.3000000119209,
+              "wall_UTC": "2026-11-04T18:47:33.737Z"
+            }
+          ],
+          "expectedLaunchId": "1f71ad26-2b2b-45cf-96ba-95e1c1de0a5c",
+          "expectedURL": "http://127.0.0.1:55774/",
+          "sealed": false,
+          "version": 1
+        },
+        "cancel_receipt": {
+          "current": {
+            "armed_ms": 761.1999999880791,
+            "cancelled_ms": 1018.6999999880792,
+            "deadline_ms": 1200,
+            "due_ms": 1961.199999988079,
+            "nonce": "cbdc5727-c340-43ce-b5b6-4ce5d708b630",
+            "state": "cancelled"
+          },
+          "deadline_ms": 1200,
+          "documentTimeOrigin": 1793818052976,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 597.1999999880791,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T18:47:33.573Z"
+            },
+            {
+              "due_ms": 1961.199999988079,
+              "event": "armed",
+              "nonce": "cbdc5727-c340-43ce-b5b6-4ce5d708b630",
+              "performance_ms": 761.3000000119209,
+              "wall_UTC": "2026-11-04T18:47:33.737Z"
+            },
+            {
+              "elapsed_ms": 257.5,
+              "event": "cancelled",
+              "nonce": "cbdc5727-c340-43ce-b5b6-4ce5d708b630",
+              "performance_ms": 1018.8000000119208,
+              "wall_UTC": "2026-11-04T18:47:33.994Z"
+            }
+          ],
+          "expectedLaunchId": "1f71ad26-2b2b-45cf-96ba-95e1c1de0a5c",
+          "expectedURL": "http://127.0.0.1:55774/",
+          "sealed": false,
+          "version": 1
+        }
+      },
+      "screenshot": "timely_cancel.png",
+      "screenshot_SHA256": "664acedfc24209250db3ab39920e2e57db156192fb847b2b5e210a2898bd6d5f",
+      "passed": true
+    },
+    "old_nonce_does_not_cancel_new": {
+      "helper": {
+        "current": {
+          "armed_ms": 450.9000000357628,
+          "deadline_ms": 1200,
+          "due_ms": 1650.9000000357628,
+          "elapsed_ms": 1200.399999976158,
+          "nonce": "c4d32de1-ee61-4ad4-a552-1654ec669cd6",
+          "state": "expired"
+        },
+        "deadline_ms": 1200,
+        "documentTimeOrigin": 1793818056125.5,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 313,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:36.438Z"
+          },
+          {
+            "due_ms": 1558.300000011921,
+            "event": "armed",
+            "nonce": "56c18153-323f-42bd-9d22-6d3a78391a73",
+            "performance_ms": 358.30000001192093,
+            "wall_UTC": "2026-11-04T18:47:36.483Z"
+          },
+          {
+            "elapsed_ms": 54.5,
+            "event": "cancelled",
+            "nonce": "56c18153-323f-42bd-9d22-6d3a78391a73",
+            "performance_ms": 412.800000011921,
+            "wall_UTC": "2026-11-04T18:47:36.538Z"
+          },
+          {
+            "due_ms": 1650.9000000357628,
+            "event": "armed",
+            "nonce": "c4d32de1-ee61-4ad4-a552-1654ec669cd6",
+            "performance_ms": 450.9000000357628,
+            "wall_UTC": "2026-11-04T18:47:36.576Z"
+          },
+          {
+            "event": "cancel_ignored_stale_or_inactive",
+            "nonce": "56c18153-323f-42bd-9d22-6d3a78391a73",
+            "performance_ms": 475.199999988079,
+            "wall_UTC": "2026-11-04T18:47:36.600Z"
+          },
+          {
+            "elapsed_ms": 1200.399999976158,
+            "event": "end_click",
+            "nonce": "c4d32de1-ee61-4ad4-a552-1654ec669cd6",
+            "performance_ms": 1651.300000011921,
+            "wall_UTC": "2026-11-04T18:47:37.776Z"
+          }
+        ],
+        "expectedLaunchId": "ec80e1de-caf2-4943-9f4c-dfe1c8df65a1",
+        "expectedURL": "http://127.0.0.1:55795/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 1,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "stopping",
+        "stop_event": true
+      },
+      "browser": {
+        "endDisabled": true,
+        "ending": true,
+        "finished": false,
+        "menuDisabled": true,
+        "phase": "stopping"
+      },
+      "extra": {
+        "old": "56c18153-323f-42bd-9d22-6d3a78391a73",
+        "new": "c4d32de1-ee61-4ad4-a552-1654ec669cd6"
+      },
+      "screenshot": "old_nonce_does_not_cancel_new.png",
+      "screenshot_SHA256": "1a47edb184c365a74cef2e8dcd612f49cccd535308e14f593fe224a1f9a37941",
+      "passed": true
+    },
+    "repeat_arm_no_extension": {
+      "helper": {
+        "current": {
+          "armed_ms": 324.89999997615814,
+          "deadline_ms": 1200,
+          "due_ms": 1524.899999976158,
+          "elapsed_ms": 1202.100000023842,
+          "nonce": "8d9c0f3d-0626-4473-b437-6ab703942f7c",
+          "state": "expired"
+        },
+        "deadline_ms": 1200,
+        "documentTimeOrigin": 1793818058292.6,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 259.39999997615814,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:38.552Z"
+          },
+          {
+            "due_ms": 1524.899999976158,
+            "event": "armed",
+            "nonce": "8d9c0f3d-0626-4473-b437-6ab703942f7c",
+            "performance_ms": 324.89999997615814,
+            "wall_UTC": "2026-11-04T18:47:38.617Z"
+          },
+          {
+            "event": "duplicate_arm_no_extension",
+            "nonce": "8d9c0f3d-0626-4473-b437-6ab703942f7c",
+            "performance_ms": 1015.0999999642372,
+            "wall_UTC": "2026-11-04T18:47:39.307Z"
+          },
+          {
+            "event": "different_arm_refused",
+            "nonce": "8b6e9abf-9a8e-4317-90a9-c982331f5312",
+            "performance_ms": 1050.800000011921,
+            "wall_UTC": "2026-11-04T18:47:39.343Z"
+          },
+          {
+            "elapsed_ms": 1202.100000023842,
+            "event": "end_click",
+            "nonce": "8d9c0f3d-0626-4473-b437-6ab703942f7c",
+            "performance_ms": 1527.199999988079,
+            "wall_UTC": "2026-11-04T18:47:39.819Z"
+          }
+        ],
+        "expectedLaunchId": "3b8e51ea-3f74-49bb-903e-0e14cc156bd7",
+        "expectedURL": "http://127.0.0.1:55812/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 1,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "stopping",
+        "stop_event": true
+      },
+      "browser": {
+        "endDisabled": true,
+        "ending": true,
+        "finished": false,
+        "menuDisabled": true,
+        "phase": "ready"
+      },
+      "extra": null,
+      "screenshot": "repeat_arm_no_extension.png",
+      "screenshot_SHA256": "c59ec8eff4513b660767821809de2cc54b40e6b4d6de2a60c1c20c2655798ec2",
+      "passed": true
+    },
+    "wrong_URL_refused": {
+      "helper": null,
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 0,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "ready",
+        "stop_event": false
+      },
+      "browser": {
+        "endDisabled": false,
+        "ending": false,
+        "finished": false,
+        "menuDisabled": false,
+        "phase": "ready"
+      },
+      "extra": {
+        "error": "('eval', '--stdin'):  ✗ Evaluation error: Error: deadline_refused: exact_URL\n    at fail (<anonymous>:6:35)\n    at installInteractionDeadline (<anonymous>:11:110)\n    at <anonymous>:131:1\n"
+      },
+      "screenshot": "wrong_URL_refused.png",
+      "screenshot_SHA256": "664acedfc24209250db3ab39920e2e57db156192fb847b2b5e210a2898bd6d5f",
+      "passed": true
+    },
+    "wrong_DOM_refused": {
+      "helper": null,
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 0,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "ready",
+        "stop_event": false
+      },
+      "browser": {
+        "endDisabled": false,
+        "ending": false,
+        "finished": false,
+        "menuDisabled": false,
+        "phase": "ready"
+      },
+      "extra": {
+        "error": "('eval', '--stdin'):  ✗ Evaluation error: Error: deadline_refused: DOM schema\n    at fail (<anonymous>:6:35)\n    at installInteractionDeadline (<anonymous>:25:87)\n    at <anonymous>:131:1\n"
+      },
+      "screenshot": "wrong_DOM_refused.png",
+      "screenshot_SHA256": "9342c33e255bf8883b211e93053f9de7402565dcafa52c4862c0997f91a829f4",
+      "passed": true
+    },
+    "real_key_pending_End_enabled": {
+      "helper": {
+        "current": {
+          "armed_ms": 3044.800000011921,
+          "deadline_ms": 1200,
+          "due_ms": 4244.800000011921,
+          "elapsed_ms": 1202.699999988079,
+          "nonce": "5e6d5104-03b6-4430-bc9e-e1b5672d8988",
+          "state": "expired"
+        },
+        "deadline_ms": 1200,
+        "documentTimeOrigin": 1793818060988,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 2957.100000023842,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:43.945Z"
+          },
+          {
+            "due_ms": 4244.800000011921,
+            "event": "armed",
+            "nonce": "5e6d5104-03b6-4430-bc9e-e1b5672d8988",
+            "performance_ms": 3044.900000035763,
+            "wall_UTC": "2026-11-04T18:47:44.032Z"
+          },
+          {
+            "elapsed_ms": 1202.699999988079,
+            "event": "end_click",
+            "nonce": "5e6d5104-03b6-4430-bc9e-e1b5672d8988",
+            "performance_ms": 4247.600000023842,
+            "wall_UTC": "2026-11-04T18:47:45.235Z"
+          }
+        ],
+        "expectedLaunchId": "a8a42f6e-0084-42e8-80c6-fd2fb7488e5f",
+        "expectedURL": "http://127.0.0.1:55841/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 1,
+          "confirm": 0,
+          "stop": 1,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 1,
+        "busy": true,
+        "phase": "stopping",
+        "stop_event": true
+      },
+      "browser": {
+        "endDisabled": true,
+        "ending": true,
+        "finished": false,
+        "menuDisabled": true,
+        "phase": "stopping"
+      },
+      "extra": {
+        "pending_observation": {
+          "busy": false,
+          "endDisabled": false,
+          "keyDisabled": true
+        },
+        "fixture_explicit_key_clicks": 1,
+        "alarm_added_key_requests": 0
+      },
+      "screenshot": "real_key_pending_End_enabled.png",
+      "screenshot_SHA256": "c59ec8eff4513b660767821809de2cc54b40e6b4d6de2a60c1c20c2655798ec2",
+      "passed": true
+    },
+    "existing_End_not_clicked_twice": {
+      "helper": {
+        "current": {
+          "armed_ms": 804.3999999761581,
+          "deadline_ms": 1200,
+          "due_ms": 2004.399999976158,
+          "elapsed_ms": 1203,
+          "nonce": "26329359-a7e3-442b-9eb4-721fa6457d69",
+          "state": "expired"
+        },
+        "deadline_ms": 1200,
+        "documentTimeOrigin": 1793818066060.2,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 573.0999999642372,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:46.633Z"
+          },
+          {
+            "due_ms": 2004.399999976158,
+            "event": "armed",
+            "nonce": "26329359-a7e3-442b-9eb4-721fa6457d69",
+            "performance_ms": 804.3999999761581,
+            "wall_UTC": "2026-11-04T18:47:46.864Z"
+          },
+          {
+            "elapsed_ms": 1203,
+            "event": "already_stopping_or_disabled",
+            "nonce": "26329359-a7e3-442b-9eb4-721fa6457d69",
+            "performance_ms": 2007.5,
+            "phase": "stopping",
+            "wall_UTC": "2026-11-04T18:47:48.067Z"
+          }
+        ],
+        "expectedLaunchId": "983db301-d90e-46c0-a4ee-20f1d66f6b4c",
+        "expectedURL": "http://127.0.0.1:55872/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 1,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "stopping",
+        "stop_event": true
+      },
+      "browser": {
+        "endDisabled": true,
+        "ending": true,
+        "finished": false,
+        "menuDisabled": true,
+        "phase": "stopping"
+      },
+      "extra": null,
+      "screenshot": "existing_End_not_clicked_twice.png",
+      "screenshot_SHA256": "1a47edb184c365a74cef2e8dcd612f49cccd535308e14f593fe224a1f9a37941",
+      "passed": true
+    },
+    "terminal_not_reversed": {
+      "helper": {
+        "current": {
+          "armed_ms": 146,
+          "deadline_ms": 1200,
+          "due_ms": 1346,
+          "elapsed_ms": 1202.5999999642372,
+          "nonce": "00752395-c4ee-42f8-805b-1ea1129b0f01",
+          "state": "expired"
+        },
+        "deadline_ms": 1200,
+        "documentTimeOrigin": 1793818069111.6,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 127.29999995231628,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:49.238Z"
+          },
+          {
+            "due_ms": 1346,
+            "event": "armed",
+            "nonce": "00752395-c4ee-42f8-805b-1ea1129b0f01",
+            "performance_ms": 146.0999999642372,
+            "wall_UTC": "2026-11-04T18:47:49.257Z"
+          },
+          {
+            "elapsed_ms": 1202.5999999642372,
+            "event": "already_stopping_or_disabled",
+            "nonce": "00752395-c4ee-42f8-805b-1ea1129b0f01",
+            "performance_ms": 1348.699999988079,
+            "phase": "finished",
+            "wall_UTC": "2026-11-04T18:47:50.460Z"
+          },
+          {
+            "event": "arm_refused_terminal",
+            "nonce": "8036d8cc-47a3-40a3-ab33-9c7201adc992",
+            "performance_ms": 1902.199999988079,
+            "phase": "finished",
+            "wall_UTC": "2026-11-04T18:47:51.013Z"
+          }
+        ],
+        "expectedLaunchId": "b8049c9e-29e3-4598-8aff-b68884543c5f",
+        "expectedURL": "http://127.0.0.1:55894/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 0,
+          "start": 0,
+          "final_ack": 1
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "finished",
+        "stop_event": false
+      },
+      "browser": {
+        "endDisabled": true,
+        "ending": false,
+        "finished": true,
+        "menuDisabled": true,
+        "phase": "finished"
+      },
+      "extra": null,
+      "screenshot": "terminal_not_reversed.png",
+      "screenshot_SHA256": "b088898c8419959136ef14850f6625de16412fc024b7daf2b2292ec6285b6d90",
+      "passed": true
+    },
+    "blocked_event_loop_is_not_hard_deadline": {
+      "helper": {
+        "current": {
+          "armed_ms": 137.19999998807907,
+          "deadline_ms": 1200,
+          "due_ms": 1337.199999988079,
+          "elapsed_ms": 1819.800000011921,
+          "nonce": "9e49abaa-691e-4187-ae02-3e9ca96d2f02",
+          "state": "expired"
+        },
+        "deadline_ms": 1200,
+        "documentTimeOrigin": 1793818071617.5,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 116.19999998807909,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:51.733Z"
+          },
+          {
+            "due_ms": 1337.199999988079,
+            "event": "armed",
+            "nonce": "9e49abaa-691e-4187-ae02-3e9ca96d2f02",
+            "performance_ms": 137.19999998807907,
+            "wall_UTC": "2026-11-04T18:47:51.754Z"
+          },
+          {
+            "elapsed_ms": 1819.800000011921,
+            "event": "end_click",
+            "nonce": "9e49abaa-691e-4187-ae02-3e9ca96d2f02",
+            "performance_ms": 1957.300000011921,
+            "wall_UTC": "2026-11-04T18:47:53.574Z"
+          }
+        ],
+        "expectedLaunchId": "dbcbf0aa-44db-4b46-8350-a105494f79e2",
+        "expectedURL": "http://127.0.0.1:55906/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 1,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "stopping",
+        "stop_event": true
+      },
+      "browser": {
+        "endDisabled": true,
+        "ending": true,
+        "finished": false,
+        "menuDisabled": true,
+        "phase": "stopping"
+      },
+      "extra": null,
+      "screenshot": "blocked_event_loop_is_not_hard_deadline.png",
+      "screenshot_SHA256": "1a47edb184c365a74cef2e8dcd612f49cccd535308e14f593fe224a1f9a37941",
+      "passed": true
+    },
+    "production_20s_wrapper_arm_cancel": {
+      "helper": {
+        "current": {
+          "armed_ms": 183.30000001192093,
+          "cancelled_ms": 228.80000001192093,
+          "deadline_ms": 20000,
+          "due_ms": 20183.30000001192,
+          "nonce": "42439a74-dd1c-47a8-a705-b065ebcd8b8e",
+          "state": "cancelled"
+        },
+        "deadline_ms": 20000,
+        "documentTimeOrigin": 1793818074033.4,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 136.39999997615814,
+            "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+            "wall_UTC": "2026-11-04T18:47:54.169Z"
+          },
+          {
+            "due_ms": 20183.30000001192,
+            "event": "armed",
+            "nonce": "42439a74-dd1c-47a8-a705-b065ebcd8b8e",
+            "performance_ms": 183.39999997615817,
+            "wall_UTC": "2026-11-04T18:47:54.216Z"
+          },
+          {
+            "elapsed_ms": 45.5,
+            "event": "cancelled",
+            "nonce": "42439a74-dd1c-47a8-a705-b065ebcd8b8e",
+            "performance_ms": 228.80000001192093,
+            "wall_UTC": "2026-11-04T18:47:54.262Z"
+          },
+          {
+            "event": "disposed",
+            "performance_ms": 262.80000001192093,
+            "wall_UTC": "2026-11-04T18:47:54.296Z"
+          }
+        ],
+        "expectedLaunchId": "8143a190-0d32-4d10-8f7d-3c7ec5b7a463",
+        "expectedURL": "http://127.0.0.1:55918/",
+        "sealed": true,
+        "version": 1
+      },
+      "stats": {
+        "requests": {
+          "key": 0,
+          "confirm": 0,
+          "stop": 0,
+          "start": 0,
+          "final_ack": 0
+        },
+        "steps": 0,
+        "pending": 0,
+        "busy": false,
+        "phase": "ready",
+        "stop_event": false
+      },
+      "browser": {
+        "endDisabled": false,
+        "ending": false,
+        "finished": false,
+        "menuDisabled": false,
+        "phase": "ready"
+      },
+      "extra": null,
+      "screenshot": "production_20s_wrapper_arm_cancel.png",
+      "screenshot_SHA256": "664acedfc24209250db3ab39920e2e57db156192fb847b2b5e210a2898bd6d5f",
+      "passed": true
+    }
+  },
+  "cleanup": {
+    "browser_close": "✓ Browser closed",
+    "harness_threads_joined": true
+  },
+  "passed": true,
+  "module_SHA256_after": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+  "source_SHA256_after": "1c22588340874a2bd4a4ee5bbb68a120854af31a1352236c0a3dcadd4108a974"
+}

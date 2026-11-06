@@ -1,0 +1,327 @@
+{
+  "files": [
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-CVE-2021-28831.patch",
+      "bytes": 840,
+      "sha256": "6a274d1515969c30e0902e3928b45ac1308bdfe93da17864ca8686b1ad373294",
+      "output": "source-excerpts/busybox-1.29.3-CVE-2021-28831.patch",
+      "changed_paths": [
+        "--- busybox-1.29.3.orig/archival/libarchive/decompress_gunzip.c",
+        "+++ busybox-1.29.3/archival/libarchive/decompress_gunzip.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-CVE-2021-42374.patch",
+      "bytes": 1894,
+      "sha256": "09b7aff97351350f1aefa504f100d7b48e783195ea45234839057b0c08a077b7",
+      "output": "source-excerpts/busybox-1.29.3-CVE-2021-42374.patch",
+      "changed_paths": [
+        "--- a/archival/libarchive/decompress_unlzma.c",
+        "+++ b/archival/libarchive/decompress_unlzma.c",
+        "--- a/testsuite/unlzma.tests",
+        "+++ b/testsuite/unlzma.tests"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-CVE-2021-42378-to-CVE-2021-42386.patch",
+      "bytes": 9281,
+      "sha256": "08f323624d71e22b26bf2b41a68ea6921a38988dfbb88ba6a3cc1a3b98ac2d15",
+      "output": "source-excerpts/busybox-1.29.3-CVE-2021-42378-to-CVE-2021-42386.patch",
+      "changed_paths": [
+        "--- a/editors/awk.c",
+        "+++ b/editors/awk.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-devel.patch",
+      "bytes": 1562,
+      "sha256": "b1119b4a53bcaeae666dfa1fc77f48273f2821931c082bb03f8167201af8a1b1",
+      "output": "source-excerpts/busybox-1.29.3-devel.patch",
+      "changed_paths": [
+        "diff -Naur busybox-1.29.3_orig/include/libbb.h busybox-1.29.3/include/libbb.h",
+        "--- busybox-1.29.3_orig/include/libbb.h\t2018-10-09 10:40:29.224080401 +0530",
+        "+++ busybox-1.29.3/include/libbb.h\t2018-10-09 11:33:40.744177701 +0530",
+        "diff -Naur busybox-1.29.3_orig/loginutils/login.c busybox-1.29.3/loginutils/login.c",
+        "--- busybox-1.29.3_orig/loginutils/login.c\t2018-10-09 10:40:29.128080398 +0530",
+        "+++ busybox-1.29.3/loginutils/login.c\t2018-10-09 11:34:39.112179481 +0530"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-halt-without-init.patch",
+      "bytes": 831,
+      "sha256": "330bb2baeb5f9ad1eda226e02f970c1564c33c2a9711368390b8d56fc5f40fb1",
+      "output": "source-excerpts/busybox-1.29.3-halt-without-init.patch",
+      "changed_paths": [
+        "diff -Naur busybox-1.29.3_orig/init/halt.c busybox-1.29.3/init/halt.c",
+        "--- busybox-1.29.3_orig/init/halt.c\t2018-10-09 10:40:29.224080401 +0530",
+        "+++ busybox-1.29.3/init/halt.c\t2018-10-09 11:53:47.288214485 +0530"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-logger.patch",
+      "bytes": 1340,
+      "sha256": "d391afdfd85fd39e2e4ce8a0a431b105bc9d1737ba60707a90b79b03362b73ae",
+      "output": "source-excerpts/busybox-1.29.3-logger.patch",
+      "changed_paths": [
+        "diff -Naur busybox-1.29.3_orig/sysklogd/logger.c busybox-1.29.3/sysklogd/logger.c",
+        "--- busybox-1.29.3_orig/sysklogd/logger.c\t2018-10-09 10:40:29.224080401 +0530",
+        "+++ busybox-1.29.3/sysklogd/logger.c\t2018-10-09 11:47:13.260202473 +0530"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-make.patch",
+      "bytes": 1740,
+      "sha256": "078a731e9dceb5a2f9d38486b2070964be86f1de064ce525eff417093302b913",
+      "output": "source-excerpts/busybox-1.29.3-make.patch",
+      "changed_paths": [
+        "diff -Naur busybox-1.29.3_orig/include/inet_common.h busybox-1.29.3/include/inet_common.h",
+        "--- busybox-1.29.3_orig/include/inet_common.h\t2018-10-09 10:40:29.224080401 +0530",
+        "+++ busybox-1.29.3/include/inet_common.h\t2018-10-09 10:41:28.112082196 +0530",
+        "diff -Naur busybox-1.29.3_orig/libbb/xfuncs.c busybox-1.29.3/libbb/xfuncs.c",
+        "--- busybox-1.29.3_orig/libbb/xfuncs.c\t2018-10-09 10:40:29.120080398 +0530",
+        "+++ busybox-1.29.3/libbb/xfuncs.c\t2018-10-09 10:42:18.816083742 +0530",
+        "diff -Naur busybox-1.29.3_orig/networking/ping.c busybox-1.29.3/networking/ping.c",
+        "--- busybox-1.29.3_orig/networking/ping.c\t2018-10-09 10:40:29.152080399 +0530",
+        "+++ busybox-1.29.3/networking/ping.c\t2018-10-09 10:43:28.896085879 +0530"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-nfs-cp.patch",
+      "bytes": 581,
+      "sha256": "e848c2ad463119a2efc6dabe4dcc4b0fb58d3c3aa07324cb8c114eedaefb4751",
+      "output": "source-excerpts/busybox-1.29.3-nfs-cp.patch",
+      "changed_paths": [
+        "diff -Naur busybox-1.29.3_orig/libbb/copy_file.c busybox-1.29.3/libbb/copy_file.c",
+        "--- busybox-1.29.3_orig/libbb/copy_file.c\t2018-10-09 10:40:29.120080398 +0530",
+        "+++ busybox-1.29.3/libbb/copy_file.c\t2018-10-09 11:24:24.768160751 +0530"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-sfdisk-error-exit.patch",
+      "bytes": 7368,
+      "sha256": "7f1c9a28830f74dea335bc94cc53dadab381ce08b28e2f42cf290c8ac3c72db4",
+      "output": "source-excerpts/busybox-1.29.3-sfdisk-error-exit.patch",
+      "changed_paths": [
+        "diff -Naur busybox-1.29.3_orig/util-linux/sfdisk.c busybox-1.29.3/util-linux/sfdisk.c",
+        "--- busybox-1.29.3_orig/util-linux/sfdisk.c\t2018-10-09 14:27:39.528495950 +0530",
+        "+++ busybox-1.29.3/util-linux/sfdisk.c\t2018-10-09 14:36:02.904511296 +0530"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3-sfdisk.patch",
+      "bytes": 95058,
+      "sha256": "bee577d3eb2533c0ab01a9d225021a82ce74637170365e984049fa36d0e591a0",
+      "output": "source-excerpts/busybox-1.29.3-sfdisk.patch",
+      "changed_paths": [
+        "diff -Naur busybox-1.29.3_orig/include/applets.src.h busybox-1.29.3/include/applets.src.h",
+        "--- busybox-1.29.3_orig/include/applets.src.h\t2018-10-09 10:40:29.224080401 +0530",
+        "+++ busybox-1.29.3/include/applets.src.h\t2018-10-09 11:14:25.256142474 +0530",
+        "diff -Naur busybox-1.29.3_orig/util-linux/Config.src busybox-1.29.3/util-linux/Config.src",
+        "--- busybox-1.29.3_orig/util-linux/Config.src\t2018-10-09 10:40:29.168080399 +0530",
+        "+++ busybox-1.29.3/util-linux/Config.src\t2018-10-09 11:15:15.000143990 +0530",
+        "diff -Naur busybox-1.29.3_orig/util-linux/Kbuild.src busybox-1.29.3/util-linux/Kbuild.src",
+        "--- busybox-1.29.3_orig/util-linux/Kbuild.src\t2018-10-09 10:40:29.168080399 +0530",
+        "+++ busybox-1.29.3/util-linux/Kbuild.src\t2018-10-09 11:15:41.784144807 +0530",
+        "diff -Naur busybox-1.29.3_orig/util-linux/sfdisk.c busybox-1.29.3/util-linux/sfdisk.c",
+        "--- busybox-1.29.3_orig/util-linux/sfdisk.c\t1970-01-01 05:30:00.000000000 +0530",
+        "+++ busybox-1.29.3/util-linux/sfdisk.c\t2018-10-09 11:18:22.420149704 +0530"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3_CVE-2018-20679.patch",
+      "bytes": 5364,
+      "sha256": "f81245a96783a100b33238dcee3d7e60b704e61589b8d880847d305fef5ef9f6",
+      "output": "source-excerpts/busybox-1.29.3_CVE-2018-20679.patch",
+      "changed_paths": [
+        "diff --git a/networking/udhcp/common.c b/networking/udhcp/common.c",
+        "--- a/networking/udhcp/common.c",
+        "+++ b/networking/udhcp/common.c",
+        "diff --git a/networking/udhcp/common.h b/networking/udhcp/common.h",
+        "--- a/networking/udhcp/common.h",
+        "+++ b/networking/udhcp/common.h",
+        "diff --git a/networking/udhcp/dhcpc.c b/networking/udhcp/dhcpc.c",
+        "--- a/networking/udhcp/dhcpc.c",
+        "+++ b/networking/udhcp/dhcpc.c",
+        "diff --git a/networking/udhcp/dhcpd.c b/networking/udhcp/dhcpd.c",
+        "--- a/networking/udhcp/dhcpd.c",
+        "+++ b/networking/udhcp/dhcpd.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "busybox-1.29.3_CVE-2019-5747.patch",
+      "bytes": 2354,
+      "sha256": "5b3f5749bd5746b46320280045443e94647611beffbbd75774cae970a60a9f27",
+      "output": "source-excerpts/busybox-1.29.3_CVE-2019-5747.patch",
+      "changed_paths": [
+        "diff --git a/networking/udhcp/common.c b/networking/udhcp/common.c",
+        "--- a/networking/udhcp/common.c",
+        "+++ b/networking/udhcp/common.c",
+        "diff --git a/networking/udhcp/common.h b/networking/udhcp/common.h",
+        "--- a/networking/udhcp/common.h",
+        "+++ b/networking/udhcp/common.h",
+        "diff --git a/networking/udhcp/dhcpc.c b/networking/udhcp/dhcpc.c",
+        "--- a/networking/udhcp/dhcpc.c",
+        "+++ b/networking/udhcp/dhcpc.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "dotconfig",
+      "bytes": 30698,
+      "sha256": "ee9466638ed86798de40d55ef51cc8d259768e3da29ecd30be287431da9dd618",
+      "output": "source-excerpts/dotconfig",
+      "changed_paths": [],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-busybox-1.29.3-08000403.src.rpm",
+      "member": "sony-target-dev-busybox.spec",
+      "bytes": 22893,
+      "sha256": "0ccbf5c00be25e79e67a28c9ac0d2410601a952cfd0ea40dbff274c0a9978097",
+      "output": "source-excerpts/sony-target-dev-busybox.spec",
+      "changed_paths": [],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "CVE-2012-0060-1.patch",
+      "bytes": 1250,
+      "sha256": "2ef1340c1abbb09753b8346344ce739b87c4106ce1e2a8db8ebb97cf32e54604",
+      "output": "source-excerpts/CVE-2012-0060-1.patch",
+      "changed_paths": [
+        "diff --git a/rpmdb/header.c b/rpmdb/header.c",
+        "--- a/rpmdb/header.c",
+        "+++ b/rpmdb/header.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "CVE-2012-0060-2.patch",
+      "bytes": 4011,
+      "sha256": "53729531a31d4320d2df792370bb86d0e50e89acde1c1980e35e0939275e555d",
+      "output": "source-excerpts/CVE-2012-0060-2.patch",
+      "changed_paths": [
+        "diff --git a/lib/package.c b/lib/package.c",
+        "--- a/lib/package.c",
+        "+++ b/lib/package.c",
+        "diff --git a/lib/signature.c b/lib/signature.c",
+        "--- a/lib/signature.c",
+        "+++ b/lib/signature.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "CVE-2012-0061.patch",
+      "bytes": 1841,
+      "sha256": "73c4de5279c1666f63fef4d287a239661e875a2b5d98b77578a34448eaf2e62f",
+      "output": "source-excerpts/CVE-2012-0061.patch",
+      "changed_paths": [
+        "diff --git a/rpmdb/header.c b/rpmdb/header.c",
+        "--- a/rpmdb/header.c",
+        "+++ b/rpmdb/header.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "CVE-2012-0815.patch",
+      "bytes": 1821,
+      "sha256": "0058a2dff9d0645c77a1c3e363a30dfdf80e106533dd441ddbbbc482752c3297",
+      "output": "source-excerpts/CVE-2012-0815.patch",
+      "changed_paths": [
+        "diff --git a/lib/package.c b/lib/package.c",
+        "--- a/lib/package.c",
+        "+++ b/lib/package.c",
+        "diff --git a/lib/signature.c b/lib/signature.c",
+        "--- a/lib/signature.c",
+        "+++ b/lib/signature.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "rpm-4.4.2.1-configure-beecrypt.patch",
+      "bytes": 649,
+      "sha256": "4918be4c989d3729474f0a7a8bda5075735ef666b45fc922b22eb69756887d4d",
+      "output": "source-excerpts/rpm-4.4.2.1-configure-beecrypt.patch",
+      "changed_paths": [
+        "--- rpm-4.4.2.1.orig/configure",
+        "+++ rpm-4.4.2.1/configure"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "rpm-4.4.2.1-fpic.patch",
+      "bytes": 352,
+      "sha256": "d49725982f7e677a5e17837d93e545ed3704fc576bea9e62ed0dd213e6e80af7",
+      "output": "source-excerpts/rpm-4.4.2.1-fpic.patch",
+      "changed_paths": [
+        "--- rpm-4.4.2.1.orig/popt/configure",
+        "+++ rpm-4.4.2.1/popt/configure"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "rpm-4.4.2.3-CVE-2013-6435.patch",
+      "bytes": 535,
+      "sha256": "40f4980dce58a32d61f553f0ed7a6388c65cfdeb3b44e5d6e45d73a2bb609b2f",
+      "output": "source-excerpts/rpm-4.4.2.3-CVE-2013-6435.patch",
+      "changed_paths": [
+        "--- rpm-4.9.1.1.orig/lib/fsm.c\t2015-01-16 11:49:05.758389610 -0500",
+        "+++ rpm-4.9.1.1/lib/fsm.c\t2015-01-16 11:50:26.159191816 -0500"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "rpm-4.4.2.3-CVE-2014-8118.patch",
+      "bytes": 445,
+      "sha256": "97400bf623c0b4d44db871a1c5c70b83514b89e2f4fa473960db8cfceb62a07b",
+      "output": "source-excerpts/rpm-4.4.2.3-CVE-2014-8118.patch",
+      "changed_paths": [
+        "diff --git a/lib/cpio.c b/lib/cpio.c",
+        "--- a/lib/cpio.c",
+        "+++ b/lib/cpio.c"
+      ],
+      "private_marker_hits": []
+    },
+    {
+      "archive": "OSS/sony-target-dev-rpm-4.4.2.3-08000401.src.rpm",
+      "member": "sony-target-dev-rpm.spec",
+      "bytes": 5918,
+      "sha256": "d67154f90f7c57c3e879d8ca3be9e898ece05ebfd9de6f09e59f3ddee7f6cc87",
+      "output": "source-excerpts/sony-target-dev-rpm.spec",
+      "changed_paths": [],
+      "private_marker_hits": []
+    }
+  ],
+  "scope": "Read official source-RPM specs/config/patches through bsdtar stdout. No spec scriptlets, build commands, patch execution, installation or native Sony code run."
+}

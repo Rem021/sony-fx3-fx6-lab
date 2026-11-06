@@ -1,0 +1,56 @@
+{
+  "ELF_sha256": "92baeb212625b0e78ab32721b13b654e350fa0b320e9a6ecd2cd0514fb9c12db",
+  "Unicorn_tests": [
+    {
+      "point": "0x150b9c",
+      "passed": true,
+      "GPR_except_ABI_scratch_x16_preserved": true,
+      "SIMD32_NZCV_FPCR_FPSR_SP_LR_preserved": true,
+      "original_trampoline_tail_reached": true
+    },
+    {
+      "point": "0x103a40",
+      "passed": true,
+      "GPR_except_ABI_scratch_x16_preserved": true,
+      "SIMD32_NZCV_FPCR_FPSR_SP_LR_preserved": true,
+      "original_trampoline_tail_reached": true
+    },
+    {
+      "point": "0x103760",
+      "passed": true,
+      "GPR_except_ABI_scratch_x16_preserved": true,
+      "SIMD32_NZCV_FPCR_FPSR_SP_LR_preserved": true,
+      "original_trampoline_tail_reached": true
+    },
+    {
+      "point": "0x103804",
+      "passed": true,
+      "GPR_except_ABI_scratch_x16_preserved": true,
+      "SIMD32_NZCV_FPCR_FPSR_SP_LR_preserved": true,
+      "original_trampoline_tail_reached": true
+    },
+    {
+      "point": "0x1039a8",
+      "passed": true,
+      "GPR_except_ABI_scratch_x16_preserved": true,
+      "SIMD32_NZCV_FPCR_FPSR_SP_LR_preserved": true,
+      "original_trampoline_tail_reached": true
+    },
+    {
+      "point": "0xefd0c",
+      "passed": true,
+      "GPR_except_ABI_scratch_x16_preserved": true,
+      "SIMD32_NZCV_FPCR_FPSR_SP_LR_preserved": true,
+      "original_trampoline_tail_reached": true
+    },
+    {
+      "point": "0xefde8",
+      "passed": true,
+      "GPR_except_ABI_scratch_x16_preserved": true,
+      "SIMD32_NZCV_FPCR_FPSR_SP_LR_preserved": true,
+      "original_trampoline_tail_reached": true
+    }
+  ],
+  "marker_body_stub_deliberately_clobbers_all_registers": true,
+  "scope": "assembly preservation only; not compaction hardware/runtime acceptance"
+}

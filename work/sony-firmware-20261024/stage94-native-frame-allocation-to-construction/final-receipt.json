@@ -1,0 +1,87 @@
+{
+  "schema": "fx3-stage94-native-frame-allocation/1",
+  "created_utc": "2026-10-27T08:46:08.634647+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/README.md",
+      "bytes": 5982,
+      "sha256": "5b6e3808eebd57d8ab823a8138fa7ef801fcddf766ed0bdf664da95302ab4fc9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/completed-evidence-review.json",
+      "bytes": 992,
+      "sha256": "e138633aa45c38f7413aab1956c568615fa46b1d328d76b80e2f81563f848eca"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/frame_allocation.py",
+      "bytes": 22136,
+      "sha256": "6f9296f83e7ffab154fc04f701203071100d92de316f2777239b75b41bdffaed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/goal-status-after.json",
+      "bytes": 281561,
+      "sha256": "4ae0c3f8ece5f394e08bbc48a5781e514b404edd0d62f0f06bbaf43446f8c0f6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/goal-status-before.json",
+      "bytes": 277465,
+      "sha256": "8720d104d76b62538871020c30f49351121077c65f5b5531b54d3c197745fcc1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/native-provenance-and-boundaries.json",
+      "bytes": 5435,
+      "sha256": "0e9d50183d693be8520b322cb6bc5cf4cba795576a3cf1d36f16b60597053393"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/public-source-check.json",
+      "bytes": 1470,
+      "sha256": "9153c57314ca9b4a1b3a126222f3e505747e45e75f4b416ff416b69af1f8ebfb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/review_and_seal.py",
+      "bytes": 18396,
+      "sha256": "bdafa3bb86b5daf20c73bbd770aa231f19a762489f04f2efa160b68c63a0d440"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/run-initial-20261027/executed-source.py",
+      "bytes": 22136,
+      "sha256": "6f9296f83e7ffab154fc04f701203071100d92de316f2777239b75b41bdffaed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/run-initial-20261027/frame-allocation-results.json",
+      "bytes": 4452948,
+      "sha256": "44870e105dc39b091cfc4e3456ebe95caf6d735b46afd01969d2fa701d26d063"
+    }
+  ],
+  "previous_manifest_sha256": "9925f524b68926aa7874e1793a08afb4dff653583cef7c6e8841a8e0daa14e3c",
+  "operations": {
+    "status": "PASS_STORED_NATIVE_POOL_ALLOCATION_CALLER_CONSTRUCTION_AND_EXHAUSTION_EVIDENCE",
+    "created_utc": "2026-10-27T08:46:08.634647+00:00",
+    "prior_sealed_files_verified": 11,
+    "stage91_source_files_verified": 14,
+    "cases": 5,
+    "formal_phases": 203,
+    "type5_allocation_requests": 133,
+    "type5_native_successes": 132,
+    "type5_native_exhaustion_failures": 1,
+    "type4_parameter_allocations": 5,
+    "normal_constructor_chains": 4,
+    "all128_type4_and_type5_records_checked_per_case": true,
+    "whole_physical_pools_checked_against_metadata_and_constructor_scope": true,
+    "review_scope": "Same-agent source and saved-output review plus harness exact image/all-region/full-stack checks. No independent engine, actual full boot or camera acceptance.",
+    "public_recovery_case_scope": "User-reported A7CII application-mode recovery; not FX3 or independent failure-entry proof.",
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "8720d104d76b62538871020c30f49351121077c65f5b5531b54d3c197745fcc1",
+    "after_sha256": "4ae0c3f8ece5f394e08bbc48a5781e514b404edd0d62f0f06bbaf43446f8c0f6"
+  },
+  "readme_index_before_sha256": "9d6648498b3d8ef0b785743b4ff464b63d122664b2007feb0f74d21a2246672e",
+  "readme_index_after_sha256": "68efd0b6c4edb6acd7ae7c9a97305ec270988b243718c4046ed2de7e847609ea",
+  "readme_index_entry": "- [2026-10-27 FX3 原帧分配接原构造与恢复案例边界](<work/sony-firmware-20261024/stage94-native-frame-allocation-to-construction/README.md>)：原type5分配句柄→原caller地址转换→构造/header，5场景203阶段含耗尽；IRQ/MAIN/实际编码及FX3救砖仍未验。A7CII应用模式回滚反馈单列，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

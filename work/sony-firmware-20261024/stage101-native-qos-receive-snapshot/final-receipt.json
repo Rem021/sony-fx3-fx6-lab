@@ -1,0 +1,96 @@
+{
+  "schema": "fx3-stage101-native-QoS-receive-context-snapshot/1",
+  "created_utc": "2026-10-27T10:39:57.484342+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/README.md",
+      "bytes": 5792,
+      "sha256": "393cdd1d5dc1ab4a36435411d2a8376911cdaa92d6ba619a4b1e6a065c37ede6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/completed-evidence-review.json",
+      "bytes": 552,
+      "sha256": "5b24ce8da232406d0e34e649237a2ab12f3cddd4e7304e37eb5ebabe38f396ea"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/goal-status-after.json",
+      "bytes": 305755,
+      "sha256": "590bc86fcc43a6483c506aec5dae42355c61910265532b371eeca023040adbbb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/goal-status-before.json",
+      "bytes": 302277,
+      "sha256": "52cf7277e34721ac549509fa607720da1355f07f196c6fbab3c24ff0bdcda744"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/receive_snapshot.py",
+      "bytes": 14882,
+      "sha256": "ac890b53236d650585d2ec27a1895d40da43c827942c7cf4707eca69306dbc33"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/review_and_seal.py",
+      "bytes": 12310,
+      "sha256": "29dc10abcbddacbe0f7c3e3d7aeb71985acd571354293139962de94aadefe452"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/run-initial-20261027/executed-source.py",
+      "bytes": 12226,
+      "sha256": "f3037d5ff34d5323d9303b8ae08f3c92f2e193877b95cba0ae97100abb56cbfb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/run-initial-20261027/receive-snapshot-results.json",
+      "bytes": 365098,
+      "sha256": "1c16d942144928db91e8ea0134dea2c3f46ddc465bf1f00bca77d660480dd257"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/run-upstream-converter-20261027/executed-source.py",
+      "bytes": 14882,
+      "sha256": "ac890b53236d650585d2ec27a1895d40da43c827942c7cf4707eca69306dbc33"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/run-upstream-converter-20261027/receive-snapshot-results.json",
+      "bytes": 446788,
+      "sha256": "d788c683e36cddd97ebbdc6ccc1b4d1b2f1df59fcdebd96621d631ad0841626a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/source-and-scope-audit.json",
+      "bytes": 18259,
+      "sha256": "5509f35e5dc1c126e7987aa8352fd250c16f80ca00eb3119383f6c91ab65b66e"
+    }
+  ],
+  "previous_manifest_sha256": "665534f9dee835252dc6949b10fc279310d302bfcdc9f0729aa74a8111c6481b",
+  "operations": {
+    "status": "PASS_NATIVE_MID_DEMUX_CONTEXT_QOS_SNAPSHOT_AND_DECLARED_BUFFER_REUSE_SCOPE",
+    "created_utc": "2026-10-27T10:39:57.484342+00:00",
+    "prior_sealed_files_verified": 15,
+    "receive_route_cases": 6,
+    "MID_controls": 6,
+    "converter_probes": 8,
+    "bounded_phases": 104,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "natural_MAIN_policy_actual_encoding_or_recovery_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "52cf7277e34721ac549509fa607720da1355f07f196c6fbab3c24ff0bdcda744",
+    "after_sha256": "590bc86fcc43a6483c506aec5dae42355c61910265532b371eeca023040adbbb"
+  },
+  "readme_index_before_sha256": "f0c1c95bd2b03e691d944792ddcb0df83067c0b0ea52e4d73a0d2dfcfe685a92",
+  "readme_index_after_sha256": "97c16c8626a8accfe7459df05cd935603bcb0d8bc39bf26f3a3146c7d3ff3854",
+  "readme_index_entry": "- [2026-10-27 FX3 接收参数副本与上层转换边界](<work/sony-firmware-20261024/stage101-native-qos-receive-snapshot/README.md>)：原48字节上下文副本/回复关联及复用范围，12对照加8原转换探针，共104阶段；当前原转换表无10a，真实MAIN生产者/实录/恢复仍未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

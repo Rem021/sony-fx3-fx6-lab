@@ -1,0 +1,446 @@
+{
+  "source_sha256": "ba0cca76ec8e19836697d69d0851c5a0bd2c2eea98ee2aa54d1eff3408f1ec8e",
+  "function": "k_upm_init_boot_factor",
+  "instructions": [
+    {
+      "va": "0x4168",
+      "bytes": "fd7bbea9",
+      "instruction": "stp x29, x30, [sp, #-0x20]!",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x416c",
+      "bytes": "01008012",
+      "instruction": "mov w1, #-1",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4170",
+      "bytes": "fd030091",
+      "instruction": "mov x29, sp",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4174",
+      "bytes": "f30b00f9",
+      "instruction": "str x19, [sp, #0x10]",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4178",
+      "bytes": "73178052",
+      "instruction": "mov w19, #0xbb",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x417c",
+      "bytes": "5312a072",
+      "instruction": "movk w19, #0x92, lsl #16",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4180",
+      "bytes": "e003132a",
+      "instruction": "mov w0, w19",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4184",
+      "bytes": "00000094",
+      "instruction": "bl #0x4184",
+      "relocation_symbol": "osal_wai_sem_tmo"
+    },
+    {
+      "va": "0x4188",
+      "bytes": "e003132a",
+      "instruction": "mov w0, w19",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x418c",
+      "bytes": "00000094",
+      "instruction": "bl #0x418c",
+      "relocation_symbol": "osal_sig_sem"
+    },
+    {
+      "va": "0x4190",
+      "bytes": "01020058",
+      "instruction": "ldr x1, #0x41d0",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4194",
+      "bytes": "e0248852",
+      "instruction": "mov w0, #0x4127",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x4198",
+      "bytes": "82010058",
+      "instruction": "ldr x2, #0x41c8",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x419c",
+      "bytes": "030080d2",
+      "instruction": "mov x3, #0",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41a0",
+      "bytes": "21200091",
+      "instruction": "add x1, x1, #8",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41a4",
+      "bytes": "4012b072",
+      "instruction": "movk w0, #0x8092, lsl #16",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41a8",
+      "bytes": "00000094",
+      "instruction": "bl #0x41a8",
+      "relocation_symbol": "osal_reg_sync_msg_queue_cb"
+    },
+    {
+      "va": "0x41ac",
+      "bytes": "20008052",
+      "instruction": "mov w0, #1",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41b0",
+      "bytes": "00000094",
+      "instruction": "bl #0x41b0",
+      "relocation_symbol": "k_upm_setup_boot_factor"
+    },
+    {
+      "va": "0x41b4",
+      "bytes": "f30b40f9",
+      "instruction": "ldr x19, [sp, #0x10]",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41b8",
+      "bytes": "00008052",
+      "instruction": "mov w0, #0",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41bc",
+      "bytes": "fd7bc2a8",
+      "instruction": "ldp x29, x30, [sp], #0x20",
+      "relocation_symbol": null
+    },
+    {
+      "va": "0x41c0",
+      "bytes": "c0035fd6",
+      "instruction": "ret ",
+      "relocation_symbol": null
+    }
+  ],
+  "endpoint": "0x80924127",
+  "actual_AP25_requests_missing_receiver": "original sends return-1 errno1020; raw errno on successful requests not treated as failures",
+  "actual_UPM_trial": "AP24 k_upm_snd_rec_inh_msg+0x60 SCU VAfffffffff1388f54 faults before UPM init can complete",
+  "SCU_reference": "Restricted AP-only register bank inferred from original consumer; original UPM loaded0, actual register writef54/101 observed; no automatic CP ACK",
+  "scope": "Native original UPM callback data under explicit virtual SCU profile; not physical power or full CP boot acceptance",
+  "original_callback": {
+    "entry": "0x3278",
+    "bound_by_registration_pointer_relocation": "text41c8 -> text3278",
+    "instructions": [
+      {
+        "va": "0x3278",
+        "bytes": "fd7bbda9",
+        "instruction": "stp x29, x30, [sp, #-0x30]!",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x327c",
+        "bytes": "21228052",
+        "instruction": "mov w1, #0x111",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3280",
+        "bytes": "4112a072",
+        "instruction": "movk w1, #0x92, lsl #16",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3284",
+        "bytes": "fd030091",
+        "instruction": "mov x29, sp",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3288",
+        "bytes": "f35301a9",
+        "instruction": "stp x19, x20, [sp, #0x10]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x328c",
+        "bytes": "f40300aa",
+        "instruction": "mov x20, x0",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3290",
+        "bytes": "13110058",
+        "instruction": "ldr x19, #0x34b0",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3294",
+        "bytes": "000040b9",
+        "instruction": "ldr w0, [x0]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3298",
+        "bytes": "02781e12",
+        "instruction": "and w2, w0, #0xfffffffd",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x329c",
+        "bytes": "a02b00b9",
+        "instruction": "str w0, [x29, #0x28]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32a0",
+        "bytes": "5f00016b",
+        "instruction": "cmp w2, w1",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32a4",
+        "bytes": "600a00b9",
+        "instruction": "str w0, [x19, #8]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32a8",
+        "bytes": "c1010054",
+        "instruction": "b.ne #0x32e0",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32ac",
+        "bytes": "73220091",
+        "instruction": "add x19, x19, #8",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32b0",
+        "bytes": "01806451",
+        "instruction": "sub w1, w0, #0x920, lsl #12",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32b4",
+        "bytes": "214c0471",
+        "instruction": "subs w1, w1, #0x113",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32b8",
+        "bytes": "620e40a9",
+        "instruction": "ldp x2, x3, [x19]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32bc",
+        "bytes": "820e00a9",
+        "instruction": "stp x2, x3, [x20]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32c0",
+        "bytes": "620e41a9",
+        "instruction": "ldp x2, x3, [x19, #0x10]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32c4",
+        "bytes": "820e01a9",
+        "instruction": "stp x2, x3, [x20, #0x10]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32c8",
+        "bytes": "611240f9",
+        "instruction": "ldr x1, [x19, #0x20]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32cc",
+        "bytes": "811200f9",
+        "instruction": "str x1, [x20, #0x20]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32d0",
+        "bytes": "a0020054",
+        "instruction": "b.eq #0x3324",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32d4",
+        "bytes": "f35341a9",
+        "instruction": "ldp x19, x20, [sp, #0x10]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32d8",
+        "bytes": "fd7bc3a8",
+        "instruction": "ldp x29, x30, [sp], #0x30",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32dc",
+        "bytes": "c0035fd6",
+        "instruction": "ret ",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32e0",
+        "bytes": "61248052",
+        "instruction": "mov w1, #0x123",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32e4",
+        "bytes": "4112a072",
+        "instruction": "movk w1, #0x92, lsl #16",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32e8",
+        "bytes": "1f00016b",
+        "instruction": "cmp w0, w1",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32ec",
+        "bytes": "20060054",
+        "instruction": "b.eq #0x33b0",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32f0",
+        "bytes": "c1248052",
+        "instruction": "mov w1, #0x126",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32f4",
+        "bytes": "4112a072",
+        "instruction": "movk w1, #0x92, lsl #16",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32f8",
+        "bytes": "1f00016b",
+        "instruction": "cmp w0, w1",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x32fc",
+        "bytes": "a0060054",
+        "instruction": "b.eq #0x33d0",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3300",
+        "bytes": "81248052",
+        "instruction": "mov w1, #0x124",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3304",
+        "bytes": "4112a072",
+        "instruction": "movk w1, #0x92, lsl #16",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3308",
+        "bytes": "1f00016b",
+        "instruction": "cmp w0, w1",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x330c",
+        "bytes": "61010054",
+        "instruction": "b.ne #0x3338",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3310",
+        "bytes": "621240b9",
+        "instruction": "ldr w2, [x19, #0x10]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3314",
+        "bytes": "810640b9",
+        "instruction": "ldr w1, [x20, #4]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3318",
+        "bytes": "5f00016b",
+        "instruction": "cmp w2, w1",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x331c",
+        "bytes": "c0fdff54",
+        "instruction": "b.eq #0x32d4",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3320",
+        "bytes": "611200b9",
+        "instruction": "str w1, [x19, #0x10]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3324",
+        "bytes": "bdffff97",
+        "instruction": "bl #0x3218",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3328",
+        "bytes": "f35341a9",
+        "instruction": "ldp x19, x20, [sp, #0x10]",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x332c",
+        "bytes": "fd7bc3a8",
+        "instruction": "ldp x29, x30, [sp], #0x30",
+        "relocation_symbol": null
+      },
+      {
+        "va": "0x3330",
+        "bytes": "c0035fd6",
+        "instruction": "ret ",
+        "relocation_symbol": null
+      }
+    ],
+    "recognized_tag": "request & fffffffd == 00920111",
+    "native_payload_copy": "40bytes from original UPM boot-factor state to caller; only first16bytes captured in live run"
+  },
+  "native_return_observation": {
+    "run": "runs/ap28upm-c0ac4524",
+    "target": "0x80924127",
+    "post_first16": "11019200020000000100000001000000",
+    "meaning": "identifier00920111/mode2/boot_type1/eecap1; first16 bytes only, no claim to full40byte readback",
+    "CP_peer_reply_added": false
+  }
+}

@@ -1,0 +1,382 @@
+{
+  "schema": "fx3-stage229-Jiritsu-plugin-lifecycle-static-v1",
+  "source": {
+    "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+    "bytes": 225200,
+    "sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9"
+  },
+  "whole_functions_rebound": 8,
+  "manual_PLT_checks": [
+    {
+      "pc": "0xb570",
+      "bytes": "bceaff97",
+      "target": "0x6060",
+      "symbol": "osal_valloc_msg_wait"
+    },
+    {
+      "pc": "0xb5a8",
+      "bytes": "46eaff97",
+      "target": "0x5ec0",
+      "symbol": "osal_snd_msg"
+    },
+    {
+      "pc": "0xb65c",
+      "bytes": "81e9ff97",
+      "target": "0x5c60",
+      "symbol": "osal_create_waitable_thread"
+    },
+    {
+      "pc": "0xb730",
+      "bytes": "8ce9ff97",
+      "target": "0x5d60",
+      "symbol": "osal_wait_thread_exit"
+    },
+    {
+      "pc": "0xb788",
+      "bytes": "9ee9ff97",
+      "target": "0x5e00",
+      "symbol": "dlsym"
+    },
+    {
+      "pc": "0xb7c0",
+      "bytes": "8ceaff97",
+      "target": "0x61f0",
+      "symbol": "dlclose"
+    },
+    {
+      "pc": "0xb7dc",
+      "bytes": "c1eaff17",
+      "target": "0x62e0",
+      "symbol": "ramdisk_umount"
+    },
+    {
+      "pc": "0xb950",
+      "bytes": "88e8ff97",
+      "target": "0x5b70",
+      "symbol": "sys_mount"
+    },
+    {
+      "pc": "0xb9a4",
+      "bytes": "97e9ff97",
+      "target": "0x6000",
+      "symbol": "_ZN10IM_JIRITSU10CImJiritsu7releaseEv"
+    },
+    {
+      "pc": "0xbab0",
+      "bytes": "90eaff97",
+      "target": "0x64f0",
+      "symbol": "ramdisk_mount"
+    },
+    {
+      "pc": "0xbadc",
+      "bytes": "9de8ff97",
+      "target": "0x5d50",
+      "symbol": "sys_file_copy"
+    },
+    {
+      "pc": "0xbb04",
+      "bytes": "87e9ff97",
+      "target": "0x6120",
+      "symbol": "dlopen"
+    },
+    {
+      "pc": "0xbb4c",
+      "bytes": "ade8ff97",
+      "target": "0x5e00",
+      "symbol": "dlsym"
+    },
+    {
+      "pc": "0xbbb4",
+      "bytes": "93e8ff97",
+      "target": "0x5e00",
+      "symbol": "dlsym"
+    },
+    {
+      "pc": "0xbcc4",
+      "bytes": "5beaff97",
+      "target": "0x6630",
+      "symbol": "fopen"
+    },
+    {
+      "pc": "0xbe1c",
+      "bytes": "f9e7ff97",
+      "target": "0x5e00",
+      "symbol": "dlsym"
+    },
+    {
+      "pc": "0xbe70",
+      "bytes": "a4e7ff97",
+      "target": "0x5d00",
+      "symbol": "open"
+    },
+    {
+      "pc": "0xbea8",
+      "bytes": "aee8ff97",
+      "target": "0x6160",
+      "symbol": "unlink"
+    },
+    {
+      "pc": "0xc0c8",
+      "bytes": "06e9ff97",
+      "target": "0x64e0",
+      "symbol": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+    },
+    {
+      "pc": "0xc150",
+      "bytes": "e4e8ff97",
+      "target": "0x64e0",
+      "symbol": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+    },
+    {
+      "pc": "0xc1b0",
+      "bytes": "cce8ff97",
+      "target": "0x64e0",
+      "symbol": "_ZN10IM_JIRITSU10CImJiritsu3reqEjNS0_11IMJ_REQUESTEPKcS3_S3_j"
+    },
+    {
+      "pc": "0xc228",
+      "bytes": "aae8ff97",
+      "target": "0x64d0",
+      "symbol": "usleep"
+    }
+  ],
+  "independent_ADRP_ADD_symbol_checks": [
+    {
+      "adrp": "0xbb40",
+      "add": "0xbb48",
+      "string_VA": "0x32049",
+      "symbol": "CreateScriptI"
+    },
+    {
+      "adrp": "0xbba8",
+      "add": "0xbbb0",
+      "string_VA": "0x3206b",
+      "symbol": "LoadScriptI"
+    },
+    {
+      "adrp": "0xbdf4",
+      "add": "0xbdfc",
+      "string_VA": "0x32169",
+      "symbol": "RunScriptI"
+    },
+    {
+      "adrp": "0xb780",
+      "add": "0xb784",
+      "string_VA": "0x322f4",
+      "symbol": "DestroyScriptI"
+    }
+  ],
+  "ABI_instruction_checks": [
+    {
+      "pc": "0xb55c",
+      "raw": "23008052",
+      "expected_asm": "mov w3, #1"
+    },
+    {
+      "pc": "0xb560",
+      "raw": "02048052",
+      "expected_asm": "mov w2, #0x20"
+    },
+    {
+      "pc": "0xb594",
+      "raw": "180000b9",
+      "expected_asm": "str w24, [x0]"
+    },
+    {
+      "pc": "0xb598",
+      "raw": "17d800a9",
+      "expected_asm": "stp x23, x22, [x0, #8]"
+    },
+    {
+      "pc": "0xb5a0",
+      "raw": "150c00f9",
+      "expected_asm": "str x21, [x0, #0x18]"
+    },
+    {
+      "pc": "0xbb88",
+      "raw": "601200f9",
+      "expected_asm": "str x0, [x19, #0x20]"
+    },
+    {
+      "pc": "0xbc68",
+      "raw": "601240f9",
+      "expected_asm": "ldr x0, [x19, #0x20]"
+    },
+    {
+      "pc": "0xbc6c",
+      "raw": "810a40f9",
+      "expected_asm": "ldr x1, [x20, #0x10]"
+    },
+    {
+      "pc": "0xbc74",
+      "raw": "1f1c0072",
+      "expected_asm": "tst w0, #0xff"
+    },
+    {
+      "pc": "0xbc88",
+      "raw": "001c40f9",
+      "expected_asm": "ldr x0, [x0, #0x38]"
+    },
+    {
+      "pc": "0xbdd8",
+      "raw": "021f83d2",
+      "expected_asm": "mov x2, #0x18f8"
+    },
+    {
+      "pc": "0xbe94",
+      "raw": "820e40f9",
+      "expected_asm": "ldr x2, [x20, #0x18]"
+    },
+    {
+      "pc": "0xbe98",
+      "raw": "e1031aaa",
+      "expected_asm": "mov x1, x26"
+    },
+    {
+      "pc": "0xbe9c",
+      "raw": "601240f9",
+      "expected_asm": "ldr x0, [x19, #0x20]"
+    },
+    {
+      "pc": "0xbea4",
+      "raw": "e00315aa",
+      "expected_asm": "mov x0, x21"
+    },
+    {
+      "pc": "0xb7b8",
+      "raw": "600e40f9",
+      "expected_asm": "ldr x0, [x19, #0x18]"
+    },
+    {
+      "pc": "0xb734",
+      "raw": "7f0a00f9",
+      "expected_asm": "str xzr, [x19, #0x10]"
+    },
+    {
+      "pc": "0xc1a0",
+      "raw": "62008052",
+      "expected_asm": "mov w2, #3"
+    },
+    {
+      "pc": "0xc1b8",
+      "raw": "15d49052",
+      "expected_asm": "mov w21, #0x86a0"
+    },
+    {
+      "pc": "0xc1bc",
+      "raw": "f4038052",
+      "expected_asm": "mov w20, #0x1f"
+    },
+    {
+      "pc": "0xc1c0",
+      "raw": "3500a072",
+      "expected_asm": "movk w21, #1, lsl #16"
+    },
+    {
+      "pc": "0xc1c8",
+      "raw": "1f280071",
+      "expected_asm": "cmp w0, #0xa"
+    },
+    {
+      "pc": "0xc1d0",
+      "raw": "94060071",
+      "expected_asm": "subs w20, w20, #1"
+    },
+    {
+      "pc": "0xc1f4",
+      "raw": "c0038052",
+      "expected_asm": "mov w0, #0x1e"
+    },
+    {
+      "pc": "0xc1f8",
+      "raw": "600a00b9",
+      "expected_asm": "str w0, [x19, #8]"
+    },
+    {
+      "pc": "0xc040",
+      "raw": "600a00b9",
+      "expected_asm": "str w0, [x19, #8]"
+    },
+    {
+      "pc": "0xc058",
+      "raw": "c0035fd6",
+      "expected_asm": "ret"
+    },
+    {
+      "pc": "0xc0e0",
+      "raw": "1f380071",
+      "expected_asm": "cmp w0, #0xe"
+    },
+    {
+      "pc": "0xc14c",
+      "raw": "42008052",
+      "expected_asm": "mov w2, #2"
+    }
+  ],
+  "paths": {
+    "mount_parent": "/tmp/jiritsu",
+    "source_partition": "/dev/nflasha6",
+    "RAM_target": "/tmp/jiritsu/ramdsk_libJit",
+    "RAM_options": "size=5M",
+    "RAM_library": "/tmp/jiritsu/ramdsk_libJit/libJit.so",
+    "script_log": "/tmp/jiritsu/jit.log",
+    "RAM_filesystem": "tmpfs"
+  },
+  "plugin_contract": {
+    "CreateScriptI": "factory return pointer stored in CImJiritsu+0x20; no deliberate semantic argument prepared immediately before call",
+    "LoadScriptI": "object in x0, queued script pathname pointer in x1; success determined from low8bits",
+    "RunScriptI": "object x0, zeroed and partially initialized 0x18f8-byte stack context x1, queued parameter pointer x2; return overwritten without checking",
+    "DestroyScriptI": "object x0; return overwritten, then dlclose",
+    "object_error_text_pointer_offset": 56,
+    "full_object_or_Run_context_layout_recovered": false,
+    "bootstrap227_exports_match": false
+  },
+  "queue_contract": {
+    "message_bytes": 32,
+    "operation_offset": 0,
+    "borrowed_pointer_offsets": [
+      8,
+      16,
+      24
+    ],
+    "deep_copy_of_queued_strings_in_sender": false,
+    "enqueue_success_is_execution_completion": false
+  },
+  "lifecycle": {
+    "run_enqueues_load_then_when_state14_enqueues_run": true,
+    "run_return_is_script_or_descendant_completion": false,
+    "stop_enqueues_operation": 3,
+    "stop_expected_observed_state": 10,
+    "stop_counter": 31,
+    "maximum_requested_sleeps_before_timeout": 30,
+    "sleep_argument_microseconds": 100000,
+    "nominal_requested_sleep_seconds": 3,
+    "observed_real_timeout_seconds": null,
+    "stop_timeout_or_enqueue_failure_writes_state": 30,
+    "stop_has_thread_join_or_kill_or_dlclose": false,
+    "state10_store": "0xc040",
+    "thread_return": "0xc058",
+    "state10_is_actual_thread_exit_proof": false,
+    "exit_calls_wait_thread_exit": true,
+    "exit_checks_wait_return_before_clearing_handle": false,
+    "original_RunScriptI_executes_synchronously_on_Jiritsu_thread": true,
+    "blocked_Run_prevents_same_thread_consuming_stop_until_return": true
+  },
+  "mount_and_loader": {
+    "normal_source_parent_flash_mount_precedes_child_tmpfs_copy": true,
+    "child_tmpfs_size_MiB": 5,
+    "existing_plugin_release_called_before_new_copy": true,
+    "copy_to_RAM_is_zero_persistent_side_effect_proof": false,
+    "actual_mount_or_file_state_observed": false
+  },
+  "conclusion": "Actual factory/script lifecycle differs from bootstrap227. Sender queues borrowed pointers, run only submits work, stop polling/state10 and exit handle-clearing are not independent completion proof. A synchronous blocked plugin can delay the same thread consuming stop. No loader guard relaxed, no plugin generated or uploaded.",
+  "limitations": [
+    "Static ordinary instruction paths only; no actual plugin, OSAL runtime, scheduling or camera execution.",
+    "Missing full plugin object/Run context and caller data lifetimes; names alone are insufficient for an adapter.",
+    "Other service entrypoints remain outside this bounded route; no universal nonexistence claim.",
+    "No independent AP rescue, same-body complete backup, modified update acceptance or MAIN HEVC proof."
+  ],
+  "Sony_or_Linux_code_executed": false,
+  "new_camera_operations": 0,
+  "first_flash_released": false
+}

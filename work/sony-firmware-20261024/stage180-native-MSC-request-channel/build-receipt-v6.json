@@ -1,0 +1,49 @@
+{
+  "native_object": {
+    "argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage180-native-MSC-request-channel/native_session.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage180-native-MSC-request-channel/artifacts-v6/native-session.o"
+    ],
+    "sha256": "202f5cd42e957baa737cb773fc2891dccd70d3798b41997684269c91e7165d6d",
+    "stderr": ""
+  },
+  "process_fixture": {
+    "argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-DFX3_IOKIT_WIRE_FIXTURE",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage180-native-MSC-request-channel/native_session.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage180-native-MSC-request-channel/process_fixture.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/iokit_wire.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage179-bounded-IOKit-wire/fake_iokit.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage180-native-MSC-request-channel/artifacts-v6/session-process-fixture"
+    ],
+    "sha256": "11c1c526bb7a4431be3c0cd407080bef2033299a705b6803b90cce40f5aa4cac",
+    "stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage180-native-MSC-request-channel/artifacts-v6/session-process-fixture:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "native_object_linked_or_executed": false,
+  "new_root_or_device_operations": 0,
+  "sources": {
+    "native_session.h": "ce81b1e02f901323776114588989deb2938c65e9d99b0f02692bb8d1d57291d5",
+    "native_session.c": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1",
+    "process_fixture.c": "e7d4e14ea7078681b293241a89fdb7bc6aad6981033595f84c658978d7d53ff6"
+  }
+}

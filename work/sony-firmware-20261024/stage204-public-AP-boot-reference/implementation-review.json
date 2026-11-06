@@ -1,0 +1,18 @@
+{
+  "status": "PUBLIC_REFERENCE_AP_BOOT0_AND_UPDATER_PARTITION_PATH_BOUND",
+  "prior_goal_turn_classification": "progress",
+  "prior_basis": "203 completed WBI layout/resume/eMMC bindings; not a wait or repeated status",
+  "this_goal_turn_classification": "progress",
+  "next_action_changed": "Actual public A7IV AP boot0/ROM/SRAM now available locally and bound; use real mode3/partition1 code as reference for FX3-specific hardware differences instead of assuming the public source lacks boot0.",
+  "limits": [
+    "reference A7IV2.00 is not current FX3 AP ROM/boot0 or installed p1 identity",
+    "mode3 path has runtime flags/earlier steps; static consumer linkage is not a successful boot or restore",
+    "generic entry128 equality does not establish same program, same board initialization or safe cross-model loading",
+    "no independent FX3 recovery, actual inverse write, MAIN HEVC or long-record acceptance"
+  ],
+  "root01": "195 specific answer pending; no job/admin operation or repeated question",
+  "original_or_guest_executions": 0,
+  "root_or_device_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

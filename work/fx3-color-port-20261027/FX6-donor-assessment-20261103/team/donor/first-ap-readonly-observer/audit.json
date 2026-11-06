@@ -1,0 +1,112 @@
+{
+  "status": "PASS_STATIC_HOST_ONLY_NOT_RUN",
+  "input_sha256": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-ap-candidate/run_ap_once.py": "aaa9ca518d580fde7ca9fdbf2c33bebe78545d96876f997168643f33bdf4a24a",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.so": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-ap-candidate/runs/fx6ap-bb7588e5/serial.log": "7fd297d60c72a1211fa44a0103ae69fabec0c72c422be6c34519c2636db3a43f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/gdb_sysregs104_v2.py": "55404f4a333dd8dbd89b50f2e4d8a0d9075ab77203e331bbb66d5852a3f08f73",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/accel/tcg/tcg-accel-ops.c": "79a918acaf0e6c770b2095036c06c513a567beb478a3aed113edb738d00151a2",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/gdbstub/system.c": "196af474a5aacefab3394162b10537efcf9dbd55e2ec2fa291a0cbd71877352f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/sources/qemu-11.1.2/gdbstub/gdbstub.c": "a03d5b7aa6a2188f4eebda464a6e6d7914dacfb0898136323c5c857c829cba6a"
+  },
+  "scripts_sha256": {
+    "run_once.py": "73afe6576ad8207f33551f7581e70d64b41101894b361cc0abd6434f66081761",
+    "readonly_probe.py": "7da87fbb920bfa6a9516421d1224813056ff991a2c950552c4ccdadc662bbade",
+    "two_phase_identity.py": "d164c95a14e0d906083e6bbbd05facb4827cc1d4a59dbfc784830ebc2cd6de68",
+    "test_host.py": "da7eef983c80912722676a01d78bf23334a6bd449de7ff957327db1cf9b1cb75",
+    "audit.py": "66f7f3e023283fa097873bea7c1e1852a92a31c43ce431a5d37f34ad73855c11"
+  },
+  "frozen_cpio_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "frozen_argv_count": 34,
+  "frozen_argv_changed_indices": [
+    20,
+    31
+  ],
+  "frozen_argv_delta": {
+    "20_serial": "new private run/serial.log",
+    "31_initrd": "same pinned three-entry CPIO with same addr 0x440000000 and force-raw"
+  },
+  "qmp_socket": "q",
+  "gdb_socket": "g",
+  "smp": 4,
+  "rsp_resume_contract": "addressless c: immediate transport ACK only; subsequent T05 stop requires QMP debug; no RSP byte while guest running",
+  "historical_map": {
+    "pid": 239,
+    "ap_bias": "0x7edd55b000",
+    "cap_bias": "0x7f90b0c000",
+    "ap_branch_pc": "0x7edf64a7a0",
+    "cap_audio_pc": "0x7f90b2a730",
+    "caveat": "historical ASLR example only; live map must be recalculated"
+  },
+  "original_instruction_words": {
+    "ap": {
+      "0x20ef79c": "61aaa897",
+      "0x20ef7a0": "e0000034"
+    },
+    "cap": {
+      "0x1840c": "c9180094",
+      "0x1e730": "ff8301d1",
+      "0x1e754": "807f8012",
+      "0x1e764": "08c14bb9"
+    }
+  },
+  "original_instruction_file_offsets": {
+    "ap": {
+      "0x20ef79c": {
+        "file_offset": "0x20ef79c",
+        "original_le_word": "61aaa897"
+      },
+      "0x20ef7a0": {
+        "file_offset": "0x20ef7a0",
+        "original_le_word": "e0000034"
+      }
+    },
+    "cap": {
+      "0x1840c": {
+        "file_offset": "0x840c",
+        "original_le_word": "c9180094"
+      },
+      "0x1e730": {
+        "file_offset": "0xe730",
+        "original_le_word": "ff8301d1"
+      },
+      "0x1e754": {
+        "file_offset": "0xe754",
+        "original_le_word": "807f8012"
+      },
+      "0x1e764": {
+        "file_offset": "0xe764",
+        "original_le_word": "08c14bb9"
+      }
+    }
+  },
+  "host_tests": {
+    "status": "PASS_NO_QEMU",
+    "cases": [
+      "historical_maps_ptload_bias_positive",
+      "wrong_offset_cross_pid_and_incomplete_maps_rejected",
+      "current_run_early_CAP_complete_AP_absent_and_truncation_negative",
+      "real_pre_call_profile_base_and_missing_mixed_rejection",
+      "current_cpu_ELF_header_PHDR_original_word_positive_and_negatives",
+      "rsp_fragment_ack_async_and_command_allowlist",
+      "rsp_bad_checksum_nack_and_abort",
+      "rsp_bounded_timeout",
+      "rsp_unsolicited_stop_fragmented",
+      "wrong_pc_and_unattributed_cpu_rejected",
+      "z1_cleanup_success_and_failure_visible",
+      "failed_z1_no_guest_resume_or_restore_write",
+      "same_request_tls_return_and_model_capture",
+      "resume_ACK_then_fragmented_early_T05_and_outbound_silence",
+      "resume_late_T05_not_a_2s_command_reply",
+      "resume_ACK_timeout_disconnect_NACK_wrong_order_no_retry",
+      "QMP_debug_crosscheck_without_RSP_fails_closed_or_preserves_T05",
+      "real_RSP_select_thread_first_later_multiprocess_and_rejections"
+    ],
+    "historical_serial_sha256": "7fd297d60c72a1211fa44a0103ae69fabec0c72c422be6c34519c2636db3a43f",
+    "observer_sha256": "7da87fbb920bfa6a9516421d1224813056ff991a2c950552c4ccdadc662bbade",
+    "identity_sha256": "d164c95a14e0d906083e6bbbd05facb4827cc1d4a59dbfc784830ebc2cd6de68",
+    "runner_sha256": "73afe6576ad8207f33551f7581e70d64b41101894b361cc0abd6434f66081761"
+  },
+  "runtime_evidence": "none_this_turn"
+}

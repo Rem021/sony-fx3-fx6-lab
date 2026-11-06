@@ -1,0 +1,451 @@
+{
+  "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so",
+  "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "points": {
+    "0x2d7e618": [
+      {
+        "va": "0x2d7e618",
+        "raw": "a0d241b9",
+        "asm": "ldr w0, [x21, #0x1d0]"
+      },
+      {
+        "va": "0x2d7e61c",
+        "raw": "1f040071",
+        "asm": "cmp w0, #1"
+      },
+      {
+        "va": "0x2d7e620",
+        "raw": "c0000054",
+        "asm": "b.eq #0x2d7e638"
+      },
+      {
+        "va": "0x2d7e624",
+        "raw": "a1324739",
+        "asm": "ldrb w1, [x21, #0x1cc]"
+      },
+      {
+        "va": "0x2d7e628",
+        "raw": "a0e20691",
+        "asm": "add x0, x21, #0x1b8"
+      },
+      {
+        "va": "0x2d7e62c",
+        "raw": "01060035",
+        "asm": "cbnz w1, #0x2d7e6ec"
+      }
+    ],
+    "0x2d7e6f0": [
+      {
+        "va": "0x2d7e6f0",
+        "raw": "7fcf0794",
+        "asm": "bl #0x2f724ec"
+      },
+      {
+        "va": "0x2d7e6f4",
+        "raw": "f303002a",
+        "asm": "mov w19, w0"
+      },
+      {
+        "va": "0x2d7e6f8",
+        "raw": "00fbff35",
+        "asm": "cbnz w0, #0x2d7e658"
+      },
+      {
+        "va": "0x2d7e6fc",
+        "raw": "b4a30191",
+        "asm": "add x20, x29, #0x68"
+      },
+      {
+        "va": "0x2d7e700",
+        "raw": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x2d7e704",
+        "raw": "e98df497",
+        "asm": "bl #0x2aa1ea8"
+      }
+    ],
+    "0x2f724ec": [
+      {
+        "va": "0x2f724ec",
+        "raw": "9affff17",
+        "asm": "b #0x2f72354"
+      },
+      {
+        "va": "0x2f724f0",
+        "raw": "010080d2",
+        "asm": "mov x1, #0"
+      },
+      {
+        "va": "0x2f724f4",
+        "raw": "98ffff17",
+        "asm": "b #0x2f72354"
+      },
+      {
+        "va": "0x2f724f8",
+        "raw": "e10300aa",
+        "asm": "mov x1, x0"
+      },
+      {
+        "va": "0x2f724fc",
+        "raw": "000080d2",
+        "asm": "mov x0, #0"
+      },
+      {
+        "va": "0x2f72500",
+        "raw": "95ffff17",
+        "asm": "b #0x2f72354"
+      }
+    ],
+    "0x2f72494": [
+      {
+        "va": "0x2f72494",
+        "raw": "53869897",
+        "asm": "bl #0x1593de0"
+      },
+      {
+        "va": "0x2f72498",
+        "raw": "f303002a",
+        "asm": "mov w19, w0"
+      },
+      {
+        "va": "0x2f7249c",
+        "raw": "40000035",
+        "asm": "cbnz w0, #0x2f724a4"
+      },
+      {
+        "va": "0x2f724a0",
+        "raw": "b306c079",
+        "asm": "ldrsh w19, [x21, #2]"
+      },
+      {
+        "va": "0x2f724a4",
+        "raw": "a11f40f9",
+        "asm": "ldr x1, [x29, #0x38]"
+      },
+      {
+        "va": "0x2f724a8",
+        "raw": "20288052",
+        "asm": "mov w0, #0x141"
+      }
+    ],
+    "0x2f72498": [
+      {
+        "va": "0x2f72498",
+        "raw": "f303002a",
+        "asm": "mov w19, w0"
+      },
+      {
+        "va": "0x2f7249c",
+        "raw": "40000035",
+        "asm": "cbnz w0, #0x2f724a4"
+      },
+      {
+        "va": "0x2f724a0",
+        "raw": "b306c079",
+        "asm": "ldrsh w19, [x21, #2]"
+      },
+      {
+        "va": "0x2f724a4",
+        "raw": "a11f40f9",
+        "asm": "ldr x1, [x29, #0x38]"
+      },
+      {
+        "va": "0x2f724a8",
+        "raw": "20288052",
+        "asm": "mov w0, #0x141"
+      },
+      {
+        "va": "0x2f724ac",
+        "raw": "0012b072",
+        "asm": "movk w0, #0x8090, lsl #16"
+      }
+    ],
+    "0x2f724a0": [
+      {
+        "va": "0x2f724a0",
+        "raw": "b306c079",
+        "asm": "ldrsh w19, [x21, #2]"
+      },
+      {
+        "va": "0x2f724a4",
+        "raw": "a11f40f9",
+        "asm": "ldr x1, [x29, #0x38]"
+      },
+      {
+        "va": "0x2f724a8",
+        "raw": "20288052",
+        "asm": "mov w0, #0x141"
+      },
+      {
+        "va": "0x2f724ac",
+        "raw": "0012b072",
+        "asm": "movk w0, #0x8090, lsl #16"
+      },
+      {
+        "va": "0x2f724b0",
+        "raw": "c8879897",
+        "asm": "bl #0x15943d0"
+      },
+      {
+        "va": "0x2f724b4",
+        "raw": "1f000071",
+        "asm": "cmp w0, #0"
+      }
+    ],
+    "0x2f724b4": [
+      {
+        "va": "0x2f724b4",
+        "raw": "1f000071",
+        "asm": "cmp w0, #0"
+      },
+      {
+        "va": "0x2f724b8",
+        "raw": "601a407a",
+        "asm": "ccmp w19, #0, #0, ne"
+      },
+      {
+        "va": "0x2f724bc",
+        "raw": "0000931a",
+        "asm": "csel w0, w0, w19, eq"
+      },
+      {
+        "va": "0x2f724c0",
+        "raw": "1fe80f31",
+        "asm": "cmn w0, #0x3fa"
+      },
+      {
+        "va": "0x2f724c4",
+        "raw": "00109f1a",
+        "asm": "csel w0, w0, wzr, ne"
+      },
+      {
+        "va": "0x2f724c8",
+        "raw": "c2ffff17",
+        "asm": "b #0x2f723d0"
+      }
+    ],
+    "0x2f72354": [
+      {
+        "va": "0x2f72354",
+        "raw": "fd7bbba9",
+        "asm": "stp x29, x30, [sp, #-0x50]!"
+      },
+      {
+        "va": "0x2f72358",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2f7235c",
+        "raw": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x2f72360",
+        "raw": "f51300f9",
+        "asm": "str x21, [sp, #0x20]"
+      },
+      {
+        "va": "0x2f72364",
+        "raw": "bf7f04a9",
+        "asm": "stp xzr, xzr, [x29, #0x40]"
+      },
+      {
+        "va": "0x2f72368",
+        "raw": "bf1b00f9",
+        "asm": "str xzr, [x29, #0x30]"
+      }
+    ],
+    "0x2b725c8": [
+      {
+        "va": "0x2b725c8",
+        "raw": "fd7bb9a9",
+        "asm": "stp x29, x30, [sp, #-0x70]!"
+      },
+      {
+        "va": "0x2b725cc",
+        "raw": "e3078052",
+        "asm": "mov w3, #0x3f"
+      },
+      {
+        "va": "0x2b725d0",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2b725d4",
+        "raw": "f55b02a9",
+        "asm": "stp x21, x22, [sp, #0x20]"
+      },
+      {
+        "va": "0x2b725d8",
+        "raw": "566d00f0",
+        "asm": "adrp x22, #0x391d000"
+      }
+    ],
+    "0x2b72680": [
+      {
+        "va": "0x2b72680",
+        "raw": "9bff0f94",
+        "asm": "bl #0x2f724ec"
+      },
+      {
+        "va": "0x2b72684",
+        "raw": "c0050035",
+        "asm": "cbnz w0, #0x2b7273c"
+      },
+      {
+        "va": "0x2b72688",
+        "raw": "406d00f0",
+        "asm": "adrp x0, #0x391d000"
+      },
+      {
+        "va": "0x2b7268c",
+        "raw": "e20318aa",
+        "asm": "mov x2, x24"
+      },
+      {
+        "va": "0x2b72690",
+        "raw": "e10317aa",
+        "asm": "mov x1, x23"
+      }
+    ],
+    "0x2b72684": [
+      {
+        "va": "0x2b72684",
+        "raw": "c0050035",
+        "asm": "cbnz w0, #0x2b7273c"
+      },
+      {
+        "va": "0x2b72688",
+        "raw": "406d00f0",
+        "asm": "adrp x0, #0x391d000"
+      },
+      {
+        "va": "0x2b7268c",
+        "raw": "e20318aa",
+        "asm": "mov x2, x24"
+      },
+      {
+        "va": "0x2b72690",
+        "raw": "e10317aa",
+        "asm": "mov x1, x23"
+      },
+      {
+        "va": "0x2b72694",
+        "raw": "00982491",
+        "asm": "add x0, x0, #0x926"
+      }
+    ],
+    "0x2b721b4": [
+      {
+        "va": "0x2b721b4",
+        "raw": "fd7bbda9",
+        "asm": "stp x29, x30, [sp, #-0x30]!"
+      },
+      {
+        "va": "0x2b721b8",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2b721bc",
+        "raw": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x2b721c0",
+        "raw": "f30308aa",
+        "asm": "mov x19, x8"
+      },
+      {
+        "va": "0x2b721c4",
+        "raw": "f51300f9",
+        "asm": "str x21, [sp, #0x20]"
+      }
+    ],
+    "0x2b72520": [
+      {
+        "va": "0x2b72520",
+        "raw": "fd7bbda9",
+        "asm": "stp x29, x30, [sp, #-0x30]!"
+      },
+      {
+        "va": "0x2b72524",
+        "raw": "240080d2",
+        "asm": "mov x4, #1"
+      },
+      {
+        "va": "0x2b72528",
+        "raw": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2b7252c",
+        "raw": "a3c30091",
+        "asm": "add x3, x29, #0x30"
+      },
+      {
+        "va": "0x2b72530",
+        "raw": "f30b00f9",
+        "asm": "str x19, [sp, #0x10]"
+      }
+    ],
+    "0x2b7250c": [
+      {
+        "va": "0x2b7250c",
+        "raw": "01504039",
+        "asm": "ldrb w1, [x0, #0x14]"
+      },
+      {
+        "va": "0x2b72510",
+        "raw": "61000034",
+        "asm": "cbz w1, #0x2b7251c"
+      },
+      {
+        "va": "0x2b72514",
+        "raw": "001040b9",
+        "asm": "ldr w0, [x0, #0x10]"
+      },
+      {
+        "va": "0x2b72518",
+        "raw": "71a1ef17",
+        "asm": "b #0x275aadc"
+      },
+      {
+        "va": "0x2b7251c",
+        "raw": "c0035fd6",
+        "asm": "ret "
+      }
+    ],
+    "0x2b72988": [
+      {
+        "va": "0x2b72988",
+        "raw": "dafe0f94",
+        "asm": "bl #0x2f724f0"
+      },
+      {
+        "va": "0x2b7298c",
+        "raw": "e0050035",
+        "asm": "cbnz w0, #0x2b72a48"
+      },
+      {
+        "va": "0x2b72990",
+        "raw": "406d00f0",
+        "asm": "adrp x0, #0x391d000"
+      },
+      {
+        "va": "0x2b72994",
+        "raw": "e20317aa",
+        "asm": "mov x2, x23"
+      },
+      {
+        "va": "0x2b72998",
+        "raw": "e10316aa",
+        "asm": "mov x1, x22"
+      }
+    ]
+  }
+}

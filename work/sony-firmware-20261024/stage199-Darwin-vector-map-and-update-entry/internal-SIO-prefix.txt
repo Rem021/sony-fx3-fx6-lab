@@ -1,0 +1,23 @@
+# Original FX3 bytes, source map0x4200, conditional linkage only; no execution.
+0x52a4 [file+0x10a4] 2de9f05f push.w    {r4, r5, r6, r7, r8, sb, sl, fp, ip, lr}
+0x52a8 [file+0x10a8] 3a4d ldr       r5, [pc, #0xe8]
+0x52aa [file+0x10aa] 8146 mov       sb, r0
+0x52ac [file+0x10ac] 0020 movs      r0, #0
+0x52ae [file+0x10ae] 0b3d subs      r5, #0xb
+0x52b0 [file+0x10b0] 8a46 mov       sl, r1
+0x52b2 [file+0x10b2] 9346 mov       fp, r2
+0x52b4 [file+0x10b4] 1e46 mov       r6, r3
+0x52b6 [file+0x10b6] 4ff00108 mov.w     r8, #1
+0x52ba [file+0x10ba] 6870 strb      r0, [r5, #1]
+0x52bc [file+0x10bc] fff73ef9 bl        #0x453c
+0x52c0 [file+0x10c0] 0246 mov       r2, r0
+0x52c2 [file+0x10c2] 5049 ldr       r1, [pc, #0x140]
+0x52c4 [file+0x10c4] 4046 mov       r0, r8
+0x52c6 [file+0x10c6] 05f09dfb bl        #0xaa04
+0x52ca [file+0x10ca] 4f4f ldr       r7, [pc, #0x13c]
+0x52cc [file+0x10cc] 0400 movs      r4, r0
+0x52ce [file+0x10ce] 07d0 beq       #0x52e0
+0x52d0 [file+0x10d0] 3869 ldr       r0, [r7, #0x10]
+0x52d2 [file+0x10d2] 8007 lsls      r0, r0, #0x1e
+0x52d4 [file+0x10d4] 28d5 bpl       #0x5328
+0x52d6 [file+0x10d6] 2146 mov       r1, r4

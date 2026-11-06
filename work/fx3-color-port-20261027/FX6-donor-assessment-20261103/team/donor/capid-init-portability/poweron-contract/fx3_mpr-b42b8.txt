@@ -1,0 +1,45 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b418c <_ZN3mpr8HmsStartENS_7HmsTypeEPv>:
+   b42b8: d65f03c0     	ret
+
+00000000000b42bc <_ZN3mpr13GetEventParamEPjPNS_5EVTIDEPm>:
+   b42bc: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+   b42c0: aa0003e7     	mov	x7, x0
+   b42c4: 910003fd     	mov	x29, sp
+   b42c8: f9000bf3     	str	x19, [sp, #0x10]
+   b42cc: b0001233     	adrp	x19, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b42d0: f9436273     	ldr	x19, [x19, #0x6c0]
+   b42d4: f9400a63     	ldr	x3, [x19, #0x10]
+   b42d8: f9401a60     	ldr	x0, [x19, #0x30]
+   b42dc: eb03001f     	cmp	x0, x3
+   b42e0: 54000320     	b.eq	0xb4344 <_ZN3mpr13GetEventParamEPjPNS_5EVTIDEPm+0x88>
+   b42e4: a9419260     	ldp	x0, x4, [x19, #0x18]
+   b42e8: 29401868     	ldp	w8, w6, [x3]
+   b42ec: f9400465     	ldr	x5, [x3, #0x8]
+   b42f0: b90000e8     	str	w8, [x7]
+   b42f4: b9000026     	str	w6, [x1]
+   b42f8: d1004081     	sub	x1, x4, #0x10
+   b42fc: eb01007f     	cmp	x3, x1
+   b4300: f9000045     	str	x5, [x2]
+   b4304: 540000e0     	b.eq	0xb4320 <_ZN3mpr13GetEventParamEPjPNS_5EVTIDEPm+0x64>
+   b4308: 91004063     	add	x3, x3, #0x10
+   b430c: f9000a63     	str	x3, [x19, #0x10]
+   b4310: 52800000     	mov	w0, #0x0                // =0
+   b4314: f9400bf3     	ldr	x19, [sp, #0x10]
+   b4318: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+   b431c: d65f03c0     	ret
+   b4320: 97ff2b9c     	bl	0x7f190 <_ZdlPv@plt>
+   b4324: f9401660     	ldr	x0, [x19, #0x28]
+   b4328: 91002001     	add	x1, x0, #0x8
+   b432c: f9400400     	ldr	x0, [x0, #0x8]
+   b4330: f9001661     	str	x1, [x19, #0x28]
+   b4334: 91080001     	add	x1, x0, #0x200
+   b4338: a9010260     	stp	x0, x0, [x19, #0x10]
+   b433c: f9001261     	str	x1, [x19, #0x20]
+   b4340: 17fffff4     	b	0xb4310 <_ZN3mpr13GetEventParamEPjPNS_5EVTIDEPm+0x54>
+   b4344: 52800040     	mov	w0, #0x2                // =2
+   b4348: 17fffff3     	b	0xb4314 <_ZN3mpr13GetEventParamEPjPNS_5EVTIDEPm+0x58>

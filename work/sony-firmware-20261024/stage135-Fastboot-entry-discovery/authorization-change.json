@@ -1,0 +1,39 @@
+{
+  "created_utc": "2026-10-27T19:54:30.582331+00:00",
+  "source": "direct user request to test FX3 Fastboot entry",
+  "quote": "我觉得你可以尝试测试，比如说这个F33可不可以进入 Fastboot模式啊之类的。",
+  "equipment_quote": "目前只有 Mac 和 Windows 电脑",
+  "before": {
+    "scope": "Windows_and_Mac_cached_USB_metadata_only",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": false,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false,
+    "Mac_cached_USB_metadata_authorized": true
+  },
+  "after": {
+    "scope": "Windows_and_Mac_cached_USB_metadata_plus_explicit_standard_Fastboot_identification",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": false,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false,
+    "Mac_cached_USB_metadata_authorized": true,
+    "Fastboot_identification_enumeration_authorized": true,
+    "Fastboot_mode_entry_test_requested": true,
+    "Fastboot_mode_entry_procedure_validated": false,
+    "Fastboot_image_boot_download_or_partition_write_authorized": false
+  },
+  "interpretation": "New request supports standard Fastboot identification; mode-entry intent persists, but an applicable safe procedure is not yet available. No broader service/driver/module/flash approval inferred.",
+  "actual_host_commands": [
+    "fastboot --version",
+    "fastboot devices -l"
+  ],
+  "actual_camera_mode_entry_or_payload_commands": [],
+  "no_repeat_permission_request_for_identification": true
+}

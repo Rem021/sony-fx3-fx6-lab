@@ -1,0 +1,72 @@
+{
+  "created_utc": "2026-10-27T18:34:39.162109+00:00",
+  "method": "Only normalize saved sanitized cache, no I/O queries",
+  "source_files": [
+    {
+      "path": "mac-cache-20261027T183151Z/sanitized-cache-receipt.json",
+      "sha256": "c7ed0769f2dc526be8e18eabd175411c4ff6fcea9f422704142798ad1ff776a3"
+    },
+    {
+      "path": "mac-service-cache-20261027T1834Z/sanitized-service-cache-receipt.json",
+      "sha256": "b770e1406ac1189a04489085cdae19df30a938128b225f233c54cd21956574e7"
+    }
+  ],
+  "raw_Sony_identifier_records_in_service_cache": 4,
+  "physical_USB_device_roots_in_cache": 1,
+  "count4_is_inherited_properties_not_four_cameras": true,
+  "device": {
+    "tree_index_path": [
+      1
+    ],
+    "idVendor": 1356,
+    "idProduct": 3489,
+    "bDeviceClass": 0,
+    "bDeviceSubClass": 0,
+    "bDeviceProtocol": 0,
+    "USB Product Name": "ILME-FX3",
+    "USB Vendor Name": "Sony",
+    "IOObjectClass": "IOUSBHostDevice"
+  },
+  "interface": {
+    "tree_index_path": [
+      1,
+      2
+    ],
+    "idVendor": 1356,
+    "idProduct": 3489,
+    "bInterfaceClass": 8,
+    "bInterfaceSubClass": 6,
+    "bInterfaceProtocol": 80,
+    "bInterfaceNumber": 0,
+    "USB Product Name": "ILME-FX3",
+    "USB Vendor Name": "Sony",
+    "IOObjectClass": "IOUSBHostInterface"
+  },
+  "cached_descendant_classes": [
+    "AppleUSBHostCompositeDevice",
+    "AppleUSBHostDeviceUserClient",
+    "IOBlockStorageDriver",
+    "IOBlockStorageServices",
+    "IOFDiskPartitionScheme",
+    "IOMedia",
+    "IOMediaBSDClient",
+    "IOSCSILogicalUnitNub",
+    "IOSCSIPeripheralDeviceType00",
+    "IOUSBHostInterface",
+    "IOUSBMassStorageDriver",
+    "IOUSBMassStorageDriverNub",
+    "IOUSBMassStorageInterfaceNub"
+  ],
+  "VID_hex": "054C",
+  "PID_hex": "0DA1",
+  "interface_class_subclass_protocol_hex": [
+    "08",
+    "06",
+    "50"
+  ],
+  "interface_interpretation": "Mass Storage / SCSI transparent / Bulk-Only",
+  "same_identifiers_as_historical_Windows_cache": true,
+  "device_firmware_hash_health_backup_authentication_or_rescue_proven": false,
+  "camera_interface_or_media_files_accessed": false,
+  "live_device_commands_sent": false
+}

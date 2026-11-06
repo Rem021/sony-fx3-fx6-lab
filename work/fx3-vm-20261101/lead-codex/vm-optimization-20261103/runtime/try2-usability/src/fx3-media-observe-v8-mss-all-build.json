@@ -1,0 +1,31 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Werror=format",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-media-observe-v8-mss-all.so",
+    "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v8-mss-all.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-media-probes-v1.S",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v8-mss-all.so"
+  ],
+  "source_sha256": "cf2987d87a4e1ac8993e998f71a53504a91dba8d1249886c564bbed9375b4e6a",
+  "base_source_sha256": "c5de178004eac532832e0f166eecee8ebf250becae1c8099f849b5047d26e653",
+  "assembly_sha256": "e65c55a9910c14f736fd4f10c6d452aae2090191f2f0e4cd94ff95fbca256be5",
+  "output_sha256": "c6ffd64d50292f429e2a75939c13a6490599b5462bf88ca5ba7b4f2a1105b652",
+  "build_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "scope": "passive bounded original appFw MSS all commands on QID80924220; ordinary opcode hooks unchanged; no guest behavior update"
+}

@@ -1,0 +1,40 @@
+ 2e62508: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+ 2e6250c: 528099e3     	mov	w3, #0x4cf              // =1231
+ 2e62510: 910003fd     	mov	x29, sp
+ 2e62514: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e62518: d0005974     	adrp	x20, 0x3990000
+ 2e6251c: 90005833     	adrp	x19, 0x3966000
+ 2e62520: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 2e62524: 91244294     	add	x20, x20, #0x910
+ 2e62528: aa0003f6     	mov	x22, x0
+ 2e6252c: 91351e73     	add	x19, x19, #0xd47
+ 2e62530: f00049a0     	adrp	x0, 0x3799000
+ 2e62534: aa1403e2     	mov	x2, x20
+ 2e62538: aa1303e1     	mov	x1, x19
+ 2e6253c: 91203c00     	add	x0, x0, #0x80f
+ 2e62540: 910103b5     	add	x21, x29, #0x40
+ 2e62544: 94043672     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e62548: b0005940     	adrp	x0, 0x398b000
+ 2e6254c: 912bfc00     	add	x0, x0, #0xaff
+ 2e62550: 9404263e     	bl	0x2f6be48 <Application_System_Init+0x187c2b8>
+ 2e62554: b0034140     	adrp	x0, 0x968b000
+ 2e62558: 9105a000     	add	x0, x0, #0x168
+ 2e6255c: f81f8ea0     	str	x0, [x21, #-0x8]!
+ 2e62560: 97a22bfd     	bl	0x16ed554 <.text+0x158ed4>
+ 2e62564: b0034140     	adrp	x0, 0x968b000
+ 2e62568: 910012c1     	add	x1, x22, #0x4
+ 2e6256c: 9100a000     	add	x0, x0, #0x28
+ 2e62570: d2801202     	mov	x2, #0x90               // =144
+ 2e62574: 979cbdb3     	bl	0x1591c40 <memcpy@plt>
+ 2e62578: aa1503e0     	mov	x0, x21
+ 2e6257c: 97e35888     	bl	0x273879c <Application_System_Init+0x1048c0c>
+ 2e62580: d0005580     	adrp	x0, 0x3914000
+ 2e62584: aa1403e2     	mov	x2, x20
+ 2e62588: aa1303e1     	mov	x1, x19
+ 2e6258c: 9107a800     	add	x0, x0, #0x1ea
+ 2e62590: 52809aa3     	mov	w3, #0x4d5              // =1237
+ 2e62594: 9404365e     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e62598: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2e6259c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2e625a0: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+ 2e625a4: d65f03c0     	ret

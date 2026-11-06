@@ -1,0 +1,26 @@
+{
+  "observation_date": "2026-10-29",
+  "method": "live web search and direct opening of primary repository README and issue comments",
+  "sources": [
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/blob/main/README.md",
+      "scope": "maintainer supported-model and evidence limitations",
+      "observed": "A7CII firmware2.01 only; matching write/readback does not establish boot safety; restoration not guaranteed",
+      "FX3_proof": false
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31",
+      "scope": "participant reports and follow-up; not independently reproduced",
+      "initial_report_date": "2026-10-23",
+      "followup_dates": ["2026-10-25", "2026-10-26", "2026-10-27"],
+      "observed": "boot failure after modification, HID/LED symptoms; participants report video-mode startup allows system entry/restoration; later participant says modifications can remain",
+      "interpretation": "mode-dependent workaround experience, not independent recovery after the shared system or early loader is damaged",
+      "repair_claim_status": "participant assertions only; no verified FX3 board-level recovery record",
+      "FX3_proof": false
+    }
+  ],
+  "reuses_stage184_route_identity": true,
+  "latest_Git_commit_identity_verified": false,
+  "camera_or_administrator_actions": 0,
+  "third_party_code_downloaded_or_executed": false
+}

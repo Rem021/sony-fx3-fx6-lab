@@ -1,0 +1,53 @@
+{
+  "schema": "sony-offline-reassembly-fixtures/1",
+  "target_verified": false,
+  "usb_termination_verified": false,
+  "input_semantics": "synthetic fragments of serialized logical bytes; not USB packet or transfer metadata",
+  "profiles": {
+    "upstream-zero-fixture": {
+      "byte8": 0
+    },
+    "fx3-static-version3-candidate": {
+      "byte8": 3,
+      "field_name_in_pmca": "version",
+      "semantic_protocol_version_claimed": false
+    }
+  },
+  "goldens": {
+    "read_zero": "07000000400002000000000000000000414243",
+    "read_byte8_3": "07000000400002000300000000000000414243",
+    "setpath_ack_byte8_3": "04000000400001000300000000000000"
+  },
+  "limits": {
+    "default_data_bytes": 65536,
+    "nonmanifest_data_bytes": 2097152,
+    "nonmanifest_capture_bytes": 4194304,
+    "manifest_data_max": 83886080,
+    "large_manifest_single_read_only": true,
+    "logical_segment_bytes": 1048576,
+    "empty_fragment_budget": 16
+  },
+  "target_length_synthetic_test": {
+    "manifest_data_bytes": 79015712,
+    "payload_with_status_bytes": 79015716,
+    "logical_segments": 76,
+    "wire_bytes_with_headers": 79016628,
+    "generated_data_sha256": "230af254530f2e190b465ff48e15c19b27367c3e5e5bae9657f71a146a5de981",
+    "generated_input_chunk_max": 32768,
+    "real_file_read_or_saved": false,
+    "storage_mode": "bounded in-memory full assembly; not streaming sink"
+  },
+  "test_run": {
+    "command": "python3 -B verify_reassembly.py",
+    "tests": 31,
+    "seconds_observed": 0.106,
+    "result": "OK",
+    "coordinator_independent_recheck": "31 PASS; same full-size length/count/hash; AST reviewed"
+  },
+  "not_proved": [
+    "actual USB completion/ZLP/short transfer semantics",
+    "real target readback or body hash",
+    "all target error/encrypted responses",
+    "rescue/flash capability"
+  ]
+}

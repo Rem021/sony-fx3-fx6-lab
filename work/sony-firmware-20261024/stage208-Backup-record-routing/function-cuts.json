@@ -1,0 +1,117 @@
+{
+  "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+  "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+  "ranges": [
+    {
+      "symbol": "Backup_read_4Byte",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 7976,
+      "bytes": 140,
+      "sha256": "06451426a6090ab94ece6fc0e3903cca251e8fe6629aff77ab85cf6078924fc1",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/Backup_read_4Byte.txt"
+    },
+    {
+      "symbol": "Backup_read",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 7504,
+      "bytes": 100,
+      "sha256": "4a4f49ee2fe857c475c1710f8500104aa145e866e8d0c762b9d77d28cee31caf",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/Backup_read.txt"
+    },
+    {
+      "symbol": "Backup_nread",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 7864,
+      "bytes": 104,
+      "sha256": "6adf01d7e366ab50e50ed3e6ec736de4f70ff1c538c67c9d5ed578a5f1a4db4c",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/Backup_nread.txt"
+    },
+    {
+      "symbol": "Data_init",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 19808,
+      "bytes": 120,
+      "sha256": "152e0721b2ae43b2303656b84e469f590763f856e5325f728a471ed55969a042",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/Data_init.txt"
+    },
+    {
+      "symbol": "Data_GetDataPt",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 21328,
+      "bytes": 76,
+      "sha256": "ac06cd6d85bc34124c44cc6739c44251bb3d938f18995f4ac17809a4839f2df7",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/Data_GetDataPt.txt"
+    },
+    {
+      "symbol": "Data_GetBackupDataInfo",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 22632,
+      "bytes": 12,
+      "sha256": "3bff9de437b13efa9d62977bd84bf0b3161763f9e9c2b65301b07050f1585069",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/Data_GetBackupDataInfo.txt"
+    },
+    {
+      "symbol": "backupfile_load_file",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 25200,
+      "bytes": 512,
+      "sha256": "1ff4b3c61b97b4d2708f2c38bf70216e365a60eef20d989522af5caac50bf578",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/backupfile_load_file.txt"
+    },
+    {
+      "symbol": "backupfile_load",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 26280,
+      "bytes": 244,
+      "sha256": "b48333372c48118941c685c0ac8af461dc6ae82b60de81477e8800d2f5646667",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/backupfile_load.txt"
+    },
+    {
+      "symbol": "backupfile_get_file_datasize",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 25768,
+      "bytes": 144,
+      "sha256": "ff1ff2a923e23f3c08b09af2138356057ca9bf192803529383433381e1b661ef",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/backupfile_get_file_datasize.txt"
+    },
+    {
+      "symbol": "backupfile_get_cp_data",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 28720,
+      "bytes": 348,
+      "sha256": "41ffcc0b8a0c94c88856e314618719e67cf633714962078426e0acf69d3d4711",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/backupfile_get_cp_data.txt"
+    },
+    {
+      "symbol": "backup_osal_call_func",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 31400,
+      "bytes": 1312,
+      "sha256": "1be740ddf3387c3ad9da319eebe7983358482eae6ac3e1bdccc35370e872920a",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/backup_osal_call_func.txt"
+    },
+    {
+      "symbol": "backup_osal_init",
+      "section": ".text",
+      "section_index": 2,
+      "offset": 30984,
+      "bytes": 200,
+      "sha256": "810f7b5510759bc82c2b7ca0960921ba77207297361d77fa0ed924dada001edc",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/disassembly/backup_osal_init.txt"
+    }
+  ],
+  "relocations_are_unapplied_annotations": true,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

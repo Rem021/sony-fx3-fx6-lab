@@ -1,0 +1,22 @@
+{
+  "review_date": "2026-10-29",
+  "sources": [
+    {
+      "url": "https://github.com/YuuLuo/a7c2-service-preload",
+      "author_scope": "ILCE-7CM2 firmware 2.01",
+      "finding": "Author reports temporary root child execution via service/Jiritsu/preload; modified firmware admission is separate and signature checks are not permanently disabled.",
+      "fx3_compatibility_proven": false,
+      "commit_pin": null,
+      "commit_api_attempt": "URLError; no commit/date inferred"
+    },
+    {
+      "url": "https://github.com/leogenot/sony-a7iv-feature-research",
+      "author_scope": "ILCE-7M4 firmware 6.02",
+      "finding": "Author distinguishes persisted setting experiments and shared feature code from product/menu availability; this is not a repacked FX3 firmware acceptance receipt.",
+      "fx3_compatibility_proven": false,
+      "commit_pin": null,
+      "commit_api_attempt": "URLError; no commit/date inferred"
+    }
+  ],
+  "local_actions": "Read-only web review only; no repository code fetched/executed, service request, preload file, backup property or device touched."
+}

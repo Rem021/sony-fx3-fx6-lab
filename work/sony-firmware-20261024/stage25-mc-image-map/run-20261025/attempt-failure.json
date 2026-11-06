@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage25-mc-image-map/mc_image_map.py\", line 296, in main\n    run(out)\n    ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage25-mc-image-map/mc_image_map.py\", line 252, in run\n    'cpapp':cpapp(blobs['cpapp-b.bin']), 'avcam':avcam(blobs['av-cam.bin']),\n                                                 ~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage25-mc-image-map/mc_image_map.py\", line 203, in avcam\n    assert (first >> 29) & 3 == 0 and first & 0x1f800000 == 0x12800000\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "passing_result": false
+}

@@ -1,0 +1,85 @@
+{
+  "schema": "fx3-stage26-mc-open-routing/1",
+  "created_utc": "2026-10-25T21:32:20.937661+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/README.md",
+      "bytes": 8416,
+      "sha256": "a403d4d670c99a09f264fdd657ad2379b07b372a10c82389a2e1fe85232fccd4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/coordinator-observations.json",
+      "bytes": 2043,
+      "sha256": "09627be44ae3d9b628c8daf1ccc32805fc39190da73d0e8c03bc1272d2212c0a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/dfs-run-20261025/dfs-selector-results.json",
+      "bytes": 27662,
+      "sha256": "8a93ad97944613a489c4c97dedf45a4aa15288e72eb20de3da2995e4266a4b9f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/dfs-run-20261025/source-receipt.json",
+      "bytes": 455,
+      "sha256": "cd68eb83f1ab34c254c289c594e606c2d35b6c6e3eb65e418dcda1e45138d5ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/dfs_selector.py",
+      "bytes": 4424,
+      "sha256": "ecfd86e84dd046364ac8bf1a1df94bde337925b42fcf18d9be0cd2ef6947a180"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/goal-status-after.json",
+      "bytes": 38250,
+      "sha256": "eb82329ce2d9a556236bc3d23ef0d9f00d5bf21c7f3f3eaec8e91d1569984e36"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/goal-status-before.json",
+      "bytes": 36517,
+      "sha256": "5a5f90bc2c1ee66fa26fd5903f4aae495e5106ac1519525e50e9d4eacc29cb78"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/mc_open_routing.py",
+      "bytes": 17572,
+      "sha256": "2d2b31d86845f022e9ea3a2c56776834dedfdbf10547817ee02dae541906290b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/run-20261025/mc-open-routing-results.json",
+      "bytes": 234776,
+      "sha256": "b1f8d281390558f9bb90fcb7314dbb10763c617e143386d35bcf01673fb4cc63"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/run-20261025/source-receipt.json",
+      "bytes": 3073,
+      "sha256": "a914869ba39757423c44e14c86b98b3f578d1a87d42fbdfa5a0d61d6f473c2a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/run-20261025/summary.json",
+      "bytes": 439,
+      "sha256": "de88f3309a2afb1b2ce32cb6572d2a71ed8d689c2857d6dea433a16b4a5c1e07"
+    }
+  ],
+  "previous_manifest_sha256": "f8c2b75533a2da9a8bb41770763e54e5292f05de9380cb84629092323213a824",
+  "scope": "29 bounded original cases on independent guest fixtures, not full OSAL routing, address conversion, task/state/parameter dependencies, hardware encoding or recovery.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage26-mc-open-routing/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage26-mc-open-routing/goal-status-after.json",
+    "before_sha256": "5a5f90bc2c1ee66fa26fd5903f4aae495e5106ac1519525e50e9d4eacc29cb78",
+    "after_sha256": "eb82329ce2d9a556236bc3d23ef0d9f00d5bf21c7f3f3eaec8e91d1569984e36",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_fragments": true,
+    "native_output_adapters": false,
+    "host_firmware_loader_or_camera_interface": false,
+    "actual_task_state_resource_transport_or_hardware": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 MC Open分派与状态参数](<work/sony-firmware-20261024/stage26-mc-open-routing/README.md>)：29例核对转换CID/MID、原构造路由、状态选择、参数复制和DFS标量；真实注册/地址转换、完整Open/Start与恢复仍未验证。"
+}

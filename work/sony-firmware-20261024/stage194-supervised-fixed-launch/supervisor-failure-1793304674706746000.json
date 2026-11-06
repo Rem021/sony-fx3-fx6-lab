@@ -1,0 +1,20 @@
+{
+  "results": [
+    {
+      "name": "full_launch",
+      "status": "PASS",
+      "seconds": 0.329733332968317
+    },
+    {
+      "name": "relay_not_owner",
+      "status": "PASS",
+      "seconds": 0.41986337496200576
+    },
+    {
+      "name": "observation_timeout_same_pending_owner",
+      "status": "FAIL",
+      "error": "AssertionError({'status': 'UNKNOWN_ENTRY_NOT_VERIFIED', 'helper_terminal_observed': False, 'physical_camera_acceptance': False, 'automatic_retry': False, 'new_trial_authorized': False, 'relay_returncode': None, 'relay_is_not_helper_identity': True})",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage194-supervised-fixed-launch/test_supervisor.py\", line 182, in case\n    try:fn();results.append({'name':name,'status':'PASS','seconds':time.monotonic()-start})\n        ~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage194-supervised-fixed-launch/test_supervisor.py\", line 58, in observation_timeout_same_pending_owner\n    first=j.wait(.1);assert first['status']=='OWNER_ALIVE_UNRESOLVED',first\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'status': 'UNKNOWN_ENTRY_NOT_VERIFIED', 'helper_terminal_observed': False, 'physical_camera_acceptance': False, 'automatic_retry': False, 'new_trial_authorized': False, 'relay_returncode': None, 'relay_is_not_helper_identity': True}\n"
+    }
+  ]
+}

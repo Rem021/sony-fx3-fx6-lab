@@ -1,0 +1,342 @@
+{
+  "packet_function_relocations": [],
+  "worker_source_facts": {
+    "installer.c": [
+      {
+        "line": 4,
+        "text": " * Legacy builds use complete hashes; BYTE_WINDOWS_ONLY builds compare edited"
+      },
+      {
+        "line": 18,
+        "text": "#ifndef PATCH_MANIFEST"
+      },
+      {
+        "line": 19,
+        "text": "#define PATCH_MANIFEST \"patch_manifest.h\""
+      },
+      {
+        "line": 21,
+        "text": "#include PATCH_MANIFEST"
+      },
+      {
+        "line": 26,
+        "text": "static u8 buffer[65536],mounts[8192],checkbytes[4096];"
+      },
+      {
+        "line": 27,
+        "text": "struct Stat {u64 dev,ino;u32 mode,nlink,uid,gid;u64 rdev,pad1;i64 size;u32 blksize,pad2;u64 blocks;u64 rest[7];};"
+      },
+      {
+        "line": 28,
+        "text": "_Static_assert(sizeof(struct Stat)==128,\"AArch64 Linux stat ABI\");"
+      },
+      {
+        "line": 29,
+        "text": "struct Request {u8 magic[8];u32 mode,reserved;};"
+      },
+      {
+        "line": 30,
+        "text": "struct Report {"
+      },
+      {
+        "line": 32,
+        "text": "    i64 status,rollback,remount,readonly,cleanup,euid,pid;"
+      },
+      {
+        "line": 36,
+        "text": "static struct Report r;static struct Request req;static struct Stat initial[2];"
+      },
+      {
+        "line": 58,
+        "text": "    SHA256 s;sha_init(&s);u64 at=0;"
+      },
+      {
+        "line": 59,
+        "text": "    while(at<file_sizes[chip]) {"
+      },
+      {
+        "line": 60,
+        "text": "        u32 n=(file_sizes[chip]-at)>sizeof(buffer)?sizeof(buffer):(u32)(file_sizes[chip]-at);"
+      },
+      {
+        "line": 68,
+        "text": "    i64 file=op(\"/proc/mounts\",0);if(file<0)return file;"
+      },
+      {
+        "line": 69,
+        "text": "    i64 n=sc(63,file,(i64)mounts,sizeof(mounts),0,0,0);i64 c=closefd(&file);"
+      },
+      {
+        "line": 70,
+        "text": "    if(c)return c;if(n<=0 || n>=(i64)sizeof(mounts))return -75;"
+      },
+      {
+        "line": 71,
+        "text": "    const u8 prefix[]=\"/dev/nflasha15 /usr ext2 \";u32 size=sizeof(prefix)-1;"
+      },
+      {
+        "line": 73,
+        "text": "    for(u32 i=0;i+size+3<=(u32)n;i++)if((i==0||mounts[i-1]=='\\n')&&same(mounts+i,prefix,size)) {"
+      },
+      {
+        "line": 75,
+        "text": "        if(mounts[i+size]!='r'||mounts[i+size+1]!=a||mounts[i+size+2]!=',')return -30;"
+      },
+      {
+        "line": 81,
+        "text": "    i64 v=sc(40,0,(i64)\"/usr\",0,0xc30UL+(ro?1:0),0,0);"
+      },
+      {
+        "line": 86,
+        "text": "    struct Stat st;i64 v=sc(80,fd[chip],(i64)&st,0,0,0,0);if(v)return v;"
+      },
+      {
+        "line": 87,
+        "text": "    if((st.mode&0170000)!=0100000 || st.size!=(i64)file_sizes[chip])return -22;"
+      },
+      {
+        "line": 96,
+        "text": "        if(w->chip>1||!w->length||w->length>sizeof(checkbytes)||w->offset>file_sizes[w->chip]||w->length>file_sizes[w->chip]-w->offset)return -22;"
+      },
+      {
+        "line": 112,
+        "text": "#ifdef BYTE_WINDOWS_ONLY"
+      },
+      {
+        "line": 119,
+        "text": "        if(!same(out[chip],after?final_hashes[chip]:original_hashes[chip],32))return -84;"
+      },
+      {
+        "line": 127,
+        "text": "    const u8 magic[]=\"A7INS001\";"
+      },
+      {
+        "line": 131,
+        "text": "    if(r.euid!=0) {r.status=-13;return;}"
+      },
+      {
+        "line": 154,
+        "text": "__attribute__((visibility(\"default\"))) void _init(void) {"
+      },
+      {
+        "line": 155,
+        "text": "    const u8 magic[]=\"A7IRP001\";for(u32 i=0;i<8;i++)r.magic[i]=magic[i];"
+      },
+      {
+        "line": 156,
+        "text": "    r.version=1;r.euid=sc(175,0,0,0,0,0,0);r.pid=sc(172,0,0,0,0,0,0);"
+      }
+    ],
+    "wbi.c": [
+      {
+        "line": 12,
+        "text": "struct Request {u8 magic[8];u32 mode,reserved;};"
+      },
+      {
+        "line": 13,
+        "text": "struct Report {"
+      },
+      {
+        "line": 15,
+        "text": "    i64 status,cleanup,euid,pid,drop_write,drop_close,mode_write,mode_close,log_status;"
+      },
+      {
+        "line": 19,
+        "text": "_Static_assert(sizeof(struct Report)==192,\"WBI result ABI\");"
+      },
+      {
+        "line": 20,
+        "text": "static struct Report r;static struct Request req;static u8 logbuf[8192];"
+      },
+      {
+        "line": 35,
+        "text": "    const u8 magic[]=\"A7WBI001\";"
+      },
+      {
+        "line": 38,
+        "text": "    if(r.euid) {r.status=-13;return;}"
+      },
+      {
+        "line": 39,
+        "text": "    n=read_text(\"/sys/power/image_mode\",r.before_mode,sizeof(r.before_mode));"
+      },
+      {
+        "line": 41,
+        "text": "    n=read_text(\"/sys/power/image_dev\",r.before_dev,sizeof(r.before_dev));"
+      },
+      {
+        "line": 42,
+        "text": "    if(n!=6||!same(r.before_dev,(const u8*)\"*wbi4\\n\",6)) {r.status=n<0?n:-22;return;}"
+      },
+      {
+        "line": 48,
+        "text": "    change(\"/sys/power/image_drop\",'1',&r.drop_write,&r.drop_close);"
+      },
+      {
+        "line": 49,
+        "text": "    if(r.drop_write==1) {"
+      },
+      {
+        "line": 51,
+        "text": "        change(\"/sys/power/image_mode\",'0',&r.mode_write,&r.mode_close);"
+      },
+      {
+        "line": 53,
+        "text": "    if(r.drop_write!=1||r.mode_write!=1||r.drop_close||r.mode_close)r.status=-5;"
+      },
+      {
+        "line": 54,
+        "text": "    n=read_text(\"/sys/power/image_mode\",r.after_mode,sizeof(r.after_mode));"
+      },
+      {
+        "line": 56,
+        "text": "    n=read_text(\"/sys/power/image_dev\",r.after_dev,sizeof(r.after_dev));"
+      },
+      {
+        "line": 70,
+        "text": "__attribute__((visibility(\"default\"))) void _init(void) {"
+      },
+      {
+        "line": 71,
+        "text": "    const u8 magic[]=\"A7WBR001\";for(u32 i=0;i<8;i++)r.magic[i]=magic[i];"
+      },
+      {
+        "line": 72,
+        "text": "    r.version=1;r.euid=sc(175,0,0,0,0,0,0);r.pid=sc(172,0,0,0,0,0,0);"
+      }
+    ],
+    "runtime.c": [
+      {
+        "line": 4,
+        "text": "#define _init probe_init"
+      },
+      {
+        "line": 6,
+        "text": "#undef _init"
+      },
+      {
+        "line": 8,
+        "text": "    u8 magic[8];u32 version,count;i64 status,euid,pid;u64 base;"
+      },
+      {
+        "line": 10,
+        "text": "    u8 image_mode[16],image_dev[32],uptime[128],boot_id[64];"
+      },
+      {
+        "line": 13,
+        "text": "static const u64 offsets[6]={0x3528804,0x4b2ed19,0x59892b8,0x5989370,0x4b4a5e4,0x4b3b544};"
+      },
+      {
+        "line": 15,
+        "text": "__attribute__((visibility(\"default\"))) void _init(void) {"
+      },
+      {
+        "line": 16,
+        "text": "    probe_init();"
+      },
+      {
+        "line": 17,
+        "text": "    const u8 magic[]=\"A7RUN001\";for(u32 i=0;i<8;i++)runtime.magic[i]=magic[i];"
+      },
+      {
+        "line": 18,
+        "text": "    runtime.version=1;runtime.count=6;runtime.status=report.status;runtime.euid=report.euid;"
+      },
+      {
+        "line": 24,
+        "text": "            u64 va=runtime.base+offsets[i]+(offsets[i]>=0x51a7718?0x10000:0);"
+      },
+      {
+        "line": 32,
+        "text": "    read_all(\"/sys/power/image_mode\",runtime.image_mode,sizeof(runtime.image_mode));"
+      },
+      {
+        "line": 33,
+        "text": "    read_all(\"/sys/power/image_dev\",runtime.image_dev,sizeof(runtime.image_dev));"
+      }
+    ]
+  },
+  "jit_thread_handler_calls": [],
+  "symbolic_handler_relocations": [
+    {
+      "symbol": "adj_cmd_get_file2",
+      "reloc_offset": "0x460c0",
+      "type": 1026,
+      "sym_value": "0x9e74",
+      "surrounding_va": "0x460b0",
+      "surrounding40_hex": "505a000000000000505a000000000000505a000000000000505a000000000000505a000000000000",
+      "u32": [
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0
+      ]
+    },
+    {
+      "symbol": "adj_cmd_set_file2",
+      "reloc_offset": "0x46288",
+      "type": 1026,
+      "sym_value": "0x9528",
+      "surrounding_va": "0x46278",
+      "surrounding40_hex": "505a000000000000505a000000000000505a000000000000505a000000000000505a000000000000",
+      "u32": [
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0
+      ]
+    },
+    {
+      "symbol": "cmd_file_delete",
+      "reloc_offset": "0x462a8",
+      "type": 1026,
+      "sym_value": "0x8c78",
+      "surrounding_va": "0x46298",
+      "surrounding40_hex": "505a000000000000505a000000000000505a000000000000505a000000000000505a000000000000",
+      "u32": [
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0
+      ]
+    },
+    {
+      "symbol": "adj_cmd_set_file_path",
+      "reloc_offset": "0x462b0",
+      "type": 1026,
+      "sym_value": "0x89b4",
+      "surrounding_va": "0x462a0",
+      "surrounding40_hex": "505a000000000000505a000000000000505a000000000000505a000000000000505a000000000000",
+      "u32": [
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0,
+        23120,
+        0
+      ]
+    }
+  ]
+}

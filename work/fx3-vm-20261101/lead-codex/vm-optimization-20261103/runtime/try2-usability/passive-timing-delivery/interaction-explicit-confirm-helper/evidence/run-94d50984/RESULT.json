@@ -1,0 +1,1903 @@
+{
+  "scope": "host fixture with real r17 PAGE and Chrome; no QEMU",
+  "evidence_directory": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-explicit-confirm-helper/evidence/run-94d50984",
+  "page_pin": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+  "deadline_pin": "93af6b5ce6eb3f736eeed38320c990c6a05701cb6c883493589dadaf4bb57916",
+  "explicit_source_sha256": "700bf859dc5d2dbae4633562010886ab2e5f9ad1e9d824d3043aa81986827b69",
+  "cases": {
+    "basic-wrong-step": {
+      "result": {
+        "status": "refused",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57147/",
+        "launch_id": "adadb458-c971-4ca8-9443-b62f951f6c71",
+        "alarm_nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+        "step": 2,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:40.983967+00:00",
+        "host_monotonic_invoked": 409486.534749666,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:40.990053+00:00",
+        "browser_result": {
+          "click_invoked": false,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 3107.5,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 2,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:40.995Z"
+            },
+            {
+              "error": "Error: current_review_or_loaded_image_not_ready",
+              "event": "refused_or_unknown",
+              "performance_ms": 3107.899999976158,
+              "wall_UTC": "2026-11-04T20:56:40.995Z"
+            }
+          ],
+          "expected": null,
+          "reason": "Error: current_review_or_loaded_image_not_ready",
+          "status": "refused"
+        },
+        "host_return_UTC": "2026-11-04T20:56:40.996824+00:00",
+        "host_monotonic_return": 409486.547599458
+      },
+      "counts": {},
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3094.5,
+            "deadline_ms": 20000,
+            "due_ms": 23094.5,
+            "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825797888,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3087.300000011921,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:40.975Z"
+            },
+            {
+              "due_ms": 23094.5,
+              "event": "armed",
+              "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+              "performance_ms": 3094.5,
+              "wall_UTC": "2026-11-04T20:56:40.982Z"
+            }
+          ],
+          "expectedLaunchId": "adadb458-c971-4ca8-9443-b62f951f6c71",
+          "expectedURL": "http://127.0.0.1:57147/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": false,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": null,
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "basic-wrong-step.png",
+      "screenshot_sha256": "535e55f2d4ca422989c4789e22ee5af535742140548c1394140534b8d1956c59",
+      "server_reply_seen": false
+    },
+    "basic-wrong-sha": {
+      "result": {
+        "status": "refused",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57147/",
+        "launch_id": "adadb458-c971-4ca8-9443-b62f951f6c71",
+        "alarm_nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+        "step": 1,
+        "reviewed_png_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:41.044725+00:00",
+        "host_monotonic_invoked": 409486.595502125,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:41.050584+00:00",
+        "browser_result": {
+          "click_invoked": false,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 3167.699999988079,
+              "reviewed_png_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:41.055Z"
+            },
+            {
+              "error": "Error: current_review_or_loaded_image_not_ready",
+              "event": "refused_or_unknown",
+              "performance_ms": 3168.099999964237,
+              "wall_UTC": "2026-11-04T20:56:41.056Z"
+            }
+          ],
+          "expected": null,
+          "reason": "Error: current_review_or_loaded_image_not_ready",
+          "status": "refused"
+        },
+        "host_return_UTC": "2026-11-04T20:56:41.057023+00:00",
+        "host_monotonic_return": 409486.607799041
+      },
+      "counts": {},
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3094.5,
+            "deadline_ms": 20000,
+            "due_ms": 23094.5,
+            "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825797888,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3087.300000011921,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:40.975Z"
+            },
+            {
+              "due_ms": 23094.5,
+              "event": "armed",
+              "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+              "performance_ms": 3094.5,
+              "wall_UTC": "2026-11-04T20:56:40.982Z"
+            }
+          ],
+          "expectedLaunchId": "adadb458-c971-4ca8-9443-b62f951f6c71",
+          "expectedURL": "http://127.0.0.1:57147/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": false,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": null,
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "basic-wrong-sha.png",
+      "screenshot_sha256": "535e55f2d4ca422989c4789e22ee5af535742140548c1394140534b8d1956c59",
+      "server_reply_seen": false
+    },
+    "basic-wrong-nonce": {
+      "result": {
+        "status": "refused",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57147/",
+        "launch_id": "adadb458-c971-4ca8-9443-b62f951f6c71",
+        "alarm_nonce": "d15e1fdd-2148-43d1-9066-7c7562504aa6",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:41.109948+00:00",
+        "host_monotonic_invoked": 409486.660728958,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:41.115851+00:00",
+        "browser_result": {
+          "click_invoked": false,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 3233.699999988079,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:41.121Z"
+            },
+            {
+              "error": "Error: alarm_identity_or_due",
+              "event": "refused_or_unknown",
+              "performance_ms": 3234.099999964237,
+              "wall_UTC": "2026-11-04T20:56:41.122Z"
+            }
+          ],
+          "expected": null,
+          "reason": "Error: alarm_identity_or_due",
+          "status": "refused"
+        },
+        "host_return_UTC": "2026-11-04T20:56:41.123001+00:00",
+        "host_monotonic_return": 409486.673788458
+      },
+      "counts": {},
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3094.5,
+            "deadline_ms": 20000,
+            "due_ms": 23094.5,
+            "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825797888,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3087.300000011921,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:40.975Z"
+            },
+            {
+              "due_ms": 23094.5,
+              "event": "armed",
+              "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+              "performance_ms": 3094.5,
+              "wall_UTC": "2026-11-04T20:56:40.982Z"
+            }
+          ],
+          "expectedLaunchId": "adadb458-c971-4ca8-9443-b62f951f6c71",
+          "expectedURL": "http://127.0.0.1:57147/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": false,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": null,
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "basic-wrong-nonce.png",
+      "screenshot_sha256": "535e55f2d4ca422989c4789e22ee5af535742140548c1394140534b8d1956c59",
+      "server_reply_seen": false
+    },
+    "basic-success": {
+      "result": {
+        "status": "confirmed_and_cancelled",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57147/",
+        "launch_id": "adadb458-c971-4ca8-9443-b62f951f6c71",
+        "alarm_nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:41.179733+00:00",
+        "host_monotonic_invoked": 409486.730508458,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:41.186302+00:00",
+        "browser_result": {
+          "cancelled": {
+            "current": {
+              "armed_ms": 3094.5,
+              "cancelled_ms": 3723.699999988079,
+              "deadline_ms": 20000,
+              "due_ms": 23094.5,
+              "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+              "state": "cancelled"
+            },
+            "deadline_ms": 20000,
+            "documentTimeOrigin": 1793825797888,
+            "events": [
+              {
+                "event": "installed",
+                "performance_ms": 3087.300000011921,
+                "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+                "wall_UTC": "2026-11-04T20:56:40.975Z"
+              },
+              {
+                "due_ms": 23094.5,
+                "event": "armed",
+                "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+                "performance_ms": 3094.5,
+                "wall_UTC": "2026-11-04T20:56:40.982Z"
+              },
+              {
+                "elapsed_ms": 629.1999999880791,
+                "event": "cancelled",
+                "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+                "performance_ms": 3723.800000011921,
+                "wall_UTC": "2026-11-04T20:56:41.611Z"
+              }
+            ],
+            "expectedLaunchId": "adadb458-c971-4ca8-9443-b62f951f6c71",
+            "expectedURL": "http://127.0.0.1:57147/",
+            "sealed": false,
+            "version": 1
+          },
+          "click_invoked": true,
+          "current_frame": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "sequence": 1
+          },
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 3304.599999964237,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:41.192Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 23094.5,
+              "event": "precondition_passed",
+              "performance_ms": 3304.800000011921,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:56:41.192Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "b00ce43a-21d0-449b-8136-2d7b8677f81f",
+                "step": 1
+              },
+              "performance_ms": 3305.399999976158,
+              "wall_UTC": "2026-11-04T20:56:41.193Z"
+            },
+            {
+              "confirmation": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "guest_input_written": false,
+                "observed_sequence": 1,
+                "request_id": "b00ce43a-21d0-449b-8136-2d7b8677f81f",
+                "step": 1
+              },
+              "current_generation": 1,
+              "current_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "current_sequence": 1,
+              "event": "matching_ack_and_current_frame_ready",
+              "performance_ms": 3723.599999964237,
+              "wall_UTC": "2026-11-04T20:56:41.611Z"
+            },
+            {
+              "due_ms": 23094.5,
+              "elapsed_ms": 629.1999999880791,
+              "event": "cancel_returned",
+              "performance_ms": 3723.899999976158,
+              "state": "cancelled",
+              "wall_UTC": "2026-11-04T20:56:41.611Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "b00ce43a-21d0-449b-8136-2d7b8677f81f",
+            "step": 1
+          },
+          "reason": "matched_historical_receipt_and_current_input_gate",
+          "status": "confirmed_and_cancelled"
+        },
+        "host_return_UTC": "2026-11-04T20:56:41.616024+00:00",
+        "host_monotonic_return": 409487.166809916
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3094.5,
+            "cancelled_ms": 3723.699999988079,
+            "deadline_ms": 20000,
+            "due_ms": 23094.5,
+            "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+            "state": "cancelled"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825797888,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3087.300000011921,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:40.975Z"
+            },
+            {
+              "due_ms": 23094.5,
+              "event": "armed",
+              "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+              "performance_ms": 3094.5,
+              "wall_UTC": "2026-11-04T20:56:40.982Z"
+            },
+            {
+              "elapsed_ms": 629.1999999880791,
+              "event": "cancelled",
+              "nonce": "096b9814-b36c-43db-bd07-6d57760aa378",
+              "performance_ms": 3723.800000011921,
+              "wall_UTC": "2026-11-04T20:56:41.611Z"
+            }
+          ],
+          "expectedLaunchId": "adadb458-c971-4ca8-9443-b62f951f6c71",
+          "expectedURL": "http://127.0.0.1:57147/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": true,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": {
+          "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "content_generation": 1,
+          "guest_input_written": false,
+          "observed_sequence": 1,
+          "request_id": "b00ce43a-21d0-449b-8136-2d7b8677f81f",
+          "step": 1
+        },
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "basic-success.png",
+      "screenshot_sha256": "c6c88ee0b661aae080c27a1117d25828ed3bac3997ba25c4797c097562654a7f",
+      "server_reply_seen": true
+    },
+    "advance-attempt": {
+      "result": {
+        "status": "confirmed_and_cancelled",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57195/",
+        "launch_id": "34c81e72-7ef9-48fd-aef2-b1de0271dfc6",
+        "alarm_nonce": "0a0a0370-cb41-46d4-9859-a7e286f6a11a",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:45.824694+00:00",
+        "host_monotonic_invoked": 409491.375450416,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:45.832370+00:00",
+        "browser_result": {
+          "cancelled": {
+            "current": {
+              "armed_ms": 3110.900000035763,
+              "cancelled_ms": 3301.100000023842,
+              "deadline_ms": 20000,
+              "due_ms": 23110.900000035763,
+              "nonce": "0a0a0370-cb41-46d4-9859-a7e286f6a11a",
+              "state": "cancelled"
+            },
+            "deadline_ms": 20000,
+            "documentTimeOrigin": 1793825802712.1,
+            "events": [
+              {
+                "event": "installed",
+                "performance_ms": 3100.600000023842,
+                "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+                "wall_UTC": "2026-11-04T20:56:45.812Z"
+              },
+              {
+                "due_ms": 23110.900000035763,
+                "event": "armed",
+                "nonce": "0a0a0370-cb41-46d4-9859-a7e286f6a11a",
+                "performance_ms": 3110.900000035763,
+                "wall_UTC": "2026-11-04T20:56:45.823Z"
+              },
+              {
+                "elapsed_ms": 190.19999998807907,
+                "event": "cancelled",
+                "nonce": "0a0a0370-cb41-46d4-9859-a7e286f6a11a",
+                "performance_ms": 3301.100000023842,
+                "wall_UTC": "2026-11-04T20:56:46.013Z"
+              }
+            ],
+            "expectedLaunchId": "34c81e72-7ef9-48fd-aef2-b1de0271dfc6",
+            "expectedURL": "http://127.0.0.1:57195/",
+            "sealed": false,
+            "version": 1
+          },
+          "click_invoked": true,
+          "current_frame": {
+            "PNG_sha256": "4f11a2eb81e07e484aa65c2ca2f84a309035495a123bd65bec0558fb53b37894",
+            "content_generation": 2,
+            "sequence": 2
+          },
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 3131.5,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:45.843Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 23110.900000035763,
+              "event": "precondition_passed",
+              "performance_ms": 3131.900000035763,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:56:45.844Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "0f34a2fb-67f6-4aa8-be14-42e96a4b7e17",
+                "step": 1
+              },
+              "performance_ms": 3132.600000023842,
+              "wall_UTC": "2026-11-04T20:56:45.844Z"
+            },
+            {
+              "confirmation": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "guest_input_written": false,
+                "observed_sequence": 1,
+                "request_id": "0f34a2fb-67f6-4aa8-be14-42e96a4b7e17",
+                "step": 1
+              },
+              "current_generation": 2,
+              "current_png_sha256": "4f11a2eb81e07e484aa65c2ca2f84a309035495a123bd65bec0558fb53b37894",
+              "current_sequence": 2,
+              "event": "matching_ack_and_current_frame_ready",
+              "performance_ms": 3300.900000035763,
+              "wall_UTC": "2026-11-04T20:56:46.013Z"
+            },
+            {
+              "due_ms": 23110.900000035763,
+              "elapsed_ms": 190.19999998807907,
+              "event": "cancel_returned",
+              "performance_ms": 3301.100000023842,
+              "state": "cancelled",
+              "wall_UTC": "2026-11-04T20:56:46.013Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "0f34a2fb-67f6-4aa8-be14-42e96a4b7e17",
+            "step": 1
+          },
+          "reason": "matched_historical_receipt_and_current_input_gate",
+          "status": "confirmed_and_cancelled"
+        },
+        "host_return_UTC": "2026-11-04T20:56:46.016703+00:00",
+        "host_monotonic_return": 409491.567471666
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3110.900000035763,
+            "cancelled_ms": 3301.100000023842,
+            "deadline_ms": 20000,
+            "due_ms": 23110.900000035763,
+            "nonce": "0a0a0370-cb41-46d4-9859-a7e286f6a11a",
+            "state": "cancelled"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825802712.1,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3100.600000023842,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:45.812Z"
+            },
+            {
+              "due_ms": 23110.900000035763,
+              "event": "armed",
+              "nonce": "0a0a0370-cb41-46d4-9859-a7e286f6a11a",
+              "performance_ms": 3110.900000035763,
+              "wall_UTC": "2026-11-04T20:56:45.823Z"
+            },
+            {
+              "elapsed_ms": 190.19999998807907,
+              "event": "cancelled",
+              "nonce": "0a0a0370-cb41-46d4-9859-a7e286f6a11a",
+              "performance_ms": 3301.100000023842,
+              "wall_UTC": "2026-11-04T20:56:46.013Z"
+            }
+          ],
+          "expectedLaunchId": "34c81e72-7ef9-48fd-aef2-b1de0271dfc6",
+          "expectedURL": "http://127.0.0.1:57195/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 2,
+        "keyDisabled": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": true,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": {
+          "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "content_generation": 1,
+          "guest_input_written": false,
+          "observed_sequence": 1,
+          "request_id": "0f34a2fb-67f6-4aa8-be14-42e96a4b7e17",
+          "step": 1
+        },
+        "reviewUnknown": false,
+        "shownSHA": "4f11a2eb81e07e484aa65c2ca2f84a309035495a123bd65bec0558fb53b37894",
+        "steps": 1
+      },
+      "screenshot": "advance-attempt.png",
+      "screenshot_sha256": "70ea5e3964a5908232e0496612857944bc6104bcfd742cd0bf1781a8aa942ae1",
+      "server_reply_seen": true
+    },
+    "aba-attempt": {
+      "result": {
+        "status": "confirmed_and_cancelled",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57230/",
+        "launch_id": "4d8428cd-b94f-42d2-a916-84bf6021aeb2",
+        "alarm_nonce": "c956853d-4c79-4069-8e90-3383c3a1be87",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:50.255551+00:00",
+        "host_monotonic_invoked": 409495.80628225,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:50.262475+00:00",
+        "browser_result": {
+          "cancelled": {
+            "current": {
+              "armed_ms": 3073,
+              "cancelled_ms": 3304.600000023842,
+              "deadline_ms": 20000,
+              "due_ms": 23073,
+              "nonce": "c956853d-4c79-4069-8e90-3383c3a1be87",
+              "state": "cancelled"
+            },
+            "deadline_ms": 20000,
+            "documentTimeOrigin": 1793825807181.3,
+            "events": [
+              {
+                "event": "installed",
+                "performance_ms": 3064.5,
+                "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+                "wall_UTC": "2026-11-04T20:56:50.245Z"
+              },
+              {
+                "due_ms": 23073,
+                "event": "armed",
+                "nonce": "c956853d-4c79-4069-8e90-3383c3a1be87",
+                "performance_ms": 3073,
+                "wall_UTC": "2026-11-04T20:56:50.254Z"
+              },
+              {
+                "elapsed_ms": 231.60000002384183,
+                "event": "cancelled",
+                "nonce": "c956853d-4c79-4069-8e90-3383c3a1be87",
+                "performance_ms": 3304.600000023842,
+                "wall_UTC": "2026-11-04T20:56:50.485Z"
+              }
+            ],
+            "expectedLaunchId": "4d8428cd-b94f-42d2-a916-84bf6021aeb2",
+            "expectedURL": "http://127.0.0.1:57230/",
+            "sealed": false,
+            "version": 1
+          },
+          "click_invoked": true,
+          "current_frame": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 3,
+            "sequence": 3
+          },
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 3092.399999976158,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:50.273Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 23073,
+              "event": "precondition_passed",
+              "performance_ms": 3092.800000011921,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:56:50.274Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "e66b6529-e63d-4993-9dec-7ff730a6d9a2",
+                "step": 1
+              },
+              "performance_ms": 3093.300000011921,
+              "wall_UTC": "2026-11-04T20:56:50.274Z"
+            },
+            {
+              "confirmation": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "guest_input_written": false,
+                "observed_sequence": 1,
+                "request_id": "e66b6529-e63d-4993-9dec-7ff730a6d9a2",
+                "step": 1
+              },
+              "current_generation": 3,
+              "current_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "current_sequence": 3,
+              "event": "matching_ack_and_current_frame_ready",
+              "performance_ms": 3304.5,
+              "wall_UTC": "2026-11-04T20:56:50.485Z"
+            },
+            {
+              "due_ms": 23073,
+              "elapsed_ms": 231.60000002384183,
+              "event": "cancel_returned",
+              "performance_ms": 3304.699999988079,
+              "state": "cancelled",
+              "wall_UTC": "2026-11-04T20:56:50.485Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "e66b6529-e63d-4993-9dec-7ff730a6d9a2",
+            "step": 1
+          },
+          "reason": "matched_historical_receipt_and_current_input_gate",
+          "status": "confirmed_and_cancelled"
+        },
+        "host_return_UTC": "2026-11-04T20:56:50.489537+00:00",
+        "host_monotonic_return": 409496.040278291
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3073,
+            "cancelled_ms": 3304.600000023842,
+            "deadline_ms": 20000,
+            "due_ms": 23073,
+            "nonce": "c956853d-4c79-4069-8e90-3383c3a1be87",
+            "state": "cancelled"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825807181.3,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3064.5,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:50.245Z"
+            },
+            {
+              "due_ms": 23073,
+              "event": "armed",
+              "nonce": "c956853d-4c79-4069-8e90-3383c3a1be87",
+              "performance_ms": 3073,
+              "wall_UTC": "2026-11-04T20:56:50.254Z"
+            },
+            {
+              "elapsed_ms": 231.60000002384183,
+              "event": "cancelled",
+              "nonce": "c956853d-4c79-4069-8e90-3383c3a1be87",
+              "performance_ms": 3304.600000023842,
+              "wall_UTC": "2026-11-04T20:56:50.485Z"
+            }
+          ],
+          "expectedLaunchId": "4d8428cd-b94f-42d2-a916-84bf6021aeb2",
+          "expectedURL": "http://127.0.0.1:57230/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 3,
+        "keyDisabled": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": true,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": {
+          "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "content_generation": 1,
+          "guest_input_written": false,
+          "observed_sequence": 1,
+          "request_id": "e66b6529-e63d-4993-9dec-7ff730a6d9a2",
+          "step": 1
+        },
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "aba-attempt.png",
+      "screenshot_sha256": "98d26571df100a3459d3da7855cf6cacdc664d0983e0e80c4fd303f3aeed2339",
+      "server_reply_seen": true
+    },
+    "reject-attempt": {
+      "result": {
+        "status": "unknown",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57266/",
+        "launch_id": "4a4d8a65-eb78-4ebf-ad73-69ae3b439fe1",
+        "alarm_nonce": "267a589c-ed3d-4bbb-b964-af423ef7d9bd",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:53.070382+00:00",
+        "host_monotonic_invoked": 409498.621100708,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:53.077159+00:00",
+        "browser_result": {
+          "click_invoked": true,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 1444.5,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:53.083Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 21429.39999997616,
+              "event": "precondition_passed",
+              "performance_ms": 1444.800000011921,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:56:53.084Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "c66931c8-bead-4519-a779-aa6a0f067515",
+                "step": 1
+              },
+              "performance_ms": 1445.600000023842,
+              "wall_UTC": "2026-11-04T20:56:53.084Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "c66931c8-bead-4519-a779-aa6a0f067515",
+            "step": 1
+          },
+          "reason": "terminal_error_rejection_or_request_replaced",
+          "status": "unknown"
+        },
+        "host_return_UTC": "2026-11-04T20:56:53.127177+00:00",
+        "host_monotonic_return": 409498.677895833
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 1429.399999976158,
+            "deadline_ms": 20000,
+            "due_ms": 21429.39999997616,
+            "nonce": "267a589c-ed3d-4bbb-b964-af423ef7d9bd",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825811639.3,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 1420.699999988079,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:53.059Z"
+            },
+            {
+              "due_ms": 21429.39999997616,
+              "event": "armed",
+              "nonce": "267a589c-ed3d-4bbb-b964-af423ef7d9bd",
+              "performance_ms": 1429.399999976158,
+              "wall_UTC": "2026-11-04T20:56:53.068Z"
+            }
+          ],
+          "expectedLaunchId": "4a4d8a65-eb78-4ebf-ad73-69ae3b439fe1",
+          "expectedURL": "http://127.0.0.1:57266/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": false,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": null,
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "reject-attempt.png",
+      "screenshot_sha256": "d7b14108476f51bef2ed28a95e27a8eb52967bc50cb702a54b49b99e26de901b",
+      "server_reply_seen": false
+    },
+    "server-5xx-attempt": {
+      "result": {
+        "status": "unknown",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57305/",
+        "launch_id": "09c745b1-040d-4f01-84ac-780a63671fcd",
+        "alarm_nonce": "00a1c2d1-34e3-4de5-87ca-df706630afb0",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:55.682338+00:00",
+        "host_monotonic_invoked": 409501.233042416,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:55.688683+00:00",
+        "browser_result": {
+          "click_invoked": true,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 1445.5999999642372,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:55.700Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 21425.89999997616,
+              "event": "precondition_passed",
+              "performance_ms": 1445.899999976158,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:56:55.701Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "fee6f993-a3dd-4bee-b046-67bac41def78",
+                "step": 1
+              },
+              "performance_ms": 1446.5999999642372,
+              "wall_UTC": "2026-11-04T20:56:55.701Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "fee6f993-a3dd-4bee-b046-67bac41def78",
+            "step": 1
+          },
+          "reason": "terminal_error_rejection_or_request_replaced",
+          "status": "unknown"
+        },
+        "host_return_UTC": "2026-11-04T20:56:55.745756+00:00",
+        "host_monotonic_return": 409501.296462333
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 1425.899999976158,
+            "deadline_ms": 20000,
+            "due_ms": 21425.89999997616,
+            "nonce": "00a1c2d1-34e3-4de5-87ca-df706630afb0",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825814255.1,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 1417.899999976158,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:55.672Z"
+            },
+            {
+              "due_ms": 21425.89999997616,
+              "event": "armed",
+              "nonce": "00a1c2d1-34e3-4de5-87ca-df706630afb0",
+              "performance_ms": 1425.899999976158,
+              "wall_UTC": "2026-11-04T20:56:55.680Z"
+            }
+          ],
+          "expectedLaunchId": "09c745b1-040d-4f01-84ac-780a63671fcd",
+          "expectedURL": "http://127.0.0.1:57305/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "pendingConfirm": {
+          "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "content_generation": 1,
+          "observed_sequence": 1,
+          "request_id": "fee6f993-a3dd-4bee-b046-67bac41def78",
+          "step": 1
+        },
+        "phase": "ready",
+        "ready": false,
+        "renderValid": true,
+        "reviewAwaiting": true,
+        "reviewConfirmation": null,
+        "reviewUnknown": true,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "server-5xx-attempt.png",
+      "screenshot_sha256": "8cac25e82aafd9c01076bcf975d3cf60f975b42751dac13fc626f0f94fbdf5f6",
+      "server_reply_seen": false
+    },
+    "old-receipt-attempt": {
+      "result": {
+        "status": "unknown",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57333/",
+        "launch_id": "009a0a91-7bef-40e9-a793-10a0f3572442",
+        "alarm_nonce": "c6e8bf28-6f54-4710-a195-a2601a42dea8",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:56:58.239276+00:00",
+        "host_monotonic_invoked": 409503.789967625,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:56:58.246083+00:00",
+        "browser_result": {
+          "click_invoked": true,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 1401.600000023842,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:56:58.257Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 21381.80000001192,
+              "event": "precondition_passed",
+              "performance_ms": 1402,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:56:58.257Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "84118875-faf5-4f58-812e-6ee1c20dcd99",
+                "step": 1
+              },
+              "performance_ms": 1402.600000023842,
+              "wall_UTC": "2026-11-04T20:56:58.258Z"
+            },
+            {
+              "due_ms": 21381.80000001192,
+              "event": "wait_ended",
+              "performance_ms": 2205,
+              "wall_UTC": "2026-11-04T20:56:59.061Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "84118875-faf5-4f58-812e-6ee1c20dcd99",
+            "step": 1
+          },
+          "reason": "matching_ack_and_current_gate_not_proven_before_bound",
+          "status": "unknown"
+        },
+        "host_return_UTC": "2026-11-04T20:56:59.064314+00:00",
+        "host_monotonic_return": 409504.615021416
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 1381.800000011921,
+            "deadline_ms": 20000,
+            "due_ms": 21381.80000001192,
+            "nonce": "c6e8bf28-6f54-4710-a195-a2601a42dea8",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825816856,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 1372.699999988079,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:56:58.228Z"
+            },
+            {
+              "due_ms": 21381.80000001192,
+              "event": "armed",
+              "nonce": "c6e8bf28-6f54-4710-a195-a2601a42dea8",
+              "performance_ms": 1381.800000011921,
+              "wall_UTC": "2026-11-04T20:56:58.237Z"
+            }
+          ],
+          "expectedLaunchId": "009a0a91-7bef-40e9-a793-10a0f3572442",
+          "expectedURL": "http://127.0.0.1:57333/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": true,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": {
+          "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "content_generation": 1,
+          "guest_input_written": false,
+          "observed_sequence": 1,
+          "request_id": "b51f45a6-831d-4218-a6cf-33d88d826065",
+          "step": 1
+        },
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "old-receipt-attempt.png",
+      "screenshot_sha256": "c6c88ee0b661aae080c27a1117d25828ed3bac3997ba25c4797c097562654a7f",
+      "server_reply_seen": true
+    },
+    "blocked-attempt": {
+      "result": {
+        "status": "unknown",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57364/",
+        "launch_id": "b974bd2e-cef7-4aca-a307-2f6d436018ee",
+        "alarm_nonce": "0099d11b-2c1d-4071-ae53-8aa83e82a1ec",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:57:01.456559+00:00",
+        "host_monotonic_invoked": 409507.007237791,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:57:01.463345+00:00",
+        "browser_result": {
+          "click_invoked": true,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 1416.0999999642372,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:57:01.474Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 21396.5,
+              "event": "precondition_passed",
+              "performance_ms": 1416.399999976158,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:57:01.475Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "d96631fc-d520-4e94-9f81-ecf40fbd4935",
+                "step": 1
+              },
+              "performance_ms": 1417.0999999642372,
+              "wall_UTC": "2026-11-04T20:57:01.475Z"
+            },
+            {
+              "due_ms": 21396.5,
+              "event": "wait_ended",
+              "performance_ms": 2221.699999988079,
+              "wall_UTC": "2026-11-04T20:57:02.280Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "d96631fc-d520-4e94-9f81-ecf40fbd4935",
+            "step": 1
+          },
+          "reason": "matching_ack_and_current_gate_not_proven_before_bound",
+          "status": "unknown"
+        },
+        "host_return_UTC": "2026-11-04T20:57:02.284310+00:00",
+        "host_monotonic_return": 409507.834992416
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 1396.5,
+            "deadline_ms": 20000,
+            "due_ms": 21396.5,
+            "nonce": "0099d11b-2c1d-4071-ae53-8aa83e82a1ec",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825820058.6,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 1388.699999988079,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:57:01.447Z"
+            },
+            {
+              "due_ms": 21396.5,
+              "event": "armed",
+              "nonce": "0099d11b-2c1d-4071-ae53-8aa83e82a1ec",
+              "performance_ms": 1396.5,
+              "wall_UTC": "2026-11-04T20:57:01.455Z"
+            }
+          ],
+          "expectedLaunchId": "b974bd2e-cef7-4aca-a307-2f6d436018ee",
+          "expectedURL": "http://127.0.0.1:57364/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": false,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": {
+          "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "content_generation": 1,
+          "guest_input_written": false,
+          "observed_sequence": 1,
+          "request_id": "d96631fc-d520-4e94-9f81-ecf40fbd4935",
+          "step": 1
+        },
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "blocked-attempt.png",
+      "screenshot_sha256": "6a7fc8f38491b5b2d6aeaec4ee2e318b02b180457fee9064d4dabbb633b5ca6c",
+      "server_reply_seen": true
+    },
+    "lost-no-match-attempt": {
+      "result": {
+        "status": "unknown",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57397/",
+        "launch_id": "544c4d17-9599-4e6a-bd05-d405b69d3d6c",
+        "alarm_nonce": "60b95849-0914-4334-a927-8c95764cfc9e",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:57:04.712310+00:00",
+        "host_monotonic_invoked": 409510.262967958,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:57:04.718466+00:00",
+        "browser_result": {
+          "click_invoked": true,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 1448.699999988079,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:57:04.729Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 21430,
+              "event": "precondition_passed",
+              "performance_ms": 1449,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:57:04.730Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "a9de3536-1779-41e7-8e0b-d15a3fa037a1",
+                "step": 1
+              },
+              "performance_ms": 1449.699999988079,
+              "wall_UTC": "2026-11-04T20:57:04.730Z"
+            },
+            {
+              "due_ms": 21430,
+              "event": "wait_ended",
+              "performance_ms": 2249.900000035763,
+              "wall_UTC": "2026-11-04T20:57:05.530Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "a9de3536-1779-41e7-8e0b-d15a3fa037a1",
+            "step": 1
+          },
+          "reason": "matching_ack_and_current_gate_not_proven_before_bound",
+          "status": "unknown"
+        },
+        "host_return_UTC": "2026-11-04T20:57:05.535087+00:00",
+        "host_monotonic_return": 409511.085761208
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 1430,
+            "deadline_ms": 20000,
+            "due_ms": 21430,
+            "nonce": "60b95849-0914-4334-a927-8c95764cfc9e",
+            "state": "armed"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825823281,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 1422.600000023842,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:57:04.703Z"
+            },
+            {
+              "due_ms": 21430,
+              "event": "armed",
+              "nonce": "60b95849-0914-4334-a927-8c95764cfc9e",
+              "performance_ms": 1430,
+              "wall_UTC": "2026-11-04T20:57:04.711Z"
+            }
+          ],
+          "expectedLaunchId": "544c4d17-9599-4e6a-bd05-d405b69d3d6c",
+          "expectedURL": "http://127.0.0.1:57397/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "pendingConfirm": {
+          "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "content_generation": 1,
+          "observed_sequence": 1,
+          "request_id": "a9de3536-1779-41e7-8e0b-d15a3fa037a1",
+          "step": 1
+        },
+        "phase": "ready",
+        "ready": false,
+        "renderValid": true,
+        "reviewAwaiting": true,
+        "reviewConfirmation": null,
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "lost-no-match-attempt.png",
+      "screenshot_sha256": "4076cd53684d93fc1842480d79314605f98c539dc4c0d53064280bdd6140e7f6",
+      "server_reply_seen": false
+    },
+    "lost-recovered-attempt": {
+      "result": {
+        "status": "confirmed_and_cancelled",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57433/",
+        "launch_id": "dadaefef-4756-4669-ae1a-8ce4c7bf30f1",
+        "alarm_nonce": "5a424314-fc5a-44e7-9baa-2766622e3999",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:57:07.869264+00:00",
+        "host_monotonic_invoked": 409513.419915083,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:57:07.875953+00:00",
+        "browser_result": {
+          "cancelled": {
+            "current": {
+              "armed_ms": 1405.0999999642372,
+              "cancelled_ms": 1676.800000011921,
+              "deadline_ms": 20000,
+              "due_ms": 21405.099999964237,
+              "nonce": "5a424314-fc5a-44e7-9baa-2766622e3999",
+              "state": "cancelled"
+            },
+            "deadline_ms": 20000,
+            "documentTimeOrigin": 1793825826462.7,
+            "events": [
+              {
+                "event": "installed",
+                "performance_ms": 1396.800000011921,
+                "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+                "wall_UTC": "2026-11-04T20:57:07.859Z"
+              },
+              {
+                "due_ms": 21405.099999964237,
+                "event": "armed",
+                "nonce": "5a424314-fc5a-44e7-9baa-2766622e3999",
+                "performance_ms": 1405.0999999642372,
+                "wall_UTC": "2026-11-04T20:57:07.867Z"
+              },
+              {
+                "elapsed_ms": 271.7000000476837,
+                "event": "cancelled",
+                "nonce": "5a424314-fc5a-44e7-9baa-2766622e3999",
+                "performance_ms": 1676.800000011921,
+                "wall_UTC": "2026-11-04T20:57:08.139Z"
+              }
+            ],
+            "expectedLaunchId": "dadaefef-4756-4669-ae1a-8ce4c7bf30f1",
+            "expectedURL": "http://127.0.0.1:57433/",
+            "sealed": false,
+            "version": 1
+          },
+          "click_invoked": true,
+          "current_frame": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "sequence": 1
+          },
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 1424.5999999642372,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:57:07.887Z"
+            },
+            {
+              "content_generation": 1,
+              "due_ms": 21405.099999964237,
+              "event": "precondition_passed",
+              "performance_ms": 1424.800000011921,
+              "png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "sequence": 1,
+              "wall_UTC": "2026-11-04T20:57:07.887Z"
+            },
+            {
+              "event": "confirm_click_invoked",
+              "pending_confirm": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "observed_sequence": 1,
+                "request_id": "da4b5a07-17c5-4513-89f0-39d15fe4f555",
+                "step": 1
+              },
+              "performance_ms": 1425.5,
+              "wall_UTC": "2026-11-04T20:57:07.888Z"
+            },
+            {
+              "confirmation": {
+                "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+                "content_generation": 1,
+                "guest_input_written": false,
+                "observed_sequence": 1,
+                "request_id": "da4b5a07-17c5-4513-89f0-39d15fe4f555",
+                "step": 1
+              },
+              "current_generation": 1,
+              "current_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "current_sequence": 1,
+              "event": "matching_ack_and_current_frame_ready",
+              "performance_ms": 1676.5999999642372,
+              "wall_UTC": "2026-11-04T20:57:08.139Z"
+            },
+            {
+              "due_ms": 21405.099999964237,
+              "elapsed_ms": 271.7000000476837,
+              "event": "cancel_returned",
+              "performance_ms": 1676.800000011921,
+              "state": "cancelled",
+              "wall_UTC": "2026-11-04T20:57:08.139Z"
+            }
+          ],
+          "expected": {
+            "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+            "content_generation": 1,
+            "observed_sequence": 1,
+            "request_id": "da4b5a07-17c5-4513-89f0-39d15fe4f555",
+            "step": 1
+          },
+          "reason": "matched_historical_receipt_and_current_input_gate",
+          "status": "confirmed_and_cancelled"
+        },
+        "host_return_UTC": "2026-11-04T20:57:08.143140+00:00",
+        "host_monotonic_return": 409513.69379425
+      },
+      "counts": {
+        "confirm": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 1405.0999999642372,
+            "cancelled_ms": 1676.800000011921,
+            "deadline_ms": 20000,
+            "due_ms": 21405.099999964237,
+            "nonce": "5a424314-fc5a-44e7-9baa-2766622e3999",
+            "state": "cancelled"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793825826462.7,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 1396.800000011921,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:57:07.859Z"
+            },
+            {
+              "due_ms": 21405.099999964237,
+              "event": "armed",
+              "nonce": "5a424314-fc5a-44e7-9baa-2766622e3999",
+              "performance_ms": 1405.0999999642372,
+              "wall_UTC": "2026-11-04T20:57:07.867Z"
+            },
+            {
+              "elapsed_ms": 271.7000000476837,
+              "event": "cancelled",
+              "nonce": "5a424314-fc5a-44e7-9baa-2766622e3999",
+              "performance_ms": 1676.800000011921,
+              "wall_UTC": "2026-11-04T20:57:08.139Z"
+            }
+          ],
+          "expectedLaunchId": "dadaefef-4756-4669-ae1a-8ce4c7bf30f1",
+          "expectedURL": "http://127.0.0.1:57433/",
+          "sealed": false,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "pendingConfirm": null,
+        "phase": "ready",
+        "ready": true,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": {
+          "PNG_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "content_generation": 1,
+          "guest_input_written": false,
+          "observed_sequence": 1,
+          "request_id": "da4b5a07-17c5-4513-89f0-39d15fe4f555",
+          "step": 1
+        },
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "lost-recovered-attempt.png",
+      "screenshot_sha256": "c6c88ee0b661aae080c27a1117d25828ed3bac3997ba25c4797c097562654a7f",
+      "server_reply_seen": false
+    },
+    "expired-refused": {
+      "result": {
+        "status": "refused",
+        "session": "fx3-deadline-explicit-r17",
+        "url": "http://127.0.0.1:57462/",
+        "launch_id": "e950460e-20d0-4998-b672-97a959dca6fb",
+        "alarm_nonce": "fba7ef5b-5bbe-45a8-9094-c39e29c85048",
+        "step": 1,
+        "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "target": "MENU完整菜单已由操作员看清",
+        "host_invoked_UTC": "2026-11-04T20:57:13.688360+00:00",
+        "host_monotonic_invoked": 409519.239013541,
+        "eval_may_have_started": true,
+        "retries": 0,
+        "guest_keys_sent_by_helper": 0,
+        "tab_id": null,
+        "host_preflight_UTC": "2026-11-04T20:57:13.707816+00:00",
+        "browser_result": {
+          "click_invoked": false,
+          "events": [
+            {
+              "event": "invoked",
+              "performance_ms": 4418.100000023842,
+              "reviewed_png_sha256": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+              "step": 1,
+              "target": "MENU完整菜单已由操作员看清",
+              "wall_UTC": "2026-11-04T20:57:13.718Z"
+            },
+            {
+              "error": "Error: alarm_identity_or_due",
+              "event": "refused_or_unknown",
+              "performance_ms": 4418.900000035763,
+              "wall_UTC": "2026-11-04T20:57:13.719Z"
+            }
+          ],
+          "expected": null,
+          "reason": "Error: alarm_identity_or_due",
+          "status": "refused"
+        },
+        "host_return_UTC": "2026-11-04T20:57:13.721393+00:00",
+        "host_monotonic_return": 409519.272039125
+      },
+      "counts": {
+        "stop": 1
+      },
+      "dom": {
+        "alarm": {
+          "current": {
+            "armed_ms": 3077.900000035763,
+            "deadline_ms": 1200,
+            "due_ms": 4277.900000035763,
+            "elapsed_ms": 1202.5,
+            "nonce": "fba7ef5b-5bbe-45a8-9094-c39e29c85048",
+            "state": "expired"
+          },
+          "deadline_ms": 1200,
+          "documentTimeOrigin": 1793825829300.8,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3071.300000011921,
+              "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+              "wall_UTC": "2026-11-04T20:57:12.371Z"
+            },
+            {
+              "due_ms": 4277.900000035763,
+              "event": "armed",
+              "nonce": "fba7ef5b-5bbe-45a8-9094-c39e29c85048",
+              "performance_ms": 3077.900000035763,
+              "wall_UTC": "2026-11-04T20:57:12.378Z"
+            },
+            {
+              "elapsed_ms": 1202.5,
+              "event": "end_click",
+              "nonce": "fba7ef5b-5bbe-45a8-9094-c39e29c85048",
+              "performance_ms": 4280.800000011921,
+              "wall_UTC": "2026-11-04T20:57:13.581Z"
+            }
+          ],
+          "expectedLaunchId": "e950460e-20d0-4998-b672-97a959dca6fb",
+          "expectedURL": "http://127.0.0.1:57462/",
+          "sealed": true,
+          "version": 1
+        },
+        "displayedGeneration": 1,
+        "keyDisabled": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "pendingConfirm": null,
+        "phase": "stopping",
+        "ready": false,
+        "renderValid": true,
+        "reviewAwaiting": false,
+        "reviewConfirmation": null,
+        "reviewUnknown": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "steps": 1
+      },
+      "screenshot": "expired-refused.png",
+      "screenshot_sha256": "bb679059983d0266836b95bd17b06fcb35fdc4044227f56ec578149ef5b5c154",
+      "server_reply_seen": false
+    }
+  },
+  "cleanup": {
+    "checked_UTC": "2026-11-04T20:58:55.374584+00:00",
+    "agent_browser_session": {
+      "active": false,
+      "namespace": null,
+      "pid": null,
+      "runtime": null,
+      "runtimeError": null,
+      "session": "fx3-deadline-explicit-r17",
+      "socketDir": "/Users/kafu/.agent-browser",
+      "version": null
+    },
+    "fixture_port_listeners": {
+      "57147": false,
+      "57195": false,
+      "57230": false,
+      "57266": false,
+      "57305": false,
+      "57333": false,
+      "57364": false,
+      "57397": false,
+      "57433": false,
+      "57462": false
+    },
+    "all_fixture_servers_closed": true,
+    "historical_failed_result_preserved": "evidence/RESULT.json"
+  },
+  "passed": true,
+  "source_sha256_after": "700bf859dc5d2dbae4633562010886ab2e5f9ad1e9d824d3043aa81986827b69",
+  "page_sha256_after": "cfd4239effb34c8be3381eff9c1de3ebf0f6ca4d10af16c86c167e3d76ee82bb",
+  "deadline_sha256_after": "93af6b5ce6eb3f736eeed38320c990c6a05701cb6c883493589dadaf4bb57916"
+}

@@ -1,0 +1,22 @@
+{
+  "initrd_start": "0x440000000",
+  "initrd_bytes": 451234632,
+  "memory_base": "0x400000000",
+  "memory_bytes": "0x140000000",
+  "same_model_kemco_sha256": "555454e8b7db1461d6494e9ca9eb21f00918475af02557bc6ca3cedd309bcaf2",
+  "exact_original_memrsv": [
+    "memrsv=0x00001000@0x400000000",
+    "memrsv=0x00060000@0x400020000",
+    "memrsv=0x01000000@0x401000000:ex",
+    "memrsv=0x00200000@0x403e00000:uc",
+    "memrsv=0x00600000@0x404000000",
+    "memrsv=0x01000000@0x405000000",
+    "memrsv=0x00200000@0x410000000",
+    "memrsv=0x09E00000@0x410200000:uc",
+    "memrsv=0x04000000@0x420000000",
+    "memrsv=0x0C400000@0x424000000",
+    "memrsv=0xCFC00000@0x430400000:uc"
+  ],
+  "reserve_map_preserved": true,
+  "rationale": "original GRM needs DMM; high initrd avoids same-model firmware carveouts; sparse guest RAM only"
+}

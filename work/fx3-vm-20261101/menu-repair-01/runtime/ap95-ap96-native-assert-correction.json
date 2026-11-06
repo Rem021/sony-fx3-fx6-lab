@@ -1,0 +1,65 @@
+[
+  {
+    "run": "ap95v6delete-ed48a6ed",
+    "assertion_evidence": [
+      {
+        "LF_line": 203342,
+        "text": "assert at infra_wrapper_bb.cpp:870"
+      },
+      {
+        "LF_line": 203381,
+        "text": "FX3_SIGNAL_OBSERVE api=assert self=228 target=228 signal=6 caller=0x7ed1647424 library=/usr/lib/appFw.so offset=0x2ebf424"
+      },
+      {
+        "LF_line": 203382,
+        "text": "FX3_ASSERT_OBSERVE file=lib_assert.cpp line=30 expr=false func=void lib::assert::notify_model_system_error()"
+      },
+      {
+        "LF_line": 203383,
+        "text": "im.elf: lib_assert.cpp:30: void lib::assert::notify_model_system_error(): Assertion `false' failed."
+      }
+    ]
+  },
+  {
+    "run": "ap95v6r3ui600-3715c225",
+    "assertion_evidence": [
+      {
+        "LF_line": 160777,
+        "text": "assert at infra_wrapper_bb.cpp:870"
+      },
+      {
+        "LF_line": 160819,
+        "text": "FX3_SIGNAL_OBSERVE api=assert self=228 target=228 signal=6 caller=0x7eed8f8424 library=/usr/lib/appFw.so offset=0x2ebf424"
+      },
+      {
+        "LF_line": 160820,
+        "text": "FX3_ASSERT_OBSERVE file=lib_assert.cpp line=30 expr=false func=void lib::assert::notify_model_system_error()"
+      },
+      {
+        "LF_line": 160821,
+        "text": "im.elf: lib_assert.cpp:30: void lib::assert::notify_model_system_error(): Assertion `false' failed."
+      }
+    ]
+  },
+  {
+    "run": "ap96v1replaydiag-0f72a1e0",
+    "assertion_evidence": [
+      {
+        "LF_line": 248618,
+        "text": "assert at infra_wrapper_bb.cpp:870"
+      },
+      {
+        "LF_line": 248658,
+        "text": "FX3_SIGNAL_OBSERVE api=assert self=228 target=228 signal=6 caller=0x7ee460a424 library=/usr/lib/appFw.so offset=0x2ebf424"
+      },
+      {
+        "LF_line": 248659,
+        "text": "FX3_ASSERT_OBSERVE file=lib_assert.cpp line=30 expr=false func=void lib::assert::notify_model_system_error()"
+      },
+      {
+        "LF_line": 248660,
+        "text": "im.elf: lib_assert.cpp:30: void lib::assert::notify_model_system_error(): Assertion `false' failed."
+      }
+    ]
+  }
+]

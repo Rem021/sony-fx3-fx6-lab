@@ -1,0 +1,25 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-nostdlib",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-return-v3-date99-nread.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-return-v3-date99-nread.so"
+  ],
+  "exit": 0,
+  "authority": "msg_fa0d4b6ae7b5",
+  "source_sha256": "4be902470aa9f4563d65af0077b8444680a9260846c99b4df4907867aeeac310",
+  "output_sha256": "e9b7f90766817e98de735dc4a2f7f67a2991266e4815b9d1aeac80fe4a308468",
+  "headers": {
+    "fx3-date99-consumer-v1.h": "2f2671c93360c77f6533125bc505cb244722b3fca6221bf95689a8c9b3868310",
+    "fx3-date99-clock-core-v1.h": "e7683b98327a8e8aaded037b37403d0279e68384138a9ddc8ee388a196fdb1ab",
+    "fx3-date98-trace-core-v1.h": "6d6494b6a0ff074c16c5552f349dd3932981383abd5b834833f945d9fbc16cae"
+  },
+  "scope": "Correct original user Backup_nread(key,buffer,1), independent readback only; preserve all original writes/errno; no kernel-style read ABI"
+}

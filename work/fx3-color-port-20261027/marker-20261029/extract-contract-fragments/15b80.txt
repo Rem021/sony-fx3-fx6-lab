@@ -1,0 +1,121 @@
+00015b80 stp        x29, x30, [sp, #-0x40]!
+00015b84 mov        x29, sp
+00015b88 stp        x19, x20, [sp, #0x10]
+00015b8c mov        x19, x0
+00015b90 stp        x21, x22, [sp, #0x20]
+00015b94 ldrb       w20, [x0, #0x28]
+00015b98 cmp        w20, #0x32
+00015b9c b.eq       #0x15c28
+00015ba0 b.hi       #0x15bfc
+00015ba4 cbz        w20, #0x15bb0
+00015ba8 cmp        w20, #0x30
+00015bac b.ne       #0x15d18
+00015bb0 ldr        x0, [x19, #0x10]
+00015bb4 str        x1, [x29, #0x38]
+00015bb8 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015bbc mov        x20, x0
+00015bc0 ldr        x0, [x19, #0x10]
+00015bc4 bl         #0xfec0 ; Updater::StringHandler::GetSize
+00015bc8 ldr        x2, [x19]
+00015bcc ldr        x1, [x29, #0x38]
+00015bd0 cbz        x0, #0x15c20
+00015bd4 add        x20, x20, x0
+00015bd8 ldurb      w0, [x20, #-1]
+00015bdc cmp        w0, #0x2f
+00015be0 b.ne       #0x15c20
+00015be4 ldr        x2, [x2, #0x38]
+00015be8 ldp        x21, x22, [sp, #0x20]
+00015bec mov        x0, x19
+00015bf0 ldp        x19, x20, [sp, #0x10]
+00015bf4 ldp        x29, x30, [sp], #0x40
+00015bf8 br         x2
+00015bfc cmp        w20, #0x37
+00015c00 b.eq       #0x15bb0
+00015c04 cmp        w20, #0x44
+00015c08 b.eq       #0x15c14
+00015c0c cmp        w20, #0x35
+00015c10 b.ne       #0x15d18
+00015c14 ldr        x0, [x19]
+00015c18 ldr        x2, [x0, #0x38]
+00015c1c b          #0x15be8
+00015c20 ldr        x2, [x2, #0x40]
+00015c24 b          #0x15be8
+00015c28 ldr        x0, [x0, #0x18]
+00015c2c bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015c30 mov        x20, x0
+00015c34 ldr        x0, [x19, #0x10]
+00015c38 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015c3c mov        x1, x0
+00015c40 mov        x0, x20
+00015c44 bl         #0x10460 ; symlink
+00015c48 cbz        w0, #0x15d50
+00015c4c ldr        x0, [x19]
+00015c50 ldr        x21, [x0, #0x30]
+00015c54 ldr        x0, [x19, #0x10]
+00015c58 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015c5c mov        x22, x0
+00015c60 bl         #0x103d0 ; __errno_location
+00015c64 mov        x20, x0
+00015c68 mov        x1, x22
+00015c6c mov        x0, x19
+00015c70 ldr        w2, [x20]
+00015c74 blr        x21
+00015c78 ldr        x0, [x19, #0x18]
+00015c7c bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015c80 mov        x21, x0
+00015c84 ldr        x0, [x19, #0x10]
+00015c88 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015c8c mov        x1, x0
+00015c90 mov        x0, x21
+00015c94 bl         #0x10460 ; symlink
+00015c98 cbz        w0, #0x15d50
+00015c9c ldr        x0, [x19, #0x10]
+00015ca0 ldr        w20, [x20]
+00015ca4 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015ca8 mov        x21, x0
+00015cac ldr        x0, [x19, #0x18]
+00015cb0 mov        w19, #5
+00015cb4 movk       w19, #3, lsl #16
+00015cb8 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015cbc mov        x6, x0
+00015cc0 adrp       x2, #0x1b000
+00015cc4 adrp       x0, #0x1b000
+00015cc8 mov        x5, x21
+00015ccc mov        w4, w20
+00015cd0 add        x2, x2, #0xe2e ; literal 'NewFirmwareFile.cpp'
+00015cd4 mov        w1, w19
+00015cd8 add        x0, x0, #0xdf0 ; literal 'UdrAPI,%d,%s:%d,""%d:(%s, %s)""\n'
+00015cdc mov        w3, #0x8e
+00015ce0 bl         #0x10930 ; printf
+00015ce4 mov        x0, #0x10
+00015ce8 bl         #0xfd80 ; __cxa_allocate_exception
+00015cec str        w19, [x0, #8]
+00015cf0 adrp       x1, #0x31000
+00015cf4 adrp       x2, #0x31000
+00015cf8 strb       wzr, [x0, #0xc]
+00015cfc ldr        x1, [x1, #0xe30]
+00015d00 ldr        x2, [x2, #0xe88]
+00015d04 add        x1, x1, #0x10
+00015d08 str        x1, [x0]
+00015d0c adrp       x1, #0x31000
+00015d10 ldr        x1, [x1, #0xfc0]
+00015d14 bl         #0x10700 ; __cxa_throw
+00015d18 ldr        x0, [x19, #0x10]
+00015d1c mov        w19, #2
+00015d20 movk       w19, #3, lsl #16
+00015d24 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00015d28 mov        x5, x0
+00015d2c adrp       x2, #0x1b000
+00015d30 adrp       x0, #0x1b000
+00015d34 mov        w4, w20
+00015d38 add        x2, x2, #0xe2e ; literal 'NewFirmwareFile.cpp'
+00015d3c mov        w1, w19
+00015d40 add        x0, x0, #0xe42 ; literal 'UdrAPI,%d,%s:%d,""(%x:%s)""\n'
+00015d44 mov        w3, #0xb9
+00015d48 bl         #0x10930 ; printf
+00015d4c b          #0x15ce4
+00015d50 ldp        x19, x20, [sp, #0x10]
+00015d54 mov        w0, #1
+00015d58 ldp        x21, x22, [sp, #0x20]
+00015d5c ldp        x29, x30, [sp], #0x40
+00015d60 ret        

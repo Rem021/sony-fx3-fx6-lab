@@ -1,0 +1,75 @@
+{
+  "schema": "fx3-stage226-own-keeper-signal-ABI-reference-v1",
+  "source_checks": [
+    {
+      "path": "work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/source-reference/arm64-signal.h",
+      "sha256": "76099df84d20c2fe4f6980ce385aca422d6e340d30613d2330e5c9546d36fe65",
+      "checks": [
+        {
+          "token": "#define SA_RESTORER\t0x04000000",
+          "line": 20
+        },
+        {
+          "token": "#include <asm-generic/signal.h>",
+          "line": 25
+        }
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/source-reference/generic-signal.h",
+      "sha256": "be6d48197dfd0b7270292de5b9e66481a05dfff6eaa5afcc8cdddc087c3c2bf5",
+      "checks": [
+        {
+          "token": "#define _NSIG\t\t64",
+          "line": 6
+        },
+        {
+          "token": "#define SIGCHLD\t\t17",
+          "line": 27
+        },
+        {
+          "token": "#define SA_NOCLDWAIT\t0x00000002",
+          "line": 68
+        },
+        {
+          "token": "struct sigaction {",
+          "line": 103
+        },
+        {
+          "token": "__sighandler_t sa_handler;",
+          "line": 104
+        },
+        {
+          "token": "unsigned long sa_flags;",
+          "line": 105
+        },
+        {
+          "token": "__sigrestore_t sa_restorer;",
+          "line": 107
+        },
+        {
+          "token": "sigset_t sa_mask;",
+          "line": 109
+        }
+      ]
+    }
+  ],
+  "unistd_source": "work/sony-firmware-20261024/stage221-private-IPC-entry-gate/kernel-reference/unistd.h",
+  "unistd_sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+  "rt_sigaction_number": 134,
+  "SIGCHLD": 17,
+  "SA_NOCLDWAIT": 2,
+  "AArch64_long_and_pointer_bytes": 8,
+  "NSIG": 64,
+  "sigset_bytes": 8,
+  "raw_sigaction_bytes": 32,
+  "handler_flags_restorer_mask_offsets": [
+    0,
+    8,
+    16,
+    24
+  ],
+  "only_own_keeper_signal_disposition_reset": true,
+  "original_im_signal_handler_not_modified": true,
+  "real_Sony_kernel_behavior_verified": false
+}

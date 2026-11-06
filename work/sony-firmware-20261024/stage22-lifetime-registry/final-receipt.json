@@ -1,0 +1,79 @@
+{
+  "schema": "fx3-stage22-lifetime-registry/1",
+  "created_utc": "2026-10-25T20:18:59.852717+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/README.md",
+      "bytes": 8434,
+      "sha256": "aa9bb73b268de3493661512280ddb8bf9543979d271fb22439c5247ce5cc7ab5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/coordinator-observations.json",
+      "bytes": 2094,
+      "sha256": "8ef3c794be45e8304ebce68c6ba76f509a84bed212c0dfebb90e02b6e16d797e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/goal-status-after.json",
+      "bytes": 30967,
+      "sha256": "f5c08fc12b92329c016edf261b848679d4df9dff231160eff3a0f0ab42fb7716"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/goal-status-before.json",
+      "bytes": 29632,
+      "sha256": "5d25d8090cfbaff9a074836e6eccace4d351794e6b4a9c8c3fc33c564e791b7d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/lifetime_registry.py",
+      "bytes": 20600,
+      "sha256": "234d1b352a5cfa0ebbed8249016c3d11397fee9fbf1642b8fff3ab4ef1fc1dbb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/run-20261025/attempt-failure.json",
+      "bytes": 927,
+      "sha256": "7978289ef9d5be51616f1887ced63e6da4e642bf3e7c3d4231d92d7aacd7ac0d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/run-20261025/attempt-source.py",
+      "bytes": 20399,
+      "sha256": "3a046746d75832aab7d673cfd2054170b78d2c56186ba408922624cd59f13552"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/run-corrected-20261025/lifetime-registry-results.json",
+      "bytes": 24587,
+      "sha256": "2d15ef1a2ee4790d3b1a9d5fd98f8aa1782666aebb6fa334effe6370495ab762"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/run-corrected-20261025/source-receipt.json",
+      "bytes": 2462,
+      "sha256": "22f6e41140f6db0603c520f8fda30dba80f55b6474e4596c66b95d29b612c7a2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage22-lifetime-registry/run-corrected-20261025/summary.json",
+      "bytes": 549,
+      "sha256": "6689c639a481d4ffe94f640198bf939082f82da49ded2a9084df43c553fd6502"
+    }
+  ],
+  "scope": "Serialized Python protocol and bounded schedules, 4 original destructor-prefix/free-argument guest fragments. No native gate, complete destructor, weak-memory, PC barrier or camera acceptance.",
+  "previous_manifest_sha256": "ce3018bf50f33d641f8d287e809be326aad6b623be320ae24c2d2a2c7511bfa3",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage22-lifetime-registry/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage22-lifetime-registry/goal-status-after.json",
+    "before_sha256": "5d25d8090cfbaff9a074836e6eccace4d351794e6b4a9c8c3fc33c564e791b7d",
+    "after_sha256": "f5c08fc12b92329c016edf261b848679d4df9dff231160eff3a0f0ab42fb7716",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "serialized_reference_model_and_original_bounded_fragments": true,
+    "native_allocator_free_lock_wait_thread_or_destructor_cleanup": false,
+    "new_remote_attempts": false,
+    "Windows_task_dispatched_or_executed": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "runtime_registry_or_firmware_payload_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 实验对象登记与代码退出](<work/sony-firmware-20261024/stage22-lifetime-registry/README.md>)：登记参考协议通过1194个有界模型状态及4个原析构片段；数据退出与代码安全点分开，原生门禁/恢复和实机主录仍未验证。"
+}

@@ -1,0 +1,85 @@
+{
+  "schema": "fx3-r43-result-v1",
+  "task_id": "task_53cced835047",
+  "dispatch_id": "ctx_68625e416216",
+  "orca_session_id": "orca_session_id:ed9ac183-dba5-46e8-b048-66c231e722b0",
+  "outcome": "failed",
+  "run_id": "v41timing-n64-r42-0f6139b2",
+  "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v41timing-n64-r42-0f6139b2",
+  "candidate_run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/run-inputs/r43-vm-53cced835047",
+  "Start_count": 1,
+  "VM_count": 1,
+  "explicit_attempts": 2,
+  "PAGE_not_posted": 1,
+  "HTTP_key_refusals": 0,
+  "native_accepted_steps": 1,
+  "native_down_up_done_steps": 1,
+  "recoveries": 1,
+  "fixed_snapshots": 0,
+  "confirms": 0,
+  "complete_eight_steps_passed": false,
+  "reached_step": 1,
+  "failure": "original 20-second deadline auto-End before late independent pin; no new exact pinned PNG or confirm",
+  "first_qualified_host_seconds_from_Start": 46.62299008300761,
+  "initial_screenshot_pass_host_seconds_from_Start": 47.063602125039324,
+  "runtime_reported_seconds": 137.83025120798266,
+  "startup_observation": "valid_saved_no_errors",
+  "diagnostic_command_timing": "available_with_explicit_unknowns",
+  "precleanup_cutoff_byte": 11965472,
+  "startup_cutoff_byte": 3559883,
+  "command_counts": {
+    "record_count": 581,
+    "known_durations": 519,
+    "known_same_thread_gaps": 460,
+    "unknown_reason_counts": {
+      "malformed_or_interleaved_record": 62
+    }
+  },
+  "first_cleanup_reference": {
+    "call_id": "5f9a1b44-c55e-4fd6-bc38-2adae0ced8e8",
+    "receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/run-inputs/r43-vm-53cced835047/cleanup-calls/5f9a1b44-c55e-4fd6-bc38-2adae0ced8e8/result.json",
+    "receipt_sha256": "09c1987719cd5bf2a8db9fe0018d5b46416412831338a280b3bbd88023badb52",
+    "manifest_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/run-inputs/r43-vm-53cced835047/cleanup-calls/5f9a1b44-c55e-4fd6-bc38-2adae0ced8e8/MANIFEST.json",
+    "manifest_sha256": "72829616482dfff7db49d7d17a9bd8d2aac6ab058adb7a55b2bf8d288d63a3a4"
+  },
+  "second_cleanup_status": "already-cleaned",
+  "cleanup_audit": "passed",
+  "API16_restore": {
+    "passed": true,
+    "elapsed_seconds": 1.298489167005755,
+    "expected_hex": "000b00b4fd7bbba9fd030091f35301a9",
+    "guest_ACK_and_bytes": true
+  },
+  "QMP_quit_ACK_id": 541,
+  "exit_code": 0,
+  "reaped": true,
+  "owned_pid_status": [
+    {
+      "label": "runner",
+      "pid": 99042,
+      "absent": true
+    },
+    {
+      "label": "qemu",
+      "pid": 99290,
+      "absent": true
+    },
+    {
+      "label": "browser_session_background",
+      "pid": 99062,
+      "absent": true
+    }
+  ],
+  "web_final_ACK": {
+    "acknowledged": true,
+    "wait_seconds": 0.35516812501009554,
+    "end_reason": "browser_ack",
+    "maximum_wait_seconds": 30.0,
+    "scope": "browser_receipt_delivery_only"
+  },
+  "limits": [
+    "menu task failed; observed unpinned full target does not count as a passed step",
+    "no second Start, source/platform/deadline change, deploy, camera/USB/SD/firmware-write or FX6 action",
+    "r38 failure retained; no old duration backfill, speedup or zero-frame root cause claim"
+  ]
+}

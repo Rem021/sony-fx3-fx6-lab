@@ -1,0 +1,51 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/trial_web_v3_usability.py	2026-11-03 03:49:31
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/trial_web_v20_passive_timing.py	2026-11-03 09:38:07
+@@ -22,6 +22,9 @@
+         self.error = None
+         self.ready = False
+         self.busy = False
++        self.visual_state = 'idle'
++        self.input_received = False
++        self.visual_change_observed = False
+         self.steps = 0
+         self.max_steps = max_steps
+         self.render_valid = False
+@@ -57,6 +60,9 @@
+                     'ready': bool(self.ready and not self.busy and not self.stop.is_set()
+                                   and not self.error and self.render_valid and self.steps < self.max_steps),
+                     'busy': self.busy, 'steps': self.steps, 'max_steps': self.max_steps,
++                    'visual_state': self.visual_state,
++                    'input_received': self.input_received,
++                    'visual_change_observed': self.visual_change_observed,
+                     'render_valid': self.render_valid,
+                     'black_after_ready_count': len(self.black_after_ready),
+                     'frame': self.frame, 'result': self.result,
+@@ -128,10 +134,13 @@
+ async function showFrame(s){
+  if(!s.frame)return;
+  if(s.frame.PNG_sha256===shownSHA){displayed=shown=s.frame.sequence;return;}
+- const response=await fetch('/frame.png',{cache:'no-store'});if(!response.ok)throw Error('画面请求失败：HTTP '+response.status);
++ const controller=new AbortController(),fetchTimer=setTimeout(()=>controller.abort(),8000);
++ let response,bytes;try{response=await fetch('/frame.png',{cache:'no-store',signal:controller.signal});
++   if(!response.ok)throw Error('画面请求失败：HTTP '+response.status);bytes=await response.blob();}
++ finally{clearTimeout(fetchTimer);}
+  const seq=Number(response.headers.get('X-Frame-Sequence')),sha=response.headers.get('X-Frame-PNG-SHA256');
+  if(!Number.isSafeInteger(seq)||seq<=0||!sha)throw Error('画面身份缺失');
+- const u=URL.createObjectURL(await response.blob());
++ const u=URL.createObjectURL(bytes);
+  try{await new Promise((resolve,reject)=>{let done=false;const timer=setTimeout(()=>{if(!done){done=true;reject(Error('画面加载超时，请刷新页面或结束试用'));}},8000);
+    image.onload=()=>{if(!done){done=true;clearTimeout(timer);resolve();}};
+    image.onerror=()=>{if(!done){done=true;clearTimeout(timer);reject(Error('画面解码失败，请刷新页面或结束试用'));}};
+@@ -141,8 +150,10 @@
+  displayed=shown=seq;shownSHA=sha;if(lastURL)URL.revokeObjectURL(lastURL);lastURL=u;
+ }
+ async function tick(){if(finished)return;let s=null;try{
+- const response=await fetch('/api/status',{cache:'no-store'});if(!response.ok)throw Error('状态请求失败：HTTP '+response.status);s=await response.json();
+- statusEl.textContent=s.message;err.textContent=s.error||'';
++ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
++ let response;try{response=await fetch('/api/status',{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('状态请求失败：HTTP '+response.status);s=await response.json();}
++ finally{clearTimeout(timer);}
++ statusEl.textContent=s.message+(s.visual_state==='visual_pending'?'（输入已接收，仍在观察画面）':'');err.textContent=s.error||'';
+  document.querySelector('#meta').textContent=`按键 ${s.steps}/${s.max_steps} · 剩余 ${Math.ceil(s.remaining_seconds/60)} 分钟 · 提交帧 ${s.frame?s.frame.sequence:'等待中'}${s.frame?' · 像素源 '+s.frame.pixel_source_sequence:''}`;
+  document.querySelector('#events').replaceChildren(...s.events.map(e=>{const li=document.createElement('li');li.textContent=e;return li;}));
+  if(s.frame&&s.frame.sequence!==shown)await showFrame(s);

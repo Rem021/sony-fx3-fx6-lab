@@ -1,0 +1,42 @@
+_ZN7Updater10BaseModule10InitializeEPNS_15BufferContainerEPS0_PNS_17CallbackInterfaceE
+0000b2dc stp       x29, x30, [sp, #-0x40]!
+0000b2e0 mov       x29, sp
+0000b2e4 stp       x19, x20, [sp, #0x10]
+0000b2e8 stp       x21, x22, [sp, #0x20]
+0000b2ec str       x23, [sp, #0x30]
+0000b2f0 cbnz      x1, #0xb314
+0000b2f4 adrp      x3, #0xd000
+0000b2f8 adrp      x1, #0xd000
+0000b2fc adrp      x0, #0xd000
+0000b300 add       x3, x3, #0x720
+0000b304 add       x1, x1, #0x70a
+0000b308 add       x0, x0, #0x6ef
+0000b30c mov       w2, #0x49
+0000b310 bl        #0x85f0 ; __assert_fail
+0000b314 mov       x19, x0
+0000b318 add       x0, x0, #0x10
+0000b31c mov       x20, x1
+0000b320 mov       x23, x2
+0000b324 mov       x22, x3
+0000b328 str       x1, [x19, #0x68]
+0000b32c bl        #0x8980 ; _ZN7Updater10BaseModule12ThreadStatus4StopEv
+0000b330 mov       x0, #0xf8
+0000b334 bl        #0x87f0 ; _Znwm
+0000b338 mov       x21, x0
+0000b33c bl        #0x8b60 ; _ZN7Updater10RingBufferC1Ev
+0000b340 ldp       x1, x2, [x20, #0x18]
+0000b344 mov       x0, x21
+0000b348 str       x21, [x19, #0x48]
+0000b34c bl        #0x8570 ; _ZN7Updater10RingBuffer10InitializeEPhm
+0000b350 stp       x23, x22, [x19, #0x50]
+0000b354 ldp       x19, x20, [sp, #0x10]
+0000b358 ldp       x21, x22, [sp, #0x20]
+0000b35c ldr       x23, [sp, #0x30]
+0000b360 ldp       x29, x30, [sp], #0x40
+0000b364 ret       
+0000b368 mov       x19, x0
+0000b36c mov       x0, x21
+0000b370 mov       x1, #0xf8
+0000b374 bl        #0x8810 ; _ZdlPvm
+0000b378 mov       x0, x19
+0000b37c bl        #0x8c30 ; _Unwind_Resume

@@ -1,0 +1,123 @@
+{
+  "schema": "fx3-stage14-model-lifecycle/1",
+  "created_utc": "2026-10-25T17:57:32.446895+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage14-model-lifecycle/README.md",
+      "bytes": 4164,
+      "sha256": "628497c67af10dad6a80501cc30b55cd32dd69f750a409dff220715991612ee5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage14-model-lifecycle/coordinator-observations.json",
+      "bytes": 1349,
+      "sha256": "e3a00c0410513a4fbc65f8e856a949a8d608f9c4be0840366d01d644be43bf64"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage14-model-lifecycle/goal-status-after.json",
+      "bytes": 14184,
+      "sha256": "41e1934adb0aea2d5fe65144bb8fe7adf1bd85a1de5855d4aacb4a3c19314d11"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage14-model-lifecycle/goal-status-before.json",
+      "bytes": 13656,
+      "sha256": "c1a813d53491cba32f7382f11bef5782988062f2ba8c3703a0b918750b14014d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage14-model-lifecycle/model_lifecycle.py",
+      "bytes": 11059,
+      "sha256": "19f3b967878d492ca1dc46d704cae86eccc43447ba1718e15628e4dc8f055bbe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/model-lifecycle-results.json",
+      "bytes": 1195746,
+      "sha256": "220fe5d8cb63146924747c5aabb1c9056fae0b4ca0504385504894766527cfc7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/source-receipt.json",
+      "bytes": 1287,
+      "sha256": "de2269096a8e460d8576ee418008748dd08e4dafe490c7fe3245997d49363f71"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/summary.json",
+      "bytes": 708,
+      "sha256": "d8fc2815033f976a616197faa7197e82c6bc27b713495f0dbf92695dc03b2274"
+    }
+  ],
+  "scope": "Bounded original-function checks using synthetic model pointers, change context and independent mode fixtures; not camera state changes",
+  "source_binding": {
+    "script": "work/sony-firmware-20261024/stage14-model-lifecycle/model_lifecycle.py",
+    "script_sha256": "19f3b967878d492ca1dc46d704cae86eccc43447ba1718e15628e4dc8f055bbe",
+    "results_sha256": "220fe5d8cb63146924747c5aabb1c9056fae0b4ca0504385504894766527cfc7",
+    "summary_sha256": "d8fc2815033f976a616197faa7197e82c6bc27b713495f0dbf92695dc03b2274",
+    "originals": {
+      "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c"
+    },
+    "dependencies": {
+      "work/sony-firmware-20261024/stage13-query-profile/query_profile.py": "abf2c5691305c1e35b60ab4e0e8b31028f658f8abe391c09ee6be41cba198c9d",
+      "work/sony-firmware-20261024/stage12-prototype/profile/profile_prototype.py": "9b2a37bfbd2b243f4ed4b49a4048f90686a3b07297156f2896ca68f8628bb129",
+      "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/offline_verify.py": "8d467c2db8d6fa7186110fdd976dd919918eb140eba40eed0c6cf27d232ebc9d"
+    },
+    "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+    "bounded_guest_function_emulation": true,
+    "camera_native_execution": false
+  },
+  "component_results": {
+    "status": "PASS_BOUNDED_LIFECYCLE_AND_MODEL_SLOT_AUDIT",
+    "conditional_model_slot_writes": 8,
+    "negative_change_record_dependency_cases": 1,
+    "unchanged_value_case": 1,
+    "mode_fixture_pairs": 17,
+    "groups": {
+      "valid_baseline_fixture_but_stored_profile_hits_original_error_paths": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "target_parameters_returned_in_ordinary_movie_fixture": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        15
+      ],
+      "fixture_or_additional_mode_dependencies_unclosed": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        16
+      ]
+    },
+    "real_mode_transitions_or_persistence_tested": false,
+    "source_unchanged": true,
+    "goal_complete": false
+  },
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "c1a813d53491cba32f7382f11bef5782988062f2ba8c3703a0b918750b14014d",
+    "before_snapshot": "work/sony-firmware-20261024/stage14-model-lifecycle/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage14-model-lifecycle/goal-status-after.json",
+    "after_sha256": "41e1934adb0aea2d5fe65144bb8fe7adf1bd85a1de5855d4aacb4a3c19314d11",
+    "policy": "Canonical progress mutable; snapshots immutable."
+  },
+  "operations": {
+    "bounded_guest_function_emulation": true,
+    "new_remote_attempts": false,
+    "Windows_cached_task_executed": false,
+    "camera_native_execution": false,
+    "camera_active_query_or_auth": false,
+    "model_listeners_or_persistence_executed": false,
+    "camera_settings_driver_WBI_or_firmware_write": false,
+    "firmware_payload_or_patchfile_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 模型更新与生命周期边界](<work/sony-firmware-20261024/stage14-model-lifecycle/README.md>)：局部值槽位和17组合成上下文对照定位跨模式缺口；同值写仍标变更，菜单/持久化/实机验收仍未完成。"
+}

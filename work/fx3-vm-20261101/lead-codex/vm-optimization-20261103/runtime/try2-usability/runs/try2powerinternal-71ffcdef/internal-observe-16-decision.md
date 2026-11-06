@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-15-key-030.png using image tool. Setup>USB 56/59, orange category focus; connection/LUN/power supply options listed Next: DOWN to External Output category; no USB selection or physical-device operation

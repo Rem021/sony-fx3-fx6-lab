@@ -1,0 +1,59 @@
+{
+  "checked_utc": "2026-10-27T04:19:42.351490+00:00",
+  "read_only_git_refs": [
+    {
+      "repo": "QAQLeonard/a7c2-fl23-research",
+      "ref": "HEAD",
+      "sha": "ef7db116e13e37be91e9af20360dc9bba8d64a9b",
+      "same_as_stage46_audited_source": true
+    },
+    {
+      "repo": "QAQLeonard/a7c2-fl23-research",
+      "ref": "refs/tags/v3.0.3",
+      "sha": "782785641ca9f8b984940c7274b48706219e0da4"
+    },
+    {
+      "repo": "xyzhangxin/sony-a6700-powerful",
+      "ref": "HEAD",
+      "sha": "d5bb9485dfe7cc4bf13a4ead3a7437c2f40240a9"
+    },
+    {
+      "repo": "morluto/rea",
+      "ref": "HEAD",
+      "sha": "f89b03e738fe94f2bea6927c84e05871293707ea"
+    },
+    {
+      "repo": "ma1co/fwtool.py",
+      "ref": "refs/pull/52/head",
+      "sha": "3955d7890fc38daf942bb52827599bfe35de4a14"
+    }
+  ],
+  "source_observations": [
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/releases/tag/v3.0.3",
+      "kind": "maintainer_release_notes",
+      "release_date_displayed": "2026-10-23",
+      "scope": "A7CII2.01 only; release fixes receive handling/read-only error exit and other feature workflows. Not FX3 recovery support."
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31",
+      "kind": "community_self_reports",
+      "new_observed_date": "2026-10-26",
+      "new_finding": "dt-nb confirms the previously posted movie/P workaround worked. Other comments discuss trying it or repair quotes; do not count them as confirmed recoveries. No independent FX3 replication."
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+      "kind": "author_research_notes_other_model",
+      "scope": "A7IV bootrom serial/RAM fastboot backup+restore work, crypto handling excludes boot0. No direct FX3 port validation."
+    },
+    {
+      "url": "https://github.com/ma1co/fwtool.py/pull/52",
+      "kind": "author_decryption_support",
+      "scope": "Open PR includes FX3 in decryption testing list. Package decryption is not a loader, valid modified package, independent recovery or hardware recording proof."
+    }
+  ],
+  "network_limit": "GitHub REST API request failed403 rate limit; no API claim inferred. Public HTML and read-only git refs used instead.",
+  "attachments_or_camera_backups_downloaded": false,
+  "payloads_or_vendor_tools_executed": false,
+  "Windows_UU_camera_operations": false
+}

@@ -1,0 +1,203 @@
+00002f6c stp        x29, x30, [sp, #-0x70]!
+00002f70 mov        x29, sp
+00002f74 stp        x19, x20, [sp, #0x10]
+00002f78 stp        x21, x22, [sp, #0x20]
+00002f7c stp        x23, x24, [sp, #0x30]
+00002f80 stp        x25, x26, [sp, #0x40]
+00002f84 stp        x27, x28, [sp, #0x50]
+00002f88 cbnz       x1, #0x2fc0
+00002f8c mov        w2, #0x132
+00002f90 mov        w1, #1
+00002f94 mov        w0, #2
+00002f98 mov        w22, #-1
+00002f9c bl         #0x239c
+00002fa0 mov        w0, w22
+00002fa4 ldp        x19, x20, [sp, #0x10]
+00002fa8 ldp        x21, x22, [sp, #0x20]
+00002fac ldp        x23, x24, [sp, #0x30]
+00002fb0 ldp        x25, x26, [sp, #0x40]
+00002fb4 ldp        x27, x28, [sp, #0x50]
+00002fb8 ldp        x29, x30, [sp], #0x70
+00002fbc ret        
+00002fc0 mov        x21, x0
+00002fc4 mov        x0, #0xb8
+00002fc8 mov        x20, x1
+00002fcc bl         #0x1f50 ; operator new
+00002fd0 mov        x19, x0
+00002fd4 bl         #0x2010 ; ExtCmdSvc_PlugIn::ExtCmdSvc_PlugIn
+00002fd8 mov        x0, #0x38
+00002fdc bl         #0x1f50 ; operator new
+00002fe0 mov        x22, x0
+00002fe4 bl         #0x1fb0 ; MWF::ObjLock::ObjLock
+00002fe8 ldr        w0, [x20, #8]
+00002fec mov        x1, x19
+00002ff0 mov        w2, #4
+00002ff4 str        x22, [x19, #0xa8]
+00002ff8 str        w0, [x19]
+00002ffc ldr        x0, [x20, #0x58]
+00003000 str        x19, [x19, #8]
+00003004 str        x0, [x19, #0x10]
+00003008 mov        w0, #-1
+0000300c str        w0, [x19, #0xa4]
+00003010 ldr        x0, [x20, #0x18]
+00003014 str        x0, [x19, #0x18]
+00003018 ldr        w0, [x20, #0x20]
+0000301c str        w0, [x19, #0x20]
+00003020 mov        x0, x21
+00003024 bl         #0x1f80 ; ExtCmdSvc::ChangeState
+00003028 ldrh       w23, [x20, #0x18]
+0000302c ldr        x0, [x21, #0x18]
+00003030 add        x0, x0, #8
+00003034 bl         #0x1e40 ; pthread_mutex_lock
+00003038 mov        w3, w23
+0000303c mov        x2, x19
+00003040 add        x1, x21, #0x28
+00003044 mov        x0, x21
+00003048 bl         #0x20c0 ; ExtCmdSvc::RegistListAt
+0000304c mov        w22, w0
+00003050 cbz        w0, #0x30c8
+00003054 mov        w2, #0x15c
+00003058 mov        w1, #1
+0000305c mov        w0, #2
+00003060 bl         #0x239c
+00003064 ldrh       w1, [x20, #0xa]
+00003068 mov        w2, w22
+0000306c mov        w0, #3
+00003070 bl         #0x239c
+00003074 mov        w1, w23
+00003078 mov        w2, #0
+0000307c mov        w0, #3
+00003080 bl         #0x239c
+00003084 ldr        x0, [x21, #0x18]
+00003088 add        x0, x0, #8
+0000308c bl         #0x1ed0 ; pthread_mutex_unlock
+00003090 ldr        x0, [x19, #0xa8]
+00003094 cbz        x0, #0x30a4
+00003098 ldr        x1, [x0]
+0000309c ldr        x1, [x1, #8]
+000030a0 blr        x1
+000030a4 mov        x0, x19
+000030a8 str        xzr, [x19, #0xa8]
+000030ac bl         #0x1e10 ; ExtCmdSvc_PlugIn::~ExtCmdSvc_PlugIn
+000030b0 mov        x0, x19
+000030b4 mov        x1, #0xb8
+000030b8 bl         #0x1f60 ; operator delete
+000030bc mov        w0, #-1
+000030c0 str        w0, [x20, #4]
+000030c4 b          #0x2fa0
+000030c8 ldr        x0, [x21, #0x18]
+000030cc add        x26, x21, #0x48
+000030d0 add        x27, x29, #0x68
+000030d4 mov        w28, #0x1000
+000030d8 add        x0, x0, #8
+000030dc bl         #0x1ed0 ; pthread_mutex_unlock
+000030e0 ldr        x0, [x21, #0x18]
+000030e4 add        x0, x0, #8
+000030e8 bl         #0x1e40 ; pthread_mutex_lock
+000030ec ldr        x0, [x26, #0x10]
+000030f0 cbz        x0, #0x3138
+000030f4 ldr        w23, [x0]
+000030f8 mov        x1, x27
+000030fc mov        w3, #1
+00003100 mov        w2, #0x60
+00003104 mov        w0, w23
+00003108 bl         #0x1f20 ; osal_valloc_msg_wait
+0000310c mov        w24, w0
+00003110 cbz        w0, #0x3158
+00003114 mov        w2, #0x18b
+00003118 mov        w1, #1
+0000311c mov        w0, #2
+00003120 bl         #0x239c
+00003124 ldrh       w1, [x20, #0xa]
+00003128 mov        w2, w24
+0000312c mov        w0, #3
+00003130 mov        w22, #-1
+00003134 bl         #0x239c
+00003138 ldr        x0, [x21, #0x18]
+0000313c add        x0, x0, #8
+00003140 bl         #0x1ed0 ; pthread_mutex_unlock
+00003144 cbnz       w22, #0x30bc
+00003148 ldr        x0, [x19, #8]
+0000314c str        wzr, [x20, #4]
+00003150 str        x0, [x20, #0x10]
+00003154 b          #0x2fa0
+00003158 ldr        x25, [x29, #0x68]
+0000315c mov        x1, x20
+00003160 mov        x2, #0x60
+00003164 mov        x0, x25
+00003168 bl         #0x1db0 ; memcpy
+0000316c ldr        w0, [x21, #8]
+00003170 mov        w3, w23
+00003174 ldr        x2, [x29, #0x68]
+00003178 mov        x1, x21
+0000317c str        w0, [x25, #8]
+00003180 mov        x0, x21
+00003184 str        w28, [x25]
+00003188 str        xzr, [x25, #0x58]
+0000318c bl         #0x1f90 ; ExtCmdSvc::SndMsgToLowerSync
+00003190 mov        w24, w0
+00003194 cbz        w0, #0x31c4
+00003198 mov        w2, #0x19e
+0000319c mov        w1, #1
+000031a0 mov        w0, #2
+000031a4 bl         #0x239c
+000031a8 ldrh       w1, [x20, #0xa]
+000031ac mov        w2, w24
+000031b0 mov        w0, #3
+000031b4 bl         #0x239c
+000031b8 mov        w2, #0
+000031bc lsr        w1, w23, #0x10
+000031c0 b          #0x312c
+000031c4 mov        x0, #0x10
+000031c8 bl         #0x2040 ; malloc
+000031cc mov        x24, x0
+000031d0 ldr        x0, [x25, #0x10]
+000031d4 ldr        x1, [x29, #0x68]
+000031d8 str        x0, [x24, #8]
+000031dc mov        w0, w23
+000031e0 str        w23, [x24]
+000031e4 bl         #0x2150 ; osal_free_msg
+000031e8 cbz        w0, #0x320c
+000031ec ldrh       w1, [x20, #0xa]
+000031f0 mov        w2, #0
+000031f4 mov        w0, #3
+000031f8 bl         #0x239c
+000031fc mov        w2, #0
+00003200 lsr        w1, w23, #0x10
+00003204 mov        w0, #3
+00003208 bl         #0x239c
+0000320c ldr        w4, [x24]
+00003210 mov        x3, x24
+00003214 add        x2, x19, #0x80
+00003218 mov        x1, x21
+0000321c mov        x0, x21
+00003220 bl         #0x1fe0 ; ExtCmdSvc::RegistListPrtcl
+00003224 mov        w23, w0
+00003228 cbz        w0, #0x325c
+0000322c mov        w2, #0x1b9
+00003230 mov        w1, #1
+00003234 mov        w0, #2
+00003238 mov        w22, w23
+0000323c bl         #0x239c
+00003240 ldrh       w1, [x20, #0xa]
+00003244 mov        w2, w23
+00003248 mov        w0, #3
+0000324c bl         #0x239c
+00003250 mov        x0, x24
+00003254 bl         #0x1eb0 ; free
+00003258 b          #0x3138
+0000325c ldr        x26, [x26, #8]
+00003260 cbnz       x26, #0x30ec
+00003264 b          #0x3138
+00003268 mov        x20, x0
+0000326c mov        x0, x19
+00003270 mov        x1, #0xb8
+00003274 bl         #0x1f60 ; operator delete
+00003278 mov        x0, x20
+0000327c bl         #0x20b0 ; _Unwind_Resume
+00003280 mov        x19, x0
+00003284 mov        x0, x22
+00003288 mov        x1, #0x38
+0000328c bl         #0x1f60 ; operator delete
+00003290 mov        x0, x19
+00003294 b          #0x327c

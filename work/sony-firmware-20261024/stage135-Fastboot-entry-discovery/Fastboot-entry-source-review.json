@@ -1,0 +1,282 @@
+{
+  "created_utc": "2026-10-27T19:52:46.057920+00:00",
+  "reference_model": "ILCE-7M4 / A7 IV only",
+  "reference_commit": "2328d18ce640e6c8cd9341efcf0043ce9042a135",
+  "additional_selected_sources": [
+    {
+      "path": "a7iv-reference-source/ILCE-7M4-RE-2328d18ce640e6c8cd9341efcf0043ce9042a135/tools/uart_boot/serialboot.pio",
+      "bytes": 912,
+      "sha256": "951422c52af2dd6f2431fc65cf0df9e9b2102f88b60924d6fb172ad2307c3d22"
+    },
+    {
+      "path": "a7iv-reference-source/ILCE-7M4-RE-2328d18ce640e6c8cd9341efcf0043ce9042a135/tools/uart_boot/uart_boot.ino",
+      "bytes": 9088,
+      "sha256": "4bd0d66080aa1eeabb00d6d39809d8ae9fb4fa314e532b06f760e47ed7f925b8"
+    }
+  ],
+  "facts": [
+    {
+      "path": "a7iv-reference-source/ILCE-7M4-RE-2328d18ce640e6c8cd9341efcf0043ce9042a135/README.md",
+      "sha256": "978976fe69b933e9ba194ddfadc96b1085e0a1aaaaf73727c5acf9e14b679f5a",
+      "matches": [
+        {
+          "line": 8,
+          "text": "- There is a \"secret\" serial boot mode, in the bootrom."
+        },
+        {
+          "line": 9,
+          "text": "- You can reach the serial bootloader by blasting the right bits down the RX pin of the accessory connector, shortly after reset (see `tools/uart_boot`)."
+        },
+        {
+          "line": 10,
+          "text": "- I've produced a bare-metal fastboot-compatible boot payload, which can be used to back up and restore eMMC partitions over USB (see `payloads/fastboot`)."
+        },
+        {
+          "line": 12,
+          "text": "- I have all the encryption keys - see `scripts/parse_emmc_boot0.py`, `scripts/parse_emmc_partitions.py`."
+        },
+        {
+          "line": 13,
+          "text": "- The fastboot dump/flash commands handle the crypto transparently (except for boot0, not yet implemented)."
+        }
+      ]
+    },
+    {
+      "path": "a7iv-reference-source/ILCE-7M4-RE-2328d18ce640e6c8cd9341efcf0043ce9042a135/tools/uart_boot/Makefile",
+      "sha256": "840dbacc0def63fe6257668abc6f661ae4277ac84d5030e1385da9b8794969a6",
+      "matches": [
+        {
+          "line": 1,
+          "text": "FQBN := rp2040:rp2040:waveshare_rp2040_zero"
+        },
+        {
+          "line": 6,
+          "text": "CORE_URL := https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json"
+        },
+        {
+          "line": 8,
+          "text": "ARDUINO_CLI  := arduino-cli"
+        },
+        {
+          "line": 9,
+          "text": "ARDUINO_DATA := $(shell $(ARDUINO_CLI) config get directories.data)"
+        },
+        {
+          "line": 10,
+          "text": "PIOASM       := $(shell ls $(ARDUINO_DATA)/packages/rp2040/tools/pqt-pioasm/*/pioasm 2>/dev/null | head -1)"
+        },
+        {
+          "line": 17,
+          "text": "$(ARDUINO_CLI) core update-index --additional-urls $(CORE_URL)"
+        },
+        {
+          "line": 18,
+          "text": "$(ARDUINO_CLI) core install rp2040:rp2040 --additional-urls $(CORE_URL)"
+        },
+        {
+          "line": 24,
+          "text": "$(ARDUINO_CLI) compile --fqbn $(FQBN) --build-path $(BUILD_DIR) \\"
+        },
+        {
+          "line": 28,
+          "text": "$(ARDUINO_CLI) upload --fqbn $(FQBN) --port $(PORT) --input-dir $(BUILD_DIR) $(SKETCH)"
+        }
+      ]
+    },
+    {
+      "path": "a7iv-reference-source/ILCE-7M4-RE-2328d18ce640e6c8cd9341efcf0043ce9042a135/tools/uart_boot/uart_boot.ino",
+      "sha256": "4bd0d66080aa1eeabb00d6d39809d8ae9fb4fa314e532b06f760e47ed7f925b8",
+      "matches": [
+        {
+          "line": 15,
+          "text": "#include <hardware/clocks.h>"
+        },
+        {
+          "line": 17,
+          "text": "#include <hardware/pio.h>"
+        },
+        {
+          "line": 21,
+          "text": "#include \"serialboot.pio.h\""
+        },
+        {
+          "line": 72,
+          "text": "static PIO      pio = pio0;"
+        },
+        {
+          "line": 73,
+          "text": "static int      pio_sm = -1;"
+        },
+        {
+          "line": 74,
+          "text": "static uint     pio_off;"
+        },
+        {
+          "line": 100,
+          "text": "sio_hw->gpio_clr    = 1u << MULTI_RST;"
+        },
+        {
+          "line": 101,
+          "text": "sio_hw->gpio_oe_set = 1u << MULTI_RST;"
+        },
+        {
+          "line": 103,
+          "text": "sio_hw->gpio_oe_clr = 1u << MULTI_RST;"
+        },
+        {
+          "line": 108,
+          "text": "pio_sm_config c = serialboot_od_program_get_default_config(pio_off);"
+        },
+        {
+          "line": 110,
+          "text": "pio_sm_config c = serialboot_pp_program_get_default_config(pio_off);"
+        },
+        {
+          "line": 118,
+          "text": "pio_gpio_init(pio, MULTI_TX);"
+        },
+        {
+          "line": 120,
+          "text": "pio_sm_set_pins_with_mask(pio, pio_sm, 0, 1u << MULTI_TX);"
+        },
+        {
+          "line": 121,
+          "text": "pio_sm_set_consecutive_pindirs(pio, pio_sm, MULTI_TX, 1, false);"
+        },
+        {
+          "line": 123,
+          "text": "pio_sm_set_consecutive_pindirs(pio, pio_sm, MULTI_TX, 1, true);"
+        },
+        {
+          "line": 125,
+          "text": "pio_sm_init(pio, pio_sm, pio_off, &c);"
+        },
+        {
+          "line": 126,
+          "text": "pio_sm_clear_fifos(pio, pio_sm);"
+        },
+        {
+          "line": 127,
+          "text": "pio_interrupt_clear(pio, 0);"
+        },
+        {
+          "line": 128,
+          "text": "pio_sm_set_enabled(pio, pio_sm, true);"
+        },
+        {
+          "line": 135,
+          "text": "pio_sm_set_enabled(pio, pio_sm, false);"
+        },
+        {
+          "line": 150,
+          "text": "uint32_t frame = 1u << 10;"
+        },
+        {
+          "line": 155,
+          "text": "frame |= bit << (1u + b);"
+        },
+        {
+          "line": 157,
+          "text": "frame |= (x ? 0u : 1u) << 9;"
+        },
+        {
+          "line": 160,
+          "text": "if (frame & (1u << b)) {"
+        },
+        {
+          "line": 189,
+          "text": "channel_config_set_dreq(&c, pio_get_dreq(pio, pio_sm, true));"
+        },
+        {
+          "line": 190,
+          "text": "dma_channel_configure(dma_chan, &c, &pio->txf[pio_sm], bitbuf, nwords, true);"
+        },
+        {
+          "line": 344,
+          "text": "pio_sm   = pio_claim_unused_sm(pio, true);"
+        },
+        {
+          "line": 346,
+          "text": "pio_off  = pio_add_program(pio, &serialboot_od_program);"
+        },
+        {
+          "line": 348,
+          "text": "pio_off  = pio_add_program(pio, &serialboot_pp_program);"
+        },
+        {
+          "line": 358,
+          "text": "if (blob_pending && pio_interrupt_get(pio, 0)) {"
+        },
+        {
+          "line": 359,
+          "text": "pio_interrupt_clear(pio, 0);"
+        }
+      ]
+    },
+    {
+      "path": "a7iv-reference-source/ILCE-7M4-RE-2328d18ce640e6c8cd9341efcf0043ce9042a135/payloads/fastboot/src/main.c",
+      "sha256": "d52c0a9f926917e6eb5b3ebcb1f28ac4d776b476c53bb9e6adff2e6ecf254ad6",
+      "matches": [
+        {
+          "line": 42,
+          "text": "ret = cetus_bring_up();"
+        },
+        {
+          "line": 52,
+          "text": "if (mmc_init() == MMC_OK)"
+        },
+        {
+          "line": 58,
+          "text": "usb_phy_init();"
+        },
+        {
+          "line": 60,
+          "text": "ret = dwc3_core_init();"
+        },
+        {
+          "line": 69,
+          "text": "if (usb_gadget_init() != 0) {"
+        },
+        {
+          "line": 74,
+          "text": "ret = dwc3_connect();"
+        }
+      ]
+    },
+    {
+      "path": "a7iv-reference-source/ILCE-7M4-RE-2328d18ce640e6c8cd9341efcf0043ce9042a135/payloads/fastboot/src/usb.c",
+      "sha256": "07d500ac07fbf96320c267375c1afe903f95d333844a829623eb04edd48440fc",
+      "matches": [
+        {
+          "line": 41,
+          "text": "0xd1, 0x18,             /* idVendor  0x18d1 (Google) */"
+        },
+        {
+          "line": 42,
+          "text": "0xe0, 0x4e,             /* idProduct 0x4ee0 (fastboot) */"
+        },
+        {
+          "line": 48,
+          "text": "/* Fastboot's interface signature: class 0xff, subclass 0x42, protocol 0x03. */"
+        },
+        {
+          "line": 64,
+          "text": "0xff, 0x42, 0x03,       /* fastboot */"
+        }
+      ]
+    }
+  ],
+  "reference_fastboot_USB_identity": "18d1:4ee0 with interface ff/42/03",
+  "entry_chain": "serial BootROM trigger -> load custom RAM payload -> hardware init including CP/eMMC -> USB Fastboot",
+  "not_proven_for_FX3": [
+    "connector electrical characteristics and wiring",
+    "ROM trigger/protocol and target identity",
+    "RAM layout and CP/eMMC/USB/WDT initialisation",
+    "entry/exit/coldboot return and backup/restore readback"
+  ],
+  "hardware_available_user_quote": "目前只有 Mac 和 Windows 电脑",
+  "bridge_hardware_available": false,
+  "unknown_FX3_procedure_not_executed": true,
+  "source_or_payload_built_loaded_or_executed": false,
+  "scope": "Public reference code only; no proof FX3 cannot ever enter a compatible mode"
+}

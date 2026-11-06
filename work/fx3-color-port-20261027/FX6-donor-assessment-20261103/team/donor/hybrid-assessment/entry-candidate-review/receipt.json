@@ -1,0 +1,1709 @@
+{
+  "status": "PASS_STATIC_TWO_ENTRY_ALLOWLIST_ONLY",
+  "source_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+  "candidate_sha256": "ff2f927de24b801d334ce9111fb486fb2af85d24c509ab20c43eda0a69ffdc40",
+  "source_and_candidate_bytes": 453184500,
+  "member_count": 1140,
+  "member_order_equal": true,
+  "trailer_equal": true,
+  "exact_allowlist": [
+    {
+      "name": "usr/bin/bootin.elf",
+      "offset": 16071088,
+      "end_exclusive": 16095048,
+      "bytes": 23960,
+      "bytes_differing_inside": 977,
+      "differing_runs": [
+        {
+          "elf_file_offset": 208,
+          "archive_offset": 16071296,
+          "bytes": 2,
+          "sections": [],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 216,
+          "archive_offset": 16071304,
+          "bytes": 2,
+          "sections": [],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 7381,
+          "archive_offset": 16078469,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 8261,
+          "archive_offset": 16079349,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 8265,
+          "archive_offset": 16079353,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 8385,
+          "archive_offset": 16079473,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 8401,
+          "archive_offset": 16079489,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 8417,
+          "archive_offset": 16079505,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 8441,
+          "archive_offset": 16079529,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 8489,
+          "archive_offset": 16079577,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 9157,
+          "archive_offset": 16080245,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 9165,
+          "archive_offset": 16080253,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 9341,
+          "archive_offset": 16080429,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 11461,
+          "archive_offset": 16082549,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13617,
+          "archive_offset": 16084705,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13657,
+          "archive_offset": 16084745,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13669,
+          "archive_offset": 16084757,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13681,
+          "archive_offset": 16084769,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13693,
+          "archive_offset": 16084781,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13705,
+          "archive_offset": 16084793,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13717,
+          "archive_offset": 16084805,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13729,
+          "archive_offset": 16084817,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13741,
+          "archive_offset": 16084829,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13753,
+          "archive_offset": 16084841,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13765,
+          "archive_offset": 16084853,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13777,
+          "archive_offset": 16084865,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13789,
+          "archive_offset": 16084877,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13801,
+          "archive_offset": 16084889,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13813,
+          "archive_offset": 16084901,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13825,
+          "archive_offset": 16084913,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13837,
+          "archive_offset": 16084925,
+          "bytes": 2,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13849,
+          "archive_offset": 16084937,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 13873,
+          "archive_offset": 16084961,
+          "bytes": 1,
+          "sections": [
+            ".text"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16136,
+          "archive_offset": 16087224,
+          "bytes": 1,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16152,
+          "archive_offset": 16087240,
+          "bytes": 1,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16168,
+          "archive_offset": 16087256,
+          "bytes": 1,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16176,
+          "archive_offset": 16087264,
+          "bytes": 1,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16184,
+          "archive_offset": 16087272,
+          "bytes": 1,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16192,
+          "archive_offset": 16087280,
+          "bytes": 1,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16200,
+          "archive_offset": 16087288,
+          "bytes": 15,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16221,
+          "archive_offset": 16087309,
+          "bytes": 102,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16324,
+          "archive_offset": 16087412,
+          "bytes": 22,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16347,
+          "archive_offset": 16087435,
+          "bytes": 22,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16370,
+          "archive_offset": 16087458,
+          "bytes": 25,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16396,
+          "archive_offset": 16087484,
+          "bytes": 27,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16424,
+          "archive_offset": 16087512,
+          "bytes": 60,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16485,
+          "archive_offset": 16087573,
+          "bytes": 34,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16520,
+          "archive_offset": 16087608,
+          "bytes": 16,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16540,
+          "archive_offset": 16087628,
+          "bytes": 24,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16566,
+          "archive_offset": 16087654,
+          "bytes": 48,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16615,
+          "archive_offset": 16087703,
+          "bytes": 61,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16677,
+          "archive_offset": 16087765,
+          "bytes": 6,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16684,
+          "archive_offset": 16087772,
+          "bytes": 30,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16715,
+          "archive_offset": 16087803,
+          "bytes": 4,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16720,
+          "archive_offset": 16087808,
+          "bytes": 26,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16747,
+          "archive_offset": 16087835,
+          "bytes": 8,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16756,
+          "archive_offset": 16087844,
+          "bytes": 34,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16791,
+          "archive_offset": 16087879,
+          "bytes": 4,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16796,
+          "archive_offset": 16087884,
+          "bytes": 4,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16801,
+          "archive_offset": 16087889,
+          "bytes": 6,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16827,
+          "archive_offset": 16087915,
+          "bytes": 49,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16877,
+          "archive_offset": 16087965,
+          "bytes": 28,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16907,
+          "archive_offset": 16087995,
+          "bytes": 3,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16911,
+          "archive_offset": 16087999,
+          "bytes": 50,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 16962,
+          "archive_offset": 16088050,
+          "bytes": 145,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 17111,
+          "archive_offset": 16088199,
+          "bytes": 15,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 17127,
+          "archive_offset": 16088215,
+          "bytes": 19,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 17147,
+          "archive_offset": 16088235,
+          "bytes": 16,
+          "sections": [
+            ".rodata"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 20952,
+          "archive_offset": 16092040,
+          "bytes": 1,
+          "sections": [
+            ".data"
+          ],
+          "in_pt_load": true
+        },
+        {
+          "elf_file_offset": 22025,
+          "archive_offset": 16093113,
+          "bytes": 5,
+          "sections": [
+            ".comment"
+          ],
+          "in_pt_load": false
+        },
+        {
+          "elf_file_offset": 22051,
+          "archive_offset": 16093139,
+          "bytes": 1,
+          "sections": [
+            ".comment"
+          ],
+          "in_pt_load": false
+        },
+        {
+          "elf_file_offset": 23224,
+          "archive_offset": 16094312,
+          "bytes": 2,
+          "sections": [],
+          "in_pt_load": false
+        },
+        {
+          "elf_file_offset": 23272,
+          "archive_offset": 16094360,
+          "bytes": 2,
+          "sections": [],
+          "in_pt_load": false
+        },
+        {
+          "elf_file_offset": 23280,
+          "archive_offset": 16094368,
+          "bytes": 2,
+          "sections": [],
+          "in_pt_load": false
+        }
+      ],
+      "load_segments_equal": false,
+      "fx3_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "fx6_sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+      "donor_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/bootin.elf",
+      "entry_elf_before": {
+        "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+        "machine": 183,
+        "interpreter": "/lib/ld-linux-aarch64.so.1",
+        "needed": [
+          "libbackup.so",
+          "libosal_utm.so",
+          "libosal_uipc.so",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libdl.so.2",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ],
+        "load_segments": [
+          {
+            "file_offset": 0,
+            "filesz": 17132,
+            "vaddr": 4194304,
+            "sha256": "49b55b9075e7414f19d4d1fd93eeca5f46dc96bbceb7153e4c9afe261ba2a966"
+          },
+          {
+            "file_offset": 19800,
+            "filesz": 2216,
+            "vaddr": 4279640,
+            "sha256": "e9804de558cd4bd63ed44af327fee14480bb5365cb805124f2042bc5477fd454"
+          }
+        ],
+        "sections": [
+          {
+            "name": "",
+            "type": 0,
+            "file_offset": 0,
+            "bytes": 0
+          },
+          {
+            "name": ".interp",
+            "type": 1,
+            "file_offset": 512,
+            "bytes": 27
+          },
+          {
+            "name": ".note.ABI-tag",
+            "type": 7,
+            "file_offset": 540,
+            "bytes": 32
+          },
+          {
+            "name": ".gnu.hash",
+            "type": 1879048182,
+            "file_offset": 576,
+            "bytes": 492
+          },
+          {
+            "name": ".dynsym",
+            "type": 11,
+            "file_offset": 1072,
+            "bytes": 1704
+          },
+          {
+            "name": ".dynstr",
+            "type": 3,
+            "file_offset": 2776,
+            "bytes": 820
+          },
+          {
+            "name": ".gnu.version",
+            "type": 1879048191,
+            "file_offset": 3596,
+            "bytes": 142
+          },
+          {
+            "name": ".gnu.version_r",
+            "type": 1879048190,
+            "file_offset": 3744,
+            "bytes": 64
+          },
+          {
+            "name": ".rela.dyn",
+            "type": 4,
+            "file_offset": 3808,
+            "bytes": 48
+          },
+          {
+            "name": ".rela.plt",
+            "type": 4,
+            "file_offset": 3856,
+            "bytes": 1320
+          },
+          {
+            "name": ".init",
+            "type": 1,
+            "file_offset": 5176,
+            "bytes": 20
+          },
+          {
+            "name": ".plt",
+            "type": 1,
+            "file_offset": 5200,
+            "bytes": 912
+          },
+          {
+            "name": ".text",
+            "type": 1,
+            "file_offset": 6112,
+            "bytes": 7952
+          },
+          {
+            "name": ".fini",
+            "type": 1,
+            "file_offset": 14064,
+            "bytes": 16
+          },
+          {
+            "name": ".rodata",
+            "type": 1,
+            "file_offset": 14080,
+            "bytes": 3045
+          },
+          {
+            "name": ".eh_frame",
+            "type": 1,
+            "file_offset": 17128,
+            "bytes": 4
+          },
+          {
+            "name": ".init_array",
+            "type": 14,
+            "file_offset": 19800,
+            "bytes": 8
+          },
+          {
+            "name": ".fini_array",
+            "type": 15,
+            "file_offset": 19808,
+            "bytes": 8
+          },
+          {
+            "name": ".jcr",
+            "type": 1,
+            "file_offset": 19816,
+            "bytes": 8
+          },
+          {
+            "name": ".dynamic",
+            "type": 6,
+            "file_offset": 19824,
+            "bytes": 608
+          },
+          {
+            "name": ".got",
+            "type": 1,
+            "file_offset": 20432,
+            "bytes": 24
+          },
+          {
+            "name": ".got.plt",
+            "type": 1,
+            "file_offset": 20456,
+            "bytes": 464
+          },
+          {
+            "name": ".data",
+            "type": 1,
+            "file_offset": 20920,
+            "bytes": 1096
+          },
+          {
+            "name": ".bss",
+            "type": 8,
+            "file_offset": 22016,
+            "bytes": 16
+          },
+          {
+            "name": ".comment",
+            "type": 1,
+            "file_offset": 22016,
+            "bytes": 64
+          },
+          {
+            "name": ".shstrtab",
+            "type": 3,
+            "file_offset": 22080,
+            "bytes": 215
+          }
+        ]
+      },
+      "entry_elf": {
+        "sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+        "machine": 183,
+        "interpreter": "/lib/ld-linux-aarch64.so.1",
+        "needed": [
+          "libbackup.so",
+          "libosal_utm.so",
+          "libosal_uipc.so",
+          "libpthread.so.0",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libdl.so.2",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ],
+        "load_segments": [
+          {
+            "file_offset": 0,
+            "filesz": 17168,
+            "vaddr": 4194304,
+            "sha256": "302e3d77ef2810bfc6d77227c4a592232957eb65000d3c363bd474ee708c6eaf"
+          },
+          {
+            "file_offset": 19800,
+            "filesz": 2216,
+            "vaddr": 4279640,
+            "sha256": "6fa61acbd4eac18d056d78453d42228fd9c6f5b11b02798cf6fa99778629c11d"
+          }
+        ],
+        "sections": [
+          {
+            "name": "",
+            "type": 0,
+            "file_offset": 0,
+            "bytes": 0
+          },
+          {
+            "name": ".interp",
+            "type": 1,
+            "file_offset": 512,
+            "bytes": 27
+          },
+          {
+            "name": ".note.ABI-tag",
+            "type": 7,
+            "file_offset": 540,
+            "bytes": 32
+          },
+          {
+            "name": ".gnu.hash",
+            "type": 1879048182,
+            "file_offset": 576,
+            "bytes": 492
+          },
+          {
+            "name": ".dynsym",
+            "type": 11,
+            "file_offset": 1072,
+            "bytes": 1704
+          },
+          {
+            "name": ".dynstr",
+            "type": 3,
+            "file_offset": 2776,
+            "bytes": 820
+          },
+          {
+            "name": ".gnu.version",
+            "type": 1879048191,
+            "file_offset": 3596,
+            "bytes": 142
+          },
+          {
+            "name": ".gnu.version_r",
+            "type": 1879048190,
+            "file_offset": 3744,
+            "bytes": 64
+          },
+          {
+            "name": ".rela.dyn",
+            "type": 4,
+            "file_offset": 3808,
+            "bytes": 48
+          },
+          {
+            "name": ".rela.plt",
+            "type": 4,
+            "file_offset": 3856,
+            "bytes": 1320
+          },
+          {
+            "name": ".init",
+            "type": 1,
+            "file_offset": 5176,
+            "bytes": 20
+          },
+          {
+            "name": ".plt",
+            "type": 1,
+            "file_offset": 5200,
+            "bytes": 912
+          },
+          {
+            "name": ".text",
+            "type": 1,
+            "file_offset": 6112,
+            "bytes": 7952
+          },
+          {
+            "name": ".fini",
+            "type": 1,
+            "file_offset": 14064,
+            "bytes": 16
+          },
+          {
+            "name": ".rodata",
+            "type": 1,
+            "file_offset": 14080,
+            "bytes": 3084
+          },
+          {
+            "name": ".eh_frame",
+            "type": 1,
+            "file_offset": 17164,
+            "bytes": 4
+          },
+          {
+            "name": ".init_array",
+            "type": 14,
+            "file_offset": 19800,
+            "bytes": 8
+          },
+          {
+            "name": ".fini_array",
+            "type": 15,
+            "file_offset": 19808,
+            "bytes": 8
+          },
+          {
+            "name": ".jcr",
+            "type": 1,
+            "file_offset": 19816,
+            "bytes": 8
+          },
+          {
+            "name": ".dynamic",
+            "type": 6,
+            "file_offset": 19824,
+            "bytes": 608
+          },
+          {
+            "name": ".got",
+            "type": 1,
+            "file_offset": 20432,
+            "bytes": 24
+          },
+          {
+            "name": ".got.plt",
+            "type": 1,
+            "file_offset": 20456,
+            "bytes": 464
+          },
+          {
+            "name": ".data",
+            "type": 1,
+            "file_offset": 20920,
+            "bytes": 1096
+          },
+          {
+            "name": ".bss",
+            "type": 8,
+            "file_offset": 22016,
+            "bytes": 16
+          },
+          {
+            "name": ".comment",
+            "type": 1,
+            "file_offset": 22016,
+            "bytes": 64
+          },
+          {
+            "name": ".shstrtab",
+            "type": 3,
+            "file_offset": 22080,
+            "bytes": 215
+          }
+        ]
+      }
+    },
+    {
+      "name": "usr/bin/im.elf",
+      "offset": 17220920,
+      "end_exclusive": 17261840,
+      "bytes": 40920,
+      "bytes_differing_inside": 6,
+      "differing_runs": [
+        {
+          "elf_file_offset": 38745,
+          "archive_offset": 17259665,
+          "bytes": 5,
+          "sections": [
+            ".comment"
+          ],
+          "in_pt_load": false
+        },
+        {
+          "elf_file_offset": 38771,
+          "archive_offset": 17259691,
+          "bytes": 1,
+          "sections": [
+            ".comment"
+          ],
+          "in_pt_load": false
+        }
+      ],
+      "load_segments_equal": true,
+      "fx3_sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+      "fx6_sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+      "donor_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/im.elf",
+      "entry_elf_before": {
+        "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+        "machine": 183,
+        "interpreter": "/lib/ld-linux-aarch64.so.1",
+        "needed": [
+          "libjemalloc_ds.so.2",
+          "libIMDB.so",
+          "libbackup.so",
+          "libosal_utm.so",
+          "libosal_uipc.so",
+          "libdl.so.2",
+          "libpthread.so.0",
+          "libSTMcmdexecute.so",
+          "libssl.so.3",
+          "libcrypto.so.3",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ],
+        "load_segments": [
+          {
+            "file_offset": 0,
+            "filesz": 35147,
+            "vaddr": 4194304,
+            "sha256": "671d819ee0ce416eae4b6dbd7193f3d6b857bd5ec6a74f16786372b9a6c5fd24"
+          },
+          {
+            "file_offset": 35920,
+            "filesz": 2816,
+            "vaddr": 4295760,
+            "sha256": "c67df93999d9a2fcfcad5f91116fdb5a73c8b7f8c44ccd572c5bb33b5839e81f"
+          }
+        ],
+        "sections": [
+          {
+            "name": "",
+            "type": 0,
+            "file_offset": 0,
+            "bytes": 0
+          },
+          {
+            "name": ".interp",
+            "type": 1,
+            "file_offset": 568,
+            "bytes": 27
+          },
+          {
+            "name": ".note.ABI-tag",
+            "type": 7,
+            "file_offset": 596,
+            "bytes": 32
+          },
+          {
+            "name": ".gnu.hash",
+            "type": 1879048182,
+            "file_offset": 632,
+            "bytes": 716
+          },
+          {
+            "name": ".dynsym",
+            "type": 11,
+            "file_offset": 1352,
+            "bytes": 2328
+          },
+          {
+            "name": ".dynstr",
+            "type": 3,
+            "file_offset": 3680,
+            "bytes": 1800
+          },
+          {
+            "name": ".gnu.version",
+            "type": 1879048191,
+            "file_offset": 5480,
+            "bytes": 194
+          },
+          {
+            "name": ".gnu.version_r",
+            "type": 1879048190,
+            "file_offset": 5680,
+            "bytes": 272
+          },
+          {
+            "name": ".rela.dyn",
+            "type": 4,
+            "file_offset": 5952,
+            "bytes": 72
+          },
+          {
+            "name": ".rela.plt",
+            "type": 4,
+            "file_offset": 6024,
+            "bytes": 1968
+          },
+          {
+            "name": ".init",
+            "type": 1,
+            "file_offset": 7992,
+            "bytes": 20
+          },
+          {
+            "name": ".plt",
+            "type": 1,
+            "file_offset": 8016,
+            "bytes": 1344
+          },
+          {
+            "name": ".text",
+            "type": 1,
+            "file_offset": 9360,
+            "bytes": 19792
+          },
+          {
+            "name": ".fini",
+            "type": 1,
+            "file_offset": 29152,
+            "bytes": 16
+          },
+          {
+            "name": ".rodata",
+            "type": 1,
+            "file_offset": 29168,
+            "bytes": 3161
+          },
+          {
+            "name": ".eh_frame_hdr",
+            "type": 1,
+            "file_offset": 32332,
+            "bytes": 436
+          },
+          {
+            "name": ".eh_frame",
+            "type": 1,
+            "file_offset": 32768,
+            "bytes": 2268
+          },
+          {
+            "name": ".gcc_except_table",
+            "type": 1,
+            "file_offset": 35036,
+            "bytes": 111
+          },
+          {
+            "name": ".init_array",
+            "type": 14,
+            "file_offset": 35920,
+            "bytes": 16
+          },
+          {
+            "name": ".fini_array",
+            "type": 15,
+            "file_offset": 35936,
+            "bytes": 8
+          },
+          {
+            "name": ".jcr",
+            "type": 1,
+            "file_offset": 35944,
+            "bytes": 8
+          },
+          {
+            "name": ".data.rel.ro",
+            "type": 1,
+            "file_offset": 35952,
+            "bytes": 176
+          },
+          {
+            "name": ".dynamic",
+            "type": 6,
+            "file_offset": 36128,
+            "bytes": 688
+          },
+          {
+            "name": ".got",
+            "type": 1,
+            "file_offset": 36816,
+            "bytes": 24
+          },
+          {
+            "name": ".got.plt",
+            "type": 1,
+            "file_offset": 36840,
+            "bytes": 680
+          },
+          {
+            "name": ".data",
+            "type": 1,
+            "file_offset": 37520,
+            "bytes": 1216
+          },
+          {
+            "name": ".bss",
+            "type": 8,
+            "file_offset": 38736,
+            "bytes": 56
+          },
+          {
+            "name": ".comment",
+            "type": 1,
+            "file_offset": 38736,
+            "bytes": 64
+          },
+          {
+            "name": ".shstrtab",
+            "type": 3,
+            "file_offset": 38800,
+            "bytes": 260
+          }
+        ]
+      },
+      "entry_elf": {
+        "sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+        "machine": 183,
+        "interpreter": "/lib/ld-linux-aarch64.so.1",
+        "needed": [
+          "libjemalloc_ds.so.2",
+          "libIMDB.so",
+          "libbackup.so",
+          "libosal_utm.so",
+          "libosal_uipc.so",
+          "libdl.so.2",
+          "libpthread.so.0",
+          "libSTMcmdexecute.so",
+          "libssl.so.3",
+          "libcrypto.so.3",
+          "libstdc++.so.6",
+          "libm.so.6",
+          "libgcc_s.so.1",
+          "libc.so.6",
+          "librt.so.1"
+        ],
+        "load_segments": [
+          {
+            "file_offset": 0,
+            "filesz": 35147,
+            "vaddr": 4194304,
+            "sha256": "671d819ee0ce416eae4b6dbd7193f3d6b857bd5ec6a74f16786372b9a6c5fd24"
+          },
+          {
+            "file_offset": 35920,
+            "filesz": 2816,
+            "vaddr": 4295760,
+            "sha256": "c67df93999d9a2fcfcad5f91116fdb5a73c8b7f8c44ccd572c5bb33b5839e81f"
+          }
+        ],
+        "sections": [
+          {
+            "name": "",
+            "type": 0,
+            "file_offset": 0,
+            "bytes": 0
+          },
+          {
+            "name": ".interp",
+            "type": 1,
+            "file_offset": 568,
+            "bytes": 27
+          },
+          {
+            "name": ".note.ABI-tag",
+            "type": 7,
+            "file_offset": 596,
+            "bytes": 32
+          },
+          {
+            "name": ".gnu.hash",
+            "type": 1879048182,
+            "file_offset": 632,
+            "bytes": 716
+          },
+          {
+            "name": ".dynsym",
+            "type": 11,
+            "file_offset": 1352,
+            "bytes": 2328
+          },
+          {
+            "name": ".dynstr",
+            "type": 3,
+            "file_offset": 3680,
+            "bytes": 1800
+          },
+          {
+            "name": ".gnu.version",
+            "type": 1879048191,
+            "file_offset": 5480,
+            "bytes": 194
+          },
+          {
+            "name": ".gnu.version_r",
+            "type": 1879048190,
+            "file_offset": 5680,
+            "bytes": 272
+          },
+          {
+            "name": ".rela.dyn",
+            "type": 4,
+            "file_offset": 5952,
+            "bytes": 72
+          },
+          {
+            "name": ".rela.plt",
+            "type": 4,
+            "file_offset": 6024,
+            "bytes": 1968
+          },
+          {
+            "name": ".init",
+            "type": 1,
+            "file_offset": 7992,
+            "bytes": 20
+          },
+          {
+            "name": ".plt",
+            "type": 1,
+            "file_offset": 8016,
+            "bytes": 1344
+          },
+          {
+            "name": ".text",
+            "type": 1,
+            "file_offset": 9360,
+            "bytes": 19792
+          },
+          {
+            "name": ".fini",
+            "type": 1,
+            "file_offset": 29152,
+            "bytes": 16
+          },
+          {
+            "name": ".rodata",
+            "type": 1,
+            "file_offset": 29168,
+            "bytes": 3161
+          },
+          {
+            "name": ".eh_frame_hdr",
+            "type": 1,
+            "file_offset": 32332,
+            "bytes": 436
+          },
+          {
+            "name": ".eh_frame",
+            "type": 1,
+            "file_offset": 32768,
+            "bytes": 2268
+          },
+          {
+            "name": ".gcc_except_table",
+            "type": 1,
+            "file_offset": 35036,
+            "bytes": 111
+          },
+          {
+            "name": ".init_array",
+            "type": 14,
+            "file_offset": 35920,
+            "bytes": 16
+          },
+          {
+            "name": ".fini_array",
+            "type": 15,
+            "file_offset": 35936,
+            "bytes": 8
+          },
+          {
+            "name": ".jcr",
+            "type": 1,
+            "file_offset": 35944,
+            "bytes": 8
+          },
+          {
+            "name": ".data.rel.ro",
+            "type": 1,
+            "file_offset": 35952,
+            "bytes": 176
+          },
+          {
+            "name": ".dynamic",
+            "type": 6,
+            "file_offset": 36128,
+            "bytes": 688
+          },
+          {
+            "name": ".got",
+            "type": 1,
+            "file_offset": 36816,
+            "bytes": 24
+          },
+          {
+            "name": ".got.plt",
+            "type": 1,
+            "file_offset": 36840,
+            "bytes": 680
+          },
+          {
+            "name": ".data",
+            "type": 1,
+            "file_offset": 37520,
+            "bytes": 1216
+          },
+          {
+            "name": ".bss",
+            "type": 8,
+            "file_offset": 38736,
+            "bytes": 56
+          },
+          {
+            "name": ".comment",
+            "type": 1,
+            "file_offset": 38736,
+            "bytes": 64
+          },
+          {
+            "name": ".shstrtab",
+            "type": 3,
+            "file_offset": 38800,
+            "bytes": 260
+          }
+        ]
+      }
+    }
+  ],
+  "all_other_bytes_equal": true,
+  "identical_ranges": [
+    {
+      "offset": 0,
+      "bytes": 16071088,
+      "sha256": "f14b5c7d0a07d96da42c5d6a74de6f4b203d4a43a71c1f844e09e9e6bfc5528e"
+    },
+    {
+      "offset": 16095048,
+      "bytes": 1125872,
+      "sha256": "4bcfa2b4da9098aea61547b8a9c7e40f74dff1a82f42e75cb45075bf31d32bcb"
+    },
+    {
+      "offset": 17261840,
+      "bytes": 435922660,
+      "sha256": "da89cfc5a8109843a9bee74a3983d7e067661fe311a0bfd6caf67067c724da41"
+    }
+  ],
+  "preserved": {
+    "init": {
+      "sha256": "8ad0be3aec240977060e25ba1193ad80f6ef596ffe47392e3d5b5b79c0ee4a05",
+      "bytes": 20733,
+      "unchanged": true
+    },
+    "usr/lib/appFw.so": {
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "bytes": 79015712,
+      "unchanged": true
+    },
+    "usr/lib/libObj.so": {
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "bytes": 2876600,
+      "unchanged": true
+    },
+    "setting/Backup.bin": {
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+      "bytes": 2229740,
+      "unchanged": true
+    },
+    "usr/kmod/backup.ko": {
+      "sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "bytes": 144976,
+      "unchanged": true
+    },
+    "usr/kmod/liro.ko": {
+      "sha256": "b4bd80cc614751e0092ee19e89cb90632db580bc01f23f1a1df23544e9b10186",
+      "bytes": 121488,
+      "unchanged": true
+    }
+  },
+  "effective_entry_delta": {
+    "bootin_pt_load_changed": true,
+    "bootin_text_changed": true,
+    "im_pt_load_equal": true,
+    "im_differences_only_in_nonloaded_comment": true
+  },
+  "entry_boundary": {
+    "init_line_211": " if [ \"$verify_rc\" != 0 ] || [ \"$list_rc\" != 0 ] || [ \"$true_rc\" != 0 ]; then",
+    "bootin_line_288": " FX3_TOUCH_PANEL=headless_touch_config FX3_RM_EMPTY=cache-replay-v1 FX3_MEDIA_OBSERVE=passive-v1 FX3_OSD_QUEUE_OWNER=native-receiver-v1 FX3_DISPLAY_OBSERVE=passive-v1 FX3_SYS_UUD=audited-run-preset-v1 FX3_SYS_TCMODE=headless-mode0-v1 FX3_OSD_LIFETIME=observe-v1 FX3_PEAKING=headless-config-v1 FX3_OSD_HEADLESS=software-ring-v1 FX3_CAPID_STORAGE=reserved-v1 FX3_BOOT_TAIL=audited-panel-hdmi-v1 FX3_HDMI_BOOT=disconnected-inactive-v1 FX3_SKD_HW=unavailable-rom-v1 FX3_PANEL_CONFIG=captured-enum2-consumer-v1 FX3_DIGITAL_LEVEL=disabled-sensor-op3-v1 FX3_BOOT_DEFERRED=muted-path3-v1 FX3_PIN_GRAPH=empty-owned-mode1-v1 FX3_BOOT_REPLY=timecode-getfunc-muted-v1 FX3_ADF_FILE=muted-user-v1 FX3_ADF_MUTED=silent-storage-v1 FX3_LCD_OSD=captured-v1 FX3_RELEASE_INHIBIT=idle-only-v1 FX3_MONITOR_LUT=inactive-identity-v1 FX3_CEC_POWER=software-disconnected-v1 FX3_HDMI_TC=inactive-disabled-v1 FX3_SA_ADDRESS=source-ranges-v1 FX3_VDF_OBSERVE=1 FX3_HDMI_AUDIO=inactive-format-v1 FX3_HDMI_PHOTO=inactive-preset-v1 FX3_REMOTE_DMM=two-slot-storage-v1 FX3_DISPLAY_INFO=software-640x480-v1 FX3_VDF_CONFIG=acceptance-shadow-v1 FX3_VDF_PLANE=double-cache-v1 FX3_HDMI_REGISTRATION=software-v1 FX3_CP_VERSION_TRANSPORT=unavailable-v1 LD_LIBRARY_PATH=/simulation:/usr/lib:/lib LD_PRELOAD=/simulation/fx3-skd-hw-unavailable-v1.so:/simulation/fx3-capid-v1.so:/simulation/fx3-osd-headless-v5.so:/simulation/fx3-osd-lifetime-v2.so:/simulation/fx3-preset-context-v2-screen.so:/simulation/fx3-timecode-capture-v1.so:/simulation/fx3-hdmi-registration-v1.so:/simulation/fx3-gpe-observe-v7.so:/simulation/signal-observe-v2.so:/simulation/ioctl-trace.so:/simulation/fx3-icrypt-observe-v1.so:/simulation/fx3-timer-observe-v1.so:/simulation/fx3-ui-gate-v1.so:/usr/lib/libInfraCrypt.so:/simulation/fx3-backup-return-v1.so:/simulation/fx3-rm-empty-provider-v3-setup.so:/simulation/fx3-media-observe-v3-uipc.so /usr/bin/bootin.elf 'target=qemu ' dmode=3 &",
+    "probe": [
+      {
+        "line": 202,
+        "preload_count": 9,
+        "command": "/lib/ld-linux-aarch64.so.1 --verify /usr/bin/im.elf"
+      },
+      {
+        "line": 205,
+        "preload_count": 9,
+        "command": "/lib/ld-linux-aarch64.so.1 --library-path /lib:/usr/lib --list /usr/bin/im.elf"
+      },
+      {
+        "line": 208,
+        "preload_count": 9,
+        "command": "/bin/busybox true"
+      }
+    ],
+    "preload_count": 17,
+    "preloads": [
+      {
+        "path": "/simulation/fx3-skd-hw-unavailable-v1.so",
+        "sha256": "9f714d6123f1b220101ec7c240e33dd2b02a94c6d6011f77891a28e452367084"
+      },
+      {
+        "path": "/simulation/fx3-capid-v1.so",
+        "sha256": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e"
+      },
+      {
+        "path": "/simulation/fx3-osd-headless-v5.so",
+        "sha256": "816bbf9019ff422c2e24ca5a601a41dc144fa82e7baf39a563d638a55a841dbb"
+      },
+      {
+        "path": "/simulation/fx3-osd-lifetime-v2.so",
+        "sha256": "267629249407e7d3f319647330d45a0db73c5be0fae3b6fa302594b044f8f468"
+      },
+      {
+        "path": "/simulation/fx3-preset-context-v2-screen.so",
+        "sha256": "eb55680196806fb86958d632c6aed939eae91aa1ef928690a4a7d21d6a76c170"
+      },
+      {
+        "path": "/simulation/fx3-timecode-capture-v1.so",
+        "sha256": "ec31fbc7197235bfad20795f2980ab78a002f1761a5b8c94da0b7e0b4636bd94"
+      },
+      {
+        "path": "/simulation/fx3-hdmi-registration-v1.so",
+        "sha256": "756a79fe1ed104208287b31ec99ad9282723b479ff4e8b0e5cfaaecaac9e1987"
+      },
+      {
+        "path": "/simulation/fx3-gpe-observe-v7.so",
+        "sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4"
+      },
+      {
+        "path": "/simulation/signal-observe-v2.so",
+        "sha256": "4e4d9b6a87354c7308c5f8a18b08d9f02c354e3cc6a1e9388d4fb8a12dc11695"
+      },
+      {
+        "path": "/simulation/ioctl-trace.so",
+        "sha256": "f2799333d67b4b118634e273f50f7d48106a228c1c40132075d923f040ca0b74"
+      },
+      {
+        "path": "/simulation/fx3-icrypt-observe-v1.so",
+        "sha256": "2a62c7977f5b16825d01421598d58ec611b3e3c1a0d091ef75ac35944638b3ff"
+      },
+      {
+        "path": "/simulation/fx3-timer-observe-v1.so",
+        "sha256": "3b828ba31352492ab4bd4b76857ece4b30cef5241bb8ed0223fb75f9b7153b1b"
+      },
+      {
+        "path": "/simulation/fx3-ui-gate-v1.so",
+        "sha256": "54eeed923a6412cd2c6743f6e8c968d1ede71b92aa79aca4575868ebccc4a9ec"
+      },
+      {
+        "path": "/usr/lib/libInfraCrypt.so",
+        "sha256": "d3140522c90c0d1e5d75dca06f0f18f58b628d8f8dd6b29b808aaf205cfd842b"
+      },
+      {
+        "path": "/simulation/fx3-backup-return-v1.so",
+        "sha256": "68e13aafa30376e96804e3d2e73d3e760f466a96090ae17055ecab129561f8e9"
+      },
+      {
+        "path": "/simulation/fx3-rm-empty-provider-v3-setup.so",
+        "sha256": "6acb0e52e610cb0d13721f38fcf1c7c27b0e5a48e687d7a4feda5fde9f9bcd14"
+      },
+      {
+        "path": "/simulation/fx3-media-observe-v3-uipc.so",
+        "sha256": "179c74c396af95e920da7549e4ce4f8c6f9cb1bcc5ea8edf6800ff5040abeb44"
+      }
+    ],
+    "fx6_av_present": false,
+    "fx6_cp_present": false
+  },
+  "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "fixed_artifacts": {
+    "qemu_binary": {
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+      "matches_baseline": true,
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb"
+    },
+    "fx3_kernel": {
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "matches_baseline": true,
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin"
+    },
+    "fx3_dtb_full_binary": {
+      "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+      "matches_baseline": true,
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb"
+    },
+    "software_guest_cpio": {
+      "sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+      "matches_baseline": true,
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio"
+    },
+    "english_generation4_backup": {
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+      "matches_baseline": true,
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin"
+    }
+  },
+  "builder_sha256": "8a54dc4b67c5f9f9584f5b5f2ddbbf8d64bcd7d676393b0baf7eaa53eae4f6b4",
+  "builder_manifest_sha256": "de1b7cacc595903e01c8db3e927893bc37232949846ae4005818e7ccd513e5d2",
+  "old_original_elf_gate": {
+    "baseline_cpio_sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862",
+    "original_elf_count": 20,
+    "changed_or_missing": [
+      "usr/bin/bootin.elf",
+      "usr/bin/im.elf"
+    ],
+    "parent_order_errors": [],
+    "old_safe_to_unpack_would_be": false
+  },
+  "limits": [
+    "no guest execution or dynamic loader result",
+    "FX3 appFw/libObj/Backup remain in candidate",
+    "no FX6 AV or CP added",
+    "manifest platform data verified but no QEMU command generated"
+  ]
+}

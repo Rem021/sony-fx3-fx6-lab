@@ -1,0 +1,158 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000132b28 <_ZN3mpr8datasize18CreateHEIFDataSizeERNS0_18CalcStillSizeParamEPNS0_17StillDataSizeInfoE>:
+  132b28: a9b47bfd     	stp	x29, x30, [sp, #-0xc0]!
+  132b2c: 910003fd     	mov	x29, sp
+  132b30: a90153f3     	stp	x19, x20, [sp, #0x10]
+  132b34: aa0003f4     	mov	x20, x0
+  132b38: 52800500     	mov	w0, #0x28               // =40
+  132b3c: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  132b40: 9101c3b9     	add	x25, x29, #0x70
+  132b44: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  132b48: 291003bf     	stp	wzr, w0, [x29, #0x80]
+  132b4c: aa0103f5     	mov	x21, x1
+  132b50: b9400680     	ldr	w0, [x20, #0x4]
+  132b54: aa1903e1     	mov	x1, x25
+  132b58: a90363f7     	stp	x23, x24, [sp, #0x30]
+  132b5c: 9101d3b8     	add	x24, x29, #0x74
+  132b60: a90573fb     	stp	x27, x28, [sp, #0x50]
+  132b64: 9101e3b7     	add	x23, x29, #0x78
+  132b68: 290e7fbf     	stp	wzr, wzr, [x29, #0x70]
+  132b6c: 9101f3b6     	add	x22, x29, #0x7c
+  132b70: 290f7fbf     	stp	wzr, wzr, [x29, #0x78]
+  132b74: 29117fbf     	stp	wzr, wzr, [x29, #0x88]
+  132b78: 29127fbf     	stp	wzr, wzr, [x29, #0x90]
+  132b7c: 29137fbf     	stp	wzr, wzr, [x29, #0x98]
+  132b80: 29147fbf     	stp	wzr, wzr, [x29, #0xa0]
+  132b84: 97fd3437     	bl	0x7fc60 <Backup_read@plt>
+  132b88: b9400a80     	ldr	w0, [x20, #0x8]
+  132b8c: aa1803e1     	mov	x1, x24
+  132b90: 97fd3434     	bl	0x7fc60 <Backup_read@plt>
+  132b94: 910263a1     	add	x1, x29, #0x98
+  132b98: aa1403e0     	mov	x0, x20
+  132b9c: 97fd3e6d     	bl	0x82550 <_ZN3mpr8datasize11GetPixelNumERNS0_17CalcStillPixelNumEPj@plt>
+  132ba0: 2a0003f3     	mov	w19, w0
+  132ba4: b9409ba1     	ldr	w1, [x29, #0x98]
+  132ba8: 52948000     	mov	w0, #0xa400             // =41984
+  132bac: 72a003e0     	movk	w0, #0x1f, lsl #16
+  132bb0: 6b00003f     	cmp	w1, w0
+  132bb4: 540000e9     	b.ls	0x132bd0 <_ZN3mpr8datasize18CreateHEIFDataSizeERNS0_18CalcStillSizeParamEPNS0_17StillDataSizeInfoE+0xa8>
+  132bb8: b9400e80     	ldr	w0, [x20, #0xc]
+  132bbc: aa1703e1     	mov	x1, x23
+  132bc0: 97fd3428     	bl	0x7fc60 <Backup_read@plt>
+  132bc4: b9401280     	ldr	w0, [x20, #0x10]
+  132bc8: aa1603e1     	mov	x1, x22
+  132bcc: 97fd3425     	bl	0x7fc60 <Backup_read@plt>
+  132bd0: 910203a4     	add	x4, x29, #0x80
+  132bd4: b9401680     	ldr	w0, [x20, #0x14]
+  132bd8: aa0403e1     	mov	x1, x4
+  132bdc: f90033a4     	str	x4, [x29, #0x60]
+  132be0: 910233bc     	add	x28, x29, #0x8c
+  132be4: 910243bb     	add	x27, x29, #0x90
+  132be8: 910253ba     	add	x26, x29, #0x94
+  132bec: 97fd341d     	bl	0x7fc60 <Backup_read@plt>
+  132bf0: 910223a3     	add	x3, x29, #0x88
+  132bf4: b9401e80     	ldr	w0, [x20, #0x1c]
+  132bf8: aa0303e1     	mov	x1, x3
+  132bfc: f90037a3     	str	x3, [x29, #0x68]
+  132c00: 97fd3418     	bl	0x7fc60 <Backup_read@plt>
+  132c04: b9402280     	ldr	w0, [x20, #0x20]
+  132c08: aa1c03e1     	mov	x1, x28
+  132c0c: 97fd3415     	bl	0x7fc60 <Backup_read@plt>
+  132c10: aa1b03e1     	mov	x1, x27
+  132c14: 52800f60     	mov	w0, #0x7b               // =123
+  132c18: 72a000a0     	movk	w0, #0x5, lsl #16
+  132c1c: 97fd3411     	bl	0x7fc60 <Backup_read@plt>
+  132c20: aa1a03e1     	mov	x1, x26
+  132c24: 528003e0     	mov	w0, #0x1f               // =31
+  132c28: 72a05f20     	movk	w0, #0x2f9, lsl #16
+  132c2c: 97fd340d     	bl	0x7fc60 <Backup_read@plt>
+  132c30: 91009282     	add	x2, x20, #0x24
+  132c34: 9102a3a3     	add	x3, x29, #0xa8
+  132c38: a9400440     	ldp	x0, x1, [x2]
+  132c3c: 52800042     	mov	w2, #0x2                // =2
+  132c40: a9000460     	stp	x0, x1, [x3]
+  132c44: 910283a1     	add	x1, x29, #0xa0
+  132c48: f8434280     	ldur	x0, [x20, #0x34]
+  132c4c: b9403e94     	ldr	w20, [x20, #0x3c]
+  132c50: f9005fa0     	str	x0, [x29, #0xb8]
+  132c54: 52800460     	mov	w0, #0x23               // =35
+  132c58: 72a05f20     	movk	w0, #0x2f9, lsl #16
+  132c5c: 97fd3a99     	bl	0x816c0 <Backup_nread@plt>
+  132c60: 910293a1     	add	x1, x29, #0xa4
+  132c64: 5280cd40     	mov	w0, #0x66a              // =1642
+  132c68: 52800082     	mov	w2, #0x4                // =4
+  132c6c: 72a000a0     	movk	w0, #0x5, lsl #16
+  132c70: 97fd3a94     	bl	0x816c0 <Backup_nread@plt>
+  132c74: 295407a0     	ldp	w0, w1, [x29, #0xa0]
+  132c78: 0b010000     	add	w0, w0, w1
+  132c7c: b9009fa0     	str	w0, [x29, #0x9c]
+  132c80: aa1903e0     	mov	x0, x25
+  132c84: 97fd411b     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132c88: aa1803e0     	mov	x0, x24
+  132c8c: 97fd4119     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132c90: aa1703e0     	mov	x0, x23
+  132c94: 97fd4117     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132c98: aa1603e0     	mov	x0, x22
+  132c9c: 97fd4115     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132ca0: f94033a4     	ldr	x4, [x29, #0x60]
+  132ca4: aa0403e0     	mov	x0, x4
+  132ca8: 97fd4112     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132cac: 910213a0     	add	x0, x29, #0x84
+  132cb0: 97fd4110     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132cb4: f94037a3     	ldr	x3, [x29, #0x68]
+  132cb8: aa0303e0     	mov	x0, x3
+  132cbc: 97fd410d     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132cc0: aa1c03e0     	mov	x0, x28
+  132cc4: 97fd410b     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132cc8: aa1b03e0     	mov	x0, x27
+  132ccc: 97fd4109     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132cd0: aa1a03e0     	mov	x0, x26
+  132cd4: 97fd4107     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132cd8: 910273a0     	add	x0, x29, #0x9c
+  132cdc: 97fd4105     	bl	0x830f0 <_ZN3mpr8datasize13AlignDataSizeEPj@plt>
+  132ce0: 295083a1     	ldp	w1, w0, [x29, #0x84]
+  132ce4: b9408fa2     	ldr	w2, [x29, #0x8c]
+  132ce8: b94097a3     	ldr	w3, [x29, #0x94]
+  132cec: 0b020000     	add	w0, w0, w2
+  132cf0: b94083a2     	ldr	w2, [x29, #0x80]
+  132cf4: b9409fa4     	ldr	w4, [x29, #0x9c]
+  132cf8: 0b010042     	add	w2, w2, w1
+  132cfc: b94077a1     	ldr	w1, [x29, #0x74]
+  132d00: 0b020002     	add	w2, w0, w2
+  132d04: b94093a0     	ldr	w0, [x29, #0x90]
+  132d08: b94073a5     	ldr	w5, [x29, #0x70]
+  132d0c: 0b030003     	add	w3, w0, w3
+  132d10: b9407fa0     	ldr	w0, [x29, #0x7c]
+  132d14: a94363f7     	ldp	x23, x24, [sp, #0x30]
+  132d18: 0b000021     	add	w1, w1, w0
+  132d1c: 11001080     	add	w0, w4, #0x4
+  132d20: 0b050084     	add	w4, w4, w5
+  132d24: 0b000021     	add	w1, w1, w0
+  132d28: b9407ba0     	ldr	w0, [x29, #0x78]
+  132d2c: 0b020021     	add	w1, w1, w2
+  132d30: 11001000     	add	w0, w0, #0x4
+  132d34: 0b030021     	add	w1, w1, w3
+  132d38: 0b040000     	add	w0, w0, w4
+  132d3c: 0b020000     	add	w0, w0, w2
+  132d40: 9102a3a2     	add	x2, x29, #0xa8
+  132d44: 0b030000     	add	w0, w0, w3
+  132d48: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+  132d4c: a9400c42     	ldp	x2, x3, [x2]
+  132d50: a94573fb     	ldp	x27, x28, [sp, #0x50]
+  132d54: a9000ea2     	stp	x2, x3, [x21]
+  132d58: f9405fa2     	ldr	x2, [x29, #0xb8]
+  132d5c: b9001ab4     	str	w20, [x21, #0x18]
+  132d60: f9000aa2     	str	x2, [x21, #0x10]
+  132d64: 52807d02     	mov	w2, #0x3e8              // =1000
+  132d68: 1b027c00     	mul	w0, w0, w2
+  132d6c: 1b027c21     	mul	w1, w1, w2
+  132d70: 290382a1     	stp	w1, w0, [x21, #0x1c]
+  132d74: 2a1303e0     	mov	w0, w19
+  132d78: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  132d7c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  132d80: a8cc7bfd     	ldp	x29, x30, [sp], #0xc0
+  132d84: d65f03c0     	ret

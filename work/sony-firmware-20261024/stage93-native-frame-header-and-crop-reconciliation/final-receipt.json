@@ -1,0 +1,90 @@
+{
+  "schema": "fx3-stage93-native-frame-header-crop/1",
+  "created_utc": "2026-10-27T08:24:50.173411+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/README.md",
+      "bytes": 5441,
+      "sha256": "6bdda4aae6eb281fb70872b35ce6c0643c57efad31a34e9e381bbb383abe82a7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/completed-evidence-review.json",
+      "bytes": 815,
+      "sha256": "d6b1bfb7fa6861f2764e6b464ad098b3ddfcfdb491410313ddff0cf9eccc3980"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/frame_crop.py",
+      "bytes": 16283,
+      "sha256": "31a7a4937bd92a382ea5a99c730e4fcd3996958471e95f46a2691aea6d6413ce"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/goal-status-after.json",
+      "bytes": 277465,
+      "sha256": "8720d104d76b62538871020c30f49351121077c65f5b5531b54d3c197745fcc1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/goal-status-before.json",
+      "bytes": 274636,
+      "sha256": "6254df46b7c499a01976425f84bf4431fba02c7caf519f445c3a3e6cca4985e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/native-provenance-and-boundaries.json",
+      "bytes": 4807,
+      "sha256": "845e46af771baaba751368453f9774b0f664f26aa8364dabe09c5200ec740336"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/review-attempt-initial-error.json",
+      "bytes": 258,
+      "sha256": "276d0b108e322c0f5ec7a6533dedab9f49764b7eb138878ab3ff53fc4ee81376"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/review-attempt-initial.py",
+      "bytes": 15743,
+      "sha256": "b8bb23a5be90780d45ca1ea4eab6337e4b222a223a21dc1b7f7e3f13cc93eb10"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/review_and_seal.py",
+      "bytes": 15743,
+      "sha256": "472f597a41863b4e0bb480f417be360ed65e9475f1b109be9a1bd383c9cef0a1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/run-initial-20261027/executed-source.py",
+      "bytes": 16283,
+      "sha256": "31a7a4937bd92a382ea5a99c730e4fcd3996958471e95f46a2691aea6d6413ce"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/run-initial-20261027/frame-crop-results.json",
+      "bytes": 753447,
+      "sha256": "560523a2e32d468fdff830fb9fe4630d7b90207f17b28de4931498bf9fc13578"
+    }
+  ],
+  "previous_manifest_sha256": "f4ab27250570923bcd4e4eccd5e0de20636f851c186c9b51252006579111f69f",
+  "operations": {
+    "status": "PASS_NATIVE_FRAME_HEADER_AND_CROP_NUMERIC_AGREEMENT_WITH_REFERENCE_BOUNDARY",
+    "created_utc": "2026-10-27T08:24:50.173411+00:00",
+    "prior_sealed_files_verified": 11,
+    "historical_stage84_files_verified": 17,
+    "frame_cases": 6,
+    "crop_cases": 4,
+    "formal_phases": 44,
+    "no_update_native_returns": 3,
+    "new_reference_stops": 3,
+    "native_fresh_frame_parameter_handle_initially_zero": true,
+    "native_crop1080_result4_unit2_and_aligned1088_result0": true,
+    "review_scope": "Same-agent source/saved-result review plus exact full-image/page/stack checks by execution harness. No independent engine or real camera acceptance.",
+    "actual_same_MAIN_SPS_video_hardware_IRQ_or_recovery": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "6254df46b7c499a01976425f84bf4431fba02c7caf519f445c3a3e6cca4985e5",
+    "after_sha256": "8720d104d76b62538871020c30f49351121077c65f5b5531b54d3c197745fcc1"
+  },
+  "readme_index_before_sha256": "5490aac48c53ab5137305107573a6eb9be271312c6d09da1287c5603daeffff4",
+  "readme_index_after_sha256": "a50ca0d3010a65e13684fa829818197a616304d37c8572af469858f201c096cd",
+  "readme_index_entry": "- [2026-10-27 FX3 原新帧、帧头与1080参数关系](<work/sony-firmware-20261024/stage93-native-frame-header-and-crop-reconciliation/README.md>)：原frame构造/header与crop4×2核对1088→1080，6帧/4裁剪44阶段；更新指针先赋后停GP引用前，非真实MAIN/SPS/视频/硬件恢复，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

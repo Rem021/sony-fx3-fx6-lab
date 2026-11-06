@@ -1,0 +1,9 @@
+{
+  "status": "SELF_WRITTEN_GUARD_SCOPE_TOO_NARROW",
+  "script_sha256": "90f07cb362bc9284461d2330de7684357e3396deb36d3682f9cda814d8bfcf3e",
+  "stopped_original_PC": "0x54ad58",
+  "original_write_address": "0xff430c",
+  "reason": "Earlier bootstrap guest permits source-image writes only in bootstrap globals. Later original region setup uses separate global roots in 0xff4308..0xff4360. Add that exact bounded original data range; no hardware or success reply is substituted.",
+  "not_Sony_firmware_failure": true,
+  "device_actions": 0
+}

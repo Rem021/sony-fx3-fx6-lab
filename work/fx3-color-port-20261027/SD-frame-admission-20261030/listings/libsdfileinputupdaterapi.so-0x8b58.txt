@@ -1,0 +1,32 @@
+_ZN7Updater18UFPDecryptorModuleC2Ev
+00008b58 stp       x29, x30, [sp, #-0x20]!
+00008b5c mov       x29, sp
+00008b60 stp       x19, x20, [sp, #0x10]
+00008b64 mov       x19, x0
+00008b68 bl        #0x7340 ; _ZN7Updater15DecryptorModuleC2Ev
+00008b6c adrp      x0, #0x1d000
+00008b70 mov       x1, #0
+00008b74 str       xzr, [x19, #0x4b8]
+00008b78 str       xzr, [x19, #0x530]
+00008b7c ldr       x0, [x0, #0xf68]
+00008b80 add       x0, x0, #0x10
+00008b84 str       x0, [x19]
+00008b88 add       x0, x19, #0x4c0
+00008b8c bl        #0x72f0 ; pthread_mutex_init
+00008b90 add       x0, x19, #0x4f0
+00008b94 mov       x1, #0
+00008b98 bl        #0x7140 ; pthread_cond_init
+00008b9c add       x0, x19, #0xb0
+00008ba0 mov       x2, #0x400
+00008ba4 mov       w1, #0xff
+00008ba8 bl        #0x7230 ; memset
+00008bac bl        #0x7620 ; Dec_ScrambleInit
+00008bb0 b         #0x8bc8
+00008bb4 mov       x20, x0
+00008bb8 mov       x0, x19
+00008bbc bl        #0x76b0 ; _ZN7Updater15DecryptorModuleD2Ev
+00008bc0 mov       x0, x20
+00008bc4 bl        #0x7830 ; _Unwind_Resume
+00008bc8 ldp       x19, x20, [sp, #0x10]
+00008bcc ldp       x29, x30, [sp], #0x20
+00008bd0 ret       

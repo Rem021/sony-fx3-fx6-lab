@@ -1,0 +1,109 @@
+{
+  "schema": "fx3-stage89-native-pending-cache-origin/1",
+  "created_utc": "2026-10-27T07:28:56.379756+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/README.md",
+      "bytes": 5390,
+      "sha256": "0a591c97084fdc83de16b8f4da617425399f71a5f8f1173e28d6b0a0d828e9bc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/cache_origin.py",
+      "bytes": 15849,
+      "sha256": "e6b76c0e6bfd10a2ccd92ddeb3dbf9b7cf69bbe8156a138aee0cf809909ad330"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/completed-evidence-review.json",
+      "bytes": 838,
+      "sha256": "02049bccbd2c9a54aa2a17e704612011692d02e9e8da00f7ba70470995974db6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/goal-status-after.json",
+      "bytes": 267272,
+      "sha256": "d1f82e9fce0114ef2bcaf52640754335aee13dd9fa54ebdc885412a6384dae60"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/goal-status-before.json",
+      "bytes": 264179,
+      "sha256": "e96148901af2f2a342c0c408993f7a6d965b96d2d8c481698437bbc958a31ce9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/native-provenance-audit.json",
+      "bytes": 3689,
+      "sha256": "5ad95a4ffef8b8008e775054b245cb359305b7172bb6869cc50a7aeee5952fbd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/public-source-refresh-20261027/a6700-readme.md",
+      "bytes": 2961,
+      "sha256": "dac6d70739bfcfa51710b4f8613f4d16166ab7bde04709a7da1a974a9fc020aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/public-source-refresh-20261027/a7c2-readme.md",
+      "bytes": 38247,
+      "sha256": "b7851898866e60f835738a358257b6c6845350460fe2413589cdca72e4546450"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/public-source-refresh-20261027/executed-source.py",
+      "bytes": 3298,
+      "sha256": "c1926aec52b13755653682c99dae1b06ef0c9af9de3cfba33022c288a77e91e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/public-source-refresh-20261027/rea-firmware-guide.md",
+      "bytes": 15782,
+      "sha256": "60bbc962e2b2456b1e641ed60bc400ef64ab889de4a280f76b0150865e6854b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/public-source-refresh-20261027/receipt.json",
+      "bytes": 2811,
+      "sha256": "a083af709266e2569362676306c2558ffe6f75c62c7bd8030f0584692fc191a2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/refresh_public_sources.py",
+      "bytes": 3298,
+      "sha256": "c1926aec52b13755653682c99dae1b06ef0c9af9de3cfba33022c288a77e91e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/review_and_seal.py",
+      "bytes": 15568,
+      "sha256": "748822d725dded5f5a861498ba735cbd9c7b6a9e67508b21182e8e98510bbc02"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/run-initial-20261027/cache-origin-results.json",
+      "bytes": 1922545,
+      "sha256": "967a598412db430a394930643a45321704d0d851d7677322070b587b75e6cf7f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage89-native-pending-cache-origin/run-initial-20261027/executed-source.py",
+      "bytes": 15849,
+      "sha256": "e6b76c0e6bfd10a2ccd92ddeb3dbf9b7cf69bbe8156a138aee0cf809909ad330"
+    }
+  ],
+  "previous_manifest_sha256": "9104b8d2f6a5abb8a2470d3cfbfeac4da25fccaac15ecb8bbdfcf318cdf0914a",
+  "operations": {
+    "status": "PASS_NATIVE_PENDING_CACHE_PROVENANCE_WITH_DECLARED_RAW_INPUTS",
+    "created_utc": "2026-10-27T07:28:56.379756+00:00",
+    "prior_sealed_files_verified": 8,
+    "arena_cases": 8,
+    "existing_buffer_relay_cases": 12,
+    "formal_bounded_phases": 66,
+    "native_output_copies": 4,
+    "empty_record_null_handle_separate_from_existing_owned_buffer": true,
+    "pending_bit_set_before_unexecuted_allocation_not_completion": true,
+    "c90_cache_not_encoder_success_ACK": true,
+    "review_scope": "Same-agent original-instruction and saved-result review; whole-region checks performed by execution harness. No independent engine or real camera acceptance.",
+    "real_metadata_production_ownership_scheduling_MAIN_hardware_recovery": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "e96148901af2f2a342c0c408993f7a6d965b96d2d8c481698437bbc958a31ce9",
+    "after_sha256": "d1f82e9fce0114ef2bcaf52640754335aee13dd9fa54ebdc885412a6384dae60"
+  },
+  "readme_index_before_sha256": "4903982431bf1732fb835811b59ff806fbc575e3141392985f8bdc9edbf03938",
+  "readme_index_after_sha256": "8b8016d7750901529c19b93f16a5e510e49aba02b16aae6da619548434ca8937",
+  "readme_index_entry": "- [2026-10-27 FX3 待处理缓存的原初始化与转存来源](<work/sony-firmware-20261024/stage89-native-pending-cache-origin/README.md>)：原空8字节记录/已有缓冲分别验证，共20例66阶段；c90是帧参数缓存，不是编码成功ACK。真实元数据/所有权/调度/MAIN与硬件恢复未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

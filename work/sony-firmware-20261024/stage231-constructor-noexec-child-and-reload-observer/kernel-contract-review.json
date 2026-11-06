@@ -1,0 +1,79 @@
+{
+  "source_only": true,
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/fork.c",
+      "sha256": "c98b5a4f72ee235b14d2ff2c96f22e280b9176fadccaa05ee8a224dd4cf0bb37",
+      "first_line": 1705,
+      "last_line": 1718,
+      "range_sha256": "0cec79b05bfe4275d697a451bae00e6558fb4c51c94629a3ee681d51b46c791b",
+      "required_tokens": [
+        "p->exit_signal = (clone_flags & CSIGNAL);"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/source-reference/exit.c",
+      "sha256": "d514e84186bcf7a66e78a5d474f4fd26d199b9f26c4bf53324b9bbcd51b00307",
+      "first_line": 976,
+      "last_line": 1000,
+      "range_sha256": "b9a37c74c317da6103612bfd96baaa0180e6fc57f8a4cbdbaea092ab52fe20ab",
+      "required_tokens": [
+        "__WCLONE",
+        "p->exit_signal != SIGCHLD"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/source-reference/exit.c",
+      "sha256": "d514e84186bcf7a66e78a5d474f4fd26d199b9f26c4bf53324b9bbcd51b00307",
+      "first_line": 1480,
+      "last_line": 1495,
+      "range_sha256": "0817d118dc8180fd6ef466696f7ca3244b836bcf96b588dadd3aa93bac5ac41e",
+      "required_tokens": [
+        "&tsk->children"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage225-im-reaper-and-loader-ABI-audit/source-reference/exit.c",
+      "sha256": "d514e84186bcf7a66e78a5d474f4fd26d199b9f26c4bf53324b9bbcd51b00307",
+      "first_line": 1551,
+      "last_line": 1568,
+      "range_sha256": "2e54e60f9ef79ea96bf86bbcc8fe072e5cf32c53245bea505b62b9cc834afad9",
+      "required_tokens": [
+        "tsk = current",
+        "__WNOTHREAD",
+        "while_each_thread"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/proc-base.c",
+      "sha256": "0492a344e0a747e80eb255fb4ed52346961720eaca178cee38b3dc1e3ccb92f0",
+      "first_line": 1667,
+      "last_line": 1693,
+      "range_sha256": "abae0766175d0ea6da9b7842abbe32781c34fcc891bbb6cbe2f32eab115a8cac",
+      "required_tokens": [
+        "get_next_ino()",
+        "get_task_pid(task, PIDTYPE_PID)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/source-reference/proc-base.c",
+      "sha256": "0492a344e0a747e80eb255fb4ed52346961720eaca178cee38b3dc1e3ccb92f0",
+      "first_line": 1759,
+      "last_line": 1791,
+      "range_sha256": "d3484ea6a07e9f4c7e031436cf0dbf840832db4bd4eb1e58408efb308a3fe4b3",
+      "required_tokens": [
+        "get_proc_task(inode)",
+        "return 0;"
+      ]
+    }
+  ],
+  "clone_flags": 0,
+  "no_exec": true,
+  "wait_options": "0xa0000001",
+  "WNOHANG": 1,
+  "WCLONE": 2147483648,
+  "WNOTHREAD": 536870912,
+  "same_creator_tid_and_retained_current_proc_inode_required": true,
+  "other_thread_clone_PID_reuse_excluded_in_reference_model": true,
+  "Sony_actual_kernel_behavior_verified": false
+}

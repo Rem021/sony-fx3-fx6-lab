@@ -1,0 +1,177 @@
+{
+  "outcome": "failed",
+  "menu_acceptance": "failed",
+  "progress": "partial: steps1-6 complete; step7 native+visual passed but explicit confirm refused; step8 not executed",
+  "task_id": "task_9710706aa341",
+  "dispatch_id": "ctx_bbaad9d77bcf",
+  "report": "REPORT.md",
+  "run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r23-vm-9710706aa341",
+  "native_run_dir": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-e2699e9d",
+  "scripted_navigation": true,
+  "visual_review_at_click": false,
+  "model_received_at": "unknown",
+  "model_review_completed_at": "unknown",
+  "plan_sha256": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+  "start_count": 1,
+  "explicit_attempts": 7,
+  "accepted_keys": 7,
+  "native_down_up_done_steps": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "actual_semantic_passed_steps": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "successful_explicit_confirms": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "unqueued_recoveries": 0,
+  "step8_executed": false,
+  "first_qualified_frame_observed_seconds": 44.281764917017426,
+  "first_frame_budget_seconds": 180,
+  "duration_seconds": 165.46621420799056,
+  "total_budget_seconds": 480,
+  "failure": {
+    "step": 7,
+    "action": "confirm",
+    "reason": "current_review_or_loaded_image_not_ready",
+    "original_confirm_button_clicked": false,
+    "specific_condition_at_eval": "unknown",
+    "capture_after_to_confirm_browser_invoke_ms": 9306.600000023842,
+    "end_after_failure": true,
+    "retry": false
+  },
+  "cleanup": {
+    "UTC": "2026-11-05T00:59:17.542015+00:00",
+    "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+    "runner_pid": 47314,
+    "runner_absent": true,
+    "qemu_pid": 47449,
+    "qemu_absent": true,
+    "port": 60889,
+    "port_closed": true,
+    "locks": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "free": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "free": true
+      }
+    ],
+    "qmp_quit_request": {
+      "execute": "quit",
+      "id": 685
+    },
+    "qmp_quit_ACK": {
+      "return": {},
+      "id": 685
+    },
+    "qemu_exit": 0,
+    "reaped": true,
+    "API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+    "API16_sha256": "1f0175375cf56ba7d5296358bd15bd91ab55fb921540c2f3197d0b12c4669c75",
+    "owned_browser_active": false
+  },
+  "cleanup_errors": [],
+  "alarm_disposition": {
+    "classification": "valid_armed_do_not_cancel_or_dispose",
+    "forced_cancel": false
+  },
+  "API16_restore": {
+    "passed": true,
+    "reason": "guest_acknowledged_and_original_bytes_verified",
+    "timeout_seconds": 20,
+    "elapsed_seconds": 1.3154257910209708,
+    "original_guest_code_written_by_host": false
+  },
+  "web_final_ACK": {
+    "acknowledged": true,
+    "wait_seconds": 0.40912625001510605,
+    "end_reason": "browser_ack",
+    "maximum_wait_seconds": 30.0,
+    "scope": "browser_receipt_delivery_only"
+  },
+  "fixed_inputs_before_after": {
+    "before_counts": {
+      "pins": 2,
+      "source40": 40,
+      "delivery145": 144,
+      "fixed14": 14,
+      "qemu": 1
+    },
+    "after_counts": {
+      "pins": 2,
+      "source40": 40,
+      "delivery145": 144,
+      "fixed14": 14,
+      "qemu": 1
+    },
+    "all_match": true,
+    "delivery_count_explanation": {
+      "wrapper_label": "delivery145",
+      "actual_manifest_members_before_and_after": 144,
+      "SHA256SUMS_lines_and_unique_paths": 145,
+      "difference": "DELIVERY-MANIFEST.json itself; neither original delivery group nor pins checked its own file hash",
+      "supplemental_all_145_verified_after": true,
+      "before_manifest_individual_raw_hash_observation": "not recorded; do not claim independent before 145-file hashing",
+      "supplemental_evidence": "DELIVERY-145-COVERAGE-AUDIT.json"
+    }
+  },
+  "candidate_218_after": true,
+  "authorized_runtime_output_changes": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/preflight-aaf006610b0d2b6e.json",
+      "before_sha256": "3ca2e5c299bff57fdcc04c5be16bd61eafb6051bc128127a8cda2f6bf5cc0442",
+      "after_sha256": "3ca2e5c299bff57fdcc04c5be16bd61eafb6051bc128127a8cda2f6bf5cc0442",
+      "before_bytes": 287145,
+      "after_bytes": 287145,
+      "changed": false
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/STATE-v24.json.tmp",
+      "before_sha256": null,
+      "after_sha256": null,
+      "before_bytes": null,
+      "after_bytes": null,
+      "changed": false
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/STATE-v25-r3.json",
+      "before_sha256": "9472240cfe24a66d419bab871f2f3b26e76d1f281cc664a89e010d8d52912bb9",
+      "after_sha256": "2a2fab811917a0a0cab58f1c34dcc6b66b92bf6bf19bc12c8659dc3b244b862f",
+      "before_bytes": 5678,
+      "after_bytes": 5678,
+      "changed": true
+    }
+  ],
+  "web_key_rejections": {
+    "total": 0,
+    "bytes": 304,
+    "sha256": "5eb4f00bd1d18961cb8587c7ee006f8c7a8f085554b17f6b0442badd632e595f",
+    "note": "zero original key request rejections; independent step7 confirm helper refusal is separately preserved"
+  },
+  "snapshot_tail": {
+    "status": "valid_nontransactional_tail_checkpoint",
+    "snapshot_is_end_state": false,
+    "post_snapshot_event_counts": "unknown"
+  },
+  "scope_limits": "No 4096-key/60-minute/full-menu/recording/device/FX6 acceptance; old r21c failure unchanged; deployed r10 and coordinator ledger untouched."
+}

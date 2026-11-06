@@ -1,0 +1,84 @@
+{
+  "created_utc": "2026-10-26T04:37:03.639910+00:00",
+  "old_stage52_files_and_execution_preserved": true,
+  "incorrect_claim": "stage52 record_format_byte36 label and README/progress descriptions treated single byte at record+36 as input format5.",
+  "correct_scope": "record+28 is input format; +29 accompanying flag. Ten u16 geometry values start+36. Original x26 points record+48 and LDURB[x26-20] reads+28.",
+  "stage52_actual_bytes": {
+    "record28": 0,
+    "record36_low_byte": 5,
+    "record3e_40_geometry": [
+      1920,
+      1080
+    ],
+    "input_format5_proven": false
+  },
+  "unaffected_stage52_scope": "48byte tag copy, selected geometry+3e/+40 and independent queue/slot lifetime observations remain valid.",
+  "new_evidence": "Original typed setters/native event serialization/full frame fill and independent encoder packing carry format5 at+28 to input+f8 and1920x1080 to input+e8/+ea.",
+  "return_scope": "Whole0x1479d8 return1 comes from tail tag24 getter, not aggregate prior tag validity. Missing image/camera controls still return1.",
+  "sources": [
+    "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/run-bounded-string-compare-20261025/frame-lifetime-results.json",
+    "work/sony-firmware-20261024/stage53-native-frame-fill/run-coupled-geometry-20261025/native-frame-fill-results.json"
+  ],
+  "field_instructions": [
+    [
+      {
+        "offset": "0x24d024",
+        "va": "0xffffffc00124d024",
+        "bytes": "40135e38",
+        "asm": "ldurb w0, [x26, #-0x1f]"
+      },
+      {
+        "offset": "0x24d028",
+        "va": "0xffffffc00124d028",
+        "bytes": "65ba0094",
+        "asm": "bl #0xffffffc00127b9bc"
+      },
+      {
+        "offset": "0x24d02c",
+        "va": "0xffffffc00124d02c",
+        "bytes": "e0af01b9",
+        "asm": "str w0, [sp, #0x1ac]"
+      },
+      {
+        "offset": "0x24d030",
+        "va": "0xffffffc00124d030",
+        "bytes": "40035e38",
+        "asm": "ldurb w0, [x26, #-0x20]"
+      },
+      {
+        "offset": "0x24d034",
+        "va": "0xffffffc00124d034",
+        "bytes": "5dba0094",
+        "asm": "bl #0xffffffc00127b9a8"
+      }
+    ],
+    [
+      {
+        "offset": "0x92070",
+        "va": "0xffffffc001092070",
+        "bytes": "01000139",
+        "asm": "strb w1, [x0, #0x40]"
+      },
+      {
+        "offset": "0x92074",
+        "va": "0xffffffc001092074",
+        "bytes": "c0035fd6",
+        "asm": "ret "
+      }
+    ],
+    [
+      {
+        "offset": "0x91f6c",
+        "va": "0xffffffc001091f6c",
+        "bytes": "019c0079",
+        "asm": "strh w1, [x0, #0x4e]"
+      },
+      {
+        "offset": "0x91f70",
+        "va": "0xffffffc001091f70",
+        "bytes": "c0035fd6",
+        "asm": "ret "
+      }
+    ]
+  ]
+}

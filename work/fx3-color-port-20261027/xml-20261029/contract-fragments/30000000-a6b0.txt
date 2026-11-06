@@ -1,0 +1,15 @@
+0000a6b0 stp        x29, x30, [sp, #-0x20]!
+0000a6b4 mov        x29, sp
+0000a6b8 ldr        x0, [x0]
+0000a6bc str        x19, [sp, #0x10]
+0000a6c0 mov        x19, x8
+0000a6c4 cbz        x0, #0xa6e4
+0000a6c8 bl         #0x7500 ; Updater::Xml::DomNode::FirstChild
+0000a6cc cbz        x0, #0xa6e4
+0000a6d0 str        x0, [x19]
+0000a6d4 mov        x0, x19
+0000a6d8 ldr        x19, [sp, #0x10]
+0000a6dc ldp        x29, x30, [sp], #0x20
+0000a6e0 ret        
+0000a6e4 str        xzr, [x19]
+0000a6e8 b          #0xa6d4

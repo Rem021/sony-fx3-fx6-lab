@@ -1,0 +1,51 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap92-media-passive/guest.dtb",
+    "sha256": "a4d687bf2637a4138ac536aa7ed0af7bf0c83448ec349b1073d756938b9f23d9"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap92-media-passive/guest.cpio",
+    "sha256": "cb808c837e48e333b5cf290c06d164aba21740909d4c5dd9ffc67a0dd926a1a0"
+  },
+  "required_markers": [
+    "FX3_AP89_BACKUP_REPLAY_VERIFIED",
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0",
+    "FX3_PRESET_CONTEXT_BOUND",
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS",
+    "FX3_AP89_UUD_DECISION",
+    "FX3_AP89_SCREEN_CREATE",
+    "FX3_AP_IM_ENDMAPS_",
+    "registration_origin=malloc_parent_v1",
+    "FX3_GPE_RESOURCE_BOUND",
+    "FX3_GPE_RESOURCE_REGISTER",
+    "FX3_GPE_SCOPE",
+    "FX3_MEDIA_SCOPE profile=passive-v1 active=1",
+    "FX3_MEDIA_SELFTEST_PASS",
+    "FX3_MEDIA_BOUND module=A",
+    "FX3_MEDIA_BOUND module=D",
+    "FX3_MEDIA_BOUND module=M",
+    "FX3_MEDIA_PARAM",
+    "FX3_MEDIA_NOTIFY",
+    "FX3_MEDIA_MOUNT_RETURN"
+  ],
+  "scope": "AP92 passive only, AP90r2 healthy baseline without synthetic keys; capid44 protocol byte-identical after removing observer export/call; observe original detection/RM/Common/Mount inputs/outputs and native defaults, read-only application references. GPE/Backup/replies/state/seed unchanged. No empty-slot provider, no native getter invocation.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true,
+  "backup_replay": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap88cpr4-e71668cb/backup-after-shutdown.bin",
+    "sha256": "38cf44637c44d3f47d7b8541dddf7ecc443e262f40dec3aec59f7b94d5b8b38f",
+    "bytes": 2232320,
+    "physical": "0x404000000",
+    "mechanism": "boundedguesthelperfixedSHA/twooriginalbankheaders/wholecopy/remapSHA/rollback;5sboundedpreAPhostQMPreadbackwindow",
+    "original_seed_unchanged": true,
+    "unchanged_checksums_live_RAM": true
+  }
+}

@@ -1,0 +1,25 @@
+00004ef0 8020 movs     r0, #0x80
+00004ef2 0490 str      r0, [sp, #0x10]
+00004ef4 494b ldr      r3, [pc, #0x124]
+00004ef6 04aa add      r2, sp, #0x10
+00004ef8 05a9 add      r1, sp, #0x14
+00004efa 25a8 add      r0, sp, #0x94
+00004efc 00f0d2f9 bl       #0x52a4
+00004f00 0400 movs     r4, r0
+00004f02 0bd0 beq      #0x4f1c
+00004f04 012d cmp      r5, #1
+00004f06 07d1 bne      #0x4f18
+00004f08 d9f81000 ldr.w    r0, [sb, #0x10]
+00004f0c 8007 lsls     r0, r0, #0x1e
+00004f0e 03d5 bpl      #0x4f18
+00004f10 2146 mov      r1, r4
+00004f12 43a0 adr      r0, #0x10c
+00004f14 33f0e2f9 bl       #0x382dc
+00004f18 0025 movs     r5, #0
+00004f1a 45e1 b        #0x51a8
+00004f1c 7e21 movs     r1, #0x7e
+00004f1e 05a8 add      r0, sp, #0x14
+00004f20 06f040ff bl       #0xbda4
+00004f24 bdf89220 ldrh.w   r2, [sp, #0x92]
+00004f28 8242 cmp      r2, r0
+00004f2a 0ed0 beq      #0x4f4a

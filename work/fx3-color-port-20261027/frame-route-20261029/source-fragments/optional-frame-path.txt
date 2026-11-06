@@ -1,0 +1,7 @@
+009d824c ldr.w      r0, [r0, #0x8ec]
+009d8250 orr        r1, r0, #1
+009d8254 movs       r0, #0
+009d8256 cmp        r1, #3
+009d8258 it         eq
+009d825a moveq      r0, #1
+009d825c bx         lr

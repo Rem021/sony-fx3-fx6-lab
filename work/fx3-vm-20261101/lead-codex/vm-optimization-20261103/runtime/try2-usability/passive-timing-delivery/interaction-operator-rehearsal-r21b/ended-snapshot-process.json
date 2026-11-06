@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-operator-r21b-b83358633d9e-74ca3f17",
+    "snapshot"
+  ],
+  "start": {
+    "UTC": "2026-11-04T23:51:23.038501+00:00",
+    "host_ns": 419968570163458
+  },
+  "end": {
+    "UTC": "2026-11-04T23:51:23.048872+00:00",
+    "host_ns": 419968580552833
+  },
+  "returncode": 0,
+  "stdout": "- heading \"FX3 固件菜单试用\" [level=1, ref=e1]\n- paragraph\n  - StaticText \"先确认本机网页可用，再点击“开始本轮模拟器”。待机画面出现后才可按 MENU；每次按键后亲看当前图并确认。原生省电设置与本轮时间上限分开生效。\"\n- image \"固件最新提交画面\"\n- status\n  - StaticText \"OFFLINE FIXTURE ended; no VM lifecycle claim\"\n- paragraph\n  - StaticText \"按键 1/8 · 已结束 · 最后提交帧 213\"\n- alert\n- button \"↑ 上\" [disabled, ref=e2]\n- button \"← 左\" [disabled, ref=e3]\n- button \"确定\" [disabled, ref=e4]\n- button \"右 →\" [disabled, ref=e5]\n- button \"↓ 下\" [disabled, ref=e6]\n- button \"MENU\" [disabled, ref=e7]\n- button \"删除 / C4\" [disabled, ref=e8]\n- status\n- button \"我已看清当前完整画面，继续\" [disabled, ref=e9]\n- button \"开始本轮模拟器\" [disabled, ref=e10]\n- button \"结束试用\" [disabled, ref=e11]\n- list\n  - listitem [level=1]\n    - ListMarker \"1. \"\n    - StaticText \"01 · 用户确认已加载的当前画面；没有发送新的固件按键。\"\n- group\n  - DisclosureTriangle \"当前限制\" [expanded=true]\n    - StaticText \"当前限制\"\n  - paragraph\n    - StaticText \"当前为实验候选，持续操作仍可能触发原生省电关机，尚未通过完整使用验收。当前固定副本已在冷启动观察到 English；图标与橙色焦点仍需逐屏观察；无实时取景，画面来自软件 OSD 采样，尚未证明原 CP 多画面层合成。每轮默认最多 4096 次按键、最长 60 分钟；以启动参数为准。关闭网页不会结束模拟器，请点击“结束试用”或在启动终端按 Ctrl-C。\"\n",
+  "stderr": ""
+}

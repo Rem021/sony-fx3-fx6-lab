@@ -1,0 +1,51 @@
+{
+  "status": "PASS_NATIVE_OWNER_CHANNEL_OFFLINE_INTEGRATION_REVIEW",
+  "integration_tests": 32,
+  "wire_regression_tests": 55,
+  "total_local_checks": 87,
+  "additional_inert_flows": 2,
+  "final_fixture_sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "native_candidate_released_or_executed": false,
+  "new_administrator_or_camera_operations": 0,
+  "root_cross_UID_or_physical_backup_restore_proven": false,
+  "files": [
+    {
+      "path": "build-receipt-v5.json",
+      "sha256": "eec39afc41c9a8294938706ec6dcb0045e06a4dfbf3c736de9f99bded803b1ef",
+      "bytes": 9336
+    },
+    {
+      "path": "integration-results.json",
+      "sha256": "8cccb6d68674c790892ed0acd574f3dd4f7d2a315d561433312c73c2ae90b7b2",
+      "bytes": 5058
+    },
+    {
+      "path": "wire-build-receipt.json",
+      "sha256": "73e25f95fa5a93a75155f104f71573489214477c8ec9b8d26897d207e12e2609",
+      "bytes": 1466
+    },
+    {
+      "path": "wire-regression/results.json",
+      "sha256": "e57b19f7a01a4116591567b7e61fadfad2a729041d8a6d61ac5d7f47c5aa2a79",
+      "bytes": 124592
+    },
+    {
+      "path": "implementation-review.json",
+      "sha256": "ecdcc777a33387baa3dffad9245583c0dcf36e44d1894c057d305ea6d17f430b",
+      "bytes": 1762
+    },
+    {
+      "path": "primary-source-review.json",
+      "sha256": "fb5063daa769dd3697dbca1a42da175845e465f9b082c8f4f9506f3efbf2fbfc",
+      "bytes": 979
+    },
+    {
+      "path": "verify_review.py",
+      "sha256": "dc9ff018f8edfd51a2d5775221d30cf73df96aeef648a85a106aa06d99194be4",
+      "bytes": 6520
+    }
+  ]
+}

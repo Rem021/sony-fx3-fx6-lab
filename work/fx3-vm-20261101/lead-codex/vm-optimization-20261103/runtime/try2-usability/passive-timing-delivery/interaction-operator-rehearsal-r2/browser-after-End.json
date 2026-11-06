@@ -1,0 +1,96 @@
+{
+  "UTC": "2026-11-04T21:39:33.175Z",
+  "alarm": {
+    "current": {
+      "armed_ms": 14655.599999964235,
+      "cancelled_ms": 26108.099999964237,
+      "deadline_ms": 20000,
+      "due_ms": 34655.59999996424,
+      "nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+      "state": "cancelled"
+    },
+    "deadline_ms": 20000,
+    "documentTimeOrigin": 1793828313711.7,
+    "events": [
+      {
+        "event": "installed",
+        "performance_ms": 3434.300000011921,
+        "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+        "wall_UTC": "2026-11-04T21:38:37.145Z"
+      },
+      {
+        "due_ms": 34655.59999996424,
+        "event": "armed",
+        "nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+        "performance_ms": 14655.599999964235,
+        "wall_UTC": "2026-11-04T21:38:48.367Z"
+      },
+      {
+        "elapsed_ms": 11452.5,
+        "event": "cancelled",
+        "nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+        "performance_ms": 26108.099999964237,
+        "wall_UTC": "2026-11-04T21:38:59.819Z"
+      }
+    ],
+    "expectedLaunchId": "e49ce6f6-289a-49d2-bd0d-4e1775c909eb",
+    "expectedURL": "http://127.0.0.1:64311/",
+    "sealed": false,
+    "version": 1
+  },
+  "displayed": 213,
+  "displayedGeneration": 2,
+  "frame": {
+    "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+    "all_zero_pixels": false,
+    "content_generation": 2,
+    "height": 640,
+    "sequence": 213,
+    "width": 960
+  },
+  "lastStatus": {
+    "black_after_ready_count": 0,
+    "browser_ready": true,
+    "busy": false,
+    "error": null,
+    "events": [
+      "01 \u00b7 \u7528\u6237\u786e\u8ba4\u5df2\u52a0\u8f7d\u7684\u5f53\u524d\u753b\u9762\uff1b\u6ca1\u6709\u53d1\u9001\u65b0\u7684\u56fa\u4ef6\u6309\u952e\u3002"
+    ],
+    "final_receipt_id": "sYQpkaTuOnpeGwV6pQ78uw",
+    "frame": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "all_zero_pixels": false,
+      "content_generation": 2,
+      "height": 640,
+      "sequence": 213,
+      "width": 960
+    },
+    "input_received": true,
+    "launch_request_id": "e49ce6f6-289a-49d2-bd0d-4e1775c909eb",
+    "launch_status": "running",
+    "max_steps": 32,
+    "message": "SIMULATED fixture ended; no VM lifecycle claim",
+    "phase": "finished",
+    "ready": false,
+    "remaining_seconds": 561,
+    "render_valid": true,
+    "result": {
+      "scope": "simulation_only"
+    },
+    "review_confirmation": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "content_generation": 2,
+      "guest_input_written": false,
+      "observed_sequence": 213,
+      "request_id": "45215a54-a82b-4dca-968e-6bee50a60961",
+      "step": 1
+    },
+    "review_required": false,
+    "review_step": null,
+    "steps": 1,
+    "visual_change_observed": true,
+    "visual_state": "user_confirmed"
+  },
+  "performance_ms": 59463.59999996424,
+  "shownSHA": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292"
+}

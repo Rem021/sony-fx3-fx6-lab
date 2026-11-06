@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage72-native-manager-teardown/manager_teardown.py\", line 245, in main\n    try:run(out)\n        ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage72-native-manager-teardown/manager_teardown.py\", line 218, in run\n    cases=[one_case(assets,modules,providers,adapter,seed,kind) for seed in (0xa5,0xc3) for kind in kinds]\n           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage72-native-manager-teardown/manager_teardown.py\", line 127, in one_case\n    assert e['reason']=='returned' and m.uc.reg_read(r.reg.UC_ARM64_REG_X0)==0\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "passing_result": false
+}

@@ -1,0 +1,66 @@
+{
+  "created_utc": "2026-10-26T11:59:25.530077+00:00",
+  "status": "ALL47_OSAL_IMPORT_NAMES_HAVE_STATIC_ORIGINAL_PROVIDER_EVIDENCE",
+  "prior_audit_initially_missing_in_assets": [
+    "udif_devnodes"
+  ],
+  "kernel_unique_neighbor_validated_candidates": 44,
+  "additional_actual_module_export_records": [
+    {
+      "symbol": "osal_create_waitable_thread",
+      "provider": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha15/kmod/osal_utm.ko",
+      "sha256": "f6679c6481adaa0cffb5e27dbf949f5d8168ca4200f4cb245e900544977b5f1c",
+      "export_record": {
+        "export_entry_offset": "0x10",
+        "value_relocation_type": 257,
+        "name_relocation_type": 257,
+        "name_string_offset": "0x86",
+        "definition_section": ".text",
+        "definition_section_value": "0x240"
+      },
+      "symbol_type": "STT_FUNC",
+      "size": 160,
+      "runtime_mapping_or_initialization": false
+    },
+    {
+      "symbol": "osal_wait_thread_exit",
+      "provider": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha15/kmod/osal_utm.ko",
+      "sha256": "f6679c6481adaa0cffb5e27dbf949f5d8168ca4200f4cb245e900544977b5f1c",
+      "export_record": {
+        "export_entry_offset": "0x70",
+        "value_relocation_type": 257,
+        "name_relocation_type": 257,
+        "name_string_offset": "0x70",
+        "definition_section": ".text",
+        "definition_section_value": "0x310"
+      },
+      "symbol_type": "STT_FUNC",
+      "size": 88,
+      "runtime_mapping_or_initialization": false
+    },
+    {
+      "symbol": "udif_devnodes",
+      "provider": "work/sony-firmware-20261024/stage63-resource-message-boundary/official-files/nflasha7/kmod/devno.ko",
+      "sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "export_record": {
+        "export_entry_offset": "0x0",
+        "value_relocation_type": 257,
+        "name_relocation_type": 257,
+        "name_string_offset": "0x0",
+        "definition_section": ".data",
+        "definition_section_value": "0x0"
+      },
+      "symbol_type": "STT_OBJECT",
+      "size": 1088,
+      "runtime_mapping_or_initialization": false
+    }
+  ],
+  "total_original_import_names": 47,
+  "module_data_export_is_not_live_initialized_device_nodes": true,
+  "candidate_export_values_outside_kernel_file": [
+    "kmalloc_caches",
+    "system_freezing_cnt"
+  ],
+  "relocation_runtime_mapping_kernel_state_module_init_callbacks_threads_or_hardware_executed": false,
+  "next_scope": "Use these static sources to verify precise AArch64 relocations and mapping ranges; exported symbols or matching vermagic do not establish Linux runtime state or a successful message allocation/reply."
+}

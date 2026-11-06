@@ -1,0 +1,13 @@
+00013850 add        x19, x29, #0x20
+00013854 mov        x0, x19
+00013858 bl         #0x10580 ; Updater::StringHandler::StringHandler
+0001385c ldr        x0, [x20, #8]
+00013860 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00013864 adrp       x3, #0x1b000
+00013868 adrp       x2, #0x1b000
+0001386c mov        x1, x0
+00013870 add        x3, x3, #0xa94 ; literal 'config/uconfig.xml'
+00013874 add        x2, x2, #0xc18
+00013878 mov        x0, x19
+0001387c bl         #0x10850 ; Updater::StringHandler::SetString
+00013880 b          #0x13790

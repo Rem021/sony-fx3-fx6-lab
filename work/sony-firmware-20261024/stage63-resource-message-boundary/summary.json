@@ -1,0 +1,22 @@
+{
+  "created_utc": "2026-10-26T12:02:19.285534+00:00",
+  "status": "PASS_NATIVE_RESOURCE_MESSAGE_TO_UNBOUND_OSAL_ALLOCATION",
+  "bounded_fragments": 21,
+  "stop_counts": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 3,
+    "returned": 12,
+    "boundary: before_original_buffer_channel_preparation": 3,
+    "boundary: before_unbound_osal_valloc_msg_wait_indirect_branch": 3
+  },
+  "native_global_resource_metadata_records": 202,
+  "per_case_original_global_stores": 1416,
+  "native_resource_message_bytes": 216,
+  "unbound_allocation_branch_executed": false,
+  "OSAL_original_import_names_with_static_sources": 47,
+  "kernel_candidates": 44,
+  "module_export_records": 3,
+  "module_link_or_init_actual_OS_state_or_hardware": false,
+  "proof_sha256": "21db3970ff93057bd148506d9cd6c46a2dca8ece32bc054532696803de755237",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

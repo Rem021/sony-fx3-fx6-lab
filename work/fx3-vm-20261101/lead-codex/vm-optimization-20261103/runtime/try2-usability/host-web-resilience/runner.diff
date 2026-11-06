@@ -1,0 +1,45 @@
+--- run_trial_v12_mss_safe.py
++++ run_trial_v13_web_resilient.py
+@@ -22,7 +22,7 @@
+ import uuid
+ from cpio_audit import audit
+ from trial_ring_usability import TrialRingReader
+-from trial_web_v3_usability import TrialState, start_server, KEYS
++from trial_web_v4_resilient import TrialState, start_server, KEYS
+ from trial_log_v4_mss import FullLogMonitor
+ from trial_health_v2 import evaluate as evaluate_health
+ from gate_input_usability import InputGate,valid_command
+@@ -78,13 +78,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = OUT / 'mss-safe-STATE.json'
++    path = OUT / 'web-resilient-STATE.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = OUT / 'mss-safe-STATE.json.tmp'
++    temp = OUT / 'web-resilient-STATE.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -105,7 +105,7 @@
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2mssinternal' if ns.internal_hoststep else 'try2mss'
++    ns.label = 'try2webinternal' if ns.internal_hoststep else 'try2web'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+@@ -192,7 +192,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v3_usability.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
++    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v4_resilient.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
+         shutil.copyfile(OUT / name if (OUT / name).exists() else ROOT / name, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+     (run / 'cpio-audit.json').write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')

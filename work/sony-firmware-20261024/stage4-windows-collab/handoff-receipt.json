@@ -1,0 +1,101 @@
+{
+  "created_utc": "2026-10-25T08:21:29.383307+00:00",
+  "file": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage4-windows-collab/FX3-READONLY-TASK.txt",
+  "sha256": "ae0a0cf0b826ecc0d768e648deff91abcb58cdf22e817f6ae36bdd8cda544c04",
+  "camera_operations_authorized": false,
+  "purpose": "User-authorized task handoff to existing Windows Codex via UU remote",
+  "transfer_completed": true,
+  "remote_task_path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\FX3-READONLY-TASK.txt",
+  "dispatch_to_codex_confirmed": true,
+  "evidence_received": "work/sony-firmware-20261024/stage4-windows-collab/FX3-7.02-4K30-H265离线研究证据.zip",
+  "evidence_sha256": "785c3b3fdb5e879dd7acda3b782001f09e3dce8210c71d6104ce141d77ba4865",
+  "ui_observation_utc": "2026-10-25T10:02:53.189556+00:00",
+  "remote_typing": {
+    "reliable_submission": false,
+    "observed": "Initial task is submitted and acknowledged. After UU restart a supplemental draft again shows mixed IME text; modifiers, clearing and pointer submission remain unreliable. Draft not yet confirmed submitted.",
+    "manual_submission_requested": true,
+    "manual_submission_required": false
+  },
+  "mac_input_monitoring": {
+    "app_bundle_id": "com.netease.uuremote",
+    "app_path": "/Applications/UURemote.app",
+    "listed_at_inspection": false,
+    "change_made": true,
+    "action_time_confirmation_requested": true,
+    "confirmation_received": true,
+    "cause_of_remote_typing_issue": "Candidate only, not established",
+    "confirmation_text": "允许，仅给 UU 远程开启",
+    "authorization_stage": "Native authentication completed; selected /Applications/UURemote.app only; system list confirms UU ON and Discord OFF; Quit & Reopen chosen and existing Windows reconnected."
+  },
+  "temporary_input_tests": {
+    "mac_shortcut_option_toggled_twice": "Returned to prior toggle state",
+    "caps_lock_key_sent_twice": "Reversed test keystroke",
+    "mouse_mode": "Set to smart mode after controlled-end mouse test",
+    "windows_driver_or_camera_change": false,
+    "input_source": "ctrl+space used once before successful ASCII entry; current source not independently identified."
+  },
+  "mac_independent_verification": {
+    "completed": true,
+    "path": "mac-verification/engineering-note.txt",
+    "function_cases": 176,
+    "expected_checks_passed": 10,
+    "received_converter_cases_matched": 80,
+    "hardware_encoder_tested": false,
+    "bitstream_produced": false,
+    "receipt_verification_by_parent": "PASS; stdlib source/ZIP/matrix/bitmap/wheel consistency verification"
+  },
+  "dispatch_evidence": "Windows existing FX3 thread shows submitted task message and processing indicator; UI source path punctuation lost, message explicitly instructs finding newly transferred task file in outputs.",
+  "windows_new_task_completed": true,
+  "windows_inventory_ui_summary": {
+    "system": "Windows 11 Pro; 10.0.26200 build 26200 x64",
+    "cpu": "Intel Core i7-14700KF; 20 cores; 28 logical processors",
+    "cached_sony_vid_pid": "054C:0DF2",
+    "cached_sony_identity": "DualSense Edge controller and composite/HID/audio interfaces; no Sony camera reported",
+    "camera_communication_tested": false,
+    "raw_receipt_received": true,
+    "output_directory": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-readonly-collaboration-20261025T085826Z"
+  },
+  "windows_inventory_receipt": {
+    "path": "from-windows/host-inventory.json",
+    "bytes": 4340,
+    "sha256": "fb0b5739a3fc4a9a6719b0e17240f128f78f4d4983b72d38229055db3096f734"
+  },
+  "mac_results_sent_to_windows": {
+    "path": "to-windows/MAC-FX3-HD420-RESULTS.txt",
+    "sha256": "a785ad8fd9c9531d9e12a36f5b00ae5a5b6c24b1f46028ee2a320ce0038ebff1",
+    "ui_transfer_confirmed": true,
+    "read_by_windows_agent_confirmed": false,
+    "supplemental_message_submission_confirmed": false
+  },
+  "windows_final_report": {
+    "path": "from-windows/FX3-HD-READONLY-REPORT.txt",
+    "bytes": 5447,
+    "sha256": "0955463a91587fc8f6ffa6a577b096d47d48218289574676b937c8e4d9a973a4",
+    "received_via_UU_and_UI_confirmed": true,
+    "function_call_count_reported": 148,
+    "protected_old_files_reported_unchanged": 51,
+    "raw_full_result_set_received": false
+  },
+  "new_camera_inventory": {
+    "user_connected_camera": true,
+    "user_submitted_task": true,
+    "fresh_snapshot_received": true,
+    "captured_utc": "2026-10-25T09:54:17.7315333Z",
+    "local_path": "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json",
+    "sha256": "01b5b580eb4378a40c8e9ea751be9201ccca8a52e8efe8a415015c6fc93ff415",
+    "remote_directory": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\fx3-pnp-readonly-20261025T095416Z",
+    "vid_pid": "054C:0DA1",
+    "cached_bus_model": "ILME-FX3",
+    "driver_service": "USBSTOR",
+    "driver_provider": "Microsoft",
+    "driver_version": "10.0.26100.9444",
+    "driver_signed": true,
+    "status": "OK",
+    "config_manager_error_code": 0,
+    "scope": "Cached Windows PnP only; no camera interface open/read/auth/write",
+    "source_script_reviewed": true,
+    "previous_receipt_preserved": true,
+    "actual_body_firmware_read": false,
+    "recovery_tested": false
+  }
+}

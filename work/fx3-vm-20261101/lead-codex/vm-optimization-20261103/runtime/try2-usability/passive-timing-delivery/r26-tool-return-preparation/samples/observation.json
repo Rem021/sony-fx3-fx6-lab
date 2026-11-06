@@ -1,0 +1,230 @@
+{
+  "schema": "fx3-postkey-observation-r26-v1",
+  "status": "qualified_unpinned_postkey_observation",
+  "host_start_ns": 429240249634333,
+  "binding": {
+    "document_id": "a2e8dc88-1bf7-4c4f-afd3-febd20f396e6",
+    "document_time_origin": 1793845545606.4,
+    "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+    "url": "http://127.0.0.1:58342/",
+    "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+    "step": 1,
+    "attempt_id": "07dfd2c1-26d0-46eb-8a3d-61ddbb274323",
+    "nonce": "aba1220b-5836-401c-a6c9-393230ffa795"
+  },
+  "reservation_id": "23cb79a0-0a30-4714-9f79-841961f83869",
+  "guest_keys_sent": 0,
+  "pin_calls": 0,
+  "confirm_calls": 0,
+  "alarm_mutations": 0,
+  "snapshot_pinned": false,
+  "postkey_confirmation": false,
+  "input_permission": false,
+  "firmware_generation": null,
+  "tabs_before": [
+    {
+      "active": true,
+      "label": null,
+      "tabId": "t1",
+      "targetId": "B220CE560A9BE2B4CBF0299E68DD0208",
+      "title": "127.0.0.1:58342",
+      "type": "page",
+      "url": "http://127.0.0.1:58342/"
+    }
+  ],
+  "before": {
+    "alarm_identity_json": "{\"version\":1,\"expectedURL\":\"http://127.0.0.1:58342/\",\"expectedLaunchId\":\"5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb\",\"documentTimeOrigin\":1793845545606.4,\"deadline_ms\":20000,\"sealed\":false,\"current\":{\"nonce\":\"aba1220b-5836-401c-a6c9-393230ffa795\",\"state\":\"armed\",\"armed_ms\":3764.7999999523163,\"deadline_ms\":20000,\"due_ms\":23764.799999952316},\"events\":[{\"event\":\"installed\",\"wall_UTC\":\"2026-11-05T02:25:48.748Z\",\"performance_ms\":3142.599999964237,\"script_SHA256\":\"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\"},{\"event\":\"armed\",\"wall_UTC\":\"2026-11-05T02:25:49.371Z\",\"performance_ms\":3764.899999976158,\"nonce\":\"aba1220b-5836-401c-a6c9-393230ffa795\",\"due_ms\":23764.799999952316}]}",
+    "before": {
+      "h": {
+        "current": {
+          "armed_ms": 3764.799999952316,
+          "deadline_ms": 20000,
+          "due_ms": 23764.799999952316,
+          "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+          "state": "armed"
+        },
+        "deadline_ms": 20000,
+        "documentTimeOrigin": 1793845545606.4,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 3142.599999964237,
+            "script_SHA256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+            "wall_UTC": "2026-11-05T02:25:48.748Z"
+          },
+          {
+            "due_ms": 23764.799999952316,
+            "event": "armed",
+            "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+            "performance_ms": 3764.899999976158,
+            "wall_UTC": "2026-11-05T02:25:49.371Z"
+          }
+        ],
+        "expectedLaunchId": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+        "expectedURL": "http://127.0.0.1:58342/",
+        "sealed": false,
+        "version": 1
+      },
+      "performance_ms": 9232,
+      "ready": true,
+      "server": {
+        "busy": false,
+        "input_received": true,
+        "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+        "phase": "ready",
+        "render_valid": true,
+        "review_required": true,
+        "review_step": 1,
+        "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+        "step": 1
+      }
+    },
+    "binding": {
+      "action": "observe",
+      "attempt_id": "07dfd2c1-26d0-46eb-8a3d-61ddbb274323",
+      "document_id": "a2e8dc88-1bf7-4c4f-afd3-febd20f396e6",
+      "document_time_origin": 1793845545606.4,
+      "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+      "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+      "page_sha": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+      "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+      "step": 1,
+      "url": "http://127.0.0.1:58342/"
+    },
+    "displayed_frame": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "content_generation": 8,
+      "sequence": 54
+    },
+    "document_id": "a2e8dc88-1bf7-4c4f-afd3-febd20f396e6",
+    "origin": 1793845545606.4,
+    "performance_ms": 9232,
+    "phase": {
+      "busy": false,
+      "input_received": true,
+      "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+      "phase": "ready",
+      "render_valid": true,
+      "review_required": true,
+      "review_step": 1,
+      "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+      "step": 1
+    },
+    "qualified": true,
+    "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd"
+  },
+  "tabs_after_screenshot": [
+    {
+      "active": true,
+      "label": null,
+      "tabId": "t1",
+      "targetId": "B220CE560A9BE2B4CBF0299E68DD0208",
+      "title": "127.0.0.1:58342",
+      "type": "page",
+      "url": "http://127.0.0.1:58342/"
+    }
+  ],
+  "after": {
+    "alarm_identity_json": "{\"version\":1,\"expectedURL\":\"http://127.0.0.1:58342/\",\"expectedLaunchId\":\"5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb\",\"documentTimeOrigin\":1793845545606.4,\"deadline_ms\":20000,\"sealed\":false,\"current\":{\"nonce\":\"aba1220b-5836-401c-a6c9-393230ffa795\",\"state\":\"armed\",\"armed_ms\":3764.7999999523163,\"deadline_ms\":20000,\"due_ms\":23764.799999952316},\"events\":[{\"event\":\"installed\",\"wall_UTC\":\"2026-11-05T02:25:48.748Z\",\"performance_ms\":3142.599999964237,\"script_SHA256\":\"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\"},{\"event\":\"armed\",\"wall_UTC\":\"2026-11-05T02:25:49.371Z\",\"performance_ms\":3764.899999976158,\"nonce\":\"aba1220b-5836-401c-a6c9-393230ffa795\",\"due_ms\":23764.799999952316}]}",
+    "before": {
+      "h": {
+        "current": {
+          "armed_ms": 3764.799999952316,
+          "deadline_ms": 20000,
+          "due_ms": 23764.799999952316,
+          "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+          "state": "armed"
+        },
+        "deadline_ms": 20000,
+        "documentTimeOrigin": 1793845545606.4,
+        "events": [
+          {
+            "event": "installed",
+            "performance_ms": 3142.599999964237,
+            "script_SHA256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+            "wall_UTC": "2026-11-05T02:25:48.748Z"
+          },
+          {
+            "due_ms": 23764.799999952316,
+            "event": "armed",
+            "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+            "performance_ms": 3764.899999976158,
+            "wall_UTC": "2026-11-05T02:25:49.371Z"
+          }
+        ],
+        "expectedLaunchId": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+        "expectedURL": "http://127.0.0.1:58342/",
+        "sealed": false,
+        "version": 1
+      },
+      "performance_ms": 9377.799999952316,
+      "ready": true,
+      "server": {
+        "busy": false,
+        "input_received": true,
+        "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+        "phase": "ready",
+        "render_valid": true,
+        "review_required": true,
+        "review_step": 1,
+        "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+        "step": 1
+      }
+    },
+    "binding": {
+      "action": "after",
+      "attempt_id": "07dfd2c1-26d0-46eb-8a3d-61ddbb274323",
+      "document_id": "a2e8dc88-1bf7-4c4f-afd3-febd20f396e6",
+      "document_time_origin": 1793845545606.4,
+      "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+      "nonce": "aba1220b-5836-401c-a6c9-393230ffa795",
+      "page_sha": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+      "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+      "step": 1,
+      "url": "http://127.0.0.1:58342/"
+    },
+    "displayed_frame": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "content_generation": 8,
+      "sequence": 54
+    },
+    "document_id": "a2e8dc88-1bf7-4c4f-afd3-febd20f396e6",
+    "origin": 1793845545606.4,
+    "performance_ms": 9377.799999952316,
+    "phase": {
+      "busy": false,
+      "input_received": true,
+      "launch_id": "5d7ff3fb-a0f0-46b1-b179-0d4184a47fdb",
+      "phase": "ready",
+      "render_valid": true,
+      "review_required": true,
+      "review_step": 1,
+      "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd",
+      "step": 1
+    },
+    "qualified": true,
+    "run_incarnation": "f2941c6d-51cb-4332-9386-52fb076cc4cd"
+  },
+  "tabs_after": [
+    {
+      "active": true,
+      "label": null,
+      "tabId": "t1",
+      "targetId": "B220CE560A9BE2B4CBF0299E68DD0208",
+      "title": "127.0.0.1:58342",
+      "type": "page",
+      "url": "http://127.0.0.1:58342/"
+    }
+  ],
+  "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-postkey-observation-candidate/evidence/browser-attempt04/delayed_4500ms_three_observations/run-task_delayed_4500ms_three_observations/step-01-attempt-01/observation-3/observation.png",
+  "screenshot_sha256": "d79afdadc6df614e32c9ea8ee13742a5422d126dbb98f7a929e17f9fa21f50d9",
+  "byte_length": 167203,
+  "source": {
+    "method": "agent-browser screenshot",
+    "session": "fx3-deadline-r26-4603590349ac",
+    "url": "http://127.0.0.1:58342/",
+    "scope": "historical browser capture between two lifecycle observations; no single firmware generation or pixel causality"
+  },
+  "actual_semantic_review": "pending separate operator call",
+  "host_end_ns": 429240538998083
+}

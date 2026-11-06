@@ -1,0 +1,36 @@
+{
+  "url": "https://raw.githubusercontent.com/MDHan/a7c2-fl23-macos/41950d3eab53e0b801f315af07505a2d0d3f76af/macfl23/session.py",
+  "sha256": "e6b56eaccd20d81fc4cd6e480b4d507fd4016a04f1c23e315f460f77c89cee89",
+  "size": 8657,
+  "selected_lines": [
+    {
+      "line": 7,
+      "text": "import usb.core"
+    },
+    {
+      "line": 15,
+      "text": "class UsbWaitTimeout(RuntimeError):"
+    },
+    {
+      "line": 75,
+      "text": "            raise UsbWaitTimeout('Expected USB identity did not appear: %04x' % pid)"
+    },
+    {
+      "line": 110,
+      "text": "            backend = usb.backend.libusb1.get_backend(find_library=transport.libusb_package.find_library)"
+    },
+    {
+      "line": 111,
+      "text": "            if list(usb.core.find(find_all=True, idVendor=0x054c, idProduct=0x0336, backend=backend)):"
+    },
+    {
+      "line": 127,
+      "text": "            self.dev = wait_pid(0x0336, self.location)"
+    },
+    {
+      "line": 175,
+      "text": "                    self.return_timeout = isinstance(exc, UsbWaitTimeout)"
+    }
+  ],
+  "full_source_kept": false
+}

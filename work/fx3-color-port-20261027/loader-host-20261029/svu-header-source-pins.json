@@ -1,0 +1,53 @@
+{
+  "sources": [
+    {
+      "case": "SNC_original_SVU_prefix",
+      "path": "work/fx3-color-port-20261027/loader-host-20261029/host-components/sncverup_tool.svu",
+      "bytes": 90318160,
+      "sha256": "767d4b3e70bf99d390b25a65613faaf0162ebfb8d0ca011584743f62db92b325",
+      "first16_hex": "5655010000000000056225505a03c58d",
+      "guest_input_matches": true
+    },
+    {
+      "case": "VENICE_V201",
+      "path": "work/fx3-color-port-20261027/donor-loader-20261029/outer-members/VENICE/DATA23213",
+      "bytes": 169621368,
+      "sha256": "498d047ca2f6f11d54c502a399e2c5a9f4740e6fae4913eba1aaaf486349c785",
+      "first16_hex": "12ad2f68b8cd7b37e77d8cb5b2f39d23",
+      "guest_input_matches": true
+    },
+    {
+      "case": "VENICE_V630",
+      "path": "work/fx3-color-port-20261027/donor-venice1-20261029/outer-members/VENICE/DATA23213",
+      "bytes": 187973304,
+      "sha256": "93d01601322e3d1931a76b1c6f4f3bfdfb9a0745cfc0ec4eecb253c694b30d5c",
+      "first16_hex": "4290abacfa6bd70eed6c19bac1815a32",
+      "guest_input_matches": true
+    },
+    {
+      "case": "VENICE2_v392",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v392/BERLIN/DATA23213",
+      "bytes": 287442920,
+      "sha256": "9153710c8a3b9e12d0aed67f6cc22f3a5b0dd63bc99ec3488c2269b6dced3096",
+      "first16_hex": "42f88b3374a709188a07ad36da99f9ed",
+      "guest_input_matches": true
+    },
+    {
+      "case": "VENICE2_v410",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v410/BERLIN/DATA23213",
+      "bytes": 286877016,
+      "sha256": "2b9247384af40a933868ffec6e7c9d433570003414d33f05396fc53235def982",
+      "first16_hex": "4cfb3123b35b1f35af75c8389902a383",
+      "guest_input_matches": true
+    },
+    {
+      "case": "VENICE2_v500",
+      "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v500/BERLIN/DATA23213",
+      "bytes": 287401488,
+      "sha256": "662a93a061d17691bf4d243788c94a4dff7b97c92b48e6eeddf87f4c3f5d0019",
+      "first16_hex": "6f8a07bf2182fb4404a85eaaaaecb69c",
+      "guest_input_matches": true
+    }
+  ],
+  "scope": "Complete current original hashes plus exact header-to-guest equality; no extra native execution."
+}

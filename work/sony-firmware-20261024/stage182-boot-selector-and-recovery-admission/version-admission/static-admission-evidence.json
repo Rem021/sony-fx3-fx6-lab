@@ -1,0 +1,1174 @@
+{
+  "scope": "Static reads and host objdump only; no Sony ELF/script, guest/emulator, updater, device or write-to-camera execution.",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "sources": [
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "bytes": 60584,
+      "sha256": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "bytes": 56032,
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "bytes": 72864,
+      "sha256": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so",
+      "bytes": 105984,
+      "sha256": "2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu",
+      "bytes": 43728,
+      "sha256": "c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sdfileinput.elf",
+      "bytes": 10296,
+      "sha256": "19a505750d18bee713e9794dd203219c4201ce2ef4c950b2187415878d09f67e"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "bytes": 143168,
+      "sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/execute_ufp.sh",
+      "bytes": 2826,
+      "sha256": "08edf12a2b4b33a285866e88b94ef1d973bf50cec373dea6796d0ad52d5e6b9b"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/UdtrMain.sh",
+      "bytes": 2188,
+      "sha256": "506958d46585fc2276a21ecd6f1cee60d33aeee611c5e8a1dc854f2ebcfc720b"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/common.src",
+      "bytes": 3287,
+      "sha256": "3d5334ab1698d67176f8fd35ffd4d7a9a9b85a1625b20cf128ba091f752b90a0"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/up.sh",
+      "bytes": 6572,
+      "sha256": "c774320a0ab92c13b467b9219e1f60262a1effa0b551ba3b713514a36dadc402"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/package-20261028/updaterfs/usr/lib/libupdatercommon.so",
+      "bytes": 56032,
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/package-20261028/updaterfs/bin/us_crc32sum_appli.sh",
+      "bytes": 1888,
+      "sha256": "991c31024ec077d6c43599df4f04d8c0b7e82f93e04b2a275368ea2c313bae41"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/package-20261028/updaterfs/bin/endupdate.sh",
+      "bytes": 3918,
+      "sha256": "62465293ad07be41caf1b0236fd81fa29696105e1030fee14b495c325110ed8d"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/package-20261028/updaterfs/bin/startupdate.sh",
+      "bytes": 2760,
+      "sha256": "5fc3931eca41fddb4068c952772e51b1c8706a6ce817bed77cb211604fb7ec4d"
+    }
+  ],
+  "fragments": [
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "manager-init",
+      "va": "0x7d10",
+      "end": "0x7f8c",
+      "bytes": 636,
+      "sha256": "4dc07ad062b967ffc388486e44d2627a7807ead5cadb503e22bfd8f80b4e7f5b",
+      "output": "fragments/libsdfileinputupdaterapi.so-manager-init.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "manager-verify",
+      "va": "0x81e0",
+      "end": "0x8314",
+      "bytes": 308,
+      "sha256": "6427e85ac0017c1df1bab518f6ef48097596300fb82acc604ea7b90d9c673833",
+      "output": "fragments/libsdfileinputupdaterapi.so-manager-verify.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "manager-burn",
+      "va": "0x8374",
+      "end": "0x8750",
+      "bytes": 988,
+      "sha256": "a2b7de0ef1f1476f5481be664b677ea08edd274c78567497f46cef2a281e6536",
+      "output": "fragments/libsdfileinputupdaterapi.so-manager-burn.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "sd-signature-before-stream",
+      "va": "0x95b8",
+      "end": "0x9820",
+      "bytes": 616,
+      "sha256": "d193fa6eba735234b5b17e465e85f7195468dfee7a7ec415eb8dfb647b6555c9",
+      "output": "fragments/libsdfileinputupdaterapi.so-sd-signature-before-stream.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "sd-bodyloader-current",
+      "va": "0x9c90",
+      "end": "0x9d78",
+      "bytes": 232,
+      "sha256": "411ea0a967c9993a464b089bcb527372f876dd7eebf6093fcf64fff04198fd66",
+      "output": "fragments/libsdfileinputupdaterapi.so-sd-bodyloader-current.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "sd-condition-comparisons",
+      "va": "0x9fd4",
+      "end": "0xa02c",
+      "bytes": 88,
+      "sha256": "c682372d0f3e655ed3e4726e4595b306fc53274bcd72ac71b73c6f8f4e359848",
+      "output": "fragments/libsdfileinputupdaterapi.so-sd-condition-comparisons.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "sd-get-information",
+      "va": "0xa054",
+      "end": "0xa0e8",
+      "bytes": 148,
+      "sha256": "459e6773af4034cd7ec1bb029a0262a7dbb3274aeca785774f9fe8186da87896",
+      "output": "fragments/libsdfileinputupdaterapi.so-sd-get-information.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "sd-search-fdat",
+      "va": "0xa0e8",
+      "end": "0xa360",
+      "bytes": 632,
+      "sha256": "8ae509ad0a6421fdb40c6bdc5b6888c712a5786ca339f24253a8890a62c0ee6e",
+      "output": "fragments/libsdfileinputupdaterapi.so-sd-search-fdat.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "sd-condition-order",
+      "va": "0xa360",
+      "end": "0xa3fc",
+      "bytes": 156,
+      "sha256": "93b46af87de1ed0bf9060b1832f53a81fb605390741adc85b617b31e45f0961d",
+      "output": "fragments/libsdfileinputupdaterapi.so-sd-condition-order.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "name": "sd-update-information",
+      "va": "0xa3fc",
+      "end": "0xa634",
+      "bytes": 568,
+      "sha256": "0c5da9a9779a76a641c1b102254e0cad92fb70d66fb8f1081c28c007c344fbeb",
+      "output": "fragments/libsdfileinputupdaterapi.so-sd-update-information.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "name": "metadata-read",
+      "va": "0x72a4",
+      "end": "0x7494",
+      "bytes": 496,
+      "sha256": "483e712ff79653b9b163acba57fe3fc8efcd1ce5bdf9ff7b24d581dab72c191a",
+      "output": "fragments/libupdatercommon.so-metadata-read.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "name": "metadata-write",
+      "va": "0x7494",
+      "end": "0x7618",
+      "bytes": 388,
+      "sha256": "b12a28ce95a9822e3c97a6e6a3219e8a361cb03e828eac1dd866803498a724e4",
+      "output": "fragments/libupdatercommon.so-metadata-write.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "name": "metadata-paths",
+      "va": "0x7618",
+      "end": "0x7734",
+      "bytes": 284,
+      "sha256": "c7ee5bfff099aeb3e25dfe1a3e31c503d470cd4ea93df22488ec5de65aef5ae4",
+      "output": "fragments/libupdatercommon.so-metadata-paths.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "name": "flag-existence",
+      "va": "0x908c",
+      "end": "0x90b4",
+      "bytes": 40,
+      "sha256": "2f112cacdb2361c5de94b2d1cb0d73590a825fcb2e51803be333a7894c1710a2",
+      "output": "fragments/libupdatercommon.so-flag-existence.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "name": "complete-flag-path",
+      "va": "0x9278",
+      "end": "0x92b0",
+      "bytes": 56,
+      "sha256": "135b381fd8bbaf1c36699fc2a55b09b02d7d6bfc73c6d888d9073e655dfea12b",
+      "output": "fragments/libupdatercommon.so-complete-flag-path.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "name": "current-information",
+      "va": "0xc060",
+      "end": "0xc338",
+      "bytes": 728,
+      "sha256": "5146d17b8a0a4309f9983121a113356ce53f0b020c03a41a45d7adfa707b172b",
+      "output": "fragments/libupdatercorecommon.so-current-information.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "name": "switch-verskip",
+      "va": "0xc59c",
+      "end": "0xc740",
+      "bytes": 420,
+      "sha256": "301139bc622969292e4e7c51af51202887433c3602c4460c299769769e2c524d",
+      "output": "fragments/libupdatercorecommon.so-switch-verskip.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "name": "current-validity",
+      "va": "0xc9d4",
+      "end": "0xcb50",
+      "bytes": 380,
+      "sha256": "bd2de51bc0d5879474d9da5815a3498012d00c31a8da8f76bdb6b58fdd8bea8e",
+      "output": "fragments/libupdatercorecommon.so-current-validity.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "name": "current-fields",
+      "va": "0xcd30",
+      "end": "0xce88",
+      "bytes": 344,
+      "sha256": "c1cbd0bdb1c1996b1a2ad31666ebd3bc667ea968ff25291f146b86a7da57af70",
+      "output": "fragments/libupdatercorecommon.so-current-fields.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so",
+      "name": "current-valid-api",
+      "va": "0xfc68",
+      "end": "0xff50",
+      "bytes": 744,
+      "sha256": "676e06432c3e07bba5ba86b2dd76d0fa4dc784fd5c9b2b0dfe1dc004f9faf405",
+      "output": "fragments/libupdaterapi.so-current-valid-api.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so",
+      "name": "verskip-factory",
+      "va": "0x10af8",
+      "end": "0x10bc0",
+      "bytes": 200,
+      "sha256": "8ea298991df2f2429fabdd3874c19945ed56433e01f197a15422d45b69cc48bb",
+      "output": "fragments/libupdaterapi.so-verskip-factory.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so",
+      "name": "cached-validity",
+      "va": "0x111ac",
+      "end": "0x111b4",
+      "bytes": 8,
+      "sha256": "d2625c08dab8a7ed6a0ec29ef5e0b21222fe8c8aa1243088ffebd3218ae29cdc",
+      "output": "fragments/libupdaterapi.so-cached-validity.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so",
+      "name": "cache-current-information",
+      "va": "0x11664",
+      "end": "0x116f0",
+      "bytes": 140,
+      "sha256": "05eae045eda169759d38e5f9a22d2f8a84a2feaf5d6b02e95c16b122c83005cd",
+      "output": "fragments/libupdaterapi.so-cache-current-information.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu",
+      "name": "sauu-factory-selection",
+      "va": "0x405288",
+      "end": "0x4053d8",
+      "bytes": 336,
+      "sha256": "9163a4c083a5075c8effa7d473ae09bfe2180b1ccbb7fd1490734a4dd39c6580",
+      "output": "fragments/sauu-sauu-factory-selection.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu",
+      "name": "sauu-options",
+      "va": "0x405824",
+      "end": "0x4058a8",
+      "bytes": 132,
+      "sha256": "f23380e535b93fb103043b6dce507c854d46096d347d0c716245e1207f8f307e",
+      "output": "fragments/sauu-sauu-options.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu",
+      "name": "sauu-version-admission",
+      "va": "0x405b54",
+      "end": "0x405c64",
+      "bytes": 272,
+      "sha256": "4c394b2870cd3d29bb0161a1709c6343ef5be295c232489ea7b2e8038b612912",
+      "output": "fragments/sauu-sauu-version-admission.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu",
+      "name": "sauu-model-region",
+      "va": "0x405c64",
+      "end": "0x405cd4",
+      "bytes": 112,
+      "sha256": "257393895e9675069fbc23f42e40cc952dc7c688ef251eb720472ea2321856f4",
+      "output": "fragments/sauu-sauu-model-region.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu",
+      "name": "sauu-guard-order",
+      "va": "0x405cd4",
+      "end": "0x405ebc",
+      "bytes": 488,
+      "sha256": "c33b6b867b866d0e479e0a584cf0a6701a95ce163969a085342956bb457aa10a",
+      "output": "fragments/sauu-sauu-guard-order.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sdfileinput.elf",
+      "name": "sd-main",
+      "va": "0x400970",
+      "end": "0x400adc",
+      "bytes": 364,
+      "sha256": "c482f50eeef101b8e42549feb62507bf594a81590d9480b3e4c0cec3c756748f",
+      "output": "fragments/sdfileinput.elf-sd-main.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "name": "body-execute",
+      "va": "0x122a4",
+      "end": "0x12968",
+      "bytes": 1732,
+      "sha256": "10991e068d10aeffd687f7e1ff539f66a50b9629b714ca7efe1718d953cc2e02",
+      "output": "fragments/libupdaterbody-7.02.so-body-execute.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "name": "body-version-write",
+      "va": "0x19ad4",
+      "end": "0x19b50",
+      "bytes": 124,
+      "sha256": "a639dee398288a7f5ae4a38d591b0e3d66cea4b8325063e7900ecaf4dc82e3fc",
+      "output": "fragments/libupdaterbody-7.02.so-body-version-write.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "name": "body-start-flags",
+      "va": "0x19bdc",
+      "end": "0x19f88",
+      "bytes": 940,
+      "sha256": "3bb58c55f0f419d6af97c387a8e11ccf1a6d75c04bc50b137699d4af5f13289d",
+      "output": "fragments/libupdaterbody-7.02.so-body-start-flags.txt"
+    },
+    {
+      "source": "work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so",
+      "name": "body-complete-flags",
+      "va": "0x1a2f0",
+      "end": "0x1ab18",
+      "bytes": 2088,
+      "sha256": "e0c63dd675d183c5cf985030ede59ce67fe47b5c1a275da5e9a40f623da29314",
+      "output": "fragments/libupdaterbody-7.02.so-body-complete-flags.txt"
+    }
+  ],
+  "vtables": [
+    {
+      "source": "libsdfileinputupdaterapi.so",
+      "vtable": "vtable for Updater::SDFileInputUpdaterManager",
+      "vptr_base": "0x1d7f0",
+      "slots": [
+        {
+          "slot": "0x0",
+          "relocation_at": "0x1d7f0",
+          "target": "Updater::SDFileInputUpdaterManager::~SDFileInputUpdaterManager()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x8",
+          "relocation_at": "0x1d7f8",
+          "target": "Updater::SDFileInputUpdaterManager::~SDFileInputUpdaterManager()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x10",
+          "relocation_at": "0x1d800",
+          "target": "Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x18",
+          "relocation_at": "0x1d808",
+          "target": "Updater::SDFileInputUpdaterManager::Finalize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x20",
+          "relocation_at": "0x1d810",
+          "target": "Updater::SDFileInputUpdaterManager::GetFirmwarePath()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x28",
+          "relocation_at": "0x1d818",
+          "target": "Updater::SDFileInputUpdaterManager::BurnFirmware()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x30",
+          "relocation_at": "0x1d820",
+          "target": "Updater::SDFileInputUpdaterManager::VerifyUUDCondition()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x38",
+          "relocation_at": "0x1d828",
+          "target": "Updater::SDFileInputUpdaterManager::Callback(Updater::CALLBACK_LOCAL_ID, void*, void*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x48",
+          "relocation_at": "0x1d838",
+          "target": "typeinfo for Updater::SDFileInputUpdaterManager",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x50",
+          "relocation_at": "0x1d840",
+          "target": "non-virtual thunk to Updater::SDFileInputUpdaterManager::~SDFileInputUpdaterManager()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x58",
+          "relocation_at": "0x1d848",
+          "target": "non-virtual thunk to Updater::SDFileInputUpdaterManager::~SDFileInputUpdaterManager()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x60",
+          "relocation_at": "0x1d850",
+          "target": "non-virtual thunk to Updater::SDFileInputUpdaterManager::Callback(Updater::CALLBACK_LOCAL_ID, void*, void*)",
+          "relocation_type": 257
+        }
+      ]
+    },
+    {
+      "source": "libsdfileinputupdaterapi.so",
+      "vtable": "vtable for Updater::SDDecryptorModule",
+      "vptr_base": "0x1d950",
+      "slots": [
+        {
+          "slot": "0x0",
+          "relocation_at": "0x1d950",
+          "target": "Updater::SDDecryptorModule::~SDDecryptorModule()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x8",
+          "relocation_at": "0x1d958",
+          "target": "Updater::SDDecryptorModule::~SDDecryptorModule()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x10",
+          "relocation_at": "0x1d960",
+          "target": "Updater::BaseModule::Initialize(Updater::BufferContainer*, Updater::BaseModule*, Updater::CallbackInterface*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x18",
+          "relocation_at": "0x1d968",
+          "target": "Updater::BaseModule::Finalize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x20",
+          "relocation_at": "0x1d970",
+          "target": "Updater::BaseModule::Start(Updater::COMMAND_PROCESS_MODE)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x28",
+          "relocation_at": "0x1d978",
+          "target": "Updater::BaseModule::Stop()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x30",
+          "relocation_at": "0x1d980",
+          "target": "Updater::BaseModule::WriteData(unsigned char const*, unsigned long, bool)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x38",
+          "relocation_at": "0x1d988",
+          "target": "Updater::BaseModule::GetEmptyBufferSize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x40",
+          "relocation_at": "0x1d990",
+          "target": "Updater::BaseModule::Reset()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x48",
+          "relocation_at": "0x1d998",
+          "target": "Updater::DecryptorModule::GetInformation(UpdaterAPI::firmware_information_t::information*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x50",
+          "relocation_at": "0x1d9a0",
+          "target": "Updater::UFPDecryptorModule::FirmwareCopyCompletionCallback()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x58",
+          "relocation_at": "0x1d9a8",
+          "target": "Updater::BaseModule::GetCompSize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x60",
+          "relocation_at": "0x1d9b0",
+          "target": "Updater::DecryptorModule::resetModule()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x68",
+          "relocation_at": "0x1d9b8",
+          "target": "Updater::DecryptorModule::startModule()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x70",
+          "relocation_at": "0x1d9c0",
+          "target": "Updater::DecryptorModule::stopModule()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x78",
+          "relocation_at": "0x1d9c8",
+          "target": "Updater::SDDecryptorModule::execute()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x80",
+          "relocation_at": "0x1d9d0",
+          "target": "Updater::BaseModule::cleanup()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x88",
+          "relocation_at": "0x1d9d8",
+          "target": "Updater::DecryptorModule::getManagedThreadID()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x90",
+          "relocation_at": "0x1d9e0",
+          "target": "Updater::SDDecryptorModule::decrypt()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x98",
+          "relocation_at": "0x1d9e8",
+          "target": "Updater::SDDecryptorModule::IsEnd()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0xa0",
+          "relocation_at": "0x1d9f0",
+          "target": "Updater::UFPDecryptorModule::WaitForFirmwareCopyCompletion()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0xa8",
+          "relocation_at": "0x1d9f8",
+          "target": "Updater::SDDecryptorModule::SetBuffSize(unsigned long)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0xb0",
+          "relocation_at": "0x1da00",
+          "target": "Updater::SDDecryptorModule::DecScrambleWrapper(unsigned char*)",
+          "relocation_type": 257
+        }
+      ]
+    },
+    {
+      "source": "libsdfileinputupdaterapi.so",
+      "vtable": "vtable for Updater::SDUUDConditionChecker",
+      "vptr_base": "0x1dc10",
+      "slots": [
+        {
+          "slot": "0x0",
+          "relocation_at": "0x1dc10",
+          "target": "Updater::SDUUDConditionChecker::~SDUUDConditionChecker()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x8",
+          "relocation_at": "0x1dc18",
+          "target": "Updater::SDUUDConditionChecker::~SDUUDConditionChecker()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x10",
+          "relocation_at": "0x1dc20",
+          "target": "Updater::SDUUDConditionChecker::Initialize(Updater::SDFileInputBodyLoaderModule*, Updater::SDDecryptorModule*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x18",
+          "relocation_at": "0x1dc28",
+          "target": "Updater::SDUUDConditionChecker::Finalize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x20",
+          "relocation_at": "0x1dc30",
+          "target": "Updater::SDUUDConditionChecker::IsUUDConditionOK(char const*, UpdaterAPI::firmware_information_t&)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x28",
+          "relocation_at": "0x1dc38",
+          "target": "Updater::SDUUDConditionChecker::SkipContentsInformation(Updater::FsysFileHandler&)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x30",
+          "relocation_at": "0x1dc40",
+          "target": "Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x38",
+          "relocation_at": "0x1dc48",
+          "target": "Updater::SDUUDConditionChecker::isModelOK(UpdaterAPI::firmware_information_t&)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x40",
+          "relocation_at": "0x1dc50",
+          "target": "Updater::SDUUDConditionChecker::isRegionOK(UpdaterAPI::firmware_information_t&)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x48",
+          "relocation_at": "0x1dc58",
+          "target": "Updater::SDUUDConditionChecker::getFirmwareInformation(char const*, UpdaterAPI::firmware_information_t&)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x50",
+          "relocation_at": "0x1dc60",
+          "target": "Updater::SDUUDConditionChecker::getUpdateFirmwareInfo(char const*, UpdaterAPI::firmware_information_t::information&)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x58",
+          "relocation_at": "0x1dc68",
+          "target": "Updater::SDUUDConditionChecker::searchFDAT(Updater::FsysFileHandler&)",
+          "relocation_type": 257
+        }
+      ]
+    },
+    {
+      "source": "libupdatercorecommon.so",
+      "vtable": "vtable for Updater::CurrentFirmware",
+      "vptr_base": "0x20c30",
+      "slots": [
+        {
+          "slot": "0x0",
+          "relocation_at": "0x20c30",
+          "target": "Updater::CurrentFirmware::~CurrentFirmware()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x8",
+          "relocation_at": "0x20c38",
+          "target": "Updater::CurrentFirmware::~CurrentFirmware()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x10",
+          "relocation_at": "0x20c40",
+          "target": "Updater::CurrentFirmware::StartUpdaterMode()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x18",
+          "relocation_at": "0x20c48",
+          "target": "Updater::CurrentFirmware::SwitchModeToUpdater()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x20",
+          "relocation_at": "0x20c50",
+          "target": "Updater::CurrentFirmware::SwitchModeToMsCryptUpdater()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x28",
+          "relocation_at": "0x20c58",
+          "target": "Updater::CurrentFirmware::SwitchModeToVersionSkipUpdater()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x30",
+          "relocation_at": "0x20c60",
+          "target": "Updater::CurrentFirmware::GetInformation(UpdaterAPI::firmware_information_t::information*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x38",
+          "relocation_at": "0x20c68",
+          "target": "Updater::CurrentFirmware::IsValid()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x40",
+          "relocation_at": "0x20c70",
+          "target": "Updater::CurrentFirmware::getVersion(unsigned int*, unsigned int*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x48",
+          "relocation_at": "0x20c78",
+          "target": "Updater::CurrentFirmware::getModelAndRegion(unsigned int*, unsigned int*)",
+          "relocation_type": 257
+        }
+      ]
+    },
+    {
+      "source": "libupdaterapi.so",
+      "vtable": "vtable for Updater::Firmware",
+      "vptr_base": "0x28958",
+      "slots": [
+        {
+          "slot": "0x0",
+          "relocation_at": "0x28958",
+          "target": "Updater::Firmware::~Firmware()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x8",
+          "relocation_at": "0x28960",
+          "target": "Updater::Firmware::~Firmware()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x10",
+          "relocation_at": "0x28968",
+          "target": "Updater::Firmware::Initialize(Updater::BaseModule*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x18",
+          "relocation_at": "0x28970",
+          "target": "Updater::Firmware::Finalize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x20",
+          "relocation_at": "0x28978",
+          "target": "Updater::Firmware::StartUpdaterMode()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x28",
+          "relocation_at": "0x28980",
+          "target": "Updater::Firmware::SwitchModeToUpdater()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x30",
+          "relocation_at": "0x28988",
+          "target": "Updater::Firmware::SwitchModeToMsCryptUpdater()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x38",
+          "relocation_at": "0x28990",
+          "target": "Updater::Firmware::SwitchModeToVersionSkipUpdater()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x40",
+          "relocation_at": "0x28998",
+          "target": "Updater::Firmware::IsCurrentValid()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x48",
+          "relocation_at": "0x289a0",
+          "target": "Updater::Firmware::StartChkGuard()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x50",
+          "relocation_at": "0x289a8",
+          "target": "Updater::Firmware::StartWriteFirm()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x58",
+          "relocation_at": "0x289b0",
+          "target": "Updater::Firmware::EndChkGuard()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x60",
+          "relocation_at": "0x289b8",
+          "target": "Updater::Firmware::EndWriteFirm()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x68",
+          "relocation_at": "0x289c0",
+          "target": "Updater::Firmware::WriteData(unsigned char const*, unsigned long, bool)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x70",
+          "relocation_at": "0x289c8",
+          "target": "Updater::Firmware::GetEmptyBufferSize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x78",
+          "relocation_at": "0x289d0",
+          "target": "Updater::Firmware::GetInformation(UpdaterAPI::firmware_information_t*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x80",
+          "relocation_at": "0x289d8",
+          "target": "Updater::Firmware::Reset()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x88",
+          "relocation_at": "0x289e0",
+          "target": "Updater::Firmware::NotifyFirmwareCopyCompletion()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x90",
+          "relocation_at": "0x289e8",
+          "target": "Updater::Firmware::ResetFdatSize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x98",
+          "relocation_at": "0x289f0",
+          "target": "Updater::Firmware::UpdateFdatSize(unsigned long)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0xa0",
+          "relocation_at": "0x289f8",
+          "target": "Updater::Firmware::GetProgress()",
+          "relocation_type": 257
+        }
+      ]
+    },
+    {
+      "source": "libupdaterapi.so",
+      "vtable": "vtable for Updater::UpdaterManager",
+      "vptr_base": "0x287d0",
+      "slots": [
+        {
+          "slot": "0x0",
+          "relocation_at": "0x287d0",
+          "target": "Updater::UpdaterManager::~UpdaterManager()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x8",
+          "relocation_at": "0x287d8",
+          "target": "Updater::UpdaterManager::~UpdaterManager()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x10",
+          "relocation_at": "0x287e0",
+          "target": "Updater::UpdaterManager::Initialize(void (*)(UpdaterAPI::CALLBACK_ID, void*), void*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x18",
+          "relocation_at": "0x287e8",
+          "target": "Updater::UpdaterManager::Finalize()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x20",
+          "relocation_at": "0x287f0",
+          "target": "Updater::UpdaterManager::SetData(unsigned char const*, unsigned long, unsigned char**, unsigned long*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x28",
+          "relocation_at": "0x287f8",
+          "target": "Updater::UpdaterManager::GetCommandBuffer(unsigned char**, unsigned long*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x30",
+          "relocation_at": "0x28800",
+          "target": "Updater::UpdaterManager::GetFirmwareInformation(UpdaterAPI::firmware_information_t*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x38",
+          "relocation_at": "0x28808",
+          "target": "Updater::UpdaterManager::SetChkGuardResult(UpdaterAPI::GUARD_STATUS_ID const*, unsigned int)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x40",
+          "relocation_at": "0x28810",
+          "target": "Updater::UpdaterManager::IsCurrentFirmwareValid(bool*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x48",
+          "relocation_at": "0x28818",
+          "target": "Updater::UpdaterManager::HasOccurredError(bool*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x50",
+          "relocation_at": "0x28820",
+          "target": "Updater::UpdaterManager::IsComplete()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x58",
+          "relocation_at": "0x28828",
+          "target": "Updater::UpdaterManager::ReadyToSwitchMode()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x60",
+          "relocation_at": "0x28830",
+          "target": "Updater::UpdaterManager::SwitchMode(UpdaterAPI::MODE_OPTION)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x68",
+          "relocation_at": "0x28838",
+          "target": "Updater::UpdaterManager::SwitchModeMsCrypt()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x70",
+          "relocation_at": "0x28840",
+          "target": "Updater::UpdaterManager::Callback(Updater::CALLBACK_LOCAL_ID, void*, void*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x80",
+          "relocation_at": "0x28850",
+          "target": "typeinfo for Updater::UpdaterManager",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x88",
+          "relocation_at": "0x28858",
+          "target": "non-virtual thunk to Updater::UpdaterManager::~UpdaterManager()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x90",
+          "relocation_at": "0x28860",
+          "target": "non-virtual thunk to Updater::UpdaterManager::~UpdaterManager()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x98",
+          "relocation_at": "0x28868",
+          "target": "non-virtual thunk to Updater::UpdaterManager::Callback(Updater::CALLBACK_LOCAL_ID, void*, void*)",
+          "relocation_type": 257
+        }
+      ]
+    },
+    {
+      "source": "libupdaterbody-7.02.so",
+      "vtable": "vtable for Updater::FlagFirmwareInformationHandler",
+      "vptr_base": "0x31ae0",
+      "slots": [
+        {
+          "slot": "0x0",
+          "relocation_at": "0x31ae0",
+          "target": "Updater::FlagFirmwareInformationHandler::~FlagFirmwareInformationHandler()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x8",
+          "relocation_at": "0x31ae8",
+          "target": "Updater::FlagFirmwareInformationHandler::~FlagFirmwareInformationHandler()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x10",
+          "relocation_at": "0x31af0",
+          "target": "Updater::FlagFirmwareInformationHandler::StartUpdate()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x18",
+          "relocation_at": "0x31af8",
+          "target": "Updater::FlagFirmwareInformationHandler::CompleteFlagAreaFormat()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x20",
+          "relocation_at": "0x31b00",
+          "target": "Updater::FlagFirmwareInformationHandler::CompleteUpdate(UpdaterAPI::firmware_information_t::information const&)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x28",
+          "relocation_at": "0x31b08",
+          "target": "Updater::FlagFirmwareInformationHandler::setModeID1(unsigned char)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x30",
+          "relocation_at": "0x31b10",
+          "target": "Updater::FlagFirmwareInformationHandler::getInformation(UpdaterAPI::firmware_information_t::information*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x38",
+          "relocation_at": "0x31b18",
+          "target": "Updater::FlagFirmwareInformationHandler::getVersion(unsigned int*, unsigned int*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x40",
+          "relocation_at": "0x31b20",
+          "target": "Updater::FlagFirmwareInformationHandler::setVersion(unsigned int)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x48",
+          "relocation_at": "0x31b28",
+          "target": "Updater::FlagFirmwareInformationHandler::getModelAndRegion(unsigned int*, unsigned int*)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x50",
+          "relocation_at": "0x31b30",
+          "target": "Updater::FlagFirmwareInformationHandler::setModelAndRegion(unsigned int, unsigned int)",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x58",
+          "relocation_at": "0x31b38",
+          "target": "Updater::FlagFirmwareInformationHandler::isUpdateModelAndRegion()",
+          "relocation_type": 257
+        },
+        {
+          "slot": "0x60",
+          "relocation_at": "0x31b40",
+          "target": "Updater::FlagFirmwareInformationHandler::isAccessoryMode()",
+          "relocation_type": 257
+        }
+      ]
+    }
+  ],
+  "old_204_205_comparisons": [
+    {
+      "path_a": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "path_b": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.04/usr/lib/libsdfileinputupdaterapi.so",
+      "sha256_a": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2",
+      "sha256_b": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2",
+      "byte_equal": true
+    },
+    {
+      "path_a": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "path_b": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.04/usr/lib/libupdatercommon.so",
+      "sha256_a": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797",
+      "sha256_b": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797",
+      "byte_equal": true
+    },
+    {
+      "path_a": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "path_b": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.04/usr/lib/libupdatercorecommon.so",
+      "sha256_a": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74",
+      "sha256_b": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74",
+      "byte_equal": true
+    },
+    {
+      "path_a": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so",
+      "path_b": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.04/usr/lib/libupdaterapi.so",
+      "sha256_a": "2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7",
+      "sha256_b": "2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7",
+      "byte_equal": true
+    },
+    {
+      "path_a": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sdfileinput.elf",
+      "path_b": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.04/usr/bin/sdfileinput.elf",
+      "sha256_a": "19a505750d18bee713e9794dd203219c4201ce2ef4c950b2187415878d09f67e",
+      "sha256_b": "19a505750d18bee713e9794dd203219c4201ce2ef4c950b2187415878d09f67e",
+      "byte_equal": true
+    },
+    {
+      "path_a": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu",
+      "path_b": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.04/usr/bin/sauu",
+      "sha256_a": "c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00",
+      "sha256_b": "c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00",
+      "byte_equal": true
+    }
+  ],
+  "decoded_current_header": {
+    "source": "work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+    "span": "[0,512)",
+    "sha256": "b1e8964250a2c45dc2928b4de99bb9dd9ded4c572cf8b378667361a9eade53c8",
+    "udtr_header_version_offset": "0x20",
+    "raw_le_version_bytes": "0207",
+    "major": 7,
+    "minor": 2,
+    "model": "0x91030080",
+    "region": "0x0",
+    "note": "Decoded FDAT reference only; not fed to old checker, not current camera metadata."
+  },
+  "body_start_actions": [
+    {
+      "action": 3,
+      "raw_jump_byte": "0x41",
+      "destination": "0x19e24"
+    },
+    {
+      "action": 4,
+      "raw_jump_byte": "0xf",
+      "destination": "0x19d5c"
+    },
+    {
+      "action": 5,
+      "raw_jump_byte": "0x0",
+      "destination": "0x19d20"
+    },
+    {
+      "action": 6,
+      "raw_jump_byte": "0x13",
+      "destination": "0x19d6c"
+    },
+    {
+      "action": 7,
+      "raw_jump_byte": "0x21",
+      "destination": "0x19da4"
+    }
+  ]
+}

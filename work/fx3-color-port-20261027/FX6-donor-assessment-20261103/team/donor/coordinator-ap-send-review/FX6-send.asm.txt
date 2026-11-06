@@ -1,0 +1,20 @@
+
+work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 20ef794: f9402fa1     	ldr	x1, [x29, #0x58]
+ 20ef798: 2a1303e0     	mov	w0, w19
+ 20ef79c: 97a8aa61     	bl	0xb1a120 <osal_snd_msg@plt>
+ 20ef7a0: 340000e0     	cbz	w0, 0x20ef7bc <Application_System_Init+0x14e4778>
+ 20ef7a4: f0002882     	adrp	x2, 0x2602000
+ 20ef7a8: 90002880     	adrp	x0, 0x25ff000
+ 20ef7ac: 91106042     	add	x2, x2, #0x418
+ 20ef7b0: 91284400     	add	x0, x0, #0xa11
+ 20ef7b4: 52808661     	mov	w1, #0x433              // =1075
+ 20ef7b8: 9401dff3     	bl	0x2167784 <Application_System_Init+0x155c740>
+ 20ef7bc: b94053a0     	ldr	w0, [x29, #0x50]
+ 20ef7c0: aa1603e1     	mov	x1, x22
+ 20ef7c4: 12800002     	mov	w2, #-0x1               // =-1
+ 20ef7c8: 97a8a9be     	bl	0xb19ec0 <osal_rcv_msg_tmo@plt>

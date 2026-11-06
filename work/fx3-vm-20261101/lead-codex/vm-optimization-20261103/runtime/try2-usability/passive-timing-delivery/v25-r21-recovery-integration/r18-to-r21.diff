@@ -1,0 +1,509 @@
+--- old/trial_web_v22_navigation_review.py
++++ r21/trial_web_v22_navigation_review.py
+@@ -2,10 +2,13 @@
+ import collections
+ import copy
+ import json
++import re
+ import secrets
+ import threading
+ import time
+ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
++
++REQUEST_ID_RE = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')
+ 
+ KEYS = {3: '上', 0x30: '下', 0x15: '左', 0x1af: '右',
+         0x1ac: '确定', 0x1ab: 'MENU', 0x1f8: '删除 / C4'}
+@@ -106,7 +109,7 @@
+                 'truncated': self.key_rejection_truncated,
+                 'records': list(self.key_rejections)})
+ 
+-    def _reject_key(self, code, message, reason, sequence, failed_predicates=()):
++    def _reject_key(self, code, message, reason, sequence, failed_predicates=(), request_id=None):
+         """Called only inside submit's existing lock and rejection branches."""
+         observed = self.frames.get(sequence) if type(sequence) is int else None
+         current = self.frame
+@@ -126,21 +129,27 @@
+             'pending_count': len(self.pending), 'review_required': bool(self.review_required),
+             'steps': self.steps, 'stop_requested': self.stop.is_set(),
+             'error_present': self.error is not None}
++        if request_id is not None: row['request_id'] = request_id
+         self.key_rejection_total += 1
+         if len(self.key_rejections) == self.key_rejections.maxlen:
+             self.key_rejection_truncated += 1
+         self.key_rejections.append(row)
+-        return code, {'error': message}
++        response = {'error': message}
++        if request_id is not None:
++            response.update(request_id=request_id, accepted=False, enqueued=False)
++        return code, response
+ 
+     def submit(self, body):
+         with self.lock:
+             key, sequence = body.get('key'), body.get('observed_sequence')
++            raw_request_id = body.get('request_id')
++            request_id = raw_request_id if type(raw_request_id) is str and REQUEST_ID_RE.fullmatch(raw_request_id) else None
+             if type(key) is not int or key not in KEYS:
+                 return self._reject_key(400, '仅支持页面上的七个按钮。',
+-                                        'unsupported_key', sequence)
++                                        'unsupported_key', sequence, request_id=request_id)
+             if type(sequence) is not int or sequence not in self.frames:
+                 return self._reject_key(409, '请等待当前画面显示后再按键。',
+-                                        'observed_sequence_missing', sequence)
++                                        'observed_sequence_missing', sequence, request_id=request_id)
+             if (not self.render_valid or not self.frame
+                     or self.frames[sequence]['PNG_sha256'] != self.frame['PNG_sha256']
+                     or self.frames[sequence]['content_generation'] != self.content_generation):
+@@ -153,21 +162,23 @@
+                     if self.frames[sequence]['content_generation'] != self.content_generation:
+                         failures.append('generation_mismatch')
+                 return self._reject_key(409, '当前画面已变化或不可用，请等待并查看最新画面。',
+-                                        'frame_identity_or_render_invalid', sequence, failures)
++                                        'frame_identity_or_render_invalid', sequence, failures, request_id)
+             if self.stop.is_set() or self.error or self.phase in ('stopping', 'finished'):
+                 return self._reject_key(409, '试用已停止接收按键。',
+-                                        'stopping_or_error', sequence)
++                                        'stopping_or_error', sequence, request_id=request_id)
+             if not self.ready or self.busy or self.pending or self.review_required:
+                 return self._reject_key(409, '上一按键仍在处理，请稍候。',
+-                                        'not_ready_or_pending', sequence)
++                                        'not_ready_or_pending', sequence, request_id=request_id)
+             if self.steps >= self.max_steps:
+                 return self._reject_key(409, '本轮已达配置的按键上限，请结束后重新启动。',
+-                                        'configured_key_limit', sequence)
++                                        'configured_key_limit', sequence, request_id=request_id)
+             item = {'key': key, 'label': KEYS[key], 'observed_frame': self.frames[sequence],
+                     'requested_monotonic': time.monotonic(), 'source': 'local_web_user'}
+             self.pending.append(item)
+             self.busy = True
+-            return 202, {'accepted': True, 'next_step': self.steps+1, 'key': hex(key)}
++            response = {'accepted': True, 'next_step': self.steps+1, 'key': hex(key)}
++            if request_id is not None: response['request_id'] = request_id
++            return 202, response
+ 
+     def require_visual_review(self, step, state, changed):
+         """Input ACK is known; pixel change alone cannot certify the intended page."""
+@@ -299,6 +310,7 @@
+ let displayed=0,shown=0,shownSHA='',displayedGeneration=0,busy=false,ending=false,finished=false;
+ let lastURL=null,renderFault=null,lastStatus=null,awaitingStep=null,deliveryUnknown=false,reviewAwaiting=false,reviewUnknown=false,pendingConfirm=null;
+ let explicitRejection=null,uncertainDetail='';
++const attemptDocumentTimeOrigin=performance.timeOrigin,attemptDocument=document;let currentKeyAttempt=null;
+ const image=document.querySelector('#frame'),statusEl=document.querySelector('#status');
+ const err=document.querySelector('#error'),endButton=document.querySelector('#end'),startButton=document.querySelector('#start');
+ const failureSummary=document.querySelector('#failure-summary'),diagnostics=document.querySelector('#diagnostics');
+@@ -318,7 +330,7 @@
+    if(!response.ok){
+      // Only explicit server rejections prove a mutation was rejected.
+      const body=await response.json();const error=new Error(body.error||'操作未完成');
+-     error.deliveryUnknown=response.status>=500;throw error;
++     error.deliveryUnknown=response.status>=500;error.serverResponse=body;error.httpStatus=response.status;throw error;
+    }
+    const body=await response[bodyKind]();return {response,body};
+  })()]);}finally{clearTimeout(timer);}
+@@ -449,30 +461,112 @@
+    }
+  }finally{if(!finished)setTimeout(tick,400);}
+ }
++function keyAttemptOutcome(){return currentKeyAttempt?structuredClone(currentKeyAttempt):null;}
++Object.defineProperty(window,'fx3KeyAttemptOutcome',{value:keyAttemptOutcome,writable:false,configurable:false});
++function setAttempt(id,outcome,extra={}){
++ if(!currentKeyAttempt||currentKeyAttempt.attempt_id!==id)return false;
++ Object.assign(currentKeyAttempt,{outcome,...extra,updated_monotonic_ms:performance.now()});return true;
++}
++function keyAttemptRecoveryEligibility(binding){
++ const a=currentKeyAttempt,s=lastStatus;
++ const deny=reason=>({eligible:false,reason});
++ let h;try{h=window.__fx3InteractionDeadlineV1?.status?.();}
++ catch(_){return deny('alarm_status_unavailable');}
++ if(!a||!binding||typeof binding!=='object')return deny('no_attributed_attempt');
++ if(a.attempt_id!==binding.attempt_id||a.document_time_origin!==binding.document_time_origin||
++    a.launch_request_id!==binding.launch_request_id||a.key!==binding.key||
++    a.base_step!==binding.base_step||a.expected_step!==binding.expected_step||
++    a.frame.PNG_sha256!==binding.PNG_sha256||a.frame.content_generation!==binding.content_generation||
++    a.frame.sequence!==binding.sequence||a.alarm_nonce!==binding.nonce||!a.alarm_nonce)
++   return deny('binding_mismatch');
++ if(document!==attemptDocument||performance.timeOrigin!==a.document_time_origin||
++    !h||h.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedURL!==location.href||
++    h.current?.state!=='armed'||h.current.nonce!==binding.nonce||
++    h.expectedLaunchId!==a.launch_request_id||h.documentTimeOrigin!==a.document_time_origin||
++    !Number.isFinite(h.current.armed_ms)||!Number.isFinite(h.current.due_ms)||
++    h.current.due_ms!==h.current.armed_ms+20000||
++    h.current.due_ms!==a.alarm_due_ms||performance.now()>=h.current.due_ms)return deny('document_or_alarm_mismatch');
++ if(!['not_posted','explicit_rejected_unqueued'].includes(a.outcome)||
++    (a.outcome==='not_posted'&&a.mutation_called)||
++    (a.outcome==='explicit_rejected_unqueued'&&(!a.mutation_called||a.server_request_id!==a.attempt_id)))
++   return deny('attempt_not_proven_unqueued');
++ if(!s||s.launch_request_id!==a.launch_request_id||s.steps!==a.base_step||
++    s.phase!=='ready'||!s.ready||s.error||s.busy||s.review_required||
++    ending||finished||busy||awaitingStep!==null||deliveryUnknown||reviewUnknown||
++    reviewAwaiting||renderFault||!frameLoadedFor(s))return deny('current_state_not_ready');
++ return {eligible:true,reason:'attributed_unqueued_local_snapshot_only',attempt_id:a.attempt_id,
++   snapshot_monotonic_ms:performance.now(),server_atomic_permission:false};
++}
++Object.defineProperty(window,'fx3KeyAttemptRecoveryEligibility',{value:keyAttemptRecoveryEligibility,writable:false,configurable:false});
+ keys.forEach(b=>b.onclick=async()=>{
+  if(b.disabled||busy||ending||renderFault||awaitingStep!==null||!lastStatus)return;
+- // Defend the click boundary as well as the visible disabled state. This
+- // compares with the latest *known* status; the server remains authoritative.
++ // One explicit handler-admitted click, fixed before the first await.
++ let alarmAtClick=null;try{alarmAtClick=window.__fx3InteractionDeadlineV1?.status?.()||null;}catch(_){}
++ const a={attempt_id:crypto.randomUUID().toLowerCase(),document_time_origin:attemptDocumentTimeOrigin,
++   launch_request_id:lastStatus.launch_request_id||null,
++   key:Number(b.dataset.key),base_step:lastStatus.steps,expected_step:lastStatus.steps+1,
++   frame:{sequence:displayed,PNG_sha256:shownSHA,content_generation:displayedGeneration},
++   alarm_nonce:alarmAtClick?.current?.nonce||null,alarm_due_ms:alarmAtClick?.current?.due_ms||null,
++   outcome:'preflight',mutation_called:false,created_monotonic_ms:performance.now()};
++ currentKeyAttempt=a;
+  if(!frameLoadedFor(lastStatus)){
++   setAttempt(a.attempt_id,'not_posted',{reason:'click_frame_not_loaded'});
+    lockVisualControls();
+    explicitRejection={kind:'key',detail:'浏览器尚未显示最新画面；本次未发送按键。请看新图后自行决定。'};
+-   presentFeedback(lastStatus);
+-   return;
++   presentFeedback(lastStatus);return;
+  }
+- busy=true;awaitingStep=lastStatus.steps+1;disableKeys();
++ busy=true;disableKeys();
++ const clickedStep=a.base_step,clickedSHA=a.frame.PNG_sha256,clickedGeneration=a.frame.content_generation;
++ let preflight;
++ try{preflight=(await request('/api/status')).body;
++   if(currentKeyAttempt!==a)return;
++   if(!preflight||typeof preflight!=='object'||!preflight.frame||typeof preflight.frame!=='object')
++     throw Error('按键前状态格式无效');
++ }
++ catch(e){if(currentKeyAttempt!==a)return;
++   setAttempt(a.attempt_id,'not_posted',{reason:'preflight_get_failed'});
++   renderFault='按键前状态读取失败；本次未发送按键。请等待状态刷新并看最新画面。';
++   busy=false;disableKeys();presentFeedback(lastStatus);return;
++ }
++ if(ending||finished||deliveryUnknown||reviewUnknown||renderFault||
++    awaitingStep!==null||reviewAwaiting||preflight.phase!=='ready'||
++    !preflight.ready||preflight.busy||preflight.review_required||
++    preflight.steps!==clickedStep||!frameLoadedFor(preflight)||
++    preflight.frame.PNG_sha256!==clickedSHA||preflight.frame.content_generation!==clickedGeneration||
++    shownSHA!==clickedSHA||displayedGeneration!==clickedGeneration||
++    !lastStatus||!frameLoadedFor(lastStatus)||lastStatus.steps!==clickedStep||
++    lastStatus.frame.PNG_sha256!==clickedSHA||lastStatus.frame.content_generation!==clickedGeneration){
++   setAttempt(a.attempt_id,'not_posted',{reason:'preflight_identity_or_lifecycle_changed'});
++   busy=false;lockVisualControls();
++   if(!ending&&!finished){
++     explicitRejection={kind:'key',detail:'按键前画面或状态已变化；本次未发送按键。请看最新画面后自行决定。'};
++     presentFeedback(lastStatus||preflight);
++   }return;
++ }
++ awaitingStep=clickedStep+1;
++ setAttempt(a.attempt_id,'post_in_flight',{mutation_called:true,observed_sequence:displayed});
+  try{
+-   const ack=await post('/api/key',{key:Number(b.dataset.key),observed_sequence:displayed});
+-   if(ack.accepted!==true||ack.next_step!==awaitingStep)throw Error('按键回执不完整，请等待状态确认。');
++   const ack=await post('/api/key',{key:a.key,observed_sequence:displayed,request_id:a.attempt_id});
++   if(currentKeyAttempt!==a)return;
++   if(ack.accepted!==true||ack.next_step!==awaitingStep||ack.request_id!==a.attempt_id)
++     throw Error('按键回执不完整，请等待状态确认。');
++   setAttempt(a.attempt_id,'accepted',{server_request_id:ack.request_id,accepted_next_step:ack.next_step});
+    if(explicitRejection?.kind==='key')explicitRejection=null;
+    presentFeedback(lastStatus);
+  }catch(e){
+-   if(e.deliveryUnknown===false){
+-     awaitingStep=null;deliveryUnknown=false;
++   if(currentKeyAttempt!==a)return;
++   const matching=e.deliveryUnknown===false&&e.httpStatus>=400&&e.httpStatus<500&&
++     e.serverResponse?.request_id===a.attempt_id&&e.serverResponse?.accepted===false&&
++     e.serverResponse?.enqueued===false;
++   setAttempt(a.attempt_id,matching?'explicit_rejected_unqueued':'delivery_unknown',
++     {server_request_id:matching?e.serverResponse.request_id:null,http_status:e.httpStatus||null});
++   if(matching){awaitingStep=null;deliveryUnknown=false;
+      explicitRejection={kind:'key',detail:e.message};
+    }else{deliveryUnknown=true;uncertainDetail=e.message;}
+    presentFeedback(lastStatus);
+- }finally{busy=false;}
++ }finally{if(currentKeyAttempt===a)busy=false;}
+ });
++
+ startButton.onclick=async()=>{
+  if(startButton.disabled||!lastStatus||lastStatus.phase!=='awaiting_launch')return;
+  const id=crypto.randomUUID().toLowerCase();launchPending=id;startButton.disabled=true;
+--- old/deadline.js
++++ r21/deadline.js
+@@ -2,7 +2,7 @@
+   'use strict';
+   const DEADLINE_MS = 20_000;
+   const KEY = '__fx3InteractionDeadlineV1';
+-  const SCRIPT_SHA = 'd224a8f10786dc815520a8c11320f8625c1e969f9508bac39541c971ecfb9822';
++  const SCRIPT_SHA = 'f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab';
+   const fail = message => { throw new Error('deadline_refused: ' + message); };
+   if (!config || Object.keys(config).sort().join(',') !== 'expectedLaunchId,expectedURL') fail('config');
+   const expected = new URL(config.expectedURL);
+--- old/bounded_capture.js
++++ r21/bounded_capture.js
+@@ -1,6 +1,6 @@
+ (async function captureMenuReference(c) {
+   'use strict';
+-  const PAGE_SHA = 'd224a8f10786dc815520a8c11320f8625c1e969f9508bac39541c971ecfb9822';
++  const PAGE_SHA = 'f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab';
+   const MENU_SHA = '60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292';
+   const MAX_WAIT_MS = 8000, CONFIRM_RESERVE_MS = 8000, DEADLINE_MS = 20000;
+   const doc = document, origin = performance.timeOrigin;
+--- old/explicit_confirm.js
++++ r21/explicit_confirm.js
+@@ -1,7 +1,7 @@
+ (async function explicitOperatorConfirm(c) {
+   'use strict';
+   const DEADLINE_MS = 20_000;
+-  const PAGE_SCRIPT_SHA = 'd224a8f10786dc815520a8c11320f8625c1e969f9508bac39541c971ecfb9822';
++  const PAGE_SCRIPT_SHA = 'f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab';
+   const CONFIRM_HANDLER_SHA = 'f830416986fa93d865642fc00de7fc9963663dc87ba50d15939bf617e481fd5a';
+   const events = [];
+   const stamp = (event, extra = {}) => events.push({event, performance_ms: performance.now(), wall_UTC: new Date().toISOString(), ...extra});
+--- /dev/null
++++ r21/operator-helpers/recovery_readonly.js
+@@ -0,0 +1,23 @@
++(async function recoveryReadOnly(c){
++ 'use strict';
++ const PAGE_SHA='f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab';
++ const hash=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
++ const fail=reason=>({qualified:false,reason,performance_ms:performance.now()});
++ if(!c||location.href!==c.url||window.top!==window||document.title!=='FX3 固件菜单试用')return fail('document_url');
++ const scripts=[...document.scripts];if(scripts.length!==1||scripts[0].src)return fail('script_shape');
++ const canonical=scripts[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;');
++ if(await hash(canonical)!==PAGE_SHA)return fail('PAGE_fingerprint');
++ const a=window.fx3KeyAttemptOutcome?.(),h=window.__fx3InteractionDeadlineV1?.status?.(),s=lastStatus;
++ if(!a||!h||!s||!c.binding||a.attempt_id!==c.binding.attempt_id||
++    a.alarm_nonce!==c.nonce||h.current?.nonce!==c.nonce||h.current.state!=='armed'||
++    h.expectedLaunchId!==c.launch_id||h.expectedURL!==c.url||h.documentTimeOrigin!==performance.timeOrigin||
++    !Number.isFinite(h.current.due_ms)||performance.now()>=h.current.due_ms)return fail('attempt_alarm_identity');
++ const eligibility=window.fx3KeyAttemptRecoveryEligibility?.(c.binding);
++ if(!eligibility?.eligible)return fail('not_proven_unqueued_or_not_ready:'+eligibility?.reason);
++ if(!s.frame||!frameLoadedFor(s)||!image.complete||image.naturalWidth<=0||
++    s.frame.PNG_sha256!==shownSHA||s.frame.content_generation!==displayedGeneration)return fail('current_loaded_frame');
++ return {qualified:true,attempt_id:a.attempt_id,nonce:c.nonce,launch_id:c.launch_id,
++   document_time_origin:performance.timeOrigin,alarm_due_ms:h.current.due_ms,
++   sequence:displayed,PNG_sha256:shownSHA,content_generation:displayedGeneration,
++   performance_ms:performance.now(),server_atomic_permission:false};
++})
+--- /dev/null
++++ r21/operator-helpers/recovery_cancel.js
+@@ -0,0 +1,69 @@
++(async function explicitRecoveryCancel(c){
++ 'use strict';
++ const PAGE_SHA='f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab';
++ const hash=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
++ let cancel_invoked=false;
++ const fail=reason=>({status:'refused',reason,cancel_invoked,performance_ms:performance.now()});
++ try{
++  if(!c||location.href!==c.url||window.top!==window||document.title!=='FX3 固件菜单试用'||
++     !c.review||!c.binding||typeof c.target!=='string'||!c.target.trim())return fail('config_or_document');
++  const scripts=[...document.scripts];if(scripts.length!==1||scripts[0].src)return fail('script_shape');
++  const canonical=scripts[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;');
++  if(await hash(canonical)!==PAGE_SHA)return fail('PAGE_fingerprint');
++  const helper=window.__fx3InteractionDeadlineV1,desc=Object.getOwnPropertyDescriptor(window,'__fx3InteractionDeadlineV1');
++  if(!helper||!desc||desc.configurable||desc.writable||desc.value!==helper||
++     typeof helper.status!=='function'||typeof helper.cancel!=='function')return fail('deadline_identity');
++  const review=c.review;
++  if(review.status!=='qualified_review_screenshot'||review.attempt_id!==c.binding.attempt_id||
++     review.nonce!==c.nonce||review.launch_id!==c.launch_id||
++     !/^[0-9a-f]{64}$/.test(review.PNG_sha256)||
++     !Number.isSafeInteger(review.content_generation)||review.content_generation<=0||
++     !review.screenshot_sha256)return fail('review_receipt');
++  const first=helper.status(),a=window.fx3KeyAttemptOutcome?.();
++  if(!a||a.attempt_id!==c.binding.attempt_id||a.alarm_nonce!==c.nonce||
++     !first.current||first.current.state!=='armed'||first.current.nonce!==c.nonce||
++     first.expectedURL!==c.url||first.expectedLaunchId!==c.launch_id||
++     first.documentTimeOrigin!==performance.timeOrigin||first.deadline_ms!==20000||
++     !Number.isFinite(first.current.due_ms)||first.current.due_ms!==a.alarm_due_ms||
++     performance.now()>=first.current.due_ms)return fail('attempt_alarm_binding');
++  // Read-only server refresh. It is a snapshot, never an atomic key permission.
++  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),Math.min(2000,Math.max(1,first.current.due_ms-performance.now()-1000)));
++  let fresh;
++  try{const response=await fetch('/api/status',{cache:'no-store',signal:controller.signal});
++      if(!response.ok)return fail('status_http');fresh=await response.json();}
++  catch(_){return fail('status_unknown');}finally{clearTimeout(timer);}
++  if(!fresh||fresh.phase!=='ready'||!fresh.ready||fresh.busy||fresh.review_required||fresh.error||
++     fresh.steps!==a.base_step||fresh.launch_request_id!==c.launch_id||!fresh.frame||!fresh.render_valid||
++     ending||finished||busy||deliveryUnknown||reviewUnknown||awaitingStep!==null||reviewAwaiting||renderFault)
++     return fail('server_status_not_ready');
++  // Ordinary page tick may still be loading. No key, confirm or alarm mutation while waiting.
++  const limit=Math.min(performance.now()+2000,first.current.due_ms-1000);
++  while(performance.now()<limit && (!lastStatus||!frameLoadedFor(lastStatus)||
++        !image.complete||image.naturalWidth<=0||shownSHA!==fresh.frame.PNG_sha256||
++        displayedGeneration!==fresh.frame.content_generation))
++    await new Promise(resolve=>setTimeout(resolve,50));
++  if(!lastStatus||!frameLoadedFor(lastStatus)||!image.complete||image.naturalWidth<=0||
++     shownSHA!==fresh.frame.PNG_sha256||displayedGeneration!==fresh.frame.content_generation||
++     lastStatus.steps!==a.base_step||lastStatus.launch_request_id!==c.launch_id)return fail('loaded_frame_not_current');
++  const now=helper.status(),q=window.fx3KeyAttemptRecoveryEligibility?.(c.binding);
++  if(!q?.eligible||window.fx3KeyAttemptOutcome?.().attempt_id!==a.attempt_id||
++     now.current?.nonce!==c.nonce||now.current?.state!=='armed'||
++     now.current.due_ms!==first.current.due_ms||performance.now()>=now.current.due_ms)return fail('last_identity_or_eligibility');
++  // The only mutation: cancel this already proved unqueued test alarm.
++  cancel_invoked=true;const receipt=helper.cancel(c.nonce);
++  const event=receipt.events?.filter(e=>e.event==='cancelled'&&e.nonce===c.nonce).at(-1);
++  const elapsed=receipt.current?.cancelled_ms-receipt.current?.armed_ms;
++  if(receipt.current?.state!=='cancelled'||receipt.current.nonce!==c.nonce||
++     receipt.current.due_ms!==first.current.due_ms||!event||
++     !Number.isFinite(elapsed)||elapsed<0||elapsed>=20000||
++     !Number.isFinite(event.elapsed_ms)||event.elapsed_ms<0||event.elapsed_ms>=20000)
++    return {status:'unknown',reason:'cancel_receipt_mismatch',cancel_invoked,alarm_cancel_receipt:receipt};
++  return {status:'cancelled_unqueued_alarm_only',cancel_invoked,attempt_id:a.attempt_id,
++    nonce:c.nonce,alarm_cancel_receipt:receipt,
++    old_review:{sha:review.PNG_sha256,generation:review.content_generation},
++    current_frame:{sha:shownSHA,generation:displayedGeneration,sequence:displayed},
++    historical_review_not_current:review.PNG_sha256!==shownSHA||review.content_generation!==displayedGeneration,
++    no_visual_approval:true,no_guest_key:true,no_confirm_visual:true,server_atomic_permission:false,
++    due_ms:receipt.current.due_ms,elapsed_ms:elapsed,performance_ms:performance.now()};
++ }catch(e){return {status:cancel_invoked?'unknown':'refused',reason:String(e),cancel_invoked};}
++})
+--- /dev/null
++++ r21/operator-helpers/recovery_tools.py
+@@ -0,0 +1,100 @@
++#!/usr/bin/env python3
++"""Explicit operator-only FX3 recovery review or alarm cleanup; never a guest key."""
++import argparse,fcntl,hashlib,json,re,subprocess,time
++from pathlib import Path
++from urllib.parse import urlsplit
++HERE=Path(__file__).resolve().parent
++UUID=re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
++SESSION=re.compile(r'fx3-deadline-[A-Za-z0-9_-]+')
++def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
++def call(session,args,source=None,timeout=15):
++ p=subprocess.run(['agent-browser','--session',session,*args],input=source,text=True,capture_output=True,timeout=timeout)
++ if p.returncode:raise RuntimeError(f'agent-browser {args[0]} failed: {p.stdout} {p.stderr}')
++ return p.stdout.strip()
++def check(session,url,launch,nonce,binding):
++ u=urlsplit(url)
++ if not SESSION.fullmatch(session) or u.scheme!='http' or u.hostname!='127.0.0.1' or not u.port or u.path!='/' or u.query or u.fragment or url!=f'http://127.0.0.1:{u.port}/':raise ValueError('owned single tab exact loopback URL')
++ if not UUID.fullmatch(launch) or not UUID.fullmatch(nonce):raise ValueError('launch/nonce')
++ if (binding.get('launch_request_id')!=launch or binding.get('nonce')!=nonce or
++     not UUID.fullmatch(binding.get('attempt_id','')) or type(binding.get('base_step')) is not int or
++     not 0<=binding['base_step']<=4096 or binding.get('expected_step')!=binding['base_step']+1 or
++     binding.get('key') not in (3,48,21,431,428,427,504) or
++     not re.fullmatch(r'[0-9a-f]{64}',binding.get('PNG_sha256','')) or
++     type(binding.get('content_generation')) is not int or binding['content_generation']<=0 or
++     type(binding.get('sequence')) is not int or binding['sequence']<=0):raise ValueError('attempt binding')
++ tabs=json.loads(call(session,['tab','--json']))['data']['tabs']
++ if len(tabs)!=1 or tabs[0]['url']!=url:raise ValueError('one owned tab at exact URL')
++ return tabs[0].get('id')
++def evaluate(session,name,config):
++ source=(HERE/name).read_text()+'('+json.dumps(config,ensure_ascii=False)+')'
++ return json.loads(call(session,['eval','--stdin'],source,timeout=15))
++def capture(session,url,launch,nonce,binding,out):
++ tab=check(session,url,launch,nonce,binding);out=Path(out);out.mkdir() # exclusive
++ c={'url':url,'launch_id':launch,'nonce':nonce,'binding':binding}
++ receipt={'status':'unknown','scope':'read_only_unqueued_review','session':session,'tab':tab,'binding':binding,'host_start_ns':time.monotonic_ns(),'guest_keys_sent':0,'confirm_calls':0,'alarm_mutations':0}
++ try:
++  first=evaluate(session,'recovery_readonly.js',c);receipt['before']=first
++  if not first.get('qualified'):receipt.update(status='refused',reason=first.get('reason'));return receipt
++  image=out/'review-page.png';call(session,['screenshot',str(image)],timeout=12)
++  receipt['screenshot_sha256']=sha(image);receipt['screenshot_path']=str(image)
++  second=evaluate(session,'recovery_readonly.js',c);receipt['after']=second
++  fields=('attempt_id','nonce','launch_id','document_time_origin','alarm_due_ms','PNG_sha256','content_generation')
++  if not second.get('qualified') or any(first.get(k)!=second.get(k) for k in fields):receipt.update(status='refused',reason='post_screenshot_identity_changed');return receipt
++  receipt.update(status='qualified_review_screenshot',attempt_id=first['attempt_id'],nonce=nonce,launch_id=launch,PNG_sha256=first['PNG_sha256'],content_generation=first['content_generation'],sequence=first['sequence'],server_atomic_permission=False)
++  return receipt
++ except BaseException as e:receipt.update(status='unknown',error=repr(e));return receipt
++ finally:
++  receipt['host_end_ns']=time.monotonic_ns();(out/'review-result.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
++def _cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out):
++ tab=check(session,url,launch,nonce,binding);out=Path(out);out.mkdir()
++ receipt={'status':'unknown','scope':'explicit_unqueued_alarm_cleanup_only','session':session,'tab':tab,'binding':binding,'review':str(review),'target':target,'host_start_ns':time.monotonic_ns(),'guest_keys_sent':0,'confirm_calls':0,'new_alarm_calls':0}
++ try:
++  reviewed=json.loads(Path(review).read_text())
++  if not target.strip() or len(target)>500 or reviewed.get('status')!='qualified_review_screenshot' or reviewed.get('binding')!=binding or reviewed.get('nonce')!=nonce or reviewed.get('launch_id')!=launch:
++   receipt.update(status='refused',reason='operator_review_binding');return receipt
++  c={'url':url,'launch_id':launch,'nonce':nonce,'binding':binding,'review':reviewed,'target':target}
++  receipt['eval_may_have_started']=True
++  (out/'cancel-result.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
++  result=evaluate(session,'recovery_cancel.js',c);receipt['browser_result']=result;receipt['status']=result.get('status','unknown')
++  receipt['alarm_cleanup_status']='confirmed_cancelled' if receipt['status']=='cancelled_unqueued_alarm_only' else 'unknown_or_refused'
++  if receipt['status']=='cancelled_unqueued_alarm_only':
++   image=out/'current-after-cancel.png';call(session,['screenshot',str(image)],timeout=12)
++   receipt['current_screenshot_path']=str(image);receipt['current_screenshot_sha256']=sha(image)
++   receipt['current_screenshot_status']='delivered_requires_separate_operator_review'
++  return receipt
++ except BaseException as e:
++  receipt.update(status='cancelled_screenshot_unknown' if receipt.get('alarm_cleanup_status')=='confirmed_cancelled' else ('unknown' if receipt.get('eval_may_have_started') else 'refused'),error=repr(e))
++  return receipt
++ finally:receipt['host_end_ns']=time.monotonic_ns();(out/'cancel-result.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
++def cancel(session,url,launch,nonce,binding,review,target,out,ledger=None):
++    """Production calls require a locked ledger; None is offline fixture only."""
++    if ledger is None:return _cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out)
++    path=Path(ledger)
++    if not path.parent.is_dir():raise ValueError('existing ledger parent')
++    with path.open('a+') as f:
++        fcntl.flock(f,fcntl.LOCK_EX);f.seek(0);raw=f.read()
++        state=json.loads(raw) if raw else {'attempts':[],'recoveries':[]}
++        step=binding['expected_step'];aid=binding['attempt_id']
++        if (len(state.get('attempts',[]))>10 or len(state.get('recoveries',[]))>=2 or
++            any(x.get('step')==step for x in state.get('recoveries',[])) or
++            not any(x.get('attempt_id')==aid and x.get('step')==step for x in state.get('attempts',[]))):
++            return {'status':'refused','reason':'supervised_budget_or_attempt_ledger','cancel_invoked':False}
++        # Reserve and persist before any possible browser-side alarm mutation.
++        reservation={'step':step,'attempt_id':aid,'nonce':nonce,'status':'reserved_unknown','host_ns':time.monotonic_ns()}
++        state['recoveries'].append(reservation)
++        f.seek(0);f.truncate();f.write(json.dumps(state,indent=2)+'\n');f.flush();__import__('os').fsync(f.fileno())
++        result=_cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out)
++        reservation['status']=result['status']
++        reservation['alarm_cleanup_status']=result.get('alarm_cleanup_status','unknown')
++        reservation['current_screenshot_status']=result.get('current_screenshot_status','unknown')
++        f.seek(0);f.truncate();f.write(json.dumps(state,indent=2)+'\n');f.flush();__import__('os').fsync(f.fileno())
++        return result
++
++if __name__=='__main__':
++ p=argparse.ArgumentParser();p.add_argument('action',choices=('capture','cancel'))
++ for k in ('session','url','launch-id','nonce','binding','out'):p.add_argument('--'+k,required=True)
++ p.add_argument('--review');p.add_argument('--target');p.add_argument('--ledger');a=p.parse_args()
++ if a.action=='cancel' and not a.ledger:p.error('--ledger required for cancel')
++ binding=json.loads(Path(a.binding).read_text());c=(a.session,a.url,a.launch_id,a.nonce,binding)
++ result=capture(*c,a.out) if a.action=='capture' else cancel(*c,a.review,a.target or '',a.out,a.ledger)
++ print(json.dumps(result,ensure_ascii=False,indent=2));raise SystemExit(0 if result['status'] in ('qualified_review_screenshot','cancelled_unqueued_alarm_only') else 2)
+--- /dev/null
++++ r21/operator-helpers/operator_click.py
+@@ -0,0 +1,48 @@
++#!/usr/bin/env python3
++"""Explicit operator click through original PAGE button; test budget only, no direct POST."""
++import argparse,fcntl,hashlib,json,os,subprocess,time,uuid
++from pathlib import Path
++from recovery_tools import check,call
++HERE=Path(__file__).resolve().parent
++PAGE_SHA='f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab'
++KEYS=(3,48,21,431,428,427,504)
++def click(session,url,launch,nonce,key,reviewed_sha,reviewed_generation,target,ledger,receipt):
++ if key not in KEYS or not target.strip() or len(target)>500 or len(reviewed_sha)!=64 or reviewed_generation<1:raise ValueError('operator explicit inputs')
++ binding={'launch_request_id':launch,'nonce':nonce,'attempt_id':'00000000-0000-4000-8000-000000000000','base_step':0,'expected_step':1,'key':key,'PNG_sha256':reviewed_sha,'content_generation':reviewed_generation,'sequence':1}
++ tab=check(session,url,launch,nonce,binding)
++ ledger=Path(ledger);receipt=Path(receipt)
++ if not ledger.parent.is_dir() or not receipt.parent.is_dir():raise ValueError('existing receipt parents')
++ with ledger.open('a+') as f:
++  fcntl.flock(f,fcntl.LOCK_EX);f.seek(0);raw=f.read();state=json.loads(raw) if raw else {'attempts':[],'recoveries':[]}
++  if len(state['attempts'])>=10:raise ValueError('10 explicit attempts reached')
++  if any(x.get('status')!='click_invoked' for x in state['attempts']):raise ValueError('previous click outcome unknown; End required')
++  if any(x.get('status')!='cancelled_unqueued_alarm_only' or x.get('current_screenshot_status')!='delivered_requires_separate_operator_review' for x in state['recoveries']):raise ValueError('recovery outcome or new screenshot unknown; End required')
++  script="""(async c=>{const digest=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
++   const scripts=[...document.scripts],h=window.__fx3InteractionDeadlineV1?.status?.();
++   if(location.href!==c.url||window.top!==window||scripts.length!==1||scripts[0].src||
++      await digest(scripts[0].textContent.replace(/^const token=[^\\r\\n]*;$/m,'const token=__TOKEN__;'))!==c.page_sha||
++      !lastStatus||lastStatus.launch_request_id!==c.launch||lastStatus.phase!=='ready'||!lastStatus.ready||lastStatus.error||lastStatus.busy||lastStatus.review_required||
++      lastStatus.steps>=8||busy||ending||finished||deliveryUnknown||reviewUnknown||reviewAwaiting||awaitingStep!==null||renderFault||
++      !frameLoadedFor(lastStatus)||shownSHA!==c.sha||displayedGeneration!==c.gen||
++      h?.current?.nonce!==c.nonce||h.current.state!=='armed'||performance.now()>=h.current.due_ms)throw Error('operator_click_preflight');
++   const b=[...document.querySelectorAll('.key')].find(x=>Number(x.dataset.key)===c.key);
++   if(!b||b.disabled)throw Error('key_not_available');b.click();
++   const a=fx3KeyAttemptOutcome();if(!a||a.key!==c.key||a.alarm_nonce!==c.nonce)throw Error('attempt_not_created');
++   return {attempt_id:a.attempt_id,step:a.expected_step,base_step:a.base_step,clicked_sha:a.frame.PNG_sha256,clicked_generation:a.frame.content_generation,server_atomic_permission:false};
++  })"""
++  config={'url':url,'launch':launch,'nonce':nonce,'key':key,'sha':reviewed_sha,'gen':reviewed_generation,'page_sha':PAGE_SHA}
++  record={'status':'unknown','session':session,'tab':tab,'target':target,'key':key,'host_start_ns':time.monotonic_ns(),'eval_may_have_started':True,'guest_keys_sent_directly_by_cli':0}
++  receipt.open('x').write(json.dumps(record,indent=2)+'\n')
++  reservation={'status':'reserved_unknown','reservation_id':str(uuid.uuid4()),'key':key,'host_ns':time.monotonic_ns()}
++  state['attempts'].append(reservation)
++  f.seek(0);f.truncate();f.write(json.dumps(state,indent=2)+'\n');f.flush();os.fsync(f.fileno())
++  try:
++   value=json.loads(call(session,['eval','--stdin'],source=script+'('+json.dumps(config)+')',timeout=12));record.update(status='click_invoked',result=value)
++  except BaseException as e:record['error']=repr(e)
++  reservation.update(status=record['status'],attempt_id=record.get('result',{}).get('attempt_id'),step=record.get('result',{}).get('step'))
++  f.seek(0);f.truncate();f.write(json.dumps(state,indent=2)+'\n');f.flush();os.fsync(f.fileno());record['host_end_ns']=time.monotonic_ns();receipt.write_text(json.dumps(record,indent=2)+'\n');return record
++if __name__=='__main__':
++ p=argparse.ArgumentParser()
++ for k in ('session','url','launch','nonce','key','reviewed-sha','reviewed-generation','target','ledger','receipt'):
++  p.add_argument('--'+k,required=True,type=int if k in ('key','reviewed-generation') else str)
++ a=p.parse_args();x=click(a.session,a.url,a.launch,a.nonce,a.key,a.reviewed_sha,a.reviewed_generation,a.target,a.ledger,a.receipt);print(json.dumps(x,indent=2));raise SystemExit(0 if x['status']=='click_invoked' else 2)

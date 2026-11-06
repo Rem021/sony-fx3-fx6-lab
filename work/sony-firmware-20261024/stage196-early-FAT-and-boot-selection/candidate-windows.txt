@@ -1,0 +1,315 @@
+
+{"site": "0xfe054044", "target_name": "FAT_ready", "effective_address": "0xfe062168", "instruction": "ldrb w8, [x8, #0x168]", "source_register_value": "0xfe062000", "candidate_only": true}
+0xfe05402c [file+0xb02c] ea031a32 mov      w10, #0x40
+0xfe054030 [file+0xb030] 08240029 stp      w8, w9, [x0]
+0xfe054034 [file+0xb034] 090800b9 str      w9, [x0, #8]
+0xfe054038 [file+0xb038] 0a0800f9 str      x10, [x0, #0x10]
+0xfe05403c [file+0xb03c] c0035fd6 ret      
+0xfe054040 [file+0xb040] 680000d0 adrp     x8, #0xfe062000
+0xfe054044 [file+0xb044] 08a14539 ldrb     w8, [x8, #0x168]
+0xfe054048 [file+0xb048] 1f050071 cmp      w8, #1
+0xfe05404c [file+0xb04c] 41000054 b.ne     #0xfe054054
+0xfe054050 [file+0xb050] 9bffff17 b        #0xfe053ebc
+0xfe054054 [file+0xb054] c0035fd6 ret      
+0xfe054058 [file+0xb058] ffc300d1 sub      sp, sp, #0x30
+0xfe05405c [file+0xb05c] 60018052 mov      w0, #0xb
+
+{"site": "0xfe054080", "target_name": "FAT_ready", "effective_address": "0xfe062168", "instruction": "strb wzr, [x19, #0x168]", "source_register_value": null, "candidate_only": true}
+0xfe054068 [file+0xb068] 74018052 mov      w20, #0xb
+0xfe05406c [file+0xb06c] 730000d0 adrp     x19, #0xfe062000
+0xfe054070 [file+0xb070] 401fa072 movk     w0, #0xfa, lsl #16
+0xfe054074 [file+0xb074] e1630091 add      x1, sp, #0x18
+0xfe054078 [file+0xb078] 541fa072 movk     w20, #0xfa, lsl #16
+0xfe05407c [file+0xb07c] ff0700f9 str      xzr, [sp, #8]
+0xfe054080 [file+0xb080] 7fa20539 strb     wzr, [x19, #0x168]
+0xfe054084 [file+0xb084] be120094 bl       #0xfe058b7c
+0xfe054088 [file+0xb088] e803002a mov      w8, w0
+0xfe05408c [file+0xb08c] 40328012 mov      w0, #-0x193
+0xfe054090 [file+0xb090] 8802f837 tbnz     w8, #0x1f, #0xfe0540e0
+0xfe054094 [file+0xb094] e80f40f9 ldr      x8, [sp, #0x18]
+0xfe054098 [file+0xb098] 09008012 mov      w9, #-1
+
+{"site": "0xfe0540dc", "target_name": "FAT_ready", "effective_address": "0xfe062168", "instruction": "strb w8, [x19, #0x168]", "source_register_value": "0x1", "candidate_only": true}
+0xfe0540c4 [file+0xb0c4] 3f0008eb cmp      x1, x8
+0xfe0540c8 [file+0xb0c8] c0000054 b.eq     #0xfe0540e0
+0xfe0540cc [file+0xb0cc] e00f40f9 ldr      x0, [sp, #0x18]
+0xfe0540d0 [file+0xb0d0] b5ffff97 bl       #0xfe053fa4
+0xfe0540d4 [file+0xb0d4] e0031f2a mov      w0, wzr
+0xfe0540d8 [file+0xb0d8] e8030032 mov      w8, #1
+0xfe0540dc [file+0xb0dc] 68a20539 strb     w8, [x19, #0x168]
+0xfe0540e0 [file+0xb0e0] f37b42a9 ldp      x19, x30, [sp, #0x20]
+0xfe0540e4 [file+0xb0e4] f40b40f9 ldr      x20, [sp, #0x10]
+0xfe0540e8 [file+0xb0e8] ffc30091 add      sp, sp, #0x30
+0xfe0540ec [file+0xb0ec] c0035fd6 ret      
+0xfe0540f0 [file+0xb0f0] f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+0xfe0540f4 [file+0xb0f4] e803012a mov      w8, w1
+
+{"site": "0xfe055728", "target_name": "FAT_current_partition", "effective_address": "0xfe062100", "instruction": "ldr w0, [x8, #0x100]", "source_register_value": null, "candidate_only": true}
+0xfe055710 [file+0xc710] ea079f1a cset     w10, ne
+0xfe055714 [file+0xc714] df02096b cmp      w22, w9
+0xfe055718 [file+0xc718] e9179f1a cset     w9, eq
+0xfe05571c [file+0xc71c] 5601090a and      w22, w10, w9
+0xfe055720 [file+0xc720] aafeff17 b        #0xfe0551c8
+0xfe055724 [file+0xc724] 680000b0 adrp     x8, #0xfe062000
+0xfe055728 [file+0xc728] 000141b9 ldr      w0, [x8, #0x100]
+0xfe05572c [file+0xc72c] c0035fd6 ret      
+0xfe055730 [file+0xc730] 680000b0 adrp     x8, #0xfe062000
+0xfe055734 [file+0xc734] 000101b9 str      w0, [x8, #0x100]
+0xfe055738 [file+0xc738] c0035fd6 ret      
+0xfe05573c [file+0xc73c] fe0f1ff8 str      x30, [sp, #-0x10]!
+0xfe055740 [file+0xc740] ff0700f9 str      xzr, [sp, #8]
+
+{"site": "0xfe055734", "target_name": "FAT_current_partition", "effective_address": "0xfe062100", "instruction": "str w0, [x8, #0x100]", "source_register_value": null, "candidate_only": true}
+0xfe05571c [file+0xc71c] 5601090a and      w22, w10, w9
+0xfe055720 [file+0xc720] aafeff17 b        #0xfe0551c8
+0xfe055724 [file+0xc724] 680000b0 adrp     x8, #0xfe062000
+0xfe055728 [file+0xc728] 000141b9 ldr      w0, [x8, #0x100]
+0xfe05572c [file+0xc72c] c0035fd6 ret      
+0xfe055730 [file+0xc730] 680000b0 adrp     x8, #0xfe062000
+0xfe055734 [file+0xc734] 000101b9 str      w0, [x8, #0x100]
+0xfe055738 [file+0xc738] c0035fd6 ret      
+0xfe05573c [file+0xc73c] fe0f1ff8 str      x30, [sp, #-0x10]!
+0xfe055740 [file+0xc740] ff0700f9 str      xzr, [sp, #8]
+0xfe055744 [file+0xc744] c80c0094 bl       #0xfe058a64
+0xfe055748 [file+0xc748] 1f040071 cmp      w0, #1
+0xfe05574c [file+0xc74c] 81020054 b.ne     #0xfe05579c
+
+{"site": "0xfe055778", "target_name": "FAT_current_partition", "effective_address": "0xfe062100", "instruction": "ldr w8, [x8, #0x100]", "source_register_value": "0xfe062000", "candidate_only": true}
+0xfe055760 [file+0xc760] e001f837 tbnz     w0, #0x1f, #0xfe05579c
+0xfe055764 [file+0xc764] e20740f9 ldr      x2, [sp, #8]
+0xfe055768 [file+0xc768] 08008012 mov      w8, #-1
+0xfe05576c [file+0xc76c] 5f0008eb cmp      x2, x8
+0xfe055770 [file+0xc770] 60010054 b.eq     #0xfe05579c
+0xfe055774 [file+0xc774] 680000b0 adrp     x8, #0xfe062000
+0xfe055778 [file+0xc778] 080141b9 ldr      w8, [x8, #0x100]
+0xfe05577c [file+0xc77c] 410000d0 adrp     x1, #0xfe05f000
+0xfe055780 [file+0xc780] 21300991 add      x1, x1, #0x24c
+0xfe055784 [file+0xc784] e0071f32 mov      w0, #6
+0xfe055788 [file+0xc788] 1f110071 cmp      w8, #4
+0xfe05578c [file+0xc78c] e8079f1a cset     w8, ne
+0xfe055790 [file+0xc790] 480000b9 str      w8, [x2]
+
+{"site": "0xfe057f34", "target_name": "FAT_ready", "effective_address": "0xfe06216a", "instruction": "ldrb w8, [x8, #0x16a]", "source_register_value": "0xfe062000", "candidate_only": true}
+0xfe057f1c [file+0xef1c] e0071f32 mov      w0, #6
+0xfe057f20 [file+0xef20] e203132a mov      w2, w19
+0xfe057f24 [file+0xef24] a4f8ff97 bl       #0xfe0561b4
+0xfe057f28 [file+0xef28] 7f020071 cmp      w19, #0
+0xfe057f2c [file+0xef2c] 6d010054 b.le     #0xfe057f58
+0xfe057f30 [file+0xef30] 480000f0 adrp     x8, #0xfe062000
+0xfe057f34 [file+0xef34] 08a94539 ldrb     w8, [x8, #0x16a]
+0xfe057f38 [file+0xef38] 68010036 tbz      w8, #0, #0xfe057f64
+0xfe057f3c [file+0xef3c] 480000f0 adrp     x8, #0xfe062000
+0xfe057f40 [file+0xef40] 09f940b9 ldr      w9, [x8, #0xf8]
+0xfe057f44 [file+0xef44] 3f01136b cmp      w9, w19
+0xfe057f48 [file+0xef48] 41010054 b.ne     #0xfe057f70
+0xfe057f4c [file+0xef4c] e0031f2a mov      w0, wzr
+
+{"site": "0xfe057f40", "target_name": "FAT_current_partition", "effective_address": "0xfe0620f8", "instruction": "ldr w9, [x8, #0xf8]", "source_register_value": null, "candidate_only": true}
+0xfe057f28 [file+0xef28] 7f020071 cmp      w19, #0
+0xfe057f2c [file+0xef2c] 6d010054 b.le     #0xfe057f58
+0xfe057f30 [file+0xef30] 480000f0 adrp     x8, #0xfe062000
+0xfe057f34 [file+0xef34] 08a94539 ldrb     w8, [x8, #0x16a]
+0xfe057f38 [file+0xef38] 68010036 tbz      w8, #0, #0xfe057f64
+0xfe057f3c [file+0xef3c] 480000f0 adrp     x8, #0xfe062000
+0xfe057f40 [file+0xef40] 09f940b9 ldr      w9, [x8, #0xf8]
+0xfe057f44 [file+0xef44] 3f01136b cmp      w9, w19
+0xfe057f48 [file+0xef48] 41010054 b.ne     #0xfe057f70
+0xfe057f4c [file+0xef4c] e0031f2a mov      w0, wzr
+0xfe057f50 [file+0xef50] f37bc1a8 ldp      x19, x30, [sp], #0x10
+0xfe057f54 [file+0xef54] c0035fd6 ret      
+0xfe057f58 [file+0xef58] 410000b0 adrp     x1, #0xfe060000
+
+{"site": "0xfe0581dc", "target_name": "FAT_current_partition", "effective_address": "0xfe0620f0", "instruction": "ldr w10, [x24, #0xf0]", "source_register_value": null, "candidate_only": true}
+0xfe0581c4 [file+0xf1c4] 580000d0 adrp     x24, #0xfe062000
+0xfe0581c8 [file+0xf1c8] 5a0000d0 adrp     x26, #0xfe062000
+0xfe0581cc [file+0xf1cc] 5b0000d0 adrp     x27, #0xfe062000
+0xfe0581d0 [file+0xf1d0] b5822491 add      x21, x21, #0x920
+0xfe0581d4 [file+0xf1d4] d61e2491 add      x22, x22, #0x907
+0xfe0581d8 [file+0xf1d8] f903132a mov      w25, w19
+0xfe0581dc [file+0xf1dc] 0af340b9 ldr      w10, [x24, #0xf0]
+0xfe0581e0 [file+0xf1e0] e81a40b9 ldr      w8, [x23, #0x18]
+0xfe0581e4 [file+0xf1e4] 49f740b9 ldr      w9, [x26, #0xf4]
+0xfe0581e8 [file+0xf1e8] 6b3b43f9 ldr      x11, [x27, #0x670]
+0xfe0581ec [file+0xf1ec] 3f030a6b cmp      w25, w10
+0xfe0581f0 [file+0xf1f0] 5dc1991a csel     w29, w10, w25, gt
+0xfe0581f4 [file+0xf1f4] 39031d4b sub      w25, w25, w29
+
+{"site": "0xfe0581e4", "target_name": "FAT_current_partition", "effective_address": "0xfe0620f4", "instruction": "ldr w9, [x26, #0xf4]", "source_register_value": null, "candidate_only": true}
+0xfe0581cc [file+0xf1cc] 5b0000d0 adrp     x27, #0xfe062000
+0xfe0581d0 [file+0xf1d0] b5822491 add      x21, x21, #0x920
+0xfe0581d4 [file+0xf1d4] d61e2491 add      x22, x22, #0x907
+0xfe0581d8 [file+0xf1d8] f903132a mov      w25, w19
+0xfe0581dc [file+0xf1dc] 0af340b9 ldr      w10, [x24, #0xf0]
+0xfe0581e0 [file+0xf1e0] e81a40b9 ldr      w8, [x23, #0x18]
+0xfe0581e4 [file+0xf1e4] 49f740b9 ldr      w9, [x26, #0xf4]
+0xfe0581e8 [file+0xf1e8] 6b3b43f9 ldr      x11, [x27, #0x670]
+0xfe0581ec [file+0xf1ec] 3f030a6b cmp      w25, w10
+0xfe0581f0 [file+0xf1f0] 5dc1991a csel     w29, w10, w25, gt
+0xfe0581f4 [file+0xf1f4] 39031d4b sub      w25, w25, w29
+0xfe0581f8 [file+0xf1f8] 3f030071 cmp      w25, #0
+0xfe0581fc [file+0xf1fc] 8c011d4b sub      w12, w12, w29
+
+{"site": "0xfe05b108", "target_name": "FAT_ready", "effective_address": "0xfe06216c", "instruction": "strb wzr, [x19, #0x16c]", "source_register_value": null, "candidate_only": true}
+0xfe05b0f0 [file+0x120f0] 280000f0 adrp     x8, #0xfe062000
+0xfe05b0f4 [file+0x120f4] 340000f0 adrp     x20, #0xfe062000
+0xfe05b0f8 [file+0x120f8] ec030032 mov      w12, #1
+0xfe05b0fc [file+0x120fc] 290000f0 adrp     x9, #0xfe062000
+0xfe05b100 [file+0x12100] 2a0000f0 adrp     x10, #0xfe062000
+0xfe05b104 [file+0x12104] 7f350071 cmp      w11, #0xd
+0xfe05b108 [file+0x12108] 7fb20539 strb     wzr, [x19, #0x16c]
+0xfe05b10c [file+0x1210c] 1fe10539 strb     wzr, [x8, #0x178]
+0xfe05b110 [file+0x12110] 8c720539 strb     w12, [x20, #0x15c]
+0xfe05b114 [file+0x12114] 3fc10539 strb     wzr, [x9, #0x170]
+0xfe05b118 [file+0x12118] 5fd10539 strb     wzr, [x10, #0x174]
+0xfe05b11c [file+0x1211c] 48030054 b.hi     #0xfe05b184
+0xfe05b120 [file+0x12120] 0c0000d0 adrp     x12, #0xfe05d000
+
+{"site": "0xfe05b114", "target_name": "FAT_ready", "effective_address": "0xfe062170", "instruction": "strb wzr, [x9, #0x170]", "source_register_value": null, "candidate_only": true}
+0xfe05b0fc [file+0x120fc] 290000f0 adrp     x9, #0xfe062000
+0xfe05b100 [file+0x12100] 2a0000f0 adrp     x10, #0xfe062000
+0xfe05b104 [file+0x12104] 7f350071 cmp      w11, #0xd
+0xfe05b108 [file+0x12108] 7fb20539 strb     wzr, [x19, #0x16c]
+0xfe05b10c [file+0x1210c] 1fe10539 strb     wzr, [x8, #0x178]
+0xfe05b110 [file+0x12110] 8c720539 strb     w12, [x20, #0x15c]
+0xfe05b114 [file+0x12114] 3fc10539 strb     wzr, [x9, #0x170]
+0xfe05b118 [file+0x12118] 5fd10539 strb     wzr, [x10, #0x174]
+0xfe05b11c [file+0x1211c] 48030054 b.hi     #0xfe05b184
+0xfe05b120 [file+0x12120] 0c0000d0 adrp     x12, #0xfe05d000
+0xfe05b124 [file+0x12124] 8ce13f91 add      x12, x12, #0xff8
+0xfe05b128 [file+0x12128] 8b796bf8 ldr      x11, [x12, x11, lsl #3]
+0xfe05b12c [file+0x1212c] 60011fd6 br       x11
+
+{"site": "0xfe05b134", "target_name": "FAT_current_partition", "effective_address": "0xfe0620fc", "instruction": "ldr w8, [x8, #0xfc]", "source_register_value": "0xfe062000", "candidate_only": true}
+0xfe05b11c [file+0x1211c] 48030054 b.hi     #0xfe05b184
+0xfe05b120 [file+0x12120] 0c0000d0 adrp     x12, #0xfe05d000
+0xfe05b124 [file+0x12124] 8ce13f91 add      x12, x12, #0xff8
+0xfe05b128 [file+0x12128] 8b796bf8 ldr      x11, [x12, x11, lsl #3]
+0xfe05b12c [file+0x1212c] 60011fd6 br       x11
+0xfe05b130 [file+0x12130] 280000f0 adrp     x8, #0xfe062000
+0xfe05b134 [file+0x12134] 08fd40b9 ldr      w8, [x8, #0xfc]
+0xfe05b138 [file+0x12138] 1f1d0071 cmp      w8, #7
+0xfe05b13c [file+0x1213c] 61000054 b.ne     #0xfe05b148
+0xfe05b140 [file+0x12140] e0030032 mov      w0, #1
+0xfe05b144 [file+0x12144] cfe6ff97 bl       #0xfe054c80
+0xfe05b148 [file+0x12148] 210000b0 adrp     x1, #0xfe060000
+0xfe05b14c [file+0x1214c] 213c1e91 add      x1, x1, #0x78f
+
+{"site": "0xfe05b19c", "target_name": "FAT_current_partition", "effective_address": "0xfe0620fc", "instruction": "ldr w8, [x21, #0xfc]", "source_register_value": null, "candidate_only": true}
+0xfe05b184 [file+0x12184] 210000b0 adrp     x1, #0xfe060000
+0xfe05b188 [file+0x12188] 216c1e91 add      x1, x1, #0x79b
+0xfe05b18c [file+0x1218c] e0070032 mov      w0, #3
+0xfe05b190 [file+0x12190] 09ecff97 bl       #0xfe0561b4
+0xfe05b194 [file+0x12194] 31000014 b        #0xfe05b258
+0xfe05b198 [file+0x12198] 350000f0 adrp     x21, #0xfe062000
+0xfe05b19c [file+0x1219c] a8fe40b9 ldr      w8, [x21, #0xfc]
+0xfe05b1a0 [file+0x121a0] 1f1d0071 cmp      w8, #7
+0xfe05b1a4 [file+0x121a4] 61000054 b.ne     #0xfe05b1b0
+0xfe05b1a8 [file+0x121a8] e0030032 mov      w0, #1
+0xfe05b1ac [file+0x121ac] b5e6ff97 bl       #0xfe054c80
+0xfe05b1b0 [file+0x121b0] 210000b0 adrp     x1, #0xfe060000
+0xfe05b1b4 [file+0x121b4] 213c1e91 add      x1, x1, #0x78f
+
+{"site": "0xfe05b1e0", "target_name": "FAT_current_partition", "effective_address": "0xfe0620fc", "instruction": "ldr w8, [x21, #0xfc]", "source_register_value": null, "candidate_only": true}
+0xfe05b1c8 [file+0x121c8] e8030032 mov      w8, #1
+0xfe05b1cc [file+0x121cc] 21081f91 add      x1, x1, #0x7c2
+0xfe05b1d0 [file+0x121d0] e0031f32 mov      w0, #2
+0xfe05b1d4 [file+0x121d4] 9f720539 strb     wzr, [x20, #0x15c]
+0xfe05b1d8 [file+0x121d8] 68b20539 strb     w8, [x19, #0x16c]
+0xfe05b1dc [file+0x121dc] f6ebff97 bl       #0xfe0561b4
+0xfe05b1e0 [file+0x121e0] a8fe40b9 ldr      w8, [x21, #0xfc]
+0xfe05b1e4 [file+0x121e4] e0031f2a mov      w0, wzr
+0xfe05b1e8 [file+0x121e8] 1f1d0071 cmp      w8, #7
+0xfe05b1ec [file+0x121ec] c0010054 b.eq     #0xfe05b224
+0xfe05b1f0 [file+0x121f0] 1b000014 b        #0xfe05b25c
+0xfe05b1f4 [file+0x121f4] 9f720539 strb     wzr, [x20, #0x15c]
+0xfe05b1f8 [file+0x121f8] ceffff17 b        #0xfe05b130
+
+{"site": "0xfe05b218", "target_name": "FAT_current_partition", "effective_address": "0xfe0620fc", "instruction": "ldr w8, [x8, #0xfc]", "source_register_value": "0xfe062000", "candidate_only": true}
+0xfe05b200 [file+0x12200] 28c10539 strb     w8, [x9, #0x170]
+0xfe05b204 [file+0x12204] 210000b0 adrp     x1, #0xfe060000
+0xfe05b208 [file+0x12208] 21081f91 add      x1, x1, #0x7c2
+0xfe05b20c [file+0x1220c] e0031f32 mov      w0, #2
+0xfe05b210 [file+0x12210] e9ebff97 bl       #0xfe0561b4
+0xfe05b214 [file+0x12214] 280000f0 adrp     x8, #0xfe062000
+0xfe05b218 [file+0x12218] 08fd40b9 ldr      w8, [x8, #0xfc]
+0xfe05b21c [file+0x1221c] 1f1d0071 cmp      w8, #7
+0xfe05b220 [file+0x12220] c1010054 b.ne     #0xfe05b258
+0xfe05b224 [file+0x12224] 99e6ff97 bl       #0xfe054c88
+0xfe05b228 [file+0x12228] f303002a mov      w19, w0
+0xfe05b22c [file+0x1222c] 80010034 cbz      w0, #0xfe05b25c
+0xfe05b230 [file+0x12230] 210000b0 adrp     x1, #0xfe060000
+
+{"site": "0xfe05b280", "target_name": "FAT_current_partition", "effective_address": "0xfe0620fc", "instruction": "ldr w8, [x8, #0xfc]", "source_register_value": "0xfe062000", "candidate_only": true}
+0xfe05b268 [file+0x12268] f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+0xfe05b26c [file+0x1226c] 210000b0 adrp     x1, #0xfe060000
+0xfe05b270 [file+0x12270] 21bc1e91 add      x1, x1, #0x7af
+0xfe05b274 [file+0x12274] e0031f32 mov      w0, #2
+0xfe05b278 [file+0x12278] cfebff97 bl       #0xfe0561b4
+0xfe05b27c [file+0x1227c] 280000f0 adrp     x8, #0xfe062000
+0xfe05b280 [file+0x12280] 08fd40b9 ldr      w8, [x8, #0xfc]
+0xfe05b284 [file+0x12284] 1f1d0071 cmp      w8, #7
+0xfe05b288 [file+0x12288] e1010054 b.ne     #0xfe05b2c4
+0xfe05b28c [file+0x1228c] 16e6ff97 bl       #0xfe054ae4
+0xfe05b290 [file+0x12290] f303002a mov      w19, w0
+0xfe05b294 [file+0x12294] 40010034 cbz      w0, #0xfe05b2bc
+0xfe05b298 [file+0x12298] 210000b0 adrp     x1, #0xfe060000
+
+{"site": "0xfe05b2f0", "target_name": "FAT_current_partition", "effective_address": "0xfe0620fc", "instruction": "ldr w0, [x8, #0xfc]", "source_register_value": null, "candidate_only": true}
+0xfe05b2d8 [file+0x122d8] 08a04039 ldrb     w8, [x0, #0x28]
+0xfe05b2dc [file+0x122dc] 1f090071 cmp      w8, #2
+0xfe05b2e0 [file+0x122e0] e0179f1a cset     w0, eq
+0xfe05b2e4 [file+0x122e4] fe0741f8 ldr      x30, [sp], #0x10
+0xfe05b2e8 [file+0x122e8] c0035fd6 ret      
+0xfe05b2ec [file+0x122ec] 280000f0 adrp     x8, #0xfe062000
+0xfe05b2f0 [file+0x122f0] 00fd40b9 ldr      w0, [x8, #0xfc]
+0xfe05b2f4 [file+0x122f4] c0035fd6 ret      
+0xfe05b2f8 [file+0x122f8] e0031f2a mov      w0, wzr
+0xfe05b2fc [file+0x122fc] c0035fd6 ret      
+0xfe05b300 [file+0x12300] f553bea9 stp      x21, x20, [sp, #-0x20]!
+0xfe05b304 [file+0x12304] f37b01a9 stp      x19, x30, [sp, #0x10]
+0xfe05b308 [file+0x12308] f30302aa mov      x19, x2
+
+{"site": "0xfe05b37c", "target_name": "FAT_ready", "effective_address": "0xfe062169", "instruction": "ldrb w0, [x8, #0x169]", "source_register_value": null, "candidate_only": true}
+0xfe05b364 [file+0x12364] 39e6ff97 bl       #0xfe054c48
+0xfe05b368 [file+0x12368] 08344039 ldrb     w8, [x0, #0xd]
+0xfe05b36c [file+0x1236c] 00010012 and      w0, w8, #1
+0xfe05b370 [file+0x12370] fe0741f8 ldr      x30, [sp], #0x10
+0xfe05b374 [file+0x12374] c0035fd6 ret      
+0xfe05b378 [file+0x12378] 280000f0 adrp     x8, #0xfe062000
+0xfe05b37c [file+0x1237c] 00a54539 ldrb     w0, [x8, #0x169]
+0xfe05b380 [file+0x12380] c0035fd6 ret      
+0xfe05b384 [file+0x12384] e0031f2a mov      w0, wzr
+0xfe05b388 [file+0x12388] c0035fd6 ret      
+0xfe05b38c [file+0x1238c] 280000f0 adrp     x8, #0xfe062000
+0xfe05b390 [file+0x12390] 00015739 ldrb     w0, [x8, #0x5c0]
+0xfe05b394 [file+0x12394] c0035fd6 ret      
+
+{"site": "0xfe05b480", "target_name": "FAT_ready", "effective_address": "0xfe062164", "instruction": "str w9, [x8, #0x164]", "source_register_value": "0x1", "candidate_only": true}
+0xfe05b468 [file+0x12468] 210000b0 adrp     x1, #0xfe060000
+0xfe05b46c [file+0x1246c] 21481d91 add      x1, x1, #0x752
+0xfe05b470 [file+0x12470] e0071f32 mov      w0, #6
+0xfe05b474 [file+0x12474] 50ebff97 bl       #0xfe0561b4
+0xfe05b478 [file+0x12478] 280000f0 adrp     x8, #0xfe062000
+0xfe05b47c [file+0x1247c] e9030032 mov      w9, #1
+0xfe05b480 [file+0x12480] 096501b9 str      w9, [x8, #0x164]
+0xfe05b484 [file+0x12484] fe0741f8 ldr      x30, [sp], #0x10
+0xfe05b488 [file+0x12488] c0035fd6 ret      
+0xfe05b48c [file+0x1248c] fe0f1ff8 str      x30, [sp, #-0x10]!
+0xfe05b490 [file+0x12490] 210000b0 adrp     x1, #0xfe060000
+0xfe05b494 [file+0x12494] 210c1d91 add      x1, x1, #0x743
+0xfe05b498 [file+0x12498] e0071f32 mov      w0, #6
+
+{"site": "0xfe05b4a8", "target_name": "FAT_ready", "effective_address": "0xfe062164", "instruction": "str w9, [x8, #0x164]", "source_register_value": "0x2", "candidate_only": true}
+0xfe05b490 [file+0x12490] 210000b0 adrp     x1, #0xfe060000
+0xfe05b494 [file+0x12494] 210c1d91 add      x1, x1, #0x743
+0xfe05b498 [file+0x12498] e0071f32 mov      w0, #6
+0xfe05b49c [file+0x1249c] 46ebff97 bl       #0xfe0561b4
+0xfe05b4a0 [file+0x124a0] 280000f0 adrp     x8, #0xfe062000
+0xfe05b4a4 [file+0x124a4] e9031f32 mov      w9, #2
+0xfe05b4a8 [file+0x124a8] 096501b9 str      w9, [x8, #0x164]
+0xfe05b4ac [file+0x124ac] fe0741f8 ldr      x30, [sp], #0x10
+0xfe05b4b0 [file+0x124b0] c0035fd6 ret      
+0xfe05b4b4 [file+0x124b4] 1f400171 cmp      w0, #0x50
+0xfe05b4b8 [file+0x124b8] 28020054 b.hi     #0xfe05b4fc
+0xfe05b4bc [file+0x124bc] 080000d0 adrp     x8, #0xfe05d000
+0xfe05b4c0 [file+0x124c0] 08012591 add      x8, x8, #0x940

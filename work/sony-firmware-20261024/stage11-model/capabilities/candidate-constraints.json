@@ -1,0 +1,130 @@
+{
+  "status": "semantic_candidate_constraints_only_not_closed_or_executable",
+  "input_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "candidate_mode_identity": {
+    "existing_main_setting_enum": null,
+    "new_main_enum_or_orthogonal_dimension": "undecided; complete consumer enumeration is missing",
+    "external_enum_14_is_not_assigned_as_main_selector": true,
+    "required_target": {
+      "recording_kind": "ordinary movie",
+      "stream_type": 0,
+      "stream_role": "MAIN",
+      "width": 1920,
+      "height": 1080,
+      "codec": "HEVC",
+      "chroma": "4:2:0",
+      "bit_depth": 10,
+      "gop": "Long GOP",
+      "bitrate_nominal_bits_per_second": 16000000,
+      "frame_numerator": 30000,
+      "frame_denominator": 1001
+    },
+    "preserve_separate_mode_identity": [
+      "proxy",
+      "S&Q",
+      "UHD",
+      "all other frame rates",
+      "all other color/quality combinations"
+    ]
+  },
+  "proved_namespace_boundaries": {
+    "main_setting_file_format": {
+      "table_va": "0x411f108",
+      "count_with_invalid_all": 14,
+      "hs4k_value": 6,
+      "hs_hd_entry_exists": false
+    },
+    "hs4k_frame": {
+      "name_table_va": "0x411f390",
+      "setter_key": "0x39c",
+      "getter": "0x2934d14",
+      "paired_getter": "0x2934d28",
+      "frame_enum_30p": 2,
+      "frame_enum_25p": 3,
+      "typed_builder_accepts_2_or_3": false
+    },
+    "hs4k_quality": {
+      "tables": [
+        "0x4138aa0",
+        "0x4138ba0",
+        "0x4138ca0"
+      ],
+      "count_each_with_invalid_all": 32,
+      "enum29_label": "16M_420_8BIT",
+      "enum29_is_not_proof_of_selectability": true,
+      "16M_420_10BIT_name_exists_in_these_tables": false
+    },
+    "external_movie_format": {
+      "table_va": "0x41a6a48",
+      "records": 21,
+      "hevc_hd_enum": 14,
+      "hevc_hd_record_va": "0x41a6b28",
+      "remote_output_map_va": "0x3997e68",
+      "remote_event_output_value": 113,
+      "external_to_main_setting_conversion": "not established"
+    }
+  },
+  "required_gates_and_consumers": [
+    {
+      "layer": "product/menu allowed combination",
+      "status": "unclosed",
+      "requirement": "Expose one coherent target selection; typed setting name tables are not per-product capability tables."
+    },
+    {
+      "layer": "typed model/builder",
+      "entry": "0x2beae8c",
+      "status": "original HS4K target exclusion proved by adjacent research",
+      "requirement": "A valid ordinary-main target must produce frame15 and desired quality/color from explicit model fields; do not supply constructor defaults as a real setting."
+    },
+    {
+      "layer": "derived model format classification",
+      "entry": "0x2a50354",
+      "jump_table_va": "0x37fa3b8",
+      "status": "original format6 returns movie_format5 without frame/quality discrimination",
+      "requirement": "Classify target as HD consistently while retaining existing UHD identities; movie_format5 semantic name not independently assigned here."
+    },
+    {
+      "layer": "query/status/remain conversion",
+      "entry": "0x2e68048",
+      "status": "separate from actual setter",
+      "requirement": "Return target-consistent VPC/frame/quality and correct remaining-time interpretation; single-query-helper change is insufficient."
+    },
+    {
+      "layer": "actual ordinary-main setter",
+      "entry": "0x2e6e5d8",
+      "status": "original format6 HS420 path maps VPC5",
+      "requirement": "Map the exact target mode to VPC6/frame3/VQ6 without changing other HS420 combinations."
+    },
+    {
+      "layer": "libmpr main route and parameter packet",
+      "status": "previous offline MAIN/HDHEVC packet evidence exists; camera not tested",
+      "requirement": "Keep stream0/main codec15 semantics and target resolution/color/bitrate/frame through SetMovieRecParam, EnqueueExecEncOpen, writer and mux."
+    },
+    {
+      "layer": "external/remote representation",
+      "entry": "0x2e9b898",
+      "status": "external14 to remote113 output only proved",
+      "requirement": "If exposed through external control, prove input/output mappings and model/menu identity; external14 alone is not a main setting."
+    },
+    {
+      "layer": "persisted state, re-entry, UI, media, timing and hardware acceptance",
+      "status": "not closed/not run",
+      "requirement": "Check mode restore, menus, duration, naming, playback, actual encoded stream, long recording, cold boot and same-body recovery separately."
+    }
+  ],
+  "rejected_shortcuts": [
+    "replace VPC5 with VPC6 globally",
+    "open HS4K frame30P name without typed builder and query support",
+    "treat quality enum29 as allowed HS4K quality",
+    "reuse external enum14 as if it were setting_file_format_t",
+    "change query helper only",
+    "claim exact30.000 from 30000/1001"
+  ],
+  "no_executable_patch": true,
+  "camera_operations_performed": false,
+  "evidence": [
+    "capability-string-index.json",
+    "../builder/typed-selection-results.json",
+    "../../stage10-mainpath/main/main-path-summary.json"
+  ]
+}

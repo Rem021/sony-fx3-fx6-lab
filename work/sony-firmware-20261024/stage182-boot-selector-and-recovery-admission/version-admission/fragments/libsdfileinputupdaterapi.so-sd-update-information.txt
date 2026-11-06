@@ -1,0 +1,145 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0xa3fc, 0xa634) raw slice SHA256 0c5da9a9779a76a641c1b102254e0cad92fb70d66fb8f1081c28c007c344fbeb
+    a3fc: d108c3ff     	sub	sp, sp, #0x230
+    a400: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    a404: 910003fd     	mov	x29, sp
+    a408: a90153f3     	stp	x19, x20, [sp, #0x10]
+    a40c: 910123b3     	add	x19, x29, #0x48
+    a410: f9001bf7     	str	x23, [sp, #0x30]
+    a414: aa0003f7     	mov	x23, x0
+    a418: aa1303e0     	mov	x0, x19
+    a41c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    a420: aa0103f4     	mov	x20, x1
+    a424: aa0203f5     	mov	x21, x2
+    a428: 97fff496     	bl	0x7680 <Updater::FsysFileHandler::FsysFileHandler()@plt>
+    a42c: aa1403e1     	mov	x1, x20
+    a430: aa1303e0     	mov	x0, x19
+    a434: 52800002     	mov	w2, #0x0                // =0
+    a438: 97fff33e     	bl	0x7130 <Updater::FsysFileHandler::Open(char const*, unsigned int)@plt>
+    a43c: 72001c1f     	tst	w0, #0xff
+    a440: 540003e1     	b.ne	0xa4bc <Updater::SDUUDConditionChecker::getUpdateFirmwareInfo(char const*, UpdaterAPI::firmware_information_t::information&)+0xc0>
+    a444: 97fff45b     	bl	0x75b0 <__errno_location@plt>
+    a448: b9400004     	ldr	w4, [x0]
+    a44c: b0000002     	adrp	x2, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a450: 90000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    a454: 52800241     	mov	w1, #0x12               // =18
+    a458: 9112d442     	add	x2, x2, #0x4b5
+    a45c: 913e9000     	add	x0, x0, #0xfa4
+    a460: 52800843     	mov	w3, #0x42               // =66
+    a464: 72a00061     	movk	w1, #0x3, lsl #16
+    a468: 97fff52a     	bl	0x7910 <printf@plt>
+    a46c: d2800200     	mov	x0, #0x10               // =16
+    a470: 97fff34c     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    a474: f0000081     	adrp	x1, 0x1d000
+    a478: f0000082     	adrp	x2, 0x1d000
+    a47c: f947a821     	ldr	x1, [x1, #0xf50]
+    a480: f947b842     	ldr	x2, [x2, #0xf70]
+    a484: 91004021     	add	x1, x1, #0x10
+    a488: f9000001     	str	x1, [x0]
+    a48c: 52800241     	mov	w1, #0x12               // =18
+    a490: 72a00061     	movk	w1, #0x3, lsl #16
+    a494: b9000801     	str	w1, [x0, #0x8]
+    a498: f0000081     	adrp	x1, 0x1d000
+    a49c: 3900301f     	strb	wzr, [x0, #0xc]
+    a4a0: f947e421     	ldr	x1, [x1, #0xfc8]
+    a4a4: 97fff4c3     	bl	0x77b0 <__cxa_throw@plt>
+    a4a8: aa0003f4     	mov	x20, x0
+    a4ac: aa1303e0     	mov	x0, x19
+    a4b0: 97fff434     	bl	0x7580 <Updater::FsysFileHandler::~FsysFileHandler()@plt>
+    a4b4: aa1403e0     	mov	x0, x20
+    a4b8: 97fff4de     	bl	0x7830 <_Unwind_Resume@plt>
+    a4bc: f94002e0     	ldr	x0, [x23]
+    a4c0: aa1303e1     	mov	x1, x19
+    a4c4: f9402c02     	ldr	x2, [x0, #0x58]
+    a4c8: aa1703e0     	mov	x0, x23
+    a4cc: d63f0040     	blr	x2
+    a4d0: aa0003e1     	mov	x1, x0
+    a4d4: aa1303e0     	mov	x0, x19
+    a4d8: 97fff2e2     	bl	0x7060 <Updater::FsysFileHandler::Seek(long)@plt>
+    a4dc: 910183b4     	add	x20, x29, #0x60
+    a4e0: aa1303e0     	mov	x0, x19
+    a4e4: aa1403e1     	mov	x1, x20
+    a4e8: d2804182     	mov	x2, #0x20c              // =524
+    a4ec: 97fff365     	bl	0x7280 <Updater::FsysFileHandler::Read(void*, unsigned long)@plt>
+    a4f0: 91002296     	add	x22, x20, #0x8
+    a4f4: 9101e294     	add	x20, x20, #0x78
+    a4f8: b6f80340     	tbz	x0, #0x3f, 0xa560 <Updater::SDUUDConditionChecker::getUpdateFirmwareInfo(char const*, UpdaterAPI::firmware_information_t::information&)+0x164>
+    a4fc: 97fff42d     	bl	0x75b0 <__errno_location@plt>
+    a500: b9400004     	ldr	w4, [x0]
+    a504: b0000002     	adrp	x2, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a508: 90000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    a50c: 52800241     	mov	w1, #0x12               // =18
+    a510: 9112d442     	add	x2, x2, #0x4b5
+    a514: 913e9000     	add	x0, x0, #0xfa4
+    a518: 52800923     	mov	w3, #0x49               // =73
+    a51c: 72a00061     	movk	w1, #0x3, lsl #16
+    a520: 97fff4fc     	bl	0x7910 <printf@plt>
+    a524: d2800200     	mov	x0, #0x10               // =16
+    a528: 97fff31e     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    a52c: f0000081     	adrp	x1, 0x1d000
+    a530: f0000082     	adrp	x2, 0x1d000
+    a534: f947a821     	ldr	x1, [x1, #0xf50]
+    a538: f947b842     	ldr	x2, [x2, #0xf70]
+    a53c: 91004021     	add	x1, x1, #0x10
+    a540: f9000001     	str	x1, [x0]
+    a544: 52800241     	mov	w1, #0x12               // =18
+    a548: 72a00061     	movk	w1, #0x3, lsl #16
+    a54c: b9000801     	str	w1, [x0, #0x8]
+    a550: f0000081     	adrp	x1, 0x1d000
+    a554: 3900301f     	strb	wzr, [x0, #0xc]
+    a558: f947e421     	ldr	x1, [x1, #0xfc8]
+    a55c: 97fff495     	bl	0x77b0 <__cxa_throw@plt>
+    a560: f9400ae0     	ldr	x0, [x23, #0x10]
+    a564: f9400001     	ldr	x1, [x0]
+    a568: f9405822     	ldr	x2, [x1, #0xb0]
+    a56c: aa1603e1     	mov	x1, x22
+    a570: d63f0040     	blr	x2
+    a574: 910042d6     	add	x22, x22, #0x10
+    a578: eb1402df     	cmp	x22, x20
+    a57c: 54ffff21     	b.ne	0xa560 <Updater::SDUUDConditionChecker::getUpdateFirmwareInfo(char const*, UpdaterAPI::firmware_information_t::information&)+0x164>
+    a580: 394237a0     	ldrb	w0, [x29, #0x8d]
+    a584: b90006a0     	str	w0, [x21, #0x4]
+    a588: 394233a0     	ldrb	w0, [x29, #0x8c]
+    a58c: b9000aa0     	str	w0, [x21, #0x8]
+    a590: b94093a0     	ldr	w0, [x29, #0x90]
+    a594: b9000ea0     	str	w0, [x21, #0xc]
+    a598: b94097a0     	ldr	w0, [x29, #0x94]
+    a59c: b90012a0     	str	w0, [x21, #0x10]
+    a5a0: aa1303e0     	mov	x0, x19
+    a5a4: 97fff383     	bl	0x73b0 <Updater::FsysFileHandler::Close()@plt>
+    a5a8: 72001c1f     	tst	w0, #0xff
+    a5ac: 54000341     	b.ne	0xa614 <Updater::SDUUDConditionChecker::getUpdateFirmwareInfo(char const*, UpdaterAPI::firmware_information_t::information&)+0x218>
+    a5b0: 97fff400     	bl	0x75b0 <__errno_location@plt>
+    a5b4: b9400004     	ldr	w4, [x0]
+    a5b8: b0000002     	adrp	x2, 0xb000 <typeinfo name for Updater::UFPDecryptorModule+0x40>
+    a5bc: 90000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    a5c0: 52800241     	mov	w1, #0x12               // =18
+    a5c4: 9112d442     	add	x2, x2, #0x4b5
+    a5c8: 913e9000     	add	x0, x0, #0xfa4
+    a5cc: 52800b43     	mov	w3, #0x5a               // =90
+    a5d0: 72a00061     	movk	w1, #0x3, lsl #16
+    a5d4: 97fff4cf     	bl	0x7910 <printf@plt>
+    a5d8: d2800200     	mov	x0, #0x10               // =16
+    a5dc: 97fff2f1     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    a5e0: f0000081     	adrp	x1, 0x1d000
+    a5e4: f0000082     	adrp	x2, 0x1d000
+    a5e8: f947a821     	ldr	x1, [x1, #0xf50]
+    a5ec: f947b842     	ldr	x2, [x2, #0xf70]
+    a5f0: 91004021     	add	x1, x1, #0x10
+    a5f4: f9000001     	str	x1, [x0]
+    a5f8: 52800241     	mov	w1, #0x12               // =18
+    a5fc: 72a00061     	movk	w1, #0x3, lsl #16
+    a600: b9000801     	str	w1, [x0, #0x8]
+    a604: f0000081     	adrp	x1, 0x1d000
+    a608: 3900301f     	strb	wzr, [x0, #0xc]
+    a60c: f947e421     	ldr	x1, [x1, #0xfc8]
+    a610: 97fff468     	bl	0x77b0 <__cxa_throw@plt>
+    a614: aa1303e0     	mov	x0, x19
+    a618: 97fff3da     	bl	0x7580 <Updater::FsysFileHandler::~FsysFileHandler()@plt>
+    a61c: f9401bf7     	ldr	x23, [sp, #0x30]
+    a620: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    a624: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    a628: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    a62c: 9108c3ff     	add	sp, sp, #0x230
+    a630: d65f03c0     	ret

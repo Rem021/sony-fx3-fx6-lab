@@ -1,0 +1,32 @@
+{
+  "checked_utc": "2026-10-30T12:22:29.242054+00:00",
+  "Sony_FX5_Japan": {
+    "url": "https://support.sony.jp/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx5/downloads",
+    "result": "Rendered page still says no update information provided on this page.",
+    "scope": "This page only, not global absence."
+  },
+  "new_RAW_leads": [
+    {
+      "url": "https://github.com/darktable-org/rawspeed/pull/978",
+      "page_fetch": "cache_miss",
+      "patch_fetch": "success",
+      "patch_captured": "rawspeed-978.patch.source.txt",
+      "patch_SHA256": "aaef83112efeb1d10e9409bb26129e0b776623cb9300c3d54f1096e49c166bf8",
+      "changed_file": "data/cameras.xml",
+      "added_lines": [
+        "\t<Camera make=\"SONY\" model=\"ILME-FX5\" supported=\"unknown-no-samples\">",
+        "\t\t<ID make=\"Sony\" model=\"ILME-FX5\">Sony ILME-FX5</ID>",
+        "\t</Camera>"
+      ],
+      "actual_scope": "Three-line unknown-no-samples model placeholder only."
+    },
+    {
+      "url": "https://github.com/darktable-org/rawspeed/pull/983",
+      "page_fetch": "success",
+      "author_scope": "Port of ARW6 file decoder/reference decoder to rawspeed, linked A7R VI support.",
+      "full_FX3_private_ISP_or_installer_evidence": false
+    }
+  ],
+  "source_built_or_executed": false,
+  "internet_wide_absence_proved": false
+}

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/usr/bin/log",
+    "show",
+    "--start",
+    "2026-11-04 07:34:38",
+    "--end",
+    "2026-11-04 07:34:40",
+    "--style",
+    "compact",
+    "--predicate",
+    "process == \"kernel\" AND (eventMessage CONTAINS[c] \"cableChangeOccurred\" OR eventMessage CONTAINS[c] \"Extreme 55AE\" OR eventMessage CONTAINS[c] \"m_connectionActive\")"
+  ],
+  "exit_code": 0,
+  "stdout_sha256": "76f4a0ff0a3103780a24d56621a46815eabae7474c0307dfa7bb9b0a23235faf",
+  "scope": "read-only; no port/disk changes"
+}

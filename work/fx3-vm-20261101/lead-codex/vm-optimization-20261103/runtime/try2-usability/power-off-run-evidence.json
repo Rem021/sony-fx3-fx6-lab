@@ -1,0 +1,102 @@
+{
+  "schema": "fx3-poweroff-native-12b-readback-v1",
+  "utc": "2026-11-03T13:49:17.004473+00:00",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-6a05c56b",
+  "serial_sha256": "7def4c1f9d269d9595f6ce88683e909868711252b9b366aced71c5256eecc1b4",
+  "serial_bytes": 43185541,
+  "candidate_sha256": "d53363f076f5d0129c68e7489d407b0baab300bec62f487decf96a73e29d90a6",
+  "runner_source_sha256": "5cda7cacd567630b9f25d8f2cb504732ae1959552bdb860f250ddf38bb6ed7b1",
+  "source_sha256": "11d8bf8c1c817c7f83274ce79125a85e641f5053add6b5b8b531b1904cb1d39b",
+  "native_records": [
+    {
+      "serial_byte": 43121412,
+      "seq": 1,
+      "guest_monotonic_ns": 429229434000,
+      "tid": 383,
+      "point": "0x2a8a884",
+      "object": "0x7f30059410",
+      "x19": "0x7ed81877d0",
+      "lr": "0x7edc68f748",
+      "readable": true,
+      "raw12_hex": "520000001100000002000000",
+      "word_0_kind": "0x52",
+      "word_4_factor": "0x11",
+      "word_8_type": "0x2"
+    },
+    {
+      "serial_byte": 43121619,
+      "seq": 2,
+      "guest_monotonic_ns": 429231484000,
+      "tid": 383,
+      "point": "0x2a8aa10",
+      "object": "0x7f30059410",
+      "x19": "0x7ed81877d0",
+      "lr": "0x7edc69f9e4",
+      "readable": true,
+      "raw12_hex": "520000001100000002000000",
+      "word_0_kind": "0x52",
+      "word_4_factor": "0x11",
+      "word_8_type": "0x2"
+    }
+  ],
+  "guest_monotonic_between_hook_points_ns": 2050000,
+  "serial_event_offsets": {
+    "FX3_MEDIA_SELFTEST_PASS": 787991,
+    "FX3_POWER_OBSERVER_BOUND": 1359715,
+    "FX3_MEDIA_BOUND module=A": 1359871,
+    "FX3_KEY95_STEP_DONE step=1": 12152981,
+    "raw=2c000300": 43121260,
+    "open screen: scr7001_1003 -> scr0039_shutdown": 43144235
+  },
+  "sampler_started_1": true,
+  "hook_selftest_pass": true,
+  "observer_overflow": false,
+  "original_factor_table": {
+    "appFw_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "table_va": "0x41172f8",
+    "entry_index": 17,
+    "model_factor": "0x11",
+    "upm_factor": "0x8",
+    "name": "OFF_BY_APO1"
+  },
+  "interpretation": "Captured model notification kind 0x52 and model factor 0x11, type 0x2 at two original instruction points; original table uniquely maps model 0x11 to UPM 0x08 OFF_BY_APO1. The upstream UPM request bytes and actual power-save setting were not captured; next_boot at object+12 remains unknown. Do not claim source timer or synthetic-key inactivity reset as proven.",
+  "run_health": {
+    "health_pass": false,
+    "early_stop_reason": "native_model_power_off_observed: FX3_BOOT_QUEUE_SEND tid=383 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1",
+    "key_steps": 1,
+    "duration_seconds": 434.297613083967,
+    "qemu_pid": 62331,
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "pid_absent": true,
+    "API16_restored": true,
+    "inputs_unchanged": true,
+    "locks": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "free": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "free": true
+      }
+    ]
+  },
+  "screenshots": {
+    "before_key": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-6a05c56b/internal-observe-01.png",
+    "after_key_transition": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-6a05c56b/trial-step-01-key-1ab.png",
+    "after_menu_stable": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2powerinternal-6a05c56b/post-menu-current.png"
+  },
+  "ui_after_shutdown": "not visually sampled because stop occurred immediately at native power-off notification; render_valid_at_end true does not imply user usability",
+  "same_guest_clock_interval": {
+    "start": "first FX3_KEY96_POLL reporting done=1 for MENU step1",
+    "start_serial_byte": 12153166,
+    "start_guest_monotonic_ns": 128361852000,
+    "end": "first original appFw.so power-off hook at 0x2a8a884",
+    "end_serial_byte": 43121412,
+    "end_guest_monotonic_ns": 429229434000,
+    "delta_ns": 300867582000,
+    "delta_seconds": 300.867582,
+    "scope": "One key followed by idle; consistent with five-minute automatic power-off, but upstream UPM request, configured power-save time, and reset behavior remain unobserved. This is not an exact physical key-up-to-poweroff interval."
+  }
+}

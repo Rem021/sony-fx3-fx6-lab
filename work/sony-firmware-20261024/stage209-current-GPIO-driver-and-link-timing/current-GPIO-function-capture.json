@@ -1,0 +1,65 @@
+{
+  "kernel_source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+  "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "ranges": [
+    {
+      "symbol": "hw_gpio_set_mode_port",
+      "start": 2581792,
+      "end_exclusive": 2582224,
+      "bytes": 432,
+      "sha256": "4b21da6296fc040acd74262e400cd087ee4a576d9a1456a7a3c1bbc474508dc8",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/current-kernel-cuts/hw_gpio_set_mode_port.txt"
+    },
+    {
+      "symbol": "gpio_set_data_bit",
+      "start": 2582224,
+      "end_exclusive": 2582416,
+      "bytes": 192,
+      "sha256": "86c6d873100ad7216350eb31f51897b3f856e1ae607801160a8e0b8122bf634d",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/current-kernel-cuts/gpio_set_data_bit.txt"
+    },
+    {
+      "symbol": "gpio_set_data_port",
+      "start": 2582416,
+      "end_exclusive": 2582648,
+      "bytes": 232,
+      "sha256": "8bfe6eb4130a6fa817c18e72a5d93305bd97a9abd0eb0720119ea8d7f45faa0c",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/current-kernel-cuts/gpio_set_data_port.txt"
+    },
+    {
+      "symbol": "gpio_set_mode_bit",
+      "start": 2582648,
+      "end_exclusive": 2582832,
+      "bytes": 184,
+      "sha256": "4ce64ef949ca32b7d478af01cb759c51f051b375fb7cf333b0ccc5be34e6abe6",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/current-kernel-cuts/gpio_set_mode_bit.txt"
+    },
+    {
+      "symbol": "gpio_set_mode_port",
+      "start": 2582832,
+      "end_exclusive": 2583008,
+      "bytes": 176,
+      "sha256": "f384c6c4bf304f4fb662c4e4183384688f2642ec759a8bc28767f111014804eb",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/current-kernel-cuts/gpio_set_mode_port.txt"
+    },
+    {
+      "symbol": "gpio_ioctl",
+      "start": 2586424,
+      "end_exclusive": 2587224,
+      "bytes": 800,
+      "sha256": "690c29621dd11f109158612abaca629b83c8715a4695e49ecbcf25e960e00748",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/current-kernel-cuts/gpio_ioctl.txt"
+    },
+    {
+      "symbol": "gpio_probe",
+      "start": 2583016,
+      "end_exclusive": 2583112,
+      "bytes": 96,
+      "sha256": "79b71e2ad2ca517d2090420ac16daa3367be75a5fb20f097296e52276368a217",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/current-kernel-cuts/gpio_probe.txt"
+    }
+  ],
+  "span_definition": "next greater kallsyms address; not asserted DWARF function size",
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

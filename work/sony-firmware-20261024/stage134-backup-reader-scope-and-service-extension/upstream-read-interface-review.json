@@ -1,0 +1,41 @@
+{
+  "created_utc": "2026-10-27T19:35:33.705087+00:00",
+  "fixed_commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+  "records": [
+    {
+      "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/sony.py",
+      "path": "upstream/sony.py",
+      "bytes": 36033,
+      "sha256": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e",
+      "methods_reviewed": [
+        {
+          "function": "sendSenserPacket",
+          "line_start": 847,
+          "line_end": 876,
+          "source": "def sendSenserPacket(self, pFunc, data, oData=None):\n  while data != b'':\n   header = self.SenserPacketHeader.pack(size=len(data), pFunc=pFunc, sequence=self._sequence, version=0, miconType=0, offsetType=0, response=0)\n   self.driver.write(header + data[:self.SenserMaxSize])\n   data = data[self.SenserMaxSize:]\n\n  outData = BytesIO() if oData is None else oData\n  minSize = 0 if self.driver.getId()[1] == 0x0336 else self.SenserMinSize\n  while True:\n   l = max(minSize - self.SenserPacketHeader.size, 0)\n   d = self.driver.read(self.SenserPacketHeader.size + l)\n   header = self.SenserPacketHeader.unpack(d)\n   if header.sequence != self._sequence:\n    raise Exception('Wrong senser sequence')\n   outData.write(d[self.SenserPacketHeader.size:])\n   done = l\n\n   dataLen = min(header.size, self.SenserMaxSize)\n   chunkLen = self.SenserChunkSize - minSize\n   while done < dataLen:\n    l = min(dataLen - done, chunkLen)\n    outData.write(self._readAll(l))\n    done += l\n    if not (l & (self.SenserMinSize - 1)):\n     self.driver.read(self.SenserMinSize)\n    chunkLen = self.SenserChunkSize\n   if header.size <= self.SenserMaxSize:\n    break\n  self._sequence += 1\n  return header.response, outData.getvalue() if oData is None else None"
+        },
+        {
+          "function": "readFile",
+          "line_start": 1016,
+          "line_end": 1017,
+          "source": "def readFile(self, filename, outFile=None):\n  return self._sendFileControlPacket(self.SONY_FILE_CONTROL_READ, filename, b'', outFile)"
+        },
+        {
+          "function": "readMemory",
+          "line_start": 1025,
+          "line_end": 1026,
+          "source": "def readMemory(self, base, size, outFile=None):\n  return self._sendMemoryDumpPacket(base, size, b'', outFile)"
+        }
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/commands/usb.py",
+      "path": "upstream/usb-commands.py",
+      "bytes": 21952,
+      "sha256": "44783d222548598dab97d4813abbd35c3f20540686a579949dbf54e5ab1a5673",
+      "methods_reviewed": []
+    }
+  ],
+  "downloaded_code_imported_or_executed": false,
+  "camera_compatibility_not_proven": true
+}

@@ -1,0 +1,27 @@
+{
+  "qemu_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+  "commands": [
+    {
+      "args": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+        "-device",
+        "help"
+      ],
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/capabilities/device-help.txt",
+      "sha256": "90f9df4e6a2dadfbc81aa39a3e6e909615aad71097454e9f49b9258f4f6ac36b"
+    },
+    {
+      "args": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+        "-display",
+        "help"
+      ],
+      "exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/capabilities/display-help.txt",
+      "sha256": "5e62c419fe8065ae3520ec65cf27f739a029e296ebc17b6a3472d30906a8da3c"
+    }
+  ],
+  "guest_started": false,
+  "kernel_or_disk_or_devices_attached": false
+}

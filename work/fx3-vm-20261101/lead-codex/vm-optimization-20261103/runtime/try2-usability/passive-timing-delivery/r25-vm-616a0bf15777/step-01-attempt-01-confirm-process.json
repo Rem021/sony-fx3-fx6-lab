@@ -1,0 +1,36 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r25-recovery-observation-candidate/operator-helpers/review_snapshot_cli.py",
+    "confirm",
+    "--session",
+    "fx3-deadline-r25-616a0bf15777",
+    "--url",
+    "http://127.0.0.1:55052/",
+    "--launch",
+    "75987505-c13f-4384-8c78-36ed9d430ab2",
+    "--nonce",
+    "1cca0d8b-b56c-47af-9465-e6a42fdb9a71",
+    "--step",
+    "1",
+    "--attempt",
+    "9935b14c-6090-4a43-b6b9-4722b7c282fc",
+    "--capture-path",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r25-vm-616a0bf15777/step-01-attempt-01/validated-image-return.json",
+    "--target",
+    "已实际查看固定PNG：Setup > Area/Date 45/59完整菜单，Area/Date/Time Setting橙色选中，Language English与NTSC/PAL Selector可见，符合第1步。",
+    "--receipt",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r25-vm-616a0bf15777/step-01-attempt-01/explicit-confirm-receipt.json"
+  ],
+  "start": {
+    "UTC": "2026-11-05T02:07:30.260763+00:00",
+    "host_ns": 428135777087583
+  },
+  "end": {
+    "UTC": "2026-11-05T02:07:30.465522+00:00",
+    "host_ns": 428135981852833
+  },
+  "returncode": 0,
+  "stdout": "{\"status\": \"confirmed_and_cancelled\", \"receipt_schema\": \"fx3-r24-snapshot-confirm-v1\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"alarm_nonce\": \"1cca0d8b-b56c-47af-9465-e6a42fdb9a71\", \"step\": 1, \"attempt_id\": \"9935b14c-6090-4a43-b6b9-4722b7c282fc\", \"reviewed_png_sha256\": \"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\", \"target\": \"已实际查看固定PNG：Setup > Area/Date 45/59完整菜单，Area/Date/Time Setting橙色选中，Language English与NTSC/PAL Selector可见，符合第1步。\", \"retries\": 0, \"guest_keys_sent_by_helper\": 0, \"eval_may_have_started\": true, \"browser_result\": {\"cancelled\": {\"current\": {\"armed_ms\": 97776.69999998808, \"cancelled_ms\": 106416.59999996424, \"deadline_ms\": 20000, \"due_ms\": 117776.69999998808, \"nonce\": \"1cca0d8b-b56c-47af-9465-e6a42fdb9a71\", \"state\": \"cancelled\"}, \"deadline_ms\": 20000, \"documentTimeOrigin\": 1793844344038, \"events\": [{\"event\": \"installed\", \"performance_ms\": 26978.5, \"script_SHA256\": \"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\", \"wall_UTC\": \"2026-11-05T02:06:11.016Z\"}, {\"due_ms\": 117776.69999998808, \"event\": \"armed\", \"nonce\": \"1cca0d8b-b56c-47af-9465-e6a42fdb9a71\", \"performance_ms\": 97776.69999998808, \"wall_UTC\": \"2026-11-05T02:07:21.815Z\"}, {\"elapsed_ms\": 8639.899999976158, \"event\": \"cancelled\", \"nonce\": \"1cca0d8b-b56c-47af-9465-e6a42fdb9a71\", \"performance_ms\": 106416.69999998808, \"wall_UTC\": \"2026-11-05T02:07:30.456Z\"}], \"expectedLaunchId\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"expectedURL\": \"http://127.0.0.1:55052/\", \"sealed\": false, \"version\": 1}, \"click_invoked\": true, \"expected\": {\"PNG_sha256\": \"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\", \"attempt_id\": \"9935b14c-6090-4a43-b6b9-4722b7c282fc\", \"content_generation\": 52, \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"observed_sequence\": 342, \"pin_request_id\": \"cbda2e82-f2e0-4017-8b3e-5afdab464b7e\", \"request_id\": \"a9cbbd91-fea9-4757-bb6b-24081b29b2f2\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"38320342-1670-423c-8aff-2b88681fcc57\", \"step\": 1}, \"guest_keys_sent\": 0, \"historical_snapshot\": {\"PNG_sha256\": \"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\", \"attempt_id\": \"9935b14c-6090-4a43-b6b9-4722b7c282fc\", \"byte_length\": 30165, \"content_generation\": 52, \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"native_receive_floor_sequence\": 334, \"native_receive_observed_host_monotonic\": 428127.811743708, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\", \"observed_sequence\": 342, \"pin_request_id\": \"cbda2e82-f2e0-4017-8b3e-5afdab464b7e\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"38320342-1670-423c-8aff-2b88681fcc57\", \"step\": 1}, \"receipt_schema\": \"fx3-r24-snapshot-confirm-v1\", \"status\": \"confirmed_and_cancelled\"}}\n",
+  "stderr": ""
+}

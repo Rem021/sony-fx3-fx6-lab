@@ -1,0 +1,79 @@
+{
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "cases": [
+    {
+      "name": "ospi_load_cp_app_b_pre",
+      "result": {
+        "entry": "0xfe05a2b4",
+        "arguments": [],
+        "boundary": {
+          "reason": "unmapped_external_state",
+          "PC": "0xfe05885c",
+          "address": "0xfe040140",
+          "bytes": 4
+        },
+        "registers": [
+          "0x5",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 11,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe05a2b4",
+          "0xfe05a2b8",
+          "0xfe05a2bc",
+          "0xfe05a2c0",
+          "0xfe058844",
+          "0xfe058848",
+          "0xfe05884c",
+          "0xfe058850",
+          "0xfe058854",
+          "0xfe058858",
+          "0xfe05885c"
+        ]
+      },
+      "boot_metadata_supplied": false,
+      "flash_or_file_data_reply_supplied": false
+    },
+    {
+      "name": "ospi_load_cp_app_b",
+      "result": {
+        "entry": "0xfe05a1b4",
+        "arguments": [],
+        "boundary": {
+          "reason": "unmapped_external_state",
+          "PC": "0xfe05885c",
+          "address": "0xfe040140",
+          "bytes": 4
+        },
+        "registers": [
+          "0x5",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 12,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe05a1b4",
+          "0xfe05a1b8",
+          "0xfe05a1bc",
+          "0xfe05a1c0",
+          "0xfe05a1c4",
+          "0xfe058844",
+          "0xfe058848",
+          "0xfe05884c",
+          "0xfe058850",
+          "0xfe058854",
+          "0xfe058858",
+          "0xfe05885c"
+        ]
+      },
+      "boot_metadata_supplied": false,
+      "flash_or_file_data_reply_supplied": false
+    }
+  ],
+  "scope": "Only original prefix instructions in bounded RAM; both stop at the original slot5 boot-metadata read. No table value, clock, OSPI register, storage result, image bytes, native Sony process or device action is supplied."
+}

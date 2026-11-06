@@ -1,0 +1,5 @@
+_ZN7Updater10RingBuffer26getEmptySizeWithoutLockingEv
+0000993c ldr       x1, [x0, #0x28]
+00009940 ldr       x0, [x0, #0x10]
+00009944 sub       x0, x0, x1
+00009948 ret       

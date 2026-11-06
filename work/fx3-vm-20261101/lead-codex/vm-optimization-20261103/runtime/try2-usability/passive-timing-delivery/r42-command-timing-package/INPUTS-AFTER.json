@@ -1,0 +1,870 @@
+{
+  "schema": "r42-used-inputs-recheck-v1",
+  "time": "2026-11-05T09:38:15.924920+00:00",
+  "passed": true,
+  "unique_pin_count": 122,
+  "external_original_pin_count": 99,
+  "internal_current_artifact_pin_count": 23,
+  "basis": "only actually used inputs; task-initial, later first-observed and post-import pins remain distinguished by observation receipt; no inherited mass input snapshot",
+  "files": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/gpe-r41-candidate.so": {
+      "sha256": "04ba6d561c7dfbf2c2ce294c696207547e30b1c62ea0452f9899a0d2c78aba02",
+      "bytes": 277704,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-ADDITIONAL-1.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src/fx3-gpe-observe-v26-perf.c": {
+      "sha256": "e362f72e8c78c04f1360761c569226e9f2d4f5a483818f7569e30e53e4dd0f7a",
+      "bytes": 35092,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-ADDITIONAL-1.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/src/fx3-complete104-observe-v1.h": {
+      "sha256": "c86b40953528f96ef316b0252ba4a99f2c724191d4d1d74e79369ff973f17032",
+      "bytes": 3530,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-ADDITIONAL-1.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/parse_command_timing.py": {
+      "sha256": "594b03cef5fa4c3b9f81ce1076222c45618d83b959be851722307d0287dafc0e",
+      "bytes": 6150,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-ADDITIONAL-3.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/audit_after.py": {
+      "sha256": "901f7447816d688b0eaa8d12efbe635d4509a59db638ab7a96e33d0fe3a925fc",
+      "bytes": 732,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/capture_validation.py": {
+      "sha256": "4175dc76c6e97436a98e36901205851708b8a647caf5358b77f8cc4056a874a4",
+      "bytes": 2915,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/cleanup.py": {
+      "sha256": "c78adb93f1ca9be9bf4080d5bdda41c9376ce80bfc1bbce34c32a3431d7aaabc",
+      "bytes": 10369,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/common.py": {
+      "sha256": "96196e962cf9e2cdc520a9128508e32a45349db4d9d86442c7c2a05395b11c5e",
+      "bytes": 5598,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/later_capture.py": {
+      "sha256": "ca6c1b2b64ef9ff3672d39d112b598062a1ff8c613d2ee8f7daa5dedbff01f8f",
+      "bytes": 1976,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/launch_prepare.py": {
+      "sha256": "110c2fb6a4df630ce4fcb3564a52aeb5bb157a3d4c148fcc18d57ce7e9fc579f",
+      "bytes": 5082,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/operate.py": {
+      "sha256": "7c95d7ce2fa724e4172b5a6294c7a45f7393a48b765d3d58743ca74d692d0e64",
+      "bytes": 11725,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/preflight.py": {
+      "sha256": "4b1948a20a4b5b45f7844985261acda432d513e82ffdeecd4febdb81a11cf702",
+      "bytes": 4646,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/start_and_wait.py": {
+      "sha256": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+      "bytes": 2515,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/untimed_image.py": {
+      "sha256": "b400adf1aff0d599950a76908d3dd18bd8396d7ffaf7f3c8716b973de7286d34",
+      "bytes": 1874,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/deadline.js": {
+      "sha256": "63b2d2890dde8c19b50ff0a8970f6e996ea3fd4a1ee594424bfbb32b97c774b0",
+      "bytes": 6923,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/deadline_cli.py": {
+      "sha256": "602859489066aae51b732f594296445fa4d4dcfa3f9abd074b5ac6ca985bfcc4",
+      "bytes": 2759,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/planned_navigation_click.js": {
+      "sha256": "4ae5ec1f9862e9a8e563a2ec3638b5fa2bf60eb4a2f4f48751cb4a44bf6fad37",
+      "bytes": 6793,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/planned_navigation_click.py": {
+      "sha256": "65b373ca8f65660d8af85700554f0bf86ec7d76bd3cff15073ae53a511b7c65f",
+      "bytes": 7532,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/planned_prerequisite.py": {
+      "sha256": "55d22fa8fcab5c0ff388605911149c8edec1a0a4477f20156939b881960725af",
+      "bytes": 3992,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/recovery_cancel.js": {
+      "sha256": "808bfb68ccae4e8bb77ed7efd5967e0c4009c5018a50bcf73dc32c0a9adbb1a2",
+      "bytes": 5896,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/recovery_readonly.js": {
+      "sha256": "2393d6804603d25df539fff0b9138c33fd6723dfc55c3882f3e2ada9419ee0b7",
+      "bytes": 5657,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/recovery_tools.py": {
+      "sha256": "6c46f4025ded78da3433b8955cd8c2cb48680008db1f0fb9fbea9b23e0917740",
+      "bytes": 7380,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/review_snapshot_cli.py": {
+      "sha256": "8f5d72f61a75e6aeab3834364ae7edb2065de42a9f1452d17e19a3ddf2792f58",
+      "bytes": 6302,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/snapshot_confirm.js": {
+      "sha256": "6214f0b8a03d678fc14fc28a595e7a0060586cc5d8f3115160dc083735d84432",
+      "bytes": 2902,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/snapshot_read.js": {
+      "sha256": "e097be61d8f7309f1fae74959b6513d1625358176f5a0cd5709e41472408f5a8",
+      "bytes": 2334,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/run_trial_r24_review_snapshot.py": {
+      "sha256": "ab7f8220c5bbe32d5bdd04b5d54f0832967f24c7cc05cbb7385795e909d4950c",
+      "bytes": 75407,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/trial_web_r24_review_snapshot.py": {
+      "sha256": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+      "bytes": 15470,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/review_page_r24.js": {
+      "sha256": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
+      "bytes": 5554,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/confirm_page_r24.js": {
+      "sha256": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
+      "bytes": 1334,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/prepare_run.py": {
+      "sha256": "668520e7047cf8cf3ab064e218f53c9e26c87d7201443f16b3d8c3f2002a2d0b",
+      "bytes": 3937,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/NAVIGATION-PLAN.json": {
+      "sha256": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+      "bytes": 1091,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/PAGE-IDENTITY.json": {
+      "sha256": "7f4b2f3a3f9c86fdb3193a2177135955f3aa000a135e819eba08493c0cf41a0a",
+      "bytes": 265,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/recovery_observation.py": {
+      "sha256": "6562effaf376d062a859ad9350a71b42ab6712c6eb89aedc6902f43c56e35caf",
+      "bytes": 5242,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/recovery_guard.py": {
+      "sha256": "fff04d29c94aee963260ccd7cc09898319bc85eb53717fae52765a63f0510372",
+      "bytes": 3243,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/postkey_observation.py": {
+      "sha256": "40df03ab574deb81c7e3377a3f545b70dff0d9bc0992874617d4b466c045fd6e",
+      "bytes": 5376,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/operator-helpers/postkey_read.js": {
+      "sha256": "36dfd004040ed2d9be219f31ab73d2e39d7a853774bbf9d61ed1581beb5dd681",
+      "bytes": 5435,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/postkey_flow.py": {
+      "sha256": "2af4e7b9318c2f51baa36188dc5ab395eea764c87b24ba9b82989cce53d0f278",
+      "bytes": 4348,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/startup_observation.py": {
+      "sha256": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda",
+      "bytes": 10105,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/trial_ring_cached.py": {
+      "sha256": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
+      "bytes": 9620,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/trial_log_v4_mss.py": {
+      "sha256": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5",
+      "bytes": 8602,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/return-tools/return_adapter.py": {
+      "sha256": "4b1b504f5f7483e56fdeea278abb5a6466065d1c34770d17195c734a4d7b17c9",
+      "bytes": 7857,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/return-tools/short_tool.mjs": {
+      "sha256": "de0dd5938268c02a8a9c1a776e4b2c97b4d4eaa21c827aa9ffcb26d8d82afb96",
+      "bytes": 692,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/return-tools/show_result.mjs": {
+      "sha256": "f4279573abd855789c5828b7a85d540b951708f623fdcdd9a885e5eab7cc0408",
+      "bytes": 2638,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/return-tools/tool_call.mjs": {
+      "sha256": "c90ba3ebc04aa296e386a5a085f811532dbebc6689f04ca8456647fbd6ec2500",
+      "bytes": 893,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/CORE-SOURCE-FREEZE.json": {
+      "sha256": "642149dac737315d19dc6910804538eec6df79a43261527c06fcaf23d374bd50",
+      "bytes": 3967,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/r35_package_selection.py": {
+      "sha256": "7e11daf765c0a90faf5796faf15a3dd79440289d94fd3cba4f0de41daa48ab34",
+      "bytes": 3957,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/runtime-wrapper/cleanup_evidence.py": {
+      "sha256": "a293ab051ca2f744bb8189e708a1a3bcc1360b252d63253141198e78d2dd2a5d",
+      "bytes": 20818,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/SOURCE-FREEZE.json": {
+      "sha256": "3f4d9894d2bfdd1bf15f2c01132006c78f8331220f8e8da1bcee4adcbd37ff43",
+      "bytes": 4471,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-integration-task.txt": {
+      "sha256": "46d617d4b79ab493980ffe9ad842fb7b1e9e3b68820c15e17beaad8578d69950",
+      "bytes": 3655,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-coordinator-final-review.json": {
+      "sha256": "ecff9c8801a5c79d1fa02ee1947ede4c8fec848a02fc52b99e676b700b3d9378",
+      "bytes": 2537,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-coordinator-final-review.json": {
+      "sha256": "51fed565f76a5f90d437fb35dd6ec2860c1e11495cfd7b3cc8dd910bcb92222c",
+      "bytes": 1611,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/package_r36.py": {
+      "sha256": "0362d3eb2f828b3681c1f7aa3b5701f5d81a53be4be8777b338f4d688b4d6e67",
+      "bytes": 18983,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/candidate.json": {
+      "sha256": "0bf214178ab8e60d1ac7755e1d1b2fcc0d2c325ff8473abd50402f09ab81fab4",
+      "bytes": 30883,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/source-index.json": {
+      "sha256": "589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a",
+      "bytes": 563560,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/guest.cpio": {
+      "sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff",
+      "bytes": 453213884,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/SHA256SUMS": {
+      "sha256": "9a06c51caa6bc3517bedb9db06a72452fe4a12156ed3838034821caf151ecf03",
+      "bytes": 3105,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/REPORT.md": {
+      "sha256": "bee6d583482436e60ebaea6f0ba0d30f78700bfa6ea4f1a4a32f0ea11bdd84f5",
+      "bytes": 7310,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/NEXT-MEASUREMENT.md": {
+      "sha256": "1d7591a70be817998110c0e4fa62744769551a46ba73ebd302d0ec8aff093f6b",
+      "bytes": 1803,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/SHA256SUMS": {
+      "sha256": "785759f29c2f8985854852b0d64a190d8f8c3e86cf9f8048eed5158c491221df",
+      "bytes": 11428,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/SOURCE-FREEZE.json": {
+      "sha256": "0f34af0ecfc72c9264c0a13e0e279424ce7eec38bd5e8e127b05b9b1f6537f15",
+      "bytes": 1300,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/RUNTIME-SOURCE-FREEZE.json": {
+      "sha256": "4f100a8136f45ad23e4448ce34eba8778f17a8e743c62542d00fac440e6e69d6",
+      "bytes": 213,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/SLOT-ELF-REVIEW.json": {
+      "sha256": "ac7348aef51f5ad9b3b4652991d32997bd1db36b432dd1c1b4e6a46a3fb83916",
+      "bytes": 23381,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/SOURCE-ELF-REVIEW.json": {
+      "sha256": "47b9d8e54444a0567cf14723f6b5587316f490a9d4e37caad17bde93634f3525",
+      "bytes": 30021,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/BINDING.json": {
+      "sha256": "2c4fbb09a7718c6945d5f60645fe93522c52ef6c99fca3d5c64356ad70edbefa",
+      "bytes": 4144,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-candidate/build/gpe-r41-fixed-slot.so": {
+      "sha256": "19ca7deaf570eeb68fda0036bb75dec740ab30f404f9f91bd208fd3d53c06a39",
+      "bytes": 129600,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/fixed_layout.py": {
+      "sha256": "b5b9bf75763b193575a007074e6701d1a1541ba9d3658ae32a164fc350eca8bc",
+      "bytes": 29686,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/INPUTS-INITIAL.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/SHA256SUMS": {
+      "sha256": "e04a86e60d0b311d57df50a6060064f6f57e02a33d3c04c015922e6a37749a49",
+      "bytes": 10028,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/SOURCE-FREEZE.json": {
+      "sha256": "10265a99fd1a74dc23d85477c82f078485863b92ed664e12132e0a9cf41ce717",
+      "bytes": 4264,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate/CORE-SOURCE-FREEZE.json": {
+      "sha256": "3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9",
+      "bytes": 3760,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/SHA256SUMS": {
+      "sha256": "c7aee1bf7a35320e3c8d08eec03214957832008197741feb971433f19c524a71",
+      "bytes": 14793,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/SOURCE-FREEZE.json": {
+      "sha256": "dd4f8a2045220a045c32b8a0a686227f08e4e8c2edc7adca8964a12ddedc66e4",
+      "bytes": 2724,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/SHA256SUMS": {
+      "sha256": "ede0cfdc07066faf00d98e6934e5125dc10d598f8e228d8364ca0cf6fab1155c",
+      "bytes": 20282,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/SOURCE-FREEZE.json": {
+      "sha256": "861b26c5aefbe393a5e58e1015914e517f0bb9e928c6f5e572a9f56816084ca9",
+      "bytes": 4362,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/CORE-SOURCE-FREEZE.json": {
+      "sha256": "7752a6fd7cdb74def7a3cfa9659ed6a1a4f6ab23708a5aaaed5f345e7c46f303",
+      "bytes": 3858,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate/SHA256SUMS": {
+      "sha256": "7a3f5006d6b693207ab0ef58daac919a56668da0d95e9863888389cac059a8f5",
+      "bytes": 2148838,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/ARCHIVE-DIFF.json": {
+      "sha256": "a9d5787b0cda916896f214982092113743786ad40fb2a557ae8b47b158ac524b",
+      "bytes": 1088,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-package/source-index.json": {
+      "sha256": "589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a",
+      "bytes": 563560,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/SOURCE-FREEZE.json": {
+      "sha256": "31ee6b1d00fecfc5ac53e874b144230d2430208277c295d74c4a804fbe1135ec",
+      "bytes": 4042,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/manifest.json": {
+      "sha256": "284c7e6c1c1aa65fa83439c4a02598eff1074fb17a5a697a6bfecf72646b6165",
+      "bytes": 4047,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-ADDITIONAL-2.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/r35_package_selection.py": {
+      "sha256": "33e7115877732c3c6ff52c59f9281e24f46dd168149afd2f0979b35a57e39a23",
+      "bytes": 4817,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/cpio_audit.py": {
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec",
+      "bytes": 2575,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/osd_ring93_v4.py": {
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc",
+      "bytes": 6190,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/trial_ring_cached.py": {
+      "sha256": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
+      "bytes": 9620,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/startup_observation.py": {
+      "sha256": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda",
+      "bytes": 10105,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/trial_web_r24_review_snapshot.py": {
+      "sha256": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+      "bytes": 15470,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/pending_visual_v20.py": {
+      "sha256": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3",
+      "bytes": 1993,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/trial_log_v4_mss.py": {
+      "sha256": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5",
+      "bytes": 8602,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/trial_health_v2.py": {
+      "sha256": "99bb8104dd63fbb8cff7b887447fe56baf468d972c325fa39da2091f4e0c5751",
+      "bytes": 498,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/gate_input_usability.py": {
+      "sha256": "3c612905bb53861e8a3804aaa0696ba14d376646b37f52894b0c1ad7ed508104",
+      "bytes": 4240,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/file_readback100.py": {
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e",
+      "bytes": 1341,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/restore_api103_v2.py": {
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168",
+      "bytes": 3680,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/terminal_status_v23.py": {
+      "sha256": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75",
+      "bytes": 1050,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/parse_v25_diag_r3.py": {
+      "sha256": "c232254a1991894e8a6a0446ee7a516ba7491211bfcf894852b56008345dcb9a",
+      "bytes": 4855,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/quiesced_diag_readback.py": {
+      "sha256": "51b2507730a5a7515333c0611022bf4a8c29d9a43663db8dd6e385db007ca6cb",
+      "bytes": 6232,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/procdiag_readback.py": {
+      "sha256": "0f6d479e7a1072f45ede37562bde66f22bea9c682886345a6b36f38ba92312f4",
+      "bytes": 4486,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/qmp_line_transport.py": {
+      "sha256": "2686ee46ff1ce06b12650f4cb3c86ebe9d64fdeafc9e6ce8176a64c4b5ded0c3",
+      "bytes": 5879,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/runtime_resource_guard.py": {
+      "sha256": "6bb095d299b695818708360c355d6c3b4f6a7eff0112e03474b474b180051680",
+      "bytes": 10196,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/startup_qmp_v1.py": {
+      "sha256": "efba2c336e063e18208f21df6e3bf9ae462abb1fef5ed0ec618f009004b67c74",
+      "bytes": 3145,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/optional_paused_snapshots.py": {
+      "sha256": "15fbc3b50b1871b815b13c05b8275922f561ea2683c64c0d9a2e81c611d451a9",
+      "bytes": 3860,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/pre_input_observation.py": {
+      "sha256": "243f33e19c1362d3d1741ad60ac863cb5e5dd27fc9ab01dadd7f8f2fb829e50f",
+      "bytes": 7564,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/snapshot_tail_v15.py": {
+      "sha256": "659250b731d80e45d76be9c2f4d849b89d4c4153a741b92644164b59e2730aad",
+      "bytes": 14648,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/host_exception_clock.py": {
+      "sha256": "5f133dd0c8f6d17b19cab87616b1efe725445829d75447ac0de71ceb99a083dc",
+      "bytes": 3208,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/web_rejection_receipt.py": {
+      "sha256": "9aa387ff7a6eefd382388b5e3f14f5030e950233bd80482672e09a8e0893382a",
+      "bytes": 1611,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/cleanup_evidence.py": {
+      "sha256": "a293ab051ca2f744bb8189e708a1a3bcc1360b252d63253141198e78d2dd2a5d",
+      "bytes": 20818,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/common.py": {
+      "sha256": "96196e962cf9e2cdc520a9128508e32a45349db4d9d86442c7c2a05395b11c5e",
+      "bytes": 5598,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/cleanup.py": {
+      "sha256": "c78adb93f1ca9be9bf4080d5bdda41c9376ce80bfc1bbce34c32a3431d7aaabc",
+      "bytes": 10369,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/operator-helpers/planned_prerequisite.py": {
+      "sha256": "55d22fa8fcab5c0ff388605911149c8edec1a0a4477f20156939b881960725af",
+      "bytes": 3992,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/operator-helpers/review_snapshot_cli.py": {
+      "sha256": "8f5d72f61a75e6aeab3834364ae7edb2065de42a9f1452d17e19a3ddf2792f58",
+      "bytes": 6302,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/later_capture.py": {
+      "sha256": "ca6c1b2b64ef9ff3672d39d112b598062a1ff8c613d2ee8f7daa5dedbff01f8f",
+      "bytes": 1976,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/operator-helpers/recovery_observation.py": {
+      "sha256": "6562effaf376d062a859ad9350a71b42ab6712c6eb89aedc6902f43c56e35caf",
+      "bytes": 5242,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/recovery_guard.py": {
+      "sha256": "fff04d29c94aee963260ccd7cc09898319bc85eb53717fae52765a63f0510372",
+      "bytes": 3243,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/operator-helpers/postkey_observation.py": {
+      "sha256": "40df03ab574deb81c7e3377a3f545b70dff0d9bc0992874617d4b466c045fd6e",
+      "bytes": 5376,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/postkey_flow.py": {
+      "sha256": "2af4e7b9318c2f51baa36188dc5ab395eea764c87b24ba9b82989cce53d0f278",
+      "bytes": 4348,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/operate.py": {
+      "sha256": "7c95d7ce2fa724e4172b5a6294c7a45f7393a48b765d3d58743ca74d692d0e64",
+      "bytes": 11725,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/preflight.py": {
+      "sha256": "43d61dc7fadc68c60dd1ea5c831e2e2a0b775a84cd483eca897a54a11201286f",
+      "bytes": 4646,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/audit_after.py": {
+      "sha256": "901f7447816d688b0eaa8d12efbe635d4509a59db638ab7a96e33d0fe3a925fc",
+      "bytes": 732,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/launch_prepare.py": {
+      "sha256": "110c2fb6a4df630ce4fcb3564a52aeb5bb157a3d4c148fcc18d57ce7e9fc579f",
+      "bytes": 5082,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/untimed_image.py": {
+      "sha256": "b400adf1aff0d599950a76908d3dd18bd8396d7ffaf7f3c8716b973de7286d34",
+      "bytes": 1874,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/runtime-wrapper/start_and_wait.py": {
+      "sha256": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+      "bytes": 2515,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-IMPORT-OBSERVED.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb": {
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+      "bytes": 36163584,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-PLATFORM.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb": {
+      "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+      "bytes": 10355,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-PLATFORM.json"
+      ]
+    },
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin": {
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "bytes": 6610952,
+      "observation_receipts": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r42-command-timing-runner/INPUTS-PLATFORM.json"
+      ]
+    }
+  }
+}

@@ -1,0 +1,371 @@
+{
+  "kind": "OFFLINE_BYTE_RECORD_AND_BOUNDED_ORIGINAL_INSTRUCTION_SEMANTICS",
+  "elf_function_execution": false,
+  "stubs": [],
+  "arithmetic_words": [
+    {
+      "binary": "fx3_mpr",
+      "start": "0x11facc",
+      "words": [
+        "92800761",
+        "52800780",
+        "9ba20400",
+        "1e281821",
+        "9e230000",
+        "1e202030"
+      ]
+    },
+    {
+      "binary": "fx6_mpr",
+      "start": "0x1b67a0",
+      "words": [
+        "92800761",
+        "52800780",
+        "9ba20400",
+        "1e281821",
+        "9e230000",
+        "1e202030"
+      ]
+    },
+    {
+      "binary": "fx6_mpr",
+      "start": "0x199498",
+      "words": [
+        "92800761",
+        "52800780",
+        "9ba20400",
+        "1e281821",
+        "9e230000",
+        "1e202030"
+      ]
+    }
+  ],
+  "original_initializer_cases": [
+    {
+      "input_hex": "0000",
+      "input_u16": 0,
+      "effective": {
+        "fx3_xavcs": 0,
+        "fx6_xavcs": 780,
+        "fx6_mxf": 0
+      }
+    },
+    {
+      "input_hex": "0100",
+      "input_u16": 1,
+      "effective": {
+        "fx3_xavcs": 1,
+        "fx6_xavcs": 780,
+        "fx6_mxf": 1
+      }
+    },
+    {
+      "input_hex": "0c03",
+      "input_u16": 780,
+      "effective": {
+        "fx3_xavcs": 780,
+        "fx6_xavcs": 780,
+        "fx6_mxf": 780
+      }
+    },
+    {
+      "input_hex": "a005",
+      "input_u16": 1440,
+      "effective": {
+        "fx3_xavcs": 1440,
+        "fx6_xavcs": 780,
+        "fx6_mxf": 1440
+      }
+    },
+    {
+      "input_hex": "ffff",
+      "input_u16": 65535,
+      "effective": {
+        "fx3_xavcs": 65535,
+        "fx6_xavcs": 780,
+        "fx6_mxf": 65535
+      }
+    }
+  ],
+  "comparison_cases": [
+    {
+      "frame_counter": 0,
+      "fps": [
+        25,
+        1
+      ],
+      "fx3_direct_1440": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 0.0,
+        "emit_0x40000005": false
+      },
+      "fx3_preserve_780": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 0.0,
+        "emit_0x40000005": false
+      },
+      "fx6_xavcs": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 0.0,
+        "emit_0x40000005": false
+      },
+      "fx6_mxf": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 0.0,
+        "emit_0x40000005": false
+      }
+    },
+    {
+      "frame_counter": 1168499,
+      "fps": [
+        25,
+        1
+      ],
+      "fx3_direct_1440": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 46739.9609375,
+        "emit_0x40000005": false
+      },
+      "fx3_preserve_780": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 46739.9609375,
+        "emit_0x40000005": false
+      },
+      "fx6_xavcs": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 46739.9609375,
+        "emit_0x40000005": false
+      },
+      "fx6_mxf": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 46739.9609375,
+        "emit_0x40000005": false
+      }
+    },
+    {
+      "frame_counter": 1168500,
+      "fps": [
+        25,
+        1
+      ],
+      "fx3_direct_1440": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 46740.0,
+        "emit_0x40000005": false
+      },
+      "fx3_preserve_780": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 46740.0,
+        "emit_0x40000005": true
+      },
+      "fx6_xavcs": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 46740.0,
+        "emit_0x40000005": true
+      },
+      "fx6_mxf": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 46740.0,
+        "emit_0x40000005": false
+      }
+    },
+    {
+      "frame_counter": 1168501,
+      "fps": [
+        25,
+        1
+      ],
+      "fx3_direct_1440": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 46740.0390625,
+        "emit_0x40000005": false
+      },
+      "fx3_preserve_780": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 46740.0390625,
+        "emit_0x40000005": true
+      },
+      "fx6_xavcs": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 46740.0390625,
+        "emit_0x40000005": true
+      },
+      "fx6_mxf": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 46740.0390625,
+        "emit_0x40000005": false
+      }
+    },
+    {
+      "frame_counter": 2160000,
+      "fps": [
+        25,
+        1
+      ],
+      "fx3_direct_1440": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 86400.0,
+        "emit_0x40000005": true
+      },
+      "fx3_preserve_780": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 86400.0,
+        "emit_0x40000005": true
+      },
+      "fx6_xavcs": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 86400.0,
+        "emit_0x40000005": true
+      },
+      "fx6_mxf": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 86400.0,
+        "emit_0x40000005": true
+      }
+    },
+    {
+      "frame_counter": 2158500,
+      "fps": [
+        25,
+        1
+      ],
+      "fx3_direct_1440": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 86340.0,
+        "emit_0x40000005": true
+      },
+      "fx3_preserve_780": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 86340.0,
+        "emit_0x40000005": true
+      },
+      "fx6_xavcs": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 86340.0,
+        "emit_0x40000005": true
+      },
+      "fx6_mxf": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 86340.0,
+        "emit_0x40000005": true
+      }
+    },
+    {
+      "frame_counter": 4294967295,
+      "fps": [
+        25,
+        1
+      ],
+      "fx3_direct_1440": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 171798688.0,
+        "emit_0x40000005": true
+      },
+      "fx3_preserve_780": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 171798688.0,
+        "emit_0x40000005": true
+      },
+      "fx6_xavcs": {
+        "threshold_u64_seconds": 46740,
+        "threshold_f32_seconds": 46740.0,
+        "elapsed_f32_seconds": 171798688.0,
+        "emit_0x40000005": true
+      },
+      "fx6_mxf": {
+        "threshold_u64_seconds": 86340,
+        "threshold_f32_seconds": 86340.0,
+        "elapsed_f32_seconds": 171798688.0,
+        "emit_0x40000005": true
+      }
+    }
+  ],
+  "mxf_interlace_counterexample": {
+    "conditional_same_enum_and_counter": true,
+    "enum": 4,
+    "frame_counter": 2158500,
+    "fx6_mxf_effective_fps": 25,
+    "fx3_xavcs_effective_fps": 50,
+    "source": {
+      "threshold_u64_seconds": 86340,
+      "threshold_f32_seconds": 86340.0,
+      "elapsed_f32_seconds": 86340.0,
+      "emit_0x40000005": true
+    },
+    "direct_target": {
+      "threshold_u64_seconds": 86340,
+      "threshold_f32_seconds": 86340.0,
+      "elapsed_f32_seconds": 43170.0,
+      "emit_0x40000005": false
+    },
+    "ideal_target_u16_rational": "1441/2 (720.5), not representable as u16"
+  },
+  "converter": {
+    "input": "a005",
+    "output": "0c03",
+    "source_ctor": "0x1b3284",
+    "target_ctor": "0x11b9dc",
+    "rejections": [
+      {
+        "case": "mxf",
+        "reason": "source writer path not covered; Mxf is explicitly rejected"
+      },
+      {
+        "case": "unknown source",
+        "reason": "source writer path not covered; Mxf is explicitly rejected"
+      },
+      {
+        "case": "unknown target",
+        "reason": "target writer constructor not covered"
+      },
+      {
+        "case": "empty",
+        "reason": "exactly two bytes required"
+      },
+      {
+        "case": "oversize",
+        "reason": "exactly two bytes required"
+      },
+      {
+        "case": "zero",
+        "reason": "not the fixed FX6 AP producer value"
+      },
+      {
+        "case": "nonfixed 780",
+        "reason": "not the fixed FX6 AP producer value"
+      }
+    ]
+  },
+  "limits": [
+    "not complete Init conversion",
+    "no runtime mode selection or PLT binding proof",
+    "FP32 round-to-nearest finite test domain only; no FPCR/exceptions emulation",
+    "predicate point reached is an explicit precondition; no recording success inferred"
+  ]
+}

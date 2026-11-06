@@ -1,0 +1,69 @@
+{
+  "status": "NATIVE_DESCRIPTOR_POLICY_AND_OWN_CHILD_BRANCHES_PASS",
+  "checks": 5,
+  "rows": [
+    {
+      "case": "native_bounded_descriptor_parser",
+      "status": "PASS",
+      "compile_argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/descriptor_policy.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/descriptor_unit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/artifacts/descriptor-unit"
+      ],
+      "stdout": "PASS descriptor policy:2/4 endpoints,32 truncated prefixes,16 field mutations,duplicate endpoint,configuration and null bounds\n",
+      "binary_sha256": "d6bb327087a496e4a6b3b0e9d888e1a05632b79e0f5832c05539e8fc518ce285"
+    },
+    {
+      "case": "descriptor-match",
+      "status": "PASS",
+      "observed_status": "HOST_RETURN_CAMERA_STATE_UNVERIFIED",
+      "flow_frames": 80,
+      "control_only": false,
+      "body_bytes": 88,
+      "fixture_helper_sha256": "47d6ca6ce8fe6fa88332618f1b5a157f6e8965c732168da5d02f4182263543fc",
+      "directory": "runs/descriptor-match"
+    },
+    {
+      "case": "descriptor-mismatch",
+      "status": "PASS",
+      "observed_status": "HOST_CONTROL_RETURN_CAPABILITY_UNTESTED",
+      "flow_frames": 44,
+      "control_only": true,
+      "body_bytes": 0,
+      "fixture_helper_sha256": "47d6ca6ce8fe6fa88332618f1b5a157f6e8965c732168da5d02f4182263543fc",
+      "directory": "runs/descriptor-mismatch"
+    },
+    {
+      "case": "service-stall",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "flow_frames": 41,
+      "control_only": false,
+      "body_bytes": 0,
+      "fixture_helper_sha256": "47d6ca6ce8fe6fa88332618f1b5a157f6e8965c732168da5d02f4182263543fc",
+      "directory": "runs/service-stall"
+    },
+    {
+      "case": "cancel-between-OUT-IN",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "flow_frames": 6,
+      "control_only": false,
+      "body_bytes": 0,
+      "fixture_helper_sha256": "47d6ca6ce8fe6fa88332618f1b5a157f6e8965c732168da5d02f4182263543fc",
+      "directory": "runs/cancel-between-OUT-IN"
+    }
+  ],
+  "actual_native_IOKit_or_root_executed": false,
+  "fixture_only": true
+}

@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/recovery_tools.py",
+    "capture",
+    "--session",
+    "fx3-deadline-operator-r21-b83358633d9e-ccf2a6e7",
+    "--url",
+    "http://127.0.0.1:51442/",
+    "--launch-id",
+    "bb9c2485-fe65-40d5-92d5-db1d5365fd86",
+    "--nonce",
+    "68a8332d-5712-481c-a333-03e298cd8a4f",
+    "--binding",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/binding-A.json",
+    "--out",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/recovery-review"
+  ],
+  "start": {
+    "UTC": "2026-11-04T23:42:15.497354+00:00",
+    "host_ns": 419421029267750
+  },
+  "end": {
+    "UTC": "2026-11-04T23:42:15.631515+00:00",
+    "host_ns": 419421163455625
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"status\": \"qualified_review_screenshot\",\n  \"scope\": \"read_only_unqueued_review\",\n  \"session\": \"fx3-deadline-operator-r21-b83358633d9e-ccf2a6e7\",\n  \"tab\": null,\n  \"binding\": {\n    \"attempt_id\": \"c75de8c6-2738-41ff-998b-a35c8cce19da\",\n    \"document_time_origin\": 1793835724436,\n    \"launch_request_id\": \"bb9c2485-fe65-40d5-92d5-db1d5365fd86\",\n    \"key\": 427,\n    \"base_step\": 0,\n    \"expected_step\": 1,\n    \"PNG_sha256\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\",\n    \"content_generation\": 1,\n    \"sequence\": 211,\n    \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\"\n  },\n  \"host_start_ns\": 419421100327041,\n  \"guest_keys_sent\": 0,\n  \"confirm_calls\": 0,\n  \"alarm_mutations\": 0,\n  \"before\": {\n    \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\",\n    \"alarm_due_ms\": 30655.10000002384,\n    \"attempt_id\": \"c75de8c6-2738-41ff-998b-a35c8cce19da\",\n    \"content_generation\": 2,\n    \"document_time_origin\": 1793835724436,\n    \"launch_id\": \"bb9c2485-fe65-40d5-92d5-db1d5365fd86\",\n    \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\",\n    \"performance_ms\": 11138,\n    \"qualified\": true,\n    \"sequence\": 212,\n    \"server_atomic_permission\": false\n  },\n  \"screenshot_sha256\": \"d1fd8dd6c74c43fee2e3fc94bb5e1a1dc1cc26ab0c0d88aaeef4bbf3bc79752e\",\n  \"screenshot_path\": \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/recovery-review/review-page.png\",\n  \"after\": {\n    \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\",\n    \"alarm_due_ms\": 30655.10000002384,\n    \"attempt_id\": \"c75de8c6-2738-41ff-998b-a35c8cce19da\",\n    \"content_generation\": 2,\n    \"document_time_origin\": 1793835724436,\n    \"launch_id\": \"bb9c2485-fe65-40d5-92d5-db1d5365fd86\",\n    \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\",\n    \"performance_ms\": 11188.5,\n    \"qualified\": true,\n    \"sequence\": 212,\n    \"server_atomic_permission\": false\n  },\n  \"attempt_id\": \"c75de8c6-2738-41ff-998b-a35c8cce19da\",\n  \"nonce\": \"68a8332d-5712-481c-a333-03e298cd8a4f\",\n  \"launch_id\": \"bb9c2485-fe65-40d5-92d5-db1d5365fd86\",\n  \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\",\n  \"content_generation\": 2,\n  \"sequence\": 212,\n  \"server_atomic_permission\": false,\n  \"host_end_ns\": 419421157325250\n}\n",
+  "stderr": ""
+}

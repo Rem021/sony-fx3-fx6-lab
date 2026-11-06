@@ -1,0 +1,112 @@
+00007e80: e003132a mov w0, w19
+00007e84: f51340f9 ldr x21, [sp, #0x20]
+00007e88: f35341a9 ldp x19, x20, [sp, #0x10]
+00007e8c: fd7bc7a8 ldp x29, x30, [sp], #0x70
+00007e90: c0035fd6 ret 
+00007e94: 1f2003d5 nop 
+00007e98: 003040f9 ldr x0, [x0, #0x60]
+00007e9c: 858840b9 ldr w5, [x4, #0x88]
+00007ea0: 820c5729 ldp w2, w3, [x4, #0xb8]
+00007ea4: 2100050b add w1, w1, w5
+00007ea8: 000040f9 ldr x0, [x0]
+00007eac: 040080d2 mov x4, #0
+00007eb0: 00000094 bl #0x7eb0 ; {'section': '.text', 'offset': 32432, 'type': 283, 'symbol': 'emmc_seq_write', 'symbol_section': '.text', 'symbol_value': 78008, 'addend': 0}
+00007eb4: f303002a mov w19, w0
+00007eb8: 20feff36 tbz w0, #0x1f, #0x7e7c
+00007ebc: e3020058 ldr x3, #0x7f18
+00007ec0: e403132a mov w4, w19
+00007ec4: e1020058 ldr x1, #0x7f20
+00007ec8: c26b8052 mov w2, #0x35e
+00007ecc: 60030058 ldr x0, #0x7f38
+00007ed0: 63000191 add x3, x3, #0x40
+00007ed4: 00000094 bl #0x7ed4 ; {'section': '.text', 'offset': 32468, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00007ed8: eaffff17 b #0x7e80
+00007edc: f5010058 ldr x21, #0x7f18
+00007ee0: e403132a mov w4, w19
+00007ee4: f4010058 ldr x20, #0x7f20
+00007ee8: 82678052 mov w2, #0x33c
+00007eec: e0010058 ldr x0, #0x7f28
+00007ef0: a3a20091 add x3, x21, #0x28
+00007ef4: e10314aa mov x1, x20
+00007ef8: 00000094 bl #0x7ef8 ; {'section': '.text', 'offset': 32504, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00007efc: a0010058 ldr x0, #0x7f30
+00007f00: e403132a mov w4, w19
+00007f04: a3020191 add x3, x21, #0x40
+00007f08: e10314aa mov x1, x20
+00007f0c: 426a8052 mov w2, #0x352
+00007f10: 00000094 bl #0x7f10 ; {'section': '.text', 'offset': 32528, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00007f14: dbffff17 b #0x7e80
+00007f18: 00000000 udf #0 ; {'section': '.text', 'offset': 32536, 'type': 257, 'symbol': '', 'symbol_section': '.rodata', 'symbol_value': 0, 'addend': 2152}
+00007f1c: 00000000 udf #0
+00007f20: 00000000 udf #0 ; {'section': '.text', 'offset': 32544, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 10560}
+00007f24: 00000000 udf #0
+00007f28: 00000000 udf #0 ; {'section': '.text', 'offset': 32552, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 10760}
+00007f2c: 00000000 udf #0
+00007f30: 00000000 udf #0 ; {'section': '.text', 'offset': 32560, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 10816}
+00007f34: 00000000 udf #0
+00007f38: 00000000 udf #0 ; {'section': '.text', 'offset': 32568, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 10888}
+00007f3c: 00000000 udf #0
+00007f40: fd7bbea9 stp x29, x30, [sp, #-0x20]!
+00007f44: fd030091 mov x29, sp
+00007f48: f30b00f9 str x19, [sp, #0x10]
+00007f4c: f30300aa mov x19, x0
+00007f50: 000040f9 ldr x0, [x0]
+00007f54: 04bc40b9 ldr w4, [x0, #0xbc]
+00007f58: 04020034 cbz w4, #0x7f98
+00007f5c: 81200051 sub w1, w4, #8
+00007f60: 3f040071 cmp w1, #1
+00007f64: a9020054 b.ls #0x7fb8
+00007f68: 80040051 sub w0, w4, #1
+00007f6c: 1f040071 cmp w0, #1
+00007f70: c8020054 b.hi #0x7fc8
+00007f74: 00000094 bl #0x7f74 ; {'section': '.text', 'offset': 32628, 'type': 283, 'symbol': 'emmc_seq_get_boot_capacity', 'symbol_section': '.text', 'symbol_value': 83360, 'addend': 0}
+00007f78: 610240f9 ldr x1, [x19]
+00007f7c: 218840b9 ldr w1, [x1, #0x88]
+00007f80: 215877d3 ubfiz x1, x1, #9, #0x17
+00007f84: 000001cb sub x0, x0, x1
+00007f88: f30b40f9 ldr x19, [sp, #0x10]
+00007f8c: fd7bc2a8 ldp x29, x30, [sp], #0x20
+00007f90: c0035fd6 ret 
+00007f94: 1f2003d5 nop 
+00007f98: 00000094 bl #0x7f98 ; {'section': '.text', 'offset': 32664, 'type': 283, 'symbol': 'emmc_seq_get_capacity', 'symbol_section': '.text', 'symbol_value': 83336, 'addend': 0}
+00007f9c: 610240f9 ldr x1, [x19]
+00007fa0: f30b40f9 ldr x19, [sp, #0x10]
+00007fa4: fd7bc2a8 ldp x29, x30, [sp], #0x20
+00007fa8: 218840b9 ldr w1, [x1, #0x88]
+00007fac: 215877d3 ubfiz x1, x1, #9, #0x17
+00007fb0: 000001cb sub x0, x0, x1
+00007fb4: c0035fd6 ret 
+00007fb8: 004040f9 ldr x0, [x0, #0x80]
+00007fbc: f30b40f9 ldr x19, [sp, #0x10]
+00007fc0: fd7bc2a8 ldp x29, x30, [sp], #0x20
+00007fc4: c0035fd6 ret 
+00007fc8: 03010058 ldr x3, #0x7fe8
+00007fcc: 825c8052 mov w2, #0x2e4
+00007fd0: 01010058 ldr x1, #0x7ff0
+00007fd4: 20010058 ldr x0, #0x7ff8
+00007fd8: 63400191 add x3, x3, #0x50
+00007fdc: 00000094 bl #0x7fdc ; {'section': '.text', 'offset': 32732, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00007fe0: 000080d2 mov x0, #0
+00007fe4: e9ffff17 b #0x7f88
+00007fe8: 00000000 udf #0 ; {'section': '.text', 'offset': 32744, 'type': 257, 'symbol': '', 'symbol_section': '.rodata', 'symbol_value': 0, 'addend': 2152}
+00007fec: 00000000 udf #0
+00007ff0: 00000000 udf #0 ; {'section': '.text', 'offset': 32752, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 10560}
+00007ff4: 00000000 udf #0
+00007ff8: 00000000 udf #0 ; {'section': '.text', 'offset': 32760, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 10952}
+00007ffc: 00000000 udf #0
+00008000: fd7bbca9 stp x29, x30, [sp, #-0x40]!
+00008004: fd030091 mov x29, sp
+00008008: f35301a9 stp x19, x20, [sp, #0x10]
+0000800c: f303012a mov w19, w1
+00008010: f76303a9 stp x23, x24, [sp, #0x30]
+00008014: f80300aa mov x24, x0
+00008018: f55b02a9 stp x21, x22, [sp, #0x20]
+0000801c: f403022a mov w20, w2
+00008020: 000040f9 ldr x0, [x0]
+00008024: 179840b9 ldr w23, [x0, #0x98]
+00008028: 03000014 b #0x8034
+0000802c: 1f2003d5 nop 
+00008030: 000340f9 ldr x0, [x24]
+00008034: ff02146b cmp w23, w20
+00008038: 02bc40b9 ldr w2, [x0, #0xbc]
+0000803c: f592941a csel w21, w23, w20, ls

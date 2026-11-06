@@ -1,0 +1,5 @@
+{
+  "stage": "KeyTagFactory original StringHandler comparison",
+  "error": "AssertionError: ('unmodelled import', 'memcmp', '0x20006b50')",
+  "resolution": "Added bounded host memcmp semantics alongside the existing libc byte-operation shims. No vendor code, source mapping or parser result was bypassed."
+}

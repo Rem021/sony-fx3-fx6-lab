@@ -1,0 +1,314 @@
+{
+  "status": "PASS_GET_FILE2_SPECIAL_BRANCH_AND_BACKUP_LIMIT_AUDIT_NOT_READ_ONLY_DEVICE_RELEASE",
+  "source_sha256": "cb33625547b47a1f7bf486ac20ebe776fc8838ac24da1faa606bba4fc3da31dd",
+  "created_utc": "2026-10-27T18:34:39.559549+00:00",
+  "cases": [
+    {
+      "label": "pending_jit_log",
+      "declared_kind": 0,
+      "declared_selector": 3,
+      "declared_global_pointer": true,
+      "declared_object_pointer": true,
+      "declared_pending_pointer": true,
+      "declared_pending_bytes": 7,
+      "declared_resolved_name_nonempty": true,
+      "original_special_branch_selected": true,
+      "native_prepared_open_arguments": [
+        285248168,
+        285233152,
+        1089
+      ],
+      "events": [
+        {
+          "label": "independent post-path-resolution frame: original special-case decision",
+          "entry": "0xa020",
+          "stop_pc": "0x5ca0",
+          "reason": "before_original_FileAccess_constructor",
+          "pcs": [
+            "0xa020",
+            "0xa024",
+            "0xa028",
+            "0xa02c",
+            "0xa030",
+            "0xa034",
+            "0xa038",
+            "0xa03c",
+            "0xa040",
+            "0xa044",
+            "0xa048",
+            "0xa04c",
+            "0xa050",
+            "0xa054",
+            "0xa058",
+            "0xa05c",
+            "0x5ca0"
+          ],
+          "original_stores": [],
+          "all_images_stack_scratch_unchanged": true,
+          "constructor_file_open_write_sync_stat_mount_or_transport_executed": false
+        },
+        {
+          "label": "independent post-constructor frame: original write-open argument setup",
+          "entry": "0xa060",
+          "stop_pc": "0x5b00",
+          "reason": "before_original_FileAccess_open",
+          "pcs": [
+            "0xa060",
+            "0xa064",
+            "0xa068",
+            "0xa06c",
+            "0xa070",
+            "0x5b00"
+          ],
+          "original_stores": [],
+          "all_images_stack_scratch_unchanged": true,
+          "constructor_file_open_write_sync_stat_mount_or_transport_executed": false
+        }
+      ],
+      "inputs_after_unexecuted_path_resolution_and_constructor_are_explicit": true,
+      "real_runtime_reachability_or_any_file_operation_proven": false,
+      "null_root_observer_fence_is_not_a_native_guard": false
+    },
+    {
+      "label": "global_null",
+      "declared_kind": 0,
+      "declared_selector": 3,
+      "declared_global_pointer": false,
+      "declared_object_pointer": true,
+      "declared_pending_pointer": true,
+      "declared_pending_bytes": 7,
+      "declared_resolved_name_nonempty": true,
+      "original_special_branch_selected": false,
+      "native_prepared_open_arguments": null,
+      "events": [
+        {
+          "label": "independent post-path-resolution frame: original special-case decision",
+          "entry": "0xa020",
+          "stop_pc": "0xa040",
+          "reason": "before_unconditional_global_root_dereference",
+          "pcs": [
+            "0xa020",
+            "0xa024",
+            "0xa028",
+            "0xa02c",
+            "0xa030",
+            "0xa034",
+            "0xa038",
+            "0xa03c",
+            "0xa040"
+          ],
+          "original_stores": [],
+          "all_images_stack_scratch_unchanged": true,
+          "constructor_file_open_write_sync_stat_mount_or_transport_executed": false
+        }
+      ],
+      "inputs_after_unexecuted_path_resolution_and_constructor_are_explicit": true,
+      "real_runtime_reachability_or_any_file_operation_proven": false,
+      "null_root_observer_fence_is_not_a_native_guard": true
+    },
+    {
+      "label": "object_null",
+      "declared_kind": 0,
+      "declared_selector": 3,
+      "declared_global_pointer": true,
+      "declared_object_pointer": false,
+      "declared_pending_pointer": true,
+      "declared_pending_bytes": 7,
+      "declared_resolved_name_nonempty": true,
+      "original_special_branch_selected": false,
+      "native_prepared_open_arguments": null,
+      "events": [
+        {
+          "label": "independent post-path-resolution frame: original special-case decision",
+          "entry": "0xa020",
+          "stop_pc": "0xa0e4",
+          "reason": "before_regular_stat_path",
+          "pcs": [
+            "0xa020",
+            "0xa024",
+            "0xa028",
+            "0xa02c",
+            "0xa030",
+            "0xa034",
+            "0xa038",
+            "0xa03c",
+            "0xa040",
+            "0xa044",
+            "0xa0e4"
+          ],
+          "original_stores": [],
+          "all_images_stack_scratch_unchanged": true,
+          "constructor_file_open_write_sync_stat_mount_or_transport_executed": false
+        }
+      ],
+      "inputs_after_unexecuted_path_resolution_and_constructor_are_explicit": true,
+      "real_runtime_reachability_or_any_file_operation_proven": false,
+      "null_root_observer_fence_is_not_a_native_guard": false
+    },
+    {
+      "label": "pending_null",
+      "declared_kind": 0,
+      "declared_selector": 3,
+      "declared_global_pointer": true,
+      "declared_object_pointer": true,
+      "declared_pending_pointer": false,
+      "declared_pending_bytes": 7,
+      "declared_resolved_name_nonempty": true,
+      "original_special_branch_selected": false,
+      "native_prepared_open_arguments": null,
+      "events": [
+        {
+          "label": "independent post-path-resolution frame: original special-case decision",
+          "entry": "0xa020",
+          "stop_pc": "0xa0e4",
+          "reason": "before_regular_stat_path",
+          "pcs": [
+            "0xa020",
+            "0xa024",
+            "0xa028",
+            "0xa02c",
+            "0xa030",
+            "0xa034",
+            "0xa038",
+            "0xa03c",
+            "0xa040",
+            "0xa044",
+            "0xa048",
+            "0xa04c",
+            "0xa0e4"
+          ],
+          "original_stores": [],
+          "all_images_stack_scratch_unchanged": true,
+          "constructor_file_open_write_sync_stat_mount_or_transport_executed": false
+        }
+      ],
+      "inputs_after_unexecuted_path_resolution_and_constructor_are_explicit": true,
+      "real_runtime_reachability_or_any_file_operation_proven": false,
+      "null_root_observer_fence_is_not_a_native_guard": false
+    },
+    {
+      "label": "pending_empty",
+      "declared_kind": 0,
+      "declared_selector": 3,
+      "declared_global_pointer": true,
+      "declared_object_pointer": true,
+      "declared_pending_pointer": true,
+      "declared_pending_bytes": 0,
+      "declared_resolved_name_nonempty": true,
+      "original_special_branch_selected": false,
+      "native_prepared_open_arguments": null,
+      "events": [
+        {
+          "label": "independent post-path-resolution frame: original special-case decision",
+          "entry": "0xa020",
+          "stop_pc": "0xa0e4",
+          "reason": "before_regular_stat_path",
+          "pcs": [
+            "0xa020",
+            "0xa024",
+            "0xa028",
+            "0xa02c",
+            "0xa030",
+            "0xa034",
+            "0xa038",
+            "0xa03c",
+            "0xa040",
+            "0xa044",
+            "0xa048",
+            "0xa04c",
+            "0xa050",
+            "0xa054",
+            "0xa0e4"
+          ],
+          "original_stores": [],
+          "all_images_stack_scratch_unchanged": true,
+          "constructor_file_open_write_sync_stat_mount_or_transport_executed": false
+        }
+      ],
+      "inputs_after_unexecuted_path_resolution_and_constructor_are_explicit": true,
+      "real_runtime_reachability_or_any_file_operation_proven": false,
+      "null_root_observer_fence_is_not_a_native_guard": false
+    },
+    {
+      "label": "upstream_read_args_ff",
+      "declared_kind": 0,
+      "declared_selector": 255,
+      "declared_global_pointer": true,
+      "declared_object_pointer": true,
+      "declared_pending_pointer": true,
+      "declared_pending_bytes": 7,
+      "declared_resolved_name_nonempty": true,
+      "original_special_branch_selected": false,
+      "native_prepared_open_arguments": null,
+      "events": [
+        {
+          "label": "independent post-path-resolution frame: original special-case decision",
+          "entry": "0xa020",
+          "stop_pc": "0xa0e4",
+          "reason": "before_regular_stat_path",
+          "pcs": [
+            "0xa020",
+            "0xa024",
+            "0xa028",
+            "0xa02c",
+            "0xa030",
+            "0xa034",
+            "0xa0e4"
+          ],
+          "original_stores": [],
+          "all_images_stack_scratch_unchanged": true,
+          "constructor_file_open_write_sync_stat_mount_or_transport_executed": false
+        }
+      ],
+      "inputs_after_unexecuted_path_resolution_and_constructor_are_explicit": true,
+      "real_runtime_reachability_or_any_file_operation_proven": false,
+      "null_root_observer_fence_is_not_a_native_guard": false
+    },
+    {
+      "label": "empty_resolved_name",
+      "declared_kind": 0,
+      "declared_selector": 3,
+      "declared_global_pointer": true,
+      "declared_object_pointer": true,
+      "declared_pending_pointer": true,
+      "declared_pending_bytes": 7,
+      "declared_resolved_name_nonempty": false,
+      "original_special_branch_selected": false,
+      "native_prepared_open_arguments": null,
+      "events": [
+        {
+          "label": "independent post-path-resolution frame: original special-case decision",
+          "entry": "0xa020",
+          "stop_pc": "0x9ef0",
+          "reason": "before_original_error_status_path",
+          "pcs": [
+            "0xa020",
+            "0xa024",
+            "0x9ef0"
+          ],
+          "original_stores": [],
+          "all_images_stack_scratch_unchanged": true,
+          "constructor_file_open_write_sync_stat_mount_or_transport_executed": false
+        }
+      ],
+      "inputs_after_unexecuted_path_resolution_and_constructor_are_explicit": true,
+      "real_runtime_reachability_or_any_file_operation_proven": false,
+      "null_root_observer_fence_is_not_a_native_guard": false
+    }
+  ],
+  "actual_Mac_cache_camera_Windows_file_or_host_service_operations": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "backup_candidate_limits": {
+    "stage9_codec_source_sha256": "38d2c77bcf4403f600726eb88868d714e2186627564653d8578cef4e98e23977",
+    "stage9_setpath_rejects_plain_AP_path": true,
+    "stage9_max_host_data": 65536,
+    "official_AP_file_bytes": 66796,
+    "official_AP_exceeds_old_host_limit_by": 1260,
+    "plain_absolute_AP_path_native_format_candidate": "/tmp/jiritsu/setting/DmmCfg.bin",
+    "native_format_selection_static_not_snprintf_executed": true,
+    "request_has_no_device_file_length_limit": "0700000040000200000000000110110000ff00",
+    "AP_backup_current_adapter_ready": false
+  },
+  "native_phases": 8
+}

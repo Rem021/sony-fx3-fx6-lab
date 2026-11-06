@@ -1,0 +1,1073 @@
+00000da0 stp        x29, x30, [sp, #-0x180]!
+00000da4 mov        x29, sp
+00000da8 stp        x21, x22, [sp, #0x20]
+00000dac mov        x21, x0
+00000db0 stp        x19, x20, [sp, #0x10]
+00000db4 stp        x23, x24, [sp, #0x30]
+00000db8 stp        x25, x26, [sp, #0x40]
+00000dbc stp        x27, x28, [sp, #0x50]
+00000dc0 ldr        x2, [x0, #8]
+00000dc4 ldr        w0, [x1]
+00000dc8 ldr        x20, [x1, #8]
+00000dcc and        w1, w0, #0xff
+00000dd0 ldr        x19, [x2]
+00000dd4 cmp        w1, #9
+00000dd8 str        x19, [x29, #0x150]
+00000ddc b.hi       #0x1a68
+00000de0 ubfx       x1, x0, #8, #8
+00000de4 cmp        w1, #0xeb
+00000de8 b.ne       #0x11f8
+00000dec mov        w1, #0xeb02
+00000df0 movk       w1, #0xc018, lsl #16
+00000df4 cmp        w0, w1
+00000df8 b.eq       #0x1200
+00000dfc b.ls       #0xf28
+00000e00 mov        w1, #0xeb05
+00000e04 movk       w1, #0xc028, lsl #16
+00000e08 cmp        w0, w1
+00000e0c b.eq       #0x1258
+00000e10 b.ls       #0x10e8
+00000e14 mov        w1, #0xeb06
+00000e18 movk       w1, #0xc038, lsl #16
+00000e1c cmp        w0, w1
+00000e20 b.eq       #0xf88
+00000e24 add        w1, w1, #1
+00000e28 cmp        w0, w1
+00000e2c b.ne       #0x12d0
+00000e30 bl         #0xe30 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+00000e34 add        x0, x0, #8
+00000e38 bl         #0xe38 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+00000e3c cbz        x20, #0x1c24
+00000e40 ldr        w0, [x20, #0x10]
+00000e44 cbz        w0, #0x1a80
+00000e48 ldr        w0, [x20, #0x14]
+00000e4c cbz        w0, #0x1a80
+00000e50 ldr        w22, [x19]
+00000e54 cbnz       w22, #0x1acc
+00000e58 ldr        x0, [x20, #8]
+00000e5c ldurh      w1, [x0, #1]
+00000e60 ldrb       w0, [x0]
+00000e64 bl         #0xe64 ; relocation {"type": 283, "symbol": "list_get_node", "addend": 0}
+00000e68 mov        x23, x0
+00000e6c cbz        x0, #0x1c04
+00000e70 add        x24, x0, #0x28
+00000e74 mov        x0, x24
+00000e78 bl         #0xe78 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+00000e7c str        x20, [x23, #0x58]
+00000e80 mov        x0, x24
+00000e84 bl         #0xe84 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00000e88 mov        x2, x23
+00000e8c mov        w1, #1
+00000e90 mov        w0, #2
+00000e94 bl         #0xe94 ; relocation {"type": 283, "symbol": "test_and_set_bit_req_flag_kernel", "addend": 0}
+00000e98 uxtb       w0, w0
+00000e9c cmp        w0, #1
+00000ea0 add        x3, x23, #0x20
+00000ea4 b.eq       #0x1400
+00000ea8 ldr        x1, [x23, #0x50]
+00000eac mov        x2, #3
+00000eb0 ldr        w0, [x19]
+00000eb4 ldr        w4, [x20, #0x24]
+00000eb8 bl         #0xeb8 ; relocation {"type": 283, "symbol": "synchronize_wait_event", "addend": 0}
+00000ebc mov        w25, w0
+00000ec0 mov        x1, x23
+00000ec4 mov        x0, #1
+00000ec8 bl         #0xec8 ; relocation {"type": 283, "symbol": "clear_bit_req_flag", "addend": 0}
+00000ecc cbz        w25, #0x1318
+00000ed0 mov        w0, #-0x7d
+00000ed4 cmn        w25, #0x20
+00000ed8 ccmp       w25, w0, #4, ne
+00000edc ldr        x1, #0x1e68
+00000ee0 b.eq       #0x1b68
+00000ee4 cmn        w25, #0x3e
+00000ee8 b.eq       #0x13b8
+00000eec ldr        x0, #0x1ea8
+00000ef0 mov        w3, w25
+00000ef4 mov        w2, #0x2f8
+00000ef8 bl         #0xef8 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00000efc ldr        x0, [x20, #0x30]
+00000f00 mov        w2, #9
+00000f04 mov        w1, #-0x7e7e
+00000f08 strb       w2, [x0]
+00000f0c ldr        x0, [x20, #0x30]
+00000f10 strh       w1, [x0, #2]
+00000f14 mov        x0, x24
+00000f18 bl         #0xf18 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+00000f1c str        xzr, [x23, #0x58]
+00000f20 b          #0x1078
+00000f24 nop        
+00000f28 mov        w1, #0xeb08
+00000f2c movk       w1, #0xc002, lsl #16
+00000f30 cmp        w0, w1
+00000f34 b.eq       #0x12e8
+00000f38 b.ls       #0x1150
+00000f3c mov        w1, #0xeb04
+00000f40 movk       w1, #0xc004, lsl #16
+00000f44 cmp        w0, w1
+00000f48 b.eq       #0x1090
+00000f4c mov        w1, #0xeb00
+00000f50 movk       w1, #0xc00c, lsl #16
+00000f54 cmp        w0, w1
+00000f58 b.ne       #0x12d0
+00000f5c mov        x1, x20
+00000f60 bl         #0xf60 ; relocation {"type": 283, "symbol": "extcmd_user_access_ok", "addend": 0}
+00000f64 cbz        w0, #0x1330
+00000f68 ldp        x19, x20, [sp, #0x10]
+00000f6c ldp        x21, x22, [sp, #0x20]
+00000f70 ldp        x23, x24, [sp, #0x30]
+00000f74 ldp        x25, x26, [sp, #0x40]
+00000f78 ldp        x27, x28, [sp, #0x50]
+00000f7c ldp        x29, x30, [sp], #0x180
+00000f80 ret        
+00000f84 nop        
+00000f88 bl         #0xf88 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+00000f8c add        x0, x0, #8
+00000f90 bl         #0xf90 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+00000f94 cbz        x20, #0x1e00
+00000f98 ldr        w0, [x20, #0x10]
+00000f9c cbz        w0, #0x1abc
+00000fa0 ldr        w0, [x20, #0x14]
+00000fa4 cbz        w0, #0x1abc
+00000fa8 ldr        w22, [x19]
+00000fac cbnz       w22, #0x1b08
+00000fb0 ldr        x0, [x20, #8]
+00000fb4 ldurh      w1, [x0, #1]
+00000fb8 ldrb       w0, [x0]
+00000fbc bl         #0xfbc ; relocation {"type": 283, "symbol": "list_get_node", "addend": 0}
+00000fc0 mov        x23, x0
+00000fc4 cbz        x0, #0x1bf4
+00000fc8 add        x24, x0, #0x28
+00000fcc mov        x0, x24
+00000fd0 bl         #0xfd0 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+00000fd4 str        x20, [x23, #0x60]
+00000fd8 mov        x0, x24
+00000fdc bl         #0xfdc ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00000fe0 mov        x2, x23
+00000fe4 mov        w1, #0
+00000fe8 mov        w0, #3
+00000fec bl         #0xfec ; relocation {"type": 283, "symbol": "test_and_set_bit_req_flag_kernel", "addend": 0}
+00000ff0 uxtb       w0, w0
+00000ff4 cmp        w0, #1
+00000ff8 add        x3, x23, #0x20
+00000ffc b.eq       #0x13e0
+00001000 ldr        x1, [x23, #0x50]
+00001004 mov        x2, #2
+00001008 ldr        w0, [x19]
+0000100c ldr        w4, [x20, #0x24]
+00001010 bl         #0x1010 ; relocation {"type": 283, "symbol": "synchronize_wait_event", "addend": 0}
+00001014 mov        w25, w0
+00001018 mov        x1, x23
+0000101c mov        x0, #0
+00001020 bl         #0x1020 ; relocation {"type": 283, "symbol": "clear_bit_req_flag", "addend": 0}
+00001024 cbz        w25, #0x1300
+00001028 mov        w0, #-0x7d
+0000102c cmn        w25, #0x20
+00001030 ccmp       w25, w0, #4, ne
+00001034 ldr        x1, #0x1e68
+00001038 b.eq       #0x1b54
+0000103c cmn        w25, #0x3e
+00001040 b.eq       #0x1390
+00001044 ldr        x0, #0x1ea8
+00001048 mov        w3, w25
+0000104c mov        w2, #0x358
+00001050 bl         #0x1050 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001054 ldr        x0, [x20, #0x30]
+00001058 mov        w2, #9
+0000105c mov        w1, #-0x7e7e
+00001060 strb       w2, [x0]
+00001064 ldr        x0, [x20, #0x30]
+00001068 strh       w1, [x0, #2]
+0000106c mov        x0, x24
+00001070 bl         #0x1070 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+00001074 str        xzr, [x23, #0x60]
+00001078 mov        x0, x24
+0000107c bl         #0x107c ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001080 bl         #0x1080 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+00001084 add        x0, x0, #8
+00001088 bl         #0x1088 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+0000108c b          #0x12a4
+00001090 mov        x1, x20
+00001094 bl         #0x1094 ; relocation {"type": 283, "symbol": "extcmd_user_access_ok", "addend": 0}
+00001098 mov        w22, w0
+0000109c cbnz       w0, #0xf68
+000010a0 mrs        x0, sp_el0
+000010a4 mov        x1, x20
+000010a8 ldr        x0, [x0, #8]
+000010ac adds       x1, x1, #4
+000010b0 csel       x0, xzr, x0, hi
+000010b4 csinv      x1, x1, xzr, lo
+000010b8 sbcs       xzr, x1, x0
+000010bc cset       x1, ls
+000010c0 cbnz       x1, #0x15a8
+000010c4 str        wzr, [x29, #0x70]
+000010c8 ldr        x1, #0x1e68
+000010cc mov        w2, #0xdf
+000010d0 ldr        x0, #0x1e78
+000010d4 mov        w22, #-0x16
+000010d8 bl         #0x10d8 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+000010dc ldr        x19, [x29, #0x150]
+000010e0 b          #0x12a4
+000010e4 nop        
+000010e8 mov        w1, #0xeb03
+000010ec movk       w1, #0xc018, lsl #16
+000010f0 cmp        w0, w1
+000010f4 b.ne       #0x12d0
+000010f8 mov        x1, x20
+000010fc bl         #0x10fc ; relocation {"type": 283, "symbol": "extcmd_user_access_ok", "addend": 0}
+00001100 cbnz       w0, #0xf68
+00001104 mrs        x0, sp_el0
+00001108 mov        x1, x20
+0000110c ldr        x0, [x0, #8]
+00001110 adds       x1, x1, #0x18
+00001114 csel       x0, xzr, x0, hi
+00001118 csinv      x1, x1, xzr, lo
+0000111c sbcs       xzr, x1, x0
+00001120 cset       x1, ls
+00001124 cbnz       x1, #0x1608
+00001128 stp        xzr, xzr, [x29, #0x70]
+0000112c str        xzr, [x29, #0x80]
+00001130 ldr        x1, #0x1e68
+00001134 mov        w2, #0x165
+00001138 ldr        x0, #0x1e78
+0000113c mov        w22, #-0x16
+00001140 bl         #0x1140 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001144 ldr        x19, [x29, #0x150]
+00001148 b          #0x12a4
+0000114c nop        
+00001150 mov        w1, #0xeb01
+00001154 movk       w1, #0xc002, lsl #16
+00001158 cmp        w0, w1
+0000115c b.ne       #0x12d0
+00001160 mov        x1, x20
+00001164 bl         #0x1164 ; relocation {"type": 283, "symbol": "extcmd_user_access_ok", "addend": 0}
+00001168 mov        w22, w0
+0000116c cbnz       w0, #0xf68
+00001170 cbz        x19, #0x1b94
+00001174 ldrh       w1, [x19, #6]
+00001178 ldrb       w0, [x19, #4]
+0000117c bl         #0x117c ; relocation {"type": 283, "symbol": "list_get_node", "addend": 0}
+00001180 mov        x20, x0
+00001184 cbz        x0, #0x1b7c
+00001188 add        x23, x0, #0x20
+0000118c mov        w0, #5
+00001190 mov        x1, x23
+00001194 bl         #0x1194 ; relocation {"type": 283, "symbol": "set_bit", "addend": 0}
+00001198 mov        x1, x23
+0000119c mov        w0, #6
+000011a0 bl         #0x11a0 ; relocation {"type": 283, "symbol": "set_bit", "addend": 0}
+000011a4 mov        w2, #1
+000011a8 ldr        x0, [x20, #0x50]
+000011ac mov        w1, w2
+000011b0 mov        x3, #0
+000011b4 bl         #0x11b4 ; relocation {"type": 283, "symbol": "__wake_up", "addend": 0}
+000011b8 bl         #0x11b8 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+000011bc add        x0, x0, #8
+000011c0 bl         #0x11c0 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+000011c4 ldr        x0, [x20, #0x50]
+000011c8 mov        x1, #0x18
+000011cc bl         #0x11cc ; relocation {"type": 283, "symbol": "extcmd_mem_free", "addend": 0}
+000011d0 mov        x0, x20
+000011d4 bl         #0x11d4 ; relocation {"type": 283, "symbol": "list_delete_node", "addend": 0}
+000011d8 mov        x0, x20
+000011dc mov        x1, #0x78
+000011e0 bl         #0x11e0 ; relocation {"type": 283, "symbol": "extcmd_mem_free", "addend": 0}
+000011e4 bl         #0x11e4 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+000011e8 add        x0, x0, #8
+000011ec bl         #0x11ec ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+000011f0 b          #0x12a4
+000011f4 nop        
+000011f8 mov        w0, #-0x19
+000011fc b          #0xf68
+00001200 mov        x1, x20
+00001204 bl         #0x1204 ; relocation {"type": 283, "symbol": "extcmd_user_access_ok", "addend": 0}
+00001208 cbnz       w0, #0xf68
+0000120c mrs        x0, sp_el0
+00001210 mov        x1, x20
+00001214 ldr        x0, [x0, #8]
+00001218 adds       x1, x1, #0x18
+0000121c csel       x0, xzr, x0, hi
+00001220 csinv      x1, x1, xzr, lo
+00001224 sbcs       xzr, x1, x0
+00001228 cset       x1, ls
+0000122c cbnz       x1, #0x1420
+00001230 stp        xzr, xzr, [x29, #0x70]
+00001234 str        xzr, [x29, #0x80]
+00001238 ldr        x1, #0x1e68
+0000123c mov        w2, #0x21e
+00001240 ldr        x0, #0x1e78
+00001244 mov        w22, #-0x16
+00001248 bl         #0x1248 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+0000124c ldr        x19, [x29, #0x150]
+00001250 b          #0x12a4
+00001254 nop        
+00001258 cbz        x20, #0x1bdc
+0000125c cbz        x19, #0x1bac
+00001260 ldr        w22, [x19]
+00001264 cbnz       w22, #0x1c14
+00001268 ldr        x0, [x20, #8]
+0000126c ldrh       w2, [x20, #0x10]
+00001270 ldurh      w1, [x0, #1]
+00001274 ldrb       w0, [x0]
+00001278 bl         #0x1278 ; relocation {"type": 283, "symbol": "get_inquiry_state", "addend": 0}
+0000127c cmp        w0, #2
+00001280 b.eq       #0x19b8
+00001284 cmp        w0, #1
+00001288 ldr        x0, [x20, #0x18]
+0000128c b.eq       #0x1378
+00001290 mov        w2, #5
+00001294 mov        w1, #0x2000
+00001298 strb       w2, [x0]
+0000129c ldr        x0, [x20, #0x18]
+000012a0 strh       w1, [x0, #2]
+000012a4 ldr        x1, [x21, #8]
+000012a8 mov        w0, w22
+000012ac str        x19, [x1]
+000012b0 ldp        x19, x20, [sp, #0x10]
+000012b4 ldp        x21, x22, [sp, #0x20]
+000012b8 ldp        x23, x24, [sp, #0x30]
+000012bc ldp        x25, x26, [sp, #0x40]
+000012c0 ldp        x27, x28, [sp, #0x50]
+000012c4 ldp        x29, x30, [sp], #0x180
+000012c8 ret        
+000012cc nop        
+000012d0 ldr        x1, #0x1e68
+000012d4 mov        w2, #0x3e0
+000012d8 ldr        x0, #0x1e70
+000012dc mov        w22, #-0x19
+000012e0 bl         #0x12e0 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+000012e4 b          #0x12a4
+000012e8 ldr        w22, [x19]
+000012ec cbnz       w22, #0x1cc4
+000012f0 mov        x0, #4
+000012f4 bl         #0x12f4 ; relocation {"type": 283, "symbol": "synchronize_wake_up_event_all_node", "addend": 0}
+000012f8 b          #0x12a4
+000012fc nop        
+00001300 ldr        x0, [x20, #0x30]
+00001304 strb       wzr, [x0]
+00001308 ldr        x0, [x20, #0x30]
+0000130c strh       wzr, [x0, #2]
+00001310 b          #0x106c
+00001314 nop        
+00001318 ldr        x0, [x20, #0x30]
+0000131c strb       wzr, [x0]
+00001320 ldr        x0, [x20, #0x30]
+00001324 strh       wzr, [x0, #2]
+00001328 b          #0xf14
+0000132c nop        
+00001330 mrs        x0, sp_el0
+00001334 mov        x1, x20
+00001338 ldr        x0, [x0, #8]
+0000133c adds       x1, x1, #0xc
+00001340 csel       x0, xzr, x0, hi
+00001344 csinv      x1, x1, xzr, lo
+00001348 sbcs       xzr, x1, x0
+0000134c cset       x1, ls
+00001350 cbnz       x1, #0x17a0
+00001354 str        xzr, [x29, #0x70]
+00001358 str        wzr, [x29, #0x78]
+0000135c ldr        x1, #0x1e68
+00001360 mov        w2, #0x5b
+00001364 ldr        x0, #0x1e78
+00001368 mov        w22, #-0x16
+0000136c bl         #0x136c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001370 ldr        x19, [x29, #0x150]
+00001374 b          #0x12a4
+00001378 mov        w2, #9
+0000137c mov        w1, #-0x7e7f
+00001380 strb       w2, [x0]
+00001384 ldr        x0, [x20, #0x18]
+00001388 strh       w1, [x0, #2]
+0000138c b          #0x12a4
+00001390 ldr        x0, #0x1e78
+00001394 mov        w2, #0x354
+00001398 bl         #0x1398 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+0000139c ldr        x0, [x20, #0x30]
+000013a0 mov        w2, #9
+000013a4 mov        w1, #-0x7e7d
+000013a8 strb       w2, [x0]
+000013ac ldr        x0, [x20, #0x30]
+000013b0 strh       w1, [x0, #2]
+000013b4 b          #0x106c
+000013b8 ldr        x0, #0x1e78
+000013bc mov        w2, #0x2f4
+000013c0 bl         #0x13c0 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+000013c4 ldr        x0, [x20, #0x30]
+000013c8 mov        w2, #9
+000013cc mov        w1, #-0x7e7d
+000013d0 strb       w2, [x0]
+000013d4 ldr        x0, [x20, #0x30]
+000013d8 strh       w1, [x0, #2]
+000013dc b          #0xf14
+000013e0 ldr        x0, [x23, #0x50]
+000013e4 mov        x2, x3
+000013e8 mov        x1, #0
+000013ec str        x3, [x29, #0x68]
+000013f0 bl         #0x13f0 ; relocation {"type": 283, "symbol": "synchronize_wake_up_event", "addend": 0}
+000013f4 ldr        x3, [x29, #0x68]
+000013f8 b          #0x1000
+000013fc nop        
+00001400 ldr        x0, [x23, #0x50]
+00001404 mov        x2, x3
+00001408 mov        x1, #1
+0000140c str        x3, [x29, #0x68]
+00001410 bl         #0x1410 ; relocation {"type": 283, "symbol": "synchronize_wake_up_event", "addend": 0}
+00001414 ldr        x3, [x29, #0x68]
+00001418 b          #0xea8
+0000141c nop        
+00001420 add        x24, x29, #0x70
+00001424 mov        x1, x20
+00001428 mov        x0, x24
+0000142c mov        x2, #0x18
+00001430 bl         #0x1430 ; relocation {"type": 283, "symbol": "__arch_copy_from_user", "addend": 0}
+00001434 mov        x22, x0
+00001438 cbnz       x0, #0x1dac
+0000143c ldr        w0, [x29, #0x78]
+00001440 cbz        w0, #0x1de4
+00001444 ldr        w22, [x19]
+00001448 cmp        w22, #1
+0000144c b.ne       #0x1dc8
+00001450 ldrh       w1, [x19, #6]
+00001454 ldrb       w0, [x19, #4]
+00001458 bl         #0x1458 ; relocation {"type": 283, "symbol": "list_get_node", "addend": 0}
+0000145c mov        x23, x0
+00001460 cbz        x0, #0x1c48
+00001464 mov        x2, x0
+00001468 mov        w0, w22
+0000146c mov        w1, #2
+00001470 bl         #0x1470 ; relocation {"type": 283, "symbol": "test_and_set_bit_req_flag_user", "addend": 0}
+00001474 uxtb       w25, w0
+00001478 cmp        w25, #2
+0000147c b.eq       #0x18ec
+00001480 add        x25, x23, #0x28
+00001484 mov        x0, x25
+00001488 bl         #0x1488 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+0000148c ldr        x26, [x23, #0x58]
+00001490 cbz        x26, #0x1c64
+00001494 ldr        w1, [x19, #0xc]
+00001498 mov        w27, #0
+0000149c ldr        w22, [x26, #0x14]
+000014a0 ldr        w0, [x29, #0x78]
+000014a4 sub        w22, w22, w1
+000014a8 cmp        w0, w22
+000014ac b.hs       #0x14b8
+000014b0 mov        w22, w0
+000014b4 mov        w27, #1
+000014b8 mov        w2, w22
+000014bc ldr        x0, [x29, #0x70]
+000014c0 mrs        x3, sp_el0
+000014c4 mov        x4, x0
+000014c8 ldr        x3, [x3, #8]
+000014cc adds       x4, x4, x2
+000014d0 csel       x3, xzr, x3, hi
+000014d4 csinv      x4, x4, xzr, lo
+000014d8 sbcs       xzr, x4, x3
+000014dc cset       x4, ls
+000014e0 cbnz       x4, #0x1590
+000014e4 cbnz       w2, #0x1d90
+000014e8 ldr        w0, [x19, #0xc]
+000014ec add        w0, w0, w22
+000014f0 str        w0, [x19, #0xc]
+000014f4 ldr        w0, [x23, #0x6c]
+000014f8 add        w0, w22, w0
+000014fc str        w0, [x23, #0x6c]
+00001500 str        w22, [x29, #0x78]
+00001504 ldr        w1, [x26, #0x10]
+00001508 sub        w0, w1, w0
+0000150c str        w0, [x29, #0x7c]
+00001510 cbnz       w27, #0x1534
+00001514 ldr        w0, [x19, #0xc]
+00001518 str        w0, [x26, #0x20]
+0000151c str        wzr, [x19, #0xc]
+00001520 ldr        w0, [x23, #0x6c]
+00001524 ldr        w1, [x26, #0x10]
+00001528 cmp        w1, w0
+0000152c b.ne       #0x1534
+00001530 str        wzr, [x23, #0x6c]
+00001534 mrs        x0, sp_el0
+00001538 mov        x1, x20
+0000153c ldr        x0, [x0, #8]
+00001540 adds       x1, x1, #0x18
+00001544 csel       x0, xzr, x0, hi
+00001548 csinv      x1, x1, xzr, lo
+0000154c sbcs       xzr, x1, x0
+00001550 cset       x1, ls
+00001554 cbnz       x1, #0x1940
+00001558 mov        w22, #0x18
+0000155c ldr        x1, #0x1e68
+00001560 mov        w3, w22
+00001564 ldr        x0, #0x1ea0
+00001568 mov        w2, #0x25b
+0000156c mov        w22, #-0x16
+00001570 bl         #0x1570 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001574 str        wzr, [x23, #0x6c]
+00001578 mov        x0, x25
+0000157c str        wzr, [x19, #0xc]
+00001580 bl         #0x1580 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001584 ldr        x19, [x29, #0x150]
+00001588 b          #0x12a4
+0000158c nop        
+00001590 ldr        x3, [x26, #0x18]
+00001594 add        x1, x3, w1, uxtw
+00001598 bl         #0x1598 ; relocation {"type": 283, "symbol": "__arch_copy_to_user", "addend": 0}
+0000159c mov        x2, x0
+000015a0 b          #0x14e4
+000015a4 nop        
+000015a8 add        x24, x29, #0x70
+000015ac mov        x1, x20
+000015b0 mov        x0, x24
+000015b4 mov        x2, #4
+000015b8 bl         #0x15b8 ; relocation {"type": 283, "symbol": "__arch_copy_from_user", "addend": 0}
+000015bc mov        x20, x0
+000015c0 cbnz       x0, #0x1e48
+000015c4 ldr        w0, [x19]
+000015c8 cmp        w0, #1
+000015cc b.ne       #0x1e2c
+000015d0 ldrh       w1, [x19, #6]
+000015d4 ldrb       w0, [x19, #4]
+000015d8 bl         #0x15d8 ; relocation {"type": 283, "symbol": "list_get_node", "addend": 0}
+000015dc mov        x1, x0
+000015e0 cbz        x0, #0x1e10
+000015e4 stp        wzr, wzr, [x19, #8]
+000015e8 ldr        x0, [x0, #0x50]
+000015ec stp        wzr, wzr, [x1, #0x68]
+000015f0 add        x1, x1, #0x20
+000015f4 ldr        w2, [x29, #0x70]
+000015f8 bl         #0x15f8 ; relocation {"type": 283, "symbol": "synchronize_wake_up_cancel_event", "addend": 0}
+000015fc ldr        x19, [x29, #0x150]
+00001600 b          #0x12a4
+00001604 nop        
+00001608 add        x24, x29, #0x70
+0000160c mov        x1, x20
+00001610 mov        x0, x24
+00001614 mov        x2, #0x18
+00001618 bl         #0x1618 ; relocation {"type": 283, "symbol": "__arch_copy_from_user", "addend": 0}
+0000161c mov        x22, x0
+00001620 cbnz       x0, #0x1b38
+00001624 ldr        w0, [x29, #0x78]
+00001628 cbz        w0, #0x1b1c
+0000162c ldr        w25, [x19]
+00001630 cmp        w25, #1
+00001634 b.ne       #0x1cf8
+00001638 ldrh       w1, [x19, #6]
+0000163c ldrb       w0, [x19, #4]
+00001640 bl         #0x1640 ; relocation {"type": 283, "symbol": "list_get_node", "addend": 0}
+00001644 mov        x23, x0
+00001648 cbz        x0, #0x1cdc
+0000164c mov        x2, x0
+00001650 mov        w1, #3
+00001654 mov        w0, #0
+00001658 bl         #0x1658 ; relocation {"type": 283, "symbol": "test_and_set_bit_req_flag_user", "addend": 0}
+0000165c uxtb       w0, w0
+00001660 cmp        w0, #2
+00001664 b.eq       #0x1898
+00001668 add        x26, x23, #0x28
+0000166c mov        x0, x26
+00001670 bl         #0x1670 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+00001674 ldr        x25, [x23, #0x60]
+00001678 cbz        x25, #0x1d14
+0000167c ldr        w0, [x19, #8]
+00001680 mov        w28, #0
+00001684 ldr        w22, [x25, #0x14]
+00001688 ldr        w1, [x29, #0x78]
+0000168c sub        w22, w22, w0
+00001690 cmp        w1, w22
+00001694 b.hs       #0x16a0
+00001698 mov        w22, w1
+0000169c mov        w28, #1
+000016a0 ldr        x1, [x25, #0x18]
+000016a4 mov        w27, w22
+000016a8 add        x3, x1, w0, uxtw
+000016ac ldr        x1, [x29, #0x70]
+000016b0 mrs        x0, sp_el0
+000016b4 mov        x2, x1
+000016b8 ldr        x0, [x0, #8]
+000016bc adds       x2, x2, x27
+000016c0 csel       x0, xzr, x0, hi
+000016c4 csinv      x2, x2, xzr, lo
+000016c8 sbcs       xzr, x2, x0
+000016cc cset       x2, ls
+000016d0 mov        x4, x27
+000016d4 cbnz       x2, #0x1780
+000016d8 cbnz       x4, #0x1a04
+000016dc ldr        w0, [x19, #8]
+000016e0 add        w0, w0, w22
+000016e4 str        w0, [x19, #8]
+000016e8 ldr        w0, [x23, #0x68]
+000016ec add        w0, w22, w0
+000016f0 str        w0, [x23, #0x68]
+000016f4 str        w22, [x29, #0x78]
+000016f8 ldr        w1, [x25, #0x10]
+000016fc sub        w0, w1, w0
+00001700 str        w0, [x29, #0x7c]
+00001704 cbnz       w28, #0x1728
+00001708 ldr        w0, [x19, #8]
+0000170c str        w0, [x25, #0x20]
+00001710 str        wzr, [x19, #8]
+00001714 ldr        w0, [x23, #0x68]
+00001718 ldr        w1, [x25, #0x10]
+0000171c cmp        w1, w0
+00001720 b.ne       #0x1728
+00001724 str        wzr, [x23, #0x68]
+00001728 mrs        x0, sp_el0
+0000172c mov        x1, x20
+00001730 ldr        x0, [x0, #8]
+00001734 adds       x1, x1, #0x18
+00001738 csel       x0, xzr, x0, hi
+0000173c csinv      x1, x1, xzr, lo
+00001740 sbcs       xzr, x1, x0
+00001744 cset       x1, ls
+00001748 cbnz       x1, #0x197c
+0000174c mov        w22, #0x18
+00001750 ldr        x1, #0x1e68
+00001754 mov        w3, w22
+00001758 ldr        x0, #0x1ea0
+0000175c mov        w2, #0x1a3
+00001760 mov        w22, #-0x16
+00001764 bl         #0x1764 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001768 str        wzr, [x23, #0x68]
+0000176c mov        x0, x26
+00001770 str        wzr, [x19, #8]
+00001774 bl         #0x1774 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001778 ldr        x19, [x29, #0x150]
+0000177c b          #0x12a4
+00001780 mov        x0, x3
+00001784 mov        x2, x27
+00001788 str        x3, [x29, #0x68]
+0000178c bl         #0x178c ; relocation {"type": 283, "symbol": "__arch_copy_from_user", "addend": 0}
+00001790 mov        x4, x0
+00001794 ldr        x3, [x29, #0x68]
+00001798 b          #0x16d8
+0000179c nop        
+000017a0 add        x22, x29, #0x70
+000017a4 mov        x1, x20
+000017a8 mov        x0, x22
+000017ac mov        x2, #0xc
+000017b0 bl         #0x17b0 ; relocation {"type": 283, "symbol": "__arch_copy_from_user", "addend": 0}
+000017b4 mov        x20, x0
+000017b8 cbnz       x0, #0x1ca8
+000017bc cbz        x19, #0x1d74
+000017c0 mov        x0, #0x18
+000017c4 bl         #0x17c4 ; relocation {"type": 283, "symbol": "extcmd_mem_alloc", "addend": 0}
+000017c8 mov        x23, x0
+000017cc cbz        x0, #0x1d58
+000017d0 ldr        x22, #0x1e80
+000017d4 ldr        x1, #0x1e88
+000017d8 mov        x2, x22
+000017dc bl         #0x17dc ; relocation {"type": 283, "symbol": "__init_waitqueue_head", "addend": 0}
+000017e0 mov        x0, #0x78
+000017e4 bl         #0x17e4 ; relocation {"type": 283, "symbol": "extcmd_mem_alloc", "addend": 0}
+000017e8 mov        x20, x0
+000017ec cbz        x0, #0x1d30
+000017f0 mov        w3, #1
+000017f4 ldr        x1, #0x1e90
+000017f8 mov        x2, x22
+000017fc add        x0, x0, #0x28
+00001800 str        w3, [x19]
+00001804 ldrb       w4, [x29, #0x70]
+00001808 strb       w4, [x19, #4]
+0000180c ldrh       w3, [x29, #0x72]
+00001810 strh       w3, [x19, #6]
+00001814 strb       w4, [x20, #0x10]
+00001818 strh       w3, [x20, #0x12]
+0000181c ldr        w3, [x29, #0x74]
+00001820 str        w3, [x20, #0x14]
+00001824 ldr        w3, [x29, #0x78]
+00001828 str        xzr, [x20, #0x20]
+0000182c stp        w3, wzr, [x20, #0x18]
+00001830 stp        x23, xzr, [x20, #0x50]
+00001834 str        xzr, [x20, #0x60]
+00001838 stp        wzr, wzr, [x20, #0x68]
+0000183c str        xzr, [x20, #0x70]
+00001840 bl         #0x1840 ; relocation {"type": 283, "symbol": "__mutex_init", "addend": 0}
+00001844 bl         #0x1844 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+00001848 add        x0, x0, #8
+0000184c ldr        x1, #0x1e98
+00001850 mov        x2, x22
+00001854 bl         #0x1854 ; relocation {"type": 283, "symbol": "__mutex_init", "addend": 0}
+00001858 mov        x0, x20
+0000185c bl         #0x185c ; relocation {"type": 283, "symbol": "list_append_node", "addend": 0}
+00001860 mov        w22, w0
+00001864 cbz        w0, #0x10dc
+00001868 mov        x0, x23
+0000186c mov        x1, #0x18
+00001870 bl         #0x1870 ; relocation {"type": 283, "symbol": "extcmd_mem_free", "addend": 0}
+00001874 mov        x0, x20
+00001878 mov        x1, #0x78
+0000187c bl         #0x187c ; relocation {"type": 283, "symbol": "extcmd_mem_free", "addend": 0}
+00001880 ldr        x1, #0x1e68
+00001884 mov        w2, #0x93
+00001888 ldr        x0, #0x1e78
+0000188c bl         #0x188c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001890 ldr        x19, [x29, #0x150]
+00001894 b          #0x12a4
+00001898 mov        w1, w25
+0000189c mov        x0, x23
+000018a0 bl         #0x18a0 ; relocation {"type": 283, "symbol": "enable_inquiry_state", "addend": 0}
+000018a4 ldr        w4, [x29, #0x80]
+000018a8 add        x3, x23, #0x20
+000018ac ldr        x1, [x23, #0x50]
+000018b0 mov        x2, #0
+000018b4 ldr        w0, [x19]
+000018b8 bl         #0x18b8 ; relocation {"type": 283, "symbol": "synchronize_wait_event", "addend": 0}
+000018bc mov        w22, w0
+000018c0 mov        w1, w25
+000018c4 mov        x0, x23
+000018c8 bl         #0x18c8 ; relocation {"type": 283, "symbol": "disable_inquiry_state", "addend": 0}
+000018cc mov        x1, x23
+000018d0 mov        x0, #3
+000018d4 bl         #0x18d4 ; relocation {"type": 283, "symbol": "clear_bit_req_flag", "addend": 0}
+000018d8 cbz        w22, #0x1668
+000018dc str        wzr, [x23, #0x68]
+000018e0 str        wzr, [x19, #8]
+000018e4 ldr        x19, [x29, #0x150]
+000018e8 b          #0x12a4
+000018ec mov        w1, w25
+000018f0 mov        x0, x23
+000018f4 bl         #0x18f4 ; relocation {"type": 283, "symbol": "enable_inquiry_state", "addend": 0}
+000018f8 ldr        w4, [x29, #0x80]
+000018fc add        x3, x23, #0x20
+00001900 ldr        x1, [x23, #0x50]
+00001904 mov        x2, #1
+00001908 ldr        w0, [x19]
+0000190c bl         #0x190c ; relocation {"type": 283, "symbol": "synchronize_wait_event", "addend": 0}
+00001910 mov        w22, w0
+00001914 mov        w1, w25
+00001918 mov        x0, x23
+0000191c bl         #0x191c ; relocation {"type": 283, "symbol": "disable_inquiry_state", "addend": 0}
+00001920 mov        x1, x23
+00001924 mov        x0, #2
+00001928 bl         #0x1928 ; relocation {"type": 283, "symbol": "clear_bit_req_flag", "addend": 0}
+0000192c cbz        w22, #0x1480
+00001930 str        wzr, [x23, #0x6c]
+00001934 str        wzr, [x19, #0xc]
+00001938 ldr        x19, [x29, #0x150]
+0000193c b          #0x12a4
+00001940 mov        x1, x24
+00001944 mov        x0, x20
+00001948 mov        x2, #0x18
+0000194c bl         #0x194c ; relocation {"type": 283, "symbol": "__arch_copy_to_user", "addend": 0}
+00001950 mov        w22, w0
+00001954 cbnz       w0, #0x155c
+00001958 mov        x0, x25
+0000195c bl         #0x195c ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001960 cbnz       w27, #0x10dc
+00001964 ldr        x0, [x23, #0x50]
+00001968 add        x2, x23, #0x20
+0000196c mov        x1, #3
+00001970 bl         #0x1970 ; relocation {"type": 283, "symbol": "synchronize_wake_up_event", "addend": 0}
+00001974 ldr        x19, [x29, #0x150]
+00001978 b          #0x12a4
+0000197c mov        x1, x24
+00001980 mov        x0, x20
+00001984 mov        x2, #0x18
+00001988 bl         #0x1988 ; relocation {"type": 283, "symbol": "__arch_copy_to_user", "addend": 0}
+0000198c mov        w22, w0
+00001990 cbnz       w0, #0x1750
+00001994 mov        x0, x26
+00001998 bl         #0x1998 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+0000199c cbnz       w28, #0x10dc
+000019a0 ldr        x0, [x23, #0x50]
+000019a4 add        x2, x23, #0x20
+000019a8 mov        x1, #2
+000019ac bl         #0x19ac ; relocation {"type": 283, "symbol": "synchronize_wake_up_event", "addend": 0}
+000019b0 ldr        x19, [x29, #0x150]
+000019b4 b          #0x12a4
+000019b8 ldr        x0, [x20, #8]
+000019bc ldurh      w1, [x0, #1]
+000019c0 ldrb       w0, [x0]
+000019c4 bl         #0x19c4 ; relocation {"type": 283, "symbol": "cancel_disable", "addend": 0}
+000019c8 ldr        x0, [x20, #0x18]
+000019cc strb       wzr, [x0]
+000019d0 ldr        x0, [x20, #0x18]
+000019d4 strh       wzr, [x0, #2]
+000019d8 ldr        x0, [x20, #8]
+000019dc ldurh      w1, [x0, #1]
+000019e0 ldrb       w0, [x0]
+000019e4 bl         #0x19e4 ; relocation {"type": 283, "symbol": "get_send_data_len", "addend": 0}
+000019e8 str        w0, [x20, #0x20]
+000019ec ldr        x2, [x20, #8]
+000019f0 ldurh      w1, [x2, #1]
+000019f4 ldrb       w0, [x2]
+000019f8 bl         #0x19f8 ; relocation {"type": 283, "symbol": "get_recv_data_len", "addend": 0}
+000019fc str        w0, [x20, #0x24]
+00001a00 b          #0x12a4
+00001a04 sub        x0, x27, x4
+00001a08 mov        x2, x4
+00001a0c add        x0, x3, x0
+00001a10 mov        w1, #0
+00001a14 str        x4, [x29, #0x68]
+00001a18 bl         #0x1a18 ; relocation {"type": 283, "symbol": "memset", "addend": 0}
+00001a1c ldr        x4, [x29, #0x68]
+00001a20 cbz        w4, #0x16dc
+00001a24 ldr        x22, #0x1e68
+00001a28 mov        w2, #0x12f
+00001a2c ldr        x20, #0x1e78
+00001a30 mov        x1, x22
+00001a34 mov        x0, x20
+00001a38 bl         #0x1a38 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001a3c mov        x1, x22
+00001a40 mov        x0, x20
+00001a44 mov        w2, #0x199
+00001a48 mov        w22, #-0x16
+00001a4c bl         #0x1a4c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001a50 str        wzr, [x23, #0x68]
+00001a54 mov        x0, x26
+00001a58 str        wzr, [x19, #8]
+00001a5c bl         #0x1a5c ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001a60 ldr        x19, [x29, #0x150]
+00001a64 b          #0x12a4
+00001a68 ldr        x1, #0x1e68
+00001a6c mov        w2, #0x3aa
+00001a70 ldr        x0, #0x1e70
+00001a74 bl         #0x1a74 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001a78 mov        w0, #-0x19
+00001a7c b          #0xf68
+00001a80 ldr        x1, #0x1e68
+00001a84 mov        w2, #0x2c6
+00001a88 ldr        x0, #0x1e78
+00001a8c bl         #0x1a8c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001a90 mov        w22, #0
+00001a94 bl         #0x1a94 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+00001a98 add        x0, x0, #8
+00001a9c bl         #0x1a9c ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001aa0 ldr        x0, [x20, #0x30]
+00001aa4 mov        w2, #5
+00001aa8 mov        w1, #0x2000
+00001aac strb       w2, [x0]
+00001ab0 ldr        x0, [x20, #0x30]
+00001ab4 strh       w1, [x0, #2]
+00001ab8 b          #0x12a4
+00001abc ldr        x1, #0x1e68
+00001ac0 mov        w2, #0x326
+00001ac4 ldr        x0, #0x1e78
+00001ac8 b          #0x1a8c
+00001acc ldr        x1, #0x1e68
+00001ad0 mov        w2, #0x2cd
+00001ad4 ldr        x0, #0x1e78
+00001ad8 mov        w22, #0
+00001adc bl         #0x1adc ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001ae0 bl         #0x1ae0 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+00001ae4 add        x0, x0, #8
+00001ae8 bl         #0x1ae8 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001aec ldr        x0, [x20, #0x30]
+00001af0 mov        w2, #9
+00001af4 mov        w1, #-0x7e7e
+00001af8 strb       w2, [x0]
+00001afc ldr        x0, [x20, #0x30]
+00001b00 strh       w1, [x0, #2]
+00001b04 b          #0x12a4
+00001b08 ldr        x1, #0x1e68
+00001b0c mov        w2, #0x32d
+00001b10 ldr        x0, #0x1e78
+00001b14 mov        w22, #0
+00001b18 b          #0x1adc
+00001b1c ldr        x1, #0x1e68
+00001b20 mov        w2, #0x16d
+00001b24 ldr        x0, #0x1e78
+00001b28 mov        w22, #-0x16
+00001b2c bl         #0x1b2c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001b30 ldr        x19, [x29, #0x150]
+00001b34 b          #0x12a4
+00001b38 sub        x0, x24, x0
+00001b3c mov        x2, x22
+00001b40 add        x0, x0, #0x18
+00001b44 mov        w1, #0
+00001b48 bl         #0x1b48 ; relocation {"type": 283, "symbol": "memset", "addend": 0}
+00001b4c cbz        w22, #0x1624
+00001b50 b          #0x1130
+00001b54 ldr        x0, #0x1ea8
+00001b58 mov        w3, w25
+00001b5c mov        w2, #0x350
+00001b60 bl         #0x1b60 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001b64 b          #0x139c
+00001b68 ldr        x0, #0x1ea8
+00001b6c mov        w3, w25
+00001b70 mov        w2, #0x2f0
+00001b74 bl         #0x1b74 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001b78 b          #0x13c4
+00001b7c ldr        x1, #0x1e68
+00001b80 mov        w2, #0xb6
+00001b84 ldr        x0, #0x1e78
+00001b88 mov        w22, #-0x38
+00001b8c bl         #0x1b8c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001b90 b          #0x12a4
+00001b94 ldr        x1, #0x1e68
+00001b98 mov        w2, #0xaf
+00001b9c ldr        x0, #0x1e78
+00001ba0 mov        w22, #-0x16
+00001ba4 bl         #0x1ba4 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001ba8 b          #0x12a4
+00001bac ldr        x1, #0x1e68
+00001bb0 mov        w2, #0x287
+00001bb4 ldr        x0, #0x1e78
+00001bb8 bl         #0x1bb8 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001bbc mov        w22, #0
+00001bc0 ldr        x0, [x20, #0x18]
+00001bc4 mov        w2, #9
+00001bc8 mov        w1, #-0x7e7e
+00001bcc strb       w2, [x0]
+00001bd0 ldr        x0, [x20, #0x18]
+00001bd4 strh       w1, [x0, #2]
+00001bd8 b          #0x12a4
+00001bdc ldr        x1, #0x1e68
+00001be0 mov        w2, #0x27e
+00001be4 ldr        x0, #0x1e78
+00001be8 mov        w22, #-0x16
+00001bec bl         #0x1bec ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001bf0 b          #0x12a4
+00001bf4 ldr        x1, #0x1e68
+00001bf8 mov        w2, #0x335
+00001bfc ldr        x0, #0x1e78
+00001c00 b          #0x1adc
+00001c04 ldr        x1, #0x1e68
+00001c08 mov        w2, #0x2d5
+00001c0c ldr        x0, #0x1e78
+00001c10 b          #0x1adc
+00001c14 ldr        x1, #0x1e68
+00001c18 mov        w2, #0x28e
+00001c1c ldr        x0, #0x1e78
+00001c20 b          #0x1bb8
+00001c24 ldr        x1, #0x1e68
+00001c28 mov        w2, #0x2bb
+00001c2c ldr        x0, #0x1e78
+00001c30 bl         #0x1c30 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001c34 mov        w22, #-0x16
+00001c38 bl         #0x1c38 ; relocation {"type": 283, "symbol": "get_extcmd_this", "addend": 0}
+00001c3c add        x0, x0, #8
+00001c40 bl         #0x1c40 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001c44 b          #0x12a4
+00001c48 ldr        x1, #0x1e68
+00001c4c mov        w2, #0x230
+00001c50 ldr        x0, #0x1e78
+00001c54 mov        w22, #-0x16
+00001c58 bl         #0x1c58 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001c5c ldr        x19, [x29, #0x150]
+00001c60 b          #0x12a4
+00001c64 ldr        x22, #0x1e68
+00001c68 mov        w2, #0x1ca
+00001c6c ldr        x20, #0x1e78
+00001c70 mov        x1, x22
+00001c74 mov        x0, x20
+00001c78 bl         #0x1c78 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001c7c mov        x1, x22
+00001c80 mov        x0, x20
+00001c84 mov        w2, #0x251
+00001c88 mov        w22, #-0x16
+00001c8c bl         #0x1c8c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001c90 str        wzr, [x23, #0x6c]
+00001c94 mov        x0, x25
+00001c98 str        wzr, [x19, #0xc]
+00001c9c bl         #0x1c9c ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+00001ca0 ldr        x19, [x29, #0x150]
+00001ca4 b          #0x12a4
+00001ca8 sub        x0, x22, x0
+00001cac mov        x2, x20
+00001cb0 add        x0, x0, #0xc
+00001cb4 mov        w1, #0
+00001cb8 bl         #0x1cb8 ; relocation {"type": 283, "symbol": "memset", "addend": 0}
+00001cbc cbz        w20, #0x17bc
+00001cc0 b          #0x135c
+00001cc4 ldr        x1, #0x1e68
+00001cc8 mov        w2, #0x376
+00001ccc ldr        x0, #0x1e78
+00001cd0 mov        w22, #-0x16
+00001cd4 bl         #0x1cd4 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001cd8 b          #0x12a4
+00001cdc ldr        x1, #0x1e68
+00001ce0 mov        w2, #0x177
+00001ce4 ldr        x0, #0x1e78
+00001ce8 mov        w22, #-0x16
+00001cec bl         #0x1cec ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001cf0 ldr        x19, [x29, #0x150]
+00001cf4 b          #0x12a4
+00001cf8 ldr        x1, #0x1e68
+00001cfc mov        w2, #0x172
+00001d00 ldr        x0, #0x1e78
+00001d04 mov        w22, #-0x16
+00001d08 bl         #0x1d08 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001d0c ldr        x19, [x29, #0x150]
+00001d10 b          #0x12a4
+00001d14 ldr        x22, #0x1e68
+00001d18 mov        w2, #0x10f
+00001d1c ldr        x20, #0x1e78
+00001d20 mov        x1, x22
+00001d24 mov        x0, x20
+00001d28 bl         #0x1d28 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001d2c b          #0x1a3c
+00001d30 mov        x0, x23
+00001d34 mov        x1, #0x18
+00001d38 mov        w22, #-0xc
+00001d3c bl         #0x1d3c ; relocation {"type": 283, "symbol": "extcmd_mem_free", "addend": 0}
+00001d40 ldr        x1, #0x1e68
+00001d44 mov        w2, #0x74
+00001d48 ldr        x0, #0x1e78
+00001d4c bl         #0x1d4c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001d50 ldr        x19, [x29, #0x150]
+00001d54 b          #0x12a4
+00001d58 ldr        x1, #0x1e68
+00001d5c mov        w2, #0x6a
+00001d60 ldr        x0, #0x1e78
+00001d64 mov        w22, #-0xc
+00001d68 bl         #0x1d68 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001d6c ldr        x19, [x29, #0x150]
+00001d70 b          #0x12a4
+00001d74 ldr        x1, #0x1e68
+00001d78 mov        w2, #0x63
+00001d7c ldr        x0, #0x1e78
+00001d80 mov        w22, #-0x16
+00001d84 bl         #0x1d84 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001d88 ldr        x19, [x29, #0x150]
+00001d8c b          #0x12a4
+00001d90 ldr        x22, #0x1e68
+00001d94 mov        w2, #0x1eb
+00001d98 ldr        x20, #0x1e78
+00001d9c mov        x1, x22
+00001da0 mov        x0, x20
+00001da4 bl         #0x1da4 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001da8 b          #0x1c7c
+00001dac sub        x0, x24, x0
+00001db0 mov        x2, x22
+00001db4 add        x0, x0, #0x18
+00001db8 mov        w1, #0
+00001dbc bl         #0x1dbc ; relocation {"type": 283, "symbol": "memset", "addend": 0}
+00001dc0 cbz        w22, #0x143c
+00001dc4 b          #0x1238
+00001dc8 ldr        x1, #0x1e68
+00001dcc mov        w2, #0x22b
+00001dd0 ldr        x0, #0x1e78
+00001dd4 mov        w22, #-0x16
+00001dd8 bl         #0x1dd8 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001ddc ldr        x19, [x29, #0x150]
+00001de0 b          #0x12a4
+00001de4 ldr        x1, #0x1e68
+00001de8 mov        w2, #0x226
+00001dec ldr        x0, #0x1e78
+00001df0 mov        w22, #-0x16
+00001df4 bl         #0x1df4 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001df8 ldr        x19, [x29, #0x150]
+00001dfc b          #0x12a4
+00001e00 ldr        x1, #0x1e68
+00001e04 mov        w2, #0x31b
+00001e08 ldr        x0, #0x1e78
+00001e0c b          #0x1c30
+00001e10 ldr        x1, #0x1e68
+00001e14 mov        w2, #0xea
+00001e18 ldr        x0, #0x1e78
+00001e1c mov        w22, #-0x16
+00001e20 bl         #0x1e20 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001e24 ldr        x19, [x29, #0x150]
+00001e28 b          #0x12a4
+00001e2c ldr        x1, #0x1e68
+00001e30 mov        w2, #0xe5
+00001e34 ldr        x0, #0x1e78
+00001e38 mov        w22, #-0x16
+00001e3c bl         #0x1e3c ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00001e40 ldr        x19, [x29, #0x150]
+00001e44 b          #0x12a4
+00001e48 sub        x0, x24, x0
+00001e4c mov        x2, x20
+00001e50 add        x0, x0, #4
+00001e54 mov        w1, #0
+00001e58 bl         #0x1e58 ; relocation {"type": 283, "symbol": "memset", "addend": 0}
+00001e5c cbz        w20, #0x15c4
+00001e60 b          #0x10c8

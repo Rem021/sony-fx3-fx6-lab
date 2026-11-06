@@ -1,0 +1,89 @@
+{
+  "schema": "fx3-stage124-Close-counter-cleanup/1",
+  "created_utc": "2026-10-27T17:06:28.105480+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/README.md",
+      "bytes": 3738,
+      "sha256": "64491c1e4d3b69811fd5d7cf7350c19e6cd5cd29f5aa3de54abd9118d1337581"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/close_counter.py",
+      "bytes": 9830,
+      "sha256": "89d52a94ff40a9f993bc8a2da047888cd56772f9a55c435f000eb86c1a51ec2b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/completed-evidence-review.json",
+      "bytes": 495,
+      "sha256": "a278c9fe4255b125c5c96d3ed24dd66d216e8793f75724c45188e5ab5e2e6bbc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/diagnostic-contract.json",
+      "bytes": 8971,
+      "sha256": "dc00c4406e01cd12806aabd904330a7e8bbd57eb7ea7d17bf4f67583269c3699"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/goal-status-after.json",
+      "bytes": 396118,
+      "sha256": "660ebecaef0fbfaae1f9800d19d1f4bf3c86ffdf2e2afbeec5fe993d0053051e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/goal-status-before.json",
+      "bytes": 391939,
+      "sha256": "af1af47b45086e60f2516c32e0bbf83f13beacd80f8fa70bddd070b3b441816c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/review_and_seal.py",
+      "bytes": 13003,
+      "sha256": "e33c774aa6c0ed4dcbc3b0fad2dbc876f7c79802fe58931271e29a04cdbba066"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/run-native-Close-counter-20261027/close-counter-results.json",
+      "bytes": 230316,
+      "sha256": "e45314df9997fb06070128d35389e9ab77c93c5f08b763d131bb646eda775e43"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/run-native-Close-counter-20261027/executed-source.py",
+      "bytes": 9830,
+      "sha256": "89d52a94ff40a9f993bc8a2da047888cd56772f9a55c435f000eb86c1a51ec2b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/source-and-scope-audit.json",
+      "bytes": 43003,
+      "sha256": "aed4b243fc25944c35d97245bf0796ae1a0ddf3df4277c9daac2d9e02f6a7bb4"
+    }
+  ],
+  "previous_manifest_sha256": "02acc3571baa28fd1aa1204c9efe036251dbf36003af9febc7ca770f2ce724d2",
+  "operations": {
+    "status": "PASS_NATIVE_CLOSE_COUNTER_DECISION_AND_CLEANUP_SCOPE_NOT_FULL_SHUTDOWN",
+    "created_utc": "2026-10-27T17:06:28.105480+00:00",
+    "previous_manifest_members_verified": 10,
+    "cases": 18,
+    "bounded_phases": 108,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "stage117_frontend_and_stage75_backend_unchanged": true,
+    "actual_camera_Windows_UU_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "af1af47b45086e60f2516c32e0bbf83f13beacd80f8fa70bddd070b3b441816c",
+    "after_sha256": "660ebecaef0fbfaae1f9800d19d1f4bf3c86ffdf2e2afbeec5fe993d0053051e"
+  },
+  "readme_index_before_sha256": "762cc8ab43e9e7b989eb9421136e83b2cf60f068114fa79bae235ae4ceff146e",
+  "readme_index_after_sha256": "34a88af80f7ffa84a779cbb6b9da7009a64e9ea7c0cbcab68c21078b35dd985c",
+  "readme_index_entry": "- [2026-10-27 FX3 Close计数与清理结果](<work/sony-firmware-20261024/stage124-native-Close-counter-and-cleanup/README.md>)：18例108片段接原计数器与Close分支，剩余计数可跳过关闭；模式字清零非DMM释放证明，真实主录/全退出/恢复未验。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

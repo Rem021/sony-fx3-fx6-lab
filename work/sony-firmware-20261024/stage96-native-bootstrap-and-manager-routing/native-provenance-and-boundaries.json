@@ -1,0 +1,248 @@
+{
+  "created_utc": "2026-10-27T09:12:31.945040+00:00",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "instructions": [
+    {
+      "VA": "0x8005c49c",
+      "word_hex": "e171010c",
+      "instruction": "jal 0x8005c784",
+      "meaning": "original bootstrap table iterator caller"
+    },
+    {
+      "VA": "0x8005c794",
+      "word_hex": "a0305124",
+      "instruction": "addiu $s1, $v0, 0x30a0",
+      "meaning": "native ROM table pointer"
+    },
+    {
+      "VA": "0x8005c79c",
+      "word_hex": "06001024",
+      "instruction": "addiu $s0, $zero, 6",
+      "meaning": "native loop initial6 means7 entries"
+    },
+    {
+      "VA": "0x8005c7a0",
+      "word_hex": "0800228e",
+      "instruction": "lw $v0, 8($s1)",
+      "meaning": "native entry function pointer load"
+    },
+    {
+      "VA": "0x8005c7c8",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "original table indirect call"
+    },
+    {
+      "VA": "0x8005c7cc",
+      "word_hex": "0400248e",
+      "instruction": "lw $a0, 4($s1)",
+      "meaning": "native ROM entry argument load"
+    },
+    {
+      "VA": "0x80009e54",
+      "word_hex": "00600240",
+      "instruction": "mfc0 $v0, $t4, 0",
+      "meaning": "unexecuted earlier CP0 status read"
+    },
+    {
+      "VA": "0x80009e68",
+      "word_hex": "00608440",
+      "instruction": "mtc0 $a0, $t4, 0",
+      "meaning": "unexecuted earlier CP0 status write"
+    },
+    {
+      "VA": "0x8000a064",
+      "word_hex": "041020ac",
+      "instruction": "sw $zero, 0x1004($at)",
+      "meaning": "unexecuted initialization-table hardware MMIO write"
+    },
+    {
+      "VA": "0x80009e00",
+      "word_hex": "00600240",
+      "instruction": "mfc0 $v0, $t4, 0",
+      "meaning": "unexecuted RTOS IRQ helper CP0 status read"
+    },
+    {
+      "VA": "0x8007a308",
+      "word_hex": "18000424",
+      "instruction": "addiu $a0, $zero, 0x18",
+      "meaning": "native outer object request18"
+    },
+    {
+      "VA": "0x8007a31c",
+      "word_hex": "ea11050c",
+      "instruction": "jal 0x801447a8",
+      "meaning": "native actual C4 constructor variant call"
+    },
+    {
+      "VA": "0x8007a330",
+      "word_hex": "2c1c0424",
+      "instruction": "addiu $a0, $zero, 0x1c2c",
+      "meaning": "native outer object request1c2c"
+    },
+    {
+      "VA": "0x8007a344",
+      "word_hex": "c014050c",
+      "instruction": "jal 0x80145300",
+      "meaning": "native actual524 constructor variant call"
+    },
+    {
+      "VA": "0x8007a358",
+      "word_hex": "200051ae",
+      "instruction": "sw $s1, 0x20($s2)",
+      "meaning": "native default current object store"
+    },
+    {
+      "VA": "0x8007af34",
+      "word_hex": "1b00a390",
+      "instruction": "lbu $v1, 0x1b($a1)",
+      "meaning": "selector1 payload1b byte read"
+    },
+    {
+      "VA": "0x8007af3c",
+      "word_hex": "02006250",
+      "instruction": "beql $v1, $v0, 0x8007af48",
+      "meaning": "selector1 equality-to1 branch"
+    },
+    {
+      "VA": "0x8007af48",
+      "word_hex": "200002ae",
+      "instruction": "sw $v0, 0x20($s0)",
+      "meaning": "native selector1 current store"
+    },
+    {
+      "VA": "0x8007b72c",
+      "word_hex": "2e00a290",
+      "instruction": "lbu $v0, 0x2e($a1)",
+      "meaning": "selector2 payload2e byte read"
+    },
+    {
+      "VA": "0x8007b730",
+      "word_hex": "02004050",
+      "instruction": "beql $v0, $zero, 0x8007b73c",
+      "meaning": "selector2 zero test"
+    },
+    {
+      "VA": "0x8007b73c",
+      "word_hex": "200002ae",
+      "instruction": "sw $v0, 0x20($s0)",
+      "meaning": "native selector2 current store"
+    },
+    {
+      "VA": "0x8007af58",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "unexecuted selector1 mode callback"
+    },
+    {
+      "VA": "0x8007b74c",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "unexecuted selector2 mode callback"
+    },
+    {
+      "VA": "0x8007b0ec",
+      "word_hex": "2000248e",
+      "instruction": "lw $a0, 0x20($s1)",
+      "meaning": "native manager current-object load"
+    },
+    {
+      "VA": "0x8007b0f8",
+      "word_hex": "1000628c",
+      "instruction": "lw $v0, 0x10($v1)",
+      "meaning": "native selected-object slot10 load"
+    },
+    {
+      "VA": "0x8007b0fc",
+      "word_hex": "09f84000",
+      "instruction": "jalr $v0",
+      "meaning": "executed common frame parent virtual call"
+    },
+    {
+      "VA": "0x80143fc0",
+      "word_hex": "c4a28987",
+      "instruction": "lh $t1, -0x5d3c($gp)",
+      "meaning": "unexecuted GP lock-ID read"
+    }
+  ],
+  "original_source_path": "../../../../../../../../../../src/ipsx/release/spu/all/ctrl/video/enc/common/gop_vbb_mng.cxx",
+  "bootstrap_table": [
+    {
+      "index": 0,
+      "file_offset": "0x2130a0",
+      "words": [
+        "0x0",
+        "0x0",
+        "0x8000a054"
+      ],
+      "execution_scope": "original first callback returned"
+    },
+    {
+      "index": 1,
+      "file_offset": "0x2130ac",
+      "words": [
+        "0x0",
+        "0x0",
+        "0x80061f3c"
+      ],
+      "execution_scope": "stopped at original entry"
+    },
+    {
+      "index": 2,
+      "file_offset": "0x2130b8",
+      "words": [
+        "0x0",
+        "0x0",
+        "0x800093cc"
+      ],
+      "execution_scope": "static order only"
+    },
+    {
+      "index": 3,
+      "file_offset": "0x2130c4",
+      "words": [
+        "0x0",
+        "0x0",
+        "0x8000a05c"
+      ],
+      "execution_scope": "static order only"
+    },
+    {
+      "index": 4,
+      "file_offset": "0x2130d0",
+      "words": [
+        "0x0",
+        "0x0",
+        "0x8000d5b4"
+      ],
+      "execution_scope": "static order only"
+    },
+    {
+      "index": 5,
+      "file_offset": "0x2130dc",
+      "words": [
+        "0x0",
+        "0x0",
+        "0x8000a320"
+      ],
+      "execution_scope": "static order only"
+    },
+    {
+      "index": 6,
+      "file_offset": "0x2130e8",
+      "words": [
+        "0x0",
+        "0x0",
+        "0x8000d530"
+      ],
+      "execution_scope": "static order only"
+    }
+  ],
+  "actual_manager_constructor_call_variants": [
+    "0x1447a8",
+    "0x145300"
+  ],
+  "complete_boot_factory_prefix_mode_callback_scheduling_MAIN_or_hardware_proven": false,
+  "frame_handler_is_independent_routing_entry": true,
+  "original_CP0_RTOS_lock_semantics_unexecuted": true
+}

@@ -1,0 +1,193 @@
+{
+  "checked_utc": "2026-11-05T04:04:55.734621+00:00",
+  "scope": "Matched QMP STOP/RESUME event timestamps; same QMP realtime domain. Excludes initial -S time, unreported CPU scheduling stalls, and terminal unpaired STOP. Realtime clock jumps were not independently ruled out.",
+  "finding": "Failed run has 3.224597s paired STOP time before End. These measured explicit pauses alone do not add up to the large startup delay; indirect timer/queue effects are not excluded.",
+  "runs": [
+    {
+      "run": "v25gate-n64-r17-740bafa8",
+      "qmp_sha256": "01e139a68b7b2f2342bad11ee577d974c61ce3521eb43bd44cdabcceea2523c0",
+      "completed_pairs": [
+        {
+          "stop_unix_us": 1793846238677545,
+          "resume_unix_us": 1793846238938025,
+          "duration_us": 260480
+        },
+        {
+          "stop_unix_us": 1793846252180940,
+          "resume_unix_us": 1793846252340781,
+          "duration_us": 159841
+        },
+        {
+          "stop_unix_us": 1793846292037105,
+          "resume_unix_us": 1793846292037811,
+          "duration_us": 706
+        },
+        {
+          "stop_unix_us": 1793846311960772,
+          "resume_unix_us": 1793846312247530,
+          "duration_us": 286758
+        },
+        {
+          "stop_unix_us": 1793846312278702,
+          "resume_unix_us": 1793846312282717,
+          "duration_us": 4015
+        },
+        {
+          "stop_unix_us": 1793846312543190,
+          "resume_unix_us": 1793846312546768,
+          "duration_us": 3578
+        },
+        {
+          "stop_unix_us": 1793846312807640,
+          "resume_unix_us": 1793846312812846,
+          "duration_us": 5206
+        },
+        {
+          "stop_unix_us": 1793846313071181,
+          "resume_unix_us": 1793846313077620,
+          "duration_us": 6439
+        },
+        {
+          "stop_unix_us": 1793846313338035,
+          "resume_unix_us": 1793846313341621,
+          "duration_us": 3586
+        }
+      ],
+      "total_completed_pause_us": 730609,
+      "terminal_unpaired_stop_unix_us": 1793846313599465
+    },
+    {
+      "run": "v25gate-n64-r17-45304842",
+      "qmp_sha256": "e7ebd3fb0a3a2acb9c5a7b4d7cfac7df74cb073e3f6ca768cf27fd5457fe68ca",
+      "completed_pairs": [
+        {
+          "stop_unix_us": 1793847570674681,
+          "resume_unix_us": 1793847570936315,
+          "duration_us": 261634
+        },
+        {
+          "stop_unix_us": 1793847584106330,
+          "resume_unix_us": 1793847584267433,
+          "duration_us": 161103
+        },
+        {
+          "stop_unix_us": 1793847641662116,
+          "resume_unix_us": 1793847641662955,
+          "duration_us": 839
+        },
+        {
+          "stop_unix_us": 1793847644328437,
+          "resume_unix_us": 1793847644493982,
+          "duration_us": 165545
+        },
+        {
+          "stop_unix_us": 1793847661568284,
+          "resume_unix_us": 1793847661853884,
+          "duration_us": 285600
+        },
+        {
+          "stop_unix_us": 1793847661879086,
+          "resume_unix_us": 1793847661883157,
+          "duration_us": 4071
+        },
+        {
+          "stop_unix_us": 1793847662140709,
+          "resume_unix_us": 1793847662142763,
+          "duration_us": 2054
+        },
+        {
+          "stop_unix_us": 1793847662400292,
+          "resume_unix_us": 1793847662402257,
+          "duration_us": 1965
+        },
+        {
+          "stop_unix_us": 1793847662662577,
+          "resume_unix_us": 1793847662665230,
+          "duration_us": 2653
+        },
+        {
+          "stop_unix_us": 1793847662923798,
+          "resume_unix_us": 1793847662925924,
+          "duration_us": 2126
+        },
+        {
+          "stop_unix_us": 1793847663181743,
+          "resume_unix_us": 1793847663184447,
+          "duration_us": 2704
+        },
+        {
+          "stop_unix_us": 1793847663444674,
+          "resume_unix_us": 1793847663453473,
+          "duration_us": 8799
+        }
+      ],
+      "total_completed_pause_us": 899093,
+      "terminal_unpaired_stop_unix_us": 1793847663713142
+    },
+    {
+      "run": "v25gate-n64-r17-f7903939",
+      "qmp_sha256": "5a9b22c451dcbdfe6b37f9c3b8ce7dc52e4df7cfa4a0ed2a2d34151341f89ed9",
+      "completed_pairs": [
+        {
+          "stop_unix_us": 1793850497557932,
+          "resume_unix_us": 1793850499272844,
+          "duration_us": 1714912
+        },
+        {
+          "stop_unix_us": 1793850501764282,
+          "resume_unix_us": 1793850502074021,
+          "duration_us": 309739
+        },
+        {
+          "stop_unix_us": 1793850562112784,
+          "resume_unix_us": 1793850562509389,
+          "duration_us": 396605
+        },
+        {
+          "stop_unix_us": 1793850622524471,
+          "resume_unix_us": 1793850623327812,
+          "duration_us": 803341
+        },
+        {
+          "stop_unix_us": 1793850661146923,
+          "resume_unix_us": 1793850661456706,
+          "duration_us": 309783
+        },
+        {
+          "stop_unix_us": 1793850661487741,
+          "resume_unix_us": 1793850661492919,
+          "duration_us": 5178
+        },
+        {
+          "stop_unix_us": 1793850661747343,
+          "resume_unix_us": 1793850661749764,
+          "duration_us": 2421
+        },
+        {
+          "stop_unix_us": 1793850662008515,
+          "resume_unix_us": 1793850662010655,
+          "duration_us": 2140
+        },
+        {
+          "stop_unix_us": 1793850662270959,
+          "resume_unix_us": 1793850662273150,
+          "duration_us": 2191
+        },
+        {
+          "stop_unix_us": 1793850662525052,
+          "resume_unix_us": 1793850662527315,
+          "duration_us": 2263
+        },
+        {
+          "stop_unix_us": 1793850662783561,
+          "resume_unix_us": 1793850662785630,
+          "duration_us": 2069
+        }
+      ],
+      "total_completed_pause_us": 3550642,
+      "terminal_unpaired_stop_unix_us": 1793850663041939,
+      "before_End_POST_cutoff_unix_us": 1793850661115732,
+      "before_End_POST_pause_us": 3224597
+    }
+  ]
+}

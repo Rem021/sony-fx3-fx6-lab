@@ -1,0 +1,104 @@
+{
+  "status": "OWN_CODE_FIXED_STATUS_PACKAGE_OFFLINE_CHECKS_PASS",
+  "checks": 8,
+  "rows": [
+    {
+      "case": "permit_file_and_registry_binding",
+      "status": "PASS",
+      "file_cases": [
+        {
+          "case": "good",
+          "expected_deny": false,
+          "checks": {
+            "permit_and_registry_checks": 17,
+            "root_or_USB_operations": 0
+          }
+        },
+        {
+          "case": "mode",
+          "expected_deny": true,
+          "checks": {
+            "permit_and_registry_checks": 17,
+            "root_or_USB_operations": 0
+          }
+        },
+        {
+          "case": "symbolic",
+          "expected_deny": true,
+          "checks": {
+            "permit_and_registry_checks": 17,
+            "root_or_USB_operations": 0
+          }
+        },
+        {
+          "case": "hard",
+          "expected_deny": true,
+          "checks": {
+            "permit_and_registry_checks": 17,
+            "root_or_USB_operations": 0
+          }
+        },
+        {
+          "case": "short",
+          "expected_deny": true,
+          "checks": {
+            "permit_and_registry_checks": 17,
+            "root_or_USB_operations": 0
+          }
+        }
+      ]
+    },
+    {
+      "case": "native_frame_encoding_without_staging",
+      "status": "PASS",
+      "bytes": 4096,
+      "job_created": false
+    },
+    {
+      "case": "exact_new_scope_and_typed_authority",
+      "status": "PASS",
+      "rejections": 9,
+      "synthetic_values_only": true,
+      "canonical_authorization_written": false
+    },
+    {
+      "case": "unapproved_factory_stops_before_query_or_job",
+      "status": "PASS",
+      "cache_queries": 0,
+      "job_created": false
+    },
+    {
+      "case": "changed_registry_denied_before_job",
+      "status": "PASS",
+      "synthetic_values_only": true,
+      "job_created": false
+    },
+    {
+      "case": "new_supervisor_fixture_pipeline",
+      "status": "PASS",
+      "wire_calls": [
+        0,
+        0,
+        0
+      ],
+      "directory": "runs/57b777bd7ebd4686"
+    },
+    {
+      "case": "wrong_image_still_denied_before_owner",
+      "status": "PASS",
+      "directory": "runs/79d1c39816dd7af9"
+    },
+    {
+      "case": "frozen_package_and_permit_command_syntax",
+      "status": "PASS",
+      "files": 50,
+      "bundle_sha256": "c372c53f14b746ad9e9f04ad50c94af5890a7320dccf73ff354179eed0bcff41",
+      "command_executed": false
+    }
+  ],
+  "new_root_helper_or_USB_operations": 0,
+  "live_cache_queries": 0,
+  "native_job_staged": false,
+  "native_helper_executed": false,
+  "not_integrated_root_or_camera_acceptance": true
+}

@@ -1,0 +1,554 @@
+{
+  "status": "STATIC_SESSION_ROUTE_BOUND_CURRENT_RAM_GET_CANDIDATE_HELD",
+  "sources": [
+    {
+      "path": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "bytes": 225200
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libsencore.so",
+      "sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+      "bytes": 377328
+    }
+  ],
+  "source_ranges": 12,
+  "instruction_checks": [
+    {
+      "source": "libJiritsu.so",
+      "pc": 28068,
+      "word": "220000b0",
+      "asm": "adrp x2, #0xb000"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 28072,
+      "word": "42e00991",
+      "asm": "add x2, x2, #0x278"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 28076,
+      "word": "00908052",
+      "asm": "mov w0, #0x480"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 28084,
+      "word": "e02da072",
+      "asm": "movk w0, #0x16f, lsl #16"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 28088,
+      "word": "21dc47f9",
+      "asm": "ldr x1, [x1, #0xfb8]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45712,
+      "word": "604e4079",
+      "asm": "ldrh w0, [x19, #0x26]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45720,
+      "word": "1f440071",
+      "asm": "cmp w0, #0x11"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 46132,
+      "word": "cfffff17",
+      "asm": "b #0xb370"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 46144,
+      "word": "ccffff17",
+      "asm": "b #0xb370"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 46156,
+      "word": "d3ffff17",
+      "asm": "b #0xb398"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 43972,
+      "word": "75ea45f9",
+      "asm": "ldr x21, [x19, #0xbd0]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 44032,
+      "word": "74ea05f9",
+      "asm": "str x20, [x19, #0xbd0]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 44168,
+      "word": "7fea05f9",
+      "asm": "str xzr, [x19, #0xbd0]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45284,
+      "word": "15e845f9",
+      "asm": "ldr x21, [x0, #0xbd0]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45348,
+      "word": "93ea05f9",
+      "asm": "str x19, [x20, #0xbd0]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45376,
+      "word": "004c4079",
+      "asm": "ldrh w0, [x0, #0x26]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45448,
+      "word": "53fdff36",
+      "asm": "tbz w19, #0x1f, #0xb130"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45568,
+      "word": "01e845f9",
+      "asm": "ldr x1, [x0, #0xbd0]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45628,
+      "word": "7fea05f9",
+      "asm": "str xzr, [x19, #0xbd0]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 35368,
+      "word": "f30100d0",
+      "asm": "adrp x19, #0x46000"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 35376,
+      "word": "60e643f9",
+      "asm": "ldr x0, [x19, #0x7c8]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 35400,
+      "word": "60e603f9",
+      "asm": "str x0, [x19, #0x7c8]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 37724,
+      "word": "15e443f9",
+      "asm": "ldr x21, [x0, #0x7c8]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 40928,
+      "word": "60e643f9",
+      "asm": "ldr x0, [x19, #0x7c8]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 40940,
+      "word": "7fe603f9",
+      "asm": "str xzr, [x19, #0x7c8]"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45776,
+      "word": "1f400071",
+      "asm": "cmp w0, #0x10"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 46212,
+      "word": "1f440071",
+      "asm": "cmp w0, #0x11"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 46240,
+      "word": "1f480071",
+      "asm": "cmp w0, #0x12"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 30496,
+      "word": "039280d2",
+      "asm": "mov x3, #0x490"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 30508,
+      "word": "a31db8f2",
+      "asm": "movk x3, #0xc0ed, lsl #16"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 28092,
+      "word": "91feff97",
+      "asm": "bl #0x6800",
+      "target_symbol": "osal_reg_sync_msg_queue_cb"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45948,
+      "word": "e1ebff97",
+      "asm": "bl #0x6300",
+      "target_symbol": "cmd_high_capacity_send_file"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45988,
+      "word": "dbe9ff97",
+      "asm": "bl #0x5b10",
+      "target_symbol": "cmd_high_capacity_get_file"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 43984,
+      "word": "74eeff97",
+      "asm": "bl #0x65a0",
+      "target_symbol": "_ZN6DmmMgrD1Ev"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 43992,
+      "word": "9eedff97",
+      "asm": "bl #0x6250",
+      "target_symbol": "_ZdlPv"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 44136,
+      "word": "16eeff97",
+      "asm": "bl #0x64c0",
+      "target_symbol": "_ZN6DmmMgr8dmm_freeEv"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45296,
+      "word": "2cedff97",
+      "asm": "bl #0x65a0",
+      "target_symbol": "_ZN6DmmMgrD1Ev"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45304,
+      "word": "56ecff97",
+      "asm": "bl #0x6250",
+      "target_symbol": "_ZdlPv"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45596,
+      "word": "a9ecff97",
+      "asm": "bl #0x64c0",
+      "target_symbol": "_ZN6DmmMgr8dmm_freeEv"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 45616,
+      "word": "dcecff97",
+      "asm": "bl #0x65a0",
+      "target_symbol": "_ZN6DmmMgrD1Ev"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 35384,
+      "word": "02f5ff97",
+      "asm": "bl #0x5e40",
+      "target_symbol": "free"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 35396,
+      "word": "57f4ff97",
+      "asm": "bl #0x5ba0",
+      "target_symbol": "calloc"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 40936,
+      "word": "96efff97",
+      "asm": "bl #0x5e40",
+      "target_symbol": "free"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 40728,
+      "word": "16efff97",
+      "asm": "bl #0x5b70",
+      "target_symbol": "sys_mount"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 46232,
+      "word": "beeaff97",
+      "asm": "bl #0x5f90",
+      "target_symbol": "packet_set_process_res_raw_data"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 46260,
+      "word": "87e9ff97",
+      "asm": "bl #0x5ad0",
+      "target_symbol": "packet_set_fin_del_data"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 46284,
+      "word": "a1ebff97",
+      "asm": "bl #0x6350",
+      "target_symbol": "packet_set_process_end"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 30512,
+      "word": "ecf9ff17",
+      "asm": "b #0x5ee0",
+      "target_symbol": "_ZN11CFileAccess5mountEPKcS1_S1_mPKv"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63688,
+      "word": "badbff17",
+      "asm": "b #0x67b0",
+      "target_symbol": "_ZN11CFileAccess15selection_mountEPKcS1_S1_S1_mPKv"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 62648,
+      "word": "86dbff97",
+      "asm": "bl #0x62d0",
+      "target_symbol": "strncmp"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63444,
+      "word": "73daff97",
+      "asm": "bl #0x61a0",
+      "target_symbol": "mount"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63668,
+      "word": "e50304aa",
+      "asm": "mov x5, x4"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63672,
+      "word": "e40303aa",
+      "asm": "mov x4, x3"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63676,
+      "word": "e30302aa",
+      "asm": "mov x3, x2"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63680,
+      "word": "e20301aa",
+      "asm": "mov x2, x1"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63684,
+      "word": "010080d2",
+      "asm": "mov x1, #0"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 62572,
+      "word": "f40302aa",
+      "asm": "mov x20, x2"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 62588,
+      "word": "fa0304aa",
+      "asm": "mov x26, x4"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 62604,
+      "word": "f80300aa",
+      "asm": "mov x24, x0"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 62640,
+      "word": "e00314aa",
+      "asm": "mov x0, x20"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 62652,
+      "word": "20180035",
+      "asm": "cbnz w0, #0xf7c0"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63424,
+      "word": "e4031baa",
+      "asm": "mov x4, x27"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63428,
+      "word": "e3031aaa",
+      "asm": "mov x3, x26"
+    },
+    {
+      "source": "libJiritsu.so",
+      "pc": 63440,
+      "word": "e00318aa",
+      "asm": "mov x0, x24"
+    },
+    {
+      "source": "libsencore.so",
+      "pc": 61564,
+      "word": "01984039",
+      "asm": "ldrb w1, [x0, #0x26]"
+    },
+    {
+      "source": "libsencore.so",
+      "pc": 61568,
+      "word": "014c0079",
+      "asm": "strh w1, [x0, #0x26]"
+    },
+    {
+      "source": "libsencore.so",
+      "pc": 65032,
+      "word": "61081312",
+      "asm": "and w1, w3, #0xe000"
+    },
+    {
+      "source": "libsencore.so",
+      "pc": 65040,
+      "word": "c0edff54",
+      "asm": "b.eq #0xfbc8"
+    },
+    {
+      "source": "libsencore.so",
+      "pc": 65052,
+      "word": "02004039",
+      "asm": "ldrb w2, [x0]"
+    },
+    {
+      "source": "libsencore.so",
+      "pc": 65056,
+      "word": "5f080071",
+      "asm": "cmp w2, #2"
+    },
+    {
+      "source": "libsencore.so",
+      "pc": 65096,
+      "word": "4018417a",
+      "asm": "ccmp w2, #1, #0, ne"
+    }
+  ],
+  "core_records": [
+    {
+      "command": 15,
+      "name": "JIRITSU_SET_FILE_PATH",
+      "core_VA": 204180,
+      "raw": "80046f0101100f404a4952495453555f5345545f46494c455f5041544800000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "queue": 24052864,
+      "category": 4097,
+      "flags": 16399,
+      "outer_dispatch_target": 46124
+    },
+    {
+      "command": 16,
+      "name": "JIRITSU_SET_FILE2",
+      "core_VA": 204252,
+      "raw": "80046f01011010404a4952495453555f5345545f46494c45320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "queue": 24052864,
+      "category": 4097,
+      "flags": 16400,
+      "outer_dispatch_target": 46136
+    },
+    {
+      "command": 17,
+      "name": "JIRITSU_GET_FILE2",
+      "core_VA": 204324,
+      "raw": "80046f01011011404a4952495453555f4745545f46494c45320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "queue": 24052864,
+      "category": 4097,
+      "flags": 16401,
+      "outer_dispatch_target": 46148
+    }
+  ],
+  "registration": {
+    "queue": 24052864,
+    "callback": 45688,
+    "call": 28092,
+    "callback_handle_GOT": 286648,
+    "callback_handle_symbol": "g_cbHandle",
+    "current_body_registration_executed_or_verified": false
+  },
+  "DMM_lifecycle": {
+    "global_pointer": 289744,
+    "phase1_replaces_previous_manager": true,
+    "phase4_dispatches_file_operation": true,
+    "get_phase16_frees_manager": true,
+    "code16_17_18_are_internal_callback_results_not_constructor_success": true,
+    "cross_request_owner_or_authenticated_session_binding_proven": false
+  },
+  "selected_path": {
+    "global_pointer": 288712,
+    "selector_frees_and_replaces_previous_value": true,
+    "GET_consumes_and_frees_global_value": true,
+    "own_module_nonce_or_directory_claim_is_not_native_global_path_lock": true,
+    "lower_layer_exclusive_session_proven": false
+  },
+  "conditional_interleaving": {
+    "kind": "static conditional witness, not observed or executed",
+    "premises": [
+      "two authorized request sources may reach this callback",
+      "no lower-layer lease spans the whole select/get exchange"
+    ],
+    "sequence": [
+      "A selects its own result path",
+      "B selects another path",
+      "A GET consumes the current global path selected by B"
+    ],
+    "conclusion": "per-command serialization alone does not establish selected-path ownership",
+    "premises_proven_on_current_camera": false
+  },
+  "read_side_effects": {
+    "operation0_calls_mount": true,
+    "wrapper_chain": [
+      "sys_mount",
+      "CFileAccess::mount",
+      "CFileAccess::selection_mount",
+      "libc mount"
+    ],
+    "target_is_not_mnt_prefix_so_selection_takes_libc_mount_branch": 63424,
+    "mount_flags": 3236758672,
+    "MS_RDONLY_requested": false,
+    "effective_current_mount_state_or_actual_flash_write_proven": false,
+    "host_reply_length_does_not_bound_whole_file_DMM_allocation": true
+  },
+  "actual_authentication_USB_DMM_runtime_owner_normal_exit_or_restore_verified": false,
+  "original_Sony_Linux_glibc_or_downloaded_camera_code_executed": false,
+  "new_camera_USB_cache_admin_or_firmware_operations": 0,
+  "previous_model_tests_repeated": 0,
+  "probe_deployable": false,
+  "first_flash_released": false
+}

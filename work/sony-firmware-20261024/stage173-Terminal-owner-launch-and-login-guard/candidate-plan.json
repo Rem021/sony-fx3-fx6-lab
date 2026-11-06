@@ -1,0 +1,38 @@
+{
+  "schema": "fx3-Terminal-owner-login-diagnostic-plan/1",
+  "created_utc": "2026-10-29T11:23:28.930797+00:00",
+  "grant_id": "fx3-702-msc-owner-20261029-05",
+  "authorized": false,
+  "released": false,
+  "bundle_sha256": "05f682bdfa825359d543a8c6f7f23028ccf00c01f9382520066898197b5ee125",
+  "native_sha256": "fa7b5da122b67f25349551edb1870fbe93dd870c7043721cb0a46e735346625d",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "launch_method": "Fixed user-private OwnerTrial.command opened in Terminal; user completes sudo locally; no AppleScript administrator relay.",
+  "internal_user_job": "/private/tmp/fx3-702-msc-owner-20261029-05",
+  "root_private_grant": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261029-05",
+  "baseline_device_calls": "Byte-identical owner_iokit.c and owner_core.c from04; count, arguments and order unchanged.",
+  "new_guard": "Before frame open/ACK/provider: current console UID501, both audit UIDs501, successful audit/Security reads, same nonzero GUI Security/audit session, TTY and nonremote required.",
+  "supervision": "open exit0 is launch request only. Actual kernel helper PID/UID/birth/path+ACK and same nonce/result SHA remain required; separate bounded command completion marker.",
+  "prerequisite": "All FX3 volumes manually ejected; camera on, cable connected, same port, MSC; one cached preflight after explicit approval.",
+  "privilege_and_privacy": "One reviewed sudo bootstrap installs exact SHA executable into root-private directory. No privacy setting edit/reset or automatic consent. sudo verification stays in Terminal; do not send password. macOS may display removable-volume consent; any additional consent choice is left to the user.",
+  "failure_policy": "Exclusive user claim, command-entry directory and root-entry lease; consumed on staged attempt, no reuse or auto retry. Pending calls keep UNKNOWN, no kill/reset/config fallback. Independent post-return driver cache observation required.",
+  "forbidden": [
+    "Sony authentication, service commands, mode entry or payload/module upload",
+    "Card/camera file access, WBI/boot/settings/firmware writes",
+    "Automatic eject/unmount, driver installation or persistent service/sudoers changes",
+    "TCC database access/reset, Full Disk Access grant, audit setters or sandbox exceptions",
+    "Reuse camera01-04 or completed host-audit01 authorization"
+  ],
+  "acceptance": "This diagnostic tests only ownership/interface metadata/return with independent cached driver association; target MAIN recording, backup/restore/rescue remain unproven.",
+  "local_checks": 64,
+  "Terminal_sudo_root_or_native_IOKit_executed": false,
+  "new_camera_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

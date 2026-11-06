@@ -1,0 +1,84 @@
+{
+  "schema": "fx3-stage12-coordinator-observations-v1",
+  "record_created_utc": "2026-10-25T17:08:23.407167+00:00",
+  "observation_exact_utc_available": false,
+  "provenance": "Coordinator /root supplied its direct tool observations in task delegation and follow-up. This writer did not rerun CPU emulation or control UU/Windows; no original tool transcript is claimed in this file.",
+  "coordinator_profile_review": {
+    "Python_AST_and_execution_boundary_review": "PASS, reported by coordinator",
+    "reproduction": "PASS, coordinator ran the same reviewed implementation in a separate output directory; not an independently implemented emulator",
+    "reported_elapsed_seconds_approx": 4.3,
+    "command_entry": "work/sony-firmware-20261024/stage12-prototype/profile/reproduce_profile.py --output stage12/profile-independent-20261025 (short-form task description; actual output recorded below)",
+    "actual_output_directory": "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025",
+    "results": "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/profile-results.json",
+    "entry_receipt": "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/reproduction-entry.json",
+    "sealed_original_artifacts_before_after_same": 4,
+    "writer_reexecution": false
+  },
+  "coordinator_cached_probe_review": {
+    "wrapper_default_DryRun_exits_before_Add_Type": true,
+    "CachedAssociations_compiles_only": "Fx3CachedAssociations.cs",
+    "cached_native_API_libraries": [
+      "setupapi.dll",
+      "cfgmgr32.dll"
+    ],
+    "cached_CreateFile_or_DeviceIoControl_declarations": false,
+    "x64_detail_cbSize": 8,
+    "x64_detail_DevicePath_offset": 4,
+    "approval_artifact_hashes_matched": 9,
+    "approval_paths_project_relative": true,
+    "CSharp_or_PowerShell_Windows_compiled_or_executed": false
+  },
+  "UU_observations": [
+    {
+      "attempt": 1,
+      "exact_utc": null,
+      "surface": "same bound UU application through CUA",
+      "reported_state": [
+        "server/connection error",
+        "device offline"
+      ],
+      "file_transfer": false,
+      "Windows_UI_task_dispatch": false
+    },
+    {
+      "attempt": 2,
+      "exact_utc": null,
+      "surface": "same bound UU application through CUA",
+      "reported_state": [
+        "server/connection error",
+        "device offline"
+      ],
+      "diff_only_change": "Window sharing item; no connection-state change",
+      "file_transfer": false,
+      "Windows_UI_task_dispatch": false
+    }
+  ],
+  "Windows_availability_interpretation": "UU app reported offline/unavailable. Windows powered-off state is not established.",
+  "pending_user_input": {
+    "scope": "Restore Windows/UU availability only",
+    "response_received_as_reported": false,
+    "active_query_permission_requested": false
+  },
+  "dependency_classification": {
+    "cached_association_collection_pending": true,
+    "whole_goal_blocked": false,
+    "offline_work_can_continue": true
+  },
+  "cached_handoff": {
+    "directory": "work/sony-firmware-20261024/stage12-prototype/msc-probe/windows-cache-handoff",
+    "state": "PREPARED_NOT_DISPATCHED_NOT_EXECUTED",
+    "files": 4,
+    "active_source_included": false
+  },
+  "deployment_compatibility_inference": {
+    "kind": "inference_not_hardware_test",
+    "basis": "Stock typed HS frame2 reaches original assertion; experimental profile uses this selection.",
+    "implication": "If a future deployment persists this selection, restore stock-legal settings before returning to stock code; restoring ELF alone does not establish safe rollback.",
+    "internal_model_key": "0x39c; not a known persistent storage field/address",
+    "persistent_field_and_restore_order_proven": false,
+    "selection_persisted_this_stage": false
+  },
+  "no_additional_camera_access_beyond_previous_cached_PnP": true,
+  "native_camera_execution_driver_WBI_settings_write": false,
+  "native_goal_tools_called_by_writer": false
+}

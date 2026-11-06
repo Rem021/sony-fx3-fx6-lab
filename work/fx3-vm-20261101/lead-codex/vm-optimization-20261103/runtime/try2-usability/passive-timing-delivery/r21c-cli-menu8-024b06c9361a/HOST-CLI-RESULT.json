@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "checks": 17,
+  "modes": [
+    "operate-click-1",
+    "operate-click-2",
+    "operate-click-3",
+    "operate-click-4",
+    "operate-click-5",
+    "operate-click-6",
+    "operate-click-7",
+    "operate-click-8",
+    "operate-confirm",
+    "operate-recovery_cancel",
+    "operate-failure",
+    "later-capture",
+    "cleanup-null",
+    "cleanup-nonarmed",
+    "cleanup-armed",
+    "cleanup-malformed",
+    "cleanup-exception"
+  ],
+  "scope": "CLI wiring and cleanup flow only, strict dependency doubles, no browser fixture/runtime proof",
+  "source_hashes": {
+    "operate.py": "4db0b4bc56825bfef3599dc18a3ac27b2441a21aa8a5244273f14b64acfa2e52",
+    "later_capture.py": "58bff0bf65dbbfc1c03585684ee38724ea2e5dab55b2c7fccc663ea56e6aefcb",
+    "cleanup.py": "8d60b8665c4738650475594f5f2d4a42dce1a3467cee2954631066b36dc98faa"
+  },
+  "browser_HTTP_QEMU_processes_started": 0,
+  "UTC": "2026-11-05T00:15:33.442368+00:00",
+  "host_ns": 421418972789791
+}

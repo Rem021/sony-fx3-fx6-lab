@@ -1,0 +1,66 @@
+{
+  "status": "COOPERATIVE_IDLE_EXIT_OWN_PROCESS_REGRESSIONS_PASS",
+  "checks": 8,
+  "rows": [
+    {
+      "case": "idle-five-second-no-service",
+      "status": "PASS",
+      "observed_status": "HOST_IDLE_EXIT_CAMERA_STATE_UNKNOWN",
+      "private_phase": "IDLE_HELD_EXIT",
+      "raw_frames": 85,
+      "actual_camera": false,
+      "ordinary_user_kernel_peer_checked": true
+    },
+    {
+      "case": "idle-wrong-service-anchor",
+      "status": "PASS",
+      "observed_status": "HOST_IDLE_EXIT_CAMERA_STATE_UNKNOWN",
+      "private_phase": "IDLE_HELD_EXIT",
+      "raw_frames": 37,
+      "actual_camera": false,
+      "ordinary_user_kernel_peer_checked": true
+    },
+    {
+      "case": "saved-byte-idle-declaration-cannot-override-held-SERVICE-flow",
+      "status": "PASS",
+      "live_origin_recreated": false
+    },
+    {
+      "case": "service-object-still-held",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "private_phase": "HELD",
+      "raw_frames": 44,
+      "actual_camera": false,
+      "ordinary_user_kernel_peer_checked": true
+    },
+    {
+      "case": "normal-controlled-port-flow",
+      "status": "PASS",
+      "observed_status": "HOST_RETURN_CONTROLLED_PORT_ASSOCIATION",
+      "private_phase": "COMPLETE",
+      "raw_frames": 85,
+      "actual_camera": false,
+      "ordinary_user_kernel_peer_checked": true
+    },
+    {
+      "case": "idle-exit-retains-durable-UNKNOWN-denial",
+      "status": "PASS",
+      "observed_status": "DENIED_BEFORE_OWNER_ACTIONS"
+    },
+    {
+      "case": "idle-private-record-pending-or-COMPLETE-forgeries-denied",
+      "status": "PASS",
+      "variants": 4,
+      "live_origin_recreated": false
+    },
+    {
+      "case": "native-authority-render-command-and-bootstrap-remain-closed",
+      "status": "PASS"
+    }
+  ],
+  "native_helper_executed": false,
+  "new_root_or_USB_operations": 0,
+  "real_camera_return_or_recovery_proven": false,
+  "old_trial262_not_replayed": true
+}

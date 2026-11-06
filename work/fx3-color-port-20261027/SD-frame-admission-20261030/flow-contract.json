@@ -1,0 +1,1221 @@
+{
+  "created_utc": "2026-10-30T16:39:57.900430+00:00",
+  "source_libraries": [
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "bytes": 56032,
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater10RingBufferC2Ev",
+          "VA": "0x97f8",
+          "bytes": 108,
+          "sha256": "a2b10b4ca810231b54072de1636e4850a7f39e6fe729a071a8248245b944fd34",
+          "raw": "flow-original-spans/libupdatercommon.so-0x97f8.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x97f8.txt",
+          "calls": [
+            {
+              "address": "0x9834",
+              "kind": "direct",
+              "target": "0x6be0",
+              "symbol": "pthread_mutex_init"
+            },
+            {
+              "address": "0x9840",
+              "kind": "direct",
+              "target": "0x6b10",
+              "symbol": "pthread_cond_init"
+            },
+            {
+              "address": "0x984c",
+              "kind": "direct",
+              "target": "0x6be0",
+              "symbol": "pthread_mutex_init"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer10InitializeEPhm",
+          "VA": "0x9490",
+          "bytes": 24,
+          "sha256": "234afbedbf9458818b818a089310e4ebe1d34efc996fab18c26ad0dd3f6acecf",
+          "raw": "flow-original-spans/libupdatercommon.so-0x9490.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x9490.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer5ResetEv",
+          "VA": "0x9574",
+          "bytes": 112,
+          "sha256": "88afec3d32cde5840f3a500218e4d3c53182f09a580d1b88bf87cf3e98388ba6",
+          "raw": "flow-original-spans/libupdatercommon.so-0x9574.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x9574.txt",
+          "calls": [
+            {
+              "address": "0x9590",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x959c",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x95a8",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x95c4",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x95cc",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x95d4",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer5IsEndEv",
+          "VA": "0x95e4",
+          "bytes": 76,
+          "sha256": "1e62408fbba9cebfa313577bdffa684b6a9ac61c379f6c1a786d95f9323e1e3b",
+          "raw": "flow-original-spans/libupdatercommon.so-0x95e4.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x95e4.txt",
+          "calls": [
+            {
+              "address": "0x95fc",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x961c",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer11GetDataSizeEv",
+          "VA": "0x9630",
+          "bytes": 60,
+          "sha256": "44bad4113c8d7665b7af603e25993d09f4a01b5bc2a3bcf437bc92afd45f4287",
+          "raw": "flow-original-spans/libupdatercommon.so-0x9630.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x9630.txt",
+          "calls": [
+            {
+              "address": "0x964c",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9658",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer19ReadDataWithoutCopyEPPhm",
+          "VA": "0x96b0",
+          "bytes": 328,
+          "sha256": "1ddb7e8f5e8d454ac017f8c263b3677db639d434e20addd9faf95009125142bd",
+          "raw": "flow-original-spans/libupdatercommon.so-0x96b0.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x96b0.txt",
+          "calls": [
+            {
+              "address": "0x96d4",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9700",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9718",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9720",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9798",
+              "kind": "direct",
+              "target": "0x6f60",
+              "symbol": "pthread_cond_wait"
+            },
+            {
+              "address": "0x97c8",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x97d0",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x97d8",
+              "kind": "direct",
+              "target": "0x6f40",
+              "symbol": "_Unwind_Resume"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer13writeToBufferEPKhmb",
+          "VA": "0x9864",
+          "bytes": 216,
+          "sha256": "39943a51bd223c6ffd3b0673ab7c98cb7bc235ad2566692fd9601ea5158c785b",
+          "raw": "flow-original-spans/libupdatercommon.so-0x9864.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x9864.txt",
+          "calls": [
+            {
+              "address": "0x98a4",
+              "kind": "direct",
+              "target": "0x6a50",
+              "symbol": "memcpy"
+            },
+            {
+              "address": "0x98c8",
+              "kind": "direct",
+              "target": "0x6a50",
+              "symbol": "memcpy"
+            },
+            {
+              "address": "0x98d8",
+              "kind": "direct",
+              "target": "0x6a50",
+              "symbol": "memcpy"
+            },
+            {
+              "address": "0x98f4",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x990c",
+              "kind": "direct",
+              "target": "0x6c60",
+              "symbol": "pthread_cond_broadcast"
+            },
+            {
+              "address": "0x9914",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9930",
+              "kind": "direct",
+              "target": "0x6a50",
+              "symbol": "memcpy"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer26getEmptySizeWithoutLockingEv",
+          "VA": "0x993c",
+          "bytes": 16,
+          "sha256": "546ca876d9d6810d587a85cc9c81a0562e1e44cfe756f1092d167a18b3cbe7f5",
+          "raw": "flow-original-spans/libupdatercommon.so-0x993c.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x993c.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer9WriteDataEPKhmb",
+          "VA": "0x994c",
+          "bytes": 392,
+          "sha256": "f255ab1b0b3c2067042642678f94cae98d665e129d1d7b7ccd80b8710fac79ec",
+          "raw": "flow-original-spans/libupdatercommon.so-0x994c.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x994c.txt",
+          "calls": [
+            {
+              "address": "0x9984",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9994",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x99ac",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x99b4",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x99dc",
+              "kind": "direct",
+              "target": "0x6ef0",
+              "symbol": "_ZN7Updater10RingBuffer26getEmptySizeWithoutLockingEv"
+            },
+            {
+              "address": "0x99e8",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9a04",
+              "kind": "direct",
+              "target": "0x6cc0",
+              "symbol": "_ZN7Updater10RingBuffer13writeToBufferEPKhmb"
+            },
+            {
+              "address": "0x9a3c",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9a50",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9a5c",
+              "kind": "direct",
+              "target": "0x6ef0",
+              "symbol": "_ZN7Updater10RingBuffer26getEmptySizeWithoutLockingEv"
+            },
+            {
+              "address": "0x9a70",
+              "kind": "direct",
+              "target": "0x6f60",
+              "symbol": "pthread_cond_wait"
+            },
+            {
+              "address": "0x9a7c",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9aa0",
+              "kind": "direct",
+              "target": "0x6cc0",
+              "symbol": "_ZN7Updater10RingBuffer13writeToBufferEPKhmb"
+            },
+            {
+              "address": "0x9ab4",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9abc",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9ac4",
+              "kind": "direct",
+              "target": "0x6f40",
+              "symbol": "_Unwind_Resume"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer12GetEmptySizeEv",
+          "VA": "0x9ad4",
+          "bytes": 92,
+          "sha256": "0507dfddc5f35a7070e3b7dc2cdea453b087d76b054b711467a26683e09a3911",
+          "raw": "flow-original-spans/libupdatercommon.so-0x9ad4.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x9ad4.txt",
+          "calls": [
+            {
+              "address": "0x9af0",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9af8",
+              "kind": "direct",
+              "target": "0x6ef0",
+              "symbol": "_ZN7Updater10RingBuffer26getEmptySizeWithoutLockingEv"
+            },
+            {
+              "address": "0x9b08",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9b10",
+              "kind": "direct",
+              "target": "0x6f40",
+              "symbol": "_Unwind_Resume"
+            },
+            {
+              "address": "0x9b1c",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer10memoryCopyEPhPKhm",
+          "VA": "0x9b30",
+          "bytes": 24,
+          "sha256": "eebeab18fcb9017cd13366b0ba8de215d5d78c9acb249b3002ebe0f907f45c02",
+          "raw": "flow-original-spans/libupdatercommon.so-0x9b30.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x9b30.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer14readFromBufferEPhm",
+          "VA": "0x9b48",
+          "bytes": 228,
+          "sha256": "7c92fc2d71496cd8f2664f9dfdd288d543782dba038a9230d3f459f9309336bd",
+          "raw": "flow-original-spans/libupdatercommon.so-0x9b48.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x9b48.txt",
+          "calls": [
+            {
+              "address": "0x9b88",
+              "kind": "direct",
+              "target": "0x6d40",
+              "symbol": "_ZN7Updater10RingBuffer10memoryCopyEPhPKhm"
+            },
+            {
+              "address": "0x9bac",
+              "kind": "direct",
+              "target": "0x6d40",
+              "symbol": "_ZN7Updater10RingBuffer10memoryCopyEPhPKhm"
+            },
+            {
+              "address": "0x9bc8",
+              "kind": "direct",
+              "target": "0x6d40",
+              "symbol": "_ZN7Updater10RingBuffer10memoryCopyEPhPKhm"
+            },
+            {
+              "address": "0x9be4",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9bf8",
+              "kind": "direct",
+              "target": "0x6c60",
+              "symbol": "pthread_cond_broadcast"
+            },
+            {
+              "address": "0x9c00",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9c20",
+              "kind": "direct",
+              "target": "0x6d40",
+              "symbol": "_ZN7Updater10RingBuffer10memoryCopyEPhPKhm"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10RingBuffer8ReadDataEPhm",
+          "VA": "0x9c2c",
+          "bytes": 404,
+          "sha256": "d80e932894b8164ea21d1532067b34cd0f1fd80b6b16ddd4dddbc0da9690401c",
+          "raw": "flow-original-spans/libupdatercommon.so-0x9c2c.bin",
+          "listing": "flow-listings/libupdatercommon.so-0x9c2c.txt",
+          "calls": [
+            {
+              "address": "0x9c60",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9c70",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9c88",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9c90",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9cc0",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9ce8",
+              "kind": "direct",
+              "target": "0x6f30",
+              "symbol": "_ZN7Updater10RingBuffer14readFromBufferEPhm"
+            },
+            {
+              "address": "0x9d28",
+              "kind": "direct",
+              "target": "0x6a90",
+              "symbol": "pthread_mutex_lock"
+            },
+            {
+              "address": "0x9d3c",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9d64",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9d7c",
+              "kind": "direct",
+              "target": "0x6f30",
+              "symbol": "_ZN7Updater10RingBuffer14readFromBufferEPhm"
+            },
+            {
+              "address": "0x9d8c",
+              "kind": "direct",
+              "target": "0x6f60",
+              "symbol": "pthread_cond_wait"
+            },
+            {
+              "address": "0x9da4",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9dac",
+              "kind": "direct",
+              "target": "0x956c",
+              "symbol": null
+            },
+            {
+              "address": "0x9db4",
+              "kind": "direct",
+              "target": "0x6f40",
+              "symbol": "_Unwind_Resume"
+            }
+          ]
+        }
+      ],
+      "vtables": [
+        {
+          "name": "_ZTVN7Updater10RingBufferE",
+          "VA": "0x1cb88",
+          "bytes": 120,
+          "sha256": "6edd9f6f9cc92cded36e6c4a580933f9c9f1b90562b46903b806f21902a1a54f",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater10RingBufferE",
+              "addend": 0,
+              "resolved_link_VA": "0x1cb78"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBufferD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x94e8"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBufferD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9544"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer10InitializeEPhm",
+              "addend": 0,
+              "resolved_link_VA": "0x9490"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer8FinalizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x94a8"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer5ResetEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9574"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer4StopEv",
+              "addend": 0,
+              "resolved_link_VA": "0x966c"
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer5IsEndEv",
+              "addend": 0,
+              "resolved_link_VA": "0x95e4"
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer9WriteDataEPKhmb",
+              "addend": 0,
+              "resolved_link_VA": "0x994c"
+            },
+            {
+              "offset_from_symbol": "0x50",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer8ReadDataEPhm",
+              "addend": 0,
+              "resolved_link_VA": "0x9c2c"
+            },
+            {
+              "offset_from_symbol": "0x58",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer19ReadDataWithoutCopyEPPhm",
+              "addend": 0,
+              "resolved_link_VA": "0x96b0"
+            },
+            {
+              "offset_from_symbol": "0x60",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer8SkipDataEm",
+              "addend": 0,
+              "resolved_link_VA": "0x94d4"
+            },
+            {
+              "offset_from_symbol": "0x68",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer11GetDataSizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9630"
+            },
+            {
+              "offset_from_symbol": "0x70",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater10RingBuffer12GetEmptySizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9ad4"
+            }
+          ]
+        },
+        {
+          "name": "_ZTVN7Updater27BaseFirmwareInformationFileE",
+          "VA": "0x1c658",
+          "bytes": 64,
+          "sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater27BaseFirmwareInformationFileE",
+              "addend": 0,
+              "resolved_link_VA": "0x1c600"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZNK7Updater27BaseFirmwareInformationFile8GetValueEv",
+              "addend": 0,
+              "resolved_link_VA": "0x72dc"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater27BaseFirmwareInformationFile10WriteValueEj",
+              "addend": 0,
+              "resolved_link_VA": "0x7494"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater27BaseFirmwareInformationFile7IsValidEv",
+              "addend": 0,
+              "resolved_link_VA": "0x72b4"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "__cxa_pure_virtual",
+              "addend": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "bytes": 72864,
+      "sha256": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater12BaseFirmware10InitializeEPNS_10BaseModuleE",
+          "VA": "0xbb40",
+          "bytes": 8,
+          "sha256": "ab203c9f462e14bd4e997db2460790fd1a22f16c02c4fcef69fd84fcdc395371",
+          "raw": "flow-original-spans/libupdatercorecommon.so-0xbb40.bin",
+          "listing": "flow-listings/libupdatercorecommon.so-0xbb40.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater12BaseFirmware14StartWriteFirmEv",
+          "VA": "0xbb78",
+          "bytes": 124,
+          "sha256": "b7ed8b15f1f541d3c9961ee0fddf3c31eb1f383e0d005bec87e5cec957de5822",
+          "raw": "flow-original-spans/libupdatercorecommon.so-0xbb78.bin",
+          "listing": "flow-listings/libupdatercorecommon.so-0xbb78.txt",
+          "calls": [
+            {
+              "address": "0xbbac",
+              "kind": "direct",
+              "target": "0x8cf0",
+              "symbol": "printf"
+            },
+            {
+              "address": "0xbbb4",
+              "kind": "direct",
+              "target": "0x8590",
+              "symbol": "__cxa_allocate_exception"
+            },
+            {
+              "address": "0xbbe0",
+              "kind": "direct",
+              "target": "0x8be0",
+              "symbol": "__cxa_throw"
+            }
+          ]
+        },
+        {
+          "name": "_ZN7Updater10BaseModule9WriteDataEPKhmb",
+          "VA": "0xad34",
+          "bytes": 16,
+          "sha256": "4c820fea7cb33bad807dcf69fad121f822989ed08db95235cd94e87d57d362c2",
+          "raw": "flow-original-spans/libupdatercorecommon.so-0xad34.bin",
+          "listing": "flow-listings/libupdatercorecommon.so-0xad34.txt",
+          "calls": []
+        }
+      ],
+      "vtables": [
+        {
+          "name": "_ZTVN7Updater19CommonBufferManagerE",
+          "VA": "0x209e0",
+          "bytes": 64,
+          "sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater19CommonBufferManagerE",
+              "addend": 0,
+              "resolved_link_VA": "0x20978"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater19CommonBufferManagerD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xbac4"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater19CommonBufferManagerD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xbafc"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater19CommonBufferManager10InitializeEv",
+              "addend": 0,
+              "resolved_link_VA": "0xb938"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater19CommonBufferManager8FinalizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0xba80"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater19CommonBufferManager13GetWorkBufferEv",
+              "addend": 0,
+              "resolved_link_VA": "0xb920"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater19CommonBufferManager13GetBufferSizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0xb918"
+            }
+          ]
+        },
+        {
+          "name": "_ZTVN7Updater12BaseFirmwareE",
+          "VA": "0x20a30",
+          "bytes": 80,
+          "sha256": "5b6fb58e61fa475939767d68a446f97f1bff02c0e5935a3ea8bb51e6515783d8",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater12BaseFirmwareE",
+              "addend": 0,
+              "resolved_link_VA": "0x20a20"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmwareD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xbb3c"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmwareD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xbb50"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware10InitializeEPNS_10BaseModuleE",
+              "addend": 0,
+              "resolved_link_VA": "0xbb40"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware8FinalizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0xbb48"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware14StartWriteFirmEv",
+              "addend": 0,
+              "resolved_link_VA": "0xbb78"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware12EndWriteFirmEv",
+              "addend": 0,
+              "resolved_link_VA": "0xbbf4"
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware9WriteDataEPKhmb",
+              "addend": 0,
+              "resolved_link_VA": "0xbc6c"
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater12BaseFirmware5ResetEv",
+              "addend": 0,
+              "resolved_link_VA": "0xbce8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "bytes": 60584,
+      "sha256": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2",
+      "version": "2.05 historical intermediate updater initrd",
+      "byte_identical_to_2_04": true,
+      "functions": [
+        {
+          "name": "_ZN7Updater13BufferManagerC2Ev",
+          "VA": "0x9c58",
+          "bytes": 28,
+          "sha256": "2103cde0ecd701cec064da9cea87a08d4e781815880ecdebb18b37f87730dc30",
+          "raw": "flow-original-spans/libsdfileinputupdaterapi.so-0x9c58.bin",
+          "listing": "flow-listings/libsdfileinputupdaterapi.so-0x9c58.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater13BufferManager17GetResponseBufferEv",
+          "VA": "0x9a20",
+          "bytes": 8,
+          "sha256": "f289023bfc90be5c90aa1a98a40c5b356af639e69af0399f5914b2202364955c",
+          "raw": "flow-original-spans/libsdfileinputupdaterapi.so-0x9a20.bin",
+          "listing": "flow-listings/libsdfileinputupdaterapi.so-0x9a20.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater13BufferManager13GetWorkBufferEv",
+          "VA": "0x9a30",
+          "bytes": 16,
+          "sha256": "dad3ed67e8cbd63d70c2f03ddc9650be836dc8eac0d46a9882b3946fb0b9d58b",
+          "raw": "flow-original-spans/libsdfileinputupdaterapi.so-0x9a30.bin",
+          "listing": "flow-listings/libsdfileinputupdaterapi.so-0x9a30.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater21SDUUDConditionCheckerC2Ev",
+          "VA": "0xa3e4",
+          "bytes": 24,
+          "sha256": "8e28e05b3283b1d947c618bc9c8ac35ea93f8f32d87edaa705bfe0ee2dd33744",
+          "raw": "flow-original-spans/libsdfileinputupdaterapi.so-0xa3e4.bin",
+          "listing": "flow-listings/libsdfileinputupdaterapi.so-0xa3e4.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater21SDUUDConditionChecker10InitializeEPNS_27SDFileInputBodyLoaderModuleEPNS_17SDDecryptorModuleE",
+          "VA": "0x9fc0",
+          "bytes": 8,
+          "sha256": "147d7e61ef89d1cd006cfe5d922fcde341655ce34907a053fae8845f25b08898",
+          "raw": "flow-original-spans/libsdfileinputupdaterapi.so-0x9fc0.bin",
+          "listing": "flow-listings/libsdfileinputupdaterapi.so-0x9fc0.txt",
+          "calls": []
+        },
+        {
+          "name": "_ZN7Updater21SDUUDConditionChecker23SkipContentsInformationERNS_15FsysFileHandlerE",
+          "VA": "0x9fc8",
+          "bytes": 12,
+          "sha256": "7737b0f232fb10a4ba481b84587fd95c8f6665f81eeeea7fc0f80f58c3daeb67",
+          "raw": "flow-original-spans/libsdfileinputupdaterapi.so-0x9fc8.bin",
+          "listing": "flow-listings/libsdfileinputupdaterapi.so-0x9fc8.txt",
+          "calls": []
+        }
+      ],
+      "vtables": [
+        {
+          "name": "_ZTVN7Updater13BufferManagerE",
+          "VA": "0x1da80",
+          "bytes": 80,
+          "sha256": "5b6fb58e61fa475939767d68a446f97f1bff02c0e5935a3ea8bb51e6515783d8",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater13BufferManagerE",
+              "addend": 0,
+              "resolved_link_VA": "0x1da08"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater13BufferManagerD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9bf8"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater13BufferManagerD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9c30"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater13BufferManager10InitializeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9a48"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater13BufferManager8FinalizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9b80"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater13BufferManager17GetResponseBufferEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9a20"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater13BufferManager17GetFirmwareBufferEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9a28"
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater13BufferManager16GetCommandBufferEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9a30"
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater13BufferManager13GetWorkBufferEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9a30"
+            }
+          ]
+        },
+        {
+          "name": "_ZTVN7Updater21SDUUDConditionCheckerE",
+          "VA": "0x1dc00",
+          "bytes": 112,
+          "sha256": "b5fdab78d8947eacc864bfeecb4d2100780e5afe1cd8efafb124887913ac49fa",
+          "slots": [
+            {
+              "offset_from_symbol": "0x0",
+              "raw_word": "0x0"
+            },
+            {
+              "offset_from_symbol": "0x8",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZTIN7Updater21SDUUDConditionCheckerE",
+              "addend": 0,
+              "resolved_link_VA": "0x1dbf0"
+            },
+            {
+              "offset_from_symbol": "0x10",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionCheckerD1Ev",
+              "addend": 0,
+              "resolved_link_VA": "0x9fbc"
+            },
+            {
+              "offset_from_symbol": "0x18",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionCheckerD0Ev",
+              "addend": 0,
+              "resolved_link_VA": "0xa02c"
+            },
+            {
+              "offset_from_symbol": "0x20",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker10InitializeEPNS_27SDFileInputBodyLoaderModuleEPNS_17SDDecryptorModuleE",
+              "addend": 0,
+              "resolved_link_VA": "0x9fc0"
+            },
+            {
+              "offset_from_symbol": "0x28",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker8FinalizeEv",
+              "addend": 0,
+              "resolved_link_VA": "0x9fb8"
+            },
+            {
+              "offset_from_symbol": "0x30",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker16IsUUDConditionOKEPKcRN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0xa360"
+            },
+            {
+              "offset_from_symbol": "0x38",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker23SkipContentsInformationERNS_15FsysFileHandlerE",
+              "addend": 0,
+              "resolved_link_VA": "0x9fc8"
+            },
+            {
+              "offset_from_symbol": "0x40",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker11isVersionOKERN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0x9fd4"
+            },
+            {
+              "offset_from_symbol": "0x48",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker9isModelOKERN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0xa004"
+            },
+            {
+              "offset_from_symbol": "0x50",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker10isRegionOKERN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0xa018"
+            },
+            {
+              "offset_from_symbol": "0x58",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker22getFirmwareInformationEPKcRN10UpdaterAPI22firmware_information_tE",
+              "addend": 0,
+              "resolved_link_VA": "0xa054"
+            },
+            {
+              "offset_from_symbol": "0x60",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker21getUpdateFirmwareInfoEPKcRN10UpdaterAPI22firmware_information_t11informationE",
+              "addend": 0,
+              "resolved_link_VA": "0xa3fc"
+            },
+            {
+              "offset_from_symbol": "0x68",
+              "raw_word": "0x0",
+              "relocation_type": 257,
+              "symbol": "_ZN7Updater21SDUUDConditionChecker10searchFDATERNS_15FsysFileHandlerE",
+              "addend": 0,
+              "resolved_link_VA": "0xa0e8"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Original historical intermediate updater data, not a current-body engine capture. Static only; no original execution, helper stubs, hardware, signing, or modified firmware."
+}

@@ -1,0 +1,50 @@
+{
+  "scope": "offline Python CPU only; excludes QMP, disk writes, guest and browser latency",
+  "input_sha256": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2passivetiming-internal-v21-2383af57/osd-ring-readback.json": "52d5b737c96ade076047549cd5b0994213358d4db0ddc0d890ee70032b1c2f30",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2passivetiming-internal-v21-2383af57/trial-final.raw": "1f54a2d76fa2cebacc2d4272e6928bcbab79cab3bace5f52b63a9a4909188751",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2passivetiming-internal-v21-2383af57/trial-final.json": "8f78d399733aef1cb14ab849aa1113c0a317de8448a34219a55ebd2ad711dfa4",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/osd_ring93_v4.py": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/trial_ring_usability.py": "4dea2f0154844e24675726727fee5bdb7bbb50456dfd15288dfdb8d7daef1bdc"
+  },
+  "frame_records": 662,
+  "poll_records": 681,
+  "readback_bytes": 1386216,
+  "adjacent_identical_raw_sha256": 396,
+  "unique_raw_sha256": 9,
+  "timing_ms": {
+    "fnv": {
+      "samples": [
+        43.83579199202359,
+        44.5384579943493,
+        44.320749992039055
+      ],
+      "median": 44.320749992039055
+    },
+    "rgba": {
+      "samples": [
+        16.858540999237448,
+        16.83479198254645,
+        27.637791994493455
+      ],
+      "median": 16.858540999237448
+    },
+    "png": {
+      "samples": [
+        5.199374980293214,
+        7.05791701329872,
+        6.4889169880189
+      ],
+      "median": 6.4889169880189
+    },
+    "full_json_serialization": {
+      "samples": [
+        6.932875025086105,
+        4.946416011080146,
+        8.432083996012807
+      ],
+      "median": 6.932875025086105
+    }
+  },
+  "interpretation": "Potential repeated conversion cost only. SHA statistics are not permission to bypass byte equality or FNV validation. No menu speedup proven."
+}

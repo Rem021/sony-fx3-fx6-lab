@@ -1,0 +1,27 @@
+{
+  "status": "STATIC_HARDWARE_RESOURCES_AND_CURRENT_MCU_COUNTER_FIELDS_BOUND",
+  "previous_goal_turn_classification": "progress",
+  "this_goal_turn_classification": "progress",
+  "next_action_changed": "Do not require complete DDR training for the reference SRAM-only layout.9static resources/USB clock-reset mapping and current FX3 MCU counter/reload fields now correspond. Next verify current command16 and SIO/CS sources instead of guessing board pins or feeding counters.",
+  "limits": [
+    "FX3 AP/CP ROM hashes and ROM_LED_INIT function atFFFF0784 are not identified on current body",
+    "BootROM entry wiring, GPIO/serial timing and required RP2040 bridge remain unvalidated/unavailable",
+    "SIO channel0, GPIO port4 bit2 XCS and4MHz timer are reference assumptions without FX3 board/runtime binding",
+    "Cetus reset/boot strap and uploaded CP monitor must be adapted; main calls bring_up before USB and eMMC",
+    "Darwin counters/reload addresses match static FX3 code, but read command16, framing/pins, live counters, timer cadence and keepalive are not proven",
+    "raw/cleartext partition mapping, encryption, same-body boot0/p1 and inverse restore still require target evidence",
+    "reference transfer code exposes write/execute/reset operations; no FX3 upload or first hardware test is authorized by this comparison"
+  ],
+  "MCU_assumptions": [
+    "static same addresses are not the same whole MCU firmware or protocol compatibility",
+    "reload examples bind3 call sites only; not an exhaustive classification of all setters",
+    "slots0/2 use callee-saved base registers across intervening calls; their source association assumes normal ARM procedure-call preservation, not symbolic execution of all callees",
+    "no time unit, timeout, RAM write, feed/disable operation or failure recovery has been measured"
+  ],
+  "root01": "195 specific approval pending; no repeated question, job or admin launch",
+  "source_payload_compiled_uploaded_or_run": false,
+  "original_or_guest_executions": 0,
+  "root_or_device_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

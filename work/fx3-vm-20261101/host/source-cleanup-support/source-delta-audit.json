@@ -1,0 +1,44 @@
+{
+  "method": "Read-only tar-member SHA256 comparison before cleanup, 2026-11-01; no archive extraction",
+  "archive_regular_file_members_compared": 78695,
+  "code_members_different": [
+    "hw/arm/virt.c"
+  ],
+  "current_changed_code_sha256": "c87dcfffc0934812284dba05fd525ab0f400b0021b3b90896371f455f6f3289d",
+  "complete_patch": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/qemu-original-to-fx3-complete.patch",
+    "sha256": "23052b0e06f3adc6a3500d22aad8ea51688a49fa6d09f0693fb435954d1fbba7"
+  },
+  "patch_reverse_dry_run_exit": 0,
+  "patch_reverse_dry_run_stdout": "patching file 'hw/arm/virt.c'\n",
+  "non_code_link_differences": [
+    {
+      "path": "roms/edk2/EmulatorPkg/Unix/Host/X11IncludeHack",
+      "tar_target": "/opt/X11/include",
+      "local_state": "absent; external absolute symlink not extracted"
+    },
+    {
+      "path": "subprojects/libvduse/linux-headers/linux",
+      "tar_target": "../../../linux-headers/linux/",
+      "local_target": "../../../linux-headers/linux"
+    },
+    {
+      "path": "subprojects/libvduse/standard-headers/linux",
+      "tar_target": "../../../include/standard-headers/linux/",
+      "local_target": "../../../include/standard-headers/linux"
+    }
+  ],
+  "added_entry_count": 382,
+  "added_entry_classification": {
+    "subprojects/dtc_including_git_metadata": 354,
+    "scripts/qapi_generated_pycache": 17,
+    "scripts/tracetool_generated_pycache": 10,
+    "subprojects/.wraplock": 1
+  },
+  "dtc_head": "b6910bec11614980a21e46fbccc35934b671bd81",
+  "dtc_tracked_diff": "",
+  "dtc_status": "?? .meson-subproject-wrap-hash.txt\n",
+  "dtc_generated_wrap_hash_text": "932ca47fc50a6932207a6fc82e15d07d848e93c4ff9abcd0cc34c15f40a30885\n",
+  "build_tree_deleted": false,
+  "build_tree_note": "Build products/cache preserved, including generated C, object files, original build metadata/logs and source symlinks. No original implementation is deleted from this tree."
+}

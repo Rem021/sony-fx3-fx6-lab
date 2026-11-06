@@ -1,0 +1,46 @@
+--- r16/run_trial_v25_diag_r3.py
++++ r17/run_trial_v25_diag_r3.py
+@@ -172,7 +172,7 @@
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = (f'v25gate-n{ns.gate_publish_interval}-r16' if ns.gate_publish_interval is not None else
++    ns.label = (f'v25gate-n{ns.gate_publish_interval}-r17' if ns.gate_publish_interval is not None else
+                 'v25procdiag-web-r6' if ns.review_procdiag_r4e else 'v25diag-web-r6')
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+--- r16/snapshot_tail_v15.py
++++ r17/snapshot_tail_v15.py
+@@ -98,7 +98,7 @@
+     rec={'status':'unknown','snapshot_is_end_state':False,'post_snapshot_event_counts':'unknown',
+          'performance_window_closed_before_tail':True,'host_monotonic_start':started,
+          'capture_budget_seconds':budget,'stop_cleanup_budget_seconds':stop_budget,
+-         'qmp_cont_sent':False,'tail_stop_attempted':False,'reads':[],'errors':[]}
++         'qmp_cont_attempted':False,'qmp_cont_acknowledged':False,'tail_stop_attempted':False,'reads':[],'errors':[]}
+     wire=GateWire(gate,clock);cont_attempted=False;pause_proven=False
+     tag=None;nonce=None;pid=None;root=None;serial_found=False
+     def left():
+--- r16/test_fixed_slot_selection.py
++++ r17/test_fixed_slot_selection.py
+@@ -39,7 +39,7 @@
+             self.assertEqual(selected, runner.HERE.parent / 'r16-fixed-slot-guests' / f'guest-N{interval}')
+             self.assertEqual(ns.candidate, selected / 'candidate.json')
+             self.assertEqual(runner.digest(ns.candidate), pin)
+-            self.assertEqual(ns.label, f'v25gate-n{interval}-r16')
++            self.assertEqual(ns.label, f'v25gate-n{interval}-r17')
+             self.assertEqual((ns.smp, ns.tcg_thread, ns.icount_shift), (4, 'multi', None))
+             seen.append(pin)
+         self.assertNotEqual(*seen)
+--- r16/test_snapshot_tail_actual.py
++++ r17/test_snapshot_tail_actual.py
+@@ -113,6 +113,10 @@
+                 [{'name':'ui-gate-counters.bin','address':tail.BASE,'size':0x10000}],
+                 clock=clock,sleep=clock.sleep,nonce_factory=lambda:0x12345678)
+         self.assertEqual(gate.sock.gettimeout(),3)
++        self.assertNotIn('qmp_cont_sent',rec)
++        self.assertEqual(rec['qmp_cont_attempted'], 'cont' in qmp.calls)
++        self.assertEqual(rec['qmp_cont_acknowledged'],
++                         'cont' in qmp.calls and not (flags.get('lost_cont_reply') or flags.get('send_unknown_cont')))
+         self.assertTrue((run/'snapshot-tail-receipt.json').is_file())
+         return rec,qmp
+     def test_valid_and_identity(self):

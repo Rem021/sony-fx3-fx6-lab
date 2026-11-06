@@ -1,0 +1,31 @@
+{
+  "authority": "msg_b27db37f09d2",
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-completion104-light-v2.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-completion104-light-v2.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-completion104-light-v2.so"
+  ],
+  "exit": 0,
+  "source_sha256": "a923d3e0fe45c3cd0e57593525294dfea963664e2905c7c6cacb54d8f0c2b2e8",
+  "output_sha256": "a60f969a7a275372b3f558a371181addbfab372c1da52df3149ec761228fadc0",
+  "host_ASAN_UBSAN_test": {
+    "source_sha256": "3490e05572be8cf3a1c42cc344d426a26d805912cdf4601ed2aace8637c15e76",
+    "exit": 0,
+    "stdout": "AP104_LIGHT_EXACT_ONCE_ARGS_RESULTS_ERRNO_CALLER_PATH_ASAN_UBSAN_PASS\n"
+  },
+  "effect": "Resolve native libosal at process construction; no runtime dladdr, module82-only logs. Passive original native SendDrawComp PLT, osal_valloc_msg_wait and osal_snd_msg wrappers, exact once forwarding, results/errno retained; existing device/completion code unchanged"
+}

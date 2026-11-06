@@ -1,0 +1,62 @@
+{
+  "schema": "fx3-guest-audio-proxy-admission/1",
+  "status": "UNDEPLOYABLE_GUEST_ONLY",
+  "recognized_main_audio_pairs": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ]
+  ],
+  "audio_physical_capture_codec_rate_or_sync_proven": false,
+  "proxy_disabled_fields": {
+    "active": 0,
+    "vpc": 13,
+    "quality": 255,
+    "frame": 12,
+    "audio": 5,
+    "channel": 255
+  },
+  "recognized_enabled_proxy_tuples": [
+    {
+      "vpc": 6,
+      "quality": 6
+    },
+    {
+      "vpc": 6,
+      "quality": 26
+    },
+    {
+      "vpc": 11,
+      "quality": 28
+    }
+  ],
+  "enabled_proxy_other_fields": {
+    "active": 1,
+    "frame": 3,
+    "audio": 3,
+    "channel": 1
+  },
+  "preserves_MAIN_quality6_frame3_and_other_value_fields": true,
+  "native_helper_return_not_complete_format_or_frame_validation": true,
+  "borrowed_auxiliary48_control_is_not_owned_snapshot_or_capacity_proof": true,
+  "original_gate_and_overlap_guards_rechecked": 22,
+  "still_required": [
+    "actual healthy full parameter source",
+    "all omitted initializers and metadata writers",
+    "real target selector,callsite,synchronization and epoch",
+    "actual audio/proxy and MAIN resource/16M encoding",
+    "file/audio/timing/longrun/coldboot",
+    "same-body backup/restore readback and independent rescue"
+  ],
+  "stage75_backend_and_stage116_sealed_files_unchanged": true,
+  "camera_or_persistent_use_permitted": false,
+  "goal_complete": false
+}

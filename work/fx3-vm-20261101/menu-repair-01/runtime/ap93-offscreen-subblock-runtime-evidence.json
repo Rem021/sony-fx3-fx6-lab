@@ -1,0 +1,68 @@
+{
+  "run": "ap93r5frame-19bbfb81",
+  "serial_SHA256": "823a77ce7fc9946cc15ccb9f4627cd36424a7e846edbd00d8693a6e14a55aad3",
+  "scene_records": [
+    {
+      "LF_line": 16355,
+      "text": "open screen: scr0039_boot -> scr0099_0001\r"
+    },
+    {
+      "LF_line": 37033,
+      "text": "open screen: scr0099_0001 -> scr7248_0001\r"
+    }
+  ],
+  "native_child_allocations": [
+    {
+      "LF_line": 37065,
+      "text": "FX3_GPE_RESOURCE_SUBALLOC object=0x7f50691c00 logical=0x7ee37704c0 phys=0x4109364c0 bytes=0x780 align=0x40 result=0 original_once=1 interval_only=1\r"
+    },
+    {
+      "LF_line": 37071,
+      "text": "FX3_GPE_RESOURCE_SUBALLOC object=0x7f50691c00 logical=0x7ee3770c80 phys=0x410936c80 bytes=0x7400 align=0x40 result=0 original_once=1 interval_only=1\r"
+    },
+    {
+      "LF_line": 37107,
+      "text": "FX3_GPE_RESOURCE_SUBALLOC object=0x7f50691c00 logical=0x7ee37780c0 phys=0x41093e0c0 bytes=0x780 align=0x40 result=0 original_once=1 interval_only=1\r"
+    },
+    {
+      "LF_line": 37598,
+      "text": "FX3_GPE_RESOURCE_SUBALLOC object=0x7f50691c00 logical=0x7ee3778880 phys=0x41093e880 bytes=0x7400 align=0x40 result=0 original_once=1 interval_only=1\r"
+    }
+  ],
+  "unsupported_raw": [
+    {
+      "LF_line": 37069,
+      "text": "FX3_GPE_RAW_PARAMS op=FillRect seq=216 read=1 len=56 raw_hex=c0649310040000000000000000000000200000001d0000002000000000000000ffffffff00ff000000000000000000000000000000000000\r"
+    },
+    {
+      "LF_line": 37074,
+      "text": "FX3_GPE_RAW_PARAMS op=BitBlit seq=217 read=1 len=144 raw_hex=806c931004000000000000000000000074000000740000000000000000000000740000007400000000000000000000008000000000000000c06493100400000000000000000000001d0000001d00000000000000000000002000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000\r"
+    },
+    {
+      "LF_line": 37503,
+      "text": "FX3_GPE_RAW_PARAMS op=FillRect seq=218 read=1 len=56 raw_hex=c0e09310040000000000000000000000200000001d0000002000000000000000ffffffff00ff000000000000000000000000000000000000\r"
+    },
+    {
+      "LF_line": 37799,
+      "text": " reFX3_GPE_RAW_PARAMS op=BitBlit seq=219 read=1 len=144 raw_hex=80e8931004000000000000000000000074000000740000000000000000000000740000007400000000000000000000008000000000000000c0e093100400000000000000000000001d0000001d00000000000000000000002000000000000000000000000000000000000000000000000000ff0000000000000000000000000000000000000000000000000000000000t\r"
+    }
+  ],
+  "new_rejections": [
+    {
+      "LF_line": 37068,
+      "text": "FX3_GPE_CMD op=FillRect seq=216 async=0 fmt=0 w=32 h=29 dst_phys=0x4109364c0 src_phys=0 flags=0xff result=5 reason=4 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 37073,
+      "text": "FX3_GPE_CMD op=BitBlit seq=217 async=0 fmt=0 w=29 h=29 dst_phys=0x410936c80 src_phys=0x4109364c0 flags=0 result=5 reason=2 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 37500,
+      "text": "FX3_GPE_CMD op=FillRect seq=218 async=0 fmt=0 w=32 h=29 dst_phys=0x41093e0c0 src_phys=0 flags=0xff result=5 reason=4 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0\r"
+    },
+    {
+      "LF_line": 37797,
+      "text": "() LinFX3_GPE_CMD op=BitBlit seq=219 async=0 fmt=0 w=29 h=29 dst_phys=0x41093e880 src_phys=0x41093e0c0 flags=0 result=5 reason=2 read=1 approx_blend=0 formula=none selector=0 K=255 rotation=0 src_fmt=0e\r"
+    }
+  ]
+}

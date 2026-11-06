@@ -1,0 +1,34 @@
+{
+  "result": "PASS",
+  "python": "3.14.6",
+  "pinned_fx6_av_sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+  "steps": [
+    "bounded initializer with original memcpy",
+    "guard and mutation/budget controls",
+    "bounded DMA-list builder with declared provider stubs",
+    "FX3/FX6 fixture route comparison"
+  ],
+  "checks": {
+    "initializer_instructions": 55395,
+    "original_memcpy_calls": 1166,
+    "image_write_events": 30316,
+    "image_write_unique_bytes": 177232,
+    "image_write_instruction_count": 13,
+    "target_copy_count": 1,
+    "dma_builder_instructions": 6389,
+    "dma_rows": 70,
+    "target_slot_read_events": 3,
+    "hardware_submitted": false
+  },
+  "artifact_sha256": {
+    "trace_init.py": "8f7429b1aa1c0f3c539989fba59c935584dca5285cff91ef9e42b958ddee8683",
+    "replay_controls.py": "0a8908a92c780f4cd0d78cb94ef5fe0fb44ee5e8dec209e3081e17b873b95fdf",
+    "trace_dma.py": "b4df43562b51218233997dfbc01597cc5d24cf608a6ac36f5cedd9d99bd1b2c3",
+    "compare_route.py": "930c7fd1db267490ba62ae6f63e05ad7f074267ff8f74c750737100d63368c57",
+    "init-trace.json": "7bad0475d6d02adffc51e508f5189e398639d30eae72d82a210a3ccf1a09a9fd",
+    "controls.json": "dbc642a75e334f058d7e920ad7a2f2f9649152d37f0404821da5e9f527d263b9",
+    "dma-trace.json": "ecf146d0ddee5a69a33aeb54b087c7050afcb7bbc9f0b67daf90df4d9488cf71",
+    "route-diff.json": "8c3bbd6a01fdda0d6064c8494c76de637202dc3f5fb7a0151060ba0ac81fb3ea"
+  },
+  "scope": "CPU guest and static comparison only; no VM/runtime/USB/camera/hardware DMA"
+}

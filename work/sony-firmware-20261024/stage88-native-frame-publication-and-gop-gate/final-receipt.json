@@ -1,0 +1,74 @@
+{
+  "schema": "fx3-stage88-native-parent-event-GOP-gate/1",
+  "created_utc": "2026-10-27T07:07:36.922030+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/README.md",
+      "bytes": 4557,
+      "sha256": "c2b4f5ea02e532363aed9bcf6f06b504fe64e1dc650486e5e838e162215eb5b1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/completed-evidence-review.json",
+      "bytes": 814,
+      "sha256": "b65078c5722413c0811b2cbfe25b756dba1964ba044884e98d8fd1417812feac"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/gate_event.py",
+      "bytes": 14371,
+      "sha256": "16058dfa7b65502d6e51b369bc2bc1211f1bd14eb61f6ce070f86f6909b28a6a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/goal-status-after.json",
+      "bytes": 264179,
+      "sha256": "e96148901af2f2a342c0c408993f7a6d965b96d2d8c481698437bbc958a31ce9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/goal-status-before.json",
+      "bytes": 261903,
+      "sha256": "6c4925aeec9626cc4c8fd804776cfa9b345e06b58e141f5580789c6aba5d1062"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/review_and_seal.py",
+      "bytes": 11675,
+      "sha256": "f24b7b85f9222a783de536148d0b76624e3748df1a2b631d5e15fecbeefd02ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/run-20261026/executed-source.py",
+      "bytes": 14371,
+      "sha256": "16058dfa7b65502d6e51b369bc2bc1211f1bd14eb61f6ce070f86f6909b28a6a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/run-20261026/gate-event-results.json",
+      "bytes": 780672,
+      "sha256": "0974b0804156eb0fbd3ae32c824a7cdd7800554dcd7bb75a21c097c2fa34b483"
+    }
+  ],
+  "previous_manifest_sha256": "00375ff2716f51c5c07f5f7a93e81a46bc2ad35518bf88c6628f1faced682fa9",
+  "operations": {
+    "status": "PASS_NATIVE_DECLARED_PARENT_EVENT_GATE_OPEN_CHECK_COPY_CLEAR",
+    "created_utc": "2026-10-27T07:07:36.922030+00:00",
+    "prior_sealed_files_verified": 8,
+    "formal_cases": 12,
+    "formal_bounded_phases": 32,
+    "native_gate_0_1_0_success_cases": 4,
+    "event_off_native_skip_checked": true,
+    "missing_input_handle_flag_set_before_allocation_not_copy_completion": true,
+    "missing_output_handle_keeps_gate1_before_allocation": true,
+    "record_payload_handles_declared_not_real_module_reply": true,
+    "common_virtual_ownership_scheduling_MAIN_hardware_or_recovery_proven": false,
+    "review_scope": "Same-agent source/full-region/state-transition review; no independent engine or camera acceptance.",
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "6c4925aeec9626cc4c8fd804776cfa9b345e06b58e141f5580789c6aba5d1062",
+    "after_sha256": "e96148901af2f2a342c0c408993f7a6d965b96d2d8c481698437bbc958a31ce9"
+  },
+  "readme_index_before_sha256": "49279470eaa40ccfc75a5d305cf78c9fedae6a21c354694a0ff5cca81bfe02c0",
+  "readme_index_after_sha256": "b297014079bf28ae6289ae3d3f74093e03cab5d5519e67e77b8a61db234d9a9f",
+  "readme_index_entry": "- [2026-10-27 FX3 上游发布与GOP门控](<work/sony-firmware-20261024/stage88-native-frame-publication-and-gop-gate/README.md>)：声明事件经原发布/置gate/门控复制清位，12例32阶段；缺句柄停分配前。真实记录/公共虚回调/调度/MAIN与硬件仍未证，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

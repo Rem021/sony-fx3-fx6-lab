@@ -1,0 +1,30 @@
+fe05881c 08040051 sub      w8, w0, #1
+fe058820 1f150071 cmp      w8, #5
+fe058824 c8000054 b.hi     #0xfe05883c
+fe058828 090a8052 mov      w9, #0x50
+fe05882c 087d7a93 sbfiz    x8, x8, #6, #0x20
+fe058830 89c0bf72 movk     w9, #0xfe04, lsl #16
+fe058834 006969b8 ldr      w0, [x8, x9]
+fe058838 c0035fd6 ret      
+fe05883c 00008092 mov      x0, #-1
+fe058840 c0035fd6 ret      
+fe058844 08040051 sub      w8, w0, #1
+fe058848 1f150071 cmp      w8, #5
+fe05884c c8000054 b.hi     #0xfe058864
+fe058850 09088052 mov      w9, #0x40
+fe058854 087d7a93 sbfiz    x8, x8, #6, #0x20
+fe058858 89c0bf72 movk     w9, #0xfe04, lsl #16
+fe05885c 006969b8 ldr      w0, [x8, x9]
+fe058860 c0035fd6 ret      
+fe058864 00008012 mov      w0, #-1
+fe058868 c0035fd6 ret      
+fe05886c 08040051 sub      w8, w0, #1
+fe058870 1f150071 cmp      w8, #5
+fe058874 c8000054 b.hi     #0xfe05888c
+fe058878 89088052 mov      w9, #0x44
+fe05887c 087d7a93 sbfiz    x8, x8, #6, #0x20
+fe058880 89c0bf72 movk     w9, #0xfe04, lsl #16
+fe058884 006969b8 ldr      w0, [x8, x9]
+fe058888 c0035fd6 ret      
+fe05888c 00008012 mov      w0, #-1
+fe058890 c0035fd6 ret      

@@ -1,0 +1,17 @@
+{
+  "status": "PATCHED_PRIVATE_SOURCE_ONLY_NOT_NATIVE_INITIALIZATION",
+  "upstream_sha256": "290b9913eba18e0f9f9fa0de75c59bec0daa4ccd02740a96fd8479d20da06557",
+  "patched_sha256": "aa1dd8d212f3fdbbb18bfd3a8203e76d567366fe3807f093274d5fa70154ecde",
+  "unset_target_denies_all": true,
+  "selector_before_device_user_client_creation": true,
+  "fixed_VID": "054C",
+  "fixed_PIDs": [
+    "0DA1",
+    "0336"
+  ],
+  "selector_requires_nonzero_exact_location": true,
+  "descriptor_cache_single_standard_read_no_open_reset_suspend_or_retry": true,
+  "public_capture_API_still_exists_but_not_used_by_descriptor_probe": true,
+  "private_source_not_claimed_upstream_release": true,
+  "device_or_driver_operations": 0
+}

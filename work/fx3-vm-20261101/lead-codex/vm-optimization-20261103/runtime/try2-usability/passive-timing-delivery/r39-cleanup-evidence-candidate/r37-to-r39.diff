@@ -1,0 +1,580 @@
+--- r37/runtime-wrapper/audit_after.py
++++ r39/runtime-wrapper/audit_after.py
+@@ -3,8 +3,10 @@
+ from preflight import verify
+ 
+ def main():
+- cleanup=read('CLEANUP.json')
+- assert cleanup['runner_alive'] is False and cleanup['port_closed'] is True and not cleanup['errors']
++ # Never trust the compatibility/latest index as completion proof.
++ ref=evidence.load(HERE/'CLEANUP-COMPLETED.json')
++ c=identity();proof=evidence.revalidate(HERE,ref,evidence.binding(HERE,c,CFG),c,CFG)
++ write('CLEANUP-AUDIT.json',proof)
+  verify('INPUTS-AFTER.json')
+  write('OUTPUT-BOUNDARY-AFTER.json',{'original_runtime_writes_allowed':[],'candidate_run_outputs_root':str(HERE),**stamp()})
+  print(json.dumps({'status':'collected_only','menu_acceptance':'requires independent real eight-step visual/native evidence review'}))
+--- r37/runtime-wrapper/cleanup.py
++++ r39/runtime-wrapper/cleanup.py
+@@ -19,8 +19,8 @@
+  if current.get('state') in ('cancelled','expired'):return 'valid_nonarmed'
+  return 'unknown_malformed'
+ 
+-def cleanup():
+- c=identity();errors=[];event('cleanup_entry_End_first')
++def _cleanup_once(c,output):
++ errors=[];event('cleanup_entry_End_first')
+  try:
+   ev('End-original-button','(()=>{if(location.href!=='+json.dumps(c['url'])+'||lastStatus.launch_request_id!=='+json.dumps(c.get('launch_id'))+')throw Error("owned_page_identity");if(!finished&&!endButton.disabled){endButton.click();return {End_invoked:true}}return {End_invoked:false,finished,ending}})()')
+  except Exception as e:errors.append('End: '+repr(e))
+@@ -30,8 +30,8 @@
+   time.sleep(.2)
+  else:errors.append('final browser ACK receipt absent within cleanup wait')
+  try:
+-  ev('ended-state','({lastStatus,finished,ending,alarm:window.__fx3InteractionDeadlineV1?.status?.()})')
+-  browser('ended-page',['screenshot',str(HERE/'ended-page.png')],timeout=10)
++  ended=ev('ended-state','({lastStatus,finished,ending,url:location.href,document_time_origin:performance.timeOrigin,document_id:reviewDocumentId,alarm:window.__fx3InteractionDeadlineV1?.status?.()})');write('ENDED-STATE.json',ended)
++  browser('ended-page',['screenshot',str(output/'ended-page.png')],timeout=10)
+  except Exception as e:errors.append('ended document capture: '+repr(e))
+  disposition='unknown_status_fetch_failed'
+  try:
+@@ -41,7 +41,7 @@
+   else:write('dispose-not-invoked.json',{'reason':disposition,'alarm_cleanup':'no cancel/no dispose; owned document closes below'})
+  except Exception as e:errors.append('alarm status/dispose: '+repr(e))
+  write('ALARM-DISPOSITION.json',{'classification':disposition,'forced_cancel':False})
+- try:browser('HAR-stop',['network','har','stop',str(HERE/'traffic.har')],timeout=15)
++ try:browser('HAR-stop',['network','har','stop',str(output/'traffic.har')],timeout=15)
+  except Exception as e:errors.append('HAR: '+repr(e))
+  try:browser('browser-before-close',['session','info','--json'])
+  except Exception as e:errors.append('browser before-close info: '+repr(e))
+@@ -63,5 +63,85 @@
+   if (not running and closed) or time.monotonic()>=limit:break
+   time.sleep(.05)
+  if running or not closed:errors.append('final runner PID/port not closed within bounded wait')
+- value={'errors':errors,'alarm_disposition':disposition,'runner_pid':c['runner_pid'],'runner_alive':running,'port_closed':closed,'bounded_final_recheck_seconds':5,**stamp()};write('CLEANUP.json',value);print(json.dumps(value));return value
+-if __name__=='__main__':cleanup()
++ value={'errors':errors,'alarm_disposition':disposition,'runner_pid':c['runner_pid'],'runner_alive':running,'port_closed':closed,'bounded_final_recheck_seconds':5,**stamp()};write('body-result.json',value);return value
++
++
++
++def cleanup():
++ """Explicit invocation: immutable evidence and one kernel-lock owner per run."""
++ import contextlib,io
++ c=identity();call=evidence.invocation(HERE);fd=None;token=None
++ value={'schema':evidence.SCHEMA,'call_id':call.name,'status':'unknown','errors':[],
++        'receipt_path':str(call/'result.json'),'usable_only_with_verified_manifest_reference':True,'original_action_outcome':'unchanged',**stamp()}
++ state={'dir':call,'write_errors':[]};owner=False
++ try:
++  fd=evidence.acquire(HERE);owner=fd is not None
++  current=evidence.binding(HERE,c,CFG);value['binding']=current
++  try:evidence.put(call/'invocation.json',{'schema':evidence.SCHEMA,'call_id':call.name,'binding':current,'owner':owner,**stamp()})
++  except Exception as e:state['write_errors'].append('invocation: '+repr(e))
++  def stream(name):
++   try:return (call/name).open('x')
++   except Exception as e:
++    state['write_errors'].append(name+': '+repr(e));return io.StringIO()
++  with stream('stdout.txt') as stdout,stream('stderr.txt') as stderr,contextlib.redirect_stdout(stdout),contextlib.redirect_stderr(stderr):
++   token=evidence.ACTIVE.set(state)
++   try:
++    if not owner:
++     value.update(status='busy',errors=['cleanup owner active; no wait, no second End/browser/dispose'])
++    else:
++     needs_cleanup=True
++     if (HERE/'CLEANUP-COMPLETED.json').exists() or (HERE/'CLEANUP-COMPLETED.json').is_symlink():
++      try:
++       ref=evidence.load(HERE/'CLEANUP-COMPLETED.json');proof=evidence.revalidate(HERE,ref,current,c,CFG)
++       write('revalidation.json',proof);value.update(status='already-cleaned',original_receipt=ref,resources=proof['resources']);needs_cleanup=False
++      except Exception as invalid:
++       # Preserve even malformed bytes. The bad index is neither permission to
++       # skip a live run's End nor permission to act on an unowned page/PID.
++       raw=evidence.regular(HERE/'CLEANUP-COMPLETED.json').read_bytes()
++       with (call/'invalid-completed-index.bin').open('xb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
++       superseded={'path':str(call/'invalid-completed-index.bin'),'sha256':evidence.digest(call/'invalid-completed-index.bin'),'reason':repr(invalid)}
++       write('invalid-completion.json',superseded)
++       current_live=evidence.owned_live_candidate(HERE,c,CFG);write('current-live-precheck.json',current_live)
++       if current_live['state']!='live_candidate_requires_owned_page':raise ValueError('invalid completion evidence; current resources closed; no browser revisit')
++       if not isinstance(c.get('launch_id'),str) or not c['launch_id']:raise ValueError('current_launch_unestablished_End_required')
++       owned=ev('owned-current-before-recleanup','(()=>{if(location.href!=='+json.dumps(c['url'])+'||lastStatus.launch_request_id!=='+json.dumps(c['launch_id'])+'||finished||ending||lastStatus.phase==="finished"||!lastStatus.run_incarnation)throw Error("current_owned_lifecycle_unknown");return {url:location.href,launch_id:lastStatus.launch_request_id,document_id:reviewDocumentId,document_time_origin:performance.timeOrigin,run_incarnation:lastStatus.run_incarnation}})()')
++       if owned.get('url')!=c['url'] or owned.get('launch_id')!=c['launch_id'] or not owned.get('document_id') or not owned.get('run_incarnation'):raise ValueError('current_owned_page_identity')
++       if (HERE/'current-attempt.json').exists():
++        attempt=read('current-attempt.json').get('postkey_binding')
++        if attempt and any(owned.get(k)!=attempt.get(k) for k in ('document_id','document_time_origin','run_incarnation')):raise ValueError('current_document_changed_End_required')
++       write('owned-current-page.json',owned);value['superseded_invalid_completion']=superseded
++     if needs_cleanup:
++      body=_cleanup_once(c,call);value.update(body)
++      if state['write_errors']:raise OSError('cleanup evidence writes failed: '+repr(state['write_errors']))
++      proof=evidence.certify(call,c,CFG,body);write('proof.json',proof)
++      if state['write_errors']:raise OSError('cleanup proof persistence failed')
++      value.update(status='completed',resources=proof['resources'])
++   except BaseException as e:
++    value['status']='unknown';value['End_required']=True;value['errors']=[*value['errors'],'cleanup incomplete: '+repr(e)]
++   finally:
++    evidence.ACTIVE.reset(token);token=None
++   print(json.dumps(value,ensure_ascii=False));stdout.flush();stderr.flush()
++   for f in (stdout,stderr):
++    if not isinstance(f,io.StringIO):os.fsync(f.fileno())
++  evidence.put(call/'result.json',value);ref=evidence.seal(call)
++  if owner:evidence.publish(HERE,ref,value)
++  value={**value,'receipt_reference':ref}
++ except BaseException as e:
++  value.update(status='unknown',errors=[*value['errors'],'cleanup persistence/identity/lock failure: '+repr(e)],End_required=True)
++ finally:
++  if token is not None:evidence.ACTIVE.reset(token)
++  if fd is not None:os.close(fd) # close releases lease even if receipt/index failed
++ # This sidecar is the exact public CLI stdout, separate from the sealed body
++ # streams (the public reference cannot include its own hash). Never overwrite.
++ public=json.dumps(value,ensure_ascii=False)+'\n'
++ try:
++  with (call/'return.stdout.txt').open('x') as f:f.write(public);f.flush();os.fsync(f.fileno())
++  evidence.put(call/'RETURN-HASH.json',{'sha256':evidence.digest(call/'return.stdout.txt'),'bytes':len(public.encode()),'scope':'exact public stdout; no self-hash in output'})
++ except BaseException as e:
++  value.update(status='unknown',errors=[*value['errors'],'public return persistence failure: '+repr(e)],End_required=True);public=json.dumps(value,ensure_ascii=False)+'\n'
++ sys.stdout.write(public);return value
++if __name__=='__main__':
++ try:result=cleanup()
++ except BaseException as e:
++  result={'schema':evidence.SCHEMA,'status':'unknown','errors':['cleanup allocation/identity failure: '+repr(e)],'End_required':True};print(json.dumps(result))
++ raise SystemExit(0 if result['status'] in ('completed','already-cleaned') else 2)
+--- r37/runtime-wrapper/common.py
++++ r39/runtime-wrapper/common.py
+@@ -18,13 +18,19 @@
+  assert hashlib.sha256(Path(_file).read_bytes()).hexdigest()==_sha,('source_freeze_changed',_file)
+ ENV={**os.environ,'PYTHONDONTWRITEBYTECODE':'1','AGENT_BROWSER_NO_VERSION_CHECK':'1'}
+ def stamp():return {'UTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'host_ns':time.monotonic_ns()}
++import cleanup_evidence as evidence
+ def write(name,data):
++ if evidence.ACTIVE.get() is not None:return evidence.routed_write(name,data)
+  (HERE/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+ def read(name):return json.loads((HERE/name).read_text())
+ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def event(stage,**kw):
++ if evidence.ACTIVE.get() is not None:return evidence.record_event({'stage':stage,**stamp(),**kw})
+  with (HERE/'tool-timeline.jsonl').open('a') as f:f.write(json.dumps({'stage':stage,**stamp(),**kw},ensure_ascii=False)+'\n')
+ def run(name,args,source=None,timeout=20,watch=False):
++ if evidence.ACTIVE.get() is not None:
++  assert not watch,'cleanup does not observe or mutate navigation ledger'
++  return evidence.run_capture(name,args,source,timeout,ENV,stamp,event)
+  start=stamp();event(name+'_enter',argv=args)
+  stop=threading.Event()
+  def observe():
+--- r37/runtime-wrapper/operate.py
++++ r39/runtime-wrapper/operate.py
+@@ -11,8 +11,7 @@
+ def savepath(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+ def argbase(c,nonce):return ['--session',CFG['session'],'--url',c['url'],'--launch-id',c['launch_id'],'--nonce',nonce]
+ def failcleanup():
+- p=subprocess.run(['python3','-B',str(SOURCE/'cleanup.py')],env=ENV,text=True,capture_output=True,timeout=100)
+- return {'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr}
++ return evidence.dispatch_cleanup(SOURCE,HERE,ENV)
+ def prerequisite_record(step,cap_path,target,confirmation=None):
+  c=identity();cap=json.loads(Path(cap_path).read_text())
+  origin=(cap['before']['origin'] if step==0 else json.loads(Path(confirmation).read_text())['browser_result']['cancelled']['documentTimeOrigin'])
+@@ -106,7 +105,7 @@
+   # Same actual guard shape as validated r21b; End before subsequent analysis.
+   flow.terminal()
+   write('FAILURE.json',{'action':action,'error':repr(e),**stamp()})
+-  try:write('FAILURE-CLEANUP-DISPATCH.json',failcleanup())
++  try:failcleanup()
+   except BaseException as ce:write('FAILURE-CLEANUP-ERROR.json',{'error':repr(ce)})
+   raise
+ if __name__=='__main__':run_action(sys.argv[1])
+--- r37/runtime-wrapper/preflight.py
++++ r39/runtime-wrapper/preflight.py
+@@ -7,7 +7,7 @@
+  root=Path('/Volumes/KAFU2T/AI/Projects/Mac');groups={}
+  def group(label,pairs):
+   groups[label]=[{'path':str(p),'expected':h,'actual':sha(p),'match':sha(p)==h} for p,h in pairs];assert all(r['match'] for r in groups[label])
+- group('r37_local_core',[(SOURCE.parent/f,h) for f,h in json.loads((SOURCE.parent/'CORE-SOURCE-FREEZE.json').read_text()).items()])
++ group('r39_local_core',[(SOURCE.parent/f,h) for f,h in json.loads((SOURCE.parent/'CORE-SOURCE-FREEZE.json').read_text()).items()])
+  group('pins',[(FROZEN/'SHA256SUMS','dcbbb11fc1942a480b8624e53d769e29b93fec3c884401811cc0599fea3b02ef'),(FROZEN/'SOURCE-FREEZE.json','31ee6b1d00fecfc5ac53e874b144230d2430208277c295d74c4a804fbe1135ec')])
+  group('r25_manifest',[(SOURCE.parent.parent/'r25-recovery-observation-candidate/SHA256SUMS','c2d44926c77b0d102075c697e7812385f1782bc6ace67b9aaa7fe11ad83023e7')])
+  r25=SOURCE.parent.parent/'r25-recovery-observation-candidate'
+@@ -39,14 +39,14 @@
+ def audit(event,args):
+  if event in ('subprocess.Popen','os.system','os.fork','os.posix_spawn','socket.__new__'):raise RuntimeError('forbidden import side effect: '+event)
+ sys.addaudithook(audit)
+-g=runpy.run_path(str(r/'run_trial_r24_review_snapshot.py'),run_name='r37_import_only')
++g=runpy.run_path(str(r/'run_trial_r24_review_snapshot.py'),run_name='r39_import_only')
+ mods={name:str(Path(sys.modules[name].__file__).resolve()) for name in ('startup_observation','trial_ring_cached','trial_log_v4_mss','qmp_line_transport','gate_input_usability','runtime_resource_guard','trial_web_r24_review_snapshot')}
+ for name in ('startup_observation','trial_ring_cached','trial_log_v4_mss','trial_web_r24_review_snapshot'):assert Path(mods[name]).parent==r
+ for name in ('qmp_line_transport','gate_input_usability','runtime_resource_guard'):assert Path(mods[name]).parent==r.parent/'v25-r21-recovery-integration'
+ assert Path(sys.modules['r35_package_selection'].__file__).resolve()==r/'r35_package_selection.py'
+ assert g['ACTIVE_GUARD'] is None and g['ACTIVE_STARTUP_OBSERVATION'] is None
+ print(json.dumps({'mode':'import_only_main_not_called','modules':mods,'run_dir':os.environ['FX3_NAV_RUN_DIR']}))'''
+- binding=json.loads(run('r37-import-only',['python3','-B','-c',code,str(SOURCE.parent)]))
++ binding=json.loads(run('r39-import-only',['python3','-B','-c',code,str(SOURCE.parent)]))
+  write('ACTUAL-DEPENDENCY-BINDING.json',binding)
+  write('PREFLIGHT-RESULT.json',{'passed':True,'scope':'pinned input and CLI parser preparation only; no browser or guest',**stamp()})
+  print(json.dumps({'passed':True}))
+--- r37/return-tools/return_adapter.py
++++ r39/return-tools/return_adapter.py
+@@ -5,9 +5,11 @@
+ FROZEN=Path(__file__).resolve().parents[1]
+ sys.path.insert(0,str(FROZEN))
+ from r35_package_selection import output_root,PROFILE
++sys.path.insert(0,str(FROZEN/'runtime-wrapper'))
++from cleanup_evidence import failure_status
+ OPERATE=FROZEN/'runtime-wrapper/operate.py'
+-OPERATE_SHA='97e41bc5687fd6c9397fcca639355624c70e368761e1e24ad4329a85d9408741'
+-CORE_FREEZE_SHA='7752a6fd7cdb74def7a3cfa9659ed6a1a4f6ab23708a5aaaed5f345e7c46f303'
++OPERATE_SHA='7c95d7ce2fa724e4172b5a6294c7a45f7393a48b765d3d58743ca74d692d0e64'
++CORE_FREEZE_SHA='642149dac737315d19dc6910804538eec6df79a43261527c06fcaf23d374bd50'
+ VOLUME='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ MAX_SUMMARY_BYTES=4096
+ ACTIONS={'click':3,'observe':2,'pin':2,'confirm':2,'standby_review':2,'recovery_review':2,'recovery_cancel':2,'reject':2}
+@@ -23,6 +25,7 @@
+  """Private injection seam for offline tests; production argv is constructed below, never supplied by CLI."""
+  run_dir=Path(run_dir).resolve();out=Path(out);out.mkdir() # exclusive invocation; no old result fallback
+  out=out.resolve();started=time.time_ns();call_id=str(uuid.uuid4())
++ env={**env,'FX3_RETURN_CALL_ID':call_id}
+  put(out/'invocation.json',{'call_id':call_id,'action':action,'run_dir':str(run_dir),'argv':argv,'wall_start_ns':started,'fixture_only':env.get('FX3_RETURN_FIXTURE_ONLY')=='1'})
+  result={'adapter_schema':'fx3-tool-return-v1','call_id':call_id,'action':action,'run_dir':str(run_dir),'status':'return_failed','ok':False,'receipt_path':str(out/'child.stdout.json'),'stderr_path':str(out/'child.stderr.txt'),'image':None,'fixture_only':env.get('FX3_RETURN_FIXTURE_ONLY')=='1'}
+  code=2
+@@ -32,7 +35,9 @@
+    stdout.flush();stderr.flush();os.fsync(stdout.fileno());os.fsync(stderr.fileno())
+   put(out/'process.json',{'returncode':p.returncode,'wall_start_ns':started,'wall_end_ns':time.time_ns(),'stdout_sha256':sha(out/'child.stdout.json'),'stderr_sha256':sha(out/'child.stderr.txt')})
+   result['child_returncode']=p.returncode
+-  if p.returncode!=0:raise ValueError('original_child_nonzero_End_required_no_image')
++  if p.returncode!=0:
++   result['cleanup']=failure_status(run_dir,call_id)
++   raise ValueError('original_child_nonzero_End_required_no_image')
+   value=json.loads((out/'child.stdout.json').read_text()) # only the full current child file
+   if type(value) is not dict:raise ValueError('child_result_not_object')
+   status=value.get('status');image_kind=None
+--- r37/return-tools/short_tool.mjs
++++ r39/return-tools/short_tool.mjs
+@@ -5,7 +5,7 @@
+  return async function one(operation,renderer){
+   const value=await executeAndLoad(runDir,operation);
+   const s=value.summary;
+-  renderer.write({status:s.status,step:s.step,scope:s.image?.scope,receipt:s.receipt_path,reason:s.reason,End_required:s.End_required});
++  renderer.write({status:s.status,step:s.step,scope:s.image?.scope,receipt:s.receipt_path,reason:s.reason,End_required:s.End_required,cleanup:s.cleanup});
+   if(value.png)await renderer.emitImage({bytes:value.png,mimeType:'image/png'});
+  };
+ }
+--- r37/return-tools/show_result.mjs
++++ r39/return-tools/show_result.mjs
+@@ -3,7 +3,24 @@
+ import path from 'node:path';
+ import {createHash} from 'node:crypto';
+ export async function loadResult(callDir, runDir, action, exitCode) {
+- if(exitCode!==0)return {summary:{adapter_schema:'fx3-tool-return-v1',action,run_dir:runDir,status:'return_failed',ok:false,End_required:true,receipt_path:path.join(callDir,'child.stdout.json'),reason:'nonzero_or_unknown_exit_no_result_read'},png:null};
++ if(exitCode!==0){
++  const fallback={summary:{adapter_schema:'fx3-tool-return-v1',action,run_dir:runDir,status:'return_failed',ok:false,End_required:true,receipt_path:path.join(callDir,'child.stdout.json'),reason:'nonzero_or_unknown_exit_no_result_read'},png:null};
++  if(exitCode!==2)return fallback;
++  // Only this invocation's bounded failure summary may report cleanup. Never an
++  // old current-return, any image, or an unknown transport exit.
++  try{
++   for(const f of ['summary.json','invocation.json','process.json']){
++    const st=await fs.lstat(path.join(callDir,f));
++    if(!st.isFile()||st.isSymbolicLink()||st.size>4096)return fallback;
++   }
++   const r=JSON.parse(await fs.readFile(path.join(callDir,'summary.json'),'utf8'));
++   const inv=JSON.parse(await fs.readFile(path.join(callDir,'invocation.json'),'utf8'));
++   const proc=JSON.parse(await fs.readFile(path.join(callDir,'process.json'),'utf8'));
++   if(r.adapter_schema!=='fx3-tool-return-v1'||r.action!==action||r.run_dir!==runDir||r.call_id!==inv.call_id||inv.action!==action||inv.run_dir!==runDir||r.status!=='return_failed'||r.ok!==false||r.image!==null||r.End_required!==true||!Number.isInteger(r.child_returncode)||r.child_returncode===0||proc.returncode!==r.child_returncode||!['completed','already-cleaned','busy','unknown'].includes(r.cleanup?.reported_status))return fallback;
++   return {summary:r,png:null};
++  }catch{return fallback;}
++ }
++
+  const file=path.join(callDir,'summary.json'),stat=await fs.lstat(file);
+  if(!stat.isFile()||stat.isSymbolicLink()||stat.size>4096)throw Error('bounded current summary required');
+  const r=JSON.parse(await fs.readFile(file,'utf8'));
+--- r37/r35_package_selection.py
++++ r39/r35_package_selection.py
+@@ -3,23 +3,24 @@
+ import hashlib,json
+ HOST=Path(__file__).resolve().parent
+ DEL=HOST.parent
+-APPROVED_HOST=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate')
++APPROVED_HOST=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r39-cleanup-evidence-candidate')
+ PACKAGE=DEL/'r36-fixed-slot-package'
+ CANDIDATE_SHA='0bf214178ab8e60d1ac7755e1d1b2fcc0d2c325ff8473abd50402f09ab81fab4'
+ CPIO_SHA='49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff'
+ CPIO_BYTES=453213884
+-PROFILE='r35-diagnostic-r36-n64'
+-LABEL='v35diag-n64-r36-r37'
++PROFILE='r35-diagnostic-r36-n64-r39'
++LABEL='v35diag-n64-r36-r39'
+ PINS={'r30-startup-observation-candidate/SHA256SUMS':'e04a86e60d0b311d57df50a6060064f6f57e02a33d3c04c015922e6a37749a49','r30-startup-observation-candidate/SOURCE-FREEZE.json':'10265a99fd1a74dc23d85477c82f078485863b92ed664e12132e0a9cf41ce717','r30-startup-observation-candidate/CORE-SOURCE-FREEZE.json':'3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9','r35-existing-log-observation-candidate/SHA256SUMS':'c7aee1bf7a35320e3c8d08eec03214957832008197741feb971433f19c524a71','r35-existing-log-observation-candidate/SOURCE-FREEZE.json':'dd4f8a2045220a045c32b8a0a686227f08e4e8c2edc7adca8964a12ddedc66e4','r36-fixed-slot-package/SHA256SUMS':'9a06c51caa6bc3517bedb9db06a72452fe4a12156ed3838034821caf151ecf03'}
++PINS.update({'r37-diagnostic-runner-candidate/SHA256SUMS':'ede0cfdc07066faf00d98e6934e5125dc10d598f8e228d8364ca0cf6fab1155c','r37-diagnostic-runner-candidate/SOURCE-FREEZE.json':'861b26c5aefbe393a5e58e1015914e517f0bb9e928c6f5e572a9f56816084ca9','r37-diagnostic-runner-candidate/CORE-SOURCE-FREEZE.json':'7752a6fd7cdb74def7a3cfa9659ed6a1a4f6ab23708a5aaaed5f345e7c46f303'})
+ def sha(p):
+  with Path(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+ def exact_regular(path):
+  p=Path(path)
+- if not p.is_absolute() or not p.is_file() or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r37 regular exact path required: '+str(p))
++ if not p.is_absolute() or not p.is_file() or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r39 regular exact path required: '+str(p))
+  return p
+ def output_root(path):
+  p=Path(path)
+- if HOST!=APPROVED_HOST or not p.is_absolute() or p.parent!=HOST/'run-inputs' or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r37 exclusive run-inputs boundary required')
++ if HOST!=APPROVED_HOST or not p.is_absolute() or p.parent!=HOST/'run-inputs' or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r39 exclusive run-inputs boundary required')
+  return p
+ def options(ns):
+  if ns.r35_diagnostic_package and (not ns.snapshot_tail or ns.gate_publish_interval!=64 or ns.review_procdiag_r4e or ns.internal_hoststep):raise ValueError('r35 package requires snapshot-tail/N64; procdiag/N1/internal forbidden')
+@@ -28,7 +29,7 @@
+  groups={}
+  for rel,h in PINS.items():
+   p=exact_regular(DEL/rel)
+-  if sha(p)!=h:raise ValueError('r37 frozen input identity changed: '+rel)
++  if sha(p)!=h:raise ValueError('r39 frozen input identity changed: '+rel)
+   groups[rel]=h
+  p=exact_regular(PACKAGE/'candidate.json')
+  if sha(p)!=CANDIDATE_SHA:raise ValueError('r36 manifest identity changed')
+--- /dev/null
++++ r39/runtime-wrapper/cleanup_evidence.py
+@@ -0,0 +1,255 @@
++"""r39 cleanup-only evidence/lease helpers. No launch, browser, QMP or guest API."""
++import contextvars,errno,fcntl,hashlib,json,os,socket,stat,subprocess,time,uuid
++from pathlib import Path
++ACTIVE=contextvars.ContextVar('r39_cleanup_output',default=None)
++ROOT=Path(__file__).resolve().parents[1]
++RUNS=ROOT.parent.parent/'runs'
++LOCKS=[Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock'),Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock')]
++SCHEMA='fx3-cleanup-r39-v1'
++def digest(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
++def encoded(v):return (json.dumps(v,ensure_ascii=False,indent=2)+'\n').encode()
++def regular(p):
++ p=Path(p)
++ if not p.is_absolute() or p.resolve()!=p or any(x.is_symlink() for x in (p,*p.parents)) or not p.is_file():raise ValueError('exact_regular_file:'+str(p))
++ return p
++def put(p,v):
++ p=Path(p)
++ with p.open('xb') as f:f.write(encoded(v));f.flush();os.fsync(f.fileno())
++def load(p):return json.loads(regular(p).read_bytes())
++def atomic_index(p,v):
++ p=Path(p)
++ if p.is_symlink():raise ValueError('symlink_index')
++ tmp=p.with_name(p.name+'.'+str(uuid.uuid4())+'.tmp');put(tmp,v);os.replace(tmp,p)
++ fd=os.open(p.parent,os.O_RDONLY)
++ try:os.fsync(fd)
++ finally:os.close(fd)
++def invocation(here,kind='cleanup-calls'):
++ parent=Path(here)/kind;parent.mkdir(exist_ok=True)
++ if parent.is_symlink() or parent.resolve()!=parent:raise ValueError('call_parent_identity')
++ call=parent/str(uuid.uuid4());call.mkdir();return call
++def acquire(here):
++ # The persistent inode is never unlinked. Existence says nothing about liveness.
++ p=Path(here)/'.cleanup-owner.lock'
++ fd=os.open(p,os.O_RDWR|os.O_CREAT|os.O_NOFOLLOW|os.O_CLOEXEC,0o600)
++ try:
++  st=os.fstat(fd)
++  if not stat.S_ISREG(st.st_mode) or st.st_nlink!=1:raise ValueError('owner_lock_inode')
++  try:fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
++  except BlockingIOError:os.close(fd);return None
++  return fd
++ except BaseException:os.close(fd);raise
++
++def binding(here,c,cfg):
++ from r35_package_selection import PROFILE,LABEL
++ here=Path(here);run=Path(c['run'])
++ if (run.parent!=RUNS or not run.name.startswith(LABEL+'-') or run.resolve()!=run or any(x.is_symlink() for x in (run,*run.parents))):raise ValueError('native_run_boundary')
++ if (type(c.get('runner_pid')) is not int or c['runner_pid']<=1 or (c.get('launch_id') is not None and (not isinstance(c['launch_id'],str) or not c['launch_id']))):raise ValueError('launched_runtime_identity_required')
++ if cfg['candidate_source_root']!=str(ROOT) or cfg['runner_profile']!=PROFILE:raise ValueError('cleanup_source_profile')
++ expected={str(ROOT/n):h for n,h in load(ROOT/'SOURCE-FREEZE.json').items()}
++ if load(here/'LOCAL-SOURCE-FREEZE.json')!=expected or any(digest(n)!=h for n,h in expected.items()):raise ValueError('cleanup_source_freeze')
++ return {'candidate_run_dir':str(here),'session':cfg['session'],'task_id':cfg['task_id'],'dispatch_id':cfg['dispatch_id'],'source_root':str(ROOT),'profile':PROFILE,'source_sha256':digest(ROOT/'SOURCE-FREEZE.json'),'core_sha256':digest(ROOT/'CORE-SOURCE-FREEZE.json'),'config_sha256':digest(here/'config.json'),'runtime_sha256':digest(here/'runtime.json'),'local_freeze_sha256':digest(here/'LOCAL-SOURCE-FREEZE.json'),'runtime':c}
++
++def routed_write(name,data):
++ state=ACTIVE.get()
++ if state is None:raise RuntimeError('cleanup_context_required')
++ try:put(state['dir']/name,data)
++ except Exception as e:state['write_errors'].append(name+': '+repr(e))
++def run_capture(name,args,source,timeout,env,stamp,event):
++ state=ACTIVE.get();start=stamp();event(name+'_enter',argv=args);p=None;exc=None
++ try:p=subprocess.run(args,input=source,text=True,capture_output=True,timeout=timeout,env=env)
++ except BaseException as e:exc=e
++ def text(v):return v.decode(errors='replace') if isinstance(v,bytes) else (v or '')
++ out=text(p.stdout if p else getattr(exc,'stdout',None));err=text(p.stderr if p else getattr(exc,'stderr',None))
++ record={'argv':args,'start':start,'end':stamp(),'returncode':p.returncode if p else None,'stdout':out,'stderr':err,'transport_error':repr(exc) if exc else None}
++ for suffix,data in [('-stdout.txt',out.encode()),('-stderr.txt',err.encode())]:
++  try:
++   with (state['dir']/(name+suffix)).open('xb') as f:f.write(data);f.flush();os.fsync(f.fileno())
++  except Exception as e:state['write_errors'].append(name+suffix+': '+repr(e))
++ routed_write(name+'-process.json',record);event(name+'_exit',returncode=record['returncode'],transport_error=record['transport_error'])
++ if exc:raise exc
++ if p.returncode:raise RuntimeError(name+' failed: '+out[-1000:]+err[-500:])
++ return out
++
++def native_evidence(c,folder=None):
++ from r35_package_selection import PACKAGE,CANDIDATE_SHA,PROFILE
++ run=Path(c['run']);names=['command.json','trial-session.json','receipt.json','trial-web-final-receipt.json','resource-guard-receipt.json']
++ values={};refs={}
++ if folder:folder.mkdir()
++ for name in names:
++  p=regular(run/name);raw=p.read_bytes();v=json.loads(raw);values[name]=v;refs[name]={'path':str(p),'sha256':hashlib.sha256(raw).hexdigest(),'bytes':len(raw)}
++  if folder:
++   with (folder/name).open('xb') as f:f.write(raw);f.flush();os.fsync(f.fileno())
++ cmd=values['command.json'];ses=values['trial-session.json'];r=values['receipt.json'];ack=values['trial-web-final-receipt.json'];guard=values['resource-guard-receipt.json']
++ if ses['run']!=str(run) or ses['observer_pid']!=c['runner_pid'] or ses['url'].rstrip('/')!=c['url'].rstrip('/') or not ses['host_launch_uuid']:raise ValueError('native_session_identity')
++ qpid=ses['qemu_pid']
++ if type(qpid) is not int or qpid<=1 or qpid==c['runner_pid']:raise ValueError('native_qemu_identity')
++ if cmd['cwd']!=str(run) or cmd['candidate']!=str(PACKAGE/'candidate.json') or cmd['candidate_sha256']!=CANDIDATE_SHA or cmd['r35_diagnostic_selection']['profile']!=PROFILE:raise ValueError('native_command_identity')
++ if (r['run']!=str(run) or r['candidate']!=cmd['candidate'] or r['candidate_sha256']!=CANDIDATE_SHA or r['qemu_pid']!=qpid or r['process_reaped'] is not True or r['PID_absent'] is not True or type(r['qemu_exit']) is not int):raise ValueError('native_receipt_reap_or_identity')
++ expected={x.name:digest(x) for x in [ROOT/'run_trial_r24_review_snapshot.py',ROOT/'r35_package_selection.py',ROOT/'trial_web_r24_review_snapshot.py',ROOT/'startup_observation.py']}
++ seen={x['name']:x['sha256'] for x in r['observer_source_snapshot']}
++ if any(seen.get(n)!=h for n,h in expected.items()):raise ValueError('native_observer_source')
++ if (len(r['locks'])!=2 or {x['path'] for x in r['locks']}!={str(p) for p in LOCKS} or any(x['free_at_close'] is not True for x in r['locks'])):raise ValueError('native_locks')
++ if r['cleanup']['API16_restored'] is not True or r['cleanup']['quit_sent'] is not True:raise ValueError('native_restore_quit_unproven')
++ if guard['process_reaped'] is not True or guard['locks_released_after_reap'] is not True or not any(x.get('event')=='process_reaped' and x.get('pid')==qpid for x in guard['events']):raise ValueError('guard_reap')
++ if ack['acknowledged'] is not True or ack['end_reason']!='browser_ack' or ack['scope']!='browser_receipt_delivery_only' or ack['maximum_wait_seconds']!=30:raise ValueError('final_ACK_unproven')
++ return {'files':refs,'qemu_pid':qpid,'host_launch_uuid':ses['host_launch_uuid'],'locks':[str(p) for p in LOCKS],'scope':'finalACK is bound by this run directory/session/command/native receipt and captured finished page; not globally atomic'}
++
++def resource_check(c,qpid):
++ result={'runner_pid':c['runner_pid'],'qemu_pid':qpid,'runner_absent':False,'qemu_absent':False,'port_closed':False,'locks':[],'errors':[],'checked_wall_ns':time.time_ns()}
++ for key,pid in [('runner_absent',c['runner_pid']),('qemu_absent',qpid)]:
++  try:os.kill(pid,0)
++  except ProcessLookupError:result[key]=True
++  except Exception as e:result['errors'].append(key+': '+repr(e))
++ try:
++  from urllib.parse import urlsplit
++  u=urlsplit(c['url'])
++  if u.hostname!='127.0.0.1' or u.scheme!='http' or not u.port:raise ValueError('owned_loopback_URL')
++  with socket.socket() as s:s.settimeout(.3);rc=s.connect_ex(('127.0.0.1',u.port))
++  result['port_connect_errno']=rc;result['port_closed']=rc==errno.ECONNREFUSED
++  if rc not in (0,errno.ECONNREFUSED):result['errors'].append('port_state_unknown:'+str(rc))
++ except Exception as e:result['errors'].append('port: '+repr(e))
++ for path in LOCKS:
++  try:
++   with regular(path).open('rb') as f:
++    fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB);fcntl.flock(f,fcntl.LOCK_UN)
++   result['locks'].append({'path':str(path),'free_at_probe':True})
++  except Exception as e:result['errors'].append('lock: '+repr(e))
++ result['resources_closed']=bool(not result['errors'] and result['runner_absent'] and result['qemu_absent'] and result['port_closed'] and len(result['locks'])==2)
++ return result
++
++def certify(call,c,cfg,body,probe=resource_check,copy_native=True):
++ if not isinstance(c.get('launch_id'),str) or not c['launch_id']:raise ValueError('launch_not_yet_established_no_completion_certificate')
++ if body['errors'] or body['runner_alive'] is not False or body['port_closed'] is not True or body['alarm_disposition'] not in ('valid_null_never_armed','valid_nonarmed'):raise ValueError('cleanup_body_incomplete')
++ state=load(call/'ENDED-STATE.json');status=state['lastStatus'];alarm=load(call/'deadline-after-End.json')
++ if (state['finished'] is not True or status['phase']!='finished' or status['launch_request_id']!=c['launch_id'] or not status['run_incarnation'] or state['url']!=c['url'] or not state['document_id'] or state['document_time_origin']!=alarm['documentTimeOrigin']):raise ValueError('finished_page_launch_document_binding')
++ after=json.loads(load(call/'browser-after-close-process.json')['stdout'])
++ if after.get('success') is not True or after['data']['session']!=cfg['session'] or after['data']['active'] is not False or after['data']['pid'] is not None:raise ValueError('browser_close_unproven')
++ for name in ['End-original-button','ended-state','ended-page','deadline-after-End','deadline-dispose','HAR-stop','browser-before-close','browser-close','browser-after-close']:
++  if load(call/(name+'-process.json'))['returncode']!=0:raise ValueError('incomplete_stage:'+name)
++ if not regular(call/'ended-page.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n'):raise ValueError('cleanup_PNG_missing')
++ har=load(call/'traffic.har')
++ if not isinstance(har.get('log',{}).get('entries'),list):raise ValueError('cleanup_HAR_missing')
++ native=native_evidence(c,call/'native' if copy_native else None);resources=probe(c,native['qemu_pid'])
++ if resources.get('resources_closed') is not True:raise ValueError('current_resources_unproven:'+json.dumps(resources))
++ return {'native':native,'resources':resources,'run_incarnation':status['run_incarnation'],'document_id':state['document_id'],'scope':'cleanup completion only; original action/menu outcome unchanged'}
++
++def seal(call):
++ files={}
++ for p in sorted(call.rglob('*')):
++  if p.is_file():regular(p);files[str(p.relative_to(call))]={'sha256':digest(p),'bytes':p.stat().st_size}
++ put(call/'MANIFEST.json',{'schema':SCHEMA,'call_id':call.name,'files':files})
++ return {'call_id':call.name,'receipt_path':str(call/'result.json'),'receipt_sha256':digest(call/'result.json'),'manifest_path':str(call/'MANIFEST.json'),'manifest_sha256':digest(call/'MANIFEST.json')}
++
++def validate_reference(here,ref):
++ call=Path(ref['receipt_path']).parent
++ if call.parent!=Path(here)/'cleanup-calls' or call.name!=ref['call_id'] or Path(ref['manifest_path'])!=call/'MANIFEST.json':raise ValueError('receipt_call_boundary')
++ if digest(regular(call/'result.json'))!=ref['receipt_sha256'] or digest(regular(call/'MANIFEST.json'))!=ref['manifest_sha256']:raise ValueError('receipt_reference_hash')
++ manifest=load(call/'MANIFEST.json')
++ if manifest['schema']!=SCHEMA or manifest['call_id']!=call.name:raise ValueError('manifest_identity')
++ for name,v in manifest['files'].items():
++  p=call/name
++  if p.resolve()!=p or not p.is_relative_to(call) or digest(regular(p))!=v['sha256'] or p.stat().st_size!=v['bytes']:raise ValueError('artifact_integrity:'+name)
++ required={'invocation.json','result.json','body-result.json','proof.json','stdout.txt','stderr.txt','ENDED-STATE.json','traffic.har','ended-page.png','deadline-after-End.json','ALARM-DISPOSITION.json'}
++ required|={'native/'+n for n in ('command.json','trial-session.json','receipt.json','trial-web-final-receipt.json','resource-guard-receipt.json')}
++ if not required.issubset(manifest['files']):raise ValueError('incomplete_manifest')
++ public=load(call/'RETURN-HASH.json');raw=regular(call/'return.stdout.txt')
++ if digest(raw)!=public['sha256'] or raw.stat().st_size!=public['bytes']:raise ValueError('public_stdout_integrity')
++ published=load(raw)
++ value=load(call/'result.json')
++ if published.get('status')!='completed' or published.get('call_id')!=call.name or published.get('binding')!=value.get('binding'):raise ValueError('public_stdout_identity')
++ if value['schema']!=SCHEMA or value['call_id']!=call.name or value['status']!='completed' or value['errors']:raise ValueError('not_a_completed_receipt')
++ return call,value
++
++def revalidate(here,ref,current,c,cfg,probe=resource_check):
++ call,value=validate_reference(here,ref)
++ if value['binding']!=current or load(call/'invocation.json')['binding']!=current:raise ValueError('stale_or_cross_run_session_launch_source')
++ # Re-run semantic proof against immutable captured native evidence, then require
++ # originals still match. Do not infer validity from errors=[] or a file name.
++ proof=load(call/'proof.json');now_native=native_evidence(c)
++ if now_native!=proof['native']:raise ValueError('original_native_evidence_changed')
++ body=load(call/'body-result.json')
++ fresh=certify(call,c,cfg,body,probe,copy_native=False)
++ if any(fresh[k]!=proof[k] for k in ('native','run_incarnation','document_id')):raise ValueError('original_semantic_proof_changed')
++ resources=fresh['resources']
++ return {'original_receipt':ref,'resources':resources,'original_completed_call':call.name,'scope':'prior bound completion plus current point probes; not global End atomicity'}
++
++def publish(here,ref,value):
++ first=Path(here)/'CLEANUP-FIRST.json'
++ if not first.exists():put(first,ref)
++ completed=Path(here)/'CLEANUP-COMPLETED.json'
++ if value['status']=='completed':
++  if completed.exists():
++   old=value.get('superseded_invalid_completion')
++   if not old or digest(regular(completed))!=old['sha256'] or digest(regular(old['path']))!=old['sha256']:raise ValueError('cannot_replace_unarchived_completion_index')
++   atomic_index(completed,ref) # immutable archived invalid index remains in this call
++  else:put(completed,ref)
++ atomic_index(Path(here)/'CLEANUP.json',{'schema':SCHEMA,'kind':'compatibility_index_only','first_invocation':load(first),'latest_invocation':ref,'latest_status':value['status'],'completed_invocation':load(completed) if completed.exists() else None,'superseded_invalid_completion':value.get('superseded_invalid_completion'),'action_outcome':'unchanged; cleanup is separate'})
++
++def dispatch_cleanup(source,here,env):
++ """One original 100s subprocess; raw failure cleanup streams never overwritten."""
++ out=invocation(here,'cleanup-dispatches');argv=['python3','-B',str(source/'cleanup.py')];value={'dispatch_id':out.name,'argv':argv,'returncode':None,'stdout_path':str(out/'stdout.txt'),'stderr_path':str(out/'stderr.txt'),'status':'unknown','original_action_failed':True,'schema':SCHEMA,'return_call_id':env.get('FX3_RETURN_CALL_ID'),'binding':binding(here,load(Path(here)/'runtime.json'),load(Path(here)/'config.json'))}
++ try:
++  with (out/'stdout.txt').open('xb') as stdout,(out/'stderr.txt').open('xb') as stderr:
++   p=subprocess.run(argv,env=env,stdout=stdout,stderr=stderr,timeout=100)
++   stdout.flush();stderr.flush();os.fsync(stdout.fileno());os.fsync(stderr.fileno())
++  value.update(returncode=p.returncode,stdout=(out/'stdout.txt').read_text(),stderr=(out/'stderr.txt').read_text())
++  if p.returncode==0:
++   receipt=json.loads(value['stdout']);value.update(status=receipt['status'],cleanup_receipt=receipt)
++ except BaseException as e:value['error']=repr(e)
++ value['stdout_sha256']=digest(out/'stdout.txt');value['stderr_sha256']=digest(out/'stderr.txt')
++ put(out/'dispatch.json',value)
++ # Separate namespace/lock not needed: each action owns one dispatch; the shared
++ # compatibility index is read-only provenance to the FIRST dispatch, never replaced.
++ try:put(Path(here)/'FAILURE-CLEANUP-DISPATCH.json',{'schema':SCHEMA,'kind':'first_dispatch_reference','dispatch':str(out/'dispatch.json'),'sha256':digest(out/'dispatch.json'),'original_action_failed':True})
++ except FileExistsError:pass
++ return value
++
++def record_event(value):
++ state=ACTIVE.get()
++ try:
++  with (state['dir']/'tool-timeline.jsonl').open('a') as f:f.write(json.dumps(value,ensure_ascii=False)+'\n')
++ except Exception as e:state['write_errors'].append('timeline: '+repr(e))
++
++def failure_status(here,return_call_id):
++ """Readonly report from this exact adapter child, never from an old current-return."""
++ unknown={'reported_status':'unknown','scope':'cleanup separate from failed original action'}
++ try:
++  matches=[]
++  for p in (Path(here)/'cleanup-dispatches').glob('*/dispatch.json'):
++   v=load(p)
++   if v.get('return_call_id')==return_call_id:matches.append((p,v))
++  if len(matches)!=1:return unknown
++  p,v=matches[0]
++  if v['schema']!=SCHEMA or v['original_action_failed'] is not True or v['binding']!=binding(here,load(Path(here)/'runtime.json'),load(Path(here)/'config.json')):return unknown
++  if Path(v['stdout_path'])!=p.parent/'stdout.txt' or Path(v['stderr_path'])!=p.parent/'stderr.txt' or digest(regular(v['stdout_path']))!=v['stdout_sha256'] or digest(regular(v['stderr_path']))!=v['stderr_sha256']:return unknown
++  status=v['status'] if v['status'] in ('completed','already-cleaned','busy','unknown') else 'unknown'
++  return {'reported_status':status,'dispatch_receipt':str(p),'dispatch_sha256':digest(p),'scope':'this exact failed action child reports cleanup separately; audit still required'}
++ except Exception:return unknown
++
++def owned_live_candidate(here,c,cfg):
++ """Independent current-run precheck after an unusable completion index.
++
++ No process is signalled except kill(0). A positive PID is insufficient: match
++ current command/parent edges and stored run/session/package, then the caller
++ must independently read-check the exact live document before original End.
++ """
++ from r35_package_selection import PACKAGE,CANDIDATE_SHA,PROFILE
++ import shlex
++ run=Path(c['run']);cmd=load(run/'command.json');ses=load(run/'trial-session.json');launch=load(Path(here)/'RUNNER-LAUNCH.json')
++ if (ses['run']!=str(run) or ses['observer_pid']!=c['runner_pid'] or ses['url'].rstrip('/')!=c['url'].rstrip('/') or not ses['host_launch_uuid'] or launch['pid']!=c['runner_pid']):raise ValueError('current_native_run_identity_unknown')
++ if cmd['cwd']!=str(run) or cmd['candidate']!=str(PACKAGE/'candidate.json') or cmd['candidate_sha256']!=CANDIDATE_SHA or cmd['r35_diagnostic_selection']['profile']!=PROFILE:raise ValueError('current_package_identity_unknown')
++ qpid=ses['qemu_pid']
++ if type(qpid) is not int or qpid<=1 or qpid==c['runner_pid']:raise ValueError('current_qemu_identity_unknown')
++ resources=resource_check(c,qpid)
++ if resources['resources_closed']:return {'state':'resources_closed','resources':resources}
++ # Both exact processes and an accepting port are required before even a readonly
++ # owned-page query. Probe errors/ambiguous PID state cannot authorize it.
++ if resources['runner_absent'] or resources['qemu_absent'] or resources.get('port_connect_errno')!=0 or any(not e.startswith('lock: BlockingIOError') for e in resources['errors']):raise ValueError('current_resources_not_proven_live')
++ expected=launch['argv'];script=str(ROOT/'run_trial_r24_review_snapshot.py')
++ if len(expected)<3 or expected[:2]!=['python3','-B'] or expected[2]!=script:raise ValueError('current_runner_launch_source')
++ actual=subprocess.check_output(['ps','-p',str(c['runner_pid']),'-o','command='],text=True,timeout=2).strip();words=shlex.split(actual)
++ if not words or not Path(words[0]).name.lower().startswith('python') or words[1:]!=expected[1:]:raise ValueError('current_runner_command_mismatch')
++ ppid=int(subprocess.check_output(['ps','-p',str(qpid),'-o','ppid='],text=True,timeout=2).strip())
++ qexe=subprocess.check_output(['ps','-p',str(qpid),'-o','comm='],text=True,timeout=2).strip()
++ if ppid!=c['runner_pid'] or qexe!=cmd['args'][0]:raise ValueError('current_QEMU_parent_or_executable_mismatch')
++ return {'state':'live_candidate_requires_owned_page','resources':resources,'run':str(run),'qemu_pid':qpid,'host_launch_uuid':ses['host_launch_uuid'],'runner_source':script,'launch_record_sha256':digest(Path(here)/'RUNNER-LAUNCH.json'),'no_process_signals_or_QMP':True}

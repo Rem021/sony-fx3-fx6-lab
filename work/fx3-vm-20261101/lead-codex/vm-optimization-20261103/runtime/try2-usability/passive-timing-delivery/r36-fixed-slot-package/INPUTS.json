@@ -1,0 +1,61 @@
+{
+  "time": "2026-11-05T06:58:32.354630+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "binaries": {
+    "ui": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/fx3-ui-r35.so",
+      "sha256": "8fbad11e585a88ba55fc657785b6bc132bd12ee20ac3a31f23c603b1b1b322d1",
+      "bytes": 72656
+    },
+    "osd": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/fx3-osd-r35.so",
+      "sha256": "1a0761b8c73fb04502406686499ff01f3683bcc767ce1503fae3e6bbb996bf21",
+      "bytes": 119544
+    }
+  },
+  "candidate_sha256": "96666a719b1a4cf576e4d2d7ec461e10f5ce1143650450719e5273d75d970672",
+  "cpio_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+  "cpio_bytes": 453213884,
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+    "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+  },
+  "slots": {
+    "ui": {
+      "name": "simulation/fx3-ui-gate-v1.so",
+      "header_offset": 451339508,
+      "payload_offset": 451339648,
+      "size": 58856,
+      "mode": 33261,
+      "nlink": 1,
+      "inode": 1113,
+      "devmajor": 0,
+      "devminor": 0,
+      "next_offset": 451398504,
+      "header_hex": "3037303730313030303030343539303030303831656430303030303030303030303030303030303030303030303130303030303030303030303065356538303030303030303030303030303030303030303030303030303030303030303030303030303031643030303030303030"
+    },
+    "osd": {
+      "name": "simulation/fx3-osd-headless-v5.so",
+      "header_offset": 452021772,
+      "payload_offset": 452021916,
+      "size": 109000,
+      "mode": 33261,
+      "nlink": 1,
+      "inode": 1120,
+      "devmajor": 0,
+      "devminor": 0,
+      "next_offset": 452130916,
+      "header_hex": "3037303730313030303030343630303030303831656430303030303030303030303030303030303030303030303130303030303030303030303161396338303030303030303030303030303030303030303030303030303030303030303030303030303032323030303030303030"
+    }
+  },
+  "reference_tool": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/fixed_layout.py",
+    "sha256": "b5b9bf75763b193575a007074e6701d1a1541ba9d3658ae32a164fc350eca8bc"
+  },
+  "r35_final_input_gate": {
+    "status": "coordinator_verified",
+    "message": "msg_a9774da2cd5d",
+    "source_freeze_sha256": "dd4f8a2045220a045c32b8a0a686227f08e4e8c2edc7adca8964a12ddedc66e4",
+    "delivery_sha_manifest": "c7aee1bf7a35320e3c8d08eec03214957832008197741feb971433f19c524a71"
+  }
+}

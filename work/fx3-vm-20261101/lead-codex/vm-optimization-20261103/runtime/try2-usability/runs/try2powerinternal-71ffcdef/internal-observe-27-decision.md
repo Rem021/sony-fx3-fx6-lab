@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-26-key-030.png using image tool. Shooting>Audio Recording 10/59 orange category; audio recording/level/out timing listed Next: DOWN to TC/UB category; no audio setting selected

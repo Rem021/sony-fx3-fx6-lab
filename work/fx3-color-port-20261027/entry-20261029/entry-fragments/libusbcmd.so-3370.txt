@@ -1,0 +1,86 @@
+00003370 stp        x29, x30, [sp, #-0x40]!
+00003374 mov        x29, sp
+00003378 stp        x19, x20, [sp, #0x10]
+0000337c mov        x19, x0
+00003380 str        x21, [sp, #0x20]
+00003384 mov        w20, w3
+00003388 stp        w1, w2, [x0]
+0000338c mov        w21, w4
+00003390 str        x5, [x0, #8]
+00003394 stp        x6, xzr, [x0, #0x20]
+00003398 bl         #0x27c0 ; usbcmd_t::MsgBoxCreate
+0000339c str        x0, [x19, #0x38]
+000033a0 cbnz       x0, #0x33d4
+000033a4 mov        w4, #0
+000033a8 mov        w3, #0x266
+000033ac mov        w2, #0xa
+000033b0 mov        w1, #1
+000033b4 mov        w0, #0x36
+000033b8 mov        w20, #-0xa
+000033bc bl         #0x2aa0 ; usbcmd_trace_out
+000033c0 mov        w0, w20
+000033c4 ldr        x21, [sp, #0x20]
+000033c8 ldp        x19, x20, [sp, #0x10]
+000033cc ldp        x29, x30, [sp], #0x40
+000033d0 ret        
+000033d4 adrp       x0, #0x4000
+000033d8 mov        w1, #2
+000033dc add        x0, x0, #0x818 ; literal '/dev/usb/usb_extcmd'
+000033e0 bl         #0x2820 ; open
+000033e4 str        w0, [x19, #0x94]
+000033e8 tbz        w0, #0x1f, #0x3418
+000033ec mov        w4, w0
+000033f0 mov        w3, #0x26e
+000033f4 mov        w2, #0xa
+000033f8 mov        w1, #1
+000033fc mov        w0, #0x36
+00003400 mov        w20, #-2
+00003404 bl         #0x2aa0 ; usbcmd_trace_out
+00003408 ldr        x1, [x19, #0x38]
+0000340c mov        x0, x19
+00003410 bl         #0x2af0 ; usbcmd_t::MsgBoxDelete
+00003414 b          #0x33c0
+00003418 ldr        w1, [x19]
+0000341c add        x3, x29, #0x30
+00003420 mov        w2, #0xeb00
+00003424 stp        w21, w20, [x29, #0x34]
+00003428 strb       w1, [x29, #0x30]
+0000342c movk       w2, #0xc00c, lsl #16
+00003430 ldr        w1, [x19, #4]
+00003434 strh       w1, [x29, #0x32]
+00003438 mov        w1, w0
+0000343c mov        x0, x19
+00003440 bl         #0x2a60 ; usbcmd_t::IoctlDriver
+00003444 mov        w20, w0
+00003448 cbz        w0, #0x348c
+0000344c mov        w4, w0
+00003450 mov        w3, #0x27b
+00003454 mov        w2, #0xa
+00003458 mov        w1, #1
+0000345c mov        w0, #0x36
+00003460 bl         #0x2aa0 ; usbcmd_trace_out
+00003464 ldr        w0, [x19, #0x94]
+00003468 bl         #0x2ab0 ; close
+0000346c ldr        x1, [x19, #0x38]
+00003470 mov        x0, x19
+00003474 bl         #0x2af0 ; usbcmd_t::MsgBoxDelete
+00003478 cmp        w20, #0x72
+0000347c mov        w0, #-6
+00003480 mov        w20, #-0xb
+00003484 csel       w20, w20, w0, eq
+00003488 b          #0x33c0
+0000348c adrp       x0, #0x3000
+00003490 add        x1, x19, #0x40
+00003494 add        x0, x0, #0x170
+00003498 str        x19, [x19, #0x40]
+0000349c str        x0, [x19, #0x50]
+000034a0 mov        x0, x19
+000034a4 bl         #0x2a70 ; usbcmd_t::ThreadCreate
+000034a8 mov        w20, w0
+000034ac cbz        w0, #0x33c0
+000034b0 ldr        w0, [x19, #0x94]
+000034b4 bl         #0x2ab0 ; close
+000034b8 ldr        x1, [x19, #0x38]
+000034bc mov        x0, x19
+000034c0 bl         #0x2af0 ; usbcmd_t::MsgBoxDelete
+000034c4 b          #0x33c0

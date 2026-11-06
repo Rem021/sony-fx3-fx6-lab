@@ -1,0 +1,82 @@
+{
+  "glib": "LGPL-2.1-or-later; recorded in preserved Homebrew formula",
+  "libintl": "LGPL-2.1-or-later; formula explicitly distinguishes libintl/libasprintf from gettext GPL tools",
+  "pcre2": "See preserved PCRE2-LICENCE.md and PCRE2-COPYING",
+  "standard_LGPL_text_origin": "QEMU COPYING.LIB, standard version 2.1 text; not represented as a copied GLib source member",
+  "sources": [
+    {
+      "formula": "glib",
+      "version": "2.90.1",
+      "preserved_formula_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/glib/2.90.1/.brew/glib.rb",
+      "formula_sha256": "7352a67a6a1a15554d996d38886812e858bebbbcbf3985901724cab444ee3b3b",
+      "upstream_source_url": "https://download.gnome.org/sources/glib/2.90/glib-2.90.1.tar.xz",
+      "upstream_source_sha256": "93c941aa17d5eb1d53fe838365f29a8b4e539c222a256d974ec8f30fc413e396"
+    },
+    {
+      "formula": "gettext",
+      "version": "1.0",
+      "preserved_formula_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/gettext/1.0/.brew/gettext.rb",
+      "formula_sha256": "74dbc9cbf1c427c148b5d5247adfb43957b5d02be20a4e1d162aa903f0dd614e",
+      "upstream_source_url": "https://ftpmirror.gnu.org/gettext/gettext-1.0.tar.gz",
+      "upstream_source_sha256": "85d99b79c981a404874c02e0342176cf75c7698e2b51fe41031cf6526d974f1a"
+    },
+    {
+      "formula": "pcre2",
+      "version": "10.49",
+      "preserved_formula_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/pcre2/10.49/.brew/pcre2.rb",
+      "formula_sha256": "94c19a0d869da4990a8f3f371e37c986ad72124d2d94032e061c4a9019f9e174",
+      "upstream_source_url": "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.49/pcre2-10.49.tar.bz2",
+      "upstream_source_sha256": "53c156e1ba416a20da8e65395daa132da0d80e76910424caca3fcdae7831d384"
+    }
+  ],
+  "license_texts": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/QEMU-COPYING",
+      "copied_from": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2/COPYING",
+      "sha256": "dd3ce02338c3a48abb6ba59b48809f7108a8bd242cb0cc8be90daafa30707c28",
+      "bytes": 17880
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/LGPL-2.1-standard-text",
+      "copied_from": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2/COPYING.LIB",
+      "sha256": "31c90ce76b6f5aab90a205851e71d5c27e31c0aa3d7017a4383b98a6fe3f1faa",
+      "bytes": 26415
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/QEMU-LICENSE",
+      "copied_from": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2/LICENSE",
+      "sha256": "139c64b7a9ae62858ff969aae622ecfcf4f1519655bd92d2e70a1a2fb615690e",
+      "bytes": 1177
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/DTC-BSD-2-Clause",
+      "copied_from": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2/subprojects/dtc/BSD-2-Clause",
+      "sha256": "6313108c23efffa36948f8b2cff1560a5935373b527b0e1a837cc77e6ed1bacd",
+      "bytes": 1641
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/DTC-GPL",
+      "copied_from": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2/subprojects/dtc/GPL",
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "bytes": 18092
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/DTC-README.license",
+      "copied_from": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/sources/qemu-11.1.2/subprojects/dtc/README.license",
+      "sha256": "78e1e1ce5728a990d59c7de61d4741c49185d5129daf783b386380a214328d68",
+      "bytes": 2903
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/PCRE2-LICENCE.md",
+      "copied_from": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/pcre2/10.49/LICENCE.md",
+      "sha256": "197d8a73ffee0d6b09adba2f9c677b5f5aede24edf89258a68e48248d010d811",
+      "bytes": 4011
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/source-cleanup-support/licenses/PCRE2-COPYING",
+      "copied_from": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/deps/pcre2/10.49/COPYING",
+      "sha256": "99272c55f3dcfa07a8a7e15a5c1a33096e4727de74241d65fa049fccfdd59507",
+      "bytes": 97
+    }
+  ]
+}

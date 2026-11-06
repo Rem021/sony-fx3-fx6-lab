@@ -1,0 +1,24 @@
+{
+  "status": "CROSS_REBUILT_IDENTICAL_NOT_RUN",
+  "bridge_sha256": "b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b",
+  "clang_path": "/usr/bin/clang",
+  "lld_path": "/Volumes/KAFU2T/AI/Projects/HUSK/work/tools/rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/bin/gcc-ld/ld.lld",
+  "lld_version": "LLD 23.1.1 (https://github.com/rust-lang/llvm-project.git 1b9c0d5ff9bbe7634aead059efe6b11a7eeba145) (compatible with GNU linkers)",
+  "source_sha256": {
+    "sha256.c": "296cab5215ee3116647cd26107109ae8f9f243af34e71d35a81c1904d824dc15",
+    "bridge_core.c": "ea043f3e40901b05340ba5c4e7a8c47b4816fc0daef718d904c6db772a50f46b",
+    "bridge_runtime.c": "6324b0576dcdf0e3e1048044b9aaf4efee25117bc6762c16c1ecc85032b46a76",
+    "bridge_stops.S": "8af9fb53a740c4acea239dcb7da01b8660d9c747a48a00f3bdce135fb246fb26",
+    "callback_offsets.h": "4e416ff4f8c1825fed89ded7c39c416e2b7fe00c6c0e05fba06d064410f81e49",
+    "bridge_pins.h": "7649b37555f6487c97b217f0b9aa66d4623fae7dfb87a38885588854f842783a"
+  },
+  "link_input_sha256": {
+    "libdl-2.25.so": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+    "libc-2.25.so": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+  },
+  "needed": [
+    "libdl.so.2",
+    "libc.so.6"
+  ],
+  "unknown_runtime_resolution": true
+}

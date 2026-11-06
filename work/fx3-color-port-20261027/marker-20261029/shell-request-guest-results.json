@@ -1,0 +1,74 @@
+{
+  "source_library_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+  "official_config_sha256": "09cd171039d921224fe9e66b9e44350f7f5e8bc8e75cea7aefe2235719f544da",
+  "cases": [
+    {
+      "mode": 3,
+      "declared_attributes": {
+        "module": "us_crc32sum.sh",
+        "param": "config file"
+      },
+      "boundary": {
+        "operation": "system_request_boundary",
+        "command": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE=3; us_crc32sum.sh config file",
+        "native_execution": false
+      },
+      "instructions": 79,
+      "trusted_config_key": "config_sum/config.sum"
+    },
+    {
+      "mode": 6,
+      "declared_attributes": {
+        "module": "us_crc32sum.sh",
+        "param": "config file"
+      },
+      "boundary": {
+        "operation": "system_request_boundary",
+        "command": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE=6; us_crc32sum.sh config file",
+        "native_execution": false
+      },
+      "instructions": 79,
+      "trusted_config_key": "config_sum/config.sum"
+    },
+    {
+      "mode": 3,
+      "declared_attributes": {
+        "module": "us_crc32sum.sh",
+        "param": "part_image image"
+      },
+      "boundary": {
+        "operation": "system_request_boundary",
+        "command": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE=3; us_crc32sum.sh part_image image",
+        "native_execution": false
+      },
+      "instructions": 79,
+      "trusted_config_key": "part_image_sum/part_image.sum"
+    },
+    {
+      "mode": 6,
+      "declared_attributes": {
+        "module": "us_crc32sum.sh",
+        "param": "part_image image"
+      },
+      "boundary": {
+        "operation": "system_request_boundary",
+        "command": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE=6; us_crc32sum.sh part_image image",
+        "native_execution": false
+      },
+      "instructions": 79,
+      "trusted_config_key": "part_image_sum/part_image.sum"
+    },
+    {
+      "case": "missing_module_attribute",
+      "mode": 6,
+      "declared_attributes": {},
+      "boundary": {
+        "operation": "original_exception_boundary",
+        "code": "0x30002",
+        "native_unwinding": false
+      },
+      "instructions": 44
+    }
+  ],
+  "scope": "Original ShellPlugin::Execute constructs requests for attributes taken from the pinned official config. Host adapters supply XML attribute lookup and StringHandler concatenation; the original XML loader, unpacker, tag callbacks, native shell and PATH resolution are not executed. Every case stops before system or exception unwinding. A PATH prefix or mode-6 request is a candidate mechanism, not whole-container reachability, unsigned code execution, firmware admission or a flash receipt."
+}

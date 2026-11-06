@@ -1,0 +1,30 @@
+{
+  "schema": "fx3-integrated-receipt-controller-plan/1",
+  "created_utc": "2026-10-29T12:22:19.596323+00:00",
+  "grant_id": "fx3-702-msc-owner-20261029-06",
+  "authorized": false,
+  "released": false,
+  "bundle_sha256": "831b56f4b2ed7c773bb9b72654128ed36c832f2901ae5b8af60b20c6ce85e2ff",
+  "native_sha256": "aea5b9c76d0c2a55f09d56706164e8ce6a5a413f9c0875cb6c30a93ea5015703",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "purpose": "Reusable offline controller baseline; device-call behavior unchanged. Do not perform a fresh camera test merely to repair old05 logs.",
+  "implemented": [
+    "Outer user-owned0600 stdout while sudo verification remains at Terminal",
+    "Native helper stderr joins inherited stdout; errors never become valid JSON success",
+    "Bounded O_NOFOLLOW single-fd receipt reader validates UID/mode/links/size/stability and JSON object",
+    "Specific receipt cause retained separately from native result and independently observed driver return",
+    "Real unprivileged wrapper+marked C helper exercised with actual kernel identity, ACK, SHA and completion marker"
+  ],
+  "local_checks": 77,
+  "native_root_Terminal_or_camera_executed": false,
+  "current_05_authorization_not_applicable": true,
+  "service_transport_implemented_or_authorized": false,
+  "camera_file_read_or_firmware_write_released": false,
+  "independent_rescue_validated": false
+}

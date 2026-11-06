@@ -1,0 +1,2816 @@
+{
+  "scope": "STATIC_ONLY_NO_GUEST_EXECUTION",
+  "cpio": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+  "cpio_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+  "members_verified": 1140,
+  "actual_guest_libraries": {
+    "libopus.so.0": {
+      "resolved": "usr/lib/libopus.so.0.8.0",
+      "symlinks": [
+        "usr/lib/libopus.so.0",
+        "usr/lib/libopus.so.0.8.0"
+      ],
+      "sha256": "473c7182bfd47bbbcce4e377015bc9d6bbef554c4eda287ba6a31ecc34f4579a"
+    },
+    "libSoundTouch.so.1": {
+      "resolved": "usr/lib/libSoundTouch.so.1.0.0",
+      "symlinks": [
+        "usr/lib/libSoundTouch.so.1",
+        "usr/lib/libSoundTouch.so.1.0.0"
+      ],
+      "sha256": "d4abdc58ae1857d46791b7f8d3ebf0d822f03c5a8d343f3d975a98f0ff40522e"
+    },
+    "libObj.so": {
+      "resolved": "usr/lib/libObj.so",
+      "symlinks": [
+        "usr/lib/libObj.so"
+      ],
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae"
+    }
+  },
+  "fx6_roots_with_fixed_fx3_library_path": {
+    "bootin.elf": {
+      "nodes": {
+        "bootin.elf": {
+          "sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+          "dependencies": [
+            {
+              "needed": "libbackup.so",
+              "binding": {
+                "resolved": "usr/lib/libbackup.so",
+                "symlinks": [
+                  "usr/lib/libbackup.so"
+                ],
+                "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d"
+              }
+            },
+            {
+              "needed": "libosal_utm.so",
+              "binding": {
+                "resolved": "usr/lib/libosal_utm.so",
+                "symlinks": [
+                  "usr/lib/libosal_utm.so"
+                ],
+                "sha256": "d9510b4ce1d7e59a0f2e9b5be14624a4cece6f514879e8a6d23ce890a46d25eb"
+              }
+            },
+            {
+              "needed": "libosal_uipc.so",
+              "binding": {
+                "resolved": "usr/lib/libosal_uipc.so",
+                "symlinks": [
+                  "usr/lib/libosal_uipc.so"
+                ],
+                "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libbackup.so": {
+          "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+          "dependencies": [
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libosal_utm.so": {
+          "sha256": "d9510b4ce1d7e59a0f2e9b5be14624a4cece6f514879e8a6d23ce890a46d25eb",
+          "dependencies": [
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libosal_uipc.so": {
+          "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+          "dependencies": [
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "lib/libpthread-2.25.so": {
+          "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "usr/lib/libstdc++.so.6.0.22": {
+          "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+          "dependencies": [
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            }
+          ]
+        },
+        "lib/libm-2.25.so": {
+          "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "lib/libdl-2.25.so": {
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "usr/lib/libgcc_s.so.1": {
+          "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "lib/libc-2.25.so": {
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+          "dependencies": [
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "lib/librt-2.25.so": {
+          "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2",
+          "dependencies": [
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "lib/ld-2.25.so": {
+          "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+          "dependencies": []
+        }
+      },
+      "missing": []
+    },
+    "im.elf": {
+      "nodes": {
+        "im.elf": {
+          "sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+          "dependencies": [
+            {
+              "needed": "libjemalloc_ds.so.2",
+              "binding": {
+                "resolved": "usr/lib/libjemalloc_ds.so.2",
+                "symlinks": [
+                  "usr/lib/libjemalloc_ds.so.2"
+                ],
+                "sha256": "2832f529913186277b242b3ae51391d0e24481b857f11a5690a20937f45ba564"
+              }
+            },
+            {
+              "needed": "libIMDB.so",
+              "binding": {
+                "resolved": "simulation/libIMDB.so",
+                "symlinks": [
+                  "simulation/libIMDB.so"
+                ],
+                "sha256": "d475e9f423f90edea6c2f188d1defec638d816c2ace945e95592d159654c26bd"
+              }
+            },
+            {
+              "needed": "libbackup.so",
+              "binding": {
+                "resolved": "usr/lib/libbackup.so",
+                "symlinks": [
+                  "usr/lib/libbackup.so"
+                ],
+                "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d"
+              }
+            },
+            {
+              "needed": "libosal_utm.so",
+              "binding": {
+                "resolved": "usr/lib/libosal_utm.so",
+                "symlinks": [
+                  "usr/lib/libosal_utm.so"
+                ],
+                "sha256": "d9510b4ce1d7e59a0f2e9b5be14624a4cece6f514879e8a6d23ce890a46d25eb"
+              }
+            },
+            {
+              "needed": "libosal_uipc.so",
+              "binding": {
+                "resolved": "usr/lib/libosal_uipc.so",
+                "symlinks": [
+                  "usr/lib/libosal_uipc.so"
+                ],
+                "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libSTMcmdexecute.so",
+              "binding": {
+                "resolved": "lib/libSTMcmdexecute.so",
+                "symlinks": [
+                  "lib/libSTMcmdexecute.so"
+                ],
+                "sha256": "4bcde80b18a30b08c36d5ca1183b3c2fa5e357bb81530a8a9f39c5ec267d8a71"
+              }
+            },
+            {
+              "needed": "libssl.so.3",
+              "binding": {
+                "resolved": "usr/lib/libssl.so.3",
+                "symlinks": [
+                  "usr/lib/libssl.so.3"
+                ],
+                "sha256": "27bc25f1e766877b72888dba67dc60fe4589c4a7b253c9324fce8c8ad1913f21"
+              }
+            },
+            {
+              "needed": "libcrypto.so.3",
+              "binding": {
+                "resolved": "usr/lib/libcrypto.so.3",
+                "symlinks": [
+                  "usr/lib/libcrypto.so.3"
+                ],
+                "sha256": "893a37bd6f5a19069362e7c54c023ac9b93eb5d3c976dc45a82502fb4317a8d4"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libjemalloc_ds.so.2": {
+          "sha256": "2832f529913186277b242b3ae51391d0e24481b857f11a5690a20937f45ba564",
+          "dependencies": [
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "simulation/libIMDB.so": {
+          "sha256": "d475e9f423f90edea6c2f188d1defec638d816c2ace945e95592d159654c26bd",
+          "dependencies": [
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libbackup.so": {
+          "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+          "dependencies": [
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libosal_utm.so": {
+          "sha256": "d9510b4ce1d7e59a0f2e9b5be14624a4cece6f514879e8a6d23ce890a46d25eb",
+          "dependencies": [
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libosal_uipc.so": {
+          "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+          "dependencies": [
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "lib/libdl-2.25.so": {
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "lib/libpthread-2.25.so": {
+          "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "lib/libSTMcmdexecute.so": {
+          "sha256": "4bcde80b18a30b08c36d5ca1183b3c2fa5e357bb81530a8a9f39c5ec267d8a71",
+          "dependencies": [
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libssl.so.3": {
+          "sha256": "27bc25f1e766877b72888dba67dc60fe4589c4a7b253c9324fce8c8ad1913f21",
+          "dependencies": [
+            {
+              "needed": "libcrypto.so.3",
+              "binding": {
+                "resolved": "usr/lib/libcrypto.so.3",
+                "symlinks": [
+                  "usr/lib/libcrypto.so.3"
+                ],
+                "sha256": "893a37bd6f5a19069362e7c54c023ac9b93eb5d3c976dc45a82502fb4317a8d4"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "usr/lib/libcrypto.so.3": {
+          "sha256": "893a37bd6f5a19069362e7c54c023ac9b93eb5d3c976dc45a82502fb4317a8d4",
+          "dependencies": [
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "usr/lib/libstdc++.so.6.0.22": {
+          "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+          "dependencies": [
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            }
+          ]
+        },
+        "lib/libm-2.25.so": {
+          "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "usr/lib/libgcc_s.so.1": {
+          "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "lib/libc-2.25.so": {
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+          "dependencies": [
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "lib/librt-2.25.so": {
+          "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2",
+          "dependencies": [
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "lib/ld-2.25.so": {
+          "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+          "dependencies": []
+        }
+      },
+      "missing": []
+    },
+    "appFw.so": {
+      "nodes": {
+        "appFw.so": {
+          "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+          "dependencies": [
+            {
+              "needed": "libexpat.so.1",
+              "binding": {
+                "resolved": "usr/lib/libexpat.so.1.6.11",
+                "symlinks": [
+                  "usr/lib/libexpat.so.1",
+                  "usr/lib/libexpat.so.1.6.11"
+                ],
+                "sha256": "3d1e4818ad4c83228f2cad6496f6e46324c063c91713feb421544394c54be654"
+              }
+            },
+            {
+              "needed": "libqrencode.so",
+              "binding": {
+                "resolved": "usr/lib/libqrencode.so",
+                "symlinks": [
+                  "usr/lib/libqrencode.so"
+                ],
+                "sha256": "0103b054861b87d8a5fea8ef448be9b27258f247ab0693b6468981c7b74052a6"
+              }
+            },
+            {
+              "needed": "libopus.so.0",
+              "binding": {
+                "resolved": "usr/lib/libopus.so.0.8.0",
+                "symlinks": [
+                  "usr/lib/libopus.so.0",
+                  "usr/lib/libopus.so.0.8.0"
+                ],
+                "sha256": "473c7182bfd47bbbcce4e377015bc9d6bbef554c4eda287ba6a31ecc34f4579a"
+              }
+            },
+            {
+              "needed": "libSoundTouch.so.1",
+              "binding": {
+                "resolved": "usr/lib/libSoundTouch.so.1.0.0",
+                "symlinks": [
+                  "usr/lib/libSoundTouch.so.1",
+                  "usr/lib/libSoundTouch.so.1.0.0"
+                ],
+                "sha256": "d4abdc58ae1857d46791b7f8d3ebf0d822f03c5a8d343f3d975a98f0ff40522e"
+              }
+            },
+            {
+              "needed": "libjsoncpp.so.24",
+              "binding": {
+                "resolved": "usr/lib/libjsoncpp.so.24",
+                "symlinks": [
+                  "usr/lib/libjsoncpp.so.24"
+                ],
+                "sha256": "4436492274cf822c6d6df58d79cafb2d51a15f411cadad518b9a07b9d9dc0796"
+              }
+            },
+            {
+              "needed": "libpng.so.16",
+              "binding": {
+                "resolved": "usr/lib/libpng.so.16.37",
+                "symlinks": [
+                  "usr/lib/libpng.so.16",
+                  "usr/lib/libpng.so.16.37"
+                ],
+                "sha256": "0ca6101c98e33534bd42760b212dc473a050c43cc8b8b80c919789dddeca2e74"
+              }
+            },
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libexpat.so.1.6.11": {
+          "sha256": "3d1e4818ad4c83228f2cad6496f6e46324c063c91713feb421544394c54be654",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "usr/lib/libqrencode.so": {
+          "sha256": "0103b054861b87d8a5fea8ef448be9b27258f247ab0693b6468981c7b74052a6",
+          "dependencies": [
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libdl.so.2",
+              "binding": {
+                "resolved": "lib/libdl-2.25.so",
+                "symlinks": [
+                  "lib/libdl.so.2",
+                  "lib/libdl-2.25.so"
+                ],
+                "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "librt.so.1",
+              "binding": {
+                "resolved": "lib/librt-2.25.so",
+                "symlinks": [
+                  "lib/librt.so.1",
+                  "lib/librt-2.25.so"
+                ],
+                "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+              }
+            }
+          ]
+        },
+        "usr/lib/libopus.so.0.8.0": {
+          "sha256": "473c7182bfd47bbbcce4e377015bc9d6bbef554c4eda287ba6a31ecc34f4579a",
+          "dependencies": [
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "usr/lib/libSoundTouch.so.1.0.0": {
+          "sha256": "d4abdc58ae1857d46791b7f8d3ebf0d822f03c5a8d343f3d975a98f0ff40522e",
+          "dependencies": [
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            }
+          ]
+        },
+        "usr/lib/libjsoncpp.so.24": {
+          "sha256": "4436492274cf822c6d6df58d79cafb2d51a15f411cadad518b9a07b9d9dc0796",
+          "dependencies": [
+            {
+              "needed": "libstdc++.so.6",
+              "binding": {
+                "resolved": "usr/lib/libstdc++.so.6.0.22",
+                "symlinks": [
+                  "usr/lib/libstdc++.so.6",
+                  "usr/lib/libstdc++.so.6.0.22"
+                ],
+                "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "usr/lib/libpng.so.16.37": {
+          "sha256": "0ca6101c98e33534bd42760b212dc473a050c43cc8b8b80c919789dddeca2e74",
+          "dependencies": [
+            {
+              "needed": "libz.so.1",
+              "binding": {
+                "resolved": "usr/lib/libz.so.1.2.11",
+                "symlinks": [
+                  "usr/lib/libz.so.1",
+                  "usr/lib/libz.so.1.2.11"
+                ],
+                "sha256": "8ef125500aba36cab2091f6f17aacd25bd7f9098a85739219ab6a50f6bb5a3b7"
+              }
+            },
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "lib/libpthread-2.25.so": {
+          "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "usr/lib/libstdc++.so.6.0.22": {
+          "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+          "dependencies": [
+            {
+              "needed": "libm.so.6",
+              "binding": {
+                "resolved": "lib/libm-2.25.so",
+                "symlinks": [
+                  "lib/libm.so.6",
+                  "lib/libm-2.25.so"
+                ],
+                "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "libgcc_s.so.1",
+              "binding": {
+                "resolved": "usr/lib/libgcc_s.so.1",
+                "symlinks": [
+                  "usr/lib/libgcc_s.so.1"
+                ],
+                "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+              }
+            }
+          ]
+        },
+        "lib/libm-2.25.so": {
+          "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "lib/libdl-2.25.so": {
+          "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "usr/lib/libgcc_s.so.1": {
+          "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "lib/libc-2.25.so": {
+          "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+          "dependencies": [
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "lib/librt-2.25.so": {
+          "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2",
+          "dependencies": [
+            {
+              "needed": "libpthread.so.0",
+              "binding": {
+                "resolved": "lib/libpthread-2.25.so",
+                "symlinks": [
+                  "lib/libpthread.so.0",
+                  "lib/libpthread-2.25.so"
+                ],
+                "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+              }
+            },
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            },
+            {
+              "needed": "ld-linux-aarch64.so.1",
+              "binding": {
+                "resolved": "lib/ld-2.25.so",
+                "symlinks": [
+                  "lib/ld-linux-aarch64.so.1",
+                  "lib/ld-2.25.so"
+                ],
+                "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+              }
+            }
+          ]
+        },
+        "usr/lib/libz.so.1.2.11": {
+          "sha256": "8ef125500aba36cab2091f6f17aacd25bd7f9098a85739219ab6a50f6bb5a3b7",
+          "dependencies": [
+            {
+              "needed": "libc.so.6",
+              "binding": {
+                "resolved": "lib/libc-2.25.so",
+                "symlinks": [
+                  "lib/libc.so.6",
+                  "lib/libc-2.25.so"
+                ],
+                "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+              }
+            }
+          ]
+        },
+        "lib/ld-2.25.so": {
+          "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+          "dependencies": []
+        }
+      },
+      "missing": []
+    }
+  },
+  "helper": {
+    "guest_path": "simulation/fx3-preset-context-v2-screen.so",
+    "sha256": "eb55680196806fb86958d632c6aed939eae91aa1ef928690a4a7d21d6a76c170",
+    "actual_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-preset-context-v6-save102.c",
+    "source_sha256": "32bb3b5ae43ddab667c655941784daf028f26ce4c9ce6cca7e91268c4bb72663",
+    "build_receipt": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-preset-context-v6-save102-build.json",
+    "init_preload_present": true,
+    "passive_profile_present": true,
+    "guards": [
+      {
+        "index": 0,
+        "relative_va": "0x2dca610",
+        "expected": "0xa9bb7bfd",
+        "fx3": {
+          "file_offset": "0x2dca610",
+          "word": "0xa9bb7bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2dba610",
+          "word": "0x255",
+          "matches": false
+        }
+      },
+      {
+        "index": 1,
+        "relative_va": "0x2dca6e0",
+        "expected": "0xd65f03c0",
+        "fx3": {
+          "file_offset": "0x2dca6e0",
+          "word": "0xd65f03c0",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2dba6e0",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 2,
+        "relative_va": "0x2380320",
+        "expected": "0x34000160",
+        "fx3": {
+          "file_offset": "0x2380320",
+          "word": "0x34000160",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2380320",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 3,
+        "relative_va": "0x218fd0c",
+        "expected": "0xa9b87bfd",
+        "fx3": {
+          "file_offset": "0x218fd0c",
+          "word": "0xa9b87bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x218fd0c",
+          "word": "0x6b01001f",
+          "matches": false
+        }
+      },
+      {
+        "index": 4,
+        "relative_va": "0x218ffe8",
+        "expected": "0xb94002a1",
+        "fx3": {
+          "file_offset": "0x218ffe8",
+          "word": "0xb94002a1",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x218ffe8",
+          "word": "0xd284e697",
+          "matches": false
+        }
+      },
+      {
+        "index": 5,
+        "relative_va": "0x218fff4",
+        "expected": "0xf834dae0",
+        "fx3": {
+          "file_offset": "0x218fff4",
+          "word": "0xf834dae0",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x218fff4",
+          "word": "0xf0002b80",
+          "matches": false
+        }
+      },
+      {
+        "index": 6,
+        "relative_va": "0x2d7e6f4",
+        "expected": "0x2a0003f3",
+        "fx3": {
+          "file_offset": "0x2d7e6f4",
+          "word": "0x2a0003f3",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2d6e6f4",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 7,
+        "relative_va": "0x2d7e73c",
+        "expected": "0x39000300",
+        "fx3": {
+          "file_offset": "0x2d7e73c",
+          "word": "0x39000300",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2d6e73c",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 8,
+        "relative_va": "0x2d7e744",
+        "expected": "0x52821300",
+        "fx3": {
+          "file_offset": "0x2d7e744",
+          "word": "0x52821300",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2d6e744",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 9,
+        "relative_va": "0x2a69a84",
+        "expected": "0x39400001",
+        "fx3": {
+          "file_offset": "0x2a69a84",
+          "word": "0x39400001",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2a59a84",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 10,
+        "relative_va": "0x2ab9028",
+        "expected": "0xa9be7bfd",
+        "fx3": {
+          "file_offset": "0x2ab9028",
+          "word": "0xa9be7bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2aa9028",
+          "word": "0x4dda994",
+          "matches": false
+        }
+      },
+      {
+        "index": 11,
+        "relative_va": "0x2b23730",
+        "expected": "0x940e7180",
+        "fx3": {
+          "file_offset": "0x2b23730",
+          "word": "0x940e7180",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b13730",
+          "word": "0x24d0460",
+          "matches": false
+        }
+      },
+      {
+        "index": 12,
+        "relative_va": "0x2ebfd5c",
+        "expected": "0xaa1303e2",
+        "fx3": {
+          "file_offset": "0x2ebfd5c",
+          "word": "0xaa1303e2",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2eafd5c",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 13,
+        "relative_va": "0x2ebfd70",
+        "expected": "0xaa1303e1",
+        "fx3": {
+          "file_offset": "0x2ebfd70",
+          "word": "0xaa1303e1",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2eafd70",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 14,
+        "relative_va": "0x2d7e618",
+        "expected": "0xb941d2a0",
+        "fx3": {
+          "file_offset": "0x2d7e618",
+          "word": "0xb941d2a0",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2d6e618",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 15,
+        "relative_va": "0x2d7e6f0",
+        "expected": "0x9407cf7f",
+        "fx3": {
+          "file_offset": "0x2d7e6f0",
+          "word": "0x9407cf7f",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2d6e6f0",
+          "word": "0x255",
+          "matches": false
+        }
+      },
+      {
+        "index": 16,
+        "relative_va": "0x2f72354",
+        "expected": "0xa9bb7bfd",
+        "fx3": {
+          "file_offset": "0x2f72354",
+          "word": "0xa9bb7bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2f62354",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 17,
+        "relative_va": "0x2f72494",
+        "expected": "0x97988653",
+        "fx3": {
+          "file_offset": "0x2f72494",
+          "word": "0x97988653",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2f62494",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 18,
+        "relative_va": "0x2f72498",
+        "expected": "0x2a0003f3",
+        "fx3": {
+          "file_offset": "0x2f72498",
+          "word": "0x2a0003f3",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2f62498",
+          "word": "0x29787a0",
+          "matches": false
+        }
+      },
+      {
+        "index": 19,
+        "relative_va": "0x2f724a0",
+        "expected": "0x79c006b3",
+        "fx3": {
+          "file_offset": "0x2f724a0",
+          "word": "0x79c006b3",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2f624a0",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 20,
+        "relative_va": "0x2f724b4",
+        "expected": "0x7100001f",
+        "fx3": {
+          "file_offset": "0x2f724b4",
+          "word": "0x7100001f",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2f624b4",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 21,
+        "relative_va": "0x2b725c8",
+        "expected": "0xa9b97bfd",
+        "fx3": {
+          "file_offset": "0x2b725c8",
+          "word": "0xa9b97bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b625c8",
+          "word": "0x1537928",
+          "matches": false
+        }
+      },
+      {
+        "index": 22,
+        "relative_va": "0x2b72680",
+        "expected": "0x940fff9b",
+        "fx3": {
+          "file_offset": "0x2b72680",
+          "word": "0x940fff9b",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b62680",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 23,
+        "relative_va": "0x2b72684",
+        "expected": "0x350005c0",
+        "fx3": {
+          "file_offset": "0x2b72684",
+          "word": "0x350005c0",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b62684",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 24,
+        "relative_va": "0x2b721b4",
+        "expected": "0xa9bd7bfd",
+        "fx3": {
+          "file_offset": "0x2b721b4",
+          "word": "0xa9bd7bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b621b4",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 25,
+        "relative_va": "0x2b72520",
+        "expected": "0xa9bd7bfd",
+        "fx3": {
+          "file_offset": "0x2b72520",
+          "word": "0xa9bd7bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b62520",
+          "word": "0x1537928",
+          "matches": false
+        }
+      },
+      {
+        "index": 26,
+        "relative_va": "0x2b7250c",
+        "expected": "0x39405001",
+        "fx3": {
+          "file_offset": "0x2b7250c",
+          "word": "0x39405001",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b6250c",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 27,
+        "relative_va": "0x2b72988",
+        "expected": "0x940ffeda",
+        "fx3": {
+          "file_offset": "0x2b72988",
+          "word": "0x940ffeda",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b62988",
+          "word": "0x153789c",
+          "matches": false
+        }
+      },
+      {
+        "index": 28,
+        "relative_va": "0x2b7298c",
+        "expected": "0x350005e0",
+        "fx3": {
+          "file_offset": "0x2b7298c",
+          "word": "0x350005e0",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b6298c",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 29,
+        "relative_va": "0x2d9e764",
+        "expected": "0xb9404ba0",
+        "fx3": {
+          "file_offset": "0x2d9e764",
+          "word": "0xb9404ba0",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2d8e764",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 30,
+        "relative_va": "0x2b046f8",
+        "expected": "0x97aa398e",
+        "fx3": {
+          "file_offset": "0x2b046f8",
+          "word": "0x97aa398e",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2af46f8",
+          "word": "0x4eb869c",
+          "matches": false
+        }
+      },
+      {
+        "index": 31,
+        "relative_va": "0x2b04728",
+        "expected": "0xf94013f5",
+        "fx3": {
+          "file_offset": "0x2b04728",
+          "word": "0xf94013f5",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2af4728",
+          "word": "0x4eb86e4",
+          "matches": false
+        }
+      },
+      {
+        "index": 32,
+        "relative_va": "0x2b047cc",
+        "expected": "0x97aa3959",
+        "fx3": {
+          "file_offset": "0x2b047cc",
+          "word": "0x97aa3959",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2af47cc",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 33,
+        "relative_va": "0x2b047fc",
+        "expected": "0xf94013f5",
+        "fx3": {
+          "file_offset": "0x2b047fc",
+          "word": "0xf94013f5",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2af47fc",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 34,
+        "relative_va": "0x2b237f8",
+        "expected": "0x97a9c1e2",
+        "fx3": {
+          "file_offset": "0x2b237f8",
+          "word": "0x97a9c1e2",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b137f8",
+          "word": "0x22",
+          "matches": false
+        }
+      },
+      {
+        "index": 35,
+        "relative_va": "0x2b0473c",
+        "expected": "0x3970e022",
+        "fx3": {
+          "file_offset": "0x2b0473c",
+          "word": "0x3970e022",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2af473c",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 36,
+        "relative_va": "0x2b22c80",
+        "expected": "0xb94f26e0",
+        "fx3": {
+          "file_offset": "0x2b22c80",
+          "word": "0xb94f26e0",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b12c80",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 37,
+        "relative_va": "0x2b22c88",
+        "expected": "0x35000193",
+        "fx3": {
+          "file_offset": "0x2b22c88",
+          "word": "0x35000193",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b12c88",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 38,
+        "relative_va": "0x2b22cbc",
+        "expected": "0x35fffe80",
+        "fx3": {
+          "file_offset": "0x2b22cbc",
+          "word": "0x35fffe80",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b12cbc",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 39,
+        "relative_va": "0x2b22cc0",
+        "expected": "0x940e7264",
+        "fx3": {
+          "file_offset": "0x2b22cc0",
+          "word": "0x940e7264",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b12cc0",
+          "word": "0x1537928",
+          "matches": false
+        }
+      },
+      {
+        "index": 40,
+        "relative_va": "0x2b22d9c",
+        "expected": "0x2a1403f3",
+        "fx3": {
+          "file_offset": "0x2b22d9c",
+          "word": "0x2a1403f3",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b12d9c",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 41,
+        "relative_va": "0x2a69974",
+        "expected": "0xa9bd7bfd",
+        "fx3": {
+          "file_offset": "0x2a69974",
+          "word": "0xa9bd7bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2a59974",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 42,
+        "relative_va": "0x2ab90a4",
+        "expected": "0xa9be7bfd",
+        "fx3": {
+          "file_offset": "0x2ab90a4",
+          "word": "0xa9be7bfd",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2aa90a4",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 43,
+        "relative_va": "0x2b23754",
+        "expected": "0x940e73fc",
+        "fx3": {
+          "file_offset": "0x2b23754",
+          "word": "0x940e73fc",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b13754",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 44,
+        "relative_va": "0x2ec0794",
+        "expected": "0xa94153f3",
+        "fx3": {
+          "file_offset": "0x2ec0794",
+          "word": "0xa94153f3",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2eb0794",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 45,
+        "relative_va": "0x2b22b80",
+        "expected": "0x97a9befc",
+        "fx3": {
+          "file_offset": "0x2b22b80",
+          "word": "0x97a9befc",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b12b80",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 46,
+        "relative_va": "0x2b22b84",
+        "expected": "0x97a9bf9b",
+        "fx3": {
+          "file_offset": "0x2b22b84",
+          "word": "0x97a9bf9b",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b12b84",
+          "word": "0x0",
+          "matches": false
+        }
+      },
+      {
+        "index": 47,
+        "relative_va": "0x2b22cc8",
+        "expected": "0xb940a3a0",
+        "fx3": {
+          "file_offset": "0x2b22cc8",
+          "word": "0xb940a3a0",
+          "matches": true
+        },
+        "fx6": {
+          "file_offset": "0x2b12cc8",
+          "word": "0x0",
+          "matches": false
+        }
+      }
+    ],
+    "fx3_matches": 48,
+    "fx6_matches": 0
+  },
+  "limitations": [
+    "DT_NEEDED path presence only; symbol versions and runtime initialization are separate gates",
+    "Conditional helper refusal is inferred from pinned source/build and bytes; not a guest run",
+    "This helper is an observer: its rejection alone does not prove app process cannot start",
+    "Actual dlopen interposition and earlier preload effects remain unobserved for FX6",
+    "No kernel/platform/helper/Backup modification or guest payload built"
+  ]
+}

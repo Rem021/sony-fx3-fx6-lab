@@ -1,0 +1,203 @@
+{
+  "status": "PASS_TERMINAL_LAUNCH_AND_COMPLETION_SEPARATED_NO_REAL_TERMINAL_OR_ROOT",
+  "checks": 15,
+  "cases": [
+    {
+      "name": "open_exit0_does_not_end_or_accept_unstarted_command",
+      "state": {
+        "status": "TERMINAL_COMMAND_COMPLETION_PENDING_HELPER_UNCONFIRMED",
+        "verified_helper_alive": false,
+        "verified_by": "No helper identity proof yet; open status is launch request only",
+        "native_started": false,
+        "native_function_completed": false,
+        "parent_ack_sent": false,
+        "active_native_call_phase": 0,
+        "final_deadline_passed": false,
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0,
+        "Terminal_command_completion_unconfirmed": true
+      }
+    },
+    {
+      "name": "command_exit0_without_actual_helper_receipt_stays_unknown",
+      "state": {
+        "status": "UNKNOWN_TERMINAL_WITHOUT_VERIFIED_HELPER_RECEIPT",
+        "relay_returncode": 0,
+        "helper_terminal_verified": false,
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0
+      }
+    },
+    {
+      "name": "cancelled_command_does_not_start_or_accept_helper",
+      "state": {
+        "status": "UNKNOWN_TERMINAL_WITHOUT_VERIFIED_HELPER_RECEIPT",
+        "relay_returncode": 1,
+        "helper_terminal_verified": false,
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0
+      }
+    },
+    {
+      "name": "open_exit0_preserves_actual_pending_worker_and_cooperative_deadline",
+      "state": {
+        "status": "HELPER_RUNNING",
+        "verified_helper_alive": true,
+        "verified_by": "current kernel PID, UID, birth and executable path",
+        "native_started": true,
+        "native_function_completed": false,
+        "parent_ack_sent": true,
+        "active_native_call_phase": 4,
+        "final_deadline_passed": true,
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0,
+        "Terminal_command_completion_unconfirmed": true
+      }
+    },
+    {
+      "name": "wrong_nonce_completion_is_observation_error_not_cleanup_or_retry",
+      "state": {
+        "status": "OBSERVATION_ERROR_UNRESOLVED",
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0
+      }
+    },
+    {
+      "name": "actual_helper_exit_without_command_marker_is_not_terminal_acceptance",
+      "state": {
+        "status": "TERMINAL_COMMAND_COMPLETION_PENDING_HELPER_UNCONFIRMED",
+        "verified_helper_alive": false,
+        "verified_by": "No helper identity proof yet; open status is launch request only",
+        "native_started": true,
+        "native_function_completed": true,
+        "parent_ack_sent": true,
+        "active_native_call_phase": 0,
+        "final_deadline_passed": true,
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0,
+        "Terminal_command_completion_unconfirmed": true
+      }
+    },
+    {
+      "name": "actual_identity_and_SHA_receipt_plus_command_completion_allow_single_cleanup_result",
+      "state": {
+        "status": "UNKNOWN_PROVIDER_STATE",
+        "helper_terminal_verified": true,
+        "helper_identity": {
+          "pid": 2256,
+          "uid": 501,
+          "birth_sec": 1793272757,
+          "birth_usec": 761844,
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/runs/terminal-relay-tests/live-fixture-command/staged-grant/helper"
+        },
+        "relay_returncode": 0,
+        "native": {
+          "status_code": 2,
+          "capture_attempted": true,
+          "claim_attempted": false,
+          "interface_claimed_in_this_trial": false,
+          "cleanup_error": false,
+          "clock_invalid": false,
+          "active_native_call_phase": 0,
+          "events": [
+            {
+              "phase": 1,
+              "raw_return": 0
+            },
+            {
+              "phase": 2,
+              "raw_return": 0
+            },
+            {
+              "phase": 3,
+              "raw_return": 0
+            },
+            {
+              "phase": 4,
+              "raw_return": 0
+            },
+            {
+              "phase": 10,
+              "raw_return": 0
+            },
+            {
+              "phase": 11,
+              "raw_return": 0
+            }
+          ],
+          "same_camera_firmware_or_HEVC_recording_proven": false,
+          "native_driver_return_independently_proven": false
+        },
+        "receipt": {
+          "schema": 2,
+          "grant_id": "fx3-702-msc-owner-20261029-05",
+          "mode": "fixture",
+          "nonce": "e5aec127ac0eecf519aeac277bd8d3a7",
+          "pid": 2256,
+          "birth_sec": 1793272757,
+          "birth_usec": 761844,
+          "native_return": 2,
+          "result_sha256": "0f0ac16043a7d55940a605dee58d3c5e2e334ed93dc1fab2e843c38adbf16f4f",
+          "physical_camera_acceptance": false,
+          "fixture_calls": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+          ]
+        },
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0
+      }
+    },
+    {
+      "name": "marker_rejected_empty",
+      "error": "Terminal completion marker identity/size differs; outcome unknown"
+    },
+    {
+      "name": "marker_rejected_invalid-json",
+      "error": "Terminal completion marker incomplete; outcome unknown"
+    },
+    {
+      "name": "marker_rejected_noninteger",
+      "error": "Terminal completion marker grant/nonce/result differs; outcome unknown"
+    },
+    {
+      "name": "marker_rejected_wrong-grant",
+      "error": "Terminal completion marker grant/nonce/result differs; outcome unknown"
+    },
+    {
+      "name": "completion_symlink_not_followed"
+    },
+    {
+      "name": "receipt_requires_current_user_GUI_audit_session_not_uid0_only",
+      "checks": 5
+    },
+    {
+      "name": "sudo_verification_stays_in_Terminal_only_helper_output_redirected",
+      "command_executed": false
+    },
+    {
+      "name": "historical_camera_and_host_grants_cannot_launch05",
+      "error": "new fixed Terminal/sudo camera launch lacks its own explicit authorization"
+    }
+  ],
+  "actual_user_fixture_processes": 1,
+  "Terminal_or_sudo_or_root_or_native_IOKit_executed": false,
+  "camera_operations": 0
+}

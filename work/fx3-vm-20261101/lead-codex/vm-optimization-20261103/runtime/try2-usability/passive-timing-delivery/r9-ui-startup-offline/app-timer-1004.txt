@@ -1,0 +1,49 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 176fb4c: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+ 176fb50: 910003fd     	mov	x29, sp
+ 176fb54: f90013f5     	str	x21, [sp, #0x20]
+ 176fb58: aa0003f5     	mov	x21, x0
+ 176fb5c: 90017d80     	adrp	x0, 0x471f000
+ 176fb60: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 176fb64: aa0103f4     	mov	x20, x1
+ 176fb68: aa0203f3     	mov	x19, x2
+ 176fb6c: f9421400     	ldr	x0, [x0, #0x428]
+ 176fb70: b9400001     	ldr	w1, [x0]
+ 176fb74: aa1403e0     	mov	x0, x20
+ 176fb78: 97f887ca     	bl	0x1591aa0 <_ZNK2ux4core2IDeqES1_@plt>
+ 176fb7c: 72001c1f     	tst	w0, #0xff
+ 176fb80: 54000340     	b.eq	0x176fbe8 <Application_System_Init+0x80058>
+ 176fb84: 52800020     	mov	w0, #0x1                // =1
+ 176fb88: 910183a5     	add	x5, x29, #0x60
+ 176fb8c: 9100e3a4     	add	x4, x29, #0x38
+ 176fb90: 910113a3     	add	x3, x29, #0x44
+ 176fb94: 29087fa0     	stp	w0, wzr, [x29, #0x40]
+ 176fb98: b0017de0     	adrp	x0, 0x472c000
+ 176fb9c: 910103a2     	add	x2, x29, #0x40
+ 176fba0: aa1403e1     	mov	x1, x20
+ 176fba4: f81e8cbf     	str	xzr, [x5, #-0x18]!
+ 176fba8: f9446c00     	ldr	x0, [x0, #0x8d8]
+ 176fbac: b9400000     	ldr	w0, [x0]
+ 176fbb0: b9003ba0     	str	w0, [x29, #0x38]
+ 176fbb4: aa1503e0     	mov	x0, x21
+ 176fbb8: 97f88c0a     	bl	0x1592be0 <_ZN2ux6wgtsys10WidgetBase12getTimerInfoERKNS_4core2IDERNS0_9TimerTypeERjRS3_Rm@plt>
+ 176fbbc: 72001c1f     	tst	w0, #0xff
+ 176fbc0: 54000140     	b.eq	0x176fbe8 <Application_System_Init+0x80058>
+ 176fbc4: 52820080     	mov	w0, #0x1004             // =4100
+ 176fbc8: 7900abbf     	strh	wzr, [x29, #0x54]
+ 176fbcc: 7900a3a0     	strh	w0, [x29, #0x50]
+ 176fbd0: f94027a0     	ldr	x0, [x29, #0x48]
+ 176fbd4: cb000273     	sub	x19, x19, x0
+ 176fbd8: f9002fb3     	str	x19, [x29, #0x58]
+ 176fbdc: 97fdfa4a     	bl	0x16ee504 <.text+0x159e84>
+ 176fbe0: 910143a1     	add	x1, x29, #0x50
+ 176fbe4: 97fdfaeb     	bl	0x16ee790 <.text+0x15a110>
+ 176fbe8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 176fbec: f94013f5     	ldr	x21, [sp, #0x20]
+ 176fbf0: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+ 176fbf4: d65f03c0     	ret

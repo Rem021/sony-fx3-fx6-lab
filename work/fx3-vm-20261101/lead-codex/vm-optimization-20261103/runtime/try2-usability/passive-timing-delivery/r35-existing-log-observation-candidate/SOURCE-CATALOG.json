@@ -1,0 +1,45 @@
+{
+  "source_freeze": "SOURCE-FREEZE.json",
+  "original_OSD_source": "../v25-menu-osd-diagnostic-r3/src/fx3-osd-headless-v25-r3.c",
+  "original_UI_source": "../v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+  "original_exact_build_receipts": [
+    "../v25-menu-osd-diagnostic-r3/build/compile-r3.command.json",
+    "../v25-r15-snapshot-tail/BUILD.json"
+  ],
+  "actual_member_binding": "ACTUAL-BINDING.json",
+  "original_recompile": "BASELINE-REBUILD.json",
+  "candidate_build": "BUILD.json",
+  "fixed_kernel_syscalls": {
+    "172": {
+      "name": "sys_getpid",
+      "table_file_offset": 4400480,
+      "target": "0xffffff80080b1d10",
+      "code_file_offset": 204048,
+      "first40_raw_hex": "fd7bbfa9fd030091004138d5020080d28100805209220094007c4093fd7bc1a8c0035fd61f2003d5"
+    },
+    "178": {
+      "name": "sys_gettid",
+      "table_file_offset": 4400528,
+      "target": "0xffffff80080b1d38",
+      "code_file_offset": 204088,
+      "first40_raw_hex": "fd7bbfa9fd030091004138d5020080d201008052ff210094007c4093fd7bc1a8c0035fd61f2003d5"
+    }
+  },
+  "input_pins": [
+    "INPUTS-BEFORE.json",
+    "BUILD-INPUTS-BEFORE.json",
+    "SUPPLEMENT-INPUTS-BEFORE.json"
+  ],
+  "primary_interface_refs": [
+    {
+      "url": "https://man7.org/linux/man-pages/man2/getpid.2.html",
+      "checked": "2026-11-04 PT",
+      "scope": "TGID vs TID; not target binary proof"
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man2/gettid.2.html",
+      "checked": "2026-11-04 PT",
+      "scope": "TID and CLONE_THREAD; not target ABI proof"
+    }
+  ]
+}

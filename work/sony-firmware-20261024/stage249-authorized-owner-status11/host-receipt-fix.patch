@@ -1,0 +1,69 @@
+--- stage248/receipt_receiver.py
++++ candidate/receipt_receiver.py
+@@ -103,7 +103,11 @@
+     used=216+r['event_count']*8
+     if any(result[used:]):raise Rejected('unused private events')
+     for at in range(216,used,8):
+-        if struct.unpack_from('<I',result,at)[0] not in range(1,14):raise Rejected('private event phase')
++        # Native claim tracing emits 101..109 (109 once per endpoint).
++        # These are host API substeps, not additional camera operations.
++        event_phase=struct.unpack_from('<I',result,at)[0]
++        if event_phase not in range(1,14) and event_phase not in range(101,110):
++            raise Rejected('private event phase')
+     if phase==2:
+         if (native,r['status'],ran,r['owner_retained'],guard)!=(4,2,1,1,0):raise Rejected('held outcome inconsistent')
+     elif native!=r['status'] or native==4 or r['owner_retained'] or r['active_call_pending'] or r['wire_pending'] or r['vendor_attempted']:
+--- stage248/supervisor.py
++++ candidate/supervisor.py
+@@ -104,6 +104,9 @@
+             if status>8 or (not self.vendor_fixture and flags&(1|2|32)):raise R.Rejected('unreleased vendor response')
+             self.responses.append({'id':number,'status':status,'flags':flags});return
+         if len(data)!=1024:raise R.Rejected('unknown final frame')
++        # Preserve the original frame from this already identified stream
++        # before decoding. A rejected frame is evidence, never a success.
++        raw_file(self.directory/'received-final-record.bin',data)
+         value=R.decode_record(data,self.verified.identity,self.frame.nonce)
+         value['transport_peer_verified']=True
+         if value['native_return']==0 and (len(self.responses)!=len(self.ops) or any(r['status'] for r in self.responses)):
+@@ -155,7 +158,21 @@
+         state={'status':'OWNER_ALIVE_UNRESOLVED' if self.verified else 'UNKNOWN_ENTRY_NOT_VERIFIED',
+                'helper_terminal_observed':False,'physical_camera_acceptance':False,'automatic_retry':False,'new_trial_authorized':False,
+                'relay_returncode':self.relay.poll(),'relay_is_not_helper_identity':True}
+-        if self.error:return dict(state,status='UNKNOWN_OBSERVER_ERROR',error=self.error)
++        if self.error:
++            state.update(status='UNKNOWN_OBSERVER_ERROR',error=self.error)
++            if self.verified is not None:
++                try:current=self.ipc.probe(self.verified.identity.pid)
++                except OSError:
++                    state['process_observation_failed']=True
++                    return state
++                original=self.verified.identity
++                gone=current is None or (current.pid==original.pid and
++                    (current.sec,current.usec)!=(original.sec,original.usec))
++                state['original_helper_gone']=gone
++                # Close only this observer after confirmed helper exit.
++                # No accepted receipt means no operation-success verdict.
++                state['observer_may_finish']=gone
++            return state
+         if self.receipt:
+             state.update(R.observe_completion(self.receipt,self.verified,self.ipc.probe))
+         return state
+--- stage248/run_approved_status.py
++++ candidate/run_approved_status.py
+@@ -14,14 +14,14 @@
+         result=job.step();key=json.dumps(result,sort_keys=True)
+         if key!=last:
+             print(json.dumps(dict(observed_utc=datetime.now(timezone.utc).isoformat(),**result)),flush=True);last=key
+-        if result.get('helper_terminal_observed'):
++        if result.get('helper_terminal_observed') or result.get('observer_may_finish'):
+             S.put(job.directory/'live-final-summary.json',result);job.close_observer();break
+         if result.get('status') in ('OWNER_RETAINED','UNKNOWN_OBSERVER_ERROR','UNKNOWN_PROCESS_OBSERVATION','UNKNOWN_PROCESS_IDENTITY_CHANGE'):
+             S.put(job.directory/'unresolved-summary.json',result)
+             # Keep the same controller/connection alive; no kill/reset/restart.
+             while True:
+                 result=job.step()
+-                if result.get('helper_terminal_observed'):
++                if result.get('helper_terminal_observed') or result.get('observer_may_finish'):
+                     S.put(job.directory/'late-final-summary.json',result);job.close_observer();break
+                 time.sleep(.1)
+             break

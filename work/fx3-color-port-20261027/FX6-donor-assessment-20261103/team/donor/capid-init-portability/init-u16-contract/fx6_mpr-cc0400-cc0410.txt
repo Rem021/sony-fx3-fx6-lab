@@ -1,0 +1,10 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000cc0400 <_ZN3mpr5pconv20IsInterlaceFrameRateEN9DefStruct9FrameRateE>:
+  cc0400: 121e7800     	and	w0, w0, #0xfffffffd
+  cc0404: 7100101f     	cmp	w0, #0x4
+  cc0408: 1a9f17e0     	cset	w0, eq
+  cc040c: d65f03c0     	ret

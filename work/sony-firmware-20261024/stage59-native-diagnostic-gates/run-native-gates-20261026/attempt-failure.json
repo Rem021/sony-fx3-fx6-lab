@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage59-native-diagnostic-gates/diagnostic_gates.py\", line 230, in main\n    try:run(out)\n        ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage59-native-diagnostic-gates/diagnostic_gates.py\", line 189, in run\n    cases=[case(assets,'target muted priorA5',inp[0][1],0xa5,1,False,True,386),\n           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage59-native-diagnostic-gates/diagnostic_gates.py\", line 158, in case\n    assert values[5:8]==[struct.unpack_from('<I',view,0x1c)[0],*struct.unpack_from('<2H',view,8)]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "passing_result": false
+}

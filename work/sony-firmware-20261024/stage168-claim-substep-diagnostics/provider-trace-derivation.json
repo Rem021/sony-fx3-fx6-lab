@@ -1,0 +1,71 @@
+{
+  "base_provider_sha256": "236fe4c122372a13f8a5b3d4ae25bc4ccc1b7e14af47363fcde4e62e0a999afc",
+  "traced_provider_sha256": "7b33b03256f3c226ade7049c10a9e3f42790b9240d8291a60fbd600170f34fae",
+  "exact_reverse_transform_matches_original": true,
+  "trace_function_sha256": "bada15bcb70e055101c1c27703f1afd08c48ab2f1149c22e8fd492e107de9da8",
+  "steps": [
+    {
+      "phase": 101,
+      "name": "claim_device_open",
+      "original_expression": "(*p->device)->USBDeviceOpen(p->device)",
+      "wrapped_expression": "trace_claim_result(p,101,(int32_t)((*p->device)->USBDeviceOpen(p->device)))"
+    },
+    {
+      "phase": 102,
+      "name": "create_interface_iterator",
+      "original_expression": "(*p->device)->CreateInterfaceIterator(p->device,&request,&iterator)",
+      "wrapped_expression": "trace_claim_result(p,102,(int32_t)((*p->device)->CreateInterfaceIterator(p->device,&request,&iterator)))"
+    },
+    {
+      "phase": 103,
+      "name": "create_interface_plugin",
+      "original_expression": "IOCreatePlugInInterfaceForService(first,kIOUSBInterfaceUserClientTypeID,kIOCFPlugInInterfaceID,&plugin,&score)",
+      "wrapped_expression": "trace_claim_result(p,103,(int32_t)(IOCreatePlugInInterfaceForService(first,kIOUSBInterfaceUserClientTypeID,kIOCFPlugInInterfaceID,&plugin,&score)))"
+    },
+    {
+      "phase": 104,
+      "name": "query_interface650_hresult",
+      "original_expression": "(*plugin)->QueryInterface(plugin,CFUUIDGetUUIDBytes(kIOUSBInterfaceInterfaceID650),(LPVOID *)&p->interface)",
+      "wrapped_expression": "trace_claim_result(p,104,(int32_t)((*plugin)->QueryInterface(plugin,CFUUIDGetUUIDBytes(kIOUSBInterfaceInterfaceID650),(LPVOID *)&p->interface)))"
+    },
+    {
+      "phase": 105,
+      "name": "get_interface_number",
+      "original_expression": "(*p->interface)->GetInterfaceNumber(p->interface,&number)",
+      "wrapped_expression": "trace_claim_result(p,105,(int32_t)((*p->interface)->GetInterfaceNumber(p->interface,&number)))"
+    },
+    {
+      "phase": 106,
+      "name": "get_alternate_setting",
+      "original_expression": "(*p->interface)->GetAlternateSetting(p->interface,&alternate)",
+      "wrapped_expression": "trace_claim_result(p,106,(int32_t)((*p->interface)->GetAlternateSetting(p->interface,&alternate)))"
+    },
+    {
+      "phase": 107,
+      "name": "get_num_endpoints",
+      "original_expression": "(*p->interface)->GetNumEndpoints(p->interface,&endpoints)",
+      "wrapped_expression": "trace_claim_result(p,107,(int32_t)((*p->interface)->GetNumEndpoints(p->interface,&endpoints)))"
+    },
+    {
+      "phase": 108,
+      "name": "interface_open",
+      "original_expression": "(*p->interface)->USBInterfaceOpen(p->interface)",
+      "wrapped_expression": "trace_claim_result(p,108,(int32_t)((*p->interface)->USBInterfaceOpen(p->interface)))"
+    },
+    {
+      "phase": 109,
+      "name": "get_pipe_properties_in_order_1_then_2",
+      "original_expression": "(*p->interface)->GetPipeProperties(p->interface,pipe,&direction,&endpoint,&type,&packet,&interval)",
+      "wrapped_expression": "trace_claim_result(p,109,(int32_t)((*p->interface)->GetPipeProperties(p->interface,pipe,&direction,&endpoint,&type,&packet,&interval)))"
+    }
+  ],
+  "shared_ABI_unchanged": true,
+  "underlying_IOKit_call_expressions_and_order_unchanged": true,
+  "max_claim_API_results": 10,
+  "max_major_phases": 11,
+  "max_post_snapshots": 40,
+  "max_events_total_conservative": 61,
+  "event_capacity": 64,
+  "no_new_device_api_or_retry": true,
+  "compile_time_IOReturn_and_HRESULT_width_assertions": true
+}

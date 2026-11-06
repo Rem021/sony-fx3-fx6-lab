@@ -1,0 +1,34 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-ffreestanding",
+    "-fno-builtin",
+    "-fno-stack-protector",
+    "-fno-pic",
+    "-mcmodel=large",
+    "-mgeneral-regs-only",
+    "-mno-outline-atomics",
+    "-fno-asynchronous-unwind-tables",
+    "-fno-unwind-tables",
+    "-O2",
+    "-nostdlib",
+    "-c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-reset-v2-date98-module-unit.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-reset-v2-date98.ko"
+  ],
+  "exit": 0,
+  "authority": [
+    "msg_de25f58b89eb",
+    "msg_2c43f8a7ac82"
+  ],
+  "source_sha256": "a8f4ee39c5ff3849db4a387060614032dd74e06503ea0ee97a0968185a82ea44",
+  "output_sha256": "1336b006829a875a259dcb68260a8947b1bdca46f8ae52be9e8e69d8c2bd4286",
+  "scope": "AP98 passive logging/own software output only; no original params/replies/message ownership/CP reset algorithm changed",
+  "extra_original_point_proof": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap98-date-extra-original-points.json",
+  "original_point_sha256": "12adf2987846857188b1d33fa7c74b8aa7593b26f0f52a987557c74e0b6b3d95",
+  "trace_core_sha256": "6d6494b6a0ff074c16c5552f349dd3932981383abd5b834833f945d9fbc16cae"
+}

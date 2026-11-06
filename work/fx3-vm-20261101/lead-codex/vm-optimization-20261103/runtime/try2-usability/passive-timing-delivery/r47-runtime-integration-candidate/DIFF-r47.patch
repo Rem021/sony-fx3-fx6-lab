@@ -1,0 +1,576 @@
+--- a/runtime-wrapper/cleanup.py
++++ b/runtime-wrapper/cleanup.py
+@@ -1,24 +1,7 @@
+ """Original End first; classify alarm explicitly, preserve HAR/close, await final exit."""
+-import socket, math, re
++import socket
+ from common import *
+ 
+-def alarm_disposition(value,c):
+- if not isinstance(value,dict):return 'unknown_malformed'
+- if (value.get('version')!=1 or value.get('deadline_ms')!=60000 or
+-     value.get('expectedURL')!=c['url'] or value.get('expectedLaunchId')!=c['launch_id'] or
+-     type(value.get('sealed')) is not bool or type(value.get('documentTimeOrigin')) not in (int,float) or
+-     not math.isfinite(value['documentTimeOrigin']) or not isinstance(value.get('events'),list) or 'current' not in value):return 'unknown_malformed'
+- current=value['current']
+- if current is None:
+-  return 'valid_null_never_armed' if not any(isinstance(e,dict) and e.get('event') in ('armed','cancelled','expired') for e in value['events']) else 'unknown_malformed'
+- if not isinstance(current,dict):return 'unknown_malformed'
+- if (not isinstance(current.get('nonce'),str) or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',current['nonce']) or
+-     any(type(current.get(k)) not in (int,float) or not math.isfinite(current[k]) for k in ('armed_ms','due_ms')) or
+-     current['due_ms']-current['armed_ms']!=60000 or current.get('deadline_ms')!=60000):return 'unknown_malformed'
+- if current.get('state')=='armed':return 'valid_armed_do_not_cancel_or_dispose'
+- if current.get('state') in ('cancelled','expired'):return 'valid_nonarmed'
+- return 'unknown_malformed'
+-
+ def _cleanup_once(c,output):
+  errors=[];event('cleanup_entry_End_first')
+  try:
+@@ -33,14 +16,32 @@
+   ended=ev('ended-state','({lastStatus,finished,ending,url:location.href,document_time_origin:performance.timeOrigin,document_id:reviewDocumentId,alarm:window.__fx3InteractionDeadlineV1?.status?.()})');write('ENDED-STATE.json',ended)
+   browser('ended-page',['screenshot',str(output/'ended-page.png')],timeout=10)
+  except Exception as e:errors.append('ended document capture: '+repr(e))
+- disposition='unknown_status_fetch_failed'
++ disposition='unknown_status_fetch_failed';alarm_sha=None
+  try:
+-  alarm=dl('deadline-after-End','status');write('deadline-after-End.json',alarm);disposition=alarm_disposition(alarm,c)
+-  if disposition in ('valid_null_never_armed','valid_nonarmed'):
++  alarm=dl('deadline-after-End','status');write('deadline-after-End.json',alarm)
++  alarm_sha=evidence.digest(output/'deadline-after-End.json')
++  disposition=evidence.classify_alarm(alarm,c)
++  if disposition=='valid_armed_do_not_cancel_or_dispose':
++   current=alarm['current']
++   write('dispose-not-invoked.json',{'reason':disposition,
++    'alarm_cleanup':'no cancel/no dispose; owned document closes below',
++    'alarm_sha256':alarm_sha,'alarm':alarm,
++    'version':alarm['version'],'deadline_ms':alarm['deadline_ms'],
++    'expectedURL':alarm['expectedURL'],'expectedLaunchId':alarm['expectedLaunchId'],
++    'documentTimeOrigin':alarm['documentTimeOrigin'],'sealed':alarm['sealed'],
++    'nonce':current['nonce'],'state':current['state'],'armed_ms':current['armed_ms'],
++    'due_ms':current['due_ms'],'current_deadline_ms':current['deadline_ms']})
++  elif disposition in ('valid_null_never_armed','valid_nonarmed'):
+    write('deadline-dispose.json',dl('deadline-dispose','dispose'))
+-  else:write('dispose-not-invoked.json',{'reason':disposition,'alarm_cleanup':'no cancel/no dispose; owned document closes below'})
++  else:
++   # Keep a negative record only; certify refuses every non-armed/unknown disposition.
++   write('dispose-not-invoked.json',{'reason':disposition,
++    'alarm_cleanup':'no cancel/no dispose; owned document closes below',
++    'alarm_sha256':alarm_sha,'alarm':alarm})
+  except Exception as e:errors.append('alarm status/dispose: '+repr(e))
+- write('ALARM-DISPOSITION.json',{'classification':disposition,'forced_cancel':False})
++ write('ALARM-DISPOSITION.json',{'classification':disposition,'forced_cancel':False,
++  'dispose_invoked':disposition in ('valid_null_never_armed','valid_nonarmed'),
++  'alarm_sha256':alarm_sha})
+  try:browser('HAR-stop',['network','har','stop',str(output/'traffic.har')],timeout=15)
+  except Exception as e:errors.append('HAR: '+repr(e))
+  try:browser('browser-before-close',['session','info','--json'])
+--- a/runtime-wrapper/cleanup_evidence.py
++++ b/runtime-wrapper/cleanup_evidence.py
+@@ -1,5 +1,5 @@
+ """r39 cleanup-only evidence/lease helpers. No launch, browser, QMP or guest API."""
+-import contextvars,errno,fcntl,hashlib,json,os,socket,stat,subprocess,time,uuid
++import contextvars,errno,fcntl,hashlib,json,math,os,re,socket,stat,subprocess,time,uuid
+ from pathlib import Path
+ ACTIVE=contextvars.ContextVar('r39_cleanup_output',default=None)
+ ROOT=Path(__file__).resolve().parents[1]
+@@ -8,6 +8,148 @@
+ SCHEMA='fx3-cleanup-r39-v1'
+ def digest(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+ def encoded(v):return (json.dumps(v,ensure_ascii=False,indent=2)+'\n').encode()
++_UUID=re.compile(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}')
++def classify_alarm(value,c):
++ """Strictly classify the exact installed alarm status; shared by body/certify/revalidate.
++
++ valid_armed_do_not_cancel_or_dispose is a real classification, not permission to
++ skip evidence: certify below still requires the full armed identity, original End,
++ closed browser session and independent native/resource receipts.
++ """
++ if not isinstance(value,dict):return 'unknown_malformed'
++ if (value.get('version')!=1 or value.get('deadline_ms')!=60000 or
++     value.get('expectedURL')!=c['url'] or value.get('expectedLaunchId')!=c['launch_id'] or
++     type(value.get('sealed')) is not bool or type(value.get('documentTimeOrigin')) not in (int,float) or
++     not math.isfinite(value['documentTimeOrigin']) or not isinstance(value.get('events'),list) or 'current' not in value):return 'unknown_malformed'
++ current=value['current']
++ if current is None:
++  return 'valid_null_never_armed' if not any(isinstance(e,dict) and e.get('event') in ('armed','cancelled','expired') for e in value['events']) else 'unknown_malformed'
++ if not isinstance(current,dict):return 'unknown_malformed'
++ if (not isinstance(current.get('nonce'),str) or not _UUID.fullmatch(current['nonce']) or
++     any(type(current.get(k)) not in (int,float) or not math.isfinite(current[k]) for k in ('armed_ms','due_ms')) or
++     current['due_ms']-current['armed_ms']!=60000 or current.get('deadline_ms')!=60000):return 'unknown_malformed'
++ if current.get('state')=='armed':return 'valid_armed_do_not_cancel_or_dispose'
++ if current.get('state') in ('cancelled','expired'):return 'valid_nonarmed'
++ return 'unknown_malformed'
++
++def _alarm_identity(alarm):
++ cur=alarm.get('current') if isinstance(alarm.get('current'),dict) else None
++ return {'version':alarm.get('version'),'deadline_ms':alarm.get('deadline_ms'),
++  'expectedURL':alarm.get('expectedURL'),'expectedLaunchId':alarm.get('expectedLaunchId'),
++  'documentTimeOrigin':alarm.get('documentTimeOrigin'),'sealed':alarm.get('sealed'),
++  'nonce':None if cur is None else cur.get('nonce'),'state':None if cur is None else cur.get('state'),
++  'armed_ms':None if cur is None else cur.get('armed_ms'),'due_ms':None if cur is None else cur.get('due_ms'),
++  'current_deadline_ms':None if cur is None else cur.get('deadline_ms')}
++
++def _same_identity(got,expected):
++ return all(got.get(k)==v for k,v in expected.items())
++
++def _dispose_matches(dispose,alarm,cls):
++ if not isinstance(dispose,dict):return False
++ if (dispose.get('version')!=1 or dispose.get('deadline_ms')!=60000 or
++     dispose.get('expectedURL')!=alarm.get('expectedURL') or dispose.get('expectedLaunchId')!=alarm.get('expectedLaunchId') or
++     dispose.get('documentTimeOrigin')!=alarm.get('documentTimeOrigin') or dispose.get('sealed') is not True or
++     not isinstance(dispose.get('events'),list) or not any(isinstance(e,dict) and e.get('event')=='disposed' for e in dispose['events'])):return False
++ if cls=='valid_null_never_armed':
++  return (dispose.get('current') is None and
++          not any(isinstance(e,dict) and e.get('event') in ('armed','cancelled','expired') for e in dispose['events']))
++ cur=alarm.get('current');dcur=dispose.get('current')
++ if not isinstance(cur,dict) or not isinstance(dcur,dict):return False
++ return (dcur.get('state')==cur.get('state') and dcur.get('nonce')==cur.get('nonce') and
++         dcur.get('armed_ms')==cur.get('armed_ms') and dcur.get('due_ms')==cur.get('due_ms') and
++         dcur.get('deadline_ms')==60000)
++
++def alarm_evidence(call,c,body):
++ """Bind body disposition to the sealed status and require disposal only when nonarmed.
++
++ Armed: no cancel / no dispose is the designed path, but the complete alarm identity,
++         nonce and due must survive in dispose-not-invoked.json and no dispose artifact
++         may exist.
++ Nonarmed: the original deadline-dispose receipt and its disposed event are required.
++ Unknown / malformed: refuse; never infer completion from errors=[] or a file name.
++ """
++ try:alarm=load(call/'deadline-after-End.json')
++ except Exception as exc:raise ValueError('alarm_status_missing:'+repr(exc))
++ cls=classify_alarm(alarm,c)
++ if cls=='unknown_malformed':raise ValueError('alarm_identity_malformed')
++ if body.get('alarm_disposition')!=cls:raise ValueError('alarm_disposition_mismatch')
++ try:marker=load(call/'ALARM-DISPOSITION.json')
++ except Exception as exc:raise ValueError('alarm_marker_missing:'+repr(exc))
++ alarm_sha=digest(call/'deadline-after-End.json')
++ if marker.get('classification')!=cls or marker.get('forced_cancel') is not False:raise ValueError('alarm_marker_classification')
++ if marker.get('alarm_sha256')!=alarm_sha:raise ValueError('alarm_marker_digest')
++ identity=_alarm_identity(alarm)
++ if cls=='valid_armed_do_not_cancel_or_dispose':
++  if (alarm.get('current') or {}).get('state')!='armed':raise ValueError('armed_state_lost')
++  try:not_invoked=load(call/'dispose-not-invoked.json')
++  except Exception as exc:raise ValueError('armed_dispose_not_invoked_missing:'+repr(exc))
++  if not_invoked.get('reason')!=cls:raise ValueError('armed_dispose_reason')
++  if not_invoked.get('alarm_cleanup')!='no cancel/no dispose; owned document closes below':raise ValueError('armed_dispose_notice')
++  if not_invoked.get('alarm_sha256')!=alarm_sha:raise ValueError('armed_dispose_alarm_digest')
++  if not_invoked.get('alarm')!=alarm:raise ValueError('armed_dispose_alarm_identity')
++  if not _same_identity(not_invoked,identity):raise ValueError('armed_dispose_field_identity')
++  if (call/'deadline-dispose.json').exists() or (call/'deadline-dispose-process.json').exists():raise ValueError('armed_dispose_invoked')
++  if marker.get('dispose_invoked') is not False:raise ValueError('armed_marker_dispose_state')
++  return {**identity,'classification':cls,'dispose_invoked':False,'alarm_sha256':alarm_sha}
++ if cls in ('valid_null_never_armed','valid_nonarmed'):
++  if (call/'dispose-not-invoked.json').exists():raise ValueError('nonarmed_dispose_not_invoked_artifact')
++  try:dispose=load(call/'deadline-dispose.json')
++  except Exception as exc:raise ValueError('nonarmed_dispose_missing:'+repr(exc))
++  if not _dispose_matches(dispose,alarm,cls):raise ValueError('nonarmed_dispose_unproven')
++  if marker.get('dispose_invoked') is not True:raise ValueError('nonarmed_marker_dispose_state')
++  return {**identity,'classification':cls,'dispose_invoked':True,'alarm_sha256':alarm_sha,'dispose_sha256':digest(call/'deadline-dispose.json')}
++ raise ValueError('alarm_disposition_unhandled')
++
++def ended_state_evidence(call,c,alarm):
++ state=load(call/'ENDED-STATE.json');status=state.get('lastStatus')
++ if not isinstance(status,dict):raise ValueError('ended_status_missing')
++ if state.get('finished') is not True or status.get('phase')!='finished':raise ValueError('ended_not_finished')
++ if status.get('launch_request_id')!=c['launch_id'] or not status.get('run_incarnation'):raise ValueError('ended_launch_or_run')
++ if state.get('url')!=c['url'] or not state.get('document_id'):raise ValueError('ended_url_or_document')
++ origin=state.get('document_time_origin')
++ if type(origin) not in (int,float) or not math.isfinite(origin):raise ValueError('ended_time_origin')
++ if origin!=alarm.get('documentTimeOrigin'):raise ValueError('ended_alarm_document_mismatch')
++ sa=state.get('alarm')
++ if not isinstance(sa,dict) or 'current' not in sa:raise ValueError('ended_alarm_missing')
++ sc=sa.get('current');ac=alarm.get('current')
++ for k in ('version','deadline_ms','expectedURL','expectedLaunchId','documentTimeOrigin'):
++  if sa.get(k)!=alarm.get(k):raise ValueError('ended_alarm_'+k)
++ if sc is None or ac is None:
++  if sc is not ac:raise ValueError('ended_alarm_current_identity')
++ else:
++  for k in ('nonce','state','armed_ms','due_ms','deadline_ms'):
++   if sc.get(k)!=ac.get(k):raise ValueError('ended_alarm_current_'+k)
++ end=json.loads(load(call/'End-original-button-process.json')['stdout'])
++ if end.get('End_invoked') is True:
++  if state.get('ending') is not True:raise ValueError('ended_not_ending_after_End')
++ elif end.get('End_invoked') is False:
++  if state.get('finished') is not True:raise ValueError('ended_not_finished')
++ else:raise ValueError('end_invocation_unknown')
++ attempt_path=Path(call).parent.parent/'current-attempt.json'
++ bound=False
++ if attempt_path.exists():
++  attempt=load(attempt_path);pb=attempt.get('postkey_binding')
++  if not isinstance(pb,dict):raise ValueError('current_attempt_binding_missing')
++  if (state.get('document_id')!=pb.get('document_id') or origin!=pb.get('document_time_origin') or
++      status.get('run_incarnation')!=pb.get('run_incarnation')):raise ValueError('current_attempt_document_or_run')
++  if ac is not None and attempt.get('nonce')!=ac.get('nonce'):raise ValueError('current_attempt_alarm_nonce')
++  bound=True
++ return {'document_id':state['document_id'],'document_time_origin':origin,
++  'run_incarnation':status['run_incarnation'],'url':state['url'],
++  'launch_request_id':status['launch_request_id'],'End_invoked':end['End_invoked'],
++  'current_attempt_bound':bound}
++
++def browser_evidence(call,cfg):
++ before=json.loads(load(call/'browser-before-close-process.json')['stdout'])
++ after=json.loads(load(call/'browser-after-close-process.json')['stdout'])
++ bd=before.get('data') if isinstance(before,dict) else None
++ if not isinstance(before,dict) or before.get('success') is not True or not isinstance(bd,dict):raise ValueError('browser_before_close_missing')
++ if bd.get('session')!=cfg['session'] or bd.get('active') is not True or type(bd.get('pid')) is not int or bd.get('pid')<=1:raise ValueError('browser_before_close_not_active')
++ ad=after.get('data') if isinstance(after,dict) else None
++ if not isinstance(after,dict) or after.get('success') is not True or not isinstance(ad,dict):raise ValueError('browser_after_close_missing')
++ if ad.get('session')!=cfg['session'] or ad.get('active') is not False or ad.get('pid') is not None:raise ValueError('browser_close_unproven')
++ return {'session':cfg['session'],'before_pid':bd['pid'],'after_active':False,'after_pid':None}
++
+ def regular(p):
+  p=Path(p)
+  if not p.is_absolute() or p.resolve()!=p or any(x.is_symlink() for x in (p,*p.parents)) or not p.is_file():raise ValueError('exact_regular_file:'+str(p))
+@@ -119,19 +261,24 @@
+ 
+ def certify(call,c,cfg,body,probe=resource_check,copy_native=True):
+  if not isinstance(c.get('launch_id'),str) or not c['launch_id']:raise ValueError('launch_not_yet_established_no_completion_certificate')
+- if body['errors'] or body['runner_alive'] is not False or body['port_closed'] is not True or body['alarm_disposition'] not in ('valid_null_never_armed','valid_nonarmed'):raise ValueError('cleanup_body_incomplete')
+- state=load(call/'ENDED-STATE.json');status=state['lastStatus'];alarm=load(call/'deadline-after-End.json')
+- if (state['finished'] is not True or status['phase']!='finished' or status['launch_request_id']!=c['launch_id'] or not status['run_incarnation'] or state['url']!=c['url'] or not state['document_id'] or state['document_time_origin']!=alarm['documentTimeOrigin']):raise ValueError('finished_page_launch_document_binding')
+- after=json.loads(load(call/'browser-after-close-process.json')['stdout'])
+- if after.get('success') is not True or after['data']['session']!=cfg['session'] or after['data']['active'] is not False or after['data']['pid'] is not None:raise ValueError('browser_close_unproven')
+- for name in ['End-original-button','ended-state','ended-page','deadline-after-End','deadline-dispose','HAR-stop','browser-before-close','browser-close','browser-after-close']:
++ if body.get('errors') or body.get('runner_alive') is not False or body.get('port_closed') is not True:raise ValueError('cleanup_body_incomplete')
++ alarm=load(call/'deadline-after-End.json')
++ alarm_proof=alarm_evidence(call,c,body)
++ ended=ended_state_evidence(call,c,alarm)
++ browser=browser_evidence(call,cfg)
++ stages=['End-original-button','ended-state','ended-page','deadline-after-End','HAR-stop','browser-before-close','browser-close','browser-after-close']
++ if alarm_proof['dispose_invoked']:stages.append('deadline-dispose')
++ for name in stages:
+   if load(call/(name+'-process.json'))['returncode']!=0:raise ValueError('incomplete_stage:'+name)
+  if not regular(call/'ended-page.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n'):raise ValueError('cleanup_PNG_missing')
+  har=load(call/'traffic.har')
+  if not isinstance(har.get('log',{}).get('entries'),list):raise ValueError('cleanup_HAR_missing')
+  native=native_evidence(c,call/'native' if copy_native else None);resources=probe(c,native['qemu_pid'])
+  if resources.get('resources_closed') is not True:raise ValueError('current_resources_unproven:'+json.dumps(resources))
+- return {'native':native,'resources':resources,'run_incarnation':status['run_incarnation'],'document_id':state['document_id'],'scope':'cleanup completion only; original action/menu outcome unchanged'}
++ return {'native':native,'resources':resources,'run_incarnation':ended['run_incarnation'],
++  'document_id':ended['document_id'],'document_time_origin':ended['document_time_origin'],
++  'alarm':alarm_proof,'ended_state':ended,'browser':browser,
++  'scope':'cleanup completion only; original action/menu outcome unchanged'}
+ 
+ def seal(call):
+  files={}
+@@ -149,8 +296,13 @@
+  for name,v in manifest['files'].items():
+   p=call/name
+   if p.resolve()!=p or not p.is_relative_to(call) or digest(regular(p))!=v['sha256'] or p.stat().st_size!=v['bytes']:raise ValueError('artifact_integrity:'+name)
++ body=load(call/'body-result.json')
++ disposition=body.get('alarm_disposition')
++ if disposition not in ('valid_null_never_armed','valid_nonarmed','valid_armed_do_not_cancel_or_dispose'):raise ValueError('alarm_disposition_not_completed')
+  required={'invocation.json','result.json','body-result.json','proof.json','stdout.txt','stderr.txt','ENDED-STATE.json','traffic.har','ended-page.png','deadline-after-End.json','ALARM-DISPOSITION.json'}
+  required|={'native/'+n for n in ('command.json','trial-session.json','receipt.json','trial-web-final-receipt.json','resource-guard-receipt.json')}
++ if disposition=='valid_armed_do_not_cancel_or_dispose':required.add('dispose-not-invoked.json')
++ else:required|={'deadline-dispose.json','deadline-dispose-process.json'}
+  if not required.issubset(manifest['files']):raise ValueError('incomplete_manifest')
+  public=load(call/'RETURN-HASH.json');raw=regular(call/'return.stdout.txt')
+  if digest(raw)!=public['sha256'] or raw.stat().st_size!=public['bytes']:raise ValueError('public_stdout_integrity')
+@@ -169,7 +321,7 @@
+  if now_native!=proof['native']:raise ValueError('original_native_evidence_changed')
+  body=load(call/'body-result.json')
+  fresh=certify(call,c,cfg,body,probe,copy_native=False)
+- if any(fresh[k]!=proof[k] for k in ('native','run_incarnation','document_id')):raise ValueError('original_semantic_proof_changed')
++ if any(fresh[k]!=proof.get(k) for k in ('native','run_incarnation','document_id','document_time_origin','alarm','ended_state','browser')):raise ValueError('original_semantic_proof_changed')
+  resources=fresh['resources']
+  return {'original_receipt':ref,'resources':resources,'original_completed_call':call.name,'scope':'prior bound completion plus current point probes; not global End atomicity'}
+ 
+--- a/v25-r21-recovery-integration/trial_web_v22_navigation_review.py
++++ b/r47-runtime-integration-candidate/trial_web_v22_navigation_review.py
+@@ -480,11 +480,11 @@
+     a.frame.sequence!==binding.sequence||a.alarm_nonce!==binding.nonce||!a.alarm_nonce)
+    return deny('binding_mismatch');
+  if(document!==attemptDocument||performance.timeOrigin!==a.document_time_origin||
+-    !h||h.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedURL!==location.href||
++    !h||h.version!==1||h.sealed||h.deadline_ms!==60000||h.expectedURL!==location.href||
+     h.current?.state!=='armed'||h.current.nonce!==binding.nonce||
+     h.expectedLaunchId!==a.launch_request_id||h.documentTimeOrigin!==a.document_time_origin||
+     !Number.isFinite(h.current.armed_ms)||!Number.isFinite(h.current.due_ms)||
+-    h.current.due_ms!==h.current.armed_ms+20000||
++    h.current.due_ms!==h.current.armed_ms+60000||
+     h.current.due_ms!==a.alarm_due_ms||performance.now()>=h.current.due_ms)return deny('document_or_alarm_mismatch');
+  if(!['not_posted','explicit_rejected_unqueued'].includes(a.outcome)||
+     (a.outcome==='not_posted'&&a.mutation_called)||
+--- a/trial_web_r24_review_snapshot.py
++++ b/trial_web_r24_review_snapshot.py
+@@ -3,7 +3,7 @@
+ from pathlib import Path
+ from urllib.parse import urlsplit,parse_qs
+ HERE=Path(__file__).resolve().parent
+-BASE=HERE.parent/'v25-r21-recovery-integration'
++BASE=HERE
+ spec=importlib.util.spec_from_file_location('fx3_r24_original_web',BASE/'trial_web_v22_navigation_review.py')
+ base=importlib.util.module_from_spec(spec);spec.loader.exec_module(base)
+ KEYS=base.KEYS;wait_for_final_receipt=base.wait_for_final_receipt
+--- a/r35_package_selection.py
++++ b/r35_package_selection.py
+@@ -3,13 +3,13 @@
+ import hashlib,json
+ HOST=Path(__file__).resolve().parent
+ DEL=HOST.parent
+-APPROVED_HOST=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r44-review-budget-candidate')
++APPROVED_HOST=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r47-runtime-integration-candidate')
+ PACKAGE=DEL/'r42-command-timing-package'
+ CANDIDATE_SHA='857c2b7aed207ca2351029a5089741989b8fbfd4aa6feeed424ab0a4e4a11806'
+ CPIO_SHA='59c5850a4a367ddf469aa2c9f774e0808e3fd6632b9c566323e1a07592a03c63'
+ CPIO_BYTES=453213884
+-PROFILE='r44-review-budget-60s'
+-LABEL='v44review-n64-r44'
++PROFILE='r47-runtime-integration-60s'
++LABEL='v47runtime-n64-r47'
+ PINS={'r30-startup-observation-candidate/SHA256SUMS':'e04a86e60d0b311d57df50a6060064f6f57e02a33d3c04c015922e6a37749a49','r30-startup-observation-candidate/SOURCE-FREEZE.json':'10265a99fd1a74dc23d85477c82f078485863b92ed664e12132e0a9cf41ce717','r30-startup-observation-candidate/CORE-SOURCE-FREEZE.json':'3591a3fcbb79c2b1617ba47f4fa4de5b79f2057f717198393e433156f69dc5e9','r35-existing-log-observation-candidate/SHA256SUMS':'c7aee1bf7a35320e3c8d08eec03214957832008197741feb971433f19c524a71','r35-existing-log-observation-candidate/SOURCE-FREEZE.json':'dd4f8a2045220a045c32b8a0a686227f08e4e8c2edc7adca8964a12ddedc66e4','r36-fixed-slot-package/SHA256SUMS':'9a06c51caa6bc3517bedb9db06a72452fe4a12156ed3838034821caf151ecf03'}
+ PINS.update({'r37-diagnostic-runner-candidate/SHA256SUMS':'ede0cfdc07066faf00d98e6934e5125dc10d598f8e228d8364ca0cf6fab1155c','r37-diagnostic-runner-candidate/SOURCE-FREEZE.json':'861b26c5aefbe393a5e58e1015914e517f0bb9e928c6f5e572a9f56816084ca9','r37-diagnostic-runner-candidate/CORE-SOURCE-FREEZE.json':'7752a6fd7cdb74def7a3cfa9659ed6a1a4f6ab23708a5aaaed5f345e7c46f303'})
+ PINS.update({'r39-cleanup-evidence-candidate/SHA256SUMS': '7a3f5006d6b693207ab0ef58daac919a56668da0d95e9863888389cac059a8f5', 'r39-cleanup-evidence-candidate/SOURCE-FREEZE.json': '3f4d9894d2bfdd1bf15f2c01132006c78f8331220f8e8da1bcee4adcbd37ff43', 'r39-cleanup-evidence-candidate/CORE-SOURCE-FREEZE.json': '642149dac737315d19dc6910804538eec6df79a43261527c06fcaf23d374bd50', 'r41-command-entry-timing-candidate/SHA256SUMS': '785759f29c2f8985854852b0d64a190d8f8c3e86cf9f8048eed5158c491221df', 'r41-command-entry-timing-candidate/SOURCE-FREEZE.json': '0f34af0ecfc72c9264c0a13e0e279424ce7eec38bd5e8e127b05b9b1f6537f15', 'r42-command-timing-package/ARCHIVE-DIFF.json': 'a9d5787b0cda916896f214982092113743786ad40fb2a557ae8b47b158ac524b', 'r42-command-timing-package/source-index.json': '589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a'})
+--- a/PAGE-IDENTITY.json
++++ b/PAGE-IDENTITY.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": "fx3-r24-page-identity-v1",
+-  "canonical_script_sha256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+-  "PAGE_sha256": "f2c0eb2d4282ff53403f29b7650403f336b6ffd74c71c05390676193af962ff7",
++  "canonical_script_sha256": "f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf",
++  "PAGE_sha256": "551cbd919f61858ba8542a3a46d7eab3894162c915038d92d5a16317bc3c719b",
+   "original_PAGE_is_new_version": true
+ }
+--- a/operator-helpers/deadline.js
++++ b/operator-helpers/deadline.js
+@@ -2,7 +2,7 @@
+   'use strict';
+   const DEADLINE_MS = 60_000;
+   const KEY = '__fx3InteractionDeadlineV1';
+-  const SCRIPT_SHA = '852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b';
++  const SCRIPT_SHA = 'f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf';
+   const fail = message => { throw new Error('deadline_refused: ' + message); };
+   if (!config || Object.keys(config).sort().join(',') !== 'expectedLaunchId,expectedURL') fail('config');
+   const expected = new URL(config.expectedURL);
+--- a/operator-helpers/recovery_cancel.js
++++ b/operator-helpers/recovery_cancel.js
+@@ -1,7 +1,7 @@
+ (async function explicitRecoveryCancel(c){
+  'use strict';
+  const originalDocument=document,originalOrigin=performance.timeOrigin;
+- const PAGE_SHA='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b';
++ const PAGE_SHA='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf';
+  const hash=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+  let cancel_invoked=false;
+  const fail=reason=>({status:'refused',reason,cancel_invoked,performance_ms:performance.now()});
+--- a/operator-helpers/recovery_readonly.js
++++ b/operator-helpers/recovery_readonly.js
+@@ -6,7 +6,7 @@
+  try{const response=await fetch('/api/status',{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('status_http');fresh=await response.json();}catch(_){return {qualified:false,reason:'fresh_status_unknown',performance_ms:performance.now()};}finally{clearTimeout(timer);}
+  // Everything below is one synchronous browser job, not screenshot/server/guest atomicity.
+  const fail=reason=>({qualified:false,reason,performance_ms:performance.now()});
+- if(!c||document!==doc||performance.timeOrigin!==origin||location.href!==c.url||window.top!==window||document.title!=='FX3 固件菜单试用'||scripts.length!==1||script.src||script.textContent!==text||hash!=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b')return fail('document_or_PAGE_identity');
++ if(!c||document!==doc||performance.timeOrigin!==origin||location.href!==c.url||window.top!==window||document.title!=='FX3 固件菜单试用'||scripts.length!==1||script.src||script.textContent!==text||hash!=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf')return fail('document_or_PAGE_identity');
+  const a=window.fx3KeyAttemptOutcome?.(),h=window.__fx3InteractionDeadlineV1?.status?.(),s=lastStatus,b=c.binding;
+  if(!fresh||fresh.phase!=='ready'||!fresh.ready||fresh.busy||fresh.review_required||fresh.error||fresh.review_protocol_unknown||!fresh.render_valid||fresh.launch_request_id!==c.launch_id||fresh.steps!==b?.base_step)return fail('fresh_server_lifecycle');
+  if(!a||!b||!h||!s||document!==attemptDocument||origin!==a.document_time_origin||origin!==b.document_time_origin||
+--- a/operator-helpers/planned_navigation_click.py
++++ b/operator-helpers/planned_navigation_click.py
+@@ -6,7 +6,7 @@
+ from urllib.parse import urlsplit
+ from planned_prerequisite import PLAN_SHA,plan,prerequisite
+ HERE=Path(__file__).resolve().parent
+-PAGE_SHA='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b'
++PAGE_SHA='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf'
+ KEYS=(3,48,21,431,428,427,504)
+ IDENTITY_CHECKS=set('document_unchanged time_origin_unchanged exact_url top_level one_inline_script script_unchanged_during_digest page_fingerprint launch_identity prerequisite_document'.split())
+ PREFLIGHT_CHECKS=set('status_present phase_ready server_ready server_no_error server_not_busy server_no_review steps_under_eight page_not_busy page_not_ending page_not_finished delivery_known review_known review_not_awaiting no_awaiting_step no_render_fault frame_loaded plan_matches plan_step_matches server_step_matches previous_confirm_matches alarm_document_matches alarm_nonce_matches alarm_armed alarm_due_in_future key_exists key_enabled'.split())
+--- a/runtime-wrapper/untimed_image.py
++++ b/runtime-wrapper/untimed_image.py
+@@ -2,7 +2,7 @@
+ from common import *
+ def snapshot(name,out,step):
+  c=identity();out=Path(out);out.mkdir()
+- code=r'''(async()=>{const c=CONFIG,s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||lastStatus.steps!==c.step||!lastStatus.ready||lastStatus.phase!=='ready'||lastStatus.error||!frameLoadedFor(lastStatus)||busy||ending||finished||renderFault||deliveryUnknown||reviewUnknown||window.__fx3InteractionDeadlineV1.status().current?.state==='armed')throw Error('untimed_current_image_identity');return {step:lastStatus.steps,sha:shownSHA,gen:displayedGeneration,seq:displayed,origin:performance.timeOrigin,frame:lastStatus.frame,attempt:fx3KeyAttemptOutcome(),performance_ms:performance.now()};})()'''.replace('CONFIG',json.dumps({**c,'step':step}))
++ code=r'''(async()=>{const c=CONFIG,s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||lastStatus.steps!==c.step||!lastStatus.ready||lastStatus.phase!=='ready'||lastStatus.error||!frameLoadedFor(lastStatus)||busy||ending||finished||renderFault||deliveryUnknown||reviewUnknown||window.__fx3InteractionDeadlineV1.status().current?.state==='armed')throw Error('untimed_current_image_identity');return {step:lastStatus.steps,sha:shownSHA,gen:displayedGeneration,seq:displayed,origin:performance.timeOrigin,frame:lastStatus.frame,attempt:fx3KeyAttemptOutcome(),performance_ms:performance.now()};})()'''.replace('CONFIG',json.dumps({**c,'step':step}))
+  before=ev(name+'-before',code);browser(name+'-screenshot',['screenshot',str(out/'current.png')]);after=ev(name+'-after',code)
+  assert all(before[x]==after[x] for x in ('step','sha','gen','origin')) and after['seq']>=before['seq']
+  p=out/'current.png';assert p.is_file() and not p.is_symlink() and p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+--- a/runtime-wrapper/later_capture.py
++++ b/runtime-wrapper/later_capture.py
+@@ -2,7 +2,7 @@
+ import sys
+ from common import *
+ def current_guard(c):
+- return r'''(async()=>{const c=CONFIG,s=[...document.scripts];const d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');const a=fx3KeyAttemptOutcome();if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||a?.attempt_id!==c.attempt_id||a.alarm_nonce!==c.nonce||a.expected_step!==c.step||a.outcome!=='accepted')throw Error('r21_current_attempt_identity');return a;})()'''.replace('CONFIG',json.dumps(c))
++ return r'''(async()=>{const c=CONFIG,s=[...document.scripts];const d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');const a=fx3KeyAttemptOutcome();if(s.length!==1||s[0].src||await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))!=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf'||location.href!==c.url||lastStatus.launch_request_id!==c.launch_id||a?.attempt_id!==c.attempt_id||a.alarm_nonce!==c.nonce||a.expected_step!==c.step||a.outcome!=='accepted')throw Error('r21_current_attempt_identity');return a;})()'''.replace('CONFIG',json.dumps(c))
+ def main():
+  c=json.loads(Path(sys.argv[1]).read_text());out=Path(sys.argv[2]);out.mkdir()
+  ev(c['prefix']+'-identity-before',current_guard(c))
+--- a/runtime-wrapper/launch_prepare.py
++++ b/runtime-wrapper/launch_prepare.py
+@@ -42,7 +42,7 @@
+  browser('browser-open',['open',url]);browser('viewport',['set','viewport','1280','1200']);browser('HAR-start',['network','har','start'])
+  browser('await-start-enabled',['wait','--fn','!!lastStatus&&lastStatus.browser_ready&&!startButton.disabled'])
+  v=ev('PAGE-before-Start',r'''(async()=>{const s=[...document.scripts],d=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(x=>x.toString(16).padStart(2,'0')).join('');return {canonical_sha:await d(s[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;')),lastStatus,viewport:[innerWidth,innerHeight]};})()''')
+- assert v['canonical_sha']=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b' and v['lastStatus']['phase']=='awaiting_launch' and v['viewport']==[1280,1200]
++ assert v['canonical_sha']=='f9a4287834015ab1f82dc0e9719437b755d7643b5f96f4cc9548199f06725caf' and v['lastStatus']['phase']=='awaiting_launch' and v['viewport']==[1280,1200]
+  tabs=json.loads(browser('owned-tab-prestart',['tab','--json']))['data']['tabs'];assert len(tabs)==1 and tabs[0]['url']==url
+  assert read('ledger.json')=={'attempts':[],'recoveries':[]}
+  browser('prestart-screenshot',['screenshot',str(HERE/'prestart.png')]);write('PRESTART-READY.json',{'passed':True,'scripted_navigation':True,'visual_review_at_click':False,'plan_sha':CFG['plan_sha'],'standby_review_command':['python3','-B',str(SOURCE/'operate.py'),'standby_review','代理实际看合格待机图后填判断'],'actual_cli_steps':[{'step':x['step'],'planned_click_command':['python3','-B',str(SOURCE/'operate.py'),'click',str(x['step']),x['target']],'confirm_command':['python3','-B',str(SOURCE/'operate.py'),'confirm','代理实际审阅本步新截图后确认 '+x['target']]} for x in CFG['steps']],'bindings':'one exclusive step-N-attempt-N dir / new nonce generated before arm; helper CLI arguments fully wired from runtime.json','cancel_command':['python3','-B',str(SOURCE/'operate.py'),'recovery_cancel','仅取消同nonce未入队alarm'],'end_command':['python3','-B',str(SOURCE/'cleanup.py')],'tab':tabs[0],**stamp()})
+--- a/return-tools/return_adapter.py
++++ b/return-tools/return_adapter.py
+@@ -9,7 +9,7 @@
+ from cleanup_evidence import failure_status
+ OPERATE=FROZEN/'runtime-wrapper/operate.py'
+ OPERATE_SHA='e0aca5336e631ed3ec4cf3e888178f1351e05551ee1a208bcf9c9a59f4f39e5e'
+-CORE_FREEZE_SHA='b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1'
++CORE_FREEZE_SHA='c87cb75380013efd940a653da015d2116b8caf159db4a818ac377546b9349dc2'
+ VOLUME='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ MAX_SUMMARY_BYTES=4096
+ ACTIONS={'click':3,'observe':2,'pin':2,'confirm':2,'standby_review':2,'recovery_review':2,'recovery_cancel':2,'reject':2}
+--- a/SOURCE-FREEZE.json
++++ b/SOURCE-FREEZE.json
+@@ -1,45 +1,46 @@
+ {
+-  "runtime-wrapper/audit_after.py": "901f7447816d688b0eaa8d12efbe635d4509a59db638ab7a96e33d0fe3a925fc",
+-  "runtime-wrapper/capture_validation.py": "4175dc76c6e97436a98e36901205851708b8a647caf5358b77f8cc4056a874a4",
+-  "runtime-wrapper/cleanup.py": "7c567bd53ad86b7d55db4b84640e018e80443328e53a7576b4e025c9073ea3e8",
+-  "runtime-wrapper/common.py": "96196e962cf9e2cdc520a9128508e32a45349db4d9d86442c7c2a05395b11c5e",
+-  "runtime-wrapper/later_capture.py": "ca6c1b2b64ef9ff3672d39d112b598062a1ff8c613d2ee8f7daa5dedbff01f8f",
+-  "runtime-wrapper/launch_prepare.py": "110c2fb6a4df630ce4fcb3564a52aeb5bb157a3d4c148fcc18d57ce7e9fc579f",
+-  "runtime-wrapper/operate.py": "e0aca5336e631ed3ec4cf3e888178f1351e05551ee1a208bcf9c9a59f4f39e5e",
+-  "runtime-wrapper/preflight.py": "43d61dc7fadc68c60dd1ea5c831e2e2a0b775a84cd483eca897a54a11201286f",
+-  "runtime-wrapper/start_and_wait.py": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+-  "runtime-wrapper/untimed_image.py": "b400adf1aff0d599950a76908d3dd18bd8396d7ffaf7f3c8716b973de7286d34",
+-  "operator-helpers/deadline.js": "cfe09ab87d14de6f5597b1ced23f3a52dafacdce0ee3ed126514d55f9be454f4",
++  "CORE-SOURCE-FREEZE.json": "c87cb75380013efd940a653da015d2116b8caf159db4a818ac377546b9349dc2",
++  "NAVIGATION-PLAN.json": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
++  "PAGE-IDENTITY.json": "0246146d402ee732429afcdd0230615799c0f82a52e875ac555dc07a485ece4e",
++  "confirm_page_r24.js": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
++  "operator-helpers/deadline.js": "1df9ed6c41d08813feb46afc09fafc94c92de36ef5f483b1aa2dae55ac7672a0",
+   "operator-helpers/deadline_cli.py": "602859489066aae51b732f594296445fa4d4dcfa3f9abd074b5ac6ca985bfcc4",
+   "operator-helpers/planned_navigation_click.js": "6e120517b1c785bb3eb277268908801465dd55dc0bda5901cfaa2be4fc7175e0",
+-  "operator-helpers/planned_navigation_click.py": "65b373ca8f65660d8af85700554f0bf86ec7d76bd3cff15073ae53a511b7c65f",
++  "operator-helpers/planned_navigation_click.py": "4e10797ea512faebfcab32c0a3785ae1e3174eb1aa42f4d114de8e9ffe60ad77",
+   "operator-helpers/planned_prerequisite.py": "55d22fa8fcab5c0ff388605911149c8edec1a0a4477f20156939b881960725af",
+-  "operator-helpers/recovery_cancel.js": "bdb3548b3221c6f74a7c7df2ea2cbf33e443d7238c96d4fcb89e4943b592f623",
+-  "operator-helpers/recovery_readonly.js": "93cb7af2378265b041a7dda7bdfbaa206a58b46dfbb980e50dd1d78b23e1fb59",
++  "operator-helpers/postkey_observation.py": "40df03ab574deb81c7e3377a3f545b70dff0d9bc0992874617d4b466c045fd6e",
++  "operator-helpers/postkey_read.js": "f47a618a2687ab06880812f20a1d9695bbe6c14326f97c974dab2ca80713f57d",
++  "operator-helpers/recovery_cancel.js": "bea4d08fd94dd30fd6dcf590230987561f1bf513821a60010249d2535b951020",
++  "operator-helpers/recovery_observation.py": "a4c0532a4df678468a0c96260198e591d734e013fea43eb69bd5666a0b6a2457",
++  "operator-helpers/recovery_readonly.js": "3bf1ead1c90a266352c3117247b8cbe2d1776174595e5bfe8ed60d989591dd6b",
+   "operator-helpers/recovery_tools.py": "6c46f4025ded78da3433b8955cd8c2cb48680008db1f0fb9fbea9b23e0917740",
+   "operator-helpers/review_snapshot_cli.py": "8f5d72f61a75e6aeab3834364ae7edb2065de42a9f1452d17e19a3ddf2792f58",
+   "operator-helpers/snapshot_confirm.js": "167aa78440b9f30e0b60796a167299a6117647f42bbc020330886cda97d07146",
+   "operator-helpers/snapshot_read.js": "1d042133c6a2e24d128cc7ed95d7f760a7c29a4cecf4ac0a99ea2ae54ec1c225",
+-  "run_trial_r24_review_snapshot.py": "1f8cf2b78f3a56e2f38ab561ff1a7a3c072d984878a02be9b6afedf68a4fcd28",
+-  "trial_web_r24_review_snapshot.py": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+-  "review_page_r24.js": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
+-  "confirm_page_r24.js": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
+   "prepare_run.py": "0611ab27cd7ecaa215fe52abedaaad2884fe61bfe4f7746510793d91496e8fd1",
+-  "NAVIGATION-PLAN.json": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+-  "PAGE-IDENTITY.json": "7f4b2f3a3f9c86fdb3193a2177135955f3aa000a135e819eba08493c0cf41a0a",
+-  "operator-helpers/recovery_observation.py": "a4c0532a4df678468a0c96260198e591d734e013fea43eb69bd5666a0b6a2457",
+-  "runtime-wrapper/recovery_guard.py": "fff04d29c94aee963260ccd7cc09898319bc85eb53717fae52765a63f0510372",
+-  "operator-helpers/postkey_observation.py": "40df03ab574deb81c7e3377a3f545b70dff0d9bc0992874617d4b466c045fd6e",
+-  "operator-helpers/postkey_read.js": "f47a618a2687ab06880812f20a1d9695bbe6c14326f97c974dab2ca80713f57d",
+-  "runtime-wrapper/postkey_flow.py": "2af4e7b9318c2f51baa36188dc5ab395eea764c87b24ba9b82989cce53d0f278",
+-  "startup_observation.py": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda",
+-  "trial_ring_cached.py": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
+-  "trial_log_v4_mss.py": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5",
+-  "return-tools/return_adapter.py": "ce5faeadc6a7fdc53472d7102cc5111c32d007704c9ed6513d9b6535957313e2",
++  "r35_package_selection.py": "2b14b69b218ace83c6f83bafe0008e56ab7f514f9624a9e8866004e82bd955b0",
++  "return-tools/return_adapter.py": "6a1eb32fcde5fa2b83904eae3c87b88c0d72a03ab1998f6d8360eec5a5b39f2e",
+   "return-tools/short_tool.mjs": "de0dd5938268c02a8a9c1a776e4b2c97b4d4eaa21c827aa9ffcb26d8d82afb96",
+   "return-tools/show_result.mjs": "f4279573abd855789c5828b7a85d540b951708f623fdcdd9a885e5eab7cc0408",
+   "return-tools/tool_call.mjs": "c90ba3ebc04aa296e386a5a085f811532dbebc6689f04ca8456647fbd6ec2500",
+-  "CORE-SOURCE-FREEZE.json": "b9d92bc251fb6da2577af7d7f50c2b646db9797000913b747327636c2e3999f1",
+-  "r35_package_selection.py": "2b98bcbdb49765dbfc0ae405e2cb8695e78951e65978f05952bf7ffc371915a6",
+-  "runtime-wrapper/cleanup_evidence.py": "a293ab051ca2f744bb8189e708a1a3bcc1360b252d63253141198e78d2dd2a5d"
++  "review_page_r24.js": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
++  "run_trial_r24_review_snapshot.py": "1f8cf2b78f3a56e2f38ab561ff1a7a3c072d984878a02be9b6afedf68a4fcd28",
++  "runtime-wrapper/audit_after.py": "901f7447816d688b0eaa8d12efbe635d4509a59db638ab7a96e33d0fe3a925fc",
++  "runtime-wrapper/capture_validation.py": "4175dc76c6e97436a98e36901205851708b8a647caf5358b77f8cc4056a874a4",
++  "runtime-wrapper/cleanup.py": "ed3edbb402529acfa84a6fb18ce96720b48cb7b7c1edc1cbc622da9c92b7a1cb",
++  "runtime-wrapper/cleanup_evidence.py": "b9c511e2c4ecf1ff24a0446a6a462dce86776b58ac983c73db12f811261a00dc",
++  "runtime-wrapper/common.py": "96196e962cf9e2cdc520a9128508e32a45349db4d9d86442c7c2a05395b11c5e",
++  "runtime-wrapper/later_capture.py": "1bcaa615bb356f6c5d763b3ca711524cc22d5edc2d374fa966026f0702af57b2",
++  "runtime-wrapper/launch_prepare.py": "d3eae919624e6dc3523c0a6c1453ec3cd16e203a7a0ca2b10c3c06d6cc85b107",
++  "runtime-wrapper/operate.py": "e0aca5336e631ed3ec4cf3e888178f1351e05551ee1a208bcf9c9a59f4f39e5e",
++  "runtime-wrapper/postkey_flow.py": "2af4e7b9318c2f51baa36188dc5ab395eea764c87b24ba9b82989cce53d0f278",
++  "runtime-wrapper/preflight.py": "43d61dc7fadc68c60dd1ea5c831e2e2a0b775a84cd483eca897a54a11201286f",
++  "runtime-wrapper/recovery_guard.py": "fff04d29c94aee963260ccd7cc09898319bc85eb53717fae52765a63f0510372",
++  "runtime-wrapper/start_and_wait.py": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
++  "runtime-wrapper/untimed_image.py": "b6b2577b82d64d1680cfbfe8d4c35ceb449b4f95b2010318ab7a868b92539954",
++  "startup_observation.py": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda",
++  "trial_log_v4_mss.py": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5",
++  "trial_ring_cached.py": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
++  "trial_web_r24_review_snapshot.py": "201d14b0daaede2ec582dc9e3f63e021845daa0db2d205f5896077a7736b618c",
++  "trial_web_v22_navigation_review.py": "8a40a4a67bdbe4ce8712d1a4ef78c893ffc2ea625fb6f0966d1a4e4136ba1be7"
+ }
+--- a/CORE-SOURCE-FREEZE.json
++++ b/CORE-SOURCE-FREEZE.json
+@@ -1,40 +1,41 @@
+ {
+-  "runtime-wrapper/audit_after.py": "901f7447816d688b0eaa8d12efbe635d4509a59db638ab7a96e33d0fe3a925fc",
+-  "runtime-wrapper/capture_validation.py": "4175dc76c6e97436a98e36901205851708b8a647caf5358b77f8cc4056a874a4",
+-  "runtime-wrapper/cleanup.py": "7c567bd53ad86b7d55db4b84640e018e80443328e53a7576b4e025c9073ea3e8",
+-  "runtime-wrapper/common.py": "96196e962cf9e2cdc520a9128508e32a45349db4d9d86442c7c2a05395b11c5e",
+-  "runtime-wrapper/later_capture.py": "ca6c1b2b64ef9ff3672d39d112b598062a1ff8c613d2ee8f7daa5dedbff01f8f",
+-  "runtime-wrapper/launch_prepare.py": "110c2fb6a4df630ce4fcb3564a52aeb5bb157a3d4c148fcc18d57ce7e9fc579f",
+-  "runtime-wrapper/operate.py": "e0aca5336e631ed3ec4cf3e888178f1351e05551ee1a208bcf9c9a59f4f39e5e",
+-  "runtime-wrapper/preflight.py": "43d61dc7fadc68c60dd1ea5c831e2e2a0b775a84cd483eca897a54a11201286f",
+-  "runtime-wrapper/start_and_wait.py": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
+-  "runtime-wrapper/untimed_image.py": "b400adf1aff0d599950a76908d3dd18bd8396d7ffaf7f3c8716b973de7286d34",
+-  "operator-helpers/deadline.js": "cfe09ab87d14de6f5597b1ced23f3a52dafacdce0ee3ed126514d55f9be454f4",
++  "NAVIGATION-PLAN.json": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
++  "PAGE-IDENTITY.json": "0246146d402ee732429afcdd0230615799c0f82a52e875ac555dc07a485ece4e",
++  "confirm_page_r24.js": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
++  "operator-helpers/deadline.js": "1df9ed6c41d08813feb46afc09fafc94c92de36ef5f483b1aa2dae55ac7672a0",
+   "operator-helpers/deadline_cli.py": "602859489066aae51b732f594296445fa4d4dcfa3f9abd074b5ac6ca985bfcc4",
+   "operator-helpers/planned_navigation_click.js": "6e120517b1c785bb3eb277268908801465dd55dc0bda5901cfaa2be4fc7175e0",
+-  "operator-helpers/planned_navigation_click.py": "65b373ca8f65660d8af85700554f0bf86ec7d76bd3cff15073ae53a511b7c65f",
++  "operator-helpers/planned_navigation_click.py": "4e10797ea512faebfcab32c0a3785ae1e3174eb1aa42f4d114de8e9ffe60ad77",
+   "operator-helpers/planned_prerequisite.py": "55d22fa8fcab5c0ff388605911149c8edec1a0a4477f20156939b881960725af",
+-  "operator-helpers/recovery_cancel.js": "bdb3548b3221c6f74a7c7df2ea2cbf33e443d7238c96d4fcb89e4943b592f623",
+-  "operator-helpers/recovery_readonly.js": "93cb7af2378265b041a7dda7bdfbaa206a58b46dfbb980e50dd1d78b23e1fb59",
++  "operator-helpers/postkey_observation.py": "40df03ab574deb81c7e3377a3f545b70dff0d9bc0992874617d4b466c045fd6e",
++  "operator-helpers/postkey_read.js": "f47a618a2687ab06880812f20a1d9695bbe6c14326f97c974dab2ca80713f57d",
++  "operator-helpers/recovery_cancel.js": "bea4d08fd94dd30fd6dcf590230987561f1bf513821a60010249d2535b951020",
++  "operator-helpers/recovery_observation.py": "a4c0532a4df678468a0c96260198e591d734e013fea43eb69bd5666a0b6a2457",
++  "operator-helpers/recovery_readonly.js": "3bf1ead1c90a266352c3117247b8cbe2d1776174595e5bfe8ed60d989591dd6b",
+   "operator-helpers/recovery_tools.py": "6c46f4025ded78da3433b8955cd8c2cb48680008db1f0fb9fbea9b23e0917740",
+   "operator-helpers/review_snapshot_cli.py": "8f5d72f61a75e6aeab3834364ae7edb2065de42a9f1452d17e19a3ddf2792f58",
+   "operator-helpers/snapshot_confirm.js": "167aa78440b9f30e0b60796a167299a6117647f42bbc020330886cda97d07146",
+   "operator-helpers/snapshot_read.js": "1d042133c6a2e24d128cc7ed95d7f760a7c29a4cecf4ac0a99ea2ae54ec1c225",
+-  "run_trial_r24_review_snapshot.py": "1f8cf2b78f3a56e2f38ab561ff1a7a3c072d984878a02be9b6afedf68a4fcd28",
+-  "trial_web_r24_review_snapshot.py": "450d1e33413117ca4d6c29cb8fc4befbfc5eaa268b42c96c2e0c6e465fad5df2",
+-  "review_page_r24.js": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
+-  "confirm_page_r24.js": "0bd31e9c2f61da3f645ce7191958ac00487208c0e770669f2c96c962f1b37c72",
+   "prepare_run.py": "0611ab27cd7ecaa215fe52abedaaad2884fe61bfe4f7746510793d91496e8fd1",
+-  "NAVIGATION-PLAN.json": "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+-  "PAGE-IDENTITY.json": "7f4b2f3a3f9c86fdb3193a2177135955f3aa000a135e819eba08493c0cf41a0a",
+-  "operator-helpers/recovery_observation.py": "a4c0532a4df678468a0c96260198e591d734e013fea43eb69bd5666a0b6a2457",
+-  "runtime-wrapper/recovery_guard.py": "fff04d29c94aee963260ccd7cc09898319bc85eb53717fae52765a63f0510372",
+-  "operator-helpers/postkey_observation.py": "40df03ab574deb81c7e3377a3f545b70dff0d9bc0992874617d4b466c045fd6e",
+-  "operator-helpers/postkey_read.js": "f47a618a2687ab06880812f20a1d9695bbe6c14326f97c974dab2ca80713f57d",
++  "r35_package_selection.py": "2b14b69b218ace83c6f83bafe0008e56ab7f514f9624a9e8866004e82bd955b0",
++  "review_page_r24.js": "26aaf20a42124dabd7b339662870e72c5351b99843afdff54f5652aca8d8e4a1",
++  "run_trial_r24_review_snapshot.py": "1f8cf2b78f3a56e2f38ab561ff1a7a3c072d984878a02be9b6afedf68a4fcd28",
++  "runtime-wrapper/audit_after.py": "901f7447816d688b0eaa8d12efbe635d4509a59db638ab7a96e33d0fe3a925fc",
++  "runtime-wrapper/capture_validation.py": "4175dc76c6e97436a98e36901205851708b8a647caf5358b77f8cc4056a874a4",
++  "runtime-wrapper/cleanup.py": "ed3edbb402529acfa84a6fb18ce96720b48cb7b7c1edc1cbc622da9c92b7a1cb",
++  "runtime-wrapper/cleanup_evidence.py": "b9c511e2c4ecf1ff24a0446a6a462dce86776b58ac983c73db12f811261a00dc",
++  "runtime-wrapper/common.py": "96196e962cf9e2cdc520a9128508e32a45349db4d9d86442c7c2a05395b11c5e",
++  "runtime-wrapper/later_capture.py": "1bcaa615bb356f6c5d763b3ca711524cc22d5edc2d374fa966026f0702af57b2",
++  "runtime-wrapper/launch_prepare.py": "d3eae919624e6dc3523c0a6c1453ec3cd16e203a7a0ca2b10c3c06d6cc85b107",
++  "runtime-wrapper/operate.py": "e0aca5336e631ed3ec4cf3e888178f1351e05551ee1a208bcf9c9a59f4f39e5e",
+   "runtime-wrapper/postkey_flow.py": "2af4e7b9318c2f51baa36188dc5ab395eea764c87b24ba9b82989cce53d0f278",
++  "runtime-wrapper/preflight.py": "43d61dc7fadc68c60dd1ea5c831e2e2a0b775a84cd483eca897a54a11201286f",
++  "runtime-wrapper/recovery_guard.py": "fff04d29c94aee963260ccd7cc09898319bc85eb53717fae52765a63f0510372",
++  "runtime-wrapper/start_and_wait.py": "e62309eb24b808d2e831607c767a7102a65e242a62de0a8df94d75e2f1a336d4",
++  "runtime-wrapper/untimed_image.py": "b6b2577b82d64d1680cfbfe8d4c35ceb449b4f95b2010318ab7a868b92539954",
+   "startup_observation.py": "84672496af3626b6c160b0f0dbf4b65d733240b17ae1ec2d89d8bd537a102fda",
+-  "trial_ring_cached.py": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
+   "trial_log_v4_mss.py": "4c8b8f3519de649c446ef6298adf1cefa273d7fa3482f7fd95a078fb9ea87eb5",
+-  "r35_package_selection.py": "2b98bcbdb49765dbfc0ae405e2cb8695e78951e65978f05952bf7ffc371915a6",
+-  "runtime-wrapper/cleanup_evidence.py": "a293ab051ca2f744bb8189e708a1a3bcc1360b252d63253141198e78d2dd2a5d"
++  "trial_ring_cached.py": "2b7f76b0ae9298e07a2cace1033ad9b4caca6888df31cea0125b35a3c66b5716",
++  "trial_web_r24_review_snapshot.py": "201d14b0daaede2ec582dc9e3f63e021845daa0db2d205f5896077a7736b618c",
++  "trial_web_v22_navigation_review.py": "8a40a4a67bdbe4ce8712d1a4ef78c893ffc2ea625fb6f0966d1a4e4136ba1be7"
+ }

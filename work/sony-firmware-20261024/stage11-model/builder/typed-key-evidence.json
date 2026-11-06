@@ -1,0 +1,1824 @@
+{
+  "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "known_model_key_paths": {
+    "format_wrapper": [
+      {
+        "va": "0x2bd0fb0",
+        "bytes": "fd7bbfa9",
+        "asm": "stp x29, x30, [sp, #-0x10]!"
+      },
+      {
+        "va": "0x2bd0fb4",
+        "bytes": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2bd0fb8",
+        "bytes": "398ff597",
+        "asm": "bl #0x2934c9c"
+      },
+      {
+        "va": "0x2bd0fbc",
+        "bytes": "217380d2",
+        "asm": "mov x1, #0x399"
+      },
+      {
+        "va": "0x2bd0fc0",
+        "bytes": "fd7bc1a8",
+        "asm": "ldp x29, x30, [sp], #0x10"
+      },
+      {
+        "va": "0x2bd0fc4",
+        "bytes": "c0035fd6",
+        "asm": "ret "
+      }
+    ],
+    "exposure_wrapper": [
+      {
+        "va": "0x2bd0fe0",
+        "bytes": "fd7bbfa9",
+        "asm": "stp x29, x30, [sp, #-0x10]!"
+      },
+      {
+        "va": "0x2bd0fe4",
+        "bytes": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x2bd0fe8",
+        "bytes": "49b2f597",
+        "asm": "bl #0x293d90c"
+      },
+      {
+        "va": "0x2bd0fec",
+        "bytes": "61ef80d2",
+        "asm": "mov x1, #0x77b"
+      },
+      {
+        "va": "0x2bd0ff0",
+        "bytes": "fd7bc1a8",
+        "asm": "ldp x29, x30, [sp], #0x10"
+      },
+      {
+        "va": "0x2bd0ff4",
+        "bytes": "c0035fd6",
+        "asm": "ret "
+      }
+    ],
+    "main_frame_dispatch": [
+      {
+        "va": "0x27c79c4",
+        "bytes": "fd7bb7a9",
+        "asm": "stp x29, x30, [sp, #-0x90]!"
+      },
+      {
+        "va": "0x27c79c8",
+        "bytes": "fd030091",
+        "asm": "mov x29, sp"
+      },
+      {
+        "va": "0x27c79cc",
+        "bytes": "f55b02a9",
+        "asm": "stp x21, x22, [sp, #0x20]"
+      },
+      {
+        "va": "0x27c79d0",
+        "bytes": "b6430191",
+        "asm": "add x22, x29, #0x50"
+      },
+      {
+        "va": "0x27c79d4",
+        "bytes": "f35301a9",
+        "asm": "stp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x27c79d8",
+        "bytes": "f40300aa",
+        "asm": "mov x20, x0"
+      },
+      {
+        "va": "0x27c79dc",
+        "bytes": "e00316aa",
+        "asm": "mov x0, x22"
+      },
+      {
+        "va": "0x27c79e0",
+        "bytes": "f503012a",
+        "asm": "mov w21, w1"
+      },
+      {
+        "va": "0x27c79e4",
+        "bytes": "f76303a9",
+        "asm": "stp x23, x24, [sp, #0x30]"
+      },
+      {
+        "va": "0x27c79e8",
+        "bytes": "f96b04a9",
+        "asm": "stp x25, x26, [sp, #0x40]"
+      },
+      {
+        "va": "0x27c79ec",
+        "bytes": "2f690b94",
+        "asm": "bl #0x2aa1ea8"
+      },
+      {
+        "va": "0x27c79f0",
+        "bytes": "abb40594",
+        "asm": "bl #0x2934c9c"
+      },
+      {
+        "va": "0x27c79f4",
+        "bytes": "000040b9",
+        "asm": "ldr w0, [x0]"
+      },
+      {
+        "va": "0x27c79f8",
+        "bytes": "1f300071",
+        "asm": "cmp w0, #0xc"
+      },
+      {
+        "va": "0x27c79fc",
+        "bytes": "61000054",
+        "asm": "b.ne #0x27c7a08"
+      },
+      {
+        "va": "0x27c7a00",
+        "bytes": "acb40594",
+        "asm": "bl #0x2934cb0"
+      },
+      {
+        "va": "0x27c7a04",
+        "bytes": "000040b9",
+        "asm": "ldr w0, [x0]"
+      },
+      {
+        "va": "0x27c7a08",
+        "bytes": "00140051",
+        "asm": "sub w0, w0, #5"
+      },
+      {
+        "va": "0x27c7a0c",
+        "bytes": "1f180071",
+        "asm": "cmp w0, #6"
+      },
+      {
+        "va": "0x27c7a10",
+        "bytes": "e8100054",
+        "asm": "b.hi #0x27c7c2c"
+      },
+      {
+        "va": "0x27c7a14",
+        "bytes": "817e00b0",
+        "asm": "adrp x1, #0x3798000"
+      },
+      {
+        "va": "0x27c7a18",
+        "bytes": "b3830191",
+        "asm": "add x19, x29, #0x60"
+      },
+      {
+        "va": "0x27c7a1c",
+        "bytes": "21b00691",
+        "asm": "add x1, x1, #0x1ac"
+      },
+      {
+        "va": "0x27c7a20",
+        "bytes": "20486038",
+        "asm": "ldrb w0, [x1, w0, uxtw]"
+      },
+      {
+        "va": "0x27c7a24",
+        "bytes": "61000010",
+        "asm": "adr x1, #0x27c7a30"
+      },
+      {
+        "va": "0x27c7a28",
+        "bytes": "2088208b",
+        "asm": "add x0, x1, w0, sxtb #2"
+      },
+      {
+        "va": "0x27c7a2c",
+        "bytes": "00001fd6",
+        "asm": "br x0"
+      },
+      {
+        "va": "0x27c7a30",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x27c7a34",
+        "bytes": "0157bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c7a38",
+        "bytes": "b43740f9",
+        "asm": "ldr x20, [x29, #0x68]"
+      },
+      {
+        "va": "0x27c7a3c",
+        "bytes": "acb40594",
+        "asm": "bl #0x2934cec"
+      },
+      {
+        "va": "0x27c7a40",
+        "bytes": "f70300aa",
+        "asm": "mov x23, x0"
+      },
+      {
+        "va": "0x27c7a44",
+        "bytes": "afb40594",
+        "asm": "bl #0x2934d00"
+      },
+      {
+        "va": "0x27c7a48",
+        "bytes": "b70307a9",
+        "asm": "stp x23, x0, [x29, #0x70]"
+      },
+      {
+        "va": "0x27c7a4c",
+        "bytes": "77738052",
+        "asm": "mov w23, #0x39b"
+      },
+      {
+        "va": "0x27c7a50",
+        "bytes": "b44700f9",
+        "asm": "str x20, [x29, #0x88]"
+      },
+      {
+        "va": "0x27c7a54",
+        "bytes": "b4c30191",
+        "asm": "add x20, x29, #0x70"
+      },
+      {
+        "va": "0x27c7a58",
+        "bytes": "e103152a",
+        "asm": "mov w1, w21"
+      },
+      {
+        "va": "0x27c7a5c",
+        "bytes": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x27c7a60",
+        "bytes": "bf130239",
+        "asm": "strb wzr, [x29, #0x84]"
+      },
+      {
+        "va": "0x27c7a64",
+        "bytes": "b78300b9",
+        "asm": "str w23, [x29, #0x80]"
+      },
+      {
+        "va": "0x27c7a68",
+        "bytes": "f407da97",
+        "asm": "bl #0x1e49a38"
+      },
+      {
+        "va": "0x27c7a6c",
+        "bytes": "e00314aa",
+        "asm": "mov x0, x20"
+      },
+      {
+        "va": "0x27c7a70",
+        "bytes": "8105da97",
+        "asm": "bl #0x1e49074"
+      },
+      {
+        "va": "0x27c7a74",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x27c7a78",
+        "bytes": "f08abc97",
+        "asm": "bl #0x16ea638"
+      },
+      {
+        "va": "0x27c7a7c",
+        "bytes": "e003172a",
+        "asm": "mov w0, w23"
+      },
+      {
+        "va": "0x27c7a80",
+        "bytes": "1949fe97",
+        "asm": "bl #0x2759ee4"
+      },
+      {
+        "va": "0x27c7a84",
+        "bytes": "e00316aa",
+        "asm": "mov x0, x22"
+      },
+      {
+        "va": "0x27c7a88",
+        "bytes": "0b680b94",
+        "asm": "bl #0x2aa1ab4"
+      },
+      {
+        "va": "0x27c7a8c",
+        "bytes": "f35341a9",
+        "asm": "ldp x19, x20, [sp, #0x10]"
+      },
+      {
+        "va": "0x27c7a90",
+        "bytes": "f55b42a9",
+        "asm": "ldp x21, x22, [sp, #0x20]"
+      },
+      {
+        "va": "0x27c7a94",
+        "bytes": "f76343a9",
+        "asm": "ldp x23, x24, [sp, #0x30]"
+      },
+      {
+        "va": "0x27c7a98",
+        "bytes": "f96b44a9",
+        "asm": "ldp x25, x26, [sp, #0x40]"
+      },
+      {
+        "va": "0x27c7a9c",
+        "bytes": "fd7bc9a8",
+        "asm": "ldp x29, x30, [sp], #0x90"
+      },
+      {
+        "va": "0x27c7aa0",
+        "bytes": "c0035fd6",
+        "asm": "ret "
+      },
+      {
+        "va": "0x27c7aa4",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x27c7aa8",
+        "bytes": "e456bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c7aac",
+        "bytes": "b43740f9",
+        "asm": "ldr x20, [x29, #0x68]"
+      },
+      {
+        "va": "0x27c7ab0",
+        "bytes": "99b40594",
+        "asm": "bl #0x2934d14"
+      },
+      {
+        "va": "0x27c7ab4",
+        "bytes": "f70300aa",
+        "asm": "mov x23, x0"
+      },
+      {
+        "va": "0x27c7ab8",
+        "bytes": "9cb40594",
+        "asm": "bl #0x2934d28"
+      },
+      {
+        "va": "0x27c7abc",
+        "bytes": "b70307a9",
+        "asm": "stp x23, x0, [x29, #0x70]"
+      },
+      {
+        "va": "0x27c7ac0",
+        "bytes": "97738052",
+        "asm": "mov w23, #0x39c"
+      },
+      {
+        "va": "0x27c7ac4",
+        "bytes": "e3ffff17",
+        "asm": "b #0x27c7a50"
+      },
+      {
+        "va": "0x27c7ac8",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x27c7acc",
+        "bytes": "db56bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c7ad0",
+        "bytes": "b43740f9",
+        "asm": "ldr x20, [x29, #0x68]"
+      },
+      {
+        "va": "0x27c7ad4",
+        "bytes": "9ab40594",
+        "asm": "bl #0x2934d3c"
+      },
+      {
+        "va": "0x27c7ad8",
+        "bytes": "f70300aa",
+        "asm": "mov x23, x0"
+      },
+      {
+        "va": "0x27c7adc",
+        "bytes": "9db40594",
+        "asm": "bl #0x2934d50"
+      },
+      {
+        "va": "0x27c7ae0",
+        "bytes": "b70307a9",
+        "asm": "stp x23, x0, [x29, #0x70]"
+      },
+      {
+        "va": "0x27c7ae4",
+        "bytes": "b7738052",
+        "asm": "mov w23, #0x39d"
+      },
+      {
+        "va": "0x27c7ae8",
+        "bytes": "daffff17",
+        "asm": "b #0x27c7a50"
+      },
+      {
+        "va": "0x27c7aec",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x27c7af0",
+        "bytes": "d256bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c7af4",
+        "bytes": "b43740f9",
+        "asm": "ldr x20, [x29, #0x68]"
+      },
+      {
+        "va": "0x27c7af8",
+        "bytes": "9bb40594",
+        "asm": "bl #0x2934d64"
+      },
+      {
+        "va": "0x27c7afc",
+        "bytes": "f70300aa",
+        "asm": "mov x23, x0"
+      },
+      {
+        "va": "0x27c7b00",
+        "bytes": "9eb40594",
+        "asm": "bl #0x2934d78"
+      },
+      {
+        "va": "0x27c7b04",
+        "bytes": "b70307a9",
+        "asm": "stp x23, x0, [x29, #0x70]"
+      },
+      {
+        "va": "0x27c7b08",
+        "bytes": "d7738052",
+        "asm": "mov w23, #0x39e"
+      },
+      {
+        "va": "0x27c7b0c",
+        "bytes": "d1ffff17",
+        "asm": "b #0x27c7a50"
+      },
+      {
+        "va": "0x27c7b10",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x27c7b14",
+        "bytes": "c956bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c7b18",
+        "bytes": "b43740f9",
+        "asm": "ldr x20, [x29, #0x68]"
+      },
+      {
+        "va": "0x27c7b1c",
+        "bytes": "9cb40594",
+        "asm": "bl #0x2934d8c"
+      },
+      {
+        "va": "0x27c7b20",
+        "bytes": "f70300aa",
+        "asm": "mov x23, x0"
+      },
+      {
+        "va": "0x27c7b24",
+        "bytes": "9fb40594",
+        "asm": "bl #0x2934da0"
+      },
+      {
+        "va": "0x27c7b28",
+        "bytes": "b70307a9",
+        "asm": "stp x23, x0, [x29, #0x70]"
+      },
+      {
+        "va": "0x27c7b2c",
+        "bytes": "f7738052",
+        "asm": "mov w23, #0x39f"
+      },
+      {
+        "va": "0x27c7b30",
+        "bytes": "c8ffff17",
+        "asm": "b #0x27c7a50"
+      },
+      {
+        "va": "0x27c7b34",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x27c7b38",
+        "bytes": "c056bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c7b3c",
+        "bytes": "b43740f9",
+        "asm": "ldr x20, [x29, #0x68]"
+      },
+      {
+        "va": "0x27c7b40",
+        "bytes": "9db40594",
+        "asm": "bl #0x2934db4"
+      },
+      {
+        "va": "0x27c7b44",
+        "bytes": "f70300aa",
+        "asm": "mov x23, x0"
+      },
+      {
+        "va": "0x27c7b48",
+        "bytes": "a0b40594",
+        "asm": "bl #0x2934dc8"
+      },
+      {
+        "va": "0x27c7b4c",
+        "bytes": "b70307a9",
+        "asm": "stp x23, x0, [x29, #0x70]"
+      },
+      {
+        "va": "0x27c7b50",
+        "bytes": "17748052",
+        "asm": "mov w23, #0x3a0"
+      },
+      {
+        "va": "0x27c7b54",
+        "bytes": "bfffff17",
+        "asm": "b #0x27c7a50"
+      },
+      {
+        "va": "0x27c7b58",
+        "bytes": "b7630191",
+        "asm": "add x23, x29, #0x58"
+      },
+      {
+        "va": "0x27c7b5c",
+        "bytes": "e00317aa",
+        "asm": "mov x0, x23"
+      },
+      {
+        "va": "0x27c7b60",
+        "bytes": "d2680b94",
+        "asm": "bl #0x2aa1ea8"
+      },
+      {
+        "va": "0x27c7b64",
+        "bytes": "e00313aa",
+        "asm": "mov x0, x19"
+      },
+      {
+        "va": "0x27c7b68",
+        "bytes": "b456bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c7b6c",
+        "bytes": "e003152a",
+        "asm": "mov w0, w21"
+      },
+      {
+        "va": "0x27c7b70",
+        "bytes": "e81e0a94",
+        "asm": "bl #0x2a4f710"
+      },
+      {
+        "va": "0x27c7b74",
+        "bytes": "f803002a",
+        "asm": "mov w24, w0"
+      },
+      {
+        "va": "0x27c7b78",
+        "bytes": "65d70594",
+        "asm": "bl #0x293d90c"
+      },
+      {
+        "va": "0x27c7b7c",
+        "bytes": "000040b9",
+        "asm": "ldr w0, [x0]"
+      },
+      {
+        "va": "0x27c7b80",
+        "bytes": "cc1a0a94",
+        "asm": "bl #0x2a4e6b0"
+      },
+      {
+        "va": "0x27c7b84",
+        "bytes": "1f1c0072",
+        "asm": "tst w0, #0xff"
+      },
+      {
+        "va": "0x27c7b88",
+        "bytes": "a1090054",
+        "asm": "b.ne #0x27c7cbc"
+      },
+      {
+        "va": "0x27c7b8c",
+        "bytes": "562c0a94",
+        "asm": "bl #0x2a52ce4"
+      },
+      {
+        "va": "0x27c7b90",
+        "bytes": "1f1c0072",
+        "asm": "tst w0, #0xff"
+      },
+      {
+        "va": "0x27c7b94",
+        "bytes": "c0000054",
+        "asm": "b.eq #0x27c7bac"
+      },
+      {
+        "va": "0x27c7b98",
+        "bytes": "5dd70594",
+        "asm": "bl #0x293d90c"
+      },
+      {
+        "va": "0x27c7b9c",
+        "bytes": "000040b9",
+        "asm": "ldr w0, [x0]"
+      },
+      {
+        "va": "0x27c7ba0",
+        "bytes": "fe1a0a94",
+        "asm": "bl #0x2a4e798"
+      },
+      {
+        "va": "0x27c7ba4",
+        "bytes": "1f1c0072",
+        "asm": "tst w0, #0xff"
+      },
+      {
+        "va": "0x27c7ba8",
+        "bytes": "a1080054",
+        "asm": "b.ne #0x27c7cbc"
+      },
+      {
+        "va": "0x27c7bac",
+        "bytes": "b43740f9",
+        "asm": "ldr x20, [x29, #0x68]"
+      },
+      {
+        "va": "0x27c7bb0",
+        "bytes": "8bb40594",
+        "asm": "bl #0x2934ddc"
+      },
+      {
+        "va": "0x27c7bb4",
+        "bytes": "f90300aa",
+        "asm": "mov x25, x0"
+      },
+      {
+        "va": "0x27c7bb8",
+        "bytes": "8eb40594",
+        "asm": "bl #0x2934df0"
+      },
+      {
+        "va": "0x27c7bbc",
+        "bytes": "b90307a9",
+        "asm": "stp x25, x0, [x29, #0x70]"
+      },
+      {
+        "va": "0x27c7bc0",
+        "bytes": "20748052",
+        "asm": "mov w0, #0x3a1"
+      },
+      {
+        "va": "0x27c7bc4",
+        "bytes": "b44700f9",
+        "asm": "str x20, [x29, #0x88]"
+      }
+    ],
+    "hs4k_quality_dispatch": [
+      {
+        "va": "0x27c8ab4",
+        "bytes": "98b00594",
+        "asm": "bl #0x2934d14"
+      },
+      {
+        "va": "0x27c8ab8",
+        "bytes": "000040b9",
+        "asm": "ldr w0, [x0]"
+      },
+      {
+        "va": "0x27c8abc",
+        "bytes": "1f200071",
+        "asm": "cmp w0, #8"
+      },
+      {
+        "va": "0x27c8ac0",
+        "bytes": "61000054",
+        "asm": "b.ne #0x27c8acc"
+      },
+      {
+        "va": "0x27c8ac4",
+        "bytes": "99b00594",
+        "asm": "bl #0x2934d28"
+      },
+      {
+        "va": "0x27c8ac8",
+        "bytes": "000040b9",
+        "asm": "ldr w0, [x0]"
+      },
+      {
+        "va": "0x27c8acc",
+        "bytes": "1f180071",
+        "asm": "cmp w0, #6"
+      },
+      {
+        "va": "0x27c8ad0",
+        "bytes": "a8040054",
+        "asm": "b.hi #0x27c8b64"
+      },
+      {
+        "va": "0x27c8ad4",
+        "bytes": "817e0090",
+        "asm": "adrp x1, #0x3798000"
+      },
+      {
+        "va": "0x27c8ad8",
+        "bytes": "21500791",
+        "asm": "add x1, x1, #0x1d4"
+      },
+      {
+        "va": "0x27c8adc",
+        "bytes": "20486038",
+        "asm": "ldrb w0, [x1, w0, uxtw]"
+      },
+      {
+        "va": "0x27c8ae0",
+        "bytes": "61000010",
+        "asm": "adr x1, #0x27c8aec"
+      },
+      {
+        "va": "0x27c8ae4",
+        "bytes": "2088208b",
+        "asm": "add x0, x1, w0, sxtb #2"
+      },
+      {
+        "va": "0x27c8ae8",
+        "bytes": "00001fd6",
+        "asm": "br x0"
+      },
+      {
+        "va": "0x27c8aec",
+        "bytes": "b5430191",
+        "asm": "add x21, x29, #0x50"
+      },
+      {
+        "va": "0x27c8af0",
+        "bytes": "e00315aa",
+        "asm": "mov x0, x21"
+      },
+      {
+        "va": "0x27c8af4",
+        "bytes": "d152bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c8af8",
+        "bytes": "b72f40f9",
+        "asm": "ldr x23, [x29, #0x58]"
+      },
+      {
+        "va": "0x27c8afc",
+        "bytes": "d6b00594",
+        "asm": "bl #0x2934e54"
+      },
+      {
+        "va": "0x27c8b00",
+        "bytes": "f40300aa",
+        "asm": "mov x20, x0"
+      },
+      {
+        "va": "0x27c8b04",
+        "bytes": "d9b00594",
+        "asm": "bl #0x2934e68"
+      },
+      {
+        "va": "0x27c8b08",
+        "bytes": "b40306a9",
+        "asm": "stp x20, x0, [x29, #0x60]"
+      },
+      {
+        "va": "0x27c8b0c",
+        "bytes": "94748052",
+        "asm": "mov w20, #0x3a4"
+      },
+      {
+        "va": "0x27c8b10",
+        "bytes": "cbffff17",
+        "asm": "b #0x27c8a3c"
+      },
+      {
+        "va": "0x27c8b14",
+        "bytes": "b5430191",
+        "asm": "add x21, x29, #0x50"
+      },
+      {
+        "va": "0x27c8b18",
+        "bytes": "e00315aa",
+        "asm": "mov x0, x21"
+      },
+      {
+        "va": "0x27c8b1c",
+        "bytes": "c752bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c8b20",
+        "bytes": "b72f40f9",
+        "asm": "ldr x23, [x29, #0x58]"
+      },
+      {
+        "va": "0x27c8b24",
+        "bytes": "d6b00594",
+        "asm": "bl #0x2934e7c"
+      },
+      {
+        "va": "0x27c8b28",
+        "bytes": "f40300aa",
+        "asm": "mov x20, x0"
+      },
+      {
+        "va": "0x27c8b2c",
+        "bytes": "d9b00594",
+        "asm": "bl #0x2934e90"
+      },
+      {
+        "va": "0x27c8b30",
+        "bytes": "b40306a9",
+        "asm": "stp x20, x0, [x29, #0x60]"
+      },
+      {
+        "va": "0x27c8b34",
+        "bytes": "b4748052",
+        "asm": "mov w20, #0x3a5"
+      },
+      {
+        "va": "0x27c8b38",
+        "bytes": "c1ffff17",
+        "asm": "b #0x27c8a3c"
+      },
+      {
+        "va": "0x27c8b3c",
+        "bytes": "b5430191",
+        "asm": "add x21, x29, #0x50"
+      },
+      {
+        "va": "0x27c8b40",
+        "bytes": "e00315aa",
+        "asm": "mov x0, x21"
+      },
+      {
+        "va": "0x27c8b44",
+        "bytes": "bd52bf97",
+        "asm": "bl #0x179d638"
+      },
+      {
+        "va": "0x27c8b48",
+        "bytes": "b72f40f9",
+        "asm": "ldr x23, [x29, #0x58]"
+      },
+      {
+        "va": "0x27c8b4c",
+        "bytes": "d6b00594",
+        "asm": "bl #0x2934ea4"
+      },
+      {
+        "va": "0x27c8b50",
+        "bytes": "f40300aa",
+        "asm": "mov x20, x0"
+      },
+      {
+        "va": "0x27c8b54",
+        "bytes": "d9b00594",
+        "asm": "bl #0x2934eb8"
+      },
+      {
+        "va": "0x27c8b58",
+        "bytes": "b40306a9",
+        "asm": "stp x20, x0, [x29, #0x60]"
+      },
+      {
+        "va": "0x27c8b5c",
+        "bytes": "d4748052",
+        "asm": "mov w20, #0x3a6"
+      },
+      {
+        "va": "0x27c8b60",
+        "bytes": "b7ffff17",
+        "asm": "b #0x27c8a3c"
+      },
+      {
+        "va": "0x27c8b64",
+        "bytes": "947e00f0",
+        "asm": "adrp x20, #0x379b000"
+      }
+    ]
+  },
+  "original_typed_signatures": [
+    {
+      "va": "0x37fbe20",
+      "text": "model::setting_movie_rec_frame_rate_t model::determine_movie_rec_frame_rate(model::setting_file_format_t, model::model_data::setting_movie_rec_frame_rate_xavc_hs_8k_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_hs_4k_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_4k_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_hd_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_4k_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_hd_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_dci_4k_decl_type)"
+    },
+    {
+      "va": "0x398f318",
+      "text": "void infra_wrapper_mpr::detail::convert2MovieMainParams(model::exposure_mode_t, model::setting_file_format_t, model::model_data::setting_movie_rec_frame_rate_xavc_hs_8k_type, model::model_data::setting_movie_rec_frame_rate_xavc_hs_4k_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_4k_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_hd_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_4k_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_hd_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_dci_4k_type, model::model_data::setting_movie_record_setting_xavc_hs_8k_30p_25p_type, model::model_data::setting_movie_record_setting_xavc_hs_8k_24p_type, model::model_data::setting_movie_record_setting_xavc_hs_4k_60p_50p_type, model::model_data::setting_movie_record_setting_xavc_hs_4k_24p_type, model::model_data::setting_movie_record_setting_xavc_hs_4k_120p_100p_type, model::model_data::setting_movie_record_setting_xavc_s_4k_60p_50p_type, model::model_data::setting_movie_record_setting_xavc_s_4k_30p_25p_type, model::model_data::setting_movie_record_setting_xavc_s_4k_24p_type, model::model_data::setting_movie_record_setting_xavc_s_4k_120p_100p_type, model::model_data::setting_movie_record_setting_xavc_s_hd_60p_50p_type, model::model_data::setting_movie_record_setting_xavc_s_hd_30p_25p_type, model::model_data::setting_movie_record_setting_xavc_s_hd_24p_type, model::model_data::setting_movie_record_setting_xavc_s_hd_120p_100p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_60p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_50p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_30p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_25p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_24p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_60p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_50p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_30p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_25p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_24p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_60p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_50p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_30p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_25p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_24p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_24_00p_type, model::model_data::setting_sq_rec_frame_rate_xavc_hs_8k_type, model::model_data::setting_sq_rec_frame_rate_xavc_hs_4k_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_4k_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_hd_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_i_4k_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_i_hd_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_i_dci_4k_type, model::model_data::setting_sq_record_setting_xavc_hs_8k_30p_25p_type, model::model_data::setting_sq_record_setting_xavc_hs_8k_24p_type, model::model_data::setting_sq_record_setting_xavc_hs_4k_60p_50p_type, model::model_data::setting_sq_record_setting_xavc_hs_4k_24p_type, model::model_data::setting_sq_record_setting_xavc_hs_4k_120p_100p_type, model::model_data::setting_sq_record_setting_xavc_s_4k_60p_50p_type, model::model_data::setting_sq_record_setting_xavc_s_4k_30p_25p_type, model::model_data::setting_sq_record_setting_xavc_s_4k_24p_type, model::model_data::setting_sq_record_setting_xavc_s_4k_120p_100p_type, model::model_data::setting_sq_record_setting_xavc_s_hd_60p_50p_type, model::model_data::setting_sq_record_setting_xavc_s_hd_30p_25p_type, model::model_data::setting_sq_record_setting_xavc_s_hd_24p_type, model::model_data::setting_sq_record_setting_xavc_s_hd_120p_100p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_60p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_50p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_30p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_25p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_24p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_60p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_50p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_30p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_25p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_24p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_60p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_50p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_30p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_25p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_24p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_24_00p_type, model::setting_sq_proxy_recording_t, model::setting_sq_proxy_file_format_t, mpr::VideoParamComb*, DefStruct::FrameRate*, DefStruct::VQuality*)"
+    },
+    {
+      "va": "0x37fbe20",
+      "text": "model::setting_movie_rec_frame_rate_t model::determine_movie_rec_frame_rate(model::setting_file_format_t, model::model_data::setting_movie_rec_frame_rate_xavc_hs_8k_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_hs_4k_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_4k_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_hd_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_4k_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_hd_decl_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_dci_4k_decl_type)"
+    },
+    {
+      "va": "0x398f318",
+      "text": "void infra_wrapper_mpr::detail::convert2MovieMainParams(model::exposure_mode_t, model::setting_file_format_t, model::model_data::setting_movie_rec_frame_rate_xavc_hs_8k_type, model::model_data::setting_movie_rec_frame_rate_xavc_hs_4k_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_4k_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_hd_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_4k_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_hd_type, model::model_data::setting_movie_rec_frame_rate_xavc_s_i_dci_4k_type, model::model_data::setting_movie_record_setting_xavc_hs_8k_30p_25p_type, model::model_data::setting_movie_record_setting_xavc_hs_8k_24p_type, model::model_data::setting_movie_record_setting_xavc_hs_4k_60p_50p_type, model::model_data::setting_movie_record_setting_xavc_hs_4k_24p_type, model::model_data::setting_movie_record_setting_xavc_hs_4k_120p_100p_type, model::model_data::setting_movie_record_setting_xavc_s_4k_60p_50p_type, model::model_data::setting_movie_record_setting_xavc_s_4k_30p_25p_type, model::model_data::setting_movie_record_setting_xavc_s_4k_24p_type, model::model_data::setting_movie_record_setting_xavc_s_4k_120p_100p_type, model::model_data::setting_movie_record_setting_xavc_s_hd_60p_50p_type, model::model_data::setting_movie_record_setting_xavc_s_hd_30p_25p_type, model::model_data::setting_movie_record_setting_xavc_s_hd_24p_type, model::model_data::setting_movie_record_setting_xavc_s_hd_120p_100p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_60p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_50p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_30p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_25p_type, model::model_data::setting_movie_record_setting_xavc_s_i_4k_24p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_60p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_50p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_30p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_25p_type, model::model_data::setting_movie_record_setting_xavc_s_i_hd_24p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_60p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_50p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_30p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_25p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_24p_type, model::model_data::setting_movie_record_setting_xavc_s_i_dci_4k_24_00p_type, model::model_data::setting_sq_rec_frame_rate_xavc_hs_8k_type, model::model_data::setting_sq_rec_frame_rate_xavc_hs_4k_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_4k_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_hd_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_i_4k_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_i_hd_type, model::model_data::setting_sq_rec_frame_rate_xavc_s_i_dci_4k_type, model::model_data::setting_sq_record_setting_xavc_hs_8k_30p_25p_type, model::model_data::setting_sq_record_setting_xavc_hs_8k_24p_type, model::model_data::setting_sq_record_setting_xavc_hs_4k_60p_50p_type, model::model_data::setting_sq_record_setting_xavc_hs_4k_24p_type, model::model_data::setting_sq_record_setting_xavc_hs_4k_120p_100p_type, model::model_data::setting_sq_record_setting_xavc_s_4k_60p_50p_type, model::model_data::setting_sq_record_setting_xavc_s_4k_30p_25p_type, model::model_data::setting_sq_record_setting_xavc_s_4k_24p_type, model::model_data::setting_sq_record_setting_xavc_s_4k_120p_100p_type, model::model_data::setting_sq_record_setting_xavc_s_hd_60p_50p_type, model::model_data::setting_sq_record_setting_xavc_s_hd_30p_25p_type, model::model_data::setting_sq_record_setting_xavc_s_hd_24p_type, model::model_data::setting_sq_record_setting_xavc_s_hd_120p_100p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_60p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_50p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_30p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_25p_type, model::model_data::setting_sq_record_setting_xavc_s_i_4k_24p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_60p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_50p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_30p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_25p_type, model::model_data::setting_sq_record_setting_xavc_s_i_hd_24p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_60p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_50p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_30p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_25p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_24p_type, model::model_data::setting_sq_record_setting_xavc_s_i_dci_4k_24_00p_type, model::setting_sq_proxy_recording_t, model::setting_sq_proxy_file_format_t, mpr::VideoParamComb*, DefStruct::FrameRate*, DefStruct::VQuality*)"
+    }
+  ],
+  "exposure_helpers": [
+    {
+      "entry": "0x2a4e5e0",
+      "identity_string_va": "0x37faf00",
+      "identity": "bool model::is_still_exposure_mode(model::exposure_mode_t)",
+      "instructions": [
+        {
+          "va": "0x2a4e5e0",
+          "bytes": "1f100071",
+          "asm": "cmp w0, #4"
+        },
+        {
+          "va": "0x2a4e5e4",
+          "bytes": "a9000054",
+          "asm": "b.ls #0x2a4e5f8"
+        },
+        {
+          "va": "0x2a4e5e8",
+          "bytes": "1f400071",
+          "asm": "cmp w0, #0x10"
+        },
+        {
+          "va": "0x2a4e5ec",
+          "bytes": "a8000054",
+          "asm": "b.hi #0x2a4e600"
+        },
+        {
+          "va": "0x2a4e5f0",
+          "bytes": "00008052",
+          "asm": "mov w0, #0"
+        },
+        {
+          "va": "0x2a4e5f4",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "va": "0x2a4e5f8",
+          "bytes": "20008052",
+          "asm": "mov w0, #1"
+        },
+        {
+          "va": "0x2a4e5fc",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "va": "0x2a4e600",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!"
+        },
+        {
+          "va": "0x2a4e604",
+          "bytes": "a2748052",
+          "asm": "mov w2, #0x3a5"
+        },
+        {
+          "va": "0x2a4e608",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "va": "0x2a4e60c",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x2a4e610",
+          "bytes": "746d0090",
+          "asm": "adrp x20, #0x37fa000"
+        },
+        {
+          "va": "0x2a4e614",
+          "bytes": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]"
+        },
+        {
+          "va": "0x2a4e618",
+          "bytes": "d62900d0",
+          "asm": "adrp x22, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e61c",
+          "bytes": "949e1491",
+          "asm": "add x20, x20, #0x527"
+        },
+        {
+          "va": "0x2a4e620",
+          "bytes": "d6b23b91",
+          "asm": "add x22, x22, #0xeec"
+        },
+        {
+          "va": "0x2a4e624",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e628",
+          "bytes": "e00316aa",
+          "asm": "mov x0, x22"
+        },
+        {
+          "va": "0x2a4e62c",
+          "bytes": "736d0090",
+          "asm": "adrp x19, #0x37fa000"
+        },
+        {
+          "va": "0x2a4e630",
+          "bytes": "756a0090",
+          "asm": "adrp x21, #0x379a000"
+        },
+        {
+          "va": "0x2a4e634",
+          "bytes": "73023c91",
+          "asm": "add x19, x19, #0xf00"
+        },
+        {
+          "va": "0x2a4e638",
+          "bytes": "b5861891",
+          "asm": "add x21, x21, #0x621"
+        },
+        {
+          "va": "0x2a4e63c",
+          "bytes": "00861494",
+          "asm": "bl #0x2f6fe3c"
+        },
+        {
+          "va": "0x2a4e640",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e644",
+          "bytes": "e00315aa",
+          "asm": "mov x0, x21"
+        },
+        {
+          "va": "0x2a4e648",
+          "bytes": "fd851494",
+          "asm": "bl #0x2f6fe3c"
+        },
+        {
+          "va": "0x2a4e64c",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e650",
+          "bytes": "e00316aa",
+          "asm": "mov x0, x22"
+        },
+        {
+          "va": "0x2a4e654",
+          "bytes": "a2748052",
+          "asm": "mov w2, #0x3a5"
+        },
+        {
+          "va": "0x2a4e658",
+          "bytes": "fc751494",
+          "asm": "bl #0x2f6be48"
+        },
+        {
+          "va": "0x2a4e65c",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e660",
+          "bytes": "e00315aa",
+          "asm": "mov x0, x21"
+        },
+        {
+          "va": "0x2a4e664",
+          "bytes": "f9751494",
+          "asm": "bl #0x2f6be48"
+        },
+        {
+          "va": "0x2a4e668",
+          "bytes": "c02900d0",
+          "asm": "adrp x0, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e66c",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e670",
+          "bytes": "00f03b91",
+          "asm": "add x0, x0, #0xefc"
+        },
+        {
+          "va": "0x2a4e674",
+          "bytes": "a2748052",
+          "asm": "mov w2, #0x3a5"
+        },
+        {
+          "va": "0x2a4e678",
+          "bytes": "5210ad97",
+          "asm": "bl #0x15927c0"
+        },
+        {
+          "va": "0x2a4e67c",
+          "bytes": "c02900d0",
+          "asm": "adrp x0, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e680",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e684",
+          "bytes": "00343c91",
+          "asm": "add x0, x0, #0xf0d"
+        },
+        {
+          "va": "0x2a4e688",
+          "bytes": "4e10ad97",
+          "asm": "bl #0x15927c0"
+        },
+        {
+          "va": "0x2a4e68c",
+          "bytes": "00d49052",
+          "asm": "mov w0, #0x86a0"
+        },
+        {
+          "va": "0x2a4e690",
+          "bytes": "2000a072",
+          "asm": "movk w0, #1, lsl #16"
+        },
+        {
+          "va": "0x2a4e694",
+          "bytes": "0b12ad97",
+          "asm": "bl #0x1592ec0"
+        },
+        {
+          "va": "0x2a4e698",
+          "bytes": "46c31194",
+          "asm": "bl #0x2ebf3b0"
+        },
+        {
+          "va": "0x2a4e69c",
+          "bytes": "00008052",
+          "asm": "mov w0, #0"
+        },
+        {
+          "va": "0x2a4e6a0",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x2a4e6a4",
+          "bytes": "f55b42a9",
+          "asm": "ldp x21, x22, [sp, #0x20]"
+        },
+        {
+          "va": "0x2a4e6a8",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30"
+        },
+        {
+          "va": "0x2a4e6ac",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        }
+      ]
+    },
+    {
+      "entry": "0x2a4e6b0",
+      "identity_string_va": "0x37faec0",
+      "identity": "bool model::is_movie_exposure_mode(model::exposure_mode_t)",
+      "instructions": [
+        {
+          "va": "0x2a4e6b0",
+          "bytes": "1f400071",
+          "asm": "cmp w0, #0x10"
+        },
+        {
+          "va": "0x2a4e6b4",
+          "bytes": "88010054",
+          "asm": "b.hi #0x2a4e6e4"
+        },
+        {
+          "va": "0x2a4e6b8",
+          "bytes": "220080d2",
+          "asm": "mov x2, #1"
+        },
+        {
+          "va": "0x2a4e6bc",
+          "bytes": "e3838fd2",
+          "asm": "mov x3, #0x7c1f"
+        },
+        {
+          "va": "0x2a4e6c0",
+          "bytes": "4120c09a",
+          "asm": "lsl x1, x2, x0"
+        },
+        {
+          "va": "0x2a4e6c4",
+          "bytes": "2300a0f2",
+          "asm": "movk x3, #1, lsl #16"
+        },
+        {
+          "va": "0x2a4e6c8",
+          "bytes": "3f0003ea",
+          "asm": "tst x1, x3"
+        },
+        {
+          "va": "0x2a4e6cc",
+          "bytes": "00008052",
+          "asm": "mov w0, #0"
+        },
+        {
+          "va": "0x2a4e6d0",
+          "bytes": "21060054",
+          "asm": "b.ne #0x2a4e794"
+        },
+        {
+          "va": "0x2a4e6d4",
+          "bytes": "e003022a",
+          "asm": "mov w0, w2"
+        },
+        {
+          "va": "0x2a4e6d8",
+          "bytes": "027c90d2",
+          "asm": "mov x2, #0x83e0"
+        },
+        {
+          "va": "0x2a4e6dc",
+          "bytes": "3f0002ea",
+          "asm": "tst x1, x2"
+        },
+        {
+          "va": "0x2a4e6e0",
+          "bytes": "a1050054",
+          "asm": "b.ne #0x2a4e794"
+        },
+        {
+          "va": "0x2a4e6e4",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!"
+        },
+        {
+          "va": "0x2a4e6e8",
+          "bytes": "02798052",
+          "asm": "mov w2, #0x3c8"
+        },
+        {
+          "va": "0x2a4e6ec",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "va": "0x2a4e6f0",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x2a4e6f4",
+          "bytes": "746d0090",
+          "asm": "adrp x20, #0x37fa000"
+        },
+        {
+          "va": "0x2a4e6f8",
+          "bytes": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]"
+        },
+        {
+          "va": "0x2a4e6fc",
+          "bytes": "d62900d0",
+          "asm": "adrp x22, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e700",
+          "bytes": "949e1491",
+          "asm": "add x20, x20, #0x527"
+        },
+        {
+          "va": "0x2a4e704",
+          "bytes": "d6b23b91",
+          "asm": "add x22, x22, #0xeec"
+        },
+        {
+          "va": "0x2a4e708",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e70c",
+          "bytes": "e00316aa",
+          "asm": "mov x0, x22"
+        },
+        {
+          "va": "0x2a4e710",
+          "bytes": "736d0090",
+          "asm": "adrp x19, #0x37fa000"
+        },
+        {
+          "va": "0x2a4e714",
+          "bytes": "756a0090",
+          "asm": "adrp x21, #0x379a000"
+        },
+        {
+          "va": "0x2a4e718",
+          "bytes": "73023b91",
+          "asm": "add x19, x19, #0xec0"
+        },
+        {
+          "va": "0x2a4e71c",
+          "bytes": "b5861891",
+          "asm": "add x21, x21, #0x621"
+        },
+        {
+          "va": "0x2a4e720",
+          "bytes": "c7851494",
+          "asm": "bl #0x2f6fe3c"
+        },
+        {
+          "va": "0x2a4e724",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e728",
+          "bytes": "e00315aa",
+          "asm": "mov x0, x21"
+        },
+        {
+          "va": "0x2a4e72c",
+          "bytes": "c4851494",
+          "asm": "bl #0x2f6fe3c"
+        },
+        {
+          "va": "0x2a4e730",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e734",
+          "bytes": "e00316aa",
+          "asm": "mov x0, x22"
+        },
+        {
+          "va": "0x2a4e738",
+          "bytes": "02798052",
+          "asm": "mov w2, #0x3c8"
+        },
+        {
+          "va": "0x2a4e73c",
+          "bytes": "c3751494",
+          "asm": "bl #0x2f6be48"
+        },
+        {
+          "va": "0x2a4e740",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e744",
+          "bytes": "e00315aa",
+          "asm": "mov x0, x21"
+        },
+        {
+          "va": "0x2a4e748",
+          "bytes": "c0751494",
+          "asm": "bl #0x2f6be48"
+        },
+        {
+          "va": "0x2a4e74c",
+          "bytes": "c02900d0",
+          "asm": "adrp x0, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e750",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e754",
+          "bytes": "00f03b91",
+          "asm": "add x0, x0, #0xefc"
+        },
+        {
+          "va": "0x2a4e758",
+          "bytes": "02798052",
+          "asm": "mov w2, #0x3c8"
+        },
+        {
+          "va": "0x2a4e75c",
+          "bytes": "1910ad97",
+          "asm": "bl #0x15927c0"
+        },
+        {
+          "va": "0x2a4e760",
+          "bytes": "c02900d0",
+          "asm": "adrp x0, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e764",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e768",
+          "bytes": "00343c91",
+          "asm": "add x0, x0, #0xf0d"
+        },
+        {
+          "va": "0x2a4e76c",
+          "bytes": "1510ad97",
+          "asm": "bl #0x15927c0"
+        },
+        {
+          "va": "0x2a4e770",
+          "bytes": "00d49052",
+          "asm": "mov w0, #0x86a0"
+        },
+        {
+          "va": "0x2a4e774",
+          "bytes": "2000a072",
+          "asm": "movk w0, #1, lsl #16"
+        },
+        {
+          "va": "0x2a4e778",
+          "bytes": "d211ad97",
+          "asm": "bl #0x1592ec0"
+        },
+        {
+          "va": "0x2a4e77c",
+          "bytes": "0dc31194",
+          "asm": "bl #0x2ebf3b0"
+        },
+        {
+          "va": "0x2a4e780",
+          "bytes": "00008052",
+          "asm": "mov w0, #0"
+        },
+        {
+          "va": "0x2a4e784",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x2a4e788",
+          "bytes": "f55b42a9",
+          "asm": "ldp x21, x22, [sp, #0x20]"
+        },
+        {
+          "va": "0x2a4e78c",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30"
+        },
+        {
+          "va": "0x2a4e790",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "va": "0x2a4e794",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        }
+      ]
+    },
+    {
+      "entry": "0x2a4e798",
+      "identity_string_va": "0x37fac78",
+      "identity": "bool model::is_sq_exposure_mode(model::exposure_mode_t)",
+      "instructions": [
+        {
+          "va": "0x2a4e798",
+          "bytes": "1f400071",
+          "asm": "cmp w0, #0x10"
+        },
+        {
+          "va": "0x2a4e79c",
+          "bytes": "88010054",
+          "asm": "b.hi #0x2a4e7cc"
+        },
+        {
+          "va": "0x2a4e7a0",
+          "bytes": "220080d2",
+          "asm": "mov x2, #1"
+        },
+        {
+          "va": "0x2a4e7a4",
+          "bytes": "e37f90d2",
+          "asm": "mov x3, #0x83ff"
+        },
+        {
+          "va": "0x2a4e7a8",
+          "bytes": "4120c09a",
+          "asm": "lsl x1, x2, x0"
+        },
+        {
+          "va": "0x2a4e7ac",
+          "bytes": "00008052",
+          "asm": "mov w0, #0"
+        },
+        {
+          "va": "0x2a4e7b0",
+          "bytes": "3f0003ea",
+          "asm": "tst x1, x3"
+        },
+        {
+          "va": "0x2a4e7b4",
+          "bytes": "41060054",
+          "asm": "b.ne #0x2a4e87c"
+        },
+        {
+          "va": "0x2a4e7b8",
+          "bytes": "e003022a",
+          "asm": "mov w0, w2"
+        },
+        {
+          "va": "0x2a4e7bc",
+          "bytes": "02808fd2",
+          "asm": "mov x2, #0x7c00"
+        },
+        {
+          "va": "0x2a4e7c0",
+          "bytes": "2200a0f2",
+          "asm": "movk x2, #1, lsl #16"
+        },
+        {
+          "va": "0x2a4e7c4",
+          "bytes": "3f0002ea",
+          "asm": "tst x1, x2"
+        },
+        {
+          "va": "0x2a4e7c8",
+          "bytes": "a1050054",
+          "asm": "b.ne #0x2a4e87c"
+        },
+        {
+          "va": "0x2a4e7cc",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!"
+        },
+        {
+          "va": "0x2a4e7d0",
+          "bytes": "227d8052",
+          "asm": "mov w2, #0x3e9"
+        },
+        {
+          "va": "0x2a4e7d4",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "va": "0x2a4e7d8",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x2a4e7dc",
+          "bytes": "746d0090",
+          "asm": "adrp x20, #0x37fa000"
+        },
+        {
+          "va": "0x2a4e7e0",
+          "bytes": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]"
+        },
+        {
+          "va": "0x2a4e7e4",
+          "bytes": "d62900d0",
+          "asm": "adrp x22, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e7e8",
+          "bytes": "949e1491",
+          "asm": "add x20, x20, #0x527"
+        },
+        {
+          "va": "0x2a4e7ec",
+          "bytes": "d6b23b91",
+          "asm": "add x22, x22, #0xeec"
+        },
+        {
+          "va": "0x2a4e7f0",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e7f4",
+          "bytes": "e00316aa",
+          "asm": "mov x0, x22"
+        },
+        {
+          "va": "0x2a4e7f8",
+          "bytes": "736d0090",
+          "asm": "adrp x19, #0x37fa000"
+        },
+        {
+          "va": "0x2a4e7fc",
+          "bytes": "756a0090",
+          "asm": "adrp x21, #0x379a000"
+        },
+        {
+          "va": "0x2a4e800",
+          "bytes": "73e23191",
+          "asm": "add x19, x19, #0xc78"
+        },
+        {
+          "va": "0x2a4e804",
+          "bytes": "b5861891",
+          "asm": "add x21, x21, #0x621"
+        },
+        {
+          "va": "0x2a4e808",
+          "bytes": "8d851494",
+          "asm": "bl #0x2f6fe3c"
+        },
+        {
+          "va": "0x2a4e80c",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e810",
+          "bytes": "e00315aa",
+          "asm": "mov x0, x21"
+        },
+        {
+          "va": "0x2a4e814",
+          "bytes": "8a851494",
+          "asm": "bl #0x2f6fe3c"
+        },
+        {
+          "va": "0x2a4e818",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e81c",
+          "bytes": "e00316aa",
+          "asm": "mov x0, x22"
+        },
+        {
+          "va": "0x2a4e820",
+          "bytes": "227d8052",
+          "asm": "mov w2, #0x3e9"
+        },
+        {
+          "va": "0x2a4e824",
+          "bytes": "89751494",
+          "asm": "bl #0x2f6be48"
+        },
+        {
+          "va": "0x2a4e828",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e82c",
+          "bytes": "e00315aa",
+          "asm": "mov x0, x21"
+        },
+        {
+          "va": "0x2a4e830",
+          "bytes": "86751494",
+          "asm": "bl #0x2f6be48"
+        },
+        {
+          "va": "0x2a4e834",
+          "bytes": "c02900d0",
+          "asm": "adrp x0, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e838",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20"
+        },
+        {
+          "va": "0x2a4e83c",
+          "bytes": "00f03b91",
+          "asm": "add x0, x0, #0xefc"
+        },
+        {
+          "va": "0x2a4e840",
+          "bytes": "227d8052",
+          "asm": "mov w2, #0x3e9"
+        },
+        {
+          "va": "0x2a4e844",
+          "bytes": "df0fad97",
+          "asm": "bl #0x15927c0"
+        },
+        {
+          "va": "0x2a4e848",
+          "bytes": "c02900d0",
+          "asm": "adrp x0, #0x2f88000"
+        },
+        {
+          "va": "0x2a4e84c",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19"
+        },
+        {
+          "va": "0x2a4e850",
+          "bytes": "00343c91",
+          "asm": "add x0, x0, #0xf0d"
+        },
+        {
+          "va": "0x2a4e854",
+          "bytes": "db0fad97",
+          "asm": "bl #0x15927c0"
+        },
+        {
+          "va": "0x2a4e858",
+          "bytes": "00d49052",
+          "asm": "mov w0, #0x86a0"
+        },
+        {
+          "va": "0x2a4e85c",
+          "bytes": "2000a072",
+          "asm": "movk w0, #1, lsl #16"
+        },
+        {
+          "va": "0x2a4e860",
+          "bytes": "9811ad97",
+          "asm": "bl #0x1592ec0"
+        },
+        {
+          "va": "0x2a4e864",
+          "bytes": "d3c21194",
+          "asm": "bl #0x2ebf3b0"
+        },
+        {
+          "va": "0x2a4e868",
+          "bytes": "00008052",
+          "asm": "mov w0, #0"
+        },
+        {
+          "va": "0x2a4e86c",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x2a4e870",
+          "bytes": "f55b42a9",
+          "asm": "ldp x21, x22, [sp, #0x20]"
+        },
+        {
+          "va": "0x2a4e874",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30"
+        },
+        {
+          "va": "0x2a4e878",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "va": "0x2a4e87c",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        }
+      ]
+    }
+  ]
+}

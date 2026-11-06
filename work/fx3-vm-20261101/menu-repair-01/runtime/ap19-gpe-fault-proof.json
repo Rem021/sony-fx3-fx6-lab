@@ -1,0 +1,158 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap19utimer-b3e92417",
+  "serial_sha256": "211109ad3c741721526e99a8acd62d45dbcef1b8a2d5c89d4ac8051cf54748a9",
+  "libgpe_sha256": "363879687bd43a69734187eb28f721ce6080209a95c62b04c833a4a117f12464",
+  "library_runtime_base": "0x7f880c1000",
+  "fault_runtime_pc": "0x7f880cec88",
+  "fault_elf_va": "0xdc88",
+  "instructions": [
+    {
+      "va": "0xdc58",
+      "bytes": "220e8052",
+      "instruction": "mov w2, #0x71"
+    },
+    {
+      "va": "0xdc5c",
+      "bytes": "63c01b91",
+      "instruction": "add x3, x3, #0x6f0"
+    },
+    {
+      "va": "0xdc60",
+      "bytes": "e7ffff17",
+      "instruction": "b #0xdbfc"
+    },
+    {
+      "va": "0xdc64",
+      "bytes": "a02740f9",
+      "instruction": "ldr x0, [x29, #0x48]"
+    },
+    {
+      "va": "0xdc68",
+      "bytes": "000017cb",
+      "instruction": "sub x0, x0, x23"
+    },
+    {
+      "va": "0xdc6c",
+      "bytes": "c00200f9",
+      "instruction": "str x0, [x22]"
+    },
+    {
+      "va": "0xdc70",
+      "bytes": "60da47f9",
+      "instruction": "ldr x0, [x19, #0xfb0]"
+    },
+    {
+      "va": "0xdc74",
+      "bytes": "a2028052",
+      "instruction": "mov w2, #0x15"
+    },
+    {
+      "va": "0xdc78",
+      "bytes": "010040f9",
+      "instruction": "ldr x1, [x0]"
+    },
+    {
+      "va": "0xdc7c",
+      "bytes": "40000090",
+      "instruction": "adrp x0, #0x15000"
+    },
+    {
+      "va": "0xdc80",
+      "bytes": "00a01b91",
+      "instruction": "add x0, x0, #0x6e8"
+    },
+    {
+      "va": "0xdc84",
+      "bytes": "007874b8",
+      "instruction": "ldr w0, [x0, x20, lsl #2]"
+    },
+    {
+      "va": "0xdc88",
+      "bytes": "026821b8",
+      "instruction": "str w2, [x0, x1]"
+    },
+    {
+      "va": "0xdc8c",
+      "bytes": "40000090",
+      "instruction": "adrp x0, #0x15000"
+    },
+    {
+      "va": "0xdc90",
+      "bytes": "00801b91",
+      "instruction": "add x0, x0, #0x6e0"
+    },
+    {
+      "va": "0xdc94",
+      "bytes": "007874b8",
+      "instruction": "ldr w0, [x0, x20, lsl #2]"
+    },
+    {
+      "va": "0xdc98",
+      "bytes": "026821b8",
+      "instruction": "str w2, [x0, x1]"
+    },
+    {
+      "va": "0xdc9c",
+      "bytes": "e003152a",
+      "instruction": "mov w0, w21"
+    },
+    {
+      "va": "0xdca0",
+      "bytes": "01008052",
+      "instruction": "mov w1, #0"
+    },
+    {
+      "va": "0xdca4",
+      "bytes": "07eeff97",
+      "instruction": "bl #0x94c0"
+    },
+    {
+      "va": "0xdca8",
+      "bytes": "42edff97",
+      "instruction": "bl #0x91b0"
+    },
+    {
+      "va": "0xdcac",
+      "bytes": "c0ffff17",
+      "instruction": "b #0xdbac"
+    },
+    {
+      "va": "0xdcb0",
+      "bytes": "fd7bbfa9",
+      "instruction": "stp x29, x30, [sp, #-0x10]!"
+    },
+    {
+      "va": "0xdcb4",
+      "bytes": "00008052",
+      "instruction": "mov w0, #0"
+    },
+    {
+      "va": "0xdcb8",
+      "bytes": "fd030091",
+      "instruction": "mov x29, sp"
+    },
+    {
+      "va": "0xdcbc",
+      "bytes": "aeffff97",
+      "instruction": "bl #0xdb74"
+    },
+    {
+      "va": "0xdcc0",
+      "bytes": "01008052",
+      "instruction": "mov w1, #0"
+    },
+    {
+      "va": "0xdcc4",
+      "bytes": "00008052",
+      "instruction": "mov w0, #0"
+    }
+  ],
+  "actual_module_load_gates": {
+    "FX3_UTIMER_RC=0": true,
+    "FX3_STREAM_RC=0": true,
+    "FX3_STREAM2_RC=0": true,
+    "FX3_DMM_RC=0": true,
+    "FX3_GRM_MA_RC=0": true
+  },
+  "interpretation": "original MPGRM_GPE0 thread reaches libgpe hardware register access; all five original provider modules now loaded. Not software rendering or original UI frame proof."
+}

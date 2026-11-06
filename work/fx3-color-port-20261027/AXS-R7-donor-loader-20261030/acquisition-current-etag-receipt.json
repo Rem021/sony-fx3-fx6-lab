@@ -1,0 +1,52 @@
+{
+  "created_utc": "2026-10-30T16:48:46.545991+00:00",
+  "source_url": "https://www.sonystyle.com.cn/professional/cn/softDownload/minisite/srmaster/files/MPC-3610%20V6.1%26%20AXS-R7%20V6.0.zip",
+  "If_Match": "\"dc96c8d-614b8390db2fc\"",
+  "If_Match_source": "Full-range 412 response just observed in this stage",
+  "requested_range": "bytes=321079-29651863",
+  "requested_bytes": 29330785,
+  "whole_archive_downloaded": false,
+  "whole_archive_identity_proven": false,
+  "vendor_execution": false,
+  "device_actions": 0,
+  "http_status": 206,
+  "final_url": "https://www.sonystyle.com.cn/professional/cn/softDownload/minisite/srmaster/files/MPC-3610%20V6.1%26%20AXS-R7%20V6.0.zip",
+  "headers": {
+    "Date": "Fri, 30 Oct 2026 16:48:46 GMT",
+    "Content-Type": "application/zip",
+    "Content-Length": "29330785",
+    "ETag": "\"dc96c8d-614b8390db2fc\"",
+    "Content-Range": "bytes 321079-29651863/231304333"
+  },
+  "range_path": "AXS-R7-member-and-md5.range.bin",
+  "range_bytes": 29330785,
+  "range_sha256": "518436c398a4e3e6327d642cc0430c71a4b84b421dae61c943f4e80a557eb5f9",
+  "previous_prefix_byte_identical": true,
+  "result": "COMPLETE_AXS_MEMBER_CRC_AND_ADJACENT_MD5_VERIFIED",
+  "extracted": [
+    {
+      "path": "AXS-R7_V600_firmware.f.bin",
+      "bytes": 29330524,
+      "sha256": "8b228e57f9dba27379dc171aec104408a38cf7d6045cfcbec32e28b0c98350cc",
+      "CRC32": "baf82716",
+      "CRC32_verified": true,
+      "member_header_offset_within_range": 0,
+      "payload_offset_within_range": 100,
+      "local_header_and_prior_directory_fields_match": true
+    },
+    {
+      "path": "AXS-R7_V600_firmware.f.md5",
+      "bytes": 61,
+      "sha256": "102623f7e276d03ca38286c16916356bc00bc769adb3dab61465ab748179f248",
+      "CRC32": "eabe0b5a",
+      "CRC32_verified": true,
+      "member_header_offset_within_range": 29330624,
+      "payload_offset_within_range": 29330724,
+      "local_header_and_prior_directory_fields_match": true
+    }
+  ],
+  "firmware_md5": "b6772a08199d02aa97110dc6bb92537a",
+  "adjacent_md5_text": "B6772A08199D02AA97110DC6BB92537A  AXS-R7_V600_firmware.f.bin\n",
+  "complete_firmware_member_acquired": true,
+  "private_loader_or_ISP_readability_proven": false
+}

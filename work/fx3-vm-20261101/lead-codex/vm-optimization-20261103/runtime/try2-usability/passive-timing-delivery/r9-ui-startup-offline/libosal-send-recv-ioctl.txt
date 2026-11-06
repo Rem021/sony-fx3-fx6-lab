@@ -1,0 +1,194 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libosal_uipc.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000003a10 <u_osal_snd_msg>:
+    3a10: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    3a14: 910003fd     	mov	x29, sp
+    3a18: a90153f3     	stp	x19, x20, [sp, #0x10]
+    3a1c: d00000b3     	adrp	x19, 0x19000
+    3a20: 929fff74     	mov	x20, #-0xfffc           // =-65532
+    3a24: f90013f5     	str	x21, [sp, #0x20]
+    3a28: 9100c3b5     	add	x21, x29, #0x30
+    3a2c: f2b00014     	movk	x20, #0x8000, lsl #16
+    3a30: f947e673     	ldr	x19, [x19, #0xfc8]
+    3a34: b90033a0     	str	w0, [x29, #0x30]
+    3a38: f9001fa1     	str	x1, [x29, #0x38]
+    3a3c: b9400260     	ldr	w0, [x19]
+    3a40: aa1503e2     	mov	x2, x21
+    3a44: aa1403e1     	mov	x1, x20
+    3a48: 97fffaba     	bl	0x2530 <ioctl@plt>
+    3a4c: 3100041f     	cmn	w0, #0x1
+    3a50: 350000c0     	cbnz	w0, 0x3a68 <u_osal_snd_msg+0x58>
+    3a54: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3a58: f94013f5     	ldr	x21, [sp, #0x20]
+    3a5c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    3a60: d65f03c0     	ret
+    3a64: d503201f     	nop
+    3a68: 54000100     	b.eq	0x3a88 <u_osal_snd_msg+0x78>
+    3a6c: 310ff41f     	cmn	w0, #0x3fd
+    3a70: 54fffe60     	b.eq	0x3a3c <u_osal_snd_msg+0x2c>
+    3a74: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3a78: f94013f5     	ldr	x21, [sp, #0x20]
+    3a7c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    3a80: d65f03c0     	ret
+    3a84: d503201f     	nop
+    3a88: 97fffb0a     	bl	0x26b0 <__errno_location@plt>
+    3a8c: b9400000     	ldr	w0, [x0]
+    3a90: 4b0003e0     	neg	w0, w0
+    3a94: 17fffff6     	b	0x3a6c <u_osal_snd_msg+0x5c>
+
+0000000000003a98 <u_osal_snd_sync_msg>:
+    3a98: a9b87bfd     	stp	x29, x30, [sp, #-0x80]!
+    3a9c: 910003fd     	mov	x29, sp
+    3aa0: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    3aa4: d00000b6     	adrp	x22, 0x19000
+    3aa8: a90363f7     	stp	x23, x24, [sp, #0x30]
+    3aac: 2a0003f8     	mov	w24, w0
+    3ab0: 9101a3a0     	add	x0, x29, #0x68
+    3ab4: a90153f3     	stp	x19, x20, [sp, #0x10]
+    3ab8: f90023f9     	str	x25, [sp, #0x40]
+    3abc: 929fff54     	mov	x20, #-0xfffb           // =-65531
+    3ac0: f947e6d5     	ldr	x21, [x22, #0xfc8]
+    3ac4: aa0003f7     	mov	x23, x0
+    3ac8: a9007c1f     	stp	xzr, xzr, [x0]
+    3acc: 910163b3     	add	x19, x29, #0x58
+    3ad0: aa0103f9     	mov	x25, x1
+    3ad4: f2b00014     	movk	x20, #0x8000, lsl #16
+    3ad8: b9005bb8     	str	w24, [x29, #0x58]
+    3adc: f90033a0     	str	x0, [x29, #0x60]
+    3ae0: f9003fbf     	str	xzr, [x29, #0x78]
+    3ae4: f90037a1     	str	x1, [x29, #0x68]
+    3ae8: b94002a0     	ldr	w0, [x21]
+    3aec: aa1303e2     	mov	x2, x19
+    3af0: aa1403e1     	mov	x1, x20
+    3af4: 97fffa8f     	bl	0x2530 <ioctl@plt>
+    3af8: 3100041f     	cmn	w0, #0x1
+    3afc: 350002e0     	cbnz	w0, 0x3b58 <u_osal_snd_sync_msg+0xc0>
+    3b00: f9403ba2     	ldr	x2, [x29, #0x70]
+    3b04: b40005a2     	cbz	x2, 0x3bb8 <u_osal_snd_sync_msg+0x120>
+    3b08: f9403fa1     	ldr	x1, [x29, #0x78]
+    3b0c: aa1903e0     	mov	x0, x25
+    3b10: 929fff55     	mov	x21, #-0xfffb           // =-65531
+    3b14: f2b00015     	movk	x21, #0x8000, lsl #16
+    3b18: d63f0040     	blr	x2
+    3b1c: f947e6d6     	ldr	x22, [x22, #0xfc8]
+    3b20: b9005bb8     	str	w24, [x29, #0x58]
+    3b24: f90033b7     	str	x23, [x29, #0x60]
+    3b28: b94002c0     	ldr	w0, [x22]
+    3b2c: aa1303e2     	mov	x2, x19
+    3b30: aa1503e1     	mov	x1, x21
+    3b34: 97fffa7f     	bl	0x2530 <ioctl@plt>
+    3b38: 3100041f     	cmn	w0, #0x1
+    3b3c: 35000220     	cbnz	w0, 0x3b80 <u_osal_snd_sync_msg+0xe8>
+    3b40: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3b44: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    3b48: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    3b4c: f94023f9     	ldr	x25, [sp, #0x40]
+    3b50: a8c87bfd     	ldp	x29, x30, [sp], #0x80
+    3b54: d65f03c0     	ret
+    3b58: 540000c0     	b.eq	0x3b70 <u_osal_snd_sync_msg+0xd8>
+    3b5c: 310ff41f     	cmn	w0, #0x3fd
+    3b60: 54fffc40     	b.eq	0x3ae8 <u_osal_snd_sync_msg+0x50>
+    3b64: 35fffee0     	cbnz	w0, 0x3b40 <u_osal_snd_sync_msg+0xa8>
+    3b68: 17ffffe6     	b	0x3b00 <u_osal_snd_sync_msg+0x68>
+    3b6c: d503201f     	nop
+    3b70: 97fffad0     	bl	0x26b0 <__errno_location@plt>
+    3b74: b9400000     	ldr	w0, [x0]
+    3b78: 4b0003e0     	neg	w0, w0
+    3b7c: 17fffff8     	b	0x3b5c <u_osal_snd_sync_msg+0xc4>
+    3b80: 54000140     	b.eq	0x3ba8 <u_osal_snd_sync_msg+0x110>
+    3b84: 310ff41f     	cmn	w0, #0x3fd
+    3b88: 54fffd00     	b.eq	0x3b28 <u_osal_snd_sync_msg+0x90>
+    3b8c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3b90: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    3b94: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    3b98: f94023f9     	ldr	x25, [sp, #0x40]
+    3b9c: a8c87bfd     	ldp	x29, x30, [sp], #0x80
+    3ba0: d65f03c0     	ret
+    3ba4: d503201f     	nop
+    3ba8: 97fffac2     	bl	0x26b0 <__errno_location@plt>
+    3bac: b9400000     	ldr	w0, [x0]
+    3bb0: 4b0003e0     	neg	w0, w0
+    3bb4: 17fffff4     	b	0x3b84 <u_osal_snd_sync_msg+0xec>
+    3bb8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3bbc: 52800000     	mov	w0, #0x0                // =0
+    3bc0: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    3bc4: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    3bc8: f94023f9     	ldr	x25, [sp, #0x40]
+    3bcc: a8c87bfd     	ldp	x29, x30, [sp], #0x80
+    3bd0: d65f03c0     	ret
+    3bd4: 00000000     	udf	#0x0
+
+0000000000003bd8 <u_osal_snd_sync_direct>:
+    3bd8: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    3bdc: 910003fd     	mov	x29, sp
+    3be0: a90153f3     	stp	x19, x20, [sp, #0x10]
+    3be4: d00000b3     	adrp	x19, 0x19000
+    3be8: 929fff34     	mov	x20, #-0xfffa           // =-65530
+    3bec: f90013f5     	str	x21, [sp, #0x20]
+    3bf0: 9100c3b5     	add	x21, x29, #0x30
+    3bf4: f2b00014     	movk	x20, #0x8000, lsl #16
+    3bf8: f947e673     	ldr	x19, [x19, #0xfc8]
+    3bfc: b90033a0     	str	w0, [x29, #0x30]
+    3c00: f9001fa1     	str	x1, [x29, #0x38]
+    3c04: b9400260     	ldr	w0, [x19]
+    3c08: aa1503e2     	mov	x2, x21
+    3c0c: aa1403e1     	mov	x1, x20
+    3c10: 97fffa48     	bl	0x2530 <ioctl@plt>
+    3c14: 3100041f     	cmn	w0, #0x1
+    3c18: 350000c0     	cbnz	w0, 0x3c30 <u_osal_snd_sync_direct+0x58>
+    3c1c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3c20: f94013f5     	ldr	x21, [sp, #0x20]
+    3c24: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    3c28: d65f03c0     	ret
+    3c2c: d503201f     	nop
+    3c30: 54000100     	b.eq	0x3c50 <u_osal_snd_sync_direct+0x78>
+    3c34: 310ff41f     	cmn	w0, #0x3fd
+    3c38: 54fffe60     	b.eq	0x3c04 <u_osal_snd_sync_direct+0x2c>
+    3c3c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3c40: f94013f5     	ldr	x21, [sp, #0x20]
+    3c44: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    3c48: d65f03c0     	ret
+    3c4c: d503201f     	nop
+    3c50: 97fffa98     	bl	0x26b0 <__errno_location@plt>
+    3c54: b9400000     	ldr	w0, [x0]
+    3c58: 4b0003e0     	neg	w0, w0
+    3c5c: 17fffff6     	b	0x3c34 <u_osal_snd_sync_direct+0x5c>
+
+0000000000003c60 <u_osal_rcv_msg_tmo>:
+    3c60: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    3c64: 910003fd     	mov	x29, sp
+    3c68: a90153f3     	stp	x19, x20, [sp, #0x10]
+    3c6c: d00000b3     	adrp	x19, 0x19000
+    3c70: 910083a3     	add	x3, x29, #0x20
+    3c74: 9100c3b4     	add	x20, x29, #0x30
+    3c78: f90013a1     	str	x1, [x29, #0x20]
+    3c7c: f947e673     	ldr	x19, [x19, #0xfc8]
+    3c80: b9002ba2     	str	w2, [x29, #0x28]
+    3c84: b90033a0     	str	w0, [x29, #0x30]
+    3c88: f9001fa3     	str	x3, [x29, #0x38]
+    3c8c: b9400260     	ldr	w0, [x19]
+    3c90: aa1403e2     	mov	x2, x20
+    3c94: b2618fe1     	mov	x1, #-0x7ffffff9        // =-2147483641
+    3c98: 97fffa26     	bl	0x2530 <ioctl@plt>
+    3c9c: 3100041f     	cmn	w0, #0x1
+    3ca0: 35000080     	cbnz	w0, 0x3cb0 <u_osal_rcv_msg_tmo+0x50>
+    3ca4: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3ca8: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    3cac: d65f03c0     	ret
+    3cb0: 540000c0     	b.eq	0x3cc8 <u_osal_rcv_msg_tmo+0x68>
+    3cb4: 310ff41f     	cmn	w0, #0x3fd
+    3cb8: 54fffea0     	b.eq	0x3c8c <u_osal_rcv_msg_tmo+0x2c>
+    3cbc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    3cc0: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    3cc4: d65f03c0     	ret
+    3cc8: 97fffa7a     	bl	0x26b0 <__errno_location@plt>
+    3ccc: b9400000     	ldr	w0, [x0]
+    3cd0: 4b0003e0     	neg	w0, w0
+    3cd4: 17fffff8     	b	0x3cb4 <u_osal_rcv_msg_tmo+0x54>
+
+0000000000003cd8 <u_osal_reg_msg_queue_cb>:
+    3cd8: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+    3cdc: 910003fd     	mov	x29, sp

@@ -1,0 +1,76 @@
+{
+  "runs": [
+    {
+      "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap16stacks-db115528",
+      "receipt_sha256": "4c5f06b2bb45e1e5c3c089bf10630b99dfaefb923bdcb821d29a8a3a162e2ece",
+      "exceptions": [],
+      "markers": {
+        "FX3_CPUSET_READY": true,
+        "FX3_BACKUP_INSMOD_RC=0": true,
+        "FX3_ULOGIO_INSMOD_RC=0": true,
+        "FX3_AP_NATURAL_BOOTIN_BEGIN": true
+      },
+      "host_QMP_exit": 0,
+      "inputs_unchanged": true
+    },
+    {
+      "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap17dmm-260fd322",
+      "receipt_sha256": "216df5f5952ba0ffa52e191d767c50f46ae5fb51acb18b3fc68625868737980c",
+      "exceptions": [
+        "Kernel panic",
+        "Entering exception monitor."
+      ],
+      "markers": {
+        "FX3_CPUSET_READY": true,
+        "FX3_BACKUP_INSMOD_RC=0": true,
+        "FX3_ULOGIO_INSMOD_RC=0": true,
+        "FX3_AP_NATURAL_BOOTIN_BEGIN": false
+      },
+      "host_QMP_exit": 0,
+      "inputs_unchanged": true
+    },
+    {
+      "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap18timer-249d3ce7",
+      "receipt_sha256": "e84bcf1fcc105acdcc7db071b9b94f22b30214b61a212265791eb7382b966690",
+      "exceptions": [
+        "Kernel panic",
+        "Entering exception monitor."
+      ],
+      "markers": {
+        "FX3_CPUSET_READY": true,
+        "FX3_BACKUP_INSMOD_RC=0": true,
+        "FX3_ULOGIO_INSMOD_RC=0": true,
+        "FX3_AP_NATURAL_BOOTIN_BEGIN": false,
+        "FX3_UTIMER_RC=0": false,
+        "FX3_STREAM_RC=0": true,
+        "FX3_STREAM2_RC=0": true,
+        "FX3_DMM_RC=0": false,
+        "FX3_GRM_MA_RC=0": false
+      },
+      "host_QMP_exit": 0,
+      "inputs_unchanged": true
+    },
+    {
+      "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap19utimer-b3e92417",
+      "receipt_sha256": "d1edca1198726f05f0e1f205aa9469ac1dbe1b280cd21d539a4b068716fd0460",
+      "exceptions": [
+        "Entering exception monitor.",
+        "Unhandled fault:"
+      ],
+      "markers": {
+        "FX3_CPUSET_READY": true,
+        "FX3_BACKUP_INSMOD_RC=0": true,
+        "FX3_ULOGIO_INSMOD_RC=0": true,
+        "FX3_AP_NATURAL_BOOTIN_BEGIN": true,
+        "FX3_UTIMER_RC=0": true,
+        "FX3_STREAM_RC=0": true,
+        "FX3_STREAM2_RC=0": true,
+        "FX3_DMM_RC=0": true,
+        "FX3_GRM_MA_RC=0": true
+      },
+      "host_QMP_exit": 0,
+      "inputs_unchanged": true
+    }
+  ],
+  "new_binary_deps_still_match": true
+}

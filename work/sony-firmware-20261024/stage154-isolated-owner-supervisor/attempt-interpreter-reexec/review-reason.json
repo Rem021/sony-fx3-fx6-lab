@@ -1,0 +1,7 @@
+{
+  "failure": "Resume observer rejected a still-live own fixture because macOS Python re-executed its Framework interpreter with the same PID and task nonce",
+  "evidence": "../interpreter-identity-diagnostic.json",
+  "fix": "Match PID birth, exact reviewed task argv suffix/nonce and a launch-time whitelist of Python executable aliases; do not restart on command-prefix change",
+  "all_old_fixture_workers_verified_missing_before_preservation": true,
+  "real_IOKit_loaded": false
+}

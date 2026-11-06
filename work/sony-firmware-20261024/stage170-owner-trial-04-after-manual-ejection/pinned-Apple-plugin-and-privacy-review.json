@@ -1,0 +1,17 @@
+{
+  "checked_utc": "2026-10-28T14:03:10.087186+00:00",
+  "plugin_source": "https://github.com/apple-oss-distributions/IOKitUser/blob/main/IOCFPlugIn.c",
+  "upstream_commit": null,
+  "ls_remote_returncode": 128,
+  "DTS_permissions_source": "https://developer.apple.com/forums/thread/678819",
+  "removable_volume_service_source": "https://developer.apple.com/documentation/bundleresources/information-property-list/nsremovablevolumesusagedescription",
+  "usb_entitlement_source": "https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.security.device.usb",
+  "exact_running_Apple_library_source_match_not_claimed": true,
+  "facts": [
+    "Public IOCFPlugIn implementation converts failure to obtain a started plugin into NoResources and logs failed Start.",
+    "Apple DTS states root is subject to MAC, GUI login affects Files and Folders prompts, and responsible-code identity matters.",
+    "USB entitlement documentation applies to sandboxed apps; absent standalone entitlements are not proof of the cause."
+  ],
+  "local_evidence": "existing-helper-plugin-system-log.json and existing-helper-targeted-policy-log.json",
+  "no_privacy_database_or_setting_modified": true
+}

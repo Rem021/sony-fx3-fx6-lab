@@ -1,0 +1,46 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001286ac <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb>:
+  1286ac: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  1286b0: 910003fd     	mov	x29, sp
+  1286b4: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1286b8: b0007b34     	adrp	x20, 0x108d000
+  1286bc: f90013f5     	str	x21, [sp, #0x20]
+  1286c0: 53001c35     	uxtb	w21, w1
+  1286c4: 52820521     	mov	w1, #0x1029             // =4137
+  1286c8: 3900101f     	strb	wzr, [x0, #0x4]
+  1286cc: 3900501f     	strb	wzr, [x0, #0x14]
+  1286d0: aa0003f3     	mov	x19, x0
+  1286d4: b9000001     	str	w1, [x0]
+  1286d8: f9426281     	ldr	x1, [x20, #0x4c0]
+  1286dc: 3900901f     	strb	wzr, [x0, #0x24]
+  1286e0: 3900c01f     	strb	wzr, [x0, #0x30]
+  1286e4: 39400021     	ldrb	w1, [x1]
+  1286e8: 36000041     	tbz	w1, #0x0, 0x1286f0 <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb+0x44>
+  1286ec: 97ff33f9     	bl	0xf56d0 <_ZN3mpr15SetMovieRecTimeEPNS_17evtRecPbTimeParamE@plt>
+  1286f0: f9426280     	ldr	x0, [x20, #0x4c0]
+  1286f4: 39400000     	ldrb	w0, [x0]
+  1286f8: 36080080     	tbz	w0, #0x1, 0x128708 <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb+0x5c>
+  1286fc: 2a1503e1     	mov	w1, w21
+  128700: aa1303e0     	mov	x0, x19
+  128704: 97ff2613     	bl	0xf1f50 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb@plt>
+  128708: f9426280     	ldr	x0, [x20, #0x4c0]
+  12870c: 39400000     	ldrb	w0, [x0]
+  128710: 36100060     	tbz	w0, #0x2, 0x12871c <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb+0x70>
+  128714: aa1303e0     	mov	x0, x19
+  128718: 97ff2776     	bl	0xf24f0 <_ZN3mpr15SetAudioRecTimeEPNS_17evtRecPbTimeParamE@plt>
+  12871c: f9426294     	ldr	x20, [x20, #0x4c0]
+  128720: 39400280     	ldrb	w0, [x20]
+  128724: 361800c0     	tbz	w0, #0x3, 0x12873c <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb+0x90>
+  128728: aa1303e0     	mov	x0, x19
+  12872c: f94013f5     	ldr	x21, [sp, #0x20]
+  128730: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  128734: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  128738: 17ff29fa     	b	0xf2f20 <_ZN3mpr14SetAudioPbTimeEPNS_17evtRecPbTimeParamE@plt>
+  12873c: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  128740: f94013f5     	ldr	x21, [sp, #0x20]
+  128744: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  128748: d65f03c0     	ret

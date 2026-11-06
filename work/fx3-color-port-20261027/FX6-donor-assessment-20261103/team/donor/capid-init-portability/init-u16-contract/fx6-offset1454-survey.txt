@@ -1,0 +1,111 @@
+  151550: b84046c1     	ldr	w1, [x22], #0x4
+  151554: aa1303e0     	mov	x0, x19
+  151558: 97fe7af6     	bl	0xf0130 <printf@plt>
+  15155c: eb1602bf     	cmp	x21, x22
+  151560: 54ffff81     	b.ne	0x151550 <_ZN3mpr16dumpMovieRecInfoEv+0x254>
+  151564: 52800140     	mov	w0, #0xa                // =10
+  151568: 97fe78a2     	bl	0xef7f0 <putchar@plt>
+  15156c: f9438694     	ldr	x20, [x20, #0x708]
+  151570: 90005bc0     	adrp	x0, 0xcc9000 <_ZN3mpr16g_videoParamCombE+0x1c8>
+  151574: 913a9c00     	add	x0, x0, #0xea7
+  151578: b953e281     	ldr	w1, [x20, #0x13e0]
+  15157c: 97fe7aed     	bl	0xf0130 <printf@plt>
+  151580: b9545681     	ldr	w1, [x20, #0x1454]
+  151584: 90005bc0     	adrp	x0, 0xcc9000 <_ZN3mpr16g_videoParamCombE+0x1c8>
+  151588: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  15158c: 913ae400     	add	x0, x0, #0xeb9
+  151590: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  151594: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  151598: 17fe7ae6     	b	0xf0130 <printf@plt>
+
+000000000015159c <_ZN3mpr12GetSAndQModeERKNS_21getMovieRemainInParamEPjS3_PNS_16MovieCaptureTypeEPb>:
+  15159c: 39411005     	ldrb	w5, [x0, #0x44]
+  1515a0: 34000165     	cbz	w5, 0x1515cc <_ZN3mpr12GetSAndQModeERKNS_21getMovieRemainInParamEPjS3_PNS_16MovieCaptureTypeEPb+0x30>
+  1515a4: b9404805     	ldr	w5, [x0, #0x48]
+  1515a8: 710004bf     	cmp	w5, #0x1
+  1515ac: 54000101     	b.ne	0x1515cc <_ZN3mpr12GetSAndQModeERKNS_21getMovieRemainInParamEPjS3_PNS_16MovieCaptureTypeEPb+0x30>
+  1515b0: b9404c06     	ldr	w6, [x0, #0x4c]
+
+  155db4: a90153f3     	stp	x19, x20, [sp, #0x10]
+  155db8: 7900e7a0     	strh	w0, [x29, #0x72]
+  155dbc: aa1503e0     	mov	x0, x21
+  155dc0: 2a0203f9     	mov	w25, w2
+  155dc4: 290f0bb8     	stp	w24, w2, [x29, #0x78]
+  155dc8: 29107fb6     	stp	w22, wzr, [x29, #0x80]
+  155dcc: b00079d4     	adrp	x20, 0x108e000
+  155dd0: a90573fb     	stp	x27, x28, [sp, #0x50]
+  155dd4: 97ffb3c3     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  155dd8: d00079a0     	adrp	x0, 0x108b000
+  155ddc: f9438693     	ldr	x19, [x20, #0x708]
+  155de0: f943d000     	ldr	x0, [x0, #0x7a0]
+  155de4: b9145676     	str	w22, [x19, #0x1454]
+  155de8: 52800056     	mov	w22, #0x2               // =2
+  155dec: 97fe5ab5     	bl	0xec8c0 <_ZN3mpr5Codec20SetCbFuncForRecMovieEPFvNS0_9IntFactorEP12PayloadCodecE@plt>
+  155df0: 350011e0     	cbnz	w0, 0x15602c <_ZN3mpr20IntegRecordMovieInitEjPKjjt+0x2b4>
+  155df4: b00079db     	adrp	x27, 0x108e000
+  155df8: 2a0003f6     	mov	w22, w0
+  155dfc: d2800017     	mov	x23, #0x0               // =0
+  155e00: 529fffe2     	mov	w2, #0xffff             // =65535
+  155e04: b900027f     	str	wzr, [x19]
+  155e08: f942977b     	ldr	x27, [x27, #0x528]
+  155e0c: eb1802ff     	cmp	x23, x24
+  155e10: 540011e1     	b.ne	0x15604c <_ZN3mpr20IntegRecordMovieInitEjPKjjt+0x2d4>
+  155e14: d00079a0     	adrp	x0, 0x108b000
+  155e18: 12800001     	mov	w1, #-0x1               // =-1
+  155e1c: d28e2148     	mov	x8, #0x710a             // =28938
+
+  157988: b9016394     	str	w20, [x28, #0x160]
+  15798c: b4000080     	cbz	x0, 0x15799c <_ZN3mpr8EnterRecERKNS_15enterRecInParamE+0x3b8>
+  157990: f9400001     	ldr	x1, [x0]
+  157994: f9400421     	ldr	x1, [x1, #0x8]
+  157998: d63f0020     	blr	x1
+  15799c: d2872900     	mov	x0, #0x3948             // =14664
+  1579a0: 97fe56e8     	bl	0xed540 <_Znwm@plt>
+  1579a4: aa0003f4     	mov	x20, x0
+  1579a8: 94016e37     	bl	0x1b3284 <_ZNSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS2_EEaSERKS4_+0x190>
+  1579ac: f943867a     	ldr	x26, [x19, #0x708]
+  1579b0: 52800c83     	mov	w3, #0x64               // =100
+  1579b4: b90063a3     	str	w3, [x29, #0x60]
+  1579b8: 7968ab40     	ldrh	w0, [x26, #0x1454]
+  1579bc: 790133a0     	strh	w0, [x29, #0x98]
+  1579c0: f9400780     	ldr	x0, [x28, #0x8]
+  1579c4: f9400001     	ldr	x1, [x0]
+  1579c8: f9004bbf     	str	xzr, [x29, #0x90]
+  1579cc: f900b794     	str	x20, [x28, #0x168]
+  1579d0: 5284e214     	mov	w20, #0x2710            // =10000
+  1579d4: a9085fbb     	stp	x27, x23, [x29, #0x80]
+  1579d8: f9400824     	ldr	x4, [x1, #0x10]
+  1579dc: f9403fa1     	ldr	x1, [x29, #0x78]
+  1579e0: 2913d3b4     	stp	w20, w20, [x29, #0x9c]
+  1579e4: b900a7a3     	str	w3, [x29, #0xa4]
+  1579e8: d63f0080     	blr	x4
+  1579ec: 35fff180     	cbnz	w0, 0x15781c <_ZN3mpr8EnterRecERKNS_15enterRecInParamE+0x238>
+  1579f0: 7968ab40     	ldrh	w0, [x26, #0x1454]
+
+  1579c0: f9400780     	ldr	x0, [x28, #0x8]
+  1579c4: f9400001     	ldr	x1, [x0]
+  1579c8: f9004bbf     	str	xzr, [x29, #0x90]
+  1579cc: f900b794     	str	x20, [x28, #0x168]
+  1579d0: 5284e214     	mov	w20, #0x2710            // =10000
+  1579d4: a9085fbb     	stp	x27, x23, [x29, #0x80]
+  1579d8: f9400824     	ldr	x4, [x1, #0x10]
+  1579dc: f9403fa1     	ldr	x1, [x29, #0x78]
+  1579e0: 2913d3b4     	stp	w20, w20, [x29, #0x9c]
+  1579e4: b900a7a3     	str	w3, [x29, #0xa4]
+  1579e8: d63f0080     	blr	x4
+  1579ec: 35fff180     	cbnz	w0, 0x15781c <_ZN3mpr8EnterRecERKNS_15enterRecInParamE+0x238>
+  1579f0: 7968ab40     	ldrh	w0, [x26, #0x1454]
+  1579f4: 910012e1     	add	x1, x23, #0x4
+  1579f8: a90a87bb     	stp	x27, x1, [x29, #0xa8]
+  1579fc: 790183a0     	strh	w0, [x29, #0xc0]
+  157a00: f940b780     	ldr	x0, [x28, #0x168]
+  157a04: b94063a3     	ldr	w3, [x29, #0x60]
+  157a08: f9005fbf     	str	xzr, [x29, #0xb8]
+  157a0c: b900cfa3     	str	w3, [x29, #0xcc]
+  157a10: f9400001     	ldr	x1, [x0]
+  157a14: 2918d3b4     	stp	w20, w20, [x29, #0xc4]
+  157a18: f9400823     	ldr	x3, [x1, #0x10]
+  157a1c: aa1503e1     	mov	x1, x21
+  157a20: d63f0060     	blr	x3
+  157a24: 2a0003f4     	mov	w20, w0
+  157a28: 35ffefa0     	cbnz	w0, 0x15781c <_ZN3mpr8EnterRecERKNS_15enterRecInParamE+0x238>

@@ -1,0 +1,220 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/ap-input-20261029/original-members/crypter.elf",
+  "source_sha256": "638eeba2fc720fa807f62fb6f1c65c72e106ed164d16747b0c56e40512c78402",
+  "original_ufp_argv_table": {
+    "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+    "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+    "va": "0x151b8",
+    "bytes": 24,
+    "sha256": "c40d6f58636d755cc233283aa055c1412f9eb4dbc45563da6671c0a2d02dac3e",
+    "pointers": [
+      "0x3d70",
+      "0x3d85",
+      "0x0"
+    ],
+    "argv": [
+      "/usr/bin/crypter.elf",
+      "/tmp_updater/Firm.dat"
+    ]
+  },
+  "cases": [
+    {
+      "argv": [
+        "/usr/bin/crypter.elf",
+        "/tmp_updater/Firm.dat"
+      ],
+      "boundary": {
+        "operation": "virtual_initialize_request",
+        "file_chunk": 0,
+        "filename": "/tmp_updater/Firm.dat",
+        "pc": "0x70000300",
+        "manager_initialization_executed": false
+      },
+      "return_value_if_returned": null,
+      "executable_initializers": [
+        {
+          "entry": "0x400a98",
+          "instructions": 10,
+          "file_chunk_after": 0
+        },
+        {
+          "entry": "0x401028",
+          "instructions": 16,
+          "file_chunk_after": 0
+        }
+      ],
+      "original_bss_writes": [
+        {
+          "address": "0x412098",
+          "bytes": 8,
+          "value": 1342185493,
+          "pc": "0x400ccc"
+        }
+      ],
+      "host_adapters": [
+        {
+          "adapter": "mcmn_init no-op fixture"
+        },
+        {
+          "adapter": "bounded snprintf %s",
+          "text": "/tmp_updater/Firm.dat",
+          "bytes": 21
+        },
+        {
+          "adapter": "synthetic manager/vtable fixture"
+        }
+      ],
+      "instructions": 110,
+      "bss_file_chunk_before": 0,
+      "bss_file_chunk_after": 0,
+      "case": "ufp_exact_arguments"
+    },
+    {
+      "argv": [
+        "/usr/bin/crypter.elf",
+        "chunk=full",
+        "/tmp_updater/Firm.dat"
+      ],
+      "boundary": {
+        "operation": "virtual_initialize_request",
+        "file_chunk": 1,
+        "filename": "/tmp_updater/Firm.dat",
+        "pc": "0x70000300",
+        "manager_initialization_executed": false
+      },
+      "return_value_if_returned": null,
+      "executable_initializers": [
+        {
+          "entry": "0x400a98",
+          "instructions": 10,
+          "file_chunk_after": 0
+        },
+        {
+          "entry": "0x401028",
+          "instructions": 16,
+          "file_chunk_after": 0
+        }
+      ],
+      "original_bss_writes": [
+        {
+          "address": "0x412094",
+          "bytes": 4,
+          "value": 1,
+          "pc": "0x400c8c"
+        },
+        {
+          "address": "0x412098",
+          "bytes": 8,
+          "value": 1342185504,
+          "pc": "0x400ccc"
+        }
+      ],
+      "host_adapters": [
+        {
+          "adapter": "mcmn_init no-op fixture"
+        },
+        {
+          "adapter": "bounded snprintf %s",
+          "text": "/tmp_updater/Firm.dat",
+          "bytes": 21
+        },
+        {
+          "adapter": "synthetic manager/vtable fixture"
+        }
+      ],
+      "instructions": 137,
+      "bss_file_chunk_before": 0,
+      "bss_file_chunk_after": 1,
+      "case": "explicit_full"
+    },
+    {
+      "argv": [
+        "/usr/bin/crypter.elf",
+        "chunk=fdat",
+        "/tmp_updater/Firm.dat"
+      ],
+      "boundary": {
+        "operation": "virtual_initialize_request",
+        "file_chunk": 0,
+        "filename": "/tmp_updater/Firm.dat",
+        "pc": "0x70000300",
+        "manager_initialization_executed": false
+      },
+      "return_value_if_returned": null,
+      "executable_initializers": [
+        {
+          "entry": "0x400a98",
+          "instructions": 10,
+          "file_chunk_after": 0
+        },
+        {
+          "entry": "0x401028",
+          "instructions": 16,
+          "file_chunk_after": 0
+        }
+      ],
+      "original_bss_writes": [
+        {
+          "address": "0x412094",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x400c6c"
+        },
+        {
+          "address": "0x412098",
+          "bytes": 8,
+          "value": 1342185504,
+          "pc": "0x400ccc"
+        }
+      ],
+      "host_adapters": [
+        {
+          "adapter": "mcmn_init no-op fixture"
+        },
+        {
+          "adapter": "bounded snprintf %s",
+          "text": "/tmp_updater/Firm.dat",
+          "bytes": 21
+        },
+        {
+          "adapter": "synthetic manager/vtable fixture"
+        }
+      ],
+      "instructions": 130,
+      "bss_file_chunk_before": 0,
+      "bss_file_chunk_after": 0,
+      "case": "explicit_fdat"
+    },
+    {
+      "argv": [
+        "/usr/bin/crypter.elf"
+      ],
+      "boundary": null,
+      "return_value_if_returned": 1,
+      "executable_initializers": [
+        {
+          "entry": "0x400a98",
+          "instructions": 10,
+          "file_chunk_after": 0
+        },
+        {
+          "entry": "0x401028",
+          "instructions": 16,
+          "file_chunk_after": 0
+        }
+      ],
+      "original_bss_writes": [],
+      "host_adapters": [
+        {
+          "adapter": "discarded stderr text",
+          "text": "[crypter.elf] no filename\n"
+        }
+      ],
+      "instructions": 77,
+      "bss_file_chunk_before": 0,
+      "bss_file_chunk_after": 0,
+      "case": "no_filename"
+    }
+  ],
+  "scope": "Original crypter executable DT_INIT and its single init-array function execute with declared zero weak gmon/JCR bindings; both leave FILE_CHUNK zero. Original main then parses declared argv using ELF PT_LOAD segments and zero-initialized BSS in Unicorn. Exact bounded original BSS writes are permitted and logged; stderr COPY binding is synthetic. mcmn_init is a no-op, snprintf/strncmp and logging are bounded host adapters; the manager factory returns a synthetic object/vtable so execution stops at virtual Initialize before original manager initialization or file access. No full dynamic-loader/dependency startup, actual process, live process globals, complete decryption/CRC/admission, input file, native target library, USB or camera is proven. The normal UFP argument vector is the previously pinned parameter-table value, not an observed real camera invocation."
+}

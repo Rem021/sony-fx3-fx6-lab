@@ -1,0 +1,54 @@
+0000a8e8 stp        x29, x30, [sp, #-0x20]!
+0000a8ec mov        x29, sp
+0000a8f0 stp        x19, x20, [sp, #0x10]
+0000a8f4 mov        x19, x0
+0000a8f8 bl         #0x7d50 ; Updater::DecryptorModule::getHdDataSize
+0000a8fc uxth       w4, w0
+0000a900 sub        w1, w4, #1
+0000a904 uxth       w1, w1
+0000a908 cmp        w1, #0x3fb
+0000a90c b.ls       #0xa968
+0000a910 mov        w19, #2
+0000a914 adrp       x2, #0xc000
+0000a918 movk       w19, #3, lsl #16
+0000a91c adrp       x0, #0xc000
+0000a920 add        x2, x2, #0x514 ; literal 'DecryptorModule.cpp'
+0000a924 mov        w1, w19
+0000a928 add        x0, x0, #0x3aa ; literal 'UdrAPI,%d,%s:%d,""%d""\n'
+0000a92c mov        w3, #0x67
+0000a930 bl         #0x81e0 ; printf
+0000a934 mov        x0, #0x10
+0000a938 bl         #0x7b70 ; __cxa_allocate_exception
+0000a93c str        w19, [x0, #8]
+0000a940 adrp       x1, #0x1e000
+0000a944 adrp       x2, #0x1e000
+0000a948 strb       wzr, [x0, #0xc]
+0000a94c ldr        x1, [x1, #0xf20]
+0000a950 ldr        x2, [x2, #0xf40]
+0000a954 add        x1, x1, #0x10
+0000a958 str        x1, [x0]
+0000a95c adrp       x1, #0x1e000
+0000a960 ldr        x1, [x1, #0xfc8]
+0000a964 bl         #0x8100 ; __cxa_throw
+0000a968 mov        x0, x19
+0000a96c bl         #0x7cf0 ; Updater::DecryptorModule::calSum
+0000a970 uxth       w20, w0
+0000a974 mov        x0, x19
+0000a978 bl         #0x7c10 ; Updater::DecryptorModule::getHdSum
+0000a97c uxth       w5, w0
+0000a980 cmp        w20, w5
+0000a984 b.eq       #0xa9b4
+0000a988 mov        w19, #2
+0000a98c adrp       x2, #0xc000
+0000a990 movk       w19, #3, lsl #16
+0000a994 adrp       x0, #0xc000
+0000a998 mov        w4, w20
+0000a99c add        x2, x2, #0x514 ; literal 'DecryptorModule.cpp'
+0000a9a0 mov        w1, w19
+0000a9a4 add        x0, x0, #0x5ed ; literal 'UdrAPI,%d,%s:%d,""%d:%d""\n'
+0000a9a8 mov        w3, #0x6e
+0000a9ac bl         #0x81e0 ; printf
+0000a9b0 b          #0xa934
+0000a9b4 ldp        x19, x20, [sp, #0x10]
+0000a9b8 ldp        x29, x30, [sp], #0x20
+0000a9bc ret        

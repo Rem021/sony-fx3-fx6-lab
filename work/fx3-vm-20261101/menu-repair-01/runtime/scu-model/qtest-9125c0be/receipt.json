@@ -1,0 +1,80 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-scu-8ad02fc9cea66054",
+    "-machine",
+    "virt,gic-version=2,secure=off",
+    "-accel",
+    "tcg",
+    "-cpu",
+    "cortex-a35",
+    "-m",
+    "64",
+    "-display",
+    "none",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-serial",
+    "none",
+    "-monitor",
+    "none",
+    "-qtest",
+    "unix:t,server=on,wait=off",
+    "-qmp",
+    "unix:q,server=on,wait=off",
+    "-S"
+  ],
+  "events": [
+    {
+      "command": "readl 0xf1388f60",
+      "response": "OK 0x0000000000000000"
+    },
+    {
+      "command": "writel 0xf1388f50 0x101",
+      "response": "OK"
+    },
+    {
+      "command": "writel 0xf1388f54 0x101",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1388f60",
+      "response": "OK 0x0000000000000000"
+    },
+    {
+      "command": "writel 0xf1388f58 1",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1388f60",
+      "response": "OK 0x0000000000000001"
+    },
+    {
+      "command": "writel 0xf1388f5c 1",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1388f60",
+      "response": "OK 0x0000000000000000"
+    },
+    {
+      "command": "writel 0xf1388f58 0x100",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1388f60",
+      "response": "OK 0x0000000000000000"
+    },
+    {
+      "command": "writel 0xf1388f58 2",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1388f60",
+      "response": "OK 0x0000000000000000"
+    }
+  ],
+  "exit": 0,
+  "peer_ack_invariant_verified": true,
+  "scope": "isolated register model qtest only, no firmware or CP execution"
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "fx3-stage43-next-code-exit-and-valid-STOP-anchors/1",
+  "created_utc": "2026-10-26T01:07:08.323723+00:00",
+  "image_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "native_constructor": {
+    "entry": "0x253b38",
+    "selected_START_vptr_store": "0x253cf0 ->state+508",
+    "selected_STOP_vptr_store": "0x253d48 ->state+550",
+    "first_runtime_clear": "0x253d8c ->0x2f67c, state+5a0 length58",
+    "second_runtime_clear": "0x253da8 ->0x2f67c, state+c length151",
+    "complete_construction_real_singleton_selection_and_runtime_binding_unproven": true
+  },
+  "native_virtual_drain": {
+    "queue_pop": "0x2530fc..0x253134",
+    "virtual_call": "0x25313c",
+    "generic_operator": "0x253db4",
+    "pending_clear": "0x253db8, object+c",
+    "typed_START": "0x253ec4 ->0x252f54",
+    "typed_STOP": "0x253ee4 ->0x2533d4",
+    "zero_counts_and_flags_not_code_exit_receipt": true
+  },
+  "next_work": [
+    "Bind full constructor and runtime clears to original runtime implementations, actual singleton/owner lifecycle and current epoch, preserving observed native metadata.",
+    "Follow valid STOP state8/9 actions and full transition diagnostics/entry/exit through infra completion; invalid STOP-in-READY test is not real stop recovery.",
+    "Establish real shared synchronization and all worker/consumer code exits before removing hooks/freeing data or code. Ordered guest context proof covers only its observed calls.",
+    "Retain52byte initialization/full input/Hal/model/query/cache/mux and real MAIN media/audio/longrun/thermal, same-body backup/restricted restore/WBI/coldboot/independent rescue requirements."
+  ],
+  "context_API_reference": {
+    "url": "https://github.com/unicorn-engine/unicorn/blob/master/include/unicorn/unicorn.h",
+    "checked_date": "2026-10-25",
+    "observed_runtime": "2.1.4",
+    "scope": "Generic API reference; actual installed-engine CPU/RAM integrity checked in this run, not a real camera scheduler."
+  },
+  "camera_or_remote_access_attempted": false
+}

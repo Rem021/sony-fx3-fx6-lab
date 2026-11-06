@@ -1,0 +1,132 @@
+{
+  "status": "PINNED_FULL_DIFF_VERIFIED_DOCUMENT_ONLY_NO_NEW_FX3_RECOVERY_IMPLEMENTATION",
+  "old_head": "400313ea073269f7a87eab544b44dfc388f19ed9",
+  "new_head": "575c707dcbd79dcacab7e28e49f6b66434b25463",
+  "changed_paths": [
+    "docs/QEMU_M2_PROGRESS.md"
+  ],
+  "added_lines": 764,
+  "deleted_lines": 0,
+  "old_lines": 10739,
+  "new_lines": 11503,
+  "git_blob_sha1": {
+    "old": "2fc17180015725fc6136510d34d5fa4778d639db",
+    "new": "a659cfe7b577b6686e9d0b09e6b06aa4586d9482"
+  },
+  "source_records": [
+    {
+      "label": "old",
+      "head": "400313ea073269f7a87eab544b44dfc388f19ed9",
+      "url": "https://raw.githubusercontent.com/cokeenet/zve10-qemu/400313ea073269f7a87eab544b44dfc388f19ed9/docs/QEMU_M2_PROGRESS.md",
+      "returncode": 0,
+      "path": "old-QEMU_M2_PROGRESS.md",
+      "bytes": 498722,
+      "sha256": "5d43a7072ac2b4bd0b9747eabb69de142ab79bd410a93010f66548731e68728c"
+    },
+    {
+      "label": "new",
+      "head": "575c707dcbd79dcacab7e28e49f6b66434b25463",
+      "url": "https://raw.githubusercontent.com/cokeenet/zve10-qemu/575c707dcbd79dcacab7e28e49f6b66434b25463/docs/QEMU_M2_PROGRESS.md",
+      "returncode": 0,
+      "path": "new-QEMU_M2_PROGRESS.md",
+      "bytes": 531887,
+      "sha256": "147afcc23e604f7083c7025a61f8f51689a41597b3e72d73485333278b499c3a"
+    }
+  ],
+  "headings": [
+    {
+      "line": 10743,
+      "text": "# ★★★★★ 2026-10-30 第一百零三层：**Image 内嵌 initramfs 才发现**；软件帧全零"
+    },
+    {
+      "line": 10801,
+      "text": "# ★★★★★ 2026-10-30 第一百零四层：可控内核构建成功；**软件光栅化器收到 0 条绘制指令**"
+    },
+    {
+      "line": 10869,
+      "text": "# ★★★★★ 2026-10-30 第一百零五层：**GPE 只收到 11 个相同的启动栅栏包；UI 从未提交绘制命令**"
+    },
+    {
+      "line": 10941,
+      "text": "# ★★★★★ 2026-10-30 第一百零六层：REA + Ghidra 工具链落地；M2 系统服务队列语义首次反编译成功"
+    },
+    {
+      "line": 11019,
+      "text": "# ★★★★★★ 2026-10-31 第一百零七层：**M2 首次跑到 Application_Start 之后 2810 行；阻塞点换到 0x8f0313**"
+    },
+    {
+      "line": 11081,
+      "text": "# ★★★★★★ 2026-10-31 第一百零八层：伪造缺失队列后推进到 3947 行；阻塞点逐层下移"
+    },
+    {
+      "line": 11137,
+      "text": "# ★★★★★★★ 2026-10-31 第一百零九层：**恢复原版 IMDB 后越过 bus_power 断言，进入 GPE 图形初始化**"
+    },
+    {
+      "line": 11203,
+      "text": "# ★★★★★★★ 2026-10-31 第一百一十层：**证据显示帧循环曾被进入**（backtrace 0x54f678），但伪造分配破坏堆"
+    },
+    {
+      "line": 11259,
+      "text": "# ★★★★★★★★ 2026-10-31 第一百一十一层：**换对 ZV-1M2 的 /setting 后，valloc 失败归零、日志 7167 行**"
+    },
+    {
+      "line": 11314,
+      "text": "# ★★★★★★★★ 2026-10-31 第一百一十二层：**硬件级墙 —— M2 的新引擎等 sugilite GPU 中断，QEMU 从不发**"
+    },
+    {
+      "line": 11377,
+      "text": "# ★★★★★★★ 2026-10-31 第一百一十三层：自建 QEMU 并实现 sugilite 中断模型（首次尝试）"
+    },
+    {
+      "line": 11450,
+      "text": "# ★★★★★★★★ 2026-10-31 第一百一十四层：**sugilite 中断模型成功工作 —— 19 个 GPE 包首次出现**"
+    }
+  ],
+  "scope_proof_lines": [
+    {
+      "token": "内嵌 initramfs",
+      "lines": [
+        10743,
+        10795,
+        10811
+      ]
+    },
+    {
+      "token": "像素全零",
+      "lines": [
+        10776,
+        10813,
+        10845
+      ]
+    },
+    {
+      "token": "ZVE10_GPE_PACKET = 19",
+      "lines": [
+        11473
+      ]
+    },
+    {
+      "token": "帧仍 0",
+      "lines": [
+        11476
+      ]
+    },
+    {
+      "token": "backup 服务队列",
+      "lines": [
+        11481,
+        11491
+      ]
+    }
+  ],
+  "delta_sha256": "f411f466d092a94f2967eef412e5666302a8685c375e2e940d3599d4d7e6d32f",
+  "report_covers_ZVE10_and_ZV1M2_emulator_work_not_FX3": true,
+  "contains_documented_local_QEMU_code_snippets_but_no_repository_source_file_change": true,
+  "author_reports_19_startup_packets_but_zero_frames_and_backup_queue_block": true,
+  "emulator_or_hardware_recovery_reproduced_by_us": false,
+  "original_firmware_or_downloaded_code_executed": false,
+  "new_camera_USB_cache_admin_auth_upload_firmware_operations": 0,
+  "actual_FX3_entry_backup_restore_and_MAIN_HEVC_gates_changed": false,
+  "first_flash_released": false
+}

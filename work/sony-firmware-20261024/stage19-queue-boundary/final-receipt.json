@@ -1,0 +1,69 @@
+{
+  "schema": "fx3-stage19-queue-boundary/1",
+  "created_utc": "2026-10-25T19:32:40.302472+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage19-queue-boundary/README.md",
+      "bytes": 6644,
+      "sha256": "9dbb857f852de196adeb3377311c264aef08d0480ff0f581c46113a33133b09b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage19-queue-boundary/coordinator-observations.json",
+      "bytes": 1337,
+      "sha256": "427e472c4c02cc181b151054275e5386b30645ce3d3e8d01e6da4c8d10e900be"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage19-queue-boundary/goal-status-after.json",
+      "bytes": 26161,
+      "sha256": "e3d22e99990632ae07e0eee997e2277690202fc5835be9274bbd77c82da7ba1b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage19-queue-boundary/goal-status-before.json",
+      "bytes": 24942,
+      "sha256": "664c31ba4ee35e9c084d6ffb75fd9d14f667ac6660977f0105724350af77cba9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage19-queue-boundary/queue_boundary.py",
+      "bytes": 16811,
+      "sha256": "abf464ba6b7b9aeaabaff601bd027d4e0e511ac4401b1155799b8b4be14764d2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage19-queue-boundary/run-20261025/queue-boundary-results.json",
+      "bytes": 132526,
+      "sha256": "565b0a27f3ef7ddeccec22e7a8bb673c9b8af67fc21416a5163459af69bb71ee"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage19-queue-boundary/run-20261025/source-receipt.json",
+      "bytes": 1614,
+      "sha256": "8eddc334e19e3c320f125c7920020179b2f5e67f3099300ed7858f654a5ec6d2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage19-queue-boundary/run-20261025/summary.json",
+      "bytes": 524,
+      "sha256": "6d8695cdbcd4e55481a6462ed8d0df21d076a83bf18f105757dc05a5b5fe9046"
+    }
+  ],
+  "scope": "Synthetic graph/counter original-code fragments, not full native replacement, waiting, worker or safe unload acceptance.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_sha256": "664c31ba4ee35e9c084d6ffb75fd9d14f667ac6660977f0105724350af77cba9",
+    "after_sha256": "e3d22e99990632ae07e0eee997e2277690202fc5835be9274bbd77c82da7ba1b",
+    "before_snapshot": "work/sony-firmware-20261024/stage19-queue-boundary/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage19-queue-boundary/goal-status-after.json",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "bounded_guest_fragments": true,
+    "new_remote_attempts": false,
+    "Windows_task_dispatched_or_executed": false,
+    "native_wait_mutex_thread_or_destructor_execution": false,
+    "actual_GetMovieRemain_or_media_free_space_query": false,
+    "camera_interface_auth_driver_files_module_backend_WBI_or_write": false,
+    "firmware_payload_or_patchfile_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 缓存替换与等待边界](<work/sony-firmware-20261024/stage19-queue-boundary/README.md>)：刷新token不代表配置代次，wait集合命中可按条件放行；完善退出观察条件，尚无实机清空/恢复验收。"
+}

@@ -1,0 +1,20 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0xbda4 10b5 push     {r4, lr}
+0xbda6 0022 movs     r2, #0
+0xbda8 00b9 cbnz     r0, #0xbdac
+0xbdaa 1260 str      r2, [r2]
+0xbdac 134b ldr      r3, [pc, #0x4c]
+0xbdae 1a70 strb     r2, [r3]
+0xbdb0 1a78 ldrb     r2, [r3]
+0xbdb2 42f00102 orr      r2, r2, #1
+0xbdb6 1a70 strb     r2, [r3]
+0xbdb8 0022 movs     r2, #0
+0xbdba 02e0 b        #0xbdc2
+0xbdbc 845c ldrb     r4, [r0, r2]
+0xbdbe 1c72 strb     r4, [r3, #8]
+0xbdc0 521c adds     r2, r2, #1
+0xbdc2 8a42 cmp      r2, r1
+0xbdc4 fad3 blo      #0xbdbc
+0xbdc6 d868 ldr      r0, [r3, #0xc]
+0xbdc8 80b2 uxth     r0, r0
+0xbdca 10bd pop      {r4, pc}

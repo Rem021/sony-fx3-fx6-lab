@@ -1,0 +1,2279 @@
+{
+  "status": "EXACT702_STOP_RECEIVE_WAKE_AND_DEQUEUE_BOUNDARIES_PINNED",
+  "module_sha256": "1a7294dd9d3babde3f1e8cc2ac4aa12f54356f61995993bbc18ace095ed0cbf2",
+  "module_ranges": [
+    {
+      "label": "cleanup",
+      "start": "0xe8",
+      "bytes": 124,
+      "sha256": "e7c40d9af5822456b7b1acda161504a17afaf55251c654f59b85e5576f1aacee",
+      "instructions": [
+        {
+          "offset": 232,
+          "word": "c00300b4",
+          "asm": "cbz x0, #0x160",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 236,
+          "word": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 240,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 244,
+          "word": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 248,
+          "word": "140040f9",
+          "asm": "ldr x20, [x0]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 252,
+          "word": "f40100b4",
+          "asm": "cbz x20, #0x138",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 256,
+          "word": "81e20191",
+          "asm": "add x1, x20, #0x78",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 260,
+          "word": "f30300aa",
+          "asm": "mov x19, x0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 264,
+          "word": "00008052",
+          "asm": "mov w0, #0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 268,
+          "word": "00000094",
+          "asm": "bl #0x10c",
+          "relocation_symbol": "test_and_clear_bit"
+        },
+        {
+          "offset": 272,
+          "word": "c0010035",
+          "asm": "cbnz w0, #0x148",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 276,
+          "word": "810240f9",
+          "asm": "ldr x1, [x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 280,
+          "word": "610000b4",
+          "asm": "cbz x1, #0x124",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 284,
+          "word": "e00313aa",
+          "asm": "mov x0, x19",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 288,
+          "word": "00000094",
+          "asm": "bl #0x120",
+          "relocation_symbol": "usb_ep_free_request"
+        },
+        {
+          "offset": 292,
+          "word": "804640f9",
+          "asm": "ldr x0, [x20, #0x88]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 296,
+          "word": "600000b4",
+          "asm": "cbz x0, #0x134",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 300,
+          "word": "00000094",
+          "asm": "bl #0x12c",
+          "relocation_symbol": "kfree"
+        },
+        {
+          "offset": 304,
+          "word": "9f4600f9",
+          "asm": "str xzr, [x20, #0x88]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 308,
+          "word": "7f0200f9",
+          "asm": "str xzr, [x19]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 312,
+          "word": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 316,
+          "word": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 320,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 324,
+          "word": "1f2003d5",
+          "asm": "nop ",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 328,
+          "word": "810240f9",
+          "asm": "ldr x1, [x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 332,
+          "word": "e00313aa",
+          "asm": "mov x0, x19",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 336,
+          "word": "00000094",
+          "asm": "bl #0x150",
+          "relocation_symbol": "usb_ep_dequeue"
+        },
+        {
+          "offset": 340,
+          "word": "810240f9",
+          "asm": "ldr x1, [x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 344,
+          "word": "21feffb5",
+          "asm": "cbnz x1, #0x11c",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 348,
+          "word": "f2ffff17",
+          "asm": "b #0x124",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 352,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "relocation_symbol": null
+        }
+      ],
+      "range_type": "explicit code range; anonymous function boundaries not exported STT_FUNC sizes"
+    },
+    {
+      "label": "core_stop",
+      "start": "0x168",
+      "bytes": 248,
+      "sha256": "28c36c96c1fbb8365089069924f822e66d8e714252fb0936177cb13a3794ccfb",
+      "instructions": [
+        {
+          "offset": 360,
+          "word": "fd7bbca9",
+          "asm": "stp x29, x30, [sp, #-0x40]!",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 364,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 368,
+          "word": "f76303a9",
+          "asm": "stp x23, x24, [sp, #0x30]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 372,
+          "word": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 376,
+          "word": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 380,
+          "word": "38070058",
+          "asm": "ldr x24, #0x260",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 384,
+          "word": "171040f9",
+          "asm": "ldr x23, [x0, #0x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 388,
+          "word": "e00318aa",
+          "asm": "mov x0, x24",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 392,
+          "word": "00000094",
+          "asm": "bl #0x188",
+          "relocation_symbol": "mutex_lock"
+        },
+        {
+          "offset": 396,
+          "word": "e2c24539",
+          "asm": "ldrb w2, [x23, #0x170]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 400,
+          "word": "5f100071",
+          "asm": "cmp w2, #4",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 404,
+          "word": "e0050054",
+          "asm": "b.eq #0x250",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 408,
+          "word": "13008052",
+          "asm": "mov w19, #0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 412,
+          "word": "62010035",
+          "asm": "cbnz w2, #0x1c8",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 416,
+          "word": "1c000014",
+          "asm": "b #0x210",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 420,
+          "word": "1f2003d5",
+          "asm": "nop ",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 424,
+          "word": "00000094",
+          "asm": "bl #0x1a8",
+          "relocation_symbol": "usbg_ldisc_cleanup_ep_data"
+        },
+        {
+          "offset": 428,
+          "word": "e10316aa",
+          "asm": "mov x1, x22",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 432,
+          "word": "60008052",
+          "asm": "mov w0, #3",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 436,
+          "word": "00000094",
+          "asm": "bl #0x1b4",
+          "relocation_symbol": "clear_bit"
+        },
+        {
+          "offset": 440,
+          "word": "e2c24539",
+          "asm": "ldrb w2, [x23, #0x170]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 444,
+          "word": "73060011",
+          "asm": "add w19, w19, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 448,
+          "word": "5f00136b",
+          "asm": "cmp w2, w19",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 452,
+          "word": "6d020054",
+          "asm": "b.le #0x210",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 456,
+          "word": "e1b640f9",
+          "asm": "ldr x1, [x23, #0x168]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 460,
+          "word": "40008052",
+          "asm": "mov w0, #2",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 464,
+          "word": "35d873f8",
+          "asm": "ldr x21, [x1, w19, sxtw #3]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 468,
+          "word": "b40240f9",
+          "asm": "ldr x20, [x21]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 472,
+          "word": "96e20191",
+          "asm": "add x22, x20, #0x78",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 476,
+          "word": "e10316aa",
+          "asm": "mov x1, x22",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 480,
+          "word": "f4feffb4",
+          "asm": "cbz x20, #0x1bc",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 484,
+          "word": "00000094",
+          "asm": "bl #0x1e4",
+          "relocation_symbol": "set_bit"
+        },
+        {
+          "offset": 488,
+          "word": "22008052",
+          "asm": "mov w2, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 492,
+          "word": "80820191",
+          "asm": "add x0, x20, #0x60",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 496,
+          "word": "e103022a",
+          "asm": "mov w1, w2",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 500,
+          "word": "030080d2",
+          "asm": "mov x3, #0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 504,
+          "word": "00000094",
+          "asm": "bl #0x1f8",
+          "relocation_symbol": "__wake_up"
+        },
+        {
+          "offset": 508,
+          "word": "7f060071",
+          "asm": "cmp w19, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 512,
+          "word": "e00315aa",
+          "asm": "mov x0, x21",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 516,
+          "word": "2cfdff54",
+          "asm": "b.gt #0x1a8",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 520,
+          "word": "b8ffff97",
+          "asm": "bl #0xe8",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 524,
+          "word": "e8ffff17",
+          "asm": "b #0x1ac",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 528,
+          "word": "e00317aa",
+          "asm": "mov x0, x23",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 532,
+          "word": "00000094",
+          "asm": "bl #0x214",
+          "relocation_symbol": "usbg_cmn_clear_ep_list"
+        },
+        {
+          "offset": 536,
+          "word": "e00318aa",
+          "asm": "mov x0, x24",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 540,
+          "word": "00000094",
+          "asm": "bl #0x21c",
+          "relocation_symbol": "mutex_unlock"
+        },
+        {
+          "offset": 544,
+          "word": "e20240f9",
+          "asm": "ldr x2, [x23]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 548,
+          "word": "050080d2",
+          "asm": "mov x5, #0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 552,
+          "word": "e10a40f9",
+          "asm": "ldr x1, [x23, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 556,
+          "word": "04008052",
+          "asm": "mov w4, #0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 560,
+          "word": "23008052",
+          "asm": "mov w3, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 564,
+          "word": "00008052",
+          "asm": "mov w0, #0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 568,
+          "word": "00000094",
+          "asm": "bl #0x238",
+          "relocation_symbol": "usb_event_add_queue"
+        },
+        {
+          "offset": 572,
+          "word": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 576,
+          "word": "f55b42a9",
+          "asm": "ldp x21, x22, [sp, #0x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 580,
+          "word": "f76343a9",
+          "asm": "ldp x23, x24, [sp, #0x30]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 584,
+          "word": "fd7bc4a8",
+          "asm": "ldp x29, x30, [sp], #0x40",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 588,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 592,
+          "word": "e00317aa",
+          "asm": "mov x0, x23",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 596,
+          "word": "00000094",
+          "asm": "bl #0x254",
+          "relocation_symbol": "usbg_ldisc_stop"
+        },
+        {
+          "offset": 600,
+          "word": "e2c24539",
+          "asm": "ldrb w2, [x23, #0x170]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 604,
+          "word": "cfffff17",
+          "asm": "b #0x198",
+          "relocation_symbol": null
+        }
+      ],
+      "range_type": "explicit code range; anonymous function boundaries not exported STT_FUNC sizes"
+    },
+    {
+      "label": "receive_complete",
+      "start": "0x308",
+      "bytes": 148,
+      "sha256": "09e22589c388f751835579bdba0af839236b3b55a164cc5c505457b7e3a092be",
+      "instructions": [
+        {
+          "offset": 776,
+          "word": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 780,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 784,
+          "word": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 788,
+          "word": "f30301aa",
+          "asm": "mov x19, x1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 792,
+          "word": "54040058",
+          "asm": "ldr x20, #0x3a0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 796,
+          "word": "f51300f9",
+          "asm": "str x21, [sp, #0x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 800,
+          "word": "95a20091",
+          "asm": "add x21, x20, #0x28",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 804,
+          "word": "e00315aa",
+          "asm": "mov x0, x21",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 808,
+          "word": "00000094",
+          "asm": "bl #0x328",
+          "relocation_symbol": "mutex_lock"
+        },
+        {
+          "offset": 812,
+          "word": "942e40f9",
+          "asm": "ldr x20, [x20, #0x58]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 816,
+          "word": "641640a9",
+          "asm": "ldp x4, x5, [x19]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 820,
+          "word": "82220091",
+          "asm": "add x2, x20, #8",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 824,
+          "word": "e00315aa",
+          "asm": "mov x0, x21",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 828,
+          "word": "441400a9",
+          "asm": "stp x4, x5, [x2]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 832,
+          "word": "641641a9",
+          "asm": "ldp x4, x5, [x19, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 836,
+          "word": "441401a9",
+          "asm": "stp x4, x5, [x2, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 840,
+          "word": "641642a9",
+          "asm": "ldp x4, x5, [x19, #0x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 844,
+          "word": "441402a9",
+          "asm": "stp x4, x5, [x2, #0x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 848,
+          "word": "641643a9",
+          "asm": "ldp x4, x5, [x19, #0x30]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 852,
+          "word": "441403a9",
+          "asm": "stp x4, x5, [x2, #0x30]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 856,
+          "word": "641644a9",
+          "asm": "ldp x4, x5, [x19, #0x40]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 860,
+          "word": "441404a9",
+          "asm": "stp x4, x5, [x2, #0x40]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 864,
+          "word": "612a40f9",
+          "asm": "ldr x1, [x19, #0x50]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 868,
+          "word": "812e00f9",
+          "asm": "str x1, [x20, #0x58]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 872,
+          "word": "00000094",
+          "asm": "bl #0x368",
+          "relocation_symbol": "mutex_unlock"
+        },
+        {
+          "offset": 876,
+          "word": "81e20191",
+          "asm": "add x1, x20, #0x78",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 880,
+          "word": "20008052",
+          "asm": "mov w0, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 884,
+          "word": "00000094",
+          "asm": "bl #0x374",
+          "relocation_symbol": "set_bit"
+        },
+        {
+          "offset": 888,
+          "word": "22008052",
+          "asm": "mov w2, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 892,
+          "word": "80820191",
+          "asm": "add x0, x20, #0x60",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 896,
+          "word": "e103022a",
+          "asm": "mov w1, w2",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 900,
+          "word": "030080d2",
+          "asm": "mov x3, #0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 904,
+          "word": "00000094",
+          "asm": "bl #0x388",
+          "relocation_symbol": "__wake_up"
+        },
+        {
+          "offset": 908,
+          "word": "f51340f9",
+          "asm": "ldr x21, [sp, #0x20]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 912,
+          "word": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 916,
+          "word": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 920,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "relocation_symbol": null
+        }
+      ],
+      "range_type": "explicit code range; anonymous function boundaries not exported STT_FUNC sizes"
+    },
+    {
+      "label": "receive_post_wait",
+      "start": "0x10dc",
+      "bytes": 24,
+      "sha256": "d7154cc5a884cf99b93e96b3db625ea5fb705d0ae12c6479ee79985c458abf4d",
+      "instructions": [
+        {
+          "offset": 4316,
+          "word": "20008052",
+          "asm": "mov w0, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4320,
+          "word": "e10319aa",
+          "asm": "mov x1, x25",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4324,
+          "word": "00000094",
+          "asm": "bl #0x10e4",
+          "relocation_symbol": "test_and_clear_bit"
+        },
+        {
+          "offset": 4328,
+          "word": "80120034",
+          "asm": "cbz w0, #0x1338",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4332,
+          "word": "603e40f9",
+          "asm": "ldr x0, [x19, #0x78]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4336,
+          "word": "80371037",
+          "asm": "tbnz w0, #2, #0x17e0",
+          "relocation_symbol": null
+        }
+      ],
+      "range_type": "explicit code range; anonymous function boundaries not exported STT_FUNC sizes"
+    },
+    {
+      "label": "receive_wait",
+      "start": "0x1338",
+      "bytes": 84,
+      "sha256": "7f775e4bdd0e76b75392f185f4947d8435066222ea20b1731c90a0c7b8b9f716",
+      "instructions": [
+        {
+          "offset": 4920,
+          "word": "b5430391",
+          "asm": "add x21, x29, #0xd0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4924,
+          "word": "01008052",
+          "asm": "mov w1, #0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4928,
+          "word": "e00315aa",
+          "asm": "mov x0, x21",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4932,
+          "word": "7c820191",
+          "asm": "add x28, x19, #0x60",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4936,
+          "word": "00000094",
+          "asm": "bl #0x1348",
+          "relocation_symbol": "init_wait_entry"
+        },
+        {
+          "offset": 4940,
+          "word": "03000014",
+          "asm": "b #0x1358",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4944,
+          "word": "970700b5",
+          "asm": "cbnz x23, #0x1440",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4948,
+          "word": "00000094",
+          "asm": "bl #0x1354",
+          "relocation_symbol": "schedule"
+        },
+        {
+          "offset": 4952,
+          "word": "e10315aa",
+          "asm": "mov x1, x21",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4956,
+          "word": "e0031caa",
+          "asm": "mov x0, x28",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4960,
+          "word": "22008052",
+          "asm": "mov w2, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4964,
+          "word": "00000094",
+          "asm": "bl #0x1364",
+          "relocation_symbol": "prepare_to_wait_event"
+        },
+        {
+          "offset": 4968,
+          "word": "f70300aa",
+          "asm": "mov x23, x0",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4972,
+          "word": "e10319aa",
+          "asm": "mov x1, x25",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4976,
+          "word": "20008052",
+          "asm": "mov w0, #1",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4980,
+          "word": "00000094",
+          "asm": "bl #0x1374",
+          "relocation_symbol": "test_and_clear_bit"
+        },
+        {
+          "offset": 4984,
+          "word": "c0feff34",
+          "asm": "cbz w0, #0x1350",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4988,
+          "word": "e10315aa",
+          "asm": "mov x1, x21",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4992,
+          "word": "e0031caa",
+          "asm": "mov x0, x28",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 4996,
+          "word": "00000094",
+          "asm": "bl #0x1384",
+          "relocation_symbol": "finish_wait"
+        },
+        {
+          "offset": 5000,
+          "word": "59ffff17",
+          "asm": "b #0x10ec",
+          "relocation_symbol": null
+        }
+      ],
+      "range_type": "explicit code range; anonymous function boundaries not exported STT_FUNC sizes"
+    },
+    {
+      "label": "registration",
+      "start": "0x15a0",
+      "bytes": 56,
+      "sha256": "84807fcc87dc6836b2c8853b094c872629cbbd3f4aca56b43c2112c042267532",
+      "instructions": [
+        {
+          "offset": 5536,
+          "word": "012740f9",
+          "asm": "ldr x1, [x24, #0x48]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5540,
+          "word": "00c30191",
+          "asm": "add x0, x24, #0x70",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5544,
+          "word": "1f3b00f9",
+          "asm": "str xzr, [x24, #0x70]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5548,
+          "word": "184b00f9",
+          "asm": "str x24, [x24, #0x90]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5552,
+          "word": "c4230058",
+          "asm": "ldr x4, #0x1a28",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5556,
+          "word": "25004039",
+          "asm": "ldrb w5, [x1]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5560,
+          "word": "c3230058",
+          "asm": "ldr x3, #0x1a30",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5564,
+          "word": "05e30139",
+          "asm": "strb w5, [x24, #0x78]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5568,
+          "word": "c2230058",
+          "asm": "ldr x2, #0x1a38",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5572,
+          "word": "21044039",
+          "asm": "ldrb w1, [x1, #1]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5576,
+          "word": "040f0aa9",
+          "asm": "stp x4, x3, [x24, #0xa0]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5580,
+          "word": "01e70139",
+          "asm": "strb w1, [x24, #0x79]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5584,
+          "word": "027300f9",
+          "asm": "str x2, [x24, #0xe0]",
+          "relocation_symbol": null
+        },
+        {
+          "offset": 5588,
+          "word": "00000094",
+          "asm": "bl #0x15d4",
+          "relocation_symbol": "usb_gadgetcore_register_driver"
+        }
+      ],
+      "range_type": "explicit code range; anonymous function boundaries not exported STT_FUNC sizes"
+    }
+  ],
+  "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "kernel_ranges": [
+    {
+      "name": "usb_ep_dequeue",
+      "start": "0x2e0c00",
+      "bytes": 32,
+      "sha256": "7e6b9611c16d1922e15f1ac9ed966f2c230626c9f76c991442992872443649dd",
+      "instructions": [
+        {
+          "offset": 3017728,
+          "word": "fd7bbfa9",
+          "asm": "stp x29, x30, [sp, #-0x10]!",
+          "target": null
+        },
+        {
+          "offset": 3017732,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "target": null
+        },
+        {
+          "offset": 3017736,
+          "word": "020840f9",
+          "asm": "ldr x2, [x0, #0x10]",
+          "target": null
+        },
+        {
+          "offset": 3017740,
+          "word": "421440f9",
+          "asm": "ldr x2, [x2, #0x28]",
+          "target": null
+        },
+        {
+          "offset": 3017744,
+          "word": "40003fd6",
+          "asm": "blr x2",
+          "target": null
+        },
+        {
+          "offset": 3017748,
+          "word": "fd7bc1a8",
+          "asm": "ldp x29, x30, [sp], #0x10",
+          "target": null
+        },
+        {
+          "offset": 3017752,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "target": null
+        },
+        {
+          "offset": 3017756,
+          "word": "1f2003d5",
+          "asm": "nop ",
+          "target": null
+        }
+      ],
+      "boundary": "next original kernel symbol; not ELF function size"
+    },
+    {
+      "name": "gcore_dequeue",
+      "start": "0x2e8b30",
+      "bytes": 32,
+      "sha256": "76ba95422d3f0dd041ba01270df2d2165467c89c2fab2f0f4e58ca36dada5d94",
+      "instructions": [
+        {
+          "offset": 3050288,
+          "word": "fd7bbfa9",
+          "asm": "stp x29, x30, [sp, #-0x10]!",
+          "target": null
+        },
+        {
+          "offset": 3050292,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "target": null
+        },
+        {
+          "offset": 3050296,
+          "word": "212c40f9",
+          "asm": "ldr x1, [x1, #0x58]",
+          "target": null
+        },
+        {
+          "offset": 3050300,
+          "word": "002440f9",
+          "asm": "ldr x0, [x0, #0x48]",
+          "target": null
+        },
+        {
+          "offset": 3050304,
+          "word": "30e0ff97",
+          "asm": "bl #0xffffff8008360c00",
+          "target": "usb_ep_dequeue"
+        },
+        {
+          "offset": 3050308,
+          "word": "fd7bc1a8",
+          "asm": "ldp x29, x30, [sp], #0x10",
+          "target": null
+        },
+        {
+          "offset": 3050312,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "target": null
+        },
+        {
+          "offset": 3050316,
+          "word": "1f2003d5",
+          "asm": "nop ",
+          "target": null
+        }
+      ],
+      "boundary": "next original kernel symbol; not ELF function size"
+    },
+    {
+      "name": "gcw_dequeue",
+      "start": "0x2ecd90",
+      "bytes": 32,
+      "sha256": "06d0035ef91cbc90e0030f727bdadca9e5242da50208f8a27215acade4952f00",
+      "instructions": [
+        {
+          "offset": 3067280,
+          "word": "a21d00b0",
+          "asm": "adrp x2, #0xffffff8008721000",
+          "target": null
+        },
+        {
+          "offset": 3067284,
+          "word": "fd7bbfa9",
+          "asm": "stp x29, x30, [sp, #-0x10]!",
+          "target": null
+        },
+        {
+          "offset": 3067288,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "target": null
+        },
+        {
+          "offset": 3067292,
+          "word": "42d046f9",
+          "asm": "ldr x2, [x2, #0xda0]",
+          "target": null
+        },
+        {
+          "offset": 3067296,
+          "word": "40003fd6",
+          "asm": "blr x2",
+          "target": null
+        },
+        {
+          "offset": 3067300,
+          "word": "fd7bc1a8",
+          "asm": "ldp x29, x30, [sp], #0x10",
+          "target": null
+        },
+        {
+          "offset": 3067304,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "target": null
+        },
+        {
+          "offset": 3067308,
+          "word": "1f2003d5",
+          "asm": "nop ",
+          "target": null
+        }
+      ],
+      "boundary": "next original kernel symbol; not ELF function size"
+    },
+    {
+      "name": "dwc3_gadget_ep_dequeue",
+      "start": "0x2d95f8",
+      "bytes": 360,
+      "sha256": "6a506e9ba235ac082bae95082326f558fead0f2831c6627ad5b9af7c7100597b",
+      "instructions": [
+        {
+          "offset": 2987512,
+          "word": "fd7bbba9",
+          "asm": "stp x29, x30, [sp, #-0x50]!",
+          "target": null
+        },
+        {
+          "offset": 2987516,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "target": null
+        },
+        {
+          "offset": 2987520,
+          "word": "f55b02a9",
+          "asm": "stp x21, x22, [sp, #0x20]",
+          "target": null
+        },
+        {
+          "offset": 2987524,
+          "word": "f50300aa",
+          "asm": "mov x21, x0",
+          "target": null
+        },
+        {
+          "offset": 2987528,
+          "word": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "target": null
+        },
+        {
+          "offset": 2987532,
+          "word": "f40301aa",
+          "asm": "mov x20, x1",
+          "target": null
+        },
+        {
+          "offset": 2987536,
+          "word": "f76303a9",
+          "asm": "stp x23, x24, [sp, #0x30]",
+          "target": null
+        },
+        {
+          "offset": 2987540,
+          "word": "f92300f9",
+          "asm": "str x25, [sp, #0x40]",
+          "target": null
+        },
+        {
+          "offset": 2987544,
+          "word": "184c40f9",
+          "asm": "ldr x24, [x0, #0x98]",
+          "target": null
+        },
+        {
+          "offset": 2987548,
+          "word": "16630491",
+          "asm": "add x22, x24, #0x118",
+          "target": null
+        },
+        {
+          "offset": 2987552,
+          "word": "e00316aa",
+          "asm": "mov x0, x22",
+          "target": null
+        },
+        {
+          "offset": 2987556,
+          "word": "f1290594",
+          "asm": "bl #0xffffff80084a3de8",
+          "target": "_raw_spin_lock_irqsave"
+        },
+        {
+          "offset": 2987560,
+          "word": "f70300aa",
+          "asm": "mov x23, x0",
+          "target": null
+        },
+        {
+          "offset": 2987564,
+          "word": "a02e40f9",
+          "asm": "ldr x0, [x21, #0x58]",
+          "target": null
+        },
+        {
+          "offset": 2987568,
+          "word": "006001d1",
+          "asm": "sub x0, x0, #0x58",
+          "target": null
+        },
+        {
+          "offset": 2987572,
+          "word": "bf0200eb",
+          "asm": "cmp x21, x0",
+          "target": null
+        },
+        {
+          "offset": 2987576,
+          "word": "c1000054",
+          "asm": "b.ne #0xffffff8008359650",
+          "target": null
+        },
+        {
+          "offset": 2987580,
+          "word": "1c000014",
+          "asm": "b #0xffffff80083596ac",
+          "target": null
+        },
+        {
+          "offset": 2987584,
+          "word": "002c40f9",
+          "asm": "ldr x0, [x0, #0x58]",
+          "target": null
+        },
+        {
+          "offset": 2987588,
+          "word": "006001d1",
+          "asm": "sub x0, x0, #0x58",
+          "target": null
+        },
+        {
+          "offset": 2987592,
+          "word": "bf0200eb",
+          "asm": "cmp x21, x0",
+          "target": null
+        },
+        {
+          "offset": 2987596,
+          "word": "e0020054",
+          "asm": "b.eq #0xffffff80083596a8",
+          "target": null
+        },
+        {
+          "offset": 2987600,
+          "word": "9f0200eb",
+          "asm": "cmp x20, x0",
+          "target": null
+        },
+        {
+          "offset": 2987604,
+          "word": "61ffff54",
+          "asm": "b.ne #0xffffff8008359640",
+          "target": null
+        },
+        {
+          "offset": 2987608,
+          "word": "a3b640b9",
+          "asm": "ldr w3, [x21, #0xb4]",
+          "target": null
+        },
+        {
+          "offset": 2987612,
+          "word": "e10314aa",
+          "asm": "mov x1, x20",
+          "target": null
+        },
+        {
+          "offset": 2987616,
+          "word": "e00315aa",
+          "asm": "mov x0, x21",
+          "target": null
+        },
+        {
+          "offset": 2987620,
+          "word": "e20c8012",
+          "asm": "mov w2, #-0x68",
+          "target": null
+        },
+        {
+          "offset": 2987624,
+          "word": "63040051",
+          "asm": "sub w3, w3, #1",
+          "target": null
+        },
+        {
+          "offset": 2987628,
+          "word": "19008052",
+          "asm": "mov w25, #0",
+          "target": null
+        },
+        {
+          "offset": 2987632,
+          "word": "a3b600b9",
+          "asm": "str w3, [x21, #0xb4]",
+          "target": null
+        },
+        {
+          "offset": 2987636,
+          "word": "b3fbff97",
+          "asm": "bl #0xffffff8008358540",
+          "target": "dwc3_gadget_giveback"
+        },
+        {
+          "offset": 2987640,
+          "word": "9f3e03d5",
+          "asm": "dsb st",
+          "target": null
+        },
+        {
+          "offset": 2987644,
+          "word": "e10317aa",
+          "asm": "mov x1, x23",
+          "target": null
+        },
+        {
+          "offset": 2987648,
+          "word": "e00316aa",
+          "asm": "mov x0, x22",
+          "target": null
+        },
+        {
+          "offset": 2987652,
+          "word": "852a0594",
+          "asm": "bl #0xffffff80084a4098",
+          "target": "_raw_spin_unlock_irqrestore"
+        },
+        {
+          "offset": 2987656,
+          "word": "e003192a",
+          "asm": "mov w0, w25",
+          "target": null
+        },
+        {
+          "offset": 2987660,
+          "word": "f92340f9",
+          "asm": "ldr x25, [sp, #0x40]",
+          "target": null
+        },
+        {
+          "offset": 2987664,
+          "word": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "target": null
+        },
+        {
+          "offset": 2987668,
+          "word": "f55b42a9",
+          "asm": "ldp x21, x22, [sp, #0x20]",
+          "target": null
+        },
+        {
+          "offset": 2987672,
+          "word": "f76343a9",
+          "asm": "ldp x23, x24, [sp, #0x30]",
+          "target": null
+        },
+        {
+          "offset": 2987676,
+          "word": "fd7bc5a8",
+          "asm": "ldp x29, x30, [sp], #0x50",
+          "target": null
+        },
+        {
+          "offset": 2987680,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "target": null
+        },
+        {
+          "offset": 2987684,
+          "word": "1f2003d5",
+          "asm": "nop ",
+          "target": null
+        },
+        {
+          "offset": 2987688,
+          "word": "e00315aa",
+          "asm": "mov x0, x21",
+          "target": null
+        },
+        {
+          "offset": 2987692,
+          "word": "9f0200eb",
+          "asm": "cmp x20, x0",
+          "target": null
+        },
+        {
+          "offset": 2987696,
+          "word": "40fdff54",
+          "asm": "b.eq #0xffffff8008359658",
+          "target": null
+        },
+        {
+          "offset": 2987700,
+          "word": "e00315aa",
+          "asm": "mov x0, x21",
+          "target": null
+        },
+        {
+          "offset": 2987704,
+          "word": "138c46f8",
+          "asm": "ldr x19, [x0, #0x68]!",
+          "target": null
+        },
+        {
+          "offset": 2987708,
+          "word": "1f0013eb",
+          "asm": "cmp x0, x19",
+          "target": null
+        },
+        {
+          "offset": 2987712,
+          "word": "736201d1",
+          "asm": "sub x19, x19, #0x58",
+          "target": null
+        },
+        {
+          "offset": 2987716,
+          "word": "60010054",
+          "asm": "b.eq #0xffffff80083596f0",
+          "target": null
+        },
+        {
+          "offset": 2987720,
+          "word": "9f0213eb",
+          "asm": "cmp x20, x19",
+          "target": null
+        },
+        {
+          "offset": 2987724,
+          "word": "a1000054",
+          "asm": "b.ne #0xffffff80083596e0",
+          "target": null
+        },
+        {
+          "offset": 2987728,
+          "word": "0b000014",
+          "asm": "b #0xffffff80083596fc",
+          "target": null
+        },
+        {
+          "offset": 2987732,
+          "word": "1f2003d5",
+          "asm": "nop ",
+          "target": null
+        },
+        {
+          "offset": 2987736,
+          "word": "9f0213eb",
+          "asm": "cmp x20, x19",
+          "target": null
+        },
+        {
+          "offset": 2987740,
+          "word": "e0030054",
+          "asm": "b.eq #0xffffff8008359758",
+          "target": null
+        },
+        {
+          "offset": 2987744,
+          "word": "732e40f9",
+          "asm": "ldr x19, [x19, #0x58]",
+          "target": null
+        },
+        {
+          "offset": 2987748,
+          "word": "1f0013eb",
+          "asm": "cmp x0, x19",
+          "target": null
+        },
+        {
+          "offset": 2987752,
+          "word": "736201d1",
+          "asm": "sub x19, x19, #0x58",
+          "target": null
+        },
+        {
+          "offset": 2987756,
+          "word": "61ffff54",
+          "asm": "b.ne #0xffffff80083596d8",
+          "target": null
+        },
+        {
+          "offset": 2987760,
+          "word": "9f0213eb",
+          "asm": "cmp x20, x19",
+          "target": null
+        },
+        {
+          "offset": 2987764,
+          "word": "b9028012",
+          "asm": "mov w25, #-0x16",
+          "target": null
+        },
+        {
+          "offset": 2987768,
+          "word": "01fcff54",
+          "asm": "b.ne #0xffffff8008359678",
+          "target": null
+        },
+        {
+          "offset": 2987772,
+          "word": "a1aa4239",
+          "asm": "ldrb w1, [x21, #0xaa]",
+          "target": null
+        },
+        {
+          "offset": 2987776,
+          "word": "e00318aa",
+          "asm": "mov x0, x24",
+          "target": null
+        },
+        {
+          "offset": 2987780,
+          "word": "49feff97",
+          "asm": "bl #0xffffff8008359028",
+          "target": "dwc3_stop_active_transfer.constprop.16"
+        },
+        {
+          "offset": 2987784,
+          "word": "604640f9",
+          "asm": "ldr x0, [x19, #0x88]",
+          "target": null
+        },
+        {
+          "offset": 2987788,
+          "word": "000200b4",
+          "asm": "cbz x0, #0xffffff800835974c",
+          "target": null
+        },
+        {
+          "offset": 2987792,
+          "word": "82724239",
+          "asm": "ldrb w2, [x20, #0x9c]",
+          "target": null
+        },
+        {
+          "offset": 2987796,
+          "word": "80620191",
+          "asm": "add x0, x20, #0x58",
+          "target": null
+        },
+        {
+          "offset": 2987800,
+          "word": "813640f9",
+          "asm": "ldr x1, [x20, #0x68]",
+          "target": null
+        },
+        {
+          "offset": 2987804,
+          "word": "42781c12",
+          "asm": "and w2, w2, #0xfffffff7",
+          "target": null
+        },
+        {
+          "offset": 2987808,
+          "word": "82720239",
+          "asm": "strb w2, [x20, #0x9c]",
+          "target": null
+        },
+        {
+          "offset": 2987812,
+          "word": "21200191",
+          "asm": "add x1, x1, #0x48",
+          "target": null
+        },
+        {
+          "offset": 2987816,
+          "word": "838a45a9",
+          "asm": "ldp x3, x2, [x20, #0x58]",
+          "target": null
+        },
+        {
+          "offset": 2987820,
+          "word": "620400f9",
+          "asm": "str x2, [x3, #8]",
+          "target": null
+        },
+        {
+          "offset": 2987824,
+          "word": "430000f9",
+          "asm": "str x3, [x2]",
+          "target": null
+        },
+        {
+          "offset": 2987828,
+          "word": "220440f9",
+          "asm": "ldr x2, [x1, #8]",
+          "target": null
+        },
+        {
+          "offset": 2987832,
+          "word": "200400f9",
+          "asm": "str x0, [x1, #8]",
+          "target": null
+        },
+        {
+          "offset": 2987836,
+          "word": "818a05a9",
+          "asm": "stp x1, x2, [x20, #0x58]",
+          "target": null
+        },
+        {
+          "offset": 2987840,
+          "word": "400000f9",
+          "asm": "str x0, [x2]",
+          "target": null
+        },
+        {
+          "offset": 2987844,
+          "word": "a0a640b9",
+          "asm": "ldr w0, [x21, #0xa4]",
+          "target": null
+        },
+        {
+          "offset": 2987848,
+          "word": "80f84736",
+          "asm": "tbz w0, #8, #0xffffff8008359658",
+          "target": null
+        },
+        {
+          "offset": 2987852,
+          "word": "19008052",
+          "asm": "mov w25, #0",
+          "target": null
+        },
+        {
+          "offset": 2987856,
+          "word": "caffff17",
+          "asm": "b #0xffffff8008359678",
+          "target": null
+        },
+        {
+          "offset": 2987860,
+          "word": "1f2003d5",
+          "asm": "nop ",
+          "target": null
+        },
+        {
+          "offset": 2987864,
+          "word": "f30314aa",
+          "asm": "mov x19, x20",
+          "target": null
+        },
+        {
+          "offset": 2987868,
+          "word": "e8ffff17",
+          "asm": "b #0xffffff80083596fc",
+          "target": null
+        }
+      ],
+      "boundary": "next original kernel symbol; not ELF function size"
+    },
+    {
+      "name": "dwc3_stop_active_transfer.constprop.16",
+      "start": "0x2d9028",
+      "bytes": 184,
+      "sha256": "b22662270dbbc0f04f0482a2908e03eba777c4861d1ff1c70cb7ab679f13ae21",
+      "instructions": [
+        {
+          "offset": 2986024,
+          "word": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "target": null
+        },
+        {
+          "offset": 2986028,
+          "word": "014c218b",
+          "asm": "add x1, x0, w1, uxtw #3",
+          "target": null
+        },
+        {
+          "offset": 2986032,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "target": null
+        },
+        {
+          "offset": 2986036,
+          "word": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "target": null
+        },
+        {
+          "offset": 2986040,
+          "word": "33e040f9",
+          "asm": "ldr x19, [x1, #0x1c0]",
+          "target": null
+        },
+        {
+          "offset": 2986044,
+          "word": "61a640b9",
+          "asm": "ldr w1, [x19, #0xa4]",
+          "target": null
+        },
+        {
+          "offset": 2986048,
+          "word": "a1033837",
+          "asm": "tbnz w1, #7, #0xffffff80083590b4",
+          "target": null
+        },
+        {
+          "offset": 2986052,
+          "word": "61b24239",
+          "asm": "ldrb w1, [x19, #0xac]",
+          "target": null
+        },
+        {
+          "offset": 2986056,
+          "word": "61030034",
+          "asm": "cbz w1, #0xffffff80083590b4",
+          "target": null
+        },
+        {
+          "offset": 2986060,
+          "word": "03218152",
+          "asm": "mov w3, #0x908",
+          "target": null
+        },
+        {
+          "offset": 2986064,
+          "word": "f40300aa",
+          "asm": "mov x20, x0",
+          "target": null
+        },
+        {
+          "offset": 2986068,
+          "word": "a2830091",
+          "asm": "add x2, x29, #0x20",
+          "target": null
+        },
+        {
+          "offset": 2986072,
+          "word": "e00313aa",
+          "asm": "mov x0, x19",
+          "target": null
+        },
+        {
+          "offset": 2986076,
+          "word": "6140012a",
+          "asm": "orr w1, w3, w1, lsl #16",
+          "target": null
+        },
+        {
+          "offset": 2986080,
+          "word": "bf1300f9",
+          "asm": "str xzr, [x29, #0x20]",
+          "target": null
+        },
+        {
+          "offset": 2986084,
+          "word": "bf2b00b9",
+          "asm": "str wzr, [x29, #0x28]",
+          "target": null
+        },
+        {
+          "offset": 2986088,
+          "word": "64fdff97",
+          "asm": "bl #0xffffff80083585f8",
+          "target": "dwc3_send_gadget_ep_cmd"
+        },
+        {
+          "offset": 2986092,
+          "word": "a0020035",
+          "asm": "cbnz w0, #0xffffff80083590c0",
+          "target": null
+        },
+        {
+          "offset": 2986096,
+          "word": "60a640b9",
+          "asm": "ldr w0, [x19, #0xa4]",
+          "target": null
+        },
+        {
+          "offset": 2986100,
+          "word": "c3de9952",
+          "asm": "mov w3, #0xcef6",
+          "target": null
+        },
+        {
+          "offset": 2986104,
+          "word": "7fb20239",
+          "asm": "strb wzr, [x19, #0xac]",
+          "target": null
+        },
+        {
+          "offset": 2986108,
+          "word": "8359b572",
+          "asm": "movk w3, #0xaacc, lsl #16",
+          "target": null
+        },
+        {
+          "offset": 2986112,
+          "word": "00781b12",
+          "asm": "and w0, w0, #0xffffffef",
+          "target": null
+        },
+        {
+          "offset": 2986116,
+          "word": "a2de9952",
+          "asm": "mov w2, #0xcef5",
+          "target": null
+        },
+        {
+          "offset": 2986120,
+          "word": "60a600b9",
+          "asm": "str w0, [x19, #0xa4]",
+          "target": null
+        },
+        {
+          "offset": 2986124,
+          "word": "8259a572",
+          "asm": "movk w2, #0x2acc, lsl #16",
+          "target": null
+        },
+        {
+          "offset": 2986128,
+          "word": "81e646b9",
+          "asm": "ldr w1, [x20, #0x6e4]",
+          "target": null
+        },
+        {
+          "offset": 2986132,
+          "word": "2100030b",
+          "asm": "add w1, w1, w3",
+          "target": null
+        },
+        {
+          "offset": 2986136,
+          "word": "3f00026b",
+          "asm": "cmp w1, w2",
+          "target": null
+        },
+        {
+          "offset": 2986140,
+          "word": "c9000054",
+          "asm": "b.ls #0xffffff80083590b4",
+          "target": null
+        },
+        {
+          "offset": 2986144,
+          "word": "01001932",
+          "asm": "orr w1, w0, #0x80",
+          "target": null
+        },
+        {
+          "offset": 2986148,
+          "word": "80b791d2",
+          "asm": "mov x0, #0x8dbc",
+          "target": null
+        },
+        {
+          "offset": 2986152,
+          "word": "c000a0f2",
+          "asm": "movk x0, #6, lsl #16",
+          "target": null
+        },
+        {
+          "offset": 2986156,
+          "word": "61a600b9",
+          "asm": "str w1, [x19, #0xa4]",
+          "target": null
+        },
+        {
+          "offset": 2986160,
+          "word": "b65afc97",
+          "asm": "bl #0xffffff800826fb88",
+          "target": "__const_udelay"
+        },
+        {
+          "offset": 2986164,
+          "word": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "target": null
+        },
+        {
+          "offset": 2986168,
+          "word": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "target": null
+        },
+        {
+          "offset": 2986172,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "target": null
+        },
+        {
+          "offset": 2986176,
+          "word": "801b00d0",
+          "asm": "adrp x0, #0xffffff80086cb000",
+          "target": null
+        },
+        {
+          "offset": 2986180,
+          "word": "00880a91",
+          "asm": "add x0, x0, #0x2a2",
+          "target": null
+        },
+        {
+          "offset": 2986184,
+          "word": "010c4039",
+          "asm": "ldrb w1, [x0, #3]",
+          "target": null
+        },
+        {
+          "offset": 2986188,
+          "word": "21fdff35",
+          "asm": "cbnz w1, #0xffffff8008359070",
+          "target": null
+        },
+        {
+          "offset": 2986192,
+          "word": "21008052",
+          "asm": "mov w1, #1",
+          "target": null
+        },
+        {
+          "offset": 2986196,
+          "word": "010c0039",
+          "asm": "strb w1, [x0, #3]",
+          "target": null
+        },
+        {
+          "offset": 2986200,
+          "word": "000021d4",
+          "asm": "brk #0x800",
+          "target": null
+        },
+        {
+          "offset": 2986204,
+          "word": "e5ffff17",
+          "asm": "b #0xffffff8008359070",
+          "target": null
+        }
+      ],
+      "boundary": "next original kernel symbol; not ELF function size"
+    },
+    {
+      "name": "dwc3_gadget_giveback",
+      "start": "0x2d8540",
+      "bytes": 80,
+      "sha256": "277310e1c3082f4ac5d554b6d37da0a692beb15a60251dc5f5a11d34b3b4eb5c",
+      "instructions": [
+        {
+          "offset": 2983232,
+          "word": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "target": null
+        },
+        {
+          "offset": 2983236,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "target": null
+        },
+        {
+          "offset": 2983240,
+          "word": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "target": null
+        },
+        {
+          "offset": 2983244,
+          "word": "f40300aa",
+          "asm": "mov x20, x0",
+          "target": null
+        },
+        {
+          "offset": 2983248,
+          "word": "f51300f9",
+          "asm": "str x21, [sp, #0x20]",
+          "target": null
+        },
+        {
+          "offset": 2983252,
+          "word": "f50301aa",
+          "asm": "mov x21, x1",
+          "target": null
+        },
+        {
+          "offset": 2983256,
+          "word": "134c40f9",
+          "asm": "ldr x19, [x0, #0x98]",
+          "target": null
+        },
+        {
+          "offset": 2983260,
+          "word": "cdffff97",
+          "asm": "bl #0xffffff8008358490",
+          "target": "dwc3_gadget_del_and_unmap_request"
+        },
+        {
+          "offset": 2983264,
+          "word": "73620491",
+          "asm": "add x19, x19, #0x118",
+          "target": null
+        },
+        {
+          "offset": 2983268,
+          "word": "e00313aa",
+          "asm": "mov x0, x19",
+          "target": null
+        },
+        {
+          "offset": 2983272,
+          "word": "ba2e0594",
+          "asm": "bl #0xffffff80084a4050",
+          "target": "_raw_spin_unlock"
+        },
+        {
+          "offset": 2983276,
+          "word": "e10315aa",
+          "asm": "mov x1, x21",
+          "target": null
+        },
+        {
+          "offset": 2983280,
+          "word": "e00314aa",
+          "asm": "mov x0, x20",
+          "target": null
+        },
+        {
+          "offset": 2983284,
+          "word": "85220094",
+          "asm": "bl #0xffffff8008360f88",
+          "target": "usb_gadget_giveback_request"
+        },
+        {
+          "offset": 2983288,
+          "word": "e00313aa",
+          "asm": "mov x0, x19",
+          "target": null
+        },
+        {
+          "offset": 2983292,
+          "word": "f72d0594",
+          "asm": "bl #0xffffff80084a3d58",
+          "target": "__lock_text_start"
+        },
+        {
+          "offset": 2983296,
+          "word": "f51340f9",
+          "asm": "ldr x21, [sp, #0x20]",
+          "target": null
+        },
+        {
+          "offset": 2983300,
+          "word": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "target": null
+        },
+        {
+          "offset": 2983304,
+          "word": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "target": null
+        },
+        {
+          "offset": 2983308,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "target": null
+        }
+      ],
+      "boundary": "next original kernel symbol; not ELF function size"
+    },
+    {
+      "name": "usb_gadget_giveback_request",
+      "start": "0x2e0f88",
+      "bytes": 24,
+      "sha256": "03e46fb9554ba47cf19d745670421b92691d22fb750013b3c2c50380b811e168",
+      "instructions": [
+        {
+          "offset": 3018632,
+          "word": "fd7bbfa9",
+          "asm": "stp x29, x30, [sp, #-0x10]!",
+          "target": null
+        },
+        {
+          "offset": 3018636,
+          "word": "fd030091",
+          "asm": "mov x29, sp",
+          "target": null
+        },
+        {
+          "offset": 3018640,
+          "word": "221840f9",
+          "asm": "ldr x2, [x1, #0x30]",
+          "target": null
+        },
+        {
+          "offset": 3018644,
+          "word": "40003fd6",
+          "asm": "blr x2",
+          "target": null
+        },
+        {
+          "offset": 3018648,
+          "word": "fd7bc1a8",
+          "asm": "ldp x29, x30, [sp], #0x10",
+          "target": null
+        },
+        {
+          "offset": 3018652,
+          "word": "c0035fd6",
+          "asm": "ret ",
+          "target": null
+        }
+      ],
+      "boundary": "next original kernel symbol; not ELF function size"
+    }
+  ],
+  "findings": [
+    "core_stop sets interrupt bit2 and wakes; receive waits on completion bit1. A wake notification alone does not satisfy that condition.",
+    "cleanup calls usb_ep_dequeue conditionally on USING, and its return code is not checked before continuing.",
+    "The receive-completion callback sets bit1 and wakes. On this completed/interrupted path, common receive maps kernel count-4 to internal-15, reaching Serialize cancellation handling.",
+    "The saved DWC3 dequeue contains direct giveback branches and a local success-return branch0x2d974c without a direct giveback call on that branch. Runtime request state, indirect binding and interrupt progress are unmeasured; this is not a claim the device hangs or violates an API contract.",
+    "These internal notifications are not a host-readable record proving NIN cancel/join success. Normal initial-MSC supervision and standalone service WorkerThreadManager are distinct paths."
+  ],
+  "Linux49_reference_must_not_be_replaced_with_modern_dequeue_semantics": true,
+  "live_callback_or_complete_thread_exit_proven": false,
+  "original_instructions_executed": false,
+  "new_live_operations": 0
+}

@@ -1,0 +1,38 @@
+0xfe040800: 01000014 b #0xfe040804
+0xfe040804: fe77bfa9 stp x30, x29, [sp, #-0x10]!
+0xfe040808: fc6fbfa9 stp x28, x27, [sp, #-0x10]!
+0xfe04080c: fa67bfa9 stp x26, x25, [sp, #-0x10]!
+0xfe040810: f85fbfa9 stp x24, x23, [sp, #-0x10]!
+0xfe040814: f657bfa9 stp x22, x21, [sp, #-0x10]!
+0xfe040818: f44fbfa9 stp x20, x19, [sp, #-0x10]!
+0xfe04081c: f247bfa9 stp x18, x17, [sp, #-0x10]!
+0xfe040820: f03fbfa9 stp x16, x15, [sp, #-0x10]!
+0xfe040824: ee37bfa9 stp x14, x13, [sp, #-0x10]!
+0xfe040828: ec2fbfa9 stp x12, x11, [sp, #-0x10]!
+0xfe04082c: ea27bfa9 stp x10, x9, [sp, #-0x10]!
+0xfe040830: e81fbfa9 stp x8, x7, [sp, #-0x10]!
+0xfe040834: e617bfa9 stp x6, x5, [sp, #-0x10]!
+0xfe040838: e40fbfa9 stp x4, x3, [sp, #-0x10]!
+0xfe04083c: e207bfa9 stp x2, x1, [sp, #-0x10]!
+0xfe040840: 9f3f03d5 dsb sy
+0xfe040844: 1f7108d5 ic ialluis
+0xfe040848: 9f3f03d5 dsb sy
+0xfe04084c: df3f03d5 isb 
+0xfe040850: 45020058 ldr x5, #0xfe040898
+0xfe040854: a0003fd6 blr x5
+0xfe040858: e207c1a8 ldp x2, x1, [sp], #0x10
+0xfe04085c: e40fc1a8 ldp x4, x3, [sp], #0x10
+0xfe040860: e617c1a8 ldp x6, x5, [sp], #0x10
+0xfe040864: e81fc1a8 ldp x8, x7, [sp], #0x10
+0xfe040868: ea27c1a8 ldp x10, x9, [sp], #0x10
+0xfe04086c: ec2fc1a8 ldp x12, x11, [sp], #0x10
+0xfe040870: ee37c1a8 ldp x14, x13, [sp], #0x10
+0xfe040874: f03fc1a8 ldp x16, x15, [sp], #0x10
+0xfe040878: f247c1a8 ldp x18, x17, [sp], #0x10
+0xfe04087c: f44fc1a8 ldp x20, x19, [sp], #0x10
+0xfe040880: f657c1a8 ldp x22, x21, [sp], #0x10
+0xfe040884: f85fc1a8 ldp x24, x23, [sp], #0x10
+0xfe040888: fa67c1a8 ldp x26, x25, [sp], #0x10
+0xfe04088c: fc6fc1a8 ldp x28, x27, [sp], #0x10
+0xfe040890: fe77c1a8 ldp x30, x29, [sp], #0x10
+0xfe040894: c0035fd6 ret 

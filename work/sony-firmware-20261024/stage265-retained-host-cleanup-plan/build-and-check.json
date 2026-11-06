@@ -1,0 +1,60 @@
+{
+  "status": "HOST_ONLY_FIXED_CLEANUP_BUILT_OWN_CHILD_CHECKED",
+  "builds": {
+    "own_child": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/bound_signal.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/test_own_child.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/artifacts/own-child-test-final"
+      ],
+      "compile_return": 0,
+      "compile_stderr": "",
+      "sha256": "101c3521aab9b121f51d87c2f892ea6c6a47ba9797884ec3255d391c6ea9697c",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/artifacts/own-child-test-final:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n",
+      "run_uid": 501,
+      "run_return": 0,
+      "stdout": "{\"wrong_token_api_return\":3,\"errno\":3,\"child_observation\":0}\n{\"wrong_version_denied\":true,\"own_child_only_signal\":9,\"child_exit_confirmed\":true,\"root_or_USB\":false}\n",
+      "stderr": ""
+    },
+    "cleanup": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/bound_signal.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/cleanup.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/artifacts/fixed-host-cleanup"
+      ],
+      "compile_return": 0,
+      "compile_stderr": "",
+      "sha256": "89dc2a57132d474fc178c271c8e11feda5aa7bd32dac83dd70301bd6843e02eb",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage265-retained-host-cleanup-plan/artifacts/fixed-host-cleanup:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n",
+      "run_uid": 501,
+      "run_return": 77,
+      "stdout": "",
+      "stderr": "FX3_HOST_CLEANUP_DENIED:root_required\n"
+    }
+  },
+  "signals_to_original_helper_or_observer": 0,
+  "new_root_or_USB_operations": 0,
+  "production_root_execution": false
+}

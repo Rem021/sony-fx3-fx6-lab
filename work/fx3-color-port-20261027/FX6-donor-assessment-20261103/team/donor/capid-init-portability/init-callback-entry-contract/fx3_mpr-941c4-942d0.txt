@@ -1,0 +1,73 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000940f4 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi>:
+   941c4: f0001340     	adrp	x0, 0x2ff000
+   941c8: 39434401     	ldrb	w1, [x0, #0xd1]
+   941cc: 34000801     	cbz	w1, 0x942cc <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0x1d8>
+   941d0: a9b77bfd     	stp	x29, x30, [sp, #-0x90]!
+   941d4: 910003fd     	mov	x29, sp
+   941d8: a90363f7     	stp	x23, x24, [sp, #0x30]
+   941dc: d0001337     	adrp	x23, 0x2fa000
+   941e0: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   941e4: b0001338     	adrp	x24, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   941e8: d0001336     	adrp	x22, 0x2fa000
+   941ec: a9046bf9     	stp	x25, x26, [sp, #0x40]
+   941f0: f9439af7     	ldr	x23, [x23, #0x730]
+   941f4: 900016d9     	adrp	x25, 0x36c000
+   941f8: f947af18     	ldr	x24, [x24, #0xf58]
+   941fc: 912d233a     	add	x26, x25, #0xb48
+   94200: f94642d6     	ldr	x22, [x22, #0xc80]
+   94204: a90153f3     	stp	x19, x20, [sp, #0x10]
+   94208: d2800014     	mov	x20, #0x0               // =0
+   9420c: 3903441f     	strb	wzr, [x0, #0xd1]
+   94210: d2800013     	mov	x19, #0x0               // =0
+   94214: f9002bfb     	str	x27, [sp, #0x50]
+   94218: d37ef675     	lsl	x21, x19, #2
+   9421c: 912d2320     	add	x0, x25, #0xb48
+   94220: d2800001     	mov	x1, #0x0                // =0
+   94224: 9101a3bb     	add	x27, x29, #0x68
+   94228: b8206ab3     	str	w19, [x21, x0]
+   9422c: 8b1402c0     	add	x0, x22, x20
+   94230: 97ffa754     	bl	0x7df80 <pthread_mutex_init@plt>
+   94234: 8b1402e0     	add	x0, x23, x20
+   94238: d2800001     	mov	x1, #0x0                // =0
+   9423c: 97ffa301     	bl	0x7ce40 <pthread_cond_init@plt>
+   94240: b8386abf     	str	wzr, [x21, x24]
+   94244: f100127f     	cmp	x19, #0x4
+   94248: 52800f00     	mov	w0, #0x78               // =120
+   9424c: aa1b03e1     	mov	x1, x27
+   94250: 54000040     	b.eq	0x94258 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0x164>
+   94254: 52800ee0     	mov	w0, #0x77               // =119
+   94258: 97ffb53a     	bl	0x81740 <_ZN3mpr10ThreadInfo13GetThreadInfoEiR18__osal_thread_info@plt>
+   9425c: 8b150355     	add	x21, x26, x21
+   94260: b0001320     	adrp	x0, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   94264: 910183a1     	add	x1, x29, #0x60
+   94268: 91000673     	add	x19, x19, #0x1
+   9426c: f9421c00     	ldr	x0, [x0, #0x438]
+   94270: a907d7a0     	stp	x0, x21, [x29, #0x78]
+   94274: aa1b03e0     	mov	x0, x27
+   94278: 97ffa11a     	bl	0x7c6e0 <osal_create_waitable_thread@plt>
+   9427c: d0001320     	adrp	x0, 0x2fa000
+   94280: d2800001     	mov	x1, #0x0                // =0
+   94284: f9422000     	ldr	x0, [x0, #0x440]
+   94288: 8b140000     	add	x0, x0, x20
+   9428c: 97ffa73d     	bl	0x7df80 <pthread_mutex_init@plt>
+   94290: b0001320     	adrp	x0, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   94294: d2800001     	mov	x1, #0x0                // =0
+   94298: f946b000     	ldr	x0, [x0, #0xd60]
+   9429c: 8b140000     	add	x0, x0, x20
+   942a0: 9100c294     	add	x20, x20, #0x30
+   942a4: 97ffa737     	bl	0x7df80 <pthread_mutex_init@plt>
+   942a8: f100167f     	cmp	x19, #0x5
+   942ac: 54fffb61     	b.ne	0x94218 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0x124>
+   942b0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   942b4: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   942b8: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   942bc: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+   942c0: f9402bfb     	ldr	x27, [sp, #0x50]
+   942c4: a8c97bfd     	ldp	x29, x30, [sp], #0x90
+   942c8: d65f03c0     	ret
+   942cc: d65f03c0     	ret

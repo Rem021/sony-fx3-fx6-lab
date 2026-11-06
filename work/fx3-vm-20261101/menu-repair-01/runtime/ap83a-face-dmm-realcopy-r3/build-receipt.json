@@ -1,0 +1,19 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap83a-face-dmm-realcopy/candidate83a.json",
+  "base_sha256": "54482f5f7173b3366793e6fe7e9553e127225d2c7caee32db16fade959aece08",
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap83a-face-dmm-realcopy-r3/guest.cpio",
+    "sha256": "b35045352b9deb80e89fa56d7f6f2d57b32acaae61cb185580fe9339a82afa6c"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap83a-face-dmm-realcopy-r3/guest.dtb",
+    "sha256": "c771792dbb65273bb1ab992f948b36e7202ce6d453a22a3d9b45af4405e7a94d"
+  },
+  "helper_sha256": {
+    "fx3-capid-v40.so": "24aef5aff37ffd792ed4256437e9d65d93b8479d84c06d5cd26beea1d8457de0",
+    "fx3-ui-gate-v11.so": "54eeed923a6412cd2c6743f6e8c968d1ede71b92aa79aca4575868ebccc4a9ec",
+    "fx3-gpe-observe-v13-trace-v1.so": "5aa907051c15fd67911a47bb51ff13e30be643ecfc36ffbf3d85aa307cfacb44"
+  },
+  "changes": "AP82 second pin topology9ab2518 UUD reset: capidv37 graph28pins/9owners/14edges with original22 indices+states retained, emptyqueues/noimagebuffers/noDMA/no sensor frames; exact new90050004 GET outerSID and current native replyqueue,9 extra packets. Gatev11 passive original Backup compare/write,desired144,mode input,face procedure return and graph v2 QMP. SKD guard and enum2 inherited unchanged. GPE v13 trace variant adds raw marker only, original unsupported blend/conversion behavior unchanged; logical PNG only; no Backup/parameter prewrites or synthetic tokens/input. AP83a independently reserved face-registration DMM1d9/1da/1db in41dd00000/90000, capidv38, native localDMM/full handles captured from original freed replies; ICDT actual local-to-remote byte copy/equality, no muted substitution, no recognition engine; AP82 pin/gate/GPEv13trace unchanged. AP83a-r3 v40 precise native24B allocate-only and40B local8024 capture, short-reply zero-extension is observer scratch only; original bytes/free unchanged; reused retired pin/panel pointers gated by exact owned message size. Actual ICDT byte copy inherited. Native allocate-only20 geometry explicitly ignored because original kernel leaves segment fields uninitialized; unit/handle captured,8024 updates geometry by fullhandle only; original raw native bytes never modified.",
+  "backup_seed_or_reserved_source_modified": false
+}

@@ -1,0 +1,108 @@
+{
+  "created_utc": "2026-10-30T11:14:51.297224+00:00",
+  "stage": "CP-escape-config-20261030",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "CPIR-inventory.json",
+      "bytes": 181595,
+      "sha256": "55948ffb2594f4ff1fdf0b7868dfd3164ae94432e4b5bd6a3ac4d1a04c635655"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6608,
+      "sha256": "f4cfc9614581a1ae243447a142e26d2034a94c04e29ddbccdcd0444d01bf7e12"
+    },
+    {
+      "path": "analyze_escape.py",
+      "bytes": 13344,
+      "sha256": "79392548e281f4869d4282661940f931f37b6af22258952eb66d5e6154195bfe"
+    },
+    {
+      "path": "attempts/analyze_escape-before-fragment-boundary-review.py",
+      "bytes": 11897,
+      "sha256": "8603c294998ab91ca9cf6c097818b901cfe41b5ab0c5a282d9028df5d01e708f"
+    },
+    {
+      "path": "attempts/initial-fragment-result.json",
+      "bytes": 856,
+      "sha256": "5c2a2579bd5c9067f98f085979dbc1cfbd6737c916fbd22590f0344a447bcd5b"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 923,
+      "sha256": "c8a2f439c4cc51527dd893866d33eaba59457e55a1df535e674656299c88c791"
+    },
+    {
+      "path": "escape-source-proof.json",
+      "bytes": 19511,
+      "sha256": "74ce69700121a3e95d8b12ea64bcbc24cf5919343d14d2c7a6e48431d13fbdda"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 291,
+      "sha256": "fe271e28861da645630ee74bd61d12c1a3f62d7c7b568948a7fcac77786e2c68"
+    },
+    {
+      "path": "listings/original-CP-CPIR-header-check.txt",
+      "bytes": 1531,
+      "sha256": "ded9dae59acf15cae0254a49e5b68a6f8af8d5a2627c9d64484b71b72afdabb7"
+    },
+    {
+      "path": "listings/original-CP-CPIR-record-walk.txt",
+      "bytes": 2807,
+      "sha256": "51df1d063b4194b90fa0815f359a9d4ddb8209d5339f32521a282ca214ec6893"
+    },
+    {
+      "path": "listings/reference-class5-escape-load.txt",
+      "bytes": 3468,
+      "sha256": "c89954bfbb584baf66db74b78f04c868c01cc68e8fa0bd6e03b3d8220146e34b"
+    },
+    {
+      "path": "listings/reference-escape-bulk-transfer.txt",
+      "bytes": 2357,
+      "sha256": "099e7664b9651a2dd2cff527c0381d54a61c60d40301c81ad470a5e1bd18a56c"
+    },
+    {
+      "path": "listings/reference-escape-context-properties.txt",
+      "bytes": 4919,
+      "sha256": "68fb53f31e4c4d98e76169a251e148b4ec6c6bd8be7e56ff267551d714471554"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 989,
+      "sha256": "75e27fbd0a8dd8d151a84c01ebad359ec6c8dae6c30791bdeb861e52adfe4698"
+    }
+  ],
+  "validation": {
+    "status": "PASS_SCOPED_ESCAPE_CLASS5_ADDRESS_AND_CPIR_BOUNDS",
+    "previous_sealed_files_reverified": 12,
+    "original_default_records": 2,
+    "class5_records_in_escape_envelope": 9,
+    "paths_present_in_original_update_p8": 4,
+    "independent_original_reference_fragments": 6,
+    "strict_prefixes_stop_before_diagnostics": true,
+    "late_fragments_not_a_whole_loader": true,
+    "DmmCfg_projected_AP_destination": "0x4132d8e00",
+    "actual_file_read_or_transfer_executed": false,
+    "CPIR_records": 500,
+    "CPIR_exact_file_coverage": true,
+    "CPIR_align16_two_byte_plane_candidates": 474,
+    "CPIR_pixel_encoding_not_claimed": true,
+    "original_source_windows": 5,
+    "actual_target_AP_boot_or_record_selection_proved": false,
+    "source_pointer_0x38_binding_proved": false,
+    "physical_DMM_or_RAW_or_complete_ISP_obtained": false,
+    "device_actions": 0,
+    "other_owner_files_written": false,
+    "modified_firmware_produced": false,
+    "flashable_package_produced": false,
+    "goal_complete": false
+  },
+  "persistent_goal_status": "active",
+  "current_turn_classification": "progress",
+  "same_impasse_repeated_consecutive_goal_turns": 0,
+  "goal_complete": false,
+  "device_actions": 0,
+  "flashable_package_produced": false
+}

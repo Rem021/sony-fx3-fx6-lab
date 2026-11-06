@@ -1,0 +1,96 @@
+{
+  "status": "PASS_HOST_ONLY_TRIAL_AND_READBACK",
+  "tests_run": 15,
+  "results": [
+    {
+      "name": "full_private_trial_and_readback",
+      "status": "PASS",
+      "seconds": 0.49824733298737556
+    },
+    {
+      "name": "fresh_query_without_saved_trial_live_proof",
+      "status": "PASS",
+      "seconds": 0.1937885000370443
+    },
+    {
+      "name": "saved_file_parse_is_not_authenticated",
+      "status": "PASS",
+      "seconds": 2.675002906471491e-05
+    },
+    {
+      "name": "archive_mode_rejected",
+      "status": "PASS",
+      "seconds": 0.1930197500041686
+    },
+    {
+      "name": "archive_partial_rejected",
+      "status": "PASS",
+      "seconds": 0.1917680000187829
+    },
+    {
+      "name": "archive_checksum_rejected",
+      "status": "PASS",
+      "seconds": 0.1980187080334872
+    },
+    {
+      "name": "archive_symlink_rejected",
+      "status": "PASS",
+      "seconds": 0.21286504197632894
+    },
+    {
+      "name": "archive_hardlink_rejected",
+      "status": "PASS",
+      "seconds": 0.1989700419944711
+    },
+    {
+      "name": "archive_missing_rejected",
+      "status": "PASS",
+      "seconds": 0.1980829589883797
+    },
+    {
+      "name": "wrong_installed_hash",
+      "status": "PASS",
+      "seconds": 0.037194583972450346
+    },
+    {
+      "name": "replay_wrapper_and_entry_denied",
+      "status": "PASS",
+      "seconds": 0.21734174998709932
+    },
+    {
+      "name": "refusal_before_work_on_stop",
+      "status": "PASS",
+      "seconds": 0.13408570899628103
+    },
+    {
+      "name": "host_record_bounds_and_nonce_replay",
+      "status": "PASS",
+      "seconds": 0.0001627910532988608
+    },
+    {
+      "name": "nonce_bound_query_and_scope",
+      "status": "PASS",
+      "seconds": 3.691698657348752e-05
+    },
+    {
+      "name": "quoted_paths_remain_data",
+      "status": "PASS",
+      "seconds": 0.20163220900576562
+    }
+  ],
+  "root_candidate_executed": false,
+  "administrator_or_camera_operations": 0,
+  "unprivileged_kernel_peer_handshakes": true,
+  "root_protected_path_or_cross_UID_validated": false,
+  "cleared_live_context_in_same_observer_process_explicit": true,
+  "real_Orca_restart_and_power_loss_not_tested": true,
+  "test_source_sha256": "54ff7bbd66947f19ba9bdce1a4687317e3dd421c590008724084d520de252695",
+  "build_receipt_sha256": "6e1b3534cfc44ac4e8da64a03b840492d975bd894bca82af63a03757a20203db",
+  "python_sources": {
+    "host_supervisor.py": "8253ef4047e24ec0c3354f522b2cf7cd3c5faeccd0aa428f1d87ad2187a348f2",
+    "host_records.py": "a7c2007a0b793d932654df84343ea06b849fff8c030370f1290e0d3c8a14a815",
+    "host_plan.py": "96b82a4cc26f6dd818556ca74cf9127e93a50e9615fb27ff9db9cb6cffeca9b6",
+    "controller_ipc.py": "97964b26aaaa7da8b84c8ff2443177dec7c22f49e789d432b6482f645c2bec46",
+    "receipt_receiver.py": "824f8644d7466445b2e81984d7e26ac3e909a1604d26d2387dbfcc7698a4a41e"
+  }
+}

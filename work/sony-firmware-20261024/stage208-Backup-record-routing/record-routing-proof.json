@@ -1,0 +1,221 @@
+{
+  "status": "OFFICIAL_MAIN_LOCAL_RECORD0_AND_CP_RECORD1_STATIC_ROUTES_BOUND",
+  "source_module_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+  "source_library_sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+  "queue": "0x003e014d",
+  "operation_selector": 4,
+  "argument_count": 1,
+  "operation_selector_is_not_length": true,
+  "receiver_callback_offset": "0x74e8",
+  "dispatch_table": {
+    "section": ".rodata",
+    "offset": "0xa8",
+    "index": 5,
+    "signed_halfword": 271,
+    "destination": "0x7f58",
+    "call": "Backup_read_4Byte@.text+0x7f60"
+  },
+  "local_record": {
+    "Data_init_stores_unshifted_record_base": true,
+    "shared_state_relocation": ".bss+0x28",
+    "Data_init": "0x4d60",
+    "Data_SearchId": "0x4ef8",
+    "Data_GetDataPt": "0x5350"
+  },
+  "CP_record": {
+    "caller": "backupfile_get_cp_data",
+    "index": 1,
+    "formula": "align_up(header.dataOffset + header.dataSize,4096)",
+    "transport": "pcidma_transfer_async"
+  },
+  "template_layout_checks": [
+    {
+      "template": "CX95900_ALLLANG.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95900_E38.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95900_J1.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95900_KR2.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95900_UC2.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95901_AF1.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95901_ALLLANG.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95901_AP2.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95901_CEC.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95901_CN2.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    },
+    {
+      "template": "CX95901_IN5.bin",
+      "local_record_offset": 0,
+      "CP_record_offset": 860160
+    }
+  ],
+  "classic_public_AP_defaults": {
+    "SIO": 0,
+    "GPIO_portid": 4,
+    "GPIO_bitnum": 2
+  },
+  "classic_public_CP_defaults": {
+    "SIO": 5,
+    "GPIO_portid": 4,
+    "GPIO_bitnum": 30
+  },
+  "extra_source_ranges": [
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".text",
+      "offset": 29928,
+      "bytes": 20,
+      "kind": "code",
+      "sha256": "29b6564ac3991260f0b288bcd4263ca6713aec6269a98d8add1862c4d5fdaa17",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/sync-receiver.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".text",
+      "offset": 19928,
+      "bytes": 16,
+      "kind": "data",
+      "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/local-init-literals.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".text",
+      "offset": 20312,
+      "bytes": 8,
+      "kind": "data",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/local-search-literal.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".text",
+      "offset": 21408,
+      "bytes": 8,
+      "kind": "data",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/local-value-literal.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".text",
+      "offset": 22504,
+      "bytes": 8,
+      "kind": "data",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/local-header-literal.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".text",
+      "offset": 31184,
+      "bytes": 32,
+      "kind": "data",
+      "sha256": "66687aadf862bd776c8fc18b8e9f8e20089714856ee233b3902a591d0d5f2925",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/registered-callback-literals.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".text",
+      "offset": 19584,
+      "bytes": 188,
+      "kind": "code",
+      "sha256": "97f28de587e4a5ea6995bf82affd6e50ca10028e972150df06c8b5809b67d579",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/format-revision-callee.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".text",
+      "offset": 19776,
+      "bytes": 24,
+      "kind": "data",
+      "sha256": "9d908ecfb6b256def8b49a7c504e6c889c4b0e41fe6ce3e01863dd7b61a20aa0",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/format-name-literals.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+      "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+      "section": ".rodata",
+      "offset": 168,
+      "bytes": 114,
+      "kind": "data",
+      "sha256": "37f1aa5272b009dd39bdba6ca1fc3ca6930cea93eff06ecbc7d2cd07ba6a3cc5",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/dispatch-switch-table.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/lib/libbackup.so",
+      "source_sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+      "section": ".text",
+      "offset": 6672,
+      "bytes": 348,
+      "kind": "code",
+      "sha256": "396a86177d18a6055962174c2490a1206a6f8a882ca3b3e7947151cf246f5e1f",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/userspace-sync-builder.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/lib/libbackup.so",
+      "source_sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+      "section": ".text",
+      "offset": 7700,
+      "bytes": 56,
+      "kind": "code",
+      "sha256": "a1c8584b79522345c61a22a67dc73d37ba836f464a39b82af07ce4bd5b2b4684",
+      "output": "work/sony-firmware-20261024/stage208-Backup-record-routing/pins/userspace-ordinary-read4.txt"
+    }
+  ],
+  "relocations_are_static_evidence_only": true,
+  "actual_body_Backup_read": false,
+  "current_body_driver_provider_attested": false,
+  "actual_AP_current_settings_or_recovery_execution_proven": false,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "limits": [
+    "AP/CP default record roles now source-bound, but runtime Backup bytes were not acquired",
+    "Main7.02 package provider is not an installed same-body p1 fingerprint",
+    "Static defaults do not prove board pin state, UART/SIO transport, clock, MCU state, independent AP entry or restore"
+  ]
+}

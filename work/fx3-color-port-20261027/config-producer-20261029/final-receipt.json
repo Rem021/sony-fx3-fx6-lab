@@ -1,0 +1,235 @@
+{
+  "created_utc": "2026-10-29T20:41:43.865548+00:00",
+  "stage": "config-producer-20261029",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "AP-initrd-config-marker-scan.json",
+      "bytes": 155553,
+      "sha256": "afc1459f0eddbdf035f2a9c730fc3c999ffa213d54e113f491980d278c71374b"
+    },
+    {
+      "path": "CP-file-address-bindings.json",
+      "bytes": 3288,
+      "sha256": "282259268745f6eab4e376cc35cce47b54dbab8f33f181463adf61e356897b5b"
+    },
+    {
+      "path": "NOR-descriptor-query-results.json",
+      "bytes": 5243,
+      "sha256": "589a85ff1f08318ea78a3eed088bb8de78a65bd93e96c3a0b721163ae81e81e9"
+    },
+    {
+      "path": "NOR-load-contract-review.json",
+      "bytes": 5920,
+      "sha256": "1b3d07c7670ecb20342f367be7fa30e17629bc7e290ce320330456751c6b01f3"
+    },
+    {
+      "path": "NOR-load-prefix-results.json",
+      "bytes": 3592,
+      "sha256": "27e640ba39006831af89315135c0fcaa9928a05198e0240160727265db9d689a"
+    },
+    {
+      "path": "NOR-negative-query-results.json",
+      "bytes": 2086,
+      "sha256": "900333cf28eb26c5e0311a9002dcd9c47cb485acf8d2abeb06f43e50bdda736c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 8306,
+      "sha256": "517c8c5eb27877ee7de9db952ec6927d3962cc9f109ebe331081b761067cc4d2"
+    },
+    {
+      "path": "capture_CP_bindings.py",
+      "bytes": 2477,
+      "sha256": "5a41a2d48b62a37967e943697a8e99ed8098685b9b86b9f900ca191040c49515"
+    },
+    {
+      "path": "capture_nor_contract.py",
+      "bytes": 4960,
+      "sha256": "fe221c6a66f2fd9a72728aad1427943f4012338a9b7343edd0fbfdbae69bbf0d"
+    },
+    {
+      "path": "check_negative_queries.py",
+      "bytes": 1998,
+      "sha256": "53baa39dacd7d0888562b8c1dddb7bf9ae9cef4929a9d49129f8c2a1388745ed"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 757,
+      "sha256": "41d23a17542ada2256975f263e4d029a78fedeeed64745c48197e3642316f3bd"
+    },
+    {
+      "path": "continuation-source-check.json",
+      "bytes": 1138,
+      "sha256": "9a3c4f28ec3109b3a5221c4fcfa7a6c770cab7e0f644a3cc96572f704e036e5e"
+    },
+    {
+      "path": "extract_load_descriptors.py",
+      "bytes": 5994,
+      "sha256": "f6bc04ed1bb4ef55889f3683ee66732ccd210046ab3c4ff25b30a8170f869479"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 339,
+      "sha256": "edef2ec0fc5557dc2e66d48b895f00a3766879b9326758b5fd447fc321c75368"
+    },
+    {
+      "path": "load-descriptor-sources.json",
+      "bytes": 258291,
+      "sha256": "5e5f214db9cc0f9a4ce6a4dcaacfb3813c4ce3b75d23fb268db120ccbf7e4d80"
+    },
+    {
+      "path": "nor_descriptor_guest.py",
+      "bytes": 6162,
+      "sha256": "3174f71e156f1969ad58e4e4dba089332ed4e8dfe6ff18f6b030e1927e985f29"
+    },
+    {
+      "path": "nor_load_prefix_guest.py",
+      "bytes": 3539,
+      "sha256": "425f6d29a954dcfb785d3b4fd5ec017e30191fcb6d06f90efad488918d2f991c"
+    },
+    {
+      "path": "original-files/LdrBkupList.txt",
+      "bytes": 650,
+      "sha256": "ae537183ecce42fbe9589c01f7ee4a19929fa2fc1cb09e48eda9ef2ab6f5dd88"
+    },
+    {
+      "path": "original-files/bank0-fa0080.bin",
+      "bytes": 9216,
+      "sha256": "7211bc043617837927604e0f1900a987d31d483920323fdc653c1348d28bac5b"
+    },
+    {
+      "path": "original-files/bank1-fa0080.bin",
+      "bytes": 9216,
+      "sha256": "33e39fc7bf35447d97f4ce2bf8d8251cee79453fdd6175cce0c6136f48c93ad6"
+    },
+    {
+      "path": "original-files/loader_nor.bin",
+      "bytes": 101888,
+      "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942"
+    },
+    {
+      "path": "original-files/pformat_config.txt",
+      "bytes": 1274,
+      "sha256": "21cd5b29dd165c322f5b00bb057802c377ff94af15f95881e150a32130302ece"
+    },
+    {
+      "path": "scan_config_sources.py",
+      "bytes": 2010,
+      "sha256": "3d29ed6b28663b9db45ca44814d644371a5234acb00180b58eb1be3e72e43d81"
+    },
+    {
+      "path": "source-fragments/fe04b45c-fe04b4cc.txt",
+      "bytes": 1097,
+      "sha256": "386d00cbe9b67d16ea353b829e9d195ee1096c80097e324288652aedc260e55e"
+    },
+    {
+      "path": "source-fragments/fe04c7b4-fe04c808.txt",
+      "bytes": 823,
+      "sha256": "511ede054627ee15a39400ac98d8146a0adb17ce0d4880ad0ec4b02f43da43f3"
+    },
+    {
+      "path": "source-fragments/fe04d44c-fe04d484.txt",
+      "bytes": 551,
+      "sha256": "31c49c0aa52c4df4d33f4086fc3274b683808af9c0f1bca905ca3dbe4decde90"
+    },
+    {
+      "path": "source-fragments/fe04d4c0-fe04d4e8.txt",
+      "bytes": 406,
+      "sha256": "eaeade0aa4d7ad724ace597520f39fd57b04a4c3906a3fbf68411eb4ba01651c"
+    },
+    {
+      "path": "source-fragments/fe04d51c-fe04d584.txt",
+      "bytes": 1026,
+      "sha256": "486a27c239154cafcaff7b11dffda6b2a39caee4d47ba9da6db26d4bd7538610"
+    },
+    {
+      "path": "source-fragments/fe04d63c-fe04d69c.txt",
+      "bytes": 940,
+      "sha256": "aeef5557bec6aadbe5d4624c206a4acbbf5ba8c1d190a0d2266c5cabd5f59a2f"
+    },
+    {
+      "path": "source-fragments/fe0530b0-fe053134.txt",
+      "bytes": 1342,
+      "sha256": "9e0346953b4f206c7d786a4b109dacdd8059e1dfdaba0e96cf56a16b916c32f1"
+    },
+    {
+      "path": "source-fragments/fe053a1c-fe053a70.txt",
+      "bytes": 804,
+      "sha256": "91d8bc46fdbc0c9edf36a16b6be195839722e9e1639091eba524617495a6499b"
+    },
+    {
+      "path": "source-fragments/fe0545dc-fe054a18.txt",
+      "bytes": 10981,
+      "sha256": "5ba1c1d7c19d87e3fa1eaa8cf8b8acf86bd316d4760d643201cb24557951f42f"
+    },
+    {
+      "path": "source-fragments/fe057e98-fe057f0c.txt",
+      "bytes": 1150,
+      "sha256": "43ac91785802cf760e37e6221e9fdf76f3a2d58c90dce8e607b8c23f92fb7ffb"
+    },
+    {
+      "path": "source-fragments/fe057f0c-fe057fa0.txt",
+      "bytes": 1483,
+      "sha256": "d34a385da0130f0f742c5abb108e3ed3133407706334615d02ccfb2030b31e54"
+    },
+    {
+      "path": "source-fragments/fe057fa0-fe058178.txt",
+      "bytes": 4742,
+      "sha256": "4aad5e9d436acab82ee6ccdb43e701570f87a179e0f8086aebaa72544c324835"
+    },
+    {
+      "path": "source-fragments/fe058a64-fe058a7c.txt",
+      "bytes": 219,
+      "sha256": "f9e1fe661714d14cf17493597c9083150af483f7dae85c9a09a768b7d4a7cd69"
+    },
+    {
+      "path": "source-fragments/fe058b7c-fe058c98.txt",
+      "bytes": 2784,
+      "sha256": "cbd52158eda6c203cda5b4f36e6a7d328f6029a8de3a85a7fe7ab87b12f62565"
+    },
+    {
+      "path": "validate_and_seal.py",
+      "bytes": 10695,
+      "sha256": "0ee1f9896987a4ef49d8bcae5fd84d1ba15bafb0e579c9fe4ee9c6c66e38d1d9"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 1093,
+      "sha256": "7fb950b3d63f693042dae56edc2f46f9fd1838c49a206adb4302b69987bd4918"
+    }
+  ],
+  "validation": {
+    "status": "PASS_ORIGINAL_BK4_FILE_DESCRIPTOR_AND_NOR_CONSUMER_PREFIX",
+    "previous_sealed_files_verified": 29,
+    "backup_sealed_files_reverified": 26,
+    "official_templates": 22,
+    "checked_BK4_records": 44,
+    "original_payload_bytes_per_record": 9216,
+    "descriptor_stride": 144,
+    "source_fragments": 14,
+    "original_NOR_query_payloads_matched": 2,
+    "negative_original_query_cases": 2,
+    "original_consumer_prefixes": 2,
+    "identical_DmmCfg_descriptors_in_second_records": 22,
+    "CP_file_address_bindings": 3,
+    "original_fa0182_start_binding": true,
+    "original_fa0183_value_matches_capacity": true,
+    "normal_record_selection_verified": false,
+    "normal_loader_ready_state_verified": false,
+    "actual_FAT_mount_or_file_read_completed": false,
+    "configuration_bytes_at_candidate_obtained": false,
+    "physical_buffer_or_RAW_pixels_obtained": false,
+    "whole_ISP_recovered": false,
+    "native_Sony_programs_executed": 0,
+    "device_actions": 0,
+    "other_owner_files_written": false,
+    "modified_firmware_produced": false,
+    "flashable_package_produced": false,
+    "goal_complete": false
+  },
+  "persistent_goal_status": "active",
+  "goal_complete": false,
+  "device_actions": 0,
+  "flashable_package_produced": false
+}

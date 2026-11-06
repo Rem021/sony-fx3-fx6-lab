@@ -1,0 +1,84 @@
+{
+  "schema": "fx3-stage44-stop-unmap-and-completion/1",
+  "created_utc": "2026-10-26T01:21:44.122335+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/README.md",
+      "bytes": 5241,
+      "sha256": "6363a7e55da93a85de5148a8d9985e432d92d95eac5b125348c46b948277e088"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/coordinator-observations.json",
+      "bytes": 1605,
+      "sha256": "b7e74049f0c50fc0d335a8396d4111c43d63f6ba53230dd465de49f4273629bd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/goal-status-after.json",
+      "bytes": 85047,
+      "sha256": "35ec2c11b681ae941246441287e509c1e7793940cd8b682f7628712964a07a8f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/goal-status-before.json",
+      "bytes": 81358,
+      "sha256": "b25196fcffb93dc2fef15a8f34d57ca33b8b0bf055ad18f3244e166807aff9be"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/next-stop-completion-anchors.json",
+      "bytes": 2223,
+      "sha256": "dbf529754292723f9ae2faa2c9da5541a061131b790d4d3dfa0a66ba49af86d7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/run-20261025/executed-source.py",
+      "bytes": 12721,
+      "sha256": "a9452c5b84922eb1fbe61e7b7df883914f7d4c4c53a467a32b268e12aea55e01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/run-20261025/source-receipt.json",
+      "bytes": 598,
+      "sha256": "cae48a93ddabdcde7e6e283d1f6b93507496f4f315ce57043c3f3c55c11bbfbe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/run-20261025/stop-completion-results.json",
+      "bytes": 100809,
+      "sha256": "723c2331a317e38d85c8eabcee50366a76920b8e763ec243326ca407944b5930"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/run-20261025/summary.json",
+      "bytes": 641,
+      "sha256": "ff4d253be944448893dc354f0f26058a89294b2f6fb5347f055a09c390ea416c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/stop_completion.py",
+      "bytes": 12721,
+      "sha256": "a9452c5b84922eb1fbe61e7b7df883914f7d4c4c53a467a32b268e12aea55e01"
+    }
+  ],
+  "previous_manifest_sha256": "b94fd89c56f8e3e52a005fb0227730844f5a74e02bd7296be6e8409297da7d0b",
+  "scope": "14 original fragments: legal STOP wrappers stop at diagnostic; independent actions enter PCIATU unmap/lock boundary; separate post-log unmap/field-format/completion packet/send preparation. No full STOP transition/action, runtime service/send/receiver/current epoch/HAL or physical recovery.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage44-stop-unmap-and-completion/goal-status-after.json",
+    "before_sha256": "b25196fcffb93dc2fef15a8f34d57ca33b8b0bf055ad18f3244e166807aff9be",
+    "after_sha256": "35ec2c11b681ae941246441287e509c1e7793940cd8b682f7628712964a07a8f",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-25 FX3 合法STOP、映射清理与完成通知](<work/sony-firmware-20261024/stage44-stop-unmap-and-completion/README.md>)：原STOP动作绑定PCIATU unmap，seq_id/forced标志与通道完成包已核对；局部清零不能证明底层完成，完整停止/硬件与恢复仍待验收。",
+  "readme_index_before_sha256": "dbd8a85c82d7bb4dc0173a11ea25c556e58107e0ead1fc69620cd4b619989e6e",
+  "readme_index_after_sha256": "9b71b9997bf805e48738258e7bd82da12f585e8d0afcdcfd2a70560f38e2ef0d",
+  "operations": {
+    "guest_only_original_bounded_code": true,
+    "original_image_RX_unchanged": true,
+    "native_log_lock_unmap_send_or_HAL_output_adapters": false,
+    "complete_STOP_action_transition_or_idle_proven": false,
+    "compiled_prototype_invoked": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_mode_driver_files_module_WBI_or_write": false,
+    "hardware_main_media_same_body_backup_restore_WBI_coldboot_or_rescue_verified": false,
+    "camera_loadable_module_or_device_firmware_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

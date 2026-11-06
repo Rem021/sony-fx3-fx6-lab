@@ -1,0 +1,370 @@
+{
+  "created_utc": "2026-11-04T16:06:58.605308+00:00",
+  "tests_run": 12,
+  "successful": true,
+  "failures": 0,
+  "errors": 0,
+  "output": "test_both_writes_fail_and_first_remains (__main__.HostExceptionTests.test_both_writes_fail_and_first_remains) ... ok\ntest_broken_stderr_does_not_replace_original (__main__.HostExceptionTests.test_broken_stderr_does_not_replace_original) ... ok\ntest_exception_file_path_is_directory (__main__.HostExceptionTests.test_exception_file_path_is_directory) ... ok\ntest_execute_main_error_missing_output_still_finalizes (__main__.HostExceptionTests.test_execute_main_error_missing_output_still_finalizes) ... ok\ntest_missing_output_parent (__main__.HostExceptionTests.test_missing_output_parent) ... ok\ntest_original_traceback_inside_unrelated_except (__main__.HostExceptionTests.test_original_traceback_inside_unrelated_except) ... ok\ntest_patched_handler_then_cleanup_and_guard_retry_keep_first (__main__.HostExceptionTests.test_patched_handler_then_cleanup_and_guard_retry_keep_first) ... ok\ntest_qmp_success_contains_first_exception_status (__main__.HostExceptionTests.test_qmp_success_contains_first_exception_status) ... ok\ntest_qmp_write_can_be_first_host_error (__main__.HostExceptionTests.test_qmp_write_can_be_first_host_error) ... ok\ntest_qmp_write_failure_keeps_original_successful_record (__main__.HostExceptionTests.test_qmp_write_failure_keeps_original_successful_record) ... ok\ntest_success_keeps_memory_and_both_clocks (__main__.HostExceptionTests.test_success_keeps_memory_and_both_clocks) ... ok\ntest_transport_snapshot_and_continuous_exceptions (__main__.HostExceptionTests.test_transport_snapshot_and_continuous_exceptions) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.025s\n\nOK\n",
+  "captured_stderr": "Host exception persistence failed: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_both_writes_fail_and_first_remains/absent-run/host-first-exception.json FileNotFoundError(2, 'No such file or directory')\nHost exception persistence failed: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_both_writes_fail_and_first_remains/absent-run/qmp.json FileNotFoundError(2, 'No such file or directory')\nHost exception persistence failed: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_exception_file_path_is_directory/run/host-first-exception.json IsADirectoryError(21, 'Is a directory')\nHost exception persistence failed: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_execute_main_error_missing_output_still_finalizes/absent-parent/run/host-first-exception.json FileNotFoundError(2, 'No such file or directory')\nStopped: original-host-observation-error\nHost exception persistence failed: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_missing_output_parent/absent-parent/run/host-first-exception.json FileNotFoundError(2, 'No such file or directory')\nHost exception persistence failed: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_patched_handler_then_cleanup_and_guard_retry_keep_first/absent-parent/run/host-first-exception.json FileNotFoundError(2, 'No such file or directory')\nStopped: [Errno 2] No such file or directory: '/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_patched_handler_then_cleanup_and_guard_retry_keep_first/absent-parent/run/trial-fail.json'\nResource guard failure, retaining process and locks: FileNotFoundError(2, 'No such file or directory')\nCleanup pending: QEMU reap unconfirmed; runner retains locks.\nHost exception persistence failed: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_can_be_first_host_error/run/qmp.json IsADirectoryError(21, 'Is a directory')\nHost exception persistence failed: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_failure_keeps_original_successful_record/run/qmp.json IsADirectoryError(21, 'Is a directory')\n",
+  "evidence": [
+    {
+      "test": "__main__.HostExceptionTests.test_both_writes_fail_and_first_remains",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_both_writes_fail_and_first_remains",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.580261+00:00",
+            "host_monotonic": 392104.234063333,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_both_writes_fail_and_first_remains/absent-run/host-first-exception.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "FileNotFoundError",
+            "error": "FileNotFoundError(2, 'No such file or directory')"
+          }
+        },
+        {
+          "host_journal_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_both_writes_fail_and_first_remains/absent-run/qmp.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "FileNotFoundError",
+            "error": "FileNotFoundError(2, 'No such file or directory')"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_broken_stderr_does_not_replace_original",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_broken_stderr_does_not_replace_original",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.581350+00:00",
+            "host_monotonic": 392104.235152291,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_broken_stderr_does_not_replace_original/absent-run/host-first-exception.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "FileNotFoundError",
+            "error": "FileNotFoundError(2, 'No such file or directory')"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_exception_file_path_is_directory",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_exception_file_path_is_directory",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.581814+00:00",
+            "host_monotonic": 392104.235616291,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_exception_file_path_is_directory/run/host-first-exception.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "IsADirectoryError",
+            "error": "IsADirectoryError(21, 'Is a directory')"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_execute_main_error_missing_output_still_finalizes",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_execute_main_error_missing_output_still_finalizes",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/apply-checks/check-jizx4_yb/run_trial_v25_diag_r3.py:AST-only\", line 917, in execute_runner\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 234, in fake_main\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.590628+00:00",
+            "host_monotonic": 392104.24443,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_execute_main_error_missing_output_still_finalizes/absent-parent/run/host-first-exception.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "FileNotFoundError",
+            "error": "FileNotFoundError(2, 'No such file or directory')"
+          }
+        }
+      ],
+      "guard_calls": [
+        {
+          "reason": "uncaught:ValueError",
+          "diagnostics": true,
+          "reap_wait": 0.05
+        }
+      ],
+      "sleeps": [],
+      "guard_closed": true
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_missing_output_parent",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_missing_output_parent",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.591297+00:00",
+            "host_monotonic": 392104.245099916,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_missing_output_parent/absent-parent/run/host-first-exception.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "FileNotFoundError",
+            "error": "FileNotFoundError(2, 'No such file or directory')"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_original_traceback_inside_unrelated_except",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_original_traceback_inside_unrelated_except",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.591570+00:00",
+            "host_monotonic": 392104.24537325,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_original_traceback_inside_unrelated_except/run/host-first-exception.json",
+            "status": "write_completed",
+            "write_completed": true,
+            "durability": "not_verified"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_patched_handler_then_cleanup_and_guard_retry_keep_first",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_patched_handler_then_cleanup_and_guard_retry_keep_first",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 256, in fake_main\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.599834+00:00",
+            "host_monotonic": 392104.253636208,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_patched_handler_then_cleanup_and_guard_retry_keep_first/absent-parent/run/host-first-exception.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "FileNotFoundError",
+            "error": "FileNotFoundError(2, 'No such file or directory')"
+          }
+        }
+      ],
+      "guard_calls": [
+        {
+          "reason": "uncaught:FileNotFoundError",
+          "diagnostics": true,
+          "reap_wait": 0.05
+        },
+        {
+          "reason": "uncaught:FileNotFoundError",
+          "diagnostics": false,
+          "reap_wait": 0.05
+        }
+      ],
+      "sleeps": [
+        0.01
+      ],
+      "guard_closed": true,
+      "executed_patched_handler": true
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_qmp_success_contains_first_exception_status",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_success_contains_first_exception_status",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.601486+00:00",
+            "host_monotonic": 392104.255288125,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_success_contains_first_exception_status/run/host-first-exception.json",
+            "status": "write_completed",
+            "write_completed": true,
+            "durability": "not_verified"
+          }
+        },
+        {
+          "host_journal_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_success_contains_first_exception_status/run/qmp.json",
+            "status": "write_completed",
+            "write_completed": true,
+            "durability": "not_verified"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_qmp_write_can_be_first_host_error",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_can_be_first_host_error",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "IsADirectoryError",
+            "error": "IsADirectoryError(21, 'Is a directory')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/host_exception_clock.py\", line 63, in write_host_journal\n    path.write_text(json.dumps(journal, ensure_ascii=False, indent=2) + '\\n')\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 809, in write_text\n    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 771, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nIsADirectoryError: [Errno 21] Is a directory: '/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_can_be_first_host_error/run/qmp.json'\n",
+            "host_utc": "2026-11-04T16:06:58.602395+00:00",
+            "host_monotonic": 392104.256197458,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_can_be_first_host_error/run/host-first-exception.json",
+            "status": "write_completed",
+            "write_completed": true,
+            "durability": "not_verified"
+          }
+        },
+        {
+          "host_journal_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_can_be_first_host_error/run/qmp.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "IsADirectoryError",
+            "error": "IsADirectoryError(21, 'Is a directory')"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_qmp_write_failure_keeps_original_successful_record",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_failure_keeps_original_successful_record",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.603072+00:00",
+            "host_monotonic": 392104.256874375,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_failure_keeps_original_successful_record/run/host-first-exception.json",
+            "status": "write_completed",
+            "write_completed": true,
+            "durability": "not_verified"
+          }
+        },
+        {
+          "host_journal_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_qmp_write_failure_keeps_original_successful_record/run/qmp.json",
+            "status": "failed",
+            "write_completed": false,
+            "durability": "not_verified",
+            "error_type": "IsADirectoryError",
+            "error": "IsADirectoryError(21, 'Is a directory')"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_success_keeps_memory_and_both_clocks",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_success_keeps_memory_and_both_clocks",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.603730+00:00",
+            "host_monotonic": 392104.257533375,
+            "qmp_send_unknown": null,
+            "qmp_buffered_bytes": null
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_success_keeps_memory_and_both_clocks/run/host-first-exception.json",
+            "status": "write_completed",
+            "write_completed": true,
+            "durability": "not_verified"
+          }
+        }
+      ]
+    },
+    {
+      "test": "__main__.HostExceptionTests.test_transport_snapshot_and_continuous_exceptions",
+      "fixture": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_transport_snapshot_and_continuous_exceptions",
+      "memory_journal": [
+        {
+          "host_first_exception": {
+            "type": "ValueError",
+            "error": "ValueError('original-host-observation-error')",
+            "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 31, in original_error\n    original_error_leaf()\n    ~~~~~~~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/test_host_exception_clock.py\", line 26, in original_error_leaf\n    raise ValueError('original-host-observation-error')\nValueError: original-host-observation-error\n",
+            "host_utc": "2026-11-04T16:06:58.604773+00:00",
+            "host_monotonic": 392104.258574958,
+            "qmp_send_unknown": true,
+            "qmp_buffered_bytes": 4
+          },
+          "host_first_exception_persistence": {
+            "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7/test_transport_snapshot_and_continuous_exceptions/run/host-first-exception.json",
+            "status": "write_completed",
+            "write_completed": true,
+            "durability": "not_verified"
+          }
+        }
+      ]
+    }
+  ],
+  "fixture_root": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r7-host-exception-clock/offline-cases/host-8dxr_yu7",
+  "patched_source_sha256": "902869ee48c1c80dbe770316d0515ac429a5679beb1af73971dfabf7be041126",
+  "full_runner_imported": false,
+  "vm_started": false,
+  "actual_child_reaping_or_locks_tested": false,
+  "bounded_fake_guard_control_flow_tested": true,
+  "integration_status": "not_integrated"
+}

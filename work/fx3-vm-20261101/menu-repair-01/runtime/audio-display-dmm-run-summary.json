@@ -1,0 +1,526 @@
+[
+  {
+    "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap46audio-79457999",
+    "receipt_sha256": "813107c10d2b1ead44d1540c59c0ef47d59e2004156ed5fcac19b5dbbcde9f40",
+    "host_exit": 0,
+    "reaped": true,
+    "input_unchanged": true,
+    "all_required_markers": true,
+    "guest_exceptions": [],
+    "commits": [
+      {
+        "line": 7541,
+        "text": "FX3_HDMI_AUDIO_COMMIT command=0x32d completion=0x132d source=0x81cf6186 format=0 applied=1 notification_reason=3 raw_status=0x580000 lease=6 request_free=0 active_output=0 audio_frames=0 CP_executed=0"
+      }
+    ],
+    "native_frees": [
+      {
+        "line": 7519,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1000 lease=1 result=0"
+      },
+      {
+        "line": 7522,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1001 lease=2 result=0"
+      },
+      {
+        "line": 7526,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x8285074f command=0x1 lease=3 result=0"
+      },
+      {
+        "line": 7529,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1002 lease=4 result=0"
+      },
+      {
+        "line": 7537,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803c6186 command=0xb850 lease=5 result=0"
+      },
+      {
+        "line": 7543,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x32d lease=6 result=0"
+      }
+    ],
+    "provider_requests": [
+      {
+        "line": 7539,
+        "text": "FX3_VDF_REQUEST bytes=10 source=0x81cf6186 caller=0x7f50585264 raw=0d202d030a0001800000 original_delegated=1"
+      }
+    ],
+    "ram_readback": [
+      {
+        "address": 17674797056,
+        "size": 65536,
+        "name": "capid-reserved-ram.bin",
+        "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+        "present": true,
+        "actual_bytes": 65536,
+        "sha256": "2bde59e9a95f1dea99311cea8330e866b17ce3654158dbbbe226c9ef13df57e1",
+        "nonzero_bytes": 7,
+        "header": [
+          1024,
+          1023,
+          1023,
+          1023,
+          0
+        ]
+      }
+    ],
+    "GPE_request_count": 0,
+    "menu_verified": false
+  },
+  {
+    "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap47photo-65bf7414",
+    "receipt_sha256": "2ca0a232dffe4d2ff68ed78040f2a01b545f7bc1624e1595219953ddbf7a248a",
+    "host_exit": 0,
+    "reaped": true,
+    "input_unchanged": true,
+    "all_required_markers": true,
+    "guest_exceptions": [],
+    "commits": [
+      {
+        "line": 7545,
+        "text": "FX3_HDMI_AUDIO_COMMIT command=0x32d completion=0x132d source=0x81cf6186 format=0 applied=1 notification_reason=3 raw_status=0x580000 lease=6 request_free=0 active_output=0 audio_frames=0 CP_executed=0"
+      },
+      {
+        "line": 7550,
+        "text": "FX3_HDMI_PHOTO_COMMIT command=0x102 completion=0x8102 source=0x81cf6186 raw=1 preset6=1 applied=1 lease=7 request_free=0 active_output=0 frames=0 CP_executed=0"
+      }
+    ],
+    "native_frees": [
+      {
+        "line": 7523,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1000 lease=1 result=0"
+      },
+      {
+        "line": 7526,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1001 lease=2 result=0"
+      },
+      {
+        "line": 7530,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x8285074f command=0x1 lease=3 result=0"
+      },
+      {
+        "line": 7533,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1002 lease=4 result=0"
+      },
+      {
+        "line": 7541,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803c6186 command=0xb850 lease=5 result=0"
+      },
+      {
+        "line": 7547,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x32d lease=6 result=0"
+      },
+      {
+        "line": 7551,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x102 lease=7 result=0"
+      }
+    ],
+    "provider_requests": [
+      {
+        "line": 7466,
+        "text": "FX3_VDF_REQUEST bytes=12 source=0x81cf618b caller=0x7f59464264 raw=002527010c00010016012a80 dispatch_pending=1"
+      },
+      {
+        "line": 7543,
+        "text": "FX3_VDF_REQUEST bytes=10 source=0x81cf6186 caller=0x7f59464264 raw=0d202d030a0001800000 dispatch_pending=1"
+      },
+      {
+        "line": 7548,
+        "text": "FX3_VDF_REQUEST bytes=12 source=0x81cf6186 caller=0x7f59464264 raw=002502010c00010001000000 dispatch_pending=1"
+      }
+    ],
+    "ram_readback": [
+      {
+        "address": 17674797056,
+        "size": 65536,
+        "name": "capid-reserved-ram.bin",
+        "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+        "present": true,
+        "actual_bytes": 65536,
+        "sha256": "2bde59e9a95f1dea99311cea8330e866b17ce3654158dbbbe226c9ef13df57e1",
+        "nonzero_bytes": 7,
+        "header": [
+          1024,
+          1023,
+          1023,
+          1023,
+          0
+        ]
+      }
+    ],
+    "GPE_request_count": 0,
+    "menu_verified": false
+  },
+  {
+    "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap48dmmobs-f595aa4d",
+    "receipt_sha256": "803b9e5ed83b64abf37b1af0a6c703f65ab17dca523e88973959b8870fed50f7",
+    "host_exit": 0,
+    "reaped": true,
+    "input_unchanged": true,
+    "all_required_markers": true,
+    "guest_exceptions": [],
+    "commits": [
+      {
+        "line": 7565,
+        "text": "FX3_HDMI_AUDIO_COMMIT command=0x32d completion=0x132d source=0x81cf6186 format=0 applied=1 notification_reason=3 raw_status=0x580000 lease=6 request_free=0 active_output=0 audio_frames=0 CP_executed=0"
+      },
+      {
+        "line": 7570,
+        "text": "FX3_HDMI_PHOTO_COMMIT command=0x102 completion=0x8102 source=0x81cf6186 raw=1 preset6=1 applied=1 lease=7 request_free=0 active_output=0 frames=0 CP_executed=0"
+      }
+    ],
+    "native_frees": [
+      {
+        "line": 7543,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1000 lease=1 result=0"
+      },
+      {
+        "line": 7546,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1001 lease=2 result=0"
+      },
+      {
+        "line": 7550,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x8285074f command=0x1 lease=3 result=0"
+      },
+      {
+        "line": 7553,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1002 lease=4 result=0"
+      },
+      {
+        "line": 7561,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803c6186 command=0xb850 lease=5 result=0"
+      },
+      {
+        "line": 7567,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x32d lease=6 result=0"
+      },
+      {
+        "line": 7571,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x102 lease=7 result=0"
+      }
+    ],
+    "provider_requests": [
+      {
+        "line": 7486,
+        "text": "FX3_PROVIDER_REQUEST destination=0x909a015a bytes=12 source=0x81cf618b caller=0x7f32786264 raw=002527010c00010016012a80 dispatch_pending=1"
+      },
+      {
+        "line": 7563,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf6186 caller=0x7f32786264 raw=0d202d030a0001800000 dispatch_pending=1"
+      },
+      {
+        "line": 7568,
+        "text": "FX3_PROVIDER_REQUEST destination=0x909a015a bytes=12 source=0x81cf6186 caller=0x7f32786264 raw=002502010c00010001000000 dispatch_pending=1"
+      },
+      {
+        "line": 7575,
+        "text": "FX3_PROVIDER_REQUEST destination=0x9061003c bytes=40 source=0x81cf6186 caller=0x7f327ee0e4 raw=200000003a06000000000000ffffffff000000000000010000000000000000000000000000000000 dispatch_pending=1"
+      }
+    ],
+    "ram_readback": [
+      {
+        "address": 17674797056,
+        "size": 65536,
+        "name": "capid-reserved-ram.bin",
+        "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+        "present": true,
+        "actual_bytes": 65536,
+        "sha256": "2bde59e9a95f1dea99311cea8330e866b17ce3654158dbbbe226c9ef13df57e1",
+        "nonzero_bytes": 7,
+        "header": [
+          1024,
+          1023,
+          1023,
+          1023,
+          0
+        ]
+      }
+    ],
+    "GPE_request_count": 0,
+    "menu_verified": false
+  },
+  {
+    "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap49dmm-61ef4b16",
+    "receipt_sha256": "35da60b946845d6ec3dbf1fccc7699abeb6b03f946e1d0fa3607a547b91ed7ae",
+    "host_exit": 0,
+    "reaped": true,
+    "input_unchanged": true,
+    "all_required_markers": true,
+    "guest_exceptions": [],
+    "commits": [
+      {
+        "line": 7614,
+        "text": "FX3_HDMI_AUDIO_COMMIT command=0x32d completion=0x132d source=0x81cf61c0 format=0 applied=1 notification_reason=3 raw_status=0x580000 lease=6 request_free=0 active_output=0 audio_frames=0 CP_executed=0"
+      },
+      {
+        "line": 7619,
+        "text": "FX3_HDMI_PHOTO_COMMIT command=0x102 completion=0x8102 source=0x81cf61c0 raw=1 preset6=1 applied=1 lease=7 request_free=0 active_output=0 frames=0 CP_executed=0"
+      },
+      {
+        "line": 7625,
+        "text": "FX3_REMOTE_DMM_BIND physical=0x41d900000 bytes=0x100000 readback=0x44534d4d original_CP=0"
+      },
+      {
+        "line": 7627,
+        "text": "FX3_REMOTE_DMM_COMMIT op=0x20 source=0x81cf61c0 status=0 handle=0x8400 address=0x1d900000 bytes=0x80000 slots=1/0 opens=1/0 allocations=1 lease=8 request_free=0 virtual_storage=1 original_CP=0"
+      },
+      {
+        "line": 7630,
+        "text": "FX3_REMOTE_DMM_COMMIT op=0x20 source=0x81cf61c0 status=0 handle=0x8401 address=0x1d980000 bytes=0x80000 slots=1/1 opens=1/1 allocations=2 lease=9 request_free=0 virtual_storage=1 original_CP=0"
+      }
+    ],
+    "native_frees": [
+      {
+        "line": 7592,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1000 lease=1 result=0"
+      },
+      {
+        "line": 7595,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1001 lease=2 result=0"
+      },
+      {
+        "line": 7599,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x8285074f command=0x1 lease=3 result=0"
+      },
+      {
+        "line": 7602,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1002 lease=4 result=0"
+      },
+      {
+        "line": 7610,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803c61c0 command=0xb850 lease=5 result=0"
+      },
+      {
+        "line": 7616,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x32d lease=6 result=0"
+      },
+      {
+        "line": 7620,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x102 lease=7 result=0"
+      },
+      {
+        "line": 7628,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x20 lease=8 result=0"
+      },
+      {
+        "line": 7631,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x20 lease=9 result=0"
+      }
+    ],
+    "provider_requests": [
+      {
+        "line": 7532,
+        "text": "FX3_PROVIDER_REQUEST destination=0x909a015a bytes=12 source=0x81cf618a caller=0x7f486c6264 raw=002527010c00010016012a80 dispatch_pending=1"
+      },
+      {
+        "line": 7612,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf61c0 caller=0x7f486c6264 raw=0d202d030a0001800000 dispatch_pending=1"
+      },
+      {
+        "line": 7617,
+        "text": "FX3_PROVIDER_REQUEST destination=0x909a015a bytes=12 source=0x81cf61c0 caller=0x7f486c6264 raw=002502010c00010001000000 dispatch_pending=1"
+      },
+      {
+        "line": 7624,
+        "text": "FX3_PROVIDER_REQUEST destination=0x9061003c bytes=40 source=0x81cf61c0 caller=0x7f4872e0e4 raw=200000003a06000000000000ffffffff000000000000010000000000000000000000000000000000 dispatch_pending=1"
+      },
+      {
+        "line": 7629,
+        "text": "FX3_PROVIDER_REQUEST destination=0x9061003c bytes=40 source=0x81cf61c0 caller=0x7f4872e0e4 raw=200000003a06000000000000ffffffff000000000000010000000000000000000000000000000000 dispatch_pending=1"
+      },
+      {
+        "line": 7655,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=22 source=0x81cf6186 caller=0x7f486c5884 raw=0d201801160001800301000000000000000000000100 dispatch_pending=1"
+      },
+      {
+        "line": 7694,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf61c2 caller=0x7f486c6264 raw=0d203d010a0001800001 dispatch_pending=1"
+      },
+      {
+        "line": 12444,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=8 source=0x81cf6195 caller=0x7f486c6264 raw=0d206a0108000180 dispatch_pending=1"
+      }
+    ],
+    "ram_readback": [
+      {
+        "address": 17674797056,
+        "size": 65536,
+        "name": "capid-reserved-ram.bin",
+        "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+        "present": true,
+        "actual_bytes": 65536,
+        "sha256": "2bde59e9a95f1dea99311cea8330e866b17ce3654158dbbbe226c9ef13df57e1",
+        "nonzero_bytes": 7,
+        "header": [
+          1024,
+          1023,
+          1023,
+          1023,
+          0
+        ]
+      },
+      {
+        "address": 17675845632,
+        "size": 1048576,
+        "name": "dmm-virtual-ram.bin",
+        "scope": "Quiesced explicit virtual two-slot DMM backing only; no originalCP/capture acceptance",
+        "present": true,
+        "actual_bytes": 1048576,
+        "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58",
+        "nonzero_bytes": 0
+      }
+    ],
+    "GPE_request_count": 0,
+    "menu_verified": false
+  },
+  {
+    "run": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap50display-ad72a6fa",
+    "receipt_sha256": "1a2283f481b112450b119e23ed4d119c60106efaeda07a7f6b40ce73a1f43389",
+    "host_exit": 0,
+    "reaped": true,
+    "input_unchanged": true,
+    "all_required_markers": true,
+    "guest_exceptions": [],
+    "commits": [
+      {
+        "line": 7552,
+        "text": "FX3_HDMI_AUDIO_COMMIT command=0x32d completion=0x132d source=0x81cf6186 format=0 applied=1 notification_reason=3 raw_status=0x580000 lease=6 request_free=0 active_output=0 audio_frames=0 CP_executed=0"
+      },
+      {
+        "line": 7557,
+        "text": "FX3_HDMI_PHOTO_COMMIT command=0x102 completion=0x8102 source=0x81cf6186 raw=1 preset6=1 applied=1 lease=7 request_free=0 active_output=0 frames=0 CP_executed=0"
+      },
+      {
+        "line": 7563,
+        "text": "FX3_REMOTE_DMM_BIND physical=0x41d900000 bytes=0x100000 readback=0x44534d4d original_CP=0"
+      },
+      {
+        "line": 7565,
+        "text": "FX3_REMOTE_DMM_COMMIT op=0x20 source=0x81cf6186 status=0 handle=0x8400 address=0x1d900000 bytes=0x80000 slots=1/0 opens=1/0 allocations=1 lease=8 request_free=0 virtual_storage=1 original_CP=0"
+      },
+      {
+        "line": 7568,
+        "text": "FX3_REMOTE_DMM_COMMIT op=0x20 source=0x81cf6186 status=0 handle=0x8401 address=0x1d980000 bytes=0x80000 slots=1/1 opens=1/1 allocations=2 lease=9 request_free=0 virtual_storage=1 original_CP=0"
+      },
+      {
+        "line": 20074,
+        "text": "FX3_DISPLAY_INFO_COMMIT command=0x16a completion=0x116a source=0x81cf61c0 panel=640x480 evf=640x480 aspect=1/1 queries=1 lease=10 request_free=0 virtual_geometry=1 physical_display=0 original_CP=0"
+      }
+    ],
+    "native_frees": [
+      {
+        "line": 7530,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1000 lease=1 result=0"
+      },
+      {
+        "line": 7533,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1001 lease=2 result=0"
+      },
+      {
+        "line": 7537,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x8285074f command=0x1 lease=3 result=0"
+      },
+      {
+        "line": 7540,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x1002 lease=4 result=0"
+      },
+      {
+        "line": 7548,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x803c6186 command=0xb850 lease=5 result=0"
+      },
+      {
+        "line": 7554,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x32d lease=6 result=0"
+      },
+      {
+        "line": 7558,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x102 lease=7 result=0"
+      },
+      {
+        "line": 7566,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x20 lease=8 result=0"
+      },
+      {
+        "line": 7569,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x20 lease=9 result=0"
+      },
+      {
+        "line": 20076,
+        "text": "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x16a lease=10 result=0"
+      }
+    ],
+    "provider_requests": [
+      {
+        "line": 7472,
+        "text": "FX3_PROVIDER_REQUEST destination=0x909a015a bytes=12 source=0x81cf618b caller=0x7f52547264 raw=002527010c00010016012a80 dispatch_pending=1"
+      },
+      {
+        "line": 7550,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf6186 caller=0x7f52547264 raw=0d202d030a0001800000 dispatch_pending=1"
+      },
+      {
+        "line": 7555,
+        "text": "FX3_PROVIDER_REQUEST destination=0x909a015a bytes=12 source=0x81cf6186 caller=0x7f52547264 raw=002502010c00010001000000 dispatch_pending=1"
+      },
+      {
+        "line": 7562,
+        "text": "FX3_PROVIDER_REQUEST destination=0x9061003c bytes=40 source=0x81cf6186 caller=0x7f525af0e4 raw=200000003a06000000000000ffffffff000000000000010000000000000000000000000000000000 dispatch_pending=1"
+      },
+      {
+        "line": 7567,
+        "text": "FX3_PROVIDER_REQUEST destination=0x9061003c bytes=40 source=0x81cf6186 caller=0x7f525af0e4 raw=200000003a06000000000000ffffffff000000000000010000000000000000000000000000000000 dispatch_pending=1"
+      },
+      {
+        "line": 7594,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=22 source=0x81cf6189 caller=0x7f52546884 raw=0d201801160001800301000000000000000000000100 dispatch_pending=1"
+      },
+      {
+        "line": 7634,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf61c1 caller=0x7f52547264 raw=0d203d010a0001800001 dispatch_pending=1"
+      },
+      {
+        "line": 20072,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=8 source=0x81cf61c0 caller=0x7f52547264 raw=0d206a0108000180 dispatch_pending=1"
+      },
+      {
+        "line": 20077,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=10 source=0x81cf61c0 caller=0x7f52548550 raw=0d2059010a0001800700 dispatch_pending=1"
+      },
+      {
+        "line": 20080,
+        "text": "FX3_PROVIDER_REQUEST destination=0x92840747 bytes=40 source=0x81cf61c0 caller=0x7f52547264 raw=0d204c012800018007010100000000008002e0010000000000000000000000000300000000000000 dispatch_pending=1"
+      }
+    ],
+    "ram_readback": [
+      {
+        "address": 17674797056,
+        "size": 65536,
+        "name": "capid-reserved-ram.bin",
+        "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+        "present": true,
+        "actual_bytes": 65536,
+        "sha256": "2bde59e9a95f1dea99311cea8330e866b17ce3654158dbbbe226c9ef13df57e1",
+        "nonzero_bytes": 7,
+        "header": [
+          1024,
+          1023,
+          1023,
+          1023,
+          0
+        ]
+      },
+      {
+        "address": 17675845632,
+        "size": 1048576,
+        "name": "dmm-virtual-ram.bin",
+        "scope": "Quiesced explicit virtual two-slot DMM backing only; no originalCP/capture acceptance",
+        "present": true,
+        "actual_bytes": 1048576,
+        "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58",
+        "nonzero_bytes": 0
+      }
+    ],
+    "GPE_request_count": 0,
+    "menu_verified": false
+  }
+]

@@ -1,0 +1,742 @@
+{
+  "schema": "fx3-strip-debug-audit/v1",
+  "passed": true,
+  "architecture": "ELF64-LE-AArch64-ET_DYN",
+  "raw_sha256": "04ba6d561c7dfbf2c2ce294c696207547e30b1c62ea0452f9899a0d2c78aba02",
+  "stripped_sha256": "19ca7deaf570eeb68fda0036bb75dec740ab30f404f9f91bd208fd3d53c06a39",
+  "raw_size": 277704,
+  "stripped_size": 129600,
+  "program_headers_equal": true,
+  "program_header_sha256": "f90d106a3070680e347b20837c2980e956613ef49ff9bb7881523579a1a6d188",
+  "elf_header_changes": [
+    {
+      "field": "shoff",
+      "before": 275592,
+      "after": 128064
+    },
+    {
+      "field": "shnum",
+      "before": 33,
+      "after": 24
+    },
+    {
+      "field": "shstrndx",
+      "before": 31,
+      "after": 23
+    }
+  ],
+  "removed_debug_sections": [
+    ".debug_abbrev",
+    ".debug_aranges",
+    ".debug_info",
+    ".debug_line",
+    ".debug_loc",
+    ".debug_ranges",
+    ".debug_str"
+  ],
+  "removed_static_symbol_sections": [
+    ".strtab",
+    ".symtab"
+  ],
+  "retained_other_nonalloc_sections_equal": [
+    "",
+    ".comment"
+  ],
+  "alloc_sections": [
+    {
+      "name": ".dynsym",
+      "type": 11,
+      "flags": 2,
+      "addr": 624,
+      "offset": 624,
+      "size": 1056,
+      "align": 8,
+      "entsize": 24,
+      "sha256": "5f71e4041a2f1e58ca3493489571f5e825c8feaaf87422ee29ab1928ac36ccc9",
+      "nobits": false
+    },
+    {
+      "name": ".gnu.version",
+      "type": 1879048191,
+      "flags": 2,
+      "addr": 1680,
+      "offset": 1680,
+      "size": 88,
+      "align": 2,
+      "entsize": 2,
+      "sha256": "c60d460fd81e5996c1dd3c7873b0cda3370f985d1a012b7dc0d63674777ff93d",
+      "nobits": false
+    },
+    {
+      "name": ".gnu.version_r",
+      "type": 1879048190,
+      "flags": 2,
+      "addr": 1768,
+      "offset": 1768,
+      "size": 64,
+      "align": 4,
+      "entsize": 0,
+      "sha256": "c192e4121c9bfa79f77e68ff7d480ac50ec4a5d90c8fcd137bd83d942f128ca2",
+      "nobits": false
+    },
+    {
+      "name": ".gnu.hash",
+      "type": 1879048182,
+      "flags": 2,
+      "addr": 1832,
+      "offset": 1832,
+      "size": 152,
+      "align": 8,
+      "entsize": 0,
+      "sha256": "ce0aa4e53e4e195986f9e7d544bf687923ac3c744afb4ea69a19ded4e3e951f2",
+      "nobits": false
+    },
+    {
+      "name": ".hash",
+      "type": 5,
+      "flags": 2,
+      "addr": 1984,
+      "offset": 1984,
+      "size": 360,
+      "align": 4,
+      "entsize": 4,
+      "sha256": "4654ac62fd38c8a9efe73216e25aefb9856fbf4cbb57ed782747fc448808c897",
+      "nobits": false
+    },
+    {
+      "name": ".dynstr",
+      "type": 3,
+      "flags": 2,
+      "addr": 2344,
+      "offset": 2344,
+      "size": 640,
+      "align": 1,
+      "entsize": 0,
+      "sha256": "0d86db7229ee37a2869c0903793fb20d24859bcc3eb187202d595c12add2f27a",
+      "nobits": false
+    },
+    {
+      "name": ".rela.dyn",
+      "type": 4,
+      "flags": 2,
+      "addr": 2984,
+      "offset": 2984,
+      "size": 528,
+      "align": 8,
+      "entsize": 24,
+      "sha256": "88cb54ec86765a6ef1a21034a582a67f2ff16cdfa0f14083a5bcdb2d57026c9c",
+      "nobits": false
+    },
+    {
+      "name": ".rela.plt",
+      "type": 4,
+      "flags": 66,
+      "addr": 3512,
+      "offset": 3512,
+      "size": 672,
+      "align": 8,
+      "entsize": 24,
+      "sha256": "3f33f68987e9ab797d4ad0c9cda8035fe8cf7bea775edfa55283d091222fca57",
+      "nobits": false
+    },
+    {
+      "name": ".rodata",
+      "type": 1,
+      "flags": 50,
+      "addr": 4192,
+      "offset": 4192,
+      "size": 79960,
+      "align": 16,
+      "entsize": 0,
+      "sha256": "4f38241f99e6653b04651c1d5f401cfaa0655486cfae437569456a78bb6a739a",
+      "nobits": false
+    },
+    {
+      "name": ".eh_frame_hdr",
+      "type": 1,
+      "flags": 2,
+      "addr": 84152,
+      "offset": 84152,
+      "size": 476,
+      "align": 4,
+      "entsize": 0,
+      "sha256": "556a901b5d36d98d59ef367dc52d899162ad294023a54be198bbd9048cdac7ab",
+      "nobits": false
+    },
+    {
+      "name": ".eh_frame",
+      "type": 1,
+      "flags": 2,
+      "addr": 84632,
+      "offset": 84632,
+      "size": 3176,
+      "align": 8,
+      "entsize": 0,
+      "sha256": "725ff340cbb3b4e7cb4f434144b94423c8725384b4dc066c766904f779fcf76a",
+      "nobits": false
+    },
+    {
+      "name": ".text",
+      "type": 1,
+      "flags": 6,
+      "addr": 153344,
+      "offset": 87808,
+      "size": 38648,
+      "align": 4,
+      "entsize": 0,
+      "sha256": "59c26fd1f5aeef219a9a996008e3511b4cfbe1af9ebc6e6f65b755953141fb17",
+      "nobits": false
+    },
+    {
+      "name": ".plt",
+      "type": 1,
+      "flags": 536870918,
+      "addr": 192000,
+      "offset": 126464,
+      "size": 480,
+      "align": 16,
+      "entsize": 0,
+      "sha256": "8cea61cf70a534e3d07407880dce42c56a39db3fdd31ad07ac78a06ca266e353",
+      "nobits": false
+    },
+    {
+      "name": ".tbss",
+      "type": 8,
+      "flags": 1027,
+      "addr": 192480,
+      "offset": 126944,
+      "size": 44,
+      "align": 8,
+      "entsize": 0,
+      "sha256": null,
+      "nobits": true
+    },
+    {
+      "name": ".data.rel.ro",
+      "type": 1,
+      "flags": 3,
+      "addr": 258016,
+      "offset": 126944,
+      "size": 112,
+      "align": 8,
+      "entsize": 0,
+      "sha256": "b5fdab78d8947eacc864bfeecb4d2100780e5afe1cd8efafb124887913ac49fa",
+      "nobits": false
+    },
+    {
+      "name": ".dynamic",
+      "type": 6,
+      "flags": 3,
+      "addr": 258128,
+      "offset": 127056,
+      "size": 368,
+      "align": 8,
+      "entsize": 16,
+      "sha256": "f41878001511e08584b346d2ca576fe20fe178fd4360e02b70c67a876855fb28",
+      "nobits": false
+    },
+    {
+      "name": ".got",
+      "type": 1,
+      "flags": 3,
+      "addr": 258496,
+      "offset": 127424,
+      "size": 120,
+      "align": 8,
+      "entsize": 0,
+      "sha256": "6edd9f6f9cc92cded36e6c4a580933f9c9f1b90562b46903b806f21902a1a54f",
+      "nobits": false
+    },
+    {
+      "name": ".got.plt",
+      "type": 1,
+      "flags": 3,
+      "addr": 258616,
+      "offset": 127544,
+      "size": 248,
+      "align": 8,
+      "entsize": 0,
+      "sha256": "bdc063db0726bf8483bea3d73d14b55a01a6a7245469c0de1a0a284884422024",
+      "nobits": false
+    },
+    {
+      "name": ".relro_padding",
+      "type": 8,
+      "flags": 3,
+      "addr": 258864,
+      "offset": 127792,
+      "size": 3280,
+      "align": 1,
+      "entsize": 0,
+      "sha256": null,
+      "nobits": true
+    },
+    {
+      "name": ".data",
+      "type": 1,
+      "flags": 3,
+      "addr": 324400,
+      "offset": 127792,
+      "size": 16,
+      "align": 8,
+      "entsize": 0,
+      "sha256": "db0550d553e2a146e34164d19cd55f006c38d700d8f9a4e3ba2c889a1d7c26b2",
+      "nobits": false
+    },
+    {
+      "name": ".bss",
+      "type": 8,
+      "flags": 3,
+      "addr": 324416,
+      "offset": 127808,
+      "size": 569208,
+      "align": 8,
+      "entsize": 0,
+      "sha256": null,
+      "nobits": true
+    }
+  ],
+  "dynamic": {
+    "needed": [
+      "libc.so.6",
+      "libdl.so.2"
+    ],
+    "soname": [
+      "fx3-gpe-observe-v26-perf.so"
+    ],
+    "rpath": [],
+    "runpath": []
+  },
+  "exports": [
+    {
+      "name": "fx3_gpe_callback_cache_invalidate26",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 153536,
+      "size": 28
+    },
+    {
+      "name": "osal_create_thread",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 154804,
+      "size": 644
+    },
+    {
+      "name": "osal_dynamic_id",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 158636,
+      "size": 620
+    },
+    {
+      "name": "gpe_begin_batch",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 180988,
+      "size": 160
+    },
+    {
+      "name": "gpe_submit",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 184216,
+      "size": 1860
+    },
+    {
+      "name": "gpe_plan_blit",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 181828,
+      "size": 2388
+    },
+    {
+      "name": "fx3_gpe_observation_sequence102",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 153520,
+      "size": 16
+    },
+    {
+      "name": "fx3_gpe_frame_target_release",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 154708,
+      "size": 96
+    },
+    {
+      "name": "dlopen",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 157300,
+      "size": 1100
+    },
+    {
+      "name": "gpe_init",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 180212,
+      "size": 76
+    },
+    {
+      "name": "gpe_unregister",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 180576,
+      "size": 108
+    },
+    {
+      "name": "gpe_release",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 180844,
+      "size": 144
+    },
+    {
+      "name": "fx3_gpe_snapshot_trylock",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 153344,
+      "size": 96
+    },
+    {
+      "name": "fx3_gpe_frame_target_recheck",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 154388,
+      "size": 320
+    },
+    {
+      "name": "gpe_plan_fill",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 181148,
+      "size": 504
+    },
+    {
+      "name": "gpe_register",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 180288,
+      "size": 288
+    },
+    {
+      "name": "fx3_gpe_snapshot_unlock",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 153440,
+      "size": 80
+    },
+    {
+      "name": "fx3_gpe_frame_target_acquire",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 153680,
+      "size": 240
+    },
+    {
+      "name": "_ZN8BTUtils_6BTBlog10errorPlaceEtj",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 158400,
+      "size": 236
+    },
+    {
+      "name": "gpe_acquire",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 180684,
+      "size": 160
+    },
+    {
+      "name": "gpe_deliver_one",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": ".text",
+      "value": 186076,
+      "size": 588
+    }
+  ],
+  "undefined": [
+    {
+      "name": "__errno_location",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "dprintf",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "syscall",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "bcmp",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "dlsym",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "dladdr",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "dlinfo",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "_exit",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "strcmp",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "open",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "strstr",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "mmap",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "mprotect",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "clock_gettime",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "pread",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "munmap",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "memset",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "sscanf",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "read",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "close",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "nanosleep",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    },
+    {
+      "name": "memcpy",
+      "bind": 1,
+      "type": 2,
+      "other": 0,
+      "section": 0,
+      "value": 0,
+      "size": 0
+    }
+  ],
+  "pt_load_comparison": [
+    {
+      "program_header_index": 1,
+      "file_offset": 0,
+      "filesz": 87808,
+      "differing_file_offsets": [
+        40,
+        41,
+        42,
+        60,
+        62
+      ],
+      "raw_sha256": "dede2c32dc0f7743e457875fd87627cb6d44f571c0c2d7af7767d4aa24473733",
+      "stripped_sha256": "4dda9dd8a0ef043ef051ff5de6256e1b0d58fe005e100cd6fe81c5ab845b7aa9"
+    },
+    {
+      "program_header_index": 2,
+      "file_offset": 87808,
+      "filesz": 39136,
+      "differing_file_offsets": [],
+      "raw_sha256": "a100c17708a137e8d11d3caa299337a8948771837bf7a738c7c8b290ef15ae1f",
+      "stripped_sha256": "a100c17708a137e8d11d3caa299337a8948771837bf7a738c7c8b290ef15ae1f"
+    },
+    {
+      "program_header_index": 3,
+      "file_offset": 126944,
+      "filesz": 848,
+      "differing_file_offsets": [],
+      "raw_sha256": "2d7b3e9d8807594a0423e3eebe9a3a78d54da2b378d4abab23ced3cb2fe9f194",
+      "stripped_sha256": "2d7b3e9d8807594a0423e3eebe9a3a78d54da2b378d4abab23ced3cb2fe9f194"
+    },
+    {
+      "program_header_index": 4,
+      "file_offset": 127792,
+      "filesz": 16,
+      "differing_file_offsets": [],
+      "raw_sha256": "db0550d553e2a146e34164d19cd55f006c38d700d8f9a4e3ba2c889a1d7c26b2",
+      "stripped_sha256": "db0550d553e2a146e34164d19cd55f006c38d700d8f9a4e3ba2c889a1d7c26b2"
+    }
+  ],
+  "pt_load_whole_bytes_equal": false
+}

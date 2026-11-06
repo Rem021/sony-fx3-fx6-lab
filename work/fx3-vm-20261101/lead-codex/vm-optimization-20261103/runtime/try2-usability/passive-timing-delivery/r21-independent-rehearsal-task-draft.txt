@@ -1,0 +1,21 @@
+FX3｜r21 独立操作员演练任务草案（尚未派发）
+
+启用前置条件：协调端先验收 v25-r21-recovery-integration 的最终报告、源码/依赖/交付哈希及当前补测；将精确 SHA 和验收消息写入任务。当前草案没有执行授权，不得凭草案启动。后续实际派发由协调端在既有用户授权范围内安排，无需另询用户。
+
+目的：验证恢复工具真正能被独立操作员分开调用、接图并判断后继续；脚本测试不替代此项。仅离线真实浏览器＋受控后台，不运行 QEMU/guest，不动固定 FX3 平台、用户入口及原冻结件。
+
+依赖：最终 r21 PAGE/TrialState、deadline/capture/explicit_confirm/recovery/operator_click 全部用验收后的原件。参考 interaction-operator-rehearsal-r2 的输出校验与计时方法，不复用旧页面指纹或修改旧目录。新目录拟为 interaction-operator-rehearsal-r21，独占输出；只创建自有 loopback 服务、唯一 fx3-deadline-* 浏览器会话。
+
+在计时前完成依赖核验、完整命令准备、会话与输出路径验证、历史完整菜单 PNG 选择及失败清理脚本。首次测试应使原后台在 submit 原锁内因帧代次变化完整拒绝，返回匹配本次 request_id 的 accepted:false/enqueued:false。不在前端伪造结果，不直接设置 attempt/alarm 状态。新当前图之后保持稳定以隔离工具链时序；刷新竞争已有离线专项验证，不将稳定fixture解释为VM性能。
+
+一次完整演练：
+1. 原20秒辅助 arm nonce A；通过实际 operator_click 明确 MENU；只读取本次 attempt 完整拒绝。实际后台0入队。
+2. 调用 recovery capture，将合格的新截图在同次工具结果内返回给操作员。必须验证子进程exit0、精确status、此次独占目录内新建普通PNG、文件hash；失败不得展示旧图。
+3. 操作员亲看拒绝提示和当前画面，下一工具调用只执行 recovery cancel(A)。保持原 due、完整 cancelled receipt、elapsed<20000，0confirm、0新输入、0重arm。返回取消后新截图；不能把取消算成批准画面。
+4. 操作员再看新截图，在另一独立工具调用才用新 nonce B arm＋实际 operator_click 发一次新 MENU。禁止复用旧nonce、自动retry或在取消脚本尾部发键。
+5. 受控后台接受这一键并发布历史完整Setup > Area/Date菜单图（明确是fixture），用实际 bounded capture 返回截图。操作员亲看完整菜单和橙色焦点后，另一工具调用用原 explicit_confirm 完成历史ACK匹配＋原nonce B取消；B原20秒不延长。
+6. End、finalACK、关闭本次服务和自有浏览器，核进程消失、端口关闭。失败先End和清理，再封存证据。单次演练失败保留failed，不现场循环重试掩盖调度问题。
+
+验收：2次明确点击（1拒绝+1接受）、1次未入队恢复、1次独立视觉确认；实际guest=0。记录 HTTP 请求/响应归属、attempt与nonce、原 due、完整取消事件、ledger预留与最终值、截图/固件PNG各自身份、工具边界时间。只做同钟域时差；模型接图/审完时刻无仪器则unknown。保存每次看图后的简短真实视觉判断。不得以hash匹配替代视觉判断。
+
+输出：REPORT、分项RESULT、时间线、原始HTTP/辅助receipt、截图、清理证据、精确输入与源码哈希和交付清单。结果只证明一次离线操作链，不证明8键VM、首帧稳定性、设备能力或FX6开机。下一轮真实VM由协调端根据本结果另行安排。

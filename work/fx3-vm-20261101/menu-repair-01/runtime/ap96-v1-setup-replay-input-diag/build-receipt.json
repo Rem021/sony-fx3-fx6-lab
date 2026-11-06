@@ -1,0 +1,18 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap95-v6-delete-hoststep/candidate.json",
+  "base_sha256": "822d1a281d61bc9c4b6e32b38f1abc28e0cd98f3e219aa0a281b531b68328d14",
+  "changed_member_bodies": [
+    "init",
+    "simulation/fx3-backup-replay-v1",
+    "simulation/ap89-backup-ram.bin",
+    "simulation/fx3-rm-empty-provider-v3-setup.so"
+  ],
+  "all_other_members_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "source_backup": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap95v6r3ui600-3715c225/backup-after-setup.bin",
+  "source_sha256": "191924ef39d996171ae06ab4ca85e249b655b16db6b68fd1e2ddea45efc60bdc",
+  "replay_host_ASan_UBSan": "PASS",
+  "actual_worker_13commands_MENU_after12_ASan_UBSan": "PASS",
+  "new_gate_semantics": false,
+  "authority": "msg_48dccc7b7d3d"
+}

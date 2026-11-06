@@ -1,0 +1,27 @@
+{
+  "live_release": false,
+  "native_helper_executed": false,
+  "new_administrator_or_camera_operations": 0,
+  "kernel_peer_tests": "real same-UID501 processes only; root-to-user cross-UID behavior untested",
+  "native_scope": "compiled native candidate is wholly unreleased; native path additionally enforces observe/status/end only",
+  "physical_protocol": "MSC START/AUTH/STOP in tests used only fake IOKit vtables; no actual mode transition, SERVICE profile, authentication or exit proof",
+  "cleanup": "after any START attempt, even a returned STOP, private lifetime is retained; no body completion fabricated",
+  "remaining": [
+    "fixed Terminal/bootstrap/user supervisor and result-receipt delivery must be ported to ABI4/schema3",
+    "global fencing across future grants/processes is not implemented by a per-process once flag or per-grant lease",
+    "shared frame is a cooperating observer interface, not a proven hostile-client security boundary; truncation/hostile mapping lifetime is not tested",
+    "real root peer and physical ownership/return need their own concrete reviewed grant",
+    "actual Sony wire/profiles, post-START re-enumeration, worker completion and read admission remain unproven",
+    "same-body p1 backup, guarded ET_DYN loading, clean boot/WBI and independent restoration remain unproven"
+  ],
+  "test_counter_correction": {
+    "integration_report_helper_processes": 31,
+    "meaning": "jobs launched by primary Job counter only",
+    "additional_owner_job_in_orphan_observer": 1,
+    "additional_replay_helper_execution": 1,
+    "total_fake_owner_jobs": 32,
+    "total_fake_helper_executions": 33,
+    "own_observer_processes_intentionally_terminated": 1,
+    "no_real_owner_or_pending_device_process_killed": true
+  }
+}

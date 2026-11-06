@@ -1,0 +1,79 @@
+{
+  "schema": "fx6-backup-read-observer-candidate-result-v1",
+  "task": "task_e0f4f68af4d4",
+  "dispatch": "ctx_1ffa7ba88ade",
+  "status": "HOST_ONLY_CANDIDATE_READY_NOT_RUN",
+  "target_cpio_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+  "appfw_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+  "serial_sha256": "377142e9dcee7f4f7728db6e9fcb822a9f3e501e61da7f719761d4d506f5050e",
+  "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "keys": [
+    "0x02cf0214",
+    "0x02cf0218"
+  ],
+  "thunk_vas": [
+    "0x2169784",
+    "0x21697d4"
+  ],
+  "return_vas": [
+    "0x11f67d4",
+    "0x11f67f4"
+  ],
+  "current_serial_epoch5_bias_fixture": "0x7ed3ccc000",
+  "approval_token": "APPROVE_GRMREAL46_TWO_KEYS_0214_0218",
+  "default_disabled": true,
+  "execution_adapter_included": false,
+  "new_vm_started": false,
+  "guest_contacted": false,
+  "guest_writes": false,
+  "z0": false,
+  "software_step": false,
+  "old_observer_modified": false,
+  "old_authorization_reused": false,
+  "host_tests": "tests/host-tests.json",
+  "test_status": "PASS_NO_QEMU_FAKE_RSP",
+  "test_count": 12,
+  "limitations": [
+    "fake RSP/fixture tests are not real CPU/menu evidence",
+    "future run requires new authorization and reviewed execution adapter",
+    "receiver of 0x3e014d and Backup origin remain unproven",
+    "TLS/current maps must be live; no historical ASLR accepted"
+  ],
+  "host_tests_sha256": "368d9a3b28e44c22e41fa79ff6a07325c55f2296e4f999b39cc64cd29f119934",
+  "core_sha256": "5ae5a720530b8c1f68699676175c336fbce234ccb311ccd3b4e5c23680e16d39",
+  "plan": {
+    "status": "PLAN_ONLY_NOT_RUN",
+    "serial_sha256": "377142e9dcee7f4f7728db6e9fcb822a9f3e501e61da7f719761d4d506f5050e",
+    "bias_fixture": "0x7ed3ccc000",
+    "breakpoints": [
+      [
+        "0x02cf0214",
+        "0x7ed5e35784",
+        "0x7ed4ec27d4"
+      ],
+      [
+        "0x02cf0218",
+        "0x7ed5e357d4",
+        "0x7ed4ec27f4"
+      ]
+    ],
+    "budgets": {
+      "one_start": true,
+      "keys": 0,
+      "observe_seconds": 150,
+      "total_seconds": 180,
+      "max_simultaneous_Z1": 2,
+      "max_stops": 8,
+      "max_data_reads": 16,
+      "max_read_bytes": 4,
+      "identity_reads_bounded": 128
+    }
+  },
+  "input_seal": {
+    "count": 10,
+    "unchanged": true,
+    "path": "receipts/input-compare.json"
+  },
+  "baseline_binding_sha256": "538f7344adff672cb891cd844fddf3aec46d9dba00bb1ebdb033c98b3f49e999",
+  "plan_sha256": "a65e3eae0da42978b29ac37e03ecb8db9c8b8cb4c4d8b6386e2ad012c50a9976"
+}

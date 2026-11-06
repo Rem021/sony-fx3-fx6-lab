@@ -1,0 +1,139 @@
+{
+  "passed": true,
+  "scope": "offline Chrome fixture, no VM or real operator semantic review",
+  "cases": {
+    "wrong_attempt_nonce_PAGE_no_cancel": {
+      "attempt": {
+        "cancel_invoked": false,
+        "performance_ms": 3751.5,
+        "reason": "review_receipt",
+        "status": "refused"
+      },
+      "nonce": {
+        "cancel_invoked": false,
+        "performance_ms": 3762.5,
+        "reason": "review_receipt",
+        "status": "refused"
+      },
+      "PAGE": {
+        "cancel_invoked": false,
+        "performance_ms": 3771,
+        "reason": "PAGE_fingerprint",
+        "status": "refused"
+      }
+    },
+    "old_alarm_cancelled_cannot_repeat": {
+      "result": {
+        "cancel_invoked": false,
+        "performance_ms": 3842.5,
+        "reason": "attempt_alarm_binding",
+        "status": "refused"
+      }
+    },
+    "historical_review_B_current_A_cancel_only": {
+      "result": {
+        "alarm_cancel_receipt": {
+          "current": {
+            "armed_ms": 3047.2000000476837,
+            "cancelled_ms": 3792.700000047684,
+            "deadline_ms": 20000,
+            "due_ms": 23047.200000047684,
+            "nonce": "03ba9008-c4b0-4801-abe8-7465f67bc637",
+            "state": "cancelled"
+          },
+          "deadline_ms": 20000,
+          "documentTimeOrigin": 1793834986006.2,
+          "events": [
+            {
+              "event": "installed",
+              "performance_ms": 3040,
+              "script_SHA256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+              "wall_UTC": "2026-11-04T23:29:49.045Z"
+            },
+            {
+              "due_ms": 23047.200000047684,
+              "event": "armed",
+              "nonce": "03ba9008-c4b0-4801-abe8-7465f67bc637",
+              "performance_ms": 3047.2000000476837,
+              "wall_UTC": "2026-11-04T23:29:49.053Z"
+            },
+            {
+              "elapsed_ms": 745.5,
+              "event": "cancelled",
+              "nonce": "03ba9008-c4b0-4801-abe8-7465f67bc637",
+              "performance_ms": 3792.700000047684,
+              "wall_UTC": "2026-11-04T23:29:49.798Z"
+            }
+          ],
+          "expectedLaunchId": "c6f67c5a-dcb6-45d8-8c9b-464dc8e5d10f",
+          "expectedURL": "http://127.0.0.1:49727/",
+          "sealed": false,
+          "version": 1
+        },
+        "attempt_id": "dadfaaf7-8674-47fd-af4f-c7b0cd06657b",
+        "cancel_invoked": true,
+        "current_frame": {
+          "generation": 3,
+          "sequence": 3,
+          "sha": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9"
+        },
+        "due_ms": 23047.200000047684,
+        "elapsed_ms": 745.5,
+        "historical_review_not_current": true,
+        "no_confirm_visual": true,
+        "no_guest_key": true,
+        "no_visual_approval": true,
+        "nonce": "03ba9008-c4b0-4801-abe8-7465f67bc637",
+        "old_review": {
+          "generation": 2,
+          "sha": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1"
+        },
+        "performance_ms": 3792.700000047684,
+        "server_atomic_permission": false,
+        "status": "cancelled_unqueued_alarm_only"
+      },
+      "key_posts": 1,
+      "confirm_posts": 0,
+      "guest_steps": 0
+    },
+    "separate_explicit_new_click": {
+      "key_posts": 2,
+      "confirm_posts": 0,
+      "pending": 1,
+      "receipt": {
+        "status": "click_invoked",
+        "session": "fx3-deadline-r21-9f897508",
+        "tab": null,
+        "target": "fixture operator separately reviewed current A",
+        "key": 427,
+        "host_start_ns": 418675405723958,
+        "eval_may_have_started": true,
+        "guest_keys_sent_directly_by_cli": 0,
+        "result": {
+          "attempt_id": "e029d0fe-1ec7-4852-9e2f-1abd61564b2e",
+          "base_step": 0,
+          "clicked_generation": 3,
+          "clicked_sha": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+          "server_atomic_permission": false,
+          "step": 1
+        },
+        "host_end_ns": 418675412939791
+      }
+    },
+    "stale_reviewed_image_refused_zero_key": {
+      "receipt": {
+        "status": "unknown",
+        "session": "fx3-deadline-r21-9f897508",
+        "tab": null,
+        "target": "fixture deliberately stale reviewed image",
+        "key": 427,
+        "host_start_ns": 418675718346708,
+        "eval_may_have_started": true,
+        "guest_keys_sent_directly_by_cli": 0,
+        "error": "RuntimeError('agent-browser eval failed:  ✗ Evaluation error: Error: operator_click_preflight\\n    at <anonymous>:8:105\\n')",
+        "host_end_ns": 418675724664875
+      },
+      "key_posts": 0
+    }
+  }
+}

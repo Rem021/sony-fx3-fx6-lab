@@ -1,0 +1,143 @@
+_ZN7Updater21SDUUDConditionChecker21getUpdateFirmwareInfoEPKcRN10UpdaterAPI22firmware_information_t11informationE
+0000a3fc sub       sp, sp, #0x230
+0000a400 stp       x29, x30, [sp, #-0x40]!
+0000a404 mov       x29, sp
+0000a408 stp       x19, x20, [sp, #0x10]
+0000a40c add       x19, x29, #0x48
+0000a410 str       x23, [sp, #0x30]
+0000a414 mov       x23, x0
+0000a418 mov       x0, x19
+0000a41c stp       x21, x22, [sp, #0x20]
+0000a420 mov       x20, x1
+0000a424 mov       x21, x2
+0000a428 bl        #0x7680 ; _ZN7Updater15FsysFileHandlerC1Ev
+0000a42c mov       x1, x20
+0000a430 mov       x0, x19
+0000a434 mov       w2, #0
+0000a438 bl        #0x7130 ; _ZN7Updater15FsysFileHandler4OpenEPKcj
+0000a43c tst       w0, #0xff
+0000a440 b.ne      #0xa4bc
+0000a444 bl        #0x75b0 ; __errno_location
+0000a448 ldr       w4, [x0]
+0000a44c adrp      x2, #0xb000
+0000a450 adrp      x0, #0xa000
+0000a454 mov       w1, #0x12
+0000a458 add       x2, x2, #0x4b5
+0000a45c add       x0, x0, #0xfa4
+0000a460 mov       w3, #0x42
+0000a464 movk      w1, #3, lsl #16
+0000a468 bl        #0x7910 ; printf
+0000a46c mov       x0, #0x10
+0000a470 bl        #0x71a0 ; __cxa_allocate_exception
+0000a474 adrp      x1, #0x1d000
+0000a478 adrp      x2, #0x1d000
+0000a47c ldr       x1, [x1, #0xf50]
+0000a480 ldr       x2, [x2, #0xf70]
+0000a484 add       x1, x1, #0x10
+0000a488 str       x1, [x0]
+0000a48c mov       w1, #0x12
+0000a490 movk      w1, #3, lsl #16
+0000a494 str       w1, [x0, #8]
+0000a498 adrp      x1, #0x1d000
+0000a49c strb      wzr, [x0, #0xc]
+0000a4a0 ldr       x1, [x1, #0xfc8]
+0000a4a4 bl        #0x77b0 ; __cxa_throw
+0000a4a8 mov       x20, x0
+0000a4ac mov       x0, x19
+0000a4b0 bl        #0x7580 ; _ZN7Updater15FsysFileHandlerD1Ev
+0000a4b4 mov       x0, x20
+0000a4b8 bl        #0x7830 ; _Unwind_Resume
+0000a4bc ldr       x0, [x23]
+0000a4c0 mov       x1, x19
+0000a4c4 ldr       x2, [x0, #0x58]
+0000a4c8 mov       x0, x23
+0000a4cc blr       x2
+0000a4d0 mov       x1, x0
+0000a4d4 mov       x0, x19
+0000a4d8 bl        #0x7060 ; _ZN7Updater15FsysFileHandler4SeekEl
+0000a4dc add       x20, x29, #0x60
+0000a4e0 mov       x0, x19
+0000a4e4 mov       x1, x20
+0000a4e8 mov       x2, #0x20c
+0000a4ec bl        #0x7280 ; _ZN7Updater15FsysFileHandler4ReadEPvm
+0000a4f0 add       x22, x20, #8
+0000a4f4 add       x20, x20, #0x78
+0000a4f8 tbz       x0, #0x3f, #0xa560
+0000a4fc bl        #0x75b0 ; __errno_location
+0000a500 ldr       w4, [x0]
+0000a504 adrp      x2, #0xb000
+0000a508 adrp      x0, #0xa000
+0000a50c mov       w1, #0x12
+0000a510 add       x2, x2, #0x4b5
+0000a514 add       x0, x0, #0xfa4
+0000a518 mov       w3, #0x49
+0000a51c movk      w1, #3, lsl #16
+0000a520 bl        #0x7910 ; printf
+0000a524 mov       x0, #0x10
+0000a528 bl        #0x71a0 ; __cxa_allocate_exception
+0000a52c adrp      x1, #0x1d000
+0000a530 adrp      x2, #0x1d000
+0000a534 ldr       x1, [x1, #0xf50]
+0000a538 ldr       x2, [x2, #0xf70]
+0000a53c add       x1, x1, #0x10
+0000a540 str       x1, [x0]
+0000a544 mov       w1, #0x12
+0000a548 movk      w1, #3, lsl #16
+0000a54c str       w1, [x0, #8]
+0000a550 adrp      x1, #0x1d000
+0000a554 strb      wzr, [x0, #0xc]
+0000a558 ldr       x1, [x1, #0xfc8]
+0000a55c bl        #0x77b0 ; __cxa_throw
+0000a560 ldr       x0, [x23, #0x10]
+0000a564 ldr       x1, [x0]
+0000a568 ldr       x2, [x1, #0xb0]
+0000a56c mov       x1, x22
+0000a570 blr       x2
+0000a574 add       x22, x22, #0x10
+0000a578 cmp       x22, x20
+0000a57c b.ne      #0xa560
+0000a580 ldrb      w0, [x29, #0x8d]
+0000a584 str       w0, [x21, #4]
+0000a588 ldrb      w0, [x29, #0x8c]
+0000a58c str       w0, [x21, #8]
+0000a590 ldr       w0, [x29, #0x90]
+0000a594 str       w0, [x21, #0xc]
+0000a598 ldr       w0, [x29, #0x94]
+0000a59c str       w0, [x21, #0x10]
+0000a5a0 mov       x0, x19
+0000a5a4 bl        #0x73b0 ; _ZN7Updater15FsysFileHandler5CloseEv
+0000a5a8 tst       w0, #0xff
+0000a5ac b.ne      #0xa614
+0000a5b0 bl        #0x75b0 ; __errno_location
+0000a5b4 ldr       w4, [x0]
+0000a5b8 adrp      x2, #0xb000
+0000a5bc adrp      x0, #0xa000
+0000a5c0 mov       w1, #0x12
+0000a5c4 add       x2, x2, #0x4b5
+0000a5c8 add       x0, x0, #0xfa4
+0000a5cc mov       w3, #0x5a
+0000a5d0 movk      w1, #3, lsl #16
+0000a5d4 bl        #0x7910 ; printf
+0000a5d8 mov       x0, #0x10
+0000a5dc bl        #0x71a0 ; __cxa_allocate_exception
+0000a5e0 adrp      x1, #0x1d000
+0000a5e4 adrp      x2, #0x1d000
+0000a5e8 ldr       x1, [x1, #0xf50]
+0000a5ec ldr       x2, [x2, #0xf70]
+0000a5f0 add       x1, x1, #0x10
+0000a5f4 str       x1, [x0]
+0000a5f8 mov       w1, #0x12
+0000a5fc movk      w1, #3, lsl #16
+0000a600 str       w1, [x0, #8]
+0000a604 adrp      x1, #0x1d000
+0000a608 strb      wzr, [x0, #0xc]
+0000a60c ldr       x1, [x1, #0xfc8]
+0000a610 bl        #0x77b0 ; __cxa_throw
+0000a614 mov       x0, x19
+0000a618 bl        #0x7580 ; _ZN7Updater15FsysFileHandlerD1Ev
+0000a61c ldr       x23, [sp, #0x30]
+0000a620 ldp       x19, x20, [sp, #0x10]
+0000a624 ldp       x21, x22, [sp, #0x20]
+0000a628 ldp       x29, x30, [sp], #0x40
+0000a62c add       sp, sp, #0x230
+0000a630 ret       

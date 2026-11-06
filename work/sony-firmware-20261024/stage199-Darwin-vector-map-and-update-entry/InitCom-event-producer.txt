@@ -1,0 +1,38 @@
+# Original FX3 bytes, source map0x4200, conditional linkage only; no execution.
+0x18004 [file+0x13e04] 7cb5 push      {r2, r3, r4, r5, r6, lr}
+0x18006 [file+0x13e06] 01ac add       r4, sp, #4
+0x18008 [file+0x13e08] 0025 movs      r5, #0
+0x1800a [file+0x13e0a] 01a9 add       r1, sp, #4
+0x1800c [file+0x13e0c] 0320 movs      r0, #3
+0x1800e [file+0x13e0e] ecf79ffa bl        #0x4550
+0x18012 [file+0x13e12] 2088 ldrh      r0, [r4]
+0x18014 [file+0x13e14] 0a28 cmp       r0, #0xa
+0x18016 [file+0x13e16] 13d0 beq       #0x18040
+0x18018 [file+0x13e18] ff28 cmp       r0, #0xff
+0x1801a [file+0x13e1a] 1fd0 beq       #0x1805c
+0x1801c [file+0x13e1c] 5f21 movs      r1, #0x5f
+0x1801e [file+0x13e1e] 0120 movs      r0, #1
+0x18020 [file+0x13e20] eff764f9 bl        #0x72ec
+0x18024 [file+0x13e24] f221 movs      r1, #0xf2
+0x18026 [file+0x13e26] 0120 movs      r0, #1
+0x18028 [file+0x13e28] eff760f9 bl        #0x72ec
+0x1802c [file+0x13e2c] 0321 movs      r1, #3
+0x1802e [file+0x13e2e] 0120 movs      r0, #1
+0x18030 [file+0x13e30] eff75cf9 bl        #0x72ec
+0x18034 [file+0x13e34] 2088 ldrh      r0, [r4]
+0x18036 [file+0x13e36] c1b2 uxtb      r1, r0
+0x18038 [file+0x13e38] 0120 movs      r0, #1
+0x1803a [file+0x13e3a] eff757f9 bl        #0x72ec
+0x1803e [file+0x13e3e] e4e7 b         #0x1800a
+0x18040 [file+0x13e40] 6846 mov       r0, sp
+0x18042 [file+0x13e42] ecf70bff bl        #0x4e5c
+0x18046 [file+0x13e46] 0028 cmp       r0, #0
+0x18048 [file+0x13e48] dfd1 bne       #0x1800a
+0x1804a [file+0x13e4a] 2580 strh      r5, [r4]
+0x1804c [file+0x13e4c] 9df80000 ldrb.w    r0, [sp]
+0x18050 [file+0x13e50] 6080 strh      r0, [r4, #2]
+0x18052 [file+0x13e52] 0020 movs      r0, #0
+0x18054 [file+0x13e54] 0199 ldr       r1, [sp, #4]
+0x18056 [file+0x13e56] ecf779fa bl        #0x454c
+0x1805a [file+0x13e5a] d6e7 b         #0x1800a
+0x1805c [file+0x13e5c] 7cbd pop       {r2, r3, r4, r5, r6, pc}

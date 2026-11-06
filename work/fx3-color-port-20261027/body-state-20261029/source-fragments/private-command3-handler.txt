@@ -1,0 +1,60 @@
+00013cf8 stp        x29, x30, [sp, #-0xc0]!
+00013cfc mov        x3, x0
+00013d00 add        x1, x3, #0xc
+00013d04 mov        x2, #0x98
+00013d08 mov        x29, sp
+00013d0c stp        x19, x20, [sp, #0x10]
+00013d10 add        x0, x29, #0x24
+00013d14 ldr        w19, [x3, #8]
+00013d18 stp        xzr, xzr, [x29, #0x20]
+00013d1c stp        xzr, xzr, [x29, #0x30]
+00013d20 stp        xzr, xzr, [x29, #0x40]
+00013d24 stp        xzr, xzr, [x29, #0x50]
+00013d28 stp        xzr, xzr, [x29, #0x60]
+00013d2c stp        xzr, xzr, [x29, #0x70]
+00013d30 stp        xzr, xzr, [x29, #0x80]
+00013d34 stp        xzr, xzr, [x29, #0x90]
+00013d38 stp        xzr, xzr, [x29, #0xa0]
+00013d3c ldr        w20, [x3, #0xa4]
+00013d40 str        xzr, [x29, #0xb0]
+00013d44 str        wzr, [x29, #0xb8]
+00013d48 bl         #0x13d48 ; [{"symbol": "memcpy", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00013d4c cmp        w19, #0x17
+00013d50 b.hi       #0x13db0
+00013d54 mov        w19, w19
+00013d58 ldr        x0, #0x13dd8
+00013d5c add        x19, x19, x19, lsl #1
+00013d60 add        x19, x0, x19, lsl #4
+00013d64 ldr        x2, [x19, #0x18]
+00013d68 cbz        x2, #0x13db0
+00013d6c ldr        x1, #0x13de0
+00013d70 add        x19, x29, #0x20
+00013d74 add        x0, x19, #4
+00013d78 add        x1, x1, #4
+00013d7c blr        x2
+00013d80 cmp        w0, #0
+00013d84 mov        w1, #-0x400
+00013d88 mov        w0, w20
+00013d8c csel       w1, wzr, w1, eq
+00013d90 mov        w2, #0x9c
+00013d94 str        w1, [x29, #0x20]
+00013d98 mov        x1, x19
+00013d9c bl         #0x13d9c ; [{"symbol": "upm_notify_wrapper_async", "addend": 0, "type": 283, "section": 2}]
+00013da0 ldp        x19, x20, [sp, #0x10]
+00013da4 ldp        x29, x30, [sp], #0xc0
+00013da8 ret        
+00013dac nop        
+00013db0 add        x19, x29, #0xc0
+00013db4 mov        w0, #-0x3fa
+00013db8 mov        w2, #0x9c
+00013dbc str        w0, [x19, #-0xa0]!
+00013dc0 mov        w0, w20
+00013dc4 mov        x1, x19
+00013dc8 bl         #0x13dc8 ; [{"symbol": "upm_notify_wrapper_async", "addend": 0, "type": 283, "section": 2}]
+00013dcc ldp        x19, x20, [sp, #0x10]
+00013dd0 ldp        x29, x30, [sp], #0xc0
+00013dd4 ret        
+00013dd8 udf        #0 ; [{"symbol": "g_upm_fp_factor_func", "addend": 0, "type": 257, "section": 23}]
+00013ddc udf        #0
+00013de0 udf        #0 ; [{"symbol": "", "addend": 2384, "type": 257, "section": 27}]
+00013de4 udf        #0

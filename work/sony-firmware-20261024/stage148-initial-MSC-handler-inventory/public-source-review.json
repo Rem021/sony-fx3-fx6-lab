@@ -1,0 +1,51 @@
+{
+  "checked_date": "2026-10-27",
+  "sources": [
+    {
+      "URL": "https://github.com/ma1co/Sony-PMCA-RE/issues/715",
+      "source_kind": "firsthand issue report and followup, not independently reproduced",
+      "dates": ["2026-06-04", "2026-06-09", "2026-07-07"],
+      "model": "ILME-FX3A",
+      "reported_firmware": "2.02",
+      "findings": [
+        "Initial macOS serviceshell timeout was followed by a reported success on the same model using Conda Python3.11, Homebrew libusb and an inline sudo environment path.",
+        "The success instructions do not describe a changed authentication algorithm or source patch. The claimed cause of the improvement is the reporter's explanation, not a USB trace or controlled isolation experiment.",
+        "The goal was PAL/NTSC setting modification; this is not modified firmware flashing, complete firmware restoration or an independent brick recovery report."
+      ],
+      "proves_classic_FX3_702_authentication_or_recovery": false
+    },
+    {
+      "URL": "https://github.com/ma1co/Sony-PMCA-RE/issues/504",
+      "source_kind": "firsthand tutorial and followup comments",
+      "dates": ["2024-04-02", "2026-08-23"],
+      "findings": [
+        "The initial tutorial reports FX3/FX30 language changes through an Ubuntu ARM VM on Apple Silicon; its title/body do not supply classic FX3 firmware7.02 acceptance evidence.",
+        "Later reports name other models; the August2026 FX5 comment is a question, not a success or recovery test."
+      ],
+      "proves_classic_FX3_702_authentication_or_recovery": false
+    },
+    {
+      "URL": "https://github.com/morluto/rea/discussions/3027",
+      "source_kind": "original research request",
+      "date": "2026-10-13",
+      "finding": "A request to reverse engineer FX3 firmware7.02 for battery behavior; the viewed discussion had no implementation comments. It supplies no working unlock or recovery artifact.",
+      "proves_working_FX3_modified_firmware": false
+    }
+  ],
+  "GitHub_search": {
+    "local_result": "public-issue-refresh/FX3-search.json",
+    "source_metadata": "public-issue-refresh/source.json",
+    "query": "repo:ma1co/Sony-PMCA-RE \"FX3\"",
+    "total": 16,
+    "returned": 16,
+    "complete_web_or_private_firmware_search": false
+  },
+  "API_comment_fetch_failures": {
+    "issues": [715, 504, 714],
+    "HTTP_status": 403,
+    "reason": "rate limit exceeded",
+    "fallback": "Read the public715 and504 issue pages with the web tool; no credentials, private account or camera access used.",
+    "714_comments_claimed_reviewed": false
+  },
+  "downloaded_instructions_or_camera_commands_executed": false
+}

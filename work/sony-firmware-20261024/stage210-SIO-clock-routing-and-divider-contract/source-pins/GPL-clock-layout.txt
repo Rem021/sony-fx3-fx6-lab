@@ -1,0 +1,12 @@
+typedef struct UDIF_CLK_CTL {
+	UDIF_VA		set;
+	UDIF_VA		clr;
+	UDIF_U32	shift;
+	UDIF_U32	mask;
+} UDIF_CLK_CTL;
+
+typedef struct UDIF_CLOCK {
+	UDIF_CLK_CTL	hclk;
+	UDIF_CLK_CTL	dclk;
+	UDIF_CLK_CTL	dclksel;
+} UDIF_CLOCK;

@@ -1,0 +1,60 @@
+{
+  "compiled_magic_vector_at_0xac0": [
+    "0x32474e495244534f",
+    2
+  ],
+  "window_boundary_regression_passed": true,
+  "UI_v15_source_build_fixed_slot_binding": true,
+  "same_fixed_argv_cpio_and_actual_helpers_all4": true,
+  "actual_members": {
+    "usr/lib/appFw.so": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "simulation/fx3-osd-headless-v5.so": "67155b38fbbe23c3b6273c64ce8fc4676e59ad98da4a30a238508c26d9b5fba8",
+    "simulation/fx3-capid-v1.so": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e",
+    "simulation/ioctl-trace.so": "f2799333d67b4b118634e273f50f7d48106a228c1c40132075d923f040ca0b74",
+    "simulation/fx3-ui-gate-v1.so": "6673b9beaf8a2adfbc2c68dc7337df369e484bd58ede10edff3519dcf8d258df"
+  },
+  "cpio_SHA": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+  "OSD_source_SHA": "1c4d2b420a40d006d22d2e60510df18d6dbbd7c51cd219735f1252f17c5956eb",
+  "capid_source_build_binary_binding": true,
+  "disassembly": [
+    {
+      "argv": [
+        "/usr/bin/xcrun",
+        "llvm-objdump",
+        "--disassemble",
+        "--start-address=0x16f1a48",
+        "--stop-address=0x16f1c18",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so"
+      ],
+      "exit": 0,
+      "output": "app-producer-full.txt",
+      "sha256": "51224ffb7eeb6cb6776da117e73c78b182112a331356c126be18852ff2f3b5e7"
+    },
+    {
+      "argv": [
+        "/usr/bin/xcrun",
+        "llvm-objdump",
+        "--disassemble",
+        "--start-address=0x16f1d08",
+        "--stop-address=0x16f1db0",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so"
+      ],
+      "exit": 0,
+      "output": "app-consumer-full.txt",
+      "sha256": "a877c2b124e6c3e4db72144443324866a84f8c4b48b0567eaac7228432194af4"
+    },
+    {
+      "argv": [
+        "/usr/bin/xcrun",
+        "llvm-objdump",
+        "--disassemble",
+        "--start-address=0x13f2c",
+        "--stop-address=0x14154",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/build/fx3-osd-headless-v25-r3.so"
+      ],
+      "exit": 0,
+      "output": "osd-bind-compiled.txt",
+      "sha256": "b8e09e5e1712d074db7e82425aa5c78b5362a704f0288a8966a8a6f0c4401c4b"
+    }
+  ]
+}

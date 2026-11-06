@@ -1,0 +1,197 @@
+{
+  "fault": null,
+  "result": 11,
+  "state": 11,
+  "collector_kernel_raw_status": 10752,
+  "filtered": false,
+  "anchor_origin": "same running collector object A",
+  "lookups": [
+    {
+      "relative_anchor_fd": 80,
+      "object": "same running collector object A",
+      "phase": 0,
+      "state": "S",
+      "numeric_index_object": "same running collector object A"
+    },
+    {
+      "relative_anchor_fd": 80,
+      "object": "same running collector object A",
+      "phase": 0,
+      "state": "S",
+      "numeric_index_object": "same running collector object A"
+    },
+    {
+      "relative_anchor_fd": 80,
+      "object": "same running collector object A",
+      "phase": 1,
+      "state": "Z",
+      "numeric_index_object": "same running collector object A"
+    },
+    {
+      "relative_anchor_fd": 80,
+      "object": "same running collector object A",
+      "phase": 2,
+      "state": "GONE",
+      "numeric_index_object": "same running collector object A"
+    }
+  ],
+  "closes": [
+    {
+      "fd": 81,
+      "kind": "stat"
+    },
+    {
+      "fd": 53,
+      "kind": "channel"
+    },
+    {
+      "fd": 82,
+      "kind": "stat"
+    },
+    {
+      "fd": 83,
+      "kind": "stat"
+    },
+    {
+      "fd": 80,
+      "kind": "anchor"
+    }
+  ],
+  "waits": [],
+  "events": [
+    {
+      "event": "kernel installs received rights",
+      "FDs": [
+        80
+      ],
+      "control_bytes": 56,
+      "unsupported_kernel_schema": false
+    }
+  ],
+  "host_borrowed_FDs_unchanged": true,
+  "remaining_before_wrapper_exit": [
+    0,
+    1,
+    2,
+    7
+  ],
+  "new_stat_FDs_all_closed": true,
+  "all_lookups_relative_to_original_object": true,
+  "no_numeric_pid_path_lookup_or_wait": true,
+  "ack": [
+    {
+      "type": 4,
+      "sha256": "01d19dcb9ae3213ea00e3dfd5211e0040fae9731597d9cc93507fc0783fdf4b0",
+      "collector_worker_created_already": false
+    }
+  ],
+  "received_FDs": [
+    80
+  ],
+  "received_remaining": [],
+  "receiver_state": 11,
+  "producer": {
+    "fault": null,
+    "collector_exit_status": 10752,
+    "collector_alive": false,
+    "collector_state": 10,
+    "own_worker_status": 0,
+    "own_worker_alive": false,
+    "worker_reaped": true,
+    "collector_remaining_FDs": [],
+    "host_borrowed_FDs_unchanged": true,
+    "private_messages": [
+      {
+        "event": "private message",
+        "sender": 5001,
+        "type": 1
+      },
+      {
+        "event": "private message",
+        "sender": 7002,
+        "type": 2
+      }
+    ],
+    "events": [
+      {
+        "event": "clone0",
+        "parent": 5001,
+        "child": 7002,
+        "private_VM_FDs_sighand": true,
+        "new_child_list_empty": true,
+        "new_subreaper": false
+      },
+      {
+        "event": "private message",
+        "sender": 5001,
+        "type": 1
+      },
+      {
+        "event": "private message",
+        "sender": 7002,
+        "type": 2
+      },
+      {
+        "event": "kernel task terminal",
+        "role": "own worker",
+        "pid": 7002,
+        "status": 0,
+        "kind": "SYS_exit",
+        "closed_FDs": []
+      },
+      {
+        "event": "kernel task terminal",
+        "role": "own collector",
+        "pid": 5001,
+        "status": 10752,
+        "kind": "SYS_exit",
+        "closed_FDs": []
+      }
+    ],
+    "waits": [
+      {
+        "request": -1,
+        "options": 1073741825,
+        "eligible_roles": [],
+        "returned": -10,
+        "status": null
+      },
+      {
+        "request": 7002,
+        "options": 2684354561,
+        "eligible_roles": [
+          "own worker"
+        ],
+        "returned": 0,
+        "status": null
+      },
+      {
+        "request": 7002,
+        "options": 2684354561,
+        "eligible_roles": [
+          "own worker"
+        ],
+        "returned": 7002,
+        "status": 0
+      }
+    ],
+    "source_accesses": [],
+    "collector_sleeps": 1,
+    "only_collector_created_child": true,
+    "injected_rights_all_closed": true,
+    "syscall_count": 184
+  },
+  "self_proc_anchor_transfers": [
+    {
+      "sender_pid": 5001,
+      "receiver_fd": 53,
+      "source_fd": 10,
+      "object_identity": "same collector object as sender",
+      "not_numeric_reopen": true,
+      "hello_sha256": "c64f4e80d77fa7894397f6690849f3f4ba73c5aec098cf3b6b9ddad6f0585768"
+    }
+  ],
+  "explicit_incomplete_control_cleanup": false,
+  "own_C_ACK_precedes_inner_worker": true,
+  "foreign_origin_boundary": false
+}

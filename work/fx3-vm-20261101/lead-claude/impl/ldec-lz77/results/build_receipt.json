@@ -1,0 +1,96 @@
+{
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.27.1)",
+  "python": "3.14.6 (v3.14.6:c63aec69bd5, Jun 10 2026, 08:07:54) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "source_resources": [
+    {
+      "bytes": 27969292,
+      "failures": 0,
+      "file": "image_00_169.uxc",
+      "length_matches": 7735,
+      "records": 7735,
+      "sha256": "9d1d92fd1657977c8feaa64ea38bc7a0dd7d7382920b69ea980c5db573b4f89b"
+    },
+    {
+      "bytes": 26839932,
+      "failures": 0,
+      "file": "image_00_32.uxc",
+      "length_matches": 7735,
+      "records": 7735,
+      "sha256": "10d000f944f83132a0006d694a6e05ce23919b09ca4d34fe213be4cc5a8cdc49"
+    },
+    {
+      "bytes": 27607512,
+      "failures": 0,
+      "file": "image_00_43.uxc",
+      "length_matches": 7735,
+      "records": 7735,
+      "sha256": "b704fbfa786d1bf6c90052a02a5538f89870e65882f079d47d6d2d08fcbbc4e2"
+    },
+    {
+      "bytes": 25397076,
+      "failures": 0,
+      "file": "image_01_169.uxc",
+      "length_matches": 7569,
+      "records": 7569,
+      "sha256": "146bb298cf2cb8eb42007f333b61eca6c9d1cfe5fea2137d7b6c9915514fa15d"
+    },
+    {
+      "bytes": 25508264,
+      "failures": 0,
+      "file": "image_01_32.uxc",
+      "length_matches": 7569,
+      "records": 7569,
+      "sha256": "49cbf50c294742991092d35e7f654ac81c4cf5e46641b034b4ba7542acaee762"
+    },
+    {
+      "bytes": 25349968,
+      "failures": 0,
+      "file": "image_01_43.uxc",
+      "length_matches": 7569,
+      "records": 7569,
+      "sha256": "582c410bb0845ef577b2d1e087d1adb8c799359da6f4030eda065bd38c3ca84f"
+    },
+    {
+      "bytes": 5576672,
+      "failures": 0,
+      "file": "image_02_169.uxc",
+      "length_matches": 1910,
+      "records": 1910,
+      "sha256": "1712a91f4b58b825c9e6aaef66f6aa4066e2fd2e3798b005d6384b286253b83d"
+    },
+    {
+      "bytes": 5532880,
+      "failures": 0,
+      "file": "image_02_32.uxc",
+      "length_matches": 1910,
+      "records": 1910,
+      "sha256": "90441f0bc058fd2068af6600c7e642cc7b06e0bb169239384b1d8f05c92f2a39"
+    },
+    {
+      "bytes": 5732624,
+      "failures": 0,
+      "file": "image_02_43.uxc",
+      "length_matches": 1910,
+      "records": 1910,
+      "sha256": "ddb76b40be59eb68533061f8c8fd3ad6f4546c78b2a6d7255dc8a34093edab4f"
+    }
+  ],
+  "sources": {
+    "build_and_test.py": "048557622f40f63307a069ae5bb81a0c7d9008cf6ad3cb63c7c3952d646ef79a",
+    "decode_ldec.py": "18198b47f27fc749e0a8fb604dcad19506af28a3185d02e39af4861a57c40577",
+    "infer_format.py": "312e045019116a8774ca7cab113d9bf5f1b4046d0eb328c4e833a81bfc145038",
+    "ldec_soft.c": "10eacafe48b4d3c6ff3afcde507619e394294cdf8324dc5e0c7af9d1fd233780",
+    "ldec_soft.h": "492619efa49569136edefc0d1903939f2d18c8b218e3a4bacf5c26e485eb48c7",
+    "research_sources.py": "037c5782e916804e4568108e527bca6e5c99521070f6cfc834a17f084f89cf82",
+    "resource_tools.py": "0a72463345e77f12019b20f4881ce4989cfbfdd8c321f912d585e5276e203c21",
+    "tests/test_c.c": "76e5fbf45ca039f65740f9fa92cd2807d918cfc5b0732377b770a74b4f94a620",
+    "tests/test_decoder.py": "1f6a7ea6a370e3f0f8595730b41c42a9454c2a649ad44de5fd59abb2c0ce8961"
+  },
+  "tests": {
+    "aarch64_freestanding_compile": "passed (not linked or guest executed)",
+    "c_sanitizers": "address,undefined passed",
+    "mutations_accepted": 56,
+    "mutations_rejected": 2944,
+    "unit_methods": 10
+  }
+}

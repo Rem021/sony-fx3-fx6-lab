@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "actual_run_status": {
+    "status": "试用已结束：观察到原生关机；本轮健康未通过，资源已回收。",
+    "last_stop_cause": "health_failure",
+    "last_health_pass": false,
+    "last_lifecycle_pass": true,
+    "restart_requires_new_authorization": true
+  },
+  "cases": [
+    "native_shutdown",
+    "healthy",
+    "host_failure",
+    "cleanup_failure",
+    "startup_failure"
+  ],
+  "production_runner_uses_terminal_summary": true,
+  "guest_started": false
+}

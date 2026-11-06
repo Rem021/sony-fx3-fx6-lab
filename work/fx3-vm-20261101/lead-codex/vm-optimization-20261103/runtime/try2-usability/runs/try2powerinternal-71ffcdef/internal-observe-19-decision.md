@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-18-key-030.png using image tool. My Menu page 1/59, orange My Menu Setting category; add/sort/delete items listed but not entered Next: DOWN to next menu category for read-only browse; no deletion or My Menu mutation

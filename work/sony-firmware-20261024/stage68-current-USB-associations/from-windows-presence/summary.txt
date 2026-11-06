@@ -1,0 +1,27 @@
+FX3 Presence Crosscheck - cached PnP only
+task_state=CACHED_CROSSCHECK_COMPLETE_NON_UNIQUE_MODEL_NODES
+observed_start_utc=2026-10-26T17:15:31.086Z
+observed_end_utc=2026-10-26T17:15:31.497Z
+observed_start_Asia_Shanghai=2026-10-27 01:15:31.086 +08:00
+observed_end_Asia_Shanghai=2026-10-27 01:15:31.497 +08:00
+本次按Sony USB前缀或明确ILME-FX3/Sony DSC名称描述做1次服务端WQL筛选，最多16条；返回4条，未触及上限，命令退出0。
+
+当前相机相关设备节点=4：3个明确Sony DSC磁盘节点，另1个USB存储节点与旧FX3根节点的完整实例ID摘要相同。
+本次返回范围内历史相机相关节点=0；这不是系统历史缓存总量盘点。
+上述数字是设备节点数量，不是物理相机台数；物理相机数量UNKNOWN。
+四个节点均Present=True、Status=OK、ConfigManagerErrorCode=0。
+同旧根节点摘要匹配的USB节点：实际VID=054C、PID=0DA1，Service=USBSTOR，ClassGuid={36fc9e60-c465-11cf-8056-444553540000}。
+该USB节点本次Name/Description为普通USB大容量存储设备，未直接返回ILME-FX3型号文本；与已识别旧根的关联依据是完整实例ID摘要相等，不是固定旧VID/PID推断。
+same_as_old_fx3_root=true；root_sha256=1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd
+3个Sony DSC磁盘节点：Service=disk、ClassGuid={4d36e967-e325-11ce-bfc1-08002be10318}、Present=True、Status=OK、错误码0；各自HardwareID保存在nodes.json。磁盘节点自身VID/PID字段没有值，记UNKNOWN，不从根节点猜填。
+明确当前Sony相机型号节点=3，不唯一；按任务文件停止PnPUtil分支，没有任选一个。
+
+当前父子关系、接口GUID/启用状态、Started、驱动INF/提供者/版本/签名者均UNKNOWN，本轮没有相应查询；未把Status=OK当作Started，未使用旧结果补成PASS。
+与之前PnPUtil的connected筛选零匹配相比，本次较晚的CIM快照给出Present=True；原因UNKNOWN，不推断协议故障或物理连接状态变化。
+非相机Sony设备=0（仅本次筛选范围）；如果存在其他厂商或无关设备，本轮未查询。
+
+原始实例ID、可能含序列的标识及CIM原始结果只留本机private。public中的节点标识为uppercase UTF8 SHA256。
+仅计算本轮新输出的SHA256。旧connected快照的五件public结果及其他旧材料未修改；只读取旧公开根摘要用于对照。
+camera_interface_handles=0；camera_commands=0；card_media_reads=0；authentication=false；mode_driver_policy_change=false；elevation=false；probe_generation_or_execution=false；scan_refresh_or_retry=false；hardware_validation=NOT_PERFORMED。
+
+public_path=C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-presence-crosscheck-20261026T165500Z/public

@@ -1,0 +1,14 @@
+{
+  "references": [
+    {
+      "url": "https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/flock.2.html",
+      "scope": "advisory exclusive/nonblocking lock, cooperating processes and descriptor references; archived API reference, actual current host behavior also tested"
+    },
+    {
+      "url": "https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/pread.2.html",
+      "scope": "offset read semantics; actual private-envelope truncation behavior tested with fake device objects"
+    }
+  ],
+  "source": "official Apple archived manual + compiled current Mac process tests",
+  "new_device_operations": 0
+}

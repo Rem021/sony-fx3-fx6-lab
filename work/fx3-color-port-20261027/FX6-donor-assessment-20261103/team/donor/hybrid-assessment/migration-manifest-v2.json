@@ -1,0 +1,205 @@
+{
+  "status": "READ_ONLY_DRAFT_V2_NO_GUEST_EXECUTION",
+  "actual_cpio_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+  "source_order": "FX3 init invokes bootin; donor IM has AV and libObj path; appFw/libmpr order not proven",
+  "entries": [
+    {
+      "name": "fixed-platform",
+      "policy": "retain",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+      "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+      "bytes": 4545
+    },
+    {
+      "name": "fixed-fx3-image",
+      "policy": "retain",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "bytes": 6610952
+    },
+    {
+      "name": "fixed-fx3-cpio",
+      "policy": "retain",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+      "sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+      "bytes": 453184500
+    },
+    {
+      "name": "fx6-bootin",
+      "policy": "entry-assessment-only",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/bootin.elf",
+      "sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+      "bytes": 23960
+    },
+    {
+      "name": "fx6-im",
+      "policy": "entry-assessment-only",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/im.elf",
+      "sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+      "bytes": 40920
+    },
+    {
+      "name": "fx6-appfw",
+      "policy": "later-conditional-assessment",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "bytes": 50520424
+    },
+    {
+      "name": "fx6-libmpr",
+      "policy": "later-conditional-assessment",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so",
+      "sha256": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e",
+      "bytes": 28921824
+    },
+    {
+      "name": "fx6-av",
+      "policy": "later-not-loaded",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/av-cam.bin",
+      "sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+      "bytes": 12939512
+    },
+    {
+      "name": "fx6-cp",
+      "policy": "excluded",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha8/cpapp-b.bin",
+      "sha256": "60de0ab5544749dd50d8245f573c0994573fef349186efe20b502c42e3289668",
+      "bytes": 17952816
+    }
+  ],
+  "actual_guest_runtime_dependencies": {
+    "libopus.so.0": {
+      "path": "usr/lib/libopus.so.0.8.0",
+      "chain": [
+        "usr/lib/libopus.so.0",
+        "usr/lib/libopus.so.0.8.0"
+      ],
+      "sha256": "473c7182bfd47bbbcce4e377015bc9d6bbef554c4eda287ba6a31ecc34f4579a"
+    },
+    "libSoundTouch.so.1": {
+      "path": "usr/lib/libSoundTouch.so.1.0.0",
+      "chain": [
+        "usr/lib/libSoundTouch.so.1",
+        "usr/lib/libSoundTouch.so.1.0.0"
+      ],
+      "sha256": "d4abdc58ae1857d46791b7f8d3ebf0d822f03c5a8d343f3d975a98f0ff40522e"
+    },
+    "libObj.so": {
+      "path": "usr/lib/libObj.so",
+      "chain": [
+        "usr/lib/libObj.so"
+      ],
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae"
+    },
+    "libstdc++.so.6": {
+      "path": "usr/lib/libstdc++.so.6.0.22",
+      "chain": [
+        "usr/lib/libstdc++.so.6",
+        "usr/lib/libstdc++.so.6.0.22"
+      ],
+      "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389"
+    },
+    "libc.so.6": {
+      "path": "lib/libc-2.25.so",
+      "chain": [
+        "lib/libc.so.6",
+        "lib/libc-2.25.so"
+      ],
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+    }
+  },
+  "preloads": [
+    {
+      "path": "/simulation/fx3-skd-hw-unavailable-v1.so",
+      "sha256": "9f714d6123f1b220101ec7c240e33dd2b02a94c6d6011f77891a28e452367084",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-skd-hw-unavailable-v1.c"
+    },
+    {
+      "path": "/simulation/fx3-capid-v1.so",
+      "sha256": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.c"
+    },
+    {
+      "path": "/simulation/fx3-osd-headless-v5.so",
+      "sha256": "816bbf9019ff422c2e24ca5a601a41dc144fa82e7baf39a563d638a55a841dbb",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-osd-headless-v7-observe102.c"
+    },
+    {
+      "path": "/simulation/fx3-osd-lifetime-v2.so",
+      "sha256": "267629249407e7d3f319647330d45a0db73c5be0fae3b6fa302594b044f8f468",
+      "source": null
+    },
+    {
+      "path": "/simulation/fx3-preset-context-v2-screen.so",
+      "sha256": "eb55680196806fb86958d632c6aed939eae91aa1ef928690a4a7d21d6a76c170",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-preset-context-v6-save102.c"
+    },
+    {
+      "path": "/simulation/fx3-timecode-capture-v1.so",
+      "sha256": "ec31fbc7197235bfad20795f2980ab78a002f1761a5b8c94da0b7e0b4636bd94",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-timecode-capture-v1.c"
+    },
+    {
+      "path": "/simulation/fx3-hdmi-registration-v1.so",
+      "sha256": "756a79fe1ed104208287b31ec99ad9282723b479ff4e8b0e5cfaaecaac9e1987",
+      "source": null
+    },
+    {
+      "path": "/simulation/fx3-gpe-observe-v7.so",
+      "sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+      "source": null
+    },
+    {
+      "path": "/simulation/signal-observe-v2.so",
+      "sha256": "4e4d9b6a87354c7308c5f8a18b08d9f02c354e3cc6a1e9388d4fb8a12dc11695",
+      "source": null
+    },
+    {
+      "path": "/simulation/ioctl-trace.so",
+      "sha256": "f2799333d67b4b118634e273f50f7d48106a228c1c40132075d923f040ca0b74",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/ioctl-trace-v12.c"
+    },
+    {
+      "path": "/simulation/fx3-icrypt-observe-v1.so",
+      "sha256": "2a62c7977f5b16825d01421598d58ec611b3e3c1a0d091ef75ac35944638b3ff",
+      "source": null
+    },
+    {
+      "path": "/simulation/fx3-timer-observe-v1.so",
+      "sha256": "3b828ba31352492ab4bd4b76857ece4b30cef5241bb8ed0223fb75f9b7153b1b",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-timer-observe-v3.c"
+    },
+    {
+      "path": "/simulation/fx3-ui-gate-v1.so",
+      "sha256": "54eeed923a6412cd2c6743f6e8c968d1ede71b92aa79aca4575868ebccc4a9ec",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ui-gate-v11.c"
+    },
+    {
+      "path": "/usr/lib/libInfraCrypt.so",
+      "sha256": "d3140522c90c0d1e5d75dca06f0f18f58b628d8f8dd6b29b808aaf205cfd842b",
+      "source": null
+    },
+    {
+      "path": "/simulation/fx3-backup-return-v1.so",
+      "sha256": "68e13aafa30376e96804e3d2e73d3e760f466a96090ae17055ecab129561f8e9",
+      "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-backup-return-v5-save102.c"
+    },
+    {
+      "path": "/simulation/fx3-rm-empty-provider-v3-setup.so",
+      "sha256": "6acb0e52e610cb0d13721f38fcf1c7c27b0e5a48e687d7a4feda5fde9f9bcd14",
+      "source": null
+    },
+    {
+      "path": "/simulation/fx3-media-observe-v3-uipc.so",
+      "sha256": "179c74c396af95e920da7549e4ce4f8c6f9cb1bcc5ea8edf6800ff5040abeb44",
+      "source": null
+    }
+  ],
+  "stop_rules": [
+    "do not replace fixed platform/Backup/helper",
+    "do not infer ABI from symbol/version match",
+    "init line211 triple loader probe failure stops before AP",
+    "first original-app guard mismatch is conditional observer refusal, not AP exit",
+    "no deployable mixed payload generated"
+  ]
+}

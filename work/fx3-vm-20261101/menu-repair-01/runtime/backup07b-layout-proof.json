@@ -1,0 +1,11 @@
+{
+  "kernel_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+  "image_text_offset": "0x80000",
+  "image_size": "0x6af000",
+  "kernel_expected_load": "0x400080000",
+  "kernel_expected_reserved_extent_end": "0x40072f000",
+  "backup_reserved_start": "0x404000000",
+  "backup_reserved_end": "0x404221000",
+  "kernel_and_backup_disjoint": true,
+  "layout_derivation": "Existing QEMU virt highDDR base + original ARM64 Image text_offset; loaded file extent and Image image_size both bounded; no kernel changes."
+}

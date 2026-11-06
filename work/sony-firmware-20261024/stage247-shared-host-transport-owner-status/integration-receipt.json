@@ -1,0 +1,116 @@
+{
+  "status": "OWN_PROCESSES_SHARED_TRANSPORT_STATUS_ONLY_SCOPED_PASS",
+  "checks": 8,
+  "rows": [
+    {
+      "case": "observe_status_end",
+      "status": "PASS",
+      "path": "runs/d0b4ef87d458c5fe",
+      "responses": 3,
+      "wire_calls": [
+        0,
+        0,
+        0
+      ],
+      "profile": [
+        0,
+        0,
+        129,
+        2,
+        512,
+        2,
+        1,
+        2
+      ]
+    },
+    {
+      "case": "swapped_pipe_map",
+      "status": "PASS",
+      "path": "runs/1812ce4435dfb47c",
+      "responses": 3,
+      "wire_calls": [
+        0,
+        0,
+        0
+      ],
+      "profile": [
+        0,
+        0,
+        129,
+        2,
+        512,
+        2,
+        2,
+        1
+      ]
+    },
+    {
+      "case": "reject_START",
+      "status": "PASS",
+      "path": "runs/81b7e3e6ee939427",
+      "wire_calls": [
+        0,
+        0,
+        0
+      ],
+      "outcome": "HOST_ABORT_RETURN_OBSERVED"
+    },
+    {
+      "case": "reject_AUTH",
+      "status": "PASS",
+      "path": "runs/d231308782ecf65a",
+      "wire_calls": [
+        0,
+        0,
+        0
+      ],
+      "outcome": "HOST_ABORT_RETURN_OBSERVED"
+    },
+    {
+      "case": "reject_STOP",
+      "status": "PASS",
+      "path": "runs/2d586d2ca29ef491",
+      "wire_calls": [
+        0,
+        0,
+        0
+      ],
+      "outcome": "HOST_ABORT_RETURN_OBSERVED"
+    },
+    {
+      "case": "wrong_session_nonce",
+      "status": "PASS",
+      "path": "runs/1f017a5714c9b6dd",
+      "wire_calls": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "wrong_image_before_owner",
+      "status": "PASS",
+      "path": "runs/d31267a191b8e05e",
+      "wire_calls": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case": "pending_owner_cannot_fake_completion",
+      "status": "PASS",
+      "path": "runs/9259714f132f6511",
+      "wire_calls": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "native_helper_executed": false,
+  "new_root_or_camera_operations": 0,
+  "own_fixture_callbacks_not_real_IOKit_driver_or_device_acceptance": true,
+  "original_Sony_or_kernel_code_executed": false,
+  "previous_model_suites_repeated": false
+}

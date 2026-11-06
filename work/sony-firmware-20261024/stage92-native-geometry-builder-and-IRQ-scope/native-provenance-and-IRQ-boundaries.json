@@ -1,0 +1,144 @@
+{
+  "created_utc": "2026-10-27T08:08:09.772595+00:00",
+  "VCD_sha256": "15e75a9732e2f9904ada1c919c631dac0da57e605ce3daa4c6fb2ebe98982b5b",
+  "instructions": [
+    {
+      "VA": "0x801352f0",
+      "word_hex": "01000324",
+      "instruction": "addiu $v1, $zero, 1",
+      "meaning": "original default-field initializer entry"
+    },
+    {
+      "VA": "0x801315ac",
+      "word_hex": "0e00a390",
+      "instruction": "lbu $v1, 0xe($a1)",
+      "meaning": "declared raw mode-byte source"
+    },
+    {
+      "VA": "0x801315bc",
+      "word_hex": "9c0046ae",
+      "instruction": "sw $a2, 0x9c($s2)",
+      "meaning": "native owner mode9c store"
+    },
+    {
+      "VA": "0x801315c8",
+      "word_hex": "03ce040c",
+      "instruction": "jal 0x8013380c",
+      "meaning": "original complete geometry call"
+    },
+    {
+      "VA": "0x8013380c",
+      "word_hex": "c0ffbd27",
+      "instruction": "addiu $sp, $sp, -0x40",
+      "meaning": "complete geometry body entry"
+    },
+    {
+      "VA": "0x80133850",
+      "word_hex": "0b18c200",
+      "instruction": "movn $v1, $a2, $v0",
+      "meaning": "native conditional height scaling"
+    },
+    {
+      "VA": "0x80133878",
+      "word_hex": "ee9a010c",
+      "instruction": "jal 0x80066bb8",
+      "meaning": "original classification helper call"
+    },
+    {
+      "VA": "0x80134890",
+      "word_hex": "1b000202",
+      "instruction": "divu $zero, $s0, $v0",
+      "meaning": "original geometry divide"
+    },
+    {
+      "VA": "0x8013489c",
+      "word_hex": "cd010000",
+      "instruction": "break 0, 7",
+      "meaning": "calibrated annulled BREAK or actual divide-zero trap"
+    },
+    {
+      "VA": "0x801338bc",
+      "word_hex": "0800e003",
+      "instruction": "jr $ra",
+      "meaning": "original geometry return"
+    },
+    {
+      "VA": "0x80131e60",
+      "word_hex": "03ce040c",
+      "instruction": "jal 0x8013380c",
+      "meaning": "actual caller geometry builder JAL now executed"
+    },
+    {
+      "VA": "0x80131e68",
+      "word_hex": "1000bf8f",
+      "instruction": "lw $ra, 0x10($sp)",
+      "meaning": "actual setter tail after geometry return"
+    },
+    {
+      "VA": "0x80134fa0",
+      "word_hex": "1000bf8f",
+      "instruction": "lw $ra, 0x10($sp)",
+      "meaning": "actual wrapper tail after setter"
+    },
+    {
+      "VA": "0x801441c8",
+      "word_hex": "0400448e",
+      "instruction": "lw $a0, 4($s2)",
+      "meaning": "actual caller reload after full geometry return"
+    },
+    {
+      "VA": "0x801441d0",
+      "word_hex": "6cd4040c",
+      "instruction": "jal 0x801351b0",
+      "meaning": "actual caller frame-wrapper JAL"
+    },
+    {
+      "VA": "0x80009e00",
+      "word_hex": "00600240",
+      "instruction": "mfc0 $v0, $t4, 0",
+      "meaning": "unexecuted CP0 read in IRQ-state helper"
+    },
+    {
+      "VA": "0x80009e40",
+      "word_hex": "00608840",
+      "instruction": "mtc0 $t0, $t4, 0",
+      "meaning": "unexecuted CP0 write in IRQ-state helper"
+    },
+    {
+      "VA": "0x8005b618",
+      "word_hex": "8027000c",
+      "instruction": "jal 0x80009e00",
+      "meaning": "unexecuted lock-ID creator calls IRQ-state helper"
+    },
+    {
+      "VA": "0x8005d5b4",
+      "word_hex": "c4a282a7",
+      "instruction": "sh $v0, -0x5d3c($gp)",
+      "meaning": "unexecuted returned lock-ID store"
+    },
+    {
+      "VA": "0x80140d04",
+      "word_hex": "c4a28487",
+      "instruction": "lh $a0, -0x5d3c($gp)",
+      "meaning": "unexecuted GP lock-ID read"
+    },
+    {
+      "VA": "0x80140d0c",
+      "word_hex": "26000070",
+      "instruction": "extension_not_decoded_by_selected_Capstone_mode",
+      "meaning": "unexecuted extension encoding70000026"
+    },
+    {
+      "VA": "0x80140d3c",
+      "word_hex": "26000270",
+      "instruction": "extension_not_decoded_by_selected_Capstone_mode",
+      "meaning": "unexecuted extension encoding70020026"
+    }
+  ],
+  "geometry_no_body_gap_or_fake_return": true,
+  "outer_mode_message_and_frame_header_unexecuted": true,
+  "IRQ_CP0_extension_controller_state_and_lock_ID_initialization_unexecuted": true,
+  "GNU_encoding_match_does_not_identify_FX3_processor_or_hardware_state": true,
+  "public_source": "https://sources.debian.org/data/main/b/binutils/2.43.1-5/gas/testsuite/gas/mips/allegrex.d",
+  "PSP_emulator_behavior_imported": false
+}

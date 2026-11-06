@@ -1,0 +1,100 @@
+{
+  "schema": "fx3-stage60-native-diagnostic-format/1",
+  "created_utc": "2026-10-26T11:16:15.021771+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/README.md",
+      "bytes": 6567,
+      "sha256": "395ee2459389424000967d50f27cd93e99ceb6569c062797dd9eeae07f73f884"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/coordinator-observations.json",
+      "bytes": 1158,
+      "sha256": "e75fa30ebda5fdabcfd64c24bc044df5bd254df2f872bd23dd9c385d6bf2f1d9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/diagnostic_format.py",
+      "bytes": 9507,
+      "sha256": "311078a17c2ac58432b1970ed6e795af501c20df9dfce25d9779e82dc27b006c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/finalize_stage60.py",
+      "bytes": 15436,
+      "sha256": "0be809bf45fcc4e9b8d082f21d95fc057a17f84ddbdb6bac5d2245ea61d31f9b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/goal-status-after.json",
+      "bytes": 164674,
+      "sha256": "8aa0e1bbb3a7642f0ace7d3b32812f786dd106410c1044239e96bd6acfa7557f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/goal-status-before.json",
+      "bytes": 159488,
+      "sha256": "1ca3c365f751d9744325ed6461b05d578b634f663faa53c29e16935072381053"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/run-20261026/attempt-failure.json",
+      "bytes": 845,
+      "sha256": "4c411f767c5b298fb50b143c0c42f317d5cceaae67ea0bf8781b924a78d2b921"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/run-20261026/attempt-source.py",
+      "bytes": 9450,
+      "sha256": "0007d84a67129f21b2cf082eea2aa632868164810ff9778589ceecdf77e9d6a3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/run-20261026/last-phase-at-failure.json",
+      "bytes": 10012,
+      "sha256": "84eee8e302b1ed75742562bbc407b6dae3869400d84aa56c172a7a57e76abec4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/run-native-string-stream-20261026/diagnostic-format-results.json",
+      "bytes": 6765083,
+      "sha256": "5f89a805d8f6dcf7c430532457474a09483b66f736b26c8f5b11f8fb9c90a8e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/run-native-string-stream-20261026/executed-source.py",
+      "bytes": 9507,
+      "sha256": "311078a17c2ac58432b1970ed6e795af501c20df9dfce25d9779e82dc27b006c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/run-native-string-stream-20261026/source-receipt.json",
+      "bytes": 598,
+      "sha256": "855df2b0ca7096da0f44a9c929632dc71410a2ee9515628d9f36b2a3d2136061"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/scope-refinement.json",
+      "bytes": 1490,
+      "sha256": "d0ea0061ce8b7b0592c8190e03c9f0f6f522cee9228dcb72c6d252d3e1f2b387"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage60-native-diagnostic-format/summary.json",
+      "bytes": 659,
+      "sha256": "0b20f8fae89bd2454bf236e6c8a9e5abdf0a5a1542632791fa7ac61fd96ac911"
+    }
+  ],
+  "previous_manifest_sha256": "3cab80234f8292be7bb1abd5558efc94e7716b2eae0486973908aa475871f5e1",
+  "scope": "Original native enabled-log prefix stopped before timer LDR plus independent internal native text formatting. No fake clock/kernel printf, complete log/backend/device or recovery.",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage60-native-diagnostic-format/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage60-native-diagnostic-format/goal-status-after.json",
+    "before_sha256": "1ca3c365f751d9744325ed6461b05d578b634f663faa53c29e16935072381053",
+    "after_sha256": "8aa0e1bbb3a7642f0ace7d3b32812f786dd106410c1044239e96bd6acfa7557f",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-26 FX3 原内部诊断文本与时间边界](<work/sony-firmware-20261024/stage60-native-diagnostic-format/README.md>)：原实际va_list经内部格式化产146字节，20段含截断/零容量通过；完整日志停未读时间寄存器，硬件/同步/成片与恢复仍未验收。",
+  "readme_index_before_sha256": "177a73a69140667078b7d4305d29bbafa82957f5ff2b81f4da013947437a234a",
+  "readme_index_after_sha256": "aae855e0835c262c83d61a28416453dab7ee5623c8a2ae8fbd3ebfd4ae77c718",
+  "operations": {
+    "original_firmware_file_unchanged": true,
+    "prior_guest_BL_and_logger_fixture_changes_declared": true,
+    "native_formatter_clear_log_return_PC_or_MMIO_result_adapter": false,
+    "Sony_loadable_module_or_firmware_exported": false,
+    "UU_Windows_camera_interfaces_auth_modes_drivers_files_modules_WBI_flash": false,
+    "real_hardware_recording_backup_restore_or_independent_recovery": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

@@ -1,0 +1,242 @@
+{
+  "schema": "fx3-mss-all-commands-observer-v1",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssallinternal-48a838e5",
+  "serial_sha256": "4452b928c28f9c6cfbdad5380678cbb84219722e1efbc783a161e8f84bd331e0",
+  "serial_bytes": 9403937,
+  "candidate_sha256": "2382063eacb5f185e8553c2596be2c644654efe7234adc1e4578f7464ab99a05",
+  "source_observer": "injected passive appFw.so ordinary-instruction hook, not original kernel log",
+  "original_queue": "0x80924220",
+  "records": 44,
+  "paired_calls": 20,
+  "command_counts": {
+    "0x920118": 7,
+    "0x920119": 5,
+    "0x920202": 6,
+    "0x920204": 2
+  },
+  "overflow_lines": 0,
+  "raw_ok_calls": 0,
+  "calls": [
+    {
+      "call_id": 1,
+      "cmd": "0x920118",
+      "source": "0x81cf6198",
+      "tid": 432,
+      "entry_guest_ns": 29428843008,
+      "return_guest_ns": 29431010000,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 2,
+      "cmd": "0x920118",
+      "source": "0x81cf6198",
+      "tid": 432,
+      "entry_guest_ns": 29433813008,
+      "return_guest_ns": 29435521008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 3,
+      "cmd": "0x920202",
+      "source": "0x81cf6198",
+      "tid": 432,
+      "entry_guest_ns": 29437031008,
+      "return_guest_ns": 29438982000,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 4,
+      "cmd": "0x920119",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 33731142000,
+      "return_guest_ns": 33740003008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 5,
+      "cmd": "0x920118",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 33743717008,
+      "return_guest_ns": 33744605008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 6,
+      "cmd": "0x920202",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 33746596000,
+      "return_guest_ns": 33748369008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 7,
+      "cmd": "0x920119",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 33766283008,
+      "return_guest_ns": 33767139008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 8,
+      "cmd": "0x920118",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 33770544000,
+      "return_guest_ns": 33772386000,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 9,
+      "cmd": "0x920202",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 33775473008,
+      "return_guest_ns": 33776871008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 10,
+      "cmd": "0x920204",
+      "source": "0x81cf6198",
+      "tid": 432,
+      "entry_guest_ns": 34738887008,
+      "return_guest_ns": 34740402000,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 11,
+      "cmd": "0x920204",
+      "source": "0x81cf6198",
+      "tid": 432,
+      "entry_guest_ns": 34804288000,
+      "return_guest_ns": 34806654000,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 12,
+      "cmd": "0x920119",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 35047077008,
+      "return_guest_ns": 35047784000,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 13,
+      "cmd": "0x920118",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 35050549008,
+      "return_guest_ns": 35051595008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 14,
+      "cmd": "0x920202",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 35053366000,
+      "return_guest_ns": 35054489008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 15,
+      "cmd": "0x920119",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 36084100000,
+      "return_guest_ns": 36085232000,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 16,
+      "cmd": "0x920118",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 36088121008,
+      "return_guest_ns": 36088711008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 17,
+      "cmd": "0x920202",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 36089528000,
+      "return_guest_ns": 36089833008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 18,
+      "cmd": "0x920119",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 36114567008,
+      "return_guest_ns": 36115149008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 19,
+      "cmd": "0x920118",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 36117958000,
+      "return_guest_ns": 36119785008,
+      "return_x0": "0",
+      "raw_ok": false
+    },
+    {
+      "call_id": 20,
+      "cmd": "0x920202",
+      "source": "0x81cf6198",
+      "tid": 448,
+      "entry_guest_ns": 36124153008,
+      "return_guest_ns": 36127939008,
+      "return_x0": "0",
+      "raw_ok": false
+    }
+  ],
+  "key_steps": 0,
+  "host_observer_error": "RuntimeError('白名单、步数或按键持续时间校验失败')",
+  "stop_cause": "host_error",
+  "native_power_off": false,
+  "native_shutdown": false,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "pid_absent": true,
+  "api16_restored": true,
+  "inputs_unchanged": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true
+    }
+  ],
+  "interpretation_guard": "entry and return are original app send-path observations only; no UPM receive, timer start, or raw16 packet claim when raw_ok=0"
+}

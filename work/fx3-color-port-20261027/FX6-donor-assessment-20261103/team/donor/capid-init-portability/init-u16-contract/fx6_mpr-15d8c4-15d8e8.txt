@@ -1,0 +1,15 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000015d730 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_>:
+  15d8c4: aa1803e5     	mov	x5, x24
+  15d8c8: 2a1703e4     	mov	w4, w23
+  15d8cc: aa1303e3     	mov	x3, x19
+  15d8d0: 2a1603e2     	mov	w2, w22
+  15d8d4: 528000a1     	mov	w1, #0x5                // =5
+  15d8d8: aa1503e0     	mov	x0, x21
+  15d8dc: 72a80001     	movk	w1, #0x4000, lsl #16
+  15d8e0: 97fe5e64     	bl	0xf5270 <_ZN3mpr32RecvWriterEvtReachRecordableTimeEmjiPvjS0_@plt>
+  15d8e4: 17ffffc1     	b	0x15d7e8 <_ZN3mpr27CallbackPointForMovieWriterEmjiPvjS0_+0xb8>

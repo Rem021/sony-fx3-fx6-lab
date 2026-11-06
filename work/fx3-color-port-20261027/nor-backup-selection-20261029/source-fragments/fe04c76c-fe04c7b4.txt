@@ -1,0 +1,18 @@
+fe04c76c f40f1ef8 str      x20, [sp, #-0x20]!
+fe04c770 f37b01a9 stp      x19, x30, [sp, #0x10]
+fe04c774 f30300aa mov      x19, x0
+fe04c778 33030094 bl       #0xfe04d444
+fe04c77c f403002a mov      w20, w0
+fe04c780 e00313aa mov      x0, x19
+fe04c784 64030094 bl       #0xfe04d514
+fe04c788 f37b41a9 ldp      x19, x30, [sp, #0x10]
+fe04c78c 1f040071 cmp      w0, #1
+fe04c790 e8f30132 mov      w8, #-0x55555556
+fe04c794 8002487a ccmp     w20, w8, #0, eq
+fe04c798 a8008012 mov      w8, #-6
+fe04c79c e003881a csel     w0, wzr, w8, eq
+fe04c7a0 f40742f8 ldr      x20, [sp], #0x20
+fe04c7a4 c0035fd6 ret      
+fe04c7a8 e2030032 mov      w2, #1
+fe04c7ac 76030014 b        #0xfe04d584
+fe04c7b0 a3030014 b        #0xfe04d63c

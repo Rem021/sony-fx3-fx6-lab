@@ -1,0 +1,414 @@
+{
+  "created_utc": "2026-10-29T11:59:43.887655+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "free_bytes": 107320168448,
+  "previous_ap_input_receipt_sha256": "72352790a27c8e2ebb955967c485f98ea336119a39175a801c8f8a217ff6345d",
+  "validation": {
+    "status": "PASS",
+    "previous_sealed_files_verified": 394,
+    "previous_receipt_sha256": "72352790a27c8e2ebb955967c485f98ea336119a39175a801c8f8a217ff6345d",
+    "python_ast_files": 9,
+    "json_files_parsed_before_validation_output": 15,
+    "pinned_elf_views": 11,
+    "new_slice_hashes_verified": 45,
+    "original_guest_cases": 13,
+    "local_readme_links": 12,
+    "source_layout_checks": "Kernel ET_REL source and five slice hashes verified by named section offsets; these offsets are not runtime addresses.",
+    "camera_actions": 0,
+    "full_modified_package_emitted": false,
+    "termination_condition_met": false
+  },
+  "project_index_before_bytes": 66148,
+  "project_index_before_sha256": "8101662c1a6f5f4207bda5e22f386ac11f90a7718411f3b67e3bdf725a626dc6",
+  "project_index_prefix_unchanged": true,
+  "goal_completion_claimed": false,
+  "termination_condition_met": false,
+  "actual_camera_or_usb_operations": 0,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7366,
+      "sha256": "88463dfa09acabaf0831d9235e02497f5de1f9b210a39203a1177477e795a374"
+    },
+    {
+      "path": "ap-service-constructor-results.json",
+      "bytes": 78049,
+      "sha256": "aa3829630dc52fec2c00c35fbb2ffcd8d34ac17350043943e682278c64baaea1"
+    },
+    {
+      "path": "app-crypto-call-results.json",
+      "bytes": 15936,
+      "sha256": "927655e3f8e56fab6009c9221e097af361455f11a8378436a0968b420487996c"
+    },
+    {
+      "path": "app-crypto-fragments/2e10164-iCrypt_HasPrivateKey.txt",
+      "bytes": 3335,
+      "sha256": "b3629a2487a3891bfc35669abc55783b753197e46f346d96b201973eb67f45f3"
+    },
+    {
+      "path": "app-crypto-fragments/2e101b8-iCrypt_HasPublicKey.txt",
+      "bytes": 3341,
+      "sha256": "af7b969a0bb78a9c72de1d20c751e8695d6837bfbe3ed8cc6fb12b07e5f74f98"
+    },
+    {
+      "path": "app-crypto-fragments/2e10210-iCrypt_DeletePrivateKey.txt",
+      "bytes": 3419,
+      "sha256": "7ed45be62e6495774d42dbfc594870ac4edca9ad87f5ac530f6764a3ece1427b"
+    },
+    {
+      "path": "app-crypto-fragments/2e102b8-iCrypt_DeletePublicKey.txt",
+      "bytes": 3381,
+      "sha256": "ff427dc1d4fe312c17649659f4883ee37f47931464a6b619f8a2696e4c97ddf8"
+    },
+    {
+      "path": "app-crypto-fragments/2e10360-iCrypt_CreatePrivateKey.txt",
+      "bytes": 3402,
+      "sha256": "f14f4dc52ebad83a3a061f7f423f47077c737a2549bf4b6b40a43186671ad45f"
+    },
+    {
+      "path": "app-crypto-fragments/2e1041c-iCrypt_CreatePublicKey.txt",
+      "bytes": 3419,
+      "sha256": "b727f2497f69b9fc46ad8df2d330d9f335a0675426734830514194b42653c7ca"
+    },
+    {
+      "path": "app-crypto-fragments/2e104ec-iCrypt_ExtractPublicKeyBodyData.txt",
+      "bytes": 3357,
+      "sha256": "d1d162a42087b57b5d80c34a1bce73922f2830b4086710474f786b5b7e4295db"
+    },
+    {
+      "path": "app-crypto-fragments/2e105a8-iCrypt_FreeData.txt",
+      "bytes": 3381,
+      "sha256": "d735e2c5745120d86f6df555e0508ad8943fca0edf4cafbd6d46b65f5cce0b4c"
+    },
+    {
+      "path": "app-crypto-fragments/2e10654-iCrypt_GetPublicKey.txt",
+      "bytes": 3267,
+      "sha256": "0b712db7b2db30bf3e7e61ebcfa8f2c05b35f19a6f3538dff10d9356aec71ceb"
+    },
+    {
+      "path": "attempts/execute-update-guest-bodyfail-failure.json",
+      "bytes": 1965,
+      "sha256": "9bb059740f42afc0bd2fbf55193bdc477c9d1e64ea08cec4368ea398f33dac4d"
+    },
+    {
+      "path": "development-notes.json",
+      "bytes": 2170,
+      "sha256": "4e418573f7540c37de3ab94aa7629e6d1d36671ed5299356977814fc49dfd025"
+    },
+    {
+      "path": "entry-fragments/app-execute-update-caller.txt",
+      "bytes": 4143,
+      "sha256": "c95c24bf3d6dc1946c8e122996da198b6d1dfced7aab905d2a7a95b68bcb5d52"
+    },
+    {
+      "path": "entry-fragments/app-execute-update.txt",
+      "bytes": 6884,
+      "sha256": "f6d3963d2bfdb2016e8c4101e5e1cd94f90c6d2db1daaac9ac86d027ea2df876"
+    },
+    {
+      "path": "entry-fragments/app-initialize-rpc.txt",
+      "bytes": 1721,
+      "sha256": "4c34f62ec24bf86bc8dc50aee04c419bc0ba9a644e0158dc14e71aa9647080b7"
+    },
+    {
+      "path": "entry-fragments/app-initialize-wrapper.txt",
+      "bytes": 3746,
+      "sha256": "39115f7edbc1c773d74ae0f621fe3cc6d45de5ee24dbf14f0076df9bd555e90c"
+    },
+    {
+      "path": "entry-fragments/app-public-key-extract-caller.txt",
+      "bytes": 4139,
+      "sha256": "a96d197e1b93f5dfb319370db37f3d9356f1ad12e76cd96186fed0cb26ca3b7c"
+    },
+    {
+      "path": "entry-fragments/app-sync-rpc.txt",
+      "bytes": 3582,
+      "sha256": "d9981652f1ee5e4668ff44831ab859aa43415bf08ef28d7eaf9dead4c10ee313"
+    },
+    {
+      "path": "entry-fragments/core-check-chassis.txt",
+      "bytes": 5336,
+      "sha256": "82468b4ae94ca37f2e5d604c511588439e701914a36f6eafc7741f26b21d1f1f"
+    },
+    {
+      "path": "entry-fragments/libInfraExtCmdSvc.so-292c.txt",
+      "bytes": 6550,
+      "sha256": "8709f4f8fa567c41e7053fda7c269665a338f99abd2c1390a371ef73758fc838"
+    },
+    {
+      "path": "entry-fragments/libInfraExtCmdSvc.so-2c4c.txt",
+      "bytes": 5323,
+      "sha256": "a7d5850ddb61ac76e3a1e8282be5222136290f7b276cfb62f2c0606da8680d48"
+    },
+    {
+      "path": "entry-fragments/libInfraExtCmdSvc.so-2f6c.txt",
+      "bytes": 6772,
+      "sha256": "4735ca01a916caf02ece12b8fc7c10aac11e21e44c35fc6951017417460ae797"
+    },
+    {
+      "path": "entry-fragments/libInfraExtCmdSvc.so-3298.txt",
+      "bytes": 6012,
+      "sha256": "5612821d090797870ee8687f713691ea947578dc36639ed948e04a048a653480"
+    },
+    {
+      "path": "entry-fragments/libInfraExtCmdSvc.so-3eec.txt",
+      "bytes": 4745,
+      "sha256": "5f35d2e8d04ad8cb49b37639928cba6712f91cfab284604e933a8420df87e07a"
+    },
+    {
+      "path": "entry-fragments/libupdatercommon.so-9e38-loader-gate.txt",
+      "bytes": 1290,
+      "sha256": "c0317ade1e3a90f7757113a283e5baa774938724cc68b3144c8f375ab64af246"
+    },
+    {
+      "path": "entry-fragments/libupdatercorecommon.so-9ae8-loader-gate.txt",
+      "bytes": 5336,
+      "sha256": "82468b4ae94ca37f2e5d604c511588439e701914a36f6eafc7741f26b21d1f1f"
+    },
+    {
+      "path": "entry-fragments/libupdaterufp.so-1b40-loader-gate.txt",
+      "bytes": 2339,
+      "sha256": "f09bf7ad792d16916693a4c06cf5c40048f8672065d0fdd43073ddcb6e47b327"
+    },
+    {
+      "path": "entry-fragments/libupdaterufp.so-22e0-loader-gate.txt",
+      "bytes": 3941,
+      "sha256": "668dcf787f08bfe651ea58a2040f549b239a0f7cfc2eb65a99afc1771a01549b"
+    },
+    {
+      "path": "entry-fragments/libupdaterufp.so-27c4-loader-gate.txt",
+      "bytes": 14480,
+      "sha256": "9cd860f9426de94acd9d954d1b6258bd00047b8a368f4561dd7ba6e38c454797"
+    },
+    {
+      "path": "entry-fragments/libupdaterufp.so-3a00-loader-gate.txt",
+      "bytes": 2123,
+      "sha256": "3b6c99dae76e150c28788d9f63b8ca137d1e3d5d3cc455211826a94ab8e64ed0"
+    },
+    {
+      "path": "entry-fragments/libupdaterufp.so-3bcc-loader-gate.txt",
+      "bytes": 2382,
+      "sha256": "62836eeed9f2fb2fd1f5f9b4d5ebe0cf17c2a621f891b7047ab93bfe428c4c0a"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-3308.txt",
+      "bytes": 838,
+      "sha256": "1ca9ce11345b3f80be2613bfebb5119c86fb0a0534151d3ff1155706911ab50e"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-3370.txt",
+      "bytes": 2989,
+      "sha256": "28b2715f0b0c69ec436723f41c59806bfcff9cdca31f227cbba49f2a9992738b"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-36c8.txt",
+      "bytes": 2195,
+      "sha256": "a6af27f4aa1cc21089febccb5c1ca73ec123c63f2833b7c4bbdede7bc456619b"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-37cc.txt",
+      "bytes": 2195,
+      "sha256": "48178d5b4c9fa67142676476c0e245fffc70869d65ac7ba62847143cfa18d220"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-41c0.txt",
+      "bytes": 1070,
+      "sha256": "d8a09d33db2e6dda1131dc788f538399c2a7a041833ca24f3a8f92ca9a288f74"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-4240.txt",
+      "bytes": 1386,
+      "sha256": "a2a5893b77e8d463d87b0f761719a589cf5b7b14146886e85616075959a284a8"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-42dc.txt",
+      "bytes": 1315,
+      "sha256": "9589b784d9cb26fa1ed342fa19edd72d701764ec96fddfce511195da5e474d8b"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-437c.txt",
+      "bytes": 1522,
+      "sha256": "e33784b34b6c705e0ce4c1b17a8e6563314e1cf9c7422912c51c1fa5e9a15897"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-448c.txt",
+      "bytes": 1545,
+      "sha256": "6c98c0d52505d7e10bf862985178a1f7b4de468a6517f123b60eb42455f6f20d"
+    },
+    {
+      "path": "entry-fragments/libusbcmd.so-4700.txt",
+      "bytes": 788,
+      "sha256": "2219b395c3673c008dcc254ec9afeddb7ce1f0e61111fa858e71ec9a1a77428c"
+    },
+    {
+      "path": "entry-fragments/ufp-body-prepare.txt",
+      "bytes": 1388,
+      "sha256": "80809bbd1b365984c528eeca98c991ed1d0fa3c7a0ff39d85334d71d0ef3cb19"
+    },
+    {
+      "path": "entry-fragments/ufp-execute-callback.txt",
+      "bytes": 2580,
+      "sha256": "53f973d258dbcaa8d9d0505ebd17349bdc56af9b6013a65e50de3b0e44d1e3e3"
+    },
+    {
+      "path": "entry-fragments/ufp-lens-prepare.txt",
+      "bytes": 2028,
+      "sha256": "55fe4fc9345a46642421f9f355a12a3088eca62c44fd7a81cf9034281cb15b73"
+    },
+    {
+      "path": "entry-fragments/ufp-udtr_cmd_search_chank.txt",
+      "bytes": 2123,
+      "sha256": "3b6c99dae76e150c28788d9f63b8ca137d1e3d5d3cc455211826a94ab8e64ed0"
+    },
+    {
+      "path": "entry-fragments/ufp-udtr_write_firm_from_media.txt",
+      "bytes": 2382,
+      "sha256": "62836eeed9f2fb2fd1f5f9b4d5ebe0cf17c2a621f891b7047ab93bfe428c4c0a"
+    },
+    {
+      "path": "entry-fragments/usb_extcmd.ko-extcmd_create_this.txt",
+      "bytes": 1200,
+      "sha256": "22447b5e03e7f0c3d86355c2a6bc3d5617d0755754fe097fb1287e3779003ab8"
+    },
+    {
+      "path": "entry-fragments/usb_extcmd.ko-extcmd_ioctl.txt",
+      "bytes": 42678,
+      "sha256": "4f349bcc0e3c4249098698bbfd26d31ff42f59a62cc68929b275df4935486f00"
+    },
+    {
+      "path": "entry-fragments/usb_extcmd.ko-extcmd_open.txt",
+      "bytes": 783,
+      "sha256": "0b59df92ab7df693e408a13e9d9a828466c91217dbb847abb3d668381bf1502b"
+    },
+    {
+      "path": "entry-fragments/usb_extcmd.ko-extcmd_user_access_ok.txt",
+      "bytes": 891,
+      "sha256": "025ea3cf703ca7f2d08657be656895de73cc7f0c49be1a901e61484e7c7fc4bd"
+    },
+    {
+      "path": "entry-fragments/usb_extcmd.ko-list_get_node.txt",
+      "bytes": 1442,
+      "sha256": "002e1141d25e60ce2e6e53308b92b2140cb6f8c689ab914defd20bca5ab59436"
+    },
+    {
+      "path": "entry-static-results.json",
+      "bytes": 30963,
+      "sha256": "fac0fb14df72c216d4ed47f89452ce73590722a3277b0efd683b503acc6f96dd"
+    },
+    {
+      "path": "execute-update-guest-results.json",
+      "bytes": 9352,
+      "sha256": "e635cc2b961480686e8e7674cbf846d27e6f7f29667b34ba3ad49a28d4069be6"
+    },
+    {
+      "path": "execute_update_guest.py",
+      "bytes": 10044,
+      "sha256": "5543781b21ff80ba6b0238801a5984cdad989e87481e152ee28c51f65bb3be11"
+    },
+    {
+      "path": "external-command-sources.json",
+      "bytes": 1051,
+      "sha256": "61b353a2533d8389bbfa85bc5f37f71ce2b64066b5e280890dc5a087c74e9e19"
+    },
+    {
+      "path": "external-command-static-results.json",
+      "bytes": 34397,
+      "sha256": "605f90ea86719b0992633d9b0afee9fbeab161a74895cdb55756676e0c070016"
+    },
+    {
+      "path": "find_ap_service_constructors.py",
+      "bytes": 4704,
+      "sha256": "4a55f08fef6567fdedb0361ab0d661b85d21844f305c53c91c7b2e4423bc8f95"
+    },
+    {
+      "path": "find_transport_service.py",
+      "bytes": 3355,
+      "sha256": "3d285ef058e297efe9774489bd734216fcf5f2aab102b67466516a86916311da"
+    },
+    {
+      "path": "inspect_app_crypto_calls.py",
+      "bytes": 3612,
+      "sha256": "9cf53ca079e98a46625f26ea2ffe1db74b9991aa81f3455b9cca33fd1cea9c7c"
+    },
+    {
+      "path": "inspect_entry_chain.py",
+      "bytes": 4046,
+      "sha256": "7bb47a89f505679137ca7900f815d8b303423a4a055312a07096e99504de7ed1"
+    },
+    {
+      "path": "inspect_external_transport.py",
+      "bytes": 3694,
+      "sha256": "f8b3a8a32b1bfec23bd7913e27729c655c62e5fd5f851283dac497361944cb28"
+    },
+    {
+      "path": "inspect_loader_gates.py",
+      "bytes": 2720,
+      "sha256": "934dacb0d3b32f821024dbac6e9e69550430b99301ca71bfb81eabd6ac1f2940"
+    },
+    {
+      "path": "loader-gates-selected-results.json",
+      "bytes": 21546,
+      "sha256": "8a6e832fb1142925313ec19ab0f2e1240ca266db44b534a06f329f901b18b2c3"
+    },
+    {
+      "path": "media-length-guest-results.json",
+      "bytes": 5002,
+      "sha256": "eb215da148b90b967cbfe66381913de776b0dc4a330783ab9b9c70a060f9820d"
+    },
+    {
+      "path": "media_length_guest.py",
+      "bytes": 7192,
+      "sha256": "a95df5e1c15e8935266071c51f478bd8244745cf52a08f60ebfdef5289007da7"
+    },
+    {
+      "path": "msc-server-source.json",
+      "bytes": 531,
+      "sha256": "7d45da15a6e237d5f9ff936e5ca3b0f7bba45aa58e6689b244a7553423a59fb5"
+    },
+    {
+      "path": "original-members/libInfraExtCmdSvc.so",
+      "bytes": 26960,
+      "sha256": "6ed99a632f6646e3313241b8d1aaef5a584444f81cf721c013fc403887774134"
+    },
+    {
+      "path": "original-members/libInfraMscServer.so",
+      "bytes": 64456,
+      "sha256": "3802b00e6cd5961e703f03c2b6f2e3f08a35323dc019921f73f29b8f9c813938"
+    },
+    {
+      "path": "original-members/libusbcmd.so",
+      "bytes": 27208,
+      "sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787"
+    },
+    {
+      "path": "original-members/usb_extcmd.ko",
+      "bytes": 23112,
+      "sha256": "9afdcb214058ff1d8be8c6a8b0bb72e861a1b0d92b7504310ac06b4ed56d92d7"
+    },
+    {
+      "path": "transport-service-constructor-results.json",
+      "bytes": 39963,
+      "sha256": "8df78fce0112f5ebc226b68dc47549cf83252ea17dce784434f32cc5d6fb11f0"
+    },
+    {
+      "path": "usb-extcmd-source.json",
+      "bytes": 331,
+      "sha256": "cf5b8b5e9fba270ae675c0516939965a096704124f71db3dacfd4973cb5a39ef"
+    },
+    {
+      "path": "usb-extcmd-static-results.json",
+      "bytes": 21093,
+      "sha256": "dc4cae838f8df8a84dc66a83792572baa96e98c96470e3068fe01c0d10016402"
+    },
+    {
+      "path": "validate_checkpoint.py",
+      "bytes": 4279,
+      "sha256": "501176d3647877776dc8e6e98bb9fe5c16312a628e352f8b3378f3911b5faa28"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 608,
+      "sha256": "f4fe57bc7d177efa1aed1f6e6c8e50bfbdcec145c7a283ac6a8b618d9a4871f4"
+    }
+  ]
+}

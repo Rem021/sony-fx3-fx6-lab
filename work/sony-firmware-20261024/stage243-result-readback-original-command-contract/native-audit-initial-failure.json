@@ -1,0 +1,126 @@
+{
+  "status": "INITIAL_STATIC_TABLE_EXPECTATION_FAILED",
+  "tables": [
+    {
+      "VA": 72468,
+      "bytes": "001003030303140303171b",
+      "sha256": "b4a59d7c7a600f9901cf974e179a07d8f423e322c0773ce4be334741a8834efb",
+      "rows": [
+        {
+          "command": 6,
+          "signed_index": 0,
+          "target": 44112
+        },
+        {
+          "command": 7,
+          "signed_index": 16,
+          "target": 44176
+        },
+        {
+          "command": 8,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 9,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 10,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 11,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 12,
+          "signed_index": 20,
+          "target": 44192
+        },
+        {
+          "command": 13,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 14,
+          "signed_index": 3,
+          "target": 44124
+        },
+        {
+          "command": 15,
+          "signed_index": 23,
+          "target": 44204
+        },
+        {
+          "command": 16,
+          "signed_index": 27,
+          "target": 44220
+        }
+      ]
+    },
+    {
+      "VA": 72480,
+      "bytes": "003d161d3d3d3d3d3d24",
+      "sha256": "f2f610dfc94982684605510f35ac6bcac22aed68c0f5aa19e3edfea1ff11425f",
+      "rows": [
+        {
+          "command": 8,
+          "signed_index": 0,
+          "target": 45416
+        },
+        {
+          "command": 9,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 10,
+          "signed_index": 22,
+          "target": 45504
+        },
+        {
+          "command": 11,
+          "signed_index": 29,
+          "target": 45532
+        },
+        {
+          "command": 12,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 13,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 14,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 15,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 16,
+          "signed_index": 61,
+          "target": 45660
+        },
+        {
+          "command": 17,
+          "signed_index": 36,
+          "target": 45560
+        }
+      ]
+    }
+  ],
+  "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 4, in <module>\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"audit_native_contract.py\", line 56, in <module>\n    assert send[15]==0xacac and send[16]==0xacbc and get[17]==0xb1fc\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "original_code_executed": false
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "address": "0xce4f0",
+    "target": "0x1d4e58",
+    "text": "reboot hot",
+    "lines": [
+      "000ce4dc mov     w2, #2",
+      "000ce4e0 mov     w19, w1",
+      "000ce4e4 mov     w0, #0x7a",
+      "000ce4e8 mov     w1, #0",
+      "000ce4ec bl      #0xb93ac",
+      "000ce4f0 adrp    x7, #0x1d4000",
+      "000ce4f4 mov     w4, w19",
+      "000ce4f8 add     x7, x7, #0xe58",
+      "000ce4fc mov     w6, #0",
+      "000ce500 mov     w5, #0",
+      "000ce504 mov     w3, #0",
+      "000ce508 mov     w2, #0x4000",
+      "000ce50c mov     w1, #0"
+    ]
+  },
+  {
+    "address": "0xce564",
+    "target": "0x1d476a",
+    "text": "reboot cold",
+    "lines": [
+      "000ce550 mov     w2, #2",
+      "000ce554 mov     w19, w1",
+      "000ce558 mov     w0, #0x7a",
+      "000ce55c mov     w1, #0",
+      "000ce560 bl      #0xb93ac",
+      "000ce564 adrp    x7, #0x1d4000",
+      "000ce568 mov     w4, w19",
+      "000ce56c add     x7, x7, #0x76a",
+      "000ce570 mov     w6, #0",
+      "000ce574 mov     w5, #0",
+      "000ce578 mov     w3, #0",
+      "000ce57c mov     w2, #0x4001",
+      "000ce580 mov     w1, #0"
+    ]
+  },
+  {
+    "address": "0xed4c0",
+    "target": "0x1dc94d",
+    "text": "us_reboot.sh",
+    "lines": [
+      "000ed4ac mov     w3, #0",
+      "000ed4b0 mov     w2, #2",
+      "000ed4b4 mov     x29, sp",
+      "000ed4b8 stp     x19, x20, [sp, #0x10]",
+      "000ed4bc mov     x20, x0",
+      "000ed4c0 adrp    x0, #0x1dc000",
+      "000ed4c4 add     x1, x29, #0x20",
+      "000ed4c8 add     x0, x0, #0x94d",
+      "000ed4cc stp     x0, xzr, [x29, #0x20]",
+      "000ed4d0 bl      #0x56940",
+      "000ed4d4 mov     w19, w0",
+      "000ed4d8 adrp    x0, #0x1dc000",
+      "000ed4dc add     x0, x0, #0x963"
+    ]
+  }
+]

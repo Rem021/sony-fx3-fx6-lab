@@ -1,0 +1,13 @@
+{
+  "status": "host_nonce_boundary_fix_complete_guest_integration_pending",
+  "derived_from": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail",
+  "source_freeze_sha256": "4737db8f89660c6bb41993b37f8aa9c8f9761a1e26be1e2fbbfa7a73db760d4b",
+  "changed_sources": [
+    "snapshot_tail_v15.py",
+    "test_snapshot_tail_actual.py"
+  ],
+  "guest_CPIO_created": false,
+  "VM_started": false,
+  "runner_still_pins_original_r3": true,
+  "regression": "Expected nonce0x12345678 incorrectly accepted complete serial line nonce0x123456789; require literal next probe field."
+}

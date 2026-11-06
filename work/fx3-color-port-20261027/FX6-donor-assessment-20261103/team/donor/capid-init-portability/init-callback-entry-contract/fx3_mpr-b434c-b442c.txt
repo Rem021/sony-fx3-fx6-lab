@@ -1,0 +1,62 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b434c <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj>:
+   b434c: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+   b4350: 910003fd     	mov	x29, sp
+   b4354: a90363f7     	stp	x23, x24, [sp, #0x30]
+   b4358: d0001237     	adrp	x23, 0x2fa000
+   b435c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   b4360: aa0003f5     	mov	x21, x0
+   b4364: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b4368: b0001233     	adrp	x19, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b436c: f9458ef6     	ldr	x22, [x23, #0xb18]
+   b4370: aa0103f8     	mov	x24, x1
+   b4374: a9046bf9     	stp	x25, x26, [sp, #0x40]
+   b4378: aa0203f9     	mov	x25, x2
+   b437c: 910022c0     	add	x0, x22, #0x8
+   b4380: 2a0303fa     	mov	w26, w3
+   b4384: 97ff209b     	bl	0x7c5f0 <pthread_mutex_lock@plt>
+   b4388: f9436273     	ldr	x19, [x19, #0x6c0]
+   b438c: f9400a61     	ldr	x1, [x19, #0x10]
+   b4390: f9401a60     	ldr	x0, [x19, #0x30]
+   b4394: eb00003f     	cmp	x1, x0
+   b4398: 540003e1     	b.ne	0xb4414 <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj+0xc8>
+   b439c: d0001224     	adrp	x4, 0x2fa000
+   b43a0: f9466884     	ldr	x4, [x4, #0xcd0]
+   b43a4: b9400094     	ldr	w20, [x4]
+   b43a8: 35000214     	cbnz	w20, 0xb43e8 <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj+0x9c>
+   b43ac: aa1603e0     	mov	x0, x22
+   b43b0: 12800001     	mov	w1, #-0x1               // =-1
+   b43b4: 52800013     	mov	w19, #0x0               // =0
+   b43b8: 97ff2b16     	bl	0x7f010 <_ZN3mpr6thread10signalLock4waitEj@plt>
+   b43bc: f9458ee0     	ldr	x0, [x23, #0xb18]
+   b43c0: 91002000     	add	x0, x0, #0x8
+   b43c4: 97ff253b     	bl	0x7d8b0 <pthread_mutex_unlock@plt>
+   b43c8: 7100029f     	cmp	w20, #0x0
+   b43cc: 1a9f0260     	csel	w0, w19, wzr, eq
+   b43d0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   b43d4: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   b43d8: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   b43dc: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+   b43e0: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+   b43e4: d65f03c0     	ret
+   b43e8: 2a1a03e1     	mov	w1, w26
+   b43ec: aa1603e0     	mov	x0, x22
+   b43f0: 97ff2b08     	bl	0x7f010 <_ZN3mpr6thread10signalLock4waitEj@plt>
+   b43f4: f9400a60     	ldr	x0, [x19, #0x10]
+   b43f8: f9401a61     	ldr	x1, [x19, #0x30]
+   b43fc: eb00003f     	cmp	x1, x0
+   b4400: 540000a1     	b.ne	0xb4414 <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj+0xc8>
+   b4404: 52800014     	mov	w20, #0x0               // =0
+   b4408: b90002bf     	str	wzr, [x21]
+   b440c: 52800033     	mov	w19, #0x1               // =1
+   b4410: 17ffffeb     	b	0xb43bc <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj+0x70>
+   b4414: aa1903e2     	mov	x2, x25
+   b4418: aa1803e1     	mov	x1, x24
+   b441c: aa1503e0     	mov	x0, x21
+   b4420: 97ff2f9c     	bl	0x80290 <_ZN3mpr13GetEventParamEPjPNS_5EVTIDEPm@plt>
+   b4424: 2a0003f4     	mov	w20, w0
+   b4428: 17fffff9     	b	0xb440c <_ZN3mpr13GetIssueEventEPjPNS_5EVTIDEPmj+0xc0>

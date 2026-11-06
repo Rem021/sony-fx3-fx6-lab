@@ -1,0 +1,164 @@
+{
+  "status": "no_qualified_screenshot",
+  "scope": "first_MENU_reference_only",
+  "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+  "session": "fx3-deadline-operator-r21-b83358633d9e-ccf2a6e7",
+  "url": "http://127.0.0.1:51442/",
+  "launch_id": "bb9c2485-fe65-40d5-92d5-db1d5365fd86",
+  "alarm_nonce": "981ffb0a-f966-4fe3-bd97-289d70849308",
+  "step": 1,
+  "host_started_UTC": "2026-11-04T23:42:32.486910+00:00",
+  "host_monotonic_started": 419438.018912125,
+  "screenshot_attempted": false,
+  "guest_keys_sent": 0,
+  "confirm_calls": 0,
+  "alarm_mutations": 0,
+  "timeline": [
+    {
+      "stage": "initial_receipt_write_enter",
+      "UTC": "2026-11-04T23:42:32.487052+00:00",
+      "monotonic": 419438.018921291
+    },
+    {
+      "stage": "initial_receipt_write_exit",
+      "UTC": "2026-11-04T23:42:32.487252+00:00",
+      "monotonic": 419438.019121583
+    },
+    {
+      "stage": "tab_preflight_enter",
+      "UTC": "2026-11-04T23:42:32.487255+00:00",
+      "monotonic": 419438.019124041
+    },
+    {
+      "stage": "tab_preflight_exit",
+      "UTC": "2026-11-04T23:42:32.493174+00:00",
+      "monotonic": 419438.025046875
+    },
+    {
+      "stage": "before_eval_enter",
+      "UTC": "2026-11-04T23:42:32.493219+00:00",
+      "monotonic": 419438.025088458
+    },
+    {
+      "stage": "before_eval_exit",
+      "UTC": "2026-11-04T23:42:32.583998+00:00",
+      "monotonic": 419438.115872083
+    },
+    {
+      "stage": "final_receipt_write_enter",
+      "UTC": "2026-11-04T23:42:32.584083+00:00",
+      "monotonic": 419438.115952
+    },
+    {
+      "stage": "final_receipt_write_exit",
+      "UTC": "2026-11-04T23:42:32.584432+00:00",
+      "monotonic": 419438.116311
+    },
+    {
+      "stage": "return_boundary",
+      "UTC": "2026-11-04T23:42:32.584444+00:00",
+      "monotonic": 419438.116313291
+    }
+  ],
+  "tab_id": null,
+  "before_eval": {
+    "diagnostics": {
+      "alarm_nonce": "981ffb0a-f966-4fe3-bd97-289d70849308",
+      "alarm_state": "armed",
+      "awaiting_step": null,
+      "delivery_unknown": false,
+      "displayed_generation": 2,
+      "displayed_sequence": 212,
+      "error": null,
+      "explicit_rejection": null,
+      "frame_generation": 3,
+      "frame_sequence": 213,
+      "frame_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "host_busy": false,
+      "input_received": true,
+      "phase": "ready",
+      "remaining_ms": 19787.89999997616,
+      "render_valid": true,
+      "review_required": true,
+      "review_step": 1,
+      "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "status_busy": false,
+      "steps": 1,
+      "visual_state": "visual_pending"
+    },
+    "events": [
+      {
+        "kind": "invoked",
+        "performance_ms": 28062.60000002384,
+        "wall_UTC": "2026-11-04T23:42:32.498Z"
+      },
+      {
+        "diagnostics": {
+          "alarm_nonce": "981ffb0a-f966-4fe3-bd97-289d70849308",
+          "alarm_state": "armed",
+          "awaiting_step": 1,
+          "delivery_unknown": false,
+          "displayed_generation": 2,
+          "displayed_sequence": 212,
+          "error": null,
+          "explicit_rejection": null,
+          "frame_generation": 2,
+          "frame_sequence": 212,
+          "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "host_busy": false,
+          "input_received": false,
+          "phase": "ready",
+          "remaining_ms": 19871,
+          "render_valid": true,
+          "review_required": false,
+          "review_step": null,
+          "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "status_busy": false,
+          "steps": 0,
+          "visual_state": "idle"
+        },
+        "kind": "state_transition",
+        "performance_ms": 28062.80000001192,
+        "state": "accepted_menu_waiting_for_status",
+        "wall_UTC": "2026-11-04T23:42:32.498Z"
+      },
+      {
+        "diagnostics": {
+          "alarm_nonce": "981ffb0a-f966-4fe3-bd97-289d70849308",
+          "alarm_state": "armed",
+          "awaiting_step": null,
+          "delivery_unknown": false,
+          "displayed_generation": 2,
+          "displayed_sequence": 212,
+          "error": null,
+          "explicit_rejection": null,
+          "frame_generation": 3,
+          "frame_sequence": 213,
+          "frame_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "host_busy": false,
+          "input_received": true,
+          "phase": "ready",
+          "remaining_ms": 19787.89999997616,
+          "render_valid": true,
+          "review_required": true,
+          "review_step": 1,
+          "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "status_busy": false,
+          "steps": 1,
+          "visual_state": "visual_pending"
+        },
+        "kind": "refused",
+        "performance_ms": 28146.200000047684,
+        "reason": "Error: step_one_review_visual_state_unexpected",
+        "wall_UTC": "2026-11-04T23:42:32.582Z"
+      }
+    ],
+    "reason": "Error: step_one_review_visual_state_unexpected",
+    "status": "no_qualified_screenshot",
+    "waited_ms": 83.70000004768372
+  },
+  "reason": "Error: step_one_review_visual_state_unexpected",
+  "host_finished_UTC": "2026-11-04T23:42:32.584072+00:00",
+  "host_monotonic_finished": 419438.115944791,
+  "host_elapsed_ms": 97.033
+}

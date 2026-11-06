@@ -1,0 +1,124 @@
+{
+  "schema": "fx3-offline-compatibility-contract/1",
+  "artifact_kind": "declarative_research_only_not_executable_adapter",
+  "created_utc": "2026-10-25T10:44:53.631271+00:00",
+  "source_refs": {
+    "pmca": {
+      "repo": "ma1co/Sony-PMCA-RE",
+      "ref": "master",
+      "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0"
+    },
+    "a7c2": {
+      "repo": "QAQLeonard/a7c2-fl23-research",
+      "ref": "main",
+      "commit": "b311407ac4ca5dd2460baee8f7d07a86a3bc9f2d"
+    }
+  },
+  "authorization": {
+    "scope": "windows_cached_pnp_only",
+    "live_device_commands_enabled": false,
+    "driver_changes_enabled": false,
+    "source_import_or_execution_enabled": false
+  },
+  "target": {
+    "model_human_menu": "ILME-FX3",
+    "firmware_human_menu": "7.02",
+    "model_firmware_provenance": "coordinator_current_task_input_not_device_read_by_this_agent",
+    "normal_cached_usb": {
+      "vid": "054C",
+      "pid": "0DA1",
+      "service": "USBSTOR",
+      "status": "healthy_per_coordinator_cached_inventory"
+    },
+    "live_usb_product_string": null,
+    "normal_usb_serial_sha256": null,
+    "service_pid": null,
+    "interfaces_and_endpoints": null,
+    "authentication_profile": null,
+    "senser_framing_profile": null,
+    "body_program_sha256": null
+  },
+  "capabilities": {
+    "cached_pnp_inventory_authorized": true,
+    "active_standard_scsi_query_enabled": false,
+    "sony_msc_extcmd_enabled": false,
+    "vendor_control_or_bulk_enabled": false,
+    "service_start_auth_stop_enabled": false,
+    "backup_or_program_file_read_enabled": false,
+    "temp_upload_delete_native_execution_enabled": false,
+    "persistent_settings_firmware_wbi_boot_write_enabled": false,
+    "automatic_retry_or_rescue_enabled": false
+  },
+  "transport_applicability": {
+    "native_usbstor_spti": "candidate_by_source_abstraction_and_Microsoft_API_not_FX3_tested",
+    "sony_0x7a_over_spti": "source_inference_only_not_authorized",
+    "service_auth_over_native_spti": "not_provided_by_existing_native_MSC_adapter",
+    "service_transport_requirement": "raw_USB_vendor_control_and_bulk_proof_required"
+  },
+  "implicit_io_audit": [
+    {
+      "source": "pmca/usb/__init__.py:23-64",
+      "operation": "MscDevice(driver).getDeviceInfo()",
+      "normal_scsi_command_count": 3,
+      "details": [
+        {
+          "command": "TEST_UNIT_READY",
+          "calls": 1,
+          "cdb_bytes": 6,
+          "description": "one six-byte all-zero CDB; not six commands; constructor reset side effect"
+        },
+        {
+          "command": "INQUIRY",
+          "calls": 1,
+          "allocation_length": 5
+        },
+        {
+          "command": "INQUIRY",
+          "calls": 1,
+          "allocation_length": "5+additional_length_from_first_response"
+        }
+      ],
+      "enabled": false
+    },
+    {
+      "source": "pmca/usb/driver/generic/__init__.py:121-172",
+      "operation": "libusb_BBB_error_path",
+      "conditional_additional_commands": [
+        {
+          "command": "REQUEST_SENSE",
+          "calls_per_failed_original_status": 1,
+          "allocation_length": 18,
+          "condition": "CSW status nonzero and failOnError false; sense query uses failOnError true"
+        }
+      ],
+      "conditional_control_action": "clearHalt on bulk data read/write GenericUsbException",
+      "native_spti_difference": "native adapter parses sense returned by same IOCTL; no explicit separate REQUEST_SENSE in that adapter",
+      "enabled": false
+    },
+    {
+      "source": "src/camera_runtime/transport.py:173-239",
+      "operation": "A7CII _query_initial_ready",
+      "normal_no_retry_scsi_command_count": 6,
+      "details": "two MSC-derived object constructors produce 2 TUR; 2 INQUIRY; Sony0x7A OUT and IN once each",
+      "conditional_more_io": "ReadyDriver can repeat TUR on explicit sense set; SonyBusy can repeat OUT or IN; BBB may add sense/clearHalt",
+      "enabled": false
+    }
+  ],
+  "blocking_unknowns": [
+    "live normal USB strings and per-body binding",
+    "target interface and endpoint layout",
+    "classic FX3 7.02 service PID and cold-entry path",
+    "target authentication and stop semantics",
+    "target Senser packet/chunk/ZLP behavior",
+    "body-specific program hashes and native ABI",
+    "recovery behavior independent of damaged main app"
+  ],
+  "forbidden_shortcuts": [
+    "change only PID/model and run A7CII Session",
+    "reuse I/O-bearing constructors as a single-query wrapper",
+    "replace USBSTOR for an ordinary cache or standard SCSI inventory",
+    "treat data OUT as proof of persistent writes",
+    "treat read-only or cleanup labels as authorization",
+    "equate successful normal entry with brick recovery"
+  ]
+}

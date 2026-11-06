@@ -1,0 +1,977 @@
+{
+  "status": "PASS_ORIGINAL_RESOURCE_AND_WORKER_FAILURE_FLOW_NOT_ACTUAL_OS_OR_CAMERA_COMPLETION",
+  "callback_cases": [
+    {
+      "options": {
+        "name": "matched_pending1"
+      },
+      "original_entries": [
+        "Obj:0xea58c",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x2f3c0",
+        "MWF:0x2f3c0",
+        "MWF:0x3808c",
+        "Obj:0xea9b4",
+        "Obj:0xea924"
+      ],
+      "bridges": [
+        "_Znwm",
+        "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+        "_Znwm",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList8pop_headEPNS_6ObjMsgE",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF8RsrcAcsr14SubAddUserListENS_6ObjMsgEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "pthread_attr_init",
+        "pthread_attr_setdetachstate",
+        "pthread_create",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF10ObjMsgListC1Ev",
+        "_ZN3MWF8RsrcAcsr24SubCheckRsrcMgrLIFOExistEPNS_10ObjMsgListE",
+        "_ZN3MWF10ObjMsgListD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev"
+      ],
+      "writes": 70,
+      "thread_create_calls": [
+        {
+          "kind": "resource",
+          "result_fixture": 0,
+          "entry": "0x100ea750"
+        }
+      ],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [],
+      "callback_dispatches": 1,
+      "sub_add_user_list_calls": 1,
+      "invocations": [
+        {
+          "entry": "0x100ea58c",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 0,
+          "checkpoint": null
+        }
+      ],
+      "pending_after": 0,
+      "resource_thread_flag_after": 1,
+      "last_return_low32": 0,
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "resource_create_failure_then_repeat",
+        "resource_create": 11,
+        "repeat": true,
+        "sem_post": 22
+      },
+      "original_entries": [
+        "Obj:0xea58c",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x2f3c0",
+        "MWF:0x2f3c0",
+        "MWF:0x3808c",
+        "Obj:0xea9b4",
+        "Obj:0xea924",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x2f3c0",
+        "MWF:0x2f3c0",
+        "MWF:0x3808c",
+        "Obj:0xea9b4",
+        "Obj:0xea924"
+      ],
+      "bridges": [
+        "_Znwm",
+        "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+        "_Znwm",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList8pop_headEPNS_6ObjMsgE",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF8RsrcAcsr14SubAddUserListENS_6ObjMsgEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "pthread_attr_init",
+        "pthread_attr_setdetachstate",
+        "pthread_create",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF10ObjMsgListC1Ev",
+        "_ZN3MWF8RsrcAcsr24SubCheckRsrcMgrLIFOExistEPNS_10ObjMsgListE",
+        "_ZN3MWF10ObjMsgListD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList8pop_headEPNS_6ObjMsgE",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF8RsrcAcsr14SubAddUserListENS_6ObjMsgEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "sem_post",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF10ObjMsgListC1Ev",
+        "_ZN3MWF8RsrcAcsr24SubCheckRsrcMgrLIFOExistEPNS_10ObjMsgListE",
+        "_ZN3MWF10ObjMsgListD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev"
+      ],
+      "writes": 129,
+      "thread_create_calls": [
+        {
+          "kind": "resource",
+          "result_fixture": 11,
+          "entry": "0x100ea750"
+        }
+      ],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [
+        22
+      ],
+      "sem_init_calls": [],
+      "callback_dispatches": 2,
+      "sub_add_user_list_calls": 2,
+      "invocations": [
+        {
+          "entry": "0x100ea58c",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 0,
+          "checkpoint": null
+        }
+      ],
+      "pending_after": 0,
+      "resource_thread_flag_after": 1,
+      "last_return_low32": 0,
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "key_mismatch",
+        "incoming_key": 41
+      },
+      "original_entries": [
+        "Obj:0xea58c",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420"
+      ],
+      "bridges": [
+        "_Znwm",
+        "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+        "_Znwm",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev"
+      ],
+      "writes": 28,
+      "thread_create_calls": [],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea58c",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 0,
+          "checkpoint": null
+        }
+      ],
+      "pending_after": 1,
+      "resource_thread_flag_after": 0,
+      "last_return_low32": 0,
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "pending2",
+        "pending": 2
+      },
+      "original_entries": [
+        "Obj:0xea58c",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x2f3c0",
+        "MWF:0x2f3c0"
+      ],
+      "bridges": [
+        "_Znwm",
+        "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+        "_Znwm",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz"
+      ],
+      "writes": 39,
+      "thread_create_calls": [],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea58c",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 0,
+          "checkpoint": null
+        }
+      ],
+      "pending_after": 1,
+      "resource_thread_flag_after": 0,
+      "last_return_low32": 0,
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "pending0",
+        "pending": 0
+      },
+      "original_entries": [
+        "Obj:0xea58c",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x36d78",
+        "MWF:0x2f420"
+      ],
+      "bridges": [
+        "_Znwm",
+        "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+        "_Znwm",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz"
+      ],
+      "writes": 36,
+      "thread_create_calls": [],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea58c",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 1,
+          "checkpoint": null
+        }
+      ],
+      "pending_after": 0,
+      "resource_thread_flag_after": 0,
+      "last_return_low32": 1,
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "null_payload",
+        "null_payload": true
+      },
+      "original_entries": [
+        "Obj:0xea58c",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x2f3c0",
+        "MWF:0x2f3c0",
+        "MWF:0x3808c"
+      ],
+      "bridges": [
+        "_Znwm",
+        "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+        "_Znwm",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList8pop_headEPNS_6ObjMsgE",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF8RsrcAcsr14SubAddUserListENS_6ObjMsgEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev"
+      ],
+      "writes": 56,
+      "thread_create_calls": [],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 1,
+      "invocations": [
+        {
+          "entry": "0x100ea58c",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 1,
+          "checkpoint": null
+        }
+      ],
+      "pending_after": 0,
+      "resource_thread_flag_after": 0,
+      "last_return_low32": 1,
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "mode_field1",
+        "mode": 1
+      },
+      "original_entries": [
+        "Obj:0xea58c",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x2f3c0",
+        "MWF:0x2f3c0",
+        "MWF:0x3808c",
+        "Obj:0xea9b4",
+        "Obj:0xea924"
+      ],
+      "bridges": [
+        "_Znwm",
+        "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+        "_Znwm",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList8pop_headEPNS_6ObjMsgE",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF8RsrcAcsr14SubAddUserListENS_6ObjMsgEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF10ObjMsgListC1Ev",
+        "_ZN3MWF8RsrcAcsr24SubCheckRsrcMgrLIFOExistEPNS_10ObjMsgListE",
+        "_ZN3MWF10ObjMsgListD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev"
+      ],
+      "writes": 63,
+      "thread_create_calls": [],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [],
+      "callback_dispatches": 1,
+      "sub_add_user_list_calls": 1,
+      "invocations": [
+        {
+          "entry": "0x100ea58c",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 0,
+          "checkpoint": null
+        }
+      ],
+      "pending_after": 0,
+      "resource_thread_flag_after": 0,
+      "last_return_low32": 0,
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "sub_add_failure",
+        "sub_add": 7
+      },
+      "original_entries": [
+        "Obj:0xea58c",
+        "MWF:0x38238",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x36d78",
+        "MWF:0x2f420",
+        "MWF:0x2f3c0",
+        "MWF:0x2f3c0"
+      ],
+      "bridges": [
+        "_Znwm",
+        "_ZN3MWF8RsrcAcsrC1EN7DefRsrc8AcsrId_tEPvPFvS3_NS_6ObjMsgEEj",
+        "_Znwm",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList6GetMsgEi",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZNK3MWF6ObjMsg8GetParamEj",
+        "_ZN3MWF8MyPrintfENS_6RsrcDP2PLEPKcz",
+        "_ZN3MWF6ObjMsgC1Ev",
+        "_ZN3MWF10ObjMsgList8pop_headEPNS_6ObjMsgE",
+        "_ZN3MWF6ObjMsgC1ERKS0_",
+        "_ZN3MWF8RsrcAcsr14SubAddUserListENS_6ObjMsgEj",
+        "_ZN3MWF6ObjMsgD1Ev",
+        "_ZN3MWF6ObjMsgD1Ev"
+      ],
+      "writes": 43,
+      "thread_create_calls": [],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 1,
+      "invocations": [
+        {
+          "entry": "0x100ea58c",
+          "return_low32": 0,
+          "checkpoint": null
+        },
+        {
+          "entry": "0x30038238",
+          "return_low32": 7,
+          "checkpoint": null
+        }
+      ],
+      "pending_after": 0,
+      "resource_thread_flag_after": 0,
+      "last_return_low32": 7,
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    }
+  ],
+  "worker_cases": [
+    {
+      "options": {
+        "name": "join_success"
+      },
+      "original_entries": [
+        "Obj:0xea750",
+        "Obj:0xec458",
+        "Obj:0xec4bc",
+        "Obj:0xea488",
+        "Obj:0xec3f4"
+      ],
+      "bridges": [
+        "_Z19SenserIfRegSenEndCBPv",
+        "sem_init",
+        "sem_init",
+        "sem_post",
+        "sem_wait",
+        "CPU_fixture_local_logging",
+        "pthread_mutex_lock",
+        "pthread_cancel",
+        "pthread_join",
+        "pthread_mutex_unlock",
+        "CPU_fixture_local_logging",
+        "pthread_create"
+      ],
+      "writes": 35,
+      "thread_create_calls": [
+        {
+          "kind": "normal",
+          "result_fixture": 0,
+          "entry": "0x100ea1dc"
+        }
+      ],
+      "cancel_calls": [
+        0
+      ],
+      "join_calls": [
+        0
+      ],
+      "dlclose_calls": [],
+      "sem_post_calls": [
+        0
+      ],
+      "sem_init_calls": [
+        0,
+        0
+      ],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea750",
+          "return_low32": 4,
+          "checkpoint": "BEFORE_SECOND_SEM_WAIT_WITH_INTERNAL_STATE4"
+        }
+      ],
+      "internal_state_after": 4,
+      "old_thread_token_after": "0xffffffffffffffff",
+      "loader_token_after": "0x91",
+      "resource_thread_flag_after": 1,
+      "checkpoint": "BEFORE_SECOND_SEM_WAIT_WITH_INTERNAL_STATE4",
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "cancel_join_failure",
+        "cancel": 3,
+        "join": 3
+      },
+      "original_entries": [
+        "Obj:0xea750",
+        "Obj:0xec458",
+        "Obj:0xec4bc",
+        "Obj:0xea488",
+        "Obj:0xec3f4"
+      ],
+      "bridges": [
+        "_Z19SenserIfRegSenEndCBPv",
+        "sem_init",
+        "sem_init",
+        "sem_post",
+        "sem_wait",
+        "CPU_fixture_local_logging",
+        "pthread_mutex_lock",
+        "pthread_cancel",
+        "CPU_fixture_local_logging",
+        "pthread_join",
+        "CPU_fixture_local_logging",
+        "pthread_mutex_unlock",
+        "CPU_fixture_local_logging",
+        "pthread_create"
+      ],
+      "writes": 34,
+      "thread_create_calls": [
+        {
+          "kind": "normal",
+          "result_fixture": 0,
+          "entry": "0x100ea1dc"
+        }
+      ],
+      "cancel_calls": [
+        3
+      ],
+      "join_calls": [
+        3
+      ],
+      "dlclose_calls": [],
+      "sem_post_calls": [
+        0
+      ],
+      "sem_init_calls": [
+        0,
+        0
+      ],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea750",
+          "return_low32": 4,
+          "checkpoint": "BEFORE_SECOND_SEM_WAIT_WITH_INTERNAL_STATE4"
+        }
+      ],
+      "internal_state_after": 4,
+      "old_thread_token_after": "0x71",
+      "loader_token_after": "0x91",
+      "resource_thread_flag_after": 1,
+      "checkpoint": "BEFORE_SECOND_SEM_WAIT_WITH_INTERNAL_STATE4",
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "join_and_dlclose_failure_loaded_control",
+        "join": 3,
+        "loaded": 1,
+        "dlclose": -1
+      },
+      "original_entries": [
+        "Obj:0xea750",
+        "Obj:0xec458",
+        "Obj:0xec4bc",
+        "Obj:0xeb95c",
+        "Obj:0xec51c",
+        "Obj:0xea488",
+        "Obj:0xec3f4"
+      ],
+      "bridges": [
+        "_Z19SenserIfRegSenEndCBPv",
+        "sem_init",
+        "sem_init",
+        "sem_post",
+        "sem_wait",
+        "CPU_fixture_local_logging",
+        "pthread_mutex_lock",
+        "pthread_cancel",
+        "pthread_join",
+        "CPU_fixture_local_logging",
+        "dlclose",
+        "pthread_mutex_unlock",
+        "CPU_fixture_local_logging",
+        "pthread_create"
+      ],
+      "writes": 38,
+      "thread_create_calls": [
+        {
+          "kind": "normal",
+          "result_fixture": 0,
+          "entry": "0x100ea1dc"
+        }
+      ],
+      "cancel_calls": [
+        0
+      ],
+      "join_calls": [
+        3
+      ],
+      "dlclose_calls": [
+        -1
+      ],
+      "sem_post_calls": [
+        0
+      ],
+      "sem_init_calls": [
+        0,
+        0
+      ],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea750",
+          "return_low32": 4,
+          "checkpoint": "BEFORE_SECOND_SEM_WAIT_WITH_INTERNAL_STATE4"
+        }
+      ],
+      "internal_state_after": 4,
+      "old_thread_token_after": "0x71",
+      "loader_token_after": "0x0",
+      "resource_thread_flag_after": 1,
+      "checkpoint": "BEFORE_SECOND_SEM_WAIT_WITH_INTERNAL_STATE4",
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "normal_create_failure",
+        "main_create": 11
+      },
+      "original_entries": [
+        "Obj:0xea750",
+        "Obj:0xec458",
+        "Obj:0xec4bc",
+        "Obj:0xea488",
+        "Obj:0xec3f4"
+      ],
+      "bridges": [
+        "_Z19SenserIfRegSenEndCBPv",
+        "sem_init",
+        "sem_init",
+        "sem_post",
+        "sem_wait",
+        "CPU_fixture_local_logging",
+        "pthread_mutex_lock",
+        "pthread_cancel",
+        "pthread_join",
+        "pthread_mutex_unlock",
+        "CPU_fixture_local_logging",
+        "pthread_create",
+        "CPU_fixture_local_logging",
+        "CPU_fixture_local_logging",
+        "sem_destroy",
+        "sem_destroy",
+        "CPU_fixture_local_logging",
+        "pthread_exit"
+      ],
+      "writes": 35,
+      "thread_create_calls": [
+        {
+          "kind": "normal",
+          "result_fixture": 11,
+          "entry": "0x100ea1dc"
+        }
+      ],
+      "cancel_calls": [
+        0
+      ],
+      "join_calls": [
+        0
+      ],
+      "dlclose_calls": [],
+      "sem_post_calls": [
+        0
+      ],
+      "sem_init_calls": [
+        0,
+        0
+      ],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea750",
+          "return_low32": 0,
+          "checkpoint": "AT_PTHREAD_EXIT_FIXTURE_BOUNDARY_NOT_REAL_THREAD_EXIT"
+        }
+      ],
+      "internal_state_after": 0,
+      "old_thread_token_after": "0xffffffffffffffff",
+      "loader_token_after": "0x91",
+      "resource_thread_flag_after": 0,
+      "checkpoint": "AT_PTHREAD_EXIT_FIXTURE_BOUNDARY_NOT_REAL_THREAD_EXIT",
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "first_sem_init_failure",
+        "sem_init_fail": 1
+      },
+      "original_entries": [
+        "Obj:0xea750"
+      ],
+      "bridges": [
+        "_Z19SenserIfRegSenEndCBPv",
+        "sem_init",
+        "CPU_fixture_local_logging",
+        "CPU_fixture_local_logging",
+        "pthread_exit"
+      ],
+      "writes": 19,
+      "thread_create_calls": [],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [
+        -1
+      ],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea750",
+          "return_low32": 0,
+          "checkpoint": "AT_PTHREAD_EXIT_FIXTURE_BOUNDARY_NOT_REAL_THREAD_EXIT"
+        }
+      ],
+      "internal_state_after": 0,
+      "old_thread_token_after": "0x71",
+      "loader_token_after": "0x91",
+      "resource_thread_flag_after": 0,
+      "checkpoint": "AT_PTHREAD_EXIT_FIXTURE_BOUNDARY_NOT_REAL_THREAD_EXIT",
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    },
+    {
+      "options": {
+        "name": "second_sem_init_failure",
+        "sem_init_fail": 2
+      },
+      "original_entries": [
+        "Obj:0xea750"
+      ],
+      "bridges": [
+        "_Z19SenserIfRegSenEndCBPv",
+        "sem_init",
+        "sem_init",
+        "CPU_fixture_local_logging",
+        "sem_destroy",
+        "CPU_fixture_local_logging",
+        "pthread_exit"
+      ],
+      "writes": 19,
+      "thread_create_calls": [],
+      "cancel_calls": [],
+      "join_calls": [],
+      "dlclose_calls": [],
+      "sem_post_calls": [],
+      "sem_init_calls": [
+        0,
+        -1
+      ],
+      "callback_dispatches": 0,
+      "sub_add_user_list_calls": 0,
+      "invocations": [
+        {
+          "entry": "0x100ea750",
+          "return_low32": 0,
+          "checkpoint": "AT_PTHREAD_EXIT_FIXTURE_BOUNDARY_NOT_REAL_THREAD_EXIT"
+        }
+      ],
+      "internal_state_after": 0,
+      "old_thread_token_after": "0x71",
+      "loader_token_after": "0x91",
+      "resource_thread_flag_after": 0,
+      "checkpoint": "AT_PTHREAD_EXIT_FIXTURE_BOUNDARY_NOT_REAL_THREAD_EXIT",
+      "original_code_unchanged_and_entry_stack_guard_preserved": true
+    }
+  ],
+  "case_count": 14,
+  "original_function_entries": 102,
+  "real_queue_delivery_thread_exit_dlclose_or_mode_transition_proven": false,
+  "actual_initial_MSC_auth_or_runtime_registration_proven": false,
+  "message_copy_list_management_OS_thread_semaphore_loader_and_log_calls_use_declared_fixtures": true,
+  "new_device_Windows_USB_operations": 0,
+  "test_sha256": "105bcefe41aa66b986af0df26f8bc565dabdd200f61ac647f4a056233e2bb76a"
+}

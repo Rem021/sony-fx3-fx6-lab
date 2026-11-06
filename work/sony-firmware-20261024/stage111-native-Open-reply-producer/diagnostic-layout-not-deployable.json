@@ -1,0 +1,60 @@
+{
+  "schema": "fx3-offline-internal-message-observations/1",
+  "status": "SPEC_ONLY_UNDEPLOYABLE",
+  "source_stage": "stage111-native-Open-reply-producer",
+  "not_USB_protocol_or_permission_to_query_camera": true,
+  "forward_Open": {
+    "observed_payload_bytes": 48,
+    "source": "stage107 original MPR allocation and header copy",
+    "physical_u64_offset": 8,
+    "virtual_u64_offset": 40,
+    "runtime_pointer_validity_unproven": true
+  },
+  "tested_reply_producers": {
+    "observed_payload_bytes": 44,
+    "producers": [
+      "ExecErrorCommand",
+      "Ack ExecCmd",
+      "Comp ExecCmd"
+    ],
+    "fields_little_endian": {
+      "subcode": {
+        "offset": 2,
+        "bytes": 2
+      },
+      "opaque_status": {
+        "offset": 20,
+        "bytes": 4
+      },
+      "CodecType": {
+        "offset": 24,
+        "bytes": 1
+      },
+      "MID": {
+        "offset": 36,
+        "bytes": 4
+      }
+    },
+    "classifier_identity": {
+      "MID4e0_sub0": 1,
+      "MID4e0_sub1": 4097
+    },
+    "do_not_parse_virtual_u64_at40_from44_bytes": true,
+    "other_reply_types_and_normal_MC_input_production_unproven": true
+  },
+  "Cxx_reply_copy": {
+    "observed_copy_bytes": 48,
+    "source": "original MPR CallbackFromAvbbc",
+    "44_wire_to48_storage_allocation_extent_tail_and_lifetime_not_verified": true
+  },
+  "acceptance_requires": [
+    "actual message role and declared length",
+    "valid owning storage extent before Cxx copy",
+    "expected event and instance/generation",
+    "opaque status interpretation and content readback",
+    "actual hardware Open/Start and target file",
+    "raw98 lifetime and external synchronization"
+  ],
+  "device_IO_or_guest_prototype_changed": false,
+  "goal_complete": false
+}

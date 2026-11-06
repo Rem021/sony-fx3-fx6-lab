@@ -1,0 +1,28 @@
+{
+  "recorded_utc": "2026-11-01T07:20:10.937767+00:00",
+  "user_reply": "出现报错或访问灯亮起／闪烁",
+  "reply_ambiguity": "Combined option; exact error text, lamp color/location and final screen state not yet known. Do not assert a confirmed camera error.",
+  "cache_source": "UID501 ioreg; tool chunk3aa7f6",
+  "new_cached_node": {
+    "VID": 1356,
+    "PID": 3432,
+    "PID_hex": "0x0d68",
+    "registryID": 4295944815,
+    "locationID": 17825792,
+    "product": "USB Bus-powered Device"
+  },
+  "SERVICE_0336_still_seen_in_this_snapshot": false,
+  "inference": "Possible ordinary OFF/USB charging state, not yet confirmed by screen/lamp observation; product name and same logical location do not prove firmware identity or recovery.",
+  "official_reference": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000867599.html",
+  "official_relevant_fact": "With camera OFF and USB-C power connected, orange charge lamp lit means charging; flashing indicates charging error or temporary temperature-related pause.",
+  "pending": "Clarify orange charge lamp versus red access lamp; screen off and any exact message.",
+  "current_instruction": "Keep OFF, USB and power connected; no additional cycling, cable/battery removal or Sony command.",
+  "original_helper_and_observer_live": [
+    85066,
+    82324
+  ],
+  "new_USB_requests": 0,
+  "new_root_helpers": 0,
+  "new_Sony_commands": 0,
+  "no_retry_kill_reset_or_fence_clear": true
+}

@@ -1,0 +1,333 @@
+#!/usr/bin/env python3
+"""Bounded FX3 menu-repair guest observer. Frozen baseline is read-only."""
+from pathlib import Path
+import argparse
+import datetime
+import fcntl
+import hashlib
+import json
+import os
+import plistlib
+import resource
+import shutil
+import signal
+import socket
+import subprocess
+import struct
+import sys
+import time
+import uuid
+from cpio_audit import audit
+
+ROOT = Path(__file__).resolve().parent
+BASE = ROOT.parent
+FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+
+
+def digest(path):
+    with path.open('rb') as f:
+        return hashlib.file_digest(f, 'sha256').hexdigest()
+
+
+def input_check(item):
+    p = Path(item['path'])
+    if not p.is_file() or p.is_symlink() or digest(p) != item['sha256']:
+        raise RuntimeError('Input SHA/path mismatch: ' + str(p))
+    return p
+
+
+def checkpoint(value):
+    path = ROOT / 'STATE.json'
+    state = json.loads(path.read_text()) if path.exists() else {}
+    state.update(value)
+    state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+    state['owner'] = '/root/fx3_vm_host'
+    state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    temp = ROOT / 'STATE.json.tmp'
+    temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+    temp.replace(path)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--candidate', required=True, type=Path)
+    ap.add_argument('--seconds', type=int, default=20)
+    ap.add_argument('--trace-seconds', type=float, default=0)
+    ap.add_argument('--label', default='guest')
+    ns = ap.parse_args()
+    if not 1 <= ns.seconds <= 600 or not 0 <= ns.trace_seconds <= 10:
+        ap.error('Observation 1..600s, instruction trace 0..10s only')
+    vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+    if vol.get('VolumeUUID') != VOLUME_UUID:
+        raise RuntimeError('External volume UUID mismatch')
+    candidate_path = ns.candidate.resolve()
+    if not candidate_path.is_relative_to(BASE):
+        raise RuntimeError('Candidate manifest must be in this menu-repair task')
+    candidate = json.loads(candidate_path.read_text())
+    baseline = json.loads((FROZEN / 'manifest.json').read_text())
+    checks = [(FROZEN / rel, h) for rel, h in baseline['runtime_sha256'].items()]
+    checks.append((Path(baseline['kernel']['path']), baseline['kernel']['sha256']))
+    for p, h in checks:
+        input_check({'path': str(p), 'sha256': h})
+    dtb = input_check(candidate['dtb'])
+    initrd = input_check(candidate['initrd'])
+    if not dtb.resolve().is_relative_to(BASE) or not initrd.resolve().is_relative_to(BASE):
+        raise RuntimeError('Candidate DTB/initrd must be in this task')
+    checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+               (candidate_path, digest(candidate_path))]
+    snapshots = []
+    fdt_bytes = dtb.read_bytes()
+    fdt_header = struct.unpack_from('>10I', fdt_bytes)
+    if fdt_header[0] != 0xd00dfeed or fdt_header[1] != len(fdt_bytes):
+        raise RuntimeError('Malformed experimental FDT header')
+    reserve_offset = fdt_header[4]
+    while reserve_offset + 16 <= len(fdt_bytes):
+        address, size = struct.unpack_from('>QQ', fdt_bytes, reserve_offset)
+        reserve_offset += 16
+        if not (address or size):
+            break
+        # Exact same-model Backup region was independently audited for07b.
+        # This is read-only guest RAM, not a host source or physical device.
+        if (address, size) == (0x404000000, 0x221000):
+            snapshots.append({'address': address, 'size': size,
+                              'name': 'backup-reserved-ram.bin',
+                              'scope': 'Quiesced original Backup RAM only; not persistence/API acceptance'})
+        if (address, size) == (0x41d800000, 0x10000):
+            snapshots.append({'address': address, 'size': size, 'name': 'capid-reserved-ram.bin', 'scope': 'Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance'})
+        if (address, size) == (0x41d900000, 0x100000):
+            snapshots.append({'address': address, 'size': size, 'name': 'dmm-virtual-ram.bin', 'scope': 'Quiesced explicit virtual two-slot DMM backing only; no originalCP/capture acceptance'})
+    cpio_report = audit(initrd, FROZEN / 'share/fx3-original-app-loader-probe.cpio')
+    audit_path = ROOT / ('preflight-' + digest(initrd)[:16] + '.json')
+    if not audit_path.exists():
+        audit_path.write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')
+    if not cpio_report['safe_to_unpack']:
+        raise RuntimeError('CPIO unpack/order or original ELF identity gate failed: ' + str(audit_path))
+    locks = []
+    # Also take the baseline lock to coordinate any manual use of the shared runtime.
+    for path, mode in [(FROZEN / '.run.lock', 'rb'), (ROOT / '.run.lock', 'a+b')]:
+        lock = path.open(mode)
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        locks.append(lock)
+    label = ''.join(c for c in ns.label if c.isalnum() or c in '-_')[:32]
+    run = ROOT / 'runs' / (label + '-' + uuid.uuid4().hex[:8])
+    run.mkdir()
+    observer_dir = run / 'observer-source'
+    observer_dir.mkdir()
+    observer_sources = []
+    for name in ['run_candidate.py', 'cpio_audit.py', 'decode_printk_ring.py']:
+        shutil.copyfile(ROOT / name, observer_dir / name)
+        observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+    (run / 'cpio-audit.json').write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')
+    success_doc = BASE / 'success-cases/source/docs/tech/03-guest-environment.md'
+    if success_doc.is_file():
+        (run / 'success-path-provenance.json').write_text(json.dumps({
+            'upstream_pinned_prefix': 'b3d7c1f', 'evidence_file': str(success_doc),
+            'evidence_sha256': digest(success_doc),
+            'evidence_section': 'section3 original devno→osal_utm→osal_uipc; original FX3 module/order/IDs checked separately',
+            'application_to_FX3': 'Same module chain; no A7C2 binary offsets copied'}, ensure_ascii=False, indent=2) + '\n')
+    qemu = FROZEN / baseline['binary']
+    if 'qemu' in candidate:
+        qemu = input_check(candidate['qemu'])
+        if not qemu.resolve().is_relative_to(ROOT / 'qemu-display-build') or candidate.get('timer_model') is not True:
+            raise RuntimeError('Unreviewed derived QEMU profile')
+        checks.append((qemu, candidate['qemu']['sha256']))
+    # Relative QMP sockaddr avoids the macOS AF_UNIX absolute-path length limit.
+    args = [str(qemu), '-machine', 'virt,gic-version=2,secure=off', '-accel', 'tcg',
+            '-cpu', 'cortex-a35', '-smp', '1', '-m', str(candidate.get('memory_mib', 2048)), '-display', 'none',
+            '-nodefaults', '-nic', 'none', '-no-reboot', '-monitor', 'none',
+            '-serial', 'file:' + str(run / 'serial.log'),
+            '-qmp', 'unix:q,server=on,wait=off', '-S',
+            '-kernel', baseline['kernel']['path'], '-initrd', str(initrd),
+            '-device', 'loader,file=' + str(dtb) + ',addr=0x400002000,force-raw=on']
+    if 'initrd_load_address' in candidate:
+        address = int(candidate['initrd_load_address'], 0)
+        if address != 0x440000000 or candidate.get('memory_mib') != 5120:
+            raise RuntimeError('Only reviewed high-initrd/5GiB experimental profile supported')
+        index = args.index('-initrd')
+        args[index:index+2] = ['-device', 'loader,file=' + str(initrd) + ',addr=0x440000000,force-raw=on']
+    elif candidate.get('memory_mib', 2048) != 2048:
+        raise RuntimeError('Unexpected memory profile')
+    if ns.trace_seconds:
+        args += ['-d', 'in_asm', '-D', str(run / 'instruction.log')]
+    env = os.environ.copy()
+    env.update(baseline['model_env'])
+    if candidate.get('timer_model') is True:
+        env['FX3_VM_SONY_TIMER'] = '1'
+    if candidate.get('scu_request_model') is True:
+        env['FX3_VM_SCU_REQUEST'] = '1'
+    if candidate.get('gpio_bank5_model') is True:
+        env['FX3_VM_GPIO_BANK5'] = '1'
+    command = {'args': args, 'cwd': str(run), 'model_env': {key: env[key] for key in ['FX3_VM_ESRAM_RAM', 'FX3_VM_HIGH_DDR', 'FX3_VM_SONY_TIMER', 'FX3_VM_SCU_REQUEST', 'FX3_VM_GPIO_BANK5'] if key in env},
+               'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+               'seconds': ns.seconds, 'trace_prefix_seconds': ns.trace_seconds,
+               'read_only_guest_memory_snapshots': snapshots}
+    (run / 'command.json').write_text(json.dumps(command, ensure_ascii=False, indent=2) + '\n')
+    journal = []
+    samples = []
+    error = None
+    p = None
+    seq = 0
+    previous_cwd = Path.cwd()
+    start = time.monotonic()
+    started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+    def limits():
+        resource.setrlimit(resource.RLIMIT_FSIZE, (32 * 1024 * 1024, 32 * 1024 * 1024))
+        resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+
+    def terminated(signum, frame):
+        raise KeyboardInterrupt('Observer received signal ' + str(signum))
+
+    signal.signal(signal.SIGTERM, terminated)
+
+    with (run / 'host-stdout.log').open('wb') as stdout, (run / 'host-stderr.log').open('wb') as stderr:
+        try:
+            p = subprocess.Popen(args, cwd=run, env=env, stdout=stdout, stderr=stderr,
+                                 start_new_session=True, preexec_fn=limits)
+            checkpoint({'phase': 'RUNNING_BOUNDED_CANDIDATE', 'current_candidate': str(candidate_path),
+                        'current_candidate_sha256': digest(candidate_path), 'current_run': str(run),
+                        'fixed_inputs': [{'path': str(p), 'sha256': h} for p, h in checks],
+                        'guest_process': {'pid': p.pid, 'current_running_pid': p.pid,
+                                          'observer_pid': os.getpid(), 'exit': None, 'reaped': False},
+                        'locks': [{'path': str(FROZEN / '.run.lock'), 'holder': os.getpid(), 'status': 'held'},
+                                  {'path': str(ROOT / '.run.lock'), 'holder': os.getpid(), 'status': 'held'}],
+                        'next_minimal_command': {'status': 'Current bounded observation in progress',
+                                                 'argv': [sys.executable, str(ROOT / 'run_candidate.py'),
+                                                          '--candidate', str(candidate_path), '--seconds',
+                                                          str(ns.seconds), '--label', label]}})
+            for _ in range(100):
+                if (run / 'q').exists() or p.poll() is not None:
+                    break
+                time.sleep(.05)
+            if p.poll() is not None:
+                raise RuntimeError('QEMU startup exited; inspect host-stderr.log')
+            os.chdir(run)
+            s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+            s.settimeout(3)
+            s.connect('q')
+            os.chdir(previous_cwd)
+            f = s.makefile('rb')
+            journal.append({'greeting': json.loads(f.readline())})
+
+            def qmp(cmd, arguments=None):
+                nonlocal seq
+                seq += 1
+                req = {'execute': cmd, 'id': seq}
+                if arguments is not None:
+                    req['arguments'] = arguments
+                journal.append({'request': req, 'elapsed_seconds': time.monotonic() - start})
+                s.sendall((json.dumps(req) + '\n').encode())
+                while True:
+                    raw = f.readline()
+                    if not raw:
+                        raise RuntimeError('QMP stream ended')
+                    resp = json.loads(raw)
+                    journal.append({'response': resp})
+                    if resp.get('id') == seq:
+                        return resp
+
+            qmp('qmp_capabilities')
+            qmp('human-monitor-command', {'command-line': 'info registers'})
+            qmp('cont')
+            guest_start = time.monotonic()
+            deadline = guest_start + ns.seconds
+            tracing = ns.trace_seconds > 0
+            while time.monotonic() < deadline and p.poll() is None:
+                st = subprocess.run(['ps', '-o', 'rss=,vsz=', '-p', str(p.pid)],
+                                    capture_output=True, text=True)
+                samples.append({'elapsed_seconds': time.monotonic() - start,
+                                'rss_vsz_kib': st.stdout.strip()})
+                if tracing and time.monotonic() - guest_start >= ns.trace_seconds:
+                    qmp('human-monitor-command', {'command-line': 'log none'})
+                    tracing = False
+                time.sleep(.25)
+            if p.poll() is None:
+                qmp('stop')
+                for command in [
+                    'gva2gpa 0xffffff80086e7538', 'gva2gpa 0xfffffffff13a1c38',
+                    'x /2gx 0xffffff80086994d8', 'x /4gx 0xffffff80086e47a0',
+                    'memsave 0xffffff80086994d8 0x10 "' + str(run / 'printk-pointers.bin') + '"',
+                    'memsave 0xffffff80086e47a0 0x20 "' + str(run / 'printk-indices.bin') + '"',
+                    'memsave 0xffffff80086e7538 0x20000 "' + str(run / 'printk-ring.bin') + '"',
+                    'info registers']:
+                    qmp('human-monitor-command', {'command-line': command})
+                for snapshot in snapshots:
+                    command = 'pmemsave ' + hex(snapshot['address']) + ' ' + hex(snapshot['size']) + ' "' + str(run / snapshot['name']) + '"'
+                    qmp('human-monitor-command', {'command-line': command})
+                qmp('query-status')
+                qmp('query-cpus-fast')
+                qmp('quit')
+            p.wait(timeout=5)
+        except (Exception, KeyboardInterrupt) as exc:
+            error = repr(exc)
+        finally:
+            os.chdir(previous_cwd)
+            if p is not None and p.poll() is None:
+                os.killpg(p.pid, signal.SIGTERM)
+                try:
+                    p.wait(timeout=3)
+                except subprocess.TimeoutExpired:
+                    os.killpg(p.pid, signal.SIGKILL)
+                    p.wait(timeout=3)
+    (run / 'qmp.json').write_text(json.dumps(journal, ensure_ascii=False, indent=2) + '\n')
+    ring_decode = None
+    if all((run / n).is_file() for n in ['printk-pointers.bin', 'printk-indices.bin', 'printk-ring.bin']):
+        dec = subprocess.run([sys.executable, str(ROOT / 'decode_printk_ring.py'), str(run)],
+                             capture_output=True, text=True)
+        ring_decode = {'exit': dec.returncode, 'stdout': dec.stdout, 'stderr': dec.stderr}
+        (run / 'printk-decode-observer.json').write_text(json.dumps(ring_decode, indent=2) + '\n')
+    serial = (run / 'serial.log').read_text(errors='replace') if (run / 'serial.log').exists() else ''
+    exceptions = [m for m in ['Kernel panic', 'Entering exception monitor.', 'Unhandled fault:'] if m in serial]
+    warnings = [line for line in serial.splitlines() if 'WARNING:' in line or 'BUG:' in line or 'Oops:' in line]
+    markers = {m: m in serial for m in candidate.get('required_markers', [])}
+    unchanged = all(digest(path) == h for path, h in checks)
+    for snapshot in snapshots:
+        path = run / snapshot['name']
+        snapshot['present'] = path.is_file()
+        if path.is_file():
+            snapshot['actual_bytes'] = path.stat().st_size
+            snapshot['sha256'] = digest(path)
+    receipt = {'created_utc': started, 'duration_seconds': time.monotonic() - start,
+               'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+               'observer_source_snapshot': observer_sources,
+               'run': str(run), 'requested_seconds': ns.seconds,
+               'qemu_pid': None if p is None else p.pid,
+               'qemu_exit': None if p is None else p.returncode,
+               'process_reaped': p is not None and p.poll() is not None,
+               'inputs_unchanged': unchanged, 'input_checks': [{'path': str(p), 'sha256': h} for p, h in checks],
+               'host_observer_error': error, 'memory_samples': samples,
+               'printk_ring_decode': ring_decode,
+               'read_only_guest_memory_snapshots': snapshots,
+               'guest_exception_markers': exceptions, 'markers': markers,
+               'guest_warning_lines': warnings,
+               'menu_verified': False, 'classification': 'OBSERVATION_ONLY_REVIEW_GUEST_LOGS',
+               'physical_devices_host_disks_network': 0,
+               'receipt_scope': candidate.get('scope', 'Candidate original services/AP in bounded VM')}
+    (run / 'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
+    for lock in locks:
+        fcntl.flock(lock, fcntl.LOCK_UN)
+        lock.close()
+    checkpoint({'phase': 'RUN_COMPLETE_REVIEW_PENDING', 'last_run': str(run), 'current_run': None,
+                'last_run_immutable': True,
+                'guest_process': {'pid': receipt['qemu_pid'], 'current_running_pid': None,
+                                  'observer_pid': os.getpid(), 'exit': receipt['qemu_exit'],
+                                  'reaped': receipt['process_reaped']},
+                'inputs_unchanged': unchanged, 'guest_exception_markers': exceptions,
+                'guest_warning_lines': warnings,
+                'locks': [{'path': str(FROZEN / '.run.lock'), 'holder': None, 'status': 'released'},
+                          {'path': str(ROOT / '.run.lock'), 'holder': None, 'status': 'released'}],
+                'next_minimal_command': {'status': 'Review immutable serial/proc/ring before next candidate'}})
+    print('RUN', run)
+    print('OBSERVER', error, 'EXIT', receipt['qemu_exit'], 'REAPED', receipt['process_reaped'],
+          'UNCHANGED', unchanged, 'GUEST_EXCEPTION', exceptions)
+    print('\n'.join(serial.splitlines()[-100:]))
+    return 0 if unchanged and error is None and receipt['process_reaped'] else 2
+
+
+if __name__ == '__main__':
+    try:
+        sys.exit(main())
+    except Exception as exc:
+        print('Stopped:', exc, file=sys.stderr)
+        sys.exit(2)

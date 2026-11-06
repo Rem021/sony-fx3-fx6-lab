@@ -1,0 +1,57 @@
+{
+  "receipt_status": "click_invoked",
+  "clicks": 1,
+  "keyPOST": 1,
+  "pending": 1,
+  "PAGE_attempt": {
+    "accepted_next_step": 1,
+    "alarm_due_ms": 20039,
+    "alarm_nonce": "50af8b6d-1a37-49b5-b9b9-c15ff1d9bb31",
+    "attempt_id": "25c69bfd-2fa0-44bd-8ea7-3697805a88c2",
+    "base_step": 0,
+    "created_monotonic_ms": 51.30000001192093,
+    "document_time_origin": 1793838438294.1,
+    "expected_step": 1,
+    "frame": {
+      "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+      "content_generation": 1,
+      "sequence": 1
+    },
+    "key": 427,
+    "launch_request_id": "40903fc1-a1a1-46c5-916f-d77966a27da4",
+    "mutation_called": true,
+    "observed_sequence": 1,
+    "outcome": "accepted",
+    "server_request_id": "25c69bfd-2fa0-44bd-8ea7-3697805a88c2",
+    "updated_monotonic_ms": 53.60000002384186
+  },
+  "rejections": {
+    "schema": "fx3-host-key-rejection-v1",
+    "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+    "capacity": 64,
+    "total": 0,
+    "truncated": 0,
+    "records": []
+  },
+  "reserved_before_eval": [
+    {
+      "status": "reserved_unknown",
+      "reservation_id": "88449ae2-3b11-4b5e-824c-cd16f13dd132",
+      "key": 427,
+      "host_ns": 422123869012000
+    }
+  ],
+  "ledger_final": {
+    "attempts": [
+      {
+        "status": "click_invoked",
+        "reservation_id": "88449ae2-3b11-4b5e-824c-cd16f13dd132",
+        "key": 427,
+        "host_ns": 422123869012000,
+        "attempt_id": "25c69bfd-2fa0-44bd-8ea7-3697805a88c2",
+        "step": 1
+      }
+    ],
+    "recoveries": []
+  }
+}

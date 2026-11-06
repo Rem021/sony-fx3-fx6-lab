@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "reviewed_utc": "2026-11-01T11:10:10.663359+00:00",
+  "status": "FIXED_COMMUNICATION03_READY_PENDING_NEW_EXACT_APPROVAL",
+  "approval_bundle_sha256": "c4719618f3c4c78cd78c4401384ae713c6b2dc5a08f911b07dfd01d31486db62",
+  "fixed_members": 99,
+  "native_helper_sha256": "b9f424d9993698f2793f0e6a8c5e306c13cdb9fc92928d980eb2cca558b41944",
+  "grant_id": "fx3-702-service-access-communication-20261101-03",
+  "scope": "MANUAL_RECOVERED_BOUNDED_SHARED_SERVICE_AUTH_READ0_RETURN",
+  "canonical_authorization_must_be_false": true,
+  "check_receipts": {
+    "package-test-receipt.json": {
+      "status": "FIXED_MANUAL_RECOVERED_COMMUNICATION_PACKAGE_OFFLINE_PASS",
+      "sha256": "231310efcba18da021d035a79959c0e4a8bf87f28871d531a2c34912b540fe04",
+      "groups": 7
+    },
+    "test-receipt.json": {
+      "status": "MANUAL_RECOVERY_ENTRY_PRIVATE_STAMP_AND_FLOW_OWN_PROCESS_PASS",
+      "sha256": "b6a90fc79ed5049095435575d49fab3bb8f851eab95e81e36f4d572a652bb79b",
+      "groups": 8
+    },
+    "acquisition-integration-check.json": {
+      "status": "FULL_CONTROLLER_V5_ACQUISITION_FAILURE_IPC_PASS",
+      "sha256": "2d4125541e8fbf9f86d3539416ff1e95e4756d6ee1edcad0c7e0bb84d32cdbb9",
+      "groups": 5
+    },
+    "shared-access-check.json": {
+      "status": "BOUNDED_SHARED_SERVICE_FULL_FAKE_FLOW_PASS",
+      "sha256": "8ed02e26177a7c6c5bb1d5951c60ede7f1abae577d5af11016e3ffd64266da02",
+      "groups": 4
+    },
+    "current-binding-check.json": {
+      "status": "CURRENT_ACTUAL269_270_RECOVERY_POLICY_AND_NEW_TARGET_BOUND",
+      "sha256": "374424f860429493491976ff35bc3eae3120ffc36dbf4cc5ef68a41fd349bb01",
+      "groups": 0
+    }
+  },
+  "corrected_draft_preserved": true,
+  "current_target_matches": true,
+  "current_camera_volumes_mounted": [
+    "disk10s1"
+  ],
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_root_or_USB_operations": 0,
+  "new_camera_trial_authorized": false,
+  "production_job_created": false,
+  "artificial_process_tests_do_not_prove_real_camera_success": true,
+  "firmware_write": false,
+  "module_upload": false,
+  "safe_first_flash_accepted": false
+}

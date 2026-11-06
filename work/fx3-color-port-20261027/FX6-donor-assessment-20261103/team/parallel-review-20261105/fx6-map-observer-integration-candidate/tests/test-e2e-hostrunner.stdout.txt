@@ -1,0 +1,102 @@
+{
+  "status": "SUCCESS",
+  "two_keys_observed": true,
+  "host_cleanup_complete": true,
+  "input_unchanged_after": true,
+  "postflight_error": null,
+  "verification_failed": false,
+  "guest_restore_status": "unknown_not_attempted",
+  "boot_menu_passed": false,
+  "receipt": "/var/folders/hd/xmjxvtc5679d05fx85pqg6p40000gn/T/tmp92agaah2/run/receipt.json"
+}
+DEBUG_RECEIPT {
+ "status": "observed",
+ "error": null,
+ "clean": false,
+ "records": [
+  {
+   "key": "0x02cf0214",
+   "key_id": "0x2cf0214",
+   "pid": 239,
+   "gdb_cpu_thread": "1",
+   "guest_tid": "unknown",
+   "entry_pc": "0x7efccc4784",
+   "return_pc": "0x7efbd517d4",
+   "buffer": "0x7ed3d12344",
+   "capacity_expected_static": 4,
+   "capacity_runtime_w2": "not_measured",
+   "before_hex": "01000000",
+   "after_hex": "16161616",
+   "return_w0_signed32": -1021,
+   "return_w0_hex": "0xfffffc03",
+   "return_raw": 4294966275,
+   "frame": "0x7ed3d12290"
+  },
+  {
+   "key": "0x02cf0218",
+   "key_id": "0x2cf0218",
+   "pid": 239,
+   "gdb_cpu_thread": "1",
+   "guest_tid": "unknown",
+   "entry_pc": "0x7efccc47d4",
+   "return_pc": "0x7efbd517f4",
+   "buffer": "0x7ed3d12354",
+   "capacity_expected_static": 4,
+   "capacity_runtime_w2": "not_measured",
+   "before_hex": "01000000",
+   "after_hex": "16161616",
+   "return_w0_signed32": -1021,
+   "return_w0_hex": "0xfffffc03",
+   "return_raw": 4294966275,
+   "frame": "0x7ed3d12290"
+  }
+ ],
+ "two_keys_observed": true,
+ "host_cleanup_complete": true,
+ "cleanup": {
+  "stop_confirmed": true,
+  "breakpoints": {
+   "all_removed": true,
+   "results": [
+    {
+     "addr": "0x7efbd517d4",
+     "reply": "OK"
+    },
+    {
+     "addr": "0x7efbd517f4",
+     "reply": "OK"
+    },
+    {
+     "addr": "0x7efccc4784",
+     "reply": "OK"
+    },
+    {
+     "addr": "0x7efccc47d4",
+     "reply": "OK"
+    }
+   ],
+   "residual": [],
+   "guest_resumed": false,
+   "writes_issued": false
+  },
+  "inherited": "not_attempted_stop_only",
+  "qemu_reaped": true,
+  "qemu_exit": 0,
+  "lock_released": true,
+  "clean": false,
+  "errors": [],
+  "status": "unclean",
+  "guest_restore_status": "unknown_not_attempted",
+  "two_keys_observed": true,
+  "host_cleanup_complete": true,
+  "boot_menu_passed": false
+ }
+}
+{
+  "schema": "fx6-map-observer-integration-e2e-v1",
+  "status": "PASS_OFFLINE_ACTUAL_HOSTRUNNER",
+  "tests": 1,
+  "cases": [
+    "actual_HostRunner_Observer_QMP_RSP_four_stop_via_entry"
+  ]
+}

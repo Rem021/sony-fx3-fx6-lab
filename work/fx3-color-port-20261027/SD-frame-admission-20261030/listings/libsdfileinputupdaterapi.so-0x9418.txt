@@ -1,0 +1,72 @@
+_ZN7Updater17SDDecryptorModule7decryptEv
+00009418 sub       sp, sp, #0x50
+0000941c stp       x29, x30, [sp, #0x10]
+00009420 add       x29, sp, #0x10
+00009424 stp       x19, x20, [sp, #0x20]
+00009428 mov       x19, x0
+0000942c ldr       x0, [x0, #0x4b0]
+00009430 str       x21, [sp, #0x30]
+00009434 tst       x0, #0xf
+00009438 b.eq      #0x9494
+0000943c mov       w19, #2
+00009440 adrp      x2, #0xb000
+00009444 movk      w19, #3, lsl #16
+00009448 adrp      x0, #0xa000
+0000944c add       x2, x2, #0x267
+00009450 mov       w1, w19
+00009454 add       x0, x0, #0xf79
+00009458 mov       w3, #0x8f
+0000945c bl        #0x7910 ; printf
+00009460 mov       x0, #0x10
+00009464 bl        #0x71a0 ; __cxa_allocate_exception
+00009468 str       w19, [x0, #8]
+0000946c adrp      x1, #0x1d000
+00009470 adrp      x2, #0x1d000
+00009474 strb      wzr, [x0, #0xc]
+00009478 ldr       x1, [x1, #0xf50]
+0000947c ldr       x2, [x2, #0xf70]
+00009480 add       x1, x1, #0x10
+00009484 str       x1, [x0]
+00009488 adrp      x1, #0x1d000
+0000948c ldr       x1, [x1, #0xfc8]
+00009490 bl        #0x77b0 ; __cxa_throw
+00009494 ldr       x1, [x19, #0x60]
+00009498 add       x20, x19, #0xb0
+0000949c mov       w0, #0
+000094a0 cmp       x1, #0x1ff
+000094a4 b.hi      #0x94d0
+000094a8 add       x21, x19, #0x2b0
+000094ac mov       x0, x20
+000094b0 add       x20, x20, #0x10
+000094b4 bl        #0x7800 ; Dec_Scramble
+000094b8 cmp       x20, x21
+000094bc b.ne      #0x94ac
+000094c0 ldr       x0, [x19, #0x60]
+000094c4 add       x0, x0, #0x200
+000094c8 str       x0, [x19, #0x60]
+000094cc mov       w0, #0x200
+000094d0 mov       w1, w0
+000094d4 ldr       x0, [x19, #0x4b0]
+000094d8 ldr       x2, [x19, #0x558]
+000094dc sub       x0, x0, x1
+000094e0 str       x0, [x29, #0x38]
+000094e4 cbz       x20, #0x9510
+000094e8 sxtw      x0, w0
+000094ec mov       w1, #3
+000094f0 str       x0, [sp]
+000094f4 mov       x7, x20
+000094f8 add       x6, x29, #0x38
+000094fc mov       x5, x20
+00009500 mov       w0, w1
+00009504 mov       x4, #0
+00009508 mov       x3, #0
+0000950c bl        #0x9278
+00009510 ldr       x0, [x19, #0x60]
+00009514 mov       sp, x29
+00009518 ldr       x1, [x29, #0x38]
+0000951c ldr       x21, [sp, #0x20]
+00009520 add       x0, x0, x1
+00009524 str       x0, [x19, #0x60]
+00009528 ldp       x19, x20, [sp, #0x10]
+0000952c ldp       x29, x30, [sp], #0x40
+00009530 ret       

@@ -1,0 +1,69 @@
+{
+  "schema": "fx3-current-root-cache-receipt/1",
+  "task_state": "CACHED_ROOT_CHECK_COMPLETE_NO_CURRENT_PNPUTIL_MATCH",
+  "instruction_file": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-presence-crosscheck-20261026T165500Z/WINDOWS_ROOT_CLARIFICATION.txt",
+  "output_directory": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-current-root-cache-20261026T172200Z",
+  "public_directory": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-current-root-cache-20261026T172200Z/public",
+  "private_directory_local_only": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-current-root-cache-20261026T172200Z/private",
+  "preflight": {
+    "target": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-current-root-cache-20261026T172200Z",
+    "local_system_C_ordinary": true,
+    "filesystem": "NTFS",
+    "ancestors_checked": 8,
+    "reparse_network_camera_redirect": false,
+    "administrator_token": false,
+    "source_cim_time_utc": "2026-10-26T17:15:31.4415345Z",
+    "qualified_usb_root_count": 1,
+    "root_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+    "CIM_query_repeated": false,
+    "created_utc": "2026-10-26T17:49:46.2885765Z"
+  },
+  "commands": [
+    {
+      "id": "01-current-root",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /connected /instanceid <NODE_SHA256:1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd> /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T17:50:01.622Z",
+      "finished_utc": "2026-10-26T17:50:01.877Z",
+      "exit_code": 0,
+      "stdout_private": "private/01-current-root.stdout.txt",
+      "stderr_private": "private/01-current-root.stderr.txt"
+    }
+  ],
+  "qualified_saved_CIM_usb_roots": 1,
+  "new_pnputil_root_matches": 0,
+  "same_source_instance_as_old_fx3_root": true,
+  "current_disk_candidate_count": "UNKNOWN",
+  "binding_status": "MISSING_CURRENT_PNPUTIL_ROOT",
+  "uniqueness_gate_applies_to_usb_roots_not_disks": true,
+  "stop_reason": "The fresh connected-only query for the exact qualified instance ID returned no devices. No current PnPUtil root is available for tree/disk follow-up.",
+  "private_hash_manifest": "private-sha256.json",
+  "public_hash_manifest": "public-sha256.json",
+  "unresolved": [
+    "Reason for no match",
+    "Current parent-child relations",
+    "Current disk interfaces and enabled states",
+    "Current Started/problem code",
+    "Driver/stack/Address/UINumber fields"
+  ],
+  "boundaries": {
+    "CIM_query_repeated": false,
+    "old_hardware_id_query_repeated": false,
+    "old_ps1_run": false,
+    "new_probe_generated_or_run": false,
+    "automatic_retry": false,
+    "scan_refresh": false,
+    "administrator_token": false,
+    "elevation": false,
+    "policy_driver_or_mode_change": false,
+    "camera_disk_volume_interface_opened": false,
+    "camera_commands": 0,
+    "card_media_camera_file_reads": 0,
+    "authentication": false,
+    "module_upload": false,
+    "WBI_or_flash": false,
+    "hardware_validation": "NOT_PERFORMED"
+  },
+  "old_reports_modified": false,
+  "old_materials_rehashed": false,
+  "only_new_file_hashes": true
+}

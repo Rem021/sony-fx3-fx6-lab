@@ -1,0 +1,26 @@
+usage: run_trial_v25_diag_r3.py [-h] [--port PORT] [--max-minutes MAX_MINUTES]
+                                [--max-steps MAX_STEPS]
+                                [--launch-wait-seconds LAUNCH_WAIT_SECONDS]
+                                [--internal-hoststep]
+                                [--exit-at-phase {pre-bind,bound-before-first-frame}]
+                                [--review-procdiag-r4e]
+                                [--pre-input-snapshot-step PRE_INPUT_SNAPSHOT_STEP]
+
+FX3 固件菜单本机试用
+
+options:
+  -h, --help            show this help message and exit
+  --port PORT           127.0.0.1 本地端口，默认8765
+  --max-minutes MAX_MINUTES
+                        会话上限，1..120分钟；默认60分钟
+  --max-steps MAX_STEPS
+                        会话按键上限，32..4096；默认4096
+  --launch-wait-seconds LAUNCH_WAIT_SECONDS
+                        浏览器启动前握手上限，30..600秒
+  --internal-hoststep   内部逐键文件门；不启动网页服务，不构成浏览器验收
+  --exit-at-phase {pre-bind,bound-before-first-frame}
+                        有界退出边界验证
+  --review-procdiag-r4e
+                        仅经另行批准时使用隔离只读/proc诊断CPIO；默认固定r3 guest
+  --pre-input-snapshot-step PRE_INPUT_SNAPSHOT_STEP
+                        仅指定一个合法step，在既有输入QMP暂停窗只读采集UI gate和OSD头；默认关闭

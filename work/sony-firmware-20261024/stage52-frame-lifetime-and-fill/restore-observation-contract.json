@@ -1,0 +1,57 @@
+{
+  "schema": "fx3-frame-lifetime-observation-contract/1",
+  "created_utc": "2026-10-26T04:25:43.327634+00:00",
+  "scope": "Design constraints only; no active probe, native gate or restore implementation.",
+  "current_camera_authorization": "Windows cached PnP only; all camera handles/auth/modes/drivers/files/modules/WBI/writes remain unauthorized.",
+  "local_observations": [
+    {
+      "field": "controller+0x947a8",
+      "meaning": "queued-index count",
+      "required_at_data_restore": "0 with current owner and synchronization established",
+      "sufficient_alone": false
+    },
+    {
+      "field": "controller+0x8ade0+3*i",
+      "meaning": "active/marker1/marker2 per frame slot",
+      "required_at_data_restore": "all current active slots released; flags alone do not prove queue or hardware completion",
+      "sufficient_alone": false
+    },
+    {
+      "field": "record+0/+8..+0x4f",
+      "meaning": "tag-validity byte and48byte source payload",
+      "required_before_submit": "successful current-frame production after native allocation clear",
+      "sufficient_alone": false
+    },
+    {
+      "field": "record+0x630/+0x63c",
+      "meaning": "optional runtime notification branch inputs; full business semantics unbound",
+      "required_before_dequeue_completion": "real notification call and error/timeout semantics when selected",
+      "sufficient_alone": false
+    }
+  ],
+  "required_evidence_not_yet_implemented_or_verified": [
+    "Actual same-body fingerprints, runtime address/owner and pool binding; MAIN and packet UID namespaces kept distinct.",
+    "Admission closed under the real common synchronization; no producer can borrow, fill or publish a new frame.",
+    "Current queued indices drained and all current active slots returned without inventing notification or HAL success.",
+    "Original callback identities, owner lifetime and generation proven current; index-only duplicate not accepted as current completion.",
+    "Producer, consumer, callback and relevant native code stacks exited; flags and queue count do not prove code exit.",
+    "Hardware STOP/completion, mapping unmap and all other parameter/buffer consumers independently settled.",
+    "Same-body healthy backup, scoped prior bytes and restore/readback; actual cold boot and independent recovery verified separately."
+  ],
+  "explicitly_insufficient": [
+    "queued count0",
+    "all slot flags0",
+    "composite return1",
+    "reused slot number",
+    "one successful tag copy",
+    "pure VCD predicate0",
+    "static firmware dump"
+  ],
+  "late_callback_reachability_or_real_camera_ABA_bug_proven": false,
+  "real_notification_Hal_stop_current_epoch_or_global_quiescence_proven": false,
+  "active_probe_ready": false,
+  "restore_ready": false,
+  "persistent_write_release": false,
+  "goal_complete": false,
+  "evidence": "work/sony-firmware-20261024/stage52-frame-lifetime-and-fill/run-bounded-string-compare-20261025/frame-lifetime-results.json"
+}

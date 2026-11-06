@@ -1,0 +1,20 @@
+{
+  "status": "ADJUST_WIRE_CODEC_TESTS_PASSED",
+  "valid_cases": 4,
+  "rejected_counterexamples": 12,
+  "rejection_details": [
+    "seq_zero: invalid sequence number",
+    "slot_overflow: slot out of range",
+    "mode_above_0x11: mode out of range for operation 0xFF (0x9630)",
+    "empty_data: data length out of bounds",
+    "bad_command: unsupported AdjustControl command",
+    "wrong_response_version_0: unexpected response version: 0 (stock SendResponse writes 3)",
+    "wrong_response_seq: sequence mismatch: got 9, expected 1",
+    "wrong_response_pfunc: unexpected response pFunc: 0x10",
+    "error_res_0x82: non-ok Senser response res byte: 130",
+    "oversized_response_payload: response payload size 512 outside bounded [4, 260]",
+    "nonzero_native_status_0x10000201: non-zero native business status: 0x10000201",
+    "short_response_body: response body length mismatch"
+  ],
+  "usb_or_camera_operations": 0
+}

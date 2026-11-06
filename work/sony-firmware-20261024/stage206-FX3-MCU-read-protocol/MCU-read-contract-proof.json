@@ -1,0 +1,286 @@
+{
+  "status": "BUNDLED_FX3_INITCOM_READ_ARM_AND_AP_CONFIG_INPUTS_BOUND",
+  "MCU_source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+  "AP_source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+  "source_identity": "7.02 public package components, not a current-body ROM/MCU or p1 readback",
+  "handler": {
+    "function": "0x4e5c",
+    "command": "0x16",
+    "request_bytes": 128,
+    "address_offset": 1,
+    "address_encoding": "LE32",
+    "length_offset": 5,
+    "read_selector": "bit7 clear",
+    "maximum_read_bytes": 120,
+    "payload_offset": 6,
+    "zero_fill_payload_bytes": 120,
+    "response_preserves_request_header6": true,
+    "response_CRC_offset": 126,
+    "response_CRC_encoding": "LE16",
+    "checksum_valid_and_handler_runtime_state_required": true,
+    "actual_entry_or_read_observed": false
+  },
+  "pre_dispatch_effect": {
+    "call": "0x4f6c",
+    "target": "0x6450",
+    "MMIO_base": "0x40011000",
+    "writes": [
+      "base+0xc00 <- 0x1acce551",
+      "base+0xc00 <- complement",
+      "base+8 <- byte0",
+      "base+0xc00 <-0"
+    ],
+    "hardware_watchdog_refresh_interpretation": "inference from adjacent load/control and unlock/clear pattern, not physical measurement",
+    "virtual_counter_table_reload_proven": false,
+    "whole_protocol_is_side_effect_free": false
+  },
+  "CRC": {
+    "MCU_peripheral_base": "0x40039000",
+    "input_bytes": 126,
+    "hardware_algorithm_or_timing_proven": false,
+    "official_AP_software_seed": 65535,
+    "official_AP_software_polynomial": "0x1021",
+    "software_vs_reference_semantic_check": "CRC-semantic-model-results.json"
+  },
+  "AP_configuration": {
+    "Backup_inputs": [
+      {
+        "id": "0xf900d4",
+        "call": "0x400c7c",
+        "use": "SIO path suffix"
+      },
+      {
+        "id": "0xf900b1",
+        "call": "0x400c8c",
+        "use": "UdtrGpioOpen argument1"
+      },
+      {
+        "id": "0xf9006d",
+        "call": "0x400c9c",
+        "use": "UdtrGpioOpen argument2"
+      }
+    ],
+    "source_path_prefix": "/dev/sio",
+    "suffix_format": "%d",
+    "GPIO_argument_semantic_types_or_actual_values_proven": false,
+    "actual_body_configuration_read": false,
+    "reference_fixed_channel0_port4_bit2_validated": false
+  },
+  "reply_freshness": {
+    "reference_matches": "CRC plus first6 header bytes",
+    "request_nonce_echoed": false,
+    "identical_header_delayed_reply_excluded": false,
+    "strict_same_request_freshness_proven": false
+  },
+  "selected_original_ranges": [
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x4ef0",
+      "end_exclusive": "0x4f2c",
+      "bytes": 60,
+      "sha256": "83410a5a3bf83ff524c62a2f4849b1a1f957a66a6a9e29986d58b671fcb78409",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-frame-and-RX-CRC.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x4f6c",
+      "end_exclusive": "0x4fb8",
+      "bytes": 76,
+      "sha256": "ae9f5e5555696c2c2745201317523af88767a81f285a7aaa414731258aa1114c",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-command16-dispatch.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x515e",
+      "end_exclusive": "0x5176",
+      "bytes": 24,
+      "sha256": "6d052e2b4f6412865f494f764ebd4bb30ff9bc0b3764e4a5bbce96da4477cda3",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-read-copy.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x5194",
+      "end_exclusive": "0x51a8",
+      "bytes": 20,
+      "sha256": "7944640b0b0e0c74c45eb6fc1b4cccee449f2a3a3f10fffd379a8d6b103ae6c2",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-echo-buffer.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x4c20",
+      "end_exclusive": "0x4c2a",
+      "bytes": 10,
+      "sha256": "f8e652cbbf09e5680d813a32bcab6f2773d5b7b463499f2d21193f15e49a537c",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-serializer-gate.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x4d28",
+      "end_exclusive": "0x4d2a",
+      "bytes": 2,
+      "sha256": "133df2eccf6dee8a2a3ab9e2f188b9055ebece9f3286d4ef4c0cd82c2ff0dbef",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-serializer-non10.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x4e4a",
+      "end_exclusive": "0x4e5c",
+      "bytes": 18,
+      "sha256": "1fd691d34b72a9d90a48d0edff7e9ef969d8ed93fd8b004c5d934584653867cc",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-TX-CRC-seal.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x6450",
+      "end_exclusive": "0x6468",
+      "bytes": 24,
+      "sha256": "d718f05a711164903ef53429f83e792af6a48cbdf5049d6ecffecff9779a791c",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-pre-dispatch-MMIO.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x65a4",
+      "end_exclusive": "0x65ac",
+      "bytes": 8,
+      "sha256": "81c7835135d8bd36b60748544d6ceeb0c47cd6280d984c13c7fcb4e91f20bd1c",
+      "data_not_code": true,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-MMIO-pools.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0xbda4",
+      "end_exclusive": "0xbdcc",
+      "bytes": 40,
+      "sha256": "a652d8e2a8ee079c0af242620e5960a99ebd533689d800d8ee9db2f81b12d27a",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-CRC-peripheral.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0xbdfc",
+      "end_exclusive": "0xbe00",
+      "bytes": 4,
+      "sha256": "d0f18f975684bb87afe6b84c05dd1f9d3db854b1837e8a5cc4127364c4b93711",
+      "data_not_code": true,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-CRC-base.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x38784",
+      "end_exclusive": "0x3879a",
+      "bytes": 22,
+      "sha256": "987b55974a0e8f9f7438b9cde47151c03b6c163409504d7813a56261bac46d81",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-LE32-decode.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x385f2",
+      "end_exclusive": "0x3867e",
+      "bytes": 140,
+      "sha256": "b3674c38be025cc58651064eba5d2642636b087792dde14477229bec82077cdb",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-copy-function.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/darwin_core.bin",
+      "source_sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+      "layout": "flat_source_base4200",
+      "start": "0x3867e",
+      "end_exclusive": "0x38784",
+      "bytes": 262,
+      "sha256": "1fd2a373fa0ba167a54d44a76879262b5a21623a03394bac970fa0b2b51e65fa",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/MCU-fill-shared-zero.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "layout": "ELF_VA",
+      "start": "0x400c58",
+      "end_exclusive": "0x400ca4",
+      "bytes": 76,
+      "sha256": "3f8e5f820fbb6cb32919820bcfa24b26f218a2e5408b815549c8a084bc949f2b",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/AP-Backup-inputs.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "layout": "ELF_VA",
+      "start": "0x400ca4",
+      "end_exclusive": "0x400cd8",
+      "bytes": 52,
+      "sha256": "d8e2d3558c06509cc6ab8c09d88602a512000dc15b279c7aa899605b4add729b",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/AP-SIO-path-and-arguments.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "layout": "ELF_VA",
+      "start": "0x4013b8",
+      "end_exclusive": "0x4013d4",
+      "bytes": 28,
+      "sha256": "382c9fb9c1f423af0775d389983589a9c1b5e9c7c9f5420620fb14c8556cb9e9",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/AP-GPIO-open-arguments.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "layout": "ELF_VA",
+      "start": "0x4014f8",
+      "end_exclusive": "0x401544",
+      "bytes": 76,
+      "sha256": "2979b88719caf8c6df69b43255ad8cab018c3f06226fcdc48df50c93f88a82c5",
+      "data_not_code": false,
+      "output": "work/sony-firmware-20261024/stage206-FX3-MCU-read-protocol/pins/AP-software-CRC.txt"
+    }
+  ],
+  "limits": [
+    "InitCom exists in bundled MCU; selected target MCU execution state and physical link are not observed",
+    "read branch is memory copy, but common CRC and pre-dispatch MMIO/status logic have side effects",
+    "read-only semantic comparison excludes command16 write branch; no write grammar is approved or implemented",
+    "128B reply is prepared in the next loop; matching CRC/header cannot establish freshness for a repeated identical query",
+    "no same-body backup, inverse write, independent rescue or target MAIN recording acceptance"
+  ],
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

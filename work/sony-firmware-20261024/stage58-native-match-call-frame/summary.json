@@ -1,0 +1,25 @@
+{
+  "created_utc": "2026-10-26T10:39:39.535077+00:00",
+  "status": "PASS_GUEST_CALLSITE_STACK_VIEW_AND_NATIVE_RETURN_WITH_EXCLUDED_DIAGNOSTICS",
+  "bounded_fragments": 25,
+  "original_stop_counts": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 10,
+    "returned": 5,
+    "boundary: before_unexecuted_diagnostic": 10
+  },
+  "compiled_wrapper_bytes": 228,
+  "rodata_bytes": 136,
+  "single_guest_callsite": "0xffffffc00121ed18",
+  "guest_wrapper_mapping": "0xffffffc002000000",
+  "target_and_control_rows": [
+    386,
+    386,
+    386,
+    -1,
+    431
+  ],
+  "actual_camera_address_module_or_full_matcher_not_proven": true,
+  "proof_sha256": "1214d98447fe94386b66b207241e3ee2918507dafd0676a31526795713421c73",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

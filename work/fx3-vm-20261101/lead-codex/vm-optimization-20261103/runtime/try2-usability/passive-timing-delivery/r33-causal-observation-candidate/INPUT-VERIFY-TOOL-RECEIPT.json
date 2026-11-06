@@ -1,0 +1,24 @@
+{
+  "kind": "transcribed original exec tool receipt; INPUTS-AFTER.json is actual verifier output",
+  "command": "python3 -B /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/verify_inputs.py",
+  "exit_code": 1,
+  "chunk_id": "4c1f3d",
+  "wall_time_seconds": 0.902289292,
+  "stdout_summary": {
+    "unique_inputs": 168,
+    "unchanged": 167,
+    "frozen_checks": {
+      "r32-zero-ring-causal-review": {
+        "entries": 20,
+        "mismatches": []
+      },
+      "r30-startup-observation-candidate": {
+        "entries": 41,
+        "mismatches": []
+      }
+    }
+  },
+  "reason": "README drift retained; no before/after entry removed or relabeled matched",
+  "subsequent_rerun_after_coordinator_note": false,
+  "stderr_excerpt": "  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/verify_inputs.py\", line 36, in main\n    assert all(x['matched'] for x in rows) and all(not x['mismatches'] for x in checks.values())\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

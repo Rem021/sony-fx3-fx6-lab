@@ -1,0 +1,89 @@
+{
+  "schema": "fx3-stage122-callback-record-queue/1",
+  "created_utc": "2026-10-27T16:50:58.566386+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/README.md",
+      "bytes": 4315,
+      "sha256": "db6096e064e4c0d8a7eb4063e2d674356a2e3b1e728c52ab3dca91343442388b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/callback_queue.py",
+      "bytes": 11223,
+      "sha256": "f2906cd08e9455b60c1ff2dcf2fef1c841cefa9341b5d42ba7f510e0e5fdf94b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/completed-evidence-review.json",
+      "bytes": 507,
+      "sha256": "0bd62579f55bf73aea8067af3344835b6d350364c920004f5a0933b62d752ec3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/diagnostic-contract.json",
+      "bytes": 6377,
+      "sha256": "6f94326181488d7886256026a2fa213a359f27cdb61b7d8cbc2c7cce9bdf15db"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/goal-status-after.json",
+      "bytes": 387676,
+      "sha256": "d9acc582766edfca0d68721e5f1e892846edad73853f8bfa2b73c634d878ab58"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/goal-status-before.json",
+      "bytes": 383408,
+      "sha256": "273823bc3bdb540d053cfcf4d57dcfa3a4a5e891571cc7b53c1660ea53a56010"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/review_and_seal.py",
+      "bytes": 12994,
+      "sha256": "a6cfc4fe9e70225d3f8bd2e585f5edd2cbbcfd7d2b761a86c76bab8a4c005169"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/run-native-owner-queue-20261027/callback-queue-results.json",
+      "bytes": 1959799,
+      "sha256": "65f60621dbebc077b7a29628aedcc2583b300a3b86c55e3744dedb09be4a3d57"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/run-native-owner-queue-20261027/executed-source.py",
+      "bytes": 11223,
+      "sha256": "f2906cd08e9455b60c1ff2dcf2fef1c841cefa9341b5d42ba7f510e0e5fdf94b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/source-and-scope-audit.json",
+      "bytes": 38314,
+      "sha256": "895043fb15676b08e62933979470684d123d55d39429ba6b89a0f05ffd9f583f"
+    }
+  ],
+  "previous_manifest_sha256": "f1e1f7df3ed41b175707ed7849fafffab5e7dcc8de0de2c8a0c7d373738ff963",
+  "operations": {
+    "status": "PASS_NATIVE_CALLBACK_RECORD_AND_QUEUE_POINTER_LIFETIME_SCOPE_NOT_RUNTIME_ACCEPTANCE",
+    "created_utc": "2026-10-27T16:50:58.566386+00:00",
+    "previous_manifest_members_verified": 13,
+    "cases": 12,
+    "bounded_phases": 54,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "stage117_frontend_and_stage75_backend_unchanged": true,
+    "actual_camera_Windows_UU_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "273823bc3bdb540d053cfcf4d57dcfa3a4a5e891571cc7b53c1660ea53a56010",
+    "after_sha256": "d9acc582766edfca0d68721e5f1e892846edad73853f8bfa2b73c634d878ab58"
+  },
+  "readme_index_before_sha256": "71053e90c96391e9d095d5adb15656ce63f230073bbf6a8487d773d89bd6f643",
+  "readme_index_after_sha256": "a9a280abad69e1a32d299405687a4dd9abea28b88c66c11759ff8a9c6aafb5a3",
+  "readme_index_entry": "- [2026-10-27 FX3 回调记录与执行队列寿命](<work/sony-firmware-20261024/stage122-native-callback-record-and-execqueue/README.md>)：12例54片段核对384字节记录、8ea0任务复制及原worker分派；队列块和外部记录分开验，实际完成/回收/恢复未验。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

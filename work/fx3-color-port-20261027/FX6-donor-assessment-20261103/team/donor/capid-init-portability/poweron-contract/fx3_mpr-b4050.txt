@@ -1,0 +1,162 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b3f40 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm>:
+   b4050: 9343fc40     	asr	x0, x2, #3
+   b4054: 8b130c73     	add	x19, x3, x19, lsl #3
+   b4058: eb13003f     	cmp	x1, x19
+   b405c: 54000469     	b.ls	0xb40e8 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x1a8>
+   b4060: b4000060     	cbz	x0, 0xb406c <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x12c>
+   b4064: aa1303e0     	mov	x0, x19
+   b4068: 97ff3156     	bl	0x805c0 <memmove@plt>
+   b406c: f9436280     	ldr	x0, [x20, #0x6c0]
+   b4070: d10022b5     	sub	x21, x21, #0x8
+   b4074: f9400261     	ldr	x1, [x19]
+   b4078: f9000c01     	str	x1, [x0, #0x18]
+   b407c: 91080021     	add	x1, x1, #0x200
+   b4080: f9001001     	str	x1, [x0, #0x20]
+   b4084: 8b150261     	add	x1, x19, x21
+   b4088: f9002401     	str	x1, [x0, #0x48]
+   b408c: f8756a61     	ldr	x1, [x19, x21]
+   b4090: f9001413     	str	x19, [x0, #0x28]
+   b4094: f9001c01     	str	x1, [x0, #0x38]
+   b4098: 91080021     	add	x1, x1, #0x200
+   b409c: f9002001     	str	x1, [x0, #0x40]
+   b40a0: f9436293     	ldr	x19, [x20, #0x6c0]
+   b40a4: d2804000     	mov	x0, #0x200              // =512
+   b40a8: f9402675     	ldr	x21, [x19, #0x48]
+   b40ac: 97ff2d1d     	bl	0x7f520 <_Znwm@plt>
+   b40b0: f90006a0     	str	x0, [x21, #0x8]
+   b40b4: f9401a60     	ldr	x0, [x19, #0x30]
+   b40b8: b4000060     	cbz	x0, 0xb40c4 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x184>
+   b40bc: 29006418     	stp	w24, w25, [x0]
+   b40c0: f9000417     	str	x23, [x0, #0x8]
+   b40c4: f9436294     	ldr	x20, [x20, #0x6c0]
+   b40c8: f9402680     	ldr	x0, [x20, #0x48]
+   b40cc: 91002001     	add	x1, x0, #0x8
+   b40d0: f9400400     	ldr	x0, [x0, #0x8]
+   b40d4: f9002681     	str	x1, [x20, #0x48]
+   b40d8: 91080001     	add	x1, x0, #0x200
+   b40dc: f9001e80     	str	x0, [x20, #0x38]
+   b40e0: f9002281     	str	x1, [x20, #0x40]
+   b40e4: 17ffffbb     	b	0xb3fd0 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x90>
+   b40e8: b4fffc20     	cbz	x0, 0xb406c <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x12c>
+   b40ec: cb0202a0     	sub	x0, x21, x2
+   b40f0: 8b000260     	add	x0, x19, x0
+   b40f4: 17ffffdd     	b	0xb4068 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x128>
+   b40f8: f100001f     	cmp	x0, #0x0
+   b40fc: 9a9f141a     	csinc	x26, x0, xzr, ne
+   b4100: 91000800     	add	x0, x0, #0x2
+   b4104: 8b1a001a     	add	x26, x0, x26
+   b4108: 92fc0000     	mov	x0, #0x1fffffffffffffff // =2305843009213693951
+   b410c: eb00035f     	cmp	x26, x0
+   b4110: 54000049     	b.ls	0xb4118 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x1d8>
+   b4114: 97ff2237     	bl	0x7c9f0 <_ZSt17__throw_bad_allocv@plt>
+   b4118: d37df340     	lsl	x0, x26, #3
+   b411c: cb130353     	sub	x19, x26, x19
+   b4120: 97ff2d00     	bl	0x7f520 <_Znwm@plt>
+   b4124: aa0003fb     	mov	x27, x0
+   b4128: f9402782     	ldr	x2, [x28, #0x48]
+   b412c: d341fe73     	lsr	x19, x19, #1
+   b4130: f9401781     	ldr	x1, [x28, #0x28]
+   b4134: 91002042     	add	x2, x2, #0x8
+   b4138: 8b130c13     	add	x19, x0, x19, lsl #3
+   b413c: cb010042     	sub	x2, x2, x1
+   b4140: 9343fc40     	asr	x0, x2, #3
+   b4144: b4000060     	cbz	x0, 0xb4150 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x210>
+   b4148: aa1303e0     	mov	x0, x19
+   b414c: 97ff311d     	bl	0x805c0 <memmove@plt>
+   b4150: f943629c     	ldr	x28, [x20, #0x6c0]
+   b4154: f9400380     	ldr	x0, [x28]
+   b4158: 97ff2c0e     	bl	0x7f190 <_ZdlPv@plt>
+   b415c: a9006b9b     	stp	x27, x26, [x28]
+   b4160: 17ffffc3     	b	0xb406c <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm+0x12c>
+
+00000000000b4164 <_ZN3mpr13SetIssueEventENS_5EVTIDEPvm>:
+   b4164: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!
+   b4168: aa0203e3     	mov	x3, x2
+   b416c: aa0103e2     	mov	x2, x1
+   b4170: 2a0003e1     	mov	w1, w0
+   b4174: 910003fd     	mov	x29, sp
+   b4178: 52800020     	mov	w0, #0x1                // =1
+   b417c: 97ff3689     	bl	0x81ba0 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm@plt>
+   b4180: 52800000     	mov	w0, #0x0                // =0
+   b4184: a8c17bfd     	ldp	x29, x30, [sp], #0x10
+   b4188: d65f03c0     	ret
+
+00000000000b418c <_ZN3mpr8HmsStartENS_7HmsTypeEPv>:
+   b418c: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+   b4190: 910003fd     	mov	x29, sp
+   b4194: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   b4198: b0001236     	adrp	x22, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b419c: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b41a0: 2a0003f4     	mov	w20, w0
+   b41a4: aa0103f5     	mov	x21, x1
+   b41a8: d0001233     	adrp	x19, 0x2fa000
+   b41ac: f946fec0     	ldr	x0, [x22, #0xdf8]
+   b41b0: 91002000     	add	x0, x0, #0x8
+   b41b4: 97ff210f     	bl	0x7c5f0 <pthread_mutex_lock@plt>
+   b41b8: 36000254     	tbz	w20, #0x0, 0xb4200 <_ZN3mpr8HmsStartENS_7HmsTypeEPv+0x74>
+   b41bc: f945d660     	ldr	x0, [x19, #0xba8]
+   b41c0: 39400000     	ldrb	w0, [x0]
+   b41c4: 370001e0     	tbnz	w0, #0x0, 0xb4200 <_ZN3mpr8HmsStartENS_7HmsTypeEPv+0x74>
+   b41c8: b94002a0     	ldr	w0, [x21]
+   b41cc: 97ff2c31     	bl	0x7f290 <_ZN3mpr26HmsChengeFramePerSecX10000EN9DefStruct9FrameRateE@plt>
+   b41d0: d0001221     	adrp	x1, 0x2fa000
+   b41d4: f942a421     	ldr	x1, [x1, #0x548]
+   b41d8: b9000020     	str	w0, [x1]
+   b41dc: 5284e200     	mov	w0, #0x2710             // =10000
+   b41e0: b94006a1     	ldr	w1, [x21, #0x4]
+   b41e4: 1b007c21     	mul	w1, w1, w0
+   b41e8: b0001220     	adrp	x0, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b41ec: f943c400     	ldr	x0, [x0, #0x788]
+   b41f0: b9000001     	str	w1, [x0]
+   b41f4: d0001220     	adrp	x0, 0x2fa000
+   b41f8: f9479400     	ldr	x0, [x0, #0xf28]
+   b41fc: b900001f     	str	wzr, [x0]
+   b4200: 36080274     	tbz	w20, #0x1, 0xb424c <_ZN3mpr8HmsStartENS_7HmsTypeEPv+0xc0>
+   b4204: f945d660     	ldr	x0, [x19, #0xba8]
+   b4208: 39400000     	ldrb	w0, [x0]
+   b420c: 37080200     	tbnz	w0, #0x1, 0xb424c <_ZN3mpr8HmsStartENS_7HmsTypeEPv+0xc0>
+   b4210: b0001220     	adrp	x0, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b4214: f94002a1     	ldr	x1, [x21]
+   b4218: f9434c00     	ldr	x0, [x0, #0x698]
+   b421c: f9000001     	str	x1, [x0]
+   b4220: d0001220     	adrp	x0, 0x2fa000
+   b4224: 394022a1     	ldrb	w1, [x21, #0x8]
+   b4228: f9427800     	ldr	x0, [x0, #0x4f0]
+   b422c: 39000001     	strb	w1, [x0]
+   b4230: d0001220     	adrp	x0, 0x2fa000
+   b4234: f9434400     	ldr	x0, [x0, #0x688]
+   b4238: 97fffe88     	bl	0xb3c58 <_ZN3mpr6thread10signalLock4waitEj+0xb8>
+   b423c: d0001220     	adrp	x0, 0x2fa000
+   b4240: 92800001     	mov	x1, #-0x1               // =-1
+   b4244: f941cc00     	ldr	x0, [x0, #0x398]
+   b4248: f9000001     	str	x1, [x0]
+   b424c: 361000d4     	tbz	w20, #0x2, 0xb4264 <_ZN3mpr8HmsStartENS_7HmsTypeEPv+0xd8>
+   b4250: f945d660     	ldr	x0, [x19, #0xba8]
+   b4254: 39400000     	ldrb	w0, [x0]
+   b4258: 37100060     	tbnz	w0, #0x2, 0xb4264 <_ZN3mpr8HmsStartENS_7HmsTypeEPv+0xd8>
+   b425c: f00015e0     	adrp	x0, 0x373000 <_ZN3mpr13s_vpiSyncInfoE+0x2f0>
+   b4260: f9022c15     	str	x21, [x0, #0x458]
+   b4264: 361800d4     	tbz	w20, #0x3, 0xb427c <_ZN3mpr8HmsStartENS_7HmsTypeEPv+0xf0>
+   b4268: f945d660     	ldr	x0, [x19, #0xba8]
+   b426c: 39400000     	ldrb	w0, [x0]
+   b4270: 37180060     	tbnz	w0, #0x3, 0xb427c <_ZN3mpr8HmsStartENS_7HmsTypeEPv+0xf0>
+   b4274: f00015e0     	adrp	x0, 0x373000 <_ZN3mpr13s_vpiSyncInfoE+0x2f0>
+   b4278: f9022815     	str	x21, [x0, #0x450]
+   b427c: f945d673     	ldr	x19, [x19, #0xba8]
+   b4280: 39400260     	ldrb	w0, [x19]
+   b4284: 2a000294     	orr	w20, w20, w0
+   b4288: f946fec0     	ldr	x0, [x22, #0xdf8]
+   b428c: 39000274     	strb	w20, [x19]
+   b4290: 97ff3318     	bl	0x80ef0 <_ZN3mpr6thread10normalLock6unlockEv@plt>
+   b4294: d2800003     	mov	x3, #0x0                // =0
+   b4298: d2800002     	mov	x2, #0x0                // =0
+   b429c: 52820001     	mov	w1, #0x1000             // =4096
+   b42a0: 52800000     	mov	w0, #0x0                // =0
+   b42a4: 97ff363f     	bl	0x81ba0 <_ZN3mpr13SetEventParamEjNS_5EVTIDEPvm@plt>
+   b42a8: 52800000     	mov	w0, #0x0                // =0
+   b42ac: a94153f3     	ldp	x19, x20, [sp, #0x10]

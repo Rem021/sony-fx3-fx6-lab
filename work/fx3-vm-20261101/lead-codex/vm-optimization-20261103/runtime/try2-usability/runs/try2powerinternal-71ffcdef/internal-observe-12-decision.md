@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-11-key-1ab.png using image tool. English standby after native MENU close; NO CARD prompt and status icons visible Next: MENU reopens native menu for normal longer-session navigation without settings modification

@@ -1,0 +1,94 @@
+0000f618: fd7bbda9 stp x29, x30, [sp, #-0x30]!
+0000f61c: 02008052 mov w2, #0
+0000f620: fd030091 mov x29, sp
+0000f624: f35301a9 stp x19, x20, [sp, #0x10]
+0000f628: f30300aa mov x19, x0
+0000f62c: f51300f9 str x21, [sp, #0x20]
+0000f630: f503012a mov w21, w1
+0000f634: 017440f9 ldr x1, [x0, #0xe8]
+0000f638: 210040f9 ldr x1, [x1]
+0000f63c: 21cc4239 ldrb w1, [x1, #0xb3]
+0000f640: 52fdff97 bl #0xeb88
+0000f644: 60d242b9 ldr w0, [x19, #0x2d0]
+0000f648: b2f6ff97 bl #0xd110
+0000f64c: 1f1c0072 tst w0, #0xff
+0000f650: c1050054 b.ne #0xf708
+0000f654: e003152a mov w0, w21
+0000f658: aef6ff97 bl #0xd110
+0000f65c: 1f1c0072 tst w0, #0xff
+0000f660: f403002a mov w20, w0
+0000f664: 60040054 b.eq #0xf6f0
+0000f668: e203002a mov w2, w0
+0000f66c: e00313aa mov x0, x19
+0000f670: 61168052 mov w1, #0xb3
+0000f674: 0dfdff97 bl #0xeaa8
+0000f678: c000f837 tbnz w0, #0x1f, #0xf690
+0000f67c: 610642b9 ldr w1, [x19, #0x204]
+0000f680: 600240f9 ldr x0, [x19]
+0000f684: 624e40f9 ldr x2, [x19, #0x98]
+0000f688: 54f6ff97 bl #0xcfd8
+0000f68c: 2003f836 tbz w0, #0x1f, #0xf6f0
+0000f690: 600240f9 ldr x0, [x19]
+0000f694: 61220891 add x1, x19, #0x208
+0000f698: 8afcff97 bl #0xe8c0
+0000f69c: e203142a mov w2, w20
+0000f6a0: e00313aa mov x0, x19
+0000f6a4: 61168052 mov w1, #0xb3
+0000f6a8: 00fdff97 bl #0xeaa8
+0000f6ac: c000f837 tbnz w0, #0x1f, #0xf6c4
+0000f6b0: 610642b9 ldr w1, [x19, #0x204]
+0000f6b4: 600240f9 ldr x0, [x19]
+0000f6b8: 624e40f9 ldr x2, [x19, #0x98]
+0000f6bc: 47f6ff97 bl #0xcfd8
+0000f6c0: 8001f836 tbz w0, #0x1f, #0xf6f0
+0000f6c4: 23050058 ldr x3, #0xf768
+0000f6c8: c4858252 mov w4, #0x142e
+0000f6cc: 21050058 ldr x1, #0xf770
+0000f6d0: e203042a mov w2, w4
+0000f6d4: 60050058 ldr x0, #0xf780
+0000f6d8: 63000a91 add x3, x3, #0x280
+0000f6dc: 00000094 bl #0xf6dc ; {'section': '.text', 'offset': 63196, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0000f6e0: 00000094 bl #0xf6e0 ; {'section': '.text', 'offset': 63200, 'type': 283, 'symbol': 'emmc_dump', 'symbol_section': '.text', 'symbol_value': 23424, 'addend': 0}
+0000f6e4: 20050058 ldr x0, #0xf788
+0000f6e8: 00000094 bl #0xf6e8 ; {'section': '.text', 'offset': 63208, 'type': 283, 'symbol': 'panic', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0000f6ec: 1f2003d5 nop 
+0000f6f0: 75d202b9 str w21, [x19, #0x2d0]
+0000f6f4: 00008052 mov w0, #0
+0000f6f8: f35341a9 ldp x19, x20, [sp, #0x10]
+0000f6fc: f51340f9 ldr x21, [sp, #0x20]
+0000f700: fd7bc3a8 ldp x29, x30, [sp], #0x30
+0000f704: c0035fd6 ret 
+0000f708: e403002a mov w4, w0
+0000f70c: 61f20691 add x1, x19, #0x1bc
+0000f710: e00313aa mov x0, x19
+0000f714: 83098012 mov w3, #-0x4d
+0000f718: 42008052 mov w2, #2
+0000f71c: b3fcff97 bl #0xe9e8
+0000f720: e403002a mov w4, w0
+0000f724: 4001f837 tbnz w0, #0x1f, #0xf74c
+0000f728: 610642b9 ldr w1, [x19, #0x204]
+0000f72c: 600240f9 ldr x0, [x19]
+0000f730: 624e40f9 ldr x2, [x19, #0x98]
+0000f734: 29f6ff97 bl #0xcfd8
+0000f738: e0f8ff36 tbz w0, #0x1f, #0xf654
+0000f73c: 600240f9 ldr x0, [x19]
+0000f740: 61220891 add x1, x19, #0x208
+0000f744: 5ffcff97 bl #0xe8c0
+0000f748: c3ffff17 b #0xf654
+0000f74c: e3000058 ldr x3, #0xf768
+0000f750: e2d58152 mov w2, #0xeaf
+0000f754: e1000058 ldr x1, #0xf770
+0000f758: 00010058 ldr x0, #0xf778
+0000f75c: 63a00991 add x3, x3, #0x268
+0000f760: 00000094 bl #0xf760 ; {'section': '.text', 'offset': 63328, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0000f764: f6ffff17 b #0xf73c
+0000f768: 00000000 udf #0 ; {'section': '.text', 'offset': 63336, 'type': 257, 'symbol': '', 'symbol_section': '.rodata', 'symbol_value': 0, 'addend': 3584}
+0000f76c: 00000000 udf #0
+0000f770: 00000000 udf #0 ; {'section': '.text', 'offset': 63344, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 17280}
+0000f774: 00000000 udf #0
+0000f778: 00000000 udf #0 ; {'section': '.text', 'offset': 63352, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 21944}
+0000f77c: 00000000 udf #0
+0000f780: 00000000 udf #0 ; {'section': '.text', 'offset': 63360, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 21864}
+0000f784: 00000000 udf #0
+0000f788: 00000000 udf #0 ; {'section': '.text', 'offset': 63368, 'type': 257, 'symbol': '', 'symbol_section': '.rodata.str1.8', 'symbol_value': 0, 'addend': 23680}
+0000f78c: 00000000 udf #0

@@ -1,0 +1,638 @@
+{
+  "status": "THREE_ORIGINAL_FOOTERS_SHARE_LENGTH_RELATION",
+  "files": [
+    {
+      "version": "v392",
+      "source": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v392/BERLIN/DATA23213",
+      "sha256": "9153710c8a3b9e12d0aed67f6cc22f3a5b0dd63bc99ec3488c2269b6dced3096",
+      "bytes": 287442920,
+      "last16_hex": "bc062211000000002020202020202020",
+      "tail_little_endian_u64": 287442620,
+      "n_minus_value": 300,
+      "u64_mod8": 4,
+      "u64_mod16": 12,
+      "n_minus_ceil_u64_to8": 296,
+      "formula": "N == ceil(footer_u64 / 8) * 8 + 296",
+      "formula_matches": true,
+      "rsa_probes": [
+        {
+          "offset": 0,
+          "relative_to_end": -287442920,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "0bcb27b8"
+        },
+        {
+          "offset": 0,
+          "relative_to_end": -287442920,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "b146e1df"
+        },
+        {
+          "offset": 8,
+          "relative_to_end": -287442912,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "aa523677"
+        },
+        {
+          "offset": 8,
+          "relative_to_end": -287442912,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "89adce59"
+        },
+        {
+          "offset": 16,
+          "relative_to_end": -287442904,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "37a3c969"
+        },
+        {
+          "offset": 16,
+          "relative_to_end": -287442904,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "16967096"
+        },
+        {
+          "offset": 24,
+          "relative_to_end": -287442896,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "225a6408"
+        },
+        {
+          "offset": 24,
+          "relative_to_end": -287442896,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "3fd57bd2"
+        },
+        {
+          "offset": 256,
+          "relative_to_end": -287442664,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "8eccd3d0"
+        },
+        {
+          "offset": 256,
+          "relative_to_end": -287442664,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "ba952371"
+        },
+        {
+          "offset": 264,
+          "relative_to_end": -287442656,
+          "endian": "big",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "ba3fa241"
+        },
+        {
+          "offset": 264,
+          "relative_to_end": -287442656,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "6e6ff89b"
+        },
+        {
+          "offset": 280,
+          "relative_to_end": -287442640,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "729468f1"
+        },
+        {
+          "offset": 280,
+          "relative_to_end": -287442640,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "335b1a9f"
+        },
+        {
+          "offset": 287442624,
+          "relative_to_end": -296,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "a2951a40"
+        },
+        {
+          "offset": 287442624,
+          "relative_to_end": -296,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "5b2d4c97"
+        },
+        {
+          "offset": 287442632,
+          "relative_to_end": -288,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "5a7bf45c"
+        },
+        {
+          "offset": 287442632,
+          "relative_to_end": -288,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "7596dbfe"
+        },
+        {
+          "offset": 287442640,
+          "relative_to_end": -280,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "93d79556"
+        },
+        {
+          "offset": 287442640,
+          "relative_to_end": -280,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "7097a089"
+        },
+        {
+          "offset": 287442648,
+          "relative_to_end": -272,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "9c75e163"
+        },
+        {
+          "offset": 287442648,
+          "relative_to_end": -272,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "01a5921b"
+        },
+        {
+          "offset": 287442664,
+          "relative_to_end": -256,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "badc7f94"
+        },
+        {
+          "offset": 287442664,
+          "relative_to_end": -256,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "b76ab701"
+        }
+      ]
+    },
+    {
+      "version": "v410",
+      "source": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v410/BERLIN/DATA23213",
+      "sha256": "2b9247384af40a933868ffec6e7c9d433570003414d33f05396fc53235def982",
+      "bytes": 286877016,
+      "last16_hex": "2c641911000000002020202020202020",
+      "tail_little_endian_u64": 286876716,
+      "n_minus_value": 300,
+      "u64_mod8": 4,
+      "u64_mod16": 12,
+      "n_minus_ceil_u64_to8": 296,
+      "formula": "N == ceil(footer_u64 / 8) * 8 + 296",
+      "formula_matches": true,
+      "rsa_probes": [
+        {
+          "offset": 0,
+          "relative_to_end": -286877016,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "27d07d45"
+        },
+        {
+          "offset": 0,
+          "relative_to_end": -286877016,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "7dcc97f1"
+        },
+        {
+          "offset": 8,
+          "relative_to_end": -286877008,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "b4fdcb8c"
+        },
+        {
+          "offset": 8,
+          "relative_to_end": -286877008,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "293c846e"
+        },
+        {
+          "offset": 16,
+          "relative_to_end": -286877000,
+          "endian": "big",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "3f295d50"
+        },
+        {
+          "offset": 16,
+          "relative_to_end": -286877000,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "766249ed"
+        },
+        {
+          "offset": 24,
+          "relative_to_end": -286876992,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "44e24724"
+        },
+        {
+          "offset": 24,
+          "relative_to_end": -286876992,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "ba520da6"
+        },
+        {
+          "offset": 256,
+          "relative_to_end": -286876760,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "8318abb3"
+        },
+        {
+          "offset": 256,
+          "relative_to_end": -286876760,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "0e95ea4d"
+        },
+        {
+          "offset": 264,
+          "relative_to_end": -286876752,
+          "endian": "big",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "0e8d97d2"
+        },
+        {
+          "offset": 264,
+          "relative_to_end": -286876752,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "88df006b"
+        },
+        {
+          "offset": 280,
+          "relative_to_end": -286876736,
+          "endian": "big",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "a1e9f5f8"
+        },
+        {
+          "offset": 280,
+          "relative_to_end": -286876736,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "43e19016"
+        },
+        {
+          "offset": 286876720,
+          "relative_to_end": -296,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "3c2c7da2"
+        },
+        {
+          "offset": 286876720,
+          "relative_to_end": -296,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "b0599ab3"
+        },
+        {
+          "offset": 286876728,
+          "relative_to_end": -288,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "410cb5ea"
+        },
+        {
+          "offset": 286876728,
+          "relative_to_end": -288,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "820fafde"
+        },
+        {
+          "offset": 286876736,
+          "relative_to_end": -280,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "764efcee"
+        },
+        {
+          "offset": 286876736,
+          "relative_to_end": -280,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "6c9c36ab"
+        },
+        {
+          "offset": 286876744,
+          "relative_to_end": -272,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "a48de17e"
+        },
+        {
+          "offset": 286876744,
+          "relative_to_end": -272,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "466f47a1"
+        },
+        {
+          "offset": 286876760,
+          "relative_to_end": -256,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "1dca9e92"
+        },
+        {
+          "offset": 286876760,
+          "relative_to_end": -256,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "6ae9845f"
+        }
+      ]
+    },
+    {
+      "version": "v500",
+      "source": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/work/venice-firmware-2026-10-23/v500/BERLIN/DATA23213",
+      "sha256": "662a93a061d17691bf4d243788c94a4dff7b97c92b48e6eeddf87f4c3f5d0019",
+      "bytes": 287401488,
+      "last16_hex": "e2642111000000002020202020202020",
+      "tail_little_endian_u64": 287401186,
+      "n_minus_value": 302,
+      "u64_mod8": 2,
+      "u64_mod16": 2,
+      "n_minus_ceil_u64_to8": 296,
+      "formula": "N == ceil(footer_u64 / 8) * 8 + 296",
+      "formula_matches": true,
+      "rsa_probes": [
+        {
+          "offset": 0,
+          "relative_to_end": -287401488,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "31ec3bce"
+        },
+        {
+          "offset": 0,
+          "relative_to_end": -287401488,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "a175b11b"
+        },
+        {
+          "offset": 8,
+          "relative_to_end": -287401480,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "355e21dc"
+        },
+        {
+          "offset": 8,
+          "relative_to_end": -287401480,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "01316b93"
+        },
+        {
+          "offset": 16,
+          "relative_to_end": -287401472,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "4b487c19"
+        },
+        {
+          "offset": 16,
+          "relative_to_end": -287401472,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "079cf6b6"
+        },
+        {
+          "offset": 24,
+          "relative_to_end": -287401464,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "a1f42109"
+        },
+        {
+          "offset": 24,
+          "relative_to_end": -287401464,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "0a848083"
+        },
+        {
+          "offset": 256,
+          "relative_to_end": -287401232,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "6b92bcbb"
+        },
+        {
+          "offset": 256,
+          "relative_to_end": -287401232,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "8ea88e87"
+        },
+        {
+          "offset": 264,
+          "relative_to_end": -287401224,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "ab8a2572"
+        },
+        {
+          "offset": 264,
+          "relative_to_end": -287401224,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "2c7ed2e9"
+        },
+        {
+          "offset": 280,
+          "relative_to_end": -287401208,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "3a8de2ee"
+        },
+        {
+          "offset": 280,
+          "relative_to_end": -287401208,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "1583993c"
+        },
+        {
+          "offset": 287401192,
+          "relative_to_end": -296,
+          "endian": "big",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "1bd57cfa"
+        },
+        {
+          "offset": 287401192,
+          "relative_to_end": -296,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "0781af3a"
+        },
+        {
+          "offset": 287401200,
+          "relative_to_end": -288,
+          "endian": "big",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "8995f13b"
+        },
+        {
+          "offset": 287401200,
+          "relative_to_end": -288,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "071660cd"
+        },
+        {
+          "offset": 287401208,
+          "relative_to_end": -280,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "b611787f"
+        },
+        {
+          "offset": 287401208,
+          "relative_to_end": -280,
+          "endian": "little",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "4e441a17"
+        },
+        {
+          "offset": 287401216,
+          "relative_to_end": -272,
+          "endian": "big",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "948194a7"
+        },
+        {
+          "offset": 287401216,
+          "relative_to_end": -272,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "9defdf32"
+        },
+        {
+          "offset": 287401232,
+          "relative_to_end": -256,
+          "endian": "big",
+          "signature_less_than_modulus": false,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "b7428b60"
+        },
+        {
+          "offset": 287401232,
+          "relative_to_end": -256,
+          "endian": "little",
+          "signature_less_than_modulus": true,
+          "pkcs1_v1_5_padding_valid": false,
+          "public_modexp_prefix_hex": "642cd063"
+        }
+      ]
+    }
+  ],
+  "public_key_pem_sha256": "8281413b5607446939613e07d020b2c7d8ee2371349099de56bc8288f7be0a43",
+  "public_key_der_sha256": "be79b3323d7d92dff52175fc6d12825d73cfc68c32e4fcbca5c7d36fc04bdf10",
+  "rsa_valid_candidates": 0,
+  "limits": [
+    "The footer word is an observed length-like value; its semantic meaning is not proven.",
+    "The 296 residual does not locate or identify a header, signature, IV, key, digest, or encrypted region.",
+    "No padding of decrypted bytes was inspected. Eight-byte layout alignment does not establish a cipher.",
+    "RSA probes test only these 12 offsets and two byte orders under the FX3 FDAT public key. Negative results do not rule out RSA, other keys, other locations, or other signature schemes."
+  ]
+}

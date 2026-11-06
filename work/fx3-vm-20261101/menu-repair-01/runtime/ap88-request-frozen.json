@@ -1,0 +1,20 @@
+{
+  "run": "ap88capture2-061ecbfd",
+  "printk_decoded_capture": "932 [836.709875] FX3_BACKUP_CP_CAPTURE serial=1 destination=0x903e0811 pointer=ffffffc11e7e41c0 metadata_size=40 source=0x803e61c2 Q=0x803e61c2 fields_destination=0x903e0811 pages=1 argcount=2 ptrcount=0 selector=2 flag=1 observed40=1 no_reply=1 request_not_freed=1",
+  "raw40": "330000000000000011083e90c2613e80010000000100000002000000000000000200000001000000",
+  "raw_sha256": "1d9c7401092c60f5efd61cd97a07a44cc3343fe85726e4a8e1f1273a7977bcaf",
+  "logical_length": 40,
+  "native_source_and_Q": "0x803e61c2",
+  "flag": 1,
+  "pages_field": 1,
+  "actual_allocation_capacity": 60,
+  "ownership": "captureonly no reply/free/write; firstrequest in native infinitewait",
+  "frozen": true,
+  "allocation_capture_run": "ap88capture3r-d0263fb2",
+  "actual_pool_block_bytes": 128,
+  "private_prefix_bytes": 40,
+  "message_header_bytes": 24,
+  "tail_canary_bytes": 4,
+  "native_header24": "50074e0080ffffff02410100c2613e802800000055555555",
+  "capacity_scope": "allocator3248/34e8 +capturedoriginal24Bheader; protocolpages1doesnotmean4096Brequest"
+}

@@ -1,0 +1,29 @@
+// GPIO REGISTER
+#define GPIO_DIR                0x00U
+#define GPIO_DIR_SET            0x04U
+#define GPIO_DIR_CLR            0x08U
+/* NotUsed                      0x0CU */
+#define GPIO_RDATA              0x10U
+/* NotUsed                      0x14U */
+/* NotUsed                      0x18U */
+/* NotUsed                      0x1CU */
+#define GPIO_INEN               0x20U
+#define GPIO_INEN_SET           0x24U
+#define GPIO_INEN_CLR           0x28U
+/* NotUsed                      0x2CU */
+#define GPIO_PORTSEL            0x30U
+#define GPIO_PORTSEL_SET        0x34U
+#define GPIO_PORTSEL_CLR        0x38U
+/* NotUsed                      0x3CU */
+#define GPIO_WDATA              0x40U
+#define GPIO_WDATA_SET          0x44U
+#define GPIO_WDATA_CLR          0x48U
+/* NotUsed                      0x4CU */
+
+#define GPIO_REG_DIRECTION(x)       (ginfo[x].base + GPIO_DIR)
+#define GPIO_REG_DIRECTION_SET(x)   (ginfo[x].base + GPIO_DIR_SET)
+#define GPIO_REG_DIRECTION_CLR(x)   (ginfo[x].base + GPIO_DIR_CLR)
+#define GPIO_REG_RDATA(x)           (ginfo[x].base + GPIO_RDATA)
+#define GPIO_REG_INPUTEN(x)         (ginfo[x].base + GPIO_INEN)
+#define GPIO_REG_INPUTEN_SET(x)     (ginfo[x].base + GPIO_INEN_SET)
+#define GPIO_REG_INPUTEN_CLR(x)     (ginfo[x].base + GPIO_INEN_CLR)

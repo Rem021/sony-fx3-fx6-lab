@@ -1,0 +1,184 @@
+{
+  "status": "PASS",
+  "verified_readme_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/display-contract/README.md",
+  "verified_readme_sha256": "803b5091f7c3a802b1ac23af60ab82a273665f815581383295a333dcc8f07cc0",
+  "columns_verified_per_instruction_row": [
+    "Binary",
+    "Section (against ELF64 shdr table & VA bounds)",
+    "VA",
+    "File Offset (sh_offset + va - sh_addr)",
+    "Raw Bytes (LE)",
+    "U32 Word",
+    "Objdump Disassembly (exact string match against independent objdump)",
+    "Relocation (exact string match against independent objdump -r)"
+  ],
+  "verified_instruction_table_rows": 712,
+  "verified_upm_summary_rows": 17,
+  "verified_inline_va_word_citations": 35,
+  "verified_file_paths": 33,
+  "verified_sha256_digests": 30,
+  "mismatches": [],
+  "negative_tamper_tests_count": 11,
+  "negative_tamper_tests": [
+    {
+      "test_name": "tamper_instruction_unknown_section",
+      "expected_mismatch_type": "section_mismatch",
+      "detected_mismatches": [
+        {
+          "line": 584,
+          "type": "section_mismatch",
+          "va": "0x2eaf2a0",
+          "got_section": ".fake_sec"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_instruction_wrong_section_va_range",
+      "expected_mismatch_type": "section_va_range",
+      "detected_mismatches": [
+        {
+          "line": 584,
+          "type": "section_va_range",
+          "va": "0x2eaf2a0",
+          "section": ".rodata"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_instruction_file_offset",
+      "expected_mismatch_type": "file_offset",
+      "detected_mismatches": [
+        {
+          "line": 464,
+          "type": "file_offset",
+          "va": "0xaa44",
+          "got": "0xaab0",
+          "expected": "0xaaac"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_instruction_raw_bytes_le",
+      "expected_mismatch_type": "bytes_or_word",
+      "detected_mismatches": [
+        {
+          "line": 607,
+          "type": "bytes_or_word",
+          "va": "0x2eaf2fc",
+          "got_le": "38 60 00 29",
+          "actual_le": "39 60 00 29",
+          "got_word": "29006039",
+          "actual_word": "29006039"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_instruction_word_hex",
+      "expected_mismatch_type": "bytes_or_word",
+      "detected_mismatches": [
+        {
+          "line": 584,
+          "type": "bytes_or_word",
+          "va": "0x2eaf2a0",
+          "got_le": "f4 7f 80 12",
+          "actual_le": "f4 7f 80 12",
+          "got_word": "a9025bf5",
+          "actual_word": "12807ff4"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_instruction_disasm",
+      "expected_mismatch_type": "disasm_mismatch",
+      "detected_mismatches": [
+        {
+          "line": 584,
+          "type": "disasm_mismatch",
+          "va": "0x2eaf2a0",
+          "got_disasm": "stp x21, x22, [sp, #0x20]",
+          "expected_disasm": "mov w20, #-0x400 // =-1024"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_instruction_reloc",
+      "expected_mismatch_type": "reloc_mismatch",
+      "detected_mismatches": [
+        {
+          "line": 464,
+          "type": "reloc_mismatch",
+          "va": "0xaa44",
+          "got_reloc": "R_AARCH64_CALL26 osal_free_msg",
+          "expected_reloc": "R_AARCH64_CALL26 osal_snd_sync_msg"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_upm_summary_reloc",
+      "expected_mismatch_type": "upm_summary_reloc",
+      "detected_mismatches": [
+        {
+          "line": 125,
+          "type": "upm_summary_reloc",
+          "va": "0xaa44",
+          "got_reloc": "R_AARCH64_CALL26 upm_c3p_msg_async",
+          "expected_reloc": "R_AARCH64_CALL26 osal_snd_sync_msg"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_inline_va_word",
+      "expected_mismatch_type": "inline_va_word",
+      "detected_mismatches": [
+        {
+          "line": 649,
+          "type": "inline_va_word",
+          "va": "0x2eaf318",
+          "got": "b9400018",
+          "actual": "f9402fa0"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_sha256_digest",
+      "expected_mismatch_type": "sha256_mismatch",
+      "detected_mismatches": [
+        {
+          "line": 32,
+          "type": "sha256_mismatch",
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so",
+          "got": "0000000000000000000000000000000000000000000000000000000000000000",
+          "actual": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "test_name": "tamper_file_path",
+      "expected_mismatch_type": "missing_file_path",
+      "detected_mismatches": [
+        {
+          "type": "missing_file_path",
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/display-contract/NONEXISTENT-v999.md"
+        },
+        {
+          "line": 17,
+          "type": "sha256_mismatch",
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/display-contract/NONEXISTENT-v999.md",
+          "got": "cb328ad84d3e5687b6b84c4206738bffc0f3c1f363a7274dde414a46bdee403b",
+          "actual": "<missing>"
+        }
+      ],
+      "passed": true
+    }
+  ]
+}

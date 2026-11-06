@@ -1,0 +1,53 @@
+{
+  "id": "e9054862-a690-474a-b0f2-dcd8bbc20383",
+  "ok": true,
+  "result": {
+    "origin": "http://127.0.0.1:50571/",
+    "refs": {
+      "e1": {
+        "name": "FX3 网页测试：历史画面，无固件输入",
+        "role": "heading"
+      },
+      "e2": {
+        "name": "↑ 上",
+        "role": "button"
+      },
+      "e3": {
+        "name": "← 左",
+        "role": "button"
+      },
+      "e4": {
+        "name": "确定",
+        "role": "button"
+      },
+      "e5": {
+        "name": "右 →",
+        "role": "button"
+      },
+      "e6": {
+        "name": "↓ 下",
+        "role": "button"
+      },
+      "e7": {
+        "name": "MENU",
+        "role": "button"
+      },
+      "e8": {
+        "name": "删除 / C4",
+        "role": "button"
+      },
+      "e9": {
+        "name": "结束试用",
+        "role": "button"
+      }
+    },
+    "removedRefs": [],
+    "snapshot": "- heading \"FX3 网页测试：历史画面，无固件输入\" [level=1, ref=e1]\n- paragraph\n  - StaticText \"等待待机画面出现后，按 MENU 打开菜单。首次打开 MENU 可能较慢；每次按键后，请等画面更新再继续。原生省电设置与本轮时间上限分开生效。\"\n- image \"固件最新提交画面\"\n- status\n  - StaticText \"网页测试已结束；本轮没有启动或操作固件。\"\n- paragraph\n  - StaticText \"按键 1/4096 · 剩余 3 分钟 · 提交帧 2\"\n- alert\n- button \"↑ 上\" [disabled, ref=e2]\n- button \"← 左\" [disabled, ref=e3]\n- button \"确定\" [disabled, ref=e4]\n- button \"右 →\" [disabled, ref=e5]\n- button \"↓ 下\" [disabled, ref=e6]\n- button \"MENU\" [disabled, ref=e7]\n- button \"删除 / C4\" [disabled, ref=e8]\n- button \"结束试用\" [disabled, ref=e9]\n- list\n  - listitem [level=1]\n    - ListMarker \"1. \"\n    - StaticText \"网页按键已收到；仅切换历史测试画面，未发送固件输入。\"\n- group\n  - DisclosureTriangle \"当前限制\" [expanded=true]\n    - StaticText \"当前限制\"\n  - paragraph\n    - StaticText \"当前为实验候选，持续操作仍可能触发原生省电关机，尚未通过完整使用验收。当前固定副本已在冷启动观察到 English；图标与橙色焦点仍需逐屏观察；无实时取景，画面来自软件 OSD 采样，尚未证明原 CP 多画面层合成。每轮默认最多 4096 次按键、最长 60 分钟；以启动参数为准。关闭网页不会结束模拟器，请点击“结束试用”或在启动终端按 Ctrl-C。\"",
+    "browserPageId": "5d72c5ed-a9d9-4ac0-a5fd-77a66dbd0234",
+    "url": "http://127.0.0.1:50571/",
+    "title": "FX3 宿主网页验收 · normal"
+  },
+  "_meta": {
+    "runtimeId": "3c82a3d1-af0b-45cf-8834-21f2451b0793"
+  }
+}

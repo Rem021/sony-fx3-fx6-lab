@@ -1,0 +1,7 @@
+{
+  "status": "FAILED_NO_PASSING_RESULT",
+  "original_core_sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+  "cases": [],
+  "actual_IO_or_Sony_native_execution": false,
+  "error": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage161-bounded-read-import-inventory/prefix_reader_guest.py\", line 120, in main\n    g=Guest(image,options)\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage161-bounded-read-import-inventory/prefix_reader_guest.py\", line 43, in __init__\n    assert image.read(0x167c8,16).hex()=='e20301aae103002a000080521bb5ff17'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

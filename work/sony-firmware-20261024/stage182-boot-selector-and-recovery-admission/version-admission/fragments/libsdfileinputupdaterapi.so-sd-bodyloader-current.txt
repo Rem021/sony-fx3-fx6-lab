@@ -1,0 +1,61 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0x9c90, 0x9d78) raw slice SHA256 411ea0a967c9993a464b089bcb527372f876dd7eebf6093fcf64fff04198fd66
+    9c90: 91030000     	add	x0, x0, #0xc0
+    9c94: 17fff613     	b	0x74e0 <Updater::BaseBodyLoaderModule::FirmwareHeader::Check() const@plt>
+    9c98: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+    9c9c: 910003fd     	mov	x29, sp
+    9ca0: f9000bf3     	str	x19, [sp, #0x10]
+    9ca4: aa0003f3     	mov	x19, x0
+    9ca8: 97fff6e6     	bl	0x7840 <Updater::SDFileInputBodyLoaderModule::~SDFileInputBodyLoaderModule()@plt>
+    9cac: aa1303e0     	mov	x0, x19
+    9cb0: f9400bf3     	ldr	x19, [sp, #0x10]
+    9cb4: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+    9cb8: d2802b01     	mov	x1, #0x158              // =344
+    9cbc: 17fff5fd     	b	0x74b0 <operator delete(void*, unsigned long)@plt>
+    9cc0: 9104e000     	add	x0, x0, #0x138
+    9cc4: a9400c02     	ldp	x2, x3, [x0]
+    9cc8: a9000c22     	stp	x2, x3, [x1]
+    9ccc: f9400800     	ldr	x0, [x0, #0x10]
+    9cd0: f9000820     	str	x0, [x1, #0x10]
+    9cd4: d65f03c0     	ret
+    9cd8: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    9cdc: 910003fd     	mov	x29, sp
+    9ce0: a90153f3     	stp	x19, x20, [sp, #0x10]
+    9ce4: aa0003f3     	mov	x19, x0
+    9ce8: 9104e014     	add	x20, x0, #0x138
+    9cec: f90013f5     	str	x21, [sp, #0x20]
+    9cf0: 97fff5c0     	bl	0x73f0 <Updater::BaseBodyLoaderModule::BaseBodyLoaderModule(Updater::UPDATER_ACTION_MODE, bool)@plt>
+    9cf4: 9100e3b5     	add	x21, x29, #0x38
+    9cf8: 900000a0     	adrp	x0, 0x1d000
+    9cfc: 3904e27f     	strb	wzr, [x19, #0x138]
+    9d00: f947ac00     	ldr	x0, [x0, #0xf58]
+    9d04: 91004000     	add	x0, x0, #0x10
+    9d08: f9000260     	str	x0, [x19]
+    9d0c: aa1503e0     	mov	x0, x21
+    9d10: 2900fe9f     	stp	wzr, wzr, [x20, #0x4]
+    9d14: 2901fe9f     	stp	wzr, wzr, [x20, #0xc]
+    9d18: b900169f     	str	wzr, [x20, #0x14]
+    9d1c: 3905427f     	strb	wzr, [x19, #0x150]
+    9d20: 97fff5b8     	bl	0x7400 <Updater::CurrentFirmware::CurrentFirmware()@plt>
+    9d24: aa1403e1     	mov	x1, x20
+    9d28: aa1503e0     	mov	x0, x21
+    9d2c: 97fff6f5     	bl	0x7900 <Updater::CurrentFirmware::GetInformation(UpdaterAPI::firmware_information_t::information*)@plt>
+    9d30: aa1503e0     	mov	x0, x21
+    9d34: 97fff5db     	bl	0x74a0 <Updater::CurrentFirmware::IsValid()@plt>
+    9d38: 39054260     	strb	w0, [x19, #0x150]
+    9d3c: aa1503e0     	mov	x0, x21
+    9d40: 97fff530     	bl	0x7200 <Updater::CurrentFirmware::~CurrentFirmware()@plt>
+    9d44: f94013f5     	ldr	x21, [sp, #0x20]
+    9d48: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    9d4c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    9d50: d65f03c0     	ret
+    9d54: aa0003f4     	mov	x20, x0
+    9d58: aa1503e0     	mov	x0, x21
+    9d5c: 97fff529     	bl	0x7200 <Updater::CurrentFirmware::~CurrentFirmware()@plt>
+    9d60: aa1303e0     	mov	x0, x19
+    9d64: 97fff603     	bl	0x7570 <Updater::BaseBodyLoaderModule::~BaseBodyLoaderModule()@plt>
+    9d68: aa1403e0     	mov	x0, x20
+    9d6c: 97fff6b1     	bl	0x7830 <_Unwind_Resume@plt>
+    9d70: aa0003f4     	mov	x20, x0
+    9d74: 17fffffb     	b	0x9d60 <Updater::SDFileInputBodyLoaderModule::SDFileInputBodyLoaderModule(Updater::UPDATER_ACTION_MODE, bool)+0x88>

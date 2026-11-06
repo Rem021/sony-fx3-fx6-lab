@@ -1,0 +1,81 @@
+{
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "source": {
+    "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+    "size": 79015712,
+    "sha256_before_after": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+  },
+  "scope": "single focused static trace from known external report and derived classifier; no full UI crawl",
+  "execution": {
+    "static_only": true,
+    "guest": false,
+    "native_firmware": false,
+    "camera_USB_UI_auth_files_driver_module_WBI_write": false,
+    "installed_packages": false
+  },
+  "verification": {
+    "all_json_parse": true,
+    "consumer_proof_bytes_equal_source": true,
+    "ordinary_query_typed_hs_frame2_targets_error_block_2e691e0": true,
+    "notes_links_exist": true,
+    "source_unchanged": true
+  },
+  "third_party_fetches": [],
+  "artifacts": [
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json",
+      "size": 3477,
+      "sha256": "3132fc025d01b1f71236421dbb86199b523ba9797bf1e42d96402992eebf3d01"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json",
+      "size": 126228,
+      "sha256": "191106f477787c8df65bfe9ab2c2a1dbdfaef4658c9a2c98a84d5ec4eea65645"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/descriptor-derived-query-proof.json",
+      "size": 83248,
+      "sha256": "c85a6732c0252922ac1816cc2abfe9365eaea9619a03440fc7d469e6ccc88f8b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/external-read-and-query-dispatch.json",
+      "size": 53337,
+      "sha256": "b630574482b96389569da8202174c16ff815eb1a25887e4ba1f8b8dd25e15470"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/focused-regions.json",
+      "size": 61013,
+      "sha256": "3477e042376fb5667662c0238b04f54ee623be794b7fe12b051dad9db23fa20f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/format-descriptor-and-model-setter.json",
+      "size": 49993,
+      "sha256": "116e5364b78c5f05c328a9a204b2a91e7d6c6fd4f580f4db671cf64ba299b29c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/probe-run-summary.txt",
+      "size": 2375,
+      "sha256": "fe36b09ed54f6eb5669225020863718980b5a4afe41ddb08d578c20359064296"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/probe_selector_consumers.py",
+      "size": 5624,
+      "sha256": "bb9f669fdf105568a70ce1396df7b8297dafc802553f220201c58d57b839642e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/selector-index.json",
+      "size": 1905775,
+      "sha256": "85fb589911ad3d7672106071b6a33500a5bbf401c301763ce706034b99fc653c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/consumers/table-page-xrefs.json",
+      "size": 25810,
+      "sha256": "32ecbab9a8dceeccfc2ba0db799684cd085c69551b105814e79ef6c9a92a4918"
+    },
+    {
+      "path": "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "size": 11353,
+      "sha256": "35d2b18c83204e6890d03ac77a55cf8f5b80ad56f1d63c46d5c8f927c7b895d3"
+    }
+  ]
+}

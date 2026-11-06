@@ -1,0 +1,119 @@
+{
+  "run": "try2mssallinternal-keycontrast-06db37ef",
+  "snapshot_only": true,
+  "serial_prefix_bytes": 15639443,
+  "serial_prefix_sha256": "b33b5445bb656357e58831c8b580cf0acce361a47e1620c2765a050993bec8b1",
+  "key1_sender_records": [
+    {
+      "byte_range": [
+        6454046,
+        6454297
+      ],
+      "raw": "FX3_SYNTH_KEY step=1 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=155088704000 host_gate=1[ 4861.145562] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1022"
+    },
+    {
+      "byte_range": [
+        6463667,
+        6463849
+      ],
+      "raw": "FX3_SYNTH_KEY step=1 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=157417632000 host_gate=1"
+    }
+  ],
+  "post_startup_mss_records": [
+    {
+      "byte_range": [
+        7912687,
+        7912987
+      ],
+      "raw": "FX3_MSS_ORIGINAL_PATH seq=45 ns=248724626000 tid=592 point=0x2eaf294 call_id=21 qid=0x80924220 cmd=0x920119 phase=entry lr=0x7edf166420 x0=0x80924220 x1=0x920119 x2=0x2 x3=0 x4=0x81cf6198 x5=0x7ec4d42670 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1"
+    },
+    {
+      "byte_range": [
+        7912989,
+        7913287
+      ],
+      "raw": "FX3_MSS_ORIGINAL_PATH seq=46 ns=248731494000 tid=592 point=0x2eaf308 call_id=21 qid=0x80924220 cmd=0x920119 phase=return lr=0x7edf166308 x0=0 x1=0x7ec4d43720 x2=0 x3=0x2 x4=0x7ec4d43030 x5=0x7ec4d43138 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1"
+    },
+    {
+      "byte_range": [
+        7913492,
+        7913897
+      ],
+      "raw": "FX3_MSS_ORIGINAL_PATH seq=47 ns=248737850992 tid=592 point=0x2eaf294 call_id=22 qid=0x80924220 cmd=0x920118 phase=entry lr=0x7edf1663ac x0=0x80924220 x1=0x920118 x2=0x2 x3=0x12c x4=0x81cf6198 x5=0x7ec4d42650 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1[ 7770.219062] FX3_LDEC103_OPEN count=68 devno=0xfb000cd result=0 synthetic_ldec=1 original_ldec_hw=0"
+    },
+    {
+      "byte_range": [
+        7913901,
+        7914199
+      ],
+      "raw": "FX3_MSS_ORIGINAL_PATH seq=48 ns=248742290992 tid=592 point=0x2eaf308 call_id=22 qid=0x80924220 cmd=0x920118 phase=return lr=0x7edf166308 x0=0 x1=0x7ec4d43720 x2=0 x3=0x2 x4=0x7ec4d43030 x5=0x7ec4d43138 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1"
+    },
+    {
+      "byte_range": [
+        7914245,
+        7914542
+      ],
+      "raw": "FX3_MSS_ORIGINAL_PATH seq=49 ns=248753898992 tid=592 point=0x2eaf294 call_id=23 qid=0x80924220 cmd=0x920202 phase=entry lr=0x7edf16e408 x0=0x80924220 x1=0x920202 x2=0x81cf6198 x3=0 x4=0 x5=0 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1FX3_LDEC10"
+    },
+    {
+      "byte_range": [
+        7914554,
+        7915115
+      ],
+      "raw": "FX3_MSS_ORIGINAL_PATH seq=50 ns=248761824992 tid=592 point=0x2eaf308 call_id=23 qid=0x80924220 cmd=0x920202 phase=return lr=0x7edf166308 x0=0 x1=0x7ec4d43720 x2=0 x3=0x2 x4=0x7ec4d43030 x5=0x7ec4d43138 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1q=97 command=1 src=0x7dc738909c src_bytes=743 p32=0x10948a80 pa=0x410948a80 dst_bytes=6144 records=2 channel=8 source_bypass=0 destination_bypass=1 decode=0 blocks=2 src_fnv=0x295326728c7e4372 output_fnv=0x470482cffd08e666 result=0 reason=complete synchronous=1 s"
+    }
+  ],
+  "frame": {
+    "sequence": 434,
+    "epoch": 1,
+    "update_id": "0x1005",
+    "pixel_source_sequence": 80,
+    "token": "0x402",
+    "physical": "0x43feb5100",
+    "native_format": 0,
+    "native_bitmap_format": 1,
+    "width": 640,
+    "height": 480,
+    "stride_pixels": 640,
+    "span": 614400,
+    "fnv64": "0x4e8d182294bfcec",
+    "sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+    "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+    "QMP_read_only": true,
+    "nonuniform_pixels": true,
+    "all_zero_pixels": false,
+    "host_monotonic": 309228.773441125,
+    "committed_slot": 1,
+    "native_identity": {
+      "FB": "0x7f54001160",
+      "bitmap": "0x7f4800c420",
+      "entry": "0x7f54001198",
+      "allocation": "0x54001340",
+      "metadata_physical": "0x402",
+      "FB_format": 1,
+      "publish_sem": "0x288604a",
+      "config_hash": "0xd67884e03390217d",
+      "bits_cpu_VA": "0x7ee87b6100",
+      "map_begin": "0x7ee87b6000",
+      "map_end": "0x7ee884d000",
+      "map_offset": "0x43feb5000"
+    },
+    "registered_target": {
+      "version": 1,
+      "kind": 1,
+      "object": "0x0",
+      "epoch": 2,
+      "identity": "0x0",
+      "parent_physical": "0x43feb5000",
+      "parent_bytes": 1310720,
+      "native_token": "0x402",
+      "vptr": "0x0",
+      "captured_physical": "0x43feb5100",
+      "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+    },
+    "guest_native_lease_released_before_ring_commit": true,
+    "CP_composition_panel_acceptance": false
+  },
+  "frozen_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/coordinator-keycontrast-live-review/60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292.png",
+  "conclusion": "Post-startup MSS calls observed following first MENU in log order; causal timer reset and stable menu operation not established; raw16 is unreadable."
+}

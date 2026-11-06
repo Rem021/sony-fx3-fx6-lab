@@ -1,0 +1,156 @@
+LOC_BEGIN sequence=21773 tid=365 destination=0x8288076c bytes=40 wait=1 op=7040 native_caller=0xf1fe4 original_follows=1
+FX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_OSD_LIFE_ALLOC_RETURN sequence=21773 tid=365 destination=0x8288076c bytes=40 pointer=0x7f90e58180 result=0 errno=1022 record=0 tracked_live=1 native_reuses_without_user_free=0
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8288076c op=4 tag1=0x1 tag2=0 result=0 independent_of_unique_lock=1
+FX3_OSD_LIFE_SEND sequence=5443 destination=0x8288076c source=0x8288076c op=7040 bytes=40 pointer=0x7f90e58180 result=0 record=0 sends=14341 pair_pending=0 original_owned=unchanged
+FX3_RM_SEND destination=0x807a0020 pointer=0x7f90e58040 bytes=20 result=0 success_transfers_ownership=1
+FX3_SYNTH_KEY step=11 key=0x1ac status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=314927922000 host_gate=1
+FX3_KEY96_POLL tid=327 poll=35066 stage=5 failed=0 receiver_seen=1 done=10 control_step=11 key=0x1ac hold_ms=100 last_send=0 native_receiver_queue_exists=1 receiver_query_ns=314147541008 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=314929061008
+FX3_OSD_LIFE_USER_FREE destination=0x8288076c pointer=0x7f90e58180 role=7040 result=0 record=0 count=21773 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1
+FX3_OSD_LIFE_ALLOC_BEGIN sequence=21774 tid=265 destination=0x8280074d bytes=12 wait=1 op=1002 native_caller=0xf1db8 original_follows=1
+FX3_OSD_LIFE_ALLOC_RETURN sequence=21774 tid=265 destination=0x8280074d bytes=12 pointer=0x7f90e58040 result=0 errno=0 record=0 tracked_live=1 native_reuses_without_user_free=0
+FX3_TIMER_SNAPSHOT tid=265 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_UI_WIRE tid=265 target=0x8280074d op=4 tag1=0x1002 tag2=0 result=0 independent_of_unique_lock=1
+FX3_OSD_LIFE_SEND sequence=5444 destination=0x8280074d source=0x8288076c op=1002 bytes=12 pointer=0x7f90e58040 result=0 record=0 sends=14342 pair_pending=1005 original_owned=unchanged
+FX3_BOOT_QUEUE_SEND tid=516 bytes=32 source=0xa5a5a5a5 raw=ac01000000000000010000000000000000000000000000000100000000000000 caller_relative=0x16f10b4 passive=1 completion_not_assumed=1
+FX3_OSD_LIFE_ALLOC_BEGIN sequence=21775 tid=265 destination=0x8280084e bytes=8 wait=1 op=1005 native_caller=0xf1d2c original_follows=1
+FX3_OSD_LIFE_ALLOC_RETURN sequence=21775 tid=265 destination=0x8280084e bytes=8 pointer=0x7f90e58180 result=0 errno=0 record=1 tracked_live=2 native_reuses_without_user_free=0
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_AP_IM_ENDMAPS_228_BEGIN
+FX3_OSD_LIFE_USER_FREE destination=0x8280074d pointer=0x7f90e58040 role=1002 result=0 record=0 count=21774 tracked_live=1 retired_before_native_free=1 original_call_forwarded=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_OSD_LIFE_SEND sequence=5444 destination=0x8280084e source=0x8288076c op=1005 bytes=8 pointer=0x7f90e58180 result=0 record=1 sends=14343 pair_pending=0 original_owned=unchanged
+314.98 564.72
+FX3_OSD_LIFE_USER_FREE destination=0x8280084e pointer=0x7f90e58180 role=1005 result=0 record=0 count=21775 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1
+00400000-00409000 r-xp 00000000 00:02 2310                               /usr/bin/im.elf
+00418000-00419000 r--p 00008000 00:02 2310                               /usr/bin/im.elf
+00419000-0041a000 rw-p 00009000 00:02 2310                               /usr/bin/im.elf
+FX3_BOOT_QUEUE_SEND tid=233 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_OSD_LIFE_ALLOC_BEGIN sequence=21776 tid=812 destination=0x8288076c bytes=8 wait=1 op=6008 native_caller=0x14864 original_follows=1
+FX3_OSD_LIFE_ALLOC_RETURN sequence=21776 tid=812 destination=0x8288076c bytes=8 pointer=0x7f90e58040 result=0 errno=1022 record=0 tracked_live=1 native_reuses_without_user_free=0
+FX3_OSD_LIFE_USER_FREE destination=0x8288076c pointer=0x7f90e58040 role=6008 result=0 record=0 count=21776 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1
+FX3_TIMER_SNAPSHOT tid=812 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=812 target=0x8288076c op=4 tag1=0x6005 tag2=0 result=0 independent_of_unique_lock=1
+FX3_OSD_LIFE_SEND sequence=5444 destination=0x8288076c source=0x8280074d op=6008 bytes=8 pointer=0x7f90e58040 result=0 record=-1 sends=14343 pair_pending=0 original_owned=unchanged
+FX3_OSD_LIFE_ALLOC_BEGIN sequence=21777 tid=365 destination=0x8288076c bytes=40 wait=1 op=7040 native_caller=0xf1fe4 original_follows=1
+FX3_OSD_LIFE_ALLOC_RETURN sequence=21777 tid=365 destination=0x8288076c bytes=40 pointer=0x7f90e58040 result=0 errno=1022 record=0 tracked_live=1 native_reuses_without_user_free=0
+FX3_AP_IM_ENDMAPS_228_END
+FX3_OSD_LIFE_USER_FREE destination=0x8288076c pointer=0x7f90e58040 role=7040 result=0 record=0 count=21777 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8288076c op=4 tag1=0x1 tag2=0 result=0 independent_of_unique_lock=1
+FX3_OSD_LIFE_SEND sequence=5444 destination=0x8288076c source=0x8288076c op=7040 bytes=40 pointer=0x7f90e58040 result=0 record=-1 sends=14343 pair_pending=0 original_owned=unchanged
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_KEY96_POLL tid=327 poll=35067 stage=6 failed=0 receiver_seen=1 done=10 control_step=11 key=0x1ac hold_ms=100 last_send=0 native_receiver_queue_exists=1 receiver_query_ns=314147541008 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=315031393008
+FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f90e58040 bytes=20 lease=25 native_allocation=1
+FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=ac01000000000000000000000000000001000000
+FX3_KEY_INPUT_RECV step=11 key=0x1ac status=0 from_type=1 source=0x410025 native_result=0
+FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f90e58040 bytes=20 lease=25 result=0 receiver_original_free=1
+FX3_UIPC_SYNC_RETURN seq=1809131 target=0x80924127 caller=0x7f93979af8 result=0 errno=0 read=16 epoch_stable=1 post=11019200020000000100000001000000
+FX3_RM_SEND destination=0x807a0020 pointer=0x7f90e58040 bytes=20 result=0 success_transfers_ownership=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_SYNTH_KEY step=11 key=0x1ac status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=315042925008 host_gate=1
+FX3_KEY95_STEP_DONE step=11 key=0x1ac requested_hold_ms=100 measured_down_up_ns=113474000 elapsed_ns=130728000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1
+FX3_KEY96_POLL tid=327 poll=35068 stage=7 failed=0 receiver_seen=1 done=11 control_step=11 key=0x1ac hold_ms=100 last_send=0 native_receiver_queue_exists=1 receiver_query_ns=314147541008 screen_gate_used=0 screen_from_native_open_log=1 software_diagnostic_only=1 ns=315045451008
+[ 9857.517281] UDIF: cdev_ioctl() FX3_OSD_LIFE_ALLOC_BEGIN sequence=21778 tid=265 destination=0x8280074d bytes=12 wait=1 op=1002 native_caller=0xf1db8 original_follows=1L
+ine 100: uipc: warning ret = -1022
+FX3_BOOT_QUEUE_SEND tid=516 bytes=32 source=0xa5a5a5a5 raw=ac01000000000000000000000100000000000000000000000100000000000000 caller_relative=0x16f10b4 passive=1 completion_not_assumed=1
+FX3_OSD_LIFE_ALLOC_RETURN sequence=21778 tid=265 destination=0x8280074d bytes=12 pointer=0x7f90e58040 result=0 errno=0 record=0 tracked_live=1 native_reuses_without_user_free=0
+FX3_TIMER_SNAPSHOT tid=265 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=265 target=0x8280074d op=4 tag1=0x1002 tag2=0 result=0 independent_of_unique_lock=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_OSD_LIFE_SEND sequence=5445 destination=0x8280074d source=0x8288076c op=1002 bytes=12 pointer=0x7f90e58040 result=0 record=0 sends=14344 pair_pending=1005 original_owned=unchanged
+FX3_OSD_LIFE_ALLOC_BEGIN sequence=21779 tid=265 destination=0x8280084e bytes=8 wait=1 op=1005 native_caller=0xf1d2c original_follows=1
+FX3_OSD_LIFE_ALLOC_RETURN sequence=21779 tid=265 destination=0x8280084e bytes=8 pointer=0x7f90e58180 result=0 errno=0 record=1 tracked_live=2 native_reuses_without_user_free=0
+FX3_OSD_LIFE_SEND sequence=5445 destination=0x8280084e source=0x8288076c op=1005 bytes=8 pointer=0x7f90e58180 result=0 record=1 sends=14345 pair_pending=0 original_owned=unchanged
+FX3_OSD_LIFE_USER_FREE destination=0x8280074d pointer=0x7f90e58040 role=1002 result=0 record=0 count=21778 tracked_live=1 retired_before_native_free=1 original_call_forwarded=1
+FX3_OSD_LIFE_USER_FREE destination=0x8280084e pointer=0x7f90e58180 role=1005 result=0 record=0 count=21779 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1
+FX3_OSD_LIFE_ALLOC_BEGIN sequence=21780 tid=812 destination=0x8288076c bytes=8 wait=1 op=6008 native_caller=0x14864 original_follows=1
+FX3_OSD_LIFE_ALLOC_RETURN sequence=21780 tid=812 destination=0x8288076c bytes=8 pointer=0x7f90e58040 result=0 errno=1022 record=0 tracked_live=1 native_reuses_without_user_free=0
+FX3_TIMER_SNAPSHOT tid=812 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=812 target=0x8288076c op=4 tag1=0x6005 tag2=0 result=0 independent_of_unique_lock=1
+FX3_OSD_LIFE_USER_FREE destination=0x8288076c pointer=0x7f90e58040 role=6008 result=0 record=0 count=21780 tracked_live=0 retired_before_native_free=1 original_call_forwarded=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_OSD_LIFE_SEND sequence=5445 destination=0x8288076c source=0x8280074d op=6008 bytes=8 pointer=0x7f90e58040 result=0 record=-1 sends=14345 pair_pending=0 original_owned=unchanged
+open screen: scr0103_0024 -> rep_boot
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0xea571000 tag2=0 result=0 independent_of_unique_lock=1
+FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ee1683490 id1=0x1a5 id2=0x2e1 id3=0x1a5 three_reference_args_one_call=1 creation_not_yet_complete=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+[ 9859.444250] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1022
+open screen: rep_boot -> rep_shooting
+FX3_AP89_SCREEN_CREATE phase=controller_init_return screen_id=0x2e1 controller=0x7ee98160e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_OSD_OWNER_FREE queue=0x8280074d pointer=0x7f90e7ca40 kind=GUI result=0 count=5520 original_received_message=1 ownership_change=missing_CP_receiver
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_AP89_SCREEN_CREATE phase=presenter_factory_return screen_id=0x2e1 controller=0x7ee98160e0 presenter_return=0x7ee8ff60e0 native_point=0x218fff4 native_call_returned=1 visible_pixels_unproven=1
+FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ee1683490 id1=0x2e1 id2=0x2dd id3=0x2e1 three_reference_args_one_call=1 creation_not_yet_complete=1
+FX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_BOOT_QUEUE_SEND tid=421 bytes=28 source=0x830128 raw=97010300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1
+FX3_UIPC_SYNC_RETURN seq=1810140 target=0x80924127 caller=0x7f93979af8 result=0 errno=1022 read=16 epoch_stable=1 post=11019200020000000100000001000000
+[ 9860.895062] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1022
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+open screen: rep_shooting -> scr0132_0001
+FX3_AP89_SCREEN_CREATE phase=controller_init_return screen_id=0x2dd controller=0x7ee98160e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1
+FX3_AP89_SCREEN_CREATE phase=presenter_factory_return screen_id=0x2dd controller=0x7ee98160e0 presenter_return=0x7ee8ff60e0 native_point=0x218fff4 native_call_returned=1 visible_pixels_unproven=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ee1683490 id1=0x2dd id2=0 id3=0x2dd three_reference_args_one_call=1 creation_not_yet_complete=1
+FX3_UUD_PARAM144_STORE tid=365 value=0 destination=0x7ee9971db8 original_point=0x27bec60 caller=0x27bec58 passive=1
+FX3_BOOT_GATE_SAMPLE id=54 n=2 tid=365 pc=0x27bec60 x0=0 x1=0 x2=0x144 x3=0x7ee9971dbc x4=0x7ee1681b08 x19=0x7ee1681b20 remaining=544947575568 expected=0x7ee9971db8/0/0x7ee1681de0/0x7ee1682014 token_or_req=0 create_sequence=0 create_function=0 completion_sequence=0 completion_handle=0
+FX3_BOOT_QUEUE_SEND tid=365 bytes=28 source=0x830128 raw=0b010300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1
+FX3_BOOT_QUEUE_SEND tid=233 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_BOOT_QUEUE_SEND tid=365 bytes=28 source=0x830128 raw=f7000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1
+FX3_AP89_SCREEN_CREATE phase=controller_init_return screen_id=0 controller=0x7ee98160e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+[ 9862.851968] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1022
+FX3_BOOT_QUEUE_SEND tid=233 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+[ 9863.523968] UDIF: cdev_ioctl() Line 100: uipc: warning ret = -1022
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_BOOT_QUEUE_SEND tid=232 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_AP89_SCREEN_CREATE phase=presenter_factory_return screen_id=0 controller=0x7ee98160e0 presenter_return=0x7ee8ff60e0 native_point=0x218fff4 native_call_returned=1 visible_pixels_unproven=1
+FX3_BOOT_QUEUE_SEND tid=231 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1
+FX3_TIMER_SNAPSHOT tid=365 bound=1 patch_mask=0xf timer_entry=0 id_compare=0 info=0 table=0 config=9 config_target=9 fill=20 event_seq=29 original_memory_read_only=1
+FX3_UI_WIRE tid=365 target=0x8280074d op=4 tag1=0x1001 tag2=0 result=0 independent_of_unique_lock=1
+FX3_GPE_CHILD_REGISTER parent=0x7f506ae6b0 parent_epoch=3 logical=0x7edfe3ad40 phys=0x410947d40 bytes=0x2580 align=0x40 child_epoch=76 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1
+FX3_GPE_RESOURCE_SUBALLOC object=0x7f506ae6b0 logical=0x7edfe3ad40 phys=0x410947d40 bytes=0x2580 align=0x40 result=0 original_once=1 interval_only=1
+FX3_GPE_CHILD_REGISTER parent=0x7f506ae6b0 parent_epoch=3 logical=0x7edfe3d300 phys=0x41094a300 bytes=0x2580 align=0x40 child_epoch=77 malloc_success_return=1 bitmap_binding_unproven=1 compaction_uncovered=1 queued_ABA_uncovered=1
+FX3_GPE_RESOURCE_SUBALLOC object=0x7f506ae6b0 logical=0x7edfe3d300 phys=0x41094a300 bytes=0x2580 align=0x40 result=0 original_once=1 interval_only=1
+FX3_GPE_CHILD_REGISTER parent=0x7f506ae6b0 parent_epoch=3 logical=0x7edfe3f8c0 phys=0x41094c8c0 bytes=0x780 align=0x40 child_epo

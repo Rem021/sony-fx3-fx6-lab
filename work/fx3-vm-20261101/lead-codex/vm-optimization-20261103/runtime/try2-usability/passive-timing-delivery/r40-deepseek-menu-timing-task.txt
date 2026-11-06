@@ -1,0 +1,15 @@
+# FX3｜DeepSeek菜单延迟分解
+用户指定DeepSeek Harness参与并行研究。本任务独立分析FX3原固件菜单性能；不涉及被提供方拒绝的FX6实现，不重试或转交该实现。
+先读项目AGENTS/README。写前核验外盘UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。
+唯一可写目录：/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-deepseek-menu-timing，独占创建。所有输入只读，不修改协调ledger、运行代码或其他候选。
+输入：
+- native run /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v35diag-n64-r36-r37-4d245250，serial.log、osd-ring-readback.json、trial-session/receipt及step记录。
+- host run /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/r38-vm-29076c7ba60e，REPORT.md、RESULT.json、tool-timeline.jsonl、FIRST-FRAME-CLOCK.json及step-01-attempt-01两个observation。
+- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r38-coordinator-final-review.json、r38-coordinator-r35-readout.json、r38-coordinator-resource-audit.json。
+已知但从原件验证：本轮Start1/按键1、MENU原生down/up/done，约47.37秒待机。20秒原截止先到，pin未成功，整轮菜单验收失败。observation1在arm+5秒仍待机，observation2在+13.6秒完整Setup菜单。保留ring frame200 hostmono448271.059008875/pixel_source200/SHA60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292约arm+10秒已有菜单，采样非每帧。工具调用空档约8.38秒与11.53秒可与guest进度重叠，不全算固件耗时。首次HAR被二次cleanup覆盖，缺失HTTP时序不可还原。r39其他worker仅修cleanup。
+任务：
+1. 列出时钟域、可用锚点及误差。guest ns只同域相减；先从必要的日志生产源码证明key和GPE标签语义与时钟，不凭名字推测。
+2. 分析serial的GPE104_CMD_RETURN/DYNAMIC_ENTER/RETURN/COMPLETE_ENTER/RETURN、GPE_CMD/SCOPE/DRAW_INTERVAL/NATIVE_TARGET等，按真实线程/序号/事件标识配对避免交错错配，分解MENU附近耗时及慢调用。输出可复算脚本与机器可读数据，明确未配对/缺失/截断，不把重叠时间累加为walltime。
+3. 对照host工具调用、首次保留菜单和20秒截止，区分实测、调度间隔、未知归因。最多3个具体优化建议，保留独立视觉判断、pin/confirm和原20秒截止；不自动语义通过、不延时限、不重试按键。
+4. 只读分析，不实现或启动VM/QEMU/浏览器/网页服务/QMP/guest，不设备/USB/相机操作、不改FX3平台/默认入口。不import有副作用的现有模块；只运行自己的纯文件分析脚本。避免复制大镜像。
+5. 交付中文REPORT.md、机器可读结果、脚本、读取输入前后hash及交付hash。单次运行不证明稳定性/全菜单/FX6开机。可交付有依据unknown，不把r38改成通过。完成worker_done回报；遇权限/提供方拒绝报原错误，不换模型重试。

@@ -1,0 +1,39 @@
+{
+  "fixture": {
+    "sha256": "658c736dc0b7951cb542a0553851c46ee75c30badf9299cdb5fef66104ef3ff2",
+    "dependencies": "work/sony-firmware-20261024/stage191-native-owner-channel-integration/artifacts-v5/fake-iokit.dylib:\n\twork/sony-firmware-20261024/stage191-native-owner-channel-integration/artifacts-v5/fake-iokit.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "sources": [
+    {
+      "path": "iokit_wire.h",
+      "sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b"
+    },
+    {
+      "path": "iokit_wire.c",
+      "sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94"
+    },
+    {
+      "path": "fake_iokit.c",
+      "sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19"
+    }
+  ],
+  "native_helper_executed": false,
+  "camera_operations": 0,
+  "argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-fvisibility=hidden",
+    "-DFX3_IOKIT_WIRE_FIXTURE",
+    "-dynamiclib",
+    "work/sony-firmware-20261024/stage191-native-owner-channel-integration/iokit_wire.c",
+    "work/sony-firmware-20261024/stage191-native-owner-channel-integration/fake_iokit.c",
+    "-o",
+    "work/sony-firmware-20261024/stage191-native-owner-channel-integration/artifacts-v5/fake-iokit.dylib"
+  ],
+  "stderr": ""
+}

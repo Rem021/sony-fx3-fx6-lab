@@ -1,0 +1,233 @@
+{
+  "schema": 1,
+  "owner_ABI": 4,
+  "entry_schema": 3,
+  "native_build_released": false,
+  "native_helper_executed": false,
+  "administrator_or_camera_operations": 0,
+  "builds": {
+    "fixture": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "-DFX3_ENTRY_FIXTURE",
+        "-DFX3_OWNER_CHANNEL_FIXTURE",
+        "-DFX3_IOKIT_WIRE_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_core.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_entry_main.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_channel.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/host_transport.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/iokit_wire.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/native_session.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_receipt.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/helper_hello.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_fixture.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/fake_iokit.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/owner-fixture-helper"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/owner-fixture-helper",
+      "sha256": "0529a73cea979e7ad9d84d5218afd6d332b2f2b399deea222cc56679c6165e1b",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/owner-fixture-helper:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "native": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_core.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_entry_main.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_channel.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/host_transport.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/iokit_wire.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/native_session.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_receipt.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/helper_hello.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_iokit.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/host_login.c",
+        "-framework",
+        "Security",
+        "-lbsm",
+        "-framework",
+        "IOKit",
+        "-framework",
+        "CoreFoundation",
+        "-framework",
+        "DiskArbitration",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/owner-native-helper"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/owner-native-helper",
+      "sha256": "e431d24471bb53e18576bf559d21f8bff8b6310c6552e80f147f066b1e1d2430",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/owner-native-helper:\n\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.40.78)\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.1.8)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    },
+    "ipc": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-dynamiclib",
+        "-DFX3_ENTRY_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/entry_support.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/entry-ipc.dylib"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/entry-ipc.dylib",
+      "sha256": "b1369031eb86a3938dd674a74528cc235804f13150ad98404802e37850173f2d",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/entry-ipc.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage247-shared-host-transport-owner-status/artifacts/entry-ipc.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n"
+    }
+  },
+  "sources": [
+    {
+      "path": "entry_shared.h",
+      "sha256": "e1e0e36943297f26c3e8be260025a13213e78aa07e128cf154f9f9e906cfff76"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "entry_target.h",
+      "sha256": "1602334aa75ee5900aac186d9209720d955500ab088478c8922c4a9831213dff"
+    },
+    {
+      "path": "fake_iokit.c",
+      "sha256": "99e4923233a00bdd43f522e4b64ada3d7e5a53412fc79d0745adac9c2e5b4b19"
+    },
+    {
+      "path": "frame_io.c",
+      "sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f"
+    },
+    {
+      "path": "frame_io.h",
+      "sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a"
+    },
+    {
+      "path": "global_guard.c",
+      "sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526"
+    },
+    {
+      "path": "global_guard.h",
+      "sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828"
+    },
+    {
+      "path": "helper_hello.c",
+      "sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719"
+    },
+    {
+      "path": "helper_hello.h",
+      "sha256": "80db6e355881fe8bad51309d6109871111e7dfd41c8b007759a45f9703bcbb1e"
+    },
+    {
+      "path": "host_login.c",
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "host_login.h",
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "host_transport.c",
+      "sha256": "0e226578e2593f7660d515ea57993118eaedc4f66d7b849816bd20ffa9af3099"
+    },
+    {
+      "path": "host_transport.h",
+      "sha256": "757c0d5e834f853c41a9f7a09747403ca3670d97800d4d8bcc520e5747bb4889"
+    },
+    {
+      "path": "iokit_wire.c",
+      "sha256": "e031c8e81f354c8576145492b2f411fa7339f2c4be27d140428b2228ec64db94"
+    },
+    {
+      "path": "iokit_wire.h",
+      "sha256": "a94408847f88603ea78c8d31a79cb349701fa6555e810fd9d75975c1825d9f8b"
+    },
+    {
+      "path": "native_session.c",
+      "sha256": "e66e0c6dd4f43072c9a92bfb0099bcc97730b6a12e05dea8ff5e450373fdc3e1"
+    },
+    {
+      "path": "native_session.h",
+      "sha256": "727283132ff03505c0723cf4ef0f84f1527354a61a6379caf11d55cb54794e7f"
+    },
+    {
+      "path": "owner_channel.c",
+      "sha256": "1f7706a24149671b6b10f8a71467037176228f1073c011f6e4209cbde8598519"
+    },
+    {
+      "path": "owner_channel.h",
+      "sha256": "19ba22cdaca7b1475000d294a9c46ff35fa9029e7597d1e61aaa49642bed7e32"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "9a4c07529c7233d2eb4487b8939ee794dcb2a5b0ef8b7450e12a456696c4620d"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "6f40187b219e06701c23b8a6c262fc5f70f556502a7939958c00830bdae78801"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "a17ef8bd7c2e564cd58215648cc66c0bb000023952f0c85b14c1e2cda883c9aa"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "f0a0f75cb793d648f8a801cb1978b358c93e825cd78a2a7b9ef0cc81b5b024b2"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "owner_receipt.c",
+      "sha256": "793c87a9e7ee7f0f1e90a15e2b005b707f71b08a1f6921a9c73cf5c6daeaab7f"
+    },
+    {
+      "path": "owner_receipt.h",
+      "sha256": "34af5854c5f933765778777d14a430cb3a98c0d60b7b7cb11ef1c1e94ceb294e"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88b-cp-backup-reset/guest.dtb",
+    "sha256": "8c2c6f7b01dd6bd2113dbb8ed6e2ed83d0595206f34d823e8581b7e5b9dc538a"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88b-cp-backup-reset/guest.cpio",
+    "sha256": "5f08650885b984230c2baab0199c457b802ab6b5affc35eb97053cf34cb72f01"
+  },
+  "required_markers": [
+    "FX3_BACKUP_CP_PUBLIC_OWNER",
+    "FX3_BACKUP_CP_INSMOD_RC=0",
+    "FX3_BACKUP_CP_STORAGE",
+    "FX3_BACKUP_CP_COMMIT flag=1 stage=1",
+    "FX3_BACKUP_CP_COMMIT flag=4 stage=2",
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=1 flag=1",
+    "FX3_BACKUP_NATIVE_RESET_RETURN index=2 flag=4",
+    "FX3_AP_IM_ENDMAPS_"
+  ],
+  "scope": "AP88 explicit virtualCP Backup op33/F1thenF4once. Native kernel publicsender route; actualinitialized40B validated (nativeallocation128/capacity60). CP separate physicalbacking4040d2000/1369580 insideexistingsecondBK4; pinnedfullbank/checksum/allindex/defaultbounds/repeat4; actual317+2copy/readback; independent4096reply zero tail4056declaredsoftwaredifference; native003e0811 source/replytoactualQ; requestfreeoriginaldestination; noAPwholebankreset. OriginalBackup_reset_all passivereturnwrapper. Postresetunknownfullraw<=4096,no reply. NoAP89boot.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true
+}

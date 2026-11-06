@@ -1,0 +1,16 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-display-pool88.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-display-pool88"
+  ],
+  "exit": 0,
+  "stdout": "",
+  "stderr": "",
+  "test_scope": "actualextractednewallocator:obj80MiBslotaccepted/appsame80rejected/129MiBrejected/negativeoffsetaccepted/branchrange/hintsnonfixed"
+}

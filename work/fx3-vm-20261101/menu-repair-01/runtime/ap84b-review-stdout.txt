@@ -1,0 +1,66 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap84bicount0-b2028788",
+  "healthy_observation": true,
+  "cpu_profile": {
+    "smp": 1,
+    "tcg_thread": null,
+    "icount_profile": "shift=0,align=off,sleep=off"
+  },
+  "cpu_boot_lines": [
+    {
+      "line": 75,
+      "text": "[    5.400002] \tRCU restricting CPUs from NR_CPUS=4 to nr_cpu_ids=1."
+    },
+    {
+      "line": 116,
+      "text": "[    8.550332] Brought up 1 CPUs"
+    },
+    {
+      "line": 117,
+      "text": "[    8.550493] SMP: Total of 1 processors activated."
+    },
+    {
+      "line": 119,
+      "text": "[    8.553716] CPU: All CPU(s) started at EL1"
+    }
+  ],
+  "cpu_online_readback": [],
+  "real_proc_uptime_samples": [
+    {
+      "sample": 1,
+      "guest_proc_uptime_seconds": 12.93,
+      "guest_idle_seconds": 9.47,
+      "host_elapsed_first_observed_seconds": 10.402295459003653,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    },
+    {
+      "sample": 2,
+      "guest_proc_uptime_seconds": 23.25,
+      "guest_idle_seconds": 17.69,
+      "host_elapsed_first_observed_seconds": 17.62947204199736,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    },
+    {
+      "sample": 3,
+      "guest_proc_uptime_seconds": 33.57,
+      "guest_idle_seconds": 27.66,
+      "host_elapsed_first_observed_seconds": 20.40263599998434,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    }
+  ],
+  "speed_observations": {
+    "peak_all": 12318,
+    "last_a18": 12317,
+    "backlog_skip": 532,
+    "time_pass": 2,
+    "time_skip": 1,
+    "dequeue_total": 535,
+    "timer_dequeue": 506,
+    "mirror_skip": 0,
+    "actual_UI_updates": 2,
+    "timer_production_probe_hits": 12824
+  },
+  "key_threads_sampled_CPUs": [],
+  "GPE_approx_blend_marker_count": 0
+}
+AppFw last: {"tid": 290, "name": "AppFw", "allowed_list": "0", "state": "S (sleeping)", "syscall": "29 0x3 0xffffffff80000001 0x7f501b5870 0x2 0x7f501b7150 0x7f501b7258 0x7f501b54c0 0x7fa4518cbc", "stack": ["[<ffffff80080879fc>] __switch_to+0x5c/0x80", "[<ffffff80004c439c>] osal_wai_sem_tmo+0x1e4/0x278 [osal_uipc]", "[<ffffff80004bf4ac>] osal_unlock+0x12cc/0x22b0 [osal_uipc]", "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]", "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0", "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838", "[<ffffff800819e954>] SyS_ioctl+0x44/0x80", "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c", "[<ffffffffffffffff>] 0xffffffffffffffff"], "last_cpu": null, "cgroup": null, "raw": "Name:\tAppFw\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t203\nNgid:\t0\nPid:\t290\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 5969788 kB\nVmSize:\t 5968508 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3289336 kB\nVmRSS:\t 3289336 kB\nRssAnon:\t   51652 kB\nRssFile:\t 3163700 kB\nRssShmem:\t   73984 kB\nVmData:\t 1710492 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95396 kB\nVmPTE:\t    7400 kB\nVmPMD:\t      36 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t187\nSigQ:\t0/4720\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\t1\nCpus_allowed_list:\t0\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t84\nnonvoluntary_ctxt_switches:\t63\n29 0x3 0xffffffff80000001 0x7f501b5870 0x2 0x7f501b7150 0x7f501b7258 0x7f501b54c0 0x7fa4518cbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c439c>] osal_wai_sem_tmo+0x1e4/0x278 [osal_uipc]\n[<ffffff80004bf4ac>] osal_unlock+0x12cc/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\n"}

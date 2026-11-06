@@ -1,0 +1,85 @@
+{
+  "schema": "fx3-stage45-stop-notification-routing/1",
+  "created_utc": "2026-10-26T01:38:22.858127+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/README.md",
+      "bytes": 6363,
+      "sha256": "88f9cdede4d1e425b6adf9839083072c7c6fbe74db427501d7dfc5829d13a67f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/coordinator-observations.json",
+      "bytes": 1865,
+      "sha256": "328aab2df267c93b67b24d22840adc07c1bd1fe406feb2d798478014d783c57b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/goal-status-after.json",
+      "bytes": 89434,
+      "sha256": "2563a0aacff8a6b5c23b70131ecb1b3d6660aa791d125599abab41b8606310a0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/goal-status-before.json",
+      "bytes": 85047,
+      "sha256": "35ec2c11b681ae941246441287e509c1e7793940cd8b682f7628712964a07a8f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/next-output-stop-anchors.json",
+      "bytes": 2694,
+      "sha256": "50da419e5d5f6ab04117571e74e9635b21eab8bd491b61d24cc5a343bb17196f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/run-20261025/executed-source.py",
+      "bytes": 15078,
+      "sha256": "cb3ec06b05c410cee5b6ba75cf642fd7f8322cfa1c78e560e77f4fa4864654bb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/run-20261025/source-receipt.json",
+      "bytes": 598,
+      "sha256": "d079917579a1ec09c9b55ccd04d9d0faf9607286eab9c5a309ff81f3854c6c30"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/run-20261025/stop-routing-results.json",
+      "bytes": 203975,
+      "sha256": "6263f0fb6394c9b6ea3e078d45b2bb0cad436d8ce9d30685ac6c9b3ee7ed180c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/run-20261025/summary.json",
+      "bytes": 691,
+      "sha256": "9152ecd80be5e92f58b5a4b32cb49083ffc2b015a426e799475e338efcf2e9bd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage45-stop-notification-routing/stop_routing.py",
+      "bytes": 15078,
+      "sha256": "cb3ec06b05c410cee5b6ba75cf642fd7f8322cfa1c78e560e77f4fa4864654bb"
+    }
+  ],
+  "previous_manifest_sha256": "f781c38ed0abb4b5bf2eeb36e909d0e787e1f30486e0864c768bc3c293597e64",
+  "scope": "33 original fragments. Selected native constructor vptr stores, receiver prefix/separate post-log route through actual callbacks to output STOP event; busy queues/returns0, nonbusy stops before exit log. A/V selectors and another STOP-command packet producer. No real factory/MAIN owner routing/current epoch/concurrency/full STOP/runtime service/HAL/recovery proof.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage45-stop-notification-routing/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage45-stop-notification-routing/goal-status-after.json",
+    "before_sha256": "35ec2c11b681ae941246441287e509c1e7793940cd8b682f7628712964a07a8f",
+    "after_sha256": "2563a0aacff8a6b5c23b70131ecb1b3d6660aa791d125599abab41b8606310a0",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-25 FX3 STOP通知与输出状态队列](<work/sony-firmware-20261024/stage45-stop-notification-routing/README.md>)：原接收/回调路由进入输出事件，返回0时仍可排队；A/V停止有中间状态，相同包另有生产者，完整停止/硬件与恢复仍待验收。",
+  "readme_index_before_sha256": "9b71b9997bf805e48738258e7bd82da12f585e8d0afcdcfd2a70560f38e2ef0d",
+  "readme_index_after_sha256": "71ca1688374e34b5240a3c063e3e2a6138c7ee14ebaf06ce926cb55cf4dd39f9",
+  "operations": {
+    "guest_only_original_bounded_code": true,
+    "original_image_RX_unchanged": true,
+    "native_log_lock_transport_or_HAL_output_adapters": false,
+    "original_callback_vptrs_written_by_native_fragments": true,
+    "real_MAIN_channel_owner_factory_epoch_or_full_STOP_proven": false,
+    "compiled_prototype_invoked": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_mode_driver_files_module_WBI_or_write": false,
+    "hardware_main_media_same_body_backup_restore_WBI_coldboot_or_rescue_verified": false,
+    "camera_loadable_module_or_device_firmware_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

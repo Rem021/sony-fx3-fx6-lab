@@ -1,0 +1,10 @@
+{
+  "results": [
+    {
+      "name": "observe_end_real_peer",
+      "status": "FAIL",
+      "error": "EOFError('own fixture stream ended')",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 132, in case\n    try:fn();results.append({'name':name,'status':'PASS','processes':Job.serial-before,'seconds':time.monotonic()-start})\n        ~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 139, in clean\n    assert j.send(1,fragment=fragment)[0]==0;assert j.send(5)[0]==0;r=j.finish()\n           ~~~~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 92, in send\n    return self.response()\n           ~~~~~~~~~~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 83, in response\n    n=struct.unpack('<I',self.read_exact(4))[0];assert n==676\n                         ~~~~~~~~~~~~~~~^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage191-native-owner-channel-integration/test_integration.py\", line 79, in read_exact\n    if not chunk:raise EOFError('own fixture stream ended')\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nEOFError: own fixture stream ended\n"
+    }
+  ]
+}

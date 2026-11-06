@@ -1,0 +1,77 @@
+{
+  "source_only": true,
+  "reference": "Linux v4.9 upstream, not actual Sony loaded kernel",
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/unistd.h",
+      "sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6",
+      "first_line": 701,
+      "last_line": 705,
+      "range_sha256": "c01c65d9917c4b9516f8b672e5fb487d76a6056c7ccf194c39c938712de45560",
+      "required_tokens": [
+        "__NR_renameat2 276"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/shmem.c",
+      "sha256": "f58fc9717393436b41607d58e7e99d940ee528b1caba6b4dece080493daf01a9",
+      "first_line": 2967,
+      "last_line": 2978,
+      "range_sha256": "d37c1daae277701078a2e3ee813560868f7aca5a755cf402d730d7cf123476fd",
+      "required_tokens": [
+        "RENAME_NOREPLACE",
+        "-EINVAL"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/shmem.c",
+      "sha256": "f58fc9717393436b41607d58e7e99d940ee528b1caba6b4dece080493daf01a9",
+      "first_line": 3704,
+      "last_line": 3712,
+      "range_sha256": "cf2a64f576f7cfa7cf66cb6f40fa176200e319d771fb1e511be2944e3a9d5d39",
+      "required_tokens": [
+        "shmem_rename2"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/namei.c",
+      "sha256": "b20efdbcba11a32df2d93418be58c6b0c6b1abeb3ea55f114ec47de7c505dfa8",
+      "first_line": 4465,
+      "last_line": 4486,
+      "range_sha256": "17428d5ca216c402818eb06af1f61154ab949dfee9117ba9ea88317e5b0d8b57",
+      "required_tokens": [
+        "SYSCALL_DEFINE5(renameat2",
+        "RENAME_NOREPLACE"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/namei.c",
+      "sha256": "b20efdbcba11a32df2d93418be58c6b0c6b1abeb3ea55f114ec47de7c505dfa8",
+      "first_line": 4508,
+      "last_line": 4528,
+      "range_sha256": "998c3f1828ad263cfb804e2ea524eb2601fe0314d9328d4cde87d03c6a026e97",
+      "required_tokens": [
+        "old_path.mnt != new_path.mnt",
+        "lock_rename"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/namei.c",
+      "sha256": "b20efdbcba11a32df2d93418be58c6b0c6b1abeb3ea55f114ec47de7c505dfa8",
+      "first_line": 4536,
+      "last_line": 4544,
+      "range_sha256": "7cab469c225dd88db8fea67014dd8a6406337deca399b4eaf5435ea3dc1f3415",
+      "required_tokens": [
+        "-EEXIST",
+        "RENAME_NOREPLACE",
+        "d_is_positive(new_dentry)"
+      ]
+    }
+  ],
+  "syscall": 276,
+  "flags": 1,
+  "RENAME_NOREPLACE": true,
+  "plain_rename_or_overwrite_fallback": false,
+  "actual_target_renameat2_tmpfs_or_privileges_verified": false,
+  "first_flash_released": false
+}

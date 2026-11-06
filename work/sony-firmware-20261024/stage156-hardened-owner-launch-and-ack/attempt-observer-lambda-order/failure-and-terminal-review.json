@@ -1,0 +1,122 @@
+{
+  "error": "UnboundLocalError: conditional lambda reads s before assignment",
+  "after_finally_cleanup": [
+    {
+      "status": "RECORDED_HELPER_TERMINAL_RESULT_CONSISTENT",
+      "helper_terminal_verified": true,
+      "verified_helper_alive": false,
+      "restarted": false,
+      "physical_acceptance": false,
+      "native": {
+        "status_code": 0,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 0
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "status": "RECORDED_HELPER_TERMINAL_RESULT_CONSISTENT",
+      "helper_terminal_verified": true,
+      "verified_helper_alive": false,
+      "restarted": false,
+      "physical_acceptance": false,
+      "native": {
+        "status_code": 1,
+        "capture_attempted": true,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    }
+  ],
+  "native_or_admin_executed": false
+}

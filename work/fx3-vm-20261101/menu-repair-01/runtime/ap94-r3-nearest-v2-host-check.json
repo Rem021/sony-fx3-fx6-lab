@@ -1,0 +1,114 @@
+{
+  "authority": "msg_c030a5a3da12",
+  "checks": [
+    {
+      "test": "check-gpe94-r3-center",
+      "ASan_UBSan_exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe94-r3-center.log",
+      "log_sha256": "3063048427e4f0f53b5c8703da61be4e71d05df17aa6263f1e536f2ccad9c087"
+    },
+    {
+      "test": "check-gpe94-r3-regression",
+      "ASan_UBSan_exit": 0,
+      "log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-gpe94-r3-regression.log",
+      "log_sha256": "b084ccda2da60d3f7753d9a14930eefd7700da67069b4a26e0afe63f12d68101"
+    }
+  ],
+  "exact_rational_pixel_center_references": [
+    {
+      "source": [
+        49,
+        49
+      ],
+      "destination": [
+        103,
+        116
+      ],
+      "strides": [
+        64,
+        112
+      ],
+      "expected_LE16_sha256": "ece81268c75c781009899eeca1cb5963405294f00efb70663b34b9cb4b5c9069"
+    },
+    {
+      "source": [
+        49,
+        49
+      ],
+      "destination": [
+        7,
+        5
+      ],
+      "strides": [
+        64,
+        16
+      ],
+      "expected_LE16_sha256": "52f1cde10218f9fb8713df86a056fbf0f5b6b5663cda1b38e17aacd795064e2e"
+    },
+    {
+      "source": [
+        1,
+        7
+      ],
+      "destination": [
+        1,
+        13
+      ],
+      "strides": [
+        16,
+        16
+      ],
+      "expected_LE16_sha256": "eb01816cb239ca4c6b0757dca08f71e66d4a591acbc90067098bd5b6ba8234af"
+    },
+    {
+      "source": [
+        7,
+        1
+      ],
+      "destination": [
+        13,
+        1
+      ],
+      "strides": [
+        16,
+        16
+      ],
+      "expected_LE16_sha256": "ff71979373d6e7b7760398ed8e075cb2d3e235b22db9508df81440d65760db66"
+    },
+    {
+      "source": [
+        1,
+        1
+      ],
+      "destination": [
+        5,
+        9
+      ],
+      "strides": [
+        16,
+        16
+      ],
+      "expected_LE16_sha256": "89ee6107b0a4153af66d4e35739dd1310c78af04e82bdb97dba6a2aa06896c3f"
+    },
+    {
+      "source": [
+        29,
+        29
+      ],
+      "destination": [
+        116,
+        116
+      ],
+      "strides": [
+        32,
+        128
+      ],
+      "expected_LE16_sha256": "e20879a426e55549673d0e43fcf5197c538ec6052aa3024340e7c8e1e7bc9749"
+    }
+  ],
+  "old_4x_expected_pixels_identical": true,
+  "hardware_sampling_precision_unproven": true,
+  "guards_unchanged": true,
+  "formula": "min(sw-1,floor((dx+0.5)*sw/dw)), min(sh-1,floor((dy+0.5)*sh/dh))",
+  "73_independent_FNV_equal": true
+}

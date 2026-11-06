@@ -1,0 +1,25 @@
+{
+  "review_date": "2026-10-29",
+  "sources": [
+    {
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+      "live_open_succeeded": true,
+      "use": "Sony explicitly labels the GPL distribution ILME-FX3 Ver7.00. Saved archive members supply static platform/clock/reset/USB references.",
+      "limit": "Not exact7.02 build identity or current-body runtime behavior."
+    },
+    {
+      "url": "https://api.github.com/repos/DavidBuchanan314/ILCE-7M4-RE/commits/main",
+      "capture": "upstream-head-check.json",
+      "use": "Latest checked main still equals pinned e85e137fc3b88b7cb26e69faa9f1304184678ff7;47 selected source files independently match its blob hashes.",
+      "limit": "No generic FX3 support or device acceptance inferred. Fixed GitHub web page failed to fetch, while pinned raw data and API succeeded."
+    },
+    {
+      "url": "https://devicetree-specification.readthedocs.io/en/stable/devicetree-basics.html",
+      "live_open_succeeded": true,
+      "use": "Primary definitions of cell widths, reg, phandles and ranges for decoding the saved firmware DTB.",
+      "limit": "Generic address translation does not replace Sony syscon/MFD driver semantics, device binding or runtime fixups."
+    }
+  ],
+  "no_web_content_used_as_device_authorization": true,
+  "actual_device_operations": 0
+}

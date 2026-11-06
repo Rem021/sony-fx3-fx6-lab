@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "scope": "offline Chrome fixture, no VM or real operator semantic review",
+  "cases": {
+    "wrong_attempt_nonce_PAGE_no_cancel": {
+      "attempt": {
+        "cancel_invoked": false,
+        "performance_ms": 3750,
+        "reason": "review_receipt",
+        "status": "refused"
+      },
+      "nonce": {
+        "cancel_invoked": false,
+        "performance_ms": 3758.399999976158,
+        "reason": "review_receipt",
+        "status": "refused"
+      },
+      "PAGE": {
+        "cancel_invoked": false,
+        "performance_ms": 3765.899999976158,
+        "reason": "PAGE_fingerprint",
+        "status": "refused"
+      }
+    },
+    "old_alarm_cancelled_cannot_repeat": {
+      "result": {
+        "cancel_invoked": false,
+        "performance_ms": 3837,
+        "reason": "attempt_alarm_binding",
+        "status": "refused"
+      }
+    },
+    "historical_review_B_current_A_cancel_only": {
+      "result": {
+        "attempt_id": "de398c29-f8e3-4d86-bf0a-d77292378e58",
+        "cancel_invoked": true,
+        "current_frame": {
+          "generation": 3,
+          "sequence": 3,
+          "sha": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9"
+        },
+        "due_ms": 23102,
+        "historical_review_not_current": true,
+        "no_confirm_visual": true,
+        "no_guest_key": true,
+        "no_visual_approval": true,
+        "nonce": "d976ab64-b197-4921-b90b-1e8d1fb67494",
+        "old_review": {
+          "generation": 2,
+          "sha": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1"
+        },
+        "performance_ms": 3787.699999988079,
+        "server_atomic_permission": false,
+        "status": "cancelled_unqueued_alarm_only"
+      },
+      "key_posts": 1,
+      "confirm_posts": 0,
+      "guest_steps": 0
+    },
+    "separate_explicit_new_click": {
+      "key_posts": 2,
+      "confirm_posts": 0,
+      "pending": 1
+    }
+  }
+}

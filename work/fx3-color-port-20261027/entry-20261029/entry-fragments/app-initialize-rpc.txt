@@ -1,0 +1,49 @@
+02eadaec stp        x29, x30, [sp, #-0x50]!
+02eadaf0 mov        x29, sp
+02eadaf4 stp        x21, x22, [sp, #0x20]
+02eadaf8 mov        w22, w1
+02eadafc stp        x23, x24, [sp, #0x30]
+02eadb00 add        x1, x29, #0x48
+02eadb04 mov        w23, w0
+02eadb08 mov        w0, #0x16a
+02eadb0c stp        x19, x20, [sp, #0x10]
+02eadb10 mov        w21, w2
+02eadb14 mov        x19, x3
+02eadb18 mov        w2, #0x10
+02eadb1c mov        w3, #1
+02eadb20 movk       w0, #0x94, lsl #16
+02eadb24 mov        w24, w4
+02eadb28 bl         #0x1594120 ; osal_valloc_msg_wait
+02eadb2c mov        w20, w0
+02eadb30 cbnz       w0, #0x2eadb98
+02eadb34 ldr        x0, [x29, #0x48]
+02eadb38 mov        w1, w24
+02eadb3c bl         #0x1591e00 ; osal_set_msg_src
+02eadb40 ldr        x1, [x29, #0x48]
+02eadb44 mov        w0, #3
+02eadb48 stp        w0, w21, [x1, #8]
+02eadb4c mov        w0, #0x16a
+02eadb50 stp        w23, w22, [x1]
+02eadb54 movk       w0, #0x94, lsl #16
+02eadb58 bl         #0x1593de0 ; osal_snd_sync_msg
+02eadb5c cmp        w0, #0
+02eadb60 ccmp       x19, #0, #4, eq
+02eadb64 mov        w20, w0
+02eadb68 b.eq       #0x2eadb88
+02eadb6c ldr        x0, [x29, #0x48]
+02eadb70 ldr        w1, [x0]
+02eadb74 str        w1, [x19]
+02eadb78 ldr        w1, [x0, #4]
+02eadb7c str        w1, [x19, #4]
+02eadb80 ldp        w1, w0, [x0, #8]
+02eadb84 stp        w1, w0, [x19, #8]
+02eadb88 ldr        x1, [x29, #0x48]
+02eadb8c mov        w0, #0x16a
+02eadb90 movk       w0, #0x94, lsl #16
+02eadb94 bl         #0x15943d0 ; osal_free_msg
+02eadb98 mov        w0, w20
+02eadb9c ldp        x19, x20, [sp, #0x10]
+02eadba0 ldp        x21, x22, [sp, #0x20]
+02eadba4 ldp        x23, x24, [sp, #0x30]
+02eadba8 ldp        x29, x30, [sp], #0x50
+02eadbac ret        

@@ -1,0 +1,73 @@
+{
+  "created_utc": "2026-10-26T02:51:37.882686+00:00",
+  "reviewer": "same agent source, trace, original byte and hash review; no independent implementation/replay",
+  "script_execution_copy_and_receipt_match": true,
+  "previous_stage_files_verified": 21,
+  "dependencies": [
+    {
+      "path": "work/sony-firmware-20261024/stage47-runtime-provider-binding/native_initialization.py",
+      "sha256": "0a92c351e06c9bab660278a76aaca9b31f0abcec13c5a09d9cb0f24c07cffe0d",
+      "sealed_manifest": "work/sony-firmware-20261024/stage47-runtime-provider-binding/final-receipt.json",
+      "sealed_source_match": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage47-runtime-provider-binding/provider_binding.py",
+      "sha256": "06f3ebd6c8959c552f6ea202dae76480d40aa4da9530c78e051b57a860ddd636",
+      "sealed_manifest": "work/sony-firmware-20261024/stage47-runtime-provider-binding/final-receipt.json",
+      "sealed_source_match": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage26-mc-open-routing/mc_open_routing.py",
+      "sha256": "2d2b31d86845f022e9ea3a2c56776834dedfdbf10547817ee02dae541906290b",
+      "sealed_manifest": "work/sony-firmware-20261024/stage26-mc-open-routing/final-receipt.json",
+      "sealed_source_match": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage25-mc-image-map/mc_image_map.py",
+      "sha256": "4913247619915a8c231ae28cf631bd240dc02dbbe6abc2acbbfcb5541f193ec3",
+      "sealed_manifest": "work/sony-firmware-20261024/stage25-mc-image-map/final-receipt.json",
+      "sealed_source_match": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage38-imola-parameter-copy/parameter_copy.py",
+      "sha256": "c2bf42ed6a07f259959e02b6721ddb5fdd56cc05add608a35dc421ad30c8b998",
+      "sealed_manifest": "work/sony-firmware-20261024/stage38-imola-parameter-copy/final-receipt.json",
+      "sealed_source_match": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/private_preset.py",
+      "sha256": "188f85924067ca3b552c70c37834b6409fcfa1cc26ca8f383e75b9a83281dc9c",
+      "sealed_manifest": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/final-receipt.json",
+      "sealed_source_match": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/preset_defaults.py",
+      "sha256": "e2b4a3fde16ba3884955878dfe6fca1004f563569e83e4673a803bfc14e32aae",
+      "sealed_manifest": "work/sony-firmware-20261024/stage35-hevc-preset-defaults/final-receipt.json",
+      "sealed_source_match": true
+    }
+  ],
+  "recomputed_396_written_52_unwritten_for_all_four_cases": true,
+  "six_slot_calls_and_15_pool_constructors_per_handler_verified": true,
+  "original_kernel_memset_PC_in_actual_builder_common_clear_verified": true,
+  "same_PC_continuation_preserves_original_builder_frame": true,
+  "post_diagnostic_body_in_separate_guest_on_declared_fixtures": true,
+  "no_log_lock_or_Hal_success_adapter": true,
+  "fresh_vs_retained_scope_kept_separate": true,
+  "source_files_guest_code_and_all_but_original_loader_import_data_unchanged": true,
+  "observed_store_hook_count_is_not_instruction_or_hardware_write_count": true,
+  "full_factory_singleton_guard_current_MAIN_owner_epoch_OSAL_or_complete_builder_not_claimed": true,
+  "official_docs_rechecked": [
+    {
+      "url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000868279.html",
+      "scope": "Official listed movie formats; no HD HS MAIN capability inferred"
+    },
+    {
+      "url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000882045.html",
+      "scope": "Official HD HS 16M 42010 proxy option; no custom MAIN acceptance inferred"
+    }
+  ],
+  "UU_Windows_camera_interfaces_drivers_modules_WBI_or_flash_operations": false,
+  "real_hardware_Open_Start_stream_audio_sync_thermal_longrun_backup_restore_or_independent_recovery": false,
+  "review_outcome": "PASS_WITH_EXPLICIT_RUNTIME_AND_DEVICE_GAPS"
+}

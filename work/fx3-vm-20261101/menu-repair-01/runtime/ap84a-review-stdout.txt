@@ -1,0 +1,74 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap84amttcg-953a9d56",
+  "healthy_observation": true,
+  "cpu_profile": {
+    "smp": 4,
+    "tcg_thread": "multi",
+    "icount_profile": null
+  },
+  "cpu_boot_lines": [
+    {
+      "line": 115,
+      "text": "[   13.890593] CPU1: Booted secondary processor [411fd040]"
+    },
+    {
+      "line": 117,
+      "text": "[   16.549125] CPU2: Booted secondary processor [411fd040]"
+    },
+    {
+      "line": 119,
+      "text": "[   19.185187] CPU3: Booted secondary processor [411fd040]"
+    },
+    {
+      "line": 120,
+      "text": "[   19.203343] Brought up 4 CPUs"
+    },
+    {
+      "line": 121,
+      "text": "[   19.264000] SMP: Total of 4 processors activated."
+    },
+    {
+      "line": 123,
+      "text": "[   19.828562] CPU: All CPU(s) started at EL1"
+    }
+  ],
+  "cpu_online_readback": [],
+  "real_proc_uptime_samples": [
+    {
+      "sample": 1,
+      "guest_proc_uptime_seconds": 13.88,
+      "guest_idle_seconds": 34.05,
+      "host_elapsed_first_observed_seconds": 14.481474833009997,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    },
+    {
+      "sample": 2,
+      "guest_proc_uptime_seconds": 26.34,
+      "guest_idle_seconds": 72.49,
+      "host_elapsed_first_observed_seconds": 27.48132987500867,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    },
+    {
+      "sample": 3,
+      "guest_proc_uptime_seconds": 38.86,
+      "guest_idle_seconds": 119.76,
+      "host_elapsed_first_observed_seconds": 40.01077508300659,
+      "scope": "Actual existing guest cat /proc/uptime; host first-observed timestamp includes polling and QMP pauses, not printk time"
+    }
+  ],
+  "speed_observations": {
+    "peak_all": 12320,
+    "last_a18": 12319,
+    "backlog_skip": 435,
+    "time_pass": 2,
+    "time_skip": 0,
+    "dequeue_total": 437,
+    "timer_dequeue": 405,
+    "mirror_skip": 0,
+    "actual_UI_updates": 2,
+    "timer_production_probe_hits": 12725
+  },
+  "key_threads_sampled_CPUs": [],
+  "GPE_approx_blend_marker_count": 0
+}
+AppFw last: {"tid": 307, "name": "AppFw", "allowed_list": "0-3", "state": "S (sleeping)", "syscall": "29 0x3 0xffffffff80000001 0x7ee5c9f870 0x2 0x7ee5ca1150 0x7ee5ca1258 0x7ee5c9f4c0 0x7f95ffbcbc", "stack": ["[<ffffff80080879fc>] __switch_to+0x5c/0x80", "[<ffffff80004c439c>] osal_wai_sem_tmo+0x1e4/0x278 [osal_uipc]", "[<ffffff80004bf4ac>] osal_unlock+0x12cc/0x22b0 [osal_uipc]", "[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]", "[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0", "[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838", "[<ffffff800819e954>] SyS_ioctl+0x44/0x80", "[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c", "[<ffffffffffffffff>] 0xffffffffffffffff"], "last_cpu": null, "cgroup": null, "raw": "FX3_BOOT_QUEUE_SEND tid=228 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1\nName:\tAppFw\nUmask:\t0022\nState:\tS (sleeping)\nTgid:\t220\nNgid:\t0\nPid:\t307\nPPid:\t1\nTracerPid:\t0\nUid:\t0\t0\t0\t0\nGid:\t0\t0\t0\t0\nFDSize:\t64\nGroups:\t \nVmPeak:\t 7476992 kB\nVmSize:\t 7475712 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t 3289172 kB\nVmRSS:\t 3289172 kB\nRssAnon:\t   51868 kB\nRssFile:\t 3163700 kB\nRssShmem:\t   73604 kB\nVmData:\t 1713272 kB\nVmStk:\t     132 kB\nVmExe:\t      36 kB\nVmLib:\t   95396 kB\nVmPTE:\t    7496 kB\nVmPMD:\t      40 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nThreads:\t187\nSigQ:\t0/4719\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000000001006\nSigCgt:\t0000000180030000\nCapInh:\t0000000000000000\nCapPrm:\t0000003fffffffff\nCapEff:\t0000003fffffffff\nCapBnd:\t0000003fffffffff\nCapAmb:\t0000000000000000\nSpeculation_Store_Bypass:\tunknown\nCpus_allowed:\tf\nCpus_allowed_list:\t0-3\nMems_allowed:\t1\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t657\nnonvoluntary_ctxt_switches:\t185\n29 0x3 0xffffffff80000001 0x7ee5c9f870 0x2 0x7ee5ca1150 0x7ee5ca1258 0x7ee5c9f4c0 0x7f95ffbcbc\n[<ffffff80080879fc>] __switch_to+0x5c/0x80\n[<ffffff80004c439c>] osal_wai_sem_tmo+0x1e4/0x278 [osal_uipc]\n[<ffffff80004bf4ac>] osal_unlock+0x12cc/0x22b0 [osal_uipc]\n[<ffffff80004be584>] osal_unlock+0x3a4/0x22b0 [osal_uipc]\n[<ffffff800839724c>] cdev_ioctl+0x4c/0xb0\n[<ffffff800819e17c>] do_vfs_ioctl+0xa4/0x838\n[<ffffff800819e954>] SyS_ioctl+0x44/0x80\n[<ffffff8008082798>] el0_svc_naked+0x4c/0x5c\n[<ffffffffffffffff>] 0xffffffffffffffff\n"}

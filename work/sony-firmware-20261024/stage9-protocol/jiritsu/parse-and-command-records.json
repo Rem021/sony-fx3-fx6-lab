@@ -1,0 +1,1433 @@
+{
+  "source_sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+  "blocks": [
+    {
+      "start": "0xe73c",
+      "end": "0xe994",
+      "instructions": [
+        {
+          "va": "0xe73c",
+          "bytes": "fd7bbba9",
+          "instruction": "stp x29, x30, [sp, #-0x50]!",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe740",
+          "bytes": "fd030091",
+          "instruction": "mov x29, sp",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe744",
+          "bytes": "f35301a9",
+          "instruction": "stp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe748",
+          "bytes": "94078052",
+          "instruction": "mov w20, #0x3c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe74c",
+          "bytes": "f55b02a9",
+          "instruction": "stp x21, x22, [sp, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe750",
+          "bytes": "351c0053",
+          "instruction": "uxtb w21, w1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe754",
+          "bytes": "5f7c00a9",
+          "instruction": "stp xzr, xzr, [x2]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe758",
+          "bytes": "f60300aa",
+          "instruction": "mov x22, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe75c",
+          "bytes": "5f7c01a9",
+          "instruction": "stp xzr, xzr, [x2, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe760",
+          "bytes": "f30302aa",
+          "instruction": "mov x19, x2",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe764",
+          "bytes": "5f1000f9",
+          "instruction": "str xzr, [x2, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe768",
+          "bytes": "340cb272",
+          "instruction": "movk w20, #0x9061, lsl #16",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe76c",
+          "bytes": "a2f30091",
+          "instruction": "add x2, x29, #0x3c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe770",
+          "bytes": "015041b9",
+          "instruction": "ldr w1, [x0, #0x150]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe774",
+          "bytes": "0000b252",
+          "instruction": "mov w0, #-0x70000000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe778",
+          "bytes": "1f00216a",
+          "instruction": "bics wzr, w0, w1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe77c",
+          "bytes": "80078052",
+          "instruction": "mov w0, #0x3c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe780",
+          "bytes": "200cb072",
+          "instruction": "movk w0, #0x8061, lsl #16",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe784",
+          "bytes": "a1078052",
+          "instruction": "mov w1, #0x3d",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe788",
+          "bytes": "9402801a",
+          "instruction": "csel w20, w20, w0, eq",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe78c",
+          "bytes": "40058052",
+          "instruction": "mov w0, #0x2a",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe790",
+          "bytes": "f8efff97",
+          "instruction": "bl #0xa770",
+          "target_symbol": "osal_dynamic_id"
+        },
+        {
+          "va": "0xe794",
+          "bytes": "60010034",
+          "instruction": "cbz w0, #0xe7c0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe798",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe79c",
+          "bytes": "21d03991",
+          "instruction": "add x1, x1, #0xe74",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7a0",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7a4",
+          "bytes": "33008052",
+          "instruction": "mov w19, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7a8",
+          "bytes": "6ef0ff97",
+          "instruction": "bl #0xa960",
+          "target_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "va": "0xe7ac",
+          "bytes": "e003132a",
+          "instruction": "mov w0, w19",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7b0",
+          "bytes": "f35341a9",
+          "instruction": "ldp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7b4",
+          "bytes": "f55b42a9",
+          "instruction": "ldp x21, x22, [sp, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7b8",
+          "bytes": "fd7bc5a8",
+          "instruction": "ldp x29, x30, [sp], #0x50",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7bc",
+          "bytes": "c0035fd6",
+          "instruction": "ret ",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7c0",
+          "bytes": "a1030191",
+          "instruction": "add x1, x29, #0x40",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7c4",
+          "bytes": "e003142a",
+          "instruction": "mov w0, w20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7c8",
+          "bytes": "23008052",
+          "instruction": "mov w3, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7cc",
+          "bytes": "02058052",
+          "instruction": "mov w2, #0x28",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7d0",
+          "bytes": "1cefff97",
+          "instruction": "bl #0xa440",
+          "target_symbol": "osal_valloc_msg_wait"
+        },
+        {
+          "va": "0xe7d4",
+          "bytes": "c0000034",
+          "instruction": "cbz w0, #0xe7ec",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7d8",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7dc",
+          "bytes": "21483a91",
+          "instruction": "add x1, x1, #0xe92",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7e0",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7e4",
+          "bytes": "5ff0ff97",
+          "instruction": "bl #0xa960",
+          "target_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "va": "0xe7e8",
+          "bytes": "13000014",
+          "instruction": "b #0xe834",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7ec",
+          "bytes": "a02340f9",
+          "instruction": "ldr x0, [x29, #0x40]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7f0",
+          "bytes": "a13f40b9",
+          "instruction": "ldr w1, [x29, #0x3c]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7f4",
+          "bytes": "0feeff97",
+          "instruction": "bl #0xa030",
+          "target_symbol": "osal_set_msg_src"
+        },
+        {
+          "va": "0xe7f8",
+          "bytes": "a02340f9",
+          "instruction": "ldr x0, [x29, #0x40]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe7fc",
+          "bytes": "1f7c00a9",
+          "instruction": "stp xzr, xzr, [x0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe800",
+          "bytes": "1f7c01a9",
+          "instruction": "stp xzr, xzr, [x0, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe804",
+          "bytes": "1f1000f9",
+          "instruction": "str xzr, [x0, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe808",
+          "bytes": "95020034",
+          "instruction": "cbz w21, #0xe858",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe80c",
+          "bytes": "bf060071",
+          "instruction": "cmp w21, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe810",
+          "bytes": "60040054",
+          "instruction": "b.eq #0xe89c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe814",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe818",
+          "bytes": "21b43a91",
+          "instruction": "add x1, x1, #0xead",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe81c",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe820",
+          "bytes": "50f0ff97",
+          "instruction": "bl #0xa960",
+          "target_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "va": "0xe824",
+          "bytes": "a03f40b9",
+          "instruction": "ldr w0, [x29, #0x3c]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe828",
+          "bytes": "a12340f9",
+          "instruction": "ldr x1, [x29, #0x40]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe82c",
+          "bytes": "7df1ff97",
+          "instruction": "bl #0xae20",
+          "target_symbol": "osal_free_msg"
+        },
+        {
+          "va": "0xe830",
+          "bytes": "60040035",
+          "instruction": "cbnz w0, #0xe8bc",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe834",
+          "bytes": "33008052",
+          "instruction": "mov w19, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe838",
+          "bytes": "a23f40b9",
+          "instruction": "ldr w2, [x29, #0x3c]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe83c",
+          "bytes": "01008052",
+          "instruction": "mov w1, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe840",
+          "bytes": "40098052",
+          "instruction": "mov w0, #0x4a",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe844",
+          "bytes": "cbefff97",
+          "instruction": "bl #0xa770",
+          "target_symbol": "osal_dynamic_id"
+        },
+        {
+          "va": "0xe848",
+          "bytes": "20fbff34",
+          "instruction": "cbz w0, #0xe7ac",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe84c",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe850",
+          "bytes": "215c3d91",
+          "instruction": "add x1, x1, #0xf57",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe854",
+          "bytes": "d3ffff17",
+          "instruction": "b #0xe7a0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe858",
+          "bytes": "21048052",
+          "instruction": "mov w1, #0x21",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe85c",
+          "bytes": "01000079",
+          "instruction": "strh w1, [x0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe860",
+          "bytes": "c1b240f9",
+          "instruction": "ldr x1, [x22, #0x160]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe864",
+          "bytes": "220840b9",
+          "instruction": "ldr w2, [x1, #8]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe868",
+          "bytes": "020800b9",
+          "instruction": "str w2, [x0, #8]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe86c",
+          "bytes": "210840f9",
+          "instruction": "ldr x1, [x1, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe870",
+          "bytes": "1f280079",
+          "instruction": "strh wzr, [x0, #0x14]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe874",
+          "bytes": "010400b9",
+          "instruction": "str w1, [x0, #4]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe878",
+          "bytes": "21008052",
+          "instruction": "mov w1, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe87c",
+          "bytes": "012c0079",
+          "instruction": "strh w1, [x0, #0x16]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe880",
+          "bytes": "e003142a",
+          "instruction": "mov w0, w20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe884",
+          "bytes": "a12340f9",
+          "instruction": "ldr x1, [x29, #0x40]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe888",
+          "bytes": "7eeeff97",
+          "instruction": "bl #0xa280",
+          "target_symbol": "osal_snd_msg"
+        },
+        {
+          "va": "0xe88c",
+          "bytes": "e0010034",
+          "instruction": "cbz w0, #0xe8c8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe890",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe894",
+          "bytes": "21803b91",
+          "instruction": "add x1, x1, #0xee0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe898",
+          "bytes": "e1ffff17",
+          "instruction": "b #0xe81c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe89c",
+          "bytes": "61048052",
+          "instruction": "mov w1, #0x23",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8a0",
+          "bytes": "01000079",
+          "instruction": "strh w1, [x0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8a4",
+          "bytes": "c1b240f9",
+          "instruction": "ldr x1, [x22, #0x160]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8a8",
+          "bytes": "210840b9",
+          "instruction": "ldr w1, [x1, #8]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8ac",
+          "bytes": "1f280079",
+          "instruction": "strh wzr, [x0, #0x14]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8b0",
+          "bytes": "010800b9",
+          "instruction": "str w1, [x0, #8]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8b4",
+          "bytes": "41008052",
+          "instruction": "mov w1, #2",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8b8",
+          "bytes": "f1ffff17",
+          "instruction": "b #0xe87c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8bc",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8c0",
+          "bytes": "211c3b91",
+          "instruction": "add x1, x1, #0xec7",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8c4",
+          "bytes": "c7ffff17",
+          "instruction": "b #0xe7e0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8c8",
+          "bytes": "a03f40b9",
+          "instruction": "ldr w0, [x29, #0x3c]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8cc",
+          "bytes": "a1230191",
+          "instruction": "add x1, x29, #0x48",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8d0",
+          "bytes": "02008012",
+          "instruction": "mov w2, #-1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8d4",
+          "bytes": "a3eeff97",
+          "instruction": "bl #0xa360",
+          "target_symbol": "osal_rcv_msg_tmo"
+        },
+        {
+          "va": "0xe8d8",
+          "bytes": "80000034",
+          "instruction": "cbz w0, #0xe8e8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8dc",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8e0",
+          "bytes": "21e03b91",
+          "instruction": "add x1, x1, #0xef8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8e4",
+          "bytes": "bfffff17",
+          "instruction": "b #0xe7e0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8e8",
+          "bytes": "a02740f9",
+          "instruction": "ldr x0, [x29, #0x48]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8ec",
+          "bytes": "020c40a9",
+          "instruction": "ldp x2, x3, [x0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8f0",
+          "bytes": "620e00a9",
+          "instruction": "stp x2, x3, [x19]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8f4",
+          "bytes": "020c41a9",
+          "instruction": "ldp x2, x3, [x0, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8f8",
+          "bytes": "620e01a9",
+          "instruction": "stp x2, x3, [x19, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe8fc",
+          "bytes": "011040f9",
+          "instruction": "ldr x1, [x0, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe900",
+          "bytes": "611200f9",
+          "instruction": "str x1, [x19, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe904",
+          "bytes": "13008052",
+          "instruction": "mov w19, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe908",
+          "bytes": "0004c079",
+          "instruction": "ldrsh w0, [x0, #2]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe90c",
+          "bytes": "e0000034",
+          "instruction": "cbz w0, #0xe928",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe910",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe914",
+          "bytes": "e203152a",
+          "instruction": "mov w2, w21",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe918",
+          "bytes": "21403c91",
+          "instruction": "add x1, x1, #0xf10",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe91c",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe920",
+          "bytes": "33008052",
+          "instruction": "mov w19, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe924",
+          "bytes": "cbeeff97",
+          "instruction": "bl #0xa450",
+          "target_symbol": "_Z10cpp_logrechPKcj"
+        },
+        {
+          "va": "0xe928",
+          "bytes": "a03f40b9",
+          "instruction": "ldr w0, [x29, #0x3c]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe92c",
+          "bytes": "a12740f9",
+          "instruction": "ldr x1, [x29, #0x48]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe930",
+          "bytes": "3cf1ff97",
+          "instruction": "bl #0xae20",
+          "target_symbol": "osal_free_msg"
+        },
+        {
+          "va": "0xe934",
+          "bytes": "20f8ff34",
+          "instruction": "cbz w0, #0xe838",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe938",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe93c",
+          "bytes": "21e03c91",
+          "instruction": "add x1, x1, #0xf38",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe940",
+          "bytes": "a8ffff17",
+          "instruction": "b #0xe7e0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe944",
+          "bytes": "fd7bbda9",
+          "instruction": "stp x29, x30, [sp, #-0x30]!",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe948",
+          "bytes": "fd030091",
+          "instruction": "mov x29, sp",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe94c",
+          "bytes": "f35301a9",
+          "instruction": "stp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe950",
+          "bytes": "f40302aa",
+          "instruction": "mov x20, x2",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe954",
+          "bytes": "f51300f9",
+          "instruction": "str x21, [sp, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe958",
+          "bytes": "f50300aa",
+          "instruction": "mov x21, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe95c",
+          "bytes": "530440b9",
+          "instruction": "ldr w19, [x2, #4]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe960",
+          "bytes": "731200d1",
+          "instruction": "sub x19, x19, #4",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe964",
+          "bytes": "7f9204f1",
+          "instruction": "cmp x19, #0x124",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe968",
+          "bytes": "09010054",
+          "instruction": "b.ls #0xe988",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe96c",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x35000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe970",
+          "bytes": "e203132a",
+          "instruction": "mov w2, w19",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe974",
+          "bytes": "21203991",
+          "instruction": "add x1, x1, #0xe48",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe978",
+          "bytes": "83248052",
+          "instruction": "mov w3, #0x124",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe97c",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe980",
+          "bytes": "932480d2",
+          "instruction": "mov x19, #0x124",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe984",
+          "bytes": "9feeff97",
+          "instruction": "bl #0xa400",
+          "target_symbol": "_Z10cpp_logrechPKcjj"
+        },
+        {
+          "va": "0xe988",
+          "bytes": "e20313aa",
+          "instruction": "mov x2, x19",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe98c",
+          "bytes": "81a20091",
+          "instruction": "add x1, x20, #0x28",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe990",
+          "bytes": "e00315aa",
+          "instruction": "mov x0, x21",
+          "target_symbol": ""
+        }
+      ]
+    },
+    {
+      "start": "0xe9f4",
+      "end": "0xea84",
+      "instructions": [
+        {
+          "va": "0xe9f4",
+          "bytes": "e1020090",
+          "instruction": "adrp x1, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe9f8",
+          "bytes": "fd7bbea9",
+          "instruction": "stp x29, x30, [sp, #-0x20]!",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xe9fc",
+          "bytes": "fd030091",
+          "instruction": "mov x29, sp",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea00",
+          "bytes": "216047f9",
+          "instruction": "ldr x1, [x1, #0xec0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea04",
+          "bytes": "f35301a9",
+          "instruction": "stp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea08",
+          "bytes": "210040f9",
+          "instruction": "ldr x1, [x1]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea0c",
+          "bytes": "210100b4",
+          "instruction": "cbz x1, #0xea30",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea10",
+          "bytes": "220440f9",
+          "instruction": "ldr x2, [x1, #8]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea14",
+          "bytes": "e20000b4",
+          "instruction": "cbz x2, #0xea30",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea18",
+          "bytes": "04084079",
+          "instruction": "ldrh w4, [x0, #4]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea1c",
+          "bytes": "23044178",
+          "instruction": "ldrh w3, [x1], #0x10",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea20",
+          "bytes": "9f00036b",
+          "instruction": "cmp w4, w3",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea24",
+          "bytes": "61ffff54",
+          "instruction": "b.ne #0xea10",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea28",
+          "bytes": "40003fd6",
+          "instruction": "blr x2",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea2c",
+          "bytes": "a00100b5",
+          "instruction": "cbnz x0, #0xea60",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea30",
+          "bytes": "000180d2",
+          "instruction": "mov x0, #8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea34",
+          "bytes": "1fefff97",
+          "instruction": "bl #0xa6b0",
+          "target_symbol": "_Znwm"
+        },
+        {
+          "va": "0xea38",
+          "bytes": "f30300aa",
+          "instruction": "mov x19, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea3c",
+          "bytes": "79edff97",
+          "instruction": "bl #0xa020",
+          "target_symbol": "_ZN8NoAction15DiscardRecvDataC1Ev"
+        },
+        {
+          "va": "0xea40",
+          "bytes": "000380d2",
+          "instruction": "mov x0, #0x18",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea44",
+          "bytes": "1befff97",
+          "instruction": "bl #0xa6b0",
+          "target_symbol": "_Znwm"
+        },
+        {
+          "va": "0xea48",
+          "bytes": "e1020090",
+          "instruction": "adrp x1, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea4c",
+          "bytes": "213047f9",
+          "instruction": "ldr x1, [x1, #0xe60]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea50",
+          "bytes": "21400091",
+          "instruction": "add x1, x1, #0x10",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea54",
+          "bytes": "014c00a9",
+          "instruction": "stp x1, x19, [x0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea58",
+          "bytes": "e10f8012",
+          "instruction": "mov w1, #-0x80",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea5c",
+          "bytes": "01400039",
+          "instruction": "strb w1, [x0, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea60",
+          "bytes": "f35341a9",
+          "instruction": "ldp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea64",
+          "bytes": "fd7bc2a8",
+          "instruction": "ldp x29, x30, [sp], #0x20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea68",
+          "bytes": "c0035fd6",
+          "instruction": "ret ",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea6c",
+          "bytes": "f40300aa",
+          "instruction": "mov x20, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea70",
+          "bytes": "e00313aa",
+          "instruction": "mov x0, x19",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea74",
+          "bytes": "010180d2",
+          "instruction": "mov x1, #8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea78",
+          "bytes": "16efff97",
+          "instruction": "bl #0xa6d0",
+          "target_symbol": "_ZdlPvm"
+        },
+        {
+          "va": "0xea7c",
+          "bytes": "e00314aa",
+          "instruction": "mov x0, x20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xea80",
+          "bytes": "9cf0ff97",
+          "instruction": "bl #0xacf0",
+          "target_symbol": "_Unwind_Resume"
+        }
+      ]
+    },
+    {
+      "start": "0xf038",
+      "end": "0xf0e0",
+      "instructions": [
+        {
+          "va": "0xf038",
+          "bytes": "fd7bbea9",
+          "instruction": "stp x29, x30, [sp, #-0x20]!",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf03c",
+          "bytes": "fd030091",
+          "instruction": "mov x29, sp",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf040",
+          "bytes": "f30b00f9",
+          "instruction": "str x19, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf044",
+          "bytes": "f30300aa",
+          "instruction": "mov x19, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf048",
+          "bytes": "01a04539",
+          "instruction": "ldrb w1, [x0, #0x168]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf04c",
+          "bytes": "3f100071",
+          "instruction": "cmp w1, #4",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf050",
+          "bytes": "01000039",
+          "instruction": "strb w1, [x0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf054",
+          "bytes": "00b040f9",
+          "instruction": "ldr x0, [x0, #0x160]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf058",
+          "bytes": "60020054",
+          "instruction": "b.eq #0xf0a4",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf05c",
+          "bytes": "3f400071",
+          "instruction": "cmp w1, #0x10",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf060",
+          "bytes": "20020054",
+          "instruction": "b.eq #0xf0a4",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf064",
+          "bytes": "3f040071",
+          "instruction": "cmp w1, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf068",
+          "bytes": "01030054",
+          "instruction": "b.ne #0xf0c8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf06c",
+          "bytes": "e10313aa",
+          "instruction": "mov x1, x19",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf070",
+          "bytes": "022a80d2",
+          "instruction": "mov x2, #0x150",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf074",
+          "bytes": "c3ebff97",
+          "instruction": "bl #0x9f80",
+          "target_symbol": "memcpy"
+        },
+        {
+          "va": "0xf078",
+          "bytes": "60b240f9",
+          "instruction": "ldr x0, [x19, #0x160]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf07c",
+          "bytes": "01984039",
+          "instruction": "ldrb w1, [x0, #0x26]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf080",
+          "bytes": "014c0079",
+          "instruction": "strh w1, [x0, #0x26]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf084",
+          "bytes": "62b240f9",
+          "instruction": "ldr x2, [x19, #0x160]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf088",
+          "bytes": "41000090",
+          "instruction": "adrp x1, #0x17000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf08c",
+          "bytes": "f30b40f9",
+          "instruction": "ldr x19, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf090",
+          "bytes": "21440691",
+          "instruction": "add x1, x1, #0x191",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf094",
+          "bytes": "fd7bc2a8",
+          "instruction": "ldp x29, x30, [sp], #0x20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf098",
+          "bytes": "03048052",
+          "instruction": "mov w3, #0x20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf09c",
+          "bytes": "800f8012",
+          "instruction": "mov w0, #-0x7d",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0a0",
+          "bytes": "44eeff17",
+          "instruction": "b #0xa9b0",
+          "target_symbol": "_Z14cppdump_logrechPKcPhj"
+        },
+        {
+          "va": "0xf0a4",
+          "bytes": "010840f9",
+          "instruction": "ldr x1, [x0, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0a8",
+          "bytes": "610e00f9",
+          "instruction": "str x1, [x19, #0x18]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0ac",
+          "bytes": "011840b9",
+          "instruction": "ldr w1, [x0, #0x18]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0b0",
+          "bytes": "612200b9",
+          "instruction": "str w1, [x19, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0b4",
+          "bytes": "01104039",
+          "instruction": "ldrb w1, [x0, #4]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0b8",
+          "bytes": "61320039",
+          "instruction": "strb w1, [x19, #0xc]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0bc",
+          "bytes": "010840b9",
+          "instruction": "ldr w1, [x0, #8]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0c0",
+          "bytes": "611200b9",
+          "instruction": "str w1, [x19, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0c4",
+          "bytes": "eaffff17",
+          "instruction": "b #0xf06c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0c8",
+          "bytes": "02004039",
+          "instruction": "ldrb w2, [x0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0cc",
+          "bytes": "41000090",
+          "instruction": "adrp x1, #0x17000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0d0",
+          "bytes": "21dc0591",
+          "instruction": "add x1, x1, #0x177",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0d4",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf0d8",
+          "bytes": "deecff97",
+          "instruction": "bl #0xa450",
+          "target_symbol": "_Z10cpp_logrechPKcj"
+        },
+        {
+          "va": "0xf0dc",
+          "bytes": "eaffff17",
+          "instruction": "b #0xf084",
+          "target_symbol": ""
+        }
+      ]
+    }
+  ],
+  "records": [
+    {
+      "va": "0x31d94",
+      "raw_hex": "80046f0101100f404a4952495453555f5345545f46494c455f5041544800000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message_id": "0x16f0480",
+      "family": "0x1001",
+      "internal_command": "0x400f",
+      "name": "JIRITSU_SET_FILE_PATH"
+    },
+    {
+      "va": "0x31ddc",
+      "raw_hex": "80046f01011010404a4952495453555f5345545f46494c45320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message_id": "0x16f0480",
+      "family": "0x1001",
+      "internal_command": "0x4010",
+      "name": "JIRITSU_SET_FILE2"
+    },
+    {
+      "va": "0x31e24",
+      "raw_hex": "80046f01011011404a4952495453555f4745545f46494c45320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message_id": "0x16f0480",
+      "family": "0x1001",
+      "internal_command": "0x4011",
+      "name": "JIRITSU_GET_FILE2"
+    },
+    {
+      "va": "0x31e6c",
+      "raw_hex": "80046f01011012404a4952495453555f46494c455f44454c455445320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message_id": "0x16f0480",
+      "family": "0x1001",
+      "internal_command": "0x4012",
+      "name": "JIRITSU_FILE_DELETE2"
+    },
+    {
+      "va": "0x5087c",
+      "raw_hex": "80046f0101100f404a4952495453555f5345545f46494c455f5041544800000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "message_id": "0x16f0480",
+      "family": "0x1001",
+      "internal_command": "0x400f",
+      "name": "JIRITSU_SET_FILE_PATH"
+    }
+  ]
+}

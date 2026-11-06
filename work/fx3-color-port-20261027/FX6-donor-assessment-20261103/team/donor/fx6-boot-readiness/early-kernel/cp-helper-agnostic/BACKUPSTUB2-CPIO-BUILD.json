@@ -1,0 +1,24 @@
+{
+  "schema": "fx6-hybrid-backupstub2-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal21.cpio",
+  "source_sha256": "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal34.cpio",
+  "output_sha256": "b64ad4f75ba9fb52389531df79a1985aad6ac828c7096b2eb85a281ebb171471",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 21195,
+    "new_bytes": 21229,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libbackup-nread-stub2.so",
+      "bytes": 3360,
+      "sha256": "fa5519e5840ccb1e64078db647e277e7f118fdb4c1ebbfc487cf6f8894649bc4"
+    }
+  ],
+  "source_member_count": 1158
+}

@@ -1,0 +1,174 @@
+{
+  "schema": "fx3-persistent-research-progress-v1",
+  "updated_utc": "2026-10-25T15:36:30.128252+00:00",
+  "objective": "持续实现经典Sony ILME-FX3 7.02可用的1920x1080、29.97fps（精确30.000fps单列）、HEVC420 10bit约16Mbps主录，并完成对应恢复、冷启动、实际成片、音画同步与长录验收。",
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "research_activity": "continued_after_explicit_user_resume",
+  "latest_stage": "stage10-mainpath",
+  "native_goal_state_not_modified": true,
+  "progress_audit": {
+    "classification": "progress",
+    "basis": [
+      "闭合活跃查找至正常回复的静态链并纠正stage9记录布局解释",
+      "新增79,015,712B精确manifest重组及31项合成测试",
+      "定位真实主录模型输入并以14例有界guest仿真排除不合格常数替换"
+    ],
+    "completion_not_claimed": true
+  },
+  "authorization": {
+    "scope": "Windows_cached_PnP_inventory_only",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": false,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false
+  },
+  "requirements": [
+    {
+      "id": "G01",
+      "requirement": "经典ILME-FX3实机7.02身份与同机程序指纹",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage7-entry/menu-version-confirmation.json",
+        "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json"
+      ],
+      "remaining": "菜单7.02与MSC054C:0DA1已确认；尚无实机程序哈希和唯一机身绑定。"
+    },
+    {
+      "id": "G02",
+      "requirement": "主录规格1920x1080、HEVC420 10bit约16Mbps、29.97fps；精确30.000fps单列",
+      "status": "offline_parameter_chain_only",
+      "evidence": [
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/hd420-16m-chain.json"
+      ],
+      "remaining": "原固件纯参数链Frame3=30000/1001；尚无硬件码流，精确30.000fps未建立。"
+    },
+    {
+      "id": "G03",
+      "requirement": "原厂固件来源、解包与离线程序完整性",
+      "status": "proven_within_official_sample_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/source-receipt.json",
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/entry-provenance-check.json"
+      ],
+      "remaining": "官方提取件的哈希不能代替用户机身实际原件或校准数据。"
+    },
+    {
+      "id": "G04",
+      "requirement": "服务接收、权限、文件处理与正常回复静态路径",
+      "status": "proven_within_static_normal_path_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/reply/final-reply-proof.json"
+      ],
+      "remaining": "当前pFunc、adjCodeLevel、队列初始化和真实USB可达性未观察；错误/加密路径未全面覆盖。"
+    },
+    {
+      "id": "G05",
+      "requirement": "真实认证、退出与USB完整传输",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "无实机主动访问；service PID/端点、短包/ZLP/timeout完成语义、认证权限与退出均待对应授权及验收。"
+    },
+    {
+      "id": "G06",
+      "requirement": "完整目标长度的候选回复重组",
+      "status": "proven_within_synthetic_bytes_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/host/offline-fixtures.json",
+        "work/sony-firmware-20261024/stage10-mainpath/host/source-receipt.json"
+      ],
+      "remaining": "31合成测试含79,015,712B/76段；无backend、真实文件、传输或备份。"
+    },
+    {
+      "id": "G07",
+      "requirement": "同机健康备份、来源绑定与完整内容真实性",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "未读取机身原件或完整backup；官方DAT和合成长度不能替代同机健康检查点。"
+    },
+    {
+      "id": "G08",
+      "requirement": "FX3专用最小模块加载、ABI及权限",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage8-adaptation/device/device-abi-audit.json",
+        "work/sony-firmware-20261024/stage9-protocol/jiritsu/command-handler-table.json"
+      ],
+      "remaining": "加载模型有静态依据；实际获准加载、syscall/权限/结构布局及正常退出未验收。"
+    },
+    {
+      "id": "G09",
+      "requirement": "当前WBI后端、失效流程与冷启动加载一致性",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage9-protocol/wbi/sysfs-attribute-audit.json",
+        "work/sony-firmware-20261024/stage9-protocol/wbi/sysfs-handler-disassembly.txt"
+      ],
+      "remaining": "原厂快照有接口和顺序语义；当前image_dev/模式及backend到介质、实际冷启动未证。"
+    },
+    {
+      "id": "G10",
+      "requirement": "设置模型、菜单、查询与目标主录参数一致",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/main/main-path-summary.json",
+        "work/sony-firmware-20261024/stage10-mainpath/main/setter-conversion-results.json"
+      ],
+      "remaining": "仅转换块和模型来源；14例排除全HS420常数替换，完整builder/typed key/产品允许表未闭合。"
+    },
+    {
+      "id": "G11",
+      "requirement": "硬件编码器实际接受Open与Start",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "纯参数包和转换块仿真不能证明硬件接受。"
+    },
+    {
+      "id": "G12",
+      "requirement": "实际主录文件规格、HEVC参数集、GOP、码率与图像内容",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "需主录而非仅代理的真实文件，检查尺寸、色度、位深、VPS/SPS/PPS、GOP、码率及画面完整性。"
+    },
+    {
+      "id": "G13",
+      "requirement": "实际音频、时间戳、音画同步与连续录制",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "需实际媒体的音轨、PTS/DTS、时间基与同步证据。"
+    },
+    {
+      "id": "G14",
+      "requirement": "冷启动与长录、温度及既有模式回归",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "需稳定性、温度、连续录像和相关既有模式验收；不以离线CPU结果代替。"
+    },
+    {
+      "id": "G15",
+      "requirement": "受限恢复器、原字节回读和对应故障范围",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "需FX3专用清单/工具、同机原件、拟改范围恢复读回和冷启动；明确断电/截断/服务失效等未覆盖风险。"
+    },
+    {
+      "id": "G16",
+      "requirement": "故障时独立入口与维护边界",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage7-entry/firmware/focused-evidence.json"
+      ],
+      "remaining": "未证明主应用失效后冷启动服务可达；不以诱发主力机变砖取证，不借用A7CII救砖保证。"
+    }
+  ],
+  "next_safe_offline_actions": [
+    "沿0x2beae8c的typed getter与产品能力分支闭合帧率、质量、色彩选择，明确目标模式适用范围。",
+    "将模型、菜单/查询与实际setter/MPR目标参数统一核对，保留UHD及其他帧率码率控制，避免全HS420常数替换。",
+    "完善与已证静态协议相符的最小主动诊断契约；没有对应授权前不打开相机接口。",
+    "继续厘清WBI backend到介质及独立启动路径，分别登记静态支持、运行状态与故障恢复证据。"
+  ],
+  "completion_rule": "所有用户目标要求必须有对应范围的可复核实际证据；静态分析、合成测试、报告或计划不能替代硬件主录与恢复验收。"
+}

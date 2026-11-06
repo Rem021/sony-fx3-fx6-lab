@@ -1,0 +1,28 @@
+{
+  "reviewed_utc": "2026-10-30T00:16:29.909160+00:00",
+  "status": "CURRENT_KERNEL_AND_HELPER_BYTES_WITH_LABELED_REFERENCE_DRIVER",
+  "primary_sources": [
+    {
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+      "scope": "GPL GPIO character driver source only; current package instructions separately checked",
+      "capture": "GPIO-source-capture.json"
+    },
+    {
+      "url": "https://github.com/ma1co/Sony-PMCA-RE/blob/master/README.md",
+      "scope": "General tool background reviewed; no new exact FX3 flash/recovery support claim used"
+    }
+  ],
+  "existing_fixed_reference_payload": "../stage205-FX3-hardware-profile-differences/payload-source-capture.json",
+  "local_primary_evidence": [
+    "kernel-source-binding.json",
+    "current-GPIO-function-capture.json",
+    "GPIO-and-SIO-contract-proof.json"
+  ],
+  "decisions": [
+    "Kernel GPIO layout/address/operation are exact package observations, not live register readings",
+    "7.02 helper request19 versus reference3 is a value difference, not measured Hz or proven bug",
+    "Historical2.05 SIO interpretation is kept separate from unacquired current-body p1"
+  ],
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

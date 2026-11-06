@@ -1,0 +1,116 @@
+WINDOWS CODEX TASK - CACHED PNP ASSOCIATIONS ONLY
+
+Status and scope
+- This is a later handoff package. It has NOT been dispatched or executed.
+- Only the existing authorization for Windows cached PnP inventory applies.
+- This task does not request or enable an active camera query.
+- The C# and PowerShell have NEVER been compiled or run on Windows.
+- Do not call this hardware-ready or infer camera/firmware/recovery acceptance.
+- Current UU server/device is unavailable; the Mac coordinator must not dispatch
+  or run this package until that external condition changes.
+
+Verified target location for this later Windows task
+Project: C:\Users\owo\Documents\Codex\2026-10-16\rea-2
+New output folder: C:\Users\owo\Documents\Codex\2026-10-16\rea-2\outputs\fx3-cache-associations-handoff-20261025T170645Z
+- Verify this is the existing intended Windows 11 x64 Intel/AMD host and project.
+- Read only enough existing project/host metadata to verify the location. Do not
+  initialize/clone a repository or change branches, policies, other tasks or files.
+- Create ONLY the exact new output folder above. If it already exists, STOP and
+  report the collision; do not reuse it or overwrite anything.
+- Transfer/copy ONLY the four files named in sha256-manifest.json into that folder.
+  The folder must be verified host-local on C:, not a card, device, network path
+  or reparse point to such a location. Stop if this cannot be established safely.
+- Work in that output folder. No other existing project files may be modified.
+
+Package verification before compilation or execution
+- Verify the two source hashes below and all manifest payload hashes using
+  Get-FileHash -Algorithm SHA256 on the host files. Stop on any mismatch.
+- Check the project-relative destination paths in sha256-manifest.json.
+- Review-Fx3Msc.ps1 SHA256=7e9df2455522aede99c7dc32d987ae1421d1ea2739701089e474f3b2680e19c0
+- Fx3CachedAssociations.cs SHA256=f14e6907e0e1077b3d92b38764c9aa66014563a781b4b732d8339bd4bcf0be2d
+- The manifest is a transfer receipt, not an approval for active device I/O.
+- Review the complete sources before Add-Type. The compiled C# must contain ONLY
+  SetupAPI and Configuration Manager (cfgmgr32) native declarations/calls.
+  Constructors/type initialization must not perform device I/O.
+- Review-Fx3Msc.ps1 may read Win32_PnPSignedDriver cached metadata, filtered to
+  VID_054C&PID_0DA1 and matched to the exact cached USB parent hash. Its other file
+  operations must be confined to this package and its new host-local output.
+- This package MUST NOT contain Fx3OneInquiry.cs or any active transport source.
+- Expected package: Review-Fx3Msc.ps1, Fx3CachedAssociations.cs, TASK.txt,
+  sha256-manifest.json. Reject unexpected executable/source additions.
+
+Absolute boundaries
+- ZERO camera/mass-storage CreateFile or DeviceIoControl calls.
+- No SCSI/USB/Sony command, TEST UNIT READY, INQUIRY, REQUEST SENSE, ExtCMD, INIT,
+  authentication, USB mode change, recovery/reset/rescue/retry or native execution.
+- No cards/volumes/media enumeration or camera/card/filesystem content reads.
+- No serial-number property collection; do not publish opaque interface paths or
+  raw instance IDs. Cached identity IDs may be hashed inside the reviewed source.
+- No driver installation/rebinding, elevation, UAC request, ACL/security changes,
+  ExecutionPolicyBypass, Set-ExecutionPolicy, Unblock-File or security fallback.
+- Only new host-local receipt files in this output folder may be created.
+- If review, compile, policy, metadata or access fails: STOP and report the error.
+  Do not fix by editing the sealed sources or changing host configuration.
+
+Execution sequence, only after the checks above
+1. Use a fresh existing x64 Windows PowerShell/PowerShell process with -NoProfile.
+   Confirm [Environment]::Is64BitProcess is True. Use the current user token only.
+   Do not change PowerShell execution policy or start a privileged process.
+2. In that new output folder, perform a compile-only metadata-source check in a
+   fresh NoProfile x64 process. Example with the existing x64 powershell.exe:
+
+   powershell.exe -NoProfile -Command "if (-not [Environment]::Is64BitProcess) { throw 'x64 process required' }; Add-Type -Path '.\Fx3CachedAssociations.cs'; Write-Output 'CACHE_SOURCE_COMPILE=PASS'"
+
+   This compiles the source; it must not call Collect(). If restricted language,
+   policy, compiler availability or the source prevents compilation, STOP and
+   return the exact error. Do not bypass the restriction.
+3. In another fresh NoProfile x64 process, execute the default inactive mode:
+
+   powershell.exe -NoProfile -File .\Review-Fx3Msc.ps1 -Mode DryRun
+
+   Require state=INACTIVE, active_entry_point=false, device_handle_opens=0 and
+   application_scsi_submissions=0. This mode exits before Add-Type.
+4. In another fresh NoProfile x64 process, execute ONLY the explicit cache mode:
+
+   powershell.exe -NoProfile -File .\Review-Fx3Msc.ps1 -Mode CachedAssociations -OutputFile .\fx3-cached-associations.private.json
+
+   The output file must not exist. Do not retry on failure. An Add-Type collision
+   from an earlier process is not permission to edit source: use a fresh x64
+   NoProfile process only if nothing was collected yet; otherwise stop/report.
+   Do not use a different device query to work around a missing association.
+5. Read ONLY the newly created host JSON for the summary below. Do not print its
+   DiskInterfacePath or dump the private JSON to chat, transcript or shared logs.
+   Preserve the private JSON locally until the coordinator requests retrieval.
+
+Expected observations, not hardware acceptance
+- stdout: CACHED_ASSOCIATION_CANDIDATE_COUNT=n
+- stdout: STATE=INACTIVE; NO_DEVICE_HANDLES; NO_SCSI_COMMANDS
+- stdout: PRIVATE_OUTPUT_SHA256=<hash>
+- NO_DEVICE_HANDLES means no camera/disk-interface handles; normal host files may
+  be opened to write this task's output and to hash the reviewed sources/receipt.
+- JSON binding_status is MISSING, AMBIGUOUS, INCOMPLETE or UNIQUE_CACHED_CANDIDATE.
+- active_probe_ready must remain false; adapter_alignment_mask must remain null.
+- MISSING/AMBIGUOUS/INCOMPLETE is a valid cached finding: report it and STOP.
+- Even UNIQUE_CACHED_CANDIDATE does not authorize or establish active access.
+
+Host-local summary receipt and response
+Create a NEW summary.txt beside the package, refusing overwrite. Keep it concise:
+- task_state=CACHED_ONLY_COMPLETE or STOPPED_WITH_ERROR
+- compile_status=PASS/FAIL/NOT_RUN and dry_run_status=PASS/FAIL/NOT_RUN
+- candidate_count=<n or UNKNOWN>
+- binding_status=<exact cached status or UNKNOWN>
+- driver_status=<unique exact-parent signed-driver match/provider/version/signed,
+  or MISSING/AMBIGUOUS/CHANGED/UNKNOWN>; state whether it matches the previous
+  Microsoft signed USBSTOR 10.0.26100.9444 cache. Do not infer device access.
+- Review-Fx3Msc.ps1 SHA256=<verified source hash>
+- Fx3CachedAssociations.cs SHA256=<verified source hash>
+- private_json_sha256=<hash or NOT_CREATED>
+- result_path=<host-local task JSON path or NOT_CREATED>
+- error=<exact relevant compile/policy/access error if stopped; redact any opaque
+  device path/instance ID/serial from the summary and chat>
+- camera_device_handles=0; camera_commands=0; hardware_validation=NOT_PERFORMED
+
+Return only candidate count, binding/driver status, source/private-JSON hashes,
+summary.txt path and private result path. Do not send private JSON content,
+opaque device/interface paths, raw IDs or serials. Do not retrieve or delete any
+other task's materials, and do not perform any active follow-up action.

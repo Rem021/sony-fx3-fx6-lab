@@ -1,0 +1,131 @@
+00428438 push       {r4, r5, r6, r7, lr}
+0042843a add        r7, sp, #0xc
+0042843c push.w     {r8, sb, sl, fp}
+00428440 sub.w      sp, sp, #0x224
+00428444 str        r3, [sp, #4]
+00428446 add        r5, sp, #8
+00428448 mov        fp, r1
+0042844a mov        sl, r0
+0042844c movs       r1, #0x14
+0042844e mov        sb, r2
+00428450 orr        r0, r5, #4
+00428454 blx        #0x558af4
+00428458 movw       r0, #0xe610
+0042845c movs       r4, #0
+0042845e movt       r0, #0xba
+00428462 adds       r0, #8
+00428464 str        r0, [sp, #8]
+00428466 movw       r0, #0xe4a4
+0042846a movt       r0, #0xba
+0042846e add.w      r6, r0, #8
+00428472 add.w      r8, r5, r4
+00428476 movs       r1, #0x14
+00428478 add.w      r0, r8, #0x9c
+0042847c blx        #0x558af4
+00428480 adds       r4, #0x98
+00428482 str.w      r6, [r8, #0x98]
+00428486 cmp.w      r4, #0x130
+0042848a bne        #0x428472
+0042848c movw       r0, #0x123a
+00428490 ldrb.w     r0, [sl, r0]
+00428494 bl         #0x9d5eb2
+00428498 cmp.w      fp, #2
+0042849c blo        #0x428506
+0042849e beq        #0x4284a6
+004284a0 cmp.w      fp, #4
+004284a4 bne        #0x428522
+004284a6 ldr.w      r4, [sl, #0x440]
+004284aa mov.w      r0, #-1
+004284ae movs       r6, #0
+004284b0 movs       r1, #0x40
+004284b2 str        r0, [sp, #0x1d0]
+004284b4 strh.w     r6, [sp, #0x1d4]
+004284b8 str        r6, [sp, #0x1d8]
+004284ba strb.w     r6, [sp, #0x1d6]
+004284be add        r5, sp, #0x1d0
+004284c0 add.w      r0, r5, #0x10
+004284c4 blx        #0x558af4
+004284c8 movw       r1, #0x614
+004284cc cmp        r4, #2
+004284ce str        r6, [sp]
+004284d0 mov        r3, r5
+004284d2 it         lo
+004284d4 movlo.w    r1, #0x440
+004284d8 movs       r0, #3
+004284da movs       r2, #0
+004284dc bl         #0x403a78
+004284e0 cbz        r0, #0x428516
+004284e2 movs       r0, #0
+004284e4 movs       r1, #1
+004284e6 str        r0, [sp, #0x20]
+004284e8 str        r1, [sp, #0x28]
+004284ea str        r0, [sp, #0x70]
+004284ec ldrd       r0, r1, [sp, #0x1e0]
+004284f0 strd       r0, r1, [sp, #0x30]
+004284f4 ldr        r0, [sp, #0x1e8]
+004284f6 str        r0, [sp, #0x38]
+004284f8 movs       r0, #5
+004284fa str        r0, [sp, #0x80]
+004284fc add        r0, sp, #0x1d0
+004284fe bl         #0x66a736
+00428502 add        r5, sp, #8
+00428504 b          #0x428524
+00428506 ldr        r0, [r0, #4]
+00428508 movs       r2, #0
+0042850a movs       r5, #0
+0042850c ldr        r1, [r0]
+0042850e movs       r0, #3
+00428510 bl         #0x9cecb8
+00428514 b          #0x428524
+00428516 adr        r0, #0x90
+00428518 bl         #0x9e6684
+0042851c add        r0, sp, #0x1d0
+0042851e bl         #0x66a736
+00428522 movs       r5, #0
+00428524 sub.w      r0, fp, #1
+00428528 cmp        r0, #2
+0042852a blo        #0x428556
+0042852c cmp.w      fp, #3
+00428530 beq        #0x42856c
+00428532 cmp.w      fp, #4
+00428536 bne        #0x428576
+00428538 mov        r0, sl
+0042853a mov        r1, sb
+0042853c mov        r2, r5
+0042853e bl         #0x428f0c
+00428542 mov        r0, sl
+00428544 mov        r1, r5
+00428546 movs       r2, #0
+00428548 bl         #0x429438
+0042854c mov        r0, sl
+0042854e movs       r1, #0
+00428550 bl         #0x429a0c
+00428554 b          #0x42858e
+00428556 mov        r0, sl
+00428558 mov        r1, sb
+0042855a mov        r2, r5
+0042855c bl         #0x428f0c
+00428560 ldr        r2, [sp, #4]
+00428562 mov        r0, sl
+00428564 mov        r1, r5
+00428566 bl         #0x429438
+0042856a b          #0x42858e
+0042856c mov        r0, sl
+0042856e mov        r1, sb
+00428570 bl         #0x429a0c
+00428574 b          #0x42858e
+00428576 movw       r0, #0xab49
+0042857a movw       r1, #0x3e20
+0042857e movw       r2, #0x451
+00428582 movt       r0, #0xd9
+00428586 movt       r1, #0xdf
+0042858a bl         #0x9e6684
+0042858e add.w      sp, sp, #0x224
+00428592 pop.w      {r8, sb, sl, fp}
+00428596 pop        {r4, r5, r6, r7, pc}
+00428598 mov        r4, r0
+0042859a add        r0, sp, #0x1d0
+0042859c bl         #0x66a736
+004285a0 mov        r0, r4
+004285a2 bl         #0x569720
+004285a6 nop        

@@ -1,0 +1,66 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 16f1358: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+ 16f135c: 910003fd     	mov	x29, sp
+ 16f1360: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 16f1364: aa0003f3     	mov	x19, x0
+ 16f1368: f90013f5     	str	x21, [sp, #0x20]
+ 16f136c: 97fa898d     	bl	0x15939a0 <osal_get_msg_src@plt>
+ 16f1370: 52800801     	mov	w1, #0x40               // =64
+ 16f1374: 72a01221     	movk	w1, #0x91, lsl #16
+ 16f1378: 6b01001f     	cmp	w0, w1
+ 16f137c: 54000380     	b.eq	0x16f13ec <Application_System_Init+0x185c>
+ 16f1380: aa1303e0     	mov	x0, x19
+ 16f1384: 97fa8987     	bl	0x15939a0 <osal_get_msg_src@plt>
+ 16f1388: 2a0003e1     	mov	w1, w0
+ 16f138c: b000c560     	adrp	x0, 0x2f9e000
+ 16f1390: 91282800     	add	x0, x0, #0xa0a
+ 16f1394: 97fa850b     	bl	0x15927c0 <printf@plt>
+ 16f1398: b4000233     	cbz	x19, 0x16f13dc <Application_System_Init+0x184c>
+ 16f139c: b000c560     	adrp	x0, 0x2f9e000
+ 16f13a0: b000c575     	adrp	x21, 0x2f9e000
+ 16f13a4: aa1303e1     	mov	x1, x19
+ 16f13a8: 9128e000     	add	x0, x0, #0xa38
+ 16f13ac: 91291ab5     	add	x21, x21, #0xa46
+ 16f13b0: d2800014     	mov	x20, #0x0               // =0
+ 16f13b4: 97fa8503     	bl	0x15927c0 <printf@plt>
+ 16f13b8: 38746a61     	ldrb	w1, [x19, x20]
+ 16f13bc: aa1503e0     	mov	x0, x21
+ 16f13c0: 91000694     	add	x20, x20, #0x1
+ 16f13c4: 97fa84ff     	bl	0x15927c0 <printf@plt>
+ 16f13c8: f100629f     	cmp	x20, #0x18
+ 16f13cc: 54ffff61     	b.ne	0x16f13b8 <Application_System_Init+0x1828>
+ 16f13d0: 900111c0     	adrp	x0, 0x3929000
+ 16f13d4: 913ee000     	add	x0, x0, #0xfb8
+ 16f13d8: 97fa82fa     	bl	0x1591fc0 <puts@plt>
+ 16f13dc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 16f13e0: f94013f5     	ldr	x21, [sp, #0x20]
+ 16f13e4: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+ 16f13e8: d65f03c0     	ret
+ 16f13ec: 9100e3a2     	add	x2, x29, #0x38
+ 16f13f0: a9400660     	ldp	x0, x1, [x19]
+ 16f13f4: a9000440     	stp	x0, x1, [x2]
+ 16f13f8: 910123a2     	add	x2, x29, #0x48
+ 16f13fc: a9410660     	ldp	x0, x1, [x19, #0x10]
+ 16f1400: a9000440     	stp	x0, x1, [x2]
+ 16f1404: aa1303e1     	mov	x1, x19
+ 16f1408: f9401260     	ldr	x0, [x19, #0x20]
+ 16f140c: f9002fa0     	str	x0, [x29, #0x58]
+ 16f1410: b9401260     	ldr	w0, [x19, #0x10]
+ 16f1414: 97fa8bef     	bl	0x15943d0 <osal_free_msg@plt>
+ 16f1418: 910183a0     	add	x0, x29, #0x60
+ 16f141c: f9402ba1     	ldr	x1, [x29, #0x50]
+ 16f1420: f9401fa2     	ldr	x2, [x29, #0x38]
+ 16f1424: f81d0c01     	str	x1, [x0, #-0x30]!
+ 16f1428: f94023a1     	ldr	x1, [x29, #0x40]
+ 16f142c: d63f0040     	blr	x2
+ 16f1430: f9402fa1     	ldr	x1, [x29, #0x58]
+ 16f1434: b4fffd41     	cbz	x1, 0x16f13dc <Application_System_Init+0x184c>
+ 16f1438: 910143a0     	add	x0, x29, #0x50
+ 16f143c: 52800062     	mov	w2, #0x3                // =3
+ 16f1440: 97ffff36     	bl	0x16f1118 <Application_System_Init+0x1588>
+ 16f1444: 17ffffe6     	b	0x16f13dc <Application_System_Init+0x184c>

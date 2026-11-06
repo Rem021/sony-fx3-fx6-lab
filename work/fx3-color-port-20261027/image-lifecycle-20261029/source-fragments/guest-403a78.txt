@@ -1,0 +1,191 @@
+00403a78 push       {r4, r5, r6, r7, lr}
+00403a7a add        r7, sp, #0xc
+00403a7c push.w     {r8, sb, sl, fp}
+00403a80 sub        sp, #0xc
+00403a82 mov        sb, r0
+00403a84 movw       r0, #0xb620
+00403a88 mov        r8, r2
+00403a8a mov        r6, r1
+00403a8c movt       r0, #0xf1
+00403a90 ldr.w      r0, [r0, sb, lsl #2]
+00403a94 cmp        r0, #1
+00403a96 blt.w      #0x403c48
+00403a9a cmp.w      sb, #1
+00403a9e str        r3, [sp, #8]
+00403aa0 bne.w      #0x403baa
+00403aa4 movw       sl, #0xb630
+00403aa8 mov.w      fp, #2
+00403aac cmp.w      r8, #0
+00403ab0 movt       sl, #0xf1
+00403ab4 it         ne
+00403ab6 movne.w    fp, #6
+00403aba ldr.w      r0, [sl, sb, lsl #2]
+00403abe cmp        fp, r0
+00403ac0 bge        #0x403b5c
+00403ac2 cmp.w      r8, #1
+00403ac6 bne        #0x403ad2
+00403ac8 adr        r0, #0x1d0
+00403aca bl         #0x9e6684
+00403ace ldr.w      r0, [sl, sb, lsl #2]
+00403ad2 cmp        r0, #1
+00403ad4 blt        #0x403afc
+00403ad6 movw       r1, #0x2e70
+00403ada rsb        r0, sb, sb, lsl #8
+00403ade movs       r4, #0
+00403ae0 movt       r1, #0x117
+00403ae4 add.w      r5, r1, r0, lsl #5
+00403ae8 mov        r0, r5
+00403aea bl         #0x403cd0
+00403aee cbz        r0, #0x403b68
+00403af0 ldr.w      r0, [sl, sb, lsl #2]
+00403af4 adds       r4, #1
+00403af6 adds       r5, #0x88
+00403af8 cmp        r4, r0
+00403afa blt        #0x403ae8
+00403afc movw       r1, #0x38d8
+00403b00 movt       r1, #0x13c
+00403b04 ldr.w      r1, [r1, sb, lsl #2]
+00403b08 cmp        r1, fp
+00403b0a bge        #0x403b68
+00403b0c movw       r1, #0x38e8
+00403b10 movt       r1, #0x13c
+00403b14 ldr.w      r1, [r1, sb, lsl #2]
+00403b18 cmp        r1, fp
+00403b1a bge        #0x403b68
+00403b1c cmp        fp, r0
+00403b1e bge        #0x403b4c
+00403b20 movw       r1, #0x2e70
+00403b24 rsb        r0, sb, sb, lsl #8
+00403b28 mov        r4, fp
+00403b2a movt       r1, #0x117
+00403b2e add.w      r0, r1, r0, lsl #5
+00403b32 add.w      r1, fp, fp, lsl #4
+00403b36 add.w      r5, r0, r1, lsl #3
+00403b3a mov        r0, r5
+00403b3c bl         #0x9ced10
+00403b40 ldr.w      r0, [sl, sb, lsl #2]
+00403b44 adds       r5, #0x88
+00403b46 adds       r4, #1
+00403b48 cmp        r4, r0
+00403b4a blt        #0x403b3a
+00403b4c cmp.w      r8, #0
+00403b50 str.w      fp, [sl, sb, lsl #2]
+00403b54 beq        #0x403baa
+00403b56 mov.w      fp, #6
+00403b5a b          #0x403b78
+00403b5c cmp.w      r8, #0
+00403b60 str.w      fp, [sl, sb, lsl #2]
+00403b64 bne        #0x403b78
+00403b66 b          #0x403baa
+00403b68 cmp.w      r8, #1
+00403b6c bne        #0x403baa
+00403b6e ldr.w      fp, [sl, sb, lsl #2]
+00403b72 cmp.w      fp, #1
+00403b76 blt        #0x403ba6
+00403b78 movw       r1, #0x2e70
+00403b7c rsb        r0, sb, sb, lsl #8
+00403b80 movs       r4, #0
+00403b82 movt       r1, #0x117
+00403b86 add.w      r5, r1, r0, lsl #5
+00403b8a ldr        r0, [r5]
+00403b8c adds       r0, #1
+00403b8e bne        #0x403b9e
+00403b90 mov        r0, sb
+00403b92 mov        r1, r6
+00403b94 mov        r2, r4
+00403b96 bl         #0x403d54
+00403b9a ldr.w      fp, [sl, sb, lsl #2]
+00403b9e adds       r5, #0x88
+00403ba0 adds       r4, #1
+00403ba2 cmp        r4, fp
+00403ba4 blt        #0x403b8a
+00403ba6 movs       r0, #1
+00403ba8 b          #0x403bac
+00403baa movs       r0, #0
+00403bac movw       r8, #0x38d8
+00403bb0 str        r0, [sp, #4]
+00403bb2 movw       r0, #0x38e8
+00403bb6 movw       r1, #0x2e70
+00403bba movt       r8, #0x13c
+00403bbe movt       r0, #0x13c
+00403bc2 movt       r1, #0x117
+00403bc6 ldr.w      r4, [r8, sb, lsl #2]
+00403bca str.w      r4, [r0, sb, lsl #2]
+00403bce rsb        r0, sb, sb, lsl #8
+00403bd2 add.w      fp, r1, r0, lsl #5
+00403bd6 add.w      r0, r4, r4, lsl #4
+00403bda add.w      r5, fp, r0, lsl #3
+00403bde add.w      sl, r5, #8
+00403be2 ldr        r0, [r5]
+00403be4 adds       r0, #1
+00403be6 beq        #0x403bfc
+00403be8 ldr.w      r0, [sl]
+00403bec cmp        r0, r6
+00403bee beq        #0x403c0c
+00403bf0 mov        r0, r5
+00403bf2 bl         #0x9ced10
+00403bf6 ldr        r0, [r5]
+00403bf8 adds       r0, #1
+00403bfa bne        #0x403c0c
+00403bfc mov        r0, sb
+00403bfe mov        r1, r6
+00403c00 mov        r2, r4
+00403c02 bl         #0x403d54
+00403c06 cmp        r0, #0
+00403c08 bne        #0x403be2
+00403c0a b          #0x403c48
+00403c0c mov        r0, r5
+00403c0e bl         #0x403cd0
+00403c12 cmp        r0, #1
+00403c14 beq        #0x403c52
+00403c16 movw       r1, #0xb630
+00403c1a ldr.w      r0, [r8, sb, lsl #2]
+00403c1e adds       r4, #1
+00403c20 movt       r1, #0xf1
+00403c24 ldr.w      r1, [r1, sb, lsl #2]
+00403c28 cmp        r4, r1
+00403c2a it         ge
+00403c2c movge      r4, #0
+00403c2e cmp        r4, r0
+00403c30 bne        #0x403bd6
+00403c32 adr        r1, #0x90
+00403c34 movs       r0, #8
+00403c36 mov.w      r2, #0x178
+00403c3a bl         #0x41b484
+00403c3e cmp        r0, #1
+00403c40 bne        #0x403c48
+00403c42 ldr.w      r4, [r8, sb, lsl #2]
+00403c46 b          #0x403c68
+00403c48 movs       r0, #0
+00403c4a add        sp, #0xc
+00403c4c pop.w      {r8, sb, sl, fp}
+00403c50 pop        {r4, r5, r6, r7, pc}
+00403c52 ldr.w      r0, [r8, sb, lsl #2]
+00403c56 cmp        r0, r4
+00403c58 beq        #0x403c68
+00403c5a movs       r0, #0
+00403c5c str.w      r4, [r8, sb, lsl #2]
+00403c60 str        r0, [r5, #0x6c]
+00403c62 movs       r0, #1
+00403c64 strb.w     r0, [r5, #0x70]
+00403c68 ldr        r5, [sp, #8]
+00403c6a add.w      r0, r4, r4, lsl #4
+00403c6e movs       r2, #0x50
+00403c70 add.w      r4, fp, r0, lsl #3
+00403c74 mov        r1, r4
+00403c76 mov        r0, r5
+00403c78 blx        #0x558400
+00403c7c movs       r0, #0
+00403c7e strb       r0, [r5, #6]
+00403c80 ldr        r0, [sp, #4]
+00403c82 cmp        r0, #1
+00403c84 bne        #0x403c8c
+00403c86 movs       r0, #1
+00403c88 strb.w     r0, [r4, #0x71]
+00403c8c ldr        r1, [r7, #8]
+00403c8e cbz        r1, #0x403c96
+00403c90 ldr.w      r0, [r4, #0x80]
+00403c94 str        r0, [r1]
+00403c96 movs       r0, #1
+00403c98 b          #0x403c4a
+00403c9a nop        

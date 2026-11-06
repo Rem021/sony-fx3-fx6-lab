@@ -1,0 +1,39 @@
+00000550 stp        x29, x30, [sp, #-0x30]!
+00000554 mov        x29, sp
+00000558 stp        x19, x20, [sp, #0x10]
+0000055c uxth       w20, w0
+00000560 ldr        x19, #0x5f0
+00000564 str        x21, [sp, #0x20]
+00000568 uxth       w21, w1
+0000056c ldr        x0, [x19, #0x10]
+00000570 add        x0, x0, #0x30
+00000574 bl         #0x574 ; relocation {"type": 283, "symbol": "mutex_lock", "addend": 0}
+00000578 ldr        x0, [x19, #0x10]
+0000057c ldr        x3, [x0]
+00000580 ldr        x19, [x3]
+00000584 cmp        x3, x19
+00000588 b.ne       #0x59c
+0000058c b          #0x5d0
+00000590 ldr        x19, [x19]
+00000594 cmp        x3, x19
+00000598 b.eq       #0x5d0
+0000059c ldrb       w2, [x19, #0x10]
+000005a0 cmp        w2, w20
+000005a4 b.ne       #0x590
+000005a8 ldrh       w2, [x19, #0x12]
+000005ac cmp        w2, w21
+000005b0 b.ne       #0x590
+000005b4 add        x0, x0, #0x30
+000005b8 bl         #0x5b8 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+000005bc ldr        x21, [sp, #0x20]
+000005c0 mov        x0, x19
+000005c4 ldp        x19, x20, [sp, #0x10]
+000005c8 ldp        x29, x30, [sp], #0x30
+000005cc ret        
+000005d0 add        x0, x0, #0x30
+000005d4 bl         #0x5d4 ; relocation {"type": 283, "symbol": "mutex_unlock", "addend": 0}
+000005d8 ldr        x21, [sp, #0x20]
+000005dc mov        x0, #0
+000005e0 ldp        x19, x20, [sp, #0x10]
+000005e4 ldp        x29, x30, [sp], #0x30
+000005e8 ret        

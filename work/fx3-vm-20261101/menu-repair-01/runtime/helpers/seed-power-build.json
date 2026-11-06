@@ -1,0 +1,29 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-pie",
+    "-fPIE",
+    "-Wl,-e,_start",
+    "-Wl,--dynamic-linker=/lib/ld-linux-aarch64.so.1",
+    "-Wl,-rpath,/usr/lib",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/success-cases/source/runtime/analysis/seed-power-on.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libbackup.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/seed-power-on"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "source_sha256": "129663a5148f255cc9667fe9d996fb0f262cdcb422b598a2f182b4d4fce79c5c",
+  "libbackup": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d"
+}

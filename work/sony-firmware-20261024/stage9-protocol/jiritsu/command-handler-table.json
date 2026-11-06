@@ -1,0 +1,114 @@
+{
+  "scope": "Pure static command\u2192handler derivation; not a device protocol test",
+  "library_SHA256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+  "core_SHA256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+  "outer_record_active_lookup": "unproved in this bounded pass",
+  "external_wire_serializer_and_auth": "not verified",
+  "rows": [
+    {
+      "command": 15,
+      "core_record_VA": "0x31d94",
+      "core_record_hex": "80046f0101100f404a4952495453555f5345545f46494c455f5041544800000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "record_name": "JIRITSU_SET_FILE_PATH",
+      "record_message_id": "0x16f0480",
+      "record_family": "0x1001",
+      "record_internal_command": "0x400f",
+      "dispatcher": "0xb278",
+      "table_VA": "0x11b2c",
+      "index": 14,
+      "table_byte": "5d",
+      "first_target": "0xb42c",
+      "handler_symbol": "adj_cmd_set_file_path",
+      "handler_entry": "0x89b4",
+      "real_call_VA": "0xacb4",
+      "real_call_bytes": "c7ecff97",
+      "PLT_target": "0x5fd0",
+      "secondary": {
+        "table": "0x11b14",
+        "index": 9,
+        "byte": "17",
+        "target": "0xacac"
+      }
+    },
+    {
+      "command": 16,
+      "core_record_VA": "0x31ddc",
+      "core_record_hex": "80046f01011010404a4952495453555f5345545f46494c45320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "record_name": "JIRITSU_SET_FILE2",
+      "record_message_id": "0x16f0480",
+      "record_family": "0x1001",
+      "record_internal_command": "0x4010",
+      "dispatcher": "0xb278",
+      "table_VA": "0x11b2c",
+      "index": 15,
+      "table_byte": "60",
+      "first_target": "0xb438",
+      "handler_symbol": "adj_cmd_set_file2",
+      "handler_entry": "0x9528",
+      "real_call_VA": "0xacc4",
+      "real_call_bytes": "afecff97",
+      "PLT_target": "0x5f80",
+      "secondary": {
+        "table": "0x11b14",
+        "index": 10,
+        "byte": "1b",
+        "target": "0xacbc"
+      }
+    },
+    {
+      "command": 17,
+      "core_record_VA": "0x31e24",
+      "core_record_hex": "80046f01011011404a4952495453555f4745545f46494c45320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "record_name": "JIRITSU_GET_FILE2",
+      "record_message_id": "0x16f0480",
+      "record_family": "0x1001",
+      "record_internal_command": "0x4011",
+      "dispatcher": "0xb278",
+      "table_VA": "0x11b2c",
+      "index": 16,
+      "table_byte": "63",
+      "first_target": "0xb444",
+      "handler_symbol": "adj_cmd_get_file2",
+      "handler_entry": "0x9e74",
+      "real_call_VA": "0xb20c",
+      "real_call_bytes": "79eaff97",
+      "PLT_target": "0x5bf0",
+      "secondary": {
+        "table": "0x11b20",
+        "index": 9,
+        "byte": "24",
+        "target": "0xb1f8"
+      }
+    },
+    {
+      "command": 18,
+      "core_record_VA": "0x31e6c",
+      "core_record_hex": "80046f01011012404a4952495453555f46494c455f44454c455445320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+      "record_name": "JIRITSU_FILE_DELETE2",
+      "record_message_id": "0x16f0480",
+      "record_family": "0x1001",
+      "record_internal_command": "0x4012",
+      "dispatcher": "0xb278",
+      "table_VA": "0x11b2c",
+      "index": 17,
+      "table_byte": "66",
+      "first_target": "0xb450",
+      "handler_symbol": "cmd_file_delete2",
+      "handler_entry": "0xa29c",
+      "real_call_VA": "0xb464",
+      "real_call_bytes": "43ebff97",
+      "PLT_target": "0x6170"
+    }
+  ],
+  "control_proof": {
+    "full_table_hex": "0010171e252c33363d44474a4d555d606366",
+    "dispatcher_entry24": "fd7bbda9fd030091f30b00f9f30300aa800080d2a01700f9",
+    "callback_registration_call": "0x6dbc",
+    "callback_queue_id": "0x016f0480",
+    "callback_address": "0xb278",
+    "MakeOsalMessage_narrowing_instructions": {
+      "0xf07c": "01984039",
+      "0xf080": "014c0079"
+    }
+  }
+}

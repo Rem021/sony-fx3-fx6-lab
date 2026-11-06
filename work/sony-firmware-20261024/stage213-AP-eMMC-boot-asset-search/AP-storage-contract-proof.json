@@ -1,0 +1,509 @@
+{
+  "status": "CURRENT_PACKAGE_AP_BOOT_DEVICES_GEOMETRY_AND_READ_DISPATCH_BOUND",
+  "current_source": "official7.02 main p3 initrd; actual installed current-body p1 identity not obtained",
+  "captures": [
+    {
+      "path_in_image": "/kmod/emmc.ko",
+      "inode": 71,
+      "bytes": 341024,
+      "sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko"
+    },
+    {
+      "path_in_image": "/kmod/crypt-emmc.ko",
+      "inode": 72,
+      "bytes": 14592,
+      "sha256": "521589c8eac8b851f1cab29f95f449c7bbaf31639a01331d3bf0ca8866b488b8",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/crypt-emmc.ko"
+    },
+    {
+      "path_in_image": "/sbin/initrc/setup_nflash",
+      "inode": 133,
+      "bytes": 375,
+      "sha256": "055cb3db7a40084aef8aaa89a7357921b514bf0af89690f920b608d9f3734cdc",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/sbin/initrc/setup_nflash"
+    },
+    {
+      "path_in_image": "/kmod/devno.ko",
+      "inode": 73,
+      "bytes": 6344,
+      "sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/devno.ko"
+    },
+    {
+      "path_in_image": "/sbin/initrc/insmod_drv1",
+      "inode": 125,
+      "bytes": 152,
+      "sha256": "22f29d06d7776fe5e8362c17049beabfd3e3bebffd222e51276e3704d483a591",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/sbin/initrc/insmod_drv1"
+    },
+    {
+      "path_in_image": "/sbin/initrc/insmod_drv2",
+      "inode": 127,
+      "bytes": 1298,
+      "sha256": "19757bdd450061f861e2da44a6a93be2525668e3f7edc64e5a99a25bde56564e",
+      "output": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/sbin/initrc/insmod_drv2"
+    }
+  ],
+  "raw_ranges": [
+    {
+      "label": "boot-device-table",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/devno.ko",
+      "source_sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "section": ".data",
+      "section_offset": 0,
+      "end_exclusive": 64,
+      "file_offset": 944,
+      "bytes": 64,
+      "sha256": "e089c5d71548776460612690bd44931cbf8a602241d7b866d84a72e4a98517e2",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/boot-device-table.bin",
+      "note": "Four node descriptors: raw user, B0, B1 and crypt user; names relocated separately."
+    },
+    {
+      "label": "boot-node-names",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/devno.ko",
+      "source_sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "section": ".rodata.str1.8",
+      "section_offset": 0,
+      "end_exclusive": 64,
+      "file_offset": 120,
+      "bytes": 64,
+      "sha256": "66aa6636a77c4b42b8cd0979afabe097852a10d92da1289e347cbac8ef84f184",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/boot-node-names.bin",
+      "note": "Original current7.02 node names; not copied from GPL table."
+    },
+    {
+      "label": "descriptor-base-and-boot-selection",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "section_offset": 1536,
+      "end_exclusive": 1564,
+      "file_offset": 102928,
+      "bytes": 28,
+      "sha256": "7294b357d82c851bb395510d4f4458d4e9896cc65c2b4a3e926153d32ea3a741",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/descriptor-base-and-boot-selection.bin",
+      "note": "Loop record index x23, 0xe0 stride.",
+      "relocations": []
+    },
+    {
+      "label": "boot-descriptor-kind-and-no-callback",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "section_offset": 1876,
+      "end_exclusive": 2008,
+      "file_offset": 103268,
+      "bytes": 132,
+      "sha256": "c0cc6cb77c35f577908de4436fbeee564e63b967a1b62ff9953b4b034ac74ec5",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/boot-descriptor-kind-and-no-callback.bin",
+      "note": "Index1 sets type1, other selected boot branch sets2; clears callback pointer+c8, calls common init.",
+      "relocations": [
+        {
+          "section": ".init.text",
+          "offset": 1912,
+          "type": 283,
+          "symbol": "printk",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".init.text",
+          "offset": 1960,
+          "type": 283,
+          "symbol": "printk",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        }
+      ]
+    },
+    {
+      "label": "boot-node-pointer-relocations",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "section_offset": 2312,
+      "end_exclusive": 2328,
+      "file_offset": 103704,
+      "bytes": 16,
+      "sha256": "374708fff7719dd5979ec875d56cd2286f6d3cf7ec317a3b25632aab28ec37bb",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/boot-node-pointer-relocations.bin",
+      "note": "udif_devnodes+16 and+32 are B0 and B1 descriptors.",
+      "relocations": [
+        {
+          "section": ".init.text",
+          "offset": 2312,
+          "type": 257,
+          "symbol": "udif_devnodes",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 16
+        },
+        {
+          "section": ".init.text",
+          "offset": 2320,
+          "type": 257,
+          "symbol": "udif_devnodes",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 32
+        }
+      ]
+    },
+    {
+      "label": "common-node-and-offset-init",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "section_offset": 904,
+      "end_exclusive": 1160,
+      "file_offset": 102296,
+      "bytes": 256,
+      "sha256": "e0c1990fc00e00d10097702c64d71ff991b6c15cf5118cebb33b08b2cd2fc8a1",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/common-node-and-offset-init.bin",
+      "note": "Copies descriptor name and u16 major/minors; clears sector offset+88.",
+      "relocations": [
+        {
+          "section": ".init.text",
+          "offset": 944,
+          "type": 283,
+          "symbol": "strncpy",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".init.text",
+          "offset": 968,
+          "type": 283,
+          "symbol": "strncpy",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".init.text",
+          "offset": 1012,
+          "type": 283,
+          "symbol": "strlen",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".init.text",
+          "offset": 1032,
+          "type": 283,
+          "symbol": "strncat",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".init.text",
+          "offset": 1048,
+          "type": 283,
+          "symbol": "strncpy",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".init.text",
+          "offset": 1104,
+          "type": 283,
+          "symbol": "va_emmc_get_nr_sectors_per_unit",
+          "symbol_section": ".text",
+          "symbol_value": 21264,
+          "addend": 0
+        },
+        {
+          "section": ".init.text",
+          "offset": 1152,
+          "type": 257,
+          "symbol": "",
+          "symbol_section": ".rodata.str1.8",
+          "symbol_value": 0,
+          "addend": 6072
+        }
+      ]
+    },
+    {
+      "label": "capacity-kind-dispatch",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".text",
+      "section_offset": 32576,
+      "end_exclusive": 32696,
+      "file_offset": 32680,
+      "bytes": 120,
+      "sha256": "b25bcce220987d71e5af8ac4e9f38537cf8f21ad39712f0525f3364074aeae4d",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/capacity-kind-dispatch.bin",
+      "note": "Kinds1/2 call get_boot_capacity then subtract start_sector<<9.",
+      "relocations": [
+        {
+          "section": ".text",
+          "offset": 32628,
+          "type": 283,
+          "symbol": "emmc_seq_get_boot_capacity",
+          "symbol_section": ".text",
+          "symbol_value": 83360,
+          "addend": 0
+        },
+        {
+          "section": ".text",
+          "offset": 32664,
+          "type": 283,
+          "symbol": "emmc_seq_get_capacity",
+          "symbol_section": ".text",
+          "symbol_value": 83336,
+          "addend": 0
+        }
+      ]
+    },
+    {
+      "label": "boot-capacity-getter-and-pointer",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".text",
+      "section_offset": 83360,
+      "end_exclusive": 83384,
+      "file_offset": 83464,
+      "bytes": 24,
+      "sha256": "0e6e8aeabbc74a3e597dee8f2ac494820ba99090d6860eeb90cab5a6fc266b21",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/boot-capacity-getter-and-pointer.bin",
+      "note": "u8 state+dc <<17; pointer relocation to.bss+5c0, not a fixed4MiB constant.",
+      "relocations": [
+        {
+          "section": ".text",
+          "offset": 83376,
+          "type": 257,
+          "symbol": "",
+          "symbol_section": ".bss",
+          "symbol_value": 0,
+          "addend": 1472
+        }
+      ]
+    },
+    {
+      "label": "generic-read-callback-or-sequence",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".text",
+      "section_offset": 31960,
+      "end_exclusive": 32132,
+      "file_offset": 32064,
+      "bytes": 172,
+      "sha256": "c474616f2c72a0eacdff1c9f4d3d418793ff609d98da67f574422d078c37e25f",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/generic-read-callback-or-sequence.bin",
+      "note": "If callback+c8 absent, passes kind and null optional argument to emmc_seq_read.",
+      "relocations": [
+        {
+          "section": ".text",
+          "offset": 32120,
+          "type": 283,
+          "symbol": "emmc_seq_read",
+          "symbol_section": ".text",
+          "symbol_value": 77528,
+          "addend": 0
+        }
+      ]
+    },
+    {
+      "label": "seq-read-partition-and-data-call",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".text",
+      "section_offset": 77644,
+      "end_exclusive": 77700,
+      "file_offset": 77748,
+      "bytes": 56,
+      "sha256": "988ac5ea47d6e8c548f0ad9bca985005c663c9ef1fa4e96141faaedeb5383014",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/seq-read-partition-and-data-call.bin",
+      "note": "Read compares/switches partition before data helper; optional value preserved into x4. Lower data/crypto helper not closed here.",
+      "relocations": []
+    },
+    {
+      "label": "gendisk-name-major-minor-capacity",
+      "source": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/originals/current-p3-initrd/kmod/emmc.ko",
+      "source_sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+      "section": ".init.text",
+      "section_offset": 6048,
+      "end_exclusive": 6176,
+      "file_offset": 107440,
+      "bytes": 128,
+      "sha256": "750e065ed7ccd00fc5b7a365d2cb92040c944e20c5a25b9f14107949ba35e795",
+      "raw": "work/sony-firmware-20261024/stage213-AP-eMMC-boot-asset-search/pins/gendisk-name-major-minor-capacity.bin",
+      "note": "Copies major/first_minor/name and byte_capacity>>9 to gendisk before device_add_disk.",
+      "relocations": [
+        {
+          "section": ".init.text",
+          "offset": 6124,
+          "type": 283,
+          "symbol": "strncpy",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        },
+        {
+          "section": ".init.text",
+          "offset": 6172,
+          "type": 283,
+          "symbol": "device_add_disk",
+          "symbol_section": "SHN_UNDEF",
+          "symbol_value": 0,
+          "addend": 0
+        }
+      ]
+    }
+  ],
+  "source_lines": [
+    {
+      "path": "GPL/include/linux/udif/devnode.h",
+      "line": 31,
+      "text": "\tUDIF_TYPE_CDEV = 0,"
+    },
+    {
+      "path": "GPL/include/linux/udif/devnode.h",
+      "line": 32,
+      "text": "\tUDIF_TYPE_BDEV,"
+    },
+    {
+      "path": "GPL/include/linux/udif/devnode.h",
+      "line": 35,
+      "text": "typedef struct UDIF_DEVNODE {"
+    },
+    {
+      "path": "GPL/include/linux/udif/devnode.h",
+      "line": 36,
+      "text": "\tconst unsigned char *name;"
+    },
+    {
+      "path": "GPL/include/linux/udif/devnode.h",
+      "line": 37,
+      "text": "\tconst unsigned short type;"
+    },
+    {
+      "path": "GPL/include/linux/udif/devnode.h",
+      "line": 38,
+      "text": "\tconst unsigned short major;"
+    },
+    {
+      "path": "GPL/include/linux/udif/devnode.h",
+      "line": 39,
+      "text": "\tconst unsigned short first_minor;"
+    },
+    {
+      "path": "GPL/include/linux/udif/devnode.h",
+      "line": 40,
+      "text": "\tconst unsigned short nr_minor;"
+    },
+    {
+      "path": "GPL/include/linux/genhd.h",
+      "line": 180,
+      "text": "struct gendisk {"
+    },
+    {
+      "path": "GPL/include/linux/genhd.h",
+      "line": 184,
+      "text": "\tint major;\t\t\t/* major number of driver */"
+    },
+    {
+      "path": "GPL/include/linux/genhd.h",
+      "line": 185,
+      "text": "\tint first_minor;"
+    },
+    {
+      "path": "GPL/include/linux/genhd.h",
+      "line": 186,
+      "text": "\tint minors;                     /* maximum number of minors, =1 for"
+    },
+    {
+      "path": "GPL/include/linux/genhd.h",
+      "line": 189,
+      "text": "\tchar disk_name[DISK_NAME_LEN];\t/* name of major driver */"
+    },
+    {
+      "path": "originals/current-p3-initrd/sbin/initrc/insmod_drv1",
+      "line": 1,
+      "text": "insmod /kmod/devno.ko"
+    },
+    {
+      "path": "originals/current-p3-initrd/sbin/initrc/insmod_drv1",
+      "line": 3,
+      "text": "insmod /kmod/crypt-emmc.ko"
+    },
+    {
+      "path": "originals/current-p3-initrd/sbin/initrc/insmod_drv1",
+      "line": 4,
+      "text": "insmod /kmod/emmc.ko tbl=0xFFFFFFC003E00000 tune_en=0"
+    }
+  ],
+  "nodes": [
+    {
+      "index": 0,
+      "name": "pnflasha",
+      "type": 1,
+      "major": 252,
+      "first_minor": 0,
+      "nr_minor": 32
+    },
+    {
+      "index": 1,
+      "name": "nflashaB0",
+      "type": 1,
+      "major": 252,
+      "first_minor": 126,
+      "nr_minor": 1
+    },
+    {
+      "index": 2,
+      "name": "nflashaB1",
+      "type": 1,
+      "major": 252,
+      "first_minor": 127,
+      "nr_minor": 1
+    },
+    {
+      "index": 3,
+      "name": "cnflasha",
+      "type": 1,
+      "major": 252,
+      "first_minor": 128,
+      "nr_minor": 32
+    }
+  ],
+  "boot0_node": "/dev/nflashaB0",
+  "boot1_node": "/dev/nflashaB1",
+  "boot0_public_main_driver_rdev": [
+    252,
+    126
+  ],
+  "boot1_public_main_driver_rdev": [
+    252,
+    127
+  ],
+  "boot_capacity_expression": "unsigned byte state+0xdc * 131072; boot descriptor start sector is0 in selected init route",
+  "boot_capacity_runtime_value": null,
+  "boot_capacity_fixed_4MiB_proven": false,
+  "formatter_2MiB_map_not_complete_boot_capacity": true,
+  "boot_descriptors_software_crypt_callback_cleared": true,
+  "direct_read_passes_partition_type_and_null_optional_arg": true,
+  "lower_transfer_crypto_or_whole_boot_rawness_closed": false,
+  "current_body_readability_geometry_backup_or_independent_restore_proven": false,
+  "GPL_layout_only_not_matching_platform_table": true,
+  "limits": [
+    "Do not use public-main module identity as installed p1 identity.",
+    "No claim full boot contents are plaintext; per-component format/encryption remains separate.",
+    "GPT/boot backup data are not present just because device descriptors exist.",
+    "Numeric geometry must be observed in a specifically authorized same-body capture, without4MiB fallback.",
+    "GPL header gives shared layout only; its platform node table differs from current binary."
+  ],
+  "independent_word_checks": 4,
+  "independent_relocation_checks": 3,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "persistent_write_release": false
+}

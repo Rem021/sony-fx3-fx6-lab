@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "created_utc": "2026-11-01T11:27:00.751631+00:00",
+  "status": "FX3_LOCAL_BACKUP_CANDIDATE_NOT_REGISTER_CALLBACK_VERIFIED",
+  "terminology": "待核的本地 Backup 候选；不是已证明FX3接收者或远端服务",
+  "runtime_observation_received_from_sibling": {
+    "source": "root and fx3_uipc_original inter-agent messages, not a receipt independently read by this researcher",
+    "operation": 5,
+    "arg0_counts": {
+      "0x008f013a": 42,
+      "0x003e014d": 2,
+      "0x0094016a": 1
+    },
+    "message_selector_and_full_payload": "pending exact mapped snapshot at time of this v1",
+    "actual_fx3_module_reg_callback_here_verified": false
+  },
+  "proven_in_this_research_scope": [
+    {
+      "claim": "Pinned A7C2 source text and report identity verified against its Git tree",
+      "scope": "upstream source data, not original Sony KO execution"
+    },
+    {
+      "claim": "Old observer contains literal 0x003e014d in disabled if(0) blocks",
+      "locations": [
+        "runtime/analysis/menu-observe.c:7331",
+        "runtime/analysis/menu-observe.c:9244",
+        "runtime/analysis/menu-observe.c:9250"
+      ]
+    },
+    {
+      "claim": "Current fetched virtual Backup sidecar target is 0x903e0811, a different ID and format from observed 0x003e014d",
+      "location": "report/virtual-cp/udate-distribution/backup-endpoint.c:3-7",
+      "request_bytes": 40,
+      "reply_bytes": 4096
+    }
+  ],
+  "upstream_binary_analysis_claims_not_independently_reverified_here": {
+    "source": "report/backup-noop-sync-contract.md",
+    "model": "A7C II 2.01 ALLLANG",
+    "original_KO": "backup.ko",
+    "original_KO_bytes": 144976,
+    "original_KO_sha256": "167715ebd8086b0751e95396ecc214c4d65ec54e11a9f2737a05664e03ad237b",
+    "ELF_type": "ET_REL",
+    "coordinate": ".text+offset; report says file offset adds 0x68",
+    "original_KO_available_to_this_researcher": false,
+    "reported_route": [
+      {
+        "site": "libbackup.so Backup_sync_subsystem@0x2258",
+        "behavior": "initialize result=-1, call backup_sync_msg@0x1a10 using service 0x003e014d, selector0xf and one u16 SID argument"
+      },
+      {
+        "site": "libbackup.so backup_sync_msg@0x1a10",
+        "behavior": "osal_valloc_msg_wait 112B; selector at+0, result at+4, count at+8, args at+0x20; send original osal_snd_sync_msg; copy result only if transport returns0"
+      },
+      {
+        "site": "backup.ko .text+0x7aa8 backup_osal_call_func",
+        "behavior": "selector+1 indexes halfword jump table"
+      },
+      {
+        "site": "selector0xf entry16",
+        "behavior": "reported table entry215 -> 0x7b1c+215*4=0x7e78; read SID low16 from +0x20"
+      },
+      {
+        "site": "backup.ko .text+0x7e84",
+        "behavior": "reported CALL26 to Backup_sync_subsystem, store returned status at message+4"
+      }
+    ],
+    "actual_registration_call_for_SID_0x003e014d_in_original_KO": "not independently captured here; must be checked by original owner before FX3 endpoint promotion",
+    "reported_return_limit": "transport0/result0 can still skip persistence; not a guarantee of file/data writes"
+  },
+  "hypotheses": [
+    {
+      "claim": "Observed FX3 0x003e014d may be local Backup gateway supplied by original backup.ko",
+      "basis": "upstream AP KO dispatch analysis plus ID match",
+      "status": "candidate only; FX3 original registration, selector and callback must be checked"
+    },
+    {
+      "claim": "Specific Backup operations may later call remote CP 0x903e0811",
+      "basis": "separate pinned backup-sync-cp-contract report",
+      "status": "later path only; no evidence current observed selector reaches it"
+    }
+  ],
+  "deprecated_or_rejected": [
+    {
+      "source": "old menu-observe.c disabled branches/comments",
+      "label": "historical comment, not authoritative endpoint proof",
+      "claim_to_reject": "0x003e014d directly equals remote CP endpoint"
+    },
+    {
+      "source": "menu-observe.c if(0) blocks",
+      "label": "disabled historical fake ACK/malloc experiment",
+      "claim_to_reject": "set status0 or fabricate message header to resolve observed callback absence"
+    },
+    {
+      "claim_to_reject": "Loading original AP backup.ko alone proves all Backup/CP synchronization works",
+      "reason": "local callback and later remote lifecycle/data transfer are separate"
+    }
+  ],
+  "next_promotion_requirements": [
+    "Independently fix FX3 original KO SHA, symbol and relocation coordinates",
+    "Locate original osal_reg_sync_msg_queue_cb/registration call with exact ID/callback",
+    "Observe actual current selector/payload via known 2MiB mapping",
+    "Map the callback switch and return path for that selector",
+    "Only if actual callback reaches remote exchange, investigate that exact CP contract"
+  ],
+  "other_observed_destinations": {
+    "0x008f013a": {
+      "label": "ulogio sink per pinned A7C2 observer; FX3 original owner separately reported literal hit in osal_ulogio.ko",
+      "load_command_upstream": "insmod /usr/kmod/osal_ulogio.ko ulogio_initfile=/setting/ulogio.bin",
+      "source": "runtime/analysis/qemu-menu-probe.py:1201-1205",
+      "minimum_dependency_on_stream": "not proven by source script ordering; original imports/relocations and bounded insmod result required"
+    },
+    "0x0094016a": {
+      "label": "unknown in this source scope",
+      "claim": "no unverified namespace/module name assigned"
+    }
+  },
+  "fixed_sources": [
+    {
+      "path": "runtime/analysis/menu-observe.c",
+      "url": "https://github.com/chocotan/a7c2-qemu/blob/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/menu-observe.c",
+      "bytes": 668098,
+      "sha256": "56c8158267f1281e5ee13f0a8f653d20f2189769d7f5df4c65efa08ff20ede1f",
+      "git_blob": "0685bafd9076c076fdd7ff3fb0991737f5c35d4f"
+    },
+    {
+      "path": "runtime/analysis/qemu-menu-probe.py",
+      "url": "https://github.com/chocotan/a7c2-qemu/blob/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/runtime/analysis/qemu-menu-probe.py",
+      "bytes": 194398,
+      "sha256": "9c037a75ae5c3b6a64af289b8bf22d4f176261810f8a6427341c0210e08beb15",
+      "git_blob": "640de75694bc53ccbb4959022c90092d5af2da89"
+    },
+    {
+      "path": "report/backup-noop-sync-contract.md",
+      "url": "https://github.com/chocotan/a7c2-qemu/blob/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/report/backup-noop-sync-contract.md",
+      "bytes": 15027,
+      "sha256": "fd3b214707d15c7af8a28b5cedab6e44c9a421449590b492428456af4fff1db8",
+      "git_blob": "9fe207e039516dfc4a53d0f3331708abff263209"
+    },
+    {
+      "path": "report/backup-sync-cp-contract.md",
+      "url": "https://github.com/chocotan/a7c2-qemu/blob/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/report/backup-sync-cp-contract.md",
+      "bytes": 12003,
+      "sha256": "a545ab49f0c68c0b5a865aaabefa5e96d61fbc6519badaddc17db0518f162ea7",
+      "git_blob": "7d7d28a4784912831acaa90f8c622576edbd5265"
+    },
+    {
+      "path": "report/virtual-cp/udate-distribution/backup-endpoint.c",
+      "url": "https://github.com/chocotan/a7c2-qemu/blob/b3d7c1fed349f1d918acc4259f1d2b3a7c52a500/report/virtual-cp/udate-distribution/backup-endpoint.c",
+      "bytes": 6298,
+      "sha256": "636e7803330efabc972a04b98e8e7956558c756812b297e581e02a0d4aa26f7b",
+      "git_blob": "95b47600c27984f8fda5ade530ab927b7271337a"
+    }
+  ],
+  "implementation_authorization": "This contract authorizes no module or ACK; implementation follows original owner evidence and unique runtime operator."
+}

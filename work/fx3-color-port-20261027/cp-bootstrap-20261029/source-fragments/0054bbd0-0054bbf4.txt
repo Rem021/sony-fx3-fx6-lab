@@ -1,0 +1,9 @@
+0054bbd0 mov        r2, r1
+0054bbd4 mov        r1, r0
+0054bbd8 cmp        r2, #0
+0054bbdc mvneq      r0, #0x10
+0054bbe0 bxeq       lr
+0054bbe4 movw       r0, #0x7c8
+0054bbe8 mvn        r3, #0
+0054bbec movt       r0, #0x140
+0054bbf0 b          #0x554ebc

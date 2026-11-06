@@ -1,0 +1,19 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap99-r2-user-backup-nread/candidate.json",
+  "base_sha256": "922d07e102581da6c990c368bc9d4cf2a6ff7ba04ec85ac2101000d8fca5f9ab",
+  "changed_member_bodies": [
+    "init",
+    "simulation/fx3-capid-v1.so",
+    "simulation/fx3-preset-context-v2-screen.so",
+    "simulation/fx3-backup-return-v1.so",
+    "simulation/fx3-cp-backup-reset-v1.ko"
+  ],
+  "new_members": [
+    "simulation/fx3-file100-observer-v1",
+    "simulation/fx3-sync100-unbind-v1.ko",
+    "simulation/fx3-sync100-shutdown.sh"
+  ],
+  "all_other_members_unchanged": true,
+  "DTB_delta": "initrd-end plus new observer-only reservation/memrsv",
+  "authority": "msg_db11d2266751"
+}

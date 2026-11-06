@@ -1,0 +1,18 @@
+# Source-layout map0x4200; no runtime PC, physical trace or execution claim.
+0x43fc [file+0x1fc] 00f002f8 bl        #0x4404
+0x4400 [file+0x200] 00f070f8 bl        #0x44e4
+0x4404 [file+0x204] 0aa0 adr       r0, #0x28
+0x4406 [file+0x206] 90e8000c ldm.w     r0, {sl, fp}
+0x440a [file+0x20a] 8244 add       sl, r0
+0x440c [file+0x20c] 8344 add       fp, r0
+0x440e [file+0x20e] aaf10107 sub.w     r7, sl, #1
+0x4412 [file+0x212] da45 cmp       sl, fp
+0x4414 [file+0x214] 01d1 bne       #0x441a
+0x4416 [file+0x216] 00f065f8 bl        #0x44e4
+0x441a [file+0x21a] aff2090e subw      lr, pc, #9
+0x441e [file+0x21e] bae80f00 ldm.w     sl!, {r0, r1, r2, r3}
+0x4422 [file+0x222] 13f0010f tst.w     r3, #1
+0x4426 [file+0x226] 18bf it        ne
+0x4428 [file+0x228] fb1a subne     r3, r7, r3
+0x442a [file+0x22a] 43f00103 orr       r3, r3, #1
+0x442e [file+0x22e] 1847 bx        r3

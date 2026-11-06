@@ -1,0 +1,462 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/readonly_probe.py	2026-11-03 10:57:19
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-read-observer-candidate/observer/observer_core.py	2026-11-05 10:02:33
+@@ -1,259 +1,229 @@
+ #!/usr/bin/env python3
+-"""Strict read-only RSP and ELF/maps proof for the fixed FX6 AP observation."""
+-import collections
+-import hashlib
+-import re
+-import select
+-import socket
+-import struct
+-import time
++"""Host-testable, default-disabled two-key AppFw Backup_nread observer core.
++
++Future run only: this module never starts QEMU and never writes guest state.
++Allowed RSP operations are H/g/p/m, Z1/z1, mode 0/1, register XML; no Z0,
++no M/G/P, no continue-with-single-step, no patch/stub/veneer.
++"""
++import hashlib,json,re,struct,sys,time
+ from pathlib import Path
++sys.path.insert(0,str(Path(__file__).resolve().parent))
++from rsp_readonly import RSP
+ 
+-MAP = re.compile(rb'^([0-9a-f]+)-([0-9a-f]+) ([rwxp-]{4}) ([0-9a-f]+) [0-9a-f]+:[0-9a-f]+ (\d+)\s+(/\S+)$')
+-AP_PATH = b'/usr/lib/appFw.so'
+-CAP_PATH = b'/simulation/fx3-capid-v1.so'
+-PAGE = 4096
+-AP_WORD = {0x20ef79c: '61aaa897', 0x20ef7a0: 'e0000034'}
+-CAP_WORD = {0x1840c: 'c9180094', 0x1e730: 'ff8301d1', 0x1e754: '807f8012', 0x1e764: '08c14bb9'}
++AP_PATH=b'/usr/lib/appFw.so'
++APP_ELF=Path('/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/grm-fbinit/appFw-future-skip.so')
++PAGE=4096
++APPFW_SHA256='b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be'
++TARGET_CPIO_SHA256='3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b'
++TARGET_SERIAL_SHA256='377142e9dcee7f4f7728db6e9fcb822a9f3e501e61da7f719761d4d506f5050e'
++KEYS=(
++ {'name':'0x02cf0214','key':0x02cf0214,'thunk_va':0x2169784,'return_va':0x11f67d4,'slot_off':0xb4,
++  'thunk_word':'e10300aa','return_word':'a0e30291'},
++ {'name':'0x02cf0218','key':0x02cf0218,'thunk_va':0x21697d4,'return_va':0x11f67f4,'slot_off':0xc4,
++  'thunk_word':'e10300aa','return_word':'a0230391'},
++)
++MAX_ENTRY_HITS=2; MAX_RETURN_HITS=2; MAX_STOPS=8; MAX_DATA_READS=16; MAX_IDENTITY_READS=128; MAX_READ_BYTES=4; MAX_SECONDS=150
++MAP=re.compile(rb'^([0-9a-f]+)-([0-9a-f]+) ([rwxp-]{4}) ([0-9a-f]+) [0-9a-f]+:[0-9a-f]+ (\d+)\s+(/\S+)$')
++EARLY_BEGIN=re.compile(rb'FX3_AP_EARLY_MAPS_(\d+)_(\d+)_BEGIN'); EARLY_END=re.compile(rb'FX3_AP_EARLY_MAPS_(\d+)_(\d+)_END')
++APPFW_TID=re.compile(rb'FX3_UIPC_RECV_BEGIN tid=(\d+) name=AppFw ')
++REQ=re.compile(rb'FX3_PROVIDER_REQUEST [^\r\n]*')
+ 
+ def sha(path):
+-    with Path(path).open('rb') as f:
+-        return hashlib.file_digest(f, 'sha256').hexdigest()
++    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+ 
+ def elf_loads(path):
+-    with Path(path).open('rb') as f:
+-        head=f.read(64)
+-        if head[:6]!=b'\x7fELF\x02\x01': raise ValueError('not ELF64 LE')
+-        off=struct.unpack_from('<Q',head,32)[0]
+-        size,count=struct.unpack_from('<HH',head,54)
+-        if not 0<count<=64 or not 56<=size<=128:raise ValueError('unbounded ELF phdr')
+-        f.seek(off);b=f.read(size*count)
+-    if len(b)!=size*count:raise ValueError('short ELF phdr')
++    b=Path(path).read_bytes(); head=b[:64]
++    if head[:6]!=b'\x7fELF\x02\x01' or struct.unpack_from('<H',head,18)[0]!=183:
++        raise ValueError('original not AArch64 ELF64 LE')
++    phoff=struct.unpack_from('<Q',head,32)[0]; es,n=struct.unpack_from('<HH',head,54)
++    if not 0<n<=64 or es!=56 or phoff+es*n>len(b):raise ValueError('bad PHDR bounds')
+     out=[]
+-    for i in range(count):
+-        p=i*size
+-        kind,flags=struct.unpack_from('<II',b,p)
+-        if kind!=1:continue
+-        fileoff,va,_,filesz,memsz,align=struct.unpack_from('<QQQQQQ',b,p+8)
+-        out.append(dict(fileoff=fileoff,va=va,filesz=filesz,memsz=memsz,align=align,flags=flags))
++    for i in range(n):
++        p=phoff+i*es; typ,flags=struct.unpack_from('<II',b,p)
++        if typ!=1:continue
++        fo,va,pa,fs,ms,al=struct.unpack_from('<QQQQQQ',b,p+8)
++        out.append({'fileoff':fo,'va':va,'filesz':fs,'memsz':ms,'align':al,'flags':flags})
++    if not out:raise ValueError('no PT_LOAD')
+     return out
+ 
+-def parse_maps(serial):
+-    """Completed /init IM maps snapshots; old late and current early formats.
++def word_at(path,va):
++    loads=elf_loads(path); b=Path(path).read_bytes()
++    seg=[s for s in loads if s['va']<=va and va+4<=s['va']+s['filesz']]
++    if len(seg)!=1:raise ValueError('VA not in one file-backed PT_LOAD')
++    fo=seg[0]['fileoff']+va-seg[0]['va']
++    return b[fo:fo+4]
+ 
+-    Early maps come from `cat /proc/uptime /proc/$im_pid/maps` within matched
+-    markers. The concurrent IM_ENDMAPS observer prints only im.elf rows; it
+-    cannot supply an AP or CAP row. All PT_LOAD rows are still checked below.
+-    """
++def parse_maps(serial):
+     blocks=[];active=None;pos=0
+     for line in serial.splitlines(keepends=True):
+-        stripped=line.strip()
+-        early_begin=re.fullmatch(rb'FX3_AP_EARLY_MAPS_(\d+)_(\d+)_BEGIN',stripped)
+-        early_end=re.fullmatch(rb'FX3_AP_EARLY_MAPS_(\d+)_(\d+)_END',stripped)
+-        late_begin=re.fullmatch(rb'FX3_AP_IM_PROCESS=(\d+)',stripped)
+-        if early_begin or late_begin:
++        stripped=line.strip(); begin=EARLY_BEGIN.fullmatch(stripped); end=EARLY_END.fullmatch(stripped)
++        if begin:
+             if active:blocks.append(active)
+-            active={'pid':int((early_begin or late_begin)[1]),'epoch':int(early_begin[2]) if early_begin else None,
+-                    'kind':'early' if early_begin else 'late','rows':[],'complete':False,
+-                    'byte_start':pos,'byte_end':None,'first_uptime':None}
++            active={'pid':int(begin[1]),'epoch':int(begin[2]),'rows':[],'complete':False,'byte_start':pos,'byte_end':None}
+         elif active is not None:
+-            if early_end and active['kind']=='early':
+-                if int(early_end[1])==active['pid'] and int(early_end[2])==active['epoch']:
+-                    active['complete']=True;active['byte_end']=pos+len(line)
+-                blocks.append(active);active=None
+-            elif active['kind']=='late' and b'FX3_TASK_SNAPSHOT_' in line and b'_BEGIN' in line:
+-                active['complete']=True;active['byte_end']=pos+len(line)
+-                blocks.append(active);active=None
++            if end and int(end[1])==active['pid'] and int(end[2])==active['epoch']:
++                active['complete']=True;active['byte_end']=pos+len(line);blocks.append(active);active=None
+             else:
+-                if active['first_uptime'] is None and re.fullmatch(rb'\d+\.\d+ \d+\.\d+',stripped):
+-                    active['first_uptime']=stripped.decode()
+-                mm=MAP.match(stripped)
+-                if mm:
+-                    active['rows'].append(dict(start=int(mm[1],16),end=int(mm[2],16),
+-                        perms=mm[3].decode(),offset=int(mm[4],16),inode=int(mm[5]),path=mm[6]))
++                m=MAP.match(stripped)
++                if m:active['rows'].append({'start':int(m[1],16),'end':int(m[2],16),'perms':m[3].decode(),'offset':int(m[4],16),'inode':int(m[5]),'path':m[6]})
+         pos+=len(line)
+     if active:blocks.append(active)
+     return blocks
+ 
+-def map_bias(rows, path, loads):
++def map_bias(rows,path,loads):
+     present=[r for r in rows if r['path']==path]
+-    if not present or len({r['inode'] for r in present})!=1:raise ValueError('missing or mixed inode '+path.decode())
+-    # A PT_LOAD may split into r--/rw after RELRO, but at least one row must
+-    # match its page-aligned file offset and virtual address in the same bias.
+-    candidates=set()
+-    for r in present:
+-        for seg in loads:
+-            if r['offset']==seg['fileoff']//PAGE*PAGE:
+-                candidates.add(r['start']-seg['va']//PAGE*PAGE)
++    if not present or len({r['inode'] for r in present})!=1:raise ValueError('missing/mixed inode')
++    if any(r['end']-r['start']<PAGE for r in present):raise ValueError('map row shorter than a page')
+     valid=[]
+-    for bias in candidates:
+-        matched=[]
++    for bias in {r['start']-seg['va']//PAGE*PAGE for r in present for seg in loads if r['offset']==seg['fileoff']//PAGE*PAGE}:
++        good=True
+         for seg in loads:
+-            if not any(r['start']==bias+(seg['va']//PAGE*PAGE)
+-               and r['offset']==seg['fileoff']//PAGE*PAGE for r in present):break
+-            matched.append(seg)
+-        if len(matched)==len(loads):valid.append(bias)
+-    if len(valid)!=1:raise ValueError('PT_LOAD/map bias ambiguous '+path.decode()+': '+repr(valid))
+-    return dict(bias=valid[0],inode=present[0]['inode'],segments=loads,
+-                rows=[{k:v.decode() if isinstance(v,bytes) else v for k,v in r.items()} for r in present])
++            pageva=seg['va']//PAGE*PAGE;pageoff=seg['fileoff']//PAGE*PAGE
++            # Require the page-aligned file-backed extent; a final partial page may
++            # legitimately be a guard/protected mapping in the current loader.
++            need=bias+pageva+max(PAGE,(seg['filesz']//PAGE)*PAGE)
++            rr=[r for r in present if r['offset']>=pageoff and r['offset']<pageoff+seg['filesz'] and r['start']>=bias+pageva and r['start']<need]
++            if not rr or min(r['start'] for r in rr)!=bias+pageva:good=False;break
++            if any(r['start']-bias-pageva != r['offset']-pageoff for r in rr):good=False;break
++            # union must cover the whole file-backed segment (RELRO splits allowed)
++            covered=[(r['start'],r['end']) for r in rr]
++            end=max(x[1] for x in covered)
++            if end<need:good=False;break
++            if (seg['flags']&1) and not any('x' in r['perms'] for r in rr):good=False;break
++            if (seg['flags']&2) and not any('w' in r['perms'] for r in rr):good=False;break
++        if good:valid.append(bias)
++    if len(valid)!=1:raise ValueError('ambiguous/incomplete appFw bias '+repr(valid))
++    return {'bias':valid[0],'inode':present[0]['inode'],'rows':[{k:(v.decode() if isinstance(v,bytes) else v) for k,v in r.items()} for r in present]}
+ 
+-def choose_mapping(serial, ap_elf, cap_elf):
+-    for block in reversed(parse_maps(serial)):
+-        if not block['complete']:
+-            continue
+-        try:
+-            ap=map_bias(block['rows'],AP_PATH,elf_loads(ap_elf))
+-            cap=map_bias(block['rows'],CAP_PATH,elf_loads(cap_elf))
+-            return {'pid':block['pid'],'block_complete':block['complete'],
+-                    'snapshot_kind':block['kind'],'snapshot_epoch':block['epoch'],
+-                    'snapshot_byte_range':[block['byte_start'],block['byte_end']],
+-                    'snapshot_first_uptime':block['first_uptime'],'ap':ap,'cap':cap}
+-        except ValueError:continue
+-    return None
+ 
+-def rsp_packet(payload):
+-    raw=payload.encode('ascii')
+-    return b'$'+raw+b'#'+f'{sum(raw)&255:02x}'.encode('ascii')
++def choose_appfw(serial,elf_path):
++    """Use the LAST early block only; never silently fall back to an older epoch."""
++    blocks=parse_maps(serial)
++    if not blocks:raise ValueError('no early map block')
++    block=blocks[-1]
++    if not block['complete']:raise ValueError('newest early map block incomplete')
++    try:ap=map_bias(block['rows'],AP_PATH,elf_loads(elf_path))
++    except ValueError as exc:raise ValueError('newest early map block invalid: '+str(exc))
++    tids=sorted({x.decode() for x in APPFW_TID.findall(serial)})
++    # Header/PHDR and all four target code addresses must be in mapped, readable
++    # ranges; code addresses must be executable. This catches one-page truncation.
++    b=Path(elf_path).read_bytes();phoff=struct.unpack_from('<Q',b,32)[0];es,n=struct.unpack_from('<HH',b,54)
++    checks=[('header',0,64,False),('phdr',phoff,es*n,False)]+[('code',k['thunk_va'],4,True) for k in KEYS]+[('code',k['return_va'],4,True) for k in KEYS]
++    for name,va,size,needx in checks:
++        addr=ap['bias']+va
++        hits=[r for r in ap['rows'] if r['start']<=addr and addr+size<=r['end']]
++        if not hits:raise ValueError('unmapped '+name+' '+hex(va))
++        if 'r' not in hits[0]['perms']:raise ValueError('unreadable '+name)
++        if needx and 'x' not in hits[0]['perms']:raise ValueError('non-executable code '+hex(va))
++    return {'pid':block['pid'],'epoch':block['epoch'],'ap':ap,'appfw_tids':tids,
++            'block_byte_range':[block['byte_start'],block['byte_end']]}
+ 
+-class RSP:
+-    ALLOWED=(re.compile(r'(?:Qqemu\.PhyMemMode:[01]|qqemu\.PhyMemMode|Hg(?:p[0-9a-f]+\.)?[0-9a-f]+|Hc(?:p[0-9a-f]+\.)?[0-9a-f]+|g|p[0-9a-f]+|m[0-9a-f]+,[0-9a-f]+|qXfer:features:read:[A-Za-z0-9_.-]+:[0-9a-f]+,[0-9a-f]+|Z1,[0-9a-f]+,4|z1,[0-9a-f]+,4)',re.I))
+-    def __init__(self,sock):
+-        self.sock=sock;self.sock.settimeout(1.0);self.stops=collections.deque();self._pending=b''
+-    @classmethod
+-    def connect(cls,run):
+-        s=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
+-        # AF_UNIX absolute paths exceed macOS sockaddr_un; QEMU uses cwd/g.
+-        import os
+-        old=Path.cwd()
+-        try:os.chdir(run);s.connect('g')
+-        finally:os.chdir(old)
+-        return cls(s)
+-    def _one(self,deadline):
+-        while True:
+-            if time.monotonic()>deadline:raise TimeoutError('RSP packet timeout')
+-            self.sock.settimeout(min(.1,max(.001,deadline-time.monotonic())))
+-            try:c=self.sock.recv(1)
+-            except socket.timeout:continue
+-            if not c:raise ConnectionError('RSP socket closed')
+-            if c==b'-':raise ValueError('RSP outgoing checksum rejected')
+-            if c in (b'+',b'\n',b'\r'):continue
+-            if c!=b'$':raise ValueError('unexpected RSP framing '+repr(c))
+-            raw=bytearray()
+-            while True:
+-                if time.monotonic()>deadline:raise TimeoutError('RSP payload timeout')
+-                try:c=self.sock.recv(1)
+-                except socket.timeout:continue
+-                if not c:raise ConnectionError('RSP truncated payload')
+-                if c==b'#':break
+-                raw.extend(c)
+-                if len(raw)>65536:raise ValueError('RSP payload too long')
+-            tail=self._exact(2,deadline)
+-            try:got=int(tail,16)
+-            except ValueError:raise ValueError('RSP checksum digits invalid')
+-            if got!=sum(raw)&255:
+-                self.sock.sendall(b'-');raise ValueError('RSP incoming checksum mismatch')
+-            self.sock.sendall(b'+')
+-            # Escaping is part of RSP framing; no run-length expansion is
+-            # needed for the bounded hex registers/memory and ASCII stop set.
+-            un=bytearray();i=0
+-            while i<len(raw):
+-                if raw[i]==0x7d:
+-                    i+=1
+-                    if i==len(raw):raise ValueError('RSP dangling escape')
+-                    un.append(raw[i]^0x20)
+-                else:un.append(raw[i])
+-                i+=1
+-            return un.decode('ascii')
+-    def _exact(self,n,deadline):
+-        out=b''
+-        while len(out)<n:
+-            if time.monotonic()>deadline:raise TimeoutError('RSP checksum timeout')
+-            try:c=self.sock.recv(n-len(out))
+-            except socket.timeout:continue
+-            if not c:raise ConnectionError('RSP truncated checksum')
+-            out+=c
+-        return out
+-    def command(self,payload,timeout=2.0):
+-        if not self.ALLOWED.fullmatch(payload):raise ValueError('prohibited RSP command '+payload[:16])
+-        self.sock.sendall(rsp_packet(payload));end=time.monotonic()+timeout
+-        while True:
+-            response=self._one(end)
+-            if response.startswith(('T','S')):
+-                self.stops.append(response);continue
+-            if response.startswith('O') and response!='OK' and re.fullmatch(r'O(?:[0-9a-fA-F]{2})+',response):continue
+-            return response
+-    packet=command
+-    def send_continue(self,timeout=2.0):
+-        """Resume all CPUs with addressless `c`; ACK is not a stop reply.
+ 
+-        QEMU's pinned system gdbstub sets allow_stop_reply only while handling
+-        this command.  A stop packet may follow the ACK immediately or much
+-        later; leave it unread for poll_stop and the identity gates.
+-        """
+-        self.sock.sendall(rsp_packet('c'))
+-        deadline=time.monotonic()+timeout
+-        while True:
+-            if time.monotonic()>deadline:raise TimeoutError('RSP continue ACK timeout')
+-            self.sock.settimeout(min(.1,max(.001,deadline-time.monotonic())))
+-            try:c=self.sock.recv(1)
+-            except socket.timeout:continue
+-            if not c:raise ConnectionError('RSP closed before continue ACK')
+-            if c==b'+':return {'command':'c','ack':'+'}
+-            if c==b'-':raise ValueError('RSP continue checksum rejected')
+-            raise ValueError('RSP continue response before ACK '+repr(c))
+-    def poll_stop(self,timeout=.05):
+-        if self.stops:return self.stops.popleft()
+-        if not select.select([self.sock],[],[],timeout)[0]:return None
+-        v=self._one(time.monotonic()+1.0)
+-        if v.startswith(('T','S')):return v
+-        if v.startswith('O') and v!='OK':return None
+-        raise ValueError('unexpected asynchronous RSP '+v[:40])
+-    def select_thread(self,stop):
+-        # T05 is the signal header, immediately followed by n:r; fields.
+-        # QEMU's first field is normally `thread:02;` with no leading `;`.
+-        if not stop.startswith('T05') or not stop.endswith(';') or len(stop)>1024:
+-            raise ValueError('unknown CPU stop '+stop[:80])
+-        fields=stop[3:-1].split(';')
+-        parsed=[]
+-        for field in fields:
+-            if ':' not in field:raise ValueError('malformed CPU stop field '+field[:40])
+-            key,value=field.split(':',1)
+-            if not re.fullmatch(r'[A-Za-z0-9_]+',key) or not value:
+-                raise ValueError('malformed CPU stop field '+field[:40])
+-            parsed.append((key,value))
+-        tids=[value for key,value in parsed if key=='thread']
+-        if len(tids)!=1 or not re.fullmatch(r'(?:p[0-9a-f]+\.)?[0-9a-f]+',tids[0],re.I):
+-            raise ValueError('unknown CPU stop '+stop[:80])
+-        tid=tids[0]
+-        if self.command('Hg'+tid)!='OK' or self.command('Hc'+tid)!='OK':raise ValueError('CPU selection failed')
+-        return tid
+-    def regs(self):
+-        v=self.command('g')
+-        if not re.fullmatch(r'[0-9a-fA-F]+',v):raise ValueError('nonhex AArch64 register response')
+-        b=bytes.fromhex(v)
+-        if len(b)<264:raise ValueError('short AArch64 register response')
+-        return struct.unpack_from('<33Q',b)
++def _read_chunks(rsp,addr,size):
++    if not 0<size<=8192 or size%4:raise ValueError('bad identity read')
++    out=b''
++    for i in range(0,size,4):out+=rsp.virtual_read(addr+i,4)
++    return out
++
++def verify_live_identity(rsp,bias,elf_path):
++    """Current vCPU memory must equal pinned appFw ELF header/PHDR and all four machine words."""
++    b=Path(elf_path).read_bytes(); head=b[:64]
++    if b[:6]!=b'\x7fELF\x02\x01' or struct.unpack_from('<H',b,18)[0]!=183:raise ValueError('original not AArch64')
++    phoff=struct.unpack_from('<Q',b,32)[0]; es,n=struct.unpack_from('<HH',b,54)
++    if es!=56 or not 0<n<=64 or phoff+es*n>8192:raise ValueError('original PHDR bounds')
++    expected=[(k['thunk_va'],k['thunk_word']) for k in KEYS]+[(k['return_va'],k['return_word']) for k in KEYS]
++    if _read_chunks(rsp,bias,64)!=head:raise ValueError('live ELF header mismatch')
++    if _read_chunks(rsp,bias+phoff,es*n)!=b[phoff:phoff+es*n]:raise ValueError('live PHDR mismatch')
++    words=[]
++    for va,w in expected:
++        got=rsp.virtual_read(bias+va,4)
++        if got!=bytes.fromhex(w):raise ValueError('live machine word mismatch '+hex(va))
++        words.append({'va':hex(va),'word':got.hex()})
++    return {'bias':hex(bias),'elf_sha256':hashlib.sha256(head).hexdigest(),'phdr_sha256':hashlib.sha256(b[phoff:phoff+es*n]).hexdigest(),'words':words,'pid':None}
++
++
++class BudgetRSP:
++    """Count every RSP memory read; identity+data share the 128-read cap."""
++    def __init__(self,base,deadline,max_reads=MAX_IDENTITY_READS,clock=time.monotonic):
++        self.base=base;self.deadline=deadline;self.count=0;self.max_reads=max_reads;self.clock=clock
++    def command(self,*a,**k):return self.base.command(*a,**k)
++    def select_thread(self,*a,**k):return self.base.select_thread(*a,**k)
++    def regs(self):return self.base.regs()
++    def poll_stop(self,*a,**k):return self.base.poll_stop(*a,**k)
++    def close(self):return self.base.close()
+     def virtual_read(self,addr,size):
+-        if not 0<size<=64:raise ValueError('unbounded RSP memory read')
+-        if self.command('Qqemu.PhyMemMode:0')!='OK':raise ValueError('virtual memory mode rejected')
+-        try:
+-            v=self.command(f'm{addr:x},{size:x}')
+-            if v.startswith('E'):raise ValueError('virtual address unavailable '+hex(addr))
+-            if not re.fullmatch(r'[0-9a-fA-F]+',v):raise ValueError('nonhex RSP memory')
+-            data=bytes.fromhex(v)
+-            if len(data)!=size:raise ValueError('short RSP memory read')
+-            return data
+-        finally:
+-            if self.command('Qqemu.PhyMemMode:1')!='OK':raise ValueError('physical mode restoration failed')
+-    def close(self):self.sock.close()
++        if size!=MAX_READ_BYTES:raise ValueError('observer read must be 4 bytes')
++        if self.count>=self.max_reads:raise RuntimeError('RSP read budget exceeded')
++        if self.clock()>self.deadline:raise TimeoutError('RSP total deadline')
++        self.count+=1
++        return self.base.virtual_read(addr,size)
+ 
+-def confirm_hit(rsp,stop,mapping,expected,origin):
+-    tid=rsp.select_thread(stop);r=rsp.regs();pc=r[32]
+-    if pc!=expected:raise ValueError('unknown breakpoint PC '+hex(pc))
+-    bias=mapping[origin]['bias'];va=pc-bias
+-    table=AP_WORD if origin=='ap' else CAP_WORD
+-    if va not in table:raise ValueError('PC not an allowed original instruction')
+-    word=rsp.virtual_read(pc,4).hex()
+-    if word!=table[va]:raise ValueError('wrong current address space or modified original word')
+-    return {'vCPU':tid,'stop':stop,'pc':hex(pc),'va':hex(va),'word':word,
+-        'x0':hex(r[0]),'x1':hex(r[1]),'fp':hex(r[29]),'sp':hex(r[31]),'regs':r}
++class Observer:
++    def __init__(self,mapping,rsp,tls_reader=None,clock=time.monotonic):
++        if not callable(tls_reader):raise ValueError('TLS reader required; no TLS means unknown')
++        self.m=mapping;self.clock=clock;self.t0=clock();self.deadline=self.t0+MAX_SECONDS;self.rsp=BudgetRSP(rsp,self.deadline,clock=clock);self.tls_reader=tls_reader;self.bp=set();self.possibly=set();self.records=[];self.entry=None;self.done=set();self.stops=0;self.reads=0;self.unknown=None;self.identity=None
++    def budget(self):
++        if self.clock()-self.t0>MAX_SECONDS:raise TimeoutError('observation budget')
++        if self.stops>MAX_STOPS or self.reads>MAX_DATA_READS:raise RuntimeError('hit/read budget exceeded')
++    def read(self,addr,n=4):
++        if n!=MAX_READ_BYTES:raise ValueError('only 4-byte reads')
++        self.reads+=1;self.budget();b=self.rsp.virtual_read(addr,n)
++        if len(b)!=n:raise ValueError('short data read')
++        return b
++    def arm(self):
++        for k in KEYS:
++            a=self.m['ap']['bias']+k['thunk_va']
++            self.possibly.add(a)
++            if self.rsp.command(f'Z1,{a:x},4')!='OK':raise RuntimeError('Z1 rejected '+hex(a))
++            self.bp.add(a)
++    def _key_for_pc(self,pc):
++        for k in KEYS:
++            if pc==self.m['ap']['bias']+k['thunk_va']:return k
++        return None
++    def on_stop(self,stop):
++        self.stops+=1;self.budget();gdb_cpu_thread=self.rsp.select_thread(stop);r=self.rsp.regs();pc=r[32]
++        if self.entry is None:
++            k=self._key_for_pc(pc)
++            if not k:raise ValueError('unknown entry PC '+hex(pc))
++            if k['name'] in self.done:raise ValueError('duplicate key '+k['name'])
++            if self.identity is None:
++                self.identity=verify_live_identity(self.rsp,self.m['ap']['bias'],APP_ELF)
++            got=self.read(pc);exp=bytes.fromhex(k['thunk_word'])
++            if got!=exp:raise ValueError('entry machine word mismatch '+hex(pc))
++            buffer,fp,lr=int(r[0]),int(r[29]),int(r[30]);expect_ret=self.m['ap']['bias']+k['return_va'];expect_buf=fp+k['slot_off']
++            if buffer!=expect_buf:raise ValueError('entry buffer != frame slot')
++            if lr!=expect_ret:raise ValueError('entry LR != key return')
++            tls=self.tls_reader()
++            if tls is None:raise ValueError('TLS unavailable')
++            before=self.read(buffer)
++            # replace this thunk with its exact return site; other thunk remains
++            if self.rsp.command(f'z1,{pc:x},4')!='OK':raise RuntimeError('entry z1 failed')
++            self.bp.discard(pc)
++            self.possibly.add(expect_ret)
++            if self.rsp.command(f'Z1,{expect_ret:x},4')!='OK':raise RuntimeError('return Z1 rejected')
++            self.bp.add(expect_ret)
++            self.entry={'key':k,'gdb_cpu_thread':gdb_cpu_thread,'guest_tid':'unknown','tls':tls,'fp':fp,'buffer':buffer,'before':before,'return':expect_ret,'pc':pc}
++            return {'stage':'entry','key':k['name'],'gdb_cpu_thread':gdb_cpu_thread,'guest_tid':'unknown','pc':hex(pc),'buffer':hex(buffer),'before':before.hex()}
++        e=self.entry;k=e['key'];expect_ret=e['return']
++        if pc!=expect_ret:raise ValueError('return PC mismatch')
++        if gdb_cpu_thread!=e['gdb_cpu_thread']:raise ValueError('return GDB CPU thread mismatch')
++        if int(r[29])!=e['fp']:raise ValueError('return frame mismatch')
++        if self.tls_reader()!=e['tls']:raise ValueError('return TLS mismatch')
++        if self.read(pc)!=bytes.fromhex(k['return_word']):raise ValueError('return machine word mismatch')
++        w0=int(r[0]);after=self.read(e['buffer'])
++        row={'key':k['name'],'key_id':hex(k['key']),'pid':self.m['pid'],'gdb_cpu_thread':e['gdb_cpu_thread'],'guest_tid':'unknown',
++             'entry_pc':hex(e['pc']),'return_pc':hex(pc),'buffer':hex(e['buffer']),'capacity_expected_static':4,'capacity_runtime_w2':'not_measured',
++             'before_hex':e['before'].hex(),'after_hex':after.hex(),'return_w0_signed32':int.from_bytes(w0.to_bytes(8,'little')[:4],'little',signed=True),
++             'return_w0_hex':hex(w0 & 0xffffffff),'return_raw':r[0],'frame':hex(e['fp'])}
++        self.records.append(row)
++        if self.rsp.command(f'z1,{pc:x},4')!='OK':raise RuntimeError('return z1 failed')
++        self.bp.discard(pc);self.done.add(k['name']);self.entry=None
++        return {'stage':'return','record':row}
++    def cleanup(self):
++        res=[]
++        for a in sorted(self.possibly):
++            try:r=self.rsp.command(f'z1,{a:x},4')
++            except Exception as e:r=repr(e)
++            res.append({'addr':hex(a),'reply':r})
++            if r=='OK':self.bp.discard(a);self.possibly.discard(a)
++        return {'all_removed':not self.possibly,'results':res,'residual':[hex(a) for a in sorted(self.possibly)],'guest_resumed':False,'writes_issued':False}

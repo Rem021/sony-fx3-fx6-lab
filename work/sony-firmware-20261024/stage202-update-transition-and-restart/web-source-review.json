@@ -1,0 +1,30 @@
+{
+  "checked_utc": "2026-10-29T22:42:21.421832+00:00",
+  "sources": [
+    {
+      "url": "https://github.com/Erlla/sony-a7m4-custom-firmware/blob/main/methods/00-sd-recovery/README.md",
+      "ref_kind": "web-read main page; no API HEAD obtained",
+      "finding": "requires existing Fastboot, exact updater profile and separate camera completion evidence; not a FX3 pre-boot entry",
+      "scope": "ILCE-7M4 only"
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/2328d18ce640e6c8cd9341efcf0043ce9042a135/emmc_boot/README.md",
+      "ref_kind": "fixed commit, re-opened this turn",
+      "finding": "describes A7IV v2.00 boot0 and next-stage address; not FX3 boot0 identity"
+    },
+    {
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+      "ref_kind": "official reference source page re-opened this turn",
+      "finding": "model/module Ver7.00; not exact7.02 source attestation"
+    },
+    {
+      "url": "https://github.com/Hearts-Ace/sony-a7r5-custom-firmware/blob/main/README.md",
+      "ref_kind": "web-read main page; no API HEAD obtained",
+      "finding": "latest displayed publication distinguishes offline rebuild checks from pending LCD/cold boot/device validation; no FX3 verification inferred",
+      "used_as_FX3_recovery_proof": false
+    }
+  ],
+  "API_failures": "TLS unexpected EOF / read timeout; all specific process handles ended; no tree or HEAD conclusion",
+  "branch_tree_web_errors": "main/master emmc_boot tree URLs failed; fixed commit README succeeded",
+  "read_only": true
+}

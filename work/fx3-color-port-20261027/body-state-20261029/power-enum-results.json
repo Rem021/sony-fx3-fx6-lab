@@ -1,0 +1,200 @@
+{
+  "cases": [
+    {
+      "declared_state": {
+        "type": 1,
+        "jack": 1,
+        "other_words": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_printk_requests": [
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "type",
+          "value": 1,
+          "enum_label": "PS_TYPE_ACV"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "jack",
+          "value": 1,
+          "enum_label": "PS_AC_CONNECT_OK"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "usb",
+          "value": 0,
+          "enum_label": "PS_USB_POWER_SUPPLY_NONE"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "batt_supply",
+          "value": 0,
+          "enum_label": "PS_BATT_SUPPLY_UNKNOWN"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "batt_connect",
+          "value": 0,
+          "enum_label": "PS_BATT_CONNECT_IN"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "certification_status",
+          "value": 0,
+          "enum_label": "PS_CERTIFICATION_STATUS_UNKNOWN"
+        },
+        {
+          "format": "%32s: %d mA\n",
+          "label": "usb pd",
+          "value": 0
+        },
+        {
+          "format": "%32s: %d mV\n",
+          "label": "usb pd",
+          "value": 0
+        }
+      ],
+      "instructions": 64
+    },
+    {
+      "declared_state": {
+        "type": 2,
+        "jack": 2,
+        "other_words": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_printk_requests": [
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "type",
+          "value": 2,
+          "enum_label": "PS_TYPE_BATTERY"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "jack",
+          "value": 2,
+          "enum_label": "PS_AC_CONNECT_NG"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "usb",
+          "value": 0,
+          "enum_label": "PS_USB_POWER_SUPPLY_NONE"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "batt_supply",
+          "value": 0,
+          "enum_label": "PS_BATT_SUPPLY_UNKNOWN"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "batt_connect",
+          "value": 0,
+          "enum_label": "PS_BATT_CONNECT_IN"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "certification_status",
+          "value": 0,
+          "enum_label": "PS_CERTIFICATION_STATUS_UNKNOWN"
+        },
+        {
+          "format": "%32s: %d mA\n",
+          "label": "usb pd",
+          "value": 0
+        },
+        {
+          "format": "%32s: %d mV\n",
+          "label": "usb pd",
+          "value": 0
+        }
+      ],
+      "instructions": 68
+    },
+    {
+      "declared_state": {
+        "type": 4294967295,
+        "jack": 4294967295,
+        "other_words": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "original_printk_requests": [
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "type",
+          "value": 4294967295,
+          "enum_label": "PS_TYPE_UNKNOWN"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "jack",
+          "value": 4294967295,
+          "enum_label": "PS_AC_CONNECT_UNKNOWN"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "usb",
+          "value": 0,
+          "enum_label": "PS_USB_POWER_SUPPLY_NONE"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "batt_supply",
+          "value": 0,
+          "enum_label": "PS_BATT_SUPPLY_UNKNOWN"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "batt_connect",
+          "value": 0,
+          "enum_label": "PS_BATT_CONNECT_IN"
+        },
+        {
+          "format": "%32s: %d(%s)\n",
+          "label": "certification_status",
+          "value": 0,
+          "enum_label": "PS_CERTIFICATION_STATUS_UNKNOWN"
+        },
+        {
+          "format": "%32s: %d mA\n",
+          "label": "usb pd",
+          "value": 0
+        },
+        {
+          "format": "%32s: %d mV\n",
+          "label": "usb pd",
+          "value": 0
+        }
+      ],
+      "instructions": 72
+    }
+  ],
+  "scope": "Original named power-status diagnostic code and literal relocations execute in Unicorn; printk is a captured string request with no native log. State inputs are synthetic, not a hardware reading."
+}

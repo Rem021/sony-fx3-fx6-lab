@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "fixed_original_files_checked": 9,
+  "fx6_symbols": 41294,
+  "independent_original_export_pairs": 6089,
+  "original_kernel_leaf_CPU_cases": 1007,
+  "original_LIRO_wrapper_CPU_cases": 2,
+  "bound_slots": {
+    "0x3c0": ".text",
+    "0x3e8": "osal_free_msg",
+    "0x4c0": "Backup_nread"
+  },
+  "source_sha256": {
+    "kernel_symbols.py": "c5d45d2ef473db6f34f5e213ded882500476bfedf847a0df49276d2d76e935ae",
+    "recover_symbols.py": "2e156893f15614cf72d04472cfa0dc50ba0afaa8d0b434bc3b1c9c49804344a8",
+    "verify_symbols.py": "be7fa29c617fbadb114b6c29ee1370bcee114f8ae19ee9a9f256c4df51b1701c",
+    "analyze_binding.py": "74e9ef86588abf1d7d498d87a772307e5d16139c2247e929feebeab3efbd513b",
+    "replay_wrapper.py": "db7498c5827be487582260c86091da7618151171be0a01c62b70f1857926596a",
+    "verify.py": "af285c5c80a763a1e607af3890da8418918678330851604e297eb5b75c441bad",
+    "prepare.sh": "7f8c7260451114c2e8543e68420a4af942c2a5f13fd0f8c2d7cf5450708d32a3"
+  },
+  "output_sha256": {
+    "fx6-kernel-symbol-catalog.json": "f81602bb6d754eccdd7b2c17af371ee2e03cc01fad86dff3552936bd1f9a6166",
+    "symbol-recovery.json": "e25a3bbf4d91254c16441caced18305ba021dadf1f0f94e52496e54e65ae21b7",
+    "export-crosscheck.json": "e9cd948f230d66b6e1aca689b5f96bf94e9ad98d91f10ee9bf72a018d4b133ad",
+    "symbol-verification.json": "c7d9e18a3e10858e1c649254fc04af633946cf648795c013c51d3b6a0cfb3a04",
+    "binding-evidence.json": "e701967407d6a8f543652249c875b4f32fc656c5f04bac04d528a773889193c5",
+    "wrapper-replay.json": "1e45fe94c32d1d4919a80c558fc215ed907e6317bc12e82fa616a8b99a87ea4c"
+  },
+  "scope": "original static symbols/ELF relocation and bounded isolated CPU only; no kernel module runtime addresses, actual Backup word/event, VM or device proof"
+}

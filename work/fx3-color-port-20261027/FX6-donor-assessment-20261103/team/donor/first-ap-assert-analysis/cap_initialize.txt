@@ -1,0 +1,41 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000244fc <cap_control>:
+   24550: 5282004a     	mov	w10, #0x1002            // =4098
+   24554: 6b0a003f     	cmp	w1, w10
+   24558: 540001c0     	b.eq	0x24590 <cap_control+0x94>
+   2455c: 5282006a     	mov	w10, #0x1003            // =4099
+   24560: 6b0a003f     	cmp	w1, w10
+   24564: 54000061     	b.ne	0x24570 <cap_control+0x74>
+   24568: f940090a     	ldr	x10, [x8, #0x10]
+   2456c: b400028a     	cbz	x10, 0x245bc <cap_control+0xc0>
+   24570: d65f03c0     	ret
+   24574: f9400509     	ldr	x9, [x8, #0x8]
+   24578: b9000869     	str	w9, [x3, #0x8]
+   2457c: 52800209     	mov	w9, #0x10               // =16
+   24580: b9400d08     	ldr	w8, [x8, #0xc]
+   24584: b9000c68     	str	w8, [x3, #0xc]
+   24588: b9000089     	str	w9, [x4]
+   2458c: 14000007     	b	0x245a8 <cap_control+0xac>
+   24590: f9400909     	ldr	x9, [x8, #0x10]
+   24594: eb02013f     	cmp	x9, x2
+   24598: 54fffec1     	b.ne	0x24570 <cap_control+0x74>
+   2459c: f900091f     	str	xzr, [x8, #0x10]
+   245a0: 14000002     	b	0x245a8 <cap_control+0xac>
+   245a4: f9000902     	str	x2, [x8, #0x10]
+   245a8: 0f000420     	movi	v0.2s, #0x1
+   245ac: 2a1f03e0     	mov	w0, wzr
+   245b0: b9000461     	str	w1, [x3, #0x4]
+   245b4: bd000060     	str	s0, [x3]
+   245b8: d65f03c0     	ret
+   245bc: b9400129     	ldr	w9, [x9]
+   245c0: 7110013f     	cmp	w9, #0x400
+   245c4: 54fffd61     	b.ne	0x24570 <cap_control+0x74>
+   245c8: 2a1f03e0     	mov	w0, wzr
+   245cc: 52800029     	mov	w9, #0x1                // =1
+   245d0: b9001909     	str	w9, [x8, #0x18]
+   245d4: b900009f     	str	wzr, [x4]
+   245d8: d65f03c0     	ret

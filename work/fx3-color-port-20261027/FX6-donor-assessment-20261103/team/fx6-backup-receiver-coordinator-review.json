@@ -1,0 +1,23 @@
+{
+  "schema": "fx6-backup-receiver-coordinator-review-v1",
+  "utc": "2026-11-05T17:22:10.934873+00:00",
+  "status": "bounded_static_trace_accepted_receiver_unresolved",
+  "task": "task_8dd57bb90625",
+  "dispatch": "ctx_bb316031f763",
+  "manifest_sha256": "dcd619c90ea9f139b8ec38cd65a3c6a5975ea1b7d3de0158b8c5ff1fb5b4a6bb",
+  "manifest_count_verified": 142,
+  "manifest_mismatches": [],
+  "report": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-backup-receiver-trace/REPORT.md",
+  "proven_scope": "static libbackup -> libosal_uipc -> ioctl sender path; existing transport logs support messages, not the two specific key operations",
+  "unproven_scope": "receiver callback/dispatch and key-specific response/caller values; no causal link from 92fe bytes to observed asserts proved",
+  "notes": [
+    "report log row numbering differs from coordinator Python splitlines by 2; identify records by content/TID rather than cross-parser row number",
+    "initial bootin messages are not AppFw key observations",
+    "absence in bounded constant scan does not prove receiver absent"
+  ],
+  "next_action": "prepare isolated host-only read-observation candidate using existing hardware breakpoint protocol, with exact current manifest and two target reads; offline only until specific run authorized",
+  "menu_verified": false,
+  "platform_changed": false,
+  "new_VM": false,
+  "firmware_or_backup_modified": false
+}

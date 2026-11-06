@@ -1,0 +1,7 @@
+{
+  "failure": "Parent deadline passed while provider still had observation time because Python mach_absolute_time and C CLOCK_MONOTONIC have different origins on this Mac",
+  "evidence": "../clock-domain-diagnostic.json",
+  "fix": "Use explicit CLOCK_MONOTONIC nanoseconds for config, supervisor comparisons and deadline tests; retain Python monotonic only for independent relative test wait limits",
+  "all_own_fixture_workers_terminal_before_preservation": true,
+  "real_IOKit_loaded": false
+}

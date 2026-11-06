@@ -1,0 +1,76 @@
+{
+  "schema": "fx3-same-creator-between-loads-PID-reuse-counterexample-v1",
+  "status": "COUNTEREXAMPLE_REPRODUCED",
+  "old_binary_path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/runs-bounded-verified/built/parent-module.so",
+  "old_binary_sha256": "c711f6ab13666c45249cc255d2ab09ec283496214d8941d11b9f1569124c47ec",
+  "old_model_sha256": "c1787e53acdc812ef9202007d03b6a4b0bf9e58b8ec8e720e36f26f01583f48a",
+  "script_sha256": "037ee4213f974f272f8e7dae1b557f6702efb7b9d99566735ff01a7237f860ee",
+  "cases": [
+    {
+      "replacement": "none",
+      "original_child_exit": 68,
+      "private_DONE_from_original_child": true,
+      "creator_thread_still_live": true,
+      "synthetic_foreign_child_exit": null,
+      "old_result": [
+        2,
+        45
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 17408
+        }
+      ],
+      "old_parent_mask_after_START": 1024
+    },
+    {
+      "replacement": "other-creator",
+      "original_child_exit": 68,
+      "private_DONE_from_original_child": true,
+      "creator_thread_still_live": true,
+      "synthetic_foreign_child_exit": 0,
+      "old_result": [
+        2,
+        45
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": -10,
+          "status": null
+        }
+      ],
+      "old_parent_mask_after_START": 1024
+    },
+    {
+      "replacement": "same-live-creator",
+      "original_child_exit": 68,
+      "private_DONE_from_original_child": true,
+      "creator_thread_still_live": true,
+      "synthetic_foreign_child_exit": 0,
+      "old_result": [
+        3,
+        0
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "old_parent_mask_after_START": 1024
+    }
+  ],
+  "old_same_thread_guard_is_complete_child_identity_proof": false,
+  "old_WNOTHREAD_rejects_other_thread_replacement_only": true,
+  "foreign_child_and_reaping_are_explicit_fake_kernel_inputs": true,
+  "original_Sony_Linux_or_glibc_executed": false,
+  "new_device_operations": 0,
+  "first_flash_released": false
+}

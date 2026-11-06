@@ -1,0 +1,31 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 212cf44: aa0003e6     	mov	x6, x0
+ 212cf48: f9400000     	ldr	x0, [x0]
+ 212cf4c: f8617800     	ldr	x0, [x0, x1, lsl #3]
+ 212cf50: b4000220     	cbz	x0, 0x212cf94 <Application_System_Init+0x1521f50>
+ 212cf54: b9400047     	ldr	w7, [x2]
+ 212cf58: f9400003     	ldr	x3, [x0]
+ 212cf5c: b9400862     	ldr	w2, [x3, #0x8]
+ 212cf60: 6b0200ff     	cmp	w7, w2
+ 212cf64: 54000180     	b.eq	0x212cf94 <Application_System_Init+0x1521f50>
+ 212cf68: f9400062     	ldr	x2, [x3]
+ 212cf6c: b4000122     	cbz	x2, 0x212cf90 <Application_System_Init+0x1521f4c>
+ 212cf70: b9400845     	ldr	w5, [x2, #0x8]
+ 212cf74: aa0303e0     	mov	x0, x3
+ 212cf78: f94004c4     	ldr	x4, [x6, #0x8]
+ 212cf7c: aa0203e3     	mov	x3, x2
+ 212cf80: 9ac408a2     	udiv	x2, x5, x4
+ 212cf84: 9b049442     	msub	x2, x2, x4, x5
+ 212cf88: eb02003f     	cmp	x1, x2
+ 212cf8c: 54fffe80     	b.eq	0x212cf5c <Application_System_Init+0x1521f18>
+ 212cf90: d2800000     	mov	x0, #0x0                // =0
+ 212cf94: d65f03c0     	ret
+ 212cf98: aa0003e6     	mov	x6, x0
+ 212cf9c: f9400000     	ldr	x0, [x0]
+ 212cfa0: f8617800     	ldr	x0, [x0, x1, lsl #3]
+ 212cfa4: b4000220     	cbz	x0, 0x212cfe8 <Application_System_Init+0x1521fa4>

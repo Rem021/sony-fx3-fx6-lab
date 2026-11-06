@@ -1,0 +1,150 @@
+{
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "entry": "0xfe057fa0",
+  "cases": [
+    {
+      "path": "\\DmmCfg.bin",
+      "result": {
+        "entry": "0xfe057fa0",
+        "arguments": [
+          "0x300000100"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0xfffffe68",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 1112,
+        "nonstack_RAM_writes": 13,
+        "first_trace": [
+          "0xfe057fa0",
+          "0xfe057fa4",
+          "0xfe057fa8",
+          "0xfe057fac",
+          "0xfe057fb0",
+          "0xfe057fb4",
+          "0xfe057fb8",
+          "0xfe057fbc",
+          "0xfe057fc0",
+          "0xfe057fc4",
+          "0xfe057fc8",
+          "0xfe057fcc",
+          "0xfe057fdc",
+          "0xfe057fe0",
+          "0xfe057fe4",
+          "0xfe057fe8"
+        ]
+      },
+      "original_function_entries": [
+        "0xfe057fa0",
+        "0xfe04a3b0",
+        "0xfe0561b4"
+      ],
+      "file_query_or_block_data_reply_supplied": false,
+      "original_byte_stream_reader_entered": false
+    },
+    {
+      "path": "\\NoSuch.bin",
+      "result": {
+        "entry": "0xfe057fa0",
+        "arguments": [
+          "0x300000100"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0xfffffe68",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 1112,
+        "nonstack_RAM_writes": 13,
+        "first_trace": [
+          "0xfe057fa0",
+          "0xfe057fa4",
+          "0xfe057fa8",
+          "0xfe057fac",
+          "0xfe057fb0",
+          "0xfe057fb4",
+          "0xfe057fb8",
+          "0xfe057fbc",
+          "0xfe057fc0",
+          "0xfe057fc4",
+          "0xfe057fc8",
+          "0xfe057fcc",
+          "0xfe057fdc",
+          "0xfe057fe0",
+          "0xfe057fe4",
+          "0xfe057fe8"
+        ]
+      },
+      "original_function_entries": [
+        "0xfe057fa0",
+        "0xfe04a3b0",
+        "0xfe0561b4"
+      ],
+      "file_query_or_block_data_reply_supplied": false,
+      "original_byte_stream_reader_entered": false
+    },
+    {
+      "path": "\\updater\\mode",
+      "result": {
+        "entry": "0xfe057fa0",
+        "arguments": [
+          "0x300000100"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0xfffffe68",
+          "0x80",
+          "0x80000000",
+          "0x1010101"
+        ],
+        "original_instructions": 1153,
+        "nonstack_RAM_writes": 12,
+        "first_trace": [
+          "0xfe057fa0",
+          "0xfe057fa4",
+          "0xfe057fa8",
+          "0xfe057fac",
+          "0xfe057fb0",
+          "0xfe057fb4",
+          "0xfe057fb8",
+          "0xfe057fbc",
+          "0xfe057fc0",
+          "0xfe057fc4",
+          "0xfe057fc8",
+          "0xfe057fcc",
+          "0xfe057fdc",
+          "0xfe057fe0",
+          "0xfe057fe4",
+          "0xfe057fe8"
+        ]
+      },
+      "original_function_entries": [
+        "0xfe057fa0",
+        "0xfe04a3b0"
+      ],
+      "file_query_or_block_data_reply_supplied": false,
+      "original_byte_stream_reader_entered": false
+    }
+  ],
+  "declared_environment_inputs": {
+    "file_context": "Empty32B at0xfe062678",
+    "heap": "64KiB model RAM and a free-list context",
+    "ctype": "Explicit pointer0xfe06147d into the unchanged original character-classification bytes; not a recovered live locale pointer.",
+    "diagnostic_thresholds": "Two explicit zero words; original diagnostic gating runs without emitting output."
+  },
+  "scope": "No original function is replaced or supplied a successful return. Original file-open/allocator/name-conversion/diagnostic instructions run in a declared software environment. No filesystem is mounted, no FAT sector/file reply supplied, no source instruction modified, and no native/device action. Ordinary return -408 belongs to this pinned NOR build, not every Sony loader or all camera boot routes."
+}

@@ -1,0 +1,527 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/run_trial_v4_try2.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v5_usability.py
+@@ -21,10 +21,10 @@
+ import time
+ import uuid
+ from cpio_audit import audit
+-from trial_ring_v1 import TrialRingReader
+-from trial_web_try2 import TrialState, start_server, KEYS
+-from trial_log_try2 import FullLogMonitor
+-from gate_input101 import InputGate,valid_command
++from trial_ring_usability import TrialRingReader
++from trial_web_v3_usability import TrialState, start_server, KEYS
++from trial_log_usability import FullLogMonitor
++from gate_input_usability import InputGate,valid_command
+ from file_readback100 import capture as capture_native_file
+ from restore_api103_v2 import restore_native_api
+ 
+@@ -52,7 +52,7 @@
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+-    state['owner'] = 'try2-delivery'
++    state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+     temp = OUT / 'STATE.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+@@ -62,25 +62,27 @@
+ def main():
+     ap = argparse.ArgumentParser(description='FX3 固件菜单本机试用')
+     ap.add_argument('--port', type=int, default=8765, help='127.0.0.1 本地端口，默认8765')
+-    ap.add_argument('--max-minutes', type=int, default=15, help='防遗留上限，1..15分钟')
++    ap.add_argument('--max-minutes', type=int, default=60, help='会话上限，1..120分钟；默认60分钟')
++    ap.add_argument('--max-steps', type=int, default=4096, help='会话按键上限，32..4096；默认4096')
++    ap.add_argument('--internal-hoststep', action='store_true', help='内部逐键文件门；不启动网页服务，不构成浏览器验收')
+     ap.add_argument('--exit-at-phase', choices=['pre-bind', 'bound-before-first-frame'], help='有界退出边界验证')
+     ns = ap.parse_args()
+-    if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 15:
+-        ap.error('端口0..65535，上限1..15分钟')
+-    ns.candidate = OUT/'vmopt-20261103-try2-v1/candidate.json'
++    if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 120 or not 32 <= ns.max_steps <= 4096:
++        ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
++    ns.candidate = OUT/'vmopt-20261103-try2-long-v1/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2'
++    ns.label = 'try2internal' if ns.internal_hoststep else 'try2long'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-v1'):
++    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-long-v1'):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+-    if digest(candidate_path) != 'c7691dcc0cb35fb9aabf471b3859da2b54c19bde4b77b9446e14d293d67d5487':
++    if digest(candidate_path) != 'd3bb8f938144d8a59b77d6168aff846880977a429c701ad8d207de36d199a114':
+         raise RuntimeError('TRY2 manifest identity changed')
+     candidate = json.loads(candidate_path.read_text())
+     if candidate.get('try2_contract', {}).get('ready_before_CP_binding') is not True:
+@@ -96,7 +98,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-v1') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-v1'):
++    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-long-v1') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-long-v1'):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+@@ -153,13 +155,14 @@
+             raise RuntimeError('已有 FX3 试用或验证正在运行，请等待其结束后重试。不会抢锁或停止其他会话。')
+         locks.append(lock)
+     label = ''.join(c for c in ns.label if c.isalnum() or c in '-_')[:32]
++    (OUT / 'runs').mkdir(exist_ok=True)
+     run = OUT / 'runs' / (label + '-' + uuid.uuid4().hex[:8])
+     run.mkdir()
+     run.chmod(0o700)
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input101.py','file_readback100.py','trial_web_try2.py','trial_ring_v1.py','trial_log_try2.py','restore_api103_v2.py']:
++    for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v3_usability.py','trial_ring_usability.py','trial_log_usability.py','restore_api103_v2.py']:
+         shutil.copyfile(OUT / name if (OUT / name).exists() else ROOT / name, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+     (run / 'cpio-audit.json').write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')
+@@ -223,7 +226,7 @@
+         resource.setrlimit(resource.RLIMIT_FSIZE, (512 * 1024 * 1024, 512 * 1024 * 1024))
+         resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+ 
+-    trial = TrialState(run, ns.seconds)
++    trial = TrialState(run, ns.seconds, ns.max_steps)
+     server = web_thread = None
+     qmp = None
+     input_gate = None
+@@ -246,7 +249,8 @@
+ 
+     with (run / 'host-stdout.log').open('wb') as stdout, (run / 'host-stderr.log').open('wb') as stderr:
+         try:
+-            server, web_thread = start_server(trial, ns.port)
++            if not ns.internal_hoststep:
++                server, web_thread = start_server(trial, ns.port)
+             p = subprocess.Popen(args, cwd=run, env=env, stdout=stdout, stderr=stderr,
+                                  start_new_session=True, preexec_fn=limits)
+             checkpoint({'phase': 'TRY2_RUNNING_LOCAL_INTERACTIVE', 'current_candidate': str(candidate_path),
+@@ -293,17 +297,20 @@
+             qmp('query-cpus-fast')
+             qmp('cont')
+             ring_reader = TrialRingReader(run, qmp, trial)
+-            input_gate = InputGate(run, delete_key=0x1f8)
++            input_gate = InputGate(run, delete_key=0x1f8, max_steps=ns.max_steps)
+             (run/'trial-session.json').write_text(json.dumps({
+                 'url': trial.url, 'run': str(run), 'observer_pid': os.getpid(), 'qemu_pid': p.pid,
+-                'authority': 'TRY2 local delivery', 'max_seconds': ns.seconds, 'max_steps': 30,
++                'authority': 'TRY2 usability', 'max_seconds': ns.seconds, 'max_steps': ns.max_steps,
+                 'exit_at_phase': ns.exit_at_phase,
+                 'models_identical_to_frozen_AP101_r4': False, 'listen': '127.0.0.1',
+                 'button_whitelist': {hex(k): v for k, v in KEYS.items()},
+                 'hold_ms': 100, 'HTTP_threads_have_no_QMP_or_guest_access': True,
+             }, ensure_ascii=False, indent=2)+'\n')
+             checkpoint({'trial_url': trial.url, 'trial_run': str(run)})
+-            print('试用网址:', trial.url, flush=True)
++            if trial.url:
++                print('试用网址:', trial.url, flush=True)
++            else:
++                print('内部逐键文件门，不启动网页服务。', flush=True)
+             print('RUN', run, flush=True)
+             print('等待固件待机画面；结束请用网页按钮或 Ctrl-C。', flush=True)
+             guest_start = time.monotonic()
+@@ -323,6 +330,9 @@
+ 
+             phase_exit_hit = False
+             while time.monotonic() < deadline and p.poll() is None and not trial.stop.is_set():
++                if ns.internal_hoststep and time.monotonic() >= deadline-240:
++                    stop_cause = 'internal_input_window_end_with_240s_cleanup_reserve'
++                    break
+                 serial_now = log_monitor.poll()
+                 if ns.exit_at_phase == 'pre-bind' and 'FX3_SYNC100_BACKEND_BOUND' not in serial_now:
+                     phase_exit_hit = True; stop_cause = 'pre_bind_exit_phase'; break
+@@ -396,11 +406,12 @@
+ 
+                 for match in re.finditer(r'FX3_SYNTH_KEY step=(\d+) key=(0x[0-9a-f]+) status=0 [^\n]*result=0 ', serial_now):
+                     up_seen.setdefault(int(match[1]), (time.monotonic(), int(match[2], 0)))
+-                frame_changed = (current_command is not None and ring_reader.last > current_command['before_command_sequence'])
++                frame_changed = (current_command is not None and ring_reader.current_record is not None
++                                 and ring_reader.current_record.get('PNG_sha256') != current_command['before_command_png_sha256'])
+                 both_native_events = (current_command is not None and all(
+                     re.search(r'FX3_KEY_INPUT_RECV step=%d key=%s status=%d [^\n]*native_result=0' % (host_step, hex(current_command['key']), status), serial_now)
+                     for status in (0, 1)))
+-                unchanged_wait = 180 if current_command is not None and current_command['key'] == 0x1ab else 20
++                unchanged_wait = 180 if current_command is not None and current_command['key'] == 0x1ab else 6
+                 if (current_command is not None and host_step in up_seen and both_native_events
+                         and time.monotonic()-up_seen[host_step][0] >= 1
+                         and (frame_changed or time.monotonic()-up_seen[host_step][0] >= unchanged_wait)):
+@@ -413,11 +424,38 @@
+                         trial.events.append('%02d · %s · 固件已接收，帧 %s%s' % (host_step, current_command['label'], captured['sequence'], '' if frame_changed else '（画面未变）'))
+                         trial.busy = False
+                     current_command = None
+-                    trial.update(message='本轮已达 30 次按键，请结束后重新启动。' if host_step == 30 else '画面已更新，可以继续操作。' if frame_changed else '按键已接收，画面尚未更新；请观察后再继续。')
++                    trial.update(message='固件提交全黑画面，已暂停按键；可结束试用。' if not trial.render_valid
++                                 else '本轮已达按键上限，请结束后重新启动。' if host_step == ns.max_steps
++                                 else '画面已更新，可以继续操作。' if frame_changed
++                                 else '按键已接收，像素未变；请观察后再继续。')
+                 if current_command is not None and host_step not in up_seen and time.monotonic()-current_command['sent_monotonic'] > 12:
+                     raise RuntimeError('按键 12 秒内未得到原生 key-up 回执')
+ 
+-                proposed = trial.take() if current_command is None else None
++                proposed = trial.take() if current_command is None and not ns.internal_hoststep else None
++                if ns.internal_hoststep and current_command is None and phaseA_capture is not None and trial.render_valid:
++                    request_path = run/'INTERNAL_STEP.json'
++                    if request_path.exists():
++                        if request_path.is_symlink() or request_path.stat().st_size > 4096:
++                            raise RuntimeError('内部逐键请求文件身份/大小无效')
++                        request = json.loads(request_path.read_text())
++                        frame = ring_reader.current_record
++                        observed_path = run/('internal-observe-%02d.json' % (host_step+1))
++                        observed = json.loads(observed_path.read_text()) if observed_path.is_file() else None
++                        if (request.get('mode') != 'internal-hoststep-v1' or request.get('step') != host_step+1
++                                or request.get('key') not in KEYS or request.get('hold_ms') != 100
++                                or not isinstance(request.get('observed_page'), str) or not request['observed_page'].strip()
++                                or not isinstance(request.get('reason'), str) or not request['reason'].strip()
++                                or observed is None or request.get('observed_sequence') != observed['sequence']
++                                or observed['sequence'] > frame['sequence']
++                                or request.get('observed_png_sha256') != observed['PNG_sha256']
++                                or observed['PNG_sha256'] != frame['PNG_sha256']
++                                or digest(run/'trial-frame.png') != frame['PNG_sha256']):
++                            raise RuntimeError('内部逐键请求与当前已提交PNG/顺序/白名单不符')
++                        request_path.rename(run/('internal-step-%02d-request.json' % (host_step+1)))
++                        proposed = {'key': request['key'], 'label': KEYS[request['key']],
++                                    'observed_frame': dict(observed), 'observed_page': request['observed_page'],
++                                    'reason': request['reason'], 'requested_monotonic': time.monotonic(),
++                                    'source': 'internal_hoststep_file'}
+                 if proposed is not None and not trial.stop.is_set():
+                     # Inspect ALL bytes appended since this iteration began before any guest write.
+                     log_monitor.poll()
+@@ -426,16 +464,17 @@
+                         trial.fail(early_stop_reason)
+                         break
+                     key = proposed['key']
+-                    if not valid_command(host_step+1, key, 100, host_step, input_gate.delete_key):
++                    if not valid_command(host_step+1, key, 100, host_step, input_gate.delete_key, ns.max_steps):
+                         raise RuntimeError('白名单、步数或按键持续时间校验失败')
+                     frame = proposed['observed_frame']
+-                    description = '用户网页显示本轮原生提交帧 sequence=%d SHA256=%s' % (frame['sequence'], frame['PNG_sha256'])
+-                    reason_text = '用户点击网页按钮：'+proposed['label']
++                    description = ('内部看图：'+proposed['observed_page'] if ns.internal_hoststep else '用户网页显示本轮原生提交帧') + ' sequence=%d SHA256=%s' % (frame['sequence'], frame['PNG_sha256'])
++                    reason_text = proposed['reason'] if ns.internal_hoststep else '用户点击网页按钮：'+proposed['label']
+                     qmp('stop')
+                     host_step += 1
+                     sent = input_gate.command(host_step, key, 100, description, reason_text)
+                     qmp('cont')
+-                    current_command = dict(proposed, step=host_step, before_command_sequence=ring_reader.last, sent_monotonic=time.monotonic())
++                    current_command = dict(proposed, step=host_step, before_command_sequence=ring_reader.last,
++                                           before_command_png_sha256=ring_reader.current_record['PNG_sha256'], sent_monotonic=time.monotonic())
+                     with (run/'trial-input-events.jsonl').open('a') as events:
+                         events.write(json.dumps(dict(current_command, gate=sent), ensure_ascii=False)+'\n')
+                     trial.update(steps=host_step, message='按键已发送，等待固件画面…')
+@@ -541,7 +580,8 @@
+                'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+                'models_identical_to_frozen_AP101_r4': False, 'authority': 'msg_3a52a0ab7e46',
+                'observer_source_snapshot': observer_sources, 'run': str(run),
+-               'maximum_seconds': ns.seconds, 'stop_cause': stop_cause,
++               'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps, 'stop_cause': stop_cause,
++               'internal_hoststep_mode': ns.internal_hoststep, 'HTTP_key_source_used': not ns.internal_hoststep,
+                'qemu_pid': None if p is None else p.pid, 'qemu_exit': None if p is None else p.returncode,
+                'process_reaped': p is not None and p.poll() is not None, 'PID_absent': pid_absent,
+                'inputs_unchanged': unchanged, 'input_checks': [{'path': str(path), 'sha256': h} for path, h in checks],
+@@ -553,6 +593,9 @@
+                'key_steps': trial.steps, 'step_captures': step_captures,
+                'standby_ready': phaseA_capture is not None if 'phaseA_capture' in locals() else False,
+                'menu_verified': False, 'visual_acceptance_separate_from_health': True,
++               'render_valid_at_end': trial.render_valid, 'black_after_ready': trial.black_after_ready,
++               'render_observation_ok': bool(phaseA_capture is not None and trial.render_valid and not trial.black_after_ready),
++               'browser_visual_acceptance': None,
+                'physical_device_operations': 0, 'remote_network_connections': 0, 'HTTP_loopback_only': True,
+                'scope': 'TRY2 original FX3 menu software model with improved icon and focus presentation; no camera, live view, or exact compositor claim'}
+     (run/'receipt.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2)+'\n')
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v5_usability.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v6_media_gap.py
+@@ -69,20 +69,20 @@
+     ns = ap.parse_args()
+     if not 0 <= ns.port <= 65535 or not 1 <= ns.max_minutes <= 120 or not 32 <= ns.max_steps <= 4096:
+         ap.error('端口0..65535，会话1..120分钟，按键32..4096次')
+-    ns.candidate = OUT/'vmopt-20261103-try2-long-v1/candidate.json'
++    ns.candidate = OUT/'vmopt-20261103-try2-long-media-gap-v2/candidate.json'
+     ns.seconds = ns.max_minutes*60
+     ns.trace_seconds = 0
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2internal' if ns.internal_hoststep else 'try2long'
++    ns.label = 'try2gapinternal' if ns.internal_hoststep else 'try2gap'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+     candidate_path = ns.candidate.resolve()
+-    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-long-v1'):
++    if not candidate_path.is_relative_to(OUT / 'vmopt-20261103-try2-long-media-gap-v2'):
+         raise RuntimeError('Candidate manifest must be in this menu-repair task')
+-    if digest(candidate_path) != 'd3bb8f938144d8a59b77d6168aff846880977a429c701ad8d207de36d199a114':
++    if digest(candidate_path) != '67eb81401a457bf7ffecb21f7367e7819b5bf3e13aef39dd8a4c9001ce408417':
+         raise RuntimeError('TRY2 manifest identity changed')
+     candidate = json.loads(candidate_path.read_text())
+     if candidate.get('try2_contract', {}).get('ready_before_CP_binding') is not True:
+@@ -98,7 +98,7 @@
+         input_check({'path': str(p), 'sha256': h})
+     dtb = input_check(candidate['dtb'])
+     initrd = input_check(candidate['initrd'])
+-    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-long-v1') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-long-v1'):
++    if not dtb.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-long-media-gap-v2') or not initrd.resolve().is_relative_to(OUT / 'vmopt-20261103-try2-long-media-gap-v2'):
+         raise RuntimeError('Candidate DTB/initrd must be in this task')
+     checks += [(dtb, candidate['dtb']['sha256']), (initrd, candidate['initrd']['sha256']),
+                (candidate_path, digest(candidate_path))]
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/trial_web_try2.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/trial_web_v3_usability.py
+@@ -11,7 +11,7 @@
+ 
+ 
+ class TrialState:
+-    def __init__(self, run, max_seconds):
++    def __init__(self, run, max_seconds, max_steps):
+         self.lock = threading.RLock()
+         self.stop = threading.Event()
+         self.token = secrets.token_urlsafe(32)
+@@ -23,7 +23,9 @@
+         self.ready = False
+         self.busy = False
+         self.steps = 0
+-        self.max_steps = 30
++        self.max_steps = max_steps
++        self.render_valid = False
++        self.black_after_ready = []
+         self.pending = collections.deque()
+         self.events = []
+         self.png = None
+@@ -39,7 +41,12 @@
+ 
+     def publish(self, png, frame):
+         with self.lock:
++            if frame.get('all_zero_pixels', False) and self.ready and self.render_valid:
++                self.black_after_ready.append({'sequence': frame['sequence'], 'pixel_source_sequence': frame['pixel_source_sequence'], 'host_monotonic': time.monotonic()})
++                self.events.append('画面提交了全黑像素；已暂停按键，等待真实画面或结束试用。')
++                self.message = '固件提交全黑画面，已暂停按键；可结束试用。'
+             self.png, self.frame = png, dict(frame)
++            self.render_valid = not frame.get('all_zero_pixels', False)
+             self.frames[frame['sequence']] = dict(frame)
+             while len(self.frames) > 64:
+                 self.frames.popitem(last=False)
+@@ -48,8 +55,10 @@
+         with self.lock:
+             return {'phase': self.phase, 'message': self.message, 'error': self.error,
+                     'ready': bool(self.ready and not self.busy and not self.stop.is_set()
+-                                  and not self.error and self.steps < self.max_steps),
++                                  and not self.error and self.render_valid and self.steps < self.max_steps),
+                     'busy': self.busy, 'steps': self.steps, 'max_steps': self.max_steps,
++                    'render_valid': self.render_valid,
++                    'black_after_ready_count': len(self.black_after_ready),
+                     'frame': self.frame, 'result': self.result,
+                     'remaining_seconds': max(0, int(self.deadline-time.monotonic())),
+                     'events': list(self.events[-12:])}
+@@ -61,12 +70,14 @@
+                 return 400, {'error': '仅支持页面上的七个按钮。'}
+             if type(sequence) is not int or sequence not in self.frames:
+                 return 409, {'error': '请等待当前画面显示后再按键。'}
++            if not self.render_valid or not self.frame or self.frames[sequence]['PNG_sha256'] != self.frame['PNG_sha256']:
++                return 409, {'error': '当前画面已变化或不可用，请等待并查看最新画面。'}
+             if self.stop.is_set() or self.error or self.phase in ('stopping', 'finished'):
+                 return 409, {'error': '试用已停止接收按键。'}
+             if not self.ready or self.busy or self.pending:
+                 return 409, {'error': '上一按键仍在处理，请稍候。'}
+             if self.steps >= self.max_steps:
+-                return 409, {'error': '本轮已达 30 次按键，请结束后重新启动。'}
++                return 409, {'error': '本轮已达配置的按键上限，请结束后重新启动。'}
+             item = {'key': key, 'label': KEYS[key], 'observed_frame': self.frames[sequence],
+                     'requested_monotonic': time.monotonic(), 'source': 'local_web_user'}
+             self.pending.append(item)
+@@ -107,20 +118,39 @@
+ <div class="pad"><button class="key up" data-key="3" disabled>↑ 上</button><button class="key left" data-key="21" disabled>← 左</button><button class="key" data-key="428" disabled>确定</button><button class="key" data-key="431" disabled>右 →</button><button class="key down" data-key="48" disabled>↓ 下</button></div>
+ <div class="wide"><button class="key" data-key="427" disabled>MENU</button><button class="key" data-key="504" disabled>删除 / C4</button></div>
+ <button id="end">结束试用</button><ol id="events"></ol></div></div>
+-<details open><summary>当前限制</summary><p class="small">当前固定副本已在冷启动观察到 English；图标与橙色焦点仍需逐屏观察；无实时取景，画面采用软件合成。每轮最多 30 次按键，最长 15 分钟。关闭网页不会结束模拟器，请点击“结束试用”或在启动终端按 Ctrl-C。</p></details>
++<details open><summary>当前限制</summary><p class="small">当前固定副本已在冷启动观察到 English；图标与橙色焦点仍需逐屏观察；无实时取景，画面来自软件 OSD 采样，尚未证明原 CP 多画面层合成。每轮默认最多 4096 次按键、最长 60 分钟；以启动参数为准。关闭网页不会结束模拟器，请点击“结束试用”或在启动终端按 Ctrl-C。</p></details>
+ <script>
+-const token=__TOKEN__;let displayed=0,shown=0,busy=false,ending=false,finished=false,lastURL=null;
++const token=__TOKEN__;let displayed=0,shown=0,shownSHA='',busy=false,ending=false,finished=false,lastURL=null,renderFault=null;
+ const image=document.querySelector('#frame'),statusEl=document.querySelector('#status'),err=document.querySelector('#error');
+ const keys=[...document.querySelectorAll('.key')];
+ async function post(path,body){const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json','X-Trial-Token':token},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw Error(j.error||'操作未完成');return j;}
+-async function tick(){if(finished)return;try{const r=await fetch('/api/status',{cache:'no-store'});const s=await r.json();
+-statusEl.textContent=s.message;err.textContent=s.error||'';keys.forEach(b=>b.disabled=!s.ready||busy||ending||!displayed);
+-document.querySelector('#meta').textContent=`按键 ${s.steps}/${s.max_steps} · 剩余 ${Math.ceil(s.remaining_seconds/60)} 分钟 · 帧 ${s.frame?s.frame.sequence:'等待中'}`;
+-document.querySelector('#events').replaceChildren(...s.events.map(e=>{const li=document.createElement('li');li.textContent=e;return li;}));
+-if(s.frame&&s.frame.sequence!==shown){const f=await fetch('/frame.png',{cache:'no-store'});if(f.ok){const seq=Number(f.headers.get('X-Frame-Sequence'));const u=URL.createObjectURL(await f.blob());await new Promise(resolve=>{image.onload=()=>{document.querySelector('#placeholder').hidden=true;resolve();};image.src=u;});displayed=shown=seq;if(lastURL)URL.revokeObjectURL(lastURL);lastURL=u;}}
+-if(s.phase==='finished'){finished=true;keys.forEach(b=>b.disabled=true);document.querySelector('#end').disabled=true;}
+-}catch(e){if(ending){statusEl.textContent='试用已结束，窗口可以关闭。';finished=true;}else{err.textContent='连接已中断；请查看启动终端或重新启动试用。';keys.forEach(b=>b.disabled=true);}}if(!finished)setTimeout(tick,400);}
+-keys.forEach(b=>b.onclick=async()=>{if(busy||ending)return;busy=true;keys.forEach(k=>k.disabled=true);try{await post('/api/key',{key:Number(b.dataset.key),observed_sequence:displayed});err.textContent='';}catch(e){err.textContent=e.message;}finally{busy=false;}});
++function enableKeys(s){const visual=!!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&s.render_valid&&!renderFault;keys.forEach(b=>b.disabled=!s.ready||busy||ending||!visual);}
++async function showFrame(s){
++ if(!s.frame)return;
++ if(s.frame.PNG_sha256===shownSHA){displayed=shown=s.frame.sequence;return;}
++ const response=await fetch('/frame.png',{cache:'no-store'});if(!response.ok)throw Error('画面请求失败：HTTP '+response.status);
++ const seq=Number(response.headers.get('X-Frame-Sequence')),sha=response.headers.get('X-Frame-PNG-SHA256');
++ if(!Number.isSafeInteger(seq)||seq<=0||!sha)throw Error('画面身份缺失');
++ const u=URL.createObjectURL(await response.blob());
++ try{await new Promise((resolve,reject)=>{let done=false;const timer=setTimeout(()=>{if(!done){done=true;reject(Error('画面加载超时，请刷新页面或结束试用'));}},8000);
++   image.onload=()=>{if(!done){done=true;clearTimeout(timer);resolve();}};
++   image.onerror=()=>{if(!done){done=true;clearTimeout(timer);reject(Error('画面解码失败，请刷新页面或结束试用'));}};
++   image.src=u;});
++ }catch(e){URL.revokeObjectURL(u);throw e;}
++ document.querySelector('#placeholder').hidden=true;
++ displayed=shown=seq;shownSHA=sha;if(lastURL)URL.revokeObjectURL(lastURL);lastURL=u;
++}
++async function tick(){if(finished)return;let s=null;try{
++ const response=await fetch('/api/status',{cache:'no-store'});if(!response.ok)throw Error('状态请求失败：HTTP '+response.status);s=await response.json();
++ statusEl.textContent=s.message;err.textContent=s.error||'';
++ document.querySelector('#meta').textContent=`按键 ${s.steps}/${s.max_steps} · 剩余 ${Math.ceil(s.remaining_seconds/60)} 分钟 · 提交帧 ${s.frame?s.frame.sequence:'等待中'}${s.frame?' · 像素源 '+s.frame.pixel_source_sequence:''}`;
++ document.querySelector('#events').replaceChildren(...s.events.map(e=>{const li=document.createElement('li');li.textContent=e;return li;}));
++ if(s.frame&&s.frame.sequence!==shown)await showFrame(s);
++ renderFault=null;enableKeys(s);
++ if(s.phase==='finished'){finished=true;keys.forEach(b=>b.disabled=true);document.querySelector('#end').disabled=true;}
++ }catch(e){renderFault=e.message;err.textContent=renderFault;keys.forEach(b=>b.disabled=true);if(ending){statusEl.textContent='试用已结束，窗口可以关闭。';finished=true;}}
++ finally{if(!finished)setTimeout(tick,400);}}
++keys.forEach(b=>b.onclick=async()=>{if(busy||ending||renderFault)return;busy=true;keys.forEach(k=>k.disabled=true);try{await post('/api/key',{key:Number(b.dataset.key),observed_sequence:displayed});err.textContent='';}catch(e){err.textContent=e.message;}finally{busy=false;}});
+ document.querySelector('#end').onclick=async()=>{ending=true;keys.forEach(b=>b.disabled=true);document.querySelector('#end').disabled=true;statusEl.textContent='正在结束试用并回收资源…';try{await post('/api/stop',{});}catch(e){err.textContent=e.message;}};tick();
+ </script></html>'''
+ 
+@@ -165,7 +195,7 @@
+                     data, frame = state.png, state.frame
+                 if data is None:
+                     return self.reply(503, {'error': '画面尚未就绪。'})
+-                return self.reply(200, data, 'image/png', {'X-Frame-Sequence': str(frame['sequence'])})
++                return self.reply(200, data, 'image/png', {'X-Frame-Sequence': str(frame['sequence']), 'X-Frame-PNG-SHA256': frame['PNG_sha256']})
+             return self.reply(404, {'error': '页面不存在。'})
+ 
+         def do_POST(self):
+--- work/fx3-vm-20261101/menu-repair-01/runtime/trial_ring_v1.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/trial_ring_usability.py
+@@ -69,6 +69,7 @@
+                   'stride_pixels': stride, 'span': v[11], 'fnv64': hex(v[12]), 'sha256': sha(raw),
+                   'PNG_sha256': sha(encoded), 'QMP_read_only': True,
+                   'nonuniform_pixels': any(pixels[i:i+4] != pixels[:4] for i in range(4, len(pixels), 4)),
++                  'all_zero_pixels': raw.count(0) == len(raw),
+                   'host_monotonic': time.monotonic(), 'committed_slot': index,
+                   'native_identity': {'FB': hex(v[13]), 'bitmap': hex(v[14]), 'entry': hex(v[15]),
+                                       'allocation': hex(v[16]), 'metadata_physical': hex(v[17]),
+--- work/fx3-vm-20261101/menu-repair-01/runtime/gate_input101.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/gate_input_usability.py
+@@ -2,10 +2,10 @@
+ from pathlib import Path
+ import socket,os,struct,time,json
+ PHYS=0x41df00000;MAGIC=0x3545594b334d5253;BASE_KEYS={3,0x30,0x15,0x1af,0x1ac,0x1ab}
+-def valid_command(step,key,hold_ms,count,delete_key=0):
+- return count<30 and step==count+1 and 1<=step<=30 and key in BASE_KEYS|({delete_key} if delete_key else set()) and 50<=hold_ms<=200
++def valid_command(step,key,hold_ms,count,delete_key=0,max_steps=4096):
++ return 32<=max_steps<=4096 and count<max_steps and step==count+1 and 1<=step<=max_steps and key in BASE_KEYS|({delete_key} if delete_key else set()) and 50<=hold_ms<=200
+ class InputGate:
+- def __init__(self,run,delete_key=0):self.run=Path(run);self.sock=None;self.history=[];self.delete_key=delete_key
++ def __init__(self,run,delete_key=0,max_steps=4096):self.run=Path(run);self.sock=None;self.history=[];self.delete_key=delete_key;self.max_steps=max_steps
+  def exact(self,n):
+   out=bytearray()
+   while len(out)<n:
+@@ -39,7 +39,7 @@
+   if self.packet('Qqemu.PhyMemMode:1')!='OK':raise RuntimeError('physical GDB mode unavailable')
+   if self.packet('qqemu.PhyMemMode')!='1':raise RuntimeError('physical GDB mode readback failed')
+  def command(self,step,key,hold_ms,observed_page,reason):
+-  if not observed_page or not reason or not valid_command(step,key,hold_ms,len(self.history),self.delete_key):raise ValueError('Unapproved host-step command/key/hold/visual reasoning')
++  if not observed_page or not reason or not valid_command(step,key,hold_ms,len(self.history),self.delete_key,self.max_steps):raise ValueError('Unapproved host-step command/key/hold/visual reasoning')
+   self.connect();raw=bytes.fromhex(self.packet(f'm{PHYS:x},40'))
+   if len(raw)!=64:raise RuntimeError('short host-step software header')
+   magic,previous,oldkey,oldhold,reserved,done,donekey=struct.unpack_from('<Q6I',raw)
+--- work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-rm-empty-provider-v7-diag96.c
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-rm-empty-provider-v8-long-use.c
+@@ -21,7 +21,7 @@
+ static const struct rm93_ops ops={allocate,send,release,0,alive,event};
+ static int callback(void*message,void*unused){(void)unused;int saved=*__errno_location();acquire();if(tail-head>=32){unlock();nf(RM93_ID,message);event("QUEUE_REJECT",32,0,0);*__errno_location()=saved;return 0;}jobs[tail%32]=message;tail++;unlock();*__errno_location()=saved;return 0;}
+ static void*worker(void*unused){(void)unused;struct rm93_ops o=ops;o.source=nss;for(;;){void*p=0;acquire();if(head<tail){p=jobs[head%32];jobs[head%32]=0;head++;}unlock();if(!p){usleep(1000);continue;}W n=nz(p);dprintf(2,"FX3_RM_REQUEST tid=%ld source=%#x pointer=%p bytes=%u native_received=1\n",syscall(178),ng(p),p,n);raw("REQUEST",p,n);int rc=rm93_process(&model,&o,p,n);if(rc)event("PROCESS_REJECT",(W)rc,0,0);}return 0;}
+-#include "fx3-rm-key-gate-v5-diag96.inc"
++#include "fx3-rm-key-gate-v6-long-use.inc"
+ static int start(void){if(started)return ready?0:-1;if(!active())return 0;char exe[128]={0};if(readlink("/proc/self/exe",exe,127)<=0||strcmp(exe,"/usr/bin/im.elf"))return 0;started=1;owner=syscall(172);
+  na=dlsym((void*)-1,"osal_valloc_msg_wait");ns=dlsym((void*)-1,"osal_snd_msg");nf=dlsym((void*)-1,"osal_free_msg");nst=dlsym((void*)-1,"osal_stat_msgq");nreg=dlsym((void*)-1,"osal_reg_msg_queue_cb");nz=dlsym((void*)-1,"osal_msg_size");ng=dlsym((void*)-1,"osal_get_msg_src");nss=dlsym((void*)-1,"osal_set_msg_src");nr=dlsym((void*)-1,"osal_rcv_msg_tmo");if(!na||!ns||!nf||!nst||!nreg||!nz||!ng||!nss||!nr){event("BIND_REJECT",0,0,0);return -1;}
+  int previous=alive(RM93_ID);if(previous!=0){dprintf(2,"FX3_RM_QUEUE_CONFLICT stat=%d original_service_not_replaced=1\n",previous);event("BIND_REJECT",1,previous,0);return -1;}U t;int rc=pthread_create(&t,0,worker,0);if(rc){event("BIND_REJECT",2,rc,0);return -1;}pthread_detach(t);rc=nreg(RM93_ID,&handle,callback,0);int after=rc?0:alive(RM93_ID);if(rc||after!=1){event("BIND_REJECT",3,rc,after);return -1;}ready=1;dprintf(2,"FX3_RM_BOUND queue=0x80d9016e pid=%lu callback_handle=%#lx previous_registered=0 now_registered=1 before_MediaDetect_dlopen=1 synthetic_empty_slot_provider=1 original_CP=0 kernel_mcmn_loaded=0\n",owner,handle);if(pthread_create(&t,0,keyworker,0)){event("KEY_REJECT",0,0,0);return -1;}pthread_detach(t);return 0;}
+--- work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-rm-key-gate-v5-diag96.inc
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-rm-key-gate-v6-long-use.inc
+@@ -1,6 +1,6 @@
+ /* Sole host-controlled synthetic source. The host writes only cmd/key in a
+  * new software-owned reserved page; original input/cache/UI are never written. */
+-#include "fx3-input95-hoststep-v1.h"
++#include "fx3-input-v2-long-use.h"
+ #ifndef HP95_DELETE_KEY
+ #define HP95_DELETE_KEY 0U
+ #endif
+@@ -16,7 +16,7 @@
+ 
+ static int key_send(W step,W key,W down){unsigned char b[20];if(hp95_pack(key,down,HP95_DELETE_KEY,b))return -1;void*p=0;int rc=allocate(0x807a0020U,&p,20);if(rc||!p){if(p)release(0x807a0020U,p);return -2;}memcpy(p,b,20);nss(p,0x00410025U);__atomic_store_n(&key_step,step,__ATOMIC_RELEASE);rc=send(0x807a0020U,p);if(rc)release(0x807a0020U,p);dprintf(2,"FX3_SYNTH_KEY step=%u key=%#x status=%u synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=%d monotonic_ns=%lu host_gate=1\n",step,key,down,rc,now());key_last_send=rc;return rc;}
+ static void*keyworker(void*unused){(void)unused;char cmd[4096]={0};int fd=open("/proc/cmdline",0);long n=fd<0?-1:read(fd,cmd,sizeof(cmd)-1);if(fd>=0)close(fd);if(n<=0||!strstr(cmd,"memrsv=0x00010000@0x41df00000:uc")){event("KEY_REJECT",1,0,0);return 0;}fd=open("/dev/mem",2);void*p=fd<0?(void*)-1:mmap(0,65536,3,1,fd,KEY93_PHYS);if(fd>=0)close(fd);if(p==(void*)-1){event("KEY_REJECT",2,0,0);return 0;}key_control=p;int identity_fd=open("/tmp/fx3-keyworker96.identity",0x200c1,0600);if(identity_fd>=0){dprintf(identity_fd,"%lu %lu\n",syscall(172),syscall(178));close(identity_fd);}memset(p,0,65536);*(volatile U*)p=KEY93_MAGIC;key_mem=open("/proc/self/mem",0);if(key_mem<0){event("KEY_REJECT",3,0,0);return 0;}void*(*load)(const char*,int)=dlsym((void*)-1,"dlopen");if(!load){event("KEY_REJECT",4,0,0);return 0;}struct lm*l=0;while(!key_obj){if(__atomic_load_n(&failed,__ATOMIC_ACQUIRE))return 0;void*h=load("libObj.so",5);if(h&&!dlinfo(h,2,&l)&&l&&l->base)key_obj=l->base;else usleep(50000);}
+- W done=0;dprintf(2,"FX3_KEY96_READY physical=%#lx bytes=65536 header_magic=%#lx host_command_bytes=12 step_key_hold_ms_offset8=1 done_offset24=1 max_steps=30 hold_ms_min=50 hold_ms_max=200 delete_key=%#x native_NOLOAD_base=%#lx synthetic_input=1 original_cp_key_detection=0 host_step_only=1\n",KEY93_PHYS,KEY93_MAGIC,HP95_DELETE_KEY,key_obj);
+- for(;;){key_diag96(done,1);if(__atomic_load_n(&failed,__ATOMIC_ACQUIRE))return 0;W command=__atomic_load_n((volatile W*)(key_control+8),__ATOMIC_ACQUIRE);if(command==done){usleep(5000);continue;}struct hp95_command c={command,__atomic_load_n((volatile W*)(key_control+12),__ATOMIC_ACQUIRE),__atomic_load_n((volatile W*)(key_control+16),__ATOMIC_ACQUIRE)};if(command!=__atomic_load_n((volatile W*)(key_control+8),__ATOMIC_ACQUIRE)||hp95_validate(done,&c,HP95_DELETE_KEY)||!__atomic_load_n(&receiver_seen,__ATOMIC_ACQUIRE)){event("KEY_REJECT",5,c.step,c.key);return 0;}key_diag96(done,3);W cache=0;if(!key_cache(c.key,&cache)){event("KEY_REJECT",6,c.step,c.key);return 0;}dprintf(2,"FX3_KEY_CACHE step=%u key=%#x when=before_down readable=1 status=%#x native_cache_readonly=1\n",c.step,c.key,cache);U start=now();key_diag96(done,4);if(key_send(c.step,c.key,1)){event("KEY_REJECT",7,c.step,c.key);return 0;}key_diag96(done,5);U down=now();*(volatile U*)(key_control+32)=down;int wait_rc=usleep(c.hold_ms*1000);key_diag96(done,6);if(key_send(c.step,c.key,0)){event("KEY_REJECT",8,c.step,c.key);return 0;}U up=now();*(volatile U*)(key_control+40)=up;*(volatile W*)(key_control+28)=c.key;*(volatile W*)(key_control+48)=c.hold_ms;*(volatile W*)(key_control+52)=wait_rc?1:0;*(volatile U*)(key_control+56)=c.step*2;done=c.step;__atomic_store_n((volatile W*)(key_control+24),done,__ATOMIC_RELEASE);dprintf(2,"FX3_KEY95_STEP_DONE step=%u key=%#x requested_hold_ms=%u measured_down_up_ns=%lu elapsed_ns=%lu wait_result=%d native_input_queue=1 one_down_one_up=1 host_next_required=1\n",done,c.key,c.hold_ms,up-down,now()-start,wait_rc);key_diag96(done,7);if(wait_rc){event("KEY_REJECT",9,c.step,c.key);return 0;}if(done>=30)return 0;}
++ W done=0;dprintf(2,"FX3_KEY96_READY physical=%#lx bytes=65536 header_magic=%#lx host_command_bytes=12 step_key_hold_ms_offset8=1 done_offset24=1 max_steps=4096 hold_ms_min=50 hold_ms_max=200 delete_key=%#x native_NOLOAD_base=%#lx synthetic_input=1 original_cp_key_detection=0 host_step_only=1\n",KEY93_PHYS,KEY93_MAGIC,HP95_DELETE_KEY,key_obj);
++ for(;;){key_diag96(done,1);if(__atomic_load_n(&failed,__ATOMIC_ACQUIRE))return 0;W command=__atomic_load_n((volatile W*)(key_control+8),__ATOMIC_ACQUIRE);if(command==done){usleep(5000);continue;}struct hp95_command c={command,__atomic_load_n((volatile W*)(key_control+12),__ATOMIC_ACQUIRE),__atomic_load_n((volatile W*)(key_control+16),__ATOMIC_ACQUIRE)};if(command!=__atomic_load_n((volatile W*)(key_control+8),__ATOMIC_ACQUIRE)||hp95_validate(done,&c,HP95_DELETE_KEY)||!__atomic_load_n(&receiver_seen,__ATOMIC_ACQUIRE)){event("KEY_REJECT",5,c.step,c.key);return 0;}key_diag96(done,3);W cache=0;if(!key_cache(c.key,&cache)){event("KEY_REJECT",6,c.step,c.key);return 0;}dprintf(2,"FX3_KEY_CACHE step=%u key=%#x when=before_down readable=1 status=%#x native_cache_readonly=1\n",c.step,c.key,cache);U start=now();key_diag96(done,4);if(key_send(c.step,c.key,1)){event("KEY_REJECT",7,c.step,c.key);return 0;}key_diag96(done,5);U down=now();*(volatile U*)(key_control+32)=down;int wait_rc=usleep(c.hold_ms*1000);key_diag96(done,6);if(key_send(c.step,c.key,0)){event("KEY_REJECT",8,c.step,c.key);return 0;}U up=now();*(volatile U*)(key_control+40)=up;*(volatile W*)(key_control+28)=c.key;*(volatile W*)(key_control+48)=c.hold_ms;*(volatile W*)(key_control+52)=wait_rc?1:0;*(volatile U*)(key_control+56)=c.step*2;done=c.step;__atomic_store_n((volatile W*)(key_control+24),done,__ATOMIC_RELEASE);dprintf(2,"FX3_KEY95_STEP_DONE step=%u key=%#x requested_hold_ms=%u measured_down_up_ns=%lu elapsed_ns=%lu wait_result=%d native_input_queue=1 one_down_one_up=1 host_next_required=1\n",done,c.key,c.hold_ms,up-down,now()-start,wait_rc);key_diag96(done,7);if(wait_rc){event("KEY_REJECT",9,c.step,c.key);return 0;}if(done>=HP95_MAX_STEPS)return 0;}
+ 
+  return 0;}
+--- work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-input95-hoststep-v1.h
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-input-v2-long-use.h
+@@ -3,9 +3,9 @@
+ /* Host-owned command12 at+8. No predefined sequence; no autonomous next key.
+  * delete_key=0 until independent key audit is approved by Lead. */
+ #define HP95_MAGIC 0x3545594b334d5253UL
+-#define HP95_MAX_STEPS 30U
++#define HP95_MAX_STEPS 4096U
+ struct hp95_command {unsigned step,key,hold_ms;};
+ static int hp95_allowed(unsigned key,unsigned delete_key){return key==3||key==0x30||key==0x15||key==0x1af||key==0x1ac||key==0x1ab||(delete_key&&key==delete_key);}
+-static int hp95_validate(unsigned done,const struct hp95_command*c,unsigned delete_key){if(!c||done>=30||c->step!=done+1||c->step>30)return -1;if(!hp95_allowed(c->key,delete_key))return -2;if(c->hold_ms<50||c->hold_ms>200)return -3;return 0;}
++static int hp95_validate(unsigned done,const struct hp95_command*c,unsigned delete_key){if(!c||done>=HP95_MAX_STEPS||c->step!=done+1||c->step>HP95_MAX_STEPS)return -1;if(!hp95_allowed(c->key,delete_key))return -2;if(c->hold_ms<50||c->hold_ms>200)return -3;return 0;}
+ static int hp95_pack(unsigned key,unsigned down,unsigned delete_key,unsigned char*p){if(!p||down>1||!hp95_allowed(key,delete_key))return -1;for(unsigned i=0;i<20;i++)p[i]=0;for(unsigned i=0;i<4;i++)p[i]=(unsigned char)(key>>(8*i));p[8]=(unsigned char)down;p[16]=1;return 0;}
+ #endif
+--- work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-media-observe-v3-uipc.c
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v4-near-gap.c
+@@ -3,7 +3,7 @@
+ struct ts{long s,n;};extern int clock_gettime(int,struct ts *);
+ struct lm{U base;char *name;void *dynamic;struct lm *next,*prev;};
+ struct ctx{U pc,continuation,id,objreg;};
+-extern long pread(int,void *,size_t,long);extern char *getenv(const char *);extern int strcmp(const char *,const char *);
++extern long pread(int,void *,size_t,long);extern int sscanf(const char *,const char *,...);extern char *getenv(const char *);extern int strcmp(const char *,const char *);
+ extern void fx3_media_probe_core(void);extern int fx3_media_test(void),fx3_media_branch_test(int),fx3_media_bl_test(int);extern char fx3_media_test_point[],fx3_media_test_cb[],fx3_media_test_bl[];
+ __attribute__((visibility("hidden"))) int fx3_media_test_compare(U *p){for(int i=0;i<31;i++)if(p[i]!=(U)(0x100+i))return i+1;unsigned char *q=(void *)(p+32);for(int i=0;i<32;i++)for(int j=0;j<16;j++)if(q[i*16+j]!=i+1)return 100+i;if(p[96]!=0xa0000000)return 200;if(p[97]||p[98])return 202;if(p[124]!=(U)p)return 201;return 0;}
+ 
+@@ -73,7 +73,39 @@
+ struct pool{unsigned char*p;U used;};static struct pool test_pool,pool_D,pool_M;
+ static W branch(U at,U to){return 0x14000000U|((W)((long)(to-at)/4)&0x3ffffff);}
+ static W literal(unsigned int reg,unsigned int from,unsigned int to){return 0x58000000U|(((to-from)/4)<<5)|reg;}
+-static int allocate_pool(struct pool *pool,U pc){if(pool->p)return 0;for(U i=1;i<1792;i++)for(int sign=-1;sign<=1;sign+=2){U hint=(pc&~4095UL)+sign*(i*0x10000);void *p=mmap((void *)hint,8192,3,0x22,-1,0);if(p==(void *)-1)continue;long d=(long)((U)p-pc);if(d>-(120L<<20)+8192&&d<(120L<<20)-8192){pool->p=p;return 0;}munmap(p,8192);}return -1;}
++static char media_maps[262144];
++static int try_gap(struct pool *pool,U pc,U lo,U hi){
++ U low=pc-(120UL<<20)+8192,high=pc+(120UL<<20)-8192;
++ if(lo<low)lo=low;if(hi>high)hi=high;
++ U hint=(lo+4095UL)&~4095UL;
++ if(hi<=hint||hi-hint<8192)return -1;
++ void *p=mmap((void *)hint,8192,3,0x22,-1,0);if(p==(void *)-1)return -1;
++ long d=(long)((U)p-pc);
++ if(d>-(120L<<20)+8192&&d<(120L<<20)-8192){pool->p=p;dprintf(2,"FX3_MEDIA_POOL_MAPS_GAP pc=%#lx hint=%#lx actual=%p hole_begin=%#lx hole_end=%#lx no_fixed_mapping=1\n",pc,hint,p,lo,hi);return 0;}
++ munmap(p,8192);return -1;
++}
++static int allocate_pool(struct pool *pool,U pc){
++ if(pool->p)return 0;
++ int fd=open("/proc/self/maps",0);
++ if(fd>=0){
++  long total=0,n=0;
++  while(total<(long)sizeof(media_maps)-1&&(n=read(fd,media_maps+total,sizeof(media_maps)-1-total))>0)total+=n;
++  close(fd);
++  if(n==0&&total>0){
++   media_maps[total]=0;U prior=0;
++   for(char *line=media_maps;*line;){
++    char *end=line;while(*end&&*end!='\n')end++;char saved=*end;*end=0;
++    U begin=0,finish=0;
++    if(sscanf(line,"%lx-%lx",&begin,&finish)==2&&finish>begin){
++     if(prior&&begin>prior&&try_gap(pool,pc,prior,begin)==0){*end=saved;return 0;}
++     if(finish>prior)prior=finish;
++    }
++    *end=saved;line=saved?end+1:end;
++   }
++  }
++ }
++ for(U i=1;i<1792;i++)for(int sign=-1;sign<=1;sign+=2){U hint=(pc&~4095UL)+sign*(i*0x10000);void *p=mmap((void *)hint,8192,3,0x22,-1,0);if(p==(void *)-1)continue;long d=(long)((U)p-pc);if(d>-(120L<<20)+8192&&d<(120L<<20)-8192){pool->p=p;return 0;}munmap(p,8192);}return -1;
++}
+ static int install(struct pool *pool,U pc,W expected,U id,U objreg){
+  W original=*(W *)pc;if(original!=expected)return -2;if(allocate_pool(pool,pc)||pool->used+128>8192)return -3;unsigned char *p=pool->p+pool->used;long delta=(long)((U)p-pc);if(delta<=-(1L<<27)||delta>=(1L<<27))return -8;pool->used+=128;if(mprotect(pool->p,8192,7))return -4;memset(p,0,128);W *code=(void *)p;code[0]=0xa9bf47f0;code[1]=literal(16,4,32);code[2]=literal(17,8,40);code[3]=0xd61f0220;code[4]=0xa8c147f0;
+  code[5]=original;code[6]=branch((U)p+24,pc+4);code[7]=0xd503201f;U context=(U)p+48,core=(U)fx3_media_probe_core;memcpy(p+32,&context,8);memcpy(p+40,&core,8);struct ctx c={pc,(U)p+16,id,objreg};memcpy(p+48,&c,sizeof c);

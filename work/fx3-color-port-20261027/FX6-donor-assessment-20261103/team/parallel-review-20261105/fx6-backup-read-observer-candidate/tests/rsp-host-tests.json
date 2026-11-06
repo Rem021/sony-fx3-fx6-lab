@@ -1,0 +1,15 @@
+{
+  "status": "PASS_NO_QEMU_REAL_SOCKET",
+  "fixture": "real RSP class over socketpair; no QEMU/guest",
+  "cases": [
+    "invalid_checksum_+$OK#00_rejected",
+    "missing_checksum_EOF_rejected",
+    "fragmented_packet_and_leading_ack",
+    "console_O_and_async_T_handled",
+    "duplicate_T05_thread_rejected",
+    "unique_hex_pPID_TID_accepted",
+    "timeout_rejected"
+  ],
+  "count": 7,
+  "rsp_sha256": "261d40fd58d11d9121cea4c4e271dc9a1324ce8ccfe95b7078a3fc05393071a6"
+}

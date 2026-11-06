@@ -1,0 +1,44 @@
+{
+  "checked_utc": "2026-11-05T04:20:18.331546+00:00",
+  "scope": "Read-only source/receipt comparison. No import or execution of candidate/tests; no repair or workaround for provider-rejected implementation.",
+  "verdict": "CURRENT_CANDIDATE_NOT_REVIEWED_READY",
+  "findings": [
+    {
+      "id": "FX6-SOURCE-IDENTITY",
+      "severity": "blocking",
+      "files": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/run_guest_once.py",
+          "lines": [
+            39,
+            97,
+            98
+          ]
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/host-tests.json",
+          "lines": [
+            2
+          ]
+        }
+      ],
+      "runner_expected_probe_sha256": "6f40e30e62fde9eddd74d547da8d6f3ab0d13be59413204632a232bc1d449aec",
+      "actual_probe_sha256": "f10defaad641b3565d49c78225e84c9bcc4d60dabe4e7fdc70a82883de7c0842",
+      "historical_test_probe_sha256": "bb5c5e18b98cced5f86d4a57ff5487138d9cbc62ef7d98e4dfb4a1164db27921",
+      "evidence": "Three digests differ. The current verify condition requires both the test receipt and actual probe digest equal the runner constant. This predicate is false by static evaluation; the candidate was not executed."
+    },
+    {
+      "id": "FX6-SYNTHETIC-REGISTER",
+      "severity": "evidence_gap",
+      "file": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/test_im_inherited.py",
+      "lines": [
+        108,
+        109
+      ],
+      "evidence": "Historical dlsym x22 was NOT_CAPTURED; positive fixture assumes it equals the dispatch record. Source test assertions and PASS_NO_QEMU print statement do not establish execution or real migration acceptance."
+    }
+  ],
+  "existing_change_scope": "Current guest_probe replaces inherited dlsym-return branch with record/TLS/current-image checks; historical successful behavior for this replacement is not established. No claim of boot or Init acceptance.",
+  "unchanged_goal": "FX6 software on fixed FX3 platform; FX3 kernel plus FX6 upper layer.",
+  "provider_execution_blocker": "msg_chaterr_5a1b17d63a36b951f0927f33 remains unresolved."
+}

@@ -1,0 +1,99 @@
+{
+  "reason": "Initial payload-offset assertion used +0x28 for the kind flag; source stores it at +0x20 relative to payload pointer sp+8. Preserve observed bytes before correcting the assertion.",
+  "failed_expected_words_28_38": [
+    "0x1",
+    "0x0",
+    "0x52000100",
+    "0x12340",
+    "0x56780"
+  ],
+  "fixture": {
+    "held_record_va": "0x1178e10",
+    "handle": "0x12345678",
+    "key": "0x440",
+    "owned_byte": 1,
+    "plane_words": [
+      "0x52000100",
+      "0x12340",
+      "0x56780"
+    ],
+    "plane_memory_mapped": false,
+    "origin": "declared already-held descriptor metadata only; not a query reply, allocation or live snapshot"
+  },
+  "observed_phases": [
+    {
+      "boundary": {
+        "operation": "before_next_output_helper",
+        "pc": "0x428f0c",
+        "registers": [
+          "0x51000000",
+          "0x51001248",
+          "0x5000ed28",
+          "0x0"
+        ],
+        "original_lr": "0x428543",
+        "native_call": false,
+        "service_reply_supplied": false,
+        "argument2_payload": "18e6ba0000000000000000000000000000000000000000000000000000000000010000000000000000010052402301008067050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000",
+        "argument2_words_28_38": [
+          "0x52000100",
+          "0x12340",
+          "0x56780",
+          "0x0",
+          "0x0"
+        ]
+      },
+      "latch": 0,
+      "phase": {
+        "state": 1,
+        "look": 0,
+        "pending": 0,
+        "commands": 0
+      },
+      "entry_delta": {
+        "resource_gate": 2,
+        "resource_checker": 2,
+        "mlut_controller": 1
+      },
+      "instructions_total": 19049
+    },
+    {
+      "boundary": {
+        "operation": "before_next_output_helper",
+        "pc": "0x428f0c",
+        "registers": [
+          "0x51000000",
+          "0x51001248",
+          "0x5000ed28",
+          "0x0"
+        ],
+        "original_lr": "0x428543",
+        "native_call": false,
+        "service_reply_supplied": false,
+        "argument2_payload": "18e6ba0000000000000000000000000000000000000000000000000000000000010000000000000000010052402301008067050000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000",
+        "argument2_words_28_38": [
+          "0x52000100",
+          "0x12340",
+          "0x56780",
+          "0x0",
+          "0x0"
+        ]
+      },
+      "latch": 0,
+      "phase": {
+        "state": 2,
+        "look": 22,
+        "pending": 1,
+        "commands": 1
+      },
+      "entry_delta": {
+        "resource_gate": 2,
+        "resource_checker": 2,
+        "mlut_controller": 1
+      },
+      "instructions_total": 20867
+    }
+  ],
+  "debug_observations": 1,
+  "formal_cases": 0
+}

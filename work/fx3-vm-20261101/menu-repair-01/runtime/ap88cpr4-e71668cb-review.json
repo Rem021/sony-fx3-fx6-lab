@@ -1,0 +1,1650 @@
+{
+  "created_utc": "2026-11-02T13:52:54.090592+00:00",
+  "run": "ap88cpr4-e71668cb",
+  "receipt_sha256": "9fc3a51a917bb1eab632e29ad411344e26fdc7d141fe38e7b802ebc00af56b78",
+  "duration_seconds": 27.907927749998635,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "host_observer_error": null,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "fatal_markers": [
+    "Entering exception monitor."
+  ],
+  "missing_markers_combined_serial_and_printk": [],
+  "receipt_serial_only_missing": [
+    "FX3_BACKUP_CP_COMMIT flag=4 stage=2"
+  ],
+  "marker_evidence_scope": "Rawserial flags retained; kernelprintkring independentlyrecovers interleavedkernelmarkers, neverrewritesreceipt",
+  "im_alive_last_complete_maps": {
+    "pid": 226,
+    "uptime": 25.47,
+    "byte_offset": 2614036,
+    "im_maps_lines": [
+      "00400000-00409000 r-xp 00000000 00:02 2303                               /usr/bin/im.elf",
+      "00418000-00419000 r--p 00008000 00:02 2303                               /usr/bin/im.elf",
+      "00419000-0041a000 rw-p 00009000 00:02 2303                               /usr/bin/im.elf"
+    ]
+  },
+  "im_complete_maps_samples": 18,
+  "CP_kernel_records": [
+    {
+      "LF_line": 622,
+      "text": "846 [61.790188] FX3_BACKUP_CP_PUBLIC_OWNER capture_only=0 exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+    },
+    {
+      "LF_line": 640,
+      "text": "864 [69.075781] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000030000000d00000000000000000000000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 641,
+      "text": "865 [69.103906] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=20 captured=20 raw=5602920000000000060000001a0000001f000000 epoch=1"
+    },
+    {
+      "LF_line": 642,
+      "text": "866 [69.105281] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 643,
+      "text": "867 [69.153718] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 645,
+      "text": "869 [69.275875] FX3_BACKUP_CP_UNHANDLED destination=0x928708f7 logical_bytes=16 captured=16 raw=5a019200010000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 646,
+      "text": "870 [69.276094] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x928708f7 source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 647,
+      "text": "871 [69.434313] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000001a00000080ffffff94368e000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 648,
+      "text": "872 [69.434500] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 649,
+      "text": "873 [69.447250] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 650,
+      "text": "874 [69.447406] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 651,
+      "text": "875 [69.447563] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=40 captured=40 raw=53029200120192000000000000000000ffffffffffffffff01000000010000000100ff0400000000 epoch=1"
+    },
+    {
+      "LF_line": 652,
+      "text": "876 [69.447656] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 653,
+      "text": "877 [69.456500] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292004f00ffff epoch=1"
+    },
+    {
+      "LF_line": 654,
+      "text": "878 [69.457188] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 655,
+      "text": "879 [69.457562] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 656,
+      "text": "880 [69.457656] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 657,
+      "text": "881 [69.458656] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292005200ffff epoch=1"
+    },
+    {
+      "LF_line": 658,
+      "text": "882 [69.458844] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 659,
+      "text": "883 [69.459031] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=540292003e00ffff epoch=1"
+    },
+    {
+      "LF_line": 660,
+      "text": "884 [69.460781] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 661,
+      "text": "885 [69.461781] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 662,
+      "text": "886 [69.462625] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 663,
+      "text": "887 [69.462937] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 664,
+      "text": "888 [69.463000] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 667,
+      "text": "891 [70.395719] FX3_BACKUP_CP_UNHANDLED destination=0x909005c5 logical_bytes=44 captured=40 raw=01000000000000000000000000000000000000000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 668,
+      "text": "892 [70.420719] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x909005c5 source=0x809005c5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 678,
+      "text": "902 [180.750000] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=5402920050000000 epoch=1"
+    },
+    {
+      "LF_line": 679,
+      "text": "903 [180.812844] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 680,
+      "text": "904 [180.835688] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=44 captured=40 raw=5202920000000000ffffffffffffffff000000000000000000000000ffffffff0000000003000000 epoch=1"
+    },
+    {
+      "LF_line": 681,
+      "text": "905 [180.858156] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 682,
+      "text": "906 [180.888719] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 683,
+      "text": "907 [180.909437] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=0 terminal_unproven=1"
+    },
+    {
+      "LF_line": 708,
+      "text": "932 [776.841656] FX3_BACKUP_CP_REQUEST destination=0x903e0811 logical_bytes=40 captured=40 raw=330000000000000011083e90c5613e80010000000100000002000000000000000200000001000000 epoch=1"
+    },
+    {
+      "LF_line": 709,
+      "text": "933 [777.282656] FX3_BACKUP_CP_STORAGE physical=0x4040d2000 bytes=1369580 bank_offset=0xd2000 separate_CP_profile=1 native_CP_address_binding_unproven=1 first_AP_bank_untouched=1 initial_sha256=5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7 checksum_verified=1 index_all_validated=1 repeat=4 epoch=1 save_to_disk=0"
+    },
+    {
+      "LF_line": 710,
+      "text": "934 [777.686063] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x300ab attr=0xe8 offset=0x2f24c size=1280 unit=320 repeat=4 copies=4 default_offset=0x2f74c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 711,
+      "text": "935 [777.742656] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x30103 attr=0x60 offset=0x2f994 size=1 unit=1 repeat=1 copies=1 default_offset=0x2f995 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 712,
+      "text": "936 [777.798312] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x3012c attr=0x68 offset=0x2f9a4 size=320 unit=320 repeat=1 copies=1 default_offset=0x2fae4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 713,
+      "text": "937 [777.882875] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x6000a attr=0x60 offset=0x34780 size=4 unit=4 repeat=1 copies=1 default_offset=0x34784 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 714,
+      "text": "938 [777.934594] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0xd0027 attr=0x48 offset=0x370bc size=256 unit=256 repeat=1 copies=1 default_offset=0x371bc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 715,
+      "text": "939 [778.008312] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0xd004a attr=0x60 offset=0x3824c size=32 unit=32 repeat=1 copies=1 default_offset=0x3826c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 716,
+      "text": "940 [778.040468] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0xd006a attr=0x48 offset=0x390c8 size=32 unit=32 repeat=1 copies=1 default_offset=0x390e8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 717,
+      "text": "941 [778.076250] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x280011 attr=0x40 offset=0x3dfb8 size=12 unit=12 repeat=1 copies=1 default_offset=0x3dfc4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 718,
+      "text": "942 [778.127062] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x3e0010 attr=0x40 offset=0x3f1e9 size=1 unit=1 repeat=1 copies=1 default_offset=0x3f1ea changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 719,
+      "text": "943 [778.174938] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x3e0024 attr=0x74 offset=0x3f840 size=1 unit=1 repeat=1 copies=1 default_offset=0x3f841 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 720,
+      "text": "944 [778.208031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x3e0025 attr=0xc0 offset=0x3f842 size=4 unit=1 repeat=4 copies=4 default_offset=0x3f846 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 721,
+      "text": "945 [778.248406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580000 attr=0x40 offset=0x3fac4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fac5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 722,
+      "text": "946 [778.283688] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580004 attr=0x40 offset=0x3fac8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3facc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 723,
+      "text": "947 [778.315156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580005 attr=0x40 offset=0x3fad0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fad1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 724,
+      "text": "948 [778.367593] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580006 attr=0x40 offset=0x3fad2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fad3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 725,
+      "text": "949 [778.416906] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580007 attr=0x40 offset=0x3fad4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fad5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 726,
+      "text": "950 [778.469093] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580008 attr=0x40 offset=0x3fad6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fad7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 727,
+      "text": "951 [778.520031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58000c attr=0x40 offset=0x3fad8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fadc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 728,
+      "text": "952 [778.552781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58000d attr=0x40 offset=0x3fae0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fae1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 729,
+      "text": "953 [778.586812] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58000e attr=0x40 offset=0x3fae2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fae3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 730,
+      "text": "954 [778.621343] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58000f attr=0x40 offset=0x3fae4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fae5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 731,
+      "text": "955 [778.648500] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580010 attr=0x40 offset=0x3fae6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fae7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 732,
+      "text": "956 [778.671844] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580014 attr=0x40 offset=0x3fae8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3faec changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 733,
+      "text": "957 [778.695344] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580015 attr=0x40 offset=0x3faf0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3faf1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 734,
+      "text": "958 [778.753375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580016 attr=0x40 offset=0x3faf2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3faf3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 735,
+      "text": "959 [778.795875] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580017 attr=0x40 offset=0x3faf4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3faf5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 736,
+      "text": "960 [778.836937] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580018 attr=0x40 offset=0x3faf6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3faf7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 737,
+      "text": "961 [778.885281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58001c attr=0x40 offset=0x3faf8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fafc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 738,
+      "text": "962 [778.948031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58001d attr=0x40 offset=0x3fb00 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb01 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 739,
+      "text": "963 [778.999156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58001e attr=0x40 offset=0x3fb02 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb03 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 740,
+      "text": "964 [779.049062] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58001f attr=0x40 offset=0x3fb04 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb05 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 741,
+      "text": "965 [779.105156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580020 attr=0x40 offset=0x3fb06 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb07 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 742,
+      "text": "966 [779.156062] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580024 attr=0x40 offset=0x3fb08 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fb0c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 743,
+      "text": "967 [779.179156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580025 attr=0x40 offset=0x3fb10 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb11 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 744,
+      "text": "968 [779.202843] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580026 attr=0x40 offset=0x3fb12 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb13 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 745,
+      "text": "969 [779.227000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580027 attr=0x40 offset=0x3fb14 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb15 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 746,
+      "text": "970 [779.251156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580028 attr=0x40 offset=0x3fb16 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb17 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 747,
+      "text": "971 [779.276562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58002c attr=0x40 offset=0x3fb18 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fb1c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 748,
+      "text": "972 [779.301375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58002d attr=0x40 offset=0x3fb20 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb21 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 749,
+      "text": "973 [779.334781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58002e attr=0x40 offset=0x3fb22 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb23 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 750,
+      "text": "974 [779.359312] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58002f attr=0x40 offset=0x3fb24 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb25 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 751,
+      "text": "975 [779.392844] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580030 attr=0x40 offset=0x3fb26 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb27 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 752,
+      "text": "976 [779.418718] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580034 attr=0x40 offset=0x3fb28 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fb2c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 753,
+      "text": "977 [779.445281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580035 attr=0x40 offset=0x3fb30 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb31 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 754,
+      "text": "978 [779.487938] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580036 attr=0x40 offset=0x3fb32 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb33 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 755,
+      "text": "979 [779.519156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580037 attr=0x40 offset=0x3fb34 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb35 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 756,
+      "text": "980 [779.559000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580038 attr=0x40 offset=0x3fb36 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb37 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 757,
+      "text": "981 [779.593468] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58003c attr=0x40 offset=0x3fb38 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fb3c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 758,
+      "text": "982 [779.655625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58003d attr=0x40 offset=0x3fb40 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb41 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 759,
+      "text": "983 [779.689750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58003e attr=0x40 offset=0x3fb42 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb43 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 760,
+      "text": "984 [779.725063] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58003f attr=0x40 offset=0x3fb44 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb45 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 761,
+      "text": "985 [779.766719] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580040 attr=0x40 offset=0x3fb46 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb47 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 762,
+      "text": "986 [779.814188] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580044 attr=0x40 offset=0x3fb48 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fb4c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 763,
+      "text": "987 [779.839062] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580045 attr=0x40 offset=0x3fb50 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb51 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 764,
+      "text": "988 [779.862594] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580046 attr=0x40 offset=0x3fb52 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb53 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 765,
+      "text": "989 [779.898438] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580047 attr=0x40 offset=0x3fb54 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb55 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 766,
+      "text": "990 [779.942281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580048 attr=0x40 offset=0x3fb56 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb57 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 767,
+      "text": "991 [779.978500] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58004c attr=0x40 offset=0x3fb58 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fb5c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 768,
+      "text": "992 [780.003031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58004d attr=0x40 offset=0x3fb60 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb61 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 769,
+      "text": "993 [780.026656] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58004e attr=0x40 offset=0x3fb62 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb63 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 770,
+      "text": "994 [780.051219] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58004f attr=0x40 offset=0x3fb64 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb65 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 771,
+      "text": "995 [780.079093] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580050 attr=0x40 offset=0x3fb66 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb67 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 772,
+      "text": "996 [780.103344] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580051 attr=0x40 offset=0x3fb68 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb69 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 773,
+      "text": "997 [780.128063] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580052 attr=0x40 offset=0x3fb6a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb6b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 774,
+      "text": "998 [780.152938] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580053 attr=0x40 offset=0x3fb6c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb6d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 775,
+      "text": "999 [780.178562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580054 attr=0x40 offset=0x3fb6e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb6f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 776,
+      "text": "1000 [780.210218] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580055 attr=0x40 offset=0x3fb70 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb71 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 777,
+      "text": "1001 [780.255375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580056 attr=0x40 offset=0x3fb72 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb73 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 778,
+      "text": "1002 [780.297531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580057 attr=0x40 offset=0x3fb74 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb75 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 779,
+      "text": "1003 [780.381062] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580058 attr=0x40 offset=0x3fb76 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb77 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 780,
+      "text": "1004 [780.456812] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580059 attr=0x40 offset=0x3fb78 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb79 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 781,
+      "text": "1005 [780.495500] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58005a attr=0x40 offset=0x3fb7a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb7b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 782,
+      "text": "1006 [780.533406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58005b attr=0x40 offset=0x3fb7c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb7d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 783,
+      "text": "1007 [780.589844] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58005c attr=0x40 offset=0x3fb7e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb7f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 784,
+      "text": "1008 [780.706156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58005d attr=0x40 offset=0x3fb80 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb81 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 785,
+      "text": "1009 [780.787969] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58005e attr=0x40 offset=0x3fb82 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb83 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 786,
+      "text": "1010 [780.839093] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58005f attr=0x40 offset=0x3fb84 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb85 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 787,
+      "text": "1011 [780.920562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580060 attr=0x40 offset=0x3fb86 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb87 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 788,
+      "text": "1012 [780.970125] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580061 attr=0x40 offset=0x3fb88 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb89 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 789,
+      "text": "1013 [781.004688] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580062 attr=0x40 offset=0x3fb8a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb8b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 790,
+      "text": "1014 [781.041593] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580063 attr=0x40 offset=0x3fb8c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb8d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 791,
+      "text": "1015 [781.079562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580064 attr=0x40 offset=0x3fb8e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb8f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 792,
+      "text": "1016 [781.128031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580065 attr=0x40 offset=0x3fb90 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb91 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 793,
+      "text": "1017 [781.232781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580066 attr=0x40 offset=0x3fb92 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb93 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 794,
+      "text": "1018 [781.299468] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580067 attr=0x40 offset=0x3fb94 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb95 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 795,
+      "text": "1019 [781.341843] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580068 attr=0x40 offset=0x3fb96 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb97 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 796,
+      "text": "1020 [781.382625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580069 attr=0x40 offset=0x3fb98 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb99 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 797,
+      "text": "1021 [781.429781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58006a attr=0x40 offset=0x3fb9a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb9b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 798,
+      "text": "1022 [781.500250] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58006b attr=0x40 offset=0x3fb9c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb9d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 799,
+      "text": "1023 [781.658563] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58006c attr=0x40 offset=0x3fb9e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fb9f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 800,
+      "text": "1024 [781.753406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58006d attr=0x40 offset=0x3fba0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fba1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 801,
+      "text": "1025 [781.791406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580070 attr=0x40 offset=0x3fba2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fba3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 802,
+      "text": "1026 [781.923312] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580071 attr=0x40 offset=0x3fba4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fba5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 803,
+      "text": "1027 [781.983468] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580072 attr=0x40 offset=0x3fba6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fba7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 804,
+      "text": "1028 [782.034375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580073 attr=0x40 offset=0x3fba8 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fba9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 805,
+      "text": "1029 [782.071218] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58007c attr=0x40 offset=0x3fbb4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fbb5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 806,
+      "text": "1030 [782.162218] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58007d attr=0x40 offset=0x3fbb6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fbb7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 807,
+      "text": "1031 [782.274718] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58007e attr=0x40 offset=0x3fbb8 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fbb9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 808,
+      "text": "1032 [782.354750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58007f attr=0x40 offset=0x3fbbc size=4 unit=4 repeat=1 copies=1 default_offset=0x3fbc0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 809,
+      "text": "1033 [782.413000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580080 attr=0x40 offset=0x3fbc4 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fbc8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 810,
+      "text": "1034 [782.447156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580081 attr=0x40 offset=0x3fbcc size=1 unit=1 repeat=1 copies=1 default_offset=0x3fbcd changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 811,
+      "text": "1035 [782.485281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580082 attr=0x40 offset=0x3fbd0 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fbd4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 812,
+      "text": "1036 [782.536625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580083 attr=0x40 offset=0x3fbd8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fbdc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 813,
+      "text": "1037 [782.610594] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580084 attr=0x40 offset=0x3fbe0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fbe1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 814,
+      "text": "1038 [782.740906] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580085 attr=0x40 offset=0x3fbe4 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fbe8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 815,
+      "text": "1039 [782.784188] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580086 attr=0x40 offset=0x3fbec size=4 unit=4 repeat=1 copies=1 default_offset=0x3fbf0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 816,
+      "text": "1040 [782.839844] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580087 attr=0x40 offset=0x3fbf4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fbf5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 817,
+      "text": "1041 [782.889750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580088 attr=0x40 offset=0x3fbf8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fbfc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 818,
+      "text": "1042 [782.917406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580089 attr=0x40 offset=0x3fc00 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc04 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 819,
+      "text": "1043 [782.948468] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58008a attr=0x40 offset=0x3fc08 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fc09 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 820,
+      "text": "1044 [782.973344] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58008b attr=0x40 offset=0x3fc0c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc10 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 821,
+      "text": "1045 [782.999688] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58008c attr=0x40 offset=0x3fc14 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc18 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 822,
+      "text": "1046 [783.023593] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58008d attr=0x40 offset=0x3fc1c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fc1d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 823,
+      "text": "1047 [783.048343] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58008e attr=0x40 offset=0x3fc20 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc24 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 824,
+      "text": "1048 [783.072000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58008f attr=0x40 offset=0x3fc28 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc2c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 825,
+      "text": "1049 [783.113875] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580090 attr=0x40 offset=0x3fc30 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fc31 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 826,
+      "text": "1050 [783.307437] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580091 attr=0x40 offset=0x3fc34 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc38 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 827,
+      "text": "1051 [783.355594] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580092 attr=0x40 offset=0x3fc3c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc40 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 828,
+      "text": "1052 [783.426938] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580093 attr=0x40 offset=0x3fc44 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fc45 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 829,
+      "text": "1053 [783.468625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580094 attr=0x40 offset=0x3fc48 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc4c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 830,
+      "text": "1054 [783.505937] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580095 attr=0x40 offset=0x3fc50 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc54 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 831,
+      "text": "1055 [783.542093] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580096 attr=0x40 offset=0x3fc58 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fc59 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 832,
+      "text": "1056 [783.576937] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580097 attr=0x40 offset=0x3fc5c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc60 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 833,
+      "text": "1057 [783.611094] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580098 attr=0x40 offset=0x3fc64 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc68 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 834,
+      "text": "1058 [783.646656] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580099 attr=0x40 offset=0x3fc6c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fc6d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 835,
+      "text": "1059 [783.691218] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58009a attr=0x40 offset=0x3fc70 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc74 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 836,
+      "text": "1060 [783.786031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58009b attr=0x40 offset=0x3fc78 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc7c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 837,
+      "text": "1061 [783.831406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58009c attr=0x40 offset=0x3fc80 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc84 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 838,
+      "text": "1062 [783.873156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58009d attr=0x40 offset=0x3fc88 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc8c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 839,
+      "text": "1063 [783.919968] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58009f attr=0x40 offset=0x3fc94 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fc98 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 840,
+      "text": "1064 [784.056156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800a0 attr=0x40 offset=0x3fc9c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fca0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 841,
+      "text": "1065 [784.093906] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800a2 attr=0x40 offset=0x3fca8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fcac changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 842,
+      "text": "1066 [784.126719] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800a3 attr=0x40 offset=0x3fcb0 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fcb4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 843,
+      "text": "1067 [784.161406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800a5 attr=0x40 offset=0x3fcbc size=4 unit=4 repeat=1 copies=1 default_offset=0x3fcc0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 844,
+      "text": "1068 [784.194906] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800a6 attr=0x40 offset=0x3fcc4 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fcc8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 845,
+      "text": "1069 [784.239187] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800a8 attr=0x40 offset=0x3fcd0 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fcd4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 846,
+      "text": "1070 [784.273406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800a9 attr=0x40 offset=0x3fcd8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fcdc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 847,
+      "text": "1071 [784.306750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ab attr=0x40 offset=0x3fce4 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fce8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 848,
+      "text": "1072 [784.339531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ac attr=0x40 offset=0x3fcec size=4 unit=4 repeat=1 copies=1 default_offset=0x3fcf0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 849,
+      "text": "1073 [784.386438] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ae attr=0x40 offset=0x3fcf8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fcfc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 850,
+      "text": "1074 [784.420406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800af attr=0x40 offset=0x3fd00 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd04 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 851,
+      "text": "1075 [784.459125] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800b1 attr=0x40 offset=0x3fd0c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd10 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 852,
+      "text": "1076 [784.487188] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800b2 attr=0x40 offset=0x3fd14 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd18 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 853,
+      "text": "1077 [784.510343] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800b4 attr=0x40 offset=0x3fd20 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd24 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 854,
+      "text": "1078 [784.534313] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800b5 attr=0x40 offset=0x3fd28 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd2c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 855,
+      "text": "1079 [784.696000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800b7 attr=0x40 offset=0x3fd34 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd38 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 856,
+      "text": "1080 [784.753250] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800b8 attr=0x40 offset=0x3fd3c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd40 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 857,
+      "text": "1081 [784.833843] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800bc attr=0x40 offset=0x3fd4a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd4b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 858,
+      "text": "1082 [784.875968] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800bd attr=0x40 offset=0x3fd4c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd4d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 859,
+      "text": "1083 [784.911906] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800be attr=0x40 offset=0x3fd4e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd4f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 860,
+      "text": "1084 [784.982813] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800bf attr=0x40 offset=0x3fd50 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd51 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 861,
+      "text": "1085 [785.026500] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c0 attr=0x40 offset=0x3fd52 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd53 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 862,
+      "text": "1086 [785.061937] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c1 attr=0x40 offset=0x3fd54 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd55 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 863,
+      "text": "1087 [785.099750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c2 attr=0x40 offset=0x3fd56 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd57 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 864,
+      "text": "1088 [785.132281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c3 attr=0x40 offset=0x3fd58 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd59 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 865,
+      "text": "1089 [785.163937] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c4 attr=0x40 offset=0x3fd5a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd5b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 866,
+      "text": "1090 [785.197375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c5 attr=0x40 offset=0x3fd5c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd5d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 867,
+      "text": "1091 [785.246625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c6 attr=0x40 offset=0x3fd5e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd5f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 868,
+      "text": "1092 [785.292469] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c7 attr=0x40 offset=0x3fd60 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd61 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 869,
+      "text": "1093 [785.342968] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c8 attr=0x40 offset=0x3fd62 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd63 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 870,
+      "text": "1094 [785.378656] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800c9 attr=0x40 offset=0x3fd64 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd65 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 871,
+      "text": "1095 [785.438843] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ca attr=0x40 offset=0x3fd66 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd67 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 872,
+      "text": "1096 [785.474406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800cb attr=0x40 offset=0x3fd68 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd69 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 873,
+      "text": "1097 [785.506656] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800cc attr=0x40 offset=0x3fd6c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd70 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 874,
+      "text": "1098 [785.546687] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800cd attr=0x40 offset=0x3fd74 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd78 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 875,
+      "text": "1099 [785.591625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800cf attr=0x40 offset=0x3fd80 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd84 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 876,
+      "text": "1100 [785.624125] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d0 attr=0x40 offset=0x3fd88 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd89 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 877,
+      "text": "1101 [785.655156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d1 attr=0x40 offset=0x3fd8a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd8b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 878,
+      "text": "1102 [785.688625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d2 attr=0x40 offset=0x3fd8c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd8d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 879,
+      "text": "1103 [785.720718] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d3 attr=0x40 offset=0x3fd8e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fd8f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 880,
+      "text": "1104 [785.754969] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d4 attr=0x40 offset=0x3fd90 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd94 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 881,
+      "text": "1105 [785.794719] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d5 attr=0x40 offset=0x3fd98 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fd9c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 882,
+      "text": "1106 [785.828250] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d6 attr=0x40 offset=0x3fda0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fda1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 883,
+      "text": "1107 [785.876968] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d7 attr=0x40 offset=0x3fda4 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fda8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 884,
+      "text": "1108 [785.943750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800d8 attr=0x40 offset=0x3fdac size=4 unit=4 repeat=1 copies=1 default_offset=0x3fdb0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 885,
+      "text": "1109 [785.994625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800da attr=0x40 offset=0x3fdb8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fdbc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 886,
+      "text": "1110 [786.032500] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800db attr=0x40 offset=0x3fdc0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdc1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 887,
+      "text": "1111 [786.072156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800dc attr=0x40 offset=0x3fdc2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdc3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 888,
+      "text": "1112 [786.123563] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800dd attr=0x40 offset=0x3fdc4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdc5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 889,
+      "text": "1113 [786.181875] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800de attr=0x40 offset=0x3fdc6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdc7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 890,
+      "text": "1114 [786.311063] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800df attr=0x40 offset=0x3fdc8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fdcc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 891,
+      "text": "1115 [786.435500] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e0 attr=0x40 offset=0x3fdd0 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fdd4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 892,
+      "text": "1116 [786.577688] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e1 attr=0x40 offset=0x3fdd8 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdd9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 893,
+      "text": "1117 [786.659750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e2 attr=0x40 offset=0x3fddc size=4 unit=4 repeat=1 copies=1 default_offset=0x3fde0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 894,
+      "text": "1118 [786.715750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e3 attr=0x40 offset=0x3fde4 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fde8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 895,
+      "text": "1119 [786.760218] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e5 attr=0x40 offset=0x3fdf0 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fdf4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 896,
+      "text": "1120 [786.793594] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e6 attr=0x40 offset=0x3fdf8 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdf9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 897,
+      "text": "1121 [786.850406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e7 attr=0x40 offset=0x3fdfa size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdfb changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 898,
+      "text": "1122 [786.895188] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e8 attr=0x40 offset=0x3fdfc size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdfd changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 899,
+      "text": "1123 [786.929875] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800e9 attr=0x40 offset=0x3fdfe size=1 unit=1 repeat=1 copies=1 default_offset=0x3fdff changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 900,
+      "text": "1124 [786.962843] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ea attr=0x40 offset=0x3fe00 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe04 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 901,
+      "text": "1125 [786.995437] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800eb attr=0x40 offset=0x3fe08 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe0c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 902,
+      "text": "1126 [787.029281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ec attr=0x40 offset=0x3fe10 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe11 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 903,
+      "text": "1127 [787.065000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ed attr=0x40 offset=0x3fe14 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe18 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 904,
+      "text": "1128 [787.114000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ee attr=0x40 offset=0x3fe1c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe20 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 905,
+      "text": "1129 [787.178437] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f0 attr=0x40 offset=0x3fe28 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe2c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 906,
+      "text": "1130 [787.226875] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f1 attr=0x40 offset=0x3fe30 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe31 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 907,
+      "text": "1131 [787.261219] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f2 attr=0x40 offset=0x3fe32 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe33 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 908,
+      "text": "1132 [787.316625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f3 attr=0x40 offset=0x3fe34 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe35 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 909,
+      "text": "1133 [787.359844] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f4 attr=0x40 offset=0x3fe36 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe37 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 910,
+      "text": "1134 [787.396281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f5 attr=0x40 offset=0x3fe38 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe3c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 911,
+      "text": "1135 [787.433437] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f6 attr=0x40 offset=0x3fe40 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe44 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 912,
+      "text": "1136 [787.487094] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f7 attr=0x40 offset=0x3fe48 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe49 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 913,
+      "text": "1137 [787.560187] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f8 attr=0x40 offset=0x3fe4c size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe50 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 914,
+      "text": "1138 [787.616531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800f9 attr=0x40 offset=0x3fe54 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe58 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 915,
+      "text": "1139 [787.693531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800fb attr=0x40 offset=0x3fe60 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe64 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 916,
+      "text": "1140 [787.748500] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800fc attr=0x40 offset=0x3fe68 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe69 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 917,
+      "text": "1141 [787.835281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800fd attr=0x40 offset=0x3fe6a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe6b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 918,
+      "text": "1142 [787.890531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800fe attr=0x40 offset=0x3fe6c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe6d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 919,
+      "text": "1143 [787.944656] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5800ff attr=0x40 offset=0x3fe6e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe6f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 920,
+      "text": "1144 [787.998406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580100 attr=0x40 offset=0x3fe70 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe74 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 921,
+      "text": "1145 [788.077406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580101 attr=0x40 offset=0x3fe78 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fe7c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 922,
+      "text": "1146 [788.261281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580102 attr=0x40 offset=0x3fe80 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe81 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 923,
+      "text": "1147 [788.317969] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580103 attr=0x40 offset=0x3fe82 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe83 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 924,
+      "text": "1148 [788.375406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580104 attr=0x40 offset=0x3fe84 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe85 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 925,
+      "text": "1149 [788.401313] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580105 attr=0x40 offset=0x3fe86 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe87 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 926,
+      "text": "1150 [788.424781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580106 attr=0x40 offset=0x3fe88 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe89 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 927,
+      "text": "1151 [788.449375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580107 attr=0x40 offset=0x3fe8a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe8b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 928,
+      "text": "1152 [788.473562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580108 attr=0x40 offset=0x3fe8c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe8d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 929,
+      "text": "1153 [788.497531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580109 attr=0x40 offset=0x3fe8e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe8f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 930,
+      "text": "1154 [788.521593] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58010a attr=0x40 offset=0x3fe90 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe91 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 931,
+      "text": "1155 [788.546156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58010b attr=0x40 offset=0x3fe92 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe93 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 932,
+      "text": "1156 [788.569625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58010c attr=0x40 offset=0x3fe94 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe95 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 933,
+      "text": "1157 [788.594000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58010d attr=0x40 offset=0x3fe96 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe97 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 934,
+      "text": "1158 [788.617687] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58010e attr=0x40 offset=0x3fe98 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe99 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 935,
+      "text": "1159 [788.645281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58010f attr=0x40 offset=0x3fe9a size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe9b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 936,
+      "text": "1160 [788.670031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580110 attr=0x40 offset=0x3fe9c size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe9d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 937,
+      "text": "1161 [788.780813] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580111 attr=0x40 offset=0x3fe9e size=1 unit=1 repeat=1 copies=1 default_offset=0x3fe9f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 938,
+      "text": "1162 [788.815969] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580112 attr=0x40 offset=0x3fea0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fea1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 939,
+      "text": "1163 [788.855656] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580113 attr=0x40 offset=0x3fea2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fea3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 940,
+      "text": "1164 [788.920625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580114 attr=0x40 offset=0x3fea4 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fea8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 941,
+      "text": "1165 [788.965312] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580115 attr=0x40 offset=0x3feac size=4 unit=4 repeat=1 copies=1 default_offset=0x3feb0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 942,
+      "text": "1166 [789.044781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580117 attr=0x40 offset=0x3feb8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3febc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 943,
+      "text": "1167 [789.079781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580118 attr=0x40 offset=0x3fec0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fec1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 944,
+      "text": "1168 [789.104375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580119 attr=0x40 offset=0x3fec2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fec3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 945,
+      "text": "1169 [789.129187] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58011a attr=0x40 offset=0x3fec4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fec5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 946,
+      "text": "1170 [789.156625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58011b attr=0x40 offset=0x3fec6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fec7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 947,
+      "text": "1171 [789.185781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58011c attr=0x40 offset=0x3fec8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fecc changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 948,
+      "text": "1172 [789.218031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58011d attr=0x40 offset=0x3fed0 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fed4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 949,
+      "text": "1173 [789.249218] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58011e attr=0x40 offset=0x3fed8 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fed9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 950,
+      "text": "1174 [789.287406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58011f attr=0x40 offset=0x3fedc size=4 unit=4 repeat=1 copies=1 default_offset=0x3fee0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 951,
+      "text": "1175 [789.338375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580120 attr=0x40 offset=0x3fee4 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fee8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 952,
+      "text": "1176 [789.386750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580122 attr=0x40 offset=0x3fef0 size=4 unit=4 repeat=1 copies=1 default_offset=0x3fef4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 953,
+      "text": "1177 [789.461531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580123 attr=0x40 offset=0x3fef8 size=1 unit=1 repeat=1 copies=1 default_offset=0x3fef9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 954,
+      "text": "1178 [789.520313] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580124 attr=0x40 offset=0x3fefa size=1 unit=1 repeat=1 copies=1 default_offset=0x3fefb changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 955,
+      "text": "1179 [789.562531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580125 attr=0x40 offset=0x3fefc size=1 unit=1 repeat=1 copies=1 default_offset=0x3fefd changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 956,
+      "text": "1180 [789.627813] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580126 attr=0x40 offset=0x3fefe size=1 unit=1 repeat=1 copies=1 default_offset=0x3feff changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 957,
+      "text": "1181 [789.682344] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580127 attr=0x40 offset=0x3ff00 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff04 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 958,
+      "text": "1182 [789.735312] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580128 attr=0x40 offset=0x3ff08 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff0c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 959,
+      "text": "1183 [789.773281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580129 attr=0x40 offset=0x3ff10 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff11 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 960,
+      "text": "1184 [789.819343] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58012a attr=0x40 offset=0x3ff14 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff18 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 961,
+      "text": "1185 [789.854687] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58012b attr=0x40 offset=0x3ff1c size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff20 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 962,
+      "text": "1186 [789.905813] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58012d attr=0x40 offset=0x3ff28 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff2c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 963,
+      "text": "1187 [789.967562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58012e attr=0x40 offset=0x3ff30 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff31 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 964,
+      "text": "1188 [790.090750] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58012f attr=0x40 offset=0x3ff32 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff33 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 965,
+      "text": "1189 [790.162625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580130 attr=0x40 offset=0x3ff34 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff35 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 966,
+      "text": "1190 [790.248156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580131 attr=0x40 offset=0x3ff36 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff37 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 967,
+      "text": "1191 [790.368093] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580132 attr=0x40 offset=0x3ff38 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff3c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 968,
+      "text": "1192 [790.416625] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580133 attr=0x40 offset=0x3ff40 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff44 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 969,
+      "text": "1193 [790.452156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580134 attr=0x40 offset=0x3ff48 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff49 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 970,
+      "text": "1194 [790.505156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580135 attr=0x40 offset=0x3ff4c size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff50 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 971,
+      "text": "1195 [790.561875] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580136 attr=0x40 offset=0x3ff54 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff58 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 972,
+      "text": "1196 [790.610250] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580137 attr=0x40 offset=0x3ff5c size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff60 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 973,
+      "text": "1197 [790.654781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580139 attr=0x40 offset=0x3ff68 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff69 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 974,
+      "text": "1198 [790.769281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58013a attr=0x40 offset=0x3ff6a size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff6b changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 975,
+      "text": "1199 [790.942156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58013b attr=0x40 offset=0x3ff6c size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff6d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 976,
+      "text": "1200 [790.991562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58013c attr=0x40 offset=0x3ff6e size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff6f changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 977,
+      "text": "1201 [791.065375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58013d attr=0x40 offset=0x3ff70 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff74 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 978,
+      "text": "1202 [791.101406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58013e attr=0x40 offset=0x3ff78 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff7c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 979,
+      "text": "1203 [791.137562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58013f attr=0x40 offset=0x3ff80 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ff81 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 980,
+      "text": "1204 [791.178437] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580140 attr=0x40 offset=0x3ff84 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff88 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 981,
+      "text": "1205 [791.233375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580141 attr=0x40 offset=0x3ff8c size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff90 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 982,
+      "text": "1206 [791.366813] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580143 attr=0x40 offset=0x3ff98 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ff9c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 983,
+      "text": "1207 [791.441375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580144 attr=0x40 offset=0x3ffa0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffa1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 984,
+      "text": "1208 [791.509343] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580145 attr=0x40 offset=0x3ffa2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffa3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 985,
+      "text": "1209 [791.562906] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580146 attr=0x40 offset=0x3ffa4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffa5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 986,
+      "text": "1210 [791.610656] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580147 attr=0x40 offset=0x3ffa6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffa7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 987,
+      "text": "1211 [791.645562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580148 attr=0x40 offset=0x3ffa8 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ffac changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 988,
+      "text": "1212 [791.681875] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580149 attr=0x40 offset=0x3ffb0 size=4 unit=4 repeat=1 copies=1 default_offset=0x3ffb4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 989,
+      "text": "1213 [791.733968] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58014c attr=0x40 offset=0x3ffba size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffbb changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 990,
+      "text": "1214 [791.826000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58014d attr=0x40 offset=0x3ffbc size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffbd changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 991,
+      "text": "1215 [792.006188] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58014e attr=0x40 offset=0x3ffbe size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffbf changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 992,
+      "text": "1216 [792.079438] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58014f attr=0x40 offset=0x3ffc0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffc1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 993,
+      "text": "1217 [792.238219] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580150 attr=0x40 offset=0x3ffc2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffc3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 994,
+      "text": "1218 [792.303000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580151 attr=0x40 offset=0x3ffc4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffc5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 995,
+      "text": "1219 [792.441218] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580152 attr=0x40 offset=0x3ffc6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffc7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 996,
+      "text": "1220 [792.594375] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580153 attr=0x40 offset=0x3ffc8 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffc9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 997,
+      "text": "1221 [792.654437] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580154 attr=0x40 offset=0x3ffca size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffcb changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 998,
+      "text": "1222 [792.710063] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580155 attr=0x40 offset=0x3ffcc size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffcd changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 999,
+      "text": "1223 [792.772312] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580156 attr=0x40 offset=0x3ffce size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffcf changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1000,
+      "text": "1224 [792.812969] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580157 attr=0x40 offset=0x3ffd0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffd1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1001,
+      "text": "1225 [792.869906] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580158 attr=0x40 offset=0x3ffd2 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffd3 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1002,
+      "text": "1226 [792.906468] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x580159 attr=0x40 offset=0x3ffd4 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffd5 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1003,
+      "text": "1227 [792.958781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58015a attr=0x40 offset=0x3ffd6 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffd7 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1004,
+      "text": "1228 [792.998593] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58015b attr=0x40 offset=0x3ffd8 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffd9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1005,
+      "text": "1229 [793.046781] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58015c attr=0x40 offset=0x3ffda size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffdb changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1006,
+      "text": "1230 [793.105218] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58015d attr=0x40 offset=0x3ffdc size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffdd changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1007,
+      "text": "1231 [793.182469] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58015e attr=0x40 offset=0x3ffde size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffdf changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1008,
+      "text": "1232 [793.232406] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x58015f attr=0x40 offset=0x3ffe0 size=1 unit=1 repeat=1 copies=1 default_offset=0x3ffe1 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1009,
+      "text": "1233 [793.274000] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x590004 attr=0x40 offset=0x3ffe4 size=12 unit=12 repeat=1 copies=1 default_offset=0x3fff0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1010,
+      "text": "1234 [793.324500] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x590005 attr=0x40 offset=0x3fffc size=12 unit=12 repeat=1 copies=1 default_offset=0x40008 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1011,
+      "text": "1235 [793.386531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x590007 attr=0x40 offset=0x40014 size=20 unit=20 repeat=1 copies=1 default_offset=0x40028 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1012,
+      "text": "1236 [793.422843] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x590008 attr=0x40 offset=0x4003c size=24 unit=24 repeat=1 copies=1 default_offset=0x40054 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1013,
+      "text": "1237 [793.519281] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x59000d attr=0x40 offset=0x4006c size=32 unit=32 repeat=1 copies=1 default_offset=0x4008c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1014,
+      "text": "1238 [793.567343] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x590016 attr=0x40 offset=0x400b4 size=12 unit=12 repeat=1 copies=1 default_offset=0x400c0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1015,
+      "text": "1239 [793.610843] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x59002d attr=0x40 offset=0x400cc size=4 unit=4 repeat=1 copies=1 default_offset=0x400d0 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1016,
+      "text": "1240 [793.684531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x590043 attr=0x40 offset=0x4013b size=1 unit=1 repeat=1 copies=1 default_offset=0x4013c changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1017,
+      "text": "1241 [793.747562] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5d0020 attr=0x40 offset=0x401f8 size=1 unit=1 repeat=1 copies=1 default_offset=0x401f9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1018,
+      "text": "1242 [793.808031] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5d0022 attr=0x40 offset=0x401fc size=4 unit=4 repeat=1 copies=1 default_offset=0x40200 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1019,
+      "text": "1243 [793.847468] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x5d0023 attr=0x40 offset=0x40204 size=4 unit=4 repeat=1 copies=1 default_offset=0x40208 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1020,
+      "text": "1244 [793.898531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x89100e attr=0x40 offset=0x5a7b8 size=12 unit=12 repeat=1 copies=1 default_offset=0x5a7c4 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1021,
+      "text": "1245 [793.980688] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x90000d attr=0x40 offset=0x5a7e8 size=1 unit=1 repeat=1 copies=1 default_offset=0x5a7e9 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1022,
+      "text": "1246 [794.017812] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x9c0000 attr=0x40 offset=0x5bd45 size=1 unit=1 repeat=1 copies=1 default_offset=0x5bd46 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1023,
+      "text": "1247 [794.051156] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x9c0001 attr=0x40 offset=0x5bd48 size=2 unit=2 repeat=1 copies=1 default_offset=0x5bd4a changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1024,
+      "text": "1248 [794.086343] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x2a6000e attr=0x68 offset=0xd0b98 size=160 unit=160 repeat=1 copies=1 default_offset=0xd0c38 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1025,
+      "text": "1249 [794.113531] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x2d00002 attr=0x48 offset=0x14da50 size=16 unit=16 repeat=1 copies=1 default_offset=0x14da60 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1026,
+      "text": "1250 [794.137125] FX3_BACKUP_CP_RESET_ITEM flag=1 key=0x2d0000b attr=0x48 offset=0x14e278 size=304 unit=304 repeat=1 copies=1 default_offset=0x14e3a8 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1027,
+      "text": "1251 [794.461500] FX3_BACKUP_CP_COMMIT flag=1 stage=1 Q=0x803e61c5 reply_source=0x003e0811 request_metadata=40 request_allocation=128 request_capacity=60 reply_metadata=4096 initialized_copy=40 tail_zeroed=4056 opaque_tail_software_difference=1 reply_allocator_accounting=actual_AP_Q request_free_accounting=original_destination selected=317 repeat_items=2 copies=323 changed=0 before_fnv64=0x9c88411e0172b013 after_fnv64=0x9c88411e0172b013 actual_copy_and_readback=1 reply_send_result=0 request_free_result=0 software_CP_profile=1 original_CP_executed=0 epoch=1"
+    },
+    {
+      "LF_line": 1028,
+      "text": "1252 [794.965063] FX3_BACKUP_CP_REQUEST destination=0x903e0811 logical_bytes=40 captured=40 raw=330000000000000011083e90c0613e80010000000100000002000000000000000200000004000000 epoch=1"
+    },
+    {
+      "LF_line": 1029,
+      "text": "1253 [795.296187] FX3_BACKUP_CP_RESET_ITEM flag=4 key=0x3e0016 attr=0x4 offset=0x3f20c size=1 unit=1 repeat=1 copies=1 default_offset=0x3f20d changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1030,
+      "text": "1254 [795.421563] FX3_BACKUP_CP_RESET_ITEM flag=4 key=0x3e0024 attr=0x74 offset=0x3f840 size=1 unit=1 repeat=1 copies=1 default_offset=0x3f841 changed=0 copied_and_readback=1 software_CP_profile=1"
+    },
+    {
+      "LF_line": 1031,
+      "text": "1255 [795.829687] FX3_BACKUP_CP_COMMIT flag=4 stage=2 Q=0x803e61c0 reply_source=0x003e0811 request_metadata=40 request_allocation=128 request_capacity=60 reply_metadata=4096 initialized_copy=40 tail_zeroed=4056 opaque_tail_software_difference=1 reply_allocator_accounting=actual_AP_Q request_free_accounting=original_destination selected=2 repeat_items=0 copies=2 changed=0 before_fnv64=0x9c88411e0172b013 after_fnv64=0x9c88411e0172b013 actual_copy_and_readback=1 reply_send_result=0 request_free_result=0 software_CP_profile=1 original_CP_executed=0 epoch=1"
+    },
+    {
+      "LF_line": 1032,
+      "text": "1256 [797.258875] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000000b00000021000000982d8fd40000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 1033,
+      "text": "1257 [797.327688] FX3_BACKUP_CP_POST_RESET_RAW index=1 destination=0x92a208fc source=0xa5a5a5a5 bytes=96 offset=0 captured=64 raw=00000000040000000b00000021000000982d8fd40000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1034,
+      "text": "1258 [797.437969] FX3_BACKUP_CP_POST_RESET_RAW index=1 destination=0x92a208fc source=0xa5a5a5a5 bytes=96 offset=64 captured=32 raw=0000000000000000000000000000000000000000000000000000000000000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1035,
+      "text": "1259 [797.790593] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=2 terminal_unproven=1"
+    },
+    {
+      "LF_line": 1036,
+      "text": "1260 [798.722031] FX3_BACKUP_CP_UNHANDLED destination=0x92a208fc logical_bytes=96 captured=40 raw=00000000040000001700000021000000982d8fd40000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 1037,
+      "text": "1261 [798.786844] FX3_BACKUP_CP_POST_RESET_RAW index=2 destination=0x92a208fc source=0xa5a5a5a5 bytes=96 offset=0 captured=64 raw=00000000040000001700000021000000982d8fd40000000000000000000000000000000000000000000000000000000002410000a5a5a5a51400000055555555 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1038,
+      "text": "1262 [798.847937] FX3_BACKUP_CP_POST_RESET_RAW index=2 destination=0x92a208fc source=0xa5a5a5a5 bytes=96 offset=64 captured=32 raw=040000001700000021000000982d8fd400000000777777770000000000000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1039,
+      "text": "1263 [798.890875] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92a208fc source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=2 terminal_unproven=1"
+    },
+    {
+      "LF_line": 1040,
+      "text": "1264 [799.431063] FX3_BACKUP_CP_UNHANDLED destination=0x9088076b logical_bytes=488 captured=40 raw=10000000e00100000000000001000000010000000000000000000000000000000000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 1041,
+      "text": "1265 [799.466218] FX3_BACKUP_CP_POST_RESET_RAW index=3 destination=0x9088076b source=0xa5a5a5a5 bytes=488 offset=0 captured=64 raw=10000000e001000000000000010000000100000000000000000000000000000000000000000000000000000000000000000000000000803f0000000003000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1042,
+      "text": "1266 [799.514875] FX3_BACKUP_CP_POST_RESET_RAW index=3 destination=0x9088076b source=0xa5a5a5a5 bytes=488 offset=64 captured=64 raw=01000000010000000100000000000000010000000d00000001000000030000000000000002000000000000000000000001000000000000000000000001000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1043,
+      "text": "1267 [799.567688] FX3_BACKUP_CP_POST_RESET_RAW index=3 destination=0x9088076b source=0xa5a5a5a5 bytes=488 offset=128 captured=64 raw=0000000040010000f000000000000000030000000000000040010000f000000000000000030000000000000040010000f0000000000000000300000000000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1044,
+      "text": "1268 [799.645343] FX3_BACKUP_CP_POST_RESET_RAW index=3 destination=0x9088076b source=0xa5a5a5a5 bytes=488 offset=192 captured=64 raw=40010000f000000000000000030000000000000040010000f000000000000000030000000000000040010000f000000000000000030000000000000040010000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1045,
+      "text": "1269 [799.748344] FX3_BACKUP_CP_POST_RESET_RAW index=3 destination=0x9088076b source=0xa5a5a5a5 bytes=488 offset=256 captured=64 raw=f000000000000000030000000000000040010000f000000000000000030000000000000040010000f000000000000000030000000000000040010000f0000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1046,
+      "text": "1270 [799.845375] FX3_BACKUP_CP_POST_RESET_RAW index=3 destination=0x9088076b source=0xa5a5a5a5 bytes=488 offset=320 captured=64 raw=00000000030000000000000040010000f000000000000000030000000000000040010000f000000000000000030000000000000040010000f000000000000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1047,
+      "text": "1271 [799.935344] FX3_BACKUP_CP_POST_RESET_RAW index=3 destination=0x9088076b source=0xa5a5a5a5 bytes=488 offset=384 captured=64 raw=010000000300000040010000f000000000000000010000000300000040010000f000000000000000010000000300000003000000010000000300000001000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1048,
+      "text": "1272 [800.031062] FX3_BACKUP_CP_POST_RESET_RAW index=3 destination=0x9088076b source=0xa5a5a5a5 bytes=488 offset=448 captured=40 raw=03000000010000000000000000000000000000000100000000000000000000000000000000000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1049,
+      "text": "1273 [800.117406] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9088076b source=0xa5a5a5a5 no_reply=1 no_free=1 prior_absent_route_return=0 stage=2 terminal_unproven=1"
+    },
+    {
+      "LF_line": 1050,
+      "text": "1274 [800.681031] FX3_BACKUP_CP_UNHANDLED destination=0x90040193 logical_bytes=12 captured=12 raw=0500a5404200008000000000 epoch=1"
+    },
+    {
+      "LF_line": 1051,
+      "text": "1275 [800.706531] FX3_BACKUP_CP_POST_RESET_RAW index=4 destination=0x90040193 source=0x80020002 bytes=12 offset=0 captured=12 raw=0500a5404200008000000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1052,
+      "text": "1276 [800.740000] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x90040193 source=0x80020002 no_reply=1 no_free=1 prior_absent_route_return=0 stage=2 terminal_unproven=1"
+    },
+    {
+      "LF_line": 1053,
+      "text": "1277 [803.564313] FX3_BACKUP_CP_UNHANDLED destination=0x92840747 logical_bytes=22 captured=22 raw=0d201801160001800300000000000000000000000200 epoch=1"
+    },
+    {
+      "LF_line": 1054,
+      "text": "1278 [803.722437] FX3_BACKUP_CP_POST_RESET_RAW index=5 destination=0x92840747 source=0x81cf6188 bytes=22 offset=0 captured=22 raw=0d201801160001800300000000000000000000000200 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1055,
+      "text": "1279 [803.994937] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x92840747 source=0x81cf6188 no_reply=1 no_free=1 prior_absent_route_return=0 stage=2 terminal_unproven=1"
+    },
+    {
+      "LF_line": 1056,
+      "text": "1280 [804.215656] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=8 captured=8 raw=5402920010020000 epoch=1"
+    },
+    {
+      "LF_line": 1057,
+      "text": "1281 [804.271906] FX3_BACKUP_CP_POST_RESET_RAW index=6 destination=0x9092083f source=0x80920021 bytes=8 offset=0 captured=8 raw=5402920010020000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1058,
+      "text": "1282 [804.321969] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=2 terminal_unproven=1"
+    },
+    {
+      "LF_line": 1059,
+      "text": "1283 [804.381938] FX3_BACKUP_CP_UNHANDLED destination=0x9092083f logical_bytes=36 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff epoch=1"
+    },
+    {
+      "LF_line": 1060,
+      "text": "1284 [804.432250] FX3_BACKUP_CP_POST_RESET_RAW index=7 destination=0x9092083f source=0x80920021 bytes=36 offset=0 captured=36 raw=5502920000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1061,
+      "text": "1285 [804.521468] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x9092083f source=0x80920021 no_reply=1 no_free=1 prior_absent_route_return=0 stage=2 terminal_unproven=1"
+    },
+    {
+      "LF_line": 1062,
+      "text": "1286 [804.618781] FX3_BACKUP_CP_UNHANDLED destination=0x90030001 logical_bytes=12 captured=12 raw=0500b8400000000000000000 epoch=1"
+    },
+    {
+      "LF_line": 1063,
+      "text": "1287 [804.677469] FX3_BACKUP_CP_POST_RESET_RAW index=8 destination=0x90030001 source=0x80020002 bytes=12 offset=0 captured=12 raw=0500b8400000000000000000 stage=2 no_reply=1"
+    },
+    {
+      "LF_line": 1064,
+      "text": "1288 [804.714281] FX3_BACKUP_CP_UNHANDLED_SOURCE destination=0x90030001 source=0x80020002 no_reply=1 no_free=1 prior_absent_route_return=0 stage=2 terminal_unproven=1"
+    }
+  ],
+  "native_reset_API_records": [
+    {
+      "LF_line": 17740,
+      "text": "FX3_BACKUP_NATIVE_RESET_ENTER index=1 flag=1 tid=348 caller=0x7ecd67a120 original_args_unchanged=1 no_extra_API_calls=1\r"
+    },
+    {
+      "LF_line": 18805,
+      "text": "FX3_BACKUP_NATIVE_RESET_RETURN index=1 flag=1 tid=348 result=0 errno=2 native_original_return=1 request_reply_release_and_dynamicQ_cleanup_precede_return=1\r"
+    },
+    {
+      "LF_line": 18806,
+      "text": "FX3_BACKUP_NATIVE_RESET_ENTER index=2 flag=4 tid=348 caller=0x7ecd67a128 original_args_unchanged=1 no_extra_API_calls=1\r"
+    },
+    {
+      "LF_line": 18940,
+      "text": "FX3_BACKUP_NATIVE_RESET_RETURN index=2 flag=4 tid=348 result=0 errno=2 native_original_return=1 request_reply_release_and_dynamicQ_cleanup_precede_return=1\r"
+    }
+  ],
+  "screen_records": [
+    {
+      "LF_line": 17521,
+      "text": "open screen: scr0039_boot -> scr0039_shutdown\r"
+    }
+  ],
+  "native_power_event_records": [
+    {
+      "LF_line": 10192,
+      "text": "FX3_BOOT_QUEUE_SEND tid=348 bytes=28 source=0x830128 raw=72000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1\r"
+    },
+    {
+      "LF_line": 16669,
+      "text": "FX3_BOOT_QUEUE_SEND tid=351 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1\r"
+    }
+  ],
+  "GPE_records": [],
+  "backup_snapshot": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap88cpr4-e71668cb/backup-after-shutdown.bin",
+    "exists": true,
+    "scope": "QuiescedreservedRAM; filenamealone isnotshutdowncompletion",
+    "bytes": 2232320,
+    "sha256": "38cf44637c44d3f47d7b8541dddf7ecc443e262f40dec3aec59f7b94d5b8b38f",
+    "CP_second_bank_sha256": "5dc5883fb86d87d14c1c3d530d4d65d903361c189a64edabcd1f636df289f5b7",
+    "CP_second_bank_matches_pinned_seed": true
+  },
+  "timeline": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap88cpr4-e71668cb-post11a-requests.json",
+  "original_menu_verified": false,
+  "AP89_boot_executed": false,
+  "early_stop_reason": "new guest fatal marker; quiesce snapshot quit immediately"
+}

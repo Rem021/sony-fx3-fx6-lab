@@ -1,0 +1,233 @@
+--- r19/trial_web_v22_navigation_review.py
++++ r20/trial_web_v22_navigation_review.py
+@@ -2,10 +2,13 @@
+ import collections
+ import copy
+ import json
++import re
+ import secrets
+ import threading
+ import time
+ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
++
++REQUEST_ID_RE = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')
+ 
+ KEYS = {3: '上', 0x30: '下', 0x15: '左', 0x1af: '右',
+         0x1ac: '确定', 0x1ab: 'MENU', 0x1f8: '删除 / C4'}
+@@ -106,7 +109,7 @@
+                 'truncated': self.key_rejection_truncated,
+                 'records': list(self.key_rejections)})
+ 
+-    def _reject_key(self, code, message, reason, sequence, failed_predicates=()):
++    def _reject_key(self, code, message, reason, sequence, failed_predicates=(), request_id=None):
+         """Called only inside submit's existing lock and rejection branches."""
+         observed = self.frames.get(sequence) if type(sequence) is int else None
+         current = self.frame
+@@ -126,21 +129,27 @@
+             'pending_count': len(self.pending), 'review_required': bool(self.review_required),
+             'steps': self.steps, 'stop_requested': self.stop.is_set(),
+             'error_present': self.error is not None}
++        if request_id is not None: row['request_id'] = request_id
+         self.key_rejection_total += 1
+         if len(self.key_rejections) == self.key_rejections.maxlen:
+             self.key_rejection_truncated += 1
+         self.key_rejections.append(row)
+-        return code, {'error': message}
++        response = {'error': message}
++        if request_id is not None:
++            response.update(request_id=request_id, accepted=False, enqueued=False)
++        return code, response
+ 
+     def submit(self, body):
+         with self.lock:
+             key, sequence = body.get('key'), body.get('observed_sequence')
++            raw_request_id = body.get('request_id')
++            request_id = raw_request_id if type(raw_request_id) is str and REQUEST_ID_RE.fullmatch(raw_request_id) else None
+             if type(key) is not int or key not in KEYS:
+                 return self._reject_key(400, '仅支持页面上的七个按钮。',
+-                                        'unsupported_key', sequence)
++                                        'unsupported_key', sequence, request_id=request_id)
+             if type(sequence) is not int or sequence not in self.frames:
+                 return self._reject_key(409, '请等待当前画面显示后再按键。',
+-                                        'observed_sequence_missing', sequence)
++                                        'observed_sequence_missing', sequence, request_id=request_id)
+             if (not self.render_valid or not self.frame
+                     or self.frames[sequence]['PNG_sha256'] != self.frame['PNG_sha256']
+                     or self.frames[sequence]['content_generation'] != self.content_generation):
+@@ -153,21 +162,23 @@
+                     if self.frames[sequence]['content_generation'] != self.content_generation:
+                         failures.append('generation_mismatch')
+                 return self._reject_key(409, '当前画面已变化或不可用，请等待并查看最新画面。',
+-                                        'frame_identity_or_render_invalid', sequence, failures)
++                                        'frame_identity_or_render_invalid', sequence, failures, request_id)
+             if self.stop.is_set() or self.error or self.phase in ('stopping', 'finished'):
+                 return self._reject_key(409, '试用已停止接收按键。',
+-                                        'stopping_or_error', sequence)
++                                        'stopping_or_error', sequence, request_id=request_id)
+             if not self.ready or self.busy or self.pending or self.review_required:
+                 return self._reject_key(409, '上一按键仍在处理，请稍候。',
+-                                        'not_ready_or_pending', sequence)
++                                        'not_ready_or_pending', sequence, request_id=request_id)
+             if self.steps >= self.max_steps:
+                 return self._reject_key(409, '本轮已达配置的按键上限，请结束后重新启动。',
+-                                        'configured_key_limit', sequence)
++                                        'configured_key_limit', sequence, request_id=request_id)
+             item = {'key': key, 'label': KEYS[key], 'observed_frame': self.frames[sequence],
+                     'requested_monotonic': time.monotonic(), 'source': 'local_web_user'}
+             self.pending.append(item)
+             self.busy = True
+-            return 202, {'accepted': True, 'next_step': self.steps+1, 'key': hex(key)}
++            response = {'accepted': True, 'next_step': self.steps+1, 'key': hex(key)}
++            if request_id is not None: response['request_id'] = request_id
++            return 202, response
+ 
+     def require_visual_review(self, step, state, changed):
+         """Input ACK is known; pixel change alone cannot certify the intended page."""
+@@ -299,6 +310,7 @@
+ let displayed=0,shown=0,shownSHA='',displayedGeneration=0,busy=false,ending=false,finished=false;
+ let lastURL=null,renderFault=null,lastStatus=null,awaitingStep=null,deliveryUnknown=false,reviewAwaiting=false,reviewUnknown=false,pendingConfirm=null;
+ let explicitRejection=null,uncertainDetail='';
++const attemptDocumentTimeOrigin=performance.timeOrigin,attemptDocument=document;let currentKeyAttempt=null;
+ const image=document.querySelector('#frame'),statusEl=document.querySelector('#status');
+ const err=document.querySelector('#error'),endButton=document.querySelector('#end'),startButton=document.querySelector('#start');
+ const failureSummary=document.querySelector('#failure-summary'),diagnostics=document.querySelector('#diagnostics');
+@@ -318,7 +330,7 @@
+    if(!response.ok){
+      // Only explicit server rejections prove a mutation was rejected.
+      const body=await response.json();const error=new Error(body.error||'操作未完成');
+-     error.deliveryUnknown=response.status>=500;throw error;
++     error.deliveryUnknown=response.status>=500;error.serverResponse=body;error.httpStatus=response.status;throw error;
+    }
+    const body=await response[bodyKind]();return {response,body};
+  })()]);}finally{clearTimeout(timer);}
+@@ -449,30 +461,73 @@
+    }
+  }finally{if(!finished)setTimeout(tick,400);}
+ }
++function keyAttemptOutcome(){return currentKeyAttempt?structuredClone(currentKeyAttempt):null;}
++Object.defineProperty(window,'fx3KeyAttemptOutcome',{value:keyAttemptOutcome,writable:false,configurable:false});
++function setAttempt(id,outcome,extra={}){
++ if(!currentKeyAttempt||currentKeyAttempt.attempt_id!==id)return false;
++ Object.assign(currentKeyAttempt,{outcome,...extra,updated_monotonic_ms:performance.now()});return true;
++}
++function keyAttemptRecoveryEligibility(binding){
++ const a=currentKeyAttempt,s=lastStatus;
++ const deny=reason=>({eligible:false,reason});
++ let h;try{h=window.__fx3InteractionDeadlineV1?.status?.();}
++ catch(_){return deny('alarm_status_unavailable');}
++ if(!a||!binding||typeof binding!=='object')return deny('no_attributed_attempt');
++ if(a.attempt_id!==binding.attempt_id||a.document_time_origin!==binding.document_time_origin||
++    a.launch_request_id!==binding.launch_request_id||a.key!==binding.key||
++    a.base_step!==binding.base_step||a.expected_step!==binding.expected_step||
++    a.frame.PNG_sha256!==binding.PNG_sha256||a.frame.content_generation!==binding.content_generation||
++    a.frame.sequence!==binding.sequence||a.alarm_nonce!==binding.nonce||!a.alarm_nonce)
++   return deny('binding_mismatch');
++ if(document!==attemptDocument||performance.timeOrigin!==a.document_time_origin||
++    !h||h.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedURL!==location.href||
++    h.current?.state!=='armed'||h.current.nonce!==binding.nonce||
++    h.expectedLaunchId!==a.launch_request_id||h.documentTimeOrigin!==a.document_time_origin||
++    !Number.isFinite(h.current.armed_ms)||!Number.isFinite(h.current.due_ms)||
++    h.current.due_ms!==h.current.armed_ms+20000||
++    h.current.due_ms!==a.alarm_due_ms||performance.now()>=h.current.due_ms)return deny('document_or_alarm_mismatch');
++ if(!['not_posted','explicit_rejected_unqueued'].includes(a.outcome)||
++    (a.outcome==='not_posted'&&a.mutation_called)||
++    (a.outcome==='explicit_rejected_unqueued'&&(!a.mutation_called||a.server_request_id!==a.attempt_id)))
++   return deny('attempt_not_proven_unqueued');
++ if(!s||s.launch_request_id!==a.launch_request_id||s.steps!==a.base_step||
++    s.phase!=='ready'||!s.ready||s.error||s.busy||s.review_required||
++    ending||finished||busy||awaitingStep!==null||deliveryUnknown||reviewUnknown||
++    reviewAwaiting||renderFault||!frameLoadedFor(s))return deny('current_state_not_ready');
++ return {eligible:true,reason:'attributed_unqueued_local_snapshot_only',attempt_id:a.attempt_id,
++   snapshot_monotonic_ms:performance.now(),server_atomic_permission:false};
++}
++Object.defineProperty(window,'fx3KeyAttemptRecoveryEligibility',{value:keyAttemptRecoveryEligibility,writable:false,configurable:false});
+ keys.forEach(b=>b.onclick=async()=>{
+  if(b.disabled||busy||ending||renderFault||awaitingStep!==null||!lastStatus)return;
++ // One explicit handler-admitted click, fixed before the first await.
++ let alarmAtClick=null;try{alarmAtClick=window.__fx3InteractionDeadlineV1?.status?.()||null;}catch(_){}
++ const a={attempt_id:crypto.randomUUID().toLowerCase(),document_time_origin:attemptDocumentTimeOrigin,
++   launch_request_id:lastStatus.launch_request_id||null,
++   key:Number(b.dataset.key),base_step:lastStatus.steps,expected_step:lastStatus.steps+1,
++   frame:{sequence:displayed,PNG_sha256:shownSHA,content_generation:displayedGeneration},
++   alarm_nonce:alarmAtClick?.current?.nonce||null,alarm_due_ms:alarmAtClick?.current?.due_ms||null,
++   outcome:'preflight',mutation_called:false,created_monotonic_ms:performance.now()};
++ currentKeyAttempt=a;
+  if(!frameLoadedFor(lastStatus)){
++   setAttempt(a.attempt_id,'not_posted',{reason:'click_frame_not_loaded'});
+    lockVisualControls();
+    explicitRejection={kind:'key',detail:'浏览器尚未显示最新画面；本次未发送按键。请看新图后自行决定。'};
+-   presentFeedback(lastStatus);
+-   return;
++   presentFeedback(lastStatus);return;
+  }
+- // Reserve this click before the read-only preflight. A second click cannot
+- // create a second request while the status GET is pending.
+  busy=true;disableKeys();
+- const clickedStep=lastStatus.steps;
+- const clickedSHA=shownSHA,clickedGeneration=displayedGeneration;
++ const clickedStep=a.base_step,clickedSHA=a.frame.PNG_sha256,clickedGeneration=a.frame.content_generation;
+  let preflight;
+- try{
+-   preflight=(await request('/api/status')).body;
+- }catch(e){
+-   // No mutation was sent. A fresh ordinary tick is required before keys reopen.
++ try{preflight=(await request('/api/status')).body;
++   if(currentKeyAttempt!==a)return;
++   if(!preflight||typeof preflight!=='object'||!preflight.frame||typeof preflight.frame!=='object')
++     throw Error('按键前状态格式无效');
++ }
++ catch(e){if(currentKeyAttempt!==a)return;
++   setAttempt(a.attempt_id,'not_posted',{reason:'preflight_get_failed'});
+    renderFault='按键前状态读取失败；本次未发送按键。请等待状态刷新并看最新画面。';
+-   busy=false;disableKeys();presentFeedback(lastStatus);
+-   return;
++   busy=false;disableKeys();presentFeedback(lastStatus);return;
+  }
+- // A tick or End may have advanced while the GET was in flight. All identities
+- // must still match the image actually loaded in this document.
+  if(ending||finished||deliveryUnknown||reviewUnknown||renderFault||
+     awaitingStep!==null||reviewAwaiting||preflight.phase!=='ready'||
+     !preflight.ready||preflight.busy||preflight.review_required||
+@@ -481,26 +536,35 @@
+     shownSHA!==clickedSHA||displayedGeneration!==clickedGeneration||
+     !lastStatus||!frameLoadedFor(lastStatus)||lastStatus.steps!==clickedStep||
+     lastStatus.frame.PNG_sha256!==clickedSHA||lastStatus.frame.content_generation!==clickedGeneration){
++   setAttempt(a.attempt_id,'not_posted',{reason:'preflight_identity_or_lifecycle_changed'});
+    busy=false;lockVisualControls();
+    if(!ending&&!finished){
+      explicitRejection={kind:'key',detail:'按键前画面或状态已变化；本次未发送按键。请看最新画面后自行决定。'};
+      presentFeedback(lastStatus||preflight);
+-   }
+-   return;
++   }return;
+  }
+  awaitingStep=clickedStep+1;
++ setAttempt(a.attempt_id,'post_in_flight',{mutation_called:true,observed_sequence:displayed});
+  try{
+-   const ack=await post('/api/key',{key:Number(b.dataset.key),observed_sequence:displayed});
+-   if(ack.accepted!==true||ack.next_step!==awaitingStep)throw Error('按键回执不完整，请等待状态确认。');
++   const ack=await post('/api/key',{key:a.key,observed_sequence:displayed,request_id:a.attempt_id});
++   if(currentKeyAttempt!==a)return;
++   if(ack.accepted!==true||ack.next_step!==awaitingStep||ack.request_id!==a.attempt_id)
++     throw Error('按键回执不完整，请等待状态确认。');
++   setAttempt(a.attempt_id,'accepted',{server_request_id:ack.request_id,accepted_next_step:ack.next_step});
+    if(explicitRejection?.kind==='key')explicitRejection=null;
+    presentFeedback(lastStatus);
+  }catch(e){
+-   if(e.deliveryUnknown===false){
+-     awaitingStep=null;deliveryUnknown=false;
++   if(currentKeyAttempt!==a)return;
++   const matching=e.deliveryUnknown===false&&e.httpStatus>=400&&e.httpStatus<500&&
++     e.serverResponse?.request_id===a.attempt_id&&e.serverResponse?.accepted===false&&
++     e.serverResponse?.enqueued===false;
++   setAttempt(a.attempt_id,matching?'explicit_rejected_unqueued':'delivery_unknown',
++     {server_request_id:matching?e.serverResponse.request_id:null,http_status:e.httpStatus||null});
++   if(matching){awaitingStep=null;deliveryUnknown=false;
+      explicitRejection={kind:'key',detail:e.message};
+    }else{deliveryUnknown=true;uncertainDetail=e.message;}
+    presentFeedback(lastStatus);
+- }finally{busy=false;}
++ }finally{if(currentKeyAttempt===a)busy=false;}
+ });
+ 
+ startButton.onclick=async()=>{

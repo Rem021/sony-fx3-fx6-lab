@@ -1,0 +1,222 @@
+{
+  "status": "PASS_STATIC_PRE_CP_ROUTE_WITH_RUNTIME_FIRST_ORIGINAL_MODULES_ONLY",
+  "pinned_inputs": {
+    "cpio_audit": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/cpio-audit.json",
+      "sha256": "cc0b3c5b1925aa4bb0cb14aab275f2831833c7378490ca5408789f3824eb4847"
+    },
+    "candidate": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/fixed-kernel-candidate.json",
+      "sha256": "42cddf844eb37a4712feb59a0c595ab9746eee21b37b210a7f81741bdb16797c"
+    },
+    "run_receipt": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-c72ee0b9/run-receipt.json",
+      "sha256": "c37ad1d014d90fd3311722eec1ff025468aeeccc1001d91456bd06cf6b278ceb"
+    },
+    "run_serial": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-c72ee0b9/serial.log",
+      "sha256": "034552e396f4dbd49aa55e85fb931272d009e41cf7c0a413d85b373b9c7b8536"
+    },
+    "ldec_build": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ldec-soft103-v1-build.json",
+      "sha256": "2cb966171e77ca33360feb0d1658e6a7af8430530cdf32de4a9630400701b329"
+    },
+    "ldec_source": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ldec-soft103-v1.c",
+      "sha256": "6c026aeb7231801f196af93524248d4c515f2a69788a3e3485b8b90d1ed35c9d"
+    },
+    "ldec_unit": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ldec-soft103-v1-module-unit.c",
+      "sha256": "bf154834ecf29a72143bc8b93e4695594f0c4857308892ba92bb2bef43ee6745"
+    },
+    "ldec_decoder": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/ldec-lz77/ldec_soft.c",
+      "sha256": "10eacafe48b4d3c6ff3afcde507619e394294cdf8324dc5e0c7af9d1fd233780"
+    },
+    "ldec_test_build": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ldec-ioctl103-test-v2-build.json",
+      "sha256": "c4bd12cab476458974d595425cd6ca52c7e94bd32c0aa1d2dd4bfed738942d94"
+    },
+    "ldec_test_source": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ldec-ioctl103-test-v2.c",
+      "sha256": "c00720368f0dee921a6cd07a30ed870a29d70a1500c8b705581d20ded0d1d7ff"
+    },
+    "file_observer_build": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-file100-observer-v2-build.json",
+      "sha256": "fe7635a2958b2c664c531f14c62258eb6f7d5f779c640ab6c5cd87b3d943b343"
+    },
+    "file_observer_source": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-file100-observer-v2.c",
+      "sha256": "288f6946cbd43dd4a8bf82aa5b71dca3a93d9626ba2456202161e3e394bcb9f6"
+    },
+    "devno_module": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/payloads/cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+      "sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23"
+    }
+  },
+  "fixed_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+    "sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+    "bytes": 453184500
+  },
+  "fixed_guest_dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+    "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+    "bytes": 10355
+  },
+  "runtime_observed": {
+    "receipt_sha256": "c37ad1d014d90fd3311722eec1ff025468aeeccc1001d91456bd06cf6b278ceb",
+    "serial_sha256": "034552e396f4dbd49aa55e85fb931272d009e41cf7c0a413d85b373b9c7b8536",
+    "original_insmod_rc_zero": [
+      "FX3_INSMOD_RC_/kmod/devno.ko=0",
+      "FX3_INSMOD_RC_/usr/kmod/osal_utm.ko=0",
+      "FX3_INSMOD_RC_/usr/kmod/osal_uipc.ko=0"
+    ],
+    "next_first_unverified_condition": "/init line 86 -c /dev/uipc; no node/present marker in captured serial",
+    "simulation_executed": false
+  },
+  "reviewed_init_lines": [
+    79,
+    118
+  ],
+  "guest_programs": {
+    "simulation/fx3-ldec-soft103-v1.ko": {
+      "sha256": "dec6285407341319bfe6239a47e434f08b920ec23c6af960d2653c1d061c02df",
+      "bytes": 37280,
+      "elf_machine": 183,
+      "elf_type": 1,
+      "undefined_symbols": [
+        "__arch_copy_from_user",
+        "arch_p32_to_p64",
+        "arch_phys_to_va",
+        "arch_va_to_phys",
+        "printk",
+        "udif_cdev_register",
+        "udif_cdev_unregister",
+        "udif_devnodes",
+        "vfree",
+        "vmalloc"
+      ],
+      "kernel_text_patch_imports": [],
+      "runtime_result": "UNTESTED"
+    },
+    "simulation/fx3-ldec-ioctl103-test-v2": {
+      "sha256": "c6e792379e8adefd221f172a379593adfdf37141f920292a1abcd25f1223a4ab",
+      "bytes": 20536,
+      "elf_machine": 183,
+      "elf_type": 2,
+      "undefined_symbols": [
+        "__errno_location",
+        "__libc_start_main",
+        "abort",
+        "bcmp",
+        "close",
+        "dprintf",
+        "free",
+        "ioctl",
+        "lseek",
+        "malloc",
+        "memset",
+        "mmap",
+        "munmap",
+        "open",
+        "read"
+      ],
+      "kernel_text_patch_imports": [],
+      "runtime_result": "UNTESTED"
+    },
+    "simulation/fx3-file100-observer-v2": {
+      "sha256": "044d08549217523c645035e02ae74b1e76b73db17a61d13b0ff4ecd05a3987e0",
+      "bytes": 16008,
+      "elf_machine": 183,
+      "elf_type": 2,
+      "undefined_symbols": [
+        "__libc_start_main",
+        "abort",
+        "bcmp",
+        "close",
+        "dprintf",
+        "getpid",
+        "lseek",
+        "malloc",
+        "memcpy",
+        "memset",
+        "mmap",
+        "open",
+        "read",
+        "system",
+        "usleep"
+      ],
+      "kernel_text_patch_imports": [],
+      "runtime_result": "UNTESTED"
+    },
+    "simulation/fx3-cp-backup-reset-v1.ko": {
+      "sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca",
+      "bytes": 190648,
+      "elf_machine": 183,
+      "elf_type": 1,
+      "undefined_symbols": [
+        "arch_phys_to_va",
+        "kallsyms_lookup_name",
+        "osal_create_waitable_thread",
+        "osal_dynamic_id",
+        "osal_free_msg",
+        "osal_get_msg_src",
+        "osal_msg_size",
+        "osal_rcv_msg_tmo",
+        "osal_reg_public",
+        "osal_set_msg_src",
+        "osal_sig_sem",
+        "osal_snd_msg",
+        "osal_unreg_public",
+        "osal_valloc_msg_wait",
+        "osal_wai_sem_tmo",
+        "osal_wait_thread_exit",
+        "printk",
+        "probe_kernel_read",
+        "vfree",
+        "vmalloc"
+      ],
+      "kernel_text_patch_imports": [],
+      "runtime_result": "UNTESTED"
+    }
+  },
+  "ldec_init_linkage": {
+    "function_text_offset": "0x4e8",
+    "function_file_offset": "0x528",
+    "devno_table_relocation": ".text+0x4e8 R_AARCH64_MOVW_UABS_G0_NC udif_devnodes",
+    "registration_call_relocation": ".text+0x5c4 R_AARCH64_CALL26 udif_cdev_register"
+  },
+  "devno_ldec_row": {
+    "module_sha256": "cca1d9acd87a718c7742d168ea0de402b01a7c04cd40433ff2ca4071150dbc23",
+    "symbol": "udif_devnodes",
+    "row_index": 5,
+    "row_file_offset": "0x400",
+    "row_hex": "00000000000000000000fb00cd000100",
+    "name_relocation_rodata_offset": "0x48",
+    "name": "ldec",
+    "type": 0,
+    "major": 251,
+    "minor": 205,
+    "count": 1
+  },
+  "pre_cp_physical_writes": {
+    "ldec_test": {
+      "start": "0x41d300000",
+      "size": "0x100000",
+      "fixed_dtb_reserved": true,
+      "conditions": "guest test opens /dev/mem and /dev/ldec; module validates destination p32 and arch conversion, writes only after full decode and readback rollback"
+    },
+    "file100_observer": {
+      "start": "0x41d400000",
+      "size": "0x300000",
+      "fixed_dtb_reserved": true,
+      "conditions": "read-only /setting/Backup.bin; private observer span initialized and payload copied within CAP=0x230000; shutdown shell only after external magic at h[6]"
+    }
+  },
+  "old_fx3_kernel_absolute_address_or_text_patch_in_verified_source": false,
+  "kernel_export_implementation_and_runtime_mapping_fully_verified": false,
+  "cp_helper_known_refusal_gate_preserved": true,
+  "pre_cp_guest_execution_observed": false,
+  "host_only_next_observation": "stop at first completed negative marker or CP helper insmod RC; if unexpected positive CP RC, stop before AP and flag guard; serial polling is not a CPU breakpoint"
+}

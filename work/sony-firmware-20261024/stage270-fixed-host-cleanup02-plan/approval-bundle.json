@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "grant_id": "fx3-host-cleanup-20261101-02",
+  "maximum_root_program_invocations": 1,
+  "scope": "HOST_ONLY_FIXED_AUDIT_TOKEN_CLEANUP_AFTER_PHYSICAL_CAMERA_DISCONNECT",
+  "helper_PID": 34474,
+  "helper_signal": 9,
+  "observer_PID": 34391,
+  "observer_signal": 15,
+  "USB_requests": 0,
+  "firmware_write": false,
+  "old_journal_write": false,
+  "automatic_retry": false,
+  "files": [
+    {
+      "path": "HostCleanup.command",
+      "bytes": 1463,
+      "sha256": "8304262358514d855a1746e5368f6446e3c90d9b8ad078f2e984369badd49644"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3496,
+      "sha256": "2028042d04a73d69a0f15f15edac9b1c85444c34166ab0bbd6b030621caa6943"
+    },
+    {
+      "path": "artifacts/fixed-host-cleanup",
+      "bytes": 36736,
+      "sha256": "a926996757e6d90474830d9bf7ae2977917221da72645baedec1caa9453db9ff"
+    },
+    {
+      "path": "artifacts/fixed-host-cleanup.dSYM/Contents/Info.plist",
+      "bytes": 647,
+      "sha256": "a266a07d283f6b9978ecf761fd88e642c7a715098a50eaabd35517b912c14ba1"
+    },
+    {
+      "path": "artifacts/fixed-host-cleanup.dSYM/Contents/Resources/DWARF/fixed-host-cleanup",
+      "bytes": 26656,
+      "sha256": "cf5e93e02b0676a6eef41a60c4b9e9b671bfd1cf8e48441212345f28e07b156d"
+    },
+    {
+      "path": "artifacts/fixed-host-cleanup.dSYM/Contents/Resources/Relocations/aarch64/fixed-host-cleanup.yml",
+      "bytes": 209,
+      "sha256": "42a64146fa344ccefa63035765de5eff661d4a7ebaf103208b0a0df9db8d7c99"
+    },
+    {
+      "path": "bound_signal.c",
+      "bytes": 1879,
+      "sha256": "4e8c1cec1a4fa0b382639cc434db39a81a3acf66ad35173c61f9c260850760bf"
+    },
+    {
+      "path": "bound_signal.h",
+      "bytes": 681,
+      "sha256": "64d031a8bd3e02b93ebef00df6badde8390b561f45ec4d93ef12283ef6a3a9c3"
+    },
+    {
+      "path": "build-and-check.json",
+      "bytes": 2144,
+      "sha256": "e2596285f8e82cf002c6f93ddc1e36897efc27072d1f2efb939ff92244fe5536"
+    },
+    {
+      "path": "cleanup.c",
+      "bytes": 6798,
+      "sha256": "1a903f4fe412d3362f051ce6963447eb3ddefef77409ec3bdfa9fd7c75a9598d"
+    },
+    {
+      "path": "cleanup_target.h",
+      "bytes": 1101,
+      "sha256": "5742649e7ade3f606986f292ddb265891f8ec140f7f782bafb6baba1bf4d2b9d"
+    },
+    {
+      "path": "fixed-plan.json",
+      "bytes": 1775,
+      "sha256": "b3fea8d499d6c5608843a8d4a8cc8cf9ddc42baa42591915d5c10db166479c13"
+    },
+    {
+      "path": "root-bootstrap-reviewed.sh",
+      "bytes": 746,
+      "sha256": "2dc0e2dcec33aef776d6b14f70b6a9e0b84b0acb304eea8917a9bd52ebdc9586"
+    }
+  ]
+}

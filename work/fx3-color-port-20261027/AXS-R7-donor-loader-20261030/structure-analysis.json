@@ -1,0 +1,311 @@
+{
+  "created_utc": "2026-10-30T16:58:47.557946+00:00",
+  "firmware_samples": [
+    {
+      "name": "AXS600",
+      "source": "AXS-R7_V600_firmware.f.bin",
+      "bytes": 29330524,
+      "sha256": "8b228e57f9dba27379dc171aec104408a38cf7d6045cfcbec32e28b0c98350cc",
+      "version_bytes_ascii": "6.00",
+      "clear_header_bytes": 76,
+      "raw_field_0x00_equals_0x40": true,
+      "bounded_header_candidate_start": 76,
+      "bounded_header_candidate_bytes": 1024,
+      "declared_body_bytes_field_0x44": 29329408,
+      "body_candidate_offset": 1100,
+      "trailer_candidate_bytes": 16,
+      "total_length_relation_matches": true,
+      "independent_run_fits": [
+        {
+          "start": 336,
+          "end_exclusive": 490,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 97,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 718,
+          "end_exclusive": 872,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 97,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 595,
+          "end_exclusive": 708,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 56,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 180,
+          "end_exclusive": 283,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 46,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 905,
+          "end_exclusive": 986,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 24,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 491,
+          "end_exclusive": 559,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 11,
+          "held_out_mismatches": 0
+        }
+      ],
+      "candidate_path": "AXS600-bounded-header-candidate.bin",
+      "candidate_sha256": "58625b305d5808df599befd9a97f4136c2819b6cedb5f668d9926fe72a968717",
+      "candidate_nonzero_byte_count": 16,
+      "candidate_nonzero_source_offsets": [
+        88,
+        101,
+        127,
+        179,
+        283,
+        317,
+        335,
+        490,
+        559,
+        594,
+        708,
+        717,
+        872,
+        904,
+        986,
+        1043
+      ],
+      "candidate_scope": "Only this 1024-byte prefix was transformed; isolated residual bytes have not been assigned a field/key/IV meaning. No body decryption or signing.",
+      "raw_prefix_sliding_relation_matches": 991,
+      "raw_prefix_sliding_relation_pairs": 1023,
+      "raw_body_first_1MiB_entropy": 7.999822440997262,
+      "raw_selected_magic_offsets": {
+        "ELF": [],
+        "gzip": [
+          8061269
+        ],
+        "XZ": [],
+        "SquashFS_LE": [],
+        "UBI": [],
+        "CPIO_newc": [],
+        "BinaryPackProperty": [],
+        "DATA23213": []
+      },
+      "bounded_gzip_checks": [
+        {
+          "source_offset": 8061269,
+          "output_cap": 4194304,
+          "input_cap": 4194304,
+          "complete_valid_stream": false,
+          "error": "Error -3 while decompressing data: unknown header flags set"
+        }
+      ],
+      "body_or_private_loader_readable": false
+    },
+    {
+      "name": "AXS601",
+      "source": "AXS601-members/AXS-R7_6.01_firmware.f.bin",
+      "bytes": 29329516,
+      "sha256": "da0028a10ff74538bbac96222089e2682e4a82fdb5028e5c3ee0844519f1e277",
+      "version_bytes_ascii": "6.01",
+      "clear_header_bytes": 76,
+      "raw_field_0x00_equals_0x40": true,
+      "bounded_header_candidate_start": 76,
+      "bounded_header_candidate_bytes": 1024,
+      "declared_body_bytes_field_0x44": 29328400,
+      "body_candidate_offset": 1100,
+      "trailer_candidate_bytes": 16,
+      "total_length_relation_matches": true,
+      "independent_run_fits": [
+        {
+          "start": 298,
+          "end_exclusive": 519,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 164,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 76,
+          "end_exclusive": 186,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 53,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 187,
+          "end_exclusive": 297,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 53,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 644,
+          "end_exclusive": 742,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 41,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 743,
+          "end_exclusive": 827,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 27,
+          "held_out_mismatches": 0
+        },
+        {
+          "start": 839,
+          "end_exclusive": 921,
+          "train_bits": 64,
+          "fit_degree": 16,
+          "taps": [
+            11,
+            13,
+            14,
+            16
+          ],
+          "held_out_bits": 25,
+          "held_out_mismatches": 0
+        }
+      ],
+      "candidate_path": "AXS601-bounded-header-candidate.bin",
+      "candidate_sha256": "18bd203571b7a4ec8f169f79cbbba829e7d83c1e118d25542eccd61210398663",
+      "candidate_nonzero_byte_count": 16,
+      "candidate_nonzero_source_offsets": [
+        186,
+        297,
+        519,
+        555,
+        576,
+        643,
+        742,
+        827,
+        838,
+        921,
+        963,
+        969,
+        1010,
+        1034,
+        1055,
+        1077
+      ],
+      "candidate_scope": "Only this 1024-byte prefix was transformed; isolated residual bytes have not been assigned a field/key/IV meaning. No body decryption or signing.",
+      "raw_prefix_sliding_relation_matches": 991,
+      "raw_prefix_sliding_relation_pairs": 1023,
+      "raw_body_first_1MiB_entropy": 7.999837642637236,
+      "raw_selected_magic_offsets": {
+        "ELF": [],
+        "gzip": [],
+        "XZ": [],
+        "SquashFS_LE": [],
+        "UBI": [],
+        "CPIO_newc": [],
+        "BinaryPackProperty": [],
+        "DATA23213": []
+      },
+      "bounded_gzip_checks": [],
+      "body_or_private_loader_readable": false
+    }
+  ],
+  "inferred_recurrence": "s[n]=s[n-11]^s[n-13]^s[n-14]^s[n-16], byte mask is an eight-bit sliding window",
+  "hypothesis": "Long sliding-window runs in a bounded prefix expose a linear mask under a zero-padding hypothesis. Independent held-out predictions fit. This is a data model, not an original loader contract or identification of the body cipher.",
+  "VENICE_direct_comparison": {
+    "source": "donor-loader-20261029/outer-members/VENICE/DATA23213",
+    "type": "VENICE V2.01 type3 inner",
+    "source_sha256": "498d047ca2f6f11d54c502a399e2c5a9f4740e6fae4913eba1aaaf486349c785",
+    "compared_span_start": 76,
+    "compared_span_bytes": 1024,
+    "sliding_relation_matches": 6,
+    "sliding_relation_pairs": 1023,
+    "AXS_clear_product_prefix_matches": false,
+    "AXS_mask_or_cipher_attempted": false,
+    "scope": "The observed AXS padded-prefix pattern is not assumed to be a VENICE type3 format or a successful VENICE decoding."
+  },
+  "VENICE_or_FX5_private_ISP_recovered": false,
+  "private_signing_key_operations": false,
+  "body_cipher_guesses_or_trials": false,
+  "modified_firmware_created": false,
+  "vendor_program_execution": false,
+  "device_actions": 0
+}

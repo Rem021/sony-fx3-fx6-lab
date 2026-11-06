@@ -1,0 +1,40 @@
+{
+  "timestamp_utc": "2026-11-05T17:51:08.177219+00:00",
+  "task": "task_a11971763fc5",
+  "dispatch": "ctx_064d81a251c4",
+  "status": "revision_rejected_runtime_adapter_incomplete_false_clean_reproduced",
+  "manifest": {
+    "count": 62,
+    "all_match": true,
+    "sha256": "3f182d91bcb4fc3a09573c77d69aa050f4b9ac783e31e71d930ee03b52437b6c"
+  },
+  "independently_reproduced": [
+    {
+      "case": "inherited callback returns passed=false API16_restored=false and qemu.wait raises TimeoutError",
+      "actual": "status clean; inherited completed; locks released despite live process uncertainty"
+    },
+    {
+      "case": "QMP stop raises TimeoutError",
+      "actual": "cleanup raises before any own-process fallback"
+    },
+    {
+      "case": "all appFw maps shortened to one page",
+      "actual": "map_bias accepts although multi-page ELF code locations not covered"
+    }
+  ],
+  "code_gaps": [
+    "run_lifecycle remains a print-only placeholder; no actual launch/locks/current maps/continue/poll/TLS/end receipt integration",
+    "prepare compares mutable plan argv with its own copy rather than pinned baseline command; target path similarly unchecked against hashed target",
+    "180s starts in arm, only checked on consume; no no-hit timeout, blocking IO/cleanup overall deadline",
+    "RSP whitelist still lacks actual continue and XML/p TLS register path needed by live observer",
+    "API16 callback absent; must statically establish target helper supports inherited control before integration"
+  ],
+  "accepted_progress": [
+    "RSP checksum parser and explicit CPU-thread vs guest TID distinction improved",
+    "possibly-installed breakpoint tracking added",
+    "new output path generated"
+  ],
+  "VM_started": false,
+  "VM_authorized": false,
+  "next": "complete offline concrete runner and fail-closed cleanup; preserve prior versions; no runtime launch"
+}

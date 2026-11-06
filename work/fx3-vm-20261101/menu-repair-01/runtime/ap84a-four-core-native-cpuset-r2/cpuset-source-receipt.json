@@ -1,0 +1,30 @@
+{
+  "only_CPIO_member_changed": "init",
+  "all_helpers_original_ELFs_and_other_members_unchanged": true,
+  "DTB_only_change": "linux,initrd-end",
+  "original_source_sha256": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/regular-files/sbin/init2": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/regular-files/sbin/initrc/setup_shielding": "d54f7a0ebfa3db37fe329463bdbf60c8b6fd14c3cb95dc658c244e8bf61ead1f",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/full-v4/regular-files/sbin/initrc/setup_cpuset_CPU3": "95c778bd94e446d1e92f3f978cba58b714ca328c9020d03b7969ff2f83dd5ead",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/prepare_uipc_module_probe09.py": "a3c9a8fe4537ba7dc167334a9e856f4451b7e76b5555e7c6c1265385328dc7e4"
+  },
+  "policy": {
+    "cpu0": "0",
+    "cpu1": "1",
+    "cpu2": "2",
+    "cpu3rt": "3",
+    "cpu0_1": "0,1",
+    "cpu0_1_2": "0-2",
+    "cpu0_1_2_3rt": "0-3",
+    "full.cpus_migratable": "0-2",
+    "init_and_kthreadd_group": "cpu0_1_2_3rt"
+  },
+  "harness_origin": "prepare_uipc_module_probe09.py explicit one online CPU profile, all seven cpu masks0",
+  "current_smp_only_AppFw_status": "Actual Cpus_allowed_list0-3, despite group files0; not enough to claim the process was CPU0-bound",
+  "read_only_observation_additions": [
+    "online",
+    "threadstat processor field",
+    "threadcgroup",
+    "allnativecpusets"
+  ]
+}

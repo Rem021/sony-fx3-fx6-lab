@@ -1,0 +1,25 @@
+{
+  "observation_date": "2026-10-29",
+  "sources": [
+    {
+      "url": "https://github.com/nicolvus/a6000-fw-decomp/blob/main/docs/STATE.md",
+      "use": "A6000 Darwin0x4200 layout correction used as a hypothesis; distinct FX3 vectors/instructions then verified locally",
+      "not_inferred": "A6000 MCU pins, offsets, payloads or physical recovery compatibility with FX3"
+    },
+    {
+      "url": "https://github.com/nicolvus/a6000-fw-decomp/blob/main/docs/capture/e26-recovery.md",
+      "source_update_date": "2026-10-29",
+      "use": "current source reports user-described A6000 boot failure after update100percent/Done and open recovery investigation",
+      "limits": "user report not independently verified here; block alignment issue is an investigation lead, not established cause or FX3 diagnosis"
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/main/emmc_boot/README.md",
+      "use": "maintainer distinguishes A7IV separate eMMC boot0 original and encrypted next stage; acquisition lead only",
+      "not_inferred": "FX3 node identity, format, entry, keys or recovery-payload compatibility"
+    }
+  ],
+  "Git_commit_identity_for_live_pages_verified": false,
+  "third_party_firmware_downloaded_or_executed": false,
+  "REA_or_Ghidra_connector_discovery": "no callable matching tool found; source inspection used existing Capstone and independent raw Thumb decoding",
+  "root_or_device_operations": 0
+}

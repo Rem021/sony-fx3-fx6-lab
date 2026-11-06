@@ -1,0 +1,78 @@
+{
+  "scope": "FX3 original static audit plus bounded guest conversion-block emulation; no real camera operation",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "source": {
+    "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+    "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+  },
+  "execution": {
+    "bounded_guest_function_emulation": true,
+    "whole_builder_or_setter_execution": false,
+    "camera_native_execution": false,
+    "USB_or_GUI": false,
+    "syscall_MMIO_forwarding": false,
+    "persistent_camera_write": false,
+    "original_firmware_modified": false,
+    "patch_or_payload_output": false
+  },
+  "third_party_downloads_this_round": 0,
+  "test_cases_passed": 14,
+  "notes_path": "research_notes/\u7d22\u5c3c FX3 \u4e3b\u5f55\u8bbe\u7f6e\u4e0e\u56de\u590d\u94fe\u8def/main_recording.md",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/actual-main-setter-static.json",
+      "size": 209449,
+      "sha256": "348e8d8c874be6008af440af1fde6cd726df546c809e8c5d8ee2e93fe8fb423d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/audit_main_path.py",
+      "size": 2493,
+      "sha256": "5535a0557b8af37d7050c2ca98596b419b4fbf97c3975695adc1eb2fc67f9ce7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/builder-string-xrefs.json",
+      "size": 875102,
+      "sha256": "ad8748c0948fd5882fe6db4a63aecab9b97259915a1e96d9560795fe1f84315f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/main-path-summary.json",
+      "size": 2020,
+      "sha256": "a8d6b2214c809b61dd680f3b7930ea9afc33974f5f16aa98a01ac2b6cb4ed31d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/model-builder-static.json",
+      "size": 40096,
+      "sha256": "b0d5aa866ea94b6cc8840a052875248e26c35af08c0890ce15da218903f14795"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/model-sequence-builder-link.json",
+      "size": 34290,
+      "sha256": "5f1b1a295194f8590d92199749583718db18dd17cdfc33123b47f1f798bd8fdc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/model-string-evidence.json",
+      "size": 4318,
+      "sha256": "475a6563643f6dc1eea67e988feeaae0e0301aa99215475ceb18f1fad6c859f6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/setter-conversion-cases.csv",
+      "size": 1172,
+      "sha256": "4547e9fd3850f9df4be3565f4e911a7ff0f7e5803724d0898e0b2f4001dc3f6a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/setter-conversion-results.json",
+      "size": 23851,
+      "sha256": "f63493705682a4e1b3bf44aa859385e4cda1cfdeb9e5126298de78277a6960ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage10-mainpath/main/verify_setter_conversion.py",
+      "size": 5673,
+      "sha256": "a54b9662dd1737004f67b52b9d05088fc01f85ebb470ac446cc3cb34bfcb22ab"
+    },
+    {
+      "path": "research_notes/\u7d22\u5c3c FX3 \u4e3b\u5f55\u8bbe\u7f6e\u4e0e\u56de\u590d\u94fe\u8def/main_recording.md",
+      "size": 8139,
+      "sha256": "9aec6d0742ca20169157519939713ceb96ab055a34835d8c1e22029d68ee3901"
+    }
+  ]
+}

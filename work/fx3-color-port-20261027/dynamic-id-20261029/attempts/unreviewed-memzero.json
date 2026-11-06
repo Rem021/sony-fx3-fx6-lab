@@ -1,0 +1,5 @@
+{
+  "formal_cases": 0,
+  "observed_error": "AssertionError: 0x558af4",
+  "reason": "The new standalone NRV-derived guest had no admitted ARM memzero window. Original sparse-index construction reached it after the context adapter was routed correctly. Add the already source-reviewed original 0x558af4..0x558c30 window and retain the RAM write guard; do not replace it with a zero-fill success stub."
+}

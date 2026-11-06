@@ -1,0 +1,72 @@
+{
+  "evidence_level": "pinned-original static analysis and own host compiled/linked tests only",
+  "source_and_output_sha256": {
+    "gen_inputs.py": "8568573f5a15add9a73b5e0caebe1f995ea178b7633ec251fcd03701c1b07d33",
+    "audit.py": "58aa8c1a2e2f2b33f80b64ae7873228db8d0048110f4546f8b7dc9a24abcab2b",
+    "veneer.hpp": "e9498f1139ee665b4df798d3fb1c8996d1ed43d6def66e3daee1f32142a3cce8",
+    "veneer.cpp": "ac3bc49df71cd758fd1ae006f0c4fbb52f195b99a48a87462de280b3a0078992",
+    "test_veneer.cpp": "d39b2181579040ac410538c9a14fe2e16e4465d924dfa241753a13d7c859a4b6",
+    "build_and_test.py": "ea16603d3ec615726fdd04ef40a49bb2cdcacb47c660c73f90a419609a6dd255",
+    "callback_map.hpp": "d66bc4a4b3e685f28c5ee15561d85daa91e4bca6065d2e2540bac86ffc27e87c",
+    "genuine-input.bin": "585d8918da368cec6ef689aa3c14dc3306311ab6661c0bffc9a02e1685430cf1",
+    "evidence.json": "2e7bdaddc8de68b4d09b46387d84040fc1a42267c907e2fa5d66fe9e3411dec0",
+    "veneer_host_test": "a3a29e28061bac105370c127854e5bd068abdecd831b88ac9118054cd2df7400",
+    "README.md": "405b2fd2764a41b5ee16e0e51cee992bdfd75e6a7afafb506fa1dbd6cc09a4c9"
+  },
+  "runs": [
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "gen_inputs.py"
+      ],
+      "exit": 0,
+      "stdout": "generated 57/18 map and 656-byte genuine input\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "audit.py"
+      ],
+      "exit": 0,
+      "stdout": "audited 53 original instructions\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "clang++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "veneer.cpp",
+        "test_veneer.cpp",
+        "-o",
+        "veneer_host_test"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "./veneer_host_test",
+        "genuine-input.bin"
+      ],
+      "exit": 0,
+      "stdout": "host veneer: mapping, unique nonzero original call, provisional 780, post-choice gate, PowerOn bytes and rejection fixtures passed\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "./veneer_host_test",
+        "--trigger-unsupported"
+      ],
+      "exit": 86,
+      "stdout": "",
+      "stderr": "FX6_BRIDGE_UNSUPPORTED_CALLBACK_SLOT=0\n"
+    }
+  ],
+  "result": "host mapping and rejection fixtures pass; original Sony function not executed"
+}

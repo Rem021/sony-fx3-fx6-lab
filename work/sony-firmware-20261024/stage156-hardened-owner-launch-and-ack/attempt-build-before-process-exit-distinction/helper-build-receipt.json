@@ -1,0 +1,136 @@
+{
+  "ABI": 3,
+  "entry_schema": 2,
+  "grant_id": "fx3-702-msc-owner-20261028-01",
+  "fixture": {
+    "path": "artifacts/owner-fixture-helper",
+    "sha256": "58e02b2c4c046c80c2e0253ef445860e7564cb2a042f6da41f837a8c381586b8",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-DFX3_ENTRY_FIXTURE",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_ipc.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/entry_support.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_entry_main.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_fixture.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/artifacts/owner-fixture-helper"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/artifacts/owner-fixture-helper:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "native": {
+    "path": "artifacts/owner-native-helper",
+    "sha256": "c7ea25dc0889c67cfb9a8c306bc9eb7a9c0c8b418ac81e1178f86f6c25bd2c98",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_ipc.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/entry_support.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_entry_main.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_iokit.c",
+      "-framework",
+      "IOKit",
+      "-framework",
+      "CoreFoundation",
+      "-framework",
+      "DiskArbitration",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/artifacts/owner-native-helper"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/artifacts/owner-native-helper:\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.63)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "ipc": {
+    "path": "artifacts/entry-ipc.dylib",
+    "sha256": "f88bf785afb3f5e48cee52e24aeccfd11c415f9ebfc9937d07b8318d139311aa",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-deprecated-declarations",
+      "-fvisibility=hidden",
+      "-dynamiclib",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/owner_ipc.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/entry_support.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/artifacts/entry-ipc.dylib"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/artifacts/entry-ipc.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/artifacts/entry-ipc.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+  },
+  "sources": [
+    {
+      "path": "owner_trial.h",
+      "sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "236fe4c122372a13f8a5b3d4ae25bc4ccc1b7e14af47363fcde4e62e0a999afc"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "aba073e7df59e076df15568789a5de697f2b73dd95bcd525985e33582eb26e55"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "owner_binding.py",
+      "sha256": "b8f5e4170ef40e38c9d05c09909a99204b49baab476de1b1e4beeed2ed6d8a6f"
+    },
+    {
+      "path": "entry_shared.h",
+      "sha256": "7d8595fd42ab85e45bf3047c0ff024d6ed038b1de606d1420acd1f4557702603"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "f857acce0cab4c2b31cafee924635bef9c1fa8dda81b41c4fa605edb67412eb2"
+    },
+    {
+      "path": "entry_target.h",
+      "sha256": "3c9350812dd2e92d9c60733ee6e4a422387dc701b10d8219c7e60f178d3bed9d"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "d6484dd55da4782a057345bf394c1a362aea5f51062aabacf9af332f978ba423"
+    },
+    {
+      "path": "entry_binding.py",
+      "sha256": "d0dcdb0a2cca6cb4ce7aff193b83de537a419b86f79f3fdd7c7f9bb1a8eef43d"
+    },
+    {
+      "path": "launch_policy.py",
+      "sha256": "3c33d5d0f5521e61bacaa22cc488675d9a0651d6e72e1944c5ba437b9fac4ee6"
+    },
+    {
+      "path": "cache_observer.py",
+      "sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971"
+    }
+  ],
+  "native_helper_executed_or_IOKit_loaded": false,
+  "administrator_prompt_requested": false,
+  "active_device_operations": 0
+}

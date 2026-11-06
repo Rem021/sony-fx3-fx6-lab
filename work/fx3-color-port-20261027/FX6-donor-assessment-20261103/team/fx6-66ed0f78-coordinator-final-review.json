@@ -1,0 +1,44 @@
+{
+  "schema": "fx6-independent-audit-coordinator-review-v1",
+  "utc": "2026-11-05T16:30:41.045164+00:00",
+  "status": "readonly_audit_accepted_runtime_goal_unmet",
+  "task": "task_de448d2614f8",
+  "dispatch": "ctx_07c6b0cfed79",
+  "report": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-66ed0f78-audit/REPORT.md",
+  "manifest_sha256": "8a1cbfcae84113c620629d3330b284c8af35366a5c51f67e86f838a1bc8ecbb5",
+  "manifest_items_verified": 68,
+  "manifest_mismatches": [],
+  "worker_analysis_scripts_exit_zero": 9,
+  "verification_scope": "nine analysis/seal scripts, not nine VM tests; no additional runtime",
+  "independent_serial_check": {
+    "sha256": "377142e9dcee7f4f7728db6e9fcb822a9f3e501e61da7f719761d4d506f5050e",
+    "assert_lines": [
+      11688,
+      11738,
+      14502,
+      14734
+    ],
+    "screen_uud_menu_markers": [
+      0,
+      0,
+      0
+    ],
+    "boot_screen_function": "model::model_api::detail::set_model_for_boot_screen()",
+    "media_function": "infra_wrapper_bb::detail::send_and_wait_cmp_i"
+  },
+  "backup_initial_finding_withdrawn": {
+    "section_offset": "0x75c",
+    "text_file_offset": "0x68",
+    "actual_file_offset": "0x7c4",
+    "claim_supported": true,
+    "coordinator_independently_parsed_ELF": true
+  },
+  "same_platform_comparison": "cp-bind-84db17c2 uses same FX3 kernel/platform; CPIO/UPM and timeout differ; not isolated causal proof",
+  "bootability": "not demonstrated usable; not proof of absolute impossibility",
+  "cleanup": "host exit/reaping/locks self-reported; guest graceful and independent cleanup proof absent; no new QMP policy imposed",
+  "module_origin": "UPM/backup differ from selected FX6 donor; exact baseline origin unresolved; may be FX3 compatibility modules",
+  "menu_verified": false,
+  "new_runtime_started": false,
+  "platform_modified": false,
+  "next_focus": "localize boot-screen model initialization assertions using existing data, retain assertion checks and fixed FX3 platform"
+}

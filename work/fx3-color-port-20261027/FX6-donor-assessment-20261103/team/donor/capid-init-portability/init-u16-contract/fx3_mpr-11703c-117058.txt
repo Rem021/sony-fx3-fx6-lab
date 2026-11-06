@@ -1,0 +1,13 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000116f2c <_ZN16XavcsMovieWriter16SetVideoInfoListESt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS3_EEjPhRj>:
+  11703c: 97ff8df9     	bl	0xfa820 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListE+0xe80>
+  117040: f94002a0     	ldr	x0, [x21]
+  117044: 8b140014     	add	x20, x0, x20
+  117048: 91004660     	add	x0, x19, #0x11
+  11704c: 91005673     	add	x19, x19, #0x15
+  117050: b9402681     	ldr	w1, [x20, #0x24]
+  117054: 97ff8df3     	bl	0xfa820 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListE+0xe80>

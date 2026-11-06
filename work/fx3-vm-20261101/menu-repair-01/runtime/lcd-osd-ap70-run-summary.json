@@ -1,0 +1,654 @@
+{
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap70-lcd-osd/candidate70.json",
+  "candidate_sha256": "0d95bbcdd5cedf86f8641c5c7bb372eb4aada723eba777370372e3ad42e5b128",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap70lcd-f61554d9",
+  "requested_seconds": 80,
+  "duration_seconds": 81.19880149999517,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "inputs_unchanged": true,
+  "host_observer_error": null,
+  "guest_exception_markers": [],
+  "missing_markers": [],
+  "qemu_pid_absent": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "reacquire_and_release": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "reacquire_and_release": true
+    }
+  ],
+  "originals": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so",
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "unchanged": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "unchanged": true
+    }
+  ],
+  "requests_after_11a": [
+    {
+      "destination": "0x92840747",
+      "bytes": "10",
+      "source": "0x81cf61c1",
+      "caller": "0x7f34a5b550",
+      "raw": "0d2029040a0001800000",
+      "line": 7759,
+      "guest_time_previous_log": "458.183281",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de8550",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f191ff740 lr=0x7f34a5b550 module=/usr/lib/appFw.so relative=0x2de8550",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f191ff7a0 lr=0x7f34a65d98 module=/usr/lib/appFw.so relative=0x2df2d98",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f191ff800 lr=0x7f34a450c0 module=/usr/lib/appFw.so relative=0x2dd20c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f191ff830 lr=0x7f34a3da34 module=/usr/lib/appFw.so relative=0x2dcaa34",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f191ff850 lr=0x7f34a3dc6c module=/usr/lib/appFw.so relative=0x2dcac6c",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f191ff8b0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f191ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f191ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f191ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=9 fp=0x7f191ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 334,
+      "wait_type": "无需回复: send_no_wait_i +0x2de83b4",
+      "command": "0x429"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "10",
+      "source": "0x81cf6189",
+      "caller": "0x7f34a59884",
+      "raw": "0d2000050a0001800100",
+      "line": 7778,
+      "guest_time_previous_log": "458.573781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de6884",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f191ff740 lr=0x7f34a59884 module=/usr/lib/appFw.so relative=0x2de6884",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f191ff7a0 lr=0x7f34a65df8 module=/usr/lib/appFw.so relative=0x2df2df8",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f191ff800 lr=0x7f34a45100 module=/usr/lib/appFw.so relative=0x2dd2100",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f191ff830 lr=0x7f34a3daf0 module=/usr/lib/appFw.so relative=0x2dcaaf0",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f191ff850 lr=0x7f34a3dc6c module=/usr/lib/appFw.so relative=0x2dcac6c",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f191ff8b0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f191ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f191ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f191ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=9 fp=0x7f191ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 334,
+      "wait_type": "无需回复: +0x2de66f4, snd+0x2de6880后直接返回",
+      "command": "0x500"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "8",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5a264",
+      "raw": "0d206a0108000180",
+      "line": 20237,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff700 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff760 lr=0x7f34a5f41c module=/usr/lib/appFw.so relative=0x2dec41c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff7e0 lr=0x7f34a43940 module=/usr/lib/appFw.so relative=0x2dd0940",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff830 lr=0x7f34823dd0 module=/usr/lib/appFw.so relative=0x2bb0dd0",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff850 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x16a"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "10",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5b550",
+      "raw": "0d2059010a0001800700",
+      "line": 20254,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de8550",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff750 lr=0x7f34a5b550 module=/usr/lib/appFw.so relative=0x2de8550",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7b0 lr=0x7f34a5e4f4 module=/usr/lib/appFw.so relative=0x2deb4f4",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff810 lr=0x7f34a43040 module=/usr/lib/appFw.so relative=0x2dd0040",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff840 lr=0x7f3482c2d0 module=/usr/lib/appFw.so relative=0x2bb92d0",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff860 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "无需回复: send_no_wait_i +0x2de83b4",
+      "command": "0x159"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "40",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5a264",
+      "raw": "0d204c012800018007010100000000008002e0010000000000000000000000000300000000000000",
+      "line": 20269,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff610 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff670 lr=0x7f34a6732c module=/usr/lib/appFw.so relative=0x2df432c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff720 lr=0x7f34a42fc0 module=/usr/lib/appFw.so relative=0x2dcffc0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff7c0 lr=0x7f3482c09c module=/usr/lib/appFw.so relative=0x2bb909c",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff7e0 lr=0x7f3482c2fc module=/usr/lib/appFw.so relative=0x2bb92fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff860 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=9 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x14c"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "40",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5a264",
+      "raw": "0d204c012800018007010100000000008002e0010000000000000000000000000300000000000000",
+      "line": 20286,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff610 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff670 lr=0x7f34a6732c module=/usr/lib/appFw.so relative=0x2df432c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff720 lr=0x7f34a42fc0 module=/usr/lib/appFw.so relative=0x2dcffc0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff7c0 lr=0x7f3482c09c module=/usr/lib/appFw.so relative=0x2bb909c",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff7e0 lr=0x7f3482c308 module=/usr/lib/appFw.so relative=0x2bb9308",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff860 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=9 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x14c"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "40",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5a264",
+      "raw": "0d204c012800018007010100000000008002e0010000000000000000000000000300000000000000",
+      "line": 20302,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff610 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff670 lr=0x7f34a6732c module=/usr/lib/appFw.so relative=0x2df432c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff720 lr=0x7f34a42fc0 module=/usr/lib/appFw.so relative=0x2dcffc0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff7c0 lr=0x7f3482c09c module=/usr/lib/appFw.so relative=0x2bb909c",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff7e0 lr=0x7f3482c314 module=/usr/lib/appFw.so relative=0x2bb9314",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff860 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=9 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x14c"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "776",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5a264",
+      "raw": "0d2047010803018001000002000000008002e001000000008002ac0102000000000000000000000001010001000000008002e00100003c008002680101000000000000000000000001000000000000008002e001240000003802ac0100000000000000000000000001000004000000008002e0016a000000ac01ac0104000000000000000000000001010005000000008002e001000030008002800105000000000000000000000001010006000000008002e001000047008002520106000000000000000000000001010007000000008002e001000047008002520107000000000000000000000001010003000000008002e001000000000000000003000000000000000000000002010002000000008002e00100001a008002ac0102000000000000000000000002010001000000008002e00100003c008002680101000000000000000000000002000000000000008002e00123001a003a02ac0100000000000000000000000002000004000000008002e0016a001a00ac01ac0104000000000000000000000002010005000000008002e001000030008002800105000000000000000000000002010006000000008002e001000047008002520106000000000000000000000002010007000000008002e001000047008002520107000000000000000000000002010003000000008002e001000000000000000003000000000000000000000004000002000000008002e00150000000e001ac0102000000000000000000000004000001000000008002e00150003c00e001680101000000000000000000000004000000000000008002e0016a000000ac01ac0100000000000000000000000004000004000000008002e001a00000004001ac0104000000000000000000000004010005000000008002e001140000005802e00105000000000000000000000004000006000000008002e00150004700e001520106000000000000000000000004000007000000008002e0015f004700c201520107000000000000000000000004010003000000008002e0010000000000000000030000000000000000000000",
+      "line": 20317,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff2b0 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff310 lr=0x7f34a5e3e8 module=/usr/lib/appFw.so relative=0x2deb3e8",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff3a0 lr=0x7f34a43000 module=/usr/lib/appFw.so relative=0x2dd0000",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff840 lr=0x7f3482c558 module=/usr/lib/appFw.so relative=0x2bb9558",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff860 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x147"
+    },
+    {
+      "destination": "0x909c015b",
+      "bytes": "12",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5a264",
+      "raw": "000001010c00010001000000",
+      "line": 20325,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff2b0 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff310 lr=0x7f34a5e3e8 module=/usr/lib/appFw.so relative=0x2deb3e8",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff3a0 lr=0x7f34a43000 module=/usr/lib/appFw.so relative=0x2dd0000",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff840 lr=0x7f3482c558 module=/usr/lib/appFw.so relative=0x2bb9558",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff860 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x101"
+    },
+    {
+      "destination": "0x909a015a",
+      "bytes": "12",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5a264",
+      "raw": "002509010c00010000000000",
+      "line": 20330,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff2b0 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff310 lr=0x7f34a5e3e8 module=/usr/lib/appFw.so relative=0x2deb3e8",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff3a0 lr=0x7f34a43000 module=/usr/lib/appFw.so relative=0x2dd0000",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff840 lr=0x7f3482c558 module=/usr/lib/appFw.so relative=0x2bb9558",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff860 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x109"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "10",
+      "source": "0x81cf61c0",
+      "caller": "0x7f34a5a264",
+      "raw": "0d2061010a0001800000",
+      "line": 20347,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x161"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "05003d40020000800080000001000000",
+      "line": 20352,
+      "guest_time_previous_log": "554.481781",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x403d"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "05003d40080000800080000000000000",
+      "line": 20367,
+      "guest_time_previous_log": "571.414531",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x403d"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "050037400900008012000000ffffffff",
+      "line": 20372,
+      "guest_time_previous_log": "571.414531",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x4037"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "05003d400a0000800080000001000000",
+      "line": 20376,
+      "guest_time_previous_log": "571.642562",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x403d"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "05003d400d0000800080000000000000",
+      "line": 20385,
+      "guest_time_previous_log": "571.950593",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x403d"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "050037400e00008004000000ffffffff",
+      "line": 20390,
+      "guest_time_previous_log": "571.950593",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x4037"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "05003d400f0000800080000001000000",
+      "line": 20394,
+      "guest_time_previous_log": "572.231093",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x403d"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "05003d40110000800080000000000000",
+      "line": 20401,
+      "guest_time_previous_log": "572.472156",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x403d"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "05003740120000800d000000ffffffff",
+      "line": 20406,
+      "guest_time_previous_log": "572.472156",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x4037"
+    },
+    {
+      "destination": "0x90040193",
+      "bytes": "16",
+      "source": "0x80020002",
+      "caller": "0x7f34aa2d40",
+      "raw": "05003d40130000800080000001000000",
+      "line": 20410,
+      "guest_time_previous_log": "572.724843",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2e2fd40",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f1f1ff740 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f1f1ff7a0 lr=0x7f34a5ee3c module=/usr/lib/appFw.so relative=0x2debe3c",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f1f1ff820 lr=0x7f34a437c0 module=/usr/lib/appFw.so relative=0x2dd07c0",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f1f1ff880 lr=0x7f349fda78 module=/usr/lib/appFw.so relative=0x2d8aa78",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f1f1ff8a0 lr=0x7f3484a6fc module=/usr/lib/appFw.so relative=0x2bd76fc",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f1f1ff8e0 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f1f1ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f1f1ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f1f1ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 322,
+      "wait_type": "未审计",
+      "command": "0x403d"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "8",
+      "source": "0x81cf61c3",
+      "caller": "0x7f34a5a264",
+      "raw": "0d203d0308000180",
+      "line": 20494,
+      "guest_time_previous_log": "575.722843",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f201ff760 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f201ff7c0 lr=0x7f34a61a60 module=/usr/lib/appFw.so relative=0x2deea60",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f201ff840 lr=0x7f34a44000 module=/usr/lib/appFw.so relative=0x2dd1000",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f201ff880 lr=0x7f347d4d90 module=/usr/lib/appFw.so relative=0x2b61d90",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f201ff8c0 lr=0x7f34a3e9c0 module=/usr/lib/appFw.so relative=0x2dcb9c0",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f201ff910 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f201ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f201ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f201ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 320,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x33d"
+    },
+    {
+      "destination": "0x92840747",
+      "bytes": "10",
+      "source": "0x81cf61c2",
+      "caller": "0x7f34a5a264",
+      "raw": "0d202e030a0001800800",
+      "line": 20498,
+      "guest_time_previous_log": "575.722843",
+      "caller_module": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+      "stack": [
+        "FX3_PROFILE_FRAME depth=0 fp=0x7f201ff760 lr=0x7f34a5a264 module=/usr/lib/appFw.so relative=0x2de7264",
+        "FX3_PROFILE_FRAME depth=1 fp=0x7f201ff7c0 lr=0x7f34a61a60 module=/usr/lib/appFw.so relative=0x2deea60",
+        "FX3_PROFILE_FRAME depth=2 fp=0x7f201ff840 lr=0x7f34a44000 module=/usr/lib/appFw.so relative=0x2dd1000",
+        "FX3_PROFILE_FRAME depth=3 fp=0x7f201ff880 lr=0x7f347d4d90 module=/usr/lib/appFw.so relative=0x2b61d90",
+        "FX3_PROFILE_FRAME depth=4 fp=0x7f201ff8c0 lr=0x7f34a3e9c0 module=/usr/lib/appFw.so relative=0x2dcb9c0",
+        "FX3_PROFILE_FRAME depth=5 fp=0x7f201ff910 lr=0x7f34be4ba0 module=/usr/lib/appFw.so relative=0x2f71ba0",
+        "FX3_PROFILE_FRAME depth=6 fp=0x7f201ff960 lr=0x7f85d6d184 module=/usr/lib/libosal_utm.so relative=0x1184",
+        "FX3_PROFILE_FRAME depth=7 fp=0x7f201ff980 lr=0x7f85d17020 module=/lib/libpthread.so.0 relative=0x7020",
+        "FX3_PROFILE_FRAME depth=8 fp=0x7f201ff9d0 lr=0x7f855f6dbc module=/lib/libc.so.6 relative=0xc8dbc"
+      ],
+      "tid": 320,
+      "wait_type": "同步: send_and_wait_cmp_i +0x2de70a8",
+      "command": "0x32e"
+    }
+  ],
+  "new_uipc_keys_vs_ap69": [
+    {
+      "line": 7742,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=334 target=0x5503e0 op=4 tag1=0x300f6 tag2=0 result=0 errno=1023 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 7761,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=334 target=0x92840747 op=4 tag1=0x429200d tag2=0x8001000a result=0 errno=1023 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 7780,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=334 target=0x92840747 op=4 tag1=0x500200d tag2=0x8001000a result=0 errno=1023 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 7819,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=230 target=0x808261c0 op=4 tag1=0 tag2=0x77777777 result=0 errno=0 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 20238,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=322 target=0x81cf61c0 op=4 tag1=0x116a200d tag2=0x80010012 result=0 errno=2 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 20270,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=322 target=0x81cf61c0 op=4 tag1=0x114c200d tag2=0x8001000c result=0 errno=2 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 20321,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=322 target=0x81cf61c0 op=4 tag1=0x1147200d tag2=0x8001000c result=0 errno=2 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 20326,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=322 target=0x81cf61c0 op=4 tag1=0x81010000 tag2=0x10010 result=0 errno=2 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 20331,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=322 target=0x81cf61c0 op=4 tag1=0x81092500 tag2=0x1000c result=0 errno=2 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 20348,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=322 target=0x81cf61c0 op=4 tag1=0x1161200d tag2=0x8001000c result=0 errno=2 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    },
+    {
+      "line": 20459,
+      "text": "FX3_UIPC_SEND_UNIQUE tid=322 target=0x9059000e op=4 tag1=0x81cf61c0 tag2=0xa0a0a0a0 result=0 errno=2 caller=0x7f85d53a4c delegated=1",
+      "classification": "仅被动差集，含回复/动态queue；不可当新服务请求"
+    }
+  ],
+  "hardware_complete": false,
+  "menu_verified": false
+}

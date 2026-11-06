@@ -1,0 +1,255 @@
+--- r17/trial_web_v22_navigation_review.py
++++ r18/trial_web_v22_navigation_review.py
+@@ -1,5 +1,6 @@
+ """Loopback-only trial UI. HTTP threads never access QMP, GDB, or guest RAM."""
+ import collections
++import copy
+ import json
+ import secrets
+ import threading
+@@ -42,6 +43,10 @@
+         self.png = None
+         self.frame = None
+         self.frames = collections.OrderedDict()
++        # Host-only diagnostic: bounded and never serialized by an HTTP thread.
++        self.key_rejections = collections.deque(maxlen=64)
++        self.key_rejection_total = 0
++        self.key_rejection_truncated = 0
+         self.url = None
+         self.result = None
+         # Delivery acknowledgement, never a new VM cleanup assertion.
+@@ -91,23 +96,73 @@
+                     'remaining_seconds': max(0, int(self.deadline-time.monotonic())),
+                     'events': list(self.events[-12:])}
+ 
++    def key_rejection_snapshot(self):
++        """Independent deep copy; no token, request body, or QMP state."""
++        with self.lock:
++            return copy.deepcopy({
++                'schema': 'fx3-host-key-rejection-v1',
++                'scope': 'TrialState.submit explicit refusals only; host monotonic clock',
++                'capacity': 64, 'total': self.key_rejection_total,
++                'truncated': self.key_rejection_truncated,
++                'records': list(self.key_rejections)})
++
++    def _reject_key(self, code, message, reason, sequence, failed_predicates=()):
++        """Called only inside submit's existing lock and rejection branches."""
++        observed = self.frames.get(sequence) if type(sequence) is int else None
++        current = self.frame
++        row = {
++            'host_monotonic_ns': time.monotonic_ns(),
++            'http_status': code, 'reason': reason,
++            'failed_predicates': list(failed_predicates),
++            'observed_sequence': sequence if type(sequence) is int and 0 <= sequence < 2**64 else None,
++            'observed_cached': observed is not None,
++            'observed_png_sha256': observed.get('PNG_sha256') if observed else None,
++            'observed_content_generation': observed.get('content_generation') if observed else None,
++            'current_sequence': current.get('sequence') if current else None,
++            'current_png_sha256': current.get('PNG_sha256') if current else None,
++            'current_content_generation': self.content_generation,
++            'render_valid': bool(self.render_valid), 'phase': self.phase,
++            'ready': bool(self.ready), 'busy': bool(self.busy),
++            'pending_count': len(self.pending), 'review_required': bool(self.review_required),
++            'steps': self.steps, 'stop_requested': self.stop.is_set(),
++            'error_present': self.error is not None}
++        self.key_rejection_total += 1
++        if len(self.key_rejections) == self.key_rejections.maxlen:
++            self.key_rejection_truncated += 1
++        self.key_rejections.append(row)
++        return code, {'error': message}
++
+     def submit(self, body):
+         with self.lock:
+             key, sequence = body.get('key'), body.get('observed_sequence')
+             if type(key) is not int or key not in KEYS:
+-                return 400, {'error': '仅支持页面上的七个按钮。'}
++                return self._reject_key(400, '仅支持页面上的七个按钮。',
++                                        'unsupported_key', sequence)
+             if type(sequence) is not int or sequence not in self.frames:
+-                return 409, {'error': '请等待当前画面显示后再按键。'}
++                return self._reject_key(409, '请等待当前画面显示后再按键。',
++                                        'observed_sequence_missing', sequence)
+             if (not self.render_valid or not self.frame
+                     or self.frames[sequence]['PNG_sha256'] != self.frame['PNG_sha256']
+                     or self.frames[sequence]['content_generation'] != self.content_generation):
+-                return 409, {'error': '当前画面已变化或不可用，请等待并查看最新画面。'}
++                failures = []
++                if not self.render_valid: failures.append('render_invalid')
++                if not self.frame: failures.append('current_frame_missing')
++                if self.frame:
++                    if self.frames[sequence]['PNG_sha256'] != self.frame['PNG_sha256']:
++                        failures.append('sha_mismatch')
++                    if self.frames[sequence]['content_generation'] != self.content_generation:
++                        failures.append('generation_mismatch')
++                return self._reject_key(409, '当前画面已变化或不可用，请等待并查看最新画面。',
++                                        'frame_identity_or_render_invalid', sequence, failures)
+             if self.stop.is_set() or self.error or self.phase in ('stopping', 'finished'):
+-                return 409, {'error': '试用已停止接收按键。'}
++                return self._reject_key(409, '试用已停止接收按键。',
++                                        'stopping_or_error', sequence)
+             if not self.ready or self.busy or self.pending or self.review_required:
+-                return 409, {'error': '上一按键仍在处理，请稍候。'}
++                return self._reject_key(409, '上一按键仍在处理，请稍候。',
++                                        'not_ready_or_pending', sequence)
+             if self.steps >= self.max_steps:
+-                return 409, {'error': '本轮已达配置的按键上限，请结束后重新启动。'}
++                return self._reject_key(409, '本轮已达配置的按键上限，请结束后重新启动。',
++                                        'configured_key_limit', sequence)
+             item = {'key': key, 'label': KEYS[key], 'observed_frame': self.frames[sequence],
+                     'requested_monotonic': time.monotonic(), 'source': 'local_web_user'}
+             self.pending.append(item)
+@@ -271,9 +326,13 @@
+ async function post(path,body){return (await request(path,{method:'POST',
+  headers:{'Content-Type':'application/json','X-Trial-Token':token},body:JSON.stringify(body)})).body;}
+ function disableKeys(){keys.forEach(b=>b.disabled=true);confirmButton.disabled=true;startButton.disabled=true;}
++function lockVisualControls(){keys.forEach(b=>b.disabled=true);confirmButton.disabled=true;}
++function frameLoadedFor(s){
++ return !!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&
++   displayedGeneration===s.frame.content_generation&&s.render_valid&&!renderFault;
++}
+ function enableKeys(s){
+- const visual=!!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&
+-   displayedGeneration===s.frame.content_generation&&s.render_valid&&!renderFault;
++ const visual=frameLoadedFor(s);
+  keys.forEach(b=>b.disabled=!s.ready||busy||ending||awaitingStep!==null||deliveryUnknown||reviewAwaiting||reviewUnknown||!visual);
+  confirmButton.disabled=!s.review_required||!s.input_received||busy||ending||
+    awaitingStep!==null||deliveryUnknown||reviewAwaiting||reviewUnknown||!visual;
+@@ -376,6 +435,9 @@
+      reviewAwaiting=false;reviewUnknown=false;pendingConfirm=null;
+      if(explicitRejection?.kind==='confirm')explicitRejection=null;
+    }
++   // A fresh status may arrive while the previous image is still displayed.
++   // Lock controls before the asynchronous image load; never post the old view.
++   if(!frameLoadedFor(s))lockVisualControls();
+    if(s.frame&&(s.frame.sequence!==shown||s.frame.content_generation!==displayedGeneration))await showFrame(s);
+    renderFault=null;enableKeys(s);presentFeedback(s);
+  }catch(e){
+@@ -389,6 +451,14 @@
+ }
+ keys.forEach(b=>b.onclick=async()=>{
+  if(b.disabled||busy||ending||renderFault||awaitingStep!==null||!lastStatus)return;
++ // Defend the click boundary as well as the visible disabled state. This
++ // compares with the latest *known* status; the server remains authoritative.
++ if(!frameLoadedFor(lastStatus)){
++   lockVisualControls();
++   explicitRejection={kind:'key',detail:'浏览器尚未显示最新画面；本次未发送按键。请看新图后自行决定。'};
++   presentFeedback(lastStatus);
++   return;
++ }
+  busy=true;awaitingStep=lastStatus.steps+1;disableKeys();
+  try{
+    const ack=await post('/api/key',{key:Number(b.dataset.key),observed_sequence:displayed});
+--- r17/run_trial_v25_diag_r3.py
++++ r18/run_trial_v25_diag_r3.py
+@@ -41,6 +41,7 @@
+ from pre_input_observation import capture as capture_pre_input_observation
+ from snapshot_tail_v15 import capture as capture_snapshot_tail
+ from host_exception_clock import write_host_first_exception, write_host_journal
++from web_rejection_receipt import deliver as deliver_web_rejections
+ 
+ ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
+ OUT = Path(__file__).resolve().parents[2]
+@@ -260,7 +261,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py','optional_paused_snapshots.py','pre_input_observation.py','snapshot_tail_v15.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py','optional_paused_snapshots.py','pre_input_observation.py','snapshot_tail_v15.py','web_rejection_receipt.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -896,6 +897,9 @@
+                     except OSError:
+                         pass
+ 
++    # After native cleanup and QEMU wait, before the ordinary receipt. Failure
++    # here is a diagnostic delivery failure, never a reason to skip cleanup.
++    web_rejections_export = deliver_web_rejections(trial, run)
+     log_monitor.poll()
+     write_host_journal(run, journal)
+     (run/'trial-native-file-readbacks.json').write_text(json.dumps(native_file_reads, indent=2)+'\n')
+@@ -929,7 +933,7 @@
+         standby_observed=phaseA_capture is not None, render_valid=trial.render_valid,
+         black_after_ready=trial.black_after_ready, early_stop=early_stop_reason)
+     diagnostic_readback_pass = shutdown.get('diag_snapshot', {}).get('consistent') is True
+-    health_pass = bool(health_pass and diagnostic_readback_pass)
++    health_pass = bool(health_pass and diagnostic_readback_pass and web_rejections_export['complete'])
+     receipt = {'created_utc': started, 'duration_seconds': time.monotonic()-start,
+                'candidate': str(candidate_path), 'candidate_sha256': digest(candidate_path),
+                'models_identical_to_frozen_AP101_r4': False, 'authority': 'task_ee5eb31bb981_offline_candidate',
+@@ -937,6 +941,7 @@
+                'maximum_seconds': ns.seconds, 'maximum_steps': ns.max_steps,
+                'diagnostic_actual_step_limit': 12 if ns.internal_hoststep else None,
+                'visual_outcomes': visual_records, 'visual_state_at_end': trial.visual_state,
++               'web_key_rejections_export': web_rejections_export,
+                'stop_cause': stop_cause,
+                'internal_hoststep_mode': ns.internal_hoststep, 'HTTP_key_source_used': not ns.internal_hoststep,
+                'qemu_pid': None if p is None else p.pid, 'qemu_exit': None if p is None else p.returncode,
+--- frozen/deadline.js
++++ r18/operator-helpers/deadline.js
+@@ -2,7 +2,7 @@
+   'use strict';
+   const DEADLINE_MS = 20_000;
+   const KEY = '__fx3InteractionDeadlineV1';
+-  const SCRIPT_SHA = 'fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478';
++  const SCRIPT_SHA = 'd224a8f10786dc815520a8c11320f8625c1e969f9508bac39541c971ecfb9822';
+   const fail = message => { throw new Error('deadline_refused: ' + message); };
+   if (!config || Object.keys(config).sort().join(',') !== 'expectedLaunchId,expectedURL') fail('config');
+   const expected = new URL(config.expectedURL);
+--- frozen/bounded_capture.js
++++ r18/operator-helpers/bounded_capture.js
+@@ -1,6 +1,6 @@
+ (async function captureMenuReference(c) {
+   'use strict';
+-  const PAGE_SHA = 'fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478';
++  const PAGE_SHA = 'd224a8f10786dc815520a8c11320f8625c1e969f9508bac39541c971ecfb9822';
+   const MENU_SHA = '60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292';
+   const MAX_WAIT_MS = 8000, CONFIRM_RESERVE_MS = 8000, DEADLINE_MS = 20000;
+   const doc = document, origin = performance.timeOrigin;
+--- frozen/explicit_confirm.js
++++ r18/operator-helpers/explicit_confirm.js
+@@ -1,7 +1,7 @@
+ (async function explicitOperatorConfirm(c) {
+   'use strict';
+   const DEADLINE_MS = 20_000;
+-  const PAGE_SCRIPT_SHA = 'fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478';
++  const PAGE_SCRIPT_SHA = 'd224a8f10786dc815520a8c11320f8625c1e969f9508bac39541c971ecfb9822';
+   const CONFIRM_HANDLER_SHA = 'f830416986fa93d865642fc00de7fc9963663dc87ba50d15939bf617e481fd5a';
+   const events = [];
+   const stamp = (event, extra = {}) => events.push({event, performance_ms: performance.now(), wall_UTC: new Date().toISOString(), ...extra});
+--- /dev/null
++++ r18/web_rejection_receipt.py
+@@ -0,0 +1,33 @@
++"""Persist bounded host key-refusal evidence after native cleanup, never in HTTP lock."""
++import hashlib
++import json
++import time
++from pathlib import Path
++
++
++def deliver(trial, run):
++    run = Path(run)
++    stamp = time.monotonic_ns()
++    snapshot = None
++    data = None
++    try:
++        snapshot = trial.key_rejection_snapshot()
++        snapshot['export_host_monotonic_ns'] = stamp
++        snapshot['capture_boundary'] = 'after_qemu_cleanup_before_browser_final_ack'
++        data = (json.dumps(snapshot, ensure_ascii=False, indent=2) + '\n').encode()
++        path = run / 'web-key-rejections.json'
++        temp = run / 'web-key-rejections.json.tmp'
++        if path.exists() or temp.exists():
++            raise FileExistsError('rejection evidence already exists; never overwrite')
++        temp.write_bytes(data)
++        temp.replace(path)
++        return {'complete': True, 'path': str(path), 'bytes': len(data),
++                'sha256': hashlib.sha256(data).hexdigest(),
++                'total': snapshot['total'], 'stored': len(snapshot['records']),
++                'truncated': snapshot['truncated'], 'capture_boundary': snapshot['capture_boundary']}
++    except Exception as exc:
++        return {'complete': False, 'error_type': type(exc).__name__, 'error': str(exc),
++                'memory_bytes': len(data) if data is not None else None,
++                'memory_sha256': hashlib.sha256(data).hexdigest() if data is not None else None,
++                'memory_total': snapshot.get('total') if snapshot is not None else None,
++                'capture_boundary': 'after_qemu_cleanup_before_browser_final_ack'}

@@ -1,0 +1,165 @@
+{
+  "status": "PASS_RECORDED_OBSERVER_AND_ACTUAL_OWN_PARENT_EXIT_NOT_ROOT_OR_CAMERA_ACCEPTANCE",
+  "checks": 5,
+  "cases": [
+    {
+      "name": "recorded_file_checked_against_current_kernel_identity",
+      "state": {
+        "status": "RECORDED_HELPER_LIVE",
+        "verified_helper_alive": true,
+        "verified_by": "current kernel PID, UID, birth and executable path",
+        "active_native_call_phase": 4,
+        "restarted": false,
+        "physical_acceptance": false
+      }
+    },
+    {
+      "name": "recorded_birth_mismatch_not_accepted_as_live",
+      "state": {
+        "status": "UNKNOWN_PID_IDENTITY_DIFFERS",
+        "verified_helper_alive": false,
+        "verified_by": null,
+        "active_native_call_phase": 4,
+        "restarted": false,
+        "physical_acceptance": false
+      }
+    },
+    {
+      "name": "actual_kernel_absence_and_consistent_receipt_reported_separately",
+      "state": {
+        "status": "RECORDED_HELPER_TERMINAL_RESULT_CONSISTENT",
+        "helper_terminal_verified": true,
+        "verified_helper_alive": false,
+        "restarted": false,
+        "physical_acceptance": false,
+        "native": {
+          "status_code": 0,
+          "capture_attempted": true,
+          "claim_attempted": true,
+          "interface_claimed_in_this_trial": true,
+          "cleanup_error": false,
+          "clock_invalid": false,
+          "active_native_call_phase": 0,
+          "events": [
+            {
+              "phase": 1,
+              "raw_return": 0
+            },
+            {
+              "phase": 2,
+              "raw_return": 0
+            },
+            {
+              "phase": 3,
+              "raw_return": 0
+            },
+            {
+              "phase": 4,
+              "raw_return": 0
+            },
+            {
+              "phase": 5,
+              "raw_return": 0
+            },
+            {
+              "phase": 6,
+              "raw_return": 0
+            },
+            {
+              "phase": 7,
+              "raw_return": 0
+            },
+            {
+              "phase": 8,
+              "raw_return": 0
+            },
+            {
+              "phase": 9,
+              "raw_return": 0
+            },
+            {
+              "phase": 10,
+              "raw_return": 0
+            },
+            {
+              "phase": 11,
+              "raw_return": 0
+            },
+            {
+              "phase": 12,
+              "raw_return": 0
+            }
+          ],
+          "same_camera_firmware_or_HEVC_recording_proven": false,
+          "native_driver_return_independently_proven": false
+        }
+      }
+    },
+    {
+      "name": "actual_parent_exit_watchdog_requests_stop_without_killing_pending_helper",
+      "state": {
+        "status": "RECORDED_HELPER_LIVE",
+        "verified_helper_alive": true,
+        "verified_by": "current kernel PID, UID, birth and executable path",
+        "active_native_call_phase": 4,
+        "restarted": false,
+        "physical_acceptance": false
+      }
+    },
+    {
+      "name": "orphaned_fixture_returns_and_cleans_once_no_restart",
+      "state": {
+        "status": "RECORDED_HELPER_TERMINAL_RESULT_CONSISTENT",
+        "helper_terminal_verified": true,
+        "verified_helper_alive": false,
+        "restarted": false,
+        "physical_acceptance": false,
+        "native": {
+          "status_code": 1,
+          "capture_attempted": true,
+          "claim_attempted": false,
+          "interface_claimed_in_this_trial": false,
+          "cleanup_error": false,
+          "clock_invalid": false,
+          "active_native_call_phase": 0,
+          "events": [
+            {
+              "phase": 1,
+              "raw_return": 0
+            },
+            {
+              "phase": 2,
+              "raw_return": 0
+            },
+            {
+              "phase": 3,
+              "raw_return": 0
+            },
+            {
+              "phase": 4,
+              "raw_return": 0
+            },
+            {
+              "phase": 10,
+              "raw_return": 0
+            },
+            {
+              "phase": 11,
+              "raw_return": 0
+            },
+            {
+              "phase": 12,
+              "raw_return": 0
+            }
+          ],
+          "same_camera_firmware_or_HEVC_recording_proven": false,
+          "native_driver_return_independently_proven": false
+        }
+      }
+    }
+  ],
+  "fixture_helpers": 2,
+  "orphan_parent_processes": 1,
+  "native_IOKit_or_admin_executed": false,
+  "new_device_operations": 0
+}

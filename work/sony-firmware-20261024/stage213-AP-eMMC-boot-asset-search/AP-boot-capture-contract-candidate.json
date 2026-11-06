@@ -1,0 +1,36 @@
+{
+  "schema": "fx3-AP-boot-capture-data-only-v1",
+  "target": "classic ILME-FX3 7.02",
+  "evidence": "AP-storage-contract-proof.json",
+  "candidate_targets": [
+    {
+      "path": "/dev/nflashaB0",
+      "public_main_rdev": [
+        252,
+        126
+      ],
+      "role": "boot0 hardware region",
+      "actual_geometry_bytes": null
+    },
+    {
+      "path": "/dev/nflashaB1",
+      "public_main_rdev": [
+        252,
+        127
+      ],
+      "role": "boot1 hardware region; content/use unknown",
+      "actual_geometry_bytes": null
+    }
+  ],
+  "conditions": [
+    "Actual execution-environment module identity and same-body identity must be checked before using this candidate.",
+    "Obtain the whole reported region size; reject missing/zero/inconsistent geometry; never substitute publicA7IV4MiB or formatter2MiB.",
+    "Record read view, driver identity, full-region hash and bounded chunk checks; lower crypto path must be clarified.",
+    "Node metadata and a completed read do not themselves prove independent entry, restore or cold boot."
+  ],
+  "executable_payload": false,
+  "new_device_backend": false,
+  "camera_operation_authorized": false,
+  "device_read_or_write_performed": false,
+  "persistent_write_release": false
+}

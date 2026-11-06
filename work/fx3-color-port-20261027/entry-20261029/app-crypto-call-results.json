@@ -1,0 +1,614 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+  "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "text_va": "0x1594680",
+  "text_bytes": 27215176,
+  "unwind_ranges": 346,
+  "imported_crypto_functions": {
+    "0x1591b00": "iCrypt_HasPrivateKey",
+    "0x1591ca0": "iCrypt_GetPublicKey",
+    "0x1592480": "iCrypt_CreatePublicKey",
+    "0x1592990": "iCrypt_CreatePrivateKey",
+    "0x1592a20": "iCrypt_FreeData",
+    "0x1593670": "iCrypt_HasPublicKey",
+    "0x1593a10": "iCrypt_DeletePrivateKey",
+    "0x1593b70": "iCrypt_ExtractPublicKeyBodyData",
+    "0x1593e60": "iCrypt_DeletePublicKey"
+  },
+  "call_sites": [
+    {
+      "site": "0x2e10164",
+      "plt_target": "0x1591b00",
+      "symbol": "iCrypt_HasPrivateKey",
+      "range_start": "0x2e100c4",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "bd4aaf783bbc3ecc9be5942cd31426186915d903a6562bba020d89be98f7e6ac",
+      "calls": [
+        {
+          "site": "0x2e100c8",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e100d8",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e100e4",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e100f8",
+          "target": "0x15927c0",
+          "symbol": "printf"
+        },
+        {
+          "site": "0x2e10108",
+          "target": "0x15927c0",
+          "symbol": "printf"
+        },
+        {
+          "site": "0x2e10114",
+          "target": "0x1592ec0",
+          "symbol": "usleep"
+        },
+        {
+          "site": "0x2e10118",
+          "target": "0x2ebf3b0",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10138",
+          "target": "0x2e10070",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10160",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10164",
+          "target": "0x1591b00",
+          "symbol": "iCrypt_HasPrivateKey"
+        },
+        {
+          "site": "0x2e1019c",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e101b4",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e101b8",
+          "target": "0x1593670",
+          "symbol": "iCrypt_HasPublicKey"
+        },
+        {
+          "site": "0x2e101f0",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1020c",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10210",
+          "target": "0x1593a10",
+          "symbol": "iCrypt_DeletePrivateKey"
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e10164-iCrypt_HasPrivateKey.txt"
+    },
+    {
+      "site": "0x2e101b8",
+      "plt_target": "0x1593670",
+      "symbol": "iCrypt_HasPublicKey",
+      "range_start": "0x2e10118",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "e2960823dd5e79d4f4789e7a4e0dd19dfe74805d37d56340c5767f5efdf14614",
+      "calls": [
+        {
+          "site": "0x2e10118",
+          "target": "0x2ebf3b0",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10138",
+          "target": "0x2e10070",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10160",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10164",
+          "target": "0x1591b00",
+          "symbol": "iCrypt_HasPrivateKey"
+        },
+        {
+          "site": "0x2e1019c",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e101b4",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e101b8",
+          "target": "0x1593670",
+          "symbol": "iCrypt_HasPublicKey"
+        },
+        {
+          "site": "0x2e101f0",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1020c",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10210",
+          "target": "0x1593a10",
+          "symbol": "iCrypt_DeletePrivateKey"
+        },
+        {
+          "site": "0x2e10274",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10298",
+          "target": "0x2f6be48",
+          "symbol": null
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e101b8-iCrypt_HasPublicKey.txt"
+    },
+    {
+      "site": "0x2e10210",
+      "plt_target": "0x1593a10",
+      "symbol": "iCrypt_DeletePrivateKey",
+      "range_start": "0x2e10170",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "2522612cad092caa85f8468fa9f569d8ded0be9ce0c6889fd4d5c83bffb5d8db",
+      "calls": [
+        {
+          "site": "0x2e1019c",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e101b4",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e101b8",
+          "target": "0x1593670",
+          "symbol": "iCrypt_HasPublicKey"
+        },
+        {
+          "site": "0x2e101f0",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1020c",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10210",
+          "target": "0x1593a10",
+          "symbol": "iCrypt_DeletePrivateKey"
+        },
+        {
+          "site": "0x2e10274",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10298",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e102b4",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e102b8",
+          "target": "0x1593e60",
+          "symbol": "iCrypt_DeletePublicKey"
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e10210-iCrypt_DeletePrivateKey.txt"
+    },
+    {
+      "site": "0x2e102b8",
+      "plt_target": "0x1593e60",
+      "symbol": "iCrypt_DeletePublicKey",
+      "range_start": "0x2e10218",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "ef0f31f71e790a8e1377a97545b2c9ced4dc8203f144ed524669a079762d699f",
+      "calls": [
+        {
+          "site": "0x2e10274",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10298",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e102b4",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e102b8",
+          "target": "0x1593e60",
+          "symbol": "iCrypt_DeletePublicKey"
+        },
+        {
+          "site": "0x2e1031c",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10340",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1035c",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10360",
+          "target": "0x1592990",
+          "symbol": "iCrypt_CreatePrivateKey"
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e102b8-iCrypt_DeletePublicKey.txt"
+    },
+    {
+      "site": "0x2e10360",
+      "plt_target": "0x1592990",
+      "symbol": "iCrypt_CreatePrivateKey",
+      "range_start": "0x2e102c0",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "049337d676bba9c0574387e5eca5934d962b50cf0eb53410a261dbea18b21460",
+      "calls": [
+        {
+          "site": "0x2e1031c",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10340",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1035c",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10360",
+          "target": "0x1592990",
+          "symbol": "iCrypt_CreatePrivateKey"
+        },
+        {
+          "site": "0x2e103c4",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e103e8",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10410",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1041c",
+          "target": "0x1592480",
+          "symbol": "iCrypt_CreatePublicKey"
+        },
+        {
+          "site": "0x2e1044c",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e10360-iCrypt_CreatePrivateKey.txt"
+    },
+    {
+      "site": "0x2e1041c",
+      "plt_target": "0x1592480",
+      "symbol": "iCrypt_CreatePublicKey",
+      "range_start": "0x2e1037c",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "003d26fc7daeb21229d29f5f0f92bd8d5a89fed739f6780341c35f04b029400c",
+      "calls": [
+        {
+          "site": "0x2e103c4",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e103e8",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10410",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1041c",
+          "target": "0x1592480",
+          "symbol": "iCrypt_CreatePublicKey"
+        },
+        {
+          "site": "0x2e1044c",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10494",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e104ac",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e104b0",
+          "target": "0x2e10450",
+          "symbol": null
+        },
+        {
+          "site": "0x2e104dc",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e104ec",
+          "target": "0x1593b70",
+          "symbol": "iCrypt_ExtractPublicKeyBodyData"
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e1041c-iCrypt_CreatePublicKey.txt"
+    },
+    {
+      "site": "0x2e104ec",
+      "plt_target": "0x1593b70",
+      "symbol": "iCrypt_ExtractPublicKeyBodyData",
+      "range_start": "0x2e1044c",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "a8c0fa023ec6927229dfead03aff4cbee1083075ba25598bc9718d71925f78f8",
+      "calls": [
+        {
+          "site": "0x2e1044c",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10494",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e104ac",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e104b0",
+          "target": "0x2e10450",
+          "symbol": null
+        },
+        {
+          "site": "0x2e104dc",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e104ec",
+          "target": "0x1593b70",
+          "symbol": "iCrypt_ExtractPublicKeyBodyData"
+        },
+        {
+          "site": "0x2e1051c",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10564",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1057c",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10580",
+          "target": "0x2e10520",
+          "symbol": null
+        },
+        {
+          "site": "0x2e105a0",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e105a8",
+          "target": "0x1592a20",
+          "symbol": "iCrypt_FreeData"
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e104ec-iCrypt_ExtractPublicKeyBodyData.txt"
+    },
+    {
+      "site": "0x2e105a8",
+      "plt_target": "0x1592a20",
+      "symbol": "iCrypt_FreeData",
+      "range_start": "0x2e10508",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "15463de2d1d033c525aa1a91c1fdfbe546e723b99175459b3182c446e9e1450c",
+      "calls": [
+        {
+          "site": "0x2e1051c",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10564",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1057c",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10580",
+          "target": "0x2e10520",
+          "symbol": null
+        },
+        {
+          "site": "0x2e105a0",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e105a8",
+          "target": "0x1592a20",
+          "symbol": "iCrypt_FreeData"
+        },
+        {
+          "site": "0x2e105fc",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10620",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10648",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10654",
+          "target": "0x1591ca0",
+          "symbol": "iCrypt_GetPublicKey"
+        },
+        {
+          "site": "0x2e10684",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e105a8-iCrypt_FreeData.txt"
+    },
+    {
+      "site": "0x2e10654",
+      "plt_target": "0x1591ca0",
+      "symbol": "iCrypt_GetPublicKey",
+      "range_start": "0x2e105b4",
+      "bytes": 400,
+      "scope": "Bounded instruction window; no whole-function boundary asserted",
+      "sha256": "ddc017b7d51c5a70598b065846ab6e2666b18674c3e4bbc6ced756d7290bc032",
+      "calls": [
+        {
+          "site": "0x2e105fc",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10620",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10648",
+          "target": "0x2e10048",
+          "symbol": null
+        },
+        {
+          "site": "0x2e10654",
+          "target": "0x1591ca0",
+          "symbol": "iCrypt_GetPublicKey"
+        },
+        {
+          "site": "0x2e10684",
+          "target": "0x2f6ff0c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e106cc",
+          "target": "0x2f6fe3c",
+          "symbol": null
+        },
+        {
+          "site": "0x2e106e4",
+          "target": "0x2f6be48",
+          "symbol": null
+        },
+        {
+          "site": "0x2e106e8",
+          "target": "0x2e10688",
+          "symbol": null
+        },
+        {
+          "site": "0x2e1073c",
+          "target": "0x2e10730",
+          "symbol": null
+        }
+      ],
+      "disassembly": "app-crypto-fragments/2e10654-iCrypt_GetPublicKey.txt"
+    }
+  ],
+  "scope": "Static direct branch references to iCrypt imports only. No claim these are firmware verification, no private key access or vendor code execution, and no indirect-call coverage."
+}

@@ -1,0 +1,104 @@
+{
+  "schema": "fx6-backup-observer-r3-result-v1",
+  "task": "task_b57412ab29f6",
+  "dispatch": "ctx_e8ab32545125",
+  "status": "HOST_ONLY_R3_CORRECTED_NOT_RUNTIME_READY",
+  "offline_complete": true,
+  "runtime_ready": false,
+  "vm_started": false,
+  "guest_contacted": false,
+  "qmp_or_browser_contact": false,
+  "old_authorization_reused": false,
+  "old_observer_modified": false,
+  "target_cpio_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+  "appfw_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+  "serial_sha256": "377142e9dcee7f4f7728db6e9fcb822a9f3e501e61da7f719761d4d506f5050e",
+  "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "fixed_r3": {
+    "qmp_capabilities": true,
+    "qmp_id_event_eof_fragment_deadline": true,
+    "minus_S_boot_cont_before_map": true,
+    "resume_c_after_every_stop": true,
+    "quit_before_wait": true,
+    "qemu_exit_recorded": true,
+    "lock_released_receipt": true,
+    "stop_unconfirmed_skips_breakpoints": true,
+    "callback_no_daemon": true,
+    "rsp_close_before_recovery": true,
+    "separate_observation_total_deadline": true,
+    "map_whole_segment_relro_legal": true,
+    "map_header_phdr_code_ranges": true
+  },
+  "tests": [
+    {
+      "name": "host-tests",
+      "status": "PASS_NO_QEMU_FAKE_RSP",
+      "count": 16,
+      "sha256": "415e40b4cc8d43566d821380c012450038a286af47665aad44d0496939d20b37"
+    },
+    {
+      "name": "rsp-host-tests",
+      "status": "PASS_NO_QEMU_REAL_SOCKET",
+      "count": 7,
+      "sha256": "4b3fc9af0956c1d90000db5847dd514f262aa29d5546a8c53757e20352f2f982"
+    },
+    {
+      "name": "adapter-host-tests",
+      "status": "PASS_NO_QEMU_FAKE_LIFECYCLE",
+      "count": 5,
+      "sha256": "08ac6e718f7829b83eafbf8b362bb0b39f9c8fc7afe8b8c15ec73ffaf7d98ed6"
+    },
+    {
+      "name": "runner-host-tests",
+      "status": "PASS_NO_QEMU_FAKE_RUNNER",
+      "count": 10,
+      "sha256": "a6158283cadb76f212dc587f1f0c2e675e679625a1cf99b138ca13c401dc6b0c"
+    },
+    {
+      "name": "stateful-transport-tests",
+      "status": "PASS_NO_QEMU_STATEFUL_TRANSPORT",
+      "count": 4,
+      "sha256": "ecf76364363a2daeb28051909d2ef8e62bbdeed8bc54b103bbcc209957b16b2d"
+    },
+    {
+      "name": "e2e-stateful-tests",
+      "status": "PASS_NO_QEMU_STATEFUL_E2E",
+      "count": 1,
+      "sha256": "ee087f11b174f8e9e574a488ba7f7e55de04bad5a892cbfa2e586aa2db132587"
+    }
+  ],
+  "test_total": 43,
+  "transports": {
+    "qmp": "actual QMP class over socketpair",
+    "rsp": "actual RSP class over socketpair",
+    "e2e": "actual HostRunner+QMP/RSP socketpair; fake guest observer only"
+  },
+  "input_seal": {
+    "count": 10,
+    "extra_count": 4,
+    "unchanged": true,
+    "path": "receipts/input-compare.json",
+    "extra_path": "receipts/extra-input-compare.json"
+  },
+  "inherited_cleanup": {
+    "required_for_clean": true,
+    "adapter_self_write": false,
+    "api16_contract": "96d4fb2f8df13b4415eaeace3a647bac44256a08cc17dfdc16d7b11b2f3578b0",
+    "target_3a08_compatibility": "old restore_api103_v2 control contract NOT ESTABLISHED; target helper retains fx3_sync100_shutdown/sync100_restore and FX3_SYNC100_SHUTDOWN original16_verified markers; exact interface not matched; do not infer absence of mechanism",
+    "status": "real_runtime_cleanup_blocked",
+    "runtime_cleanup_open": true
+  },
+  "default_entries_disabled": true,
+  "approval_token": "APPROVE_GRMREAL46_TWO_KEYS_0214_0218",
+  "separate_new_run_approval_required": true,
+  "real_launch_invoked": false,
+  "limitations": [
+    "stateful fake transport is not real QEMU/menu evidence",
+    "guest TID unknown; GDB CPU thread only",
+    "receiver 0x3e014d unresolved",
+    "target 3a08 inherited restoration protocol not established",
+    "real VM not launched"
+  ],
+  "snapshot": "superseded/pre-r3-f5cf4236/",
+  "report": "REPORT.md"
+}

@@ -1,0 +1,15 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-life-core-v1.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-life-core-v1"
+  ],
+  "exit": 0,
+  "stdout": "LIFETIME_CORE_PASS native_constructor_exact/alloc_failure/no_userfree_vs_native_reuse_distinct/wrong_free_unchanged/paired_types/deadline_no_duplicate_reset/failed_no_ack\n",
+  "stderr": ""
+}

@@ -1,0 +1,68 @@
+000184bc stp        x29, x30, [sp, #-0x20]!
+000184c0 mov        x29, sp
+000184c4 stp        x19, x20, [sp, #0x10]
+000184c8 mov        x19, x0
+000184cc ldr        x0, [x0, #0x78]
+000184d0 cbz        x0, #0x184e4
+000184d4 ldr        x1, [x0]
+000184d8 ldr        x1, [x1, #8]
+000184dc blr        x1
+000184e0 str        xzr, [x19, #0x78]
+000184e4 ldr        x0, [x19, #0x80]
+000184e8 cbz        x0, #0x184fc
+000184ec ldr        x1, [x0]
+000184f0 ldr        x1, [x1, #8]
+000184f4 blr        x1
+000184f8 str        xzr, [x19, #0x80]
+000184fc ldr        x0, [x19, #0x88]
+00018500 cbz        x0, #0x18514
+00018504 ldr        x1, [x0]
+00018508 ldr        x1, [x1, #8]
+0001850c blr        x1
+00018510 str        xzr, [x19, #0x88]
+00018514 adrp       x20, #0x31000
+00018518 mov        x0, #0x40
+0001851c bl         #0x10140 ; operator new
+00018520 add        x2, x0, #8
+00018524 ldr        x20, [x20, #0xf00]
+00018528 add        x1, x0, #0x20
+0001852c str        x0, [x19, #0x78]
+00018530 add        x20, x20, #0x10
+00018534 str        x20, [x0, #8]
+00018538 str        x20, [x0, #0x20]
+0001853c stp        x2, x1, [x2, #8]
+00018540 str        x2, [x0, #0x28]
+00018544 str        x1, [x1, #0x10]
+00018548 adrp       x1, #0x31000
+0001854c str        wzr, [x0, #0x38]
+00018550 ldr        x1, [x1, #0xe78]
+00018554 add        x1, x1, #0x10
+00018558 str        x1, [x0]
+0001855c mov        x0, #0x38
+00018560 bl         #0x10140 ; operator new
+00018564 add        x2, x0, #8
+00018568 str        x20, [x0, #8]
+0001856c add        x1, x0, #0x20
+00018570 str        x20, [x0, #0x20]
+00018574 stp        x2, x1, [x2, #8]
+00018578 str        x2, [x0, #0x28]
+0001857c str        x1, [x1, #0x10]
+00018580 adrp       x1, #0x31000
+00018584 str        x0, [x19, #0x80]
+00018588 ldr        x1, [x1, #0xe18]
+0001858c add        x1, x1, #0x10
+00018590 str        x1, [x0]
+00018594 mov        x0, #0x68
+00018598 bl         #0x10140 ; operator new
+0001859c mov        x20, x0
+000185a0 bl         #0x10510 ; Updater::ThreadIdQueue::ThreadIdQueue
+000185a4 str        x20, [x19, #0x88]
+000185a8 ldp        x19, x20, [sp, #0x10]
+000185ac ldp        x29, x30, [sp], #0x20
+000185b0 ret        
+000185b4 mov        x19, x0
+000185b8 mov        x0, x20
+000185bc mov        x1, #0x68
+000185c0 bl         #0x10190 ; operator delete
+000185c4 mov        x0, x19
+000185c8 bl         #0x107a0 ; _Unwind_Resume

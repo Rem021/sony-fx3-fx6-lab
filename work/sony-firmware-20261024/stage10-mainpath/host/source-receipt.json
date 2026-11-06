@@ -1,0 +1,84 @@
+{
+  "accessed_utc": "2026-10-25T13:53:12.638200+00:00",
+  "sources": [
+    {
+      "name": "pmca-sony.py",
+      "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/sony.py",
+      "repo": "ma1co/Sony-PMCA-RE",
+      "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+      "source_path": "pmca/usb/sony.py",
+      "bytes": 36033,
+      "sha256": "53ffb4d9d49cb5146623fda2b66ecb137681a6fc9ab0c98d23a51e75128af97e",
+      "raw_reference_removed": true
+    },
+    {
+      "name": "a7-transport.py",
+      "url": "https://raw.githubusercontent.com/QAQLeonard/a7c2-fl23-research/ef7db116e13e37be91e9af20360dc9bba8d64a9b/src/camera_runtime/transport.py",
+      "repo": "QAQLeonard/a7c2-fl23-research",
+      "commit": "ef7db116e13e37be91e9af20360dc9bba8d64a9b",
+      "source_path": "src/camera_runtime/transport.py",
+      "bytes": 23438,
+      "sha256": "52f2c34f4b5c5d2361a7a5869320fec3711b753299a74fd814a87129d1a9d10a",
+      "raw_reference_removed": true
+    },
+    {
+      "name": "pmca-libusb.py",
+      "url": "https://raw.githubusercontent.com/ma1co/Sony-PMCA-RE/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/driver/generic/libusb.py",
+      "repo": "ma1co/Sony-PMCA-RE",
+      "commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+      "source_path": "pmca/usb/driver/generic/libusb.py",
+      "bytes": 3027,
+      "sha256": "1c80cfaa0692cf308bd086edc9a9bad3691804b50182993c1dd960c932daa1df",
+      "raw_reference_removed": true
+    }
+  ],
+  "refs": {
+    "pmca_master": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+    "a7c2_main": "ef7db116e13e37be91e9af20360dc9bba8d64a9b"
+  },
+  "official_web_sources": [
+    {
+      "url": "https://libusb.sourceforge.io/api-1.0/group__libusb__syncio.html",
+      "access_date": "2026-10-25",
+      "generated_date_observed": "2026-05-18",
+      "read_via": "web tool; no raw reference file retained"
+    },
+    {
+      "url": "https://libusb.sourceforge.io/api-1.0/libusb_packetoverflow.html",
+      "access_date": "2026-10-25",
+      "generated_date_observed": "2026-05-18",
+      "read_via": "web tool; no raw reference file retained"
+    },
+    {
+      "url": "https://libusb.sourceforge.io/api-1.0/group__libusb__asyncio.html",
+      "access_date": "2026-10-25",
+      "generated_date_observed": "2026-05-18",
+      "read_via": "web tool; no raw reference file retained"
+    }
+  ],
+  "own_artifacts": {
+    "offline_reassembly.py": {
+      "bytes": 9193,
+      "sha256": "0ebe282f1e8e6efb2ff6995ece088ea244b6faffa936b86d4a80524291c5d039"
+    },
+    "verify_reassembly.py": {
+      "bytes": 14599,
+      "sha256": "e90bcd9a7c6c414f40beaa86ced18f69bfdc5f0331cd7f4da4fd6e0534f4a529"
+    },
+    "offline-fixtures.json": {
+      "bytes": 1810,
+      "sha256": "f645e1bf7cb21ca2c405c788a25104ccad3ce48cc526a0a4fed284174579b4f3"
+    }
+  },
+  "stage9_preserved": {
+    "offline_codec.py": "38d2c77bcf4403f600726eb88868d714e2186627564653d8578cef4e98e23977",
+    "verify_offline_codec.py": "502b7595971afe473d9d696104d4145319a7a207c9341393159316f29e18279d"
+  },
+  "execution": {
+    "downloaded_code_imported_or_executed": false,
+    "own_bytes_fixture_tests": 31,
+    "result": "PASS",
+    "coordinator_independent_recheck": "31 PASS; AST reviewed; full-size count/hash matched",
+    "camera_usb_gui_auth_driver_flash_operations": false
+  }
+}

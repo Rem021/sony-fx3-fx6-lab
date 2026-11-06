@@ -1,0 +1,112 @@
+{
+  "source_images": [
+    [
+      "root",
+      "nflasha7.img",
+      "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7"
+    ],
+    [
+      "app",
+      "nflasha15.img",
+      "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5"
+    ]
+  ],
+  "regular_unique_inodes_scanned": {
+    "nflasha7.img": 50,
+    "nflasha15.img": 797
+  },
+  "records": [
+    {
+      "image": "nflasha7.img",
+      "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+      "path": "/sbin/init2",
+      "inode": 139,
+      "bytes": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb",
+      "string_file_offsets": [
+        114
+      ],
+      "locator_only": true
+    },
+    {
+      "image": "nflasha7.img",
+      "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+      "path": "/sbin/init",
+      "inode": 144,
+      "bytes": 735,
+      "sha256": "c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e",
+      "string_file_offsets": [
+        114
+      ],
+      "locator_only": true
+    },
+    {
+      "image": "nflasha15.img",
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "path": "/bin/change_mode.sh",
+      "inode": 80993,
+      "bytes": 5044,
+      "sha256": "0c277c24e503f214ebdb651ea1bec569ebd31d6c19c27156f3df29394621fc75",
+      "string_file_offsets": [
+        21
+      ],
+      "locator_only": true
+    },
+    {
+      "image": "nflasha15.img",
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "path": "/bin/bootin.elf",
+      "inode": 80994,
+      "bytes": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "string_file_offsets": [
+        15340
+      ],
+      "locator_only": true,
+      "machine": "EM_AARCH64",
+      "parsing_symbols": [
+        "open"
+      ]
+    }
+  ],
+  "selected_originals": [
+    {
+      "image": "nflasha7.img",
+      "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+      "path": "/sbin/initrc/fstab.ext",
+      "inode": 129,
+      "bytes": 134,
+      "sha256": "a77bdfb7bf15d3a1240bdefc4edb4469672f3258d6d8dba7dd4164e3fd2d51c3",
+      "output": "originals/root/sbin/initrc/fstab.ext"
+    },
+    {
+      "image": "nflasha7.img",
+      "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+      "path": "/sbin/initrc/fstab.root",
+      "inode": 131,
+      "bytes": 58,
+      "sha256": "c77d93236b89349bcc24853756f960bb49411e922c9430ede70b5b2cb8b6a4b2",
+      "output": "originals/root/sbin/initrc/fstab.root"
+    },
+    {
+      "image": "nflasha7.img",
+      "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+      "path": "/sbin/init2",
+      "inode": 139,
+      "bytes": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb",
+      "output": "originals/root/sbin/init2"
+    },
+    {
+      "image": "nflasha15.img",
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "path": "/bin/bootin.elf",
+      "inode": 80994,
+      "bytes": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "output": "originals/app/bin/bootin.elf"
+    }
+  ],
+  "scope": "saved-image string locators only; no newline requirement, runtime behavior, command execution or recovery proved",
+  "Sony_or_guest_execution": false
+}

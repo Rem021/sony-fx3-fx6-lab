@@ -1,0 +1,34 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r26-tool-return-preparation/return_adapter.py
++++ return-tools/return_adapter.py
+@@ -2,10 +2,10 @@
+ """Run one frozen operate action; retain full child streams and publish only this invocation."""
+ import argparse,hashlib,json,os,plistlib,shutil,subprocess,sys,time,uuid
+ from pathlib import Path
+-FROZEN=Path(__file__).resolve().parent.parent/'r26-postkey-observation-candidate'
++FROZEN=Path(__file__).resolve().parents[1]
+ OPERATE=FROZEN/'runtime-wrapper/operate.py'
+ OPERATE_SHA='97e41bc5687fd6c9397fcca639355624c70e368761e1e24ad4329a85d9408741'
+-MANIFEST_SHA='9f6c4c047f8dc2bbb253d880b174a09e7701448bc645554b93fea1bac0d52fd2'
++CORE_FREEZE_SHA='a253a42c1f6aa56a929df85890a0d13e2e4e043bccafa8fa134f6a70d78e4cd4'
+ VOLUME='F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+ MAX_SUMMARY_BYTES=4096
+ ACTIONS={'click':3,'observe':2,'pin':2,'confirm':2,'standby_review':2,'recovery_review':2,'recovery_cancel':2,'reject':2}
+@@ -73,7 +73,8 @@
+ def main():
+  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--run-dir',required=True);p.add_argument('--output-dir',required=True);p.add_argument('operation',nargs=argparse.REMAINDER);a=p.parse_args()
+  assert plistlib.loads(subprocess.check_output(['diskutil','info','-plist','/Volumes/KAFU2T']))['VolumeUUID']==VOLUME
+- assert sha(FROZEN/'SHA256SUMS')==MANIFEST_SHA and sha(OPERATE)==OPERATE_SHA
++ assert sha(FROZEN/'CORE-SOURCE-FREEZE.json')==CORE_FREEZE_SHA and sha(OPERATE)==OPERATE_SHA
++ for f,h in json.loads((FROZEN/'CORE-SOURCE-FREEZE.json').read_text()).items():assert sha(FROZEN/f)==h
+  args=a.operation
+  if args and args[0]=='--':args=args[1:]
+  if not args or args[0] not in ACTIONS or len(args)!=ACTIONS[args[0]]:p.error('one exact original action and its arguments required')
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r27-operator-latency-preparation/short_tool.mjs
++++ return-tools/short_tool.mjs
+@@ -1,5 +1,5 @@
+ // Optional return-path convenience only; all production gates/timing remain in frozen r26.
+-import {executeAndLoad} from '../r26-tool-return-preparation/tool_call.mjs';
++import {executeAndLoad} from './tool_call.mjs';
+ export function bind(runDir){
+  if(typeof runDir!=='string'||!runDir.startsWith('/Volumes/KAFU2T/AI/Projects/Mac/'))throw Error('explicit authorized absolute run directory required');
+  return async function one(operation,renderer){

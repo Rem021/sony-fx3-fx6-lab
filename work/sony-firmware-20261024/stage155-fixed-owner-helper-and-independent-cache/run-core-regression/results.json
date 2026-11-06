@@ -1,0 +1,2121 @@
+{
+  "status": "PASS_NATIVE_CORE_FIXTURES_NOT_IOKIT_OR_CAMERA_ACCEPTANCE",
+  "case_count": 37,
+  "cases": [
+    {
+      "name": "normal_capture_reopen_claim_release_return",
+      "raw_status": 0,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 0,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 0
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "native_work_boundary_failure_1",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 17
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "native_work_boundary_failure_2",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 17
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "native_work_boundary_failure_3",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 17
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "native_work_boundary_failure_4",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": true,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 17
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "native_work_boundary_failure_5",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": true,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 17
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "native_work_boundary_failure_6",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": true,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 17
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "native_work_boundary_failure_7",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 17
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "cleanup_failure_9",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": true,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 0
+          },
+          {
+            "phase": 9,
+            "raw_return": 17
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "cleanup_failure_10",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": true,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 0
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 17
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "cleanup_failure_11",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": true,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 0
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "post_observation_never_available",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 40
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 0
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          },
+          {
+            "phase": 12,
+            "raw_return": 17
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "mounted_before_prepare",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "missing_cached_serial_tag",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "wrong_endpoint_profile",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 1
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "different_body_after_return",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 1,
+        "11": 1,
+        "12": 40
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": true,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 0
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "volume_mount_race_before_capture",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "registry_incarnation_race_before_capture",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "MSC_driver_remains_after_capture",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 1,
+        "6": 1,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": true,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 5,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "driver_already_absent_no_capture",
+      "raw_status": 0,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 1,
+        "7": 1,
+        "8": 0,
+        "9": 1,
+        "10": 0,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 0,
+        "capture_attempted": false,
+        "claim_attempted": true,
+        "interface_claimed_in_this_trial": true,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 6,
+            "raw_return": 0
+          },
+          {
+            "phase": 7,
+            "raw_return": 0
+          },
+          {
+            "phase": 8,
+            "raw_return": 0
+          },
+          {
+            "phase": 9,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "capture_not_permitted_driver_present",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "clock_backwards_after_capture",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 1,
+        "11": 1,
+        "12": 0
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": true,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": true,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "late_capture_return_cleanup_still_runs",
+      "raw_status": 1,
+      "calls": {
+        "1": 1,
+        "2": 1,
+        "3": 1,
+        "4": 1,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 1,
+        "11": 1,
+        "12": 1
+      },
+      "result": {
+        "status_code": 1,
+        "capture_attempted": true,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          },
+          {
+            "phase": 2,
+            "raw_return": 0
+          },
+          {
+            "phase": 3,
+            "raw_return": 0
+          },
+          {
+            "phase": 4,
+            "raw_return": 0
+          },
+          {
+            "phase": 10,
+            "raw_return": 0
+          },
+          {
+            "phase": 11,
+            "raw_return": 0
+          },
+          {
+            "phase": 12,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_config_abi",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_config_arm",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_config_vid",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_config_pid",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_config_location",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_config_capture_permitted",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_config_reserved",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_config_work_deadline_ns",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "stop_before_any_provider_call",
+      "raw_status": 2,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "invalid_control_ABI",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "missing_expected_body_tag",
+      "raw_status": 3,
+      "calls": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 3,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "wrong_expected_body_tag_before_any_client",
+      "raw_status": 2,
+      "calls": {
+        "1": 1,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0
+      },
+      "result": {
+        "status_code": 2,
+        "capture_attempted": false,
+        "claim_attempted": false,
+        "interface_claimed_in_this_trial": false,
+        "cleanup_error": false,
+        "clock_invalid": false,
+        "active_native_call_phase": 0,
+        "events": [
+          {
+            "phase": 1,
+            "raw_return": 0
+          }
+        ],
+        "same_camera_firmware_or_HEVC_recording_proven": false,
+        "native_driver_return_independently_proven": false
+      }
+    },
+    {
+      "name": "live_gate_current",
+      "rejected_before_native_symbol_lookup": true,
+      "reason": "Mac owner trial lacks separately reviewed authorization and release"
+    },
+    {
+      "name": "live_gate_future_flags_without_supervisor",
+      "rejected_before_native_symbol_lookup": true,
+      "reason": "native candidate is not released: process supervision and one-shot entry are still required"
+    }
+  ],
+  "compile_argv": [
+    "xcrun",
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fvisibility=hidden",
+    "-dynamiclib",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_core.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/owner_fixture.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/run-core-regression/owner-fixture.dylib"
+  ],
+  "fixture_dso_sha256": "39f57d6fdca94236c1256b5317c7bb71a67512fe857cfb11664fffe12989585b",
+  "fixture_dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/run-core-regression/owner-fixture.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage155-fixed-owner-helper-and-independent-cache/run-core-regression/owner-fixture.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+  "actual_IOKit_candidate_loaded": false,
+  "actual_USB_or_device_operations": 0,
+  "real_process_supervision_one_shot_entry_or_driver_return_proven": false
+}

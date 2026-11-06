@@ -1,0 +1,36 @@
+{
+  "previous_files_verified": 23,
+  "previous_receipt_sha256": "ab686ac5273122b91557a076c7e382ecfd41cb581599e321e8fcd52ed70e2539",
+  "python_ast_files": 5,
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "original_source_fragments": 17,
+  "switch_tables_verified": 3,
+  "field_candidates": 52,
+  "case_counts": {
+    "STP": 3,
+    "image_query": 4,
+    "uint16_domain": 1,
+    "total": 8
+  },
+  "uint16_samples": 65536,
+  "recognized_uint16_modes": 40,
+  "original_stp_handle_and_exact_register_boundary_verified": true,
+  "register_value_or_STP_success_fabricated": false,
+  "original_mode_and_query_producers_verified": true,
+  "actual_getter_bss_vector_initialized_by_original_code": true,
+  "incorrect_type2_expectation_preserved_and_corrected": true,
+  "local_links_verified": 6,
+  "boundary": {
+    "physical_register_reads": 0,
+    "device_actions": 0,
+    "native_target_execution": false,
+    "full_STP_completion": false,
+    "real_buffers": false,
+    "MAIN_pixels": false,
+    "complete_donor_ISP": false,
+    "firmware_output": false,
+    "goal_complete": false,
+    "termination_condition_met": false
+  },
+  "conclusion": "Strict STP prefix stops before unmapped fixed-register read. Independent original query windows reach unreplied image/frame queries; normal modes, resources, pixels and modified firmware flashability remain unproven."
+}

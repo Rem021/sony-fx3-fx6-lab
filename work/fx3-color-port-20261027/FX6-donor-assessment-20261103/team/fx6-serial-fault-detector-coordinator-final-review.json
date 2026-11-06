@@ -1,0 +1,33 @@
+{
+  "time": "2026-11-05T18:48:54.539201+00:00",
+  "task": "task_121156a0bd5b",
+  "dispatch": "ctx_e30fd3b4ff8c",
+  "status": "offline_detector_accepted_not_integrated",
+  "manifest": {
+    "count": 26,
+    "all_match": true,
+    "sha256": "198394415c68fef398778b47900d43ec270b0b183da5b81787d3aa43b7cb7612"
+  },
+  "worker_tests_passed": 7,
+  "independent_probes": [
+    "boot started plus newline: line_terminated=true capture_complete=null no boot claim",
+    "unrelated assert: fatal=null returnable=null",
+    "panic marker: kernel_fault_marker termination_proven=false"
+  ],
+  "historical_results": {
+    "66ed": {
+      "assert_count": 4,
+      "kernel_fault_count": 0
+    },
+    "84db": {
+      "assert_count": 2,
+      "kernel_fault_count": 1
+    }
+  },
+  "limits": [
+    "Only serial marker visibility and bounded offline semantics validated",
+    "No new VM; r6 remains separately sealed and pending user approval",
+    "No runtime integration or boot/menu acceptance"
+  ],
+  "previous_review": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-serial-fault-detector-coordinator-review.json"
+}

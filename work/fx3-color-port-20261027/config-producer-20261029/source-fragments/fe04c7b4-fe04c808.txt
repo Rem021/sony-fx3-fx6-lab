@@ -1,0 +1,21 @@
+fe04c7b4 f553bea9 stp      x21, x20, [sp, #-0x20]!
+fe04c7b8 f37b01a9 stp      x19, x30, [sp, #0x10]
+fe04c7bc f30301aa mov      x19, x1
+fe04c7c0 57030094 bl       #0xfe04d51c
+fe04c7c4 f50300aa mov      x21, x0
+fe04c7c8 600100b4 cbz      x0, #0xfe04c7f4
+fe04c7cc e00315aa mov      x0, x21
+fe04c7d0 3c030094 bl       #0xfe04d4c0
+fe04c7d4 143c0012 and      w20, w0, #0xffff
+fe04c7d8 e00315aa mov      x0, x21
+fe04c7dc 1c030094 bl       #0xfe04d44c
+fe04c7e0 e10300aa mov      x1, x0
+fe04c7e4 e00313aa mov      x0, x19
+fe04c7e8 e20314aa mov      x2, x20
+fe04c7ec 1cfbff97 bl       #0xfe04b45c
+fe04c7f0 02000014 b        #0xfe04c7f8
+fe04c7f4 14008012 mov      w20, #-1
+fe04c7f8 f37b41a9 ldp      x19, x30, [sp, #0x10]
+fe04c7fc e003142a mov      w0, w20
+fe04c800 f553c2a8 ldp      x21, x20, [sp], #0x20
+fe04c804 c0035fd6 ret      

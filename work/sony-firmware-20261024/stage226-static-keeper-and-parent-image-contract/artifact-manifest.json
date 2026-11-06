@@ -1,0 +1,30 @@
+{
+  "schema": "fx3-offline-keeper-worker-artifact-pair-v1",
+  "artifacts": [
+    {
+      "role": "keeper",
+      "path": "work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/runs-final/keeper-built/worker.elf",
+      "bytes": 262144,
+      "sha256": "93bcd77751550c7079a38dfe532272ecf71d849f906c4b05d5515267fa888581",
+      "entry": 4284364,
+      "entry_function": "fx3_keeper_run",
+      "static_ELF": true,
+      "actual_target_execution_verified": false
+    },
+    {
+      "role": "worker",
+      "path": "work/sony-firmware-20261024/stage226-static-keeper-and-parent-image-contract/runs-final/worker-built/worker.elf",
+      "bytes": 262144,
+      "sha256": "349115672da2bc494e073472446004ee476c77ecc716756351cfe50a395b66e7",
+      "entry": 4279560,
+      "entry_function": "fx3_boot_read_window",
+      "static_ELF": true,
+      "actual_target_execution_verified": false
+    }
+  ],
+  "hash_dependency": "worker built first; keeper embeds worker SHA; host512 carries both SHA; worker handoff188 carries runtime-computed keeper SHA plus length220",
+  "mutual_embedded_hash_cycle": false,
+  "manifest_is_not_user_approval": true,
+  "installer_or_real_bootstrap_provided": false,
+  "flashable": false
+}

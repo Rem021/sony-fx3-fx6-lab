@@ -1,0 +1,4 @@
+{
+  "failure": "First exploratory vtable read incorrectly used a data-section virtual address as a file offset and failed bounds before any table result was emitted.",
+  "fix": "Translate each read through original PT_LOAD file-backed segments. Existing selected code spans are in the identity-offset first segment and will be separately checked at sealing."
+}

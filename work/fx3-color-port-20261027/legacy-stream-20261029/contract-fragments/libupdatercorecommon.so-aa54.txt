@@ -1,0 +1,119 @@
+0000aa54 stp        x29, x30, [sp, #-0x30]!
+0000aa58 mov        w3, #0x24
+0000aa5c mov        w1, #0
+0000aa60 mov        x29, sp
+0000aa64 stp        x19, x20, [sp, #0x10]
+0000aa68 mov        x19, x0
+0000aa6c adrp       x20, #0xc000
+0000aa70 adrp       x0, #0xc000
+0000aa74 stp        x21, x22, [sp, #0x20]
+0000aa78 add        x2, x20, #0x514 ; literal 'DecryptorModule.cpp'
+0000aa7c add        x0, x0, #0x528 ; literal 'UdrAPI,%d,%s:%d,""-------------- Dec start ---------------""\n'
+0000aa80 add        x21, x19, #0x10
+0000aa84 bl         #0x81e0 ; printf
+0000aa88 mov        x0, x21
+0000aa8c bl         #0x8090 ; Updater::BaseModule::ThreadStatus::IsRunning
+0000aa90 tst        w0, #0xff
+0000aa94 b.eq       #0xabf4
+0000aa98 mov        x0, x19
+0000aa9c bl         #0x7ea0 ; Updater::DecryptorModule::updateData
+0000aaa0 ldr        x0, [x19, #0x4b0]
+0000aaa4 cmp        x0, #0x3ff
+0000aaa8 b.hi       #0xabcc
+0000aaac ldr        x0, [x19, #0x48]
+0000aab0 ldr        x1, [x0]
+0000aab4 ldr        x1, [x1, #0x30]
+0000aab8 blr        x1
+0000aabc tst        w0, #0xff
+0000aac0 b.eq       #0xabcc
+0000aac4 mov        w21, #2
+0000aac8 ldr        x4, [x19, #0x4b0]
+0000aacc movk       w21, #3, lsl #16
+0000aad0 adrp       x0, #0xc000
+0000aad4 add        x2, x20, #0x514
+0000aad8 mov        w1, w21
+0000aadc add        x0, x0, #0x5c7 ; literal 'UdrAPI,%d,%s:%d,""DecSize less %zu""\n'
+0000aae0 mov        w3, #0x2c
+0000aae4 bl         #0x81e0 ; printf
+0000aae8 mov        x0, #0x10
+0000aaec bl         #0x7b70 ; __cxa_allocate_exception
+0000aaf0 mov        x2, x0
+0000aaf4 adrp       x1, #0x1e000
+0000aaf8 str        w21, [x0, #8]
+0000aafc ldr        x1, [x1, #0xf20]
+0000ab00 add        x1, x1, #0x10
+0000ab04 str        x1, [x0]
+0000ab08 strb       wzr, [x2, #0xc]
+0000ab0c adrp       x1, #0x1e000
+0000ab10 adrp       x2, #0x1e000
+0000ab14 ldr        x1, [x1, #0xfc8]
+0000ab18 ldr        x2, [x2, #0xf40]
+0000ab1c bl         #0x8100 ; __cxa_throw
+0000ab20 ldr        x0, [x19]
+0000ab24 ldr        x1, [x0, #0x90]
+0000ab28 mov        x0, x19
+0000ab2c blr        x1
+0000ab30 mov        x0, x19
+0000ab34 bl         #0x7a80 ; Updater::DecryptorModule::verifySum
+0000ab38 mov        x0, x19
+0000ab3c bl         #0x7dc0 ; Updater::DecryptorModule::getHdEndFlag
+0000ab40 uxtb       w22, w0
+0000ab44 ldr        x0, [x19, #0x48]
+0000ab48 ldr        x1, [x0]
+0000ab4c ldr        x1, [x1, #0x30]
+0000ab50 blr        x1
+0000ab54 uxtb       w0, w0
+0000ab58 eor        w0, w0, #1
+0000ab5c orr        w22, w22, w0
+0000ab60 cbnz       w22, #0xac18
+0000ab64 mov        w19, #2
+0000ab68 adrp       x0, #0xc000
+0000ab6c movk       w19, #3, lsl #16
+0000ab70 add        x2, x20, #0x514
+0000ab74 mov        w1, w19
+0000ab78 add        x0, x0, #0x20a ; literal 'UdrAPI,%d,%s:%d,""""\n'
+0000ab7c mov        w3, #0x3a
+0000ab80 bl         #0x81e0 ; printf
+0000ab84 mov        x0, #0x10
+0000ab88 bl         #0x7b70 ; __cxa_allocate_exception
+0000ab8c mov        x2, x0
+0000ab90 adrp       x1, #0x1e000
+0000ab94 str        w19, [x0, #8]
+0000ab98 ldr        x1, [x1, #0xf20]
+0000ab9c add        x1, x1, #0x10
+0000aba0 str        x1, [x0]
+0000aba4 b          #0xab08
+0000aba8 mov        x0, x19
+0000abac bl         #0x7b60 ; Updater::DecryptorModule::setData
+0000abb0 ldr        x0, [x19]
+0000abb4 ldr        x1, [x0, #0x98]
+0000abb8 mov        x0, x19
+0000abbc blr        x1
+0000abc0 tst        w0, #0xff
+0000abc4 b.eq       #0xaa88
+0000abc8 b          #0xabf4
+0000abcc mov        x0, x21
+0000abd0 bl         #0x8090 ; Updater::BaseModule::ThreadStatus::IsRunning
+0000abd4 tst        w0, #0xff
+0000abd8 b.ne       #0xab20
+0000abdc mov        w3, #0x31
+0000abe0 adrp       x0, #0xc000
+0000abe4 add        x2, x20, #0x514
+0000abe8 add        x0, x0, #0x566 ; literal 'UdrAPI,%d,%s:%d,""Dec Stopping""\n'
+0000abec mov        w1, #0
+0000abf0 bl         #0x81e0 ; printf
+0000abf4 add        x2, x20, #0x514
+0000abf8 adrp       x0, #0xc000
+0000abfc ldp        x19, x20, [sp, #0x10]
+0000ac00 add        x0, x0, #0x588 ; literal 'UdrAPI,%d,%s:%d,""-------------- Dec finish ---------------""\n'
+0000ac04 ldp        x21, x22, [sp, #0x20]
+0000ac08 mov        w3, #0x47
+0000ac0c ldp        x29, x30, [sp], #0x30
+0000ac10 mov        w1, #0
+0000ac14 b          #0x81e0 ; printf
+0000ac18 mov        x0, x21
+0000ac1c bl         #0x8090 ; Updater::BaseModule::ThreadStatus::IsRunning
+0000ac20 tst        w0, #0xff
+0000ac24 b.ne       #0xaba8
+0000ac28 mov        w3, #0x3e
+0000ac2c b          #0xabe0

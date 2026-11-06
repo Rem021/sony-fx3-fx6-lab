@@ -1,0 +1,221 @@
+{
+  "created_utc": "2026-10-28T11:01:26.169742+00:00",
+  "status": "PASS_BOUNDED_PRIMITIVE_SCOPE_REVIEW_NOT_DEPLOYABLE_BACKUP",
+  "AP_ELF_count": 532,
+  "named_match_files": 168,
+  "ReadDeviceData_named_files": [
+    {
+      "paths": [
+        "/lib/libsencore.so"
+      ],
+      "symbols": [
+        "_ZN14ReadDeviceData9GetBufferEv",
+        "_ZN14ReadDeviceDataC2EPKcim",
+        "_ZTI14ReadDeviceData",
+        "_ZNK14ReadDeviceData11GetCapacityEv",
+        "_ZN14ReadDeviceData7AdvanceEm",
+        "_ZNK14ReadDeviceData7GetSizeEv",
+        "_ZTV14ReadDeviceData",
+        "_ZNK14ReadDeviceData13GetBufferSizeEv",
+        "_ZN14ReadDeviceDataD0Ev",
+        "_ZNK14ReadDeviceData9IsHealthyEv",
+        "_ZTS14ReadDeviceData",
+        "_ZN14ReadDeviceDataD1Ev",
+        "_ZN14ReadDeviceDataC1EPKcim",
+        "_ZN14ReadDeviceDataD2Ev",
+        "_ZNK14ReadDeviceData5BeginEv",
+        "_ZN14ReadDeviceData7ReleaseEv",
+        "_ZNK14ReadDeviceData5GetIoEv"
+      ]
+    }
+  ],
+  "prefix_guest_cases": 11,
+  "original_instruction_entries": 1920,
+  "prefix_results": [
+    {
+      "name": "prefix_32_of_79MB",
+      "return_w0": 0,
+      "read_count": 32,
+      "declared_read_return": 32,
+      "buffer_all_zero": false,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "prefix_64KiB_of_79MB",
+      "return_w0": 0,
+      "read_count": 65536,
+      "declared_read_return": 65536,
+      "buffer_all_zero": false,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "file_smaller_than_cap",
+      "return_w0": 0,
+      "read_count": 17,
+      "declared_read_return": 17,
+      "buffer_all_zero": false,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "zero_stat_size",
+      "return_w0": 0,
+      "read_count": 0,
+      "declared_read_return": 0,
+      "buffer_all_zero": true,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "short_read",
+      "return_w0": 0,
+      "read_count": 32,
+      "declared_read_return": 31,
+      "buffer_all_zero": false,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "read_error",
+      "return_w0": 0,
+      "read_count": 32,
+      "declared_read_return": -1,
+      "buffer_all_zero": true,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "zero_cap",
+      "return_w0": 0,
+      "read_count": 0,
+      "declared_read_return": 0,
+      "buffer_all_zero": true,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "block_capacity",
+      "return_w0": 0,
+      "read_count": 32,
+      "declared_read_return": 32,
+      "buffer_all_zero": false,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "block_size_query_error",
+      "return_w0": 0,
+      "read_count": 0,
+      "declared_read_return": 0,
+      "buffer_all_zero": true,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "close_error",
+      "return_w0": 0,
+      "read_count": 32,
+      "declared_read_return": 32,
+      "buffer_all_zero": false,
+      "short_tail_zero_padded": true
+    },
+    {
+      "name": "size_above4GiB",
+      "return_w0": 0,
+      "read_count": 32,
+      "declared_read_return": 32,
+      "buffer_all_zero": false,
+      "short_tail_zero_padded": true
+    }
+  ],
+  "key_constraints": [
+    "Presence of read/seek classes or imports is not an authenticated wire command or a physical read-only/restore guarantee.",
+    "The anonymous helper operation1 reads at most the supplied uint32 cap and size; it first memset(cap), so destination capacity must be proven independently.",
+    "The 64KiB guest cap is a fixture bound, not an intrinsic firmware cap.",
+    "A fresh open and no seek in this branch yields only a prefix for ordinary files; no validated offset/resume API has been found in this route.",
+    "The helper ignores the actual read result and can return0 with all-zero modeled output after an error.",
+    "DeviceIo.size handles regular64-bit size and block ioctl0x1260; an error can collapse size to0. Actual target device support was not tested.",
+    "ReadDeviceData buffers then refills, but its constructor has no direct named caller here and no other AP ELF imports were found. This does not exclude indirect/dynamic use.",
+    "FirmwareUpdateFunc in this core returns NULL; its name is not proof of a current read/write implementation.",
+    "No change to original Sony code or live transport; full same-body backup, cleanup, restore and rescue remain missing."
+  ],
+  "route_inventory": {
+    "functions": 14,
+    "anonymous_helper_bytes": 936,
+    "operations": [
+      {
+        "operation": 0,
+        "VA": "0x109ec"
+      },
+      {
+        "operation": 1,
+        "VA": "0x10ae4"
+      },
+      {
+        "operation": 2,
+        "VA": "0x10b44"
+      },
+      {
+        "operation": 3,
+        "VA": "0x10b5c"
+      },
+      {
+        "operation": 4,
+        "VA": "0x10b68"
+      },
+      {
+        "operation": 5,
+        "VA": "0x10b98"
+      },
+      {
+        "operation": 6,
+        "VA": "0x10be8"
+      },
+      {
+        "operation": 7,
+        "VA": "0x10c2c"
+      },
+      {
+        "operation": 8,
+        "VA": "0x10c7c"
+      },
+      {
+        "operation": 9,
+        "VA": "0x10a8c"
+      },
+      {
+        "operation": 10,
+        "VA": "0x10ab8"
+      }
+    ],
+    "constructor_direct_call_count": 0,
+    "vtable_load_candidates": [
+      {
+        "load_pc": "0xe168",
+        "ADRP_pc": "0xe15c",
+        "slot": "0x6afa0",
+        "frame": {
+          "VA": "0xe15c",
+          "bytes": 52
+        }
+      },
+      {
+        "load_pc": "0xe4c0",
+        "ADRP_pc": "0xe4b4",
+        "slot": "0x6afa0",
+        "frame": {
+          "VA": "0xe474",
+          "bytes": 188
+        }
+      }
+    ],
+    "packet_service_binding_validated": false
+  },
+  "references": [
+    {
+      "url": "https://man7.org/linux/man-pages/man2/pread.2.html",
+      "scope": "offset/count and short-read semantics, not the camera implementation"
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man2/lseek.2.html",
+      "scope": "seek semantics, not a service route"
+    }
+  ],
+  "owner_trial_authorization_retained": true,
+  "manual_eject_pending": true,
+  "one_shot_consumed": false,
+  "new_root_or_active_USB_or_camera_file_operations": 0
+}

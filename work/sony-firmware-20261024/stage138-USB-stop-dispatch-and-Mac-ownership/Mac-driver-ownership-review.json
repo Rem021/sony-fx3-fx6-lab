@@ -1,0 +1,103 @@
+{
+  "status": "PASS_STATIC_MAC_DRIVER_OWNERSHIP_NOT_DRIVER_RELEASE_OR_CAMERA_QUERY",
+  "PMCA_fixed_commit": "a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0",
+  "PMCA_AST_facts": {
+    "backend_reset_lines": [
+      67,
+      72
+    ],
+    "reset_may_explicitly_detach_interface0": true,
+    "detach_catches_only_NotImplementedError_here": true,
+    "no_paired_attach_or_auto_detach_setup_in_reviewed_backend": true,
+    "destructor_disposes_resources_not_explicitly_attaches": true,
+    "default_timeout_property_ms": 5000,
+    "constructor_dispatches_reset": {
+      "lines": [
+        24,
+        26
+      ]
+    },
+    "MSC_reset_also_issues_SCSI_command": {
+      "lines": [
+        48,
+        50
+      ]
+    },
+    "CLI_listing_calls_MSC_getDeviceInfo": {
+      "lines": [
+        175,
+        217
+      ]
+    },
+    "standard_tool_list_is_not_cache_only_and_must_not_be_run_under_cache_authority": true,
+    "vendor_call_lines": [
+      95,
+      99
+    ]
+  },
+  "libusb_source_reference": {
+    "tag": "v1.0.30",
+    "published_changelog_date": "2026-05-17",
+    "path": "work/sony-firmware-20261024/stage138-USB-stop-dispatch-and-Mac-ownership/upstream/darwin_usb-v1.0.30.c",
+    "sha256": "290b9913eba18e0f9f9fa0de75c59bec0daa4ccd02740a96fd8479d20da06557",
+    "functions": [
+      {
+        "name": "darwin_detach_kernel_driver",
+        "first_line": 2902,
+        "last_line": 2945,
+        "text": "static int darwin_detach_kernel_driver (struct libusb_device_handle *dev_handle, uint8_t interface) {\n  UNUSED(interface);\n  struct darwin_cached_device *dpriv = DARWIN_CACHED_DEVICE(dev_handle->dev);\n  IOReturn kresult;\n  enum libusb_error err;\n  struct libusb_context *ctx = HANDLE_CTX (dev_handle);\n\n  if (get_interface_interface_version() < 700) {\n    return LIBUSB_ERROR_NOT_SUPPORTED;\n  }\n\n  if (dpriv->capture_count == 0) {\n    usbi_dbg (ctx, \"attempting to detach kernel driver from device\");\n\n    if (darwin_has_capture_entitlements ()) {\n      /* request authorization */\n      kresult = IOServiceAuthorize (dpriv->service, kIOServiceInteractionAllowed);\n      if (kresult != kIOReturnSuccess) {\n        usbi_warn (ctx, \"IOServiceAuthorize: %s\", darwin_error_str(kresult));\n        return darwin_to_libusb (kresult);\n      }\n\n      /* we need start() to be called again for authorization status to refresh */\n      err = darwin_reload_device (dev_handle);\n      if (err != LIBUSB_SUCCESS) {\n        return err;\n      }\n    } else {\n      usbi_info (ctx, \"no capture entitlements. may not be able to detach the kernel driver for this device\");\n      if (0 != geteuid()) {\n        usbi_warn (ctx, \"USB device capture requires either an entitlement (com.apple.vm.device-access) or root privilege\");\n        return LIBUSB_ERROR_ACCESS;\n      }\n    }\n\n    /* reset device to release existing drivers */\n    err = darwin_reenumerate_device (dev_handle, true);\n    if (err != LIBUSB_SUCCESS) {\n      return err;\n    }\n  }\n  dpriv->capture_count++;\n  return LIBUSB_SUCCESS;\n}"
+      },
+      {
+        "name": "darwin_attach_kernel_driver",
+        "first_line": 2948,
+        "last_line": 2965,
+        "text": "static int darwin_attach_kernel_driver (struct libusb_device_handle *dev_handle, uint8_t interface) {\n  UNUSED(interface);\n  struct darwin_cached_device *dpriv = DARWIN_CACHED_DEVICE(dev_handle->dev);\n\n  if (get_interface_interface_version() < 700) {\n    return LIBUSB_ERROR_NOT_SUPPORTED;\n  }\n\n  dpriv->capture_count--;\n  if (dpriv->capture_count > 0) {\n    return LIBUSB_SUCCESS;\n  }\n\n  usbi_dbg (HANDLE_CTX (dev_handle), \"reenumerating device for kernel driver attach\");\n\n  /* reset device to attach kernel drivers */\n  return darwin_reenumerate_device (dev_handle, false);\n}"
+      },
+      {
+        "name": "darwin_capture_claim_interface",
+        "first_line": 2967,
+        "last_line": 2977,
+        "text": "static int darwin_capture_claim_interface(struct libusb_device_handle *dev_handle, uint8_t iface) {\n  enum libusb_error ret;\n  if (dev_handle->auto_detach_kernel_driver && darwin_kernel_driver_active(dev_handle, iface)) {\n    ret = darwin_detach_kernel_driver (dev_handle, iface);\n    if (ret != LIBUSB_SUCCESS) {\n      usbi_info (HANDLE_CTX (dev_handle), \"failed to auto-detach the kernel driver for this device, ret=%d\", ret);\n    }\n  }\n\n  return darwin_claim_interface (dev_handle, iface);\n}"
+      },
+      {
+        "name": "darwin_capture_release_interface",
+        "first_line": 2979,
+        "last_line": 2997,
+        "text": "static int darwin_capture_release_interface(struct libusb_device_handle *dev_handle, uint8_t iface) {\n  enum libusb_error ret;\n  struct darwin_cached_device *dpriv = DARWIN_CACHED_DEVICE(dev_handle->dev);\n\n  ret = darwin_release_interface (dev_handle, iface);\n  if (ret != LIBUSB_SUCCESS) {\n    return ret;\n  }\n\n  if (dev_handle->auto_detach_kernel_driver && dpriv->capture_count > 0) {\n    ret = darwin_attach_kernel_driver (dev_handle, iface);\n    if (LIBUSB_SUCCESS != ret) {\n      usbi_info (HANDLE_CTX (dev_handle), \"on attempt to reattach the kernel driver got ret=%d\", ret);\n    }\n    /* ignore the error as the interface was successfully released */\n  }\n\n  return LIBUSB_SUCCESS;\n}"
+      },
+      {
+        "name": "darwin_close",
+        "first_line": 1640,
+        "last_line": 1682,
+        "text": "static void darwin_close (struct libusb_device_handle *dev_handle) {\n  struct darwin_device_handle_priv *priv = usbi_get_device_handle_priv(dev_handle);\n  struct darwin_cached_device *dpriv = DARWIN_CACHED_DEVICE(dev_handle->dev);\n  IOReturn kresult;\n  int i;\n\n  if (dpriv->open_count == 0) {\n    /* something is probably very wrong if this is the case */\n    usbi_err (HANDLE_CTX (dev_handle), \"Close called on a device that was not open!\");\n    return;\n  }\n\n  dpriv->open_count--;\n  if (NULL == dpriv->device) {\n    usbi_warn (HANDLE_CTX (dev_handle), \"darwin_close device missing IOService\");\n    return;\n  }\n\n  /* make sure all interfaces are released */\n  for (i = 0 ; i < USB_MAXINTERFACES ; i++)\n    if (dev_handle->claimed_interfaces & (1U << i))\n      libusb_release_interface (dev_handle, i);\n\n  if (0 == dpriv->open_count) {\n    /* delete the device's async event source */\n    if (priv->cfSource) {\n      CFRunLoopRemoveSource (libusb_darwin_acfl, priv->cfSource, kCFRunLoopDefaultMode);\n      CFRelease (priv->cfSource);\n      priv->cfSource = NULL;\n      CFRelease (libusb_darwin_acfl);\n    }\n\n    if (priv->is_open) {\n      /* close the device */\n      kresult = (*dpriv->device)->USBDeviceClose(dpriv->device);\n      if (kresult != kIOReturnSuccess) {\n        /* Log the fact that we had a problem closing the file, however failing a\n         * close isn't really an error, so return success anyway */\n        usbi_warn (HANDLE_CTX (dev_handle), \"USBDeviceClose: %s\", darwin_error_str(kresult));\n      }\n    }\n  }\n}"
+      }
+    ],
+    "detach_captures_whole_device_and_may_reenumerate": true,
+    "authorization_or_root_condition_is_source_branch_not_current_access_request": true,
+    "attach_reenumerates_after_capture_count_reaches0": true,
+    "auto_release_can_return_success_despite_attach_failure": true,
+    "explicit_Python_detach_not_proven_paired_by_dispose": true,
+    "not_loaded_or_claimed_current_installed_backend": true
+  },
+  "host_metadata_only": {
+    "macOS": "27.2",
+    "machine": "arm64",
+    "known_Homebrew_libusb_cellars": [],
+    "research_venv_packages": {
+      "pyusb": null,
+      "libusb1": null
+    },
+    "scope": "Two conventional Cellar paths and this research venv only; not a full host package inventory"
+  },
+  "future_active_trial_constraints": [
+    "Select the exact permitted FX3 before any constructor/reset or query; do not reuse broad all-Sony listing as cached metadata.",
+    "Driver capture, service protocol and post-attach identity/driver restoration require separate concrete evidence and matching authority.",
+    "Keep enter/auth/reenumeration/stop/body-complete/host-reattach results separate; host timeout or disposal alone leaves outcome unknown.",
+    "Do not change entitlements, invoke root, install drivers/libraries, detach, auto-retry or reset based on this static audit."
+  ],
+  "driver_library_import_load_or_device_open": false,
+  "new_camera_USB_cache_Windows_UU_or_Fastboot_test": false,
+  "live_service_plan_released": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

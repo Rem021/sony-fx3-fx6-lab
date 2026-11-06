@@ -1,0 +1,59 @@
+{
+  "created_utc": "2026-10-30T17:36:41.165013+00:00",
+  "hypothesis": "Exactly one structural hypothesis: 16 nonzero bounded-header residual bytes in ascending offset order as AES-128 key, final 16 original bytes as CBC IV, body starts at 1100. This is not claimed to be the vendor algorithm.",
+  "basis": "Two original samples have a 1024-byte inferred header with 16 residual bytes, 16-byte-aligned declared body and 16-byte trailer. No arbitrary key search, mode enumeration or signing.",
+  "own_helper_sha256": "45d4f421585701be1d283a3bac9351fc42f6fbb4388bbb8c82d9b7668f3d8f46",
+  "native_primitive": "Apple CommonCrypto CCCrypt, local AES-128-CBC decryption of two bounded samples per original",
+  "samples": [
+    {
+      "sample": "AXS600",
+      "source_sha256": "8b228e57f9dba27379dc171aec104408a38cf7d6045cfcbec32e28b0c98350cc",
+      "candidate_header_sha256": "58625b305d5808df599befd9a97f4136c2819b6cedb5f668d9926fe72a968717",
+      "input_body_offset": 1100,
+      "declared_body_bytes": 29329408,
+      "tested_head_bytes": 4096,
+      "decrypted_head_sha256": "85ed6017630657348ca36279a377cfd328594b61d3e8ab881d5789c8d08e31aa",
+      "decrypted_head_entropy": 7.950925564049793,
+      "recognized_start_markers": {
+        "ELF": false,
+        "gzip": false,
+        "XZ": false,
+        "SquashFS_LE": false,
+        "UBI": false,
+        "cpio": false,
+        "ZIP": false,
+        "tar_header_with_checksum": false
+      },
+      "last_block_PKCS7_predicate": false,
+      "key_or_IV_bytes_printed_or_saved": false,
+      "recognized_valid_plaintext_established": false,
+      "full_body_decryption_attempted": false
+    },
+    {
+      "sample": "AXS601",
+      "source_sha256": "da0028a10ff74538bbac96222089e2682e4a82fdb5028e5c3ee0844519f1e277",
+      "candidate_header_sha256": "18bd203571b7a4ec8f169f79cbbba829e7d83c1e118d25542eccd61210398663",
+      "input_body_offset": 1100,
+      "declared_body_bytes": 29328400,
+      "tested_head_bytes": 4096,
+      "decrypted_head_sha256": "a5d3d04a97a21585f65df00844c779ca5d30c649e5b6ec6df027b8a15d9e2a6a",
+      "decrypted_head_entropy": 7.962927857059999,
+      "recognized_start_markers": {
+        "ELF": false,
+        "gzip": false,
+        "XZ": false,
+        "SquashFS_LE": false,
+        "UBI": false,
+        "cpio": false,
+        "ZIP": false,
+        "tar_header_with_checksum": false
+      },
+      "last_block_PKCS7_predicate": false,
+      "key_or_IV_bytes_printed_or_saved": false,
+      "recognized_valid_plaintext_established": false,
+      "full_body_decryption_attempted": false
+    }
+  ],
+  "new_usable_decode_path": false,
+  "scope": "Only 4096-byte head and last block tested; no target modified package, vendor code, device, private signing operation or broad cipher enumeration. No plaintext success asserted from entropy or padding alone."
+}

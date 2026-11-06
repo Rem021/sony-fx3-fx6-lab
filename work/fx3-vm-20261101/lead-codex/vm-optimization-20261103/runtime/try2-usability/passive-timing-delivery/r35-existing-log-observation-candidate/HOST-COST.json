@@ -1,0 +1,69 @@
+{
+  "baseline": {
+    "argv": [
+      "/usr/bin/clang",
+      "-O2",
+      "-Wno-incompatible-library-redeclaration",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/src",
+      "-DSOURCE_FILE=\"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/src/fx3-osd-headless-v25-r3.c\"",
+      "-DBENCH=1",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/wrapper_fixture.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/host_real_cost.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/host-cost-baseline"
+    ],
+    "compile_exit": 0,
+    "samples": [
+      {
+        "exit": 0,
+        "stdout": "BENCH actual_wrapper_claim_failure_ns=147.70 iterations=20000 actual_host_getpid_calls_per_wrapper=1 interval_includes_clock_measurement_overhead=1 mocked_native_and_IO=1\nBENCH steady_completed_claim_failure_wrapper_ns=143.50 iterations=20000 actual_host_getpid_calls_per_wrapper=1 no_collector_reset=1 native_and_IO_mock=1\n",
+        "stderr": ""
+      },
+      {
+        "exit": 0,
+        "stdout": "BENCH actual_wrapper_claim_failure_ns=145.40 iterations=20000 actual_host_getpid_calls_per_wrapper=1 interval_includes_clock_measurement_overhead=1 mocked_native_and_IO=1\nBENCH steady_completed_claim_failure_wrapper_ns=144.00 iterations=20000 actual_host_getpid_calls_per_wrapper=1 no_collector_reset=1 native_and_IO_mock=1\n",
+        "stderr": ""
+      },
+      {
+        "exit": 0,
+        "stdout": "BENCH actual_wrapper_claim_failure_ns=145.25 iterations=20000 actual_host_getpid_calls_per_wrapper=1 interval_includes_clock_measurement_overhead=1 mocked_native_and_IO=1\nBENCH steady_completed_claim_failure_wrapper_ns=145.65 iterations=20000 actual_host_getpid_calls_per_wrapper=1 no_collector_reset=1 native_and_IO_mock=1\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "candidate": {
+    "argv": [
+      "/usr/bin/clang",
+      "-O2",
+      "-Wno-incompatible-library-redeclaration",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/src",
+      "-DSOURCE_FILE=\"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/src/fx3-osd-r35.c\"",
+      "-DBENCH=1",
+      "-DCANDIDATE=1",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/wrapper_fixture.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/host_real_cost.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/host-cost-candidate"
+    ],
+    "compile_exit": 0,
+    "samples": [
+      {
+        "exit": 0,
+        "stdout": "BENCH actual_wrapper_claim_failure_ns=543.60 iterations=20000 actual_host_getpid_calls_per_wrapper=5 interval_includes_clock_measurement_overhead=1 mocked_native_and_IO=1\nBENCH steady_completed_claim_failure_wrapper_ns=342.95 iterations=20000 actual_host_getpid_calls_per_wrapper=3 no_collector_reset=1 native_and_IO_mock=1\n",
+        "stderr": ""
+      },
+      {
+        "exit": 0,
+        "stdout": "BENCH actual_wrapper_claim_failure_ns=535.70 iterations=20000 actual_host_getpid_calls_per_wrapper=5 interval_includes_clock_measurement_overhead=1 mocked_native_and_IO=1\nBENCH steady_completed_claim_failure_wrapper_ns=343.10 iterations=20000 actual_host_getpid_calls_per_wrapper=3 no_collector_reset=1 native_and_IO_mock=1\n",
+        "stderr": ""
+      },
+      {
+        "exit": 0,
+        "stdout": "BENCH actual_wrapper_claim_failure_ns=542.90 iterations=20000 actual_host_getpid_calls_per_wrapper=5 interval_includes_clock_measurement_overhead=1 mocked_native_and_IO=1\nBENCH steady_completed_claim_failure_wrapper_ns=345.50 iterations=20000 actual_host_getpid_calls_per_wrapper=3 no_collector_reset=1 native_and_IO_mock=1\n",
+        "stderr": ""
+      }
+    ]
+  }
+}

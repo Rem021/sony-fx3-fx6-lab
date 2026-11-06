@@ -1,0 +1,146 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101v1nativefile600-7c9e5597",
+  "created_utc": "2026-11-02T21:40:23.256103+00:00",
+  "health_pass": false,
+  "native_health_no_assert": false,
+  "completed_requested_window": false,
+  "unsupported_drawing": false,
+  "lifecycle_pass": false,
+  "native_assertions": [],
+  "native_application_failed": false,
+  "duration_seconds": 5.0510031250014435,
+  "requested_seconds": 600,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "input_SHA_reverified": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap100v1sync600-8d0d69c0/Backup-native-file-before-menu.bin",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-v1-native-backup-file/guest.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-v1-native-backup-file/guest.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-v1-native-backup-file/candidate.json",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "matches": true
+    }
+  ],
+  "missing_markers": [
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0",
+    "FX3_PRESET_CONTEXT_BOUND",
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS",
+    "FX3_AP89_UUD_DECISION",
+    "FX3_AP89_SCREEN_CREATE",
+    "FX3_AP_IM_ENDMAPS_",
+    "registration_origin=malloc_parent_v1",
+    "FX3_GPE_RESOURCE_BOUND",
+    "FX3_GPE_RESOURCE_REGISTER",
+    "FX3_GPE_SCOPE",
+    "FX3_RM_BOUND",
+    "FX3_RM_FRONT_TRANSFER",
+    "FX3_RM_REPLY_TRANSFER",
+    "FX3_RM_NATIVE_FREE",
+    "FX3_MEDIA_SELFTEST_PASS",
+    "FX3_MEDIA_BOUND module=D",
+    "FX3_MEDIA_FRONT",
+    "FRONT_FULL_BODY",
+    "FX3_MEDIA_START_BRANCH",
+    "FX3_MEDIA_NOTIFY",
+    "FX3_KEY96_READY",
+    "FX3_OSD_FRAME_TARGET_VALID",
+    "FX3_GPE_COMPACTION_BOUND",
+    "FX3_GPE_DRAW_INTERVAL",
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND",
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED",
+    "FX3_KEY96_POLL",
+    "FX3_KEY96_THREAD_BEGIN",
+    "FX3_PANEL_CONFIG_V2_COMMIT",
+    "FX3_PROC97_STATUS_BEGIN",
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN",
+    "FX3_DATE98_TRACE_BOUND",
+    "FX3_FILE100_OBSERVER_READY"
+  ],
+  "fatal_markers": [],
+  "early_stop_reason": "AP101 original file/load/preAP identity gate failed",
+  "im_alive_last_complete_maps": null,
+  "host_gate_commands": 0,
+  "guest_done_steps": 0,
+  "sent_events": 0,
+  "received_events": 0,
+  "keys": [],
+  "key_receipts": [],
+  "done": [],
+  "raw20": [],
+  "leases": [],
+  "all_leases_native_free_once0": false,
+  "captures": [],
+  "capture_count": 0,
+  "GPE_complete_records": 0,
+  "GPE_incomplete_records": [],
+  "GPE_nonzero_records": [],
+  "screens": [],
+  "RM_native_branches": [],
+  "RM_native_notifications": [],
+  "RM_mount_count": 0,
+  "RM_timeout_count": 0,
+  "host_command_not_proven_sent": [],
+  "standby_verified": false,
+  "menu_verified": false,
+  "scope": "Independent read-only review; no changes inside completed runs; raw LF interleaving retained, not global lossless proof"
+}

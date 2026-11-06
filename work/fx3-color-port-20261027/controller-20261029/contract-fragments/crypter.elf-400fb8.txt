@@ -1,0 +1,16 @@
+00400fb8 adrp       x1, #0x412000
+00400fbc adrp       x0, #0x412000
+00400fc0 add        x1, x1, #0x88
+00400fc4 add        x0, x0, #0x88
+00400fc8 sub        x1, x1, x0
+00400fcc asr        x1, x1, #3
+00400fd0 add        x1, x1, x1, lsr #63
+00400fd4 asr        x1, x1, #1
+00400fd8 cbz        x1, #0x400ff0
+00400fdc adrp       x2, #0x401000
+00400fe0 ldr        x2, [x2, #0x100]
+00400fe4 cbz        x2, #0x400ff0
+00400fe8 br         x2
+00400fec nop        
+00400ff0 ret        
+00400ff4 nop        

@@ -1,0 +1,23 @@
+{
+  "created_utc": "2026-11-04T15:57:50.534183+00:00",
+  "scope": "read_only_source_review_no_runtime_change",
+  "source": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r6-qmp-startup/run_trial_v25_diag_r3.py",
+  "sha256": "2101edb5eb9c7789faa5c753e206fe315df87307df0695d290a95e718fb4846c",
+  "observations": [
+    {
+      "function": "write_host_first_exception",
+      "line": 50,
+      "fact": "Records host_monotonic but no wall-clock UTC timestamp; failed first-exception file write retains original record in in-memory QMP journal."
+    },
+    {
+      "line": 816,
+      "fact": "QMP journal is persisted after cleanup to the same external-volume run directory; persistence still depends on volume availability."
+    }
+  ],
+  "next_host_candidate_requirements": [
+    "Record UTC wall-clock and monotonic timestamp together at the original exception; retain the first exception unchanged through cleanup failures.",
+    "Keep memory-journal fallback; surface persistence failure explicitly without creating another project directory on internal storage.",
+    "Use host-only missing-output-path tests before integrating; do not alter guest, fixed platform, QMP budgets or input semantics."
+  ],
+  "acceptance": "Not implemented or runtime-validated; zero-frame root cause remains separate."
+}

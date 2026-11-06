@@ -1,0 +1,129 @@
+{
+  "status": "confirmed_and_cancelled",
+  "session": "fx3-deadline-operator-rehearsal-r2-0b081725",
+  "url": "http://127.0.0.1:64311/",
+  "launch_id": "e49ce6f6-289a-49d2-bd0d-4e1775c909eb",
+  "alarm_nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+  "step": 1,
+  "reviewed_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+  "target": "亲看模拟历史完整菜单：Setup > Area/Date；橙色Area/Date/Time Setting焦点；Language English可读",
+  "host_invoked_UTC": "2026-11-04T21:38:59.722245+00:00",
+  "host_monotonic_invoked": 412025.268319583,
+  "eval_may_have_started": true,
+  "retries": 0,
+  "guest_keys_sent_by_helper": 0,
+  "tab_id": null,
+  "host_preflight_UTC": "2026-11-04T21:38:59.728655+00:00",
+  "browser_result": {
+    "cancelled": {
+      "current": {
+        "armed_ms": 14655.599999964235,
+        "cancelled_ms": 26108.099999964237,
+        "deadline_ms": 20000,
+        "due_ms": 34655.59999996424,
+        "nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+        "state": "cancelled"
+      },
+      "deadline_ms": 20000,
+      "documentTimeOrigin": 1793828313711.7,
+      "events": [
+        {
+          "event": "installed",
+          "performance_ms": 3434.300000011921,
+          "script_SHA256": "fe56b4846b9cb0c386216b38cc7e5b0707f616cab5ee6a526a217e68ce114478",
+          "wall_UTC": "2026-11-04T21:38:37.145Z"
+        },
+        {
+          "due_ms": 34655.59999996424,
+          "event": "armed",
+          "nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+          "performance_ms": 14655.599999964235,
+          "wall_UTC": "2026-11-04T21:38:48.367Z"
+        },
+        {
+          "elapsed_ms": 11452.5,
+          "event": "cancelled",
+          "nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+          "performance_ms": 26108.099999964237,
+          "wall_UTC": "2026-11-04T21:38:59.819Z"
+        }
+      ],
+      "expectedLaunchId": "e49ce6f6-289a-49d2-bd0d-4e1775c909eb",
+      "expectedURL": "http://127.0.0.1:64311/",
+      "sealed": false,
+      "version": 1
+    },
+    "click_invoked": true,
+    "current_frame": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "content_generation": 2,
+      "sequence": 213
+    },
+    "events": [
+      {
+        "event": "invoked",
+        "performance_ms": 26022.19999998808,
+        "reviewed_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "step": 1,
+        "target": "亲看模拟历史完整菜单：Setup > Area/Date；橙色Area/Date/Time Setting焦点；Language English可读",
+        "wall_UTC": "2026-11-04T21:38:59.734Z"
+      },
+      {
+        "content_generation": 2,
+        "due_ms": 34655.59999996424,
+        "event": "precondition_passed",
+        "performance_ms": 26022.5,
+        "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "sequence": 213,
+        "wall_UTC": "2026-11-04T21:38:59.734Z"
+      },
+      {
+        "event": "confirm_click_invoked",
+        "pending_confirm": {
+          "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "content_generation": 2,
+          "observed_sequence": 213,
+          "request_id": "45215a54-a82b-4dca-968e-6bee50a60961",
+          "step": 1
+        },
+        "performance_ms": 26023.099999964237,
+        "wall_UTC": "2026-11-04T21:38:59.734Z"
+      },
+      {
+        "confirmation": {
+          "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "content_generation": 2,
+          "guest_input_written": false,
+          "observed_sequence": 213,
+          "request_id": "45215a54-a82b-4dca-968e-6bee50a60961",
+          "step": 1
+        },
+        "current_generation": 2,
+        "current_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "current_sequence": 213,
+        "event": "matching_ack_and_current_frame_ready",
+        "performance_ms": 26108.099999964237,
+        "wall_UTC": "2026-11-04T21:38:59.819Z"
+      },
+      {
+        "due_ms": 34655.59999996424,
+        "elapsed_ms": 11452.5,
+        "event": "cancel_returned",
+        "performance_ms": 26108.099999964237,
+        "state": "cancelled",
+        "wall_UTC": "2026-11-04T21:38:59.820Z"
+      }
+    ],
+    "expected": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "content_generation": 2,
+      "observed_sequence": 213,
+      "request_id": "45215a54-a82b-4dca-968e-6bee50a60961",
+      "step": 1
+    },
+    "reason": "matched_historical_receipt_and_current_input_gate",
+    "status": "confirmed_and_cancelled"
+  },
+  "host_return_UTC": "2026-11-04T21:38:59.822076+00:00",
+  "host_monotonic_return": 412025.368024208
+}

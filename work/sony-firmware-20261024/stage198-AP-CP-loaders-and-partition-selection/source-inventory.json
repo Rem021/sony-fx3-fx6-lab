@@ -1,0 +1,205 @@
+{
+  "sources": [
+    {
+      "label": "official7.02 p8 payload",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha8.img",
+      "sha256": "3c751e784fe6790a4b455990d7c6e144c33cf51c643cf3bf9523f8a3bd5a6a2b",
+      "bytes": 22450176,
+      "metadata": {
+        "kind": "FAT12",
+        "sector_size": 512,
+        "sectors_per_cluster": 32,
+        "root_offset": 49152,
+        "data_offset": 65536,
+        "cluster_count": 1366
+      },
+      "complete_directory": [
+        {
+          "path": "/DGU.bin",
+          "cluster": 3,
+          "size": 24336,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/DmmCfg.bin",
+          "cluster": 5,
+          "size": 43320,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/MIS.bin",
+          "cluster": 8,
+          "size": 119296,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/OldAmtCL.bin",
+          "cluster": 16,
+          "size": 161766,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/SysSound.bin",
+          "cluster": 26,
+          "size": 33920,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/cpImg.dat",
+          "cluster": 29,
+          "size": 1772736,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/cpapp-b.bin",
+          "cluster": 138,
+          "size": 15980568,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/loader_spi.bin",
+          "cluster": 1114,
+          "size": 39184,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/pcie_phy_fw.bin",
+          "cluster": 1117,
+          "size": 16384,
+          "attributes": 32,
+          "type": 32768
+        },
+        {
+          "path": "/tomco.txt",
+          "cluster": 1118,
+          "size": 710,
+          "attributes": 32,
+          "type": 32768
+        }
+      ]
+    },
+    {
+      "label": "historical official2.05 p1 reference ONLY",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/input-20261028/original-update-engine/2.05/nflasha1",
+      "sha256": "ab2cd5372fed3c742b586e28484c6bf0aa6ebfba1f6d8e450a19191abc5b6591",
+      "bytes": 19377152,
+      "current_body_identity_verified": false,
+      "complete_directory": [
+        {
+          "path": "/boot",
+          "bytes": 0,
+          "directory": true,
+          "sha256": null
+        },
+        {
+          "path": "/boot/initrd.img",
+          "bytes": 9097216,
+          "directory": false,
+          "sha256": "d5c4795c962750d2d9b6c4a387d927d05bdf59d4427054e857ba6146790ae790"
+        },
+        {
+          "path": "/boot/vmlinux.bin",
+          "bytes": 6582280,
+          "directory": false,
+          "sha256": "f96c2a7e9f70f6f7d1d9d2edb1a729ed045c4b3812f349d4305a40530613e832"
+        },
+        {
+          "path": "/boot/cxd90057.dtb",
+          "bytes": 17131,
+          "directory": false,
+          "sha256": "87abb2b72c3d373cf8f0779f8981a6e3f6780b54d08862d61a252248ebcf36ca"
+        },
+        {
+          "path": "/boot/kemco.txt",
+          "bytes": 934,
+          "directory": false,
+          "sha256": "eb184157afc8eaf2d9a3dc795e7b52057130cb25f7799bc72fd6c85cbb99c94a"
+        },
+        {
+          "path": "/boot/loadaddr.txt",
+          "bytes": 48,
+          "directory": false,
+          "sha256": "8c7cc8eb65c40311172f4bf1dc591fe3bcbc1efe689ededdd225142139881452"
+        },
+        {
+          "path": "/p1chksum",
+          "bytes": 105,
+          "directory": false,
+          "sha256": "eaca3656095d5ac00b0fd94113d76ae3e1d2942a217d18aa3ce77e7bda1cac25"
+        }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "source": "official7.02 p8 payload",
+      "path_in_image": "/DGU.bin",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/DGU.bin",
+      "sha256": "39eeb6d572a060149194463507800ed66b866a20dceb8ed49b01a04eb6fb2ba7",
+      "bytes": 24336,
+      "first64": "01000014fe77bfa9fc6fbfa9fa67bfa9f85fbfa9f657bfa9f44fbfa9f247bfa9f03fbfa9ee37bfa9ec2fbfa9ea27bfa9e81fbfa9e617bfa9e40fbfa9e207bfa9",
+      "string_count": 101,
+      "source_hash_verified": true
+    },
+    {
+      "source": "official7.02 p8 payload",
+      "path_in_image": "/MIS.bin",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/MIS.bin",
+      "sha256": "4cd3e9bc3a0a4aec4793bff77e7ca4dccdba8637212cd632cdc5ecbe550daf98",
+      "bytes": 119296,
+      "first64": "4d49535f4845414400d20100000008fe00000300000a000000c2000000320100ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "string_count": 68,
+      "source_hash_verified": true
+    },
+    {
+      "source": "official7.02 p8 payload",
+      "path_in_image": "/loader_spi.bin",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/loader_spi.bin",
+      "sha256": "314d372d0d2b9883c3b9dc04b40389edb3100e6d5ef529633cc427c3d0cab72e",
+      "bytes": 39184,
+      "first64": "c12f005801c018d501c01cd501c01ed5239080d203111ed5660e80d225103ed5050006aa25101ed5c52e005805e01bd545b039d5a50040b2a5007bb245b019d5",
+      "string_count": 162,
+      "source_hash_verified": true
+    },
+    {
+      "source": "official7.02 p8 payload",
+      "path_in_image": "/tomco.txt",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/tomco.txt",
+      "sha256": "42f1785422bce152dbb21c4e82f42dd4b053a1729c7694e54b7cc9f118592722",
+      "bytes": 710,
+      "first64": "5b544f4d434f5d0a75737272746e5f6366676772703d320a6d7063705f657863657074696f6e5f696e745f6366673d300a72657365745f7265715f696e745f63",
+      "string_count": 33,
+      "source_hash_verified": true
+    },
+    {
+      "source": "historical2.05 p1 reference ONLY",
+      "path_in_image": "/boot/loadaddr.txt",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/historical2.05-loadaddr.txt",
+      "bytes": 48,
+      "sha256": "8c7cc8eb65c40311172f4bf1dc591fe3bcbc1efe689ededdd225142139881452",
+      "text": "0x400080000,0x408000000,0x400001000,0x400002000\n",
+      "current_body_identity_verified": false
+    },
+    {
+      "source": "historical2.05 p1 reference ONLY",
+      "path_in_image": "/boot/kemco.txt",
+      "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage198-AP-CP-loaders-and-partition-selection/originals/historical2.05-kemco.txt",
+      "bytes": 934,
+      "sha256": "eb184157afc8eaf2d9a3dc795e7b52057130cb25f7799bc72fd6c85cbb99c94a",
+      "text": "kemco\ninit=/sbin/init\nramdisk_size=16384\nrw noatime\nslab_max_order=0\npage_alloc.minkb=128\nthreadirqs manage.irqd=129\npcie_pme=nomsi pcie_hp=nomsi\ncoredump.coremode=1\nheap_profile.records=0\nadrs_conv.debug=1\nadrs_conv.null=Y\nwdt.timeout=500\nbasic.prof_path=/log/ssbi_prof.bin\nudif.perr_enable=0\ncfg.uart=9\ndwc3.dwc3_typec_flipped=1\npcie.vboost1=7 pcie.vboost2=7 pcie.aspm0=1 pcie.aspm1=3 pcie.aspm2=3 pcie.aspm4=3\npm.poff=18,6\nerror.abt_o=17,6\nerror.abt_i0=17,5\nip=off root=/dev/ram0 rootfstype=squashfs\nconsole=ttynull xrstreq=0 wdt.mode=0 stack_usage=1 coredump.core=/log/%f.core.lz77\nexception.reboot=0\ninitrd=0x408000000,0x2000000\nboottime=0x00020000@0x400020000\nklog.addr=0x400040000 klog.size=0x20000\nmem=2G\nmemrsv=0x00001000@0x400000000\nmemrsv=0x00060000@0x400020000\nmemrsv=0x00200000@0x403e00000:uc\nmemrsv=0x02000000@0x404000000\nmemrsv=0x00200000@0x410000000\nmemrsv=0x01e00000@0x410200000:uc\nmemrsv=0x04000000@0x47c000000:uc\n*\n",
+      "current_body_identity_verified": false
+    }
+  ],
+  "reader_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/read_filesystems.py",
+  "reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "Sony_or_guest_code_executed": false,
+  "mount_or_device_or_administrator_operations": 0
+}

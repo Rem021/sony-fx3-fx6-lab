@@ -1,0 +1,30 @@
+{
+  "formal_cases": 0,
+  "reason": "Initial static label assertion used four assumed diagnostic pointers; preserve exact observed strings before correcting against original MOVW/MOVT call sites.",
+  "observations": [
+    {
+      "va": "0xd8cda4",
+      "bytes": 40,
+      "text": "AllocNew: ERR_OSAL_MSGQ! 0x%x, 0x%x, %d",
+      "sha256": "8e854c16c83b2e5aafc7bff5336e2e7a9b1f0c229503a848baa88717088af6f1"
+    },
+    {
+      "va": "0xd8cdd8",
+      "bytes": 42,
+      "text": "AllocNew: ERR_OSAL_HANDLE! 0x%x, 0x%x, %d",
+      "sha256": "1d09bae35aa75826a9f16d4a96f76111f305ff6c898f676a7f08b169de0e4412"
+    },
+    {
+      "va": "0xd8ce0e",
+      "bytes": 48,
+      "text": "AllocNew: ERR_DMM_RET_CODE!: %d, 0x%x, 0x%x, %d",
+      "sha256": "575ad31f947a763cfe787272c02a9d9b10756005e4abca0cc7df2e0b55f47701"
+    },
+    {
+      "va": "0xd8ce4a",
+      "bytes": 74,
+      "text": "AllocNew: ERR_DMM_DIFFERENT_COMP! msg_id %08x, my_id %08x, 0x%x, 0x%x, %d",
+      "sha256": "028200934e3b5c16e7a9ec28298448002c40e642334f34e6671759c1896640fd"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "schema": "fx3-stage49-vcd-consumer-validation/1",
+  "created_utc": "2026-10-26T03:17:22.153959+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/README.md",
+      "bytes": 7015,
+      "sha256": "5b92c05da8d5e432300d502539437b07cf0fbf5ea85423f934b7616e62d523a8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/baseband-run-20261025/baseband-results.json",
+      "bytes": 60428,
+      "sha256": "80a3f1975ae771e46b9ebc1853aa8979a81a290cb55e0ba9442abc56370a7656"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/baseband-run-20261025/executed-source.py",
+      "bytes": 5121,
+      "sha256": "837307965fc1720fa9e112310bbb17859335641257aefa37a167fca8f60b36e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/baseband-run-20261025/source-receipt.json",
+      "bytes": 513,
+      "sha256": "91cbe03eaad68fe9904916be1a8e605c1ac7add15860af9db372c3f370b79ae3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/baseband_probe.py",
+      "bytes": 5121,
+      "sha256": "837307965fc1720fa9e112310bbb17859335641257aefa37a167fca8f60b36e5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/coordinator-observations.json",
+      "bytes": 2541,
+      "sha256": "fc96c342761a75128ceeaa6e37bacdabfe7ac18d2e899b22357c6d921c40c09c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/goal-status-after.json",
+      "bytes": 107755,
+      "sha256": "771590f0e30ea92519dacb3c35f6983cb6adaa5c03b107b398efde4fe3e71c74"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/goal-status-before.json",
+      "bytes": 103187,
+      "sha256": "2fb28ce6e27a462646ce540d908ffbbc19da69f41326ebba1b004c63afa5d2d7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/next-consumer-anchors.json",
+      "bytes": 19634,
+      "sha256": "f7adc79949539bbb38c442f6dfb7c6790d9fca1759523f92e3ff2b5cb0070b0a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/run-20261025/attempt-failure.json",
+      "bytes": 1862,
+      "sha256": "e1c9c38e775228b3587e3d747da56dab3d28cdabb9930615a4a90d4ca84290fb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/run-20261025/attempt-source.py",
+      "bytes": 14521,
+      "sha256": "4d2eb55e39b8f243735ae4772656ce0c95cf00d7e917cef415429e8b4bfbba7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/run-corrected-20261025/executed-source.py",
+      "bytes": 14753,
+      "sha256": "fd1c4f156905eaf7757250fd99be8878997fe071d8be3087946b26716aad6744"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/run-corrected-20261025/source-receipt.json",
+      "bytes": 587,
+      "sha256": "0474cb3128758aae4aff67f3a37bd06d11eb3b06b09385252931327779709fb2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/run-corrected-20261025/vcd-consumer-results.json",
+      "bytes": 582616,
+      "sha256": "846fb70665fd21bfa30691d0f326e402ec5cfb0db418117ef3482d757c587899"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/summary.json",
+      "bytes": 1592,
+      "sha256": "1b614804a5b1b52fc383094dc042a1c145e3c8f60ee6323a13be46cf63838131"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/vcd_consumer.py",
+      "bytes": 14753,
+      "sha256": "fd1c4f156905eaf7757250fd99be8878997fe071d8be3087946b26716aad6744"
+    }
+  ],
+  "previous_manifest_sha256": "3a76d3582755478d21485cdf4e32bd4da6a6d0858c168e9aaf412b224a32f980",
+  "scope": "71original MIPS pure config/baseband function and command-router runs. Native config returns0 but does not read ratewords; unchanged minimal COMMON fails3006. No fullstart-input producer, VCD boot, shared memory/cache, notification/response, actual encoding or recovery proof.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage49-vcd-consumer-validation/goal-status-after.json",
+    "before_sha256": "2fb28ce6e27a462646ce540d908ffbbc19da69f41326ebba1b004c63afa5d2d7",
+    "after_sha256": "771590f0e30ea92519dacb3c35f6983cb6adaa5c03b107b398efde4fe3e71c74",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-25 FX3 原VCD消费端校验](<work/sony-firmware-20261024/stage49-vcd-consumer-validation/README.md>)：71次原MIPS函数/路由验证，配置谓词不读码率字或52字节；配套基带块返回3006，需补原start-input生产者，真实硬件与恢复仍待验收。",
+  "readme_index_before_sha256": "d01bd97967394b66c6b6f54ef2f02eb61f4805b55c41148c4f4797fe6662d3c4",
+  "readme_index_after_sha256": "bae4ff47e98c703a1a069913f3d495c01439f70a2dd2c60be3563480db01d14c",
+  "operations": {
+    "original_VCD_code_and_test_inputs_unchanged_during_native_execution": true,
+    "normal_Unicorn_MIPS_kseg_mapping": true,
+    "native_output_PC_return_or_service_adapter": false,
+    "first_observer_assertion_and_source_preserved": true,
+    "new_loadable_camera_module": false,
+    "UU_Windows_camera_interfaces_auth_modes_drivers_media_module_WBI_flash": false,
+    "real_hardware_recording_or_same_body_backup_restore_independent_recovery": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

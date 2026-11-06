@@ -1,0 +1,24 @@
+{
+  "compile_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage273-bounded-service-device-access/test_device_access.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage273-bounded-service-device-access/artifacts/device-policy-test"
+  ],
+  "compile_return": 0,
+  "run_UID": 501,
+  "run_return": 0,
+  "stdout": "{\"status\":\"BOUNDED_DEVICE_CONTROL_POLICY_PASS\",\"IOKit_calls\":0}\n",
+  "stderr": "",
+  "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage273-bounded-service-device-access/artifacts/device-policy-test:\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n",
+  "new_root_or_USB_operations": 0
+}

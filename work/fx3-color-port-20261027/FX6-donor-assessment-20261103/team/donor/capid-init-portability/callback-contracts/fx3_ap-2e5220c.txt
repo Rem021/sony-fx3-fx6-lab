@@ -1,0 +1,42 @@
+ 2e5220c: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 2e52210: 52808743     	mov	w3, #0x43a              // =1082
+ 2e52214: 910003fd     	mov	x29, sp
+ 2e52218: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e5221c: 900058b4     	adrp	x20, 0x3966000
+ 2e52220: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 2e52224: f00059f5     	adrp	x21, 0x3991000
+ 2e52228: aa0003f6     	mov	x22, x0
+ 2e5222c: 912b82b5     	add	x21, x21, #0xae0
+ 2e52230: 91351e94     	add	x20, x20, #0xd47
+ 2e52234: f0004a20     	adrp	x0, 0x3799000
+ 2e52238: aa1403e1     	mov	x1, x20
+ 2e5223c: aa1503e2     	mov	x2, x21
+ 2e52240: 91203c00     	add	x0, x0, #0x80f
+ 2e52244: 94047732     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e52248: d2800500     	mov	x0, #0x28               // =40
+ 2e5224c: 97f099d0     	bl	0x2a7898c <Application_System_Init+0x1388dfc>
+ 2e52250: aa0003f3     	mov	x19, x0
+ 2e52254: 528002e0     	mov	w0, #0x17               // =23
+ 2e52258: b9000260     	str	w0, [x19]
+ 2e5225c: b9400ac0     	ldr	w0, [x22, #0x8]
+ 2e52260: b9000660     	str	w0, [x19, #0x4]
+ 2e52264: b94006c0     	ldr	w0, [x22, #0x4]
+ 2e52268: 97fff9fc     	bl	0x2e50a58 <Application_System_Init+0x1760ec8>
+ 2e5226c: b9001a60     	str	w0, [x19, #0x18]
+ 2e52270: 910032c0     	add	x0, x22, #0xc
+ 2e52274: a9400c02     	ldp	x2, x3, [x0]
+ 2e52278: 91002260     	add	x0, x19, #0x8
+ 2e5227c: a9000c02     	stp	x2, x3, [x0]
+ 2e52280: f94012c0     	ldr	x0, [x22, #0x20]
+ 2e52284: f9001260     	str	x0, [x19, #0x20]
+ 2e52288: aa1303e0     	mov	x0, x19
+ 2e5228c: 97f099d1     	bl	0x2a789d0 <Application_System_Init+0x1388e40>
+ 2e52290: aa1503e2     	mov	x2, x21
+ 2e52294: aa1403e1     	mov	x1, x20
+ 2e52298: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2e5229c: d0005600     	adrp	x0, 0x3914000
+ 2e522a0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2e522a4: 9107a800     	add	x0, x0, #0x1ea
+ 2e522a8: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 2e522ac: 52808883     	mov	w3, #0x444              // =1092
+ 2e522b0: 14047717     	b	0x2f6ff0c <Application_System_Init+0x188037c>

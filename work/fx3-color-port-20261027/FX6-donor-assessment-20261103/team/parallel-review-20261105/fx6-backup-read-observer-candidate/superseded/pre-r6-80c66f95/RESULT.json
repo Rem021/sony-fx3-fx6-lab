@@ -1,0 +1,122 @@
+{
+  "schema": "fx6-backup-observer-r5-result-v1",
+  "task": "task_d6eb303d4240",
+  "dispatch": "ctx_2b28a6b92c1d",
+  "status": "HOST_ONLY_R5_CORRECTED_NOT_RUNTIME_READY",
+  "offline_complete": true,
+  "runtime_ready": false,
+  "vm_started": false,
+  "guest_contacted": false,
+  "qmp_or_browser_contact": false,
+  "old_authorization_reused": false,
+  "old_observer_modified": false,
+  "target_cpio_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+  "appfw_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+  "serial_sha256": "377142e9dcee7f4f7728db6e9fcb822a9f3e501e61da7f719761d4d506f5050e",
+  "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "fixed_r5": {
+    "stop_only_real_hostrunner": true,
+    "stop_only_receipt_exit_codes": true,
+    "stop_only_no_inherited_no_guest_write": true,
+    "rsp_absolute_phase_deadline": true,
+    "rsp_partial_T05_honors_50ms": true,
+    "rsp_expired_no_business_io": true,
+    "connect_close_finite_retry": true,
+    "qmp_rsp_constructor_close": true,
+    "no_qcall_typeerror_redispatch": true,
+    "preflight_before_180s": true,
+    "postflight_hash_receipt": true,
+    "runtime_evidence_source": true,
+    "four_stop_actual": true,
+    "continued": 4
+  },
+  "tests": [
+    {
+      "name": "host-tests",
+      "status": "PASS_NO_QEMU_FAKE_RSP",
+      "count": 16,
+      "sha256": "415e40b4cc8d43566d821380c012450038a286af47665aad44d0496939d20b37"
+    },
+    {
+      "name": "rsp-host-tests",
+      "status": "PASS_NO_QEMU_REAL_SOCKET",
+      "count": 7,
+      "sha256": "92537630820cb116e77fa18dd431445906221f554f38facbdef7aa91612e6172"
+    },
+    {
+      "name": "adapter-host-tests",
+      "status": "PASS_NO_QEMU_FAKE_LIFECYCLE",
+      "count": 5,
+      "sha256": "08ac6e718f7829b83eafbf8b362bb0b39f9c8fc7afe8b8c15ec73ffaf7d98ed6"
+    },
+    {
+      "name": "runner-host-tests",
+      "status": "PASS_NO_QEMU_FAKE_RUNNER",
+      "count": 12,
+      "sha256": "d730ad2bc6bfa261f9912d194d92e71808474183ad17c74e88a61119fc254a7c"
+    },
+    {
+      "name": "stateful-transport-tests",
+      "status": "PASS_NO_QEMU_STATEFUL_TRANSPORT",
+      "count": 7,
+      "sha256": "1e060174ddbbf475f705ee7193798e6d5b68ba2583254e5602a20378e793b768"
+    },
+    {
+      "name": "e2e-stateful-tests",
+      "status": "PASS_NO_QEMU_ACTUAL_OBSERVER_E2E",
+      "count": 1,
+      "sha256": "bae5acb395594618ac69d3bde3b294550afc0bee3c44935a0b39d5fabe68e56b"
+    }
+  ],
+  "test_total": 48,
+  "actual_e2e": {
+    "file": "tests/test_e2e_stateful.py",
+    "continued": 4,
+    "fixture": "actual Observer/QMP/RSP/Sysregs over socketpair; fake guest regs/mem only"
+  },
+  "stop_only": {
+    "entry": "observer/run_stop_only.py",
+    "uses": "HostRunner(real_deps(run_root), stop_only=True)",
+    "default_disabled": true,
+    "fields": [
+      "two_keys_observed",
+      "host_cleanup_complete",
+      "guest_restore_status=unknown_not_attempted",
+      "boot_menu_passed=false"
+    ],
+    "exit_rule": "0 iff two_keys_observed && host_cleanup_complete",
+    "guest_control_write": false
+  },
+  "input_seal": {
+    "count": 10,
+    "extra_count": 4,
+    "unchanged": true,
+    "path": "receipts/input-compare.json",
+    "extra_path": "receipts/extra-input-compare.json"
+  },
+  "inherited_cleanup": {
+    "required_for_full_clean": true,
+    "adapter_self_write": false,
+    "api16_contract": "96d4fb2f8df13b4415eaeace3a647bac44256a08cc17dfdc16d7b11b2f3578b0",
+    "target_3a08_compatibility": "old restore_api103_v2 control contract NOT ESTABLISHED; target helper retains fx3_sync100_shutdown/sync100_restore and FX3_SYNC100_SHUTDOWN original16_verified markers; exact interface not matched; do not infer absence of mechanism",
+    "status": "runtime_cleanup_blocked",
+    "guest_restore_status": "unknown_not_attempted"
+  },
+  "default_entries_disabled": true,
+  "approval_tokens": {
+    "full": "APPROVE_GRMREAL46_TWO_KEYS_0214_0218",
+    "stop_only": "APPROVE_GRMREAL46_TWO_KEYS_STOP_ONLY"
+  },
+  "separate_new_run_approval_required": true,
+  "real_launch_invoked": false,
+  "runtime_evidence": false,
+  "limitations": [
+    "stateful socketpair is not real QEMU/menu evidence",
+    "guest TID unknown; GDB CPU thread only",
+    "receiver 0x3e014d unresolved",
+    "target 3a08 inherited restore contract not established",
+    "no VM run"
+  ],
+  "snapshot": "superseded/pre-r5-1e6b85c6/",
+  "report": "REPORT.md"
+}

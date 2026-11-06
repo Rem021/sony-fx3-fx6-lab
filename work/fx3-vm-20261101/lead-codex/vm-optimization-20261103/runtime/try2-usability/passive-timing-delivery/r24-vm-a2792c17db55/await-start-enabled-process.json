@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-r24-a2792c17db55",
+    "wait",
+    "--fn",
+    "!!lastStatus&&lastStatus.browser_ready&&!startButton.disabled"
+  ],
+  "start": {
+    "UTC": "2026-11-05T01:36:08.376634+00:00",
+    "host_ns": 426253898371333
+  },
+  "end": {
+    "UTC": "2026-11-05T01:36:08.794578+00:00",
+    "host_ns": 426254316329625
+  },
+  "returncode": 0,
+  "stdout": "true\n",
+  "stderr": ""
+}

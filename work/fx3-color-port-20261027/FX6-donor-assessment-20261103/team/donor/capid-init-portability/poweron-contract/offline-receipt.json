@@ -1,0 +1,145 @@
+{
+  "status": "PASS_OFFLINE_LOCAL_CONTRACT_ONLY",
+  "instruction_derived_event_constants": [
+    4134,
+    4141
+  ],
+  "constant_zero_result_proven_by_str_wzr": true,
+  "cases": [
+    {
+      "source_hex": "261000000000000000000000",
+      "translated_hex": "2d1000000000000000000000",
+      "donor_reference_hex": "2d1000000000000000000000",
+      "echo_is_symbolic_operand": true,
+      "matched": {
+        "key": 4141,
+        "request_echo": 0,
+        "phase": "notified",
+        "object_3e4": 0,
+        "object_8": 0,
+        "promise_moved": true,
+        "request_result": 0
+      },
+      "mismatch": {
+        "key": 4141,
+        "request_echo": 1,
+        "phase": "notified",
+        "object_3e4": 0,
+        "object_8": 0,
+        "promise_moved": true,
+        "request_result": 189
+      }
+    },
+    {
+      "source_hex": "261000000100000000000000",
+      "translated_hex": "2d1000000100000000000000",
+      "donor_reference_hex": "2d1000000100000000000000",
+      "echo_is_symbolic_operand": true,
+      "matched": {
+        "key": 4141,
+        "request_echo": 1,
+        "phase": "notified",
+        "object_3e4": 1,
+        "object_8": 0,
+        "promise_moved": true,
+        "request_result": 0
+      },
+      "mismatch": {
+        "key": 4141,
+        "request_echo": 0,
+        "phase": "notified",
+        "object_3e4": 1,
+        "object_8": 0,
+        "promise_moved": true,
+        "request_result": 189
+      }
+    },
+    {
+      "source_hex": "26100000ffffffff00000000",
+      "translated_hex": "2d100000ffffffff00000000",
+      "donor_reference_hex": "2d100000ffffffff00000000",
+      "echo_is_symbolic_operand": true,
+      "matched": {
+        "key": 4141,
+        "request_echo": 4294967295,
+        "phase": "notified",
+        "object_3e4": 4294967295,
+        "object_8": 0,
+        "promise_moved": true,
+        "request_result": 0
+      },
+      "mismatch": {
+        "key": 4141,
+        "request_echo": 4294967294,
+        "phase": "notified",
+        "object_3e4": 4294967295,
+        "object_8": 0,
+        "promise_moved": true,
+        "request_result": 189
+      }
+    },
+    {
+      "source_hex": "261000000000008000000000",
+      "translated_hex": "2d1000000000008000000000",
+      "donor_reference_hex": "2d1000000000008000000000",
+      "echo_is_symbolic_operand": true,
+      "matched": {
+        "key": 4141,
+        "request_echo": 2147483648,
+        "phase": "notified",
+        "object_3e4": 2147483648,
+        "object_8": 0,
+        "promise_moved": true,
+        "request_result": 0
+      },
+      "mismatch": {
+        "key": 4141,
+        "request_echo": 2147483649,
+        "phase": "notified",
+        "object_3e4": 2147483648,
+        "object_8": 0,
+        "promise_moved": true,
+        "request_result": 189
+      }
+    }
+  ],
+  "rejections": [
+    {
+      "case": "unaltered_fx3_event",
+      "reason": "no matching pending key; original callback count branch does not notify"
+    },
+    {
+      "case": "wrong_event",
+      "reason": "source event is not proven FX3 PowerOnFinished"
+    },
+    {
+      "case": "nonzero_result",
+      "reason": "nonzero result domain not produced by pinned PowerOnMain; preserve failure by refusing"
+    },
+    {
+      "case": "negative_result_bits",
+      "reason": "nonzero result domain not produced by pinned PowerOnMain; preserve failure by refusing"
+    },
+    {
+      "case": "short",
+      "reason": "requires exact immutable 12-byte PowerOn event"
+    },
+    {
+      "case": "long",
+      "reason": "requires exact immutable 12-byte PowerOn event"
+    },
+    {
+      "case": "mutable",
+      "reason": "requires exact immutable 12-byte PowerOn event"
+    },
+    {
+      "case": "duplicate",
+      "reason": "missing/moved promise; duplicate not accepted"
+    },
+    {
+      "case": "no_pending_key",
+      "reason": "no matching pending key; original callback count branch does not notify"
+    }
+  ],
+  "limits": "Does not execute firmware, queue, allocator, promise ABI, wait, actual binding or native synchronization; symbolic fixtures are not captured runtime packets."
+}

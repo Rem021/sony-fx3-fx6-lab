@@ -1,0 +1,67 @@
+{
+  "scope": "static branch review correlated with actual first assertion; no guest run",
+  "binaries": {
+    "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+    "work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.so": "cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e"
+  },
+  "AP_words": [
+    {
+      "VA": "0x20ef79c",
+      "file_offset": "0x20ef79c",
+      "word": "97a8aa61"
+    },
+    {
+      "VA": "0x20ef7a0",
+      "file_offset": "0x20ef7a0",
+      "word": "340000e0"
+    },
+    {
+      "VA": "0x20ef7b4",
+      "file_offset": "0x20ef7b4",
+      "word": "52808661"
+    },
+    {
+      "VA": "0x20ef7b8",
+      "file_offset": "0x20ef7b8",
+      "word": "9401dff3"
+    },
+    {
+      "VA": "0x20ef7c8",
+      "file_offset": "0x20ef7c8",
+      "word": "97a8a9be"
+    }
+  ],
+  "helper_words": [
+    {
+      "VA": "0x1e754",
+      "file_offset": "0xe754",
+      "word": "12807f80"
+    },
+    {
+      "VA": "0x1e764",
+      "file_offset": "0xe764",
+      "word": "b94bc108"
+    },
+    {
+      "VA": "0x1e768",
+      "file_offset": "0xe768",
+      "word": "34000ea8"
+    }
+  ],
+  "finding": "1075 assertion is nonzero osal_snd_msg return, before osal_rcv_msg_tmo; not evidence of reply timeout",
+  "unknown": "exact return code and helper runtime state not captured",
+  "hypothesis": "FX6 audio request before fixed FX3 CAPID model initialization",
+  "hypothesis_status": "needs full init ordering and actual state proof",
+  "raw_request": "0d202d030a0001800000",
+  "request_satisfies_source_format_predicate": true,
+  "local_source_predicate_accepts_81cf6196": true,
+  "no_CAPID_BIND_or_COMMIT_in_actual_serial": true,
+  "no_helper_or_guest_modifications": true,
+  "source_sha256": {
+    "work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.c": "8d65d6907c38e0f6767f7127e74de29e703e927aa0dc0be08deb9081d36bb7e7",
+    "work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-hdmi-audio-format.c": "5192b2dcfe37da60e61daf658273623693e28797763570e906ac0fe2767591c6"
+  },
+  "serial_sha256": "7fd297d60c72a1211fa44a0103ae69fabec0c72c422be6c34519c2636db3a43f",
+  "CAPID_BIND_count": 0,
+  "CAPID_COMMIT_count": 0
+}

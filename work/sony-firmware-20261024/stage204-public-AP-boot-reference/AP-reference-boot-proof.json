@@ -1,0 +1,233 @@
+{
+  "source_model": "A7 IV2.00 public boot0/SRAM; not FX3 body",
+  "commit": "e85e137fc3b88b7cb26e69faa9f1304184678ff7",
+  "boot0_sha256": "1a7a5c3cc40910f9365f023703f72a175fddb8d163dedb515f8e942d49452846",
+  "AP_ROM_sha256": "f93eaef410a47ec65f3487cd1edf63e1982df77163f3461206118ba5d6ee3fc3",
+  "SRAM_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+  "SRAM_source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+  "EXBL": {
+    "start_sector": 4,
+    "load_address": "0xfe040800",
+    "load_bytes": 188416,
+    "entry": "0xfe049000"
+  },
+  "whole_public_boot0_to_supplied_SRAM_match": true,
+  "derived_key_printed_or_persisted": false,
+  "upstream_parser_executed": false,
+  "mode3_selects_sequence": "0xfe069cc8",
+  "sequence_layout": {
+    "bytes": 32,
+    "callback_offset": 0,
+    "flags_offset": 8,
+    "label_offset": 16
+  },
+  "sequence_entries": [
+    {
+      "index": 0,
+      "address": "0xfe069cc8",
+      "callback": "0xfe04f468",
+      "flags": "0x8000",
+      "label": "Off Hotic      "
+    },
+    {
+      "index": 1,
+      "address": "0xfe069ce8",
+      "callback": "0xfe04d36c",
+      "flags": "0x8000",
+      "label": "DwnCom:SndBkup "
+    },
+    {
+      "index": 2,
+      "address": "0xfe069d08",
+      "callback": "0xfe04f9b8",
+      "flags": "0x8000",
+      "label": "DwnCom:ChgState"
+    },
+    {
+      "index": 3,
+      "address": "0xfe069d28",
+      "callback": "0xfe04f078",
+      "flags": "0x8000",
+      "label": "Ld Config REG  "
+    },
+    {
+      "index": 4,
+      "address": "0xfe069d48",
+      "callback": "0xfe04f190",
+      "flags": "0x8000",
+      "label": "Ld Kernel UPD  "
+    },
+    {
+      "index": 5,
+      "address": "0xfe069d68",
+      "callback": "0xfe04fa18",
+      "flags": "0x8000",
+      "label": "PowerLED Ctrl  "
+    },
+    {
+      "index": 6,
+      "address": "0xfe069d88",
+      "callback": "0xfe04d704",
+      "flags": "0x8000",
+      "label": "Cpy bootdata   "
+    },
+    {
+      "index": 7,
+      "address": "0xfe069da8",
+      "callback": "0xfe05c774",
+      "flags": "0x8000",
+      "label": "Cpy TRNG data  "
+    },
+    {
+      "index": 8,
+      "address": "0xfe069dc8",
+      "callback": "0xfe04f420",
+      "flags": "0x8000",
+      "label": "exit eMMC      "
+    },
+    {
+      "index": 9,
+      "address": "0xfe069de8",
+      "callback": "0xfe04d9ec",
+      "flags": "0x8000",
+      "label": "Debug Info     "
+    },
+    {
+      "index": 10,
+      "address": "0xfe069e08",
+      "callback": "0xfe04ea48",
+      "flags": "0x8000",
+      "label": "LogSave[Update]"
+    },
+    {
+      "index": 11,
+      "address": "0xfe069e28",
+      "callback": "0xfe04e7c4",
+      "flags": "0x8000",
+      "label": "Jmp2 Kernel    "
+    },
+    {
+      "index": 12,
+      "address": "0xfe069e48",
+      "callback": "0x0",
+      "flags": "0x8000",
+      "label": "end[UPD seq]tbl"
+    }
+  ],
+  "selected_callback": {
+    "index": 4,
+    "address": "0xfe069d48",
+    "callback": "0xfe04f190",
+    "flags": "0x8000",
+    "label": "Ld Kernel UPD  "
+  },
+  "selected_partition": 1,
+  "partition_selection_link": "callbackw0=1 -> FE059E94 -> FE058B54 partition-indexed read and FAT BPB checks",
+  "boot_file_paths": [
+    {
+      "address": "0xfe065153",
+      "path": "\\boot\\loadaddr.txt",
+      "call_site": "0xfe04f1e0",
+      "target_function": "0xfe05a1e0"
+    },
+    {
+      "address": "0xfe065116",
+      "path": "\\boot\\vmlinux.bin",
+      "call_site": "0xfe04f2dc",
+      "target_function": "0xfe059e20"
+    },
+    {
+      "address": "0xfe0650eb",
+      "path": "\\boot\\initrd.img",
+      "call_site": "0xfe04f2f4",
+      "target_function": "0xfe059e20"
+    },
+    {
+      "address": "0xfe065143",
+      "path": "\\boot\\kemco.txt",
+      "call_site": "0xfe04f310",
+      "target_function": "0xfe059e20"
+    },
+    {
+      "address": "0xfe06508b",
+      "path": "\\boot\\cxd90057.dtb",
+      "call_site": "0xfe04f328",
+      "target_function": "0xfe059e20"
+    }
+  ],
+  "selected_original_ranges": [
+    {
+      "start": "0xfe05d6a0",
+      "end_exclusive": "0xfe05d71c",
+      "bytes": 124,
+      "sha256": "e71356d126b4e718aea8d7fb4b896ba7d9ca11ebc01740091982022c4ee30608",
+      "output": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/pins/mode3-sequence-select.txt"
+    },
+    {
+      "start": "0xfe0606dc",
+      "end_exclusive": "0xfe060770",
+      "bytes": 148,
+      "sha256": "58fdd44be9d6ffaf2b6efc9592c6ce080bcb96f6e5a08f2c36d5b2ef818d63aa",
+      "output": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/pins/sequence-callback-consumer.txt"
+    },
+    {
+      "start": "0xfe06081c",
+      "end_exclusive": "0xfe060840",
+      "bytes": 36,
+      "sha256": "9f1e1129370923cdcfea9b57ccb258e094abe2605e935372cbdec5489ae21528",
+      "output": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/pins/sequence-label-consumer.txt"
+    },
+    {
+      "start": "0xfe04f190",
+      "end_exclusive": "0xfe04f230",
+      "bytes": 160,
+      "sha256": "226e4c86ce01f8a6b28db5fd4d03612e529bf19633ffa6ce9959361e2fb9390d",
+      "output": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/pins/updater-partition1-and-config.txt"
+    },
+    {
+      "start": "0xfe04f2c8",
+      "end_exclusive": "0xfe04f334",
+      "bytes": 108,
+      "sha256": "0a04a2db6b3fa30b676ad039553db90e16acd5671539c638df5b675cb0df1e3b",
+      "output": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/pins/updater-boot-files.txt"
+    },
+    {
+      "start": "0xfe059e94",
+      "end_exclusive": "0xfe059f64",
+      "bytes": 208,
+      "sha256": "b13f320de7c23a2a765da80b5526241c0136e07241fc36a1c505e1d136a3ac46",
+      "output": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/pins/partition-FAT-selector.txt"
+    },
+    {
+      "start": "0xfe058b54",
+      "end_exclusive": "0xfe058bc8",
+      "bytes": 116,
+      "sha256": "3569947838f11e9cd3d46579c6ac5a0a6b9a3f4e11c7b586a669b543099705ca",
+      "output": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/pins/partition-read-source.txt"
+    },
+    {
+      "start": "0xfe049000",
+      "end_exclusive": "0xfe049080",
+      "bytes": 128,
+      "sha256": "187ce23991b4d083240f6fecf91f6bb222f031ddb129bf91bfc68071d16608d4",
+      "output": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/pins/generic-entry128.txt"
+    }
+  ],
+  "FX3_NOR_comparison": {
+    "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+    "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+    "entry128_equal": true,
+    "complete_binary_equal": false,
+    "same_program_or_AP_boot0_identity_proven": false
+  },
+  "limits": [
+    "mode3 value, table and callback are reference A7IV evidence only; FX3 currently installed AP boot0 still absent",
+    "selected consumer has runtime flags, earlier steps and failure paths; no boot or independent recovery has run",
+    "AP UART/SPI/USB boot alternatives cannot be excluded by missing printable USB strings",
+    "reference boot0/ROM/addresses are not a payload to upload to FX3"
+  ],
+  "actual_camera_operations": 0,
+  "original_or_guest_execution": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

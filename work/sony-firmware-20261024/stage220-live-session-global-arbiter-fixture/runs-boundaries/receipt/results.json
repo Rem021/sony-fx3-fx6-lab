@@ -1,0 +1,110 @@
+{
+  "errors": 0,
+  "failures": 0,
+  "hardware_or_recovery_verified": false,
+  "new_camera_operations": 0,
+  "owners": [
+    {
+      "all_children_terminal": true,
+      "children": 2,
+      "history": [
+        {
+          "done": {
+            "binding": {
+              "module_sha256": "be0805584b07e116d26da2ee8036a67cbd9c65801efdaedab47e995f33e3030d",
+              "nonce": "0d5093f5f878778ca2ecc7836d6a8251f822e2114545ca3ea667cf681cdbae39",
+              "request_sha256": "511e76eff286ff006326af92acc96eaaca054864ac493c6c6e36c747068fab53",
+              "session": "5723e12d093c987ba6323575eecf8dde555942d279ddd3c5276d72c509fc59ea"
+            },
+            "errors": [],
+            "fds_closed": true,
+            "kind": "DONE",
+            "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage220-live-session-global-arbiter-fixture/runs-boundaries/first/kernel/fx3-boot-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-b0-w0-v1",
+            "pid": 23640,
+            "result": 0,
+            "source_reads": 2
+          },
+          "exit": 0,
+          "frames": [
+            "READY",
+            "DONE"
+          ],
+          "pid": 23640,
+          "reasons": [],
+          "state": "IDLE"
+        },
+        {
+          "done": {
+            "binding": {
+              "module_sha256": "be0805584b07e116d26da2ee8036a67cbd9c65801efdaedab47e995f33e3030d",
+              "nonce": "da9d009c1e8d5fb451536c6a914501ee0f25a9d51fb67b0fa1322d5a9caed63a",
+              "request_sha256": "511e76eff286ff006326af92acc96eaaca054864ac493c6c6e36c747068fab53",
+              "session": "5723e12d093c987ba6323575eecf8dde555942d279ddd3c5276d72c509fc59ea"
+            },
+            "errors": [],
+            "fds_closed": true,
+            "kind": "DONE",
+            "output": "None",
+            "pid": 23647,
+            "result": 51,
+            "source_reads": 0
+          },
+          "exit": 0,
+          "frames": [
+            "READY",
+            "DONE"
+          ],
+          "pid": 23647,
+          "reasons": [
+            "Denied: no clean private completion and normal exit"
+          ],
+          "state": "HELD_UNKNOWN"
+        }
+      ],
+      "state": "HELD_UNKNOWN"
+    },
+    {
+      "all_children_terminal": true,
+      "children": 1,
+      "history": [
+        {
+          "done": {
+            "binding": {
+              "module_sha256": "be0805584b07e116d26da2ee8036a67cbd9c65801efdaedab47e995f33e3030d",
+              "nonce": "80860e0413706986d4c104bb025a38b399e8f410b4b2a05fec9a92d01831a13a",
+              "request_sha256": "511e76eff286ff006326af92acc96eaaca054864ac493c6c6e36c747068fab53",
+              "session": "adb6b9dd5d64ae2abc0a31b2ec4d20bf79fb116abdc62ab437217dc784e93d23"
+            },
+            "errors": [],
+            "fds_closed": true,
+            "kind": "DONE",
+            "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage220-live-session-global-arbiter-fixture/runs-boundaries/chunk-first/kernel/fx3-boot-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-b0-w0-v1",
+            "pid": 23655,
+            "result": 0,
+            "source_reads": 2
+          },
+          "exit": 0,
+          "frames": [
+            "READY",
+            "DONE"
+          ],
+          "pid": 23655,
+          "reasons": [
+            "ValueError: boot chunk CRC differs"
+          ],
+          "state": "HELD_UNKNOWN"
+        }
+      ],
+      "state": "HELD_UNKNOWN"
+    }
+  ],
+  "schema": "fx3-live-arbiter-result-boundary-tests-v1",
+  "source_hashes": {
+    "live_arbiter.py": "959470e27ded022c564a457d4b9ea528a3cb55b007c9e3c4adbbc698d1aa2c50",
+    "model_worker.py": "4fb7a6892cdf51a0b7f41add8e9288ad342e727332242b85421676269937f982",
+    "test_result_boundaries.py": "e50fb071e1cb244ee3c83a351a815fffff5d53b34152195c9edd24806f33fe6a"
+  },
+  "status": "PASS",
+  "target_ARM64_entry_global_fence_integrated": false,
+  "tests_run": 2
+}

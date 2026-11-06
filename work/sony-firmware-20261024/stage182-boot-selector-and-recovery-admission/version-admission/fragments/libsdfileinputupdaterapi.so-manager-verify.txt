@@ -1,0 +1,80 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0x81e0, 0x8314) raw slice SHA256 6427e85ac0017c1df1bab518f6ef48097596300fb82acc604ea7b90d9c673833
+    81e0: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+    81e4: 910003fd     	mov	x29, sp
+    81e8: f9000bf3     	str	x19, [sp, #0x10]
+    81ec: aa0003f3     	mov	x19, x0
+    81f0: f9402000     	ldr	x0, [x0, #0x40]
+    81f4: 9100c3a2     	add	x2, x29, #0x30
+    81f8: 3900c3bf     	strb	wzr, [x29, #0x30]
+    81fc: 390123bf     	strb	wzr, [x29, #0x48]
+    8200: 2906ffbf     	stp	wzr, wzr, [x29, #0x34]
+    8204: f9400001     	ldr	x1, [x0]
+    8208: 2907ffbf     	stp	wzr, wzr, [x29, #0x3c]
+    820c: b90047bf     	str	wzr, [x29, #0x44]
+    8210: 2909ffbf     	stp	wzr, wzr, [x29, #0x4c]
+    8214: f9401023     	ldr	x3, [x1, #0x20]
+    8218: 91017261     	add	x1, x19, #0x5c
+    821c: 290affbf     	stp	wzr, wzr, [x29, #0x54]
+    8220: b9005fbf     	str	wzr, [x29, #0x5c]
+    8224: d63f0060     	blr	x3
+    8228: 72001c1f     	tst	w0, #0xff
+    822c: 52800001     	mov	w1, #0x0                // =0
+    8230: 54000401     	b.ne	0x82b0 <Updater::SDFileInputUpdaterManager::VerifyUUDCondition()+0xd0>
+    8234: d0000002     	adrp	x2, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    8238: d0000000     	adrp	x0, 0xa000 <Updater::SDUUDConditionChecker::isVersionOK(UpdaterAPI::firmware_information_t&)+0x2c>
+    823c: 528004c1     	mov	w1, #0x26               // =38
+    8240: 913d6c42     	add	x2, x2, #0xf5b
+    8244: 913c6c00     	add	x0, x0, #0xf1b
+    8248: 52801623     	mov	w3, #0xb1               // =177
+    824c: 72a00061     	movk	w1, #0x3, lsl #16
+    8250: 97fffdb0     	bl	0x7910 <printf@plt>
+    8254: d2800200     	mov	x0, #0x10               // =16
+    8258: 97fffbd2     	bl	0x71a0 <__cxa_allocate_exception@plt>
+    825c: b00000a1     	adrp	x1, 0x1d000
+    8260: b00000a2     	adrp	x2, 0x1d000
+    8264: f947a821     	ldr	x1, [x1, #0xf50]
+    8268: f947b842     	ldr	x2, [x2, #0xf70]
+    826c: 91004021     	add	x1, x1, #0x10
+    8270: f9000001     	str	x1, [x0]
+    8274: 528004c1     	mov	w1, #0x26               // =38
+    8278: 72a00061     	movk	w1, #0x3, lsl #16
+    827c: b9000801     	str	w1, [x0, #0x8]
+    8280: b00000a1     	adrp	x1, 0x1d000
+    8284: 3900301f     	strb	wzr, [x0, #0xc]
+    8288: f947e421     	ldr	x1, [x1, #0xfc8]
+    828c: 97fffd49     	bl	0x77b0 <__cxa_throw@plt>
+    8290: f100043f     	cmp	x1, #0x1
+    8294: 54000161     	b.ne	0x82c0 <Updater::SDFileInputUpdaterManager::VerifyUUDCondition()+0xe0>
+    8298: 97fffb9a     	bl	0x7100 <__cxa_begin_catch@plt>
+    829c: aa0003e1     	mov	x1, x0
+    82a0: aa1303e0     	mov	x0, x19
+    82a4: 97fffbff     	bl	0x72a0 <Updater::SDFileInputUpdaterManager::blinkLED(Updater::ApiException const&)@plt>
+    82a8: 97fffd2a     	bl	0x7750 <__cxa_end_catch@plt>
+    82ac: 52800081     	mov	w1, #0x4                // =4
+    82b0: f9400bf3     	ldr	x19, [sp, #0x10]
+    82b4: 2a0103e0     	mov	w0, w1
+    82b8: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+    82bc: d65f03c0     	ret
+    82c0: 97fffb90     	bl	0x7100 <__cxa_begin_catch@plt>
+    82c4: b00000a0     	adrp	x0, 0x1d000
+    82c8: 910083a1     	add	x1, x29, #0x20
+    82cc: f947a800     	ldr	x0, [x0, #0xf50]
+    82d0: 91004000     	add	x0, x0, #0x10
+    82d4: f90013a0     	str	x0, [x29, #0x20]
+    82d8: 528004a0     	mov	w0, #0x25               // =37
+    82dc: 72a00060     	movk	w0, #0x3, lsl #16
+    82e0: b9002ba0     	str	w0, [x29, #0x28]
+    82e4: aa1303e0     	mov	x0, x19
+    82e8: 3900b3bf     	strb	wzr, [x29, #0x2c]
+    82ec: 97fffbed     	bl	0x72a0 <Updater::SDFileInputUpdaterManager::blinkLED(Updater::ApiException const&)@plt>
+    82f0: 97fffd18     	bl	0x7750 <__cxa_end_catch@plt>
+    82f4: 17ffffee     	b	0x82ac <Updater::SDFileInputUpdaterManager::VerifyUUDCondition()+0xcc>
+    82f8: aa0003f3     	mov	x19, x0
+    82fc: 97fffd15     	bl	0x7750 <__cxa_end_catch@plt>
+    8300: aa1303e0     	mov	x0, x19
+    8304: 97fffd4b     	bl	0x7830 <_Unwind_Resume@plt>
+    8308: aa0003f3     	mov	x19, x0
+    830c: 97fffd11     	bl	0x7750 <__cxa_end_catch@plt>
+    8310: 17fffffc     	b	0x8300 <Updater::SDFileInputUpdaterManager::VerifyUUDCondition()+0x120>

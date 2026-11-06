@@ -1,0 +1,98 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap86apooltrace-bc28575f",
+  "classification": "OSD_INCOMPLETE_OR_NEW_BLOCK",
+  "actual_seconds": 286.3419766660081,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "host_pid_absent": true,
+  "inputs_unchanged": true,
+  "missing_markers": [
+    "FX3_OSD_PAIR_DEADLINE",
+    "FX3_OSD_PAIR_DEADLINE_EVIDENCE_END"
+  ],
+  "im_alive_last_snapshot": true,
+  "im_alive_end_compact_maps": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "released_verified": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "released_verified": true
+    }
+  ],
+  "speed_observations": {
+    "peak_all": 192,
+    "last_a18": 0,
+    "backlog_skip": 1017,
+    "time_pass": 1317,
+    "time_skip": 974,
+    "dequeue_total": 3012,
+    "timer_dequeue": 2980,
+    "mirror_skip": 0,
+    "actual_UI_updates": 1317,
+    "timer_production_probe_hits": 2980
+  },
+  "barrier_passed": true,
+  "OSD_event_counts": {
+    "FX3_PEAKING_COMMIT": 1,
+    "FX3_PEAKING_CONSUMED": 1,
+    "FX3_OSD_HEADLESS_BOUND": 1,
+    "FX3_OSD_HEADLESS_PUBLISH": 143,
+    "FX3_OSD_HEADLESS_VALIDATE": 1,
+    "605D": 1,
+    "FX3_OSD_HEADLESS_LEASE": 1,
+    "FX3_OSD_HEADLESS_NATIVE_FREE": 72,
+    "604A": 1,
+    "FX3_OSD_DRAW_WAIT_RETURN": 72,
+    "FX3_OSD_HEADLESS_ACK": 71,
+    "613F": 1,
+    "FX3_OSD_NATIVE_SIGNAL": 71,
+    "7f9409b000-7f940aa000": 1
+  },
+  "OSD_ring_final": {
+    "magic": "0x31474e495244534f",
+    "schema": 1,
+    "pid": 222,
+    "epoch": 1,
+    "completed_snapshots": 1316,
+    "ACKs_queued": 1316,
+    "native_signal_success_count": 1316,
+    "duplicates": 0,
+    "rejected": 0,
+    "failed": 0,
+    "slot_overwrites": 1308,
+    "slots": 8,
+    "stride": "0x180000",
+    "header": "0x10000",
+    "stage": 0,
+    "pending": "0x0",
+    "scope": "software ledger; native signal receipt additionally verified by original callsite markers"
+  },
+  "OSD_rejects": [],
+  "OSD_native_completion_verified": true,
+  "OSD_consecutive_frames_verified": false,
+  "OSD_consecutive_publications_verified": true,
+  "OSD_distinct_pixel_source_sequences": [
+    1
+  ],
+  "gpe_grouped_statistics": [
+    {
+      "op": "FillRect",
+      "fmt": "0",
+      "flags": "0xff",
+      "result": "0",
+      "approx_blend": "0",
+      "count": 1
+    },
+    {
+      "op": "Flush",
+      "fmt": "0",
+      "flags": "0",
+      "result": "0",
+      "approx_blend": "0",
+      "count": 1
+    }
+  ]
+}

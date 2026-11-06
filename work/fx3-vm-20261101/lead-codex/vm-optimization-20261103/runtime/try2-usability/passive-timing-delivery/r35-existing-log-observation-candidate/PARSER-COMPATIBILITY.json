@@ -1,0 +1,71 @@
+{
+  "r32_prefix_regex_same_original_captures": true,
+  "opportunities_strict_exact_fields_rejects_suffix_records": 1,
+  "runtime_KEEP_FAILURES_MARKERS_same_results_on_actual_selected_fixture": true,
+  "scope": "No runtime/ready consumer changed. Added bytes affect offsets/serial volume and can perturb timing; this is not runtime admission equivalence.",
+  "CLI": [
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/parse_r35.py",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/parser-long-no-LF.bin",
+        "--run-id",
+        "offline-fixture-r35-long-no-LF",
+        "--end-byte",
+        "22000"
+      ],
+      "exit": 0,
+      "valid_records": 0,
+      "unknown": [
+        {
+          "offset": 0,
+          "reason": "overlong_line"
+        },
+        {
+          "offset": 22000,
+          "reason": "partial_line_at_End"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/parse_r35.py",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/parser-long-complete-and-fragment.bin",
+        "--run-id",
+        "offline-fixture-r35-long-complete-and-fragment",
+        "--end-byte",
+        "22355"
+      ],
+      "exit": 0,
+      "valid_records": 0,
+      "unknown": [
+        {
+          "offset": 0,
+          "reason": "overlong_line"
+        },
+        {
+          "offset": 22001,
+          "reason": "partial_line_at_End"
+        }
+      ]
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/parse_r35.py",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/parser-candidate-complete.bin",
+        "--run-id",
+        "offline-fixture-r35-candidate-complete",
+        "--end-byte",
+        "9408"
+      ],
+      "exit": 0,
+      "valid_records": 1,
+      "unknown": []
+    }
+  ]
+}

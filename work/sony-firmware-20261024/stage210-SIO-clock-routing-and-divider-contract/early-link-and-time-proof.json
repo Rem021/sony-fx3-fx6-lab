@@ -1,0 +1,334 @@
+{
+  "status": "FX3_EARLY_SIO_TRANSACTION_AND_SHARED_COUNTER_CONTRACT_BOUND",
+  "current_NOR": {
+    "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+    "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+    "configured_file_base": "0xfe049000",
+    "config": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/pformat_config.txt",
+    "config_sha256": "21cd5b29dd165c322f5b00bb057802c377ff94af15f95881e150a32130302ece",
+    "actual_PC_observed": false,
+    "selected_transaction": "0xfe052348",
+    "rate_input_address": "0xfe0625cc",
+    "channel_input_address": "0xfe0625d0",
+    "GPIO_bit_input_address": "0xfe0625d4",
+    "GPIO_port_input_address": "0xfe0625d8",
+    "frame_bytes": 128,
+    "SIO_FIFO_offset": 256,
+    "rate_register_offsets": [
+      20,
+      24
+    ],
+    "rate_input_initialization_or_current_value_proven": false
+  },
+  "timing": {
+    "current_wrapper": "0xfe05cab8",
+    "current_normalizer": "0xfe05863c",
+    "reference_normalizer": "0xfe05aad0",
+    "full84B_equal": true,
+    "reads": [
+      "CNTPCT_EL0",
+      "CNTFRQ_EL0"
+    ],
+    "input_x0_unused": true,
+    "startup_CNTFRQ_literal": 2000000,
+    "normalization_formula": "CNTPCT / (((CNTFRQ * 0x431bde82d7b634db) >>64) >>18)",
+    "divisor_at_declared_2MHz": 2,
+    "setup_counter_delta_threshold": 101,
+    "hold_counter_delta_threshold": 1001,
+    "baselines_precede_GPIO_edges": true,
+    "thresholds_are_not_actual_pin_pulse_widths": true,
+    "reference_payload_declared_setup_us": 150,
+    "reference_payload_declared_hold_us": 1200,
+    "reference_payload_timer0_claimed_Hz": 4000000,
+    "actual_Timer0_rate_or_PIN_timing_proven": false
+  },
+  "kernel_SIO_descriptors": [
+    {
+      "channel": 0,
+      "record_offset": 6551608,
+      "physical": "0xf1005000",
+      "bytes": 4096,
+      "clock_field_offset": 80,
+      "clock_field_bytes": 72,
+      "clock_field_all_zero": true
+    },
+    {
+      "channel": 1,
+      "record_offset": 6551760,
+      "physical": "0xf1006000",
+      "bytes": 4096,
+      "clock_field_offset": 80,
+      "clock_field_bytes": 72,
+      "clock_field_all_zero": true
+    },
+    {
+      "channel": 2,
+      "record_offset": 6551912,
+      "physical": "0xf1007000",
+      "bytes": 4096,
+      "clock_field_offset": 80,
+      "clock_field_bytes": 72,
+      "clock_field_all_zero": true
+    }
+  ],
+  "kernel_clock_contract_scope": "SIO descriptors provide no nonzero hclk/dclk/dclksel settings; this does not prove physical clock absence or identify its parent",
+  "source_symbol_catalog": "work/sony-firmware-20261024/stage146-original-kernel-symbol-and-vendor-route/work/kernel-symbol-catalog.json",
+  "source_symbol_catalog_sha256": "b37c6b7d4315f65234cd6b64c3be4a3d7c6e0d2cca66204e27cb5c575000a51e",
+  "selected_original_ranges": [
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe052348",
+      "end_exclusive": "0xfe0523c8",
+      "bytes": 128,
+      "sha256": "4b27ebfe0868849594cacc051adfbd6c5549ad11718bfb59fcd644a99ff3501b",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-SIO-transaction-prefix.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe0523c8",
+      "end_exclusive": "0xfe052458",
+      "bytes": 144,
+      "sha256": "c2a15abbc941944618a66a632bd445133aa2dfa4cb08a647fb146440fc06bb4a",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-SIO-rate-and-assert.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe052458",
+      "end_exclusive": "0xfe0524b8",
+      "bytes": 96,
+      "sha256": "8d7bf32757638512f927e9d9d9c5fdc9f3dfa0ee92fee2b5fbf3a6f68d283ba9",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-setup-delta-and-frame.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe0524b8",
+      "end_exclusive": "0xfe052508",
+      "bytes": 80,
+      "sha256": "e6f88de6bdd77f4fe10f2bbf81599f30f8e0a638148fcad766356d5a5dfc18cf",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-busy-RX-and-release-baseline.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe052508",
+      "end_exclusive": "0xfe052574",
+      "bytes": 108,
+      "sha256": "3e86aadd5d3dad9be72458c52ea5397a2e4c6429e7c47f21ce90f37a0fbcc0f5",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-release-hold-delta-and-teardown.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe05cab8",
+      "end_exclusive": "0xfe05cac8",
+      "bytes": 16,
+      "sha256": "3e753ec816d0e47ea3c46ea19339653fb7b9ae40cc002f7e7b1ae9caf8a35120",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-time-wrapper.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe05863c",
+      "end_exclusive": "0xfe058690",
+      "bytes": 84,
+      "sha256": "8dad5314df175cfa71686dfacd692c50a662023dedecab2619bcfce1aba72769",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-counter-normalization.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe049028",
+      "end_exclusive": "0xfe049030",
+      "bytes": 8,
+      "sha256": "e8563342142c2fbb955e963a08b9029c144d29807786ace4b038c8d6973004c3",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-CNTFRQ-declaration.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+      "source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+      "base": "0xfe049000",
+      "start": "0xfe049600",
+      "end_exclusive": "0xfe049608",
+      "bytes": 8,
+      "sha256": "07344f186e79fd11ec3f9cf51ad21a472235d3fd765953a14372dba1cb15880a",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/FX3-CNTFRQ-literal.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe05aad0",
+      "end_exclusive": "0xfe05ab24",
+      "bytes": 84,
+      "sha256": "8dad5314df175cfa71686dfacd692c50a662023dedecab2619bcfce1aba72769",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/A7IV-identical-counter-normalization.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe062418",
+      "end_exclusive": "0xfe062428",
+      "bytes": 16,
+      "sha256": "3d4ababeb250d7aa1719cf24c540b2128c73085fd7da88cad00ed3c62b8e1af4",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/A7IV-time-wrapper.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe049028",
+      "end_exclusive": "0xfe049030",
+      "bytes": 8,
+      "sha256": "e8563342142c2fbb955e963a08b9029c144d29807786ace4b038c8d6973004c3",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/A7IV-CNTFRQ-declaration.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+      "source_sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+      "base": "0xfe040000",
+      "start": "0xfe049600",
+      "end_exclusive": "0xfe049608",
+      "bytes": 8,
+      "sha256": "07344f186e79fd11ec3f9cf51ad21a472235d3fd765953a14372dba1cb15880a",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/A7IV-CNTFRQ-literal.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+      "source_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "base": "0x0",
+      "start": "0x63f838",
+      "end_exclusive": "0x63fa00",
+      "bytes": 456,
+      "sha256": "a95e1c3aa793b0ef1ad3f701785056a7afe8a2ce8012a054e1966d6fa740f86d",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/current-SIO-resource-descriptors.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+      "source_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "base": "0x0",
+      "start": "0x31ad10",
+      "end_exclusive": "0x31ae08",
+      "bytes": 248,
+      "sha256": "2613b8bc3333af004a3d42a25a21039c80d4f369eeed6041cec1a3e09930f57e",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/current-__udif_devio_hclk.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+      "source_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "base": "0x0",
+      "start": "0x31ae08",
+      "end_exclusive": "0x31afc0",
+      "bytes": 440,
+      "sha256": "b7598fdeae75abd7c49062bf27b032de646127389347ddd2261aade12e773e2d",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/current-__udif_devio_devclk.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+      "source_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "base": "0x0",
+      "start": "0x31afc0",
+      "end_exclusive": "0x31b0c8",
+      "bytes": 264,
+      "sha256": "56a40a371d430716f949cfe86b7ef9b81ee595182aaf7fd9ce628adf7b62b773",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/pins/current-udif_change_clk.txt"
+    }
+  ],
+  "source_line_pins": [
+    {
+      "source": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/platform.c",
+      "source_sha256": "5cdcdbeb56a5f1a0c6fff9f954884a779e2651740adcae6c6c22e3ab4b66c482",
+      "start_line": 215,
+      "end_line_inclusive": 235,
+      "sha256": "c03ab779fc16b229e425eb6f8e9783a038227a319735586657646d43529848dc",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/source-pins/GPL-SIO-descriptors.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/reference-source/linux-kernel/drivers/udif/mach-cxd900xx/include/mach/udif/clock.h",
+      "source_sha256": "801ada8e05fcd7a11e06c035fd474db2427831341676e2d91fa5d23ddf494957",
+      "start_line": 31,
+      "end_line_inclusive": 42,
+      "sha256": "a473bf1c408cbd902fe4af5cd1e018204ec06fbcdb99d67d48fc7296511c5eed",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/source-pins/GPL-clock-layout.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/reference-source/linux-kernel/include/linux/udif/device.h",
+      "source_sha256": "867cd5b5936fcd37ce811994979ec8fdc8bcf1dd06349055982be6e87793fb7c",
+      "start_line": 40,
+      "end_line_inclusive": 44,
+      "sha256": "afc7a71272660555f00cb92beeb55d65d2c87041be2d8adc61577e6841fdb3a3",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/source-pins/GPL-channel-layout.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/reference-source/linux-kernel/include/linux/udif/io.h",
+      "source_sha256": "7efe1ba370ca59c31043f45d96945da364945651703648645bdfd294cf325619",
+      "start_line": 38,
+      "end_line_inclusive": 44,
+      "sha256": "326199d5e011221a488b90c7632b82bd40da0872cc9d6fdbc6ec170b33070235",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/source-pins/GPL-IOMEM-layout.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/reference-source/linux-kernel/include/linux/udif/irq.h",
+      "source_sha256": "d846f3eb2714f22b8667162307aafc661aa7040155b2b53b8a58bfdd674b8ebe",
+      "start_line": 37,
+      "end_line_inclusive": 43,
+      "sha256": "8350b9d1426c8e18667475b45dc1217e2c58c9a6b506ccd63018a8f199e36f7e",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/source-pins/GPL-IRQ-layout.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/darwin.c",
+      "source_sha256": "220ce98b18773a66df1aa499e2f9aa6e82dadb6a409d6130f65a5511d8088a1b",
+      "start_line": 62,
+      "end_line_inclusive": 63,
+      "sha256": "2d18d42f657b6df48a181a46ce86d7c09c1aaa5f18f2675e66959f804f97a0a0",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/source-pins/reference-delay-claims.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/include/timer.h",
+      "source_sha256": "a8960cd36c294e5b90cbb97b26ef9c2ab4da2d6962ea16d3f2fbfe107d519be9",
+      "start_line": 23,
+      "end_line_inclusive": 24,
+      "sha256": "9bc432eb4e25b97267a4e92398d88ed7bfa1c95d7de6d0c05effcb534a158756",
+      "output": "work/sony-firmware-20261024/stage210-SIO-clock-routing-and-divider-contract/source-pins/reference-timer0-frequency-claim.txt"
+    }
+  ],
+  "SIO_parent_frequency_or_divider_formula_proven": false,
+  "current_early_rate3_or19_selected": false,
+  "limits": [
+    "Early loader rate field initialization is unresolved; reference source3 is not established as current FX3 rate",
+    "Physical CNTFRQ/Timer0/SIO clock rates and actual GPIO pulse widths were not measured",
+    "Image-byte and configured-address contracts are not proof of actual entry or installed same-body p1/ROM identity",
+    "No current-body backup, restore, persistent flash or MAIN recording acceptance"
+  ],
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

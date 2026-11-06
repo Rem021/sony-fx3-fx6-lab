@@ -1,0 +1,766 @@
+{
+  "method": "read-only original ext2 data, ELF DT_NEEDED; no code execution or native loading",
+  "roots": [
+    "/usr/bin/sen.elf",
+    "/usr/bin/bootin.elf",
+    "/usr/lib/libsencore.so",
+    "/usr/lib/libpro00.so"
+  ],
+  "nodes": {
+    "/usr/bin/sen.elf": {
+      "resolved": "/usr/bin/sen.elf",
+      "size": 27240,
+      "sha256": "9e3236666176b69746848edaac31e1e0ef00c4e80a9f062794ff62be2d605470",
+      "dependencies": [
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libosal_uipc.so",
+          "path": "/usr/lib/libosal_uipc.so"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [
+        "dlsym",
+        "dlopen",
+        "dlclose"
+      ],
+      "runtime_hints": [
+        "dlopen",
+        "/boot/sen/smode",
+        "/setting/sen/smode",
+        "senser_usb_mode_start",
+        "libsencore.so"
+      ]
+    },
+    "/usr/bin/bootin.elf": {
+      "resolved": "/usr/bin/bootin.elf",
+      "size": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "dependencies": [
+        {
+          "name": "libbackup.so",
+          "path": "/usr/lib/libbackup.so"
+        },
+        {
+          "name": "libosal_utm.so",
+          "path": "/usr/lib/libosal_utm.so"
+        },
+        {
+          "name": "libosal_uipc.so",
+          "path": "/usr/lib/libosal_uipc.so"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": [
+        " bootin: Version %s.%s",
+        "  bootin.elf { file=<mode_file> } { dmode=<debug_mode> }",
+        "         killall : kill existing bootin.elf",
+        "bootin_sync_apicb",
+        "Bb bootin",
+        "Bb bootin init failed"
+      ]
+    },
+    "/usr/lib/libsencore.so": {
+      "resolved": "/usr/lib/libsencore.so",
+      "size": 377328,
+      "sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+      "dependencies": [
+        {
+          "name": "libosal_uipc.so",
+          "path": "/usr/lib/libosal_uipc.so"
+        },
+        {
+          "name": "libInfraUsbCmn.so",
+          "path": "/usr/lib/libInfraUsbCmn.so"
+        },
+        {
+          "name": "libtestcmd.so",
+          "path": "/usr/lib/libtestcmd.so"
+        },
+        {
+          "name": "libtestcmd_scn.so",
+          "path": "/usr/lib/libtestcmd_scn.so"
+        },
+        {
+          "name": "libSTMcmdexecute.so",
+          "path": "/lib/libSTMcmdexecute.so"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libssl.so.3",
+          "path": "/usr/lib/libssl.so.3"
+        },
+        {
+          "name": "libcrypto.so.3",
+          "path": "/usr/lib/libcrypto.so.3"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [
+        "dlsym",
+        "dlopen",
+        "dlclose"
+      ],
+      "runtime_hints": [
+        "senser_usb_mode_start",
+        "dlopen",
+        "libsencore.so",
+        "libpro%02X.so",
+        "/boot/sen/smode",
+        "/setting/sen/smode",
+        "senser_usb_mode_start",
+        "libsencore.so"
+      ]
+    },
+    "/usr/lib/libpro00.so": {
+      "resolved": "/usr/lib/libpro00.so",
+      "size": 6032,
+      "sha256": "771749c2397c48e9a3444a7562a8f8e2773abf59a262276c2b225cc415ac9403",
+      "dependencies": [
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": [
+        "libpro00.so"
+      ]
+    },
+    "/lib/libdl.so.2": {
+      "resolved": "/lib/libdl-2.25.so",
+      "size": 10368,
+      "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+      "dependencies": [
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "ld-linux-aarch64.so.1",
+          "path": "/lib/ld-linux-aarch64.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": [
+        "dlopen"
+      ]
+    },
+    "/usr/lib/libstdc++.so.6": {
+      "resolved": "/usr/lib/libstdc++.so.6.0.22",
+      "size": 1549496,
+      "sha256": "28f2d082aea5206c42ba15664f39e2eaf7febed8f6264305e7e16aa44c878389",
+      "dependencies": [
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/lib/libpthread.so.0": {
+      "resolved": "/lib/libpthread-2.25.so",
+      "size": 101888,
+      "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+      "dependencies": [
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "ld-linux-aarch64.so.1",
+          "path": "/lib/ld-linux-aarch64.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [
+        "__libc_dlopen_mode"
+      ],
+      "runtime_hints": [
+        "__libc_dlopen_mode"
+      ]
+    },
+    "/usr/lib/libosal_uipc.so": {
+      "resolved": "/usr/lib/libosal_uipc.so",
+      "size": 43752,
+      "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3",
+      "dependencies": [
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/lib/libm.so.6": {
+      "resolved": "/lib/libm-2.25.so",
+      "size": 658000,
+      "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871",
+      "dependencies": [
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/usr/lib/libgcc_s.so.1": {
+      "resolved": "/usr/lib/libgcc_s.so.1",
+      "size": 71920,
+      "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805",
+      "dependencies": [
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/lib/libc.so.6": {
+      "resolved": "/lib/libc-2.25.so",
+      "size": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+      "dependencies": [
+        {
+          "name": "ld-linux-aarch64.so.1",
+          "path": "/lib/ld-linux-aarch64.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": [
+        "__libc_dlopen_mode"
+      ]
+    },
+    "/lib/librt.so.1": {
+      "resolved": "/lib/librt-2.25.so",
+      "size": 27448,
+      "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2",
+      "dependencies": [
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "ld-linux-aarch64.so.1",
+          "path": "/lib/ld-linux-aarch64.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [
+        "__libc_dlopen_mode"
+      ],
+      "runtime_hints": [
+        "__libc_dlopen_mode"
+      ]
+    },
+    "/usr/lib/libbackup.so": {
+      "resolved": "/usr/lib/libbackup.so",
+      "size": 14232,
+      "sha256": "6a3c5f6067620c00d790cbe520844acdbb721fa5d0e7433b00a227f922ab9d0d",
+      "dependencies": [
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/usr/lib/libosal_utm.so": {
+      "resolved": "/usr/lib/libosal_utm.so",
+      "size": 10216,
+      "sha256": "d9510b4ce1d7e59a0f2e9b5be14624a4cece6f514879e8a6d23ce890a46d25eb",
+      "dependencies": [
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/usr/lib/libInfraUsbCmn.so": {
+      "resolved": "/usr/lib/libInfraUsbCmn.so",
+      "size": 159504,
+      "sha256": "6caefd0677ee01cc6cdd54555f4422b03a86d12304c60f5372de18315bdd4396",
+      "dependencies": [
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libbackup.so",
+          "path": "/usr/lib/libbackup.so"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": [
+        "/setting/sen/smode"
+      ]
+    },
+    "/usr/lib/libtestcmd.so": {
+      "resolved": "/usr/lib/libtestcmd.so",
+      "size": 18504,
+      "sha256": "a6fcb217753d7315abafaf15b8b56dd3106d198e68785c434b3b641862ca1cc6",
+      "dependencies": [
+        {
+          "name": "libosal_uipc.so",
+          "path": "/usr/lib/libosal_uipc.so"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/usr/lib/libtestcmd_scn.so": {
+      "resolved": "/usr/lib/libtestcmd_scn.so",
+      "size": 10192,
+      "sha256": "9f8da044753cdfda41367d87a6020d50e0ecf985cd43eb6ebd0e6521cb9ef861",
+      "dependencies": [
+        {
+          "name": "libosal_uipc.so",
+          "path": "/usr/lib/libosal_uipc.so"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [
+        "dlsym",
+        "dlopen",
+        "dlclose"
+      ],
+      "runtime_hints": [
+        "dlopen"
+      ]
+    },
+    "/lib/libSTMcmdexecute.so": {
+      "resolved": "/lib/libSTMcmdexecute.so",
+      "size": 10120,
+      "sha256": "4bcde80b18a30b08c36d5ca1183b3c2fa5e357bb81530a8a9f39c5ec267d8a71",
+      "dependencies": [
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libstdc++.so.6",
+          "path": "/usr/lib/libstdc++.so.6"
+        },
+        {
+          "name": "libm.so.6",
+          "path": "/lib/libm.so.6"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libgcc_s.so.1",
+          "path": "/usr/lib/libgcc_s.so.1"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        },
+        {
+          "name": "librt.so.1",
+          "path": "/lib/librt.so.1"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/usr/lib/libssl.so.3": {
+      "resolved": "/usr/lib/libssl.so.3",
+      "size": 574464,
+      "sha256": "27bc25f1e766877b72888dba67dc60fe4589c4a7b253c9324fce8c8ad1913f21",
+      "dependencies": [
+        {
+          "name": "libcrypto.so.3",
+          "path": "/usr/lib/libcrypto.so.3"
+        },
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        }
+      ],
+      "dynamic_loading_imports": [],
+      "runtime_hints": []
+    },
+    "/usr/lib/libcrypto.so.3": {
+      "resolved": "/usr/lib/libcrypto.so.3",
+      "size": 3615072,
+      "sha256": "893a37bd6f5a19069362e7c54c023ac9b93eb5d3c976dc45a82502fb4317a8d4",
+      "dependencies": [
+        {
+          "name": "libdl.so.2",
+          "path": "/lib/libdl.so.2"
+        },
+        {
+          "name": "libpthread.so.0",
+          "path": "/lib/libpthread.so.0"
+        },
+        {
+          "name": "libc.so.6",
+          "path": "/lib/libc.so.6"
+        }
+      ],
+      "dynamic_loading_imports": [
+        "dlclose",
+        "dlsym",
+        "dlopen"
+      ],
+      "runtime_hints": [
+        "dlopen"
+      ]
+    },
+    "/lib/ld-linux-aarch64.so.1": {
+      "resolved": "/lib/ld-2.25.so",
+      "size": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+      "dependencies": [],
+      "dynamic_loading_imports": [],
+      "runtime_hints": [
+        "shared object cannot be dlopen()ed",
+        "dlopen",
+        "invalid mode for dlopen()"
+      ]
+    }
+  },
+  "static_closures": {
+    "/usr/bin/sen.elf": [
+      "/lib/ld-linux-aarch64.so.1",
+      "/lib/libc.so.6",
+      "/lib/libdl.so.2",
+      "/lib/libm.so.6",
+      "/lib/libpthread.so.0",
+      "/lib/librt.so.1",
+      "/usr/bin/sen.elf",
+      "/usr/lib/libgcc_s.so.1",
+      "/usr/lib/libosal_uipc.so",
+      "/usr/lib/libstdc++.so.6"
+    ],
+    "/usr/bin/bootin.elf": [
+      "/lib/ld-linux-aarch64.so.1",
+      "/lib/libc.so.6",
+      "/lib/libdl.so.2",
+      "/lib/libm.so.6",
+      "/lib/libpthread.so.0",
+      "/lib/librt.so.1",
+      "/usr/bin/bootin.elf",
+      "/usr/lib/libbackup.so",
+      "/usr/lib/libgcc_s.so.1",
+      "/usr/lib/libosal_uipc.so",
+      "/usr/lib/libosal_utm.so",
+      "/usr/lib/libstdc++.so.6"
+    ],
+    "/usr/lib/libsencore.so": [
+      "/lib/ld-linux-aarch64.so.1",
+      "/lib/libSTMcmdexecute.so",
+      "/lib/libc.so.6",
+      "/lib/libdl.so.2",
+      "/lib/libm.so.6",
+      "/lib/libpthread.so.0",
+      "/lib/librt.so.1",
+      "/usr/lib/libInfraUsbCmn.so",
+      "/usr/lib/libbackup.so",
+      "/usr/lib/libcrypto.so.3",
+      "/usr/lib/libgcc_s.so.1",
+      "/usr/lib/libosal_uipc.so",
+      "/usr/lib/libsencore.so",
+      "/usr/lib/libssl.so.3",
+      "/usr/lib/libstdc++.so.6",
+      "/usr/lib/libtestcmd.so",
+      "/usr/lib/libtestcmd_scn.so"
+    ],
+    "/usr/lib/libpro00.so": [
+      "/lib/ld-linux-aarch64.so.1",
+      "/lib/libc.so.6",
+      "/lib/libdl.so.2",
+      "/lib/libm.so.6",
+      "/lib/libpthread.so.0",
+      "/lib/librt.so.1",
+      "/usr/lib/libgcc_s.so.1",
+      "/usr/lib/libpro00.so",
+      "/usr/lib/libstdc++.so.6"
+    ]
+  },
+  "limitations": [
+    "DT_NEEDED only: dynamic dlopen plugins, runtime registration, IPC and startup triggering are not proven by this graph"
+  ]
+}

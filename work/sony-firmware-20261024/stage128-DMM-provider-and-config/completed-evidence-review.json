@@ -1,0 +1,212 @@
+{
+  "status": "PASS_DMM_STATIC_ROUTE_CONFIG_MISMATCH_AND_NATIVE_LEAF_SCOPE_NOT_RUNTIME_ALLOCATION",
+  "created_utc": "2026-10-27T18:01:05.565438+00:00",
+  "native_phases": 36,
+  "native_length_cases": 21,
+  "native_open_cases": 15,
+  "config_units": 348,
+  "target_unit_matches": 0,
+  "two_failed_harness_attempts_preserved": true,
+  "formal_source_matches_executed_copy": true,
+  "same_agent_review_not_independent_engine": true,
+  "stage117_frontend_and_stage75_backend_unchanged": true,
+  "actual_camera_Windows_or_host_services": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "previous_manifest_members_verified": 12,
+  "native_unit_mutations": [
+    {
+      "case": "ordinary_1",
+      "changed_unit_offsets": [
+        "0xe9",
+        "0xec"
+      ],
+      "status": 0,
+      "count_storage": 1
+    },
+    {
+      "case": "ordinary_8",
+      "changed_unit_offsets": [
+        "0xe9",
+        "0xec"
+      ],
+      "status": 0,
+      "count_storage": 8
+    },
+    {
+      "case": "ordinary_12",
+      "changed_unit_offsets": [
+        "0xe9"
+      ],
+      "status": 0,
+      "count_storage": 12
+    },
+    {
+      "case": "inspect_9",
+      "changed_unit_offsets": [],
+      "status": 0,
+      "count_storage": 9
+    },
+    {
+      "case": "stale_generation",
+      "changed_unit_offsets": [],
+      "status": -517,
+      "count_storage": 65535
+    },
+    {
+      "case": "invalid_index",
+      "changed_unit_offsets": [],
+      "status": -261,
+      "count_storage": 65535
+    },
+    {
+      "case": "saturated_open",
+      "changed_unit_offsets": [],
+      "status": -1,
+      "count_storage": 0
+    },
+    {
+      "case": "exclusive_busy",
+      "changed_unit_offsets": [],
+      "status": -13057,
+      "count_storage": 0
+    },
+    {
+      "case": "exclusive_aux",
+      "changed_unit_offsets": [],
+      "status": -1,
+      "count_storage": 0
+    },
+    {
+      "case": "inspect_state3",
+      "changed_unit_offsets": [],
+      "status": 0,
+      "count_storage": 1
+    },
+    {
+      "case": "ordinary_state3",
+      "changed_unit_offsets": [],
+      "status": -13057,
+      "count_storage": 0
+    },
+    {
+      "case": "closed_state",
+      "changed_unit_offsets": [],
+      "status": -1,
+      "count_storage": 0
+    },
+    {
+      "case": "zero_extent",
+      "changed_unit_offsets": [
+        "0xe9",
+        "0xec"
+      ],
+      "status": 0,
+      "count_storage": 0
+    },
+    {
+      "case": "bad_flags",
+      "changed_unit_offsets": [],
+      "status": -4,
+      "count_storage": 0
+    },
+    {
+      "case": "exclusive_open",
+      "changed_unit_offsets": [
+        "0xe9",
+        "0xec"
+      ],
+      "status": 0,
+      "count_storage": 1
+    }
+  ],
+  "harness_corrections": [
+    {
+      "path": "run-original-leaves-20261027",
+      "error": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage128-DMM-provider-and-config/provider_audit.py\", line 211, in main\n    for n in (0,1,8,9,10,12,13):j['length_cases'].append(length_case(image,kind,n))\n                                                         ~~~~~~~~~~~^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage128-DMM-provider-and-config/provider_audit.py\", line 141, in length_case\n    assert ev['return_u32']==expected\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "source_sha256": "5f363d23cc7ebaa65da4989a9a45ceecf69ae9ea49d995466ab46c1fbd66da5f",
+      "formal_source_diff": [
+        "--- run-original-leaves-20261027",
+        "+++ formal",
+        "@@ -137,8 +137,9 @@",
+        "     m=Guest(image,0xa5)",
+        "     try:",
+        "         m.u.mem_write(COUNT,struct.pack('<H',n));ev=m.run('original DMM reply length selector',0x5e90,[],x0=kind,x1=COUNT)",
+        "-        expected=0x18+n*16 if kind==0x8020 and 1<=n<=12 else 0x28",
+        "-        assert ev['return_u32']==expected",
+        "+        variable_types=(0x8020,0x8021,0x8022,0x8024,0x8026,0x802a)",
+        "+        expected=0x18+n*16 if kind in variable_types and 1<=n<=12 else 0x28",
+        "+        assert ev['return_u32']==expected,(hex(kind),n,ev['return_u32'],expected)",
+        "         return {'reply_type':kind,'declared_count':n,'native_bytes':ev['return_u32'],'events':[ev],",
+        "             'fallback_length_not_count_rejection_or_buffer_validity_proof':True}",
+        "     finally:m.close()",
+        "@@ -153,9 +154,9 @@",
+        "         for i in range(n):",
+        "             ptr=EXT+i*0x80;struct.pack_into('<Q',arr,at+0x10+i*8,ptr)",
+        "             b=bytearray(0x50);base=0x70000000+i*0x01000000;off=i*0x1000;size=0x200000+i*0x1000",
+        "-            struct.pack_into('<QII',b,8,base,off,size);m.u.mem_write(ptr,b)",
+        "+            struct.pack_into('<QII',b,8,base,off,size);m.u.mem_write(ptr,bytes(b))",
+        "             expected_desc+=struct.pack('<QI4x',base+off,size)",
+        "-        m.u.mem_write(UNIT,arr);m.u.mem_write(image.controller_global+0x20,struct.pack('<Q',UNIT))",
+        "+        m.u.mem_write(UNIT,bytes(arr));m.u.mem_write(image.controller_global+0x20,struct.pack('<Q',UNIT))",
+        "         before_unit=bytes(arr);before_dest=bytes(m.u.mem_read(DEST,0x100));before_count=bytes(m.u.mem_read(COUNT,2))",
+        "         handle=(handle_generation<<10)|index",
+        "         ev=m.run('original unit Open '+label,0x91e8,[(UNIT+at+9,UNIT+at+10),(UNIT+at+0xc,UNIT+at+0xe),(DEST,DEST+0x100),(COUNT,COUNT+2)],",
+        "@@ -167,7 +168,9 @@",
+        "             assert count==n",
+        "             # The original writes address/size only; four padding bytes per row",
+        "             # retain their input. Compare only the native semantic fields.",
+        "-            for i in range(n):assert dest[i*16:i*16+12]==expected_desc[i*16:i*16+12]",
+        "+            wanted_dest=bytearray(before_dest)",
+        "+            for i in range(n):wanted_dest[i*16:i*16+12]=expected_desc[i*16:i*16+12]",
+        "+            assert dest==bytes(wanted_dest)",
+        "             if flags in (0,1):wanted[at+9]=opens+1;struct.pack_into('<H',wanted,at+0xc,2)",
+        "             elif flags==4:wanted[at+9]=1;struct.pack_into('<H',wanted,at+0xc,3)",
+        "         else:",
+        "@@ -188,7 +191,9 @@",
+        "     j={'status':'RUNNING','created_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source_sha256':sha(Path(__file__).read_bytes()),",
+        "         'length_cases':[],'open_cases':[],'camera_Windows_host_services_or_module_loading':False,'goal_complete':False,'persistent_write_release':False}",
+        "     try:",
+        "-        cfg=decode_cfg(CFG.read_bytes());put(STAGE/'DmmCfg-decoded.json',cfg)",
+        "+        cfg=decode_cfg(CFG.read_bytes());decoded=STAGE/'DmmCfg-decoded.json'",
+        "+        if decoded.exists():assert json.loads(decoded.read_text())==cfg",
+        "+        else:put(decoded,cfg)",
+        "         assert len(cfg['roots'])==1 and len(cfg['rules'])==164 and len(cfg['units'])==348",
+        "         assert cfg['total_consumed_bytes']==43320 and max(len(u['extent_types']) for u in cfg['units'])==1",
+        "         failures=[]",
+        "@@ -232,6 +237,10 @@",
+        "             (0xa158,0xa250),(0xbce8,0xc0a0),(0x80,0x190))]",
+        "         put(STAGE/'source-and-scope-audit.json',{'created_utc':j['created_utc'],'module_sha256':MOD_SHA,'config_sha256':CFG_SHA,",
+        "             'local_leaf_literal_links_only':image.local_links,'full_module_relocation_or_kernel_initialization_proven':False,",
+        "+            'reply_length_native_jump_table':[",
+        "+                {'reply_type':hex(0x8020+k),'entry_byte':v,",
+        "+                 'target_text_offset':hex(0x5eb4+struct.unpack('b',bytes([v]))[0]*4)}",
+        "+                for k,v in enumerate(image.rodata[0xe0:0xeb])],",
+        "             'module_command20_tables':table,'native_listings':listings,",
+        "             'module_static_queue_ID':'0x61003c','queue_receive_call_relocation':{'offset':'0x8234','symbol':'osal_rcv_msg_tmo'},",
+        "             'queue_sync_registration_call_relocation':{'offset':'0x843c','symbol':'osal_reg_sync_msg_queue_cb'},"
+      ]
+    },
+    {
+      "path": "run-corrected-reply-types-20261027",
+      "error": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage128-DMM-provider-and-config/provider_audit.py\", line 228, in main\n    for label,kw in params:j['open_cases'].append(open_case(image,label,**kw))\n                                                  ~~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage128-DMM-provider-and-config/provider_audit.py\", line 157, in open_case\n    struct.pack_into('<QII',b,8,base,off,size);m.u.mem_write(ptr,b)\n                                               ~~~~~~~~~~~~~^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage4-windows-collab/mac-verification/.venv/lib/python3.14/site-packages/unicorn/unicorn_py3/unicorn.py\", line 995, in mem_write\n    status = uclib.uc_mem_write(self._uch, address, data, size)\nctypes.ArgumentError: argument 3: TypeError: 'bytearray' object cannot be interpreted as ctypes.c_char_p\n",
+      "source_sha256": "8f2426d8be3da89e864aaf4b6317b7083c93e400f6303a151898a43627476653",
+      "formal_source_diff": [
+        "--- run-corrected-reply-types-20261027",
+        "+++ formal",
+        "@@ -154,9 +154,9 @@",
+        "         for i in range(n):",
+        "             ptr=EXT+i*0x80;struct.pack_into('<Q',arr,at+0x10+i*8,ptr)",
+        "             b=bytearray(0x50);base=0x70000000+i*0x01000000;off=i*0x1000;size=0x200000+i*0x1000",
+        "-            struct.pack_into('<QII',b,8,base,off,size);m.u.mem_write(ptr,b)",
+        "+            struct.pack_into('<QII',b,8,base,off,size);m.u.mem_write(ptr,bytes(b))",
+        "             expected_desc+=struct.pack('<QI4x',base+off,size)",
+        "-        m.u.mem_write(UNIT,arr);m.u.mem_write(image.controller_global+0x20,struct.pack('<Q',UNIT))",
+        "+        m.u.mem_write(UNIT,bytes(arr));m.u.mem_write(image.controller_global+0x20,struct.pack('<Q',UNIT))",
+        "         before_unit=bytes(arr);before_dest=bytes(m.u.mem_read(DEST,0x100));before_count=bytes(m.u.mem_read(COUNT,2))",
+        "         handle=(handle_generation<<10)|index",
+        "         ev=m.run('original unit Open '+label,0x91e8,[(UNIT+at+9,UNIT+at+10),(UNIT+at+0xc,UNIT+at+0xe),(DEST,DEST+0x100),(COUNT,COUNT+2)],"
+      ]
+    }
+  ]
+}

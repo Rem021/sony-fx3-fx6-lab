@@ -1,0 +1,26 @@
+{
+  "reviewed_at": "2026-11-05T16:13:12.545146+00:00",
+  "status": "offline_diagnostic_candidate_accepted_sync_prototype_rejected_for_integration",
+  "manifest": {
+    "sha256": "c27df7cbeb7b3ddd8e3666e1e1390714c68d825ecbcc7ad6ff68f150d29e1849",
+    "entries": 35,
+    "mismatches": []
+  },
+  "review_basis": [
+    "actual minimal diff read",
+    "actual baseline/candidate PAGE plus helper replay code reviewed",
+    "original freshness condition retained",
+    "synthetic baseline/prototype comparison inspected"
+  ],
+  "accepted_scope": "obs_v2 standalone final-script artifact; no runtime integration",
+  "caveats": [
+    "evaluated_terms is reconstructed from a snapshot of predicate values, not instrumentation of actual property-read execution",
+    "confirm/pin equivalence based on unchanged source and disabled-state comparisons; no full human visual chain",
+    "fake-clock latency is synthetic, not real browser performance"
+  ],
+  "prototype_decision": "do not integrate; no increased acceptance in provided scenarios, extra delay and changed attempt accounting",
+  "no_new_VM": true,
+  "deployed": false,
+  "menu_pass": false,
+  "next_priority": "new FX6 primary evidence audit; do not launch another FX3 run solely for diagnostics without user scope"
+}

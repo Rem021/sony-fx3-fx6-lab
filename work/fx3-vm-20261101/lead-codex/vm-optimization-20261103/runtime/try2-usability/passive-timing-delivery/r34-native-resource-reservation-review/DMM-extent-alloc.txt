@@ -1,0 +1,39 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review/dmm.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000000b5f0 <dmm_ext_ctrl_AllocExtent>:
+    b5f0: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    b5f4: 910003fd     	mov	x29, sp
+    b5f8: 58000403     	ldr	x3, 0xb678 <dmm_ext_ctrl_AllocExtent+0x88>
+    b5fc: f9000bf3     	str	x19, [sp, #0x10]
+    b600: f9001fbf     	str	xzr, [x29, #0x38]
+    b604: b9002ba1     	str	w1, [x29, #0x28]
+    b608: f942d064     	ldr	x4, [x3, #0x5a0]
+    b60c: f942d461     	ldr	x1, [x3, #0x5a8]
+    b610: f90013a0     	str	x0, [x29, #0x20]
+    b614: 79400083     	ldrh	w3, [x4]
+    b618: 78637821     	ldrh	w1, [x1, x3, lsl #1]
+    b61c: 7100fc3f     	cmp	w1, #0x3f
+    b620: 790053a1     	strh	w1, [x29, #0x28]
+    b624: 540000a9     	b.ls	0xb638 <dmm_ext_ctrl_AllocExtent+0x48>
+    b628: 12800000     	mov	w0, #-0x1               // =-1
+    b62c: f9400bf3     	ldr	x19, [sp, #0x10]
+    b630: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    b634: d65f03c0     	ret
+    b638: b9402ba1     	ldr	w1, [x29, #0x28]
+    b63c: aa0203f3     	mov	x19, x2
+    b640: 9100e3a2     	add	x2, x29, #0x38
+    b644: 97fffd31     	bl	0xab08 <dmm_unit_tbl_GetUnitTbl+0x8a0>
+    b648: 13003c00     	sxth	w0, w0
+    b64c: 35ffff00     	cbnz	w0, 0xb62c <dmm_ext_ctrl_AllocExtent+0x3c>
+    b650: f9401fa1     	ldr	x1, [x29, #0x38]
+    b654: b4fffea1     	cbz	x1, 0xb628 <dmm_ext_ctrl_AllocExtent+0x38>
+    b658: aa0103e0     	mov	x0, x1
+    b65c: f9000261     	str	x1, [x19]
+    b660: 97fffb48     	bl	0xa380 <dmm_unit_tbl_GetUnitTbl+0x118>
+    b664: f9400bf3     	ldr	x19, [sp, #0x10]
+    b668: 13003c00     	sxth	w0, w0
+    b66c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    b670: d65f03c0     	ret

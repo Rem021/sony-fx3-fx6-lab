@@ -1,0 +1,152 @@
+{
+  "created_utc": "2026-11-01T12:08:44.315929+00:00",
+  "status": "SOURCE_RESOLVED_DEFAULTS_NOT_REPLAYED_RUN_ENV",
+  "case_commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "chain": [
+    {
+      "file": "menu_control.py",
+      "lines": "370,419-425",
+      "behavior": "profile_environment -> optional native_display_environment -> real Popen bash run-menu-probe.sh"
+    },
+    {
+      "file": "start-menu.py",
+      "lines": "210-240,250-267,315-340",
+      "behavior": "scrub MENU_/QEMU_/SONY_ from caller then construct natural or controlled menu profile; optional imaging/PNG explicitly adds MENU_EXTRA_MODULES=safe"
+    },
+    {
+      "file": "run-menu-probe.sh",
+      "lines": "42-50",
+      "behavior": "no default/export of MENU_EXTRA_MODULES; fixed CLI flags; exec probe"
+    },
+    {
+      "file": "qemu-menu-probe.py",
+      "lines": "1170-1207",
+      "behavior": "if os.environ.get(MENU_EXTRA_MODULES) only; no default; append echo set early and deferred extra modules after Backup/DMM"
+    }
+  ],
+  "resolved_baseline": {
+    "precondition": "standard natural profile, no imaging or PNG optional branch and no later custom environment modification",
+    "MENU_EXTRA_MODULES": "absent => None => false",
+    "echo_set_in_setup": false,
+    "extra_modules_in_setup": false,
+    "direct_wrapper_exception": "Direct shell wrapper preserves a caller nonempty value; even string 0 is truthy and selects broad extra path unless safe/no-pcie. Do not infer absent from omitted CLI alone."
+  },
+  "standard_flags": [
+    "--initramfs",
+    "--sony-timers",
+    "--load-ipc",
+    "--seed-backup",
+    "--load-dmm",
+    "--load-power",
+    "--load-kikilog",
+    "--no-cp-updater",
+    "--capid-service",
+    "--sa-address-service",
+    "--hdmi-format-service",
+    "--hdmi-photo-service",
+    "--dmm-service",
+    "--software-gpe",
+    "--firmware-identity",
+    "--display-info-service",
+    "--seed-power-on",
+    "--menu-target",
+    "--bootin",
+    "--observe"
+  ],
+  "before_original_bootin_order": [
+    "mounts/cpuset/fonts",
+    "devno -> osal_utm -> osal_uipc, natural dev/uipc",
+    "dma330 with same-camera phy_inst_area",
+    "optional kernel endpoint/sender/vpanel/pcie paths only explicit profiles",
+    "optional echo set and collect extra list if MENU_EXTRA_MODULES truthy",
+    "utimer (--sony-timers)",
+    "seed Backup -> backup Backup_load1 Backup_save optin -> stream -> stream2",
+    "copy seed-setting -> osal_ulogio config -> dmm config -> grm_ma",
+    "optional deferred extra module list AFTER Backup/DMM",
+    "firmware identity virtual RAM files",
+    "seed-power-on -> upm",
+    "udate if not already live -> seed-date-clock and ready marker",
+    "system-sound-owner gate in natural audio config",
+    "kikilog",
+    "model env + ramfb-viewer if selected + observer/readmem selfchecks/media preparation",
+    "test date and sound ready markers -> LD_PRELOAD real bootin target=qemu dmode=3"
+  ],
+  "not_proved_postponable": [
+    "utimer",
+    "stream",
+    "stream2",
+    "Backup",
+    "ulogio",
+    "dmm",
+    "grm_ma",
+    "upm",
+    "udate",
+    "seed-date-clock"
+  ],
+  "natural_vs_diagnostic": {
+    "natural": "MENU_LIVE_APP_INPUT and explicit service/model profile; no MENU_APPLY_MENU default",
+    "controlled_menu": "MENU_APPLY_MENU=1 and original controller/lifecycle entry used for diagnosis; not natural cold boot evidence",
+    "both_entry": "standard wrapper still runs real bootin; diagnostic intervention happens later in original AP lifecycle"
+  },
+  "public_success_reference": {
+    "file": "validation/README.md:205-225",
+    "command": "python3 -u check-natural-gtk-input.py --new-ui --firstboot --simplified-chinese --export-sd",
+    "run": "run-0wfqbd6k",
+    "maintainer_reported": "original simplified-Chinese selection, original 640x480 HUD and stable MENU via actual GTK mouse/key chain",
+    "overall_proof_ok": false,
+    "raw_run_environment_and_console_in_public_tree": false,
+    "limit": "Published success report and current source defaults are separate evidence; no assertion that private historic run had precisely absent MENU_EXTRA_MODULES."
+  },
+  "imdb_filter": {
+    "skip_names": [
+      "libUsbBusPower.so",
+      "libInfraUsbCmn.so",
+      "libsensapi.so",
+      "libUsbControl.so",
+      "libBusPower.so",
+      "libHotplug.so",
+      "libInfraCrypt.so",
+      "libInfraMediaPwrMgr.so",
+      "libNetServiceTethering.so",
+      "libTetheringResource.so"
+    ],
+    "liro_in_skip_names": false,
+    "original_A7C2_sha256": "14f3cd439bf27a6878b97d155c3cd97cc534a57395f922aed56e59a5b8b32f31",
+    "patched_A7C2_sha256": "0ebba8dd2fefad4684419d1111a56c659c7fd04473c04da39e6f2e7d8ac0facf",
+    "loop": "VA1db20..21d80 step48(hex), name entry+16, mask entry+8; only lower3bits cleared; count/set/output SHA strict",
+    "rationale_scope": "qemu service/model platform filtering; exact reason of each entry not established from set declaration alone",
+    "headless_state_requirement": "hosd_claim scans /proc/modules and refuses if liro is loaded; source does not show LIRO in ten-item filter",
+    "unresolved": "Why original A7C2 LIRO did not remain Live in successful private run is not closed by retained published source. Failure/skip/current im target differences must not be guessed.",
+    "cp_execution": "AP software OSD and explicit software CP models do not establish original CP RAM/RTOS execution."
+  },
+  "memory_reference": {
+    "script": "supplemental-source/runtime/analysis/qemu-kernel-probe.sh",
+    "script_sha256": "68e8c4a272bf52b5328c30f97bdd3d7d6c0585e5b091e73c6cc6685436e108df",
+    "initrd_start": "0x440000000",
+    "initrd_end": "start + actual cpio bytes, DTB chosen matches loader",
+    "kernel": "0x400080000",
+    "dtb": "0x400002000",
+    "linux_memory_reg": [
+      "0x400000000",
+      "0x140000000"
+    ],
+    "original_carveouts": "official same-model kemco.txt all memrsv= lines except tmonitor appended to bootargs",
+    "A7C2_extra_fdt_reservations": [
+      [
+        "0x404000000",
+        "0x400000"
+      ],
+      [
+        "0x405000000",
+        "0x800000"
+      ],
+      [
+        "0x410268000",
+        "0x7c000"
+      ]
+    ],
+    "model_reservations": "DMM41e000000/1MiB; optional scanout41e100000/5MiB or combined9MiB; not actual Sony panel addresses",
+    "limit": "Use FX3 original kemco and actual allocation owners; do not copy A7C2 carveouts. QEMU -m24576 is sparse address coverage, not a 24GiB host RAM requirement."
+  },
+  "upstream_scripts_executed": false
+}

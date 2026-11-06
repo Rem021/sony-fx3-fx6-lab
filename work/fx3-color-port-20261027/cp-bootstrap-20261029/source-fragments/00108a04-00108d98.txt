@@ -1,0 +1,229 @@
+00108a04 push       {r0, lr}
+00108a08 subs       r2, r2, #4
+00108a0c blt        #0x108a94
+00108a10 ands       ip, r0, #3
+00108a14 bne        #0x108abc
+00108a18 ands       ip, r1, #3
+00108a1c bne        #0x108aec
+00108a20 subs       r2, r2, #8
+00108a24 blt        #0x108a74
+00108a28 subs       r2, r2, #0x14
+00108a2c blt        #0x108a60
+00108a30 str        r4, [sp, #-4]!
+00108a34 ldm        r1!, {r3, r4, ip, lr}
+00108a38 stm        r0!, {r3, r4, ip, lr}
+00108a3c ldm        r1!, {r3, r4, ip, lr}
+00108a40 stm        r0!, {r3, r4, ip, lr}
+00108a44 subs       r2, r2, #0x20
+00108a48 bge        #0x108a34
+00108a4c cmn        r2, #0x10
+00108a50 ldmge      r1!, {r3, r4, ip, lr}
+00108a54 stmge      r0!, {r3, r4, ip, lr}
+00108a58 subge      r2, r2, #0x10
+00108a5c pop        {r4}
+00108a60 adds       r2, r2, #0x14
+00108a64 ldmge      r1!, {r3, ip, lr}
+00108a68 stmge      r0!, {r3, ip, lr}
+00108a6c subsge     r2, r2, #0xc
+00108a70 bge        #0x108a64
+00108a74 adds       r2, r2, #8
+00108a78 blt        #0x108a94
+00108a7c subs       r2, r2, #4
+00108a80 ldrlt      r3, [r1], #4
+00108a84 strlt      r3, [r0], #4
+00108a88 ldmge      r1!, {r3, ip}
+00108a8c stmge      r0!, {r3, ip}
+00108a90 subge      r2, r2, #4
+00108a94 adds       r2, r2, #4
+00108a98 popeq      {r0, pc}
+00108a9c cmp        r2, #2
+00108aa0 ldrb       r3, [r1], #1
+00108aa4 strb       r3, [r0], #1
+00108aa8 ldrbge     r3, [r1], #1
+00108aac strbge     r3, [r0], #1
+00108ab0 ldrbgt     r3, [r1], #1
+00108ab4 strbgt     r3, [r0], #1
+00108ab8 pop        {r0, pc}
+00108abc rsb        ip, ip, #4
+00108ac0 cmp        ip, #2
+00108ac4 ldrb       r3, [r1], #1
+00108ac8 strb       r3, [r0], #1
+00108acc ldrbge     r3, [r1], #1
+00108ad0 strbge     r3, [r0], #1
+00108ad4 ldrbgt     r3, [r1], #1
+00108ad8 strbgt     r3, [r0], #1
+00108adc subs       r2, r2, ip
+00108ae0 blt        #0x108a94
+00108ae4 ands       ip, r1, #3
+00108ae8 beq        #0x108a20
+00108aec bic        r1, r1, #3
+00108af0 ldr        lr, [r1], #4
+00108af4 cmp        ip, #2
+00108af8 bgt        #0x108bd8
+00108afc beq        #0x108b6c
+00108b00 cmp        r2, #0xc
+00108b04 blt        #0x108b4c
+00108b08 sub        r2, r2, #0xc
+00108b0c push       {r4, r5}
+00108b10 lsr        r3, lr, #8
+00108b14 ldm        r1!, {r4, r5, ip, lr}
+00108b18 orr        r3, r3, r4, lsl #24
+00108b1c lsr        r4, r4, #8
+00108b20 orr        r4, r4, r5, lsl #24
+00108b24 lsr        r5, r5, #8
+00108b28 orr        r5, r5, ip, lsl #24
+00108b2c lsr        ip, ip, #8
+00108b30 orr        ip, ip, lr, lsl #24
+00108b34 stm        r0!, {r3, r4, r5, ip}
+00108b38 subs       r2, r2, #0x10
+00108b3c bge        #0x108b10
+00108b40 pop        {r4, r5}
+00108b44 adds       r2, r2, #0xc
+00108b48 blt        #0x108b64
+00108b4c lsr        ip, lr, #8
+00108b50 ldr        lr, [r1], #4
+00108b54 orr        ip, ip, lr, lsl #24
+00108b58 str        ip, [r0], #4
+00108b5c subs       r2, r2, #4
+00108b60 bge        #0x108b4c
+00108b64 sub        r1, r1, #3
+00108b68 b          #0x108a94
+00108b6c cmp        r2, #0xc
+00108b70 blt        #0x108bb8
+00108b74 sub        r2, r2, #0xc
+00108b78 push       {r4, r5}
+00108b7c lsr        r3, lr, #0x10
+00108b80 ldm        r1!, {r4, r5, ip, lr}
+00108b84 orr        r3, r3, r4, lsl #16
+00108b88 lsr        r4, r4, #0x10
+00108b8c orr        r4, r4, r5, lsl #16
+00108b90 lsr        r5, r5, #0x10
+00108b94 orr        r5, r5, ip, lsl #16
+00108b98 lsr        ip, ip, #0x10
+00108b9c orr        ip, ip, lr, lsl #16
+00108ba0 stm        r0!, {r3, r4, r5, ip}
+00108ba4 subs       r2, r2, #0x10
+00108ba8 bge        #0x108b7c
+00108bac pop        {r4, r5}
+00108bb0 adds       r2, r2, #0xc
+00108bb4 blt        #0x108bd0
+00108bb8 lsr        ip, lr, #0x10
+00108bbc ldr        lr, [r1], #4
+00108bc0 orr        ip, ip, lr, lsl #16
+00108bc4 str        ip, [r0], #4
+00108bc8 subs       r2, r2, #4
+00108bcc bge        #0x108bb8
+00108bd0 sub        r1, r1, #2
+00108bd4 b          #0x108a94
+00108bd8 cmp        r2, #0xc
+00108bdc blt        #0x108c24
+00108be0 sub        r2, r2, #0xc
+00108be4 push       {r4, r5}
+00108be8 lsr        r3, lr, #0x18
+00108bec ldm        r1!, {r4, r5, ip, lr}
+00108bf0 orr        r3, r3, r4, lsl #8
+00108bf4 lsr        r4, r4, #0x18
+00108bf8 orr        r4, r4, r5, lsl #8
+00108bfc lsr        r5, r5, #0x18
+00108c00 orr        r5, r5, ip, lsl #8
+00108c04 lsr        ip, ip, #0x18
+00108c08 orr        ip, ip, lr, lsl #8
+00108c0c stm        r0!, {r3, r4, r5, ip}
+00108c10 subs       r2, r2, #0x10
+00108c14 bge        #0x108be8
+00108c18 pop        {r4, r5}
+00108c1c adds       r2, r2, #0xc
+00108c20 blt        #0x108c3c
+00108c24 lsr        ip, lr, #0x18
+00108c28 ldr        lr, [r1], #4
+00108c2c orr        ip, ip, lr, lsl #8
+00108c30 str        ip, [r0], #4
+00108c34 subs       r2, r2, #4
+00108c38 bge        #0x108c24
+00108c3c sub        r1, r1, #1
+00108c40 b          #0x108a94
+00108c44 mov        r3, r1
+00108c48 mov        r1, r2
+00108c4c mov        r2, r3
+00108c50 b          #0x108c60
+00108c54 mov        r2, r1
+00108c58 mov        r1, #0
+00108c5c b          #0x108c60
+00108c60 and        r3, r1, #0xff
+00108c64 mov        r1, r2
+00108c68 cmp        r1, #4
+00108c6c mov        ip, r0
+00108c70 blt        #0x108d70
+00108c74 ands       r2, ip, #3
+00108c78 bne        #0x108d50
+00108c7c orr        r3, r3, r3, lsl #8
+00108c80 tst        ip, #4
+00108c84 orr        r3, r3, r3, lsl #16
+00108c88 subne      r1, r1, #4
+00108c8c strne      r3, [ip], #4
+00108c90 cmp        r1, #0x10
+00108c94 blt        #0x108d24
+00108c98 mov        r2, r3
+00108c9c cmp        r1, #0x80
+00108ca0 blt        #0x108cf4
+00108ca4 subs       r1, r1, #0x80
+00108ca8 strdge     r2, r3, [ip], #8
+00108cac strdge     r2, r3, [ip], #8
+00108cb0 strdge     r2, r3, [ip], #8
+00108cb4 strdge     r2, r3, [ip], #8
+00108cb8 strdge     r2, r3, [ip], #8
+00108cbc strdge     r2, r3, [ip], #8
+00108cc0 strdge     r2, r3, [ip], #8
+00108cc4 strdge     r2, r3, [ip], #8
+00108cc8 strdge     r2, r3, [ip], #8
+00108ccc strdge     r2, r3, [ip], #8
+00108cd0 strdge     r2, r3, [ip], #8
+00108cd4 strdge     r2, r3, [ip], #8
+00108cd8 strdge     r2, r3, [ip], #8
+00108cdc strdge     r2, r3, [ip], #8
+00108ce0 strdge     r2, r3, [ip], #8
+00108ce4 strdge     r2, r3, [ip], #8
+00108ce8 bgt        #0x108ca4
+00108cec bxeq       lr
+00108cf0 add        r1, r1, #0x80
+00108cf4 subs       r1, r1, #0x20
+00108cf8 strdge     r2, r3, [ip], #8
+00108cfc strdge     r2, r3, [ip], #8
+00108d00 strdge     r2, r3, [ip], #8
+00108d04 strdge     r2, r3, [ip], #8
+00108d08 bgt        #0x108cf4
+00108d0c bxeq       lr
+00108d10 adds       r1, r1, #0x10
+00108d14 strdge     r2, r3, [ip], #8
+00108d18 strdge     r2, r3, [ip], #8
+00108d1c bxeq       lr
+00108d20 addlt      r1, r1, #0x10
+00108d24 subs       r1, r1, #4
+00108d28 strge      r3, [ip], #4
+00108d2c bgt        #0x108d24
+00108d30 bxeq       lr
+00108d34 adds       r1, r1, #4
+00108d38 bxeq       lr
+00108d3c cmp        r1, #2
+00108d40 strb       r3, [ip], #1
+00108d44 strbge     r3, [ip], #1
+00108d48 strbgt     r3, [ip]
+00108d4c bx         lr
+00108d50 rsb        r2, r2, #4
+00108d54 strb       r3, [ip], #1
+00108d58 cmp        r2, #2
+00108d5c strbge     r3, [ip], #1
+00108d60 sub        r1, r1, r2
+00108d64 strbgt     r3, [ip], #1
+00108d68 cmp        r1, #4
+00108d6c bge        #0x108c7c
+00108d70 cmp        r1, #0
+00108d74 bxeq       lr
+00108d78 strb       r3, [ip], #1
+00108d7c cmp        r1, #2
+00108d80 strbge     r3, [ip], #1
+00108d84 strbgt     r3, [ip]
+00108d88 bx         lr
+00108d8c svcvc      #0xfff60c
+00108d90 andeq      r0, r0, r1
+00108d94 andeq      r0, r0, r0

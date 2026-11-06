@@ -1,0 +1,45 @@
+{
+  "schema": "fx6-map-collector-shortread-snapshot-v1",
+  "reason": "preserve the coordinator-verified 47-entry candidate before clock/budget/entry fixes",
+  "old_manifest_self": "209fdf5012633ac3a96adbb65732f652e48912de1931839fc9ec157a58a0ffc5",
+  "old_manifest_entries": 47,
+  "old_seal_sha256": "d6df1e245c6ecb637f8cdb4046a2beeb32267eaba872deb78c45549d43b29a47",
+  "files": [
+    {
+      "path": "SHA256SUMS",
+      "sha256": "209fdf5012633ac3a96adbb65732f652e48912de1931839fc9ec157a58a0ffc5",
+      "bytes": 4393
+    },
+    {
+      "path": "SHA256SUMS.sha256",
+      "sha256": "22527c94ad8e0fe49d0ef039a6a635091b117b884bca32f0ab95219b730279f4",
+      "bytes": 77
+    },
+    {
+      "path": "SEAL.json",
+      "sha256": "d6df1e245c6ecb637f8cdb4046a2beeb32267eaba872deb78c45549d43b29a47",
+      "bytes": 4001
+    },
+    {
+      "path": "REPORT.md",
+      "sha256": "42f5d994c3b65a505c59c09ced088f77581e84d1bf285492cd8566f79eb507e4",
+      "bytes": 10217
+    },
+    {
+      "path": "RESULT.json",
+      "sha256": "f2d53b8e258c72eabf9929223b03c0d719437de2abce52641188906ade45f0d6",
+      "bytes": 9862
+    },
+    {
+      "path": "work/fx3-map-snapshot-v2-aarch64",
+      "sha256": "1286759f2662e0af43f054cce72b700b24588bdd96532a6ff5a910b4af341eb9",
+      "bytes": 15800
+    },
+    {
+      "path": "work/fx6-map-collector-shortread-grmreal46.cpio",
+      "sha256": "79a87f32059cd3fa7bd2b1fa6484559ce5b2b2cacdad1dba6c456e13a64cf92d",
+      "bytes": 453200484
+    }
+  ],
+  "note": "byte-for-byte copies; old accepted candidate/r6/original inputs untouched"
+}

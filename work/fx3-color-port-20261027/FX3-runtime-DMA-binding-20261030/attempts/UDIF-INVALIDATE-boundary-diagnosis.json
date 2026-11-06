@@ -1,0 +1,70 @@
+{
+  "label": "UDIF-INVALIDATE-initial-boundary",
+  "entry": "__udif_cache_ctrl",
+  "args": [
+    "0x10008000",
+    "0x80",
+    "0x2"
+  ],
+  "trace": [
+    {
+      "VA": "0xffffff800839b0c8",
+      "file_offset": "0x31b0c8",
+      "bytes": "fd7bbfa9",
+      "instruction": "stp x29, x30, [sp, #-0x10]!"
+    },
+    {
+      "VA": "0xffffff800839b0cc",
+      "file_offset": "0x31b0cc",
+      "bytes": "fd030091",
+      "instruction": "mov x29, sp"
+    },
+    {
+      "VA": "0xffffff800839b0d0",
+      "file_offset": "0x31b0d0",
+      "bytes": "58ecf397",
+      "instruction": "bl #0xffffff8008096230"
+    },
+    {
+      "VA": "0xffffff8008096230",
+      "file_offset": "0x16230",
+      "bytes": "5f080071",
+      "instruction": "cmp w2, #2"
+    },
+    {
+      "VA": "0xffffff8008096234",
+      "file_offset": "0x16234",
+      "bytes": "20faff54",
+      "instruction": "b.eq #0xffffff8008096178"
+    },
+    {
+      "VA": "0xffffff8008096178",
+      "file_offset": "0x16178",
+      "bytes": "2100008b",
+      "instruction": "add x1, x1, x0"
+    },
+    {
+      "VA": "0xffffff800809617c",
+      "file_offset": "0x1617c",
+      "bytes": "1f2003d5",
+      "instruction": "nop "
+    }
+  ],
+  "instruction_count": 7,
+  "cache_or_system_instructions_executed": 0,
+  "helper_replies_supplied": 0,
+  "hardware_replies_supplied": 0,
+  "stop": {
+    "kind": "unexecuted_outside_call",
+    "VA": "0xffffff8008096180",
+    "symbols": [
+      "__inval_cache_range",
+      "__pi___inval_cache_range"
+    ]
+  },
+  "x0_at_stop": "0x10008000",
+  "w0_at_stop": "0x10008000",
+  "sp_at_stop": "0x1000eff0",
+  "callee_saved_restored": false,
+  "validation_skipped_for_boundary_diagnosis": true
+}

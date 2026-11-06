@@ -1,0 +1,11 @@
+FX3 r30：宿主启动观测候选，离线实现与验证。此文件为协调端草案，尚未派发。
+项目/外盘规则沿用，写入前核对卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。DEL为本文件父目录；仅创建并修改DEL/r30-startup-observation-candidate。读取r29-startup-first-frame-analysis正式交付及其输入，基于已封存r28-first-observation-candidate建立最小候选，保留全部历史原件。不得写部署目录或旧候选。不得Start/VM/浏览器/服务，不碰相机/USB/SD。
+目标：下次真实启动失败能区分软件ring尚未初始化或未发布、host读取无效、原ready谓词未满足；不声称本任务修复底层backlog。实现r29 REPORT的最小宿主观测方案。四核A35/5120MiB/MTTCG/noicount及QEMU/kernel/DTB/N64CPIO保持逐字节不变；不增加guest写入、暂停、QMP调用或改变轮询频率。原180秒首帧、20秒按键和全部准入/cleanup语义不变。无重复Start或自动重试。
+具体：
+1. 复用已有header读取，对每次读取计数，记录有界状态转移：请求id、host monotonic读取前后、长度、可用原16Q、拒绝原因、serial消费offset、startup/cleanup阶段。区分short、bad_magic/version、valid_seq0、valid_positive、QMP异常；保留invalid→valid/seq0→positive/stop前后，不把QMP空成功当bytes有效。异常继续按原路径抛出；观测不改变准入。
+2. 复用既有serial poll，记录固定白名单marker首次完整命中的字节offset与host收到时刻，跨poll断行必须正确；不要把接收时间当guest发生时间。禁止新增重复全日志扫描，保留完整原serial作为证据。
+3. 记录原standby各命名谓词及最后screen观察时刻、serial offset、当前已验证ring身份。尽量复用原已算结果；原if表达式/短路与有效性行为须保持等价。观察不到或尚未求值应明确unknown/not_evaluated，不能把最终marker集合倒推为先前ready。
+4. 有界内存/文件和明确截断计数；记录初始、变化、末次及清理边界。避免每次poll额外fsync/大文件rewrite，说明额外开销，诊断写入异常不得破坏原cleanup。不得记录私有环境/密钥或完整进程环境。
+5. 修正候选prepare/preflight/source freeze和实际import绑定，不能只改未被使用的同名文件。保持r28后键5s采样及原pin/confirm/return-tools语义；列明具体变动文件与绑定链。不得拿旧source freeze冒充新候选。
+验证：仅离线；用现存成功/失败日志和构造header序列验证边界，不能编造未保留的r28早期header原字节。覆盖short/错误magic/version/seq0/validseq/重复/读异常/跨chunkmarker/截断/cleanup-only首帧与所有ready谓词的真假未知。做原候选与新候选的受控对照，核对相同QMP调用序列、已有轮询/等待策略及ready/exit/异常结果；观测调用不得参与准入。补实际导入/prepare预检，避免import main启动副作用。记录新增开销和局限，不把离线结果称真实VM通过。
+交付精简REPORT、SOURCE-FREEZE及实际依赖绑定、离线测试与回执、运行准备模板、SHA256SUMS；记录原输入before/after hashes，原件不得漂移。不要复制历史大日志或数千项无关交付。完成后worker_done；真实运行由后续单独调度，当前未授权。

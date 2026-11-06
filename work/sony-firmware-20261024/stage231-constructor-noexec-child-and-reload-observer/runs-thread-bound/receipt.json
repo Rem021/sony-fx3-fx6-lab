@@ -1,0 +1,3419 @@
+{
+  "schema": "fx3-constructor-noexec-reload-lifecycle-model-v1",
+  "status": "PASS",
+  "tests_run": 11,
+  "failures": 0,
+  "errors": 0,
+  "details": [],
+  "build": {
+    "schema": "fx3-restricted-own-ET_DYN-v1",
+    "sha256": "bbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec96",
+    "bytes": 131864,
+    "segments": [
+      {
+        "flags": 4,
+        "offset": 0,
+        "va": 0,
+        "filesz": 32768,
+        "memsz": 32768
+      },
+      {
+        "flags": 5,
+        "offset": 32768,
+        "va": 32768,
+        "filesz": 14284,
+        "memsz": 14284
+      },
+      {
+        "flags": 4,
+        "offset": 65536,
+        "va": 65536,
+        "filesz": 1040,
+        "memsz": 1040
+      },
+      {
+        "flags": 6,
+        "offset": 98304,
+        "va": 98304,
+        "filesz": 32768,
+        "memsz": 32768
+      },
+      {
+        "flags": 6,
+        "offset": 131072,
+        "va": 131072,
+        "filesz": 0,
+        "memsz": 560
+      }
+    ],
+    "exports": {
+      "fx3_entry_state": {
+        "va": 39884,
+        "bytes": 12
+      },
+      "fx3_entry_reason": {
+        "va": 39896,
+        "bytes": 12
+      }
+    },
+    "dynamic_tags": [
+      [
+        4,
+        66528
+      ],
+      [
+        5,
+        66416
+      ],
+      [
+        6,
+        66456
+      ],
+      [
+        10,
+        34
+      ],
+      [
+        11,
+        24
+      ],
+      [
+        7,
+        66552
+      ],
+      [
+        8,
+        24
+      ],
+      [
+        9,
+        24
+      ],
+      [
+        25,
+        98304
+      ],
+      [
+        27,
+        8
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "runtime_relocations": [
+      {
+        "offset": 98304,
+        "type": 1027,
+        "symbol": 0,
+        "addend": 32768
+      }
+    ],
+    "init_array": [
+      98304
+    ],
+    "has_DT_NEEDED_or_imports": false,
+    "initialization_behavior_verified_by_inspector": false,
+    "constructor_effect_authenticated_by_metadata": false,
+    "child_identity_guard_implemented": true,
+    "actual_Sony_loader_acceptance_verified": false,
+    "actual_body_or_loaded_driver_identity_verified": false,
+    "camera_transfer_or_launch_backend": false,
+    "camera_operations": 0,
+    "camera_identity_verified": false,
+    "hardware_validated": false,
+    "flashable": false,
+    "independent_recovery_proven": false,
+    "object_sha256": "b6a3e02cdacd0a1380e0422913e2e6893c37589548a286f5ead56dfee481da94",
+    "link_relocations": [
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 32804,
+        "target": 131072,
+        "before": 2415919126,
+        "after": 2415919318
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 32812,
+        "target": 131076,
+        "before": 2415919127,
+        "after": 2415919319
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 32820,
+        "target": 131072,
+        "before": 3103785672,
+        "after": 3103785672
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 32828,
+        "target": 131076,
+        "before": 3103785727,
+        "after": 3103786751
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 32964,
+        "target": 65936,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 32968,
+        "target": 65936,
+        "before": 2432696353,
+        "after": 2433105953
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33144,
+        "target": 65536,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33148,
+        "target": 65552,
+        "before": 2415919114,
+        "after": 2415919178
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 33156,
+        "target": 65536,
+        "before": 1035993344,
+        "after": 1035993344
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 33164,
+        "target": 65552,
+        "before": 1035993409,
+        "after": 1035994433
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33480,
+        "target": 65880,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 33484,
+        "target": 65880,
+        "before": 2432696353,
+        "after": 2433048609
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 33592,
+        "target": 131076,
+        "before": 3103785704,
+        "after": 3103786728
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 33596,
+        "target": 131072,
+        "before": 3103785673,
+        "after": 3103785673
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33644,
+        "target": 131080,
+        "before": 2415919123,
+        "after": 2415919315
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 33648,
+        "target": 131080,
+        "before": 2432696947,
+        "after": 2432705139
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33652,
+        "target": 65891,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 33656,
+        "target": 65891,
+        "before": 2432696353,
+        "after": 2433059873
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33684,
+        "target": 65816,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 33692,
+        "target": 65816,
+        "before": 4248830209,
+        "after": 4248866049
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33696,
+        "target": 65808,
+        "before": 2415919112,
+        "after": 2415919176
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 33708,
+        "target": 65808,
+        "before": 4248830210,
+        "after": 4248865026
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33824,
+        "target": 131100,
+        "before": 2415919124,
+        "after": 2415919316
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 33828,
+        "target": 131100,
+        "before": 3107979912,
+        "after": 3107987080
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33844,
+        "target": 131104,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 33848,
+        "target": 131104,
+        "before": 2432696584,
+        "after": 2432729352
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33872,
+        "target": 131332,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33876,
+        "target": 65568,
+        "before": 2415919114,
+        "after": 2415919178
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 33880,
+        "target": 65584,
+        "before": 2415919115,
+        "after": 2415919179
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 33884,
+        "target": 131332,
+        "before": 3107979528,
+        "after": 3108046088
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 33888,
+        "target": 65568,
+        "before": 1035993408,
+        "after": 1035995456
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 33892,
+        "target": 65584,
+        "before": 1035993441,
+        "after": 1035996513
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34028,
+        "target": 131112,
+        "before": 2415919113,
+        "after": 2415919305
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34032,
+        "target": 131112,
+        "before": 2432696617,
+        "after": 2432737577
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34116,
+        "target": 131192,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34120,
+        "target": 131192,
+        "before": 2432696584,
+        "after": 2432819464
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34156,
+        "target": 131244,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34160,
+        "target": 131244,
+        "before": 2432696584,
+        "after": 2432872712
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34184,
+        "target": 131260,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34188,
+        "target": 131260,
+        "before": 2432696584,
+        "after": 2432889096
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34212,
+        "target": 131276,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34216,
+        "target": 131276,
+        "before": 2432696584,
+        "after": 2432905480
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34240,
+        "target": 131292,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34244,
+        "target": 131292,
+        "before": 2432696584,
+        "after": 2432921864
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34268,
+        "target": 131308,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34272,
+        "target": 131308,
+        "before": 2432696584,
+        "after": 2432938248
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34304,
+        "target": 131324,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34308,
+        "target": 131324,
+        "before": 2432696584,
+        "after": 2432954632
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34376,
+        "target": 131224,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34380,
+        "target": 131224,
+        "before": 2432696584,
+        "after": 2432852232
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34444,
+        "target": 131100,
+        "before": 3107979913,
+        "after": 3107987081
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34464,
+        "target": 131104,
+        "before": 2415919104,
+        "after": 2415919296
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34468,
+        "target": 131104,
+        "before": 2432696320,
+        "after": 2432729088
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34472,
+        "target": 131344,
+        "before": 2415919106,
+        "after": 2415919298
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34476,
+        "target": 131344,
+        "before": 2432696386,
+        "after": 2432974914
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34500,
+        "target": 131100,
+        "before": 3107979912,
+        "after": 3107987080
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 34504,
+        "target": 65913,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 34508,
+        "target": 65913,
+        "before": 2432696353,
+        "after": 2433082401
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34552,
+        "target": 131072,
+        "before": 3103785673,
+        "after": 3103785673
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34560,
+        "target": 131076,
+        "before": 3103785704,
+        "after": 3103786728
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34716,
+        "target": 131076,
+        "before": 3103785704,
+        "after": 3103786728
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34724,
+        "target": 131072,
+        "before": 3103785672,
+        "after": 3103785672
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34768,
+        "target": 131076,
+        "before": 3103785704,
+        "after": 3103786728
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34772,
+        "target": 131072,
+        "before": 3103785674,
+        "after": 3103785674
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34836,
+        "target": 131076,
+        "before": 3103785704,
+        "after": 3103786728
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 34848,
+        "target": 131072,
+        "before": 3103785672,
+        "after": 3103785672
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 35424,
+        "target": 66033,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 35428,
+        "target": 66033,
+        "before": 2432696353,
+        "after": 2433205281
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 35664,
+        "target": 0,
+        "before": 2415919125,
+        "after": 2432696277
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 35668,
+        "target": 0,
+        "before": 2432697013,
+        "after": 2432697013
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 35744,
+        "target": 65600,
+        "before": 2415919113,
+        "after": 2415919177
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 35748,
+        "target": 65616,
+        "before": 2415919114,
+        "after": 2415919178
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 35756,
+        "target": 65600,
+        "before": 1035993376,
+        "after": 1035997472
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 35760,
+        "target": 65616,
+        "before": 1035993409,
+        "after": 1035998529
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36320,
+        "target": 131192,
+        "before": 2415919112,
+        "after": 2415919304
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 36324,
+        "target": 131192,
+        "before": 2432696584,
+        "after": 2432819464
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36484,
+        "target": 66056,
+        "before": 2415919105,
+        "after": 2415919169
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 36488,
+        "target": 66056,
+        "before": 2432696353,
+        "after": 2433228833
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36492,
+        "target": 131080,
+        "before": 2415919106,
+        "after": 2415919298
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 36496,
+        "target": 131080,
+        "before": 2432696386,
+        "after": 2432704578
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36516,
+        "target": 131076,
+        "before": 2415919129,
+        "after": 2415919321
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36640,
+        "target": 131076,
+        "before": 3103785768,
+        "after": 3103786792
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36652,
+        "target": 131072,
+        "before": 2415919114,
+        "after": 2415919306
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36656,
+        "target": 131072,
+        "before": 3103785288,
+        "after": 3103785288
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36696,
+        "target": 131076,
+        "before": 3103785768,
+        "after": 3103786792
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36700,
+        "target": 131072,
+        "before": 3103785291,
+        "after": 3103785291
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36744,
+        "target": 131076,
+        "before": 3103785768,
+        "after": 3103786792
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36748,
+        "target": 131072,
+        "before": 3103785291,
+        "after": 3103785291
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36792,
+        "target": 131076,
+        "before": 3103785768,
+        "after": 3103786792
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36796,
+        "target": 131072,
+        "before": 3103785291,
+        "after": 3103785291
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36852,
+        "target": 131076,
+        "before": 3103785768,
+        "after": 3103786792
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36856,
+        "target": 131072,
+        "before": 3103785291,
+        "after": 3103785291
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36912,
+        "target": 131076,
+        "before": 3103785768,
+        "after": 3103786792
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 36916,
+        "target": 131072,
+        "before": 3103785289,
+        "after": 3103785289
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 36996,
+        "target": 65824,
+        "before": 2415919112,
+        "after": 4026531880
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37004,
+        "target": 131376,
+        "before": 2415919127,
+        "after": 4026532023
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37008,
+        "target": 131376,
+        "before": 2432697079,
+        "after": 2433008375
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 37012,
+        "target": 65824,
+        "before": 4248830209,
+        "after": 4248867073
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37016,
+        "target": 65832,
+        "before": 2415919112,
+        "after": 4026531880
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 37068,
+        "target": 65832,
+        "before": 4248830208,
+        "after": 4248868096
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37128,
+        "target": 131344,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37132,
+        "target": 131344,
+        "before": 2432696584,
+        "after": 2432975112
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37148,
+        "target": 131112,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37152,
+        "target": 131112,
+        "before": 2432696584,
+        "after": 2432737544
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37432,
+        "target": 131224,
+        "before": 2415919114,
+        "after": 4026532010
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37436,
+        "target": 131224,
+        "before": 2432696650,
+        "after": 2432852298
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37620,
+        "target": 66070,
+        "before": 2415919105,
+        "after": 4026531873
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37624,
+        "target": 66070,
+        "before": 2432696353,
+        "after": 2433243169
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37896,
+        "target": 131376,
+        "before": 2415919124,
+        "after": 4026532020
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37900,
+        "target": 131376,
+        "before": 2432696980,
+        "after": 2433008276
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37912,
+        "target": 66070,
+        "before": 2415919105,
+        "after": 4026531873
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 37916,
+        "target": 66070,
+        "before": 2432696353,
+        "after": 2433243169
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37956,
+        "target": 65848,
+        "before": 2415919112,
+        "after": 4026531880
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 37964,
+        "target": 65848,
+        "before": 4248830209,
+        "after": 4248870145
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 37968,
+        "target": 65840,
+        "before": 2415919112,
+        "after": 4026531880
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 37992,
+        "target": 65840,
+        "before": 4248830208,
+        "after": 4248869120
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38072,
+        "target": 131628,
+        "before": 2415919113,
+        "after": 4026532009
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38076,
+        "target": 65632,
+        "before": 2415919114,
+        "after": 4026531882
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38080,
+        "target": 65648,
+        "before": 2415919115,
+        "after": 4026531883
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 38084,
+        "target": 131628,
+        "before": 3107979561,
+        "after": 3108121897
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 38088,
+        "target": 65632,
+        "before": 1035993409,
+        "after": 1035999553
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 38092,
+        "target": 65648,
+        "before": 1035993442,
+        "after": 1036000610
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38228,
+        "target": 131392,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 38236,
+        "target": 131392,
+        "before": 3107979528,
+        "after": 3108061448
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38252,
+        "target": 131396,
+        "before": 2415919130,
+        "after": 4026532026
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38256,
+        "target": 131396,
+        "before": 2432697178,
+        "after": 2433028954
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38308,
+        "target": 131344,
+        "before": 2415919129,
+        "after": 4026532025
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38312,
+        "target": 131344,
+        "before": 2432697145,
+        "after": 2432975673
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38316,
+        "target": 131432,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38320,
+        "target": 131432,
+        "before": 2432696584,
+        "after": 2433065224
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38356,
+        "target": 131464,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38360,
+        "target": 131464,
+        "before": 2432696584,
+        "after": 2433097992
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38364,
+        "target": 131112,
+        "before": 2415919126,
+        "after": 4026532022
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38368,
+        "target": 131112,
+        "before": 2432697046,
+        "after": 2432738006
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38400,
+        "target": 131192,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38404,
+        "target": 131192,
+        "before": 2432696584,
+        "after": 2432819464
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38408,
+        "target": 131480,
+        "before": 2415919113,
+        "after": 4026532009
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38412,
+        "target": 131480,
+        "before": 2432696617,
+        "after": 2433114409
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38448,
+        "target": 131512,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 38456,
+        "target": 131512,
+        "before": 4181721352,
+        "after": 4181777672
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38468,
+        "target": 131520,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 38476,
+        "target": 131520,
+        "before": 4181721352,
+        "after": 4181778696
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38488,
+        "target": 131528,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38492,
+        "target": 131224,
+        "before": 2415919113,
+        "after": 4026532009
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 38496,
+        "target": 131528,
+        "before": 4181721352,
+        "after": 4181779720
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 38500,
+        "target": 131224,
+        "before": 4181721385,
+        "after": 4181740841
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38512,
+        "target": 131536,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38516,
+        "target": 131232,
+        "before": 2415919113,
+        "after": 4026532009
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 38520,
+        "target": 131536,
+        "before": 4181721352,
+        "after": 4181780744
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 38524,
+        "target": 131232,
+        "before": 4181721385,
+        "after": 4181741865
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38536,
+        "target": 131548,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 38540,
+        "target": 131548,
+        "before": 3107979528,
+        "after": 3108101384
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38548,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38556,
+        "target": 131072,
+        "before": 2415919114,
+        "after": 4026532010
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 38564,
+        "target": 131076,
+        "before": 3103785225,
+        "after": 3103786249
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 38568,
+        "target": 131072,
+        "before": 3103785291,
+        "after": 3103785291
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38604,
+        "target": 131568,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38608,
+        "target": 131568,
+        "before": 2432696584,
+        "after": 2433204488
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38676,
+        "target": 131624,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38680,
+        "target": 131624,
+        "before": 2432696584,
+        "after": 2433261832
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38716,
+        "target": 131400,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38720,
+        "target": 131400,
+        "before": 2432696584,
+        "after": 2433032456
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38784,
+        "target": 131552,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 38792,
+        "target": 131552,
+        "before": 4181721352,
+        "after": 4181782792
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38804,
+        "target": 131560,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 38812,
+        "target": 131560,
+        "before": 4181721352,
+        "after": 4181783816
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38900,
+        "target": 131404,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 38904,
+        "target": 131404,
+        "before": 2432696584,
+        "after": 2433036552
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38960,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 38972,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39012,
+        "target": 66096,
+        "before": 2415919105,
+        "after": 4026531873
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 39016,
+        "target": 66096,
+        "before": 2432696353,
+        "after": 2433269793
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39020,
+        "target": 131080,
+        "before": 2415919106,
+        "after": 4026532002
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 39024,
+        "target": 131080,
+        "before": 2432696386,
+        "after": 2432704578
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39092,
+        "target": 131076,
+        "before": 2415919113,
+        "after": 4026532009
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39100,
+        "target": 131072,
+        "before": 2415919115,
+        "after": 4026532011
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39104,
+        "target": 131076,
+        "before": 3103785258,
+        "after": 3103786282
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39108,
+        "target": 131072,
+        "before": 3103785320,
+        "after": 3103785320
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39116,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39128,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39260,
+        "target": 131072,
+        "before": 2415919114,
+        "after": 4026532010
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39272,
+        "target": 131072,
+        "before": 3103785307,
+        "after": 3103785307
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39336,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39364,
+        "target": 131072,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39372,
+        "target": 131072,
+        "before": 3103785226,
+        "after": 3103785226
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39380,
+        "target": 131076,
+        "before": 2415919114,
+        "after": 4026532010
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39384,
+        "target": 131076,
+        "before": 3103785288,
+        "after": 3103786312
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39420,
+        "target": 131072,
+        "before": 2415919114,
+        "after": 4026532010
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39424,
+        "target": 131076,
+        "before": 2415919115,
+        "after": 4026532011
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39432,
+        "target": 131072,
+        "before": 3103785288,
+        "after": 3103785288
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39436,
+        "target": 131076,
+        "before": 3103785324,
+        "after": 3103786348
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39448,
+        "target": 131072,
+        "before": 2415919127,
+        "after": 4026532023
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39452,
+        "target": 131076,
+        "before": 2415919128,
+        "after": 4026532024
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39456,
+        "target": 131072,
+        "before": 3107980010,
+        "after": 3107980010
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39516,
+        "target": 131076,
+        "before": 3107980040,
+        "after": 3107981064
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39584,
+        "target": 65856,
+        "before": 2415919114,
+        "after": 4026531882
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 39588,
+        "target": 65856,
+        "before": 4248830273,
+        "after": 4248871233
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39776,
+        "target": 66110,
+        "before": 2415919105,
+        "after": 4026531873
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 39780,
+        "target": 66110,
+        "before": 2432696353,
+        "after": 2433284129
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39808,
+        "target": 131076,
+        "before": 3103785736,
+        "after": 3103786760
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39812,
+        "target": 131072,
+        "before": 3103785705,
+        "after": 3103785705
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39848,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39860,
+        "target": 131076,
+        "before": 3103785226,
+        "after": 3103786250
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39876,
+        "target": 131072,
+        "before": 3103785288,
+        "after": 3103785288
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39884,
+        "target": 131072,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39888,
+        "target": 131072,
+        "before": 3107979520,
+        "after": 3107979520
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 39896,
+        "target": 131076,
+        "before": 2415919112,
+        "after": 4026532008
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 39900,
+        "target": 131076,
+        "before": 3107979520,
+        "after": 3107980544
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 40916,
+        "target": 65952,
+        "before": 2415919113,
+        "after": 4026531881
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 40920,
+        "target": 65952,
+        "before": 2432696617,
+        "after": 2433122601
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 40924,
+        "target": 66016,
+        "before": 2415919114,
+        "after": 4026531882
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 40928,
+        "target": 66016,
+        "before": 2432696650,
+        "after": 2433188170
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 41488,
+        "target": 66124,
+        "before": 2415919121,
+        "after": 3489660977
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 41492,
+        "target": 66124,
+        "before": 2432696881,
+        "after": 2433298993
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 41900,
+        "target": 65664,
+        "before": 2415919113,
+        "after": 3489660969
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 41912,
+        "target": 65664,
+        "before": 1035993376,
+        "after": 1036001568
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 41916,
+        "target": 65680,
+        "before": 2415919113,
+        "after": 3489660969
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 41924,
+        "target": 65680,
+        "before": 1035993377,
+        "after": 1036002593
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 42348,
+        "target": 65696,
+        "before": 2415919112,
+        "after": 3489660968
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 42356,
+        "target": 65696,
+        "before": 1035993345,
+        "after": 1036003585
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43548,
+        "target": 131224,
+        "before": 2415919113,
+        "after": 3489661097
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 43552,
+        "target": 131224,
+        "before": 4181721385,
+        "after": 4181740841
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43576,
+        "target": 131232,
+        "before": 2415919113,
+        "after": 3489661097
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 43580,
+        "target": 131232,
+        "before": 4181721385,
+        "after": 4181741865
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43712,
+        "target": 131396,
+        "before": 2415919116,
+        "after": 3489661100
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 43716,
+        "target": 131396,
+        "before": 3107979656,
+        "after": 3108062600
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43808,
+        "target": 131404,
+        "before": 2415919118,
+        "after": 3489661102
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43812,
+        "target": 65712,
+        "before": 2415919120,
+        "after": 3489660976
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 43820,
+        "target": 131404,
+        "before": 3103785418,
+        "after": 3103870410
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43824,
+        "target": 65728,
+        "before": 2415919114,
+        "after": 3489660970
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 43828,
+        "target": 65712,
+        "before": 1035993600,
+        "after": 1036004864
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 43832,
+        "target": 65728,
+        "before": 1035993409,
+        "after": 1036005697
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43856,
+        "target": 131376,
+        "before": 2415919114,
+        "after": 3489661098
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 43860,
+        "target": 131376,
+        "before": 2432696650,
+        "after": 2433007946
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43980,
+        "target": 131628,
+        "before": 2415919114,
+        "after": 3489661098
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 43988,
+        "target": 131628,
+        "before": 3103785288,
+        "after": 3103927624
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 43992,
+        "target": 66082,
+        "before": 2415919105,
+        "after": 3489660961
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 43996,
+        "target": 66082,
+        "before": 2432696353,
+        "after": 2433255457
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 44436,
+        "target": 66384,
+        "before": 2415919115,
+        "after": 3489660971
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 44440,
+        "target": 66384,
+        "before": 2432696683,
+        "after": 2433565035
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 44664,
+        "target": 131396,
+        "before": 3107979649,
+        "after": 3108062593
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 44688,
+        "target": 131396,
+        "before": 2415919112,
+        "after": 3489661096
+      },
+      {
+        "kind": "LDST32_ABS_LO12_NC",
+        "file_offset": 44700,
+        "target": 131396,
+        "before": 3107979521,
+        "after": 3108062465
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 44816,
+        "target": 131224,
+        "before": 2415919113,
+        "after": 3489661097
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 44820,
+        "target": 131224,
+        "before": 2432696617,
+        "after": 2432852265
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45144,
+        "target": 65744,
+        "before": 2415919113,
+        "after": 2952790057
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45148,
+        "target": 65760,
+        "before": 2415919114,
+        "after": 2952790058
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 45156,
+        "target": 65744,
+        "before": 1035993376,
+        "after": 1036006688
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 45160,
+        "target": 65760,
+        "before": 1035993409,
+        "after": 1036007745
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45308,
+        "target": 65864,
+        "before": 2415919113,
+        "after": 2952790057
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 45316,
+        "target": 65864,
+        "before": 4248830241,
+        "after": 4248872225
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45320,
+        "target": 65872,
+        "before": 2415919113,
+        "after": 2952790057
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45324,
+        "target": 131344,
+        "before": 2415919116,
+        "after": 2952790188
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 45328,
+        "target": 131344,
+        "before": 2432696716,
+        "after": 2432975244
+      },
+      {
+        "kind": "LDST64_ABS_LO12_NC",
+        "file_offset": 45344,
+        "target": 65872,
+        "before": 4248830241,
+        "after": 4248873249
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45348,
+        "target": 131396,
+        "before": 2415919113,
+        "after": 2952790185
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 45352,
+        "target": 131396,
+        "before": 2432696617,
+        "after": 2433028393
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45420,
+        "target": 131112,
+        "before": 2415919114,
+        "after": 2952790186
+      },
+      {
+        "kind": "ADD_ABS_LO12_NC",
+        "file_offset": 45424,
+        "target": 131112,
+        "before": 2432696650,
+        "after": 2432737610
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45580,
+        "target": 65792,
+        "before": 2415919117,
+        "after": 2952790061
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 45620,
+        "target": 65792,
+        "before": 1035993505,
+        "after": 1036009889
+      },
+      {
+        "kind": "ADR_PREL_PG_HI21",
+        "file_offset": 45916,
+        "target": 65776,
+        "before": 2415919115,
+        "after": 2952790059
+      },
+      {
+        "kind": "LDST128_ABS_LO12_NC",
+        "file_offset": 45920,
+        "target": 65776,
+        "before": 1035993440,
+        "after": 1036008800
+      }
+    ],
+    "initializer_symbol": "fx3_module_init",
+    "initializer_va": 32768,
+    "initializer_bytes": 2136,
+    "initializer_code_sha256": "6bd336263747074601709bf8ea60527a392025ab64fd427a7b1408ec0de2890e",
+    "role": "own constructor-only NOOP lifecycle and once-reload observer",
+    "source_pins": {
+      "entry.c": "b9c6e82394065d7a946630c1c78010ea19f8596bcb3a4b2699973111257b652e",
+      "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+      "parent_ipc.inc": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044"
+    },
+    "build_argv": [
+      "/usr/bin/xcrun",
+      "clang",
+      "-target",
+      "aarch64-linux-gnu",
+      "-std=c11",
+      "-O2",
+      "-fPIC",
+      "-fvisibility=hidden",
+      "-ffreestanding",
+      "-fno-builtin",
+      "-fno-stack-protector",
+      "-fno-unwind-tables",
+      "-fno-asynchronous-unwind-tables",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/entry.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/runs-thread-bound/built/module.o"
+    ],
+    "source_initializer_calls_worker_or_syscall": true,
+    "global_session_directory_and_private_live_state_implemented": true,
+    "actual_target_global_namespace_or_IPC_verified": false,
+    "controlled_raw_clone_exec_and_preexec_hash_implemented": false,
+    "controlled_no_exec_clone_implemented": true,
+    "NOOP_diagnostic_only_no_boot_source": true,
+    "actual_child_launch_or_wait4_verified": false,
+    "persistent_restart_completion_reconstruction": false,
+    "exclusive_authority_or_full_loaded_image_attested": false
+  },
+  "cases": [
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "reaper": [
+        {
+          "all_children": false,
+          "eligible": false,
+          "exit_signal": 0
+        }
+      ],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000010000000100000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d10000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000176356e3",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000dd0700000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000da0700000000000000ca9a3b0000000000f2c8c7d100000010000000000000000900000000000000dc07000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f34d562b",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000030000000000000041010000591b00000f0000000903000000000000427f0a921490233e09d308c757f6b18ae58032aa76c000bd907aa227c0c36c0965bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbf43b6de98b756bef976d545a56b3d09ed24cc2e6c46501354a3bac6ebcca5a7200000000591b000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000034b9062c"
+      },
+      "name": "normal",
+      "observations": [
+        3
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 0,
+          "status": null
+        }
+      ],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000ef0700000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000ec0700000000000000ca9a3b0000000000f2c8c7d100000010000000000000000900000000000000ee0700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000097379281",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000020000002c00000041010000591b0000000000000903000000000000340aefe79701574e3a5121117a663ef43c2fdfea034a70a3d9f54b1440f6c3f965bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb0000000000000000000000000000000000000000000000000000000000000000ffffffff00000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e8c8e97e"
+      },
+      "name": "pending",
+      "observations": [
+        2,
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": -10,
+          "status": null
+        }
+      ],
+      "reaper": [
+        {
+          "all_children": true,
+          "eligible": true,
+          "exit_signal": 0
+        }
+      ],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000010800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000fe0700000000000000ca9a3b0000000000f2c8c7d10000001000000000000000090000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d2e67b9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000020000002d00000041010000591b0000010000000903000000000000adfb6ba23cad80a0a29f5883de6d9eca0f99deac06198c006a1cbdbb98589eb765bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc5999449aeea2aa0b306cae1b119bb83f1a70102b1daecde1db8ee3afa61c936fffffffff6ffffff0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004c269ab7"
+      },
+      "name": "other-waiter",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 17408
+        }
+      ],
+      "reaper": [],
+      "child_exit": 17408,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        [
+          18
+        ]
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000130800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000100800000000000000ca9a3b0000000000f2c8c7d100000010000000000000000900000000000000120800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000035510f98",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000020000002d00000041010000591b0000030000000903000000000000e1c145b56bc54614946520e35474a8f728f7934524013b63c6f56b6f46737eb565bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb6a24454857b08bead88ccbf16143022c41b3f4880788f907e2b4530627f8833800440000591b000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000033d8b929"
+      },
+      "name": "close-after-DONE",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [],
+      "waits": [],
+      "reaper": [],
+      "child_exit": null,
+      "child_alive": null,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 0,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [],
+      "kernel_exit_closes": [],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c9"
+      },
+      "name": "bad-plan",
+      "observations": [
+        4
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [],
+      "waits": [],
+      "reaper": [],
+      "child_exit": null,
+      "child_alive": null,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 0,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [],
+      "kernel_exit_closes": [],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8"
+      },
+      "name": "image-file",
+      "observations": [
+        4
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [],
+      "waits": [],
+      "reaper": [],
+      "child_exit": null,
+      "child_alive": null,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 0,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [],
+      "kernel_exit_closes": [],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8"
+      },
+      "name": "mapped-image",
+      "observations": [
+        4
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000400800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9609000000000000003d0800000000000000ca9a3b0000000000f2c8c7d1000000100000000000000009000000000000003f0800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000098d2a6f4",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000020000002c00000041010000591b0000020000000903000000000000eba6af976439e9321fc722ca1db2132832c10549dca7baf2f67a1cfd9a1f85ef65bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb000000000000000000000000000000000000000000000000000000000000000000000000591b0000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000b09c095d"
+      },
+      "name": "wrong-DONE-cred",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000520800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9609000000000000004f0800000000000000ca9a3b0000000000f2c8c7d10000001000000000000000090000000000000051080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001617275c",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000020000002c00000041010000591b0000020000000903000000000000defb2c8bb4535d52ea6beb18943e306dbb66700a844a50d8918c9e0e78ccd42965bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb000000000000000000000000000000000000000000000000000000000000000000000000591b000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000073b0dd02"
+      },
+      "name": "SCM-rights",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000650800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000620800000000000000ca9a3b0000000000f2c8c7d10000001000000000000000090000000000000064080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000fa06110",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000020000002c00000041010000591b0000020000000903000000000000f21b1de173e67cf41b08a305c1410c8c2d921f337e70b67eafaf4acf49cdc77765bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb000000000000000000000000000000000000000000000000000000000000000000000000591b00000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004c156d37"
+      },
+      "name": "short-with-rights",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000780800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000750800000000000000ca9a3b0000000000f2c8c7d10000001000000000000000090000000000000077080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d51d8a8"
+      },
+      "name": "fd-reuse",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [],
+      "reaper": [],
+      "child_exit": null,
+      "child_alive": true,
+      "parent_mask": 18446744073709289215,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8"
+      },
+      "name": "mask-restore",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [],
+      "waits": [],
+      "reaper": [],
+      "child_exit": null,
+      "child_alive": null,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 0,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [],
+      "kernel_exit_closes": [],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8"
+      },
+      "name": "expired-start",
+      "observations": [
+        4
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 17664
+        }
+      ],
+      "reaper": [],
+      "child_exit": 17664,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        [
+          18
+        ]
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000a10800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9609000000000000009e0800000000000000ca9a3b0000000000f2c8c7d100000010000000000000000900000000000000a00800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ef41b8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000020000002c00000041010000591b00000200000009030000000000004cb2e3582350756689c5a4a2a7499b6c58770f18b05daaa297e459fe88e2043d65bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb000000000000000000000000000000000000000000000000000000000000000000450000591b000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000092a60118"
+      },
+      "name": "expired-child",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": 7001,
+          "status": 0
+        }
+      ],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000b30800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000b00800000000000000ca9a3b0000000000f2c8c7d100000010000000000000000900000000000000b2080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002fbf7e12",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000030000000000000041010000591b00000f000000090300000000000083119d8ec278613b8612805f31faca07d255fa2ec3e3a94b88efe51fd2d5878865bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbede95acd6163af9d53a8f7ead6e50ea462f85521287096cc1778ba27e1b9b0b00000000591b000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021f5bb81"
+      },
+      "name": "expired-observation",
+      "observations": [
+        3
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000c50800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000c20800000000000000ca9a3b0000000000f2c8c7d100000010000000000000000900000000000000c408000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000154e109a"
+      },
+      "name": "other-thread",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": false,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000d50800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000d20800000000000000ca9a3b0000000000f2c8c7d100000010000000000000000900000000000000d408000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000bc7f488e"
+      },
+      "name": "reused-thread-number",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    },
+    {
+      "foreign_clone_PID_reuse_injected": true,
+      "clones": [
+        {
+          "flags": 0,
+          "shared_VM": false,
+          "shared_FD_table": false,
+          "shared_sighand": false,
+          "parent_mask": 18446744073709289215,
+          "child_mask": 18446744073709289215,
+          "child_pid": 7001
+        }
+      ],
+      "waits": [
+        {
+          "pid": 7001,
+          "options": 2684354561,
+          "returned": -10,
+          "status": null
+        }
+      ],
+      "reaper": [],
+      "child_exit": 0,
+      "child_alive": false,
+      "parent_mask": 1024,
+      "parent_SIGCHLD": "4c2f400000000000000000000000000000000000000000000000000000000000",
+      "child_signal_ops": 124,
+      "new_original_signal_handlers_executed": false,
+      "exec_attempts": [],
+      "source_accesses": [],
+      "borrowed_FDs_unchanged": true,
+      "rights_all_closed": true,
+      "child_FDs_before_GRANT": [
+        [
+          18
+        ]
+      ],
+      "kernel_exit_closes": [
+        []
+      ],
+      "files": {
+        "/tmp_wbshd/fx3-entry-plan-v1.bin": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.pending": "465833454e545259504c414e7631000001000000010000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d30a8c8",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.owner": "465833454e5452594f574e7631000000010000004101000009030000591b000011000000010000000900000000000000e60800000000000065bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec960900000000000000e30800000000000000ca9a3b0000000000f2c8c7d100000010000000000000000900000000000000e50800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000091ac90e7",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.observe": "465833454e545259504c414e7631000001000000020000000100000000000000bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbbc0246473a799f0657a8cf414b7306ecf7100b647bf972bbec9d1290037ec9600ca9a3b0000000000f2c8c7d100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003a45bce9",
+        "/tmp_wbshd/fx3-bootstrap-owner-v1/entry.result": "465833454e545259524553554c54310001000000020000002d00000041010000591b000001000000090300000000000003258954c1e0ebb03cc110c2edfe92468cbfac6c5b749eca13b3a7897fd9370565bcb26505b1a47d13d6704b3acdab1ca09ec53e33c0a97a273da037bf55ec00bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb7324bc9557ee3e68345706e022d70395b08669aab4335e4d54d6e3ac27113285fffffffff6ffffff0100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002b946876"
+      },
+      "name": "PID-reuse-at-wait",
+      "observations": [
+        2
+      ],
+      "constructor_parent_unloaded_before_child_execution": true,
+      "no_actual_Linux_or_Sony_code_executed": true
+    }
+  ],
+  "debug": [
+    {
+      "name": "normal",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "pending",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "other-waiter",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "close-after-DONE",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "bad-plan",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        57,
+        56,
+        44,
+        80,
+        56,
+        44,
+        80,
+        63,
+        63,
+        80,
+        57,
+        57
+      ],
+      "child_last_syscalls": []
+    },
+    {
+      "name": "image-file",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        63,
+        57,
+        57
+      ],
+      "child_last_syscalls": []
+    },
+    {
+      "name": "mapped-image",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        44,
+        80,
+        63,
+        63,
+        80,
+        57,
+        113,
+        56,
+        80,
+        63,
+        57,
+        57
+      ],
+      "child_last_syscalls": []
+    },
+    {
+      "name": "wrong-DONE-cred",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "SCM-rights",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "short-with-rights",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "fd-reuse",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "mask-restore",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        204,
+        209,
+        208,
+        172,
+        178,
+        113,
+        135,
+        220,
+        135,
+        57,
+        57,
+        57
+      ],
+      "child_last_syscalls": [
+        134,
+        134,
+        134,
+        134,
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212
+      ]
+    },
+    {
+      "name": "expired-start",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        56,
+        44,
+        80,
+        56,
+        44,
+        80,
+        63,
+        63,
+        80,
+        57,
+        113,
+        57
+      ],
+      "child_last_syscalls": []
+    },
+    {
+      "name": "expired-child",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        134,
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        93
+      ]
+    },
+    {
+      "name": "expired-observation",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "other-thread",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "reused-thread-number",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    },
+    {
+      "name": "PID-reuse-at-wait",
+      "guest_errors": [],
+      "child_errors": [],
+      "parent_last_syscalls": [
+        135,
+        56,
+        44,
+        80,
+        64,
+        82,
+        57,
+        57,
+        57,
+        57,
+        113,
+        211
+      ],
+      "child_last_syscalls": [
+        134,
+        135,
+        80,
+        209,
+        204,
+        209,
+        208,
+        212,
+        113,
+        211,
+        57,
+        93
+      ]
+    }
+  ],
+  "source_hashes": {
+    "entry.c": "b9c6e82394065d7a946630c1c78010ea19f8596bcb3a4b2699973111257b652e",
+    "entry_build.py": "b1dfb015c864c5a2758c4e3d4fb2e469fa931f33cf137ac5e5e9791a48c266aa",
+    "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+    "parent_ipc.inc": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044",
+    "model_entry.py": "75382d5666b2735602e395a0560893dd61d6ed15a1714752f1425cd6972bff58",
+    "test_entry.py": "2a5c9c3630ee18d82523b7bb4752d8b5cc71c7a72e56c0e07e4fd28ae5cd21ce"
+  },
+  "own_ARM64_executed": true,
+  "real_processes_or_threads_created": false,
+  "original_Sony_or_Linux_code_executed": false,
+  "new_camera_operations": 0,
+  "boot_or_other_source_reads": 0,
+  "full_boot_capture_worker_integrated": false,
+  "actual_FX3_kernel_loader_credentials_or_recovery_verified": false,
+  "goal_complete": false,
+  "flashable": false
+}

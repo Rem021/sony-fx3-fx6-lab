@@ -1,0 +1,122 @@
+{
+  "scope": "9 illustrative source-derived bit-operation examples; no target or guest execution",
+  "examples": [
+    {
+      "previous_kind": 0,
+      "target_kind": 0,
+      "source_derived_commands": [],
+      "expected_register_value_under_bit_operation_model": 8,
+      "actual_device_test": false
+    },
+    {
+      "previous_kind": 0,
+      "target_kind": 1,
+      "source_derived_commands": [
+        {
+          "mode": 1,
+          "index": 179,
+          "value": 1,
+          "arg": "0x1b30100"
+        }
+      ],
+      "expected_register_value_under_bit_operation_model": 9,
+      "actual_device_test": false
+    },
+    {
+      "previous_kind": 0,
+      "target_kind": 2,
+      "source_derived_commands": [
+        {
+          "mode": 1,
+          "index": 179,
+          "value": 2,
+          "arg": "0x1b30200"
+        }
+      ],
+      "expected_register_value_under_bit_operation_model": 10,
+      "actual_device_test": false
+    },
+    {
+      "previous_kind": 1,
+      "target_kind": 0,
+      "source_derived_commands": [
+        {
+          "mode": 2,
+          "index": 179,
+          "value": 1,
+          "arg": "0x2b30100"
+        }
+      ],
+      "expected_register_value_under_bit_operation_model": 8,
+      "actual_device_test": false
+    },
+    {
+      "previous_kind": 1,
+      "target_kind": 1,
+      "source_derived_commands": [],
+      "expected_register_value_under_bit_operation_model": 9,
+      "actual_device_test": false
+    },
+    {
+      "previous_kind": 1,
+      "target_kind": 2,
+      "source_derived_commands": [
+        {
+          "mode": 2,
+          "index": 179,
+          "value": 1,
+          "arg": "0x2b30100"
+        },
+        {
+          "mode": 1,
+          "index": 179,
+          "value": 2,
+          "arg": "0x1b30200"
+        }
+      ],
+      "expected_register_value_under_bit_operation_model": 10,
+      "actual_device_test": false
+    },
+    {
+      "previous_kind": 2,
+      "target_kind": 0,
+      "source_derived_commands": [
+        {
+          "mode": 2,
+          "index": 179,
+          "value": 2,
+          "arg": "0x2b30200"
+        }
+      ],
+      "expected_register_value_under_bit_operation_model": 8,
+      "actual_device_test": false
+    },
+    {
+      "previous_kind": 2,
+      "target_kind": 1,
+      "source_derived_commands": [
+        {
+          "mode": 2,
+          "index": 179,
+          "value": 2,
+          "arg": "0x2b30200"
+        },
+        {
+          "mode": 1,
+          "index": 179,
+          "value": 1,
+          "arg": "0x1b30100"
+        }
+      ],
+      "expected_register_value_under_bit_operation_model": 9,
+      "actual_device_test": false
+    },
+    {
+      "previous_kind": 2,
+      "target_kind": 2,
+      "source_derived_commands": [],
+      "expected_register_value_under_bit_operation_model": 10,
+      "actual_device_test": false
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "status": "FIXED_READ_CODEC_PREPARED_NOT_LIVE_APPROVED_OR_EXECUTABLE",
+  "prospective_USB": {
+    "VID": 1356,
+    "PID": 822,
+    "identity_binding_required_separately": true
+  },
+  "request": {
+    "pFunc": 16,
+    "category": 0,
+    "command": 31,
+    "read_argument": 0,
+    "sequence": 1,
+    "bytes": 17,
+    "hex": "05000000100001000000000000001f0000"
+  },
+  "reply": {
+    "max_bytes": 100,
+    "payload_bytes": 88,
+    "response": 1,
+    "raw_payload_returned_by_codec": false,
+    "output": "per-trial HMAC only"
+  },
+  "forbidden": {
+    "reset_argument": 128,
+    "arbitrary_command_or_payload": true,
+    "file_upload_or_firmware_operations": true
+  },
+  "static_capability_requirement": "Stock A or B table, level2 or3; reply cannot establish highest level3 or firmware identity.",
+  "effect_scope": "Read branch of command body only. Full authentication/history, module loading and error logging remain separate effects.",
+  "does_not_complete_authentication_or_thread_exit_proof": true,
+  "contains_live_backend": false,
+  "approved": false
+}

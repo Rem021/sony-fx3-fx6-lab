@@ -1,0 +1,23 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000011c664 <_ZNSt6vectorIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EEaSERKS4_>:
+  11c788: 17fffff7     	b	0x11c764 <_ZNSt6vectorIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EEaSERKS4_+0x100>
+  11c78c: d14007ff     	sub	sp, sp, #0x1, lsl #12   // =0x1000
+  11c790: d11783ff     	sub	sp, sp, #0x5e0
+  11c794: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+  11c798: 910003fd     	mov	x29, sp
+  11c79c: a90363f7     	stp	x23, x24, [sp, #0x30]
+  11c7a0: 910143b7     	add	x23, x29, #0x50
+  11c7a4: aa1703e0     	mov	x0, x23
+  11c7a8: a90153f3     	stp	x19, x20, [sp, #0x10]
+  11c7ac: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  11c7b0: 2a0103f4     	mov	w20, w1
+  11c7b4: aa0203f5     	mov	x21, x2
+  11c7b8: 52800001     	mov	w1, #0x0                // =0
+  11c7bc: aa0203f3     	mov	x19, x2
+  11c7c0: f90023f9     	str	x25, [sp, #0x40]
+  11c7c4: 97fe3b1a     	bl	0xab42c <_ZN3mpr6thread10normalLock6unlockEv+0x78>
+  11c7c8: b90053b4     	str	w20, [x29, #0x50]

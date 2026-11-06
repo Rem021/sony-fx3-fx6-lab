@@ -1,0 +1,22 @@
+{
+  "ASan_UBSan_exit": 0,
+  "compile": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-D__errno_location=__error",
+    "-Dsyscall=fx3_host_tid",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-media-host-check-v1.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-media-host-check-v1"
+  ],
+  "host_stderr": "FX3_MEDIA_RAW eid=0 tid=7 tag=host_valid pointer=0x1000 bytes=32 readable=1 raw=000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f passive=1\nFX3_MEDIA_RAW eid=0 tid=7 tag=host_oversize pointer=0x1000 bytes=4097 readable=0 limit=4096 passive=1\nFX3_MEDIA_RAW eid=0 tid=7 tag=host_unmapped pointer=0x3000 bytes=32 readable=0 limit=4096 passive=1\nFX3_MEDIA_STACK eid=0 tid=7 depth=0 pc=0x102cbcbb0 module=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-media-host-check-v1 relative=0xbb0 passive=1\n",
+  "read_tests": "exact4096/nativepreadfail/underflow/upperbound/lengthoverflow/oversizehex/errno/no_source_mutation/malformed_frame",
+  "capid44_protocol_byte_equal_after_removing_two_passive_additions": true,
+  "getters_Unicorn_two_ASLR_bases": 20,
+  "original_points_guarded": 36,
+  "nativeASM_GPR_SIMD_NZCV_FPCR_FPSR_SP_CBZ_BL_selftest": "required guest marker, not yet runtime",
+  "source_sha256": "fde2a18c7bb0a3c571d72b8238b192bb92aa7356fbb4b7e902f51c6909957eb1"
+}

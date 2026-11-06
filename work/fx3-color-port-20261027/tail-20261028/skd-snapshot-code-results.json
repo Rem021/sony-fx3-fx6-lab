@@ -1,0 +1,155 @@
+{
+  "status": "PASS_SNAPSHOT_SAME_ELF_METADATA_CROSSCHECK",
+  "source_sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+  "original_library_sha256": "7d1fbd9a53794def916ca3ff2fc3a00f295268bb0f4ea7c07d0e8356d2840f9b",
+  "root_physical_address": "0x40867a000",
+  "library_base_candidate": "0x7f73ef9000",
+  "metadata": [
+    {
+      "name": "ELF_header",
+      "relative_va": "0x0",
+      "bytes": 336,
+      "match": true,
+      "sha256": "2f1bf4ffbfdfb71eccf900519b87694c174c4b201e97c1d5191a44163880f2f8"
+    },
+    {
+      "name": "GNU_hash",
+      "relative_va": "0x158",
+      "bytes": 60,
+      "match": true,
+      "sha256": "f832c696530b1bb08e3a90a51fe0dbe3671788b516442ba052f33522c0a51266"
+    },
+    {
+      "name": "original_144_dynamic_symbols",
+      "relative_va": "0x198",
+      "bytes": 3456,
+      "match": true,
+      "sha256": "de59b27287771c958f7cc911c6fa86d6046a6899f812e32b082df03b42cd113b"
+    },
+    {
+      "name": "original_dynamic_string_prefix",
+      "relative_va": "0xf18",
+      "bytes": 1024,
+      "match": true,
+      "sha256": "1eeafbdc53ec80961b59f6dcf26e74a614196adb54b62619e5ec744fdfa53db4"
+    },
+    {
+      "name": "original_SONAME",
+      "relative_va": "0x14dc",
+      "bytes": 15,
+      "match": true,
+      "sha256": "53c5c428304d7af8848fb3957f5728faabcf4677671ba87518c97ee801f969bf"
+    }
+  ],
+  "functions": [
+    {
+      "symbol": {
+        "name": "SKD_SignBufAlloc",
+        "va": "0x64c34",
+        "bytes": 8,
+        "section": 10,
+        "type": "STT_FUNC"
+      },
+      "read_success": true,
+      "sha256": "6c21b8afffa3b82fbb66a15641ccfa56ec2c007b32915754c362bc1e04f23de4",
+      "same_as_original_file": false,
+      "same_entry_stub": false,
+      "symbol_record_and_name_match": true,
+      "decoded_instructions": 2,
+      "data_bytes": 0,
+      "output": "snapshot-fragments/SKD_SignBufAlloc.bin",
+      "disassembly": "disassembly/snapshot-SKD_SignBufAlloc.txt"
+    },
+    {
+      "symbol": {
+        "name": "SKD_SignBufFree",
+        "va": "0x64c3c",
+        "bytes": 12,
+        "section": 10,
+        "type": "STT_FUNC"
+      },
+      "read_success": true,
+      "sha256": "18d4e170b23b7d20986e41c38ddd98377de6b440b6ccaf1f6dcf6a4ef2faf11d",
+      "same_as_original_file": false,
+      "same_entry_stub": false,
+      "symbol_record_and_name_match": true,
+      "decoded_instructions": 3,
+      "data_bytes": 0,
+      "output": "snapshot-fragments/SKD_SignBufFree.bin",
+      "disassembly": "disassembly/snapshot-SKD_SignBufFree.txt"
+    },
+    {
+      "symbol": {
+        "name": "SKD_Sign",
+        "va": "0x64b30",
+        "bytes": 260,
+        "section": 10,
+        "type": "STT_FUNC"
+      },
+      "read_success": true,
+      "sha256": "9ae7c09632f935134e49f98d833a0464bb10246baa366a579156a4216a1b1dc9",
+      "same_as_original_file": false,
+      "same_entry_stub": false,
+      "symbol_record_and_name_match": true,
+      "decoded_instructions": 65,
+      "data_bytes": 0,
+      "output": "snapshot-fragments/SKD_Sign.bin",
+      "disassembly": "disassembly/snapshot-SKD_Sign.txt"
+    },
+    {
+      "symbol": {
+        "name": "SKData_Init",
+        "va": "0x64568",
+        "bytes": 400,
+        "section": 10,
+        "type": "STT_FUNC"
+      },
+      "read_success": true,
+      "sha256": "c915ecb8fd8c2fe2aa3b61f02378f1658d2a74479cc6ab9e7a190927f35c4847",
+      "same_as_original_file": false,
+      "same_entry_stub": false,
+      "symbol_record_and_name_match": true,
+      "decoded_instructions": 100,
+      "data_bytes": 0,
+      "output": "snapshot-fragments/SKData_Init.bin",
+      "disassembly": "disassembly/snapshot-SKData_Init.txt"
+    },
+    {
+      "symbol": {
+        "name": "SKD_Verify",
+        "va": "0x64c48",
+        "bytes": 256,
+        "section": 10,
+        "type": "STT_FUNC"
+      },
+      "read_success": true,
+      "sha256": "ad9240e7220c83c377b9c85d92567295f14d24dff9651b542c3121e0ed90db6f",
+      "same_as_original_file": false,
+      "same_entry_stub": false,
+      "symbol_record_and_name_match": true,
+      "decoded_instructions": 64,
+      "data_bytes": 0,
+      "output": "snapshot-fragments/SKD_Verify.bin",
+      "disassembly": "disassembly/snapshot-SKD_Verify.txt"
+    },
+    {
+      "symbol": {
+        "name": "SKData_Exit",
+        "va": "0x646f8",
+        "bytes": 212,
+        "section": 10,
+        "type": "STT_FUNC"
+      },
+      "read_success": true,
+      "sha256": "1f24c3e03d63f39a4a7d12ff14136813ccaced4e6c5eee803fbd9a70906a594e",
+      "same_as_original_file": false,
+      "same_entry_stub": false,
+      "symbol_record_and_name_match": true,
+      "decoded_instructions": 53,
+      "data_bytes": 0,
+      "output": "snapshot-fragments/SKData_Exit.bin",
+      "disassembly": "disassembly/snapshot-SKData_Exit.txt"
+    }
+  ],
+  "scope": "Original offline WBI snapshot only. ELF header, GNU hash, 144 complete original symbol records, 1024 string bytes, SONAME, and each selected symbol name/value/size agree through one 39-bit page-table chain. This supports snapshot library identity and function locations, not live process identity, current FX3 state, function execution or update admission. Function changes and instruction decoding are recorded separately."
+}

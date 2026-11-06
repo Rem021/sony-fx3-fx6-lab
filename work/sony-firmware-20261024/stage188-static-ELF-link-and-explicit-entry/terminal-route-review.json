@@ -1,0 +1,55 @@
+{
+  "status": "STATIC_TERMINAL_FACTORY_AUDIT_NOT_CHANNEL_PROOF",
+  "core_library_sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+  "plugin_sha256": "771749c2397c48e9a3444a7562a8f8e2773abf59a262276c2b225cc415ac9403",
+  "plugin_image_path": "/usr/lib/libpro00.so",
+  "product_info_handler": {
+    "VA": 60092,
+    "bytes": 236,
+    "source_sha256": "ed2ce7604b2b3f6da6731a003526012f9e9151c6fa96217313f80e4a906ef27e"
+  },
+  "default_terminal_disabled_byte": 1,
+  "auth_onComplete_level3_clears_disabled_flag": {
+    "VA": 49416,
+    "bytes": 124,
+    "source_sha256": "18e1e7ce28fce11721c6d3f325553b3b7b49df5628ad69345856196fef4d7cab",
+    "not_claiming_runtime_flag_stays_disabled": true
+  },
+  "disabled_branch_NoAction_response": {
+    "value": 1,
+    "DoExecute_VA": 54504,
+    "bytes": 16,
+    "source_hex": "00404039202c0039000080d2c0035fd6"
+  },
+  "enabled_branch_plugin_command00F1": {
+    "VA": 2660,
+    "bytes": 8,
+    "original_hex": "20008052c0035fd6",
+    "instructions": [
+      "mov w0, #1",
+      "ret "
+    ],
+    "returns_response_one_with_no_other_instructions": true
+  },
+  "adjust_TERM_MODE_records": [
+    {
+      "record_VA": 157092,
+      "message_destination": "0x3d025f",
+      "family": "0x601",
+      "command": "0x801f",
+      "original_hex": "5f023d0001061f805445524d5f4d4f444500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "record_VA": 282764,
+      "message_destination": "0x3d025f",
+      "family": "0x601",
+      "command": "0x801f",
+      "original_hex": "5f023d0001061f805445524d5f4d4f444500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "adjust_downstream_effect_or_AP_shell_not_proven": true,
+  "real_USB_terminal_endpoint_or_prompt_observed": false,
+  "original_Sony_code_loaded_or_executed": false,
+  "new_camera_operations": 0,
+  "adjust_records_are_static_header_evidence_not_executed_dispatch": true
+}

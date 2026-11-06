@@ -1,0 +1,52 @@
+{
+  "body_library_sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+  "common_library_sha256": "c059cf9b04c629e505c7bf50d9c46e5784b74b49ee63bf2203a353b6de433891",
+  "official_plain_fdat_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "cases": [
+    {
+      "parse_result": 0,
+      "parser_instructions": 4639,
+      "block_requests": 1,
+      "normalized_name": "config",
+      "index": 100,
+      "result_type": "vtable for Updater::ConfigKeyTag",
+      "factory_instructions": 176,
+      "case": "0100_config",
+      "fixture_kind": "official_original_header",
+      "header_sha256": "4b1209fb8be4aad55015aaf428433439d8186cc72c73011aad4d5476632b2d32"
+    },
+    {
+      "parse_result": 0,
+      "parser_instructions": 4639,
+      "block_requests": 1,
+      "normalized_name": "config/mount.conf",
+      "index": 100,
+      "result_type": "vtable for Updater::CommonKeyTag",
+      "factory_instructions": 400,
+      "case": "0100_config/mount.conf",
+      "fixture_kind": "official_original_header",
+      "header_sha256": "b8eb5cb25d631a5d11be4675b4903172b88d7cf2164f2e24ca88abb82814214f"
+    },
+    {
+      "parse_result": 0,
+      "parser_instructions": 4639,
+      "block_requests": 1,
+      "normalized_name": "program/probe.txt",
+      "index": 1,
+      "result_type": "vtable for Updater::CommonKeyTag",
+      "factory_instructions": 401,
+      "case": "0001_program/probe.txt",
+      "fixture_kind": "isolated_empty_nonexecutable_file_header",
+      "header_sha256": "66412bf5ef0f2f803100f6e636bd76f715931d7300cc1165efba859a6ccbeb96"
+    },
+    {
+      "parse_result": 2,
+      "parser_instructions": 3812,
+      "block_requests": 1,
+      "case": "corrupted_checksum",
+      "fixture_kind": "isolated_bad_header",
+      "header_sha256": "58b42c8f8214bc451573d768f55a0195cb861ca4aa5068d76b82784e811843b1"
+    }
+  ],
+  "scope": "Original PackedFileHeader constructor/Parse/filename normalization, octal conversion, StringHandler and KeyTagFactory execute in synthetic RAM. The only source adapter returns one declared 512-byte block; host shims are allocation, bounded libc bytes/strings and ASCII isspace. The program fixture describes an empty nonexecutable text file and has no payload or full update container. No file extraction, XML dispatch, unsigned code execution, native process, external admission, changed complete package, USB or camera action."
+}

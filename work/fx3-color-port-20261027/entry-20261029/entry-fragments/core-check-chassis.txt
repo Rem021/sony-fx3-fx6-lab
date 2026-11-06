@@ -1,0 +1,142 @@
+00009ae8 stp        x29, x30, [sp, #-0x90]!
+00009aec mov        x29, sp
+00009af0 stp        x19, x20, [sp, #0x10]
+00009af4 add        x19, x29, #0x50
+00009af8 mov        x0, x19
+00009afc stp        x21, x22, [sp, #0x20]
+00009b00 add        x20, x29, #0x60
+00009b04 str        x23, [sp, #0x30]
+00009b08 bl         #0x80d0 ; Updater::FileHandler::FileHandler
+00009b0c mov        x0, x20
+00009b10 bl         #0x80d0 ; Updater::FileHandler::FileHandler
+00009b14 adrp       x1, #0xc000
+00009b18 mov        x0, x19
+00009b1c add        x1, x1, #0x343 ; literal '/tmp_updater/updater/bodyfs/config/chassis'
+00009b20 mov        w2, #0
+00009b24 stp        xzr, xzr, [x29, #0x70]
+00009b28 stp        xzr, xzr, [x29, #0x80]
+00009b2c bl         #0x81d0 ; Updater::FileHandler::Open
+00009b30 tst        w0, #0xff
+00009b34 b.ne       #0x9b64
+00009b38 mov        w21, #1
+00009b3c mov        x0, x20
+00009b40 bl         #0x8180 ; Updater::FileHandler::~FileHandler
+00009b44 mov        x0, x19
+00009b48 bl         #0x8180 ; Updater::FileHandler::~FileHandler
+00009b4c ldr        x23, [sp, #0x30]
+00009b50 mov        w0, w21
+00009b54 ldp        x19, x20, [sp, #0x10]
+00009b58 ldp        x21, x22, [sp, #0x20]
+00009b5c ldp        x29, x30, [sp], #0x90
+00009b60 ret        
+00009b64 adrp       x1, #0xc000
+00009b68 mov        x0, x20
+00009b6c add        x1, x1, #0x36e ; literal '/root/chassis'
+00009b70 mov        w2, #0
+00009b74 bl         #0x81d0 ; Updater::FileHandler::Open
+00009b78 tst        w0, #0xff
+00009b7c b.ne       #0x9bf8
+00009b80 adrp       x2, #0xc000
+00009b84 adrp       x0, #0xc000
+00009b88 mov        w1, #7
+00009b8c add        x2, x2, #0x37c ; literal 'BaseBodyLoaderModule.cpp'
+00009b90 add        x0, x0, #0x20a ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00009b94 mov        w3, #0x1c3
+00009b98 movk       w1, #3, lsl #16
+00009b9c bl         #0x81e0 ; printf
+00009ba0 mov        x0, #0x10
+00009ba4 bl         #0x7b70 ; __cxa_allocate_exception
+00009ba8 adrp       x1, #0x1e000
+00009bac adrp       x2, #0x1e000
+00009bb0 ldr        x1, [x1, #0xf20]
+00009bb4 ldr        x2, [x2, #0xf40]
+00009bb8 add        x1, x1, #0x10
+00009bbc str        x1, [x0]
+00009bc0 mov        w1, #7
+00009bc4 movk       w1, #3, lsl #16
+00009bc8 str        w1, [x0, #8]
+00009bcc adrp       x1, #0x1e000
+00009bd0 strb       wzr, [x0, #0xc]
+00009bd4 ldr        x1, [x1, #0xfc8]
+00009bd8 bl         #0x8100 ; __cxa_throw
+00009bdc mov        x21, x0
+00009be0 mov        x0, x20
+00009be4 bl         #0x8180 ; Updater::FileHandler::~FileHandler
+00009be8 mov        x0, x19
+00009bec bl         #0x8180 ; Updater::FileHandler::~FileHandler
+00009bf0 mov        x0, x21
+00009bf4 bl         #0x8150 ; _Unwind_Resume
+00009bf8 add        x22, x29, #0x70
+00009bfc add        x3, x29, #0x40
+00009c00 mov        x1, x22
+00009c04 mov        x0, x19
+00009c08 mov        x2, #0x10
+00009c0c stp        xzr, xzr, [x29, #0x40]
+00009c10 bl         #0x8040 ; Updater::FileHandler::ReadAll
+00009c14 tst        w0, #0xff
+00009c18 b.ne       #0x9c78
+00009c1c adrp       x2, #0xc000
+00009c20 adrp       x0, #0xc000
+00009c24 mov        w1, #7
+00009c28 add        x2, x2, #0x37c ; literal 'BaseBodyLoaderModule.cpp'
+00009c2c add        x0, x0, #0x20a ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00009c30 mov        w3, #0x1c9
+00009c34 movk       w1, #3, lsl #16
+00009c38 bl         #0x81e0 ; printf
+00009c3c mov        x0, #0x10
+00009c40 bl         #0x7b70 ; __cxa_allocate_exception
+00009c44 adrp       x1, #0x1e000
+00009c48 adrp       x2, #0x1e000
+00009c4c ldr        x1, [x1, #0xf20]
+00009c50 ldr        x2, [x2, #0xf40]
+00009c54 add        x1, x1, #0x10
+00009c58 str        x1, [x0]
+00009c5c mov        w1, #7
+00009c60 movk       w1, #3, lsl #16
+00009c64 str        w1, [x0, #8]
+00009c68 adrp       x1, #0x1e000
+00009c6c strb       wzr, [x0, #0xc]
+00009c70 ldr        x1, [x1, #0xfc8]
+00009c74 bl         #0x8100 ; __cxa_throw
+00009c78 add        x23, x29, #0x80
+00009c7c add        x3, x29, #0x48
+00009c80 mov        x1, x23
+00009c84 mov        x0, x20
+00009c88 mov        x2, #0x10
+00009c8c bl         #0x8040 ; Updater::FileHandler::ReadAll
+00009c90 tst        w0, #0xff
+00009c94 b.ne       #0x9cf4
+00009c98 adrp       x2, #0xc000
+00009c9c adrp       x0, #0xc000
+00009ca0 mov        w1, #7
+00009ca4 add        x2, x2, #0x37c ; literal 'BaseBodyLoaderModule.cpp'
+00009ca8 add        x0, x0, #0x20a ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00009cac mov        w3, #0x1cc
+00009cb0 movk       w1, #3, lsl #16
+00009cb4 bl         #0x81e0 ; printf
+00009cb8 mov        x0, #0x10
+00009cbc bl         #0x7b70 ; __cxa_allocate_exception
+00009cc0 adrp       x1, #0x1e000
+00009cc4 adrp       x2, #0x1e000
+00009cc8 ldr        x1, [x1, #0xf20]
+00009ccc ldr        x2, [x2, #0xf40]
+00009cd0 add        x1, x1, #0x10
+00009cd4 str        x1, [x0]
+00009cd8 mov        w1, #7
+00009cdc movk       w1, #3, lsl #16
+00009ce0 str        w1, [x0, #8]
+00009ce4 adrp       x1, #0x1e000
+00009ce8 strb       wzr, [x0, #0xc]
+00009cec ldr        x1, [x1, #0xfc8]
+00009cf0 bl         #0x8100 ; __cxa_throw
+00009cf4 ldp        x2, x0, [x29, #0x40]
+00009cf8 mov        w21, #0
+00009cfc cmp        x2, x0
+00009d00 b.ne       #0x9b3c
+00009d04 mov        x1, x23
+00009d08 mov        x0, x22
+00009d0c bl         #0x7b80 ; memcmp
+00009d10 cbnz       w0, #0x9b3c
+00009d14 b          #0x9b38
+00009d18 mov        x21, x0
+00009d1c b          #0x9be8

@@ -1,0 +1,87 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu
+# SHA256 c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00
+# VA [0x405288, 0x4053d8) raw slice SHA256 9163a4c083a5075c8effa7d473ae09bfe2180b1ccbb7fd1490734a4dd39c6580
+  405288: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  40528c: 910003fd     	mov	x29, sp
+  405290: a90153f3     	stp	x19, x20, [sp, #0x10]
+  405294: aa0003f3     	mov	x19, x0
+  405298: f90013f5     	str	x21, [sp, #0x20]
+  40529c: d0000014     	adrp	x20, 0x407000 <vtable for BaseQueue+0xe80>
+  4052a0: 3900a81f     	strb	wzr, [x0, #0x2a]
+  4052a4: 97fff9ec     	bl	0x403a54 <BaseQueue::~BaseQueue()+0xe70>
+  4052a8: f9400a60     	ldr	x0, [x19, #0x10]
+  4052ac: b5000780     	cbnz	x0, 0x40539c <BaseQueue::~BaseQueue()+0x27b8>
+  4052b0: 3940a260     	ldrb	w0, [x19, #0x28]
+  4052b4: 34000660     	cbz	w0, 0x405380 <BaseQueue::~BaseQueue()+0x279c>
+  4052b8: 97fff3d6     	bl	0x402210 <GetMinorUpdater@plt>
+  4052bc: 90000015     	adrp	x21, 0x405000 <BaseQueue::~BaseQueue()+0x241c>
+  4052c0: 91305e94     	add	x20, x20, #0xc17
+  4052c4: 911ca2b5     	add	x21, x21, #0x728
+  4052c8: f9000a60     	str	x0, [x19, #0x10]
+  4052cc: d0000000     	adrp	x0, 0x407000 <vtable for BaseQueue+0xe80>
+  4052d0: aa1503e4     	mov	x4, x21
+  4052d4: aa1403e2     	mov	x2, x20
+  4052d8: 9130a800     	add	x0, x0, #0xc2a
+  4052dc: d2800005     	mov	x5, #0x0                // =0
+  4052e0: 52800743     	mov	w3, #0x3a               // =58
+  4052e4: 52800001     	mov	w1, #0x0                // =0
+  4052e8: 97fff446     	bl	0x402400 <printf@plt>
+  4052ec: f9400a60     	ldr	x0, [x19, #0x10]
+  4052f0: d2800002     	mov	x2, #0x0                // =0
+  4052f4: f9400001     	ldr	x1, [x0]
+  4052f8: f9400823     	ldr	x3, [x1, #0x10]
+  4052fc: aa1503e1     	mov	x1, x21
+  405300: d63f0060     	blr	x3
+  405304: 2a0003f5     	mov	w21, w0
+  405308: 2a0003e4     	mov	w4, w0
+  40530c: d0000000     	adrp	x0, 0x407000 <vtable for BaseQueue+0xe80>
+  405310: aa1403e2     	mov	x2, x20
+  405314: 9131b400     	add	x0, x0, #0xc6d
+  405318: 52800783     	mov	w3, #0x3c               // =60
+  40531c: 52800001     	mov	w1, #0x0                // =0
+  405320: 97fff438     	bl	0x402400 <printf@plt>
+  405324: 34000535     	cbz	w21, 0x4053c8 <BaseQueue::~BaseQueue()+0x27e4>
+  405328: aa1303e0     	mov	x0, x19
+  40532c: 528000f3     	mov	w19, #0x7               // =7
+  405330: 72a00093     	movk	w19, #0x4, lsl #16
+  405334: 97fff9c5     	bl	0x403a48 <BaseQueue::~BaseQueue()+0xe64>
+  405338: d0000000     	adrp	x0, 0x407000 <vtable for BaseQueue+0xe80>
+  40533c: 2a1503e4     	mov	w4, w21
+  405340: aa1403e2     	mov	x2, x20
+  405344: 2a1303e1     	mov	w1, w19
+  405348: 9132e800     	add	x0, x0, #0xcba
+  40534c: 52800843     	mov	w3, #0x42               // =66
+  405350: 97fff42c     	bl	0x402400 <printf@plt>
+  405354: d2800200     	mov	x0, #0x10               // =16
+  405358: 97fff33e     	bl	0x402050 <__cxa_allocate_exception@plt>
+  40535c: b9000813     	str	w19, [x0, #0x8]
+  405360: d0000002     	adrp	x2, 0x407000 <vtable for BaseQueue+0xe80>
+  405364: d0000001     	adrp	x1, 0x407000 <vtable for BaseQueue+0xe80>
+  405368: f9457842     	ldr	x2, [x2, #0xaf0]
+  40536c: f9000002     	str	x2, [x0]
+  405370: f9457c22     	ldr	x2, [x1, #0xaf8]
+  405374: d0000001     	adrp	x1, 0x407000 <vtable for BaseQueue+0xe80>
+  405378: f9458021     	ldr	x1, [x1, #0xb00]
+  40537c: 97fff3ed     	bl	0x402330 <__cxa_throw@plt>
+  405380: 3940a660     	ldrb	w0, [x19, #0x29]
+  405384: 34000060     	cbz	w0, 0x405390 <BaseQueue::~BaseQueue()+0x27ac>
+  405388: 97fff3fe     	bl	0x402380 <GetVersionSkipUpdater@plt>
+  40538c: 17ffffcc     	b	0x4052bc <BaseQueue::~BaseQueue()+0x26d8>
+  405390: 52800020     	mov	w0, #0x1                // =1
+  405394: 97fff3a7     	bl	0x402230 <GetUpdater@plt>
+  405398: 17ffffc9     	b	0x4052bc <BaseQueue::~BaseQueue()+0x26d8>
+  40539c: aa1303e0     	mov	x0, x19
+  4053a0: 52800153     	mov	w19, #0xa               // =10
+  4053a4: 72a00093     	movk	w19, #0x4, lsl #16
+  4053a8: 97fff9a8     	bl	0x403a48 <BaseQueue::~BaseQueue()+0xe64>
+  4053ac: d0000000     	adrp	x0, 0x407000 <vtable for BaseQueue+0xe80>
+  4053b0: 91305e82     	add	x2, x20, #0xc17
+  4053b4: 2a1303e1     	mov	w1, w19
+  4053b8: 9133cc00     	add	x0, x0, #0xcf3
+  4053bc: 528008e3     	mov	w3, #0x47               // =71
+  4053c0: 97fff410     	bl	0x402400 <printf@plt>
+  4053c4: 17ffffe4     	b	0x405354 <BaseQueue::~BaseQueue()+0x2770>
+  4053c8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  4053cc: f94013f5     	ldr	x21, [sp, #0x20]
+  4053d0: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  4053d4: d65f03c0     	ret

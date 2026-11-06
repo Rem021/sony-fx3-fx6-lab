@@ -1,0 +1,141 @@
+0000baa0 stp        x29, x30, [sp, #-0x70]!
+0000baa4 mov        x29, sp
+0000baa8 stp        x19, x20, [sp, #0x10]
+0000baac mov        x19, x0
+0000bab0 stp        x21, x22, [sp, #0x20]
+0000bab4 mov        x21, x1
+0000bab8 stp        x23, x24, [sp, #0x30]
+0000babc adrp       x1, #0xc000
+0000bac0 str        x25, [sp, #0x40]
+0000bac4 add        x1, x1, #0xf7e
+0000bac8 strb       wzr, [x0, #0x50]
+0000bacc add        x0, x0, #0x58
+0000bad0 stur       wzr, [x0, #-4]
+0000bad4 mov        x22, x2
+0000bad8 mov        w20, w3
+0000badc bl         #0x7880 ; Updater::Xml::TiXmlString::operator=
+0000bae0 stp        wzr, wzr, [x19, #0x64]
+0000bae4 cbz        x21, #0xbaf0
+0000bae8 ldrb       w0, [x21]
+0000baec cbnz       w0, #0xbb28
+0000baf0 mov        w4, #0
+0000baf4 mov        x0, x19
+0000baf8 mov        x3, #0
+0000bafc mov        x2, #0
+0000bb00 mov        w1, #0xd
+0000bb04 mov        x21, #0
+0000bb08 bl         #0x7550 ; Updater::Xml::DomDocument::SetError
+0000bb0c mov        x0, x21
+0000bb10 ldr        x25, [sp, #0x40]
+0000bb14 ldp        x19, x20, [sp, #0x10]
+0000bb18 ldp        x21, x22, [sp, #0x20]
+0000bb1c ldp        x23, x24, [sp, #0x30]
+0000bb20 ldp        x29, x30, [sp], #0x70
+0000bb24 ret        
+0000bb28 mov        w0, #-1
+0000bb2c stp        w0, w0, [x19, #8]
+0000bb30 cbz        x22, #0xbc40
+0000bb34 ldr        w0, [x22]
+0000bb38 str        w0, [x19, #8]
+0000bb3c ldr        w0, [x22, #4]
+0000bb40 str        w0, [x19, #0xc]
+0000bb44 ldp        w1, w0, [x19, #8]
+0000bb48 str        x21, [x29, #0x60]
+0000bb4c stp        w1, w0, [x29, #0x58]
+0000bb50 ldr        w2, [x19, #0x60]
+0000bb54 ldr        x0, [x29, #0x58]
+0000bb58 str        w2, [x29, #0x68]
+0000bb5c str        x0, [x19, #8]
+0000bb60 cbnz       w20, #0xbb94
+0000bb64 ldrb       w0, [x21]
+0000bb68 cmp        w0, #0xef
+0000bb6c b.ne       #0xbb94
+0000bb70 ldrb       w0, [x21, #1]
+0000bb74 cmp        w0, #0xbb
+0000bb78 b.ne       #0xbb94
+0000bb7c ldrb       w0, [x21, #2]
+0000bb80 cmp        w0, #0xbf
+0000bb84 b.ne       #0xbb94
+0000bb88 mov        w0, #1
+0000bb8c mov        w20, #1
+0000bb90 strb       w0, [x19, #0x6c]
+0000bb94 mov        x0, x21
+0000bb98 mov        w1, w20
+0000bb9c bl         #0x75f0 ; Updater::Xml::DomBase::SkipWhiteSpace
+0000bba0 mov        x21, x0
+0000bba4 cbz        x0, #0xbaf0
+0000bba8 adrp       x23, #0xd000 ; literal ':Xml::DomAttribute*)'
+0000bbac adrp       x24, #0xd000 ; literal ':Xml::DomAttribute*)'
+0000bbb0 add        x25, x29, #0x58
+0000bbb4 add        x23, x23, #0x693 ; literal 'UTF-8'
+0000bbb8 add        x24, x24, #0x699 ; literal 'UTF8'
+0000bbbc ldrb       w0, [x21]
+0000bbc0 cbz        w0, #0xbc30
+0000bbc4 mov        w2, w20
+0000bbc8 mov        x1, x21
+0000bbcc mov        x0, x19
+0000bbd0 bl         #0x7260 ; Updater::Xml::DomNode::Identify
+0000bbd4 mov        x22, x0
+0000bbd8 cbz        x0, #0xbc30
+0000bbdc ldr        x1, [x0]
+0000bbe0 mov        w3, w20
+0000bbe4 mov        x2, x25
+0000bbe8 ldr        x4, [x1, #0x18]
+0000bbec mov        x1, x21
+0000bbf0 blr        x4
+0000bbf4 mov        x21, x0
+0000bbf8 mov        x1, x22
+0000bbfc mov        x0, x19
+0000bc00 bl         #0x77d0 ; Updater::Xml::DomNode::LinkEndChild
+0000bc04 cbnz       w20, #0xbc1c
+0000bc08 ldr        x0, [x22]
+0000bc0c ldr        x1, [x0, #0x78]
+0000bc10 mov        x0, x22
+0000bc14 blr        x1
+0000bc18 cbnz       x0, #0xbc98
+0000bc1c mov        x0, x21
+0000bc20 mov        w1, w20
+0000bc24 bl         #0x75f0 ; Updater::Xml::DomBase::SkipWhiteSpace
+0000bc28 mov        x21, x0
+0000bc2c cbnz       x0, #0xbbbc
+0000bc30 ldr        x0, [x19, #0x28]
+0000bc34 cbnz       x0, #0xbb0c
+0000bc38 mov        w4, w20
+0000bc3c b          #0xbaf4
+0000bc40 stp        wzr, wzr, [x19, #8]
+0000bc44 b          #0xbb44
+0000bc48 ldrb       w0, [x0, #0x10]
+0000bc4c cbnz       w0, #0xbc58
+0000bc50 mov        w20, #1
+0000bc54 b          #0xbc1c
+0000bc58 mov        x1, x23
+0000bc5c mov        x0, x20
+0000bc60 mov        w3, #0
+0000bc64 mov        w2, #1
+0000bc68 bl         #0x7480 ; Updater::Xml::DomBase::StringEqual
+0000bc6c tst        w0, #0xff
+0000bc70 b.ne       #0xbc50
+0000bc74 mov        x1, x24
+0000bc78 mov        x0, x20
+0000bc7c mov        w3, #0
+0000bc80 mov        w2, #1
+0000bc84 bl         #0x7480 ; Updater::Xml::DomBase::StringEqual
+0000bc88 tst        w0, #0xff
+0000bc8c b.ne       #0xbc50
+0000bc90 mov        w20, #2
+0000bc94 b          #0xbc1c
+0000bc98 ldr        x0, [x22]
+0000bc9c ldr        x1, [x0, #0x78]
+0000bca0 mov        x0, x22
+0000bca4 blr        x1
+0000bca8 ldr        x0, [x0, #0x58]
+0000bcac adds       x20, x0, #0x10
+0000bcb0 b.ne       #0xbc48
+0000bcb4 adrp       x3, #0xd000 ; literal ':Xml::DomAttribute*)'
+0000bcb8 adrp       x1, #0xd000 ; literal ':Xml::DomAttribute*)'
+0000bcbc adrp       x0, #0xd000 ; literal ':Xml::DomAttribute*)'
+0000bcc0 add        x3, x3, #0xc00 ; literal 'virtual const char* Updater::Xml::DomDocument::Parse(const char*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)'
+0000bcc4 add        x1, x1, #0x6e4 ; literal 'ul_xmlparser.cpp'
+0000bcc8 add        x0, x0, #0x68f
+0000bccc mov        w2, #0x29a
+0000bcd0 bl         #0x73f0 ; __assert_fail

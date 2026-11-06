@@ -1,0 +1,37 @@
+004056f4 push       {r4, r5, r6, r7, lr}
+004056f6 add        r7, sp, #0xc
+004056f8 push.w     {r8, sb, sl, fp}
+004056fc sub        sp, #0x9c
+004056fe mov        r4, r3
+00405700 cmp        r2, #0
+00405702 strd       r1, r0, [sp, #0x18]
+00405706 str        r2, [sp, #0x10]
+00405708 beq        #0x40571c
+0040570a movw       r6, #0x417
+0040570e movs       r0, #2
+00405710 mov.w      fp, #1
+00405714 str        r0, [sp, #0x14]
+00405716 movt       r6, #0x8017
+0040571a b          #0x40573c
+0040571c cmp        r1, #4
+0040571e bhi        #0x405730
+00405720 adr        r0, #0x2e0
+00405722 mov.w      fp, #0
+00405726 movw       r6, #0x4af
+0040572a ldr.w      r0, [r0, r1, lsl #2]
+0040572e b          #0x40573a
+00405730 movs       r0, #0
+00405732 mov.w      fp, #0
+00405736 movw       r6, #0x4af
+0040573a str        r0, [sp, #0x14]
+0040573c movw       sb, #0xadf0
+00405740 mov.w      sl, #0
+00405744 movs       r5, #5
+00405746 movt       sb, #0x117
+0040574a mov        r8, sb
+0040574c mov        r0, r8
+0040574e mov        r1, r6
+00405750 movs       r2, #1
+00405752 movs       r3, #0
+00405754 str        r5, [sp]
+00405756 bl         #0x44f004

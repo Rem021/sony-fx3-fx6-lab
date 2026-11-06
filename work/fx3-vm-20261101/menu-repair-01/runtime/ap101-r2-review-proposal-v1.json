@@ -1,0 +1,25 @@
+{
+  "base_run": "ap101v1nativefile600-7c9e5597",
+  "own_observer_failure": "BusyBox sha256sum applet absent; raw bank data actually matched native file exactly",
+  "proposed_observer_fix": "actual existing O_RDONLY file-export snapshot SHA; start observer before native preAP window, including early stop native API restore",
+  "actual_CP_loaded_matches_native_saved_file": true,
+  "native_CP_difference_from_prior_seed": [
+    {
+      "offset": 9,
+      "old": 0,
+      "native": 1
+    },
+    {
+      "offset": 32,
+      "old": 177,
+      "native": 178
+    }
+  ],
+  "old_initial_FNV": "0x9c88411e0172b013",
+  "native_initial_FNV": "0xee5c1a03bd34104f",
+  "old_initial_SuspendComp": 0,
+  "native_initial_SuspendComp": 1,
+  "review_pending_constructor_profile": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-v5-native101.c",
+  "candidate_or_run_created_for_proposal": false,
+  "all_other_models_identical": true
+}

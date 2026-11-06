@@ -1,0 +1,49 @@
+{
+  "timestamp_utc": "2026-11-05T18:42:27.694971+00:00",
+  "task": "task_ed9c75658665",
+  "dispatch": "ctx_65b7325e226f",
+  "candidate_revision": "r6",
+  "status": "offline_stop_only_candidate_accepted_pending_specific_run_approval",
+  "manifest": {
+    "count": 337,
+    "all_match": true,
+    "sha256": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49"
+  },
+  "reviewed_fixes": [
+    "UUID/preflight/root rejection does not create or overwrite run output",
+    "cleanup phase selected before observer breakpoint removal",
+    "successful CLI exit requires verified unchanged inputs and no postflight error"
+  ],
+  "tests": {
+    "worker_reported_passed": 53,
+    "kind": "offline fake lifecycle and real socketpair only",
+    "coordinator_reran_entire_suite": false,
+    "coordinator_evidence": "code review of targeted fixes and independent 337-item hash verification; prior independent fault probes preserved in preceding reviews"
+  },
+  "approved_for_runtime": false,
+  "VM_started": false,
+  "proposed_trial": {
+    "mode": "HOST_STOP_ONLY_OBSERVATION",
+    "starts": 1,
+    "keys": 0,
+    "observation_seconds_max": 150,
+    "total_launch_cleanup_seconds_max": 180,
+    "target_cpio_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+    "appfw_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+    "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+    "FX3_platform_configuration_changed": false,
+    "observer_guest_control_code_data_writes": false,
+    "guest_restore_status": "unknown_not_attempted",
+    "termination": "pause, remove owned Z1 where total budget permits, close RSP, quit/reap own QEMU, release locks only after confirmed reap",
+    "purpose": "observe actual entry/return values for Backup keys 0x02cf0214 and 0x02cf0218",
+    "boot_menu_passed": false,
+    "pre_post_hashes_outside_guest_budget": true
+  },
+  "remaining": [
+    "Specific approval for stop-only termination mode pending; earlier FX3 r44/r47 approvals not reused",
+    "Full guest restoration contract remains unestablished",
+    "No real two-key runtime values or FX6 menu acceptance yet"
+  ],
+  "authorization_source": "User-supplied AGENTS.md instruction: 不改变项目运行政策; proposed one-run stop-only mode differs from prior restore/Guest End policy",
+  "prior_review": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-backup-observer-coordinator-review-r6.json"
+}

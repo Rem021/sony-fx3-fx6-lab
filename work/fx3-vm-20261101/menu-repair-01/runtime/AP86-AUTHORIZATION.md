@@ -1,0 +1,13 @@
+# AP86 current authorization (2026-11-02)
+
+Lead msg_a6a816406d52 (delivery124765656546 ACKed) approves first passive valloc/send/free, pool remaining and producer stack observations, plus pair deadline/noACK. If those observations establish pool exhaustion / original messages lacking receiver release, software consumer may act as missing CP receiver and receive/release originals on exact allowed messages only. Snapshot/ACK logic unchanged, ownership change must be evidenced and reported. 0400 remains no reply until separate audited contract.
+
+Blocking ask sent after ACK, tool session72305 returned answer: yes, includes **8280084e exact8B1005**, alongside8280074d exact12B1002 and8280084d exact36B1003; all others untouched. Condition unchanged. This is conditional authorization, not permission to assume the cause.
+
+AP86A diagnostic plan: new passive preload aftercapid/beforeheadless, capid stays outermost for native CPversioncaller. Newheadlessv4 only adds exported stage1→failed timeout gate; timeout2s after validcontrol with no descriptor, noACK, exactpending/racechecks. Diagnostic wrappers preserve allnativeAPI arguments/results/errno, log nativeconstructor valloc entry/return, successfuloriginalsend andoriginalfree; record pointer reuse independently because missing userfree alone does not prove missing kernelfree. Read-only/proc/osal/minfo/uipc andnativeosal_stat_msgq raw state; producerstack/syscall andboundeduserFPcapture ondeadline. Nooriginalqueue receive/free in AP86A. SameR4reservedring/header spare diagnostic counters can be coordinated ifneeded. Startfromcandidate85-r4, software0152 unchanged,0400 unmodified; combinefuture0400contractonlyafterLeadaccepted.
+
+NoAP86candidate/helper/VM yet at this checkpoint. AP85finalreportsynchronized andnoVM; seeAP85-IMPLEMENTATION-NOTES.md. Do notworker_done.
+
+## AP86B additional explicit decisions
+
+Lead msg_4332e0a51d70 authorizes exact audited0400 software mode0/status0 backend and passive display/cache/category270/direction243/notifyDraw/resource/GRM/queue-completion observations, without hinge input changes. Blocking ask session9678 answerA expressly authorizes native OSAL receive/free of ALL messages on74D/84D/84E: saveGUI1000/1001/1004 without reply, normal current1002/1003/1005 completion, unknown fullraw/count/free with no effect/reply, old backlog neverACK. Include76c8BACK and40Blocal allocations and active-allocation deadline. AP86A proved 2632 successful CP publications without user free, pending queues and native normal-vpool128B starvation (only64B free blocks), satisfying the conditional ownership gate.

@@ -1,0 +1,93 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap87uudqueue-7d78fa20",
+  "classification": "AP86B_PARTIAL_OR_REVIEW_REQUIRED",
+  "actual_seconds": 103.65793687500991,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "host_pid_absent": true,
+  "inputs_unchanged": true,
+  "missing_markers": [
+    "FX3_GPE_CMD",
+    "FX3_OSD_HEADLESS_BOUND",
+    "FX3_OSD_HEADLESS_ACK",
+    "FX3_OSD_NATIVE_SIGNAL",
+    "FX3_OSD_DRAW_WAIT_RETURN",
+    "FX3_OSD_LIFE_ALLOC_BEGIN",
+    "FX3_OSD_LIFE_ALLOC_RETURN",
+    "FX3_OSD_LIFE_SEND",
+    "FX3_OSD_OWNER_START",
+    "FX3_OSD_OWNER_CURRENT",
+    "FX3_OSD_OWNER_FREE",
+    "FX3_OSD_LIFE_USER_FREE",
+    "FX3_DISPLAY_WIDGET",
+    "FX3_DISPLAY_GRM_DIRTY",
+    "FX3_UUD_DELETE_FACE_EVENT_WIRE"
+  ],
+  "im_alive_end_compact_maps": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "released_verified": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "released_verified": true
+    }
+  ],
+  "OSD_ring_final": {
+    "magic": "0x0",
+    "schema": 0,
+    "pid": 0,
+    "epoch": 0,
+    "completed_snapshots": 0,
+    "ACKs_queued": 0,
+    "native_signal_success_count": 0,
+    "duplicates": 0,
+    "rejected": 0,
+    "failed": 0,
+    "slot_overwrites": 0,
+    "slots": 0,
+    "stride": "0x0",
+    "header": "0x0",
+    "stage": 0,
+    "pending": "0x0",
+    "scope": "software ledger; native signal receipt additionally verified by original callsite markers"
+  },
+  "native_owner": {
+    "magic": "0x0",
+    "schema": 0,
+    "pid": 0,
+    "registered_sends": 0,
+    "received": [
+      0,
+      0,
+      0
+    ],
+    "freed": [
+      0,
+      0,
+      0
+    ],
+    "GUI": 0,
+    "unknown": 0,
+    "stale": 0,
+    "errors": 0,
+    "owned_descriptor": "0x0",
+    "owned_queue": "0x0"
+  },
+  "display_final": {
+    "magic": "0x0",
+    "schema": 0,
+    "bank": 0,
+    "sample": 0
+  },
+  "pool_final_kernel": {
+    "maximum": 524288,
+    "waiter": "0x0",
+    "free": 350912,
+    "minimum_free": 350400,
+    "sha256": "f2f05920184c6296705c57a1cad3f9e1ec2db9b2880b04346347b78649b0fa85"
+  },
+  "lifetime": {},
+  "gpe_grouped_statistics": []
+}

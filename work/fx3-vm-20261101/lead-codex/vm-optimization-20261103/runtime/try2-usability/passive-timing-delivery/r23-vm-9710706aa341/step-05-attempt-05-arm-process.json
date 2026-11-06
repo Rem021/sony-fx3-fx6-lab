@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r21-recovery-integration/operator-helpers/deadline_cli.py",
+    "arm",
+    "--session",
+    "fx3-deadline-r23-9710706aa341",
+    "--url",
+    "http://127.0.0.1:60889/",
+    "--launch-id",
+    "920ab44f-c731-4322-84f1-fdeb50fa4b9b",
+    "--nonce",
+    "968bd401-2f34-4a48-978b-78eefddc8247"
+  ],
+  "start": {
+    "UTC": "2026-11-05T00:56:52.783783+00:00",
+    "host_ns": 423898311176250
+  },
+  "end": {
+    "UTC": "2026-11-05T00:56:52.844126+00:00",
+    "host_ns": 423898371533583
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"current\": {\n    \"armed_ms\": 139045.10000002384,\n    \"deadline_ms\": 20000,\n    \"due_ms\": 159045.10000002384,\n    \"nonce\": \"968bd401-2f34-4a48-978b-78eefddc8247\",\n    \"state\": \"armed\"\n  },\n  \"deadline_ms\": 20000,\n  \"documentTimeOrigin\": 1793840073791.9,\n  \"events\": [\n    {\n      \"event\": \"installed\",\n      \"performance_ms\": 18643.30000001192,\n      \"script_SHA256\": \"f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab\",\n      \"wall_UTC\": \"2026-11-05T00:54:52.435Z\"\n    },\n    {\n      \"due_ms\": 93115.80000001192,\n      \"event\": \"armed\",\n      \"nonce\": \"058f913e-b137-4429-8cf0-0ad21c57d634\",\n      \"performance_ms\": 73115.80000001192,\n      \"wall_UTC\": \"2026-11-05T00:55:46.907Z\"\n    },\n    {\n      \"elapsed_ms\": 11978.80000001192,\n      \"event\": \"cancelled\",\n      \"nonce\": \"058f913e-b137-4429-8cf0-0ad21c57d634\",\n      \"performance_ms\": 85094.60000002384,\n      \"wall_UTC\": \"2026-11-05T00:55:58.886Z\"\n    },\n    {\n      \"due_ms\": 111365.5,\n      \"event\": \"armed\",\n      \"nonce\": \"ac612b76-1de5-48b6-bfb9-ea3a8a687399\",\n      \"performance_ms\": 91365.5,\n      \"wall_UTC\": \"2026-11-05T00:56:05.157Z\"\n    },\n    {\n      \"elapsed_ms\": 9231.399999976158,\n      \"event\": \"cancelled\",\n      \"nonce\": \"ac612b76-1de5-48b6-bfb9-ea3a8a687399\",\n      \"performance_ms\": 100596.89999997616,\n      \"wall_UTC\": \"2026-11-05T00:56:14.388Z\"\n    },\n    {\n      \"due_ms\": 126544.19999998808,\n      \"event\": \"armed\",\n      \"nonce\": \"85637cd5-f13b-4d47-b22e-cb01db48bd54\",\n      \"performance_ms\": 106544.30000001192,\n      \"wall_UTC\": \"2026-11-05T00:56:20.336Z\"\n    },\n    {\n      \"elapsed_ms\": 8758.5,\n      \"event\": \"cancelled\",\n      \"nonce\": \"85637cd5-f13b-4d47-b22e-cb01db48bd54\",\n      \"performance_ms\": 115302.69999998808,\n      \"wall_UTC\": \"2026-11-05T00:56:29.094Z\"\n    },\n    {\n      \"due_ms\": 143071.10000002384,\n      \"event\": \"armed\",\n      \"nonce\": \"c6576e0d-730b-4e93-9192-1b35d903aa79\",\n      \"performance_ms\": 123071.10000002384,\n      \"wall_UTC\": \"2026-11-05T00:56:36.863Z\"\n    },\n    {\n      \"elapsed_ms\": 9293.899999976158,\n      \"event\": \"cancelled\",\n      \"nonce\": \"c6576e0d-730b-4e93-9192-1b35d903aa79\",\n      \"performance_ms\": 132365,\n      \"wall_UTC\": \"2026-11-05T00:56:46.157Z\"\n    },\n    {\n      \"due_ms\": 159045.10000002384,\n      \"event\": \"armed\",\n      \"nonce\": \"968bd401-2f34-4a48-978b-78eefddc8247\",\n      \"performance_ms\": 139045.10000002384,\n      \"wall_UTC\": \"2026-11-05T00:56:52.837Z\"\n    }\n  ],\n  \"expectedLaunchId\": \"920ab44f-c731-4322-84f1-fdeb50fa4b9b\",\n  \"expectedURL\": \"http://127.0.0.1:60889/\",\n  \"sealed\": false,\n  \"version\": 1\n}\n",
+  "stderr": ""
+}

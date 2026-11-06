@@ -1,0 +1,47 @@
+{
+  "status": "PASS_EXACT_THREE_PAYLOAD_STATIC_DIFF_ONLY",
+  "candidate_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "source_sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+  "member_count": 1140,
+  "changes": [
+    {
+      "name": "usr/bin/bootin.elf",
+      "before_sha": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "after_sha": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+      "before_size": 23960,
+      "after_size": 23960
+    },
+    {
+      "name": "usr/bin/im.elf",
+      "before_sha": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+      "after_sha": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+      "before_size": 40920,
+      "after_size": 40920
+    },
+    {
+      "name": "usr/lib/appFw.so",
+      "before_sha": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "after_sha": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "before_size": 79015712,
+      "after_size": 50520424
+    }
+  ],
+  "all_other_member_records_equal": true,
+  "candidate_bytes": 453184500,
+  "trailer_end": 424689212,
+  "trailing_zero_padding_bytes": 28495288,
+  "frozen_artifacts_verified": {
+    "qemu_binary": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+    "fx3_kernel": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "fx3_dtb_full_binary": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+    "software_guest_cpio": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+    "english_generation4_backup": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+  },
+  "guest_execution": false,
+  "remaining": [
+    "pre-AP global scope and actual flags",
+    "FX6 dlopen and initialization",
+    "ABI and native IPC",
+    "actual FX6 UI and usability"
+  ]
+}

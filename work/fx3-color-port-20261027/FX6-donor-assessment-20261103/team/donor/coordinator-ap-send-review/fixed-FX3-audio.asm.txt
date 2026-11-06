@@ -1,0 +1,222 @@
+
+work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v49-touch100.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000001e730 <audio_dispatch>:
+   1e730: d10183ff     	sub	sp, sp, #0x60
+   1e734: a9017bfd     	stp	x29, x30, [sp, #0x10]
+   1e738: f90013f9     	str	x25, [sp, #0x20]
+   1e73c: a9035ff8     	stp	x24, x23, [sp, #0x30]
+   1e740: a90457f6     	stp	x22, x21, [sp, #0x40]
+   1e744: a9054ff4     	stp	x20, x19, [sp, #0x50]
+   1e748: 910043fd     	add	x29, sp, #0x10
+   1e74c: f0000136     	adrp	x22, 0x45000 <pins+0x380>
+   1e750: aa0003f3     	mov	x19, x0
+   1e754: 12807f80     	mov	w0, #-0x3fd             // =-1021
+   1e758: 396f22c8     	ldrb	w8, [x22, #0xbc8]
+   1e75c: 37000f08     	tbnz	w8, #0x0, 0x1e93c <audio_dispatch+0x20c>
+   1e760: f0000128     	adrp	x8, 0x45000 <pins+0x380>
+   1e764: b94bc108     	ldr	w8, [x8, #0xbc0]
+   1e768: 34000ea8     	cbz	w8, 0x1e93c <audio_dispatch+0x20c>
+   1e76c: f0000128     	adrp	x8, 0x45000 <pins+0x380>
+   1e770: 52801580     	mov	w0, #0xac               // =172
+   1e774: f9458514     	ldr	x20, [x8, #0xb08]
+   1e778: 9400186a     	bl	0x24920 <syscall@plt>
+   1e77c: eb00029f     	cmp	x20, x0
+   1e780: 54000dc1     	b.ne	0x1e938 <audio_dispatch+0x208>
+   1e784: f0000128     	adrp	x8, 0x45000 <pins+0x380>
+   1e788: aa1303e0     	mov	x0, x19
+   1e78c: f945c508     	ldr	x8, [x8, #0xb88]
+   1e790: d63f0100     	blr	x8
+   1e794: 7100281f     	cmp	w0, #0xa
+   1e798: 54000d01     	b.ne	0x1e938 <audio_dispatch+0x208>
+   1e79c: f0000128     	adrp	x8, 0x45000 <pins+0x380>
+   1e7a0: aa1303e0     	mov	x0, x19
+   1e7a4: f945c908     	ldr	x8, [x8, #0xb90]
+   1e7a8: d63f0100     	blr	x8
+   1e7ac: 12ae0009     	mov	w9, #-0x70000001        // =-1879048193
+   1e7b0: 2a0003e8     	mov	w8, w0
+   1e7b4: 6b09001f     	cmp	w0, w9
+   1e7b8: 12807fe0     	mov	w0, #-0x400             // =-1024
+   1e7bc: 54000c0c     	b.gt	0x1e93c <audio_dispatch+0x20c>
+   1e7c0: 12006d09     	and	w9, w8, #0xfffffff
+   1e7c4: 34000bc9     	cbz	w9, 0x1e93c <audio_dispatch+0x20c>
+   1e7c8: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e7cc: f945e929     	ldr	x9, [x9, #0xbd0]
+   1e7d0: b4000309     	cbz	x9, 0x1e830 <audio_dispatch+0x100>
+   1e7d4: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e7d8: f945f529     	ldr	x9, [x9, #0xbe8]
+   1e7dc: b40002e9     	cbz	x9, 0x1e838 <audio_dispatch+0x108>
+   1e7e0: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e7e4: f9460129     	ldr	x9, [x9, #0xc00]
+   1e7e8: b40002c9     	cbz	x9, 0x1e840 <audio_dispatch+0x110>
+   1e7ec: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e7f0: f9460d29     	ldr	x9, [x9, #0xc18]
+   1e7f4: b40002a9     	cbz	x9, 0x1e848 <audio_dispatch+0x118>
+   1e7f8: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e7fc: f9461929     	ldr	x9, [x9, #0xc30]
+   1e800: b4000289     	cbz	x9, 0x1e850 <audio_dispatch+0x120>
+   1e804: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e808: f9462529     	ldr	x9, [x9, #0xc48]
+   1e80c: b4000269     	cbz	x9, 0x1e858 <audio_dispatch+0x128>
+   1e810: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e814: f9463129     	ldr	x9, [x9, #0xc60]
+   1e818: b4000249     	cbz	x9, 0x1e860 <audio_dispatch+0x130>
+   1e81c: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e820: f9463d29     	ldr	x9, [x9, #0xc78]
+   1e824: b50008a9     	cbnz	x9, 0x1e938 <audio_dispatch+0x208>
+   1e828: 528000f7     	mov	w23, #0x7               // =7
+   1e82c: 1400000e     	b	0x1e864 <audio_dispatch+0x134>
+   1e830: aa1f03f7     	mov	x23, xzr
+   1e834: 1400000c     	b	0x1e864 <audio_dispatch+0x134>
+   1e838: 52800037     	mov	w23, #0x1               // =1
+   1e83c: 1400000a     	b	0x1e864 <audio_dispatch+0x134>
+   1e840: 52800057     	mov	w23, #0x2               // =2
+   1e844: 14000008     	b	0x1e864 <audio_dispatch+0x134>
+   1e848: 52800077     	mov	w23, #0x3               // =3
+   1e84c: 14000006     	b	0x1e864 <audio_dispatch+0x134>
+   1e850: 52800097     	mov	w23, #0x4               // =4
+   1e854: 14000004     	b	0x1e864 <audio_dispatch+0x134>
+   1e858: 528000b7     	mov	w23, #0x5               // =5
+   1e85c: 14000002     	b	0x1e864 <audio_dispatch+0x134>
+   1e860: 528000d7     	mov	w23, #0x6               // =6
+   1e864: f0000129     	adrp	x9, 0x45000 <pins+0x380>
+   1e868: 910063a1     	add	x1, x29, #0x18
+   1e86c: 2a0803e0     	mov	w0, w8
+   1e870: f9464929     	ldr	x9, [x9, #0xc90]
+   1e874: 52800182     	mov	w2, #0xc                // =12
+   1e878: 52800023     	mov	w3, #0x1                // =1
+   1e87c: f9000fbf     	str	xzr, [x29, #0x18]
+   1e880: 2a0803f4     	mov	w20, w8
+   1e884: 52800035     	mov	w21, #0x1               // =1
+   1e888: d63f0120     	blr	x9
+   1e88c: f9400fa3     	ldr	x3, [x29, #0x18]
+   1e890: eb13007f     	cmp	x3, x19
+   1e894: 54000500     	b.eq	0x1e934 <audio_dispatch+0x204>
+   1e898: b4000603     	cbz	x3, 0x1e958 <audio_dispatch+0x228>
+   1e89c: f0000138     	adrp	x24, 0x45000 <pins+0x380>
+   1e8a0: 912f4318     	add	x24, x24, #0xbd0
+   1e8a4: f9400308     	ldr	x8, [x24]
+   1e8a8: eb08007f     	cmp	x3, x8
+   1e8ac: 540005e0     	b.eq	0x1e968 <audio_dispatch+0x238>
+   1e8b0: f9400f08     	ldr	x8, [x24, #0x18]
+   1e8b4: eb08007f     	cmp	x3, x8
+   1e8b8: 54000580     	b.eq	0x1e968 <audio_dispatch+0x238>
+   1e8bc: f9401b08     	ldr	x8, [x24, #0x30]
+   1e8c0: eb08007f     	cmp	x3, x8
+   1e8c4: 54000520     	b.eq	0x1e968 <audio_dispatch+0x238>
+   1e8c8: f9402708     	ldr	x8, [x24, #0x48]
+   1e8cc: eb08007f     	cmp	x3, x8
+   1e8d0: 540004c0     	b.eq	0x1e968 <audio_dispatch+0x238>
+   1e8d4: f9403308     	ldr	x8, [x24, #0x60]
+   1e8d8: eb08007f     	cmp	x3, x8
+   1e8dc: 54000460     	b.eq	0x1e968 <audio_dispatch+0x238>
+   1e8e0: f9403f08     	ldr	x8, [x24, #0x78]
+   1e8e4: eb08007f     	cmp	x3, x8
+   1e8e8: 54000400     	b.eq	0x1e968 <audio_dispatch+0x238>
+   1e8ec: f9404b08     	ldr	x8, [x24, #0x90]
+   1e8f0: eb08007f     	cmp	x3, x8
+   1e8f4: 540003a0     	b.eq	0x1e968 <audio_dispatch+0x238>
+   1e8f8: f9405708     	ldr	x8, [x24, #0xa8]
+   1e8fc: eb08007f     	cmp	x3, x8
+   1e900: 54000340     	b.eq	0x1e968 <audio_dispatch+0x238>
+   1e904: 340003a0     	cbz	w0, 0x1e978 <audio_dispatch+0x248>
+   1e908: f0000128     	adrp	x8, 0x45000 <pins+0x380>
+   1e90c: 2a0003f3     	mov	w19, w0
+   1e910: 2a1403e0     	mov	w0, w20
+   1e914: f9464d08     	ldr	x8, [x8, #0xc98]
+   1e918: aa0303e1     	mov	x1, x3
+   1e91c: d63f0100     	blr	x8
+   1e920: 340008c0     	cbz	w0, 0x1ea38 <audio_dispatch+0x308>
+   1e924: 52800028     	mov	w8, #0x1                // =1
+   1e928: 2a1303e0     	mov	w0, w19
+   1e92c: 392f22c8     	strb	w8, [x22, #0xbc8]
+   1e930: 14000003     	b	0x1e93c <audio_dispatch+0x20c>
+   1e934: 392f22d5     	strb	w21, [x22, #0xbc8]
+   1e938: 12807f80     	mov	w0, #-0x3fd             // =-1021
+   1e93c: a9454ff4     	ldp	x20, x19, [sp, #0x50]
+   1e940: f94013f9     	ldr	x25, [sp, #0x20]
+   1e944: a94457f6     	ldp	x22, x21, [sp, #0x40]
+   1e948: a9435ff8     	ldp	x24, x23, [sp, #0x30]
+   1e94c: a9417bfd     	ldp	x29, x30, [sp, #0x10]
+   1e950: 910183ff     	add	sp, sp, #0x60
+   1e954: d65f03c0     	ret
+   1e958: 7100001f     	cmp	w0, #0x0
+   1e95c: 12807f88     	mov	w8, #-0x3fd             // =-1021
+   1e960: 1a800100     	csel	w0, w8, w0, eq
+   1e964: 17fffff6     	b	0x1e93c <audio_dispatch+0x20c>
+   1e968: 52800028     	mov	w8, #0x1                // =1
+   1e96c: 12807f80     	mov	w0, #-0x3fd             // =-1021
+   1e970: 392f22c8     	strb	w8, [x22, #0xbc8]
+   1e974: 17fffff2     	b	0x1e93c <audio_dispatch+0x20c>
+   1e978: d0000175     	adrp	x21, 0x4c000 <pin_retired+0x1300>
+   1e97c: 911012b5     	add	x21, x21, #0x404
+   1e980: aa1303e1     	mov	x1, x19
+   1e984: f94002a8     	ldr	x8, [x21]
+   1e988: b9400aa9     	ldr	w9, [x21, #0x8]
+   1e98c: aa1503e0     	mov	x0, x21
+   1e990: 52800142     	mov	w2, #0xa                // =10
+   1e994: f90003e8     	str	x8, [sp]
+   1e998: b9000be9     	str	w9, [sp, #0x8]
+   1e99c: 940017c5     	bl	0x248b0 <fx3_audio_format_apply@plt>
+   1e9a0: 350002e0     	cbnz	w0, 0x1e9fc <audio_dispatch+0x2cc>
+   1e9a4: f0000148     	adrp	x8, 0x49000 <previous_table+0x3360>
+   1e9a8: f9400fa0     	ldr	x0, [x29, #0x18]
+   1e9ac: 5280e8e1     	mov	w1, #0x747              // =1863
+   1e9b0: f9465d08     	ldr	x8, [x8, #0xcb8]
+   1e9b4: 72b25081     	movk	w1, #0x9284, lsl #16
+   1e9b8: d63f0100     	blr	x8
+   1e9bc: 52800308     	mov	w8, #0x18               // =24
+   1e9c0: 528065aa     	mov	w10, #0x32d             // =813
+   1e9c4: f000012b     	adrp	x11, 0x45000 <pins+0x380>
+   1e9c8: 9ba862f9     	umaddl	x25, w23, w8, x24
+   1e9cc: f0000148     	adrp	x8, 0x49000 <previous_table+0x3360>
+   1e9d0: f9400fa1     	ldr	x1, [x29, #0x18]
+   1e9d4: f9466109     	ldr	x9, [x8, #0xcc0]
+   1e9d8: 2a1403e0     	mov	w0, w20
+   1e9dc: 29012b34     	stp	w20, w10, [x25, #0x8]
+   1e9e0: f945d16a     	ldr	x10, [x11, #0xba0]
+   1e9e4: 91000529     	add	x9, x9, #0x1
+   1e9e8: f9000321     	str	x1, [x25]
+   1e9ec: f9066109     	str	x9, [x8, #0xcc0]
+   1e9f0: f9000b29     	str	x9, [x25, #0x10]
+   1e9f4: d63f0140     	blr	x10
+   1e9f8: 34000240     	cbz	w0, 0x1ea40 <audio_dispatch+0x310>
+   1e9fc: f94003e8     	ldr	x8, [sp]
+   1ea00: 52800309     	mov	w9, #0x18               // =24
+   1ea04: b9400bea     	ldr	w10, [sp, #0x8]
+   1ea08: 9ba962e9     	umaddl	x9, w23, w9, x24
+   1ea0c: f9400fa1     	ldr	x1, [x29, #0x18]
+   1ea10: 2a0003f3     	mov	w19, w0
+   1ea14: f90002a8     	str	x8, [x21]
+   1ea18: f0000128     	adrp	x8, 0x45000 <pins+0x380>
+   1ea1c: 2a1403e0     	mov	w0, w20
+   1ea20: f9464d08     	ldr	x8, [x8, #0xc98]
+   1ea24: b9000aaa     	str	w10, [x21, #0x8]
+   1ea28: a900fd3f     	stp	xzr, xzr, [x9, #0x8]
+   1ea2c: f900013f     	str	xzr, [x9]
+   1ea30: d63f0100     	blr	x8
+   1ea34: 35fff780     	cbnz	w0, 0x1e924 <audio_dispatch+0x1f4>
+   1ea38: 2a1303e0     	mov	w0, w19
+   1ea3c: 17ffffc0     	b	0x1e93c <audio_dispatch+0x20c>
+   1ea40: f0000128     	adrp	x8, 0x45000 <pins+0x380>
+   1ea44: 5280e8e0     	mov	w0, #0x747              // =1863
+   1ea48: aa1303e1     	mov	x1, x19
+   1ea4c: f9464d08     	ldr	x8, [x8, #0xc98]
+   1ea50: 72b25080     	movk	w0, #0x9284, lsl #16
+   1ea54: d63f0100     	blr	x8
+   1ea58: 2a0003e7     	mov	w7, w0
+   1ea5c: 34000060     	cbz	w0, 0x1ea68 <audio_dispatch+0x338>
+   1ea60: 52800028     	mov	w8, #0x1                // =1
+   1ea64: 392f22c8     	strb	w8, [x22, #0xbc8]
+   1ea68: 294012a3     	ldp	w3, w4, [x21]
+   1ea6c: b9400aa5     	ldr	w5, [x21, #0x8]
+   1ea70: f9400b26     	ldr	x6, [x25, #0x10]
+   1ea74: b0ffff21     	adrp	x1, 0x3000 <fr_offset+0x1f58>
+   1ea78: 9129f421     	add	x1, x1, #0xa7d
+   1ea7c: 52800040     	mov	w0, #0x2                // =2
+   1ea80: 2a1403e2     	mov	w2, w20
+   1ea84: 940017af     	bl	0x24940 <dprintf@plt>
+   1ea88: 2a1f03e0     	mov	w0, wzr
+   1ea8c: 17ffffac     	b	0x1e93c <audio_dispatch+0x20c>

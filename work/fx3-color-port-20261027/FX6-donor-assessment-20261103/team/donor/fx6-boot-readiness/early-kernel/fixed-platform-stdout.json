@@ -1,0 +1,119 @@
+{
+  "schema": "fx6-image-only-on-frozen-fx3-platform-v1",
+  "status": "OFFLINE_PINNED_NOT_EXECUTED",
+  "owner_baseline": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+    "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669"
+  },
+  "source_run_command_sha256": "31063442c16c39664e6274d5ecdda01bfb0351474617c9c90b8788e5ea3af34d",
+  "fx3_platform": {
+    "machine": "virt,gic-version=2,secure=off",
+    "accel": "tcg,thread=multi",
+    "cpu": "cortex-a35",
+    "smp": 4,
+    "memory_mib": 5120,
+    "display": "none",
+    "nodefaults": true,
+    "nic": "none",
+    "no_reboot": true,
+    "kernel_load": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+    "initrd_load_address": "0x440000000",
+    "dtb_load_address": "0x400002000"
+  },
+  "model_env": {
+    "FX3_VM_ESRAM_RAM": "1",
+    "FX3_VM_HIGH_DDR": "1",
+    "FX3_VM_SONY_TIMER": "1",
+    "FX3_VM_SCU_REQUEST": "1",
+    "FX3_VM_GPIO_BANK5": "1"
+  },
+  "unchanged_full_binary_sha256": {
+    "qemu_binary": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+      "bytes": 36163584
+    },
+    "fx3_dtb_full_binary": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+      "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+      "bytes": 10355
+    },
+    "software_guest_cpio": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+      "sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+      "bytes": 453184500
+    },
+    "english_generation4_backup": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+      "bytes": 2229740
+    }
+  },
+  "firmware_payload_changes": [
+    {
+      "argv_index": 29,
+      "role": "kernel Image",
+      "from_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "from_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "to_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/vmlinux.bin",
+      "to_sha256": "bc4925e701ae363c797f22ef28f29dc48fd17af7f25a3f64d7d0824312c0dab9"
+    }
+  ],
+  "candidate_argv_before_observer_serial_retarget": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "-machine",
+    "virt,gic-version=2,secure=off",
+    "-accel",
+    "tcg,thread=multi",
+    "-cpu",
+    "cortex-a35",
+    "-smp",
+    "4",
+    "-m",
+    "5120",
+    "-display",
+    "none",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-no-reboot",
+    "-monitor",
+    "none",
+    "-serial",
+    "file:/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/serial.log",
+    "-qmp",
+    "unix:q,server=on,wait=off",
+    "-chardev",
+    "socket,path=g,server=on,wait=off,id=keygate93",
+    "-gdb",
+    "chardev:keygate93",
+    "-S",
+    "-kernel",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/vmlinux.bin",
+    "-device",
+    "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio,addr=0x440000000,force-raw=on",
+    "-device",
+    "loader,file=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb,addr=0x400002000,force-raw=on"
+  ],
+  "platform_changes": [],
+  "other_firmware_payload_changes": [],
+  "withdrawn_exploratory_candidate": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/candidate.json",
+    "status": "WITHDRAWN_DO_NOT_RUN_FIXED_FX3_PLATFORM_CONSTRAINT",
+    "new_initrd_sha256": "1351de617d8a58cab2e9bf435f0e2b066cb195ea89dc1a72c756a44c61a738ae",
+    "new_dtb_sha256": "a1d0494b9f5c116872bef8b4151dcb6d514388445153f24163819e94fc3ae363",
+    "reason": "altered initrd contents and DTB chosen bootargs/initrd-end; conflicts with fixed FX3 platform directive"
+  },
+  "stop_at_first_kernel_serial_marker": "Linux version ",
+  "guard_before_AP_marker": "FX3_AP_NATURAL_BOOTIN_BEGIN",
+  "maximum_wall_seconds": 180,
+  "boot_result": "UNTESTED",
+  "what_this_does_not_test": [
+    "FX6 AP",
+    "FX6 AV",
+    "FX6 CP",
+    "movie color",
+    "RAW",
+    "camera or storage hardware"
+  ]
+}

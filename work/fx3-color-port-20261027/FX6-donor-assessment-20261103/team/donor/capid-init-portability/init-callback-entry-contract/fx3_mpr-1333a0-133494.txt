@@ -1,0 +1,67 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001333a0 <_ZN3mpr8datasize19CreateDataSizeTableEPNS0_17StillDataSizeInfoE>:
+  1333a0: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+  1333a4: 910003fd     	mov	x29, sp
+  1333a8: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  1333ac: f0000ed5     	adrp	x21, 0x30e000 <_ZN3mpr11MoviePlayer8s_pbTimeE+0x9068>
+  1333b0: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1333b4: 912202b5     	add	x21, x21, #0x880
+  1333b8: aa0003f3     	mov	x19, x0
+  1333bc: a90363f7     	stp	x23, x24, [sp, #0x30]
+  1333c0: d2800014     	mov	x20, #0x0               // =0
+  1333c4: d2800496     	mov	x22, #0x24              // =36
+  1333c8: 9b164e81     	madd	x1, x20, x22, x19
+  1333cc: 8b141aa0     	add	x0, x21, x20, lsl #6
+  1333d0: 91000694     	add	x20, x20, #0x1
+  1333d4: 97fd360f     	bl	0x80c10 <_ZN3mpr8datasize17CreateJPGDataSizeERNS0_18CalcStillSizeParamEPNS0_17StillDataSizeInfoE@plt>
+  1333d8: f102d29f     	cmp	x20, #0xb4
+  1333dc: 54ffff61     	b.ne	0x1333c8 <_ZN3mpr8datasize19CreateDataSizeTableEPNS0_17StillDataSizeInfoE+0x28>
+  1333e0: b0000ea0     	adrp	x0, 0x308000 <_ZN3mpr11MoviePlayer8s_pbTimeE+0x3068>
+  1333e4: d2832a01     	mov	x1, #0x1950             // =6480
+  1333e8: 913a0000     	add	x0, x0, #0xe80
+  1333ec: d28b4082     	mov	x2, #0x5a04             // =23044
+  1333f0: f0000cd7     	adrp	x23, 0x2ce000 <_ZN3mpr26XavcOutBandParamDataBuffer18ALIGNMENT_AREA_NUME+0xb40>
+  1333f4: f0000cd8     	adrp	x24, 0x2ce000 <_ZN3mpr26XavcOutBandParamDataBuffer18ALIGNMENT_AREA_NUME+0xb40>
+  1333f8: 8b010276     	add	x22, x19, x1
+  1333fc: 91001015     	add	x21, x0, #0x4
+  133400: 8b020014     	add	x20, x0, x2
+  133404: 911ce6f7     	add	x23, x23, #0x739
+  133408: 911d7f18     	add	x24, x24, #0x75f
+  13340c: aa1603e1     	mov	x1, x22
+  133410: d10012a0     	sub	x0, x21, #0x4
+  133414: 97fd372b     	bl	0x810c0 <_ZN3mpr8datasize18CreateHEIFDataSizeERNS0_18CalcStillSizeParamEPNS0_17StillDataSizeInfoE@plt>
+  133418: b9401ec0     	ldr	w0, [x22, #0x1c]
+  13341c: 34000060     	cbz	w0, 0x133428 <_ZN3mpr8datasize19CreateDataSizeTableEPNS0_17StillDataSizeInfoE+0x88>
+  133420: b94022c0     	ldr	w0, [x22, #0x20]
+  133424: 350000e0     	cbnz	w0, 0x133440 <_ZN3mpr8datasize19CreateDataSizeTableEPNS0_17StillDataSizeInfoE+0xa0>
+  133428: b94002a1     	ldr	w1, [x21]
+  13342c: aa1703e0     	mov	x0, x23
+  133430: 97fd4090     	bl	0x83670 <printf@plt>
+  133434: b94006a1     	ldr	w1, [x21, #0x4]
+  133438: aa1803e0     	mov	x0, x24
+  13343c: 97fd408d     	bl	0x83670 <printf@plt>
+  133440: 910102b5     	add	x21, x21, #0x40
+  133444: 910092d6     	add	x22, x22, #0x24
+  133448: eb1402bf     	cmp	x21, x20
+  13344c: 54fffe01     	b.ne	0x13340c <_ZN3mpr8datasize19CreateDataSizeTableEPNS0_17StillDataSizeInfoE+0x6c>
+  133450: d2897e00     	mov	x0, #0x4bf0             // =19440
+  133454: 90000eb5     	adrp	x21, 0x307000 <_ZN3mpr11MoviePlayer8s_pbTimeE+0x2068>
+  133458: 8b000273     	add	x19, x19, x0
+  13345c: 912f02b5     	add	x21, x21, #0xbc0
+  133460: d2800014     	mov	x20, #0x0               // =0
+  133464: aa1303e1     	mov	x1, x19
+  133468: 8b141aa0     	add	x0, x21, x20, lsl #6
+  13346c: 91000694     	add	x20, x20, #0x1
+  133470: 91009273     	add	x19, x19, #0x24
+  133474: 97fd312f     	bl	0x7f930 <_ZN3mpr8datasize17CreateRAWDataSizeERNS0_18CalcStillSizeParamEPNS0_17StillDataSizeInfoE@plt>
+  133478: f1012e9f     	cmp	x20, #0x4b
+  13347c: 54ffff41     	b.ne	0x133464 <_ZN3mpr8datasize19CreateDataSizeTableEPNS0_17StillDataSizeInfoE+0xc4>
+  133480: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  133484: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  133488: a94363f7     	ldp	x23, x24, [sp, #0x30]
+  13348c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+  133490: d65f03c0     	ret

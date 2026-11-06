@@ -1,0 +1,10 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000133494 <_ZN3mpr8datasize4initEv>:
+  133554: f0000e20     	adrp	x0, 0x2fa000
+  133558: d2800001     	mov	x1, #0x0                // =0
+  13355c: f9455000     	ldr	x0, [x0, #0xaa0]
+  133560: 17fd2a88     	b	0x7df80 <pthread_mutex_init@plt>

@@ -1,0 +1,36 @@
+{
+  "schema": "fx3-stage23-coordinator-review/1",
+  "created_utc": "2026-10-25T20:37:20.304023+00:00",
+  "status": "PASS_ARTIFACT_AND_SCOPE_REVIEW",
+  "reviewer_role": "Coordinator structural/hash review; no independent CPU replay, native library load or actual camera verification.",
+  "previous_goal_turn_classification": "progress",
+  "previous_stage_sealed_files_verified": 10,
+  "source_hashes_verified": true,
+  "source_image_after_extraction_verified": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "MAIN_proxy_CoreVideo_fields_match": true,
+  "full_packets_are_not_equal": true,
+  "outer_FileFormat_namespace_is_not_packet_codec_namespace": true,
+  "original_MPR_diagnostic_PC_LR_proofs_reviewed": 100,
+  "AV_debug_variable_is_explicit_read_input_not_logger_output_stub": true,
+  "resource_return_values_are_not_capability_acceptance": true,
+  "GetMsg_transport_and_allocator_returns_are_excluded_preconditions": true,
+  "first_attempts": [
+    "Missing local ELF relocation in identity helper; preserved source/error and enabled existing same-library data relocation.",
+    "Report serialization used a Native.dump interface unavailable on original MPR parser; preserved source/error and used a generic read-only dump."
+  ],
+  "primary_source_checked_20261025": {
+    "url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000882045.html",
+    "use": "Classic FX3 official HD HEVC42010 proxy settings, not MAIN or actual-device validation."
+  },
+  "unverified": [
+    "Live available-format backup, resource allocation, address conversion and physical buffers",
+    "Full receiver, MC parameter/capability checks, message acknowledgements and actual Open/Start",
+    "Actual main/proxy hardware bitstreams, container/audio/timestamps and A/V sync",
+    "Same-body backup, restricted restore, PC safety, WBI/cold boot and independent recovery",
+    "Long recording and thermal/stock-mode regression"
+  ],
+  "new_remote_attempts": false,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true
+}

@@ -1,0 +1,69 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000133494 <_ZN3mpr8datasize4initEv>:
+  133554: f0000e20     	adrp	x0, 0x2fa000
+  133558: d2800001     	mov	x1, #0x0                // =0
+  13355c: f9455000     	ldr	x0, [x0, #0xaa0]
+  133560: 17fd2a88     	b	0x7df80 <pthread_mutex_init@plt>
+  133564: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  133568: 910003fd     	mov	x29, sp
+  13356c: a90153f3     	stp	x19, x20, [sp, #0x10]
+  133570: 91002014     	add	x20, x0, #0x8
+  133574: f9400813     	ldr	x19, [x0, #0x10]
+  133578: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  13357c: aa0103f6     	mov	x22, x1
+  133580: aa1403f5     	mov	x21, x20
+  133584: b4000173     	cbz	x19, 0x1335b0 <_ZN3mpr8datasize4initEv+0x11c>
+  133588: aa1603e1     	mov	x1, x22
+  13358c: 91008260     	add	x0, x19, #0x20
+  133590: 97ffffde     	bl	0x133508 <_ZN3mpr8datasize4initEv+0x74>
+  133594: 72001c1f     	tst	w0, #0xff
+  133598: 54000081     	b.ne	0x1335a8 <_ZN3mpr8datasize4initEv+0x114>
+  13359c: aa1303f5     	mov	x21, x19
+  1335a0: f9400a73     	ldr	x19, [x19, #0x10]
+  1335a4: 17fffff8     	b	0x133584 <_ZN3mpr8datasize4initEv+0xf0>
+  1335a8: f9400e73     	ldr	x19, [x19, #0x18]
+  1335ac: 17fffff6     	b	0x133584 <_ZN3mpr8datasize4initEv+0xf0>
+  1335b0: eb15029f     	cmp	x20, x21
+  1335b4: aa1403e0     	mov	x0, x20
+  1335b8: 540000c0     	b.eq	0x1335d0 <_ZN3mpr8datasize4initEv+0x13c>
+  1335bc: 910082a1     	add	x1, x21, #0x20
+  1335c0: aa1603e0     	mov	x0, x22
+  1335c4: 97ffffd1     	bl	0x133508 <_ZN3mpr8datasize4initEv+0x74>
+  1335c8: 72001c1f     	tst	w0, #0xff
+  1335cc: 9a951280     	csel	x0, x20, x21, ne
+  1335d0: eb00029f     	cmp	x20, x0
+  1335d4: 9a9f07e0     	cset	x0, ne
+  1335d8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  1335dc: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  1335e0: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  1335e4: d65f03c0     	ret
+  1335e8: a9b47bfd     	stp	x29, x30, [sp, #-0xc0]!
+  1335ec: 910003fd     	mov	x29, sp
+  1335f0: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1335f4: 52800014     	mov	w20, #0x0               // =0
+  1335f8: f90013f5     	str	x21, [sp, #0x20]
+  1335fc: b4000280     	cbz	x0, 0x13364c <_ZN3mpr8datasize4initEv+0x1b8>
+  133600: f0000e33     	adrp	x19, 0x2fa000
+  133604: aa0003f4     	mov	x20, x0
+  133608: 2a0103f5     	mov	w21, w1
+  13360c: f9455273     	ldr	x19, [x19, #0xaa0]
+  133610: aa1303e0     	mov	x0, x19
+  133614: 97fd23f7     	bl	0x7c5f0 <pthread_mutex_lock@plt>
+  133618: b9003bb5     	str	w21, [x29, #0x38]
+  13361c: aa1403e1     	mov	x1, x20
+  133620: 9100f3a0     	add	x0, x29, #0x3c
+  133624: d2801002     	mov	x2, #0x80               // =128
+  133628: 97fd20ea     	bl	0x7b9d0 <memcpy@plt>
+  13362c: f0000e20     	adrp	x0, 0x2fa000
+  133630: 9100e3a1     	add	x1, x29, #0x38
+  133634: f946e000     	ldr	x0, [x0, #0xdc0]
+  133638: 97ffffcb     	bl	0x133564 <_ZN3mpr8datasize4initEv+0xd0>
+  13363c: f100001f     	cmp	x0, #0x0
+  133640: aa1303e0     	mov	x0, x19
+  133644: 1a9f07f4     	cset	w20, ne
+  133648: 97fd289a     	bl	0x7d8b0 <pthread_mutex_unlock@plt>
+  13364c: 2a1403e0     	mov	w0, w20

@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "checks": [
+    "real HTTP browser-ready then one idempotent accepted launch; other ID rejected",
+    "lost start ACK can reconcile exact ID from read-only status without retry",
+    "cancel before launch leaves spawn request count zero",
+    "bounded missing-browser handshake has no launch request",
+    "existing owner lock is not stolen; fake spawn count zero"
+  ],
+  "production_order_AST": true,
+  "real_guest_spawned": false
+}

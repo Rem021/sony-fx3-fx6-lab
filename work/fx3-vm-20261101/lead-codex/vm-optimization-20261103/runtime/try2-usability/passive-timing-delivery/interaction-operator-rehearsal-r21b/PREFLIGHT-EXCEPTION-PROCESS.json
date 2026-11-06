@@ -1,0 +1,16 @@
+{
+  "start": {
+    "UTC": "2026-11-04T23:50:03.138966+00:00",
+    "host_ns": 419888670806833
+  },
+  "end": {
+    "UTC": "2026-11-04T23:50:03.184820+00:00",
+    "host_ns": 419888716666333
+  },
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 11, in <module>\n    try:operate.run_action('preflight_exception')\n        ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/operate.py\", line 52, in run_action\n    try:return _run_action(action)\n               ~~~~~~~~~~~^^^^^^^^\n  File \"<string>\", line 6, in injected\n    trace.append({'action_called':action});raise RuntimeError('intentional pre-timer exception; no browser/arm')\n                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: intentional pre-timer exception; no browser/arm\n",
+  "expected_nonzero": true,
+  "actual_run_action_guard_exercised": true,
+  "cleanup_callback_replaced_with_no_browser_test_double": true
+}

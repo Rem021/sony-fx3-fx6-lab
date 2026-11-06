@@ -1,0 +1,193 @@
+{
+  "source_AP": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage204-public-AP-boot-reference/reference/emmc_boot/esram_0xfe040000.bin",
+    "sha256": "2e37d90bc8f489db13a0319a3e7f8f1e746921c380484147b922957af3e95d74",
+    "bytes": 190464,
+    "commit": "e85e137fc3b88b7cb26e69faa9f1304184678ff7",
+    "upstream_path": "emmc_boot/esram_0xfe040000.bin",
+    "git_blob_sha1": "cbe4759df6264bc9c417f559797ac9bbcd0b6d09",
+    "model": "Public ILCE-7M4 v2.00 reference, not this FX3"
+  },
+  "source_CP": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/config-producer-20261029/original-files/loader_nor.bin",
+    "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+    "bytes": 101888,
+    "role": "Original classic FX3 7.02 CP NOR component"
+  },
+  "original_FX3_table": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/config-producer-20261029/original-files/bank1-fa0080.bin",
+    "sha256": "33e39fc7bf35447d97f4ce2bf8d8251cee79453fdd6175cce0c6136f48c93ad6",
+    "bytes": 9216,
+    "canonical_template_is_body_selection": false
+  },
+  "handoff_contract": {
+    "KRNE": {
+      "value": "0x454e524b",
+      "AP_entry": "0xfe052a08",
+      "AP_call": "0xfe052a30",
+      "CP_consumer": "0xfe052e74",
+      "address": "0x800107f20",
+      "bytes": 4
+    },
+    "ESCP": {
+      "value": "0x50435345",
+      "AP_entry": "0xfe052af8",
+      "AP_marker_call": "0xfe052bc8",
+      "CP_consumer": "0xfe052de0",
+      "address": "0x800107f30",
+      "bytes": 4
+    },
+    "pointer": {
+      "AP_call": "0xfe052930",
+      "address": "0x800107f28",
+      "bytes": 8,
+      "source": "first u64 of current original load-table row, staged at AP context+8",
+      "CP_read": "0xfe052e98",
+      "CP_context_store": "0xfe052ea8"
+    },
+    "reference_transfer_callee": "0xfe05d884",
+    "actual_transfer_or_marker_delivery_proved": false,
+    "target_FX3_AP_sender_located": false
+  },
+  "original_row_fragment_results": [
+    {
+      "original_FX3_row": {
+        "index": 3,
+        "start": "0x809a08e00",
+        "end": "0x809a21dff",
+        "partition": 8,
+        "mode": "0x5000000",
+        "path": "\\DmmCfg.bin",
+        "record_offset": "0x1b0",
+        "original_record_sha256": "eb7ebe0f50723118cc53f645176e85eddebcf193cdd6cc301f85c1ffff8b3ef1"
+      },
+      "original_row_sha256": "eb7ebe0f50723118cc53f645176e85eddebcf193cdd6cc301f85c1ffff8b3ef1",
+      "AP_reference_fragment": {
+        "boundary": {
+          "reason": "before_original_skip_diagnostic",
+          "PC": "0xfe052e4c"
+        },
+        "original_instruction_entries": 8,
+        "trace": [
+          "0xfe052d4c",
+          "0xfe052d50",
+          "0xfe052d54",
+          "0xfe052d58",
+          "0xfe052dd0",
+          "0xfe052dd4",
+          "0xfe052dd8",
+          "0xfe052e24"
+        ],
+        "registers": {
+          "X0": "0x0",
+          "W8": "0xfaffffff",
+          "W29": "0x0"
+        },
+        "state_supplied": "Original row bytes and X26=explicit row path pointer only; no boot context, disk data or successful helper replies.",
+        "model_or_firmware_bytes_modified": false,
+        "file_query_or_transfer_executed": false
+      }
+    },
+    {
+      "original_FX3_row": {
+        "index": 2,
+        "start": "0x800100000",
+        "end": "0x800107fff",
+        "partition": 8,
+        "mode": "0x7000000",
+        "path": "\\tomco.txt",
+        "record_offset": "0x120",
+        "original_record_sha256": "f89b458872cd67b754550974ce946999751e915ad49a240a2f7eabb5450508c2"
+      },
+      "original_row_sha256": "f89b458872cd67b754550974ce946999751e915ad49a240a2f7eabb5450508c2",
+      "AP_reference_fragment": {
+        "boundary": {
+          "reason": "before_original_file_size_query",
+          "PC": "0xfe05a1e0"
+        },
+        "original_instruction_entries": 9,
+        "trace": [
+          "0xfe052d4c",
+          "0xfe052d50",
+          "0xfe052d54",
+          "0xfe052d58",
+          "0xfe052dd0",
+          "0xfe052dd4",
+          "0xfe052dd8",
+          "0xfe052ddc",
+          "0xfe052de0"
+        ],
+        "registers": {
+          "X0": "0x100000018",
+          "W8": "0xf8ffffff",
+          "W29": "0x0"
+        },
+        "state_supplied": "Original row bytes and X26=explicit row path pointer only; no boot context, disk data or successful helper replies.",
+        "model_or_firmware_bytes_modified": false,
+        "file_query_or_transfer_executed": false
+      }
+    }
+  ],
+  "source_fragments": [
+    {
+      "source": "AP_reference",
+      "VA": "0xfe052a08",
+      "end_exclusive": "0xfe052a3c",
+      "bytes": 52,
+      "original_bytes_sha256": "37d0b6eebc3d601b15635c542dbad3a5f86daf2903984188195fa5503c5f8d00",
+      "listing": "listings/AP-reference-KRNE-producer.txt"
+    },
+    {
+      "source": "AP_reference",
+      "VA": "0xfe052af8",
+      "end_exclusive": "0xfe052bdc",
+      "bytes": 228,
+      "original_bytes_sha256": "8d0ab83c94bbe912281324af8a4b5b7714239cf53adfccc9074a99e744d0a710",
+      "listing": "listings/AP-reference-ESCP-producer.txt"
+    },
+    {
+      "source": "AP_reference",
+      "VA": "0xfe0528c4",
+      "end_exclusive": "0xfe052968",
+      "bytes": 164,
+      "original_bytes_sha256": "0a0245b51822316013c2a4299b84efcdedc6b41d5194d0fc805b72546c5d02a5",
+      "listing": "listings/AP-reference-handoff-pointer.txt"
+    },
+    {
+      "source": "AP_reference",
+      "VA": "0xfe052d4c",
+      "end_exclusive": "0xfe052e60",
+      "bytes": 276,
+      "original_bytes_sha256": "0c2f6b1da02798da6b2478a55569c1f2ce82a5c931110fa54d65bf5b0dac849e",
+      "listing": "listings/AP-reference-transfer-class-filter.txt"
+    },
+    {
+      "source": "AP_reference",
+      "VA": "0xfe05d884",
+      "end_exclusive": "0xfe05d8dc",
+      "bytes": 88,
+      "original_bytes_sha256": "eea6162d970c19551575fba4ccc6c04ada5159e24efb2588e108a24cb72ea70b",
+      "listing": "listings/AP-reference-transfer-function-prefix.txt"
+    },
+    {
+      "source": "FX3_CP",
+      "VA": "0xfe052de0",
+      "end_exclusive": "0xfe052ee8",
+      "bytes": 264,
+      "original_bytes_sha256": "29a861fdc04a393405a2605725d69562938661375a3265f566a31619b435297c",
+      "listing": "listings/FX3-original-CP-consumers.txt"
+    }
+  ],
+  "interpretation": {
+    "reference_marker_producers_located": true,
+    "matching_interface_with_FX3_original_CP": true,
+    "original_DmmCfg_mode": "0x05000000",
+    "ordinary_AP_reference_transfer_path_skips_this_row": true,
+    "original_tomco_mode": "0x07000000",
+    "tomco_reaches_file_query_boundary_only": true,
+    "full_FX3_normal_loader_or_DmmCfg_data_arrival_proved": false,
+    "physical_buffer_RAW_or_full_ISP_obtained": false,
+    "flashable_package_produced": false
+  },
+  "scope": "Only read original reference SRAM and FX3 components. Two independent reference-code fragments use untouched original FX3 table rows as explicit analytical inputs. They are not a reconstructed actual AP boot. No boot metadata or helper replies supplied; no ROM/key derivation, source updater/script, device, USB, physical PCIe transfer, CPU maintenance or storage write."
+}

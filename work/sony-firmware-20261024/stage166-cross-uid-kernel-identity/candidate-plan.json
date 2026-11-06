@@ -1,0 +1,44 @@
+{
+  "schema": "fx3-single-owner-trial-approval-plan/3",
+  "grant_id": "fx3-702-msc-owner-20261028-03",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "bundle_sha256": "ababb876b9f57187f9faab6fe3d75d601a2a7c75483919c3a2d670ac1118f569",
+  "native_sha256": "bcbdf155ae928c88d909166b5598c66757402c4be93041706e1ac21e1a63d441",
+  "authorized": false,
+  "released": false,
+  "prior_consumed_grants": [
+    "fx3-702-msc-owner-20261028-01",
+    "fx3-702-msc-owner-20261028-02"
+  ],
+  "changes": "03 uses public kernel UID/microsecond-start identity plus exact path and consistent second read, preserving verified-parent ACK; adds bounded error journal. Internal private copy and root exact SHA checks remain.",
+  "host_paths": {
+    "user_job": "/private/tmp/fx3-702-msc-owner-20261028-03",
+    "user_source": "/private/tmp/fx3-702-msc-owner-20261028-03/source-helper",
+    "root_job": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-03",
+    "root_helper": "/private/var/root/fx3-owner-trials/fx3-702-msc-owner-20261028-03/helper"
+  },
+  "preconditions": [
+    "User manually ejects all FX3 volumes; stays powered/USB connected/MSC",
+    "Current unique cached body/port and no mounted target volumes",
+    "Verify exact bundle and native SHA; no prior/live trial process or consumed03 claim",
+    "Explicit approval for this new03 run, then user completes native administrator validation if prompted"
+  ],
+  "scope": "One USB ownership/return run; may temporarily interrupt storage connection; creates private local program/records and root one-shot lease. No broader system permissions or driver installation.",
+  "forbidden": [
+    "Sony authentication/service protocol",
+    "Card or camera file access",
+    "Module/WBI/settings/firmware writes",
+    "Automatic unmount, USB reset, force kill or retry",
+    "Reuse of01/02 or cleanup of previous claims/leases"
+  ],
+  "failure_policy": "Any submitted attempt consumes03 even on startup failure. Missing identity or blocked call stays UNKNOWN; retain the same in-flight worker, never force reset or retry.",
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "recovery_claim": false
+}

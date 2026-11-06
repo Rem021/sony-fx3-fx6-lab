@@ -1,0 +1,72 @@
+{
+  "status": "PASS bounded CPU prototype; goal unachieved",
+  "environment": {
+    "unicorn": "2.1.4",
+    "capstone": "5.0.9",
+    "pyelftools": "0.33"
+  },
+  "test_counts": {
+    "legitimate_HS_stock_vs_prototype": 19,
+    "builder_negative_and_other_format": 8,
+    "setter_controls": 8,
+    "target_chain": 1
+  },
+  "builder_output": [
+    15,
+    6,
+    2,
+    0
+  ],
+  "setter_output": [
+    6,
+    6,
+    3
+  ],
+  "MPR_main_codec": 15,
+  "MPR_frame_rational": [
+    30000,
+    1001
+  ],
+  "MPR_bitrate_raw": 16000,
+  "actual_guest_packet_fields": {
+    "codec": 15,
+    "width": 1920,
+    "height": 1080,
+    "frame_enum": 3,
+    "ntsc_flag": 1,
+    "quality_enum": 22,
+    "chroma": 0,
+    "bitdepth": 1
+  },
+  "logging_adapter": "single 0xc8c70; only records guest diagnostic packet and PC<-LR, no X0 or guest-memory writes",
+  "logging_callsites_with_original_byte_nonconsumption_proof": 24,
+  "strict_no_adapter_stops": {
+    "validator": "unapproved execution c8c70",
+    "main_codec": "unapproved execution c8c70",
+    "open_parameter_preparation": "unapproved execution c8c70"
+  },
+  "unknown_execution_syscall_MMIO_forwarding": false,
+  "native_camera_Start_or_restore": false,
+  "artifacts": [
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/profile/profile_prototype.py",
+      "bytes": 20429,
+      "sha256": "9b2a37bfbd2b243f4ed4b49a4048f90686a3b07297156f2896ca68f8628bb129"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+      "bytes": 1516510,
+      "sha256": "9f83f867e9e3be3c7b1d2be5f3c70a202564c2475460abce03ce79b6fc1bbf2d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage12-prototype/profile/source-receipt.json",
+      "bytes": 2356,
+      "sha256": "b31eba8b12a3fc6aed763a688087f3f8995e83e0cf31d1920bb8e5f8ed9409c1"
+    },
+    {
+      "path": "research_notes/\u7d22\u5c3c FX3 \u5b9a\u70b9\u539f\u578b\u4e0e\u67e5\u8be2\u51c6\u5907/profile_prototype.md",
+      "bytes": 11083,
+      "sha256": "6bb08cb6adc8d46976f561e756a919f472f9d0fffbb455c42be387542b54727f"
+    }
+  ]
+}

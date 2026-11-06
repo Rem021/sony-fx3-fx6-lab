@@ -1,0 +1,2660 @@
+{
+  "created_utc": "2026-10-28T14:21:23.115273+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "validation": {
+    "status": "PASS_ORIGINAL_SD_INPUT_AND_SIGNATURE_EVIDENCE_VALIDATION",
+    "prior_files_verified": 1704,
+    "independent_squashfs_oracle_entries": 65,
+    "independent_oracle_regular_file_hashes": 58,
+    "initrd_entries_each": 342,
+    "initrd_regular_files_each": 216,
+    "original_boot_md5_records": 4,
+    "original_signed_packages_verified": 3,
+    "in_memory_mutation_cases_rejected": 12,
+    "native_openssl_cases": 2,
+    "cryptcore_exports_recovered": 2,
+    "skd_static_callback_fragments": 2,
+    "original_sd_vptr_and_dispatch_checked": true,
+    "old_stages_rerun": false,
+    "no_network_needed_for_validation": true,
+    "sony_programs_executed": 0,
+    "device_actions": 0,
+    "scope": "Original artifacts and static code, independent decompression oracle, public RSA signatures and independent native crypto. No full modified package, signing, updater execution, device admission, boot or recovery acceptance."
+  },
+  "previous_sealed_material": [
+    {
+      "receipt": "work/fx3-color-port-20261027/final-receipt.json",
+      "sha256": "53f5113cc79c57b9465f2556735534917cc0fe29c881661449dcd6ed499b9424",
+      "files_verified": 1282
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/route-20261028/final-receipt.json",
+      "sha256": "bf96cb1d8a76bd5eec86947332c14ceb538b6cdf4b71890b672845bfcbea217d",
+      "files_verified": 43
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/consumer-20261028/final-receipt.json",
+      "sha256": "670c50f53a270c32288b7bf96ed17c21bd360bab0562e6dc93cf1998d9694199",
+      "files_verified": 35
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/resource-20261028/final-receipt.json",
+      "sha256": "43f12cedea38c47f36d2375f69d307312f66de6658a36cd0b1427358a298685c",
+      "files_verified": 48
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/binding-20261028/final-receipt.json",
+      "sha256": "8d2589a7ad5e638a0e235e8e364a3575d45bed01b882d7424045ccd3b5f3ee86",
+      "files_verified": 63
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/package-20261028/final-receipt.json",
+      "sha256": "8a503bda8c4a1a9239090ec2f9478538570b28537f8d081c5512733b5deb30e2",
+      "files_verified": 128
+    },
+    {
+      "receipt": "work/fx3-color-port-20261027/tail-20261028/final-receipt.json",
+      "sha256": "65a164460b03454d0c990879251ee9c79265144c25fbbb02c1185902b074362e",
+      "files_verified": 105
+    }
+  ],
+  "original_binaries": [
+    {
+      "path": "work/sony-firmware-20261024/fx3-7.02-BODYDATA.DAT",
+      "bytes": 811876768,
+      "sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+      "unchanged": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+      "bytes": 808704512,
+      "sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+      "unchanged": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/nflasha5.img",
+      "bytes": 209112512,
+      "sha256": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+      "unchanged": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "bytes": 15980568,
+      "sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "unchanged": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+      "bytes": 13348560,
+      "sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+      "unchanged": true
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "unchanged": true
+    }
+  ],
+  "project_index_prefix_unchanged": true,
+  "project_index_before_bytes": 62094,
+  "project_index_before_sha256": "6668a5d482a15af75f3915ce5d4e392256591d2f0c2f604981f19e046fe422fb",
+  "project_index_after_sha256": "a3a6c1f4532efa82ae7b004840a5be398b6509be336c5235f0d8ddfb76f0940a",
+  "third_party_parser_downloaded": false,
+  "global_network_settings_modified": false,
+  "private_rsa_parameters_read_or_derived": false,
+  "new_signatures_generated": false,
+  "sony_programs_executed": 0,
+  "camera_usb_phone_actions": 0,
+  "full_modified_firmware_emitted": false,
+  "flashable_package_produced": false,
+  "persistent_goal_status": "active",
+  "goal_completion_claimed": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 8581,
+      "sha256": "98e251e9b005349795916a8264de31489a3eea0ccf0e50c59ce4000ec5de159b"
+    },
+    {
+      "path": "alternative-install-source-review.json",
+      "bytes": 975,
+      "sha256": "dc923b56d83fe6b6c7a323757befd3811cbf32b02bedf1a43f9681bebd21fea7"
+    },
+    {
+      "path": "attempts/external-parser-download-failure.json",
+      "bytes": 391,
+      "sha256": "d0b5c0748188a8be7ac1a6f61542ba73f7023947bc7741a2ba43d827f28e7b02"
+    },
+    {
+      "path": "attempts/initial-external-parser-unpack.py",
+      "bytes": 4827,
+      "sha256": "8dc0b756de2acf34ce0b7ec640ebb76bbad7ba694ff5aa03a79042aa9b89782a"
+    },
+    {
+      "path": "attempts/vtable-initial-address-failure.json",
+      "bytes": 361,
+      "sha256": "dd671357f0a9be81cdd79e1fc757a6ff3a51f93c0ef94b647017741a9813bda0"
+    },
+    {
+      "path": "cryptcore-snapshot-identity.json",
+      "bytes": 896,
+      "sha256": "a0b174faaef62d2d93b562b0cd1835318f6ccfc34a08ad507628e6354cd8bb8c"
+    },
+    {
+      "path": "cryptcore-snapshot-results.json",
+      "bytes": 2577,
+      "sha256": "63b1f515ecb033eedf08f0d06f9c50b80e6b43d1d525082709e13fb0f083c453"
+    },
+    {
+      "path": "development-notes.json",
+      "bytes": 1696,
+      "sha256": "e73dd563d67f122c23102740ab570ec963b768b53194fb16c08fcfe53e419c4b"
+    },
+    {
+      "path": "disassembly/SDDecryptor-constructor.txt",
+      "bytes": 1228,
+      "sha256": "eeb2c8e257e49b314f1e77e52a9328b1c6b0c5351dd3e657f462263fd5053d6b"
+    },
+    {
+      "path": "disassembly/SDDecryptorModule-decrypt.txt",
+      "bytes": 2304,
+      "sha256": "8ec51fa0173b23d9cdb04b3a90a292cc29069398904268c45d8324c510913529"
+    },
+    {
+      "path": "disassembly/SDDecryptorModule-execWriteFirm.txt",
+      "bytes": 9135,
+      "sha256": "e5c072bb0bee40556385c73c4a21540913d983420c19c08888d92ed935558f56"
+    },
+    {
+      "path": "disassembly/SDFileInputUpdaterManager-BurnFirmware.txt",
+      "bytes": 8935,
+      "sha256": "23a436ee898bd5edc5c8c93948494c97b122ea16548d9e41cd8f45dc26a6e14f"
+    },
+    {
+      "path": "disassembly/SDUUDConditionChecker-getUpdateFirmwareInfo.txt",
+      "bytes": 4963,
+      "sha256": "a7703cd8029bbf0943ce281949ab36bc14139e45cc3c6f1fe88b9a873dfe7091"
+    },
+    {
+      "path": "disassembly/SKD-key-lookup.txt",
+      "bytes": 1990,
+      "sha256": "60317be09e8fa3f46047b5f825c045955d80cd4065c64f05f02645880e4908da"
+    },
+    {
+      "path": "disassembly/SKD-service-callback.txt",
+      "bytes": 8197,
+      "sha256": "d6b11bf1518a3d19720637c8492a42eef4ac3f89bc27e9d8a6459108ab336ec8"
+    },
+    {
+      "path": "disassembly/SignatureVerification-VerifySignature.txt",
+      "bytes": 3022,
+      "sha256": "d6caaba5a11ef8f100a2d9c7d6d2bf4be0b2cd7da95527794af515d6b297508e"
+    },
+    {
+      "path": "disassembly/SignatureVerification-verifyKey.txt",
+      "bytes": 4724,
+      "sha256": "cc14edac93678374e4d2e2f00206991d6d28da2fc310873c4e53035124f6cb8d"
+    },
+    {
+      "path": "disassembly/UFPDecryptorModule-exec_chk_guard.txt",
+      "bytes": 3683,
+      "sha256": "e08fc732511ebe0eb1af69a144ad3e5609ba1b49a1582075ea6a8872a44d7848"
+    },
+    {
+      "path": "disassembly/UFPDecryptorModule-exec_write_firm.txt",
+      "bytes": 8964,
+      "sha256": "89b057750a7c9741600a0d6a23757c14395783c4a7470195c347c95a26919e25"
+    },
+    {
+      "path": "disassembly/WaitForFirmwareCopyCompletion.txt",
+      "bytes": 691,
+      "sha256": "b337ede5ab9d2234becb7b0c7a05434561c090abfce12444e0f4a7d7167dc01e"
+    },
+    {
+      "path": "disassembly/iCryptCore_main.txt",
+      "bytes": 2053,
+      "sha256": "7172fdd5a6ef460abe247100eb95c140d6338647bb40e885ef8f34d08deea3d7"
+    },
+    {
+      "path": "disassembly/icc_verifyDataCore.txt",
+      "bytes": 9875,
+      "sha256": "ce81d745a4255615c479fc27d1baa8554981fd54884d71367b74eadfa3dedfa4"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/busybox",
+      "bytes": 320392,
+      "sha256": "d9ac7d99d8a73695bcde25416c9506ea3261f1bab2d67fa60abc58a050c62308"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/chattr",
+      "bytes": 32088,
+      "sha256": "c04412eee20750664deb6ad2b3b18ece54e176334e7fbf83065e90e16dbbeabd"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/compile_et",
+      "bytes": 1365,
+      "sha256": "774711c746929c814d687a9ce87301df51d70fce23f592a319c693b6dd2c038a"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/dnsdomainname",
+      "bytes": 43328,
+      "sha256": "e25a79bb1fb6a48f4c7fa70cdae88c103f47903a8537cb8c26b4b0772441eef5"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/hostname",
+      "bytes": 43328,
+      "sha256": "e25a79bb1fb6a48f4c7fa70cdae88c103f47903a8537cb8c26b4b0772441eef5"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/lsattr",
+      "bytes": 29040,
+      "sha256": "ff05392f478a7372c5dd6eb4f247a944a0ab190c6e4915d3288b7f0505bd8e8c"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/mk_cmds",
+      "bytes": 1130,
+      "sha256": "e0aaac651bbd39309df23d1033bb292ff562dcfa83b2abdc33aa9e3bbe7a799a"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/ps",
+      "bytes": 88984,
+      "sha256": "ee394ac11f645e82dbd6d89b2620ae59676b07a9359f38ef8b972c41756782cf"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/top",
+      "bytes": 92576,
+      "sha256": "ee3357df9f2b2eac7e9aa5e6c0759c748630012ff4e597809ff9092418796ea9"
+    },
+    {
+      "path": "engine-rootfs/2.04/bin/vmstat",
+      "bytes": 22856,
+      "sha256": "0066ab13ab77d8e5038130feb532b92b69be4cd9ba934afef4c1c18b0a56c149"
+    },
+    {
+      "path": "engine-rootfs/2.04/etc/DmmConfig.bin",
+      "bytes": 944,
+      "sha256": "2861f355b29ba2237e70ac59780cbbc5e3e6c32f9817eba907644621d24dc4ac"
+    },
+    {
+      "path": "engine-rootfs/2.04/etc/VerificationKey.pem",
+      "bytes": 451,
+      "sha256": "8281413b5607446939613e07d020b2c7d8ee2371349099de56bc8288f7be0a43"
+    },
+    {
+      "path": "engine-rootfs/2.04/etc/ulogio.bin",
+      "bytes": 2688,
+      "sha256": "a6c55a918c22749c46e985afb746f217b2ae4718509d1e52ca4fd43f65bdd6a5"
+    },
+    {
+      "path": "engine-rootfs/2.04/kmod/crypt-emmc.ko",
+      "bytes": 14592,
+      "sha256": "17282d9fe7263452924a7a52266488505bd6dd6f70397f31291c4bf9f97986fa"
+    },
+    {
+      "path": "engine-rootfs/2.04/kmod/devno.ko",
+      "bytes": 6344,
+      "sha256": "52ecc0a862772a3d218e4842553c6f0552175c97ed9fe8763124d662cea31832"
+    },
+    {
+      "path": "engine-rootfs/2.04/kmod/dma330.ko",
+      "bytes": 606152,
+      "sha256": "61f590020d6f3eb1482a1cd17d6cbcc6a2cac238cf1a58b9cc6a4a2784339f96"
+    },
+    {
+      "path": "engine-rootfs/2.04/kmod/emmc.ko",
+      "bytes": 340000,
+      "sha256": "295dca55a071e39c95ca377d3e447c03b12cdacd7b5b09bc2f78c21de2ea7a52"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/ld-2.25.so",
+      "bytes": 120616,
+      "sha256": "ae69d962b3a819765bbd42c2077df52745de7ab6b0cf2052522737258875f2e6"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/libSTMcmdexecute.so",
+      "bytes": 10120,
+      "sha256": "04ebdc6ca5372f58bbd56482d857190863bd7fd6ebe33f23f33337b7e7c08679"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/libc-2.25.so",
+      "bytes": 1271648,
+      "sha256": "363b313d6b3f9b4c8b4d91ddcbdd5096970887fbbb543ebea1d1295ce4d65733"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/libcrypt-2.25.so",
+      "bytes": 30864,
+      "sha256": "7bab9a22f26420f674e1c6dcec07e0c0df54767927d0576323a7eb1b1d21d69b"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/libdl-2.25.so",
+      "bytes": 10368,
+      "sha256": "b525ab6ba51617ac0747ca7dc8b87dfa809d5b4b6b176fe7a01922296af4d97b"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/libm-2.25.so",
+      "bytes": 658000,
+      "sha256": "aa90d1991ae3f898aa3a8ea3672416d748f1331e22e6e4b30e49fa177caabaf0"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/libnsl-2.25.so",
+      "bytes": 76600,
+      "sha256": "424ea18196a5acedc73212c1fcf4ea6c4d2ee093c69fce85b4a2e2f72e27ef88"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/libpthread-2.25.so",
+      "bytes": 101888,
+      "sha256": "a58f6f84efd89bef0d12028b974b5e3aca2a2804e922954283e8127d6d5a02fe"
+    },
+    {
+      "path": "engine-rootfs/2.04/lib/librt-2.25.so",
+      "bytes": 27448,
+      "sha256": "494988afd6b8b23542bfa3da80a25fbf82c620e4ebe2a77a591b0604d593cbf8"
+    },
+    {
+      "path": "engine-rootfs/2.04/root/IAMSIGNENABLED",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "engine-rootfs/2.04/root/IAMUPDATER",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "engine-rootfs/2.04/root/chassis",
+      "bytes": 18,
+      "sha256": "7880368a5b3a8efe7e19337e225fc1248dca9e8f1f96eb111823eb66588417e1"
+    },
+    {
+      "path": "engine-rootfs/2.04/sbin/dosfsck",
+      "bytes": 43232,
+      "sha256": "c02075bfa60c26dbb376139b13c6d9660f1b3bb946848f086a0cd60263f700cb"
+    },
+    {
+      "path": "engine-rootfs/2.04/sbin/init",
+      "bytes": 1438,
+      "sha256": "223f642c9cc8eb3a53901263940d42905a3d57fc5a091459003719e216950ccd"
+    },
+    {
+      "path": "engine-rootfs/2.04/sbin/mkdosfs",
+      "bytes": 23264,
+      "sha256": "b7d22f48c145bf3140ec99eff527f2d97cb9eae5093ce1b9655e063babbe4ddd"
+    },
+    {
+      "path": "engine-rootfs/2.04/tmp/kikilog.dat",
+      "bytes": 4227072,
+      "sha256": "a11e635ec7eaa24e8ce504b58cb3c90698c0eaa2eee759cff8b2e769e158f4d5"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/UdtrMain.sh",
+      "bytes": 2188,
+      "sha256": "506958d46585fc2276a21ecd6f1cee60d33aeee611c5e8a1dc854f2ebcfc720b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/common.src",
+      "bytes": 3287,
+      "sha256": "3d5334ab1698d67176f8fd35ffd4d7a9a9b85a1625b20cf128ba091f752b90a0"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/crypter.elf",
+      "bytes": 10352,
+      "sha256": "bc0d6b2d5638fd6b96a0e52967435efcb26d3cf040115de8b488a8ed0f3e0972"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/execute_prod.sh",
+      "bytes": 898,
+      "sha256": "837607ded51a48fe85175e311c00027b2262b909f2d50587ae46e1869440efb5"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/execute_ufp.sh",
+      "bytes": 2826,
+      "sha256": "08edf12a2b4b33a285866e88b94ef1d973bf50cec373dea6796d0ad52d5e6b9b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/hash_check.sh",
+      "bytes": 566,
+      "sha256": "78b71e702e57b914e01c98617f138785bba18651a949586fe0711f371f764c44"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/hash_drop.sh",
+      "bytes": 407,
+      "sha256": "e5c8b33e1f41bac0683c6d2b5d01c830f4233690e31e0fff43c190955da29f3b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/hash_update.sh",
+      "bytes": 325,
+      "sha256": "61f4ef4c50fb657c7195f137ac37546551fd1afbd79e10cfee750295f202e1c5"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/insmod.sh",
+      "bytes": 2678,
+      "sha256": "700bd1129d3aecd5de62bfd7c730df18b3b1b3bedba56b9f31889a7593020f4f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/is_valid_boot.sh",
+      "bytes": 483,
+      "sha256": "51a9aec51413eead0debd856afa60ad06ad4726bab2502a11415fe5c3a3a1b8a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/mf",
+      "bytes": 10320,
+      "sha256": "9107ac720f9626c810c2ae6fa3b51a59e74faae389942699f4ab88a465c88a78"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/mkramdsk.sh",
+      "bytes": 343,
+      "sha256": "4314078825b573e74ed80f901c2723b7ca805b8a1428de6997f0f367045af7d1"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/prepare-usb.sh",
+      "bytes": 492,
+      "sha256": "fee9a47fdc9f1c5f3f78aa4cb2d88052e2fa6e5534729a8c5ea0d8ce5097919b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/sauu",
+      "bytes": 43728,
+      "sha256": "c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/sdfileinput.elf",
+      "bytes": 10296,
+      "sha256": "19a505750d18bee713e9794dd203219c4201ce2ef4c950b2187415878d09f67e"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/sen.elf",
+      "bytes": 31336,
+      "sha256": "c97d791be82a800d2d60ff0ae9f5627de163cafa093e32745cf3de70214f9c93"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/setup_nflash.sh",
+      "bytes": 611,
+      "sha256": "cc71a751c621db90a3f201959115fddb9b46be41fee2051f505bd6170f2728dc"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/uc_portctl.elf",
+      "bytes": 10328,
+      "sha256": "57f25ffb92059d7062ce6ce6036fe34b8389df0014a52dbd8bac090114d983db"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_configurator.elf",
+      "bytes": 6176,
+      "sha256": "4e7ffea44bde7d90b30d0f832863d105edd66b7131b5762a71896b528e9b0119"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_darwin_init.elf",
+      "bytes": 10304,
+      "sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_datcnv.elf",
+      "bytes": 10248,
+      "sha256": "b4f3ea1049bc5105271ff08ae09c8260ebbdfe9bf1ae56e1daf9dce54e4e4421"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_genlock_firmup.elf",
+      "bytes": 18624,
+      "sha256": "fbaedfcad7173ea5a380307b76a1c48273e4e34e69319131d8c62d6fae2879db"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_get_buspower_ic.elf",
+      "bytes": 6096,
+      "sha256": "8f47a5b310cf70e57af0e1ed3d0165ff5b082f93445aa1466700df883e37f7e9"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_get_mem2file.elf",
+      "bytes": 6112,
+      "sha256": "aa99282a393efe79fb1379e4c2c4710872ec5c98a1292041e4fde41df8c9daae"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_get_power_ic_type.elf",
+      "bytes": 6088,
+      "sha256": "285cb7cc168d6bcc4f3116238e69edbe25ae32cff594d115a68252a818b0d8aa"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_get_serial_cfg_file.elf",
+      "bytes": 10264,
+      "sha256": "1d02445dbc4934206b385a1671d0f66a7fec79c21701f0053c2cf76599ceb270"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_im.elf",
+      "bytes": 6112,
+      "sha256": "7eb7e5a0a45bab7d8a6f313cef162f47ac0b8d00544d628fb76c34deacb6d7dc"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_pd_firmup.elf",
+      "bytes": 14432,
+      "sha256": "92dbb8b08bde699414df31be995bf48cc23022b506e7dec04018f3f099e018ef"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_read_lsi_type.elf",
+      "bytes": 6104,
+      "sha256": "7a9cd6f744bcaae65eeff67af0b8f58302e49a4eb9557178158e9c7763c2d29e"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_reboot.elf",
+      "bytes": 14432,
+      "sha256": "314725816b8a251500eb38b001ab8bd8449f6560753db4090658086331586d7a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_send_lsi.elf",
+      "bytes": 10248,
+      "sha256": "9fb4bd02b3434bd9fe8fb49fcf4359f7720b292506960ae0d9894332d3453c80"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_timeout_poweroff.elf",
+      "bytes": 6128,
+      "sha256": "1894b5f76e9f271541ba2bbbd2a0511fac9527b32ff5578d31fc05b80d935029"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ud_xrst_req.elf",
+      "bytes": 6112,
+      "sha256": "195dce14076e4782846c529262f07a2b76a3ec8cabef13dac5493fb3db9a7b55"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/ulogio.elf",
+      "bytes": 28672,
+      "sha256": "8870e878fdafeacb21e047ec84f74ab25e04e6ccffbd4380857d639b9ae9b0ee"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/up.sh",
+      "bytes": 6572,
+      "sha256": "c774320a0ab92c13b467b9219e1f60262a1effa0b551ba3b713514a36dadc402"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/updater_log.sh",
+      "bytes": 137,
+      "sha256": "c5d4fa9c062b8794f92b551f5a70aa0335cf838ea2a6ecab3def2f5be836809a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/updater_log_rotate.sh",
+      "bytes": 732,
+      "sha256": "6a47082132edaace4056146aa2132b9172779b95a8a0847b12574c961d0018d1"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/updater_storage_backup.sh",
+      "bytes": 488,
+      "sha256": "eb835d9ea1b270c6e9cccf6c0f7a01333874bee10986963c44a1ad044f07a0af"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/updater_storage_mount.sh",
+      "bytes": 589,
+      "sha256": "a40f8a8173de6202706e2a0013d664bea48780b37c0eeb97cab57c8dacb21c3d"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/updater_storage_restore.sh",
+      "bytes": 619,
+      "sha256": "7cc2f2d475c8954e35a5466a2501301b80a376be4dca6edf49118f654ff48949"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/us_darwin_firm.sh",
+      "bytes": 478,
+      "sha256": "38875671d86166753a67666edb58e2424a72dd772579632799e255f30fc2204e"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/us_darwin_init.sh",
+      "bytes": 89,
+      "sha256": "190a3ff1bf248bb5204c1290a7ecb89f9723d660a37b331ba09e0f19c36a7492"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/us_error.sh",
+      "bytes": 336,
+      "sha256": "02f68f3306dd416ebf3e5131edf5900c2ba5de1380057a3e0f09186e4c0f28ad"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/us_pulse_led.sh",
+      "bytes": 392,
+      "sha256": "698aef895c77bc7477d7adba290fcff4940c898b776160b2c6b42ef06cceda94"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/us_reboot.sh",
+      "bytes": 230,
+      "sha256": "9307a9f79e2814589202cc0f41e5ba531d0ca993f0471ea791ffba5da5b51c4f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/us_remove_modes.sh",
+      "bytes": 52,
+      "sha256": "90a56f5b3d6e1a304055d7ccabdf058da8703a3e956781112022e7ee697bda4a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/usb_insmod.sh",
+      "bytes": 225,
+      "sha256": "5e885d964a9ab9c9e18c23453af42f7ff7da57d0aa446c1812b385206f3d8f7a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/bin/uudfileinput.elf",
+      "bytes": 6184,
+      "sha256": "f1a2d0a36998bfe2df7c7496cd96b59653fd839dd00e6c9beaed063041c38385"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/arc4.ko",
+      "bytes": 4944,
+      "sha256": "98bd7e072a153f9b756af67fa552108d1c75d252adce8d359e375c7743ae2483"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/asix.ko",
+      "bytes": 46528,
+      "sha256": "9107ac013683e6d59b0d44f0e968936f4f9d1cf685fb60917bee7b273eeb4273"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/backup.ko",
+      "bytes": 209328,
+      "sha256": "6635c2814bb8cd2e14b64028715563ac5ed2893d7bf56a308f407632afaa9bf2"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/ccm.ko",
+      "bytes": 14752,
+      "sha256": "7a4689277b1b4172b9e0f9b97a7abbcd0663e003067d78e96f51b99f6a3d61bf"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/cdc-acm.ko",
+      "bytes": 36504,
+      "sha256": "70fa6f606538d71ffaff5de2afcaa31e9f4c052f936a86c17c5756b6938b188d"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/cdc_ether.ko",
+      "bytes": 13400,
+      "sha256": "45c0565d29ab164bb8b464a464ae7afc97f5e5ae3d4cf4c4ea16caa60438ad48"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/cdrom.ko",
+      "bytes": 38328,
+      "sha256": "7818e9a70fcb6e4cdfe25f20c697705fd77e26b9aba06925c6c1f0cc04c8c898"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/crc-ccitt.ko",
+      "bytes": 3720,
+      "sha256": "3ac64d8c71b433a48b3c23ffa9160e4fe4c873cc49154cb52d3cda6506a1265c"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/ctr.ko",
+      "bytes": 8848,
+      "sha256": "07bee5212e8cb847206b7678e886127343a12d9ce45877ce007ba73f2bd8567b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/dmm.ko",
+      "bytes": 134040,
+      "sha256": "6278f18f5d9d0dbfd193fc222bfd41ea265242146fb7950b09c46a602852604b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/fixed_phy.ko",
+      "bytes": 9064,
+      "sha256": "d10e2d737a547e00ba20614cba6d16d9808ae45ddc34b486fb9f15aaf835607f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/g_mass_storage.ko",
+      "bytes": 11080,
+      "sha256": "80b52e24623647ba0651ebc58dbbcbf63f6ad5a6e60df3c35b1eb7bbafac3736"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/gcm.ko",
+      "bytes": 19472,
+      "sha256": "c4550880fb7e9b028984c40740e073a8b3d3b62810cfee26c1afcece04d707ad"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/gf128mul.ko",
+      "bytes": 9560,
+      "sha256": "b0638bb4c302fd3d4f36e4f4a9362a69359f0443b93d72e05e97b3c9b18ac7d3"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/ghash-generic.ko",
+      "bytes": 5072,
+      "sha256": "4d6ff5f1a7658f0f066f5bb1ec15532f83b41baeb75808ec8f446df9b3b7c3cd"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/kikilog.ko",
+      "bytes": 98032,
+      "sha256": "9b59ccd9322d3eb6acfd0b15f7793e5bfc5f144b51d59896a677109890b7b7af"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/lg-vl600.ko",
+      "bytes": 8504,
+      "sha256": "5be4c2d6837918bab4122fecaadf02ca39f4ded1953e2a44c2996869e168acdd"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/libcomposite.ko",
+      "bytes": 60896,
+      "sha256": "98d3c4da81b5a0579ddaeecee3258abb952a2d64d7203a02b3767edd005e9a6f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/libphy.ko",
+      "bytes": 58256,
+      "sha256": "86a61e48fc668ec8b22694bd96f8f9585552ad12218b4161c54d80192017c593"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/mcmn_drv.ko",
+      "bytes": 282144,
+      "sha256": "1e1137c7380e3c44cb6bd0742d04a4c91c72147119c29146d300476cdd01b599"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/mii.ko",
+      "bytes": 7560,
+      "sha256": "d36df92fbde2d790b71745026aa66249aa39f1186168a82b2568598558127200"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/mmc_core.ko",
+      "bytes": 167912,
+      "sha256": "4bd33b777a20a09e47ee2bbbc91936401d25e70ead96ff1d2b481a41a391fcbf"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/mmc_drv.ko",
+      "bytes": 448616,
+      "sha256": "c647e165bd9a53d5f1670d9e9b478ac58693c45520247916df04018f95f5cc96"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/ms_drv.ko",
+      "bytes": 192512,
+      "sha256": "b214ed3c904f6f39198d6f15140239c69a2b94bc201824a32aff4efa0ad4de18"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/nvme-core.ko",
+      "bytes": 42848,
+      "sha256": "90b6546b9b76893cf2adf011fbf2ae764561c8a6e7a18aaa599fa769c549ed88"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/nvme.ko",
+      "bytes": 37872,
+      "sha256": "4de4c9571faa52c1f7d224e7ade04874a2dab38df28e12a48167a853b352e284"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/of_mdio.ko",
+      "bytes": 14352,
+      "sha256": "6bf0b12c3f4e4ea69df67fa07b6fc0aa926d567297ecde1dccae03fc7375a81f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/option.ko",
+      "bytes": 105416,
+      "sha256": "eb0a68bcc9bb074ca7b95fb9acff4d81d63067d6703d5155d214b64db5993d40"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/osal_uipc.ko",
+      "bytes": 81152,
+      "sha256": "62783602c3ff3b8e6f24cb9ca8164a76faa5a78671cd66382d0f995e116af9ed"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/osal_ulogio.ko",
+      "bytes": 65208,
+      "sha256": "4b8bdee79819001f3d6fa9f83af78cc9bfe6e54917e72522ef3678f29ee7a7fe"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/osal_utm.ko",
+      "bytes": 7976,
+      "sha256": "b880fb3970dec6139df076aa1701aadc7a0bb1854cbf70d7368a096718005dfe"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/pci_ep_cp.ko",
+      "bytes": 6496,
+      "sha256": "347cf32bec53ae8132f8f61f8fc5acbc0536a8c190ebdc88598cd908e50f3675"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/pcie-if.ko",
+      "bytes": 51144,
+      "sha256": "7f7d9a283ddc61e66e304954f3736b8b18b49eafc2007b3494d61f307fb24f7a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/pciedma.ko",
+      "bytes": 54464,
+      "sha256": "65214ce23ea8361f27ff1b213bc6ad5f7a6c48e1fe7686d7669733ea2084d7ee"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/ppp_async.ko",
+      "bytes": 17616,
+      "sha256": "8b58318e2c72742d8bec18c003d43edbe8653dc689bf69ed23506ee0067fd60a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/ppp_generic.ko",
+      "bytes": 43240,
+      "sha256": "363d296db34d37280bee10cb59f3152b2148412022382cb8dcdc3a13257e5613"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/rndis_host.ko",
+      "bytes": 13912,
+      "sha256": "19122b7e56eba1aad6307b6b8e596a38922bf901f36456b6aa1de13a168198fb"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/scsi_mod.ko",
+      "bytes": 218096,
+      "sha256": "19dc68fe9096ee8fab1870ae5775e86a0d5967e86a6697185dc03002083427ec"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/sd_mod.ko",
+      "bytes": 51216,
+      "sha256": "4efe9f71b58e20f5e440fc8ede7157432676ce30511e4cdba2d18f5ebf6f4eaa"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/seqiv.ko",
+      "bytes": 5984,
+      "sha256": "1a048cf2f05b511a80b619290e76958aef778348a9199f15abde9dbfca5b1e32"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/sio.ko",
+      "bytes": 20384,
+      "sha256": "1c1f8fbf89dafd1a68c8835bb7317535bc9f72dad779e6bcea843ac9107b0fb5"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/slhc.ko",
+      "bytes": 8424,
+      "sha256": "005d76cbd5beec7a999bc8b6f0c2edf5f8dcef06d288b3b9d3b029d038ae973c"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-aloop.ko",
+      "bytes": 25568,
+      "sha256": "ec3e46f57cd48e04a8d515562e1a3fae8285eb9550384f7251d4429c92e6ab61"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-dummy.ko",
+      "bytes": 22528,
+      "sha256": "0b618657a5fdf4d23568b46cdba7a8762ff9f418316c98fb375770907ef9b9ca"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-hrtimer.ko",
+      "bytes": 6760,
+      "sha256": "c0c57be96296d369e698a2348bb588df1f4e3fa849afeccd8c96a81adb36cc66"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-hwdep.ko",
+      "bytes": 14672,
+      "sha256": "37884d53ecce8f5cd4b5023eb3ffe8bf15f4ab8190d2d9c90a652bdb5331ebfd"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-mixer-oss.ko",
+      "bytes": 29136,
+      "sha256": "b845efc10561217970571939da45f35bf7c8f27a2c7174175cff10e52c9e585f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-pcm-oss.ko",
+      "bytes": 59088,
+      "sha256": "7b3ba0bad2ff68d39467c11bd7d91c6455471c37028cb56296fdf7a41031a8c4"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-pcm.ko",
+      "bytes": 123976,
+      "sha256": "ddd0e4abbb3bf11d61d4ed8fce67724b5c79b537af4b27679eac689915b99cd5"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-rawmidi.ko",
+      "bytes": 35904,
+      "sha256": "d2de86227d3ea0310f5a5ea5e8feb613b484ff49c0054b01410725b84bc31480"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-seq-device.ko",
+      "bytes": 10328,
+      "sha256": "917aee2f005a7f0acc298a1c4b210a6ae7ed4ec0168e65563355a3140d503ca8"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-seq-dummy.ko",
+      "bytes": 6384,
+      "sha256": "cce6a981035c30e98f85f661fc32b1a8c826bdbe4386bc21cf9d9e2126348c8b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-seq-midi-event.ko",
+      "bytes": 9768,
+      "sha256": "282a570e8d2d2b51c0496aec1da52643cbf500ba3c4820ca109e161e29402079"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-seq-midi.ko",
+      "bytes": 11992,
+      "sha256": "4e2c2dae9d672d68b7db6158c2db26fe0a86922d717c42d76d1fa8769f12a901"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-seq-oss.ko",
+      "bytes": 55376,
+      "sha256": "24b4e3f4c766ded252aa1ff330c8d7359c0275526eaa42c46265d8efd5c8c99b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-seq-virmidi.ko",
+      "bytes": 11104,
+      "sha256": "6a15e80727523e6748bd4a129c438ffd6bafa41b60e584ce6ea77997b39339b3"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-seq.ko",
+      "bytes": 78848,
+      "sha256": "6b903df9acd989ebd6d54496d6d337fb0eb9249bc2d2b387e4721812331ff66a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-timer.ko",
+      "bytes": 35056,
+      "sha256": "2ac300e1f584bb1e9c3098ac07df441d694a39eb03fb29b23a1e5024e2ed8ee9"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-usb-audio.ko",
+      "bytes": 216768,
+      "sha256": "9c442e6ce8d179c4a9eb997c0b84a2cadd1b5cebeef2623947bcbc6540db1ba6"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-usbmidi-lib.ko",
+      "bytes": 31032,
+      "sha256": "57680c03f0a7878f80e8e3a5f97258949bf32257ccfafbe461ce0d8b5a13a0c4"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd-virmidi.ko",
+      "bytes": 8016,
+      "sha256": "5afd5c9b4e2a7468ed23e0c3f34a520078d8d7adc9a76fe597d173e0f20d6044"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/snd.ko",
+      "bytes": 82912,
+      "sha256": "25c2443f1fa022b4e699c306cdc04ef8f04f49a431777c3a42058a381c944874"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/soundcore.ko",
+      "bytes": 14024,
+      "sha256": "01d9c9bf26d6d40864ecb09be9f860256e8088c10bc856d53dfa0e00705bb830"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/sr_mod.ko",
+      "bytes": 26568,
+      "sha256": "e9d8a8f482270161122102ea34913db25da7ddd388725b9442237176dba85a0d"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/stream.ko",
+      "bytes": 7032,
+      "sha256": "8023e677ed9285f6f4111b943e779164b8b0babfdd78e9c52229fa2774fb5b6a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/stream2.ko",
+      "bytes": 9080,
+      "sha256": "f6400e4786400a9738848781b5200bfbb1f95958fadb9a371eaad0093501c160"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/udate.ko",
+      "bytes": 47528,
+      "sha256": "ba162d4949beb169916baf5b017d3e2526345134f2cf57bc278d435c58d0db0a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usb-storage.ko",
+      "bytes": 47272,
+      "sha256": "f558c19596b40153a081373f6d7c4512db85a0b520d80d7342d0ed48f13f22be"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usb_beets.ko",
+      "bytes": 165976,
+      "sha256": "56d88e322b80aa489bceffd5671c9e7efe6fced147f2e2359260ea79fde15f4b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usb_buspwr.ko",
+      "bytes": 54328,
+      "sha256": "dfb1d675759745347a379dd1c5765c24ff5ca147522fe4f1a132f6db17d47f4c"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usb_current.ko",
+      "bytes": 7840,
+      "sha256": "fc948adc5131fa5c38d835122903a6dc26448e6c96c464db58adb040631f78ed"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usb_extcmd.ko",
+      "bytes": 23024,
+      "sha256": "e0ee711ae7410ec40d6bc7e9a7ac26087ab7c405e4ad567cb13befcf6c0577c1"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usb_f_mass_storage.ko",
+      "bytes": 51696,
+      "sha256": "9a7d2feb911a5d2ade5005b5052197c4c76813fc99d4a2b072c18334a601fb6c"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usb_portMonitor.ko",
+      "bytes": 70720,
+      "sha256": "75e8ce03874f2a55f610a9f9024d4ec8caeb5d5493e95faca0bb4415d5b502c7"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usb_wwan.ko",
+      "bytes": 14464,
+      "sha256": "60ae31169c0e9e1941a85230d0d18d5f8dac8e539b0bbb64e5baa5b37b228fae"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usbg_buspower.ko",
+      "bytes": 21216,
+      "sha256": "deb2fe54c1a15a3da7cd725b1566f63a7bcc81cbf1268fa31df0943a0d583e22"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usbg_sen.ko",
+      "bytes": 58056,
+      "sha256": "7b6c6e9aa65252c216921fba25237e970f3f082bcb23725cad9feb9d41549f57"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usbg_stillimage.ko",
+      "bytes": 48528,
+      "sha256": "b567b78c28d84a98189b159cf182bfce9d824bbd15ef2a84ef84cd572f7b9756"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usbg_storage.ko",
+      "bytes": 104288,
+      "sha256": "f3937da0db4c8552ed1e857473339cfe33073d80cbe0e55f9b929091897bad44"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usbhid.ko",
+      "bytes": 38104,
+      "sha256": "8ab18c3c3688cb6be7ca017839aa9d4560f91392c0078d59aece3baa5018c62b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usbnet.ko",
+      "bytes": 38776,
+      "sha256": "8abf5aea95d4cc3827fe9d7f20f95c20c5c476b52bf8f5578453d6beaf661c02"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/usbserial.ko",
+      "bytes": 42352,
+      "sha256": "2a18db77114b488fe38637a394c66394140371f16ad8ddc1d0264287a9fc6b18"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/utimer.ko",
+      "bytes": 33776,
+      "sha256": "00bcb27b26ecf6d4abe3f2aef76e0c6563000cc7987df357a24c7a6971e5d442"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/xhci-hcd.ko",
+      "bytes": 167632,
+      "sha256": "63bdbfcd56bd0daf85172c502c4a01416e13e2ab5cbc6ea9877f06bf9f751673"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/xhci-pci.ko",
+      "bytes": 11064,
+      "sha256": "c2eca81902bf37cea982381d915721f1627772fb8ad6cae7d8ff1f8481860dc6"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/kmod/xhci-plat-hcd.ko",
+      "bytes": 13616,
+      "sha256": "b245a7b2f4fc71c82dc5f79ddab82cf1aecbda1db7cd283f2c956a54982156b0"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libInfraExtCmdSvc.so",
+      "bytes": 51616,
+      "sha256": "6ea4e19973e220e7d55c7daeabfa5f5d05462e2dc04537764e3e9bce43d60fdd"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libInfraFsys.so",
+      "bytes": 638528,
+      "sha256": "ba0467674b056b3389a34ba974b1f0bbe99f4189d8aa36ad509843596ccacb62"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libInfraKikiLogGenerator.so",
+      "bytes": 22752,
+      "sha256": "e617a8a75f188069141a131bee7b1464b7a6f805867f978321eab207b6c3ba7b"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libInfraMediaCommon.so",
+      "bytes": 488280,
+      "sha256": "7b36918172b50275f43590da4816d79abdd2146f5d870a2b87f72550ef1ef603"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libInfraSKD.so",
+      "bytes": 8020712,
+      "sha256": "8052390d5d043db47dd0aa83b3f65be7ec980288c5c72c01f46229b597b12f20"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libInfraUsbCmn.so",
+      "bytes": 143752,
+      "sha256": "f56e89660896dea16249d01031d8bb21d5ee5f9b3fb0c4d4e922aa3f7637a687"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libMWF.so",
+      "bytes": 357216,
+      "sha256": "c2b6dfb403ca28a0de6c822e2d72e4cb2a560c773a5fbea534f2f8f51d920136"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libSysDef.so",
+      "bytes": 6022992,
+      "sha256": "7d50db9afa4e2aea336cb4ee8472acc9b4327460a641271af96fe89b0f6fac54"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libUsbBusPower.so",
+      "bytes": 72832,
+      "sha256": "b57d308fda2efaeb9e7118d0df7ec5376cf6100a5efee1943ac5f1962f247c2f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libUsbControl.so",
+      "bytes": 196840,
+      "sha256": "2919e14b44607baa29a8729fc3d132423b5d68156a1f550d3db590f3ed7e0717"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libbackup.so",
+      "bytes": 18344,
+      "sha256": "5c1ede86e363bbc718063299833b905985f4a254f5b4d25ad81fce62e253daeb"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libcom_err.so.2.1",
+      "bytes": 14488,
+      "sha256": "784feba5e8864220fc2b3158086fc30554baa79fe4812f6e7227f934258f6e38"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libcryptfileinputupdaterapi.so",
+      "bytes": 27088,
+      "sha256": "06ee88247f9d1da34f28aebbe9ff5b355b661ce9645e1b83c6ee6a0bf292d17a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libcrypto.so.1.1",
+      "bytes": 2349584,
+      "sha256": "df69906d5f63a3afe9b7872e41cab741c346630e53ebcaadb86e457f0b803726"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libe2p.so.2.3",
+      "bytes": 32472,
+      "sha256": "d9fa1739613551f4313e086bb6cef26d3e9c0e89154b086b3dd0334ec8bf8773"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libfileinputupdaterapi.so",
+      "bytes": 27232,
+      "sha256": "7f8ab4a0f2b1a92497cce8cc655eb59c62cdd6fb2760722ee9b614b2d67ea3a6"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libgcc_s.so.1",
+      "bytes": 71920,
+      "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libjemalloc_ds.so.1",
+      "bytes": 5848,
+      "sha256": "1bb62836a9e71bb424216f5e8e00f25230a54b6c252e5cbd0436a231a1ffa19a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libncurses.so.6.2",
+      "bytes": 342160,
+      "sha256": "3f8e46ff85fd5fdf0105b91a41cb01b10705e787b22b62a4a914282621e2c14d"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libosal_udate.so",
+      "bytes": 35528,
+      "sha256": "6867bf4709fc559d58432ab930867279708e4354e2469c7be6eaf1cc7900daff"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libosal_uipc.so",
+      "bytes": 47848,
+      "sha256": "2d899fdbb3befed231f05ae7efd1a3689921e07e1125527d1c9fc602a67ebbec"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libosal_ulogio.so",
+      "bytes": 40168,
+      "sha256": "df09ccaea58b05999506a6c834a7d1d1263b8ff2f0d9eca1da0a1fa85be2b9cb"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libosal_utm.so",
+      "bytes": 10216,
+      "sha256": "c3047f937f50eed6a73f7a02f05c95d1b7dc515750d2d634817a668e6dbe78f5"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libpro00.so",
+      "bytes": 10176,
+      "sha256": "1dd40519f2dd8ef6ae583db110b2473eded3b694a3f8d5352f0487ecf707de1d"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libprocps.so.6.0.0",
+      "bytes": 64128,
+      "sha256": "3515c6c846ce444aa458e1e76b3c2d20b2c95263220cb7eaee3c3b55495ede4f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libsdfileinputupdaterapi.so",
+      "bytes": 60584,
+      "sha256": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libsencore.so",
+      "bytes": 401768,
+      "sha256": "69232017ae6b6ece6bdb18bc0f4919955342a406d0ab0215887812ffff3c1321"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libseninputupdaterapi.so",
+      "bytes": 31512,
+      "sha256": "3240c3c70aaa645de3af74101cd4fb85263ec478cff830993a5cd4ba0a6bd704"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libsensapi.so",
+      "bytes": 48200,
+      "sha256": "b2c9facaf68ddd53ea08839858cfdf5bfc36bb9acc481e9d3037554c37becc6d"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libsenupdater.so",
+      "bytes": 14616,
+      "sha256": "1b90757ac5aff9d5fdd6f71a945121f2ea73f3fec73527a790dc14d643a40dd4"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libssl.so.1.1",
+      "bytes": 499824,
+      "sha256": "f76920e114aa790b7e5921497f54543a7b22d44945a1c075d4d1309cbcf384fb"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libssp.so.0.0.0",
+      "bytes": 10184,
+      "sha256": "2a1365635b69c181dfb16ad2cddbaacf4f13194d20307387b348612f6df2177e"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libstdc++.so.6.0.22",
+      "bytes": 1549496,
+      "sha256": "f247fb26b772f4f6815efaf4319f98ffa8d04393c68c929e04cc93f4c7a11160"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libtestcmd.so",
+      "bytes": 18520,
+      "sha256": "821c7f252f3b0b3b17055fef6f77ad9ba4eda9fb8c8eb6f78a0b70054591061d"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libtestcmd_scn.so",
+      "bytes": 10216,
+      "sha256": "82ad01b0ad5758f9a311281fd6aca35660fc805ced5c9deae34ed49bfb99e170"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libul_GpioCtrl.so",
+      "bytes": 10064,
+      "sha256": "4c36648d884bb89d109bb1eda681683ec65e5995cd3d7fa4c1a5228fb41a6e2f"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libul_xml.so",
+      "bytes": 72784,
+      "sha256": "3d2412eca8118c7b181d5fb97a0a26e5a18d5081689e5089a0ef25b843344fa3"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libupdater0604.so",
+      "bytes": 27088,
+      "sha256": "546ffcea5b4bb6b481248fccd16dede38e3cfcd9c606db03d423dd69dc6a39a7"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libupdaterapi.so",
+      "bytes": 105984,
+      "sha256": "2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libupdatercommon.so",
+      "bytes": 56032,
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libupdatercorecommon.so",
+      "bytes": 72864,
+      "sha256": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libupdatertalk.so",
+      "bytes": 5896,
+      "sha256": "c46b9bb95bdba6e4a54aefd36836f1c27e229d6af35456a5e2dbd0fcccd856ed"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libupdaterufunc.so",
+      "bytes": 10088,
+      "sha256": "d6c5757eb10c728b9cf1f6206f7b18c28db8616afbea62beb4ca6f29ca2350ee"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libusbcmd.so",
+      "bytes": 35408,
+      "sha256": "9ad5118de3fd1456a0e96193566ad27ded1b56888260dc65b61a50e8e4ee3361"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libutil_date.so",
+      "bytes": 10032,
+      "sha256": "b810b5508c247cf5fb3da5d9459f1b5533cc30d70f5a9984a7fb404959eab21a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libuudfileinputupdaterapi.so",
+      "bytes": 52288,
+      "sha256": "f8a622fd2b038080cf682b22febe60e379b916f72d8890687b1a6b2109c5182e"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/lib/libuuid.so.1.3.0",
+      "bytes": 14712,
+      "sha256": "2956149101e1893bd32d8df4d82a7da644c1d184f4a055511c8998333e052f4a"
+    },
+    {
+      "path": "engine-rootfs/2.04/usr/share/terminfo/l/linux",
+      "bytes": 1730,
+      "sha256": "4cd3bfcad5ef6fa077c84c642ad4143da82a98e3c283c1338cadaef4ae9e6b10"
+    },
+    {
+      "path": "engine-rootfs/2.04/version.txt",
+      "bytes": 12,
+      "sha256": "f53b366b81d10625434dfd6e2fdbcce795fbe78fe27af15221d1a7cbe0f0fb97"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/busybox",
+      "bytes": 320392,
+      "sha256": "d9ac7d99d8a73695bcde25416c9506ea3261f1bab2d67fa60abc58a050c62308"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/chattr",
+      "bytes": 32088,
+      "sha256": "c04412eee20750664deb6ad2b3b18ece54e176334e7fbf83065e90e16dbbeabd"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/compile_et",
+      "bytes": 1365,
+      "sha256": "774711c746929c814d687a9ce87301df51d70fce23f592a319c693b6dd2c038a"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/dnsdomainname",
+      "bytes": 43328,
+      "sha256": "e25a79bb1fb6a48f4c7fa70cdae88c103f47903a8537cb8c26b4b0772441eef5"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/hostname",
+      "bytes": 43328,
+      "sha256": "e25a79bb1fb6a48f4c7fa70cdae88c103f47903a8537cb8c26b4b0772441eef5"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/lsattr",
+      "bytes": 29040,
+      "sha256": "ff05392f478a7372c5dd6eb4f247a944a0ab190c6e4915d3288b7f0505bd8e8c"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/mk_cmds",
+      "bytes": 1130,
+      "sha256": "e0aaac651bbd39309df23d1033bb292ff562dcfa83b2abdc33aa9e3bbe7a799a"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/ps",
+      "bytes": 88984,
+      "sha256": "ee394ac11f645e82dbd6d89b2620ae59676b07a9359f38ef8b972c41756782cf"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/top",
+      "bytes": 92576,
+      "sha256": "ee3357df9f2b2eac7e9aa5e6c0759c748630012ff4e597809ff9092418796ea9"
+    },
+    {
+      "path": "engine-rootfs/2.05/bin/vmstat",
+      "bytes": 22856,
+      "sha256": "0066ab13ab77d8e5038130feb532b92b69be4cd9ba934afef4c1c18b0a56c149"
+    },
+    {
+      "path": "engine-rootfs/2.05/etc/DmmConfig.bin",
+      "bytes": 944,
+      "sha256": "2861f355b29ba2237e70ac59780cbbc5e3e6c32f9817eba907644621d24dc4ac"
+    },
+    {
+      "path": "engine-rootfs/2.05/etc/VerificationKey.pem",
+      "bytes": 451,
+      "sha256": "8281413b5607446939613e07d020b2c7d8ee2371349099de56bc8288f7be0a43"
+    },
+    {
+      "path": "engine-rootfs/2.05/etc/ulogio.bin",
+      "bytes": 2688,
+      "sha256": "a6c55a918c22749c46e985afb746f217b2ae4718509d1e52ca4fd43f65bdd6a5"
+    },
+    {
+      "path": "engine-rootfs/2.05/kmod/crypt-emmc.ko",
+      "bytes": 14592,
+      "sha256": "ec90c0f8d030ef7b3fc2a52f766fdbd8c4d88e0c27481634f8582208df941ea5"
+    },
+    {
+      "path": "engine-rootfs/2.05/kmod/devno.ko",
+      "bytes": 6344,
+      "sha256": "4544ae566779fb6f17dfbd745b8ea753aac7f8c86750599ee0cfcecb3dfb4d4a"
+    },
+    {
+      "path": "engine-rootfs/2.05/kmod/dma330.ko",
+      "bytes": 606152,
+      "sha256": "fbcd4962056293c438175245218d3c548f4b9e33d3159c5d331e4ef46767685f"
+    },
+    {
+      "path": "engine-rootfs/2.05/kmod/emmc.ko",
+      "bytes": 340000,
+      "sha256": "af9b89805f15e373dad8ab88482c24f91a644e93b0a9eeee678a0f9150fd1351"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/ld-2.25.so",
+      "bytes": 120616,
+      "sha256": "ae69d962b3a819765bbd42c2077df52745de7ab6b0cf2052522737258875f2e6"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/libSTMcmdexecute.so",
+      "bytes": 10120,
+      "sha256": "04ebdc6ca5372f58bbd56482d857190863bd7fd6ebe33f23f33337b7e7c08679"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/libc-2.25.so",
+      "bytes": 1271648,
+      "sha256": "363b313d6b3f9b4c8b4d91ddcbdd5096970887fbbb543ebea1d1295ce4d65733"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/libcrypt-2.25.so",
+      "bytes": 30864,
+      "sha256": "7bab9a22f26420f674e1c6dcec07e0c0df54767927d0576323a7eb1b1d21d69b"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/libdl-2.25.so",
+      "bytes": 10368,
+      "sha256": "b525ab6ba51617ac0747ca7dc8b87dfa809d5b4b6b176fe7a01922296af4d97b"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/libm-2.25.so",
+      "bytes": 658000,
+      "sha256": "aa90d1991ae3f898aa3a8ea3672416d748f1331e22e6e4b30e49fa177caabaf0"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/libnsl-2.25.so",
+      "bytes": 76600,
+      "sha256": "424ea18196a5acedc73212c1fcf4ea6c4d2ee093c69fce85b4a2e2f72e27ef88"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/libpthread-2.25.so",
+      "bytes": 101888,
+      "sha256": "a58f6f84efd89bef0d12028b974b5e3aca2a2804e922954283e8127d6d5a02fe"
+    },
+    {
+      "path": "engine-rootfs/2.05/lib/librt-2.25.so",
+      "bytes": 27448,
+      "sha256": "494988afd6b8b23542bfa3da80a25fbf82c620e4ebe2a77a591b0604d593cbf8"
+    },
+    {
+      "path": "engine-rootfs/2.05/root/IAMSIGNENABLED",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "engine-rootfs/2.05/root/IAMUPDATER",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "engine-rootfs/2.05/root/chassis",
+      "bytes": 18,
+      "sha256": "7880368a5b3a8efe7e19337e225fc1248dca9e8f1f96eb111823eb66588417e1"
+    },
+    {
+      "path": "engine-rootfs/2.05/sbin/dosfsck",
+      "bytes": 43232,
+      "sha256": "c02075bfa60c26dbb376139b13c6d9660f1b3bb946848f086a0cd60263f700cb"
+    },
+    {
+      "path": "engine-rootfs/2.05/sbin/init",
+      "bytes": 1438,
+      "sha256": "223f642c9cc8eb3a53901263940d42905a3d57fc5a091459003719e216950ccd"
+    },
+    {
+      "path": "engine-rootfs/2.05/sbin/mkdosfs",
+      "bytes": 23264,
+      "sha256": "b7d22f48c145bf3140ec99eff527f2d97cb9eae5093ce1b9655e063babbe4ddd"
+    },
+    {
+      "path": "engine-rootfs/2.05/tmp/kikilog.dat",
+      "bytes": 4227072,
+      "sha256": "a11e635ec7eaa24e8ce504b58cb3c90698c0eaa2eee759cff8b2e769e158f4d5"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/UdtrMain.sh",
+      "bytes": 2188,
+      "sha256": "506958d46585fc2276a21ecd6f1cee60d33aeee611c5e8a1dc854f2ebcfc720b"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/common.src",
+      "bytes": 3287,
+      "sha256": "3d5334ab1698d67176f8fd35ffd4d7a9a9b85a1625b20cf128ba091f752b90a0"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/crypter.elf",
+      "bytes": 10352,
+      "sha256": "bc0d6b2d5638fd6b96a0e52967435efcb26d3cf040115de8b488a8ed0f3e0972"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/execute_prod.sh",
+      "bytes": 898,
+      "sha256": "837607ded51a48fe85175e311c00027b2262b909f2d50587ae46e1869440efb5"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/execute_ufp.sh",
+      "bytes": 2826,
+      "sha256": "08edf12a2b4b33a285866e88b94ef1d973bf50cec373dea6796d0ad52d5e6b9b"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/hash_check.sh",
+      "bytes": 566,
+      "sha256": "78b71e702e57b914e01c98617f138785bba18651a949586fe0711f371f764c44"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/hash_drop.sh",
+      "bytes": 407,
+      "sha256": "e5c8b33e1f41bac0683c6d2b5d01c830f4233690e31e0fff43c190955da29f3b"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/hash_update.sh",
+      "bytes": 325,
+      "sha256": "61f4ef4c50fb657c7195f137ac37546551fd1afbd79e10cfee750295f202e1c5"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/insmod.sh",
+      "bytes": 2678,
+      "sha256": "700bd1129d3aecd5de62bfd7c730df18b3b1b3bedba56b9f31889a7593020f4f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/is_valid_boot.sh",
+      "bytes": 483,
+      "sha256": "51a9aec51413eead0debd856afa60ad06ad4726bab2502a11415fe5c3a3a1b8a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/mf",
+      "bytes": 10320,
+      "sha256": "9107ac720f9626c810c2ae6fa3b51a59e74faae389942699f4ab88a465c88a78"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/mkramdsk.sh",
+      "bytes": 343,
+      "sha256": "4314078825b573e74ed80f901c2723b7ca805b8a1428de6997f0f367045af7d1"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/prepare-usb.sh",
+      "bytes": 492,
+      "sha256": "fee9a47fdc9f1c5f3f78aa4cb2d88052e2fa6e5534729a8c5ea0d8ce5097919b"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/sauu",
+      "bytes": 43728,
+      "sha256": "c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/sdfileinput.elf",
+      "bytes": 10296,
+      "sha256": "19a505750d18bee713e9794dd203219c4201ce2ef4c950b2187415878d09f67e"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/sen.elf",
+      "bytes": 31336,
+      "sha256": "c97d791be82a800d2d60ff0ae9f5627de163cafa093e32745cf3de70214f9c93"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/setup_nflash.sh",
+      "bytes": 611,
+      "sha256": "cc71a751c621db90a3f201959115fddb9b46be41fee2051f505bd6170f2728dc"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/uc_portctl.elf",
+      "bytes": 10328,
+      "sha256": "57f25ffb92059d7062ce6ce6036fe34b8389df0014a52dbd8bac090114d983db"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_configurator.elf",
+      "bytes": 6176,
+      "sha256": "4e7ffea44bde7d90b30d0f832863d105edd66b7131b5762a71896b528e9b0119"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_darwin_init.elf",
+      "bytes": 10304,
+      "sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_datcnv.elf",
+      "bytes": 10248,
+      "sha256": "b4f3ea1049bc5105271ff08ae09c8260ebbdfe9bf1ae56e1daf9dce54e4e4421"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_genlock_firmup.elf",
+      "bytes": 18624,
+      "sha256": "fbaedfcad7173ea5a380307b76a1c48273e4e34e69319131d8c62d6fae2879db"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_get_buspower_ic.elf",
+      "bytes": 6096,
+      "sha256": "8f47a5b310cf70e57af0e1ed3d0165ff5b082f93445aa1466700df883e37f7e9"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_get_mem2file.elf",
+      "bytes": 6112,
+      "sha256": "aa99282a393efe79fb1379e4c2c4710872ec5c98a1292041e4fde41df8c9daae"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_get_power_ic_type.elf",
+      "bytes": 6088,
+      "sha256": "285cb7cc168d6bcc4f3116238e69edbe25ae32cff594d115a68252a818b0d8aa"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_get_serial_cfg_file.elf",
+      "bytes": 10264,
+      "sha256": "1d02445dbc4934206b385a1671d0f66a7fec79c21701f0053c2cf76599ceb270"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_im.elf",
+      "bytes": 6112,
+      "sha256": "7eb7e5a0a45bab7d8a6f313cef162f47ac0b8d00544d628fb76c34deacb6d7dc"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_pd_firmup.elf",
+      "bytes": 14432,
+      "sha256": "92dbb8b08bde699414df31be995bf48cc23022b506e7dec04018f3f099e018ef"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_read_lsi_type.elf",
+      "bytes": 6104,
+      "sha256": "7a9cd6f744bcaae65eeff67af0b8f58302e49a4eb9557178158e9c7763c2d29e"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_reboot.elf",
+      "bytes": 14432,
+      "sha256": "314725816b8a251500eb38b001ab8bd8449f6560753db4090658086331586d7a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_send_lsi.elf",
+      "bytes": 10248,
+      "sha256": "9fb4bd02b3434bd9fe8fb49fcf4359f7720b292506960ae0d9894332d3453c80"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_timeout_poweroff.elf",
+      "bytes": 6128,
+      "sha256": "1894b5f76e9f271541ba2bbbd2a0511fac9527b32ff5578d31fc05b80d935029"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ud_xrst_req.elf",
+      "bytes": 6112,
+      "sha256": "195dce14076e4782846c529262f07a2b76a3ec8cabef13dac5493fb3db9a7b55"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/ulogio.elf",
+      "bytes": 28672,
+      "sha256": "8870e878fdafeacb21e047ec84f74ab25e04e6ccffbd4380857d639b9ae9b0ee"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/up.sh",
+      "bytes": 6572,
+      "sha256": "c774320a0ab92c13b467b9219e1f60262a1effa0b551ba3b713514a36dadc402"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/updater_log.sh",
+      "bytes": 137,
+      "sha256": "c5d4fa9c062b8794f92b551f5a70aa0335cf838ea2a6ecab3def2f5be836809a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/updater_log_rotate.sh",
+      "bytes": 732,
+      "sha256": "6a47082132edaace4056146aa2132b9172779b95a8a0847b12574c961d0018d1"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/updater_storage_backup.sh",
+      "bytes": 488,
+      "sha256": "eb835d9ea1b270c6e9cccf6c0f7a01333874bee10986963c44a1ad044f07a0af"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/updater_storage_mount.sh",
+      "bytes": 589,
+      "sha256": "a40f8a8173de6202706e2a0013d664bea48780b37c0eeb97cab57c8dacb21c3d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/updater_storage_restore.sh",
+      "bytes": 619,
+      "sha256": "7cc2f2d475c8954e35a5466a2501301b80a376be4dca6edf49118f654ff48949"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/us_darwin_firm.sh",
+      "bytes": 478,
+      "sha256": "38875671d86166753a67666edb58e2424a72dd772579632799e255f30fc2204e"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/us_darwin_init.sh",
+      "bytes": 89,
+      "sha256": "190a3ff1bf248bb5204c1290a7ecb89f9723d660a37b331ba09e0f19c36a7492"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/us_error.sh",
+      "bytes": 336,
+      "sha256": "02f68f3306dd416ebf3e5131edf5900c2ba5de1380057a3e0f09186e4c0f28ad"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/us_pulse_led.sh",
+      "bytes": 392,
+      "sha256": "698aef895c77bc7477d7adba290fcff4940c898b776160b2c6b42ef06cceda94"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/us_reboot.sh",
+      "bytes": 230,
+      "sha256": "9307a9f79e2814589202cc0f41e5ba531d0ca993f0471ea791ffba5da5b51c4f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/us_remove_modes.sh",
+      "bytes": 52,
+      "sha256": "90a56f5b3d6e1a304055d7ccabdf058da8703a3e956781112022e7ee697bda4a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/usb_insmod.sh",
+      "bytes": 225,
+      "sha256": "5e885d964a9ab9c9e18c23453af42f7ff7da57d0aa446c1812b385206f3d8f7a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/bin/uudfileinput.elf",
+      "bytes": 6184,
+      "sha256": "f1a2d0a36998bfe2df7c7496cd96b59653fd839dd00e6c9beaed063041c38385"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/arc4.ko",
+      "bytes": 4944,
+      "sha256": "b7643432ecf19b9865e03a7374b8d1f4d138ece5637c39025ad4713f2cd37b4d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/asix.ko",
+      "bytes": 46528,
+      "sha256": "db43ac6eadde7c8f99b68938b27ef16f09d7ed997d97666ac12675e6655e49a7"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/backup.ko",
+      "bytes": 209328,
+      "sha256": "220a8834d6da9e87696abd59b6b42e60c9697ba853e6254a3e91de1e3938bdf4"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/ccm.ko",
+      "bytes": 14752,
+      "sha256": "5d8c51bd3e5aab18ffbcd9a6a98799a898a25ea6b65f35715e6e90fdafbc8497"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/cdc-acm.ko",
+      "bytes": 36504,
+      "sha256": "d8c36f4a6ff6d1b6c712b3452188f4ce8ec327d5ab5277a46204acdccbc1d93d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/cdc_ether.ko",
+      "bytes": 13400,
+      "sha256": "227073ee3853ff68b716d399c3f298459e3ab734fbd118fc3c338d9a2c968987"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/cdrom.ko",
+      "bytes": 38328,
+      "sha256": "7741540a00ad86cedc9a3d203a938e98446fd62bc32901c3e6b802dc980b5f9f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/crc-ccitt.ko",
+      "bytes": 3720,
+      "sha256": "c219d1ac03f8b3565f2c16746716d85326a04da6d61dd31bf8f7082ead47cb52"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/ctr.ko",
+      "bytes": 8848,
+      "sha256": "9f0dea50443d7a5549d9fa1cc8542396f7b52ae6d49911ff59f614a15a12e5f8"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/dmm.ko",
+      "bytes": 134040,
+      "sha256": "8d5ac3070cb6f0958f67b9ce363cbce7b83a9ea2dc84caad757a5c619613fc14"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/fixed_phy.ko",
+      "bytes": 9064,
+      "sha256": "10ed8475833264d815c6bc2e2b051c22a9f94f592d43ee2e7e091a45d641e784"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/g_mass_storage.ko",
+      "bytes": 11080,
+      "sha256": "ad61aeda74615a0fd4ffd3615f10a2cf771616c20ad5f6ad83254a2335da679c"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/gcm.ko",
+      "bytes": 19472,
+      "sha256": "55d6f00eceee438a771db0aa8040e6ac1c1c36567898a6d39746685c4bd6849a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/gf128mul.ko",
+      "bytes": 9560,
+      "sha256": "439f727bbad21e256ff7fd816ea830e62e9ba5a32b524b5b1383de8c58a5aa44"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/ghash-generic.ko",
+      "bytes": 5072,
+      "sha256": "ff72327a832907d239904739ef54f53c55f89fd0367d5f5b29d72cd15dfe4fcc"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/kikilog.ko",
+      "bytes": 98032,
+      "sha256": "dfdb6620188a819acb153ecbe0dbcabda8c4d6e08b26045f6f8dbb11ad443826"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/lg-vl600.ko",
+      "bytes": 8504,
+      "sha256": "89c588b9524ab57681add9f8d0b361b07695783d7f2292a257b91b9af073ce9d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/libcomposite.ko",
+      "bytes": 60896,
+      "sha256": "7d49df4010e2e2187da3adf856fb2bb99aabfcceab8fe7633f5a0ca5694759e9"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/libphy.ko",
+      "bytes": 58256,
+      "sha256": "18bcc0218b77ef1a8502d79b838de8d5a53bbe25f4b1cdad368c361078d8a491"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/mcmn_drv.ko",
+      "bytes": 282144,
+      "sha256": "5b834074a6456274e8370c7f41bd736efe1717ba257648e42b24ba39b3939f3d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/mii.ko",
+      "bytes": 7560,
+      "sha256": "f32ee74cabed3937a234520593652eac5994ede91409d51fca394fe3292515bf"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/mmc_core.ko",
+      "bytes": 167912,
+      "sha256": "05966faf3ad145b240085658b10302e82c22acb071cbe7fd72b8a5cbe81c068c"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/mmc_drv.ko",
+      "bytes": 448616,
+      "sha256": "eedfb7afd99b5433676950d1e96ae6b2a8ea812087a6b961dcdf48931db15caa"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/ms_drv.ko",
+      "bytes": 192512,
+      "sha256": "748fc99cff43ad0549374bbd746fb9a7e089280f0a14fd797a609c722bc5df06"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/nvme-core.ko",
+      "bytes": 42848,
+      "sha256": "09dcb853b31db490d1eafbf158ed2935fb98f8105a538a753033096f08760093"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/nvme.ko",
+      "bytes": 37872,
+      "sha256": "df8b7d60aee05e04633311877f7182369e98dd9255c23e063f83c391708a1d06"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/of_mdio.ko",
+      "bytes": 14352,
+      "sha256": "ccef53d5032e84840aa88863718838adc64f5af5dcd3c78dee63b636b7f7d4e1"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/option.ko",
+      "bytes": 105416,
+      "sha256": "74872817cfb50f341efe340523534f7210124f3c2bd1a7fbbaa5fd1327b03e9d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/osal_uipc.ko",
+      "bytes": 81152,
+      "sha256": "a459009391bf382ea46b0bb3ccf1c1237d84160788efae01d0096f575db9bb9b"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/osal_ulogio.ko",
+      "bytes": 65208,
+      "sha256": "796dca9b7258f574af37dbfc5666a287823c3adf6b6a724a84cffbaa392fee5a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/osal_utm.ko",
+      "bytes": 7976,
+      "sha256": "ad9652b0db4ada6462fc79b0692bf826bed8e9f87a882d43a86a0b903600523e"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/pci_ep_cp.ko",
+      "bytes": 6496,
+      "sha256": "d7fe768d484ce1904d33aa3431c65e58c6234a137318a6deb9a5b64f43813991"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/pcie-if.ko",
+      "bytes": 51144,
+      "sha256": "553449368df30e27d5a3afd7f9be5195a3cec89b56cb3e658390738115672095"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/pciedma.ko",
+      "bytes": 54464,
+      "sha256": "ff2b3749c5137c0f56bdf855f710a639cb510d5852c14c4ffa2eddba0752cf0f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/ppp_async.ko",
+      "bytes": 17616,
+      "sha256": "3b6923cab8aa34d9d9800d42975387d92f83ec91b9918a23d25221683f9cddac"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/ppp_generic.ko",
+      "bytes": 43240,
+      "sha256": "ff70daf89be65a9fd15f8cda243881d21bb9ad911a6ae4e9feb41ca8b8db6728"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/rndis_host.ko",
+      "bytes": 13912,
+      "sha256": "3b9f22f8e962eaf24b325cca59b34397bf717f27349e457baa32ae7d9708e8df"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/scsi_mod.ko",
+      "bytes": 218096,
+      "sha256": "5a58da5f5e2e0f009470d298664bbec4b62ac8f2f125be97d67f7f3c11a5a683"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/sd_mod.ko",
+      "bytes": 51216,
+      "sha256": "a8438f5e7f487376189bff97c7f2744b9f263ab8347037732451c0f37c05e13e"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/seqiv.ko",
+      "bytes": 5984,
+      "sha256": "e4a1369c7a45b43d561fa709b2ef4f2e223645adb2851bb2be67ad9299e9b319"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/sio.ko",
+      "bytes": 20384,
+      "sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/slhc.ko",
+      "bytes": 8424,
+      "sha256": "eccb163a5bd7eb68582fc806117d1ec34e896a3bcf55bda5538d3bce3325dd6e"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-aloop.ko",
+      "bytes": 25568,
+      "sha256": "21678ed0a305c189c14bac0c10ec5153c31b264dd50d426974aa18454dad90c0"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-dummy.ko",
+      "bytes": 22528,
+      "sha256": "df84aff13943484dfdfbc15d06264f9d92d194d324dab4013961bda5f18b3119"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-hrtimer.ko",
+      "bytes": 6760,
+      "sha256": "d68139d9c57ce7eb637eea1306a521eff5a81c4c13b5a235fbcf8c6c43d1a2fd"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-hwdep.ko",
+      "bytes": 14672,
+      "sha256": "e971096af824a61a9676b058b2849eec22b9151ac8bf2ebb0a490a739a87b4f4"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-mixer-oss.ko",
+      "bytes": 29136,
+      "sha256": "4f4ba60442bd54e2aaed621304bc4f878819ee461b76a95a64e0a94a4409efb4"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-pcm-oss.ko",
+      "bytes": 59088,
+      "sha256": "94b345d5893caddfbcd1cb18ec27e0cf18ce04d5de28f2e760358ef1d15a42a3"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-pcm.ko",
+      "bytes": 123976,
+      "sha256": "2559e4073cb1445fcd034cd0e6c4dc5f54513dc44d2f8f25a2d9312d54d120e3"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-rawmidi.ko",
+      "bytes": 35904,
+      "sha256": "0f7fb706ccc722107d621a36ac245bdbba3221dd729fd2c91b347691e1cadb33"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-seq-device.ko",
+      "bytes": 10328,
+      "sha256": "f71c76580ff36afef7cff2319a10dbbb9dda508439650a376cdacae5c1376c2a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-seq-dummy.ko",
+      "bytes": 6384,
+      "sha256": "58c776af1b5069a67f9f4ac6d326962716b79f35ccaec4f6f4ee831a4510b66b"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-seq-midi-event.ko",
+      "bytes": 9768,
+      "sha256": "c4e73b3f491ea0b4abc2f13a0a5504b596b39ea6144ab00f7b5e9796691bdea6"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-seq-midi.ko",
+      "bytes": 11992,
+      "sha256": "a552b60bec1a2d54a35f675bb38d54a4afeb42352adb56b1cba666e5739863a6"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-seq-oss.ko",
+      "bytes": 55376,
+      "sha256": "1a39826ed65e84b07122312954e99d300fbd2047b3892f092ab224fe4a3af84f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-seq-virmidi.ko",
+      "bytes": 11104,
+      "sha256": "df6b43a90ea02a09c91f66665a8f9118977cd99eb41dd27a3afc0a5a842e8cc6"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-seq.ko",
+      "bytes": 78848,
+      "sha256": "564343f86e17c393a2231a042951648cc7af41f893216faf79672cd404842272"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-timer.ko",
+      "bytes": 35056,
+      "sha256": "531f3ed0c3aa450a39c2a576a7ddc2d184ed3e01228b8001e1cc1004f9242a4f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-usb-audio.ko",
+      "bytes": 216768,
+      "sha256": "237e226f846f32ee7a60fb1e5c88caf6318d1c3bbf40f0a2c40d87ec36618f5b"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-usbmidi-lib.ko",
+      "bytes": 31032,
+      "sha256": "b648dbbf816144b2965a9a3fd65e760456f413b446df2cec6f92dcc600eef6d1"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd-virmidi.ko",
+      "bytes": 8016,
+      "sha256": "b1fa4b6091897b8515b705ab8c5ad4be34f9fb44e8e7cd54d71d421d68ee5e42"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/snd.ko",
+      "bytes": 82912,
+      "sha256": "a075e586e39ebcd9c10322a8d3c0b8a1abe4c16f7d54bbf917bf604dbde6206f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/soundcore.ko",
+      "bytes": 14024,
+      "sha256": "41271b6790fcec2ed9d0878ff86c245c18b0bd6418df4ba17c0843eeea623d3d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/sr_mod.ko",
+      "bytes": 26568,
+      "sha256": "59111e651b9cd7b5299aead1deb3c8d280f2add766d16171bcaea477766a23bb"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/stream.ko",
+      "bytes": 7032,
+      "sha256": "99b70753e8e27e22ab00ae8e20392376da9a31dc1e8597f93261085ecc1b72cb"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/stream2.ko",
+      "bytes": 9080,
+      "sha256": "eade6fcf52ab5c0e1174d3ba25712df896e97320c298ab52c3c6a64de3f36c43"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/udate.ko",
+      "bytes": 47528,
+      "sha256": "da5b865ce7ef1fe384add02ba49b5b23b694d6b55eeb3adb5985e6568d546170"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usb-storage.ko",
+      "bytes": 47272,
+      "sha256": "553d094d4632642a3789c6c49dffcc4c60dc56614af4e4e004581af3515bfb64"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usb_beets.ko",
+      "bytes": 165976,
+      "sha256": "dbd2c36b028008f6fda9fe5dc1c1fabcd2dbbb1fe5f1bb20868ddba817c5b7c9"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usb_buspwr.ko",
+      "bytes": 54328,
+      "sha256": "8d6083b2055a5c5877aaa5fcb0d0037d763c527868df227c132be8abbccd4e56"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usb_current.ko",
+      "bytes": 7840,
+      "sha256": "067181997d2fd94a39046b2c3362f9bc2db227e16068ee3eb7ffa909d55422a9"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usb_extcmd.ko",
+      "bytes": 23024,
+      "sha256": "12ff32cb711467ff94e3b3d81bd948ba8ce4178e2480efcc24ef759bad531572"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usb_f_mass_storage.ko",
+      "bytes": 51696,
+      "sha256": "3bad32cbd477fd06979fa47b5b505f6d69c5133d03ba803031f4a909c6aeed33"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usb_portMonitor.ko",
+      "bytes": 70720,
+      "sha256": "a38362ed28b22cf2b3ceb6a87aae118cf4fef6b12fb1894bbdaa37ee7f285da3"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usb_wwan.ko",
+      "bytes": 14464,
+      "sha256": "b9a420ae2f1eb53d2bac311b4fa9b68ab80b669f04f3d5988d3bd99c05d8cb23"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usbg_buspower.ko",
+      "bytes": 21216,
+      "sha256": "3343451b5c43576706f3c65518592bc44c9c873fa9708216e89554311a3bd4a8"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usbg_sen.ko",
+      "bytes": 58056,
+      "sha256": "a07bd73c8e1e47fc39540c5f5d72635df6ac765eaeb398eb6ce159733c3f5426"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usbg_stillimage.ko",
+      "bytes": 48528,
+      "sha256": "0328effb2ebeebafe6d75c744d95dfe8344e82675896184b2077ba6d9f278541"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usbg_storage.ko",
+      "bytes": 104288,
+      "sha256": "796236a7e84185e90b3fcda0fdb77972e66e8f38efd161827b126a82d9f5ffc1"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usbhid.ko",
+      "bytes": 38104,
+      "sha256": "7c2e04a65930da33fb9e738ffe844094dd24484df170b2b1e8386f80dbc4869d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usbnet.ko",
+      "bytes": 38776,
+      "sha256": "0bb369df9941c3eda9a86af6a681d2134ae60de33f5cc84dcaefb303fd5dfcc8"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/usbserial.ko",
+      "bytes": 42352,
+      "sha256": "89880351e48399902c5d583cc12b62e95ae94f29bc8223d45756bef5294caccf"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/utimer.ko",
+      "bytes": 33776,
+      "sha256": "9b47306ff25489320e5aa8fa56212d39e426634f10a04d34f5fc25ed6daeae1f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/xhci-hcd.ko",
+      "bytes": 167632,
+      "sha256": "829ce7910da8390ae08cbddd1dde961662e4215ea1755f062ebef4457adf3a2c"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/xhci-pci.ko",
+      "bytes": 11064,
+      "sha256": "f1d8f747d529b5d4d5f90252cb9f636fb658b90c4a3d432843cbeb9d27cdd3c1"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/kmod/xhci-plat-hcd.ko",
+      "bytes": 13616,
+      "sha256": "dea7bdeb1c69e9f06af7c4a397b77dd6e2a5023f7e9268771119a1b53e37b614"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libInfraExtCmdSvc.so",
+      "bytes": 51616,
+      "sha256": "6ea4e19973e220e7d55c7daeabfa5f5d05462e2dc04537764e3e9bce43d60fdd"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libInfraFsys.so",
+      "bytes": 638528,
+      "sha256": "ba0467674b056b3389a34ba974b1f0bbe99f4189d8aa36ad509843596ccacb62"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libInfraKikiLogGenerator.so",
+      "bytes": 22752,
+      "sha256": "e617a8a75f188069141a131bee7b1464b7a6f805867f978321eab207b6c3ba7b"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libInfraMediaCommon.so",
+      "bytes": 488280,
+      "sha256": "7b36918172b50275f43590da4816d79abdd2146f5d870a2b87f72550ef1ef603"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libInfraSKD.so",
+      "bytes": 8020712,
+      "sha256": "8052390d5d043db47dd0aa83b3f65be7ec980288c5c72c01f46229b597b12f20"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libInfraUsbCmn.so",
+      "bytes": 143752,
+      "sha256": "f56e89660896dea16249d01031d8bb21d5ee5f9b3fb0c4d4e922aa3f7637a687"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libMWF.so",
+      "bytes": 357216,
+      "sha256": "586f06bcac8ccbf8ffdd55f794731b02c6f354771fe147803ecc0401c49b8443"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libSysDef.so",
+      "bytes": 6022992,
+      "sha256": "088fe0c57c7d808dc625d3639d50c2908a124dcc989c2ce1c938a17ceb252927"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libUsbBusPower.so",
+      "bytes": 72832,
+      "sha256": "b57d308fda2efaeb9e7118d0df7ec5376cf6100a5efee1943ac5f1962f247c2f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libUsbControl.so",
+      "bytes": 196840,
+      "sha256": "2919e14b44607baa29a8729fc3d132423b5d68156a1f550d3db590f3ed7e0717"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libbackup.so",
+      "bytes": 18344,
+      "sha256": "5c1ede86e363bbc718063299833b905985f4a254f5b4d25ad81fce62e253daeb"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libcom_err.so.2.1",
+      "bytes": 14488,
+      "sha256": "784feba5e8864220fc2b3158086fc30554baa79fe4812f6e7227f934258f6e38"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libcryptfileinputupdaterapi.so",
+      "bytes": 27088,
+      "sha256": "06ee88247f9d1da34f28aebbe9ff5b355b661ce9645e1b83c6ee6a0bf292d17a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libcrypto.so.1.1",
+      "bytes": 2349584,
+      "sha256": "df69906d5f63a3afe9b7872e41cab741c346630e53ebcaadb86e457f0b803726"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libe2p.so.2.3",
+      "bytes": 32472,
+      "sha256": "d9fa1739613551f4313e086bb6cef26d3e9c0e89154b086b3dd0334ec8bf8773"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libfileinputupdaterapi.so",
+      "bytes": 27232,
+      "sha256": "7f8ab4a0f2b1a92497cce8cc655eb59c62cdd6fb2760722ee9b614b2d67ea3a6"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libgcc_s.so.1",
+      "bytes": 71920,
+      "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libjemalloc_ds.so.1",
+      "bytes": 5848,
+      "sha256": "1bb62836a9e71bb424216f5e8e00f25230a54b6c252e5cbd0436a231a1ffa19a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libncurses.so.6.2",
+      "bytes": 342160,
+      "sha256": "3f8e46ff85fd5fdf0105b91a41cb01b10705e787b22b62a4a914282621e2c14d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libosal_udate.so",
+      "bytes": 35528,
+      "sha256": "6867bf4709fc559d58432ab930867279708e4354e2469c7be6eaf1cc7900daff"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libosal_uipc.so",
+      "bytes": 47848,
+      "sha256": "2d899fdbb3befed231f05ae7efd1a3689921e07e1125527d1c9fc602a67ebbec"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libosal_ulogio.so",
+      "bytes": 40168,
+      "sha256": "df09ccaea58b05999506a6c834a7d1d1263b8ff2f0d9eca1da0a1fa85be2b9cb"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libosal_utm.so",
+      "bytes": 10216,
+      "sha256": "c3047f937f50eed6a73f7a02f05c95d1b7dc515750d2d634817a668e6dbe78f5"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libpro00.so",
+      "bytes": 10176,
+      "sha256": "1dd40519f2dd8ef6ae583db110b2473eded3b694a3f8d5352f0487ecf707de1d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libprocps.so.6.0.0",
+      "bytes": 64128,
+      "sha256": "3515c6c846ce444aa458e1e76b3c2d20b2c95263220cb7eaee3c3b55495ede4f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so",
+      "bytes": 60584,
+      "sha256": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libsencore.so",
+      "bytes": 401768,
+      "sha256": "69232017ae6b6ece6bdb18bc0f4919955342a406d0ab0215887812ffff3c1321"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libseninputupdaterapi.so",
+      "bytes": 31512,
+      "sha256": "3240c3c70aaa645de3af74101cd4fb85263ec478cff830993a5cd4ba0a6bd704"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libsensapi.so",
+      "bytes": 48200,
+      "sha256": "b2c9facaf68ddd53ea08839858cfdf5bfc36bb9acc481e9d3037554c37becc6d"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libsenupdater.so",
+      "bytes": 14616,
+      "sha256": "1b90757ac5aff9d5fdd6f71a945121f2ea73f3fec73527a790dc14d643a40dd4"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libssl.so.1.1",
+      "bytes": 499824,
+      "sha256": "f76920e114aa790b7e5921497f54543a7b22d44945a1c075d4d1309cbcf384fb"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libssp.so.0.0.0",
+      "bytes": 10184,
+      "sha256": "2a1365635b69c181dfb16ad2cddbaacf4f13194d20307387b348612f6df2177e"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libstdc++.so.6.0.22",
+      "bytes": 1549496,
+      "sha256": "f247fb26b772f4f6815efaf4319f98ffa8d04393c68c929e04cc93f4c7a11160"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libtestcmd.so",
+      "bytes": 18520,
+      "sha256": "3184552b0403bfc2fecf58d4c13bf7c730f3d000f560cfe5cfa4adfeb3c5f2be"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libtestcmd_scn.so",
+      "bytes": 10216,
+      "sha256": "82ad01b0ad5758f9a311281fd6aca35660fc805ced5c9deae34ed49bfb99e170"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libul_GpioCtrl.so",
+      "bytes": 10064,
+      "sha256": "4c36648d884bb89d109bb1eda681683ec65e5995cd3d7fa4c1a5228fb41a6e2f"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libul_xml.so",
+      "bytes": 72784,
+      "sha256": "380dbc09a6aee462fb313d9b1254ece8f7ca0421857c5e70f621ccf0159f89a0"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libupdater0604.so",
+      "bytes": 27088,
+      "sha256": "546ffcea5b4bb6b481248fccd16dede38e3cfcd9c606db03d423dd69dc6a39a7"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libupdaterapi.so",
+      "bytes": 105984,
+      "sha256": "2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libupdatercommon.so",
+      "bytes": 56032,
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libupdatercorecommon.so",
+      "bytes": 72864,
+      "sha256": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libupdatertalk.so",
+      "bytes": 5896,
+      "sha256": "c46b9bb95bdba6e4a54aefd36836f1c27e229d6af35456a5e2dbd0fcccd856ed"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libupdaterufunc.so",
+      "bytes": 10088,
+      "sha256": "d6c5757eb10c728b9cf1f6206f7b18c28db8616afbea62beb4ca6f29ca2350ee"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libusbcmd.so",
+      "bytes": 35408,
+      "sha256": "9ad5118de3fd1456a0e96193566ad27ded1b56888260dc65b61a50e8e4ee3361"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libutil_date.so",
+      "bytes": 10032,
+      "sha256": "b810b5508c247cf5fb3da5d9459f1b5533cc30d70f5a9984a7fb404959eab21a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libuudfileinputupdaterapi.so",
+      "bytes": 52288,
+      "sha256": "f8a622fd2b038080cf682b22febe60e379b916f72d8890687b1a6b2109c5182e"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/lib/libuuid.so.1.3.0",
+      "bytes": 14712,
+      "sha256": "2956149101e1893bd32d8df4d82a7da644c1d184f4a055511c8998333e052f4a"
+    },
+    {
+      "path": "engine-rootfs/2.05/usr/share/terminfo/l/linux",
+      "bytes": 1730,
+      "sha256": "4cd3bfcad5ef6fa077c84c642ad4143da82a98e3c283c1338cadaef4ae9e6b10"
+    },
+    {
+      "path": "engine-rootfs/2.05/version.txt",
+      "bytes": 12,
+      "sha256": "0d6f5ab07a5dd5440391ffede534d22323f816c6d7e2cbb231092b753759efac"
+    },
+    {
+      "path": "extract_original_updater.py",
+      "bytes": 5560,
+      "sha256": "9601c6b1dcb833c230fbf026b1491a2b54e5a249586c31bd3f250c7c3531e837"
+    },
+    {
+      "path": "extract_updater_fat.py",
+      "bytes": 2684,
+      "sha256": "93e42aa7cbd6c4f59f444f27bf91612b34d7b0b190050954436344915b4a0b47"
+    },
+    {
+      "path": "fat-members/2ceafc4dff5d242631b379bc2859905f8eda7787cd9d64b61ef7310567b80d83-vmlinux.bin",
+      "bytes": 6582280,
+      "sha256": "2ceafc4dff5d242631b379bc2859905f8eda7787cd9d64b61ef7310567b80d83"
+    },
+    {
+      "path": "fat-members/7967b9208322c2d02a272896d1c96822a3c204aeaffb1334f94d225bd6da3ace-p1chksum",
+      "bytes": 105,
+      "sha256": "7967b9208322c2d02a272896d1c96822a3c204aeaffb1334f94d225bd6da3ace"
+    },
+    {
+      "path": "fat-members/87abb2b72c3d373cf8f0779f8981a6e3f6780b54d08862d61a252248ebcf36ca-cxd90057.dtb",
+      "bytes": 17131,
+      "sha256": "87abb2b72c3d373cf8f0779f8981a6e3f6780b54d08862d61a252248ebcf36ca"
+    },
+    {
+      "path": "fat-members/8c7cc8eb65c40311172f4bf1dc591fe3bcbc1efe689ededdd225142139881452-loadaddr.txt",
+      "bytes": 48,
+      "sha256": "8c7cc8eb65c40311172f4bf1dc591fe3bcbc1efe689ededdd225142139881452"
+    },
+    {
+      "path": "fat-members/c9c1c5516d0b38f0251f7a1fbd09727acf285b448daf6a98065b2e6348c88c38-initrd.img",
+      "bytes": 9097216,
+      "sha256": "c9c1c5516d0b38f0251f7a1fbd09727acf285b448daf6a98065b2e6348c88c38"
+    },
+    {
+      "path": "fat-members/d5c4795c962750d2d9b6c4a387d927d05bdf59d4427054e857ba6146790ae790-initrd.img",
+      "bytes": 9097216,
+      "sha256": "d5c4795c962750d2d9b6c4a387d927d05bdf59d4427054e857ba6146790ae790"
+    },
+    {
+      "path": "fat-members/eaca3656095d5ac00b0fd94113d76ae3e1d2942a217d18aa3ce77e7bda1cac25-p1chksum",
+      "bytes": 105,
+      "sha256": "eaca3656095d5ac00b0fd94113d76ae3e1d2942a217d18aa3ce77e7bda1cac25"
+    },
+    {
+      "path": "fat-members/eb184157afc8eaf2d9a3dc795e7b52057130cb25f7799bc72fd6c85cbb99c94a-kemco.txt",
+      "bytes": 934,
+      "sha256": "eb184157afc8eaf2d9a3dc795e7b52057130cb25f7799bc72fd6c85cbb99c94a"
+    },
+    {
+      "path": "fat-members/f96c2a7e9f70f6f7d1d9d2edb1a729ed045c4b3812f349d4305a40530613e832-vmlinux.bin",
+      "bytes": 6582280,
+      "sha256": "f96c2a7e9f70f6f7d1d9d2edb1a729ed045c4b3812f349d4305a40530613e832"
+    },
+    {
+      "path": "format-source-receipt.json",
+      "bytes": 600,
+      "sha256": "1e1100492edc5dbee60e45346ee8608f288ca701b9373f0b1f7de965f1e4f304"
+    },
+    {
+      "path": "goal-status.json",
+      "bytes": 2398,
+      "sha256": "f8c63317f7da15796f0c475efc52a3f4001cb7df8bf0cd2f829d37c479cb81a0"
+    },
+    {
+      "path": "native-openssl-verification-results.json",
+      "bytes": 862,
+      "sha256": "896f3344b01324b5d4603d117e1cba6068bfd98cdf85eea43a3bf2892316c519"
+    },
+    {
+      "path": "official-key-rsa-verification-results.json",
+      "bytes": 7402,
+      "sha256": "323965d979d40bf71497fb4311cffe55e924fde6c431ded07662c304d10d503b"
+    },
+    {
+      "path": "original-boot-md5-results.json",
+      "bytes": 974,
+      "sha256": "fc8594300e02680062037028a6c915fcb20ae64c34295cb078877fb5aeb7aa1b"
+    },
+    {
+      "path": "original-initrd-inventory.json",
+      "bytes": 381794,
+      "sha256": "485343cec3092ef23b74791473edfd162551c886a6f78d9e73c39cdf45fbb255"
+    },
+    {
+      "path": "original-initrd-version-comparison.json",
+      "bytes": 23746,
+      "sha256": "7727e53102fa685476160154320d089a83da8aec26ab146f68b9ecfe563ba134"
+    },
+    {
+      "path": "original-input-component-inventory.json",
+      "bytes": 1236089,
+      "sha256": "963374df629d85871f3897731877df470d06bc140b18eba1752c3f571d7d5888"
+    },
+    {
+      "path": "original-signatures/FirmwareA1Data_ILMEFX3V204.rsa2048-signature.bin",
+      "bytes": 256,
+      "sha256": "3ffa9938f78fc71539cc3f2f26876f018c0f7eaedacd02790a302dd7f14cf049"
+    },
+    {
+      "path": "original-signatures/FirmwareA2Data_ILMEFX3V205.rsa2048-signature.bin",
+      "bytes": 256,
+      "sha256": "2471ae0d7360a94694058d0eff95643f760d8e7651c5c2a63dfb9843cb406673"
+    },
+    {
+      "path": "original-signatures/fx3-7.02-BODYDATA.rsa2048-signature.bin",
+      "bytes": 256,
+      "sha256": "9b6e3702a3c9dbb98df9b6d7e1e8f4f5c67930aa8973b32d416e5616f7cc33c2"
+    },
+    {
+      "path": "original-update-engine/2.04/mount.conf",
+      "bytes": 1248,
+      "sha256": "ea0132091f3bb8d675b3ae7aecfbb1ca2459864a2e2812c0f7dd66fbb877d1a3"
+    },
+    {
+      "path": "original-update-engine/2.04/nflasha1",
+      "bytes": 19377152,
+      "sha256": "e5b71cc24bf5232c2e182a979b60c5f080dcbabe2775b32214dc0f394cf53c67"
+    },
+    {
+      "path": "original-update-engine/2.04/partinf.conf",
+      "bytes": 3999,
+      "sha256": "3d96228d4ed2db3cb4295aa854edf0ad8895440167f132144cdec4f8cfdad189"
+    },
+    {
+      "path": "original-update-engine/2.04/updater.sum",
+      "bytes": 145,
+      "sha256": "19a1659991376e125db05440a913aa8a3e28bdf53861e4b1f2cde6197485e38a"
+    },
+    {
+      "path": "original-update-engine/2.05/mount.conf",
+      "bytes": 1248,
+      "sha256": "ea0132091f3bb8d675b3ae7aecfbb1ca2459864a2e2812c0f7dd66fbb877d1a3"
+    },
+    {
+      "path": "original-update-engine/2.05/nflasha1",
+      "bytes": 19377152,
+      "sha256": "ab2cd5372fed3c742b586e28484c6bf0aa6ebfba1f6d8e450a19191abc5b6591"
+    },
+    {
+      "path": "original-update-engine/2.05/partinf.conf",
+      "bytes": 3999,
+      "sha256": "3d96228d4ed2db3cb4295aa854edf0ad8895440167f132144cdec4f8cfdad189"
+    },
+    {
+      "path": "original-update-engine/2.05/updater.sum",
+      "bytes": 145,
+      "sha256": "207afc3a673aa093d07ff730e51e4008b1e050cf939cd1d6ec916ae025c03f0f"
+    },
+    {
+      "path": "original-update-engine-results.json",
+      "bytes": 7060,
+      "sha256": "2b6e783e6681aea1d3fef4ce0e327dd5b36ab531cd3512bae9c961b4c301dc35"
+    },
+    {
+      "path": "read_squashfs4_gzip.py",
+      "bytes": 7621,
+      "sha256": "0f9eea50595f3a5e17d37f2f53bd8c40b582b4d22f4b8cec9da571ed2cb56ad2"
+    },
+    {
+      "path": "recover_cryptcore_snapshot.py",
+      "bytes": 4331,
+      "sha256": "0a1cb21870ae3e86cc745eb302c0cdeddaf8a65345d63a4bc111c01c63a68655"
+    },
+    {
+      "path": "restart-audit.json",
+      "bytes": 649,
+      "sha256": "c47e9bedd729df2de0422cd2aec90797b3e0839bee293e061d4a31111a7d1caa"
+    },
+    {
+      "path": "rsa-key-family-comparison.json",
+      "bytes": 602,
+      "sha256": "de3c131897235a9916c099e58d7ddfb9347a644a6d74dc5100fde44776675d2c"
+    },
+    {
+      "path": "sd-input-static-results.json",
+      "bytes": 17767,
+      "sha256": "50d75dbc63ca3517a563a5e24bce0896648a4e8492a58db9a62961e50e967b70"
+    },
+    {
+      "path": "sd-input-vtable-results.json",
+      "bytes": 29021,
+      "sha256": "65ad426f355770e0da2e920f0cdb04cfe19bb8d616de2291bfcf5708f78426d6"
+    },
+    {
+      "path": "sd-preverification-dispatch-results.json",
+      "bytes": 729,
+      "sha256": "216a7a9d7683dc6e58c6cb62165d387a73ce68a8cd562d2fe59971200fdd5c76"
+    },
+    {
+      "path": "skd-key-lookup-results.json",
+      "bytes": 474,
+      "sha256": "3dfe8dc9740a07c6b22620f4003d2d675c6b29cce5a0d42ddd1635d9c344dd23"
+    },
+    {
+      "path": "skd-key-trust-callback-results.json",
+      "bytes": 579,
+      "sha256": "edc298b39758cbd26708e9e8fafdd108db99592cedc64845124508c4a8e0eb83"
+    },
+    {
+      "path": "snapshot-fragments/SDDecryptor-constructor-original-file.bin",
+      "bytes": 132,
+      "sha256": "6cc46fb53dae255774f528609b423e35d9aa6918a1fa5c502c506ea816117dd3"
+    },
+    {
+      "path": "snapshot-fragments/SKD-key-lookup.bin",
+      "bytes": 264,
+      "sha256": "2069e83aec9b86ae0a1dacd7883b00f84027db185806790d333af785b6e6208a"
+    },
+    {
+      "path": "snapshot-fragments/SKD-service-callback.bin",
+      "bytes": 1076,
+      "sha256": "70f724838a9b7a053523ae00b22e2415ca4e8514eb85ed93fd1380be80ba922a"
+    },
+    {
+      "path": "snapshot-fragments/WaitForFirmwareCopyCompletion-original-file.bin",
+      "bytes": 76,
+      "sha256": "c5d755f6013ed22cdcf5299a98680f01660bdf80d05e6517596eab6a54741a2e"
+    },
+    {
+      "path": "snapshot-fragments/iCryptCore_main.bin",
+      "bytes": 256,
+      "sha256": "dd51b23a84f9c75156bb73b73f4b4ebd63735c3da03abd7cb169611d4a2a931f"
+    },
+    {
+      "path": "snapshot-fragments/icc_verifyDataCore.bin",
+      "bytes": 1280,
+      "sha256": "43e20250746f1d2853423f39959caca90a29f5c581d0401af38ab873c414df6f"
+    },
+    {
+      "path": "source-refresh-failures.json",
+      "bytes": 488,
+      "sha256": "cbe11d789326253fab53ecb156603301fe4146843ce2a35e899c1509d180d96a"
+    },
+    {
+      "path": "squashfs-reader-oracle-results.json",
+      "bytes": 9548,
+      "sha256": "f31005a6cb8d93de318f8a485637c003f2ae84a39dd9038565e728223af7d038"
+    },
+    {
+      "path": "unpack_original_initrd.py",
+      "bytes": 3098,
+      "sha256": "7d75b762a95fe461fe5525f6cf31fbdf315a796d2aa8a07562f8558952c47d65"
+    },
+    {
+      "path": "unpack_updater_initrd.py",
+      "bytes": 4827,
+      "sha256": "8dc0b756de2acf34ce0b7ec640ebb76bbad7ba694ff5aa03a79042aa9b89782a"
+    },
+    {
+      "path": "updater-fat-extraction-results.json",
+      "bytes": 6446,
+      "sha256": "9358c2649f6689c3c1d65c074138b907016771f6db09ab9972a6566caa4a4242"
+    },
+    {
+      "path": "updater-fat-inventory.json",
+      "bytes": 3181,
+      "sha256": "2b1ace3c6c38136cb4e7f0f578e17b133a9a07220be91fc84378869ebccac8ad"
+    },
+    {
+      "path": "validate_and_seal.py",
+      "bytes": 12623,
+      "sha256": "e4a5a4d27dca9adcc8f1bf573f627c19fd7c4cb0ca6c3bad237e3952d4901bc8"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 902,
+      "sha256": "98d17c3afbf23cefe7577acd90c7f346214ca9ca2f17d92149181317b88c7a7b"
+    },
+    {
+      "path": "verify_original_fdat_rsa.py",
+      "bytes": 7196,
+      "sha256": "35a342b0909133e59348ac505b1782e2a6d17ca3922e72d7f05d401a256723c2"
+    }
+  ]
+}

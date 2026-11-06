@@ -1,0 +1,8 @@
+{
+  "case": "first original send extension",
+  "outcome": "instruction allowlist rejected original PC 0xa878cc",
+  "reason": "Only first instruction at 0xa878ca was allowed; the next movs and tail branch were omitted from the new bounded span.",
+  "correction": "Allow exactly 0xa878ca..0xa878d2 only after explicitly enabling submission-prefix tracing. Previous sealed packet stop remains unchanged.",
+  "counted_as_passing_case": false,
+  "kernel_return_or_service_reply_supplied": false
+}

@@ -1,0 +1,10 @@
+0040b746 ldr.w      r0, [sb, #0x4b0]
+0040b74a bl         #0x69fa1a
+0040b74e cmp        r0, #2
+0040b750 movw       sl, #0x15d8
+0040b754 movw       r1, #0x15e4
+0040b758 mov        r2, sb
+0040b75a it         ne
+0040b75c movne      r0, #1
+0040b75e movs       r3, #0
+0040b760 str.w      r0, [sb, sl]

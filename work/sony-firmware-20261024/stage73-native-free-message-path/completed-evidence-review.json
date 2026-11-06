@@ -1,0 +1,37 @@
+{
+  "created_utc": "2026-10-26T19:21:32.140642+00:00",
+  "status": "PASS_ORIGINAL_PENDING_FREE_AND_INDEPENDENT_ACK_SCOPE",
+  "verified_prior_sealed_file_counts": {
+    "stage64-osal-offline-link": 23,
+    "stage69-native-16M-callpath": 50,
+    "stage72-native-manager-teardown": 14
+  },
+  "request_cases": 4,
+  "independent_decoder_cases": 7,
+  "total_bounded_fragments": 55,
+  "same_pending_free_request_continued_without_return_adapter": true,
+  "handle_bit15_command_bit28_and_first_diagnostic_allocation_proven_in_fixture": true,
+  "original_sparse_client_lookup_executed_no_fabricated_client": true,
+  "all_requests_stop_before_original_kernel_lock": true,
+  "independent_supplied_ack_not_injected_into_pending_transport": true,
+  "eight_byte_local_success_not_protocol_vulnerability_or_physical_completion": true,
+  "retained_failed_attempts": [
+    {
+      "path": "run-20261026",
+      "retained_source_sha256": "06e15e7b28326e303bfb19bdc12b72a8198ea009c2649795637ca3bc086e6840",
+      "last_reason": "boundary: before_original_unexecuted_kernel_service",
+      "camera_or_firmware_failure": false
+    },
+    {
+      "path": "run-entry-observer-20261026",
+      "retained_source_sha256": "6baffb1a59640d321be8875bde63fb31b4d8a2abd41806a26de1c7ec9e2bda98",
+      "last_reason": "unapproved execution 0xffffff800a283938",
+      "camera_or_firmware_failure": false
+    }
+  ],
+  "source_image_and_modules_unchanged_except_declared_original_data": true,
+  "Windows_UU_camera_operations": false,
+  "physical_release_main_recording_or_recovery_proven": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

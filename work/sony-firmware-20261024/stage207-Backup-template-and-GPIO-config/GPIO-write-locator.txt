@@ -1,0 +1,30 @@
+00000cb0 600300b4 cbz      x0, #0xd1c
+00000cb4 e20300aa mov      x2, x0
+00000cb8 20008052 mov      w0, #1
+00000cbc 430440b9 ldr      w3, [x2, #4]
+00000cc0 63080051 sub      w3, w3, #2
+00000cc4 7f00006b cmp      w3, w0
+00000cc8 e8020054 b.hi     #0xd24
+00000ccc fd7bbea9 stp      x29, x30, [sp, #-0x20]!
+00000cd0 e00302aa mov      x0, x2
+00000cd4 42200091 add      x2, x2, #8
+00000cd8 213c0013 sxth     w1, w1
+00000cdc fd030091 mov      x29, sp
+00000ce0 3f000071 cmp      w1, #0
+00000ce4 000040b9 ldr      w0, [x0]
+00000ce8 420c40a9 ldp      x2, x3, [x2]
+00000cec e1d79f1a cset     w1, gt
+00000cf0 a20f01a9 stp      x2, x3, [x29, #0x10]
+00000cf4 a2430091 add      x2, x29, #0x10
+00000cf8 a11f00b9 str      w1, [x29, #0x1c]
+00000cfc 21e088d2 mov      x1, #0x4701
+00000d00 0102b8f2 movk     x1, #0xc010, lsl #16
+00000d04 0fffff97 bl       #0x940
+00000d08 1f000071 cmp      w0, #0
+00000d0c c1018052 mov      w1, #0xe
+00000d10 0000811a csel     w0, w0, w1, eq
+00000d14 fd7bc2a8 ldp      x29, x30, [sp], #0x20
+00000d18 c0035fd6 ret      
+00000d1c 20008052 mov      w0, #1
+00000d20 c0035fd6 ret      
+00000d24 c0035fd6 ret      

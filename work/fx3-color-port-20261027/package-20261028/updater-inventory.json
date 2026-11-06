@@ -1,0 +1,2123 @@
+{
+  "status": "PASS_BOUNDED_OFFICIAL_UPDATER_FILESYSTEM_EXTRACTED",
+  "source": "work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+  "source_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "filesystem_offset": 512,
+  "filesystem_bytes": 1253376,
+  "filesystem_sha256": "62e86fad175e0326969d5f1cea29d780feb496ce8034acd2c9c3954320d8ccaa",
+  "entries": [
+    {
+      "path": "/",
+      "size": 76,
+      "mode": "drwxr-xr-x",
+      "type": "directory"
+    },
+    {
+      "path": "/bin",
+      "size": 1263,
+      "mode": "drwxr-xr-x",
+      "type": "directory"
+    },
+    {
+      "path": "/bin/bksb.elf",
+      "size": 18568,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9",
+      "output": "updaterfs/bin/bksb.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/body_common.sh",
+      "size": 137,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "e50af3525f040a9a3ac62d4804958e5db49eb2c7aabc1445bcb15b420c176195",
+      "output": "updaterfs/bin/body_common.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/chkfirm.sh",
+      "size": 922,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "7a98a804a04f31fb458d9b524951f0d997c1949c23ab4a6ac0d5eb9fd6bea546",
+      "output": "updaterfs/bin/chkfirm.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/chknandcapa.elf",
+      "size": 10592,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "107412b43aa694767b25fbd9f352c7633a1761c9f435a77bbab5d50c5e3f203f",
+      "output": "updaterfs/bin/chknandcapa.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/edisx.elf",
+      "size": 10328,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "3fab0e163242f0f4524d74d810dfb01baec4a505bcb37fccc43390012ea4b65a",
+      "output": "updaterfs/bin/edisx.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/edit_mount.sh",
+      "size": 265,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "c54da4f9aece133e9daebbcec0566af0325f35a50cc6ebca94d2c0b0dece9222",
+      "output": "updaterfs/bin/edit_mount.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/endufp.sh",
+      "size": 45,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "14adc04916854e1a37f6475833cdbf60e369a0e288b16bef0b9b367508196359",
+      "output": "updaterfs/bin/endufp.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/endupdate.sh",
+      "size": 3918,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "62465293ad07be41caf1b0236fd81fa29696105e1030fee14b495c325110ed8d",
+      "output": "updaterfs/bin/endupdate.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/filecheck.sh",
+      "size": 91,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "a3856d92c1bab1144373db3a1356af565438f5e2594634e3b2f6d7172aa1eacf",
+      "output": "updaterfs/bin/filecheck.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/getledval.elf",
+      "size": 6168,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "ae9f6a2cc231a4c0975a6c3042c1343a70c1c766216b1471deb741d93359663c",
+      "output": "updaterfs/bin/getledval.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/keep_big_backup.sh",
+      "size": 1241,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "ab73a01902294072caf9144446db854a00682c46ea0e135bf0f6a8106143a575",
+      "output": "updaterfs/bin/keep_big_backup.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/loader_writer.sh",
+      "size": 2424,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "ff5f25c1e32e52fe3053ab987cf8bb38bfb96597194f9d85be67d90e48f1d342",
+      "output": "updaterfs/bin/loader_writer.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/nor_loader_writer.sh",
+      "size": 9106,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "78b794fc52c5e104a899a6bf23278bd211e4a4f3c987a505bc43d648fcb5c2d6",
+      "output": "updaterfs/bin/nor_loader_writer.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/pformat.elf",
+      "size": 1631008,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "3ce2a76f477e937369f8e5b6dde2cdcb838645b53492b9a184ee16bbed389e21",
+      "output": "updaterfs/bin/pformat.elf",
+      "interesting_strings": [
+        {
+          "offset": "0x3c0d",
+          "value": "secure_getenv"
+        },
+        {
+          "offset": "0x3d15",
+          "value": "Camellia_decrypt"
+        },
+        {
+          "offset": "0x3de4",
+          "value": "aes_v8_decrypt"
+        },
+        {
+          "offset": "0x3e36",
+          "value": "AES_encrypt"
+        },
+        {
+          "offset": "0x3fc1",
+          "value": "SM4_encrypt"
+        },
+        {
+          "offset": "0x416c",
+          "value": "CMS_OriginatorPublicKey_it"
+        },
+        {
+          "offset": "0x437a",
+          "value": "aes_v8_ctr32_encrypt_blocks"
+        },
+        {
+          "offset": "0x43a2",
+          "value": "i2d_RSA_PUBKEY"
+        },
+        {
+          "offset": "0x43b1",
+          "value": "vpaes_decrypt"
+        },
+        {
+          "offset": "0x4414",
+          "value": "CMS_EncryptedData_it"
+        },
+        {
+          "offset": "0x4456",
+          "value": "RSAPrivateKey_it"
+        },
+        {
+          "offset": "0x4467",
+          "value": "vpaes_encrypt"
+        },
+        {
+          "offset": "0x4485",
+          "value": "AES_cbc_encrypt"
+        },
+        {
+          "offset": "0x4503",
+          "value": "RSA_PSS_PARAMS_it"
+        },
+        {
+          "offset": "0x4625",
+          "value": "aes_v8_encrypt"
+        },
+        {
+          "offset": "0x4690",
+          "value": "RSAPublicKey_it"
+        },
+        {
+          "offset": "0x483d",
+          "value": "RSA_new"
+        },
+        {
+          "offset": "0x4896",
+          "value": "Camellia_cbc_encrypt"
+        },
+        {
+          "offset": "0x49f2",
+          "value": "aria_encrypt"
+        },
+        {
+          "offset": "0x4a63",
+          "value": "d2i_RSA_PUBKEY"
+        },
+        {
+          "offset": "0x4a90",
+          "value": "CMS_RecipientEncryptedKey_it"
+        },
+        {
+          "offset": "0x4aee",
+          "value": "ASN1_UNIVERSALSTRING_it"
+        },
+        {
+          "offset": "0x4b06",
+          "value": "SEED_encrypt"
+        },
+        {
+          "offset": "0x4ccc",
+          "value": "Camellia_encrypt"
+        },
+        {
+          "offset": "0x4d25",
+          "value": "aes_v8_cbc_encrypt"
+        },
+        {
+          "offset": "0x4d83",
+          "value": "RSA_OAEP_PARAMS_it"
+        },
+        {
+          "offset": "0x4d96",
+          "value": "SM4_decrypt"
+        },
+        {
+          "offset": "0x4dde",
+          "value": "AES_decrypt"
+        },
+        {
+          "offset": "0x4f17",
+          "value": "CMS_Attributes_Verify_it"
+        },
+        {
+          "offset": "0x4f6e",
+          "value": "SEED_decrypt"
+        },
+        {
+          "offset": "0x5016",
+          "value": "vpaes_cbc_encrypt"
+        },
+        {
+          "offset": "0x11ffd3",
+          "value": "[PFORMAT]data encryption error."
+        },
+        {
+          "offset": "0x11fff3",
+          "value": "[Encrypt] Error: source address == 0 : %d"
+        },
+        {
+          "offset": "0x12001e",
+          "value": "[Encrypt] Error: destination address == 0 : %d"
+        },
+        {
+          "offset": "0x12004e",
+          "value": "[Encrypt] Error: data size == 0 : %d"
+        },
+        {
+          "offset": "0x120074",
+          "value": "[Encrypt] Error: EVP_CIPHER_CTX_new : %d"
+        },
+        {
+          "offset": "0x12009e",
+          "value": "[Encrypt] Error: EVP_CipherInit_ex : %d"
+        },
+        {
+          "offset": "0x1200c7",
+          "value": "[Encrypt] Error: EVP_CipherUpdate : %d"
+        },
+        {
+          "offset": "0x1200ef",
+          "value": "[Encrypt] Error: EVP_CipherFinal_ex : %d"
+        },
+        {
+          "offset": "0x125be0",
+          "value": "RSA Data Security, Inc."
+        },
+        {
+          "offset": "0x125c00",
+          "value": "RSA Data Security, Inc. PKCS"
+        },
+        {
+          "offset": "0x125c48",
+          "value": "rsaEncryption"
+        },
+        {
+          "offset": "0x125c58",
+          "value": "RSA-MD2"
+        },
+        {
+          "offset": "0x125c60",
+          "value": "md2WithRSAEncryption"
+        },
+        {
+          "offset": "0x125c78",
+          "value": "RSA-MD5"
+        },
+        {
+          "offset": "0x125c80",
+          "value": "md5WithRSAEncryption"
+        },
+        {
+          "offset": "0x125e30",
+          "value": "pkcs7-encryptedData"
+        },
+        {
+          "offset": "0x125f70",
+          "value": "RSA-SHA"
+        },
+        {
+          "offset": "0x125f78",
+          "value": "shaWithRSAEncryption"
+        },
+        {
+          "offset": "0x126060",
+          "value": "countersignature"
+        },
+        {
+          "offset": "0x1261d8",
+          "value": "RSA-SHA1"
+        },
+        {
+          "offset": "0x1261e8",
+          "value": "sha1WithRSAEncryption"
+        },
+        {
+          "offset": "0x126220",
+          "value": "dsaEncryption-old"
+        },
+        {
+          "offset": "0x126650",
+          "value": "RSA-MDC2"
+        },
+        {
+          "offset": "0x126660",
+          "value": "mdc2WithRSA"
+        },
+        {
+          "offset": "0x126730",
+          "value": "RSA-NP-MD5"
+        },
+        {
+          "offset": "0x126740",
+          "value": "md5WithRSA"
+        },
+        {
+          "offset": "0x126850",
+          "value": "RSA-SHA1-2"
+        },
+        {
+          "offset": "0x126860",
+          "value": "sha1WithRSA"
+        },
+        {
+          "offset": "0x126878",
+          "value": "dsaEncryption"
+        },
+        {
+          "offset": "0x1268a8",
+          "value": "RSA-RIPEMD160"
+        },
+        {
+          "offset": "0x1268b8",
+          "value": "ripemd160WithRSA"
+        },
+        {
+          "offset": "0x126b10",
+          "value": "Microsoft Encrypted File System"
+        },
+        {
+          "offset": "0x127148",
+          "value": "id-smime-mod-ets-eSignature-88"
+        },
+        {
+          "offset": "0x127168",
+          "value": "id-smime-mod-ets-eSignature-97"
+        },
+        {
+          "offset": "0x127408",
+          "value": "id-smime-aa-smimeEncryptCerts"
+        },
+        {
+          "offset": "0x127608",
+          "value": "id-smime-aa-signatureType"
+        },
+        {
+          "offset": "0x127dc0",
+          "value": "id-alg-noSignature"
+        },
+        {
+          "offset": "0x127ec0",
+          "value": "id-cmc-encryptedPOP"
+        },
+        {
+          "offset": "0x127ed8",
+          "value": "id-cmc-decryptedPOP"
+        },
+        {
+          "offset": "0x1282a0",
+          "value": "rsaSignature"
+        },
+        {
+          "offset": "0x128460",
+          "value": "RSA-MD4"
+        },
+        {
+          "offset": "0x128468",
+          "value": "md4WithRSAEncryption"
+        },
+        {
+          "offset": "0x1285c8",
+          "value": "id-ecPublicKey"
+        },
+        {
+          "offset": "0x128d38",
+          "value": "personalSignature"
+        },
+        {
+          "offset": "0x128e48",
+          "value": "Secure Electronic Transactions"
+        },
+        {
+          "offset": "0x1296b8",
+          "value": "setext-pinSecure"
+        },
+        {
+          "offset": "0x129700",
+          "value": "additional verification"
+        },
+        {
+          "offset": "0x1299b0",
+          "value": "encrypted track 2"
+        },
+        {
+          "offset": "0x129a10",
+          "value": "ICC or token signature"
+        },
+        {
+          "offset": "0x129a40",
+          "value": "secure device signature"
+        },
+        {
+          "offset": "0x129b10",
+          "value": "rsaOAEPEncryptionSET"
+        },
+        {
+          "offset": "0x129e40",
+          "value": "RSA-SHA256"
+        },
+        {
+          "offset": "0x129e50",
+          "value": "sha256WithRSAEncryption"
+        },
+        {
+          "offset": "0x129e68",
+          "value": "RSA-SHA384"
+        },
+        {
+          "offset": "0x129e78",
+          "value": "sha384WithRSAEncryption"
+        },
+        {
+          "offset": "0x129e90",
+          "value": "RSA-SHA512"
+        },
+        {
+          "offset": "0x129ea0",
+          "value": "sha512WithRSAEncryption"
+        },
+        {
+          "offset": "0x129eb8",
+          "value": "RSA-SHA224"
+        },
+        {
+          "offset": "0x129ec8",
+          "value": "sha224WithRSAEncryption"
+        },
+        {
+          "offset": "0x12b908",
+          "value": "RSASSA-PSS"
+        },
+        {
+          "offset": "0x12ba18",
+          "value": "RSAES-OAEP"
+        },
+        {
+          "offset": "0x12c8f8",
+          "value": "secureShellClient"
+        },
+        {
+          "offset": "0x12c920",
+          "value": "secureShellServer"
+        },
+        {
+          "offset": "0x12ca70",
+          "value": "KxRSA"
+        },
+        {
+          "offset": "0x12cae8",
+          "value": "KxRSA_PSK"
+        },
+        {
+          "offset": "0x12cb38",
+          "value": "AuthRSA"
+        },
+        {
+          "offset": "0x12d3e8",
+          "value": "RSA-SHA3-224"
+        },
+        {
+          "offset": "0x12d420",
+          "value": "RSA-SHA3-256"
+        },
+        {
+          "offset": "0x12d458",
+          "value": "RSA-SHA3-384"
+        },
+        {
+          "offset": "0x12d490",
+          "value": "RSA-SHA3-512"
+        },
+        {
+          "offset": "0x12d6d8",
+          "value": "RSA-SM3"
+        },
+        {
+          "offset": "0x12d6e0",
+          "value": "sm3WithRSAEncryption"
+        },
+        {
+          "offset": "0x12d6f8",
+          "value": "RSA-SHA512/224"
+        },
+        {
+          "offset": "0x12d708",
+          "value": "sha512-224WithRSAEncryption"
+        },
+        {
+          "offset": "0x12d728",
+          "value": "RSA-SHA512/256"
+        },
+        {
+          "offset": "0x12d738",
+          "value": "sha512-256WithRSAEncryption"
+        },
+        {
+          "offset": "0x1306a8",
+          "value": "ASN1_UNIVERSALSTRING"
+        },
+        {
+          "offset": "0x130ea8",
+          "value": "publicKey"
+        },
+        {
+          "offset": "0x135c68",
+          "value": "RSA lib"
+        },
+        {
+          "offset": "0x136d08",
+          "value": "RSA-PSS"
+        },
+        {
+          "offset": "0x136e20",
+          "value": "OpenSSL RSA-PSS method"
+        },
+        {
+          "offset": "0x136e38",
+          "value": "OpenSSL RSA method"
+        },
+        {
+          "offset": "0x136e50",
+          "value": "RSA_OAEP_PARAMS"
+        },
+        {
+          "offset": "0x136e90",
+          "value": "RSA_PSS_PARAMS"
+        },
+        {
+          "offset": "0x136ee8",
+          "value": "RSAPublicKey"
+        },
+        {
+          "offset": "0x136ef8",
+          "value": "RSAPrivateKey"
+        },
+        {
+          "offset": "0x136f30",
+          "value": "RSA_PRIME_INFO"
+        },
+        {
+          "offset": "0x136ff0",
+          "value": "OpenSSL PKCS#1 RSA"
+        },
+        {
+          "offset": "0x137160",
+          "value": "    Signature Algorithm: "
+        },
+        {
+          "offset": "0x138428",
+          "value": "S/MIME encryption"
+        },
+        {
+          "offset": "0x138440",
+          "value": "smimeencrypt"
+        },
+        {
+          "offset": "0x139038",
+          "value": "UNIVERSALSTRING"
+        },
+        {
+          "offset": "0x149ae8",
+          "value": "bad decrypt"
+        },
+        {
+          "offset": "0x14a350",
+          "value": "EVP_DecryptFinal_ex"
+        },
+        {
+          "offset": "0x14a368",
+          "value": "EVP_DecryptUpdate"
+        },
+        {
+          "offset": "0x14a3b0",
+          "value": "EVP_EncryptFinal_ex"
+        },
+        {
+          "offset": "0x14a3c8",
+          "value": "EVP_EncryptUpdate"
+        },
+        {
+          "offset": "0x14a528",
+          "value": "EVP_PKEY_decrypt"
+        },
+        {
+          "offset": "0x14a540",
+          "value": "EVP_PKEY_decrypt_init"
+        },
+        {
+          "offset": "0x14a558",
+          "value": "EVP_PKEY_decrypt_old"
+        },
+        {
+          "offset": "0x14a5b8",
+          "value": "EVP_PKEY_encrypt"
+        },
+        {
+          "offset": "0x14a5d0",
+          "value": "EVP_PKEY_encrypt_init"
+        },
+        {
+          "offset": "0x14a5e8",
+          "value": "EVP_PKEY_encrypt_old"
+        },
+        {
+          "offset": "0x14a678",
+          "value": "EVP_PKEY_get0_RSA"
+        },
+        {
+          "offset": "0x14a860",
+          "value": "EVP_PKEY_verify"
+        },
+        {
+          "offset": "0x14a870",
+          "value": "EVP_PKEY_verify_init"
+        },
+        {
+          "offset": "0x14a888",
+          "value": "EVP_PKEY_verify_recover"
+        },
+        {
+          "offset": "0x14a8a0",
+          "value": "EVP_PKEY_verify_recover_init"
+        },
+        {
+          "offset": "0x14a8d0",
+          "value": "EVP_VerifyFinal"
+        },
+        {
+          "offset": "0x14ad78",
+          "value": "certificate verify error"
+        },
+        {
+          "offset": "0x14af68",
+          "value": "signature failure"
+        },
+        {
+          "offset": "0x14b060",
+          "value": "OCSP_basic_verify"
+        },
+        {
+          "offset": "0x14b128",
+          "value": "OCSP_request_verify"
+        },
+        {
+          "offset": "0x14b300",
+          "value": "not encrypted"
+        },
+        {
+          "offset": "0x14b3b0",
+          "value": "unsupported encryption"
+        },
+        {
+          "offset": "0x14b820",
+          "value": "encrypt error"
+        },
+        {
+          "offset": "0x14b830",
+          "value": "error setting encrypted data type"
+        },
+        {
+          "offset": "0x14b900",
+          "value": "mac verify failure"
+        },
+        {
+          "offset": "0x14ba28",
+          "value": "PKCS12_item_decrypt_d2i"
+        },
+        {
+          "offset": "0x14ba40",
+          "value": "PKCS12_item_i2d_encrypt"
+        },
+        {
+          "offset": "0x14bb80",
+          "value": "PKCS12_SAFEBAG_create_pkcs8_encrypt"
+        },
+        {
+          "offset": "0x14bc00",
+          "value": "PKCS12_verify_mac"
+        },
+        {
+          "offset": "0x14bc18",
+          "value": "PKCS8_encrypt"
+        },
+        {
+          "offset": "0x14bcc8",
+          "value": "decrypt error"
+        },
+        {
+          "offset": "0x14bce8",
+          "value": "encryption ctrl failure"
+        },
+        {
+          "offset": "0x14bd00",
+          "value": "encryption not supported for this key type"
+        },
+        {
+          "offset": "0x14bdf0",
+          "value": "no signatures on data"
+        },
+        {
+          "offset": "0x14be40",
+          "value": "pkcs7 add signature error"
+        },
+        {
+          "offset": "0x14c070",
+          "value": "PKCS7_add_signature"
+        },
+        {
+          "offset": "0x14c120",
+          "value": "PKCS7_dataVerify"
+        },
+        {
+          "offset": "0x14c138",
+          "value": "PKCS7_decrypt"
+        },
+        {
+          "offset": "0x14c148",
+          "value": "pkcs7_decrypt_rinfo"
+        },
+        {
+          "offset": "0x14c178",
+          "value": "PKCS7_encrypt"
+        },
+        {
+          "offset": "0x14c248",
+          "value": "PKCS7_signatureVerify"
+        },
+        {
+          "offset": "0x14c2c0",
+          "value": "PKCS7_verify"
+        },
+        {
+          "offset": "0x14ca40",
+          "value": "bad fixed header decrypt"
+        },
+        {
+          "offset": "0x14ca78",
+          "value": "bad signature"
+        },
+        {
+          "offset": "0x14d028",
+          "value": "unsupported encryption type"
+        },
+        {
+          "offset": "0x14d0a8",
+          "value": "unsupported signature type"
+        },
+        {
+          "offset": "0x14d0c8",
+          "value": "wrong signature length"
+        },
+        {
+          "offset": "0x14d108",
+          "value": "int_rsa_verify"
+        },
+        {
+          "offset": "0x14d178",
+          "value": "pkey_rsa_verify"
+        },
+        {
+          "offset": "0x14d188",
+          "value": "pkey_rsa_verifyrecover"
+        },
+        {
+          "offset": "0x14d1c8",
+          "value": "RSA_check_key"
+        },
+        {
+          "offset": "0x14d1d8",
+          "value": "RSA_check_key_ex"
+        },
+        {
+          "offset": "0x14d1f0",
+          "value": "rsa_cms_decrypt"
+        },
+        {
+          "offset": "0x14d200",
+          "value": "rsa_cms_verify"
+        },
+        {
+          "offset": "0x14d210",
+          "value": "rsa_item_verify"
+        },
+        {
+          "offset": "0x14d220",
+          "value": "RSA_meth_dup"
+        },
+        {
+          "offset": "0x14d230",
+          "value": "RSA_meth_new"
+        },
+        {
+          "offset": "0x14d240",
+          "value": "RSA_meth_set1_name"
+        },
+        {
+          "offset": "0x14d270",
+          "value": "RSA_new_method"
+        },
+        {
+          "offset": "0x14d280",
+          "value": "rsa_ossl_private_decrypt"
+        },
+        {
+          "offset": "0x14d2a0",
+          "value": "rsa_ossl_private_encrypt"
+        },
+        {
+          "offset": "0x14d2c0",
+          "value": "rsa_ossl_public_decrypt"
+        },
+        {
+          "offset": "0x14d2d8",
+          "value": "rsa_ossl_public_encrypt"
+        },
+        {
+          "offset": "0x14d2f0",
+          "value": "RSA_padding_add_none"
+        },
+        {
+          "offset": "0x14d308",
+          "value": "RSA_padding_add_PKCS1_OAEP"
+        },
+        {
+          "offset": "0x14d328",
+          "value": "RSA_padding_add_PKCS1_OAEP_mgf1"
+        },
+        {
+          "offset": "0x14d348",
+          "value": "RSA_padding_add_PKCS1_PSS"
+        },
+        {
+          "offset": "0x14d368",
+          "value": "RSA_padding_add_PKCS1_PSS_mgf1"
+        },
+        {
+          "offset": "0x14d388",
+          "value": "RSA_padding_add_PKCS1_type_1"
+        },
+        {
+          "offset": "0x14d3a8",
+          "value": "RSA_padding_add_PKCS1_type_2"
+        },
+        {
+          "offset": "0x14d3c8",
+          "value": "RSA_padding_add_SSLv23"
+        },
+        {
+          "offset": "0x14d3e0",
+          "value": "RSA_padding_add_X931"
+        },
+        {
+          "offset": "0x14d3f8",
+          "value": "RSA_padding_check_none"
+        },
+        {
+          "offset": "0x14d410",
+          "value": "RSA_padding_check_PKCS1_OAEP"
+        },
+        {
+          "offset": "0x14d430",
+          "value": "RSA_padding_check_PKCS1_OAEP_mgf1"
+        },
+        {
+          "offset": "0x14d458",
+          "value": "RSA_padding_check_PKCS1_type_1"
+        },
+        {
+          "offset": "0x14d478",
+          "value": "RSA_padding_check_PKCS1_type_2"
+        },
+        {
+          "offset": "0x14d498",
+          "value": "RSA_padding_check_SSLv23"
+        },
+        {
+          "offset": "0x14d4b8",
+          "value": "RSA_padding_check_X931"
+        },
+        {
+          "offset": "0x14d4e8",
+          "value": "RSA_print"
+        },
+        {
+          "offset": "0x14d4f8",
+          "value": "RSA_print_fp"
+        },
+        {
+          "offset": "0x14d560",
+          "value": "RSA_setup_blinding"
+        },
+        {
+          "offset": "0x14d578",
+          "value": "RSA_sign"
+        },
+        {
+          "offset": "0x14d588",
+          "value": "RSA_sign_ASN1_OCTET_STRING"
+        },
+        {
+          "offset": "0x14d5a8",
+          "value": "RSA_verify"
+        },
+        {
+          "offset": "0x14d5b8",
+          "value": "RSA_verify_ASN1_OCTET_STRING"
+        },
+        {
+          "offset": "0x14d5d8",
+          "value": "RSA_verify_PKCS1_PSS_mgf1"
+        },
+        {
+          "offset": "0x14ec40",
+          "value": "PKCS8 decrypt password"
+        },
+        {
+          "offset": "0x14ecf0",
+          "value": "PKCS8Encrypted"
+        },
+        {
+          "offset": "0x14ed20",
+          "value": "error verifying pkcs12 mac"
+        },
+        {
+          "offset": "0x14f2f8",
+          "value": "try_decode_PKCS8Encrypted"
+        },
+        {
+          "offset": "0x14f748",
+          "value": "int_ts_RESP_verify_token"
+        },
+        {
+          "offset": "0x14faf8",
+          "value": "TS_RESP_verify_signature"
+        },
+        {
+          "offset": "0x14fbd8",
+          "value": "ts_verify_cert"
+        },
+        {
+          "offset": "0x14fe68",
+          "value": "UI_dup_verify_string"
+        },
+        {
+          "offset": "0x14ffc0",
+          "value": "Verifying - %s"
+        },
+        {
+          "offset": "0x14ffd0",
+          "value": "Verify failure"
+        },
+        {
+          "offset": "0x150168",
+          "value": "crl verify failure"
+        },
+        {
+          "offset": "0x1502a0",
+          "value": "no cert set for us to verify"
+        },
+        {
+          "offset": "0x150940",
+          "value": "X509_verify_cert"
+        },
+        {
+          "offset": "0x153150",
+          "value": "crypto/asn1/a_verify.c"
+        },
+        {
+          "offset": "0x1539d8",
+          "value": "unknown signature algorithm"
+        },
+        {
+          "offset": "0x153d38",
+          "value": "ASN1_item_verify"
+        },
+        {
+          "offset": "0x153f20",
+          "value": "ASN1_verify"
+        },
+        {
+          "offset": "0x154048",
+          "value": "d2i_PublicKey"
+        },
+        {
+          "offset": "0x1540f0",
+          "value": "i2d_PublicKey"
+        },
+        {
+          "offset": "0x154100",
+          "value": "i2d_RSA_PUBKEY"
+        },
+        {
+          "offset": "0x1545b0",
+          "value": "encryption"
+        },
+        {
+          "offset": "0x156040",
+          "value": "secure memory buffer"
+        },
+        {
+          "offset": "0x158670",
+          "value": "originatorSignatureValue"
+        },
+        {
+          "offset": "0x158708",
+          "value": "CMS_Attributes_Verify"
+        },
+        {
+          "offset": "0x158790",
+          "value": "d.encryptedData"
+        },
+        {
+          "offset": "0x158890",
+          "value": "CMS_EncryptedData"
+        },
+        {
+          "offset": "0x1588a8",
+          "value": "encryptedContentInfo"
+        },
+        {
+          "offset": "0x1589b0",
+          "value": "keyEncryptionAlgorithm"
+        },
+        {
+          "offset": "0x1589c8",
+          "value": "encryptedKey"
+        },
+        {
+          "offset": "0x158a58",
+          "value": "recipientEncryptedKeys"
+        },
+        {
+          "offset": "0x158ad0",
+          "value": "CMS_OriginatorPublicKey"
+        },
+        {
+          "offset": "0x158ae8",
+          "value": "CMS_RecipientEncryptedKey"
+        },
+        {
+          "offset": "0x158ba8",
+          "value": "CMS_EncryptedContentInfo"
+        },
+        {
+          "offset": "0x158bc8",
+          "value": "contentEncryptionAlgorithm"
+        },
+        {
+          "offset": "0x158be8",
+          "value": "encryptedContent"
+        },
+        {
+          "offset": "0x158d00",
+          "value": "signatureAlgorithm"
+        },
+        {
+          "offset": "0x158fe8",
+          "value": "content verify error"
+        },
+        {
+          "offset": "0x159080",
+          "value": "invalid encrypted key length"
+        },
+        {
+          "offset": "0x1590a0",
+          "value": "invalid key encryption parameter"
+        },
+        {
+          "offset": "0x159140",
+          "value": "msgsigdigest verification failure"
+        },
+        {
+          "offset": "0x1591b0",
+          "value": "not encrypted data"
+        },
+        {
+          "offset": "0x159268",
+          "value": "no matching signature"
+        },
+        {
+          "offset": "0x159330",
+          "value": "type not encrypted data"
+        },
+        {
+          "offset": "0x1593c0",
+          "value": "unsupported key encryption algorithm"
+        },
+        {
+          "offset": "0x159448",
+          "value": "verification failure"
+        },
+        {
+          "offset": "0x1595d0",
+          "value": "CMS_decrypt"
+        },
+        {
+          "offset": "0x1595e0",
+          "value": "CMS_decrypt_set1_key"
+        },
+        {
+          "offset": "0x1595f8",
+          "value": "CMS_decrypt_set1_password"
+        },
+        {
+          "offset": "0x159618",
+          "value": "CMS_decrypt_set1_pkey"
+        },
+        {
+          "offset": "0x159690",
+          "value": "CMS_digest_verify"
+        },
+        {
+          "offset": "0x1596c0",
+          "value": "CMS_encrypt"
+        },
+        {
+          "offset": "0x1596d0",
+          "value": "cms_EncryptedContent_init"
+        },
+        {
+          "offset": "0x1596f0",
+          "value": "cms_EncryptedContent_init_bio"
+        },
+        {
+          "offset": "0x159710",
+          "value": "CMS_EncryptedData_decrypt"
+        },
+        {
+          "offset": "0x159730",
+          "value": "CMS_EncryptedData_encrypt"
+        },
+        {
+          "offset": "0x159750",
+          "value": "CMS_EncryptedData_set1_key"
+        },
+        {
+          "offset": "0x1598c0",
+          "value": "cms_Receipt_verify"
+        },
+        {
+          "offset": "0x1598d8",
+          "value": "CMS_RecipientInfo_decrypt"
+        },
+        {
+          "offset": "0x1598f8",
+          "value": "CMS_RecipientInfo_encrypt"
+        },
+        {
+          "offset": "0x159918",
+          "value": "cms_RecipientInfo_kari_encrypt"
+        },
+        {
+          "offset": "0x1599d0",
+          "value": "cms_RecipientInfo_kekri_decrypt"
+        },
+        {
+          "offset": "0x1599f0",
+          "value": "cms_RecipientInfo_kekri_encrypt"
+        },
+        {
+          "offset": "0x159a70",
+          "value": "cms_RecipientInfo_ktri_decrypt"
+        },
+        {
+          "offset": "0x159a90",
+          "value": "cms_RecipientInfo_ktri_encrypt"
+        },
+        {
+          "offset": "0x159c50",
+          "value": "CMS_SignerInfo_verify"
+        },
+        {
+          "offset": "0x159c68",
+          "value": "cms_signerinfo_verify_cert"
+        },
+        {
+          "offset": "0x159c88",
+          "value": "CMS_SignerInfo_verify_content"
+        },
+        {
+          "offset": "0x159ce0",
+          "value": "CMS_verify"
+        },
+        {
+          "offset": "0x15a460",
+          "value": "sct invalid signature"
+        },
+        {
+          "offset": "0x15a4d0",
+          "value": "unrecognized signature nid"
+        },
+        {
+          "offset": "0x15a608",
+          "value": "i2o_SCT_signature"
+        },
+        {
+          "offset": "0x15a638",
+          "value": "o2i_SCT_signature"
+        },
+        {
+          "offset": "0x15a660",
+          "value": "SCT_CTX_verify"
+        },
+        {
+          "offset": "0x15a6c8",
+          "value": "SCT_set1_signature"
+        },
+        {
+          "offset": "0x15a6f8",
+          "value": "SCT_set_signature_nid"
+        },
+        {
+          "offset": "0x15bc38",
+          "value": "dh_cms_decrypt"
+        },
+        {
+          "offset": "0x15be70",
+          "value": "DSA_do_verify"
+        },
+        {
+          "offset": "0x15c970",
+          "value": "ecdh_cms_decrypt"
+        },
+        {
+          "offset": "0x15c9f0",
+          "value": "ECDSA_do_verify"
+        },
+        {
+          "offset": "0x15ca38",
+          "value": "ECDSA_verify"
+        },
+        {
+          "offset": "0x15ca48",
+          "value": "ecd_item_verify"
+        },
+        {
+          "offset": "0x15d8f8",
+          "value": "i2o_ECPublicKey"
+        },
+        {
+          "offset": "0x15d950",
+          "value": "o2i_ECPublicKey"
+        },
+        {
+          "offset": "0x15d9a8",
+          "value": "ossl_ecdsa_verify_sig"
+        },
+        {
+          "offset": "0x15e230",
+          "value": "crypto/evp/p_verify.c"
+        },
+        {
+          "offset": "0x15e8a8",
+          "value": "d.encrypted"
+        },
+        {
+          "offset": "0x162d10",
+          "value": "Digital Signature"
+        },
+        {
+          "offset": "0x162d28",
+          "value": "digitalSignature"
+        },
+        {
+          "offset": "0x162fe0",
+          "value": "application/x-pkcs7-signature"
+        },
+        {
+          "offset": "0x163000",
+          "value": "application/pkcs7-signature"
+        },
+        {
+          "offset": "0x163188",
+          "value": " protocol=\"%ssignature\";"
+        },
+        {
+          "offset": "0x163248",
+          "value": "Content-Type: %ssignature;"
+        },
+        {
+          "offset": "0x1646f8",
+          "value": "unverified"
+        },
+        {
+          "offset": "0x1647e9",
+          "value": "%*sSignature : "
+        },
+        {
+          "offset": "0x164e90",
+          "value": "optionalSignature"
+        }
+      ],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": [
+        {
+          "name": "Camellia_decrypt",
+          "va": "0x4f8b20",
+          "bytes": 16,
+          "section": 12
+        },
+        {
+          "name": "SM4_encrypt",
+          "va": "0x4da2f8",
+          "bytes": 2460,
+          "section": 12
+        },
+        {
+          "name": "aes_v8_encrypt",
+          "va": "0x4237c0",
+          "bytes": 80,
+          "section": 12
+        },
+        {
+          "name": "CMS_SignerInfo_it",
+          "va": "0x58f668",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "RSA_PSS_PARAMS_it",
+          "va": "0x584bd8",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "CMS_SignedData_it",
+          "va": "0x58f5c0",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "i2d_RSA_PUBKEY",
+          "va": "0x4640b8",
+          "bytes": 156,
+          "section": 12
+        },
+        {
+          "name": "RSA_OAEP_PARAMS_it",
+          "va": "0x584b78",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "SEED_encrypt",
+          "va": "0x4d3e48",
+          "bytes": 3412,
+          "section": 12
+        },
+        {
+          "name": "vpaes_cbc_encrypt",
+          "va": "0x424bc0",
+          "bytes": 84,
+          "section": 12
+        },
+        {
+          "name": "aes_v8_cbc_encrypt",
+          "va": "0x423880",
+          "bytes": 1000,
+          "section": 12
+        },
+        {
+          "name": "vpaes_decrypt",
+          "va": "0x424660",
+          "bytes": 32,
+          "section": 12
+        },
+        {
+          "name": "AES_encrypt",
+          "va": "0x422c90",
+          "bytes": 1080,
+          "section": 12
+        },
+        {
+          "name": "AES_cbc_encrypt",
+          "va": "0x422628",
+          "bytes": 28,
+          "section": 12
+        },
+        {
+          "name": "CMS_OriginatorPublicKey_it",
+          "va": "0x58f3d8",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "Camellia_cbc_encrypt",
+          "va": "0x4f8a80",
+          "bytes": 28,
+          "section": 12
+        },
+        {
+          "name": "Camellia_encrypt",
+          "va": "0x4f8b10",
+          "bytes": 16,
+          "section": 12
+        },
+        {
+          "name": "aes_v8_decrypt",
+          "va": "0x423820",
+          "bytes": 80,
+          "section": 12
+        },
+        {
+          "name": "CMS_Attributes_Verify_it",
+          "va": "0x58efe0",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "SM4_decrypt",
+          "va": "0x4dac98",
+          "bytes": 2460,
+          "section": 12
+        },
+        {
+          "name": "aria_encrypt",
+          "va": "0x4ee050",
+          "bytes": 1624,
+          "section": 12
+        },
+        {
+          "name": "ASN1_UNIVERSALSTRING_it",
+          "va": "0x582ea0",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "d2i_RSA_PUBKEY",
+          "va": "0x464038",
+          "bytes": 128,
+          "section": 12
+        },
+        {
+          "name": "CMS_EncryptedData_it",
+          "va": "0x58f158",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "RSAPublicKey_it",
+          "va": "0x584c38",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "AES_decrypt",
+          "va": "0x4230c8",
+          "bytes": 1036,
+          "section": 12
+        },
+        {
+          "name": "SEED_decrypt",
+          "va": "0x4d4ba0",
+          "bytes": 3412,
+          "section": 12
+        },
+        {
+          "name": "aes_v8_ctr32_encrypt_blocks",
+          "va": "0x423c80",
+          "bytes": 648,
+          "section": 12
+        },
+        {
+          "name": "RSAPrivateKey_it",
+          "va": "0x584c98",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "CMS_Attributes_Sign_it",
+          "va": "0x58f018",
+          "bytes": 56,
+          "section": 19
+        },
+        {
+          "name": "signal",
+          "va": "0x0",
+          "bytes": 0,
+          "section": "SHN_UNDEF"
+        },
+        {
+          "name": "vpaes_encrypt",
+          "va": "0x4243b0",
+          "bytes": 32,
+          "section": 12
+        },
+        {
+          "name": "RSA_new",
+          "va": "0x45b378",
+          "bytes": 8,
+          "section": 12
+        },
+        {
+          "name": "CMS_RecipientEncryptedKey_it",
+          "va": "0x58f410",
+          "bytes": 56,
+          "section": 19
+        }
+      ]
+    },
+    {
+      "path": "/bin/spicom.elf",
+      "size": 14416,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "83544c8f02e9a55c3ec45dc2a6f141cba8a707b5f16351516dc13c4e7906e9b1",
+      "output": "updaterfs/bin/spicom.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/startupdate.sh",
+      "size": 2760,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "5fc3931eca41fddb4068c952772e51b1c8706a6ce817bed77cb211604fb7ec4d",
+      "output": "updaterfs/bin/startupdate.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/uc_crc32sum.elf",
+      "size": 14608,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "5bc46b77925d82aea1898c0dc7a337ef9587f91a89a82272d4de54580a625ed6",
+      "output": "updaterfs/bin/uc_crc32sum.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/uc_mkfs.elf",
+      "size": 10368,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "720e949cdefff323c4ba312b65d243602ce52132da66674ba809286f98646933",
+      "output": "updaterfs/bin/uc_mkfs.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_cp_firmup.elf",
+      "size": 18544,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "ea896626a2503f9ab8b90c9506176ffbab7d3b8081a378734d93d7dd410f2c95",
+      "output": "updaterfs/bin/ud_cp_firmup.elf",
+      "interesting_strings": [
+        {
+          "offset": "0x2c3f",
+          "value": "[E] %s(): write & verify command error..."
+        },
+        {
+          "offset": "0x31f8",
+          "value": "mp_mccp_setUpNorWriteVerifyCommand"
+        },
+        {
+          "offset": "0x3220",
+          "value": "mp_mccp_setUpNorEncWriteVerifyCommand"
+        }
+      ],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_darwin_firmup.elf",
+      "size": 14408,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "output": "updaterfs/bin/ud_darwin_firmup.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_fsys_format.elf",
+      "size": 6144,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "dde024ef907ba36ed73cfcb48a12cb8fe2f16c6b5d0282cfcb80fd7cf7721553",
+      "output": "updaterfs/bin/ud_fsys_format.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_get_addr_from_infosec.elf",
+      "size": 6136,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "ae6950642a320e5b4ffdb586ef8046505ea71f4a61a46f49415d5d820d673231",
+      "output": "updaterfs/bin/ud_get_addr_from_infosec.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_get_boot_device.elf",
+      "size": 6096,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "f9b48a5c02a9ccf025a85d0fd8b4ec539379dad58d621c2f3622326d45309e8c",
+      "output": "updaterfs/bin/ud_get_boot_device.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_get_boot_ext.elf",
+      "size": 6112,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "072f6ea804f7037546b0cdfc1d908f346715fd7ae4bdee9e931dad63d55a9e71",
+      "output": "updaterfs/bin/ud_get_boot_ext.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_get_data_from_mis.elf",
+      "size": 6152,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "557029e21eac8b9eccfc410a37d44e2d08b881817b2c6ee01a96779ce832a222",
+      "output": "updaterfs/bin/ud_get_data_from_mis.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_get_power_ic_type.elf",
+      "size": 6088,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "285cb7cc168d6bcc4f3116238e69edbe25ae32cff594d115a68252a818b0d8aa",
+      "output": "updaterfs/bin/ud_get_power_ic_type.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_get_uudtype.elf",
+      "size": 6104,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "22ee6823196a37ac968aab6b0c87e8e047021ed7737a45ba24271d9e5973d9ff",
+      "output": "updaterfs/bin/ud_get_uudtype.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_init_sio_port_setting.elf",
+      "size": 6128,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "a651d6d4740c0720b9b5f23182eb5523a0bc995e5b83a99ab6ab640478ebeac7",
+      "output": "updaterfs/bin/ud_init_sio_port_setting.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_init_spi_port_setting.elf",
+      "size": 10232,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "9f158b469cb9ae8ee2e23d34aab10766d6dedbc8d0a6e08650f44a36962f7649",
+      "output": "updaterfs/bin/ud_init_spi_port_setting.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_ioex_sel_en.elf",
+      "size": 10240,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "3aedcc7badbb3956d1635b30f493f4229de3d467e461baf34bdd00dd46d04ef2",
+      "output": "updaterfs/bin/ud_ioex_sel_en.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_keep_backup.elf",
+      "size": 10224,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "36c9937652c8af98e3a2066931db77d1598f7ab8d70167e432599255666585d0",
+      "output": "updaterfs/bin/ud_keep_backup.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_lerase.elf",
+      "size": 6176,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "af581e221ba316e8a10e96f1e1004f20269f912331e7012704bb89c9a65bdf0e",
+      "output": "updaterfs/bin/ud_lerase.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_nor_pformat.elf",
+      "size": 10336,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "065955c5e6f34f622c9d35490bc3bfc84e3daeb6de882cda1cc9a7b63a15f9da",
+      "output": "updaterfs/bin/ud_nor_pformat.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_parallel_spirom_firmup.elf",
+      "size": 10248,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "e13c0bda19fb41f14c8acb9f085c1c1519c42e7ce40bd3613cab0cc19db59beb",
+      "output": "updaterfs/bin/ud_parallel_spirom_firmup.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_pd_firmup.elf",
+      "size": 14432,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "92dbb8b08bde699414df31be995bf48cc23022b506e7dec04018f3f099e018ef",
+      "output": "updaterfs/bin/ud_pd_firmup.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_spicom_boot.elf",
+      "size": 6136,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "558f99bca3e3fb25513c642654d582b8589f681ee8632359bff39798da3e8939",
+      "output": "updaterfs/bin/ud_spicom_boot.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_spirom_firmup.elf",
+      "size": 14448,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "3036d7eab543e5f8d3fb46a03b206792fcb56eaf6a2cb9bfcd285b044961e4a4",
+      "output": "updaterfs/bin/ud_spirom_firmup.elf",
+      "interesting_strings": [
+        {
+          "offset": "0x22ea",
+          "value": "[UD_SPIROM_FIRMUP%d] Verify start"
+        },
+        {
+          "offset": "0x230d",
+          "value": "[UD_SPIROM_FIRMUP%d] Verify error: %d"
+        },
+        {
+          "offset": "0x233f",
+          "value": "[UD_SPIROM_FIRMUP%d] Verify done"
+        }
+      ],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ud_wbi_drop.elf",
+      "size": 10304,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "4cfc8f979a4289915e2a3db6cd7e96bb97b35645149977619c04b0d9c5fbc7b3",
+      "output": "updaterfs/bin/ud_wbi_drop.elf",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/ul_crc32sumprfile.so",
+      "size": 128072,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "f51b3469a47cec534ac4a84cabebf8b6c013a879e8201099ad6e99fcf099df58",
+      "output": "updaterfs/bin/ul_crc32sumprfile.so",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/bin/us_ca_firm.sh",
+      "size": 1772,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "9fb706305dcd99d71458991585dde03db1e2e3ebfbbf4d3f832a5e3280fe303f",
+      "output": "updaterfs/bin/us_ca_firm.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_crc32sum.sh",
+      "size": 1195,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "a0ce2112c37bfd67884d28c26aa4871f8added98852bdfa25c9e668013af6729",
+      "output": "updaterfs/bin/us_crc32sum.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_crc32sum_appli.sh",
+      "size": 1888,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "991c31024ec077d6c43599df4f04d8c0b7e82f93e04b2a275368ea2c313bae41",
+      "output": "updaterfs/bin/us_crc32sum_appli.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_crc32sum_backup.sh",
+      "size": 1429,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "7215ffd9509ea9a12e37c8954011e197886c4d7c1c78d6b04b1ab7ab8188d3af",
+      "output": "updaterfs/bin/us_crc32sum_backup.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_crc32sum_updater.sh",
+      "size": 1578,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "ab91e09292ddcf137239be03324c98478188c68c8e064380549256455d9eb2dc",
+      "output": "updaterfs/bin/us_crc32sum_updater.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_crc32sumprfile.sh",
+      "size": 1291,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "3f5a7272f53408b3454b4352ca7a23438bbf3e845b071b75d200186900fd7c04",
+      "output": "updaterfs/bin/us_crc32sumprfile.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_front_firmup.sh",
+      "size": 559,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "6e5db8cd9e9c22f4c2e2e2627a06f36df7565fab356ddefd85288ab991ced100",
+      "output": "updaterfs/bin/us_front_firmup.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_i2c_updater.sh",
+      "size": 744,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "976b451140db18550fb9dd2cea9c22f697e5c7a929fb32866a1559df0225c4b1",
+      "output": "updaterfs/bin/us_i2c_updater.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_mkfs.sh",
+      "size": 3486,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "f1027ba9271d7899278c417e93ea3e67e45333419b764fa897cbe5036a13d80d",
+      "output": "updaterfs/bin/us_mkfs.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_spi_firmup.sh",
+      "size": 1180,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "36bbc193522f1e08f3450911d201e93027f5feca6275589ee6a2b8911205a407",
+      "output": "updaterfs/bin/us_spi_firmup.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bin/us_zynq_firmup.sh",
+      "size": 1043,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "ea2a10fc1c49954f337414389e23fb9e6f9e9a6d97339fa38139d3af7bde1845",
+      "output": "updaterfs/bin/us_zynq_firmup.sh",
+      "interesting_strings": []
+    },
+    {
+      "path": "/bodylib",
+      "size": 40,
+      "mode": "drwxr-xr-x",
+      "type": "directory"
+    },
+    {
+      "path": "/bodylib/libupdaterbody.so",
+      "size": 143168,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9",
+      "output": "updaterfs/bodylib/libupdaterbody.so",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    },
+    {
+      "path": "/config",
+      "size": 86,
+      "mode": "drwxr-xr-x",
+      "type": "directory"
+    },
+    {
+      "path": "/config/body_version",
+      "size": 12,
+      "mode": "-rw-r--r--",
+      "type": "file",
+      "sha256": "54e3c93b9020f8023aea963a0381a5488e2eb4492a0277bae551d7bfd4d30df4",
+      "output": "updaterfs/config/body_version",
+      "interesting_strings": []
+    },
+    {
+      "path": "/config/chassis",
+      "size": 18,
+      "mode": "-rw-r--r--",
+      "type": "file",
+      "sha256": "7880368a5b3a8efe7e19337e225fc1248dca9e8f1f96eb111823eb66588417e1",
+      "output": "updaterfs/config/chassis",
+      "interesting_strings": []
+    },
+    {
+      "path": "/config/common.src",
+      "size": 2546,
+      "mode": "-rw-r--r--",
+      "type": "file",
+      "sha256": "96f3bddf603788409af69fead42f6686e3701ad6f4aa2ccd3af0ef4ba986d7d2",
+      "output": "updaterfs/config/common.src",
+      "interesting_strings": []
+    },
+    {
+      "path": "/config/config.xml",
+      "size": 2519,
+      "mode": "-rw-r--r--",
+      "type": "file",
+      "sha256": "09cd171039d921224fe9e66b9e44350f7f5e8bc8e75cea7aefe2235719f544da",
+      "output": "updaterfs/config/config.xml",
+      "interesting_strings": []
+    },
+    {
+      "path": "/cp",
+      "size": 50,
+      "mode": "drwxr-xr-x",
+      "type": "directory"
+    },
+    {
+      "path": "/cp/tomco.txt",
+      "size": 618,
+      "mode": "-rw-r--r--",
+      "type": "file",
+      "sha256": "d9401e6a7d0cdd85803e2a6823fd9dac0ff186910d82a5671f32fc0a37fc21f1",
+      "output": "updaterfs/cp/tomco.txt",
+      "interesting_strings": []
+    },
+    {
+      "path": "/cp/udtrcp.bin",
+      "size": 880944,
+      "mode": "-rw-r--r--",
+      "type": "file",
+      "sha256": "f512ee9abf1b94c40a655a1dc0cebff7ff181858016e2e298ef5c74adcf7e283",
+      "output": "updaterfs/cp/udtrcp.bin",
+      "interesting_strings": [
+        {
+          "offset": "0x6e444",
+          "value": "cp_mccp_handleNorWriteVerifyCommand"
+        },
+        {
+          "offset": "0x6e53c",
+          "value": "verify_data"
+        },
+        {
+          "offset": "0x6e572",
+          "value": "[0m%s(): Verify FAILED."
+        },
+        {
+          "offset": "0x6e828",
+          "value": "cp_mccp_handleNorEncWriteVerifyCommand"
+        },
+        {
+          "offset": "0x9277e",
+          "value": "[0m%s(): ERROR: Verify failed."
+        },
+        {
+          "offset": "0x927a8",
+          "value": "[0m%s(): Verify OK."
+        },
+        {
+          "offset": "0x92da2",
+          "value": "[0m%s(buf=0x%08x, ref=0x%08x, size=0x%x): verifying ..."
+        }
+      ]
+    },
+    {
+      "path": "/usr",
+      "size": 26,
+      "mode": "drwxr-xr-x",
+      "type": "directory"
+    },
+    {
+      "path": "/usr/lib",
+      "size": 42,
+      "mode": "drwxr-xr-x",
+      "type": "directory"
+    },
+    {
+      "path": "/usr/lib/libupdatercommon.so",
+      "size": 56032,
+      "mode": "-rwxr-xr-x",
+      "type": "file",
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797",
+      "output": "updaterfs/usr/lib/libupdatercommon.so",
+      "interesting_strings": [],
+      "elf_machine": "EM_AARCH64",
+      "relevant_symbols": []
+    }
+  ],
+  "total_regular_file_bytes": 3151747,
+  "scope": "Offline decompression and static ELF/string inventory only. No symlinks/devices created, no extracted code executed, no updater acceptance or signature validation proved."
+}

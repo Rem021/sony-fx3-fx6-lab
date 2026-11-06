@@ -1,0 +1,217 @@
+{
+  "status": "SAVED_PROC_OBJECT_AND_NONZERO_FILTER_CONTRACT_FIXED_NOT_TARGET_ACCEPTANCE",
+  "checks": 58,
+  "check_names": [
+    "0x163204 mov w1, #0",
+    "0x163214 stur x0, [x19, #-0x48]",
+    "0x16392c mov w1, #0",
+    "0x163934 ldur x0, [x0, #-0x48]",
+    "0x160600 ldur x22, [x20, #-0x48]",
+    "0x160608 mov x0, x22",
+    "0x160614 cbz x0, #0xffffff80081e0680",
+    "0x15fd58 ldur x0, [x19, #-0x48]",
+    "0x165a58 mov w1, #0xd",
+    "0x165a64 uxtb w22, w0",
+    "0x16619c cbnz w22, #0xffffff80081e6078",
+    "0x166078 ldrsw x2, [x20, #0x328]",
+    "0x1661ac bl #0xffffff80081b1b38",
+    "0x23390 mov w0, #0x20",
+    "0x23394 str w0, [x19, #0x324]",
+    "0x23638 mov w0, #0x10",
+    "0x2363c str w0, [x19, #0x324]",
+    "0x163210 raw BL get_task_pid",
+    "0x163210 bl #0xffffff80080ba400",
+    "0x163938 raw BL get_pid_task",
+    "0x163938 bl #0xffffff80080ba460",
+    "0x160610 raw BL get_pid_task",
+    "0x160610 bl #0xffffff80080ba460",
+    "0x15fd5c raw BL put_pid",
+    "0x15fd5c bl #0xffffff80080ba380",
+    "0x165a60 raw BL ptrace_may_access",
+    "0x165a60 bl #0xffffff80080aa510",
+    "0x166084 raw BL seq_put_decimal_ll",
+    "0x166084 bl #0xffffff80081b1d00",
+    "0x1661ac raw BL seq_puts",
+    "0x1661ac bl #0xffffff80081b1b38",
+    "0x166edc raw BL do_task_stat",
+    "0x166edc bl #0xffffff80081e59f8",
+    "filtered exit-code fallback string is exact zero",
+    "fixed success sentinel cannot equal filtered zero",
+    "complete next-symbol decode proc_pid_make_inode",
+    "complete next-symbol decode proc_pident_lookup",
+    "complete next-symbol decode proc_single_show",
+    "complete next-symbol decode proc_evict_inode",
+    "complete next-symbol decode do_task_stat",
+    "complete next-symbol decode proc_tgid_stat",
+    "complete next-symbol decode do_exit",
+    "source range fs__proc__base.c:1679",
+    "source range fs__proc__base.c:2431",
+    "source range fs__proc__base.c:770",
+    "source range fs__proc__inode.c:31",
+    "source range fs__proc__internal.h:90",
+    "source range fs__proc__self.c:9",
+    "source range fs__proc__array.c:118",
+    "source range fs__proc__array.c:432",
+    "source range fs__proc__array.c:592",
+    "source range pid.c:250",
+    "source range exit.c:686",
+    "source range exit.c:810",
+    "captured source-reference/fs__proc__base.c",
+    "captured source-reference/fs__proc__inode.c",
+    "captured source-reference/fs__proc__internal.h",
+    "captured source-reference/fs__proc__self.c"
+  ],
+  "original_kernel": "work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "parser_sha256": "db8a1ebba52e8bfb85367e3d8450e1ef89224d0bb9e768bf656c6370600614a1",
+  "source_ranges": [
+    {
+      "path": "work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/source-reference/fs__proc__base.c",
+      "sha256": "e8fdad2427e024ef7d5f22608191126ea283b78f472ef92bb6001888d991a447",
+      "first_line": 1679,
+      "last_line": 1705,
+      "range_sha256": "f241ec2fa2e6b4c5f1d94a45d170c84bf04647172acc8c565b6bcc6466877753",
+      "required_tokens": [
+        "ei->pid = get_task_pid(task, PIDTYPE_PID)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/source-reference/fs__proc__base.c",
+      "sha256": "e8fdad2427e024ef7d5f22608191126ea283b78f472ef92bb6001888d991a447",
+      "first_line": 2431,
+      "last_line": 2449,
+      "range_sha256": "a0fa1c66826286b6206f8b4887d4f9c105e29c7b89944e996200b09eb0111b8e",
+      "required_tokens": [
+        "get_proc_task(dir)",
+        "error = -ENOENT",
+        "if (!task)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/source-reference/fs__proc__base.c",
+      "sha256": "e8fdad2427e024ef7d5f22608191126ea283b78f472ef92bb6001888d991a447",
+      "first_line": 770,
+      "last_line": 790,
+      "range_sha256": "4a6666acfd4343a6e9cd9dae5d36f9b5dd8fd239379c8a90751deffa7759d0a4",
+      "required_tokens": [
+        "get_pid_task(pid, PIDTYPE_PID)",
+        "return -ESRCH",
+        "put_task_struct(task)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/source-reference/fs__proc__inode.c",
+      "sha256": "e6ff8c1845631a8aa452733266133f58264ff161a1c35a7678f542d8437d782c",
+      "first_line": 31,
+      "last_line": 41,
+      "range_sha256": "8789fc0f622a5b50650a6537aa60a0054e63d7935e0121cb3ab10aaa5f883314",
+      "required_tokens": [
+        "put_pid(PROC_I(inode)->pid)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/source-reference/fs__proc__internal.h",
+      "sha256": "47dc04c22fcc04c37c22d04a65febdab74769002a0119c954e8504b363eac5f2",
+      "first_line": 90,
+      "last_line": 100,
+      "range_sha256": "758542b2c7e38084e89ac2a22bafba817df3dff83af492114ed48b957b13e54b",
+      "required_tokens": [
+        "return PROC_I(inode)->pid",
+        "get_pid_task(proc_pid(inode), PIDTYPE_PID)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/source-reference/fs__proc__self.c",
+      "sha256": "dd3d883cd9372726a1f280f05ed13dd1da28a8a9e7eda71aa5e5f9d3686ca284",
+      "first_line": 9,
+      "last_line": 19,
+      "range_sha256": "ac76cad2da6bd629f4bfaf966197ec0601efcdd3dc303e24a3316b8da6671858",
+      "required_tokens": [
+        "task_tgid_nr_ns(current, ns)",
+        "sprintf(tmp, \"%d\", tgid)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/fs__proc__array.c",
+      "sha256": "4f85c86135658bc4259d6954085ce1806ab9a586c8342a981ad20935e696953b",
+      "first_line": 118,
+      "last_line": 145,
+      "range_sha256": "9f06f0e41b36111e3debd215a506a092214468d6726170b00a59577c9973595e",
+      "required_tokens": [
+        "Z (zombie)",
+        "tsk->state | tsk->exit_state"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/fs__proc__array.c",
+      "sha256": "4f85c86135658bc4259d6954085ce1806ab9a586c8342a981ad20935e696953b",
+      "first_line": 432,
+      "last_line": 440,
+      "range_sha256": "778f78f12d72d95c59bfd2c40d643d76ea33e8f254cf62121cbd519242914f85",
+      "required_tokens": [
+        "state = *get_task_state(task)",
+        "ptrace_may_access(task, PTRACE_MODE_READ_FSCREDS | PTRACE_MODE_NOAUDIT)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage237-isolated-collector-child-domain/source-reference/fs__proc__array.c",
+      "sha256": "4f85c86135658bc4259d6954085ce1806ab9a586c8342a981ad20935e696953b",
+      "first_line": 592,
+      "last_line": 604,
+      "range_sha256": "846fbfcb7506738779259b53714ec96c73d714599471ebc23637e27614bb9996",
+      "required_tokens": [
+        "if (permitted)",
+        "task->exit_code",
+        "seq_puts(m, \" 0\")"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/pid.c",
+      "sha256": "cf379e38ae286607193ec48a882180a222c1009dd51eb2738d5a1a7e750923d6",
+      "first_line": 250,
+      "last_line": 299,
+      "range_sha256": "0513068fbb126d84c34103e5d032de34dd856f5d8ebb8a48e9b9b5d6869f997e",
+      "required_tokens": [
+        "free_pidmap",
+        "call_rcu",
+        "put_pid(pid)"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/exit.c",
+      "sha256": "dcba4ee792baa2ae056900e8a895a9ba0f76d34f96ee6c4bc0b31d55722df17f",
+      "first_line": 686,
+      "last_line": 703,
+      "range_sha256": "6717b19dce872cd8a647c3753d4e94e90c552ba9d82d433a113e2b9ecdd3db03",
+      "required_tokens": [
+        "do_notify_parent",
+        "autoreap ? EXIT_DEAD : EXIT_ZOMBIE"
+      ]
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage236-kernel-unique-exit-interface-audit/source-reference/exit.c",
+      "sha256": "dcba4ee792baa2ae056900e8a895a9ba0f76d34f96ee6c4bc0b31d55722df17f",
+      "first_line": 810,
+      "last_line": 848,
+      "range_sha256": "e90547b538a2217325042fc92d33311b6dd34157e18e26d58bfcc3f87a566e60",
+      "required_tokens": [
+        "tsk->exit_code = code",
+        "exit_files(tsk)",
+        "exit_notify(tsk, group_dead)"
+      ]
+    }
+  ],
+  "raw_filtered_exit_status_zero_can_look_like_normal0": true,
+  "nonzero_sentinel": 10752,
+  "proc_inode_holds_struct_pid_reference": true,
+  "proc_lookup_and_read_use_that_object_not_fresh_numeric_pid": true,
+  "reference": "Linux v4.9.337, not full rebuilt Sony source",
+  "native_EXIT_ZOMBIE_value": 32,
+  "native_EXIT_DEAD_value": 16,
+  "reference_exit_files_precedes_exit_notify": true,
+  "complete_native_all_path_exit_files_dominance_proven": false,
+  "proc_PID_detachment_is_all_kernel_post_exit_cleanup_complete": false,
+  "native_parent_SCM_receiver_and_authentic_entry_binding_proven": false,
+  "original_code_executed": false,
+  "new_device_operations": 0
+}

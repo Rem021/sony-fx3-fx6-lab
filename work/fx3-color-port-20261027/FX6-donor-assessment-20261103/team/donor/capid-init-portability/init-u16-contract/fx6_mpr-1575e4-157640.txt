@@ -1,0 +1,29 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001575e4 <_ZN3mpr8EnterRecERKNS_15enterRecInParamE>:
+  1575e4: a9b37bfd     	stp	x29, x30, [sp, #-0xd0]!
+  1575e8: 52800281     	mov	w1, #0x14               // =20
+  1575ec: 910003fd     	mov	x29, sp
+  1575f0: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1575f4: 52842214     	mov	w20, #0x2110            // =8464
+  1575f8: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  1575fc: b00079b9     	adrp	x25, 0x108c000
+  157600: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  157604: 9102a3b5     	add	x21, x29, #0xa8
+  157608: a90363f7     	stp	x23, x24, [sp, #0x30]
+  15760c: aa0003f8     	mov	x24, x0
+  157610: a90573fb     	stp	x27, x28, [sp, #0x50]
+  157614: 97ffadb3     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  157618: aa1803e0     	mov	x0, x24
+  15761c: 900079da     	adrp	x26, 0x108f000
+  157620: f00079b3     	adrp	x19, 0x108e000
+  157624: 97fe6b3f     	bl	0xf2320 <_ZNK3mpr15enterRecInParam8DbgPrintEv@plt>
+  157628: f945ff20     	ldr	x0, [x25, #0xbf8]
+  15762c: 97fe6cd9     	bl	0xf2990 <pthread_mutex_lock@plt>
+  157630: 3902b7bf     	strb	wzr, [x29, #0xad]
+  157634: 52800040     	mov	w0, #0x2                // =2
+  157638: 52800201     	mov	w1, #0x10               // =16
+  15763c: 3902bbbf     	strb	wzr, [x29, #0xae]

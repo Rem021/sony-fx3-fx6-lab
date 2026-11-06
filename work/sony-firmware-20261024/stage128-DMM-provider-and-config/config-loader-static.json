@@ -1,0 +1,645 @@
+{
+  "module_sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a",
+  "init_text_sha256": "ae8452cad3794ab46cb82614a4ee0aedb1c7cc8f53dae5a82bfaaf9468d6f5dd",
+  "init_text_disassembly": [
+    {
+      "section_offset": "0x0",
+      "bytes": "fd7bbea9",
+      "asm": "stp x29, x30, [sp, #-0x20]!",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x4",
+      "bytes": "21008052",
+      "asm": "mov w1, #1",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x8",
+      "bytes": "fd030091",
+      "asm": "mov x29, sp",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xc",
+      "bytes": "a0830091",
+      "asm": "add x0, x29, #0x20",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x10",
+      "bytes": "c2000058",
+      "asm": "ldr x2, #0x28",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x14",
+      "bytes": "028c1ff8",
+      "asm": "str x2, [x0, #-8]!",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x18",
+      "bytes": "00000094",
+      "asm": "bl #0x18",
+      "relocation": {
+        "name": "udif_driver_register",
+        "type": 283,
+        "section": "SHN_UNDEF",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x1c",
+      "bytes": "fd7bc2a8",
+      "asm": "ldp x29, x30, [sp], #0x20",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x20",
+      "bytes": "c0035fd6",
+      "asm": "ret ",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x24",
+      "bytes": "1f2003d5",
+      "asm": "nop ",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x28",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": {
+        "name": "",
+        "type": 257,
+        "section": ".data",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x2c",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x30",
+      "bytes": "fd7bbda9",
+      "asm": "stp x29, x30, [sp, #-0x30]!",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x34",
+      "bytes": "fd030091",
+      "asm": "mov x29, sp",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x38",
+      "bytes": "f51300f9",
+      "asm": "str x21, [sp, #0x20]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x3c",
+      "bytes": "75070058",
+      "asm": "ldr x21, #0x128",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x40",
+      "bytes": "f35301a9",
+      "asm": "stp x19, x20, [sp, #0x10]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x44",
+      "bytes": "a00240b9",
+      "asm": "ldr w0, [x21]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x48",
+      "bytes": "20010034",
+      "asm": "cbz w0, #0x6c",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x4c",
+      "bytes": "20070058",
+      "asm": "ldr x0, #0x130",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x50",
+      "bytes": "02188052",
+      "asm": "mov w2, #0xc0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x54",
+      "bytes": "01008b52",
+      "asm": "mov w1, #0x5800",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x58",
+      "bytes": "0248a072",
+      "asm": "movk w2, #0x240, lsl #16",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x5c",
+      "bytes": "4100a072",
+      "asm": "movk w1, #2, lsl #16",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x60",
+      "bytes": "00000094",
+      "asm": "bl #0x60",
+      "relocation": {
+        "name": "__udif_kmalloc",
+        "type": 283,
+        "section": "SHN_UNDEF",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x64",
+      "bytes": "f40300aa",
+      "asm": "mov x20, x0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x68",
+      "bytes": "0c000014",
+      "asm": "b #0x98",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x6c",
+      "bytes": "60060058",
+      "asm": "ldr x0, #0x138",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x70",
+      "bytes": "01188052",
+      "asm": "mov w1, #0xc0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x74",
+      "bytes": "0148a072",
+      "asm": "movk w1, #0x240, lsl #16",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x78",
+      "bytes": "004840f9",
+      "asm": "ldr x0, [x0, #0x90]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x7c",
+      "bytes": "00000094",
+      "asm": "bl #0x7c",
+      "relocation": {
+        "name": "kmem_cache_alloc",
+        "type": 283,
+        "section": "SHN_UNDEF",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x80",
+      "bytes": "f40300aa",
+      "asm": "mov x20, x0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x84",
+      "bytes": "02188052",
+      "asm": "mov w2, #0xc0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x88",
+      "bytes": "01008bd2",
+      "asm": "mov x1, #0x5800",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x8c",
+      "bytes": "0248a072",
+      "asm": "movk w2, #0x240, lsl #16",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x90",
+      "bytes": "4100a0f2",
+      "asm": "movk x1, #2, lsl #16",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x94",
+      "bytes": "00000094",
+      "asm": "bl #0x94",
+      "relocation": {
+        "name": "kmalloc_add_trace",
+        "type": 283,
+        "section": "SHN_UNDEF",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x98",
+      "bytes": "53050058",
+      "asm": "ldr x19, #0x140",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x9c",
+      "bytes": "740a00f9",
+      "asm": "str x20, [x19, #0x10]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xa0",
+      "bytes": "540000b5",
+      "asm": "cbnz x20, #0xa8",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xa4",
+      "bytes": "00000094",
+      "asm": "bl #0xa4",
+      "relocation": {
+        "name": "",
+        "type": 283,
+        "section": ".text.unlikely",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0xa8",
+      "bytes": "600a40f9",
+      "asm": "ldr x0, [x19, #0x10]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xac",
+      "bytes": "01008b52",
+      "asm": "mov w1, #0x5800",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xb0",
+      "bytes": "4100a072",
+      "asm": "movk w1, #2, lsl #16",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xb4",
+      "bytes": "00000094",
+      "asm": "bl #0xb4",
+      "relocation": {
+        "name": "dmm_module_GetConfigData",
+        "type": 283,
+        "section": ".text",
+        "target_offset": "0x80"
+      }
+    },
+    {
+      "section_offset": "0xb8",
+      "bytes": "1f3c0072",
+      "asm": "tst w0, #0xffff",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xbc",
+      "bytes": "40000054",
+      "asm": "b.eq #0xc4",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xc0",
+      "bytes": "00000094",
+      "asm": "bl #0xc0",
+      "relocation": {
+        "name": "",
+        "type": 283,
+        "section": ".text.unlikely",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0xc4",
+      "bytes": "00000094",
+      "asm": "bl #0xc4",
+      "relocation": {
+        "name": "dmm_log_CreateArea",
+        "type": 283,
+        "section": ".text",
+        "target_offset": "0x7d98"
+      }
+    },
+    {
+      "section_offset": "0xc8",
+      "bytes": "f4018012",
+      "asm": "mov w20, #-0x10",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xcc",
+      "bytes": "00008052",
+      "asm": "mov w0, #0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xd0",
+      "bytes": "00000094",
+      "asm": "bl #0xd0",
+      "relocation": {
+        "name": "dmm_ctrl_Init",
+        "type": 283,
+        "section": ".text",
+        "target_offset": "0x6688"
+      }
+    },
+    {
+      "section_offset": "0xd4",
+      "bytes": "00000094",
+      "asm": "bl #0xd4",
+      "relocation": {
+        "name": "dmm_udm_procfs_CreateProcfs",
+        "type": 283,
+        "section": ".text",
+        "target_offset": "0x3338"
+      }
+    },
+    {
+      "section_offset": "0xd8",
+      "bytes": "0001f837",
+      "asm": "tbnz w0, #0x1f, #0xf8",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xdc",
+      "bytes": "61030058",
+      "asm": "ldr x1, #0x148",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xe0",
+      "bytes": "e00313aa",
+      "asm": "mov x0, x19",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xe4",
+      "bytes": "21000291",
+      "asm": "add x1, x1, #0x80",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xe8",
+      "bytes": "00000094",
+      "asm": "bl #0xe8",
+      "relocation": {
+        "name": "dmm_utm_EntryThread",
+        "type": 283,
+        "section": ".text",
+        "target_offset": "0x3918"
+      }
+    },
+    {
+      "section_offset": "0xec",
+      "bytes": "143c0013",
+      "asm": "sxth w20, w0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xf0",
+      "bytes": "5400f837",
+      "asm": "tbnz w20, #0x1f, #0xf8",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xf4",
+      "bytes": "00000094",
+      "asm": "bl #0xf4",
+      "relocation": {
+        "name": "dmm_log_SetLoadTime",
+        "type": 283,
+        "section": ".text",
+        "target_offset": "0x7fc8"
+      }
+    },
+    {
+      "section_offset": "0xf8",
+      "bytes": "a10240b9",
+      "asm": "ldr w1, [x21]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0xfc",
+      "bytes": "600a40f9",
+      "asm": "ldr x0, [x19, #0x10]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x100",
+      "bytes": "61000034",
+      "asm": "cbz w1, #0x10c",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x104",
+      "bytes": "00000094",
+      "asm": "bl #0x104",
+      "relocation": {
+        "name": "__udif_kfree",
+        "type": 283,
+        "section": "SHN_UNDEF",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x108",
+      "bytes": "02000014",
+      "asm": "b #0x110",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x10c",
+      "bytes": "00000094",
+      "asm": "bl #0x10c",
+      "relocation": {
+        "name": "kfree",
+        "type": 283,
+        "section": "SHN_UNDEF",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x110",
+      "bytes": "e003142a",
+      "asm": "mov w0, w20",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x114",
+      "bytes": "f51340f9",
+      "asm": "ldr x21, [sp, #0x20]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x118",
+      "bytes": "f35341a9",
+      "asm": "ldp x19, x20, [sp, #0x10]",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x11c",
+      "bytes": "fd7bc3a8",
+      "asm": "ldp x29, x30, [sp], #0x30",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x120",
+      "bytes": "c0035fd6",
+      "asm": "ret ",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x124",
+      "bytes": "1f2003d5",
+      "asm": "nop ",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x128",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": {
+        "name": "udif_km_debug",
+        "type": 257,
+        "section": "SHN_UNDEF",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x12c",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x130",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": {
+        "name": "",
+        "type": 257,
+        "section": ".rodata.str1.8",
+        "target_offset": "0x18"
+      }
+    },
+    {
+      "section_offset": "0x134",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x138",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": {
+        "name": "kmalloc_caches",
+        "type": 257,
+        "section": "SHN_UNDEF",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x13c",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x140",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": {
+        "name": "",
+        "type": 257,
+        "section": ".bss",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x144",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": null
+    },
+    {
+      "section_offset": "0x148",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": {
+        "name": "",
+        "type": 257,
+        "section": ".data",
+        "target_offset": "0x0"
+      }
+    },
+    {
+      "section_offset": "0x14c",
+      "bytes": "00000000",
+      "asm": "udf #0",
+      "relocation": null
+    }
+  ],
+  "parameter_relocations": [
+    {
+      "offset": "0x0",
+      "name": "",
+      "type": 257,
+      "section": ".rodata",
+      "target_offset": "0x0"
+    },
+    {
+      "offset": "0x8",
+      "name": "__this_module",
+      "type": 257,
+      "section": ".gnu.linkonce.this_module",
+      "target_offset": "0x0"
+    },
+    {
+      "offset": "0x10",
+      "name": "param_ops_charp",
+      "type": 257,
+      "section": "SHN_UNDEF",
+      "target_offset": "0x0"
+    },
+    {
+      "offset": "0x20",
+      "name": "",
+      "type": 257,
+      "section": ".bss",
+      "target_offset": "0x18"
+    }
+  ],
+  "parameter": "DmmConfig:charp",
+  "parameter_pointer_field": ".bss+0x18",
+  "native_initial_config_read_request_bytes": 153600,
+  "actual_boot_parameter_value_runtime_file_or_loading_success_proven": false,
+  "kernel_file_operations_or_initialization_executed": false
+}

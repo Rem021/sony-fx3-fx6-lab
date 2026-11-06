@@ -1,0 +1,37 @@
+{
+  "created_utc": "2026-11-01T10:08:47.757119+00:00",
+  "machine": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "arch": "arm64",
+  "memory_bytes": 17179869184,
+  "cpu_count": 10,
+  "cpu_brand": "Apple M2 Pro",
+  "free_disk": 175776010240,
+  "tool_path_lookup": {
+    "qemu-system-aarch64": null,
+    "qemu-aarch64": null,
+    "qemu-img": null,
+    "brew": null,
+    "docker": null,
+    "orb": null,
+    "limactl": null,
+    "utmctl": null,
+    "colima": null,
+    "podman": null
+  },
+  "absolute_path_presence": {
+    "/opt/homebrew/bin": false,
+    "/Applications/UTM.app": false,
+    "/Applications/Docker.app": false,
+    "/Applications/OrbStack.app": false,
+    "/Users/kafu/.lima": false,
+    "/Users/kafu/.colima": false,
+    "/Users/kafu/.orbstack": false,
+    "/Users/kafu/Library/Application Support/Claude/vm_bundles": true
+  },
+  "claude_vm_scope": "present dedicated Claude environment left untouched; no generic reusable Linux environment found in checked locations",
+  "network_or_global_install_operations": "only public build-source/dependency downloads; no global package manager, no new persistent VM, no app or system setting changed",
+  "source_reference_docs": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/docs/shared-development-storage.md",
+    "/Volumes/KAFU2T/AI/Projects/Mac/reports/2026-10-27-vm-experiment-consolidation/README.md"
+  ]
+}

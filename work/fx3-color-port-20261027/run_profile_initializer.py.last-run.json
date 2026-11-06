@@ -1,0 +1,4 @@
+{
+  "stdout": "{\n  \"status\": \"PASS_ORIGINAL_INITIALIZER_AND_ORIGINAL_MEMCPY\",\n  \"instructions\": 64082,\n  \"initializer_offsets\": [\n    \"0x2baf00\",\n    \"0x2bc100\",\n    \"0x2bc330\"\n  ],\n  \"initializer_end\": \"0x2c278c\",\n  \"original_memcpy_offset\": \"0xd80\",\n  \"initializer_sha256\": \"b74c7bfafcd47be1e94d77924f2f809f9df90fcabc93b7b8b0683b27a0401e57\",\n  \"named_matrix_not_copied_by_these_initializers\": \"MLUT_MTX_A_REG_VENICE_LMX0_SLOG3_SGAMUT3_ACES\",\n  \"equivalent_matrix_descriptor_used\": \"MLUT_MTX_A_REG_SG3TOAP1_0\",\n  \"equivalent_matrix_bytes_match\": true,\n  \"initialized_region_sha256\": \"d9b912b30d4f8e15ee3cf23ef8122b4aee7bb25f7d26a271753c6bf45adaa051\",\n  \"stack_and_callee_saved_preserved\": true,\n  \"unexpected_writes\": [],\n  \"scope\": \"CPU-only guest. Original descriptor initialization, not camera DSP writes or current record route.\"\n}\ncopies 1342 VENICE descriptors 29\n",
+  "stderr": ""
+}

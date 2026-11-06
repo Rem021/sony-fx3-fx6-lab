@@ -1,0 +1,265 @@
+{
+  "status": "BUILT_OFFLINE_NOT_BOOTED",
+  "source": {
+    "fx6_image": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/vmlinux.bin",
+      "sha256": "bc4925e701ae363c797f22ef28f29dc48fd17af7f25a3f64d7d0824312c0dab9",
+      "bytes": 6610952
+    },
+    "virt_dtb": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.dtb",
+      "sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+      "bytes": 10355
+    },
+    "qemu": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+      "bytes": 36163584
+    },
+    "busybox": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/bin/busybox",
+      "sha256": "a306367cd67674b1d1a03464b24fbe8137a8ea8f630817e7733a054f761d0c6d",
+      "bytes": 423000
+    },
+    "ld": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/lib/ld-2.25.so",
+      "sha256": "8eeed290e0992ef3717e61450831a3b1e25e9bff11e5062204cc0dc96a617a75",
+      "bytes": 120616
+    },
+    "libc": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/lib/libc-2.25.so",
+      "sha256": "4ecddf81915c4e03d9815eade4e626363616618be7f70aabfa467d52cb0348fd",
+      "bytes": 1283936
+    },
+    "libcrypt": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nested-files/nflasha3-initrd/lib/libcrypt-2.25.so",
+      "sha256": "969fbcbc967305d69c32c1059fd76b1f2ca5118eef5da37fdc66f8d3069f3dc2",
+      "bytes": 30864
+    },
+    "fdt_encoder": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/prepare_virt_dtb.py",
+      "sha256": "ce65e3851c5e00f2167b8c8cd98a3109dd456f45f438194d365b6090a3141941",
+      "bytes": 4722
+    }
+  },
+  "artifacts": {
+    "initrd": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/minimal-initrd.cpio",
+      "sha256": "1351de617d8a58cab2e9bf435f0e2b066cb195ea89dc1a72c756a44c61a738ae",
+      "bytes": 1860816,
+      "members": [
+        {
+          "path": "bin",
+          "mode": "0o40755",
+          "data_offset": 116,
+          "size": 0,
+          "sha256": null,
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "lib",
+          "mode": "0o40755",
+          "data_offset": 232,
+          "size": 0,
+          "sha256": null,
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "proc",
+          "mode": "0o40755",
+          "data_offset": 348,
+          "size": 0,
+          "sha256": null,
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "sys",
+          "mode": "0o40755",
+          "data_offset": 464,
+          "size": 0,
+          "sha256": null,
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "dev",
+          "mode": "0o40755",
+          "data_offset": 580,
+          "size": 0,
+          "sha256": null,
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "init",
+          "mode": "0o100755",
+          "data_offset": 696,
+          "size": 265,
+          "sha256": "c8c2c56e80d7340c19babdbf7f10fe446aa0b32ece5a14b559df96e985721392",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "bin/busybox",
+          "mode": "0o100755",
+          "data_offset": 1088,
+          "size": 423000,
+          "sha256": "a306367cd67674b1d1a03464b24fbe8137a8ea8f630817e7733a054f761d0c6d",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "bin/sh",
+          "mode": "0o120777",
+          "data_offset": 424208,
+          "size": 7,
+          "sha256": "9d75f0d7c398df565d7ac04c6819b62d6d8f9560f5eb4672596ecd8f7e96ae91",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "lib/ld-2.25.so",
+          "mode": "0o100755",
+          "data_offset": 424344,
+          "size": 120616,
+          "sha256": "8eeed290e0992ef3717e61450831a3b1e25e9bff11e5062204cc0dc96a617a75",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "lib/ld-linux-aarch64.so.1",
+          "mode": "0o120777",
+          "data_offset": 545096,
+          "size": 10,
+          "sha256": "c4d8ce90c4e8d0aac6bd8545e39dd098049cfa702dba2dd788bdccec0e24c616",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "lib/libc-2.25.so",
+          "mode": "0o100644",
+          "data_offset": 545236,
+          "size": 1283936,
+          "sha256": "4ecddf81915c4e03d9815eade4e626363616618be7f70aabfa467d52cb0348fd",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "lib/libc.so.6",
+          "mode": "0o120777",
+          "data_offset": 1829296,
+          "size": 12,
+          "sha256": "e453935786dc5cbb3c2b341c0853e19a34c69018625d9fc618413dfce851f3b2",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "lib/libcrypt-2.25.so",
+          "mode": "0o100644",
+          "data_offset": 1829440,
+          "size": 30864,
+          "sha256": "969fbcbc967305d69c32c1059fd76b1f2ca5118eef5da37fdc66f8d3069f3dc2",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "lib/libcrypt.so.1",
+          "mode": "0o120777",
+          "data_offset": 1860432,
+          "size": 16,
+          "sha256": "ae98aee7bfbb3a6679a5d98a744d12d0532382b6d337cb7d237bcb8fd797342b",
+          "rdev": [
+            0,
+            0
+          ]
+        },
+        {
+          "path": "dev/console",
+          "mode": "0o20600",
+          "data_offset": 1860572,
+          "size": 0,
+          "sha256": null,
+          "rdev": [
+            5,
+            1
+          ]
+        },
+        {
+          "path": "dev/null",
+          "mode": "0o20666",
+          "data_offset": 1860692,
+          "size": 0,
+          "sha256": null,
+          "rdev": [
+            1,
+            3
+          ]
+        }
+      ]
+    },
+    "dtb": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/fx6-virt-early.dtb",
+      "sha256": "a1d0494b9f5c116872bef8b4151dcb6d514388445153f24163819e94fc3ae363",
+      "bytes": 9491,
+      "parent_sha256": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+      "changed_properties": [
+        [
+          "/chosen",
+          "bootargs"
+        ],
+        [
+          "/chosen",
+          "linux,initrd-end"
+        ]
+      ],
+      "reserve_map_unchanged": true,
+      "nodes_unchanged": true
+    }
+  },
+  "bootargs": "console=ttyAMA0 earlycon=pl011,0x09000000 rdinit=/init init=/init nokaslr ignore_loglevel loglevel=8 panic=-1",
+  "initrd_load_address": "0x440000000",
+  "dtb_load_address": "0x400002000",
+  "guest_tasks": [
+    "console",
+    "minimal shell init"
+  ],
+  "excluded": [
+    "AP",
+    "CP",
+    "AV",
+    "writable disk",
+    "camera",
+    "USB",
+    "SD"
+  ],
+  "qemu_started": false
+}

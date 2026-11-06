@@ -1,0 +1,107 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/dependency_gate.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/dependency_gate.py
+@@ -19,6 +19,12 @@
+  for line in (FROZEN/'SHA256SUMS').read_text().splitlines():
+   h,f=line.split(maxsplit=1);sums.append((FROZEN/f.lstrip('*'),h))
+  group('sha256sums',sums)
++ old=HERE.parent/'interaction-operator-rehearsal-r21'
++ oldpairs=[]
++ for line in (old/'SHA256SUMS').read_text().splitlines():
++  h,f=line.split(maxsplit=1);oldpairs.append((old/f.lstrip('*'),h))
++ group('previous_failed_delivery_88',oldpairs)
++ group('previous_failed_fixed_pins',[(old/'REPORT.md','e74eb7ae0b2fc8a50b5892e16f20eb8a20a60a61317929d06db4e9c9dfed4bb2'),(old/'SHA256SUMS','7327a058d4e62fe7a67a16bab6d51d4d2df00b83defafd98b02b30bd914d7d8f')])
+  historical=Path(CFG['historical_root']);group('historical_png',[(historical/f,sha(historical/f)) for f in ('trial-standby-ready.png','trial-step-01-key-1ab.png','trial-final.png')])
+  assert sha(historical/'trial-final.png')=='60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292'
+  # Source can import without writing into frozen directory.
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/fixture_server.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/fixture_server.py
+@@ -2,9 +2,10 @@
+ import importlib.util,io,signal,sys,uuid
+ from common import *
+ from dependency_gate import verify
++from fixture_contract import complete_review
+ verify('DEPENDENCY-SERVER-START.json')
+ spec=importlib.util.spec_from_file_location('r21_original_page',FROZEN/'trial_web_v22_navigation_review.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+-state=m.TrialState('OFFLINE-FIXTURE-independent-operator-r21',600,8)
++state=m.TrialState('OFFLINE-FIXTURE-independent-operator-r21b',600,8)
+ state.update(phase='awaiting_launch',message='OFFLINE FIXTURE; no guest/VM exists')
+ loglock=threading.RLock();shutdown=threading.Event();calls=0
+ hist=Path(CFG['historical_root'])
+@@ -32,8 +33,8 @@
+    item=state.take();assert item['key']==427
+    log('fixture_dequeued_one_accepted_key',item=item,actual_guest_inputs=0)
+    state.update(steps=1)
+-   state.require_visual_review(1,'visual_pending',True)
+    publish('trial-final.png',213)
++   complete_review(state)
+    state.update(message='OFFLINE FIXTURE: historical complete Setup > Area/Date PNG; no guest executes')
+   return code,reply
+ state.submit=controlled_submit
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/operate.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/operate.py
+@@ -10,7 +10,7 @@
+  assert not (HERE/folder).exists()
+  if action=='cancel':a+=['--review',str(HERE/'recovery-review/review-result.json'),'--target',target,'--ledger',str(HERE/'ledger.json')]
+  return helper(name,'recovery_tools.py',a,watch=action=='cancel')
+-def run_action(action):
++def _run_action(action):
+  event('operator_tool_'+action+'_entry')
+  if action=='reject_capture':
+   (HERE/'once-only-attempt-A').open('x').close()
+@@ -44,9 +44,15 @@
+   assert r['status']=='confirmed_and_cancelled';value={'status':r['status']}
+  else:raise ValueError(action)
+  event('operator_tool_'+action+'_return_prepared',**value);print(json.dumps(value));return value
+-if __name__=='__main__':
+- try:run_action(sys.argv[1])
++def _cleanup_on_failure():
++ p=subprocess.run(['python3',str(HERE/'cleanup.py')],env=ENV,text=True,capture_output=True)
++ return {'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr,**stamp()}
++def run_action(action):
++ # Actual imported AND CLI entry uses this guard, not just __main__.
++ try:return _run_action(action)
+  except BaseException as e:
+-  write('FAILURE.json',{'action':sys.argv[1],'error':repr(e),**stamp()})
+-  subprocess.run(['python3',str(HERE/'cleanup.py')],env=ENV)
++  write('FAILURE.json',{'action':action,'error':repr(e),**stamp()})
++  try:write('FAILURE-CLEANUP-DISPATCH.json',_cleanup_on_failure())
++  except BaseException as ce:write('FAILURE-CLEANUP-ERROR.json',{'error':repr(ce),**stamp()})
+   raise
++if __name__=='__main__':run_action(sys.argv[1])
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/cleanup.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/cleanup.py
+@@ -2,6 +2,9 @@
+ import signal,socket
+ from common import *
+ errors=[];c=identity();event('cleanup_entry')
++try:
++ write('cleanup-alarm-before-End.json',dl('cleanup-alarm-before-End','status'))
++except Exception as e:errors.append('alarm status before End: '+repr(e))
+ try:
+  result=ev('End-explicit-original-button','(()=>{if(!finished&&!endButton.disabled){endButton.click();return {End_invoked:true}}return {End_invoked:false,finished}})()')
+  wait_readonly('wait-ended-status','finished&&lastStatus.phase==="finished"&&lastStatus')
+@@ -13,8 +16,12 @@
+   time.sleep(.02)
+  else:raise RuntimeError('missing final ACK')
+  browser('ended-page',['screenshot',str(HERE/'ended-page.png')]);browser('ended-snapshot',['snapshot'])
+- try:dl('deadline-dispose','dispose')
+- except Exception as e:errors.append('dispose: '+repr(e))
++ try:
++  alarm=dl('cleanup-alarm-after-End','status');write('cleanup-alarm-after-End.json',alarm)
++  if alarm.get('current',{}).get('state')=='armed':
++   write('dispose-not-invoked.json',{'reason':'accepted/unknown alarm remains armed; do not force cancel to dispose','timer_termination':'owned document close below; not explicit cancellation',**stamp()})
++  else:write('deadline-dispose.json',dl('deadline-dispose','dispose'))
++ except Exception as e:errors.append('dispose/status: '+repr(e))
+ except Exception as e:errors.append('End/finalACK: '+repr(e))
+ try:
+  # State-only command does not launch a replacement browser.
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21/prepare.py
++++ /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r21b/prepare.py
+@@ -2,6 +2,7 @@
+ from common import *
+ from dependency_gate import verify
+ verify('DEPENDENCY-PREPARATION.json')
++assert read('PREFLIGHT-RESULT.json')['passed'] is True
+ # All action and cleanup scripts exist before service/browser/timer; freeze local source now.
+ write('SOURCE-FREEZE.json',{p.name:sha(p) for p in HERE.glob('*.py')})
+ assert not (HERE/'fixture.json').exists()

@@ -1,0 +1,125 @@
+# Exact original configured VA; ordinary-call-return CFG; not runtime PC. No execution.
+0xfe05c03c [file+0x1303c] ff0305d1 sub      sp, sp, #0x140
+0xfe05c040 [file+0x13040] f55312a9 stp      x21, x20, [sp, #0x120]
+0xfe05c044 [file+0x13044] f37b13a9 stp      x19, x30, [sp, #0x130]
+0xfe05c048 [file+0x13048] f30300aa mov      x19, x0
+0xfe05c04c [file+0x1304c] f4430391 add      x20, sp, #0xd0
+0xfe05c050 [file+0x13050] e0430091 add      x0, sp, #0x10
+0xfe05c054 [file+0x13054] e2071a32 mov      w2, #0xc0
+0xfe05c058 [file+0x13058] e1031f2a mov      w1, wzr
+0xfe05c05c [file+0x1305c] fc8b00f9 str      x28, [sp, #0x110]
+0xfe05c060 [file+0x13060] 9f7e01a9 stp      xzr, xzr, [x20, #0x10]
+0xfe05c064 [file+0x13064] 9f7e00a9 stp      xzr, xzr, [x20]
+0xfe05c068 [file+0x13068] 08bdff97 bl       #0xfe04b488
+0xfe05c06c [file+0x1306c] e8031c32 mov      w8, #0x10
+0xfe05c070 [file+0x13070] e0830391 add      x0, sp, #0xe0
+0xfe05c074 [file+0x13074] e1330091 add      x1, sp, #0xc
+0xfe05c078 [file+0x13078] e80f00b9 str      w8, [sp, #0xc]
+0xfe05c07c [file+0x1307c] ea000094 bl       #0xfe05c424
+0xfe05c080 [file+0x13080] a0010034 cbz      w0, #0xfe05c0b4
+0xfe05c084 [file+0x13084] 21000090 adrp     x1, #0xfe060000
+0xfe05c088 [file+0x13088] 21ec1091 add      x1, x1, #0x43b ; source string candidate 'LDR_E:Recv Header: %s\n'
+0xfe05c08c [file+0x1308c] 22000090 adrp     x2, #0xfe060000
+0xfe05c090 [file+0x13090] 42941191 add      x2, x2, #0x465 ; source string candidate 'spi_response_combined_init_comm'
+0xfe05c094 [file+0x13094] e0070032 mov      w0, #3
+0xfe05c098 [file+0x13098] 47e8ff97 bl       #0xfe0561b4
+0xfe05c09c [file+0x1309c] e0031f32 mov      w0, #2
+0xfe05c0a0 [file+0x130a0] f37b53a9 ldp      x19, x30, [sp, #0x130]
+0xfe05c0a4 [file+0x130a4] f55352a9 ldp      x21, x20, [sp, #0x120]
+0xfe05c0a8 [file+0x130a8] fc8b40f9 ldr      x28, [sp, #0x110]
+0xfe05c0ac [file+0x130ac] ff030591 add      sp, sp, #0x140
+0xfe05c0b0 [file+0x130b0] c0035fd6 ret      
+0xfe05c0b4 [file+0x130b4] e2834339 ldrb     w2, [sp, #0xe0]
+0xfe05c0b8 [file+0x130b8] 5f040071 cmp      w2, #1
+0xfe05c0bc [file+0x130bc] 40040054 b.eq     #0xfe05c144
+0xfe05c0c0 [file+0x130c0] 5f080071 cmp      w2, #2
+0xfe05c0c4 [file+0x130c4] 41050054 b.ne     #0xfe05c16c
+0xfe05c0c8 [file+0x130c8] e8031c32 mov      w8, #0x10
+0xfe05c0cc [file+0x130cc] e0430391 add      x0, sp, #0xd0
+0xfe05c0d0 [file+0x130d0] e1330091 add      x1, sp, #0xc
+0xfe05c0d4 [file+0x130d4] e80f00b9 str      w8, [sp, #0xc]
+0xfe05c0d8 [file+0x130d8] d3000094 bl       #0xfe05c424
+0xfe05c0dc [file+0x130dc] 20040035 cbnz     w0, #0xfe05c160
+0xfe05c0e0 [file+0x130e0] 2cdeff97 bl       #0xfe053990
+0xfe05c0e4 [file+0x130e4] 21000090 adrp     x1, #0xfe060000
+0xfe05c0e8 [file+0x130e8] 22000090 adrp     x2, #0xfe060000
+0xfe05c0ec [file+0x130ec] 28108052 mov      w8, #0x81
+0xfe05c0f0 [file+0x130f0] e9031d32 mov      w9, #8
+0xfe05c0f4 [file+0x130f4] 05000012 and      w5, w0, #1
+0xfe05c0f8 [file+0x130f8] 21c40e91 add      x1, x1, #0x3b1 ; source string candidate 'LDR:Send Data: %s header->response_id = %d, header->length = %d, payload->data2 = %d\n'
+0xfe05c0fc [file+0x130fc] 42481191 add      x2, x2, #0x452 ; source string candidate '_response_ank_mode'
+0xfe05c100 [file+0x13100] e0071f32 mov      w0, #6
+0xfe05c104 [file+0x13104] 23108052 mov      w3, #0x81
+0xfe05c108 [file+0x13108] e4031d32 mov      w4, #8
+0xfe05c10c [file+0x1310c] 9f7e03a9 stp      xzr, xzr, [x20, #0x30]
+0xfe05c110 [file+0x13110] 9f7e02a9 stp      xzr, xzr, [x20, #0x20]
+0xfe05c114 [file+0x13114] e8070279 strh     w8, [sp, #0x102]
+0xfe05c118 [file+0x13118] e90f0279 strh     w9, [sp, #0x106]
+0xfe05c11c [file+0x1311c] e5e70179 strh     w5, [sp, #0xf2]
+0xfe05c120 [file+0x13120] 25e8ff97 bl       #0xfe0561b4
+0xfe05c124 [file+0x13124] e0030491 add      x0, sp, #0x100
+0xfe05c128 [file+0x13128] e1031d32 mov      w1, #8
+0xfe05c12c [file+0x1312c] 0c010094 bl       #0xfe05c55c
+0xfe05c130 [file+0x13130] e0c30391 add      x0, sp, #0xf0
+0xfe05c134 [file+0x13134] e1031d32 mov      w1, #8
+0xfe05c138 [file+0x13138] 09010094 bl       #0xfe05c55c
+0xfe05c13c [file+0x1313c] e0030032 mov      w0, #1
+0xfe05c140 [file+0x13140] d8ffff17 b        #0xfe05c0a0
+0xfe05c144 [file+0x13144] e8071a32 mov      w8, #0xc0
+0xfe05c148 [file+0x13148] e0430091 add      x0, sp, #0x10
+0xfe05c14c [file+0x1314c] e1330091 add      x1, sp, #0xc
+0xfe05c150 [file+0x13150] e80f00b9 str      w8, [sp, #0xc]
+0xfe05c154 [file+0x13154] f5430091 add      x21, sp, #0x10
+0xfe05c158 [file+0x13158] b3000094 bl       #0xfe05c424
+0xfe05c15c [file+0x1315c] 60010034 cbz      w0, #0xfe05c188
+0xfe05c160 [file+0x13160] 21000090 adrp     x1, #0xfe060000
+0xfe05c164 [file+0x13164] 218c1091 add      x1, x1, #0x423 ; source string candidate 'LDR_E:Recv Payload: %s\n'
+0xfe05c168 [file+0x13168] c9ffff17 b        #0xfe05c08c
+0xfe05c16c [file+0x1316c] 21000090 adrp     x1, #0xfe060000
+0xfe05c170 [file+0x13170] 23000090 adrp     x3, #0xfe060000
+0xfe05c174 [file+0x13174] 211c1091 add      x1, x1, #0x407 ; source string candidate 'LDR_E:Recv command[%d]: %s\n'
+0xfe05c178 [file+0x13178] 63941191 add      x3, x3, #0x465 ; source string candidate 'spi_response_combined_init_comm'
+0xfe05c17c [file+0x1317c] e0070032 mov      w0, #3
+0xfe05c180 [file+0x13180] 0de8ff97 bl       #0xfe0561b4
+0xfe05c184 [file+0x13184] c6ffff17 b        #0xfe05c09c
+0xfe05c188 [file+0x13188] 60f20091 add      x0, x19, #0x3c
+0xfe05c18c [file+0x1318c] a1f20091 add      x1, x21, #0x3c
+0xfe05c190 [file+0x13190] e2031932 mov      w2, #0x80
+0xfe05c194 [file+0x13194] b2bcff97 bl       #0xfe04b45c
+0xfe05c198 [file+0x13198] e1430091 add      x1, sp, #0x10
+0xfe05c19c [file+0x1319c] e20b1d32 mov      w2, #0x38
+0xfe05c1a0 [file+0x131a0] e00313aa mov      x0, x19
+0xfe05c1a4 [file+0x131a4] aebcff97 bl       #0xfe04b45c
+0xfe05c1a8 [file+0x131a8] e84b40b9 ldr      w8, [sp, #0x48]
+0xfe05c1ac [file+0x131ac] 21000090 adrp     x1, #0xfe060000
+0xfe05c1b0 [file+0x131b0] 22000090 adrp     x2, #0xfe060000
+0xfe05c1b4 [file+0x131b4] e9031d32 mov      w9, #8
+0xfe05c1b8 [file+0x131b8] 683a00b9 str      w8, [x19, #0x38]
+0xfe05c1bc [file+0x131bc] e83b4339 ldrb     w8, [sp, #0xce]
+0xfe05c1c0 [file+0x131c0] ea030032 mov      w10, #1
+0xfe05c1c4 [file+0x131c4] 21c40e91 add      x1, x1, #0x3b1 ; source string candidate 'LDR:Send Data: %s header->response_id = %d, header->length = %d, payload->data2 = %d\n'
+0xfe05c1c8 [file+0x131c8] 42481191 add      x2, x2, #0x452 ; source string candidate '_response_ank_mode'
+0xfe05c1cc [file+0x131cc] 68fa0239 strb     w8, [x19, #0xbe]
+0xfe05c1d0 [file+0x131d0] e8334339 ldrb     w8, [sp, #0xcc]
+0xfe05c1d4 [file+0x131d4] e0071f32 mov      w0, #6
+0xfe05c1d8 [file+0x131d8] 23108052 mov      w3, #0x81
+0xfe05c1dc [file+0x131dc] e4031d32 mov      w4, #8
+0xfe05c1e0 [file+0x131e0] 68f20239 strb     w8, [x19, #0xbc]
+0xfe05c1e4 [file+0x131e4] e8374339 ldrb     w8, [sp, #0xcd]
+0xfe05c1e8 [file+0x131e8] e5030032 mov      w5, #1
+0xfe05c1ec [file+0x131ec] 68f60239 strb     w8, [x19, #0xbd]
+0xfe05c1f0 [file+0x131f0] 28108052 mov      w8, #0x81
+0xfe05c1f4 [file+0x131f4] 9f7e03a9 stp      xzr, xzr, [x20, #0x30]
+0xfe05c1f8 [file+0x131f8] 9f7e02a9 stp      xzr, xzr, [x20, #0x20]
+0xfe05c1fc [file+0x131fc] e8070279 strh     w8, [sp, #0x102]
+0xfe05c200 [file+0x13200] e90f0279 strh     w9, [sp, #0x106]
+0xfe05c204 [file+0x13204] eae70179 strh     w10, [sp, #0xf2]
+0xfe05c208 [file+0x13208] ebe7ff97 bl       #0xfe0561b4
+0xfe05c20c [file+0x1320c] e0030491 add      x0, sp, #0x100
+0xfe05c210 [file+0x13210] e1031d32 mov      w1, #8
+0xfe05c214 [file+0x13214] d2000094 bl       #0xfe05c55c
+0xfe05c218 [file+0x13218] e0c30391 add      x0, sp, #0xf0
+0xfe05c21c [file+0x1321c] e1031d32 mov      w1, #8
+0xfe05c220 [file+0x13220] cf000094 bl       #0xfe05c55c
+0xfe05c224 [file+0x13224] e0031f2a mov      w0, wzr
+0xfe05c228 [file+0x13228] 9effff17 b        #0xfe05c0a0

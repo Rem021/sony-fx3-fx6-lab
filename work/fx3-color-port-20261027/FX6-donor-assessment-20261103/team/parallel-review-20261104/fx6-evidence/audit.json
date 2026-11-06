@@ -1,0 +1,485 @@
+{
+  "schema": "fx6-evidence-independent-readonly-audit-v1",
+  "task_id": "task_caff27534971",
+  "dispatch_id": "ctx_58ad41090a5d",
+  "generated_utc": "2026-11-05T06:40:02.934079+00:00",
+  "verdict": "FX6_BOOT_AND_USABLE_MENU_NOT_PROVEN",
+  "scope": "指定历史材料及明确引用的必要文本/JSON；无候选导入、执行、修改或重新封存",
+  "volume": {
+    "mountpoint": "/Volumes/KAFU2T",
+    "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+    "verified_before_output": true
+  },
+  "project_git": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac",
+    "is_git_repository": false,
+    "observed_command": "git rev-parse --show-toplevel",
+    "observed_result": "fatal: not a git repository (or any parent up to mount point /Volumes)"
+  },
+  "audit_times": {
+    "readiness_utc": "2026-11-05T04:19:01.749303+00:00",
+    "static_review_utc": "2026-11-05T04:20:18.331546+00:00",
+    "same_local_date": "2026-11-04 America/Los_Angeles"
+  },
+  "evidence_limits": {
+    "candidate_tests_executed": false,
+    "research_scripts_executed": false,
+    "qemu_guest_browser_services_devices_started": false,
+    "candidate_source_or_artifacts_modified": false,
+    "candidate_resealed": false,
+    "provider_rejection_bypassed": false,
+    "large_hash_recalculation": false,
+    "reported_hashes": "copied from owning records; not recalculated in this review",
+    "shared_index_modified": false,
+    "network_research_performed": false
+  },
+  "last_run": {
+    "run": "guest-veneer-33d090b1",
+    "elapsed_seconds": 38.5776543749962,
+    "stop": "unknown_loader_return",
+    "ap_identity_observed": false,
+    "bridge_or_original_init_observed": false,
+    "gate_installed": false,
+    "diagnostic_captured": false,
+    "lifecycle_healthy": false,
+    "cleanup": "qemu reaped, breakpoints removed, locks free; API16 restoration intentionally skipped",
+    "evidence": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+        "line_start": 3,
+        "line_end": 35,
+        "fields_or_scope": "stop/elapsed/cleanup"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+        "line_start": 149,
+        "line_end": 152,
+        "fields_or_scope": "diagnostic/lifecycle"
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/guest-veneer-observation.json",
+        "line_start": 58,
+        "line_end": 125,
+        "fields_or_scope": "mapping and records"
+      }
+    ]
+  },
+  "version_boundaries": [
+    {
+      "series": "historical original FX6 AP",
+      "cpio_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+      "ap_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/receipt.json",
+          "line_start": 131,
+          "line_end": 137,
+          "fields_or_scope": "inputs_sha256_after"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/receipt.json",
+          "line_start": 131,
+          "line_end": 137,
+          "fields_or_scope": "inputs_sha256_after"
+        }
+      ]
+    },
+    {
+      "series": "last veneer run",
+      "cpio_sha256": "8abed37418a0f07e8193228ca2242f185103b6b5f98959b98821bbeeb3ad3b5d",
+      "ap_sha256": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1",
+      "probe_sha256": "bb5c5e18b98cced5f86d4a57ff5487138d9cbc62ef7d98e4dfb4a1164db27921",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+          "line_start": 37,
+          "line_end": 45,
+          "fields_or_scope": "inputs_sha256_after"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/source-sha256.json",
+          "line_start": 2,
+          "line_end": 7,
+          "fields_or_scope": "historical source identities"
+        }
+      ]
+    },
+    {
+      "series": "current source as recorded by prior audits",
+      "not_proven_runtime_accepted": true,
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-readiness-audit-20261104.json",
+          "line_start": 62,
+          "line_end": 83,
+          "fields_or_scope": "source drift"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-static-review-20261104.json",
+          "line_start": 25,
+          "line_end": 41,
+          "fields_or_scope": "identity and synthetic register findings"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "BOOT-NOT-PROVEN",
+      "kind": "audit_conclusion",
+      "new_code_defect": false,
+      "conclusion": "历史原 FX6 AP 已执行初始化相关代码；没有成功 Init/PowerOn 或可用 FX6 菜单证据",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/mpr-observation.json",
+          "line_start": 190,
+          "line_end": 260,
+          "fields_or_scope": "records kind=call/return"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/mpr-observation.json",
+          "line_start": 339,
+          "line_end": 344,
+          "fields_or_scope": "return_w0_signed32=3; mpr_entry_observed=false; capid_breakpoint_armed=false"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/readonly-observation.json",
+          "line_start": 270,
+          "line_end": 296,
+          "fields_or_scope": "model_initialized=0; model_process_owner=0; send_w0_signed32=-1021"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-readiness-audit-20261104.json",
+          "line_start": 241,
+          "line_end": 250,
+          "fields_or_scope": "open_gates"
+        }
+      ]
+    },
+    {
+      "id": "LATEST-STOP-IS-OBSERVER-REJECTION",
+      "kind": "additional_scope_qualification",
+      "new_code_defect": false,
+      "conclusion": "最近 unknown_loader_return 为观察器归属拒绝停点；不证明 guest loader 实际失败或 AP/bridge 已执行",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+          "line_start": 3,
+          "line_end": 5,
+          "fields_or_scope": "stop; elapsed_seconds; host_error"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/guest-veneer-observation.json",
+          "line_start": 58,
+          "line_end": 59,
+          "fields_or_scope": "mapping.ap=null; mapping.mpr=null"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/guest-veneer-observation.json",
+          "line_start": 63,
+          "line_end": 125,
+          "fields_or_scope": "dispatch vCPU03; dlsym vCPU02; same literal TLS; status=not_same_im_record_tls; gate_installed=false"
+        }
+      ]
+    },
+    {
+      "id": "CURRENT-SOURCE-IDENTITY",
+      "kind": "confirmed_existing_finding",
+      "new_code_defect": false,
+      "conclusion": "A/B 审查时版本三值不同，当前身份判定静态为假；未执行当前源码",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-readiness-audit-20261104.json",
+          "line_start": 62,
+          "line_end": 83,
+          "fields_or_scope": "candidate_integrity.files changed guest_probe.py/run_guest_once.py/test_guest_host.py"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-static-review-20261104.json",
+          "line_start": 25,
+          "line_end": 28,
+          "fields_or_scope": "runner_expected_probe_sha256; actual_probe_sha256; historical_test_probe_sha256"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/run_guest_once.py",
+          "line_start": 39,
+          "line_end": 39,
+          "fields_or_scope": "GUEST_PROBE_SHA"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/run_guest_once.py",
+          "line_start": 96,
+          "line_end": 99,
+          "fields_or_scope": "host-only tests identity predicate"
+        }
+      ]
+    },
+    {
+      "id": "HOST-PASS-IS-HISTORICAL-AND-SYNTHETIC",
+      "kind": "confirmed_existing_finding",
+      "new_code_defect": false,
+      "conclusion": "旧 PASS_NO_QEMU 绑定旧 probe；x22 正例系显式合成假设，没有真实跨 vCPU 接受证据",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/host-tests.json",
+          "line_start": 2,
+          "line_end": 11,
+          "fields_or_scope": "status; tests; guest_probe_sha256"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/test_im_inherited.py",
+          "line_start": 91,
+          "line_end": 114,
+          "fields_or_scope": "test source assertions; real_fields.dlsym_x22=NOT_CAPTURED; synthetic_assumption"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/source-sha256.json",
+          "line_start": 2,
+          "line_end": 7,
+          "fields_or_scope": "historical source identities"
+        }
+      ]
+    },
+    {
+      "id": "OBSERVATION-COMPLETE-NOT-HEALTHY",
+      "kind": "additional_scope_qualification",
+      "new_code_defect": false,
+      "conclusion": "历史 mpr/CAPID 同次返回捕获与真实断言记录并存，stop 字段不得当健康通过",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/receipt.json",
+          "line_start": 3,
+          "line_end": 5,
+          "fields_or_scope": "stop; elapsed_seconds"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/receipt.json",
+          "line_start": 191,
+          "line_end": 197,
+          "fields_or_scope": "health.failure"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/receipt.json",
+          "line_start": 3,
+          "line_end": 5,
+          "fields_or_scope": "stop; elapsed_seconds"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/receipt.json",
+          "line_start": 191,
+          "line_end": 197,
+          "fields_or_scope": "health.failure"
+        }
+      ]
+    },
+    {
+      "id": "LATEST-CLEANUP-PARTIAL",
+      "kind": "additional_scope_qualification",
+      "new_code_defect": false,
+      "conclusion": "最新轮进程/断点/锁已收尾，但 API16 主动跳过且 lifecycle 未过；exit0 不等于正常初始化或恢复",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+          "line_start": 6,
+          "line_end": 35,
+          "fields_or_scope": "qemu_exit=0; qemu_reaped=true; API16_restored=false; restore skipped; all_removed=true; locks free"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+          "line_start": 149,
+          "line_end": 152,
+          "fields_or_scope": "diagnostic_captured=false; lifecycle_healthy=false; API16_restore_policy"
+        }
+      ]
+    },
+    {
+      "id": "HISTORICAL-STATE-AND-CALLBACK-ERRATUM",
+      "kind": "historical_document_scope",
+      "new_code_defect": false,
+      "conclusion": "README 当前状态优先；旧 callback producer 尺寸与 AP 读取末端混淆已有勘误，不能把旧措辞当新矛盾",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/README.md",
+          "line_start": 19,
+          "line_end": 19,
+          "fields_or_scope": "current FX6 status; earlier entries are historical"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/README.md",
+          "line_start": 43,
+          "line_end": 55,
+          "fields_or_scope": "superseded MPR/CAPID observation status"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/init-field-adapter/README.md",
+          "line_start": 45,
+          "line_end": 46,
+          "fields_or_scope": "historical callback read-size wording"
+        },
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/writer-veneer-prototype/README.md",
+          "line_start": 38,
+          "line_end": 40,
+          "fields_or_scope": "explicit erratum: producer size versus AP unconditional read end"
+        }
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "id": "G0",
+      "name": "提供方执行阻塞",
+      "status": "unresolved",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-readiness-audit-20261104.json",
+          "line_start": 253,
+          "line_end": 258,
+          "fields_or_scope": "execution_blocker"
+        }
+      ]
+    },
+    {
+      "id": "G1",
+      "name": "固定平台及源码/测试/载荷身份一致",
+      "status": "historical_platform_static_evidence_current_source_gate_failed",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-static-review-20261104.json",
+          "line_start": 25,
+          "line_end": 28,
+          "fields_or_scope": "three distinct hashes"
+        }
+      ]
+    },
+    {
+      "id": "G2",
+      "name": "loader/自然入口/IM 身份",
+      "status": "historical_and_latest_local_evidence",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+          "line_start": 50,
+          "line_end": 85,
+          "fields_or_scope": "serial.first"
+        }
+      ]
+    },
+    {
+      "id": "G3",
+      "name": "当前候选 AP/bridge 实际绑定",
+      "status": "not_observed",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/guest-veneer-observation.json",
+          "line_start": 58,
+          "line_end": 125,
+          "fields_or_scope": "mapping.ap/mpr; gate_installed"
+        }
+      ]
+    },
+    {
+      "id": "G4",
+      "name": "Init 前 callback/模式/所有权合同",
+      "status": "host_static_subsets_only",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/init-field-adapter/README.md",
+          "line_start": 43,
+          "line_end": 50,
+          "fields_or_scope": "callback conditions and registration-before-Init dependency"
+        }
+      ]
+    },
+    {
+      "id": "G5",
+      "name": "同次原 Init 成功与 CAPID ready",
+      "status": "not_passed",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/mpr-observation.json",
+          "line_start": 339,
+          "line_end": 344,
+          "fields_or_scope": "return 3; internal entry not captured"
+        }
+      ]
+    },
+    {
+      "id": "G6",
+      "name": "PowerOn 真实事件与等待者闭环",
+      "status": "not_proven",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/writer-veneer-prototype/README.md",
+          "line_start": 28,
+          "line_end": 28,
+          "fields_or_scope": "host-only conversion; no live callback or notification proof"
+        }
+      ]
+    },
+    {
+      "id": "G7",
+      "name": "可用 FX6 菜单/输入到画面/持续健康",
+      "status": "no_evidence",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-readiness-audit-20261104.json",
+          "line_start": 249,
+          "line_end": 250,
+          "fields_or_scope": "boot to usable FX6 menu"
+        }
+      ]
+    },
+    {
+      "id": "G8",
+      "name": "正常 API16 恢复和退出",
+      "status": "latest_fault_cleanup_partial_only",
+      "evidence": [
+        {
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+          "line_start": 6,
+          "line_end": 35,
+          "fields_or_scope": "intentional restore skip but process/breakpoints/locks cleanup"
+        }
+      ]
+    }
+  ],
+  "gate_dependencies": [
+    "G0 must be resolved for any formerly rejected implementation/execution",
+    "G1 precedes current runtime evidence",
+    "G2 -> G3",
+    "G4 contract must hold before invoking original Init; callbacks may occur during Init",
+    "G5 and G6 may overlap within initialization; neither proven",
+    "G5/G6 -> G7; same-version G8 lifecycle evidence also required"
+  ],
+  "next_gate_now": "执行阻塞仍有效；只读确认源码/测试/载荷证据归属，禁止将旧 PASS/运行移用于当前版本，本报告已完成归属分类",
+  "no_new_experimentally_proven_code_root_cause": true,
+  "sources": {
+    "A": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-readiness-audit-20261104.json",
+    "B": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/fx6-primary-static-review-20261104.json",
+    "C": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/receipt.json",
+    "D": "/Volumes/KAFU2T/AI/Projects/Mac/README.md",
+    "E": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/guest-veneer-observation.json",
+    "F": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/command.json",
+    "G": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/runs/guest-veneer-33d090b1/source-sha256.json",
+    "H": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/host-tests.json",
+    "I": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/preflight.json",
+    "J": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/static-receipt.json",
+    "K": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/run_guest_once.py",
+    "L": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/guest-veneer-candidate/test_im_inherited.py",
+    "M": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/mpr-observation.json",
+    "N": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/runs/mpr-ro-b22ccc48/receipt.json",
+    "O": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/readonly-observation.json",
+    "P": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/runs/ap-ro-8548d224/receipt.json",
+    "Q": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/coordinator-entry-runtime-review/README.md",
+    "R": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/hybrid-ap-candidate/runs/fx6ap-bb7588e5/OBSERVATION.md",
+    "S": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/coordinator-ap-candidate-review/receipt.json",
+    "T": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/writer-veneer-prototype/README.md",
+    "U": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/first-ap-readonly-observer/mpr-init-candidate/init-field-adapter/README.md",
+    "V": "/Volumes/KAFU2T/AI/Projects/README.md"
+  },
+  "outputs": [
+    "REPORT.md",
+    "audit.json"
+  ]
+}

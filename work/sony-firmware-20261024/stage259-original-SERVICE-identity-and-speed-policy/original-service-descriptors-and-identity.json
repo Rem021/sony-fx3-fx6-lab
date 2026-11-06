@@ -1,0 +1,620 @@
+{
+  "status": "ORIGINAL_SERVICE_SERIAL_SUPPRESSION_AND_THREE_SPEED_TABLES_FOUND",
+  "original_pin": {
+    "path": "work/sony-firmware-20261024/stage183-request-consumer-and-early-entry/evidence/usb-main-dependency/originals/lib/libInfraUsbCmn.so",
+    "bytes": 159504,
+    "sha256": "6caefd0677ee01cc6cdd54555f4422b03a86d12304c60f5372de18315bdd4396"
+  },
+  "reader_pin": {
+    "path": "work/sony-firmware-20261024/stage134-backup-reader-scope-and-service-extension/audit_readers.py",
+    "sha256": "1bff3cd4993406760cda36356d4d2607ff7d3e0a0072a2214db34ea67090c40a"
+  },
+  "reference_header": {
+    "path": "work/sony-firmware-20261024/stage145-initial-MSC-native-route/work/official-kernel-reference/linux-kernel/include/linux/usb/gcore/usb_gadgetcore.h",
+    "sha256": "e86535d51eb537322ea084869e245d321f8e3cb9bd4113684b006ae8de0ee300",
+    "version": "Sony FX3 GPL7.00 reference layout, not exact7.02 kernel runtime"
+  },
+  "checked_instructions": 27,
+  "relocations": [
+    {
+      "at": "0x32510",
+      "type": 1027,
+      "symbol": null,
+      "addend": 217504,
+      "resolved_VA": "0x351a0"
+    },
+    {
+      "at": "0x351a8",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205976,
+      "resolved_VA": "0x32498"
+    },
+    {
+      "at": "0x324a0",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205512,
+      "resolved_VA": "0x322c8"
+    },
+    {
+      "at": "0x322d0",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205704,
+      "resolved_VA": "0x32388"
+    },
+    {
+      "at": "0x324f8",
+      "type": 1027,
+      "symbol": null,
+      "addend": 217456,
+      "resolved_VA": "0x35170"
+    },
+    {
+      "at": "0x35178",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205960,
+      "resolved_VA": "0x32488"
+    },
+    {
+      "at": "0x32490",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205480,
+      "resolved_VA": "0x322a8"
+    },
+    {
+      "at": "0x322b0",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205576,
+      "resolved_VA": "0x32308"
+    },
+    {
+      "at": "0x32528",
+      "type": 1027,
+      "symbol": null,
+      "addend": 217552,
+      "resolved_VA": "0x351d0"
+    },
+    {
+      "at": "0x351d8",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205992,
+      "resolved_VA": "0x324a8"
+    },
+    {
+      "at": "0x324b0",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205544,
+      "resolved_VA": "0x322e8"
+    },
+    {
+      "at": "0x322f0",
+      "type": 1027,
+      "symbol": null,
+      "addend": 205832,
+      "resolved_VA": "0x32408"
+    },
+    {
+      "at": "0x32420",
+      "type": 1027,
+      "symbol": null,
+      "addend": 116584,
+      "resolved_VA": "0x1c768"
+    },
+    {
+      "at": "0x32440",
+      "type": 1027,
+      "symbol": null,
+      "addend": 116588,
+      "resolved_VA": "0x1c76c"
+    },
+    {
+      "at": "0x32460",
+      "type": 1027,
+      "symbol": null,
+      "addend": 116592,
+      "resolved_VA": "0x1c770"
+    },
+    {
+      "at": "0x32480",
+      "type": 1027,
+      "symbol": null,
+      "addend": 116596,
+      "resolved_VA": "0x1c774"
+    },
+    {
+      "at": "0x33e30",
+      "type": 1025,
+      "symbol": "sen_speed_desc_hs",
+      "addend": 0,
+      "resolved_VA": "0x324f0"
+    },
+    {
+      "at": "0x33b68",
+      "type": 1025,
+      "symbol": "sen_speed_desc_lsfs",
+      "addend": 0,
+      "resolved_VA": "0x32508"
+    },
+    {
+      "at": "0x33a30",
+      "type": 1025,
+      "symbol": "sen_speed_desc_ss",
+      "addend": 0,
+      "resolved_VA": "0x32520"
+    },
+    {
+      "at": "0x33ed0",
+      "type": 1025,
+      "symbol": "sen_serial_number_str",
+      "addend": 0,
+      "resolved_VA": "0x1c858"
+    },
+    {
+      "at": "0x33ec0",
+      "type": 1025,
+      "symbol": "storage_speed_desc_hs",
+      "addend": 0,
+      "resolved_VA": "0x32aa0"
+    },
+    {
+      "at": "0x33f18",
+      "type": 1025,
+      "symbol": "func_tbl",
+      "addend": 0,
+      "resolved_VA": "0x36740"
+    },
+    {
+      "at": "0x34d88",
+      "type": 1027,
+      "symbol": null,
+      "addend": 215152,
+      "resolved_VA": "0x34870"
+    },
+    {
+      "at": "0x34d20",
+      "type": 1027,
+      "symbol": null,
+      "addend": 215320,
+      "resolved_VA": "0x34918"
+    },
+    {
+      "at": "0x34888",
+      "type": 257,
+      "symbol": "func_tbl",
+      "addend": 608,
+      "resolved_VA": "0x369a0"
+    },
+    {
+      "at": "0x34930",
+      "type": 257,
+      "symbol": "func_tbl",
+      "addend": 912,
+      "resolved_VA": "0x36ad0"
+    }
+  ],
+  "data_spans": [
+    {
+      "VA": "0x32508",
+      "bytes": 24,
+      "raw_hex": "0002000000010000a0510300000000000000000000000000",
+      "sha256": "9c667bf74a3e7998428546a61934f115f549c2f28c1b4f62fb9295d253adad83"
+    },
+    {
+      "VA": "0x351a0",
+      "bytes": 48,
+      "raw_hex": "0001010000000000982403000000000000c0010000000000000000000000000000000000000000000000000000000000",
+      "sha256": "28c12b627ab92e6f1cb4e311b8bee9640a1112995bd2c6b50cc15f0f812fd66d"
+    },
+    {
+      "VA": "0x351b8",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x32498",
+      "bytes": 16,
+      "raw_hex": "0001000000000000c822030000000000",
+      "sha256": "58ea2d20f45423ad582a4499e17421a2beb9a30ed53465824f0c455a3c73cced"
+    },
+    {
+      "VA": "0x322c8",
+      "bytes": 32,
+      "raw_hex": "00040000000000008823030000000000ff000000000000000000000000000000",
+      "sha256": "a5ce0e075aef1d3b0c5b237fdce49f897eb508ad247166a186ce82b4fe396e98"
+    },
+    {
+      "VA": "0x32388",
+      "bytes": 32,
+      "raw_hex": "8102400000010100000000000000000000000000000000000000000000000000",
+      "sha256": "526c990f71ee19c42d1bbf82615b1937fbb9b79435c7046345c32f28efcc6b6a"
+    },
+    {
+      "VA": "0x323a0",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x323a8",
+      "bytes": 32,
+      "raw_hex": "0202400000010100000000000000000000000000000000000000000000000000",
+      "sha256": "aafc9e247ef1df7935ce28be78bfe965afc85dac4f96e288c6c6b303259939f2"
+    },
+    {
+      "VA": "0x323c0",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x323c8",
+      "bytes": 32,
+      "raw_hex": "8302400000010100000000000000000000000000000000000000000000000000",
+      "sha256": "eabaf12ae8fd00d3a10a30712d4d7772fbf1b50c11b1f7ea3cdd91ccde28832c"
+    },
+    {
+      "VA": "0x323e0",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x323e8",
+      "bytes": 32,
+      "raw_hex": "0402400000010100000000000000000000000000000000000000000000000000",
+      "sha256": "b9e375347175017a9ca506dad1491eea55b39b0e4db80e46d2dfee982cab8006"
+    },
+    {
+      "VA": "0x32400",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x324f0",
+      "bytes": 24,
+      "raw_hex": "000200000001000070510300000000000000000000000000",
+      "sha256": "7481c9dd73c8c112ed38d9c00c2f8ff9045e3c6366d74dd535b3daf469a88a29"
+    },
+    {
+      "VA": "0x35170",
+      "bytes": 48,
+      "raw_hex": "0001010000000000882403000000000000c0010000000000000000000000000000000000000000000000000000000000",
+      "sha256": "599695889b4ea677f460ed85c64cc043a7e9e51d04eab7e3f3ae675cec4f408c"
+    },
+    {
+      "VA": "0x35188",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x32488",
+      "bytes": 16,
+      "raw_hex": "0001000000000000a822030000000000",
+      "sha256": "ee9bbc301b1345e6429e9ac948adb6441185af85a0e403d8596c4acae9c4a859"
+    },
+    {
+      "VA": "0x322a8",
+      "bytes": 32,
+      "raw_hex": "00040000000000000823030000000000ff000000000000000000000000000000",
+      "sha256": "5c49bb28cabf440c077605f0bef35f0117fc099a2e50e7deb12d1c896f9ae4c9"
+    },
+    {
+      "VA": "0x32308",
+      "bytes": 32,
+      "raw_hex": "8102000200020100000000000000000000000000000000000000000000000000",
+      "sha256": "ea46bcb47fa7315f64e5ff7028a911f038c1572114d71aeab503d8544c230ea7"
+    },
+    {
+      "VA": "0x32320",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x32328",
+      "bytes": 32,
+      "raw_hex": "0202000200020100000000000000000000000000000000000000000000000000",
+      "sha256": "fc91549ab6d173013bc57881def04fcef1896b0e1ca5b382d51682fbb6c65eb0"
+    },
+    {
+      "VA": "0x32340",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x32348",
+      "bytes": 32,
+      "raw_hex": "8302000200020100000000000000000000000000000000000000000000000000",
+      "sha256": "cd75d2cedc5425636bd9dd7d0a8b4ed340fad832707a38a84012457bcfdda9d0"
+    },
+    {
+      "VA": "0x32360",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x32368",
+      "bytes": 32,
+      "raw_hex": "0402000200020100000000000000000000000000000000000000000000000000",
+      "sha256": "5d441e28883fb4d3fe49530626ec3de9fd6ca0ae4c5d9bbf6beb806a02e4fd0d"
+    },
+    {
+      "VA": "0x32380",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x32520",
+      "bytes": 24,
+      "raw_hex": "2003000000010000d0510300000000000000000000000000",
+      "sha256": "19dbe132fbea1f01f483ee0c706c1d28c8f2de804d33590eaeab32cc6f91b90e"
+    },
+    {
+      "VA": "0x351d0",
+      "bytes": 48,
+      "raw_hex": "0001010000000000a82403000000000000c0010000000000000000000000000000000000000000000000000000000000",
+      "sha256": "977452b4d4005ad348b561d3b0c35983bdf81147880fb23e3b2fb28485f10d8a"
+    },
+    {
+      "VA": "0x351e8",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x324a8",
+      "bytes": 16,
+      "raw_hex": "0001000000000000e822030000000000",
+      "sha256": "de91b21f4e350afd6ea1030745a5fd687676a1200f924a179c831b2c28ab8728"
+    },
+    {
+      "VA": "0x322e8",
+      "bytes": 32,
+      "raw_hex": "00040000000000000824030000000000ff000000000000000000000000000000",
+      "sha256": "37d4d861ea3a9f0000a58f9f4e78b1a656e6b9598fef633f03bb388365bdeacc"
+    },
+    {
+      "VA": "0x32408",
+      "bytes": 32,
+      "raw_hex": "81020004000201000000000000000000000000000000000068c7010000000000",
+      "sha256": "5813bac79db7c4f93f117b80c41cf549cfa6a48372a2f7942db3dd75ca0ced1d"
+    },
+    {
+      "VA": "0x1c768",
+      "bytes": 4,
+      "raw_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "VA": "0x32428",
+      "bytes": 32,
+      "raw_hex": "0202000400020100000000000000000000000000000000006cc7010000000000",
+      "sha256": "ff845323b3c35e9acbada9012ca36dfbbade3673e35aecab7f31c890f9e9314c"
+    },
+    {
+      "VA": "0x1c76c",
+      "bytes": 4,
+      "raw_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "VA": "0x32448",
+      "bytes": 32,
+      "raw_hex": "83020004000201000000000000000000000000000000000070c7010000000000",
+      "sha256": "560495c475df55b692b301a8e9dcd78bdfc7bdf2945143e26b9de8c8b0af7a8a"
+    },
+    {
+      "VA": "0x1c770",
+      "bytes": 4,
+      "raw_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "VA": "0x32468",
+      "bytes": 32,
+      "raw_hex": "04020004000201000000000000000000000000000000000074c7010000000000",
+      "sha256": "58dc45bd44a506e77c75c15a44fd880a96c6407691033bb95262f98feba1f787"
+    },
+    {
+      "VA": "0x1c774",
+      "bytes": 4,
+      "raw_hex": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    },
+    {
+      "VA": "0x34899",
+      "bytes": 1,
+      "raw_hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+    },
+    {
+      "VA": "0x34941",
+      "bytes": 1,
+      "raw_hex": "01",
+      "sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+    },
+    {
+      "VA": "0x1c858",
+      "bytes": 1,
+      "raw_hex": "00",
+      "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d"
+    },
+    {
+      "VA": "0x1c840",
+      "bytes": 2,
+      "raw_hex": "3603",
+      "sha256": "364f12a9155b7fef707f691958e3d1a5d8e7333205712ad7a28965aec1e8f711"
+    },
+    {
+      "VA": "0x1c842",
+      "bytes": 2,
+      "raw_hex": "4c05",
+      "sha256": "52780beb9bbe946fed89c42c7173b135d314d752d741cb485664b780808820a5"
+    },
+    {
+      "VA": "0x324d8",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    },
+    {
+      "VA": "0x32a28",
+      "bytes": 8,
+      "raw_hex": "0000000000000000",
+      "sha256": "af5570f5a1810b7af78caf4bc70a660f0df51e42baf91d4de5b2328de0e83dfc"
+    }
+  ],
+  "speed_tables": [
+    {
+      "speed": "lsfs",
+      "internal_speed_table_VA": "0x32508",
+      "config_VA": "0x351a0",
+      "interfaces": 1,
+      "alternate": 0,
+      "endpoint_count": 4,
+      "pipes": [
+        {
+          "address": 129,
+          "attributes": 2,
+          "packet": 64,
+          "interval": 0,
+          "companion_hex": null
+        },
+        {
+          "address": 2,
+          "attributes": 2,
+          "packet": 64,
+          "interval": 0,
+          "companion_hex": null
+        },
+        {
+          "address": 131,
+          "attributes": 2,
+          "packet": 64,
+          "interval": 0,
+          "companion_hex": null
+        },
+        {
+          "address": 4,
+          "attributes": 2,
+          "packet": 64,
+          "interval": 0,
+          "companion_hex": null
+        }
+      ],
+      "derived_wire_bytes": 46,
+      "derived_wire_sha256": "dad9a62853f91e8721f87cab425bc149e3ee3d3c8ddabb90355e22dcaab33a64",
+      "derived_wire_is_not_a_captured_USB_descriptor": true
+    },
+    {
+      "speed": "hs",
+      "internal_speed_table_VA": "0x324f0",
+      "config_VA": "0x35170",
+      "interfaces": 1,
+      "alternate": 0,
+      "endpoint_count": 4,
+      "pipes": [
+        {
+          "address": 129,
+          "attributes": 2,
+          "packet": 512,
+          "interval": 0,
+          "companion_hex": null
+        },
+        {
+          "address": 2,
+          "attributes": 2,
+          "packet": 512,
+          "interval": 0,
+          "companion_hex": null
+        },
+        {
+          "address": 131,
+          "attributes": 2,
+          "packet": 512,
+          "interval": 0,
+          "companion_hex": null
+        },
+        {
+          "address": 4,
+          "attributes": 2,
+          "packet": 512,
+          "interval": 0,
+          "companion_hex": null
+        }
+      ],
+      "derived_wire_bytes": 46,
+      "derived_wire_sha256": "e74116910f88eb647a0941aa62c7501e0f1080d043eeac551eba35d62cbbb852",
+      "derived_wire_is_not_a_captured_USB_descriptor": true
+    },
+    {
+      "speed": "ss",
+      "internal_speed_table_VA": "0x32520",
+      "config_VA": "0x351d0",
+      "interfaces": 1,
+      "alternate": 0,
+      "endpoint_count": 4,
+      "pipes": [
+        {
+          "address": 129,
+          "attributes": 2,
+          "packet": 1024,
+          "interval": 0,
+          "companion_hex": "00000000"
+        },
+        {
+          "address": 2,
+          "attributes": 2,
+          "packet": 1024,
+          "interval": 0,
+          "companion_hex": "00000000"
+        },
+        {
+          "address": 131,
+          "attributes": 2,
+          "packet": 1024,
+          "interval": 0,
+          "companion_hex": "00000000"
+        },
+        {
+          "address": 4,
+          "attributes": 2,
+          "packet": 1024,
+          "interval": 0,
+          "companion_hex": "00000000"
+        }
+      ],
+      "derived_wire_bytes": 70,
+      "derived_wire_sha256": "1ce9a9ab62151810590780b1ddf91bd9c98f7f58cee6254b18722cc79c97beb5",
+      "derived_wire_is_not_a_captured_USB_descriptor": true
+    }
+  ],
+  "SERVICE_DID": 13,
+  "SERVICE_entry_VA": "0x34870",
+  "SERVICE_descriptor_VA": "0x369a0",
+  "SERVICE_serial_enabled_byte": 0,
+  "storage_DID": 0,
+  "storage_serial_enabled_byte": 1,
+  "common_CREATE_GADGET_branch": "entry+0x29==0 clears serial pointer and length in START ioctl frame",
+  "SERVICE_default_iSerialNumber": 0,
+  "SERVICE_and_storage_default_BOS_container_id_pointers": 0,
+  "known_native_candidate_incompatibility": "258 requires nonempty same cached serial on0336; source-backed default SERVICE path omits that serial. After successful MSC transition this could return SHAPE and retain before opening SERVICE or sending STOP.",
+  "no_guarantee_current_runtime_uses_unchanged_defaults": true,
+  "fallback_identity_not_silently_relaxed": true,
+  "next_identity_work": "Review a separately labelled continuously observed physical-port transition and/or an independent device identity read. Do not label topology as serial identity or copy the MSC tag into an unverified SERVICE node.",
+  "original_Sony_instructions_executed": false,
+  "USB_or_root_operations": 0
+}

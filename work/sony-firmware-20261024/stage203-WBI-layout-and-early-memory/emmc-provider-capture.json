@@ -1,0 +1,48 @@
+[
+  {
+    "path": "/kmod/emmc.ko",
+    "source_image": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/initrd.img",
+    "source_image_sha256": "5ba4076f0f0765d57767736c824b12ed345a38cbb6541d61546570a4470c9f52",
+    "output": "work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/originals/p3-initrd/kmod/emmc.ko",
+    "bytes": 341024,
+    "sha256": "14d17ea8065e3bc751a699dc644f00d247225640175d2957fb2a44bea39e5e4d",
+    "symbols": [
+      {
+        "name": "emmc_seq_switch_partition",
+        "value": "0x15398",
+        "size": 100,
+        "section": 2,
+        "type": "STT_FUNC"
+      },
+      {
+        "name": "emmc_seq_get_boot_capacity",
+        "value": "0x145a0",
+        "size": 16,
+        "section": 2,
+        "type": "STT_FUNC"
+      },
+      {
+        "name": "part_arg_check",
+        "value": "0x78c0",
+        "size": 48,
+        "section": 2,
+        "type": "STT_FUNC"
+      },
+      {
+        "name": "emmc_seq_get_device_info",
+        "value": "0x147f8",
+        "size": 540,
+        "section": 2,
+        "type": "STT_FUNC"
+      }
+    ]
+  },
+  {
+    "path": "/sbin/initrc/insmod_drv1",
+    "source_image": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/initrd.img",
+    "source_image_sha256": "5ba4076f0f0765d57767736c824b12ed345a38cbb6541d61546570a4470c9f52",
+    "output": "work/sony-firmware-20261024/stage203-WBI-layout-and-early-memory/originals/p3-initrd/sbin/initrc/insmod_drv1",
+    "bytes": 152,
+    "sha256": "22f29d06d7776fe5e8362c17049beabfd3e3bebffd222e51276e3704d483a591"
+  }
+]

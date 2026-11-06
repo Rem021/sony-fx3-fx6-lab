@@ -1,0 +1,35 @@
+{
+  "baseline": {
+    "argv": [
+      "/usr/bin/clang",
+      "-O2",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/src",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests",
+      "-DBLOCK_FILE=\"original-ui-selected.inc\"",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/ui_selected_fixture.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/host-ui-baseline"
+    ],
+    "compile_exit": 0,
+    "run_exit": 0,
+    "metrics": "SELECTED count=51 tid_calls=51 diagnostic_getpid=0 original_clock=51 chars=9224\nBENCH steady_suppressed_ns_per_callback=477.26 iterations=100000\nBENCH actual_host_getpid_syscall_ns=99.82 iterations=100000 last=70128\nBENCH actual_host_vdprintf_devnull_ns_per_callback=1389.37 iterations=100000 underlying_write_syscall_count_not_inferred=1\n"
+  },
+  "candidate": {
+    "argv": [
+      "/usr/bin/clang",
+      "-O2",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/src",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests",
+      "-DBLOCK_FILE=\"candidate-ui-selected.inc\"",
+      "-DCANDIDATE=1",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/tests/ui_selected_fixture.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/host-ui-candidate"
+    ],
+    "compile_exit": 0,
+    "run_exit": 0,
+    "metrics": "SELECTED count=51 tid_calls=51 diagnostic_getpid=102 original_clock=51 chars=9408\nBENCH steady_suppressed_ns_per_callback=690.98 iterations=100000\nBENCH forced_fixture_export_ns_per_callback=836.83 iterations=100000 fixture_resets_not_runtime_API=1\nBENCH actual_host_getpid_syscall_ns=96.76 iterations=100000 last=70134\nBENCH actual_host_vdprintf_devnull_ns_per_callback=1613.55 iterations=100000 underlying_write_syscall_count_not_inferred=1\nBENCH actual_host_vdprintf_devnull_forced_export_ns_per_callback=1728.40 iterations=100000 fixture_resets_only=1\nBENCH exhausted_budget_actual_host_vdprintf_ns_per_callback=1582.66 iterations=100000 diagnostic_getpid_per_callback=2 no_collector_or_budget_reset=1\n"
+  },
+  "original_fields_byte_identical_after_suffix_removal": true,
+  "extra_bytes_this_fixture": 184
+}

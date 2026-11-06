@@ -1,0 +1,162 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libsdfileinputupdaterapi.so
+# SHA256 257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2
+# VA [0x7d10, 0x7f8c) raw slice SHA256 4dc07ad062b967ffc388486e44d2627a7807ead5cadb503e22bfd8f80b4e7f5b
+    7d10: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+    7d14: 910003fd     	mov	x29, sp
+    7d18: a90153f3     	stp	x19, x20, [sp, #0x10]
+    7d1c: aa0003f3     	mov	x19, x0
+    7d20: d2800600     	mov	x0, #0x30               // =48
+    7d24: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    7d28: aa0103f4     	mov	x20, x1
+    7d2c: aa0203f5     	mov	x21, x2
+    7d30: 97fffdd4     	bl	0x7480 <operator new(unsigned long)@plt>
+    7d34: aa0003f6     	mov	x22, x0
+    7d38: 97fffce2     	bl	0x70c0 <Updater::BufferManager::BufferManager()@plt>
+    7d3c: d2800200     	mov	x0, #0x10               // =16
+    7d40: f9001276     	str	x22, [x19, #0x20]
+    7d44: 97fffdcf     	bl	0x7480 <operator new(unsigned long)@plt>
+    7d48: aa0003f6     	mov	x22, x0
+    7d4c: 97fffe3d     	bl	0x7640 <Updater::BaseFirmware::BaseFirmware()@plt>
+    7d50: d2802b00     	mov	x0, #0x158              // =344
+    7d54: f9001676     	str	x22, [x19, #0x28]
+    7d58: 97fffdca     	bl	0x7480 <operator new(unsigned long)@plt>
+    7d5c: b9405a61     	ldr	w1, [x19, #0x58]
+    7d60: 52800022     	mov	w2, #0x1                // =1
+    7d64: aa0003f6     	mov	x22, x0
+    7d68: 97fffd1a     	bl	0x71d0 <Updater::SDFileInputBodyLoaderModule::SDFileInputBodyLoaderModule(Updater::UPDATER_ACTION_MODE, bool)@plt>
+    7d6c: d280b800     	mov	x0, #0x5c0              // =1472
+    7d70: f9001a76     	str	x22, [x19, #0x30]
+    7d74: 97fffdc3     	bl	0x7480 <operator new(unsigned long)@plt>
+    7d78: aa0003f6     	mov	x22, x0
+    7d7c: 97fffd25     	bl	0x7210 <Updater::SDDecryptorModule::SDDecryptorModule()@plt>
+    7d80: d2800300     	mov	x0, #0x18               // =24
+    7d84: f9001e76     	str	x22, [x19, #0x38]
+    7d88: 97fffdbe     	bl	0x7480 <operator new(unsigned long)@plt>
+    7d8c: aa0003f6     	mov	x22, x0
+    7d90: 97fffe38     	bl	0x7670 <Updater::SDUUDConditionChecker::SDUUDConditionChecker()@plt>
+    7d94: d2800200     	mov	x0, #0x10               // =16
+    7d98: f9002276     	str	x22, [x19, #0x40]
+    7d9c: 97fffdb9     	bl	0x7480 <operator new(unsigned long)@plt>
+    7da0: aa0003f6     	mov	x22, x0
+    7da4: 97fffe5f     	bl	0x7720 <Updater::SDLedProgressIndicator::SDLedProgressIndicator()@plt>
+    7da8: d2808500     	mov	x0, #0x428              // =1064
+    7dac: f9002676     	str	x22, [x19, #0x48]
+    7db0: 97fffdb4     	bl	0x7480 <operator new(unsigned long)@plt>
+    7db4: aa1503e2     	mov	x2, x21
+    7db8: aa1403e1     	mov	x1, x20
+    7dbc: aa0003f6     	mov	x22, x0
+    7dc0: 97fffe78     	bl	0x77a0 <Updater::SDFileManager::SDFileManager(char const*, char const*)@plt>
+    7dc4: f9401260     	ldr	x0, [x19, #0x20]
+    7dc8: f9400001     	ldr	x1, [x0]
+    7dcc: f9400821     	ldr	x1, [x1, #0x10]
+    7dd0: f9002a76     	str	x22, [x19, #0x50]
+    7dd4: d63f0020     	blr	x1
+    7dd8: f9401a74     	ldr	x20, [x19, #0x30]
+    7ddc: f9400280     	ldr	x0, [x20]
+    7de0: f9400816     	ldr	x22, [x0, #0x10]
+    7de4: f9401260     	ldr	x0, [x19, #0x20]
+    7de8: f9400001     	ldr	x1, [x0]
+    7dec: f9401c21     	ldr	x1, [x1, #0x38]
+    7df0: d63f0020     	blr	x1
+    7df4: 91002275     	add	x21, x19, #0x8
+    7df8: aa0003e1     	mov	x1, x0
+    7dfc: aa1503e3     	mov	x3, x21
+    7e00: aa1403e0     	mov	x0, x20
+    7e04: d2800002     	mov	x2, #0x0                // =0
+    7e08: d63f02c0     	blr	x22
+    7e0c: f9401e74     	ldr	x20, [x19, #0x38]
+    7e10: f9400280     	ldr	x0, [x20]
+    7e14: f9400816     	ldr	x22, [x0, #0x10]
+    7e18: f9401260     	ldr	x0, [x19, #0x20]
+    7e1c: f9400001     	ldr	x1, [x0]
+    7e20: f9401421     	ldr	x1, [x1, #0x28]
+    7e24: d63f0020     	blr	x1
+    7e28: f9401a62     	ldr	x2, [x19, #0x30]
+    7e2c: aa0003e1     	mov	x1, x0
+    7e30: aa1503e3     	mov	x3, x21
+    7e34: aa1403e0     	mov	x0, x20
+    7e38: d63f02c0     	blr	x22
+    7e3c: f9401660     	ldr	x0, [x19, #0x28]
+    7e40: f9400001     	ldr	x1, [x0]
+    7e44: f9400822     	ldr	x2, [x1, #0x10]
+    7e48: f9401e61     	ldr	x1, [x19, #0x38]
+    7e4c: d63f0040     	blr	x2
+    7e50: a9438262     	ldp	x2, x0, [x19, #0x38]
+    7e54: f9400001     	ldr	x1, [x0]
+    7e58: f9400823     	ldr	x3, [x1, #0x10]
+    7e5c: f9401a61     	ldr	x1, [x19, #0x30]
+    7e60: d63f0060     	blr	x3
+    7e64: f9402660     	ldr	x0, [x19, #0x48]
+    7e68: f9400001     	ldr	x1, [x0]
+    7e6c: f9400821     	ldr	x1, [x1, #0x10]
+    7e70: d63f0020     	blr	x1
+    7e74: f9402a60     	ldr	x0, [x19, #0x50]
+    7e78: f9400001     	ldr	x1, [x0]
+    7e7c: f9400821     	ldr	x1, [x1, #0x10]
+    7e80: d63f0020     	blr	x1
+    7e84: 52800000     	mov	w0, #0x0                // =0
+    7e88: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    7e8c: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    7e90: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+    7e94: d65f03c0     	ret
+    7e98: aa0003f4     	mov	x20, x0
+    7e9c: aa0103f5     	mov	x21, x1
+    7ea0: d2800601     	mov	x1, #0x30               // =48
+    7ea4: aa1603e0     	mov	x0, x22
+    7ea8: 97fffd82     	bl	0x74b0 <operator delete(void*, unsigned long)@plt>
+    7eac: f10006bf     	cmp	x21, #0x1
+    7eb0: aa1403e0     	mov	x0, x20
+    7eb4: 54000421     	b.ne	0x7f38 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x228>
+    7eb8: 97fffc92     	bl	0x7100 <__cxa_begin_catch@plt>
+    7ebc: aa0003e1     	mov	x1, x0
+    7ec0: aa1303e0     	mov	x0, x19
+    7ec4: 97fffcf7     	bl	0x72a0 <Updater::SDFileInputUpdaterManager::blinkLED(Updater::ApiException const&)@plt>
+    7ec8: 14000019     	b	0x7f2c <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x21c>
+    7ecc: aa0103f5     	mov	x21, x1
+    7ed0: aa0003f4     	mov	x20, x0
+    7ed4: d2800201     	mov	x1, #0x10               // =16
+    7ed8: 17fffff3     	b	0x7ea4 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x194>
+    7edc: aa0103f5     	mov	x21, x1
+    7ee0: aa0003f4     	mov	x20, x0
+    7ee4: d2802b01     	mov	x1, #0x158              // =344
+    7ee8: 17ffffef     	b	0x7ea4 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x194>
+    7eec: aa0103f5     	mov	x21, x1
+    7ef0: aa0003f4     	mov	x20, x0
+    7ef4: d280b801     	mov	x1, #0x5c0              // =1472
+    7ef8: 17ffffeb     	b	0x7ea4 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x194>
+    7efc: aa0103f5     	mov	x21, x1
+    7f00: aa0003f4     	mov	x20, x0
+    7f04: d2800301     	mov	x1, #0x18               // =24
+    7f08: 17ffffe7     	b	0x7ea4 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x194>
+    7f0c: 17fffff0     	b	0x7ecc <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x1bc>
+    7f10: aa0103f5     	mov	x21, x1
+    7f14: aa0003f4     	mov	x20, x0
+    7f18: d2808501     	mov	x1, #0x428              // =1064
+    7f1c: 17ffffe2     	b	0x7ea4 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x194>
+    7f20: aa0003f4     	mov	x20, x0
+    7f24: aa0103f5     	mov	x21, x1
+    7f28: 17ffffe1     	b	0x7eac <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x19c>
+    7f2c: 97fffe09     	bl	0x7750 <__cxa_end_catch@plt>
+    7f30: 52800080     	mov	w0, #0x4                // =4
+    7f34: 17ffffd5     	b	0x7e88 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x178>
+    7f38: 97fffc72     	bl	0x7100 <__cxa_begin_catch@plt>
+    7f3c: d00000a0     	adrp	x0, 0x1d000
+    7f40: 9100c3a1     	add	x1, x29, #0x30
+    7f44: f947a800     	ldr	x0, [x0, #0xf50]
+    7f48: 91004000     	add	x0, x0, #0x10
+    7f4c: f9001ba0     	str	x0, [x29, #0x30]
+    7f50: 528004a0     	mov	w0, #0x25               // =37
+    7f54: 72a00060     	movk	w0, #0x3, lsl #16
+    7f58: b9003ba0     	str	w0, [x29, #0x38]
+    7f5c: aa1303e0     	mov	x0, x19
+    7f60: 3900f3bf     	strb	wzr, [x29, #0x3c]
+    7f64: 97fffccf     	bl	0x72a0 <Updater::SDFileInputUpdaterManager::blinkLED(Updater::ApiException const&)@plt>
+    7f68: 97fffdfa     	bl	0x7750 <__cxa_end_catch@plt>
+    7f6c: 17fffff1     	b	0x7f30 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x220>
+    7f70: aa0003f3     	mov	x19, x0
+    7f74: 97fffdf7     	bl	0x7750 <__cxa_end_catch@plt>
+    7f78: aa1303e0     	mov	x0, x19
+    7f7c: 97fffe2d     	bl	0x7830 <_Unwind_Resume@plt>
+    7f80: aa0003f3     	mov	x19, x0
+    7f84: 97fffdf3     	bl	0x7750 <__cxa_end_catch@plt>
+    7f88: 17fffffc     	b	0x7f78 <Updater::SDFileInputUpdaterManager::Initialize(char const*, char const*)+0x268>

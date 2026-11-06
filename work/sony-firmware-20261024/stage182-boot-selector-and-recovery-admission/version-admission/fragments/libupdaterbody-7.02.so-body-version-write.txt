@@ -1,0 +1,34 @@
+# work/fx3-color-port-20261027/package-20261028/updaterfs/bodylib/libupdaterbody.so
+# SHA256 6582eba530025d17fab81420050433cd998714c922aa4c16fd4d5cdc5a378ee9
+# VA [0x19ad4, 0x19b50) raw slice SHA256 a639dee398288a7f5ae4a38d591b0e3d66cea4b8325063e7900ecaf4dc82e3fc
+   19ad4: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+   19ad8: 910003fd     	mov	x29, sp
+   19adc: a90153f3     	stp	x19, x20, [sp, #0x10]
+   19ae0: 9100e3b4     	add	x20, x29, #0x38
+   19ae4: f90013f5     	str	x21, [sp, #0x20]
+   19ae8: 2a0103f5     	mov	w21, w1
+   19aec: d0000001     	adrp	x1, 0x1b000 <Updater::FsysWrapper::Close(void*)+0x34>
+   19af0: aa1403e0     	mov	x0, x20
+   19af4: 912db821     	add	x1, x1, #0xb6e
+   19af8: 900000d3     	adrp	x19, 0x31000 <vtable for Updater::UpdaterChksumKeyTag>
+   19afc: 97ffdb5d     	bl	0x10870 <Updater::VersionFile::VersionFile(char const*)@plt>
+   19b00: 2a1503e1     	mov	w1, w21
+   19b04: aa1403e0     	mov	x0, x20
+   19b08: 97ffd80a     	bl	0xfb30 <Updater::BaseFirmwareInformationFile::WriteValue(unsigned int)@plt>
+   19b0c: 91002280     	add	x0, x20, #0x8
+   19b10: f947de73     	ldr	x19, [x19, #0xfb8]
+   19b14: 91004273     	add	x19, x19, #0x10
+   19b18: f9001fb3     	str	x19, [x29, #0x38]
+   19b1c: 97ffdb15     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   19b20: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   19b24: f94013f5     	ldr	x21, [sp, #0x20]
+   19b28: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+   19b2c: d65f03c0     	ret
+   19b30: aa0003f5     	mov	x21, x0
+   19b34: f947de73     	ldr	x19, [x19, #0xfb8]
+   19b38: 91002280     	add	x0, x20, #0x8
+   19b3c: 91004273     	add	x19, x19, #0x10
+   19b40: f9001fb3     	str	x19, [x29, #0x38]
+   19b44: 97ffdb0b     	bl	0x10770 <Updater::StringHandler::~StringHandler()@plt>
+   19b48: aa1503e0     	mov	x0, x21
+   19b4c: 97ffdb15     	bl	0x107a0 <_Unwind_Resume@plt>

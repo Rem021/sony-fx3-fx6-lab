@@ -1,0 +1,63 @@
+{
+  "receipt_status": "click_invoked",
+  "clicks": 1,
+  "keyPOST": 1,
+  "pending": 0,
+  "PAGE_attempt": {
+    "alarm_due_ms": 20038.80000001192,
+    "alarm_nonce": "e03dddb0-58ea-40cc-ab38-ee14d282f154",
+    "attempt_id": "309b4623-0eb4-4269-9248-284bd5252bbf",
+    "base_step": 0,
+    "created_monotonic_ms": 51.5,
+    "document_time_origin": 1793838438376.7,
+    "expected_step": 1,
+    "frame": {
+      "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+      "content_generation": 1,
+      "sequence": 1
+    },
+    "http_status": 409,
+    "key": 427,
+    "launch_request_id": "dfbce7e0-d449-43c3-bc4e-ee72ea4f80f2",
+    "mutation_called": true,
+    "observed_sequence": 1,
+    "outcome": "explicit_rejected_unqueued",
+    "server_request_id": "309b4623-0eb4-4269-9248-284bd5252bbf",
+    "updated_monotonic_ms": 53.90000003576279
+  },
+  "rejections": {
+    "schema": "fx3-host-key-rejection-v1",
+    "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+    "capacity": 64,
+    "total": 1,
+    "truncated": 0,
+    "records": [
+      {
+        "host_monotonic_ns": 422123959238625,
+        "http_status": 409,
+        "reason": "frame_identity_or_render_invalid",
+        "failed_predicates": [
+          "sha_mismatch",
+          "generation_mismatch"
+        ],
+        "observed_sequence": 1,
+        "observed_cached": true,
+        "observed_png_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+        "observed_content_generation": 1,
+        "current_sequence": 2,
+        "current_png_sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a",
+        "current_content_generation": 2,
+        "render_valid": true,
+        "phase": "ready",
+        "ready": true,
+        "busy": false,
+        "pending_count": 0,
+        "review_required": false,
+        "steps": 0,
+        "stop_requested": false,
+        "error_present": false,
+        "request_id": "309b4623-0eb4-4269-9248-284bd5252bbf"
+      }
+    ]
+  }
+}

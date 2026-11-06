@@ -1,0 +1,22 @@
+0069fa1a push       {r4, r6, r7, lr}
+0069fa1c add        r7, sp, #8
+0069fa1e sub        sp, #0x10
+0069fa20 mov        r4, r0
+0069fa22 movs       r0, #0
+0069fa24 mov        r2, sp
+0069fa26 movs       r1, #0
+0069fa28 strd       r0, r0, [sp, #8]
+0069fa2c strd       r0, r0, [sp]
+0069fa30 mov        r0, r4
+0069fa32 bl         #0x251fa4
+0069fa36 cmp        r0, #1
+0069fa38 bne        #0x69fa3e
+0069fa3a ldr        r0, [sp, #4]
+0069fa3c b          #0x69fa4e
+0069fa3e movw       r0, #0xcfde
+0069fa42 mov        r1, r4
+0069fa44 movt       r0, #0xd9
+0069fa48 bl         #0x9e6684
+0069fa4c movs       r0, #0
+0069fa4e add        sp, #0x10
+0069fa50 pop        {r4, r6, r7, pc}

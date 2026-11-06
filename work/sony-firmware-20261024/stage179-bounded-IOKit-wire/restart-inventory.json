@@ -1,0 +1,16 @@
+{
+  "previous_exec_session": "42655 absent after restart",
+  "build_receipt_present": false,
+  "unreceipted_artifacts": [
+    {
+      "path": "artifacts/fake-iokit.dylib",
+      "sha256": "b94495e18c36cb8940fbf9736a0081db63d10dbb7a08a16fe75606dda3be5196"
+    },
+    {
+      "path": "artifacts/iokit-wire-native.o",
+      "sha256": "dcc49fc483f3c305702b712df72f69a28cb077e6b3392b8bea97d832d14a3fd1"
+    }
+  ],
+  "reason_for_missing_receipt": "otool dependency filter matches own install-name containing IOKit; confirmed from preserved binary",
+  "device_operations": 0
+}

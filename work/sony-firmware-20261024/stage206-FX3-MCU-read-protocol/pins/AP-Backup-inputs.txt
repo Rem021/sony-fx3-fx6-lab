@@ -1,0 +1,19 @@
+00400c58 801a8052 mov      w0, #0xd4
+00400c5c 201fa072 movk     w0, #0xf9, lsl #16
+00400c60 f35301a9 stp      x19, x20, [sp, #0x10]
+00400c64 f96b04a9 stp      x25, x26, [sp, #0x40]
+00400c68 740200f0 adrp     x20, #0x44f000
+00400c6c f76303a9 stp      x23, x24, [sp, #0x30]
+00400c70 fb7305a9 stp      x27, x28, [sp, #0x50]
+00400c74 bf270239 strb     wzr, [x29, #0x89]
+00400c78 bfe30079 strh     wzr, [x29, #0x70]
+00400c7c d5ffff97 bl       #0x400bd0
+00400c80 f303002a mov      w19, w0
+00400c84 20168052 mov      w0, #0xb1
+00400c88 201fa072 movk     w0, #0xf9, lsl #16
+00400c8c d1ffff97 bl       #0x400bd0
+00400c90 f903002a mov      w25, w0
+00400c94 a00d8052 mov      w0, #0x6d
+00400c98 201fa072 movk     w0, #0xf9, lsl #16
+00400c9c cdffff97 bl       #0x400bd0
+00400ca0 fa03002a mov      w26, w0

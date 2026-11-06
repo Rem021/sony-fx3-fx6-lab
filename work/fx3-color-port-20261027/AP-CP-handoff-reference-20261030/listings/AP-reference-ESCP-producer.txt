@@ -1,0 +1,57 @@
+0xfe052af8: f40f1ef8 str x20, [sp, #-0x20]!
+0xfe052afc: a8688a52 mov w8, #0x5345
+0xfe052b00: 6808aa72 movk w8, #0x5043, lsl #16
+0xfe052b04: f37b01a9 stp x19, x30, [sp, #0x10]
+0xfe052b08: e80f00b9 str w8, [sp, #0xc]
+0xfe052b0c: 010c41f9 ldr x1, [x0, #0x218]
+0xfe052b10: 021c40f9 ldr x2, [x0, #0x38]
+0xfe052b14: 031041f9 ldr x3, [x0, #0x220]
+0xfe052b18: 13800291 add x19, x0, #0xa0
+0xfe052b1c: f40300aa mov x20, x0
+0xfe052b20: e00313aa mov x0, x19
+0xfe052b24: 582b0094 bl #0xfe05d884
+0xfe052b28: 840e41f9 ldr x4, [x20, #0x218]
+0xfe052b2c: 851e40f9 ldr x5, [x20, #0x38]
+0xfe052b30: 861241f9 ldr x6, [x20, #0x220]
+0xfe052b34: 810000f0 adrp x1, #0xfe065000
+0xfe052b38: a2000090 adrp x2, #0xfe066000
+0xfe052b3c: a3000090 adrp x3, #0xfe066000
+0xfe052b40: 210c3791 add x1, x1, #0xdc3
+0xfe052b44: 428c0a91 add x2, x2, #0x2a3
+0xfe052b48: 63cc0891 add x3, x3, #0x233
+0xfe052b4c: e0071f32 mov w0, #6
+0xfe052b50: 780a0094 bl #0xfe055530
+0xfe052b54: 88da41b9 ldr w8, [x20, #0x1d8]
+0xfe052b58: c8000034 cbz w8, #0xfe052b70
+0xfe052b5c: 810000f0 adrp x1, #0xfe065000
+0xfe052b60: 21dc3491 add x1, x1, #0xd37
+0xfe052b64: e0071f32 mov w0, #6
+0xfe052b68: 720a0094 bl #0xfe055530
+0xfe052b6c: 11000014 b #0xfe052bb0
+0xfe052b70: 811641f9 ldr x1, [x20, #0x228]
+0xfe052b74: 822640f9 ldr x2, [x20, #0x48]
+0xfe052b78: 831a41f9 ldr x3, [x20, #0x230]
+0xfe052b7c: e00313aa mov x0, x19
+0xfe052b80: 412b0094 bl #0xfe05d884
+0xfe052b84: 841641f9 ldr x4, [x20, #0x228]
+0xfe052b88: 852640f9 ldr x5, [x20, #0x48]
+0xfe052b8c: 861a41f9 ldr x6, [x20, #0x230]
+0xfe052b90: 810000f0 adrp x1, #0xfe065000
+0xfe052b94: a2000090 adrp x2, #0xfe066000
+0xfe052b98: a3000090 adrp x3, #0xfe066000
+0xfe052b9c: 210c3791 add x1, x1, #0xdc3
+0xfe052ba0: 428c0a91 add x2, x2, #0x2a3
+0xfe052ba4: 631c0991 add x3, x3, #0x247
+0xfe052ba8: e0071f32 mov w0, #6
+0xfe052bac: 610a0094 bl #0xfe055530
+0xfe052bb0: 01e68fd2 mov x1, #0x7f30
+0xfe052bb4: 0102a0f2 movk x1, #0x10, lsl #16
+0xfe052bb8: 0101c0f2 movk x1, #8, lsl #32
+0xfe052bbc: e2330091 add x2, sp, #0xc
+0xfe052bc0: e3031e32 mov w3, #4
+0xfe052bc4: e00313aa mov x0, x19
+0xfe052bc8: 2f2b0094 bl #0xfe05d884
+0xfe052bcc: f37b41a9 ldp x19, x30, [sp, #0x10]
+0xfe052bd0: e0031f2a mov w0, wzr
+0xfe052bd4: f40742f8 ldr x20, [sp], #0x20
+0xfe052bd8: c0035fd6 ret 

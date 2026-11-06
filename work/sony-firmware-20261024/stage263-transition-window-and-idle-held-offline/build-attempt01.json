@@ -1,0 +1,33 @@
+{
+  "argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/service_flow.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/transition_identity.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/idle_held.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/timing_fixture.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01/stream.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01/flow_journal.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01/descriptor_policy.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage263-transition-window-and-idle-held-offline/artifacts/timing-fixture"
+  ],
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "actual_camera": false,
+  "native_helper_built_or_run": false
+}

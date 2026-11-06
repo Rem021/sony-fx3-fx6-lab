@@ -1,0 +1,36 @@
+# Original FX3 core bytes under source map0x4200. No execution.
+0x99d0 [file+0x57d0] 70b5 push      {r4, r5, r6, lr}
+0x99d2 [file+0x57d2] 1648 ldr       r0, [pc, #0x58]
+0x99d4 [file+0x57d4] 144d ldr       r5, [pc, #0x50]
+0x99d6 [file+0x57d6] 0069 ldr       r0, [r0, #0x10]
+0x99d8 [file+0x57d8] 8007 lsls      r0, r0, #0x1e
+0x99da [file+0x57da] 02d5 bpl       #0x99e2
+0x99dc [file+0x57dc] 14a0 adr       r0, #0x50
+0x99de [file+0x57de] 2ef07dfc bl        #0x382dc
+0x99e2 [file+0x57e2] 72b6 cpsid     i
+0x99e4 [file+0x57e4] 0020 movs      r0, #0
+0x99e6 [file+0x57e6] 0122 movs      r2, #1
+0x99e8 [file+0x57e8] 4ff0e023 mov.w     r3, #-0x1fff2000
+0x99ec [file+0x57ec] 41b2 sxtb      r1, r0
+0x99ee [file+0x57ee] 01f01f04 and       r4, r1, #0x1f
+0x99f2 [file+0x57f2] 02fa04f4 lsl.w     r4, r2, r4
+0x99f6 [file+0x57f6] 4909 lsrs      r1, r1, #5
+0x99f8 [file+0x57f8] 03eb8101 add.w     r1, r3, r1, lsl #2
+0x99fc [file+0x57fc] c1f88041 str.w     r4, [r1, #0x180]
+0x9a00 [file+0x5800] 401c adds      r0, r0, #1
+0x9a02 [file+0x5802] 2f28 cmp       r0, #0x2f
+0x9a04 [file+0x5804] f2dd ble       #0x99ec
+0x9a06 [file+0x5806] 0024 movs      r4, #0
+0x9a08 [file+0x5808] 2046 mov       r0, r4
+0x9a0a [file+0x580a] fcf779fc bl        #0x6300
+0x9a0e [file+0x580e] 641c adds      r4, r4, #1
+0x9a10 [file+0x5810] 1f2c cmp       r4, #0x1f
+0x9a12 [file+0x5812] f9dd ble       #0x9a08
+0x9a14 [file+0x5814] 62b6 cpsie     i
+0x9a16 [file+0x5816] 0420 movs      r0, #4
+0x9a18 [file+0x5818] a871 strb      r0, [r5, #6]
+0x9a1a [file+0x581a] 0020 movs      r0, #0
+0x9a1c [file+0x581c] e871 strb      r0, [r5, #7]
+0x9a1e [file+0x581e] faf7ddfd bl        #0x45dc
+0x9a22 [file+0x5822] 0020 movs      r0, #0
+0x9a24 [file+0x5824] 70bd pop       {r4, r5, r6, pc}

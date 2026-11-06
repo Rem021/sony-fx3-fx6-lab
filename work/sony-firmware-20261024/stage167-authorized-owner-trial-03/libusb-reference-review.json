@@ -1,0 +1,28 @@
+{
+  "source": "https://raw.githubusercontent.com/libusb/libusb/v1.0.30/libusb/os/darwin_usb.c",
+  "local_whole_sha256": "290b9913eba18e0f9f9fa0de75c59bec0daa4ccd02740a96fd8479d20da06557",
+  "prior_excerpt_facts_revalidated": [
+    {
+      "claim": "Darwin capture is whole-device even when API takes interface 0",
+      "excerpt_sha256": "c77ce052ffde0a71f1da998db63197fe71358ce75524574952622660c884d476"
+    },
+    {
+      "claim": "Distinguish capture/reopen branch from noncapture re-enumeration wait",
+      "excerpt_sha256": "88980bf495d352b275ea8538ae618d6f693c2ad1a3ea2bd4453947f719badf66"
+    },
+    {
+      "claim": "Final attach count transition takes noncapture re-enumeration route",
+      "excerpt_sha256": "17c92c2df4ec76a3b05706e879c31cbca1a75e2ac170edf127178d22cc852b48"
+    },
+    {
+      "claim": "Restore helper can reopen, conditionally set configuration and reclaim old interfaces",
+      "excerpt_sha256": "f8db3276f8db574cd258aebeee596e6149792019999749c77994e8301c12c14e"
+    },
+    {
+      "claim": "Auto-release success does not prove driver attach succeeded",
+      "excerpt_sha256": "4e7ebe444fffbffbe7292ab1d34854e159a43ab432ac6bb50e16a29dcf2f76c2"
+    }
+  ],
+  "new_web_attempt": "connection failed; reused verified local tagged source",
+  "source_executed": false
+}

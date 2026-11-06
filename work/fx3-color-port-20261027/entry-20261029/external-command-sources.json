@@ -1,0 +1,39 @@
+[
+  {
+    "path": "/lib/libInfraExtCmdSvc.so",
+    "inode": 95280,
+    "bytes": 26960,
+    "sha256": "6ed99a632f6646e3313241b8d1aaef5a584444f81cf721c013fc403887774134",
+    "machine": "EM_AARCH64",
+    "needed": [
+      "libUsbControl.so",
+      "libpthread.so.0",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libdl.so.2",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "librt.so.1"
+    ],
+    "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+    "output": "original-members/libInfraExtCmdSvc.so"
+  },
+  {
+    "path": "/lib/libusbcmd.so",
+    "inode": 95528,
+    "bytes": 27208,
+    "sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+    "machine": "EM_AARCH64",
+    "needed": [
+      "libpthread.so.0",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libdl.so.2",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "librt.so.1"
+    ],
+    "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+    "output": "original-members/libusbcmd.so"
+  }
+]

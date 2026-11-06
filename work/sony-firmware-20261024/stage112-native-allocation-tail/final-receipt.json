@@ -1,0 +1,117 @@
+{
+  "schema": "fx3-stage112-allocation-tail/1",
+  "created_utc": "2026-10-27T14:20:50.391752+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/README.md",
+      "bytes": 6393,
+      "sha256": "caced0881f9566705861b55274b1f1e6ef3cfbcbec5298b593b31da1c9713d65"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/allocation_tail.py",
+      "bytes": 17104,
+      "sha256": "f41a08e2a9ce59cf9b735b9a45890f4c3f4ef1d4e4c989eb84d62ace77ffc78a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/completed-evidence-review.json",
+      "bytes": 586,
+      "sha256": "ef9916808c980a1f4e47a34004a2566a176479abd9465716d5af224121d9b30b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/diagnostic-storage-refinement.json",
+      "bytes": 1252,
+      "sha256": "1b6721e79dacf150fb0912b9d46268af8edf9114dff7905ac8be50a0a4916d6b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/goal-status-after.json",
+      "bytes": 345987,
+      "sha256": "73f41fbbbbe6e98e48df93f58cd5a93917d0637d869b47dd4689878aa8466bcf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/goal-status-before.json",
+      "bytes": 341628,
+      "sha256": "8ff93f4c8611f2acb7e25ad43c1a9c71590224ff0d2b4219590c619f80ac64da"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/public-source-notes.json",
+      "bytes": 342,
+      "sha256": "4564548e14319cb06deb04b12b3b35640af340b72e81fe1059aa7bb99bc0b0ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/review_and_seal.py",
+      "bytes": 18296,
+      "sha256": "f2994b5d5b2ed97685d0f6b789aa189515bfeb84881c106796afc1c34f0e39cc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/run-native-call-instruction-scope-20261027/allocation-tail-results.json",
+      "bytes": 156531,
+      "sha256": "02a93614cfad2ff4bd3ef7dd8dbb8dce9c715a45de76c7ef4cc92db147f2fe1a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/run-native-call-instruction-scope-20261027/executed-source.py",
+      "bytes": 15636,
+      "sha256": "3a4d67683a50aa36d449c107bc30cf77548f7c883f9baab7238aad1e430ac5f3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/run-native-client-branches-20261027/allocation-tail-results.json",
+      "bytes": 199149,
+      "sha256": "6b514602f0e0fcf79907548f3a90a9e27d26686453b12456625effcc568f446d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/run-native-client-branches-20261027/executed-source.py",
+      "bytes": 17104,
+      "sha256": "f41a08e2a9ce59cf9b735b9a45890f4c3f4ef1d4e4c989eb84d62ace77ffc78a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/run-native-tail-and-callback-20261027/attempt-failure.json",
+      "bytes": 1423,
+      "sha256": "195c40f2b1133a01a03ae8163f64b23ebd6d71c3f4229bf33cf7f48420ad55b9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/run-native-tail-and-callback-20261027/executed-source.py",
+      "bytes": 15516,
+      "sha256": "4d6f1a26593d3fb9359cf7361f4ae42381b7d1745df05f1d13a2be42c63a42c1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage112-native-allocation-tail/source-and-scope-audit.json",
+      "bytes": 126548,
+      "sha256": "81d1b5a25abd1f8ad6eba30e3f4ee08595724e52232e456232fe1cabdac7fcdc"
+    }
+  ],
+  "previous_manifest_sha256": "719b2d1e33d93e3021c081438ed5d9ed292626f5c4fd72ae67355dab31694438",
+  "operations": {
+    "status": "PASS_ORIGINAL_KERNEL_GEOMETRY_TRAILER_AND_DECLARED_USER_CALLBACK_STORAGE_SCOPE",
+    "created_utc": "2026-10-27T14:20:50.391752+00:00",
+    "previous_manifest_members_verified": 12,
+    "geometry_cases": 16,
+    "rejected_configuration_cases": 2,
+    "ioctl_argument_cases": 4,
+    "registration_cases": 2,
+    "linked_independent_flows": 2,
+    "bounded_phases": 70,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "actual_kernel_services_or_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "8ff93f4c8611f2acb7e25ad43c1a9c71590224ff0d2b4219590c619f80ac64da",
+    "after_sha256": "73f41fbbbbe6e98e48df93f58cd5a93917d0637d869b47dd4689878aa8466bcf"
+  },
+  "readme_index_before_sha256": "cabc7b0a25347a1c65cdec284d7d2e7a1b905e811659ee59d061ce00f342a989",
+  "readme_index_after_sha256": "e5a765c93639852e089c8e0744fb88b5add804a31013600ecca18cfc34e03433",
+  "readme_index_entry": "- [2026-10-27 FX3 分配空间与回复尾标记](<work/sony-firmware-20261024/stage112-native-allocation-tail/README.md>)：原128B块/77777777尾标记解释声明条件下44→48复制，70阶段；实际池/用户映射/寿命及硬件恢复仍待验，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

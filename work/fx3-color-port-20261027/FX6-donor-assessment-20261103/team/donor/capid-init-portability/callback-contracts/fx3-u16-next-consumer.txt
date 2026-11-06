@@ -1,0 +1,175 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001192a8 <_ZN16XavcsMovieWriter13SetClipStatusEN4sidb10ClipStatusE>:
+  11975c: d10743ff     	sub	sp, sp, #0x1d0
+  119760: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+  119764: 910003fd     	mov	x29, sp
+  119768: a90153f3     	stp	x19, x20, [sp, #0x10]
+  11976c: aa0003f3     	mov	x19, x0
+  119770: 52802400     	mov	w0, #0x120              // =288
+  119774: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  119778: 910263b5     	add	x21, x29, #0x98
+  11977c: aa0103f4     	mov	x20, x1
+  119780: 790137a0     	strh	w0, [x29, #0x9a]
+  119784: f9400420     	ldr	x0, [x1, #0x8]
+  119788: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  11978c: 52800059     	mov	w25, #0x2               // =2
+  119790: b900a3a0     	str	w0, [x29, #0xa0]
+  119794: 9132227a     	add	x26, x19, #0xc88
+  119798: 79403020     	ldrh	w0, [x1, #0x18]
+  11979c: 52800201     	mov	w1, #0x10               // =16
+  1197a0: a90363f7     	stp	x23, x24, [sp, #0x30]
+  1197a4: 52846218     	mov	w24, #0x2310            // =8976
+  1197a8: b900a7a0     	str	w0, [x29, #0xa4]
+  1197ac: aa1503e0     	mov	x0, x21
+  1197b0: 390273b9     	strb	w25, [x29, #0x9c]
+  1197b4: 390277bf     	strb	wzr, [x29, #0x9d]
+  1197b8: 39027bbf     	strb	wzr, [x29, #0x9e]
+  1197bc: 39027fbf     	strb	wzr, [x29, #0x9f]
+  1197c0: 790133b8     	strh	w24, [x29, #0x98]
+  1197c4: 97fff09a     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  1197c8: 79403280     	ldrh	w0, [x20, #0x18]
+  1197cc: 79004a60     	strh	w0, [x19, #0x24]
+  1197d0: f9400280     	ldr	x0, [x20]
+  1197d4: f9001e60     	str	x0, [x19, #0x38]
+  1197d8: f9400680     	ldr	x0, [x20, #0x8]
+  1197dc: f9002260     	str	x0, [x19, #0x40]
+  1197e0: f9400a80     	ldr	x0, [x20, #0x10]
+  1197e4: f9002660     	str	x0, [x19, #0x48]
+  1197e8: d2800400     	mov	x0, #0x20               // =32
+  1197ec: 97fd974d     	bl	0x7f520 <_Znwm@plt>
+  1197f0: aa0003f6     	mov	x22, x0
+  1197f4: b9401e81     	ldr	w1, [x20, #0x1c]
+  1197f8: 97fd9926     	bl	0x7fc90 <_ZN3mpr8BaseListC1Ej@plt>
+  1197fc: f9008a76     	str	x22, [x19, #0x110]
+  119800: d2800400     	mov	x0, #0x20               // =32
+  119804: 97fd9747     	bl	0x7f520 <_Znwm@plt>
+  119808: aa0003f6     	mov	x22, x0
+  11980c: b9402281     	ldr	w1, [x20, #0x20]
+  119810: 97fd9920     	bl	0x7fc90 <_ZN3mpr8BaseListC1Ej@plt>
+  119814: f9008e76     	str	x22, [x19, #0x118]
+  119818: d2800400     	mov	x0, #0x20               // =32
+  11981c: 97fd9741     	bl	0x7f520 <_Znwm@plt>
+  119820: aa0003f6     	mov	x22, x0
+  119824: b9402681     	ldr	w1, [x20, #0x24]
+  119828: 97fd991a     	bl	0x7fc90 <_ZN3mpr8BaseListC1Ej@plt>
+  11982c: f9009276     	str	x22, [x19, #0x120]
+  119830: 912f3260     	add	x0, x19, #0xbcc
+  119834: a9007c1f     	stp	xzr, xzr, [x0]
+  119838: a9017c1f     	stp	xzr, xzr, [x0, #0x10]
+  11983c: f900101f     	str	xzr, [x0, #0x20]
+  119840: 912fe260     	add	x0, x19, #0xbf8
+  119844: 97ffff5d     	bl	0x1195b8 <_ZN16XavcsMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0x310>
+  119848: b90bf67f     	str	wzr, [x19, #0xbf4]
+  11984c: d2858000     	mov	x0, #0x2c00             // =11264
+  119850: 8b000260     	add	x0, x19, x0
+  119854: 3900401f     	strb	wzr, [x0, #0x10]
+  119858: d280c4e0     	mov	x0, #0x627              // =1575
+  11985c: b92c167f     	str	wzr, [x19, #0x2c14]
+  119860: 97fd87c8     	bl	0x7b780 <_Znam@plt>
+  119864: f904da60     	str	x0, [x19, #0x9b0]
+  119868: d2801900     	mov	x0, #0xc8               // =200
+  11986c: 97fd87c5     	bl	0x7b780 <_Znam@plt>
+  119870: f904de60     	str	x0, [x19, #0x9b8]
+  119874: b0000da1     	adrp	x1, 0x2ce000 <_ZN3mpr26XavcOutBandParamDataBuffer18ALIGNMENT_AREA_NUME+0xb40>
+  119878: 9131a260     	add	x0, x19, #0xc68
+  11987c: 910fb021     	add	x1, x1, #0x3ec
+  119880: 97fd9d0c     	bl	0x80cb0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEaSEPKc@plt>
+  119884: b0000da1     	adrp	x1, 0x2ce000 <_ZN3mpr26XavcOutBandParamDataBuffer18ALIGNMENT_AREA_NUME+0xb40>
+  119888: aa1a03e0     	mov	x0, x26
+  11988c: 910fc421     	add	x1, x1, #0x3f1
+  119890: 97fd9d08     	bl	0x80cb0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEaSEPKc@plt>
+  119894: 528000a0     	mov	w0, #0x5                // =5
+  119898: 72a007c0     	movk	w0, #0x3e, lsl #16
+  11989c: 97fd94d9     	bl	0x7ec00 <Backup_get_datasize@plt>
+  1198a0: 7100001f     	cmp	w0, #0x0
+  1198a4: 54000aec     	b.gt	0x119a00 <_ZN16XavcsMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0x758>
+  1198a8: 52802501     	mov	w1, #0x128              // =296
+  1198ac: 390273b9     	strb	w25, [x29, #0x9c]
+  1198b0: 390277bf     	strb	wzr, [x29, #0x9d]
+  1198b4: 790137a1     	strh	w1, [x29, #0x9a]
+  1198b8: f9400681     	ldr	x1, [x20, #0x8]
+  1198bc: 39027bbf     	strb	wzr, [x29, #0x9e]
+  1198c0: 291403a1     	stp	w1, w0, [x29, #0xa0]
+  1198c4: aa1503e0     	mov	x0, x21
+  1198c8: 52800201     	mov	w1, #0x10               // =16
+  1198cc: 39027fbf     	strb	wzr, [x29, #0x9f]
+  1198d0: 790133b8     	strh	w24, [x29, #0x98]
+  1198d4: 97fff056     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  1198d8: aa1503e0     	mov	x0, x21
+  1198dc: 52800301     	mov	w1, #0x18               // =24
+  1198e0: 9101e3b6     	add	x22, x29, #0x78
+  1198e4: 910163b7     	add	x23, x29, #0x58
+  1198e8: 97fd9332     	bl	0x7e5b0 <_ZNSt7__cxx1118basic_stringstreamIcSt11char_traitsIcESaIcEEC1ESt13_Ios_Openmode@plt>
+  1198ec: 3901a3bf     	strb	wzr, [x29, #0x68]
+  1198f0: 9101a3a0     	add	x0, x29, #0x68
+  1198f4: 12800001     	mov	w1, #-0x1               // =-1
+  1198f8: a905ffa0     	stp	x0, xzr, [x29, #0x58]
+  1198fc: 910042a0     	add	x0, x21, #0x10
+  119900: 97fd9c90     	bl	0x80b40 <_ZNSolsEj@plt>
+  119904: aa1603e8     	mov	x8, x22
+  119908: 910062a0     	add	x0, x21, #0x18
+  11990c: 97fda0f9     	bl	0x81cf0 <_ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv@plt>
+  119910: aa1603e1     	mov	x1, x22
+  119914: 9132a260     	add	x0, x19, #0xca8
+  119918: 97fd9ac2     	bl	0x80420 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEaSEOS4_@plt>
+  11991c: aa1603e0     	mov	x0, x22
+  119920: 97fd9ae0     	bl	0x804a0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv@plt>
+  119924: aa1703e0     	mov	x0, x23
+  119928: 97fd9ade     	bl	0x804a0 <_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv@plt>
+  11992c: aa1503e0     	mov	x0, x21
+  119930: 97fd92c0     	bl	0x7e430 <_ZNSt7__cxx1118basic_stringstreamIcSt11char_traitsIcESaIcEED1Ev@plt>
+  119934: 3940c260     	ldrb	w0, [x19, #0x30]
+  119938: 35000380     	cbnz	w0, 0x1199a8 <_ZN16XavcsMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0x700>
+  11993c: aa1503e1     	mov	x1, x21
+  119940: 52800f20     	mov	w0, #0x79               // =121
+  119944: 52800037     	mov	w23, #0x1               // =1
+  119948: 97fd9f7e     	bl	0x81740 <_ZN3mpr10ThreadInfo13GetThreadInfoEiR18__osal_thread_info@plt>
+  11994c: 3901f3b7     	strb	w23, [x29, #0x7c]
+  119950: b0000f00     	adrp	x0, 0x2fa000
+  119954: 52800301     	mov	w1, #0x18               // =24
+  119958: 3901f7bf     	strb	wzr, [x29, #0x7d]
+  11995c: 3901fbbf     	strb	wzr, [x29, #0x7e]
+  119960: f9401400     	ldr	x0, [x0, #0x28]
+  119964: 3901ffbf     	strb	wzr, [x29, #0x7f]
+  119968: a90acfa0     	stp	x0, x19, [x29, #0xa8]
+  11996c: 52846200     	mov	w0, #0x2310             // =8976
+  119970: 29117fb3     	stp	w19, wzr, [x29, #0x88]
+  119974: 7900f3a0     	strh	w0, [x29, #0x78]
+  119978: 52802700     	mov	w0, #0x138              // =312
+  11997c: 7900f7a0     	strh	w0, [x29, #0x7a]
+  119980: f9400680     	ldr	x0, [x20, #0x8]
+  119984: b90083a0     	str	w0, [x29, #0x80]
+  119988: d360fe60     	lsr	x0, x19, #32
+  11998c: b90087a0     	str	w0, [x29, #0x84]
+  119990: aa1603e0     	mov	x0, x22
+  119994: 97fff026     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  119998: 3900c277     	strb	w23, [x19, #0x30]
+  11999c: 9100a261     	add	x1, x19, #0x28
+  1199a0: aa1503e0     	mov	x0, x21
+  1199a4: 97fd8b4f     	bl	0x7c6e0 <osal_create_waitable_thread@plt>
+  1199a8: 52800040     	mov	w0, #0x2                // =2
+  1199ac: 52800201     	mov	w1, #0x10               // =16
+  1199b0: 390277bf     	strb	wzr, [x29, #0x9d]
+  1199b4: 390273a0     	strb	w0, [x29, #0x9c]
+  1199b8: 52846200     	mov	w0, #0x2310             // =8976
+  1199bc: 39027bbf     	strb	wzr, [x29, #0x9e]
+  1199c0: 790133a0     	strh	w0, [x29, #0x98]
+  1199c4: 52802800     	mov	w0, #0x140              // =320
+  1199c8: 39027fbf     	strb	wzr, [x29, #0x9f]
+  1199cc: 790137a0     	strh	w0, [x29, #0x9a]
+  1199d0: f9400680     	ldr	x0, [x20, #0x8]
+  1199d4: 29147fa0     	stp	w0, wzr, [x29, #0xa0]
+  1199d8: aa1503e0     	mov	x0, x21
+  1199dc: 97fff014     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  1199e0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  1199e4: 52800000     	mov	w0, #0x0                // =0
+  1199e8: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+  1199ec: a94363f7     	ldp	x23, x24, [sp, #0x30]
+  1199f0: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+  1199f4: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+  1199f8: 910743ff     	add	sp, sp, #0x1d0
+  1199fc: d65f03c0     	ret

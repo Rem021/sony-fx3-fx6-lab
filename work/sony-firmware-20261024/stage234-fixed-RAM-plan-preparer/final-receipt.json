@@ -1,0 +1,414 @@
+{
+  "schema": "fx3-stage234-own-RAM-plan-preparer-seal-v1",
+  "created_utc": "2026-10-30T18:00:32.247943+00:00",
+  "previous_manifest_sha256": "165a3ba9f7f8ae7fc1ad2a407f2bb6e720e92b42c5ecf50062eb334ef004fbd4",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/README.md",
+      "bytes": 5613,
+      "sha256": "473f5959ab9282369d5aa053cf232e2a189b6dbfeb021b8fc216a55f0aa7b427"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/build-initial/build.json",
+      "bytes": 16494,
+      "sha256": "e217094035ff6a34aa43fce4fce4437454da280b8e1526b151d9843a02db311a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/build-initial/module.o",
+      "bytes": 13536,
+      "sha256": "db6b5cad8bd10161178724ae9336ddea5b718b15e45fe861b2c043b6282da62f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/build-initial/parent-module.so",
+      "bytes": 131864,
+      "sha256": "bd973665dc26d70d5acadf9f797e6cbe74dacc1be8adf5ab9933f86f162f1966"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/build-initial-summary.json",
+      "bytes": 12530,
+      "sha256": "96c4fa29d6458dda6910ef9138c249f52aceec7c994755d9e40ee76e9f1b2bae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/cleanup-expiry-before-fix.json",
+      "bytes": 456,
+      "sha256": "4a398e87f12a54bbd849576c0fea00426ef4b7cefd622decc57c3b3ba2c33b0b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/cleanup-expiry-counterexample-model.py",
+      "bytes": 6623,
+      "sha256": "2cf06a6a5f2a77aab9d5372ef4cd820e3d91f141a3b19a502601e5b52312acd0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/core_support.inc",
+      "bytes": 5754,
+      "sha256": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/expiry-counterexample-model.py",
+      "bytes": 6427,
+      "sha256": "90cbeb4e5db05000ffe77cd71c288661a27306d458024f4b00f2cda8c63c4892"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/goal-status-after.json",
+      "bytes": 506109,
+      "sha256": "f37e1357a8c79f374063758051f8da090215ca015f2e69623598111062eee4eb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/goal-status-before.json",
+      "bytes": 500736,
+      "sha256": "57c09006f93cf6c15733fe17a1502d9f2dc8c6d70ecc84b85154db8613b35779"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/kernel-contract-review.json",
+      "bytes": 2888,
+      "sha256": "a592611b3f50afb78a98c1aca2550e91012b6e488b718d229fe6ae3d5e1ed741"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/kernel-source-capture.json",
+      "bytes": 971,
+      "sha256": "dcd00b8fafcab48abb46910fa42364f35aa7b1e401823b16324a84c7f7eb5f66"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/model_prepare.py",
+      "bytes": 6623,
+      "sha256": "2cf06a6a5f2a77aab9d5372ef4cd820e3d91f141a3b19a502601e5b52312acd0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/native-goal-observed.json",
+      "bytes": 384,
+      "sha256": "576772e269f8eeecf0b0c0704cbd6032defa2c1d0d682d8d3eb46bd770d88059"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/parent_ipc.inc",
+      "bytes": 1104,
+      "sha256": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/post-publication-expiry-before-fix.json",
+      "bytes": 443,
+      "sha256": "cfd2aafb1bc79efcb84363c7db2ab88f9763b9414e9c2fdbe505dff2a4d0f31b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/prepare.c",
+      "bytes": 7150,
+      "sha256": "f46fb6ba33f931008f692a6dc8261b2439b75f832a781191d9d170a61d8ad9f3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/prepare_build.py",
+      "bytes": 21233,
+      "sha256": "8d8a832af549361cf200f23d2195b209d1c70ec0289dd4888b3e0936123c4ee9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/readme-after.md",
+      "bytes": 106900,
+      "sha256": "cb72e84d2c8294a15ef3859e478f4fb68756ef95ec4948e1adee255436730d61"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/readme-before.md",
+      "bytes": 106472,
+      "sha256": "c3478a04da86e72555255fb5577e71521e4886ab6c5d6be4fea40ebc516274ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/readme-rebased-before.md",
+      "bytes": 106472,
+      "sha256": "c3478a04da86e72555255fb5577e71521e4886ab6c5d6be4fea40ebc516274ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/reproducible-build/build.json",
+      "bytes": 16548,
+      "sha256": "01d92309894d5d6deb017b8cd0e420ff6e8b002e1054483b6f11936469c57328"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/reproducible-build/module.o",
+      "bytes": 13584,
+      "sha256": "b88a0f1e1d7ef602cf7eee0659e36f9285970f4eca8f1605dcd76f08180362aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/reproducible-build/parent-module.so",
+      "bytes": 131864,
+      "sha256": "852296532d80d0ffb5288e9532acfcb9a68177ed893f3733cd2192022e957100"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/reproducible-build-summary.json",
+      "bytes": 837,
+      "sha256": "bb7d1ef6b6b40d82e81f973041e869697c7ea3a10039f91597d46d24044c5a75"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/reproducible-final/build.json",
+      "bytes": 25553,
+      "sha256": "72d1f911b59b8323c54bc919c7b151a2be10ad3269dd59bdbfce37dc60452bf6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/reproducible-final/module.o",
+      "bytes": 15416,
+      "sha256": "98a37a221e999690fac23df25ba16ceb65869a58cfae5ba8e079c0a2c55cbbc0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/reproducible-final/parent-module.so",
+      "bytes": 131864,
+      "sha256": "48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/reproducible-final-summary.json",
+      "bytes": 897,
+      "sha256": "cd832a4734fb6a03eb4d97a89bbffc12d0ee6514ce10a41ec8ce92963a26781f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/built/build.json",
+      "bytes": 25551,
+      "sha256": "4f21a5a11ca9b028823b82f3dbaca0538abb5859fca2550f3f86b110ed3b7bfb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/built/module.o",
+      "bytes": 15416,
+      "sha256": "98a37a221e999690fac23df25ba16ceb65869a58cfae5ba8e079c0a2c55cbbc0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/built/parent-module.so",
+      "bytes": 131864,
+      "sha256": "48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/receipt.json",
+      "bytes": 77234,
+      "sha256": "e84dc237ba9c42bc66b3399102135460520bc0deee7bc292ded9ee2fff0440fb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/source-snapshot/core_support.inc",
+      "bytes": 5754,
+      "sha256": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/source-snapshot/model_prepare.py",
+      "bytes": 6600,
+      "sha256": "78c0d96e4cacb6d56f29017c21cb2f92f7ded20e36e3c07d018ee8ddae9b9728"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/source-snapshot/parent_ipc.inc",
+      "bytes": 1104,
+      "sha256": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/source-snapshot/prepare.c",
+      "bytes": 7150,
+      "sha256": "f46fb6ba33f931008f692a6dc8261b2439b75f832a781191d9d170a61d8ad9f3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/source-snapshot/prepare_build.py",
+      "bytes": 21233,
+      "sha256": "8d8a832af549361cf200f23d2195b209d1c70ec0289dd4888b3e0936123c4ee9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final/source-snapshot/test_prepare.py",
+      "bytes": 6333,
+      "sha256": "ab0b46d2aedf9ed3bb4f3adc32a19940f7b806b12101f0701fb19b7a45c92768"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/built/build.json",
+      "bytes": 25565,
+      "sha256": "94835134f3628b784a6bffdcc430c42a500fdb03c32734996ef280b1fc7ab623"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/built/module.o",
+      "bytes": 15416,
+      "sha256": "98a37a221e999690fac23df25ba16ceb65869a58cfae5ba8e079c0a2c55cbbc0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/built/parent-module.so",
+      "bytes": 131864,
+      "sha256": "48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/receipt.json",
+      "bytes": 77248,
+      "sha256": "ff8df2f1aede31669a1aefacb486506868f7a97a79821bce7610adfdadee52ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/source-snapshot/core_support.inc",
+      "bytes": 5754,
+      "sha256": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/source-snapshot/model_prepare.py",
+      "bytes": 6623,
+      "sha256": "2cf06a6a5f2a77aab9d5372ef4cd820e3d91f141a3b19a502601e5b52312acd0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/source-snapshot/parent_ipc.inc",
+      "bytes": 1104,
+      "sha256": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/source-snapshot/prepare.c",
+      "bytes": 7150,
+      "sha256": "f46fb6ba33f931008f692a6dc8261b2439b75f832a781191d9d170a61d8ad9f3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/source-snapshot/prepare_build.py",
+      "bytes": 21233,
+      "sha256": "8d8a832af549361cf200f23d2195b209d1c70ec0289dd4888b3e0936123c4ee9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-final-close-checked/source-snapshot/test_prepare.py",
+      "bytes": 6333,
+      "sha256": "ab0b46d2aedf9ed3bb4f3adc32a19940f7b806b12101f0701fb19b7a45c92768"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/built/build.json",
+      "bytes": 16499,
+      "sha256": "8c44e6e58f4e566d34e5bad5c64b0871bf69757c0f41f4f01946815987d31ec6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/built/module.o",
+      "bytes": 13536,
+      "sha256": "db6b5cad8bd10161178724ae9336ddea5b718b15e45fe861b2c043b6282da62f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/built/parent-module.so",
+      "bytes": 131864,
+      "sha256": "bd973665dc26d70d5acadf9f797e6cbe74dacc1be8adf5ab9933f86f162f1966"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/receipt.json",
+      "bytes": 61984,
+      "sha256": "32fe9466210c377ab141bf0f44ed173f20722a4a563d6f833fa126c22f486a3f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/source-snapshot/core_support.inc",
+      "bytes": 5754,
+      "sha256": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/source-snapshot/model_prepare.py",
+      "bytes": 6364,
+      "sha256": "8f0788fc331509706e415154febef84684bb3568fedc85d033070d20da19d991"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/source-snapshot/parent_ipc.inc",
+      "bytes": 1104,
+      "sha256": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/source-snapshot/prepare.c",
+      "bytes": 7025,
+      "sha256": "0b54b221ffc0a75fb7c7ff29592d4d1da1cf3539cd36f1a1973f2ac0ba33ab8b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/source-snapshot/prepare_build.py",
+      "bytes": 21143,
+      "sha256": "fab1a800c5df3350446b3d44f05b64c45848511231de5b24cc978c018563cc0c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-initial/source-snapshot/test_prepare.py",
+      "bytes": 6272,
+      "sha256": "2f64deeac521de15f980094f6d9470c5b26ca66ada4b13f67ac9327110b39a10"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/built/build.json",
+      "bytes": 16561,
+      "sha256": "67f1abd972bf6e5f07d1a335b5f4d54e145067370eb74d5f8fe01a2964eafd65"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/built/module.o",
+      "bytes": 13584,
+      "sha256": "b88a0f1e1d7ef602cf7eee0659e36f9285970f4eca8f1605dcd76f08180362aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/built/parent-module.so",
+      "bytes": 131864,
+      "sha256": "852296532d80d0ffb5288e9532acfcb9a68177ed893f3733cd2192022e957100"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/receipt.json",
+      "bytes": 64716,
+      "sha256": "2c7b2bca80f4ddc53f0fc1555c11e6c62861dd68f32843299a66910aef715dfe"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/source-snapshot/core_support.inc",
+      "bytes": 5754,
+      "sha256": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/source-snapshot/model_prepare.py",
+      "bytes": 6427,
+      "sha256": "90cbeb4e5db05000ffe77cd71c288661a27306d458024f4b00f2cda8c63c4892"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/source-snapshot/parent_ipc.inc",
+      "bytes": 1104,
+      "sha256": "2c7db2013151b833f157f8202c7c2a4364ea403e9703d93999d2705e1f376044"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/source-snapshot/prepare.c",
+      "bytes": 7079,
+      "sha256": "e53673ea7e920a143e574009486f1624789b15cb5af5f5459362b865e8dcb4e4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/source-snapshot/prepare_build.py",
+      "bytes": 21233,
+      "sha256": "42a9d241eb393aa5ccbf6545e4bfbf437b7849c229cc4bf693447ec542f58d95"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/runs-publication-verified/source-snapshot/test_prepare.py",
+      "bytes": 6300,
+      "sha256": "5aa77370437de7144f997d6a82d8fc646f5e680b58b2ea71e5df303dc7235bbb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/seal_stage.py",
+      "bytes": 13202,
+      "sha256": "4373667713e29d7dd8eab79505ac34c311b16cdf9eeeb0c0a45b0927cb88be76"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/namei.c",
+      "bytes": 122903,
+      "sha256": "b20efdbcba11a32df2d93418be58c6b0c6b1abeb3ea55f114ec47de7c505dfa8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/shmem.c",
+      "bytes": 108766,
+      "sha256": "f58fc9717393436b41607d58e7e99d940ee528b1caba6b4dece080493daf01a9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/source-reference/unistd.h",
+      "bytes": 30186,
+      "sha256": "873c02e6321fc00a8d4993469b3904035dd2c76f249bcd5af3065f3f51cd22d6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/test_prepare.py",
+      "bytes": 6333,
+      "sha256": "ab0b46d2aedf9ed3bb4f3adc32a19940f7b806b12101f0701fb19b7a45c92768"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage234-fixed-RAM-plan-preparer/verification-receipt.json",
+      "bytes": 2205,
+      "sha256": "e71137c931dddf9ad6901bfcf102c2b0c0601143d44b7d626e3ae540a15725b6"
+    }
+  ],
+  "member_count": 76,
+  "mutable_heads_not_manifest_members": true,
+  "goal_before_sha256": "57c09006f93cf6c15733fe17a1502d9f2dc8c6d70ecc84b85154db8613b35779",
+  "goal_after_sha256": "f37e1357a8c79f374063758051f8da090215ca015f2e69623598111062eee4eb",
+  "status": "OWN_FIXED_RAM_PLAN_PREPARER_MODEL_PASS_NOT_DEPLOYABLE",
+  "tests": 7,
+  "model_cases": 27,
+  "own_ELF_bytes": 131864,
+  "own_ELF_sha256": "48dd484aeb42af4465e237ecf97fec4e467639e4ed5d15dc890491fa066994a3",
+  "private_staging_full_readback_and_no_replace_publication_implemented": true,
+  "final_success_after_directory_close_and_clock_recheck": true,
+  "generated_plan_to_existing_own_worker_START_modeled": true,
+  "normalized_self_check_is_authentication": false,
+  "synthetic_associations_only": true,
+  "START_to_OBSERVE_transition_implemented": false,
+  "preparer_completion_to_worker_activation_gate_integrated": false,
+  "full_boot_worker_integrated": false,
+  "real_kernel_loader_rename_tmpfs_body_or_host_transport_verified": false,
+  "probe_deployable": false,
+  "original_Sony_glibc_Linux_driver_or_public_camera_code_executed": false,
+  "new_device_USB_cache_admin_auth_upload_or_firmware_writes": 0,
+  "all16_requirements_and_authorizations_unchanged": true,
+  "formal23_sources_release04_05_unchanged": true,
+  "root195_pending_unlaunched": true,
+  "previous_goal_turn_classification": "progress:233 kernel receive assignment and16 conditional schedules sealed",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

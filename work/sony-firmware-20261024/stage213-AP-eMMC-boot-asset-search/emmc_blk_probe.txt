@@ -1,0 +1,116 @@
+00001d08: fd7bbba9 stp x29, x30, [sp, #-0x50]!
+00001d0c: fd030091 mov x29, sp
+00001d10: f55b02a9 stp x21, x22, [sp, #0x20]
+00001d14: f603012a mov w22, w1
+00001d18: f76303a9 stp x23, x24, [sp, #0x30]
+00001d1c: f80300aa mov x24, x0
+00001d20: f96b04a9 stp x25, x26, [sp, #0x40]
+00001d24: f90302aa mov x25, x2
+00001d28: f35301a9 stp x19, x20, [sp, #0x10]
+00001d2c: 00000094 bl #0x1d2c ; {'section': '.init.text', 'offset': 7468, 'type': 283, 'symbol': 'emmc_blk_plat_probe_pre', 'addend': 0}
+00001d30: 4001f836 tbz w0, #0x1f, #0x1d58
+00001d34: 230d0058 ldr x3, #0x1ed8
+00001d38: f303002a mov w19, w0
+00001d3c: 210d0058 ldr x1, #0x1ee0
+00001d40: e403132a mov w4, w19
+00001d44: 200d0058 ldr x0, #0x1ee8
+00001d48: 63800091 add x3, x3, #0x20
+00001d4c: 627a8152 mov w2, #0xbd3
+00001d50: 00000094 bl #0x1d50 ; {'section': '.init.text', 'offset': 7504, 'type': 283, 'symbol': 'printk', 'addend': 0}
+00001d54: 59000014 b #0x1eb8
+00001d58: d6050035 cbnz w22, #0x1e10
+00001d5c: 00000094 bl #0x1d5c ; {'section': '.init.text', 'offset': 7516, 'type': 283, 'symbol': 'emmc_seq_probe', 'addend': 0}
+00001d60: f303002a mov w19, w0
+00001d64: 2001f836 tbz w0, #0x1f, #0x1d88
+00001d68: 830b0058 ldr x3, #0x1ed8
+00001d6c: e403132a mov w4, w19
+00001d70: 810b0058 ldr x1, #0x1ee0
+00001d74: 027c8152 mov w2, #0xbe0
+00001d78: c00b0058 ldr x0, #0x1ef0
+00001d7c: 63800091 add x3, x3, #0x20
+00001d80: 00000094 bl #0x1d80 ; {'section': '.init.text', 'offset': 7552, 'type': 283, 'symbol': 'printk', 'addend': 0}
+00001d84: 41000014 b #0x1e88
+00001d88: 950b0058 ldr x21, #0x1ef8
+00001d8c: a1b20091 add x1, x21, #0x2c
+00001d90: a02a40b9 ldr w0, [x21, #0x28]
+00001d94: 00000094 bl #0x1d94 ; {'section': '.init.text', 'offset': 7572, 'type': 283, 'symbol': 'register_blkdev', 'addend': 0}
+00001d98: f303002a mov w19, w0
+00001d9c: 8000f837 tbnz w0, #0x1f, #0x1dac
+00001da0: 14008052 mov w20, #0
+00001da4: 175f8052 mov w23, #0x2f8
+00001da8: 0a000014 b #0x1dd0
+00001dac: 63090058 ldr x3, #0x1ed8
+00001db0: e403132a mov w4, w19
+00001db4: 61090058 ldr x1, #0x1ee0
+00001db8: 027d8152 mov w2, #0xbe8
+00001dbc: 200a0058 ldr x0, #0x1f00
+00001dc0: 63800091 add x3, x3, #0x20
+00001dc4: 00000094 bl #0x1dc4 ; {'section': '.init.text', 'offset': 7620, 'type': 283, 'symbol': 'printk', 'addend': 0}
+00001dc8: 2f000014 b #0x1e84
+00001dcc: 94060011 add w20, w20, #1
+00001dd0: a00a40b9 ldr w0, [x21, #8]
+00001dd4: 9f02006b cmp w20, w0
+00001dd8: ea010054 b.ge #0x1e14
+00001ddc: a00240f9 ldr x0, [x21]
+00001de0: 8002379b smaddl x0, w20, w23, x0
+00001de4: b9fcff97 bl #0x10c8
+00001de8: f303002a mov w19, w0
+00001dec: 00ffff36 tbz w0, #0x1f, #0x1dcc
+00001df0: 43070058 ldr x3, #0x1ed8
+00001df4: e403132a mov w4, w19
+00001df8: 41070058 ldr x1, #0x1ee0
+00001dfc: 227e8152 mov w2, #0xbf1
+00001e00: 40080058 ldr x0, #0x1f08
+00001e04: 63800091 add x3, x3, #0x20
+00001e08: 00000094 bl #0x1e08 ; {'section': '.init.text', 'offset': 7688, 'type': 283, 'symbol': 'printk', 'addend': 0}
+00001e0c: 0f000014 b #0x1e48
+00001e10: 14008052 mov w20, #0
+00001e14: e20319aa mov x2, x25
+00001e18: e103162a mov w1, w22
+00001e1c: e00318aa mov x0, x24
+00001e20: 00000094 bl #0x1e20 ; {'section': '.init.text', 'offset': 7712, 'type': 283, 'symbol': 'emmc_blk_plat_probe_post', 'addend': 0}
+00001e24: f303002a mov w19, w0
+00001e28: a004f836 tbz w0, #0x1f, #0x1ebc
+00001e2c: 63050058 ldr x3, #0x1ed8
+00001e30: e403132a mov w4, w19
+00001e34: 61050058 ldr x1, #0x1ee0
+00001e38: a27f8152 mov w2, #0xbfd
+00001e3c: a0060058 ldr x0, #0x1f10
+00001e40: 63800091 add x3, x3, #0x20
+00001e44: 00000094 bl #0x1e44 ; {'section': '.init.text', 'offset': 7748, 'type': 283, 'symbol': 'printk', 'addend': 0}
+00001e48: 97050058 ldr x23, #0x1ef8
+00001e4c: 94060051 sub w20, w20, #1
+00001e50: 1a5f8052 mov w26, #0x2f8
+00001e54: 3401f837 tbnz w20, #0x1f, #0x1e78
+00001e58: f50240f9 ldr x21, [x23]
+00001e5c: 95563a9b smaddl x21, w20, w26, x21
+00001e60: 94060051 sub w20, w20, #1
+00001e64: e00315aa mov x0, x21
+00001e68: 00000094 bl #0x1e68 ; {'section': '.init.text', 'offset': 7784, 'type': 283, 'symbol': '', 'addend': 31720}
+00001e6c: e00315aa mov x0, x21
+00001e70: 00000094 bl #0x1e70 ; {'section': '.init.text', 'offset': 7792, 'type': 283, 'symbol': '', 'addend': 31512}
+00001e74: f8ffff17 b #0x1e54
+00001e78: e02a40b9 ldr w0, [x23, #0x28]
+00001e7c: e1b20091 add x1, x23, #0x2c
+00001e80: 00000094 bl #0x1e80 ; {'section': '.init.text', 'offset': 7808, 'type': 283, 'symbol': 'unregister_blkdev', 'addend': 0}
+00001e84: 00000094 bl #0x1e84 ; {'section': '.init.text', 'offset': 7812, 'type': 283, 'symbol': 'emmc_seq_remove', 'addend': 0}
+00001e88: e20319aa mov x2, x25
+00001e8c: e103162a mov w1, w22
+00001e90: e00318aa mov x0, x24
+00001e94: 00000094 bl #0x1e94 ; {'section': '.init.text', 'offset': 7828, 'type': 283, 'symbol': 'emmc_blk_plat_remove_post', 'addend': 0}
+00001e98: e403002a mov w4, w0
+00001e9c: e000f836 tbz w0, #0x1f, #0x1eb8
+00001ea0: c3010058 ldr x3, #0x1ed8
+00001ea4: c2818152 mov w2, #0xc0e
+00001ea8: c1010058 ldr x1, #0x1ee0
+00001eac: 60030058 ldr x0, #0x1f18
+00001eb0: 63800091 add x3, x3, #0x20
+00001eb4: 00000094 bl #0x1eb4 ; {'section': '.init.text', 'offset': 7860, 'type': 283, 'symbol': 'printk', 'addend': 0}
+00001eb8: e003132a mov w0, w19
+00001ebc: 00000094 bl #0x1ebc ; {'section': '.init.text', 'offset': 7868, 'type': 283, 'symbol': 'err_convert', 'addend': 0}
+00001ec0: f35341a9 ldp x19, x20, [sp, #0x10]
+00001ec4: f55b42a9 ldp x21, x22, [sp, #0x20]
+00001ec8: f76343a9 ldp x23, x24, [sp, #0x30]
+00001ecc: f96b44a9 ldp x25, x26, [sp, #0x40]
+00001ed0: fd7bc5a8 ldp x29, x30, [sp], #0x50
+00001ed4: c0035fd6 ret 

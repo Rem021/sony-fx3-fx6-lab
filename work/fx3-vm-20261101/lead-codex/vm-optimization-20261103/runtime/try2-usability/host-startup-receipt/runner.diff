@@ -1,0 +1,67 @@
+--- run_trial_v14_final_receipt.py
++++ run_trial_v15_startup_receipt.py
+@@ -78,13 +78,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = OUT / 'web-final-receipt-STATE.json'
++    path = OUT / 'web-startup-receipt-STATE.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = OUT / 'web-final-receipt-STATE.json.tmp'
++    temp = OUT / 'web-startup-receipt-STATE.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -105,7 +105,7 @@
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2finalinternal' if ns.internal_hoststep else 'try2final'
++    ns.label = 'try2startupinternal' if ns.internal_hoststep else 'try2startup'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+@@ -247,6 +247,11 @@
+     error = None
+     early_stop_reason = None
+     p = None
++    # Receipt defaults must exist before HTTP bind, process spawn, and QMP setup.
++    phaseA_capture = None
++    phase_exit_hit = False
++    shutdown_count_at_ready = 0
++    power_off_count_at_ready = 0
+     seq = 0
+     previous_cwd = Path.cwd()
+     start = time.monotonic()
+@@ -665,7 +670,10 @@
+                'early_stop_reason': early_stop_reason, 'full_serial_bytes_inspected': log_monitor.offset,
+                'serial_health_failure': log_monitor.failure, 'markers': log_monitor.markers,
+                'marker_evidence': log_monitor.marker_evidence,
+-               'date99_raw_serial_evidence': log_monitor.date99_raw_receipt(),
++               'date99_raw_serial_evidence': (log_monitor.date99_raw_receipt()
++                   if (run/'serial.log').is_file() else
++                   {'available': False, 'reason': 'serial_log_not_created',
++                    'literal_present': False, 'semantic_evidence': None}),
+                'cleanup': shutdown, 'lifecycle_pass': bool(lifecycle_pass),
+                'protocol_pass': protocol_pass, 'render_pass': render_pass,
+                'black_frame_semantics': 'unknown; an all-zero committed panel cannot satisfy this visual trial',
+@@ -693,9 +701,14 @@
+                 'inputs_unchanged': unchanged, 'trial_url': None,
+                 'locks': [{'path': x['path'], 'holder': None, 'status': 'released' if x['free_at_close'] else 'held_by_other'} for x in lock_status],
+                 'TRY2': {'health_pass': health_pass, 'last_run': str(run), 'launch': [sys.executable, str(Path(__file__))]}})
++    if p is None:
++        final_message = '启动未完成，模拟器未启动；请查看终端中的原始错误和回执。'
++    else:
++        final_message = ('试用已结束，模拟器已退出，资源已回收。' if lifecycle_pass else
++                         '试用已结束，收尾检查未全部通过，请查看启动终端。')
+     trial.update(phase='finished', busy=False, result={'health_pass': health_pass, 'qemu_exit': receipt['qemu_exit'],
+                                                     'API16_restored': shutdown.get('API16_restored')},
+-                 message='试用已结束，模拟器已退出，资源已回收。' if lifecycle_pass else '试用已结束，收尾检查未全部通过，请查看启动终端。',
++                 message=final_message,
+                  error=trial.error or early_stop_reason or log_monitor.failure or error)
+     print('回执:', run/'receipt.json', flush=True)
+     print('HEALTH', health_pass, 'QEMU_EXIT', receipt['qemu_exit'], 'REAPED', receipt['process_reaped'],

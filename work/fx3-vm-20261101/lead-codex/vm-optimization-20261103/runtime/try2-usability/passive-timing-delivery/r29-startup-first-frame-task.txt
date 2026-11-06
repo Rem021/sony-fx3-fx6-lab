@@ -1,0 +1,7 @@
+FX3 r29：固定FX3平台偶发首次出图超时的只读根因定位。
+项目根/外盘规则沿用；写入前验证UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。只写DEL/r29-startup-first-frame-analysis，其中DEL为本规格目录。严禁新VM/Start、浏览器/服务、设备/USB/SD、源码/部署/平台/运行期限修改，禁止重跑或延长180秒以制造通过。
+最新失败：DEL/r28-vm-cb12b6256797，真实run位于TRY/runs/v25gate-n64-r17-f7903939，TRY=DEL父目录。唯一Start 2026-11-05T03:48:00.735Z，180秒未qualified standby，03:51:01启动超时End，0keys/attempt/pin/confirm，20秒按键alarm未armed。runner89775/QEMU89913已退出；当前operator正在整理完整报告，不修改其文件。read-only读取已有原始日志/回执即可，必要注明封存待定。
+对照真实成功首次待机：DEL/r26b-vm-93b3e243da6f及TRY/runs/v25gate-n64-r17-45304842（44.089秒）；DEL/r26-vm-49f0c1c3663b及TRY/runs/v25gate-n64-r17-740bafa8（44.174秒）。它们后续按键失败不妨碍仅比较启动。固定4xA35/5120MiB/MTTCG/noicount、QEMU/kernel/DTB/N64CPIO相同的事实须用各actual argv/input pin核实，不靠名称。
+先定位首次可用像素与host ready/浏览器loaded分别何时发生：关联serial真实事件、startup-qmp-timing、ring/observer记录、HTTP/HAR与host poll、首帧判断代码。最新receipt有standby_ready=false/render_pass=false但render_valid_at_end=true，End后晚图标画面可能是清理阶段产物，必须厘清其时间、语义和来源，不能倒算首次待机合格。区分guest实际未出图、host没发布、browser未加载、判定条件阻塞；不要把尾部snapshot当事务终态。
+与成功样本逐层比较，指出最早有证据的分叉；用具体文件/时间/偏移/相关代码说明。保留未知：若只能定位区间或缺关键观测点，明确不能确认根因，并提出最小下一步离线仪表/候选设计。不要依据Thread/Futex/忙状态单独猜死锁，不依据log写入时间当guest精确事件时间，不把GPU/QEMU普遍建议替代此项目证据。
+交付简洁REPORT、结构化时间线/差异、用到的原始文件hash、必要只读分析脚本及SHA清单；尽量复用已有封存记录，不复制大型原日志或千项历史文件。先分析证据再提修复；本任务不实现候选和不启动新运行。完整目标仍原生FX3模拟器可用性及固定FX3配置下的软件适配，不能为了通过更改FX3硬件。完成用worker_done回报，若发现可立即复核的具体错误及时发status。

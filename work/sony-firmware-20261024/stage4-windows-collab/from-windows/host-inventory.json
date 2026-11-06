@@ -1,0 +1,145 @@
+{
+  "captured_utc": "2026-10-25T08:58:30.6857004Z",
+  "source_task": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\FX3-READONLY-TASK.txt",
+  "host": {
+    "os_caption": "Microsoft Windows 11 专业版",
+    "version": "10.0.26200",
+    "build": "26200",
+    "architecture": "64 位",
+    "cpu": [
+      {
+        "Name": "Intel(R) Core(TM) i7-14700KF",
+        "Architecture": 9,
+        "NumberOfCores": 20,
+        "NumberOfLogicalProcessors": 28
+      }
+    ],
+    "python": {
+      "executable": "C:\\Users\\owo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "version": "3.12.14",
+      "architecture": "AMD64",
+      "modules": {
+        "unicorn": false,
+        "capstone": false,
+        "elftools": false,
+        "usb": false,
+        "serial": false
+      }
+    }
+  },
+  "tools_on_path": [
+    {
+      "name": "python",
+      "path": "C:\\Users\\owo\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe",
+      "invoked": false
+    },
+    {
+      "name": "python3",
+      "path": "C:\\Users\\owo\\AppData\\Local\\Microsoft\\WindowsApps\\python3.exe",
+      "invoked": false
+    },
+    {
+      "name": "node",
+      "path": "C:\\Users\\owo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "invoked": false
+    },
+    {
+      "name": "git",
+      "path": "C:\\Users\\owo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\git\\cmd\\git.exe",
+      "invoked": false
+    },
+    {
+      "name": "pnputil",
+      "path": "C:\\Windows\\system32\\pnputil.exe",
+      "invoked": false
+    }
+  ],
+  "existing_local_scripts": [
+    {
+      "path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\work\\tools\\sony-pmca\\pmca-console.py",
+      "invoked": false
+    },
+    {
+      "path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\work\\tools\\sony-pmca\\pmca-gui.py",
+      "invoked": false
+    },
+    {
+      "path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\work\\emulate_h265_converter.py",
+      "invoked": false
+    },
+    {
+      "path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\work\\emulate_mpr_downstream.py",
+      "invoked": false
+    },
+    {
+      "path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\work\\emulate_encoder_packet.py",
+      "invoked": false
+    },
+    {
+      "path": "C:\\Users\\owo\\Documents\\Codex\\2026-10-16\\rea-2\\outputs\\h265-path-research\\candidate-plan.json",
+      "invoked": false
+    }
+  ],
+  "sony_present_cached_pnp": [
+    {
+      "name": "USB 输入设备",
+      "vid": "054C",
+      "pid": "0DF2",
+      "present": true,
+      "driver_provider": "Microsoft",
+      "driver_version": "10.0.26100.9711",
+      "service": "HidUsb",
+      "status": "OK",
+      "config_manager_error_code": 0
+    },
+    {
+      "name": "HID-compliant game controller",
+      "vid": "054C",
+      "pid": "0DF2",
+      "present": true,
+      "driver_provider": "Microsoft",
+      "driver_version": "10.0.26100.9711",
+      "service": null,
+      "status": "OK",
+      "config_manager_error_code": 0
+    },
+    {
+      "name": "USB Composite Device",
+      "vid": "054C",
+      "pid": "0DF2",
+      "present": true,
+      "driver_provider": "Microsoft",
+      "driver_version": "10.0.26100.9711",
+      "service": "usbccgp",
+      "status": "OK",
+      "config_manager_error_code": 0
+    },
+    {
+      "name": "DualSense Edge Wireless Controller",
+      "vid": "054C",
+      "pid": "0DF2",
+      "present": true,
+      "driver_provider": "Microsoft",
+      "driver_version": "10.0.26100.9457",
+      "service": "usbaudio",
+      "status": "OK",
+      "config_manager_error_code": 0
+    }
+  ],
+  "cached_pnp_query_error": null,
+  "access_evidence": {
+    "cached_device_enumeration_only": true,
+    "camera_interface_opened": false,
+    "driver_access_tested": false,
+    "authenticated_service_access_tested": false,
+    "body_version": "7.02 user-reported; not read back"
+  },
+  "boundaries": {
+    "software_installs": false,
+    "driver_changes": false,
+    "security_changes": false,
+    "camera_commands": false,
+    "camera_reads_or_writes": false,
+    "firmware_modification": false
+  }
+}

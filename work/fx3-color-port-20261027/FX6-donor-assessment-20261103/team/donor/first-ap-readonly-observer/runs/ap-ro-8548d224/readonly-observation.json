@@ -1,0 +1,333 @@
+{
+  "stage": "same_call_return_captured;cleanup",
+  "mapping": {
+    "pid": 237,
+    "cap": {
+      "bias": 547543171072,
+      "inode": 2924,
+      "segments": [
+        {
+          "fileoff": 0,
+          "va": 0,
+          "filesz": 20836,
+          "memsz": 20836,
+          "align": 65536,
+          "flags": 4
+        },
+        {
+          "fileoff": 20836,
+          "va": 86372,
+          "filesz": 63740,
+          "memsz": 63740,
+          "align": 65536,
+          "flags": 5
+        },
+        {
+          "fileoff": 84576,
+          "va": 215648,
+          "filesz": 544,
+          "memsz": 1440,
+          "align": 65536,
+          "flags": 6
+        },
+        {
+          "fileoff": 85120,
+          "va": 281728,
+          "filesz": 0,
+          "memsz": 1886484,
+          "align": 65536,
+          "flags": 6
+        }
+      ],
+      "rows": [
+        {
+          "start": 547543171072,
+          "end": 547543195648,
+          "perms": "r--p",
+          "offset": 0,
+          "inode": 2924,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 547543195648,
+          "end": 547543257088,
+          "perms": "---p",
+          "offset": 24576,
+          "inode": 2924,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 547543257088,
+          "end": 547543322624,
+          "perms": "r-xp",
+          "offset": 20480,
+          "inode": 2924,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 547543322624,
+          "end": 547543384064,
+          "perms": "---p",
+          "offset": 151552,
+          "inode": 2924,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 547543384064,
+          "end": 547543388160,
+          "perms": "r--p",
+          "offset": 81920,
+          "inode": 2924,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 547543388160,
+          "end": 547543449600,
+          "perms": "---p",
+          "offset": 217088,
+          "inode": 2924,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 547543449600,
+          "end": 547543453696,
+          "perms": "rw-p",
+          "offset": 81920,
+          "inode": 2924,
+          "path": "/simulation/fx3-capid-v1.so"
+        }
+      ]
+    },
+    "ap": {
+      "bias": 544611233792,
+      "source": "same-TID native dladdr profile plus current CPU ELF/PHDR/code",
+      "proc_vma_observed": false
+    },
+    "snapshot_kind": "early",
+    "snapshot_epoch": 1,
+    "snapshot_byte_range": [
+      159706,
+      186877
+    ],
+    "snapshot_first_uptime": "16.67 61.22",
+    "early_snapshot_count": 1,
+    "im_inode": 1097,
+    "ap_identity_status": "not_checked_until_CAP_stop"
+  },
+  "breakpoints_still_installed": [],
+  "records": [
+    {
+      "vCPU": "01",
+      "stop": "T05thread:01;",
+      "pc": "0x7f7c1fa730",
+      "va": "0x1e730",
+      "word": "ff8301d1",
+      "x0": "0x7f790781c0",
+      "x1": "0x7f7c1dd60d",
+      "fp": "0x7ebd1584f0",
+      "sp": "0x7ebd1573f0",
+      "tpidr_el0": "0x7ebd159740",
+      "native_lineage": {
+        "tid": 770,
+        "tls": 544338188096,
+        "source": 2177851798,
+        "request_count": 1
+      },
+      "request_pointer": "0x7f790781c0",
+      "request_raw": "0d202d030a0001800000",
+      "target_native_profile": {
+        "bias": 544611233792,
+        "tid": 770,
+        "source": "0x81cf6196",
+        "profile_byte_range": [
+          2198933,
+          2200097
+        ],
+        "request_byte_range": [
+          2200164,
+          2200298
+        ],
+        "request_raw": "0d202d030a0001800000",
+        "frame_count": 7,
+        "frames": [
+          {
+            "depth": 0,
+            "fp": "0x7ebd1584f0",
+            "lr": "0x7ecf6ae7a0",
+            "relative": "0x20ef7a0",
+            "base": "0x7ecd5bf000"
+          },
+          {
+            "depth": 1,
+            "fp": "0x7ebd158550",
+            "lr": "0x7ecf6b060c",
+            "relative": "0x20f160c",
+            "base": "0x7ecd5bf000"
+          },
+          {
+            "depth": 2,
+            "fp": "0x7ebd1585b0",
+            "lr": "0x7ecf68f0e8",
+            "relative": "0x20d00e8",
+            "base": "0x7ecd5bf000"
+          },
+          {
+            "depth": 3,
+            "fp": "0x7ebd1585f0",
+            "lr": "0x7ecf297100",
+            "relative": "0x1cd8100",
+            "base": "0x7ecd5bf000"
+          },
+          {
+            "depth": 4,
+            "fp": "0x7ebd158610",
+            "lr": "0x7ecf2976a8",
+            "relative": "0x1cd86a8",
+            "base": "0x7ecd5bf000"
+          },
+          {
+            "depth": 5,
+            "fp": "0x7ebd158660",
+            "lr": "0x7ecf3e428c",
+            "relative": "0x1e2528c",
+            "base": "0x7ecd5bf000"
+          },
+          {
+            "depth": 6,
+            "fp": "0x7ebd158740",
+            "lr": "0x7ecf7ecc0c",
+            "relative": "0x222dc0c",
+            "base": "0x7ecd5bf000"
+          }
+        ],
+        "provenance": "native CAPID helper dladdr frames in target request TID; /proc AP VMA not emitted"
+      },
+      "current_cap_identity": {
+        "bias": "0x7f7c1dc000",
+        "elf_header_sha256": "6af0b4ac8b38bca4c185077b154174b93d49233a996066e8aa58c0a1828a1e17",
+        "program_headers_sha256": "4dcfc63c2a1b87c19df16ed969a1e91824c686d93864b9721587d5483e4ccb74",
+        "program_header_bytes": 504,
+        "machine": "AArch64",
+        "original_code_words": [
+          {
+            "va": "0x1840c",
+            "file_offset": "0x840c",
+            "word_le": "c9180094"
+          },
+          {
+            "va": "0x1e730",
+            "file_offset": "0xe730",
+            "word_le": "ff8301d1"
+          },
+          {
+            "va": "0x1e754",
+            "file_offset": "0xe754",
+            "word_le": "807f8012"
+          },
+          {
+            "va": "0x1e764",
+            "file_offset": "0xe764",
+            "word_le": "08c14bb9"
+          }
+        ]
+      },
+      "current_ap_identity": {
+        "bias": "0x7ecd5bf000",
+        "elf_header_sha256": "4809d8af884a2ecca2b2377344969f3df623b19ef27ab6a3bf49fefdb180e9dd",
+        "program_headers_sha256": "80b29fd6f9b19554dba009da973b148f2e9ae7a393831e2a905f8c50993055dc",
+        "program_header_bytes": 336,
+        "machine": "AArch64",
+        "original_code_words": [
+          {
+            "va": "0x20ef79c",
+            "file_offset": "0x20ef79c",
+            "word_le": "61aaa897"
+          },
+          {
+            "va": "0x20ef7a0",
+            "file_offset": "0x20ef7a0",
+            "word_le": "e0000034"
+          },
+          {
+            "va": "0x20ef7b4",
+            "file_offset": "0x20ef7b4",
+            "word_le": "61868052"
+          },
+          {
+            "va": "0x20ef7c8",
+            "file_offset": "0x20ef7c8",
+            "word_le": "bea9a897"
+          }
+        ]
+      },
+      "bounded_fp_chain": [
+        {
+          "fp": "0x7ebd1584f0",
+          "previous_fp": "0x7ebd158550",
+          "saved_lr": "0x7ecf6ae7a0"
+        }
+      ],
+      "ap_frame_anchor": "0x7ebd158550",
+      "model_initialized": 0,
+      "model_process_owner": 0,
+      "attribution": "same_live_TID_TLS_source_request_AP_mapping_and_saved_LR; TGID from serial map only"
+    },
+    {
+      "vCPU": "01",
+      "stop": "T05thread:01;",
+      "pc": "0x7ecf6ae7a0",
+      "va": "0x20ef7a0",
+      "word": "e0000034",
+      "x0": "0xfffffc03",
+      "x1": "0x7ebd159740",
+      "fp": "0x7ebd158550",
+      "sp": "0x7ebd158550",
+      "tpidr_el0": "0x7ebd159740",
+      "native_lineage": {
+        "tid": 770,
+        "tls": 544338188096,
+        "source": 2177851798,
+        "request_count": 1
+      },
+      "frame_request_pointer": "0x7f790781c0",
+      "frame_request_raw": "0d202d030a0001800000",
+      "send_w0_signed32": -1021,
+      "attribution": "same_request_pointer_raw_and_TLS_as_audio_entry",
+      "assert_branch_will_fire": true
+    }
+  ],
+  "linux_process_attribution": "requires live TLS+request+same AP mapping; unknown until captured",
+  "resume_acks": [
+    {
+      "stage": "await_audio_entry",
+      "command": "c",
+      "ack": "+"
+    },
+    {
+      "stage": "await_same_call_return",
+      "command": "c",
+      "ack": "+"
+    }
+  ],
+  "qmp_statuses": [
+    {
+      "stage": "arm",
+      "status": "paused"
+    },
+    {
+      "stage": "await_audio_entry",
+      "status": "running"
+    },
+    {
+      "stage": "await_audio_entry",
+      "status": "debug",
+      "rsp_stop": "T05thread:01;"
+    },
+    {
+      "stage": "await_same_call_return",
+      "status": "debug",
+      "rsp_stop": "T05thread:01;"
+    }
+  ],
+  "policy": "RSP addressless c after Z1, Z1/z1 and stopped-only g/p/m/XML; no guest write, no Z0, no keys"
+}

@@ -1,0 +1,154 @@
+{
+  "sources": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+      "sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdatertalk.so",
+      "sha256": "8f7f7b8a334277f49be200b69cba36a689690a00be238ed9394d0aa2d7c541e5"
+    }
+  ],
+  "cases": [
+    {
+      "returned": true,
+      "return_value": 2,
+      "boundary": null,
+      "copied_model_word": "0x91030080",
+      "file_cursor": 532,
+      "file_events": [
+        {
+          "adapter": "RAM readonly Fsys_Open"
+        },
+        {
+          "adapter": "RAM relative seek",
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 8,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 12,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 16,
+          "requested": 516,
+          "returned": 516
+        },
+        {
+          "adapter": "RAM Fsys_Close"
+        }
+      ],
+      "original_global_writes": [
+        {
+          "address": "0x40015208",
+          "bytes": 4,
+          "value": 2432893056,
+          "pc": "0x40002fb4"
+        },
+        {
+          "address": "0x4001520c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40002fc4"
+        },
+        {
+          "address": "0x40015210",
+          "bytes": 2,
+          "value": 1794,
+          "pc": "0x40002fd0"
+        }
+      ],
+      "instructions": 802,
+      "case": "camera_model_word",
+      "declared_model_word": "0x91030080",
+      "ram_chunk_stream_bytes": 1264656,
+      "ram_chunk_stream_sha256": "af6f7ba2b0bc491f26bc387a40a26f07b3652c12ac8b239da3fb65df31331bf0"
+    },
+    {
+      "returned": false,
+      "return_value": null,
+      "boundary": {
+        "operation": "before_OSAL_allocation",
+        "pc": "0x400013e0",
+        "service": "0x912503d0",
+        "requested_message_bytes": 8,
+        "original_request_command": 3,
+        "native_allocation": false
+      },
+      "copied_model_word": "0x91a00080",
+      "file_cursor": 532,
+      "file_events": [
+        {
+          "adapter": "RAM readonly Fsys_Open"
+        },
+        {
+          "adapter": "RAM relative seek",
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 8,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 12,
+          "requested": 4,
+          "returned": 4
+        },
+        {
+          "adapter": "RAM Fsys_Read",
+          "offset": 16,
+          "requested": 516,
+          "returned": 516
+        },
+        {
+          "adapter": "RAM Fsys_Close"
+        }
+      ],
+      "original_global_writes": [
+        {
+          "address": "0x40015208",
+          "bytes": 4,
+          "value": 2443182208,
+          "pc": "0x40002fb4"
+        },
+        {
+          "address": "0x4001520c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40002fc4"
+        },
+        {
+          "address": "0x40015210",
+          "bytes": 2,
+          "value": 1794,
+          "pc": "0x40002fd0"
+        },
+        {
+          "address": "0x400151f4",
+          "bytes": 4,
+          "value": 1,
+          "pc": "0x40002ff4"
+        }
+      ],
+      "instructions": 814,
+      "case": "synthetic_accessory_class_word",
+      "declared_model_word": "0x91a00080",
+      "ram_chunk_stream_bytes": 1264656,
+      "ram_chunk_stream_sha256": "8073649e9f15723c139cb6d65484d60b054ed30b59325e09b0dfd0e2e4a7df7a"
+    }
+  ],
+  "scope": "Original private lens-preparation window 0x2f48..0x3034, original UFU chunk search/header info helper, talk AES wrappers and first original OSAL helper execute with RAM readonly Fsys and AES math adapters. Media root and original AES setup are explicit fixtures. Original camera model word is rejected before any IPC; changing only the class byte in a synthetic inert fixture advances to OSAL allocation and stops without response fabrication. The RAM input has a UFU signature plus FDAT chunk, no claim of a complete official UFU with CRC/footer admission. No native startup/service/IPC, file staging, mount, process launch, hardware, USB, complete firmware acceptance, flash package or device action."
+}

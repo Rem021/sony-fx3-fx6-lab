@@ -1,0 +1,42 @@
+{
+  "schema": "fx6-image-only-init-boundary-owner-review-v1",
+  "utc": "2026-11-03T13:32:59.341068+00:00",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-306428ab",
+  "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "candidate_manifest_sha256": "42cddf844eb37a4712feb59a0c595ab9746eee21b37b210a7f81741bdb16797c",
+  "runner_sha256": "a5d62284e4639e9bb7820e200cfd1122d148fad3728ebd6efc0da17152f46012",
+  "command_exact_baseline_except_fx6_Image_and_serial_sink": true,
+  "command_sha256": "48896894d808b6c2bb08a4a32419bf48a2767a6c8d8de1fc998f2188c93f613a",
+  "receipt_sha256": "9c3e04bc3a6b62c57ea411b781c3093321d4b0543eb7c12e039bc4cf3daa204f",
+  "serial_sha256": "69eea39535b90eeb4e02584a2256bd6ecca5218314c5f61fadf95c288a50a978",
+  "serial_bytes": 63699,
+  "init_marker_byte": 63553,
+  "init_marker_complete_line": "FX3_DEVTMPFS_RC=0",
+  "post_marker_lines": [
+    "FX3_CPUSET_INIT_BEGIN",
+    "FX3_CPUSET_MOUNT_RC=0",
+    "FX3_CPUSET_GROUP_cpu0=0,0",
+    "FX3_CPUSET_GROUP_cpu1=0,0",
+    "FX3_CPUSET_GROUP_cpu2=0,0"
+  ],
+  "reason": "guest_init_boundary",
+  "fault_markers": [],
+  "ap_guard": false,
+  "duration_seconds": 1.9934509170125239,
+  "maximum_seconds": 180,
+  "qemu_pid": 60950,
+  "qemu_exit": 0,
+  "reaped": true,
+  "pid_absent_now": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free": true
+    }
+  ],
+  "scope": "FX6 original kernel reached first echo in unchanged FX3 CPIO /init; poll stop permits a few later lines; no AP/AV/CP or image/menu acceptance"
+}

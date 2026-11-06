@@ -1,0 +1,43 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+  "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "targets": {
+    "0x1591cc0": "SHA256_Update",
+    "0x1591dd0": "SHA256_Final",
+    "0x1591e90": "SHA256_Init"
+  },
+  "references": [
+    {
+      "pc": "0x2ec2504",
+      "target": "SHA256_Init",
+      "link": true
+    },
+    {
+      "pc": "0x2ec2548",
+      "target": "SHA256_Update",
+      "link": true
+    },
+    {
+      "pc": "0x2ec255c",
+      "target": "SHA256_Final",
+      "link": true
+    },
+    {
+      "pc": "0x2f715f0",
+      "target": "SHA256_Init",
+      "link": true
+    },
+    {
+      "pc": "0x2f7160c",
+      "target": "SHA256_Update",
+      "link": true
+    },
+    {
+      "pc": "0x2f71618",
+      "target": "SHA256_Final",
+      "link": true
+    }
+  ],
+  "eh_frame_present": true,
+  "symtab_present": false
+}

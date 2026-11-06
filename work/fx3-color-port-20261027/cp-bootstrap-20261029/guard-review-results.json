@@ -1,0 +1,108 @@
+{
+  "checks": [
+    {
+      "name": "declared_optional_flag_does_not_supply_startup_poll",
+      "result": {
+        "entry": "0x108398",
+        "args": [],
+        "declared_optional_flag": 0,
+        "boundary": {
+          "reason": "before_unknown_hardware_flag_read",
+          "PC": "0x10897c",
+          "address": "0x3e42001",
+          "bytes": 1
+        },
+        "original_instructions": 6,
+        "original_RAM_writes": 0,
+        "flag_reads": 0,
+        "first_trace": [
+          "0x108398",
+          "0x10839c",
+          "0x1083a0",
+          "0x108974",
+          "0x108978",
+          "0x10897c"
+        ],
+        "registers": [
+          "0x3e42001",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      }
+    },
+    {
+      "name": "unknown_optional_flag_still_stops",
+      "result": {
+        "entry": "0x1083a4",
+        "args": [],
+        "declared_optional_flag": null,
+        "boundary": {
+          "reason": "before_unknown_hardware_flag_read",
+          "PC": "0x1089ec",
+          "address": "0x3e42000",
+          "bytes": 1
+        },
+        "original_instructions": 131,
+        "original_RAM_writes": 97,
+        "flag_reads": 0,
+        "first_trace": [
+          "0x1083a4",
+          "0x1083a8",
+          "0x1083ac",
+          "0x1083b0",
+          "0x1083b4",
+          "0x1083b8",
+          "0x1083bc",
+          "0x108a04",
+          "0x108a08",
+          "0x108a0c",
+          "0x108a10",
+          "0x108a14",
+          "0x108a18",
+          "0x108a1c",
+          "0x108a20",
+          "0x108a24",
+          "0x108a28",
+          "0x108a2c",
+          "0x108a30",
+          "0x108a34",
+          "0x108a38",
+          "0x108a3c",
+          "0x108a40",
+          "0x108a44"
+        ],
+        "registers": [
+          "0x2000f010",
+          "0x3e42000",
+          "0x3ff",
+          "0xedf000"
+        ]
+      }
+    },
+    {
+      "name": "unrecovered_BSS_is_not_original_code",
+      "result": {
+        "entry": "0x15ff000",
+        "args": [],
+        "declared_optional_flag": null,
+        "boundary": {
+          "reason": "outside_original_image_execution",
+          "PC": "0x15ff000",
+          "address": "0x15ff000"
+        },
+        "original_instructions": 0,
+        "original_RAM_writes": 0,
+        "flag_reads": 0,
+        "first_trace": [],
+        "registers": [
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      }
+    }
+  ],
+  "scope": "Negative RAM-fixture guard checks only. No supplied startup poll, BSS code, native or device action."
+}

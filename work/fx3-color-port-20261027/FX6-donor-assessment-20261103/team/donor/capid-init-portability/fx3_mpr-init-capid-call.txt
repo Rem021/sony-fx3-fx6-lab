@@ -1,0 +1,32 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b6844 <_ZN3mpr4InitERKNS_11initInParamE>:
+   b6fe0: f941fc00     	ldr	x0, [x0, #0x3f8]
+   b6fe4: f9000015     	str	x21, [x0]
+   b6fe8: 97ff2a46     	bl	0x81900 <_ZN3mpr3log4initEv@plt>
+   b6fec: 97ff281d     	bl	0x81060 <_ZN3mpr5Codec4InitEv@plt>
+   b6ff0: 9401f159     	bl	0x133554 <_ZN3mpr8datasize4initEv+0xc0>
+   b6ff4: 97ff7474     	bl	0x941c4 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0xd0>
+   b6ff8: 9401e180     	bl	0x12f5f8 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x8d0>
+   b6ffc: 9401c9e5     	bl	0x129790 <_ZN10XavcsNamer9GetRemainEPKcbPtN3mpr10NamingModeE+0x3e44>
+   b7000: d2a48000     	mov	x0, #0x24000000         // =603979776
+   b7004: 52800002     	mov	w2, #0x0                // =0
+   b7008: d2bb8001     	mov	x1, #0xdc000000         // =3690987520
+   b700c: f2c00080     	movk	x0, #0x4, lsl #32
+   b7010: 9407de86     	bl	0x2aea28 <_ZN3mpr4dmac7memcpy2EPvS1_j+0x22c>
+   b7014: 97ff190b     	bl	0x7d440 <_ZN3mpr8capidtbl4InitEv@plt>
+   b7018: 52800500     	mov	w0, #0x28               // =40
+   b701c: 72a01f40     	movk	w0, #0xfa, lsl #16
+   b7020: 97ff281c     	bl	0x81090 <Backup_read_8Byte@plt>
+   b7024: aa0003f4     	mov	x20, x0
+   b7028: 52800ba0     	mov	w0, #0x5d               // =93
+   b702c: 72a01f40     	movk	w0, #0xfa, lsl #16
+   b7030: 97ff2818     	bl	0x81090 <Backup_read_8Byte@plt>
+   b7034: aa0003e1     	mov	x1, x0
+   b7038: aa1403e0     	mov	x0, x20
+   b703c: 97ff1dc1     	bl	0x7e740 <_ZN3mpr6memory4initEmm@plt>
+   b7040: 97ff1f04     	bl	0x7ec50 <_ZN3mpr4dmac11init_memcpyEv@plt>
+   b7044: 9406588c     	bl	0x24d274 <_ZN9NRTERRCNV10ConvToMPR2Ei+0x15f20>

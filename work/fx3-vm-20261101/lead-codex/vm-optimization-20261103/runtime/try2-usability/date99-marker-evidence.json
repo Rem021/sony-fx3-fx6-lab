@@ -1,0 +1,123 @@
+{
+  "try2gapinternal-13b47129": {
+    "serial": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-13b47129/serial.log",
+    "source_causal_files": [
+      "helpers/fx3-cp-backup-v4-sync100.c:51",
+      "helpers/fx3-date99-consumer-v1.h:18-32"
+    ],
+    "literal_present": false,
+    "evidence": {
+      "literal_consumer_bound": null,
+      "worker": {
+        "byte_range": [
+          81006,
+          81107
+        ],
+        "raw": "FX3_DATE99_WORKER_READY serialized=1 native_OSAL_waitable_thread=1 synthetic_cp_clock=1 original_CP=0"
+      },
+      "registered_branch": {
+        "byte_range": [
+          81352,
+          81469
+        ],
+        "raw": "FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=0x909005c5 original_other_destinations_unchanged=1"
+      },
+      "owner_result_zero": {
+        "byte_range": [
+          81486,
+          81643
+        ],
+        "raw": "FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+      },
+      "accept_transaction1": {
+        "byte_range": [
+          93925,
+          94052
+        ],
+        "raw": "FX3_DATE99_ACCEPT transaction=1 reason=4 source=0x809005c5 original_request_queue_owned=1 deferred_worker=1 no_reentrant_wait=1"
+      },
+      "commit_transaction1": {
+        "byte_range": [
+          94923,
+          95201
+        ],
+        "raw": "FX3_DATE99_CLOCK_COMMIT transaction=1 generation=1 reason=4 valid_UTC=1 AP_type=0 UTC_base_ms=1609426800001 mono_basis_ns=2280650992 now_ns=2280964992 RTT_ns=628000 readback_UTC_ms=1609426800001 software_clock_advances=1 synthetic_cp_clock=1 original_CP=0 physical_RTC_written=0"
+      },
+      "retired_transaction1": {
+        "byte_range": [
+          95299,
+          95435
+        ],
+        "raw": "FX3_DATE99_RETIRED transaction=1 reason=4 result=0 native_request_free=0 type4_sent=0 generation=1 original_owner_destination=0x909005c5"
+      },
+      "reject": null,
+      "interleaved_raw": {
+        "byte_range": [
+          81124,
+          81284
+        ],
+        "raw": "FX3_DATFX3_BACKUP_CP_INSMOD_RC=0E9\r\n9_CONSUMER_BOUND FX3_UTIMER_BEGINo\r\nnly_ready44=1 synthetic_cp_clock=1 original_CP=0 original_AP_clock_and_Backup_unchanged="
+      }
+    }
+  },
+  "try2gapinternal-47e2924a": {
+    "serial": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a/serial.log",
+    "source_causal_files": [
+      "helpers/fx3-cp-backup-v4-sync100.c:51",
+      "helpers/fx3-date99-consumer-v1.h:18-32"
+    ],
+    "literal_present": true,
+    "evidence": {
+      "literal_consumer_bound": {
+        "byte_range": [
+          81141,
+          81166
+        ],
+        "raw": "FX3_DATE99_CONSUMER_BOUND"
+      },
+      "worker": {
+        "byte_range": [
+          81023,
+          81124
+        ],
+        "raw": "FX3_DATE99_WORKER_READY serialized=1 native_OSAL_waitable_thread=1 synthetic_cp_clock=1 original_CP=0"
+      },
+      "registered_branch": {
+        "byte_range": [
+          81369,
+          81486
+        ],
+        "raw": "FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=0x909005c5 original_other_destinations_unchanged=1"
+      },
+      "owner_result_zero": {
+        "byte_range": [
+          81503,
+          81660
+        ],
+        "raw": "FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+      },
+      "accept_transaction1": {
+        "byte_range": [
+          93941,
+          94068
+        ],
+        "raw": "FX3_DATE99_ACCEPT transaction=1 reason=4 source=0x809005c5 original_request_queue_owned=1 deferred_worker=1 no_reentrant_wait=1"
+      },
+      "commit_transaction1": {
+        "byte_range": [
+          94939,
+          95217
+        ],
+        "raw": "FX3_DATE99_CLOCK_COMMIT transaction=1 generation=1 reason=4 valid_UTC=1 AP_type=0 UTC_base_ms=1609426800001 mono_basis_ns=2436826992 now_ns=2437160992 RTT_ns=668000 readback_UTC_ms=1609426800001 software_clock_advances=1 synthetic_cp_clock=1 original_CP=0 physical_RTC_written=0"
+      },
+      "retired_transaction1": {
+        "byte_range": [
+          95315,
+          95451
+        ],
+        "raw": "FX3_DATE99_RETIRED transaction=1 reason=4 result=0 native_request_free=0 type4_sent=0 generation=1 original_owner_destination=0x909005c5"
+      },
+      "reject": null
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "host_only": true,
+  "qemu_executions": 0,
+  "checks": [
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-m",
+        "py_compile",
+        "runtime_resource_guard.py",
+        "run_trial_v25_diag_r3.py",
+        "gate_input_usability.py",
+        "test_resource_guard.py",
+        "test_runner_lifecycle.py"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "",
+      "stderr_tail": ""
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "test_resource_guard.py"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "short QMP/GDB aliases; connect/diagnostic/restore faults; exited child; removed cwd PASS\n",
+      "stderr_tail": ""
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "test_runner_lifecycle.py"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "outer connect/log/receipt exceptions and process-level unreaped lock retention PASS\n",
+      "stderr_tail": "Stopped: [Errno 2] No such file or directory\nStopped: [Errno 21] Is a directory: '/var/folders/hd/xmjxvtc5679d05fx85pqg6p40000gn/T/tmp0sm0xydl/run/serial.log'\nStopped: fixture enters actual receipt writer\n"
+    },
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "run_trial_v25_diag_r3.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "usage: run_trial_v25_diag_r3.py [-h] [--port PORT] [--max-minutes MAX_MINUTES]\n                                [--max-steps MAX_STEPS]\n                                [--launch-wait-seconds LAUNCH_WAIT_SECONDS]\n                                [--internal-hoststep]\n                                [--exit-at-phase {pre-bind,bound-before-first-frame}]\n                                [--review-procdiag-r4e]\n\nFX3 固件菜单本机试用\n\noptions:\n  -h, --help            show this help message and exit\n  --port PORT           127.0.0.1 本地端口，默认8765\n  --max-minutes MAX_MINUTES\n                        会话上限，1..120分钟；默认60分钟\n  --max-steps MAX_STEPS\n                        会话按键上限，32..4096；默认4096\n  --launch-wait-seconds LAUNCH_WAIT_SECONDS\n                        浏览器启动前握手上限，30..600秒\n  --internal-hoststep   内部逐键文件门；不启动网页服务，不构成浏览器验收\n  --exit-at-phase {pre-bind,bound-before-first-frame}\n                        有界退出边界验证\n  --review-procdiag-r4e\n                        仅经另行批准时使用隔离只读/proc诊断CPIO；默认固定r3 guest\n",
+      "stderr_tail": ""
+    }
+  ],
+  "freeze_sha256": "b33c42db950180b341794ecef13540c6d1e6ca8188e7be29e8180fbd6b1e35d3",
+  "created_utc": "2026-11-04T15:11:22Z"
+}

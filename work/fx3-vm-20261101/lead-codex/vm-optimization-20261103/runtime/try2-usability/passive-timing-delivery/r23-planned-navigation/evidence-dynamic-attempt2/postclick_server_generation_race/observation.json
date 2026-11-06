@@ -1,0 +1,68 @@
+{
+  "receipt_status": "click_invoked",
+  "clicks": 1,
+  "keyPOST": 1,
+  "pending": 0,
+  "before_historical_frame": {
+    "gen": 1,
+    "seq": 1,
+    "sha": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739"
+  },
+  "PAGE_attempt": {
+    "alarm_due_ms": 20044.099999964237,
+    "alarm_nonce": "db633928-d1cc-4bb0-a7a2-090f936c33a6",
+    "attempt_id": "f492e592-e295-46f2-b1aa-19794e8508c4",
+    "base_step": 0,
+    "created_monotonic_ms": 61.89999997615814,
+    "document_time_origin": 1793839350681.4,
+    "expected_step": 1,
+    "frame": {
+      "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+      "content_generation": 1,
+      "sequence": 1
+    },
+    "http_status": 409,
+    "key": 427,
+    "launch_request_id": "22b83570-b602-4400-84dc-61785fdfc635",
+    "mutation_called": true,
+    "observed_sequence": 1,
+    "outcome": "explicit_rejected_unqueued",
+    "server_request_id": "f492e592-e295-46f2-b1aa-19794e8508c4",
+    "updated_monotonic_ms": 64.09999996423721
+  },
+  "server_rejections": {
+    "schema": "fx3-host-key-rejection-v1",
+    "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+    "capacity": 64,
+    "total": 1,
+    "truncated": 0,
+    "records": [
+      {
+        "host_monotonic_ns": 423036274084791,
+        "http_status": 409,
+        "reason": "frame_identity_or_render_invalid",
+        "failed_predicates": [
+          "sha_mismatch",
+          "generation_mismatch"
+        ],
+        "observed_sequence": 1,
+        "observed_cached": true,
+        "observed_png_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+        "observed_content_generation": 1,
+        "current_sequence": 999,
+        "current_png_sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a",
+        "current_content_generation": 2,
+        "render_valid": true,
+        "phase": "ready",
+        "ready": true,
+        "busy": false,
+        "pending_count": 0,
+        "review_required": false,
+        "steps": 0,
+        "stop_requested": false,
+        "error_present": false,
+        "request_id": "f492e592-e295-46f2-b1aa-19794e8508c4"
+      }
+    ]
+  }
+}

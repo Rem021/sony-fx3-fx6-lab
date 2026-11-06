@@ -1,0 +1,343 @@
+{
+  "scope": "Offline preparation only; no QEMU, locks, STATE or TRY1 mutations",
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap105-v1-gpe-perf/candidate.json",
+  "candidate_SHA256": "0c4fd429c0c506c285895bdad87fd2bff78babd0db89b597932525b869f7ed7c",
+  "input_hash_checks": [
+    {
+      "name": "DTB",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap105-v1-gpe-perf/guest.dtb",
+      "SHA256": "29ce0d84e28eda9da99a9feb273ccd75380a0db73b2f7ab2ff508bbe25c37e8b",
+      "matches": true
+    },
+    {
+      "name": "initrd",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap105-v1-gpe-perf/guest.cpio",
+      "SHA256": "6030764b010731d7622326e03a5c328810f32ba13a965c9b944842a43d20c52a",
+      "matches": true
+    },
+    {
+      "name": "base",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap103-r2-soft-ldec/candidate.json",
+      "SHA256": "5d2155cb3e208ba182caa1c57e8c03f05b140e575ec9ea7c9b8e2743993aefe7",
+      "matches": true
+    },
+    {
+      "name": "performance_copy",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v26-perf-ap105.so",
+      "SHA256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+      "matches": true
+    },
+    {
+      "name": "accepted_host_receipt",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/build/test.json",
+      "SHA256": "39242a00671a33c54e3cfd2ee00829ab3c2647c0458bbe5c2fa2fc444e236c47",
+      "matches": true
+    },
+    {
+      "name": "accepted_source",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-observe-v26-perf.so",
+      "SHA256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+      "matches": true
+    }
+  ],
+  "AST": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/run_candidate105_v1.py",
+      "SHA256": "fdc48f06b4b653fa3c3f2514c98a080f768eaa473aead0e4789ad5464114daca",
+      "AST": "passed",
+      "module_executed": false
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/gate_input105_v1.py",
+      "SHA256": "fed3b6537d52966e1fd20396a178fbe6e9353fbb1c446e51034506b7297a702b",
+      "AST": "passed",
+      "module_executed": false
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/prepare_candidate105_v1.py",
+      "SHA256": "26a9ac7c8a8bc577966dab6bd9b29881e0e64158ce64cd21c5641d5ab03b04b8",
+      "AST": "passed",
+      "module_executed": false
+    }
+  ],
+  "visual_ledger_rows_verified": 34,
+  "visual_rows": [
+    {
+      "run": "ap104v5trace600-65c08de2",
+      "step": 1,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v5trace600-65c08de2/ap102-phaseA-before-SETUP.png",
+      "SHA256": "e637550685f003a942613a03a237565a6255262318fc76a360dee069a451ba02",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v5trace600-65c08de2/ap102-step-01-settled.png"
+    },
+    {
+      "run": "ap104v6bretrace600-45dfde57",
+      "step": 1,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/ap102-phaseA-before-SETUP.png",
+      "SHA256": "313a81fbba34299bd1da561d19be3b250427e84e99f289d75cd5695cf84a4019",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/ap102-step-01-settled.png"
+    },
+    {
+      "run": "ap104v6bretrace600-45dfde57",
+      "step": 2,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/ap102-menu-step01-later.png",
+      "SHA256": "8490833fe357aeffe7d9f2603755d0efbe1d5e3e67cb680026bb8e9945093b6a",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v6bretrace600-45dfde57/ap102-step-02-settled.png"
+    },
+    {
+      "run": "ap104v7trace600-da26dd55",
+      "step": 1,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v7trace600-da26dd55/ap102-phaseA-before-SETUP.png",
+      "SHA256": "313a81fbba34299bd1da561d19be3b250427e84e99f289d75cd5695cf84a4019",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v7trace600-da26dd55/ap102-step-01-settled.png"
+    },
+    {
+      "run": "ap104v7trace600-da26dd55",
+      "step": 2,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v7trace600-da26dd55/ap102-menu-step01-reviewed.png",
+      "SHA256": "1c8877264eb5161edd34c95ce47544eb99c6c6ce9ac02ed645ee2d8f33d6ec5b",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v7trace600-da26dd55/ap102-step-02-settled.png"
+    },
+    {
+      "run": "ap104v7trace600-da26dd55",
+      "step": 3,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v7trace600-da26dd55/ap102-group-step02-reviewed.png",
+      "SHA256": "117b3c94fea902113c4644cede729e7ef25c69ecf8f0ea052cc05ca001f3b759",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104v7trace600-da26dd55/ap102-step-03-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 1,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-phaseA-before-SETUP.png",
+      "SHA256": "e637550685f003a942613a03a237565a6255262318fc76a360dee069a451ba02",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-01-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 2,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-01-settled.png",
+      "SHA256": "ffb8a5d6fd43ca24da71c989bdb0e414ece488adce72b6163cf286f794267e3e",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-02-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 3,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-02-settled.png",
+      "SHA256": "b305ffbb58558935e2c288e11d78602271313f421cc6684e03dacb523add4f88",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-03-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 4,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-03-settled.png",
+      "SHA256": "11e1e8f9d82852f8e65ae3d4972e2d721a8b292dcbb9201d9fc432621014c6b1",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-04-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 5,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-04-settled.png",
+      "SHA256": "cd380131a0e9e9a8df2e5a784ae8d8dae525997974c77b86aaa20da31fece08d",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-05-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 6,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-05-settled.png",
+      "SHA256": "22cf1ee48aa8d428e307eec0c57fdd70c21a5f8c3bad132d97d75c1a6d3d8ac7",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-06-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 7,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-06-settled.png",
+      "SHA256": "51fee283a0520789191e5a3fa91ac9aa8b85b2d24a59db511357c614ea14f377",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-07-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 8,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-07-settled.png",
+      "SHA256": "67cde86949bca84442af507a4604dc44976cfb79ac51a6fe510c4866b1e38a77",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-08-settled.png"
+    },
+    {
+      "run": "ap104light4menu600-c115023e",
+      "step": 9,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-08-settled.png",
+      "SHA256": "00db22331b8037f80a252b21eb3209579f970cb0ff2ba0e13a411e35c6b876ca",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4menu600-c115023e/ap102-step-09-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 1,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-phaseA-before-SETUP.png",
+      "SHA256": "e637550685f003a942613a03a237565a6255262318fc76a360dee069a451ba02",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-01-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 2,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-01-settled.png",
+      "SHA256": "1c8877264eb5161edd34c95ce47544eb99c6c6ce9ac02ed645ee2d8f33d6ec5b",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-02-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 3,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-02-settled.png",
+      "SHA256": "1c8877264eb5161edd34c95ce47544eb99c6c6ce9ac02ed645ee2d8f33d6ec5b",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-03-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 4,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-category-step03-current.png",
+      "SHA256": "1c8877264eb5161edd34c95ce47544eb99c6c6ce9ac02ed645ee2d8f33d6ec5b",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-04-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 5,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-04-settled.png",
+      "SHA256": "11e1e8f9d82852f8e65ae3d4972e2d721a8b292dcbb9201d9fc432621014c6b1",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-05-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 6,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-05-settled.png",
+      "SHA256": "cd380131a0e9e9a8df2e5a784ae8d8dae525997974c77b86aaa20da31fece08d",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-06-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 7,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-06-settled.png",
+      "SHA256": "22cf1ee48aa8d428e307eec0c57fdd70c21a5f8c3bad132d97d75c1a6d3d8ac7",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-07-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 8,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-07-settled.png",
+      "SHA256": "51fee283a0520789191e5a3fa91ac9aa8b85b2d24a59db511357c614ea14f377",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-08-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 9,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-08-settled.png",
+      "SHA256": "67cde86949bca84442af507a4604dc44976cfb79ac51a6fe510c4866b1e38a77",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-09-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 10,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-09-settled.png",
+      "SHA256": "00db22331b8037f80a252b21eb3209579f970cb0ff2ba0e13a411e35c6b876ca",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-10-settled.png"
+    },
+    {
+      "run": "ap104light4bmenu600-09dcd746",
+      "step": 11,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-10-settled.png",
+      "SHA256": "5106cc270d96c41c29e5d0ce572c84c093ef22c3cc7c386da0e4d134c1b30410",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4bmenu600-09dcd746/ap102-step-11-settled.png"
+    },
+    {
+      "run": "ap104light4save1200-2e5d177c",
+      "step": 1,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-phaseA-before-SETUP.png",
+      "SHA256": "e637550685f003a942613a03a237565a6255262318fc76a360dee069a451ba02",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-01-settled.png"
+    },
+    {
+      "run": "ap104light4save1200-2e5d177c",
+      "step": 2,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-menu-step01-reviewed.png",
+      "SHA256": "1c8877264eb5161edd34c95ce47544eb99c6c6ce9ac02ed645ee2d8f33d6ec5b",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-02-settled.png"
+    },
+    {
+      "run": "ap104light4save1200-2e5d177c",
+      "step": 3,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-02-settled.png",
+      "SHA256": "b305ffbb58558935e2c288e11d78602271313f421cc6684e03dacb523add4f88",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-03-settled.png"
+    },
+    {
+      "run": "ap104light4save1200-2e5d177c",
+      "step": 4,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-03-settled.png",
+      "SHA256": "11e1e8f9d82852f8e65ae3d4972e2d721a8b292dcbb9201d9fc432621014c6b1",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-04-settled.png"
+    },
+    {
+      "run": "ap104light4save1200-2e5d177c",
+      "step": 5,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-04-settled.png",
+      "SHA256": "cd380131a0e9e9a8df2e5a784ae8d8dae525997974c77b86aaa20da31fece08d",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-05-settled.png"
+    },
+    {
+      "run": "ap104light4save1200-2e5d177c",
+      "step": 6,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-05-settled.png",
+      "SHA256": "22cf1ee48aa8d428e307eec0c57fdd70c21a5f8c3bad132d97d75c1a6d3d8ac7",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-06-settled.png"
+    },
+    {
+      "run": "ap104light4save1200-2e5d177c",
+      "step": 7,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-06-settled.png",
+      "SHA256": "51fee283a0520789191e5a3fa91ac9aa8b85b2d24a59db511357c614ea14f377",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-07-settled.png"
+    },
+    {
+      "run": "ap104light4save1200-2e5d177c",
+      "step": 8,
+      "observed_png": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-07-settled.png",
+      "SHA256": "67cde86949bca84442af507a4604dc44976cfb79ac51a6fe510c4866b1e38a77",
+      "matched": true,
+      "auto_readback": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap104light4save1200-2e5d177c/ap102-step-08-settled.png"
+    }
+  ],
+  "visual_report": "/Volumes/KAFU2T/AI/Projects/Mac/reports/2026-11-01-fx3-vm-resumed-repair/ap104-visual-step-log.md",
+  "CPIO_diff_proof": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap105-v1-gpe-perf/build-receipt.json",
+  "guest": "NOT_RUN_WAIT_FOR_LEAD_RESUME",
+  "native_receive_budget_ms": 5000,
+  "profile104_overlaid": false
+}

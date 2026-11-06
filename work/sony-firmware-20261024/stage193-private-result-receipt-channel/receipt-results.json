@@ -1,0 +1,117 @@
+{
+  "status": "PASS_PRIVATE_OWNER_RECEIPTS",
+  "tests_run": 20,
+  "results": [
+    {
+      "name": "private_complete_after_public_file_destroyed_and_peer_exit",
+      "status": "PASS",
+      "seconds": 0.06954366702120751
+    },
+    {
+      "name": "held_private_result_defeats_public_completion_forgery",
+      "status": "PASS",
+      "seconds": 0.23652658297214657
+    },
+    {
+      "name": "missing_receipt_cannot_release_pending_owner",
+      "status": "PASS",
+      "seconds": 0.22651016700547189
+    },
+    {
+      "name": "actual_kernel_peer_PID_UID_and_duplicate_ACK_rejected",
+      "status": "PASS",
+      "seconds": 0.06737674999749288
+    },
+    {
+      "name": "captured_executable_digest_and_native_UID_path_policy",
+      "status": "PASS",
+      "seconds": 0.06456504197558388
+    },
+    {
+      "name": "pre_owner_ACK_wrong_nonce",
+      "status": "PASS",
+      "seconds": 0.05970174999674782
+    },
+    {
+      "name": "pre_owner_ACK_none",
+      "status": "PASS",
+      "seconds": 1.0620135409990326
+    },
+    {
+      "name": "pre_owner_ACK_rights32",
+      "status": "PASS",
+      "seconds": 0.05948641599388793
+    },
+    {
+      "name": "pre_owner_ACK_rights200",
+      "status": "PASS",
+      "seconds": 0.059614291007164866
+    },
+    {
+      "name": "pre_owner_ACK_stop_before_ack",
+      "status": "PASS",
+      "seconds": 0.055832166981417686
+    },
+    {
+      "name": "format_identity_digest_and_replay_rejections",
+      "status": "PASS",
+      "seconds": 0.00010208302410319448
+    },
+    {
+      "name": "contradictory_complete_and_held_outcomes_rejected",
+      "status": "PASS",
+      "seconds": 0.00013795803533867002
+    },
+    {
+      "name": "completion_separates_private_result_from_process_observation",
+      "status": "PASS",
+      "seconds": 2.762500662356615e-05
+    },
+    {
+      "name": "actual_unprivileged_stream_normal",
+      "status": "PASS",
+      "seconds": 0.035800915968138725
+    },
+    {
+      "name": "actual_unprivileged_stream_fragment",
+      "status": "PASS",
+      "seconds": 0.0478487919899635
+    },
+    {
+      "name": "actual_unprivileged_stream_short",
+      "status": "PASS",
+      "seconds": 0.03471341700060293
+    },
+    {
+      "name": "actual_unprivileged_stream_oversized",
+      "status": "PASS",
+      "seconds": 0.035894582979381084
+    },
+    {
+      "name": "actual_unprivileged_stream_silent",
+      "status": "PASS",
+      "seconds": 0.19203291705343872
+    },
+    {
+      "name": "actual_unprivileged_stream_rights32",
+      "status": "PASS",
+      "seconds": 0.03753625001991168
+    },
+    {
+      "name": "actual_unprivileged_stream_rights200",
+      "status": "PASS",
+      "seconds": 0.03656204103026539
+    }
+  ],
+  "actual_unprivileged_UID_PID_birth_and_executable_checks": true,
+  "root_cross_UID_tested": false,
+  "native_helper_executed": false,
+  "administrator_or_camera_operations": 0,
+  "physical_recovery_proven": false,
+  "synthetic_transport_records_explicit": true,
+  "process_observation_models_explicit": true,
+  "test_source_sha256": "3a1d32f3c63aaa532e3bf877b9249c638663a8071eaac1195ec4b698c407b530",
+  "receiver_source_sha256": "43a4ba66c1fab36c83380cb5a2f561f35368e970e32a495645574686cab1712b",
+  "integration_source_sha256": "c05b48867a65f27704c71458eb93cc84f0be8b722ca390be16c4def0a1aff795",
+  "build_receipt_sha256": "4ab2e83dbef554f38cfc9a2a2835f23d8d6bcbd98a3349f182d025fe5dc2b3ca"
+}

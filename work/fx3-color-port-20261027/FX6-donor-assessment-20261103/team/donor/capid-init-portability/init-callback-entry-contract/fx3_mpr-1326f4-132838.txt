@@ -1,0 +1,87 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001326f4 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE>:
+  1326f4: b00013c4     	adrp	x4, 0x3ab000 <_ZN3mpr8capidtbl15s_mutexCapIdTblE+0x38>
+  1326f8: 9100c083     	add	x3, x4, #0x30
+  1326fc: 29402007     	ldp	w7, w8, [x0]
+  132700: 29412809     	ldp	w9, w10, [x0, #0x8]
+  132704: 29422c06     	ldp	w6, w11, [x0, #0x10]
+  132708: 52800000     	mov	w0, #0x0                // =0
+  13270c: 710004ff     	cmp	w7, #0x1
+  132710: 54000301     	b.ne	0x132770 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x7c>
+  132714: b9400065     	ldr	w5, [x3]
+  132718: 710004bf     	cmp	w5, #0x1
+  13271c: 54000821     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  132720: b9400865     	ldr	w5, [x3, #0x8]
+  132724: 6b0900bf     	cmp	w5, w9
+  132728: 540007c1     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  13272c: b9401065     	ldr	w5, [x3, #0x10]
+  132730: 6b0600bf     	cmp	w5, w6
+  132734: 54000761     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  132738: b9400c65     	ldr	w5, [x3, #0xc]
+  13273c: 6b0a00bf     	cmp	w5, w10
+  132740: 54000701     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  132744: b9401865     	ldr	w5, [x3, #0x18]
+  132748: 6b0100bf     	cmp	w5, w1
+  13274c: 540006a1     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  132750: 93407c00     	sxtw	x0, w0
+  132754: d2800481     	mov	x1, #0x24               // =36
+  132758: 9100c084     	add	x4, x4, #0x30
+  13275c: 9b011000     	madd	x0, x0, x1, x4
+  132760: 29438001     	ldp	w1, w0, [x0, #0x1c]
+  132764: 29000041     	stp	w1, w0, [x2]
+  132768: 52800000     	mov	w0, #0x0                // =0
+  13276c: d65f03c0     	ret
+  132770: 710008ff     	cmp	w7, #0x2
+  132774: 54000341     	b.ne	0x1327dc <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0xe8>
+  132778: 7100091f     	cmp	w8, #0x2
+  13277c: 54000201     	b.ne	0x1327bc <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0xc8>
+  132780: b9400065     	ldr	w5, [x3]
+  132784: 710008bf     	cmp	w5, #0x2
+  132788: 540004c1     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  13278c: b9400465     	ldr	w5, [x3, #0x4]
+  132790: 710008bf     	cmp	w5, #0x2
+  132794: 54000461     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  132798: b9400865     	ldr	w5, [x3, #0x8]
+  13279c: 6b05013f     	cmp	w9, w5
+  1327a0: 54000401     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  1327a4: b9401065     	ldr	w5, [x3, #0x10]
+  1327a8: 6b0600bf     	cmp	w5, w6
+  1327ac: 540003a1     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  1327b0: b9401865     	ldr	w5, [x3, #0x18]
+  1327b4: 6b05003f     	cmp	w1, w5
+  1327b8: 17ffffe5     	b	0x13274c <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x58>
+  1327bc: 7100051f     	cmp	w8, #0x1
+  1327c0: 54000308     	b.hi	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  1327c4: b9400065     	ldr	w5, [x3]
+  1327c8: 710008bf     	cmp	w5, #0x2
+  1327cc: 540002a1     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  1327d0: b9400465     	ldr	w5, [x3, #0x4]
+  1327d4: 6b05011f     	cmp	w8, w5
+  1327d8: 17fffff2     	b	0x1327a0 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0xac>
+  1327dc: 710010ff     	cmp	w7, #0x4
+  1327e0: 54000201     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  1327e4: b9400065     	ldr	w5, [x3]
+  1327e8: 710010bf     	cmp	w5, #0x4
+  1327ec: 540001a1     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  1327f0: b9400865     	ldr	w5, [x3, #0x8]
+  1327f4: 6b05013f     	cmp	w9, w5
+  1327f8: 54000141     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  1327fc: b9401065     	ldr	w5, [x3, #0x10]
+  132800: 6b0500df     	cmp	w6, w5
+  132804: 540000e1     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  132808: b9400c65     	ldr	w5, [x3, #0xc]
+  13280c: 6b05015f     	cmp	w10, w5
+  132810: 54000081     	b.ne	0x132820 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x12c>
+  132814: b9401465     	ldr	w5, [x3, #0x14]
+  132818: 6b05017f     	cmp	w11, w5
+  13281c: 17ffffe4     	b	0x1327ac <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0xb8>
+  132820: 11000400     	add	w0, w0, #0x1
+  132824: 91009063     	add	x3, x3, #0x24
+  132828: 71099c1f     	cmp	w0, #0x267
+  13282c: 54fff701     	b.ne	0x13270c <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE+0x18>
+  132830: 52800060     	mov	w0, #0x3                // =3
+  132834: d65f03c0     	ret

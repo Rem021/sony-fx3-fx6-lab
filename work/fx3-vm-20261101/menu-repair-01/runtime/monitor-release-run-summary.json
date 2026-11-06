@@ -1,0 +1,103 @@
+{
+  "runs": [
+    {
+      "run": "ap66lut-ed5764ad",
+      "seconds": 80,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "monitor_lut": [
+        "FX3_MONITOR_LUT_COMMIT command=0x161 completion=0x1161 source=0x81cf61c0 mode=0/0 updates=1 pending_f029=1 lease=18 request_free=0 physical_LUT=0 active_conversion=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf61c0 command=0x161 lease=18 result=0"
+      ],
+      "release_inhibit": [],
+      "gpe": [],
+      "serial_sha256": "0929dd9336fff28ab01ccc1a02bec260eb1b0d74aab7519200802a1d6026179e"
+    },
+    {
+      "run": "ap67release-838492df",
+      "seconds": 80,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "monitor_lut": [
+        "FX3_MONITOR_LUT_COMMIT command=0x161 completion=0x1161 source=0x81cf6186 mode=0/0 updates=1 pending_f029=1 lease=18 request_free=0 physical_LUT=0 active_conversion=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x161 lease=18 result=0"
+      ],
+      "release_inhibit": [],
+      "gpe": [],
+      "serial_sha256": "e0e110d295659c3ea3f490d29af1eedffd87cfb39c00a6e82b379fecad5efd0d"
+    },
+    {
+      "run": "ap68idle-e5d17096",
+      "seconds": 85,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "monitor_lut": [
+        "FX3_MONITOR_LUT_COMMIT command=0x161 completion=0x1161 source=0x81cf6192 mode=0/0 updates=1 pending_f029=1 lease=18 request_free=0 physical_LUT=0 active_conversion=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf6192 command=0x161 lease=18 result=0"
+      ],
+      "release_inhibit": [
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x80000002 updates=1 lease=19 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=19 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0 token=0x80000008 updates=2 lease=20 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=20 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x8000000a updates=3 lease=21 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=21 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0 token=0x8000000d updates=4 lease=22 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=22 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x8000000f updates=5 lease=23 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=23 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0 token=0x80000011 updates=6 lease=24 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=24 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x80000013 updates=7 lease=25 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=25 result=0"
+      ],
+      "gpe": [],
+      "serial_sha256": "64fc938226ec3e6b9b6c6d287bc70ce63632092f4476ca174bd983d09b268b73"
+    },
+    {
+      "run": "ap69audio-1cbbef9f",
+      "seconds": 80,
+      "host_exit": 0,
+      "reaped": true,
+      "inputs_unchanged": true,
+      "observer_error": null,
+      "exceptions": [],
+      "missing_markers": [],
+      "monitor_lut": [
+        "FX3_MONITOR_LUT_COMMIT command=0x161 completion=0x1161 source=0x81cf6186 mode=0/0 updates=1 pending_f029=1 lease=18 request_free=0 physical_LUT=0 active_conversion=0 originalCP=0 software_backend=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x81cf6186 command=0x161 lease=18 result=0"
+      ],
+      "release_inhibit": [
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x80000002 updates=1 lease=19 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=19 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0 token=0x80000008 updates=2 lease=20 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=20 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x8000000a updates=3 lease=21 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=21 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0 token=0x8000000d updates=4 lease=22 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=22 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x8000000f updates=5 lease=23 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=23 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0 token=0x80000011 updates=6 lease=24 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=24 result=0",
+        "FX3_RELEASE_INHIBIT_COMMIT command=0x403d source=0x80020002 mask=0x8000 token=0x80000013 updates=7 lease=25 status=0xf000 active_release=0 request_caller_owned=1 request_free=not_called originalCP=0 software_idle_only=1",
+        "FX3_CAPID_NATIVE_FREE destination=0x80020002 command=0x403d lease=25 result=0"
+      ],
+      "gpe": [],
+      "serial_sha256": "1a0025ecae78384094bfdecf20b0e6e235387040b8e416e518fc29148c4edea0"
+    }
+  ],
+  "scope": "Explicitsoftware monitorLUTmode0 andidleonlyreleaseinhibit; nativeAP repliesconsumed/free0. No physicalLUT/capture/soundbuffer/UI acceptance."
+}

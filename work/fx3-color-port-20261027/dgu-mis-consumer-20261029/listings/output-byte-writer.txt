@@ -1,0 +1,21 @@
+0xfe045974: 080000b0 adrp x8, #0xfe046000
+0xfe045978: 08411c91 add x8, x8, #0x710
+0xfe04597c: 085961b8 ldr w8, [x8, w1, uxtw #2]
+0xfe045980: 692cab52 mov w9, #0x59630000
+0xfe045984: 29c98872 movk w9, #0x4649
+0xfe045988: 1f01096b cmp w8, w9
+0xfe04598c: 81010054 b.ne #0xfe0459bc
+0xfe045990: 0820be52 mov w8, #-0xf000000
+0xfe045994: 294c1453 lsl w9, w1, #0xc
+0xfe045998: 2a01080b add w10, w9, w8
+0xfe04599c: 4a051d32 orr w10, w10, #0x18
+0xfe0459a0: 4b0140b9 ldr w11, [x10]
+0xfe0459a4: ebff2f37 tbnz w11, #5, #0xfe0459a0
+0xfe0459a8: 2901080b add w9, w9, w8
+0xfe0459ac: e8031f2a mov w8, wzr
+0xfe0459b0: 200100b9 str w0, [x9]
+0xfe0459b4: e003082a mov w0, w8
+0xfe0459b8: c0035fd6 ret 
+0xfe0459bc: e87b1f32 mov w8, #-2
+0xfe0459c0: e003082a mov w0, w8
+0xfe0459c4: c0035fd6 ret 

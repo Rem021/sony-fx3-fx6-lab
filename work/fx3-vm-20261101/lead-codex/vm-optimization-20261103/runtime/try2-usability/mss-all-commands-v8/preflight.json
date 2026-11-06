@@ -1,0 +1,35 @@
+{
+  "original_app_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "original_guard_words": {
+    "0x2d35168": "0xa9bc7bfd",
+    "0x2eb4f58": "0x72b01240",
+    "0x2eaf294": "0xa9ba7bfd",
+    "0x2eaf308": "0x7100001f"
+  },
+  "source_v7_sha256": "c5de178004eac532832e0f166eecee8ebf250becae1c8099f849b5047d26e653",
+  "source_v8_sha256": "cf2987d87a4e1ac8993e998f71a53504a91dba8d1249886c564bbed9375b4e6a",
+  "source_diff_sha256": "3bd5d19c006c1d18a6fd6d5d43e8febd3d2bcbb2aa62eaff9ec2896d6d72411a",
+  "candidate_v7_sha256": "6dd9fee185c4ea1a8859a70cca19a3af7f5c6d8d0280f849fc60afd21eba30b4",
+  "candidate_v8_sha256": "2382063eacb5f185e8553c2596be2c644654efe7234adc1e4578f7464ab99a05",
+  "candidate_same_fields": {
+    "qemu": true,
+    "kernel": true,
+    "native_Backup_seed": true,
+    "memory_mib": true,
+    "try2_contract": true,
+    "initrd_load_address": true
+  },
+  "candidate_changed_manifest_keys": [
+    "dtb",
+    "initrd",
+    "mss_all_commands_contract",
+    "mss_passive_contract"
+  ],
+  "candidate_changed_cpio_member": "simulation/fx3-media-observe-v3-uipc.so",
+  "only_one_cpio_member_changed": true,
+  "dtb_only_initrd_end": true,
+  "init_script_unchanged": true,
+  "seed_unchanged": true,
+  "qemu_runtime_config": "fixed 4-core cortex-a35 5120MiB virt GICv2 MTTCG no icount per runner",
+  "no_guest_execution": true
+}

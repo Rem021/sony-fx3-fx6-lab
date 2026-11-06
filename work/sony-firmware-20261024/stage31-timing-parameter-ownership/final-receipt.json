@@ -1,0 +1,69 @@
+{
+  "schema": "fx3-stage31-timing-parameter-ownership/1",
+  "created_utc": "2026-10-25T22:25:29.728495+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/README.md",
+      "bytes": 6604,
+      "sha256": "b749cdfe456288e7b4ecf08d30801d7006e78c50a4400b96f6f867ea8f9a9632"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/coordinator-observations.json",
+      "bytes": 2144,
+      "sha256": "24b13cdd8a2b88b2bded4598e712e1bbbe1fbd9a8bc9098e5fad786738556fec"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/goal-status-after.json",
+      "bytes": 48707,
+      "sha256": "8aa735292db537d90025eae4fea47f9b401806bd9c654cc7ad3085b40b7504bd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/goal-status-before.json",
+      "bytes": 46554,
+      "sha256": "094014b94e884ac5f5f3a83b9230322ae834727ad2741263911d86d6966c699a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/source-receipt.json",
+      "bytes": 995,
+      "sha256": "06b244da5da432de8668c9368972007ca06da25beba8e7d48f65ad457ccc4ab1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/summary.json",
+      "bytes": 476,
+      "sha256": "9e24d8d305412a6778e681f7f616a13e970f9ea395661aa2a007c6b27a66a303"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/timing-parameter-results.json",
+      "bytes": 202707,
+      "sha256": "ea1045e7e001ed6d3f3e6c9c7eac3858cbe3a6ffdbf8ccdebd8efd6168c9bc38"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/timing_parameters.py",
+      "bytes": 12141,
+      "sha256": "11456fab6b353c7d1cb60fba16af3b9f87786f6f674133b8f95278fa475034f2"
+    }
+  ],
+  "previous_manifest_sha256": "63ca2e08204f9bd1ed8457806e494a3834b79f17304707a2c0b07f6951d64871",
+  "scope": "8Open-action scenarios and1artificial3prefix order scenario,11bounded phases. Original timing packet preparation/overlap only, not input/resource/hardware acceptance or restore.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/goal-status-after.json",
+    "before_sha256": "094014b94e884ac5f5f3a83b9230322ae834727ad2741263911d86d6966c699a",
+    "after_sha256": "8aa735292db537d90025eae4fea47f9b401806bd9c654cc7ad3085b40b7504bd",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "native_output_adapters": false,
+    "actual_configuration_order_transition_clock_input_if_resource_hardware": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 timing参数与写入所有权](<work/sony-firmware-20261024/stage31-timing-parameter-ownership/README.md>)：原Open动作保持目标包并构造输入组件请求，选择低帧率逐行分支；配置/Open整包覆盖同一存储，真实顺序与硬件/恢复仍未验证。"
+}

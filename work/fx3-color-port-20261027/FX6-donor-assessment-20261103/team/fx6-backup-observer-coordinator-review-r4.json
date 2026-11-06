@@ -1,0 +1,23 @@
+{
+  "timestamp_utc": "2026-11-05T18:21:20.911998+00:00",
+  "task": "task_b57412ab29f6",
+  "dispatch": "ctx_e8ab32545125",
+  "manifest": {
+    "count": 163,
+    "all_match": true,
+    "sha256": "b3cd050d8fdcbf37f6cf84af146f7ac746c757a55b1d61b037f974b63f2a4e4f"
+  },
+  "status": "not_runtime_ready_prelaunch_mismatch_and_real_deadline_not_wired",
+  "findings": [
+    "start accepts only paused but fixed -S initial state prelaunch; prior real r5 receipt independently confirms",
+    "stateful socketpair E2E replaces Observer with fake that completes both keys on one stop; gdb server does not check receipt ACK or server errors; cannot prove four stops",
+    "real RSP has no shared deadline passed to connect/command/XML/p and poll_stop uses new 1s allowance; real QMP constructor called without shared deadline",
+    "cleanup accesses nonexistent self.possibly when observer not initialized",
+    "receipt not persisted and runtime_evidence hardcoded false on real path"
+  ],
+  "local_prelaunch_evidence": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25procdiag-web-r5-1db74605/receipt.json:371",
+  "reference": "https://www.qemu.org/docs/master/interop/qemu-qmp-ref.html#enum-RunState",
+  "next": "correct actual protocol state and run real Observer four-stop test; prepare distinct default-disabled host-stop-only observation mode with guest restoration unknown for later review, no runtime policy change",
+  "VM_authorized": false,
+  "VM_started": false
+}

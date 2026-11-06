@@ -1,0 +1,34 @@
+{
+  "first_attempt": "terminated before results: per-page ELF map setup was unnecessarily slow; no hardware code or outputs involved",
+  "second_attempt": {
+    "exit": 1,
+    "result_sha256": "1cedcd6c85e329888c52a5755f176c986468a979829278cec4a4e32be2de845d",
+    "negative_hypotheses": [
+      "GetVQuality16 reverse mapping differs from app literal map",
+      "HD422 color/depth fields are254",
+      "packet VQuality6 converts to API quality22, not identity6"
+    ]
+  },
+  "final_attempt": {
+    "exit": 0,
+    "checks": {
+      "80_converter_cases_match_received": true,
+      "Windows_eight_quality_pairs_match_real_MPR": true,
+      "expanded_16M_reverse_mapping_gap_reproduced": true,
+      "HD_16M_basic_validator_accepts": true,
+      "invalid_basic_enum_controls_reject": true,
+      "HD420_16M_packet_fields_match_conversion": true,
+      "HD422_packet_invalid_color_depth_reproduced": true,
+      "HD422_direct_helpers_return_invalid_254": true,
+      "q6_to_API22_and_16M_bitrate_confirmed": true,
+      "inputs_unchanged": true
+    },
+    "case_counts": {
+      "quality": 17,
+      "converter_cases": 80,
+      "downstream_cases": 51,
+      "combination_cases": 12,
+      "packet_cases": 16
+    }
+  }
+}

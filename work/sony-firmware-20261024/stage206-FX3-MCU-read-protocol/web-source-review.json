@@ -1,0 +1,20 @@
+{
+  "review_date": "2026-10-29",
+  "sources": [
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/main/payloads/fastboot/src/darwin.c",
+      "live_web_open_succeeded": true,
+      "local_analysis_commit": "e85e137fc3b88b7cb26e69faa9f1304184678ff7",
+      "local_source_binding": "stage205 payload-source-capture.json contains exact blob/SHA for the analyzed fixed file",
+      "use": "Reference0x16 read envelope, CRC/header reply matching, byte ordering and hardware transport assumptions.",
+      "limits": "The live page is cached and is not a new main HEAD verification. Fixed/raw web fetch failed; actual fixed code was already obtained and source-hashed. No FX3 compatibility inferred from the maintainer's A7IV scope."
+    }
+  ],
+  "primary_local_evidence": [
+    "FX3 current7.02 package MCU source243000B, fixed source-layout base4200",
+    "FX3 current7.02 Ubody official AP sender ELF, exact current PLT and parameter bytes",
+    "previous full official package member inventory for classic/HIBIKI2 Backup template candidates"
+  ],
+  "new_device_authorization": false,
+  "actual_camera_operations": 0
+}

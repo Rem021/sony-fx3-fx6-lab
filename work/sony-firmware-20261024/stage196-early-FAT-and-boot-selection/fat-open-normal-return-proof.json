@@ -1,0 +1,105 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+  "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "configured_base": "0xfe049000",
+  "entry": "0xfe057fa0",
+  "end_exclusive": "0xfe058178",
+  "entry_xref": {
+    "caller": "0xfe053cf8",
+    "kind": "bl",
+    "context": "mode existence fallback"
+  },
+  "raw_sha256": "b6a19905c3fdff06c89f9375cff6d7b35f3897d45584dae2c78d89636544296b",
+  "instructions": 118,
+  "reachable_instructions": 118,
+  "normal_returns": [
+    "0xfe058174"
+  ],
+  "dominating_return_setter": "0xfe05816c",
+  "normal_return_signed32": -408,
+  "unknown_or_outside_tail_edges": [],
+  "call_assumptions": [
+    {
+      "site": "0xfe057fd4",
+      "target": "0xfe04a490",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe057ff0",
+      "target": "0xfe04a490",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058008",
+      "target": "0xfe04b364",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058020",
+      "target": "0xfe04b364",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058038",
+      "target": "0xfe04b2dc",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058040",
+      "target": "0xfe04a3b0",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058084",
+      "target": "0xfe04b2dc",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058094",
+      "target": "0xfe04b4cc",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe05809c",
+      "target": "0xfe04b2dc",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe0580d0",
+      "target": "0xfe04b2b4",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe0580e8",
+      "target": "0xfe04b1b8",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe0580fc",
+      "target": "0xfe0561b4",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058118",
+      "target": "0xfe0526bc",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058138",
+      "target": "0xfe0526bc",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe058144",
+      "target": "0xfe0526bc",
+      "assumption": "normal ABI return to next instruction; not executed"
+    },
+    {
+      "site": "0xfe05815c",
+      "target": "0xfe0561b4",
+      "assumption": "normal ABI return to next instruction; not executed"
+    }
+  ],
+  "conclusion": "Every modeled ordinary return from this exact original FAT-open entry returns-408. No success return was found; does not prove callees return, hardware initialization, or whole-device boot behavior.",
+  "scope": "host static CFG only; no Sony/guest/device execution"
+}

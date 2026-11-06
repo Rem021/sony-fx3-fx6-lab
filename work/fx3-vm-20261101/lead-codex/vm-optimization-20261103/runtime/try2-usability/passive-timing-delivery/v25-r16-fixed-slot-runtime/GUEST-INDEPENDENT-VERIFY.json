@@ -1,0 +1,27 @@
+{
+  "source_cpio_sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83",
+  "all_cpio_bytes": 453213884,
+  "allowed_span": [
+    451339648,
+    451398504
+  ],
+  "original_dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+  "variants": {
+    "N1": {
+      "candidate_sha256": "ce047a951a5e7af08d19312d4e9d6440080e159c857e41edf90ce66607a31563",
+      "cpio_sha256": "77081424fa73f9737434b7d0c5d2f6dc2b21215ffcc9cb3a95281dac9d4b521c",
+      "outside_slot_bytes_equal": true,
+      "platform_fields_equal": true,
+      "complete_receipt_sha256": "d4d248614c59e693763358700fdcbbab24bd71e1afa784abd7f6c382a0a12688"
+    },
+    "N64": {
+      "candidate_sha256": "96666a719b1a4cf576e4d2d7ec461e10f5ce1143650450719e5273d75d970672",
+      "cpio_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+      "outside_slot_bytes_equal": true,
+      "platform_fields_equal": true,
+      "complete_receipt_sha256": "e63d79eedd6816375dea92ecf15e2d4296a44a3e30a980ab5802097af36289b5"
+    }
+  },
+  "VM_started": false,
+  "verification": "Coordinator independent full streaming hash and byte comparison against original r3, both candidates, one pass."
+}

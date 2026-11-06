@@ -1,0 +1,1682 @@
+[
+  {
+    "section": ".rodata",
+    "section_offset": 1760,
+    "text": "init_boot_part"
+  },
+  {
+    "section": ".rodata",
+    "section_offset": 1776,
+    "text": "emmc_load_partition_tbl"
+  },
+  {
+    "section": ".rodata",
+    "section_offset": 1896,
+    "text": "emmc_register_wbi_partition"
+  },
+  {
+    "section": ".rodata",
+    "section_offset": 1928,
+    "text": "emmc_register_crypt_partition"
+  },
+  {
+    "section": ".rodata",
+    "section_offset": 3560,
+    "text": "to_partition_access"
+  },
+  {
+    "section": ".rodata",
+    "section_offset": 3680,
+    "text": "refresh_calc_capacity"
+  },
+  {
+    "section": ".rodata",
+    "section_offset": 4224,
+    "text": "switch_partition"
+  },
+  {
+    "section": ".rodata",
+    "section_offset": 6432,
+    "text": "emmc_seq_switch_partition"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 89,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on al_sg_dma_map(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 233,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on adma2_desc_table_new(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 313,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on %s(), not big enough descriptor table, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 481,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 665,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 1144,
+    "text": "%s0x%04x: "
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 1160,
+    "text": "%s "
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 1168,
+    "text": "%s%02x%02x "
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 1184,
+    "text": "%s%04x "
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 1192,
+    "text": "%s%04x %04x "
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 1537,
+    "text": "3%-16s(%4d[%-16s]) : Error : Not supported unknown speed mode(%d)"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 1953,
+    "text": "6eMMC: %s mode"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 1977,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s: error on ioremap()"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 2057,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on sdhci_dma_init(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 2225,
+    "text": "3%-16s(%4d[%-16s]) : Error : error on hw_data_prepare() err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 2297,
+    "text": "3%-16s(%4d[%-16s]) : Error : Not supported response type, type = %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 2369,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on hw_data_transfer() err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 2521,
+    "text": "3%-16s(%4d[%-16s]) : Error : Signal on %s(), err = %d, timeout_us = %lu"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 2705,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on %s(), err = %d, timeout_us = %lu"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 2785,
+    "text": "3%-16s(%4d[%-16s]) : Error : cmd->index: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 2937,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error IRQ on %s(): 0x%08x"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 3001,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error sdhci_emmc_wait() err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 3065,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on hw_data_wait() err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 3129,
+    "text": "3%-16s(%4d[%-16s]) : Error : Signal on %s(), err = %ld, timeout_us = %lu"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 3209,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on %s(), err = %ld, timeout_us = %lu"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 3289,
+    "text": "3%-16s(%4d[%-16s]) : Error : Invalid argument: method %d!"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 3353,
+    "text": "4%-16s(%4d[%-16s]) : Warning : Wrong key value %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 3657,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 3993,
+    "text": "3%-16s(%4d[%-16s]) : Error : Signal on %s(), err = %d, timeout_us = %lu"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4073,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on dma330_reset_channel(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4153,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on cryptEmmc_wrapper_reset(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4233,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on cryptEmmc_pio_write() err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4305,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on cryptEmmc_pio_read() err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4377,
+    "text": "4%-16s(%4d[%-16s]) : Warning : The previous tansfer status is %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4457,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on EMMC_KMALLOC() in %s()"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4521,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on dma330_peri_transfer_async() err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4601,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on cryptEmmc_setParam(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4673,
+    "text": "3%-16s(%4d[%-16s]) : Error : DMA330 transfer error %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4729,
+    "text": "3UDIF: %s() Line %d: invalid param: addr:0x%p, size:0x%zx"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4809,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_ops->init() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4873,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on init_emmc(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 4961,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_ops->exec_cmd() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5033,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_seq_read(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5105,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_seq_write(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5249,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5337,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5401,
+    "text": "3%-16s(%4d[%-16s]) : Error : WBI partition(%s) device invalid"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5465,
+    "text": "3%-16s(%4d[%-16s]) : Error : WBI partition(%s) type(%08x) invalid"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5537,
+    "text": "3%-16s(%4d[%-16s]) : Error : WBI device read range is not correctly set, %s (0 - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5633,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_decrypt_read() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5705,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_read() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5769,
+    "text": "3%-16s(%4d[%-16s]) : Error : WBI device write range is not correctly set, %s (0 - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5865,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_encrypt_write() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 5937,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_write() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 6001,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_seq_stop_bkops(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 6177,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 6321,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 6417,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 6593,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : dumping partition table info ..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 6665,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : dumping dev_params[%d].ptbl_info ..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 7080,
+    "text": "ptbl->n_partition"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 7104,
+    "text": "ptbl->partitions"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 7193,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : dumping ptbl->partitions ..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 7649,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_suspend_pre() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 7721,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_switch_to_hs_mode() failed... [%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 7801,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_switch_partition() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 7881,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_sleep() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 7945,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_suspend() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8009,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_resume_pre() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8081,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc seq awake failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8145,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_resume() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8281,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_update_max_discard_sectors() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8369,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_refresh_validate_capacity() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8457,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_wbi_resume_post() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8544,
+    "text": "init_boot_part()"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8577,
+    "text": "6%s (%s)"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8593,
+    "text": "3%-16s(%4d[%-16s]) : Error : va_emmc_init() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8721,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_init() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8849,
+    "text": "3%-16s(%4d[%-16s]) : Error : alloc partition info failed"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 8913,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on %s, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9033,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_seq_read(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9105,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_load_partition_tbl(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9185,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on init_cfs_part(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9256,
+    "text": "%s%d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9265,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on request_emmc_blk_dev(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9353,
+    "text": "4%-16s(%4d[%-16s]) : Warning : Register WBI device(%s%d) failed, as (%s) had already been registered"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9457,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on wb_register_device(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9529,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_register_wbi(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9601,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_register_wbi_partition(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9681,
+    "text": "3%-16s(%4d[%-16s]) : Error : partition table not defined in any part (%d)"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9761,
+    "text": "6partition table invalid"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9793,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on alloc_hw_param(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9865,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_register_crypt(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 9937,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_register_crypt_partition(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10033,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : va_panic at line %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10329,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10552,
+    "text": " [%s]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10577,
+    "text": "3%-16s(%4d[%-16s]) : Error : hw read failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10633,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_hw_read() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10697,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_read() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10761,
+    "text": "3%-16s(%4d[%-16s]) : Error : hw write failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10817,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_hw_write() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10889,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_write() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 10953,
+    "text": "3%-16s(%4d[%-16s]) : Error : Partition type [%d] is not supported."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11025,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_trim() failed ...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11097,
+    "text": "3%-16s(%4d[%-16s]) : Error : Can not erase the hw partition %s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11169,
+    "text": "3%-16s(%4d[%-16s]) : Error : Erase range is not correctly set, %s (0 - %lu sectors)"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11257,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_trim() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11617,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_proc_register_blkdev() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11697,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s : blk_init_queue() failed..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11761,
+    "text": "3%-16s(%4d[%-16s]) : Error : al_req_count_init() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11833,
+    "text": "3%-16s(%4d[%-16s]) : Error : al_req_count_set_discard_params() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 11913,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_seq_get_super_page_size(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12041,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s : kthread_run() failed..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12105,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s : alloc_disk() failed..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12169,
+    "text": "3%-16s(%4d[%-16s]) : Error : Failed to alloc_emmc_op_structures(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12249,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s : init_emmc() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12313,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on init_req_count(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12385,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s : init_blkdev_if() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12457,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_read(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12521,
+    "text": "4%-16s(%4d[%-16s]) : Warning : AL_REQ_COUNT_ADD_READ() returns %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12593,
+    "text": "4%-16s(%4d[%-16s]) : Warning : AL_REQ_COUNT_ADD_WRITE() returns %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12665,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_to_buf() for Head Unit, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12745,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_to_buf() for Tail Unit, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12889,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s : emmc is not initialized"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 12953,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_sanitize() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13025,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_erase_cmd() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13089,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_discard(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13161,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on add_bio_sg(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13225,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_write(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13289,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on pre_buffered_rw(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13361,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on copy_bio() for Head Unit, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13441,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on copy_bio() for Tail Unit, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13521,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_blk_buffered_transfer(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13601,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s : discard request failed : cmd_flag = 0x%llx, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13697,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_blk_direct_transfer(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13777,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_to_bio(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 13841,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s : emmc_blk_transfer() failed : err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 14185,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 14281,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 14353,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 14513,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : dumping emmc_blk_dev[%d] ..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 15129,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : dumping emmc_blk_dev[%d].bufs ..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 15201,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : dumping emmc_blk_bounce_buffer[%d] ..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 15441,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : dumping emmc_blk_dev_params[%d] ..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16169,
+    "text": "3%-16s(%4d[%-16s]) : Error : init_emmc_and_blkdev() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16241,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_register_dev() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16313,
+    "text": "4%-16s(%4d[%-16s]) : Warning : FIXME: unexpectedly an error code (%d)is returned as UDIF_ERR"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16409,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_plat_init() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16481,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_proc_init() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16545,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_plat_proc_init() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16617,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on init_procfs(), err =  %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16689,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_plat_probe_pre() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16761,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_seq_probe() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16825,
+    "text": "3%-16s(%4d[%-16s]) : Error : register_blkdev() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16889,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_plat_probe_post() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 16961,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_blk_plat_remove_post(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 17041,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on emmc_blk_plat_remove_pre(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 17137,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_plat_suspend() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 17209,
+    "text": "3%-16s(%4d[%-16s]) : Error : emmc_blk_plat_resume() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 17401,
+    "text": "3%-16s(%4d[%-16s]) : Error : Unknown host bus width : %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 17465,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on get_host_bus_width(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 17537,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on get_host_speed_mode(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 17657,
+    "text": "3%-16s(%4d[%-16s]) : Error : Invalid module descriptor :%d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 18177,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on get_host_setting() for wait mode err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 18265,
+    "text": "3%-16s(%4d[%-16s]) : Error : There is no such mdesc: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 18465,
+    "text": "6[eMMC] External module: %s has been unregistered!"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 18528,
+    "text": "HS200: %06d [%6lu.%03ld][%lu.%03ld] %s %s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 18601,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 18825,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 19145,
+    "text": "4%-16s(%4d[%-16s]) : Warning : Module name is too long! The max name length is %d."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 19305,
+    "text": "3%-16s(%4d[%-16s]) : Error : %s has already been registered!"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 19585,
+    "text": "6[eMMC] External module: %s has been registered successfully!"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 19785,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_host_params(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20185,
+    "text": "3%-16s(%4d[%-16s]) : Error : Unsupported partition type: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20425,
+    "text": "3%-16s(%4d[%-16s]) : Error : handle->emmc_ops->cmd() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20497,
+    "text": "3%-16s(%4d[%-16s]) : Error : check_emmc_cmd_response() returns error, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20585,
+    "text": "3%-16s(%4d[%-16s]) : Error : Wrong command index: %d!"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20641,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_cmd(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20713,
+    "text": "3%-16s(%4d[%-16s]) : Error : UDA capacity %llu must be refunit %u aligned"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20793,
+    "text": "3%-16s(%4d[%-16s]) : Error : BP capacity %llu must be refunit %u aligned"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20873,
+    "text": "3%-16s(%4d[%-16s]) : Error : Unsupported partition access [%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 20945,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_send_csd(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21017,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_csd(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21081,
+    "text": "4%-16s(%4d[%-16s]) : Warning : The bit 'not used' in CID is not %d, which should be."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21169,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on get_host_setting(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21321,
+    "text": "3%-16s(%4d[%-16s]) : Error : handle->emmc_ops->data_cmd() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21401,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_data_cmd(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21553,
+    "text": "3%-16s(%4d[%-16s]) : Error : Prepare tuning failed, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21617,
+    "text": "3%-16s(%4d[%-16s]) : Error : tuning failed over max retries limit : %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21697,
+    "text": "3%-16s(%4d[%-16s]) : Error : Unknown tuning block size for bus width : %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21777,
+    "text": "3%-16s(%4d[%-16s]) : Error : tuning ended with unknown error, end = %d, succeed = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21865,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : panic at line %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 21945,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_swtich(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22017,
+    "text": "3%-16s(%4d[%-16s]) : Error : Unexpected value detected in PARTITION_CONFIG: 0x%x"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22105,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on write_ext_csd_byte(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22177,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on wait_for_busy_cleared(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22256,
+    "text": "PARTITION_CONFIG value is wrong: 0x%x"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22321,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_send_ext_csd(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22401,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_ext_csd(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22473,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on check_bkops_if_urgent(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22553,
+    "text": "4%-16s(%4d[%-16s]) : Warning : BKOPS remains outstanding after complete, outstanding = %u, %u times"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22657,
+    "text": "3%-16s(%4d[%-16s]) : Error : Unsupported EXT_CSD revision: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 22721,
+    "text": "4%-16s(%4d[%-16s]) : Warning : Unsupported new version of device: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 23041,
+    "text": "3%-16s(%4d[%-16s]) : Error : Can't handle device which erase group size is not configured as an high-capacity"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 23497,
+    "text": "3%-16s(%4d[%-16s]) : Error : EXT_CSD[%u]: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 23609,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_emmc_spec(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 23785,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on start_bkops(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 23849,
+    "text": "3%-16s(%4d[%-16s]) : Error : Failed to notify device poweroff, skip reset device, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 23945,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_select_card(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24105,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_send_status(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24185,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_device_status(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24257,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on start_bkops_if_needed(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24337,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_device_state(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24489,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on put_state_from_trans_into_stby(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24577,
+    "text": "4%-16s(%4d[%-16s]) : Warning : IO operation[%u] in progress"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24641,
+    "text": "3%-16s(%4d[%-16s]) : Error : Can't handle to put device state from %u to Stand-by"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24729,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on put_state_into_stby(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24801,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_send_cid(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24873,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_cid(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 24937,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_cid_for_init(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25009,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_csd_for_init(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25081,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on put_state_from_stby_into_trans(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25169,
+    "text": "4%-16s(%4d[%-16s]) : Warning : State still not EMMC_DEV_STATE_TRAN, state = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25345,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on wait_for_trans_state(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25425,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_hs_timing_interface(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25505,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_ext_csd_bits(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25577,
+    "text": "3%-16s(%4d[%-16s]) : Error : read_ext_csd() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25641,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on enable_hpi(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25857,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on STOP_TRANSMISSION, err = %d, %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 25929,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on STOP_TRANSMISSION, err = %d, status = 0x%x"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26017,
+    "text": "3%-16s(%4d[%-16s]) : Error : Unexpected device state[%u]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26081,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on __stop_transmission(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26153,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_read_single_block(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26233,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_set_block_count(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26313,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_read_multiple_block(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26481,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on stop_transmission(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26553,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_block(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26617,
+    "text": "3%-16s(%4d[%-16s]) : Error : Failed to read %d/%d times..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26681,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_write_single_block(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26769,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_write_multiple_block(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 26937,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on write_block(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27001,
+    "text": "3%-16s(%4d[%-16s]) : Error : Failed to write %d/%d times..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27065,
+    "text": "3%-16s(%4d[%-16s]) : Error : Tried to issue HPI in unexpected device state[%u]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27241,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on issuing HPI, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27305,
+    "text": "3%-16s(%4d[%-16s]) : Error : Timed out in wait_busy_cleared(), timeout_us = %lu + %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27513,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on confirm_bkops_status_after_comp(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27601,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on interrupt_with_hpi(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27673,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on wait_bkops(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27737,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on stop_bkops(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27801,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on confirm_bkops_running_state(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 27945,
+    "text": "3%-16s(%4d[%-16s]) : Error : Failed to erase %d/%d times..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28009,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_erase_group_start(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28089,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_erase_group_end(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28169,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_erase(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28305,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_ext_csd_with_sem(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28736,
+    "text": "[%6lu.%03ld][%lu.%03ld](%6lu) CMD: %2u 0x%08x 0x%08x%s%s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28800,
+    "text": "[%6lu.%03ld][%lu.%03ld](%6lu) CMD: %2u 0x%08x N/A%s%s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28857,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on get_cmd_trace(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28928,
+    "text": "Tuning count: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28945,
+    "text": "Cause(Periodic): %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28965,
+    "text": "Cause(Error): %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 28982,
+    "text": "Cause(Re-tuning event): %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 29009,
+    "text": "Result(Tuned clock): %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 29033,
+    "text": "Result(Fixed clock): %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 29057,
+    "text": "Result(Incompleted): %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 29313,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on stop_sanitize(), HPI is not supported, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 29553,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on stop_sanitize(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 29625,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on switch_partition(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 29769,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_block_retry(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 29913,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on write_block_retry(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 30121,
+    "text": "4%-16s(%4d[%-16s]) : Warning : Drop invalid skip region: (%u - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 30201,
+    "text": "3%-16s(%4d[%-16s]) : Error : BP1 skip region is out of range : (%u - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 30289,
+    "text": "6Permanent BP1 skip region : (%u - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 30345,
+    "text": "3%-16s(%4d[%-16s]) : Error : BP2 skip region is out of range : (%u - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 30433,
+    "text": "6Permanent BP2 skip region : (%u - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 30489,
+    "text": "3%-16s(%4d[%-16s]) : Error : UDA skip region is out of range : (%u - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 30577,
+    "text": "6Permanent UDA skip region : (%u - %u) sectors"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31017,
+    "text": "3%-16s(%4d[%-16s]) : Error : Invalid refresh context cur_refunit: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31089,
+    "text": "3%-16s(%4d[%-16s]) : Error : No such superpage size device [%u]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31224,
+    "text": "%-20s : %s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31256,
+    "text": "capacity (MiB)"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31272,
+    "text": "%-20s : %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31344,
+    "text": "%20s: %u"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31569,
+    "text": "3%-16s(%4d[%-16s]) : Error : Erron on read_ext_csd(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31689,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_pon() w/ POWERED_ON, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31769,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_pon() w/ %s, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31841,
+    "text": "6Power Off Notification (%s) has been sent"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 31969,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_pon_to_power_off(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 32153,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 32416,
+    "text": "spec->capacity"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 32937,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : dumping handle->trans_data_list[%d] ..."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 33585,
+    "text": "0%-16s(%4d[%-16s]) : Emergency : %-32s: %s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 34929,
+    "text": "3%-16s(%4d[%-16s]) : Error : device not in Transfer state state = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35001,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_ext_csd_for_init(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35081,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on init_emmc_features(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35153,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on init_emmc_active_pt(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35289,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on stop_bkops_if_running(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35441,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_pon() w/ SLEEP_NOTIFICATION, err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35529,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_sleep_awake(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35681,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_pon_to_sleep_notification(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35769,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on __emmc_seq_sleep(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 35905,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on __emmc_seq_awake(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36049,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_go_idle_state(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36129,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on put_state_into_idle(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36201,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_send_op_cond(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36281,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_all_send_cid(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36361,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on put_state_into_identification(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36449,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on exec_emmc_set_rca(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36521,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on set_relative_addr(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36593,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on switch_bus_width(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36665,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on switch_timing_mode(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36737,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on execute_tuning(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36889,
+    "text": "4%-16s(%4d[%-16s]) : Warning : Number of eMMC host reset time: %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 36961,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on put_state_into_ready(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 37041,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on switch_erase_group_def(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 37225,
+    "text": "3%-16s(%4d[%-16s]) : Error : Failed to allocate emmc_trans_data list[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 37377,
+    "text": "3%-16s(%4d[%-16s]) : Error : al_sg_alloc() failed...[%d]"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 37513,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on init_cmd_trace(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 37585,
+    "text": "3%-16s(%4d[%-16s]) : Error : Failed to init_emmc_seq_mod_bm(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 37857,
+    "text": "4%-16s(%4d[%-16s]) : Warning : Discrepancy between OCR/EXT_CSD register about device capacity. Trying to access as the High Capacity device."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 38001,
+    "text": "4%-16s(%4d[%-16s]) : Warning : Discrepancy between OCR/EXT_CSD register about device capacity. Trying to access as the non-High Capacity device."
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 38225,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on init_emmc_access_mode(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 38305,
+    "text": "6eMMC: %lluMiB, %s %s (rev 0x%02x, date 0x%02x, serial 0x%08x)"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 38377,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on read_emmc_spec_for_init(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 38457,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on refresh_init(), err = %d"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 39033,
+    "text": "3%-16s(%4d[%-16s]) : Error : Failed on creating %s"
+  },
+  {
+    "section": ".rodata.str1.8",
+    "section_offset": 39105,
+    "text": "3%-16s(%4d[%-16s]) : Error : Error on registering al_proc_entries, err = %d"
+  }
+]

@@ -1,0 +1,25 @@
+00015398: fd7bbea9 stp x29, x30, [sp, #-0x20]!
+0001539c: fd030091 mov x29, sp
+000153a0: 02030058 ldr x2, #0x15400
+000153a4: f30b00f9 str x19, [sp, #0x10]
+000153a8: 41d042b9 ldr w1, [x2, #0x2d0]
+000153ac: 3f00006b cmp w1, w0
+000153b0: c0000054 b.eq #0x153c8
+000153b4: e103002a mov w1, w0
+000153b8: e00302aa mov x0, x2
+000153bc: 97e8ff97 bl #0xf618
+000153c0: f303002a mov w19, w0
+000153c4: c000f837 tbnz w0, #0x1f, #0x153dc
+000153c8: 13008052 mov w19, #0
+000153cc: e003132a mov w0, w19
+000153d0: f30b40f9 ldr x19, [sp, #0x10]
+000153d4: fd7bc2a8 ldp x29, x30, [sp], #0x20
+000153d8: c0035fd6 ret 
+000153dc: 63010058 ldr x3, #0x15408
+000153e0: e403132a mov w4, w19
+000153e4: 61010058 ldr x1, #0x15410
+000153e8: 42758452 mov w2, #0x23aa
+000153ec: 60010058 ldr x0, #0x15418
+000153f0: 63802c91 add x3, x3, #0xb20
+000153f4: 00000094 bl #0x153f4 ; {'section': '.text', 'offset': 87028, 'type': 283, 'symbol': 'printk', 'addend': 0}
+000153f8: f5ffff17 b #0x153cc

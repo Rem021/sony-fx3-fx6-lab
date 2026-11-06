@@ -1,0 +1,160 @@
+--- work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/build.py
++++ stage258-fixed-Sony-communication-diagnostic01/build.py
+@@ -11,7 +11,8 @@
+ commands={
+     'fixture':base+['-fsanitize=address,undefined','-fno-sanitize-recover=all','-DFX3_ENTRY_FIXTURE','-DFX3_OWNER_CHANNEL_FIXTURE','-DFX3_IOKIT_WIRE_FIXTURE',*shared,str(H/'owner_fixture.c'),str(H/'fake_iokit.c'),str(H/'flow_fixture.c'),'-o',str(out/'service-fixture-helper')],
+     'native':base+[*shared,str(H/'owner_iokit.c'),str(H/'iokit_adapter.c'),str(H/'host_login.c'),'-framework','Security','-lbsm','-framework','IOKit','-framework','CoreFoundation','-framework','DiskArbitration','-o',str(out/'service-native-helper')],
+-    'ipc':base+['-dynamiclib','-DFX3_ENTRY_FIXTURE',str(H/'owner_ipc.c'),str(H/'entry_support.c'),'-o',str(out/'entry-ipc.dylib')]
++    'ipc':base+['-dynamiclib','-DFX3_ENTRY_FIXTURE',str(H/'owner_ipc.c'),str(H/'entry_support.c'),'-o',str(out/'entry-ipc.dylib')],
++    'permit_test':base+['-fsanitize=address,undefined','-fno-sanitize-recover=all','-DFX3_PERMIT_TEST',str(H/'status_permit.c'),str(H/'permit_unit.c'),'-o',str(out/'permit-unit')]
+ }
+ builds={}
+ for name,cmd in commands.items():
+@@ -23,5 +24,5 @@
+     if name!='native':assert 'IOKit.framework'not in deps
+     builds[name].update(path=str(path),sha256=sha256(path.read_bytes()).hexdigest(),dependencies=deps)
+ sources=[dict(path=p.name,sha256=sha256(p.read_bytes()).hexdigest())for p in sorted(H.iterdir())if p.suffix in ['.c','.h','.inc']]
+-with(H/'build-receipt.json').open('x')as f:json.dump(dict(builds=builds,sources=sources,native_build_released=False,native_helper_executed=False,new_root_or_USB_operations=0),f,indent=2);f.write('\n')
++with(H/'build-receipt.json').open('x')as f:json.dump(dict(builds=builds,sources=sources,native_build_released=True,native_helper_executed=False,new_root_or_USB_operations=0),f,indent=2);f.write('\n')
+ print(json.dumps(dict(status='BUILT_NATIVE_ROOT_CANDIDATE_AND_UNPRIVILEGED_FIXTURE',native_executed=False)))
+--- work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/controller_ipc.py
++++ stage258-fixed-Sony-communication-diagnostic01/controller_ipc.py
+@@ -12,7 +12,8 @@
+         if sha256((HERE/m['path']).read_bytes()).hexdigest()!=m['sha256']:raise R.Rejected('fixed build source changed')
+     for m in b['builds'].values():
+         if sha256(Path(m['path']).read_bytes()).hexdigest()!=m['sha256']:raise R.Rejected('fixed binary changed')
+-    if b['native_build_released'] or b['native_helper_executed']:raise R.Rejected('this offline candidate must stay closed')
++    if b['native_build_released'] is not True or b['native_helper_executed'] is not False:
++        raise R.Rejected('fixed reviewed build identity')
+     return b
+ 
+ class Grant(C.Structure):
+--- work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/entry_target.h
++++ stage258-fixed-Sony-communication-diagnostic01/entry_target.h
+@@ -1,13 +1,13 @@
+-#define FX3_NATIVE_RELEASED 0
+-#define FX3_GRANT_ID "fx3-702-service-discovery-candidate-20261031-01"
+-#define FX3_FIXED_JOB_DIR "/private/tmp/fx3-702-service-discovery-candidate-20261031-01"
+-#define FX3_FIXED_FRAME "/private/tmp/fx3-702-service-discovery-candidate-20261031-01/shared.bin"
++#define FX3_NATIVE_RELEASED 1
++#define FX3_GRANT_ID "fx3-702-service-diagnostic-20261031-01"
++#define FX3_FIXED_JOB_DIR "/private/tmp/fx3-702-service-diagnostic-20261031-01"
++#define FX3_FIXED_FRAME "/private/tmp/fx3-702-service-diagnostic-20261031-01/shared.bin"
+ #define FX3_ROOT_BASE "/private/var/root/fx3-owner-trials"
+-#define FX3_ROOT_GRANT_DIR "/private/var/root/fx3-owner-trials/fx3-702-service-discovery-candidate-20261031-01"
+-#define FX3_INSTALLED_HELPER "/private/var/root/fx3-owner-trials/fx3-702-service-discovery-candidate-20261031-01/helper"
+-#define FX3_ROOT_ENTRY_LEASE "/private/var/root/fx3-owner-trials/fx3-702-service-discovery-candidate-20261031-01/entry.once"
+-#define FX3_FIXED_PEER_PATH "/private/tmp/fx3-702-service-discovery-candidate-20261031-01/peer.sock"
+-#define FX3_FIXTURE_JOB_ROOT "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/runs/"
+-#define FX3_FIXTURE_SOCKET_ROOT "/private/tmp/fx3-fixture-ipc257/"
++#define FX3_ROOT_GRANT_DIR "/private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01"
++#define FX3_INSTALLED_HELPER "/private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/helper"
++#define FX3_ROOT_ENTRY_LEASE "/private/var/root/fx3-owner-trials/fx3-702-service-diagnostic-20261031-01/entry.once"
++#define FX3_FIXED_PEER_PATH "/private/tmp/fx3-702-service-diagnostic-20261031-01/peer.sock"
++#define FX3_FIXTURE_JOB_ROOT "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage258-fixed-Sony-communication-diagnostic01/runs/"
++#define FX3_FIXTURE_SOCKET_ROOT "/private/tmp/fx3-fixture-ipc258/"
+ 
+ #define FX3_GLOBAL_GUARD "/private/var/root/fx3-owner-trials/global-fx3-owner.journal"
+--- work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/fixed_launch.py
++++ stage258-fixed-Sony-communication-diagnostic01/fixed_launch.py
+@@ -1,4 +1,4 @@
+-"""Render fixed shell launch; only explicit fixture APIs execute it elsewhere."""
++"""Fixed one-shot communication diagnostic, separate from old status grants."""
+ from pathlib import Path
+ from hashlib import sha256
+ import json,os,shlex,stat
+@@ -9,6 +9,8 @@
+ ROOT_BASE=Path('/private/var/root/fx3-owner-trials')
+ ROOT_DIR=ROOT_BASE/R.GRANT_ID
+ TARGET={'locationID':0x01100000,'VID':0x054c,'PID':0x0da1,'model':'ILME-FX3','firmware':'7.02'}
++SCOPE='MSC_SERVICE_AUTH_READ0_RETURN'
++AUTH_KEY='Mac_service_diagnostic01'
+ 
+ def private_copy(source,expected,directory):
+     directory=Path(directory)
+@@ -77,29 +79,28 @@
+     'printf '+q(status)+' "$code" > '+q(directory/'terminal-marker.json'),'exit "$code"',''])
+ 
+ def render_native(nonce):
+-    raise R.Rejected("native service launch rendering remains closed")
+     b=I.build();digest=b['builds']['native']['sha256']
+     body=bootstrap(JOB/'source-helper',digest,ROOT_DIR/'helper',JOB/'shared.bin',nonce)
+     return command(body,JOB,nonce),body
+ 
+ def native_authority(goal):
+-    raise R.Rejected("service candidate has no fixed profile or new live approval; no staging")
+-    # Preserved old renderer is unreachable.
+     raw=(HERE/'approval-bundle.json').read_bytes();b=json.loads(raw);digest=sha256(raw).hexdigest()
+-    if os.getuid()!=501 or os.geteuid()!=501 or b['grant_id']!=R.GRANT_ID or b['scope']!='MSC_OWNER_STATUS_ONLY' or \
++    if os.getuid()!=501 or os.geteuid()!=501 or b['grant_id']!=R.GRANT_ID or b['scope']!=SCOPE or \
+        type(b.get('maximum_helper_invocations')) is not int or b.get('maximum_helper_invocations')!=1:
+         raise R.Rejected('fixed native authority context')
+     expected={'authorized':True,'grant_id':R.GRANT_ID,'bundle_sha256':digest,
+-      'scope':'MSC_OWNER_STATUS_ONLY','maximum_helper_invocations':1,
+-      'usb_capture_and_return':True,'sony_vendor_or_file_commands':False}
+-    given=goal.get('authorization',{}).get('Mac_owner_status12',{})
++      'scope':SCOPE,'maximum_helper_invocations':1,
++      'usb_capture_and_return':True,'Sony_authentication_and_mode_transition':True,
++      'camera_fixed_read0_maximum_bytes':88,'firmware_write':False}
++    given=goal.get('authorization',{}).get(AUTH_KEY,{})
+     if given!=expected or given.get('authorized') is not True or type(given.get('maximum_helper_invocations')) is not int or \
+-       given.get('usb_capture_and_return') is not True or given.get('sony_vendor_or_file_commands') is not False:
+-        raise R.Rejected('new exact status-only administrator and USB approval required')
+-    if goal.get('authorization_consumption',{}).get('Mac_owner_status12',{}).get('consumed'):
+-        raise R.Rejected('status-only grant consumed')
++       given.get('usb_capture_and_return') is not True or given.get('Sony_authentication_and_mode_transition') is not True or \
++       type(given.get('camera_fixed_read0_maximum_bytes')) is not int or given.get('firmware_write') is not False:
++        raise R.Rejected('fixed new communication diagnostic authority required')
++    if goal.get('authorization_consumption',{}).get(AUTH_KEY,{}).get('consumed'):
++        raise R.Rejected('communication diagnostic grant consumed')
+     for x in b['files']:
+         p=HERE/x['path'];data=p.read_bytes()
+         if len(data)!=x['bytes'] or sha256(data).hexdigest()!=x['sha256']:raise R.Rejected('approval member changed')
+-    if JOB.exists():raise R.Rejected('fixed status-only attempt already staged; no retry')
++    if JOB.exists():raise R.Rejected('fixed communication diagnostic already staged; no retry')
+     return b
+--- work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/receipt_receiver.py
++++ stage258-fixed-Sony-communication-diagnostic01/receipt_receiver.py
+@@ -16,7 +16,7 @@
+ 
+ BYTES=1024
+ RESULT_BYTES=728
+-GRANT_ID='fx3-702-service-discovery-candidate-20261031-01'
++GRANT_ID='fx3-702-service-diagnostic-20261031-01'
+ LIVE_PATH='/private/var/root/fx3-owner-trials/'+GRANT_ID+'/helper'
+ 
+ class Rejected(ValueError):pass
+--- work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/service_profile.h
++++ stage258-fixed-Sony-communication-diagnostic01/service_profile.h
+@@ -3,5 +3,5 @@
+ /* Ready means descriptor-policy code exists, not real-camera verification.
+  * No fixed endpoint numbers, guessed SERVICE profile or live release. */
+ #define FX3_SERVICE_DISCOVERY_READY 1
+-#define FX3_NATIVE_SERVICE_RELEASED 0
++#define FX3_NATIVE_SERVICE_RELEASED 1
+ #endif
+--- work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/supervisor.py
++++ stage258-fixed-Sony-communication-diagnostic01/supervisor.py
+@@ -10,7 +10,7 @@
+ import controller_ipc as I
+ import fixed_launch as P
+ import receipt_receiver as R
+-HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2];SOCKET_ROOT=Path('/private/tmp/fx3-fixture-ipc257')
++HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2];SOCKET_ROOT=Path('/private/tmp/fx3-fixture-ipc258')
+ 
+ def put(path,value):
+     data=(json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode()
+--- work/sony-firmware-20261024/stage257-service-descriptor-discovery-and-control-exit/target_binding.h
++++ stage258-fixed-Sony-communication-diagnostic01/target_binding.h
+@@ -2,8 +2,8 @@
+ #define FX3_STATUS_TARGET_BINDING_H
+ #include <stdint.h>
+ #define FX3_FIXED_LOCATION 0x01100000u
+-#define FX3_CACHED_REGISTRY_ID 0ull
+-static const unsigned char FX3_FIXED_NONCE[16]={0};
+-static const unsigned char FX3_FIXED_PRIVACY_KEY[32]={0};
++#define FX3_CACHED_REGISTRY_ID 4295260251ull
++static const unsigned char FX3_FIXED_NONCE[16]={0xdc,0xe9,0xe1,0x30,0x7b,0xf,0x2c,0xbb,0x5a,0xa5,0x22,0x98,0xf8,0x8e,0xa8,0x4};
++static const unsigned char FX3_FIXED_PRIVACY_KEY[32]={0x56,0x7c,0x46,0xcd,0x30,0xc7,0x7d,0xc8,0xa5,0xd8,0x21,0xc6,0xbf,0xbf,0xc4,0x53,0xe1,0x9d,0x87,0x38,0x40,0x2,0x4c,0x3e,0x10,0x0,0x26,0x14,0xc7,0xc4,0xc6,0x3};
+ static inline int fx3_target_registry_permitted(uint64_t id,unsigned captured){return captured || id==FX3_CACHED_REGISTRY_ID;}
+ #endif

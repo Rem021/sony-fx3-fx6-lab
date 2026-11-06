@@ -1,0 +1,397 @@
+{
+  "cp_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+  "previous_files_verified": 23,
+  "source_fragments": [
+    {
+      "file_offset": "0x37b078",
+      "bytes": 360,
+      "sha256": "7f3288540ad0905810a450200595035c70d1407c1ee34efb51701d71bb6b9c3e",
+      "label": "stp-allocator",
+      "listing": "source-fragments/stp-allocator.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x37b250",
+      "bytes": 66,
+      "sha256": "bb74a50b780feaafc770d2040038c7888f6b4f138c4aee56a2fbdb35e25124bc",
+      "label": "stp-lock-wrapper",
+      "listing": "source-fragments/stp-lock-wrapper.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x93fdcc",
+      "bytes": 68,
+      "sha256": "99399d9f5b60064c96f53099136d096bd21e34a96692cf4a1f2858de75edb0e2",
+      "label": "stp-unlock-wrapper",
+      "listing": "source-fragments/stp-unlock-wrapper.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x37c8c0",
+      "bytes": 36,
+      "sha256": "fe7478ee526dfa5a873c3573df939351a214f9aa627d77e7a59792fe64e8a2a0",
+      "label": "quiet-log-entry",
+      "listing": "source-fragments/quiet-log-entry.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x37c994",
+      "bytes": 14,
+      "sha256": "0eca9c9179da0b709f8ab8db0151a37acfca379c575100caca888d83c1e77aa1",
+      "label": "quiet-log-return",
+      "listing": "source-fragments/quiet-log-return.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x93fb88",
+      "bytes": 104,
+      "sha256": "71111dc9f167bac644d94363be9c52a97e0ea109173d6317466d5e885870aee4",
+      "label": "stp-initialization",
+      "listing": "source-fragments/stp-initialization.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x36c024",
+      "bytes": 24,
+      "sha256": "f8ee8861c05f89034eb22e804f5bbd884e6007f8ed73ac28d0cfa2e5afe45dc7",
+      "label": "register-dispatch-entry",
+      "listing": "source-fragments/register-dispatch-entry.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x36c306",
+      "bytes": 70,
+      "sha256": "aa95a8eb67ed933d90c03e8a851aefd4fa33f59daa2b9adba016fb6a44cd6af9",
+      "label": "selected-register-writes",
+      "listing": "source-fragments/selected-register-writes.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x300242",
+      "bytes": 16,
+      "sha256": "0dc1875549482c060d8b7089de4a48bf2495064a34aa35daecede73b62402557",
+      "label": "mode-input-producer",
+      "listing": "source-fragments/mode-input-producer.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x300282",
+      "bytes": 8,
+      "sha256": "1c367b00d099e7dcf3b5587e7e73d6c3279272aa187c52c47497e6511fb0fc81",
+      "label": "query-selector-producer",
+      "listing": "source-fragments/query-selector-producer.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x303746",
+      "bytes": 30,
+      "sha256": "e1d222502c4da47ee5f52be50e1ceab70f45cbbd6a8bc2ba28135c6b09c7dac3",
+      "label": "buffer-kind-producer",
+      "listing": "source-fragments/buffer-kind-producer.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x303184",
+      "bytes": 22,
+      "sha256": "ba1bd0c6cc0bb0b80c9e4b627c273fc7faf59e00e5b9c1692467757b52cce67f",
+      "label": "buffer-kind-three-producer",
+      "listing": "source-fragments/buffer-kind-three-producer.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x307040",
+      "bytes": 46,
+      "sha256": "a01adecdb329725578369553981b1d5136f623778d2ba13c12cb8a0d3af6988e",
+      "label": "buffer-kind-four-producer",
+      "listing": "source-fragments/buffer-kind-four-producer.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x597a1a",
+      "bytes": 56,
+      "sha256": "4b967d0bbe6f323f2cbacd1e6c7f69971327966ce4ff3f6a950e9bdf0a3dc102",
+      "label": "mode-default-wrapper",
+      "listing": "source-fragments/mode-default-wrapper.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x149fa4",
+      "bytes": 474,
+      "sha256": "8ba2d95eeeaed765c4e374d847f39e921b3ee59720a65cebd6e53a874a1dcec4",
+      "label": "mode-default-dispatch",
+      "listing": "source-fragments/mode-default-dispatch.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x320438",
+      "bytes": 368,
+      "sha256": "fe68ee7357a20d4fd87180152f5a9d3e082df5f1ec2f2e4e54338abd498554d1",
+      "label": "image-query-branch",
+      "listing": "source-fragments/image-query-branch.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    },
+    {
+      "file_offset": "0x3205c4",
+      "bytes": 68,
+      "sha256": "b4ed894ea0327c76a52030b20771cbdb78d7dfde7959fa702a254bc63d3ddc11",
+      "label": "image-query-wrapper",
+      "listing": "source-fragments/image-query-wrapper.txt",
+      "bounds": "explicit source window; embedded switch data is not instruction-execution evidence"
+    }
+  ],
+  "switch_tables": [
+    {
+      "va": "0x47403c",
+      "bytes": 144,
+      "sha256": "6e6ee8af2b3a81e910fd2a1e929a225f7a9df3d5cea51e92212d4b49b4d689b9",
+      "element_bytes": 2,
+      "selected_targets": {
+        "0x22": "0x474306",
+        "0x23": "0x474316",
+        "0x24": "0x474326",
+        "0x25": "0x474336"
+      }
+    },
+    {
+      "va": "0x473458",
+      "bytes": 144,
+      "sha256": "b3df4eb09f91691e711f7aa6cc346bde8364167d08736f5a99a853e780a40066",
+      "element_bytes": 2,
+      "selected_targets": {
+        "0x22": "0x473914",
+        "0x23": "0x47393a",
+        "0x24": "0x473960",
+        "0x25": "0x473986"
+      }
+    },
+    {
+      "va": "0x252094",
+      "bytes": 5,
+      "sha256": "6b52b54c221886f03a6c1683a0200a59519b98b25633c88e74672a5ae167dcd7",
+      "element_bytes": 1,
+      "targets": [
+        "0x25213a",
+        "0x25213a",
+        "0x2520f8",
+        "0x252174",
+        "0x2520f8"
+      ]
+    }
+  ],
+  "field_15d8_candidates": [
+    {
+      "file_offset": "0x2411b6",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x2413ec",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x2418a0",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x2419c0",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x241adc",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x249760",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x24999e",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x249cc6",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x24aaa6",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x24aca4",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x24ae64",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x24c412",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x303184",
+      "instruction": "movw r6, #0x15d8"
+    },
+    {
+      "file_offset": "0x303750",
+      "instruction": "movw sl, #0x15d8"
+    },
+    {
+      "file_offset": "0x304874",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x304912",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x305ce0",
+      "instruction": "movw sl, #0x15d8"
+    },
+    {
+      "file_offset": "0x307044",
+      "instruction": "movw r5, #0x15d8"
+    },
+    {
+      "file_offset": "0x307656",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x308e8e",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x3094e2",
+      "instruction": "movw r8, #0x15d8"
+    },
+    {
+      "file_offset": "0x30a04c",
+      "instruction": "movw r5, #0x15d8"
+    },
+    {
+      "file_offset": "0x30ada0",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x30b93e",
+      "instruction": "movw r8, #0x15d8"
+    },
+    {
+      "file_offset": "0x30cb14",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x30cba0",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x30dce8",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x30dd70",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x3203e4",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x3205e8",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x320780",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x320984",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x320a4a",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x320b3a",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x6a05a8",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x6d35ea",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x70a004",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x71f132",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x7a8092",
+      "instruction": "movw r6, #0x15d8"
+    },
+    {
+      "file_offset": "0x7aba64",
+      "instruction": "movw r5, #0x15d8"
+    },
+    {
+      "file_offset": "0x7ac588",
+      "instruction": "movw r3, #0x15d8"
+    },
+    {
+      "file_offset": "0x84b138",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x84bb00",
+      "instruction": "movw r4, #0x15d8"
+    },
+    {
+      "file_offset": "0x84bb60",
+      "instruction": "movw r5, #0x15d8"
+    },
+    {
+      "file_offset": "0x8c9966",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x8cb498",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x8cb5c4",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x8cb87a",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x8cbcd6",
+      "instruction": "movw r0, #0x15d8"
+    },
+    {
+      "file_offset": "0x8dbbd4",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x9102e6",
+      "instruction": "movw r1, #0x15d8"
+    },
+    {
+      "file_offset": "0x93696a",
+      "instruction": "movw r1, #0x15d8"
+    }
+  ],
+  "source_diagnostic": {
+    "va": "0xd9cfde",
+    "value": "CamCore: ImgModeDefaultParam() No Table[%d] Flow",
+    "sha256": "2702b44d1bd10be407b3792c001cfdf853e66469bdac866c65337ecb010ae980"
+  },
+  "scope": "Read-only original source windows, explicit switch data and immediate candidates. Runtime MMIO values, locks, physical STP ownership, normal input modes and image buffers are not supplied by static source."
+}

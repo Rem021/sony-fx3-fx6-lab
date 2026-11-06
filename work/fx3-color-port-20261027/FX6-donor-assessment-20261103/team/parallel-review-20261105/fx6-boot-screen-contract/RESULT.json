@@ -1,0 +1,429 @@
+{
+  "schema": "fx6-r50-boot-screen-result-v1",
+  "task": "task_97919f2e6f0f",
+  "dispatch": "ctx_a9695459fefe",
+  "status": "succeeded_root_cause_localization",
+  "bootability_status": "not_demonstrated",
+  "menu_verified": false,
+  "runtime_contact": false,
+  "new_vm_browser_server_qmp_guest": false,
+  "source_or_candidate_modified": false,
+  "old_audit_modified": false,
+  "camera_usb_sd_touched": false,
+  "external_process_contact": false,
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "target": "cp-bind-66ed0f78",
+  "function": {
+    "target": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/grm-fbinit/appFw-future-skip.so",
+    "target_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+    "donor": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+    "donor_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+    "text_vma": "0xb1a1f0",
+    "text_file_offset": "0xb1a1f0",
+    "function_vma_start": "0x11f6188",
+    "next_function_vma": "0x11f79f8",
+    "function_region_sha256_target": "c802ebf53f6be40c9a17c89fd68e4bbc34134065d4ca555b38b25f381f77f6f0",
+    "function_region_sha256_donor": "c802ebf53f6be40c9a17c89fd68e4bbc34134065d4ca555b38b25f381f77f6f0",
+    "function_region_identical": true,
+    "model_func_name_string_vma": "0x24c1500",
+    "model_file_string_vma": "0x24be0d8",
+    "assert_logger": "0x2167784",
+    "assert_logger_return": "0x2167780 ret after printf/usleep; nonfatal logging call",
+    "disassembly_receipt": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-boot-screen-contract/receipts/disasm-set_model_for_boot_screen.txt"
+  },
+  "assert_sites": {
+    "3147": {
+      "vma": "0x11f72d8",
+      "file_offset": "0x11f72d8",
+      "condition": "local[b4] is neither 0 nor 1",
+      "load": "0x11f7230 ldr w0,[x29,#0xb4]; cbz -> mode1; cmp #1; b.ne assert",
+      "assert_args": "w1=0xc4b (3147), x0=model_api.cpp, x2=set_model_for_boot_screen; bl 0x2167784",
+      "then": "w20=0; b 0x11f7288; logger returns"
+    },
+    "3176": {
+      "vma": "0x11f72a0",
+      "file_offset": "0x11f72a0",
+      "condition": "local[c4] is neither 0 nor 1",
+      "load": "0x11f7288 ldr w1,[x29,#0xc4]; 0 -> 0x11f72e8; 1 -> 0x11f7320; else assert",
+      "assert_args": "w1=0xc68 (3176), x0=model_api.cpp, x2=function; bl 0x2167784",
+      "then": "w0=0; b 0x11f7310/0x11f7320; logger returns"
+    }
+  },
+  "backup_contract": {
+    "target_66ed_setting_Backup.bin": {
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+      "values": {
+        "0x2cf01af": {
+          "present": false,
+          "length": null,
+          "raw_hex": null,
+          "u32_le": null,
+          "property_index": 29620,
+          "attribute": null,
+          "data_file_offset": null,
+          "checksum": true
+        },
+        "0x2cf0214": {
+          "present": true,
+          "length": 4,
+          "raw_hex": "16161616",
+          "u32_le": 370546198,
+          "property_index": 29721,
+          "attribute": 192,
+          "data_file_offset": 594516,
+          "checksum": true
+        },
+        "0x2cf0215": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "0a",
+          "u32_le": null,
+          "property_index": 29722,
+          "attribute": 96,
+          "data_file_offset": 594521,
+          "checksum": true
+        },
+        "0x2cf0216": {
+          "present": true,
+          "length": 4,
+          "raw_hex": "0a0a0a0a",
+          "u32_le": 168430090,
+          "property_index": 29723,
+          "attribute": 192,
+          "data_file_offset": 594523,
+          "checksum": true
+        },
+        "0x2cf0217": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "19",
+          "u32_le": null,
+          "property_index": 29724,
+          "attribute": 96,
+          "data_file_offset": 594528,
+          "checksum": true
+        },
+        "0x2cf0218": {
+          "present": true,
+          "length": 4,
+          "raw_hex": "19191919",
+          "u32_le": 421075225,
+          "property_index": 29725,
+          "attribute": 192,
+          "data_file_offset": 594530,
+          "checksum": true
+        },
+        "0x2cf0219": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "19",
+          "u32_le": null,
+          "property_index": 29726,
+          "attribute": 96,
+          "data_file_offset": 594535,
+          "checksum": true
+        }
+      }
+    },
+    "fx6_chaplin_template": {
+      "sha256": "e2eafd4e950ead94fdba64722b225b9ccf4cf294ce4c1cf956b9e62926bbf89e",
+      "values": {
+        "0x2cf01af": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "00",
+          "u32_le": null,
+          "property_index": 33204,
+          "attribute": 96,
+          "data_file_offset": 561766,
+          "checksum": true
+        },
+        "0x2cf0214": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "00",
+          "u32_le": null,
+          "property_index": 33305,
+          "attribute": 96,
+          "data_file_offset": 581154,
+          "checksum": true
+        },
+        "0x2cf0215": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "00",
+          "u32_le": null,
+          "property_index": 33306,
+          "attribute": 96,
+          "data_file_offset": 581156,
+          "checksum": true
+        },
+        "0x2cf0216": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "00",
+          "u32_le": null,
+          "property_index": 33307,
+          "attribute": 96,
+          "data_file_offset": 581158,
+          "checksum": true
+        },
+        "0x2cf0217": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "00",
+          "u32_le": null,
+          "property_index": 33308,
+          "attribute": 96,
+          "data_file_offset": 581160,
+          "checksum": true
+        },
+        "0x2cf0218": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "01",
+          "u32_le": null,
+          "property_index": 33309,
+          "attribute": 96,
+          "data_file_offset": 581162,
+          "checksum": true
+        },
+        "0x2cf0219": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "01",
+          "u32_le": null,
+          "property_index": 33310,
+          "attribute": 96,
+          "data_file_offset": 581164,
+          "checksum": true
+        }
+      }
+    },
+    "fx3_official_seed": {
+      "sha256": "bf3a9d851f9853fd80953be165f2e4d77770314a85465bc7698ebad438d0e7a2",
+      "values": {
+        "0x2cf01af": {
+          "present": false,
+          "length": null,
+          "raw_hex": null,
+          "u32_le": null,
+          "property_index": 29620,
+          "attribute": null,
+          "data_file_offset": null,
+          "checksum": true
+        },
+        "0x2cf0214": {
+          "present": true,
+          "length": 4,
+          "raw_hex": "16161616",
+          "u32_le": 370546198,
+          "property_index": 29721,
+          "attribute": 192,
+          "data_file_offset": 594516,
+          "checksum": true
+        },
+        "0x2cf0215": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "0a",
+          "u32_le": null,
+          "property_index": 29722,
+          "attribute": 96,
+          "data_file_offset": 594521,
+          "checksum": true
+        },
+        "0x2cf0216": {
+          "present": true,
+          "length": 4,
+          "raw_hex": "0a0a0a0a",
+          "u32_le": 168430090,
+          "property_index": 29723,
+          "attribute": 192,
+          "data_file_offset": 594523,
+          "checksum": true
+        },
+        "0x2cf0217": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "19",
+          "u32_le": null,
+          "property_index": 29724,
+          "attribute": 96,
+          "data_file_offset": 594528,
+          "checksum": true
+        },
+        "0x2cf0218": {
+          "present": true,
+          "length": 4,
+          "raw_hex": "19191919",
+          "u32_le": 421075225,
+          "property_index": 29725,
+          "attribute": 192,
+          "data_file_offset": 594530,
+          "checksum": true
+        },
+        "0x2cf0219": {
+          "present": true,
+          "length": 1,
+          "raw_hex": "19",
+          "u32_le": null,
+          "property_index": 29726,
+          "attribute": 96,
+          "data_file_offset": 594535,
+          "checksum": true
+        }
+      }
+    },
+    "target_cpio_member": {
+      "name": "setting/Backup.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+    },
+    "baseline_84db_cpio_member": {
+      "name": "setting/Backup.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+    },
+    "normal_contract": "FX6 template: keys 0x02cf0214/0x02cf0218 are length 1, raw 00/01; target image is length 4 raw 16161616/19191919, matching FX3 seed values; appFw reads 4 bytes and asserts when not 0/1."
+  },
+  "serial_evidence": {
+    "66ed": {
+      "lines": [
+        {
+          "line": 11688,
+          "text": "assert at model_api.cpp:3147"
+        },
+        {
+          "line": 11738,
+          "text": "assert at model_api.cpp:3176"
+        },
+        {
+          "line": 14502,
+          "text": "assert at infra_wrapper_bb_procam_chaplin_base.cpp:1075"
+        },
+        {
+          "line": 14734,
+          "text": "assert at infra_wrapper_bb_procam_chaplin_base.cpp:1075"
+        }
+      ],
+      "markers": {
+        "FX3_AP89_SCREEN_CREATE": 0,
+        "FX3_AP89_UUD_DECISION": 0,
+        "FX3_MENU": 0,
+        "FX3_MEDIA_START_BRANCH": 2,
+        "FX3_PROFILE_FRAME": 294
+      }
+    },
+    "84db": {
+      "lines": [
+        {
+          "line": 11597,
+          "text": "assert at model_api.cpp:3147"
+        },
+        {
+          "line": 11644,
+          "text": "assert at model_api.cpp:3176"
+        },
+        {
+          "line": 16408,
+          "text": "[ 1065.645906] Internal error: Oops: 96000005 [#1] PREEMPT SMP"
+        }
+      ],
+      "markers": {
+        "FX3_AP89_SCREEN_CREATE": 0,
+        "FX3_AP89_UUD_DECISION": 0,
+        "FX3_MENU": 0,
+        "FX3_MEDIA_START_BRANCH": 1,
+        "FX3_PROFILE_FRAME": 267
+      }
+    },
+    "9d_screen_create": 8,
+    "9d_model_asserts": []
+  },
+  "root_cause": {
+    "summary": "set_model_for_boot_screen reads Backup keys 0x02cf0214 and 0x02cf0218 into 4-byte slots; target Backup.bin provides 0x16161616 and 0x19191919 (length4), so the two enum checks at model_api.cpp:3147/3176 fail. FX6 default templates provide length1 0x00/0x01 at the same IDs.",
+    "assert_3147_condition": "local[b4] not in {0,1}; buffer filled by Backup_nread key 0x02cf0214",
+    "assert_3176_condition": "local[c4] not in {0,1}; buffer filled by Backup_nread key 0x02cf0218",
+    "same_backup_84db": true,
+    "same_backup_hash": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+    "target_and_84db_asserts": "both have model_api 3147/3176; 84db later Oops at 16408, target later CAPID 1075 at 14502/14734; those are downstream/other paths, not the model_api input cause",
+    "assert_logger": "0x2167784 returns after printf/usleep; 3147 then w20=0, 3176 then w0=0; execution continues"
+  },
+  "producer_contract": {
+    "loaded_file": "setting/Backup.bin (CPIO member), sha 92fe…",
+    "normal_fx6_image": "FX6 CHAPLIN template CX95898_NTSC.bin sha e2ea… has 0x02cf0214 length1 00, 0x02cf0218 length1 01",
+    "target_values": "0x02cf0214 length4 16161616; 0x02cf0218 length4 19191919; both BK4 checksum true",
+    "fx3_seed": "FX3 official seed has same 4-byte 16/19 values; target file hash differs but these key values match FX3 seed semantics",
+    "producer": "Backup BK4 image/init; exact runtime writer not observed; only loaded image and read path established",
+    "minimum_unmet_condition": "For 0x02cf0214/0x02cf0218, Backup data consumed by appFw must represent 0/1 (FX6 length1 00/01 or an explicit equivalent); target 4-byte 16/19 violates the enum contract. Full model contract also involves 0x02cf0215/16/17/19 but those are not the two immediate assert conditions."
+  },
+  "screen_causality": {
+    "asserts_fatal": false,
+    "assert_logger_returns": true,
+    "execution_continues_after_asserts": true,
+    "direct_screen_block_proven": false,
+    "note": "Both asserts log and return; no direct branch/abort to screen failure. Marker absence is not proof that no pixel was painted and does not establish causality."
+  },
+  "sufficient_for_next_fix": "Enough to localize the exact boot-screen model contract violation and select a functional repair target (Backup producer/format values at these keys). Not enough to claim a repair will boot/menu; runtime function values and screen/render/input evidence remain required.",
+  "known": [
+    "set_model_for_boot_screen reads Backup keys 0x02cf0214/0x02cf0218 into slots b4/c4 with 4-byte capacity; asserts fire if values are not 0/1.",
+    "target and 84db both use setting/Backup.bin sha 92fe...; both have model_api asserts 3147/3176.",
+    "target Backup record has 0x02cf0214=16161616 and 0x02cf0218=19191919 (length4, checksum valid); FX6 template has 0x00/0x01 length1 at the same IDs.",
+    "target appFw function region is byte-identical to donor appFw at 0x11f6188..0x11f79f8; future::get patch at 0x2159c50 is elsewhere.",
+    "assert logger returns; serial continues after both asserts."
+  ],
+  "inference": [
+    "The two asserts are caused by FX3-format 4-byte backup values at the two keys, not by the later UPM Oops or CAPID path.",
+    "Normal boot-screen model contract is not met: Backup must provide FX6-compatible 0/1 values for these IDs / a compatible conversion.",
+    "The assert is nonfatal; whether invalid model state directly blocks screen is not proven."
+  ],
+  "unknown": [
+    "exact producer/writer that should initialize these two IDs at FX6 semantics",
+    "whether target Backup.bin 92fe is a rechecksummed FX3 seed or another FX3-compatible image",
+    "whether correcting these two values alone would allow screen/menu",
+    "downstream use of the fallback mode and whether other model asserts remain",
+    "visible pixel/menu/input evidence"
+  ],
+  "limitations": {
+    "9d": "9d has screen markers=8 and no model_api asserts but uses FX3 CPIO/appFw 545c and different upper stack; not a same-appFw comparison.",
+    "profile_frames": "Adjacent FX3_PROFILE_FRAME lines are cross-thread/context noise; they are not used as assert thread stack.",
+    "no_patch": "No code/veneer/patch/return0/assert deletion was designed or executed."
+  },
+  "source_index": {
+    "backup_state_binding_README_sha256": "560f5f0222e574614d34e6510e08bc063ff066812165f62c770d9d3db618269a",
+    "static_receipt_sha256": "2eb1cfec1bd8e6e299055db80bfbb1b1e114a3962c710cf933c25c2e233f7d33",
+    "parse_bk4_sha256": "5aa777eecbb43f480f7899da06cf8b46ddf461576af7005f5b9e150485daf52f",
+    "used": "existing Backup BK4 parser/static receipt; no new broad scan"
+  },
+  "input_seal": {
+    "core": {
+      "count": 16,
+      "changed": [],
+      "unchanged": true
+    },
+    "root": {
+      "count": 11,
+      "changed": [],
+      "unchanged": true
+    },
+    "unchanged": true,
+    "path": "receipts/input-seal-compare.json"
+  },
+  "test_run": {
+    "path": "receipts/test-run.json",
+    "cases": 3,
+    "failed": 0,
+    "passed": true
+  },
+  "receipts": {
+    "after-input-seal.json": "04d3cc8fa4e79ae449afd95e33899e5d3636c137dd6031f52d694fe6b067bb29",
+    "after-root-input-seal.json": "69c46d17b5bb699264ffe032752678e60173fa78e4989ae2bd47c85023e2ef18",
+    "before-input-seal.json": "fcd580686c1178d79d69c860a9d1b933ca7f060fad0050558d7668de85737219",
+    "before-root-input-seal.json": "2d3d3b44985e17d416d023da72a3e5686e12b7ff3c8b404fd3f2613b3c451fcf",
+    "bk4-0x02cf0214.json": "4b080d5b73712e424c5e444c690ddb8cc86721ea5b5c80f5e2bb93dbfd1676e6",
+    "bk4-0x02cf0218.json": "080c4251a7e5abdfe67cbdcbe5a481271c004df2b1fc6d1064b15016c50a8c58",
+    "boot-screen-contract.json": "10d9786cdb45fb6b70b78eb8bde9104c8e524d6f65de78034573e79f1c297001",
+    "input-seal-compare.json": "1845f179a995b731f33d20d46ab24dad654e39573cb46e33859fad0d1e80ca6c"
+  },
+  "disassembly": "receipts/disasm-set_model_for_boot_screen.txt",
+  "contract_receipt": "receipts/boot-screen-contract.json"
+}

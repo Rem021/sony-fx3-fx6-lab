@@ -1,0 +1,47 @@
+{
+  "saved_FDAT_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+  "saved_FDAT_sha256_verified": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "darwin": {
+    "member": "0640_darwin/darwin_core.bin",
+    "FDAT_offset": 50341888,
+    "bytes": 243000,
+    "sha256": "ac3fe4cb9d7122b196d33ca3514d0eb4e2d3abbed882926d4e08d5b26b76afe0",
+    "first64": "d0260020f945000001460000154600001f4600002946000033460000ab6e0000ab6e0000ab6e0000ab6e000059450000ab6e0000ab6e000083450000ab6e0000",
+    "string_count": 1140,
+    "SPI_sender_identity_or_boot_mode_generation_proven": false
+  },
+  "p5": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha5.img",
+    "sha256_verified": "ac7373c58a75b7685cc2fc8e920440ec37534d15c11f447ecdea546e255fb9b1",
+    "bytes": 209112512,
+    "first96": "574249320000000077050000000000000000000000000000f0674a0004000000240206200000000000020000000000000070710c00000000000000000000000000000000000000000f0f0f0f000000000060250e000000000000000000000000",
+    "signature_ascii": "WBI2",
+    "signature_only_not_complete_WBI_parse": true
+  },
+  "top_level_partition_payloads": [
+    "0700_part_image/dev/nflasha15",
+    "0700_part_image/dev/nflasha3",
+    "0700_part_image/dev/nflasha5",
+    "0700_part_image/dev/nflasha7",
+    "0700_part_image/dev/nflasha8"
+  ],
+  "FDAT_filesystem_slots": [
+    {
+      "slot": 0,
+      "mode": "U",
+      "offset": 512,
+      "bytes": 1253376,
+      "raw": "55000000000200000020130000000000"
+    },
+    {
+      "slot": 1,
+      "mode": "P",
+      "offset": 512,
+      "bytes": 0,
+      "raw": "50000000000200000000000000000000"
+    }
+  ],
+  "known_boot0_payload_or_FX3_current_p1_obtained": false,
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

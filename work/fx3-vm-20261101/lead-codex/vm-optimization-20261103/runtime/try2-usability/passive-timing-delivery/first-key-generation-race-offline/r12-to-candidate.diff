@@ -1,0 +1,43 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r12-confirmation-progress/trial_web_v22_navigation_review.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/first-key-generation-race-offline/trial_web_v22_navigation_review.py
+@@ -271,9 +271,13 @@
+ async function post(path,body){return (await request(path,{method:'POST',
+  headers:{'Content-Type':'application/json','X-Trial-Token':token},body:JSON.stringify(body)})).body;}
+ function disableKeys(){keys.forEach(b=>b.disabled=true);confirmButton.disabled=true;startButton.disabled=true;}
++function lockVisualControls(){keys.forEach(b=>b.disabled=true);confirmButton.disabled=true;}
++function frameLoadedFor(s){
++ return !!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&
++   displayedGeneration===s.frame.content_generation&&s.render_valid&&!renderFault;
++}
+ function enableKeys(s){
+- const visual=!!s.frame&&displayed>0&&shownSHA===s.frame.PNG_sha256&&
+-   displayedGeneration===s.frame.content_generation&&s.render_valid&&!renderFault;
++ const visual=frameLoadedFor(s);
+  keys.forEach(b=>b.disabled=!s.ready||busy||ending||awaitingStep!==null||deliveryUnknown||reviewAwaiting||reviewUnknown||!visual);
+  confirmButton.disabled=!s.review_required||!s.input_received||busy||ending||
+    awaitingStep!==null||deliveryUnknown||reviewAwaiting||reviewUnknown||!visual;
+@@ -376,6 +380,9 @@
+      reviewAwaiting=false;reviewUnknown=false;pendingConfirm=null;
+      if(explicitRejection?.kind==='confirm')explicitRejection=null;
+    }
++   // A fresh status may arrive while the previous image is still displayed.
++   // Lock controls before the asynchronous image load; never post the old view.
++   if(!frameLoadedFor(s))lockVisualControls();
+    if(s.frame&&(s.frame.sequence!==shown||s.frame.content_generation!==displayedGeneration))await showFrame(s);
+    renderFault=null;enableKeys(s);presentFeedback(s);
+  }catch(e){
+@@ -389,6 +396,14 @@
+ }
+ keys.forEach(b=>b.onclick=async()=>{
+  if(b.disabled||busy||ending||renderFault||awaitingStep!==null||!lastStatus)return;
++ // Defend the click boundary as well as the visible disabled state. This
++ // compares with the latest *known* status; the server remains authoritative.
++ if(!frameLoadedFor(lastStatus)){
++   lockVisualControls();
++   explicitRejection={kind:'key',detail:'浏览器尚未显示最新画面；本次未发送按键。请看新图后自行决定。'};
++   presentFeedback(lastStatus);
++   return;
++ }
+  busy=true;awaitingStep=lastStatus.steps+1;disableKeys();
+  try{
+    const ack=await post('/api/key',{key:Number(b.dataset.key),observed_sequence:displayed});

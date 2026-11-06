@@ -1,0 +1,88 @@
+{
+  "status": "PASS_HOST_GLOBAL_FENCE",
+  "tests_run": 18,
+  "results": [
+    {
+      "name": "clean_append_history",
+      "status": "PASS"
+    },
+    {
+      "name": "unknown_blocks_next",
+      "status": "PASS"
+    },
+    {
+      "name": "different_grant_after_clean",
+      "status": "PASS"
+    },
+    {
+      "name": "simultaneous_processes_busy_then_clean",
+      "status": "PASS"
+    },
+    {
+      "name": "dead_PID_does_not_clear_OWNED",
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt_payload",
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt_digest",
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt_chain",
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt_sequence",
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt_initial-state",
+      "status": "PASS"
+    },
+    {
+      "name": "corrupt_partial",
+      "status": "PASS"
+    },
+    {
+      "name": "wrong_permissions",
+      "status": "PASS"
+    },
+    {
+      "name": "symlink_refused",
+      "status": "PASS"
+    },
+    {
+      "name": "hardlink_refused",
+      "status": "PASS"
+    },
+    {
+      "name": "fifo_nonblocking_refused",
+      "status": "PASS"
+    },
+    {
+      "name": "directory_refused",
+      "status": "PASS"
+    },
+    {
+      "name": "full_journal_denied",
+      "status": "PASS"
+    },
+    {
+      "name": "oversize_journal_denied",
+      "status": "PASS"
+    }
+  ],
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "journal_sha256_verifier": "independent Python hashlib/struct",
+  "root_or_camera_operations": 0,
+  "test_source_sha256": "658dc2935480d29deeab0947d5ef8e94619606cf366740604b7290d43a58069b",
+  "build_receipt_sha256": "63f8d95613741efcae49119b2c94856c8aac41adf1b02af567c4f9ded4145a28",
+  "running_kernel_advisory_lock_tested": true,
+  "physical_device_fencing_or_recovery_proven": false
+}

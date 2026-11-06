@@ -1,0 +1,53 @@
+  115bb4: b9402260     	ldr	w0, [x19, #0x20]
+  115bb8: b9006ba0     	str	w0, [x29, #0x68]
+  115bbc: b9402660     	ldr	w0, [x19, #0x24]
+  115bc0: b9006fa0     	str	w0, [x29, #0x6c]
+  115bc4: b9402a60     	ldr	w0, [x19, #0x28]
+
+  117048: 91004660     	add	x0, x19, #0x11
+  11704c: 91005673     	add	x19, x19, #0x15
+  117050: b9402681     	ldr	w1, [x20, #0x24]
+  117054: 97ff8df3     	bl	0xfa820 <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListE+0xe80>
+  117058: 910006d6     	add	x22, x22, #0x1
+
+  117668: ea1a003f     	tst	x1, x26
+  11766c: 54000500     	b.eq	0x11770c <_ZN16XavcsMovieWriter18SetVideoSampleInfoEP10libXavcMp4RSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEjm+0x10c>
+  117670: b9402661     	ldr	w1, [x19, #0x24]
+  117674: 7100001f     	cmp	w0, #0x0
+  117678: 1a9f17e0     	cset	w0, eq
+
+  1197c4: 97fff09a     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  1197c8: 79403280     	ldrh	w0, [x20, #0x18]
+  1197cc: 79004a60     	strh	w0, [x19, #0x24]
+  1197d0: f9400280     	ldr	x0, [x20]
+  1197d4: f9001e60     	str	x0, [x19, #0x38]
+
+  11981c: 97fd9741     	bl	0x7f520 <_Znwm@plt>
+  119820: aa0003f6     	mov	x22, x0
+  119824: b9402681     	ldr	w1, [x20, #0x24]
+  119828: 97fd991a     	bl	0x7fc90 <_ZN3mpr8BaseListC1Ej@plt>
+  11982c: f9009276     	str	x22, [x19, #0x120]
+
+  119c6c: b9402262     	ldr	w2, [x19, #0x20]
+  119c70: 340002e2     	cbz	w2, 0x119ccc <_ZNSt12_Vector_baseIN3mpr16AudioEncodeTable9AudioInfoESaIS2_EED2Ev+0xec>
+  119c74: b9402663     	ldr	w3, [x19, #0x24]
+  119c78: a9410660     	ldp	x0, x1, [x19, #0x10]
+  119c7c: f9401664     	ldr	x4, [x19, #0x28]
+
+  11bb64: 97ffe7b2     	bl	0x115a2c <_ZN16XavcsMovieReader17_read_stream_dataEPvhPNS_15VideoSampleInfoEPNS_15AudioSampleInfoEPNS_18MetadataSampleInfoEPjPN3mpr10RingBufferEPNS8_8BaseListESC_SC_+0x1b84>
+  11bb68: 9104c260     	add	x0, x19, #0x130
+  11bb6c: 79004a7f     	strh	wzr, [x19, #0x24]
+  11bb70: 3900c27f     	strb	wzr, [x19, #0x30]
+  11bb74: d2802002     	mov	x2, #0x100              // =256
+
+  11c878: b9402260     	ldr	w0, [x19, #0x20]
+  11c87c: b90073a0     	str	w0, [x29, #0x70]
+  11c880: b9402660     	ldr	w0, [x19, #0x24]
+  11c884: b90077a0     	str	w0, [x29, #0x74]
+  11c888: f9401660     	ldr	x0, [x19, #0x28]
+
+  11fac0: 5400044d     	b.le	0x11fb48 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2bc4>
+  11fac4: 1e230001     	ucvtf	s1, w0
+  11fac8: 79404b22     	ldrh	w2, [x25, #0x24]
+  11facc: 92800761     	mov	x1, #-0x3c              // =-60
+  11fad0: 52800780     	mov	w0, #0x3c               // =60

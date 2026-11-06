@@ -1,0 +1,34 @@
+{
+  "status": "SPI_MODE_INPUT_TRACED_REMOTE_RECOVERY_NOT_PROVEN",
+  "new_findings": [
+    "original command1 SPI payload prefix+0x30 flows through bootdata import to global0xfe0615d4; getter reads same location",
+    "COMMON Copy BM/BF can copy getter to context+0x1b4, but flags0x8000 preserves conditional reachability",
+    "full0xfe054c88 local CFG679instructions with post-RET tail blocks; observed top-level behavior concerns PWD standby/backup exchange",
+    "receive routine clears caller counter on entry;0xc0 initialization cannot be promoted to a proven receive bound"
+  ],
+  "source_bound_verification": {
+    "raw_CFG_matches": true,
+    "BL_targets": 10,
+    "raw_instruction_fields": 13,
+    "source_slices": 10
+  },
+  "limits": [
+    "ordinary BL returns assumed for local CFG; no guarantee of callee return or exhaustive whole-boot execution",
+    "aligned BL scan includes data and cannot prove absence of indirect callers or aliases",
+    "SPI remote-controller identity and firmware, trigger conditions and p1/p3 choice remain unresolved",
+    "no independent cold-boot restoration, actual current p1 backup or MAIN HD HEVC recording proof",
+    "A7CII participant video-mode workaround is not a verified FX3 recovery interface"
+  ],
+  "initial_window_correction": {
+    "end_exclusive": "0xfe0556d8",
+    "rejected": true,
+    "reason": "direct conditional successor reaches post-RET tail block",
+    "corrected_end_exclusive": "0xfe055724",
+    "artifact_preserved": "spi-state-initial-window.txt"
+  },
+  "pending_root01": "same195 bundle; no explicit answer, no fixed job, no repeated question or administrator launch",
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

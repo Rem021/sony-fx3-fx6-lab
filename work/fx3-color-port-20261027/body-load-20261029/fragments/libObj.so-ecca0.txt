@@ -1,0 +1,128 @@
+000ecca0 subs       x0, x0, #0xfd4
+000ecca4 b.ne       #0xecbbc
+000ecca8 mov        w23, #1
+000eccac mov        w19, #0
+000eccb0 mov        w20, #0
+000eccb4 b          #0xecc5c
+000eccb8 mov        w23, #1
+000eccbc mov        w19, #0
+000eccc0 mov        w20, #0
+000eccc4 b          #0xecc68
+000eccc8 stp        x29, x30, [sp, #-0xd0]!
+000ecccc mov        x29, sp
+000eccd0 stp        x19, x20, [sp, #0x10]
+000eccd4 mov        x19, x0
+000eccd8 adrp       x0, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000eccdc add        x1, x29, #0x50
+000ecce0 add        x0, x0, #0x5be ; literal '/root/IAMUPDATER'
+000ecce4 stp        x21, x22, [sp, #0x20]
+000ecce8 stp        x23, x24, [sp, #0x30]
+000eccec bl         #0x1bce48
+000eccf0 mov        w21, w0
+000eccf4 cbnz       w0, #0xecd24
+000eccf8 adrp       x0, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000eccfc mov        w1, #0
+000ecd00 add        x0, x0, #0x771 ; literal '/version.txt'
+000ecd04 bl         #0x55c10 ; open
+000ecd08 mov        w22, w0
+000ecd0c tbz        w0, #0x1f, #0xecd3c
+000ecd10 mov        w1, w0
+000ecd14 adrp       x0, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ecd18 add        x0, x0, #0x5cf ; literal '[UDTR0604] UD_GET_RUNVER can not open version.txt: (fd = %d)\n'
+000ecd1c mov        w21, #0x10
+000ecd20 bl         #0x57cd0 ; printf
+000ecd24 mov        w0, #1
+000ecd28 strb       wzr, [x19, #1]
+000ecd2c strb       wzr, [x19, #2]
+000ecd30 strb       w0, [x19]
+000ecd34 strb       wzr, [x19, #3]
+000ecd38 b          #0xecdd0
+000ecd3c add        x1, x29, #0x48
+000ecd40 mov        x2, #8
+000ecd44 bl         #0x562a0 ; read
+000ecd48 tbz        w0, #0x1f, #0xecd6c
+000ecd4c mov        w1, w0
+000ecd50 adrp       x0, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ecd54 add        x0, x0, #0x60d ; literal '[UDTR0604] UD_GET_RUNVER can not read major version: (ret = %d)\n'
+000ecd58 mov        w21, #0xe
+000ecd5c bl         #0x57cd0 ; printf
+000ecd60 mov        w0, w22
+000ecd64 bl         #0x572a0 ; close
+000ecd68 b          #0xecd24
+000ecd6c ldrh       w0, [x29, #0x48]
+000ecd70 add        x20, x29, #0x40
+000ecd74 strb       wzr, [x29, #0x42]
+000ecd78 strh       w0, [x29, #0x40]
+000ecd7c mov        x0, x20
+000ecd80 bl         #0x56730 ; atoi
+000ecd84 mov        w24, w0
+000ecd88 ldurh      w0, [x29, #0x4b]
+000ecd8c strb       wzr, [x29, #0x42]
+000ecd90 strh       w0, [x29, #0x40]
+000ecd94 mov        x0, x20
+000ecd98 bl         #0x56730 ; atoi
+000ecd9c mov        w23, w0
+000ecda0 ldrh       w0, [x29, #0x4e]
+000ecda4 strb       wzr, [x29, #0x42]
+000ecda8 strh       w0, [x29, #0x40]
+000ecdac mov        x0, x20
+000ecdb0 bl         #0x56730 ; atoi
+000ecdb4 mov        w20, w0
+000ecdb8 mov        w0, w22
+000ecdbc bl         #0x572a0 ; close
+000ecdc0 strb       wzr, [x19]
+000ecdc4 strb       w24, [x19, #1]
+000ecdc8 strb       w23, [x19, #2]
+000ecdcc strb       w20, [x19, #3]
+000ecdd0 mov        w0, w21
+000ecdd4 ldp        x19, x20, [sp, #0x10]
+000ecdd8 ldp        x21, x22, [sp, #0x20]
+000ecddc ldp        x23, x24, [sp, #0x30]
+000ecde0 ldp        x29, x30, [sp], #0xd0
+000ecde4 ret        
+000ecde8 adrp       x0, #0x264000
+000ecdec stp        x29, x30, [sp, #-0x40]!
+000ecdf0 add        x0, x0, #0x6e0
+000ecdf4 mov        w3, #0
+000ecdf8 mov        x29, sp
+000ecdfc add        x1, x29, #0x20
+000ece00 str        x19, [sp, #0x10]
+000ece04 ld1        {v0.16b, v1.16b}, [x0]
+000ece08 adrp       x0, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ece0c add        x0, x0, #0x670 ; literal '/bin/umount'
+000ece10 mov        w2, #4
+000ece14 st1        {v0.16b, v1.16b}, [x1]
+000ece18 bl         #0x56940 ; stm_system
+000ece1c mov        w19, w0
+000ece20 bl         #0x56f00 ; __errno_location
+000ece24 ldr        w3, [x0]
+000ece28 cmp        w3, #0xa
+000ece2c b.ne       #0xece58
+000ece30 adrp       x1, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ece34 adrp       x0, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ece38 add        x1, x1, #0x660 ; literal 'umount_squashfs'
+000ece3c add        x0, x0, #0x77e ; literal '[UDTR0604] %s @ %d ignore system error errno(%d)'
+000ece40 mov        w2, #0x4c
+000ece44 bl         #0x57cd0 ; printf
+000ece48 mov        w0, #0
+000ece4c ldr        x19, [sp, #0x10]
+000ece50 ldp        x29, x30, [sp], #0x40
+000ece54 ret        
+000ece58 tst        x19, #0x7f
+000ece5c mov        w0, #1
+000ece60 b.ne       #0xece4c
+000ece64 ubfx       x19, x19, #8, #8
+000ece68 cmp        w19, #0
+000ece6c cset       w0, ne
+000ece70 b          #0xece4c
+000ece74 stp        x29, x30, [sp, #-0xa0]!
+000ece78 adrp       x4, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ece7c adrp       x2, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ece80 mov        x3, #1
+000ece84 mov        x29, sp
+000ece88 stp        x21, x22, [sp, #0x20]
+000ece8c adrp       x22, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ece90 adrp       x21, #0x1dc000 ; literal 'Start[%d] (smode:%d)'
+000ece94 add        x22, x22, #0x3f6 ; literal '/dev/nflasha1'
+000ece98 stp        x19, x20, [sp, #0x10]
+000ece9c add        x4, x4, #0x3e1 ; literal 'posix_attr'

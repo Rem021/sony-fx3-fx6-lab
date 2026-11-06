@@ -1,0 +1,144 @@
+{
+  "created_utc": "2026-10-26T05:05:23.122803+00:00",
+  "older_sealed_files_preserved": true,
+  "stage33_appended_fixture_scope": "Old MAIN(2,10) and proxy(2,1) remain conditional fixtures; not claimed real field production.",
+  "new_native_production": "Original queued Open writes88/8c/90. Classifier produces1 ENC_MAIN for HEVC MAIN and2 ENC_PROXY for proxy; this declared new-handler path keeps8c10. Current controls produce native(1,10)/(2,10).",
+  "88_role_not_pixel_format_or_bit_depth": true,
+  "original_role_names": [
+    {
+      "value": 0,
+      "original_name": "NONE",
+      "string_offset": "0x43323f"
+    },
+    {
+      "value": 1,
+      "original_name": "ENC_MAIN",
+      "string_offset": "0x432d55"
+    },
+    {
+      "value": 2,
+      "original_name": "ENC_PROXY",
+      "string_offset": "0x40a11e"
+    },
+    {
+      "value": 3,
+      "original_name": "ENC_SUBSTREAM",
+      "string_offset": "0x43de3c"
+    },
+    {
+      "value": 4,
+      "original_name": "ENC_STREAMING",
+      "string_offset": "0x43de4a"
+    },
+    {
+      "value": 5,
+      "original_name": "ENC_PB_STREAMING",
+      "string_offset": "0x43de58"
+    },
+    {
+      "value": 6,
+      "original_name": "ENC_SAKUHINKA",
+      "string_offset": "0x43de69"
+    },
+    {
+      "value": 7,
+      "original_name": "ENC_HEIF_MAIN",
+      "string_offset": "0x43de77"
+    },
+    {
+      "value": 8,
+      "original_name": "ENC_HEIF_SCN",
+      "string_offset": "0x43de85"
+    },
+    {
+      "value": 9,
+      "original_name": "ENC_HEIF_THM",
+      "string_offset": "0x43de92"
+    },
+    {
+      "value": 10,
+      "original_name": "DEC",
+      "string_offset": "0x4524ff"
+    },
+    {
+      "value": 11,
+      "original_name": "DEC_SAKUHINKA",
+      "string_offset": "0x43de9f"
+    },
+    {
+      "value": 12,
+      "original_name": "DEC_HEIF_0",
+      "string_offset": "0x43dead"
+    },
+    {
+      "value": 13,
+      "original_name": "DEC_HEIF_1",
+      "string_offset": "0x43deb8"
+    }
+  ],
+  "original_role_name_getter": [
+    {
+      "offset": "0x2297e4",
+      "va": "0xffffffc0012297e4",
+      "bytes": "3f340071",
+      "asm": "cmp w1, #0xd"
+    },
+    {
+      "offset": "0x2297e8",
+      "va": "0xffffffc0012297e8",
+      "bytes": "a8000054",
+      "asm": "b.hi #0xffffffc0012297fc"
+    },
+    {
+      "offset": "0x2297ec",
+      "va": "0xffffffc0012297ec",
+      "bytes": "280800b0",
+      "asm": "adrp x8, #0xffffffc00132e000"
+    },
+    {
+      "offset": "0x2297f0",
+      "va": "0xffffffc0012297f0",
+      "bytes": "08411791",
+      "asm": "add x8, x8, #0x5d0"
+    },
+    {
+      "offset": "0x2297f4",
+      "va": "0xffffffc0012297f4",
+      "bytes": "00d961f8",
+      "asm": "ldr x0, [x8, w1, sxtw #3]"
+    },
+    {
+      "offset": "0x2297f8",
+      "va": "0xffffffc0012297f8",
+      "bytes": "c0035fd6",
+      "asm": "ret "
+    },
+    {
+      "offset": "0x2297fc",
+      "va": "0xffffffc0012297fc",
+      "bytes": "a0100090",
+      "asm": "adrp x0, #0xffffffc00143d000"
+    },
+    {
+      "offset": "0x229800",
+      "va": "0xffffffc001229800",
+      "bytes": "000c3b91",
+      "asm": "add x0, x0, #0xec3"
+    },
+    {
+      "offset": "0x229804",
+      "va": "0xffffffc001229804",
+      "bytes": "c0035fd6",
+      "asm": "ret "
+    }
+  ],
+  "94_prior_stack_seed_not_device_uninitialized_bug_or_globally_unused": true,
+  "FF386_matches_under_new_native_MAIN_role_but_quality_still_artificial": true,
+  "target_FH_does_not_match_original_table": true,
+  "proxy_old2_1_row607_not_new_native2_10_result": true,
+  "query_quality_alignment": "Original VQuality6 produces API22/raw16000; VQuality8 produces API24/raw25000. Changing to FF upstream is not a16M identity-preserving change.",
+  "new_queued_Open_count0_is_not_code_exit_or_global_idle": true,
+  "independent_post_diagnostic_matcher_not_whole_Open": true,
+  "actual_queue_factory_epoch_source_graph_Hal_and_camera_recovery_unbound": true,
+  "evidence": "work/sony-firmware-20261024/stage54-native-open-matcher-input/run-native-quality-and-tail-20261025/open-matcher-input-results.json"
+}

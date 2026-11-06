@@ -1,0 +1,91 @@
+{
+  "schema": "fx3-connected-pnp-receipt/1",
+  "task_tag": "FX3_CONNECTED_CACHE_20261026T163821Z",
+  "task_state": "CACHED_ONLY_COMPLETE_NO_CURRENT_MATCH",
+  "output_directory": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-connected-pnp-20261026T163821Z",
+  "public_directory": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-connected-pnp-20261026T163821Z/public",
+  "private_directory_local_only": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-connected-pnp-20261026T163821Z/private",
+  "preflight": {
+    "target": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-connected-pnp-20261026T163821Z",
+    "local_fixed_system_C": true,
+    "filesystem": "NTFS",
+    "ordinary_directory": true,
+    "ancestors_checked": 8,
+    "reparse_network_camera_redirection": false,
+    "current_token_is_administrator": false,
+    "created_utc": "2026-10-26T16:40:38.5778394Z"
+  },
+  "observed_start_utc": "2026-10-26T16:41:07.673Z",
+  "observed_end_utc": "2026-10-26T16:41:07.907Z",
+  "query_count": 1,
+  "commands": [
+    {
+      "id": "01-fx3-connected-usb",
+      "command_public": "C:/Windows/System32/pnputil.exe /enum-devices /connected /deviceid \"USB\\VID_054C&PID_0DA1\" /deviceids /relations /services /stack /drivers /interfaces /properties",
+      "started_utc": "2026-10-26T16:41:07.673Z",
+      "finished_utc": "2026-10-26T16:41:07.907Z",
+      "exit_code": 0,
+      "stdout_private": "private/01-fx3-connected-usb.stdout.txt",
+      "stderr_private": "private/01-fx3-connected-usb.stderr.txt"
+    }
+  ],
+  "root_count": 0,
+  "current_disk_candidate_count": "UNKNOWN",
+  "binding_status": "MISSING_CURRENT_ROOT",
+  "binding_unique": false,
+  "root_query_result": {
+    "exit_code": 0,
+    "no_devices_reported": true,
+    "instance_header_count": 0,
+    "stderr_bytes": 0
+  },
+  "branch_states": {
+    "connected_root_query": "COMPLETE_NO_MATCH",
+    "device_tree": "NOT_RUN_NO_UNIQUE_CURRENT_ROOT",
+    "disk_queries": "NOT_RUN_NO_UNIQUE_CURRENT_ROOT"
+  },
+  "driver_status": "UNKNOWN",
+  "present_status": "UNKNOWN",
+  "started_status": "UNKNOWN",
+  "problem_code": "UNKNOWN",
+  "requested_disk_interface_class_guid": "53f56307-b6bf-11d0-94f2-00a0c91efb8b",
+  "interface_observed": "UNKNOWN",
+  "address": "UNKNOWN",
+  "ui_number": "UNKNOWN",
+  "traced_related_nodes": 0,
+  "max_related_nodes": 16,
+  "old_results_used_to_fill_missing_fields": false,
+  "old_task_rerun": false,
+  "old_files_modified": false,
+  "old_files_rehashed": false,
+  "raw_output_storage": "private only; private files not uploaded",
+  "private_hash_manifest": "private-sha256.json",
+  "public_files": [
+    "summary.txt",
+    "receipt.json",
+    "nodes.json",
+    "commands.json",
+    "private-sha256.json"
+  ],
+  "report_paths_use_forward_slashes": true,
+  "boundaries": {
+    "administrator_token": false,
+    "elevation_requested": false,
+    "old_ps1_run": false,
+    "new_probe_generated_or_executed": false,
+    "execution_policy_changed": false,
+    "execution_policy_bypass": false,
+    "hardware_scan_refresh": false,
+    "reconnection_attempt": false,
+    "automatic_retry": false,
+    "device_disk_volume_camera_interface_opened": false,
+    "camera_commands": 0,
+    "card_media_camera_file_reads": 0,
+    "authentication": false,
+    "mode_or_driver_change": false,
+    "module_upload": false,
+    "WBI_or_flash": false,
+    "hardware_validation": "NOT_PERFORMED"
+  },
+  "limitation": "No match for this specific connected-only hardware-ID filter is not a physical-connection or protocol diagnosis."
+}

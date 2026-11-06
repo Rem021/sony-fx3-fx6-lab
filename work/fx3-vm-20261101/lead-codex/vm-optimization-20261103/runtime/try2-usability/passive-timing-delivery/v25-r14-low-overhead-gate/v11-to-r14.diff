@@ -1,0 +1,47 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-ui-gate-v11.c
++++ fx3-ui-gate-v14.c
+@@ -3,13 +3,22 @@
+ struct ts{long s,n;};extern int clock_gettime(int,struct ts *);
+ struct lm{U base;char *name;void *dynamic;struct lm *next,*prev;};
+ struct ctx{U pc,continuation,id,objreg;};
+-struct statistics{U count[64],peak_all,peak_gate,field_samples,hist[6],gate_hist[6],system_false,backlog_skip,time_skip,time_pass,dequeue_total,timer_dequeue,a12_nonzero,a13_nonzero,last_object,last_a18,last_a12,last_a13,first_ns,last_ns,mirror_skip,selftest,bound;};
+-static struct statistics st;static volatile U *ram;static unsigned char mirror_lock;static U mirror_serial,app_base,root_object;static W (*message_source)(void *);static __thread W decision_a18;
++struct statistics{U count[64],peak_all,peak_gate,field_samples,hist[6],gate_hist[6],system_false,backlog_skip,time_skip,time_pass,dequeue_total,timer_dequeue,a12_nonzero,a13_nonzero,last_object,last_a18,last_a12,last_a13,first_ns,last_ns,mirror_skip,selftest,bound,object_mismatch,root_change;};
++/* Atomics stay in ordinary process RAM.  No RMW is attempted on :uc /dev/mem. */
++static struct statistics st;
++static volatile U *ram;static unsigned char mirror_lock;static U mirror_serial,mirror_visit,mirror_published,app_base,root_object;static W (*message_source)(void *);static __thread W decision_a18;
++#ifndef FX3_GATE_PUBLISH_INTERVAL
++#define FX3_GATE_PUBLISH_INTERVAL 64
++#endif
++#if FX3_GATE_PUBLISH_INTERVAL != 1 && FX3_GATE_PUBLISH_INTERVAL != 64
++#error FX3_GATE_PUBLISH_INTERVAL must be 1 or 64
++#endif
+ extern void fx3_gate_probe_core(void);extern int fx3_gate_test(void);extern int fx3_gate_branch_test(int);extern int fx3_gate_bl_test(int);extern char fx3_gate_test_point[],fx3_gate_test_cb[],fx3_gate_test_bl[];
+ static U add(U *p,U n){return __atomic_add_fetch(p,n,__ATOMIC_RELAXED);}static U load(U *p){return __atomic_load_n(p,__ATOMIC_RELAXED);}static void save(U *p,U n){__atomic_store_n(p,n,__ATOMIC_RELAXED);}
+ static void peak(U *p,U n){U old=load(p);while(old<n&&!__atomic_compare_exchange_n(p,&old,n,0,__ATOMIC_RELAXED,__ATOMIC_RELAXED)){} }
+ static U now(void){struct ts t={0};return clock_gettime(7,&t)?0:(U)t.s*1000000000UL+t.n;}
+-static void mirror(void){if(!ram)return;if(__atomic_test_and_set(&mirror_lock,__ATOMIC_ACQUIRE)){add(&st.mirror_skip,1);return;}U bank=ram[2]^1;volatile U *out=ram+0x100/8+bank*(0x1000/8);U *in=(U *)&st;for(U i=0;i<sizeof st/8;i++)out[i]=load(in+i);__asm__ volatile("dmb sy":::"memory");ram[2]=bank;ram[3]=++mirror_serial;__asm__ volatile("dmb sy":::"memory");__atomic_clear(&mirror_lock,__ATOMIC_RELEASE);}
++static int publication_due(U visit){U done=load(&mirror_published);return FX3_GATE_PUBLISH_INTERVAL==1||(visit>done&&visit-done>=64);}
++static void mirror(void){if(!ram)return;U visit=add(&mirror_visit,1);if(!publication_due(visit))return;if(__atomic_test_and_set(&mirror_lock,__ATOMIC_ACQUIRE)){add(&st.mirror_skip,1);return;}if(!publication_due(visit)){__atomic_clear(&mirror_lock,__ATOMIC_RELEASE);return;}U bank=ram[2]^1;volatile U *out=ram+0x100/8+bank*(0x1000/8);U *in=(U *)&st;for(U i=0;i<sizeof st/8;i++)out[i]=load(in+i);__asm__ volatile("dmb sy":::"memory");ram[2]=bank;ram[3]=++mirror_serial;peak(&mirror_published,visit);__asm__ volatile("dmb sy":::"memory");__atomic_clear(&mirror_lock,__ATOMIC_RELEASE);}
+ static unsigned int bucket(U n){return n<=2?(unsigned int)n:n<=10?3:n<=100?4:5;}
+ 
+ static U observed_reverse_known,observed_reverse_enum,observed_reverse_tid,observed_reverse_sequence;int fx3_observed_reverse_context(U *out){if(!__atomic_load_n(&observed_reverse_known,__ATOMIC_ACQUIRE))return 0;out[0]=load(&observed_reverse_enum);out[1]=load(&observed_reverse_tid);out[2]=load(&observed_reverse_sequence);return 1;}int fx3_observed_reverse_enum(unsigned int *out){if(!__atomic_load_n(&observed_reverse_known,__ATOMIC_ACQUIRE))return 0;*out=(unsigned int)__atomic_load_n(&observed_reverse_enum,__ATOMIC_RELAXED);return 1;}
+@@ -76,7 +85,8 @@
+   __asm__ volatile("mov x18,xzr; msr nzcv,xzr; movi v0.16b,#0; movi v1.16b,#0; movi v2.16b,#0; movi v3.16b,#0; movi v4.16b,#0; movi v5.16b,#0; movi v6.16b,#0; movi v7.16b,#0; movi v8.16b,#0; movi v9.16b,#0; movi v10.16b,#0; movi v11.16b,#0; movi v12.16b,#0; movi v13.16b,#0; movi v14.16b,#0; movi v15.16b,#0; movi v16.16b,#0; movi v17.16b,#0; movi v18.16b,#0; movi v19.16b,#0; movi v20.16b,#0; movi v21.16b,#0; movi v22.16b,#0; movi v23.16b,#0; movi v24.16b,#0; movi v25.16b,#0; movi v26.16b,#0; movi v27.16b,#0; movi v28.16b,#0; movi v29.16b,#0; movi v30.16b,#0; movi v31.16b,#0":::"x18","v0","v1","v2","v3","v4","v5","v6","v7","v8","v9","v10","v11","v12","v13","v14","v15","v16","v17","v18","v19","v20","v21","v22","v23","v24","v25","v26","v27","v28","v29","v30","v31","cc","memory");*__errno_location()=saved;return;
+  }
+  if(id>=60){*__errno_location()=saved;return;}if(id>=12){U n=add(&st.count[id],1);boot_event(c,r,n);*__errno_location()=saved;return;}U n=add(&st.count[id],1),obj=c->objreg<31?r[c->objreg]:load(&root_object),a18=0,a12=0,a13=0,elapsed=0,msg=0,type=0,src=0;
+- if((id==0||id==2)&&obj)save(&root_object,obj);
++ if((id==0||id==2)&&obj){U old=__atomic_exchange_n(&root_object,obj,__ATOMIC_RELAXED);if(old&&old!=obj)add(&st.root_change,1);}
++ U active_root=load(&root_object);if(id!=0&&id!=2&&obj&&active_root&&obj!=active_root)add(&st.object_mismatch,1);
+  if(obj){a18=__atomic_load_n((W *)(obj+0xa18),__ATOMIC_RELAXED);a12=__atomic_load_n((unsigned char *)(obj+0xa12),__ATOMIC_RELAXED);a13=__atomic_load_n((unsigned char *)(obj+0xa13),__ATOMIC_RELAXED);save(&st.last_object,obj);save(&st.last_a18,a18);save(&st.last_a12,a12);save(&st.last_a13,a13);if(a12)add(&st.a12_nonzero,1);if(a13)add(&st.a13_nonzero,1);}
+  if(id==4&&!(r[0]&255))add(&st.system_false,1);
+  if(id==5){decision_a18=(W)r[0];a18=decision_a18;peak(&st.peak_gate,a18);add(&st.gate_hist[bucket(a18)],1);}
+@@ -109,7 +119,7 @@
+  int rc=install(&test_pool,(U)fx3_gate_test_point,*(W *)fx3_gate_test_point,63,31);if(!rc)rc=install(&test_pool,(U)fx3_gate_test_cb,*(W *)fx3_gate_test_cb,63,31);if(!rc)rc=install(&test_pool,(U)fx3_gate_test_bl,*(W *)fx3_gate_test_bl,63,31);if(!rc)rc=fx3_gate_test();if(!rc&&(fx3_gate_branch_test(0)!=11||fx3_gate_branch_test(1)!=22||fx3_gate_bl_test(9)!=16))rc=250;
+  if(rc){dprintf(2,"FX3_UI_GATE_SELFTEST_FAIL result=%d originals_not_bound=1\n",rc);return;}st.selftest=1;dprintf(2,"FX3_UI_GATE_SELFTEST_PASS GPR=31 SIMD=32 NZCV=preserved FPCR_FPSR=preserved SP=preserved NOP_CBNZ_BL=passed\n");
+  for(int i=0;i<60;i++){rc=install(&app_pool,app_base+offsets[i],words[i],i,regs[i]);if(rc){dprintf(2,"FX3_UI_GATE_BIND_FAIL id=%d result=%d\n",i,rc);return;}}
+- message_source=dlsym((void *)-1,"osal_get_msg_src");st.first_ns=st.last_ns=now();st.bound=1;mirror();dprintf(2,"FX3_UI_GATE_BOUND count=60 single_instruction_near_islands=1 full_register_state_preserved=1 observer_physical=41dc00000\n");
++ message_source=dlsym((void *)-1,"osal_get_msg_src");st.first_ns=st.last_ns=now();st.bound=1;save(&mirror_visit,FX3_GATE_PUBLISH_INTERVAL-1);mirror();dprintf(2,"FX3_UI_GATE_BOUND count=60 single_instruction_near_islands=1 full_register_state_preserved=1 observer_physical=41dc00000 publication_interval=%d ordinary_ram_authority=1\n",FX3_GATE_PUBLISH_INTERVAL);
+ }
+ void *dlopen(const char *name,int flags){int saved=*__errno_location();void *(*fn)(const char *,int)=dlsym((void *)-1,"dlopen");if(!fn)__builtin_trap();*__errno_location()=saved;void *h=fn(name,flags);saved=*__errno_location();if(h&&name&&strstr(name,"appFw.so"))bind(h);*__errno_location()=saved;return h;}
+ 

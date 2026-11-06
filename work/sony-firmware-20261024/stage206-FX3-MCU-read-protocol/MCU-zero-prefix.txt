@@ -1,0 +1,19 @@
+0003868e 4ff00002 mov.w    r2, #0
+00038692 0429 cmp      r1, #4
+00038694 c0f01280 blo.w    #0x386bc
+00038698 10f0030c ands     ip, r0, #3
+0003869c 00f04d80 beq.w    #0x3873a
+000386a0 ccf1040c rsb.w    ip, ip, #4
+000386a4 bcf1020f cmp.w    ip, #2
+000386a8 18bf it       ne
+000386aa 00f8012b strbne   r2, [r0], #1
+000386ae a8bf it       ge
+000386b0 20f8022b strhge   r2, [r0], #2
+000386b4 a1eb0c01 sub.w    r1, r1, ip
+000386b8 00f03fb8 b.w      #0x3873a
+000386bc 5feac17c lsls.w   ip, r1, #0x1f
+000386c0 24bf itt      hs
+000386c2 00f8012b strbhs   r2, [r0], #1
+000386c6 00f8012b strbhs   r2, [r0], #1
+000386ca 48bf it       mi
+000386cc 00f8 .byte    0x00, 0xf8

@@ -1,0 +1,88 @@
+0069fe40 push       {r7, lr}
+0069fe42 mov        r7, sp
+0069fe44 mov        ip, r0
+0069fe46 ldr.w      lr, [ip, #0xc]
+0069fe4a ldr.w      r0, [lr]
+0069fe4e cbz        r0, #0x69fe82
+0069fe50 ldr        r3, [r0]
+0069fe52 str.w      r3, [lr]
+0069fe56 ldr.w      r3, [lr, #8]
+0069fe5a subs       r3, #1
+0069fe5c str.w      r3, [lr, #8]
+0069fe60 ldrd       r3, r2, [r2]
+0069fe64 strd       r3, r2, [r0, #8]
+0069fe68 ldr        r1, [r1]
+0069fe6a ldr        r2, [r1, #4]
+0069fe6c strd       r1, r2, [r0]
+0069fe70 ldr        r2, [r1, #4]
+0069fe72 str        r0, [r2]
+0069fe74 str        r0, [r1, #4]
+0069fe76 ldr.w      r1, [ip, #8]
+0069fe7a adds       r1, #1
+0069fe7c str.w      r1, [ip, #8]
+0069fe80 pop        {r7, pc}
+0069fe82 ldr.w      r0, [ip, #4]
+0069fe86 pop        {r7, pc}
+0069fe88 movw       r0, #0x76c
+0069fe8c movs       r1, #0
+0069fe8e movs       r3, #0x10
+0069fe90 movt       r0, #0x11e
+0069fe94 add.w      r2, r0, #0x10
+0069fe98 stm.w      r0, {r1, r2, r3}
+0069fe9c str        r3, [r0, #0xc]
+0069fe9e adds       r2, r0, r1
+0069fea0 adds       r1, #0x10
+0069fea2 add.w      r3, r2, #0x20
+0069fea6 cmp        r1, #0xf0
+0069fea8 str        r3, [r2, #0x10]
+0069feaa bne        #0x69fe9e
+0069feac push       {r4, r5, r6, r7, lr}
+0069feae add        r7, sp, #0xc
+0069feb0 str        r8, [sp, #-0x4]!
+0069feb4 movs       r1, #0
+0069feb6 adds       r2, r0, #4
+0069feb8 add.w      r3, r0, #0x110
+0069febc movw       r4, #0x12f0
+0069fec0 movw       r5, #0x16b0
+0069fec4 movw       r6, #0x1a28
+0069fec8 str.w      r1, [r0, #0x100]
+0069fecc strd       r3, r3, [r0, #0x110]
+0069fed0 strd       r1, r2, [r0, #0x118]
+0069fed4 movw       r0, #0x6ae8
+0069fed8 movw       r2, #0x88c
+0069fedc movw       r1, #0x2790
+0069fee0 movt       r0, #0x108
+0069fee4 movt       r2, #0x11e
+0069fee8 add        r1, r0
+0069feea add.w      ip, r0, #0x358
+0069feee add.w      r3, r0, #0x788
+0069fef2 addw       r8, r0, #0xb48
+0069fef6 add.w      lr, r0, #0xec0
+0069fefa add        r4, r0
+0069fefc add        r5, r0
+0069fefe add        r6, r0
+0069ff00 str        r1, [r2]
+0069ff02 movw       r1, #0x2cf0
+0069ff06 movw       r2, #0x890
+0069ff0a add        r1, r0
+0069ff0c movt       r2, #0x11e
+0069ff10 str        r1, [r2]
+0069ff12 movw       r2, #0x894
+0069ff16 movw       r1, #0x1c38
+0069ff1a movt       r2, #0x11e
+0069ff1e add        r1, r0
+0069ff20 strd       ip, r3, [r2]
+0069ff24 add.w      r3, r2, #0x10
+0069ff28 strd       r8, lr, [r2, #8]
+0069ff2c stm        r3!, {r4, r5, r6}
+0069ff2e str        r1, [r2, #0x1c]
+0069ff30 movw       r1, #0x202c
+0069ff34 add        r1, r0
+0069ff36 str        r1, [r2, #0x20]
+0069ff38 movw       r1, #0x2e20
+0069ff3c add        r0, r1
+0069ff3e movw       r1, #0x8b8
+0069ff42 movt       r1, #0x11e
+0069ff46 str        r0, [r1]
+0069ff48 ldr        r8, [sp], #4
+0069ff4c pop        {r4, r5, r6, r7, pc}

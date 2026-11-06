@@ -1,0 +1,21 @@
+{
+  "SDK_header": "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/IOKit.framework/Headers/usb/IOUSBLib.h",
+  "SHA256": "16acc674ebc759d00904e8ae1cd2137b5f814d54fe237c5193cf6549131d542a",
+  "checked_functions": [
+    "USBDeviceOpen",
+    "GetConfigurationDescriptorPtr",
+    "DeviceRequestTO",
+    "DeviceRequestAsyncTO",
+    "USBInterfaceOpen"
+  ],
+  "conclusions": [
+    "Device exclusive open and interface exclusive open are separate capabilities.",
+    "Cached configuration descriptor access does not require device open.",
+    "Some default-pipe requests do not require device exclusive open; standard USB state changes may still require it.",
+    "libusb tolerates device-level ExclusiveAccess but still requires successful interface open for endpoint access.",
+    "Current FX3 control callback requires device_open, so ignoring only the open result would not fix the chain."
+  ],
+  "libusb_commit": "987c1170d0018ba82557823a98ae443e8335e11b",
+  "native_backend_strategy_changed": false,
+  "actual_device_API_executed": false
+}

@@ -1,0 +1,14 @@
+{
+  "partinf_sha256": "e05b53d1f739968510dd24d62cd38426772fe3e50fe463a3d260c5f113e17ec9",
+  "cp_partition_comment": "# /dev/nflasha8        64MB(System Group  CP Data  /dev/nflasha8  )",
+  "cp_partition_record": "0x000EC000,0x00020000,0x00000005,0xFFFFFFFF",
+  "tomco_sha256": "36566d47fe61e9560f4ce7f1b579bc2404b330bb7940b54e462abcff9c360140",
+  "tomco_memcfg": [
+    "memcfg=0x400000@0x04C00000:uc",
+    "memcfg=0x7000000@0x09000000:uc",
+    "memcfg=0x24800000@0x1B800000:uc",
+    "memcfg=0x40000000@0x80000000:uc"
+  ],
+  "tomco_tmon_addr": "0x03400000",
+  "scope": "flash partition and CP memory configuration text; neither states the cpapp load address or runtime mapping"
+}

@@ -1,0 +1,10 @@
+0000a8a0 add        x3, x0, #0xb2
+0000a8a4 mov        x1, #0
+0000a8a8 mov        w0, #0
+0000a8ac ldrh       w2, [x3, x1]
+0000a8b0 add        x1, x1, #2
+0000a8b4 cmp        x1, #0x3fe
+0000a8b8 add        w0, w0, w2
+0000a8bc uxth       w0, w0
+0000a8c0 b.ne       #0xa8ac
+0000a8c4 ret        

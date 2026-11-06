@@ -1,0 +1,48 @@
+{
+  "checked_date": "2026-10-29",
+  "official_sources": [
+    {
+      "url": "https://support.sony.jp/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx5/downloads",
+      "result": "Retrieved page states that it currently offers no update information.",
+      "full_private_firmware_obtained": false
+    },
+    {
+      "url": "https://www.sony.com/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx5/downloads",
+      "result": "Retrieved list contains Monitor & Control dated2026-10-28, Catalyst tools dated2026-08-27 and RAW Viewer6.0 dated2026-07-27. No camera firmware module was listed in the retrieved section.",
+      "full_private_firmware_obtained": false
+    },
+    {
+      "url": "https://www.sony.co.uk/electronics/support/interchangeable-lens-camcorders-ilme-series/ilme-fx5/downloads",
+      "result": "Search result lists companion applications. A subsequent page find returned UnexpectedStatusCode, so no fresh full-page UK result is claimed.",
+      "full_private_firmware_obtained": false
+    }
+  ],
+  "primary_maintainer_review": [
+    {
+      "url": "https://github.com/leogenot/sony-a7iv-feature-research",
+      "scope": "A7 IV6.02; author-reported persisted shutter-angle display and shared implementation research. LUT menu and recording routes remain gated/unproven in the reviewed status.",
+      "FX3_modified_package_admission_proof": false
+    },
+    {
+      "url": "https://github.com/nicolvus/a6000-fw-decomp",
+      "scope": "A6000 author-reported Darwin firmware modification on an older CRC-based update path, not a classic FX3 signature-admission implementation.",
+      "FX3_modified_package_admission_proof": false
+    },
+    {
+      "url": "https://github.com/nicolvus/a6000-fw-decomp/blob/main/docs/capture/e26-recovery.md",
+      "scope": "Reviewed recovery report remains open; post-update failure is identified as user testimony, with cause and independent recovery unproven. No conclusion about FX3 failure behavior is inferred.",
+      "FX3_independent_recovery_proof": false
+    },
+    {
+      "url": "https://github.com/ma1co/fwtool.py",
+      "scope": "Current public format selector retrieved as text and inspected, not executed. Dedicated VENICE DATA23213/type3/type4 decoding not obtained. This does not prove no such implementation exists elsewhere."
+    }
+  ],
+  "bounded_search_topics": [
+    "Exact DATA23213, ProductCodeVersion/enctype/type3 and VENICE firmware decryption references",
+    "Official FX5 firmware/support pages in Japan, US and UK",
+    "Public camera-firmware distribution/API/JSON/Creators references; results reviewed did not supply a verified FX5 firmware-distribution manifest or complete private payload"
+  ],
+  "entire_internet_absence_proved": false,
+  "device_or_vendor_program_operations": 0
+}

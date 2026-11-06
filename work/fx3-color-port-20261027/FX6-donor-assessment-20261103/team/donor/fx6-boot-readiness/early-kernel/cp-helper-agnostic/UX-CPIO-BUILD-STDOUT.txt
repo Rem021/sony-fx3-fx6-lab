@@ -1,0 +1,29 @@
+{
+  "schema": "fx6-hybrid-ux-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal8.cpio",
+  "source_sha256": "8feec85e3d4230d1713a89db81235c12fdd74a0b9246e49ba5d7dc16237348fd",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal9.cpio",
+  "output_sha256": "802c0639d804e0d744d4853b06d479dc890397d670116a0a643a43bfa0435f59",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 21119,
+    "new_bytes": 21168,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libux_wgtlay.so",
+      "bytes": 172632,
+      "sha256": "ef28ff7f7257bd9124dd1ba29ad29695058dabed91dda65f59a222cb5ab849b1"
+    },
+    {
+      "name": "usr/lib/libuxengine.so",
+      "bytes": 742128,
+      "sha256": "11dbc9a7283587d27692cfdf5d54c9b89e79ac6d509e88107d4c7f3878868876"
+    }
+  ],
+  "source_member_count": 1155
+}

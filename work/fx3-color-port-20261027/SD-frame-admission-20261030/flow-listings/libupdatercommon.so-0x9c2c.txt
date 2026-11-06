@@ -1,0 +1,102 @@
+_ZN7Updater10RingBuffer8ReadDataEPhm
+00009c2c stp       x29, x30, [sp, #-0x70]!
+00009c30 mov       x29, sp
+00009c34 stp       x19, x20, [sp, #0x10]
+00009c38 mov       x20, x0
+00009c3c add       x0, x0, #0x98
+00009c40 stp       x21, x22, [sp, #0x20]
+00009c44 stp       x23, x24, [sp, #0x30]
+00009c48 add       x24, x20, #0x38
+00009c4c stp       x25, x26, [sp, #0x40]
+00009c50 mov       x25, x2
+00009c54 stp       x27, x28, [sp, #0x50]
+00009c58 mov       x27, x1
+00009c5c str       x0, [x29, #0x60]
+00009c60 bl        #0x6a90 ; pthread_mutex_lock
+00009c64 add       x22, x29, #0x70
+00009c68 mov       x0, x24
+00009c6c str       x24, [x22, #-8]!
+00009c70 bl        #0x6a90 ; pthread_mutex_lock
+00009c74 ldrb      w0, [x20, #0x31]
+00009c78 tst       w0, #0xff
+00009c7c b.eq      #0x9cb4
+00009c80 mov       x0, x22
+00009c84 mov       x21, #0
+00009c88 bl        #0x956c
+00009c8c add       x0, x29, #0x60
+00009c90 bl        #0x956c
+00009c94 mov       x0, x21
+00009c98 ldp       x19, x20, [sp, #0x10]
+00009c9c ldp       x21, x22, [sp, #0x20]
+00009ca0 ldp       x23, x24, [sp, #0x30]
+00009ca4 ldp       x25, x26, [sp, #0x40]
+00009ca8 ldp       x27, x28, [sp, #0x50]
+00009cac ldp       x29, x30, [sp], #0x70
+00009cb0 ret       
+00009cb4 mov       x0, x22
+00009cb8 ldr       x21, [x20, #0x28]
+00009cbc ldrb      w19, [x20, #0x30]
+00009cc0 bl        #0x956c
+00009cc4 cmp       x21, x25
+00009cc8 uxtb      w19, w19
+00009ccc cset      w0, hs
+00009cd0 orr       w19, w19, w0
+00009cd4 cbz       w19, #0x9cf4
+00009cd8 cmp       x21, x25
+00009cdc mov       x1, x27
+00009ce0 csel      x2, x21, x25, ls
+00009ce4 mov       x0, x20
+00009ce8 bl        #0x6f30 ; _ZN7Updater10RingBuffer14readFromBufferEPhm
+00009cec mov       x21, x0
+00009cf0 b         #0x9c8c
+00009cf4 ldr       x26, [x20, #0x10]
+00009cf8 add       x28, x20, #0x68
+00009cfc mov       x21, #0
+00009d00 lsr       x26, x26, #1
+00009d04 cmp       x21, x25
+00009d08 cset      w0, hs
+00009d0c orr       w19, w19, w0
+00009d10 cbnz      w19, #0x9c8c
+00009d14 sub       x23, x25, x21
+00009d18 mov       x0, x24
+00009d1c cmp       x23, x26
+00009d20 str       x24, [x29, #0x68]
+00009d24 csel      x23, x23, x26, ls
+00009d28 bl        #0x6a90 ; pthread_mutex_lock
+00009d2c ldrb      w19, [x20, #0x31]
+00009d30 uxtb      w19, w19
+00009d34 cbz       w19, #0x9d44
+00009d38 mov       x0, x22
+00009d3c bl        #0x956c
+00009d40 b         #0x9c8c
+00009d44 ldr       x0, [x20, #0x28]
+00009d48 cmp       x0, x23
+00009d4c b.hs      #0x9d60
+00009d50 ldrb      w19, [x20, #0x30]
+00009d54 uxtb      w19, w19
+00009d58 cbz       w19, #0x9d84
+00009d5c ldr       x23, [x20, #0x28]
+00009d60 mov       x0, x22
+00009d64 bl        #0x956c
+00009d68 add       x1, x27, x21
+00009d6c cmp       x27, #0
+00009d70 mov       x2, x23
+00009d74 csel      x1, x1, xzr, ne
+00009d78 mov       x0, x20
+00009d7c bl        #0x6f30 ; _ZN7Updater10RingBuffer14readFromBufferEPhm
+00009d80 b         #0x9d94
+00009d84 mov       x1, x24
+00009d88 mov       x0, x28
+00009d8c bl        #0x6f60 ; pthread_cond_wait
+00009d90 b         #0x9d2c
+00009d94 add       x21, x21, x0
+00009d98 b         #0x9d04
+00009d9c mov       x19, x0
+00009da0 mov       x0, x22
+00009da4 bl        #0x956c
+00009da8 add       x0, x29, #0x60
+00009dac bl        #0x956c
+00009db0 mov       x0, x19
+00009db4 bl        #0x6f40 ; _Unwind_Resume
+00009db8 mov       x19, x0
+00009dbc b         #0x9da8

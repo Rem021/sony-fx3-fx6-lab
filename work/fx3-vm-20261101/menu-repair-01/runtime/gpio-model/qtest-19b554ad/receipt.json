@@ -1,0 +1,144 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "-machine",
+    "virt,gic-version=2,secure=off",
+    "-accel",
+    "tcg",
+    "-cpu",
+    "cortex-a35",
+    "-m",
+    "64",
+    "-display",
+    "none",
+    "-nodefaults",
+    "-nic",
+    "none",
+    "-serial",
+    "none",
+    "-monitor",
+    "none",
+    "-qtest",
+    "unix:t,server=on,wait=off",
+    "-qmp",
+    "unix:q,server=on,wait=off",
+    "-S"
+  ],
+  "events": [
+    {
+      "command": "readl 0xf1022000",
+      "response": "OK 0x0000000000000000"
+    },
+    {
+      "command": "writel 0xf1022000 0x10",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022000",
+      "response": "OK 0x0000000000000010"
+    },
+    {
+      "command": "writel 0xf1022004 0x80",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022000",
+      "response": "OK 0x0000000000000090"
+    },
+    {
+      "command": "writel 0xf1022008 0x10",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022000",
+      "response": "OK 0x0000000000000080"
+    },
+    {
+      "command": "readl 0xf1022020",
+      "response": "OK 0x0000000000000000"
+    },
+    {
+      "command": "writel 0xf1022020 0x10",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022020",
+      "response": "OK 0x0000000000000010"
+    },
+    {
+      "command": "writel 0xf1022024 0x80",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022020",
+      "response": "OK 0x0000000000000090"
+    },
+    {
+      "command": "writel 0xf1022028 0x10",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022020",
+      "response": "OK 0x0000000000000080"
+    },
+    {
+      "command": "readl 0xf1022030",
+      "response": "OK 0x0000000000000000"
+    },
+    {
+      "command": "writel 0xf1022030 0x10",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022030",
+      "response": "OK 0x0000000000000010"
+    },
+    {
+      "command": "writel 0xf1022034 0x80",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022030",
+      "response": "OK 0x0000000000000090"
+    },
+    {
+      "command": "writel 0xf1022038 0x10",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022030",
+      "response": "OK 0x0000000000000080"
+    },
+    {
+      "command": "readl 0xf1022040",
+      "response": "OK 0x0000000000000000"
+    },
+    {
+      "command": "writel 0xf1022040 0x10",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022040",
+      "response": "OK 0x0000000000000010"
+    },
+    {
+      "command": "writel 0xf1022044 0x80",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022040",
+      "response": "OK 0x0000000000000090"
+    },
+    {
+      "command": "writel 0xf1022048 0x10",
+      "response": "OK"
+    },
+    {
+      "command": "readl 0xf1022040",
+      "response": "OK 0x0000000000000080"
+    }
+  ],
+  "exit": 0,
+  "register_set_clear_readback_verified": true,
+  "scope": "isolated register model qtest only, no firmware or CP execution"
+}

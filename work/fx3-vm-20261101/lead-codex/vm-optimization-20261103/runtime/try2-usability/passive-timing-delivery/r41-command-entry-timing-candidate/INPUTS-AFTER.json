@@ -1,0 +1,901 @@
+{
+  "categories_not_disjoint": {
+    "initial_preparation_snapshot": 33,
+    "first_observed_legacy_serial_after_read": 1,
+    "later_observed_compiler_dependencies_and_tools": 49,
+    "first_observed_linker_recipe_reference": 1
+  },
+  "merged_unique_inputs": 74,
+  "matched": 74,
+  "scope": "33 original preparation pins plus later first-observed technical pins; NOT all fresh before/after snapshots",
+  "files": [
+    {
+      "path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/objdump",
+      "expected": {
+        "sha256": "dfc9b8179ea5e3af99064ac2b062d5237d09b5b92482f724b5ba98ca0dec9f55",
+        "bytes": 18276320
+      },
+      "actual": {
+        "sha256": "dfc9b8179ea5e3af99064ac2b062d5237d09b5b92482f724b5ba98ca0dec9f55",
+        "bytes": 18276320
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx/compat/string.h",
+      "expected": {
+        "sha256": "dbe18bba3c7d51a26de48b0732e656db738231f84fc7ea29da5b14ee9139690f",
+        "bytes": 158
+      },
+      "actual": {
+        "sha256": "dbe18bba3c7d51a26de48b0732e656db738231f84fc7ea29da5b14ee9139690f",
+        "bytes": 158
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/build/cross-build.json",
+      "expected": {
+        "sha256": "511c5703f3767afb2f0dc2d624829e327d429ce46a2807f0afa8f3fc664e08e5",
+        "bytes": 2193
+      },
+      "actual": {
+        "sha256": "511c5703f3767afb2f0dc2d624829e327d429ce46a2807f0afa8f3fc664e08e5",
+        "bytes": 2193
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/build/provenance.json",
+      "expected": {
+        "sha256": "52a684c5c0367d45adeddb0cbb26b1b487ff097d8c7fd67ec64a10dffdce3424",
+        "bytes": 3832
+      },
+      "actual": {
+        "sha256": "52a684c5c0367d45adeddb0cbb26b1b487ff097d8c7fd67ec64a10dffdce3424",
+        "bytes": 3832
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/cache-v26.inc",
+      "expected": {
+        "sha256": "76dd98ad58615d1370524a1425130dfdcb5a46bf89435e2aca2956fe4d575aa4",
+        "bytes": 2703
+      },
+      "actual": {
+        "sha256": "76dd98ad58615d1370524a1425130dfdcb5a46bf89435e2aca2956fe4d575aa4",
+        "bytes": 2703
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/check_adapter.c",
+      "expected": {
+        "sha256": "126e5e379f6c49bb5db35aa338dd582d49a38e30e32886bd3016c000d28aff97",
+        "bytes": 8681
+      },
+      "actual": {
+        "sha256": "126e5e379f6c49bb5db35aa338dd582d49a38e30e32886bd3016c000d28aff97",
+        "bytes": 8681
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-backend-v9.c",
+      "expected": {
+        "sha256": "fdc2f060db55288278f18ccbd312c51493208a3267d8add1a6b36db02a9461be",
+        "bytes": 15079
+      },
+      "actual": {
+        "sha256": "fdc2f060db55288278f18ccbd312c51493208a3267d8add1a6b36db02a9461be",
+        "bytes": 15079
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-backend-v9.h",
+      "expected": {
+        "sha256": "3bcedee7dd957804ea235177607fe4cb92ddad14ccf8024653e17691d6021394",
+        "bytes": 3064
+      },
+      "actual": {
+        "sha256": "3bcedee7dd957804ea235177607fe4cb92ddad14ccf8024653e17691d6021394",
+        "bytes": 3064
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-observe-v26-perf.c",
+      "expected": {
+        "sha256": "06f6d2968f55b2579b950df2a4954f3976fa9f624a5c6a987e27b253b475e1f9",
+        "bytes": 34970
+      },
+      "actual": {
+        "sha256": "06f6d2968f55b2579b950df2a4954f3976fa9f624a5c6a987e27b253b475e1f9",
+        "bytes": 34970
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/fx3-gpe-observe-v26-perf.so",
+      "expected": {
+        "sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+        "bytes": 276984
+      },
+      "actual": {
+        "sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+        "bytes": 276984
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/raster-v9.inc",
+      "expected": {
+        "sha256": "64e7e37469d85c650cc4cc6daa45457eacd46ba57d931914498c20a4d45bb9ab",
+        "bytes": 6398
+      },
+      "actual": {
+        "sha256": "64e7e37469d85c650cc4cc6daa45457eacd46ba57d931914498c20a4d45bb9ab",
+        "bytes": 6398
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/resource-v26.inc",
+      "expected": {
+        "sha256": "03b5f5d6ad8c275de17ce7164697f03d82b31b39dcc221e83de7c7faa84c4f4c",
+        "bytes": 16845
+      },
+      "actual": {
+        "sha256": "03b5f5d6ad8c275de17ce7164697f03d82b31b39dcc221e83de7c7faa84c4f4c",
+        "bytes": 16845
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/tables-v9.inc",
+      "expected": {
+        "sha256": "3e5dbabbeafeec0d70c8a2d281d288517ddbf470815462e055a2abc225df0bf3",
+        "bytes": 166187
+      },
+      "actual": {
+        "sha256": "3e5dbabbeafeec0d70c8a2d281d288517ddbf470815462e055a2abc225df0bf3",
+        "bytes": 166187
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-perf/texture-v26.inc",
+      "expected": {
+        "sha256": "8f765fc47acdcb1cc5c6ed0e334dd68d5c1dace46bf5a15d143a66331f489bec",
+        "bytes": 799
+      },
+      "actual": {
+        "sha256": "8f765fc47acdcb1cc5c6ed0e334dd68d5c1dace46bf5a15d143a66331f489bec",
+        "bytes": 799
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r33-causal-observation-candidate/GPE-SOURCE-BINDING.json",
+      "expected": {
+        "sha256": "1b3d1e93fa0a080ba6a4f63e2a48f8e8d7c297830d14b84e90ce6b7685106d2e",
+        "bytes": 1258
+      },
+      "actual": {
+        "sha256": "1b3d1e93fa0a080ba6a4f63e2a48f8e8d7c297830d14b84e90ce6b7685106d2e",
+        "bytes": 1258
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/MANIFEST.json",
+      "expected": {
+        "sha256": "518b43e6703ef04bc24829c3735fb9bde9d1ab58b0f9e33ffe4739676fdb9a53",
+        "bytes": 4290
+      },
+      "actual": {
+        "sha256": "518b43e6703ef04bc24829c3735fb9bde9d1ab58b0f9e33ffe4739676fdb9a53",
+        "bytes": 4290
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/guest.cpio",
+      "expected": {
+        "sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff",
+        "bytes": 453213884
+      },
+      "actual": {
+        "sha256": "49c1e110475fa15b692a3bf79fdf15189b82929cc7d643e27cd5f2d383d77fff",
+        "bytes": 453213884
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/package_r36.py",
+      "expected": {
+        "sha256": "0362d3eb2f828b3681c1f7aa3b5701f5d81a53be4be8777b338f4d688b4d6e67",
+        "bytes": 18983
+      },
+      "actual": {
+        "sha256": "0362d3eb2f828b3681c1f7aa3b5701f5d81a53be4be8777b338f4d688b4d6e67",
+        "bytes": 18983
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/source-index.json",
+      "expected": {
+        "sha256": "589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a",
+        "bytes": 563560
+      },
+      "actual": {
+        "sha256": "589e7235516e1d87a2016833229f795b733392b15bf9795b8a001ca7b7b7739a",
+        "bytes": 563560
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-coordinator-final-review.json",
+      "expected": {
+        "sha256": "14523c31974e63d50e59a8b5b258b9cac4f9c772b602fc8aefc8be41ba2173c4",
+        "bytes": 2628
+      },
+      "actual": {
+        "sha256": "14523c31974e63d50e59a8b5b258b9cac4f9c772b602fc8aefc8be41ba2173c4",
+        "bytes": 2628
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-deepseek-menu-timing/review-revision-1/REPORT.md",
+      "expected": {
+        "sha256": "b4c80ebaf05981830019776ae9e07488d08c0fa98c64dd42d43358c7a3c07b00",
+        "bytes": 27139
+      },
+      "actual": {
+        "sha256": "b4c80ebaf05981830019776ae9e07488d08c0fa98c64dd42d43358c7a3c07b00",
+        "bytes": 27139
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-deepseek-menu-timing/review-revision-1/analyze_menu_timing.py",
+      "expected": {
+        "sha256": "efb431ae6c95de7af2f20b0312660d78e00517777b45481f9f1b4aad1e165d26",
+        "bytes": 51933
+      },
+      "actual": {
+        "sha256": "efb431ae6c95de7af2f20b0312660d78e00517777b45481f9f1b4aad1e165d26",
+        "bytes": 51933
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r40-deepseek-menu-timing/review-revision-1/results.json",
+      "expected": {
+        "sha256": "825586d98d49d9edf600519f84a64cfe3b1bef2644ecb6b0e7d27644f1b7d7de",
+        "bytes": 364835
+      },
+      "actual": {
+        "sha256": "825586d98d49d9edf600519f84a64cfe3b1bef2644ecb6b0e7d27644f1b7d7de",
+        "bytes": 364835
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r41-command-entry-timing-task.txt",
+      "expected": {
+        "sha256": "ae9cc20c1faaaad3fa5bf4e015185e526528ed0e575ea991a511bc351b7679ae",
+        "bytes": 5031
+      },
+      "actual": {
+        "sha256": "ae9cc20c1faaaad3fa5bf4e015185e526528ed0e575ea991a511bc351b7679ae",
+        "bytes": 5031
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v35diag-n64-r36-r37-4d245250/serial.log",
+      "expected": {
+        "sha256": "bb607c0e10b3b843f41bf02a0295428060b70a68f091501bab1634d142c11a70",
+        "bytes": 7124818
+      },
+      "actual": {
+        "sha256": "bb607c0e10b3b843f41bf02a0295428060b70a68f091501bab1634d142c11a70",
+        "bytes": 7124818
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+      "expected": {
+        "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+        "bytes": 120616
+      },
+      "actual": {
+        "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a",
+        "bytes": 120616
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+      "expected": {
+        "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+        "bytes": 1283936
+      },
+      "actual": {
+        "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9",
+        "bytes": 1283936
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+      "expected": {
+        "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+        "bytes": 10368
+      },
+      "actual": {
+        "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b",
+        "bytes": 10368
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+      "expected": {
+        "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+        "bytes": 101888
+      },
+      "actual": {
+        "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592",
+        "bytes": 101888
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-complete104-observe-v1.h",
+      "expected": {
+        "sha256": "ccf951a9ac06d67ca5ffb43d8455fd3a601a3c39e799c9783130a559e716c188",
+        "bytes": 3493
+      },
+      "actual": {
+        "sha256": "ccf951a9ac06d67ca5ffb43d8455fd3a601a3c39e799c9783130a559e716c188",
+        "bytes": 3493
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-frame-target-v1.h",
+      "expected": {
+        "sha256": "ac09333462198779cdf4ac7c7e088228e4355f8cb7111d87921b1df21efdcc9b",
+        "bytes": 614
+      },
+      "actual": {
+        "sha256": "ac09333462198779cdf4ac7c7e088228e4355f8cb7111d87921b1df21efdcc9b",
+        "bytes": 614
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-command-wait102-v1.h",
+      "expected": {
+        "sha256": "1d7f0be8b72c5a23dbbd3b050c0cc732899b75b7f50c90303c48af9595c77bd2",
+        "bytes": 1291
+      },
+      "actual": {
+        "sha256": "1d7f0be8b72c5a23dbbd3b050c0cc732899b75b7f50c90303c48af9595c77bd2",
+        "bytes": 1291
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-compaction-v1.S",
+      "expected": {
+        "sha256": "b465c89b3df6294bc0703a202d57a189ad1f3eb386d290caa71c32df52464615",
+        "bytes": 13088
+      },
+      "actual": {
+        "sha256": "b465c89b3df6294bc0703a202d57a189ad1f3eb386d290caa71c32df52464615",
+        "bytes": 13088
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v26-perf-ap105.so",
+      "expected": {
+        "sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+        "bytes": 276984
+      },
+      "actual": {
+        "sha256": "30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4",
+        "bytes": 276984
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-screen-v3-aux.inc",
+      "expected": {
+        "sha256": "9bc9d51a931af9d1796610d2d725eaeb17f304cb437fd5d39404b8325f23faf7",
+        "bytes": 3692
+      },
+      "actual": {
+        "sha256": "9bc9d51a931af9d1796610d2d725eaeb17f304cb437fd5d39404b8325f23faf7",
+        "bytes": 3692
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-texture-observe102-v2.h",
+      "expected": {
+        "sha256": "477125de582428b6239b1fc713b5c581f07a8bfee263ef41c1cef372dbb5880e",
+        "bytes": 7802
+      },
+      "actual": {
+        "sha256": "477125de582428b6239b1fc713b5c581f07a8bfee263ef41c1cef372dbb5880e",
+        "bytes": 7802
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/__stddef_header_macro.h",
+      "expected": {
+        "sha256": "4cf46e8fbb809df048eecbbd63686fa741da27afa8db4245bd1f61c1fb1611dc",
+        "bytes": 417
+      },
+      "actual": {
+        "sha256": "4cf46e8fbb809df048eecbbd63686fa741da27afa8db4245bd1f61c1fb1611dc",
+        "bytes": 417
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/__stddef_max_align_t.h",
+      "expected": {
+        "sha256": "3c1e4de47f4f06b35e2c5890d670052e84f716760505ff51b022fc8b21a9400f",
+        "bytes": 857
+      },
+      "actual": {
+        "sha256": "3c1e4de47f4f06b35e2c5890d670052e84f716760505ff51b022fc8b21a9400f",
+        "bytes": 857
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/__stddef_null.h",
+      "expected": {
+        "sha256": "b1d71b08563ab3d2c22a1e4f8ddf4d9a1111c89e9404b859a45c307e8ebc6c69",
+        "bytes": 875
+      },
+      "actual": {
+        "sha256": "b1d71b08563ab3d2c22a1e4f8ddf4d9a1111c89e9404b859a45c307e8ebc6c69",
+        "bytes": 875
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/__stddef_offsetof.h",
+      "expected": {
+        "sha256": "e5f0f4ff8ff5fc6a1cc8b535f5065f1728eadd2bf1e1401f021f803ec7b4222f",
+        "bytes": 708
+      },
+      "actual": {
+        "sha256": "e5f0f4ff8ff5fc6a1cc8b535f5065f1728eadd2bf1e1401f021f803ec7b4222f",
+        "bytes": 708
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/__stddef_ptrdiff_t.h",
+      "expected": {
+        "sha256": "b4178a57f3711b7013cba747a72a2f178c29fa9364e77d75b2159754072ced43",
+        "bytes": 717
+      },
+      "actual": {
+        "sha256": "b4178a57f3711b7013cba747a72a2f178c29fa9364e77d75b2159754072ced43",
+        "bytes": 717
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/__stddef_size_t.h",
+      "expected": {
+        "sha256": "d86ddc0238da09b385846ebef814ffc50a44e40cf85d4e3793f485952b7e73ad",
+        "bytes": 708
+      },
+      "actual": {
+        "sha256": "d86ddc0238da09b385846ebef814ffc50a44e40cf85d4e3793f485952b7e73ad",
+        "bytes": 708
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/__stddef_wchar_t.h",
+      "expected": {
+        "sha256": "1900d4998aef3698b06399ed686db0c21e26509b08638a25734fb97ae89b1001",
+        "bytes": 853
+      },
+      "actual": {
+        "sha256": "1900d4998aef3698b06399ed686db0c21e26509b08638a25734fb97ae89b1001",
+        "bytes": 853
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/limits.h",
+      "expected": {
+        "sha256": "6b59cc1b6f86c901bf41ce942b8434530e852eb16e79e6e9287f89441f71efca",
+        "bytes": 3794
+      },
+      "actual": {
+        "sha256": "6b59cc1b6f86c901bf41ce942b8434530e852eb16e79e6e9287f89441f71efca",
+        "bytes": 3794
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/stdatomic.h",
+      "expected": {
+        "sha256": "728b690f127fc85faa32b9031e3a0019da92f77db92ca91b749571e45617a9ea",
+        "bytes": 8662
+      },
+      "actual": {
+        "sha256": "728b690f127fc85faa32b9031e3a0019da92f77db92ca91b749571e45617a9ea",
+        "bytes": 8662
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/stddef.h",
+      "expected": {
+        "sha256": "b3e62a046ddf28d09eedebe6eb9461cb7060e47cad2c69964b222c4eea10347e",
+        "bytes": 5053
+      },
+      "actual": {
+        "sha256": "b3e62a046ddf28d09eedebe6eb9461cb7060e47cad2c69964b222c4eea10347e",
+        "bytes": 5053
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/include/stdint.h",
+      "expected": {
+        "sha256": "f43783466c93f77a6464274ebf18f9e4cc46f0d90770ddee2993c6cf39f7514f",
+        "bytes": 27519
+      },
+      "actual": {
+        "sha256": "f43783466c93f77a6464274ebf18f9e4cc46f0d90770ddee2993c6cf39f7514f",
+        "bytes": 27519
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/aarch64-linux-gnu/bits/pthread_stack_min.h",
+      "expected": {
+        "sha256": "9cce89d27aed467734ee5a4a4ebd3fb4ac2de96e0446a0f317dec3846676c13b",
+        "bytes": 969
+      },
+      "actual": {
+        "sha256": "9cce89d27aed467734ee5a4a4ebd3fb4ac2de96e0446a0f317dec3846676c13b",
+        "bytes": 969
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/aarch64-linux-gnu/bits/wordsize.h",
+      "expected": {
+        "sha256": "796e91baed174dbc79c37967ba179490d8e5beb5ae5da7ff959b17281100bcf4",
+        "bytes": 908
+      },
+      "actual": {
+        "sha256": "796e91baed174dbc79c37967ba179490d8e5beb5ae5da7ff959b17281100bcf4",
+        "bytes": 908
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/aarch64-linux-gnu/gnu/stubs-lp64.h",
+      "expected": {
+        "sha256": "78b386e5dd26bd9a26dee8d1550a5a2067f5aef46c7a089d4f4d9936d65b7815",
+        "bytes": 626
+      },
+      "actual": {
+        "sha256": "78b386e5dd26bd9a26dee8d1550a5a2067f5aef46c7a089d4f4d9936d65b7815",
+        "bytes": 626
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/aarch64-linux-gnu/gnu/stubs.h",
+      "expected": {
+        "sha256": "75076dba19a7403375b21ce20c37fd6f0f05ad09067abe088c95a34aae21692f",
+        "bytes": 324
+      },
+      "actual": {
+        "sha256": "75076dba19a7403375b21ce20c37fd6f0f05ad09067abe088c95a34aae21692f",
+        "bytes": 324
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/any-linux-any/linux/limits.h",
+      "expected": {
+        "sha256": "40d3b236cd08f99f78f1a40c91ffda19b7e3eedfd85666e78b3bce966b679564",
+        "bytes": 936
+      },
+      "actual": {
+        "sha256": "40d3b236cd08f99f78f1a40c91ffda19b7e3eedfd85666e78b3bce966b679564",
+        "bytes": 936
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/libc-header-start.h",
+      "expected": {
+        "sha256": "3d5066ef5b5ce0c1ed11475f97fad7a853120cd47cf9249b4896dbb8a1f91886",
+        "bytes": 4285
+      },
+      "actual": {
+        "sha256": "3d5066ef5b5ce0c1ed11475f97fad7a853120cd47cf9249b4896dbb8a1f91886",
+        "bytes": 4285
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/local_lim.h",
+      "expected": {
+        "sha256": "219e1d37d8a9f2bb47f9664ab51846d01f06d1866d8bf3a3f1befad79ec17add",
+        "bytes": 3174
+      },
+      "actual": {
+        "sha256": "219e1d37d8a9f2bb47f9664ab51846d01f06d1866d8bf3a3f1befad79ec17add",
+        "bytes": 3174
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/long-double.h",
+      "expected": {
+        "sha256": "d16e9d137e2ccb56161217d91d56584a6cb2571b9fe73872e1d96e8c11456542",
+        "bytes": 970
+      },
+      "actual": {
+        "sha256": "d16e9d137e2ccb56161217d91d56584a6cb2571b9fe73872e1d96e8c11456542",
+        "bytes": 970
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/posix1_lim.h",
+      "expected": {
+        "sha256": "97f9dbc93999d2f830b9e756a35a65c46ebf1534ba5523453eca968fba85621e",
+        "bytes": 5197
+      },
+      "actual": {
+        "sha256": "97f9dbc93999d2f830b9e756a35a65c46ebf1534ba5523453eca968fba85621e",
+        "bytes": 5197
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/posix2_lim.h",
+      "expected": {
+        "sha256": "6a2d21420abcf388bacbc266bc8c5c185173dba54790265b32151805f545f561",
+        "bytes": 2866
+      },
+      "actual": {
+        "sha256": "6a2d21420abcf388bacbc266bc8c5c185173dba54790265b32151805f545f561",
+        "bytes": 2866
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/pthread_stack_min-dynamic.h",
+      "expected": {
+        "sha256": "a41b1b38303820baf8425e5b61d8f2acaf78b8f3ddef989c8fdf62ab3c294193",
+        "bytes": 1213
+      },
+      "actual": {
+        "sha256": "a41b1b38303820baf8425e5b61d8f2acaf78b8f3ddef989c8fdf62ab3c294193",
+        "bytes": 1213
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/stdint-intn.h",
+      "expected": {
+        "sha256": "c2abe6baef8ef4b6567f274dcb7cd8bb91de793172e0a4506d4b7a38e3359587",
+        "bytes": 1036
+      },
+      "actual": {
+        "sha256": "c2abe6baef8ef4b6567f274dcb7cd8bb91de793172e0a4506d4b7a38e3359587",
+        "bytes": 1036
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/stdint-least.h",
+      "expected": {
+        "sha256": "6d5f760132b5bb3727d497e89fe96cf7281e5e746bcf05b6ad69345674e8e6b0",
+        "bytes": 1304
+      },
+      "actual": {
+        "sha256": "6d5f760132b5bb3727d497e89fe96cf7281e5e746bcf05b6ad69345674e8e6b0",
+        "bytes": 1304
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/stdint-uintn.h",
+      "expected": {
+        "sha256": "98035b1d41568e5c98cf13541c2d1484634a5cdef71877cd98c42468cc4f2f77",
+        "bytes": 1048
+      },
+      "actual": {
+        "sha256": "98035b1d41568e5c98cf13541c2d1484634a5cdef71877cd98c42468cc4f2f77",
+        "bytes": 1048
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/time64.h",
+      "expected": {
+        "sha256": "088d2bd5745474df46278507b6c693a43a222212650d155ff256340a7d19fe6d",
+        "bytes": 1339
+      },
+      "actual": {
+        "sha256": "088d2bd5745474df46278507b6c693a43a222212650d155ff256340a7d19fe6d",
+        "bytes": 1339
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/timesize.h",
+      "expected": {
+        "sha256": "11001d52c297e8ef9435a0bd130419c72397df1d79f310ccf0225f9ee8aa2ad8",
+        "bytes": 938
+      },
+      "actual": {
+        "sha256": "11001d52c297e8ef9435a0bd130419c72397df1d79f310ccf0225f9ee8aa2ad8",
+        "bytes": 938
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/types.h",
+      "expected": {
+        "sha256": "f71a5a21aa2a38ea6b9c085169522c834b6e7aaa46761958e00fd797f388c185",
+        "bytes": 8805
+      },
+      "actual": {
+        "sha256": "f71a5a21aa2a38ea6b9c085169522c834b6e7aaa46761958e00fd797f388c185",
+        "bytes": 8805
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/typesizes.h",
+      "expected": {
+        "sha256": "1a206801a2102e4148cee6b181491e1605e232aeaf549367b601f681226b2198",
+        "bytes": 3905
+      },
+      "actual": {
+        "sha256": "1a206801a2102e4148cee6b181491e1605e232aeaf549367b601f681226b2198",
+        "bytes": 3905
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/bits/wchar.h",
+      "expected": {
+        "sha256": "d2cdf868e95eb5038b9a641efd5a38eb7d3f2c486c919d11cb1f024c06671de4",
+        "bytes": 1905
+      },
+      "actual": {
+        "sha256": "d2cdf868e95eb5038b9a641efd5a38eb7d3f2c486c919d11cb1f024c06671de4",
+        "bytes": 1905
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/features-time64.h",
+      "expected": {
+        "sha256": "e7790969f31c231c92952a7e68582f284880eb2d5ccad85deda380c1d60fb47f",
+        "bytes": 1531
+      },
+      "actual": {
+        "sha256": "e7790969f31c231c92952a7e68582f284880eb2d5ccad85deda380c1d60fb47f",
+        "bytes": 1531
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/features.h",
+      "expected": {
+        "sha256": "73c5ae4dc8ea6db5c20b8ea4e2f9ed2042bf288c207966979a0f288fb5609ae0",
+        "bytes": 20379
+      },
+      "actual": {
+        "sha256": "73c5ae4dc8ea6db5c20b8ea4e2f9ed2042bf288c207966979a0f288fb5609ae0",
+        "bytes": 20379
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/limits.h",
+      "expected": {
+        "sha256": "dff9f040535ce4038471ad34194acf932bc260615a7e5c79ac4d92e79da6d7e6",
+        "bytes": 5838
+      },
+      "actual": {
+        "sha256": "dff9f040535ce4038471ad34194acf932bc260615a7e5c79ac4d92e79da6d7e6",
+        "bytes": 5838
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/stdc-predef.h",
+      "expected": {
+        "sha256": "c1d3f503babbddbab61a9a558efd89a4e53c6d96c2bc0602e347306314115e98",
+        "bytes": 2461
+      },
+      "actual": {
+        "sha256": "c1d3f503babbddbab61a9a558efd89a4e53c6d96c2bc0602e347306314115e98",
+        "bytes": 2461
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/stdint.h",
+      "expected": {
+        "sha256": "84f062556e4e5eef2dcbefd2d265c41611524c8bb73574e7850e104ccca8714e",
+        "bytes": 8267
+      },
+      "actual": {
+        "sha256": "84f062556e4e5eef2dcbefd2d265c41611524c8bb73574e7850e104ccca8714e",
+        "bytes": 8267
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/lib/libc/include/generic-glibc/sys/cdefs.h",
+      "expected": {
+        "sha256": "5d5978525304e2147b9a8a314ffb556b432c806b950c50b0307ebcf510b645e9",
+        "bytes": 35167
+      },
+      "actual": {
+        "sha256": "5d5978525304e2147b9a8a314ffb556b432c806b950c50b0307ebcf510b645e9",
+        "bytes": 35167
+      },
+      "match": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "expected": {
+        "sha256": "1c5f706db0ed6d55451940f31dc05a6177d05696bc1fa5d853696d04c718b523",
+        "bytes": 199375152
+      },
+      "actual": {
+        "sha256": "1c5f706db0ed6d55451940f31dc05a6177d05696bc1fa5d853696d04c718b523",
+        "bytes": 199375152
+      },
+      "match": true
+    },
+    {
+      "path": "/usr/bin/clang",
+      "expected": {
+        "sha256": "ed6f5284033aa2aae6a58427c25ba3ab119947b40365627b24e5d51a4b70a1cd",
+        "bytes": 200560
+      },
+      "actual": {
+        "sha256": "ed6f5284033aa2aae6a58427c25ba3ab119947b40365627b24e5d51a4b70a1cd",
+        "bytes": 200560
+      },
+      "match": true
+    }
+  ]
+}

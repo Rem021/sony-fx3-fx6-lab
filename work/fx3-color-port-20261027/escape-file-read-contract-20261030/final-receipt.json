@@ -1,0 +1,412 @@
+{
+  "created_utc": "2026-10-30T11:46:58.443841+00:00",
+  "stage": "escape-file-read-contract-20261030",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7415,
+      "sha256": "b4bcc64d8dc893a0a21a24dff05f88502a0fa648c2e799b9b17f1337a78f20ad"
+    },
+    {
+      "path": "attempts/initial-window-stop.txt",
+      "bytes": 157,
+      "sha256": "e69037c985e8105440f3f7f30c02d14539c178bc8b1b238fa18bb5042a146184"
+    },
+    {
+      "path": "attempts/memcmp-window-stop.txt",
+      "bytes": 155,
+      "sha256": "c99ce0eba8dc70b38c8acc72d9878f95b4fa9bdaac1488626a51260e0f84dac7"
+    },
+    {
+      "path": "attempts/prove_file_read-before-memcmp-window-review.py",
+      "bytes": 11203,
+      "sha256": "2f3a8eda259ee3a3afc9924e484d464b4f183e5f1484db0b06365bc7567d13c0"
+    },
+    {
+      "path": "attempts/prove_file_read-before-strlen-window-review.py",
+      "bytes": 11203,
+      "sha256": "ae971d82204004d9e77e5410e52eb552726aa25afddba7483566047367fd8cb5"
+    },
+    {
+      "path": "continuation-audit.json",
+      "bytes": 1108,
+      "sha256": "63f2329b8790e559b0394f17141148f90706fd2d64b592b3e5b70e51953a8cdb"
+    },
+    {
+      "path": "file-read-proof.json",
+      "bytes": 16942,
+      "sha256": "195245de54e3deb7149c7bd9029ffa3c62f9636edf941e50a28eff0bb62427e3"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 1450,
+      "sha256": "26384a387a3100e1d5d2593944686bb8619a076d3c034925246ec10e414e0ceb"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 431,
+      "sha256": "ed3eb5dd05d63a8fa2b04860c48001ba8f58463789f30bbeeb39e3fdf6d1d8f7"
+    },
+    {
+      "path": "initialization-candidate-review.json",
+      "bytes": 4214,
+      "sha256": "0baa8de032436302230c869c9e5b900970b9587ffce68b4b32a99fde9c49de74"
+    },
+    {
+      "path": "listings/reference-AP-descriptor-query.txt",
+      "bytes": 1319,
+      "sha256": "5016e4b3f3bd606694fe10f2a2eaf4ebfefec4fc0bd4827b729519a48f63741b"
+    },
+    {
+      "path": "listings/reference-FAT-cluster-read.txt",
+      "bytes": 3368,
+      "sha256": "4399ee5af50d141669e64b9d278ab816f5d4ba1aea7e10b9dd6fffa34f4546ba"
+    },
+    {
+      "path": "listings/reference-FAT-file-read.txt",
+      "bytes": 4603,
+      "sha256": "2d0e1ad790fc0e3f314f6652f48b13b5795edc469a10cdd0672cea41da28c336"
+    },
+    {
+      "path": "listings/reference-FAT-open-result.txt",
+      "bytes": 1001,
+      "sha256": "0b31a18f2fcb6eea199097e46a28b72ad7f60bf893a219e8c3db25ccbef2de09"
+    },
+    {
+      "path": "listings/reference-FAT-root-lookup.txt",
+      "bytes": 923,
+      "sha256": "ad4317641a0832104945fa4af958ba0bc0c5be926068b51c7ed51a74e114b2f2"
+    },
+    {
+      "path": "listings/reference-MMC-zero-fill-candidate.txt",
+      "bytes": 1863,
+      "sha256": "9fd3bfd268b11542e9aad9e40e96baa1561411b2c99501f4fd262be966820670"
+    },
+    {
+      "path": "listings/reference-clear-reboot-dispatch.txt",
+      "bytes": 2098,
+      "sha256": "0c9bb91f65a05ab53be6f79e2a3ff4e0faaee898d53be83e3af3c3223a218458"
+    },
+    {
+      "path": "listings/reference-ctype-init-fragment.txt",
+      "bytes": 244,
+      "sha256": "69fa0546cf36b167a9edec8244bbefee60e7b1849ce09be8807c7bd1a1dc122d"
+    },
+    {
+      "path": "listings/reference-ctype-table-helper.txt",
+      "bytes": 583,
+      "sha256": "ce45fa2dbf745dc52be2f88cf8bf5ec20186581a49e2012012899d693e20f756"
+    },
+    {
+      "path": "listings/reference-escape-loader-whole.txt",
+      "bytes": 5593,
+      "sha256": "dde80e27f88547f0c8b8c5d313bc4021edaff7615277322578a0f94be7750650"
+    },
+    {
+      "path": "listings/reference-file-load-wrapper.txt",
+      "bytes": 1089,
+      "sha256": "1e10bfde3f46cb92953a58edd6685152e4879a4b4865a89d7e898b471a25e012"
+    },
+    {
+      "path": "prove_file_read.py",
+      "bytes": 11203,
+      "sha256": "5d2ec214adecfd8bf7d59a65fb215d18807555f600ce2d5d5c9a3710c88b4469"
+    },
+    {
+      "path": "review_init_candidates.py",
+      "bytes": 4058,
+      "sha256": "dbf87c9688a53a4c3e09d33058e781049e1b4369dcbdc81fccd779171a898f9b"
+    },
+    {
+      "path": "source-inventory-and-coverage.json",
+      "bytes": 2523,
+      "sha256": "9232cfe68537012ce6cfc3c1c25241ddd851b7c2897f5728e87227657209d9b6"
+    },
+    {
+      "path": "source-review.json",
+      "bytes": 675,
+      "sha256": "7ced3295ae35f006fe1ec427ac468a2b7f5e63f8a1c7e1f4c771b9a51b91a8ef"
+    },
+    {
+      "path": "validation-results.json",
+      "bytes": 6275,
+      "sha256": "722f674ff10e4be176519636be8ef5da1073151c8392f572ac83dd640e15896f"
+    },
+    {
+      "path": "verify_file_contract.py",
+      "bytes": 7039,
+      "sha256": "9b2ab046fe5692f6909a39e6a0a8b26d83db13186b58c7148096863c73b27d88"
+    }
+  ],
+  "validation": {
+    "status": "PASS_SCOPED_FILE_READ_AND_RETURN_CONTRACT",
+    "instruction_checks": [
+      {
+        "VA": "0xfe059e30",
+        "bytes": "ec000094",
+        "instruction": "bl #0xfe05a1e0"
+      },
+      {
+        "VA": "0xfe059e34",
+        "bytes": "f403002a",
+        "instruction": "mov w20, w0"
+      },
+      {
+        "VA": "0xfe059e40",
+        "bytes": "e103142a",
+        "instruction": "mov w1, w20"
+      },
+      {
+        "VA": "0xfe059e44",
+        "bytes": "0c020094",
+        "instruction": "bl #0xfe05a674"
+      },
+      {
+        "VA": "0xfe059e48",
+        "bytes": "f503002a",
+        "instruction": "mov w21, w0"
+      },
+      {
+        "VA": "0xfe059e4c",
+        "bytes": "c001f836",
+        "instruction": "tbz w0, #0x1f, #0xfe059e84"
+      },
+      {
+        "VA": "0xfe059e88",
+        "bytes": "e003142a",
+        "instruction": "mov w0, w20"
+      },
+      {
+        "VA": "0xfe059e80",
+        "bytes": "f4328012",
+        "instruction": "mov w20, #-0x198"
+      },
+      {
+        "VA": "0xfe052298",
+        "bytes": "e21e0094",
+        "instruction": "bl #0xfe059e20"
+      },
+      {
+        "VA": "0xfe05229c",
+        "bytes": "047c4093",
+        "instruction": "sxtw x4, w0"
+      },
+      {
+        "VA": "0xfe0522a0",
+        "bytes": "e0071f32",
+        "instruction": "mov w0, #6"
+      },
+      {
+        "VA": "0xfe0522b0",
+        "bytes": "a00c0094",
+        "instruction": "bl #0xfe055530"
+      },
+      {
+        "VA": "0xfe0522b8",
+        "bytes": "7b070011",
+        "instruction": "add w27, w27, #1"
+      },
+      {
+        "VA": "0xfe0522bc",
+        "bytes": "9f021b6b",
+        "instruction": "cmp w20, w27"
+      },
+      {
+        "VA": "0xfe0522d4",
+        "bytes": "e0031f2a",
+        "instruction": "mov w0, wzr"
+      },
+      {
+        "VA": "0xfe05a65c",
+        "bytes": "886a4039",
+        "instruction": "ldrb w8, [x20, #0x1a]"
+      },
+      {
+        "VA": "0xfe05a664",
+        "bytes": "951e40b9",
+        "instruction": "ldr w21, [x20, #0x1c]"
+      },
+      {
+        "VA": "0xfe05a66c",
+        "bytes": "e8560329",
+        "instruction": "stp w8, w21, [x23, #0x18]"
+      },
+      {
+        "VA": "0xfe04e4d0",
+        "bytes": "a1290094",
+        "instruction": "bl #0xfe058b54"
+      },
+      {
+        "VA": "0xfe04e51c",
+        "bytes": "8e290094",
+        "instruction": "bl #0xfe058b54"
+      },
+      {
+        "VA": "0xfe04e55c",
+        "bytes": "e20318aa",
+        "instruction": "mov x2, x24"
+      },
+      {
+        "VA": "0xfe04e560",
+        "bytes": "b9f3ff97",
+        "instruction": "bl #0xfe04b444"
+      }
+    ],
+    "direct_call_checks": [
+      {
+        "function": "wrapper",
+        "original_direct_calls": [
+          {
+            "VA": "0xfe059e30",
+            "target": "#0xfe05a1e0"
+          },
+          {
+            "VA": "0xfe059e44",
+            "target": "#0xfe05a674"
+          },
+          {
+            "VA": "0xfe059e60",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe059e7c",
+            "target": "#0xfe055530"
+          }
+        ],
+        "no_direct_memset_call": true,
+        "scope": "Direct call targets only; not proof of absence of earlier whole-boot memory initialization."
+      },
+      {
+        "function": "file_read",
+        "original_direct_calls": [
+          {
+            "VA": "0xfe05a7cc",
+            "target": "#0xfe04e424"
+          },
+          {
+            "VA": "0xfe05a804",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe05a844",
+            "target": "#0xfe055530"
+          }
+        ],
+        "no_direct_memset_call": true,
+        "scope": "Direct call targets only; not proof of absence of earlier whole-boot memory initialization."
+      },
+      {
+        "function": "cluster_read",
+        "original_direct_calls": [
+          {
+            "VA": "0xfe04e47c",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe04e494",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe04e4d0",
+            "target": "#0xfe058b54"
+          },
+          {
+            "VA": "0xfe04e51c",
+            "target": "#0xfe058b54"
+          },
+          {
+            "VA": "0xfe04e544",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe04e560",
+            "target": "#0xfe04b444"
+          }
+        ],
+        "no_direct_memset_call": true,
+        "scope": "Direct call targets only; not proof of absence of earlier whole-boot memory initialization."
+      },
+      {
+        "function": "escape_loader",
+        "original_direct_calls": [
+          {
+            "VA": "0xfe052114",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe052164",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe052178",
+            "target": "#0xfe05b2b8"
+          },
+          {
+            "VA": "0xfe0521ec",
+            "target": "#0xfe059e94"
+          },
+          {
+            "VA": "0xfe052208",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe05221c",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe052254",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe052274",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe052298",
+            "target": "#0xfe059e20"
+          },
+          {
+            "VA": "0xfe0522b0",
+            "target": "#0xfe055530"
+          },
+          {
+            "VA": "0xfe0522f4",
+            "target": "#0xfe055530"
+          }
+        ],
+        "no_direct_memset_call": true,
+        "scope": "Direct call targets only; not proof of absence of earlier whole-boot memory initialization."
+      }
+    ],
+    "original_root_lookup_fragments": 8,
+    "original_ctype_initializer_executed": true,
+    "ctype_helper_substitutions": 0,
+    "p8_files_found": 4,
+    "p8_root_names_returning_minus408": 4,
+    "nested_sabin_path_not_guest_tested": true,
+    "DmmCfg_full_sector_read_request": {
+      "start_sector": 224,
+      "sectors": 84,
+      "bytes": 43008
+    },
+    "DmmCfg_tail_read_request": {
+      "sector": 308,
+      "sectors": 1
+    },
+    "original_tail_copy_bytes": 312,
+    "original_file_read_or_device_block_io_executed": false,
+    "slot_tail_bytes_unchanged_in_independent_copy_fragment": 59080,
+    "static_short_read_equality_check_present": false,
+    "static_selected_file_error_aggregation_present": false,
+    "any_prior_whole_boot_zeroing_proved": false,
+    "actual_source_RAM_complete": false,
+    "complete_FX3_target_boot_RAW_full_ISP_or_flashable_modified_package_proved": false,
+    "goal_complete": false
+  },
+  "initialization_candidate_checks": 7,
+  "goal_status": "active",
+  "goal_complete": false,
+  "device_actions": 0,
+  "modified_or_flashable_firmware_produced": false
+}

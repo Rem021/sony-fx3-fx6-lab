@@ -1,0 +1,76 @@
+{
+  "status": "HOST_ONLY_TERMINAL_FIX_CANDIDATE",
+  "created_utc": "2026-11-03T18:49:47.207753+00:00",
+  "source_sha256": {
+    "run_trial_v22_navigation_review.py": "9e63fb1e32b18f76843692fa3d49934af77669b19d8662ceac2c57fc44333368",
+    "trial_web_v22_navigation_review.py": "6f1a3ae9017162a5941b98df5eb87a72c9b64a806f6e11a5b185ea2af1095e1a",
+    "trial_ring_cached.py": "9309794feded60291d6748bd4d19ab98a909e7ba73c91233a2ffb983551f9e11",
+    "pending_visual_v20.py": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3",
+    "terminal_status_v23.py": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75",
+    "test_terminal_status_v23.py": "81ae1a54e966b1510d4ca3fdbcb71670271c5279d27684b8034ed5e4a5178208",
+    "test_v23_startup.py": "cbe948f91d1ea27a8e10cfdf1b7ba2f7de2f1b2ed16b7aba142f432ae3cf0674"
+  },
+  "runner_diff_sha256": "ea8bc5c88857392f608dbe1433b26f02435f53769bb7bfc2a6da46834a69fed0",
+  "tests": {
+    "terminal": {
+      "status": "PASS",
+      "actual_run_status": {
+        "status": "试用已结束：观察到原生关机；本轮健康未通过，资源已回收。",
+        "last_stop_cause": "health_failure",
+        "last_health_pass": false,
+        "last_lifecycle_pass": true,
+        "restart_requires_new_authorization": true
+      },
+      "cases": [
+        "native_shutdown",
+        "healthy",
+        "host_failure",
+        "cleanup_failure",
+        "startup_failure"
+      ],
+      "production_runner_uses_terminal_summary": true,
+      "guest_started": false
+    },
+    "startup": {
+      "scope": "v23 production startup and cleanup body; fake process only; real HTTP and flock",
+      "cases": [
+        {
+          "source": "run_trial_v22_navigation_review.py",
+          "scenario": "port_collision",
+          "passed": true,
+          "exit": 2,
+          "original_error": "OSError(48, 'Address already in use')",
+          "real_qemu_started": false,
+          "server_threads_closed": true,
+          "locks_free": true,
+          "health_pass": false
+        },
+        {
+          "source": "run_trial_v22_navigation_review.py",
+          "scenario": "spawn_error",
+          "passed": true,
+          "exit": 2,
+          "original_error": "OSError('fixture process spawn denied')",
+          "real_qemu_started": false,
+          "server_threads_closed": true,
+          "locks_free": true,
+          "health_pass": false
+        },
+        {
+          "source": "run_trial_v22_navigation_review.py",
+          "scenario": "early_exit",
+          "passed": true,
+          "exit": 2,
+          "original_error": "RuntimeError('QEMU startup exited; inspect host-stderr.log')",
+          "real_qemu_started": false,
+          "server_threads_closed": true,
+          "locks_free": true,
+          "health_pass": false
+        }
+      ]
+    }
+  },
+  "old_state_archive_sha256": "53bcf502e4283f4232d036a0f4e0166d16d13f1be490dd936b5df8361b4f41ef",
+  "current_state_sha256": "0ee8e6f243e3a440dd9a017eaf1b2f9eb8db1774d9f42ea7b103f89f14494f5d",
+  "guest_started": false
+}

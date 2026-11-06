@@ -1,0 +1,84 @@
+{
+  "receipt_status": "unknown",
+  "clicks": 1,
+  "keyPOST": 1,
+  "pending": 1,
+  "PAGE_attempt": {
+    "accepted_next_step": 1,
+    "alarm_due_ms": 20038.39999997616,
+    "alarm_nonce": "372f1599-88d5-4842-b738-67945387da54",
+    "attempt_id": "c7baa880-323c-4824-a798-32c3387e9022",
+    "base_step": 0,
+    "created_monotonic_ms": 50.60000002384186,
+    "document_time_origin": 1793838438685.9,
+    "expected_step": 1,
+    "frame": {
+      "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+      "content_generation": 1,
+      "sequence": 1
+    },
+    "key": 427,
+    "launch_request_id": "1995c1c6-a447-47e2-9d0e-48be5b0f9795",
+    "mutation_called": true,
+    "observed_sequence": 1,
+    "outcome": "accepted",
+    "server_request_id": "c7baa880-323c-4824-a798-32c3387e9022",
+    "updated_monotonic_ms": 53
+  },
+  "rejections": {
+    "schema": "fx3-host-key-rejection-v1",
+    "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+    "capacity": 64,
+    "total": 1,
+    "truncated": 0,
+    "records": [
+      {
+        "host_monotonic_ns": 422123959238625,
+        "http_status": 409,
+        "reason": "frame_identity_or_render_invalid",
+        "failed_predicates": [
+          "sha_mismatch",
+          "generation_mismatch"
+        ],
+        "observed_sequence": 1,
+        "observed_cached": true,
+        "observed_png_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+        "observed_content_generation": 1,
+        "current_sequence": 2,
+        "current_png_sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a",
+        "current_content_generation": 2,
+        "render_valid": true,
+        "phase": "ready",
+        "ready": true,
+        "busy": false,
+        "pending_count": 0,
+        "review_required": false,
+        "steps": 0,
+        "stop_requested": false,
+        "error_present": false,
+        "request_id": "309b4623-0eb4-4269-9248-284bd5252bbf"
+      }
+    ]
+  },
+  "reserved_before_eval": [
+    {
+      "status": "reserved_unknown",
+      "reservation_id": "068228fa-9a66-49fe-bc18-cc41a405dc8c",
+      "key": 427,
+      "host_ns": 422124260496708
+    }
+  ],
+  "ledger_final": {
+    "attempts": [
+      {
+        "status": "unknown",
+        "reservation_id": "068228fa-9a66-49fe-bc18-cc41a405dc8c",
+        "key": 427,
+        "host_ns": 422124260496708,
+        "attempt_id": null,
+        "step": null
+      }
+    ],
+    "recoveries": []
+  }
+}

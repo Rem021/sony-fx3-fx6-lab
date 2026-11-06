@@ -1,0 +1,27 @@
+{
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/candidate.json",
+  "candidate_sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518",
+  "base_candidate_sha256": "c1467c2673b700b1988335694bcbf67dfb03c90c9acf486bc2b61c4b04867795",
+  "initrd_sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83",
+  "dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+  "changed_members": [
+    {
+      "member": "simulation/fx3-osd-headless-v5.so",
+      "old_sha256": "5b9632aa641e6df2d931850944c26d8ceb233cc93617d987b3182fbb7bbbca7c",
+      "new_sha256": "67155b38fbbe23c3b6273c64ce8fc4676e59ad98da4a30a238508c26d9b5fba8",
+      "old_size": 108144,
+      "new_size": 109000
+    }
+  ],
+  "other_member_payloads_and_modes_unchanged": true,
+  "member_count": 1140,
+  "initrd_end_old": "0x45b037b64",
+  "initrd_end_new": "0x45b037ebc",
+  "dtb_only_initrd_end_changed": true,
+  "seed_sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f",
+  "QEMU_started": false,
+  "guest_validated": false,
+  "source_sha256": "1c4d2b420a40d006d22d2e60510df18d6dbbd7c51cd219735f1252f17c5956eb",
+  "so_sha256": "67155b38fbbe23c3b6273c64ce8fc4676e59ad98da4a30a238508c26d9b5fba8",
+  "builder_sha256": "7245eca988c5a6f0dd7fc3e2ac178a6162af1411908b12c1849d067c7e256cb1"
+}

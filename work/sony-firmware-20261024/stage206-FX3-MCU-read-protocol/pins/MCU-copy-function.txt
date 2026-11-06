@@ -1,0 +1,43 @@
+000385f2 032a cmp      r2, #3
+000385f4 40f23180 bls.w    #0x3865a
+000385f8 10f0030c ands     ip, r0, #3
+000385fc 00f01580 beq.w    #0x3862a
+00038600 11f8013b ldrb     r3, [r1], #1
+00038604 bcf1020f cmp.w    ip, #2
+00038608 6244 add      r2, ip
+0003860a 98bf it       ls
+0003860c 11f801cb ldrbls   ip, [r1], #1
+00038610 00f8013b strb     r3, [r0], #1
+00038614 38bf it       lo
+00038616 11f8013b ldrblo   r3, [r1], #1
+0003861a a2f10402 sub.w    r2, r2, #4
+0003861e 98bf it       ls
+00038620 00f801cb strbls   ip, [r0], #1
+00038624 38bf it       lo
+00038626 00f8013b strblo   r3, [r0], #1
+0003862a 11f00303 ands     r3, r1, #3
+0003862e 00f05080 beq.w    #0x386d2
+00038632 083a subs     r2, #8
+00038634 c0f00980 blo.w    #0x3864a
+00038638 51f8043b ldr      r3, [r1], #4
+0003863c 51f804cb ldr      ip, [r1], #4
+00038640 40f8043b str      r3, [r0], #4
+00038644 40f804cb str      ip, [r0], #4
+00038648 f3e7 b        #0x38632
+0003864a 121d adds     r2, r2, #4
+0003864c 5cbf itt      pl
+0003864e 51f8043b ldrpl    r3, [r1], #4
+00038652 40f8043b strpl    r3, [r0], #4
+00038656 aff30080 nop.w    
+0003865a d207 lsls     r2, r2, #0x1f
+0003865c 24bf itt      hs
+0003865e 11f8013b ldrbhs   r3, [r1], #1
+00038662 11f801cb ldrbhs   ip, [r1], #1
+00038666 48bf it       mi
+00038668 11f8012b ldrbmi   r2, [r1], #1
+0003866c 24bf itt      hs
+0003866e 00f8013b strbhs   r3, [r0], #1
+00038672 00f801cb strbhs   ip, [r0], #1
+00038676 48bf it       mi
+00038678 00f8012b strbmi   r2, [r0], #1
+0003867c 7047 bx       lr

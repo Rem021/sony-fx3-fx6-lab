@@ -1,0 +1,65 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000116794 <_ZN16XavcsMovieWriter28GetAudioSampleSizeOfOneTrackEN3mpr14AudioParamCombEj>:
+  116874: 53001c34     	uxtb	w20, w1
+  116878: aa0203f3     	mov	x19, x2
+  11687c: 97fda711     	bl	0x804c0 <usleep@plt>
+  116880: 34000094     	cbz	w20, 0x116890 <_ZN16XavcsMovieWriter28GetAudioSampleSizeOfOneTrackEN3mpr14AudioParamCombEj+0xfc>
+  116884: b9400260     	ldr	w0, [x19]
+  116888: 11019000     	add	w0, w0, #0x64
+  11688c: b9000260     	str	w0, [x19]
+  116890: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  116894: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+  116898: d65f03c0     	ret
+  11689c: d14007ff     	sub	sp, sp, #0x1, lsl #12   // =0x1000
+  1168a0: d11783ff     	sub	sp, sp, #0x5e0
+  1168a4: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  1168a8: 910003fd     	mov	x29, sp
+  1168ac: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1168b0: 9100c3b3     	add	x19, x29, #0x30
+  1168b4: aa1303e0     	mov	x0, x19
+  1168b8: f90013f5     	str	x21, [sp, #0x20]
+  1168bc: 2a0103f5     	mov	w21, w1
+  1168c0: 52800001     	mov	w1, #0x0                // =0
+  1168c4: aa0203f4     	mov	x20, x2
+  1168c8: 97fe52d9     	bl	0xab42c <_ZN3mpr6thread10normalLock6unlockEv+0x78>
+  1168cc: b90033b5     	str	w21, [x29, #0x30]
+  1168d0: aa1403e1     	mov	x1, x20
+  1168d4: 910103a0     	add	x0, x29, #0x40
+  1168d8: d2801002     	mov	x2, #0x80               // =128
+  1168dc: 97fd943d     	bl	0x7b9d0 <memcpy@plt>
+  1168e0: 90000f20     	adrp	x0, 0x2fa000
+  1168e4: f9474800     	ldr	x0, [x0, #0xe90]
+  1168e8: f90b07a0     	str	x0, [x29, #0x1608]
+  1168ec: aa1303e0     	mov	x0, x19
+  1168f0: 97fdf678     	bl	0x942d0 <_ZN3mpr15broadcast_queue42getSignalLockAddressForFinalizeStillHeaderEi+0x1dc>
+  1168f4: f94013f5     	ldr	x21, [sp, #0x20]
+  1168f8: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  1168fc: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+  116900: 914007ff     	add	sp, sp, #0x1, lsl #12   // =0x1000
+  116904: 911783ff     	add	sp, sp, #0x5e0
+  116908: d65f03c0     	ret
+  11690c: d14007ff     	sub	sp, sp, #0x1, lsl #12   // =0x1000
+  116910: d11783ff     	sub	sp, sp, #0x5e0
+  116914: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+  116918: 910003fd     	mov	x29, sp
+  11691c: a90153f3     	stp	x19, x20, [sp, #0x10]
+  116920: 9100c3b3     	add	x19, x29, #0x30
+  116924: aa1303e0     	mov	x0, x19
+  116928: f90013f5     	str	x21, [sp, #0x20]
+  11692c: 2a0103f5     	mov	w21, w1
+  116930: 52800001     	mov	w1, #0x0                // =0
+  116934: aa0203f4     	mov	x20, x2
+  116938: 97fe52bd     	bl	0xab42c <_ZN3mpr6thread10normalLock6unlockEv+0x78>
+  11693c: b90033b5     	str	w21, [x29, #0x30]
+  116940: aa1403e1     	mov	x1, x20
+  116944: 910103a0     	add	x0, x29, #0x40
+  116948: d2802a02     	mov	x2, #0x150              // =336
+  11694c: 97fd9421     	bl	0x7b9d0 <memcpy@plt>
+  116950: 90000f20     	adrp	x0, 0x2fa000
+  116954: f940e400     	ldr	x0, [x0, #0x1c8]
+  116958: f90b07a0     	str	x0, [x29, #0x1608]
+  11695c: aa1303e0     	mov	x0, x19

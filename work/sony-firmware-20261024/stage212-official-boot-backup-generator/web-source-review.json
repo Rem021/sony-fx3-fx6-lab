@@ -1,0 +1,28 @@
+{
+  "source_policy": "primary maintainers and Sony; existing valid source conclusions reused within scope",
+  "sources": [
+    {
+      "url": "https://github.com/YuuLuo/a7c2-camera-tools",
+      "live_page_read": true,
+      "HEAD_checked_separately_by_GitHub_API": "f124d87c26110a82db54775bfa64a0843ff21410",
+      "supports": "maintainer documents A7CII2.01-specific service worker, camera-specific p1 and both BK4 backups and temporary update gate patch",
+      "does_not_prove": "FX3 compatibility or independent recovery when the AP cannot start"
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+      "live_page_read": true,
+      "HEAD_checked_separately_by_GitHub_API": "e85e137fc3b88b7cb26e69faa9f1304184678ff7",
+      "supports": "maintainer describes A7IV accessory UART BootROM entry and bare-metal Fastboot partition backup/restore payload",
+      "does_not_prove": "FX3 entry, pin/runtime equivalence, boot0 support or successful restore on this body"
+    },
+    {
+      "url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+      "live_page_read": true,
+      "supports": "Sony labels this GPL page ILME-FX3 Ver7.00 and provides component source archives",
+      "does_not_prove": "proprietary7.02 tool source, complete7.02 recovery image or same-body boot0"
+    }
+  ],
+  "current_proprietary_code_evidence": "reextracted official7.02 Ubody pinned in source-capture.json, not inferred from webpages",
+  "source_refresh_result": "Both repository HEADs match prior pins; see upstream-refresh.json",
+  "observational_boundary": "Public descriptions are maintainer claims, not new FX3 hardware acceptance receipts"
+}

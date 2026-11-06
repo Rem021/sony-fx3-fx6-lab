@@ -1,0 +1,136 @@
+
+CANDIDATE 0xfe054a94
+fe054a44 e00313aa mov      x0, x19
+fe054a48 8d1b0094 bl       #0xfe05b87c
+fe054a4c 40268012 mov      w0, #-0x133
+fe054a50 7f0c0094 bl       #0xfe057c4c
+fe054a54 f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+fe054a58 e803012a mov      w8, w1
+fe054a5c 610000b0 adrp     x1, #0xfe061000
+fe054a60 f30300aa mov      x19, x0
+fe054a64 21d40591 add      x1, x1, #0x175
+fe054a68 e0070032 mov      w0, #3
+fe054a6c e203082a mov      w2, w8
+fe054a70 d1050094 bl       #0xfe0561b4
+fe054a74 e00313aa mov      x0, x19
+fe054a78 811b0094 bl       #0xfe05b87c
+fe054a7c 40268012 mov      w0, #-0x133
+fe054a80 730c0094 bl       #0xfe057c4c
+fe054a84 f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+fe054a88 e803012a mov      w8, w1
+fe054a8c 610000b0 adrp     x1, #0xfe061000
+fe054a90 f30300aa mov      x19, x0
+fe054a94 21500991 add      x1, x1, #0x254
+fe054a98 e0070032 mov      w0, #3
+fe054a9c e203082a mov      w2, w8
+fe054aa0 c5050094 bl       #0xfe0561b4
+fe054aa4 e00313aa mov      x0, x19
+fe054aa8 751b0094 bl       #0xfe05b87c
+fe054aac 40268012 mov      w0, #-0x133
+fe054ab0 670c0094 bl       #0xfe057c4c
+fe054ab4 f37bbfa9 stp      x19, x30, [sp, #-0x10]!
+fe054ab8 e803012a mov      w8, w1
+fe054abc 610000b0 adrp     x1, #0xfe061000
+fe054ac0 f30300aa mov      x19, x0
+
+CANDIDATE 0xfe055780
+fe055730 680000b0 adrp     x8, #0xfe062000
+fe055734 000101b9 str      w0, [x8, #0x100]
+fe055738 c0035fd6 ret      
+fe05573c fe0f1ff8 str      x30, [sp, #-0x10]!
+fe055740 ff0700f9 str      xzr, [sp, #8]
+fe055744 c80c0094 bl       #0xfe058a64
+fe055748 1f040071 cmp      w0, #1
+fe05574c 81020054 b.ne     #0xfe05579c
+fe055750 a0148052 mov      w0, #0xa5
+fe055754 401fa072 movk     w0, #0xfa, lsl #16
+fe055758 e1230091 add      x1, sp, #8
+fe05575c 080d0094 bl       #0xfe058b7c
+fe055760 e001f837 tbnz     w0, #0x1f, #0xfe05579c
+fe055764 e20740f9 ldr      x2, [sp, #8]
+fe055768 08008012 mov      w8, #-1
+fe05576c 5f0008eb cmp      x2, x8
+fe055770 60010054 b.eq     #0xfe05579c
+fe055774 680000b0 adrp     x8, #0xfe062000
+fe055778 080141b9 ldr      w8, [x8, #0x100]
+fe05577c 410000d0 adrp     x1, #0xfe05f000
+fe055780 21300991 add      x1, x1, #0x24c
+fe055784 e0071f32 mov      w0, #6
+fe055788 1f110071 cmp      w8, #4
+fe05578c e8079f1a cset     w8, ne
+fe055790 480000b9 str      w8, [x2]
+fe055794 430040b9 ldr      w3, [x2]
+fe055798 87020094 bl       #0xfe0561b4
+fe05579c fe0741f8 ldr      x30, [sp], #0x10
+fe0557a0 c0035fd6 ret      
+fe0557a4 ff8301d1 sub      sp, sp, #0x60
+fe0557a8 f96302a9 stp      x25, x24, [sp, #0x20]
+fe0557ac f55304a9 stp      x21, x20, [sp, #0x40]
+
+CANDIDATE 0xfe05dd4c
+fe05dcfc 01000000 udf      #1
+fe05dd00 50000000 udf      #0x50
+fe05dd04 60000000 udf      #0x60
+fe05dd08 00000000 udf      #0
+fe05dd0c 00000000 udf      #0
+fe05dd10 10020000 udf      #0x210
+fe05dd14 04020000 udf      #0x204
+fe05dd18 01000000 udf      #1
+fe05dd1c 10020000 udf      #0x210
+fe05dd20 18010000 udf      #0x118
+fe05dd24 02000000 udf      #2
+fe05dd28 10020000 udf      #0x210
+fe05dd2c 19010000 udf      #0x119
+fe05dd30 03000000 udf      #3
+fe05dd34 10020000 udf      #0x210
+fe05dd38 1a010000 udf      #0x11a
+fe05dd3c 04000000 udf      #4
+fe05dd40 10020000 udf      #0x210
+fe05dd44 1b010000 udf      #0x11b
+fe05dd48 05000000 udf      #5
+fe05dd4c 50020000 udf      #0x250
+fe05dd50 00020000 udf      #0x200
+fe05dd54 06000000 udf      #6
+fe05dd58 50020000 udf      #0x250
+fe05dd5c 02020000 udf      #0x202
+fe05dd60 00000000 udf      #0
+fe05dd64 04000000 udf      #4
+fe05dd68 06000000 udf      #6
+fe05dd6c 02000000 udf      #2
+fe05dd70 03000000 udf      #3
+fe05dd74 04000000 udf      #4
+fe05dd78 02000000 udf      #2
+
+CANDIDATE 0xfe05dd58
+fe05dd08 00000000 udf      #0
+fe05dd0c 00000000 udf      #0
+fe05dd10 10020000 udf      #0x210
+fe05dd14 04020000 udf      #0x204
+fe05dd18 01000000 udf      #1
+fe05dd1c 10020000 udf      #0x210
+fe05dd20 18010000 udf      #0x118
+fe05dd24 02000000 udf      #2
+fe05dd28 10020000 udf      #0x210
+fe05dd2c 19010000 udf      #0x119
+fe05dd30 03000000 udf      #3
+fe05dd34 10020000 udf      #0x210
+fe05dd38 1a010000 udf      #0x11a
+fe05dd3c 04000000 udf      #4
+fe05dd40 10020000 udf      #0x210
+fe05dd44 1b010000 udf      #0x11b
+fe05dd48 05000000 udf      #5
+fe05dd4c 50020000 udf      #0x250
+fe05dd50 00020000 udf      #0x200
+fe05dd54 06000000 udf      #6
+fe05dd58 50020000 udf      #0x250
+fe05dd5c 02020000 udf      #0x202
+fe05dd60 00000000 udf      #0
+fe05dd64 04000000 udf      #4
+fe05dd68 06000000 udf      #6
+fe05dd6c 02000000 udf      #2
+fe05dd70 03000000 udf      #3
+fe05dd74 04000000 udf      #4
+fe05dd78 02000000 udf      #2
+fe05dd7c 05000000 udf      #5
+fe05dd80 00a005f1 subs     x0, x0, #0x168
+fe05dd84 00000000 udf      #0

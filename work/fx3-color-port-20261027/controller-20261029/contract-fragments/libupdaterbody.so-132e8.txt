@@ -1,0 +1,29 @@
+000132e8 stp        x29, x30, [sp, #-0x20]!
+000132ec mov        x29, sp
+000132f0 stp        x19, x20, [sp, #0x10]
+000132f4 mov        x19, x0
+000132f8 adrp       x0, #0x31000
+000132fc stp        x2, x3, [x19, #0x10]
+00013300 ldr        x0, [x0, #0xf48]
+00013304 stp        x4, x5, [x19, #0x20]
+00013308 add        x0, x0, #0x10
+0001330c stp        x0, x1, [x19]
+00013310 mov        x0, #0x10
+00013314 bl         #0x10140 ; operator new
+00013318 mov        x20, x0
+0001331c mov        w1, #-1
+00013320 bl         #0x10920 ; Updater::BaseKeyTag::BaseKeyTag
+00013324 adrp       x0, #0x31000
+00013328 str        x20, [x19, #0x30]
+0001332c ldr        x0, [x0, #0xfb0]
+00013330 add        x0, x0, #0x10
+00013334 str        x0, [x20]
+00013338 ldp        x19, x20, [sp, #0x10]
+0001333c ldp        x29, x30, [sp], #0x20
+00013340 ret        
+00013344 mov        x19, x0
+00013348 mov        x0, x20
+0001334c mov        x1, #0x10
+00013350 bl         #0x10190 ; operator delete
+00013354 mov        x0, x19
+00013358 bl         #0x107a0 ; _Unwind_Resume

@@ -1,0 +1,18 @@
+00000bc8 3f080071 cmp      w1, #2
+00000bcc 21020054 b.ne     #0xc10
+00000bd0 21018052 mov      w1, #9
+00000bd4 a2030191 add      x2, x29, #0x40
+00000bd8 a14f00b9 str      w1, [x29, #0x4c]
+00000bdc 41e088d2 mov      x1, #0x4702
+00000be0 0102b8f2 movk     x1, #0xc010, lsl #16
+00000be4 57ffff97 bl       #0x940
+00000be8 f403002a mov      w20, w0
+00000bec e0030034 cbz      w0, #0xc68
+00000bf0 e00313aa mov      x0, x19
+00000bf4 4bffff97 bl       #0x920
+00000bf8 00000090 adrp     x0, #0
+00000bfc e103142a mov      w1, w20
+00000c00 00d03691 add      x0, x0, #0xdb4
+00000c04 5fffff97 bl       #0x980
+00000c08 e0008052 mov      w0, #7
+00000c0c eaffff17 b        #0xbb4

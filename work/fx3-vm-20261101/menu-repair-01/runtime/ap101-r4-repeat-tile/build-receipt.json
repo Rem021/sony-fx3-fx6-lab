@@ -1,0 +1,18 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r3-empty-clip-noop/candidate.json",
+  "base_sha256": "6ff67656756d257990dc7123fcd89256371644cbad3bd596aac4786e1c2d4cc1",
+  "changed_member_bodies": [
+    "simulation/fx3-gpe-observe-v7.so"
+  ],
+  "all_other_members_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "authority": "msg_a9a7efb598c7",
+  "tests": {
+    "check-tile101-v1.log": "f0530b858dd285e26ad73003541c64def45a948b3856aea425ebf8a7d7859468",
+    "check-emptyclip101-v2.log": "18ccc483a50b61b8fb7b344d88f60070abfabfb32491e4bfed54a9f2dc2c38bc",
+    "check-gpe101-v8-alpha-regression-v1.log": "5f4a939233ceddd248e3c48bd7712e929f894903183cf8f31e5edad85a499e4b",
+    "check-gpe101-v8-native73-regression-v1.log": "b084ccda2da60d3f7753d9a14930eefd7700da67069b4a26e0afe63f12d68101"
+  },
+  "host_runner_identical_to_r3": true,
+  "conditional_date_set_marker_only_bookkeeping": true
+}

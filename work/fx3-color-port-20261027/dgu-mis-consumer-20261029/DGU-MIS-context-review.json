@@ -1,0 +1,318 @@
+{
+  "source_pins": {
+    "DGU": "39eeb6d572a060149194463507800ed66b866a20dceb8ed49b01a04eb6fb2ba7",
+    "MIS": "4cd3e9bc3a0a4aec4793bff77e7ca4dccdba8637212cd632cdc5ecbe550daf98"
+  },
+  "observed_opcode_dispatch_entries": [
+    {
+      "opcode": "0x0",
+      "index": 0,
+      "table_VA": "0xfe045a38",
+      "raw16_hex": "0000000000000000f02804fe00000000",
+      "handler": "0xfe0428f0"
+    },
+    {
+      "opcode": "0x1",
+      "index": 1,
+      "table_VA": "0xfe045a48",
+      "raw16_hex": "0100000000000000740e04fe00000000",
+      "handler": "0xfe040e74"
+    },
+    {
+      "opcode": "0x10",
+      "index": 2,
+      "table_VA": "0xfe045a58",
+      "raw16_hex": "1000000000000000102104fe00000000",
+      "handler": "0xfe042110"
+    },
+    {
+      "opcode": "0x11",
+      "index": 3,
+      "table_VA": "0xfe045a68",
+      "raw16_hex": "1100000000000000542604fe00000000",
+      "handler": "0xfe042654"
+    },
+    {
+      "opcode": "0x20",
+      "index": 4,
+      "table_VA": "0xfe045a78",
+      "raw16_hex": "2000000000000000783404fe00000000",
+      "handler": "0xfe043478"
+    },
+    {
+      "opcode": "0x21",
+      "index": 6,
+      "table_VA": "0xfe045a98",
+      "raw16_hex": "2100000000000000803104fe00000000",
+      "handler": "0xfe043180"
+    },
+    {
+      "opcode": "0x23",
+      "index": 10,
+      "table_VA": "0xfe045ad8",
+      "raw16_hex": "2300000000000000ac1704fe00000000",
+      "handler": "0xfe0417ac"
+    },
+    {
+      "opcode": "0x24",
+      "index": 12,
+      "table_VA": "0xfe045af8",
+      "raw16_hex": "24000000000000006c1004fe00000000",
+      "handler": "0xfe04106c"
+    },
+    {
+      "opcode": "0x25",
+      "index": 14,
+      "table_VA": "0xfe045b18",
+      "raw16_hex": "2500000000000000a02704fe00000000",
+      "handler": "0xfe0427a0"
+    },
+    {
+      "opcode": "0x26",
+      "index": 15,
+      "table_VA": "0xfe045b28",
+      "raw16_hex": "2600000000000000a43004fe00000000",
+      "handler": "0xfe0430a4"
+    },
+    {
+      "opcode": "0x27",
+      "index": 16,
+      "table_VA": "0xfe045b38",
+      "raw16_hex": "27000000000000008c0d04fe00000000",
+      "handler": "0xfe040d8c"
+    },
+    {
+      "opcode": "0x29",
+      "index": 17,
+      "table_VA": "0xfe045b48",
+      "raw16_hex": "2900000000000000142404fe00000000",
+      "handler": "0xfe042414"
+    },
+    {
+      "opcode": "0x2a",
+      "index": 18,
+      "table_VA": "0xfe045b58",
+      "raw16_hex": "2a00000000000000bc0c04fe00000000",
+      "handler": "0xfe040cbc"
+    },
+    {
+      "opcode": "0x2e",
+      "index": 20,
+      "table_VA": "0xfe045b78",
+      "raw16_hex": "2e000000000000001c2a04fe00000000",
+      "handler": "0xfe042a1c"
+    },
+    {
+      "opcode": "0x2f",
+      "index": 21,
+      "table_VA": "0xfe045b88",
+      "raw16_hex": "2f00000000000000602d04fe00000000",
+      "handler": "0xfe042d60"
+    },
+    {
+      "opcode": "0x40",
+      "index": 22,
+      "table_VA": "0xfe045b98",
+      "raw16_hex": "4000000000000000782104fe00000000",
+      "handler": "0xfe042178"
+    },
+    {
+      "opcode": "0x72",
+      "index": 9,
+      "table_VA": "0xfe045ac8",
+      "raw16_hex": "7200000000000000c81504fe00000000",
+      "handler": "0xfe0415c8"
+    },
+    {
+      "opcode": "0x74",
+      "index": 13,
+      "table_VA": "0xfe045b08",
+      "raw16_hex": "7400000000000000b41204fe00000000",
+      "handler": "0xfe0412b4"
+    }
+  ],
+  "record_format": {
+    "raw_flags_u16_at": 0,
+    "word_count_u8_at": 2,
+    "opcode_u8_at": 3,
+    "total_record_bytes": "word_count*4",
+    "original_max_word_count": 21,
+    "decoded_DGU_context_layout": "opcode u8,word_count u8,raw_flags u16,payload",
+    "payload_copy_count": "word_count-1 u32, or equivalent bytes for opcode0x25",
+    "raw_flags_not_a_line_or_label_number": true
+  },
+  "current_package_lookup": {
+    "image": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/nflasha3.img",
+    "image_sha256": "ca5a8c80a1883c4a72c2f40018e3d40ab43e28ff0bf6a1d89f17d0680c607568",
+    "FAT_members": [
+      "/av-cam.bin",
+      "/bonobo.bin",
+      "/btfw32.tlv",
+      "/btfw32a.tlv",
+      "/btnv32.bin",
+      "/initrd.img",
+      "/sabin",
+      "/sabin/idt_cam.bin",
+      "/vmlinux.bin",
+      "/wole_app.bin"
+    ],
+    "assumed_standalone_DTB_present": false,
+    "original_kernel_bytes": 6610952,
+    "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "plain_FDT_magic_candidates": 0,
+    "scope": "Bounded absence in this FAT directory and plain kernel only, not all firmware/live DTB absence."
+  },
+  "model_GPL_UART_reference": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx3-gpl-reference/linux-kernel/arch/arm64/boot/dts/cxd/cxd90057.dtsi",
+    "bytes": 28387,
+    "sha256": "4c7a16829a732d24cd21b8fc2a481e15d56cbfe0371c81c7562765ca266a1663",
+    "receipt": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage133-FX5-source-availability-and-portability/fx3-gpl-reference-receipt.json",
+    "receipt_sha256": "07d96d5c8c1dc4f9a49157b8fe375dfccf898607f8524a877cedb014c17b9f0f",
+    "source_url": "https://oss.sony.net/Products/Linux/B2B/ILME-FX3_Ver700.html",
+    "model_source_version": "FX3 Ver700 GPL / Linux4.9.337",
+    "PL011_nodes": [
+      {
+        "node": "uart0",
+        "address": "f1000000",
+        "compatible": [
+          "arm,pl011",
+          "arm,primecell"
+        ],
+        "reg_u32": [
+          0,
+          4043309056,
+          0,
+          4096
+        ]
+      },
+      {
+        "node": "uart1",
+        "address": "f1001000",
+        "compatible": [
+          "arm,pl011",
+          "arm,primecell"
+        ],
+        "reg_u32": [
+          0,
+          4043313152,
+          0,
+          4096
+        ]
+      },
+      {
+        "node": "uart2",
+        "address": "f1002000",
+        "compatible": [
+          "arm,pl011",
+          "arm,primecell"
+        ],
+        "reg_u32": [
+          0,
+          4043317248,
+          0,
+          4096
+        ]
+      },
+      {
+        "node": "uart3",
+        "address": "f1003000",
+        "compatible": [
+          "arm,pl011",
+          "arm,primecell"
+        ],
+        "reg_u32": [
+          0,
+          4043321344,
+          0,
+          4096
+        ]
+      },
+      {
+        "node": "uart4",
+        "address": "f1004000",
+        "compatible": [
+          "arm,pl011",
+          "arm,primecell"
+        ],
+        "reg_u32": [
+          0,
+          4043325440,
+          0,
+          4096
+        ]
+      }
+    ],
+    "scope": "Model-associated official GPL reference only; not the7.02 active exact configuration, current DTB or physical-device measurement."
+  },
+  "boundary_classification": {
+    "first_external_read": "0xfe05fe48",
+    "purpose": "Original diagnostic magic probe, not a service callback pointer",
+    "original_NOR_word": "0x645f68637461705f",
+    "compared_magic": "0x59634649cafec0da",
+    "enhanced_cases_next_write": "0xf1020024",
+    "enhanced_cases_value": "0x1",
+    "enhanced_cases_PC": "0xfe045918",
+    "write_executed": false,
+    "downstream_selected_port_base": "0xf1000000",
+    "inference": "The original0x11 handler selects an output port and enters hardware setup; downstream0xf1000000 range matches model GPL PL011. The first0xf1020024 register is not independently named here. Not a completed DDR-init or a buffer/pixel/RAW operation."
+  },
+  "comment_findings": {
+    "DDR_reset_CKE_and_MCLK_comments_in_first_script": true,
+    "Nanya_related_ODT_comment_in_second_script": true,
+    "actual_fitted_chip_vendor_capacity_or_profile_selection_proved": false
+  },
+  "source_fragments": [
+    {
+      "VA": "0xfe04548c",
+      "end_exclusive": "0xfe04564c",
+      "bytes": 448,
+      "original_bytes_sha256": "fa3a434d41645d4668f1e4758bb10cfa1c09a17ef3dcc0daeccf65080174ad24",
+      "listing": "listings/record-framing-and-dispatch.txt"
+    },
+    {
+      "VA": "0xfe043b98",
+      "end_exclusive": "0xfe043c74",
+      "bytes": 220,
+      "original_bytes_sha256": "08ab77a24d6f30d2d44e67a2ce57347fe4084a9f697126055da0bb073cd2852d",
+      "listing": "listings/flags-normalizer.txt"
+    },
+    {
+      "VA": "0xfe042654",
+      "end_exclusive": "0xfe0426a8",
+      "bytes": 84,
+      "original_bytes_sha256": "4e65d9fcbc7a70ba5e8ebeeb18d420b45287e4443430ef5b74f58880dc1ce74b",
+      "listing": "listings/opcode11-setup-prefix.txt"
+    },
+    {
+      "VA": "0xfe0452d4",
+      "end_exclusive": "0xfe04536c",
+      "bytes": 152,
+      "original_bytes_sha256": "6310bec030bdad2ff0a0831b246ab08a17d5d1093402be1262d0226373581640",
+      "listing": "listings/output-port-selection.txt"
+    },
+    {
+      "VA": "0xfe0458a4",
+      "end_exclusive": "0xfe045974",
+      "bytes": 208,
+      "original_bytes_sha256": "44a98bb35fb4e0f2fbac98eebdace81936d272b98ff6ffd80f745d831f337bf7",
+      "listing": "listings/output-register-initializer.txt"
+    },
+    {
+      "VA": "0xfe045974",
+      "end_exclusive": "0xfe0459c8",
+      "bytes": 84,
+      "original_bytes_sha256": "7da1b7579c92d34d41d3b2b435ef5ba14b0b7cef6be9d24bca92dc38ab5e4dfd",
+      "listing": "listings/output-byte-writer.txt"
+    },
+    {
+      "VA": "0xfe0446fc",
+      "end_exclusive": "0xfe0447a8",
+      "bytes": 172,
+      "original_bytes_sha256": "937426776a547f2c276951f3c75134381eca7c53e249896efddaabc9b5f53c89",
+      "listing": "listings/diagnostic-magic-read.txt"
+    }
+  ],
+  "full_ISP_or_flashable_package_recovered": false,
+  "device_or_native_Sony_operations": 0,
+  "other_owner_files_written": false
+}

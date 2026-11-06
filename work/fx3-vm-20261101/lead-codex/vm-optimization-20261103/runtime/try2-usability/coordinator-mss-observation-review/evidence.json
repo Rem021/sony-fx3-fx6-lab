@@ -1,0 +1,11 @@
+{
+  "scope": "STATIC_SOURCE_REVIEW_NO_RUNTIME",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/src/fx3-media-observe-v7-mss-safe.c",
+  "sha256": "c5de178004eac532832e0f166eecee8ebf250becae1c8099f849b5047d26e653",
+  "filter": "mss_pending=((W)r[0]==0x80924220U&&(W)r[1]==0x00920204U);",
+  "filter_line": 26,
+  "implication": "All app common-builder messages for queue80924220 except command920204 excluded from this observer; historical lack of920204 is not absence of all timer-affecting traffic",
+  "approved_next_observation": "Capture all commands to same queue at already guarded ordinary-instruction hooks; keep original behavior. Record command field with entry/return correlation. No raw-byte validity claim when raw_ok=0.",
+  "runtime_required": true,
+  "guest_modified": false
+}

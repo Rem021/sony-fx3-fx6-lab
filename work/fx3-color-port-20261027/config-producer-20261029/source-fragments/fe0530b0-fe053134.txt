@@ -1,0 +1,33 @@
+fe0530b0 f37bc1a8 ldp      x19, x30, [sp], #0x10
+fe0530b4 c0035fd6 ret      
+fe0530b8 f40f1ef8 str      x20, [sp, #-0x20]!
+fe0530bc f37b01a9 stp      x19, x30, [sp, #0x10]
+fe0530c0 08b441b9 ldr      w8, [x0, #0x1b4]
+fe0530c4 f30300aa mov      x19, x0
+fe0530c8 1f390071 cmp      w8, #0xe
+fe0530cc a0010054 b.eq     #0xfe053100
+fe0530d0 1f350071 cmp      w8, #0xd
+fe0530d4 a1020054 b.ne     #0xfe053128
+fe0530d8 e0070632 mov      w0, #0xc000000
+fe0530dc e10313aa mov      x1, x19
+fe0530e0 3f050094 bl       #0xfe0545dc
+fe0530e4 e803002a mov      w8, w0
+fe0530e8 74e20691 add      x20, x19, #0x1b8
+fe0530ec 60ba01b9 str      w0, [x19, #0x1b8]
+fe0530f0 20020034 cbz      w0, #0xfe053134
+fe0530f4 410000f0 adrp     x1, #0xfe05e000
+fe0530f8 21c01891 add      x1, x1, #0x630
+fe0530fc 1f000014 b        #0xfe053178
+fe053100 0020a152 mov      w0, #0x9000000
+fe053104 e10313aa mov      x1, x19
+fe053108 35050094 bl       #0xfe0545dc
+fe05310c e803002a mov      w8, w0
+fe053110 74e20691 add      x20, x19, #0x1b8
+fe053114 60ba01b9 str      w0, [x19, #0x1b8]
+fe053118 00020034 cbz      w0, #0xfe053158
+fe05311c 410000f0 adrp     x1, #0xfe05e000
+fe053120 21a41991 add      x1, x1, #0x669
+fe053124 15000014 b        #0xfe053178
+fe053128 74e20691 add      x20, x19, #0x1b8
+fe05312c 7fba01b9 str      wzr, [x19, #0x1b8]
+fe053130 15000014 b        #0xfe053184

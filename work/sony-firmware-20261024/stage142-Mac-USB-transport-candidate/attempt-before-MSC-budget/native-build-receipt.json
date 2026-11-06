@@ -1,0 +1,67 @@
+{
+  "status": "BUILT_PRIVATE_DARWIN_LIBRARY_NOT_LOADED_OR_INITIALIZED",
+  "created_utc": "2026-10-27T21:34:17.696114+00:00",
+  "runs": [
+    {
+      "argv": [
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/work/libusb-1.0.30/configure",
+        "--prefix=/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/artifacts/private-libusb",
+        "--disable-static",
+        "--enable-shared",
+        "--disable-examples-build",
+        "--disable-tests-build",
+        "--disable-log",
+        "CC=/usr/bin/clang"
+      ],
+      "returncode": 0,
+      "log": "work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/build-step0.log"
+    },
+    {
+      "argv": [
+        "/usr/bin/make",
+        "-j2"
+      ],
+      "returncode": 0,
+      "log": "work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/build-step1.log"
+    },
+    {
+      "argv": [
+        "/usr/bin/make",
+        "install"
+      ],
+      "returncode": 0,
+      "log": "work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/build-step2.log"
+    }
+  ],
+  "probe_compile_argv": [
+    "/usr/bin/clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-I/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/work/libusb-1.0.30/libusb",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/abi_probe.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/artifacts/abi-probe"
+  ],
+  "probe_header_layout": {
+    "device_size": 18,
+    "endpoint_size": 32,
+    "interface_desc_size": 40,
+    "interface_size": 16,
+    "config_size": 40,
+    "endpoint_extra": 16,
+    "interface_endpoint": 16,
+    "config_interface": 16
+  },
+  "probe_dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/artifacts/abi-probe:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+  "library": {
+    "path": "work/sony-firmware-20261024/stage142-Mac-USB-transport-candidate/artifacts/private-libusb/lib/libusb-1.0.0.dylib",
+    "bytes": 148384,
+    "sha256": "e5346b71fcaf95a0d1ab79258ccd3bded6dab4e20cfbdef8d3c1965b140bfc11"
+  },
+  "private_source_sha256": "a11147e536e8ed86f052a096282b67d1c7605b4026c84f3beff8794ca5e3dd62",
+  "library_init_or_device_operations": 0,
+  "only_own_header_probe_executed_no_libusb_link": true,
+  "no_global_driver_library_or_PATH_install": true
+}

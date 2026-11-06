@@ -1,0 +1,93 @@
+0000b6cc fd7bb7a9 stp      x29, x30, [sp, #-0x90]!
+0000b6d0 fd030091 mov      x29, sp
+0000b6d4 f35301a9 stp      x19, x20, [sp, #0x10]
+0000b6d8 b3830191 add      x19, x29, #0x60
+0000b6dc e00313aa mov      x0, x19
+0000b6e0 140000b0 adrp     x20, #0xc000
+0000b6e4 f51300f9 str      x21, [sp, #0x20]
+0000b6e8 7af1ff97 bl       #0x7cd0 ; _ZN7Updater10MountPointC1Ev
+0000b6ec 81061e91 add      x1, x20, #0x781
+0000b6f0 e00313aa mov      x0, x19
+0000b6f4 5bf1ff97 bl       #0x7c60 ; _ZN7Updater10MountPoint10InitializeEPKc
+0000b6f8 150000b0 adrp     x21, #0xc000
+0000b6fc e00313aa mov      x0, x19
+0000b700 a17a1e91 add      x1, x21, #0x79e
+0000b704 02828052 mov      w2, #0x410
+0000b708 f6f0ff97 bl       #0x7ae0 ; _ZN7Updater10MountPoint5MountEPKcj
+0000b70c 1f1c0072 tst      w0, #0xff
+0000b710 61030054 b.ne     #0xb77c
+0000b714 020000b0 adrp     x2, #0xc000
+0000b718 000000b0 adrp     x0, #0xc000
+0000b71c c1018052 mov      w1, #0xe
+0000b720 a47a1e91 add      x4, x21, #0x79e
+0000b724 42b41d91 add      x2, x2, #0x76d
+0000b728 00b01e91 add      x0, x0, #0x7ac
+0000b72c 43078052 mov      w3, #0x3a
+0000b730 6100a072 movk     w1, #3, lsl #16
+0000b734 abf2ff97 bl       #0x81e0 ; printf
+0000b738 000280d2 mov      x0, #0x10
+0000b73c 0df1ff97 bl       #0x7b70 ; __cxa_allocate_exception
+0000b740 810000f0 adrp     x1, #0x1e000
+0000b744 820000f0 adrp     x2, #0x1e000
+0000b748 219047f9 ldr      x1, [x1, #0xf20]
+0000b74c 42a047f9 ldr      x2, [x2, #0xf40]
+0000b750 21400091 add      x1, x1, #0x10
+0000b754 010000f9 str      x1, [x0]
+0000b758 c1018052 mov      w1, #0xe
+0000b75c 6100a072 movk     w1, #3, lsl #16
+0000b760 010800b9 str      w1, [x0, #8]
+0000b764 810000f0 adrp     x1, #0x1e000
+0000b768 1f300039 strb     wzr, [x0, #0xc]
+0000b76c 21e447f9 ldr      x1, [x1, #0xfc8]
+0000b770 64f2ff97 bl       #0x8100 ; __cxa_throw
+0000b774 f40300aa mov      x20, x0
+0000b778 26000014 b        #0xb810
+0000b77c b5e30091 add      x21, x29, #0x38
+0000b780 81061e91 add      x1, x20, #0x781
+0000b784 e00315aa mov      x0, x21
+0000b788 2af2ff97 bl       #0x8030 ; _ZN7Updater12ModeFlagFileC1EPKc
+0000b78c e00315aa mov      x0, x21
+0000b790 78f2ff97 bl       #0x8170 ; _ZN7Updater12BaseFlagFile6CreateEv
+0000b794 e00313aa mov      x0, x19
+0000b798 0ef2ff97 bl       #0x7fd0 ; _ZN7Updater10MountPoint6UmountEv
+0000b79c 1f1c0072 tst      w0, #0xff
+0000b7a0 01040054 b.ne     #0xb820
+0000b7a4 020000b0 adrp     x2, #0xc000
+0000b7a8 000000b0 adrp     x0, #0xc000
+0000b7ac e1018052 mov      w1, #0xf
+0000b7b0 84061e91 add      x4, x20, #0x781
+0000b7b4 42b41d91 add      x2, x2, #0x76d
+0000b7b8 00b01e91 add      x0, x0, #0x7ac
+0000b7bc e3078052 mov      w3, #0x3f
+0000b7c0 6100a072 movk     w1, #3, lsl #16
+0000b7c4 87f2ff97 bl       #0x81e0 ; printf
+0000b7c8 000280d2 mov      x0, #0x10
+0000b7cc e9f0ff97 bl       #0x7b70 ; __cxa_allocate_exception
+0000b7d0 810000f0 adrp     x1, #0x1e000
+0000b7d4 820000f0 adrp     x2, #0x1e000
+0000b7d8 219047f9 ldr      x1, [x1, #0xf20]
+0000b7dc 42a047f9 ldr      x2, [x2, #0xf40]
+0000b7e0 21400091 add      x1, x1, #0x10
+0000b7e4 010000f9 str      x1, [x0]
+0000b7e8 e1018052 mov      w1, #0xf
+0000b7ec 6100a072 movk     w1, #3, lsl #16
+0000b7f0 010800b9 str      w1, [x0, #8]
+0000b7f4 810000f0 adrp     x1, #0x1e000
+0000b7f8 1f300039 strb     wzr, [x0, #0xc]
+0000b7fc 21e447f9 ldr      x1, [x1, #0xfc8]
+0000b800 40f2ff97 bl       #0x8100 ; __cxa_throw
+0000b804 f40300aa mov      x20, x0
+0000b808 e00315aa mov      x0, x21
+0000b80c e5f0ff97 bl       #0x7ba0 ; _ZN7Updater12ModeFlagFileD1Ev
+0000b810 e00313aa mov      x0, x19
+0000b814 87f0ff97 bl       #0x7a30 ; _ZN7Updater10MountPointD1Ev
+0000b818 e00314aa mov      x0, x20
+0000b81c 4df2ff97 bl       #0x8150 ; _Unwind_Resume
+0000b820 e00315aa mov      x0, x21
+0000b824 dff0ff97 bl       #0x7ba0 ; _ZN7Updater12ModeFlagFileD1Ev
+0000b828 e00313aa mov      x0, x19
+0000b82c 81f0ff97 bl       #0x7a30 ; _ZN7Updater10MountPointD1Ev
+0000b830 f51340f9 ldr      x21, [sp, #0x20]
+0000b834 f35341a9 ldp      x19, x20, [sp, #0x10]
+0000b838 fd7bc9a8 ldp      x29, x30, [sp], #0x90
+0000b83c c0035fd6 ret      

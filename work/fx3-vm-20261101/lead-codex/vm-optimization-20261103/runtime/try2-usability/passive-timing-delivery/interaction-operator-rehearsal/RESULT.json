@@ -1,0 +1,131 @@
+{
+  "overall": "failed",
+  "scope": "single simulated operator rehearsal; no guest evidence",
+  "post_counts": {
+    "/api/browser-ready": 1,
+    "/api/start": 1,
+    "/api/key": 1,
+    "/api/stop": 1,
+    "/api/final-ack": 1
+  },
+  "accepted_fake_MENU_keys": 1,
+  "actual_guest_keys": 0,
+  "confirm_CLI_invocations": 0,
+  "qualified_target_screenshot": "failed",
+  "operator_target_review": "not_reached",
+  "explicit_confirm": "not_invoked",
+  "same_nonce_cancel": "not_reached",
+  "cleanup": "passed",
+  "dependency_integrity_after": {
+    "interaction-bounded-capture-helper": {
+      "source_files": 5,
+      "dependency_files": 5,
+      "unchanged": true
+    },
+    "interaction-explicit-confirm-helper": {
+      "source_files": 4,
+      "dependency_files": 3,
+      "unchanged": true
+    }
+  },
+  "nonce": "2273f116-c81b-4c40-96d9-c6b2f27a40b7",
+  "due_ms": 33531,
+  "arm_performance_ms": 13531,
+  "key_to_Stop_HTTP_reply_host_seconds": 3.6021109169814736,
+  "capture_eval_enter_after_key_handler_enter_seconds": 0.05089424998732284,
+  "capture_command_elapsed_ms": 13.801,
+  "browser_wait_before_refusal_ms": 0.40000003576278687,
+  "specified_target_delay_seconds": 7.0,
+  "fake_MENU_handler_to_target_publish_host_seconds": 7.016202541999519,
+  "clocked_events": {
+    "key": {
+      "event": "HTTP_reply_written",
+      "UTC": "2026-11-04T21:27:58.044962+00:00",
+      "host_monotonic": 411363.591886541,
+      "request_method": "POST",
+      "path": "/api/key",
+      "HTTP_status": 202,
+      "body": {
+        "accepted": true,
+        "next_step": 1,
+        "key": "0x1ab"
+      },
+      "reply_enter": {
+        "UTC": "2026-11-04T21:27:58.044864+00:00",
+        "host_monotonic": 411363.591790791
+      }
+    },
+    "Stop": {
+      "event": "HTTP_reply_written",
+      "UTC": "2026-11-04T21:28:01.647083+00:00",
+      "host_monotonic": 411367.193997458,
+      "request_method": "POST",
+      "path": "/api/stop",
+      "HTTP_status": 202,
+      "body": {
+        "stopping": true
+      },
+      "reply_enter": {
+        "UTC": "2026-11-04T21:28:01.646869+00:00",
+        "host_monotonic": 411367.193787291
+      }
+    },
+    "finalACK": {
+      "event": "HTTP_reply_written",
+      "UTC": "2026-11-04T21:28:01.988397+00:00",
+      "host_monotonic": 411367.53531775,
+      "request_method": "POST",
+      "path": "/api/final-ack",
+      "HTTP_status": 200,
+      "body": {
+        "acknowledged": true
+      },
+      "reply_enter": {
+        "UTC": "2026-11-04T21:28:01.988068+00:00",
+        "host_monotonic": 411367.5349835
+      }
+    },
+    "last_status_reply_before_key": {
+      "event": "HTTP_reply_written",
+      "UTC": "2026-11-04T21:27:57.935557+00:00",
+      "host_monotonic": 411363.482484166,
+      "request_method": "GET",
+      "path": "/api/status",
+      "HTTP_status": 200,
+      "body": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T21:27:57.935338+00:00",
+        "host_monotonic": 411363.482270833
+      }
+    },
+    "first_status_reply_after_key": {
+      "event": "HTTP_reply_written",
+      "UTC": "2026-11-04T21:27:58.340667+00:00",
+      "host_monotonic": 411363.887597375,
+      "request_method": "GET",
+      "path": "/api/status",
+      "HTTP_status": 200,
+      "body": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T21:27:58.340198+00:00",
+        "host_monotonic": 411363.887139666
+      }
+    },
+    "late_complete_PNG_publication": {
+      "event": "fixture_publish_complete",
+      "UTC": "2026-11-04T21:28:05.060214+00:00",
+      "host_monotonic": 411370.607126708,
+      "sequence": 213,
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "content_generation": 2,
+      "source_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-c33f8c46/trial-final.png"
+    }
+  },
+  "model_image_receive_UTC": null,
+  "model_target_review_complete_UTC": null,
+  "unknowns": [
+    "No direct failure-time dump of individual PAGE lexical variables; check group is generic",
+    "Model image receipt/review clock unavailable; no qualified target image was returned",
+    "Explicit-confirm runtime and end-to-end completion remain untested by this rehearsal"
+  ]
+}

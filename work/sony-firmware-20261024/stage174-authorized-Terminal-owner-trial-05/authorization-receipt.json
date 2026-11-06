@@ -1,0 +1,58 @@
+{
+  "created_utc": "2026-10-29T11:28:34.384227+00:00",
+  "user_statement": "允许按第173轮做一次05号诊断",
+  "exact_plan": "work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/candidate-plan.json",
+  "grant_id": "fx3-702-msc-owner-20261029-05",
+  "target": {
+    "locationID": 34603008,
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "firmware": "7.02"
+  },
+  "bundle_sha256": "05f682bdfa825359d543a8c6f7f23028ccf00c01f9382520066898197b5ee125",
+  "native_sha256": "fa7b5da122b67f25349551edb1870fbe93dd870c7043721cb0a46e735346625d",
+  "authorized_single_attempt": true,
+  "runtime_release": false,
+  "previous_authorization_preserved": {
+    "scope": "Windows_and_Mac_cached_USB_metadata_plus_explicit_standard_Fastboot_identification_and_single_fixed_Mac_USB_ownership_trial",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": true,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false,
+    "Mac_cached_USB_metadata_authorized": true,
+    "Fastboot_identification_enumeration_authorized": true,
+    "Fastboot_mode_entry_test_requested": true,
+    "Fastboot_mode_entry_procedure_validated": false,
+    "Fastboot_image_boot_download_or_partition_write_authorized": false,
+    "Mac_active_USB_descriptor_read_authorized": false,
+    "Mac_active_USB_descriptor_target": {
+      "locationID": 34603008,
+      "VID": 1356,
+      "PID": 3489
+    },
+    "Mac_descriptor_probe_one_shot_id": "stage142-fx3-msc-descriptors-v1",
+    "Mac_descriptor_probe_authorization_consumed": true,
+    "driver_change_scope": "Only fixed approved diagnostic grant fx3-702-msc-owner-20261028-04; no other driver operations;01/02/03 consumed and preserved.",
+    "Mac_owner_trial_authorized": true,
+    "Mac_owner_trial_admin_launch_authorized": true,
+    "Mac_owner_trial_target": {
+      "locationID": 34603008,
+      "VID": 1356,
+      "PID": 3489,
+      "model": "ILME-FX3",
+      "firmware": "7.02"
+    },
+    "Mac_owner_trial_grant_id": "fx3-702-msc-owner-20261028-04",
+    "Mac_owner_trial_bundle_sha256": "0bfe5210a392dd0b57752e8e5d67e23f2597a34f24e7609b8bad37b80dd0ca72",
+    "Mac_host_login_audit_authorized": true,
+    "Mac_host_login_audit_grant_id": "fx3-host-audit-20261028-01",
+    "Mac_host_login_audit_bundle_sha256": "7204be8281541c4ec157c9be23282a4f3e54e03b53bb21d77d5ef649bd19f4c8",
+    "Mac_host_login_audit_authorization_consumed": true
+  },
+  "old_camera01_02_03_04_and_host01_not_reused": true,
+  "persistent_write_release": false
+}

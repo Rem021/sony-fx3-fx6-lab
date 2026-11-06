@@ -1,0 +1,84 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b4ed8 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb>:
+   b4ed8: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+   b4edc: 910003fd     	mov	x29, sp
+   b4ee0: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b4ee4: d0001233     	adrp	x19, 0x2fa000
+   b4ee8: a9025bf5     	stp	x21, x22, [sp, #0x20]
+   b4eec: aa0003f5     	mov	x21, x0
+   b4ef0: a90363f7     	stp	x23, x24, [sp, #0x30]
+   b4ef4: 53001c37     	uxtb	w23, w1
+   b4ef8: a9046bf9     	stp	x25, x26, [sp, #0x40]
+   b4efc: b0001234     	adrp	x20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>
+   b4f00: f9002bfb     	str	x27, [sp, #0x50]
+   b4f04: 97ff1c4f     	bl	0x7c040 <_ZN3mpr5Codec17GetDecStatusPts64Ev@plt>
+   b4f08: aa0003f9     	mov	x25, x0
+   b4f0c: d28bf1e0     	mov	x0, #0x5f8f             // =24463
+   b4f10: f2a00020     	movk	x0, #0x1, lsl #16
+   b4f14: eb00033f     	cmp	x25, x0
+   b4f18: 54000248     	b.hi	0xb4f60 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x88>
+   b4f1c: f9434e80     	ldr	x0, [x20, #0x698]
+   b4f20: f9434661     	ldr	x1, [x19, #0x688]
+   b4f24: f9400000     	ldr	x0, [x0]
+   b4f28: 940107ed     	bl	0xf6edc <_ZN3mpr4file5_OpenEPv+0x1008>
+   b4f2c: 72001c1f     	tst	w0, #0xff
+   b4f30: 54000181     	b.ne	0xb4f60 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x88>
+   b4f34: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   b4f38: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+   b4f3c: a94363f7     	ldp	x23, x24, [sp, #0x30]
+   b4f40: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+   b4f44: f9402bfb     	ldr	x27, [sp, #0x50]
+   b4f48: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+   b4f4c: d65f03c0     	ret
+   b4f50: 7100041f     	cmp	w0, #0x1
+   b4f54: 54ffff01     	b.ne	0xb4f34 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x5c>
+   b4f58: b9001ebf     	str	wzr, [x21, #0x1c]
+   b4f5c: 17fffff6     	b	0xb4f34 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x5c>
+   b4f60: f9434e94     	ldr	x20, [x20, #0x698]
+   b4f64: f9434673     	ldr	x19, [x19, #0x688]
+   b4f68: aa1303e1     	mov	x1, x19
+   b4f6c: f9400280     	ldr	x0, [x20]
+   b4f70: 94010627     	bl	0xf680c <_ZN3mpr4file5_OpenEPv+0x938>
+   b4f74: b940027a     	ldr	w26, [x19]
+   b4f78: 7100075f     	cmp	w26, #0x1
+   b4f7c: 54fffdc1     	b.ne	0xb4f34 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x5c>
+   b4f80: b9403e78     	ldr	w24, [x19, #0x3c]
+   b4f84: 34fffd98     	cbz	w24, 0xb4f34 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x5c>
+   b4f88: b9404274     	ldr	w20, [x19, #0x40]
+   b4f8c: 2a1803e2     	mov	w2, w24
+   b4f90: aa1903e0     	mov	x0, x25
+   b4f94: 2a1803fb     	mov	w27, w24
+   b4f98: 2a1403e1     	mov	w1, w20
+   b4f9c: 2a1403f6     	mov	w22, w20
+   b4fa0: 97ff2cb8     	bl	0x80280 <_ZN3mpr24Convert90kHzToFrameCountEmmm@plt>
+   b4fa4: d0001222     	adrp	x2, 0x2fa000
+   b4fa8: f941cc42     	ldr	x2, [x2, #0x398]
+   b4fac: f9400041     	ldr	x1, [x2]
+   b4fb0: eb00003f     	cmp	x1, x0
+   b4fb4: 1a9f07e1     	cset	w1, ne
+   b4fb8: 2a0102e1     	orr	w1, w23, w1
+   b4fbc: 34fffbc1     	cbz	w1, 0xb4f34 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x5c>
+   b4fc0: f9402a61     	ldr	x1, [x19, #0x50]
+   b4fc4: f9000040     	str	x0, [x2]
+   b4fc8: 5284e202     	mov	w2, #0x2710             // =10000
+   b4fcc: 390052ba     	strb	w26, [x21, #0x14]
+   b4fd0: 9ba27e94     	umull	x20, w20, w2
+   b4fd4: 9b017ed6     	mul	x22, x22, x1
+   b4fd8: 528bf201     	mov	w1, #0x5f90             // =24464
+   b4fdc: 72a00021     	movk	w1, #0x1, lsl #16
+   b4fe0: 9adb0a94     	udiv	x20, x20, x27
+   b4fe4: 9ba17f01     	umull	x1, w24, w1
+   b4fe8: 9ac10ac1     	udiv	x1, x22, x1
+   b4fec: 290302b4     	stp	w20, w0, [x21, #0x18]
+   b4ff0: b90022a1     	str	w1, [x21, #0x20]
+   b4ff4: 34fffa17     	cbz	w23, 0xb4f34 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x5c>
+   b4ff8: d0001220     	adrp	x0, 0x2fa000
+   b4ffc: f9427800     	ldr	x0, [x0, #0x4f0]
+   b5000: 39400000     	ldrb	w0, [x0]
+   b5004: 35fffa60     	cbnz	w0, 0xb4f50 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x78>
+   b5008: b9001ea1     	str	w1, [x21, #0x1c]
+   b500c: 17ffffca     	b	0xb4f34 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb+0x5c>

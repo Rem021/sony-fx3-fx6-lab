@@ -1,0 +1,26 @@
+{
+  "result": "PASS",
+  "scope": "static source pins, JSON cross-checks and bounded CPU replay receipt; no device/VM/camera",
+  "python": "3.14.6",
+  "source_bytes_rehashed": {
+    "cp": 17952816,
+    "av": 12939512
+  },
+  "output_sha256": {
+    "analyze.py": "f5fa09c6fe7f12fc0f742f57ec6c2b1873dd5c053a46d2f578da824ec479bc83",
+    "replay_lookup.py": "9344fcb88f607ced3337f487a8f5aeb46e0b4f82b0479dc937b065929f99b7a5",
+    "mapping.json": "00966a7c4d3b686505e63f1ceaf35cffd67b4ee8517a1219dc49951f9f9e4665",
+    "config-evidence.json": "d2ac85b8a2e730d7d501422c3a76e07eab1e2b451107223642512bbb3773c9cc",
+    "descriptor-diff.json": "067c594c4aa6f3c97879654df5e928f9d8c2bc4d8a7437b995babffcce745e9b",
+    "consumer-edge.json": "0967d025df91893f40d31525754763b2ceb0a9279892191cbb11c64a6ab04c7d",
+    "initializer-edges.json": "da8adcb4932612a431967c690425ba9c135afa2a55063a9cd2bda92cbd7457a0",
+    "cpu-replay.json": "c26f734d3c4b4623b1e1b1c06aaa0040a640a54a71ffd56843bbb7126746a2ec"
+  },
+  "counts": {
+    "descriptors": 612,
+    "identical_common": 583,
+    "changed_vintage": 29,
+    "static_copy_edges": 3,
+    "cpu_cases": 7
+  }
+}

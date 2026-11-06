@@ -1,0 +1,43 @@
+# Exact original configured VA; ordinary-call-return CFG; not runtime PC. No execution.
+0xfe05c22c [file+0x1322c] ffc300d1 sub      sp, sp, #0x30
+0xfe05c230 [file+0x13230] f55301a9 stp      x21, x20, [sp, #0x10]
+0xfe05c234 [file+0x13234] 14018e52 mov      w20, #0x7008
+0xfe05c238 [file+0x13238] f37b02a9 stp      x19, x30, [sp, #0x20]
+0xfe05c23c [file+0x1323c] 3420be72 movk     w20, #0xf101, lsl #16
+0xfe05c240 [file+0x13240] fff0ff97 bl       #0xfe05863c
+0xfe05c244 [file+0x13244] 15d89852 mov      w21, #0xc6c0
+0xfe05c248 [file+0x13248] f30300aa mov      x19, x0
+0xfe05c24c [file+0x1324c] b505a072 movk     w21, #0x2d, lsl #16
+0xfe05c250 [file+0x13250] 880a4079 ldrh     w8, [x20, #4]
+0xfe05c254 [file+0x13254] 88012036 tbz      w8, #4, #0xfe05c284
+0xfe05c258 [file+0x13258] f9f0ff97 bl       #0xfe05863c
+0xfe05c25c [file+0x1325c] 080013cb sub      x8, x0, x19
+0xfe05c260 [file+0x13260] 1f0115eb cmp      x8, x21
+0xfe05c264 [file+0x13264] 63ffff54 b.lo     #0xfe05c250
+0xfe05c268 [file+0x13268] 21000090 adrp     x1, #0xfe060000
+0xfe05c26c [file+0x1326c] 22000090 adrp     x2, #0xfe060000
+0xfe05c270 [file+0x13270] 21383191 add      x1, x1, #0xc4e ; source string candidate 'SPI:%s Busy wait timeout\n'
+0xfe05c274 [file+0x13274] 42683291 add      x2, x2, #0xc9a ; source string candidate 'spi_rxfifo_clear'
+0xfe05c278 [file+0x13278] e0031f32 mov      w0, #2
+0xfe05c27c [file+0x1327c] cee7ff97 bl       #0xfe0561b4
+0xfe05c280 [file+0x13280] 11000014 b        #0xfe05c2c4
+0xfe05c284 [file+0x13284] 88024079 ldrh     w8, [x20]
+0xfe05c288 [file+0x13288] e81b0079 strh     w8, [sp, #0xc]
+0xfe05c28c [file+0x1328c] 88024079 ldrh     w8, [x20]
+0xfe05c290 [file+0x13290] e81b0079 strh     w8, [sp, #0xc]
+0xfe05c294 [file+0x13294] 88024079 ldrh     w8, [x20]
+0xfe05c298 [file+0x13298] e81b0079 strh     w8, [sp, #0xc]
+0xfe05c29c [file+0x1329c] 88024079 ldrh     w8, [x20]
+0xfe05c2a0 [file+0x132a0] e81b0079 strh     w8, [sp, #0xc]
+0xfe05c2a4 [file+0x132a4] 88024079 ldrh     w8, [x20]
+0xfe05c2a8 [file+0x132a8] e81b0079 strh     w8, [sp, #0xc]
+0xfe05c2ac [file+0x132ac] 88024079 ldrh     w8, [x20]
+0xfe05c2b0 [file+0x132b0] e81b0079 strh     w8, [sp, #0xc]
+0xfe05c2b4 [file+0x132b4] 88024079 ldrh     w8, [x20]
+0xfe05c2b8 [file+0x132b8] e81b0079 strh     w8, [sp, #0xc]
+0xfe05c2bc [file+0x132bc] 88024079 ldrh     w8, [x20]
+0xfe05c2c0 [file+0x132c0] e81b0079 strh     w8, [sp, #0xc]
+0xfe05c2c4 [file+0x132c4] f37b42a9 ldp      x19, x30, [sp, #0x20]
+0xfe05c2c8 [file+0x132c8] f55341a9 ldp      x21, x20, [sp, #0x10]
+0xfe05c2cc [file+0x132cc] ffc30091 add      sp, sp, #0x30
+0xfe05c2d0 [file+0x132d0] c0035fd6 ret      

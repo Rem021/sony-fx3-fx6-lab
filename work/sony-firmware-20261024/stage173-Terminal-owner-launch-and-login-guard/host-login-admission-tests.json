@@ -1,0 +1,26 @@
+{
+  "compile_argv": [
+    "xcrun",
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/host_login.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/test_host_login.c",
+    "-framework",
+    "Security",
+    "-lbsm",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/artifacts/test-host-login"
+  ],
+  "executable_sha256": "e50cf19672335fecd8b7dbcacbd60500133d68500f6bc42122e9837054fdbd55",
+  "result": {
+    "state": "PASS_PURE_LOGIN_ADMISSION_FAULT_CASES",
+    "checks": 15,
+    "self_or_root_identity_probed": false,
+    "camera_operations": 0
+  },
+  "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/artifacts/test-host-login:\n\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.0.55)\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+}

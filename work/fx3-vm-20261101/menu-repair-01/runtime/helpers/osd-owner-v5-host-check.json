@@ -1,0 +1,18 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-owner-v5.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-osd-owner-v5"
+  ],
+  "exit": 0,
+  "stdout": "OWNER_RECEIVER_PASS actual_native_receive/free_order/GUI_frozen/unknown_fullraw_no_reply/stale_no_ACK/current_exact_lease/retire_before_free/no_oversize_read/failure_poison\n",
+  "stderr": "00003100000\nFX3_OSD_OWNER_RAW_END queue=0x8280074d bytes=12\nFX3_OSD_OWNER_FREE queue=0x8280074d pointer=0x104535ba0 kind=stale-no-ACK result=0 count=1 original_received_message=1 ownership_change=missing_CP_receiver\nFX3_OSD_OWNER_CURRENT frame=1 queue=0x8280074d op=1002 bytes=12 pointer=0x104535ba0 source=0x8288076c exact_original_send_lease=1 no_stale_ACK=1\nFX3_OSD_OWNER_FREE queue=0x8280074d pointer=0x104535ba0 kind=control-current result=0 count=1 original_received_message=1 ownership_change=missing_CP_receiver\nFX3_OSD_OWNER_CURRENT frame=1 queue=0x8280084d op=1003 bytes=36 pointer=0x104535ba0 source=0x8288076c exact_original_send_lease=1 no_stale_ACK=1\nFX3_OSD_OWNER_FREE queue=0x8280084d pointer=0x104535ba0 kind=after-capture result=0 count=1 original_received_message=1 ownership_change=missing_CP_receiver\nFX3_OSD_OWNER_RAW_BEGIN kind=current-validation-rejected queue=0x8280074d pointer=0x104535ba0 source=0x8288076c bytes=12 unknown_no_reply=1\nFX3_OSD_OWNER_RAW offset=0 raw=021000000000000005100000\nFX3_OSD_OWNER_RAW_END queue=0x8280074d bytes=12\nFX3_OSD_OWNER_FREE queue=0x8280074d pointer=0x104535ba0 kind=current-rejected result=-4 count=0 original_received_message=1 ownership_change=missing_CP_receiver\nFX3_OSD_OWNER_RAW_BEGIN kind=native-size-outside-valloc-limit queue=0x8280074d pointer=0x104535ba0 source=0 bytes=4097 unknown_no_reply=1\nFX3_OSD_OWNER_RAW_INVALID_SIZE bytes=4097 body_not_read=1\nFX3_OSD_OWNER_RAW_END queue=0x8280074d bytes=4097\nFX3_OSD_OWNER_FREE queue=0x8280074d pointer=0x104535ba0 kind=oversize result=0 count=1 original_received_message=1 ownership_change=missing_CP_receiver\nFX3_OSD_OWNER_RAW_BEGIN kind=timeout-with-pointer queue=0x8280074d pointer=0x104535ba0 source=0 bytes=8 unknown_no_reply=1\nFX3_OSD_OWNER_RAW offset=0 raw=0000000000000000\nFX3_OSD_OWNER_RAW_END queue=0x8280074d bytes=8\nFX3_OSD_OWNER_FREE queue=0x8280074d pointer=0x104535ba0 kind=timeout-owned result=0 count=1 original_received_message=1 ownership_change=missing_CP_receiver\n",
+  "helper_sha256": "abb42fc136339fd605456773b78425c7c5cc6974000d103f44b1ac49ad43697a",
+  "capture_unchanged": true,
+  "worker_original_free_precedes_commit_and_ACK": true
+}

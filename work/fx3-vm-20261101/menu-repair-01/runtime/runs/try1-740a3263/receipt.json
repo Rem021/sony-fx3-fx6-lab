@@ -1,0 +1,397 @@
+{
+  "created_utc": "2026-11-02T23:20:36.665578+00:00",
+  "duration_seconds": 189.6687881250109,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r4-repeat-tile/candidate.json",
+  "candidate_sha256": "fdcd0a3cf614473e233d0d39df78a47765f9eff433b9a0e5d67e9253f943a1f9",
+  "models_identical_to_frozen_AP101_r4": true,
+  "authority": "msg_3a52a0ab7e46",
+  "observer_source_snapshot": [
+    {
+      "name": "run_trial_v3.py",
+      "sha256": "82103cadaae614343582d749428ebac678c43413798bb8146acf562969324277"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "gate_input101.py",
+      "sha256": "2d430d401488d12868e5dd81d7107c975a30a87a01758b8429ad58bf088ce88a"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_web_v2.py",
+      "sha256": "62df3b74e92187343870ae168c7a4b3a8cdcba9a19ea69f3b0f55fa9d3cb4ce7"
+    },
+    {
+      "name": "trial_ring_v1.py",
+      "sha256": "31393143a1fecb5eecb6e5d4f0c169f19c8b47b600c6fe2b22120908bed1c230"
+    },
+    {
+      "name": "trial_log_v2.py",
+      "sha256": "9cfa1402672d48397a868ccccbcaf19a9c20315ffee25b657139b0475119ae9c"
+    },
+    {
+      "name": "run_trial.py",
+      "sha256": "b253d667a236ad56cf82fbc328b5458eebc3f2970787e0e6f468e2aeb856c87c"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/try1-740a3263",
+  "maximum_seconds": 600,
+  "stop_cause": "Ctrl-C",
+  "qemu_pid": 97844,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap100v1sync600-8d0d69c0/Backup-native-file-before-menu.bin",
+      "sha256": "552fd5f8b422f855aecbe0c3918b56f83f60fb76ea9a3b6fc7a0291c26035d9e"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r4-repeat-tile/guest.dtb",
+      "sha256": "a293b7ca236fb043d515373bbf360de09a57b77a7f42699927a4df39f49a1ec3"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r4-repeat-tile/guest.cpio",
+      "sha256": "f3a6ceacdd244ead0ffa0bdc0adefbd98809af3f3ec74ffd58bf610c3e415cf9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r4-repeat-tile/candidate.json",
+      "sha256": "fdcd0a3cf614473e233d0d39df78a47765f9eff433b9a0e5d67e9253f943a1f9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.816576500015799,
+      "rss_vsz_kib": "648928 495712464"
+    },
+    {
+      "elapsed_seconds": 5.860377625009278,
+      "rss_vsz_kib": "537824 495712464"
+    },
+    {
+      "elapsed_seconds": 10.946837208000943,
+      "rss_vsz_kib": "192448 495712464"
+    },
+    {
+      "elapsed_seconds": 16.018491875001928,
+      "rss_vsz_kib": "69184 495712464"
+    },
+    {
+      "elapsed_seconds": 21.236454666010104,
+      "rss_vsz_kib": "110080 495712464"
+    },
+    {
+      "elapsed_seconds": 26.259572041017236,
+      "rss_vsz_kib": "106384 495712464"
+    },
+    {
+      "elapsed_seconds": 31.323904749995563,
+      "rss_vsz_kib": "105184 495712464"
+    },
+    {
+      "elapsed_seconds": 36.34859262499958,
+      "rss_vsz_kib": "83376 495712464"
+    },
+    {
+      "elapsed_seconds": 41.38355200001388,
+      "rss_vsz_kib": "127376 495720656"
+    },
+    {
+      "elapsed_seconds": 46.460631458001444,
+      "rss_vsz_kib": "85552 495720656"
+    },
+    {
+      "elapsed_seconds": 51.50591062501189,
+      "rss_vsz_kib": "145920 495720656"
+    },
+    {
+      "elapsed_seconds": 56.55882662499789,
+      "rss_vsz_kib": "76816 495720656"
+    },
+    {
+      "elapsed_seconds": 61.598616958013736,
+      "rss_vsz_kib": "162496 495720656"
+    },
+    {
+      "elapsed_seconds": 66.64730250000139,
+      "rss_vsz_kib": "170400 495737040"
+    },
+    {
+      "elapsed_seconds": 71.66553858300904,
+      "rss_vsz_kib": "137200 495737040"
+    },
+    {
+      "elapsed_seconds": 76.72261704099947,
+      "rss_vsz_kib": "140592 495737040"
+    },
+    {
+      "elapsed_seconds": 81.8473305410007,
+      "rss_vsz_kib": "145712 495737040"
+    },
+    {
+      "elapsed_seconds": 86.89837599999737,
+      "rss_vsz_kib": "139712 495737040"
+    },
+    {
+      "elapsed_seconds": 91.92457479101722,
+      "rss_vsz_kib": "136592 495737040"
+    },
+    {
+      "elapsed_seconds": 96.94452241601539,
+      "rss_vsz_kib": "132560 495737040"
+    },
+    {
+      "elapsed_seconds": 101.99851962501998,
+      "rss_vsz_kib": "132384 495737040"
+    },
+    {
+      "elapsed_seconds": 107.08066500001587,
+      "rss_vsz_kib": "125504 495737040"
+    },
+    {
+      "elapsed_seconds": 112.09522008299245,
+      "rss_vsz_kib": "121792 495737040"
+    },
+    {
+      "elapsed_seconds": 117.12319912499515,
+      "rss_vsz_kib": "135936 495737040"
+    },
+    {
+      "elapsed_seconds": 122.18302766600391,
+      "rss_vsz_kib": "159424 495737040"
+    },
+    {
+      "elapsed_seconds": 127.20319558301708,
+      "rss_vsz_kib": "153184 495737040"
+    },
+    {
+      "elapsed_seconds": 132.24752637499478,
+      "rss_vsz_kib": "126928 495737040"
+    },
+    {
+      "elapsed_seconds": 137.28559849999147,
+      "rss_vsz_kib": "137616 495737040"
+    },
+    {
+      "elapsed_seconds": 142.35328262500116,
+      "rss_vsz_kib": "145904 495737040"
+    },
+    {
+      "elapsed_seconds": 147.39434154101764,
+      "rss_vsz_kib": "141024 495737040"
+    },
+    {
+      "elapsed_seconds": 152.4375005000038,
+      "rss_vsz_kib": "129696 495737040"
+    },
+    {
+      "elapsed_seconds": 157.471250875009,
+      "rss_vsz_kib": "136848 495737040"
+    },
+    {
+      "elapsed_seconds": 162.52743845799705,
+      "rss_vsz_kib": "129504 495737040"
+    },
+    {
+      "elapsed_seconds": 167.5837300409912,
+      "rss_vsz_kib": "132448 495737040"
+    },
+    {
+      "elapsed_seconds": 172.60452112500207,
+      "rss_vsz_kib": "139552 495737040"
+    },
+    {
+      "elapsed_seconds": 177.65625016600825,
+      "rss_vsz_kib": "139424 495737040"
+    },
+    {
+      "elapsed_seconds": 182.78869358301745,
+      "rss_vsz_kib": "134176 495737040"
+    }
+  ],
+  "early_stop_reason": null,
+  "full_serial_bytes_inspected": 11196092,
+  "serial_health_failure": null,
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": true,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY96_READY": true,
+    "FX3_OSD_FRAME_TARGET_VALID": true,
+    "FX3_GPE_COMPACTION_BOUND": true,
+    "FX3_GPE_DRAW_INTERVAL": true,
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": true,
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": true,
+    "FX3_KEY96_POLL": true,
+    "FX3_KEY96_THREAD_BEGIN": true,
+    "FX3_PANEL_CONFIG_V2_COMMIT": true,
+    "FX3_PROC97_STATUS_BEGIN": true,
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": true,
+    "FX3_DATE98_KERNEL_OBSERVE_READY": true,
+    "FX3_DATE99_WORKER_READY": true,
+    "FX3_DATE99_CONSUMER_BOUND": true,
+    "FX3_SYNC100_BACKEND_BOUND": true,
+    "FX3_FILE100_OBSERVER_READY": true,
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": true,
+    "FX3_BACKUP_INSMOD_RC=0": true
+  },
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": true,
+    "quit_sent": true,
+    "serial_bytes_before_cleanup": 11149078,
+    "native_unbind_return": 0
+  },
+  "lifecycle_pass": true,
+  "health_pass": true,
+  "key_steps": 1,
+  "step_captures": [
+    {
+      "sequence": 192,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 192,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xa54866da34853428",
+      "sha256": "4e2e6a5b2ef547a1ce053063710fa36ea30fdc11228d80ca260cc358de83aeb0",
+      "PNG_sha256": "29817e9375c5e1ddb0c825fd0e345b4deb350c33891ceea50fb5abd64352b22a",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "host_monotonic": 245444.160404583,
+      "committed_slot": 7,
+      "native_identity": {
+        "FB": "0x7f64001140",
+        "bitmap": "0x7f5c02a980",
+        "entry": "0x7f64001158",
+        "allocation": "0x640011e0",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604a",
+        "config_hash": "0x4db92fa7fce24a9d",
+        "bits_cpu_VA": "0x7eefeda100",
+        "map_begin": "0x7eefeda000",
+        "map_end": "0x7eeff71000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f640011e0",
+        "epoch": 1,
+        "identity": "0xffffffc11e728c00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f9c2dca48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 1,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/try1-740a3263/trial-step-01-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/try1-740a3263/trial-step-01-key-1ab.png",
+      "raw_sha256": "4e2e6a5b2ef547a1ce053063710fa36ea30fdc11228d80ca260cc358de83aeb0",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 192,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    }
+  ],
+  "standby_ready": true,
+  "menu_verified": false,
+  "visual_acceptance_separate_from_health": true,
+  "physical_device_operations": 0,
+  "remote_network_connections": 0,
+  "HTTP_loopback_only": true,
+  "scope": "Original FX3 menu in software model; latest committed OSD frames; no camera, live view, or exact compositor claim"
+}

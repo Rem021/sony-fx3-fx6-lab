@@ -1,0 +1,40 @@
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <pthread.h>
+#include <time.h>
+#include <unistd.h>
+static unsigned long fake_now=10000000000UL;static unsigned long test_now(void){return __atomic_add_fetch(&fake_now,1000000UL,__ATOMIC_RELAXED);}
+#define DATE99_NOW test_now
+#include "fx3-cp-backup-reset-v3-date99.c"
+struct sm{W id;long value;pthread_mutex_t m;pthread_cond_t c;int alive;};static struct sm sems[32];static W sem_count,queue_count;static int pump;static pthread_mutex_t meta=PTHREAD_MUTEX_INITIALIZER;
+struct header{W owner,source,n,magic;};static unsigned allocated,freed;static void *reply;static W live_Q;static int failure_type2,failure_type4,bad_status,bad_length;static W phase,type4_count,reply_count,ready_frees;static B APdate[16]={0xe5,7,1,1},APtz[8]={0x1c,2};static _Alignas(64) B trace_page[DATE98_SPAN],clock_page[4096];
+static struct sm*semof(W id){for(W i=0;i<sem_count;i++)if(sems[i].id==id&&sems[i].alive)return sems+i;assert(0);return 0;}
+int printk(const char*f,...){char tmp[4096];va_list a;va_start(a,f);int n=vsnprintf(tmp,sizeof tmp,f,a);va_end(a);assert(n>=0&&n<(int)sizeof tmp);return n;}
+int osal_reg_public(const void*p){assert(p==&owner);return 0;}int osal_unreg_public(void){return 0;}
+W osal_msg_size(const void*p){const struct header*h=(const void*)((const B*)p-sizeof *h);assert(h->magic==0x55aaff00);return h->n;}W osal_get_msg_src(const void*p){const struct header*h=(const void*)((const B*)p-sizeof *h);assert(h->magic==0x55aaff00);return h->source;}
+void osal_set_msg_src(void*p,W src){struct header*h=(void*)((B*)p-sizeof *h);assert(h->magic==0x55aaff00);h->source=src;}
+static void*message(W ownerid,W n,W src){struct header*h=calloc(1,sizeof *h+n+4);assert(h);h->owner=ownerid;h->source=src;h->n=n;h->magic=0x55aaff00;B*p=(void*)(h+1);wr32(p+n,0x77777777);pthread_mutex_lock(&meta);allocated++;pthread_mutex_unlock(&meta);return p;}
+int osal_valloc_msg_wait(W id,void**out,W n,W wait){assert(n==44&&wait==1&&id==DATE99_AP);*out=message(id,n,0);return 0;}
+int osal_free_msg(W id,void*p){struct header*h=(void*)((B*)p-sizeof *h);assert(h->magic==0x55aaff00&&id==h->owner&&rd32((B*)p+h->n)==0x77777777);pthread_mutex_lock(&meta);if(id==DATE99_DEST)ready_frees++;freed++;pthread_mutex_unlock(&meta);h->magic=0;free(h);return 0;}
+void*arch_phys_to_va(U address){if(address==DATE98_PHYS)return trace_page;if(address==DATE99_CLOCK_PHYS)return clock_page;assert(address==CP_BANK_PHYS);return 0;}void*vmalloc(U n){return malloc(n);}void vfree(void*p){free(p);}
+int osal_dynamic_id(W op,W module,void*ptr){if(op==0x32){assert(module==0x90&&sem_count<32);struct sm*s=sems+sem_count;s->id=0x00907000+sem_count++;s->value=1;s->alive=1;pthread_mutex_init(&s->m,0);pthread_cond_init(&s->c,0);*(W*)ptr=s->id;return 0;}if(op==0x52){struct sm*s=semof((U)ptr);s->alive=0;pthread_cond_destroy(&s->c);pthread_mutex_destroy(&s->m);return 0;}if(op==0x2a){assert(module==0x90&&!live_Q&&!reply);live_Q=0x809061c0+(++queue_count);*(W*)ptr=live_Q;return 0;}if(op==0x4a){assert((W)(U)ptr==live_Q&&!reply);live_Q=0;return 0;}assert(0);return -1021;}
+int osal_wai_sem_tmo(W id,int timeout){assert(timeout==-1);struct sm*s=semof(id);pthread_mutex_lock(&s->m);while(!s->value||(id==date99_event_sem&&date99_join&&!__atomic_load_n(&pump,__ATOMIC_ACQUIRE)&&!__atomic_load_n(&date99_stopping,__ATOMIC_ACQUIRE)))pthread_cond_wait(&s->c,&s->m);s->value--;pthread_mutex_unlock(&s->m);return 0;}
+int osal_sig_sem(W id){struct sm*s=semof(id);pthread_mutex_lock(&s->m);s->value++;pthread_cond_broadcast(&s->c);pthread_mutex_unlock(&s->m);return 0;}
+struct thread{pthread_t thread;};static void*launch(void*p){(void)p;date99_worker(0);return 0;}
+int osal_create_waitable_thread(const void*info,void**out){assert(info==&date99_thread_info&&date99_thread_info.module==0x90&&date99_thread_info.priority==15);struct thread*t=malloc(sizeof *t);assert(t&&!pthread_create(&t->thread,0,launch,0));*out=t;return 1;}
+int osal_wait_thread_exit(void*p){struct thread*t=p;assert(!pthread_join(t->thread,0));free(t);return 0;}
+int osal_snd_msg(W dst,void*p){assert(dst==DATE99_AP&&osal_msg_size(p)==44&&osal_get_msg_src(p)==DATE99_DEST);if(rd32(p)==2){assert(rd32((B*)p+8)==1&&rd32((B*)p+12)==live_Q);phase=2;if(failure_type2)return -1023;void*q=message(live_Q,44,DATE99_AP);memcpy(q,p,44);wr32((B*)q+4,bad_status?-1021:0);memcpy((B*)q+16,APdate,16);memcpy((B*)q+32,APtz,8);if(bad_length)((struct header*)q-1)->n=43;assert(!reply);reply=q;reply_count++;assert(!osal_free_msg(dst,p));return 0;}assert(rd32(p)==4&&phase==3&&date99_current.initialized&&date99_current.valid);for(W i=4;i<40;i++)assert(!((B*)p)[i]);assert(rd16((B*)p+40)==date99_current.reason);if(failure_type4)return -1021;type4_count++;phase=4;assert(!osal_free_msg(dst,p));return 0;}
+int osal_rcv_msg_tmo(W Q,void**out,int timeout){assert(Q==live_Q&&timeout==-1&&reply&&phase==2);*out=reply;reply=0;phase=3;return 0;}
+static void enable(int on){__atomic_store_n(&pump,on,__ATOMIC_RELEASE);if(date99_event_sem){struct sm*s=semof(date99_event_sem);pthread_mutex_lock(&s->m);pthread_cond_broadcast(&s->c);pthread_mutex_unlock(&s->m);}}
+static void idle(void){for(int k=0;k<10000;k++){date99_enter();int busy=date99_count;for(W i=0;i<8;i++)busy|=date99_jobs[i].state;date99_leave();if(!busy)return;struct timespec t={0,1000000};nanosleep(&t,0);}assert(!"worker timeout");}
+static void*ready(W reason){B*p=message(DATE99_DEST,44,DATE99_AP);wr32(p,1);p[40]=reason;p[41]=reason>>8;return p;}
+static void accept_one(W reason){enable(0);void*p=ready(reason);B b[44];memcpy(b,p,44);assert(!cp_reset_send99(DATE99_DEST,p)&&!memcmp(b,p,44));enable(1);idle();}
+int main(void){assert(!init_module()&&registered);enable(0);void*p=ready(1);B copy[44];memcpy(copy,p,44);assert(!cp_reset_send99(DATE99_DEST,p));assert(!cp_reset_send99(DATE99_DEST,p)&&date99_count==1&&date99_serial==1&&!memcmp(copy,p,44));assert(ready_frees==0&&phase==0);enable(1);idle();assert(type4_count==1&&date99_done==1&&ready_frees==1&&date99_current.valid&&date99_current.generation==1);B observed[16];long utc;assert(!c99_read(&date99_current,test_now()+2000000000UL,observed,&utc)&&utc>date99_current.utc_ms+2000);
+ U gen=date99_current.generation;W dones=type4_count;accept_one(4);assert(date99_current.generation==gen+1&&type4_count==dones);APdate[12]=3;accept_one(4);assert(!date99_current.valid&&date99_current.native_date[12]==3&&type4_count==dones);APdate[12]=0;
+ enable(0);p=ready(1);osal_set_msg_src(p,0x909005c5);assert(cp_reset_send99(DATE99_DEST,p)<0);osal_set_msg_src(p,DATE99_AP);((struct header*)p-1)->n=43;assert(cp_reset_send99(DATE99_DEST,p)<0);((struct header*)p-1)->n=44;assert(!osal_free_msg(DATE99_DEST,p));
+ void*jobs[8];for(W i=0;i<8;i++){jobs[i]=ready(1);assert(!cp_reset_send99(DATE99_DEST,jobs[i]));}p=ready(1);assert(cp_reset_send99(DATE99_DEST,p)<0&&!osal_free_msg(DATE99_DEST,p));enable(1);idle();assert(type4_count==dones+8);
+ struct date99_clock old=date99_current;failure_type2=1;dones=type4_count;accept_one(1);assert(type4_count==dones&&!memcmp(&old,&date99_current,sizeof old)&&!live_Q&&!reply);failure_type2=0;failure_type4=1;accept_one(1);assert(type4_count==dones&&!memcmp(&old,&date99_current,sizeof old)&&!live_Q&&!reply);failure_type4=0;
+ bad_status=1;accept_one(1);assert(type4_count==dones&&!memcmp(&old,&date99_current,sizeof old)&&!live_Q&&!reply);bad_status=0;accept_one(1);assert(type4_count==dones+1&&date99_current.generation==old.generation+1);for(W k=0;k<14;k++){B*r=clock_page+512+k*256;if(!rd32(r+8))continue;assert(!(rd32(r)&1)&&rd32(r+28)>=6&&rd32(r+16)>=1&&rd32(r+16)<=8&&rd32(r+20)==DATE99_AP&&rd32(r+64)==1);}cleanup_module();assert(!registered&&!date99_join&&!date99_lock_sem&&!date99_event_sem&&allocated==freed);printf("DATE99_TRANSPORT_PASS native_OSAL_deferred_worker/type1_type2_real_AP_fixture_reply_clock_then_type4/reason4_known_unknown_no_done/duplicate_same_live_allocation_once/8slots_full_reject/wrongsource_length/type2_sendfail_type4_sendfail_APstatus_rollback/source_dynamicQ_accounting/all%u_allocations_freed_once/worker_join\n",allocated);}

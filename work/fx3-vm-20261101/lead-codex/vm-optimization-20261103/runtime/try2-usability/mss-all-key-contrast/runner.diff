@@ -1,0 +1,131 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/run_trial_v15_mss_all.py
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/mss-all-key-contrast/run_trial_v17_mss_key_contrast.py
+@@ -2,7 +2,8 @@
+ """TRY2 local web runner for the validated English, performance, and readiness candidate."""
+ from pathlib import Path
+ import sys
+-sys.path.insert(1, str(Path(__file__).resolve().parents[4] / "menu-repair-01/runtime"))
++sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
++sys.path.insert(1, str(Path(__file__).resolve().parents[5] / "menu-repair-01/runtime"))
+ import argparse
+ import re
+ import datetime
+@@ -29,8 +30,8 @@
+ from file_readback100 import capture as capture_native_file
+ from restore_api103_v2 import restore_native_api
+ 
+-ROOT = Path(__file__).resolve().parents[4] / "menu-repair-01/runtime"
+-OUT = Path(__file__).resolve().parent
++ROOT = Path(__file__).resolve().parents[5] / "menu-repair-01/runtime"
++OUT = Path(__file__).resolve().parent.parent
+ BASE = ROOT.parent
+ FROZEN = Path('/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm')
+ VOLUME_UUID = 'F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B'
+@@ -78,15 +79,26 @@
+ 
+ 
+ def checkpoint(value):
+-    path = OUT / 'mss-all-STATE.json'
++    path = Path(__file__).resolve().parent / 'STATE.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = OUT / 'mss-all-STATE.json.tmp'
++    temp = Path(__file__).resolve().parent / 'STATE.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
++
++
++def native_input_deadline_error(command, step, up_seen, both_native_events, now):
++    """Bound missing sender or native receive evidence; never resend a key."""
++    if command is None or now-command['sent_monotonic'] <= 12:
++        return None
++    if step not in up_seen:
++        return '按键 12 秒内未得到原生 key-up 回执'
++    if not both_native_events:
++        return '按键 12 秒内原程序按下/抬起接收证据不完整，停止本轮；不会自动重发。'
++    return None
+ 
+ 
+ def main():
+@@ -107,7 +119,7 @@
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2mssallinternal' if ns.internal_hoststep else 'disabled'
++    ns.label = 'try2mssallinternal-keycontrast' if ns.internal_hoststep else 'disabled'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+@@ -195,7 +207,8 @@
+     observer_dir.mkdir()
+     observer_sources = []
+     for name in [Path(__file__).name, 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v3_usability.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
+-        shutil.copyfile(OUT / name if (OUT / name).exists() else ROOT / name, observer_dir / name)
++        source = Path(__file__) if name == Path(__file__).name else (OUT / name if (OUT / name).exists() else ROOT / name)
++        shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+     (run / 'cpio-audit.json').write_text(json.dumps(cpio_report, ensure_ascii=False, indent=2) + '\n')
+     success_doc = BASE / 'success-cases/source/docs/tech/03-guest-environment.md'
+@@ -249,6 +262,11 @@
+     error = None
+     early_stop_reason = None
+     p = None
++    # Preserve original startup error and receipt even before QMP/serial exists.
++    phaseA_capture = None
++    phase_exit_hit = False
++    shutdown_count_at_ready = 0
++    power_off_count_at_ready = 0
+     seq = 0
+     previous_cwd = Path.cwd()
+     start = time.monotonic()
+@@ -346,7 +364,7 @@
+             print('RUN', run, flush=True)
+             print('等待固件待机画面；结束请用网页按钮或 Ctrl-C。', flush=True)
+             guest_start = time.monotonic()
+-            deadline = guest_start + ns.seconds
++            deadline = start + ns.seconds
+             trial.deadline = deadline
+             replay_input_verified = False
+             phaseA_capture = None
+@@ -490,8 +508,10 @@
+                                  else '本轮已达按键上限，请结束后重新启动。' if host_step == ns.max_steps
+                                  else '画面已更新，可以继续操作。' if frame_changed
+                                  else '按键已接收，像素未变；请观察后再继续。')
+-                if current_command is not None and host_step not in up_seen and time.monotonic()-current_command['sent_monotonic'] > 12:
+-                    raise RuntimeError('按键 12 秒内未得到原生 key-up 回执')
++                missing_input_error = native_input_deadline_error(
++                    current_command, host_step, up_seen, both_native_events, time.monotonic())
++                if missing_input_error:
++                    raise RuntimeError(missing_input_error)
+ 
+                 proposed = trial.take() if current_command is None and not ns.internal_hoststep else None
+                 if ns.internal_hoststep and current_command is None and phaseA_capture is not None and trial.render_valid:
+@@ -667,7 +687,10 @@
+                'early_stop_reason': early_stop_reason, 'full_serial_bytes_inspected': log_monitor.offset,
+                'serial_health_failure': log_monitor.failure, 'markers': log_monitor.markers,
+                'marker_evidence': log_monitor.marker_evidence,
+-               'date99_raw_serial_evidence': log_monitor.date99_raw_receipt(),
++               'date99_raw_serial_evidence': (log_monitor.date99_raw_receipt()
++                   if (run/'serial.log').is_file() else
++                   {'available': False, 'reason': 'serial_log_not_created',
++                    'literal_present': False, 'semantic_evidence': None}),
+                'cleanup': shutdown, 'lifecycle_pass': bool(lifecycle_pass),
+                'protocol_pass': protocol_pass, 'render_pass': render_pass,
+                'black_frame_semantics': 'unknown; an all-zero committed panel cannot satisfy this visual trial',
+@@ -695,9 +718,12 @@
+                 'inputs_unchanged': unchanged, 'trial_url': None,
+                 'locks': [{'path': x['path'], 'holder': None, 'status': 'released' if x['free_at_close'] else 'held_by_other'} for x in lock_status],
+                 'TRY2': {'health_pass': health_pass, 'last_run': str(run), 'launch': [sys.executable, str(Path(__file__))]}})
++    final_message = ('启动未完成，模拟器未启动；请查看原始错误和回执。' if p is None else
++                     '试用已结束，模拟器已退出，资源已回收。' if lifecycle_pass else
++                     '试用已结束，收尾检查未全部通过，请查看启动终端。')
+     trial.update(phase='finished', busy=False, result={'health_pass': health_pass, 'qemu_exit': receipt['qemu_exit'],
+                                                     'API16_restored': shutdown.get('API16_restored')},
+-                 message='试用已结束，模拟器已退出，资源已回收。' if lifecycle_pass else '试用已结束，收尾检查未全部通过，请查看启动终端。',
++                 message=final_message,
+                  error=trial.error or early_stop_reason or log_monitor.failure or error)
+     print('回执:', run/'receipt.json', flush=True)
+     print('HEALTH', health_pass, 'QEMU_EXIT', receipt['qemu_exit'], 'REAPED', receipt['process_reaped'],

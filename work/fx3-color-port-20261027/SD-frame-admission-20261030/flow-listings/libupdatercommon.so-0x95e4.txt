@@ -1,0 +1,20 @@
+_ZN7Updater10RingBuffer5IsEndEv
+000095e4 stp       x29, x30, [sp, #-0x30]!
+000095e8 mov       x29, sp
+000095ec stp       x19, x20, [sp, #0x10]
+000095f0 mov       x20, x0
+000095f4 add       x0, x0, #0x38
+000095f8 str       x0, [x29, #0x28]
+000095fc bl        #0x6a90 ; pthread_mutex_lock
+00009600 ldrb      w19, [x20, #0x30]
+00009604 uxtb      w19, w19
+00009608 cbz       w19, #0x9618
+0000960c ldr       x0, [x20, #0x28]
+00009610 cmp       x0, #0
+00009614 cset      w19, eq
+00009618 add       x0, x29, #0x28
+0000961c bl        #0x956c
+00009620 mov       w0, w19
+00009624 ldp       x19, x20, [sp, #0x10]
+00009628 ldp       x29, x30, [sp], #0x30
+0000962c ret       

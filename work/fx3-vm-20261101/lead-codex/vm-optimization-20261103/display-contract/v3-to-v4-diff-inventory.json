@@ -1,0 +1,381 @@
+{
+  "reviewed_readme_v3_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/display-contract/README-v3.md",
+  "reviewed_readme_v3_sha256": "cb328ad84d3e5687b6b84c4206738bffc0f3c1f363a7274dde414a46bdee403b",
+  "coordinator_receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/display-contract/coordinator-v3-review/receipt.json",
+  "coordinator_receipt_sha256": "fe743b2728d5cf3ec2606643766b9a41bf7962cf585497ebfca42be2d97246ac",
+  "appfw_0x2eaf294_table_mismatches_count": 23,
+  "appfw_0x2eaf294_table_mismatches": [
+    {
+      "va": "0x2eaf2a0",
+      "file_offset": "0x2eaf2a0",
+      "v3_raw_bytes_le": "f5 5b 02 a9",
+      "actual_raw_bytes_le": "f4 7f 80 12",
+      "v3_word_hex": "a9025bf5",
+      "actual_word_hex": "12807ff4",
+      "v3_disasm": "stp x21, x22, [sp, #0x20]",
+      "actual_disasm": "mov w20, #-0x400 // =-1024"
+    },
+    {
+      "va": "0x2eaf2a4",
+      "file_offset": "0x2eaf2a4",
+      "v3_raw_bytes_le": "f7 63 03 a9",
+      "actual_raw_bytes_le": "f5 5b 02 a9",
+      "v3_word_hex": "a90363f7",
+      "actual_word_hex": "a9025bf5",
+      "v3_disasm": "stp x23, x24, [sp, #0x30]",
+      "actual_disasm": "stp x21, x22, [sp, #0x20]"
+    },
+    {
+      "va": "0x2eaf2a8",
+      "file_offset": "0x2eaf2a8",
+      "v3_raw_bytes_le": "f9 6b 04 a9",
+      "actual_raw_bytes_le": "f7 63 03 a9",
+      "v3_word_hex": "a9046bf9",
+      "actual_word_hex": "a90363f7",
+      "v3_disasm": "stp x25, x26, [sp, #0x40]",
+      "actual_disasm": "stp x23, x24, [sp, #0x30]"
+    },
+    {
+      "va": "0x2eaf2ac",
+      "file_offset": "0x2eaf2ac",
+      "v3_raw_bytes_le": "a0 e6 00 d0",
+      "actual_raw_bytes_le": "f9 6b 04 a9",
+      "v3_word_hex": "d000e6a0",
+      "actual_word_hex": "a9046bf9",
+      "v3_disasm": "adrp x0, 0x4b85000",
+      "actual_disasm": "stp x25, x26, [sp, #0x40]"
+    },
+    {
+      "va": "0x2eaf2b0",
+      "file_offset": "0x2eaf2b0",
+      "v3_raw_bytes_le": "14 7c 46 f9",
+      "actual_raw_bytes_le": "80 04 00 34",
+      "v3_word_hex": "f9467c14",
+      "actual_word_hex": "34000480",
+      "v3_disasm": "ldr x20, [x0, #0xcf8]",
+      "actual_disasm": "cbz w0, 0x2eaf340 <Application_System_Init+0x17bf7b0>"
+    },
+    {
+      "va": "0x2eaf2c4",
+      "file_offset": "0x2eaf2c4",
+      "v3_raw_bytes_le": "80 02 40 f9",
+      "actual_raw_bytes_le": "23 00 80 52",
+      "v3_word_hex": "f9400280",
+      "actual_word_hex": "52800023",
+      "v3_disasm": "ldr x0, [x20]",
+      "actual_disasm": "mov w3, #0x1 // =1"
+    },
+    {
+      "va": "0x2eaf2c8",
+      "file_offset": "0x2eaf2c8",
+      "v3_raw_bytes_le": "a0 53 05 f9",
+      "actual_raw_bytes_le": "02 02 80 52",
+      "v3_word_hex": "f9002ba0",
+      "actual_word_hex": "52800202",
+      "v3_disasm": "str x0, [x29, #0x50]",
+      "actual_disasm": "mov w2, #0x10 // =16"
+    },
+    {
+      "va": "0x2eaf2dc",
+      "file_offset": "0x2eaf2dc",
+      "v3_raw_bytes_le": "69 91 9b 97",
+      "actual_raw_bytes_le": "91 93 9b 97",
+      "v3_word_hex": "979b9169",
+      "actual_word_hex": "979b9391",
+      "v3_disasm": "bl 0x1593880 <osal_valloc_msg_wait@plt>",
+      "actual_disasm": "bl 0x1594120 <osal_valloc_msg_wait@plt>"
+    },
+    {
+      "va": "0x2eaf2e0",
+      "file_offset": "0x2eaf2e0",
+      "v3_raw_bytes_le": "1f 00 00 71",
+      "actual_raw_bytes_le": "f4 03 00 2a",
+      "v3_word_hex": "7100001f",
+      "actual_word_hex": "2a0003f4",
+      "v3_disasm": "cmp w0, #0x0",
+      "actual_disasm": "mov w20, w0"
+    },
+    {
+      "va": "0x2eaf2e4",
+      "file_offset": "0x2eaf2e4",
+      "v3_raw_bytes_le": "60 03 00 54",
+      "actual_raw_bytes_le": "e0 02 00 35",
+      "v3_word_hex": "54000360",
+      "actual_word_hex": "350002e0",
+      "v3_disasm": "b.eq 0x2eaf350",
+      "actual_disasm": "cbnz w0, 0x2eaf340 <Application_System_Init+0x17bf7b0>"
+    },
+    {
+      "va": "0x2eaf2f0",
+      "file_offset": "0x2eaf2f0",
+      "v3_raw_bytes_le": "fc 8f 9b 97",
+      "actual_raw_bytes_le": "c4 8a 9b 97",
+      "v3_word_hex": "979b8ffc",
+      "actual_word_hex": "979b8ac4",
+      "v3_disasm": "bl 0x15932e0 <osal_set_msg_src@plt>",
+      "actual_disasm": "bl 0x1591e00 <osal_set_msg_src@plt>"
+    },
+    {
+      "va": "0x2eaf30c",
+      "file_offset": "0x2eaf30c",
+      "v3_raw_bytes_le": "c1 01 00 54",
+      "actual_raw_bytes_le": "64 0a 40 fa",
+      "v3_word_hex": "540001c1",
+      "actual_word_hex": "fa400a64",
+      "v3_disasm": "b.ne 0x2eaf344",
+      "actual_disasm": "ccmp x19, #0x0, #0x4, eq"
+    },
+    {
+      "va": "0x2eaf310",
+      "file_offset": "0x2eaf310",
+      "v3_raw_bytes_le": "a0 2f 40 f9",
+      "actual_raw_bytes_le": "f4 03 00 2a",
+      "v3_word_hex": "f9402fa0",
+      "actual_word_hex": "2a0003f4",
+      "v3_disasm": "ldr x0, [x29, #0x58]",
+      "actual_disasm": "mov w20, w0"
+    },
+    {
+      "va": "0x2eaf314",
+      "file_offset": "0x2eaf314",
+      "v3_raw_bytes_le": "b3 01 00 b4",
+      "actual_raw_bytes_le": "00 01 00 54",
+      "v3_word_hex": "b40001b3",
+      "actual_word_hex": "54000100",
+      "v3_disasm": "cbz x19, 0x2eaf348",
+      "actual_disasm": "b.eq 0x2eaf334 <Application_System_Init+0x17bf7a4>"
+    },
+    {
+      "va": "0x2eaf318",
+      "file_offset": "0x2eaf318",
+      "v3_raw_bytes_le": "18 00 40 b9",
+      "actual_raw_bytes_le": "a0 2f 40 f9",
+      "v3_word_hex": "b9400018",
+      "actual_word_hex": "f9402fa0",
+      "v3_disasm": "ldr w24, [x0]",
+      "actual_disasm": "ldr x0, [x29, #0x58]"
+    },
+    {
+      "va": "0x2eaf31c",
+      "file_offset": "0x2eaf31c",
+      "v3_raw_bytes_le": "78 02 00 b9",
+      "actual_raw_bytes_le": "01 00 40 b9",
+      "v3_word_hex": "b9000278",
+      "actual_word_hex": "b9400001",
+      "v3_disasm": "str w24, [x19]",
+      "actual_disasm": "ldr w1, [x0]"
+    },
+    {
+      "va": "0x2eaf320",
+      "file_offset": "0x2eaf320",
+      "v3_raw_bytes_le": "18 04 40 b9",
+      "actual_raw_bytes_le": "61 02 00 b9",
+      "v3_word_hex": "b9400418",
+      "actual_word_hex": "b9000261",
+      "v3_disasm": "ldr w24, [x0, #0x4]",
+      "actual_disasm": "str w1, [x19]"
+    },
+    {
+      "va": "0x2eaf324",
+      "file_offset": "0x2eaf324",
+      "v3_raw_bytes_le": "78 06 00 b9",
+      "actual_raw_bytes_le": "01 04 40 b9",
+      "v3_word_hex": "b9000678",
+      "actual_word_hex": "b9400401",
+      "v3_disasm": "str w24, [x19, #0x4]",
+      "actual_disasm": "ldr w1, [x0, #0x4]"
+    },
+    {
+      "va": "0x2eaf328",
+      "file_offset": "0x2eaf328",
+      "v3_raw_bytes_le": "18 08 40 b9",
+      "actual_raw_bytes_le": "61 06 00 b9",
+      "v3_word_hex": "b9400818",
+      "actual_word_hex": "b9000661",
+      "v3_disasm": "ldr w24, [x0, #0x8]",
+      "actual_disasm": "str w1, [x19, #0x4]"
+    },
+    {
+      "va": "0x2eaf32c",
+      "file_offset": "0x2eaf32c",
+      "v3_raw_bytes_le": "78 0a 00 b9",
+      "actual_raw_bytes_le": "01 00 41 29",
+      "v3_word_hex": "b9000a78",
+      "actual_word_hex": "29410001",
+      "v3_disasm": "str w24, [x19, #0x8]",
+      "actual_disasm": "ldp w1, w0, [x0, #0x8]"
+    },
+    {
+      "va": "0x2eaf330",
+      "file_offset": "0x2eaf330",
+      "v3_raw_bytes_le": "18 0c 40 b9",
+      "actual_raw_bytes_le": "61 02 01 29",
+      "v3_word_hex": "b9400c18",
+      "actual_word_hex": "29010261",
+      "v3_disasm": "ldr w24, [x0, #0xc]",
+      "actual_disasm": "stp w1, w0, [x19, #0x8]"
+    },
+    {
+      "va": "0x2eaf334",
+      "file_offset": "0x2eaf334",
+      "v3_raw_bytes_le": "78 0e 00 b9",
+      "actual_raw_bytes_le": "a1 2f 40 f9",
+      "v3_word_hex": "b9000e78",
+      "actual_word_hex": "f9402fa1",
+      "v3_disasm": "str w24, [x19, #0xc]",
+      "actual_disasm": "ldr x1, [x29, #0x58]"
+    },
+    {
+      "va": "0x2eaf338",
+      "file_offset": "0x2eaf338",
+      "v3_raw_bytes_le": "f4 03 1f 2a",
+      "actual_raw_bytes_le": "e0 03 15 2a",
+      "v3_word_hex": "2a1f03f4",
+      "actual_word_hex": "2a1503e0",
+      "v3_disasm": "mov w20, wzr",
+      "actual_disasm": "mov w0, w21"
+    }
+  ],
+  "upm_sync_table_v3_audit": [
+    {
+      "row": 1,
+      "text_offset": "0x0130",
+      "v3_file_offset": "0x0198",
+      "actual_file_offset": "0x0198",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x00a4`: `00 44 a2 52` + `0x00b4`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "Forwards msg from `0x80920865` to `0x80924220`"
+    },
+    {
+      "row": 2,
+      "text_offset": "0x0e38",
+      "v3_file_offset": "0x0ea0",
+      "actual_file_offset": "0x0ea0",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x0e28`: `00 44 22 52` + `0x0e30`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920118` (`id=0xfff`, `timeout=0xbbf81e00`, `req_status=1`)"
+    },
+    {
+      "row": 3,
+      "text_offset": "0x0fd8",
+      "v3_file_offset": "0x1040",
+      "actual_file_offset": "0x1040",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x0fc8`: `00 44 22 52` + `0x0fd0`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920119` (`id=0xfff`, `mode=1`)"
+    },
+    {
+      "row": 4,
+      "text_offset": "0x614c",
+      "v3_file_offset": "0x61b4",
+      "actual_file_offset": "0x61b4",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x6138`: `00 44 22 52` + `0x6144`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920203` (`MSS_notify_factor`, `arg=1`)"
+    },
+    {
+      "row": 5,
+      "text_offset": "0x69f4",
+      "v3_file_offset": "0x6a5c",
+      "actual_file_offset": "0x6a5c",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x69e0`: `00 44 22 52` + `0x69ec`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920203` (`MSS_notify_factor`, `arg=1`)"
+    },
+    {
+      "row": 6,
+      "text_offset": "0x6acc",
+      "v3_file_offset": "0x6b34",
+      "actual_file_offset": "0x6b34",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x6ab4`: `00 44 22 52` + `0x6ac4`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920203` (`MSS_notify_factor`, `arg=0`)"
+    },
+    {
+      "row": 7,
+      "text_offset": "0x6ed4",
+      "v3_file_offset": "0x6f3c",
+      "actual_file_offset": "0x6f3c",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x6ec8`: `00 44 22 52` + `0x6ecc`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920202` (`MSS_del_stopper`, `id=0x110`)"
+    },
+    {
+      "row": 8,
+      "text_offset": "0x700c",
+      "v3_file_offset": "0x7074",
+      "actual_file_offset": "0x7074",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x7000`: `00 44 22 52` + `0x7004`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920202` (`MSS_del_stopper`, `id=0x110`)"
+    },
+    {
+      "row": 9,
+      "text_offset": "0x7164",
+      "v3_file_offset": "0x71cc",
+      "actual_file_offset": "0x71cc",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x7158`: `00 44 22 52` + `0x715c`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920202` (`MSS_del_stopper`, `id=0x120`)"
+    },
+    {
+      "row": 10,
+      "text_offset": "0x88c4",
+      "v3_file_offset": "0x892c",
+      "actual_file_offset": "0x892c",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0x88b4`: `00 44 22 52` + `0x88bc`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920202` (`MSS_del_stopper`, `id=0x120`)"
+    },
+    {
+      "row": 11,
+      "text_offset": "0xa2d0",
+      "v3_file_offset": "0xa338",
+      "actual_file_offset": "0xa338",
+      "file_offset_mismatch": false,
+      "v3_qid_setup_claim": "`0xa2c0`: `00 44 22 52` + `0xa2c8`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920204` (`MSS_req_status`)"
+    },
+    {
+      "row": 12,
+      "text_offset": "0xaa44",
+      "v3_file_offset": "0xaab0",
+      "actual_file_offset": "0xaaac",
+      "file_offset_mismatch": true,
+      "v3_qid_setup_claim": "`0xaa30`: `00 44 22 52` + `0xaa3c`: `00 12 90 72` (`w0=0x80924220`)",
+      "v3_sent_cmd_claim": "`0x00920203` (`MSS_notify_factor`, `arg=1`)"
+    }
+  ],
+  "structural_and_prose_errata": [
+    {
+      "category": "appFw_0x2eaf294_missing_epilogue_and_reload_offset",
+      "v3_error": "README-v3.md table stopped at 0x2eaf33c (omitting 0x2eaf340..0x2eaf358), stated post-send msg_ptr reload 'ldr x0, [x29, #0x58]' at 0x2eaf310 instead of 0x2eaf318, and misstated the reply-copy instructions at 0x2eaf318..0x2eaf334 as four ldr/str w24 pairs instead of ldr/str w1 at +0/+4 and ldp/stp w1,w0 at +8 (0x2eaf31c..0x2eaf330) followed by 0x2eaf334 ldr x1,[x29,#0x58]; 0x2eaf338 mov w0,w21; 0x2eaf33c bl osal_free_msg.",
+      "v4_correction": "Full 50-instruction range 0x2eaf294..0x2eaf358 is machine-generated directly from appFw.so; post-send reload is at 0x2eaf318 (f9402fa0: ldr x0, [x29, #0x58]), reply copy is 0x2eaf31c..0x2eaf330, and osal_free_msg arg reload is at 0x2eaf334..0x2eaf338."
+    },
+    {
+      "category": "upm_ko_sync_table_file_offset_and_handwritten_qid_columns",
+      "v3_error": "README-v3.md row 12 listed .text+0xaa44 file offset as 0xaab0 instead of 0xaaac (0x68 + 0xaa44 = 0xaaac; 0xaab0 is .text+0xaa48), stated .text size as 0xbd68 instead of ELF sh_size=0x2d978, and hand-wrote fabricated 'QID Setup Instruction' bytes ('00 44 22 52' / '00 12 90 72') and stopper IDs ('id=0x110', 'id=0x120', 'arg=1', 'arg=0') instead of the actual upm.ko instructions (52884400 mov w0,#0x4220; 72b01240 movk w0,#0x8092,lsl #16, and payload word1 / osal_set_msg_src source IDs 0x80920021 / 0x80920196).",
+      "v4_correction": "Every sync call site's file offset (0x68 + text_offset) and exact instruction window are machine-generated from objdump -d -r --section=.text on upm.ko. Out of 53 total osal_snd_sync_msg relocations in upm.ko .text, 12 send to destination QID w0=0x80924220. In k_upm_off_factor_handler_init (.text+0x6d38), site 7 (.text+0x6ed4) sets destination w0=0x80924220 (0x6ec0/0x6ec4) and source/payload word1 w19=0x80920021 (0x6ea0/0x6ea8), while site 8 (.text+0x700c) sets destination w0=0x80924220 (0x6ff8/0x6ffc) and source/payload word1 w20=0x80920196 (0x6fd8/0x6fe0)."
+    },
+    {
+      "category": "upm_ko_async_table_relocation_bytes_and_commands",
+      "v3_error": "README-v3.md async table hand-wrote PC-relative branch bytes ('ae ff ff 97', 'ab f8 ff 97', etc.) and labeled .text+0x24b4/.text+0x2510/.text+0x2680/.text+0x2720 with wrong branch conditions and commands. In relocatable upm.ko, all 5 bl instructions have raw word 0x94000000 ('00 00 00 94') with R_AARCH64_CALL26 relocations to upm_c3p_msg_async (.text+0x0688).",
+      "v4_correction": "Out of 22 total upm_c3p_msg_async relocations in upm.ko .text, 5 target destination QID w0=0x80924220 (.text+0x08a8 in k_mss_fire_all_expired_nr, and .text+0x24b4, 0x2510, 0x2680, 0x2720 in the MSS queue dispatcher .text+0x2180). All 5 are machine-generated with their exact raw bytes (00 00 00 94), R_AARCH64_CALL26 relocations, and preceding register-setup instructions."
+    },
+    {
+      "category": "upm_ko_del_stopper_and_timer_offsets_and_request_node_layout",
+      "v3_error": "README-v3.md §1 Erratum 3 hand-wrote wrong offsets for status checks ('0x22d8..0x22f8'), wrong instruction at 0x2484 ('str wzr, [x20, #0x48]' instead of 0x248c '2909069f: stp wzr, w1, [x20, #0x48]'), wrong timer API ('osal_StartTimer' and 'delta_sec * 1000 ms' at 0x1040..0x104c instead of 'osal_snd_sync_direct' with 0x00910040 and '(timeout_sec - elapsed_sec) * 1,000,000 us' at 0x1044..0x1094), wrong mss_state.+0x38 label ('request_count' instead of 'active_req pointer'), and wrong request_list node offsets ('+0x10=id, +0x14=timeout_sec' instead of '+0x0c=req_id, +0x10=timeout_sec, +0x14=src_id, +0x18=state').",
+      "v4_correction": "Replaced all hand-written prose offsets with machine-generated disassembly tables of .text+0x21c8..0x2240, .text+0x2300..0x231c, .text+0x2468..0x24bc, .text+0x2598..0x25bc, .text+0x1008..0x1098 (k_mss_start_timer_nr), .text+0x1220..0x12d8 (k_mss_add_request_nr), and .text+0x1558..0x15f8 (k_mss_find_min_request)."
+    },
+    {
+      "category": "appfw_got_display_update_event_and_wrapper_claims",
+      "v3_error": "README-v3.md §1 Erratum 4 and §2 cited unverified symbols/addresses ('fw::ConcreteEvent::get_parameter 0x17d8a3c', 'App::request_ChangeTo Standby/Sleep 0x16ee034..0x16ee280', '0x2eafb30..0x2eb0108', and external scripts 'probe-mss300s-userspace.py' / '/Volumes/KAFU2T/AI/Projects/Mac/extracted/...').",
+      "v4_correction": "Deleted all unverified symbol assertions; included full machine-generated disassembly of 0x16f11e8..0x16f1218, 0x16f12a8..0x16f12ec, and 0x16f38b4..0x16f38d0, and explicitly marked downstream event-loop handlers after type 5 classification as statically unresolved without runtime trace."
+    },
+    {
+      "category": "v1_receipt_sha256_and_binary_source_paths",
+      "v3_error": "README-v3.md §0 listed wrong SHA-256 digests for v1 files (eb3bb3cc... and 7ba11552...) and listed /Volumes/KAFU2T/AI/Projects/Mac/extracted/... paths instead of the canonical workspace paths.",
+      "v4_correction": "All file paths and SHA-256 digests in README.md (v4) are computed directly from disk files and verified post-generation."
+    }
+  ]
+}

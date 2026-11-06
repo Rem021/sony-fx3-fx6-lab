@@ -1,0 +1,24 @@
+{
+  "time": "2026-11-05T07:16:17.998423+00:00",
+  "scope": "future r35 offline readout boundaries only; not a VM dispatch or run permission",
+  "historical_reference": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd/startup-observation.json",
+    "sha256": "ee452a75fb204fc3aa89a77a28abf0576cdf33c3ae3bdb7f83dc5472d59e9554",
+    "host_consumed_offset_entering_cleanup": 3819978,
+    "final_consumed_offset": 3882426,
+    "additional_cleanup_bytes": 62448,
+    "observation_errors": {}
+  },
+  "future_run_requirements": [
+    "Use the actual current run ID, candidate hash and serial hash; never a historical sample as current proof",
+    "Pre-cleanup readout uses phases.first_kinds stage=cleanup serial_offset, with schema/range/error checks",
+    "Cut means bytes host consumed before cleanup; do not claim atomic guest End state",
+    "If standby succeeds before input, separately identify the first preserved completed qualified startup readiness observation and its serial_offset; missing/evicted first-kind evidence prevents claiming exact first observation",
+    "Keep startup, interactive pre-cleanup and cleanup-tail readouts separate; full final serial is not startup evidence",
+    "End cutoff inside a log line stays partial/unknown; never borrow a later newline",
+    "No export, collector unready, contention, identity mismatch or missing boundary remains unknown; do not extend runtime to obtain a record",
+    "Parser stays offline, cannot drive ready/health/key/retry/End decisions"
+  ],
+  "runtime_authorized": false,
+  "r37_final_binding_required": true
+}

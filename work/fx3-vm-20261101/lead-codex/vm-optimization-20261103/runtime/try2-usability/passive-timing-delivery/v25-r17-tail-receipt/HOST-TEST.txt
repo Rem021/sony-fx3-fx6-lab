@@ -1,0 +1,49 @@
+test_crlf_and_split_crlf_require_complete_line (test_snapshot_tail_actual.TailTests.test_crlf_and_split_crlf_require_complete_line) ... ok
+test_default_runner_and_cleanup_excerpt (test_snapshot_tail_actual.TailTests.test_default_runner_and_cleanup_excerpt) ... ok
+test_lost_cont_reply_is_stopped_but_unknown (test_snapshot_tail_actual.TailTests.test_lost_cont_reply_is_stopped_but_unknown) ... ok
+test_qmp_unknown_never_reads_or_continues (test_snapshot_tail_actual.TailTests.test_qmp_unknown_never_reads_or_continues) ... ok
+test_request_commit_after_deadline_never_continues (test_snapshot_tail_actual.TailTests.test_request_commit_after_deadline_never_continues) ... ok
+test_request_failure_never_continues (test_snapshot_tail_actual.TailTests.test_request_failure_never_continues) ... ok
+test_slot_failures_and_deadline (test_snapshot_tail_actual.TailTests.test_slot_failures_and_deadline) ... ok
+test_uncertain_gdb_stream_is_closed_not_reused (test_snapshot_tail_actual.TailTests.test_uncertain_gdb_stream_is_closed_not_reused) ... ok
+test_unknown_cont_send_is_not_retried (test_snapshot_tail_actual.TailTests.test_unknown_cont_send_is_not_retried) ... ok
+test_unproved_new_gdb_mode_is_discarded (test_snapshot_tail_actual.TailTests.test_unproved_new_gdb_mode_is_discarded) ... ok
+test_valid_and_identity (test_snapshot_tail_actual.TailTests.test_valid_and_identity) ... ok
+test_wrong_missing_and_half_ack (test_snapshot_tail_actual.TailTests.test_wrong_missing_and_half_ack) ... ok
+test_default_remains_original_r3 (test_fixed_slot_selection.SelectionTests.test_default_remains_original_r3) ... ok
+test_explicit_variants_use_distinct_real_frozen_manifests (test_fixed_slot_selection.SelectionTests.test_explicit_variants_use_distinct_real_frozen_manifests) ... ok
+test_manifest_tamper_rejected_before_input_loading (test_fixed_slot_selection.SelectionTests.test_manifest_tamper_rejected_before_input_loading) ... ok
+test_missing_tail_and_conflicting_candidate_rejected (test_fixed_slot_selection.SelectionTests.test_missing_tail_and_conflicting_candidate_rejected) ... usage: python3 -m unittest [-h] [--port PORT] [--max-minutes MAX_MINUTES]
+                           [--max-steps MAX_STEPS]
+                           [--launch-wait-seconds LAUNCH_WAIT_SECONDS]
+                           [--internal-hoststep]
+                           [--exit-at-phase {pre-bind,bound-before-first-frame}]
+                           [--review-procdiag-r4e]
+                           [--pre-input-snapshot-step PRE_INPUT_SNAPSHOT_STEP]
+                           [--snapshot-tail] [--gate-publish-interval {1,64}]
+python3 -m unittest: error: N1/N64对照须启用--snapshot-tail，且不能同时选择procdiag候选
+usage: python3 -m unittest [-h] [--port PORT] [--max-minutes MAX_MINUTES]
+                           [--max-steps MAX_STEPS]
+                           [--launch-wait-seconds LAUNCH_WAIT_SECONDS]
+                           [--internal-hoststep]
+                           [--exit-at-phase {pre-bind,bound-before-first-frame}]
+                           [--review-procdiag-r4e]
+                           [--pre-input-snapshot-step PRE_INPUT_SNAPSHOT_STEP]
+                           [--snapshot-tail] [--gate-publish-interval {1,64}]
+python3 -m unittest: error: N1/N64对照须启用--snapshot-tail，且不能同时选择procdiag候选
+ok
+test_unreviewed_interval_rejected (test_fixed_slot_selection.SelectionTests.test_unreviewed_interval_rejected) ... usage: python3 -m unittest [-h] [--port PORT] [--max-minutes MAX_MINUTES]
+                           [--max-steps MAX_STEPS]
+                           [--launch-wait-seconds LAUNCH_WAIT_SECONDS]
+                           [--internal-hoststep]
+                           [--exit-at-phase {pre-bind,bound-before-first-frame}]
+                           [--review-procdiag-r4e]
+                           [--pre-input-snapshot-step PRE_INPUT_SNAPSHOT_STEP]
+                           [--snapshot-tail] [--gate-publish-interval {1,64}]
+python3 -m unittest: error: argument --gate-publish-interval: invalid choice: '2' (choose from '1', '64')
+ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.081s
+
+OK

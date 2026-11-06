@@ -1,0 +1,27 @@
+{
+  "status": "FINAL_CURRENT_BUILD_NOMINAL_AND_COOPERATIVE_STOP_PASS",
+  "checks": 2,
+  "rows": [
+    {
+      "case": "normal-final",
+      "status": "PASS",
+      "observed_status": "HOST_RETURN_CAMERA_STATE_UNVERIFIED",
+      "frames": 80,
+      "fixture_helper_sha256": "e8788dc60b08db114f9aeb29a497bbfe96c1012d1fb5a1c83b96173ebda52df4",
+      "native_IOKit_executed": false,
+      "scope": "real own child and Unix peer; artificial USB callbacks",
+      "directory": "runs/normal-final"
+    },
+    {
+      "case": "stop-after-first-OUT",
+      "status": "PASS",
+      "observed_status": "OWNER_RETAINED",
+      "frames": 6,
+      "fixture_helper_sha256": "e8788dc60b08db114f9aeb29a497bbfe96c1012d1fb5a1c83b96173ebda52df4",
+      "native_IOKit_executed": false,
+      "scope": "real own child and Unix peer; artificial USB callbacks",
+      "directory": "runs/stop-after-first-OUT"
+    }
+  ],
+  "new_root_or_camera_operations": 0
+}

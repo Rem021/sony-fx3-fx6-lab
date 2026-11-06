@@ -1,0 +1,2580 @@
+{
+  "scope": "original firmware helpers under bounded Unicorn CPU emulation; synthesized main input; no EncOpen/EncStart, hardware, bitstream or flash",
+  "candidate_target": {
+    "width": 1920,
+    "height": 1080,
+    "rate": "30000/1001",
+    "codec": "HEVC",
+    "chroma": "4:2:0",
+    "bit_depth": 10,
+    "nominal_bitrate_bps": 16000000
+  },
+  "packet_case": {
+    "test": "SetEncOpenParam",
+    "entry": "0xd13f8",
+    "args": [
+      285212672,
+      285220864
+    ],
+    "reason": "returned",
+    "steps": 594,
+    "return_u32": 0,
+    "calls": [
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "PLT": "0x82c00",
+        "symbol": "_ZN3mpr19GetCodecAudioFormatEjj",
+        "local_target": "0xcf7bc",
+        "args_x0_x4": [
+          "0x0",
+          "0x1",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xcf880",
+        "return_x0": "0x1"
+      },
+      {
+        "PLT": "0x7b7e0",
+        "symbol": "_ZN3mpr24ConvertVideoCodecToCodecEN9DefStruct10VideoCodecENS0_12GopStructureE",
+        "local_target": "0xcf884",
+        "args_x0_x4": [
+          "0x1",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xcf93c",
+        "return_x0": "0xf"
+      },
+      {
+        "PLT": "0x80ac0",
+        "symbol": "_ZN3mpr15GetAudioBitrateENS_14AudioParamCombE",
+        "local_target": "0xd1338",
+        "args_x0_x4": [
+          "0x0",
+          "0xc",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd13e4",
+        "return_x0": "0x0"
+      },
+      {
+        "PLT": "0x83800",
+        "symbol": "_ZN3mpr5pconv24ConvertFrameRateForCodecEN9DefStruct9FrameRateEPNS_11FramePerSecEPhS5_",
+        "local_target": "0x2c0d04",
+        "args_x0_x4": [
+          "0x3",
+          "0x1002fff4",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "return_instruction": "0x2c0d3c",
+        "return_x0": "0x1"
+      },
+      {
+        "PLT": "0x80ca0",
+        "symbol": "_ZN3mpr21GetAudioOutputChannelEh",
+        "local_target": "0xcf984",
+        "args_x0_x4": [
+          "0x0",
+          "0x1002fff4",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xcfa24",
+        "return_x0": "0x1"
+      },
+      {
+        "PLT": "0x82d10",
+        "symbol": "_ZN3mpr35ConvertPictureQualityDefStructToMprEj",
+        "local_target": "0xd0758",
+        "args_x0_x4": [
+          "0x6",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd07f4",
+        "return_x0": "0x16"
+      },
+      {
+        "PLT": "0x7dea0",
+        "symbol": "_ZN3mpr14GetVideoAspectENS_14VideoParamCombE",
+        "local_target": "0xd0d1c",
+        "args_x0_x4": [
+          "0x6",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd0ddc",
+        "return_x0": "0x1"
+      },
+      {
+        "PLT": "0x7e3d0",
+        "symbol": "_ZN3mpr32ConvertVideoAspectForAspectRatioEN9DefStruct11VideoAspectE",
+        "local_target": "0xd0800",
+        "args_x0_x4": [
+          "0x1",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd089c",
+        "return_x0": "0x3"
+      },
+      {
+        "PLT": "0x7ba40",
+        "symbol": "_ZN3mpr15GetChromaFormatENS_14VideoParamCombE",
+        "local_target": "0xd11b0",
+        "args_x0_x4": [
+          "0x6",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd1268",
+        "return_x0": "0x0"
+      },
+      {
+        "PLT": "0x7c990",
+        "symbol": "_ZN3mpr14GetVideoBitLenENS_14VideoParamCombE",
+        "local_target": "0xd1274",
+        "args_x0_x4": [
+          "0x6",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd1334",
+        "return_x0": "0x1"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd1650",
+        "return_x0": "0x0"
+      }
+    ],
+    "guest_write_count": 235,
+    "elapsed_seconds": 0.007282,
+    "VideoParamComb": 6,
+    "FrameRate": 3,
+    "VQuality": 6,
+    "packet_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000b0040000000000000000000000000000b00400000000000000000000000000000003000000000000000000000000000000000000000000000000000000010f00800738040000000000000000000000000000000001000000030116030000000000000000000000000000000000010000",
+    "input_buffer": "0x11000000",
+    "output_buffer": "0x11002000",
+    "input_write": {
+      "offset": "0x764",
+      "hex": "06000000060000000300000000000000",
+      "fields": [
+        "VideoParamComb",
+        "VQuality",
+        "FrameRate",
+        "AudioParamComb"
+      ]
+    },
+    "initial_buffers": "Unicorn zero-filled scratch; only the stated input fields are host-written; output remains zero until guest writes",
+    "guest_packet_write_trace": [
+      {
+        "pc": "0xd1478",
+        "packet_offset": "0x0",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1480",
+        "packet_offset": "0x8",
+        "size": 4,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1488",
+        "packet_offset": "0x10",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1490",
+        "packet_offset": "0x18",
+        "size": 4,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1498",
+        "packet_offset": "0x30",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd149c",
+        "packet_offset": "0x20",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd14a4",
+        "packet_offset": "0x28",
+        "size": 2,
+        "value_hex": "0x4b0"
+      },
+      {
+        "pc": "0xd14a8",
+        "packet_offset": "0x38",
+        "size": 2,
+        "value_hex": "0x4b0"
+      },
+      {
+        "pc": "0xd14b0",
+        "packet_offset": "0x40",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd14b8",
+        "packet_offset": "0x48",
+        "size": 2,
+        "value_hex": "0x300"
+      },
+      {
+        "pc": "0xd14c0",
+        "packet_offset": "0x50",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd14c8",
+        "packet_offset": "0x58",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1654",
+        "packet_offset": "0x64",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1658",
+        "packet_offset": "0x86",
+        "size": 2,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd165c",
+        "packet_offset": "0x85",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1508",
+        "packet_offset": "0x65",
+        "size": 1,
+        "value_hex": "0x1"
+      },
+      {
+        "pc": "0xd1518",
+        "packet_offset": "0x66",
+        "size": 1,
+        "value_hex": "0xf"
+      },
+      {
+        "pc": "0xd1520",
+        "packet_offset": "0x68",
+        "size": 2,
+        "value_hex": "0x780"
+      },
+      {
+        "pc": "0xd1528",
+        "packet_offset": "0x6a",
+        "size": 2,
+        "value_hex": "0x438"
+      },
+      {
+        "pc": "0xd1538",
+        "packet_offset": "0x7b",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1554",
+        "packet_offset": "0x80",
+        "size": 1,
+        "value_hex": "0x3"
+      },
+      {
+        "pc": "0xd155c",
+        "packet_offset": "0x81",
+        "size": 1,
+        "value_hex": "0x1"
+      },
+      {
+        "pc": "0xd1568",
+        "packet_offset": "0x7c",
+        "size": 1,
+        "value_hex": "0x1"
+      },
+      {
+        "pc": "0xd1580",
+        "packet_offset": "0x7d",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1594",
+        "packet_offset": "0x7f",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15a0",
+        "packet_offset": "0x82",
+        "size": 1,
+        "value_hex": "0x16"
+      },
+      {
+        "pc": "0xd15b0",
+        "packet_offset": "0x84",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15b4",
+        "packet_offset": "0x83",
+        "size": 1,
+        "value_hex": "0x3"
+      },
+      {
+        "pc": "0xd15b8",
+        "packet_offset": "0x88",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15bc",
+        "packet_offset": "0x8b",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15c0",
+        "packet_offset": "0x89",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1664",
+        "packet_offset": "0x8a",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15dc",
+        "packet_offset": "0x8c",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15e0",
+        "packet_offset": "0x8d",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15e4",
+        "packet_offset": "0x8e",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15e8",
+        "packet_offset": "0x8f",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15ec",
+        "packet_offset": "0x92",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15f0",
+        "packet_offset": "0x93",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15f8",
+        "packet_offset": "0x94",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1604",
+        "packet_offset": "0x95",
+        "size": 1,
+        "value_hex": "0x1"
+      }
+    ],
+    "fields": {
+      "file_format_65": 1,
+      "codec_66": 15,
+      "width": 1920,
+      "height": 1080,
+      "frame_enum_80": 3,
+      "ntsc_flag_81": 1,
+      "quality_enum_82": 22,
+      "color_format_94": 0,
+      "bit_depth_95": 1
+    }
+  },
+  "real_downstream_helpers": [
+    {
+      "test": "CheckMovieRecParam",
+      "entry": "0xcc4d4",
+      "args": [
+        285212672
+      ],
+      "reason": "returned",
+      "steps": 53,
+      "return_u32": 0,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcc57c",
+          "return_x0": "0x0"
+        }
+      ],
+      "guest_write_count": 17,
+      "elapsed_seconds": 0.000408,
+      "VideoParamComb": 6,
+      "FrameRate": 3,
+      "VQuality": 6,
+      "accepted": true
+    },
+    {
+      "test": "CheckMovieRecParam",
+      "entry": "0xcc4d4",
+      "args": [
+        285212672
+      ],
+      "reason": "returned",
+      "steps": 53,
+      "return_u32": 0,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcc57c",
+          "return_x0": "0x0"
+        }
+      ],
+      "guest_write_count": 17,
+      "elapsed_seconds": 0.000385,
+      "VideoParamComb": 6,
+      "FrameRate": 7,
+      "VQuality": 6,
+      "accepted": true
+    },
+    {
+      "test": "CheckMovieRecParam",
+      "entry": "0xcc4d4",
+      "args": [
+        285212672
+      ],
+      "reason": "returned",
+      "steps": 53,
+      "return_u32": 0,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcc57c",
+          "return_x0": "0x0"
+        }
+      ],
+      "guest_write_count": 17,
+      "elapsed_seconds": 0.00045,
+      "VideoParamComb": 6,
+      "FrameRate": 3,
+      "VQuality": 12,
+      "accepted": true
+    },
+    {
+      "test": "CheckMovieRecParam",
+      "entry": "0xcc4d4",
+      "args": [
+        285212672
+      ],
+      "reason": "returned",
+      "steps": 52,
+      "return_u32": 3,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcc57c",
+          "return_x0": "0x3"
+        }
+      ],
+      "guest_write_count": 19,
+      "elapsed_seconds": 0.000403,
+      "VideoParamComb": 6,
+      "FrameRate": 12,
+      "VQuality": 6,
+      "accepted": false
+    },
+    {
+      "test": "CheckMovieRecParam",
+      "entry": "0xcc4d4",
+      "args": [
+        285212672
+      ],
+      "reason": "returned",
+      "steps": 49,
+      "return_u32": 3,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcc57c",
+          "return_x0": "0x3"
+        }
+      ],
+      "guest_write_count": 19,
+      "elapsed_seconds": 0.000367,
+      "VideoParamComb": 6,
+      "FrameRate": 3,
+      "VQuality": 255,
+      "accepted": false
+    },
+    {
+      "test": "ConvertVPCToLevel",
+      "entry": "0x115e78",
+      "args": [
+        0,
+        6,
+        6,
+        3,
+        285212672
+      ],
+      "reason": "returned",
+      "steps": 14,
+      "return_u32": 5,
+      "calls": [
+        {
+          "return_instruction": "0x115ecc",
+          "return_x0": "0x5"
+        }
+      ],
+      "guest_write_count": 1,
+      "elapsed_seconds": 0.000191,
+      "VideoParamComb": 6,
+      "FrameRate": 3,
+      "VQuality": 6,
+      "level": 5
+    },
+    {
+      "test": "ConvertVPCToLevel",
+      "entry": "0x115e78",
+      "args": [
+        0,
+        6,
+        12,
+        3,
+        285212672
+      ],
+      "reason": "unapproved PLT printf",
+      "steps": 21,
+      "return_u32": 2939086,
+      "calls": [],
+      "guest_write_count": 1,
+      "elapsed_seconds": 0.000232,
+      "VideoParamComb": 6,
+      "FrameRate": 3,
+      "VQuality": 12,
+      "level": 5
+    },
+    {
+      "test": "GetCodecInfoForCodec",
+      "entry": "0xcd40c",
+      "args": [
+        6,
+        0
+      ],
+      "reason": "returned",
+      "steps": 56,
+      "return_u32": 15,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcd4d8",
+          "return_x0": "0xf"
+        }
+      ],
+      "guest_write_count": 20,
+      "elapsed_seconds": 0.000427,
+      "VideoParamComb": 6,
+      "StreamType": 0
+    },
+    {
+      "test": "GetCodecInfoForCodec",
+      "entry": "0xcd40c",
+      "args": [
+        6,
+        1
+      ],
+      "reason": "returned",
+      "steps": 56,
+      "return_u32": 18,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcd4d8",
+          "return_x0": "0x12"
+        }
+      ],
+      "guest_write_count": 20,
+      "elapsed_seconds": 0.000379,
+      "VideoParamComb": 6,
+      "StreamType": 1
+    },
+    {
+      "test": "GetVideoBitrate",
+      "entry": "0x2c0ce0",
+      "args": [
+        6
+      ],
+      "reason": "returned",
+      "steps": 7,
+      "return_u32": 16000,
+      "calls": [
+        {
+          "return_instruction": "0x2c0cf8",
+          "return_x0": "0x3e80"
+        }
+      ],
+      "guest_write_count": 0,
+      "elapsed_seconds": 0.000189,
+      "VQuality": 6
+    },
+    {
+      "test": "GetVideoBitrate",
+      "entry": "0x2c0ce0",
+      "args": [
+        12
+      ],
+      "reason": "returned",
+      "steps": 7,
+      "return_u32": 100000,
+      "calls": [
+        {
+          "return_instruction": "0x2c0cf8",
+          "return_x0": "0x186a0"
+        }
+      ],
+      "guest_write_count": 0,
+      "elapsed_seconds": 0.000224,
+      "VQuality": 12
+    },
+    {
+      "test": "GetVideoBitrate",
+      "entry": "0x2c0ce0",
+      "args": [
+        255
+      ],
+      "reason": "returned",
+      "steps": 5,
+      "return_u32": 0,
+      "calls": [
+        {
+          "return_instruction": "0x2c0d00",
+          "return_x0": "0x0"
+        }
+      ],
+      "guest_write_count": 0,
+      "elapsed_seconds": 0.000246,
+      "VQuality": 255
+    },
+    {
+      "test": "GetChromaFormat",
+      "entry": "0xd11b0",
+      "args": [
+        6
+      ],
+      "reason": "returned",
+      "steps": 49,
+      "return_u32": 0,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd1268",
+          "return_x0": "0x0"
+        }
+      ],
+      "guest_write_count": 18,
+      "elapsed_seconds": 0.000381,
+      "VideoParamComb": 6
+    },
+    {
+      "test": "GetVideoBitLen",
+      "entry": "0xd1274",
+      "args": [
+        6
+      ],
+      "reason": "returned",
+      "steps": 47,
+      "return_u32": 1,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd1334",
+          "return_x0": "0x1"
+        }
+      ],
+      "guest_write_count": 19,
+      "elapsed_seconds": 0.000428,
+      "VideoParamComb": 6
+    },
+    {
+      "test": "ConvertPictureQualityDefStructToMpr",
+      "entry": "0xd0758",
+      "args": [
+        6
+      ],
+      "reason": "returned",
+      "steps": 42,
+      "return_u32": 22,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd07f4",
+          "return_x0": "0x16"
+        }
+      ],
+      "guest_write_count": 18,
+      "elapsed_seconds": 0.000393,
+      "VQuality": 6
+    },
+    {
+      "test": "ConvertPictureQualityDefStructToMpr",
+      "entry": "0xd0758",
+      "args": [
+        12
+      ],
+      "reason": "returned",
+      "steps": 42,
+      "return_u32": 49,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd07f4",
+          "return_x0": "0x31"
+        }
+      ],
+      "guest_write_count": 18,
+      "elapsed_seconds": 0.000424,
+      "VQuality": 12
+    },
+    {
+      "test": "ConvertPictureQualityDefStructToMpr",
+      "entry": "0xd0758",
+      "args": [
+        255
+      ],
+      "reason": "returned",
+      "steps": 41,
+      "return_u32": 255,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd07f4",
+          "return_x0": "0xff"
+        }
+      ],
+      "guest_write_count": 18,
+      "elapsed_seconds": 0.00038,
+      "VQuality": 255
+    },
+    {
+      "test": "ConvertFrameRateToNumerAndDenom",
+      "entry": "0x2c0de8",
+      "args": [
+        3,
+        285212672,
+        285212676
+      ],
+      "reason": "returned",
+      "steps": 15,
+      "return_u32": 1001,
+      "calls": [
+        {
+          "return_instruction": "0x2c0e28",
+          "return_x0": "0x3e9"
+        }
+      ],
+      "guest_write_count": 2,
+      "elapsed_seconds": 0.000431,
+      "FrameRate": 3,
+      "numerator": 30000,
+      "denominator": 1001
+    }
+  ],
+  "original_app_literal_16M": {
+    "test": "GetVQuality",
+    "entry": "0xc9c04",
+    "args": [
+      16
+    ],
+    "reason": "returned",
+    "steps": 25,
+    "return_u32": 255,
+    "calls": [
+      {
+        "return_instruction": "0xc9c60",
+        "return_x0": "0xff"
+      }
+    ],
+    "guest_write_count": 0,
+    "elapsed_seconds": 0.00025,
+    "input_Mbps": 16,
+    "app_literal_value": 6
+  },
+  "combination_selector": {
+    "test": "GetVideoParamComb",
+    "entry": "0xc9e84",
+    "args": [
+      1,
+      2,
+      0,
+      1,
+      0
+    ],
+    "reason": "returned",
+    "steps": 17,
+    "return_u32": 6,
+    "calls": [
+      {
+        "return_instruction": "0xc9ed4",
+        "return_x0": "0x6"
+      }
+    ],
+    "guest_write_count": 0,
+    "elapsed_seconds": 0.000307,
+    "codec": 1,
+    "resolution_enum": 2,
+    "color_enum": 0,
+    "bit_depth_enum": 1,
+    "gop_enum": 0
+  },
+  "positive_UHD_controls": [
+    {
+      "test": "SetEncOpenParam",
+      "entry": "0xd13f8",
+      "args": [
+        285212672,
+        285220864
+      ],
+      "reason": "returned",
+      "steps": 594,
+      "return_u32": 0,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "PLT": "0x82c00",
+          "symbol": "_ZN3mpr19GetCodecAudioFormatEjj",
+          "local_target": "0xcf7bc",
+          "args_x0_x4": [
+            "0x0",
+            "0x1",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcf880",
+          "return_x0": "0x1"
+        },
+        {
+          "PLT": "0x7b7e0",
+          "symbol": "_ZN3mpr24ConvertVideoCodecToCodecEN9DefStruct10VideoCodecENS0_12GopStructureE",
+          "local_target": "0xcf884",
+          "args_x0_x4": [
+            "0x1",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcf93c",
+          "return_x0": "0xf"
+        },
+        {
+          "PLT": "0x80ac0",
+          "symbol": "_ZN3mpr15GetAudioBitrateENS_14AudioParamCombE",
+          "local_target": "0xd1338",
+          "args_x0_x4": [
+            "0x0",
+            "0xc",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd13e4",
+          "return_x0": "0x0"
+        },
+        {
+          "PLT": "0x83800",
+          "symbol": "_ZN3mpr5pconv24ConvertFrameRateForCodecEN9DefStruct9FrameRateEPNS_11FramePerSecEPhS5_",
+          "local_target": "0x2c0d04",
+          "args_x0_x4": [
+            "0x3",
+            "0x1002fff4",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "return_instruction": "0x2c0d3c",
+          "return_x0": "0x1"
+        },
+        {
+          "PLT": "0x80ca0",
+          "symbol": "_ZN3mpr21GetAudioOutputChannelEh",
+          "local_target": "0xcf984",
+          "args_x0_x4": [
+            "0x0",
+            "0x1002fff4",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcfa24",
+          "return_x0": "0x1"
+        },
+        {
+          "PLT": "0x82d10",
+          "symbol": "_ZN3mpr35ConvertPictureQualityDefStructToMprEj",
+          "local_target": "0xd0758",
+          "args_x0_x4": [
+            "0xc",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd07f4",
+          "return_x0": "0x31"
+        },
+        {
+          "PLT": "0x7dea0",
+          "symbol": "_ZN3mpr14GetVideoAspectENS_14VideoParamCombE",
+          "local_target": "0xd0d1c",
+          "args_x0_x4": [
+            "0x5",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd0ddc",
+          "return_x0": "0x1"
+        },
+        {
+          "PLT": "0x7e3d0",
+          "symbol": "_ZN3mpr32ConvertVideoAspectForAspectRatioEN9DefStruct11VideoAspectE",
+          "local_target": "0xd0800",
+          "args_x0_x4": [
+            "0x1",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd089c",
+          "return_x0": "0x3"
+        },
+        {
+          "PLT": "0x7ba40",
+          "symbol": "_ZN3mpr15GetChromaFormatENS_14VideoParamCombE",
+          "local_target": "0xd11b0",
+          "args_x0_x4": [
+            "0x5",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd1268",
+          "return_x0": "0x0"
+        },
+        {
+          "PLT": "0x7c990",
+          "symbol": "_ZN3mpr14GetVideoBitLenENS_14VideoParamCombE",
+          "local_target": "0xd1274",
+          "args_x0_x4": [
+            "0x5",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd1334",
+          "return_x0": "0x1"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd1650",
+          "return_x0": "0x0"
+        }
+      ],
+      "guest_write_count": 235,
+      "elapsed_seconds": 0.009327,
+      "VideoParamComb": 5,
+      "FrameRate": 3,
+      "VQuality": 12,
+      "packet_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000b0040000000000000000000000000000b00400000000000000000000000000000003000000000000000000000000000000000000000000000000000000010f00000f70080000000000000000000000000000000001000000030131030000000000000000000000000000000000010000",
+      "input_buffer": "0x11000000",
+      "output_buffer": "0x11002000",
+      "input_write": {
+        "offset": "0x764",
+        "hex": "050000000c0000000300000000000000",
+        "fields": [
+          "VideoParamComb",
+          "VQuality",
+          "FrameRate",
+          "AudioParamComb"
+        ]
+      },
+      "initial_buffers": "Unicorn zero-filled scratch; only the stated input fields are host-written; output remains zero until guest writes",
+      "guest_packet_write_trace": [
+        {
+          "pc": "0xd1478",
+          "packet_offset": "0x0",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1480",
+          "packet_offset": "0x8",
+          "size": 4,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1488",
+          "packet_offset": "0x10",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1490",
+          "packet_offset": "0x18",
+          "size": 4,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1498",
+          "packet_offset": "0x30",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd149c",
+          "packet_offset": "0x20",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd14a4",
+          "packet_offset": "0x28",
+          "size": 2,
+          "value_hex": "0x4b0"
+        },
+        {
+          "pc": "0xd14a8",
+          "packet_offset": "0x38",
+          "size": 2,
+          "value_hex": "0x4b0"
+        },
+        {
+          "pc": "0xd14b0",
+          "packet_offset": "0x40",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd14b8",
+          "packet_offset": "0x48",
+          "size": 2,
+          "value_hex": "0x300"
+        },
+        {
+          "pc": "0xd14c0",
+          "packet_offset": "0x50",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd14c8",
+          "packet_offset": "0x58",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1654",
+          "packet_offset": "0x64",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1658",
+          "packet_offset": "0x86",
+          "size": 2,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd165c",
+          "packet_offset": "0x85",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1508",
+          "packet_offset": "0x65",
+          "size": 1,
+          "value_hex": "0x1"
+        },
+        {
+          "pc": "0xd1518",
+          "packet_offset": "0x66",
+          "size": 1,
+          "value_hex": "0xf"
+        },
+        {
+          "pc": "0xd1520",
+          "packet_offset": "0x68",
+          "size": 2,
+          "value_hex": "0xf00"
+        },
+        {
+          "pc": "0xd1528",
+          "packet_offset": "0x6a",
+          "size": 2,
+          "value_hex": "0x870"
+        },
+        {
+          "pc": "0xd1538",
+          "packet_offset": "0x7b",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1554",
+          "packet_offset": "0x80",
+          "size": 1,
+          "value_hex": "0x3"
+        },
+        {
+          "pc": "0xd155c",
+          "packet_offset": "0x81",
+          "size": 1,
+          "value_hex": "0x1"
+        },
+        {
+          "pc": "0xd1568",
+          "packet_offset": "0x7c",
+          "size": 1,
+          "value_hex": "0x1"
+        },
+        {
+          "pc": "0xd1580",
+          "packet_offset": "0x7d",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1594",
+          "packet_offset": "0x7f",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15a0",
+          "packet_offset": "0x82",
+          "size": 1,
+          "value_hex": "0x31"
+        },
+        {
+          "pc": "0xd15b0",
+          "packet_offset": "0x84",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15b4",
+          "packet_offset": "0x83",
+          "size": 1,
+          "value_hex": "0x3"
+        },
+        {
+          "pc": "0xd15b8",
+          "packet_offset": "0x88",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15bc",
+          "packet_offset": "0x8b",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15c0",
+          "packet_offset": "0x89",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1664",
+          "packet_offset": "0x8a",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15dc",
+          "packet_offset": "0x8c",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15e0",
+          "packet_offset": "0x8d",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15e4",
+          "packet_offset": "0x8e",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15e8",
+          "packet_offset": "0x8f",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15ec",
+          "packet_offset": "0x92",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15f0",
+          "packet_offset": "0x93",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15f8",
+          "packet_offset": "0x94",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1604",
+          "packet_offset": "0x95",
+          "size": 1,
+          "value_hex": "0x1"
+        }
+      ],
+      "fields": {
+        "file_format_65": 1,
+        "codec_66": 15,
+        "width": 3840,
+        "height": 2160,
+        "frame_enum_80": 3,
+        "ntsc_flag_81": 1,
+        "quality_enum_82": 49,
+        "color_format_94": 0,
+        "bit_depth_95": 1
+      }
+    },
+    {
+      "test": "SetEncOpenParam",
+      "entry": "0xd13f8",
+      "args": [
+        285212672,
+        285220864
+      ],
+      "reason": "returned",
+      "steps": 590,
+      "return_u32": 0,
+      "calls": [
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "PLT": "0x82c00",
+          "symbol": "_ZN3mpr19GetCodecAudioFormatEjj",
+          "local_target": "0xcf7bc",
+          "args_x0_x4": [
+            "0x0",
+            "0x1",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcf880",
+          "return_x0": "0x1"
+        },
+        {
+          "PLT": "0x7b7e0",
+          "symbol": "_ZN3mpr24ConvertVideoCodecToCodecEN9DefStruct10VideoCodecENS0_12GopStructureE",
+          "local_target": "0xcf884",
+          "args_x0_x4": [
+            "0x1",
+            "0x0",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcf93c",
+          "return_x0": "0xf"
+        },
+        {
+          "PLT": "0x80ac0",
+          "symbol": "_ZN3mpr15GetAudioBitrateENS_14AudioParamCombE",
+          "local_target": "0xd1338",
+          "args_x0_x4": [
+            "0x0",
+            "0xc",
+            "0x0",
+            "0x0",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd13e4",
+          "return_x0": "0x0"
+        },
+        {
+          "PLT": "0x83800",
+          "symbol": "_ZN3mpr5pconv24ConvertFrameRateForCodecEN9DefStruct9FrameRateEPNS_11FramePerSecEPhS5_",
+          "local_target": "0x2c0d04",
+          "args_x0_x4": [
+            "0x3",
+            "0x1002fff4",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "return_instruction": "0x2c0d3c",
+          "return_x0": "0x1"
+        },
+        {
+          "PLT": "0x80ca0",
+          "symbol": "_ZN3mpr21GetAudioOutputChannelEh",
+          "local_target": "0xcf984",
+          "args_x0_x4": [
+            "0x0",
+            "0x1002fff4",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xcfa24",
+          "return_x0": "0x1"
+        },
+        {
+          "PLT": "0x82d10",
+          "symbol": "_ZN3mpr35ConvertPictureQualityDefStructToMprEj",
+          "local_target": "0xd0758",
+          "args_x0_x4": [
+            "0xc",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd07f4",
+          "return_x0": "0x31"
+        },
+        {
+          "PLT": "0x7dea0",
+          "symbol": "_ZN3mpr14GetVideoAspectENS_14VideoParamCombE",
+          "local_target": "0xd0d1c",
+          "args_x0_x4": [
+            "0x7",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd0ddc",
+          "return_x0": "0x1"
+        },
+        {
+          "PLT": "0x7e3d0",
+          "symbol": "_ZN3mpr32ConvertVideoAspectForAspectRatioEN9DefStruct11VideoAspectE",
+          "local_target": "0xd0800",
+          "args_x0_x4": [
+            "0x1",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd089c",
+          "return_x0": "0x3"
+        },
+        {
+          "PLT": "0x7ba40",
+          "symbol": "_ZN3mpr15GetChromaFormatENS_14VideoParamCombE",
+          "local_target": "0xd11b0",
+          "args_x0_x4": [
+            "0x7",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd1268",
+          "return_x0": "0x2"
+        },
+        {
+          "PLT": "0x7c990",
+          "symbol": "_ZN3mpr14GetVideoBitLenENS_14VideoParamCombE",
+          "local_target": "0xd1274",
+          "args_x0_x4": [
+            "0x7",
+            "0xc",
+            "0x1002fff2",
+            "0x1002fff3",
+            "0x0"
+          ]
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd1334",
+          "return_x0": "0x1"
+        },
+        {
+          "stub": "0xc8c70"
+        },
+        {
+          "return_instruction": "0xd1650",
+          "return_x0": "0x0"
+        }
+      ],
+      "guest_write_count": 235,
+      "elapsed_seconds": 0.006499,
+      "VideoParamComb": 7,
+      "FrameRate": 3,
+      "VQuality": 12,
+      "packet_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000b0040000000000000000000000000000b00400000000000000000000000000000003000000000000000000000000000000000000000000000000000000010f00000f70080000000000000000000000000000000001000000030131030000000000000000000000000000000002010000",
+      "input_buffer": "0x11000000",
+      "output_buffer": "0x11002000",
+      "input_write": {
+        "offset": "0x764",
+        "hex": "070000000c0000000300000000000000",
+        "fields": [
+          "VideoParamComb",
+          "VQuality",
+          "FrameRate",
+          "AudioParamComb"
+        ]
+      },
+      "initial_buffers": "Unicorn zero-filled scratch; only the stated input fields are host-written; output remains zero until guest writes",
+      "guest_packet_write_trace": [
+        {
+          "pc": "0xd1478",
+          "packet_offset": "0x0",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1480",
+          "packet_offset": "0x8",
+          "size": 4,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1488",
+          "packet_offset": "0x10",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1490",
+          "packet_offset": "0x18",
+          "size": 4,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1498",
+          "packet_offset": "0x30",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd149c",
+          "packet_offset": "0x20",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd14a4",
+          "packet_offset": "0x28",
+          "size": 2,
+          "value_hex": "0x4b0"
+        },
+        {
+          "pc": "0xd14a8",
+          "packet_offset": "0x38",
+          "size": 2,
+          "value_hex": "0x4b0"
+        },
+        {
+          "pc": "0xd14b0",
+          "packet_offset": "0x40",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd14b8",
+          "packet_offset": "0x48",
+          "size": 2,
+          "value_hex": "0x300"
+        },
+        {
+          "pc": "0xd14c0",
+          "packet_offset": "0x50",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd14c8",
+          "packet_offset": "0x58",
+          "size": 8,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1654",
+          "packet_offset": "0x64",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1658",
+          "packet_offset": "0x86",
+          "size": 2,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd165c",
+          "packet_offset": "0x85",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1508",
+          "packet_offset": "0x65",
+          "size": 1,
+          "value_hex": "0x1"
+        },
+        {
+          "pc": "0xd1518",
+          "packet_offset": "0x66",
+          "size": 1,
+          "value_hex": "0xf"
+        },
+        {
+          "pc": "0xd1520",
+          "packet_offset": "0x68",
+          "size": 2,
+          "value_hex": "0xf00"
+        },
+        {
+          "pc": "0xd1528",
+          "packet_offset": "0x6a",
+          "size": 2,
+          "value_hex": "0x870"
+        },
+        {
+          "pc": "0xd1538",
+          "packet_offset": "0x7b",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1554",
+          "packet_offset": "0x80",
+          "size": 1,
+          "value_hex": "0x3"
+        },
+        {
+          "pc": "0xd155c",
+          "packet_offset": "0x81",
+          "size": 1,
+          "value_hex": "0x1"
+        },
+        {
+          "pc": "0xd1568",
+          "packet_offset": "0x7c",
+          "size": 1,
+          "value_hex": "0x1"
+        },
+        {
+          "pc": "0xd1580",
+          "packet_offset": "0x7d",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1594",
+          "packet_offset": "0x7f",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15a0",
+          "packet_offset": "0x82",
+          "size": 1,
+          "value_hex": "0x31"
+        },
+        {
+          "pc": "0xd15b0",
+          "packet_offset": "0x84",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15b4",
+          "packet_offset": "0x83",
+          "size": 1,
+          "value_hex": "0x3"
+        },
+        {
+          "pc": "0xd15b8",
+          "packet_offset": "0x88",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15bc",
+          "packet_offset": "0x8b",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15c0",
+          "packet_offset": "0x89",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd1664",
+          "packet_offset": "0x8a",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15dc",
+          "packet_offset": "0x8c",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15e0",
+          "packet_offset": "0x8d",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15e4",
+          "packet_offset": "0x8e",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15e8",
+          "packet_offset": "0x8f",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15ec",
+          "packet_offset": "0x92",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15f0",
+          "packet_offset": "0x93",
+          "size": 1,
+          "value_hex": "0x0"
+        },
+        {
+          "pc": "0xd15f8",
+          "packet_offset": "0x94",
+          "size": 1,
+          "value_hex": "0x2"
+        },
+        {
+          "pc": "0xd1604",
+          "packet_offset": "0x95",
+          "size": 1,
+          "value_hex": "0x1"
+        }
+      ],
+      "fields": {
+        "file_format_65": 1,
+        "codec_66": 15,
+        "width": 3840,
+        "height": 2160,
+        "frame_enum_80": 3,
+        "ntsc_flag_81": 1,
+        "quality_enum_82": 49,
+        "color_format_94": 2,
+        "bit_depth_95": 1
+      }
+    }
+  ],
+  "negative_HD422_control": {
+    "test": "SetEncOpenParam",
+    "entry": "0xd13f8",
+    "args": [
+      285212672,
+      285220864
+    ],
+    "reason": "returned",
+    "steps": 601,
+    "return_u32": 0,
+    "calls": [
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "PLT": "0x82c00",
+        "symbol": "_ZN3mpr19GetCodecAudioFormatEjj",
+        "local_target": "0xcf7bc",
+        "args_x0_x4": [
+          "0x0",
+          "0x1",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xcf880",
+        "return_x0": "0x1"
+      },
+      {
+        "PLT": "0x7b7e0",
+        "symbol": "_ZN3mpr24ConvertVideoCodecToCodecEN9DefStruct10VideoCodecENS0_12GopStructureE",
+        "local_target": "0xcf884",
+        "args_x0_x4": [
+          "0x1",
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xcf93c",
+        "return_x0": "0xf"
+      },
+      {
+        "PLT": "0x80ac0",
+        "symbol": "_ZN3mpr15GetAudioBitrateENS_14AudioParamCombE",
+        "local_target": "0xd1338",
+        "args_x0_x4": [
+          "0x0",
+          "0xc",
+          "0x0",
+          "0x0",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd13e4",
+        "return_x0": "0x0"
+      },
+      {
+        "PLT": "0x83800",
+        "symbol": "_ZN3mpr5pconv24ConvertFrameRateForCodecEN9DefStruct9FrameRateEPNS_11FramePerSecEPhS5_",
+        "local_target": "0x2c0d04",
+        "args_x0_x4": [
+          "0x3",
+          "0x1002fff4",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "return_instruction": "0x2c0d3c",
+        "return_x0": "0x1"
+      },
+      {
+        "PLT": "0x80ca0",
+        "symbol": "_ZN3mpr21GetAudioOutputChannelEh",
+        "local_target": "0xcf984",
+        "args_x0_x4": [
+          "0x0",
+          "0x1002fff4",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xcfa24",
+        "return_x0": "0x1"
+      },
+      {
+        "PLT": "0x82d10",
+        "symbol": "_ZN3mpr35ConvertPictureQualityDefStructToMprEj",
+        "local_target": "0xd0758",
+        "args_x0_x4": [
+          "0x6",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd07f4",
+        "return_x0": "0x16"
+      },
+      {
+        "PLT": "0x7dea0",
+        "symbol": "_ZN3mpr14GetVideoAspectENS_14VideoParamCombE",
+        "local_target": "0xd0d1c",
+        "args_x0_x4": [
+          "0x8",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd0ddc",
+        "return_x0": "0xff"
+      },
+      {
+        "PLT": "0x7e3d0",
+        "symbol": "_ZN3mpr32ConvertVideoAspectForAspectRatioEN9DefStruct11VideoAspectE",
+        "local_target": "0xd0800",
+        "args_x0_x4": [
+          "0xff",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd089c",
+        "return_x0": "0x0"
+      },
+      {
+        "PLT": "0x7ba40",
+        "symbol": "_ZN3mpr15GetChromaFormatENS_14VideoParamCombE",
+        "local_target": "0xd11b0",
+        "args_x0_x4": [
+          "0x8",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd1268",
+        "return_x0": "0xfe"
+      },
+      {
+        "PLT": "0x7c990",
+        "symbol": "_ZN3mpr14GetVideoBitLenENS_14VideoParamCombE",
+        "local_target": "0xd1274",
+        "args_x0_x4": [
+          "0x8",
+          "0xc",
+          "0x1002fff2",
+          "0x1002fff3",
+          "0x0"
+        ]
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd1334",
+        "return_x0": "0xfe"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xd1650",
+        "return_x0": "0x0"
+      }
+    ],
+    "guest_write_count": 235,
+    "elapsed_seconds": 0.00317,
+    "VideoParamComb": 8,
+    "FrameRate": 3,
+    "VQuality": 6,
+    "packet_hex": "00000000000000000000000000000000000000000000000000000000000000000000000000000000b0040000000000000000000000000000b00400000000000000000000000000000003000000000000000000000000000000000000000000000000000000010f008007380400000000000000000000000000000000010000000301160000000000000000000000000000000000fefe0000",
+    "input_buffer": "0x11000000",
+    "output_buffer": "0x11002000",
+    "input_write": {
+      "offset": "0x764",
+      "hex": "08000000060000000300000000000000",
+      "fields": [
+        "VideoParamComb",
+        "VQuality",
+        "FrameRate",
+        "AudioParamComb"
+      ]
+    },
+    "initial_buffers": "Unicorn zero-filled scratch; only the stated input fields are host-written; output remains zero until guest writes",
+    "guest_packet_write_trace": [
+      {
+        "pc": "0xd1478",
+        "packet_offset": "0x0",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1480",
+        "packet_offset": "0x8",
+        "size": 4,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1488",
+        "packet_offset": "0x10",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1490",
+        "packet_offset": "0x18",
+        "size": 4,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1498",
+        "packet_offset": "0x30",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd149c",
+        "packet_offset": "0x20",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd14a4",
+        "packet_offset": "0x28",
+        "size": 2,
+        "value_hex": "0x4b0"
+      },
+      {
+        "pc": "0xd14a8",
+        "packet_offset": "0x38",
+        "size": 2,
+        "value_hex": "0x4b0"
+      },
+      {
+        "pc": "0xd14b0",
+        "packet_offset": "0x40",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd14b8",
+        "packet_offset": "0x48",
+        "size": 2,
+        "value_hex": "0x300"
+      },
+      {
+        "pc": "0xd14c0",
+        "packet_offset": "0x50",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd14c8",
+        "packet_offset": "0x58",
+        "size": 8,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1654",
+        "packet_offset": "0x64",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1658",
+        "packet_offset": "0x86",
+        "size": 2,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd165c",
+        "packet_offset": "0x85",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1508",
+        "packet_offset": "0x65",
+        "size": 1,
+        "value_hex": "0x1"
+      },
+      {
+        "pc": "0xd1518",
+        "packet_offset": "0x66",
+        "size": 1,
+        "value_hex": "0xf"
+      },
+      {
+        "pc": "0xd1520",
+        "packet_offset": "0x68",
+        "size": 2,
+        "value_hex": "0x780"
+      },
+      {
+        "pc": "0xd1528",
+        "packet_offset": "0x6a",
+        "size": 2,
+        "value_hex": "0x438"
+      },
+      {
+        "pc": "0xd1538",
+        "packet_offset": "0x7b",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1554",
+        "packet_offset": "0x80",
+        "size": 1,
+        "value_hex": "0x3"
+      },
+      {
+        "pc": "0xd155c",
+        "packet_offset": "0x81",
+        "size": 1,
+        "value_hex": "0x1"
+      },
+      {
+        "pc": "0xd1568",
+        "packet_offset": "0x7c",
+        "size": 1,
+        "value_hex": "0x1"
+      },
+      {
+        "pc": "0xd1580",
+        "packet_offset": "0x7d",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1594",
+        "packet_offset": "0x7f",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15a0",
+        "packet_offset": "0x82",
+        "size": 1,
+        "value_hex": "0x16"
+      },
+      {
+        "pc": "0xd15b0",
+        "packet_offset": "0x84",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15b4",
+        "packet_offset": "0x83",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15b8",
+        "packet_offset": "0x88",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15bc",
+        "packet_offset": "0x8b",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15c0",
+        "packet_offset": "0x89",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd1664",
+        "packet_offset": "0x8a",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15dc",
+        "packet_offset": "0x8c",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15e0",
+        "packet_offset": "0x8d",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15e4",
+        "packet_offset": "0x8e",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15e8",
+        "packet_offset": "0x8f",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15ec",
+        "packet_offset": "0x92",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15f0",
+        "packet_offset": "0x93",
+        "size": 1,
+        "value_hex": "0x0"
+      },
+      {
+        "pc": "0xd15f8",
+        "packet_offset": "0x94",
+        "size": 1,
+        "value_hex": "0xfe"
+      },
+      {
+        "pc": "0xd1604",
+        "packet_offset": "0x95",
+        "size": 1,
+        "value_hex": "0xfe"
+      }
+    ],
+    "fields": {
+      "file_format_65": 1,
+      "codec_66": 15,
+      "width": 1920,
+      "height": 1080,
+      "frame_enum_80": 3,
+      "ntsc_flag_81": 1,
+      "quality_enum_82": 22,
+      "color_format_94": 254,
+      "bit_depth_95": 254
+    }
+  },
+  "negative_invalid_frame_control": {
+    "test": "CheckMovieRecParam",
+    "entry": "0xcc4d4",
+    "args": [
+      285212672
+    ],
+    "reason": "returned",
+    "steps": 52,
+    "return_u32": 3,
+    "calls": [
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "stub": "0xc8c70"
+      },
+      {
+        "return_instruction": "0xcc57c",
+        "return_x0": "0x3"
+      }
+    ],
+    "guest_write_count": 19,
+    "elapsed_seconds": 0.000403,
+    "VideoParamComb": 6,
+    "FrameRate": 12,
+    "VQuality": 6,
+    "accepted": false
+  },
+  "unresolved": [
+    "Actual settings model setter to real recording-start entry",
+    "Coherent camera UI/model configuration",
+    "Hardware encoder accepts Open/Start packet",
+    "Encoded HEVC file and VPS/SPS/PPS, GOP/timestamps/audio/thermal validation",
+    "Signed update package and camera restore/flash safety"
+  ]
+}

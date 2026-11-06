@@ -1,0 +1,199 @@
+{
+  "schema": "fx3-original-shell-child-profile-v1",
+  "source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+  "original_ranges": [
+    {
+      "name": "cmd_debug",
+      "source": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "start": 33728,
+      "bytes": 64,
+      "file_offset": 33728,
+      "sha256": "7b65c3adf2ae86a3885712f23e069d6ebb8a9c6c45639143509c79c5f3e1fd59",
+      "output": "raw/cmd_debug"
+    },
+    {
+      "name": "sys_set_timeofday",
+      "source": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "start": 31568,
+      "bytes": 216,
+      "file_offset": 31568,
+      "sha256": "4e0f933410b69cfea49bf39d638bd929fe325312cd1b756a14ab80f620c1e8a5",
+      "output": "raw/sys_set_timeofday"
+    },
+    {
+      "name": "_ZN13CShellExecute12ExecShellNewEPc",
+      "source": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "start": 27788,
+      "bytes": 156,
+      "file_offset": 27788,
+      "sha256": "a4207d89818294e9f3c3c1dbeb08471f02bdc5ef8a20ab18355ae344927deca1",
+      "output": "raw/_ZN13CShellExecute12ExecShellNewEPc"
+    },
+    {
+      "name": "shell-path",
+      "source": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "start": 198407,
+      "bytes": 8,
+      "file_offset": 198407,
+      "sha256": "ae112ed43be9bdf809d8ab7fca32e5c3560ff72f13631ad395ee967c430d9b84",
+      "output": "raw/shell-path"
+    },
+    {
+      "name": "shell-c-option",
+      "source": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "start": 198415,
+      "bytes": 3,
+      "file_offset": 198415,
+      "sha256": "f1e26f2908d6e66fb35351e2b720fb7dd25e28b7cc91bd87e776cca6874bb75e",
+      "output": "raw/shell-c-option"
+    },
+    {
+      "name": "date-format",
+      "source": "work/sony-firmware-20261024/stage184-community-recovery-and-standalone-service/evidence/standalone-commands/originals/lib/libJiritsu.so",
+      "source_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+      "start": 204397,
+      "bytes": 39,
+      "file_offset": 204397,
+      "sha256": "fc47048391d40de2d323a633569298f9d279ed7ecc17312376514c84ec2ad729",
+      "output": "raw/date-format"
+    }
+  ],
+  "raw_instruction_checks": [
+    {
+      "VA": "0x6c90",
+      "add_VA": "0x6c94",
+      "adrp_word": "0xd0000141",
+      "add_word": "0x911c1c21",
+      "resolves_to": "0x30707"
+    },
+    {
+      "VA": "0x6ca0",
+      "add_VA": "0x6ca4",
+      "adrp_word": "0xd0000141",
+      "add_word": "0x911c3c21",
+      "resolves_to": "0x3070f"
+    },
+    {
+      "VA": "0x6c9c",
+      "word": "0xf90013a1",
+      "meaning": "argv0=/bin/sh stored at frame+0x20"
+    },
+    {
+      "VA": "0x6cac",
+      "word": "0xf90017a1",
+      "meaning": "argv1=-c stored at frame+0x28"
+    },
+    {
+      "VA": "0x6ca8",
+      "word": "0xa9037fa0",
+      "meaning": "argv2=input command,argv3=null stored at frame+0x30/+0x38"
+    },
+    {
+      "VA": "0x6cc8",
+      "word": "0xf94013a0",
+      "meaning": "execv pathname loads argv0"
+    },
+    {
+      "VA": "0x6ccc",
+      "word": "0x910083a1",
+      "meaning": "execv argv points at frame+0x20"
+    },
+    {
+      "VA": "0x6cb0",
+      "word": "0x97fffe58",
+      "PLT_target": "0x6610",
+      "callee": "fork"
+    },
+    {
+      "VA": "0x6cc0",
+      "word": "0x97fffcb8",
+      "PLT_target": "0x5fa0",
+      "callee": "_exit"
+    },
+    {
+      "VA": "0x6cd0",
+      "word": "0x97fffbbc",
+      "PLT_target": "0x5bc0",
+      "callee": "execv"
+    },
+    {
+      "VA": "0x6ce0",
+      "word": "0x97fffbec",
+      "PLT_target": "0x5c90",
+      "callee": "waitpid"
+    },
+    {
+      "VA": "0x83c4",
+      "word": "0x52800345",
+      "register": 5,
+      "value": 26
+    },
+    {
+      "VA": "0x83c8",
+      "word": "0x52800544",
+      "register": 4,
+      "value": 42
+    },
+    {
+      "VA": "0x83cc",
+      "word": "0x528002a3",
+      "register": 3,
+      "value": 21
+    },
+    {
+      "VA": "0x83dc",
+      "word": "0x52800082",
+      "register": 2,
+      "value": 4
+    },
+    {
+      "VA": "0x83e0",
+      "word": "0x528000e1",
+      "register": 1,
+      "value": 7
+    },
+    {
+      "VA": "0x83e4",
+      "word": "0x5280fc20",
+      "register": 0,
+      "value": 2017
+    }
+  ],
+  "execv_path": "/bin/sh",
+  "argv": [
+    "/bin/sh",
+    "-c",
+    "/bin/date -s 070421422017.26"
+  ],
+  "kernel_cmdline_hex": "2f62696e2f7368002d63002f62696e2f64617465202d73203037303432313432323031372e323600",
+  "kernel_cmdline_bytes": 40,
+  "direct_date_is_not_first_exec": true,
+  "reference_self_executable": {
+    "image": "nflasha7.img",
+    "image_sha256": "ceca23d253350e65df9c7c976f06e545ad41a2d8f272d28fc1e73fcc576ddba7",
+    "inode": 33,
+    "bytes": 423000,
+    "sha256": "c3297a7086efe9a001c39fa98d74d125992cf3225cf353ab6ff2238d827c7799",
+    "output": "originals/busybox"
+  },
+  "reference_parent_profile": {
+    "image": "nflasha15.img",
+    "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+    "inode": 80972,
+    "bytes": 40920,
+    "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91",
+    "output": "originals/im.elf"
+  },
+  "actual_camera_parent_identity_observed": false,
+  "parent_im_profile_is_fail_closed_candidate_assumption": true,
+  "raw_cmdline_and_backing_executable_hash_not_exclusive_origin_or_loaded_memory_attestation": true,
+  "original_clock_side_effect_still_possible_if_unintercepted": true,
+  "fork_failure_parent_exit_and_unbounded_wait_not_repaired": true,
+  "original_or_guest_Sony_execution": false,
+  "camera_operations": 0
+}

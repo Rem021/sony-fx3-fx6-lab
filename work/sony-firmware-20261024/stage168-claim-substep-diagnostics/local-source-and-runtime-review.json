@@ -1,0 +1,111 @@
+{
+  "created_utc": "2026-10-28T13:33:16.404165+00:00",
+  "current_checks": {
+    "internal-stage-tests.json": {
+      "status": "PASS_USER_INTERNAL_STAGING_NOT_ADMIN_OR_USB_ACCEPTANCE",
+      "checks": 13
+    },
+    "hardened-entry-tests.json": {
+      "status": "PASS_HARDENED_FIXTURE_LAUNCH_NOT_ROOT_OR_USB_ACCEPTANCE",
+      "checks": 13
+    },
+    "recorded-observer-tests.json": {
+      "status": "PASS_RECORDED_OBSERVER_AND_ACTUAL_OWN_PARENT_EXIT_NOT_ROOT_OR_CAMERA_ACCEPTANCE",
+      "checks": 5
+    },
+    "claim-trace-memory-tests.json": {
+      "status": "PASS_EXACT_TRACE_RETURN_BITS_ORDER_CAPACITY_AND_BUDGET",
+      "checks": 3
+    }
+  },
+  "total_current_checks": 34,
+  "unchanged_runtime_sources": [
+    {
+      "path": "owner_core.c",
+      "sha256": "0b3fcc313b6aa8eb24b7bcd8b54ba2159eeefe60b40cc35e35e6958fb638ab53"
+    },
+    {
+      "path": "owner_entry_main.c",
+      "sha256": "c9d7b7cbec73f4d6388a85fe9f727cea1ef6718a748fd4d4abd24a1e3c9571b4"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "eda8fd18ba154f66a26077d48acd616151096cecab4f4dcbfea54f87edcd924e"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "entry_shared.h",
+      "sha256": "43d4be1b325bcc5a8940054e9d6e8f917c72022537b34458f094398e26616948"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "00dff89176cbe9073f102aebeefb354a770316c5e3a866e93ac2aece8b4d296c"
+    },
+    {
+      "path": "entry_binding.py",
+      "sha256": "2748a25a6488112f3139a3ac169e298ee0d972b51616e3bfbd5cb939b95aaef7"
+    },
+    {
+      "path": "owner_binding.py",
+      "sha256": "b8f5e4170ef40e38c9d05c09909a99204b49baab476de1b1e4beeed2ed6d8a6f"
+    },
+    {
+      "path": "owner_supervisor.py",
+      "sha256": "7f9642d723811d7570089fd2cd9d49c7430bd1178b5d5601e57935952652b1bb"
+    },
+    {
+      "path": "cache_observer.py",
+      "sha256": "95f20182884ac592fa79c992356d082355396b0709acf86f87772b1a92081971"
+    }
+  ],
+  "trace_derivation": "provider-trace-derivation.json",
+  "native_provider_API_call_parameters_count_and_order_unchanged": true,
+  "new_trace_stored_inside_existing_SHA_bound_result": true,
+  "shared_ABI_entry_schema_and_event_capacity_unchanged": true,
+  "maximum_conservative_events": 61,
+  "event_capacity": 64,
+  "new_root_or_active_camera_operations": 0,
+  "new_grant_directory_and_claim_absent": true,
+  "live_authority_denial": "fixed trial release, grant or target missing",
+  "fixture_helper_kernel_identities_absent": [
+    1828,
+    1773,
+    1730,
+    1820,
+    1814,
+    1834,
+    1728,
+    1770,
+    1729
+  ],
+  "prior_consumed_claims_preserved": [
+    {
+      "path": "work/sony-firmware-20261024/stage156-hardened-owner-launch-and-ack/physical-grant-attempt.claim",
+      "sha256": "ae3e6eb503d37a659267794e9468872da5b052bf27fc683af4d664ceacecd07f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage164-internal-staged-owner-launch/physical-grant-attempt.claim",
+      "sha256": "3bce6825fce44860b7b49e49e7d02f1ef1ce0784da52b3a232136e49b0fc3e44"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage166-cross-uid-kernel-identity/physical-grant-attempt.claim",
+      "sha256": "586f703ed0bc35473e23990a01d1ab25f08ec28d7ae75f6af789a58892d3aa39"
+    }
+  ],
+  "native_sha256": "661e679e725a6b5cc9431c63b747fb1d15412b05856663461bb856c232b00651",
+  "bundle_sha256": "0bfe5210a392dd0b57752e8e5d67e23f2597a34f24e7609b8bad37b80dd0ca72",
+  "admin_source_parsed_only": true,
+  "reuse_without_recounting": [
+    "166 kernel-identity-tests.json:6 host checks; identity implementation byte-identical",
+    "167 real root PID/UID/birth/path+ACK and capture/return attempt; does not prove04 acceptance"
+  ],
+  "remaining_limits": [
+    "NoResources exact call is not yet known;04 adds diagnostics, not a proven fix.",
+    "Original03 immediate UNKNOWN remains; later cached driver convergence and user normal screen are separate evidence.",
+    "An identical diagnostic attempt may fail or block; no reset/force kill/retry.",
+    "No valid camera backup/restore, independent rescue, target recording, long-run or cold-boot acceptance exists."
+  ]
+}

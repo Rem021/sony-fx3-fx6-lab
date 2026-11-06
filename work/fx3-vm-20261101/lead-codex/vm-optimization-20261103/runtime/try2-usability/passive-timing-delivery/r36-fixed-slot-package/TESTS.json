@@ -1,0 +1,51 @@
+{
+  "scope": "host validators only; no target load/execute",
+  "count": 9,
+  "tests": [
+    {
+      "name": "oversized_ui_slot",
+      "rejected": true,
+      "reason": "release exceeds ui fixed slot"
+    },
+    {
+      "name": "wrong_original_hash",
+      "rejected": true,
+      "reason": "pinned hash mismatch: /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r36-fixed-slot-package/raw/fx3-ui-r35.so"
+    },
+    {
+      "name": "write_outside_authorized_output",
+      "rejected": true,
+      "reason": "write outside authorized output"
+    },
+    {
+      "name": "path_traversal",
+      "rejected": true,
+      "reason": "absolute non-traversing path required"
+    },
+    {
+      "name": "wrong_archive_member",
+      "rejected": true,
+      "reason": "wrong/missing slot member: simulation/fx3-ui-gate-v1.so"
+    },
+    {
+      "name": "out_of_bounds_or_shifted_slot",
+      "rejected": true,
+      "reason": "slot header/offset/size/mode mismatch"
+    },
+    {
+      "name": "machine_instruction_change",
+      "rejected": true,
+      "reason": "SHF_ALLOC bytes changed: .text"
+    },
+    {
+      "name": "program_header_change",
+      "rejected": true,
+      "reason": "ELF program headers changed"
+    },
+    {
+      "name": "entry_change",
+      "rejected": true,
+      "reason": "ELF header changed outside section-table fields"
+    }
+  ]
+}

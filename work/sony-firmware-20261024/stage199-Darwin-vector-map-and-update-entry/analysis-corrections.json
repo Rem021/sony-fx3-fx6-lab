@@ -1,0 +1,18 @@
+{
+  "scope": "unsealed static analysis only; no native/guest/device retries",
+  "corrections": [
+    {
+      "initial_check": "runtime slice ended0x442c",
+      "rejection": "cut a32bit Thumb instruction",
+      "corrected_end": "0x4430"
+    },
+    {
+      "initial_check": "expected CBZ word mistakenly transcribed0xb918",
+      "observed_original": "0xb118",
+      "action": "corrected expected value; independent CBZ target field confirms0x879c"
+    }
+  ],
+  "invalid_proofs_accepted": false,
+  "source_modified": false,
+  "root_or_device_operations": 0
+}

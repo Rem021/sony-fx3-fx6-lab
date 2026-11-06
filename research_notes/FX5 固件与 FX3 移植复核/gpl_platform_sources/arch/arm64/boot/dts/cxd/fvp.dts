@@ -1,0 +1,33 @@
+/*
+ * ARM Ltd.
+ *
+ * ARMv8 Foundation model DTS (GICv3 configuration)
+ */
+#include <dt-bindings/arm/memtype.h>
+
+#include "../arm/foundation-v8.dtsi"
+#include "../arm/foundation-v8-gicv3.dtsi"
+#include "../arm/foundation-v8-spin-table.dtsi"
+
+/ {
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0x00000009 0x00000000 0 0x08000000>,
+		      <0x00000009 0x80000000 0 0x02000000>;
+	};
+
+	iomem@2f000000 {
+		device_type = "iomap";
+		physaddr = <0x00000000 0x2f000000>;
+		virt     = <0xffffffff 0x2f000000>;
+		size     = <0x00000000 0x01000000>;
+		memtype  = <MT_DEVICE_nGnRE>;
+	};
+
+	chosen {
+		stdout-path = "serial0";
+		bootargs = "debug earlycon console=ttyAMA0,115200n8 root=/dev/ram0 rootfstype=ext2 rw noatime init=/sbin/init malloc.debug=1 manage.irqd=129 heap_profile.records=1000 memrsv=1M@0x900000000 boottime=64K@0x900010000 klog.addr=0x900020000 klog.size=0x10000 memrsv=16M@0x903000000:uc memrsv=32M@0x980000000:uc memrsv=1M@0x902000000 tmonitor.addr=0x902000000 tmonitor.size=0x100000 tmonitor.mask=0";
+		linux,initrd-start = <0x9 0x01000000>;
+		linux,initrd-end   = <0x9 0x02000000>;
+	};
+};

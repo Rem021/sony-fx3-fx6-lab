@@ -1,0 +1,128 @@
+{
+  "source_sha256": "22e19c05a5816b6d358a8d037297a9472cc53230c2045051b830316c59902acd",
+  "functions": [
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocumentC1Ev",
+      "label": "Updater::Xml::DomDocument::DomDocument()",
+      "va": "0x8c90",
+      "bytes": 152,
+      "sha256": "0a8b14240b693f0676efd726d8c59bfe59dedce8f76103ae393d93b5b82c2843",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x8cac",
+          "target": "0x7320",
+          "label": "Updater::Xml::DomNode::DomNode(Updater::Xml::DomNode::NodeType)"
+        },
+        {
+          "site": "0x8cf4",
+          "target": "0x7880",
+          "label": "Updater::Xml::TiXmlString::operator=(char const*)"
+        },
+        {
+          "site": "0x8d14",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0x8d1c",
+          "target": "0x7470",
+          "label": "Updater::Xml::DomNode::~DomNode()"
+        },
+        {
+          "site": "0x8d24",
+          "target": "0x7800",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "disassembly": "xml-fragments/8c90.txt"
+    },
+    {
+      "symbol": "_ZN7Updater3Xml11DomDocument8loadFileEPKcNS0_13TiXmlEncodingE",
+      "label": "Updater::Xml::DomDocument::loadFile(char const*, Updater::Xml::TiXmlEncoding)",
+      "va": "0x9078",
+      "bytes": 292,
+      "sha256": "71a6a8c3589af4bb0da25b650b242d038426907b9dd71cd6f3262938f0ebdeab",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x909c",
+          "target": "0x7300",
+          "label": "strlen"
+        },
+        {
+          "site": "0x90c0",
+          "target": "0x7210",
+          "label": "operator new[](unsigned long)"
+        },
+        {
+          "site": "0x90ec",
+          "target": "0x7250",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x90f8",
+          "target": "0x7400",
+          "label": "Updater::Xml::TiXmlString::operator=(Updater::Xml::TiXmlString const&)"
+        },
+        {
+          "site": "0x90fc",
+          "target": "0x9114",
+          "label": null
+        },
+        {
+          "site": "0x9100",
+          "target": "0x76d0",
+          "label": "__cxa_throw_bad_array_new_length"
+        },
+        {
+          "site": "0x9110",
+          "target": "0x90d8",
+          "label": null
+        },
+        {
+          "site": "0x9124",
+          "target": "0x76c0",
+          "label": "fopen"
+        },
+        {
+          "site": "0x913c",
+          "target": "0x7220",
+          "label": "Updater::Xml::DomDocument::loadFile(_IO_FILE*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x9148",
+          "target": "0x73d0",
+          "label": "fclose"
+        },
+        {
+          "site": "0x914c",
+          "target": "0x916c",
+          "label": null
+        },
+        {
+          "site": "0x9164",
+          "target": "0x7550",
+          "label": "Updater::Xml::DomDocument::SetError(int, char const*, Updater::Xml::DomParsingData*, Updater::Xml::TiXmlEncoding)"
+        },
+        {
+          "site": "0x9170",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0x9190",
+          "target": "0x7560",
+          "label": "Updater::Xml::TiXmlString::quit()"
+        },
+        {
+          "site": "0x9198",
+          "target": "0x7800",
+          "label": "_Unwind_Resume"
+        }
+      ],
+      "disassembly": "xml-fragments/9078.txt"
+    }
+  ],
+  "scope": "Original symbol/FDE bounded functions, no XML input or loading executed."
+}

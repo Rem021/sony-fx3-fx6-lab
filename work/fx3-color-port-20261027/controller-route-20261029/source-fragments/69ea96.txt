@@ -1,0 +1,43 @@
+0069ea96 push       {r4, r5, r6, r7, lr}
+0069ea98 add        r7, sp, #0xc
+0069ea9a str        r8, [sp, #-0x4]!
+0069ea9e sub        sp, #0x10
+0069eaa0 mov        r4, r0
+0069eaa2 ldr        r0, [r7, #0x10]
+0069eaa4 mov        r6, r1
+0069eaa6 mov        r5, r2
+0069eaa8 mov        r8, r3
+0069eaaa ldr        r2, [r6, #0x20]
+0069eaac mov        r1, r4
+0069eaae mov        r3, r5
+0069eab0 str        r0, [sp, #0xc]
+0069eab2 ldr        r0, [r7, #0xc]
+0069eab4 str        r0, [sp, #8]
+0069eab6 ldr        r0, [r7, #8]
+0069eab8 strd       r8, r0, [sp]
+0069eabc movw       r0, #0xe420
+0069eac0 movt       r0, #0xee
+0069eac4 bl         #0x23e6d0
+0069eac8 movw       r0, #0x76c
+0069eacc mov        r1, r4
+0069eace movt       r0, #0x11e
+0069ead2 bl         #0x69e402
+0069ead6 cbz        r0, #0x69eb04
+0069ead8 movw       r1, #0xdc28
+0069eadc movw       r2, #0xddc8
+0069eae0 movs       r3, #0
+0069eae2 movt       r1, #0xba
+0069eae6 movt       r2, #0xba
+0069eaea bl         #0x4ec038
+0069eaee cbz        r0, #0x69eb04
+0069eaf0 mov        r1, r6
+0069eaf2 mov        r2, r5
+0069eaf4 mov        r3, r8
+0069eaf6 add        sp, #0x10
+0069eaf8 ldr        r8, [sp], #4
+0069eafc pop.w      {r4, r5, r6, r7, lr}
+0069eb00 b.w        #0x6a2b3a
+0069eb04 movs       r0, #2
+0069eb06 add        sp, #0x10
+0069eb08 ldr        r8, [sp], #4
+0069eb0c pop        {r4, r5, r6, r7, pc}

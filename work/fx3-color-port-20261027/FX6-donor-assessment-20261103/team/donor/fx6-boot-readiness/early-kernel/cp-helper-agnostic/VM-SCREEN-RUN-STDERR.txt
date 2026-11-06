@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/run_screen_once.py", line 53, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/run_screen_once.py", line 52, in main
+    else:print(run(s,ns.seconds))
+               ~~~^^^^^^^^^^^^^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/run_screen_once.py", line 30, in run
+    shot=rd/'screen.ppm';fr.qmp_send(qmp,qr,'screendump',3,{'filename':str(shot)})
+                         ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/fixed_runner.py", line 77, in qmp_send
+    if 'error' in data:raise RuntimeError('QMP '+repr(data['error']))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: QMP {'class': 'GenericError', 'desc': 'There is no console to take a screendump from'}

@@ -1,0 +1,71 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001c9ca8 <_ZN3mpr8capidtbl4InitEv>:
+  1c9ca8: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+  1c9cac: 52800080     	mov	w0, #0x4                // =4
+  1c9cb0: 52800101     	mov	w1, #0x8                // =8
+  1c9cb4: 910003fd     	mov	x29, sp
+  1c9cb8: a90153f3     	stp	x19, x20, [sp, #0x10]
+  1c9cbc: 9100e3b4     	add	x20, x29, #0x38
+  1c9cc0: f90013f5     	str	x21, [sp, #0x20]
+  1c9cc4: b000d133     	adrp	x19, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>
+  1c9cc8: 3900f3a0     	strb	w0, [x29, #0x3c]
+  1c9ccc: 52848200     	mov	w0, #0x2410             // =9232
+  1c9cd0: 3900f7bf     	strb	wzr, [x29, #0x3d]
+  1c9cd4: 790073a0     	strh	w0, [x29, #0x38]
+  1c9cd8: aa1403e0     	mov	x0, x20
+  1c9cdc: 3900fbbf     	strb	wzr, [x29, #0x3e]
+  1c9ce0: 3900ffbf     	strb	wzr, [x29, #0x3f]
+  1c9ce4: 790077bf     	strh	wzr, [x29, #0x3a]
+  1c9ce8: 97fff8ce     	bl	0x1c8020 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x1820>
+  1c9cec: b000d120     	adrp	x0, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>
+  1c9cf0: 91366261     	add	x1, x19, #0xd98
+  1c9cf4: 3936a01f     	strb	wzr, [x0, #0xda8]
+  1c9cf8: 52820000     	mov	w0, #0x1000             // =4096
+  1c9cfc: 97fc8a81     	bl	0xec700 <_ZN3mpr8capidtbl19SendCapIdTblCommandEjPm@plt>
+  1c9d00: 35000360     	cbnz	w0, 0x1c9d6c <_ZN3mpr8capidtbl4InitEv+0xc4>
+  1c9d04: f946ce60     	ldr	x0, [x19, #0xd98]
+  1c9d08: b000d135     	adrp	x21, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>
+  1c9d0c: 913682a1     	add	x1, x21, #0xda0
+  1c9d10: 9100c3b3     	add	x19, x29, #0x30
+  1c9d14: 97fff5f4     	bl	0x1c74e4 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xce4>
+  1c9d18: aa1303e1     	mov	x1, x19
+  1c9d1c: 52820020     	mov	w0, #0x1001             // =4097
+  1c9d20: 97fc8a78     	bl	0xec700 <_ZN3mpr8capidtbl19SendCapIdTblCommandEjPm@plt>
+  1c9d24: 35000240     	cbnz	w0, 0x1c9d6c <_ZN3mpr8capidtbl4InitEv+0xc4>
+  1c9d28: f946d2a0     	ldr	x0, [x21, #0xda0]
+  1c9d2c: 52808001     	mov	w1, #0x400              // =1024
+  1c9d30: b9000001     	str	w1, [x0]
+  1c9d34: 52807fe1     	mov	w1, #0x3ff              // =1023
+  1c9d38: b900101f     	str	wzr, [x0, #0x10]
+  1c9d3c: 29008401     	stp	w1, w1, [x0, #0x4]
+  1c9d40: b9000c01     	str	w1, [x0, #0xc]
+  1c9d44: b000d120     	adrp	x0, 0x1bee000 <_ZN3mpr10VpgManager6s_lockE+0x1a770>
+  1c9d48: b90d901f     	str	wzr, [x0, #0xd90]
+  1c9d4c: 97fff620     	bl	0x1c75cc <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0xdcc>
+  1c9d50: aa1303e1     	mov	x1, x19
+  1c9d54: 52820040     	mov	w0, #0x1002             // =4098
+  1c9d58: 97fc8a6a     	bl	0xec700 <_ZN3mpr8capidtbl19SendCapIdTblCommandEjPm@plt>
+  1c9d5c: 35000080     	cbnz	w0, 0x1c9d6c <_ZN3mpr8capidtbl4InitEv+0xc4>
+  1c9d60: aa1303e1     	mov	x1, x19
+  1c9d64: 52820060     	mov	w0, #0x1003             // =4099
+  1c9d68: 97fc8a66     	bl	0xec700 <_ZN3mpr8capidtbl19SendCapIdTblCommandEjPm@plt>
+  1c9d6c: 52800080     	mov	w0, #0x4                // =4
+  1c9d70: 52800101     	mov	w1, #0x8                // =8
+  1c9d74: 3900f7bf     	strb	wzr, [x29, #0x3d]
+  1c9d78: 3900f3a0     	strb	w0, [x29, #0x3c]
+  1c9d7c: 52848200     	mov	w0, #0x2410             // =9232
+  1c9d80: 3900fbbf     	strb	wzr, [x29, #0x3e]
+  1c9d84: 790073a0     	strh	w0, [x29, #0x38]
+  1c9d88: 528001e0     	mov	w0, #0xf                // =15
+  1c9d8c: 3900ffbf     	strb	wzr, [x29, #0x3f]
+  1c9d90: 790077a0     	strh	w0, [x29, #0x3a]
+  1c9d94: aa1403e0     	mov	x0, x20
+  1c9d98: 97fff8a2     	bl	0x1c8020 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x1820>
+  1c9d9c: f94013f5     	ldr	x21, [sp, #0x20]
+  1c9da0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+  1c9da4: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+  1c9da8: d65f03c0     	ret

@@ -1,0 +1,40 @@
+00017224 stp        x29, x30, [sp, #-0x30]!
+00017228 mov        x29, sp
+0001722c ldr        x0, [x0, #8]
+00017230 add        x1, x29, #0x30
+00017234 ldr        x2, [x0]
+00017238 ldr        x3, [x2, #0x48]
+0001723c mov        x2, #0x200
+00017240 str        x19, [sp, #0x10]
+00017244 str        xzr, [x1, #-8]!
+00017248 blr        x3
+0001724c cbz        x0, #0x172b4
+00017250 cmp        x0, #0x200
+00017254 ldr        x0, [x29, #0x28]
+00017258 b.eq       #0x172b8
+0001725c mov        w19, #2
+00017260 adrp       x2, #0x1b000
+00017264 movk       w19, #3, lsl #16
+00017268 adrp       x0, #0x1b000
+0001726c add        x2, x2, #0xec0 ; literal 'PackedFirmwareBuffer.cpp'
+00017270 mov        w1, w19
+00017274 add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00017278 mov        w3, #0x1b
+0001727c bl         #0x10930 ; printf
+00017280 mov        x0, #0x10
+00017284 bl         #0xfd80 ; __cxa_allocate_exception
+00017288 str        w19, [x0, #8]
+0001728c adrp       x1, #0x31000
+00017290 adrp       x2, #0x31000
+00017294 strb       wzr, [x0, #0xc]
+00017298 ldr        x1, [x1, #0xe30]
+0001729c ldr        x2, [x2, #0xe88]
+000172a0 add        x1, x1, #0x10
+000172a4 str        x1, [x0]
+000172a8 adrp       x1, #0x31000
+000172ac ldr        x1, [x1, #0xfc0]
+000172b0 bl         #0x10700 ; __cxa_throw
+000172b4 mov        x0, #0
+000172b8 ldr        x19, [sp, #0x10]
+000172bc ldp        x29, x30, [sp], #0x30
+000172c0 ret        

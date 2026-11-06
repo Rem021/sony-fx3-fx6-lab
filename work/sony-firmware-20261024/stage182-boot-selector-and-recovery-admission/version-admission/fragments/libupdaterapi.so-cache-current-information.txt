@@ -1,0 +1,38 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/lib/libupdaterapi.so
+# SHA256 2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7
+# VA [0x11664, 0x116f0) raw slice SHA256 05eae045eda169759d38e5f9a22d2f8a84a2feaf5d6b02e95c16b122c83005cd
+   11664: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+   11668: 910003fd     	mov	x29, sp
+   1166c: a90153f3     	stp	x19, x20, [sp, #0x10]
+   11670: aa0003f3     	mov	x19, x0
+   11674: f00000a0     	adrp	x0, 0x28000 <vtable for Updater::BodyLoaderModule+0x88>
+   11678: f90013f5     	str	x21, [sp, #0x20]
+   1167c: 9100e3b5     	add	x21, x29, #0x38
+   11680: 91004274     	add	x20, x19, #0x10
+   11684: 3900a661     	strb	w1, [x19, #0x29]
+   11688: f947c800     	ldr	x0, [x0, #0xf90]
+   1168c: 3900427f     	strb	wzr, [x19, #0x10]
+   11690: 91004000     	add	x0, x0, #0x10
+   11694: 3900a27f     	strb	wzr, [x19, #0x28]
+   11698: a9007e60     	stp	x0, xzr, [x19]
+   1169c: aa1503e0     	mov	x0, x21
+   116a0: 2902fe7f     	stp	wzr, wzr, [x19, #0x14]
+   116a4: 2903fe7f     	stp	wzr, wzr, [x19, #0x1c]
+   116a8: b900267f     	str	wzr, [x19, #0x24]
+   116ac: f9001a7f     	str	xzr, [x19, #0x30]
+   116b0: b9003a7f     	str	wzr, [x19, #0x38]
+   116b4: 97ffec6f     	bl	0xc870 <Updater::CurrentFirmware::CurrentFirmware()@plt>
+   116b8: aa1403e1     	mov	x1, x20
+   116bc: aa1503e0     	mov	x0, x21
+   116c0: 97ffee08     	bl	0xcee0 <Updater::CurrentFirmware::GetInformation(UpdaterAPI::firmware_information_t::information*)@plt>
+   116c4: aa1503e0     	mov	x0, x21
+   116c8: 97ffec9e     	bl	0xc940 <Updater::CurrentFirmware::IsValid()@plt>
+   116cc: 3900a260     	strb	w0, [x19, #0x28]
+   116d0: aa1503e0     	mov	x0, x21
+   116d4: 97ffebbb     	bl	0xc5c0 <Updater::CurrentFirmware::~CurrentFirmware()@plt>
+   116d8: f94013f5     	ldr	x21, [sp, #0x20]
+   116dc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   116e0: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+   116e4: d65f03c0     	ret
+   116e8: aa0003f3     	mov	x19, x0
+   116ec: aa1503e0     	mov	x0, x21

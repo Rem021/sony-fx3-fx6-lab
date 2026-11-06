@@ -1,0 +1,135 @@
+00018e28 stp        x29, x30, [sp, #-0x40]!
+00018e2c mov        x29, sp
+00018e30 stp        x19, x20, [sp, #0x10]
+00018e34 stp        x21, x22, [sp, #0x20]
+00018e38 cbz        x1, #0x18e4c
+00018e3c mov        w20, w0
+00018e40 ldr        x0, [x1, #0x18]
+00018e44 mov        x19, x1
+00018e48 cbnz       x0, #0x18fb0
+00018e4c mov        w19, #0x1a
+00018e50 mov        w3, #0x1c
+00018e54 movk       w19, #3, lsl #16
+00018e58 b          #0x18fcc
+00018e5c add        x2, x29, #0x40
+00018e60 adrp       x1, #0x1b000
+00018e64 add        x1, x1, #0xf36
+00018e68 str        xzr, [x2, #-0x10]!
+00018e6c bl         #0x10760 ; Updater::Xml::DomElement::queryStringAttribute
+00018e70 cbz        w0, #0x18e84
+00018e74 mov        w19, #2
+00018e78 mov        w3, #0x22
+00018e7c movk       w19, #3, lsl #16
+00018e80 b          #0x18fcc
+00018e84 ldr        x0, [x19]
+00018e88 ldr        x1, [x0, #0x28]
+00018e8c mov        x0, x19
+00018e90 blr        x1
+00018e94 mov        x21, x0
+00018e98 cbnz       x0, #0x18eac
+00018e9c mov        w19, #0x1a
+00018ea0 mov        w3, #0x26
+00018ea4 movk       w19, #3, lsl #16
+00018ea8 b          #0x18fcc
+00018eac ldr        x1, [x19, #0x38]
+00018eb0 adrp       x0, #0x1c000
+00018eb4 add        x0, x0, #0x17e
+00018eb8 add        x1, x1, #0x10
+00018ebc bl         #0x10530 ; strcmp
+00018ec0 mov        x2, x21
+00018ec4 ldr        x1, [x29, #0x30]
+00018ec8 cbnz       w0, #0x18f5c
+00018ecc mov        w0, w20
+00018ed0 bl         #0x105e0 ; Updater::DllPlugin::Execute
+00018ed4 uxtb       w20, w0
+00018ed8 cbz        w20, #0x19034
+00018edc add        x2, x29, #0x40
+00018ee0 adrp       x1, #0x1b000
+00018ee4 mov        x0, x21
+00018ee8 add        x1, x1, #0xf0c ; literal 'module'
+00018eec adrp       x19, #0x31000
+00018ef0 adrp       x21, #0x31000
+00018ef4 str        xzr, [x2, #-8]!
+00018ef8 adrp       x22, #0x31000
+00018efc bl         #0x10760 ; Updater::Xml::DomElement::queryStringAttribute
+00018f00 adrp       x2, #0x1c000
+00018f04 cbnz       w0, #0x19018
+00018f08 ldr        x4, [x29, #0x38]
+00018f0c ldrb       w0, [x4]
+00018f10 cbz        w0, #0x19018
+00018f14 cmp        w20, #0x50
+00018f18 adrp       x0, #0x1b000
+00018f1c b.le       #0x18f68
+00018f20 add        x2, x2, #0x117
+00018f24 mov        w1, w20
+00018f28 add        x0, x0, #0x881
+00018f2c mov        w3, #0x36
+00018f30 bl         #0x10930 ; printf
+00018f34 mov        x0, #0x10
+00018f38 bl         #0xfd80 ; __cxa_allocate_exception
+00018f3c ldr        x19, [x19, #0xe30]
+00018f40 mov        w2, #0xc
+00018f44 movk       w2, #3, lsl #16
+00018f48 add        x19, x19, #0x10
+00018f4c str        x19, [x0]
+00018f50 str        w2, [x0, #8]
+00018f54 strb       w20, [x0, #0xc]
+00018f58 b          #0x18fa4
+00018f5c mov        w0, w20
+00018f60 bl         #0x101c0 ; Updater::ShellPlugin::Execute
+00018f64 b          #0x18ed4
+00018f68 add        x2, x2, #0x117
+00018f6c add        x0, x0, #0x881
+00018f70 mov        w3, #0x34
+00018f74 mov        w1, #0x59
+00018f78 bl         #0x10930 ; printf
+00018f7c mov        x0, #0x10
+00018f80 bl         #0xfd80 ; __cxa_allocate_exception
+00018f84 ldr        x19, [x19, #0xe30]
+00018f88 mov        w2, #0xc
+00018f8c movk       w2, #3, lsl #16
+00018f90 add        x19, x19, #0x10
+00018f94 str        x19, [x0]
+00018f98 str        w2, [x0, #8]
+00018f9c mov        w2, #0x59
+00018fa0 strb       w2, [x0, #0xc]
+00018fa4 ldr        x2, [x21, #0xe88]
+00018fa8 ldr        x1, [x22, #0xfc0]
+00018fac b          #0x19014
+00018fb0 ldr        x1, [x0]
+00018fb4 ldr        x1, [x1, #0x28]
+00018fb8 blr        x1
+00018fbc cbnz       x0, #0x18e5c
+00018fc0 mov        w19, #0x1a
+00018fc4 mov        w3, #0x1f
+00018fc8 movk       w19, #3, lsl #16
+00018fcc adrp       x2, #0x1c000
+00018fd0 adrp       x0, #0x1b000
+00018fd4 add        x2, x2, #0x117 ; literal 'Plugin.cpp'
+00018fd8 mov        w1, w19
+00018fdc add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00018fe0 bl         #0x10930 ; printf
+00018fe4 mov        x0, #0x10
+00018fe8 bl         #0xfd80 ; __cxa_allocate_exception
+00018fec str        w19, [x0, #8]
+00018ff0 adrp       x1, #0x31000
+00018ff4 adrp       x2, #0x31000
+00018ff8 strb       wzr, [x0, #0xc]
+00018ffc ldr        x1, [x1, #0xe30]
+00019000 ldr        x2, [x2, #0xe88]
+00019004 add        x1, x1, #0x10
+00019008 str        x1, [x0]
+0001900c adrp       x1, #0x31000
+00019010 ldr        x1, [x1, #0xfc0]
+00019014 bl         #0x10700 ; __cxa_throw
+00019018 adrp       x0, #0x1b000
+0001901c add        x2, x2, #0x117
+00019020 mov        w1, w20
+00019024 add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00019028 mov        w3, #0x31
+0001902c bl         #0x10930 ; printf
+00019030 b          #0x18f34
+00019034 ldp        x19, x20, [sp, #0x10]
+00019038 ldp        x21, x22, [sp, #0x20]
+0001903c ldp        x29, x30, [sp], #0x40
+00019040 ret        

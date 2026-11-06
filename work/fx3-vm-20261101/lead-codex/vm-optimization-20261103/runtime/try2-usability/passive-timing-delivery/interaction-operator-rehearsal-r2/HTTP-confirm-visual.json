@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "headers": {
+      "Content-Type": "application/json",
+      "Referer": "",
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "X-Trial-Token": "[REDACTED]",
+      "sec-ch-ua": "\"Not:A-Brand\";v=\"8\", \"Chromium\";v=\"156\", \"Google Chrome\";v=\"156\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"macOS\""
+    },
+    "lifecycle": {
+      "effectiveLaunch": {
+        "browserLaunched": true,
+        "engine": "chrome",
+        "launchHash": 11677035664275010974
+      },
+      "launched": false,
+      "relaunchedBrowser": false,
+      "restartedBackground": false,
+      "restoreStatus": "not_configured",
+      "reused": true,
+      "saveStatus": "not_attempted"
+    },
+    "method": "POST",
+    "mimeType": "application/json",
+    "postData": "{\"request_id\":\"45215a54-a82b-4dca-968e-6bee50a60961\",\"step\":1,\"observed_sequence\":213,\"content_generation\":2,\"PNG_sha256\":\"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\"}",
+    "requestId": "98870.74",
+    "resourceType": "Fetch",
+    "responseBody": "{\"confirmed\": true, \"request_id\": \"45215a54-a82b-4dca-968e-6bee50a60961\", \"step\": 1, \"observed_sequence\": 213, \"content_generation\": 2, \"PNG_sha256\": \"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\", \"guest_input_written\": false}",
+    "responseHeaders": {
+      "Cache-Control": "no-store",
+      "Content-Length": "247",
+      "Content-Security-Policy": "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'",
+      "Content-Type": "application/json; charset=utf-8",
+      "Date": "Wed, 04 Nov 2026 21:38:59 GMT",
+      "Referrer-Policy": "no-referrer",
+      "Server": "BaseHTTP/0.6 Python/3.14.6",
+      "X-Content-Type-Options": "nosniff"
+    },
+    "status": 200,
+    "timestamp": 1793828339820,
+    "url": "http://127.0.0.1:64311/api/confirm-visual"
+  },
+  "error": null
+}

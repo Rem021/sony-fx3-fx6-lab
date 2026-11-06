@@ -1,0 +1,7 @@
+0xfe04a0e8: 7a080094 bl #0xfe04c2d0
+0xfe04a0ec: f50300aa mov x21, x0
+0xfe04a0f0: 000080d2 mov x0, #0
+0xfe04a0f4: 010080d2 mov x1, #0
+0xfe04a0f8: 85630094 bl #0xfe062f0c
+0xfe04a0fc: 00040091 add x0, x0, #1
+0xfe04a100: a00600f9 str x0, [x21, #8]

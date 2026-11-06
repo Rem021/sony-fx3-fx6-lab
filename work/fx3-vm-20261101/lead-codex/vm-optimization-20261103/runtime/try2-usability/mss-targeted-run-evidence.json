@@ -1,0 +1,566 @@
+{
+  "scope": "passive original app points plus synthetic input receiver; kernel UPM consumer unknown",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a",
+  "serial_sha256": "cab0891be83fa46d2f16096ba2d7f354609289357d21b5e2d70fde2f4d594ada",
+  "receipt_sha256": "5632702e11b6364c1d79ca03b669e4bf30c91d51a41b8658e04df8c9d147cb3b",
+  "candidate_sha256": "6dd9fee185c4ea1a8859a70cca19a3af7f5c6d8d0280f849fc60afd21eba30b4",
+  "observer_source_snapshot": [
+    {
+      "name": "run_trial_v12_mss_safe.py",
+      "sha256": "b16e1e4e807fc0e94c3adb2ac5036715830b5089895a0eeb3fa68d1cc83d3aed"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "gate_input_usability.py",
+      "sha256": "a491ad53babf720830d5bda45ecf6467b018cd79dae7247ebcce45bd854f37f6"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_web_v3_usability.py",
+      "sha256": "1335ac18a7f29291182255ae88cd100d6df289f5266507ca7adfcca8675187f4"
+    },
+    {
+      "name": "trial_ring_usability.py",
+      "sha256": "4dea2f0154844e24675726727fee5bdb7bbb50456dfd15288dfdb8d7daef1bdc"
+    },
+    {
+      "name": "trial_log_v4_mss.py",
+      "sha256": "4d57629fc8bf1c8d158bfcf101915b9edd626f7bfb11c55fc78fe634ef7d6645"
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    }
+  ],
+  "events": [
+    {
+      "line": "FX3_MSS_OBSERVER_BOUND module=A original_sequence=0x2d35168 original_wrapper_pre_call=0x2eb4f58 original_builder_entry=0x2eaf294 original_send_after=0x2eaf308 bounded_ring=256 sample_ms=100 original_words_guarded=1 passive=1",
+      "fields": {
+        "module": "A",
+        "original_sequence": "0x2d35168",
+        "original_wrapper_pre_call": "0x2eb4f58",
+        "original_builder_entry": "0x2eaf294",
+        "original_send_after": "0x2eaf308",
+        "bounded_ring": "256",
+        "sample_ms": "100",
+        "original_words_guarded": "1",
+        "passive": "1"
+      }
+    },
+    {
+      "line": "FX3_MSS_ORIGINAL_PATH seq=1 ns=44426468000 tid=442 point=0x2d35168 lr=0x7ef900f6fc x0=0x7f680d05c0 x1=0x7ef916d168 x2=0x7ee3197660 x3=0x2 x4=0x7ee3198040 x5=0x7ee3198148 source=0x7ee319725c raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1",
+      "fields": {
+        "seq": "1",
+        "ns": "44426468000",
+        "tid": "442",
+        "point": "0x2d35168",
+        "lr": "0x7ef900f6fc",
+        "x0": "0x7f680d05c0",
+        "x1": "0x7ef916d168",
+        "x2": "0x7ee3197660",
+        "x3": "0x2",
+        "x4": "0x7ee3198040",
+        "x5": "0x7ee3198148",
+        "source": "0x7ee319725c",
+        "raw16": "unreadable",
+        "readable": "0",
+        "bounded": "256",
+        "passive": "1",
+        "original_control_unchanged": "1"
+      }
+    },
+    {
+      "line": "FX3_MSS_ORIGINAL_PATH seq=2 ns=44427336000 tid=442 point=0x2eb4f58 lr=0x7ef92182c0 x0=0x4220 x1=0x920204 x2=0x81cf6198 x3=0 x4=0 x5=0 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1",
+      "fields": {
+        "seq": "2",
+        "ns": "44427336000",
+        "tid": "442",
+        "point": "0x2eb4f58",
+        "lr": "0x7ef92182c0",
+        "x0": "0x4220",
+        "x1": "0x920204",
+        "x2": "0x81cf6198",
+        "x3": "0",
+        "x4": "0",
+        "x5": "0",
+        "source": "0x81cf6198",
+        "raw16": "unreadable",
+        "readable": "0",
+        "bounded": "256",
+        "passive": "1",
+        "original_control_unchanged": "1"
+      }
+    },
+    {
+      "line": "FX3_MSS_ORIGINAL_PATH seq=3 ns=44427374992 tid=442 point=0x2eaf294 lr=0x7ef92ecf60 x0=0x80924220 x1=0x920204 x2=0x81cf6198 x3=0 x4=0 x5=0 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1",
+      "fields": {
+        "seq": "3",
+        "ns": "44427374992",
+        "tid": "442",
+        "point": "0x2eaf294",
+        "lr": "0x7ef92ecf60",
+        "x0": "0x80924220",
+        "x1": "0x920204",
+        "x2": "0x81cf6198",
+        "x3": "0",
+        "x4": "0",
+        "x5": "0",
+        "source": "0x81cf6198",
+        "raw16": "unreadable",
+        "readable": "0",
+        "bounded": "256",
+        "passive": "1",
+        "original_control_unchanged": "1"
+      }
+    },
+    {
+      "line": "FX3_MSS_ORIGINAL_PATH seq=4 ns=44428864000 tid=442 point=0x2eaf308 lr=0x7ef92e7308 x0=0 x1=0x7ee3198730 x2=0 x3=0x2 x4=0x7ee3198040 x5=0x7ee3198148 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1",
+      "fields": {
+        "seq": "4",
+        "ns": "44428864000",
+        "tid": "442",
+        "point": "0x2eaf308",
+        "lr": "0x7ef92e7308",
+        "x0": "0",
+        "x1": "0x7ee3198730",
+        "x2": "0",
+        "x3": "0x2",
+        "x4": "0x7ee3198040",
+        "x5": "0x7ee3198148",
+        "source": "0x81cf6198",
+        "raw16": "unreadable",
+        "readable": "0",
+        "bounded": "256",
+        "passive": "1",
+        "original_control_unchanged": "1"
+      }
+    },
+    {
+      "line": "FX3_MSS_ORIGINAL_PATH seq=5 ns=44462972000 tid=442 point=0x2d35168 lr=0x7ef900f6fc x0=0x7f680d1150 x1=0x7ef916d168 x2=0x7ee3197660 x3=0x2 x4=0x7ee3198040 x5=0x7ee3198148 source=0x7ee319725c raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1",
+      "fields": {
+        "seq": "5",
+        "ns": "44462972000",
+        "tid": "442",
+        "point": "0x2d35168",
+        "lr": "0x7ef900f6fc",
+        "x0": "0x7f680d1150",
+        "x1": "0x7ef916d168",
+        "x2": "0x7ee3197660",
+        "x3": "0x2",
+        "x4": "0x7ee3198040",
+        "x5": "0x7ee3198148",
+        "source": "0x7ee319725c",
+        "raw16": "unreadable",
+        "readable": "0",
+        "bounded": "256",
+        "passive": "1",
+        "original_control_unchanged": "1"
+      }
+    },
+    {
+      "line": "FX3_MSS_ORIGINAL_PATH seq=6 ns=44463876000 tid=442 point=0x2eb4f58 lr=0x7ef92182c0 x0=0x4220 x1=0x920204 x2=0x81cf6198 x3=0 x4=0 x5=0 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1",
+      "fields": {
+        "seq": "6",
+        "ns": "44463876000",
+        "tid": "442",
+        "point": "0x2eb4f58",
+        "lr": "0x7ef92182c0",
+        "x0": "0x4220",
+        "x1": "0x920204",
+        "x2": "0x81cf6198",
+        "x3": "0",
+        "x4": "0",
+        "x5": "0",
+        "source": "0x81cf6198",
+        "raw16": "unreadable",
+        "readable": "0",
+        "bounded": "256",
+        "passive": "1",
+        "original_control_unchanged": "1"
+      }
+    },
+    {
+      "line": "FX3_MSS_ORIGINAL_PATH seq=7 ns=44463916992 tid=442 point=0x2eaf294 lr=0x7ef92ecf60 x0=0x80924220 x1=0x920204 x2=0x81cf6198 x3=0 x4=0 x5=0 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1",
+      "fields": {
+        "seq": "7",
+        "ns": "44463916992",
+        "tid": "442",
+        "point": "0x2eaf294",
+        "lr": "0x7ef92ecf60",
+        "x0": "0x80924220",
+        "x1": "0x920204",
+        "x2": "0x81cf6198",
+        "x3": "0",
+        "x4": "0",
+        "x5": "0",
+        "source": "0x81cf6198",
+        "raw16": "unreadable",
+        "readable": "0",
+        "bounded": "256",
+        "passive": "1",
+        "original_control_unchanged": "1"
+      }
+    },
+    {
+      "line": "FX3_MSS_ORIGINAL_PATH seq=8 ns=44468196992 tid=442 point=0x2eaf308 lr=0x7ef92e7308 x0=0 x1=0x7ee3198730 x2=0 x3=0x2 x4=0x7ee3198040 x5=0x7ee3198148 source=0x81cf6198 raw16=unreadable readable=0 bounded=256 passive=1 original_control_unchanged=1",
+      "fields": {
+        "seq": "8",
+        "ns": "44468196992",
+        "tid": "442",
+        "point": "0x2eaf308",
+        "lr": "0x7ef92e7308",
+        "x0": "0",
+        "x1": "0x7ee3198730",
+        "x2": "0",
+        "x3": "0x2",
+        "x4": "0x7ee3198040",
+        "x5": "0x7ee3198148",
+        "source": "0x81cf6198",
+        "raw16": "unreadable",
+        "readable": "0",
+        "bounded": "256",
+        "passive": "1",
+        "original_control_unchanged": "1"
+      }
+    },
+    {
+      "line": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0",
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      }
+    },
+    {
+      "line": "FX3_SYNTH_KEY step=1 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=81945418000 host_gate=1",
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "81945418000",
+        "host_gate": "1"
+      }
+    },
+    {
+      "line": "FX3_SYNTH_KEY step=1 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=82054992000 host_gate=1",
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "82054992000",
+        "host_gate": "1"
+      }
+    },
+    {
+      "line": "FX3_KEY95_STEP_DONE step=1 key=0x1ab requested_hold_ms=100 measured_down_up_ns=108944000 elapsed_ns=148258992 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1",
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "108944000",
+        "elapsed_ns": "148258992",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      }
+    },
+    {
+      "line": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0",
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      }
+    },
+    {
+      "line": "FX3_KEY_INPUT_RECV step=2 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      }
+    },
+    {
+      "line": "FX3_SYNTH_KEY step=2 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=131663584992 host_gate=1",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "131663584992",
+        "host_gate": "1"
+      }
+    },
+    {
+      "line": "FX3_KEY_INPUT_RECV step=2 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      }
+    },
+    {
+      "line": "FX3_SYNTH_KEY step=2 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=131782332000 host_gate=1",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "131782332000",
+        "host_gate": "1"
+      }
+    },
+    {
+      "line": "FX3_KEY95_STEP_DONE step=2 key=0x1ab requested_hold_ms=100 measured_down_up_ns=116678000 elapsed_ns=124078000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1",
+      "fields": {
+        "step": "2",
+        "key": "0x1ab",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "116678000",
+        "elapsed_ns": "124078000",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      }
+    },
+    {
+      "line": "FX3_BOOT_QUEUE_SEND tid=381 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1",
+      "fields": {
+        "tid": "381",
+        "bytes": "28",
+        "source": "0x830128",
+        "raw": "2c000300000000000000000000000000000000000000000000000000",
+        "caller_relative": "0x2eacd4c",
+        "passive": "1",
+        "completion_not_assumed": "1"
+      }
+    },
+    {
+      "line": "FX3_POWER_NATIVE_NOTIFY seq=1 ns=431981032992 tid=381 point=0x2a8a884 object=0x7f94001ad0 x19=0x7f767ee7c0 lr=0x7ef8eb2748 readable=1 raw12=520000001100000002000000 original_registers_preserved=1 passive=1",
+      "fields": {
+        "seq": "1",
+        "ns": "431981032992",
+        "tid": "381",
+        "point": "0x2a8a884",
+        "object": "0x7f94001ad0",
+        "x19": "0x7f767ee7c0",
+        "lr": "0x7ef8eb2748",
+        "readable": "1",
+        "raw12": "520000001100000002000000",
+        "original_registers_preserved": "1",
+        "passive": "1"
+      }
+    },
+    {
+      "line": "FX3_POWER_NATIVE_NOTIFY seq=2 ns=431983550992 tid=381 point=0x2a8aa10 object=0x7f94001ad0 x19=0x7f767ee7c0 lr=0x7ef8ec29e4 readable=1 raw12=520000001100000002000000 original_registers_preserved=1 passive=1",
+      "fields": {
+        "seq": "2",
+        "ns": "431983550992",
+        "tid": "381",
+        "point": "0x2a8aa10",
+        "object": "0x7f94001ad0",
+        "x19": "0x7f767ee7c0",
+        "lr": "0x7ef8ec29e4",
+        "readable": "1",
+        "raw12": "520000001100000002000000",
+        "original_registers_preserved": "1",
+        "passive": "1"
+      }
+    },
+    {
+      "line": "open screen: scr0132_0001 -> scr0039_shutdown",
+      "fields": {}
+    }
+  ],
+  "counts": {
+    "mss_points": 8,
+    "synthetic_key_edges": 4,
+    "power_native_points": 2
+  },
+  "same_guest_monotonic_only": {
+    "last_boot_mss_point_ns": 44468196992,
+    "last_key_up_ns": 131782332000,
+    "first_power_notify_ns": 431981032992,
+    "last_mss_to_power_seconds": 387.512836,
+    "last_key_up_to_power_seconds": 300.198700992
+  },
+  "host_duration_seconds_separate_clock": 437.7664160829736,
+  "shutdown": {
+    "early_stop_reason": "native_model_power_off_observed: FX3_BOOT_QUEUE_SEND tid=381 bytes=28 source=0x830128 raw=2c000300000000000000000000000000000000000000000000000000 caller_relative=0x2eacd4c passive=1 completion_not_assumed=1",
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "PID_absent": true,
+    "inputs_unchanged": true,
+    "locks": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "free_at_close": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "free_at_close": true
+      }
+    ],
+    "cleanup": {
+      "attempted": true,
+      "API16_restored": true,
+      "quit_sent": true,
+      "serial_bytes_before_cleanup": 40870398,
+      "restore103": {
+        "passed": true,
+        "reason": "guest_acknowledged_and_original_bytes_verified",
+        "timeout_seconds": 20,
+        "elapsed_seconds": 1.3096953749773093,
+        "request_bytes": 8,
+        "request_issued": true,
+        "existing_request_reused": false,
+        "request_physical": "0x41d400030",
+        "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+        "requires_ack_and_original_bytes_after_request": true,
+        "already_original_without_pending_request_never_resumed": false,
+        "original_guest_code_written_by_host": false,
+        "guest_left_stopped": true,
+        "exception": null,
+        "attempts": [
+          {
+            "attempt": 0,
+            "elapsed_seconds": 0.002536540967412293,
+            "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-000-header.bin",
+            "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-000-api16.bin",
+            "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+            "api16_original": false,
+            "header_identity": true,
+            "shutdown_control": 0,
+            "restore_status": 0,
+            "restore_seen": 0,
+            "header_SHA256": "ba34098b369c016f6e971c7c9d2f02109c74ee0960f05578584ae0cd66e9d9a6"
+          },
+          {
+            "attempt": 1,
+            "elapsed_seconds": 0.2597622500034049,
+            "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-001-header.bin",
+            "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-001-api16.bin",
+            "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+            "api16_original": false,
+            "header_identity": true,
+            "shutdown_control": 269229737,
+            "restore_status": 0,
+            "restore_seen": 0,
+            "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+          },
+          {
+            "attempt": 2,
+            "elapsed_seconds": 0.523423082951922,
+            "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-002-header.bin",
+            "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-002-api16.bin",
+            "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+            "api16_original": false,
+            "header_identity": true,
+            "shutdown_control": 269229737,
+            "restore_status": 0,
+            "restore_seen": 0,
+            "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+          },
+          {
+            "attempt": 3,
+            "elapsed_seconds": 0.7907076249830425,
+            "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-003-header.bin",
+            "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-003-api16.bin",
+            "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+            "api16_original": false,
+            "header_identity": true,
+            "shutdown_control": 269229737,
+            "restore_status": 0,
+            "restore_seen": 0,
+            "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+          },
+          {
+            "attempt": 4,
+            "elapsed_seconds": 1.0535888749873266,
+            "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-004-header.bin",
+            "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-004-api16.bin",
+            "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+            "api16_original": false,
+            "header_identity": true,
+            "shutdown_control": 269229737,
+            "restore_status": 0,
+            "restore_seen": 0,
+            "header_SHA256": "741f0b43cd41f5d45a8818138d59f48fd3f6e47f24c5821c8887044442671b4d"
+          },
+          {
+            "attempt": 5,
+            "elapsed_seconds": 1.3094904159661382,
+            "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-005-header.bin",
+            "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2mssinternal-a1d8f68a/restore103-005-api16.bin",
+            "api16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+            "api16_original": true,
+            "header_identity": true,
+            "shutdown_control": 269229737,
+            "restore_status": 0,
+            "restore_seen": 1,
+            "header_SHA256": "e8668d6dda28642898c97841bc9ae5d653e42b7924dc2a7675e5c6d6bb2e1cd6"
+          }
+        ]
+      },
+      "native_unbind_return": 0
+    },
+    "health_pass": false,
+    "key_steps": 2
+  },
+  "limitations": [
+    "MSS after-send raw16 was not readable; no live 16B payload claim",
+    "osal_snd_sync_msg result=0 does not prove UPM consume or timer reload",
+    "no claim that MENU is the only activity path",
+    "native power notification and original shutdown screen are observed; specific factor is original table plus passive raw12"
+  ]
+}

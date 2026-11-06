@@ -1,0 +1,13 @@
+set -euC
+cd /
+umask 077
+[ "$(/usr/bin/id -u)" = 0 ] || exit 77
+if [ ! -e /private/var/root/fx3-host-validation ]; then /bin/mkdir -m 700 /private/var/root/fx3-host-validation; fi
+[ ! -L /private/var/root/fx3-host-validation ] && [ -d /private/var/root/fx3-host-validation ] || exit 78
+[ "$(/usr/bin/stat -f %u:%Lp /private/var/root/fx3-host-validation)" = 0:700 ] || exit 78
+/bin/mkdir -m 700 /private/var/root/fx3-host-validation/fx3-host-root-20261029-01
+/usr/bin/install -m 500 /private/tmp/fx3-host-root-20261029-01/source-helper /private/var/root/fx3-host-validation/fx3-host-root-20261029-01/helper
+actual=$(/usr/bin/shasum -a 256 /private/var/root/fx3-host-validation/fx3-host-root-20261029-01/helper)
+[ "$actual" = 'fb150a18a4efc9d827f293b912aa56c21e14488670817256c12b39c1356c32cb  /private/var/root/fx3-host-validation/fx3-host-root-20261029-01/helper' ] || exit 78
+/private/var/root/fx3-host-validation/fx3-host-root-20261029-01/helper trial /private/tmp/fx3-host-root-20261029-01/trial.bin 13055d37f20b6b7ccf24be23afdb55cf /private/tmp/fx3-host-root-20261029-01/trial.sock 2>&1
+/private/var/root/fx3-host-validation/fx3-host-root-20261029-01/helper readback /private/tmp/fx3-host-root-20261029-01/query.bin f3f0d1a513e96fc1a9ab0e2382d5a4fb /private/tmp/fx3-host-root-20261029-01/query.sock 2>&1

@@ -1,0 +1,45 @@
+{
+  "status": "conditional offline identity contract; selector and consumers not fully closed",
+  "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "conditional_identity": {
+    "ordinary_movie_only": true,
+    "main_stream": 0,
+    "setting_format_key": "0x399",
+    "setting_format_value": 6,
+    "typed_hs_frame_key": "0x39c",
+    "typed_hs_frame_value": 2,
+    "explicit_profile_discriminator": "required; not yet implemented as selectable/persisted model identity",
+    "quality": "fixed 16M 4:2:0 10bit; no stock typed quality enum assigned"
+  },
+  "required_semantics": {
+    "width": 1920,
+    "height": 1080,
+    "codec": "HEVC Long GOP",
+    "chroma": "4:2:0",
+    "bit_depth": 10,
+    "bitrate_bits_per_second": 16000000,
+    "frame_rational": [30000, 1001],
+    "model_frame": 15,
+    "mpr_VideoParamComb": 6,
+    "mpr_FrameRate": 3,
+    "mpr_VQuality": 6
+  },
+  "consumers": [
+    {"entry": "0x2beae8c", "role": "ordinary main typed builder", "required": "exact conditional model target; sibling prototype evidence only"},
+    {"entry": "0x2e6e5d8", "role": "actual ordinary main setter", "required": "exact conditional VPC6/frame3/VQ6, preserve other profiles"},
+    {"entry": "0x2e68048", "role": "query/remaining conversion helper", "call_sites": ["0x2e6a1f0", "0x2e6a8f8"], "original_ordinary_format6_entry": "0x2e69198", "required": "accept frame2 only for explicit target and report same target parameters"},
+    {"entry": "0x2a50354", "role": "derived movie format", "call_sites": ["0x2b6dd54", "0x2d20f58"], "original_result_for_format6": 5, "required": "recognize HD target without globally changing HS4K; signature currently lacks frame/profile discriminator"},
+    {"entries": ["0x2dd1354", "0x2df7948"], "role": "HDMI definition", "original_result": "derived5 joins 2/4/7 -> class2 under matching system/exposure path; derived1/3 -> class0", "required": "consistent main identity; preserve independently selected HDMI output semantics"},
+    {"entries": ["0x2dd1294", "0x2df6d8c", "0x2de5594"], "role": "HDMI resolution", "required": "consistent HD identity and existing output-format overrides; not a recording setter"},
+    {"entry": "0x2318720", "role": "external descriptor support/current format", "tables": ["0x3120278", "0x31202f8"], "required": "if exposed, gates and current value must describe target; not yet proven inverse input"},
+    {"entry": "0x2e9b898", "role": "remote event output", "original_mapping": "external14 -> remote113", "required": "prove exact input mapping separately; 113 is not assigned as property ID"},
+    {"role": "menu/name/allowed combination", "required": "target label and enabled selection, fixed16M42010 quality display or true target typed quality; stock HS4K name and arbitrary quality display are inconsistent"},
+    {"role": "persisted state/re-entry/restore", "required": "reconstruct same explicit target and permit return to original settings; not proven"}
+  ],
+  "preserve": ["existing UHD", "other frame rates", "other quality/color profiles", "S&Q", "proxy", "independent HDMI choices"],
+  "namespace_restrictions": ["internal key399/39c/3a4/3a5/3a6 are not SDK or PTP property IDs", "external14 is not setting_file_format14", "remote113 is not assigned as an inbound property or command", "derived5 is not VPC5"],
+  "target_derived_enum_value": null,
+  "selector_input_mapper": null,
+  "camera_operation_performed": false,
+  "functional_release_claim": false
+}

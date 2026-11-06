@@ -1,0 +1,37 @@
+
+#include <assert.h>
+#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+typedef unsigned long U;
+#include "fx3-osd-core-v3.h"
+#include "fx3-osd-owner-core-v1.h"
+static struct ho_model hm;static struct qo_model ownership;static void *owned_descriptor;static unsigned owned_queue;
+static unsigned char configs[256*96+96];static U config_version;
+static unsigned char body[4096];static unsigned qsrc,nbytes;static int receive_result,free_result;static unsigned frees,receives;
+static unsigned sz(void *p){assert(p==body);return nbytes;}static unsigned source(void *p){assert(p==body);return qsrc;}
+static int freem(unsigned q,void *p){assert(q==HO_CONTROL||q==HO_PIXELS||q==HO_META);assert(p==body);int i=qo_index(q);assert(!ownership.leases[i].pointer);frees++;return free_result;}
+static int receive(unsigned q,void **p,long t){assert(t==10);assert(q==HO_CONTROL||q==HO_PIXELS||q==HO_META);receives++;*p=body;return receive_result;}
+static int (*hreceive)(unsigned,void **,long)=receive;static int (*hfree)(unsigned,void *)=freem;static unsigned (*hsize)(void *)=sz,(*hsource)(void *)=source;
+static void own_lock(void){}static void own_unlock(void){}static void publish_status(void){}static int fail(const char *p,int r){(void)p;(void)r;hm.failed=1;return -1;}
+static void owner_raw(unsigned q,void *p,unsigned n,unsigned src,const char *kind){dprintf(2,"FX3_OSD_OWNER_RAW_BEGIN kind=%s queue=%#x pointer=%p source=%#x bytes=%u unknown_no_reply=1\n",kind,q,p,src,n);const char *hex="0123456789abcdef";const unsigned char *b=p;unsigned limit=n<=4096?n:0;if(n>4096)dprintf(2,"FX3_OSD_OWNER_RAW_INVALID_SIZE bytes=%u body_not_read=1\n",n);for(unsigned offset=0;offset<limit;offset+=128){unsigned count=limit-offset<128?limit-offset:128;char text[257];for(unsigned j=0;j<count;j++){text[j*2]=hex[b[offset+j]>>4];text[j*2+1]=hex[b[offset+j]&15];}text[count*2]=0;dprintf(2,"FX3_OSD_OWNER_RAW offset=%u raw=%s\n",offset,text);}dprintf(2,"FX3_OSD_OWNER_RAW_END queue=%#x bytes=%u\n",q,n);}
+static int owner_release(unsigned q,void *p,const char *kind){own_lock();qo_retire(&ownership,q,(U)p);own_unlock();int rc=hfree(q,p);own_lock();int i=qo_index(q);if(!rc&&i>=0)ownership.freed[i]++;else{ownership.errors++;hm.failed=1;}publish_status();U n=i>=0?ownership.freed[i]:0;own_unlock();if(n<=30||n%30==0||rc)dprintf(2,"FX3_OSD_OWNER_FREE queue=%#x pointer=%p kind=%s result=%d count=%lu original_received_message=1 ownership_change=missing_CP_receiver\n",q,p,kind,rc,n);return rc;}
+static int owner_receive_step(void){own_lock();unsigned stage=hm.stage,pending=hm.pending;int failed=hm.failed;U expected_seq=hm.seq+1;own_unlock();if(failed)return -1;if(stage!=0&&stage!=1)return 0;unsigned q=stage==0?HO_CONTROL:pending==0x1003?HO_PIXELS:HO_META;void *p=0;int rc=hreceive(q,&p,10);if(rc==-1021||rc==-1022){if(p){owner_raw(q,p,hsize(p),hsource(p),"timeout-with-pointer");if(owner_release(q,p,"timeout-owned"))return -1;}return 0;}if(rc||!p)return fail("native-receive",rc);unsigned n=hsize(p),src=hsource(p);if(n>4096){owner_raw(q,p,n,src,"native-size-outside-valloc-limit");owner_release(q,p,"oversize");return fail("native-size",-1);}own_lock();int i=qo_index(q);if(i>=0)ownership.received[i]++;own_unlock();unsigned offset=0;int amount=qo_GUI(q,src,p,n,&offset);if(amount){own_lock();memcpy(configs+offset,p,amount);config_version++;U count=++ownership.GUI;publish_status();own_unlock();if(count<=30||count%100==0)dprintf(2,"FX3_OSD_OWNER_GUI queue=%#x op=%x bytes=%u count=%lu saved_frozen_fields=1 reply_added=0\n",q,ho_u16(p),n,count);return owner_release(q,p,"GUI");}unsigned op=qo_publication(q,src,p,n);if(!op){own_lock();ownership.unknown++;publish_status();own_unlock();owner_raw(q,p,n,src,"unknown");return owner_release(q,p,"unknown-no-effect");}unsigned char bytes[96];memcpy(bytes,p,n);int match=1;for(unsigned attempt=0;attempt<1001;attempt++){own_lock();match=qo_match(&ownership,q,src,bytes,n,(U)p,expected_seq);own_unlock();if(match!=1)break;usleep(2000);}if(match){own_lock();ownership.stale++;publish_status();own_unlock();owner_raw(q,p,n,src,match==1?"send-confirm-timeout":"stale-or-not-current");int fr=owner_release(q,p,"stale-no-ACK");if(match==1)return fail("native-send-confirm-timeout",-1);return fr;}own_lock();if(q==HO_CONTROL){rc=ho_control(&hm,src,bytes,n);if(!rc)hm.frame.config_hash=ho_hash(configs,sizeof configs);}else{rc=ho_publish(&hm,src,q,bytes,n);if(!rc){owned_descriptor=p;owned_queue=q;}}publish_status();own_unlock();if(rc){owner_raw(q,p,n,src,"current-validation-rejected");owner_release(q,p,"current-rejected");return fail("native-current-validation",rc);}if(expected_seq<=30||expected_seq%30==0)dprintf(2,"FX3_OSD_OWNER_CURRENT frame=%lu queue=%#x op=%x bytes=%u pointer=%p source=%#x exact_original_send_lease=1 no_stale_ACK=1\n",expected_seq,q,op,n,p,src);if(q==HO_CONTROL)return owner_release(q,p,"control-current");return 0;}
+
+static void reset(unsigned op,unsigned n,unsigned src){memset(&hm,0,sizeof hm);memset(&ownership,0,sizeof ownership);memset(body,0,sizeof body);body[0]=op;body[1]=op>>8;nbytes=n;qsrc=src;frees=receives=0;free_result=receive_result=0;owned_descriptor=0;owned_queue=0;}
+static void accepted(unsigned dst){U stamp=qo_register(&ownership,dst,qsrc,body,nbytes,(U)body,hm.seq+1);assert(stamp);assert(qo_match(&ownership,dst,qsrc,body,nbytes,(U)body,hm.seq+1)==1);assert(!qo_confirm(&ownership,dst,(U)body,stamp,0));}
+int main(void){
+ reset(0x1000,80,0x9088076b);assert(!owner_receive_step()&&ownership.GUI==1&&frees==1&&hm.stage==0);
+ reset(0x1001,96,0x9088076b);body[8]=255;body[28]=16;assert(!owner_receive_step()&&ownership.GUI==1&&frees==1);
+ reset(0x1001,96,0x9088076b);body[28]=17;assert(!owner_receive_step()&&ownership.unknown==1&&frees==1&&!hm.stage);
+ reset(0x1004,16,0x9088076b);assert(!owner_receive_step()&&ownership.GUI==1&&frees==1);
+ reset(0x9999,4096,12);assert(!owner_receive_step()&&ownership.unknown==1&&frees==1&&!hm.stage);
+ reset(0x1002,12,HO_AP);body[8]=3;body[9]=16;assert(!owner_receive_step()&&ownership.stale==1&&frees==1&&!hm.stage);
+ reset(0x1002,12,HO_AP);body[8]=3;body[9]=16;accepted(HO_CONTROL);assert(!owner_receive_step()&&frees==1&&hm.stage==1&&hm.pending==0x1003);
+ memset(body,0,sizeof body);body[0]=3;body[1]=16;nbytes=36;body[12]=1;body[20]=1;body[22]=1;accepted(HO_PIXELS);assert(!owner_receive_step()&&frees==1&&hm.stage==2&&owned_descriptor==body&&owned_queue==HO_PIXELS);assert(!owner_release(owned_queue,owned_descriptor,"after-capture"));assert(frees==2&&ownership.freed[1]==1);
+ reset(0x1002,12,HO_AP);body[8]=5;body[9]=16;accepted(HO_CONTROL);free_result=-4;assert(owner_receive_step()<0&&hm.failed&&ownership.errors==1);
+ reset(0,4097,0);assert(owner_receive_step()<0&&frees==1&&hm.failed);/* no oversize read */
+ reset(0,8,0);receive_result=-1021;assert(!owner_receive_step()&&frees==1&&!hm.failed);
+ /* Failed send / wrong sequence / bytes cannot become accepted. */
+ reset(0x1002,12,HO_AP);body[8]=5;body[9]=16;U stamp=qo_register(&ownership,HO_CONTROL,qsrc,body,nbytes,(U)body,1);assert(!qo_confirm(&ownership,HO_CONTROL,(U)body,stamp,-1));assert(qo_match(&ownership,HO_CONTROL,qsrc,body,nbytes,(U)body,1)<0);qo_retire(&ownership,HO_CONTROL,(U)body);accepted(HO_CONTROL);assert(qo_match(&ownership,HO_CONTROL,qsrc,body,nbytes,(U)body,2)<0);body[2]=1;assert(qo_match(&ownership,HO_CONTROL,qsrc,body,nbytes,(U)body,1)<0);
+ puts("OWNER_RECEIVER_PASS actual_native_receive/free_order/GUI_frozen/unknown_fullraw_no_reply/stale_no_ACK/current_exact_lease/retire_before_free/no_oversize_read/failure_poison");}

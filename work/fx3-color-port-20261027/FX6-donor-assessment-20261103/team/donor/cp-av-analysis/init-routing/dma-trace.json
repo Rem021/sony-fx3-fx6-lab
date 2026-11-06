@@ -1,0 +1,1624 @@
+{
+  "source_sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+  "initializer_entry_offset": "0x29f508",
+  "initializer_instructions": 55395,
+  "dma_entry_offset": "0x2a7978",
+  "dma_instruction_count": 6389,
+  "dma_stop_pc": "0x60000000",
+  "error": null,
+  "violations": [],
+  "stubs_and_guest_patches": [
+    {
+      "kind": "provider_table_pointer",
+      "address_offset": "0x20",
+      "before_hex": "a4010001c0ffffff",
+      "after_value": "0xffffffc001c68000"
+    },
+    {
+      "kind": "provider_callbacks",
+      "table": "0xffffffc001c68000",
+      "cache_flush_slot": "0xffffffc001c68610",
+      "cache_flush_stub": "0x61000000",
+      "virtual_to_physical_slot": "0xffffffc001c68630",
+      "virtual_to_physical_stub": "0x61000100"
+    },
+    {
+      "kind": "DMA_builder_input_fixture",
+      "address": "0xffffffc001c61000",
+      "ip": 0,
+      "count": 70,
+      "first_descriptor": "0xffffffc001aa2ca0"
+    },
+    {
+      "kind": "output_canary_fixture",
+      "address": "0xffffffc001c61ff0",
+      "bytes": 1152,
+      "pattern": "5a"
+    }
+  ],
+  "stub_semantics": {
+    "cache_flush": "record x0 address and x1 length; return to LR, no cache operation",
+    "virtual_to_physical": "declared PHYS + virtual - VIRT; return to LR, no OS mapping proof"
+  },
+  "callback_count": 209,
+  "flush_count": 70,
+  "callbacks": [
+    {
+      "virtual": "0xffffffc001b533c4",
+      "declared_physical": "0x401b533c4"
+    },
+    {
+      "virtual": "0xffffffc001c62010",
+      "declared_physical": "0x401c62010"
+    },
+    {
+      "virtual": "0xffffffc001c62000",
+      "declared_physical": "0x401c62000"
+    },
+    {
+      "virtual": "0xffffffc001bb10a4",
+      "declared_physical": "0x401bb10a4"
+    },
+    {
+      "virtual": "0xffffffc001c62020",
+      "declared_physical": "0x401c62020"
+    },
+    {
+      "virtual": "0xffffffc001c62010",
+      "declared_physical": "0x401c62010"
+    },
+    {
+      "virtual": "0xffffffc001bb1cdc",
+      "declared_physical": "0x401bb1cdc"
+    },
+    {
+      "virtual": "0xffffffc001c62030",
+      "declared_physical": "0x401c62030"
+    },
+    {
+      "virtual": "0xffffffc001c62020",
+      "declared_physical": "0x401c62020"
+    },
+    {
+      "virtual": "0xffffffc001bb14a4",
+      "declared_physical": "0x401bb14a4"
+    },
+    {
+      "virtual": "0xffffffc001c62040",
+      "declared_physical": "0x401c62040"
+    },
+    {
+      "virtual": "0xffffffc001c62030",
+      "declared_physical": "0x401c62030"
+    },
+    {
+      "virtual": "0xffffffc001bb1ce0",
+      "declared_physical": "0x401bb1ce0"
+    },
+    {
+      "virtual": "0xffffffc001c62050",
+      "declared_physical": "0x401c62050"
+    },
+    {
+      "virtual": "0xffffffc001c62040",
+      "declared_physical": "0x401c62040"
+    },
+    {
+      "virtual": "0xffffffc001bb18a4",
+      "declared_physical": "0x401bb18a4"
+    },
+    {
+      "virtual": "0xffffffc001c62060",
+      "declared_physical": "0x401c62060"
+    },
+    {
+      "virtual": "0xffffffc001c62050",
+      "declared_physical": "0x401c62050"
+    },
+    {
+      "virtual": "0xffffffc001b533c8",
+      "declared_physical": "0x401b533c8"
+    },
+    {
+      "virtual": "0xffffffc001c62070",
+      "declared_physical": "0x401c62070"
+    },
+    {
+      "virtual": "0xffffffc001c62060",
+      "declared_physical": "0x401c62060"
+    },
+    {
+      "virtual": "0xffffffc001bb6840",
+      "declared_physical": "0x401bb6840"
+    },
+    {
+      "virtual": "0xffffffc001c62080",
+      "declared_physical": "0x401c62080"
+    },
+    {
+      "virtual": "0xffffffc001c62070",
+      "declared_physical": "0x401c62070"
+    },
+    {
+      "virtual": "0xffffffc001bb7478",
+      "declared_physical": "0x401bb7478"
+    },
+    {
+      "virtual": "0xffffffc001c62090",
+      "declared_physical": "0x401c62090"
+    },
+    {
+      "virtual": "0xffffffc001c62080",
+      "declared_physical": "0x401c62080"
+    },
+    {
+      "virtual": "0xffffffc001bb6c40",
+      "declared_physical": "0x401bb6c40"
+    },
+    {
+      "virtual": "0xffffffc001c620a0",
+      "declared_physical": "0x401c620a0"
+    },
+    {
+      "virtual": "0xffffffc001c62090",
+      "declared_physical": "0x401c62090"
+    },
+    {
+      "virtual": "0xffffffc001bb747c",
+      "declared_physical": "0x401bb747c"
+    },
+    {
+      "virtual": "0xffffffc001c620b0",
+      "declared_physical": "0x401c620b0"
+    },
+    {
+      "virtual": "0xffffffc001c620a0",
+      "declared_physical": "0x401c620a0"
+    },
+    {
+      "virtual": "0xffffffc001bb7040",
+      "declared_physical": "0x401bb7040"
+    },
+    {
+      "virtual": "0xffffffc001c620c0",
+      "declared_physical": "0x401c620c0"
+    },
+    {
+      "virtual": "0xffffffc001c620b0",
+      "declared_physical": "0x401c620b0"
+    },
+    {
+      "virtual": "0xffffffc001b533d0",
+      "declared_physical": "0x401b533d0"
+    },
+    {
+      "virtual": "0xffffffc001c620d0",
+      "declared_physical": "0x401c620d0"
+    },
+    {
+      "virtual": "0xffffffc001c620c0",
+      "declared_physical": "0x401c620c0"
+    },
+    {
+      "virtual": "0xffffffc001c47828",
+      "declared_physical": "0x401c47828"
+    },
+    {
+      "virtual": "0xffffffc001c620e0",
+      "declared_physical": "0x401c620e0"
+    },
+    {
+      "virtual": "0xffffffc001c620d0",
+      "declared_physical": "0x401c620d0"
+    },
+    {
+      "virtual": "0xffffffc001c53424",
+      "declared_physical": "0x401c53424"
+    },
+    {
+      "virtual": "0xffffffc001c620f0",
+      "declared_physical": "0x401c620f0"
+    },
+    {
+      "virtual": "0xffffffc001c620e0",
+      "declared_physical": "0x401c620e0"
+    },
+    {
+      "virtual": "0xffffffc001c47ff8",
+      "declared_physical": "0x401c47ff8"
+    },
+    {
+      "virtual": "0xffffffc001c62100",
+      "declared_physical": "0x401c62100"
+    },
+    {
+      "virtual": "0xffffffc001c620f0",
+      "declared_physical": "0x401c620f0"
+    },
+    {
+      "virtual": "0xffffffc001c53428",
+      "declared_physical": "0x401c53428"
+    },
+    {
+      "virtual": "0xffffffc001c62110",
+      "declared_physical": "0x401c62110"
+    },
+    {
+      "virtual": "0xffffffc001c62100",
+      "declared_physical": "0x401c62100"
+    },
+    {
+      "virtual": "0xffffffc001c487c8",
+      "declared_physical": "0x401c487c8"
+    },
+    {
+      "virtual": "0xffffffc001c62120",
+      "declared_physical": "0x401c62120"
+    },
+    {
+      "virtual": "0xffffffc001c62110",
+      "declared_physical": "0x401c62110"
+    },
+    {
+      "virtual": "0xffffffc001c5342c",
+      "declared_physical": "0x401c5342c"
+    },
+    {
+      "virtual": "0xffffffc001c62130",
+      "declared_physical": "0x401c62130"
+    },
+    {
+      "virtual": "0xffffffc001c62120",
+      "declared_physical": "0x401c62120"
+    },
+    {
+      "virtual": "0xffffffc001c48f98",
+      "declared_physical": "0x401c48f98"
+    },
+    {
+      "virtual": "0xffffffc001c62140",
+      "declared_physical": "0x401c62140"
+    },
+    {
+      "virtual": "0xffffffc001c62130",
+      "declared_physical": "0x401c62130"
+    },
+    {
+      "virtual": "0xffffffc001c53430",
+      "declared_physical": "0x401c53430"
+    },
+    {
+      "virtual": "0xffffffc001c62150",
+      "declared_physical": "0x401c62150"
+    },
+    {
+      "virtual": "0xffffffc001c62140",
+      "declared_physical": "0x401c62140"
+    },
+    {
+      "virtual": "0xffffffc001c49768",
+      "declared_physical": "0x401c49768"
+    },
+    {
+      "virtual": "0xffffffc001c62160",
+      "declared_physical": "0x401c62160"
+    },
+    {
+      "virtual": "0xffffffc001c62150",
+      "declared_physical": "0x401c62150"
+    },
+    {
+      "virtual": "0xffffffc001c53434",
+      "declared_physical": "0x401c53434"
+    },
+    {
+      "virtual": "0xffffffc001c62170",
+      "declared_physical": "0x401c62170"
+    },
+    {
+      "virtual": "0xffffffc001c62160",
+      "declared_physical": "0x401c62160"
+    },
+    {
+      "virtual": "0xffffffc001c49f38",
+      "declared_physical": "0x401c49f38"
+    },
+    {
+      "virtual": "0xffffffc001c62180",
+      "declared_physical": "0x401c62180"
+    },
+    {
+      "virtual": "0xffffffc001c62170",
+      "declared_physical": "0x401c62170"
+    },
+    {
+      "virtual": "0xffffffc001c53438",
+      "declared_physical": "0x401c53438"
+    },
+    {
+      "virtual": "0xffffffc001c62190",
+      "declared_physical": "0x401c62190"
+    },
+    {
+      "virtual": "0xffffffc001c62180",
+      "declared_physical": "0x401c62180"
+    },
+    {
+      "virtual": "0xffffffc001c4a708",
+      "declared_physical": "0x401c4a708"
+    },
+    {
+      "virtual": "0xffffffc001c621a0",
+      "declared_physical": "0x401c621a0"
+    },
+    {
+      "virtual": "0xffffffc001c62190",
+      "declared_physical": "0x401c62190"
+    },
+    {
+      "virtual": "0xffffffc001c5343c",
+      "declared_physical": "0x401c5343c"
+    },
+    {
+      "virtual": "0xffffffc001c621b0",
+      "declared_physical": "0x401c621b0"
+    },
+    {
+      "virtual": "0xffffffc001c621a0",
+      "declared_physical": "0x401c621a0"
+    },
+    {
+      "virtual": "0xffffffc001c4aed8",
+      "declared_physical": "0x401c4aed8"
+    },
+    {
+      "virtual": "0xffffffc001c621c0",
+      "declared_physical": "0x401c621c0"
+    },
+    {
+      "virtual": "0xffffffc001c621b0",
+      "declared_physical": "0x401c621b0"
+    },
+    {
+      "virtual": "0xffffffc001c53440",
+      "declared_physical": "0x401c53440"
+    },
+    {
+      "virtual": "0xffffffc001c621d0",
+      "declared_physical": "0x401c621d0"
+    },
+    {
+      "virtual": "0xffffffc001c621c0",
+      "declared_physical": "0x401c621c0"
+    },
+    {
+      "virtual": "0xffffffc001c4b6a8",
+      "declared_physical": "0x401c4b6a8"
+    },
+    {
+      "virtual": "0xffffffc001c621e0",
+      "declared_physical": "0x401c621e0"
+    },
+    {
+      "virtual": "0xffffffc001c621d0",
+      "declared_physical": "0x401c621d0"
+    },
+    {
+      "virtual": "0xffffffc001c53444",
+      "declared_physical": "0x401c53444"
+    },
+    {
+      "virtual": "0xffffffc001c621f0",
+      "declared_physical": "0x401c621f0"
+    },
+    {
+      "virtual": "0xffffffc001c621e0",
+      "declared_physical": "0x401c621e0"
+    },
+    {
+      "virtual": "0xffffffc001c4be78",
+      "declared_physical": "0x401c4be78"
+    },
+    {
+      "virtual": "0xffffffc001c62200",
+      "declared_physical": "0x401c62200"
+    },
+    {
+      "virtual": "0xffffffc001c621f0",
+      "declared_physical": "0x401c621f0"
+    },
+    {
+      "virtual": "0xffffffc001c53448",
+      "declared_physical": "0x401c53448"
+    },
+    {
+      "virtual": "0xffffffc001c62210",
+      "declared_physical": "0x401c62210"
+    },
+    {
+      "virtual": "0xffffffc001c62200",
+      "declared_physical": "0x401c62200"
+    },
+    {
+      "virtual": "0xffffffc001c4c648",
+      "declared_physical": "0x401c4c648"
+    },
+    {
+      "virtual": "0xffffffc001c62220",
+      "declared_physical": "0x401c62220"
+    },
+    {
+      "virtual": "0xffffffc001c62210",
+      "declared_physical": "0x401c62210"
+    },
+    {
+      "virtual": "0xffffffc001c5344c",
+      "declared_physical": "0x401c5344c"
+    },
+    {
+      "virtual": "0xffffffc001c62230",
+      "declared_physical": "0x401c62230"
+    },
+    {
+      "virtual": "0xffffffc001c62220",
+      "declared_physical": "0x401c62220"
+    },
+    {
+      "virtual": "0xffffffc001c4ce18",
+      "declared_physical": "0x401c4ce18"
+    },
+    {
+      "virtual": "0xffffffc001c62240",
+      "declared_physical": "0x401c62240"
+    },
+    {
+      "virtual": "0xffffffc001c62230",
+      "declared_physical": "0x401c62230"
+    },
+    {
+      "virtual": "0xffffffc001c53450",
+      "declared_physical": "0x401c53450"
+    },
+    {
+      "virtual": "0xffffffc001c62250",
+      "declared_physical": "0x401c62250"
+    },
+    {
+      "virtual": "0xffffffc001c62240",
+      "declared_physical": "0x401c62240"
+    },
+    {
+      "virtual": "0xffffffc001c4d5e8",
+      "declared_physical": "0x401c4d5e8"
+    },
+    {
+      "virtual": "0xffffffc001c62260",
+      "declared_physical": "0x401c62260"
+    },
+    {
+      "virtual": "0xffffffc001c62250",
+      "declared_physical": "0x401c62250"
+    },
+    {
+      "virtual": "0xffffffc001c53454",
+      "declared_physical": "0x401c53454"
+    },
+    {
+      "virtual": "0xffffffc001c62270",
+      "declared_physical": "0x401c62270"
+    },
+    {
+      "virtual": "0xffffffc001c62260",
+      "declared_physical": "0x401c62260"
+    },
+    {
+      "virtual": "0xffffffc001c4ddb8",
+      "declared_physical": "0x401c4ddb8"
+    },
+    {
+      "virtual": "0xffffffc001c62280",
+      "declared_physical": "0x401c62280"
+    },
+    {
+      "virtual": "0xffffffc001c62270",
+      "declared_physical": "0x401c62270"
+    },
+    {
+      "virtual": "0xffffffc001c53458",
+      "declared_physical": "0x401c53458"
+    },
+    {
+      "virtual": "0xffffffc001c62290",
+      "declared_physical": "0x401c62290"
+    },
+    {
+      "virtual": "0xffffffc001c62280",
+      "declared_physical": "0x401c62280"
+    },
+    {
+      "virtual": "0xffffffc001c4e588",
+      "declared_physical": "0x401c4e588"
+    },
+    {
+      "virtual": "0xffffffc001c622a0",
+      "declared_physical": "0x401c622a0"
+    },
+    {
+      "virtual": "0xffffffc001c62290",
+      "declared_physical": "0x401c62290"
+    },
+    {
+      "virtual": "0xffffffc001c5345c",
+      "declared_physical": "0x401c5345c"
+    },
+    {
+      "virtual": "0xffffffc001c622b0",
+      "declared_physical": "0x401c622b0"
+    },
+    {
+      "virtual": "0xffffffc001c622a0",
+      "declared_physical": "0x401c622a0"
+    },
+    {
+      "virtual": "0xffffffc001c4ed58",
+      "declared_physical": "0x401c4ed58"
+    },
+    {
+      "virtual": "0xffffffc001c622c0",
+      "declared_physical": "0x401c622c0"
+    },
+    {
+      "virtual": "0xffffffc001c622b0",
+      "declared_physical": "0x401c622b0"
+    },
+    {
+      "virtual": "0xffffffc001c53460",
+      "declared_physical": "0x401c53460"
+    },
+    {
+      "virtual": "0xffffffc001c622d0",
+      "declared_physical": "0x401c622d0"
+    },
+    {
+      "virtual": "0xffffffc001c622c0",
+      "declared_physical": "0x401c622c0"
+    },
+    {
+      "virtual": "0xffffffc001c4f528",
+      "declared_physical": "0x401c4f528"
+    },
+    {
+      "virtual": "0xffffffc001c622e0",
+      "declared_physical": "0x401c622e0"
+    },
+    {
+      "virtual": "0xffffffc001c622d0",
+      "declared_physical": "0x401c622d0"
+    },
+    {
+      "virtual": "0xffffffc001c53464",
+      "declared_physical": "0x401c53464"
+    },
+    {
+      "virtual": "0xffffffc001c622f0",
+      "declared_physical": "0x401c622f0"
+    },
+    {
+      "virtual": "0xffffffc001c622e0",
+      "declared_physical": "0x401c622e0"
+    },
+    {
+      "virtual": "0xffffffc001c4fcf8",
+      "declared_physical": "0x401c4fcf8"
+    },
+    {
+      "virtual": "0xffffffc001c62300",
+      "declared_physical": "0x401c62300"
+    },
+    {
+      "virtual": "0xffffffc001c622f0",
+      "declared_physical": "0x401c622f0"
+    },
+    {
+      "virtual": "0xffffffc001c53468",
+      "declared_physical": "0x401c53468"
+    },
+    {
+      "virtual": "0xffffffc001c62310",
+      "declared_physical": "0x401c62310"
+    },
+    {
+      "virtual": "0xffffffc001c62300",
+      "declared_physical": "0x401c62300"
+    },
+    {
+      "virtual": "0xffffffc001c504c8",
+      "declared_physical": "0x401c504c8"
+    },
+    {
+      "virtual": "0xffffffc001c62320",
+      "declared_physical": "0x401c62320"
+    },
+    {
+      "virtual": "0xffffffc001c62310",
+      "declared_physical": "0x401c62310"
+    },
+    {
+      "virtual": "0xffffffc001c5346c",
+      "declared_physical": "0x401c5346c"
+    },
+    {
+      "virtual": "0xffffffc001c62330",
+      "declared_physical": "0x401c62330"
+    },
+    {
+      "virtual": "0xffffffc001c62320",
+      "declared_physical": "0x401c62320"
+    },
+    {
+      "virtual": "0xffffffc001c50c98",
+      "declared_physical": "0x401c50c98"
+    },
+    {
+      "virtual": "0xffffffc001c62340",
+      "declared_physical": "0x401c62340"
+    },
+    {
+      "virtual": "0xffffffc001c62330",
+      "declared_physical": "0x401c62330"
+    },
+    {
+      "virtual": "0xffffffc001c53470",
+      "declared_physical": "0x401c53470"
+    },
+    {
+      "virtual": "0xffffffc001c62350",
+      "declared_physical": "0x401c62350"
+    },
+    {
+      "virtual": "0xffffffc001c62340",
+      "declared_physical": "0x401c62340"
+    },
+    {
+      "virtual": "0xffffffc001c51468",
+      "declared_physical": "0x401c51468"
+    },
+    {
+      "virtual": "0xffffffc001c62360",
+      "declared_physical": "0x401c62360"
+    },
+    {
+      "virtual": "0xffffffc001c62350",
+      "declared_physical": "0x401c62350"
+    },
+    {
+      "virtual": "0xffffffc001c53474",
+      "declared_physical": "0x401c53474"
+    },
+    {
+      "virtual": "0xffffffc001c62370",
+      "declared_physical": "0x401c62370"
+    },
+    {
+      "virtual": "0xffffffc001c62360",
+      "declared_physical": "0x401c62360"
+    },
+    {
+      "virtual": "0xffffffc001c51c38",
+      "declared_physical": "0x401c51c38"
+    },
+    {
+      "virtual": "0xffffffc001c62380",
+      "declared_physical": "0x401c62380"
+    },
+    {
+      "virtual": "0xffffffc001c62370",
+      "declared_physical": "0x401c62370"
+    },
+    {
+      "virtual": "0xffffffc001c53478",
+      "declared_physical": "0x401c53478"
+    },
+    {
+      "virtual": "0xffffffc001c62390",
+      "declared_physical": "0x401c62390"
+    },
+    {
+      "virtual": "0xffffffc001c62380",
+      "declared_physical": "0x401c62380"
+    },
+    {
+      "virtual": "0xffffffc001c52408",
+      "declared_physical": "0x401c52408"
+    },
+    {
+      "virtual": "0xffffffc001c623a0",
+      "declared_physical": "0x401c623a0"
+    },
+    {
+      "virtual": "0xffffffc001c62390",
+      "declared_physical": "0x401c62390"
+    },
+    {
+      "virtual": "0xffffffc001c5347c",
+      "declared_physical": "0x401c5347c"
+    },
+    {
+      "virtual": "0xffffffc001c623b0",
+      "declared_physical": "0x401c623b0"
+    },
+    {
+      "virtual": "0xffffffc001c623a0",
+      "declared_physical": "0x401c623a0"
+    },
+    {
+      "virtual": "0xffffffc001c52bd8",
+      "declared_physical": "0x401c52bd8"
+    },
+    {
+      "virtual": "0xffffffc001c623c0",
+      "declared_physical": "0x401c623c0"
+    },
+    {
+      "virtual": "0xffffffc001c623b0",
+      "declared_physical": "0x401c623b0"
+    },
+    {
+      "virtual": "0xffffffc001bb0fe8",
+      "declared_physical": "0x401bb0fe8"
+    },
+    {
+      "virtual": "0xffffffc001c623d0",
+      "declared_physical": "0x401c623d0"
+    },
+    {
+      "virtual": "0xffffffc001c623c0",
+      "declared_physical": "0x401c623c0"
+    },
+    {
+      "virtual": "0xffffffc001bb1030",
+      "declared_physical": "0x401bb1030"
+    },
+    {
+      "virtual": "0xffffffc001c623e0",
+      "declared_physical": "0x401c623e0"
+    },
+    {
+      "virtual": "0xffffffc001c623d0",
+      "declared_physical": "0x401c623d0"
+    },
+    {
+      "virtual": "0xffffffc001bb1ca4",
+      "declared_physical": "0x401bb1ca4"
+    },
+    {
+      "virtual": "0xffffffc001c623f0",
+      "declared_physical": "0x401c623f0"
+    },
+    {
+      "virtual": "0xffffffc001c623e0",
+      "declared_physical": "0x401c623e0"
+    },
+    {
+      "virtual": "0xffffffc001bb1dec",
+      "declared_physical": "0x401bb1dec"
+    },
+    {
+      "virtual": "0xffffffc001c62400",
+      "declared_physical": "0x401c62400"
+    },
+    {
+      "virtual": "0xffffffc001c623f0",
+      "declared_physical": "0x401c623f0"
+    },
+    {
+      "virtual": "0xffffffc001bb7440",
+      "declared_physical": "0x401bb7440"
+    },
+    {
+      "virtual": "0xffffffc001c62410",
+      "declared_physical": "0x401c62410"
+    },
+    {
+      "virtual": "0xffffffc001c62400",
+      "declared_physical": "0x401c62400"
+    },
+    {
+      "virtual": "0xffffffc001bb752c",
+      "declared_physical": "0x401bb752c"
+    },
+    {
+      "virtual": "0xffffffc001c62420",
+      "declared_physical": "0x401c62420"
+    },
+    {
+      "virtual": "0xffffffc001c62410",
+      "declared_physical": "0x401c62410"
+    },
+    {
+      "virtual": "0xffffffc001bba5e0",
+      "declared_physical": "0x401bba5e0"
+    },
+    {
+      "virtual": "0xffffffc001c62430",
+      "declared_physical": "0x401c62430"
+    },
+    {
+      "virtual": "0xffffffc001c62420",
+      "declared_physical": "0x401c62420"
+    },
+    {
+      "virtual": "0xffffffc001c533a8",
+      "declared_physical": "0x401c533a8"
+    },
+    {
+      "virtual": "0xffffffc001c62440",
+      "declared_physical": "0x401c62440"
+    },
+    {
+      "virtual": "0xffffffc001c62430",
+      "declared_physical": "0x401c62430"
+    },
+    {
+      "virtual": "0xffffffc001c53480",
+      "declared_physical": "0x401c53480"
+    },
+    {
+      "virtual": "0xffffffc001c62450",
+      "declared_physical": "0x401c62450"
+    },
+    {
+      "virtual": "0xffffffc001c62440",
+      "declared_physical": "0x401c62440"
+    },
+    {
+      "virtual": "0xffffffc001c535a0",
+      "declared_physical": "0x401c535a0"
+    },
+    {
+      "virtual": "0xffffffc001c62450",
+      "declared_physical": "0x401c62450"
+    }
+  ],
+  "flushes": [
+    {
+      "address": "0x401c62000",
+      "length": 16
+    },
+    {
+      "address": "0x401c62010",
+      "length": 16
+    },
+    {
+      "address": "0x401c62020",
+      "length": 16
+    },
+    {
+      "address": "0x401c62030",
+      "length": 16
+    },
+    {
+      "address": "0x401c62040",
+      "length": 16
+    },
+    {
+      "address": "0x401c62050",
+      "length": 16
+    },
+    {
+      "address": "0x401c62060",
+      "length": 16
+    },
+    {
+      "address": "0x401c62070",
+      "length": 16
+    },
+    {
+      "address": "0x401c62080",
+      "length": 16
+    },
+    {
+      "address": "0x401c62090",
+      "length": 16
+    },
+    {
+      "address": "0x401c620a0",
+      "length": 16
+    },
+    {
+      "address": "0x401c620b0",
+      "length": 16
+    },
+    {
+      "address": "0x401c620c0",
+      "length": 16
+    },
+    {
+      "address": "0x401c620d0",
+      "length": 16
+    },
+    {
+      "address": "0x401c620e0",
+      "length": 16
+    },
+    {
+      "address": "0x401c620f0",
+      "length": 16
+    },
+    {
+      "address": "0x401c62100",
+      "length": 16
+    },
+    {
+      "address": "0x401c62110",
+      "length": 16
+    },
+    {
+      "address": "0x401c62120",
+      "length": 16
+    },
+    {
+      "address": "0x401c62130",
+      "length": 16
+    },
+    {
+      "address": "0x401c62140",
+      "length": 16
+    },
+    {
+      "address": "0x401c62150",
+      "length": 16
+    },
+    {
+      "address": "0x401c62160",
+      "length": 16
+    },
+    {
+      "address": "0x401c62170",
+      "length": 16
+    },
+    {
+      "address": "0x401c62180",
+      "length": 16
+    },
+    {
+      "address": "0x401c62190",
+      "length": 16
+    },
+    {
+      "address": "0x401c621a0",
+      "length": 16
+    },
+    {
+      "address": "0x401c621b0",
+      "length": 16
+    },
+    {
+      "address": "0x401c621c0",
+      "length": 16
+    },
+    {
+      "address": "0x401c621d0",
+      "length": 16
+    },
+    {
+      "address": "0x401c621e0",
+      "length": 16
+    },
+    {
+      "address": "0x401c621f0",
+      "length": 16
+    },
+    {
+      "address": "0x401c62200",
+      "length": 16
+    },
+    {
+      "address": "0x401c62210",
+      "length": 16
+    },
+    {
+      "address": "0x401c62220",
+      "length": 16
+    },
+    {
+      "address": "0x401c62230",
+      "length": 16
+    },
+    {
+      "address": "0x401c62240",
+      "length": 16
+    },
+    {
+      "address": "0x401c62250",
+      "length": 16
+    },
+    {
+      "address": "0x401c62260",
+      "length": 16
+    },
+    {
+      "address": "0x401c62270",
+      "length": 16
+    },
+    {
+      "address": "0x401c62280",
+      "length": 16
+    },
+    {
+      "address": "0x401c62290",
+      "length": 16
+    },
+    {
+      "address": "0x401c622a0",
+      "length": 16
+    },
+    {
+      "address": "0x401c622b0",
+      "length": 16
+    },
+    {
+      "address": "0x401c622c0",
+      "length": 16
+    },
+    {
+      "address": "0x401c622d0",
+      "length": 16
+    },
+    {
+      "address": "0x401c622e0",
+      "length": 16
+    },
+    {
+      "address": "0x401c622f0",
+      "length": 16
+    },
+    {
+      "address": "0x401c62300",
+      "length": 16
+    },
+    {
+      "address": "0x401c62310",
+      "length": 16
+    },
+    {
+      "address": "0x401c62320",
+      "length": 16
+    },
+    {
+      "address": "0x401c62330",
+      "length": 16
+    },
+    {
+      "address": "0x401c62340",
+      "length": 16
+    },
+    {
+      "address": "0x401c62350",
+      "length": 16
+    },
+    {
+      "address": "0x401c62360",
+      "length": 16
+    },
+    {
+      "address": "0x401c62370",
+      "length": 16
+    },
+    {
+      "address": "0x401c62380",
+      "length": 16
+    },
+    {
+      "address": "0x401c62390",
+      "length": 16
+    },
+    {
+      "address": "0x401c623a0",
+      "length": 16
+    },
+    {
+      "address": "0x401c623b0",
+      "length": 16
+    },
+    {
+      "address": "0x401c623c0",
+      "length": 16
+    },
+    {
+      "address": "0x401c623d0",
+      "length": 16
+    },
+    {
+      "address": "0x401c623e0",
+      "length": 16
+    },
+    {
+      "address": "0x401c623f0",
+      "length": 16
+    },
+    {
+      "address": "0x401c62400",
+      "length": 16
+    },
+    {
+      "address": "0x401c62410",
+      "length": 16
+    },
+    {
+      "address": "0x401c62420",
+      "length": 16
+    },
+    {
+      "address": "0x401c62430",
+      "length": 16
+    },
+    {
+      "address": "0x401c62440",
+      "length": 16
+    },
+    {
+      "address": "0x401c62450",
+      "length": 16
+    }
+  ],
+  "target_slot_read_events": [
+    {
+      "pc_offset": "0x2a79d8",
+      "address_offset": "0xaa5210",
+      "size": 4
+    },
+    {
+      "pc_offset": "0x2a79ec",
+      "address_offset": "0xaa5208",
+      "size": 8
+    },
+    {
+      "pc_offset": "0x2a7b00",
+      "address_offset": "0xaa5218",
+      "size": 4
+    }
+  ],
+  "target_slot_original_descriptor": {
+    "pointer": "0xffffffc001bb1dec",
+    "register_offset": "0x200",
+    "word_count": 13
+  },
+  "all_70_rows_match_original_descriptor_fields": true,
+  "register_base_low32": "0xf3019000",
+  "output_layout": "70 linked rows, each <I source_physical_low32, I register_destination_low32, I next_physical_low32, I control>; last has null next and end bit",
+  "output_canaries_preserved": true,
+  "input_after": "00000000460000003056aa01c0ffffff",
+  "dma_rows": [
+    [
+      28652484,
+      4076966152,
+      29761552,
+      239636481
+    ],
+    [
+      29036708,
+      4076969984,
+      29761568,
+      239636736
+    ],
+    [
+      29039836,
+      4076966152,
+      29761584,
+      239636481
+    ],
+    [
+      29037732,
+      4076969984,
+      29761600,
+      239636736
+    ],
+    [
+      29039840,
+      4076966152,
+      29761616,
+      239636481
+    ],
+    [
+      29038756,
+      4076969984,
+      29761632,
+      239636736
+    ],
+    [
+      28652488,
+      4076966216,
+      29761648,
+      239636481
+    ],
+    [
+      29059136,
+      4076971008,
+      29761664,
+      239636736
+    ],
+    [
+      29062264,
+      4076966216,
+      29761680,
+      239636481
+    ],
+    [
+      29060160,
+      4076971008,
+      29761696,
+      239636736
+    ],
+    [
+      29062268,
+      4076966216,
+      29761712,
+      239636481
+    ],
+    [
+      29061184,
+      4076971008,
+      29761728,
+      239636736
+    ],
+    [
+      28652496,
+      4076966920,
+      29761744,
+      239636481
+    ],
+    [
+      29653032,
+      4076978176,
+      29761760,
+      239636980
+    ],
+    [
+      29701156,
+      4076966920,
+      29761776,
+      239636481
+    ],
+    [
+      29655032,
+      4076978176,
+      29761792,
+      239636980
+    ],
+    [
+      29701160,
+      4076966920,
+      29761808,
+      239636481
+    ],
+    [
+      29657032,
+      4076978176,
+      29761824,
+      239636980
+    ],
+    [
+      29701164,
+      4076966920,
+      29761840,
+      239636481
+    ],
+    [
+      29659032,
+      4076978176,
+      29761856,
+      239636980
+    ],
+    [
+      29701168,
+      4076966920,
+      29761872,
+      239636481
+    ],
+    [
+      29661032,
+      4076978176,
+      29761888,
+      239636980
+    ],
+    [
+      29701172,
+      4076966920,
+      29761904,
+      239636481
+    ],
+    [
+      29663032,
+      4076978176,
+      29761920,
+      239636980
+    ],
+    [
+      29701176,
+      4076966920,
+      29761936,
+      239636481
+    ],
+    [
+      29665032,
+      4076978176,
+      29761952,
+      239636980
+    ],
+    [
+      29701180,
+      4076966920,
+      29761968,
+      239636481
+    ],
+    [
+      29667032,
+      4076978176,
+      29761984,
+      239636980
+    ],
+    [
+      29701184,
+      4076966920,
+      29762000,
+      239636481
+    ],
+    [
+      29669032,
+      4076978176,
+      29762016,
+      239636980
+    ],
+    [
+      29701188,
+      4076966920,
+      29762032,
+      239636481
+    ],
+    [
+      29671032,
+      4076978176,
+      29762048,
+      239636980
+    ],
+    [
+      29701192,
+      4076966920,
+      29762064,
+      239636481
+    ],
+    [
+      29673032,
+      4076978176,
+      29762080,
+      239636980
+    ],
+    [
+      29701196,
+      4076966920,
+      29762096,
+      239636481
+    ],
+    [
+      29675032,
+      4076978176,
+      29762112,
+      239636980
+    ],
+    [
+      29701200,
+      4076966920,
+      29762128,
+      239636481
+    ],
+    [
+      29677032,
+      4076978176,
+      29762144,
+      239636980
+    ],
+    [
+      29701204,
+      4076966920,
+      29762160,
+      239636481
+    ],
+    [
+      29679032,
+      4076978176,
+      29762176,
+      239636980
+    ],
+    [
+      29701208,
+      4076966920,
+      29762192,
+      239636481
+    ],
+    [
+      29681032,
+      4076978176,
+      29762208,
+      239636980
+    ],
+    [
+      29701212,
+      4076966920,
+      29762224,
+      239636481
+    ],
+    [
+      29683032,
+      4076978176,
+      29762240,
+      239636980
+    ],
+    [
+      29701216,
+      4076966920,
+      29762256,
+      239636481
+    ],
+    [
+      29685032,
+      4076978176,
+      29762272,
+      239636980
+    ],
+    [
+      29701220,
+      4076966920,
+      29762288,
+      239636481
+    ],
+    [
+      29687032,
+      4076978176,
+      29762304,
+      239636980
+    ],
+    [
+      29701224,
+      4076966920,
+      29762320,
+      239636481
+    ],
+    [
+      29689032,
+      4076978176,
+      29762336,
+      239636980
+    ],
+    [
+      29701228,
+      4076966920,
+      29762352,
+      239636481
+    ],
+    [
+      29691032,
+      4076978176,
+      29762368,
+      239636980
+    ],
+    [
+      29701232,
+      4076966920,
+      29762384,
+      239636481
+    ],
+    [
+      29693032,
+      4076978176,
+      29762400,
+      239636980
+    ],
+    [
+      29701236,
+      4076966920,
+      29762416,
+      239636481
+    ],
+    [
+      29695032,
+      4076978176,
+      29762432,
+      239636980
+    ],
+    [
+      29701240,
+      4076966920,
+      29762448,
+      239636481
+    ],
+    [
+      29697032,
+      4076978176,
+      29762464,
+      239636980
+    ],
+    [
+      29701244,
+      4076966920,
+      29762480,
+      239636481
+    ],
+    [
+      29699032,
+      4076978176,
+      29762496,
+      239636980
+    ],
+    [
+      29036520,
+      4076965904,
+      29762512,
+      239636481
+    ],
+    [
+      29036592,
+      4076966016,
+      29762528,
+      239636495
+    ],
+    [
+      29039780,
+      4076966144,
+      29762544,
+      239636494
+    ],
+    [
+      29040108,
+      4076966400,
+      29762560,
+      239636493
+    ],
+    [
+      29062208,
+      4076966208,
+      29762576,
+      239636494
+    ],
+    [
+      29062444,
+      4076966272,
+      29762592,
+      239636494
+    ],
+    [
+      29074912,
+      4076966464,
+      29762608,
+      239636493
+    ],
+    [
+      29701032,
+      4076966912,
+      29762624,
+      239636511
+    ],
+    [
+      29701248,
+      4076966528,
+      29762640,
+      239636493
+    ],
+    [
+      29701536,
+      4076967040,
+      0,
+      2387120151
+    ]
+  ],
+  "slot63_dma_row": [
+    29040108,
+    4076966400,
+    29762560,
+    239636493
+  ],
+  "slot63_output_offset": "0xffffffc001c623f0",
+  "write_event_count": 431,
+  "hardware_submitted": false,
+  "scope": "original FX6 CPU DMA-list construction only; provider stubs declared, no cache operation, OS mapping, DMA submission, DSP or camera"
+}

@@ -1,0 +1,80 @@
+0053fea0 push       {r4, r5, fp, lr}
+0053fea4 sub        sp, sp, #8
+0053fea8 bl         #0x52c4a8
+0053feac cmp        r0, #0
+0053feb0 beq        #0x53fec0
+0053feb4 mov        r0, #0
+0053feb8 str        r0, [sp, #4]
+0053febc b          #0x53ff24
+0053fec0 bl         #0x52c474
+0053fec4 cmp        r0, #1
+0053fec8 bne        #0x53fed4
+0053fecc bl         #0x52c07c
+0053fed0 b          #0x53fed8
+0053fed4 bl         #0x52c028
+0053fed8 mov        r2, r0
+0053fedc mov        r0, #1
+0053fee0 cmp        r2, #0
+0053fee4 str        r0, [sp, #4]
+0053fee8 beq        #0x53ff24
+0053feec movw       r0, #0x11d
+0053fef0 add        r1, sp, #4
+0053fef4 str        r0, [sp]
+0053fef8 movw       r0, #0x493e
+0053fefc add        r4, pc, #0xdc
+0053ff00 movt       r0, #0xe2
+0053ff04 mov        r3, r4
+0053ff08 bl         #0x53fa30
+0053ff0c movw       r0, #0xfe03
+0053ff10 mov        r1, r4
+0053ff14 movw       r2, #0x11d
+0053ff18 movt       r0, #0xe0
+0053ff1c bl         #0x53fa30
+0053ff20 .byte      0x7b, 0x00, 0x00, 0xe1
+0053ff24 movw       r5, #0xcbe4
+0053ff28 mrc        p15, #0, r0, c0, c0, #5
+0053ff2c and        r4, r0, #0xf
+0053ff30 movt       r5, #0x13f
+0053ff34 ldr        r0, [r5, r4, lsl #2]
+0053ff38 cmp        r0, #0
+0053ff3c bne        #0x53ff5c
+0053ff40 bl         #0x54913c
+0053ff44 movw       r1, #0xcbf4
+0053ff48 movt       r1, #0x13f
+0053ff4c str        r0, [r1, r4, lsl #2]
+0053ff50 mov        r0, #0
+0053ff54 bl         #0x549108
+0053ff58 ldr        r0, [r5, r4, lsl #2]
+0053ff5c add        r0, r0, #1
+0053ff60 str        r0, [r5, r4, lsl #2]
+0053ff64 ldr        r0, [sp, #4]
+0053ff68 cmp        r0, #1
+0053ff6c bne        #0x53ffd4
+0053ff70 mov        r0, #0
+0053ff74 str        r0, [sp, #4]
+0053ff78 bl         #0x52c474
+0053ff7c cmp        r0, #1
+0053ff80 bne        #0x53ff8c
+0053ff84 bl         #0x52c13c
+0053ff88 b          #0x53ff90
+0053ff8c bl         #0x52c0d0
+0053ff90 mov        r2, r0
+0053ff94 cmp        r2, #0
+0053ff98 beq        #0x53ffd4
+0053ff9c movw       r0, #0x12a
+0053ffa0 add        r1, sp, #4
+0053ffa4 str        r0, [sp]
+0053ffa8 movw       r0, #0x496b
+0053ffac add        r4, pc, #0x2c
+0053ffb0 movt       r0, #0xe2
+0053ffb4 mov        r3, r4
+0053ffb8 bl         #0x53fa30
+0053ffbc movw       r0, #0xfe03
+0053ffc0 mov        r1, r4
+0053ffc4 movw       r2, #0x12a
+0053ffc8 movt       r0, #0xe0
+0053ffcc bl         #0x53fa30
+0053ffd0 .byte      0x7b, 0x00, 0x00, 0xe1
+0053ffd4 mov        r0, #0
+0053ffd8 add        sp, sp, #8
+0053ffdc pop        {r4, r5, fp, pc}

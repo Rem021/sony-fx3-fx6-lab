@@ -1,0 +1,34 @@
+{
+  "created_utc": "2026-10-26T10:55:37.886579+00:00",
+  "status": "PASS_CONTIGUOUS_NATIVE_MATCHER_WITH_DECLARED_DIAGNOSTIC_GATES",
+  "bounded_fragments": 31,
+  "contiguous_native_matcher_returns": 6,
+  "original_stop_counts": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 8,
+    "returned": 15,
+    "boundary: after_actual_matcher_return_before_caller_diagnostic": 6,
+    "boundary: before_unexecuted_diagnostic_formatter": 1,
+    "boundary: before_unexecuted_logger_constructor": 1
+  },
+  "conditional_return_rows": [
+    386,
+    386,
+    386,
+    386,
+    -1,
+    431
+  ],
+  "formatter_and_constructor_controls_stop_as_expected": true,
+  "target_native_diagnostic_literals": {
+    "1": "HEVC_MP4",
+    "2": "29_97",
+    "3": "PROGRESSIVE",
+    "4": "FF",
+    "8": "CHROMA_420",
+    "9": "BIT_DEPTH_10"
+  },
+  "full_enabled_logs_or_actual_hardware_or_recovery_proven": false,
+  "proof_sha256": "0ae51c25eeb0b7c51c7b31615fd8150f92082e1842d0d7d8dc9625776cb83398",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

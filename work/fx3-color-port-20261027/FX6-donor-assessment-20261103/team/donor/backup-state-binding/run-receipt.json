@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "evidence_levels": [
+    "original static bytes",
+    "isolated CPU Data_SearchId/Data_GetSize",
+    "historical FX3 VM RAM, read-only, not natural FX6 runtime"
+  ],
+  "checked_pinned_default_files": 6,
+  "checked_historical_ram_files": 2,
+  "original_cpu_cases": 4,
+  "negative_lookup_branches": 12,
+  "event_producer_direct_calls_FX6": 6,
+  "event_producer_direct_calls_FX3": 6,
+  "output_files": {
+    "bk4-receipt.json": "02fba0ed849552074c414fac62c16c688e836d9d5b59d5fa20f8aebdfcb5ae96",
+    "history-receipt.json": "d4196d55d5cdcc30b612a23d3f2f3b23a62679ef77ecc15c0aa9c1f46e198552",
+    "search-replay.json": "889272dccf92e09bcfc4e24a3d479595e8df0a1cca7549deced874df8498d0a6",
+    "static-receipt.json": "2eb1cfec1bd8e6e299055db80bfbb1b1e114a3962c710cf933c25c2e233f7d33",
+    "parse_bk4.py": "5aa777eecbb43f480f7899da06cf8b46ddf461576af7005f5b9e150485daf52f",
+    "inspect_history.py": "654b39a21d50a804967434291997eee98f95c2fef0bf26810be5e2884abdd57e",
+    "replay_search.py": "396cf76dee2c4f1ac9737b8756fb0f0d07141125babe5051aab7c949990176ef",
+    "analyze_static.py": "4d24fd0f029a7e057cd91de834a135f46e22488ca6b14f8205708b4b96ab1adc",
+    "verify.py": "30a2d721d3ab90c137c9977821296bfa3234ddf31d2eb139d760b358172e25c7",
+    "prepare.sh": "306c85a0bd20d9f966607f9c0023239e928fe60105b0b0279ff7d4e959590a75",
+    "README.md": "560f5f0222e574614d34e6510e08bc063ff066812165f62c770d9d3db618269a"
+  },
+  "device_or_VM_operations": 0
+}

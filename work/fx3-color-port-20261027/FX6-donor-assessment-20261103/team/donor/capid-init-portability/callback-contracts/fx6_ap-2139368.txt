@@ -1,0 +1,88 @@
+ 2139368: b9400401     	ldr	w1, [x0, #0x4]
+ 213936c: 7100043f     	cmp	w1, #0x1
+ 2139370: 54000b21     	b.ne	0x21394d4 <Application_System_Init+0x152e490>
+ 2139374: a9ba7bfd     	stp	x29, x30, [sp, #-0x60]!
+ 2139378: 910003fd     	mov	x29, sp
+ 213937c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2139380: aa0003f4     	mov	x20, x0
+ 2139384: d2802600     	mov	x0, #0x130              // =304
+ 2139388: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 213938c: a90363f7     	stp	x23, x24, [sp, #0x30]
+ 2139390: f90023f9     	str	x25, [sp, #0x40]
+ 2139394: 97e4d693     	bl	0x1a6ede0 <Application_System_Init+0xe63d9c>
+ 2139398: aa0003f3     	mov	x19, x0
+ 213939c: b9400a80     	ldr	w0, [x20, #0x8]
+ 21393a0: 7100081f     	cmp	w0, #0x2
+ 21393a4: b9000260     	str	w0, [x19]
+ 21393a8: 540000e9     	b.ls	0x21393c4 <Application_System_Init+0x152e380>
+ 21393ac: b0002762     	adrp	x2, 0x2626000
+ 21393b0: b0002740     	adrp	x0, 0x2622000
+ 21393b4: 912be042     	add	x2, x2, #0xaf8
+ 21393b8: 913f3c00     	add	x0, x0, #0xfcf
+ 21393bc: 5280f1a1     	mov	w1, #0x78d              // =1933
+ 21393c0: 9400b8f1     	bl	0x2167784 <Application_System_Init+0x155c740>
+ 21393c4: b0002778     	adrp	x24, 0x2626000
+ 21393c8: b0002759     	adrp	x25, 0x2622000
+ 21393cc: 91008296     	add	x22, x20, #0x20
+ 21393d0: 91006275     	add	x21, x19, #0x18
+ 21393d4: 912be318     	add	x24, x24, #0xaf8
+ 21393d8: 913f3f39     	add	x25, x25, #0xfcf
+ 21393dc: 52800017     	mov	w23, #0x0               // =0
+ 21393e0: b9400260     	ldr	w0, [x19]
+ 21393e4: 6b17001f     	cmp	w0, w23
+ 21393e8: 54000449     	b.ls	0x2139470 <Application_System_Init+0x152e42c>
+ 21393ec: d10052a0     	sub	x0, x21, #0x14
+ 21393f0: d10052c1     	sub	x1, x22, #0x14
+ 21393f4: 97ffc98f     	bl	0x212ba30 <Application_System_Init+0x15209ec>
+ 21393f8: b85fc2c0     	ldur	w0, [x22, #-0x4]
+ 21393fc: 7100201f     	cmp	w0, #0x8
+ 2139400: b81fc2a0     	stur	w0, [x21, #-0x4]
+ 2139404: 540000a9     	b.ls	0x2139418 <Application_System_Init+0x152e3d4>
+ 2139408: aa1803e2     	mov	x2, x24
+ 213940c: aa1903e0     	mov	x0, x25
+ 2139410: 5280f281     	mov	w1, #0x794              // =1940
+ 2139414: 9400b8dc     	bl	0x2167784 <Application_System_Init+0x155c740>
+ 2139418: aa1503e0     	mov	x0, x21
+ 213941c: aa1603e1     	mov	x1, x22
+ 2139420: 52800002     	mov	w2, #0x0                // =0
+ 2139424: b85fc2a3     	ldur	w3, [x21, #-0x4]
+ 2139428: 6b02007f     	cmp	w3, w2
+ 213942c: 540001a9     	b.ls	0x2139460 <Application_System_Init+0x152e41c>
+ 2139430: b9400023     	ldr	w3, [x1]
+ 2139434: 11000442     	add	w2, w2, #0x1
+ 2139438: 91004021     	add	x1, x1, #0x10
+ 213943c: 91004000     	add	x0, x0, #0x10
+ 2139440: b81f0003     	stur	w3, [x0, #-0x10]
+ 2139444: b85f4023     	ldur	w3, [x1, #-0xc]
+ 2139448: b81f4003     	stur	w3, [x0, #-0xc]
+ 213944c: b85f8023     	ldur	w3, [x1, #-0x8]
+ 2139450: b81f8003     	stur	w3, [x0, #-0x8]
+ 2139454: b85fc023     	ldur	w3, [x1, #-0x4]
+ 2139458: b81fc003     	stur	w3, [x0, #-0x4]
+ 213945c: 17fffff2     	b	0x2139424 <Application_System_Init+0x152e3e0>
+ 2139460: 110006f7     	add	w23, w23, #0x1
+ 2139464: 910252d6     	add	x22, x22, #0x94
+ 2139468: 910252b5     	add	x21, x21, #0x94
+ 213946c: 17ffffdd     	b	0x21393e0 <Application_System_Init+0x152e39c>
+ 2139470: b9413680     	ldr	w0, [x20, #0x134]
+ 2139474: 97ffc062     	bl	0x21295fc <Application_System_Init+0x151e5b8>
+ 2139478: b9012e60     	str	w0, [x19, #0x12c]
+ 213947c: f0007440     	adrp	x0, 0x2fc4000
+ 2139480: 913b8000     	add	x0, x0, #0xee0
+ 2139484: f9002fa0     	str	x0, [x29, #0x58]
+ 2139488: 97fed727     	bl	0x20ef124 <Application_System_Init+0x14e40e0>
+ 213948c: d001d820     	adrp	x0, 0x5c3f000
+ 2139490: f9422000     	ldr	x0, [x0, #0x440]
+ 2139494: b40001a0     	cbz	x0, 0x21394c8 <Application_System_Init+0x152e484>
+ 2139498: f9400001     	ldr	x1, [x0]
+ 213949c: f9400022     	ldr	x2, [x1]
+ 21394a0: aa1303e1     	mov	x1, x19
+ 21394a4: d63f0040     	blr	x2
+ 21394a8: 910163a0     	add	x0, x29, #0x58
+ 21394ac: 97ff6787     	bl	0x21132c8 <Application_System_Init+0x1508284>
+ 21394b0: f94023f9     	ldr	x25, [sp, #0x40]
+ 21394b4: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 21394b8: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 21394bc: a94363f7     	ldp	x23, x24, [sp, #0x30]
+ 21394c0: a8c67bfd     	ldp	x29, x30, [sp], #0x60
+ 21394c4: d65f03c0     	ret

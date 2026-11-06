@@ -1,0 +1,100 @@
+fe049000 c12f0058 ldr      x1, #0xfe0495f8
+fe049004 01c018d5 msr      vbar_el1, x1
+fe049008 01c01cd5 msr      vbar_el2, x1
+fe04900c 01c01ed5 msr      vbar_el3, x1
+fe049010 239080d2 mov      x3, #0x481
+fe049014 03111ed5 msr      scr_el3, x3
+fe049018 660e80d2 mov      x6, #0x73
+fe04901c 25103ed5 mrs      x5, actlr_el3
+fe049020 050006aa orr      x5, x0, x6
+fe049024 25101ed5 msr      actlr_el3, x5
+fe049028 c52e0058 ldr      x5, #0xfe049600
+fe04902c 05e01bd5 msr      cntfrq_el0, x5
+fe049030 45b039d5 mrs      x5, s3_1_c11_c0_2
+fe049034 a50040b2 orr      x5, x5, #1
+fe049038 a5007bb2 orr      x5, x5, #0x20
+fe04903c 45b019d5 msr      s3_1_c11_c0_2, x5
+fe049040 02113cd5 mrs      x2, hcr_el2
+fe049044 e20361b3 bfc      x2, #0x1f, #1
+fe049048 02111cd5 msr      hcr_el2, x2
+fe04904c 1f211cd5 msr      vttbr_el2, xzr
+fe049050 a00038d5 mrs      x0, mpidr_el1
+fe049054 a0001cd5 msr      vmpidr_el2, x0
+fe049058 000038d5 mrs      x0, midr_el1
+fe04905c 00001cd5 msr      vpidr_el2, x0
+fe049060 5f111ed5 msr      cptr_el3, xzr
+fe049064 5f111cd5 msr      cptr_el2, xzr
+fe049068 0006a0d2 mov      x0, #0x300000
+fe04906c 401018d5 msr      cpacr_el1, x0
+fe049070 0000a8d2 mov      x0, #0x40000000
+fe049074 00531cd5 msr      fpexc32_el2, x0
+fe049078 9f1010d5 msr      oslar_el1, xzr
+fe04907c 9f1310d5 msr      osdlr_el1, xzr
+fe049080 20133ed5 mrs      x0, mdcr_el3
+fe049084 00f47092 and      x0, x0, #0xffffffffffff3fff
+fe049088 20131ed5 msr      mdcr_el3, x0
+fe04908c 000080d2 mov      x0, #0
+fe049090 00101ed5 msr      sctlr_el3, x0
+fe049094 00101cd5 msr      sctlr_el2, x0
+fe049098 001018d5 msr      sctlr_el1, x0
+fe04909c b6040094 bl       #0xfe04a374
+fe0490a0 f30300aa mov      x19, x0
+fe0490a4 202b0058 ldr      x0, #0xfe049608
+fe0490a8 004013cb sub      x0, x0, x19, lsl #16
+fe0490ac 1f000091 mov      sp, x0
+fe0490b0 010738d5 mrs      x1, id_aa64mmfr0_el1
+fe0490b4 610b0058 ldr      x1, #0xfe049220
+fe0490b8 01201ed5 msr      ttbr0_el3, x1
+fe0490bc 81e89fd2 mov      x1, #0xff44
+fe0490c0 8100a0f2 movk     x1, #4, lsl #16
+fe0490c4 01a21ed5 msr      mair_el3, x1
+fe0490c8 412a0058 ldr      x1, #0xfe049610
+fe0490cc 41201ed5 msr      tcr_el3, x1
+fe0490d0 df3f03d5 isb      
+fe0490d4 f31c00b5 cbnz     x19, #0xfe049470
+fe0490d8 150a0058 ldr      x21, #0xfe049218
+fe0490dc e00315aa mov      x0, x21
+fe0490e0 010084d2 mov      x1, #0x2000
+fe0490e4 a9040094 bl       #0xfe04a388
+fe0490e8 000a0058 ldr      x0, #0xfe049228
+fe0490ec 0101a0d2 mov      x1, #0x80000
+fe0490f0 a6040094 bl       #0xfe04a388
+fe0490f4 030880d2 mov      x3, #0x40
+fe0490f8 020080d2 mov      x2, #0
+fe0490fc 61090058 ldr      x1, #0xfe049228
+fe049100 5f0c00f1 cmp      x2, #3
+fe049104 c9010054 b.ls     #0xfe04913c
+fe049108 5f3c00f1 cmp      x2, #0xf
+fe04910c c9010054 b.ls     #0xfe049144
+fe049110 5f4c00f1 cmp      x2, #0x13
+fe049114 49010054 b.ls     #0xfe04913c
+fe049118 5f7c00f1 cmp      x2, #0x1f
+fe04911c 49010054 b.ls     #0xfe049144
+fe049120 5f8c00f1 cmp      x2, #0x23
+fe049124 c9000054 b.ls     #0xfe04913c
+fe049128 5fbc00f1 cmp      x2, #0x2f
+fe04912c c9000054 b.ls     #0xfe049144
+fe049130 5fcc00f1 cmp      x2, #0x33
+fe049134 49000054 b.ls     #0xfe04913c
+fe049138 61000054 b.ne     #0xfe049144
+fe04913c 210440b2 orr      x1, x1, #3
+fe049140 02000014 b        #0xfe049148
+fe049144 210040b2 orr      x1, x1, #1
+fe049148 a17a22f8 str      x1, [x21, x2, lsl #3]
+fe04914c 42040091 add      x2, x2, #1
+fe049150 0130028b add      x1, x0, x2, lsl #12
+fe049154 630400d1 sub      x3, x3, #1
+fe049158 43fdffb5 cbnz     x3, #0xfe049100
+fe04915c 35060058 ldr      x21, #0xfe049220
+fe049160 e00315aa mov      x0, x21
+fe049164 010084d2 mov      x1, #0x2000
+fe049168 88040094 bl       #0xfe04a388
+fe04916c e0050058 ldr      x0, #0xfe049228
+fe049170 830080d2 mov      x3, #4
+fe049174 020080d2 mov      x2, #0
+fe049178 81050058 ldr      x1, #0xfe049228
+fe04917c 5f0c00f1 cmp      x2, #3
+fe049180 40000054 b.eq     #0xfe049188
+fe049184 61000054 b.ne     #0xfe049190
+fe049188 210440b2 orr      x1, x1, #3
+fe04918c 02000014 b        #0xfe049194

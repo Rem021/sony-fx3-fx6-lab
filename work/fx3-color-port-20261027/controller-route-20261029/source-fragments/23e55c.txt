@@ -1,0 +1,150 @@
+0023e55c push       {r4, r5, r7, lr}
+0023e55e add        r7, sp, #8
+0023e560 sub        sp, #0x40
+0023e562 ldrb       r4, [r0]
+0023e564 cmp        r4, #0
+0023e566 beq.w      #0x23e6cc
+0023e56a ldr.w      ip, [r7, #8]
+0023e56e movs       r4, #0xb
+0023e570 cmp        r3, #0
+0023e572 strd       r4, r1, [sp, #8]
+0023e576 str        r2, [sp, #0x10]
+0023e578 beq        #0x23e592
+0023e57a ldr        r1, [r3, #0x18]
+0023e57c cmp        r1, #3
+0023e57e bhi        #0x23e598
+0023e580 movs       r2, #0xfd
+0023e582 movs       r5, #0
+0023e584 tbb        [pc, r1]
+0023e588 lsls       r0, r3, #8
+0023e58a asrs       r3, r1, #8
+0023e58c movs       r2, #0xfe
+0023e58e movs       r5, #1
+0023e590 b          #0x23e5b8
+0023e592 movs       r5, #0xff
+0023e594 movs       r2, #0xff
+0023e596 b          #0x23e5b8
+0023e598 movs       r2, #0xff
+0023e59a movs       r5, #0xfe
+0023e59c b          #0x23e5b8
+0023e59e ldr        r2, [r3, #0x20]
+0023e5a0 cmp        r2, #0x10
+0023e5a2 it         hs
+0023e5a4 movhs.w    r2, #-1
+0023e5a8 movs       r5, #2
+0023e5aa b          #0x23e5b8
+0023e5ac ldrh       r2, [r3, #0x20]
+0023e5ae cmp        r2, #0x33
+0023e5b0 it         hs
+0023e5b2 movhs.w    r2, #-1
+0023e5b6 movs       r5, #3
+0023e5b8 ldr.w      lr, [r7, #0xc]
+0023e5bc cmp.w      ip, #0
+0023e5c0 strb.w     r5, [sp, #0x14]
+0023e5c4 strb.w     r2, [sp, #0x15]
+0023e5c8 beq        #0x23e5e4
+0023e5ca ldr.w      r2, [ip, #0x18]
+0023e5ce cmp        r2, #3
+0023e5d0 bhi        #0x23e5ea
+0023e5d2 movs       r3, #0xfd
+0023e5d4 movs       r1, #0
+0023e5d6 tbb        [pc, r2]
+0023e5da lsls       r2, r3, #8
+0023e5dc asrs       r3, r1, #0xc
+0023e5de movs       r3, #0xfe
+0023e5e0 movs       r1, #1
+0023e5e2 b          #0x23e60e
+0023e5e4 movs       r1, #0xff
+0023e5e6 movs       r3, #0xff
+0023e5e8 b          #0x23e60e
+0023e5ea movs       r3, #0xff
+0023e5ec movs       r1, #0xfe
+0023e5ee b          #0x23e60e
+0023e5f0 ldr.w      r3, [ip, #0x20]
+0023e5f4 cmp        r3, #0x10
+0023e5f6 it         hs
+0023e5f8 movhs.w    r3, #-1
+0023e5fc movs       r1, #2
+0023e5fe b          #0x23e60e
+0023e600 ldrh.w     r3, [ip, #0x20]
+0023e604 cmp        r3, #0x33
+0023e606 it         hs
+0023e608 movhs.w    r3, #-1
+0023e60c movs       r1, #3
+0023e60e ldr        r2, [r7, #0x10]
+0023e610 cmp.w      lr, #0
+0023e614 strb.w     r1, [sp, #0x16]
+0023e618 strb.w     r3, [sp, #0x17]
+0023e61c beq        #0x23e638
+0023e61e ldr.w      r4, [lr, #0x18]
+0023e622 cmp        r4, #3
+0023e624 bhi        #0x23e63e
+0023e626 movs       r3, #0xfd
+0023e628 movs       r1, #0
+0023e62a tbb        [pc, r4]
+0023e62e lsls       r2, r3, #8
+0023e630 asrs       r3, r1, #0xc
+0023e632 movs       r3, #0xfe
+0023e634 movs       r1, #1
+0023e636 b          #0x23e662
+0023e638 movs       r1, #0xff
+0023e63a movs       r3, #0xff
+0023e63c b          #0x23e662
+0023e63e movs       r3, #0xff
+0023e640 movs       r1, #0xfe
+0023e642 b          #0x23e662
+0023e644 ldr.w      r3, [lr, #0x20]
+0023e648 cmp        r3, #0x10
+0023e64a it         hs
+0023e64c movhs.w    r3, #-1
+0023e650 movs       r1, #2
+0023e652 b          #0x23e662
+0023e654 ldrh.w     r3, [lr, #0x20]
+0023e658 cmp        r3, #0x33
+0023e65a it         hs
+0023e65c movhs.w    r3, #-1
+0023e660 movs       r1, #3
+0023e662 cmp        r2, #0
+0023e664 strb.w     r1, [sp, #0x18]
+0023e668 strb.w     r3, [sp, #0x19]
+0023e66c beq        #0x23e686
+0023e66e ldr        r4, [r2, #0x18]
+0023e670 cmp        r4, #3
+0023e672 bhi        #0x23e68c
+0023e674 movs       r1, #0xfd
+0023e676 movs       r3, #0
+0023e678 tbb        [pc, r4]
+0023e67c lsls       r0, r3, #8
+0023e67e asrs       r3, r1, #8
+0023e680 movs       r1, #0xfe
+0023e682 movs       r3, #1
+0023e684 b          #0x23e6ac
+0023e686 movs       r3, #0xff
+0023e688 movs       r1, #0xff
+0023e68a b          #0x23e6ac
+0023e68c movs       r1, #0xff
+0023e68e movs       r3, #0xfe
+0023e690 b          #0x23e6ac
+0023e692 ldr        r1, [r2, #0x20]
+0023e694 cmp        r1, #0x10
+0023e696 it         hs
+0023e698 movhs.w    r1, #-1
+0023e69c movs       r3, #2
+0023e69e b          #0x23e6ac
+0023e6a0 ldrh       r1, [r2, #0x20]
+0023e6a2 cmp        r1, #0x33
+0023e6a4 it         hs
+0023e6a6 movhs.w    r1, #-1
+0023e6aa movs       r3, #3
+0023e6ac movw       r2, #0xd7bc
+0023e6b0 strb.w     r3, [sp, #0x1a]
+0023e6b4 strb.w     r1, [sp, #0x1b]
+0023e6b8 movs       r1, #0
+0023e6ba movs       r3, #0x10
+0023e6bc movt       r2, #0xd9
+0023e6c0 strd       r2, r1, [sp]
+0023e6c4 add        r1, sp, #8
+0023e6c6 movs       r2, #0x14
+0023e6c8 bl         #0x23e0c8
+0023e6cc add        sp, #0x40
+0023e6ce pop        {r4, r5, r7, pc}

@@ -1,0 +1,36 @@
+{
+  "recorded_utc": "2026-11-01T16:11:18.913081+00:00",
+  "compile_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage282-fixed-host-cleanup04-quote-fix/bound_signal.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage282-fixed-host-cleanup04-quote-fix/cleanup.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage282-fixed-host-cleanup04-quote-fix/artifacts/fixed-host-cleanup"
+  ],
+  "compile_returncode": 0,
+  "compile_stderr": "",
+  "program_sha256": "873581fd102696faee363d066b2bb42cbed34b66eee6d044459966c1eb47571d",
+  "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage282-fixed-host-cleanup04-quote-fix/artifacts/fixed-host-cleanup:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.40.3)\n",
+  "undefined_symbols": "_CC_SHA256_Final\n_CC_SHA256_Init\n_CC_SHA256_Update\n___chkstk_darwin\n___error\n___stack_chk_fail\n___stack_chk_guard\n___stderrp\n___stdoutp\n_bzero\n_close\n_fflush\n_fputs\n_fstat\n_fstatfs\n_fsync\n_geteuid\n_getpid\n_lstat\n_mach_port_deallocate\n_mach_task_self_\n_nanosleep\n_open\n_openat\n_pread\n_proc_pidinfo\n_proc_pidpath\n_proc_pidpath_audittoken\n_proc_signal_with_audittoken\n_snprintf\n_strcmp\n_strlen\n_task_info\n_task_name_for_pid\n_write\n",
+  "ordinary_UID": 501,
+  "ordinary_run_return": 77,
+  "ordinary_stderr": "FX3_HOST_CLEANUP_DENIED:root_required\n",
+  "ordinary_run_denied_before_target_access": true,
+  "sh_syntax_check_host_command_returncode": 0,
+  "sh_syntax_check_root_bootstrap_returncode": 0,
+  "unchanged_token_core": {
+    "bound_signal.c": true,
+    "bound_signal.h": true
+  },
+  "observer_already_exited_supported": true,
+  "new_admin_or_USB_operations": 0,
+  "signals_to_existing_helper_or_observer": 0
+}

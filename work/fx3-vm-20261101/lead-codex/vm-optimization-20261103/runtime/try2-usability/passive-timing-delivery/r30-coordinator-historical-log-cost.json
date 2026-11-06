@@ -1,0 +1,38 @@
+{
+  "recorded_utc": "2026-11-05T04:15:22.390787+00:00",
+  "method": "Python -B import frozen FullLogMonitor (markers default empty), point at each unchanged historical serial.log; one full-file poll then 20 empty polls and four ready-regex scans. Measured via perf_counter. No VM/service/browser, no source edits. Measurements recorded from completed exec session 60580.",
+  "scope": "Single host-only replay per historical log, not real streaming or production full marker configuration. No CPU/IO attribution or causal root-fix inference. Ready scans run unconditionally here, whereas real runner gates three of them.",
+  "finding": "Retained text only 2.8-4.4K characters in these short runs; repeat retained-text scanning is not demonstrated to be a material startup bottleneck. Whole-log initial parse ~2.3-2.5s must not be added to each incremental real poll. No optimization to production logger justified by this benchmark alone.",
+  "rows": [
+    {
+      "run": "v25gate-n64-r17-740bafa8",
+      "serial_sha256": "b26cbdf45909255df6e83636005e8778e464c3946648e9dbd8150a423fc49366",
+      "source_bytes": 7835010,
+      "selected_chars": 4406,
+      "selected_lines": 30,
+      "cold_full_log_seconds": 2.32619812496705,
+      "empty_poll_max_of_20_seconds": 0.002387207990977913,
+      "four_ready_scans_max_of_20_seconds": 0.0002212079707533121
+    },
+    {
+      "run": "v25gate-n64-r17-45304842",
+      "serial_sha256": "05f82760136783ee6d9408a1df03d6b1875ea2ccfbaaadbde9db30836543f199",
+      "source_bytes": 9990187,
+      "selected_chars": 4406,
+      "selected_lines": 30,
+      "cold_full_log_seconds": 2.4615074999746867,
+      "empty_poll_max_of_20_seconds": 0.0019808749784715474,
+      "four_ready_scans_max_of_20_seconds": 4.2208004742860794e-05
+    },
+    {
+      "run": "v25gate-n64-r17-f7903939",
+      "serial_sha256": "fceeb6f7695d9601bf83d7df955be00efbeba639c0f876352155cdee53a65f82",
+      "source_bytes": 5125714,
+      "selected_chars": 2826,
+      "selected_lines": 21,
+      "cold_full_log_seconds": 2.3226528340019286,
+      "empty_poll_max_of_20_seconds": 0.002597291022539139,
+      "four_ready_scans_max_of_20_seconds": 8.191599044948816e-05
+    }
+  ]
+}

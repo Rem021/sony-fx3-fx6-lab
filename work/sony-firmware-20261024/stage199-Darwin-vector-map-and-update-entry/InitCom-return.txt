@@ -1,0 +1,11 @@
+# Original FX3 bytes, source map0x4200, conditional linkage only; no execution.
+0x51b6 [file+0xfb6] d9f81000 ldr.w     r0, [sb, #0x10]
+0x51ba [file+0xfba] 8007 lsls      r0, r0, #0x1e
+0x51bc [file+0xfbc] 04d5 bpl       #0x51c8
+0x51be [file+0xfbe] 3178 ldrb      r1, [r6]
+0x51c0 [file+0xfc0] 2246 mov       r2, r4
+0x51c2 [file+0xfc2] 85a0 adr       r0, #0x214
+0x51c4 [file+0xfc4] 33f08af8 bl        #0x382dc
+0x51c8 [file+0xfc8] 2046 mov       r0, r4
+0x51ca [file+0xfca] 45b0 add       sp, #0x114
+0x51cc [file+0xfcc] bde8f08f pop.w     {r4, r5, r6, r7, r8, sb, sl, fp, pc}

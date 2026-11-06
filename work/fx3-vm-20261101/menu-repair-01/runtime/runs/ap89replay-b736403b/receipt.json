@@ -1,0 +1,246 @@
+{
+  "created_utc": "2026-11-02T13:59:51.616498+00:00",
+  "duration_seconds": 4.822708749998128,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap89-backup-ram-replay/candidate.json",
+  "candidate_sha256": "bae2982594b49c99085ddcc8239e49c1709990a14bed585630ba7d0e124b0fe9",
+  "observer_source_snapshot": [
+    {
+      "name": "run_candidate89.py",
+      "sha256": "578705ca75294f75e1173b7de8a7500e841e35fcbadc19387c01a9910653d486"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring85_v3.py",
+      "sha256": "f9392cae4a7cbfecbae84cdd7cf3602fd98ad2d9d31f5766b8871fa46e12e1f1"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap89replay-b736403b",
+  "requested_seconds": 300,
+  "qemu_pid": 63383,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap89-backup-ram-replay/guest.dtb",
+      "sha256": "a1b429a37bc420e1403e2599ec0ad622408430064c9f64e292a816263c9df4f3"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap89-backup-ram-replay/guest.cpio",
+      "sha256": "20c71e9793e86c4814977917d95487871e843a2d3e258636247ad4e133f7f9de"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap89-backup-ram-replay/candidate.json",
+      "sha256": "bae2982594b49c99085ddcc8239e49c1709990a14bed585630ba7d0e124b0fe9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.20031924999784678,
+      "rss_vsz_kib": "949072 495710944"
+    },
+    {
+      "elapsed_seconds": 0.4613981670117937,
+      "rss_vsz_kib": "1107232 495710944"
+    },
+    {
+      "elapsed_seconds": 0.7374014590168372,
+      "rss_vsz_kib": "1108656 495710944"
+    },
+    {
+      "elapsed_seconds": 0.9952528340218123,
+      "rss_vsz_kib": "1114240 495710944"
+    },
+    {
+      "elapsed_seconds": 1.2549668340070639,
+      "rss_vsz_kib": "1234704 495710944"
+    },
+    {
+      "elapsed_seconds": 1.518131250020815,
+      "rss_vsz_kib": "1515968 495710944"
+    },
+    {
+      "elapsed_seconds": 1.7775975420081522,
+      "rss_vsz_kib": "1553984 495710944"
+    },
+    {
+      "elapsed_seconds": 2.043436459003715,
+      "rss_vsz_kib": "1567376 495710944"
+    },
+    {
+      "elapsed_seconds": 2.302943917020457,
+      "rss_vsz_kib": "1584672 495710944"
+    },
+    {
+      "elapsed_seconds": 2.5674740000104066,
+      "rss_vsz_kib": "1588896 495710944"
+    },
+    {
+      "elapsed_seconds": 2.829998083994724,
+      "rss_vsz_kib": "1588640 495710944"
+    },
+    {
+      "elapsed_seconds": 3.094531459006248,
+      "rss_vsz_kib": "1521472 495710944"
+    },
+    {
+      "elapsed_seconds": 3.3554322920099366,
+      "rss_vsz_kib": "1521552 495710944"
+    },
+    {
+      "elapsed_seconds": 3.6243976250116248,
+      "rss_vsz_kib": "1521568 495710944"
+    },
+    {
+      "elapsed_seconds": 3.8842705420101993,
+      "rss_vsz_kib": "1521568 495710944"
+    },
+    {
+      "elapsed_seconds": 4.147555750008905,
+      "rss_vsz_kib": "1521568 495710944"
+    }
+  ],
+  "printk_ring_decode": {
+    "exit": 0,
+    "stdout": "records 895 first 0 next 70092\n",
+    "stderr": ""
+  },
+  "read_only_guest_memory_snapshots": [
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-reserved-ram.bin",
+      "scope": "Quiesced original Backup RAM only; not persistence/API acceptance",
+      "present": true,
+      "actual_bytes": 2232320,
+      "sha256": "ece9dbb93d3856705fdf1169c9730043e2e03fba5f3a3f0dd3cbcd20659d6d3f"
+    },
+    {
+      "address": 17246978048,
+      "size": 2232320,
+      "name": "backup-after-shutdown.bin",
+      "scope": "AP88 final quiescedreservedBackup; shutdowncompletion separatelyverified; notAP89 input yet",
+      "present": true,
+      "actual_bytes": 2232320,
+      "sha256": "ece9dbb93d3856705fdf1169c9730043e2e03fba5f3a3f0dd3cbcd20659d6d3f"
+    },
+    {
+      "address": 17674797056,
+      "size": 65536,
+      "name": "capid-reserved-ram.bin",
+      "scope": "Quiesced explicit virtual CAPID storage backing only; not CP/capture acceptance",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17675845632,
+      "size": 1048576,
+      "name": "dmm-virtual-ram.bin",
+      "scope": "Quiesced explicit virtual two-slot DMM backing only; no originalCP/capture acceptance",
+      "present": true,
+      "actual_bytes": 1048576,
+      "sha256": "30e14955ebf1352266dc2ff8067e68104607e750abb9d3b36582b8af909fcb58"
+    },
+    {
+      "address": 17676894208,
+      "size": 65536,
+      "name": "adf-muted-ram.bin",
+      "scope": "Explicit muted software backing; original_sound=0",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17678991360,
+      "size": 65536,
+      "name": "ui-gate-counters.bin",
+      "scope": "Observer-only counters and boot records, double-bank published snapshot; no behavior model",
+      "present": true,
+      "actual_bytes": 65536,
+      "sha256": "de2f256064a0af797747c2b97505dc0b9f3df0de4f489eac731c23ae9ca9cc31"
+    },
+    {
+      "address": 17680039936,
+      "size": 589824,
+      "name": "face-dmm-reserved-ram.bin",
+      "scope": "Independent virtual face-registration byte storage; actual local-to-remote copy; no recognition/physical camera acceptance",
+      "present": true,
+      "actual_bytes": 589824,
+      "sha256": "250480ecefa3655c774b6a4e5d4eb16675ee4f181c2285c25020fac6e3aaf3b5"
+    },
+    {
+      "address": 17683185664,
+      "size": 16777216,
+      "name": "osd-ring-final.bin",
+      "scope": "Software OSD snapshot ring; no CP panel/compositor acceptance",
+      "present": true,
+      "actual_bytes": 16777216,
+      "sha256": "080acf35a507ac9849cfcba47dc2ad83e01b75663a516279c8b9d243b719643e"
+    }
+  ],
+  "guest_exception_markers": [],
+  "markers": {
+    "FX3_AP89_BACKUP_REPLAY_VERIFIED": false,
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": false,
+    "FX3_PRESET_CONTEXT_BOUND": false,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": false,
+    "FX3_AP89_UUD_DECISION": false,
+    "FX3_AP89_SCREEN_CREATE": false,
+    "FX3_AP_IM_ENDMAPS_": false
+  },
+  "guest_warning_lines": [],
+  "menu_verified": false,
+  "classification": "OBSERVATION_ONLY_REVIEW_GUEST_LOGS",
+  "physical_devices_host_disks_network": 0,
+  "early_stop_reason": "AP86B explicit diagnostic/rejection gate; stop for review; no further protocol changes",
+  "receipt_scope": "AP89 offline simulatedpowercycle: exactAP88r4protocolmodels/GPEv15; originalbackupmodule/seedloadpolicyuntouched. Afteroriginalmoduleandseed-dateclock initialization butbeforebootin, ddexactfrozenAP88liveRAM toexistingreserved404000000/221000 andcompleteSHAreadback. No storedchecksumrewrites; notnativepersistedorfullshutdownclaim. Minimalpresetprovider adds4passiveUUD/screeninit/presenterreturnpoints only. NoObjdisplayDSO/noinjectedpowerorreadyevents."
+}

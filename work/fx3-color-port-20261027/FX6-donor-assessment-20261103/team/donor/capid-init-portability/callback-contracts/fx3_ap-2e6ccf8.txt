@@ -1,0 +1,47 @@
+ 2e6ccf8: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+ 2e6ccfc: 5280ec63     	mov	w3, #0x763              // =1891
+ 2e6cd00: 910003fd     	mov	x29, sp
+ 2e6cd04: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 2e6cd08: b0005936     	adrp	x22, 0x3991000
+ 2e6cd0c: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e6cd10: d00057d5     	adrp	x21, 0x3966000
+ 2e6cd14: aa0003f4     	mov	x20, x0
+ 2e6cd18: b0004960     	adrp	x0, 0x3799000
+ 2e6cd1c: 91203c00     	add	x0, x0, #0x80f
+ 2e6cd20: 9112e2c2     	add	x2, x22, #0x4b8
+ 2e6cd24: 91351ea1     	add	x1, x21, #0xd47
+ 2e6cd28: 94040c79     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e6cd2c: b9400680     	ldr	w0, [x20, #0x4]
+ 2e6cd30: 7100041f     	cmp	w0, #0x1
+ 2e6cd34: 54000461     	b.ne	0x2e6cdc0 <Application_System_Init+0x177d230>
+ 2e6cd38: d2800100     	mov	x0, #0x8                // =8
+ 2e6cd3c: 97f02f14     	bl	0x2a7898c <Application_System_Init+0x1388dfc>
+ 2e6cd40: aa0003f3     	mov	x19, x0
+ 2e6cd44: b9400a80     	ldr	w0, [x20, #0x8]
+ 2e6cd48: b9000260     	str	w0, [x19]
+ 2e6cd4c: b9405680     	ldr	w0, [x20, #0x54]
+ 2e6cd50: 97ff8f42     	bl	0x2e50a58 <Application_System_Init+0x1760ec8>
+ 2e6cd54: b9000660     	str	w0, [x19, #0x4]
+ 2e6cd58: f00340e0     	adrp	x0, 0x968b000
+ 2e6cd5c: 91252000     	add	x0, x0, #0x948
+ 2e6cd60: f9001fa0     	str	x0, [x29, #0x38]
+ 2e6cd64: 97a201fc     	bl	0x16ed554 <.text+0x158ed4>
+ 2e6cd68: f00340e0     	adrp	x0, 0x968b000
+ 2e6cd6c: f9448800     	ldr	x0, [x0, #0x910]
+ 2e6cd70: b4000220     	cbz	x0, 0x2e6cdb4 <Application_System_Init+0x177d224>
+ 2e6cd74: f9400001     	ldr	x1, [x0]
+ 2e6cd78: f9400022     	ldr	x2, [x1]
+ 2e6cd7c: aa1303e1     	mov	x1, x19
+ 2e6cd80: d63f0040     	blr	x2
+ 2e6cd84: 9100e3a0     	add	x0, x29, #0x38
+ 2e6cd88: 97e32e85     	bl	0x273879c <Application_System_Init+0x1048c0c>
+ 2e6cd8c: 90005540     	adrp	x0, 0x3914000
+ 2e6cd90: 9112e2c2     	add	x2, x22, #0x4b8
+ 2e6cd94: 91351ea1     	add	x1, x21, #0xd47
+ 2e6cd98: 9107a800     	add	x0, x0, #0x1ea
+ 2e6cd9c: 5280ef23     	mov	w3, #0x779              // =1913
+ 2e6cda0: 94040c5b     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e6cda4: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2e6cda8: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2e6cdac: a8c57bfd     	ldp	x29, x30, [sp], #0x50
+ 2e6cdb0: d65f03c0     	ret

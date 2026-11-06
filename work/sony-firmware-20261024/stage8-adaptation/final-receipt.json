@@ -1,0 +1,173 @@
+{
+  "schema": "fx3-service-adaptation-final-receipt/1",
+  "created_at_utc": "2026-10-25T10:49:58.742156+00:00",
+  "scope": "This round new report, notes, disabled-capability contract, fixed public-source receipts and static analysis artifacts only. Prior human-menu and cached-PnP evidence is separately labelled as context.",
+  "volume_verified": {
+    "mount_point": "/Volumes/KAFU2T",
+    "uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B"
+  },
+  "target": {
+    "model": "ILME-FX3",
+    "firmware_human_menu": "7.02",
+    "normal_cached_vid_pid": "054C:0DA1",
+    "body_program_hashes_collected": false,
+    "unique_body_binding_collected": false
+  },
+  "files": [
+    {
+      "path": "research_notes/索尼 FX3 服务方案适配评估/checkpoint_portability.md",
+      "kind": "research_synthesis_note",
+      "bytes": 12613,
+      "sha256": "ea0a227dfb0cba7640437aebbac4a2774c92fe0f92038a2e183bb4a4a2f5cacf"
+    },
+    {
+      "path": "research_notes/索尼 FX3 服务方案适配评估/device_portability.md",
+      "kind": "research_synthesis_note",
+      "bytes": 13971,
+      "sha256": "cf6a47e72bf3de297334c076b1e598c476be7f3464fa5dff1f6ffe3d764138cc"
+    },
+    {
+      "path": "research_notes/索尼 FX3 服务方案适配评估/host_portability.md",
+      "kind": "research_synthesis_note",
+      "bytes": 16991,
+      "sha256": "60fc0434bea7183bb6957f02eab845bed1b84d79224208fdcd09cd23eac7c982"
+    },
+    {
+      "path": "reports/索尼 FX3 服务方案适配评估.md",
+      "kind": "final_research_report",
+      "bytes": 6784,
+      "sha256": "7b7ce0ac25030bdc655acf9de71938e8d4cb8792a40a2c5a68ad976bc0030c50"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/checkpoint/source-receipt.json",
+      "kind": "fixed_public_source_receipt",
+      "bytes": 3049,
+      "sha256": "a69cdb27e4d2d1f9783ce9fa3a925408e8b27054bff69c28c7ec878b278a2d8a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/device/artifact-manifest.json",
+      "kind": "static_analysis_artifact_or_receipt",
+      "bytes": 1336,
+      "sha256": "338a3abba302222774cdcb02a071b57e474d6ce1233d181981953c2828d8b73f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/device/audit_device.py",
+      "kind": "static_analysis_artifact_or_receipt",
+      "bytes": 4834,
+      "sha256": "d3fd91fe952a7ca63bfaf2514be8c5fbdfe40aa519a5884e2cbca59d23e584a8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/device/device-abi-audit.json",
+      "kind": "static_analysis_artifact_or_receipt",
+      "bytes": 232931,
+      "sha256": "57979f97d9e1b745baf25bdb6e6c762507672a14c119ec2181ff380c279cfb1b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/device/packet-binding-and-worker-facts.json",
+      "kind": "static_analysis_artifact_or_receipt",
+      "bytes": 9318,
+      "sha256": "4a7070c068a1149ab11b54b7115beb51de05b0c78a82c25ca06cfe4f9b44cdd6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/device/reference-cleanup.json",
+      "kind": "static_analysis_artifact_or_receipt",
+      "bytes": 2412,
+      "sha256": "6aa3ac766d457b9f726d74efc6d09ed2af26c0e066554d1665534e5d0ba7279c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/device/upstream-paths.json",
+      "kind": "static_analysis_artifact_or_receipt",
+      "bytes": 4899,
+      "sha256": "5ee7c0e8d53a78c34e42add8c13ab71d541c8d8ade51a784a276dd0ea188e8c8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/device/upstream-source-receipt.json",
+      "kind": "fixed_public_source_receipt",
+      "bytes": 8165,
+      "sha256": "2048f71786815cca4755df3489ae7f711d51cbca432cc1b69526b4bcad07622f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/device/upstream-tree-receipt.json",
+      "kind": "fixed_public_source_receipt",
+      "bytes": 20493,
+      "sha256": "bee5ef0ee9d76b6dc2baa582367bdc286b6778692a09816ccd6aa9e77b3d69de"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/host/compatibility-contract.json",
+      "kind": "declarative_disabled_capability_contract",
+      "bytes": 4693,
+      "sha256": "95b952976458f275379a2581bf819942ce33bf20e639e1f0953f88ec0e834eb7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage8-adaptation/host/source-receipt.json",
+      "kind": "fixed_public_source_receipt",
+      "bytes": 3675,
+      "sha256": "282b1b78ad51098cc490ea372e1e3387f7425fba1a1cd19c1e7615de3847ce56"
+    }
+  ],
+  "prior_context_references": [
+    {
+      "path": "work/sony-firmware-20261024/stage7-entry/menu-version-confirmation.json",
+      "classification": "prior_human_camera_menu_confirmation",
+      "bytes": 432,
+      "sha256": "332eacd216835e5049bc839abbae58a40786b42ec8b63d1df5d651e9f3b4da08",
+      "physical_program_readback_proof": false,
+      "physical_recovery_proof": false
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json",
+      "classification": "prior_windows_cached_PnP_only",
+      "bytes": 1866,
+      "sha256": "01b5b580eb4378a40c8e9ea751be9201ccca8a52e8efe8a415015c6fc93ff415",
+      "physical_program_readback_proof": false,
+      "physical_recovery_proof": false
+    }
+  ],
+  "evidence_levels": {
+    "public_source": "Fixed PMCA and A7CII source references establish inspected designs and constraints; they are not target hardware tests.",
+    "actual_worker_ELF_static": "Actual upstream worker ELF metadata and FX3 original loader bytes support loading-model plausibility only; no worker was loaded or executed on FX3.",
+    "official_firmware_static": "FX3 library, file and WBI branches are static observations of official files, not readback from the user body.",
+    "human_menu_and_cached_PnP": "Confirmed user-menu 7.02 and prior Windows normal MSC cache are retained as separate contextual evidence.",
+    "physical_recovery": "No target authentication, active query, native execution, healthy checkpoint collection, actual restoration, cold boot or recording validation occurred in this round."
+  },
+  "active_capabilities": {
+    "active_standard_scsi_query_enabled": false,
+    "sony_msc_extcmd_enabled": false,
+    "vendor_control_or_bulk_enabled": false,
+    "service_start_auth_stop_enabled": false,
+    "backup_or_program_file_read_enabled": false,
+    "temp_upload_delete_native_execution_enabled": false,
+    "persistent_settings_firmware_wbi_boot_write_enabled": false,
+    "automatic_retry_or_rescue_enabled": false
+  },
+  "cached_pnp_inventory_authorized": true,
+  "write_release": false,
+  "independent_unbrick_safety_established": false,
+  "hardware_HEVC_capability_newly_established": false,
+  "crossflash_validated": false,
+  "operations_this_round": {
+    "public_source_review": true,
+    "static_ELF_and_firmware_analysis": true,
+    "native_or_firmware_execution": false,
+    "camera_or_USB_access": false,
+    "driver_changes": false,
+    "gui_changes": false,
+    "persistent_camera_writes": false
+  },
+  "coordinator_independent_static_review": {
+    "reported_verified": true,
+    "scope": "Disabled capability contract and absence of temporary-upstream/raw/sources references; communicated by coordinator, not a hardware acceptance test."
+  },
+  "local_validation": {
+    "report_existing_or_self_receipt_links": 8,
+    "readme_new_report_target_count": 1,
+    "active_capabilities_all_false": true,
+    "downloaded_reference_code_retained": false
+  },
+  "readme_index": {
+    "path": "README.md",
+    "section": "相机与固件研究",
+    "new_entries": 1,
+    "target": "reports/索尼 FX3 服务方案适配评估.md"
+  }
+}

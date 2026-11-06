@@ -1,0 +1,208 @@
+{
+  "created_utc": "2026-10-30T14:33:21.918849+00:00",
+  "stage": "FX3-runtime-DMA-binding-20261030",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6433,
+      "sha256": "dc15aff89e0894a80da4e4e6b2ce5064f56130ac56d0347b63ac452b686d1b9a"
+    },
+    {
+      "path": "attempts/UDIF-FLUSH-boundary-diagnosis.json",
+      "bytes": 2128,
+      "sha256": "e3e7fb36b182789d0179ff9a0dda8ba84611c08fabc0e60a8df212219cb96d14"
+    },
+    {
+      "path": "attempts/UDIF-INVALIDATE-boundary-diagnosis.json",
+      "bytes": 1669,
+      "sha256": "c65897330f3d3b7f55cdf600269cccb0fdb4274ac5a8b98e6d4e7c11d349fa80"
+    },
+    {
+      "path": "attempts/UDIF-NONE-name-boundary-diagnosis.json",
+      "bytes": 2132,
+      "sha256": "3cfe86128ff92c9fb472aee72056147fc62a8a9b529359c3d00d1c67efcfb534"
+    },
+    {
+      "path": "attempts/development-notes.json",
+      "bytes": 1216,
+      "sha256": "2129000617aa242b6b8b8a4335eab33fdb7241b3c9f22eeb4e60b3abc254931f"
+    },
+    {
+      "path": "capture_original_binding.py",
+      "bytes": 9836,
+      "sha256": "3bcdd3f129a153ebd42a2e24f673e0e9374c33813700bb339f4476b850c55239"
+    },
+    {
+      "path": "capture_selected_consumers.py",
+      "bytes": 5505,
+      "sha256": "798ce3498abaec8a3397b9ab6cfe443c7562d18cab488557e5ed3600fb22dc2c"
+    },
+    {
+      "path": "check_consumer_scope.py",
+      "bytes": 6044,
+      "sha256": "cff8d4fa90655ea9121ca3b01b6c4a8a8fde81167e3c9adb3a7450f2c821304d"
+    },
+    {
+      "path": "consumer-scope.json",
+      "bytes": 42102,
+      "sha256": "2b3b03631555dda0d1d0b259bf9252b1980fbb565f4d043b75145264a0ad4935"
+    },
+    {
+      "path": "goal-status-verified.json",
+      "bytes": 634,
+      "sha256": "f979f9d32db1a32ce75f93a33532546bde2849bc827ebdd214959b8cef81a5ad"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 1347,
+      "sha256": "179cbc60ad8502637c51243132c60dd7a8ec77db700537da11a0af9a9b4b4d3f"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 497,
+      "sha256": "8767b3e21e5a618b8802259acbd19eff953866f8fcff7159485d92dac91bd037"
+    },
+    {
+      "path": "original-binding.json",
+      "bytes": 534569,
+      "sha256": "c8f51d6b92a906bdff9b0efeaa9b970a48751db43820a2ac4a8bacca9b09cee2"
+    },
+    {
+      "path": "original-fragments/__dma_clean_area.bin",
+      "bytes": 48,
+      "sha256": "1eeac36e6a9e37d7186e7563dfbdf1f1bf46b60f4a4a4f5f5195eed3540f05ec"
+    },
+    {
+      "path": "original-fragments/__dma_inv_area.bin",
+      "bytes": 8,
+      "sha256": "918c28ca200b5f006392e6524a00009a5f4d0cafd8eec95eaea7f645971ed41a"
+    },
+    {
+      "path": "original-fragments/__dma_map_area.bin",
+      "bytes": 16,
+      "sha256": "ab664be9e121e1d4d4a79fec577a21a9c2bfc31e69d78db74767e622bbb6cf08"
+    },
+    {
+      "path": "original-fragments/__dma_unmap_area.bin",
+      "bytes": 16,
+      "sha256": "7304c7027aeff6dbb5a1557faa9b0718939a515ac45a64d0e8452da28e2abbae"
+    },
+    {
+      "path": "original-fragments/__inval_cache_range.bin",
+      "bytes": 80,
+      "sha256": "ae8f9887738eea2299f0b0b1269436f2e946c646f6fcb25ed2495ed7b97eef3c"
+    },
+    {
+      "path": "original-fragments/__udif_cache_ctrl.bin",
+      "bytes": 24,
+      "sha256": "59e6fa6bd0fb8528783cf9c62f16d7a22b218d3248e9106f6b8ffa6f12f41449"
+    },
+    {
+      "path": "original-fragments/arch_p32_to_p64.bin",
+      "bytes": 168,
+      "sha256": "51e9f2762b4936d61e50d5b52dcc5309fde4aec67c496be50c944f1e153fab50"
+    },
+    {
+      "path": "original-fragments/arch_p64_to_p32.bin",
+      "bytes": 168,
+      "sha256": "9bf5fefe7045a2fc7e2f2c63fbf1d0f5d06e851daace45af2f4cdbe7a5568441"
+    },
+    {
+      "path": "original-fragments/arch_phys_to_cache.bin",
+      "bytes": 328,
+      "sha256": "e0908afd7c36874b956be7115e1a031bbd3b0a7eaff354b2d840645da4e7460c"
+    },
+    {
+      "path": "original-fragments/arch_phys_to_cachetype2.bin",
+      "bytes": 88,
+      "sha256": "70d20f513e09a9bbcb5fa4493aa8c9d7bea96d46ea83d4cc9dccccce5608e92b"
+    },
+    {
+      "path": "original-fragments/arch_phys_to_noncache.bin",
+      "bytes": 320,
+      "sha256": "5e4ec9f340e1c8d7a811ee0995fb11f0c430222018f4bb45accc662dbf54305a"
+    },
+    {
+      "path": "original-fragments/arch_phys_to_va.bin",
+      "bytes": 208,
+      "sha256": "0bf3ddd3c90d3ea70619fe503676fb00daa09e671bcb7dbd3ce44d2acf3a52f6"
+    },
+    {
+      "path": "original-fragments/arch_va_to_phys.bin",
+      "bytes": 232,
+      "sha256": "d8a960ba88dd295f25f1728c24cc11f4d795b1be51102934f7151229895e86bc"
+    },
+    {
+      "path": "original-fragments/udif_dma_map_sg.bin",
+      "bytes": 216,
+      "sha256": "20dd69fc85729d7c01ec8a59ac485e744876781086631b993e7cb412caac4b40"
+    },
+    {
+      "path": "original-fragments/udif_dma_unmap_sg.bin",
+      "bytes": 136,
+      "sha256": "bdbe52431958ae7435a69e6ddcf0f2b9de5cd9fb6bc708d3110242b57506676a"
+    },
+    {
+      "path": "original-instruction-probes.json",
+      "bytes": 35776,
+      "sha256": "b2d6b58e1b48cebc77dd3fc49c193024f9dbe5cea1127275432c51ebd58e6488"
+    },
+    {
+      "path": "original-modules/cachecontrol.ko",
+      "bytes": 6064,
+      "sha256": "1aaa059db2e29ad29e39117e0812cb9620886a035fbaba58430352dd8cad0146"
+    },
+    {
+      "path": "original-modules/dataflowInfraFramework.so",
+      "bytes": 306496,
+      "sha256": "5d6a9be3ba359cffb1a1894bb667071e0f0e2fe2749b6c5e36ce8364e57eae2a"
+    },
+    {
+      "path": "original-modules/dmm.ko",
+      "bytes": 118336,
+      "sha256": "1e28a4921b36cd8866330a6670d72627d347c556dbea8568cd5b3ab60853e65a"
+    },
+    {
+      "path": "probe_original_mapping.py",
+      "bytes": 9634,
+      "sha256": "dc78e187d9568fe0aacadb649dfcaca6a9abcdb2f3f568646533b1627d8d2a4a"
+    },
+    {
+      "path": "seal_binding.py",
+      "bytes": 5498,
+      "sha256": "1a11514f1a741118cc0650c51587dea7c58ad4e3527fcbb7e076ff4c80bc7182"
+    },
+    {
+      "path": "selected-consumers.json",
+      "bytes": 383790,
+      "sha256": "4e1d7841155ae358a8e751968d7cc22b58187184745e8912a4ac221eef857a81"
+    },
+    {
+      "path": "validate_original_binding.py",
+      "bytes": 7666,
+      "sha256": "627efeb68b1c0d16b152a2df850f585aeceeee6779071d45978a5448c0028046"
+    },
+    {
+      "path": "verification-receipt.json",
+      "bytes": 2926,
+      "sha256": "631cef8bd1ce7f11d2110e575d4417cd6415ba619ccb902af2f8cd13c514c6ce"
+    }
+  ],
+  "verification_status": "PASS_ORIGINAL_PACKAGE_LINKAGE_AND_BOUNDED_PROBES_NOT_RUNTIME_OR_FLASH",
+  "original_function_ranges": 15,
+  "independent_export_records": 10,
+  "importing_kernel_modules": 22,
+  "unresolved_shared_library_references": 1,
+  "import_relocations": 217,
+  "bounded_original_cases": 12,
+  "original_instructions": 158,
+  "cache_or_system_instructions_executed": 0,
+  "device_actions": 0,
+  "native_Sony_programs_executed": 0,
+  "full_objective_preserved": true,
+  "modified_or_flashable_firmware_produced": false,
+  "goal_complete": false,
+  "native_goal_status": "active",
+  "prior_goal_turn_classification": "progress: paired source cache/DMA contracts changed target binding investigation",
+  "current_goal_turn_classification": "progress: original 7.02 kernel exports, module call relocations and bounded original conversion/dispatch paths"
+}

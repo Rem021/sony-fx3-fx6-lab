@@ -1,0 +1,23 @@
+{
+  "time": "2026-11-06T04:50:11.902459+00:00",
+  "status": "format_and_exit_fixed_stream_frontier_and_actual_runner_tests_pending",
+  "manifest": {
+    "count": 54,
+    "all_match": true,
+    "sha256": "1cac787e6a1edd34b20c65eab2fbea2476a5cf4d9f9dab373e59f9b029978e28"
+  },
+  "independent_probe": {
+    "input": "first40 bytes of valid FX3MS1 BEGIN, positive1s deadline",
+    "function": "actual live_runner._wait_mapping with actual FramedProvider",
+    "result": "immediate ProtocolError field count/duplicate",
+    "elapsed_seconds": 0.0
+  },
+  "remaining": [
+    "normal partial last line treated as corrupt complete record",
+    "BEGIN before prior END currently retried although complete nested BEGIN is corruption",
+    "6 host tests use fake receipt dict and isolated mapping; do not execute actual HostRunner four-stop lifecycle",
+    "wrapper postflight failure edits returned object after native receipt saved, potential disk/result discrepancy"
+  ],
+  "VM_started": false,
+  "new_run_authorized": false
+}

@@ -1,0 +1,205 @@
+{
+  "cases": [
+    {
+      "case": "wrong-profile",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "-c",
+        "import sys,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]);script=sys.argv[2];sys.argv=[script,*sys.argv[3:]]\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden:'+event)\n if event=='subprocess.Popen' and list(args[1][:3])!=['diskutil','info','-plist']:raise RuntimeError('forbidden child:'+str(args[1]))\n if event=='open' and isinstance(args[0],(str,bytes)) and ((args[1] and any(c in args[1] for c in 'wax+')) or args[2]&0x603):raise RuntimeError('unexpected write')\nsys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    sys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n                                                                           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py\", line 10, in <module>\n    assert CFG['candidate_source_root']==str(SOURCE.parent) and CFG['runner_profile']==PROFILE\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "case": "wrong-profile",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "-c",
+        "import sys,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]);script=sys.argv[2];sys.argv=[script,*sys.argv[3:]]\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden:'+event)\n if event=='subprocess.Popen' and list(args[1][:3])!=['diskutil','info','-plist']:raise RuntimeError('forbidden child:'+str(args[1]))\n if event=='open' and isinstance(args[0],(str,bytes)) and ((args[1] and any(c in args[1] for c in 'wax+')) or args[2]&0x603):raise RuntimeError('unexpected write')\nsys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py",
+        "--run-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/boundary-wrong-profile-1793863723524989000",
+        "--output-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/outside-return",
+        "--",
+        "confirm",
+        "fixture-no-review"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    sys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n                                                                           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py\", line 94, in <module>\n    if __name__=='__main__':raise SystemExit(main())\n                                             ~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py\", line 86, in main\n    assert cfg['candidate_source_root']==str(FROZEN) and cfg['runner_profile']==PROFILE\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "case": "old-source-root",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "-c",
+        "import sys,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]);script=sys.argv[2];sys.argv=[script,*sys.argv[3:]]\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden:'+event)\n if event=='subprocess.Popen' and list(args[1][:3])!=['diskutil','info','-plist']:raise RuntimeError('forbidden child:'+str(args[1]))\n if event=='open' and isinstance(args[0],(str,bytes)) and ((args[1] and any(c in args[1] for c in 'wax+')) or args[2]&0x603):raise RuntimeError('unexpected write')\nsys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    sys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n                                                                           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py\", line 10, in <module>\n    assert CFG['candidate_source_root']==str(SOURCE.parent) and CFG['runner_profile']==PROFILE\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "case": "old-source-root",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "-c",
+        "import sys,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]);script=sys.argv[2];sys.argv=[script,*sys.argv[3:]]\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden:'+event)\n if event=='subprocess.Popen' and list(args[1][:3])!=['diskutil','info','-plist']:raise RuntimeError('forbidden child:'+str(args[1]))\n if event=='open' and isinstance(args[0],(str,bytes)) and ((args[1] and any(c in args[1] for c in 'wax+')) or args[2]&0x603):raise RuntimeError('unexpected write')\nsys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py",
+        "--run-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/boundary-old-source-root-1793863723769376000",
+        "--output-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/outside-return",
+        "--",
+        "confirm",
+        "fixture-no-review"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    sys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n                                                                           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py\", line 94, in <module>\n    if __name__=='__main__':raise SystemExit(main())\n                                             ~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py\", line 86, in main\n    assert cfg['candidate_source_root']==str(FROZEN) and cfg['runner_profile']==PROFILE\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "case": "missing-local-freeze-entry",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "-c",
+        "import sys,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]);script=sys.argv[2];sys.argv=[script,*sys.argv[3:]]\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden:'+event)\n if event=='subprocess.Popen' and list(args[1][:3])!=['diskutil','info','-plist']:raise RuntimeError('forbidden child:'+str(args[1]))\n if event=='open' and isinstance(args[0],(str,bytes)) and ((args[1] and any(c in args[1] for c in 'wax+')) or args[2]&0x603):raise RuntimeError('unexpected write')\nsys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    sys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n                                                                           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/runtime-wrapper/common.py\", line 12, in <module>\n    assert json.loads((HERE/'LOCAL-SOURCE-FREEZE.json').read_text())==_expected_freeze\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "case": "missing-local-freeze-entry",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "-c",
+        "import sys,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]);script=sys.argv[2];sys.argv=[script,*sys.argv[3:]]\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden:'+event)\n if event=='subprocess.Popen' and list(args[1][:3])!=['diskutil','info','-plist']:raise RuntimeError('forbidden child:'+str(args[1]))\n if event=='open' and isinstance(args[0],(str,bytes)) and ((args[1] and any(c in args[1] for c in 'wax+')) or args[2]&0x603):raise RuntimeError('unexpected write')\nsys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py",
+        "--run-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/boundary-missing-local-freeze-entry-1793863724009865000",
+        "--output-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/outside-return",
+        "--",
+        "confirm",
+        "fixture-no-review"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 8, in <module>\n    sys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n                                                                           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py\", line 94, in <module>\n    if __name__=='__main__':raise SystemExit(main())\n                                             ~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py\", line 88, in main\n    assert json.loads((run/'LOCAL-SOURCE-FREEZE.json').read_text())==expected\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "case": "outside-output",
+      "script": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "-c",
+        "import sys,runpy\nfrom pathlib import Path\nroot=Path(sys.argv[1]);script=sys.argv[2];sys.argv=[script,*sys.argv[3:]]\ndef audit(event,args):\n if event in ('socket.__new__','os.system','os.fork','os.posix_spawn'):raise RuntimeError('forbidden:'+event)\n if event=='subprocess.Popen' and list(args[1][:3])!=['diskutil','info','-plist']:raise RuntimeError('forbidden child:'+str(args[1]))\n if event=='open' and isinstance(args[0],(str,bytes)) and ((args[1] and any(c in args[1] for c in 'wax+')) or args[2]&0x603):raise RuntimeError('unexpected write')\nsys.addaudithook(audit);sys.path.insert(0,str(root/'runtime-wrapper'));runpy.run_path(script,run_name='__main__')\n",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/return-tools/return_adapter.py",
+        "--run-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/boundary-outside-output-1793863724245872000",
+        "--output-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/tests/outside-return",
+        "--",
+        "confirm",
+        "fixture-no-review"
+      ],
+      "exit": 2,
+      "stderr": "usage: return_adapter.py [-h] --run-dir RUN_DIR --output-dir OUTPUT_DIR ...\nreturn_adapter.py: error: new output directory under current task run required\n"
+    },
+    {
+      "case": "prepare-outside",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py",
+        "--run-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r30-startup-observation-candidate",
+        "--task-id",
+        "task_ad037a8848b5",
+        "--dispatch-id",
+        "ctx_f0cb9c6c63e5",
+        "--session",
+        "fx3-deadline-test"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py\", line 38, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py\", line 14, in main\n    raw=Path(a.run_dir);out=output_root(raw);assert out.is_relative_to(DEL) and out!=ROOT and re.fullmatch(r'fx3-deadline-[A-Za-z0-9_-]+',a.session)\n                            ~~~~~~~~~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/r35_package_selection.py\", line 22, in output_root\n    if HOST!=APPROVED_HOST or not p.is_absolute() or p.parent!=HOST/'run-inputs' or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r37 exclusive run-inputs boundary required')\n                                                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: r37 exclusive run-inputs boundary required\n"
+    },
+    {
+      "case": "prepare-relative",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py",
+        "--run-dir",
+        "relative",
+        "--task-id",
+        "task_ad037a8848b5",
+        "--dispatch-id",
+        "ctx_f0cb9c6c63e5",
+        "--session",
+        "fx3-deadline-test"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py\", line 38, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py\", line 14, in main\n    raw=Path(a.run_dir);out=output_root(raw);assert out.is_relative_to(DEL) and out!=ROOT and re.fullmatch(r'fx3-deadline-[A-Za-z0-9_-]+',a.session)\n                            ~~~~~~~~~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/r35_package_selection.py\", line 22, in output_root\n    if HOST!=APPROVED_HOST or not p.is_absolute() or p.parent!=HOST/'run-inputs' or any(x.is_symlink() for x in [p,*p.parents]) or p.resolve()!=p:raise ValueError('r37 exclusive run-inputs boundary required')\n                                                                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: r37 exclusive run-inputs boundary required\n"
+    },
+    {
+      "case": "prepare-bad-session",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py",
+        "--run-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/r37-ad037a8848b5-bad",
+        "--task-id",
+        "task_ad037a8848b5",
+        "--dispatch-id",
+        "ctx_f0cb9c6c63e5",
+        "--session",
+        "default"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py\", line 38, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py\", line 14, in main\n    raw=Path(a.run_dir);out=output_root(raw);assert out.is_relative_to(DEL) and out!=ROOT and re.fullmatch(r'fx3-deadline-[A-Za-z0-9_-]+',a.session)\n                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "case": "prepare-duplicate",
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python3",
+        "-B",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py",
+        "--run-dir",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/r37-preflight-ad037a8848b5-1793863720190657000",
+        "--task-id",
+        "task_ad037a8848b5",
+        "--dispatch-id",
+        "ctx_f0cb9c6c63e5",
+        "--session",
+        "fx3-deadline-test"
+      ],
+      "exit": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py\", line 38, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/prepare_run.py\", line 16, in main\n    out.mkdir() # exclusive; never overwrite a prior run\n    ~~~~~~~~~^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 1011, in mkdir\n    os.mkdir(self, mode)\n    ~~~~~~~~^^^^^^^^^^^^\nFileExistsError: [Errno 17] File exists: '/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r37-diagnostic-runner-candidate/run-inputs/r37-preflight-ad037a8848b5-1793863720190657000'\n"
+    }
+  ],
+  "count": 11,
+  "operator_browser_QMP_never_invoked": true,
+  "fixture_configs_not_runtime_evidence": true
+}

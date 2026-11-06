@@ -1,0 +1,62 @@
+{
+  "schema": "fx3-fixed-layout-release/v1",
+  "helper_version": "r15",
+  "variant": "N64",
+  "soname": "fx3-ui-gate-v15-n64.so",
+  "raw_sha256": "ea47aa2d2b437700f00e64d8f3c0db7cf164c2c81f90bdedfb528a0430784574",
+  "stripped_sha256": "3ea77f9bc94ca3f4c5edb863b20bbe1245ebde1d868e61243bf0b0d8cc3511b2",
+  "provenance": {
+    "raw_build_manifest": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/BUILD.json",
+      "sha256": "1082b8cb6434309befc28ce7635de5aa56fc0aeea19a3b597c1834675f64378a"
+    },
+    "source_manifest": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-r15-guest-SOURCE-SHA256SUMS",
+      "sha256": "05aded60ec6ecabb67381eca1f9ea8b3311599725c9d8e2cbb022db72b077d7d"
+    },
+    "strip_build_receipt": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/N64-build.json",
+      "sha256": "774d6f003e10165615e367844d9a8618cdadf14b44d5d2e1602bb10d507149ea"
+    }
+  },
+  "diagnostic_contract": {
+    "guest_report": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/REPORT.md",
+      "sha256": "8f99778bf7395e0bd00b36a0acbd2b9e8423d9ea3de7db54c4e74e6802489869"
+    },
+    "source_freeze": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/SOURCE-FREEZE.json",
+      "sha256": "4737db8f89660c6bb41993b37f8aa9c8f9761a1e26be1e2fbbfa7a73db760d4b"
+    },
+    "source_adaptation": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/SOURCE-ADAPTATION.json",
+      "sha256": "40226603aa23a368005812ddcf9fef971c07beeb40dc707f9ecebccc2b0c3ac6"
+    },
+    "protocol": "r15 requested immutable snapshot v5",
+    "protocol_version": 5,
+    "physical_base": "0x41dc00000",
+    "reserved_bytes": 65536,
+    "request": {
+      "offset": "0x3000",
+      "bytes": 64
+    },
+    "ready_ack": {
+      "offset": "0x3040",
+      "bytes": 192
+    },
+    "payload": {
+      "offset": "0x3100",
+      "bytes": 784,
+      "qwords": 98,
+      "end_exclusive": "0x3410"
+    },
+    "ordinary_ram_statistics_authoritative": true,
+    "uc_region_plain_aligned_32bit_access_and_dmb_only": true,
+    "atomic_fields_snapshot_is_transactionally_consistent": false,
+    "snapshot_is_end_state": false,
+    "extra_tail_cont_not_part_of_first_frame_or_performance_window": true,
+    "protocol_runtime_validated": false,
+    "VM_started": false,
+    "scope": "guest packaging only; no host runner source/pin integration; r16 host managed separately"
+  }
+}

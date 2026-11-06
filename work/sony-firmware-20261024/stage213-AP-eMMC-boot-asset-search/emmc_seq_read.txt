@@ -1,0 +1,106 @@
+00012ed8: fd7bbba9 stp x29, x30, [sp, #-0x50]!
+00012edc: fd030091 mov x29, sp
+00012ee0: f35301a9 stp x19, x20, [sp, #0x10]
+00012ee4: f30c0058 ldr x19, #0x13080
+00012ee8: f55b02a9 stp x21, x22, [sp, #0x20]
+00012eec: f60300aa mov x22, x0
+00012ef0: e00313aa mov x0, x19
+00012ef4: f76303a9 stp x23, x24, [sp, #0x30]
+00012ef8: f503022a mov w21, w2
+00012efc: f703012a mov w23, w1
+00012f00: f80303aa mov x24, x3
+00012f04: 6fe3ff97 bl #0xbcc0
+00012f08: 60d642b9 ldr w0, [x19, #0x2d4]
+00012f0c: e0060034 cbz w0, #0x12fe8
+00012f10: 604641b9 ldr w0, [x19, #0x144]
+00012f14: 80090035 cbnz w0, #0x13044
+00012f18: 60524539 ldrb w0, [x19, #0x154]
+00012f1c: 00080051 sub w0, w0, #2
+00012f20: 1f040071 cmp w0, #1
+00012f24: a9050054 b.ls #0x12fd8
+00012f28: e00313aa mov x0, x19
+00012f2c: fdfaff97 bl #0x11b20
+00012f30: f403002a mov w20, w0
+00012f34: 6003f837 tbnz w0, #0x1f, #0x12fa0
+00012f38: e00313aa mov x0, x19
+00012f3c: 6fe9ff97 bl #0xd4f8
+00012f40: 60000034 cbz w0, #0x12f4c
+00012f44: 20008052 mov w0, #1
+00012f48: 600a02b9 str w0, [x19, #0x208]
+00012f4c: 60d242b9 ldr w0, [x19, #0x2d0]
+00012f50: 1f00156b cmp w0, w21
+00012f54: c0000054 b.eq #0x12f6c
+00012f58: e103152a mov w1, w21
+00012f5c: e00313aa mov x0, x19
+00012f60: aef1ff97 bl #0xf618
+00012f64: f403002a mov w20, w0
+00012f68: c001f837 tbnz w0, #0x1f, #0x12fa0
+00012f6c: e40318aa mov x4, x24
+00012f70: e303172a mov w3, w23
+00012f74: e20316aa mov x2, x22
+00012f78: a1330191 add x1, x29, #0x4c
+00012f7c: e00313aa mov x0, x19
+00012f80: d0f7ff97 bl #0x10ec0
+00012f84: f403002a mov w20, w0
+00012f88: e006f837 tbnz w0, #0x1f, #0x13064
+00012f8c: a14f40b9 ldr w1, [x29, #0x4c]
+00012f90: e00313aa mov x0, x19
+00012f94: fff1ff97 bl #0xf790
+00012f98: f403002a mov w20, w0
+00012f9c: 2004f837 tbnz w0, #0x1f, #0x13020
+00012fa0: 80080058 ldr x0, #0x130b0
+00012fa4: 000840b9 ldr w0, [x0, #8]
+00012fa8: 80000034 cbz w0, #0x12fb8
+00012fac: 60d642b9 ldr w0, [x19, #0x2d4]
+00012fb0: 1f040071 cmp w0, #1
+00012fb4: 20020054 b.eq #0x12ff8
+00012fb8: e00313aa mov x0, x19
+00012fbc: 65e3ff97 bl #0xbd50
+00012fc0: e003142a mov w0, w20
+00012fc4: f35341a9 ldp x19, x20, [sp, #0x10]
+00012fc8: f55b42a9 ldp x21, x22, [sp, #0x20]
+00012fcc: f76343a9 ldp x23, x24, [sp, #0x30]
+00012fd0: fd7bc5a8 ldp x29, x30, [sp], #0x50
+00012fd4: c0035fd6 ret 
+00012fd8: eee7ff97 bl #0xcf90
+00012fdc: f403002a mov w20, w0
+00012fe0: 00feff37 tbnz w0, #0x1f, #0x12fa0
+00012fe4: d1ffff17 b #0x12f28
+00012fe8: e00313aa mov x0, x19
+00012fec: cfe7ff97 bl #0xcf28
+00012ff0: c8ffff17 b #0x12f10
+00012ff4: 1f2003d5 nop 
+00012ff8: e00313aa mov x0, x19
+00012ffc: d9e7ff97 bl #0xcf60
+00013000: e00313aa mov x0, x19
+00013004: 53e3ff97 bl #0xbd50
+00013008: e003142a mov w0, w20
+0001300c: f35341a9 ldp x19, x20, [sp, #0x10]
+00013010: f55b42a9 ldp x21, x22, [sp, #0x20]
+00013014: f76343a9 ldp x23, x24, [sp, #0x30]
+00013018: fd7bc5a8 ldp x29, x30, [sp], #0x50
+0001301c: c0035fd6 ret 
+00013020: 43030058 ldr x3, #0x13088
+00013024: e403142a mov w4, w20
+00013028: 41030058 ldr x1, #0x13090
+0001302c: c2f28352 mov w2, #0x1f96
+00013030: c0030058 ldr x0, #0x130a8
+00013034: 63601691 add x3, x3, #0x598
+00013038: 14008052 mov w20, #0
+0001303c: 00000094 bl #0x1303c ; {'section': '.text', 'offset': 77884, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00013040: d8ffff17 b #0x12fa0
+00013044: 23020058 ldr x3, #0x13088
+00013048: e2ed8352 mov w2, #0x1f6f
+0001304c: 21020058 ldr x1, #0x13090
+00013050: 14008012 mov w20, #-1
+00013054: 20020058 ldr x0, #0x13098
+00013058: 63601691 add x3, x3, #0x598
+0001305c: 00000094 bl #0x1305c ; {'section': '.text', 'offset': 77916, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+00013060: d0ffff17 b #0x12fa0
+00013064: 23010058 ldr x3, #0x13088
+00013068: e2f18352 mov w2, #0x1f8f
+0001306c: 21010058 ldr x1, #0x13090
+00013070: 80010058 ldr x0, #0x130a0
+00013074: 63601691 add x3, x3, #0x598
+00013078: 00000094 bl #0x13078 ; {'section': '.text', 'offset': 77944, 'type': 283, 'symbol': 'printk', 'symbol_section': 'SHN_UNDEF', 'symbol_value': 0, 'addend': 0}
+0001307c: c9ffff17 b #0x12fa0

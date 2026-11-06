@@ -1,0 +1,251 @@
+{
+  "schema": "venice-phayen-evidence-chain-v1",
+  "created_utc": "2026-10-31T07:50:57.586286+00:00",
+  "purpose": "Research handoff requested by user; not an executable rendering pipeline",
+  "user_target_tab_id": "structured-agent-session-codex_e3a65c98_10e6_4c31_b346_419867ee1515",
+  "target_mailbox": "orca_session_id:codex_e3a65c98_10e6_4c31_b346_419867ee1515",
+  "complete_venice_isp_recovered": false,
+  "flashable_modified_fx3_package_available": false,
+  "origin": "FX3 7.02 av-cam.bin built-in VENICE/ACES appearance subset, plus Sony RAW Viewer ART numeric ABI fragment",
+  "source_image_sha256_recorded_in_original_receipt": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "look_id": 22,
+  "look_name": "MLUT_LOOKNAME_SL3SG3_TO_ACESREC709",
+  "descriptor_count": 70,
+  "av_cp_file_backed_payloads_identical": 67,
+  "cp_runtime_selector_addresses_unresolved": [
+    "0x13e624c",
+    "0x13e6250",
+    "0x13e6254"
+  ],
+  "nodes": [
+    {
+      "id": "raw",
+      "label": "VENICE sensor RAW / decoded X-OCN sample domain",
+      "status": "not_connected_to_recovered_look",
+      "unknowns": [
+        "raw packing and original ISP handoff",
+        "sensor-specific black/white and calibration"
+      ]
+    },
+    {
+      "id": "private_isp",
+      "label": "private sensor/ISP processing",
+      "status": "not_recovered",
+      "candidate_functions_not_proven_order": [
+        "calibration/shading/bad-pixel handling",
+        "WB/illuminant adaptation",
+        "demosaic",
+        "spatial/temporal NR",
+        "sensor-dependent highlight processing"
+      ],
+      "unknowns": [
+        "actual order",
+        "algorithms",
+        "parameters",
+        "frame/state dependence"
+      ]
+    },
+    {
+      "id": "input_contract",
+      "label": "input-domain contract for FX3 native look 22",
+      "status": "unverified_on_real_pixels",
+      "required_distinctions": [
+        "VENICE-specific vs generic Sony S-Gamut3",
+        "encoded YC vs encoded RGB",
+        "S-Log3 vs linear",
+        "full/legal range",
+        "existing WB/matrix/tone application"
+      ]
+    },
+    {
+      "id": "yc_rgb",
+      "label": "YC to RGB config entry",
+      "status": "config_record_recovered",
+      "runtime_pixel_order_verified": false
+    },
+    {
+      "id": "slog3_linear",
+      "label": "S-Log3 to linear config entry",
+      "status": "config_record_recovered",
+      "runtime_pixel_order_verified": false
+    },
+    {
+      "id": "matrix",
+      "label": "VENICE S-Gamut3 to ACES AP1 coefficient payload",
+      "status": "exact_payload_and_published_math_match",
+      "signed_q16": [
+        [
+          75487,
+          -7714,
+          -2237
+        ],
+        [
+          -2656,
+          79077,
+          -10885
+        ],
+        [
+          -807,
+          475,
+          65868
+        ]
+      ],
+      "q_scale": 65536,
+      "coefficient_interpretation": "signed 19-bit/Q16; hardware saturation not fully identified",
+      "row_sums": [
+        65536,
+        65536,
+        65536
+      ],
+      "artifact": "tables/venice_matrix_signed_q16.csv",
+      "expected_linear_input": "VENICE S-Gamut3 according to Sony vendor IDT, not arbitrary iPhone linear RGB",
+      "output": "ACES AP1 according to published matrix composition; enclosing FX3 domain handoff unverified"
+    },
+    {
+      "id": "lut1d",
+      "label": "VENICE L1D0 original packed-halfword slots",
+      "status": "raw_values_recovered_incomplete_sampling_contract",
+      "slots_per_channel": 512,
+      "channels_equal": true,
+      "maximum": 6722,
+      "last_slot": 0,
+      "artifact": "tables/venice_1d_packed_halfwords.csv",
+      "unknowns": [
+        "input sample coordinates",
+        "numeric scale",
+        "role of final slot",
+        "complete hardware interpolation/precision"
+      ]
+    },
+    {
+      "id": "lut3d",
+      "label": "VENICE 20x20x20 LUT original integer grid",
+      "status": "bank_layout_and_raw_values_recovered",
+      "grid": [
+        20,
+        20,
+        20
+      ],
+      "nodes": 8000,
+      "channel_values": 24000,
+      "thru_independent_exact_checks": 24000,
+      "bank": "((r&1)<<2)|((g&1)<<1)|(b&1)",
+      "local_index": "(r//2)*100+(g//2)*10+b//2",
+      "candidate_axes_raw": [
+        0,
+        326,
+        653,
+        980,
+        1307,
+        1634,
+        1960,
+        2287,
+        2614,
+        2941,
+        3268,
+        3595,
+        3921,
+        4248,
+        4575,
+        4902,
+        5229,
+        5556,
+        5882,
+        6209
+      ],
+      "output_range_raw": [
+        0,
+        8192
+      ],
+      "artifact": "tables/venice_3d_20x20x20_raw.csv",
+      "unknowns": [
+        "normalization",
+        "complete interpolator",
+        "clamp/out-of-range behavior",
+        "pixel stage ordering"
+      ]
+    },
+    {
+      "id": "range",
+      "label": "Full to Legal config entry",
+      "status": "config_record_recovered",
+      "runtime_pixel_order_verified": false
+    },
+    {
+      "id": "rgb_yc",
+      "label": "RGB to YC709 config entry",
+      "status": "config_record_recovered",
+      "runtime_pixel_order_verified": false
+    },
+    {
+      "id": "output_route",
+      "label": "MAIN / monitoring / metadata / recording output",
+      "status": "actual_frame_binding_unverified",
+      "unknowns": [
+        "actual branch routing",
+        "buffer domain",
+        "metadata agreement",
+        "real frame output"
+      ]
+    }
+  ],
+  "config_informed_candidate_sequence": [
+    "yc_rgb",
+    "slog3_linear",
+    "matrix",
+    "lut1d",
+    "lut3d",
+    "range",
+    "rgb_yc"
+  ],
+  "sequence_warning": "Records in the latter part of the recovered configuration; not proof of hardware pixel stage order, full Sony ISP order, or MAIN application",
+  "conceptual_unproven_edges": [
+    [
+      "raw",
+      "private_isp"
+    ],
+    [
+      "private_isp",
+      "input_contract"
+    ],
+    [
+      "input_contract",
+      "yc_rgb"
+    ],
+    [
+      "rgb_yc",
+      "output_route"
+    ]
+  ],
+  "art_fragment": {
+    "library_sha256": "61a53457be8c1e38f1cf75992ede374356943ef47c8f9e3e9c024b78431cb376",
+    "matrix_finite_numeric_cases": 138,
+    "coefficient_serialization_bytes_matched": 36,
+    "descriptor_cases": 72,
+    "limitations": [
+      "Mac dylib ABI is not camera/phone hardware ABI",
+      "numeric fragment is not complete sensor color science"
+    ]
+  },
+  "phayen_integration_prerequisites": [
+    "Bind source role, primaries, transfer, range and WB stage before applying any transform",
+    "Avoid duplicate log inverse, WB, input matrix or tone mapping",
+    "Resolve 1D coordinates, LUT scales, interpolation and out-of-range behavior before rendering acceptance",
+    "Keep saved recipes versioned and unchanged; use recipient coordinator/device lease workflow",
+    "Require independent reference frame comparison and product/device/visual acceptance separately"
+  ],
+  "llvc_reference": {
+    "path": "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware",
+    "branch": "codex/venice-color-fidelity",
+    "head": "28f74ffe76ee845ec7b51cf4ae5229a56688a4bd",
+    "checked": "file existence and Git identity only; no codec execution or device acceptance repeated",
+    "files": [
+      "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/tools/sony_color/SonyLLVCCode.swift",
+      "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/tools/sony_color/SonyLLVCFraming.swift",
+      "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/tools/sony_color/SonyLLVCInverse53.swift",
+      "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/tools/sony_color/SonyLLVCCoefficientFrame.swift",
+      "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/tools/sony_color/SonyLLVCSpatialFrame.swift",
+      "/Volumes/KAFU2T/AI/Codex/Worktrees/phayen-venice-firmware/tools/sony_color/SonyLLVCPackedFrame.swift"
+    ]
+  }
+}

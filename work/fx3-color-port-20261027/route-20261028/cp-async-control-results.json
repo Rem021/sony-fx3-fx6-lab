@@ -1,0 +1,85 @@
+{
+  "status": "PASS_ORIGINAL_CP_STATE_AND_CALLBACK_PATHS",
+  "phases": [
+    {
+      "step": "pre",
+      "state": 1,
+      "look": 0,
+      "pending": 0,
+      "sdk_call_count": 1
+    },
+    {
+      "step": "submit fixture",
+      "state": 2,
+      "look": 22,
+      "pending": 1,
+      "sdk_call_count": 3
+    },
+    {
+      "step": "busy repeat",
+      "state": 2,
+      "look": 22,
+      "pending": 1,
+      "sdk_call_count": 3
+    },
+    {
+      "step": "successful callback",
+      "state": 2,
+      "look": 22,
+      "pending": 0,
+      "sdk_call_count": 3
+    }
+  ],
+  "SDK_fixtures": [
+    {
+      "name": "pre",
+      "args": [
+        "0x5000efd8",
+        "0xb",
+        "0x51000018"
+      ],
+      "declared_return": 0
+    },
+    {
+      "name": "set_builtin",
+      "args": [
+        "0x16",
+        "0x42e681",
+        "0x5000efd8"
+      ],
+      "declared_return": 0
+    },
+    {
+      "name": "set_ei",
+      "args": [
+        "0x64",
+        "0x320",
+        "0x5000efd8"
+      ],
+      "declared_return": 0
+    }
+  ],
+  "failures": {
+    "pre": {
+      "state": 0,
+      "look": 0,
+      "pending": 0,
+      "sdk_call_count": 1
+    },
+    "set": {
+      "state": 0,
+      "look": 0,
+      "pending": 0,
+      "sdk_call_count": 2
+    },
+    "callback": {
+      "state": 0,
+      "look": 0,
+      "pending": 0,
+      "sdk_call_count": 3
+    }
+  },
+  "original_instructions": 747,
+  "pinned_function_sha256": "824b16a398abb86161b196f1d90c1d6e97a2cf3c45fd7187a367d6fdfeeb2dc0",
+  "scope": "The original CP control functions and callback execute in a guest; SDK results are declared. Hardware submission and callback causality are not proved. No real frame or routing acceptance."
+}

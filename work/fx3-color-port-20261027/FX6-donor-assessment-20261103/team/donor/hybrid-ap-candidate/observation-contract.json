@@ -1,0 +1,63 @@
+{
+  "state": "HOST_RUNNER_READY_NOT_EXECUTED",
+  "host_runner": "run_ap_once.py",
+  "host_runner_sha256": "aaa9ca518d580fde7ca9fdbf2c33bebe78545d96876f997168643f33bdf4a24a",
+  "parent_host_runner": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/run_entry_once.py",
+  "parent_host_runner_sha256": "3bdc9121ac331a947fc157fc5aa1455a531140a0d2700dd1fed77f9db1f37a5e",
+  "parent_health_monitor_sha256": "4d57629fc8bf1c8d158bfcf101915b9edd626f7bfb11c55fc78fe634ef7d6645",
+  "candidate_cpio_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "preflight": [
+    "volume UUID and all frozen QEMU/kernel/DTB/Backup hashes unchanged",
+    "candidate size 453184500 and DTB /chosen initrd range unchanged",
+    "old 20-ELF identity gate retains all rules with exact bootin/im exceptions only",
+    "separate full-FX3-CPIO AP hash and byte-size exception; no other member changes",
+    "no new guest probe or patch; original /init, 17 preloads and feature protections preserved"
+  ],
+  "host_log_classifier": "classify_serial.py",
+  "classifier_scope": "read-only serial classification and fixtures; not a QEMU launcher",
+  "proposed_parent_runner_delta_for_owner_review": [
+    "pin candidate path and SHA to guest-three-entry.cpio bb618bd2..., preserving argv[20] and argv[31] as the only per-run path changes",
+    "retain the parent's 20-ELF audit with only bootin/im precise exceptions; add separate full-FX3 AP SHA/size allowance and reject every other member delta",
+    "replace the parent's broad FX3_PRESET_CONTEXT_BIND_REJECT early stop with classify_serial.py's exact candidate-pinned diagnostic classification; retain all parent failure regex and stop on every non-exact rejection",
+    "remove FX3_BOOT_QUEUE_SEND from AP success criteria because it is not FX6 AP entry evidence; observe bounded loader/guard/explicit fault only",
+    "keep original zero-key, 120s observation/180s total, API16 restore, own PID cleanup and both lock checks unchanged",
+    "do not claim flags/link-map/dlsym/entry from missing markers; review a separate read-only guest probe before attempting those fields"
+  ],
+  "diagnostic_only_exact_lines": [
+    "FX3_PRESET_CONTEXT_BIND_REJECT point=0 reason=original_word",
+    "FX3_UI_GATE_BIND_FAIL id=0 reason=original_instruction",
+    "FX3_TIMER_BIND_FAILED k=0 reason=prefix original_unchanged=1",
+    "FX3_MEDIA_BIND_REJECT module=A reason=parameter_getter_code id=0x6db"
+  ],
+  "stop_on": [
+    "any nonzero loader verify/list/BusyBox RC, including later or same-line repeated observations",
+    "symbol lookup error, dlsym or dlopen failure if explicitly observed, assertion, abort, kernel fault",
+    "any non-exact diagnostic guard text or any functional SKD/CAPID/OSD/RM/Backup protection fault",
+    "first other genuine health failure, guest exit, or bounded host deadline"
+  ],
+  "already_available_evidence": {
+    "loader_three_rc": "original /init serial markers",
+    "AP_dlopen_nonnull": "an exact post-dlopen helper bind diagnostic implies a nonnull handle in that helper only",
+    "GPE_dlopen_name_flags": "FX3_GPE_LOAD line only if its conditional arm executes; absence is not evidence",
+    "natural_AP_IPC": "only if an existing native transport trace includes a source attributable to FX6 AP; generic FX3_BOOT_QUEUE_SEND is insufficient"
+  },
+  "not_available_from_current_frozen_guest": [
+    "deterministic IM pre-dlopen flags and target at the exact call time",
+    "libObj/libmpr link-map order and RTLD_GLOBAL scope at that same time",
+    "full dlopen return or first glibc symbol failure unless existing stderr emits it",
+    "dlsym(Application_System_Init) return and proof the indirect AP entry actually executed"
+  ],
+  "minimal_future_probe_design_only": {
+    "boundary": "separate review and fresh CPIO only after approval; no change to fixed platform or functional helpers",
+    "technique": "one read-only, version-pinned IM dlopen/dlsym observation shim or equivalent non-mutating guest trace, limited to the AP record; log requested pathname, flags, return, dlerror, link-map names/order and resolved entry pointer, then delegate original calls unchanged",
+    "guard": "pin FX6 IM and AP SHA, the actual IM callsite instruction words/VA, and capture/restore errno; fail closed on any mismatch and never write AP/IM text or bypass SKD/CAPID",
+    "reversal": "drop the separate probe CPIO and return to this unmodified candidate; preserve all historic logs and verify original hashes"
+  },
+  "runtime_owner_requirements": [
+    "serialize behind active FX3 key-by-key run and acquire both existing locks nonblocking",
+    "zero keys and zero synthetic IPC; keep frozen FX3 QEMU/kernel/DTB/env/Backup/init/helpers",
+    "new run directory for every serial/host log; never overwrite historical serial",
+    "host observation <=120s inside <=180s total including API16 restore, own PID reaping and double-lock check",
+    "result states are loader failure, precise diagnostic-only, genuine protection failure, bounded unknown; never call it FX6 system startup"
+  ]
+}

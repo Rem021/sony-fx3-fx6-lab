@@ -1,0 +1,103 @@
+00004ae0 fd7bbca9 stp      x29, x30, [sp, #-0x40]!
+00004ae4 5f0000f1 cmp      x2, #0
+00004ae8 241840fa ccmp     x1, #0, #4, ne
+00004aec fd030091 mov      x29, sp
+00004af0 f35301a9 stp      x19, x20, [sp, #0x10]
+00004af4 f55b02a9 stp      x21, x22, [sp, #0x20]
+00004af8 f76303a9 stp      x23, x24, [sp, #0x30]
+00004afc a00b0054 b.eq     #0x4c70
+00004b00 1f3840f2 tst      x0, #0x7fff
+00004b04 a0050054 b.eq     #0x4bb8
+00004b08 043c0012 and      w4, w0, #0xffff
+00004b0c 200b7837 tbnz     w0, #0xf, #0x4c70
+00004b10 9ffc0071 cmp      w4, #0x3f
+00004b14 f80303aa mov      x24, x3
+00004b18 f303002a mov      w19, w0
+00004b1c f70301aa mov      x23, x1
+00004b20 f40302aa mov      x20, x2
+00004b24 a8080054 b.hi     #0x4c38
+00004b28 000b0058 ldr      x0, #0x4c88
+00004b2c 002c248b add      x0, x0, w4, uxth #3
+00004b30 160840f9 ldr      x22, [x0, #0x10]
+00004b34 b60800b4 cbz      x22, #0x4c48
+00004b38 00000094 bl       #0x4b38 ; relocation {'symbol': 'alloc_cb', 'addend': 0, 'type': 283}
+00004b3c f50300aa mov      x21, x0
+00004b40 c00800b4 cbz      x0, #0x4c58
+00004b44 600a0058 ldr      x0, #0x4c90
+00004b48 b46202a9 stp      x20, x24, [x21, #0x20]
+00004b4c a00a00f9 str      x0, [x21, #0x10]
+00004b50 f50200f9 str      x21, [x23]
+00004b54 c01e40f9 ldr      x0, [x22, #0x38]
+00004b58 00000094 bl       #0x4b58 ; relocation {'symbol': 'osal_lock', 'addend': 0, 'type': 283}
+00004b5c c10640f9 ldr      x1, [x22, #8]
+00004b60 c2024039 ldrb     w2, [x22]
+00004b64 3f0000f1 cmp      x1, #0
+00004b68 e0079f1a cset     w0, ne
+00004b6c 1f00226a bics     wzr, w0, w2
+00004b70 c0050054 b.eq     #0x4c28
+00004b74 20644039 ldrb     w0, [x1, #0x19]
+00004b78 a0030837 tbnz     w0, #1, #0x4bec
+00004b7c 00000094 bl       #0x4b7c ; relocation {'symbol': 'print_task_info', 'addend': 0, 'type': 283}
+00004b80 347f8012 mov      w20, #-0x3fa
+00004b84 a1080058 ldr      x1, #0x4c98
+00004b88 e203132a mov      w2, w19
+00004b8c a0080058 ldr      x0, #0x4ca0
+00004b90 21a00191 add      x1, x1, #0x68
+00004b94 00000094 bl       #0x4b94 ; relocation {'symbol': 'printk', 'addend': 0, 'type': 283}
+00004b98 81080058 ldr      x1, #0x4ca8
+00004b9c 606e50d3 ubfx     x0, x19, #0x10, #0xc
+00004ba0 a4ffff97 bl       #0x4a30
+00004ba4 e0060058 ldr      x0, #0x4c80
+00004ba8 000040f9 ldr      x0, [x0]
+00004bac 005c4039 ldrb     w0, [x0, #0x17]
+00004bb0 c0020034 cbz      w0, #0x4c08
+00004bb4 000021d4 brk      #0x800
+00004bb8 40060058 ldr      x0, #0x4c80
+00004bbc f47f8012 mov      w20, #-0x400
+00004bc0 000040f9 ldr      x0, [x0]
+00004bc4 005c4039 ldrb     w0, [x0, #0x17]
+00004bc8 80050035 cbnz     w0, #0x4c78
+00004bcc e003142a mov      w0, w20
+00004bd0 f35341a9 ldp      x19, x20, [sp, #0x10]
+00004bd4 f55b42a9 ldp      x21, x22, [sp, #0x20]
+00004bd8 f76343a9 ldp      x23, x24, [sp, #0x30]
+00004bdc fd7bc4a8 ldp      x29, x30, [sp], #0x40
+00004be0 c0035fd6 ret      
+00004be4 1f2003d5 nop      
+00004be8 e10300aa mov      x1, x0
+00004bec 200040f9 ldr      x0, [x1]
+00004bf0 c0ffffb5 cbnz     x0, #0x4be8
+00004bf4 bf0200f9 str      xzr, [x21]
+00004bf8 14008052 mov      w20, #0
+00004bfc 350000f9 str      x21, [x1]
+00004c00 c0024039 ldrb     w0, [x22]
+00004c04 e0020836 tbz      w0, #1, #0x4c60
+00004c08 c01e40f9 ldr      x0, [x22, #0x38]
+00004c0c 00000094 bl       #0x4c0c ; relocation {'symbol': 'osal_unlock', 'addend': 0, 'type': 283}
+00004c10 e003142a mov      w0, w20
+00004c14 f35341a9 ldp      x19, x20, [sp, #0x10]
+00004c18 f55b42a9 ldp      x21, x22, [sp, #0x20]
+00004c1c f76343a9 ldp      x23, x24, [sp, #0x30]
+00004c20 fd7bc4a8 ldp      x29, x30, [sp], #0x40
+00004c24 c0035fd6 ret      
+00004c28 21feffb5 cbnz     x1, #0x4bec
+00004c2c c1220091 add      x1, x22, #8
+00004c30 f1ffff17 b        #0x4bf4
+00004c34 1f2003d5 nop      
+00004c38 e003042a mov      w0, w4
+00004c3c 3ff7ff97 bl       #0x2938
+00004c40 f60300aa mov      x22, x0
+00004c44 a0f7ffb5 cbnz     x0, #0x4b38
+00004c48 e003042a mov      w0, w4
+00004c4c a7f8ff97 bl       #0x2ee8
+00004c50 f60300aa mov      x22, x0
+00004c54 20f7ffb5 cbnz     x0, #0x4b38
+00004c58 d47f8012 mov      w20, #-0x3ff
+00004c5c dcffff17 b        #0x4bcc
+00004c60 e00316aa mov      x0, x22
+00004c64 27fbff97 bl       #0x3900
+00004c68 e8ffff17 b        #0x4c08
+00004c6c 1f2003d5 nop      
+00004c70 f47f8012 mov      w20, #-0x400
+00004c74 d6ffff17 b        #0x4bcc
+00004c78 000021d4 brk      #0x800

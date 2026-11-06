@@ -1,0 +1,46 @@
+{
+  "schema": "fx3-stage40-next-MAIN-completion-anchors/1",
+  "created_utc": "2026-10-26T00:32:17.105492+00:00",
+  "image_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "refinement": {
+    "previous_stage39_type3": "Unlabelled local cleanup type",
+    "bound_type3": "IMOLA_ENC_STOP_DONE",
+    "bound_type0": "IMOLA_ENC_START_DONE",
+    "source_type_switch": "0x22873c reads message+2; original15-row jump table0x37be00; each selected original log string bound.",
+    "not_real_event_delivery_or_hardware_done_proof": true
+  },
+  "original_receiver": {
+    "entry": "0x2280c0",
+    "raw_message_body": "input+0x10, copied0x80 bytes",
+    "owner_channel_byte": "input+0x11 ->body+1",
+    "type_byte": "input+0x12 ->body+2",
+    "owner_scan": "0x22856c",
+    "message_free_pool": "owner+0x10",
+    "mandatory_diagnostic": "0x228148 ->0x22873c, unexecuted in full receiver",
+    "post_log_continuation": "0x22814c",
+    "original_dynamic_cast": "0x1a58 ->0x2fd8 for exact original API-enc RTTI fixture",
+    "pending_publication": "0x228550 ->0x22c574",
+    "actual_bottom_transport_message_format_current_owner_registration_and_epoch_unbound": true
+  },
+  "optional_callback_scope": {
+    "stream_predicate": "0x226ad4 ->0x27cf58; true only22/23 among0..24",
+    "MAIN_stream14": "Skip these optional START/STOP callbacks and publish pending message",
+    "START_pointer": "owner+0x1148, predicate0x226aa4, dispatch0x226604",
+    "STOP_pointer": "owner+0x1158, predicate0x226ac4, dispatch0x226634",
+    "still_callback_type_clue_not_MAIN_binding": "imola_still_enc::callback_handler_enc_start_done RTTI0x3322e0; do not adopt its behavior as MAIN completion.",
+    "registered_callback_targets_not_executed_or_bound": true
+  },
+  "required_work": [
+    "Trace caller/producer and actual driver/shared-memory transport into0x2280c0; bind formal headers, source trust, request association and current configuration epoch.",
+    "Locate MAIN-specific START consumer and distinguish START acknowledgment/application from STOP_DONE cleanup; do not release retained start parameters from optional still/other-stream callback.",
+    "Bind original owner/pointer lifetime and common synchronization across receive, pending publication, consumer, map returns/removal and actual hardware/cancellation/error paths.",
+    "Complete receiver errors after borrowing buffers, full queues, unmatched owner and all error cleanup; establish real safe code exit before unloading.",
+    "Resolve52codec bytes initialization, complete start-input/clear/log/valid HAL request, model/query/cache/mux, actual MAIN media/audio/long-run/thermal and same-body backup/restore/WBI/coldboot/rescue."
+  ],
+  "abi_reference": {
+    "url": "https://itanium-cxx-abi.github.io/cxx-abi/abi.html#rtti-layout",
+    "checked_date": "2026-10-25",
+    "scope": "Generic RTTI interpretation; observed original bytes and runtime fragment establish this fixture behavior, not Sony platform ABI or device compatibility."
+  },
+  "camera_or_remote_access_attempted": false
+}

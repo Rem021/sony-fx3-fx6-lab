@@ -1,0 +1,17 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap87-r2-passive-event-fix/candidate.json",
+  "base_sha256": "c7705a0536c65f93459f62ddf1353408747564c5128c2afbee030fef2db3cc2b",
+  "new_module": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-cp-backup-reset-v1.ko",
+  "new_module_sha256": "7e756a4e9a2edb9770baf92c07cb88f342690b1636d6c258f0ec2e1d6a98abd2",
+  "CPIO_changed": [
+    "init"
+  ],
+  "CPIO_added": [
+    "simulation/fx3-cp-backup-reset-v1.ko",
+    "simulation/fx3-backup-return-v1.so"
+  ],
+  "all_originals_and_existing_helpers_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "profile": "exactCPreset actualcopy/readback thenindependentnativeReply; strictorderandrollback; nootherreplies",
+  "original_public_slot_unique_registration": true
+}

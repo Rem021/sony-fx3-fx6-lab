@@ -1,0 +1,42 @@
+{
+  "created_at": "2026-11-05T06:35:08.047870+00:00",
+  "run": "run_57fc1c82ecd2",
+  "workers": [
+    {
+      "topic": "FX6 startup evidence",
+      "dispatch": "ctx_58ad41090a5d",
+      "task": "task_caff27534971",
+      "state": "succeeded_readonly_review",
+      "agent": "codex",
+      "coordinator_review": "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/coordinator-review.json"
+    },
+    {
+      "topic": "FX6 interface contracts",
+      "dispatch": "ctx_850fe6a6d2ab",
+      "task": "task_a7b646dba4ac",
+      "state": "succeeded_readonly_review",
+      "agent": "codex",
+      "coordinator_review": "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/coordinator-review.json"
+    },
+    {
+      "topic": "FX3 r35 independent review",
+      "dispatch": "ctx_8eeb14b71177",
+      "task": "task_65a5481d9762",
+      "state": "succeeded_readonly_review",
+      "agent": "codex",
+      "message": "msg_bf41d5a70fc5",
+      "report": "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx3-r35-review/REVIEW.md"
+    }
+  ],
+  "existing_implementation_worker": "ctx_2615e5e41dfd",
+  "deepseek": "No callable entry verified; user entry clarification pending; not dispatched.",
+  "fx6_scope": "read-only reviews; implementation provider rejection unresolved",
+  "followup_packaging": {
+    "task": "task_35fdfe758f3f",
+    "dispatch": "ctx_e8db2b14dba0",
+    "followUpOf": "ctx_8eeb14b71177",
+    "state": "ready",
+    "VM_authorized": false,
+    "runner_changes_authorized": false
+  }
+}

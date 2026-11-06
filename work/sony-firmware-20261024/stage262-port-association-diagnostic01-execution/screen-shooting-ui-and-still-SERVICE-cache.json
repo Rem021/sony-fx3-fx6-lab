@@ -1,0 +1,28 @@
+{
+  "recorded_utc": "2026-11-01T07:08:55.654330+00:00",
+  "user_statement": "现在显示拍摄界面",
+  "user_card_access_lamp_state": "not_yet_provided",
+  "source": "UID501 ioreg cached metadata; prior tool chunk008e7a",
+  "USB_interface_opened_by_this_check": false,
+  "Sony_commands_sent_by_this_check": false,
+  "Sony_nodes": [
+    {
+      "VID": 1356,
+      "PID": 822,
+      "registryID": 4295926235,
+      "name": "Sony USB Device",
+      "locationID": 17825792,
+      "driver_classes": [
+        "AppleUSBHostCompositeDevice",
+        "AppleUSBHostDeviceUserClient",
+        "IOUSBHostInterface"
+      ]
+    }
+  ],
+  "inference": "Shooting UI is an observed display state; cached USB still SERVICE. MSC/storage-driver return and normal cold boot/recording are unproven.",
+  "current_processes_live": [
+    85066,
+    82324
+  ],
+  "new_root_programs": 0
+}

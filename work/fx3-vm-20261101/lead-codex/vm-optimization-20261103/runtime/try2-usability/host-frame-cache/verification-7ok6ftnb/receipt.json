@@ -1,0 +1,86 @@
+{
+  "result": "PASS",
+  "python": "3.14.6 (v3.14.6:c63aec69bd5, Jun 10 2026, 08:07:54) [Clang 21.0.0 (clang-2100.1.1.101)]",
+  "fixed_input_sha256": {
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/trial_ring_usability.py": "4dea2f0154844e24675726727fee5bdb7bbb50456dfd15288dfdb8d7daef1bdc",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2passivetiming-internal-v21-2383af57/osd-ring-final.bin": "f385c1214f9a21cce18f59b3b52da818738ece768b4616ec1afb5e17f616d6c2",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2passivetiming-internal-v21-2383af57/osd-ring-readback.json": "52d5b737c96ade076047549cd5b0994213358d4db0ddc0d890ee70032b1c2f30",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2passivetiming-internal-v21-2383af57/trial-final.png": "3d071654943844a37e1651eb74b2919150d885664a6bbde5ed23407e3f970e17",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2passivetiming-internal-v21-2383af57/observer-source/osd_ring93_v4.py": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+  },
+  "fragment_sha256": "af8b3270756b34562fef72dfc8ebebd6ae80b7e782a7a3fde830a77010d136d6",
+  "fragment_sequences": [
+    4267,
+    4274
+  ],
+  "real_counts": {
+    "baseline": {
+      "validate_slot": 8,
+      "fnv": 8,
+      "rgba": 8,
+      "png": 8
+    },
+    "candidate": {
+      "validate_slot": 8,
+      "fnv": 8,
+      "rgba": 1,
+      "png": 1
+    },
+    "hits": 7,
+    "misses": 1
+  },
+  "mutation_counts": {
+    "validate_slot": 15,
+    "fnv": 14,
+    "rgba": 11,
+    "png": 11
+  },
+  "mutation_hits": 2,
+  "mutation_misses": 11,
+  "tests": [
+    "exact real fragment PNG and metadata equality",
+    "original final PNG byte equality",
+    "new seq and changed epoch/token/native identity/target publish",
+    "raw mutation misses",
+    "fmt/width/height/stride misses",
+    "illegal target rejected",
+    "torn FNV rejected",
+    "same seq skipped as baseline",
+    "atomic outputs verified on every accepted poll",
+    "evidence overwrite refused",
+    "source evidence hashes unchanged"
+  ],
+  "benchmark": {
+    "baseline": {
+      "eight_polls_ms": [
+        560.0855440716259,
+        548.7667079432867,
+        547.7918740361929
+      ],
+      "median_ms": 548.7667079432867,
+      "counts_per_run": {
+        "validate_slot": 8,
+        "fnv": 8,
+        "rgba": 8,
+        "png": 8
+      }
+    },
+    "candidate": {
+      "eight_polls_ms": [
+        407.7882919809781,
+        406.9127918337472,
+        409.90104113006964
+      ],
+      "median_ms": 407.7882919809781,
+      "counts_per_run": {
+        "validate_slot": 8,
+        "fnv": 8,
+        "rgba": 1,
+        "png": 1
+      }
+    }
+  },
+  "candidate_sha256": "9309794feded60291d6748bd4d19ab98a909e7ba73c91233a2ffb983551f9e11",
+  "cache_retained_payload_bytes": 649151,
+  "scope": "offline fake QMP production poll; no QEMU or menu latency claim"
+}

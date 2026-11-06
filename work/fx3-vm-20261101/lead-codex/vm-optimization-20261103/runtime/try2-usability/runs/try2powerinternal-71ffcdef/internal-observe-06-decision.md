@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-05-key-030.png using image tool. Setup>Dial Customize 49/59, orange focus; dial settings listed Next: DOWN to Touch Operation to continue browsing Setup categories without changing values

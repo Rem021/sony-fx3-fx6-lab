@@ -1,0 +1,81 @@
+02eadbb0 stp        x29, x30, [sp, #-0x50]!
+02eadbb4 mov        x29, sp
+02eadbb8 stp        x21, x22, [sp, #0x20]
+02eadbbc adrp       x21, #0x9ab0000
+02eadbc0 stp        x19, x20, [sp, #0x10]
+02eadbc4 str        x23, [sp, #0x30]
+02eadbc8 ldrb       w0, [x21, #0xbd8]
+02eadbcc cbnz       w0, #0x2eadce0
+02eadbd0 adrp       x0, #0x9ab0000
+02eadbd4 add        x3, x29, #0x50
+02eadbd8 mov        w1, #0x11d
+02eadbdc ldr        w4, [x0, #0xbc8]
+02eadbe0 mov        w0, #0x21
+02eadbe4 stp        xzr, xzr, [x3, #-0x10]!
+02eadbe8 movk       w0, #0x94, lsl #16
+02eadbec mov        w2, w4
+02eadbf0 bl         #0x2eadaec
+02eadbf4 mov        w19, w0
+02eadbf8 cbnz       w0, #0x2eadc04
+02eadbfc ldr        w19, [x29, #0x44]
+02eadc00 cbz        w19, #0x2eadcd8
+02eadc04 adrp       x23, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eadc08 adrp       x22, #0x3966000 ; literal '.output_yc_size        = 0x%x'
+02eadc0c adrp       x20, #0x396b000
+02eadc10 add        x23, x23, #0xe80 ; literal 'load_im'
+02eadc14 add        x22, x22, #0xd47 ; literal '[INFRA_WRAPPER]'
+02eadc18 add        x20, x20, #0x12 ; literal '%s%s(%d) Failure IM_open() [Error:0x%08X]'
+02eadc1c mov        w4, w19
+02eadc20 mov        x2, x23 ; literal 'load_im'
+02eadc24 mov        x1, x22 ; literal '[INFRA_WRAPPER]'
+02eadc28 mov        x0, x20 ; literal '%s%s(%d) Failure IM_open() [Error:0x%08X]'
+02eadc2c mov        w3, #0xbd
+02eadc30 bl         #0x2f6fe3c
+02eadc34 mov        w4, w19
+02eadc38 mov        x2, x23 ; literal 'load_im'
+02eadc3c mov        x1, x22 ; literal '[INFRA_WRAPPER]'
+02eadc40 mov        x0, x20 ; literal '%s%s(%d) Failure IM_open() [Error:0x%08X]'
+02eadc44 mov        w3, #0xbd
+02eadc48 adrp       x20, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eadc4c adrp       x23, #0x2f88000
+02eadc50 add        x20, x20, #0xbdd ; literal 'infra_wrapper_updater.cpp'
+02eadc54 bl         #0x2f6be48
+02eadc58 add        x23, x23, #0xeec ; literal 'assert at %s:%d'
+02eadc5c mov        x1, x20 ; literal 'infra_wrapper_updater.cpp'
+02eadc60 mov        x0, x23 ; literal 'assert at %s:%d'
+02eadc64 mov        w2, #0xbe
+02eadc68 adrp       x19, #0x399f000 ; literal '. osal_err = 0x%08X'
+02eadc6c adrp       x22, #0x379a000
+02eadc70 add        x19, x19, #0xe88 ; literal 'void infra_wrapper_updater::detail::load_im()'
+02eadc74 bl         #0x2f6fe3c
+02eadc78 add        x22, x22, #0x621 ; literal 'function:%s'
+02eadc7c mov        x1, x19 ; literal 'void infra_wrapper_updater::detail::load_im()'
+02eadc80 mov        x0, x22 ; literal 'function:%s'
+02eadc84 bl         #0x2f6fe3c
+02eadc88 mov        x1, x20 ; literal 'infra_wrapper_updater.cpp'
+02eadc8c mov        x0, x23 ; literal 'assert at %s:%d'
+02eadc90 mov        w2, #0xbe
+02eadc94 bl         #0x2f6be48
+02eadc98 mov        x1, x19 ; literal 'void infra_wrapper_updater::detail::load_im()'
+02eadc9c mov        x0, x22 ; literal 'function:%s'
+02eadca0 bl         #0x2f6be48
+02eadca4 adrp       x0, #0x2f88000
+02eadca8 mov        x1, x20 ; literal 'infra_wrapper_updater.cpp'
+02eadcac add        x0, x0, #0xefc ; literal 'assert at %s:%d\n'
+02eadcb0 mov        w2, #0xbe
+02eadcb4 bl         #0x15927c0 ; printf
+02eadcb8 adrp       x0, #0x2f88000
+02eadcbc mov        x1, x19 ; literal 'void infra_wrapper_updater::detail::load_im()'
+02eadcc0 add        x0, x0, #0xf0d ; literal 'function:%s\n'
+02eadcc4 bl         #0x15927c0 ; printf
+02eadcc8 mov        w0, #0x86a0
+02eadccc movk       w0, #1, lsl #16
+02eadcd0 bl         #0x1592ec0 ; usleep
+02eadcd4 bl         #0x2ebf3b0
+02eadcd8 mov        w0, #1
+02eadcdc strb       w0, [x21, #0xbd8]
+02eadce0 ldp        x19, x20, [sp, #0x10]
+02eadce4 ldp        x21, x22, [sp, #0x20]
+02eadce8 ldr        x23, [sp, #0x30]
+02eadcec ldp        x29, x30, [sp], #0x50
+02eadcf0 ret        

@@ -1,0 +1,101 @@
+{
+  "schema": "fx3-stage114-callback-release-order/1",
+  "created_utc": "2026-10-27T14:58:02.324298+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/README.md",
+      "bytes": 6762,
+      "sha256": "2c3969836a8046652ee9e4b03d542042b341d70ef6032042aa02d8c6c1d36ecb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/completed-evidence-review.json",
+      "bytes": 656,
+      "sha256": "d9375e4298e08480cb6b6115865f29639c464a374808b63ca470f2de21bd4958"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/diagnostic-lifetime-refinement.json",
+      "bytes": 1408,
+      "sha256": "639b6b77f4f9cd3237939ebfc22d8c26b5c090d44a630bad18da782f108292cb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/goal-status-after.json",
+      "bytes": 352949,
+      "sha256": "3c5464e7f0b688a6aaa6a3053a536c2304ec653fd6f8c8a9ad7737e422340c55"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/goal-status-before.json",
+      "bytes": 348813,
+      "sha256": "957e4fa343cef51af2a41e3e220a03a76af85a1e7af4c1d88f0ae59cdd8b645e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/public-source-notes.json",
+      "bytes": 1594,
+      "sha256": "5428f556e6676abca81b7fb80f203d91a9438a5a843348121dd435bcbaf9be6c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/release_order.py",
+      "bytes": 18214,
+      "sha256": "c37f057a7b9c9acc2fe3048fb7be74ad9b89ff4ed49e3cfae2721d94e0af377e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/review_and_seal.py",
+      "bytes": 18331,
+      "sha256": "316e729b3cb99cc48def04a20b7088291c9902eacbd7a812b81635524f15482d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/run-original-refcount-and-cleanup-20261027/executed-source.py",
+      "bytes": 18214,
+      "sha256": "c37f057a7b9c9acc2fe3048fb7be74ad9b89ff4ed49e3cfae2721d94e0af377e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/run-original-refcount-and-cleanup-20261027/release-order-results.json",
+      "bytes": 251395,
+      "sha256": "3065c2c8815575d025a9843c18925396069a283da3ccd273a6bf81f31f8feb6f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage114-native-callback-release-order/source-and-scope-audit.json",
+      "bytes": 62709,
+      "sha256": "b47ff777803d24e410a328b7e00e4fb67bfb668330a7404126a6a8887b8576f4"
+    }
+  ],
+  "previous_manifest_sha256": "95549373fb47a5d9c22da3b9b6b01c4431cd7a92299c1d82ee7e25981341b363",
+  "operations": {
+    "status": "PASS_ORIGINAL_MESSAGE_RELEASE_AND_DISTINCT_PENDING_CALLBACK_NODE_SCOPE",
+    "created_utc": "2026-10-27T14:58:02.324298+00:00",
+    "previous_manifest_members_verified": 14,
+    "case_counts": {
+      "free_cases": 12,
+      "tail_controls": 2,
+      "missing_client_cases": 2,
+      "finish_cases": 8,
+      "user_cleanup_cases": 2,
+      "pending_cleanup_cases": 2
+    },
+    "bounded_phases": 110,
+    "added_local_ABS64_data_relocations": 2,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "actual_kernel_services_or_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "957e4fa343cef51af2a41e3e220a03a76af85a1e7af4c1d88f0ae59cdd8b645e",
+    "after_sha256": "3c5464e7f0b688a6aaa6a3053a536c2304ec653fd6f8c8a9ad7737e422340c55"
+  },
+  "readme_index_before_sha256": "4325413ba55578922cda7397809a22ca4cb9177d9ef76d190983e7713dc77270",
+  "readme_index_after_sha256": "c06b4ca84def02c19966bbde914a2c278accfa942bf0a5c73c8aefb2ce87454e",
+  "readme_index_entry": "- [2026-10-27 FX3 消息释放与回调登记寿命](<work/sony-firmware-20261024/stage114-native-callback-release-order/README.md>)：原MPR释放请求/引用更新及不同finish分支110阶段；登记记录不是消息lease，真实MAIN实录/同机恢复仍未验，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

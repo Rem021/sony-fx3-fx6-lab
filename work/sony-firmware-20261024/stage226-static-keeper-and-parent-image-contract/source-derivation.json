@@ -1,0 +1,92 @@
+{
+  "schema": "fx3-stage226-source-derivation-v1",
+  "references": [
+    {
+      "path": "work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/static_model.py",
+      "bytes": 12744,
+      "sha256": "407eb3ff539c305818c848351877da63d1a33a80d34d3c9589882c9f254e3691"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/worker.c",
+      "bytes": 4164,
+      "sha256": "7de3dad15e5edbf76f09ee2ec63231ab652ca8472485ca0b049f6fabfd805e54"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/roles_and_image.inc",
+      "bytes": 2880,
+      "sha256": "14c01e590c57508eb220abe3b8ae58ed79e92a4dd2a659c85bba59181ea3e002"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/handoff_impl.inc",
+      "bytes": 5205,
+      "sha256": "34aa6e8979b4e30ddeec50912eb6da28c45d2920c83a19cee59e6b980445385c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/ipc_gate.inc",
+      "bytes": 5925,
+      "sha256": "9cd4109f7956cba8737192d93096266066056a832738b0bb91aa8a33379dc77d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage223-static-worker-and-scoped-job-descriptors/static_build.py",
+      "bytes": 14850,
+      "sha256": "ab77827e66c5bd2d47d2769b5c07802d69a235c60681721dcea3ca66d1e7a3c7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/launch_model.py",
+      "bytes": 15995,
+      "sha256": "829fd35f87eba74a9dcf5cf09059fad92cd2d7d59b699a605b3ba559d4ca5c0e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/parent_module.c",
+      "bytes": 9680,
+      "sha256": "e0cd7596f66fdfa022a7e107bf2ba87df1c1a185dd025a4ebf7d79580f26e80c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/parent_ipc.inc",
+      "bytes": 4130,
+      "sha256": "90a2c47e89b9d91d7f51e0a431cdb56d4d8ae04bef5918dcb70db0a975620318"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/core_support.inc",
+      "bytes": 5754,
+      "sha256": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/launch_support.inc",
+      "bytes": 7128,
+      "sha256": "41581edba25693999ea7035aeb4f6bfdf86b35d45f31ffa066787b0c1dd0ba1d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/output_validate.inc",
+      "bytes": 4546,
+      "sha256": "2a23706a03c3ec8f7d99ab0dff436107adc2cb313c1ef0934754eb0cac9539fe"
+    }
+  ],
+  "worker_inner_boot_reader_unchanged_sha256": "a1459db35501716dc414b45479aaa25c1ddb252ec440bd24258c4db7dbd78683",
+  "worker_new_contract": "four inherited FD roles, parent-image inode/root0500 association, GRANT followed by full parent-file SHA matched to v2 handoff188/size220; no im fallback",
+  "keeper_new_contract": "own static entry, own SIGCHLD reset/query, reference-im parent bootstrap profile,512private task/result packets,224arbiter retained,4role child exec whitelist",
+  "old_parent_module_copy_is_inactive": "keeper/parent_module.c retained as source origin only; active source keeper/keeper.c; excluded from keeper builder source pins",
+  "active_source_pins": {
+    "worker": {
+      "handoff_impl.inc": "460d52db9a48c7840350a7ca171334e5c3ac96f1dcfe73aac518697831446b0e",
+      "inner_boot_reader.c": "a1459db35501716dc414b45479aaa25c1ddb252ec440bd24258c4db7dbd78683",
+      "ipc_gate.inc": "21356f3f29c7359b34e1aeda78591e8de561fb325446b6e284f35df158eae531",
+      "parent_image.inc": "a1cf14fcfa9cc0fea94466ab56a95e2bca79e7e9a625974638d1e41ebee40c74",
+      "roles_and_image.inc": "e565069c921d256a4572d891eab1175dd33d938c34d0310de38efdfc3e720493",
+      "worker.c": "d096741ba6e988e8fd43ba8f82d3b24ff3a869a3850301ec6e260bdfe81635c6"
+    },
+    "keeper": {
+      "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+      "host_control.inc": "45580846e99f84b0b085ec536da493c54dcb59f208dd163a35d3cc8d83a0f2ac",
+      "host_recv.inc": "179b8a9583afbb241a74ed3191d85f7b7169bacd882982dbf6912a31f28e454c",
+      "keeper.c": "d117b33f7e8a38864846e710df41d0491ce058c3099b1eaee66ad819ece035a2",
+      "keeper_identity.inc": "6e10d0644655fd2bcae5b9f3ac8fd38bf9c4b27a38453fefc6bdddb7ee8d2241",
+      "launch_support.inc": "a2728cccdf3643763ba408c7091aa5350243422c992db0a8f17df092d7173b63",
+      "output_validate.inc": "2a23706a03c3ec8f7d99ab0dff436107adc2cb313c1ef0934754eb0cac9539fe",
+      "parent_ipc.inc": "6a171f44715530e61bb494aa6afb33415c98596d1dd62acc815e6ce7af9b2add",
+      "roles_and_image.inc": "8bfac2dd11b19e7e1620560e107ca7d2b52312c21a2cb71af6bfc70433bc547e"
+    }
+  },
+  "unpublished_candidates_only": true,
+  "formal_releases_modified": false
+}

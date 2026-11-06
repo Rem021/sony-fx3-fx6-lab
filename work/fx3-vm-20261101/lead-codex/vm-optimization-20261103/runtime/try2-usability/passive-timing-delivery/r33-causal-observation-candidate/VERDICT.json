@@ -1,0 +1,22 @@
+{
+  "schema": "r33-offline-feasibility-verdict/v1",
+  "outcome": "failed",
+  "offline_candidate_passed": false,
+  "layout_admission": "FAILED_UNCLOSED_DYNAMIC_WRITER",
+  "host_audit": "PASS_11_BASELINE_LOCAL_PREDICATE_FIXTURES",
+  "cross_compile_candidate": "NOT_ATTEMPTED_LAYOUT_STOP",
+  "runtime_candidate_created": false,
+  "runtime_source_diff": [],
+  "guest_CPio_created": false,
+  "VM_or_Start_executed": false,
+  "browser_or_service_executed": false,
+  "QMP_or_guest_command_executed": false,
+  "hardware_or_FX6_changed": false,
+  "boot_menu_or_root_cause_fixed": false,
+  "direct_UI_gap_excludes_known_regular_writers": true,
+  "UI_initialization_overwrites_gap": true,
+  "full_writer_safety_proven": false,
+  "blocker": "GPE dynamic native-open resource writable mapping is not locally excluded from UI reserve; native DMM exclusion/reachability proof is absent",
+  "actual_overwrite_observed": false,
+  "scope": "Completed feasibility failure evidence only; NOT a completed offline causal-observation candidate"
+}

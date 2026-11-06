@@ -1,0 +1,90 @@
+{
+  "status": "READ_ONLY_DRAFT_NO_GUEST_EXECUTION",
+  "ordering": "observed bootin -> im; remaining order is proposed, not natural runtime proof",
+  "entries": [
+    {
+      "step": "00-fx3-platform",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/fx3-platform-frozen-baseline.json",
+      "sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+      "bytes": 4545,
+      "policy": "retain"
+    },
+    {
+      "step": "01-fx3-kernel",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "bytes": 6610952,
+      "policy": "retain"
+    },
+    {
+      "step": "02-fx3-cpio",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/vmopt-20261103-try2-long-media-gap-v2/guest.cpio",
+      "sha256": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+      "bytes": 453184500,
+      "policy": "retain"
+    },
+    {
+      "step": "10-fx6-bootin",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/bootin.elf",
+      "sha256": "72480247f8d2a1eeaab076b880c35279c6c94284649e267066f5ea10de6622a6",
+      "bytes": 23960,
+      "policy": "software-delta-proposal"
+    },
+    {
+      "step": "11-fx6-im",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/bin/im.elf",
+      "sha256": "87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec",
+      "bytes": 40920,
+      "policy": "software-delta-proposal"
+    },
+    {
+      "step": "12-fx6-libstdc",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libstdc++.so.6.0.22",
+      "sha256": "60857b39f0c34a09a889d937683bd8dae68200b6f10335fe94dee130a770247c",
+      "bytes": 1549496,
+      "policy": "dependency-evaluate"
+    },
+    {
+      "step": "13-fx6-appfw",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+      "sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+      "bytes": 50520424,
+      "policy": "later-ap-phase"
+    },
+    {
+      "step": "14-fx6-libmpr",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so",
+      "sha256": "814dfff34cac6517d71f659fce8d1ead0bb7ee52b8a9ac1a4e25aa9f83ac2d4e",
+      "bytes": 28921824,
+      "policy": "later-ap-phase"
+    },
+    {
+      "step": "20-fx6-liro",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/kmod/liro.ko",
+      "sha256": "8a7cfcaef07ad18ca2a97847d44d31bb9152f57c0fcbccd96056ad683649f2e1",
+      "bytes": 121488,
+      "policy": "later-provider-phase"
+    },
+    {
+      "step": "21-fx6-av",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha3/av-cam.bin",
+      "sha256": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+      "bytes": 12939512,
+      "policy": "later-av-phase"
+    },
+    {
+      "step": "22-fx6-cp",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fat-files/nflasha8/cpapp-b.bin",
+      "sha256": "60de0ab5544749dd50d8245f573c0994573fef349186efe20b502c42e3289668",
+      "bytes": 17952816,
+      "policy": "excluded-current-evaluation"
+    }
+  ],
+  "guards": [
+    "preserve FX3 kernel/QEMU/DTB/env/CPIO and Backup",
+    "no FX6 Backup replacement",
+    "no FX6 AV/CP in first stage",
+    "do not remove fixed helper checks",
+    "stop before unknown hardware/LIRO/AV path; no success fallback"
+  ]
+}

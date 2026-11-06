@@ -1,0 +1,55 @@
+{
+  "schema": "fx3-first-service-session-contract/1",
+  "status": "OFFLINE_DESIGN_ONLY_NO_DEVICE_BACKEND_OR_EXECUTION_RELEASE",
+  "target": {
+    "model": "classic ILME-FX3",
+    "user_confirmed_firmware": "7.02",
+    "previously_observed_MSC_identity": "054C:0DA1 interface0 08/06/50",
+    "previous_identity_is_not_current_presence_or_exclusive_ownership_proof": true,
+    "Windows_and_UU_available_for_this_trial": false
+  },
+  "current_authority": {
+    "Mac_cached_USB_metadata": true,
+    "standard_Fastboot_identification": true,
+    "service_capture_authentication_or_stop": false,
+    "driver_detach_or_reattach": false,
+    "camera_file_access_or_flash": false
+  },
+  "intended_later_scope_for_separate_concrete_review": {
+    "one_selected_body_and_one_session_only": true,
+    "maximum_initial_MSC_authentication_sequences": 1,
+    "maximum_post_switch_service_authentication_sequences": 1,
+    "maximum_authentication_rounds_per_sequence": 3,
+    "camera_media_files_read": false,
+    "service_commands_or_main_recording_started": false,
+    "module_loaded_or_firmware_or_settings_write_requested": false,
+    "normal_authentication_history_writes_may_occur": true,
+    "normal_history_reference": "../stage136-authentication-and-system-read-admission/README.md",
+    "scope_is_not_zero_write_and_does_not_prove_independent_unbrick": true
+  },
+  "mandatory_controller_behavior": [
+    "Select the exact permitted FX3 using fresh cached topology before constructing any object that can open/reset/query it; do not use PMCA broad Sony listing.",
+    "Record enter intent before the first transfer; cleanup and state tracking must cover failures during either authentication and reenumeration.",
+    "Keep transport result, camera-event consumption, worker completion, return to ordinary interface, host driver reattachment and physical camera operation separate.",
+    "A return0 is not completion or queue-admission proof; an error does not mean the action was not already queued.",
+    "Do not automatically retry start/authentication/stop or reset when transport outcome or identity is uncertain.",
+    "Bound host waiting and preserve UNKNOWN on timeout; do not assert that a host deadline canceled camera work.",
+    "Do not swallow exit or reattach errors, and do not convert disposal or interface-release success into restoration success.",
+    "Driver capture/restoration must use a reviewed explicit pair and independently observe the same body's restored ordinary identity and driver.",
+    "Neither /setting/sen/smode nor /ramdsk/dev/mode is to be read, removed or modified under this session-only design."
+  ],
+  "unresolved_before_any_live_release": [
+    "A host controller and exact Mac transport backend with pinned dependencies are not yet implemented or reviewed for a live session.",
+    "Actual driver access, complete dynamic binding, queue ownership/delivery and cancellation timing have not been measured on this body.",
+    "Per-transfer and whole-session time limits need explicit review; no tested numeric deadlines are asserted here.",
+    "Current cached identity, single-body selection, battery/recording/update state and media ownership must be verified before a future authorized operation.",
+    "A matching authorization for USB access, capture, both limited authentication sequences, normal history effects and exit/reattach is still absent."
+  ],
+  "future_pilot_acceptance_is_not_the_whole_goal": {
+    "requires_observed_enter_exit_and_physical_normal_operation": true,
+    "proves_firmware_write_or_brick_recovery_safe": false,
+    "proves_1080p29_97_HEVC_MAIN_audio_longrun_coldboot_or_full_backup_restore": false,
+    "live_release": false,
+    "persistent_write_release": false
+  }
+}

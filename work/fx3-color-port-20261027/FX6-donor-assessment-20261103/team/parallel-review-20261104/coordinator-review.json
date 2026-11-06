@@ -1,0 +1,64 @@
+{
+  "time": "2026-11-05T06:42:24.367691+00:00",
+  "scope": "coordinator review of report evidence boundaries; not firmware or guest acceptance",
+  "deliveries": [
+    {
+      "path": "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx6-evidence/REPORT.md",
+      "bytes": 22606,
+      "sha256": "7c0e5b8e7b6c651ce08fc1cdeaa9afcdf09dbde881b8d89d9f6a980568cb9b23"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx6-evidence/audit.json",
+      "bytes": 25261,
+      "sha256": "9317afdbece0d4f32769d93a9ccf09935e612f4b79ee0fbd8fddf9c0c96aa396"
+    },
+    {
+      "path": "work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261104/fx6-contract/REVIEW.md",
+      "bytes": 28559,
+      "sha256": "0098a9446082d18e92c5111a592b70406c18f675503b61f003c02ac1b3e25b76"
+    }
+  ],
+  "accepted_tasks": [
+    {
+      "task": "task_caff27534971",
+      "dispatch": "ctx_58ad41090a5d",
+      "message": "msg_bb5fbedf6423",
+      "outcome": "succeeded_readonly_review"
+    },
+    {
+      "task": "task_a7b646dba4ac",
+      "dispatch": "ctx_850fe6a6d2ab",
+      "message": "msg_85ee1e4dcedd",
+      "outcome": "succeeded_readonly_review"
+    }
+  ],
+  "checks": [
+    "Read both reports and evidence audit JSON",
+    "Directly checked latest receipt stop, elapsed, exit/reap, diagnostic and lifecycle fields",
+    "Checked writer/field/callback report passages behind movie-boundary correction and provisional mode risk"
+  ],
+  "fx6_boot_passed": false,
+  "fx6_implementation_blocker_resolved": false,
+  "fx6_findings": [
+    "Most advanced historical AP evidence and latest veneer progress are different versions",
+    "Latest unknown_loader_return is not a proven native loader failure",
+    "Historical host tests do not establish current candidate readiness",
+    "Init mode, callback sizes and async ownership remain unproven runtime contracts"
+  ],
+  "r35_review_status": "implementation changes requested; independent review active",
+  "r35_required_fix": {
+    "message": "msg_9ae068cbfdca",
+    "issue": "bind-priority category dedup suppresses later first publication state",
+    "evidence_level": "source-confirmed possible event ordering; no guest reproduction",
+    "constraint": "keep two phases independent within existing 184B/7 records/1288B and original log opportunity"
+  },
+  "r35_runtime_prerequisites": [
+    "Final r35 report, source/build identity and independent review closure",
+    "Validate two-helper-only guest diff against frozen N64 and unchanged hardware/kernel/DTB/QEMU",
+    "Preserve runner/ready/timers/cleanup; parser remains offline",
+    "Existing startup timeout 180 seconds and original End cutoff retained",
+    "Missing or truncated export remains unknown; as-of-log evidence is not atomic End state",
+    "Evaluate both diagnostic completeness and original standby/menu/cleanup separately"
+  ],
+  "runtime_authorized_by_this_record": false
+}

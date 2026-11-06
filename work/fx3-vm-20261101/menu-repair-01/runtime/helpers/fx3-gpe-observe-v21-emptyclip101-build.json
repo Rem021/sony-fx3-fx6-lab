@@ -1,0 +1,40 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-claude/impl/gpe-p3-approx/compat",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-gpe-observe-v21-emptyclip101.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v21-emptyclip101.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-backend-v7.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-compaction-v1.S",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-gpe-observe-v21-emptyclip101.so"
+  ],
+  "exit": 0,
+  "authority": "msg_b4d68a13192e",
+  "source_sha256": "11426d4e39bb9732b9ff73b6647447be426b017086ca20f985a1ac33b13a0a83",
+  "output_sha256": "3d6cf58ed432bc3bd8f9c30d441307ec14310821c15bfd327149037a2a6a90c8",
+  "backend_sources": {
+    "fx3-gpe-backend-v7.c": "0c696d29ba994a59982b60414d3c98852dffd9ed64bb8fe9d019fbc8868d250e",
+    "fx3-gpe-backend-v7.h": "ea8904d66c877d9f1cf026651626240ffff46c7b11563582e1152505476a85eb"
+  },
+  "original_guard_proof": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-empty-clip-original-proof-v2.json",
+  "scope": "Only recognized selector1 flag/format families with valid full source/target geometry and extent/lifetime but empty clip intersection get zero pixel-access no-op; existing bounds/overlap/unsupported/retire/callback/status/Flush guards retained"
+}

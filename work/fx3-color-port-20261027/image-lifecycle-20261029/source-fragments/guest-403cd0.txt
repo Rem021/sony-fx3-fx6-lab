@@ -1,0 +1,29 @@
+00403cd0 push       {r4, r6, r7, lr}
+00403cd2 add        r7, sp, #8
+00403cd4 sub        sp, #0x20
+00403cd6 mov        r4, r0
+00403cd8 movs       r0, #8
+00403cda bl         #0x9d4c5e
+00403cde cbnz       r0, #0x403d0c
+00403ce0 ldrb.w     r0, [r4, #0x71]
+00403ce4 cbz        r0, #0x403d0c
+00403ce6 ldr        r0, [r4]
+00403ce8 mov        r1, sp
+00403cea movs       r2, #5
+00403cec bl         #0x44e934
+00403cf0 mov        r1, r0
+00403cf2 cbz        r1, #0x403cfe
+00403cf4 ldr        r2, [r4]
+00403cf6 adr        r0, #0x20
+00403cf8 bl         #0x9e6684
+00403cfc b          #0x403d06
+00403cfe ldrh.w     r0, [sp, #0xa]
+00403d02 cmp        r0, #1
+00403d04 bne        #0x403d12
+00403d06 movs       r0, #0
+00403d08 strb.w     r0, [r4, #0x71]
+00403d0c movs       r0, #1
+00403d0e add        sp, #0x20
+00403d10 pop        {r4, r6, r7, pc}
+00403d12 movs       r0, #0
+00403d14 b          #0x403d0e

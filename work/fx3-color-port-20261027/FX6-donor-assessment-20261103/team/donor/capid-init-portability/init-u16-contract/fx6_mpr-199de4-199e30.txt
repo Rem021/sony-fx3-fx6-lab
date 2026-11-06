@@ -1,0 +1,25 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000198314 <_ZN14MxfMovieWriter14SetEssenceMarkEN15BaseMovieWriter12RecAttributeERSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEmjm>:
+  199de4: a9b57bfd     	stp	x29, x30, [sp, #-0xb0]!
+  199de8: 910003fd     	mov	x29, sp
+  199dec: a90153f3     	stp	x19, x20, [sp, #0x10]
+  199df0: aa0003f3     	mov	x19, x0
+  199df4: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  199df8: 910183b4     	add	x20, x29, #0x60
+  199dfc: a90363f7     	stp	x23, x24, [sp, #0x30]
+  199e00: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  199e04: f9002bfb     	str	x27, [sp, #0x50]
+  199e08: 97ff97d8     	bl	0x17fd68 <_ZN15BaseMovieWriter13SetClipStatusEN4sidb10ClipStatusE+0x1fc>
+  199e0c: b00077a0     	adrp	x0, 0x108e000
+  199e10: d2800001     	mov	x1, #0x0                // =0
+  199e14: f9421000     	ldr	x0, [x0, #0x420]
+  199e18: 91004000     	add	x0, x0, #0x10
+  199e1c: f9000260     	str	x0, [x19]
+  199e20: d0007780     	adrp	x0, 0x108b000
+  199e24: f942e800     	ldr	x0, [x0, #0x5d0]
+  199e28: 91004000     	add	x0, x0, #0x10
+  199e2c: f9005660     	str	x0, [x19, #0xa8]

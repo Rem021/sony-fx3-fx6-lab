@@ -1,0 +1,36 @@
+{
+  "receipt_status": "preflight_not_clicked",
+  "clicks": 0,
+  "keyPOST": 0,
+  "pending": 0,
+  "PAGE_attempt": null,
+  "rejections": {
+    "schema": "fx3-host-key-rejection-v1",
+    "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+    "capacity": 64,
+    "total": 0,
+    "truncated": 0,
+    "records": []
+  },
+  "reserved_before_eval": [
+    {
+      "status": "reserved_unknown",
+      "reservation_id": "839c33e1-b062-46e4-ab4b-4bcd92452990",
+      "key": 427,
+      "host_ns": 422123417477750
+    }
+  ],
+  "ledger_final": {
+    "attempts": [
+      {
+        "status": "preflight_not_clicked",
+        "reservation_id": "839c33e1-b062-46e4-ab4b-4bcd92452990",
+        "key": 427,
+        "host_ns": 422123417477750,
+        "attempt_id": null,
+        "step": null
+      }
+    ],
+    "recoveries": []
+  }
+}

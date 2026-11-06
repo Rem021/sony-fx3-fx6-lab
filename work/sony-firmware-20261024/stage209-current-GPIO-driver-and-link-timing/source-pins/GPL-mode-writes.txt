@@ -1,0 +1,49 @@
+static UDIF_INT hw_gpio_set_mode_port(UDIF_U8 port, UDIF_U32 bitmask, UDIF_U32 mode)
+{
+    // function
+    switch( mode & GPIOMODE_FUNC )
+    {
+        case GPIOMODE_GPIO:
+            gpio_write( bitmask, GPIO_REG_PORTSEL_SET(port) );
+            GPIO_MODIFY(port, portsel, bitmask);
+            break;
+        case GPIOMODE_PERIPHERAL:
+            gpio_write( bitmask, GPIO_REG_PORTSEL_CLR(port) );
+            GPIO_MODIFY(port, portsel, bitmask);
+            break;
+        default:
+            break;
+    }
+
+    // Direction
+    switch( mode & GPIOMODE_DIR )
+    {
+        case GPIOMODE_INPUT:
+            gpio_write( bitmask, GPIO_REG_INPUTEN_SET(port) );
+            GPIO_MODIFY(port, inen, bitmask);
+            gpio_write( bitmask, GPIO_REG_DIRECTION_CLR(port) );
+            GPIO_MODIFY(port, dir, bitmask);
+            break;
+        case GPIOMODE_OUTPUT_H:
+            gpio_write( bitmask, GPIO_REG_INPUTEN_SET(port) );
+            GPIO_MODIFY(port, inen, bitmask);
+            gpio_write( bitmask, GPIO_REG_WDATA_SET(port) );
+            GPIO_MODIFY(port, wdata, bitmask);
+            gpio_write( bitmask, GPIO_REG_DIRECTION_SET(port) );
+            GPIO_MODIFY(port, dir, bitmask);
+            break;
+        case GPIOMODE_OUTPUT_L:
+            gpio_write( bitmask, GPIO_REG_INPUTEN_SET(port) );
+            GPIO_MODIFY(port, inen, bitmask);
+            gpio_write( bitmask, GPIO_REG_WDATA_CLR(port) );
+            GPIO_MODIFY(port, wdata, bitmask);
+            gpio_write( bitmask, GPIO_REG_DIRECTION_SET(port) );
+            GPIO_MODIFY(port, dir, bitmask);
+            break;
+        default:
+            break;
+    }
+
+    return UDIF_ERR_OK;
+}
+

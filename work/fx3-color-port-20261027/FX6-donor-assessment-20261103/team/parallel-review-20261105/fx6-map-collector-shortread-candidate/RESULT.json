@@ -1,0 +1,207 @@
+{
+  "schema": "fx6-map-collector-shortread-result-v1",
+  "task": "task_7ce9fcff3fe6",
+  "dispatch": "ctx_93f279790a19",
+  "status": "OFFLINE_COLLECTOR_CANDIDATE_BUILT_ADMISSION_BLOCKED_NOT_RUN",
+  "no_run": true,
+  "vm_started": false,
+  "real_qmp_started": false,
+  "real_rsp_started": false,
+  "guest_started": false,
+  "target_elf_executed": false,
+  "installed": false,
+  "deployed": false,
+  "boot_menu_passed": false,
+  "fx6_menu_passed": false,
+  "root_cause": {
+    "kernel_version": "Linux 4.9.337-scel+",
+    "kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "failed_run_serial_sha256": "6a397851b49ce874c8acccb3b1c6d72ee6ed6ab1d10e87b43d394ed0f220571a",
+    "failed_error": "FX3MS1 ERROR pid=237 starttime=1490 seq=1 reason=short_read_more_data",
+    "short_read_not_cap_exhaustion": true,
+    "cap_unchanged": 262144,
+    "measured_r6_maps_max_row_bytes": 43509,
+    "official_reference": "https://www.kernel.org/doc/html/v5.7/filesystems/proc.html",
+    "official_reference_fetch": "blocked: DNS resolved to non-public address; no quote fabricated"
+  },
+  "collector": {
+    "protocol": "FX3MS2",
+    "capture": "bounded_sequential_read",
+    "snapshot_atomic": false,
+    "cap_bytes": 262144,
+    "max_data_reads": 64,
+    "max_ms": 1000,
+    "read_chunk_bytes": 65536,
+    "max_eintr_per_read": 8,
+    "max_eintr_total": 32,
+    "identity": "same /proc/<pid> dir and pid/starttime before/after",
+    "read_to_eof": true,
+    "legacy_fallback": false,
+    "libc": false,
+    "raw_linux_syscalls": true
+  },
+  "host": {
+    "provider": "host/fx3ms2.py",
+    "wait_frontier": "complete newline frontier; partial tail held",
+    "prearm_identity": "full ELF header + PHDR + four code words via RSP after QMP stop, before Z1",
+    "prearm_failure_aborts_before_Z1": true,
+    "legacy_fx3ms1_rejected": true,
+    "no_appfw_frame_retryable": true,
+    "corrupt_frame_immediate_reject": true
+  },
+  "target_elf": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/work/fx3-map-snapshot-v2-aarch64",
+    "sha256": "1286759f2662e0af43f054cce72b700b24588bdd96532a6ff5a910b4af341eb9",
+    "bytes": 15800,
+    "e_type": 2,
+    "e_machine": 183,
+    "entry": "0x2108e4",
+    "pt_interp": false,
+    "pt_dynamic": false,
+    "pt_load_count": 3,
+    "executed": false
+  },
+  "cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/work/fx6-map-collector-shortread-grmreal46.cpio",
+    "sha256": "79a87f32059cd3fa7bd2b1fa6484559ce5b2b2cacdad1dba6c456e13a64cf92d",
+    "bytes": 453200484,
+    "members": 1158,
+    "unchanged_members_vs_original": 1156,
+    "only_expected_changes_vs_original": true,
+    "old_candidate_to_new_changes": [
+      {
+        "name": "simulation/fx3-map-snapshot",
+        "why": "changed"
+      }
+    ],
+    "tail_padding_bytes": 25746348,
+    "actual_reparse_ok": true
+  },
+  "init": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/work/init.patched",
+    "sha256": "6c0c8dd76360cd12917a84827ab0353fa0c3fefe1d42f2ad9721377cea06df79",
+    "bytes": 21239
+  },
+  "fixtures": {
+    "schema": "fx6-map-collector-shortread-fixtures-v1",
+    "source": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/fixtures/source-native-target-frame-fx3ms1.serial",
+      "sha256": "f9eb44e9de75cc64d271bcbb462bcb49fca214eae6ca1c620d77fe87fcd717ca",
+      "fx3ms1_pid": 239,
+      "fx3ms1_starttime": 777,
+      "fx3ms1_bytes": 10563,
+      "fx3ms1_maps_sha256": "715f83a3578e3eff9032ede50143387ee7d7359f12fed7e3f074cebd42908e9a"
+    },
+    "source_maps": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/fixtures/source-native-target-frame-fx3ms1.maps",
+      "sha256": "715f83a3578e3eff9032ede50143387ee7d7359f12fed7e3f074cebd42908e9a",
+      "bytes": 10563
+    },
+    "valid": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/fixtures/native-target-frame-v2.serial",
+      "sha256": "e76b4cb78a4f7f4813fa111bd34559df2735d0a1d010be75feb27064fdbfc138",
+      "bytes": 15928,
+      "pid": 239,
+      "starttime": 777,
+      "seq": 1,
+      "payload_bytes": 10563,
+      "lines": 105,
+      "read_count": 3,
+      "eintr_count": 2,
+      "read_attempts": 6,
+      "snapshot_atomic": false,
+      "maps_sha256": "715f83a3578e3eff9032ede50143387ee7d7359f12fed7e3f074cebd42908e9a",
+      "bias": "0x7efab5b000",
+      "appfw_rows": 4,
+      "imelf_rows": 6,
+      "frame_count": 1
+    },
+    "no_appfw": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/fixtures/no-appfw-v2.serial",
+      "sha256": "3db4e7085a0a45115128388c00bb2cf9dc4fd49a382488f395fefda709ce9396",
+      "bytes": 15388,
+      "payload_bytes": 10196,
+      "no_appfw_reject": "framed payload has no appFw rows"
+    },
+    "note": "host fixture only; source FX3MS1 frame was accepted offline; no target execution or VM"
+  },
+  "tests": {
+    "collector_state_machine": {
+      "status": "PASS",
+      "cases": 19,
+      "summary": "CASES_TOTAL=19 FAILS=0",
+      "output": "receipts/collector-test.out",
+      "includes_actual_maps_10563_split1024_eintr8": true
+    },
+    "host_parser_wait": {
+      "status": "PASS",
+      "cases": 16,
+      "output": "receipts/host-tests.json"
+    },
+    "hostrunner_qmp_rsp_e2e": {
+      "status": "PASS_OFFLINE_ACTUAL_HOSTRUNNER",
+      "cases": 2,
+      "tls_reader": "fixture stub, not actual Sysregs",
+      "target_execution": false,
+      "vm_started": false,
+      "output": "receipts/e2e-hostrunner-v2.json"
+    },
+    "entry_gates": {
+      "status": "PASS",
+      "cases": 2,
+      "output": "receipts/entry-gates.json"
+    }
+  },
+  "admission": {
+    "status": "BLOCKED",
+    "runtime_authorized": false,
+    "not_admitted": true,
+    "established": [
+      "paused-state appFw header/PHDR/code-word byte identity before arm",
+      "complete bounded sequential read with explicit snapshot_atomic=0",
+      "no fallback to legacy maps"
+    ],
+    "not_established": [
+      "multi-read map atomicity",
+      "appFw mapping continuity across reads",
+      "current executable mapping/PTE permissions at pause",
+      "strict breakpoint contract including current x permission"
+    ],
+    "required_next": "reviewer must explicitly accept residual risk under a documented conditional contract, or add a permitted mechanism to establish current executable mappings at pause",
+    "prohibited_shortcuts": [
+      "SIGSTOP",
+      "ptrace",
+      "process_vm_*",
+      "guest application modification",
+      "legacy raw-map fallback"
+    ]
+  },
+  "previous_run_correction": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/runs/fx6-framed-map-20261106T083817Z",
+    "old_manifest_sha256": "679145f9fde899aff679873caec936585199eb5dc43f64a6651a7de2a7939aab",
+    "old_seal_sha256": "a2bc053c124880e5e8937ab78fd530811bda07e34e76477d72fc5a3c41187a5a",
+    "corrected_manifest": "SHA256SUMS.CORRECTED",
+    "corrected_manifest_sha256": "d875de596338fb9c34e93ef1cec8380e8c4ebd409578c4482740bf1ca4cb74d8",
+    "corrected_entries": 40,
+    "discrepancy": "postrun.stdout.txt e3b0... -> c7c7... (buffered tee flush)",
+    "old_receipt_sha256": "a1a2ad2fc15fcc0d005ad0eaf4d4cca53d68ce6fb8e7494394ccbbff95c556a6",
+    "old_serial_sha256": "6a397851b49ce874c8acccb3b1c6d72ee6ed6ab1d10e87b43d394ed0f220571a",
+    "write_path": "corrected: ERROR record traversed output path; failure was read/probe before a complete map frame",
+    "elf_entry": "corrected: actual 0x210ab0; old report text 0x210a80 stale; hashes unchanged",
+    "qemu_locks": "our QEMU 23106 exit 0/reaped; PIDs absent; own lock release proven; external workers held locks at times and were not touched"
+  },
+  "limits": [
+    "No new run, VM, QEMU, real QMP/RSP, guest or target ELF execution in this task.",
+    "Host fixture/E2E uses a fixture TLS reader; actual target Sysregs is not verified.",
+    "The measured r6 maps block is from a different accepted run, used only as size/behavior evidence.",
+    "Runtime admission remains blocked; candidate is not authorized, installed, deployed or default.",
+    "FX6 boot/menu remains not passed; the previous one-start observation remains failed."
+  ],
+  "reports": {
+    "report": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/REPORT.md",
+    "kernel_evidence": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/KERNEL-EVIDENCE.md",
+    "admission": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/ADMISSION.md",
+    "run_plan": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/RUN-PLAN.md"
+  },
+  "note": "offline minimal candidate + design blocker; no runtime claim; no deployment"
+}

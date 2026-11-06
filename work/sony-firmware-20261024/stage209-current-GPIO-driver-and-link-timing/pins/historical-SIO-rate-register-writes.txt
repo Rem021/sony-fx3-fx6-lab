@@ -1,0 +1,23 @@
+00000a84 9f3e03d5 dsb      st
+00000a88 620280b9 ldrsw    x2, [x19]
+00000a8c 61224039 ldrb     w1, [x19, #8]
+00000a90 827a62f8 ldr      x2, [x20, x2, lsl #3]
+00000a94 211c0853 lsl      w1, w1, #0x18
+00000a98 21040432 orr      w1, w1, #0x30000000
+00000a9c 42100091 add      x2, x2, #4
+00000aa0 410000b9 str      w1, [x2]
+00000aa4 9f3e03d5 dsb      st
+00000aa8 620280b9 ldrsw    x2, [x19]
+00000aac 610e40b9 ldr      w1, [x19, #0xc]
+00000ab0 827a62f8 ldr      x2, [x20, x2, lsl #3]
+00000ab4 211c0853 lsl      w1, w1, #0x18
+00000ab8 42500091 add      x2, x2, #0x14
+00000abc 410000b9 str      w1, [x2]
+00000ac0 9f3e03d5 dsb      st
+00000ac4 620280b9 ldrsw    x2, [x19]
+00000ac8 610e40b9 ldr      w1, [x19, #0xc]
+00000acc 827a62f8 ldr      x2, [x20, x2, lsl #3]
+00000ad0 213c1053 lsl      w1, w1, #0x10
+00000ad4 42600091 add      x2, x2, #0x18
+00000ad8 211c0812 and      w1, w1, #0xff000000
+00000adc 410000b9 str      w1, [x2]

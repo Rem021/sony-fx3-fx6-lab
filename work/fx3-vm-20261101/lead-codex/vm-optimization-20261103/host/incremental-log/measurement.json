@@ -1,0 +1,96 @@
+{
+  "synthetic": {
+    "partition_seed": 105,
+    "bytes": 280,
+    "resets": 5
+  },
+  "known_counterexample": {
+    "case": "same inode, grow after rewriting early bytes while preserving old trailing 64 bytes",
+    "old_length": 270,
+    "candidate_length": 270,
+    "equal": false,
+    "mitigation": "new run path or full reread on rewrite-capable source"
+  },
+  "real_logs": [
+    {
+      "label": "ap104light4save1200-2e5d177c",
+      "sha256": "546cb84e55fe55b57c820a71334d53d43548ab8001b440e99c33c737ceef9845",
+      "bytes": 24687256,
+      "partitions": 19,
+      "contains_unfetched": true,
+      "reader_bytes": 24687256,
+      "trial_selected_lines": 82,
+      "trial_selected_text_chars": 11225,
+      "trial_selected_heap_bytes": 15298
+    },
+    {
+      "label": "try1-740a3263",
+      "sha256": "7ea21fead6e939bcbe4581a26502a14b849c4aca97fbe4bc7ff9779b28677863",
+      "bytes": 11196092,
+      "partitions": 20,
+      "contains_unfetched": false,
+      "reader_bytes": 11196092,
+      "trial_selected_lines": 28,
+      "trial_selected_text_chars": 3841,
+      "trial_selected_heap_bytes": 5274
+    }
+  ],
+  "benchmark": {
+    "bytes": 24687256,
+    "repeat_polls": 30,
+    "old_cpu_ms": 457.443,
+    "new_cpu_ms": 0.633,
+    "old_disk_bytes": 740617680,
+    "new_disk_bytes_after_first_poll": 0,
+    "new_anchor_probe_bytes": 1920,
+    "retained_text_chars": 24460644
+  },
+  "growth": [
+    {
+      "file_bytes": 1048576,
+      "old_repeat_cpu_ms": 2.697,
+      "new_repeat_cpu_ms": 0.097,
+      "old_snapshot_heap_bytes": 1041979,
+      "new_retained_text_heap_bytes": 1041979,
+      "new_snapshot_heap_bytes": 1041979,
+      "new_text_snapshot_same_object": true
+    },
+    {
+      "file_bytes": 4194304,
+      "old_repeat_cpu_ms": 11.689,
+      "new_repeat_cpu_ms": 0.12,
+      "old_snapshot_heap_bytes": 4157070,
+      "new_retained_text_heap_bytes": 4157070,
+      "new_snapshot_heap_bytes": 4157070,
+      "new_text_snapshot_same_object": true
+    },
+    {
+      "file_bytes": 8388608,
+      "old_repeat_cpu_ms": 26.321,
+      "new_repeat_cpu_ms": 0.198,
+      "old_snapshot_heap_bytes": 8302895,
+      "new_retained_text_heap_bytes": 8302895,
+      "new_snapshot_heap_bytes": 8302895,
+      "new_text_snapshot_same_object": true
+    },
+    {
+      "file_bytes": 16777216,
+      "old_repeat_cpu_ms": 52.364,
+      "new_repeat_cpu_ms": 0.175,
+      "old_snapshot_heap_bytes": 16612675,
+      "new_retained_text_heap_bytes": 16612675,
+      "new_snapshot_heap_bytes": 16612675,
+      "new_text_snapshot_same_object": true
+    },
+    {
+      "file_bytes": 24687256,
+      "old_repeat_cpu_ms": 77.387,
+      "new_repeat_cpu_ms": 0.176,
+      "old_snapshot_heap_bytes": 24460685,
+      "new_retained_text_heap_bytes": 24460685,
+      "new_snapshot_heap_bytes": 24460685,
+      "new_text_snapshot_same_object": true
+    }
+  ],
+  "scope": "host read_text snapshot equality only; regex still scans complete history; no guest/UI/save/exit validation"
+}

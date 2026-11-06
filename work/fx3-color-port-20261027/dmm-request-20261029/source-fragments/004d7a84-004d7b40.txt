@@ -1,0 +1,66 @@
+004d7a84 push       {r4, r5, r6, r7, lr}
+004d7a86 add        r7, sp, #0xc
+004d7a88 push.w     {r8, sb, sl}
+004d7a8c mov        sb, r0
+004d7a8e movw       r0, #0x182
+004d7a92 mov        r8, r1
+004d7a94 movt       r0, #0xfa
+004d7a98 bl         #0xa84be8
+004d7a9c movw       r2, #0x4930
+004d7aa0 movs       r3, #0
+004d7aa2 movw       sl, #0xffff
+004d7aa6 movt       r2, #0xb5
+004d7aaa ldrd       r5, r4, [r2]
+004d7aae subs       r6, r0, r5
+004d7ab0 sbcs.w     r6, r1, r4
+004d7ab4 blo        #0x4d7ac8
+004d7ab6 ldrd       r6, ip, [r2, #0x18]
+004d7aba adds       r6, r6, r5
+004d7abc adc.w      ip, ip, r4
+004d7ac0 subs       r6, r0, r6
+004d7ac2 sbcs.w     r6, r1, ip
+004d7ac6 blo        #0x4d7ada
+004d7ac8 adds       r2, #0x20
+004d7aca adds       r3, #1
+004d7acc cmp        r3, #4
+004d7ace blo        #0x4d7aaa
+004d7ad0 adr        r2, #0x6c
+004d7ad2 movs       r3, #3
+004d7ad4 bl         #0x1500c0
+004d7ad8 b          #0x4d7ae8
+004d7ada ldrd       r2, r3, [r2, #8]
+004d7ade subs       r0, r0, r5
+004d7ae0 sbcs       r1, r4
+004d7ae2 adds       r0, r0, r2
+004d7ae4 adcs       r1, r3
+004d7ae6 beq        #0x4d7afe
+004d7ae8 movw       r0, #0x8ff8
+004d7aec movs       r1, #0
+004d7aee movt       r0, #0x13f
+004d7af2 str        r1, [r0]
+004d7af4 sxth.w     r0, sl
+004d7af8 pop.w      {r8, sb, sl}
+004d7afc pop        {r4, r5, r6, r7, pc}
+004d7afe blx        #0x53894c
+004d7b02 movw       r1, #0x8ff8
+004d7b06 cmp        r0, #0
+004d7b08 movt       r1, #0x13f
+004d7b0c str        r0, [r1]
+004d7b0e beq        #0x4d7af4
+004d7b10 cmp        r0, sb
+004d7b12 beq        #0x4d7b2e
+004d7b14 movw       r1, #0x8ffc
+004d7b18 mov        r2, r8
+004d7b1a movt       r1, #0x13f
+004d7b1e ldr        r4, [r1]
+004d7b20 adds       r1, r0, r4
+004d7b22 mov        r0, sb
+004d7b24 blx        #0x558400
+004d7b28 add.w      r0, r4, r8
+004d7b2c b          #0x4d7b30
+004d7b2e movs       r0, #0
+004d7b30 movw       r1, #0x8ffc
+004d7b34 mov.w      sl, #0
+004d7b38 movt       r1, #0x13f
+004d7b3c str        r0, [r1]
+004d7b3e b          #0x4d7af4

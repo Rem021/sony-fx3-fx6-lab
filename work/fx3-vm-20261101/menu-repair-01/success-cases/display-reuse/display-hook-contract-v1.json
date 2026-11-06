@@ -1,0 +1,728 @@
+{
+  "created_utc": "2026-11-01T12:08:44.315929+00:00",
+  "status": "STATIC_BINDING_PREPARATION_NOT_GUEST_IMPLEMENTATION_OR_UI_PROOF",
+  "case_commit": "b3d7c1fed349f1d918acc4259f1d2b3a7c52a500",
+  "original_proof_file": "fx3-display-static-proof.json",
+  "gpe_bindings": [
+    {
+      "symbol": "_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE",
+      "original_defined": true,
+      "value": "0xa430",
+      "bytes": 228,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x2632e8",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN5mpgpe13GpermFillRectENS_3GpeENS_7IntCoreEPjRKNS_13FillRectParamE"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN5mpgpe12GpermBitBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE",
+      "original_defined": true,
+      "value": "0xa514",
+      "bytes": 220,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263180",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN5mpgpe12GpermBitBlitENS_3GpeENS_7IntCoreEPjRKNS_12BitBlitParamE"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN5mpgpe8FillRectENS_3GpeENS_7IntCoreEjjRKNS_13FillRectParamE",
+      "original_defined": true,
+      "value": "0xc30c",
+      "bytes": 1108,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x29660",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN5mpgpe8FillRectENS_3GpeENS_7IntCoreEjjRKNS_13FillRectParamE"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN5mpgpe7BitBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE",
+      "original_defined": true,
+      "value": "0xcf2c",
+      "bytes": 540,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x29158",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN5mpgpe7BitBlitENS_3GpeENS_7IntCoreEjjRKNS_12BitBlitParamE"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN5mpgpe5FlushENS_3GpeENS_7IntCoreEjjRKNS_10FlushParamE",
+      "original_defined": true,
+      "value": "0xc760",
+      "bytes": 160,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x29108",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN5mpgpe5FlushENS_3GpeENS_7IntCoreEjjRKNS_10FlushParamE"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN5mpgpe7message12SendDrawCompEjPKvm",
+      "original_defined": true,
+      "value": "0xd888",
+      "bytes": 20,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x29470",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN5mpgpe7message12SendDrawCompEjPKvm"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN5mpgpe14InitializeDrawENS_3GpeE",
+      "original_defined": true,
+      "value": "0xc1d0",
+      "bytes": 188,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x29650",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN5mpgpe14InitializeDrawENS_3GpeE"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZNK5mpgpe5Gperm4InitEv",
+      "original_defined": true,
+      "value": "0x9ae8",
+      "bytes": 100,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x29520",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZNK5mpgpe5Gperm4InitEv"
+        }
+      ]
+    }
+  ],
+  "ui_and_surface_bindings": [
+    {
+      "symbol": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv",
+      "original_defined": true,
+      "value": "0x1771f4",
+      "bytes": 132,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263c18",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47ccdd8",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux6wgtsys12WidgetSystem10notifyDrawEv"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv",
+      "original_defined": true,
+      "value": "0x16ea10",
+      "bytes": 212,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263838",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd040",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux6gfxeng14GraphicsEngine15drawFramebufferEv"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv",
+      "original_defined": true,
+      "value": "0x1749b0",
+      "bytes": 16,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263cb8",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cc308",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux6wgtsys12WidgetSystem15sys_getInstanceEv"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_screenGetOnBitmap",
+      "original_defined": true,
+      "value": "0xf377c",
+      "bytes": 44,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cce18",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_screenGetOnBitmap"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_fbrmLockSwap",
+      "original_defined": true,
+      "value": "0xf3820",
+      "bytes": 28,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd5c0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_fbrmLockSwap"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_fbrmUnlockSwap",
+      "original_defined": true,
+      "value": "0xf383c",
+      "bytes": 28,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd690",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_fbrmUnlockSwap"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_bitmapReadLockBits",
+      "original_defined": true,
+      "value": "0xfb5bc",
+      "bytes": 20,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263ed8",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapReadLockBits"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd2e0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapReadLockBits"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_bitmapReadUnlockBits",
+      "original_defined": true,
+      "value": "0xfb5d0",
+      "bytes": 20,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x2638e0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapReadUnlockBits"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cce60",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapReadUnlockBits"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_bitmapGetPhysicalAddress",
+      "original_defined": true,
+      "value": "0xfb594",
+      "bytes": 20,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263200",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapGetPhysicalAddress"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_bitmapGetSize",
+      "original_defined": true,
+      "value": "0xfb520",
+      "bytes": 20,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cc5e8",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapGetSize"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_bitmapGetFormat",
+      "original_defined": true,
+      "value": "0xfb534",
+      "bytes": 48,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263678",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapGetFormat"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47ccbf0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapGetFormat"
+        }
+      ]
+    },
+    {
+      "symbol": "GRM_bitmapGetRowPixelCount",
+      "original_defined": true,
+      "value": "0xfb790",
+      "bytes": 20,
+      "same_name_relocations": []
+    },
+    {
+      "symbol": "GRM_bitmapRelease",
+      "original_defined": true,
+      "value": "0xfb620",
+      "bytes": 20,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263a40",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapRelease"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd0f0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "GRM_bitmapRelease"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN2ux4core13GraphicsImage21sys_getInternalObjectEPv",
+      "original_defined": true,
+      "value": "0x153e28",
+      "bytes": 68,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263370",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux4core13GraphicsImage21sys_getInternalObjectEPv"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cc318",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux4core13GraphicsImage21sys_getInternalObjectEPv"
+        }
+      ]
+    }
+  ],
+  "input_bindings": [
+    {
+      "symbol": "_ZN10InfraInput11GetInstanceEv",
+      "original_defined": true,
+      "value": "0xc8bb4",
+      "bytes": 248,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x2630a8",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN10InfraInput11GetInstanceEv"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd0a0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN10InfraInput11GetInstanceEv"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN10InfraInput11SetCallbackEPiPFviP16_InfraInputEventE",
+      "original_defined": true,
+      "value": "0xc93a4",
+      "bytes": 176,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cc180",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN10InfraInput11SetCallbackEPiPFviP16_InfraInputEventE"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN10InfraInput15SetEventKeyListEiP18_InfraInputKeyListi",
+      "original_defined": true,
+      "value": "0xca63c",
+      "bytes": 2660,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x2630a0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN10InfraInput15SetEventKeyListEiP18_InfraInputKeyListi"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd5b0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN10InfraInput15SetEventKeyListEiP18_InfraInputKeyListi"
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN2ux6wgtsys12WidgetSystem12processEventEv",
+      "original_defined": true,
+      "value": "0x1770fc",
+      "bytes": 104,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cc8f0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "_ZN2ux6wgtsys12WidgetSystem12processEventEv"
+        }
+      ]
+    }
+  ],
+  "osal_input_bindings": [
+    {
+      "symbol": "osal_valloc_msg_wait",
+      "original_defined": true,
+      "value": "0x67b0",
+      "bytes": 448,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263848",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_valloc_msg_wait"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x29268",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_valloc_msg_wait"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd420",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_valloc_msg_wait"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x1a110",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_valloc_msg_wait"
+        }
+      ]
+    },
+    {
+      "symbol": "osal_set_msg_src",
+      "original_defined": true,
+      "value": "0x7e20",
+      "bytes": 8,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263208",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_set_msg_src"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x29050",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_set_msg_src"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cc290",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_set_msg_src"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x1a020",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_set_msg_src"
+        }
+      ]
+    },
+    {
+      "symbol": "osal_snd_msg",
+      "original_defined": true,
+      "value": "0x5e60",
+      "bytes": 684,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x263648",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_snd_msg"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x291e0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_snd_msg"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47ccb18",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_snd_msg"
+        }
+      ]
+    },
+    {
+      "symbol": "osal_free_msg",
+      "original_defined": true,
+      "value": "0x6970",
+      "bytes": 360,
+      "same_name_relocations": [
+        {
+          "section": ".rela.plt",
+          "offset": "0x264440",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_free_msg"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x29710",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_free_msg"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x47cd578",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_free_msg"
+        },
+        {
+          "section": ".rela.plt",
+          "offset": "0x1a2c0",
+          "type": 1026,
+          "addend": 0,
+          "symbol": "osal_free_msg"
+        }
+      ]
+    }
+  ],
+  "binding_plan": [
+    "Wait for actual original libObj/libgpe loading; resolve real symbols from original handles.",
+    "Derive load bias with dladdr/dl_iterate_phdr; discover JUMP_SLOT by exact dynamic symbol. Never subtract A7C2 function offsets or write its GOT offsets.",
+    "Initial hooks preserve original call/return, errno, thread ownership and message bytes. They only record first actual UI/GPE events.",
+    "After observed initialization, derive each FX3 parameter-block, bitmap handle, allocation bounds and original locks before enabling explicit raster/consumer models.",
+    "Use original surface with swap/bitmap/raster/lifetime lease. Atomic private snapshot only after all validations. No ACK before successful retained copy and readback."
+  ],
+  "public_surface_static_facts": [
+    "GRM_screenGetOnBitmap receives output pointer in x0 and stores a raw current bitmap to *x0; it does not AddRef.",
+    "GRM_fbrmLockSwap has no input and reaches two original infinite semaphore waits; calling before initialization or on a recursive owning thread can block/assert.",
+    "LockSwap implementation uses FX3 framebuffer semaphore objects at +0x88 then +0x78; Unlock reverses. This differs from A7C2 private identity assumptions.",
+    "ReadLockBits forwards x1/x2 to bitmap vtable+0x88; this is not sufficient to call arbitrary bitmap classes without checking actual target ABI.",
+    "GetSize writes a 64-bit byte length, not framebuffer width/height. Release must not be called on a raw borrowed getter without owning a reference."
+  ],
+  "ap_osd_original_static_contract": [
+    {
+      "destination": "0x8280074d",
+      "source": "0x8288076c",
+      "command": "0x1002",
+      "body_bytes": 12,
+      "allocation_call_va": "0xf1db4",
+      "tag_va": "0xf1e08"
+    },
+    {
+      "destination": "0x8280084d",
+      "source": "0x8288076c",
+      "command": "0x1003",
+      "body_bytes": 36,
+      "allocation_call_va": "0xf1e40",
+      "tag_va": "0xf1e94"
+    },
+    {
+      "destination": "0x8280084e",
+      "source": "0x8288076c",
+      "command": "0x1005",
+      "body_bytes": 8,
+      "allocation_call_va": "0xf1d28",
+      "tag_va": "0xf1d7c"
+    }
+  ],
+  "ack_static_facts": {
+    "receive_endpoint": "0x8288076c",
+    "receiver_call_va": "0xf2a10",
+    "message_source_dispatch_va": "0xf28c8",
+    "accepted_source_for_completion": "0x8280074d",
+    "command_dispatch_va": "0xf22f0",
+    "commands": [
+      "0x6003",
+      "0x6005"
+    ],
+    "side_effects": "original signal/callback paths f2238/f22b0; size/transaction and live delivery still require observation"
+  },
+  "lz77": {
+    "original_rtti_graph": [
+      {
+        "typename": "N2ux4core11Lz77DecoderE",
+        "typename_va": "0x1e77c8",
+        "typeinfo_va": "0x25cc80",
+        "vtable_address_point_va": "0x25cca8",
+        "first_four_slots": [
+          {
+            "slot_va": "0x25cca8",
+            "target_va": "0x154c04"
+          },
+          {
+            "slot_va": "0x25ccb0",
+            "target_va": "0x154c18"
+          },
+          {
+            "slot_va": "0x25ccb8",
+            "target_va": "0x15bee4"
+          },
+          {
+            "slot_va": "0x25ccc0",
+            "target_va": "0x154c40"
+          }
+        ]
+      }
+    ],
+    "original_decode_fields": {
+      "stream": 8,
+      "image": 16,
+      "format": 24,
+      "width_u16": 28,
+      "height_u16": 30,
+      "compressed_length_u32": 32
+    },
+    "reusable_implementation": "source/runtime/analysis/sony-lz77.c:sony_lz77_decode",
+    "remaining": "FX3 actual stream getter purity/input extent, image virtual write-lock/stride/size ABI and output lease must be validated. Original private write-lock adapter at12b414 is evidence, not copied A7C2 address."
+  },
+  "output_routes": [
+    {
+      "route": "guest private HOSDAP02 -> console base64 -> host decoder/PNG",
+      "source": "headless-osd-export.c:29-67",
+      "needs_qemu_ramfb": false,
+      "needs_qemu_pixman": false,
+      "requires": "valid leased original software surface and full snapshot length/hash/identity validation",
+      "limit": "serial sample export; no original UI frame yet; image geometry/container must be adjusted if FX3 differs"
+    },
+    {
+      "route": "HOSDAP02 -> guest ramfb-viewer -> standard fw_cfg etc/ramfb -> QMP screendump -> Mac image consumer",
+      "source": "ramfb-viewer.c; qemu-kernel-probe.sh",
+      "needs_qemu_ramfb": true,
+      "needs_qemu_pixman_or_equivalent_display_conversion": true,
+      "host_reported": "78e device help includes ramfb; original build Pixman=NO and display only none; host alone building local Pixman variant",
+      "limit": "device enumeration is not screenshot proof; actual QMP frame remains unverified"
+    }
+  ],
+  "explicit_models": [
+    "restricted CPU GPE raster preserving callback/sequence and rejecting unsupported requests",
+    "strict byte-exact Sony LZ77 decode into original target bitmap",
+    "AP output consumer replacing unavailable CP/panel compositor, with original message completions only after retained valid pixels",
+    "ramfb is an emulator scanout backend, not Sony physical panel; native keyboard bridge is optional transport, not original key hardware"
+  ],
+  "remaining_blockers": [
+    "FX3 actual nonuniform original UI raster event and pixel-format/geometry proof",
+    "GPE parameter layouts/completion ordering and physical reservations",
+    "bitmap lifetime, reference, read-lock and shared CPU raster lock; teardown coordination",
+    "GUI metadata producer source and payload roles (9088076b not yet established for FX3)",
+    "LZ77 output/image subclass write-lock ABI",
+    "FX3 raw-to-canonical table and first-wins duplicate semantics; no copying A7C2 raw codes",
+    "live original key consumption and matching new original frame",
+    "actual current host QMP/pixman consumer verification"
+  ],
+  "guest_execution_by_this_agent": false
+}

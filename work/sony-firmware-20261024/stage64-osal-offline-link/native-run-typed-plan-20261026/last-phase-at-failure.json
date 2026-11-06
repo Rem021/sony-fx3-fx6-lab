@@ -1,0 +1,27 @@
+{
+  "label": "independent original module init entry to registration boundary osal_uipc.ko",
+  "start_pc": "0xffffff800a289100",
+  "reason": "boundary: before_original_unexecuted_kernel_service",
+  "stop_pc": "0xffffff800839a528",
+  "SP_before": "0x10008000",
+  "SP_after": "0x10007fe0",
+  "x0_after": "0x10007ff8",
+  "pcs": [
+    "0xffffff800a289100",
+    "0xffffff800a289104",
+    "0xffffff800a289108",
+    "0xffffff800a28910c",
+    "0xffffff800a289110",
+    "0xffffff800a289114",
+    "0xffffff800a289118",
+    "0xffffff800a28911c",
+    "0xffffff800839a528"
+  ],
+  "writes": [],
+  "native_clear_calls": [],
+  "common_constructor_calls": [],
+  "pool_constructor_calls": [],
+  "CPU_events": [],
+  "independent_entry_fixture": true,
+  "native_output_or_PC_return_adapter": false
+}

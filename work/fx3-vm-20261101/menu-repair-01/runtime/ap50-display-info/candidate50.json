@@ -1,0 +1,57 @@
+{
+  "memory_mib": 5120,
+  "initrd_load_address": "0x440000000",
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap50-display-info/guest.dtb",
+    "sha256": "a2e4b9481ac3aecf7743531a3d75155dd653a918f7c9984d302fb8cc9486aace"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap50-display-info/guest.cpio",
+    "sha256": "441e1bf83b18935c12a7ea1dba1c175226d35b8dce201cfbe9d992c3843c438c"
+  },
+  "required_markers": [
+    "FX3_CPUSET_READY",
+    "FX3_BACKUP_INSMOD_RC=0",
+    "FX3_ULOGIO_INSMOD_RC=0",
+    "FX3_AP_NATURAL_BOOTIN_BEGIN",
+    "FX3_UTIMER_RC=0",
+    "FX3_STREAM_RC=0",
+    "FX3_STREAM2_RC=0",
+    "FX3_DMM_RC=0",
+    "FX3_GRM_MA_RC=0",
+    "FX3_GPE_BOUND count=5",
+    "FX3_POWER_SEED_RC=0",
+    "FX3_UPM_RC=0",
+    "FX3_UDATE_RC=0",
+    "FX3_DATE_CLOCK_RC=0",
+    "FX3_HDMI_REG_COMMIT",
+    "FX3_HDMI_REG_NATIVE_FREE",
+    "FX3_HDMI_REG_COMMIT",
+    "FX3_HDMI_REG_NATIVE_FREE",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_CP_VERSION_UNAVAILABLE",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_KIKILOG_RC=0",
+    "FX3_CAPID_BIND",
+    "FX3_CAPID_COMMIT",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_BT_EMPTY_RECORDS_BEGIN",
+    "FX3_HDMI_AUDIO_COMMIT",
+    "FX3_HDMI_PHOTO_COMMIT",
+    "FX3_PROVIDER_REQUEST destination=0x9061003c",
+    "FX3_REMOTE_DMM_BIND",
+    "FX3_REMOTE_DMM_COMMIT",
+    "FX3_DISPLAY_INFO_COMMIT"
+  ],
+  "scope": "Original FX3 natural boot, same-model kernel/UIPC/Backup/timer/localDMM/UPM/date/GPIO5/nativeBusPower/Kikilog. Explicit virtual models: HDMI registration and inactive032d audioformat/0102preset, emptyBluetooth peerrecords, CAPIDstorage41d800000/64KiB, SA source-ranges-v1, remoteDMMunit63a two512KiB slots41d900000/1MiB, softwaredisplaygeometry016a640x480. CPupdatercontrol exact8B originalcallers unsupported-1021; all other unsupported requests delegated. Boundedproviderobserver and GPE requestcapture only; no pixelwrites. OriginalCP/physicaldevices/audioframes/capture/UI acceptance not established.",
+  "known_unclosed_layout": "DMM/LIRO and CP fixed RAM spans not accepted by this probe; failures may be absent service/hardware/layout, not evidence of ABI incompatibility. No new timer/DMA/DMM model added.",
+  "qemu": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+    "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+  },
+  "timer_model": true,
+  "scu_request_model": true,
+  "gpio_bank5_model": true
+}

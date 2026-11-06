@@ -1,0 +1,14 @@
+from pathlib import Path
+from elftools.elf.elffile import ELFFile
+from capstone import Cs,CS_ARCH_ARM64,CS_MODE_LITTLE_ENDIAN
+import hashlib,json,struct
+R=Path(__file__).resolve().parent;row=json.loads((R/'capid-file-candidates.json').read_text())[0];b=Path(row['local_file']).read_bytes();assert hashlib.sha256(b).hexdigest()==row['sha256'];e=ELFFile(open(row['local_file'],'rb'));ds=e.get_section_by_name('.dynsym');rp=e.get_section_by_name('.rela.plt');plt=e.get_section_by_name('.plt');mp={plt['sh_addr']+32+16*i:ds.get_symbol(v['r_info_sym']).name for i,v in enumerate(rp.iter_relocations())};cs=Cs(CS_ARCH_ARM64,CS_MODE_LITTLE_ENDIAN);funcs={}
+for sym in ds.iter_symbols():
+ if 'capidtbl' not in sym.name or not sym['st_size'] or sym['st_info']['type']!='STT_FUNC':continue
+ a=sym['st_value'];n=sym['st_size'];seg=next(s for s in e.iter_segments() if s['p_type']=='PT_LOAD' and s['p_vaddr']<=a and a+n<=s['p_vaddr']+s['p_filesz']);o=seg['p_offset']+a-seg['p_vaddr'];funcs[sym.name]=[{'va':hex(i.address),'bytes':i.bytes.hex(),'instruction':i.mnemonic+' '+i.op_str,'plt_symbol':mp.get(int(i.op_str[1:],16)) if i.mnemonic=='bl' else None} for i in cs.disasm(b[o:o+n],a)]
+root={'source_sha256':row['sha256'],'functions':funcs,'runtime':'AP41/42 explicit virtual storage, native request/response/free sequence, shared memory readback; no originalCP or image producer','independently_observed_AP41':{'control':['1000','1001','1002','1003'],'sync_operation':1,'header':[1024,1023,1023,1023,0],'reply_frees':4,'entry_nonzero_bytes':0},'virtual_memory':{'physical':'41d800000','reservation_bytes':0x10000,'table_bytes':0x4014,'claim':'lazy exclusive0600 guest /tmp/fx3-capid.claim, PID owner','no_overlap_receipt':'ap41-capid-storage/exclusive-reservation.json','QMP_sha256':'2bde59e9a95f1dea99311cea8330e866b17ce3654158dbbbe226c9ef13df57e1'}};(R/'capid-mpr-full-proof.json').write_text(json.dumps(root,indent=2)+'\n');print('functions',len(funcs))
+# SA table candidates only: not sufficient consumer proof for enabling another model.
+p=R.parents[2]/'sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin';b=p.read_bytes();offsets=[]
+for t in [(0x400000000,0,0x100000000),(0x500000000,0x100000000,0x100000000),(0xfe000000,0x3fe000000,0x6c0000)]:
+ needle=struct.pack('<3Q',*t);off=b.find(needle);assert off>=0 and b.find(needle,off+1)<0;offsets.append({'file_offset':hex(off),'first_three_u64':[hex(x) for x in t],'record32_hex':b[off:off+32].hex()})
+(R/'sa-address-table-candidates.json').write_text(json.dumps({'source_sha256':hashlib.sha256(b).hexdigest(),'candidate_records':offsets,'status':'DATA_ONLY_CANDIDATES_NOT_MODEL_ACCEPTANCE','remaining':'Bind FX3 b850 consumer to these records and callback/address domain. Do not copy A7C2 file offsets2ffb14/3320d8/3323d8.'},indent=2)+'\n')

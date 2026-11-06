@@ -1,0 +1,246 @@
+{
+  "status": "PASS_SAME_PROCESS_OWNER_CHANNEL_FIXTURES",
+  "tests_run": 38,
+  "results": [
+    {
+      "name": "observe_end_real_peer",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.6499564580153674
+    },
+    {
+      "name": "fragmented_stream",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.08423725003376603
+    },
+    {
+      "name": "reversed_pipe_map",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07717466697795317
+    },
+    {
+      "name": "without_storage_driver",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.0706673749955371
+    },
+    {
+      "name": "nonce_mismatch",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06576991605106741
+    },
+    {
+      "name": "generation_mismatch",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07443525001872331
+    },
+    {
+      "name": "zero_id",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07215270801680163
+    },
+    {
+      "name": "expired_deadline",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07590491697192192
+    },
+    {
+      "name": "bad_stream_size_0",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07305945799453184
+    },
+    {
+      "name": "bad_stream_size_571",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07630841596983373
+    },
+    {
+      "name": "bad_stream_size_573",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06338929198682308
+    },
+    {
+      "name": "bad_stream_size_4294967295",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07696679199580103
+    },
+    {
+      "name": "SCM_RIGHTS_rejected_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07445125002413988
+    },
+    {
+      "name": "large_SCM_RIGHTS_rejected_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07845675002317876
+    },
+    {
+      "name": "max_accepted_test_SCM_RIGHTS_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07509712496539578
+    },
+    {
+      "name": "wrong_kernel_peer_pid_before_owner",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.04565504199126735
+    },
+    {
+      "name": "wrong_peer_birth_before_owner",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.04615429200930521
+    },
+    {
+      "name": "native_scope_denies_START",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06911062501603737
+    },
+    {
+      "name": "fake_auth_STOP_not_body_exit",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.1819414999918081
+    },
+    {
+      "name": "fake_auth_reversed_endpoints",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.17489679099526256
+    },
+    {
+      "name": "fake_auth_without_STOP_retains",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.1855028749560006
+    },
+    {
+      "name": "blocked_native_op_1_no_cleanup",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.27954720897832885
+    },
+    {
+      "name": "blocked_native_op_2_no_cleanup",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.27310629200655967
+    },
+    {
+      "name": "blocked_native_op_3_no_cleanup",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.28077004197984934
+    },
+    {
+      "name": "public_result_not_owner_state",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06649054202716798
+    },
+    {
+      "name": "public_deadline_not_private_budget",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 2.064379832998384
+    },
+    {
+      "name": "public_result_cannot_release_retained_owner",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.2669426670181565
+    },
+    {
+      "name": "single_use_lease_replay_denied",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.08298566698795184
+    },
+    {
+      "name": "cooperative_idle_stop",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07996195805026218
+    },
+    {
+      "name": "request_limit_64",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.08140120899770409
+    },
+    {
+      "name": "real_observer_death_while_fake_OUT_pending",
+      "status": "PASS",
+      "processes": 0,
+      "seconds": 0.4022307919804007
+    },
+    {
+      "name": "zero_data_rights_no_descriptor_leak",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05064854200463742
+    },
+    {
+      "name": "competing_instances_denied_before_owner",
+      "status": "PASS",
+      "processes": 3,
+      "seconds": 0.2268927920376882
+    },
+    {
+      "name": "retained_and_dead_grant_still_block_next",
+      "status": "PASS",
+      "processes": 3,
+      "seconds": 0.3012442499748431
+    },
+    {
+      "name": "unknown_cleanup_blocks_next",
+      "status": "PASS",
+      "processes": 2,
+      "seconds": 0.13141504197847098
+    },
+    {
+      "name": "frame_truncation_idle_private_owner_survives",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.08643745799781755
+    },
+    {
+      "name": "frame_hardlink_idle_stops_without_retarget",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.08418487495509908
+    },
+    {
+      "name": "frame_truncation_while_native_call_pending",
+      "status": "PASS",
+      "processes": 2,
+      "seconds": 0.42440037499181926
+    }
+  ],
+  "helper_processes": 43,
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "real_unprivileged_kernel_peer_UID_PID_birth_checks": true,
+  "cross_UID_root_peer_tested": false,
+  "native_helper_executed": false,
+  "administrator_or_camera_operations": 0,
+  "body_completion_or_recovery_proven": false,
+  "build_receipt_sha256": "586b6144aad56a8dac52cb5160774059b943c73c702189118ab3eea381d1a13f",
+  "test_source_sha256": "9db7e119e3b70680db6e7add2b7bb470e713f6509f09fdd979a15af4e77fa0b2"
+}

@@ -1,0 +1,64 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 1ca0738: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 1ca073c: 910003fd     	mov	x29, sp
+ 1ca0740: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 1ca0744: aa0003f3     	mov	x19, x0
+ 1ca0748: f9400000     	ldr	x0, [x0]
+ 1ca074c: b4000160     	cbz	x0, 0x1ca0778 <Application_System_Init+0x1095734>
+ 1ca0750: f9400661     	ldr	x1, [x19, #0x8]
+ 1ca0754: b5000261     	cbnz	x1, 0x1ca07a0 <Application_System_Init+0x109575c>
+ 1ca0758: 9100c3b4     	add	x20, x29, #0x30
+ 1ca075c: f9400a61     	ldr	x1, [x19, #0x10]
+ 1ca0760: f9000a7f     	str	xzr, [x19, #0x10]
+ 1ca0764: f81f8e81     	str	x1, [x20, #-0x8]!
+ 1ca0768: aa1403e1     	mov	x1, x20
+ 1ca076c: 97fffec3     	bl	0x1ca0278 <Application_System_Init+0x1095234>
+ 1ca0770: aa1403e0     	mov	x0, x20
+ 1ca0774: 97ffffdc     	bl	0x1ca06e4 <Application_System_Init+0x10956a0>
+ 1ca0778: f9400a60     	ldr	x0, [x19, #0x10]
+ 1ca077c: b4000080     	cbz	x0, 0x1ca078c <Application_System_Init+0x1095748>
+ 1ca0780: f9400001     	ldr	x1, [x0]
+ 1ca0784: f9400021     	ldr	x1, [x1]
+ 1ca0788: d63f0020     	blr	x1
+ 1ca078c: 91002260     	add	x0, x19, #0x8
+ 1ca0790: 97ffff4b     	bl	0x1ca04bc <Application_System_Init+0x1095478>
+ 1ca0794: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 1ca0798: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 1ca079c: d65f03c0     	ret
+ 1ca07a0: 91002021     	add	x1, x1, #0x8
+ 1ca07a4: b9400021     	ldr	w1, [x1]
+ 1ca07a8: 7100043f     	cmp	w1, #0x1
+ 1ca07ac: 54fffe60     	b.eq	0x1ca0778 <Application_System_Init+0x1095734>
+ 1ca07b0: 17ffffea     	b	0x1ca0758 <Application_System_Init+0x1095714>
+ 1ca07b4: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+ 1ca07b8: 910003fd     	mov	x29, sp
+ 1ca07bc: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 1ca07c0: aa0003f4     	mov	x20, x0
+ 1ca07c4: aa0103e0     	mov	x0, x1
+ 1ca07c8: f9400821     	ldr	x1, [x1, #0x10]
+ 1ca07cc: f90013f5     	str	x21, [sp, #0x20]
+ 1ca07d0: b5000041     	cbnz	x1, 0x1ca07d8 <Application_System_Init+0x1095794>
+ 1ca07d4: 97b9dfb3     	bl	0xb186a0 <_ZSt25__throw_bad_function_callv@plt>
+ 1ca07d8: 9100e3b3     	add	x19, x29, #0x38
+ 1ca07dc: f9400c01     	ldr	x1, [x0, #0x18]
+ 1ca07e0: aa1303e8     	mov	x8, x19
+ 1ca07e4: aa0203f5     	mov	x21, x2
+ 1ca07e8: d63f0020     	blr	x1
+ 1ca07ec: 52800020     	mov	w0, #0x1                // =1
+ 1ca07f0: f9401fa1     	ldr	x1, [x29, #0x38]
+ 1ca07f4: 390002a0     	strb	w0, [x21]
+ 1ca07f8: f9400680     	ldr	x0, [x20, #0x8]
+ 1ca07fc: f9000681     	str	x1, [x20, #0x8]
+ 1ca0800: f9001fa0     	str	x0, [x29, #0x38]
+ 1ca0804: aa1303e0     	mov	x0, x19
+ 1ca0808: 97ffffb7     	bl	0x1ca06e4 <Application_System_Init+0x10956a0>
+ 1ca080c: f94013f5     	ldr	x21, [sp, #0x20]
+ 1ca0810: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 1ca0814: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+ 1ca0818: d65f03c0     	ret
+ 1ca081c: a9bf7bfd     	stp	x29, x30, [sp, #-0x10]!

@@ -1,0 +1,111 @@
+{
+  "scope": "selected look 22 in CPU fixtures; not current camera MAIN route, pixel computation, or hardware DMA",
+  "input_source_sha256": {
+    "fx6_av": "56684d830eab1e304868548746d8275188a925f9e4ab9354560180c31b4a93cf",
+    "fx3_initializer_json": "29c76396ae58e8caca2bd96e0eb0408854c163e60556b5d27b4da9d6bd76ab95",
+    "fx3_look_json": "6443be58aaa2a547aa7488a7551452ab4ce995bc108e8cb9244f7892b7b84a4f"
+  },
+  "look_selector": {
+    "fx3": {
+      "input": 22,
+      "name": "MLUT_LOOKNAME_SL3SG3_TO_ACESREC709",
+      "descriptors": 70
+    },
+    "fx6": {
+      "input": 22,
+      "name": "MLUT_LOOKNAME_SL3SG3_TO_ACESREC709",
+      "descriptors": 70
+    },
+    "evidence": "both original CPU lookup functions, FX3 prior receipt and FX6 cp-av-analysis/cpu-replay.json"
+  },
+  "matrix_source": {
+    "fx3": {
+      "descriptor_offset": "0xbe6d88",
+      "matrix_data_pointer_low32": "0x1c15aa8"
+    },
+    "fx6": {
+      "descriptor_offset": "0xb83218",
+      "matrix_data_pointer_low32": "0x1bb1dec"
+    },
+    "payload": "same 13 matrix words and SHA (from pinned descriptor comparison); pointer difference is image layout"
+  },
+  "initializer_copy": {
+    "fx3": {
+      "entry_offsets": [
+        "0x2baf00",
+        "0x2bc100",
+        "0x2bc330"
+      ],
+      "caller_offset": "0x2c0408",
+      "dest_offset": "0xb07ba0",
+      "bytes": 152
+    },
+    "fx6": {
+      "entry_offset": "0x29f508",
+      "caller_offset": "0x2a35e0",
+      "dest_offset": "0xaa5208",
+      "bytes": 152,
+      "instruction_count": 55395,
+      "original_memcpy_calls": 1166,
+      "guarded_target_equals_original_source": true
+    }
+  },
+  "dma_builder": {
+    "fx3": {
+      "entry_offset": "0x2c4794",
+      "row63": [
+        "0x1c15aa8",
+        "0xf3019200",
+        "0x1bb6140",
+        "0xe48900d"
+      ],
+      "register_base_low32": "0xf3019000",
+      "evidence": "PASS_ORIGINAL_70_ENTRY_DMA_LIST"
+    },
+    "fx6": {
+      "entry_offset": "0x2a7978",
+      "row63": [
+        "0x1bb1dec",
+        "0xf3019200",
+        "0x1c62400",
+        "0xe48900d"
+      ],
+      "register_base_low32": "0xf3019000",
+      "slot_reads": [
+        {
+          "pc_offset": "0x2a79d8",
+          "address_offset": "0xaa5210",
+          "size": 4
+        },
+        {
+          "pc_offset": "0x2a79ec",
+          "address_offset": "0xaa5208",
+          "size": 8
+        },
+        {
+          "pc_offset": "0x2a7b00",
+          "address_offset": "0xaa5218",
+          "size": 4
+        }
+      ],
+      "callback_stubs": {
+        "cache_flush": "record x0 address and x1 length; return to LR, no cache operation",
+        "virtual_to_physical": "declared PHYS + virtual - VIRT; return to LR, no OS mapping proof"
+      },
+      "all_70_rows_match_fields": true
+    },
+    "same_register_destination": true,
+    "same_transfer_control_word": true,
+    "source_pointer_difference": "relocated descriptor data in two image layouts",
+    "next_pointer_difference": "different isolated output buffer addresses, not a color algorithm change",
+    "hardware_submitted": false
+  },
+  "preprocessing_and_upstream_pixel_domain": {
+    "fx3": "prior CPU descriptor initialization and lookup only",
+    "fx6": "original CPU descriptor initialization and DMA-list construction only",
+    "sensor_calibration_black_level_demosaic_noise_reduction": "unlocated in this route",
+    "main_video_active_selection": "unobserved",
+    "conclusion": "shared VENICE MLUT bytes and selected-look CPU routing do not establish equal final video color or RAW/ISP processing"
+  },
+  "vintage_scope": "29 descriptor pairs differ in Vintage look data; no inference about all FX6 video color differences"
+}

@@ -1,0 +1,401 @@
+{
+  "status": "MODEL_PROPERTIES_PASS_WITH_EXPLICIT_REMAINING_COUNTEREXAMPLES",
+  "model_sha256": "7a7fa946b0c158d9573c5c15bc42d1708ee8ec6134f2ff586f71ba9dc6897bf3",
+  "object_identity": "A and B are different simulated kernel objects with the same numeric pid",
+  "eligible_foreign_B_is_explicit_input_not_measured_camera_context": true,
+  "ungated_blocking_schedules": 12,
+  "ungated_false_complete_count": 1,
+  "gated_ordinary_exit_schedules": 3,
+  "gated_ordinary_exit_false_complete_count": 0,
+  "ungated_witness": {
+    "order": [
+      "release_A",
+      "exit_A_68",
+      "external_reap_A",
+      "create_B_0",
+      "wait_enter",
+      "wait_return"
+    ],
+    "result": {
+      "object": "B",
+      "kind": "normal",
+      "code": 0
+    },
+    "false_complete": true,
+    "trace": [
+      {
+        "event": "release_A",
+        "pinned_object": null,
+        "A": "alive",
+        "B_zombie": false,
+        "result": null
+      },
+      {
+        "event": "exit_A_68",
+        "pinned_object": null,
+        "A": "zombie",
+        "B_zombie": false,
+        "result": null
+      },
+      {
+        "event": "external_reap_A",
+        "pinned_object": null,
+        "A": "gone",
+        "B_zombie": false,
+        "result": null
+      },
+      {
+        "event": "create_B_0",
+        "pinned_object": null,
+        "A": "gone",
+        "B_zombie": true,
+        "result": null
+      },
+      {
+        "event": "wait_enter",
+        "pinned_object": "B",
+        "A": "gone",
+        "B_zombie": true,
+        "result": null
+      },
+      {
+        "event": "wait_return",
+        "pinned_object": "B",
+        "A": "gone",
+        "B_zombie": false,
+        "result": {
+          "object": "B",
+          "kind": "normal",
+          "code": 0
+        }
+      }
+    ]
+  },
+  "gated_ordinary_traces": [
+    {
+      "order": [
+        "wait_enter",
+        "release_A",
+        "exit_A_68",
+        "external_reap_A",
+        "create_B_0",
+        "wait_return"
+      ],
+      "result": {
+        "object": null,
+        "kind": "ECHILD",
+        "code": null
+      },
+      "false_complete": false,
+      "trace": [
+        {
+          "event": "wait_enter",
+          "pinned_object": "A",
+          "A": "alive",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "release_A",
+          "pinned_object": "A",
+          "A": "alive",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "exit_A_68",
+          "pinned_object": "A",
+          "A": "zombie",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "external_reap_A",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "create_B_0",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": true,
+          "result": null
+        },
+        {
+          "event": "wait_return",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": true,
+          "result": {
+            "object": null,
+            "kind": "ECHILD",
+            "code": null
+          }
+        }
+      ]
+    },
+    {
+      "order": [
+        "wait_enter",
+        "release_A",
+        "exit_A_68",
+        "external_reap_A",
+        "wait_return",
+        "create_B_0"
+      ],
+      "result": {
+        "object": null,
+        "kind": "ECHILD",
+        "code": null
+      },
+      "false_complete": false,
+      "trace": [
+        {
+          "event": "wait_enter",
+          "pinned_object": "A",
+          "A": "alive",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "release_A",
+          "pinned_object": "A",
+          "A": "alive",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "exit_A_68",
+          "pinned_object": "A",
+          "A": "zombie",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "external_reap_A",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "wait_return",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": false,
+          "result": {
+            "object": null,
+            "kind": "ECHILD",
+            "code": null
+          }
+        },
+        {
+          "event": "create_B_0",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": true,
+          "result": {
+            "object": null,
+            "kind": "ECHILD",
+            "code": null
+          }
+        }
+      ]
+    },
+    {
+      "order": [
+        "wait_enter",
+        "release_A",
+        "exit_A_68",
+        "wait_return",
+        "external_reap_A",
+        "create_B_0"
+      ],
+      "result": {
+        "object": "A",
+        "kind": "normal",
+        "code": 68
+      },
+      "false_complete": false,
+      "trace": [
+        {
+          "event": "wait_enter",
+          "pinned_object": "A",
+          "A": "alive",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "release_A",
+          "pinned_object": "A",
+          "A": "alive",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "exit_A_68",
+          "pinned_object": "A",
+          "A": "zombie",
+          "B_zombie": false,
+          "result": null
+        },
+        {
+          "event": "wait_return",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": false,
+          "result": {
+            "object": "A",
+            "kind": "normal",
+            "code": 68
+          }
+        },
+        {
+          "event": "external_reap_A",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": false,
+          "result": {
+            "object": "A",
+            "kind": "normal",
+            "code": 68
+          }
+        },
+        {
+          "event": "create_B_0",
+          "pinned_object": "A",
+          "A": "gone",
+          "B_zombie": true,
+          "result": {
+            "object": "A",
+            "kind": "normal",
+            "code": 68
+          }
+        }
+      ]
+    }
+  ],
+  "other_identity_counterexamples": [
+    {
+      "name": "WNOHANG pre-poll drops the reference",
+      "events": [
+        "wait4_A_WNOHANG_pin_A",
+        "returns0_put_pid_A",
+        "release_A",
+        "A_exit68",
+        "external_reap_A",
+        "eligible_B_same_number_exit0",
+        "new_wait4_resolves_B",
+        "observed_B_normal0"
+      ],
+      "old_A_actual_exit": "normal68 or signal9 as stated",
+      "falsely_observed_normal0": true,
+      "explanation": "An earlier successful lookup is not retained by a later syscall."
+    },
+    {
+      "name": "userspace wait-entering flag is not kernel wait entry",
+      "events": [
+        "collector_stores_entering_flag",
+        "worker_sees_flag_and_runs",
+        "A_exit68",
+        "external_reap_A",
+        "eligible_B_same_number_exit0",
+        "collector_syscall_resolves_B",
+        "observed_B_normal0"
+      ],
+      "old_A_actual_exit": "normal68 or signal9 as stated",
+      "falsely_observed_normal0": true,
+      "explanation": "Storing a userspace flag before SVC does not prove find_get_pid has completed."
+    },
+    {
+      "name": "pre-release external kill defeats a mere release gate",
+      "events": [
+        "A_waits_for_release",
+        "external_SIGKILL_A",
+        "external_reap_A",
+        "eligible_B_same_number_exit0",
+        "collector_syscall_resolves_B",
+        "release_attempt_after_kernel_wait_entry",
+        "observed_B_normal0"
+      ],
+      "old_A_actual_exit": "normal68 or signal9 as stated",
+      "falsely_observed_normal0": true,
+      "explanation": "The ordinary exit gate cannot prevent SIGKILL/reaping before the initial kernel lookup."
+    },
+    {
+      "name": "interrupted blocking wait loses its old reference",
+      "events": [
+        "wait4_pins_A",
+        "signal_interrupt_returns_EINTR_put_pid_A",
+        "A_exit68",
+        "external_reap_A",
+        "eligible_B_same_number_exit0",
+        "userspace_retry_resolves_B",
+        "observed_B_normal0"
+      ],
+      "old_A_actual_exit": "normal68 or signal9 as stated",
+      "falsely_observed_normal0": true,
+      "explanation": "A new or restarted numeric wait requires a new identity argument; the first reference is gone."
+    }
+  ],
+  "robust_lifecycle_cases": [
+    {
+      "path": "SYS_exit0",
+      "own_shared_planned_exit": 0,
+      "private_DONE_already_sent": true,
+      "owner_died_at_mm_release": true,
+      "descriptors_may_still_be_open_at_marker": true,
+      "kernel_final_kind": "normal",
+      "kernel_final_code": 0,
+      "naive_DONE_and_planned0_and_owner_died_accepts": true,
+      "exact_normal0_exit_proven_by_marker": false
+    },
+    {
+      "path": "SIGKILL_after_planned0",
+      "own_shared_planned_exit": 0,
+      "private_DONE_already_sent": true,
+      "owner_died_at_mm_release": true,
+      "descriptors_may_still_be_open_at_marker": true,
+      "kernel_final_kind": "signal",
+      "kernel_final_code": 9,
+      "naive_DONE_and_planned0_and_owner_died_accepts": true,
+      "exact_normal0_exit_proven_by_marker": false
+    },
+    {
+      "path": "exec_new_image",
+      "own_shared_planned_exit": 0,
+      "private_DONE_already_sent": true,
+      "owner_died_at_mm_release": true,
+      "descriptors_may_still_be_open_at_marker": true,
+      "kernel_final_kind": "still_alive",
+      "kernel_final_code": null,
+      "naive_DONE_and_planned0_and_owner_died_accepts": true,
+      "exact_normal0_exit_proven_by_marker": false
+    }
+  ],
+  "clear_child_tid_cases": [
+    {
+      "mm_users": 1,
+      "clear_child_tid_configured": true,
+      "not_core_dump": true,
+      "kernel_zeroes_word": false
+    },
+    {
+      "mm_users": 2,
+      "clear_child_tid_configured": true,
+      "not_core_dump": true,
+      "kernel_zeroes_word": true
+    }
+  ],
+  "finite_model_claims_only": true,
+  "proof_for_arbitrary_kernel_interleavings": false,
+  "prelookup_SIGKILL_or_interruption_solution_implemented": false,
+  "own_candidate_or_original_Linux_executed": false,
+  "actual_processes_or_threads_created": false,
+  "new_device_operations": 0,
+  "stage235_candidate_changed_or_admission_failure_cleared": false,
+  "deployable": false,
+  "first_flash_released": false
+}

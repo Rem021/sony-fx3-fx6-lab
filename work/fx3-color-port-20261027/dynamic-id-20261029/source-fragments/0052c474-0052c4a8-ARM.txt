@@ -1,0 +1,13 @@
+0052c474 mrs        r1, apsr
+0052c478 movw       r2, #0xe80c
+0052c47c orr        r0, r1, #0x80
+0052c480 movt       r2, #0x148
+0052c484 msr        cpsr_fc, r0
+0052c488 mrc        p15, #0, r0, c0, c0, #5
+0052c48c and        r0, r0, #3
+0052c490 ldr        r0, [r2, r0, lsl #2]
+0052c494 ldr        r0, [r0, #0x40]
+0052c498 msr        cpsr_fc, r1
+0052c49c cmp        r0, #0
+0052c4a0 movwne     r0, #1
+0052c4a4 bx         lr

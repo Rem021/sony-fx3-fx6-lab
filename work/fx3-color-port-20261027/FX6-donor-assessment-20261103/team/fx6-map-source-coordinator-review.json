@@ -1,0 +1,17 @@
+{
+  "time": "2026-11-06T04:17:49.923459+00:00",
+  "status": "source_provenance_block_confirmed_report_correction_needed",
+  "manifest_count": 24,
+  "manifest_all_match": true,
+  "manifest_sha256": "2cd83f850cf780dde2d3ab211dee89dbb77cc16680feb5e3a89b1d1a00fea7ce",
+  "facts": [
+    "actual extracted init IM_ENDMAPS body greps only im.elf; appFw rows between markers are not proven owned by that writer",
+    "EARLY_MAPS producer cats full maps; raw concurrent output may interleave",
+    "66ed raw EARLY_MAPS_237_5 BEGIN exists at logical line8029 and matching END exists at8950; worker report no-END claim is false; parser abandons active block after nested marker",
+    "current parser overlap_with_previous is always false; cannot claim all overlapping blocks rejected",
+    "map_bias max endpoint check is not a proof of gap-free union coverage"
+  ],
+  "r6_observation_result": "failed, one start consumed, no further runtime authorized",
+  "source_reference": "https://www.kernel.org/doc/html/v5.7/filesystems/proc.html",
+  "next": "offline source-framed snapshot diagnostic prototype, no image installation or VM"
+}

@@ -1,0 +1,160 @@
+RANGE 0xce58c 0xce5a8
+000ce58c mov     w2, w19
+000ce590 ldr     x19, [sp, #0x10]
+000ce594 ldp     x29, x30, [sp], #0x20
+000ce598 mov     w1, #0x1c
+000ce59c mov     w0, #7
+000ce5a0 b       #0xcdbbc
+000ce5a4 stp     x29, x30, [sp, #-0x20]!
+RANGE 0xcdbbc 0xcde18
+000cdbbc stp     x29, x30, [sp, #-0x40]!
+000cdbc0 cmp     w1, #0
+000cdbc4 ccmp    w2, #0, #4, ne
+000cdbc8 mov     x29, sp
+000cdbcc ccmp    w0, #0, #4, ne
+000cdbd0 stp     x19, x20, [sp, #0x10]
+000cdbd4 mov     w19, #-0x400
+000cdbd8 stp     x21, x22, [sp, #0x20]
+000cdbdc b.eq    #0xcdc54
+000cdbe0 mov     w21, w1
+000cdbe4 mov     w22, w0
+000cdbe8 add     x1, x29, #0x38
+000cdbec mov     w0, #0x21
+000cdbf0 mov     w20, w2
+000cdbf4 mov     w3, #1
+000cdbf8 mov     w2, #0x10
+000cdbfc movk    w0, #0x8092, lsl #16
+000cdc00 bl      #0x563d0 ; osal_valloc_msg_wait
+000cdc04 mov     w19, w0
+000cdc08 cbnz    w0, #0xcdc54
+000cdc0c ldr     x0, [x29, #0x38]
+000cdc10 mov     w1, #0x28
+000cdc14 movk    w1, #0x807a, lsl #16
+000cdc18 bl      #0x55750 ; osal_set_msg_src
+000cdc1c ldr     x1, [x29, #0x38]
+000cdc20 mov     w0, #0x141
+000cdc24 movk    w0, #0x92, lsl #16
+000cdc28 stp     w0, w22, [x1]
+000cdc2c mov     w0, #0x21
+000cdc30 stp     w21, w20, [x1, #8]
+000cdc34 movk    w0, #0x8092, lsl #16
+000cdc38 bl      #0x55fd0 ; osal_snd_msg
+000cdc3c mov     w19, w0
+000cdc40 cbz     w0, #0xcdc54
+000cdc44 ldr     x1, [x29, #0x38]
+000cdc48 mov     w0, #0x21
+000cdc4c movk    w0, #0x8092, lsl #16
+000cdc50 bl      #0x57bc0 ; osal_free_msg
+000cdc54 mov     w0, w19
+000cdc58 ldp     x19, x20, [sp, #0x10]
+000cdc5c ldp     x21, x22, [sp, #0x20]
+000cdc60 ldp     x29, x30, [sp], #0x40
+000cdc64 ret     
+000cdc68 sub     sp, sp, #0x60
+000cdc6c mov     w0, #1
+000cdc70 stp     x29, x30, [sp, #0x10]
+000cdc74 add     x29, sp, #0x10
+000cdc78 add     x2, x29, #0x2c
+000cdc7c str     w1, [x29, #0x2c]
+000cdc80 mov     w1, #2
+000cdc84 stp     w0, wzr, [x29, #0x34]
+000cdc88 movk    w1, #0x7a, lsl #16
+000cdc8c mov     w0, #0x7a
+000cdc90 str     wzr, [x29, #0x3c]
+000cdc94 str     x19, [sp, #0x20]
+000cdc98 bl      #0x57970 ; Backup_write
+000cdc9c cmp     w0, #4
+000cdca0 mov     w5, #-1
+000cdca4 b.ne    #0xcdd08
+000cdca8 add     x2, x29, #0x34
+000cdcac mov     w1, #3
+000cdcb0 movk    w1, #0x7a, lsl #16
+000cdcb4 mov     w0, #0x7a
+000cdcb8 bl      #0x57970 ; Backup_write
+000cdcbc cmp     w0, #4
+000cdcc0 mov     w5, #-2
+000cdcc4 b.ne    #0xcdd08
+000cdcc8 add     x2, x29, #0x38
+000cdccc mov     w1, #4
+000cdcd0 movk    w1, #0x7a, lsl #16
+000cdcd4 mov     w0, #0x7a
+000cdcd8 bl      #0x57970 ; Backup_write
+000cdcdc cmp     w0, #4
+000cdce0 mov     w5, #-3
+000cdce4 b.ne    #0xcdd08
+000cdce8 add     x2, x29, #0x3c
+000cdcec mov     w1, #5
+000cdcf0 movk    w1, #0x7a, lsl #16
+000cdcf4 mov     w0, #0x7a
+000cdcf8 bl      #0x57970 ; Backup_write
+000cdcfc cmp     w0, #4
+000cdd00 mov     w5, #-4
+000cdd04 csel    w5, wzr, w5, eq
+000cdd08 ldr     w0, [x29, #0x3c]
+000cdd0c adrp    x19, #0x1d4000
+000cdd10 ldr     w6, [x29, #0x2c]
+000cdd14 add     x19, x19, #0xf28
+000cdd18 ldr     w7, [x29, #0x34]
+000cdd1c adrp    x3, #0x1d4000
+000cdd20 str     w0, [sp, #8]
+000cdd24 mov     x4, x19
+000cdd28 ldr     w0, [x29, #0x38]
+000cdd2c add     x3, x3, #0x871
+000cdd30 mov     w2, #2
+000cdd34 mov     w1, #0
+000cdd38 str     w0, [sp]
+000cdd3c mov     w0, #0x7a
+000cdd40 bl      #0xb93ac
+000cdd44 mov     w0, #-1
+000cdd48 add     x1, x29, #0x40
+000cdd4c stp     w0, w0, [x29, #0x40]
+000cdd50 stp     w0, w0, [x29, #0x48]
+000cdd54 mov     w0, #2
+000cdd58 movk    w0, #0x7a, lsl #16
+000cdd5c bl      #0x56c70 ; Backup_read
+000cdd60 add     x1, x29, #0x44
+000cdd64 mov     w0, #3
+000cdd68 movk    w0, #0x7a, lsl #16
+000cdd6c bl      #0x56c70 ; Backup_read
+000cdd70 add     x1, x29, #0x48
+000cdd74 mov     w0, #4
+000cdd78 movk    w0, #0x7a, lsl #16
+000cdd7c bl      #0x56c70 ; Backup_read
+000cdd80 add     x1, x29, #0x4c
+000cdd84 mov     w0, #5
+000cdd88 movk    w0, #0x7a, lsl #16
+000cdd8c bl      #0x56c70 ; Backup_read
+000cdd90 str     w0, [sp, #8]
+000cdd94 ldp     w5, w6, [x29, #0x40]
+000cdd98 adrp    x3, #0x1d4000
+000cdd9c ldr     w0, [x29, #0x4c]
+000cdda0 mov     x4, x19
+000cdda4 ldr     w7, [x29, #0x48]
+000cdda8 add     x3, x3, #0x8b7
+000cddac str     w0, [sp]
+000cddb0 mov     w2, #3
+000cddb4 mov     w1, #0
+000cddb8 mov     w0, #0x7a
+000cddbc bl      #0xb93ac
+000cddc0 mov     sp, x29
+000cddc4 ldr     x19, [sp, #0x10]
+000cddc8 ldp     x29, x30, [sp], #0x50
+000cddcc ret     
+000cddd0 sub     sp, sp, #0x60
+000cddd4 stp     x29, x30, [sp, #0x10]
+000cddd8 add     x29, sp, #0x10
+000cdddc ldr     w0, [x0, #0x260]
+000cdde0 stp     w2, w1, [x29, #0x28]
+000cdde4 mov     w1, #2
+000cdde8 add     x2, x29, #0x2c
+000cddec str     w0, [x29, #0x3c]
+000cddf0 str     w1, [x29, #0x38]
+000cddf4 mov     w0, #0x7a
+000cddf8 movk    w1, #0x7a, lsl #16
+000cddfc str     x19, [sp, #0x20]
+000cde00 mov     w19, w3
+000cde04 bl      #0x57970 ; Backup_write
+000cde08 cmp     w0, #4
+000cde0c mov     w5, #-1
+000cde10 b.ne    #0xcde80
+000cde14 ldr     w0, [x29, #0x38]

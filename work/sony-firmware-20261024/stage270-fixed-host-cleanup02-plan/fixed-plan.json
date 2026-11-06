@@ -1,0 +1,40 @@
+{
+  "grant_id": "fx3-host-cleanup-20261101-02",
+  "maximum_root_program_invocations": 1,
+  "authorized": false,
+  "physical_precondition": "all camera-side USB data cables physically unplugged and remain unplugged; healthy battery UI/menu confirmed",
+  "helper_identity": {
+    "uid": 0,
+    "pid": 34474,
+    "sec": 1793523718,
+    "usec": 860262,
+    "path": "/private/var/root/fx3-owner-trials/fx3-702-recovered-communication-20261101-02/helper",
+    "image_sha256": ""
+  },
+  "helper_image_sha256": "dff1d0706af1a110c03fb231f7a551c153c410e4b4d319db175903df11942b91",
+  "helper_signal": "SIGKILL(9) once with exact kernel audit PID/version",
+  "observer_identity": {
+    "uid": 501,
+    "pid": 34391,
+    "sec": 1793523705,
+    "usec": 650572,
+    "path": "/Library/Frameworks/Python.framework/Versions/3.14/Resources/Python.app/Contents/MacOS/Python",
+    "image_sha256": "104402c76823baa218defcdb2a96c2e3d94302dd12cabf0db3c1f39cd620cb64"
+  },
+  "observer_image_sha256": "104402c76823baa218defcdb2a96c2e3d94302dd12cabf0db3c1f39cd620cb64",
+  "observer_signal": "SIGTERM(15) once only after helper confirmed gone",
+  "no_PID_only_signal_fallback": true,
+  "root_program_sha256": "a926996757e6d90474830d9bf7ae2977917221da72645baedec1caa9453db9ff",
+  "job": "/private/tmp/fx3-host-cleanup-20261101-02",
+  "root_private_directory": "/private/var/root/fx3-host-cleanup-20261101-02",
+  "root_guard_read_only": "/private/var/root/fx3-owner-trials/global-fx3-owner.journal",
+  "global_guard_not_modified": true,
+  "original_trial_stays_UNKNOWN": true,
+  "USB_or_camera_commands": 0,
+  "firmware_write": false,
+  "privacy_permission_changes": false,
+  "automatic_retry": false,
+  "Terminal_opened": false,
+  "admin_verification_requested": false,
+  "new_trial_authorized": false
+}

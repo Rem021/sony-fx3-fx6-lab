@@ -1,0 +1,12 @@
+Original appFw.so vtable read-only evidence
+source=/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/appFw.so
+source_sha256=545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f
+data.rel.ro VA/file delta=0x10000
+rodata VA/file delta=0x0
+vtable header 0x41cc480 offset_to_top=0x0 RTTI=0x41cc438
+RTTI name pointer at 0x41cc440=0x2f9a2c0 string=b'3App\x00'
+vtable slot 0x41cc490 -> 0x16f1490
+vtable slot 0x41cc498 -> 0x16eff74
+vtable slot 0x41cc4a0 -> 0x16f0168
+vtable slot 0x41cc4a8 -> 0x16f11e8
+vtable slot 0x41cc4b0 -> 0x16f152c

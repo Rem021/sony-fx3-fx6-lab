@@ -1,0 +1,186 @@
+00003298 stp        x29, x30, [sp, #-0x50]!
+0000329c mov        x29, sp
+000032a0 stp        x19, x20, [sp, #0x10]
+000032a4 stp        x21, x22, [sp, #0x20]
+000032a8 stp        x23, x24, [sp, #0x30]
+000032ac cbnz       x1, #0x32dc
+000032b0 mov        w2, #0x1f5
+000032b4 mov        w1, #1
+000032b8 mov        w0, #2
+000032bc mov        w21, #-1
+000032c0 bl         #0x239c
+000032c4 mov        w0, w21
+000032c8 ldp        x19, x20, [sp, #0x10]
+000032cc ldp        x21, x22, [sp, #0x20]
+000032d0 ldp        x23, x24, [sp, #0x30]
+000032d4 ldp        x29, x30, [sp], #0x50
+000032d8 ret        
+000032dc ldr        w21, [x1, #0x18]
+000032e0 mov        x19, x1
+000032e4 tst        w21, #0xffffff7f
+000032e8 b.eq       #0x3318
+000032ec mov        w2, #0x200
+000032f0 mov        w1, #1
+000032f4 mov        w0, #2
+000032f8 bl         #0x239c
+000032fc mov        w2, w21
+00003300 ldrh       w1, [x19, #0xa]
+00003304 mov        w0, #3
+00003308 bl         #0x239c
+0000330c mov        w21, #-1
+00003310 mov        w0, #-1
+00003314 b          #0x3568
+00003318 ldr        x20, [x1, #0x10]
+0000331c cbnz       x20, #0x3338
+00003320 mov        w2, #0x20a
+00003324 mov        w1, #1
+00003328 mov        w0, #2
+0000332c bl         #0x239c
+00003330 mov        w2, #0
+00003334 b          #0x3300
+00003338 mov        x22, x0
+0000333c ldr        x0, [x20, #0xa8]
+00003340 add        x0, x0, #8
+00003344 bl         #0x1e40 ; pthread_mutex_lock
+00003348 cbnz       w21, #0x33bc
+0000334c ldr        w0, [x20, #0xa0]
+00003350 mov        w2, #0x21d
+00003354 cbnz       w0, #0x33d4
+00003358 ldr        w0, [x19, #8]
+0000335c add        x1, x29, #0x48
+00003360 ldr        w23, [x20, #0xa4]
+00003364 mov        w3, #1
+00003368 str        w0, [x20, #0x40]
+0000336c mov        w2, #0x60
+00003370 ldr        x0, [x19, #0x10]
+00003374 str        x0, [x20, #0x48]
+00003378 ldr        x0, [x19, #0x58]
+0000337c str        x0, [x20, #0x50]
+00003380 mov        w0, w23
+00003384 bl         #0x1f20 ; osal_valloc_msg_wait
+00003388 mov        w21, w0
+0000338c cbz        w0, #0x3418
+00003390 mov        w2, #0x250
+00003394 mov        w1, #1
+00003398 mov        w0, #2
+0000339c bl         #0x239c
+000033a0 ldrh       w1, [x19, #0xa]
+000033a4 mov        w2, w21
+000033a8 mov        w0, #3
+000033ac bl         #0x239c
+000033b0 mov        w2, #0
+000033b4 lsr        w1, w23, #0x10
+000033b8 b          #0x33e8
+000033bc cmp        w21, #0x80
+000033c0 b.ne       #0x3400
+000033c4 ldr        w0, [x20, #0xa0]
+000033c8 cmp        w0, #2
+000033cc b.eq       #0x3358
+000033d0 mov        w2, #0x22b
+000033d4 mov        w1, #1
+000033d8 mov        w0, #2
+000033dc bl         #0x239c
+000033e0 ldr        w2, [x20, #0xa0]
+000033e4 ldrh       w1, [x19, #0xa]
+000033e8 mov        w0, #3
+000033ec bl         #0x239c
+000033f0 ldr        x0, [x20, #0xa8]
+000033f4 add        x0, x0, #8
+000033f8 bl         #0x1ed0 ; pthread_mutex_unlock
+000033fc b          #0x330c
+00003400 mov        w2, #0x237
+00003404 mov        w1, #1
+00003408 mov        w0, #2
+0000340c bl         #0x239c
+00003410 mov        w2, w21
+00003414 b          #0x33e4
+00003418 ldr        x24, [x29, #0x48]
+0000341c mov        x1, x19
+00003420 mov        x2, #0x60
+00003424 mov        x0, x24
+00003428 bl         #0x1db0 ; memcpy
+0000342c mov        w0, #0x1001
+00003430 str        w0, [x24]
+00003434 ldr        w0, [x22, #8]
+00003438 str        w0, [x24, #8]
+0000343c ldr        x0, [x22, #0x18]
+00003440 add        x0, x0, #8
+00003444 bl         #0x1e40 ; pthread_mutex_lock
+00003448 mov        w2, w23
+0000344c add        x1, x20, #0x80
+00003450 mov        x0, x22
+00003454 bl         #0x1f30 ; ExtCmdSvc::GetPrtclHndlList
+00003458 cbnz       x0, #0x349c
+0000345c mov        w2, #0x26b
+00003460 mov        w1, #1
+00003464 mov        w0, #2
+00003468 bl         #0x239c
+0000346c ldrh       w1, [x19, #0xa]
+00003470 mov        w2, #0
+00003474 mov        w0, #3
+00003478 bl         #0x239c
+0000347c ldr        x0, [x22, #0x18]
+00003480 add        x0, x0, #8
+00003484 bl         #0x1ed0 ; pthread_mutex_unlock
+00003488 ldr        x0, [x20, #0xa8]
+0000348c add        x0, x0, #8
+00003490 bl         #0x1ed0 ; pthread_mutex_unlock
+00003494 mov        w21, #-5
+00003498 b          #0x3310
+0000349c ldr        x0, [x0, #8]
+000034a0 str        x0, [x24, #0x10]
+000034a4 ldr        x0, [x22, #0x18]
+000034a8 add        x0, x0, #8
+000034ac bl         #0x1ed0 ; pthread_mutex_unlock
+000034b0 ldr        x2, [x29, #0x48]
+000034b4 mov        w3, w23
+000034b8 mov        x1, x22
+000034bc mov        x0, x22
+000034c0 bl         #0x1f90 ; ExtCmdSvc::SndMsgToLowerSync
+000034c4 mov        w21, w0
+000034c8 cbz        w0, #0x354c
+000034cc mov        w2, #0x287
+000034d0 mov        w1, #1
+000034d4 mov        w0, #2
+000034d8 bl         #0x239c
+000034dc ldrh       w1, [x19, #0xa]
+000034e0 mov        w2, w21
+000034e4 mov        w0, #3
+000034e8 bl         #0x239c
+000034ec mov        w2, #0
+000034f0 lsr        w1, w23, #0x10
+000034f4 mov        w0, #3
+000034f8 bl         #0x239c
+000034fc ldr        x0, [x20, #0xa8]
+00003500 add        x0, x0, #8
+00003504 bl         #0x1ed0 ; pthread_mutex_unlock
+00003508 ldr        x1, [x29, #0x48]
+0000350c mov        w0, w23
+00003510 bl         #0x2150 ; osal_free_msg
+00003514 cbz        w0, #0x3560
+00003518 mov        w2, #0x29a
+0000351c mov        w1, #1
+00003520 mov        w0, #2
+00003524 bl         #0x239c
+00003528 ldrh       w1, [x19, #0xa]
+0000352c mov        w2, w21
+00003530 mov        w0, #3
+00003534 bl         #0x239c
+00003538 mov        w2, #0
+0000353c lsr        w1, w23, #0x10
+00003540 mov        w0, #3
+00003544 bl         #0x239c
+00003548 b          #0x3494
+0000354c mov        x1, x20
+00003550 mov        x0, x22
+00003554 mov        w2, #1
+00003558 bl         #0x1f80 ; ExtCmdSvc::ChangeState
+0000355c b          #0x34fc
+00003560 cbnz       w21, #0x3570
+00003564 ldr        w0, [x24, #4]
+00003568 str        w0, [x19, #4]
+0000356c b          #0x32c4
+00003570 cmn        w21, #2
+00003574 b.ne       #0x3310
+00003578 str        w21, [x19, #4]
+0000357c b          #0x32c4

@@ -1,0 +1,758 @@
+{
+  "schema": "fx3-persistent-research-progress-v1",
+  "updated_utc": "2026-10-25T22:41:26.492040+00:00",
+  "objective": "持续实现经典Sony ILME-FX3 7.02可用的1920x1080、29.97fps（精确30.000fps单列）、HEVC420 10bit约16Mbps主录，并完成对应恢复、冷启动、实际成片、音画同步与长录验收。",
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "research_activity": "engineering_progress_within_offline_authorization",
+  "latest_stage": "stage32-resource-open-descriptor",
+  "native_goal_state_not_modified": true,
+  "progress_audit": {
+    "classification": "progress",
+    "previous_goal_turn_classification": "progress",
+    "basis": [
+      "独立原片段生成目标HD描述符；原名称HEVC_MP4/29_97/PROGRESSIVE/CHROMA_420/BIT_DEPTH_10，非完整输入或硬件接受。",
+      "代理对照仅流类型不同，名称XAVC_PROXY_HEVC；同为显式index0fixture，不代表实际代理通道运行。",
+      "quality22转4/FH，描述符不含字面16000码率；对应HEVC质量/码率解释及接受待追，16M目标不变。",
+      "发送前缀形成CID2103/MID0100/len90至构造之前；清零及诊断原生边界保留，无输出适配器。",
+      "收紧codecFF解释：外层15/18转换分支不使用内层codec，不能把同路现象当必需校验失效。"
+    ],
+    "completion_not_claimed": true
+  },
+  "authorization": {
+    "scope": "Windows_cached_PnP_inventory_only",
+    "active_query": false,
+    "service_auth_mode_or_stop": false,
+    "driver_change": false,
+    "camera_file_access": false,
+    "module_upload_or_native_execution": false,
+    "WBI_or_boot_write": false,
+    "settings_or_firmware_write": false
+  },
+  "requirements": [
+    {
+      "id": "G01",
+      "requirement": "经典ILME-FX3实机7.02身份与同机程序指纹",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage7-entry/menu-version-confirmation.json",
+        "work/sony-firmware-20261024/stage6-safety/windows-msc-inventory/sony-pnp-inventory.json"
+      ],
+      "remaining": "菜单7.02与MSC054C:0DA1已确认；尚无实机程序哈希和唯一机身绑定。"
+    },
+    {
+      "id": "G02",
+      "requirement": "主录规格1920x1080、HEVC420 10bit约16Mbps、29.97fps；精确30.000fps单列",
+      "status": "offline_functional_profile_parameter_chain_only",
+      "evidence": [
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/hd420-16m-chain.json",
+        "work/sony-firmware-20261024/stage11-model/builder/typed-selection-results.json",
+        "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+        "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/profile-results.json",
+        "work/sony-firmware-20261024/stage13-query-profile/run-20261025/query-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json",
+        "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/system-snapshot-results.json",
+        "work/sony-firmware-20261024/stage16-system-snapshot/wrapper-lock-scope.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/run-corrected-20261025/captured-results.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/owner-run-20261025/model-owner-results.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/drain-corrected-20261025/drain-results.json",
+        "work/sony-firmware-20261024/stage18-cached-remain/run-complete-20261025/cached-remain-results.json",
+        "work/sony-firmware-20261024/stage18-cached-remain/boundary-verified-20261025/cache-boundary-results.json",
+        "work/sony-firmware-20261024/stage23-encoder-boundary/run-corrected-20261025/encoder-boundary-results.json",
+        "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-enum-bound-20261025/resource-descriptor-results.json"
+      ],
+      "remaining": "目标原换算为30000/1001，局部包codec15、1920x1080、42010/APIquality22及raw16000不变。0x81原ntsc_flag名称已更正为逐行标志，0x80为codec FramePerSec枚举。尚无硬件Open/Start、真实码流或精确30.000fps证据。 原资源描述符片段quality22转4/FH，无字面16000码率；HEVC_MP4实际质量/码率解释及接受尚缺。"
+    },
+    {
+      "id": "G03",
+      "requirement": "原厂固件来源、解包与离线程序完整性",
+      "status": "proven_within_official_sample_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/source-receipt.json",
+        "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/entry-provenance-check.json",
+        "work/sony-firmware-20261024/stage25-mc-image-map/run-reviewed-20261025/mc-image-map-results.json"
+      ],
+      "remaining": "官方提取件的哈希不能代替用户机身实际原件或校准数据。"
+    },
+    {
+      "id": "G04",
+      "requirement": "服务接收、权限、文件处理与正常回复静态路径",
+      "status": "proven_within_static_normal_path_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/reply/final-reply-proof.json"
+      ],
+      "remaining": "当前pFunc、adjCodeLevel、队列初始化和真实USB可达性未观察；错误/加密路径未全面覆盖。"
+    },
+    {
+      "id": "G05",
+      "requirement": "真实认证、退出与USB完整传输",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "无实机主动访问；service PID/端点、短包/ZLP/timeout完成语义、认证权限与退出均待对应授权及验收。"
+    },
+    {
+      "id": "G06",
+      "requirement": "完整目标长度的候选回复重组",
+      "status": "proven_within_synthetic_bytes_scope",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/host/offline-fixtures.json",
+        "work/sony-firmware-20261024/stage10-mainpath/host/source-receipt.json"
+      ],
+      "remaining": "31合成测试含79,015,712B/76段；无backend、真实文件、传输或备份。"
+    },
+    {
+      "id": "G07",
+      "requirement": "同机健康备份、来源绑定与完整内容真实性",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "未读取机身原件或完整backup；官方DAT和合成长度不能替代同机健康检查点。"
+    },
+    {
+      "id": "G08",
+      "requirement": "FX3专用最小模块加载、ABI及权限",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage8-adaptation/device/device-abi-audit.json",
+        "work/sony-firmware-20261024/stage9-protocol/jiritsu/command-handler-table.json"
+      ],
+      "remaining": "加载模型有静态依据；实际获准加载、syscall/权限/结构布局及正常退出未验收。"
+    },
+    {
+      "id": "G09",
+      "requirement": "当前WBI后端、失效流程与冷启动加载一致性",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage9-protocol/wbi/sysfs-attribute-audit.json",
+        "work/sony-firmware-20261024/stage9-protocol/wbi/sysfs-handler-disassembly.txt"
+      ],
+      "remaining": "原厂快照有接口和顺序语义；当前image_dev/模式及backend到介质、实际冷启动未证。 独立开关重设的guest实验不证明物理重启清除RAM，WBI恢复语义仍需验证。"
+    },
+    {
+      "id": "G10",
+      "requirement": "设置模型、菜单、查询与目标主录参数一致",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage10-mainpath/main/main-path-summary.json",
+        "work/sony-firmware-20261024/stage10-mainpath/main/setter-conversion-results.json",
+        "work/sony-firmware-20261024/stage11-model/builder/typed-key-evidence.json",
+        "work/sony-firmware-20261024/stage11-model/builder/typed-selection-results.json",
+        "work/sony-firmware-20261024/stage11-model/capabilities/capability-string-index.json",
+        "work/sony-firmware-20261024/stage11-model/capabilities/candidate-constraints.json",
+        "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+        "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json",
+        "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json",
+        "work/sony-firmware-20261024/stage13-query-profile/run-20261025/query-results.json",
+        "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/model-lifecycle-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json",
+        "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/system-snapshot-results.json",
+        "work/sony-firmware-20261024/stage16-system-snapshot/wrapper-lock-scope.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/run-corrected-20261025/captured-results.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/owner-run-20261025/model-owner-results.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/drain-corrected-20261025/drain-results.json",
+        "work/sony-firmware-20261024/stage18-cached-remain/run-complete-20261025/cached-remain-results.json",
+        "work/sony-firmware-20261024/stage18-cached-remain/boundary-verified-20261025/cache-boundary-results.json",
+        "work/sony-firmware-20261024/stage19-queue-boundary/run-20261025/queue-boundary-results.json",
+        "work/sony-firmware-20261024/stage20-worker-lifecycle/run-20261025/worker-lifecycle-results.json",
+        "work/sony-firmware-20261024/stage21-admission-boundary/run-corrected-20261025/admission-boundary-results.json",
+        "work/sony-firmware-20261024/stage22-lifetime-registry/run-corrected-20261025/lifetime-registry-results.json",
+        "work/sony-firmware-20261024/stage23-encoder-boundary/run-corrected-20261025/encoder-boundary-results.json",
+        "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/encoder-state-machine-results.json",
+        "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/frontend-open-results.json",
+        "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/pending-consumption-results.json",
+        "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/timing-parameter-results.json"
+      ],
+      "remaining": "局部主录/query/cache身份及原worker槽已对照，旧请求token不等于配置代次。队列外已捕获对象不由pool谓词覆盖，须追生产者/入队/替换生命周期、真实统一代次、激活写入者、缓存失效及录制空闲门禁。NTSC/PAL名称绑定、菜单与保存仍缺；GetMovieRemain未执行、真实时长未计算。 新增SET_REC_FORMAT的生产者、消息顺序和与MAIN原包的合并/代次一致性待验证，不能只改一份编码参数。 timing配置前缀和Open共享+0x38整包/+0x2c格式存储，真实写入顺序/状态/代次必须闭合，人工前缀顺序不是运行时错误证明。"
+    },
+    {
+      "id": "G11",
+      "requirement": "硬件编码器实际接受Open与Start",
+      "status": "missing",
+      "evidence": [
+        "work/sony-firmware-20261024/stage23-encoder-boundary/run-corrected-20261025/encoder-boundary-results.json",
+        "work/sony-firmware-20261024/stage24-receiver-dispatch/run-20261025/receiver-dispatch-results.json",
+        "work/sony-firmware-20261024/stage25-mc-image-map/run-reviewed-20261025/mc-image-map-results.json",
+        "work/sony-firmware-20261024/stage26-mc-open-routing/run-20261025/mc-open-routing-results.json",
+        "work/sony-firmware-20261024/stage26-mc-open-routing/dfs-run-20261025/dfs-selector-results.json",
+        "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/encoder-state-machine-results.json",
+        "work/sony-firmware-20261024/stage28-main-frontend-binding/run-20261025/main-frontend-binding-results.json",
+        "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/frontend-open-results.json",
+        "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/pending-consumption-results.json",
+        "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/timing-parameter-results.json",
+        "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-enum-bound-20261025/resource-descriptor-results.json"
+      ],
+      "remaining": "独立原片段得到目标HEVC_MP4/HD/29_97/42010描述符及发送前缀；清零和诊断依赖未执行，完整构建器、父输出接口/input_if、传输/资源接收及HEVC_MP4+FH组合解释尚缺。codecFF在外层15/18转换分支被忽略，不是缺必需校验的证据。实际缓冲/VCD、完整校验/回复、真实状态/时钟/配置顺序、硬件Open/Start仍缺。"
+    },
+    {
+      "id": "G12",
+      "requirement": "实际主录文件规格、HEVC参数集、GOP、码率与图像内容",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "需主录而非仅代理的真实文件，检查尺寸、色度、位深、VPS/SPS/PPS、GOP、码率及画面完整性。"
+    },
+    {
+      "id": "G13",
+      "requirement": "实际音频、时间戳、音画同步与连续录制",
+      "status": "missing",
+      "evidence": [],
+      "remaining": "需实际媒体的音轨、PTS/DTS、时间基与同步证据。"
+    },
+    {
+      "id": "G14",
+      "requirement": "冷启动与长录、温度及既有模式回归",
+      "status": "missing",
+      "evidence": [
+        "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/model-lifecycle-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json"
+      ],
+      "remaining": "合法模型+私有开关在5个此前错误的合成上下文返回stock，但固定开关时不同模式快照仍可不一致；6组S&Q依赖未闭合。仍缺实际转换顺序、冷启动、长录温度和模式回归。"
+    },
+    {
+      "id": "G15",
+      "requirement": "受限恢复器、原字节回读和对应故障范围",
+      "status": "missing",
+      "evidence": [
+        "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+        "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json",
+        "work/sony-firmware-20261024/stage14-model-lifecycle/run-20261025/model-lifecycle-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json",
+        "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/system-snapshot-results.json",
+        "work/sony-firmware-20261024/stage16-system-snapshot/wrapper-lock-scope.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/run-corrected-20261025/captured-results.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/owner-run-20261025/model-owner-results.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/drain-corrected-20261025/drain-results.json",
+        "work/sony-firmware-20261024/stage18-cached-remain/run-complete-20261025/cached-remain-results.json",
+        "work/sony-firmware-20261024/stage18-cached-remain/boundary-verified-20261025/cache-boundary-results.json",
+        "work/sony-firmware-20261024/stage19-queue-boundary/run-20261025/queue-boundary-results.json",
+        "work/sony-firmware-20261024/stage20-worker-lifecycle/run-20261025/worker-lifecycle-results.json",
+        "work/sony-firmware-20261024/stage21-admission-boundary/run-corrected-20261025/admission-boundary-results.json",
+        "work/sony-firmware-20261024/stage22-lifetime-registry/run-corrected-20261025/lifetime-registry-results.json",
+        "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/encoder-state-machine-results.json",
+        "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/frontend-open-results.json",
+        "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/pending-consumption-results.json",
+        "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/timing-parameter-results.json"
+      ],
+      "remaining": "已有串行化登记参考模型及原析构边界证据，尚无原生同步/ticket存储/登记和完成hook/全消费者覆盖。数据、原队列/current和代码执行者须分别退出；虚表会在基础析构早期改变，不能在free处临时识别原类型或读取已释放对象。线程安全点、指令发布/回读、同机健康原件、受限恢复器、WBI/冷启动及独立救援入口仍缺。 下游MC pending原复制保留了源参数指针；其出队、后续重绑/保活和完成通知尚未知，不能以应用队列清空证明全部引用已退出。 前端内部busy可清除但独立待处理槽仍保留Open事件及原包指针，其消费与完成需纳入同一退出证明。 新原客体链已确认前端count0时同状态机仍busy且下游pending/count1；state8还可出现源88与早先副本的不同版本，须覆盖后续实际消费者，不能用前端槽单独放行恢复。 timing+0x38整包/+0x2c格式有至少两个写入前缀，恢复安全点还需覆盖这些写者、请求代次与消费者，不能只回读其中一次正确包。"
+    },
+    {
+      "id": "G16",
+      "requirement": "故障时独立入口与维护边界",
+      "status": "partial",
+      "evidence": [
+        "work/sony-firmware-20261024/stage7-entry/firmware/focused-evidence.json"
+      ],
+      "remaining": "未证明主应用失效后冷启动服务可达；不以诱发主力机变砖取证，不借用A7CII救砖保证。"
+    }
+  ],
+  "next_safe_offline_actions": [
+    "继续统一应用层原生登记/消费者与下游MC pending/functor队列的参数所有权，追出队、后续复制/重绑、完成通知、真实线程安全点及代码回收；本轮复制保留源指针不等于已证明完整消费路径有缺陷。",
+    "优先追CID0x2103/MID0x0100资源接收与HEVC_MP4/FH/HD/29_97组合解释/验证和真实码率；解析清零API及父组件输出接口，闭合完整input_if/描述符/传输/回复。继续SET_REC_FORMAT后续0x195724和真实配置/请求顺序、当前代次。",
+    "将实际激活写入者、主录、实时query/cache纳入配置代次与录制空闲策略；请求token不是配置版本，等待后需重新核对。",
+    "继续菜单/NTSC-PAL/持久化与WBI、同机健康检查点和受限恢复器；实机录制/音画/长录/冷启动目标不变。",
+    "仅用户告知UU恢复后交接缓存PnP包；主动相机访问、认证、模块、媒体读取、WBI或写入仍未授权。"
+  ],
+  "completion_rule": "所有用户目标要求必须有对应范围的可复核实际证据；静态分析、合成测试、报告或计划不能替代硬件主录与恢复验收。",
+  "latest_stage_evidence": {
+    "notes": [
+      "research_notes/索尼 FX3 定点原型与查询准备/profile_prototype.md",
+      "research_notes/索尼 FX3 定点原型与查询准备/selector_consumers.md",
+      "research_notes/索尼 FX3 定点原型与查询准备/minimal_probe.md"
+    ],
+    "report": "reports/索尼 FX3 定点原型与查询准备.md",
+    "proof": [
+      "work/sony-firmware-20261024/stage12-prototype/profile/profile-results.json",
+      "work/sony-firmware-20261024/stage12-prototype/profile/review-summary.json",
+      "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/profile-results.json",
+      "work/sony-firmware-20261024/stage12-prototype/profile-independent-20261025/reproduction-entry.json",
+      "work/sony-firmware-20261024/stage12-prototype/consumers/consumer-proof.json",
+      "work/sony-firmware-20261024/stage12-prototype/consumers/consistency-contract.json",
+      "work/sony-firmware-20261024/stage12-prototype/msc-probe/offline-verification.json",
+      "work/sony-firmware-20261024/stage12-prototype/msc-probe/approval-packet.json",
+      "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json",
+      "work/sony-firmware-20261024/stage12-prototype/msc-probe/windows-cache-handoff/sha256-manifest.json"
+    ],
+    "scope": "Bounded guest-only prototype in synthetic model context plus static consumer/source preparation; no full menu/sequence or device acceptance.",
+    "new_counts": {
+      "legitimate_HS_stock_vs_prototype": 19,
+      "builder_controls": 8,
+      "setter_controls": 8,
+      "target_chain": 1,
+      "logging_return_nonconsumption_sites": 24,
+      "MSC_local_static_synthetic_ABI_checks": 43
+    },
+    "coordinator_verification": "Python AST/boundary review and independent run of the same implementation in a separate directory, reported PASS in about4.3seconds. Root cached-wrapper/API and9hash review passed. Writer only read, hashed and checked links; no writer CPU replay or device access.",
+    "coordinator_observations": "work/sony-firmware-20261024/stage12-prototype/coordinator-observations.json",
+    "active_probe_state": {
+      "ready_to_run": false,
+      "binding_missing": true,
+      "active_entry_disabled": true,
+      "Windows_CSharp_PowerShell_compiled_or_run": false
+    },
+    "stage15_private_activation": {
+      "readme": "work/sony-firmware-20261024/stage15-private-activation/README.md",
+      "proof": [
+        "work/sony-firmware-20261024/stage15-private-activation/run-20261025/activation-results.json",
+        "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/snapshot-results.json"
+      ],
+      "summary": "work/sony-firmware-20261024/stage15-private-activation/run-20261025/summary.json",
+      "snapshot_summary": "work/sony-firmware-20261024/stage15-private-activation/snapshot-run-20261025/summary.json",
+      "scope": "Guest-only consistent inputs and independent input-snapshot counterexamples; no actual scheduling, transitions, NTSC/PAL gating, persistence, camera or recovery.",
+      "real_activation_owner_or_sync_implemented": false,
+      "physical_goal_reduced_to_RAM_only": false,
+      "remote_deferred_by_user": true
+    },
+    "stage16_system_snapshot": {
+      "readme": "work/sony-firmware-20261024/stage16-system-snapshot/README.md",
+      "proof": "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/system-snapshot-results.json",
+      "lock_scope": "work/sony-firmware-20261024/stage16-system-snapshot/wrapper-lock-scope.json",
+      "summary": "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/summary.json",
+      "failed_expectation_preserved": "work/sony-firmware-20261024/stage16-system-snapshot/run-20261025/attempt-failure.json",
+      "scope": "Original caller marshalling plus bounded query/post-read/enum conversion; static record-lock scope. No full APIs, model/object construction, backend, camera or recovery.",
+      "counts": {
+        "status": "PASS_ORIGINAL_MARSHALLING_AND_SYSTEM_NAMESPACE_AUDIT",
+        "distinct_tag_callers": 2,
+        "actual_scalar_arguments_per_caller": 74,
+        "actual_output_pointers_per_caller": 3,
+        "factory_legal_marshalled_query_runs": 76,
+        "post_query_enum_cases": 8,
+        "post_backend_raw_conversion_cases": 5,
+        "frame_converter_cases": 12,
+        "packet_controls_with_corrected_labels": 4,
+        "raw_backup_byte_equals_model_value": false,
+        "packet_byte81_meaning": "progressive flag; disproven legacy NTSC label",
+        "packet_byte80_meaning": "codec FramePerSec enum; differs from input FrameRate for some cases",
+        "full_API_camera_system_guard_or_restore_verified": false,
+        "goal_complete": false
+      },
+      "authorization_unchanged": true
+    },
+    "stage17_captured_profile": {
+      "readme": "work/sony-firmware-20261024/stage17-captured-profile/README.md",
+      "proof": [
+        "work/sony-firmware-20261024/stage17-captured-profile/run-corrected-20261025/captured-results.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/owner-run-20261025/model-owner-results.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/drain-corrected-20261025/drain-results.json"
+      ],
+      "summaries": [
+        "work/sony-firmware-20261024/stage17-captured-profile/run-corrected-20261025/summary.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/owner-run-20261025/summary.json",
+        "work/sony-firmware-20261024/stage17-captured-profile/drain-corrected-20261025/summary.json"
+      ],
+      "scope": "Bounded original getter copies and parameter consumers, static named model ownership and synthetic consumer-removal negatives; no real epochs, thread acquisition, recording-idle gate, cached-remain integration, camera or recovery.",
+      "full_objective_unchanged": true,
+      "physical_goal_reduced_to_RAM_only": false,
+      "post_capture_cases": 8,
+      "post_capture_tuple_mismatches": 0,
+      "different_capture_negatives": 2,
+      "cached_remain_identity_implemented": false,
+      "authorization_unchanged": true
+    },
+    "stage18_cached_remain": {
+      "readme": "work/sony-firmware-20261024/stage18-cached-remain/README.md",
+      "proof": [
+        "work/sony-firmware-20261024/stage18-cached-remain/run-complete-20261025/cached-remain-results.json",
+        "work/sony-firmware-20261024/stage18-cached-remain/boundary-verified-20261025/cache-boundary-results.json"
+      ],
+      "summaries": [
+        "work/sony-firmware-20261024/stage18-cached-remain/run-complete-20261025/summary.json",
+        "work/sony-firmware-20261024/stage18-cached-remain/boundary-verified-20261025/summary.json"
+      ],
+      "scope": "Guest cache capture/copy and original GetMovieRemain input preparation only. External MPR call, free space, actual time, owner execution, publication/invalidation, recording, recovery and cold boot not tested.",
+      "cache_parameter_propagation": "implemented_in_guest_only",
+      "actual_GetMovieRemain_API_invoked": false,
+      "actual_remaining_seconds_computed": false,
+      "actual_scalar_getter_reads": 87,
+      "distinct_scalar_fields": 85,
+      "opaque_field_bytes": 19,
+      "factory_pairs": 19,
+      "joined_same_capture_fixtures": 4,
+      "different_capture_controls": 2,
+      "constructor_direct_call_sites": 5,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage19_queue_boundary": {
+      "readme": "work/sony-firmware-20261024/stage19-queue-boundary/README.md",
+      "proof": "work/sony-firmware-20261024/stage19-queue-boundary/run-20261025/queue-boundary-results.json",
+      "summary": "work/sony-firmware-20261024/stage19-queue-boundary/run-20261025/summary.json",
+      "scope": "Original instruction fragments on synthetic queue/set/counter graphs and static refresh/wait paths, not actual task execution, full replacement, native wait, runtime idle, camera or recovery.",
+      "task_kind_namespace": {
+        "sequence_get_media_remain": 113,
+        "pool": 0,
+        "not_remote_format113_or_PTP_ID": true
+      },
+      "counts": {
+        "membership": 12,
+        "pool_lookup": 6,
+        "wait_predicate": 9,
+        "virtual_slot": 2,
+        "token_arithmetic": 8,
+        "replacement_metadata": 3
+      },
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true,
+      "real_quiescence_or_unload_verified": false
+    },
+    "stage20_worker_lifecycle": {
+      "readme": "work/sony-firmware-20261024/stage20-worker-lifecycle/README.md",
+      "proof": "work/sony-firmware-20261024/stage20-worker-lifecycle/run-20261025/worker-lifecycle-results.json",
+      "summary": "work/sony-firmware-20261024/stage20-worker-lifecycle/run-20261025/summary.json",
+      "scope": "Original instruction fragments on independent synthetic phase fixtures. Not a continuous worker execution, real lock, native task, future delivery, destructor, notify, safe unload, loader, recovery or device acceptance.",
+      "counts": {
+        "startup_argument_cases": 3,
+        "callback_argument_cases": 2,
+        "dequeue_selection_cases": 3,
+        "publication_cases": 2,
+        "run_dispatch_cases": 2,
+        "result_cleanup_cases": 3,
+        "destructor_dispatch_cases": 2,
+        "current_clear_cases": 3,
+        "notify_argument_cases": 1
+      },
+      "copied_phase_predicates": 14,
+      "current_slot_bound_to_original_worker": true,
+      "real_quiescence_or_admission_freeze_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true,
+      "independent_phase_preconditions_not_full_worker_execution": true
+    },
+    "stage21_admission_boundary": {
+      "readme": "work/sony-firmware-20261024/stage21-admission-boundary/README.md",
+      "proof": "work/sony-firmware-20261024/stage21-admission-boundary/run-corrected-20261025/admission-boundary-results.json",
+      "summary": "work/sony-firmware-20261024/stage21-admission-boundary/run-corrected-20261025/summary.json",
+      "failed_attempt_preserved": "work/sony-firmware-20261024/stage21-admission-boundary/run-20261025/attempt-failure.json",
+      "scope": "All executable PT_LOAD direct B/BL references to these fixed targets, plus confirmed original data references. Not complete indirect reachability, caller ownership or all-class admission coverage.",
+      "counts": {
+        "table_dispatch_cases": 2,
+        "typed_wrapper_cases": 2,
+        "post_constructor_marshalling_cases": 2,
+        "off_queue_capture_cases": 2,
+        "metadata_before_queue_cases": 1,
+        "registry_lock_control_cases": 2,
+        "pool_lock_destination_cases": 3,
+        "queue_notification_cases": 1,
+        "null_selected_task_cases": 1,
+        "stop_thread_wait_cases": 1
+      },
+      "copied_pool_predicates": 3,
+      "direct_cache_constructor_sites": 5,
+      "common_enqueue_direct_references": 1490,
+      "marked_off_queue_observation_witness": true,
+      "actual_race_or_complete_gate_proven": false,
+      "whole_manager_stop_executed": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage22_lifetime_registry": {
+      "readme": "work/sony-firmware-20261024/stage22-lifetime-registry/README.md",
+      "proof": "work/sony-firmware-20261024/stage22-lifetime-registry/run-corrected-20261025/lifetime-registry-results.json",
+      "summary": "work/sony-firmware-20261024/stage22-lifetime-registry/run-corrected-20261025/summary.json",
+      "failed_attempt_preserved": "work/sony-firmware-20261024/stage22-lifetime-registry/run-20261025/attempt-failure.json",
+      "scope": "Serialized Python protocol and bounded schedules, 4 original destructor-prefix/free-argument guest fragments. No native gate, complete destructor, weak-memory, PC barrier or camera acceptance.",
+      "bounded_states": 1194,
+      "wrong_candidates_with_counterexamples": 2,
+      "data_drained_but_simulated_code_active_states": 39,
+      "protocol_controls": 7,
+      "original_guest_fragments": 4,
+      "native_registry_or_safe_restore_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage23_encoder_boundary": {
+      "readme": "work/sony-firmware-20261024/stage23-encoder-boundary/README.md",
+      "proof": "work/sony-firmware-20261024/stage23-encoder-boundary/run-corrected-20261025/encoder-boundary-results.json",
+      "summary": "work/sony-firmware-20261024/stage23-encoder-boundary/run-corrected-20261025/summary.json",
+      "route_audit": "work/sony-firmware-20261024/stage23-encoder-boundary/route-and-field-audit.json",
+      "extraction_receipt": "work/sony-firmware-20261024/stage23-encoder-boundary/extraction-receipt.json",
+      "original_AV_library_sha256": "87a2246084567abca0e43228b5289bc728839a13ab4251e92828ea4c463e3c26",
+      "scope": "Pinned original helper/fragments and static source bindings; receiver transport gap and other native dependencies excluded. Synthetic zero buffer inputs, MPR diagnostic PC<-LR adapter, explicit AV debug input fixture. No hardware Open/Start, bitstream, live capability read, loader, restore or camera acceptance.",
+      "counts": {
+        "packets": 4,
+        "codec_identity": 6,
+        "quality": 5,
+        "queue_metadata": 2,
+        "transport_sets_of3": 2,
+        "resource_calls": 18,
+        "native_dependency_stops": 3
+      },
+      "MAIN_outer_FileFormat": 15,
+      "proxy_outer_FileFormat": 18,
+      "invalid_enums_can_select_no_resources": true,
+      "hardware_Open_Start_or_full_transport_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage24_receiver_dispatch": {
+      "readme": "work/sony-firmware-20261024/stage24-receiver-dispatch/README.md",
+      "proof": "work/sony-firmware-20261024/stage24-receiver-dispatch/run-20261025/receiver-dispatch-results.json",
+      "summary": "work/sony-firmware-20261024/stage24-receiver-dispatch/run-20261025/summary.json",
+      "scope": "Bounded original branches on independent fixtures; no full receiver, controller outputs, singleton/mutex, allocation/constructor, state change, backup, transport, MC or hardware execution.",
+      "bounded_original_cases": 43,
+      "MAIN_proxy_ordinary_usecase": 1,
+      "known_mask_consumer": "ExecCmd_MC_DecStart",
+      "native_controller_current_state_constructor_or_hardware_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage25_mc_image_map": {
+      "readme": "work/sony-firmware-20261024/stage25-mc-image-map/README.md",
+      "proof": "work/sony-firmware-20261024/stage25-mc-image-map/run-reviewed-20261025/mc-image-map-results.json",
+      "summary": "work/sony-firmware-20261024/stage25-mc-image-map/run-reviewed-20261025/summary.json",
+      "review": "work/sony-firmware-20261024/stage25-mc-image-map/coordinator-observations.json",
+      "scope": "Pinned raw-image static coordinate/typeinfo/diagnostic evidence only; no guest/native firmware, runtime registration, hardware encoding or recovery.",
+      "avcam_candidate_base": "0xffffffc001000000",
+      "typeinfo_chains": 6,
+      "local_references": 10,
+      "upstream_MAIN_receiver_binding_verified": false,
+      "cpapp_whole_image_map_verified": false,
+      "hardware_or_recovery_verified": false,
+      "authorization_unchanged": true,
+      "full_objective_unchanged": true
+    },
+    "stage26_mc_open_routing": {
+      "readme": "work/sony-firmware-20261024/stage26-mc-open-routing/README.md",
+      "proof": "work/sony-firmware-20261024/stage26-mc-open-routing/run-20261025/mc-open-routing-results.json",
+      "DFS_proof": "work/sony-firmware-20261024/stage26-mc-open-routing/dfs-run-20261025/dfs-selector-results.json",
+      "summary": "work/sony-firmware-20261024/stage26-mc-open-routing/run-20261025/summary.json",
+      "review": "work/sony-firmware-20261024/stage26-mc-open-routing/coordinator-observations.json",
+      "bounded_original_cases": 29,
+      "scope": "Original pure converters and independent MC route/state/command/copy/DFS fragments on explicit guest fixtures; no end-to-end registration, physical pointer transport, hooks, resources or hardware.",
+      "actual_hardware_or_recovery_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage27_encoder_state_machine": {
+      "readme": "work/sony-firmware-20261024/stage27-encoder-state-machine/README.md",
+      "proof": "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/encoder-state-machine-results.json",
+      "summary": "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/summary.json",
+      "review": "work/sony-firmware-20261024/stage27-encoder-state-machine/coordinator-observations.json",
+      "bounded_original_cases": 12,
+      "scope": "Original numeric state/queue/copy behavior and independent post-transition action entry; no actual transition hooks, interface action, resources, hardware or recovery.",
+      "pending_event_copy_size": "0xd8",
+      "embedded_pointer_rebased_in_copy": false,
+      "actual_full_lifetime_or_hardware_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage28_main_frontend_binding": {
+      "readme": "work/sony-firmware-20261024/stage28-main-frontend-binding/README.md",
+      "proof": "work/sony-firmware-20261024/stage28-main-frontend-binding/run-20261025/main-frontend-binding-results.json",
+      "summary": "work/sony-firmware-20261024/stage28-main-frontend-binding/run-20261025/summary.json",
+      "review": "work/sony-firmware-20261024/stage28-main-frontend-binding/coordinator-observations.json",
+      "bounded_scenarios": 7,
+      "bounded_phases": 12,
+      "scope": "Original post-allocation argument, partial-construction/setter, post-transport frontend and independent action-callback fragments. No full init/live routing/frontend completion, clock or hardware.",
+      "index0_MC_ID": "0x805700f9",
+      "index0_initial_frontend": "sfmc_enc_ext_isp_if",
+      "index0_owner_Open_callback": "sfmc_enc_timing_normal at0x193f24",
+      "actual_hardware_or_recovery_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage29_main_frontend_open": {
+      "readme": "work/sony-firmware-20261024/stage29-main-frontend-open/README.md",
+      "proof": "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/frontend-open-results.json",
+      "summary": "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/summary.json",
+      "review": "work/sony-firmware-20261024/stage29-main-frontend-open/coordinator-observations.json",
+      "failed_fixture": "work/sony-firmware-20261024/stage29-main-frontend-open/run-20261025/failure-explanation.json",
+      "bounded_scenarios": 14,
+      "scope": "Numeric-state frontend queue/copy, independent post-subevent raw88 suffix and SET_REC_FORMAT scalar/dimension fragments; actual init/source/order/merge/resources/hardware unverified.",
+      "full_MAIN_rebuild_order_or_hardware_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage30_frontend_pending_consumption": {
+      "readme": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/README.md",
+      "proof": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/pending-consumption-results.json",
+      "summary": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/summary.json",
+      "next_anchors": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/next-receiver-anchors.json",
+      "review": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/coordinator-observations.json",
+      "scenarios": 7,
+      "bounded_phases": 18,
+      "scope": "Original retained queue consumption and nested deferred packet plus shared timing handle entry; explicit post-transition/receiver fixtures, no actual config/task/timing/resources/hardware.",
+      "actual_merge_hardware_or_restore_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage31_timing_parameter_ownership": {
+      "readme": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/README.md",
+      "proof": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/timing-parameter-results.json",
+      "summary": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/summary.json",
+      "review": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/coordinator-observations.json",
+      "Open_action_scenarios": 8,
+      "artificial_writer_order_scenarios": 1,
+      "bounded_phases": 11,
+      "scope": "Original post-transition timing action through input_if entry and independent configuration-prefix order fixture. No actual state order, input/resource/VCD/hardware or restore.",
+      "target_packet_preserved_before_input_if": true,
+      "shared_video_and_FileFormat_storage": true,
+      "actual_hardware_or_restore_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    },
+    "stage32_resource_open_descriptor": {
+      "readme": "work/sony-firmware-20261024/stage32-resource-open-descriptor/README.md",
+      "proof": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-enum-bound-20261025/resource-descriptor-results.json",
+      "summary": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-enum-bound-20261025/summary.json",
+      "review": "work/sony-firmware-20261024/stage32-resource-open-descriptor/coordinator-observations.json",
+      "bounded_executions": 44,
+      "descriptor_scenarios": 6,
+      "fragment_descriptors": 4,
+      "scope": "Independent original descriptor fragments with explicit zero-stack and post-diagnostic preconditions plus sender prefix before construction; not whole input_if/builder/transport/resource/hardware.",
+      "target_original_names": {
+        "format_category_enum": "IMOLA",
+        "coding_enum": "HEVC_MP4",
+        "frame_enum": "29_97",
+        "interlace_enum": "PROGRESSIVE",
+        "quality_enum": "FH",
+        "chroma_enum": "CHROMA_420",
+        "depth_enum": "BIT_DEPTH_10"
+      },
+      "quality_not_proven16Mbps": true,
+      "continuous_builder_or_hardware_or_restore_verified": false,
+      "full_objective_unchanged": true,
+      "authorization_unchanged": true
+    }
+  },
+  "corrections_to_prior_stage": {
+    "stage10_frame13_control": {
+      "old_label": "HS420 59.94/100M",
+      "actual_setter_frame": 13,
+      "mpr_frame": 2,
+      "actual_rational": "25/1",
+      "target_frame15_to_mpr3": "30000/1001 confirmed",
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage11-model/builder/typed-selection-results.json"
+    },
+    "legacy_packet_fields": {
+      "superseded_field_name": "ntsc_flag",
+      "packet_offset": "0x81",
+      "corrected_meaning": "progressive flag, inverse of original named ConvertFrameRateToInterlace for all12valid input enums",
+      "counterexample": "Frame2=25/1 and Frame3=30000/1001 both yieldbyte1; Frame6 and7 both60000/1001 but yield0and1",
+      "other_enum_namespace": "Packet0x80 is codec FramePerSec, not input DefStruct FrameRate; input6/7 bothoutput5",
+      "old_source_results_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage16-system-snapshot/run-corrected-20261025/system-snapshot-results.json",
+      "target_rational_resolution_codec_quality_values_unchanged": true,
+      "not_valid_NTSC_PAL_mapping_evidence": [
+        "packet0x81",
+        "unconnected producer with same0x138offset"
+      ]
+    },
+    "input138_binding_closed": {
+      "old_status": "untyped post-query enum; unconnected NTSC producer had been rejected",
+      "confirmed_internal_key": "0x3f3",
+      "name": "setting_sq_proxy_recording",
+      "getter": "0x2935aac",
+      "producer_store": "FP+0x338 relative to packetFP+0x200",
+      "evidence": "work/sony-firmware-20261024/stage17-captured-profile/owner-run-20261025/model-owner-results.json",
+      "not_NTSC_PAL_or_progressive_field": true
+    },
+    "VPC_identity_vs_codec": {
+      "finding": "VPC6andVPC5bothproducecodec15; original preparation differs in resolution1920x1080versus3840x2160",
+      "bad_hypothesis_preserved": "work/sony-firmware-20261024/stage17-captured-profile/drain-run-20261025/attempt-failure.json",
+      "evidence": "work/sony-firmware-20261024/stage17-captured-profile/drain-corrected-20261025/drain-results.json",
+      "actual_hardware_recording_not_tested": true
+    },
+    "packet65_binding": {
+      "legacy_field_name": "file_format_65",
+      "corrected_source": "GetCodecAudioFormat result",
+      "MAIN_store": "0xd1508",
+      "proxy_store": "0xd1780",
+      "not_outer_Codec_FileFormat": true,
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage23-encoder-boundary/route-and-field-audit.json"
+    },
+    "AvailableFormat_scope": {
+      "previous_status": "unresolved capability clue in stage23; not a proven encode gate",
+      "confirmed_key": "0x1030",
+      "confirmed_consumer": "ExecCmd_MC_DecStart::ExecCmd",
+      "direct_MOVZ_scan_library": "libInfraAvbbc.so",
+      "all_indirect_or_cross_library_consumers_closed": false,
+      "not_encoding_capability_acceptance_evidence": true,
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage24-receiver-dispatch/run-20261025/receiver-dispatch-results.json"
+    },
+    "MC_image_candidate_scope": {
+      "previous_next_action": "Investigate ARM32 CPapp MC receiver/load mapping",
+      "current_finding": "Avcam A64 has stronger encoding implementation evidence; CPapp MCODEC record remains a group-name clue. No receiver binding claimed for either.",
+      "cpapp_fourth_descriptor_and_tail_unresolved": true,
+      "evidence": "work/sony-firmware-20261024/stage25-mc-image-map/run-reviewed-20261025/mc-image-map-results.json"
+    },
+    "MC_number_namespaces": {
+      "upstream_internal_MID": "0x520",
+      "converted_MC_MID": "0x0201",
+      "converted_CID": "0x2003",
+      "payload_message_ID": "0x210",
+      "Open_command_ID": 0,
+      "DFS_nominal_rate": "30 is a selector scalar; target rational remains30000/1001",
+      "DFS_mode_hex15_not_HEVC_codec_decimal15": true,
+      "evidence": "work/sony-firmware-20261024/stage26-mc-open-routing/run-20261025/mc-open-routing-results.json"
+    },
+    "Open_dump_scope": {
+      "previous_next_action": "Investigate0x178aac parameter interpretation/validation candidate",
+      "current_scope": "Two own-body scans show only stack stores and diagnostic/name lookup calls, and caller does not use return as acceptance. Actual Open submission then enters0x17eb64.",
+      "not_universal_logger_side_effect_or_hardware_claim": true,
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage27-encoder-state-machine/run-20261025/encoder-state-machine-results.json"
+    },
+    "MAIN_initial_frontend_scope": {
+      "previous_evidence_scope": "Independent state-wrapper/normal-state fixtures; real construction/live current state not proven.",
+      "new_original_construction_evidence": "Factory index0 matches0x805700f9 and initially selects ext-ISP frontend; index1 matches0x805720f9 and selects wrapper. Default MAIN needs extra frontend completion/parameter chain.",
+      "owner20_static_binding_closed_to": "timing_normal(index0) /timing(index1)",
+      "actual_live_state_not_observed": true,
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage28-main-frontend-binding/run-20261025/main-frontend-binding-results.json"
+    },
+    "SET_REC_FORMAT_scope": {
+      "previous_question": "Whether MAIN frontend necessarily rebuilds or forces geometry",
+      "new_scope": "Numeric state2 pre-subevent copies original target unchanged; separate CID0x8003/MID1 has recording SET_REC_FORMAT diagnostic and a rebuild helper. Actual producer/order/merge not established.",
+      "not_only_input_description": true,
+      "not_global_HEVC_rejection_table": true,
+      "exact30_helper_default_not_actual_hardware_frameclock": true,
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage29-main-frontend-open/run-corrected-20261025/frontend-open-results.json"
+    },
+    "frontend_empty_scope": {
+      "previous_scope": "Frontend pending event consumption and completed reference lifetime unresolved",
+      "new_scope": "Original pop can clear frontend count while lower busy/pending/count stay1 before task hook; original target packet retained in lower copy.",
+      "not_real_global_quiescence_or_concurrency_test": true,
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage30-frontend-pending-consumption/run-20261025/pending-consumption-results.json"
+    },
+    "timing_shared_parameter_owner": {
+      "previous_status": "Common timing handle known; parameter coordination unresolved",
+      "current_evidence": "Open copies raw video and preserves identity into prepared input event. SET_REC_FORMAT prefix also writes same owner video+38 and FileFormat+2c.",
+      "actual_runtime_order_or_race_not_proven": true,
+      "nominal30_not_exact30_or_hardware_clock": true,
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage31-timing-parameter-ownership/run-20261025/timing-parameter-results.json"
+    },
+    "codecFF_and_resource_quality_scope": {
+      "previous_observation": "Inner codecFF with valid frame reached timing/input boundary; not established format acceptance.",
+      "new_evidence": "Converter0x134d44 selects14HEVC_MP4/21XAVC_PROXY_HEVC from outer15/18 regardless innercodec0/15/FF; quality22->4 namedFH.",
+      "not_mandatory_validation_failure_or_literal16Mbps_proof": true,
+      "old_files_preserved": true,
+      "evidence": "work/sony-firmware-20261024/stage32-resource-open-descriptor/run-enum-bound-20261025/resource-descriptor-results.json"
+    }
+  },
+  "next_authorized_cached_metadata_action": {
+    "scope": "Windows cached PnP inventory only, unchanged prior authorization",
+    "prepared_handoff": "work/sony-firmware-20261024/stage12-prototype/msc-probe/windows-cache-handoff/sha256-manifest.json",
+    "action": "Verify existing Windows host/project, review and compile cached-only source, DryRun, collect unique disk-interface/USB-parent association metadata into new host-local private output. No camera/disk interface handle or SCSI command.",
+    "current_external_dependency": "UU app twice reported server/connection error and device offline; no file transfer or Windows task performed.",
+    "whole_goal_blocked": false,
+    "active_query_ready": false,
+    "active_query_permission_request": false
+  },
+  "external_dependencies": {
+    "Windows_cached_association_handoff": {
+      "status": "deferred_until_user_restores_connection",
+      "user_response": "稍后恢复连接",
+      "new_remote_attempts_this_stage": false,
+      "cached_only_authorization_unchanged": true,
+      "active_camera_authorization_granted": false
+    }
+  }
+}

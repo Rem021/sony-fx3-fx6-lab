@@ -1,0 +1,139 @@
+{
+  "stage": "await_audio_entry;cleanup",
+  "mapping": {
+    "pid": 237,
+    "cap": {
+      "bias": 548269412352,
+      "inode": 4210,
+      "segments": [
+        {
+          "fileoff": 0,
+          "va": 0,
+          "filesz": 20836,
+          "memsz": 20836,
+          "align": 65536,
+          "flags": 4
+        },
+        {
+          "fileoff": 20836,
+          "va": 86372,
+          "filesz": 63740,
+          "memsz": 63740,
+          "align": 65536,
+          "flags": 5
+        },
+        {
+          "fileoff": 84576,
+          "va": 215648,
+          "filesz": 544,
+          "memsz": 1440,
+          "align": 65536,
+          "flags": 6
+        },
+        {
+          "fileoff": 85120,
+          "va": 281728,
+          "filesz": 0,
+          "memsz": 1886484,
+          "align": 65536,
+          "flags": 6
+        }
+      ],
+      "rows": [
+        {
+          "start": 548269412352,
+          "end": 548269436928,
+          "perms": "r--p",
+          "offset": 0,
+          "inode": 4210,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 548269436928,
+          "end": 548269498368,
+          "perms": "---p",
+          "offset": 24576,
+          "inode": 4210,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 548269498368,
+          "end": 548269563904,
+          "perms": "r-xp",
+          "offset": 20480,
+          "inode": 4210,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 548269563904,
+          "end": 548269625344,
+          "perms": "---p",
+          "offset": 151552,
+          "inode": 4210,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 548269625344,
+          "end": 548269629440,
+          "perms": "r--p",
+          "offset": 81920,
+          "inode": 4210,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 548269629440,
+          "end": 548269690880,
+          "perms": "---p",
+          "offset": 217088,
+          "inode": 4210,
+          "path": "/simulation/fx3-capid-v1.so"
+        },
+        {
+          "start": 548269690880,
+          "end": 548269694976,
+          "perms": "rw-p",
+          "offset": 81920,
+          "inode": 4210,
+          "path": "/simulation/fx3-capid-v1.so"
+        }
+      ]
+    },
+    "ap": null,
+    "snapshot_kind": "early",
+    "snapshot_epoch": 1,
+    "snapshot_byte_range": [
+      130759,
+      158556
+    ],
+    "snapshot_first_uptime": "16.40 60.28",
+    "early_snapshot_count": 1,
+    "im_inode": 3331,
+    "ap_identity_status": "not_checked_until_CAP_stop"
+  },
+  "breakpoints_still_installed": [],
+  "records": [],
+  "linux_process_attribution": "requires live TLS+request+same AP mapping; unknown until captured",
+  "resume_acks": [
+    {
+      "stage": "await_audio_entry",
+      "command": "c",
+      "ack": "+"
+    }
+  ],
+  "qmp_statuses": [
+    {
+      "stage": "arm",
+      "status": "paused"
+    },
+    {
+      "stage": "await_audio_entry",
+      "status": "running"
+    },
+    {
+      "stage": "await_audio_entry",
+      "status": "debug",
+      "rsp_stop": "T05thread:02;"
+    }
+  ],
+  "policy": "RSP addressless c after Z1, Z1/z1 and stopped-only g/p/m/XML; no guest write, no Z0, no keys"
+}

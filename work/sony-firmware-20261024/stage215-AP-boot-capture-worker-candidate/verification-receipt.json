@@ -1,0 +1,79 @@
+{
+  "schema": "fx3-stage215-offline-boot-worker-verification-v1",
+  "created_utc": "2026-10-30T05:26:48.649310+00:00",
+  "status": "PASS_58_LOCAL_TESTS_SOURCE_ONLY_CANDIDATE",
+  "previous_manifest_sha256": "822a2d7ab12816e10bfe8dba942ebc63ef11b6fed9979920446c539f827604ae",
+  "previous_members_reverified": 63,
+  "suites": [
+    {
+      "suite": "boot-first",
+      "tests": 11,
+      "receipt": "work/sony-firmware-20261024/stage215-AP-boot-capture-worker-candidate/runs/boot-first/test-receipt/results.json",
+      "sha256": "967cc2b3eef92f432f71cec6d415979cb3b13f8daebc06d7fa3e8a7e21b505c2"
+    },
+    {
+      "suite": "legacy-adapter",
+      "tests": 13,
+      "receipt": "work/sony-firmware-20261024/stage215-AP-boot-capture-worker-candidate/runs/legacy-adapter/test-receipt/results.json",
+      "sha256": "6b5b6328cd513d04ff294abce992539c38815c5d9ddb0cf8bd9be62e9ba98347"
+    },
+    {
+      "suite": "legacy-capture",
+      "tests": 14,
+      "receipt": "work/sony-firmware-20261024/stage215-AP-boot-capture-worker-candidate/runs/legacy-capture/test-receipt/results.json",
+      "sha256": "a3f0eed320ad501aed3a38f899bcc7b84bc464c49dd7f87907146c076cd924f9"
+    },
+    {
+      "suite": "legacy-worker",
+      "tests": 11,
+      "receipt": "work/sony-firmware-20261024/stage215-AP-boot-capture-worker-candidate/runs/legacy-worker/test-receipt/results.json",
+      "sha256": "e0c7a53866a8db04ed6a9ebfec9c39ad8de33579177fc5f61a18de541c0c1f00"
+    },
+    {
+      "suite": "legacy-elflink",
+      "tests": 9,
+      "receipt": "work/sony-firmware-20261024/stage215-AP-boot-capture-worker-candidate/runs/legacy-elflink/test-receipt/results.json",
+      "sha256": "a0bd2cb6d523e04734c7313f74f478384f372462babc712597b3b5e6697658d9"
+    }
+  ],
+  "tests_passed": 58,
+  "new_boot_tests": 11,
+  "boot_fixture_cases": 74,
+  "boot_ARM64_guests": 3,
+  "boot_ARM64_source_reads": [
+    2,
+    126,
+    0
+  ],
+  "real_Linux_or_Sony_kernel_executed": false,
+  "Sony_code_executed": false,
+  "own_ARM64_code_executed": true,
+  "linked_ELF_bytes": 20480,
+  "boot_relocations": 97,
+  "linked_boot_ELF_sha256": "6e1fe8e803c3e900e25b1e7046dbf8e705ea66a8e8ccee268dcd15070d0acd70",
+  "old_p1_ELF_sha256_unchanged": "c3a7b81d95d1d537d1f97bdab9eb0117f55bdeaee9b232d1f561d3d58040e2fd",
+  "minimum_synthetic_bytes": 131072,
+  "maximum_synthetic_bytes": 33423360,
+  "maximum_window_counts": [
+    128,
+    128,
+    128,
+    126
+  ],
+  "module_fingerprint_sha_independently_checked": true,
+  "current_body_geometry_measured": false,
+  "source_package_sha256": "fd2130628b62939e867c7fad5887277d07d06bbd8ee41aeb1c793c22bd71bee4",
+  "source_package_files": 23,
+  "source_package_no_binary_or_firmware": true,
+  "release04_unchanged": true,
+  "old_p1_source_and_entry_unchanged": true,
+  "root01_bundle_unchanged": true,
+  "root01_job_absent": true,
+  "all16_requirements_and_authorizations_unchanged": true,
+  "actual_same_body_backup_or_restore_tested": false,
+  "actual_read_view_or_access_restoration_proven": false,
+  "camera_USB_or_root_operations": 0,
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "test_timing_note": "Boot suite ran after final executable code/CLI changes. Subsequent init version-only metadata and prose changes do not change candidate behavior; legacy47 suites ran with final version metadata. Exploratory pre-name-length-fix object is preserved but not accepted or released."
+}

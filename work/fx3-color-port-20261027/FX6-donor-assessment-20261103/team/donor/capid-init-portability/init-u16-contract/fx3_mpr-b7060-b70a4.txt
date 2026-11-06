@@ -1,0 +1,23 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b6844 <_ZN3mpr4InitERKNS_11initInParamE>:
+   b7060: a9000440     	stp	x0, x1, [x2]
+   b7064: aa1703e0     	mov	x0, x23
+   b7068: 940202ed     	bl	0x137c1c <_ZN6GpsMgr11SetRecParamEjPN3mpr5Codec10GpsRecInfoE+0x17c8>
+   b706c: 9407f0e3     	bl	0x2b33f8 <_ZN3mpr8sig_hash17InitSigAndHashReqEP15pthread_mutex_tPNS_6thread10signalLockEPmPijiPNS0_12SigHashReq_tE+0xfc>
+   b7070: aa1603e0     	mov	x0, x22
+   b7074: 97ff1e1b     	bl	0x7e8e0 <_ZN3mpr15IntegStatusInitEPKj@plt>
+   b7078: 97ff1992     	bl	0x7d6c0 <_ZN3mpr16IntegSettingInitEv@plt>
+   b707c: 97ff1671     	bl	0x7ca40 <_ZN3mpr20IntegRecordStillInitEv@plt>
+   b7080: 7943e663     	ldrh	w3, [x19, #0x1f2]
+   b7084: aa1603e1     	mov	x1, x22
+   b7088: b941e662     	ldr	w2, [x19, #0x1e4]
+   b708c: b941d260     	ldr	w0, [x19, #0x1d0]
+   b7090: 52800013     	mov	w19, #0x0               // =0
+   b7094: 97ff229b     	bl	0x7fb00 <_ZN3mpr20IntegRecordMovieInitEjPKjjt@plt>
+   b7098: 97ff2cf6     	bl	0x82470 <_ZN3mpr20IntegRecordAudioInitEv@plt>
+   b709c: 97ff2af9     	bl	0x81c80 <_ZN3mpr13IntegPlayInitEv@plt>
+   b70a0: 97ff24c8     	bl	0x803c0 <_ZN3mpr13IntegEditInitEv@plt>

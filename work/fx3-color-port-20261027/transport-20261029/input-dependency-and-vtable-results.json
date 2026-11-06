@@ -1,0 +1,1398 @@
+{
+  "files": [
+    {
+      "path": "usr/bin/crypter.elf",
+      "name": "crypter.elf",
+      "bytes": 10352,
+      "sha256": "bc0d6b2d5638fd6b96a0e52967435efcb26d3cf040115de8b488a8ed0f3e0972",
+      "needed": [
+        "libSysDef.so",
+        "libMWF.so",
+        "libInfraFsys.so",
+        "libInfraMediaCommon.so",
+        "libbackup.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libfileinputupdaterapi.so",
+        "libcryptfileinputupdaterapi.so",
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libupdatertalk.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": [
+        "GetCryptFileInputModeUpdater"
+      ]
+    },
+    {
+      "path": "usr/bin/mf",
+      "name": "mf",
+      "bytes": 10320,
+      "sha256": "9107ac720f9626c810c2ae6fa3b51a59e74faae389942699f4ab88a465c88a78",
+      "needed": [
+        "libInfraFsys.so",
+        "libInfraMediaCommon.so",
+        "libSysDef.so",
+        "libMWF.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libInfraUsbCmn.so",
+        "libsencore.so",
+        "libtestcmd.so",
+        "libtestcmd_scn.so",
+        "libosal_uipc.so",
+        "libupdater0604.so",
+        "libseninputupdaterapi.so",
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libSTMcmdexecute.so",
+        "libupdatertalk.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/sauu",
+      "name": "sauu",
+      "bytes": 43728,
+      "sha256": "c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00",
+      "needed": [
+        "libSysDef.so",
+        "libMWF.so",
+        "libInfraFsys.so",
+        "libInfraMediaCommon.so",
+        "libbackup.so",
+        "libInfraUsbCmn.so",
+        "libusbcmd.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libupdaterapi.so",
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libSTMcmdexecute.so",
+        "libupdatertalk.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": [
+        "GetUpdater"
+      ]
+    },
+    {
+      "path": "usr/bin/sdfileinput.elf",
+      "name": "sdfileinput.elf",
+      "bytes": 10296,
+      "sha256": "19a505750d18bee713e9794dd203219c4201ce2ef4c950b2187415878d09f67e",
+      "needed": [
+        "libSysDef.so",
+        "libMWF.so",
+        "libInfraFsys.so",
+        "libInfraMediaCommon.so",
+        "libbackup.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libsdfileinputupdaterapi.so",
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libSTMcmdexecute.so",
+        "libupdatertalk.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": [
+        "GetSDFileInputModeUpdater"
+      ]
+    },
+    {
+      "path": "usr/bin/sen.elf",
+      "name": "sen.elf",
+      "bytes": 31336,
+      "sha256": "c97d791be82a800d2d60ff0ae9f5627de163cafa093e32745cf3de70214f9c93",
+      "needed": [
+        "libdl.so.2",
+        "libstdc++.so.6",
+        "libpthread.so.0",
+        "libosal_uipc.so",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/uc_portctl.elf",
+      "name": "uc_portctl.elf",
+      "bytes": 10328,
+      "sha256": "57f25ffb92059d7062ce6ce6036fe34b8389df0014a52dbd8bac090114d983db",
+      "needed": [
+        "libul_GpioCtrl.so",
+        "libbackup.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_configurator.elf",
+      "name": "ud_configurator.elf",
+      "bytes": 6176,
+      "sha256": "4e7ffea44bde7d90b30d0f832863d105edd66b7131b5762a71896b528e9b0119",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_darwin_init.elf",
+      "name": "ud_darwin_init.elf",
+      "bytes": 10304,
+      "sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad",
+      "needed": [
+        "libul_GpioCtrl.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_datcnv.elf",
+      "name": "ud_datcnv.elf",
+      "bytes": 10248,
+      "sha256": "b4f3ea1049bc5105271ff08ae09c8260ebbdfe9bf1ae56e1daf9dce54e4e4421",
+      "needed": [
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_genlock_firmup.elf",
+      "name": "ud_genlock_firmup.elf",
+      "bytes": 18624,
+      "sha256": "fbaedfcad7173ea5a380307b76a1c48273e4e34e69319131d8c62d6fae2879db",
+      "needed": [
+        "libul_GpioCtrl.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_get_buspower_ic.elf",
+      "name": "ud_get_buspower_ic.elf",
+      "bytes": 6096,
+      "sha256": "8f47a5b310cf70e57af0e1ed3d0165ff5b082f93445aa1466700df883e37f7e9",
+      "needed": [
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_get_mem2file.elf",
+      "name": "ud_get_mem2file.elf",
+      "bytes": 6112,
+      "sha256": "aa99282a393efe79fb1379e4c2c4710872ec5c98a1292041e4fde41df8c9daae",
+      "needed": [
+        "libupdaterufunc.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_get_power_ic_type.elf",
+      "name": "ud_get_power_ic_type.elf",
+      "bytes": 6088,
+      "sha256": "285cb7cc168d6bcc4f3116238e69edbe25ae32cff594d115a68252a818b0d8aa",
+      "needed": [
+        "libupdaterufunc.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_get_serial_cfg_file.elf",
+      "name": "ud_get_serial_cfg_file.elf",
+      "bytes": 10264,
+      "sha256": "1d02445dbc4934206b385a1671d0f66a7fec79c21701f0053c2cf76599ceb270",
+      "needed": [
+        "libupdaterufunc.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_im.elf",
+      "name": "ud_im.elf",
+      "bytes": 6112,
+      "sha256": "7eb7e5a0a45bab7d8a6f313cef162f47ac0b8d00544d628fb76c34deacb6d7dc",
+      "needed": [
+        "libupdater0604.so",
+        "libsencore.so",
+        "libtestcmd.so",
+        "libtestcmd_scn.so",
+        "libInfraUsbCmn.so",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libbackup.so",
+        "libInfraFsys.so",
+        "libSysDef.so",
+        "libMWF.so",
+        "libInfraMediaCommon.so",
+        "libSTMcmdexecute.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_pd_firmup.elf",
+      "name": "ud_pd_firmup.elf",
+      "bytes": 14432,
+      "sha256": "92dbb8b08bde699414df31be995bf48cc23022b506e7dec04018f3f099e018ef",
+      "needed": [
+        "libbackup.so",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_read_lsi_type.elf",
+      "name": "ud_read_lsi_type.elf",
+      "bytes": 6104,
+      "sha256": "7a9cd6f744bcaae65eeff67af0b8f58302e49a4eb9557178158e9c7763c2d29e",
+      "needed": [
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_reboot.elf",
+      "name": "ud_reboot.elf",
+      "bytes": 14432,
+      "sha256": "314725816b8a251500eb38b001ab8bd8449f6560753db4090658086331586d7a",
+      "needed": [
+        "libul_GpioCtrl.so",
+        "libupdaterufunc.so",
+        "libbackup.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_send_lsi.elf",
+      "name": "ud_send_lsi.elf",
+      "bytes": 10248,
+      "sha256": "9fb4bd02b3434bd9fe8fb49fcf4359f7720b292506960ae0d9894332d3453c80",
+      "needed": [
+        "libbackup.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_timeout_poweroff.elf",
+      "name": "ud_timeout_poweroff.elf",
+      "bytes": 6128,
+      "sha256": "1894b5f76e9f271541ba2bbbd2a0511fac9527b32ff5578d31fc05b80d935029",
+      "needed": [
+        "libul_GpioCtrl.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ud_xrst_req.elf",
+      "name": "ud_xrst_req.elf",
+      "bytes": 6112,
+      "sha256": "195dce14076e4782846c529262f07a2b76a3ec8cabef13dac5493fb3db9a7b55",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/ulogio.elf",
+      "name": "ulogio.elf",
+      "bytes": 28672,
+      "sha256": "8870e878fdafeacb21e047ec84f74ab25e04e6ccffbd4380857d639b9ae9b0ee",
+      "needed": [
+        "libdl.so.2",
+        "libosal_utm.so",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/bin/uudfileinput.elf",
+      "name": "uudfileinput.elf",
+      "bytes": 6184,
+      "sha256": "f1a2d0a36998bfe2df7c7496cd96b59653fd839dd00e6c9beaed063041c38385",
+      "needed": [
+        "libSysDef.so",
+        "libMWF.so",
+        "libInfraFsys.so",
+        "libInfraMediaCommon.so",
+        "libbackup.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libuudfileinputupdaterapi.so",
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libSTMcmdexecute.so",
+        "libupdatertalk.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": [
+        "GetUUDFileInputModeUpdater"
+      ]
+    },
+    {
+      "path": "usr/lib/libInfraExtCmdSvc.so",
+      "name": "libInfraExtCmdSvc.so",
+      "bytes": 51616,
+      "sha256": "6ea4e19973e220e7d55c7daeabfa5f5d05462e2dc04537764e3e9bce43d60fdd",
+      "needed": [
+        "libUsbControl.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libInfraFsys.so",
+      "name": "libInfraFsys.so",
+      "bytes": 638528,
+      "sha256": "ba0467674b056b3389a34ba974b1f0bbe99f4189d8aa36ad509843596ccacb62",
+      "needed": [
+        "libuuid.so.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libInfraKikiLogGenerator.so",
+      "name": "libInfraKikiLogGenerator.so",
+      "bytes": 22752,
+      "sha256": "e617a8a75f188069141a131bee7b1464b7a6f805867f978321eab207b6c3ba7b",
+      "needed": [
+        "libpthread.so.0",
+        "libz.so.1",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libInfraMediaCommon.so",
+      "name": "libInfraMediaCommon.so",
+      "bytes": 488280,
+      "sha256": "7b36918172b50275f43590da4816d79abdd2146f5d870a2b87f72550ef1ef603",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libInfraSKD.so",
+      "name": "libInfraSKD.so",
+      "bytes": 8020712,
+      "sha256": "8052390d5d043db47dd0aa83b3f65be7ec980288c5c72c01f46229b597b12f20",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libInfraUsbCmn.so",
+      "name": "libInfraUsbCmn.so",
+      "bytes": 143752,
+      "sha256": "f56e89660896dea16249d01031d8bb21d5ee5f9b3fb0c4d4e922aa3f7637a687",
+      "needed": [
+        "libpthread.so.0",
+        "libbackup.so",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libMWF.so",
+      "name": "libMWF.so",
+      "bytes": 357216,
+      "sha256": "586f06bcac8ccbf8ffdd55f794731b02c6f354771fe147803ecc0401c49b8443",
+      "needed": [
+        "libpthread.so.0",
+        "libdl.so.2",
+        "libSysDef.so",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libSysDef.so",
+      "name": "libSysDef.so",
+      "bytes": 6022992,
+      "sha256": "088fe0c57c7d808dc625d3639d50c2908a124dcc989c2ce1c938a17ceb252927",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libUsbBusPower.so",
+      "name": "libUsbBusPower.so",
+      "bytes": 72832,
+      "sha256": "b57d308fda2efaeb9e7118d0df7ec5376cf6100a5efee1943ac5f1962f247c2f",
+      "needed": [
+        "libUsbControl.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libUsbControl.so",
+      "name": "libUsbControl.so",
+      "bytes": 196840,
+      "sha256": "2919e14b44607baa29a8729fc3d132423b5d68156a1f550d3db590f3ed7e0717",
+      "needed": [
+        "libInfraUsbCmn.so",
+        "libSTMcmdexecute.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libbackup.so",
+      "name": "libbackup.so",
+      "bytes": 18344,
+      "sha256": "5c1ede86e363bbc718063299833b905985f4a254f5b4d25ad81fce62e253daeb",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libcom_err.so.2.1",
+      "name": "libcom_err.so.2.1",
+      "bytes": 14488,
+      "sha256": "784feba5e8864220fc2b3158086fc30554baa79fe4812f6e7227f934258f6e38",
+      "needed": [
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libcryptfileinputupdaterapi.so",
+      "name": "libcryptfileinputupdaterapi.so",
+      "bytes": 27088,
+      "sha256": "06ee88247f9d1da34f28aebbe9ff5b355b661ce9645e1b83c6ee6a0bf292d17a",
+      "needed": [
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libfileinputupdaterapi.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": [
+        "GetCryptFileInputModeUpdater"
+      ]
+    },
+    {
+      "path": "usr/lib/libcrypto.so.1.1",
+      "name": "libcrypto.so.1.1",
+      "bytes": 2349584,
+      "sha256": "df69906d5f63a3afe9b7872e41cab741c346630e53ebcaadb86e457f0b803726",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libe2p.so.2.3",
+      "name": "libe2p.so.2.3",
+      "bytes": 32472,
+      "sha256": "d9fa1739613551f4313e086bb6cef26d3e9c0e89154b086b3dd0334ec8bf8773",
+      "needed": [
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libfileinputupdaterapi.so",
+      "name": "libfileinputupdaterapi.so",
+      "bytes": 27232,
+      "sha256": "7f8ab4a0f2b1a92497cce8cc655eb59c62cdd6fb2760722ee9b614b2d67ea3a6",
+      "needed": [
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libgcc_s.so.1",
+      "name": "libgcc_s.so.1",
+      "bytes": 71920,
+      "sha256": "9a348469b43aaf815f32104139a62116ef1247662a965b24e38e88e574814805",
+      "needed": [
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libjemalloc_ds.so.1",
+      "name": "libjemalloc_ds.so.1",
+      "bytes": 5848,
+      "sha256": "1bb62836a9e71bb424216f5e8e00f25230a54b6c252e5cbd0436a231a1ffa19a",
+      "needed": [
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libncurses.so.6.2",
+      "name": "libncurses.so.6.2",
+      "bytes": 342160,
+      "sha256": "3f8e46ff85fd5fdf0105b91a41cb01b10705e787b22b62a4a914282621e2c14d",
+      "needed": [
+        "libc.so.6",
+        "libdl.so.2"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libosal_udate.so",
+      "name": "libosal_udate.so",
+      "bytes": 35528,
+      "sha256": "6867bf4709fc559d58432ab930867279708e4354e2469c7be6eaf1cc7900daff",
+      "needed": [
+        "libbackup.so",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libosal_uipc.so",
+      "name": "libosal_uipc.so",
+      "bytes": 47848,
+      "sha256": "2d899fdbb3befed231f05ae7efd1a3689921e07e1125527d1c9fc602a67ebbec",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libosal_ulogio.so",
+      "name": "libosal_ulogio.so",
+      "bytes": 40168,
+      "sha256": "df09ccaea58b05999506a6c834a7d1d1263b8ff2f0d9eca1da0a1fa85be2b9cb",
+      "needed": [
+        "libdl.so.2",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libosal_utm.so",
+      "name": "libosal_utm.so",
+      "bytes": 10216,
+      "sha256": "c3047f937f50eed6a73f7a02f05c95d1b7dc515750d2d634817a668e6dbe78f5",
+      "needed": [
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libpro00.so",
+      "name": "libpro00.so",
+      "bytes": 10176,
+      "sha256": "1dd40519f2dd8ef6ae583db110b2473eded3b694a3f8d5352f0487ecf707de1d",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libprocps.so.6.0.0",
+      "name": "libprocps.so.6.0.0",
+      "bytes": 64128,
+      "sha256": "3515c6c846ce444aa458e1e76b3c2d20b2c95263220cb7eaee3c3b55495ede4f",
+      "needed": [
+        "libdl.so.2",
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libsdfileinputupdaterapi.so",
+      "name": "libsdfileinputupdaterapi.so",
+      "bytes": 60584,
+      "sha256": "257164d1cdf88757b8c0e2ba08ac47b06c46007410af308b7a8571b442b00cd2",
+      "needed": [
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libcrypto.so.1.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": [
+        "GetSDFileInputModeUpdater"
+      ]
+    },
+    {
+      "path": "usr/lib/libsencore.so",
+      "name": "libsencore.so",
+      "bytes": 401768,
+      "sha256": "69232017ae6b6ece6bdb18bc0f4919955342a406d0ab0215887812ffff3c1321",
+      "needed": [
+        "libosal_uipc.so",
+        "libInfraUsbCmn.so",
+        "libtestcmd.so",
+        "libtestcmd_scn.so",
+        "libSTMcmdexecute.so",
+        "libpthread.so.0",
+        "libssl.so.1.1",
+        "libcrypto.so.1.1",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libseninputupdaterapi.so",
+      "name": "libseninputupdaterapi.so",
+      "bytes": 31512,
+      "sha256": "3240c3c70aaa645de3af74101cd4fb85263ec478cff830993a5cd4ba0a6bd704",
+      "needed": [
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libcrypto.so.1.1",
+        "libssl.so.1.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libsensapi.so",
+      "name": "libsensapi.so",
+      "bytes": 48200,
+      "sha256": "b2c9facaf68ddd53ea08839858cfdf5bfc36bb9acc481e9d3037554c37becc6d",
+      "needed": [
+        "libInfraUsbCmn.so",
+        "libsencore.so",
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libsenupdater.so",
+      "name": "libsenupdater.so",
+      "bytes": 14616,
+      "sha256": "1b90757ac5aff9d5fdd6f71a945121f2ea73f3fec73527a790dc14d643a40dd4",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libssl.so.1.1",
+      "name": "libssl.so.1.1",
+      "bytes": 499824,
+      "sha256": "f76920e114aa790b7e5921497f54543a7b22d44945a1c075d4d1309cbcf384fb",
+      "needed": [
+        "libcrypto.so.1.1",
+        "libdl.so.2",
+        "libpthread.so.0",
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libssp.so.0.0.0",
+      "name": "libssp.so.0.0.0",
+      "bytes": 10184,
+      "sha256": "2a1365635b69c181dfb16ad2cddbaacf4f13194d20307387b348612f6df2177e",
+      "needed": [
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libstdc++.so.6.0.22",
+      "name": "libstdc++.so.6.0.22",
+      "bytes": 1549496,
+      "sha256": "f247fb26b772f4f6815efaf4319f98ffa8d04393c68c929e04cc93f4c7a11160",
+      "needed": [
+        "libm.so.6",
+        "libc.so.6",
+        "libgcc_s.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libtestcmd.so",
+      "name": "libtestcmd.so",
+      "bytes": 18520,
+      "sha256": "3184552b0403bfc2fecf58d4c13bf7c730f3d000f560cfe5cfa4adfeb3c5f2be",
+      "needed": [
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libtestcmd_scn.so",
+      "name": "libtestcmd_scn.so",
+      "bytes": 10216,
+      "sha256": "82ad01b0ad5758f9a311281fd6aca35660fc805ced5c9deae34ed49bfb99e170",
+      "needed": [
+        "libosal_uipc.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libul_GpioCtrl.so",
+      "name": "libul_GpioCtrl.so",
+      "bytes": 10064,
+      "sha256": "4c36648d884bb89d109bb1eda681683ec65e5995cd3d7fa4c1a5228fb41a6e2f",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libul_xml.so",
+      "name": "libul_xml.so",
+      "bytes": 72784,
+      "sha256": "380dbc09a6aee462fb313d9b1254ece8f7ca0421857c5e70f621ccf0159f89a0",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libupdater0604.so",
+      "name": "libupdater0604.so",
+      "bytes": 27088,
+      "sha256": "546ffcea5b4bb6b481248fccd16dede38e3cfcd9c606db03d423dd69dc6a39a7",
+      "needed": [
+        "libbackup.so",
+        "libInfraFsys.so",
+        "libSTMcmdexecute.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libupdaterapi.so",
+      "name": "libupdaterapi.so",
+      "bytes": 105984,
+      "sha256": "2c2915ecb998e2dfc1cbe90400b469db7a1aefa9669eb03e7f062591b022b2a7",
+      "needed": [
+        "libupdatercorecommon.so",
+        "libupdatercommon.so",
+        "libcrypto.so.1.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": [
+        "GetUpdater"
+      ]
+    },
+    {
+      "path": "usr/lib/libupdatercommon.so",
+      "name": "libupdatercommon.so",
+      "bytes": 56032,
+      "sha256": "537d4dc66029fed9bc413e8adc6ade638f1068716cf801536fd5476108a3b797",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libupdatercorecommon.so",
+      "name": "libupdatercorecommon.so",
+      "bytes": 72864,
+      "sha256": "b2b066b963a42d96556f811a773579eb16a0358de1b3a9206a1845c0df99bb74",
+      "needed": [
+        "libupdatercommon.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libupdatertalk.so",
+      "name": "libupdatertalk.so",
+      "bytes": 5896,
+      "sha256": "c46b9bb95bdba6e4a54aefd36836f1c27e229d6af35456a5e2dbd0fcccd856ed",
+      "needed": [
+        "libcrypto.so.1.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libupdaterufunc.so",
+      "name": "libupdaterufunc.so",
+      "bytes": 10088,
+      "sha256": "d6c5757eb10c728b9cf1f6206f7b18c28db8616afbea62beb4ca6f29ca2350ee",
+      "needed": [
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libbackup.so",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libusbcmd.so",
+      "name": "libusbcmd.so",
+      "bytes": 35408,
+      "sha256": "9ad5118de3fd1456a0e96193566ad27ded1b56888260dc65b61a50e8e4ee3361",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libutil_date.so",
+      "name": "libutil_date.so",
+      "bytes": 10032,
+      "sha256": "b810b5508c247cf5fb3da5d9459f1b5533cc30d70f5a9984a7fb404959eab21a",
+      "needed": [
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": []
+    },
+    {
+      "path": "usr/lib/libuudfileinputupdaterapi.so",
+      "name": "libuudfileinputupdaterapi.so",
+      "bytes": 52288,
+      "sha256": "f8a622fd2b038080cf682b22febe60e379b916f72d8890687b1a6b2109c5182e",
+      "needed": [
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libcrypto.so.1.1",
+        "libpthread.so.0",
+        "libstdc++.so.6",
+        "libm.so.6",
+        "libdl.so.2",
+        "libgcc_s.so.1",
+        "libc.so.6",
+        "librt.so.1"
+      ],
+      "input_api_symbols": [
+        "GetUUDFileInputModeUpdater"
+      ]
+    },
+    {
+      "path": "usr/lib/libuuid.so.1.3.0",
+      "name": "libuuid.so.1.3.0",
+      "bytes": 14712,
+      "sha256": "2956149101e1893bd32d8df4d82a7da644c1d184f4a055511c8998333e052f4a",
+      "needed": [
+        "libc.so.6"
+      ],
+      "input_api_symbols": []
+    }
+  ],
+  "dependencies": [
+    {
+      "entry": "sauu",
+      "reachable_libraries": [
+        "libInfraFsys.so",
+        "libInfraMediaCommon.so",
+        "libInfraUsbCmn.so",
+        "libMWF.so",
+        "libSysDef.so",
+        "libbackup.so",
+        "libcrypto.so.1.1",
+        "libgcc_s.so.1",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libupdaterapi.so",
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libupdatertalk.so",
+        "libusbcmd.so"
+      ],
+      "unresolved_needed": [
+        "libSTMcmdexecute.so",
+        "libc.so.6",
+        "libdl.so.2",
+        "libm.so.6",
+        "libpthread.so.0",
+        "librt.so.1",
+        "libstdc++.so.6",
+        "libuuid.so.1"
+      ],
+      "fileinput_library_reachable": false,
+      "cryptfileinput_library_reachable": false
+    },
+    {
+      "entry": "sdfileinput.elf",
+      "reachable_libraries": [
+        "libInfraFsys.so",
+        "libInfraMediaCommon.so",
+        "libMWF.so",
+        "libSysDef.so",
+        "libbackup.so",
+        "libcrypto.so.1.1",
+        "libgcc_s.so.1",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libsdfileinputupdaterapi.so",
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libupdatertalk.so"
+      ],
+      "unresolved_needed": [
+        "libSTMcmdexecute.so",
+        "libc.so.6",
+        "libdl.so.2",
+        "libm.so.6",
+        "libpthread.so.0",
+        "librt.so.1",
+        "libstdc++.so.6",
+        "libuuid.so.1"
+      ],
+      "fileinput_library_reachable": false,
+      "cryptfileinput_library_reachable": false
+    },
+    {
+      "entry": "uudfileinput.elf",
+      "reachable_libraries": [
+        "libInfraFsys.so",
+        "libInfraMediaCommon.so",
+        "libMWF.so",
+        "libSysDef.so",
+        "libbackup.so",
+        "libcrypto.so.1.1",
+        "libgcc_s.so.1",
+        "libosal_uipc.so",
+        "libosal_utm.so",
+        "libupdatercommon.so",
+        "libupdatercorecommon.so",
+        "libupdatertalk.so",
+        "libuudfileinputupdaterapi.so"
+      ],
+      "unresolved_needed": [
+        "libSTMcmdexecute.so",
+        "libc.so.6",
+        "libdl.so.2",
+        "libm.so.6",
+        "libpthread.so.0",
+        "librt.so.1",
+        "libstdc++.so.6",
+        "libuuid.so.1"
+      ],
+      "fileinput_library_reachable": false,
+      "cryptfileinput_library_reachable": false
+    }
+  ],
+  "preverification_slots": [
+    {
+      "library": "libupdaterapi.so",
+      "vtable": "_ZTVN7Updater18UFPDecryptorModuleE",
+      "vtable_va": "0x28b90",
+      "constructor_vptr_proven": true,
+      "constructor_sequence_va": "0x12c98",
+      "constructor_got": "0x28f28",
+      "vptr_offset": 16,
+      "virtual_offset": "0xa0",
+      "slot_va": "0x28c40",
+      "raw_file_pointer": "0x0",
+      "relocation_type": 257,
+      "resolved_va": "0x12c28",
+      "symbol": "_ZN7Updater18UFPDecryptorModule29WaitForFirmwareCopyCompletionEv",
+      "key_path_va": "0x148e2",
+      "key_path": "/etc/VerificationKey.pem"
+    },
+    {
+      "library": "libuudfileinputupdaterapi.so",
+      "vtable": "_ZTVN7Updater22UUDFileDecryptorModuleE",
+      "vtable_va": "0x1b9b8",
+      "constructor_vptr_proven": true,
+      "constructor_sequence_va": "0x8714",
+      "constructor_got": "0x1bf70",
+      "vptr_offset": 16,
+      "virtual_offset": "0xa0",
+      "slot_va": "0x1ba68",
+      "raw_file_pointer": "0x0",
+      "relocation_type": 257,
+      "resolved_va": "0x7cc8",
+      "symbol": "_ZN7Updater18UFPDecryptorModule29WaitForFirmwareCopyCompletionEv",
+      "key_path_va": "0x9d42",
+      "key_path": "/etc/VerificationKey.pem"
+    }
+  ],
+  "limits": [
+    "Only DT_NEEDED graph; dlopen, alternate search paths and optional runtime modules are not ruled out.",
+    "Original engine is historical 2.05, not a readback of the user camera running 7.02.",
+    "No API, mode switch, USB or filesystem write was sent to a camera."
+  ]
+}

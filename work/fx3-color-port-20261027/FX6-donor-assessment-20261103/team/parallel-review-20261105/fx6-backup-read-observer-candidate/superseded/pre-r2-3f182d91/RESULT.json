@@ -1,0 +1,86 @@
+{
+  "schema": "fx6-backup-read-observer-corrected-result-v2",
+  "task": "task_a11971763fc5",
+  "dispatch": "ctx_064d81a251c4",
+  "status": "HOST_ONLY_CORRECTED_NOT_RUNTIME_READY",
+  "offline_complete": true,
+  "runtime_ready": false,
+  "vm_started": false,
+  "guest_contacted": false,
+  "qmp_or_browser_contact": false,
+  "old_authorization_reused": false,
+  "old_observer_modified": false,
+  "target_cpio_sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+  "appfw_sha256": "b1fe2274e19d50b6d7ee12886dc233a742358772383f5cf79523de15cf0b55be",
+  "serial_sha256": "377142e9dcee7f4f7728db6e9fcb822a9f3e501e61da7f719761d4d506f5050e",
+  "baseline_sha256": "854e58f0485537e4644f81daa51d532eea5fa1f5e30887c684e9356e542b9669",
+  "target_thunks": [
+    "0x2169784",
+    "0x21697d4"
+  ],
+  "target_returns": [
+    "0x11f67d4",
+    "0x11f67f4"
+  ],
+  "current_fixture_bias": "0x7ed3ccc000",
+  "fixed_defects": {
+    "rsp_checksum_missing": true,
+    "rsp_fragmentation_ack_console_async": true,
+    "duplicate_T05_thread": true,
+    "map_truncation_and_fallback": true,
+    "cpu_thread_vs_guest_tid": "gdb_cpu_thread; guest_tid unknown; same CPU is not guest-thread proof",
+    "budget_104_of_128": 104,
+    "short_read_reject": true,
+    "possibly_installed_on_ack_loss": true,
+    "private_serial_index20": true,
+    "baseline_app_cpio_hash_in_entry": true,
+    "inherited_api16_cleanup_preserved": true
+  },
+  "execution_adapter": {
+    "path": "observer/execution_adapter.py",
+    "tests": 5,
+    "test_status": "PASS_NO_QEMU_FAKE_LIFECYCLE",
+    "tests_sha256": "0646704b69aaa8e599da8d4d6b6ab5193e8165274006d8330aeb941e7ccacb10",
+    "adapter_sha256": "588ecd22c2b7994a7ee2e651fa6c8b19863af38af13430f8141ca75a089f7460"
+  },
+  "rsp_tests": {
+    "count": 7,
+    "status": "PASS_NO_QEMU_REAL_SOCKET",
+    "sha256": "e0c602265f5e88a54f373e2b5641d004b5fbc3ea99dff530bbf4324f09d78502",
+    "rsp_sha256": "620c159267fdc7f0d6229b91f13fae54d3cf95000a5ed087b8edec034b72ac3c"
+  },
+  "core_tests": {
+    "count": 14,
+    "status": "PASS_NO_QEMU_FAKE_RSP",
+    "sha256": "02e820a7f82a138aa3c121e8da8ba58e263899a8c4535350f4f2c86d74a6a427",
+    "core_sha256": "cb54669ab993a1ece400f92e3f4394fa0f63f6f4d4363395fcf6c63c20c23099"
+  },
+  "input_seal": {
+    "count": 10,
+    "extra_count": 4,
+    "unchanged": true,
+    "path": "receipts/input-compare.json",
+    "extra_path": "receipts/extra-input-compare.json"
+  },
+  "inherited_cleanup": {
+    "required": true,
+    "adapter_self_write": false,
+    "api16_contract": "7f8e164f16223679307598b38ebbde1a5fb1fb20f0b2e5cfa8a285971d43805e",
+    "source": "old runner restore_api103_v2.py; target helper API16 bind lines 1023/1025/1026/1032",
+    "status": "required_callback_missing_in_host_only_entry",
+    "runtime_cleanup_open": true
+  },
+  "default_entries_disabled": true,
+  "approval_token": "APPROVE_GRMREAL46_TWO_KEYS_0214_0218",
+  "plan_only": true,
+  "execution_adapter_does_not_launch": true,
+  "limitations": [
+    "fake RSP/lifecycle tests are not real CPU/menu evidence",
+    "no guest TID derivation from GDB CPU thread",
+    "receiver 0x3e014d remains unresolved",
+    "inherited API16 cleanup callback not supplied; actual runtime clean completion blocked",
+    "no VM run"
+  ],
+  "snapshot": "superseded/initial-e145f8c6/",
+  "report": "REPORT.md"
+}

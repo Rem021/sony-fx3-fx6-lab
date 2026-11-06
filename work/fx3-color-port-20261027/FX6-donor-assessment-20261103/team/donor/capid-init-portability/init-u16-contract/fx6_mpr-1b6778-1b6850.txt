@@ -1,0 +1,60 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001b42f4 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj>:
+  1b6778: f900afa0     	str	x0, [x29, #0x158]
+  1b677c: 97fcf391     	bl	0xf35c0 <_ZN3mpr5Codec29GetEncStatusVideoFrameCounterEv@plt>
+  1b6780: b9412fa1     	ldr	w1, [x29, #0x12c]
+  1b6784: 35000621     	cbnz	w1, 0x1b6848 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2554>
+  1b6788: b9449741     	ldr	w1, [x26, #0x494]
+  1b678c: 350005e1     	cbnz	w1, 0x1b6848 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2554>
+  1b6790: 1e202118     	fcmpe	s8, #0.0
+  1b6794: 540005ad     	b.le	0x1b6848 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2554>
+  1b6798: 1e230001     	ucvtf	s1, w0
+  1b679c: 7940eb42     	ldrh	w2, [x26, #0x74]
+  1b67a0: 92800761     	mov	x1, #-0x3c              // =-60
+  1b67a4: 52800780     	mov	w0, #0x3c               // =60
+  1b67a8: 9ba20400     	umaddl	x0, w0, w2, x1
+  1b67ac: 1e281821     	fdiv	s1, s1, s8
+  1b67b0: 9e230000     	ucvtf	s0, x0
+  1b67b4: 1e202030     	fcmpe	s1, s0
+  1b67b8: 5400048b     	b.lt	0x1b6848 <_ZN16XavcsMovieWriter33CreateFreeBoxHeaderInStreamBufferEPN3mpr10RingBufferEj+0x2554>
+  1b67bc: aa1b03e0     	mov	x0, x27
+  1b67c0: 52800101     	mov	w1, #0x8                // =8
+  1b67c4: 97ff32c2     	bl	0x1832cc <_ZN10KkaDataMgr16SetWriteUnitInfoEPKN14Mp4WriterTable13WriteUnitInfoEjPN3mpr8BaseListENS_15RtMetaWriteUnitE+0x27fc>
+  1b67c8: d2820d81     	mov	x1, #0x106c             // =4204
+  1b67cc: 52800060     	mov	w0, #0x3                // =3
+  1b67d0: 8b0103a1     	add	x1, x29, x1
+  1b67d4: d2820da2     	mov	x2, #0x106d             // =4205
+  1b67d8: d2820dc3     	mov	x3, #0x106e             // =4206
+  1b67dc: d2820de4     	mov	x4, #0x106f             // =4207
+  1b67e0: 39000020     	strb	w0, [x1]
+  1b67e4: 8b0203a0     	add	x0, x29, x2
+  1b67e8: 52800181     	mov	w1, #0xc                // =12
+  1b67ec: 3900001f     	strb	wzr, [x0]
+  1b67f0: 8b0303a0     	add	x0, x29, x3
+  1b67f4: 3900001f     	strb	wzr, [x0]
+  1b67f8: 8b0403a0     	add	x0, x29, x4
+  1b67fc: 3900001f     	strb	wzr, [x0]
+  1b6800: 52846200     	mov	w0, #0x2310             // =8976
+  1b6804: 7920d3a0     	strh	w0, [x29, #0x1068]
+  1b6808: 52804700     	mov	w0, #0x238              // =568
+  1b680c: 7920d7a0     	strh	w0, [x29, #0x106a]
+  1b6810: b9448340     	ldr	w0, [x26, #0x480]
+  1b6814: b91073a0     	str	w0, [x29, #0x1070]
+  1b6818: aa1903e0     	mov	x0, x25
+  1b681c: 97ffdbae     	bl	0x1ad6d4 <_ZN16XavcsMovieWriter15IsEditAvailableEN15BaseMovieWriter8EditTypeEN3mpr15EssenceMarkTypeE+0x1a4>
+  1b6820: a9488346     	ldp	x6, x0, [x26, #0x88]
+  1b6824: 528000a1     	mov	w1, #0x5                // =5
+  1b6828: f9404f45     	ldr	x5, [x26, #0x98]
+  1b682c: 52800004     	mov	w4, #0x0                // =0
+  1b6830: d2800003     	mov	x3, #0x0                // =0
+  1b6834: 52800002     	mov	w2, #0x0                // =0
+  1b6838: 72a80001     	movk	w1, #0x4000, lsl #16
+  1b683c: d63f00c0     	blr	x6
+  1b6840: b94177a0     	ldr	w0, [x29, #0x174]
+  1b6844: b9012fa0     	str	w0, [x29, #0x12c]
+  1b6848: 3966ffa1     	ldrb	w1, [x29, #0x9bf]
+  1b684c: b94193a0     	ldr	w0, [x29, #0x190]

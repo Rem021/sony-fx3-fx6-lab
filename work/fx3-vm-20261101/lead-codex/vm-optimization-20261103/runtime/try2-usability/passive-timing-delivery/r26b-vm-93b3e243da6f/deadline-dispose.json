@@ -1,0 +1,43 @@
+{
+  "current": {
+    "armed_ms": 85266.5,
+    "deadline_ms": 20000,
+    "due_ms": 105266.5,
+    "elapsed_ms": 20002.5,
+    "nonce": "8ea1ded4-1e5f-43e1-8f16-d8bc29e8e6a7",
+    "state": "expired"
+  },
+  "deadline_ms": 20000,
+  "documentTimeOrigin": 1793847556296.2,
+  "events": [
+    {
+      "event": "installed",
+      "performance_ms": 7847.600000023842,
+      "script_SHA256": "852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b",
+      "wall_UTC": "2026-11-05T02:59:24.143Z"
+    },
+    {
+      "due_ms": 105266.5,
+      "event": "armed",
+      "nonce": "8ea1ded4-1e5f-43e1-8f16-d8bc29e8e6a7",
+      "performance_ms": 85266.5,
+      "wall_UTC": "2026-11-05T03:00:41.562Z"
+    },
+    {
+      "elapsed_ms": 20002.5,
+      "event": "end_click",
+      "nonce": "8ea1ded4-1e5f-43e1-8f16-d8bc29e8e6a7",
+      "performance_ms": 105269.10000002384,
+      "wall_UTC": "2026-11-05T03:01:01.565Z"
+    },
+    {
+      "event": "disposed",
+      "performance_ms": 108832.80000001192,
+      "wall_UTC": "2026-11-05T03:01:05.129Z"
+    }
+  ],
+  "expectedLaunchId": "5b87e185-06f5-4223-bfb5-ff4f10248ab2",
+  "expectedURL": "http://127.0.0.1:64077/",
+  "sealed": true,
+  "version": 1
+}

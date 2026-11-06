@@ -1,0 +1,77 @@
+00000e90 fd7bbba9 stp      x29, x30, [sp, #-0x50]!
+00000e94 e30301aa mov      x3, x1
+00000e98 fd030091 mov      x29, sp
+00000e9c f35301a9 stp      x19, x20, [sp, #0x10]
+00000ea0 044138d5 mrs      x4, sp_el0
+00000ea4 840440f9 ldr      x4, [x4, #8]
+00000ea8 638000b1 adds     x3, x3, #0x20
+00000eac e483849a csel     x4, xzr, x4, hi
+00000eb0 63309fda csinv    x3, x3, xzr, lo
+00000eb4 7f0004fa sbcs     xzr, x3, x4
+00000eb8 e3879f9a cset     x3, ls
+00000ebc e30000b5 cbnz     x3, #0xed8
+00000ec0 f47f8012 mov      w20, #-0x400
+00000ec4 e003142a mov      w0, w20
+00000ec8 f35341a9 ldp      x19, x20, [sp, #0x10]
+00000ecc fd7bc5a8 ldp      x29, x30, [sp], #0x50
+00000ed0 c0035fd6 ret      
+00000ed4 1f2003d5 nop      
+00000ed8 f303002a mov      w19, w0
+00000edc a0c30091 add      x0, x29, #0x30
+00000ee0 f40302aa mov      x20, x2
+00000ee4 020480d2 mov      x2, #0x20
+00000ee8 00000094 bl       #0xee8 ; relocation {'symbol': '__arch_copy_from_user', 'addend': 0, 'type': 283}
+00000eec a0feffb5 cbnz     x0, #0xec0
+00000ef0 a01f40f9 ldr      x0, [x29, #0x38]
+00000ef4 60feffb4 cbz      x0, #0xec0
+00000ef8 00000094 bl       #0xef8 ; relocation {'symbol': 'alloc_cb', 'addend': 0, 'type': 283}
+00000efc a01700f9 str      x0, [x29, #0x28]
+00000f00 e00500b4 cbz      x0, #0xfbc
+00000f04 23060058 ldr      x3, #0xfc8
+00000f08 a21f40f9 ldr      x2, [x29, #0x38]
+00000f0c 030800f9 str      x3, [x0, #0x10]
+00000f10 01644039 ldrb     w1, [x0, #0x19]
+00000f14 021000f9 str      x2, [x0, #0x20]
+00000f18 a22340f9 ldr      x2, [x29, #0x40]
+00000f1c 21001d32 orr      w1, w1, #8
+00000f20 13340079 strh     w19, [x0, #0x1a]
+00000f24 01640039 strb     w1, [x0, #0x19]
+00000f28 141800f9 str      x20, [x0, #0x30]
+00000f2c a31b40f9 ldr      x3, [x29, #0x30]
+00000f30 021400f9 str      x2, [x0, #0x28]
+00000f34 014138d5 mrs      x1, sp_el0
+00000f38 e20303aa mov      x2, x3
+00000f3c 210440f9 ldr      x1, [x1, #8]
+00000f40 422000b1 adds     x2, x2, #8
+00000f44 e183819a csel     x1, xzr, x1, hi
+00000f48 42309fda csinv    x2, x2, xzr, lo
+00000f4c 5f0001fa sbcs     xzr, x2, x1
+00000f50 e2879f9a cset     x2, ls
+00000f54 f47f8012 mov      w20, #-0x400
+00000f58 c20000b5 cbnz     x2, #0xf70
+00000f5c 00000094 bl       #0xf5c ; relocation {'symbol': 'free_cb', 'addend': 0, 'type': 283}
+00000f60 e003142a mov      w0, w20
+00000f64 f35341a9 ldp      x19, x20, [sp, #0x10]
+00000f68 fd7bc5a8 ldp      x29, x30, [sp], #0x50
+00000f6c c0035fd6 ret      
+00000f70 a1a30091 add      x1, x29, #0x28
+00000f74 e00303aa mov      x0, x3
+00000f78 020180d2 mov      x2, #8
+00000f7c 00000094 bl       #0xf7c ; relocation {'symbol': '__arch_copy_to_user', 'addend': 0, 'type': 283}
+00000f80 000100b5 cbnz     x0, #0xfa0
+00000f84 a04b40b9 ldr      w0, [x29, #0x48]
+00000f88 a11740f9 ldr      x1, [x29, #0x28]
+00000f8c e0000034 cbz      w0, #0xfa8
+00000f90 603e0053 uxth     w0, w19
+00000f94 00000094 bl       #0xf94 ; relocation {'symbol': 'reg_sync_msg_queue_cb', 'addend': 0, 'type': 283}
+00000f98 f403002a mov      w20, w0
+00000f9c 34feff34 cbz      w20, #0xf60
+00000fa0 a01740f9 ldr      x0, [x29, #0x28]
+00000fa4 eeffff17 b        #0xf5c
+00000fa8 603e0053 uxth     w0, w19
+00000fac 00000094 bl       #0xfac ; relocation {'symbol': 'reg_msg_queue_cb', 'addend': 0, 'type': 283}
+00000fb0 f403002a mov      w20, w0
+00000fb4 74ffff35 cbnz     w20, #0xfa0
+00000fb8 eaffff17 b        #0xf60
+00000fbc d47f8012 mov      w20, #-0x3ff
+00000fc0 e8ffff17 b        #0xf60

@@ -1,0 +1,147 @@
+{
+  "scope": "offline and real browser fixture only; not guest/browser+QEMU acceptance",
+  "browser": {
+    "browser-v22-final-normal": {
+      "receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/browser-v22-final-normal/server-receipt.json",
+      "receipt_sha256": "26d6be047acda70918274f154b05c74cc04a10995a3419da3812e57b7b8e2403",
+      "web_source_matches_freeze": true,
+      "steps": 2,
+      "stage": 4,
+      "key_posts": 2,
+      "confirm_posts": 2,
+      "faults": [],
+      "phase": "finished",
+      "final_acknowledged": true,
+      "server_threads_reaped": true,
+      "no_qemu_or_guest_input": true
+    },
+    "browser-v22-final-confirm-ack-drop": {
+      "receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/browser-v22-final-confirm-ack-drop/server-receipt.json",
+      "receipt_sha256": "333210dd15a0dd4532585838477120f36058a7cbe01f8b3fe0240f82de3571e8",
+      "web_source_matches_freeze": true,
+      "steps": 1,
+      "stage": 2,
+      "key_posts": 1,
+      "confirm_posts": 1,
+      "faults": [
+        "drop-accepted-confirmation-ack"
+      ],
+      "phase": "finished",
+      "final_acknowledged": true,
+      "server_threads_reaped": true,
+      "no_qemu_or_guest_input": true
+    },
+    "browser-v22-final-key-ack-drop": {
+      "receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/browser-v22-final-key-ack-drop/server-receipt.json",
+      "receipt_sha256": "2f1de13c159400cc40b5484d600f840790176a491bb54a39d4347864cf530b1b",
+      "web_source_matches_freeze": true,
+      "steps": 1,
+      "stage": 1,
+      "key_posts": 1,
+      "confirm_posts": 0,
+      "faults": [
+        "drop-accepted-key-ack"
+      ],
+      "phase": "finished",
+      "final_acknowledged": true,
+      "server_threads_reaped": true,
+      "no_qemu_or_guest_input": true
+    },
+    "browser-v22-receipt-confirm-ack-drop": {
+      "receipt_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/browser-v22-receipt-confirm-ack-drop/server-receipt.json",
+      "receipt_sha256": "0c33d172956ecbc0191874e0170ade54335210cb1ab117e2ca9cf31e57cf821a",
+      "web_source_matches_freeze": true,
+      "steps": 1,
+      "stage": 2,
+      "key_posts": 1,
+      "confirm_posts": 1,
+      "faults": [
+        "drop-accepted-confirmation-ack"
+      ],
+      "phase": "finished",
+      "final_acknowledged": true,
+      "server_threads_reaped": true,
+      "no_qemu_or_guest_input": true
+    }
+  },
+  "unit": {
+    "navigation": {
+      "status": "PASS",
+      "checks": [
+        "NO CARD blink does not release key gate or enqueue input",
+        "stale blink identity rejected after full menu transition",
+        "full historical menu identity can clear host gate only",
+        "old image cannot send next key; current full image can",
+        "partial category transition remains locked until current image review",
+        "static no-change may be reviewed without invented pixel change",
+        "End remains possible with review pending and blocks late confirmation",
+        "final receipt and ACK remain functional",
+        "A→B→A stale visual generation cannot submit a new guest key"
+      ],
+      "guest_started": false,
+      "historical_PNG_SHA256": [
+        "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+        "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+        "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "557376846b91022bcb8f7dba6131a559652bc43210e1572e287b23d41f2d5560",
+        "15cb5b958cf6c78c43758f3c5771ef91a90e4de9a1eb06059bb23f2dea1596fc"
+      ],
+      "server_thread_reaped": true
+    },
+    "confirmation_match": {
+      "status": "PASS",
+      "checks": [
+        "exact host confirmation receipt recovers",
+        "other tab or request ID cannot recover",
+        "new step cannot recover",
+        "changed image identity cannot recover",
+        "guest key ACK handling separate",
+        "no automatic confirmation replay"
+      ],
+      "web_sha256": "6f1a3ae9017162a5941b98df5eb87a72c9b64a806f6e11a5b185ea2af1095e1a",
+      "guest_started": false
+    },
+    "startup": {
+      "scope": "v22 production startup and cleanup body; fake process only; real HTTP and flock",
+      "cases": [
+        {
+          "source": "run_trial_v22_navigation_review.py",
+          "scenario": "port_collision",
+          "passed": true,
+          "exit": 2,
+          "original_error": "OSError(48, 'Address already in use')",
+          "real_qemu_started": false,
+          "server_threads_closed": true,
+          "locks_free": true,
+          "health_pass": false
+        },
+        {
+          "source": "run_trial_v22_navigation_review.py",
+          "scenario": "spawn_error",
+          "passed": true,
+          "exit": 2,
+          "original_error": "OSError('fixture process spawn denied')",
+          "real_qemu_started": false,
+          "server_threads_closed": true,
+          "locks_free": true,
+          "health_pass": false
+        },
+        {
+          "source": "run_trial_v22_navigation_review.py",
+          "scenario": "early_exit",
+          "passed": true,
+          "exit": 2,
+          "original_error": "RuntimeError('QEMU startup exited; inspect host-stderr.log')",
+          "real_qemu_started": false,
+          "server_threads_closed": true,
+          "locks_free": true,
+          "health_pass": false
+        }
+      ]
+    },
+    "cache_integration_receipt": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/navigation-review-v22/cache-nav-sd4x7n9d/receipt.json"
+  },
+  "runner_help_exit": 0,
+  "python_compile_exit": 0,
+  "source_freeze_sha256": "d4238f99ef87a8113ae9234f9afd2a8e35dc335ce6f460b44aca28ec82a96ba2"
+}

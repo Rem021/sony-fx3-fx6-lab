@@ -1,0 +1,121 @@
+{
+  "schema": "fx3-im-appfw-static-edge-v1",
+  "originals": {
+    "im.elf": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/bin/im.elf",
+      "bytes": 40920,
+      "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91"
+    },
+    "libIMDB.so": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libIMDB.so",
+      "bytes": 71536,
+      "sha256": "6ceaea432bc7c4645897c2f1272941b33b0c04115ec62ffa000b37faf3d8517d"
+    },
+    "appFw.so": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    }
+  },
+  "im_needed": [
+    "libIMDB.so",
+    "libdl.so.2"
+  ],
+  "imdb": {
+    "raw_symbol_va": "0x1cd38",
+    "entry_index": 143,
+    "entry_va": "0x1f670",
+    "entry_file_offset": "0xf670",
+    "entry_hex": "04000020010000009fffffff830000005cb900000000000065b900000000000095cb00000000000095cb00000000000095cb000000000000efb90000000000007db9000000000000",
+    "kind": "0x20000004",
+    "target_mask": "0xffffff9f",
+    "path": "appFw.so",
+    "init_symbol": "Application_System_Init",
+    "relocations": [
+      {
+        "place_va": "0x1f680",
+        "target_va": "0xb95c",
+        "type": "R_AARCH64_RELATIVE"
+      },
+      {
+        "place_va": "0x1f688",
+        "target_va": "0xb965",
+        "type": "R_AARCH64_RELATIVE"
+      }
+    ]
+  },
+  "im_calls": [
+    {
+      "caller_va": "0x406564",
+      "file_offset": "0x6564",
+      "instruction_le": "c3efff97",
+      "target_va": "0x402470"
+    },
+    {
+      "caller_va": "0x4065f0",
+      "file_offset": "0x65f0",
+      "instruction_le": "61ffff97",
+      "target_va": "0x406374"
+    },
+    {
+      "caller_va": "0x40639c",
+      "file_offset": "0x639c",
+      "instruction_le": "e5efff97",
+      "target_va": "0x402330"
+    },
+    {
+      "caller_va": "0x4064a0",
+      "file_offset": "0x64a0",
+      "instruction_le": "53ffff97",
+      "target_va": "0x4061ec"
+    },
+    {
+      "caller_va": "0x406284",
+      "file_offset": "0x6284",
+      "instruction_le": "e8feff97",
+      "target_va": "0x405e24"
+    },
+    {
+      "caller_va": "0x405eac",
+      "file_offset": "0x5eac",
+      "instruction_le": "a9f0ff97",
+      "target_va": "0x402150"
+    },
+    {
+      "caller_va": "0x405f0c",
+      "file_offset": "0x5f0c",
+      "instruction_le": "5df0ff97",
+      "target_va": "0x402080"
+    }
+  ],
+  "dynamic_relocations": {
+    "dlopen": {
+      "jump_slot_va": "0x4190f0",
+      "relocation": "R_AARCH64_JUMP_SLOT",
+      "dynsym_index": 31
+    },
+    "dlsym": {
+      "jump_slot_va": "0x419088",
+      "relocation": "R_AARCH64_JUMP_SLOT",
+      "dynsym_index": 10
+    }
+  },
+  "key_instruction": {
+    "va": "0x405e3c",
+    "file_offset": "0x5e3c",
+    "bytes_le": "140840f9",
+    "meaning": "x20 <- descriptor+0x10 (library name)"
+  },
+  "existing_vm_observation": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap94r3center-f3bba0ba/serial.log",
+    "line": "FX3_PROVIDER_CALLER module=/usr/lib/appFw.so relative=0x2de7264",
+    "limit": "VM log only; no live camera/cold-start identity"
+  },
+  "conclusion": "static original descriptor -> im loader dispatch -> dlopen@plt edge verified",
+  "unknown": [
+    "exact cold-start selection on camera",
+    "live camera file and memory hashes",
+    "WBI image identity",
+    "application init success on real hardware"
+  ]
+}

@@ -1,0 +1,133 @@
+--- r40-original/REPORT.md
++++ r40-review-revision-1/REPORT.md
+@@ -1,7 +1,9 @@
+ # FX3｜DeepSeek菜单延迟分解（r40，只读）
+ 
+-**结论先行：r38 仍是 failed，不改判。** 本轮只分析原固件 r38 的 MENU 单键性能，不重试按键、不延长原 20 秒截止、不把“看到菜单”当作验收通过，也不涉及 FX6 实现。MENU 键（0x1ab）的原生 down/up/done 链成立；完整菜单内容（ring frame 200）在 guest `CLOCK_MONOTONIC` 70.286425 s 提交，距按键 up 接收 9.494934 s、距 down 接收 9.644837 s。时间主要花在三次 GPE 绘制批次及其间空档，而不是某个单次慢调用：最大动态队列调用 21.3 ms，最大 `SendDrawComp` 104.1 ms。主机侧原 20 秒 alarm 先到，pin 在 alarm 后 5.286 s 才进入；`obs1→obs2` 的 8.44 s 与 `obs2→pin` 的 11.59 s 是工具/调度空档，期间 guest 仍在推进，不能全部算作固件耗时。原始 20 秒截止没有放宽，r38 的“1 accepted / 0 pin / 0 confirm / 0 passed”保持不变。
++**结论先行：r38 仍是 failed，不改判。** 本轮只分析原固件 r38 的 MENU 单键性能，不重试按键、不延长原 20 秒截止、不把“看到菜单”当作验收通过，也不涉及 FX6 实现。MENU 键（0x1ab）的原生 down/up/done 链成立；完整菜单内容（ring frame 200）在 guest `CLOCK_MONOTONIC` 70.286425 s 提交，距按键 up 接收 9.494934 s、距 down 接收 9.644837 s。在完成点序列上，9.494934 s 分布于三次 GPE 完成批次及其间完成间隔；由于日志只有完成侧标记，这不能作为 CPU 时间或因果归因，也不能排除间隔中已有命令在执行。最大动态队列调用 21.3 ms，最大 `SendDrawComp` 104.1 ms。主机侧原 20 秒 alarm 先到，pin 在 alarm 后 5.286 s 才进入；`obs1→obs2` 的 8.44 s 与 `obs2→pin` 的 11.59 s 是工具/调度空档，期间 guest 仍在推进，不能全部算作固件耗时。原始 20 秒截止没有放宽，r38 的“1 accepted / 0 pin / 0 confirm / 0 passed”保持不变。
+ 
++**修订说明（review-revision-1）：** 本文件是 r40 初稿的修订；原 r40 封存文件未改。三项复核意见的处理、被删除的可执行建议、时钟措辞与 v1/v2 头绑定见 `REVISION-NOTES.md`，原报告到本修订的文本变化见 `REPORT.diff`。
++
+ ---
+ 
+ ## 1. 输入、只读边界与卷身份
+@@ -14,29 +16,29 @@
+ 
+ ## 2. 时钟域、可用锚点与误差
+ 
+-**先给规则：guest `ns` 只在 guest `CLOCK_MONOTONIC` 内相减；内核 printk 的 `[N]` 不是同一域，未用于任何减法；host monotonic 只通过显式锚点区间换算，且给出半宽。**
++**先给规则：guest `ns` 只在 guest `CLOCK_MONOTONIC` 内相减；内核 printk 的 `[N]` 不是同一域，未用于任何减法；host monotonic 与 guest 只分别列出，不建立确定的 guest↔host 换算，主要结论只用同域量。**
+ 
+ | 域 | 证据（源码/原件） | 用途 | 误差/限制 |
+ |---|---|---|---|
+ | G：guest `CLOCK_MONOTONIC`（id=1） | `fx3-gpe-command-wait102-v1.h:11` `gpe102_now()` 用 `GPE102_CLOCK_MONOTONIC=1`；`fx3-complete104-observe-v1.h:11,17,23,30` 的 `ns` 均来自它；`fx3-osd-r35.c:26` `timing_ns()` 用 `clock_gettime(1)`，`:101` 打印 `clock_id=1`；`fx3-rm-empty-provider-v8-long-use-timing.c:12` `now()` 用 `clock_gettime(1)`，`:30` 打印 `clock_id=1`；`fx3-rm-key-gate-v6-long-use.inc:20` 的 `KEY95_STEP_DONE` 用 `now()` | GPE104/GPE102/KEY95/KEY96/OSD102 的 `ns` | 同一域内相减；分辨率来自 guest 时钟，未单独标定 |
+ | K：guest 内核 printk `[N]` | 本任务未取得可核对的 printk 生产源码 | 仅按 serial 行序判断先后 | 与 G **不是**同一域：17 个同字节行共存点近似为 `K ≈ 31.25×G + 10.79 s`，残差 σ≈0.13 s；只说明不能把 K 当秒，不能用于换算（成因未知） |
+-| H：host monotonic（`mach`/`time.monotonic`） | `osd-ring-readback.json` 的 `host_monotonic`；`tool-timeline.jsonl` 的 `host_ns` | 主机动作、ring 读回、工具空档 | 与 G 的仿射偏移由 3 个 frame 对 + 1 个 key 锚点夹出：`O = H - G ∈ [448200.588875, 448200.772584] s`，中点 448200.680730 s，半宽 ±0.0919 s。frame 读回发生在 commit 之后、key receive 发生在 host send 之后，故是单侧边界 |
++| H：host monotonic（`mach`/`time.monotonic`） | `osd-ring-readback.json` 的 `host_monotonic`；`tool-timeline.jsonl` 的 `host_ns` | 主机动作、ring 读回、工具空档 | 与 G 的逐帧差值 `d_i = H - G` 仅作记录：448200.871482 / 448200.852545 / 448200.772584 s；其 0.0989 s 变化是**差值变化**，不是 ring 读回延迟。条件区间 `[448200.588875, 448200.772584]` 仅当假定 H-G 恒定、斜率 1 且因果锚点成立时才是条件性的，**未校准，不用于换算/结论** |
+ | B：browser `performance_ms` | observation JSON 的 arm/due/observed 区间、`documentTimeOrigin` | arm、20 s alarm、两次观察窗 | 用 arm 的 wall UTC 在 host timeline 上线性插值：arm host = 448261.080321 s，插值括号 0.068 s；只用于主机窗口对照 |
+ | U：UTC | tool timeline 的 `UTC`、观察 JSON 的 wall UTC | 交叉核对 | 只用插值，不作为固件时钟 |
+ | UI 内部 clock 7 | `fx3-ui-r35.c:33` `now()` 用 `clock_gettime(7)`（BOOTTIME） | 仅内部状态，不进入本报告时间减法 | 本报告未使用 |
+ 
+ 可用锚点及误差：
+ 
+-1. **帧对锚点（G→H）**：frame 198/199/200 的 guest commit `ns` 与 ring `host_monotonic` 的差值分别为 448200.871482、448200.852545、448200.772584 s；三者跨度 0.0989 s，说明 ring 读回相对 commit 的延迟稳定在约 0.1 s 量级。
+-2. **按键锚点（G→H 下界）**：host `sent_monotonic=448261.230463375` 减去 guest down 接收 `60.641588 s`，得 448200.588875 s。按键 receive 发生在 send 之后，因此这是偏移下界。
+-3. 因此 `H - G` 取 `[448200.588875, 448200.772584]`，**不要**把 guest ns 直接当 host 秒，也不要把 host 秒直接当 guest ns。
+-4. browser arm 的 host 时刻 448261.080321 s 由 wall UTC 插值得到；alarm 的 host 时刻由 `original_alarm_End_elapsed_ms=20001.4` 得 448281.081721 s；两者之差即 20.0014 s，未被本轮修改。
++1. **帧对差值（G 与 H 独立列）**：frame 198/199/200 的 guest commit `ns` 与 ring `host_monotonic` 的差值分别为 448200.871482、448200.852545、448200.772584 s。三者跨度 0.0989 s 只说明这三个差值之间的散布；差值本身包含未知的跨域偏移与读回延迟，**不能**说“ring 读回延迟稳定在 0.1 s 量级”。
++2. **按键差值**：host `sent_monotonic=448261.230463375` 减去 guest down 接收 `60.641588 s` 得 448200.588875 s；该值同样受传输/调度影响，只能作为一条条件性观察，不是校准。
++3. 因此本报告**不建立** `H = G + 常数` 的确定映射；`[448200.588875, 448200.772584] s` 仅是“恒定偏移/斜率 1/因果锚点成立”前提下的条件区间，不用于把 guest ns 变成 host 秒或反之。主要结论分别使用 guest 同域量和 host 同域量。
++4. browser arm 的 host 时刻 448261.080321 s 由 wall UTC 在 host timeline 上插值得到（括号 0.068 s）；alarm 的 host 时刻由 `original_alarm_End_elapsed_ms=20001.4` 得 448281.081721 s；两者之差即 20.0014 s，未被本轮修改。
+ 
+ ## 3. key 与 GPE 标签语义（从生产源码与实际 CPIO 成员核验）
+ 
+ ### 3.1 实际日志生产者的绑定
+ 
+-- GPE observer 的实际 CPIO 成员 `simulation/fx3-gpe-observe-v7.so`：276984 B，SHA256 `30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4`，与 r33 `GPE-SOURCE-BINDING.json` 的 `actual_helper_sha256` 以及 `fx3-gpe-observe-v26-perf-ap105.so` 一致；该源码 `fx3-gpe-observe-v26-perf.c` 的 SHA256 `06f6d296...` 与绑定中的 expected 一致，`cache-v26.inc`、`resource-v26.inc` 也匹配。成员切片内实见 `FX3_GPE104_CMD_RETURN`、`FX3_GPE_NATIVE_TARGET`、`FX3_GPE_CMD op=`、`FX3_GPE_DRAW_INTERVAL` 字符串。
++- GPE observer 的实际 CPIO 成员 `simulation/fx3-gpe-observe-v7.so`：276984 B，SHA256 `30667f76ccfa3f0b9b4834b1fbce725a76683ccd775615ed66955d49200d7ba4`，与 r33 `GPE-SOURCE-BINDING.json` 的 `actual_helper_sha256` 以及 `fx3-gpe-observe-v26-perf-ap105.so` 一致；该源码 `fx3-gpe-observe-v26-perf.c` 的 SHA256 `06f6d296...` 与绑定中的 expected 一致，`cache-v26.inc`、`resource-v26.inc` 也匹配。成员切片内实见 `FX3_GPE104_CMD_RETURN`、`FX3_GPE_NATIVE_TARGET`、`FX3_GPE_CMD op=`、`FX3_GPE_DRAW_INTERVAL` 字符串。该成员内嵌源码路径字符串 `menu-repair-01/runtime/helpers/fx3-complete104-observe-v1.h`，且未出现 `fx3-complete104-observe-v2-profile104.h`、`P104`/`pr104`/`profile104` 标记；因此实际绑定的是 **v1** 头，不是 v2-profile104。v2 文件存在但未被该成员引用。
+ - 按键 provider 的实际成员名为历史槽位 `simulation/fx3-rm-empty-provider-v3-setup.so`：57600 B，SHA256 `ff38874e128d517147b1712588bf68d24412dae781a390eaa8bd7d230c3c1707`，与 `mss-all-key-contrast/passive-timing-next/build/rm-timing.so` 完全一致；后者由 `fx3-rm-empty-provider-v8-long-use-timing.c`（SHA256 `7467449b...`，与 `source-receipt.json` 的 candidate 一致）构建。成员切片内实见 `wait_enter_ns`、`FX3_KEY95_STEP_DONE`、`FX3_KEY96_POLL`、`clock_id=1`。**成员名是历史槽位名，不能按名字推断内容**，以上以哈希+字符串为准。
+ - OSD 的实际成员 `simulation/fx3-osd-headless-v5.so`：109000 B，SHA256 `7adfef8f...`，切片内实见 `FX3_OSD102_COMMIT`、`clock_id=1`；其用户态时钟函数来自 r35 源码 `fx3-osd-r35.c:26`。
+ 
+@@ -85,15 +87,17 @@
+ - down 接收 → frame 200：**9.644837 s**；up 接收 → frame 200：**9.494934 s**。
+ - 因此“首帧变化”与“完整菜单”必须分开说；前者不能替代后者，后者也不能替代 pin/confirm。
+ 
+-### 5.2 从 up 接收到完整菜单的精确分段
++### 5.2 从 up 接收到完整菜单的完成点分段（非 CPU/因果）
+ 
++以下七段是 GPE **完成点**之间的互斥间隔；命令起始时刻未记录，不能把空档称为“无命令执行”，也不能把批次时长称为 CPU 时间。
++
+ | 段 | 区间/seq | 时长 | 占比 | 证据 |
+ |---|---|---:|---:|---|
+-| 首个 GPE 完成前空档 | up 60.791491 → seq 176 完成 62.688123 | **1.896632 s** | 20.0% | 期间无 GPE 命令；有 AP89 screen open/create 标记（60.84–61.32）与 3 次 MSS 队列标记（61.977–61.992），但其完整语义未证明 |
++| 首个 GPE 完成前空档 | up 60.791491 → seq 176 完成 62.688123 | **1.896632 s** | 20.0% | 期间没有记录到 GPE 命令完成（命令日志在完成侧，不能排除已在执行的长命令）；有 AP89 screen open/create 标记（60.84–61.32）与 3 次 MSS 队列标记（61.977–61.992），但其完整语义未证明 |
+ | 批次 A | seq 176–244 完成（62.688123→64.720493） | **2.032370 s** | 21.4% | 69 条命令：4 FillRect + 64 BitBlit + 1 Flush；中位完成间隔 24.4 ms |
+-| A→B 空档 | 64.720493→66.295142 | **1.574649 s** | 16.6% | 无新 GPE 命令；不是把 A 的时长重复相加 |
++| A→B 空档 | 64.720493→66.295142 | **1.574649 s** | 16.6% | 期间没有记录到新的 GPE 命令完成（不排除执行中的长命令）；不是把 A 的时长重复相加 |
+ | 批次 B | seq 245–314 完成（66.295142→67.555113） | **1.259971 s** | 13.3% | 70 条：4 FillRect + 65 BitBlit + 1 Flush；中位 16.7 ms |
+-| B→C 空档 | 67.555113→68.309768 | **0.754655 s** | 7.9% | 无新 GPE 命令 |
++| B→C 空档 | 67.555113→68.309768 | **0.754655 s** | 7.9% | 期间没有记录到新的 GPE 命令完成（不排除执行中的长命令） |
+ | 批次 C | seq 315–390 完成（68.309768→70.123367） | **1.813599 s** | 19.1% | 76 条：4 FillRect + 71 BitBlit + 1 Flush；中位 19.9 ms；max 179.8 ms（seq 349→350） |
+ | C flush → frame 200 提交 | 70.123367→70.286425 | **0.163058 s** | 1.7% | OSD ring commit 延迟（该段是 C 之后的单列项） |
+ | **合计** | up→frame 200 | **9.494934 s** | 100% | 七段严格闭合；未把动态/COMPLETE 时长另外加入 |
+@@ -109,7 +113,7 @@
+ | GPE 命令完成间隔 | 390 个间隔 | 最大 **2.138303 s**（seq 175→176）、1.574649 s（244→245）、0.754655 s（314→315） | 这些是完成间隔，包含空档/等待；不能当单条命令执行时间 |
+ | `GPE102_LOCK_WAIT` | **0 条** | — | 本轮 serial 无该标签记录，无法判断锁竞争；不能写成“无锁竞争” |
+ 
+-所以 MENU 慢在“三次绘制批次 + 两段批次间空档 + 首段输入到首绘空档”，不是某一个 100 ms 级调用；104 ms 的 flush 相对 9.49 s 只占约 1.1%。
++所以从完成点看，时间分布在“三次完成批次 + 两段完成间隔 + 首段到首个完成”，不是某一个 100 ms 级调用；104 ms 的 flush 相对 9.49 s 只占约 1.1%。但“空档”只表示没有记录到完成，不能排除其中已有长命令在执行；这只是完成侧观测，不是 CPU 或因果归因。
+ 
+ ### 5.4 ring 数据、首帧与重复提交
+ 
+@@ -125,7 +129,6 @@
+ | Start 按钮进入 | 448199.093510 | — | tool timeline；本轮仅一次 Start |
+ | arm | 448261.080321（估计） | 0 | arm wall UTC 插值；performance 94010.7 ms |
+ | MENU 请求/发送 | 448261.174937 / 448261.230463 | +0.095 / +0.150 | `trial-input-events.jsonl` |
+-| down/up 接收（guest） | G 60.641588 / 60.791491 | 约 +0.42 / +0.57（按偏移中点） | G→H 仅近似，不用于精确先后 |
+ | obs1 窗口 | 448266.085→448266.163 | **+5.005→+5.083 s** | performance 99015.7–99093.2；实际显示 seq 197（待机） |
+ | frame 198 ring 读回 | 448265.949700 | **+4.869 s** | ring `host_monotonic`；比 obs1 截图早约 0.14–0.21 s |
+ | frame 199 ring 读回 | 448268.713218 | +7.633 s | ring |
+@@ -135,14 +138,16 @@
+ | pin 工具进入 | 448286.367999 | **+25.2877 s** | tool timeline；**alarm 后 5.286 s** |
+ | 首次 cleanup 进入 | 448286.419453 | +25.3391 s | tool timeline |
+ 
++MENU down/up 接收的 guest ns（60.641588 / 60.791491）只列在 5.1；本表 host 相对 arm 的数字全部来自 host/browser 域，未把 guest ns 换算成 host。
++
+ **两次工具空档（协调端原口径）：**
+ 
+-- `click child end → observe child start` = **8.379532 s**（协调 `r38-coordinator-final-review.json` 的 `intercall_gaps`）；本任务 tool-stage 口径为 8.442112 s（click tool return prepared → observe2 entry），差约 0.06 s 是 child 进程边界与工具阶段边界的差异。该空档内 guest 依次提交了 frame 198/199/200（host ring 读回 448265.95/448268.71/448271.06），所以**不能**把 8.38 s 当固件耗时；它是“模型收图/审阅/调度”与 guest 绘制重叠。
+-- `observe child end → pin child start` = **11.531242 s**（协调口径）；tool-stage 口径 11.588929 s（observe2 return prepared → pin entry）。该空档从 obs2 结束（约 +13.68 s）跨过 +20.0 s deadline 到 pin 进入（+25.2877 s）；期间 guest 只是重复提交同一 `pixel_source=200` 内容，没有新的菜单内容阶段。故原 20 秒截止前 pin 未发生的主因是**主机侧调度空档**，不是这段时间的固件新增计算；但 r38 仍因未在 20 秒内完成 pin/confirm 而 failed，这个结论不变。
++- `click child end → observe child start` = **8.379532 s**（协调 `r38-coordinator-final-review.json` 的 `intercall_gaps`）；本任务 tool-stage 口径为 8.442112 s（click tool return prepared → observe2 entry），差约 0.06 s 是 child 进程边界与工具阶段边界的差异。该 host 空档内，ring 的 host 读回记录到 frame 198/199/200（448265.95/448268.71/448271.06）；guest 侧同段也完成了对应提交（两域分别陈述，不互相换算）。因此**不能**把 8.38 s 当固件耗时；它是“模型收图/审阅/调度”与 guest 进度的重叠。
++- `observe child end → pin child start` = **11.531242 s**（协调口径）；tool-stage 口径 11.588929 s（observe2 return prepared → pin entry）。该空档从 obs2 结束（约 +13.68 s）跨过 +20.0 s deadline 到 pin 进入（+25.2877 s）；guest 侧记录显示该段只是重复提交同一 `pixel_source=200` 内容，没有新的菜单内容阶段（host 空档与 guest 提交分属两域，不互相换算）。故原 20 秒截止前 pin 未发生的主因是**主机侧调度空档**，不是这段时间的固件新增计算；但 r38 仍因未在 20 秒内完成 pin/confirm 而 failed，这个结论不变。
+ 
+ **首次保留菜单的边界：** 本轮没有 pin 成功的固定图；唯一保留的完整菜单画面是 observation-2 的历史未固定截图（页面 PNG SHA `339ae68e...`，画布 hash `60e9accc...`）。它不是 pin、不是 confirm、不是独立审阅快照。frame 200 是 ring 中的被动读回，属于软件 OSD 采样，不是原生 CP 合成层的像素因果证明（`CP_composition_panel_acceptance=false`）。obs1 在 +5.0 s 仍是待机，说明“+5 s 没有菜单”不等于“固件在 +5 s 还没开始画”：ring 在 +4.87 s 已有 frame 198，但浏览器到 +5.08 s 仍显示 seq 197，存在至少约 0.21 s 的发布/显示延迟，精确通道未知。
+ 
+-**20 秒对照：** 固件完整菜单提交在 up 后 9.495 s（down 后 9.645 s），按 guest 时钟明显早于 20 s；obs2 在 +13.62 s 也看到了完整菜单，距 deadline 还有约 6.34 s。但 pin 直到 +25.2877 s 才进入，晚于 deadline 5.286 s。**这只说明“原固件在单次运行中约 9.5 s 画出完整菜单”，不证明 20 秒内一定能完成 pin/confirm，也不允许放宽原 20 秒截止或自动语义通过。**
++**20 秒对照：** 固件完整菜单提交在 up 后 9.495 s（down 后 9.645 s，guest 同域），按 guest 时钟早于 20 s；obs2 在 host 的 +13.62 s 也看到了完整菜单（host 域），距 deadline 还有约 6.34 s。两个数字分属不同域，不能相减或互相换算。但 pin 直到 +25.2877 s 才进入，晚于 deadline 5.286 s。**这只说明“原固件在单次运行中约 9.5 s 画出完整菜单”，不证明 20 秒内一定能完成 pin/confirm，也不允许放宽原 20 秒截止或自动语义通过。**
+ 
+ ## 7. 归因分类：实测、调度、未知
+ 
+@@ -152,16 +157,17 @@
+ | 主机调度空档 | click→obs2；obs2→pin；pin 晚于 deadline | 8.3795–8.4421 s；11.5312–11.5889 s；5.286 s | 与 guest 进度重叠，不计固件；不据此改 r38 |
+ | 未知/未证明 | 首个 GPE 完成前的 1.896632 s 内具体工作；A→B 1.574649 s、B→C 0.754655 s 的等待/工作比例；每条命令的起始时刻；为何是三次 flush/三版像素；kernel printk 时钟 31.25× 的成因；浏览器发布/合成延迟；CPU 时间 | — | 明确标 unknown，不用名称补语义 |
+ 
+-特别说明：5.2 的七段是“完成点划分”的 walltime，互不重叠；动态和 COMPLETE 的时长是嵌套在其中的单次调用，**没有**再加到 9.494934 s 上。工具空档与 guest 进度是并行/重叠关系，也**没有**与固件分段相加。
++特别说明：5.2 的七段是 guest `CLOCK_MONOTONIC` 同域内的“完成点划分”间隔，互不重叠；动态和 COMPLETE 的时长是嵌套在其中的单次调用，**没有**再加到 9.494934 s 上。工具空档与 guest 进度是并行/重叠关系，也**没有**与固件分段相加。
+ 
+-## 8. 最多 3 个具体优化建议（保留独立视觉判断、pin/confirm 和原 20 秒截止）
++## 8. 最多 3 个具体优化建议（本轮只给 2 条，不凑满）
+ 
+-1. **主机侧：把“第二次观察”和“显式 pin”合并为同一次操作工具调用（或预先把 pin 请求绑定到本次 attempt），去掉 obs2→pin 的 11.53–11.59 s 调度空档。** 依据：obs2 在 arm+13.62 s 已看到完整菜单，距 deadline 还有 6.34 s；但 pin 在 +25.2877 s 才进入。该改动不延长期限、不自动判语义，pin 仍是显式调用，confirm 仍由独立视觉审阅完成；预期只是把已知的主机空档压掉，仍需真实运行验证。
+-2. **guest 侧：为首个 GPE 完成前的 1.90 s 与两次批次间 1.57/0.75 s 增加“起始侧”标记（输入分发、screen open/create、presenter/队列调用），把等待与计算分开。** 依据：现有 GPE 日志只在完成侧打印，命令起始时刻完全缺失；1.896632 s 内仅见 screen open/create 与 MSS 队列标记，无法归因。该改动是测量而非改语义，先取得可归因数据，再决定是否优化。
+-3. **guest 侧：核查三次全帧 flush 与完整菜单后 89 次同内容重提交，评估在不改变原生绘制语义的前提下合并/抑制重复提交。** 依据：frame 198/199/200 为三版不同像素，201–289 全部 `pixel_source_seq=200`（保留样本同 PNG 哈希，约 10 Hz 重提交）。这可能改善完整菜单后的持续开销和后续按键响应，但不保证缩短首菜单时间；必须新运行、保留独立视觉判断与 pin/confirm，不能自动通过。
++**合同边界（不列为建议、不实施）：** 把第二次观察与 pin 合并、或预先绑定 pin，会消掉“观察图真实返回 → 独立视觉决定 → pin → 固定 PNG 再审 → 独立 confirm”的边界；它属于当前合同之外，本报告不实施，也不承诺可省 11.53 s。r27 短模板已明确每次只发起一个动作、不自动 pin/confirm；r37/r38 已使用预载与 +5 s 首观察，本报告不再把它们当新增方案。r27 的 12.773 s 只是单次历史回放，不是未来下界；成功 pin POST 尾段约 0.024–0.080 s，也不能与含前置等待的完整 capture 重复相加。
+ 
+-以上建议都不改变原 20 秒截止，不重试本次按键，不把 r38 改成通过，也不涉及 FX6。
++1. **guest 侧：为首个 GPE 完成前的 1.90 s 与两次批次间 1.57/0.75 s 增加“起始侧”标记（输入分发、screen open/create、presenter/队列调用），把等待与计算分开。** 依据：现有 GPE 日志只在完成侧打印，命令起始时刻完全缺失；1.896632 s 内仅见 screen open/create 与 MSS 队列标记，无法归因。该改动是测量而非改语义，先取得可归因数据，再决定是否优化；不改变原 20 秒截止、不自动判语义。
++2. **guest 侧：核查三次全帧 flush 与完整菜单后 89 次同内容重提交，评估在不改变原生绘制语义的前提下合并/抑制重复提交。** 依据：frame 198/199/200 为三版不同像素，201–289 全部 `pixel_source_seq=200`（保留样本同 PNG 哈希，约 10 Hz 重提交）。这可能改善完整菜单后的持续开销和后续按键响应，但不保证缩短首菜单时间；必须新运行、保留独立视觉判断与 pin/confirm，不能自动通过。
+ 
++以上 2 条都不改变原 20 秒截止，不重试本次按键，不把 r38 改成通过，也不涉及 FX6。
++
+ ## 9. 未知、缺失与不可声称
+ 
+ - 单次运行，不能证明稳定性、全菜单、31/32 键、60 分钟、4096 键或 FX6 开机；本轮未启动 FX6，也未重试被提供方拒绝的实现。

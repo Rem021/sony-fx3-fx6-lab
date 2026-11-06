@@ -1,0 +1,43 @@
+{
+  "status": "NEW_PACKAGE_BOUNDARIES_AND_OWN_CHILD_PASS",
+  "checks": 5,
+  "rows": [
+    {
+      "case": "authority_and_preflight",
+      "status": "PASS",
+      "live_queries": 0,
+      "staging": false
+    },
+    {
+      "case": "fixed_permit_and_native_frame_RAM_only",
+      "status": "PASS",
+      "permit_checks": {
+        "permit_and_registry_checks": 17,
+        "root_or_USB_operations": 0
+      },
+      "frame_bytes": 4096
+    },
+    {
+      "case": "new-bound-match",
+      "status": "PASS",
+      "observed_status": "HOST_RETURN_CAMERA_STATE_UNVERIFIED",
+      "frames": 80,
+      "actual_root_or_USB": false
+    },
+    {
+      "case": "new-bound-mismatch",
+      "status": "PASS",
+      "observed_status": "HOST_CONTROL_RETURN_CAPABILITY_UNTESTED",
+      "frames": 44,
+      "actual_root_or_USB": false
+    },
+    {
+      "case": "frozen_render_and_members",
+      "status": "PASS",
+      "members": 69,
+      "command_executed": false
+    }
+  ],
+  "actual_root_or_IOKit_executed": false,
+  "native_job_staged": false
+}

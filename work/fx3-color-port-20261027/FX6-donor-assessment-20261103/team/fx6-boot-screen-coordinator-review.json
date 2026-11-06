@@ -1,0 +1,36 @@
+{
+  "schema": "fx6-boot-screen-coordinator-review-v1",
+  "utc": "2026-11-05T16:41:25.410306+00:00",
+  "status": "static_input_contract_accepted_runtime_cause_inferred",
+  "task": "task_97919f2e6f0f",
+  "dispatch": "ctx_a9695459fefe",
+  "report": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-boot-screen-contract/REPORT.md",
+  "manifest_sha256": "a90eb07a9b67e22407dd703d35c8cedbe67e8a294942df2a06d5bf459be14f73",
+  "manifest_items_verified": 25,
+  "mismatches": [],
+  "independent_function_region_hash": "c802ebf53f6be40c9a17c89fd68e4bbc34134065d4ca555b38b25f381f77f6f0",
+  "function_region_target_donor_equal": true,
+  "input_mismatch": {
+    "0x02cf0214": {
+      "target_length": 4,
+      "target_raw": "16161616",
+      "fx6_template_length": 1,
+      "fx6_template_raw": "00"
+    },
+    "0x02cf0218": {
+      "target_length": 4,
+      "target_raw": "19191919",
+      "fx6_template_length": 1,
+      "fx6_template_raw": "01"
+    }
+  },
+  "assert_predicate": "local uint32 not in {0,1}; static disassembly reviewed",
+  "runtime_value_capture": false,
+  "assert_fatal": false,
+  "direct_menu_blocking_proven": false,
+  "reader_width_semantics_verified": false,
+  "next_required": "verify actual Backup_nread implementation handling length1 vs capacity4, return status and tail bytes; establish data producer and shared FX3 consumer constraints before any migration candidate",
+  "new_VM": false,
+  "deployed": false,
+  "fixed_platform_changed": false
+}

@@ -1,0 +1,47 @@
+{
+  "status": "NO_QEMU_HOST_TESTS_PASS",
+  "cases": {
+    "exact_preflight": {
+      "passed": true,
+      "identity_20_ELF_rejects": 2,
+      "full_CPIO_exceptions": 3
+    },
+    "wrong_candidate_denied": {
+      "passed": true
+    },
+    "incremental_repeated_RC": {
+      "passed": true,
+      "values": [
+        0,
+        0,
+        -7
+      ]
+    },
+    "unterminated_tail_fault": {
+      "passed": true
+    },
+    "cleanup_success_fake": {
+      "passed": true,
+      "QMP": [
+        "stop",
+        "quit"
+      ],
+      "own_process_reaped": true
+    },
+    "cleanup_restore_failure_fake": {
+      "passed": true,
+      "restore_gate_stays_false": true,
+      "own_process_reaped": true
+    },
+    "budget_and_no_FX3_IPC_success_marker": {
+      "passed": true
+    },
+    "classifier_fixtures": {
+      "passed": true,
+      "count": 19
+    }
+  },
+  "qemu_started": false,
+  "candidate_sha256": "bb618bd24f0b504edb14820da4d8204c4b1517cc225e4633eb43f5884f3fff02",
+  "runner_sha256": "aaa9ca518d580fde7ca9fdbf2c33bebe78545d96876f997168643f33bdf4a24a"
+}

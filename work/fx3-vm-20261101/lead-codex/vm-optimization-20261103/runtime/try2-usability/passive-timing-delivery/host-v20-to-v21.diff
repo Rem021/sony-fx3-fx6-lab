@@ -1,0 +1,65 @@
+--- work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/run_trial_v20_passive_timing.py	2026-11-03 09:40:39
++++ work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/run_trial_v21_final_timing.py	2026-11-03 09:43:19
+@@ -23,7 +23,7 @@
+ import uuid
+ from cpio_audit import audit
+ from trial_ring_usability import TrialRingReader
+-from trial_web_v20_passive_timing import TrialState, start_server, KEYS
++from trial_web_v21_final_timing import TrialState, start_server, wait_for_final_receipt, KEYS
+ from pending_visual_v20 import classify as classify_visual, late_change
+ from trial_log_v4_mss import FullLogMonitor
+ from trial_health_v2 import evaluate as evaluate_health
+@@ -81,13 +81,13 @@
+ 
+ 
+ def checkpoint(value):
+-    path = HERE / 'STATE-v20.json'
++    path = HERE / 'STATE-v21.json'
+     state = json.loads(path.read_text()) if path.exists() else {}
+     state.update(value)
+     state['schema'] = 'fx3-menu-repair-runtime-checkpoint-v1'
+     state['owner'] = 'try2-usability'
+     state['updated_utc'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+-    temp = HERE / 'STATE-v20.json.tmp'
++    temp = HERE / 'STATE-v21.json.tmp'
+     temp.write_text(json.dumps(state, ensure_ascii=False, indent=2) + '\n')
+     temp.replace(path)
+ 
+@@ -132,7 +132,7 @@
+     ns.icount_shift = None
+     ns.smp = 4
+     ns.tcg_thread = 'multi'
+-    ns.label = 'try2passivetiming-internal-v20' if ns.internal_hoststep else 'try2passivetiming-web-v20'
++    ns.label = 'try2passivetiming-internal-v21' if ns.internal_hoststep else 'try2passivetiming-web-v21'
+     vol = plistlib.loads(subprocess.check_output(['diskutil', 'info', '-plist', '/Volumes/KAFU2T']))
+     if vol.get('VolumeUUID') != VOLUME_UUID:
+         raise RuntimeError('External volume UUID mismatch')
+@@ -219,7 +219,7 @@
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v20_passive_timing.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
++    for name in [Path(__file__).name, 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v21_final_timing.py','trial_ring_usability.py','trial_log_v4_mss.py','restore_api103_v2.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -304,6 +304,9 @@
+ 
+     def terminated(signum, frame):
+         nonlocal stop_cause
++        if trial.phase == 'finished':
++            trial.final_receipt_close.set()
++            return
+         stop_cause = 'Ctrl-C' if signum == signal.SIGINT else 'SIGTERM'
+         trial.update(ready=False, phase='stopping', message='正在结束试用并回收资源…')
+         trial.stop.set()
+@@ -800,7 +803,8 @@
+     print('HEALTH', health_pass, 'QEMU_EXIT', receipt['qemu_exit'], 'REAPED', receipt['process_reaped'],
+           'API16_RESTORED', shutdown.get('API16_restored'), 'INPUTS_UNCHANGED', unchanged, flush=True)
+     if server is not None:
+-        time.sleep(2)
++        final_delivery = wait_for_final_receipt(trial)
++        (run/'trial-web-final-receipt.json').write_text(json.dumps(final_delivery, ensure_ascii=False, indent=2)+'\n')
+         server.shutdown()
+         server.server_close()
+         web_thread.join(timeout=2)

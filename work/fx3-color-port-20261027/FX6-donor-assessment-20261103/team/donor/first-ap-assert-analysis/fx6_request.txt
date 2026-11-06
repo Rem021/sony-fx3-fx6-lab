@@ -1,0 +1,44 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000c0b044 <Application_System_Init>:
+ 20f158c: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+ 20f1590: 910003fd     	mov	x29, sp
+ 20f1594: b9400000     	ldr	w0, [x0]
+ 20f1598: f9000bf3     	str	x19, [sp, #0x10]
+ 20f159c: aa0103f3     	mov	x19, x1
+ 20f15a0: 528401a1     	mov	w1, #0x200d             // =8205
+ 20f15a4: 7100041f     	cmp	w0, #0x1
+ 20f15a8: 790053bf     	strh	wzr, [x29, #0x28]
+ 20f15ac: 790043a1     	strh	w1, [x29, #0x20]
+ 20f15b0: 528065a1     	mov	w1, #0x32d              // =813
+ 20f15b4: 790047a1     	strh	w1, [x29, #0x22]
+ 20f15b8: 52800141     	mov	w1, #0xa                // =10
+ 20f15bc: 79004ba1     	strh	w1, [x29, #0x24]
+ 20f15c0: 128fffc1     	mov	w1, #-0x7fff            // =-32767
+ 20f15c4: 79004fa1     	strh	w1, [x29, #0x26]
+ 20f15c8: 54000041     	b.ne	0x20f15d0 <Application_System_Init+0x14e658c>
+ 20f15cc: 3900a3a0     	strb	w0, [x29, #0x28]
+ 20f15d0: 3940a3a2     	ldrb	w2, [x29, #0x28]
+ 20f15d4: f0002861     	adrp	x1, 0x2600000
+ 20f15d8: b0002860     	adrp	x0, 0x25fe000
+ 20f15dc: 9119e021     	add	x1, x1, #0x678
+ 20f15e0: 91252c00     	add	x0, x0, #0x94b
+ 20f15e4: 940326cf     	bl	0x21bb120 <Application_System_Init+0x15b00dc>
+ 20f15e8: f9001bbf     	str	xzr, [x29, #0x30]
+ 20f15ec: 9100c3a3     	add	x3, x29, #0x30
+ 20f15f0: 910083a1     	add	x1, x29, #0x20
+ 20f15f4: 5280e8e0     	mov	w0, #0x747              // =1863
+ 20f15f8: 52800184     	mov	w4, #0xc                // =12
+ 20f15fc: 52800142     	mov	w2, #0xa                // =10
+ 20f1600: 72b25080     	movk	w0, #0x9284, lsl #16
+ 20f1604: b9003bbf     	str	wzr, [x29, #0x38]
+ 20f1608: 97fff7ff     	bl	0x20ef604 <Application_System_Init+0x14e45c0>
+ 20f160c: b9403ba0     	ldr	w0, [x29, #0x38]
+ 20f1610: 97fff1c3     	bl	0x20edd1c <Application_System_Init+0x14e2cd8>
+ 20f1614: b9000260     	str	w0, [x19]
+ 20f1618: f9400bf3     	ldr	x19, [sp, #0x10]
+ 20f161c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+ 20f1620: d65f03c0     	ret

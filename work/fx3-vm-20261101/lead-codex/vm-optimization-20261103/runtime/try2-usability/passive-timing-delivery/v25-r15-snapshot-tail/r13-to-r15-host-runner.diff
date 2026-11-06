@@ -1,0 +1,86 @@
+--- ../v25-r13-preinput-observation/run_trial_v25_diag_r3.py	2026-11-04 10:35:39
++++ run_trial_v25_diag_r3.py	2026-11-04 11:58:12
+@@ -39,6 +39,7 @@
+ from startup_qmp_v1 import startup_handshake, is_proven_prelaunch
+ from optional_paused_snapshots import capture as capture_optional_paused_snapshots
+ from pre_input_observation import capture as capture_pre_input_observation
++from snapshot_tail_v15 import capture as capture_snapshot_tail
+ from host_exception_clock import write_host_first_exception, write_host_journal
+ 
+ ROOT = Path(__file__).resolve().parents[6] / "menu-repair-01/runtime"
+@@ -143,6 +144,8 @@
+                     help='仅经另行批准时使用隔离只读/proc诊断CPIO；默认固定r3 guest')
+     ap.add_argument('--pre-input-snapshot-step', type=int, default=None,
+                     help='仅指定一个合法step，在既有输入QMP暂停窗只读采集UI gate和OSD头；默认关闭')
++    ap.add_argument('--snapshot-tail', action='store_true',
++                    help='仅审阅版：End原读回后显式有界诊断尾段，默认关闭；要求guest快照协议v5')
+     ns = ap.parse_args()
+     if ns.internal_hoststep:
+         ap.error('v24 浏览器就绪门不允许内部逐键模式绕过')
+@@ -238,12 +241,13 @@
+     run = OUT / 'runs' / (label + '-' + uuid.uuid4().hex[:8])
+     run.mkdir()
+     run.chmod(0o700)
++    launch_uuid = str(uuid.uuid4()) if ns.snapshot_tail else None
+     guard = RuntimeResourceGuard(run)
+     ACTIVE_GUARD = guard
+     observer_dir = run / 'observer-source'
+     observer_dir.mkdir()
+     observer_sources = []
+-    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py','optional_paused_snapshots.py','pre_input_observation.py']:
++    for name in [Path(__file__).name, 'terminal_status_v23.py', 'pending_visual_v20.py', 'cpio_audit.py', 'decode_printk_ring.py', 'osd_ring93_v4.py','gate_input_usability.py','file_readback100.py','trial_web_v22_navigation_review.py','trial_ring_cached.py','trial_log_v4_mss.py','restore_api103_v2.py','quiesced_diag_readback.py','parse_v25_diag_r3.py','qmp_line_transport.py','procdiag_readback.py','runtime_resource_guard.py','startup_qmp_v1.py','host_exception_clock.py','optional_paused_snapshots.py','pre_input_observation.py','snapshot_tail_v15.py']:
+         source = HERE / name if (HERE / name).exists() else (OUT / name if (OUT / name).exists() else ROOT / name)
+         shutil.copyfile(source, observer_dir / name)
+         observer_sources.append({'name': name, 'sha256': digest(observer_dir / name)})
+@@ -419,6 +423,7 @@
+                 'exit_at_phase': ns.exit_at_phase,
+                 'models_identical_to_frozen_AP101_r4': False, 'listen': '127.0.0.1',
+                 'button_whitelist': {hex(k): v for k, v in KEYS.items()},
++                'snapshot_tail_enabled': ns.snapshot_tail, 'host_launch_uuid': launch_uuid,
+                 'hold_ms': 100, 'HTTP_threads_have_no_QMP_or_guest_access': True,
+             }, ensure_ascii=False, indent=2)+'\n')
+             checkpoint({'trial_url': trial.url, 'trial_run': str(run)})
+@@ -805,8 +810,43 @@
+                             native_file_reads.append(capture_native_file(qmp, run, 'final-before-shutdown'))
+                         except Exception as exc:
+                             shutdown['optional_native_file_error'] = repr(exc)
++                    # The original End-stop ring/optional/frame/native-file evidence is
++                    # already sealed. Any resumed natural events below are a separate
++                    # diagnostic tail and never enter the performance observation window.
++                    if ns.snapshot_tail and ring_complete:
++                        try:
++                            shutdown['snapshot_tail_v15'] = capture_snapshot_tail(
++                                qmp, transport, input_gate, run/'serial.log', run,
++                                launch_uuid, snapshots, budget=2.0, stop_budget=5.0)
++                        except BaseException as exc:
++                            shutdown['snapshot_tail_v15'] = {'status':'unknown',
++                                'snapshot_is_end_state':False,'pause_proven_at_return':False,'error':repr(exc)}
++                    elif ns.snapshot_tail:
++                        shutdown['snapshot_tail_v15'] = {'status':'not_attempted',
++                            'reason':'original_end_ring_readback_incomplete',
++                            'snapshot_is_end_state':False,'pause_proven_at_return':False}
++                    if ns.snapshot_tail and not shutdown['snapshot_tail_v15'].get('pause_proven_at_return') and not transport.send_unknown:
++                        # Essential pre-restore safety is outside the optional tail
++                        # budget.  A lost cont reply may still have resumed QEMU.
++                        try:
++                            status=qmp('query-status',timeout=3)
++                            shutdown['pre_restore_status_after_tail']=status
++                            state=status.get('return') if isinstance(status,dict) and 'error' not in status else None
++                            if isinstance(state,dict) and state.get('running') is True:
++                                shutdown['pre_restore_stop_after_tail']=qmp('stop',timeout=3)
++                                status=qmp('query-status',timeout=3)
++                                shutdown['pre_restore_status_after_stop']=status
++                                state=status.get('return') if isinstance(status,dict) and 'error' not in status else None
++                            shutdown['pre_restore_pause_proven']=(isinstance(state,dict)
++                                and state.get('running') is False and state.get('status')=='paused')
++                        except Exception as exc:
++                            shutdown['pre_restore_pause_error']=repr(exc)
++                            shutdown['pre_restore_pause_proven']=False
+                     if transport.send_unknown:
+                         shutdown['restore_error'] = 'transport_send_unknown_before_restore'
++                    elif ns.snapshot_tail and not (shutdown['snapshot_tail_v15'].get('pause_proven_at_return')
++                                                      or shutdown.get('pre_restore_pause_proven')):
++                        shutdown['restore_error'] = 'tail_pause_unproven_no_safe_native_restore'
+                     else:
+                         try:
+                             restore = restore_native_api(qmp, input_gate, run, timeout=20)

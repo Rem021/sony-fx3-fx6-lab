@@ -1,0 +1,34 @@
+{
+  "FDAT_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/fx3-7.02-decrypted.fdat",
+  "FDAT_bytes": 808704512,
+  "FDAT_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "searched_pattern": "EXBL",
+  "plain_magic_candidates": 1,
+  "candidates": [
+    {
+      "FDAT_offset": "0x2faf06ff",
+      "member": "0750_nor_loader/loader_nor.tar",
+      "member_relative_offset": "0x168ff",
+      "complete_0x800_within_member": true,
+      "candidate_prefix_sha256": "b7aa433df063308772f1f806a524c5d976b06e5be3d3cd30500c8b1b658b5f75",
+      "candidate_fields": [
+        "0x6b61622e",
+        "0x4d4f5220",
+        "0x3a455f4b",
+        "0x20666e49"
+      ],
+      "matches_current_CP_pformat_primary_fields": false,
+      "bounded_plausibility_filter": false,
+      "filter_scope": "Heuristic only: positive results would require original FX3 field/use verification, not be accepted as a boot0 image."
+    }
+  ],
+  "bounded_plausible_candidates": 0,
+  "current_CP_pformat_field_matches": 0,
+  "expected_CP_pformat_fields": [
+    "0x4",
+    "0xfe040800",
+    "0x21800",
+    "0xfe049000"
+  ],
+  "scope": "Exact byte search across one original decrypted public FDAT container. It does not inspect separately compressed/encrypted representations or live boot0/NOR. No-match/invalid candidates do not prove no EXBL data exists elsewhere. No code, keys, updater, device or native Sony program executed."
+}

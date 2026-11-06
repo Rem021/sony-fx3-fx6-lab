@@ -1,0 +1,50 @@
+# Original source address; module uses.text offsets, MCU uses layout0x4200. No execution.
+0x400c4c 80008052 mov      w0, #4
+0x400c50 41008052 mov      w1, #2
+0x400c54 bf8300b9 str      wzr, [x29, #0x80]
+0x400c58 a0130239 strb     w0, [x29, #0x84]
+0x400c5c 000000b0 adrp     x0, #0x401000
+0x400c60 00801091 add      x0, x0, #0x420
+0x400c64 97ffff97 bl       #0x400ac0
+0x400c68 4005f837 tbnz     w0, #0x1f, #0x400d10
+0x400c6c 21018052 mov      w1, #9
+0x400c70 a2030291 add      x2, x29, #0x80
+0x400c74 f303002a mov      w19, w0
+0x400c78 74008052 mov      w20, #3
+0x400c7c a18f00b9 str      w1, [x29, #0x8c]
+0x400c80 41008052 mov      w1, #2
+0x400c84 a1230239 strb     w1, [x29, #0x88]
+0x400c88 41e088d2 mov      x1, #0x4702
+0x400c8c 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400c90 9cffff97 bl       #0x400b00
+0x400c94 b4230239 strb     w20, [x29, #0x88]
+0x400c98 a2030291 add      x2, x29, #0x80
+0x400c9c 41e088d2 mov      x1, #0x4702
+0x400ca0 e003132a mov      w0, w19
+0x400ca4 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400ca8 96ffff97 bl       #0x400b00
+0x400cac 40008052 mov      w0, #2
+0x400cb0 a2030291 add      x2, x29, #0x80
+0x400cb4 41e088d2 mov      x1, #0x4702
+0x400cb8 a08f00b9 str      w0, [x29, #0x8c]
+0x400cbc 20008052 mov      w0, #1
+0x400cc0 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400cc4 a0230239 strb     w0, [x29, #0x88]
+0x400cc8 e003132a mov      w0, w19
+0x400ccc 8dffff97 bl       #0x400b00
+0x400cd0 b4230239 strb     w20, [x29, #0x88]
+0x400cd4 a2030291 add      x2, x29, #0x80
+0x400cd8 41e088d2 mov      x1, #0x4702
+0x400cdc e003132a mov      w0, w19
+0x400ce0 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400ce4 87ffff97 bl       #0x400b00
+0x400ce8 bf230239 strb     wzr, [x29, #0x88]
+0x400cec c0008052 mov      w0, #6
+0x400cf0 a2030291 add      x2, x29, #0x80
+0x400cf4 41e088d2 mov      x1, #0x4702
+0x400cf8 a08f00b9 str      w0, [x29, #0x8c]
+0x400cfc e003132a mov      w0, w19
+0x400d00 0102b8f2 movk     x1, #0xc010, lsl #16
+0x400d04 7fffff97 bl       #0x400b00
+0x400d08 e003132a mov      w0, w19
+0x400d0c 99ffff97 bl       #0x400b70

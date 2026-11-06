@@ -1,0 +1,210 @@
+[
+  {
+    "UTC_request_start": "2026-11-05T02:06:10.823937792Z",
+    "duration_ms": 0.9379999470524489,
+    "endpoint": "start",
+    "request_body_text": "{\"request_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"request_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"guest_spawned_by_http\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:21.894035968Z",
+    "duration_ms": 0.7740000259056687,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":427,\"observed_sequence\":326,\"request_id\":\"9935b14c-6090-4a43-b6b9-4722b7c282fc\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 1, \"key\": \"0x1ab\", \"request_id\": \"9935b14c-6090-4a43-b6b9-4722b7c282fc\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:26.427248128Z",
+    "duration_ms": 0.8689999900311232,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":1,\"attempt_id\":\"9935b14c-6090-4a43-b6b9-4722b7c282fc\",\"pin_request_id\":\"cbda2e82-f2e0-4017-8b3e-5afdab464b7e\",\"observed_sequence\":342,\"content_generation\":52,\"PNG_sha256\":\"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"38320342-1670-423c-8aff-2b88681fcc57\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 1, \"attempt_id\": \"9935b14c-6090-4a43-b6b9-4722b7c282fc\", \"pin_request_id\": \"cbda2e82-f2e0-4017-8b3e-5afdab464b7e\", \"observed_sequence\": 342, \"content_generation\": 52, \"PNG_sha256\": \"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\", \"byte_length\": 30165, \"native_receive_floor_sequence\": 334, \"native_receive_observed_host_monotonic\": 428127.811743708, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:30.320826112Z",
+    "duration_ms": 0.9570000340305269,
+    "endpoint": "confirm-visual",
+    "request_body_text": "{\"schema\":\"fx3-review-snapshot-v1\",\"request_id\":\"a9cbbd91-fea9-4757-bb6b-24081b29b2f2\",\"snapshot_id\":\"38320342-1670-423c-8aff-2b88681fcc57\",\"run_incarnation\":\"3388c161-445c-4584-9944-e5c148f66337\",\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":1,\"attempt_id\":\"9935b14c-6090-4a43-b6b9-4722b7c282fc\",\"pin_request_id\":\"cbda2e82-f2e0-4017-8b3e-5afdab464b7e\",\"observed_sequence\":342,\"content_generation\":52,\"PNG_sha256\":\"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\"}",
+    "status": 200,
+    "response_body_text": "{\"confirmed\": true, \"snapshot_id\": \"38320342-1670-423c-8aff-2b88681fcc57\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 1, \"attempt_id\": \"9935b14c-6090-4a43-b6b9-4722b7c282fc\", \"pin_request_id\": \"cbda2e82-f2e0-4017-8b3e-5afdab464b7e\", \"observed_sequence\": 342, \"content_generation\": 52, \"PNG_sha256\": \"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\", \"schema\": \"fx3-review-snapshot-v1\", \"request_id\": \"a9cbbd91-fea9-4757-bb6b-24081b29b2f2\", \"guest_input_written\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:34.430439936Z",
+    "duration_ms": 0.6389999851249158,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":3,\"observed_sequence\":477,\"request_id\":\"bfdc8f0d-8007-4bd7-bb3e-2eff9509d037\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 2, \"key\": \"0x3\", \"request_id\": \"bfdc8f0d-8007-4bd7-bb3e-2eff9509d037\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:37.37901312Z",
+    "duration_ms": 0.7949999900311231,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":2,\"attempt_id\":\"bfdc8f0d-8007-4bd7-bb3e-2eff9509d037\",\"pin_request_id\":\"ad5aa7b5-4c74-4495-bd82-e018bfc6f0ee\",\"observed_sequence\":484,\"content_generation\":53,\"PNG_sha256\":\"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"1a7013ca-9750-4671-bda6-79a912bf9fad\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 2, \"attempt_id\": \"bfdc8f0d-8007-4bd7-bb3e-2eff9509d037\", \"pin_request_id\": \"ad5aa7b5-4c74-4495-bd82-e018bfc6f0ee\", \"observed_sequence\": 484, \"content_generation\": 53, \"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"byte_length\": 29934, \"native_receive_floor_sequence\": 481, \"native_receive_observed_host_monotonic\": 428140.24521625, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:41.624188928Z",
+    "duration_ms": 0.8729999741353094,
+    "endpoint": "confirm-visual",
+    "request_body_text": "{\"schema\":\"fx3-review-snapshot-v1\",\"request_id\":\"e40b90cb-85b0-4b68-b7f0-e77878e90802\",\"snapshot_id\":\"1a7013ca-9750-4671-bda6-79a912bf9fad\",\"run_incarnation\":\"3388c161-445c-4584-9944-e5c148f66337\",\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":2,\"attempt_id\":\"bfdc8f0d-8007-4bd7-bb3e-2eff9509d037\",\"pin_request_id\":\"ad5aa7b5-4c74-4495-bd82-e018bfc6f0ee\",\"observed_sequence\":484,\"content_generation\":53,\"PNG_sha256\":\"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\"}",
+    "status": 200,
+    "response_body_text": "{\"confirmed\": true, \"snapshot_id\": \"1a7013ca-9750-4671-bda6-79a912bf9fad\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 2, \"attempt_id\": \"bfdc8f0d-8007-4bd7-bb3e-2eff9509d037\", \"pin_request_id\": \"ad5aa7b5-4c74-4495-bd82-e018bfc6f0ee\", \"observed_sequence\": 484, \"content_generation\": 53, \"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"schema\": \"fx3-review-snapshot-v1\", \"request_id\": \"e40b90cb-85b0-4b68-b7f0-e77878e90802\", \"guest_input_written\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:48.847033088Z",
+    "duration_ms": 0.6050000303015113,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":504,\"observed_sequence\":620,\"request_id\":\"d1f1c230-ee8b-4e2a-88f4-c6aac0c5a9d3\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 3, \"key\": \"0x1f8\", \"request_id\": \"d1f1c230-ee8b-4e2a-88f4-c6aac0c5a9d3\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:50.360034816Z",
+    "duration_ms": 0.9200000546760857,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":3,\"attempt_id\":\"d1f1c230-ee8b-4e2a-88f4-c6aac0c5a9d3\",\"pin_request_id\":\"da8cfc1b-04d0-49ba-a135-7b639b8d225c\",\"observed_sequence\":626,\"content_generation\":54,\"PNG_sha256\":\"74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"82f1ecd2-a1b9-4ed3-806e-49567f87c644\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 3, \"attempt_id\": \"d1f1c230-ee8b-4e2a-88f4-c6aac0c5a9d3\", \"pin_request_id\": \"da8cfc1b-04d0-49ba-a135-7b639b8d225c\", \"observed_sequence\": 626, \"content_generation\": 54, \"PNG_sha256\": \"74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808\", \"byte_length\": 12828, \"native_receive_floor_sequence\": 621, \"native_receive_observed_host_monotonic\": 428154.626074791, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:53.522848Z",
+    "duration_ms": 0.8700000416450202,
+    "endpoint": "confirm-visual",
+    "request_body_text": "{\"schema\":\"fx3-review-snapshot-v1\",\"request_id\":\"7afc9c0f-005e-4ecc-9657-80b4dd2ab111\",\"snapshot_id\":\"82f1ecd2-a1b9-4ed3-806e-49567f87c644\",\"run_incarnation\":\"3388c161-445c-4584-9944-e5c148f66337\",\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":3,\"attempt_id\":\"d1f1c230-ee8b-4e2a-88f4-c6aac0c5a9d3\",\"pin_request_id\":\"da8cfc1b-04d0-49ba-a135-7b639b8d225c\",\"observed_sequence\":626,\"content_generation\":54,\"PNG_sha256\":\"74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808\"}",
+    "status": 200,
+    "response_body_text": "{\"confirmed\": true, \"snapshot_id\": \"82f1ecd2-a1b9-4ed3-806e-49567f87c644\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 3, \"attempt_id\": \"d1f1c230-ee8b-4e2a-88f4-c6aac0c5a9d3\", \"pin_request_id\": \"da8cfc1b-04d0-49ba-a135-7b639b8d225c\", \"observed_sequence\": 626, \"content_generation\": 54, \"PNG_sha256\": \"74a59929fafe833eb1c2fd7ba9f8c7d535e8fc09d733c267643c959a2899c808\", \"schema\": \"fx3-review-snapshot-v1\", \"request_id\": \"7afc9c0f-005e-4ecc-9657-80b4dd2ab111\", \"guest_input_written\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:07:59.76656896Z",
+    "duration_ms": 0.5540000226870179,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":427,\"observed_sequence\":809,\"request_id\":\"02b64c54-9623-46fe-a265-926c45d651fc\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 4, \"key\": \"0x1ab\", \"request_id\": \"02b64c54-9623-46fe-a265-926c45d651fc\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:02.125260032Z",
+    "duration_ms": 35.20200007159263,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":4,\"attempt_id\":\"02b64c54-9623-46fe-a265-926c45d651fc\",\"pin_request_id\":\"df754b8c-d5ec-4b11-9691-dd6275439713\",\"observed_sequence\":820,\"content_generation\":55,\"PNG_sha256\":\"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"dd0b17a6-d0b9-4d45-b3ff-345b2faddbd9\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 4, \"attempt_id\": \"02b64c54-9623-46fe-a265-926c45d651fc\", \"pin_request_id\": \"df754b8c-d5ec-4b11-9691-dd6275439713\", \"observed_sequence\": 820, \"content_generation\": 55, \"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"byte_length\": 29934, \"native_receive_floor_sequence\": 816, \"native_receive_observed_host_monotonic\": 428165.544697625, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:05.635917824Z",
+    "duration_ms": 0.8510000264160336,
+    "endpoint": "confirm-visual",
+    "request_body_text": "{\"schema\":\"fx3-review-snapshot-v1\",\"request_id\":\"8f698346-acf1-4cb4-9859-e06c6d66ec3b\",\"snapshot_id\":\"dd0b17a6-d0b9-4d45-b3ff-345b2faddbd9\",\"run_incarnation\":\"3388c161-445c-4584-9944-e5c148f66337\",\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":4,\"attempt_id\":\"02b64c54-9623-46fe-a265-926c45d651fc\",\"pin_request_id\":\"df754b8c-d5ec-4b11-9691-dd6275439713\",\"observed_sequence\":820,\"content_generation\":55,\"PNG_sha256\":\"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\"}",
+    "status": 200,
+    "response_body_text": "{\"confirmed\": true, \"snapshot_id\": \"dd0b17a6-d0b9-4d45-b3ff-345b2faddbd9\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 4, \"attempt_id\": \"02b64c54-9623-46fe-a265-926c45d651fc\", \"pin_request_id\": \"df754b8c-d5ec-4b11-9691-dd6275439713\", \"observed_sequence\": 820, \"content_generation\": 55, \"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"schema\": \"fx3-review-snapshot-v1\", \"request_id\": \"8f698346-acf1-4cb4-9859-e06c6d66ec3b\", \"guest_input_written\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:11.78288896Z",
+    "duration_ms": 0.7059999529793858,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":428,\"observed_sequence\":991,\"request_id\":\"5c75a9ac-c47c-4977-b32b-4c076397850f\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 5, \"key\": \"0x1ac\", \"request_id\": \"5c75a9ac-c47c-4977-b32b-4c076397850f\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:14.308759808Z",
+    "duration_ms": 1.0169999529793858,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":5,\"attempt_id\":\"5c75a9ac-c47c-4977-b32b-4c076397850f\",\"pin_request_id\":\"ff3b4ff2-b12e-4efc-836b-20ac5a36c846\",\"observed_sequence\":1004,\"content_generation\":56,\"PNG_sha256\":\"5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"329f169c-d316-4655-9aa4-39e4a97a5789\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 5, \"attempt_id\": \"5c75a9ac-c47c-4977-b32b-4c076397850f\", \"pin_request_id\": \"ff3b4ff2-b12e-4efc-836b-20ac5a36c846\", \"observed_sequence\": 1004, \"content_generation\": 56, \"PNG_sha256\": \"5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7\", \"byte_length\": 27526, \"native_receive_floor_sequence\": 998, \"native_receive_observed_host_monotonic\": 428177.487340416, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:18.88168192Z",
+    "duration_ms": 0.8040000465512276,
+    "endpoint": "confirm-visual",
+    "request_body_text": "{\"schema\":\"fx3-review-snapshot-v1\",\"request_id\":\"6263deae-dd23-40eb-8ef4-25311406f7c6\",\"snapshot_id\":\"329f169c-d316-4655-9aa4-39e4a97a5789\",\"run_incarnation\":\"3388c161-445c-4584-9944-e5c148f66337\",\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":5,\"attempt_id\":\"5c75a9ac-c47c-4977-b32b-4c076397850f\",\"pin_request_id\":\"ff3b4ff2-b12e-4efc-836b-20ac5a36c846\",\"observed_sequence\":1004,\"content_generation\":56,\"PNG_sha256\":\"5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7\"}",
+    "status": 200,
+    "response_body_text": "{\"confirmed\": true, \"snapshot_id\": \"329f169c-d316-4655-9aa4-39e4a97a5789\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 5, \"attempt_id\": \"5c75a9ac-c47c-4977-b32b-4c076397850f\", \"pin_request_id\": \"ff3b4ff2-b12e-4efc-836b-20ac5a36c846\", \"observed_sequence\": 1004, \"content_generation\": 56, \"PNG_sha256\": \"5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7\", \"schema\": \"fx3-review-snapshot-v1\", \"request_id\": \"6263deae-dd23-40eb-8ef4-25311406f7c6\", \"guest_input_written\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:22.925539072Z",
+    "duration_ms": 0.6599999797083437,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":427,\"observed_sequence\":1146,\"request_id\":\"50ea4758-e5e0-4902-9106-ad623b793bcf\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 6, \"key\": \"0x1ab\", \"request_id\": \"50ea4758-e5e0-4902-9106-ad623b793bcf\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:24.816030976Z",
+    "duration_ms": 0.7760000482387841,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":6,\"attempt_id\":\"50ea4758-e5e0-4902-9106-ad623b793bcf\",\"pin_request_id\":\"42368486-42c9-4f81-a5b1-d6c19c735d57\",\"observed_sequence\":1160,\"content_generation\":57,\"PNG_sha256\":\"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"b3f7d9bf-0b95-4a9f-b2ce-b2f24dcd7a15\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 6, \"attempt_id\": \"50ea4758-e5e0-4902-9106-ad623b793bcf\", \"pin_request_id\": \"42368486-42c9-4f81-a5b1-d6c19c735d57\", \"observed_sequence\": 1160, \"content_generation\": 57, \"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"byte_length\": 29934, \"native_receive_floor_sequence\": 1159, \"native_receive_observed_host_monotonic\": 428188.825517541, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:29.092289024Z",
+    "duration_ms": 0.8239999753125011,
+    "endpoint": "confirm-visual",
+    "request_body_text": "{\"schema\":\"fx3-review-snapshot-v1\",\"request_id\":\"038ae52a-5084-4836-99dc-8f8228b15d4f\",\"snapshot_id\":\"b3f7d9bf-0b95-4a9f-b2ce-b2f24dcd7a15\",\"run_incarnation\":\"3388c161-445c-4584-9944-e5c148f66337\",\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":6,\"attempt_id\":\"50ea4758-e5e0-4902-9106-ad623b793bcf\",\"pin_request_id\":\"42368486-42c9-4f81-a5b1-d6c19c735d57\",\"observed_sequence\":1160,\"content_generation\":57,\"PNG_sha256\":\"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\"}",
+    "status": 200,
+    "response_body_text": "{\"confirmed\": true, \"snapshot_id\": \"b3f7d9bf-0b95-4a9f-b2ce-b2f24dcd7a15\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 6, \"attempt_id\": \"50ea4758-e5e0-4902-9106-ad623b793bcf\", \"pin_request_id\": \"42368486-42c9-4f81-a5b1-d6c19c735d57\", \"observed_sequence\": 1160, \"content_generation\": 57, \"PNG_sha256\": \"c5452b85dd066fdad5d96807acc3eafe8a6dfba64b36e7b53ed56367f41b3ce2\", \"schema\": \"fx3-review-snapshot-v1\", \"request_id\": \"038ae52a-5084-4836-99dc-8f8228b15d4f\", \"guest_input_written\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:34.447330048Z",
+    "duration_ms": 0.6050000003539026,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":427,\"observed_sequence\":1321,\"request_id\":\"66ef8e1c-7165-4a2d-8021-9d9698591ec5\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 7, \"key\": \"0x1ab\", \"request_id\": \"66ef8e1c-7165-4a2d-8021-9d9698591ec5\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:36.201553152Z",
+    "duration_ms": 0.7649999671876431,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":7,\"attempt_id\":\"66ef8e1c-7165-4a2d-8021-9d9698591ec5\",\"pin_request_id\":\"4686389c-6693-435d-9853-238ff95da9fa\",\"observed_sequence\":1341,\"content_generation\":58,\"PNG_sha256\":\"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"7aa1d02e-a884-4462-8e28-81fe703317f0\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 7, \"attempt_id\": \"66ef8e1c-7165-4a2d-8021-9d9698591ec5\", \"pin_request_id\": \"4686389c-6693-435d-9853-238ff95da9fa\", \"observed_sequence\": 1341, \"content_generation\": 58, \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\", \"byte_length\": 15457, \"native_receive_floor_sequence\": 1329, \"native_receive_observed_host_monotonic\": 428200.28320075, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:42.157819904Z",
+    "duration_ms": 0.9109999355524778,
+    "endpoint": "confirm-visual",
+    "request_body_text": "{\"schema\":\"fx3-review-snapshot-v1\",\"request_id\":\"cd9e2903-905d-4e46-8707-356b87f92c1b\",\"snapshot_id\":\"7aa1d02e-a884-4462-8e28-81fe703317f0\",\"run_incarnation\":\"3388c161-445c-4584-9944-e5c148f66337\",\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":7,\"attempt_id\":\"66ef8e1c-7165-4a2d-8021-9d9698591ec5\",\"pin_request_id\":\"4686389c-6693-435d-9853-238ff95da9fa\",\"observed_sequence\":1341,\"content_generation\":58,\"PNG_sha256\":\"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\"}",
+    "status": 200,
+    "response_body_text": "{\"confirmed\": true, \"snapshot_id\": \"7aa1d02e-a884-4462-8e28-81fe703317f0\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 7, \"attempt_id\": \"66ef8e1c-7165-4a2d-8021-9d9698591ec5\", \"pin_request_id\": \"4686389c-6693-435d-9853-238ff95da9fa\", \"observed_sequence\": 1341, \"content_generation\": 58, \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\", \"schema\": \"fx3-review-snapshot-v1\", \"request_id\": \"cd9e2903-905d-4e46-8707-356b87f92c1b\", \"guest_input_written\": false}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:48.250479872Z",
+    "duration_ms": 0.6129999770000577,
+    "endpoint": "key",
+    "request_body_text": "{\"key\":427,\"observed_sequence\":1480,\"request_id\":\"11d4464c-3322-438e-adaf-9814edddf2b0\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\"}",
+    "status": 202,
+    "response_body_text": "{\"accepted\": true, \"next_step\": 8, \"key\": \"0x1ab\", \"request_id\": \"11d4464c-3322-438e-adaf-9814edddf2b0\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:49.604891904Z",
+    "duration_ms": 0.7270000482387841,
+    "endpoint": "review-snapshot",
+    "request_body_text": "{\"launch_id\":\"75987505-c13f-4384-8c78-36ed9d430ab2\",\"document_id\":\"89d7e729-af87-490c-8699-aee6543c9f66\",\"step\":8,\"attempt_id\":\"11d4464c-3322-438e-adaf-9814edddf2b0\",\"pin_request_id\":\"a0c02837-6772-4da3-91c1-06187789de16\",\"observed_sequence\":1484,\"content_generation\":76,\"PNG_sha256\":\"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\"}",
+    "status": 201,
+    "response_body_text": "{\"schema\": \"fx3-review-snapshot-v1\", \"snapshot_id\": \"f3dbad0f-e526-4136-b8cf-55159d80a061\", \"run_incarnation\": \"3388c161-445c-4584-9944-e5c148f66337\", \"launch_id\": \"75987505-c13f-4384-8c78-36ed9d430ab2\", \"document_id\": \"89d7e729-af87-490c-8699-aee6543c9f66\", \"step\": 8, \"attempt_id\": \"11d4464c-3322-438e-adaf-9814edddf2b0\", \"pin_request_id\": \"a0c02837-6772-4da3-91c1-06187789de16\", \"observed_sequence\": 1484, \"content_generation\": 76, \"PNG_sha256\": \"2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e\", \"byte_length\": 15457, \"native_receive_floor_sequence\": 1481, \"native_receive_observed_host_monotonic\": 428214.025169541, \"observation_scope\": \"new_host_observation_after_native_receive; no_pixel_causality_or_handler_completion_claim\"}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:52.338141952Z",
+    "duration_ms": 0.7739999421462418,
+    "endpoint": "stop",
+    "request_body_text": "{}",
+    "status": 202,
+    "response_body_text": "{\"stopping\": true}"
+  },
+  {
+    "UTC_request_start": "2026-11-05T02:08:55.240220928Z",
+    "duration_ms": 1.5930000066347418,
+    "endpoint": "final-ack",
+    "request_body_text": "{\"receipt_id\":\"iEP8BjTG5KnOfm-Ft8TkiQ\"}",
+    "status": 200,
+    "response_body_text": "{\"acknowledged\": true}"
+  }
+]

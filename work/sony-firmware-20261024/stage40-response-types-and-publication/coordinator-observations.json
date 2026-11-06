@@ -1,0 +1,51 @@
+{
+  "schema": "fx3-stage40-response-publication-review/1",
+  "created_utc": "2026-10-26T00:32:17.105492+00:00",
+  "status": "PASS_SOURCE_TYPES_RTTI_PREDICATE_AND_PUBLICATION_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent byte/source/trace/hash review; no independent implementation, actual message transport or camera acceptance.",
+  "previous_stage39_sealed_files_verified": 15,
+  "new_source_instruction_records_checked": 856,
+  "original_fragments": 133,
+  "compiled_prototype_calls": 9,
+  "original_named_types": 15,
+  "native_stream_predicates": 25,
+  "publication_controls": 9,
+  "unique_original_PCs_including_boundaries": 1087,
+  "unique_prototype_PCs": 168,
+  "original_store_records_checked": 5571,
+  "type0": "IMOLA_ENC_START_DONE",
+  "type3": "IMOLA_ENC_STOP_DONE",
+  "MAIN14_skips_optional_START_STOP_callback_even_nonnull": true,
+  "stream22_23_optional_callback_predicate_only": true,
+  "off_target22_callback_branch_stopped_before_invocation_and_before_pending_publication": true,
+  "original_dynamic_cast_and_original_RTTI_traversal_not_output_adapted": true,
+  "MAIN_START_published_but_not_consumed_by_STOP_cleanup": true,
+  "MAIN_STOP_published_then_original_four_returns_verified": true,
+  "raw_transport_and_owner_registry_are_fixtures": true,
+  "mandatory_diagnostic_unexecuted_prefix_and_continuation_separate": true,
+  "attempts_preserved": [
+    {
+      "directory": "run-20261025",
+      "passing_result": false,
+      "cause": "Harness compared PC-relative BL machine words instead of their identical target."
+    },
+    {
+      "directory": "run-20261025-retry1",
+      "passing_result": false,
+      "cause": "Strict execution range omitted original final branch0x228568; original bytes reviewed and branch admitted."
+    },
+    {
+      "directory": "run-20261025-retry2",
+      "passing_result": false,
+      "cause": "Earlier expectation that MAIN14 uses optional callbacks was contradicted. Native predicate bound across0..24; only22/23 eligible. Original firmware unchanged."
+    }
+  ],
+  "formal_run": "work/sony-firmware-20261024/stage40-response-types-and-publication/run-20261025-stream-bound",
+  "actual_transport_current_request_epoch_MAIN_START_consumer_full_Hal_or_recovery_bound": false,
+  "runtime_or_diagnostic_output_adapters": false,
+  "original_image_unchanged": true,
+  "camera_or_remote_access_attempted": false,
+  "authorization_unchanged": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

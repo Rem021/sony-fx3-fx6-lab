@@ -1,0 +1,38 @@
+{
+  "schema": "fx3-r41-coordinator-review-v1",
+  "status": "offline_candidate_accepted_for_isolated_integration_not_runtime",
+  "reviewed_UTC": "2026-11-05T09:21:24.121734+00:00",
+  "worker_done": "msg_4acd864b9c54",
+  "manifest_entries_verified": 121,
+  "manifest_SHA256": "785759f29c2f8985854852b0d64a190d8f8c3e86cf9f8048eed5158c491221df",
+  "evidence_SHA256": {
+    "REPORT.md": "bee6d583482436e60ebaea6f0ba0d30f78700bfa6ea4f1a4a32f0ea11bdd84f5",
+    "HOST-TESTS.json": "114a09ec59169ce99a458cf5e300c764c01a44aaabac99305de297c8c411535d",
+    "PARSER-TESTS.json": "a41a3000f5aa9e580112f433945946f0788f3ae941b30da1c7f6cdfa56ab21c3",
+    "SOURCE-ELF-REVIEW.json": "47b9d8e54444a0567cf14723f6b5587316f490a9d4e37caad17bde93634f3525",
+    "SLOT-ELF-REVIEW.json": "ac7348aef51f5ad9b3b4652991d32997bd1db36b432dd1c1b4e6a46a3fb83916",
+    "COST.json": "2e17b11b761b54edfcaa35498c97486b04c5a375833dbc3ba0041a4e1983dc1a",
+    "INPUTS-AFTER.json": "288dd64d8ddf400b329a42e6865bbd11b0d5831b1fdeac711fda5c422f2bba60",
+    "source.diff": "48d9b33953b61d3cfc923e860dcf88a2bde5ff49f3423147f851903eb2a1b5ce"
+  },
+  "coordinator_checks": [
+    "source diff reviewed: entry errno preserved and one added clock; two return paths covered",
+    "host seam owning source and check assertions read; five paired cases preserve behavior in mocked IO/native environment",
+    "18-group parser report and tests reviewed; extra overlong damaged split-tag cross-chunk check independently exercised and remained unknown",
+    "all 121 manifest entries independently hashed",
+    "fixed-slot raw bytes independently compared against unstripped ELF across all 10 program headers/segments; differences only ELF section metadata at offsets40/41/42/60/62",
+    "current runner/log monitor/health selection sources searched: no exact CMD_RETURN line-tail consumer found in inspected files"
+  ],
+  "fixed_slot_ELF": {
+    "bytes": 129600,
+    "slot_bytes": 276984,
+    "SHA256": "19ca7deaf570eeb68fda0036bb75dec740ab30f404f9f91bd208fd3d53c06a39"
+  },
+  "input_verification_basis": "worker reports74actual-used inputs unchanged; coordinator did not independently rerun entire input hashing",
+  "limits": [
+    "host and static evidence only; no VM, package admission, menu speedup, stability or FX6 boot proven",
+    "r38 remains failed; old391command records all unknown timing",
+    "host sink overhead is not guest serial or CPU overhead"
+  ],
+  "next": "isolated fixed-slot package plus r39-derived runner binding; preserve fixed FX3 platform and all runtime policies"
+}

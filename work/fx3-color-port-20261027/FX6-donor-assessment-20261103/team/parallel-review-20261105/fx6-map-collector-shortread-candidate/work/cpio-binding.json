@@ -1,0 +1,38 @@
+{
+  "schema": "fx6-map-collector-cpio-binding-v1",
+  "candidate_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/work/fx6-map-collector-shortread-grmreal46.cpio",
+    "sha256": "277bee6d68cfec6714eb7ded3d90f93d8cd5da7fd45e3c68fd473bfe55e3da0e",
+    "bytes": 453200828
+  },
+  "target_elf": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/work/fx3-map-snapshot-v2-aarch64",
+    "sha256": "a83608fe8096e4df44434e8890c0a232ec5fec5f4a3ffaf1ffb9e28334f35883",
+    "bytes": 16144
+  },
+  "init": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/work/init.patched",
+    "sha256": "6c0c8dd76360cd12917a84827ab0353fa0c3fefe1d42f2ad9721377cea06df79",
+    "bytes": 21239
+  },
+  "original_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal46.cpio",
+    "sha256": "3a08f89d89cfc6db8b12158a0a1147410e42d98713c445c3c38c07eefad8d03b",
+    "bytes": 453184500
+  },
+  "old_candidate_cpio": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-observer-integration-candidate/work/fx6-map-observer-grmreal46.cpio",
+    "sha256": "9d4f255b0a3995b0e056e210ae4d27c8129e2c853b35904a688b6ffe149529ae",
+    "bytes": 453306948
+  },
+  "cpio_diff": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/parallel-review-20261105/fx6-map-collector-shortread-candidate/receipts/cpio-diff-v2.json",
+    "sha256": "faab978bc17bdf169985b0780f4720ff3131f3623007c7c87b5b646e8b23f9e1"
+  },
+  "host_binding": {
+    "module": "host/live_runner_v2.py",
+    "new_cpio_sha256": "277bee6d68cfec6714eb7ded3d90f93d8cd5da7fd45e3c68fd473bfe55e3da0e",
+    "new_cpio_bytes": 453200828
+  },
+  "note": "new CPIO built from frozen 3a08; only init and new helper differ; zero tail preserved; not installed/deployed"
+}

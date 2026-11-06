@@ -1,0 +1,1986 @@
+{
+  "status": "ORIGINAL_NORMAL_APPLICATION_CALLBACK_REACHES_DYNAMIC_NIN_START_STATIC_ONLY",
+  "input_SHA256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+  "functions": [
+    {
+      "label": "exported_senser_init",
+      "VA": "0xeaa04",
+      "bytes": 196,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "bd2ebb0cba2eb4ba8d3d26943bc3991610a0fa383dcfc4a9c5bd64278c4f41be",
+      "instructions": [
+        {
+          "pc": "0xeaa04",
+          "bytes": "fd7bbba9",
+          "asm": "stp x29, x30, [sp, #-0x50]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa08",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa0c",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa10",
+          "bytes": "1b030094",
+          "asm": "bl #0xeb67c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa14",
+          "bytes": "a0a30091",
+          "asm": "add x0, x29, #0x28",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa18",
+          "bytes": "49fdff97",
+          "asm": "bl #0xe9f3c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa1c",
+          "bytes": "c0010034",
+          "asm": "cbz w0, #0xeaa54",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa20",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1db000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa24",
+          "bytes": "e203002a",
+          "asm": "mov w2, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa28",
+          "bytes": "21103f91",
+          "asm": "add x1, x1, #0xfc4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa2c",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa30",
+          "bytes": "20feff97",
+          "asm": "bl #0xea2b0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa34",
+          "bytes": "52030094",
+          "asm": "bl #0xeb77c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa38",
+          "bytes": "f403002a",
+          "asm": "mov w20, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa3c",
+          "bytes": "000c80d2",
+          "asm": "mov x0, #0x60",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa40",
+          "bytes": "24adfd97",
+          "asm": "bl #0x55ed0",
+          "PLT_symbol": "_Znwm"
+        },
+        {
+          "pc": "0xeaa44",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa48",
+          "bytes": "e103142a",
+          "asm": "mov w1, w20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa4c",
+          "bytes": "d0feff97",
+          "asm": "bl #0xea58c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa50",
+          "bytes": "06000014",
+          "asm": "b #0xeaa68",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa54",
+          "bytes": "a03f40b9",
+          "asm": "ldr w0, [x29, #0x3c]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa58",
+          "bytes": "1f080071",
+          "asm": "cmp w0, #2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa5c",
+          "bytes": "c1feff54",
+          "asm": "b.ne #0xeaa34",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa60",
+          "bytes": "4a030094",
+          "asm": "bl #0xeb788",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa64",
+          "bytes": "f4ffff17",
+          "asm": "b #0xeaa34",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa68",
+          "bytes": "c00b0090",
+          "asm": "adrp x0, #0x262000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa6c",
+          "bytes": "9f060071",
+          "asm": "cmp w20, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa70",
+          "bytes": "001c46f9",
+          "asm": "ldr x0, [x0, #0xc38]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa74",
+          "bytes": "130000f9",
+          "asm": "str x19, [x0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa78",
+          "bytes": "c1000054",
+          "asm": "b.ne #0xeaa90",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa7c",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa80",
+          "bytes": "f8feff97",
+          "asm": "bl #0xea660",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa84",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa88",
+          "bytes": "fd7bc5a8",
+          "asm": "ldp x29, x30, [sp], #0x50",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa8c",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa90",
+          "bytes": "4cb3fd97",
+          "asm": "bl #0x577c0",
+          "PLT_symbol": "sens_adjCmd_init"
+        },
+        {
+          "pc": "0xeaa94",
+          "bytes": "aefeff97",
+          "asm": "bl #0xea54c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa98",
+          "bytes": "60ffff34",
+          "asm": "cbz w0, #0xeaa84",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaa9c",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1db000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaaa0",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaaa4",
+          "bytes": "21c43991",
+          "asm": "add x1, x1, #0xe71",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaaa8",
+          "bytes": "72fdff97",
+          "asm": "bl #0xea070",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaaac",
+          "bytes": "f6ffff17",
+          "asm": "b #0xeaa84",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaab0",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaab4",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaab8",
+          "bytes": "010c80d2",
+          "asm": "mov x1, #0x60",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaabc",
+          "bytes": "7daafd97",
+          "asm": "bl #0x554b0",
+          "PLT_symbol": "_ZdlPvm"
+        },
+        {
+          "pc": "0xeaac0",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeaac4",
+          "bytes": "83b3fd97",
+          "asm": "bl #0x578d0",
+          "PLT_symbol": "_Unwind_Resume"
+        }
+      ]
+    },
+    {
+      "label": "normal_senif_setup",
+      "VA": "0xea54c",
+      "bytes": 64,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "84b4ae9b96e39164aab7a76c9c056032aa0dbf64ca54e186e99c2289610babf5",
+      "instructions": [
+        {
+          "pc": "0xea54c",
+          "bytes": "fd7bbfa9",
+          "asm": "stp x29, x30, [sp, #-0x10]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea550",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1db000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea554",
+          "bytes": "21c43e91",
+          "asm": "add x1, x1, #0xfb1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea558",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea55c",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea560",
+          "bytes": "c4feff97",
+          "asm": "bl #0xea070",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea564",
+          "bytes": "200f0090",
+          "asm": "adrp x0, #0x2ce000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea568",
+          "bytes": "00604339",
+          "asm": "ldrb w0, [x0, #0xd8]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea56c",
+          "bytes": "40000034",
+          "asm": "cbz w0, #0xea574",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea570",
+          "bytes": "b5ffff97",
+          "asm": "bl #0xea444",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea574",
+          "bytes": "e0ffff97",
+          "asm": "bl #0xea4f4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea578",
+          "bytes": "1f1c0072",
+          "asm": "tst w0, #0xff",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea57c",
+          "bytes": "e0179f1a",
+          "asm": "cset w0, eq",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea580",
+          "bytes": "fd7bc1a8",
+          "asm": "ldp x29, x30, [sp], #0x10",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea584",
+          "bytes": "006c1c53",
+          "asm": "lsl w0, w0, #4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea588",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "label": "register_senif_callbacks",
+      "VA": "0xea4f4",
+      "bytes": 88,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "a0706a93b78f05db67fdd3a9e61b550f30ecbefe89a7aa330c097818d3510a0a",
+      "instructions": [
+        {
+          "pc": "0xea4f4",
+          "bytes": "c20b0090",
+          "asm": "adrp x2, #0x262000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea4f8",
+          "bytes": "fd7bbfa9",
+          "asm": "stp x29, x30, [sp, #-0x10]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea4fc",
+          "bytes": "210f0090",
+          "asm": "adrp x1, #0x2ce000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea500",
+          "bytes": "20008052",
+          "asm": "mov w0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea504",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea508",
+          "bytes": "426844f9",
+          "asm": "ldr x2, [x2, #0x8d0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea50c",
+          "bytes": "21a00591",
+          "asm": "add x1, x1, #0x168",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea510",
+          "bytes": "00b1fd97",
+          "asm": "bl #0x56910",
+          "PLT_symbol": "senif_init"
+        },
+        {
+          "pc": "0xea514",
+          "bytes": "20010034",
+          "asm": "cbz w0, #0xea538",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea518",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1db000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea51c",
+          "bytes": "e203002a",
+          "asm": "mov w2, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea520",
+          "bytes": "21103b91",
+          "asm": "add x1, x1, #0xec4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea524",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea528",
+          "bytes": "62ffff97",
+          "asm": "bl #0xea2b0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea52c",
+          "bytes": "00008052",
+          "asm": "mov w0, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea530",
+          "bytes": "fd7bc1a8",
+          "asm": "ldp x29, x30, [sp], #0x10",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea534",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea538",
+          "bytes": "200f0090",
+          "asm": "adrp x0, #0x2ce000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea53c",
+          "bytes": "21008052",
+          "asm": "mov w1, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea540",
+          "bytes": "01600339",
+          "asm": "strb w1, [x0, #0xd8]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea544",
+          "bytes": "20008052",
+          "asm": "mov w0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea548",
+          "bytes": "faffff17",
+          "asm": "b #0xea530",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "label": "shared_senif_event_callback",
+      "VA": "0xea128",
+      "bytes": 180,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "853818be8872e3cb56e5fe4d62d7ed75d6ac881d62192ee69accbfc5548c6f30",
+      "instructions": [
+        {
+          "pc": "0xea128",
+          "bytes": "1f040071",
+          "asm": "cmp w0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea12c",
+          "bytes": "61050054",
+          "asm": "b.ne #0xea1d8",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea130",
+          "bytes": "c20b0090",
+          "asm": "adrp x2, #0x262000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea134",
+          "bytes": "42ac47f9",
+          "asm": "ldr x2, [x2, #0xf58]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea138",
+          "bytes": "420040b9",
+          "asm": "ldr w2, [x2]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea13c",
+          "bytes": "5f040071",
+          "asm": "cmp w2, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea140",
+          "bytes": "c8040054",
+          "asm": "b.hi #0xea1d8",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea144",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea148",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea14c",
+          "bytes": "f51300f9",
+          "asm": "str x21, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea150",
+          "bytes": "f503002a",
+          "asm": "mov w21, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea154",
+          "bytes": "200f0090",
+          "asm": "adrp x0, #0x2ce000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea158",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea15c",
+          "bytes": "330f0090",
+          "asm": "adrp x19, #0x2ce000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea160",
+          "bytes": "74220491",
+          "asm": "add x20, x19, #0x108",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea164",
+          "bytes": "018000f9",
+          "asm": "str x1, [x0, #0x100]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea168",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1db000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea16c",
+          "bytes": "21383e91",
+          "asm": "add x1, x1, #0xf8e",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea170",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea174",
+          "bytes": "bfffff97",
+          "asm": "bl #0xea070",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea178",
+          "bytes": "80420091",
+          "asm": "add x0, x20, #0x10",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea17c",
+          "bytes": "e9adfd97",
+          "asm": "bl #0x55920",
+          "PLT_symbol": "pthread_mutex_lock"
+        },
+        {
+          "pc": "0xea180",
+          "bytes": "802640f9",
+          "asm": "ldr x0, [x20, #0x48]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea184",
+          "bytes": "1f0400b1",
+          "asm": "cmn x0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea188",
+          "bytes": "60000054",
+          "asm": "b.eq #0xea194",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea18c",
+          "bytes": "71b3fd97",
+          "asm": "bl #0x56f50",
+          "PLT_symbol": "sched_yield"
+        },
+        {
+          "pc": "0xea190",
+          "bytes": "24b5fd97",
+          "asm": "bl #0x57620",
+          "PLT_symbol": "abort"
+        },
+        {
+          "pc": "0xea194",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea198",
+          "bytes": "80020191",
+          "asm": "add x0, x20, #0x40",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea19c",
+          "bytes": "95420139",
+          "asm": "strb w21, [x20, #0x50]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1a0",
+          "bytes": "d8050094",
+          "asm": "bl #0xeb900",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1a4",
+          "bytes": "f51340f9",
+          "asm": "ldr x21, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1a8",
+          "bytes": "802600f9",
+          "asm": "str x0, [x20, #0x48]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1ac",
+          "bytes": "60220491",
+          "asm": "add x0, x19, #0x108",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1b0",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1b4",
+          "bytes": "00400091",
+          "asm": "add x0, x0, #0x10",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1b8",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1bc",
+          "bytes": "99affd17",
+          "asm": "b #0x56020",
+          "PLT_symbol": "pthread_mutex_unlock"
+        },
+        {
+          "pc": "0xea1c0",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1c4",
+          "bytes": "60220491",
+          "asm": "add x0, x19, #0x108",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1c8",
+          "bytes": "00400091",
+          "asm": "add x0, x0, #0x10",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1cc",
+          "bytes": "95affd97",
+          "asm": "bl #0x56020",
+          "PLT_symbol": "pthread_mutex_unlock"
+        },
+        {
+          "pc": "0xea1d0",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1d4",
+          "bytes": "bfb5fd97",
+          "asm": "bl #0x578d0",
+          "PLT_symbol": "_Unwind_Resume"
+        },
+        {
+          "pc": "0xea1d8",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "label": "dynamic_NinThread_start",
+      "VA": "0xeb900",
+      "bytes": 92,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "dc05e350abf3b4014931415bd469a83c77990a85e02486610d001a76d209c728",
+      "instructions": [
+        {
+          "pc": "0xeb900",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb904",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb908",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb90c",
+          "bytes": "f30301aa",
+          "asm": "mov x19, x1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb910",
+          "bytes": "01008092",
+          "asm": "mov x1, #-1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb914",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb918",
+          "bytes": "a11700f9",
+          "asm": "str x1, [x29, #0x28]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb91c",
+          "bytes": "9effff97",
+          "asm": "bl #0xeb794",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb920",
+          "bytes": "1f1c0072",
+          "asm": "tst w0, #0xff",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb924",
+          "bytes": "40010054",
+          "asm": "b.eq #0xeb94c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb928",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1dc000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb92c",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb930",
+          "bytes": "21880991",
+          "asm": "add x1, x1, #0x262",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb934",
+          "bytes": "22030094",
+          "asm": "bl #0xec5bc",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb938",
+          "bytes": "e10300aa",
+          "asm": "mov x1, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb93c",
+          "bytes": "e20313aa",
+          "asm": "mov x2, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb940",
+          "bytes": "a0a30091",
+          "asm": "add x0, x29, #0x28",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb944",
+          "bytes": "030080d2",
+          "asm": "mov x3, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb948",
+          "bytes": "ab020094",
+          "asm": "bl #0xec3f4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb94c",
+          "bytes": "a01740f9",
+          "asm": "ldr x0, [x29, #0x28]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb950",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb954",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb958",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "label": "open_core_library",
+      "VA": "0xeb794",
+      "bytes": 12,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "588097c84fdbb10487f33a1f28c6d4e962a1f52458267413023698c4b66dd2a6",
+      "instructions": [
+        {
+          "pc": "0xeb794",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1dc000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb798",
+          "bytes": "21200991",
+          "asm": "add x1, x1, #0x248",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb79c",
+          "bytes": "75030014",
+          "asm": "b #0xec570",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "label": "dynamic_symbol_lookup",
+      "VA": "0xec5bc",
+      "bytes": 56,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "dad1800a0ce5acb50fdda454c55edd25a96bb32d3815a8ef56e3999671d314d1",
+      "instructions": [
+        {
+          "pc": "0xec5bc",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5c0",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5c4",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5c8",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5cc",
+          "bytes": "000040f9",
+          "asm": "ldr x0, [x0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5d0",
+          "bytes": "74abfd97",
+          "asm": "bl #0x573a0",
+          "PLT_symbol": "dlsym"
+        },
+        {
+          "pc": "0xec5d4",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5d8",
+          "bytes": "600000b5",
+          "asm": "cbnz x0, #0xec5e4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5dc",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5e0",
+          "bytes": "dcffff97",
+          "asm": "bl #0xec550",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5e4",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5e8",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5ec",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec5f0",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "label": "thread_start_wrapper",
+      "VA": "0xec3f4",
+      "bytes": 100,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "c59f9692cf81005ea70b75283d7e056eebb884d08c4484a4e2b4ef816587f932",
+      "instructions": [
+        {
+          "pc": "0xec3f4",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec3f8",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec3fc",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec400",
+          "bytes": "140040f9",
+          "asm": "ldr x20, [x0]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec404",
+          "bytes": "9f0600b1",
+          "asm": "cmn x20, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec408",
+          "bytes": "e1010054",
+          "asm": "b.ne #0xec444",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec40c",
+          "bytes": "e50303aa",
+          "asm": "mov x5, x3",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec410",
+          "bytes": "e30302aa",
+          "asm": "mov x3, x2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec414",
+          "bytes": "e20301aa",
+          "asm": "mov x2, x1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec418",
+          "bytes": "e10305aa",
+          "asm": "mov x1, x5",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec41c",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec420",
+          "bytes": "8ca5fd97",
+          "asm": "bl #0x55a50",
+          "PLT_symbol": "pthread_create"
+        },
+        {
+          "pc": "0xec424",
+          "bytes": "21008052",
+          "asm": "mov w1, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec428",
+          "bytes": "00010034",
+          "asm": "cbz w0, #0xec448",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec42c",
+          "bytes": "81070090",
+          "asm": "adrp x1, #0x1dc000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec430",
+          "bytes": "e203002a",
+          "asm": "mov w2, w0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec434",
+          "bytes": "21480c91",
+          "asm": "add x1, x1, #0x312",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec438",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec43c",
+          "bytes": "740200f9",
+          "asm": "str x20, [x19]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec440",
+          "bytes": "9cf7ff97",
+          "asm": "bl #0xea2b0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec444",
+          "bytes": "01008052",
+          "asm": "mov w1, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec448",
+          "bytes": "e003012a",
+          "asm": "mov w0, w1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec44c",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec450",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xec454",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "label": "normal_dispatcher_thread",
+      "VA": "0xea1dc",
+      "bytes": 212,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "1b48d85ff056c6c22dfc9694b1c23d78989c1d44971d7660906e669e3c91b8f9",
+      "instructions": [
+        {
+          "pc": "0xea1dc",
+          "bytes": "fd7bbca9",
+          "asm": "stp x29, x30, [sp, #-0x40]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1e0",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1db000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1e4",
+          "bytes": "21103c91",
+          "asm": "add x1, x1, #0xf04",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1e8",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1ec",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1f0",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1f4",
+          "bytes": "b4a30091",
+          "asm": "add x20, x29, #0x28",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1f8",
+          "bytes": "9effff97",
+          "asm": "bl #0xea070",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea1fc",
+          "bytes": "000980d2",
+          "asm": "mov x0, #0x48",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea200",
+          "bytes": "34affd97",
+          "asm": "bl #0x55ed0",
+          "PLT_symbol": "_Znwm"
+        },
+        {
+          "pc": "0xea204",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea208",
+          "bytes": "00200091",
+          "asm": "add x0, x0, #8",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea20c",
+          "bytes": "7f0201a9",
+          "asm": "stp xzr, x0, [x19, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea210",
+          "bytes": "607e02a9",
+          "asm": "stp x0, xzr, [x19, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea214",
+          "bytes": "c00b0090",
+          "asm": "adrp x0, #0x262000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea218",
+          "bytes": "7f0a00b9",
+          "asm": "str wzr, [x19, #8]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea21c",
+          "bytes": "7f7e03a9",
+          "asm": "stp xzr, xzr, [x19, #0x30]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea220",
+          "bytes": "003843f9",
+          "asm": "ldr x0, [x0, #0x670]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea224",
+          "bytes": "7f2200f9",
+          "asm": "str xzr, [x19, #0x40]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea228",
+          "bytes": "a0cf02a9",
+          "asm": "stp x0, x19, [x29, #0x28]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea22c",
+          "bytes": "20008052",
+          "asm": "mov w0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea230",
+          "bytes": "a03b00b9",
+          "asm": "str w0, [x29, #0x38]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea234",
+          "bytes": "52050094",
+          "asm": "bl #0xeb77c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea238",
+          "bytes": "e0010035",
+          "asm": "cbnz w0, #0xea274",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea23c",
+          "bytes": "c20b0090",
+          "asm": "adrp x2, #0x262000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea240",
+          "bytes": "200f0090",
+          "asm": "adrp x0, #0x2ce000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea244",
+          "bytes": "00200491",
+          "asm": "add x0, x0, #0x108",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea248",
+          "bytes": "e10313aa",
+          "asm": "mov x1, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea24c",
+          "bytes": "00000191",
+          "asm": "add x0, x0, #0x40",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea250",
+          "bytes": "42b042f9",
+          "asm": "ldr x2, [x2, #0x560]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea254",
+          "bytes": "68050094",
+          "asm": "bl #0xeb7f4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea258",
+          "bytes": "1f1c0072",
+          "asm": "tst w0, #0xff",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea25c",
+          "bytes": "c1000054",
+          "asm": "b.ne #0xea274",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea260",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1db000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea264",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea268",
+          "bytes": "215c3c91",
+          "asm": "add x1, x1, #0xf17",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea26c",
+          "bytes": "81ffff97",
+          "asm": "bl #0xea070",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea270",
+          "bytes": "05000014",
+          "asm": "b #0xea284",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea274",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea278",
+          "bytes": "ef050094",
+          "asm": "bl #0xeba34",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea27c",
+          "bytes": "20008052",
+          "asm": "mov w0, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea280",
+          "bytes": "a03b00b9",
+          "asm": "str w0, [x29, #0x38]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea284",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea288",
+          "bytes": "75ffff97",
+          "asm": "bl #0xea05c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea28c",
+          "bytes": "000080d2",
+          "asm": "mov x0, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea290",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea294",
+          "bytes": "fd7bc4a8",
+          "asm": "ldp x29, x30, [sp], #0x40",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea298",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea29c",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea2a0",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea2a4",
+          "bytes": "6effff97",
+          "asm": "bl #0xea05c",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea2a8",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea2ac",
+          "bytes": "89b5fd97",
+          "asm": "bl #0x578d0",
+          "PLT_symbol": "_Unwind_Resume"
+        }
+      ]
+    },
+    {
+      "label": "dynamic_normal_mode_start",
+      "VA": "0xeb7f4",
+      "bytes": 104,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "21df2489054d4455a92db817a9280e955cfef184eb6b83691820d7398b233fb8",
+      "instructions": [
+        {
+          "pc": "0xeb7f4",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb7f8",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb7fc",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb800",
+          "bytes": "f30301aa",
+          "asm": "mov x19, x1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb804",
+          "bytes": "f51300f9",
+          "asm": "str x21, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb808",
+          "bytes": "f40302aa",
+          "asm": "mov x20, x2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb80c",
+          "bytes": "f50300aa",
+          "asm": "mov x21, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb810",
+          "bytes": "e1ffff97",
+          "asm": "bl #0xeb794",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb814",
+          "bytes": "1f1c0072",
+          "asm": "tst w0, #0xff",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb818",
+          "bytes": "80010054",
+          "asm": "b.eq #0xeb848",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb81c",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1dc000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb820",
+          "bytes": "e00315aa",
+          "asm": "mov x0, x21",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb824",
+          "bytes": "21bc0891",
+          "asm": "add x1, x1, #0x22f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb828",
+          "bytes": "65030094",
+          "asm": "bl #0xec5bc",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb82c",
+          "bytes": "f51340f9",
+          "asm": "ldr x21, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb830",
+          "bytes": "e20300aa",
+          "asm": "mov x2, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb834",
+          "bytes": "e10314aa",
+          "asm": "mov x1, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb838",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb83c",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb840",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb844",
+          "bytes": "40001fd6",
+          "asm": "br x2",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb848",
+          "bytes": "00008052",
+          "asm": "mov w0, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb84c",
+          "bytes": "f51340f9",
+          "asm": "ldr x21, [sp, #0x20]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb850",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb854",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xeb858",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        }
+      ]
+    },
+    {
+      "label": "normal_mode_callback",
+      "VA": "0xea0a4",
+      "bytes": 132,
+      "boundary_source": "original .eh_frame FDE",
+      "sha256": "1011cf2a7b4c3e76bcd5214a3878d2cc8ba268fd2d18a13efbf9e56d277350cd",
+      "instructions": [
+        {
+          "pc": "0xea0a4",
+          "bytes": "fd7bb9a9",
+          "asm": "stp x29, x30, [sp, #-0x70]!",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0a8",
+          "bytes": "00008092",
+          "asm": "mov x0, #-1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0ac",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0b0",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0b4",
+          "bytes": "b3c30091",
+          "asm": "add x19, x29, #0x30",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0b8",
+          "bytes": "a01700f9",
+          "asm": "str x0, [x29, #0x28]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0bc",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0c0",
+          "bytes": "e8aefd97",
+          "asm": "bl #0x55c60",
+          "PLT_symbol": "pthread_attr_init"
+        },
+        {
+          "pc": "0xea0c4",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0c8",
+          "bytes": "21008052",
+          "asm": "mov w1, #1",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0cc",
+          "bytes": "95b1fd97",
+          "asm": "bl #0x56720",
+          "PLT_symbol": "pthread_attr_setdetachstate"
+        },
+        {
+          "pc": "0xea0d0",
+          "bytes": "40010034",
+          "asm": "cbz w0, #0xea0f8",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0d4",
+          "bytes": "810700b0",
+          "asm": "adrp x1, #0x1db000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0d8",
+          "bytes": "c00f8012",
+          "asm": "mov w0, #-0x7f",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0dc",
+          "bytes": "21803b91",
+          "asm": "add x1, x1, #0xee0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0e0",
+          "bytes": "e4ffff97",
+          "asm": "bl #0xea070",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0e4",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0e8",
+          "bytes": "f6b0fd97",
+          "asm": "bl #0x564c0",
+          "PLT_symbol": "pthread_attr_destroy"
+        },
+        {
+          "pc": "0xea0ec",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0f0",
+          "bytes": "fd7bc7a8",
+          "asm": "ldp x29, x30, [sp], #0x70",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0f4",
+          "bytes": "c0035fd6",
+          "asm": "ret ",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0f8",
+          "bytes": "c10b0090",
+          "asm": "adrp x1, #0x262000",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea0fc",
+          "bytes": "e30313aa",
+          "asm": "mov x3, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea100",
+          "bytes": "a0a30091",
+          "asm": "add x0, x29, #0x28",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea104",
+          "bytes": "020080d2",
+          "asm": "mov x2, #0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea108",
+          "bytes": "212041f9",
+          "asm": "ldr x1, [x1, #0x240]",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea10c",
+          "bytes": "ba080094",
+          "asm": "bl #0xec3f4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea110",
+          "bytes": "f5ffff17",
+          "asm": "b #0xea0e4",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea114",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea118",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea11c",
+          "bytes": "e9b0fd97",
+          "asm": "bl #0x564c0",
+          "PLT_symbol": "pthread_attr_destroy"
+        },
+        {
+          "pc": "0xea120",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20",
+          "PLT_symbol": null
+        },
+        {
+          "pc": "0xea124",
+          "bytes": "ebb5fd97",
+          "asm": "bl #0x578d0",
+          "PLT_symbol": "_Unwind_Resume"
+        }
+      ]
+    }
+  ],
+  "asserted_local_instruction_facts": 22,
+  "callback_table_relocations": {
+    "0x2628d0": {
+      "type": "R_AARCH64_RELATIVE",
+      "addend": "0x2646c8"
+    },
+    "0x2646c8": {
+      "type": "R_AARCH64_RELATIVE",
+      "addend": "0xea128"
+    },
+    "0x2646d0": {
+      "type": "R_AARCH64_RELATIVE",
+      "addend": "0xea128"
+    }
+  },
+  "dynamic_symbol_strings": {
+    "0x1dc22f": "senser_normal_mode_start",
+    "0x1dc262": "NinThread"
+  },
+  "route": "senser_init non-mode1 branch -> senif_init(1, callbacks) -> event1 callback with state<=1 -> dynamically resolve NinThread -> thread_create wrapper",
+  "normal_mode_dispatcher": "mode0 dispatcher thread separately resolves senser_normal_mode_start",
+  "full_dynamic_library_path_and_runtime_symbol_resolution_proven": false,
+  "current_MSC_driver_USB_transport_or_cooperator_vtable_binding_proven": false,
+  "initial_MSC_hash_input_algorithm_proven": false,
+  "no_auto_change_to_stage145_MSC_digest_selection": true,
+  "new_host_USB_camera_driver_or_Windows_operations": 0,
+  "original_code_executed": false
+}

@@ -1,0 +1,347 @@
+{
+  "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "run": "runs/ap45outer-667d395f",
+  "raw": "0d202d030a0001800000",
+  "native_return_RVA": "2de7264",
+  "owner": "/usr/lib/appFw.so",
+  "instructions": [
+    {
+      "va": "0x2de71d0",
+      "bytes": "1b230694",
+      "instruction": "bl #0x2f6fe3c",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71d4",
+      "bytes": "9c871891",
+      "instruction": "add x28, x28, #0x621",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71d8",
+      "bytes": "e10313aa",
+      "instruction": "mov x1, x19",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71dc",
+      "bytes": "e0031caa",
+      "instruction": "mov x0, x28",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71e0",
+      "bytes": "17230694",
+      "instruction": "bl #0x2f6fe3c",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71e4",
+      "bytes": "a33740f9",
+      "instruction": "ldr x3, [x29, #0x68]",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71e8",
+      "bytes": "e10314aa",
+      "instruction": "mov x1, x20",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71ec",
+      "bytes": "426c8052",
+      "instruction": "mov w2, #0x362",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71f0",
+      "bytes": "e00303aa",
+      "instruction": "mov x0, x3",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71f4",
+      "bytes": "15130694",
+      "instruction": "bl #0x2f6be48",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71f8",
+      "bytes": "e10313aa",
+      "instruction": "mov x1, x19",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de71fc",
+      "bytes": "e0031caa",
+      "instruction": "mov x0, x28",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7200",
+      "bytes": "12130694",
+      "instruction": "bl #0x2f6be48",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7204",
+      "bytes": "000d00b0",
+      "instruction": "adrp x0, #0x2f88000",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7208",
+      "bytes": "e10314aa",
+      "instruction": "mov x1, x20",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de720c",
+      "bytes": "00f03b91",
+      "instruction": "add x0, x0, #0xefc",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7210",
+      "bytes": "426c8052",
+      "instruction": "mov w2, #0x362",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7214",
+      "bytes": "6bad9e97",
+      "instruction": "bl #0x15927c0",
+      "plt_symbol": "printf"
+    },
+    {
+      "va": "0x2de7218",
+      "bytes": "000d00b0",
+      "instruction": "adrp x0, #0x2f88000",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de721c",
+      "bytes": "e10313aa",
+      "instruction": "mov x1, x19",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7220",
+      "bytes": "00343c91",
+      "instruction": "add x0, x0, #0xf0d",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7224",
+      "bytes": "67ad9e97",
+      "instruction": "bl #0x15927c0",
+      "plt_symbol": "printf"
+    },
+    {
+      "va": "0x2de7228",
+      "bytes": "00d49052",
+      "instruction": "mov w0, #0x86a0",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de722c",
+      "bytes": "2000a072",
+      "instruction": "movk w0, #1, lsl #16",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7230",
+      "bytes": "24af9e97",
+      "instruction": "bl #0x1592ec0",
+      "plt_symbol": "usleep"
+    },
+    {
+      "va": "0x2de7234",
+      "bytes": "5f600394",
+      "instruction": "bl #0x2ebf3b0",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7238",
+      "bytes": "a43340f9",
+      "instruction": "ldr x4, [x29, #0x60]",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de723c",
+      "bytes": "427f4093",
+      "instruction": "sxtw x2, w26",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7240",
+      "bytes": "e1031baa",
+      "instruction": "mov x1, x27",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7244",
+      "bytes": "e00304aa",
+      "instruction": "mov x0, x4",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7248",
+      "bytes": "7eaa9e97",
+      "instruction": "bl #0x1591c40",
+      "plt_symbol": "memcpy"
+    },
+    {
+      "va": "0x2de724c",
+      "bytes": "a17340b9",
+      "instruction": "ldr w1, [x29, #0x70]",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7250",
+      "bytes": "a03f40f9",
+      "instruction": "ldr x0, [x29, #0x78]",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7254",
+      "bytes": "ebaa9e97",
+      "instruction": "bl #0x1591e00",
+      "plt_symbol": "osal_set_msg_src"
+    },
+    {
+      "va": "0x2de7258",
+      "bytes": "a13f40f9",
+      "instruction": "ldr x1, [x29, #0x78]",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de725c",
+      "bytes": "e003192a",
+      "instruction": "mov w0, w25",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7260",
+      "bytes": "2caf9e97",
+      "instruction": "bl #0x1592f10",
+      "plt_symbol": "osal_snd_msg"
+    },
+    {
+      "va": "0x2de7264",
+      "bytes": "80040034",
+      "instruction": "cbz w0, #0x2de72f4",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7268",
+      "bytes": "f45b00f0",
+      "instruction": "adrp x20, #0x3966000",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de726c",
+      "bytes": "1a0d00b0",
+      "instruction": "adrp x26, #0x2f88000",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7270",
+      "bytes": "94d63d91",
+      "instruction": "add x20, x20, #0xf75",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7274",
+      "bytes": "5ab33b91",
+      "instruction": "add x26, x26, #0xeec",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7278",
+      "bytes": "e10314aa",
+      "instruction": "mov x1, x20",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de727c",
+      "bytes": "e0031aaa",
+      "instruction": "mov x0, x26",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7280",
+      "bytes": "c26c8052",
+      "instruction": "mov w2, #0x366",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7284",
+      "bytes": "135c00f0",
+      "instruction": "adrp x19, #0x396a000",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7288",
+      "bytes": "994d00f0",
+      "instruction": "adrp x25, #0x379a000",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de728c",
+      "bytes": "73620a91",
+      "instruction": "add x19, x19, #0x298",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7290",
+      "bytes": "eb220694",
+      "instruction": "bl #0x2f6fe3c",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7294",
+      "bytes": "39871891",
+      "instruction": "add x25, x25, #0x621",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de7298",
+      "bytes": "e10313aa",
+      "instruction": "mov x1, x19",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de729c",
+      "bytes": "e00319aa",
+      "instruction": "mov x0, x25",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de72a0",
+      "bytes": "e7220694",
+      "instruction": "bl #0x2f6fe3c",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de72a4",
+      "bytes": "e10314aa",
+      "instruction": "mov x1, x20",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de72a8",
+      "bytes": "e0031aaa",
+      "instruction": "mov x0, x26",
+      "plt_symbol": null
+    },
+    {
+      "va": "0x2de72ac",
+      "bytes": "c26c8052",
+      "instruction": "mov w2, #0x366",
+      "plt_symbol": null
+    }
+  ],
+  "status": "PASSIVE_REQUEST_AND_CALLER_PROOF_ONLY",
+  "remaining": "Bind original FX3 VDF032d handler/state/completion; not upstream016a display dimensions."
+}

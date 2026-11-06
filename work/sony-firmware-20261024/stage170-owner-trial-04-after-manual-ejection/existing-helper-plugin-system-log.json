@@ -1,0 +1,28 @@
+{
+  "created_utc": "2026-10-28T13:53:47.117212+00:00",
+  "argv": [
+    "/usr/bin/log",
+    "show",
+    "--style",
+    "json",
+    "--start",
+    "2026-10-28 06:49:02",
+    "--end",
+    "2026-10-28 06:50:03",
+    "--predicate",
+    "processID == 12230 AND subsystem == \"com.apple.iokit.cfplugin\""
+  ],
+  "returncode": 0,
+  "stderr": "",
+  "scope": "existing completed helper process and plugin subsystem only; no admin, device query or logging setting changed",
+  "messages": [
+    {
+      "timestamp": "2026-10-28 06:49:04.955473-0700",
+      "processID": 12230,
+      "subsystem": "com.apple.iokit.cfplugin",
+      "category": "default",
+      "eventMessage": "start failed ((iokit/common) not permitted) for plugin for <private>"
+    }
+  ],
+  "raw_output_saved": false
+}

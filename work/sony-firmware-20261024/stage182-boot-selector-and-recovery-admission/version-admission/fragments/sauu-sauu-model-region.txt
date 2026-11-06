@@ -1,0 +1,31 @@
+# work/fx3-color-port-20261027/input-20261028/engine-rootfs/2.05/usr/bin/sauu
+# SHA256 c508baac1c5d46117b32a4d689d69bdd30d269eb0d64c47100c8160d070c6c00
+# VA [0x405c64, 0x405cd4) raw slice SHA256 257393895e9675069fbc23f42e40cc952dc7c688ef251eb720472ea2321856f4
+  405c64: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+  405c68: 910003fd     	mov	x29, sp
+  405c6c: f9000bf3     	str	x19, [sp, #0x10]
+  405c70: aa0103f3     	mov	x19, x1
+  405c74: 97ffff0e     	bl	0x4058ac <BaseQueue::~BaseQueue()+0x2cc8>
+  405c78: 53001c00     	uxtb	w0, w0
+  405c7c: 350000a0     	cbnz	w0, 0x405c90 <BaseQueue::~BaseQueue()+0x30ac>
+  405c80: b9400e60     	ldr	w0, [x19, #0xc]
+  405c84: b9402661     	ldr	w1, [x19, #0x24]
+  405c88: 6b00003f     	cmp	w1, w0
+  405c8c: 1a9f17e0     	cset	w0, eq
+  405c90: f9400bf3     	ldr	x19, [sp, #0x10]
+  405c94: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+  405c98: d65f03c0     	ret
+  405c9c: a9be7bfd     	stp	x29, x30, [sp, #-0x20]!
+  405ca0: 910003fd     	mov	x29, sp
+  405ca4: f9000bf3     	str	x19, [sp, #0x10]
+  405ca8: aa0103f3     	mov	x19, x1
+  405cac: 97ffff00     	bl	0x4058ac <BaseQueue::~BaseQueue()+0x2cc8>
+  405cb0: 53001c00     	uxtb	w0, w0
+  405cb4: 350000a0     	cbnz	w0, 0x405cc8 <BaseQueue::~BaseQueue()+0x30e4>
+  405cb8: b9401260     	ldr	w0, [x19, #0x10]
+  405cbc: b9402a61     	ldr	w1, [x19, #0x28]
+  405cc0: 6b00003f     	cmp	w1, w0
+  405cc4: 1a9f17e0     	cset	w0, eq
+  405cc8: f9400bf3     	ldr	x19, [sp, #0x10]
+  405ccc: a8c27bfd     	ldp	x29, x30, [sp], #0x20
+  405cd0: d65f03c0     	ret

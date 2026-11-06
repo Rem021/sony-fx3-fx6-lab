@@ -1,0 +1,118 @@
+{
+  "status": "PASS",
+  "scope": "v24 production startup/cleanup body after immutable preflight",
+  "real_QEMU_started": false,
+  "cases": [
+    {
+      "scenario": "timeout",
+      "production_body_executed": true,
+      "fake_popen_count": 0,
+      "actions": [],
+      "first_lock_free_at_receipt": true,
+      "second_lock_free_at_receipt": true,
+      "HTTP_threads_reaped": true,
+      "guest_started": false,
+      "error": "RuntimeError('browser_launch_handshake_timeout_no_guest_spawn')"
+    },
+    {
+      "scenario": "start_without_ready",
+      "production_body_executed": true,
+      "fake_popen_count": 0,
+      "actions": [
+        [
+          "start_rejected",
+          409
+        ]
+      ],
+      "first_lock_free_at_receipt": true,
+      "second_lock_free_at_receipt": true,
+      "HTTP_threads_reaped": true,
+      "guest_started": false,
+      "error": "RuntimeError('browser_launch_handshake_timeout_no_guest_spawn')"
+    },
+    {
+      "scenario": "cancel",
+      "production_body_executed": true,
+      "fake_popen_count": 0,
+      "actions": [
+        [
+          "stop",
+          202
+        ]
+      ],
+      "first_lock_free_at_receipt": true,
+      "second_lock_free_at_receipt": true,
+      "HTTP_threads_reaped": true,
+      "guest_started": false,
+      "error": "RuntimeError('browser_cancelled_before_guest_launch')"
+    },
+    {
+      "scenario": "accepted_then_end",
+      "production_body_executed": true,
+      "fake_popen_count": 0,
+      "actions": [
+        [
+          "ready",
+          200
+        ],
+        [
+          "start",
+          202
+        ],
+        [
+          "stop",
+          202
+        ]
+      ],
+      "first_lock_free_at_receipt": true,
+      "second_lock_free_at_receipt": true,
+      "HTTP_threads_reaped": true,
+      "guest_started": false,
+      "error": "RuntimeError('browser_cancelled_before_guest_launch')"
+    },
+    {
+      "scenario": "second_lock_conflict",
+      "production_body_executed": true,
+      "fake_popen_count": 0,
+      "actions": [
+        [
+          "ready",
+          200
+        ],
+        [
+          "start",
+          202
+        ]
+      ],
+      "first_lock_free_at_receipt": true,
+      "second_lock_free_at_receipt": false,
+      "HTTP_threads_reaped": true,
+      "guest_started": false,
+      "error": "RuntimeError('已有 FX3 试用或验证占用运行锁；本轮未启动 guest，也未抢锁。')"
+    },
+    {
+      "scenario": "normal_duplicate",
+      "production_body_executed": true,
+      "fake_popen_count": 1,
+      "actions": [
+        [
+          "ready",
+          200
+        ],
+        [
+          "start",
+          202
+        ],
+        [
+          "duplicate",
+          200
+        ]
+      ],
+      "first_lock_free_at_receipt": true,
+      "second_lock_free_at_receipt": true,
+      "HTTP_threads_reaped": true,
+      "guest_started": false,
+      "error": "OSError('fixture fake Popen: QEMU deliberately forbidden')"
+    }
+  ]
+}

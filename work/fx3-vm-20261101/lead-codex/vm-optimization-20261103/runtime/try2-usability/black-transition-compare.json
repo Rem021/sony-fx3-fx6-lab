@@ -1,0 +1,186 @@
+{
+  "user_try2_70588c4c": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-delivery/runs/try2-70588c4c",
+    "last_sampled_nonblack": {
+      "sequence": 372,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 255,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "fnv64": "0x8ac6967e0d30aca7",
+      "sha256": "2b770b0bfe4aca033c44c62a747bda55b02605a0d1094548660f509a54ec71a1",
+      "PNG_sha256": "85f19747f8bd7b693aa4c4e216a9f2ff278ffe20fc1a0426f06d6568f444f1d4",
+      "host_monotonic": 288966.795217125,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": null,
+      "config_hash": "0xa8adcf1048b59ea7"
+    },
+    "first_sampled_black": {
+      "sequence": 378,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 373,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "fnv64": "0x4f2d9f141eeda325",
+      "sha256": "34c69899504b36f13e8b22120cf0fd894e61fcd6b046fb8535b79cc491fa3b3f",
+      "PNG_sha256": "5c4b697599f4affcdf1b5940c1e976b7c0d9636af9eb82d37cf56e530aaf2cbf",
+      "host_monotonic": 288969.956305875,
+      "nonuniform_pixels": false,
+      "all_zero_pixels": null,
+      "config_hash": "0x4741982a43f9e4bf"
+    },
+    "host_monotonic_observation_gap_seconds": 3.161,
+    "serial_events": [
+      {
+        "kind": "fill",
+        "serial_byte_range": [
+          17891991,
+          17892256
+        ],
+        "line": "FX3_GPE_CMD op=FillRect seq=1198 async=1 fmt=0 w=640 h=480 dst_phys=0x43feb5100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+      },
+      {
+        "kind": "flush",
+        "serial_byte_range": [
+          17893868,
+          17894109
+        ],
+        "line": "FX3_GPE_CMD op=Flush seq=1199 async=0 fmt=0 w=0 h=0 dst_phys=0 src_phys=0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=0 const_alpha=0 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+      },
+      {
+        "kind": "source_commit",
+        "serial_byte_range": [
+          17901995,
+          17902349
+        ],
+        "line": "FX3_OSD102_COMMIT frame=373 op=0x1003 pixel_source_seq=373 copied_GPE_last=1199 FB=0x7f74001160 bitmap=0x7f7068ed40 entry=0x7f74001198 allocation=0x74001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+      }
+    ],
+    "owner_gui_receipts": {
+      "1000": {
+        "last_before_fill": {
+          "serial_byte_range": [
+            2931539,
+            2931634
+          ],
+          "line": "FX3_OSD_OWNER_GUI queue=0x8280074d op=1000 bytes=80 count=9 saved_frozen_fields=1 reply_added=0"
+        },
+        "first_after_fill": null
+      },
+      "1001": {
+        "last_before_fill": {
+          "serial_byte_range": [
+            2952536,
+            2952632
+          ],
+          "line": "FX3_OSD_OWNER_GUI queue=0x8280074d op=1001 bytes=96 count=30 saved_frozen_fields=1 reply_added=0"
+        },
+        "first_after_fill": null
+      },
+      "1004": {
+        "last_before_fill": {
+          "serial_byte_range": [
+            3836399,
+            3836496
+          ],
+          "line": "FX3_OSD_OWNER_GUI queue=0x8280074d op=1004 bytes=16 count=100 saved_frozen_fields=1 reply_added=0"
+        },
+        "first_after_fill": null
+      }
+    },
+    "config_payload_bytes": "unknown: owner log records op/size/count, not raw config; ring exposes hash only",
+    "gpe_to_host_time": "unknown: serial command has no host monotonic stamp"
+  },
+  "internal_47e2924a": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/try2gapinternal-47e2924a",
+    "last_sampled_nonblack": {
+      "sequence": 1310,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 1285,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "fnv64": "0x4e8d182294bfcec",
+      "sha256": "7161e977a5f37b5940702cde45272586f88973b2fb5d7df292323885590c0d52",
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "host_monotonic": 292940.568180791,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "config_hash": "0x8e09d7f5ffd3b3ea"
+    },
+    "first_sampled_black": {
+      "sequence": 1314,
+      "update_id": "0x1005",
+      "pixel_source_sequence": 1311,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "fnv64": "0x4f2d9f141eeda325",
+      "sha256": "34c69899504b36f13e8b22120cf0fd894e61fcd6b046fb8535b79cc491fa3b3f",
+      "PNG_sha256": "5c4b697599f4affcdf1b5940c1e976b7c0d9636af9eb82d37cf56e530aaf2cbf",
+      "host_monotonic": 293349.577457666,
+      "nonuniform_pixels": false,
+      "all_zero_pixels": true,
+      "config_hash": "0xe144925f50ebce45"
+    },
+    "host_monotonic_observation_gap_seconds": 409.009,
+    "serial_events": [
+      {
+        "kind": "fill",
+        "serial_byte_range": [
+          27890803,
+          27891067
+        ],
+        "line": "FX3_GPE_CMD op=FillRect seq=717 async=1 fmt=0 w=640 h=480 dst_phys=0x43ae96100 src_phys=0 flags=0xff result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=255 const_alpha=255 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+      },
+      {
+        "kind": "flush",
+        "serial_byte_range": [
+          27899654,
+          27899894
+        ],
+        "line": "FX3_GPE_CMD op=Flush seq=718 async=0 fmt=0 w=0 h=0 dst_phys=0 src_phys=0 flags=0 result=0 reason=0 read=1 approx_blend=0 formula=none selector=0 K=0 const_alpha=0 rotation=0 src_fmt=0 empty_clip_noop=0 dst_nominal_outside=0 approx_tile=none"
+      },
+      {
+        "kind": "source_commit",
+        "serial_byte_range": [
+          27915273,
+          27915628
+        ],
+        "line": "FX3_OSD102_COMMIT frame=1311 op=0x1003 pixel_source_seq=1311 copied_GPE_last=718 FB=0x7f64001160 bitmap=0x7f5c047550 entry=0x7f64001178 allocation=0x64001200 token=0x401 physical=0x43ae96100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000104000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+      }
+    ],
+    "owner_gui_receipts": {
+      "1000": {
+        "last_before_fill": {
+          "serial_byte_range": [
+            2913131,
+            2913226
+          ],
+          "line": "FX3_OSD_OWNER_GUI queue=0x8280074d op=1000 bytes=80 count=9 saved_frozen_fields=1 reply_added=0"
+        },
+        "first_after_fill": null
+      },
+      "1001": {
+        "last_before_fill": {
+          "serial_byte_range": [
+            2937431,
+            2937527
+          ],
+          "line": "FX3_OSD_OWNER_GUI queue=0x8280074d op=1001 bytes=96 count=30 saved_frozen_fields=1 reply_added=0"
+        },
+        "first_after_fill": null
+      },
+      "1004": {
+        "last_before_fill": {
+          "serial_byte_range": [
+            14282899,
+            14282996
+          ],
+          "line": "FX3_OSD_OWNER_GUI queue=0x8280074d op=1004 bytes=16 count=700 saved_frozen_fields=1 reply_added=0"
+        },
+        "first_after_fill": null
+      }
+    },
+    "config_payload_bytes": "unknown: owner log records op/size/count, not raw config; ring exposes hash only",
+    "gpe_to_host_time": "unknown: serial command has no host monotonic stamp"
+  }
+}

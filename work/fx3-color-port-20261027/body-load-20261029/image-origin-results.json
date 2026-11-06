@@ -1,0 +1,108 @@
+{
+  "partition_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "regular_files_read": 797,
+  "preinstalled_updater_image": {
+    "path": "/bin/udtrbody.bin",
+    "inode": 80976,
+    "bytes": 1253376,
+    "sha256": "62e86fad175e0326969d5f1cea29d780feb496ce8034acd2c9c3954320d8ccaa"
+  },
+  "installed_image_matches_official_embedded_updater": true,
+  "marker_references": [
+    {
+      "path": "/bin/up.sh",
+      "token": "IAMUPDATER",
+      "source_sha256": "c774320a0ab92c13b467b9219e1f60262a1effa0b551ba3b713514a36dadc402",
+      "occurrences": [
+        {
+          "offset": "0x8e4",
+          "context": "return 1 ; } \n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tmount -t tmpfs -o size=1024 tmpfs /tmp_updater\n\tfi\n\n"
+        },
+        {
+          "offset": "0xb54",
+          "context": "ater/upnewver\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tumount /tmp_updater\n\tfi\n\n\t#message\n\techo \"Modify ver"
+        },
+        {
+          "offset": "0xd77",
+          "context": " return 1 ; }\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tmount -t tmpfs -o size=1024 tmpfs /tmp_updater\n\tfi\n\n"
+        },
+        {
+          "offset": "0x10fc",
+          "context": "updater/upmnt\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tumount /tmp_updater\n\tfi\n\n\t#message\n\techo \"Modify $1 "
+        },
+        {
+          "offset": "0x11b2",
+          "context": "ocal _flag=$1\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tmount -t tmpfs -o size=1024 tmpfs /tmp_updater\n\tfi\n\n"
+        },
+        {
+          "offset": "0x14ba",
+          "context": "updater/upmnt\n\n\tif [ ! -e /root/IAMUPDATER ] ; then\n\t\tumount /tmp_updater\n\tfi\n\n\t#message\n\techo \"console $_"
+        },
+        {
+          "offset": "0x1967",
+          "context": "_cons off\n\tfi\nfi\n\ntest -e /root/IAMUPDATER\nif [ $? = 0 ]; then\n\texit 0\nfi\n\nud_send_lsi.elf $mode_num\n"
+        }
+      ]
+    },
+    {
+      "path": "/lib/libObj.so",
+      "token": "IAMUPDATER",
+      "source_sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae",
+      "occurrences": [
+        {
+          "offset": "0x1dc5c4",
+          "context": "/dev/nflashaB0\u0000Loader Ver\u0000/root/IAMUPDATER\u0000[UDTR0604] UD_GET_RUNVER can not open version.txt: (fd = %d)\n\u0000["
+        }
+      ]
+    },
+    {
+      "path": "/lib/libupdatercorecommon.so",
+      "token": "IAMUPDATER",
+      "source_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "occurrences": [
+        {
+          "offset": "0xc2d2",
+          "context": "img\u0000/usr/bin/udtrbody.bin\u0000/root/IAMUPDATER\u0000/tmp_updater/updater/bodyfs\u0000/tmp_updater/updater/bodyfs/bodylib"
+        }
+      ]
+    },
+    {
+      "path": "/lib/libupdatercorecommon.so",
+      "token": "udtrbody.bin",
+      "source_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "occurrences": [
+        {
+          "offset": "0xc2bf",
+          "context": "pdater/updater/bodyimg\u0000/usr/bin/udtrbody.bin\u0000/root/IAMUPDATER\u0000/tmp_updater/updater/bodyfs\u0000/tmp_updater/updat"
+        }
+      ]
+    }
+  ],
+  "selected_fragments": [
+    {
+      "library": "libfileinputupdaterapi.so",
+      "source_sha256": "9465744b62326e1e8409c3ba6f6e26c3e7a647090cbb3e591f01669ec1d0ae38",
+      "va": "0x3e64",
+      "bytes": 256,
+      "sha256": "e99891cf0f87ac7696204ddd4b0142ab861dd1934449e716b02a839a5a141f72",
+      "output": "fragments/libfileinputupdaterapi.so-3e64.txt"
+    },
+    {
+      "library": "libupdatercorecommon.so",
+      "source_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "va": "0x9064",
+      "bytes": 152,
+      "sha256": "83b13e2d60f0640ecefc4f21038b7925d31edd2e33cd773e03e27bb56dda328b",
+      "output": "fragments/libupdatercorecommon.so-9064.txt"
+    },
+    {
+      "library": "libupdatercorecommon.so",
+      "source_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+      "va": "0xc1a8",
+      "bytes": 16,
+      "sha256": "5c5c9f5f2fcde75193efec76595b40c8c61e46c86f5d00f7da1d266c21bf3eb2",
+      "output": "fragments/libupdatercorecommon.so-c1a8.txt"
+    }
+  ],
+  "scope": "AP ext2 regular files and original instruction fragments only. The runtime selection literal is /usr/bin/udtrbody.bin; the file is /bin/udtrbody.bin relative to the AP partition. This scan does not enumerate the complete Linux runtime root, prove /root/IAMUPDATER presence/absence, identify every possible writer, or establish camera loading policy. No binary is run or mounted."
+}

@@ -1,0 +1,145 @@
+{
+  "schema": "fx3-stage224-launcher-source-derivation-v1",
+  "parent_source": "work/sony-firmware-20261024/stage222-parent-arbiter-core-and-paired-ARM64/parent_module.c",
+  "parent_source_sha256": "15a99e28c7b7878a615017d2ebd88b38149788274d0e9a44f00c78323e6af7b0",
+  "ordered_changes": [
+    {
+      "before": " * process context. Does not fork, exec, install, authenticate or upload.",
+      "after": " * process context. Own clone/exec candidate; no install/auth/upload backend."
+    },
+    {
+      "before": "#include \"output_validate.inc\"",
+      "after": "#include \"output_validate.inc\"\n#include \"launch_support.inc\""
+    },
+    {
+      "before": "if(fd!=199||!identity()||!im_profile()||!binding(hand,req,child)||owner.jobs>=1024){held(72);goto done;}",
+      "after": "if(child!=0||fd!=-1||!identity()||!im_profile()||!launch_template(hand,req)||owner.jobs>=1024){held(72);goto done;}"
+    },
+    {
+      "before": "if(!reserve_session(hand)){held(73);goto done;}\n    copy(owner.gate.hand,hand,256);",
+      "after": "if(!reserve_session(hand)){held(73);goto done;}\n    u8 final_hand[256];copy(final_hand,hand,256);\n    if(!launch_job(final_hand,req,&child,&fd)){held(86);goto done;}hand=final_hand;\n    if(!binding(hand,req,child)){held(87);goto done;}\n    copy(owner.gate.hand,hand,256);"
+    }
+  ],
+  "parent_derived_sha256": "e0cd7596f66fdfa022a7e107bf2ba87df1c1a185dd025a4ebf7d79580f26e80c",
+  "unchanged_support": {
+    "core_support.inc": "17a4538be13f27bafe321e5b7a0ce2c61dc4613e9bf52d57cb347d60620e725d",
+    "parent_ipc.inc": "90a2c47e89b9d91d7f51e0a431cdb56d4d8ae04bef5918dcb70db0a975620318",
+    "output_validate.inc": "2a23706a03c3ec8f7d99ab0dff436107adc2cb313c1ef0934754eb0cac9539fe"
+  },
+  "child_static_unchanged_sha256": "e40d068d43123f8f86eba5c46a1428e02e5e16c84df2211174c578d4cd273d7d",
+  "failed_runs_preserved": [
+    {
+      "receipt": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-first/receipt/results.json",
+      "status": "FAIL",
+      "failures": 0,
+      "errors": 7,
+      "matching_sources": {
+        "dynparent.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/dynparent.py",
+          "sha256": "46ec1b7291b921108cb4d896f4e6b15fc112fb3414a47ae9bb172df84ad7a956"
+        },
+        "launch_model.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/launch_model.py",
+          "sha256": "9b2e09b4c57e2ee51121b3d00c9fdfb3dccedb800222bc6648918dc9a77e9aba"
+        },
+        "launch_support.inc": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/launch_support.inc",
+          "sha256": "41581edba25693999ea7035aeb4f6bfdf86b35d45f31ffa066787b0c1dd0ba1d"
+        },
+        "parent_module.c": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/parent_module.c",
+          "sha256": "e0cd7596f66fdfa022a7e107bf2ba87df1c1a185dd025a4ebf7d79580f26e80c"
+        },
+        "test_launcher.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-first/test_launcher.py",
+          "sha256": "a630eb4cb8cdee9be53529a16db057cf537d0ef0a76d01c558c7c896ec17963a"
+        }
+      }
+    },
+    {
+      "receipt": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/receipt/results.json",
+      "status": "FAIL",
+      "failures": 4,
+      "errors": 1,
+      "matching_sources": {
+        "dynparent.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/dynparent.py",
+          "sha256": "46ec1b7291b921108cb4d896f4e6b15fc112fb3414a47ae9bb172df84ad7a956"
+        },
+        "launch_model.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/launch_model.py",
+          "sha256": "9b2e09b4c57e2ee51121b3d00c9fdfb3dccedb800222bc6648918dc9a77e9aba"
+        },
+        "launch_support.inc": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/launch_support.inc",
+          "sha256": "41581edba25693999ea7035aeb4f6bfdf86b35d45f31ffa066787b0c1dd0ba1d"
+        },
+        "parent_module.c": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/parent_module.c",
+          "sha256": "e0cd7596f66fdfa022a7e107bf2ba87df1c1a185dd025a4ebf7d79580f26e80c"
+        },
+        "test_launcher.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-template-fixed/source-snapshot/test_launcher.py",
+          "sha256": "29dfeb0b824a44239ce6a64f5b72d2156b72ef87910bd9c56ba5e2a0c0c6a604"
+        }
+      }
+    },
+    {
+      "receipt": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-model-fixed/receipt/results.json",
+      "status": "FAIL",
+      "failures": 4,
+      "errors": 0,
+      "matching_sources": {
+        "dynparent.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-model-fixed/source-snapshot/dynparent.py",
+          "sha256": "46ec1b7291b921108cb4d896f4e6b15fc112fb3414a47ae9bb172df84ad7a956"
+        },
+        "launch_model.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-model-fixed/source-snapshot/launch_model.py",
+          "sha256": "56772001ce66b3395dd65fff4a7fea43a42d32cc1ae293f373241641f4478ad4"
+        },
+        "launch_support.inc": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-model-fixed/source-snapshot/launch_support.inc",
+          "sha256": "41581edba25693999ea7035aeb4f6bfdf86b35d45f31ffa066787b0c1dd0ba1d"
+        },
+        "parent_module.c": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-model-fixed/source-snapshot/parent_module.c",
+          "sha256": "e0cd7596f66fdfa022a7e107bf2ba87df1c1a185dd025a4ebf7d79580f26e80c"
+        },
+        "test_launcher.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-model-fixed/source-snapshot/test_launcher.py",
+          "sha256": "b1f2954d6a65cd1f7d093394841ece047c76522bfb56e3a523b6b9af9e856f4a"
+        }
+      }
+    },
+    {
+      "receipt": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-ABI-fixed/receipt/results.json",
+      "status": "FAIL",
+      "failures": 1,
+      "errors": 0,
+      "matching_sources": {
+        "dynparent.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-ABI-fixed/source-snapshot/dynparent.py",
+          "sha256": "46ec1b7291b921108cb4d896f4e6b15fc112fb3414a47ae9bb172df84ad7a956"
+        },
+        "launch_model.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-ABI-fixed/source-snapshot/launch_model.py",
+          "sha256": "47df8926539d99a0b21af9056a55a7910ae6167b53da1e923f394b6f036fa977"
+        },
+        "launch_support.inc": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-ABI-fixed/source-snapshot/launch_support.inc",
+          "sha256": "41581edba25693999ea7035aeb4f6bfdf86b35d45f31ffa066787b0c1dd0ba1d"
+        },
+        "parent_module.c": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-ABI-fixed/source-snapshot/parent_module.c",
+          "sha256": "e0cd7596f66fdfa022a7e107bf2ba87df1c1a185dd025a4ebf7d79580f26e80c"
+        },
+        "test_launcher.py": {
+          "path": "work/sony-firmware-20261024/stage224-controlled-launcher-and-preexec-image-pin/runs-ABI-fixed/source-snapshot/test_launcher.py",
+          "sha256": "b1f2954d6a65cd1f7d093394841ece047c76522bfb56e3a523b6b9af9e856f4a"
+        }
+      }
+    }
+  ],
+  "formal_release_modified": false
+}

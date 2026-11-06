@@ -1,0 +1,9 @@
+{
+  "initial_result": "run-process-tests/results.json",
+  "completed_cases": 16,
+  "problem": "Late-return fake advanced native clock4s. Next fake request reset it backward and observation kept old4s deadline; correctly rejected. Preserve failure; use monotonic fixture clock and later metadata-observation deadline. No production dispatcher logic changed.",
+  "old_failed_test_last_process_receipt_missing": true,
+  "subsequent_exact_program_path_process_inventory_matches": 0,
+  "reason_for_missing_old_stdout": "not established; not counted as orderly process exit",
+  "new_device_operations": 0
+}

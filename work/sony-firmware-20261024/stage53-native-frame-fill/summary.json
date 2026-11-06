@@ -1,0 +1,151 @@
+{
+  "created_utc": "2026-10-26T04:37:03.639910+00:00",
+  "status": "PASS_NATIVE_TYPED_TAG_SERIALIZATION_AND_COMPLETE_FRAME_FILL",
+  "original_fragments": 112,
+  "original_stop_reasons": {
+    "boundary: after_original_kernel_memcpy_before_next_diagnostic": 3,
+    "returned": 105,
+    "boundary: before_real_locked_Start_wrapper": 3,
+    "boundary: before_unexecuted_diagnostic": 1
+  },
+  "original_ImageSizeInfo_RTTI": "35C_DataflowInfra_Entry_ImageSizeInfo",
+  "native_SSYC_ctor_and_native_typed_tag_serialization": true,
+  "whole_frame_fill_returns_through_original_tail_getter": true,
+  "native_image_tag_replacement_keeps9entries_and_preserves_old_filled_record": true,
+  "cases": [
+    {
+      "label": "all9tags HD format5",
+      "format_byte28": 5,
+      "geometry_10u16_at36": [
+        1920,
+        1080,
+        0,
+        0,
+        1920,
+        1080,
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "validity_bytes": {
+        "0x0": 1,
+        "0x50": 1,
+        "0x59": 1,
+        "0x9c": 1,
+        "0x438": 1,
+        "0x4bc": 1,
+        "0x5f0": 1,
+        "0x62c": 1
+      },
+      "encoder_input_e8_ea_geometry": [
+        1920,
+        1080
+      ],
+      "encoder_input_f8_format": 5,
+      "native_function_return": 1
+    },
+    {
+      "label": "same native event after ImageSizeInfo replacement",
+      "format_byte28": 6,
+      "geometry_10u16_at36": [
+        1280,
+        720,
+        0,
+        0,
+        1280,
+        720,
+        0,
+        0,
+        1280,
+        720
+      ],
+      "validity_bytes": {
+        "0x0": 1,
+        "0x50": 1,
+        "0x59": 1,
+        "0x9c": 1,
+        "0x438": 1,
+        "0x4bc": 1,
+        "0x5f0": 1,
+        "0x62c": 1
+      },
+      "encoder_input_e8_ea_geometry": [
+        1280,
+        720
+      ],
+      "encoder_input_f8_format": 6,
+      "native_function_return": 1
+    },
+    {
+      "label": "missing ImageSizeInfo",
+      "format_byte28": 0,
+      "geometry_10u16_at36": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "validity_bytes": {
+        "0x0": 0,
+        "0x50": 1,
+        "0x59": 1,
+        "0x9c": 1,
+        "0x438": 1,
+        "0x4bc": 1,
+        "0x5f0": 1,
+        "0x62c": 1
+      },
+      "encoder_input_e8_ea_geometry": [
+        0,
+        0
+      ],
+      "encoder_input_f8_format": 8,
+      "native_function_return": 1
+    },
+    {
+      "label": "missing CameraInfo",
+      "format_byte28": 5,
+      "geometry_10u16_at36": [
+        1920,
+        1080,
+        0,
+        0,
+        1920,
+        1080,
+        0,
+        0,
+        1920,
+        1080
+      ],
+      "validity_bytes": {
+        "0x0": 1,
+        "0x50": 1,
+        "0x59": 1,
+        "0x9c": 0,
+        "0x438": 1,
+        "0x4bc": 1,
+        "0x5f0": 1,
+        "0x62c": 1
+      },
+      "encoder_input_e8_ea_geometry": [
+        1920,
+        1080
+      ],
+      "encoder_input_f8_format": 5,
+      "native_function_return": 1
+    }
+  ],
+  "stage52_format_offset_corrected_without_rewriting_old_receipts": true,
+  "return1_not_aggregate_frame_validity": true,
+  "whole_Start_live_MAIN_Hal_or_recovery": false,
+  "proof_sha256": "d975ff1672614382577edb0a5be70e90528283319ed6954b3f98cbcf98e49b7f",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

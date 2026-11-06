@@ -1,0 +1,84 @@
+{
+  "schema": "fx3-stage99-offline-saved-argument-auditor/1",
+  "created_utc": "2026-10-27T09:59:12.424419+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/README.md",
+      "bytes": 5490,
+      "sha256": "2a69c3c551079ea205cc0f2ae03b13da023a51271eafd9431fbcf61752ed8a06"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/audit_saved_arguments.py",
+      "bytes": 9720,
+      "sha256": "986fa1921a5bfef09b29cb2dbe1efa74086113133e725c880d13280d47fb6838"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/available-records-review.json",
+      "bytes": 7084,
+      "sha256": "dae23a8ea1dcb345a1e55f23fb78f5ca25061232a22317d7f89d0e7a3e5f69f0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/completed-evidence-review.json",
+      "bytes": 482,
+      "sha256": "395dd58327888d8de1a7a3ce8396660e075beb8c6f02f3a213cdf85049bc5b7a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/goal-status-after.json",
+      "bytes": 298910,
+      "sha256": "c76b50edfc463ba65b9a5638dd977706b3257997f8327b7fcdc2b8c68a82234b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/goal-status-before.json",
+      "bytes": 296677,
+      "sha256": "0b624170fcca5b23bf3ac61afd42e7371bb5087e472a25d693420abf6d96140a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/review_and_seal.py",
+      "bytes": 12490,
+      "sha256": "88a2445def54e61a81da3d1607c7ac84723252464dd600c280441b02f1852b7e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/synthetic-test-results.json",
+      "bytes": 2554,
+      "sha256": "c9366a2c3babd354938ccd48a5e3eed867c73bf997a4f21f3ea6833f4627d317"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/test_saved_arguments.py",
+      "bytes": 8496,
+      "sha256": "2a808af05155a88465838124e502ecda9c2ade7c8ced16ac2ff36f1bfc6b5493"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/timer-research-scope.json",
+      "bytes": 26669,
+      "sha256": "3c65e68540657c03a1a16a3d683ec914034befe3b34382660038e1883d439f6d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/validation-source-receipt.json",
+      "bytes": 1009,
+      "sha256": "418ba1f7196e99522095041c8f357d3c8d08fa599a43b656a90ce0fd2533a77b"
+    }
+  ],
+  "previous_manifest_sha256": "8141fded71fdb61a80a208f276c8a3c723572bf7404ec862929df91f0ec9cf37",
+  "operations": {
+    "status": "PASS_OFFLINE_ARGUMENT_AUDITOR_SYNTHETIC_BOUNDARIES_ACTUAL_WINDOWS_CAUSE_UNKNOWN",
+    "created_utc": "2026-10-27T09:59:12.424419+00:00",
+    "prior_sealed_files_verified": 17,
+    "historical_manifest_hashes_anchored": 31,
+    "historical_public_files_checked": 5,
+    "synthetic_tests_passed": 18,
+    "same_body_identity_argument_cause_or_current_presence_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "0b624170fcca5b23bf3ac61afd42e7371bb5087e472a25d693420abf6d96140a",
+    "after_sha256": "c76b50edfc463ba65b9a5638dd977706b3257997f8327b7fcdc2b8c68a82234b"
+  },
+  "readme_index_before_sha256": "3d461b5f8c3f73aba7fa2e5f6cc2974e382ecb34c7787e4a9330a55740c2061a",
+  "readme_index_after_sha256": "1b86f813572b1e5e21ccce4e8917b231dff1cb792a6b6deb782733356a0546de",
+  "readme_index_entry": "- [2026-10-27 FX3 现存缓存参数离线审计工具](<work/sony-firmware-20261024/stage99-offline-cached-argument-auditor/README.md>)：18项合成边界通过，区分JSON/WQL/原生argv、实例与硬件ID及tree参数；Mac缺私有源，真实零匹配/当前连接仍UNKNOWN。无新设备查询，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true
+}

@@ -1,0 +1,1940 @@
+[
+  {
+    "event": "0x1000",
+    "jump_entry": {
+      "va": "0x2cb3f8",
+      "fileoff": "0x2cb3f8",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "0000"
+    },
+    "block": "0xb4460",
+    "symbol": "_ZN3mpr27gp_evtLoadStillFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb446c",
+          "fileoff": "0xb446c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e00000b4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4484",
+      "fileoff": "0xb4484",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 20,
+    "window": "   b4460: d0001234     \tadrp\tx20, 0x2fa000\n   b4464: f9436294     \tldr\tx20, [x20, #0x6c0]\n   b4468: f9400280     \tldr\tx0, [x20]\n   b446c: b40000e0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4470: aa1303e0     \tmov\tx0, x19\n   b4474: 52800281     \tmov\tw1, #0x14               // =20\n   b4478: 97fffd80     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b447c: f9400281     \tldr\tx1, [x20]\n   b4480: aa1303e0     \tmov\tx0, x19\n   b4484: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1001",
+    "jump_entry": {
+      "va": "0x2cb3fa",
+      "fileoff": "0x2cb3fa",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "0e00"
+    },
+    "block": "0xb4498",
+    "symbol": "_ZN3mpr27gp_evtLoadMovieFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb44a4",
+          "fileoff": "0xb44a4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "20ffffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb44bc",
+      "fileoff": "0xb44bc",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 20,
+    "window": "   b4498: d0001234     \tadrp\tx20, 0x2fa000\n   b449c: f9464694     \tldr\tx20, [x20, #0xc88]\n   b44a0: f9400280     \tldr\tx0, [x20]\n   b44a4: b4ffff20     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b44a8: aa1303e0     \tmov\tx0, x19\n   b44ac: 52800281     \tmov\tw1, #0x14               // =20\n   b44b0: 97fffd72     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b44b4: f9400281     \tldr\tx1, [x20]\n   b44b8: aa1303e0     \tmov\tx0, x19\n   b44bc: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1002",
+    "jump_entry": {
+      "va": "0x2cb3fc",
+      "fileoff": "0x2cb3fc",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "1900"
+    },
+    "block": "0xb44c4",
+    "symbol": "_ZN3mpr22gp_evtLoadFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb44d0",
+          "fileoff": "0xb44d0",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "c0fdffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb44e8",
+      "fileoff": "0xb44e8",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 20,
+    "window": "   b44c4: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b44c8: f947ba94     \tldr\tx20, [x20, #0xf70]\n   b44cc: f9400280     \tldr\tx0, [x20]\n   b44d0: b4fffdc0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b44d4: aa1303e0     \tmov\tx0, x19\n   b44d8: 52800281     \tmov\tw1, #0x14               // =20\n   b44dc: 97fffd67     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b44e0: f9400281     \tldr\tx1, [x20]\n   b44e4: aa1303e0     \tmov\tx0, x19\n   b44e8: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1003",
+    "jump_entry": {
+      "va": "0x2cb3fe",
+      "fileoff": "0x2cb3fe",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "2400"
+    },
+    "block": "0xb44f0",
+    "symbol": "_ZN3mpr24gp_evtUnloadFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb44fc",
+          "fileoff": "0xb44fc",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "60fcffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4514",
+      "fileoff": "0xb4514",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 16,
+    "window": "   b44f0: d0001234     \tadrp\tx20, 0x2fa000\n   b44f4: f944da94     \tldr\tx20, [x20, #0x9b0]\n   b44f8: f9400280     \tldr\tx0, [x20]\n   b44fc: b4fffc60     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4500: aa1303e0     \tmov\tx0, x19\n   b4504: 52800201     \tmov\tw1, #0x10               // =16\n   b4508: 97fffd5c     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b450c: f9400281     \tldr\tx1, [x20]\n   b4510: aa1303e0     \tmov\tx0, x19\n   b4514: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1004",
+    "jump_entry": {
+      "va": "0x2cb400",
+      "fileoff": "0x2cb400",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "2f00"
+    },
+    "block": "0xb451c",
+    "symbol": "_ZN3mpr31gp_evtMovieRecStatusChangedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4528",
+          "fileoff": "0xb4528",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "00fbffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4540",
+      "fileoff": "0xb4540",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 16,
+    "window": "   b451c: d0001234     \tadrp\tx20, 0x2fa000\n   b4520: f9459a94     \tldr\tx20, [x20, #0xb30]\n   b4524: f9400280     \tldr\tx0, [x20]\n   b4528: b4fffb00     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b452c: aa1303e0     \tmov\tx0, x19\n   b4530: 52800201     \tmov\tw1, #0x10               // =16\n   b4534: 97fffd51     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4538: f9400281     \tldr\tx1, [x20]\n   b453c: aa1303e0     \tmov\tx0, x19\n   b4540: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1005",
+    "jump_entry": {
+      "va": "0x2cb402",
+      "fileoff": "0x2cb402",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "3a00"
+    },
+    "block": "0xb4548",
+    "symbol": "_ZN3mpr31gp_evtStillRecStatusChangedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4554",
+          "fileoff": "0xb4554",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "a0f9ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb456c",
+      "fileoff": "0xb456c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 16,
+    "window": "   b4548: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b454c: f944ee94     \tldr\tx20, [x20, #0x9d8]\n   b4550: f9400280     \tldr\tx0, [x20]\n   b4554: b4fff9a0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4558: aa1303e0     \tmov\tx0, x19\n   b455c: 52800201     \tmov\tw1, #0x10               // =16\n   b4560: 97fffd46     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4564: f9400281     \tldr\tx1, [x20]\n   b4568: aa1303e0     \tmov\tx0, x19\n   b456c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1006",
+    "jump_entry": {
+      "va": "0x2cb404",
+      "fileoff": "0x2cb404",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "5b00"
+    },
+    "block": "0xb45cc",
+    "symbol": "_ZN3mpr25gp_evtMovieRecStartedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb45d8",
+          "fileoff": "0xb45d8",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "80f5ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb45f0",
+      "fileoff": "0xb45f0",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 48,
+    "window": "   b45cc: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b45d0: f9435694     \tldr\tx20, [x20, #0x6a8]\n   b45d4: f9400280     \tldr\tx0, [x20]\n   b45d8: b4fff580     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b45dc: aa1303e0     \tmov\tx0, x19\n   b45e0: 52800601     \tmov\tw1, #0x30               // =48\n   b45e4: 97fffd25     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b45e8: f9400281     \tldr\tx1, [x20]\n   b45ec: aa1303e0     \tmov\tx0, x19\n   b45f0: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1007",
+    "jump_entry": {
+      "va": "0x2cb406",
+      "fileoff": "0x2cb406",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "6600"
+    },
+    "block": "0xb45f8",
+    "symbol": "_ZN3mpr25gp_evtMovieRecStoppedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4604",
+          "fileoff": "0xb4604",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "20f4ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb461c",
+      "fileoff": "0xb461c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 32,
+    "window": "   b45f8: d0001234     \tadrp\tx20, 0x2fa000\n   b45fc: f9450a94     \tldr\tx20, [x20, #0xa10]\n   b4600: f9400280     \tldr\tx0, [x20]\n   b4604: b4fff420     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4608: aa1303e0     \tmov\tx0, x19\n   b460c: 52800401     \tmov\tw1, #0x20               // =32\n   b4610: 97fffd1a     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4614: f9400281     \tldr\tx1, [x20]\n   b4618: aa1303e0     \tmov\tx0, x19\n   b461c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1008",
+    "jump_entry": {
+      "va": "0x2cb408",
+      "fileoff": "0x2cb408",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "7100"
+    },
+    "block": "0xb4624",
+    "symbol": "_ZN3mpr33gp_evtInternalMovieRecStoppedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4630",
+          "fileoff": "0xb4630",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "c0f2ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4648",
+      "fileoff": "0xb4648",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 48,
+    "window": "   b4624: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4628: f9432294     \tldr\tx20, [x20, #0x640]\n   b462c: f9400280     \tldr\tx0, [x20]\n   b4630: b4fff2c0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4634: aa1303e0     \tmov\tx0, x19\n   b4638: 52800601     \tmov\tw1, #0x30               // =48\n   b463c: 97fffd0f     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4640: f9400281     \tldr\tx1, [x20]\n   b4644: aa1303e0     \tmov\tx0, x19\n   b4648: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1009",
+    "jump_entry": {
+      "va": "0x2cb40a",
+      "fileoff": "0x2cb40a",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "7c00"
+    },
+    "block": "0xb4650",
+    "symbol": "_ZN3mpr28gp_evtMovieWriteFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb465c",
+          "fileoff": "0xb465c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "60f1ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4674",
+      "fileoff": "0xb4674",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 32,
+    "window": "   b4650: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4654: f944c294     \tldr\tx20, [x20, #0x980]\n   b4658: f9400280     \tldr\tx0, [x20]\n   b465c: b4fff160     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4660: aa1303e0     \tmov\tx0, x19\n   b4664: 52800401     \tmov\tw1, #0x20               // =32\n   b4668: 97fffd04     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b466c: f9400281     \tldr\tx1, [x20]\n   b4670: aa1303e0     \tmov\tx0, x19\n   b4674: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x100a",
+    "jump_entry": {
+      "va": "0x2cb40c",
+      "fileoff": "0x2cb40c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "8700"
+    },
+    "block": "0xb467c",
+    "symbol": "_ZN3mpr31gp_evtAllMovieWriteFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4688",
+          "fileoff": "0xb4688",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "00f0ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb46a0",
+      "fileoff": "0xb46a0",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 8,
+    "window": "   b467c: d0001234     \tadrp\tx20, 0x2fa000\n   b4680: f9440294     \tldr\tx20, [x20, #0x800]\n   b4684: f9400280     \tldr\tx0, [x20]\n   b4688: b4fff000     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b468c: aa1303e0     \tmov\tx0, x19\n   b4690: 52800101     \tmov\tw1, #0x8                // =8\n   b4694: 97fffcf9     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4698: f9400281     \tldr\tx1, [x20]\n   b469c: aa1303e0     \tmov\tx0, x19\n   b46a0: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x100b",
+    "jump_entry": {
+      "va": "0x2cb40e",
+      "fileoff": "0x2cb40e",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "9200"
+    },
+    "block": "0xb46a8",
+    "symbol": "_ZN3mpr30gp_evtMovieRecMediaChangedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb46b4",
+          "fileoff": "0xb46b4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "a0eeffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb46cc",
+      "fileoff": "0xb46cc",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 32,
+    "window": "   b46a8: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b46ac: f943e294     \tldr\tx20, [x20, #0x7c0]\n   b46b0: f9400280     \tldr\tx0, [x20]\n   b46b4: b4ffeea0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b46b8: aa1303e0     \tmov\tx0, x19\n   b46bc: 52800401     \tmov\tw1, #0x20               // =32\n   b46c0: 97fffcee     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b46c4: f9400281     \tldr\tx1, [x20]\n   b46c8: aa1303e0     \tmov\tx0, x19\n   b46cc: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x100c",
+    "jump_entry": {
+      "va": "0x2cb410",
+      "fileoff": "0x2cb410",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "a800"
+    },
+    "block": "0xb4700",
+    "symbol": "_ZN3mpr28gp_evtStillWriteFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb470c",
+          "fileoff": "0xb470c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e0ebffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4724",
+      "fileoff": "0xb4724",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 88,
+    "window": "   b4700: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4704: f9449a94     \tldr\tx20, [x20, #0x930]\n   b4708: f9400280     \tldr\tx0, [x20]\n   b470c: b4ffebe0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4710: aa1303e0     \tmov\tx0, x19\n   b4714: 52800b01     \tmov\tw1, #0x58               // =88\n   b4718: 97fffcd8     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b471c: f9400281     \tldr\tx1, [x20]\n   b4720: aa1303e0     \tmov\tx0, x19\n   b4724: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x100d",
+    "jump_entry": {
+      "va": "0x2cb412",
+      "fileoff": "0x2cb412",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "b300"
+    },
+    "block": "0xb472c",
+    "symbol": "_ZN3mpr29gp_evtStillWriteCountdownFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4738",
+          "fileoff": "0xb4738",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "80eaffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4750",
+      "fileoff": "0xb4750",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 88,
+    "window": "   b472c: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4730: f9431e94     \tldr\tx20, [x20, #0x638]\n   b4734: f9400280     \tldr\tx0, [x20]\n   b4738: b4ffea80     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b473c: aa1303e0     \tmov\tx0, x19\n   b4740: 52800b01     \tmov\tw1, #0x58               // =88\n   b4744: 97fffccd     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4748: f9400281     \tldr\tx1, [x20]\n   b474c: aa1303e0     \tmov\tx0, x19\n   b4750: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x100e",
+    "jump_entry": {
+      "va": "0x2cb414",
+      "fileoff": "0x2cb414",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "be00"
+    },
+    "block": "0xb4758",
+    "symbol": "_ZN3mpr38gp_evtStillRecPriorityMediaChangedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4764",
+          "fileoff": "0xb4764",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "20e9ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb477c",
+      "fileoff": "0xb477c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4758: d0001234     \tadrp\tx20, 0x2fa000\n   b475c: f9472294     \tldr\tx20, [x20, #0xe40]\n   b4760: f9400280     \tldr\tx0, [x20]\n   b4764: b4ffe920     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4768: aa1303e0     \tmov\tx0, x19\n   b476c: 52800181     \tmov\tw1, #0xc                // =12\n   b4770: 97fffcc2     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4774: f9400281     \tldr\tx1, [x20]\n   b4778: aa1303e0     \tmov\tx0, x19\n   b477c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x100f",
+    "jump_entry": {
+      "va": "0x2cb416",
+      "fileoff": "0x2cb416",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "c900"
+    },
+    "block": "0xb4784",
+    "symbol": null,
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4788",
+          "fileoff": "0xb4788",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "000100b4"
+        },
+        "args": "x0, 0xb47a8 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x37c>"
+      }
+    ],
+    "call": {
+      "va": "0xb47a0",
+      "fileoff": "0xb47a0",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 2936,
+    "window": "   b4784: f945be60     \tldr\tx0, [x19, #0xb78]\n   b4788: b4000100     \tcbz\tx0, 0xb47a8 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x37c>\n   b478c: aa1303e0     \tmov\tx0, x19\n   b4790: 52816f01     \tmov\tw1, #0xb78              // =2936\n   b4794: 97fffcb9     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4798: f945be61     \tldr\tx1, [x19, #0xb78]\n   b479c: aa1303e0     \tmov\tx0, x19\n   b47a0: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1010",
+    "jump_entry": {
+      "va": "0x2cb418",
+      "fileoff": "0x2cb418",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "dd00"
+    },
+    "block": "0xb47d4",
+    "symbol": "_ZN3mpr25gp_evtPbStartFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb47e0",
+          "fileoff": "0xb47e0",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "40e5ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb47f8",
+      "fileoff": "0xb47f8",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b47d4: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b47d8: f944a694     \tldr\tx20, [x20, #0x948]\n   b47dc: f9400280     \tldr\tx0, [x20]\n   b47e0: b4ffe540     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b47e4: aa1303e0     \tmov\tx0, x19\n   b47e8: 52800181     \tmov\tw1, #0xc                // =12\n   b47ec: 97fffca3     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b47f0: f9400281     \tldr\tx1, [x20]\n   b47f4: aa1303e0     \tmov\tx0, x19\n   b47f8: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1011",
+    "jump_entry": {
+      "va": "0x2cb41a",
+      "fileoff": "0x2cb41a",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "e800"
+    },
+    "block": "0xb4800",
+    "symbol": "_ZN3mpr19gp_evtPbCamInfoFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb480c",
+          "fileoff": "0xb480c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e1e3ffb4"
+        },
+        "args": "x1, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4814",
+      "fileoff": "0xb4814",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": null,
+    "window": "   b4800: b0001220     \tadrp\tx0, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4804: f9473400     \tldr\tx0, [x0, #0xe68]\n   b4808: f9400001     \tldr\tx1, [x0]\n   b480c: b4ffe3e1     \tcbz\tx1, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4810: aa1303e0     \tmov\tx0, x19\n   b4814: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1012",
+    "jump_entry": {
+      "va": "0x2cb41c",
+      "fileoff": "0x2cb41c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "ef00"
+    },
+    "block": "0xb481c",
+    "symbol": "_ZN3mpr19gp_evtPbGpsInfoFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4828",
+          "fileoff": "0xb4828",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "01e3ffb4"
+        },
+        "args": "x1, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4830",
+      "fileoff": "0xb4830",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": null,
+    "window": "   b481c: d0001220     \tadrp\tx0, 0x2fa000\n   b4820: f943a000     \tldr\tx0, [x0, #0x740]\n   b4824: f9400001     \tldr\tx1, [x0]\n   b4828: b4ffe301     \tcbz\tx1, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b482c: aa1303e0     \tmov\tx0, x19\n   b4830: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1013",
+    "jump_entry": {
+      "va": "0x2cb41e",
+      "fileoff": "0x2cb41e",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "f600"
+    },
+    "block": "0xb4838",
+    "symbol": "_ZN3mpr26gp_evtPbChangedContentFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4844",
+          "fileoff": "0xb4844",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "20e2ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb485c",
+      "fileoff": "0xb485c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 32,
+    "window": "   b4838: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b483c: f9436694     \tldr\tx20, [x20, #0x6c8]\n   b4840: f9400280     \tldr\tx0, [x20]\n   b4844: b4ffe220     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4848: aa1303e0     \tmov\tx0, x19\n   b484c: 52800401     \tmov\tw1, #0x20               // =32\n   b4850: 97fffc8a     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4854: f9400281     \tldr\tx1, [x20]\n   b4858: aa1303e0     \tmov\tx0, x19\n   b485c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1014",
+    "jump_entry": {
+      "va": "0x2cb420",
+      "fileoff": "0x2cb420",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "0101"
+    },
+    "block": "0xb4864",
+    "symbol": "_ZN3mpr25gp_evtPbPauseFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4870",
+          "fileoff": "0xb4870",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "c0e0ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4888",
+      "fileoff": "0xb4888",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4864: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4868: f946ea94     \tldr\tx20, [x20, #0xdd0]\n   b486c: f9400280     \tldr\tx0, [x20]\n   b4870: b4ffe0c0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4874: aa1303e0     \tmov\tx0, x19\n   b4878: 52800181     \tmov\tw1, #0xc                // =12\n   b487c: 97fffc7f     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4880: f9400281     \tldr\tx1, [x20]\n   b4884: aa1303e0     \tmov\tx0, x19\n   b4888: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1015",
+    "jump_entry": {
+      "va": "0x2cb422",
+      "fileoff": "0x2cb422",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "0c01"
+    },
+    "block": "0xb4890",
+    "symbol": "_ZN3mpr32gp_evtPbPauseReleaseFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb489c",
+          "fileoff": "0xb489c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "60dfffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb48b4",
+      "fileoff": "0xb48b4",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4890: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4894: f945f694     \tldr\tx20, [x20, #0xbe8]\n   b4898: f9400280     \tldr\tx0, [x20]\n   b489c: b4ffdf60     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b48a0: aa1303e0     \tmov\tx0, x19\n   b48a4: 52800181     \tmov\tw1, #0xc                // =12\n   b48a8: 97fffc74     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b48ac: f9400281     \tldr\tx1, [x20]\n   b48b0: aa1303e0     \tmov\tx0, x19\n   b48b4: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1016",
+    "jump_entry": {
+      "va": "0x2cb424",
+      "fileoff": "0x2cb424",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "1701"
+    },
+    "block": "0xb48bc",
+    "symbol": "_ZN3mpr24gp_evtPbStopFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb48c8",
+          "fileoff": "0xb48c8",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "00deffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb48e0",
+      "fileoff": "0xb48e0",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 32,
+    "window": "   b48bc: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b48c0: f947ca94     \tldr\tx20, [x20, #0xf90]\n   b48c4: f9400280     \tldr\tx0, [x20]\n   b48c8: b4ffde00     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b48cc: aa1303e0     \tmov\tx0, x19\n   b48d0: 52800401     \tmov\tw1, #0x20               // =32\n   b48d4: 97fffc69     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b48d8: f9400281     \tldr\tx1, [x20]\n   b48dc: aa1303e0     \tmov\tx0, x19\n   b48e0: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1017",
+    "jump_entry": {
+      "va": "0x2cb426",
+      "fileoff": "0x2cb426",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "2201"
+    },
+    "block": "0xb48e8",
+    "symbol": "_ZN3mpr25gp_evtInternalPbPauseFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb48f4",
+          "fileoff": "0xb48f4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "a0dcffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb490c",
+      "fileoff": "0xb490c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 8,
+    "window": "   b48e8: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b48ec: f9419e94     \tldr\tx20, [x20, #0x338]\n   b48f0: f9400280     \tldr\tx0, [x20]\n   b48f4: b4ffdca0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b48f8: aa1303e0     \tmov\tx0, x19\n   b48fc: 52800101     \tmov\tw1, #0x8                // =8\n   b4900: 97fffc5e     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4904: f9400281     \tldr\tx1, [x20]\n   b4908: aa1303e0     \tmov\tx0, x19\n   b490c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1018",
+    "jump_entry": {
+      "va": "0x2cb428",
+      "fileoff": "0x2cb428",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "2d01"
+    },
+    "block": "0xb4914",
+    "symbol": "_ZN3mpr24gp_evtInternalPbStopFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4920",
+          "fileoff": "0xb4920",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "40dbffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4938",
+      "fileoff": "0xb4938",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 24,
+    "window": "   b4914: d0001234     \tadrp\tx20, 0x2fa000\n   b4918: f9452a94     \tldr\tx20, [x20, #0xa50]\n   b491c: f9400280     \tldr\tx0, [x20]\n   b4920: b4ffdb40     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4924: aa1303e0     \tmov\tx0, x19\n   b4928: 52800301     \tmov\tw1, #0x18               // =24\n   b492c: 97fffc53     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4930: f9400281     \tldr\tx1, [x20]\n   b4934: aa1303e0     \tmov\tx0, x19\n   b4938: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1019",
+    "jump_entry": {
+      "va": "0x2cb42a",
+      "fileoff": "0x2cb42a",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "3801"
+    },
+    "block": "0xb4940",
+    "symbol": "_ZN3mpr25gp_evtAudioRecStartedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb494c",
+          "fileoff": "0xb494c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e0d9ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4964",
+      "fileoff": "0xb4964",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 16,
+    "window": "   b4940: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4944: f945e294     \tldr\tx20, [x20, #0xbc0]\n   b4948: f9400280     \tldr\tx0, [x20]\n   b494c: b4ffd9e0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4950: aa1303e0     \tmov\tx0, x19\n   b4954: 52800201     \tmov\tw1, #0x10               // =16\n   b4958: 97fffc48     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b495c: f9400281     \tldr\tx1, [x20]\n   b4960: aa1303e0     \tmov\tx0, x19\n   b4964: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x101a",
+    "jump_entry": {
+      "va": "0x2cb42c",
+      "fileoff": "0x2cb42c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "4301"
+    },
+    "block": "0xb496c",
+    "symbol": "_ZN3mpr25gp_evtAudioRecStoppedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4978",
+          "fileoff": "0xb4978",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "80d8ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4990",
+      "fileoff": "0xb4990",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 16,
+    "window": "   b496c: d0001234     \tadrp\tx20, 0x2fa000\n   b4970: f9430694     \tldr\tx20, [x20, #0x608]\n   b4974: f9400280     \tldr\tx0, [x20]\n   b4978: b4ffd880     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b497c: aa1303e0     \tmov\tx0, x19\n   b4980: 52800201     \tmov\tw1, #0x10               // =16\n   b4984: 97fffc3d     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4988: f9400281     \tldr\tx1, [x20]\n   b498c: aa1303e0     \tmov\tx0, x19\n   b4990: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x101b",
+    "jump_entry": {
+      "va": "0x2cb42e",
+      "fileoff": "0x2cb42e",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "4e01"
+    },
+    "block": "0xb4998",
+    "symbol": "_ZN3mpr33gp_evtInternalAudioRecStoppedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb49a4",
+          "fileoff": "0xb49a4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "20d7ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb49bc",
+      "fileoff": "0xb49bc",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4998: d0001234     \tadrp\tx20, 0x2fa000\n   b499c: f9433e94     \tldr\tx20, [x20, #0x678]\n   b49a0: f9400280     \tldr\tx0, [x20]\n   b49a4: b4ffd720     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b49a8: aa1303e0     \tmov\tx0, x19\n   b49ac: 52800181     \tmov\tw1, #0xc                // =12\n   b49b0: 97fffc32     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b49b4: f9400281     \tldr\tx1, [x20]\n   b49b8: aa1303e0     \tmov\tx0, x19\n   b49bc: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x101c",
+    "jump_entry": {
+      "va": "0x2cb430",
+      "fileoff": "0x2cb430",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "5901"
+    },
+    "block": "0xb49c4",
+    "symbol": "_ZN3mpr28gp_evtAudioWriteFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb49d0",
+          "fileoff": "0xb49d0",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "c0d5ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb49e8",
+      "fileoff": "0xb49e8",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b49c4: d0001234     \tadrp\tx20, 0x2fa000\n   b49c8: f9461e94     \tldr\tx20, [x20, #0xc38]\n   b49cc: f9400280     \tldr\tx0, [x20]\n   b49d0: b4ffd5c0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b49d4: aa1303e0     \tmov\tx0, x19\n   b49d8: 52800181     \tmov\tw1, #0xc                // =12\n   b49dc: 97fffc27     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b49e0: f9400281     \tldr\tx1, [x20]\n   b49e4: aa1303e0     \tmov\tx0, x19\n   b49e8: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x101d",
+    "jump_entry": {
+      "va": "0x2cb432",
+      "fileoff": "0x2cb432",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "6401"
+    },
+    "block": "0xb49f0",
+    "symbol": "_ZN3mpr30gp_evtAudioPbStartFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb49fc",
+          "fileoff": "0xb49fc",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "60d4ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4a14",
+      "fileoff": "0xb4a14",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 52,
+    "window": "   b49f0: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b49f4: f946c294     \tldr\tx20, [x20, #0xd80]\n   b49f8: f9400280     \tldr\tx0, [x20]\n   b49fc: b4ffd460     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4a00: aa1303e0     \tmov\tx0, x19\n   b4a04: 52800681     \tmov\tw1, #0x34               // =52\n   b4a08: 97fffc1c     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4a0c: f9400281     \tldr\tx1, [x20]\n   b4a10: aa1303e0     \tmov\tx0, x19\n   b4a14: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x101e",
+    "jump_entry": {
+      "va": "0x2cb434",
+      "fileoff": "0x2cb434",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "6f01"
+    },
+    "block": "0xb4a1c",
+    "symbol": "_ZN3mpr30gp_evtAudioPbPauseFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4a28",
+          "fileoff": "0xb4a28",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "00d3ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4a40",
+      "fileoff": "0xb4a40",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4a1c: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4a20: f943be94     \tldr\tx20, [x20, #0x778]\n   b4a24: f9400280     \tldr\tx0, [x20]\n   b4a28: b4ffd300     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4a2c: aa1303e0     \tmov\tx0, x19\n   b4a30: 52800181     \tmov\tw1, #0xc                // =12\n   b4a34: 97fffc11     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4a38: f9400281     \tldr\tx1, [x20]\n   b4a3c: aa1303e0     \tmov\tx0, x19\n   b4a40: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x101f",
+    "jump_entry": {
+      "va": "0x2cb436",
+      "fileoff": "0x2cb436",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "7a01"
+    },
+    "block": "0xb4a48",
+    "symbol": "_ZN3mpr37gp_evtAudioPbPauseReleaseFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4a54",
+          "fileoff": "0xb4a54",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "a0d1ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4a6c",
+      "fileoff": "0xb4a6c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4a48: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4a4c: f9440e94     \tldr\tx20, [x20, #0x818]\n   b4a50: f9400280     \tldr\tx0, [x20]\n   b4a54: b4ffd1a0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4a58: aa1303e0     \tmov\tx0, x19\n   b4a5c: 52800181     \tmov\tw1, #0xc                // =12\n   b4a60: 97fffc06     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4a64: f9400281     \tldr\tx1, [x20]\n   b4a68: aa1303e0     \tmov\tx0, x19\n   b4a6c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1020",
+    "jump_entry": {
+      "va": "0x2cb438",
+      "fileoff": "0x2cb438",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "8501"
+    },
+    "block": "0xb4a74",
+    "symbol": "_ZN3mpr29gp_evtAudioPbStopFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4a80",
+          "fileoff": "0xb4a80",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "40d0ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4a98",
+      "fileoff": "0xb4a98",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4a74: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4a78: f946ba94     \tldr\tx20, [x20, #0xd70]\n   b4a7c: f9400280     \tldr\tx0, [x20]\n   b4a80: b4ffd040     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4a84: aa1303e0     \tmov\tx0, x19\n   b4a88: 52800181     \tmov\tw1, #0xc                // =12\n   b4a8c: 97fffbfb     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4a90: f9400281     \tldr\tx1, [x20]\n   b4a94: aa1303e0     \tmov\tx0, x19\n   b4a98: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1021",
+    "jump_entry": {
+      "va": "0x2cb43a",
+      "fileoff": "0x2cb43a",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "9001"
+    },
+    "block": "0xb4aa0",
+    "symbol": "_ZN3mpr32gp_evtInternalAudioPbStoppedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4aac",
+          "fileoff": "0xb4aac",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e0ceffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4ac4",
+      "fileoff": "0xb4ac4",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 8,
+    "window": "   b4aa0: d0001234     \tadrp\tx20, 0x2fa000\n   b4aa4: f9449694     \tldr\tx20, [x20, #0x928]\n   b4aa8: f9400280     \tldr\tx0, [x20]\n   b4aac: b4ffcee0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4ab0: aa1303e0     \tmov\tx0, x19\n   b4ab4: 52800101     \tmov\tw1, #0x8                // =8\n   b4ab8: 97fffbf0     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4abc: f9400281     \tldr\tx1, [x20]\n   b4ac0: aa1303e0     \tmov\tx0, x19\n   b4ac4: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1022",
+    "jump_entry": {
+      "va": "0x2cb43c",
+      "fileoff": "0x2cb43c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "9b01"
+    },
+    "block": "0xb4acc",
+    "symbol": "_ZN3mpr19gp_evtRecPbTimeFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4ad8",
+          "fileoff": "0xb4ad8",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "81cdffb4"
+        },
+        "args": "x1, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4ae0",
+      "fileoff": "0xb4ae0",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": null,
+    "window": "   b4acc: d0001220     \tadrp\tx0, 0x2fa000\n   b4ad0: f9423800     \tldr\tx0, [x0, #0x470]\n   b4ad4: f9400001     \tldr\tx1, [x0]\n   b4ad8: b4ffcd81     \tcbz\tx1, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4adc: aa1303e0     \tmov\tx0, x19\n   b4ae0: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1023",
+    "jump_entry": {
+      "va": "0x2cb43e",
+      "fileoff": "0x2cb43e",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "a201"
+    },
+    "block": "0xb4ae8",
+    "symbol": "_ZN3mpr22gp_evtEditProgressFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4af4",
+          "fileoff": "0xb4af4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "a0ccffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4b0c",
+      "fileoff": "0xb4b0c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 20,
+    "window": "   b4ae8: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4aec: f9435294     \tldr\tx20, [x20, #0x6a0]\n   b4af0: f9400280     \tldr\tx0, [x20]\n   b4af4: b4ffcca0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4af8: aa1303e0     \tmov\tx0, x19\n   b4afc: 52800281     \tmov\tw1, #0x14               // =20\n   b4b00: 97fffbde     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4b04: f9400281     \tldr\tx1, [x20]\n   b4b08: aa1303e0     \tmov\tx0, x19\n   b4b0c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1024",
+    "jump_entry": {
+      "va": "0x2cb440",
+      "fileoff": "0x2cb440",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "ad01"
+    },
+    "block": "0xb4b14",
+    "symbol": "_ZN3mpr22gp_evtEditFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4b20",
+          "fileoff": "0xb4b20",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "40cbffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4b38",
+      "fileoff": "0xb4b38",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 20,
+    "window": "   b4b14: d0001234     \tadrp\tx20, 0x2fa000\n   b4b18: f9470694     \tldr\tx20, [x20, #0xe08]\n   b4b1c: f9400280     \tldr\tx0, [x20]\n   b4b20: b4ffcb40     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4b24: aa1303e0     \tmov\tx0, x19\n   b4b28: 52800281     \tmov\tw1, #0x14               // =20\n   b4b2c: 97fffbd3     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4b30: f9400281     \tldr\tx1, [x20]\n   b4b34: aa1303e0     \tmov\tx0, x19\n   b4b38: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1025",
+    "jump_entry": {
+      "va": "0x2cb442",
+      "fileoff": "0x2cb442",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "b801"
+    },
+    "block": "0xb4b40",
+    "symbol": "_ZN3mpr26gp_evtPowerOffFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4b4c",
+          "fileoff": "0xb4b4c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e0c9ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4b64",
+      "fileoff": "0xb4b64",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4b40: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4b44: f941de94     \tldr\tx20, [x20, #0x3b8]\n   b4b48: f9400280     \tldr\tx0, [x20]\n   b4b4c: b4ffc9e0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4b50: aa1303e0     \tmov\tx0, x19\n   b4b54: 52800181     \tmov\tw1, #0xc                // =12\n   b4b58: 97fffbc8     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4b5c: f9400281     \tldr\tx1, [x20]\n   b4b60: aa1303e0     \tmov\tx0, x19\n   b4b64: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1026",
+    "jump_entry": {
+      "va": "0x2cb444",
+      "fileoff": "0x2cb444",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "c301"
+    },
+    "block": "0xb4b6c",
+    "symbol": "_ZN3mpr25gp_evtPowerOnFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4b78",
+          "fileoff": "0xb4b78",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "80c8ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4b90",
+      "fileoff": "0xb4b90",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4b6c: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4b70: f9467294     \tldr\tx20, [x20, #0xce0]\n   b4b74: f9400280     \tldr\tx0, [x20]\n   b4b78: b4ffc880     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4b7c: aa1303e0     \tmov\tx0, x19\n   b4b80: 52800181     \tmov\tw1, #0xc                // =12\n   b4b84: 97fffbbd     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4b88: f9400281     \tldr\tx1, [x20]\n   b4b8c: aa1303e0     \tmov\tx0, x19\n   b4b90: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1027",
+    "jump_entry": {
+      "va": "0x2cb446",
+      "fileoff": "0x2cb446",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "ce01"
+    },
+    "block": "0xb4b98",
+    "symbol": "_ZN3mpr31gp_evtGetRepairTimeFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4ba4",
+          "fileoff": "0xb4ba4",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "20c7ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4bbc",
+      "fileoff": "0xb4bbc",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 24,
+    "window": "   b4b98: d0001234     \tadrp\tx20, 0x2fa000\n   b4b9c: f9404e94     \tldr\tx20, [x20, #0x98]\n   b4ba0: f9400280     \tldr\tx0, [x20]\n   b4ba4: b4ffc720     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4ba8: aa1303e0     \tmov\tx0, x19\n   b4bac: 52800301     \tmov\tw1, #0x18               // =24\n   b4bb0: 97fffbb2     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4bb4: f9400281     \tldr\tx1, [x20]\n   b4bb8: aa1303e0     \tmov\tx0, x19\n   b4bbc: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1028",
+    "jump_entry": {
+      "va": "0x2cb448",
+      "fileoff": "0x2cb448",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "d901"
+    },
+    "block": "0xb4bc4",
+    "symbol": "_ZN3mpr24gp_evtRepairProgressFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4bd0",
+          "fileoff": "0xb4bd0",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "c0c5ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4be8",
+      "fileoff": "0xb4be8",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4bc4: d0001234     \tadrp\tx20, 0x2fa000\n   b4bc8: f9409694     \tldr\tx20, [x20, #0x128]\n   b4bcc: f9400280     \tldr\tx0, [x20]\n   b4bd0: b4ffc5c0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4bd4: aa1303e0     \tmov\tx0, x19\n   b4bd8: 52800181     \tmov\tw1, #0xc                // =12\n   b4bdc: 97fffba7     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4be0: f9400281     \tldr\tx1, [x20]\n   b4be4: aa1303e0     \tmov\tx0, x19\n   b4be8: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1029",
+    "jump_entry": {
+      "va": "0x2cb44a",
+      "fileoff": "0x2cb44a",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "e401"
+    },
+    "block": "0xb4bf0",
+    "symbol": "_ZN3mpr24gp_evtRepairFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4bfc",
+          "fileoff": "0xb4bfc",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "60c4ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4c14",
+      "fileoff": "0xb4c14",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 20,
+    "window": "   b4bf0: d0001234     \tadrp\tx20, 0x2fa000\n   b4bf4: f9470e94     \tldr\tx20, [x20, #0xe18]\n   b4bf8: f9400280     \tldr\tx0, [x20]\n   b4bfc: b4ffc460     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4c00: aa1303e0     \tmov\tx0, x19\n   b4c04: 52800281     \tmov\tw1, #0x14               // =20\n   b4c08: 97fffb9c     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4c0c: f9400281     \tldr\tx1, [x20]\n   b4c10: aa1303e0     \tmov\tx0, x19\n   b4c14: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x102a",
+    "jump_entry": {
+      "va": "0x2cb44c",
+      "fileoff": "0x2cb44c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "ef01"
+    },
+    "block": "0xb4c1c",
+    "symbol": "_ZN3mpr25gp_evtRecoveryStartedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4c28",
+          "fileoff": "0xb4c28",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "00c3ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4c40",
+      "fileoff": "0xb4c40",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 8,
+    "window": "   b4c1c: d0001234     \tadrp\tx20, 0x2fa000\n   b4c20: f9449e94     \tldr\tx20, [x20, #0x938]\n   b4c24: f9400280     \tldr\tx0, [x20]\n   b4c28: b4ffc300     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4c2c: aa1303e0     \tmov\tx0, x19\n   b4c30: 52800101     \tmov\tw1, #0x8                // =8\n   b4c34: 97fffb91     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4c38: f9400281     \tldr\tx1, [x20]\n   b4c3c: aa1303e0     \tmov\tx0, x19\n   b4c40: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x102b",
+    "jump_entry": {
+      "va": "0x2cb44e",
+      "fileoff": "0x2cb44e",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "fa01"
+    },
+    "block": "0xb4c48",
+    "symbol": "_ZN3mpr26gp_evtRecoveryFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4c54",
+          "fileoff": "0xb4c54",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "a0c1ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4c6c",
+      "fileoff": "0xb4c6c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4c48: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4c4c: f9435a94     \tldr\tx20, [x20, #0x6b0]\n   b4c50: f9400280     \tldr\tx0, [x20]\n   b4c54: b4ffc1a0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4c58: aa1303e0     \tmov\tx0, x19\n   b4c5c: 52800181     \tmov\tw1, #0xc                // =12\n   b4c60: 97fffb86     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4c64: f9400281     \tldr\tx1, [x20]\n   b4c68: aa1303e0     \tmov\tx0, x19\n   b4c6c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x102c",
+    "jump_entry": {
+      "va": "0x2cb450",
+      "fileoff": "0x2cb450",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "0502"
+    },
+    "block": "0xb4c74",
+    "symbol": "_ZN3mpr28gp_evtResetNecessityInfoFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4c80",
+          "fileoff": "0xb4c80",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "40c0ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4c98",
+      "fileoff": "0xb4c98",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4c74: d0001234     \tadrp\tx20, 0x2fa000\n   b4c78: f9426694     \tldr\tx20, [x20, #0x4c8]\n   b4c7c: f9400280     \tldr\tx0, [x20]\n   b4c80: b4ffc040     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4c84: aa1303e0     \tmov\tx0, x19\n   b4c88: 52800181     \tmov\tw1, #0xc                // =12\n   b4c8c: 97fffb7b     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4c90: f9400281     \tldr\tx1, [x20]\n   b4c94: aa1303e0     \tmov\tx0, x19\n   b4c98: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x102d",
+    "jump_entry": {
+      "va": "0x2cb452",
+      "fileoff": "0x2cb452",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "1002"
+    },
+    "block": "0xb4ca0",
+    "symbol": "_ZN3mpr32gp_evtStillTransferDataBuiltFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4cac",
+          "fileoff": "0xb4cac",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e0beffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4cc4",
+      "fileoff": "0xb4cc4",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 312,
+    "window": "   b4ca0: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4ca4: f9470e94     \tldr\tx20, [x20, #0xe18]\n   b4ca8: f9400280     \tldr\tx0, [x20]\n   b4cac: b4ffbee0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4cb0: aa1303e0     \tmov\tx0, x19\n   b4cb4: 52802701     \tmov\tw1, #0x138              // =312\n   b4cb8: 97fffb70     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4cbc: f9400281     \tldr\tx1, [x20]\n   b4cc0: aa1303e0     \tmov\tx0, x19\n   b4cc4: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x102e",
+    "jump_entry": {
+      "va": "0x2cb454",
+      "fileoff": "0x2cb454",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "1b02"
+    },
+    "block": "0xb4ccc",
+    "symbol": "_ZN3mpr37gp_evtSetEssenceMarkInRecFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4cd8",
+          "fileoff": "0xb4cd8",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "80bdffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4cf0",
+      "fileoff": "0xb4cf0",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 8,
+    "window": "   b4ccc: d0001234     \tadrp\tx20, 0x2fa000\n   b4cd0: f946f694     \tldr\tx20, [x20, #0xde8]\n   b4cd4: f9400280     \tldr\tx0, [x20]\n   b4cd8: b4ffbd80     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4cdc: aa1303e0     \tmov\tx0, x19\n   b4ce0: 52800101     \tmov\tw1, #0x8                // =8\n   b4ce4: 97fffb65     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4ce8: f9400281     \tldr\tx1, [x20]\n   b4cec: aa1303e0     \tmov\tx0, x19\n   b4cf0: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x102f",
+    "jump_entry": {
+      "va": "0x2cb456",
+      "fileoff": "0x2cb456",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "2602"
+    },
+    "block": "0xb4cf8",
+    "symbol": "_ZN3mpr38gp_evtSetEssenceMarkInPlayFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4d04",
+          "fileoff": "0xb4d04",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "20bcffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4d1c",
+      "fileoff": "0xb4d1c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4cf8: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4cfc: f9422e94     \tldr\tx20, [x20, #0x458]\n   b4d00: f9400280     \tldr\tx0, [x20]\n   b4d04: b4ffbc20     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4d08: aa1303e0     \tmov\tx0, x19\n   b4d0c: 52800181     \tmov\tw1, #0xc                // =12\n   b4d10: 97fffb5a     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4d14: f9400281     \tldr\tx1, [x20]\n   b4d18: aa1303e0     \tmov\tx0, x19\n   b4d1c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1030",
+    "jump_entry": {
+      "va": "0x2cb458",
+      "fileoff": "0x2cb458",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "9d00"
+    },
+    "block": "0xb46d4",
+    "symbol": "_ZN3mpr29gp_evtMovieRecAutoDividedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb46e0",
+          "fileoff": "0xb46e0",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "40edffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb46f8",
+      "fileoff": "0xb46f8",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 32,
+    "window": "   b46d4: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b46d8: f943aa94     \tldr\tx20, [x20, #0x750]\n   b46dc: f9400280     \tldr\tx0, [x20]\n   b46e0: b4ffed40     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b46e4: aa1303e0     \tmov\tx0, x19\n   b46e8: 52800401     \tmov\tw1, #0x20               // =32\n   b46ec: 97fffce3     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b46f0: f9400281     \tldr\tx1, [x20]\n   b46f4: aa1303e0     \tmov\tx0, x19\n   b46f8: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1031",
+    "jump_entry": {
+      "va": "0x2cb45a",
+      "fileoff": "0x2cb45a",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "4500"
+    },
+    "block": "0xb4574",
+    "symbol": "_ZN3mpr26gp_evtEnterRecFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4580",
+          "fileoff": "0xb4580",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "40f8ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4598",
+      "fileoff": "0xb4598",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4574: d0001234     \tadrp\tx20, 0x2fa000\n   b4578: f9472a94     \tldr\tx20, [x20, #0xe50]\n   b457c: f9400280     \tldr\tx0, [x20]\n   b4580: b4fff840     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4584: aa1303e0     \tmov\tx0, x19\n   b4588: 52800181     \tmov\tw1, #0xc                // =12\n   b458c: 97fffd3b     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4590: f9400281     \tldr\tx1, [x20]\n   b4594: aa1303e0     \tmov\tx0, x19\n   b4598: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1032",
+    "jump_entry": {
+      "va": "0x2cb45c",
+      "fileoff": "0x2cb45c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "5000"
+    },
+    "block": "0xb45a0",
+    "symbol": "_ZN3mpr25gp_evtExitRecFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb45ac",
+          "fileoff": "0xb45ac",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "e0f6ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb45c4",
+      "fileoff": "0xb45c4",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b45a0: d0001234     \tadrp\tx20, 0x2fa000\n   b45a4: f9404a94     \tldr\tx20, [x20, #0x90]\n   b45a8: f9400280     \tldr\tx0, [x20]\n   b45ac: b4fff6e0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b45b0: aa1303e0     \tmov\tx0, x19\n   b45b4: 52800181     \tmov\tw1, #0xc                // =12\n   b45b8: 97fffd30     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b45bc: f9400281     \tldr\tx1, [x20]\n   b45c0: aa1303e0     \tmov\tx0, x19\n   b45c4: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1033",
+    "jump_entry": {
+      "va": "0x2cb45e",
+      "fileoff": "0x2cb45e",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "3102"
+    },
+    "block": "0xb4d24",
+    "symbol": "_ZN3mpr30gp_evtMovieRecReelNoUpdateFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4d30",
+          "fileoff": "0xb4d30",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "c0baffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4d48",
+      "fileoff": "0xb4d48",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 4,
+    "window": "   b4d24: d0001234     \tadrp\tx20, 0x2fa000\n   b4d28: f9445a94     \tldr\tx20, [x20, #0x8b0]\n   b4d2c: f9400280     \tldr\tx0, [x20]\n   b4d30: b4ffbac0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4d34: aa1303e0     \tmov\tx0, x19\n   b4d38: 52800081     \tmov\tw1, #0x4                // =4\n   b4d3c: 97fffb4f     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4d40: f9400281     \tldr\tx1, [x20]\n   b4d44: aa1303e0     \tmov\tx0, x19\n   b4d48: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1034",
+    "jump_entry": {
+      "va": "0x2cb460",
+      "fileoff": "0x2cb460",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "6f02"
+    },
+    "block": "0xb4e1c",
+    "symbol": "_ZN3mpr36gp_evtSetClipStatusInRecFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4e28",
+          "fileoff": "0xb4e28",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "00b3ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4e40",
+      "fileoff": "0xb4e40",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 8,
+    "window": "   b4e1c: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4e20: f947c694     \tldr\tx20, [x20, #0xf88]\n   b4e24: f9400280     \tldr\tx0, [x20]\n   b4e28: b4ffb300     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4e2c: aa1303e0     \tmov\tx0, x19\n   b4e30: 52800101     \tmov\tw1, #0x8                // =8\n   b4e34: 97fffb11     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4e38: f9400281     \tldr\tx1, [x20]\n   b4e3c: aa1303e0     \tmov\tx0, x19\n   b4e40: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1035",
+    "jump_entry": {
+      "va": "0x2cb462",
+      "fileoff": "0x2cb462",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "7a02"
+    },
+    "block": "0xb4e48",
+    "symbol": "_ZN3mpr37gp_evtSetClipStatusInPlayFinishedFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4e54",
+          "fileoff": "0xb4e54",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "a0b1ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4e6c",
+      "fileoff": "0xb4e6c",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 12,
+    "window": "   b4e48: b0001234     \tadrp\tx20, 0x2f9000 <_ZTVN3mpr10Dmac330LibE+0x1a0>\n   b4e4c: f9465a94     \tldr\tx20, [x20, #0xcb0]\n   b4e50: f9400280     \tldr\tx0, [x20]\n   b4e54: b4ffb1a0     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4e58: aa1303e0     \tmov\tx0, x19\n   b4e5c: 52800181     \tmov\tw1, #0xc                // =12\n   b4e60: 97fffb06     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4e64: f9400281     \tldr\tx1, [x20]\n   b4e68: aa1303e0     \tmov\tx0, x19\n   b4e6c: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1036",
+    "jump_entry": {
+      "va": "0x2cb464",
+      "fileoff": "0x2cb464",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "3c02"
+    },
+    "block": "0xb4d50",
+    "symbol": "_ZN3mpr32gp_evtMovieRecFileNameUpdateFuncE",
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4d5c",
+          "fileoff": "0xb4d5c",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "60b9ffb4"
+        },
+        "args": "x0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>"
+      }
+    ],
+    "call": {
+      "va": "0xb4d74",
+      "fileoff": "0xb4d74",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 4,
+    "window": "   b4d50: d0001234     \tadrp\tx20, 0x2fa000\n   b4d54: f9471a94     \tldr\tx20, [x20, #0xe30]\n   b4d58: f9400280     \tldr\tx0, [x20]\n   b4d5c: b4ffb960     \tcbz\tx0, 0xb4488 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x5c>\n   b4d60: aa1303e0     \tmov\tx0, x19\n   b4d64: 52800081     \tmov\tw1, #0x4                // =4\n   b4d68: 97fffb44     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4d6c: f9400281     \tldr\tx1, [x20]\n   b4d70: aa1303e0     \tmov\tx0, x19\n   b4d74: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1037",
+    "jump_entry": {
+      "va": "0x2cb466",
+      "fileoff": "0x2cb466",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "4702"
+    },
+    "block": "0xb4d7c",
+    "symbol": null,
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4d80",
+          "fileoff": "0xb4d80",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "000100b4"
+        },
+        "args": "x0, 0xb4da0 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x974>"
+      }
+    ],
+    "call": {
+      "va": "0xb4d98",
+      "fileoff": "0xb4d98",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 20,
+    "window": "   b4d7c: f9400e60     \tldr\tx0, [x19, #0x18]\n   b4d80: b4000100     \tcbz\tx0, 0xb4da0 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x974>\n   b4d84: aa1303e0     \tmov\tx0, x19\n   b4d88: 52800281     \tmov\tw1, #0x14               // =20\n   b4d8c: 97fffb3b     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4d90: f9400e61     \tldr\tx1, [x19, #0x18]\n   b4d94: aa1303e0     \tmov\tx0, x19\n   b4d98: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  },
+  {
+    "event": "0x1038",
+    "jump_entry": {
+      "va": "0x2cb468",
+      "fileoff": "0x2cb468",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "5b02"
+    },
+    "block": "0xb4dcc",
+    "symbol": null,
+    "null_guard": [
+      {
+        "instruction": {
+          "va": "0xb4dd0",
+          "fileoff": "0xb4dd0",
+          "load_va": "0x0",
+          "load_offset": "0x0",
+          "bytes_le": "000100b4"
+        },
+        "args": "x0, 0xb4df0 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x9c4>"
+      }
+    ],
+    "call": {
+      "va": "0xb4de8",
+      "fileoff": "0xb4de8",
+      "load_va": "0x0",
+      "load_offset": "0x0",
+      "bytes_le": "20003fd6"
+    },
+    "copy_length_to_0xb3a78": 88,
+    "window": "   b4dcc: f9402e60     \tldr\tx0, [x19, #0x58]\n   b4dd0: b4000100     \tcbz\tx0, 0xb4df0 <_ZN3mpr14SendIssueEventENS_5EVTIDEm+0x9c4>\n   b4dd4: aa1303e0     \tmov\tx0, x19\n   b4dd8: 52800b01     \tmov\tw1, #0x58               // =88\n   b4ddc: 97fffb27     \tbl\t0xb3a78 <_ZN3mpr4EditEPv+0x7e0>\n   b4de0: f9402e61     \tldr\tx1, [x19, #0x58]\n   b4de4: aa1303e0     \tmov\tx0, x19\n   b4de8: d63f0020     \tblr\tx1",
+    "scope": "exact jump-table selected straight-line block; full argument producer allocation unresolved"
+  }
+]

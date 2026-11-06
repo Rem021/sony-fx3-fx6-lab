@@ -1,0 +1,101 @@
+{
+  "status": "MANUAL_RECOVERY_ENTRY_PRIVATE_STAMP_AND_FLOW_OWN_PROCESS_PASS",
+  "checks": 8,
+  "rows": [
+    {
+      "case": "manual-full-flow",
+      "status": "PASS",
+      "observed_status": "HOST_RETURN_CONTROLLED_PORT_ASSOCIATION",
+      "manual_stage": 2,
+      "frames": 85,
+      "kernel_peer_checked": true,
+      "device_and_cache_artificial": true
+    },
+    {
+      "case": "manual-idle-exit",
+      "status": "PASS",
+      "observed_status": "HOST_IDLE_EXIT_CAMERA_STATE_UNKNOWN",
+      "manual_stage": 2,
+      "frames": 84,
+      "kernel_peer_checked": true,
+      "device_and_cache_artificial": true
+    },
+    {
+      "case": "wrong-cache-port",
+      "status": "PASS",
+      "observed_status": "DENIED_BEFORE_OWNER_ACTIONS",
+      "manual_stage": 0,
+      "frames": 0,
+      "kernel_peer_checked": true,
+      "device_and_cache_artificial": true
+    },
+    {
+      "case": "mounted-cache",
+      "status": "PASS",
+      "observed_status": "DENIED_BEFORE_OWNER_ACTIONS",
+      "manual_stage": 0,
+      "frames": 0,
+      "kernel_peer_checked": true,
+      "device_and_cache_artificial": true
+    },
+    {
+      "case": "stale-cache",
+      "status": "PASS",
+      "observed_status": "DENIED_BEFORE_OWNER_ACTIONS",
+      "manual_stage": 0,
+      "frames": 0,
+      "kernel_peer_checked": true,
+      "device_and_cache_artificial": true
+    },
+    {
+      "case": "old-owner-still-live",
+      "status": "PASS",
+      "observed_status": "DENIED_BEFORE_OWNER_ACTIONS",
+      "manual_stage": 0,
+      "frames": 0,
+      "kernel_peer_checked": true,
+      "device_and_cache_artificial": true
+    },
+    {
+      "case": "interrupted-after-recovery-record",
+      "status": "PASS",
+      "observed_status": "DENIED_OWNER_NOT_STARTED_RECOVERY_TAIL_RETAINED",
+      "manual_stage": 1,
+      "frames": 0,
+      "kernel_peer_checked": true,
+      "device_and_cache_artificial": true
+    },
+    {
+      "case": "saved-byte-manual-stamp-forgeries-rejected",
+      "status": "PASS",
+      "variants": 4,
+      "live_origin_recreated": false
+    }
+  ],
+  "seed_compile_argv": [
+    "/usr/bin/xcrun",
+    "clang",
+    "-std=c11",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-DFX3_ENTRY_FIXTURE",
+    "-I",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage283-post-stop-096f-transition-compatibility",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage283-post-stop-096f-transition-compatibility/recovery_seed.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/global_guard.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/entry_support.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage264-cooperative-idle-held-exit/owner_ipc.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage283-post-stop-096f-transition-compatibility/artifacts/recovery-seed"
+  ],
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_root_or_USB_operations": 0,
+  "new_camera_trial_authorized": false
+}

@@ -1,0 +1,106 @@
+{
+  "schema": "fx3-stage105-native-main-producer/1",
+  "created_utc": "2026-10-27T11:52:56.142613+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/README.md",
+      "bytes": 7208,
+      "sha256": "6af3ab0169874d9356f2ec22b632af93eeb67046863abca7218f4bb7b8351b7c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/completed-evidence-review.json",
+      "bytes": 535,
+      "sha256": "40a8d8f8faebe9a7312fbec6bc45cf84e80a9388cbda9a9560787317e3fff87f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/goal-status-after.json",
+      "bytes": 317775,
+      "sha256": "c70bd20c3d8294741ebdca477c1ba770cf2703d47a20d0b6316ad77b795c586a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/goal-status-before.json",
+      "bytes": 314881,
+      "sha256": "05bf7f75adfc01a35c35e6bbd68067c1f2b29893d3ab05cd47b427b44a30f827"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/main_parameter.py",
+      "bytes": 7576,
+      "sha256": "74496c3d2a77d33167ecacfe6d2562a8c4525353df37457988acc8fd90a571aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/review_and_seal.py",
+      "bytes": 13987,
+      "sha256": "3a6f04276e22aeb299cf2b26d59d577a4457e3e4320dc4b028a4d27a28b80ad5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/run-call-bounds-20261027/executed-source.py",
+      "bytes": 5703,
+      "sha256": "049c1249faa1f1f1afa6d2f003d3246e79c1f821e652a106955cda625efc260b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/run-call-bounds-20261027/main-parameter-results.json",
+      "bytes": 281335,
+      "sha256": "0baa01bc684a30018025578b13c44e5c752295b8d6b92d0c6768f467c72ffcae"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/run-checker-sentinel-controls-20261027/executed-source.py",
+      "bytes": 7576,
+      "sha256": "74496c3d2a77d33167ecacfe6d2562a8c4525353df37457988acc8fd90a571aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/run-checker-sentinel-controls-20261027/main-parameter-results.json",
+      "bytes": 346739,
+      "sha256": "36fe45c5a20d720391a048bfe0f83dafc18c26c1db73fc46e65cc73670e984ee"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/run-initial-20261027/attempt-failure.json",
+      "bytes": 593,
+      "sha256": "5be81d347af99042e8c016671adcecc05edcc557ca45d68e469e6769abc94f65"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/run-initial-20261027/executed-source.py",
+      "bytes": 5703,
+      "sha256": "c028a0198976d7675e5c669e520c86c8b7b70808a5f7f7c3786e7b2a5795b175"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage105-native-main-parameter-producer/source-and-scope-audit.json",
+      "bytes": 38734,
+      "sha256": "d73d0003b5170b89f91d3079cf3ee1d15f6937e96ee29b9cc8b4d3484bc08835"
+    }
+  ],
+  "previous_manifest_sha256": "e9b01fe5ce7b55015fd400e0af399d4d1b07b03b47a08df6192c476d4a6ef985",
+  "operations": {
+    "status": "PASS_ORIGINAL_MAIN_CONVERTER_MATRIX_HAS_NO_VPC6_IN_THIS_BRANCH",
+    "created_utc": "2026-10-27T11:52:56.142613+00:00",
+    "prior_files_verified": 13,
+    "matrix_cases": 32,
+    "negative_cases": 10,
+    "checker_cases": 12,
+    "bounded_phases": 108,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "complete_producer_checker_runtime_hardware_or_recovery_proven": false,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "05bf7f75adfc01a35c35e6bbd68067c1f2b29893d3ab05cd47b427b44a30f827",
+    "after_sha256": "c70bd20c3d8294741ebdca477c1ba770cf2703d47a20d0b6316ad77b795c586a"
+  },
+  "readme_index_before_sha256": "1f314b35797fa524aa47fa423b7343d38cce577779c2e2d9ba8648149c140fde",
+  "readme_index_after_sha256": "58b160c0d554e1e99c3cb8c7e806cd10c0add00170d4a0c015cb2205e84671e5",
+  "readme_index_entry": "- [2026-10-27 FX3 原MAIN参数生产者缺口](<work/sony-firmware-20261024/stage105-native-main-parameter-producer/README.md>)：此格式转换32组无候选VPC6，通用检查结束分支不足以证明支持；108阶段，配置/编码Open来源继续追，实录与恢复未验收，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

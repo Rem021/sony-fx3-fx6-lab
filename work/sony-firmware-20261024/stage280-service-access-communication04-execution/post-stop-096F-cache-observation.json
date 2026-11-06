@@ -1,0 +1,40 @@
+{
+  "schema": "fx3-post-stop-096f-cache-observation-v1",
+  "observed_at_utc": "2026-11-01T15:23:00Z",
+  "grant_id": "fx3-702-service-access-communication-20261101-04",
+  "service_0336_present_in_ioregistry": false,
+  "msc_0da1_present_in_ioregistry": false,
+  "post_stop_reenumerated_usb_device": {
+    "idVendor": 1356,
+    "idVendor_hex": "0x054c",
+    "idProduct": 2415,
+    "idProduct_hex": "0x096f",
+    "kUSBProductString": "USB Bus-powered Device",
+    "kUSBVendorString": "Sony",
+    "USB_Serial_Number": "AD51109D9538",
+    "bcdDevice": 256,
+    "bcdUSB": 512,
+    "bDeviceClass": 0,
+    "bDeviceSubClass": 0,
+    "bDeviceProtocol": 0,
+    "bMaxPacketSize0": 64,
+    "bNumConfigurations": 1,
+    "locationID": 17825792,
+    "locationID_hex": "0x01100000",
+    "registryID": 4296238248,
+    "physical_port_registryID": 4294968654,
+    "logical_port_registryID": 4294969719,
+    "interface_0": {
+      "registryID": 4296238252,
+      "bInterfaceNumber": 0,
+      "bAlternateSetting": 0,
+      "bInterfaceClass": 3,
+      "bInterfaceClass_name": "HID (Human Interface Device)",
+      "bInterfaceSubClass": 0,
+      "bInterfaceProtocol": 0,
+      "bNumEndpoints": 1,
+      "UsbExclusiveOwner": "AppleUserUSBHostHIDDevice"
+    }
+  },
+  "root_cause_of_frame93_denied": "After SERVICE (054C:0336) STOP (0336:7) and object disposal (0336:8), the camera disconnected 054C:0336 and re-enumerated on the exact same physical port (locationID=0x01100000, physical_port_registryID=4294968654) as 054C:096F ('USB Bus-powered Device', USB Serial Number 'AD51109D9538', HID interface class 3). Because find_at() in iokit_adapter.c only accepts product IDs 0x0da1 (MSC) or 0x0336 (SERVICE) and returns FX3T_DENIED (1) for any other Sony PID on the target physical port, post-STOP return poll sample 7 (flow-0093.bin, sequence=94, op=63, point=2) returned status=1 (FX3T_DENIED), causing service_flow.c to enter HELD (flow-0094.bin, sequence=95)."
+}

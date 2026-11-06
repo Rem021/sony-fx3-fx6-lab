@@ -1,0 +1,108 @@
+{
+  "schema": "fx3-stage39-opa-return-and-reply/1",
+  "created_utc": "2026-10-26T00:19:47.549769+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/README.md",
+      "bytes": 6843,
+      "sha256": "212d63d596d284d4913fd7d90810315914fe3b7ac2bd7f2e95a2296ae402fbfa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/coordinator-observations.json",
+      "bytes": 2179,
+      "sha256": "0e3e44637c18e7ef30c865d7d4661b76b808d0dae8e966529edc9c7e1dd6bfe3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/goal-status-after.json",
+      "bytes": 69883,
+      "sha256": "bddea3d102ed28f878632f8d4c19ae9350bf83bafb55a792d95edb259dc1b399"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/goal-status-before.json",
+      "bytes": 68233,
+      "sha256": "943576ff102ff18df272ebc4f1b77085b5a134f543b89134229c7579eb1c3ded"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/next-completion-anchors.json",
+      "bytes": 2680,
+      "sha256": "2f4997ab0d4741d5b4ca16e8d9bc9f91760bb94d3019bb79c8fc0fa186639b8d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/opa_return.py",
+      "bytes": 15905,
+      "sha256": "17d3abf863e88d5d85f108b7a71577b555add01cc46f16acd2f856696855f11b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/run-20261025/executed-source.py",
+      "bytes": 15828,
+      "sha256": "44d72748fcd5f3667c569c10c7dee771477209000fcedb07aa8a71faa37170e6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/run-20261025/opa-return-results.json",
+      "bytes": 3217759,
+      "sha256": "f8b5778cd77412825fc33ff390270c71229d755969ab4c64cd16c74f2e175ad0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/run-20261025/source-receipt.json",
+      "bytes": 884,
+      "sha256": "454c4a479cb62507a6b74ed72da79cfe0382be0b5dcd0071375cd37392520431"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/run-20261025/summary.json",
+      "bytes": 735,
+      "sha256": "b26745f66e96b44aeaf5c2d3ded5bd3be238976061cd866f0b84420ce1fbe6e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/run-20261025-reviewed/executed-source.py",
+      "bytes": 15905,
+      "sha256": "17d3abf863e88d5d85f108b7a71577b555add01cc46f16acd2f856696855f11b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/run-20261025-reviewed/opa-return-results.json",
+      "bytes": 3217946,
+      "sha256": "9c044d6c5a1777a405c26d6113f308c10b89ce1b28e0146c02e94e3a1e459234"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/run-20261025-reviewed/source-receipt.json",
+      "bytes": 884,
+      "sha256": "9d179c354089f4d8923e6fabf82a35ac986befa700db478b2c371a69db9cc9ed"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/run-20261025-reviewed/summary.json",
+      "bytes": 735,
+      "sha256": "be50783f1c5ef5d418ca90c5ee7bb48436feceeb8469eced8c8d75e4aa2183e9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage39-opa-return-and-reply/upstream-refresh.json",
+      "bytes": 2303,
+      "sha256": "b965e64ea39e51f61b972127d729cc3bda977feac279b2d4a05d82b623176511"
+    }
+  ],
+  "previous_manifest_sha256": "25fd4512c4ef374cb35ab79c63d6fe00bc205dddf27d85e2cbde10a321b32f7f",
+  "scope": "74 original fragments,17 compiled guest calls. Four native local buffer returns/index removals and message return on fixtures; wrong-type zero-return and partial cleanup exposed. Real message provenance/epoch/HAL completion and full errors/camera recovery unbound. Public A7C2/REA maintainer documents refreshed without executing tools.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage39-opa-return-and-reply/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage39-opa-return-and-reply/goal-status-after.json",
+    "before_sha256": "943576ff102ff18df272ebc4f1b77085b5a134f543b89134229c7579eb1c3ded",
+    "after_sha256": "bddea3d102ed28f878632f8d4c19ae9350bf83bafb55a792d95edb259dc1b399",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_bounded_original_and_compiled_code": true,
+    "original_image_RX_unchanged": true,
+    "runtime_or_diagnostic_output_adapters": false,
+    "actual_camera_hook_message_producer_epoch_Hal_completion_bound": false,
+    "public_maintainer_docs_and_commit_metadata_read": true,
+    "third_party_installers_or_binaries_executed": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "hardware_main_recording_same_body_backup_restore_WBI_coldboot_or_rescue_verified": false,
+    "camera_loadable_module_or_device_firmware_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 原缓冲归还与消息清理](<work/sony-firmware-20261024/stage39-opa-return-and-reply/README.md>)：原四类缓冲归还/索引移除在客体通过；类型不符仍可返回0，部分失败留下混合状态，真实通知/代次/HAL与恢复待验收。"
+}

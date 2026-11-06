@@ -1,0 +1,25 @@
+#define SIO_CH          0u
+#define SIO_BASE        (0xF1005000ull + (u64)SIO_CH * 0x1000)
+
+#define SIO_CTRL        (SIO_BASE + 0x00)
+#define SIO_CTRL2       (SIO_BASE + 0x04)
+#define SIO_REG08       (SIO_BASE + 0x08)
+#define SIO_LEN         (SIO_BASE + 0x0C)
+#define SIO_CFG         (SIO_BASE + 0x10)
+#define SIO_RATE_LO     (SIO_BASE + 0x14)
+#define SIO_RATE_HI     (SIO_BASE + 0x18)
+#define SIO_DATA        (SIO_BASE + 0x100)
+
+#define SIO_CTRL_SETUP  0xD8000000u
+#define SIO_CTRL_GO     0x20000000u
+#define SIO_CTRL_BUSY   BIT(29)
+#define SIO_CTRL_STOP   0xC0000000u
+#define SIO_CTRL2_VAL   0x30000000u
+#define SIO_CFG_ON      0x01000000u
+#define SIO_LEN_VAL     ((u32)(DARWIN_PKT - 1) << 24)
+
+/*
+ * Rate index, from the loader's runtime config word (0xFE06A934/938/93C/940),
+ * which also fixes channel 0 and GPIO port 4.
+ */
+#define SIO_RATE        3u

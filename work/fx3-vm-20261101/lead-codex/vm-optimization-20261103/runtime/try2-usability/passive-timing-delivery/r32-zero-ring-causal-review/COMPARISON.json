@@ -1,0 +1,266 @@
+{
+  "r31": {
+    "cut": 3819978,
+    "scope": "exact last consumed serial prefix at host entry to original finally, before cleanup serial polling; not global guest event boundary",
+    "bytes": 3819978,
+    "gate": [
+      50,
+      0,
+      0,
+      2000,
+      50,
+      50
+    ],
+    "gate_order": "max logged n at id5,7,8,9,10,11 (sampled/lower bounds, never terminal counts)",
+    "send_records": 2763,
+    "timer150000_send_records": 2736,
+    "pre_AP_read_Popen_relative_s": 8.638062333047856,
+    "task_diag_bytes": 2255433,
+    "UI_WIRE": [
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1001",
+          "0"
+        ],
+        "records": 59
+      },
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1000",
+          "0"
+        ],
+        "records": 4
+      }
+    ],
+    "root_sets": {
+      "5": {
+        "0x7f061ddd60": 50
+      },
+      "9": {
+        "0x7f061ddd60": 52
+      },
+      "10": {
+        "0x7f061ddd60": 50
+      },
+      "11": {
+        "0x7f061ddd60": 50
+      }
+    }
+  },
+  "r28": {
+    "cut": 4915799,
+    "scope": "pre-first-timer serial prefix only; exact pre-End byte boundary unavailable, so NOT asserted to be a strict host startup window",
+    "bytes": 4915799,
+    "gate": [
+      4000,
+      1,
+      1,
+      4000,
+      4000,
+      4000
+    ],
+    "gate_order": "max logged n at id5,7,8,9,10,11 (sampled/lower bounds, never terminal counts)",
+    "send_records": 4454,
+    "timer150000_send_records": 4427,
+    "pre_AP_read_Popen_relative_s": 16.794286166026723,
+    "task_diag_bytes": 2511628,
+    "UI_WIRE": [
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1001",
+          "0"
+        ],
+        "records": 59
+      },
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1000",
+          "0"
+        ],
+        "records": 4
+      }
+    ],
+    "root_sets": {
+      "5": {
+        "0x7ee08c2d60": 54
+      },
+      "9": {
+        "0x7ee08c2d60": 54
+      },
+      "10": {
+        "0x7ee08c2d60": 54
+      },
+      "11": {
+        "0x7ee08c2d60": 54
+      }
+    }
+  },
+  "r26": {
+    "cut": 3031595,
+    "scope": "code/serial prefix before first original OSD commit; native key receive excluded; precedes qualified ready; not matched-duration window",
+    "bytes": 3031595,
+    "gate": [
+      50,
+      2,
+      2,
+      50,
+      50,
+      50
+    ],
+    "gate_order": "max logged n at id5,7,8,9,10,11 (sampled/lower bounds, never terminal counts)",
+    "send_records": 530,
+    "timer150000_send_records": 503,
+    "pre_AP_read_Popen_relative_s": 6.668259207974188,
+    "task_diag_bytes": 404679,
+    "UI_WIRE": [
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1001",
+          "0"
+        ],
+        "records": 59
+      },
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1000",
+          "0"
+        ],
+        "records": 4
+      },
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1004",
+          "0"
+        ],
+        "records": 2
+      },
+      {
+        "target_low16_result": [
+          "0x8288076c",
+          "0x1",
+          "0"
+        ],
+        "records": 1
+      },
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1002",
+          "0"
+        ],
+        "records": 1
+      },
+      {
+        "target_low16_result": [
+          "0x8280084d",
+          "0x1003",
+          "0"
+        ],
+        "records": 1
+      }
+    ],
+    "root_sets": {
+      "5": {
+        "0x7ee7237d60": 50
+      },
+      "9": {
+        "0x7ee7237d60": 50
+      },
+      "10": {
+        "0x7ee7237d60": 50
+      },
+      "11": {
+        "0x7ee7237d60": 50
+      }
+    }
+  },
+  "r26b": {
+    "cut": 3040214,
+    "scope": "code/serial prefix before first original OSD commit; native key receive excluded; precedes qualified ready; not matched-duration window",
+    "bytes": 3040214,
+    "gate": [
+      50,
+      2,
+      2,
+      50,
+      50,
+      50
+    ],
+    "gate_order": "max logged n at id5,7,8,9,10,11 (sampled/lower bounds, never terminal counts)",
+    "send_records": 541,
+    "timer150000_send_records": 514,
+    "pre_AP_read_Popen_relative_s": 6.777827457990497,
+    "task_diag_bytes": 389697,
+    "UI_WIRE": [
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1001",
+          "0"
+        ],
+        "records": 59
+      },
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1000",
+          "0"
+        ],
+        "records": 4
+      },
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1004",
+          "0"
+        ],
+        "records": 2
+      },
+      {
+        "target_low16_result": [
+          "0x8288076c",
+          "0x1",
+          "0"
+        ],
+        "records": 1
+      },
+      {
+        "target_low16_result": [
+          "0x8280074d",
+          "0x1002",
+          "0"
+        ],
+        "records": 1
+      },
+      {
+        "target_low16_result": [
+          "0x8280084d",
+          "0x1003",
+          "0"
+        ],
+        "records": 1
+      }
+    ],
+    "root_sets": {
+      "5": {
+        "0x7edecc5d60": 50
+      },
+      "9": {
+        "0x7edecc5d60": 50
+      },
+      "10": {
+        "0x7edecc5d60": 50
+      },
+      "11": {
+        "0x7edecc5d60": 50
+      }
+    }
+  }
+}

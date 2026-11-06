@@ -1,0 +1,44 @@
+{
+  "schema": "fx3-stage34-coordinator-review/1",
+  "created_utc": "2026-10-25T23:10:25.620216+00:00",
+  "status": "PASS_REQUEST_CACHE_QUANTIZER_AND_SYNTHETIC_FEEDBACK_SCOPE_REVIEW",
+  "reviewer_role": "Same-agent source-byte/structural/hash review; no independent implementation replay or camera acceptance.",
+  "previous_stage33_sealed_files_verified": 9,
+  "raw_instruction_records_checked": 1009,
+  "anchor_instruction_records_checked": 400,
+  "bounded_executions": 26,
+  "target_encoded_scalars": [
+    16000000,
+    16000000,
+    16000000,
+    10000000,
+    null,
+    null,
+    null
+  ],
+  "all7_action_prefixes_construct_same_ack_before_send": true,
+  "ack_prefix_does_not_execute_quantizer_or_Hal": true,
+  "disabled_target_flag_preserves_old_cached_value": true,
+  "Open_comp_u64_layout_distinct_from_set_QoS_u32": true,
+  "Hal_cache_is_explicit_synthetic_input_not_actual_backend_output": true,
+  "actual_FF_default_bitrate_upstream_units_state_order_or_application_unverified": true,
+  "all_guest_stores_stack_or_fixture": true,
+  "native_output_or_diagnostic_adapters": false,
+  "original_image_unchanged": true,
+  "failed_attempt": {
+    "path": "run-20261025/attempt-failure.json",
+    "cause": "Host Python prior-manifest path used subscription rather than path join. Failure occurred before image loading/guest execution; exact source and traceback retained.",
+    "failed_source_sha256": "ed76e9c7d3c8021e1da2ba8d209031a91d1b29dcf3447f616e5bab11e340c3fc",
+    "corrected_run": "run-corrected-20261025"
+  },
+  "unverified": [
+    "Actual producer/units and MAIN FF default/preset19450; upstream quality/bitrate/query/cache/menu consistency",
+    "Real resource states/transport/generations, native logs/clear, pending/future packets, HAL application and actual feedback",
+    "Hardware Open/Start, MAIN media/HEVC/audio/timebase/sync/long-run/temperature/regression",
+    "Healthy same-body backup, native safe points/restricted restore/readback, WBI/cold boot and independent recovery"
+  ],
+  "camera_or_remote_access_attempted": false,
+  "authorization_unchanged": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

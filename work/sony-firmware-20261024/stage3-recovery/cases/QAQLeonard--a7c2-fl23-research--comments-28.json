@@ -1,0 +1,52 @@
+{
+  "url": "https://api.github.com/repos/QAQLeonard/a7c2-fl23-research/issues/28/comments",
+  "data": [
+    {
+      "url": "https://api.github.com/repos/QAQLeonard/a7c2-fl23-research/issues/comments/6369627082",
+      "html_url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/28#issuecomment-6369627082",
+      "issue_url": "https://api.github.com/repos/QAQLeonard/a7c2-fl23-research/issues/28",
+      "id": 6369627082,
+      "node_id": "IC_kwDOVNeGLM8AAAABe6jLyg",
+      "user": {
+        "login": "QAQLeonard",
+        "id": 93310724,
+        "node_id": "U_kgDOBY_PBA",
+        "avatar_url": "https://avatars.githubusercontent.com/u/93310724?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/QAQLeonard",
+        "html_url": "https://github.com/QAQLeonard",
+        "followers_url": "https://api.github.com/users/QAQLeonard/followers",
+        "following_url": "https://api.github.com/users/QAQLeonard/following{/other_user}",
+        "gists_url": "https://api.github.com/users/QAQLeonard/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/QAQLeonard/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/QAQLeonard/subscriptions",
+        "organizations_url": "https://api.github.com/users/QAQLeonard/orgs",
+        "repos_url": "https://api.github.com/users/QAQLeonard/repos",
+        "events_url": "https://api.github.com/users/QAQLeonard/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/QAQLeonard/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "created_at": "2026-10-23T16:26:36Z",
+      "updated_at": "2026-10-23T16:26:36Z",
+      "body": "Thank you for the detailed report and for preserving the logs.\nappFw.so:0x3528804 belongs to the Creative Look / FL2–FL3 routing code. The conflict means the installer did not recognize the bytes at that location as an original or supported patched state. The error alone does not establish why those bytes differ, or imply that you previously modified the camera.\nYour observation about partial installation is valid: in v3.0.3, the portrait-display preparation can complete before the combined installation encounters this conflict. An overall FAILED status does not mean earlier changes were automatically rolled back.\nRegarding your questions:\n1. Factory restore: Please share the diagnostic ZIP and original installation log before attempting restoration. I cannot confirm that v3.0.3 is appropriate for this specific state without examining them.\n2. Portrait changes: The restoration code is designed to reverse supported portrait-display modifications, including the associated settings and resources. We still need to confirm which operations actually completed on your camera.\n3. Cause: We need the full traceback and transaction records to identify the unexpected bytes and the exact failing stage. A successful USB stability test does not resolve a patch compatibility conflict.\n4. Reinstallation: Please hold off on retrying the same installation. We first need to determine whether restoring the recognized state is sufficient or a corrected build is required.\n5. Verification: After an appropriate restoration, verification should include program/resource readback, the tool’s post-restart verification, and checks of the original looks, shooting, playback, sound and display behavior. A successful write alone is insufficient.\nPlease attach the diagnostic ZIP here. Keep the original task folders unchanged; there is no need to reproduce the failure.",
+      "author_association": "OWNER",
+      "pin": null,
+      "reactions": {
+        "url": "https://api.github.com/repos/QAQLeonard/a7c2-fl23-research/issues/comments/6369627082/reactions",
+        "total_count": 0,
+        "+1": 0,
+        "-1": 0,
+        "laugh": 0,
+        "hooray": 0,
+        "confused": 0,
+        "heart": 0,
+        "rocket": 0,
+        "eyes": 0
+      },
+      "performed_via_github_app": null,
+      "minimized": null
+    }
+  ]
+}

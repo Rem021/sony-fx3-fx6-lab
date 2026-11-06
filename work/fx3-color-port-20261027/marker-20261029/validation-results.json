@@ -1,0 +1,180 @@
+{
+  "status": "PASS_BOUNDED_COMPONENT_READBACK",
+  "previous_receipt_sha256": "6b67b82dab412adef6b928ccd3eb21242e712ed1de3478a5cfb83651f630b430",
+  "previous_sealed_files_verified": 22,
+  "syntax_files": [
+    "check_marker_snapshot.py",
+    "extract_text_guest.py",
+    "inspect_body_policy.py",
+    "inspect_extract_contract.py",
+    "keytag_factory_guest.py",
+    "parse_tar_header_guest.py",
+    "shell_request_guest.py",
+    "validate_marker.py"
+  ],
+  "json_files": [
+    "attempts/keytag-first-import-failure.json",
+    "body-policy-static-results.json",
+    "extract-contract-static-results.json",
+    "extract-text-guest-results.json",
+    "keytag-factory-guest-results.json",
+    "marker-snapshot-results.json",
+    "shell-request-guest-results.json",
+    "tar-header-guest-results.json"
+  ],
+  "original_span_checks": [
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x13138",
+      "bytes": 204
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x1444c",
+      "bytes": 368
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x14234",
+      "bytes": 536
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x1371c",
+      "bytes": 360
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x194dc",
+      "bytes": 40
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x173e8",
+      "bytes": 128
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x17a3c",
+      "bytes": 324
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x177cc",
+      "bytes": 532
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x187a4",
+      "bytes": 864
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x19194",
+      "bytes": 668
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x19430",
+      "bytes": 64
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x19470",
+      "bytes": 64
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x19bdc",
+      "bytes": 940
+    },
+    {
+      "source": "body-policy-static-results.json",
+      "va": "0x13c8c",
+      "bytes": 884
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x13100",
+      "bytes": 56
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x163b8",
+      "bytes": 304
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x15b80",
+      "bytes": 484
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x16880",
+      "bytes": 648
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x17468",
+      "bytes": 128
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x175c8",
+      "bytes": 248
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x179e0",
+      "bytes": 92
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x17c74",
+      "bytes": 32
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x1235c",
+      "bytes": 32
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x12590",
+      "bytes": 240
+    },
+    {
+      "source": "extract-contract-static-results.json",
+      "va": "0x13850",
+      "bytes": 52
+    }
+  ],
+  "guest_case_counts": {
+    "shell_request": 5,
+    "keytag_factory": 8,
+    "tar_header": 4,
+    "benign_text_extract": 4
+  },
+  "guest_cases_total": 21,
+  "code_identity_for_snapshot_proven": false,
+  "live_marker_state_proven": false,
+  "full_xml_dispatch_proven": false,
+  "local_readme_links": [
+    "../body-load-20261029/README.md",
+    "marker-snapshot-results.json",
+    "body-policy-static-results.json",
+    "extract-contract-static-results.json",
+    "shell-request-guest-results.json",
+    "keytag-factory-guest-results.json",
+    "tar-header-guest-results.json",
+    "extract-text-guest-results.json",
+    "extract-contract-static-results.json",
+    "validation-results.json",
+    "final-receipt.json"
+  ],
+  "host_target_file_writes": 0,
+  "native_target_execution": 0,
+  "camera_actions": 0,
+  "goal_completion_claimed": false,
+  "termination_condition_met": false
+}

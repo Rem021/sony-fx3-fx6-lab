@@ -1,0 +1,51 @@
+{
+  "schema": "fx3-stage39-next-message-provenance-and-Hal-anchors/1",
+  "created_utc": "2026-10-26T00:18:36.575123+00:00",
+  "image_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf",
+  "native_return_path": {
+    "interface_thunk": "0x228bbc..0x228bd0",
+    "owner_lookup": "0x227870",
+    "local_message_parser": "0x225934",
+    "message_match": "byte+2==3",
+    "copied_output_bytes": {
+      "message+3": "output+0, formal name unbound",
+      "message+4(u16)": "output+2, formal name unbound",
+      "message+a": "output+4 and8bit map key, formal name unbound",
+      "message+b": "output+5, formal name unbound"
+    },
+    "ordered_map_offsets": [
+      "0x1160",
+      "0x11e8",
+      "0x1270",
+      "0x12f8"
+    ],
+    "keyed_release": "0x21c114",
+    "pool_return": "0x22c6f8",
+    "index_remove_node_return": "0x21d704",
+    "pool_slot_count": "0x2a8",
+    "message_return_queue": "owner+0x10, local capacity0x100",
+    "message_transport_registry_runtime_key_generation_authentication_and_Hal_completion_unbound": true
+  },
+  "partial_error_scope": "Map2missing after map1success leaves mixed pool/map state before original diagnostic; full failure return/cleanup unexecuted.",
+  "sender_dependencies": {
+    "entry": "0x26c91c",
+    "context_flag": "0x275ee0 ->0x2755ac",
+    "synchronization_call": "0x2ef4c",
+    "request_buffer": "0x275ab0",
+    "source_pointer_path": "0x26ca00 onward scans original region table then calls0x2f528",
+    "later_submission_and_reply_calls": [
+      "0x27470c",
+      "0x274ee8"
+    ],
+    "actual_dependency_ABI_or_runtime_translation_and_completion_unproven": true
+  },
+  "required_work": [
+    "Trace the actual producer/transport and formal response definitions for this type3message; correlate to0x26c91c request and distinguish request completion, local cleanup and actual encoder state.",
+    "Bind true owner registry/current request epoch/shared synchronization; register before publication and observe each native return/removal with generation-safe association, never release on generic function return0.",
+    "Complete partial-error handling, all map/buffer/message-queue full paths, remaining consumers and safe code exit before data/code reclamation.",
+    "Resolve actual start-input and52untouched codec bytes/default/reserved layout, full clear/log dependencies and complete valid request/Hal Open/Start.",
+    "Preserve model/query/cache/mux/time estimate, actual HEVC MAIN media/audio/long-run/thermal and same-body backup/restore/WBI/coldboot/independent rescue requirements."
+  ],
+  "public_maintainer_refresh": "upstream-refresh.json",
+  "camera_or_remote_access_attempted": false
+}

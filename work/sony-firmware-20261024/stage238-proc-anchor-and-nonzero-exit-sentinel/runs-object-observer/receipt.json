@@ -1,0 +1,3709 @@
+{
+  "status": "FAIL",
+  "tests": 8,
+  "failures": 0,
+  "errors": 2,
+  "details": [
+    {
+      "test": "test_01_same_live_collector_object_sender_worker_exit_and_detachment (__main__.Tests.test_01_same_live_collector_object_sender_worker_exit_and_detachment)",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/test_observer.py\", line 13, in test_01_same_live_collector_object_sender_worker_exit_and_detachment\n    r=M.paired(self.raw,self.producer);self.assertEqual(r['result'],11);self.assertEqual(r['producer']['collector_exit_status'],42<<8);self.assertEqual(r['producer']['own_worker_status'],0);self.assertEqual(len(r['self_proc_anchor_transfers']),1);self.assertTrue(r['same_live_process_object_used_by_both_own_machines']);self.record('same-live-object-pair',r)\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/model_observer.py\", line 149, in paired\n    pk,pg=producer(collector_raw,fault,pause_after_anchor=True,return_live=True)\n          ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/model_observer.py\", line 116, in producer\n    p=B/'stage237-isolated-collector-child-domain/model_collector.py';spec=importlib.util.spec_from_file_location('collector238_pair',p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)\n                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"<frozen importlib._bootstrap_external>\", line 759, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 491, in _call_with_frames_removed\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage237-isolated-collector-child-domain/model_collector.py\", line 12, in <module>\n    import isolated_build as D\nModuleNotFoundError: No module named 'isolated_build'\n"
+    },
+    {
+      "test": "test_02_real_producer_failure_never_emits_success_sentinel (__main__.Tests.test_02_real_producer_failure_never_emits_success_sentinel)",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/test_observer.py\", line 16, in test_02_real_producer_failure_never_emits_success_sentinel\n    r=M.paired(self.raw,self.producer,f);self.assertEqual(r['result'],2);self.assertNotEqual(r['producer']['collector_exit_status'],42<<8);self.record('paired-'+f,r)\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/model_observer.py\", line 149, in paired\n    pk,pg=producer(collector_raw,fault,pause_after_anchor=True,return_live=True)\n          ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage238-proc-anchor-and-nonzero-exit-sentinel/model_observer.py\", line 116, in producer\n    p=B/'stage237-isolated-collector-child-domain/model_collector.py';spec=importlib.util.spec_from_file_location('collector238_pair',p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)\n                                                                                                                                                                                 ~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"<frozen importlib._bootstrap_external>\", line 759, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 491, in _call_with_frames_removed\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage237-isolated-collector-child-domain/model_collector.py\", line 12, in <module>\n    import isolated_build as D\nModuleNotFoundError: No module named 'isolated_build'\n"
+    }
+  ],
+  "cases": [
+    {
+      "name": "wrong-or-filtered-status-None-0",
+      "summary": {
+        "fault": null,
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 0,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "wrong-or-filtered-status-filtered-zero-9",
+      "summary": {
+        "fault": "filtered-zero",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 9,
+        "filtered": true,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "wrong-or-filtered-status-filtered-zero-10752",
+      "summary": {
+        "fault": "filtered-zero",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": true,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "wrong-or-filtered-status-None-9",
+      "summary": {
+        "fault": null,
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 9,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "wrong-or-filtered-status-None-17408",
+      "summary": {
+        "fault": null,
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 17408,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "reuse-after-evidence",
+      "summary": {
+        "fault": "numeric-reuse-after-exit",
+        "result": 11,
+        "state": 11,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "foreign object B"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 2,
+            "state": "GONE",
+            "numeric_index_object": "foreign object B"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [
+          {
+            "event": "same numeric PID now indexes B",
+            "original_anchor_object": "original object A"
+          },
+          {
+            "event": "same numeric PID now indexes B",
+            "original_anchor_object": "original object A"
+          }
+        ],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "numeric-reuse-before-evidence",
+      "summary": {
+        "fault": "numeric-reuse-before-evidence",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "GONE",
+            "numeric_index_object": "foreign object B"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [
+          {
+            "event": "same numeric PID now indexes B",
+            "original_anchor_object": "original object A"
+          }
+        ],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "gone-before-evidence",
+      "summary": {
+        "fault": "gone-before-evidence",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "GONE",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "complex-comm",
+      "summary": {
+        "fault": "complex-comm",
+        "result": 11,
+        "state": 11,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 2,
+            "state": "GONE",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "short-chunks",
+      "summary": {
+        "fault": "short-chunks",
+        "result": 11,
+        "state": 11,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 2,
+            "state": "GONE",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "gone-ESRCH",
+      "summary": {
+        "fault": "gone-ESRCH",
+        "result": 11,
+        "state": 11,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 2,
+            "state": "GONE",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "bad-pid",
+      "summary": {
+        "fault": "bad-pid",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "bad-parent",
+      "summary": {
+        "fault": "bad-parent",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "bad-start",
+      "summary": {
+        "fault": "bad-start",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "multi-thread",
+      "summary": {
+        "fault": "multi-thread",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "truncated-record",
+      "summary": {
+        "fault": "truncated-record",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "extra-field",
+      "summary": {
+        "fault": "extra-field",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "exit-overflow",
+      "summary": {
+        "fault": "exit-overflow",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "negative-exit",
+      "summary": {
+        "fault": "negative-exit",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "huge-record",
+      "summary": {
+        "fault": "huge-record",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "read-error",
+      "summary": {
+        "fault": "read-error",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "wrong-filesystem",
+      "summary": {
+        "fault": "wrong-filesystem",
+        "result": 4,
+        "state": 4,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [],
+        "closes": [],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7,
+          53
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "anchor-not-directory",
+      "summary": {
+        "fault": "anchor-not-directory",
+        "result": 4,
+        "state": 4,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [],
+        "closes": [],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7,
+          53
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "anchor-UID",
+      "summary": {
+        "fault": "anchor-UID",
+        "result": 4,
+        "state": 4,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [],
+        "closes": [],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7,
+          53
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "anchor-replaced",
+      "summary": {
+        "fault": "anchor-replaced",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "stat-inode-changed",
+      "summary": {
+        "fault": "stat-inode-changed",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "stat-close-error",
+      "summary": {
+        "fault": "stat-close-error",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "anchor-close-error",
+      "summary": {
+        "fault": "anchor-close-error",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 2,
+            "state": "GONE",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "post-sentinel-EACCES",
+      "summary": {
+        "fault": "post-sentinel-EACCES",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 2,
+            "state": "GONE",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "live-zero",
+      "summary": {
+        "fault": "live-zero",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 0,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 2,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 3,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 4,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 5,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 6,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 7,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 8,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 9,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 10,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 11,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 12,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 13,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 14,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 15,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 16,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 17,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 18,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 19,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 20,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 21,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 22,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 23,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 24,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 25,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 26,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 27,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 28,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 29,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 30,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 31,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 32,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 33,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 34,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 35,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 36,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 37,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 38,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 39,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 40,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 41,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 42,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 43,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 44,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 45,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 46,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 47,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 48,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 49,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 50,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 51,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 52,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 53,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 54,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 55,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 56,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 57,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 58,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 59,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 60,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 61,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 62,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 63,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 64,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 65,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 66,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 67,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 68,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 69,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 70,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 71,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 72,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 73,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 74,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 75,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 76,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 77,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 78,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 79,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 80,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 81,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 82,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 83,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 84,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 85,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 86,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 87,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 88,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 89,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 90,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 91,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 92,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 93,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 94,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 95,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 96,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 97,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 98,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 99,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 56,
+            "kind": "stat"
+          },
+          {
+            "fd": 57,
+            "kind": "stat"
+          },
+          {
+            "fd": 58,
+            "kind": "stat"
+          },
+          {
+            "fd": 59,
+            "kind": "stat"
+          },
+          {
+            "fd": 60,
+            "kind": "stat"
+          },
+          {
+            "fd": 61,
+            "kind": "stat"
+          },
+          {
+            "fd": 62,
+            "kind": "stat"
+          },
+          {
+            "fd": 63,
+            "kind": "stat"
+          },
+          {
+            "fd": 64,
+            "kind": "stat"
+          },
+          {
+            "fd": 65,
+            "kind": "stat"
+          },
+          {
+            "fd": 66,
+            "kind": "stat"
+          },
+          {
+            "fd": 67,
+            "kind": "stat"
+          },
+          {
+            "fd": 68,
+            "kind": "stat"
+          },
+          {
+            "fd": 69,
+            "kind": "stat"
+          },
+          {
+            "fd": 70,
+            "kind": "stat"
+          },
+          {
+            "fd": 71,
+            "kind": "stat"
+          },
+          {
+            "fd": 72,
+            "kind": "stat"
+          },
+          {
+            "fd": 73,
+            "kind": "stat"
+          },
+          {
+            "fd": 74,
+            "kind": "stat"
+          },
+          {
+            "fd": 75,
+            "kind": "stat"
+          },
+          {
+            "fd": 76,
+            "kind": "stat"
+          },
+          {
+            "fd": 77,
+            "kind": "stat"
+          },
+          {
+            "fd": 78,
+            "kind": "stat"
+          },
+          {
+            "fd": 79,
+            "kind": "stat"
+          },
+          {
+            "fd": 80,
+            "kind": "stat"
+          },
+          {
+            "fd": 81,
+            "kind": "stat"
+          },
+          {
+            "fd": 82,
+            "kind": "stat"
+          },
+          {
+            "fd": 83,
+            "kind": "stat"
+          },
+          {
+            "fd": 84,
+            "kind": "stat"
+          },
+          {
+            "fd": 85,
+            "kind": "stat"
+          },
+          {
+            "fd": 86,
+            "kind": "stat"
+          },
+          {
+            "fd": 87,
+            "kind": "stat"
+          },
+          {
+            "fd": 88,
+            "kind": "stat"
+          },
+          {
+            "fd": 89,
+            "kind": "stat"
+          },
+          {
+            "fd": 90,
+            "kind": "stat"
+          },
+          {
+            "fd": 91,
+            "kind": "stat"
+          },
+          {
+            "fd": 92,
+            "kind": "stat"
+          },
+          {
+            "fd": 93,
+            "kind": "stat"
+          },
+          {
+            "fd": 94,
+            "kind": "stat"
+          },
+          {
+            "fd": 95,
+            "kind": "stat"
+          },
+          {
+            "fd": 96,
+            "kind": "stat"
+          },
+          {
+            "fd": 97,
+            "kind": "stat"
+          },
+          {
+            "fd": 98,
+            "kind": "stat"
+          },
+          {
+            "fd": 99,
+            "kind": "stat"
+          },
+          {
+            "fd": 100,
+            "kind": "stat"
+          },
+          {
+            "fd": 101,
+            "kind": "stat"
+          },
+          {
+            "fd": 102,
+            "kind": "stat"
+          },
+          {
+            "fd": 103,
+            "kind": "stat"
+          },
+          {
+            "fd": 104,
+            "kind": "stat"
+          },
+          {
+            "fd": 105,
+            "kind": "stat"
+          },
+          {
+            "fd": 106,
+            "kind": "stat"
+          },
+          {
+            "fd": 107,
+            "kind": "stat"
+          },
+          {
+            "fd": 108,
+            "kind": "stat"
+          },
+          {
+            "fd": 109,
+            "kind": "stat"
+          },
+          {
+            "fd": 110,
+            "kind": "stat"
+          },
+          {
+            "fd": 111,
+            "kind": "stat"
+          },
+          {
+            "fd": 112,
+            "kind": "stat"
+          },
+          {
+            "fd": 113,
+            "kind": "stat"
+          },
+          {
+            "fd": 114,
+            "kind": "stat"
+          },
+          {
+            "fd": 115,
+            "kind": "stat"
+          },
+          {
+            "fd": 116,
+            "kind": "stat"
+          },
+          {
+            "fd": 117,
+            "kind": "stat"
+          },
+          {
+            "fd": 118,
+            "kind": "stat"
+          },
+          {
+            "fd": 119,
+            "kind": "stat"
+          },
+          {
+            "fd": 120,
+            "kind": "stat"
+          },
+          {
+            "fd": 121,
+            "kind": "stat"
+          },
+          {
+            "fd": 122,
+            "kind": "stat"
+          },
+          {
+            "fd": 123,
+            "kind": "stat"
+          },
+          {
+            "fd": 124,
+            "kind": "stat"
+          },
+          {
+            "fd": 125,
+            "kind": "stat"
+          },
+          {
+            "fd": 126,
+            "kind": "stat"
+          },
+          {
+            "fd": 127,
+            "kind": "stat"
+          },
+          {
+            "fd": 128,
+            "kind": "stat"
+          },
+          {
+            "fd": 129,
+            "kind": "stat"
+          },
+          {
+            "fd": 130,
+            "kind": "stat"
+          },
+          {
+            "fd": 131,
+            "kind": "stat"
+          },
+          {
+            "fd": 132,
+            "kind": "stat"
+          },
+          {
+            "fd": 133,
+            "kind": "stat"
+          },
+          {
+            "fd": 134,
+            "kind": "stat"
+          },
+          {
+            "fd": 135,
+            "kind": "stat"
+          },
+          {
+            "fd": 136,
+            "kind": "stat"
+          },
+          {
+            "fd": 137,
+            "kind": "stat"
+          },
+          {
+            "fd": 138,
+            "kind": "stat"
+          },
+          {
+            "fd": 139,
+            "kind": "stat"
+          },
+          {
+            "fd": 140,
+            "kind": "stat"
+          },
+          {
+            "fd": 141,
+            "kind": "stat"
+          },
+          {
+            "fd": 142,
+            "kind": "stat"
+          },
+          {
+            "fd": 143,
+            "kind": "stat"
+          },
+          {
+            "fd": 144,
+            "kind": "stat"
+          },
+          {
+            "fd": 145,
+            "kind": "stat"
+          },
+          {
+            "fd": 146,
+            "kind": "stat"
+          },
+          {
+            "fd": 147,
+            "kind": "stat"
+          },
+          {
+            "fd": 148,
+            "kind": "stat"
+          },
+          {
+            "fd": 149,
+            "kind": "stat"
+          },
+          {
+            "fd": 150,
+            "kind": "stat"
+          },
+          {
+            "fd": 151,
+            "kind": "stat"
+          },
+          {
+            "fd": 152,
+            "kind": "stat"
+          },
+          {
+            "fd": 153,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "zombie-only",
+      "summary": {
+        "fault": "zombie-only",
+        "result": 2,
+        "state": 2,
+        "collector_kernel_raw_status": 10752,
+        "filtered": false,
+        "anchor_origin": "original object A",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 0,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 2,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 3,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 4,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 5,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 6,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 7,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 8,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 9,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 10,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 11,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 12,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 13,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 14,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 15,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 16,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 17,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 18,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 19,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 20,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 21,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 22,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 23,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 24,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 25,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 26,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 27,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 28,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 29,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 30,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 31,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 32,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 33,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 34,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 35,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 36,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 37,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 38,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 39,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 40,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 41,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 42,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 43,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 44,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 45,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 46,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 47,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 48,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 49,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 50,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 51,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 52,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 53,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 54,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 55,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 56,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 57,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 58,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 59,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 60,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 61,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 62,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 63,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 64,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 65,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 66,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 67,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 68,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 69,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 70,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 71,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 72,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 73,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 74,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 75,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 76,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 77,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 78,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 79,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 80,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 81,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 82,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 83,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 84,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 85,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 86,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 87,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 88,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 89,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 90,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 91,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 92,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 93,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 94,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 95,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 96,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 97,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 98,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "original object A",
+            "phase": 99,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 56,
+            "kind": "stat"
+          },
+          {
+            "fd": 57,
+            "kind": "stat"
+          },
+          {
+            "fd": 58,
+            "kind": "stat"
+          },
+          {
+            "fd": 59,
+            "kind": "stat"
+          },
+          {
+            "fd": 60,
+            "kind": "stat"
+          },
+          {
+            "fd": 61,
+            "kind": "stat"
+          },
+          {
+            "fd": 62,
+            "kind": "stat"
+          },
+          {
+            "fd": 63,
+            "kind": "stat"
+          },
+          {
+            "fd": 64,
+            "kind": "stat"
+          },
+          {
+            "fd": 65,
+            "kind": "stat"
+          },
+          {
+            "fd": 66,
+            "kind": "stat"
+          },
+          {
+            "fd": 67,
+            "kind": "stat"
+          },
+          {
+            "fd": 68,
+            "kind": "stat"
+          },
+          {
+            "fd": 69,
+            "kind": "stat"
+          },
+          {
+            "fd": 70,
+            "kind": "stat"
+          },
+          {
+            "fd": 71,
+            "kind": "stat"
+          },
+          {
+            "fd": 72,
+            "kind": "stat"
+          },
+          {
+            "fd": 73,
+            "kind": "stat"
+          },
+          {
+            "fd": 74,
+            "kind": "stat"
+          },
+          {
+            "fd": 75,
+            "kind": "stat"
+          },
+          {
+            "fd": 76,
+            "kind": "stat"
+          },
+          {
+            "fd": 77,
+            "kind": "stat"
+          },
+          {
+            "fd": 78,
+            "kind": "stat"
+          },
+          {
+            "fd": 79,
+            "kind": "stat"
+          },
+          {
+            "fd": 80,
+            "kind": "stat"
+          },
+          {
+            "fd": 81,
+            "kind": "stat"
+          },
+          {
+            "fd": 82,
+            "kind": "stat"
+          },
+          {
+            "fd": 83,
+            "kind": "stat"
+          },
+          {
+            "fd": 84,
+            "kind": "stat"
+          },
+          {
+            "fd": 85,
+            "kind": "stat"
+          },
+          {
+            "fd": 86,
+            "kind": "stat"
+          },
+          {
+            "fd": 87,
+            "kind": "stat"
+          },
+          {
+            "fd": 88,
+            "kind": "stat"
+          },
+          {
+            "fd": 89,
+            "kind": "stat"
+          },
+          {
+            "fd": 90,
+            "kind": "stat"
+          },
+          {
+            "fd": 91,
+            "kind": "stat"
+          },
+          {
+            "fd": 92,
+            "kind": "stat"
+          },
+          {
+            "fd": 93,
+            "kind": "stat"
+          },
+          {
+            "fd": 94,
+            "kind": "stat"
+          },
+          {
+            "fd": 95,
+            "kind": "stat"
+          },
+          {
+            "fd": 96,
+            "kind": "stat"
+          },
+          {
+            "fd": 97,
+            "kind": "stat"
+          },
+          {
+            "fd": 98,
+            "kind": "stat"
+          },
+          {
+            "fd": 99,
+            "kind": "stat"
+          },
+          {
+            "fd": 100,
+            "kind": "stat"
+          },
+          {
+            "fd": 101,
+            "kind": "stat"
+          },
+          {
+            "fd": 102,
+            "kind": "stat"
+          },
+          {
+            "fd": 103,
+            "kind": "stat"
+          },
+          {
+            "fd": 104,
+            "kind": "stat"
+          },
+          {
+            "fd": 105,
+            "kind": "stat"
+          },
+          {
+            "fd": 106,
+            "kind": "stat"
+          },
+          {
+            "fd": 107,
+            "kind": "stat"
+          },
+          {
+            "fd": 108,
+            "kind": "stat"
+          },
+          {
+            "fd": 109,
+            "kind": "stat"
+          },
+          {
+            "fd": 110,
+            "kind": "stat"
+          },
+          {
+            "fd": 111,
+            "kind": "stat"
+          },
+          {
+            "fd": 112,
+            "kind": "stat"
+          },
+          {
+            "fd": 113,
+            "kind": "stat"
+          },
+          {
+            "fd": 114,
+            "kind": "stat"
+          },
+          {
+            "fd": 115,
+            "kind": "stat"
+          },
+          {
+            "fd": 116,
+            "kind": "stat"
+          },
+          {
+            "fd": 117,
+            "kind": "stat"
+          },
+          {
+            "fd": 118,
+            "kind": "stat"
+          },
+          {
+            "fd": 119,
+            "kind": "stat"
+          },
+          {
+            "fd": 120,
+            "kind": "stat"
+          },
+          {
+            "fd": 121,
+            "kind": "stat"
+          },
+          {
+            "fd": 122,
+            "kind": "stat"
+          },
+          {
+            "fd": 123,
+            "kind": "stat"
+          },
+          {
+            "fd": 124,
+            "kind": "stat"
+          },
+          {
+            "fd": 125,
+            "kind": "stat"
+          },
+          {
+            "fd": 126,
+            "kind": "stat"
+          },
+          {
+            "fd": 127,
+            "kind": "stat"
+          },
+          {
+            "fd": 128,
+            "kind": "stat"
+          },
+          {
+            "fd": 129,
+            "kind": "stat"
+          },
+          {
+            "fd": 130,
+            "kind": "stat"
+          },
+          {
+            "fd": 131,
+            "kind": "stat"
+          },
+          {
+            "fd": 132,
+            "kind": "stat"
+          },
+          {
+            "fd": 133,
+            "kind": "stat"
+          },
+          {
+            "fd": 134,
+            "kind": "stat"
+          },
+          {
+            "fd": 135,
+            "kind": "stat"
+          },
+          {
+            "fd": 136,
+            "kind": "stat"
+          },
+          {
+            "fd": 137,
+            "kind": "stat"
+          },
+          {
+            "fd": 138,
+            "kind": "stat"
+          },
+          {
+            "fd": 139,
+            "kind": "stat"
+          },
+          {
+            "fd": 140,
+            "kind": "stat"
+          },
+          {
+            "fd": 141,
+            "kind": "stat"
+          },
+          {
+            "fd": 142,
+            "kind": "stat"
+          },
+          {
+            "fd": 143,
+            "kind": "stat"
+          },
+          {
+            "fd": 144,
+            "kind": "stat"
+          },
+          {
+            "fd": 145,
+            "kind": "stat"
+          },
+          {
+            "fd": 146,
+            "kind": "stat"
+          },
+          {
+            "fd": 147,
+            "kind": "stat"
+          },
+          {
+            "fd": 148,
+            "kind": "stat"
+          },
+          {
+            "fd": 149,
+            "kind": "stat"
+          },
+          {
+            "fd": 150,
+            "kind": "stat"
+          },
+          {
+            "fd": 151,
+            "kind": "stat"
+          },
+          {
+            "fd": 152,
+            "kind": "stat"
+          },
+          {
+            "fd": 153,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    },
+    {
+      "name": "untrusted-origin-boundary-counterexample",
+      "summary": {
+        "fault": "wrong-anchor-same-pid-and-start",
+        "result": 11,
+        "state": 11,
+        "collector_kernel_raw_status": 9,
+        "filtered": false,
+        "anchor_origin": "foreign object B",
+        "lookups": [
+          {
+            "relative_anchor_fd": 53,
+            "object": "foreign object B",
+            "phase": 0,
+            "state": "S",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "foreign object B",
+            "phase": 1,
+            "state": "Z",
+            "numeric_index_object": "original object A"
+          },
+          {
+            "relative_anchor_fd": 53,
+            "object": "foreign object B",
+            "phase": 2,
+            "state": "GONE",
+            "numeric_index_object": "original object A"
+          }
+        ],
+        "closes": [
+          {
+            "fd": 54,
+            "kind": "stat"
+          },
+          {
+            "fd": 55,
+            "kind": "stat"
+          },
+          {
+            "fd": 53,
+            "kind": "anchor"
+          }
+        ],
+        "waits": [],
+        "events": [],
+        "host_borrowed_FDs_unchanged": true,
+        "remaining_before_wrapper_exit": [
+          0,
+          1,
+          2,
+          7
+        ],
+        "new_stat_FDs_all_closed": true,
+        "all_lookups_relative_to_original_object": true,
+        "no_numeric_pid_path_lookup_or_wait": true
+      }
+    }
+  ],
+  "source_hashes": {
+    "collector-anchor.c": "331757a7936fb09ab0fae1d2dcd149164b70a700cd8a34930b84119cdb4a5910",
+    "observer.c": "e2389c7cca84734b0049ab9bd1c99318463e364d800904ce79781b3360e03e6b",
+    "candidate_build.py": "b321e106249b6b53b799dc79203e836dadcabfc46cabe575a8b670a4b61f3df1",
+    "model_observer.py": "3f103935fe496adbdeba6bd287e2ae1f0ce105f9edcdbb5b1d1592ae2972fed4",
+    "test_observer.py": "c0f4605a2d28ea183162fb41d573b43155b216fb69132d1bf8115bfc74d6f29d"
+  },
+  "observer_sha256": "924e0508a74c31a0ee0c6eb6d5647eb354ceb954a749ec74e77e2314e5a8d863",
+  "collector_sha256": "3484301d208b649f60fd53ab79e6d7600f878bcb8ba58ddab675bec4b40d4f27",
+  "own_two_machine_live_object_pair_executed": true,
+  "all_Linux_proc_kernel_permissions_times_tasks_and_detachment_are_explicit_fakes": true,
+  "original_Sony_Linux_or_glibc_executed": false,
+  "actual_Linux_processes_or_threads_created": false,
+  "new_device_operations": 0,
+  "self_proc_anchor_sender_implemented": true,
+  "parent_native_SCM_receiver_and_authentic_creation_bridge_implemented": false,
+  "arbitrary_wrong_origin_anchor_can_still_false_complete": true,
+  "full_job_or_USB_completion_or_first_flash_released": false,
+  "deployable": false
+}

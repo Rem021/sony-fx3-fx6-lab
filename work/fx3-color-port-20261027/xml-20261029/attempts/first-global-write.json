@@ -1,0 +1,63 @@
+{
+  "error": "AssertionError(('outside synthetic RAM', '0x30021468', 8))",
+  "pc": "0x3000c9cc",
+  "steps": 187,
+  "events": [],
+  "code": "0000c9b4 mov        x0, x21\n0000c9b8 bl         #0xc818\n0000c9bc b          #0xc96c\n0000c9c0 add        x0, x0, #0x10\n0000c9c4 bl         #0x7650 ; memmove\n0000c9c8 ldr        x0, [x20]\n0000c9cc str        x19, [x0]\n0000c9d0 add        x19, x0, x19\n0000c9d4 strb       wzr, [x19, #0x10]\n0000c9d8 b          #0xc994\n0000c9dc mov        x19, x0\n0000c9e0 mov        x0, x21\n0000c9e4 bl         #0x7560 ; Updater::Xml::TiXmlString::quit\n0000c9e8 mov        x0, x19\n",
+  "target_section": [
+    {
+      "name": ".bss",
+      "address": "0x21460",
+      "size": 32,
+      "type": "SHT_NOBITS",
+      "flags": 3
+    }
+  ],
+  "nearby_symbols": [
+    {
+      "name": "_edata",
+      "va": "0x21460",
+      "size": 0
+    },
+    {
+      "name": "__end__",
+      "va": "0x21480",
+      "size": 0
+    },
+    {
+      "name": "Updater::Xml::DomBase::entity",
+      "va": "0x21410",
+      "size": 80
+    },
+    {
+      "name": "__bss_start",
+      "va": "0x21460",
+      "size": 0
+    },
+    {
+      "name": "__bss_start__",
+      "va": "0x21460",
+      "size": 0
+    },
+    {
+      "name": "_end",
+      "va": "0x21480",
+      "size": 0
+    },
+    {
+      "name": "Updater::Xml::TiXmlString::nullrep_",
+      "va": "0x21468",
+      "size": 24
+    },
+    {
+      "name": "_bss_end__",
+      "va": "0x21480",
+      "size": 0
+    },
+    {
+      "name": "__bss_end__",
+      "va": "0x21480",
+      "size": 0
+    }
+  ]
+}

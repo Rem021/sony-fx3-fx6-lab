@@ -1,0 +1,27 @@
+{
+  "status": "PATCHED_PRIVATE_SOURCE_ONLY_NOT_NATIVE_INITIALIZATION",
+  "upstream_sha256": "290b9913eba18e0f9f9fa0de75c59bec0daa4ccd02740a96fd8479d20da06557",
+  "patched_sha256": "c3e724698fe36e94df77b87e7cd02650b3ec51e91ffacae122b6bb9f8a2a5d2e",
+  "unset_target_denies_all": true,
+  "selector_before_device_user_client_creation": true,
+  "fixed_VID": "054C",
+  "fixed_PIDs": [
+    "0DA1"
+  ],
+  "selector_requires_nonzero_exact_location": true,
+  "descriptor_cache_single_standard_read_no_open_reset_suspend_or_retry": true,
+  "public_capture_API_still_exists_but_not_used_by_descriptor_probe": true,
+  "private_source_not_claimed_upstream_release": true,
+  "device_or_driver_operations": 0,
+  "prototype_fix_previous_sha256": "aa1dd8d212f3fdbbb18bfd3a8203e76d567366fe3807f093274d5fa70154ecde",
+  "prototype_fix_script_sha256": "66bdd4ec15383241c4a41c504b3b87f7c1362a1670195487407301eec6ccad83",
+  "strict_warning_policy_preserved": true,
+  "initial_compile_failure_preserved": true,
+  "previous_built_source_preserved_sha256": "a11147e536e8ed86f052a096282b67d1c7605b4026c84f3beff8794ca5e3dd62",
+  "service_PID_0336_rejected_before_user_client": true,
+  "explicit_device_descriptor_requests_per_initialized_process_at_most": 1,
+  "descriptor_error_consumes_budget_no_retry": true,
+  "multiple_configurations_rejected_before_GetConfiguration": true,
+  "two_rejected_service_IOObjects_released": true,
+  "OS_configuration_metadata_API_wire_activity_not_counted_or_guaranteed": true
+}

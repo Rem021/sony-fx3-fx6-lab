@@ -1,0 +1,141 @@
+{
+  "original_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "original_initcall_pointer_equality_checked": true,
+  "original_runtime_log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/p10/printk-decoded.txt",
+  "profile": "minimal-linux userspace only; not full Sony device initialization",
+  "rows": [
+    {
+      "name": "__boottime___udif_init_udif_hwtimer",
+      "function_va": "0xffffff800864bb40",
+      "file_offset": "0x5cbb40",
+      "original_initcall_table_members": [
+        {
+          "symbol": "__initcall___udif_init_udif_hwtimer6",
+          "entry_va": "0xffffff80086600c0",
+          "file_offset": "0x5e00c0",
+          "entry_bytes": "40bb640880ffffff",
+          "callback_va": "0xffffff800864bb40"
+        }
+      ],
+      "driver_class": "Sony board hwtimer",
+      "disable_reason": "Observed p08 hwtimer_sync_timers accesses unsupported fixed VA fffffffff1042000; generic architected timer remains available.",
+      "p10_blacklist_parse_accepted": true,
+      "p10_original_initcall_skipped": true,
+      "scope": "Disable unsupported device initialization through original Linux initcall_blacklist; not patching function or emulating successful controller replies"
+    },
+    {
+      "name": "__boottime___udif_init_udif_wdt",
+      "function_va": "0xffffff800864bb74",
+      "file_offset": "0x5cbb74",
+      "original_initcall_table_members": [
+        {
+          "symbol": "__initcall___udif_init_udif_wdt6",
+          "entry_va": "0xffffff80086600c8",
+          "file_offset": "0x5e00c8",
+          "entry_bytes": "74bb640880ffffff",
+          "callback_va": "0xffffff800864bb74"
+        }
+      ],
+      "driver_class": "Sony board watchdog",
+      "disable_reason": "No Sony watchdog/reset controller model is present in this minimal QEMU; disabled only for Linux userspace probe, not deemed hardware-compatible.",
+      "p10_blacklist_parse_accepted": true,
+      "p10_original_initcall_skipped": true,
+      "scope": "Disable unsupported device initialization through original Linux initcall_blacklist; not patching function or emulating successful controller replies"
+    },
+    {
+      "name": "__boottime___udif_init_udif_fusb_otg",
+      "function_va": "0xffffff800864c8e0",
+      "file_offset": "0x5cc8e0",
+      "original_initcall_table_members": [
+        {
+          "symbol": "__initcall___udif_init_udif_fusb_otg6",
+          "entry_va": "0xffffff8008660108",
+          "file_offset": "0x5e0108",
+          "entry_bytes": "e0c8640880ffffff",
+          "callback_va": "0xffffff800864c8e0"
+        }
+      ],
+      "driver_class": "Sony FUSB OTG",
+      "disable_reason": "No Sony Type-C/OTG/PHY controller behavior modeled and no USB device access required by this no-device probe.",
+      "p10_blacklist_parse_accepted": true,
+      "p10_original_initcall_skipped": true,
+      "scope": "Disable unsupported device initialization through original Linux initcall_blacklist; not patching function or emulating successful controller replies"
+    },
+    {
+      "name": "__boottime___udif_init_udif_pcie",
+      "function_va": "0xffffff8008650304",
+      "file_offset": "0x5d0304",
+      "original_initcall_table_members": [
+        {
+          "symbol": "__initcall___udif_init_udif_pcie6",
+          "entry_va": "0xffffff8008660158",
+          "file_offset": "0x5e0158",
+          "entry_bytes": "0403650880ffffff",
+          "callback_va": "0xffffff8008650304"
+        }
+      ],
+      "driver_class": "Sony PCIe PHY/controller",
+      "disable_reason": "Observed p10 udm_pciephy fault PC pcie_clkreq_init+0x40 reached from pcie_probe. Generic QEMU PCIe root does not implement Sony PHY/clock-request controls.",
+      "p10_blacklist_parse_accepted": false,
+      "p10_original_initcall_skipped": false,
+      "scope": "Disable unsupported device initialization through original Linux initcall_blacklist; not patching function or emulating successful controller replies"
+    },
+    {
+      "name": "__boottime___udif_init_udif_ddrc",
+      "function_va": "0xffffff8008650500",
+      "file_offset": "0x5d0500",
+      "original_initcall_table_members": [
+        {
+          "symbol": "__initcall___udif_init_udif_ddrc6",
+          "entry_va": "0xffffff8008660160",
+          "file_offset": "0x5e0160",
+          "entry_bytes": "0005650880ffffff",
+          "callback_va": "0xffffff8008650500"
+        }
+      ],
+      "driver_class": "Sony DDR controller management",
+      "disable_reason": "Guest RAM is provided by QEMU but Sony DDR controller management registers/training behavior are unmodeled; this is scope exclusion, not a demonstrated p10 fault.",
+      "p10_blacklist_parse_accepted": false,
+      "p10_original_initcall_skipped": false,
+      "scope": "Disable unsupported device initialization through original Linux initcall_blacklist; not patching function or emulating successful controller replies"
+    },
+    {
+      "name": "__boottime___udif_init_pcidma",
+      "function_va": "0xffffff800864bed0",
+      "file_offset": "0x5cbed0",
+      "original_initcall_table_members": [
+        {
+          "symbol": "__initcall___udif_init_pcidma7",
+          "entry_va": "0xffffff8008660320",
+          "file_offset": "0x5e0320",
+          "entry_bytes": "d0be640880ffffff",
+          "callback_va": "0xffffff800864bed0"
+        }
+      ],
+      "driver_class": "Sony PCI DMA engine",
+      "disable_reason": "No Sony PCI DMA endpoint/engine model in this minimal machine; generic virt PCIe support does not supply that engine. Scope exclusion, not claimed fault.",
+      "p10_blacklist_parse_accepted": false,
+      "p10_original_initcall_skipped": false,
+      "scope": "Disable unsupported device initialization through original Linux initcall_blacklist; not patching function or emulating successful controller replies"
+    },
+    {
+      "name": "__boottime_sony_usb_init",
+      "function_va": "0xffffff800864ca0c",
+      "file_offset": "0x5cca0c",
+      "original_initcall_table_members": [
+        {
+          "symbol": "__initcall_sony_usb_init7",
+          "entry_va": "0xffffff8008660328",
+          "file_offset": "0x5e0328",
+          "entry_bytes": "0cca640880ffffff",
+          "callback_va": "0xffffff800864ca0c"
+        }
+      ],
+      "driver_class": "Sony USB controller init",
+      "disable_reason": "No Sony USB peripheral controllers or service transport modeled; userland loader probe has no USB requirements. Scope exclusion, not claimed fault.",
+      "p10_blacklist_parse_accepted": false,
+      "p10_original_initcall_skipped": false,
+      "scope": "Disable unsupported device initialization through original Linux initcall_blacklist; not patching function or emulating successful controller replies"
+    }
+  ]
+}

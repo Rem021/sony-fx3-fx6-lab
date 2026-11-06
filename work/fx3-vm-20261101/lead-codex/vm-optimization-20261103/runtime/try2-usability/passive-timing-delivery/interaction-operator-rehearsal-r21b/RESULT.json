@@ -1,0 +1,205 @@
+{
+  "outcome": "passed",
+  "scope": "single offline independent operator chain only",
+  "checks": {
+    "two_targeted_no_browser_prechecks": "passed",
+    "frozen_and_old_failed_integrity_before_after": "passed",
+    "A_original_lock_409_request_match_pending0": "passed",
+    "A_new_recovery_capture_and_actual_visual_review": "passed",
+    "A_separate_cancel_same_due_under20s_no_key_confirm_rearm": "passed",
+    "separate_post_cancel_image_visual_review": "passed",
+    "B_new_nonce_explicit_operator_click_accepted": "passed",
+    "B_bounded_capture_new_regular_png_hash_identity": "passed",
+    "B_actual_complete_menu_visual_review_in_separate_tool": "passed",
+    "B_original_confirm_exact_HTTP_ACK_and_same_nonce_cancel": "passed",
+    "End_finalACK_dispose_and_owned_cleanup": "passed",
+    "reservation_and_final_ledger_evidence": "passed"
+  },
+  "counts": {
+    "key_POSTs": 2,
+    "rejected_unqueued": 1,
+    "accepted_fixture_keys": 1,
+    "recovery_cancels": 1,
+    "confirm_POSTs": 1,
+    "actual_guest_inputs": 0,
+    "explicit_operator_clicks": 2,
+    "independent_accepted_menu_visual_confirmations": 1,
+    "arms_new_unique_nonce": 2,
+    "retries": 0,
+    "same_nonce_rearms": 0
+  },
+  "timing": {
+    "browser_performance_domain": {
+      "documentTimeOrigin": 1793836232863.8,
+      "A": {
+        "nonce": "c9c50d56-6b22-4834-bf04-9cfa9abfdd28",
+        "armed_ms": 17719.80000001192,
+        "original_due_ms": 37719.80000001192,
+        "cancelled_ms": 26286.10000002384,
+        "elapsed_ms": 8566.300000011921,
+        "due_unchanged": true
+      },
+      "B": {
+        "nonce": "5ddc8de6-3263-44e7-86af-da110ff3f9fc",
+        "armed_ms": 35478.60000002384,
+        "original_due_ms": 55478.60000002384,
+        "cancelled_ms": 44000.30000001192,
+        "elapsed_ms": 8521.699999988079,
+        "due_unchanged": true
+      },
+      "complete_alarm_events": [
+        {
+          "event": "installed",
+          "performance_ms": 943.3000000119208,
+          "script_SHA256": "f1eb5a54e36b8395a419fee107b87a22fae86dc7eb3c32debfbf6e783e930eab",
+          "wall_UTC": "2026-11-04T23:50:33.806Z"
+        },
+        {
+          "due_ms": 37719.80000001192,
+          "event": "armed",
+          "nonce": "c9c50d56-6b22-4834-bf04-9cfa9abfdd28",
+          "performance_ms": 17719.899999976158,
+          "wall_UTC": "2026-11-04T23:50:50.583Z"
+        },
+        {
+          "elapsed_ms": 8566.300000011921,
+          "event": "cancelled",
+          "nonce": "c9c50d56-6b22-4834-bf04-9cfa9abfdd28",
+          "performance_ms": 26286.10000002384,
+          "wall_UTC": "2026-11-04T23:50:59.149Z"
+        },
+        {
+          "due_ms": 55478.60000002384,
+          "event": "armed",
+          "nonce": "5ddc8de6-3263-44e7-86af-da110ff3f9fc",
+          "performance_ms": 35478.60000002384,
+          "wall_UTC": "2026-11-04T23:51:08.342Z"
+        },
+        {
+          "elapsed_ms": 8521.699999988079,
+          "event": "cancelled",
+          "nonce": "5ddc8de6-3263-44e7-86af-da110ff3f9fc",
+          "performance_ms": 44000.39999997616,
+          "wall_UTC": "2026-11-04T23:51:16.864Z"
+        },
+        {
+          "event": "disposed",
+          "performance_ms": 50296.19999998808,
+          "wall_UTC": "2026-11-04T23:51:23.160Z"
+        }
+      ],
+      "confirm_events": [
+        {
+          "event": "invoked",
+          "performance_ms": 43664.5,
+          "reviewed_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "step": 1,
+          "target": "亲看完整 Setup > Area/Date 45/59，Area/Date/Time Setting 橙色焦点及 Language English；仅确认该历史 fixture 图",
+          "wall_UTC": "2026-11-04T23:51:16.528Z"
+        },
+        {
+          "content_generation": 3,
+          "due_ms": 55478.60000002384,
+          "event": "precondition_passed",
+          "performance_ms": 43664.89999997616,
+          "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "sequence": 213,
+          "wall_UTC": "2026-11-04T23:51:16.528Z"
+        },
+        {
+          "event": "confirm_click_invoked",
+          "pending_confirm": {
+            "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "content_generation": 3,
+            "observed_sequence": 213,
+            "request_id": "d1d4d07e-f757-4070-8a56-ef85685f5591",
+            "step": 1
+          },
+          "performance_ms": 43665.39999997616,
+          "wall_UTC": "2026-11-04T23:51:16.529Z"
+        },
+        {
+          "confirmation": {
+            "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+            "content_generation": 3,
+            "guest_input_written": false,
+            "observed_sequence": 213,
+            "request_id": "d1d4d07e-f757-4070-8a56-ef85685f5591",
+            "step": 1
+          },
+          "current_generation": 3,
+          "current_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+          "current_sequence": 213,
+          "event": "matching_ack_and_current_frame_ready",
+          "performance_ms": 44000.30000001192,
+          "wall_UTC": "2026-11-04T23:51:16.864Z"
+        },
+        {
+          "due_ms": 55478.60000002384,
+          "elapsed_ms": 8521.699999988079,
+          "event": "cancel_returned",
+          "performance_ms": 44000.39999997616,
+          "state": "cancelled",
+          "wall_UTC": "2026-11-04T23:51:16.864Z"
+        }
+      ]
+    },
+    "host_same_domain_deltas_ms": {
+      "A_return_prepared_to_cancel_tool_entry": 8132.355,
+      "cancel_return_prepared_to_B_tool_entry": 9088.837042,
+      "menu_return_prepared_to_confirm_tool_entry": 7671.35075,
+      "bounded_CLI": 384.799333,
+      "explicit_confirm_CLI": 405.9025,
+      "End_to_finalACK_HTTP_responses": 219.649125
+    },
+    "actual_model_received_at": "unknown",
+    "actual_model_review_completed_at": "unknown",
+    "note": "Return-prepared is measured before tool/image delivery; gaps include delivery, visual review and next-call scheduling; never subtract host_ns from browser performance."
+  },
+  "identity": {
+    "session": "fx3-deadline-operator-r21b-b83358633d9e-74ca3f17",
+    "url": "http://127.0.0.1:52524/",
+    "launch_id": "eaf767d2-d2fb-421f-a062-dc70cfb5de25",
+    "attempt_A": "1ab761ff-1c75-485b-a24d-db9412ff4945",
+    "nonce_A": "c9c50d56-6b22-4834-bf04-9cfa9abfdd28",
+    "attempt_B": "e96e6a99-983a-4f64-a6d7-89480b5d1908",
+    "nonce_B": "5ddc8de6-3263-44e7-86af-da110ff3f9fc",
+    "confirm_request_id": "d1d4d07e-f757-4070-8a56-ef85685f5591"
+  },
+  "ledger_final": {
+    "attempts": [
+      {
+        "status": "click_invoked",
+        "reservation_id": "d7153f93-1bfb-457c-8f85-1dd6419912b2",
+        "key": 427,
+        "host_ns": 419936180919208,
+        "attempt_id": "1ab761ff-1c75-485b-a24d-db9412ff4945",
+        "step": 1
+      },
+      {
+        "status": "click_invoked",
+        "reservation_id": "459b468f-5211-4b14-bce7-d8c3f8dbda57",
+        "key": 427,
+        "host_ns": 419953930103166,
+        "attempt_id": "e96e6a99-983a-4f64-a6d7-89480b5d1908",
+        "step": 1
+      }
+    ],
+    "recoveries": [
+      {
+        "step": 1,
+        "attempt_id": "1ab761ff-1c75-485b-a24d-db9412ff4945",
+        "nonce": "c9c50d56-6b22-4834-bf04-9cfa9abfdd28",
+        "status": "cancelled_unqueued_alarm_only",
+        "host_ns": 419944667124916,
+        "alarm_cleanup_status": "confirmed_cancelled",
+        "current_screenshot_status": "delivered_requires_separate_operator_review"
+      }
+    ]
+  },
+  "original_menu_fixture_performance_claim": false,
+  "VM_8key_first_frame_device_FX6_not_proven": true,
+  "preexecution_sources_unchanged": true,
+  "preexecution_source_count": 8,
+  "next": "Coordinator decides separately authorized real VM work; this result does not grant VM execution."
+}

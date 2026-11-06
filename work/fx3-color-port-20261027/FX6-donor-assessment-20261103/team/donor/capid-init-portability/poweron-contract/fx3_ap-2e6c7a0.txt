@@ -1,0 +1,70 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/original-members/nflasha15/lib/appFw.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000016efb90 <Application_System_Init>:
+ 2e6c7a0: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+ 2e6c7a4: aa0103e2     	mov	x2, x1
+ 2e6c7a8: 910003fd     	mov	x29, sp
+ 2e6c7ac: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e6c7b0: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 2e6c7b4: aa0103f5     	mov	x21, x1
+ 2e6c7b8: b9400034     	ldr	w20, [x1]
+ 2e6c7bc: aa0003f6     	mov	x22, x0
+ 2e6c7c0: f9400401     	ldr	x1, [x0, #0x8]
+ 2e6c7c4: 9ac10a93     	udiv	x19, x20, x1
+ 2e6c7c8: 9b01d273     	msub	x19, x19, x1, x20
+ 2e6c7cc: aa1303e1     	mov	x1, x19
+ 2e6c7d0: 97ffa945     	bl	0x2e56ce4 <Application_System_Init+0x1767154>
+ 2e6c7d4: b4000060     	cbz	x0, 0x2e6c7e0 <Application_System_Init+0x177cc50>
+ 2e6c7d8: f9400000     	ldr	x0, [x0]
+ 2e6c7dc: b50001a0     	cbnz	x0, 0x2e6c810 <Application_System_Init+0x177cc80>
+ 2e6c7e0: d2800300     	mov	x0, #0x18               // =24
+ 2e6c7e4: 979c9d2f     	bl	0x1593ca0 <_Znwm@plt>
+ 2e6c7e8: aa0003e1     	mov	x1, x0
+ 2e6c7ec: b94002a2     	ldr	w2, [x21]
+ 2e6c7f0: aa0003e3     	mov	x3, x0
+ 2e6c7f4: f800843f     	str	xzr, [x1], #0x8
+ 2e6c7f8: b9000802     	str	w2, [x0, #0x8]
+ 2e6c7fc: aa1403e2     	mov	x2, x20
+ 2e6c800: f900043f     	str	xzr, [x1, #0x8]
+ 2e6c804: aa1603e0     	mov	x0, x22
+ 2e6c808: aa1303e1     	mov	x1, x19
+ 2e6c80c: 97ffff8a     	bl	0x2e6c634 <Application_System_Init+0x177caa4>
+ 2e6c810: 91004000     	add	x0, x0, #0x10
+ 2e6c814: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2e6c818: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+ 2e6c81c: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+ 2e6c820: d65f03c0     	ret
+ 2e6c824: a9bb7bfd     	stp	x29, x30, [sp, #-0x50]!
+ 2e6c828: 5280fe63     	mov	w3, #0x7f3              // =2035
+ 2e6c82c: 910003fd     	mov	x29, sp
+ 2e6c830: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2e6c834: d00057d3     	adrp	x19, 0x3966000
+ 2e6c838: a9025bf5     	stp	x21, x22, [sp, #0x20]
+ 2e6c83c: aa0003f6     	mov	x22, x0
+ 2e6c840: b0005935     	adrp	x21, 0x3991000
+ 2e6c844: b0004960     	adrp	x0, 0x3799000
+ 2e6c848: 913022a2     	add	x2, x21, #0xc08
+ 2e6c84c: 91351e61     	add	x1, x19, #0xd47
+ 2e6c850: 91203c00     	add	x0, x0, #0x80f
+ 2e6c854: aa1303f4     	mov	x20, x19
+ 2e6c858: 94040dad     	bl	0x2f6ff0c <Application_System_Init+0x188037c>
+ 2e6c85c: f00340e0     	adrp	x0, 0x968b000
+ 2e6c860: 912a0000     	add	x0, x0, #0xa80
+ 2e6c864: f9001ba0     	str	x0, [x29, #0x30]
+ 2e6c868: 97a2033b     	bl	0x16ed554 <.text+0x158ed4>
+ 2e6c86c: b94002c7     	ldr	w7, [x22]
+ 2e6c870: 2a0703e0     	mov	w0, w7
+ 2e6c874: 97ffac87     	bl	0x2e57a90 <Application_System_Init+0x1767f00>
+ 2e6c878: b4000220     	cbz	x0, 0x2e6c8bc <Application_System_Init+0x177cd2c>
+ 2e6c87c: 910143b3     	add	x19, x29, #0x50
+ 2e6c880: f00340e0     	adrp	x0, 0x968b000
+ 2e6c884: 91048000     	add	x0, x0, #0x120
+ 2e6c888: b81e8e67     	str	w7, [x19, #-0x18]!
+ 2e6c88c: aa1303e1     	mov	x1, x19
+ 2e6c890: 97ffffc4     	bl	0x2e6c7a0 <Application_System_Init+0x177cc10>
+ 2e6c894: f9400000     	ldr	x0, [x0]
+ 2e6c898: b94006c1     	ldr	w1, [x22, #0x4]
+ 2e6c89c: b9000801     	str	w1, [x0, #0x8]

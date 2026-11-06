@@ -1,0 +1,23 @@
+{
+  "notes": [
+    {
+      "issue": "KeyArray expected symbol size 16",
+      "observed": "Original exported KeyArray size is 32; init explicitly passes 128 bits to AES_set_decrypt_key.",
+      "correction": "Read the leading 16 bytes in memory; no key bytes emitted."
+    },
+    {
+      "issue": "Missing PROJECT import",
+      "correction": "Derive project path from local HERE; no source or device operation occurred."
+    },
+    {
+      "issue": "WBI module-name record did not imply readable code",
+      "observed": "All five requested module spans returned invalid descriptor under the previously verified page-table root.",
+      "correction": "Retain failure receipt and report registry identity only; do not synthesize missing pages or claim code identity."
+    },
+    {
+      "issue": "Initial marker set omitted actual plain input factory name",
+      "observed": "Actual export is GetFileInputProductModeUpdater.",
+      "correction": "Preserved v1/v2 discoveries and expanded marker set; searched all original regular AP files."
+    }
+  ]
+}

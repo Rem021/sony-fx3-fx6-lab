@@ -1,0 +1,312 @@
+osal_reg_sync_msg_queue_cb @0x73c80
+00073c58 add      x0, x0, #0xa9e
+00073c5c bl       #0xa08c8
+00073c60 ldr      w19, [x19, #8]
+00073c64 cbz      w19, #0x73d08
+00073c68 adrp     x1, #0x4a0000
+00073c6c add      x1, x1, #0x518
+00073c70 adrp     x2, #0x73000
+00073c74 add      x2, x2, #0xd28
+00073c78 mov      w0, w19
+00073c7c mov      x3, xzr
+00073c80 bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x7793c
+00077914 adrp     x0, #0x4a0000
+00077918 add      x0, x0, #0x5d8
+0007791c ret      
+00077920 mov      x8, x0
+00077924 adrp     x2, #0x77000
+00077928 add      x2, x2, #0x940
+0007792c mov      w0, #-0x7f400000
+00077930 movk     w0, #0x8e5
+00077934 mov      x1, x8
+00077938 mov      x3, xzr
+0007793c b        #0x2f014
+osal_reg_sync_msg_queue_cb @0x7948c
+00079464 mov      x0, x20
+00079468 bl       #0x752bc
+0007946c add      x1, x19, #0x180
+00079470 adrp     x2, #0x78000
+00079474 add      x2, x2, #0x518
+00079478 mov      w0, #0xc00000
+0007947c movk     w0, #0x695
+00079480 mov      x3, xzr
+00079484 mov      w20, #0xc00000
+00079488 movk     w20, #0x695
+0007948c bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x794a4
+0007947c movk     w0, #0x695
+00079480 mov      x3, xzr
+00079484 mov      w20, #0xc00000
+00079488 movk     w20, #0x695
+0007948c bl       #0x2f014
+00079490 add      x1, x19, #0x188
+00079494 add      w0, w20, #0x28
+00079498 adrp     x2, #0x78000
+0007949c add      x2, x2, #0x56c
+000794a0 mov      x3, xzr
+000794a4 bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x98890
+00098868 ldr      x8, [x19, #0x18]
+0009886c ldr      w8, [x8, #4]
+00098870 mov      w9, #-0x5f600000
+00098874 movk     w9, #0xa0a0
+00098878 cmp      w8, w9
+0009887c b.ne     #0x98848
+00098880 mov      w8, #1
+00098884 mov      w21, wzr
+00098888 b        #0x98854
+0009888c stp      x19, x30, [sp, #-0x10]!
+00098890 bl       #0x2f014
+osal_reg_msg_queue_cb @0x9e680
+0009e658 cmp      w0, #0
+0009e65c csel     w8, w8, w0, eq
+0009e660 cbnz     w8, #0x9e714
+0009e664 ldr      x21, [sp, #0x18]
+0009e668 ldr      w20, [sp, #0x20]
+0009e66c adrp     x2, #0x9e000
+0009e670 add      x2, x2, #0x9cc
+0009e674 add      x1, sp, #0x38
+0009e678 mov      w0, w20
+0009e67c mov      x3, xzr
+0009e680 bl       #0x2efec
+osal_reg_msg_queue_cb @0xa02c0
+000a0298 mov      w0, #0x2a
+000a029c mov      w1, #0xbe
+000a02a0 mov      x2, x19
+000a02a4 bl       #0x2f078
+000a02a8 ldr      w0, [x19]
+000a02ac adrp     x1, #0x4a5000
+000a02b0 add      x1, x1, #0x198
+000a02b4 adrp     x2, #0xa0000
+000a02b8 add      x2, x2, #0x2dc
+000a02bc mov      x3, xzr
+000a02c0 bl       #0x2efec
+osal_reg_sync_msg_queue_cb @0x1e7654
+001e762c str      wzr, [sp, #0xc]
+001e7630 add      x0, sp, #8
+001e7634 mov      w1, #8
+001e7638 bl       #0x1e785c
+001e763c mov      w19, wzr
+001e7640 b        #0x1e769c
+001e7644 ldr      w0, [x19, #4]
+001e7648 ldr      x2, [x19, #8]
+001e764c add      x1, x19, #0x10
+001e7650 mov      x3, xzr
+001e7654 bl       #0x2f014
+osal_reg_msg_queue_cb @0x1e7e64
+001e7e3c cmp      w0, #0
+001e7e40 csel     w20, w8, w0, eq
+001e7e44 ldr      w19, [sp, #0x30]
+001e7e48 cbnz     w20, #0x1e7f00
+001e7e4c ldr      x25, [sp, #0x28]
+001e7e50 adrp     x2, #0x1e8000
+001e7e54 add      x2, x2, #0x898
+001e7e58 add      x1, sp, #0x58
+001e7e5c mov      w0, w19
+001e7e60 mov      x3, xzr
+001e7e64 bl       #0x2efec
+osal_reg_msg_queue_cb @0x1f3500
+001f34d8 cmp      w0, #0
+001f34dc csel     w20, w8, w0, eq
+001f34e0 cbnz     w20, #0x1f3598
+001f34e4 ldr      x22, [sp, #0x20]
+001f34e8 ldr      w21, [sp, #0x28]
+001f34ec adrp     x2, #0x1f3000
+001f34f0 add      x2, x2, #0x854
+001f34f4 mov      x1, sp
+001f34f8 mov      w0, w21
+001f34fc mov      x3, xzr
+001f3500 bl       #0x2efec
+osal_reg_sync_msg_queue_cb @0x296f94
+00296f6c bl       #0x2bd90
+00296f70 bl       #0x2bd90
+00296f74 bl       #0x2bd90
+00296f78 mov      x8, x0
+00296f7c adrp     x2, #0x296000
+00296f80 add      x2, x2, #0x9ac
+00296f84 mov      w0, #-0x7f980000
+00296f88 movk     w0, #0x30c
+00296f8c mov      x1, x8
+00296f90 mov      x3, x8
+00296f94 b        #0x2f014
+osal_reg_sync_msg_queue_cb @0x2988ac
+00298884 mov      w7, #0x13e
+00298888 adrp     x8, #0x44e000
+0029888c add      x8, x8, #0x306
+00298890 str      x8, [sp]
+00298894 bl       #0x27d568
+00298898 ldr      w0, [x19, #8]
+0029889c add      x1, x19, #0x10
+002988a0 adrp     x2, #0x299000
+002988a4 add      x2, x2, #0x89c
+002988a8 mov      x3, x19
+002988ac bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x2a7178
+002a7150 mov      w2, wzr
+002a7154 mov      w4, wzr
+002a7158 mov      w6, wzr
+002a715c bl       #0x2b2efc
+002a7160 add      x1, x19, #0x158
+002a7164 adrp     x2, #0x2a7000
+002a7168 add      x2, x2, #0x1a4
+002a716c mov      w0, #0x640000
+002a7170 movk     w0, #0x6a5
+002a7174 mov      x3, xzr
+002a7178 bl       #0x2f014
+osal_reg_msg_queue_cb @0x2afe90
+002afe68 cmp      w0, #0
+002afe6c csel     w20, w8, w0, eq
+002afe70 cbnz     w20, #0x2aff28
+002afe74 ldr      x24, [sp, #0x20]
+002afe78 ldr      w21, [sp, #0x28]
+002afe7c adrp     x2, #0x2b0000
+002afe80 add      x2, x2, #0x3b8
+002afe84 add      x1, sp, #0x48
+002afe88 mov      w0, w21
+002afe8c mov      x3, xzr
+002afe90 bl       #0x2efec
+osal_reg_sync_msg_queue_cb @0x2f1be0
+002f1bb8 cmp      w8, #1
+002f1bbc b.ne     #0x2f1bc8
+002f1bc0 add      w0, w19, #1
+002f1bc4 bl       #0x2ef60
+002f1bc8 sub      w0, w19, #0x1ed
+002f1bcc adrp     x1, #0xba0000
+002f1bd0 add      x1, x1, #0x470
+002f1bd4 adrp     x2, #0x2f1000
+002f1bd8 add      x2, x2, #0xce0
+002f1bdc mov      x3, xzr
+002f1be0 bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x2f1bfc
+002f1bd4 adrp     x2, #0x2f1000
+002f1bd8 add      x2, x2, #0xce0
+002f1bdc mov      x3, xzr
+002f1be0 bl       #0x2f014
+002f1be4 add      w0, w19, #2
+002f1be8 adrp     x1, #0xba0000
+002f1bec add      x1, x1, #0x478
+002f1bf0 adrp     x2, #0x2f1000
+002f1bf4 add      x2, x2, #0xdf4
+002f1bf8 mov      x3, xzr
+002f1bfc bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x2f4698
+002f4670 and      w8, w8, #0xfff
+002f4674 str      w8, [x1]
+002f4678 ret      
+002f467c adrp     x1, #0xba0000
+002f4680 add      x1, x1, #0x480
+002f4684 adrp     x2, #0x2f4000
+002f4688 add      x2, x2, #0x69c
+002f468c mov      w0, #0x730000
+002f4690 movk     w0, #0x2f0
+002f4694 mov      x3, xzr
+002f4698 b        #0x2f014
+osal_reg_sync_msg_queue_cb @0x2facf0
+002facc8 stp      x19, x30, [sp, #-0x10]!
+002faccc adrp     x1, #0xba0000
+002facd0 add      x1, x1, #0x5b8
+002facd4 adrp     x2, #0x2fa000
+002facd8 add      x2, x2, #0xe80
+002facdc mov      w0, #-0x7d3c0000
+002face0 movk     w0, #0x153
+002face4 mov      x3, xzr
+002face8 mov      w19, #-0x7d3c0000
+002facec movk     w19, #0x153
+002facf0 bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x2fad0c
+002face4 mov      x3, xzr
+002face8 mov      w19, #-0x7d3c0000
+002facec movk     w19, #0x153
+002facf0 bl       #0x2f014
+002facf4 add      w0, w19, #0x380
+002facf8 adrp     x1, #0xba0000
+002facfc add      x1, x1, #0x5c0
+002fad00 adrp     x2, #0x2fb000
+002fad04 add      x2, x2, #0x20
+002fad08 mov      x3, xzr
+002fad0c bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x2fad28
+002fad00 adrp     x2, #0x2fb000
+002fad04 add      x2, x2, #0x20
+002fad08 mov      x3, xzr
+002fad0c bl       #0x2f014
+002fad10 add      w0, w19, #0x31c
+002fad14 adrp     x1, #0xba0000
+002fad18 add      x1, x1, #0x5c8
+002fad1c adrp     x2, #0x2fa000
+002fad20 add      x2, x2, #0xf08
+002fad24 mov      x3, xzr
+002fad28 bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x2fad44
+002fad1c adrp     x2, #0x2fa000
+002fad20 add      x2, x2, #0xf08
+002fad24 mov      x3, xzr
+002fad28 bl       #0x2f014
+002fad2c add      w0, w19, #0x772
+002fad30 adrp     x1, #0xba0000
+002fad34 add      x1, x1, #0x5d0
+002fad38 adrp     x2, #0x2fb000
+002fad3c add      x2, x2, #0xa8
+002fad40 mov      x3, xzr
+002fad44 bl       #0x2f014
+osal_reg_sync_msg_queue_cb @0x2fad64
+002fad3c add      x2, x2, #0xa8
+002fad40 mov      x3, xzr
+002fad44 bl       #0x2f014
+002fad48 add      w0, w19, #0x18e
+002fad4c adrp     x1, #0xba0000
+002fad50 add      x1, x1, #0x5d8
+002fad54 adrp     x2, #0x2fa000
+002fad58 add      x2, x2, #0xdec
+002fad5c mov      x3, xzr
+002fad60 ldp      x19, x30, [sp], #0x10
+002fad64 b        #0x2f014
+osal_reg_msg_queue_cb @0x2fb454
+002fb42c cmp      w0, #0
+002fb430 csel     w20, w8, w0, eq
+002fb434 cbnz     w20, #0x2fb4ec
+002fb438 ldr      x21, [sp, #0x30]
+002fb43c ldr      w19, [sp, #0x38]
+002fb440 adrp     x2, #0x2fc000
+002fb444 add      x2, x2, #0x310
+002fb448 add      x1, sp, #0x10
+002fb44c mov      w0, w19
+002fb450 mov      x3, xzr
+002fb454 bl       #0x2efec
+osal_reg_msg_queue_cb @0x305c68
+00305c40 cmp      w0, #0
+00305c44 csel     w8, w8, w0, eq
+00305c48 cbnz     w8, #0x305cfc
+00305c4c ldr      x21, [sp, #0x20]
+00305c50 ldr      w19, [sp, #0x28]
+00305c54 adrp     x2, #0x305000
+00305c58 add      x2, x2, #0xf44
+00305c5c mov      x1, sp
+00305c60 mov      w0, w19
+00305c64 mov      x3, xzr
+00305c68 bl       #0x2efec
+osal_reg_sync_msg_queue_cb @0x308a74
+00308a4c ret      
+00308a50 adrp     x8, #0xbc2000
+00308a54 adrp     x1, #0xbcf000
+00308a58 add      x1, x1, #0x6d8
+00308a5c adrp     x2, #0x308000
+00308a60 add      x2, x2, #0xa78
+00308a64 mov      w0, #-0x7f6d0000
+00308a68 movk     w0, #0x2f5
+00308a6c mov      x3, xzr
+00308a70 strb     wzr, [x8, #0x97c]
+00308a74 b        #0x2f014
+osal_reg_msg_queue_cb @0x30b080
+0030b058 cmp      w0, #0
+0030b05c csel     w8, w8, w0, eq
+0030b060 cbnz     w8, #0x30b114
+0030b064 ldr      x22, [sp, #0x20]
+0030b068 ldr      w19, [sp, #0x28]
+0030b06c adrp     x2, #0x305000
+0030b070 add      x2, x2, #0xfe4
+0030b074 mov      x1, sp
+0030b078 mov      w0, w19
+0030b07c mov      x3, xzr
+0030b080 bl       #0x2efec

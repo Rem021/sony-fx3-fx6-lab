@@ -1,0 +1,10 @@
+0001ba18 add        x2, x0, #0x14
+0001ba1c add        x1, x1, #0xc0
+0001ba20 ldp        x4, x5, [x1]
+0001ba24 mov        w0, #0
+0001ba28 stp        x4, x5, [x2]
+0001ba2c ldp        x4, x5, [x1, #0x10]
+0001ba30 stp        x4, x5, [x2, #0x10]
+0001ba34 ldr        x1, [x1, #0x20]
+0001ba38 str        x1, [x2, #0x20]
+0001ba3c ret        

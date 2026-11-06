@@ -1,0 +1,322 @@
+{
+  "created_utc": "2026-10-30T14:01:55.065125+00:00",
+  "stage": "FX5-memory-consumer-20261030",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7083,
+      "sha256": "f118e585933f257222f8095a039519d716c7d1f333b2508603889a981cd284c6"
+    },
+    {
+      "path": "analyse_memory_contract.py",
+      "bytes": 11870,
+      "sha256": "e7ef741a4006cd2bf873fd98b9392a40aea58887b0ee30b5a8c798027e234cf2"
+    },
+    {
+      "path": "cache-abi-source-capture.json",
+      "bytes": 3699,
+      "sha256": "867b207cb3d94b708a55f2b4c5e66a10eedc869058d170f56dfa8e7de2e114b8"
+    },
+    {
+      "path": "collect_cache_abi.py",
+      "bytes": 2523,
+      "sha256": "5e04bbffffd7a6d673fa17813104201793c07afc7c16bffb9403ce581b4d7b01"
+    },
+    {
+      "path": "collect_fx3_translation_reference.py",
+      "bytes": 3029,
+      "sha256": "a8516924da6fed2fce55bf429d18bd8a4278c58b3424f1b5bf3d64481b491dd2"
+    },
+    {
+      "path": "collect_memory_sources.py",
+      "bytes": 3593,
+      "sha256": "1cf08d3784eb3fe95b2c6a46de10be7fc3dd973db975d8ecf8f5506d6c71e9e6"
+    },
+    {
+      "path": "collect_translation_sources.py",
+      "bytes": 2716,
+      "sha256": "32d2b15718d27b797a29c92cc43313ed4aa2e942e77ee119e1c29482ae6980d2"
+    },
+    {
+      "path": "fx3-cache-abi-sources/arch/arm64/include/asm/cacheflush.h",
+      "bytes": 5021,
+      "sha256": "63f22149780b4f7a1800968d7fab6334e263fd4b671e933028d6ba8eec7f253d"
+    },
+    {
+      "path": "fx3-cache-abi-sources/arch/arm64/mm/cache.S",
+      "bytes": 9236,
+      "sha256": "ebc67cf10523d184384038a8dc895c1f7ac373b0f6004baa781ece878f65bd93"
+    },
+    {
+      "path": "fx3-cache-abi-sources/include/linux/dma-direction.h",
+      "bytes": 299,
+      "sha256": "accf5e0d1f5d4a928c402d06ab701de6fe917f5e5938847a0e9b55e7fece372c"
+    },
+    {
+      "path": "fx3-cache-abi-sources/include/linux/udif/cache.h",
+      "bytes": 1920,
+      "sha256": "12a9f278be6fe9eefdcbdc7807f7f5613f806b127b6ca52e16a12c3d710a1e8c"
+    },
+    {
+      "path": "fx3-cache-abi-sources/include/linux/udif/sg.h",
+      "bytes": 1709,
+      "sha256": "a9c7baa40589a0af5e6d8505778228acba305abb8cca62588ac67dae3b914716"
+    },
+    {
+      "path": "fx3-cache-abi-sources/include/linux/udif/types.h",
+      "bytes": 2895,
+      "sha256": "0d2bb819294765a6c7051d2b957f50d463b96470f4f44be69389c2571d9dac0e"
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/adrs_conv.c",
+      "bytes": 8134,
+      "sha256": "aa553074f48b7651d65fe9bd440964538265bdbb06f280b55eea4ee8989d35fd"
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/cache.c",
+      "bytes": 1559,
+      "sha256": "459d972d51165797f4b889c4e56647c02e9a3394c46d46eabe5070dcc90b67d4"
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/dma-mapping.c",
+      "bytes": 2094,
+      "sha256": "ed9c13b55888666e0602caebde212d29ba911ca47ce8f67f562be6202e3e30f4"
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/dma32.h",
+      "bytes": 1213,
+      "sha256": "e9e44c1df24297d0645f00ef0c0cc39c7505a84ae518ca0307ff2bf51684cd7d"
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/noncache.h",
+      "bytes": 5642,
+      "sha256": "48871b021def332381801475511a64aa309e33a79cc897fffc6987354aaedc66"
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/platform.h",
+      "bytes": 3821,
+      "sha256": "a34b127dfd8e3adfb67890a676f3df5cfb885e73d5977d4306f2c288c95875f8"
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/udif/cache.h",
+      "bytes": 1491,
+      "sha256": "1b46b6cdefebe76c2aa4c5c3a2e18da05ec25c63e5385c28fffaddc33b4edcd7"
+    },
+    {
+      "path": "fx3-reference-sources-expanded/drivers/udif/mach-cxd900xx/include/mach/udif/platform.h",
+      "bytes": 2859,
+      "sha256": "9626885e97cbd0f879f65a60a3d388c25cb5c658236ab6b2c09fb4265839380d"
+    },
+    {
+      "path": "fx3-source-capture-expanded.json",
+      "bytes": 3396,
+      "sha256": "1aa07a500b1b810c59b7affb3364fbb84533192363c6d79c03f34a79fe78595f"
+    },
+    {
+      "path": "fx3-source-capture.json",
+      "bytes": 1014,
+      "sha256": "5e15176d33275e04dff8a82196d5aa7e05ea60289239c61216bfcc98da2a3132"
+    },
+    {
+      "path": "fx5-cache-abi-sources/arch/arm64/include/asm/cacheflush.h",
+      "bytes": 4947,
+      "sha256": "6d204483e37431f04a49cdbda26cd79f2e3ec76c860a973cedb14ba475545283"
+    },
+    {
+      "path": "fx5-cache-abi-sources/arch/arm64/mm/cache.S",
+      "bytes": 10646,
+      "sha256": "66e61e1f0b013e215e15e0ee4b3fbaf6d35ce9937bcf084fc78e48b7d3dc1c1e"
+    },
+    {
+      "path": "fx5-cache-abi-sources/include/linux/dma-direction.h",
+      "bytes": 407,
+      "sha256": "72a8aa889dc17dac3f58e7c674fbf9bdaa8d45b9f7d2f9e4b09795f22749b899"
+    },
+    {
+      "path": "fx5-cache-abi-sources/include/linux/udif/cache.h",
+      "bytes": 1920,
+      "sha256": "12a9f278be6fe9eefdcbdc7807f7f5613f806b127b6ca52e16a12c3d710a1e8c"
+    },
+    {
+      "path": "fx5-cache-abi-sources/include/linux/udif/sg.h",
+      "bytes": 1709,
+      "sha256": "a9c7baa40589a0af5e6d8505778228acba305abb8cca62588ac67dae3b914716"
+    },
+    {
+      "path": "fx5-cache-abi-sources/include/linux/udif/types.h",
+      "bytes": 2895,
+      "sha256": "0d2bb819294765a6c7051d2b957f50d463b96470f4f44be69389c2571d9dac0e"
+    },
+    {
+      "path": "goal-status-verified.json",
+      "bytes": 634,
+      "sha256": "7acc2bf49db6df02311202b447e437119f6f0c12acc99bfb26f2c11385717104"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 1557,
+      "sha256": "343732fb7fe13ab33c41297ade2ac279de27240f732808463a76bcf2687793c6"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 497,
+      "sha256": "7af2328b22453191f4bb26b8da6cc91537443a6501c17aafae0ef9faeccc218e"
+    },
+    {
+      "path": "memory-contract-evidence.json",
+      "bytes": 22810,
+      "sha256": "f3ee02b4838370017ebb3fbe968b24fa3a86b94d777c0b258d4831ae3215942f"
+    },
+    {
+      "path": "seal_memory_stage.py",
+      "bytes": 5787,
+      "sha256": "5534a37970e1698c2e88dec81465e7c1aeea94ab6d9344914320807531f673a9"
+    },
+    {
+      "path": "source-capture.json",
+      "bytes": 21124,
+      "sha256": "b06d87902068788c2a9456a4332d1780fd151e02f97242eb1b25bfd1fb9e46c1"
+    },
+    {
+      "path": "sources/arch/arm64/include/asm/memory.h",
+      "bytes": 11837,
+      "sha256": "337c1d7fec2c91dd16a3b6888dbb3002457931bbfa3f1363a434e55cbb04eea9"
+    },
+    {
+      "path": "sources/arch/arm64/include/asm/pgtable-prot.h",
+      "bytes": 4302,
+      "sha256": "41bb650fd0dafeb1669b5d764c0800985f9d564926acdfca0bffac80a31f79f2"
+    },
+    {
+      "path": "sources/arch/arm64/kernel/head.S",
+      "bytes": 26312,
+      "sha256": "d436ecb0dadb62f81ad3de3c633edf3aa9e71df2755893cf74c158812b973c30"
+    },
+    {
+      "path": "sources/arch/arm64/kernel/setup.c",
+      "bytes": 11920,
+      "sha256": "be9f5ecd508e07d83f5d0e106ba7cd4539780ae7497b95f7f503860fed76a45c"
+    },
+    {
+      "path": "sources/arch/arm64/mm/init.c",
+      "bytes": 15543,
+      "sha256": "a7427c08f1e0b41727e831c0257317cf92077280d620ec198b9bea17c183e580"
+    },
+    {
+      "path": "sources/arch/arm64/mm/ioremap.c",
+      "bytes": 2643,
+      "sha256": "b80d9ab257a74f07b6bc64810bfed56010b6f826ba40acddba3f664d21e9890b"
+    },
+    {
+      "path": "sources/arch/arm64/mm/mmu.c",
+      "bytes": 49820,
+      "sha256": "18ed9f70cd5409918799ed90d37873eb2c06246608befeb62952cd8fb6b59edb"
+    },
+    {
+      "path": "sources/drivers/of/address.c",
+      "bytes": 28934,
+      "sha256": "d37b92422c9e22f095f94a059e84163e455d92a5c9578b15392e937946860820"
+    },
+    {
+      "path": "sources/drivers/of/fdt.c",
+      "bytes": 34871,
+      "sha256": "b33edc43e2645f71df26986d65437b72e721cba0390fad3b5381274af2ffc5be"
+    },
+    {
+      "path": "sources/drivers/of/of_reserved_mem.c",
+      "bytes": 11558,
+      "sha256": "a9bbdae2e3e835e4074582bbb6ef4e1f9cad1899536b53c8a42dcee6034b4f41"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/Kconfig",
+      "bytes": 1408,
+      "sha256": "3c77d29c845ad73d3d91e10f3c1f207a3d6c732fa3e7947efa4b26cf259d9939"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/Makefile",
+      "bytes": 393,
+      "sha256": "2a981de1d2b8c963956f36575939a1dca06e90e3c3b4c2218d38ad9fc43b89ca"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/adrs_conv.c",
+      "bytes": 9311,
+      "sha256": "4b17c5b5eac911a21d867fc78bcd28f37f63980d7c5643c7296dd21dc9631081"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/dma32.h",
+      "bytes": 681,
+      "sha256": "c993710580e9b7de8129ba26ce3229934b8c3d44c7fdff505e4aa4576a378afd"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/noncache.h",
+      "bytes": 5696,
+      "sha256": "8d0fec9985d349249eee65caaf83b6d73f291e020a9139ae32453d944414a935"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/platform.h",
+      "bytes": 4934,
+      "sha256": "34119e4c5291146f97f251739c11579fa974a81138aa13c76ae17fe02f68fa82"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/export/mach/udif/cache.h",
+      "bytes": 1491,
+      "sha256": "db2df8da94eaf73c2e0ec6b46901009e26656a8e3834e6c086dce88344a3bb36"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/mmap.c",
+      "bytes": 3117,
+      "sha256": "3433478fe24aba2edeaf9b3507f0448f266c6046629bf9282f4a410a169ead11"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/params.c",
+      "bytes": 4697,
+      "sha256": "77e897e7068872761babaf88ffd58242779cde6f159f70ef88bd9524d027533c"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/udif/cache.c",
+      "bytes": 1685,
+      "sha256": "a70355b2f54ced20a80c65719aab7b61c775296a944f028e654a2f7b4fd05e5e"
+    },
+    {
+      "path": "sources/drivers/soc/cxd/udif/dma-mapping.c",
+      "bytes": 2088,
+      "sha256": "6a3c04450a8ab3206ffe7af969b0c4b57c7c4b13a539e2f90eb0f8bc5c4305f0"
+    },
+    {
+      "path": "sources/include/dt-bindings/arm/memtype.h",
+      "bytes": 1667,
+      "sha256": "f0eb955b6585f833b5deb773b675811990d31e92d5781d7a096c99413dd59097"
+    },
+    {
+      "path": "sources/include/linux/dma-direct.h",
+      "bytes": 3681,
+      "sha256": "6866892fc73e0d81493d31309f2be8f6c3c3511987d7d0370f1f4c65b7c405a3"
+    },
+    {
+      "path": "sources/include/uapi/linux/cxd-adrs_conv.h",
+      "bytes": 871,
+      "sha256": "c6c8439bc55b06173ddfbc7151b4110c6f20d2c47d2e354b8e45ed7cc75ed195"
+    },
+    {
+      "path": "translation-source-capture.json",
+      "bytes": 3574,
+      "sha256": "d2aed083740edcd9e0b6484251256ede8fababc8ae1956e83d52881999f61843"
+    }
+  ],
+  "verification": {
+    "source_files": 44,
+    "source_literal_locations": 42,
+    "original_default_spans": 20,
+    "boundary_inputs": 9,
+    "prior_sealed_files_verified": 109
+  },
+  "status": "PASS_STATIC_SOURCE_CONTRACT_NOT_RUNTIME_OR_FLASH",
+  "native_goal_status": "active",
+  "goal_complete": false,
+  "previous_goal_turn_classification": "progress: new anonymous public route with positive controls changed the next source-acquisition action; readiness was unchanged",
+  "current_goal_turn_classification": "progress: new paired source consumers, address-domain rejection and cache protocol constraints",
+  "device_actions": 0,
+  "source_built_or_executed": false,
+  "cache_or_TLB_operations_executed": 0,
+  "modified_or_flashable_firmware_produced": false
+}

@@ -1,0 +1,166 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r34-native-resource-reservation-review/dmm.ko:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000008b88 <dmm_unit_ctrl_Alloc>:
+    8b88: a9b87bfd     	stp	x29, x30, [sp, #-0x80]!
+    8b8c: 910003fd     	mov	x29, sp
+    8b90: a90153f3     	stp	x19, x20, [sp, #0x10]
+    8b94: 2a0003f3     	mov	w19, w0
+    8b98: a9025bf5     	stp	x21, x22, [sp, #0x20]
+    8b9c: aa0203f4     	mov	x20, x2
+    8ba0: a90363f7     	stp	x23, x24, [sp, #0x30]
+    8ba4: a9046bf9     	stp	x25, x26, [sp, #0x40]
+    8ba8: 7900dfbf     	strh	wzr, [x29, #0x6e]
+    8bac: f9002bfb     	str	x27, [sp, #0x50]
+    8bb0: 94000000     	bl	0x8bb0 <dmm_unit_ctrl_Alloc+0x28>
+		0000000000008bb0:  R_AARCH64_CALL26	dmm_unit_tbl_GetUnitTbl
+    8bb4: b9400001     	ldr	w1, [x0]
+    8bb8: f9003bbf     	str	xzr, [x29, #0x70]
+    8bbc: 3100043f     	cmn	w1, #0x1
+    8bc0: b9007bbf     	str	wzr, [x29, #0x78]
+    8bc4: 54000140     	b.eq	0x8bec <dmm_unit_ctrl_Alloc+0x64>
+    8bc8: 6b01027f     	cmp	w19, w1
+    8bcc: 540000a1     	b.ne	0x8be0 <dmm_unit_ctrl_Alloc+0x58>
+    8bd0: 14000012     	b	0x8c18 <dmm_unit_ctrl_Alloc+0x90>
+    8bd4: d503201f     	nop
+    8bd8: 6b13003f     	cmp	w1, w19
+    8bdc: 540001e0     	b.eq	0x8c18 <dmm_unit_ctrl_Alloc+0x90>
+    8be0: b8410c01     	ldr	w1, [x0, #0x10]!
+    8be4: 3100043f     	cmn	w1, #0x1
+    8be8: 54ffff81     	b.ne	0x8bd8 <dmm_unit_ctrl_Alloc+0x50>
+    8bec: 1280005a     	mov	w26, #-0x3              // =-3
+    8bf0: 12800016     	mov	w22, #-0x1              // =-1
+    8bf4: b9000296     	str	w22, [x20]
+    8bf8: 2a1a03e0     	mov	w0, w26
+    8bfc: a94153f3     	ldp	x19, x20, [sp, #0x10]
+    8c00: a9425bf5     	ldp	x21, x22, [sp, #0x20]
+    8c04: a94363f7     	ldp	x23, x24, [sp, #0x30]
+    8c08: a9446bf9     	ldp	x25, x26, [sp, #0x40]
+    8c0c: f9402bfb     	ldr	x27, [sp, #0x50]
+    8c10: a8c87bfd     	ldp	x29, x30, [sp], #0x80
+    8c14: d65f03c0     	ret
+    8c18: f9400417     	ldr	x23, [x0, #0x8]
+    8c1c: b4fffe97     	cbz	x23, 0x8bec <dmm_unit_ctrl_Alloc+0x64>
+    8c20: 9101bba0     	add	x0, x29, #0x6e
+    8c24: 12800016     	mov	w22, #-0x1              // =-1
+    8c28: 97ffff70     	bl	0x89e8 <dmm_uipc_FreeSemaphore+0xb8>
+    8c2c: 13003c1a     	sxth	w26, w0
+    8c30: 35fffe3a     	cbnz	w26, 0x8bf4 <dmm_unit_ctrl_Alloc+0x6c>
+    8c34: 7940dfa0     	ldrh	w0, [x29, #0x6e]
+    8c38: 52800e01     	mov	w1, #0x70               // =112
+    8c3c: 58000db5     	ldr	x21, 0x8df0 <dmm_unit_ctrl_Alloc+0x268>
+    8c40: 52800022     	mov	w2, #0x1                // =1
+    8c44: 9ba17c00     	umull	x0, w0, w1
+    8c48: a94212a7     	ldp	x7, x4, [x21, #0x20]
+    8c4c: b82068f3     	str	w19, [x7, x0]
+    8c50: 7940dfa3     	ldrh	w3, [x29, #0x6e]
+    8c54: b9400080     	ldr	w0, [x4]
+    8c58: 31000c1f     	cmn	w0, #0x3
+    8c5c: 1a808440     	csinc	w0, w2, w0, hi
+    8c60: 9ba11c63     	umaddl	x3, w3, w1, x7
+    8c64: b9000080     	str	w0, [x4]
+    8c68: b9000460     	str	w0, [x3, #0x4]
+    8c6c: 7940dfa0     	ldrh	w0, [x29, #0x6e]
+    8c70: 9ba11c01     	umaddl	x1, w0, w1, x7
+    8c74: 39402c23     	ldrb	w3, [x1, #0xb]
+    8c78: 3900243f     	strb	wzr, [x1, #0x9]
+    8c7c: 7100787f     	cmp	w3, #0x1e
+    8c80: 3900283f     	strb	wzr, [x1, #0xa]
+    8c84: 39002022     	strb	w2, [x1, #0x8]
+    8c88: 54000b08     	b.hi	0x8de8 <dmm_unit_ctrl_Alloc+0x260>
+    8c8c: 0b020063     	add	w3, w3, w2
+    8c90: 53001c63     	uxtb	w3, w3
+    8c94: 12001062     	and	w2, w3, #0x1f
+    8c98: 7940d3a4     	ldrh	w4, [x29, #0x68]
+    8c9c: 52800025     	mov	w5, #0x1                // =1
+    8ca0: 39002c23     	strb	w3, [x1, #0xb]
+    8ca4: 52800013     	mov	w19, #0x0               // =0
+    8ca8: 33002404     	bfxil	w4, w0, #0, #10
+    8cac: 79001825     	strh	w5, [x1, #0xc]
+    8cb0: 7900d3a4     	strh	w4, [x29, #0x68]
+    8cb4: 7940d3a3     	ldrh	w3, [x29, #0x68]
+    8cb8: 12003863     	and	w3, w3, #0x7fff
+    8cbc: 7900d3a3     	strh	w3, [x29, #0x68]
+    8cc0: 7940d3a3     	ldrh	w3, [x29, #0x68]
+    8cc4: 33161043     	bfi	w3, w2, #10, #5
+    8cc8: 7900d3a3     	strh	w3, [x29, #0x68]
+    8ccc: b94002e3     	ldr	w3, [x23]
+    8cd0: 7940d3b6     	ldrh	w22, [x29, #0x68]
+    8cd4: 3100047f     	cmn	w3, #0x1
+    8cd8: 53003ed6     	uxth	w22, w22
+    8cdc: 54000800     	b.eq	0x8ddc <dmm_unit_ctrl_Alloc+0x254>
+    8ce0: 12bfe019     	mov	w25, #0xffffff          // =16777215
+    8ce4: 12800018     	mov	w24, #-0x1              // =-1
+    8ce8: 52800e1b     	mov	w27, #0x70              // =112
+    8cec: 1400000c     	b	0x8d1c <dmm_unit_ctrl_Alloc+0x194>
+    8cf0: 8b332c22     	add	x2, x1, w19, uxth #3
+    8cf4: f9400843     	ldr	x3, [x2, #0x10]
+    8cf8: b4000343     	cbz	x3, 0x8d60 <dmm_unit_ctrl_Alloc+0x1d8>
+    8cfc: f9001c61     	str	x1, [x3, #0x38]
+    8d00: 53003c93     	uxth	w19, w4
+    8d04: f9400842     	ldr	x2, [x2, #0x10]
+    8d08: b9400423     	ldr	w3, [x1, #0x4]
+    8d0c: b9004043     	str	w3, [x2, #0x40]
+    8d10: b8404ee3     	ldr	w3, [x23, #0x4]!
+    8d14: 3100047f     	cmn	w3, #0x1
+    8d18: 54000620     	b.eq	0x8ddc <dmm_unit_ctrl_Alloc+0x254>
+    8d1c: 9bbb1c02     	umaddl	x2, w0, w27, x7
+    8d20: 290e67a3     	stp	w3, w25, [x29, #0x70]
+    8d24: 7900f3b8     	strh	w24, [x29, #0x78]
+    8d28: d37d3e63     	ubfiz	x3, x19, #3, #16
+    8d2c: 8b33cc44     	add	x4, x2, w19, sxtw #3
+    8d30: 91004063     	add	x3, x3, #0x10
+    8d34: b9407ba1     	ldr	w1, [x29, #0x78]
+    8d38: 8b030042     	add	x2, x2, x3
+    8d3c: f9403ba0     	ldr	x0, [x29, #0x70]
+    8d40: f900089f     	str	xzr, [x4, #0x10]
+    8d44: 94000000     	bl	0x8d44 <dmm_unit_ctrl_Alloc+0x1bc>
+		0000000000008d44:  R_AARCH64_CALL26	dmm_ext_ctrl_AllocExtent
+    8d48: 13003c1a     	sxth	w26, w0
+    8d4c: 7940dfa0     	ldrh	w0, [x29, #0x6e]
+    8d50: 11000664     	add	w4, w19, #0x1
+    8d54: f94012a7     	ldr	x7, [x21, #0x20]
+    8d58: 9bbb1c01     	umaddl	x1, w0, w27, x7
+    8d5c: 34fffcba     	cbz	w26, 0x8cf0 <dmm_unit_ctrl_Alloc+0x168>
+    8d60: 340002f3     	cbz	w19, 0x8dbc <dmm_unit_ctrl_Alloc+0x234>
+    8d64: 51000673     	sub	w19, w19, #0x1
+    8d68: 52800016     	mov	w22, #0x0               // =0
+    8d6c: 52800e17     	mov	w23, #0x70              // =112
+    8d70: 53003e73     	uxth	w19, w19
+    8d74: 11000673     	add	w19, w19, #0x1
+    8d78: 14000006     	b	0x8d90 <dmm_unit_ctrl_Alloc+0x208>
+    8d7c: d503201f     	nop
+    8d80: 6b1302df     	cmp	w22, w19
+    8d84: 54000140     	b.eq	0x8dac <dmm_unit_ctrl_Alloc+0x224>
+    8d88: 7940dfa0     	ldrh	w0, [x29, #0x6e]
+    8d8c: f94012a7     	ldr	x7, [x21, #0x20]
+    8d90: 8b36cce2     	add	x2, x7, w22, sxtw #3
+    8d94: 110006d6     	add	w22, w22, #0x1
+    8d98: 9bb70800     	umaddl	x0, w0, w23, x2
+    8d9c: f9400800     	ldr	x0, [x0, #0x10]
+    8da0: 94000000     	bl	0x8da0 <dmm_unit_ctrl_Alloc+0x218>
+		0000000000008da0:  R_AARCH64_CALL26	dmm_ext_ctrl_FreeExtent
+    8da4: 72003c1f     	tst	w0, #0xffff
+    8da8: 54fffec0     	b.eq	0x8d80 <dmm_unit_ctrl_Alloc+0x1f8>
+    8dac: 7940dfa0     	ldrh	w0, [x29, #0x6e]
+    8db0: 52800e01     	mov	w1, #0x70               // =112
+    8db4: f94012a7     	ldr	x7, [x21, #0x20]
+    8db8: 9ba11c01     	umaddl	x1, w0, w1, x7
+    8dbc: 7900183f     	strh	wzr, [x1, #0xc]
+    8dc0: 52800013     	mov	w19, #0x0               // =0
+    8dc4: 3900203f     	strb	wzr, [x1, #0x8]
+    8dc8: 12800016     	mov	w22, #-0x1              // =-1
+    8dcc: 97fffeef     	bl	0x8988 <dmm_uipc_FreeSemaphore+0x58>
+    8dd0: 7940dfa1     	ldrh	w1, [x29, #0x6e]
+    8dd4: 52800e00     	mov	w0, #0x70               // =112
+    8dd8: 9ba01c21     	umaddl	x1, w1, w0, x7
+    8ddc: 79001c33     	strh	w19, [x1, #0xe]
+    8de0: 17ffff85     	b	0x8bf4 <dmm_unit_ctrl_Alloc+0x6c>
+    8de4: d503201f     	nop
+    8de8: 2a0203e3     	mov	w3, w2
+    8dec: 17ffffab     	b	0x8c98 <dmm_unit_ctrl_Alloc+0x110>
+    8df0: 00 00 00 00  	.word	0x00000000
+		0000000000008df0:  R_AARCH64_ABS64	.bss+0x165c90
+    8df4: 00 00 00 00  	.word	0x00000000

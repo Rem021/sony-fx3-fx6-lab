@@ -1,0 +1,262 @@
+{
+  "env": {
+    "FX3_NAV_RUN_DIR": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-vm-cb12b6256797"
+  },
+  "commands": {
+    "preflight.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/preflight.py"
+    ],
+    "launch_prepare.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/launch_prepare.py"
+    ],
+    "start_and_wait.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/start_and_wait.py"
+    ],
+    "cleanup.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/cleanup.py"
+    ],
+    "audit_after.py": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/audit_after.py"
+    ],
+    "standby_review": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+      "standby_review",
+      "实际看图后填入待机语义判断"
+    ],
+    "steps": [
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "click",
+          "1",
+          "完整Setup > Area/Date，橙色Area/Date/Time Setting"
+        ],
+        "pin_after_actual_observation_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "pin",
+          "实际看上一张观察图已完整后的明确选择：完整Setup > Area/Date，橙色Area/Date/Time Setting"
+        ],
+        "confirm_after_actual_fixed_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：完整Setup > Area/Date，橙色Area/Date/Time Setting"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "click",
+          "2",
+          "UP到Language English"
+        ],
+        "pin_after_actual_observation_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "pin",
+          "实际看上一张观察图已完整后的明确选择：UP到Language English"
+        ],
+        "confirm_after_actual_fixed_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：UP到Language English"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "click",
+          "3",
+          "C4语言帮助"
+        ],
+        "pin_after_actual_observation_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "pin",
+          "实际看上一张观察图已完整后的明确选择：C4语言帮助"
+        ],
+        "confirm_after_actual_fixed_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：C4语言帮助"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "click",
+          "4",
+          "MENU返回Language"
+        ],
+        "pin_after_actual_observation_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "pin",
+          "实际看上一张观察图已完整后的明确选择：MENU返回Language"
+        ],
+        "confirm_after_actual_fixed_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：MENU返回Language"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "click",
+          "5",
+          "OK查看English语言列表但不改值"
+        ],
+        "pin_after_actual_observation_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "pin",
+          "实际看上一张观察图已完整后的明确选择：OK查看English语言列表但不改值"
+        ],
+        "confirm_after_actual_fixed_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：OK查看English语言列表但不改值"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "click",
+          "6",
+          "MENU取消"
+        ],
+        "pin_after_actual_observation_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "pin",
+          "实际看上一张观察图已完整后的明确选择：MENU取消"
+        ],
+        "confirm_after_actual_fixed_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：MENU取消"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "click",
+          "7",
+          "MENU关闭到待机"
+        ],
+        "pin_after_actual_observation_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "pin",
+          "实际看上一张观察图已完整后的明确选择：MENU关闭到待机"
+        ],
+        "confirm_after_actual_fixed_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：MENU关闭到待机"
+        ]
+      },
+      {
+        "planned_click": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "click",
+          "8",
+          "MENU重开完整菜单"
+        ],
+        "pin_after_actual_observation_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "pin",
+          "实际看上一张观察图已完整后的明确选择：MENU重开完整菜单"
+        ],
+        "confirm_after_actual_fixed_image_review": [
+          "python3",
+          "-B",
+          "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+          "confirm",
+          "实际看本步新图后填入语义判断：MENU重开完整菜单"
+        ]
+      }
+    ],
+    "reject": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+      "reject",
+      "实际观察/固定图语义不符或不确定，立即原End"
+    ],
+    "observe": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+      "observe",
+      "实际看上一观察仍为正常过渡，明确再次观察；最多3次含首图，原20s不重置"
+    ],
+    "recovery_cancel": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+      "recovery_cancel",
+      "实际看归因未入队新图后的判断"
+    ],
+    "recovery_review": [
+      "python3",
+      "-B",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r28-first-observation-candidate/runtime-wrapper/operate.py",
+      "recovery_review",
+      "实际看cancel后新图后的判断"
+    ]
+  },
+  "warning": "templates only; no command executed by prepare_run"
+}

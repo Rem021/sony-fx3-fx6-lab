@@ -1,0 +1,33 @@
+{
+  "args": [
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+    "cc",
+    "-target",
+    "aarch64-linux-gnu.2.25",
+    "-nostdlib",
+    "-shared",
+    "-fPIC",
+    "-O2",
+    "-mno-outline-atomics",
+    "-Wl,--no-undefined",
+    "-Wl,-soname,fx3-fx3-capid-v7.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v7.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-capid-v7.so"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "source_sha256": "bbb84961205818794d0e6e8c860f0c1004f079053ad66f9b040ee36ccbc8ea1a",
+  "core_sha256": "45b787c1e078cc8970d026a913b5294a7a9f2f6f79a14050830e01a00d14f157",
+  "exclusive_guest_claim": "lazy on first selected request, O_EXCL/NOFOLLOW0600, PID guard; no reset by unrelated bootin process",
+  "revision": "FX3 0102 explicit inactive raw/preset6 model,8102 status0 after retainedconfig; strict0..2/padzero, nativelease androllback. PassiveVDFlog dispatch_pending corrects v6 label.",
+  "photo_core_sha256": "765bc04e61f8003eac59922fb8b8a577c045bb49f7fc4b16e531613d3ea6675b",
+  "audio_core_sha256": "5192b2dcfe37da60e61daf658273623693e28797763570e906ac0fe2767591c6",
+  "output_sha256": "b0438ab52e239d652869febe219624d7693fdb7154ba5a76ba6fceb243df0bb3"
+}

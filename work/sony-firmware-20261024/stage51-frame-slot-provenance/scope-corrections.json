@@ -1,0 +1,234 @@
+{
+  "created_utc": "2026-10-26T04:07:29.167478+00:00",
+  "old_files_preserved": true,
+  "frame_index_namespace": {
+    "previous_stage50_name": "channel records/index was a provisional name",
+    "current_evidence": "Original40-slot initializer, allocator clearing3352bytes and native picture index marshalling support frame-slot index; not fixed MAIN encoding-channel identity."
+  },
+  "state_table_scope": {
+    "ordinary_rows_per_table": 14,
+    "state_name_count_can_still_be16": true,
+    "special_states14_15_handled_before_lookup": true,
+    "old_stage42_enumerated_rows_per_table": 16,
+    "old_32_selector_rows_ordinary_valid_scope": 28,
+    "excluded_adjacent_table_aliases": [
+      {
+        "old_event": "enc_sys_v_t",
+        "old_claimed_state": 14,
+        "physical_row_offset": "0x380828",
+        "actual_scope": "adjacent event table row0; excluded before table lookup by original event helper",
+        "dispatch_migration_evidence_for_old_claimed_state": false
+      },
+      {
+        "old_event": "enc_sys_v_t",
+        "old_claimed_state": 15,
+        "physical_row_offset": "0x380840",
+        "actual_scope": "adjacent event table row1; excluded before table lookup by original event helper",
+        "dispatch_migration_evidence_for_old_claimed_state": false
+      },
+      {
+        "old_event": "enc_stop_done_t",
+        "old_claimed_state": 14,
+        "physical_row_offset": "0x380ac8",
+        "actual_scope": "adjacent event table row0; excluded before table lookup by original event helper",
+        "dispatch_migration_evidence_for_old_claimed_state": false
+      },
+      {
+        "old_event": "enc_stop_done_t",
+        "old_claimed_state": 15,
+        "physical_row_offset": "0x380ae0",
+        "actual_scope": "adjacent event table row1; excluded before table lookup by original event helper",
+        "dispatch_migration_evidence_for_old_claimed_state": false
+      }
+    ],
+    "earlier_normal_wrapper_and_pending_tests_not_invalidated": true,
+    "source": "work/sony-firmware-20261024/stage42-encoder-state-and-lock-boundaries/encoder_state.py",
+    "source_sha256": "fe339617bd55e9592bedfb7a5f0da7e94577452db0e8f122a59009483e3ec21a",
+    "entry_scope_instructions": [
+      [
+        {
+          "offset": "0x252f54",
+          "va": "0xffffffc001252f54",
+          "bytes": "f75bbda9",
+          "asm": "stp x23, x22, [sp, #-0x30]!"
+        },
+        {
+          "offset": "0x252f58",
+          "va": "0xffffffc001252f58",
+          "bytes": "f55301a9",
+          "asm": "stp x21, x20, [sp, #0x10]"
+        },
+        {
+          "offset": "0x252f5c",
+          "va": "0xffffffc001252f5c",
+          "bytes": "f37b02a9",
+          "asm": "stp x19, x30, [sp, #0x20]"
+        },
+        {
+          "offset": "0x252f60",
+          "va": "0xffffffc001252f60",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0"
+        },
+        {
+          "offset": "0x252f64",
+          "va": "0xffffffc001252f64",
+          "bytes": "740a40b9",
+          "asm": "ldr w20, [x19, #8]"
+        },
+        {
+          "offset": "0x252f68",
+          "va": "0xffffffc001252f68",
+          "bytes": "f50301aa",
+          "asm": "mov x21, x1"
+        },
+        {
+          "offset": "0x252f6c",
+          "va": "0xffffffc001252f6c",
+          "bytes": "9f3e0071",
+          "asm": "cmp w20, #0xf"
+        },
+        {
+          "offset": "0x252f70",
+          "va": "0xffffffc001252f70",
+          "bytes": "c0000054",
+          "asm": "b.eq #0xffffffc001252f88"
+        },
+        {
+          "offset": "0x252f74",
+          "va": "0xffffffc001252f74",
+          "bytes": "9f3a0071",
+          "asm": "cmp w20, #0xe"
+        },
+        {
+          "offset": "0x252f78",
+          "va": "0xffffffc001252f78",
+          "bytes": "c1000054",
+          "asm": "b.ne #0xffffffc001252f90"
+        },
+        {
+          "offset": "0x252f7c",
+          "va": "0xffffffc001252f7c",
+          "bytes": "e80f0032",
+          "asm": "mov w8, #0xf"
+        },
+        {
+          "offset": "0x252f80",
+          "va": "0xffffffc001252f80",
+          "bytes": "f4070032",
+          "asm": "mov w20, #3"
+        },
+        {
+          "offset": "0x252f84",
+          "va": "0xffffffc001252f84",
+          "bytes": "1e000014",
+          "asm": "b #0xffffffc001252ffc"
+        },
+        {
+          "offset": "0x252f88",
+          "va": "0xffffffc001252f88",
+          "bytes": "f4031e32",
+          "asm": "mov w20, #4"
+        },
+        {
+          "offset": "0x252f8c",
+          "va": "0xffffffc001252f8c",
+          "bytes": "1d000014",
+          "asm": "b #0xffffffc001253000"
+        }
+      ],
+      [
+        {
+          "offset": "0x2533d4",
+          "va": "0xffffffc0012533d4",
+          "bytes": "f75bbda9",
+          "asm": "stp x23, x22, [sp, #-0x30]!"
+        },
+        {
+          "offset": "0x2533d8",
+          "va": "0xffffffc0012533d8",
+          "bytes": "f55301a9",
+          "asm": "stp x21, x20, [sp, #0x10]"
+        },
+        {
+          "offset": "0x2533dc",
+          "va": "0xffffffc0012533dc",
+          "bytes": "f37b02a9",
+          "asm": "stp x19, x30, [sp, #0x20]"
+        },
+        {
+          "offset": "0x2533e0",
+          "va": "0xffffffc0012533e0",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0"
+        },
+        {
+          "offset": "0x2533e4",
+          "va": "0xffffffc0012533e4",
+          "bytes": "740a40b9",
+          "asm": "ldr w20, [x19, #8]"
+        },
+        {
+          "offset": "0x2533e8",
+          "va": "0xffffffc0012533e8",
+          "bytes": "f50301aa",
+          "asm": "mov x21, x1"
+        },
+        {
+          "offset": "0x2533ec",
+          "va": "0xffffffc0012533ec",
+          "bytes": "9f3e0071",
+          "asm": "cmp w20, #0xf"
+        },
+        {
+          "offset": "0x2533f0",
+          "va": "0xffffffc0012533f0",
+          "bytes": "c0000054",
+          "asm": "b.eq #0xffffffc001253408"
+        },
+        {
+          "offset": "0x2533f4",
+          "va": "0xffffffc0012533f4",
+          "bytes": "9f3a0071",
+          "asm": "cmp w20, #0xe"
+        },
+        {
+          "offset": "0x2533f8",
+          "va": "0xffffffc0012533f8",
+          "bytes": "c1000054",
+          "asm": "b.ne #0xffffffc001253410"
+        },
+        {
+          "offset": "0x2533fc",
+          "va": "0xffffffc0012533fc",
+          "bytes": "e80f0032",
+          "asm": "mov w8, #0xf"
+        },
+        {
+          "offset": "0x253400",
+          "va": "0xffffffc001253400",
+          "bytes": "e0070032",
+          "asm": "mov w0, #3"
+        },
+        {
+          "offset": "0x253404",
+          "va": "0xffffffc001253404",
+          "bytes": "1e000014",
+          "asm": "b #0xffffffc00125347c"
+        },
+        {
+          "offset": "0x253408",
+          "va": "0xffffffc001253408",
+          "bytes": "e0031e32",
+          "asm": "mov w0, #4"
+        },
+        {
+          "offset": "0x25340c",
+          "va": "0xffffffc00125340c",
+          "bytes": "1d000014",
+          "asm": "b #0xffffffc001253480"
+        }
+      ]
+    ]
+  }
+}

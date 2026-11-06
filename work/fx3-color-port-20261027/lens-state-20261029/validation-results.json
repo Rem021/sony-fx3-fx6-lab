@@ -1,0 +1,178 @@
+{
+  "status": "PASS_ORIGINAL_AP_CP_RAM_LENS_CHAIN",
+  "previous_legacy_stream_receipt_sha256": "d976b2e1f9065f48afd2fba268b69582b4749c20dcbd9dca3f38068b1390d4b8",
+  "previous_sealed_files_verified": 40,
+  "syntax_files": [
+    "ap_cp_lens_bridge.py",
+    "cached_metadata_guest.py",
+    "cp_lens_peer.py",
+    "find_lens_service.py",
+    "find_peer_constants.py",
+    "record_lens_contract.py",
+    "validate_lens_state.py"
+  ],
+  "json_files": [
+    "ap-cp-bridge-results.json",
+    "attempts/cp-peer-00.json",
+    "attempts/version-skip-write-guard.json",
+    "cached-metadata-results.json",
+    "cp-peer-guest-results.json",
+    "lens-contract-results.json",
+    "original-member-results.json",
+    "peer-constant-results.json",
+    "public-route-review.json",
+    "service-location-results.json"
+  ],
+  "original_fragment_checks": [
+    {
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x184c",
+      "bytes": 220
+    },
+    {
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x1928",
+      "bytes": 208
+    },
+    {
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x1dbc",
+      "bytes": 424
+    },
+    {
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x2498",
+      "bytes": 592
+    },
+    {
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x26e8",
+      "bytes": 64
+    },
+    {
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x2f48",
+      "bytes": 236
+    },
+    {
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "architecture": "AArch64",
+      "va": "0x3cd0",
+      "bytes": 120
+    },
+    {
+      "source_sha256": "e61bf145f050dd037802871395c38d1c0471518130d5bcd2f621268da8c8f6ab",
+      "architecture": "AArch64",
+      "va": "0x1c68",
+      "bytes": 700
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x391b54",
+      "bytes": 94
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x38dddc",
+      "bytes": 22
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x38ddf8",
+      "bytes": 728
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x38e144",
+      "bytes": 52
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x391c60",
+      "bytes": 84
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0xa878d2",
+      "bytes": 12
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x94cfea",
+      "bytes": 12
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x94aaa2",
+      "bytes": 52
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x94e7fc",
+      "bytes": 34
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x948538",
+      "bytes": 46
+    },
+    {
+      "source_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba",
+      "architecture": "Thumb",
+      "va": "0x9484c0",
+      "bytes": 12
+    }
+  ],
+  "ap_elf_scan_count": 532,
+  "ap_mov_candidates": 172,
+  "cp_mov_candidates": 29,
+  "cp_lens_service_candidates": 2,
+  "case_counts": {
+    "cached_comparisons_and_query_boundary": 8,
+    "cp_reply_loop": 4,
+    "ap_cp_bridge": 7
+  },
+  "guest_cases_total": 19,
+  "cp_reply_payloads_built_by_original_code": true,
+  "physical_cp_lens_state_is_synthetic": true,
+  "osal_bus_is_synthetic": true,
+  "next_body_service_reply_proven": false,
+  "native_ipc_calls": 0,
+  "native_target_loading": 0,
+  "device_actions": 0,
+  "camera_actions": 0,
+  "firmware_file_output": 0,
+  "complete_venice_color_port_proven": false,
+  "goal_completion_claimed": false,
+  "termination_condition_met": false,
+  "preserved_failed_attempts": 2,
+  "local_readme_links": [
+    "../legacy-stream-20261029/README.md",
+    "service-location-results.json",
+    "peer-constant-results.json",
+    "lens-contract-results.json",
+    "ap-cp-bridge-results.json",
+    "cp-peer-guest-results.json",
+    "cached-metadata-results.json",
+    "public-route-review.json",
+    "attempts/",
+    "validation-results.json",
+    "final-receipt.json"
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "scope": "v22 production startup and cleanup body; fake process only; real HTTP and flock",
+  "cases": [
+    {
+      "source": "run_trial_v22_navigation_review.py",
+      "scenario": "port_collision",
+      "passed": true,
+      "exit": 2,
+      "original_error": "OSError(48, 'Address already in use')",
+      "real_qemu_started": false,
+      "server_threads_closed": true,
+      "locks_free": true,
+      "health_pass": false
+    },
+    {
+      "source": "run_trial_v22_navigation_review.py",
+      "scenario": "spawn_error",
+      "passed": true,
+      "exit": 2,
+      "original_error": "OSError('fixture process spawn denied')",
+      "real_qemu_started": false,
+      "server_threads_closed": true,
+      "locks_free": true,
+      "health_pass": false
+    },
+    {
+      "source": "run_trial_v22_navigation_review.py",
+      "scenario": "early_exit",
+      "passed": true,
+      "exit": 2,
+      "original_error": "RuntimeError('QEMU startup exited; inspect host-stderr.log')",
+      "real_qemu_started": false,
+      "server_threads_closed": true,
+      "locks_free": true,
+      "health_pass": false
+    }
+  ]
+}

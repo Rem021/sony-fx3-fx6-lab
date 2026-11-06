@@ -1,0 +1,89 @@
+00017c94 stp        x29, x30, [sp, #-0x30]!
+00017c98 mov        x29, sp
+00017c9c stp        x19, x20, [sp, #0x10]
+00017ca0 mov        x19, x0
+00017ca4 ldr        x0, [x0, #0x20]
+00017ca8 str        x21, [sp, #0x20]
+00017cac mov        x21, x1
+00017cb0 cbz        x0, #0x17cc4
+00017cb4 ldr        x1, [x0]
+00017cb8 ldr        x1, [x1, #8]
+00017cbc blr        x1
+00017cc0 str        xzr, [x19, #0x20]
+00017cc4 mov        x0, #0x38
+00017cc8 bl         #0x10140 ; operator new
+00017ccc add        x3, x0, #8
+00017cd0 adrp       x1, #0x31000
+00017cd4 add        x2, x0, #0x20
+00017cd8 str        x0, [x19, #0x20]
+00017cdc mov        x20, x1
+00017ce0 ldr        x4, [x1, #0xf00]
+00017ce4 add        x4, x4, #0x10
+00017ce8 str        x4, [x0, #8]
+00017cec str        x4, [x0, #0x20]
+00017cf0 stp        x3, x2, [x3, #8]
+00017cf4 str        x3, [x0, #0x28]
+00017cf8 str        x2, [x2, #0x10]
+00017cfc adrp       x2, #0x31000
+00017d00 ldr        x2, [x2, #0xe18]
+00017d04 add        x2, x2, #0x10
+00017d08 str        x2, [x0]
+00017d0c ldr        x0, [x19, #0x18]
+00017d10 cbz        x0, #0x17d24
+00017d14 ldr        x1, [x0]
+00017d18 ldr        x1, [x1, #8]
+00017d1c blr        x1
+00017d20 str        xzr, [x19, #0x18]
+00017d24 mov        x0, #0x40
+00017d28 bl         #0x10140 ; operator new
+00017d2c add        x3, x0, #8
+00017d30 ldr        x1, [x20, #0xf00]
+00017d34 add        x2, x0, #0x20
+00017d38 str        x0, [x19, #0x18]
+00017d3c add        x1, x1, #0x10
+00017d40 str        x1, [x0, #8]
+00017d44 str        x1, [x0, #0x20]
+00017d48 adrp       x1, #0x31000
+00017d4c stp        x3, x2, [x3, #8]
+00017d50 str        x3, [x0, #0x28]
+00017d54 ldr        x1, [x1, #0xe78]
+00017d58 str        x2, [x2, #0x10]
+00017d5c add        x1, x1, #0x10
+00017d60 str        wzr, [x0, #0x38]
+00017d64 str        x1, [x0]
+00017d68 ldr        x0, [x19, #8]
+00017d6c cbz        x0, #0x17d80
+00017d70 ldr        x1, [x0]
+00017d74 ldr        x1, [x1, #8]
+00017d78 blr        x1
+00017d7c str        xzr, [x19, #8]
+00017d80 ldr        x0, [x19, #0x10]
+00017d84 cbz        x0, #0x17d98
+00017d88 ldr        x1, [x0]
+00017d8c ldr        x1, [x1, #8]
+00017d90 blr        x1
+00017d94 str        xzr, [x19, #0x10]
+00017d98 ldr        x0, [x19, #0x28]
+00017d9c cbz        x0, #0x17db0
+00017da0 ldr        x1, [x0]
+00017da4 ldr        x1, [x1, #8]
+00017da8 blr        x1
+00017dac str        xzr, [x19, #0x28]
+00017db0 mov        x0, #0x98
+00017db4 bl         #0x10140 ; operator new
+00017db8 mov        x20, x0
+00017dbc ldr        w1, [x19, #0x30]
+00017dc0 mov        x2, x21
+00017dc4 bl         #0xfd10 ; Updater::ThreadPlugin::ThreadPlugin
+00017dc8 ldr        x21, [sp, #0x20]
+00017dcc mov        x0, x20
+00017dd0 str        x20, [x19, #0x28]
+00017dd4 ldp        x19, x20, [sp, #0x10]
+00017dd8 ldp        x29, x30, [sp], #0x30
+00017ddc b          #0x108a0 ; Updater::ThreadPlugin::Initialize
+00017de0 mov        x19, x0
+00017de4 mov        x0, x20
+00017de8 mov        x1, #0x98
+00017dec bl         #0x10190 ; operator delete
+00017df0 mov        x0, x19
+00017df4 bl         #0x107a0 ; _Unwind_Resume

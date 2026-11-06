@@ -1,0 +1,48 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/nor-loader-members/loader_nor.bin",
+  "sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "scope": "static local candidates including data; no full CFG/alias or reachability completeness claim",
+  "targets": {
+    "ready_byte": "0xfe06216a",
+    "partition_word": "0xfe0620f8",
+    "external_word": "0xfe170028"
+  },
+  "refs": [
+    {
+      "site": "0xfe053308",
+      "target": "external_word",
+      "access_start": "0xfe170028",
+      "bytes": 4,
+      "instruction": "str w9, [x10]",
+      "kind": "store_candidate",
+      "value": null
+    },
+    {
+      "site": "0xfe053ca8",
+      "target": "external_word",
+      "access_start": "0xfe170028",
+      "bytes": 4,
+      "instruction": "ldr w8, [x20]",
+      "kind": "load_candidate",
+      "value": null
+    },
+    {
+      "site": "0xfe057f34",
+      "target": "ready_byte",
+      "access_start": "0xfe06216a",
+      "bytes": 1,
+      "instruction": "ldrb w8, [x8, #0x16a]",
+      "kind": "load_candidate",
+      "value": "0xfe062000"
+    },
+    {
+      "site": "0xfe057f40",
+      "target": "partition_word",
+      "access_start": "0xfe0620f8",
+      "bytes": 4,
+      "instruction": "ldr w9, [x8, #0xf8]",
+      "kind": "load_candidate",
+      "value": null
+    }
+  ]
+}

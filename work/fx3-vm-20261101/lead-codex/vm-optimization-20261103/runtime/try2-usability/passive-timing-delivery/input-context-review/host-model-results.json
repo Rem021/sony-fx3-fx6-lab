@@ -1,0 +1,710 @@
+{
+  "scope": "abstract host model only; no FX3 execution or verified native context",
+  "protocol_cases": [
+    {
+      "name": "steps_ready_misses_unsolicited_menu",
+      "trace": [
+        "see A",
+        "native timer opens B; no host key",
+        "send old OK with steps=0"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 2,
+        "screen": "modal-B",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-B",
+        "generation": 2,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "screen_id_misses_focus",
+      "trace": [
+        "see item-1",
+        "same screen focus becomes item-2",
+        "old OK selects item-2"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 2,
+        "screen": "menu-A",
+        "focus": "item-2",
+        "resource": "raster-1",
+        "png": "PNG-focus-2",
+        "generation": 2,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "raster_identity_misses_menu",
+      "trace": [
+        "A and B reuse one raster allocation",
+        "old click targets B"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 2,
+        "screen": "menu-B",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-B",
+        "generation": 2,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "same_png_can_hide_semantic_change",
+      "trace": [
+        "native receiver changes before next published frame",
+        "PNG+generation still A"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 2,
+        "screen": "menu-B",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "sha_only_ABA",
+      "trace": [
+        "A -> B -> A; same PNG again",
+        "old incarnation click arrives"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 3,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 3,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "whitelist_or_mask_has_no_context_proof",
+      "trace": [
+        "two allowed PNGs need not share receiver",
+        "old click accepted on B"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 2,
+        "screen": "modal-B",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-B",
+        "generation": 2,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "preflight_rebinds_original_intent",
+      "trace": [
+        "click A",
+        "preflight sees B",
+        "overwrite observed identity with B",
+        "send old key"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 2,
+        "screen": "menu-B",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-B",
+        "generation": 2,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "queue_to_write_race",
+      "trace": [
+        "validate A at HTTP lock",
+        "native transition B",
+        "write key without revalidation"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 2,
+        "screen": "modal-B",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "snapshot_to_consume_race",
+      "trace": [
+        "paused snapshot proves A",
+        "resume",
+        "queued transition B wins before native key handler"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 2,
+        "screen": "modal-B",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "consumed_permit_replay",
+      "trace": [
+        "same-context no-change key accepted",
+        "review completes",
+        "delayed duplicate arrives"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 1,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "cosmetic_change_needs_real_equivalence",
+      "trace": [
+        "hypothetically proven same context",
+        "cosmetic refresh",
+        "one old-frame click allowed"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-cosmetic",
+        "generation": 2,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": false,
+      "hypothetical_complete_context_policy_accepts": true
+    },
+    {
+      "name": "unknown_context_fails_closed",
+      "trace": [
+        "no complete semantic observer",
+        "steps=0 alone cannot authorize"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": false
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    },
+    {
+      "name": "lifecycle_restart_with_reused_ids",
+      "trace": [
+        "same counters/PNG after restart",
+        "old permit invalid"
+      ],
+      "clicked": {
+        "run": "run-A",
+        "lifecycle": 1,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "at_admission": {
+        "run": "run-B",
+        "lifecycle": 2,
+        "context_revision": 1,
+        "screen": "menu-A",
+        "focus": "item-1",
+        "resource": "raster-1",
+        "png": "PNG-A",
+        "generation": 1,
+        "steps": 0,
+        "ready": true,
+        "render_valid": true,
+        "pending": false,
+        "review_required": false,
+        "error": false,
+        "stopped": false,
+        "delivery_unknown": false,
+        "complete_context_evidence": true
+      },
+      "simplified_policy_accepts": true,
+      "hypothetical_complete_context_policy_accepts": false
+    }
+  ],
+  "recovery_cases": [
+    {
+      "name": "local_preflight_no_post",
+      "inputs": {
+        "outcome": "local_no_post"
+      },
+      "may_begin_new_manual_attempt": true
+    },
+    {
+      "name": "explicit_409_then_human_click",
+      "inputs": {
+        "outcome": "explicit_server_rejection"
+      },
+      "may_begin_new_manual_attempt": true
+    },
+    {
+      "name": "5xx_unknown_even_if_steps_unchanged",
+      "inputs": {
+        "outcome": "5xx_unknown"
+      },
+      "may_begin_new_manual_attempt": false
+    },
+    {
+      "name": "network_timeout_even_if_ready",
+      "inputs": {
+        "outcome": "network_timeout"
+      },
+      "may_begin_new_manual_attempt": false
+    },
+    {
+      "name": "409_does_not_cancel_other_accepted_step",
+      "inputs": {
+        "outcome": "explicit_server_rejection",
+        "outstanding_accepted": true
+      },
+      "may_begin_new_manual_attempt": false
+    },
+    {
+      "name": "unloaded_new_frame",
+      "inputs": {
+        "outcome": "explicit_server_rejection",
+        "current_loaded": false
+      },
+      "may_begin_new_manual_attempt": false
+    },
+    {
+      "name": "automatic_retry_forbidden",
+      "inputs": {
+        "outcome": "explicit_server_rejection",
+        "new_human_click": false
+      },
+      "may_begin_new_manual_attempt": false
+    },
+    {
+      "name": "native_error_outranks_local_409",
+      "inputs": {
+        "outcome": "explicit_server_rejection",
+        "native_error": true
+      },
+      "may_begin_new_manual_attempt": false
+    },
+    {
+      "name": "old_rejection_is_not_current_attempt",
+      "inputs": {
+        "outcome": "explicit_server_rejection",
+        "attempt_matches": false
+      },
+      "may_begin_new_manual_attempt": false
+    },
+    {
+      "name": "old_hint_during_new_POST",
+      "inputs": {
+        "outcome": "explicit_server_rejection",
+        "mutation_in_flight": true
+      },
+      "may_begin_new_manual_attempt": false
+    },
+    {
+      "name": "rejection_cannot_cancel_another_alarm",
+      "inputs": {
+        "outcome": "explicit_server_rejection",
+        "nonce_matches": false
+      },
+      "may_begin_new_manual_attempt": false
+    }
+  ]
+}

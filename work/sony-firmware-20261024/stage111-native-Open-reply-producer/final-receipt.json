@@ -1,0 +1,101 @@
+{
+  "schema": "fx3-stage111-native-Open-reply/1",
+  "created_utc": "2026-10-27T13:53:13.649954+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/README.md",
+      "bytes": 6336,
+      "sha256": "b5f2d84175ceeeaa076a8d440485dfcf9e412e8ffafb1207469f3c51142a8adb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/completed-evidence-review.json",
+      "bytes": 541,
+      "sha256": "9827fd9f7a975cc4ae1f8a464b98f75791a632677372f508730f53bb8760e992"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/diagnostic-layout-not-deployable.json",
+      "bytes": 1732,
+      "sha256": "93bbd32f04b65e2aa09f63af363a492c29f4be7912a83d2e16eeb5b81fba0f23"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/goal-status-after.json",
+      "bytes": 341628,
+      "sha256": "8ff93f4c8611f2acb7e25ad43c1a9c71590224ff0d2b4219590c619f80ac64da"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/goal-status-before.json",
+      "bytes": 337159,
+      "sha256": "effa6292f54f1b51d257a48e864fdd88b1db6d31f8c0e6d5e465ebb7a3c09898"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/open_reply.py",
+      "bytes": 15544,
+      "sha256": "08fd2263fc053167df9c49816e5c369ec87bee605d6cbb70262eaf1ba0ef3e79"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/review_and_seal.py",
+      "bytes": 15397,
+      "sha256": "2bc8021552226c3575d2dea9965d79f3c2b540077d2ee58ba147a44d21fbfeaa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/run-native-constructor-boundaries-20261027/executed-source.py",
+      "bytes": 15544,
+      "sha256": "08fd2263fc053167df9c49816e5c369ec87bee605d6cbb70262eaf1ba0ef3e79"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/run-native-constructor-boundaries-20261027/open-reply-results.json",
+      "bytes": 362306,
+      "sha256": "0f5d9826f150efd3ee9d9727b3f74f1babf7b73eeaa4d4d31cf0b11994003a83"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/run-native-producers-20261027/attempt-failure.json",
+      "bytes": 1630,
+      "sha256": "2226e82fd2fddb71c27889a500f8d16de4a3271c34799a90589a9fac7cc620f6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/run-native-producers-20261027/executed-source.py",
+      "bytes": 14904,
+      "sha256": "10ae7cf521caf20d75c2fe9770fb06165e8517ac88d36bdda08c6be14c65b3fc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage111-native-Open-reply-producer/source-and-scope-audit.json",
+      "bytes": 70577,
+      "sha256": "03ca02e1b4f9250136c7feaee1b75c3df0cf8d38b03c2aca89424095a3f92e8e"
+    }
+  ],
+  "previous_manifest_sha256": "e97c5e83f17c24edc8f983b0abe5541abf9947497f1126be19f04542bcdfebfb",
+  "operations": {
+    "status": "PASS_NATIVE_SINGLE_STREAM_REPLY_POINTER_AND44_BYTE_PRODUCER_CLASSIFICATION_SCOPE",
+    "created_utc": "2026-10-27T13:53:13.649954+00:00",
+    "previous_manifest_members_verified": 14,
+    "caller_cases": 2,
+    "producer_fragments": 12,
+    "native_classifier_cases": 12,
+    "bounded_phases": 72,
+    "formal_source_matches_executed_copy": true,
+    "failed_attempt_preserved": true,
+    "same_agent_review_not_independent_engine": true,
+    "Windows_UU_camera_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "effa6292f54f1b51d257a48e864fdd88b1db6d31f8c0e6d5e465ebb7a3c09898",
+    "after_sha256": "8ff93f4c8611f2acb7e25ad43c1a9c71590224ff0d2b4219590c619f80ac64da"
+  },
+  "readme_index_before_sha256": "c7d0e42d0d836150e334fff2eeca34da38a810e02a8a443bec37a71e0eb3914b",
+  "readme_index_after_sha256": "cabc7b0a25347a1c65cdec284d7d2e7a1b905e811659ee59d061ce00f342a989",
+  "readme_index_entry": "- [2026-10-27 FX3 单流调用与44字节回复](<work/sony-firmware-20261024/stage111-native-Open-reply-producer/README.md>)：原非空回复指针、Ack/完成事件身份与发送长度72阶段；44B发送到48B存储及实际硬件/恢复仍未验收，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

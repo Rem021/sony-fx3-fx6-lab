@@ -1,0 +1,38 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/appFw.so",
+  "source_sha256": "a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067",
+  "patched_sha256": "c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1",
+  "size": 50520424,
+  "patched_ranges": [
+    {
+      "offset": 49363,
+      "length": 33,
+      "meaning": "Init unique symbol + bridge DT_NEEDED name"
+    },
+    {
+      "offset": 52804,
+      "length": 41,
+      "meaning": "EnterRec unique symbol"
+    },
+    {
+      "offset": 49090800,
+      "length": 16,
+      "meaning": "spare DT_NULL to DT_NEEDED"
+    }
+  ],
+  "bytes_changed": 75,
+  "gnu_hash_symoffset": 912,
+  "dynsym_indices": {
+    "Init": 124,
+    "EnterRec": 795
+  },
+  "unchanged_jump_slots": {
+    "_ZN3mpr4InitERKNS_11initInParamE": "0x2ef1368",
+    "_ZN3mpr8EnterRecERKNS_15enterRecInParamE": "0x2ef2670"
+  },
+  "new_needed": "libfx6diag.so",
+  "new_symbols": [
+    "fx6diag_mpr_init",
+    "fx6diag_mpr_enterrec"
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "source": "work/sony-firmware-20261024/stage208-Backup-record-routing/originals/kmod/backup.ko",
+  "source_sha256": "8a8d8c949699c130c116d0006806d8b7f92b20869c92a72876529a2001d60c4d",
+  "ranges": [
+    {
+      "label": "Data_getAdrs",
+      "section": ".text",
+      "offset": 22920,
+      "bytes": 92,
+      "sha256": "5e53d0a4506446b946556db81b81b188ee695fe2ce0c1853cad2cc93169bfdda"
+    },
+    {
+      "label": "Data_getSize",
+      "section": ".text",
+      "offset": 23016,
+      "bytes": 116,
+      "sha256": "1daa5d3d2d0bf4055ceee98efc6b1081881b122b20d828c76b05c1ba4a394679"
+    },
+    {
+      "label": "Data_SearchId",
+      "section": ".text",
+      "offset": 20216,
+      "bytes": 96,
+      "sha256": "2707045dc7381e2e2d262af2a2c489acc3c94b463e61382a9e7cd6eb0a41f4bf"
+    },
+    {
+      "label": "Data_GetHeader",
+      "section": ".text",
+      "offset": 22488,
+      "bytes": 12,
+      "sha256": "eb5318d63972dd35922d13402912fbe30e2901ae09e18cf87c2cb218bf616c1d"
+    },
+    {
+      "label": "backupfile_init",
+      "section": ".text",
+      "offset": 25920,
+      "bytes": 212,
+      "sha256": "a4136dd296fb58998b827b6ef3402b8bb6631ffd1eea941796459182a1004f43"
+    },
+    {
+      "label": "backup_sync_msg",
+      "section": ".text",
+      "offset": 16616,
+      "bytes": 420,
+      "sha256": "e473293f2b2684b0af6de5acd3c939817713f0bc108cd5f434239a9258293181"
+    },
+    {
+      "label": "load_selected_whole_file",
+      "section": ".text",
+      "offset": 26136,
+      "bytes": 144,
+      "sha256": "64cf52006239492caeb8755067d605b75a2d792991c33fdf22e5faee6b2b0ef9"
+    }
+  ],
+  "unapplied_relocations": true,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

@@ -1,0 +1,43 @@
+{
+  "scope": "reviewer static category formula/data model only; not candidate execution or native event-order proof",
+  "source_sha256": "d3ec88635bf5ea1c5b66890bb9c5c81c4205ea150ee0db17ffe0a03aadb07664",
+  "source_lines": [
+    26,
+    29
+  ],
+  "precondition": "A schema-valid PIXELS/META send reaches observe/bind before first eligible CONTROL publication; all TGID and initialization checks pass; original UI log opportunities occur at the stated points",
+  "trace": [
+    {
+      "state": "bind_complete_before_first_control",
+      "publication_phase_w6": 0,
+      "bind_phase_w9": 2,
+      "loss_w14": 0,
+      "flag": 1,
+      "category": 5,
+      "emits_suffix": true
+    },
+    {
+      "state": "first_control_attempt_started",
+      "publication_phase_w6": 1,
+      "bind_phase_w9": 2,
+      "loss_w14": 0,
+      "flag": 1,
+      "category": 5,
+      "emits_suffix": false
+    },
+    {
+      "state": "first_control_attempt_returned",
+      "publication_phase_w6": 2,
+      "bind_phase_w9": 2,
+      "loss_w14": 0,
+      "flag": 1,
+      "category": 5,
+      "emits_suffix": false
+    }
+  ],
+  "suffixes_emitted": 1,
+  "bytes_emitted": 184,
+  "remaining_record_quota": 6,
+  "remaining_declared_byte_quota_1288": 1104,
+  "native_reachability": "not established by this review"
+}

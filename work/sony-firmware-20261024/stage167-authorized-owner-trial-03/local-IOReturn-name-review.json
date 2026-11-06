@@ -1,0 +1,14 @@
+{
+  "header": "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk/System/Library/Frameworks/Kernel.framework/Versions/A/Headers/IOKit/IOReturn.h",
+  "header_sha256": "4a5cc7c1b78add6c171c81177acc152cfde2cb59d349f5161250494debe4db03",
+  "matching_definitions": [
+    "#define kIOReturnNoResources     iokit_common_err(0x2be) // resource shortage",
+    "#define kIOReturnNotFound        iokit_common_err(0x2f0) // data was not found"
+  ],
+  "claim_failure_signed": -536870210,
+  "claim_failure_hex": "0xe00002be",
+  "name": "kIOReturnNoResources",
+  "first_after_snapshot_missing_signed": -536870160,
+  "first_after_snapshot_hex": "0xe00002f0",
+  "first_after_name": "kIOReturnNotFound"
+}

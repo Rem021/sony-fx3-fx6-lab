@@ -1,0 +1,202 @@
+--- previous/run_mpr_once.py
++++ guest/run_guest_once.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Single owner-only, zero-key read-only FX6 AP send observation candidate.
++"""Single owner-only, zero-key diagnostic bridge observation candidate.
+ 
+ Do not run until the coordinator allocates the existing FX3 VM window.
+ """
+@@ -17,10 +17,11 @@
+ import subprocess
+ 
+ HERE=Path(__file__).resolve().parent
+-MAC=HERE.parents[6]
+-DONOR=HERE.parent.parent
++MAC=HERE.parents[7]
++DONOR=HERE.parents[2]
+ PARENT=DONOR/'hybrid-ap-candidate'
+ FX3_RUNTIME=MAC/'work/fx3-vm-20261101/menu-repair-01/runtime'
++sys.path.insert(0,str(HERE.parents[1]))
+ sys.path.insert(0,str(HERE.parent))
+ sys.path.insert(0,str(PARENT))
+ import run_ap_once as frozen
+@@ -29,10 +30,13 @@
+ from readonly_probe import sha
+ 
+ 
+-AP_ELF=DONOR/'nflasha15-files/lib/appFw.so'
++AP_ELF=HERE/'appFw-bridge.so'
+ CAP_ELF=FX3_RUNTIME/'helpers/fx3-capid-v49-touch100.so'
+ HISTORICAL= PARENT/'runs/fx6ap-bb7588e5/serial.log'
+-AP_SHA='a1c58b691c0884e1494eb16c3b256c33589a8e32b6f2f3de81af4305bf086067'
++AP_SHA='c31bc293816db5d63cc5acf6b019bd69c9dd7b940ae0ece1ea6977ff9b944db1'
++BRIDGE_SHA='b5d546eb2843c819ebdcab1cda2ce7530beb30afece48d378b470c1555b2428b'
++CANDIDATE_SHA='8abed37418a0f07e8193228ca2242f185103b6b5f98959b98821bbeeb3ad3b5d'
++GUEST_PROBE_SHA='bb5c5e18b98cced5f86d4a57ff5487138d9cbc62ef7d98e4dfb4a1164db27921'
+ CAP_SHA='cd51ea7b3347ccb8bd8d0cdd72b096936f0a226c142575f41a24cc018948156e'
+ PARENT_SHA='aaa9ca518d580fde7ca9fdbf2c33bebe78545d96876f997168643f33bdf4a24a'
+ HIST_SHA='7fd297d60c72a1211fa44a0103ae69fabec0c72c422be6c34519c2636db3a43f'
+@@ -52,12 +56,15 @@
+             return {'tid':int(tid),'tls':int(tls,16),'source':int(qid,16),'request_count':len(req)}
+     return None
+ 
+-from mpr_probe import Probe, choose_early_im, IM_ELF, MPR_ELF, MPR_SHA
+-
+-def quit_without_guest_resume(qemu,qmp,cleanup):
+-    """Fail closed when a Z1 remains: never resume into a stale breakpoint."""
++from guest_probe import Probe
++from mpr_probe import choose_early_im, IM_ELF, MPR_ELF, MPR_SHA
++
++def quit_without_guest_resume(qemu,qmp,cleanup,reason):
++    """Fault/unknown cleanup: never execute BRK, threshold consumer, or unguarded Init."""
+     cleanup['attempted']=True
+-    cleanup['reason']='unremoved_debug_breakpoint; no_API16_resume'
++    cleanup['reason']=reason
++    cleanup['API16_restored']=False
++    cleanup['API16_restore_skipped_to_preserve_fault_stop']=True
+     if qemu is not None and qemu.poll() is None:
+         if qmp is not None:
+             try:qmp.call('stop');cleanup['guest_stopped']=True
+@@ -74,9 +81,11 @@
+     if qmp is not None:qmp.close()
+ 
+ def main():
+-    if sha(HERE.parent/'readonly_probe.py') != '7da87fbb920bfa6a9516421d1224813056ff991a2c950552c4ccdadc662bbade':
++    if sys.argv[1:] not in (['--reviewed-run'],['--preflight']):
++        raise SystemExit('Choose --preflight (no VM) or owner-approved --reviewed-run')
++    if sha(HERE.parents[1]/'readonly_probe.py') != '7da87fbb920bfa6a9516421d1224813056ff991a2c950552c4ccdadc662bbade':
+         raise RuntimeError('observer implementation changed; re-audit before runtime')
+-    if sha(HERE.parent/'two_phase_identity.py') != IDENTITY_SHA:
++    if sha(HERE.parents[1]/'two_phase_identity.py') != IDENTITY_SHA:
+         raise RuntimeError('two-phase identity implementation changed; re-audit before runtime')
+     for p,h in [(PARENT/'run_ap_once.py',PARENT_SHA),(AP_ELF,AP_SHA),(CAP_ELF,CAP_SHA),
+                 (HISTORICAL,HIST_SHA),(IM_ELF,'87d672bd6abbcf695c0a773cb096d72d18429e5107846a2f0d3e8add87e400ec'),(MPR_ELF,MPR_SHA),(FX3_RUNTIME/'gdb_sysregs104_v2.py',SYSREG_SHA)]:
+@@ -85,11 +94,27 @@
+     for p,h in [(qsrc/'gdbstub.c',QEMU_GDB_SHA),(qsrc/'system.c',QEMU_SYSTEM_SHA)]:
+         if sha(p)!=h:raise RuntimeError('QEMU GDB protocol source drift '+str(p))
+     tests=json.loads((HERE/'host-tests.json').read_text())
+-    if (tests.get('status')!='PASS_NO_QEMU' or tests.get('mpr_probe_sha256')!=sha(HERE/'mpr_probe.py')
+-            or tests.get('identity_sha256')!=IDENTITY_SHA or tests.get('runner_sha256')!=sha(__file__)
+-            or tests.get('test_host_sha256')!=sha(HERE/'test_host.py')):
+-        raise RuntimeError('host-only parser tests missing or stale')
++    if (tests.get('status')!='PASS_NO_QEMU' or tests.get('guest_probe_sha256')!=GUEST_PROBE_SHA
++            or sha(HERE/'guest_probe.py')!=GUEST_PROBE_SHA):
++        raise RuntimeError('host-only observer tests missing or stale')
++    plan=json.loads((HERE/'static-receipt.json').read_text())
++    if (plan.get('status')!='STATIC_VERIFIED_NOT_RUN' or plan.get('candidate_sha256')!=CANDIDATE_SHA
++            or plan.get('bridge_sha256')!=BRIDGE_SHA
++            or sha(HERE/'guest-veneer.cpio')!=CANDIDATE_SHA or sha(HERE/'libfx6diag.so')!=BRIDGE_SHA):
++        raise RuntimeError('new CPIO static audit absent/stale')
++    elf_audit=json.loads((HERE/'elf-audit.json').read_text())
++    if (elf_audit.get('status')!='ELF_STATIC_AUDITED_NOT_LOADED'
++            or elf_audit.get('bridge_sha256')!=BRIDGE_SHA
++            or elf_audit.get('patched_ap_sha256')!=AP_SHA):
++        raise RuntimeError('bridge ELF contract audit absent/stale')
+     baseline,audit=frozen.verify() # includes UUID, full CPIO, kernel, DTB, 17 helpers and exact allowlist.
++    if sys.argv[1:] == ['--preflight']:
++        print(json.dumps({'status':'PREFLIGHT_NO_QEMU','old_candidate_sha256':frozen.PINS['candidate'],
++                          'new_candidate_sha256':plan['candidate_sha256'],
++                          'guest_probe_sha256':sha(HERE/'guest_probe.py'),
++                          'runner_sha256':sha(__file__),
++                          'fixed_argv_count':len(baseline['fx3_vm_command'])},indent=2))
++        return 0
+     held=[]
+     for path in frozen.LOCKS:
+         f=path.open('rb')
+@@ -99,24 +124,25 @@
+             for old in held:fcntl.flock(old,fcntl.LOCK_UN);old.close()
+             raise RuntimeError('fixed FX3 double lock busy; no QEMU started')
+         held.append(f)
+-    run=HERE/'runs'/('mpr-ro-'+uuid.uuid4().hex[:8]);run.mkdir(parents=True);run.chmod(0o700)
++    run=HERE/'runs'/('guest-veneer-'+uuid.uuid4().hex[:8]);run.mkdir(parents=True);run.chmod(0o700)
+     args=list(baseline['fx3_vm_command']);args[20]='file:'+str(run/'serial.log')
+-    args[31]='loader,file='+str(PARENT/'guest-three-entry.cpio')+',addr=0x440000000,force-raw=on'
++    args[31]='loader,file='+str(HERE/'guest-veneer.cpio')+',addr=0x440000000,force-raw=on'
+     frozen_args=baseline['fx3_vm_command']
+     if len(args)!=34 or any(args[i]!=frozen_args[i] for i in range(34) if i not in (20,31)):
+         raise RuntimeError('frozen QEMU argv mismatch')
+     env=os.environ.copy();env.update(baseline['model_env'])
+     (run/'command.json').write_text(json.dumps({'args':args,'cwd':str(run),'model_env':baseline['model_env'],
+         'key_budget':0,'observation_seconds':120,'total_seconds':180,'fixed_delta_indices':[20,31],
+-        'parent_runner_sha256':PARENT_SHA,'probe_sha256':sha(HERE/'mpr_probe.py')},indent=2)+'\n')
++        'parent_runner_sha256':PARENT_SHA,'probe_sha256':sha(HERE/'guest_probe.py')},indent=2)+'\n')
+     (run/'source-sha256.json').write_text(json.dumps({
+-        'runner':sha(__file__),'probe':sha(HERE/'mpr_probe.py'),
++        'runner':sha(__file__),'probe':sha(HERE/'guest_probe.py'),
+         'parent_runner':PARENT_SHA,'sysregs':SYSREG_SHA,'identity':IDENTITY_SHA,
+         'host_tests':sha(HERE/'host-tests.json')},indent=2)+'\n')
+-    for name in ['run_mpr_once.py','mpr_probe.py']:
++    for name in ['run_guest_once.py','guest_probe.py']:
+         shutil.copyfile(HERE/name,run/('observer-'+name))
++    shutil.copyfile(HERE.parent/'mpr_probe.py',run/'observer-mpr_probe.py')
+     for name in ['readonly_probe.py','two_phase_identity.py']:
+-        shutil.copyfile(HERE.parent/name,run/('observer-'+name))
++        shutil.copyfile(HERE.parents[1]/name,run/('observer-'+name))
+     qemu=qmp=probe=None;start=time.monotonic();stop=None;error=None
+     cleanup={'attempted':False,'API16_restored':False,'quit_sent':False};bp_cleanup={'attempted':False,'all_removed':True}
+     watcher=frozen.APHealthMonitor(run/'serial.log')
+@@ -162,12 +188,12 @@
+                     except Exception as exc:
+                         bp_cleanup={'attempted':True,'all_removed':False,'error':repr(exc)}
+                     finally:probe.rsp.close()
+-                # This existing shutdown path may write only the 8-byte
+-                # software observer control request; it never patches code.
+-                if bp_cleanup['all_removed']:
+-                    frozen.cleanup_owned(qemu,qmp,frozen.InputGate(run),run,cleanup)
+-                else:
+-                    quit_without_guest_resume(qemu,qmp,cleanup)
++                # This first diagnostic cannot prove asynchronous thunk
++                # quiescence even when Init returns zero. Never resume after
++                # removing Z1. The disposable guest is stopped then quit.
++                quit_without_guest_resume(qemu,qmp,cleanup,
++                    'diagnostic_no_guest_resume_after_Z1_removal' if bp_cleanup['all_removed']
++                    else 'unremoved_debug_breakpoint_no_guest_resume')
+     finally:
+         signal.signal(signal.SIGINT,old_sig);watcher.finish()
+         elapsed=time.monotonic()-start
+@@ -178,25 +204,33 @@
+                 try:fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB);ok=True;fcntl.flock(f,fcntl.LOCK_UN)
+                 except BlockingIOError:ok=False
+             free.append({'path':str(path),'free':ok})
+-        pins={'baseline':sha(frozen.BASE),'candidate':sha(PARENT/'guest-three-entry.cpio'),
+-              'ap':sha(AP_ELF),'cap':sha(CAP_ELF)}
+-        pins_match=(pins=={'baseline':frozen.PINS['baseline'],'candidate':frozen.PINS['candidate'],
+-                           'ap':AP_SHA,'cap':CAP_SHA})
+-        receipt={'schema':'fx6-mpr-readonly-gdb-v1','stop':stop,'host_error':error,
++        pins={'baseline':sha(frozen.BASE),'source':sha(PARENT/'guest-three-entry.cpio'),
++              'candidate':sha(HERE/'guest-veneer.cpio'),'ap':sha(AP_ELF),
++              'bridge':sha(HERE/'libfx6diag.so'),'cap':sha(CAP_ELF)}
++        pins_match=(pins=={'baseline':frozen.PINS['baseline'],
++                           'source':frozen.PINS['candidate'],
++                           'candidate':plan['candidate_sha256'],'ap':AP_SHA,
++                           'bridge':plan['bridge_sha256'],'cap':CAP_SHA})
++        receipt={'schema':'fx6-guest-veneer-readonly-gdb-v1','stop':stop,'host_error':error,
+           'elapsed_seconds':elapsed,'qemu_exit':None if qemu is None else qemu.returncode,
+           'qemu_reaped':qemu is None or qemu.poll() is not None,
+           'cleanup':cleanup,'breakpoint_cleanup':bp_cleanup,'locks':free,
+           'inputs_sha256_after':pins,'inputs_unchanged':pins_match,'serial':frozen.extract(run/'serial.log'),
+           'health':watcher.snapshot(),'probe_stage':None if probe is None else probe.stage}
+-        (run/'receipt.json').write_text(json.dumps(receipt,indent=2,ensure_ascii=False)+'\n')
+         print(json.dumps({'run':str(run),'stop':stop,'error':error,'bp_removed':bp_cleanup['all_removed'],
+             'api16_restored':cleanup['API16_restored'],'elapsed':elapsed},ensure_ascii=False),flush=True)
+-        good=(stop=='mpr_same_call_return_captured' and error is None and probe is not None
+-              and probe.records and probe.records[-1].get('mpr_identity_after') is not None
+-              and bp_cleanup['all_removed']
+-              and cleanup['API16_restored'] and qemu is not None and qemu.returncode==0
++        captured=(stop in ('ap_return_captured','unknown_callback_captured','bridge_failstop',
++                           'enterrec_blocked','writer_threshold_before_record_gate')
++              and error is None and probe is not None and probe.gate_installed
++              and probe.records
++              and bp_cleanup['all_removed'] and qemu is not None and qemu.returncode==0
+               and pins_match and all(x['free'] for x in free) and elapsed<=180)
+-        result=0 if good else 2
++        lifecycle_ok=False # no guest resume/API16 by design in diagnostic mode
++        receipt['diagnostic_captured']=bool(captured)
++        receipt['lifecycle_healthy']=bool(lifecycle_ok)
++        receipt['API16_restore_policy']='SKIPPED_TO_AVOID_UNGUARDED_ASYNC_BRK'
++        (run/'receipt.json').write_text(json.dumps(receipt,indent=2,ensure_ascii=False)+'\n')
++        result=0 if captured else 2
+     return result
+ 
+ if __name__=='__main__':sys.exit(main())

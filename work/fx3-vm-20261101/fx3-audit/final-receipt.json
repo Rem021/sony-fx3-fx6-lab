@@ -1,0 +1,366 @@
+{
+  "created_utc": "2026-11-01T10:38:57.166045+00:00",
+  "status": "RESEARCH_DONE_ORIGINAL_FX3_CORE_AND_LOADER_DEPLOYED_UI_BLOCKED_AT_UIPC",
+  "kernel_original_unchanged": true,
+  "core_and_loader_independently_verified": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/final-runtime-independent-proof.json",
+  "formal_runs": [
+    "a-7811bbff",
+    "a-2d6d46e5"
+  ],
+  "ap_entry_probe": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/p12-ap-entry-independent-proof.json",
+  "notes": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/research_notes/FX3 Mac 虚拟机部署研究/fx3-assets.md",
+    "bytes": 17553,
+    "sha256": "7a0f5ba9e849682f33de33c8160dc80c785dc5404b6c2a1321e7d77cf6b8bf23"
+  },
+  "menu_or_capture_claimed": false,
+  "real_camera_usb_phone_host_disk_operations": 0,
+  "new_subagents": 0,
+  "files": [
+    {
+      "path": "add_gicd_iomap.py",
+      "bytes": 2197,
+      "sha256": "3a5f25c15d7426f5fe28cff9ec5389d0b20b20c47a9990c1f033e5f1459ed6aa"
+    },
+    {
+      "path": "ap-entry-probe.json",
+      "bytes": 2516,
+      "sha256": "ff807db550a37d947a1a700142884647bea055a3650b4efa77f6d7e1be1748fd"
+    },
+    {
+      "path": "application-loader-probe.json",
+      "bytes": 20198,
+      "sha256": "2699efc33174951a6473901fe30110f77e2a1d081ebf2fc1fa8288c58b4b5b37"
+    },
+    {
+      "path": "asset-audit.json",
+      "bytes": 60934,
+      "sha256": "9f588ec701c341f9abd91b8498faeff9f32a0ff4a0897a145a3a414d4b4fe160"
+    },
+    {
+      "path": "audit_assets.py",
+      "bytes": 7519,
+      "sha256": "fa17df6ebc2786992f586d0b78e73d925a1011c518336fc87aef94778dbb0ad9"
+    },
+    {
+      "path": "bootin-argument-static.json",
+      "bytes": 11412,
+      "sha256": "bc8aa8b4ae8d723ce690447411e070fb3dba75558a13c1ab8d3bbfb54f5b5581"
+    },
+    {
+      "path": "coprocessor-artifacts.json",
+      "bytes": 774,
+      "sha256": "1e5868329e84ec290cb6b6419d4f7aaf2b9d76ea13ffeb5bbbb5b520fa7c0be9"
+    },
+    {
+      "path": "dtb-rebuilder-selfcheck-only.dtb",
+      "bytes": 17004,
+      "sha256": "e75cae4ba3c05058e6f8ca200ab8503e38e14cfe4c6a2730da117fac528c3efb"
+    },
+    {
+      "path": "dtb-rebuilder-selfcheck-only.dtb.json",
+      "bytes": 870,
+      "sha256": "efadc6aed1d5377cac6e88217ce65127eafa0b2236e081a16d83a6c8a87e95e8"
+    },
+    {
+      "path": "early-head-original.json",
+      "bytes": 5070,
+      "sha256": "aee69c8a459728eafe7ad7eda2095226acdac2f0f0a7cf4293a311429be0abfb"
+    },
+    {
+      "path": "final-runtime-independent-proof.json",
+      "bytes": 10174,
+      "sha256": "c3887837223e2626987c2a2bd04ae1eefeedfc12622591a5d2e6edc4c1874f6b"
+    },
+    {
+      "path": "fx3-minimal-original-userspace-v2.cpio",
+      "bytes": 1860580,
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "fx3-minimal-original-userspace-v2.cpio.gz",
+      "bytes": 920180,
+      "sha256": "c704d71d6e6618b087d21c3a2a1a2bb562cb19085032a69f7ec43314302c4f4f"
+    },
+    {
+      "path": "fx3-minimal-original-userspace.cpio.gz",
+      "bytes": 905167,
+      "sha256": "4b65cb8709ebb08a80f31c2f1c2f04787d5b07a5dc1286a207bf937a4d453993"
+    },
+    {
+      "path": "fx3-original-app-loader-probe.cpio",
+      "bytes": 8693220,
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "fx3-original-app-loader-probe.cpio.gz",
+      "bytes": 3629759,
+      "sha256": "21009d54a4e60413ae1425baf6671e91820abb246d2f8bc45a5ccc1e0e16cd0e"
+    },
+    {
+      "path": "fx3-original-im-entry-probe.cpio",
+      "bytes": 8694800,
+      "sha256": "916e5b041dbb338b916b99479225da3f9d1e5955d019c085b3f48607b20e770a"
+    },
+    {
+      "path": "gicd-original-consumer-proof.json",
+      "bytes": 19835,
+      "sha256": "6e5e4fe2f8bd03e2d109f744af91f68bb0ab87f20357932c75de5491487ce993"
+    },
+    {
+      "path": "im-argument-static.json",
+      "bytes": 8599,
+      "sha256": "41a6bcd08860bda5f07a5417048cfb13b3cbe11c852989d9e47ae1d977beeef4"
+    },
+    {
+      "path": "l2-provider-independent-proof.json",
+      "bytes": 8173,
+      "sha256": "ce95a8e20a22f0b2b942259bdbf8fe8f1062c5565489c78f3200c40a5d0fb8aa"
+    },
+    {
+      "path": "minimal-linux-blacklist-evidence.json",
+      "bytes": 6757,
+      "sha256": "54c049c4dc0b2450d98bf9a6cc9437fa1f7caec8db958d96b91584be462b8618"
+    },
+    {
+      "path": "minimal-probe-v2.json",
+      "bytes": 1245,
+      "sha256": "50de44bcf1e39eebdca29bceac3cf25376006feb1a275a1de312dbd1d4fc7708"
+    },
+    {
+      "path": "original-members/nflasha15/bin/bootin.elf",
+      "bytes": 23960,
+      "sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2"
+    },
+    {
+      "path": "original-members/nflasha15/bin/im.elf",
+      "bytes": 40920,
+      "sha256": "5171f576d8b76cfbf15581389183b390c445bd6ff9dd97fd6668c5f64e77dc91"
+    },
+    {
+      "path": "original-members/nflasha15/lib/appFw.so",
+      "bytes": 79015712,
+      "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f"
+    },
+    {
+      "path": "original-members/nflasha15/lib/libObj.so",
+      "bytes": 2876600,
+      "sha256": "c4681d209a7fe2ed63752be3b0be89ab7b7ce400679c00068c8c6e47d39f83ae"
+    },
+    {
+      "path": "original-members/nflasha15/lib/libosal_uipc.so",
+      "bytes": 43752,
+      "sha256": "09ebf5980237fc473077dc844763dcb00cba423f431646e3be7c0ca49ea70ff3"
+    },
+    {
+      "path": "original-members/nflasha7/bin/busybox",
+      "bytes": 423000,
+      "sha256": "c3297a7086efe9a001c39fa98d74d125992cf3225cf353ab6ff2238d827c7799"
+    },
+    {
+      "path": "original-members/nflasha7/lib/ld-2.25.so",
+      "bytes": 120616,
+      "sha256": "90b4fe734ba7faa08d4591b1363bff478e7bde399a821fc0b2d021c062a58a9a"
+    },
+    {
+      "path": "original-members/nflasha7/lib/libc-2.25.so",
+      "bytes": 1283936,
+      "sha256": "f9104526eb7e5d2ea533c1a209bb0b83e69367f569e4c966895c8e106e6382c9"
+    },
+    {
+      "path": "original-members/nflasha7/lib/libcrypt-2.25.so",
+      "bytes": 30864,
+      "sha256": "5e8476cab62694f2b158f1806b794c8d32cbe2d89cfd410181118f5af8af27d8"
+    },
+    {
+      "path": "original-members/nflasha7/lib/libdl-2.25.so",
+      "bytes": 10368,
+      "sha256": "6dde01ab92843eaf8c330f4cbd9b47186b14843c4e1de9f7c68ecacb3414403b"
+    },
+    {
+      "path": "original-members/nflasha7/lib/libm-2.25.so",
+      "bytes": 658000,
+      "sha256": "dfffde29fdbf16430c5c27587253323eb94b4b551235a8839478ff3a1cfd1871"
+    },
+    {
+      "path": "original-members/nflasha7/lib/libpthread-2.25.so",
+      "bytes": 101888,
+      "sha256": "7394f861930c45dd5076a700da5755faf0f6bed08544b0d60eadb85a14a7d592"
+    },
+    {
+      "path": "original-members/nflasha7/lib/librt-2.25.so",
+      "bytes": 27448,
+      "sha256": "be048444b8eaa1bfaf0ff2b3382ba097c130b2b540091ba14bb67b688bd2f8c2"
+    },
+    {
+      "path": "original-members/nflasha7/root/chassis",
+      "bytes": 18,
+      "sha256": "7880368a5b3a8efe7e19337e225fc1248dca9e8f1f96eb111823eb66588417e1"
+    },
+    {
+      "path": "original-members/nflasha7/sbin/init",
+      "bytes": 735,
+      "sha256": "c83de1abeeb779f7473181b51face32ecfedfa3bd5c0fc346ae0c628f1b0ac5e"
+    },
+    {
+      "path": "original-members/nflasha7/sbin/init2",
+      "bytes": 1658,
+      "sha256": "45d3b907e6ef96c9a930cd3e6f919db700bffb5f18c386abfdb655f4d9954aeb"
+    },
+    {
+      "path": "original-members/nflasha7/sbin/initrc/fstab",
+      "bytes": 1085,
+      "sha256": "3936e6508ba89a025fc998c824434562c2d16234db96e179ec3f3a90a5a1d6f0"
+    },
+    {
+      "path": "original-members/nflasha7/sbin/initrc/fstab.root",
+      "bytes": 58,
+      "sha256": "c77d93236b89349bcc24853756f960bb49411e922c9430ede70b5b2cb8b6a4b2"
+    },
+    {
+      "path": "original-members/nflasha7/sbin/initrc/insmod_drv1",
+      "bytes": 152,
+      "sha256": "22f29d06d7776fe5e8362c17049beabfd3e3bebffd222e51276e3704d483a591"
+    },
+    {
+      "path": "original-members/nflasha7/sbin/initrc/insmod_drv2",
+      "bytes": 1298,
+      "sha256": "19757bdd450061f861e2da44a6a93be2525668e3f7edc64e5a99a25bde56564e"
+    },
+    {
+      "path": "original-members/nflasha7/sbin/initrc/setup_nflash",
+      "bytes": 375,
+      "sha256": "055cb3db7a40084aef8aaa89a7357921b514bf0af89690f920b608d9f3734cdc"
+    },
+    {
+      "path": "p02-blocker-analysis.json",
+      "bytes": 5371,
+      "sha256": "a66760523d498327261f4e2d8ac38572bf397a535de786c4c73f005291003f1f"
+    },
+    {
+      "path": "p06-independent-printk-proof.json",
+      "bytes": 14116,
+      "sha256": "2a449d0bd15db27ec646589ba5fadcb4c0945b80f46112cb497fcbb481d6ace6"
+    },
+    {
+      "path": "p11-core-independent-proof.json",
+      "bytes": 2726,
+      "sha256": "f2d0c44d48028fe6ce2cd559c47d22705156de0c7cb193fc8c99e26a251201f0"
+    },
+    {
+      "path": "p12-ap-entry-independent-proof.json",
+      "bytes": 2126,
+      "sha256": "d1a3ee7baaf817c484ec4401ee2b247bf92a138b290df80b7fa26228c07f352c"
+    },
+    {
+      "path": "prepare_ap_entry_probe.py",
+      "bytes": 4263,
+      "sha256": "c12dfd381b52b4ffb25477806d27f5252006a1c0891c44c8f9eccfc9bad8c4f4"
+    },
+    {
+      "path": "prepare_application_loader_probe.py",
+      "bytes": 4928,
+      "sha256": "7425dadc326fcc977ad2fac59c23b606a618549af63c370f2b3bf0a789776441"
+    },
+    {
+      "path": "prepare_probe_v2.py",
+      "bytes": 2689,
+      "sha256": "2f630152d2f5da428d2122d53f631e4f3bca697554d3b22db24d816d05e9b493"
+    },
+    {
+      "path": "prepare_virt_dtb.py",
+      "bytes": 4722,
+      "sha256": "ce65e3851c5e00f2167b8c8cd98a3109dd456f45f438194d365b6090a3141941"
+    },
+    {
+      "path": "raw-initramfs-correction.json",
+      "bytes": 1317,
+      "sha256": "74e91fb6ede43ab35acd308575737e073b25dcb41db7a0b865c5298206513e87"
+    },
+    {
+      "path": "smp-esram-mailbox-proof.json",
+      "bytes": 1269,
+      "sha256": "b3a9c53057a1329a9b7ef0c1a6eeb06d0e1084bc5a82e926faf481f751d58be4"
+    },
+    {
+      "path": "upstream-initcall-name-crosscheck.json",
+      "bytes": 1284,
+      "sha256": "7a9ed63256cf8b106480b7952435eace99c0f0a3d2dbb9c7ae5dc34f16ed7a17"
+    },
+    {
+      "path": "verify_runtime_runs.py",
+      "bytes": 4795,
+      "sha256": "3bb26fe33a0b262751384b6526825d42b3b88e5a079d07a05acb032877f87e87"
+    },
+    {
+      "path": "virt-high-gicd-probe01.dtb",
+      "bytes": 8149,
+      "sha256": "73e5d84a90adf42df9ae58c200fde389a620e2e195c51e3efb3c917984243d12"
+    },
+    {
+      "path": "virt-high-gicd-probe01.dtb.json",
+      "bytes": 896,
+      "sha256": "f1bd4580b072b64c8d5a758e1570e4e47efcccad19fedc07854216ab23e45396"
+    },
+    {
+      "path": "virt-high-probe01.dtb",
+      "bytes": 7998,
+      "sha256": "dd10ff33d86b8059b5c60e6c62927418f053165dfb3a2dda3f5a5342560f7c23"
+    },
+    {
+      "path": "virt-high-probe01.dtb.json",
+      "bytes": 890,
+      "sha256": "ff0b0bf6008eb182160c7f25674128ab404286e6461ee85398eeb36d4768ff5d"
+    },
+    {
+      "path": "virt-minimal-linux-probe01.dtb",
+      "bytes": 8289,
+      "sha256": "9c4560f2d53b3d93b1fe23d2ab7e91e589be7aebb5d6e7d613ea3b8a4b3dc19d"
+    },
+    {
+      "path": "virt-minimal-linux-probe01.dtb.json",
+      "bytes": 989,
+      "sha256": "fb5e2f8df192dd58123ea518ea0b34d266d9db2327e2334829470f1ec2165382"
+    },
+    {
+      "path": "virt-minimal-linux-probe02.dtb",
+      "bytes": 8409,
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "virt-minimal-linux-probe02.dtb.json",
+      "bytes": 1110,
+      "sha256": "cdbe34a45897a767d2940b50943d38d65939d44545b20c0a82fb612b08c9adc7"
+    },
+    {
+      "path": "virt-original-app-loader-probe01.dtb",
+      "bytes": 8409,
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "virt-original-app-loader-probe01.dtb.json",
+      "bytes": 1073,
+      "sha256": "c0b3e5a1b46e22870443fdf6f3751d9a3af2c2b7ce6940689e489eafc4131b5a"
+    },
+    {
+      "path": "virt-original-im-entry-probe01.dtb",
+      "bytes": 8409,
+      "sha256": "a55ceedf89927ea38a0dbd38c0fe204e216ba190fa72d2bf2969c80cfa010be1"
+    },
+    {
+      "path": "virt-original-im-entry-probe01.dtb.json",
+      "bytes": 1071,
+      "sha256": "35581a246eaab0277078f7d965017b3458732b2e45224fdc1fcb875962264862"
+    },
+    {
+      "path": "virt-probe01.dtb",
+      "bytes": 7994,
+      "sha256": "a8cd5a3ec6d43d8769fbe76eb4db14d18ff0df689af2388bcaf8e631d4c067e3"
+    },
+    {
+      "path": "virt-probe01.dtb.json",
+      "bytes": 878,
+      "sha256": "65dc916a6443de8fddc2fc0910eca9684dda455da0c977f158ea46c051ce66f1"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "source_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+  "original_plain_source_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "original_header_sha256": "b1e8964250a2c45dc2928b4de99bb9dd9ded4c572cf8b378667361a9eade53c8",
+  "cases": [
+    {
+      "fixture": "original",
+      "constructor_bool": 0,
+      "header_sha256": "b1e8964250a2c45dc2928b4de99bb9dd9ded4c572cf8b378667361a9eade53c8",
+      "accepted": true,
+      "instructions": {
+        "constructor": 26,
+        "set_header": 30,
+        "check": 25041
+      }
+    },
+    {
+      "fixture": "changed_crc_region",
+      "constructor_bool": 0,
+      "header_sha256": "91c8f23afd3260725a7138397a737b5a548725cf5b0fa66c46a9cd00d46b1f1c",
+      "accepted": false,
+      "instructions": {
+        "constructor": 26,
+        "set_header": 30,
+        "check": 25088
+      }
+    },
+    {
+      "fixture": "changed_region_recomputed_crc",
+      "constructor_bool": 0,
+      "header_sha256": "86c96282173614f723d1b348aa08ba5a008e999baba1d0a20827301ed7aa2ea5",
+      "accepted": true,
+      "instructions": {
+        "constructor": 26,
+        "set_header": 30,
+        "check": 25088
+      }
+    },
+    {
+      "fixture": "changed_magic",
+      "constructor_bool": 0,
+      "header_sha256": "832515da32c85cf77901807a6f9711658a91f8c110657d2ef5e041f4fd3fcc83",
+      "accepted": false,
+      "instructions": {
+        "constructor": 26,
+        "set_header": 30,
+        "check": 16
+      }
+    },
+    {
+      "fixture": "original",
+      "constructor_bool": 1,
+      "header_sha256": "b1e8964250a2c45dc2928b4de99bb9dd9ded4c572cf8b378667361a9eade53c8",
+      "accepted": true,
+      "instructions": {
+        "constructor": 26,
+        "set_header": 30,
+        "check": 25041
+      }
+    },
+    {
+      "fixture": "changed_crc_region",
+      "constructor_bool": 1,
+      "header_sha256": "91c8f23afd3260725a7138397a737b5a548725cf5b0fa66c46a9cd00d46b1f1c",
+      "accepted": false,
+      "instructions": {
+        "constructor": 26,
+        "set_header": 30,
+        "check": 25088
+      }
+    },
+    {
+      "fixture": "changed_region_recomputed_crc",
+      "constructor_bool": 1,
+      "header_sha256": "86c96282173614f723d1b348aa08ba5a008e999baba1d0a20827301ed7aa2ea5",
+      "accepted": true,
+      "instructions": {
+        "constructor": 26,
+        "set_header": 30,
+        "check": 25088
+      }
+    },
+    {
+      "fixture": "changed_magic",
+      "constructor_bool": 1,
+      "header_sha256": "832515da32c85cf77901807a6f9711658a91f8c110657d2ef5e041f4fd3fcc83",
+      "accepted": false,
+      "instructions": {
+        "constructor": 26,
+        "set_header": 30,
+        "check": 16
+      }
+    }
+  ],
+  "scope": "Original constructor, SetHeader, Check and small local helpers execute in synthetic Unicorn memory. Host shims: allocation, mutex, memset/memcpy/memcmp only. Header CRC gate accepting a modified CRC region is not full firmware admission, signature bypass, body loading, native execution or a flash test."
+}

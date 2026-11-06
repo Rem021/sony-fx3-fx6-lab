@@ -1,0 +1,23 @@
+00000530 c4ba41f9 ldr      x4, [x22, #0x370]
+00000534 240100b5 cbnz     x4, #0x558
+00000538 83200058 ldr      x3, #0x948 ; literal {'symbol': '', 'target_section': '.rodata', 'target_offset': 1480, 'type': 257}
+0000053c 62ab8052 mov      w2, #0x55b
+00000540 81200058 ldr      x1, #0x950 ; literal {'symbol': '', 'target_section': '.rodata.str1.8', 'target_offset': 5384, 'type': 257}
+00000544 b4028012 mov      w20, #-0x16
+00000548 c0200058 ldr      x0, #0x960 ; literal {'symbol': '', 'target_section': '.rodata.str1.8', 'target_offset': 8656, 'type': 257}
+0000054c 63c00391 add      x3, x3, #0xf0
+00000550 00000094 bl       #0x550 ; {'symbol': 'printk', 'target_section': 'SHN_UNDEF', 'target_offset': 0, 'type': 283}
+00000554 ae000014 b        #0x80c
+00000558 800840b9 ldr      w0, [x4, #8]
+0000055c 97200091 add      x23, x4, #8
+00000560 60010034 cbz      w0, #0x58c
+00000564 800c40b9 ldr      w0, [x4, #0xc]
+00000568 20010034 cbz      w0, #0x58c
+0000056c 801040b9 ldr      w0, [x4, #0x10]
+00000570 e0000034 cbz      w0, #0x58c
+00000574 801440b9 ldr      w0, [x4, #0x14]
+00000578 a0000034 cbz      w0, #0x58c
+0000057c 801840b9 ldr      w0, [x4, #0x18]
+00000580 60000034 cbz      w0, #0x58c
+00000584 801c40b9 ldr      w0, [x4, #0x1c]
+00000588 e0140035 cbnz     w0, #0x824

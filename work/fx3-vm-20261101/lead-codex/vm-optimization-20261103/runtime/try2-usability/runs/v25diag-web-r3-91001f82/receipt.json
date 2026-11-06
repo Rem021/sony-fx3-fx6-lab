@@ -1,0 +1,3056 @@
+{
+  "created_utc": "2026-11-04T13:33:43.193565+00:00",
+  "duration_seconds": 550.402574916021,
+  "candidate": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/candidate.json",
+  "candidate_sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518",
+  "models_identical_to_frozen_AP101_r4": false,
+  "authority": "task_981cfd88e8cd_offline_candidate",
+  "observer_source_snapshot": [
+    {
+      "name": "run_trial_v25_diag_r3.py",
+      "sha256": "1a3af0b8fb6be5c79bf4e58548e622fec03263281badf147e0cff67dae7d3429"
+    },
+    {
+      "name": "terminal_status_v23.py",
+      "sha256": "94a368e187f694fce130871078d757682e9414e25c186ee0b541d83beced5c75"
+    },
+    {
+      "name": "pending_visual_v20.py",
+      "sha256": "e26aced25589fb10e509cbacb028b8cae7d25d71286752a5d57964efa6205fc3"
+    },
+    {
+      "name": "cpio_audit.py",
+      "sha256": "58d8930a4b8ece352e17e1044b4c0d940f0640a284079743a74e058d7b86a6ec"
+    },
+    {
+      "name": "decode_printk_ring.py",
+      "sha256": "8ee12b79d34c1a7da01f6411cb40857e37ff442436c9cda59b86363221ab0c8d"
+    },
+    {
+      "name": "osd_ring93_v4.py",
+      "sha256": "a57101ea4631ed281b8be34c67826f8844112e8bda1dc7ac342a1517de46c0fc"
+    },
+    {
+      "name": "gate_input_usability.py",
+      "sha256": "a491ad53babf720830d5bda45ecf6467b018cd79dae7247ebcce45bd854f37f6"
+    },
+    {
+      "name": "file_readback100.py",
+      "sha256": "f20bd5f2fa68482a2440f5c902d1c9990712c7295bbdf445eac6b837e0df3a1e"
+    },
+    {
+      "name": "trial_web_v22_navigation_review.py",
+      "sha256": "3cf9544f08fbdf62dee46420170f5fb85dfae1c656b8a24c062c7b055d64fde1"
+    },
+    {
+      "name": "trial_ring_cached.py",
+      "sha256": "9309794feded60291d6748bd4d19ab98a909e7ba73c91233a2ffb983551f9e11"
+    },
+    {
+      "name": "trial_log_v4_mss.py",
+      "sha256": "4d57629fc8bf1c8d158bfcf101915b9edd626f7bfb11c55fc78fe634ef7d6645"
+    },
+    {
+      "name": "restore_api103_v2.py",
+      "sha256": "8fb5f7a79cc152d647a433d9183ef8000f6026eb93c4ec91de7ececf0da52168"
+    },
+    {
+      "name": "quiesced_diag_readback.py",
+      "sha256": "d832239386d2975d8c55940f0ef05baf733fa5cff6e674fc77a9a4626e21eb90"
+    },
+    {
+      "name": "parse_v25_diag_r3.py",
+      "sha256": "c232254a1991894e8a6a0446ee7a516ba7491211bfcf894852b56008345dcb9a"
+    }
+  ],
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82",
+  "maximum_seconds": 1800,
+  "maximum_steps": 4096,
+  "diagnostic_actual_step_limit": null,
+  "visual_outcomes": [
+    {
+      "step": 1,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 122,
+      "before_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+      "observed_sequence": 123,
+      "observed_png_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "ack_host_monotonic": 383008.41304675,
+      "decision_host_monotonic": 383009.445352708,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 2,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 503,
+      "before_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "observed_sequence": 510,
+      "observed_png_sha256": "d2567579a0aeed525fb91b9ff0f2a40c305e1a8663017372bd3a7f62a759334c",
+      "ack_host_monotonic": 383070.275797,
+      "decision_host_monotonic": 383071.755475375,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 3,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 769,
+      "before_png_sha256": "15cb5b958cf6c78c43758f3c5771ef91a90e4de9a1eb06059bb23f2dea1596fc",
+      "observed_sequence": 778,
+      "observed_png_sha256": "aa25d4af1046045ef982407327a041d00040ea647ef0657b2dd83c18e7058ba5",
+      "ack_host_monotonic": 383099.4680165,
+      "decision_host_monotonic": 383100.844367291,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 4,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 1074,
+      "before_png_sha256": "3d071654943844a37e1651eb74b2919150d885664a6bbde5ed23407e3f970e17",
+      "observed_sequence": 1081,
+      "observed_png_sha256": "4f53b2e7e66a6211134ac1b5470a614407a7a42a16082b3be621e13a0aa2bcf8",
+      "ack_host_monotonic": 383129.382816833,
+      "decision_host_monotonic": 383130.630196375,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 5,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 1267,
+      "before_png_sha256": "4f53b2e7e66a6211134ac1b5470a614407a7a42a16082b3be621e13a0aa2bcf8",
+      "observed_sequence": 1276,
+      "observed_png_sha256": "468d6dff00e29aae9bf498e76400ffec3379d1db9431290f6845456f2488da46",
+      "ack_host_monotonic": 383150.050029625,
+      "decision_host_monotonic": 383152.648845083,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 6,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 1453,
+      "before_png_sha256": "468d6dff00e29aae9bf498e76400ffec3379d1db9431290f6845456f2488da46",
+      "observed_sequence": 1457,
+      "observed_png_sha256": "3e70df0b1e49e56d0f6299242c3bb09d4443084eaa3544ec4b66c9803985758b",
+      "ack_host_monotonic": 383170.380061583,
+      "decision_host_monotonic": 383172.08108125,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 7,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 1763,
+      "before_png_sha256": "3e70df0b1e49e56d0f6299242c3bb09d4443084eaa3544ec4b66c9803985758b",
+      "observed_sequence": 1768,
+      "observed_png_sha256": "da006693eb672d64cdec05654e0d77b091417516324e0b36759a24d65ec9fbc3",
+      "ack_host_monotonic": 383211.419776541,
+      "decision_host_monotonic": 383212.792000375,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 8,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 2016,
+      "before_png_sha256": "da006693eb672d64cdec05654e0d77b091417516324e0b36759a24d65ec9fbc3",
+      "observed_sequence": 2026,
+      "observed_png_sha256": "03dadff1a6bdc01983ad3bd17ba2e4980449b876b098312729ea26d59249902d",
+      "ack_host_monotonic": 383237.234912,
+      "decision_host_monotonic": 383238.86295975,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 9,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 2232,
+      "before_png_sha256": "e3b3fc17054d25c908d32ed027c8fb5c54b5d8464e96e981943a8a39aa70b338",
+      "observed_sequence": 2236,
+      "observed_png_sha256": "b01d81949bb355dd5a3ab3cf8faea8aba36668b00a0d1f311080c070e5b49fa0",
+      "ack_host_monotonic": 383260.5482595,
+      "decision_host_monotonic": 383262.090762083,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 10,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 2476,
+      "before_png_sha256": "733af12c77a6d6d94b29071419c952f6e1cac0df31cf27da08291ba84cbd5a74",
+      "observed_sequence": 2485,
+      "observed_png_sha256": "a46330f751d0d93fd15f67bfa8f8378652d08e2eb6312c4828ae4e226996cdcf",
+      "ack_host_monotonic": 383283.657900291,
+      "decision_host_monotonic": 383285.082070083,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 11,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 2703,
+      "before_png_sha256": "5c3394a262559b4b4331a97979660e45ce06325ee3447cf57c92780aa90638ac",
+      "observed_sequence": 2709,
+      "observed_png_sha256": "5a496c4d0995156c317d4ad10e77b4008dded98f843e381aa097e7654e8e6c25",
+      "ack_host_monotonic": 383310.298095708,
+      "decision_host_monotonic": 383312.8873755,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 12,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 2934,
+      "before_png_sha256": "5a496c4d0995156c317d4ad10e77b4008dded98f843e381aa097e7654e8e6c25",
+      "observed_sequence": 2938,
+      "observed_png_sha256": "5c3394a262559b4b4331a97979660e45ce06325ee3447cf57c92780aa90638ac",
+      "ack_host_monotonic": 383336.558892208,
+      "decision_host_monotonic": 383338.442562041,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 13,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 3235,
+      "before_png_sha256": "5c3394a262559b4b4331a97979660e45ce06325ee3447cf57c92780aa90638ac",
+      "observed_sequence": 3239,
+      "observed_png_sha256": "05aef51f6515b1c11f69c275376643b4d0fcfa3eb8dd3e0c22abb6a92ac04f6d",
+      "ack_host_monotonic": 383368.008051083,
+      "decision_host_monotonic": 383369.609440625,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 14,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 3542,
+      "before_png_sha256": "05aef51f6515b1c11f69c275376643b4d0fcfa3eb8dd3e0c22abb6a92ac04f6d",
+      "observed_sequence": 3549,
+      "observed_png_sha256": "5a1c64425a54beb425516bed32d47575dcbf607c2e1b2ab5b8383d35b1a5de85",
+      "ack_host_monotonic": 383396.186753041,
+      "decision_host_monotonic": 383398.414898916,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    },
+    {
+      "step": 15,
+      "state": "visual_changed",
+      "input_received": true,
+      "visual_change_observed": true,
+      "before_sequence": 3701,
+      "before_png_sha256": "ff93786949bb7fc8a36812110ec08d1f6ae251806d01d3e96d2970a54cef65a4",
+      "observed_sequence": 3708,
+      "observed_png_sha256": "121148d914b781da2b51101d0650bb13ceabbc858c137384f7367edd0a8092cd",
+      "ack_host_monotonic": 383418.483719791,
+      "decision_host_monotonic": 383419.848297791,
+      "downstream_handler_completed": "unknown",
+      "pixel_attribution": "observed_after_this_input_not_proven_caused"
+    }
+  ],
+  "visual_state_at_end": "unknown_ack",
+  "stop_cause": "health_failure",
+  "internal_hoststep_mode": false,
+  "HTTP_key_source_used": true,
+  "qemu_pid": 53476,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "inputs_unchanged": true,
+  "input_checks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "sha256": "486b179138cebb4c67bc7a5ae20442c32fc4dc9171cfb4778948b6e92eec3476"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "sha256": "5b8eaeb90e56af61bcc197b1adede933da10e857892c26d1ca366bc3ae5e7047"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "sha256": "1478fde20c516ef9869573711d9626c5da80a5e45be15c5ca43200d5835bb00c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "sha256": "7d151d8f1e363c66a947724fd65c5b818e8037347c886d8b0f133c970ad1f862"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/lifecycle-repair/vmopt-20261103-reload-v1/Backup-generation4-fixed.bin",
+      "sha256": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+      "sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.cpio",
+      "sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/candidate.json",
+      "sha256": "a8fd7e81e00353f8dbd5dc579f6d440f28ecd083fc15d8e1335899c44b108518"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "sha256": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d"
+    }
+  ],
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_close": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_close": true
+    }
+  ],
+  "host_observer_error": null,
+  "memory_samples": [
+    {
+      "elapsed_seconds": 0.8075304160011001,
+      "rss_vsz_kib": "761072 495717808"
+    },
+    {
+      "elapsed_seconds": 5.8204272909788415,
+      "rss_vsz_kib": "501824 495717808"
+    },
+    {
+      "elapsed_seconds": 10.831859083031304,
+      "rss_vsz_kib": "105840 495717808"
+    },
+    {
+      "elapsed_seconds": 15.844389332982246,
+      "rss_vsz_kib": "53568 495717808"
+    },
+    {
+      "elapsed_seconds": 20.999220500001684,
+      "rss_vsz_kib": "114656 495717808"
+    },
+    {
+      "elapsed_seconds": 26.04522916598944,
+      "rss_vsz_kib": "242976 495717808"
+    },
+    {
+      "elapsed_seconds": 31.050972790981177,
+      "rss_vsz_kib": "186560 495726000"
+    },
+    {
+      "elapsed_seconds": 36.05770850001136,
+      "rss_vsz_kib": "200832 495726000"
+    },
+    {
+      "elapsed_seconds": 41.10366612498183,
+      "rss_vsz_kib": "279392 495742384"
+    },
+    {
+      "elapsed_seconds": 46.14445129100932,
+      "rss_vsz_kib": "223984 495742384"
+    },
+    {
+      "elapsed_seconds": 51.16587387502659,
+      "rss_vsz_kib": "149296 495742384"
+    },
+    {
+      "elapsed_seconds": 56.19298541598255,
+      "rss_vsz_kib": "141408 495742384"
+    },
+    {
+      "elapsed_seconds": 61.19870870799059,
+      "rss_vsz_kib": "143280 495742384"
+    },
+    {
+      "elapsed_seconds": 66.27373466599965,
+      "rss_vsz_kib": "147936 495742384"
+    },
+    {
+      "elapsed_seconds": 71.38067191600567,
+      "rss_vsz_kib": "150480 495742384"
+    },
+    {
+      "elapsed_seconds": 76.40153370797634,
+      "rss_vsz_kib": "146832 495742384"
+    },
+    {
+      "elapsed_seconds": 81.45979208301287,
+      "rss_vsz_kib": "175632 495742384"
+    },
+    {
+      "elapsed_seconds": 86.51470674999291,
+      "rss_vsz_kib": "150080 495742384"
+    },
+    {
+      "elapsed_seconds": 91.55995820800308,
+      "rss_vsz_kib": "158848 495742384"
+    },
+    {
+      "elapsed_seconds": 96.5887760000187,
+      "rss_vsz_kib": "158688 495742384"
+    },
+    {
+      "elapsed_seconds": 101.6018885410158,
+      "rss_vsz_kib": "163856 495742384"
+    },
+    {
+      "elapsed_seconds": 106.65673137502745,
+      "rss_vsz_kib": "150032 495742384"
+    },
+    {
+      "elapsed_seconds": 111.68906937498832,
+      "rss_vsz_kib": "146736 495742384"
+    },
+    {
+      "elapsed_seconds": 116.71827045799,
+      "rss_vsz_kib": "145376 495742384"
+    },
+    {
+      "elapsed_seconds": 121.77267829101766,
+      "rss_vsz_kib": "136336 495742384"
+    },
+    {
+      "elapsed_seconds": 126.77835454099113,
+      "rss_vsz_kib": "141008 495742384"
+    },
+    {
+      "elapsed_seconds": 131.7921972500044,
+      "rss_vsz_kib": "143152 495742384"
+    },
+    {
+      "elapsed_seconds": 136.8297642910038,
+      "rss_vsz_kib": "142560 495742384"
+    },
+    {
+      "elapsed_seconds": 141.8500210000202,
+      "rss_vsz_kib": "151648 495742384"
+    },
+    {
+      "elapsed_seconds": 146.87813874997664,
+      "rss_vsz_kib": "181040 495742384"
+    },
+    {
+      "elapsed_seconds": 151.92828862502938,
+      "rss_vsz_kib": "165984 495742384"
+    },
+    {
+      "elapsed_seconds": 156.98622012499254,
+      "rss_vsz_kib": "167712 495742384"
+    },
+    {
+      "elapsed_seconds": 162.03043949999847,
+      "rss_vsz_kib": "166560 495742384"
+    },
+    {
+      "elapsed_seconds": 167.03841454099165,
+      "rss_vsz_kib": "167008 495742384"
+    },
+    {
+      "elapsed_seconds": 172.0528442080249,
+      "rss_vsz_kib": "172720 495742384"
+    },
+    {
+      "elapsed_seconds": 177.08074524998665,
+      "rss_vsz_kib": "169728 495742384"
+    },
+    {
+      "elapsed_seconds": 182.1253047499922,
+      "rss_vsz_kib": "169424 495742384"
+    },
+    {
+      "elapsed_seconds": 187.13693758298177,
+      "rss_vsz_kib": "169328 495742384"
+    },
+    {
+      "elapsed_seconds": 192.19587883300846,
+      "rss_vsz_kib": "166704 495742384"
+    },
+    {
+      "elapsed_seconds": 197.2171710000257,
+      "rss_vsz_kib": "142608 495742384"
+    },
+    {
+      "elapsed_seconds": 202.2370817909832,
+      "rss_vsz_kib": "169968 495742384"
+    },
+    {
+      "elapsed_seconds": 207.24620570801198,
+      "rss_vsz_kib": "149456 495742384"
+    },
+    {
+      "elapsed_seconds": 212.29894333297852,
+      "rss_vsz_kib": "147936 495742384"
+    },
+    {
+      "elapsed_seconds": 217.41098475002218,
+      "rss_vsz_kib": "148896 495742384"
+    },
+    {
+      "elapsed_seconds": 222.4704550000024,
+      "rss_vsz_kib": "148672 495742384"
+    },
+    {
+      "elapsed_seconds": 227.51040862500668,
+      "rss_vsz_kib": "147920 495742384"
+    },
+    {
+      "elapsed_seconds": 232.55178504099604,
+      "rss_vsz_kib": "157248 495742384"
+    },
+    {
+      "elapsed_seconds": 237.57735137501732,
+      "rss_vsz_kib": "155712 495742384"
+    },
+    {
+      "elapsed_seconds": 242.62561466603074,
+      "rss_vsz_kib": "154464 495742384"
+    },
+    {
+      "elapsed_seconds": 247.65973320801277,
+      "rss_vsz_kib": "142544 495742384"
+    },
+    {
+      "elapsed_seconds": 252.6800253749825,
+      "rss_vsz_kib": "139056 495742384"
+    },
+    {
+      "elapsed_seconds": 257.7204542499967,
+      "rss_vsz_kib": "145552 495742384"
+    },
+    {
+      "elapsed_seconds": 262.7771015409962,
+      "rss_vsz_kib": "136896 495742384"
+    },
+    {
+      "elapsed_seconds": 267.8201659999904,
+      "rss_vsz_kib": "134688 495742384"
+    },
+    {
+      "elapsed_seconds": 272.82691083301324,
+      "rss_vsz_kib": "132048 495742384"
+    },
+    {
+      "elapsed_seconds": 277.8669604160241,
+      "rss_vsz_kib": "134688 495742384"
+    },
+    {
+      "elapsed_seconds": 282.9258653750294,
+      "rss_vsz_kib": "137104 495742384"
+    },
+    {
+      "elapsed_seconds": 287.9412139999913,
+      "rss_vsz_kib": "165088 495742384"
+    },
+    {
+      "elapsed_seconds": 292.9929981660098,
+      "rss_vsz_kib": "148880 495742384"
+    },
+    {
+      "elapsed_seconds": 298.0256924580317,
+      "rss_vsz_kib": "149024 495742384"
+    },
+    {
+      "elapsed_seconds": 303.0467893750174,
+      "rss_vsz_kib": "149232 495742384"
+    },
+    {
+      "elapsed_seconds": 308.0826112080249,
+      "rss_vsz_kib": "149216 495742384"
+    },
+    {
+      "elapsed_seconds": 313.1148607910145,
+      "rss_vsz_kib": "165568 495742384"
+    },
+    {
+      "elapsed_seconds": 318.1361389160156,
+      "rss_vsz_kib": "169840 495742384"
+    },
+    {
+      "elapsed_seconds": 323.18336199998157,
+      "rss_vsz_kib": "162800 495742384"
+    },
+    {
+      "elapsed_seconds": 328.2068798749824,
+      "rss_vsz_kib": "165360 495742384"
+    },
+    {
+      "elapsed_seconds": 333.2410890830215,
+      "rss_vsz_kib": "169280 495742384"
+    },
+    {
+      "elapsed_seconds": 338.253467499977,
+      "rss_vsz_kib": "169376 495742384"
+    },
+    {
+      "elapsed_seconds": 343.2879121659789,
+      "rss_vsz_kib": "159632 495742384"
+    },
+    {
+      "elapsed_seconds": 348.3340740830172,
+      "rss_vsz_kib": "159168 495742384"
+    },
+    {
+      "elapsed_seconds": 353.38063391600735,
+      "rss_vsz_kib": "154048 495742384"
+    },
+    {
+      "elapsed_seconds": 358.39631300000474,
+      "rss_vsz_kib": "178816 495742384"
+    },
+    {
+      "elapsed_seconds": 363.43542954098666,
+      "rss_vsz_kib": "152448 495742384"
+    },
+    {
+      "elapsed_seconds": 368.4798528330284,
+      "rss_vsz_kib": "152176 495742384"
+    },
+    {
+      "elapsed_seconds": 373.488516582991,
+      "rss_vsz_kib": "144512 495742384"
+    },
+    {
+      "elapsed_seconds": 378.5421247910126,
+      "rss_vsz_kib": "155232 495742384"
+    },
+    {
+      "elapsed_seconds": 383.57227062497986,
+      "rss_vsz_kib": "176816 495742384"
+    },
+    {
+      "elapsed_seconds": 388.6797739160247,
+      "rss_vsz_kib": "157472 495742384"
+    },
+    {
+      "elapsed_seconds": 393.7549476249842,
+      "rss_vsz_kib": "159280 495742384"
+    },
+    {
+      "elapsed_seconds": 398.8158249160042,
+      "rss_vsz_kib": "159984 495742384"
+    },
+    {
+      "elapsed_seconds": 403.8552189579932,
+      "rss_vsz_kib": "155184 495742384"
+    },
+    {
+      "elapsed_seconds": 408.8674499579938,
+      "rss_vsz_kib": "172496 495742384"
+    },
+    {
+      "elapsed_seconds": 413.8810366659891,
+      "rss_vsz_kib": "172816 495742384"
+    },
+    {
+      "elapsed_seconds": 418.9109959159978,
+      "rss_vsz_kib": "159536 495742384"
+    },
+    {
+      "elapsed_seconds": 423.95696245797444,
+      "rss_vsz_kib": "161104 495742384"
+    },
+    {
+      "elapsed_seconds": 428.9947363330284,
+      "rss_vsz_kib": "161392 495742384"
+    },
+    {
+      "elapsed_seconds": 434.0501672080136,
+      "rss_vsz_kib": "160560 495742384"
+    },
+    {
+      "elapsed_seconds": 439.0743574160151,
+      "rss_vsz_kib": "164224 495742384"
+    },
+    {
+      "elapsed_seconds": 444.12767520803027,
+      "rss_vsz_kib": "169744 495742384"
+    },
+    {
+      "elapsed_seconds": 449.1565167499939,
+      "rss_vsz_kib": "162512 495742384"
+    },
+    {
+      "elapsed_seconds": 454.16748741600895,
+      "rss_vsz_kib": "157536 495742384"
+    },
+    {
+      "elapsed_seconds": 459.1893829579931,
+      "rss_vsz_kib": "157888 495742384"
+    },
+    {
+      "elapsed_seconds": 464.23385883303126,
+      "rss_vsz_kib": "145056 495742384"
+    },
+    {
+      "elapsed_seconds": 469.2805077499943,
+      "rss_vsz_kib": "166832 495742384"
+    },
+    {
+      "elapsed_seconds": 474.3351261250209,
+      "rss_vsz_kib": "171200 495742384"
+    },
+    {
+      "elapsed_seconds": 479.39325512497453,
+      "rss_vsz_kib": "149536 495742384"
+    },
+    {
+      "elapsed_seconds": 484.4291438750224,
+      "rss_vsz_kib": "130864 495742384"
+    },
+    {
+      "elapsed_seconds": 489.43744087498635,
+      "rss_vsz_kib": "140848 495742384"
+    },
+    {
+      "elapsed_seconds": 494.4582460829988,
+      "rss_vsz_kib": "141328 495742384"
+    },
+    {
+      "elapsed_seconds": 499.50996450003004,
+      "rss_vsz_kib": "114944 495742384"
+    },
+    {
+      "elapsed_seconds": 504.52749595802743,
+      "rss_vsz_kib": "108192 495742384"
+    },
+    {
+      "elapsed_seconds": 509.5372905830154,
+      "rss_vsz_kib": "91632 495742384"
+    },
+    {
+      "elapsed_seconds": 514.5629914160236,
+      "rss_vsz_kib": "40144 495742384"
+    },
+    {
+      "elapsed_seconds": 519.6186306250165,
+      "rss_vsz_kib": "41136 495742384"
+    },
+    {
+      "elapsed_seconds": 524.6305895409896,
+      "rss_vsz_kib": "40848 495742384"
+    }
+  ],
+  "early_stop_reason": "按键 12 秒内未得到原生 key-up 回执",
+  "full_serial_bytes_inspected": 37526216,
+  "serial_health_failure": null,
+  "markers": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": true,
+    "FX3_PRESET_CONTEXT_BOUND": true,
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": true,
+    "FX3_AP89_UUD_DECISION": true,
+    "FX3_AP89_SCREEN_CREATE": true,
+    "FX3_AP_IM_ENDMAPS_": true,
+    "registration_origin=malloc_parent_v1": true,
+    "FX3_GPE_RESOURCE_BOUND": true,
+    "FX3_GPE_RESOURCE_REGISTER": true,
+    "FX3_GPE_SCOPE": true,
+    "FX3_RM_BOUND": true,
+    "FX3_RM_FRONT_TRANSFER": true,
+    "FX3_RM_REPLY_TRANSFER": true,
+    "FX3_RM_NATIVE_FREE": true,
+    "FX3_MEDIA_SELFTEST_PASS": true,
+    "FX3_MEDIA_BOUND module=D": true,
+    "FX3_MEDIA_FRONT": true,
+    "FRONT_FULL_BODY": true,
+    "FX3_MEDIA_START_BRANCH": true,
+    "FX3_MEDIA_NOTIFY": true,
+    "FX3_KEY96_READY": true,
+    "FX3_OSD_FRAME_TARGET_VALID": true,
+    "FX3_GPE_COMPACTION_BOUND": true,
+    "FX3_GPE_DRAW_INTERVAL": true,
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": true,
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": true,
+    "FX3_KEY96_POLL": true,
+    "FX3_KEY96_THREAD_BEGIN": true,
+    "FX3_PANEL_CONFIG_V2_COMMIT": true,
+    "FX3_PROC97_STATUS_BEGIN": true,
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": true,
+    "FX3_DATE98_KERNEL_OBSERVE_READY": true,
+    "FX3_DATE99_WORKER_READY": true,
+    "FX3_DATE99_CONSUMER_BOUND": true,
+    "FX3_SYNC100_BACKEND_BOUND": true,
+    "FX3_FILE100_OBSERVER_READY": true,
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": true,
+    "FX3_BACKUP_INSMOD_RC=0": true,
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": true,
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": true,
+    "FX3_LDEC103_SELFTEST_RC=0": true,
+    "FX3_GPE104_LIB_BIND": true,
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": true,
+    "FX3_FILE103_READY_CONFIRMED": true,
+    "FX3_POWER_OBSERVER_BOUND": true,
+    "FX3_MSS_OBSERVER_BOUND": true
+  },
+  "marker_evidence": {
+    "FX3_GPE_EARLY_THREAD_GATE gpe=0": {
+      "method": "literal",
+      "marker": "FX3_GPE_EARLY_THREAD_GATE gpe=0"
+    },
+    "FX3_PRESET_CONTEXT_BOUND": {
+      "method": "literal",
+      "marker": "FX3_PRESET_CONTEXT_BOUND"
+    },
+    "FX3_PRESET_CONTEXT_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_PRESET_CONTEXT_SELFTEST_PASS"
+    },
+    "FX3_AP89_UUD_DECISION": {
+      "method": "literal",
+      "marker": "FX3_AP89_UUD_DECISION"
+    },
+    "FX3_AP89_SCREEN_CREATE": {
+      "method": "literal",
+      "marker": "FX3_AP89_SCREEN_CREATE"
+    },
+    "FX3_AP_IM_ENDMAPS_": {
+      "method": "literal",
+      "marker": "FX3_AP_IM_ENDMAPS_"
+    },
+    "registration_origin=malloc_parent_v1": {
+      "method": "literal",
+      "marker": "registration_origin=malloc_parent_v1"
+    },
+    "FX3_GPE_RESOURCE_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_RESOURCE_BOUND"
+    },
+    "FX3_GPE_RESOURCE_REGISTER": {
+      "method": "literal",
+      "marker": "FX3_GPE_RESOURCE_REGISTER"
+    },
+    "FX3_GPE_SCOPE": {
+      "method": "literal",
+      "marker": "FX3_GPE_SCOPE"
+    },
+    "FX3_RM_BOUND": {
+      "method": "literal",
+      "marker": "FX3_RM_BOUND"
+    },
+    "FX3_RM_FRONT_TRANSFER": {
+      "method": "literal",
+      "marker": "FX3_RM_FRONT_TRANSFER"
+    },
+    "FX3_RM_REPLY_TRANSFER": {
+      "method": "literal",
+      "marker": "FX3_RM_REPLY_TRANSFER"
+    },
+    "FX3_RM_NATIVE_FREE": {
+      "method": "literal",
+      "marker": "FX3_RM_NATIVE_FREE"
+    },
+    "FX3_MEDIA_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_SELFTEST_PASS"
+    },
+    "FX3_MEDIA_BOUND module=D": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_BOUND module=D"
+    },
+    "FX3_MEDIA_FRONT": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_FRONT"
+    },
+    "FRONT_FULL_BODY": {
+      "method": "literal",
+      "marker": "FRONT_FULL_BODY"
+    },
+    "FX3_MEDIA_START_BRANCH": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_START_BRANCH"
+    },
+    "FX3_MEDIA_NOTIFY": {
+      "method": "literal",
+      "marker": "FX3_MEDIA_NOTIFY"
+    },
+    "FX3_KEY96_READY": {
+      "method": "literal",
+      "marker": "FX3_KEY96_READY"
+    },
+    "FX3_OSD_FRAME_TARGET_VALID": {
+      "method": "literal",
+      "marker": "FX3_OSD_FRAME_TARGET_VALID"
+    },
+    "FX3_GPE_COMPACTION_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_COMPACTION_BOUND"
+    },
+    "FX3_GPE_DRAW_INTERVAL": {
+      "method": "literal",
+      "marker": "FX3_GPE_DRAW_INTERVAL"
+    },
+    "FX3_GPE_SCREEN_AUTHORITY_BOUND": {
+      "method": "literal",
+      "marker": "FX3_GPE_SCREEN_AUTHORITY_BOUND"
+    },
+    "FX3_AP_SNAPSHOT_DMM_SKIPPED": {
+      "method": "literal",
+      "marker": "FX3_AP_SNAPSHOT_DMM_SKIPPED"
+    },
+    "FX3_KEY96_POLL": {
+      "method": "literal",
+      "marker": "FX3_KEY96_POLL"
+    },
+    "FX3_KEY96_THREAD_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_KEY96_THREAD_BEGIN"
+    },
+    "FX3_PANEL_CONFIG_V2_COMMIT": {
+      "method": "literal",
+      "marker": "FX3_PANEL_CONFIG_V2_COMMIT"
+    },
+    "FX3_PROC97_STATUS_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_PROC97_STATUS_BEGIN"
+    },
+    "FX3_PROC97_ALL_THREAD_STAT_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_PROC97_ALL_THREAD_STAT_BEGIN"
+    },
+    "FX3_DATE98_KERNEL_OBSERVE_READY": {
+      "method": "literal",
+      "marker": "FX3_DATE98_KERNEL_OBSERVE_READY"
+    },
+    "FX3_DATE99_WORKER_READY": {
+      "method": "literal",
+      "marker": "FX3_DATE99_WORKER_READY"
+    },
+    "FX3_DATE99_CONSUMER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_DATE99_CONSUMER_BOUND"
+    },
+    "FX3_SYNC100_BACKEND_BOUND": {
+      "method": "literal",
+      "marker": "FX3_SYNC100_BACKEND_BOUND"
+    },
+    "FX3_FILE100_OBSERVER_READY": {
+      "method": "literal",
+      "marker": "FX3_FILE100_OBSERVER_READY"
+    },
+    "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN": {
+      "method": "literal",
+      "marker": "FX3_AP101_NATIVE_LOAD_READBACK_WINDOW_BEGIN"
+    },
+    "FX3_BACKUP_INSMOD_RC=0": {
+      "method": "literal",
+      "marker": "FX3_BACKUP_INSMOD_RC=0"
+    },
+    "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_BOUND major=251 minor=205 ioctl_bytes=32 command=1 result=0"
+    },
+    "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_GUEST_IOCTL_SELFTEST_PASS"
+    },
+    "FX3_LDEC103_SELFTEST_RC=0": {
+      "method": "literal",
+      "marker": "FX3_LDEC103_SELFTEST_RC=0"
+    },
+    "FX3_GPE104_LIB_BIND": {
+      "method": "literal",
+      "marker": "FX3_GPE104_LIB_BIND"
+    },
+    "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0": {
+      "method": "literal",
+      "marker": "adapter=v26_perf backend=v9 object_authoritative_no_draw_proc=1 mapping_cache=object_epoch texture_observe_default=0 callback_cache_default=0"
+    },
+    "FX3_FILE103_READY_CONFIRMED": {
+      "method": "literal",
+      "marker": "FX3_FILE103_READY_CONFIRMED"
+    },
+    "FX3_POWER_OBSERVER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_POWER_OBSERVER_BOUND"
+    },
+    "FX3_MSS_OBSERVER_BOUND": {
+      "method": "literal",
+      "marker": "FX3_MSS_OBSERVER_BOUND"
+    }
+  },
+  "date99_raw_serial_evidence": {
+    "literal_consumer_bound": {
+      "serial_byte_range": [
+        81160,
+        81185
+      ],
+      "raw": "FX3_DATE99_CONSUMER_BOUND"
+    },
+    "worker": {
+      "serial_byte_range": [
+        81042,
+        81143
+      ],
+      "raw": "FX3_DATE99_WORKER_READY serialized=1 native_OSAL_waitable_thread=1 synthetic_cp_clock=1 original_CP=0"
+    },
+    "registered_branch": {
+      "serial_byte_range": [
+        81343,
+        81446
+      ],
+      "raw": "FX3_DATE98_KERNEL_OBSERVE_READY consumer99_replaces_passive_target=0x909005cFX3_BACKUP_CP_INSMOD_RC=05 "
+    },
+    "owner_result_zero": {
+      "serial_byte_range": [
+        81522,
+        81679
+      ],
+      "raw": "FX3_BACKUP_CP_PUBLIC_OWNER exact_reset33=1 F1_then_F4_once=1 result=0 standard_native_registration=1 sync_null_preserves_prior_route=1 software_CP_executed=0"
+    },
+    "accept": {
+      "serial_byte_range": [
+        93961,
+        94088
+      ],
+      "raw": "FX3_DATE99_ACCEPT transaction=1 reason=4 source=0x809005c5 original_request_queue_owned=1 deferred_worker=1 no_reentrant_wait=1"
+    },
+    "clock_commit": {
+      "serial_byte_range": [
+        94959,
+        95237
+      ],
+      "raw": "FX3_DATE99_CLOCK_COMMIT transaction=1 generation=1 reason=4 valid_UTC=1 AP_type=0 UTC_base_ms=1609426800003 mono_basis_ns=2959890992 now_ns=2960374992 RTT_ns=968000 readback_UTC_ms=1609426800003 software_clock_advances=1 synthetic_cp_clock=1 original_CP=0 physical_RTC_written=0"
+    },
+    "retired": {
+      "serial_byte_range": [
+        95335,
+        95471
+      ],
+      "raw": "FX3_DATE99_RETIRED transaction=1 reason=4 result=0 native_request_free=0 type4_sent=0 generation=1 original_owner_destination=0x909005c5"
+    },
+    "reject": null,
+    "literal_present": true,
+    "semantic_evidence": {
+      "method": "literal",
+      "marker": "FX3_DATE99_CONSUMER_BOUND"
+    }
+  },
+  "cleanup": {
+    "attempted": true,
+    "API16_restored": false,
+    "quit_sent": true,
+    "diag_snapshot": {
+      "consistent": true,
+      "method": "QMP stop acknowledged; query-status running=false,status=paused; full pmemsave while paused",
+      "query_status": {
+        "status": "paused",
+        "running": false
+      },
+      "bytes": 16777216,
+      "sha256": "fbaa97cb5d4fe9205b961fe494fcca606c6238fc486802b5cd324a5c79004f57",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/osd-ring-final.bin",
+      "parse_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/osd-ring-final-diag.json",
+      "dropped_busy_writer_events": 5,
+      "invalid_or_torn_slots": []
+    },
+    "serial_bytes_before_cleanup": 37433313,
+    "restore103": {
+      "passed": false,
+      "reason": "completion_timeout",
+      "timeout_seconds": 20,
+      "elapsed_seconds": 20.004148125008214,
+      "request_bytes": 8,
+      "request_issued": true,
+      "existing_request_reused": false,
+      "request_physical": "0x41d400030",
+      "expected_API16_hex": "000b00b4fd7bbba9fd030091f35301a9",
+      "requires_ack_and_original_bytes_after_request": true,
+      "already_original_without_pending_request_never_resumed": false,
+      "original_guest_code_written_by_host": false,
+      "guest_left_stopped": true,
+      "exception": null,
+      "attempts": [
+        {
+          "attempt": 0,
+          "elapsed_seconds": 0.0028538749902509153,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-000-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-000-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 0,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "59331853f519666979b1a57a5ca6603a7fa1b2f8af1c4400c2daf5eb99366e2c"
+        },
+        {
+          "attempt": 1,
+          "elapsed_seconds": 0.2614832919789478,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-001-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-001-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 2,
+          "elapsed_seconds": 0.5182849999982864,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-002-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-002-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 3,
+          "elapsed_seconds": 0.7728056670166552,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-003-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-003-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 4,
+          "elapsed_seconds": 1.0275315839680843,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-004-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-004-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 5,
+          "elapsed_seconds": 1.2854261249885894,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-005-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-005-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 6,
+          "elapsed_seconds": 1.5410728749702685,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-006-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-006-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 7,
+          "elapsed_seconds": 1.7986197500140406,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-007-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-007-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 8,
+          "elapsed_seconds": 2.056472208991181,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-008-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-008-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 9,
+          "elapsed_seconds": 2.311971709015779,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-009-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-009-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 10,
+          "elapsed_seconds": 2.571565249993,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-010-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-010-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 11,
+          "elapsed_seconds": 2.828881333989557,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-011-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-011-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 12,
+          "elapsed_seconds": 3.086883209005464,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-012-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-012-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 13,
+          "elapsed_seconds": 3.3403200000175275,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-013-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-013-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 14,
+          "elapsed_seconds": 3.5974706250126474,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-014-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-014-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 15,
+          "elapsed_seconds": 3.8518161670072004,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-015-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-015-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 16,
+          "elapsed_seconds": 4.110055166995153,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-016-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-016-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 17,
+          "elapsed_seconds": 4.367729999998119,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-017-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-017-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 18,
+          "elapsed_seconds": 4.6221014999900945,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-018-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-018-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 19,
+          "elapsed_seconds": 4.879883666988462,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-019-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-019-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 20,
+          "elapsed_seconds": 5.137735083990265,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-020-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-020-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 21,
+          "elapsed_seconds": 5.395465417008381,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-021-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-021-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 22,
+          "elapsed_seconds": 5.650685958971735,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-022-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-022-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 23,
+          "elapsed_seconds": 5.906776792020537,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-023-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-023-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 24,
+          "elapsed_seconds": 6.161688874999527,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-024-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-024-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 25,
+          "elapsed_seconds": 6.418999999994412,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-025-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-025-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 26,
+          "elapsed_seconds": 6.677303291973658,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-026-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-026-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 27,
+          "elapsed_seconds": 6.932165874983184,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-027-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-027-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 28,
+          "elapsed_seconds": 7.18656333402032,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-028-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-028-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 29,
+          "elapsed_seconds": 7.444720041996334,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-029-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-029-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 30,
+          "elapsed_seconds": 7.701660541992169,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-030-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-030-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 31,
+          "elapsed_seconds": 7.959888292010874,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-031-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-031-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 32,
+          "elapsed_seconds": 8.217772417003289,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-032-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-032-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 33,
+          "elapsed_seconds": 8.475649125000928,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-033-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-033-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 34,
+          "elapsed_seconds": 8.731272083998192,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-034-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-034-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 35,
+          "elapsed_seconds": 8.987650499970187,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-035-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-035-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 36,
+          "elapsed_seconds": 9.244749791978393,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-036-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-036-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 37,
+          "elapsed_seconds": 9.502282999979798,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-037-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-037-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 38,
+          "elapsed_seconds": 9.757259333971888,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-038-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-038-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 39,
+          "elapsed_seconds": 10.012409667018801,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-039-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-039-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 40,
+          "elapsed_seconds": 10.270477583981119,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-040-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-040-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 41,
+          "elapsed_seconds": 10.526326166989747,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-041-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-041-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 42,
+          "elapsed_seconds": 10.784649709006771,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-042-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-042-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 43,
+          "elapsed_seconds": 11.039848959015217,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-043-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-043-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 44,
+          "elapsed_seconds": 11.298133208998479,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-044-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-044-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 45,
+          "elapsed_seconds": 11.55592420900939,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-045-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-045-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 46,
+          "elapsed_seconds": 11.81161237496417,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-046-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-046-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 47,
+          "elapsed_seconds": 12.069524709018879,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-047-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-047-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 48,
+          "elapsed_seconds": 12.325545249972492,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-048-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-048-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 49,
+          "elapsed_seconds": 12.5839727090206,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-049-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-049-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 50,
+          "elapsed_seconds": 12.838715000019874,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-050-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-050-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 51,
+          "elapsed_seconds": 13.09430166700622,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-051-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-051-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 52,
+          "elapsed_seconds": 13.351814708963502,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-052-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-052-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 53,
+          "elapsed_seconds": 13.610359916987363,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-053-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-053-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 54,
+          "elapsed_seconds": 13.868874709005468,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-054-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-054-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 55,
+          "elapsed_seconds": 14.126786916982383,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-055-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-055-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 56,
+          "elapsed_seconds": 14.379705916973762,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-056-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-056-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 57,
+          "elapsed_seconds": 14.636609916982707,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-057-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-057-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 58,
+          "elapsed_seconds": 14.891068917000666,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-058-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-058-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 59,
+          "elapsed_seconds": 15.149354958964977,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-059-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-059-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 60,
+          "elapsed_seconds": 15.403442959010135,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-060-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-060-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 61,
+          "elapsed_seconds": 15.661101916979533,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-061-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-061-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 62,
+          "elapsed_seconds": 15.914574083988555,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-062-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-062-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 63,
+          "elapsed_seconds": 16.172665417019743,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-063-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-063-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 64,
+          "elapsed_seconds": 16.43071908398997,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-064-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-064-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 65,
+          "elapsed_seconds": 16.68911554198712,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-065-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-065-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 66,
+          "elapsed_seconds": 16.947538541979156,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-066-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-066-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 67,
+          "elapsed_seconds": 17.20550895901397,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-067-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-067-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 68,
+          "elapsed_seconds": 17.460027583991177,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-068-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-068-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 69,
+          "elapsed_seconds": 17.717167209018953,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-069-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-069-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 70,
+          "elapsed_seconds": 17.971707791963127,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-070-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-070-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 71,
+          "elapsed_seconds": 18.226527374994475,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-071-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-071-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 72,
+          "elapsed_seconds": 18.483871083997656,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-072-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-072-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 73,
+          "elapsed_seconds": 18.741777499963064,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-073-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-073-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 74,
+          "elapsed_seconds": 19.000231167010497,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-074-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-074-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 75,
+          "elapsed_seconds": 19.2573974999832,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-075-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-075-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 76,
+          "elapsed_seconds": 19.515347333974205,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-076-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-076-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 77,
+          "elapsed_seconds": 19.776161417015828,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-077-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-077-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        },
+        {
+          "attempt": 78,
+          "elapsed_seconds": 20.003912916989066,
+          "header": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-078-header.bin",
+          "api16": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/restore103-078-api16.bin",
+          "api16_hex": "5000005800021fd6bcfc4d0080ffffff",
+          "api16_original": false,
+          "header_identity": true,
+          "shutdown_control": 269229737,
+          "restore_status": 0,
+          "restore_seen": 0,
+          "header_SHA256": "afbdf00000ff57648344916530e25656500ad09180a02a48cc39c6e6414be275"
+        }
+      ]
+    },
+    "native_unbind_return": null,
+    "restore_error": "completion_timeout"
+  },
+  "lifecycle_pass": false,
+  "diagnostic_readback_pass": true,
+  "protocol_pass": true,
+  "render_pass": true,
+  "black_frame_semantics": "unknown; an all-zero committed panel cannot satisfy this visual trial",
+  "native_shutdown_after_ready": false,
+  "native_shutdown_original_lines": [],
+  "native_shutdown_count_at_ready": 0,
+  "native_model_power_off_after_ready": false,
+  "native_model_power_off_original_lines": [],
+  "native_model_power_off_count_at_ready": 0,
+  "health_pass": false,
+  "requested_exit_phase": null,
+  "requested_exit_phase_hit": false,
+  "key_steps": 16,
+  "step_captures": [
+    {
+      "sequence": 123,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 123,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x2846744330ced770",
+      "sha256": "b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051",
+      "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383008.408944416,
+      "committed_slot": 2,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab230",
+        "entry": "0x7f50001178",
+        "allocation": "0x50001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0x2c5958dd3a70f07",
+        "bits_cpu_VA": "0x7ee6cdf100",
+        "map_begin": "0x7ee6cdf000",
+        "map_end": "0x7ee6d76000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f50001200",
+        "epoch": 1,
+        "identity": "0xffffffc11d859e00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f6b9dba48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 1,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-01-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-01-key-1ab.png",
+      "raw_sha256": "b10896e7772ab4eb12f434e8c8035ab19d41ffc4451acbe9c0ef9e0052e03051",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 123,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 510,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 510,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xd7e39cf02718859a",
+      "sha256": "07be9a0cd4e4f9537b910cac01b4419737cb217193ec66833f24bc33f2c0e8c7",
+      "PNG_sha256": "d2567579a0aeed525fb91b9ff0f2a40c305e1a8663017372bd3a7f62a759334c",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383071.751559458,
+      "committed_slot": 5,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab230",
+        "entry": "0x7f50001178",
+        "allocation": "0x50001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0x3e8476125be4b785",
+        "bits_cpu_VA": "0x7ee6cdf100",
+        "map_begin": "0x7ee6cdf000",
+        "map_end": "0x7ee6d76000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f50001200",
+        "epoch": 1,
+        "identity": "0xffffffc11d859e00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f6b9dba48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 2,
+      "key": "0x15",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-02-key-015.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-02-key-015.png",
+      "raw_sha256": "07be9a0cd4e4f9537b910cac01b4419737cb217193ec66833f24bc33f2c0e8c7",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 510,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 778,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 778,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x30ee96713214c914",
+      "sha256": "ced97f2eb9e111ca808a6442e4e99bc12014377c8cb4930fe3e01e2a52d3bc51",
+      "PNG_sha256": "aa25d4af1046045ef982407327a041d00040ea647ef0657b2dd83c18e7058ba5",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383100.840490583,
+      "committed_slot": 1,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xeaa9a6080d6dd31a",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 3,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-03-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-03-key-030.png",
+      "raw_sha256": "ced97f2eb9e111ca808a6442e4e99bc12014377c8cb4930fe3e01e2a52d3bc51",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 778,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1081,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1081,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x67b1377a1ed36483",
+      "sha256": "3d706efb0d88e1b5cc2c61245b870ed210cf4f951673b8b98f06a572f7bc7727",
+      "PNG_sha256": "4f53b2e7e66a6211134ac1b5470a614407a7a42a16082b3be621e13a0aa2bcf8",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383130.6242135,
+      "committed_slot": 0,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xeaa9a6080d6dd31a",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 4,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-04-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-04-key-030.png",
+      "raw_sha256": "3d706efb0d88e1b5cc2c61245b870ed210cf4f951673b8b98f06a572f7bc7727",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1081,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1276,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1276,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xbb6c5f2493adb352",
+      "sha256": "5c261d7bd88e803d66f3f45b4b862a8b23613d83e3e4c1eab564df463fbdd5de",
+      "PNG_sha256": "468d6dff00e29aae9bf498e76400ffec3379d1db9431290f6845456f2488da46",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383152.643377458,
+      "committed_slot": 3,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab230",
+        "entry": "0x7f50001178",
+        "allocation": "0x50001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xeaa9a6080d6dd31a",
+        "bits_cpu_VA": "0x7ee6cdf100",
+        "map_begin": "0x7ee6cdf000",
+        "map_end": "0x7ee6d76000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f50001200",
+        "epoch": 1,
+        "identity": "0xffffffc11d859e00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f6b9dba48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 5,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-05-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-05-key-030.png",
+      "raw_sha256": "5c261d7bd88e803d66f3f45b4b862a8b23613d83e3e4c1eab564df463fbdd5de",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1276,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1457,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1457,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x3e0b9aa54439ec46",
+      "sha256": "3c9722be889999ac8c5d2cd52135169dc58cab6079502ef7d5c391a6dd393110",
+      "PNG_sha256": "3e70df0b1e49e56d0f6299242c3bb09d4443084eaa3544ec4b66c9803985758b",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383172.0736425,
+      "committed_slot": 0,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xeaa9a6080d6dd31a",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 6,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-06-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-06-key-030.png",
+      "raw_sha256": "3c9722be889999ac8c5d2cd52135169dc58cab6079502ef7d5c391a6dd393110",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1457,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 1768,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 1768,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x24c12f5c1b35b4f1",
+      "sha256": "7146365f4a10cf641b0503a67e3062336a8e3efbbaa048f5b4ce8ce5e5a185e6",
+      "PNG_sha256": "da006693eb672d64cdec05654e0d77b091417516324e0b36759a24d65ec9fbc3",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383212.785330166,
+      "committed_slot": 7,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab230",
+        "entry": "0x7f50001178",
+        "allocation": "0x50001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xeaa9a6080d6dd31a",
+        "bits_cpu_VA": "0x7ee6cdf100",
+        "map_begin": "0x7ee6cdf000",
+        "map_end": "0x7ee6d76000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f50001200",
+        "epoch": 1,
+        "identity": "0xffffffc11d859e00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f6b9dba48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 7,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-07-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-07-key-030.png",
+      "raw_sha256": "7146365f4a10cf641b0503a67e3062336a8e3efbbaa048f5b4ce8ce5e5a185e6",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 1768,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2026,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 2026,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xafdf6045755f6769",
+      "sha256": "64728578dcd93b8d375c203b906b4ad1409be77a1a50f1c70e4fb218ea68492e",
+      "PNG_sha256": "03dadff1a6bdc01983ad3bd17ba2e4980449b876b098312729ea26d59249902d",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383238.855165083,
+      "committed_slot": 1,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xeaa9a6080d6dd31a",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 8,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-08-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-08-key-030.png",
+      "raw_sha256": "64728578dcd93b8d375c203b906b4ad1409be77a1a50f1c70e4fb218ea68492e",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2026,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2236,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 2236,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x7417c328dea9ae32",
+      "sha256": "d7281fb1bb91b340d1e74855c39df6d3c0b4a05596967993605ab5ec05458b61",
+      "PNG_sha256": "b01d81949bb355dd5a3ab3cf8faea8aba36668b00a0d1f311080c070e5b49fa0",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383262.080710166,
+      "committed_slot": 3,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xeaa9a6080d6dd31a",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 9,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-09-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-09-key-030.png",
+      "raw_sha256": "d7281fb1bb91b340d1e74855c39df6d3c0b4a05596967993605ab5ec05458b61",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2236,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2485,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 2485,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xe8df9550198281fb",
+      "sha256": "5963cf19f40f1f8f80dd178ac996badf04133ef0a2d8704641c17d7230209512",
+      "PNG_sha256": "a46330f751d0d93fd15f67bfa8f8378652d08e2eb6312c4828ae4e226996cdcf",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383285.071661416,
+      "committed_slot": 4,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xad714104aa7d64a6",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 10,
+      "key": "0x1af",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-10-key-1af.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-10-key-1af.png",
+      "raw_sha256": "5963cf19f40f1f8f80dd178ac996badf04133ef0a2d8704641c17d7230209512",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2485,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2709,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 2709,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x8a2fb884ac97b79f",
+      "sha256": "6890038cdf6636a2d551274eedc8b09de6b6387ec6b78b548aa2ee07924eadf7",
+      "PNG_sha256": "5a496c4d0995156c317d4ad10e77b4008dded98f843e381aa097e7654e8e6c25",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383312.875004916,
+      "committed_slot": 4,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xb964fac8d08295e1",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 11,
+      "key": "0x1ac",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-11-key-1ac.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-11-key-1ac.png",
+      "raw_sha256": "6890038cdf6636a2d551274eedc8b09de6b6387ec6b78b548aa2ee07924eadf7",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2709,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 2938,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 2938,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0xc24f305d23532cae",
+      "sha256": "09d84c671f799c91387d6e35aa82e021e5c015cddb90a56d8ac87cc54b466e18",
+      "PNG_sha256": "5c3394a262559b4b4331a97979660e45ce06325ee3447cf57c92780aa90638ac",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383338.434176208,
+      "committed_slot": 1,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab230",
+        "entry": "0x7f50001178",
+        "allocation": "0x50001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0x9021ac3313d259db",
+        "bits_cpu_VA": "0x7ee6cdf100",
+        "map_begin": "0x7ee6cdf000",
+        "map_end": "0x7ee6d76000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f50001200",
+        "epoch": 1,
+        "identity": "0xffffffc11d859e00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f6b9dba48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 12,
+      "key": "0x1ab",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-12-key-1ab.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-12-key-1ab.png",
+      "raw_sha256": "09d84c671f799c91387d6e35aa82e021e5c015cddb90a56d8ac87cc54b466e18",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 2938,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 3239,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 3239,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x1bf4079c3db03ff3",
+      "sha256": "855e4a10de93b9a2cf761cc54d3aa7741c2f90df6c5439ef5264141bd8c14bfc",
+      "PNG_sha256": "05aef51f6515b1c11f69c275376643b4d0fcfa3eb8dd3e0c22abb6a92ac04f6d",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383369.599821291,
+      "committed_slot": 6,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0x9021ac3313d259db",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 13,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-13-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-13-key-030.png",
+      "raw_sha256": "855e4a10de93b9a2cf761cc54d3aa7741c2f90df6c5439ef5264141bd8c14bfc",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 3239,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 3549,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 3549,
+      "token": "0x401",
+      "physical": "0x43ae96100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x1cb7085752f86d2",
+      "sha256": "c1f8313c6f111b5ab3f6b3085b0abba659c67cfc086b838faa35758ed9a1e514",
+      "PNG_sha256": "5a1c64425a54beb425516bed32d47575dcbf607c2e1b2ab5b8383d35b1a5de85",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383398.405249291,
+      "committed_slot": 4,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab230",
+        "entry": "0x7f50001178",
+        "allocation": "0x50001200",
+        "metadata_physical": "0x401",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0x9021ac3313d259db",
+        "bits_cpu_VA": "0x7ee6cdf100",
+        "map_begin": "0x7ee6cdf000",
+        "map_end": "0x7ee6d76000",
+        "map_offset": "0x43ae96000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 2,
+        "object": "0x7f50001200",
+        "epoch": 1,
+        "identity": "0xffffffc11d859e00",
+        "parent_physical": "0x43ae96000",
+        "parent_bytes": 1310720,
+        "native_token": "0x401",
+        "vptr": "0x7f6b9dba48",
+        "captured_physical": "0x43ae96100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 14,
+      "key": "0x15",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-14-key-015.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-14-key-015.png",
+      "raw_sha256": "c1f8313c6f111b5ab3f6b3085b0abba659c67cfc086b838faa35758ed9a1e514",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 3549,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    },
+    {
+      "sequence": 3708,
+      "epoch": 1,
+      "update_id": "0x1003",
+      "pixel_source_sequence": 3708,
+      "token": "0x402",
+      "physical": "0x43feb5100",
+      "native_format": 0,
+      "native_bitmap_format": 1,
+      "width": 640,
+      "height": 480,
+      "stride_pixels": 640,
+      "span": 614400,
+      "fnv64": "0x94a342fb80d5a487",
+      "sha256": "c327b9145fc9f91d011c565b00178e248166e74876761a33e665c573a2f0b177",
+      "PNG_sha256": "121148d914b781da2b51101d0650bb13ceabbc858c137384f7367edd0a8092cd",
+      "QMP_read_only": true,
+      "nonuniform_pixels": true,
+      "all_zero_pixels": false,
+      "host_monotonic": 383419.838584333,
+      "committed_slot": 3,
+      "native_identity": {
+        "FB": "0x7f50001160",
+        "bitmap": "0x7f486ab410",
+        "entry": "0x7f50001198",
+        "allocation": "0x50001340",
+        "metadata_physical": "0x402",
+        "FB_format": 1,
+        "publish_sem": "0x288604b",
+        "config_hash": "0xe4af33cd07902ff6",
+        "bits_cpu_VA": "0x7ee37d0100",
+        "map_begin": "0x7ee37d0000",
+        "map_end": "0x7ee3867000",
+        "map_offset": "0x43feb5000"
+      },
+      "registered_target": {
+        "version": 1,
+        "kind": 1,
+        "object": "0x0",
+        "epoch": 2,
+        "identity": "0x0",
+        "parent_physical": "0x43feb5000",
+        "parent_bytes": 1310720,
+        "native_token": "0x402",
+        "vptr": "0x0",
+        "captured_physical": "0x43feb5100",
+        "valid_during_native_read_lease_and_raster_lifecycle_guards": true
+      },
+      "guest_native_lease_released_before_ring_commit": true,
+      "CP_composition_panel_acceptance": false,
+      "step": 15,
+      "key": "0x30",
+      "raw": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-15-key-030.raw",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25diag-web-r3-91001f82/trial-step-15-key-030.png",
+      "raw_sha256": "c327b9145fc9f91d011c565b00178e248166e74876761a33e665c573a2f0b177",
+      "matches_committed_ring": true,
+      "latest_native_committed_sequence": 3708,
+      "source": "QMP validated immutable committed software-ring copy; no current source-surface reread"
+    }
+  ],
+  "standby_ready": true,
+  "menu_verified": false,
+  "visual_acceptance_separate_from_health": true,
+  "render_valid_at_end": true,
+  "black_after_ready": [],
+  "render_observation_ok": true,
+  "browser_visual_acceptance": null,
+  "physical_device_operations": 0,
+  "remote_network_connections": 0,
+  "HTTP_loopback_only": true,
+  "scope": "TRY2 original FX3 menu software model with improved icon and focus presentation; no camera, live view, or exact compositor claim"
+}

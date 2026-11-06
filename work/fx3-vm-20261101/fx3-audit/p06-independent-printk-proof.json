@@ -1,0 +1,568 @@
+{
+  "created_utc": "2026-11-01T10:12:01.748861+00:00",
+  "source_ring": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/p06/printk-ring.bin",
+  "ring_sha256": "d0869c8056d8e8f0ff86ccf7c029576ed9d47fe4264782aa31bf8e4de3ac43c6",
+  "source_indices": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/p06/printk-indices.bin",
+  "indices_sha256": "405456d815a52253f69458765a13c07af7c4971fc0e0463175a7b930bf3978ed",
+  "record_format": "Linux4.9 printk_log <QHHHBB = 16 byte header, 4-byte aligned record len; no wrap in observed valid prefix",
+  "first_seq": 0,
+  "next_seq": 61,
+  "first_idx": 0,
+  "next_idx": 4264,
+  "parsed_end_idx": 4264,
+  "all_length_checks": true,
+  "record_count": 61,
+  "records": [
+    {
+      "sequence": 0,
+      "offset": 0,
+      "len": 52,
+      "text_len": 33,
+      "dict_len": 0,
+      "ts_nsec": 124812500,
+      "text": "Booting Linux on physical CPU 0x0"
+    },
+    {
+      "sequence": 1,
+      "offset": 52,
+      "len": 176,
+      "text_len": 160,
+      "dict_len": 0,
+      "ts_nsec": 181187500,
+      "text": "Linux version 4.9.337-scel+ (jp10239@dic-build-scm-u20-028) (gcc version 6.4.0 (20201211 (Sony CE Linux 14.0.1.0)) ) #1 SMP PREEMPT Thu Dec 25 08:15:40 JST 2025"
+    },
+    {
+      "sequence": 2,
+      "offset": 228,
+      "len": 56,
+      "text_len": 38,
+      "dict_len": 0,
+      "ts_nsec": 192031000,
+      "text": "Boot CPU: AArch64 Processor [411fd040]"
+    },
+    {
+      "sequence": 3,
+      "offset": 284,
+      "len": 40,
+      "text_len": 22,
+      "dict_len": 0,
+      "ts_nsec": 364437500,
+      "text": "random: crng init done"
+    },
+    {
+      "sequence": 4,
+      "offset": 324,
+      "len": 96,
+      "text_len": 78,
+      "dict_len": 0,
+      "ts_nsec": 416906000,
+      "text": "Unhandled fault: synchronous external abort (0x96000010) at 0xffffffbefe63a000"
+    },
+    {
+      "sequence": 5,
+      "offset": 420,
+      "len": 60,
+      "text_len": 43,
+      "dict_len": 0,
+      "ts_nsec": 426718500,
+      "text": "Internal error: : 96000010 [#1] PREEMPT SMP"
+    },
+    {
+      "sequence": 6,
+      "offset": 480,
+      "len": 36,
+      "text_len": 18,
+      "dict_len": 0,
+      "ts_nsec": 468468500,
+      "text": "Modules linked in:"
+    },
+    {
+      "sequence": 7,
+      "offset": 516,
+      "len": 72,
+      "text_len": 56,
+      "dict_len": 0,
+      "ts_nsec": 497406000,
+      "text": "CPU: 0 PID: 0 Comm: swapper Not tainted 4.9.337-scel+ #1"
+    },
+    {
+      "sequence": 8,
+      "offset": 588,
+      "len": 52,
+      "text_len": 36,
+      "dict_len": 0,
+      "ts_nsec": 498281000,
+      "text": "Hardware name: linux,dummy-virt (DT)"
+    },
+    {
+      "sequence": 9,
+      "offset": 640,
+      "len": 68,
+      "text_len": 51,
+      "dict_len": 0,
+      "ts_nsec": 509156000,
+      "text": "task: ffffff800868c500 task.stack: ffffff8008680000"
+    },
+    {
+      "sequence": 10,
+      "offset": 708,
+      "len": 44,
+      "text_len": 27,
+      "dict_len": 0,
+      "ts_nsec": 530687500,
+      "text": "PC is at strncmp+0x28/0x210"
+    },
+    {
+      "sequence": 11,
+      "offset": 752,
+      "len": 48,
+      "text_len": 30,
+      "dict_len": 0,
+      "ts_nsec": 532375000,
+      "text": "LR is at setup_kemco+0x50/0xfc"
+    },
+    {
+      "sequence": 12,
+      "offset": 800,
+      "len": 84,
+      "text_len": 68,
+      "dict_len": 0,
+      "ts_nsec": 534093500,
+      "text": "pc : [<ffffff8008270558>] lr : [<ffffff8008635110>] pstate: 400001c5"
+    },
+    {
+      "sequence": 13,
+      "offset": 884,
+      "len": 40,
+      "text_len": 21,
+      "dict_len": 0,
+      "ts_nsec": 534562500,
+      "text": "sp : ffffff8008683f10"
+    },
+    {
+      "sequence": 14,
+      "offset": 924,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 536281000,
+      "text": "x29: ffffff8008683f10 x28: 000000004063001c "
+    },
+    {
+      "sequence": 15,
+      "offset": 984,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 540250000,
+      "text": "x27: 0000000040080058 x26: 0000000000000000 "
+    },
+    {
+      "sequence": 16,
+      "offset": 1044,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 540562500,
+      "text": "x25: 0000000000000000 x24: 0000000000000000 "
+    },
+    {
+      "sequence": 17,
+      "offset": 1104,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 540781000,
+      "text": "x23: 0000000000000000 x22: ffffffbefe802000 "
+    },
+    {
+      "sequence": 18,
+      "offset": 1164,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 541031000,
+      "text": "x21: ffffff800869e000 x20: ffffff8008683fa0 "
+    },
+    {
+      "sequence": 19,
+      "offset": 1224,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 541281000,
+      "text": "x19: ffffffbefe63a000 x18: 000000001fbad8f6 "
+    },
+    {
+      "sequence": 20,
+      "offset": 1284,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 541531000,
+      "text": "x17: 0000000000001f38 x16: 0000000000001800 "
+    },
+    {
+      "sequence": 21,
+      "offset": 1344,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 541750000,
+      "text": "x15: 0000000000001400 x14: 0000000000001c00 "
+    },
+    {
+      "sequence": 22,
+      "offset": 1404,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 542000000,
+      "text": "x13: 0000000000000000 x12: 0000000000000038 "
+    },
+    {
+      "sequence": 23,
+      "offset": 1464,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 542218500,
+      "text": "x11: 0101010101010101 x10: ffffff8008683f30 "
+    },
+    {
+      "sequence": 24,
+      "offset": 1524,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 543593500,
+      "text": "x9 : ffffff8008683f30 x8 : 0000000000000000 "
+    },
+    {
+      "sequence": 25,
+      "offset": 1584,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 543875000,
+      "text": "x7 : ffffff8008707540 x6 : ffffff800865c330 "
+    },
+    {
+      "sequence": 26,
+      "offset": 1644,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 544125000,
+      "text": "x5 : ffffff80086d0000 x4 : 00000000000005c5 "
+    },
+    {
+      "sequence": 27,
+      "offset": 1704,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 544343500,
+      "text": "x3 : 0000006f636d656b x2 : 0000000000000005 "
+    },
+    {
+      "sequence": 28,
+      "offset": 1764,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 544593500,
+      "text": "x1 : ffffffbefe63a000 x0 : ffffff80085a6b88 "
+    },
+    {
+      "sequence": 29,
+      "offset": 1824,
+      "len": 16,
+      "text_len": 0,
+      "dict_len": 0,
+      "ts_nsec": 545406000,
+      "text": ""
+    },
+    {
+      "sequence": 30,
+      "offset": 1840,
+      "len": 76,
+      "text_len": 58,
+      "dict_len": 0,
+      "ts_nsec": 546812500,
+      "text": "Process swapper (pid: 0, stack limit = 0xffffff8008680000)"
+    },
+    {
+      "sequence": 31,
+      "offset": 1916,
+      "len": 68,
+      "text_len": 49,
+      "dict_len": 0,
+      "ts_nsec": 549156000,
+      "text": "Stack: (0xffffff8008683f10 to 0xffffff8008684000)"
+    },
+    {
+      "sequence": 32,
+      "offset": 1984,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 554250000,
+      "text": "3f00:                                   ffffff8008683f30 ffffff8008633780"
+    },
+    {
+      "sequence": 33,
+      "offset": 2076,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 555312500,
+      "text": "3f20: ffffff8008080000 ffffff8008683fa0 ffffff8008683fb0 ffffff8008630878"
+    },
+    {
+      "sequence": 34,
+      "offset": 2168,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 555562500,
+      "text": "3f40: ffffff8008659a28 ffffff80086d2000 ffffff80086d2000 ffffff8008686000"
+    },
+    {
+      "sequence": 35,
+      "offset": 2260,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 555750000,
+      "text": "3f60: 0000000000000000 0000000000000000 0000000000000000 0000000000000000"
+    },
+    {
+      "sequence": 36,
+      "offset": 2352,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 555968500,
+      "text": "3f80: 0000000000000001 0000000040002000 0000000000000000 8000000000000000"
+    },
+    {
+      "sequence": 37,
+      "offset": 2444,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 556156000,
+      "text": "3fa0: 0000000000001f3a ff616b7364667467 0000000000000000 0000000000000000"
+    },
+    {
+      "sequence": 38,
+      "offset": 2536,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 556375000,
+      "text": "3fc0: 0000000000000000 0000000000000000 0000000040002000 0000000000000000"
+    },
+    {
+      "sequence": 39,
+      "offset": 2628,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 556562500,
+      "text": "3fe0: 0000000000000000 0000000000000000 0000000000000000 ffffff8008659a28"
+    },
+    {
+      "sequence": 40,
+      "offset": 2720,
+      "len": 28,
+      "text_len": 11,
+      "dict_len": 0,
+      "ts_nsec": 561250000,
+      "text": "Call trace:"
+    },
+    {
+      "sequence": 41,
+      "offset": 2748,
+      "len": 76,
+      "text_len": 57,
+      "dict_len": 0,
+      "ts_nsec": 566531000,
+      "text": "Exception stack(0xffffff8008683dd0 to 0xffffff8008683f10)"
+    },
+    {
+      "sequence": 42,
+      "offset": 2824,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 566750000,
+      "text": "3dc0:                                   ffffff80085a6b88 ffffffbefe63a000"
+    },
+    {
+      "sequence": 43,
+      "offset": 2916,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 566937500,
+      "text": "3de0: 0000000000000005 0000006f636d656b 00000000000005c5 ffffff80086d0000"
+    },
+    {
+      "sequence": 44,
+      "offset": 3008,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 567156000,
+      "text": "3e00: ffffff800865c330 ffffff8008707540 0000000000000000 ffffff8008683f30"
+    },
+    {
+      "sequence": 45,
+      "offset": 3100,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 567343500,
+      "text": "3e20: ffffff8008683f30 0101010101010101 0000000000000038 0000000000000000"
+    },
+    {
+      "sequence": 46,
+      "offset": 3192,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 567531000,
+      "text": "3e40: 0000000000001c00 0000000000001400 0000000000001800 0000000000001f38"
+    },
+    {
+      "sequence": 47,
+      "offset": 3284,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 567718500,
+      "text": "3e60: 000000001fbad8f6 ffffffbefe63a000 ffffff8008683fa0 ffffff800869e000"
+    },
+    {
+      "sequence": 48,
+      "offset": 3376,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 567937500,
+      "text": "3e80: ffffffbefe802000 0000000000000000 0000000000000000 0000000000000000"
+    },
+    {
+      "sequence": 49,
+      "offset": 3468,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 568125000,
+      "text": "3ea0: 0000000000000000 0000000040080058 000000004063001c ffffff8008683f10"
+    },
+    {
+      "sequence": 50,
+      "offset": 3560,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 568312500,
+      "text": "3ec0: ffffff8008635110 ffffff8008683f10 ffffff8008270558 00000000400001c5"
+    },
+    {
+      "sequence": 51,
+      "offset": 3652,
+      "len": 92,
+      "text_len": 73,
+      "dict_len": 0,
+      "ts_nsec": 568500000,
+      "text": "3ee0: 0000000040080058 000000004063001c ffffffffffffffff 00000000000005c5"
+    },
+    {
+      "sequence": 52,
+      "offset": 3744,
+      "len": 56,
+      "text_len": 39,
+      "dict_len": 0,
+      "ts_nsec": 568687500,
+      "text": "3f00: ffffff8008683f10 ffffff8008270558"
+    },
+    {
+      "sequence": 53,
+      "offset": 3800,
+      "len": 56,
+      "text_len": 39,
+      "dict_len": 0,
+      "ts_nsec": 573906000,
+      "text": "[<ffffff8008270558>] strncmp+0x28/0x210"
+    },
+    {
+      "sequence": 54,
+      "offset": 3856,
+      "len": 60,
+      "text_len": 43,
+      "dict_len": 0,
+      "ts_nsec": 575718500,
+      "text": "[<ffffff8008633780>] setup_arch+0x148/0x620"
+    },
+    {
+      "sequence": 55,
+      "offset": 3916,
+      "len": 60,
+      "text_len": 44,
+      "dict_len": 0,
+      "ts_nsec": 576750000,
+      "text": "[<ffffff8008630878>] start_kernel+0x70/0x3f0"
+    },
+    {
+      "sequence": 56,
+      "offset": 3976,
+      "len": 72,
+      "text_len": 53,
+      "dict_len": 0,
+      "ts_nsec": 583843500,
+      "text": "Code: 54000301 d100044d d343fdad f8408403 (f8408424) "
+    },
+    {
+      "sequence": 57,
+      "offset": 4048,
+      "len": 52,
+      "text_len": 36,
+      "dict_len": 0,
+      "ts_nsec": 612000000,
+      "text": "---[ end trace 8aa056f83d796c16 ]---"
+    },
+    {
+      "sequence": 58,
+      "offset": 4100,
+      "len": 60,
+      "text_len": 43,
+      "dict_len": 0,
+      "ts_nsec": 618812500,
+      "text": "Kernel panic - not syncing: Fatal exception"
+    },
+    {
+      "sequence": 59,
+      "offset": 4160,
+      "len": 52,
+      "text_len": 36,
+      "dict_len": 0,
+      "ts_nsec": 627000000,
+      "text": "------------[ cut here ]------------"
+    },
+    {
+      "sequence": 60,
+      "offset": 4212,
+      "len": 52,
+      "text_len": 33,
+      "dict_len": 0,
+      "ts_nsec": 628187500,
+      "text": "kernel BUG at kernel/panic.c:191!"
+    }
+  ],
+  "conclusion": "Original FX3 Linux early boot and own printk execution confirmed; actual synchronous external abort at strncmp in setup_kemco reading hard-coded high-DDR page; init/userspace/menu not reached",
+  "next_difference": "Move modeled DDR base to0x400000000 with same2GiB capacity; keep original kernel unmodified"
+}

@@ -1,0 +1,133 @@
+000177cc stp        x29, x30, [sp, #-0x70]!
+000177d0 mov        x29, sp
+000177d4 stp        x25, x26, [sp, #0x40]
+000177d8 adrp       x26, #0x1b000
+000177dc stp        x27, x28, [sp, #0x50]
+000177e0 mov        x25, x1
+000177e4 stp        x19, x20, [sp, #0x10]
+000177e8 add        x27, x29, #0x60
+000177ec stp        x21, x22, [sp, #0x20]
+000177f0 mov        x20, x2
+000177f4 mov        x21, x0
+000177f8 add        x28, x26, #0xefd ; literal 'guard'
+000177fc stp        x23, x24, [sp, #0x30]
+00017800 cbz        x20, #0x179c4
+00017804 add        x1, x26, #0xefd
+00017808 mov        x0, x20
+0001780c adrp       x23, #0x1b000
+00017810 add        x23, x23, #0xf03 ; literal 'function'
+00017814 bl         #0x10000 ; Updater::Xml::DomNode::FirstChild
+00017818 mov        x19, x0
+0001781c cbz        x19, #0x17984
+00017820 ldr        x0, [x19]
+00017824 ldr        x1, [x0, #0x28]
+00017828 mov        x0, x19
+0001782c blr        x1
+00017830 mov        x24, x0
+00017834 mov        x2, x27
+00017838 mov        x1, x23
+0001783c bl         #0x10760 ; Updater::Xml::DomElement::queryStringAttribute
+00017840 ldr        w22, [x21, #0x30]
+00017844 cbnz       w0, #0x178f0
+00017848 mov        x0, x25
+0001784c bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00017850 mov        x1, x0
+00017854 mov        x2, x24
+00017858 mov        w0, w22
+0001785c bl         #0x105e0 ; Updater::DllPlugin::Execute
+00017860 uxtb       w22, w0
+00017864 cmp        w22, #0xff
+00017868 b.eq       #0x179bc
+0001786c cbz        w22, #0x17954
+00017870 add        x2, x29, #0x70
+00017874 adrp       x1, #0x1b000
+00017878 add        x1, x1, #0xf0c ; literal 'module'
+0001787c mov        x0, x24
+00017880 adrp       x19, #0x31000
+00017884 adrp       x20, #0x31000
+00017888 str        xzr, [x2, #-8]!
+0001788c adrp       x21, #0x31000
+00017890 bl         #0x10760 ; Updater::Xml::DomElement::queryStringAttribute
+00017894 adrp       x2, #0x1b000
+00017898 cbnz       w0, #0x17968
+0001789c ldr        x4, [x29, #0x68]
+000178a0 ldrb       w0, [x4]
+000178a4 cbz        w0, #0x17968
+000178a8 cmp        w22, #0x50
+000178ac adrp       x0, #0x1b000
+000178b0 b.ls       #0x1790c
+000178b4 add        x2, x2, #0xf13
+000178b8 mov        w1, w22
+000178bc add        x0, x0, #0x881
+000178c0 mov        w3, #0x113
+000178c4 bl         #0x10930 ; printf
+000178c8 mov        x0, #0x10
+000178cc bl         #0xfd80 ; __cxa_allocate_exception
+000178d0 ldr        x19, [x19, #0xe30]
+000178d4 mov        w2, #0xc
+000178d8 movk       w2, #3, lsl #16
+000178dc add        x19, x19, #0x10
+000178e0 str        x19, [x0]
+000178e4 str        w2, [x0, #8]
+000178e8 strb       w22, [x0, #0xc]
+000178ec b          #0x17948
+000178f0 mov        x0, x25
+000178f4 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+000178f8 mov        x1, x0
+000178fc mov        x2, x24
+00017900 mov        w0, w22
+00017904 bl         #0x101c0 ; Updater::ShellPlugin::Execute
+00017908 b          #0x17860
+0001790c add        x2, x2, #0xf13
+00017910 add        x0, x0, #0x881
+00017914 mov        w3, #0x111
+00017918 mov        w1, #0x59
+0001791c bl         #0x10930 ; printf
+00017920 mov        x0, #0x10
+00017924 bl         #0xfd80 ; __cxa_allocate_exception
+00017928 ldr        x19, [x19, #0xe30]
+0001792c mov        w2, #0xc
+00017930 movk       w2, #3, lsl #16
+00017934 add        x19, x19, #0x10
+00017938 str        x19, [x0]
+0001793c str        w2, [x0, #8]
+00017940 mov        w2, #0x59
+00017944 strb       w2, [x0, #0xc]
+00017948 ldr        x2, [x20, #0xe88]
+0001794c ldr        x1, [x21, #0xfc0]
+00017950 bl         #0x10700 ; __cxa_throw
+00017954 mov        x0, x19
+00017958 mov        x1, x28
+0001795c bl         #0xff30 ; Updater::Xml::DomNode::getNextSibling
+00017960 mov        x19, x0
+00017964 b          #0x1781c
+00017968 adrp       x0, #0x1b000
+0001796c add        x2, x2, #0xf13
+00017970 mov        w1, w22
+00017974 add        x0, x0, #0x62e ; literal 'UdrAPI,%d,%s:%d,""""\n'
+00017978 mov        w3, #0x10e
+0001797c bl         #0x10930 ; printf
+00017980 b          #0x178c8
+00017984 ldr        x0, [x21, #0x20]
+00017988 ldr        x1, [x0]
+0001798c ldr        x1, [x1, #0x10]
+00017990 blr        x1
+00017994 ldr        x1, [x0]
+00017998 mov        x19, x0
+0001799c ldr        x2, [x1, #0x30]
+000179a0 mov        x1, x20
+000179a4 blr        x2
+000179a8 ldr        x0, [x21, #0x18]
+000179ac ldr        x1, [x0]
+000179b0 ldr        x2, [x1, #0x18]
+000179b4 mov        x1, x19
+000179b8 blr        x2
+000179bc ldr        x20, [x20, #0x48]
+000179c0 b          #0x17800
+000179c4 ldp        x19, x20, [sp, #0x10]
+000179c8 ldp        x21, x22, [sp, #0x20]
+000179cc ldp        x23, x24, [sp, #0x30]
+000179d0 ldp        x25, x26, [sp, #0x40]
+000179d4 ldp        x27, x28, [sp, #0x50]
+000179d8 ldp        x29, x30, [sp], #0x70
+000179dc ret        

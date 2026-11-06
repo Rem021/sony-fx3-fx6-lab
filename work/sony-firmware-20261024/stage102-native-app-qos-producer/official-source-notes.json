@@ -1,0 +1,27 @@
+{
+  "reviewed_utc": "2026-10-27T11:00:28.895441+00:00",
+  "source_url": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1001273514.html",
+  "source_title": "ILME-FX3 Help Guide: Network Streaming (movie)",
+  "model_scope": "Classic ILME-FX3 Ver.2 or later; feature described from firmware6.00.",
+  "verification_method": "Official exact-model Help Guide retrieved with web tool in this goal turn; no camera setting or stream was started.",
+  "published_setting_facts": {
+    "HD1080_29_97p_bit_rate_Mbps_min": 3,
+    "HD1080_29_97p_bit_rate_Mbps_max": 18,
+    "HD1080_29_97p_default_Mbps": 6,
+    "stream_format_list": [
+      "HEVC/H.265",
+      "AVC/H.264"
+    ],
+    "RTMP_RTMPS_video": "H.264",
+    "media_recording_during_streaming_is_separate_option": true
+  },
+  "not_proven_by_page": [
+    "42010 for target stream",
+    "all format combinations or exact16M actual stream",
+    "same encoder/preset as card MAIN",
+    "target HEVC card file",
+    "exact30.000",
+    "safe firmware modification or recovery"
+  ],
+  "different_model_search_results_not_used": true
+}

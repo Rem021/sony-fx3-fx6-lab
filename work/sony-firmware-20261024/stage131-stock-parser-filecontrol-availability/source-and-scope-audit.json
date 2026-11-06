@@ -1,0 +1,793 @@
+{
+  "original_core_sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+  "stock_tables": [
+    {
+      "name": "pFunc_level_A",
+      "VA": 440392,
+      "size": 112,
+      "raw_bytes": "1000000000000000000000000000000020000000000000000000000000000000300000000000000000000000000000004000000000000000000000000000000000ff000000000000000000000000000002ff000000000000000000000000000000000000000000000000000000000000",
+      "rows": [
+        {
+          "row": "0x6b848",
+          "pFunc": 16,
+          "callback": "_Z15ProductInfoFuncPK12SenserPacket",
+          "target": "0xeabc"
+        },
+        {
+          "row": "0x6b858",
+          "pFunc": 32,
+          "callback": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+          "target": "0xec08"
+        },
+        {
+          "row": "0x6b868",
+          "pFunc": 48,
+          "callback": "_Z15MiconAccessFuncPK12SenserPacket",
+          "target": "0xeba8"
+        },
+        {
+          "row": "0x6b878",
+          "pFunc": 64,
+          "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+          "target": "0x10344"
+        },
+        {
+          "row": "0x6b888",
+          "pFunc": 65280,
+          "callback": "_Z8TestModePK12SenserPacket",
+          "target": "0xec10"
+        },
+        {
+          "row": "0x6b898",
+          "pFunc": 65282,
+          "callback": "_Z9SonarFuncPK12SenserPacket",
+          "target": "0xec9c"
+        },
+        {
+          "row": "0x6b8a8",
+          "pFunc": 0,
+          "callback": null,
+          "target": "0x0"
+        }
+      ]
+    },
+    {
+      "name": "pFunc_level_B",
+      "VA": 440504,
+      "size": 64,
+      "raw_bytes": "40000000000000000000000000000000100000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000",
+      "rows": [
+        {
+          "row": "0x6b8b8",
+          "pFunc": 64,
+          "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+          "target": "0x10344"
+        },
+        {
+          "row": "0x6b8c8",
+          "pFunc": 16,
+          "callback": "_Z15ProductInfoFuncPK12SenserPacket",
+          "target": "0xeabc"
+        },
+        {
+          "row": "0x6b8d8",
+          "pFunc": 32,
+          "callback": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+          "target": "0xec08"
+        },
+        {
+          "row": "0x6b8e8",
+          "pFunc": 0,
+          "callback": null,
+          "target": "0x0"
+        }
+      ]
+    },
+    {
+      "name": "pFunc_level_C",
+      "VA": 440568,
+      "size": 32,
+      "raw_bytes": "4000000000000000000000000000000000000000000000000000000000000000",
+      "rows": [
+        {
+          "row": "0x6b8f8",
+          "pFunc": 64,
+          "callback": "_Z17AdjustControlFuncPK12SenserPacket",
+          "target": "0x10344"
+        },
+        {
+          "row": "0x6b908",
+          "pFunc": 0,
+          "callback": null,
+          "target": "0x0"
+        }
+      ]
+    }
+  ],
+  "local_guest_links": [
+    {
+      "offset": 437952,
+      "type": "R_AARCH64_GLOB_DAT",
+      "symbol": "pFunc",
+      "target": 442272
+    },
+    {
+      "offset": 440400,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z15ProductInfoFuncPK12SenserPacket",
+      "target": 60092
+    },
+    {
+      "offset": 440416,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+      "target": 60424
+    },
+    {
+      "offset": 440432,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z15MiconAccessFuncPK12SenserPacket",
+      "target": 60328
+    },
+    {
+      "offset": 440448,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "target": 66372
+    },
+    {
+      "offset": 440464,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z8TestModePK12SenserPacket",
+      "target": 60432
+    },
+    {
+      "offset": 440480,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z9SonarFuncPK12SenserPacket",
+      "target": 60572
+    },
+    {
+      "offset": 440512,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "target": 66372
+    },
+    {
+      "offset": 440528,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z15ProductInfoFuncPK12SenserPacket",
+      "target": 60092
+    },
+    {
+      "offset": 440544,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+      "target": 60424
+    },
+    {
+      "offset": 440576,
+      "type": "R_AARCH64_ABS64",
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "target": 66372
+    }
+  ],
+  "full_dynamic_loader_relocation_or_body_load_address_proven": false,
+  "listings": [
+    {
+      "range": [
+        "0xe9f4",
+        "0xea84"
+      ],
+      "sha256": "13982fad6805f33d3512211a0fb832543c6777110b32d2955091677f3eab9910",
+      "instructions": [
+        {
+          "pc": "0xe9f4",
+          "bytes": "e1020090",
+          "asm": "adrp x1, #0x6a000"
+        },
+        {
+          "pc": "0xe9f8",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!"
+        },
+        {
+          "pc": "0xe9fc",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "pc": "0xea00",
+          "bytes": "216047f9",
+          "asm": "ldr x1, [x1, #0xec0]"
+        },
+        {
+          "pc": "0xea04",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "pc": "0xea08",
+          "bytes": "210040f9",
+          "asm": "ldr x1, [x1]"
+        },
+        {
+          "pc": "0xea0c",
+          "bytes": "210100b4",
+          "asm": "cbz x1, #0xea30"
+        },
+        {
+          "pc": "0xea10",
+          "bytes": "220440f9",
+          "asm": "ldr x2, [x1, #8]"
+        },
+        {
+          "pc": "0xea14",
+          "bytes": "e20000b4",
+          "asm": "cbz x2, #0xea30"
+        },
+        {
+          "pc": "0xea18",
+          "bytes": "04084079",
+          "asm": "ldrh w4, [x0, #4]"
+        },
+        {
+          "pc": "0xea1c",
+          "bytes": "23044178",
+          "asm": "ldrh w3, [x1], #0x10"
+        },
+        {
+          "pc": "0xea20",
+          "bytes": "9f00036b",
+          "asm": "cmp w4, w3"
+        },
+        {
+          "pc": "0xea24",
+          "bytes": "61ffff54",
+          "asm": "b.ne #0xea10"
+        },
+        {
+          "pc": "0xea28",
+          "bytes": "40003fd6",
+          "asm": "blr x2"
+        },
+        {
+          "pc": "0xea2c",
+          "bytes": "a00100b5",
+          "asm": "cbnz x0, #0xea60"
+        },
+        {
+          "pc": "0xea30",
+          "bytes": "000180d2",
+          "asm": "mov x0, #8"
+        },
+        {
+          "pc": "0xea34",
+          "bytes": "1fefff97",
+          "asm": "bl #0xa6b0"
+        },
+        {
+          "pc": "0xea38",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0"
+        },
+        {
+          "pc": "0xea3c",
+          "bytes": "79edff97",
+          "asm": "bl #0xa020"
+        },
+        {
+          "pc": "0xea40",
+          "bytes": "000380d2",
+          "asm": "mov x0, #0x18"
+        },
+        {
+          "pc": "0xea44",
+          "bytes": "1befff97",
+          "asm": "bl #0xa6b0"
+        },
+        {
+          "pc": "0xea48",
+          "bytes": "e1020090",
+          "asm": "adrp x1, #0x6a000"
+        },
+        {
+          "pc": "0xea4c",
+          "bytes": "213047f9",
+          "asm": "ldr x1, [x1, #0xe60]"
+        },
+        {
+          "pc": "0xea50",
+          "bytes": "21400091",
+          "asm": "add x1, x1, #0x10"
+        },
+        {
+          "pc": "0xea54",
+          "bytes": "014c00a9",
+          "asm": "stp x1, x19, [x0]"
+        },
+        {
+          "pc": "0xea58",
+          "bytes": "e10f8012",
+          "asm": "mov w1, #-0x80"
+        },
+        {
+          "pc": "0xea5c",
+          "bytes": "01400039",
+          "asm": "strb w1, [x0, #0x10]"
+        },
+        {
+          "pc": "0xea60",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]"
+        },
+        {
+          "pc": "0xea64",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20"
+        },
+        {
+          "pc": "0xea68",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "pc": "0xea6c",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0"
+        },
+        {
+          "pc": "0xea70",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19"
+        },
+        {
+          "pc": "0xea74",
+          "bytes": "010180d2",
+          "asm": "mov x1, #8"
+        },
+        {
+          "pc": "0xea78",
+          "bytes": "16efff97",
+          "asm": "bl #0xa6d0"
+        },
+        {
+          "pc": "0xea7c",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20"
+        },
+        {
+          "pc": "0xea80",
+          "bytes": "9cf0ff97",
+          "asm": "bl #0xacf0"
+        }
+      ]
+    },
+    {
+      "range": [
+        "0xd4e8",
+        "0xd4f8"
+      ],
+      "sha256": "f81953a0e72272630195947d8c546137e0897c668a0db472d5606118738ecb8f",
+      "instructions": [
+        {
+          "pc": "0xd4e8",
+          "bytes": "00404039",
+          "asm": "ldrb w0, [x0, #0x10]"
+        },
+        {
+          "pc": "0xd4ec",
+          "bytes": "202c0039",
+          "asm": "strb w0, [x1, #0xb]"
+        },
+        {
+          "pc": "0xd4f0",
+          "bytes": "000080d2",
+          "asm": "mov x0, #0"
+        },
+        {
+          "pc": "0xd4f4",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        }
+      ]
+    },
+    {
+      "range": [
+        "0x1475c",
+        "0x1488c"
+      ],
+      "sha256": "e2d304732142f8083a77bdec1309ad276659aa332ac9d1ec907dbeb33b9c1dbd",
+      "instructions": [
+        {
+          "pc": "0x1475c",
+          "bytes": "fd7bbfa9",
+          "asm": "stp x29, x30, [sp, #-0x10]!"
+        },
+        {
+          "pc": "0x14760",
+          "bytes": "000200b0",
+          "asm": "adrp x0, #0x55000"
+        },
+        {
+          "pc": "0x14764",
+          "bytes": "00380691",
+          "asm": "add x0, x0, #0x18e"
+        },
+        {
+          "pc": "0x14768",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "pc": "0x1476c",
+          "bytes": "6fffff97",
+          "asm": "bl #0x14528"
+        },
+        {
+          "pc": "0x14770",
+          "bytes": "a10200f0",
+          "asm": "adrp x1, #0x6b000"
+        },
+        {
+          "pc": "0x14774",
+          "bytes": "fd7bc1a8",
+          "asm": "ldp x29, x30, [sp], #0x10"
+        },
+        {
+          "pc": "0x14778",
+          "bytes": "20e809b9",
+          "asm": "str w0, [x1, #0x9e8]"
+        },
+        {
+          "pc": "0x1477c",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "pc": "0x14780",
+          "bytes": "fd7bbba9",
+          "asm": "stp x29, x30, [sp, #-0x50]!"
+        },
+        {
+          "pc": "0x14784",
+          "bytes": "000200b0",
+          "asm": "adrp x0, #0x55000"
+        },
+        {
+          "pc": "0x14788",
+          "bytes": "00180591",
+          "asm": "add x0, x0, #0x146"
+        },
+        {
+          "pc": "0x1478c",
+          "bytes": "01008052",
+          "asm": "mov w1, #0"
+        },
+        {
+          "pc": "0x14790",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "pc": "0x14794",
+          "bytes": "f30b00f9",
+          "asm": "str x19, [sp, #0x10]"
+        },
+        {
+          "pc": "0x14798",
+          "bytes": "b30200f0",
+          "asm": "adrp x19, #0x6b000"
+        },
+        {
+          "pc": "0x1479c",
+          "bytes": "0dd7ff97",
+          "asm": "bl #0xa3d0"
+        },
+        {
+          "pc": "0x147a0",
+          "bytes": "80000035",
+          "asm": "cbnz w0, #0x147b0"
+        },
+        {
+          "pc": "0x147a4",
+          "bytes": "000200b0",
+          "asm": "adrp x0, #0x55000"
+        },
+        {
+          "pc": "0x147a8",
+          "bytes": "00ec0591",
+          "asm": "add x0, x0, #0x17b"
+        },
+        {
+          "pc": "0x147ac",
+          "bytes": "03000014",
+          "asm": "b #0x147b8"
+        },
+        {
+          "pc": "0x147b0",
+          "bytes": "000200b0",
+          "asm": "adrp x0, #0x55000"
+        },
+        {
+          "pc": "0x147b4",
+          "bytes": "00ac0591",
+          "asm": "add x0, x0, #0x16b"
+        },
+        {
+          "pc": "0x147b8",
+          "bytes": "5cffff97",
+          "asm": "bl #0x14528"
+        },
+        {
+          "pc": "0x147bc",
+          "bytes": "60ea09b9",
+          "asm": "str w0, [x19, #0x9e8]"
+        },
+        {
+          "pc": "0x147c0",
+          "bytes": "020200b0",
+          "asm": "adrp x2, #0x55000"
+        },
+        {
+          "pc": "0x147c4",
+          "bytes": "010200b0",
+          "asm": "adrp x1, #0x55000"
+        },
+        {
+          "pc": "0x147c8",
+          "bytes": "60a26739",
+          "asm": "ldrb w0, [x19, #0x9e8]"
+        },
+        {
+          "pc": "0x147cc",
+          "bytes": "42380691",
+          "asm": "add x2, x2, #0x18e"
+        },
+        {
+          "pc": "0x147d0",
+          "bytes": "213c0591",
+          "asm": "add x1, x1, #0x14f"
+        },
+        {
+          "pc": "0x147d4",
+          "bytes": "87ffff97",
+          "asm": "bl #0x145f0"
+        },
+        {
+          "pc": "0x147d8",
+          "bytes": "bf7f03a9",
+          "asm": "stp xzr, xzr, [x29, #0x30]"
+        },
+        {
+          "pc": "0x147dc",
+          "bytes": "60ea49b9",
+          "asm": "ldr w0, [x19, #0x9e8]"
+        },
+        {
+          "pc": "0x147e0",
+          "bytes": "bf7f04a9",
+          "asm": "stp xzr, xzr, [x29, #0x40]"
+        },
+        {
+          "pc": "0x147e4",
+          "bytes": "a02300b9",
+          "asm": "str w0, [x29, #0x20]"
+        },
+        {
+          "pc": "0x147e8",
+          "bytes": "600f8012",
+          "asm": "mov w0, #-0x7c"
+        },
+        {
+          "pc": "0x147ec",
+          "bytes": "a0c30039",
+          "asm": "strb w0, [x29, #0x30]"
+        },
+        {
+          "pc": "0x147f0",
+          "bytes": "20008052",
+          "asm": "mov w0, #1"
+        },
+        {
+          "pc": "0x147f4",
+          "bytes": "a0c70039",
+          "asm": "strb w0, [x29, #0x31]"
+        },
+        {
+          "pc": "0x147f8",
+          "bytes": "000200b0",
+          "asm": "adrp x0, #0x55000"
+        },
+        {
+          "pc": "0x147fc",
+          "bytes": "00680591",
+          "asm": "add x0, x0, #0x15a"
+        },
+        {
+          "pc": "0x14800",
+          "bytes": "a01f00f9",
+          "asm": "str x0, [x29, #0x38]"
+        },
+        {
+          "pc": "0x14804",
+          "bytes": "a0830091",
+          "asm": "add x0, x29, #0x20"
+        },
+        {
+          "pc": "0x14808",
+          "bytes": "a02300f9",
+          "asm": "str x0, [x29, #0x40]"
+        },
+        {
+          "pc": "0x1480c",
+          "bytes": "80008052",
+          "asm": "mov w0, #4"
+        },
+        {
+          "pc": "0x14810",
+          "bytes": "a04b00b9",
+          "asm": "str w0, [x29, #0x48]"
+        },
+        {
+          "pc": "0x14814",
+          "bytes": "a0c30091",
+          "asm": "add x0, x29, #0x30"
+        },
+        {
+          "pc": "0x14818",
+          "bytes": "3ed7ff97",
+          "asm": "bl #0xa510"
+        },
+        {
+          "pc": "0x1481c",
+          "bytes": "f30b40f9",
+          "asm": "ldr x19, [sp, #0x10]"
+        },
+        {
+          "pc": "0x14820",
+          "bytes": "fd7bc5a8",
+          "asm": "ldp x29, x30, [sp], #0x50"
+        },
+        {
+          "pc": "0x14824",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        },
+        {
+          "pc": "0x14828",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!"
+        },
+        {
+          "pc": "0x1482c",
+          "bytes": "01008052",
+          "asm": "mov w1, #0"
+        },
+        {
+          "pc": "0x14830",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "pc": "0x14834",
+          "bytes": "f30b00f9",
+          "asm": "str x19, [sp, #0x10]"
+        },
+        {
+          "pc": "0x14838",
+          "bytes": "131c0053",
+          "asm": "uxtb w19, w0"
+        },
+        {
+          "pc": "0x1483c",
+          "bytes": "000200b0",
+          "asm": "adrp x0, #0x55000"
+        },
+        {
+          "pc": "0x14840",
+          "bytes": "00180591",
+          "asm": "add x0, x0, #0x146"
+        },
+        {
+          "pc": "0x14844",
+          "bytes": "e3d6ff97",
+          "asm": "bl #0xa3d0"
+        },
+        {
+          "pc": "0x14848",
+          "bytes": "20010034",
+          "asm": "cbz w0, #0x1486c"
+        },
+        {
+          "pc": "0x1484c",
+          "bytes": "020200b0",
+          "asm": "adrp x2, #0x55000"
+        },
+        {
+          "pc": "0x14850",
+          "bytes": "010200b0",
+          "asm": "adrp x1, #0x55000"
+        },
+        {
+          "pc": "0x14854",
+          "bytes": "42ac0591",
+          "asm": "add x2, x2, #0x16b"
+        },
+        {
+          "pc": "0x14858",
+          "bytes": "217c0691",
+          "asm": "add x1, x1, #0x19f"
+        },
+        {
+          "pc": "0x1485c",
+          "bytes": "e003132a",
+          "asm": "mov w0, w19"
+        },
+        {
+          "pc": "0x14860",
+          "bytes": "f30b40f9",
+          "asm": "ldr x19, [sp, #0x10]"
+        },
+        {
+          "pc": "0x14864",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20"
+        },
+        {
+          "pc": "0x14868",
+          "bytes": "62ffff17",
+          "asm": "b #0x145f0"
+        },
+        {
+          "pc": "0x1486c",
+          "bytes": "020200b0",
+          "asm": "adrp x2, #0x55000"
+        },
+        {
+          "pc": "0x14870",
+          "bytes": "010200b0",
+          "asm": "adrp x1, #0x55000"
+        },
+        {
+          "pc": "0x14874",
+          "bytes": "42ec0591",
+          "asm": "add x2, x2, #0x17b"
+        },
+        {
+          "pc": "0x14878",
+          "bytes": "21a80691",
+          "asm": "add x1, x1, #0x1aa"
+        },
+        {
+          "pc": "0x1487c",
+          "bytes": "f8ffff17",
+          "asm": "b #0x1485c"
+        },
+        {
+          "pc": "0x14880",
+          "bytes": "a00200f0",
+          "asm": "adrp x0, #0x6b000"
+        },
+        {
+          "pc": "0x14884",
+          "bytes": "00e849b9",
+          "asm": "ldr w0, [x0, #0x9e8]"
+        },
+        {
+          "pc": "0x14888",
+          "bytes": "c0035fd6",
+          "asm": "ret "
+        }
+      ]
+    }
+  ],
+  "pFunc_global_GOT": "0x6aec0",
+  "pFunc_variable": "0x6bfa0",
+  "three_shipped_tables_missing_ff01_and_ff03": true,
+  "fallback_80_is_static_NoAction_field_not_observed_wire_response": true,
+  "explicit_table_pointer_is_fixture_not_actual_authenticated_camera_level": true,
+  "no_blanket_claim_about_patched_custom_tables_or_other_firmware_versions": true,
+  "PMCA_fixed_source": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/usb/sony.py#L916-L945",
+  "PMCA_ff01_file_read_and_ff03_memory_dump_not_current_stock_table_routes": true
+}

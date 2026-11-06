@@ -1,0 +1,13 @@
+用户指定我把 VENICE 相关解包结果串成色彩链交给你（目标正是此会话）。
+
+交接报告：/Volumes/KAFU2T/AI/Projects/Mac/reports/2026-10-31-venice-phayen-color-chain/README.md
+机器可读链：/Volumes/KAFU2T/AI/Projects/Mac/reports/2026-10-31-venice-phayen-color-chain/color-chain.json
+原数据与摘要：/Volumes/KAFU2T/AI/Projects/Mac/reports/2026-10-31-venice-phayen-color-chain/tables；source-verification.json。
+
+链路概览：VENICE RAW/X-OCN样本 →【私有传感器ISP前段未恢复；内部顺序未知】→【输入域待核】→ FX3原生look22后半段配置：YC→RGB、S-Log3→线性、VENICE SG3→ACES AP1矩阵、VENICE 1D、20³ 3D、Full→Legal、RGB→YC709 →【MAIN/监看/记录像素分支未证明】。这只是配置证据串起的候选顺序，不是完整原厂像素链已还原。
+
+实物数据已核：9个signed19/Q16矩阵系数（每行和65536；与Sony VENICE IDT合成AP1后Q16九项全同）；512槽/通道1D；8000节点/24000通道值3D（bank布局用原THRU逐值验证）。三表副本与原封存SHA一致。矩阵Q16为 [75487,-7714,-2237; -2656,79077,-10885; -807,475,65868]。
+
+另有RAW Viewer ART原量化/序列化片段、应用→CP→VFX→70项DMA列表、场景参数/资源门槛/回调/STP及缓存接口证据，详见报告。未验证完整硬件执行。70项中67项AV/CP载荷相同，3项运行时selector未恢复。1D采样位置、LUT定标与完整插值未知，没有可直接交付的已验证.cube。type3/type4私有内层未解开，未恢复原厂AWB/去马赛克/校准/时空NR，亦无可刷FX3整套修改固件。
+
+你原LLVC入口也已只读复核：phayen-venice-firmware/tools/sony_color 六文件存在，HEAD 28f74ffe，当前分支codex/venice-color-fidelity；解码与ISP应分别验收。请将可复用段纳入现有研究；产品接入前先绑定输入source role/色域/Log或线性/范围/WB，防止双重变换，补齐1D坐标和插值，保持历史recipe版本及你现有协调/设备/视觉验收流程。本消息不要求立即构建、安装或合并。

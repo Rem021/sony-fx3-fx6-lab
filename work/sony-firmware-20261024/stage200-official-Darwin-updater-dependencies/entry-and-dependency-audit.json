@@ -1,0 +1,51 @@
+{
+  "helper_startup_bindings": [
+    {
+      "label": "historical2.05-init",
+      "source_sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad",
+      "ELF_entry": "0x401100",
+      "raw_main_load": "0x401118",
+      "raw_main_pointer_pool": "0x401130",
+      "main": "0x400be0",
+      "libc_start_main_PLT": "0x400b20",
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "scope": "entry/main source linkage if Linux dynamic runtime starts process; not camera boot or call reachability from USB"
+    },
+    {
+      "label": "official7.02-firmup",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "ELF_entry": "0x401128",
+      "raw_main_load": "0x401140",
+      "raw_main_pointer_pool": "0x401158",
+      "main": "0x400c30",
+      "libc_start_main_PLT": "0x400b70",
+      "interpreter": "/lib/ld-linux-aarch64.so.1",
+      "scope": "entry/main source linkage if Linux dynamic runtime starts process; not camera boot or call reachability from USB"
+    }
+  ],
+  "historical_AP_updater_boot_dependency": {
+    "init_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/sbin/init",
+    "init_sha256": "223f642c9cc8eb3a53901263940d42905a3d57fc5a091459003719e216950ccd",
+    "observed_order": [
+      "Linux mounts",
+      "insmod.sh",
+      "power-IC type check",
+      "conditional us_darwin_init.sh",
+      "UdtrMain.sh background"
+    ],
+    "driver_loader_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/bin/insmod.sh",
+    "driver_loader_sha256": "700bd1129d3aecd5de62bfd7c730df18b3b1b3bedba56b9f31889a7593020f4f",
+    "sio_module_load_present": true,
+    "actual_current_p1_identity_verified": false
+  },
+  "official7_02_Darwin_stage": {
+    "config_sha256": "09cd171039d921224fe9e66b9e44350f7f5e8bc8e75cea7aefe2235719f544da",
+    "wrapper": "us_darwin_firm.sh",
+    "thread": "yes",
+    "historical_wrapper_sha256": "38875671d86166753a67666edb58e2424a72dd772579632799e255f30fc2204e",
+    "current_body_wrapper_identity_verified": false
+  },
+  "no_bootstrap_from_dead_AP_proven": true,
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

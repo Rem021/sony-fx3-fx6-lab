@@ -1,0 +1,426 @@
+{
+  "r31": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-77e949cd",
+    "cut": 3819978,
+    "scope": "exact last consumed serial prefix at host entry to original finally, before cleanup serial polling; not global guest event boundary",
+    "NUL_bytes_full": 22,
+    "registered_records": 4,
+    "ui_overlapping_registered_records": 0,
+    "records": [
+      {
+        "offset": 473799,
+        "fields": {
+          "object": "0x7f70001200",
+          "identity": "0xffffffc11df69e00",
+          "type": "0x403",
+          "uhdl": "0x401",
+          "logical": "0x7f9835b000",
+          "phys": "0x43ae96000",
+          "bytes": "0x140000",
+          "epoch": "1",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f993f4a48",
+          "registration_origin": "native_open_return_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 484173,
+        "fields": {
+          "object": "0x7f70001340",
+          "identity": "0xffffffc11df69a80",
+          "type": "0x403",
+          "uhdl": "0x402",
+          "logical": "0x7f98207000",
+          "phys": "0x43feb5000",
+          "bytes": "0x140000",
+          "epoch": "2",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f993f4a48",
+          "registration_origin": "native_open_return_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 3473656,
+        "fields": {
+          "object": "0x7f7800f170",
+          "identity": "0xffffffc11db28800",
+          "type": "0",
+          "uhdl": "0x30303030",
+          "logical": "0x7f04972000",
+          "phys": "0x410924000",
+          "bytes": "0x340000",
+          "epoch": "3",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f993f4a48",
+          "registration_origin": "malloc_parent_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 3479932,
+        "fields": {
+          "object": "0x7f7800f380",
+          "identity": "0xffffffc11dafc680",
+          "type": "0",
+          "uhdl": "0x30303030",
+          "logical": "0x7f04772000",
+          "phys": "0x410c64000",
+          "bytes": "0x200000",
+          "epoch": "4",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f993f4a48",
+          "registration_origin": "malloc_parent_v1"
+        },
+        "ui_overlap": false
+      }
+    ],
+    "post_End_header_qwords": [
+      "0x3145544147335846",
+      "0x2",
+      "0x0",
+      "0x78",
+      "0xf1",
+      "0x42",
+      "0x0",
+      "0x1"
+    ],
+    "post_End_UI_pid": 241,
+    "no_record_is_NOT_proof_of_impossible_range": true
+  },
+  "r28": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-f7903939",
+    "cut": 4915799,
+    "scope": "pre-first-timer serial prefix only; exact pre-End byte boundary unavailable, so NOT asserted to be a strict host startup window",
+    "NUL_bytes_full": 22,
+    "registered_records": 4,
+    "ui_overlapping_registered_records": 0,
+    "records": [
+      {
+        "offset": 439930,
+        "fields": {
+          "object": "0x7f4c001200",
+          "identity": "0xffffffc11ea08600",
+          "type": "0x403",
+          "uhdl": "0x401",
+          "logical": "0x7f643f1000",
+          "phys": "0x43ae96000",
+          "bytes": "0x140000",
+          "epoch": "1",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f679dba48",
+          "registration_origin": "native_open_return_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 450398,
+        "fields": {
+          "object": "0x7f4c001340",
+          "identity": "0xffffffc11ea08580",
+          "type": "0x403",
+          "uhdl": "0x402",
+          "logical": "0x7f642b1000",
+          "phys": "0x43feb5000",
+          "bytes": "0x140000",
+          "epoch": "2",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f679dba48",
+          "registration_origin": "native_open_return_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 3266892,
+        "fields": {
+          "object": "0x7f5000f1b0",
+          "identity": "0xffffffc11db27b80",
+          "type": "0",
+          "uhdl": "0x30303030",
+          "logical": "0x7edf057000",
+          "phys": "0x410924000",
+          "bytes": "0x340000",
+          "epoch": "3",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f679dba48",
+          "registration_origin": "malloc_parent_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 3271352,
+        "fields": {
+          "object": "0x7f5000f3c0",
+          "identity": "0xffffffc11db27b00",
+          "type": "0",
+          "uhdl": "0x30303030",
+          "logical": "0x7edee57000",
+          "phys": "0x410c64000",
+          "bytes": "0x200000",
+          "epoch": "4",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f679dba48",
+          "registration_origin": "malloc_parent_v1"
+        },
+        "ui_overlap": false
+      }
+    ],
+    "post_End_header_qwords": [
+      "0x3145544147335846",
+      "0x2",
+      "0x1",
+      "0x1ed",
+      "0xed",
+      "0x42",
+      "0x0",
+      "0x1"
+    ],
+    "post_End_UI_pid": 237,
+    "no_record_is_NOT_proof_of_impossible_range": true
+  },
+  "r26": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-740bafa8",
+    "cut": 3031595,
+    "scope": "code/serial prefix before first original OSD commit; native key receive excluded; precedes qualified ready; not matched-duration window",
+    "NUL_bytes_full": 22,
+    "registered_records": 4,
+    "ui_overlapping_registered_records": 0,
+    "records": [
+      {
+        "offset": 370347,
+        "fields": {
+          "object": "0x7f54001200",
+          "identity": "0xffffffc11e60df80",
+          "type": "0x403",
+          "uhdl": "0x401",
+          "logical": "0x7f58434000",
+          "phys": "0x43ae96000",
+          "bytes": "0x140000",
+          "epoch": "1",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f72408a48",
+          "registration_origin": "native_open_return_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 379151,
+        "fields": {
+          "object": "0x7f54001340",
+          "identity": "0xffffffc11e6fbf80",
+          "type": "0x403",
+          "uhdl": "0x402",
+          "logical": "0x7f582f4000",
+          "phys": "0x43feb5000",
+          "bytes": "0x140000",
+          "epoch": "2",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f72408a48",
+          "registration_origin": "native_open_return_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 2638890,
+        "fields": {
+          "object": "0x7f5002db80",
+          "identity": "0xffffffc11e60d200",
+          "type": "0",
+          "uhdl": "0x30303030",
+          "logical": "0x7ee59cc000",
+          "phys": "0x410924000",
+          "bytes": "0x340000",
+          "epoch": "3",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f72408a48",
+          "registration_origin": "malloc_parent_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 2643575,
+        "fields": {
+          "object": "0x7f5002dd90",
+          "identity": "0xffffffc11da46c80",
+          "type": "0",
+          "uhdl": "0x30303030",
+          "logical": "0x7ee57cc000",
+          "phys": "0x410c64000",
+          "bytes": "0x200000",
+          "epoch": "4",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f72408a48",
+          "registration_origin": "malloc_parent_v1"
+        },
+        "ui_overlap": false
+      }
+    ],
+    "post_End_header_qwords": [
+      "0x3145544147335846",
+      "0x2",
+      "0x0",
+      "0x124",
+      "0xed",
+      "0x42",
+      "0x0",
+      "0x1"
+    ],
+    "post_End_UI_pid": 237,
+    "no_record_is_NOT_proof_of_impossible_range": true
+  },
+  "r26b": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/runs/v25gate-n64-r17-45304842",
+    "cut": 3040214,
+    "scope": "code/serial prefix before first original OSD commit; native key receive excluded; precedes qualified ready; not matched-duration window",
+    "NUL_bytes_full": 33,
+    "registered_records": 4,
+    "ui_overlapping_registered_records": 0,
+    "records": [
+      {
+        "offset": 372203,
+        "fields": {
+          "object": "0x7f54001200",
+          "identity": "0xffffffc11eb0f180",
+          "type": "0x403",
+          "uhdl": "0x401",
+          "logical": "0x7f6c40c000",
+          "phys": "0x43ae96000",
+          "bytes": "0x140000",
+          "epoch": "1",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f6f9dba48",
+          "registration_origin": "native_open_return_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 376656,
+        "fields": {
+          "object": "0x7f54001340",
+          "identity": "0xffffffc11eb0f300",
+          "type": "0x403",
+          "uhdl": "0x402",
+          "logical": "0x7f6c2cc000",
+          "phys": "0x43feb5000",
+          "bytes": "0x140000",
+          "epoch": "2",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f6f9dba48",
+          "registration_origin": "native_open_return_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 2509155,
+        "fields": {
+          "object": "0x7f5002d960",
+          "identity": "0xffffffc11eb1d500",
+          "type": "0",
+          "uhdl": "0x30303030",
+          "logical": "0x7edd45a000",
+          "phys": "0x410924000",
+          "bytes": "0x340000",
+          "epoch": "3",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f6f9dba48",
+          "registration_origin": "malloc_parent_v1"
+        },
+        "ui_overlap": false
+      },
+      {
+        "offset": 2522047,
+        "fields": {
+          "object": "0x7f5002db70",
+          "identity": "0xffffffc11e5b2f80",
+          "type": "0",
+          "uhdl": "0x30303030",
+          "logical": "0x7edd25a000",
+          "phys": "0x410c64000",
+          "bytes": "0x200000",
+          "epoch": "4",
+          "original_success_status": "0",
+          "state": "0x10",
+          "scope": "allocation_interval",
+          "subblock_lifetime_unproven": "1",
+          "queued_ABA_uncovered": "1",
+          "vptr": "0x7f6f9dba48",
+          "registration_origin": "malloc_parent_v1"
+        },
+        "ui_overlap": false
+      }
+    ],
+    "post_End_header_qwords": [
+      "0x3145544147335846",
+      "0x2",
+      "0x1",
+      "0x189",
+      "0xed",
+      "0x42",
+      "0x0",
+      "0x1"
+    ],
+    "post_End_UI_pid": 237,
+    "no_record_is_NOT_proof_of_impossible_range": true
+  }
+}

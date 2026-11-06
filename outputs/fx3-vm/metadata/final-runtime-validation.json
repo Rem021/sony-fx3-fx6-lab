@@ -1,0 +1,77 @@
+{
+  "created_utc": "2026-11-01T10:33:07.724338+00:00",
+  "status": "FINAL_NATIVE_RUNTIME_CORE_AND_LOADER_PASSED",
+  "qemu_sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+  "qemu_signing": "ad-hoc; original and final QEMU entitlements empty; final TCG actually exercised",
+  "runtime_binary_checks": [
+    {
+      "path": "bin/qemu-system-aarch64",
+      "sha256": "78e36d4060aa4aae5a802c69cbd45beab3c69c47746371897e229e1c1eeb7e93",
+      "native_file": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64: Mach-O 64-bit executable arm64",
+      "codesign_valid": true,
+      "absolute_non_system_load_paths": false,
+      "LC_RPATH": false
+    },
+    {
+      "path": "lib/libglib-2.0.0.dylib",
+      "sha256": "15d793d59c5515e6addd05e04a748ea2930fcee456ede9aa4863c07e12a12ff2",
+      "native_file": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib: Mach-O 64-bit dynamically linked shared library arm64",
+      "codesign_valid": true,
+      "absolute_non_system_load_paths": false,
+      "LC_RPATH": false
+    },
+    {
+      "path": "lib/libintl.8.dylib",
+      "sha256": "ab09db0554104a238da4632d3831d906976ce2fd8c8a6e424899ae638d32b3c8",
+      "native_file": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib: Mach-O 64-bit dynamically linked shared library arm64",
+      "codesign_valid": true,
+      "absolute_non_system_load_paths": false,
+      "LC_RPATH": false
+    },
+    {
+      "path": "lib/libpcre2-8.0.dylib",
+      "sha256": "09822dc1655123ba9d4be6c45fddfb2ad31ba03de5b2710e069b1a375706e110",
+      "native_file": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib: Mach-O 64-bit dynamically linked shared library arm64",
+      "codesign_valid": true,
+      "absolute_non_system_load_paths": false,
+      "LC_RPATH": false
+    }
+  ],
+  "end_to_end_runs": [
+    {
+      "profile": "minimal-linux",
+      "status": "ORIGINAL_USERLAND_REACHED",
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/a-7811bbff",
+      "receipt_sha256": "adfd1fa2ed4d67a68689a3d80188eed9437d219387d0a0cd2295bf4abdbc2c74",
+      "serial_sha256": "ebada89f3144a8a0db2f99f63538abfdc7025affe2cee3bfa675cb3097e4b307",
+      "duration_seconds": 12.971559041994624,
+      "max_sampled_rss_kib": 123152,
+      "same_input_hashes_verified_after_run": true,
+      "process_reaped": true,
+      "kernel_log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/a-7811bbff/printk-decoded.json"
+    },
+    {
+      "profile": "app-loader",
+      "status": "ORIGINAL_APP_LOADER_VERIFY_LIST_PASSED",
+      "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/a-2d6d46e5",
+      "receipt_sha256": "4826860d171aa39e2e1b4397a0fb6e7136538501d893cd81c7e2d3aa222d9980",
+      "serial_sha256": "ab8b8df119e09afc62d8026c0b28453160d5c2bae1c36638a7b957323736ed0a",
+      "duration_seconds": 12.193962875011493,
+      "max_sampled_rss_kib": 140896,
+      "same_input_hashes_verified_after_run": true,
+      "process_reaped": true,
+      "kernel_log": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/runs/a-2d6d46e5/printk-decoded.json"
+    }
+  ],
+  "launcher_checks": [
+    "Python source compile",
+    "zsh -n .command",
+    "--self-check source/volume/runtime hashes"
+  ],
+  "GUI_or_Terminal_doubleclick_exercised": false,
+  "app_main_or_constructor_executed": false,
+  "menu_capture_physical_camera_or_flash_verified": false,
+  "global_install_or_new_persistent_Linux_VM": false,
+  "max_observation_window_host_seconds": 12,
+  "note": "Older probe receipts call host wall-clock windows guest_seconds_requested; actual observation is host wall time. Sony printk timestamps are not treated as wall time."
+}

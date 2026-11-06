@@ -1,0 +1,21 @@
+00000c90 stp        x29, x30, [sp, #-0x20]!
+00000c94 mov        x29, sp
+00000c98 str        x19, [sp, #0x10]
+00000c9c mov        x19, x0
+00000ca0 mov        x0, #0x10
+00000ca4 bl         #0xca4 ; relocation {"type": 283, "symbol": "extcmd_mem_alloc", "addend": 0}
+00000ca8 cbz        x0, #0xccc
+00000cac ldr        x2, [x19, #8]
+00000cb0 mov        w1, #0
+00000cb4 str        x0, [x2]
+00000cb8 stp        xzr, xzr, [x0]
+00000cbc mov        w0, w1
+00000cc0 ldr        x19, [sp, #0x10]
+00000cc4 ldp        x29, x30, [sp], #0x20
+00000cc8 ret        
+00000ccc ldr        x1, #0xce8
+00000cd0 mov        w2, #0x26
+00000cd4 ldr        x0, #0xcf0
+00000cd8 bl         #0xcd8 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+00000cdc mov        w1, #-0xc
+00000ce0 b          #0xcbc

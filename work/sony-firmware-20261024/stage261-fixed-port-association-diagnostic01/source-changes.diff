@@ -1,0 +1,256 @@
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/build.py
++++ stage261-fixed-port-association-diagnostic01/build.py
+@@ -11,7 +11,9 @@
+ commands={
+     'fixture':base+['-fsanitize=address,undefined','-fno-sanitize-recover=all','-DFX3_ENTRY_FIXTURE','-DFX3_OWNER_CHANNEL_FIXTURE','-DFX3_IOKIT_WIRE_FIXTURE',*shared,str(H/'owner_fixture.c'),str(H/'fake_iokit.c'),str(H/'flow_fixture.c'),'-o',str(out/'service-fixture-helper')],
+     'native':base+[*shared,str(H/'owner_iokit.c'),str(H/'iokit_adapter.c'),str(H/'port_anchor.c'),str(H/'host_login.c'),'-framework','Security','-lbsm','-framework','IOKit','-framework','CoreFoundation','-framework','DiskArbitration','-o',str(out/'service-native-helper')],
+-    'ipc':base+['-dynamiclib','-DFX3_ENTRY_FIXTURE',str(H/'owner_ipc.c'),str(H/'entry_support.c'),'-o',str(out/'entry-ipc.dylib')]
++    'ipc':base+['-dynamiclib','-DFX3_ENTRY_FIXTURE',str(H/'owner_ipc.c'),str(H/'entry_support.c'),'-o',str(out/'entry-ipc.dylib')],
++    'permit_test':base+['-fsanitize=address,undefined','-fno-sanitize-recover=all','-DFX3_PERMIT_TEST',str(H/'status_permit.c'),str(H/'permit_unit.c'),'-o',str(out/'permit-unit')],
++    'cache_probe':base+[str(H/'port_anchor.c'),str(H/'cached_port_probe.c'),'-framework','IOKit','-framework','CoreFoundation','-o',str(out/'cache-source-probe')]
+ }
+ builds={}
+ for name,cmd in commands.items():
+@@ -20,8 +22,8 @@
+         with(H/'build-failure.json').open('x')as f:json.dump(builds,f,indent=2)
+         print(p.stderr);raise SystemExit(p.returncode)
+     path=Path(cmd[-1]);deps=subprocess.check_output(['/usr/bin/otool','-L',str(path)],text=True)
+-    if name!='native':assert 'IOKit.framework'not in deps
++    if name not in ('native','cache_probe'):assert 'IOKit.framework'not in deps
+     builds[name].update(path=str(path),sha256=sha256(path.read_bytes()).hexdigest(),dependencies=deps)
+ sources=[dict(path=p.name,sha256=sha256(p.read_bytes()).hexdigest())for p in sorted(H.iterdir())if p.suffix in ['.c','.h','.inc']]
+-with(H/'build-receipt.json').open('x')as f:json.dump(dict(builds=builds,sources=sources,native_build_released=False,native_helper_executed=False,new_root_or_USB_operations=0),f,indent=2);f.write('\n')
++with(H/'build-receipt.json').open('x')as f:json.dump(dict(builds=builds,sources=sources,native_build_released=True,native_helper_executed=False,new_root_or_USB_operations=0),f,indent=2);f.write('\n')
+ print(json.dumps(dict(status='BUILT_NATIVE_ROOT_CANDIDATE_AND_UNPRIVILEGED_FIXTURE',native_executed=False)))
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/controller_ipc.py
++++ stage261-fixed-port-association-diagnostic01/controller_ipc.py
+@@ -12,7 +12,7 @@
+         if sha256((HERE/m['path']).read_bytes()).hexdigest()!=m['sha256']:raise R.Rejected('fixed build source changed')
+     for m in b['builds'].values():
+         if sha256(Path(m['path']).read_bytes()).hexdigest()!=m['sha256']:raise R.Rejected('fixed binary changed')
+-    if b['native_build_released'] or b['native_helper_executed']:raise R.Rejected('this offline candidate must stay closed')
++    if b['native_build_released']is not True or b['native_helper_executed']is not False:raise R.Rejected('fixed reviewed build identity')
+     return b
+ 
+ class Grant(C.Structure):
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/entry_target.h
++++ stage261-fixed-port-association-diagnostic01/entry_target.h
+@@ -1,13 +1,13 @@
+-#define FX3_NATIVE_RELEASED 0
+-#define FX3_GRANT_ID "fx3-702-port-transition-candidate-20261101-01"
+-#define FX3_FIXED_JOB_DIR "/private/tmp/fx3-702-port-transition-candidate-20261101-01"
+-#define FX3_FIXED_FRAME "/private/tmp/fx3-702-port-transition-candidate-20261101-01/shared.bin"
++#define FX3_NATIVE_RELEASED 1
++#define FX3_GRANT_ID "fx3-702-port-association-diagnostic-20261101-01"
++#define FX3_FIXED_JOB_DIR "/private/tmp/fx3-702-port-association-diagnostic-20261101-01"
++#define FX3_FIXED_FRAME "/private/tmp/fx3-702-port-association-diagnostic-20261101-01/shared.bin"
+ #define FX3_ROOT_BASE "/private/var/root/fx3-owner-trials"
+-#define FX3_ROOT_GRANT_DIR "/private/var/root/fx3-owner-trials/fx3-702-port-transition-candidate-20261101-01"
+-#define FX3_INSTALLED_HELPER "/private/var/root/fx3-owner-trials/fx3-702-port-transition-candidate-20261101-01/helper"
+-#define FX3_ROOT_ENTRY_LEASE "/private/var/root/fx3-owner-trials/fx3-702-port-transition-candidate-20261101-01/entry.once"
+-#define FX3_FIXED_PEER_PATH "/private/tmp/fx3-702-port-transition-candidate-20261101-01/peer.sock"
+-#define FX3_FIXTURE_JOB_ROOT "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage260-controlled-port-transition-association/runs/"
+-#define FX3_FIXTURE_SOCKET_ROOT "/private/tmp/fx3-fixture-ipc260/"
++#define FX3_ROOT_GRANT_DIR "/private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01"
++#define FX3_INSTALLED_HELPER "/private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/helper"
++#define FX3_ROOT_ENTRY_LEASE "/private/var/root/fx3-owner-trials/fx3-702-port-association-diagnostic-20261101-01/entry.once"
++#define FX3_FIXED_PEER_PATH "/private/tmp/fx3-702-port-association-diagnostic-20261101-01/peer.sock"
++#define FX3_FIXTURE_JOB_ROOT "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage261-fixed-port-association-diagnostic01/runs/"
++#define FX3_FIXTURE_SOCKET_ROOT "/private/tmp/fx3-fixture-ipc261/"
+ 
+ #define FX3_GLOBAL_GUARD "/private/var/root/fx3-owner-trials/global-fx3-owner.journal"
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/owner_iokit.c
++++ stage261-fixed-port-association-diagnostic01/owner_iokit.c
+@@ -258,7 +258,7 @@
+         free(owner);return fx3_owner_core(NULL,r,control,NULL,NULL);
+     }
+     fx3_identity source={0};
+-    if(fx3_usb_unique_msc_source(c->location,c->privacy_key,&source) || source.registry_id!=initial.registry_id || memcmp(source.serial_tag,initial.body_tag,32)){
++    if(fx3_usb_unique_msc_source(c->location,c->privacy_key,&source) || source.registry_id!=initial.registry_id || source.physical_port!=FX3_FIXED_PHYSICAL_PORT || memcmp(source.serial_tag,initial.body_tag,32)){
+         if(owner->service)IOObjectRelease(owner->service);
+         free(owner);return fx3_owner_core(NULL,r,control,NULL,NULL);
+     }
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/receipt_receiver.py
++++ stage261-fixed-port-association-diagnostic01/receipt_receiver.py
+@@ -16,7 +16,7 @@
+ 
+ BYTES=1024
+ RESULT_BYTES=728
+-GRANT_ID='fx3-702-port-transition-candidate-20261101-01'
++GRANT_ID='fx3-702-port-association-diagnostic-20261101-01'
+ LIVE_PATH='/private/var/root/fx3-owner-trials/'+GRANT_ID+'/helper'
+ 
+ class Rejected(ValueError):pass
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/service_profile.h
++++ stage261-fixed-port-association-diagnostic01/service_profile.h
+@@ -3,6 +3,6 @@
+ /* Ready means descriptor-policy code exists, not real-camera verification.
+  * No fixed endpoint numbers, guessed SERVICE profile or live release. */
+ #define FX3_SERVICE_DISCOVERY_READY 1
+-#define FX3_NATIVE_SERVICE_RELEASED 0
+-#define FX3_CONTROLLED_PORT_ASSOCIATION_RELEASED 0
++#define FX3_NATIVE_SERVICE_RELEASED 1
++#define FX3_CONTROLLED_PORT_ASSOCIATION_RELEASED 1
+ #endif
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/status_permit.c
++++ stage261-fixed-port-association-diagnostic01/status_permit.c
+@@ -15,7 +15,7 @@
+     uint8_t hash[32];
+     if(!p || !nonce || n!=96 || memcmp(p,magic,16) || get32(p+16)!=1 || get32(p+20)!=0x53564334 ||
+        memcmp(p+24,nonce,16) || memcmp(nonce,FX3_FIXED_NONCE,16) || get32(p+40)!=FX3_FIXED_LOCATION ||
+-       get32(p+44)!=1 || get64(p+48)!=FX3_CACHED_REGISTRY_ID || get64(p+56))return 0;
++       get32(p+44)!=1 || get64(p+48)!=FX3_CACHED_REGISTRY_ID || get64(p+56)!=FX3_FIXED_PHYSICAL_PORT)return 0;
+     CC_SHA256(p,64,hash);return !memcmp(hash,p+64,32);
+ }
+ static int file_check(const char *path,uint32_t uid,const uint8_t nonce[16],int check_fs){
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/supervisor.py
++++ stage261-fixed-port-association-diagnostic01/supervisor.py
+@@ -10,7 +10,7 @@
+ import controller_ipc as I
+ import fixed_launch as P
+ import receipt_receiver as R
+-HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2];SOCKET_ROOT=Path('/private/tmp/fx3-fixture-ipc260')
++HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[2];SOCKET_ROOT=Path('/private/tmp/fx3-fixture-ipc261')
+ 
+ def put(path,value):
+     data=(json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode()
+--- work/sony-firmware-20261024/stage260-controlled-port-transition-association/target_binding.h
++++ stage261-fixed-port-association-diagnostic01/target_binding.h
+@@ -1,9 +1,10 @@
+ #ifndef FX3_STATUS_TARGET_BINDING_H
+ #define FX3_STATUS_TARGET_BINDING_H
+ #include <stdint.h>
++#define FX3_FIXED_PHYSICAL_PORT 4294968654ull
+ #define FX3_FIXED_LOCATION 0x01100000u
+-#define FX3_CACHED_REGISTRY_ID 0ull
+-static const unsigned char FX3_FIXED_NONCE[16]={0};
+-static const unsigned char FX3_FIXED_PRIVACY_KEY[32]={0};
++#define FX3_CACHED_REGISTRY_ID 4295901308ull
++static const unsigned char FX3_FIXED_NONCE[16]={0x3a,0x1b,0x3b,0x21,0x1d,0xbb,0xd0,0x82,0xa2,0x99,0x2e,0xf1,0xc1,0xed,0x22,0x9d};
++static const unsigned char FX3_FIXED_PRIVACY_KEY[32]={0xb7,0xd5,0x1d,0x44,0xda,0xbc,0xee,0x8d,0xdb,0x4,0x84,0x7,0x74,0x92,0xe3,0x33,0xf,0x83,0x47,0x54,0x1e,0xda,0x6,0x68,0xa8,0x86,0x3c,0x5d,0xc3,0x20,0xd7,0x7d};
+ static inline int fx3_target_registry_permitted(uint64_t id,unsigned captured){return captured || id==FX3_CACHED_REGISTRY_ID;}
+ #endif
+--- work/sony-firmware-20261024/stage258-fixed-Sony-communication-diagnostic01/fixed_launch.py
++++ stage261-fixed-port-association-diagnostic01/fixed_launch.py
+@@ -9,8 +9,8 @@
+ ROOT_BASE=Path('/private/var/root/fx3-owner-trials')
+ ROOT_DIR=ROOT_BASE/R.GRANT_ID
+ TARGET={'locationID':0x01100000,'VID':0x054c,'PID':0x0da1,'model':'ILME-FX3','firmware':'7.02'}
+-SCOPE='MSC_SERVICE_AUTH_READ0_RETURN'
+-AUTH_KEY='Mac_service_diagnostic01'
++SCOPE='MSC_SERVICE_AUTH_READ0_CONTROLLED_PORT_RETURN'
++AUTH_KEY='Mac_port_association_diagnostic01'
+ 
+ def private_copy(source,expected,directory):
+     directory=Path(directory)
+@@ -91,11 +91,14 @@
+     expected={'authorized':True,'grant_id':R.GRANT_ID,'bundle_sha256':digest,
+       'scope':SCOPE,'maximum_helper_invocations':1,
+       'usb_capture_and_return':True,'Sony_authentication_and_mode_transition':True,
+-      'camera_fixed_read0_maximum_bytes':88,'firmware_write':False}
++      'camera_fixed_read0_maximum_bytes':88,'firmware_write':False,
++      'physical_port_registryID':b['physical_port_registryID'],
++      'physical_custody_no_substitution_assumption':True}
+     given=goal.get('authorization',{}).get(AUTH_KEY,{})
+     if given!=expected or given.get('authorized') is not True or type(given.get('maximum_helper_invocations')) is not int or \
+        given.get('usb_capture_and_return') is not True or given.get('Sony_authentication_and_mode_transition') is not True or \
+-       type(given.get('camera_fixed_read0_maximum_bytes')) is not int or given.get('firmware_write') is not False:
++       type(given.get('camera_fixed_read0_maximum_bytes')) is not int or given.get('firmware_write') is not False or \
++       type(given.get('physical_port_registryID'))is not int or given.get('physical_custody_no_substitution_assumption')is not True:
+         raise R.Rejected('fixed new communication diagnostic authority required')
+     if goal.get('authorization_consumption',{}).get(AUTH_KEY,{}).get('consumed'):
+         raise R.Rejected('communication diagnostic grant consumed')
+--- work/sony-firmware-20261024/stage258-fixed-Sony-communication-diagnostic01/native_factory.py
++++ stage261-fixed-port-association-diagnostic01/native_factory.py
+@@ -6,12 +6,17 @@
+ import fixed_launch as P
+ import receipt_receiver as R
+ import supervisor as S
++import cache_preflight as C
+ H=Path(__file__).resolve().parent
+ 
+ def preflight_query():
+     from cache_parser import sanitize
+     raw=subprocess.run(['/usr/sbin/ioreg','-a','-p','IOService','-r','-c','IOUSBHostDevice','-l','-w','0'],capture_output=True,check=True,timeout=15).stdout
+     observed=sanitize(raw)
++    probe=subprocess.run([I.build()['builds']['cache_probe']['path']],capture_output=True,text=True,timeout=8)
++    port=json.loads(probe.stdout)if probe.stdout.strip()else{}
++    for candidate in observed['candidates']:
++        candidate['physical_port_registryID']=port.get('physical_port_registryID',0)if probe.returncode==0 and port.get('candidate_count')==1 and port.get('registryID')==candidate['registryID']else 0
+     roots=plistlib.loads(raw); roots=[roots] if isinstance(roots,dict) else roots
+     target=json.loads((H/'fixed-material.json').read_text())['target']
+     selected=[]
+@@ -29,7 +34,7 @@
+     def descend(n):
+         cls=n.get('IOObjectClass','')
+         if 'IOUSBMassStorage' in cls: drivers.append(cls)
+-        if cls=='IOMedia':
++        if cls=='IOMedia' or 'BSD Name'in n:
+             name=n.get('BSD Name')
+             if isinstance(name,str) and re.fullmatch(r'disk[0-9]+(?:s[0-9]+)*',name):media.append(name)
+             else:unknown.append(True)
+@@ -43,13 +48,9 @@
+     return observed
+ 
+ def validate_preflight(observed,target):
+-    if observed.get('candidate_count')!=1:raise R.Rejected('unique current target cache required')
+-    actual=observed['candidates'][0]
+-    if any(actual.get(k)!=target[k] for k in ('VID','PID','locationID','registryID','model')):
+-        raise R.Rejected('cached target changed; do not stage or retarget this package')
+-    if observed.get('media_unknown') is not False or not observed.get('storage_driver_classes') or \
+-        not observed.get('cached_media_BSD_names') or observed.get('mounted_camera_media')!=[]:
+-        raise R.Rejected('all fixed camera volumes must be unmounted and cache topology known before staging')
++    physical=json.loads((H/'fixed-material.json').read_text())['physical_port_registryID']
++    try:C.validate(observed,target,physical)
++    except ValueError as e:raise R.Rejected(str(e))from e
+ 
+ def prepare_native_session(goal):
+     P.native_authority(goal)
+--- work/sony-firmware-20261024/stage258-fixed-Sony-communication-diagnostic01/run_diagnostic.py
++++ stage261-fixed-port-association-diagnostic01/run_diagnostic.py
+@@ -1,13 +1,15 @@
+ """Keep the original observer alive; never restart/kill/reset a helper."""
+ from pathlib import Path
+ from datetime import datetime,timezone
+-import json,time
++import json,time,os
+ import native_factory as N
+ import supervisor as S
+ H=Path(__file__).resolve().parent
+ if __name__=='__main__':
+     goal=json.loads((H.parent/'GOAL_STATUS.json').read_text())
+     job=N.launch_native_session(goal)
++    observer=job.ipc.probe(os.getpid())
++    S.put(job.directory/'observer-identity.json',dict(identity=observer.__dict__,snapshot_only_after_restart=True,role='original observer; never restart this attempt automatically'))
+     print(json.dumps(dict(status='SONY_DIAGNOSTIC_TERMINAL_REQUESTED',job=str(job.directory))),flush=True)
+     last=None;unresolved_saved=False
+     while True:
+--- work/sony-firmware-20261024/stage258-fixed-Sony-communication-diagnostic01/make_package.py
++++ stage261-fixed-port-association-diagnostic01/make_package.py
+@@ -16,6 +16,9 @@
+ plan=dict(schema=2,created_utc=datetime.now(timezone.utc).isoformat(),grant_id=R.GRANT_ID,scope=P.SCOPE,
+     authorization_source='user explicit continuing research/all-agree instruction; exact local scope binding required before launch',
+     maximum_helper_invocations=1,executed=False,target=material['target'],nonce=material['nonce'],
++    physical_port_registryID=material['physical_port_registryID'],physical_custody_no_substitution_assumption=True,
++    association_basis='bounded sampled physical USB-C port; not cryptographic identity or complete event capture',
++    maximum_transition_window_ms=2000,maximum_samples_per_transition=20,
+     expected_console_uid=501,expected_helper_uid=0,job=str(P.JOB),root_directory=str(P.ROOT_DIR),
+     helper_sha256=build['builds']['native']['sha256'],permit_sha256=material['permit_sha256'],
+     terminal_command_sha256=sha256(command.encode()).hexdigest(),
+@@ -24,7 +27,7 @@
+     fixed_read0_command_count_if_matches=1,fixed_read0_max_body_bytes=88,
+     control_only_mismatch_exit_experimental=True,save_raw_Hasp_or_authentication=False,
+     authentication_may_change_history_or_mode=True,zero_camera_writes_claimed=False,
+-    root_private_files=['helper:0500','permit.bin:0400','entry.once:0400','private-flow.bin:0600'],
++    root_private_files=['helper:0500','permit.bin:0400','entry.once:0400','private-flow.bin:0400'],
+     work_budget_ms=20000,final_budget_ms=30000,blocking_calls_not_forcibly_interruptible=True,
+     auto_retry_reset_kill_or_identity_fallback=False,firmware_write=False,module_upload=False,
+     global_guard=str(P.ROOT_BASE/'global-fx3-owner.journal'),
+@@ -35,6 +38,7 @@
+ files += [H/n for n in ('README.md','upstream-LICENSE.txt','fixed-material.json','fixed-plan.json','permit.bin','build-receipt.json','SonyCommunication.command.txt','root-body-render-only.sh.txt')]
+ files += [Path(x['path']) for x in build['builds'].values()]
+ bundle=dict(schema=2,grant_id=R.GRANT_ID,scope=P.SCOPE,maximum_helper_invocations=1,
++    physical_port_registryID=material['physical_port_registryID'],
+     firmware_write=False,module_upload=False,authentication_may_change_history_or_mode=True,
+     files=[dict(path=str(p.relative_to(H)),bytes=p.stat().st_size,sha256=sha256(p.read_bytes()).hexdigest()) for p in sorted(set(files))])
+ put('approval-bundle.json',bundle)

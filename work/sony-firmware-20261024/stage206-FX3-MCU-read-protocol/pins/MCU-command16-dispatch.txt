@@ -1,0 +1,30 @@
+00004f6c 01f070fa bl       #0x6450
+00004f70 9df81410 ldrb.w   r1, [sp, #0x14]
+00004f74 1129 cmp      r1, #0x11
+00004f76 1fd0 beq      #0x4fb8
+00004f78 1229 cmp      r1, #0x12
+00004f7a 2dd0 beq      #0x4fd8
+00004f7c 1329 cmp      r1, #0x13
+00004f7e 6ad0 beq      #0x5056
+00004f80 1629 cmp      r1, #0x16
+00004f82 69d1 bne      #0x5058
+00004f84 0df11a00 add.w    r0, sp, #0x1a
+00004f88 0190 str      r0, [sp, #4]
+00004f8a 0df1140a add.w    sl, sp, #0x14
+00004f8e 401f subs     r0, r0, #5
+00004f90 33f0f8fb bl       #0x38784
+00004f94 9df81940 ldrb.w   r4, [sp, #0x19]
+00004f98 0746 mov      r7, r0
+00004f9a 04f07f00 and      r0, r4, #0x7f
+00004f9e 7828 cmp      r0, #0x78
+00004fa0 08d8 bhi      #0x4fb4
+00004fa2 2006 lsls     r0, r4, #0x18
+00004fa4 7ed5 bpl      #0x50a4
+00004fa6 b7f1005f cmp.w    r7, #0x20000000
+00004faa 03d3 blo      #0x4fb4
+00004fac 2849 ldr      r1, [pc, #0xa0]
+00004fae 3819 adds     r0, r7, r4
+00004fb0 8842 cmp      r0, r1
+00004fb2 78d9 bls      #0x50a6
+00004fb4 0120 movs     r0, #1
+00004fb6 dee0 b        #0x5176

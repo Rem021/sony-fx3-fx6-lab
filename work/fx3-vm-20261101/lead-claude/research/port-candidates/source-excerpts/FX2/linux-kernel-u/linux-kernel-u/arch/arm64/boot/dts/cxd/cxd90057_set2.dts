@@ -1,0 +1,51 @@
+/*
+ * arch/arm64/boot/dts/cxd/cxd90057_set2.dts
+ *
+ * CXD90057 DTS
+ *
+ * Copyright 2018 Sony Corporation
+ *
+ *  This program is free software; you can redistribute  it and/or modify it
+ *  under  the terms of  the GNU General  Public License as published by the
+ *  Free Software Foundation;  version 2 of the  License.
+ *
+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *  You should have received a copy of the  GNU General Public License along
+ *  with this program; if not, write  to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
+ *
+ */
+
+/dts-v1/;
+
+#include "cxd90057.dtsi"
+
+/ {
+	model = "CXD90057";
+	compatible = "cxd,cxd90057";
+
+	chosen {
+		stdout-path = "serial0:460800n8";
+		bootargs = "earlycon console=ttyAMA0,460800n8 root=/dev/ram0 rootfstype=squashfs rw noatime init=/sbin/init boottime=0x20000@0x400040000 klog.addr=0x400060000 klog.size=0x20000 slab_max_order=0 stack_usage=1 threadirqs manage.irqd=129 pcie_pme=nomsi pcie_hp=nomsi page_alloc.minkb=128";
+		linux,initrd-start = <0x4 0x08000000>;
+		linux,initrd-end   = <0x4 0x09000000>;
+	};
+
+	soc {
+	/*
+		pcie_i: pcie_i {
+			status = "okay";
+		};
+	*/
+	};
+};

@@ -1,0 +1,271 @@
+[
+  {
+    "request": {
+      "stage": "HTTP_request",
+      "UTC": "2026-11-04T23:50:32.887352+00:00",
+      "host_ns": 419918419133333,
+      "id": "a841e8eb-ec3f-4eb5-9b28-4a78eb6f6e96",
+      "method": "POST",
+      "path": "/api/browser-ready",
+      "body_utf8": "{}",
+      "headers": {
+        "Host": "127.0.0.1:52524",
+        "Origin": "http://127.0.0.1:52524",
+        "Content-Type": "application/json",
+        "Sec-Fetch-Site": "same-origin"
+      }
+    },
+    "response": {
+      "stage": "HTTP_response_written",
+      "UTC": "2026-11-04T23:50:32.887655+00:00",
+      "host_ns": 419918419429833,
+      "id": "a841e8eb-ec3f-4eb5-9b28-4a78eb6f6e96",
+      "method": "POST",
+      "path": "/api/browser-ready",
+      "HTTP_status": 200,
+      "response": {
+        "browser_ready": true
+      },
+      "payload_sha256": null,
+      "extra": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T23:50:32.887548+00:00",
+        "host_ns": 419918419322875
+      }
+    }
+  },
+  {
+    "request": {
+      "stage": "HTTP_request",
+      "UTC": "2026-11-04T23:50:33.370788+00:00",
+      "host_ns": 419918902572666,
+      "id": "ed4225d4-e650-4a05-a299-16b2d24d8217",
+      "method": "POST",
+      "path": "/api/start",
+      "body_utf8": "{\"request_id\":\"eaf767d2-d2fb-421f-a062-dc70cfb5de25\"}",
+      "headers": {
+        "Host": "127.0.0.1:52524",
+        "Origin": "http://127.0.0.1:52524",
+        "Content-Type": "application/json",
+        "Sec-Fetch-Site": "same-origin"
+      }
+    },
+    "response": {
+      "stage": "HTTP_response_written",
+      "UTC": "2026-11-04T23:50:33.371350+00:00",
+      "host_ns": 419918903124416,
+      "id": "ed4225d4-e650-4a05-a299-16b2d24d8217",
+      "method": "POST",
+      "path": "/api/start",
+      "HTTP_status": 202,
+      "response": {
+        "accepted": true,
+        "request_id": "eaf767d2-d2fb-421f-a062-dc70cfb5de25",
+        "guest_spawned_by_http": false
+      },
+      "payload_sha256": null,
+      "extra": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T23:50:33.371183+00:00",
+        "host_ns": 419918902957583
+      }
+    }
+  },
+  {
+    "request": {
+      "stage": "HTTP_request",
+      "UTC": "2026-11-04T23:50:50.675647+00:00",
+      "host_ns": 419936207383791,
+      "id": "7546e2aa-fd4a-4418-95aa-da2d0fc2f599",
+      "method": "POST",
+      "path": "/api/key",
+      "body_utf8": "{\"key\":427,\"observed_sequence\":211,\"request_id\":\"1ab761ff-1c75-485b-a24d-db9412ff4945\"}",
+      "headers": {
+        "Host": "127.0.0.1:52524",
+        "Origin": "http://127.0.0.1:52524",
+        "Content-Type": "application/json",
+        "Sec-Fetch-Site": "same-origin"
+      }
+    },
+    "response": {
+      "stage": "HTTP_response_written",
+      "UTC": "2026-11-04T23:50:50.676394+00:00",
+      "host_ns": 419936208128250,
+      "id": "7546e2aa-fd4a-4418-95aa-da2d0fc2f599",
+      "method": "POST",
+      "path": "/api/key",
+      "HTTP_status": 409,
+      "response": {
+        "error": "当前画面已变化或不可用，请等待并查看最新画面。",
+        "request_id": "1ab761ff-1c75-485b-a24d-db9412ff4945",
+        "accepted": false,
+        "enqueued": false
+      },
+      "payload_sha256": null,
+      "extra": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T23:50:50.676315+00:00",
+        "host_ns": 419936208048833
+      }
+    },
+    "nonce": "c9c50d56-6b22-4834-bf04-9cfa9abfdd28"
+  },
+  {
+    "request": {
+      "stage": "HTTP_request",
+      "UTC": "2026-11-04T23:51:08.405914+00:00",
+      "host_ns": 419953937612041,
+      "id": "1a1873c7-33b7-4120-bb99-3cb1f48be0d4",
+      "method": "POST",
+      "path": "/api/key",
+      "body_utf8": "{\"key\":427,\"observed_sequence\":212,\"request_id\":\"e96e6a99-983a-4f64-a6d7-89480b5d1908\"}",
+      "headers": {
+        "Host": "127.0.0.1:52524",
+        "Origin": "http://127.0.0.1:52524",
+        "Content-Type": "application/json",
+        "Sec-Fetch-Site": "same-origin"
+      }
+    },
+    "response": {
+      "stage": "HTTP_response_written",
+      "UTC": "2026-11-04T23:51:08.406788+00:00",
+      "host_ns": 419953938482708,
+      "id": "1a1873c7-33b7-4120-bb99-3cb1f48be0d4",
+      "method": "POST",
+      "path": "/api/key",
+      "HTTP_status": 202,
+      "response": {
+        "accepted": true,
+        "next_step": 1,
+        "key": "0x1ab",
+        "request_id": "e96e6a99-983a-4f64-a6d7-89480b5d1908"
+      },
+      "payload_sha256": null,
+      "extra": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T23:51:08.406717+00:00",
+        "host_ns": 419953938411583
+      }
+    },
+    "nonce": "5ddc8de6-3263-44e7-86af-da110ff3f9fc"
+  },
+  {
+    "request": {
+      "stage": "HTTP_request",
+      "UTC": "2026-11-04T23:51:16.529878+00:00",
+      "host_ns": 419962061560125,
+      "id": "83c03caa-8191-4797-813e-41bbc887d4e5",
+      "method": "POST",
+      "path": "/api/confirm-visual",
+      "body_utf8": "{\"request_id\":\"d1d4d07e-f757-4070-8a56-ef85685f5591\",\"step\":1,\"observed_sequence\":213,\"content_generation\":3,\"PNG_sha256\":\"60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292\"}",
+      "headers": {
+        "Host": "127.0.0.1:52524",
+        "Origin": "http://127.0.0.1:52524",
+        "Content-Type": "application/json",
+        "Sec-Fetch-Site": "same-origin"
+      }
+    },
+    "response": {
+      "stage": "HTTP_response_written",
+      "UTC": "2026-11-04T23:51:16.530200+00:00",
+      "host_ns": 419962061876958,
+      "id": "83c03caa-8191-4797-813e-41bbc887d4e5",
+      "method": "POST",
+      "path": "/api/confirm-visual",
+      "HTTP_status": 200,
+      "response": {
+        "confirmed": true,
+        "request_id": "d1d4d07e-f757-4070-8a56-ef85685f5591",
+        "step": 1,
+        "observed_sequence": 213,
+        "content_generation": 3,
+        "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "guest_input_written": false
+      },
+      "payload_sha256": null,
+      "extra": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T23:51:16.530102+00:00",
+        "host_ns": 419962061779541
+      }
+    },
+    "nonce": "5ddc8de6-3263-44e7-86af-da110ff3f9fc",
+    "expected_historical_ACK": {
+      "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "content_generation": 3,
+      "observed_sequence": 213,
+      "request_id": "d1d4d07e-f757-4070-8a56-ef85685f5591",
+      "step": 1
+    }
+  },
+  {
+    "request": {
+      "stage": "HTTP_request",
+      "UTC": "2026-11-04T23:51:22.747951+00:00",
+      "host_ns": 419968279618000,
+      "id": "e077d873-d013-4af0-9c79-d31140d4b96a",
+      "method": "POST",
+      "path": "/api/stop",
+      "body_utf8": "{}",
+      "headers": {
+        "Host": "127.0.0.1:52524",
+        "Origin": "http://127.0.0.1:52524",
+        "Content-Type": "application/json",
+        "Sec-Fetch-Site": "same-origin"
+      }
+    },
+    "response": {
+      "stage": "HTTP_response_written",
+      "UTC": "2026-11-04T23:51:22.748241+00:00",
+      "host_ns": 419968279903000,
+      "id": "e077d873-d013-4af0-9c79-d31140d4b96a",
+      "method": "POST",
+      "path": "/api/stop",
+      "HTTP_status": 202,
+      "response": {
+        "stopping": true
+      },
+      "payload_sha256": null,
+      "extra": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T23:51:22.748150+00:00",
+        "host_ns": 419968279812333
+      }
+    }
+  },
+  {
+    "request": {
+      "stage": "HTTP_request",
+      "UTC": "2026-11-04T23:51:22.967320+00:00",
+      "host_ns": 419968498996083,
+      "id": "ab34ed24-f3de-48ea-a9f1-ef6b7a0c915a",
+      "method": "POST",
+      "path": "/api/final-ack",
+      "body_utf8": "{\"receipt_id\":\"upHPrYTSxtObDgWL2rM-Pg\"}",
+      "headers": {
+        "Host": "127.0.0.1:52524",
+        "Origin": "http://127.0.0.1:52524",
+        "Content-Type": "application/json",
+        "Sec-Fetch-Site": "same-origin"
+      }
+    },
+    "response": {
+      "stage": "HTTP_response_written",
+      "UTC": "2026-11-04T23:51:22.967887+00:00",
+      "host_ns": 419968499552125,
+      "id": "ab34ed24-f3de-48ea-a9f1-ef6b7a0c915a",
+      "method": "POST",
+      "path": "/api/final-ack",
+      "HTTP_status": 200,
+      "response": {
+        "acknowledged": true
+      },
+      "payload_sha256": null,
+      "extra": null,
+      "reply_enter": {
+        "UTC": "2026-11-04T23:51:22.967662+00:00",
+        "host_ns": 419968499328666
+      }
+    }
+  }
+]

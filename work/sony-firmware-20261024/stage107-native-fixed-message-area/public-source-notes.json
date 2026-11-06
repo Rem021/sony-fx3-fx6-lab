@@ -1,0 +1,33 @@
+{
+  "scope": "Public primary pages re-read in this stage; no tools downloaded, executed or sent to camera.",
+  "checked_date": "2026-10-27",
+  "sources": [
+    {
+      "url": "https://github.com/morluto/rea/discussions/3027",
+      "observed": "FX3 7.02 reverse-engineering request, opened Oct13; page still shows zero replies. This page supplies no flashing or recovery acceptance.",
+      "limit": "One discussion and scoped search, not proof that no FX3 work exists elsewhere. Battery allegations in the post are not adopted as fact."
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/releases",
+      "observed": "Browser page marks A7C II Tools3.0.3, released Oct23, Latest; release describes USB read-error handling and interrupted-install resumption.",
+      "limit": "Author release claims for A7CII, not FX3 protocol, compatibility or recovery proof. REST metadata requests were rate-limited and exact new commit was not verified."
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31",
+      "observed": "Users report no boot and repeating lamp pattern after installation. Oct25 comment describes re-entering through unaffected movie mode and then application-level restoration; Oct26 another user reports success.",
+      "limit": "User reports, not controlled independent recovery validation. The route depends on functioning application/mode code and must not be promised for FX3 movie-chain changes."
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+      "observed": "Current main README describes A7IV serial bootROM entry and a fastboot payload for eMMC partition backup/restoration; transparent dump/flash crypto explicitly has a boot0 exception.",
+      "limit": "A7IV-specific source. No FX3 execution, wiring, boot-ROM, crypto or same-body restoration acceptance established here."
+    },
+    {
+      "url": "https://man7.org/linux/man-pages/man2/mmap.2.html",
+      "observed": "mmap maps into the process virtual address space and returns the mapping address, with the object offset supplied separately.",
+      "limit": "Supports the generic mapping ABI interpretation; actual FX3 device-driver mapping and runtime addresses remain unobserved."
+    }
+  ],
+  "conclusion": "Reviewed sources do not establish an independent FX3 rescue route for the intended MAIN modification. Retain same-body backup, limited restoration/readback and independent-entry gates.",
+  "FX3_safe_flash_or_recovery_proven": false
+}

@@ -1,0 +1,98 @@
+{
+  "schema": "fx3-stage115-main-quality-domains/1",
+  "created_utc": "2026-10-27T15:16:53.516047+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/README.md",
+      "bytes": 6090,
+      "sha256": "e09f31930895eafa78434e9d8ccb04034d1935eb0579e02d094223da49107125"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/completed-evidence-review.json",
+      "bytes": 592,
+      "sha256": "de728fa0d7860f39c4c4b1654971f3d6ab792da8648d72aada0d8f30208659d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/goal-status-after.json",
+      "bytes": 357447,
+      "sha256": "9cc79ec376ef68920d29afd9305d0304c26ecfdef434b5970ba3e71d7573d113"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/goal-status-before.json",
+      "bytes": 352949,
+      "sha256": "3c5464e7f0b688a6aaa6a3053a536c2304ec653fd6f8c8a9ad7737e422340c55"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/profile-domain-contract.json",
+      "bytes": 1372,
+      "sha256": "189f5385d2d2712843ce5875f8531d7dbfd4af07f0353f01d3b2827d7d2dff94"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/public-source-notes.json",
+      "bytes": 372,
+      "sha256": "9fb2ae37587a4c927aabb8350ca7651884d09c5ddc0dba5354117afb43b149ec"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/quality_domains.py",
+      "bytes": 11893,
+      "sha256": "f9687b000c8506ca3b5045cf009fac717c1a096354d05156f2134f38670fb035"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/review_and_seal.py",
+      "bytes": 15837,
+      "sha256": "5100ad03ac13da227cf880bfb6bf1da75fec014cf456b93ef9b72798999288e2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/run-original-quality-domains-20261027/executed-source.py",
+      "bytes": 11893,
+      "sha256": "f9687b000c8506ca3b5045cf009fac717c1a096354d05156f2134f38670fb035"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/run-original-quality-domains-20261027/quality-domain-results.json",
+      "bytes": 1258833,
+      "sha256": "35c324cd9cb2bee67a938249abbfc41c2ceb5dca7bcc3720f00602e4999cd3d1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage115-native-main-quality-domains/source-and-scope-audit.json",
+      "bytes": 20476,
+      "sha256": "99d816174358d0ebcb644f24305319d01ab264f9944dde7741cedc18ef7f22db"
+    }
+  ],
+  "previous_manifest_sha256": "96f158b600124e5430fb7f95c974289638f6997c80f74b2255dcdaaec4b51ca2",
+  "operations": {
+    "status": "PASS_ORIGINAL_MAIN_QUALITY_DOMAINS_DISTINGUISH_FH16K_FROM_FF25K",
+    "created_utc": "2026-10-27T15:16:53.516047+00:00",
+    "previous_manifest_members_verified": 11,
+    "app_cases": 8,
+    "new_FF_Open_cases": 2,
+    "resource_cases": 4,
+    "new_bounded_phases": 130,
+    "old_FH_outputs_reused": 2,
+    "old_phases_counted_as_new": false,
+    "formal_source_matches_executed_copy": true,
+    "same_agent_review_not_independent_engine": true,
+    "stage75_prototype_unchanged": true,
+    "actual_camera_or_Windows_operations": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  },
+  "mutable_progress": {
+    "before_sha256": "3c5464e7f0b688a6aaa6a3053a536c2304ec653fd6f8c8a9ad7737e422340c55",
+    "after_sha256": "9cc79ec376ef68920d29afd9305d0304c26ecfdef434b5970ba3e71d7573d113"
+  },
+  "readme_index_before_sha256": "c06b4ca84def02c19966bbde914a2c278accfa942bf0a5c73c8aefb2ce87454e",
+  "readme_index_after_sha256": "41a11d89aa0ccd955a77a318334e49475d18b28d658338328b304d5696f01a76",
+  "readme_index_entry": "- [2026-10-27 FX3 MAIN质量与码率身份分域](<work/sony-firmware-20261024/stage115-native-main-quality-domains/README.md>)：原质量6/FH名义16000与8/FF25000、SIDB16/25及通用VPC6来源130新阶段；实际前端/16M编码及恢复未验，仅Mac。",
+  "requirements_retained": 16,
+  "authorization_unchanged": true,
+  "invariants_retained": [
+    "objective",
+    "authorization",
+    "completion_rule",
+    "current_user_operational_constraint",
+    "external_dependencies",
+    "current_guest_adapter_prototype",
+    "next_authorized_cached_metadata_action"
+  ]
+}

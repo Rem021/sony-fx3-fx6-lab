@@ -1,0 +1,48 @@
+0040575a cmp        r0, #0
+0040575c bne        #0x405806
+0040575e add.w      sl, sl, #1
+00405762 add.w      r8, r8, #0x50
+00405766 cmp.w      sl, #2
+0040576a blo        #0x40574c
+0040576c add        r6, sp, #0x20
+0040576e movs       r1, #0x78
+00405770 mov        r0, r6
+00405772 blx        #0x558af4
+00405776 movw       r0, #0xec3c
+0040577a add.w      r1, sb, #0x10
+0040577e movt       r0, #0xba
+00405782 adds       r0, #8
+00405784 str        r0, [sp, #0x20]
+00405786 movs       r0, #2
+00405788 str        r0, [sp, #0x40]
+0040578a movs       r0, #0
+0040578c str.w      fp, [sp, #0x38]
+00405790 str        r0, [sp, #0x88]
+00405792 ldrd       r3, r5, [r1]
+00405796 adds       r2, r6, r0
+00405798 adds       r1, #0x50
+0040579a strd       r3, r5, [r2, #0x28]
+0040579e add.w      r3, r0, r0, lsl #2
+004057a2 adds       r0, #0x10
+004057a4 add        r3, sb
+004057a6 cmp        r0, #0x20
+004057a8 ldr        r3, [r3, #0x18]
+004057aa str        r3, [r2, #0x30]
+004057ac bne        #0x405792
+004057ae movw       r0, #0x5134
+004057b2 movw       r1, #0x4abc
+004057b6 ldr.w      sl, [r7, #8]
+004057ba movt       r0, #0x13c
+004057be movt       r1, #0x13c
+004057c2 strd       r1, r0, [sp]
+004057c6 str        r6, [sp, #8]
+004057c8 movw       r6, #0x4ab8
+004057cc ldr        r5, [sp, #0x1c]
+004057ce ldr        r1, [sp, #0x14]
+004057d0 movt       r6, #0x13c
+004057d4 mov        r2, sl
+004057d6 mov        r3, r6
+004057d8 mov        r0, r5
+004057da bl         #0x69e746
+004057de cmp        r0, #0
+004057e0 beq        #0x405864

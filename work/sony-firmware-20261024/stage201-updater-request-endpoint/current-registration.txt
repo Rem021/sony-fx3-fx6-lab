@@ -1,0 +1,61 @@
+000ee0b0 fd7bb6a9 stp      x29, x30, [sp, #-0xa0]!
+000ee0b4 600700d0 adrp     x0, #0x1dc000
+000ee0b8 00f81691 add      x0, x0, #0x5be
+000ee0bc fd030091 mov      x29, sp
+000ee0c0 f35301a9 stp      x19, x20, [sp, #0x10]
+000ee0c4 a1830091 add      x1, x29, #0x20
+000ee0c8 b40b0090 adrp     x20, #0x262000
+000ee0cc 5f3b0394 bl       #0x1bce48
+000ee0d0 94e246f9 ldr      x20, [x20, #0xdc0]
+000ee0d4 234680d2 mov      x3, #0x231
+000ee0d8 6309a0f2 movk     x3, #0x4b, lsl #16
+000ee0dc e2fffff0 adrp     x2, #0xed000
+000ee0e0 010f0090 adrp     x1, #0x2ce000
+000ee0e4 42103191 add      x2, x2, #0xc44
+000ee0e8 21800691 add      x1, x1, #0x1a0
+000ee0ec 800200b9 str      w0, [x20]
+000ee0f0 e003032a mov      w0, w3
+000ee0f4 bfa5fd97 bl       #0x577f0 ; osal_reg_sync_msg_queue_cb
+000ee0f8 f303002a mov      w19, w0
+000ee0fc 20010034 cbz      w0, #0xee120
+000ee100 e103002a mov      w1, w0
+000ee104 600700f0 adrp     x0, #0x1dd000
+000ee108 00282991 add      x0, x0, #0xa4a
+000ee10c f1a6fd97 bl       #0x57cd0 ; printf
+000ee110 e003132a mov      w0, w19
+000ee114 f35341a9 ldp      x19, x20, [sp, #0x10]
+000ee118 fd7bcaa8 ldp      x29, x30, [sp], #0xa0
+000ee11c c0035fd6 ret      
+000ee120 800240b9 ldr      w0, [x20]
+000ee124 60ffff34 cbz      w0, #0xee110
+000ee128 940b00f0 adrp     x20, #0x261000
+000ee12c 6009a052 mov      w0, #0x4b0000
+000ee130 94b247f9 ldr      x20, [x20, #0xf60]
+000ee134 e10314aa mov      x1, x20
+000ee138 cea2fd97 bl       #0x56c70 ; Backup_read
+000ee13c 1f000071 cmp      w0, #0
+000ee140 f303002a mov      w19, w0
+000ee144 ac000054 b.gt     #0xee158
+000ee148 e103002a mov      w1, w0
+000ee14c 600700f0 adrp     x0, #0x1dd000
+000ee150 00e82991 add      x0, x0, #0xa7a
+000ee154 eeffff17 b        #0xee10c
+000ee158 80024039 ldrb     w0, [x20]
+000ee15c 00040051 sub      w0, w0, #1
+000ee160 001c0053 uxtb     w0, w0
+000ee164 1f040071 cmp      w0, #1
+000ee168 48fdff54 b.hi     #0xee110
+000ee16c c36e80d2 mov      x3, #0x376
+000ee170 e2fffff0 adrp     x2, #0xed000
+000ee174 6309a0f2 movk     x3, #0x4b, lsl #16
+000ee178 010f0090 adrp     x1, #0x2ce000
+000ee17c 42402691 add      x2, x2, #0x990
+000ee180 21600691 add      x1, x1, #0x198
+000ee184 e003032a mov      w0, w3
+000ee188 b2a6fd97 bl       #0x57c50 ; osal_reg_msg_queue_cb
+000ee18c f303002a mov      w19, w0
+000ee190 00fcff34 cbz      w0, #0xee110
+000ee194 e103002a mov      w1, w0
+000ee198 600700f0 adrp     x0, #0x1dd000
+000ee19c 00742a91 add      x0, x0, #0xa9d
+000ee1a0 dbffff17 b        #0xee10c

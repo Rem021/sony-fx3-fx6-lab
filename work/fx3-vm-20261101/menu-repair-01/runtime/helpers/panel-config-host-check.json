@@ -1,0 +1,19 @@
+{
+  "args": [
+    "clang",
+    "-O1",
+    "-g",
+    "-fsanitize=address,undefined",
+    "-fno-sanitize-recover=all",
+    "-pthread",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-panel-config-transport.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/capid-service.c",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/fx3-sa-address-core.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-panel-config-transport"
+  ],
+  "exit": 0,
+  "stdout": "AP80C_PANEL_PASS exact_enum2/28B/allbyte/other_enum/consumer_before_alloc_reply/readback/control3/osd0/framebuffer_unchanged/TP_metadata_only/generation/FIFO/duplicate/foreign_thread/stale/send_alloc_rollback sizeof_panel=120\n",
+  "stderr": "FX3_PANEL_CONSUMER_APPLIED source=0x803061c0 enum=2 generation=1 transaction=1 jobs=1 readbacks=1 panel_control=3 osd_rev=0 hrev=1 vrev=1 logical_framebuffer_unchanged=1 pixels_flipped=0 tp_axes_reversed=1 tp_native_consumption_unproven=1 before_reply=1 hardware_driver_executed=0\nFX3_PANEL_CONFIG_COMMIT source=0x803061c0 generation=1 transaction=1 lease=1 request_free=0 reply=1119 status=0 panel_control=3 osd_rev=0 logical_framebuffer_unchanged=1 pixels_flipped=0 tp_axes_reversed=1\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x119 lease=1 result=0\nFX3_PANEL_CONFIG_CONSUMED generation=1 transaction=1 result=0\nFX3_PANEL_DUPLICATE_FREE_REJECT pointer=0x100e905c0\nFX3_PANEL_CONSUMER_APPLIED source=0x803061c0 enum=2 generation=2 transaction=2 jobs=2 readbacks=2 panel_control=3 osd_rev=0 hrev=1 vrev=1 logical_framebuffer_unchanged=1 pixels_flipped=0 tp_axes_reversed=1 tp_native_consumption_unproven=1 before_reply=1 hardware_driver_executed=0\nFX3_PANEL_CONFIG_COMMIT source=0x803061c0 generation=2 transaction=2 lease=2 request_free=0 reply=1119 status=0 panel_control=3 osd_rev=0 logical_framebuffer_unchanged=1 pixels_flipped=0 tp_axes_reversed=1\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x119 lease=2 result=0\nFX3_PANEL_CONFIG_CONSUMED generation=2 transaction=2 result=0\nFX3_PANEL_CONSUMER_APPLIED source=0x803061c0 enum=2 generation=1 transaction=3 jobs=1 readbacks=1 panel_control=3 osd_rev=0 hrev=1 vrev=1 logical_framebuffer_unchanged=1 pixels_flipped=0 tp_axes_reversed=1 tp_native_consumption_unproven=1 before_reply=1 hardware_driver_executed=0\nFX3_PANEL_CONFIG_ROLLBACK transaction=3 error=-1020 no_reply=1\nFX3_PANEL_CONSUMER_APPLIED source=0x803061c0 enum=2 generation=1 transaction=4 jobs=1 readbacks=1 panel_control=3 osd_rev=0 hrev=1 vrev=1 logical_framebuffer_unchanged=1 pixels_flipped=0 tp_axes_reversed=1 tp_native_consumption_unproven=1 before_reply=1 hardware_driver_executed=0\nFX3_PANEL_CONFIG_COMMIT source=0x803061c0 generation=1 transaction=4 lease=4 request_free=0 reply=1119 status=0 panel_control=3 osd_rev=0 logical_framebuffer_unchanged=1 pixels_flipped=0 tp_axes_reversed=1\nFX3_CAPID_NATIVE_FREE destination=0x803061c0 command=0x119 lease=4 result=0\nFX3_PANEL_CONFIG_CONSUMED generation=1 transaction=4 result=0\n",
+  "source_sha256": "7807c6cbb6c54cda37b7659a12b160e5729daac44ec152668e7757b4c93907ba"
+}

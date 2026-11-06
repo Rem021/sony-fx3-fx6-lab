@@ -1,0 +1,17 @@
+{
+  "base_stage": "stage273-bounded-service-device-access",
+  "native_entry_flags_zero": true,
+  "changes": {
+    "flow_fixture.c": {
+      "before": "64f6b08d1ace640c0fc1bbbdcaba059284672cea4d957188d565625c19cd1c23",
+      "after": "d30dab29b7fdb245a2a32f795101ffc82495996347a53a6ae9f612ef48860c43"
+    },
+    "stream.c": {
+      "before": "1221dc5adfe86f012e4ea15b2b117b3d3f9ab3e0af67ec82b23b8a81d2f58849",
+      "after": "860b0460e204d1237c32070924f89390204407441802aed28dc123d2d012a54e"
+    }
+  },
+  "source_delta": "stream and artificial response producer each change only response header byte8 version0->3",
+  "no_new_authorization_or_active_USB_operations": true,
+  "full_controller_not_yet_runtime_tested": true
+}

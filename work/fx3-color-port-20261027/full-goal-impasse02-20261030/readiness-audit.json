@@ -1,0 +1,89 @@
+{
+  "created_utc": "2026-10-30T17:33:58.565130+00:00",
+  "previous_goal_turn_classification": "no progress",
+  "previous_seal_sha256": "dddcbff57df01876fa82e0a76a15272ab23752930ae478104d6d5d4f636cf4a6",
+  "previous_sealed_files_verified": 9,
+  "this_goal_turn_classification": "no progress",
+  "consecutive_no_progress_turns": 2,
+  "old_blocked_counter_reused": false,
+  "common_blocker": "No readable complete required private donor/applicable decoder and no verified current FX3 modified-image admission, normal boot and independent recovery.",
+  "requirements": [
+    {
+      "id": "FX5_full_private_donor",
+      "status": "missing",
+      "proof_required": "Complete readable private system/menu payload and dependencies",
+      "current_evidence_assessment": "Still no complete readable private donor artifact. Reuse the same-day registered-model catalogue queries and known positive controls; no universal absence claim."
+    },
+    {
+      "id": "VENICE_complete_ISP_color_chain",
+      "status": "incomplete",
+      "proof_required": "Readable private inner plus full realtime ISP/sensor calibration/data-domain mapping",
+      "current_evidence_assessment": "Existing type3/type4 inners remain opaque; AXS prefix model and rejected host-reader branch do not recover sensor ISP."
+    },
+    {
+      "id": "RAM_chip_and_DMM_runtime",
+      "status": "incomplete",
+      "proof_required": "Normal hardware initialization and actual buffers/capacity/payload linked to allocation",
+      "current_evidence_assessment": "Paired source and original FX3 DMA bindings exist; physical chip identity, actual initialized capacity and live target buffers remain unverified."
+    },
+    {
+      "id": "CMOS_RAW_and_calibration",
+      "status": "unproven",
+      "proof_required": "Reachable original acquisition and actual RAW samples/domain validation",
+      "current_evidence_assessment": "No validated real target sensor RAW acquisition/calibration sample path."
+    },
+    {
+      "id": "professional_menu_and_MAIN_recording",
+      "status": "incomplete",
+      "proof_required": "Whole professional UI/control route and target recording output",
+      "current_evidence_assessment": "No complete FX5 professional control graph bound to actual FX3 main recording pixels."
+    },
+    {
+      "id": "exact_modified_target_firmware",
+      "status": "missing",
+      "proof_required": "Concrete classic FX3 target package carrying the requested full change",
+      "current_evidence_assessment": "No exact full target-modified firmware with all required functions/color chain is produced."
+    },
+    {
+      "id": "classic_FX3_7_02_modified_package_admission",
+      "status": "unproven",
+      "proof_required": "Reproducible acceptance evidence for modified whole package, not original signature/repacking",
+      "current_evidence_assessment": "Original package RSA mathematics and historical engine path are known; current installed 7.02 modified-package acceptance is not."
+    },
+    {
+      "id": "normal_boot_support_and_independent_recovery",
+      "status": "unproven",
+      "proof_required": "Target compatibility and independent recovery evidence sufficient for readiness",
+      "current_evidence_assessment": "Peer stage231 explicitly NOT_DEPLOYABLE and real loader/cache/recovery unverified; stage232 has no terminal receipt at observation."
+    },
+    {
+      "id": "stop_before_actual_flash",
+      "status": "preserved",
+      "proof_required": "No target flashing; not a substitute for earlier requirements",
+      "current_evidence_assessment": "Preserved, not a substitute for the other requirements."
+    }
+  ],
+  "requirements_scope_shrunk": false,
+  "new_complete_target_donor_or_applicable_reader_received": false,
+  "peer_latest_terminal_receipt_path": "work/sony-firmware-20261024/stage231-constructor-noexec-child-and-reload-observer/verification-receipt.json",
+  "peer_latest_terminal_receipt_sha256": "0e3b48609e7ba273a5e695bf6ffc716ca01979dd0e994d8bd7b33432fb5fd18b",
+  "peer_status": "OWN_NOOP_CONSTRUCTOR_CHILD_AND_RELOAD_OBSERVER_MODEL_PASS_NOT_DEPLOYABLE",
+  "peer_probe_deployable": false,
+  "peer_real_loader_or_recovery_verified": false,
+  "peer232_terminal_artifacts": {
+    "README.md": false,
+    "verification-receipt.json": false,
+    "final-receipt.json": false
+  },
+  "live_running_job_handle_verified": false,
+  "public_head_rechecks_reused_from_prior_turn": "work/fx3-color-port-20261027/full-goal-impasse01-20261030/public-head-recheck.json",
+  "public_heads_refreshed_this_turn": false,
+  "downloads_or_research_tests_repeated": false,
+  "new_actionable_in_scope_path_found": false,
+  "new_device_actions": 0,
+  "peer_files_changed": false,
+  "modified_firmware_created": false,
+  "whole_goal_complete": false,
+  "native_goal_status": "active",
+  "confirmation_pending_for_this_task": false
+}

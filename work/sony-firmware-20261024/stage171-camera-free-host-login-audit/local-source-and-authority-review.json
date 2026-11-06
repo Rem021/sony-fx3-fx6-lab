@@ -1,0 +1,20 @@
+{
+  "created_utc": "2026-10-28T14:15:23.241927+00:00",
+  "current_own_user_execution": "own-user-baseline.json",
+  "user_has_graphic_login": true,
+  "user_audit_uid": 501,
+  "role_gate_checks": 4,
+  "script_parse_only": true,
+  "separate_host_authority_guard_test": "launch-authority-denial.json",
+  "root_branch_never_executed": true,
+  "Terminal_never_opened": true,
+  "source_and_executable_sha_pinned": true,
+  "no_camera_or_IOKit_open_capture_imports": true,
+  "no_audit_setter_or_TCC_imports": true,
+  "expected_authority_not_inherited_from_camera04": true,
+  "limitations": [
+    "Current user baseline plus prior root TCC logs support a login/attribution hypothesis; the controlled root Terminal comparison is still unperformed.",
+    "Static self signature without App Sandbox entitlement does not rule out inherited restrictions.",
+    "This probe does not open a protected volume or request privacy consent; success would not prove the camera interface permission."
+  ]
+}

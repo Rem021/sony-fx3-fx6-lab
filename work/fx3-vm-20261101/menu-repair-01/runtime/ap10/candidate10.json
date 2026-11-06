@@ -1,0 +1,17 @@
+{
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap10/virt-original-ap10.dtb",
+    "sha256": "b8903b153a3a7dd761c12f8263eb1d28203b08ef9ad95ccbc7f3a1e274c24afd"
+  },
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap10/fx3-original-ap10.cpio",
+    "sha256": "f9f2ee44ac2314b3a6e2e1de5250a27ed3ca2504827b24bb3d80419996a3f13d"
+  },
+  "required_markers": [
+    "FX3_CPUSET_READY",
+    "FX3_BACKUP_INSMOD_RC=0",
+    "FX3_ULOGIO_INSMOD_RC=0",
+    "FX3_AP_NATURAL_BOOTIN_BEGIN"
+  ],
+  "scope": "Natural original FX3 bootin target=qemu[space] dmode=3 with complete same-model AP projection; no manufactured menu/ACK. Original library idle init allowed; no physical devices/network/host disk, no independent updater/Jiritsu executable payload."
+}

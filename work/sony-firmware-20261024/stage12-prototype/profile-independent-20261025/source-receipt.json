@@ -1,0 +1,31 @@
+{
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "source_before": {
+    "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c"
+  },
+  "source_after": {
+    "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libmpr.so": "9aeef3b9edb3d011c0c90cd2387b3a47bd3b506ebfa57be39ad1a9729771b57c"
+  },
+  "dependencies_unchanged": {
+    "work/sony-firmware-20261024/stage11-model/builder/builder-static.json": "6df5df6a8a24e6bf8316fd45b7441825dbbafcde8b9399e65d0c62288ccb4ec7",
+    "work/sony-firmware-20261024/stage11-model/builder/selection-tables.json": "d65aa4fcff535fcd2f1f0252eef9394ea9708da97b7fc1363809cdf7f56fbb15",
+    "work/sony-firmware-20261024/stage11-model/builder/model-leaf-accessors.json": "2adf9951ca42310e5322ca300a4bdc6e3796e776df03237fd01d6d5edff81895",
+    "work/sony-firmware-20261024/stage11-model/builder/verify_typed_selection.py": "12928dc6c8261bd9a9e5351d50844110451fcb865d62fc298e5ff910e1c291db",
+    "work/sony-firmware-20261024/stage10-mainpath/main/verify_setter_conversion.py": "a54b9662dd1737004f67b52b9d05088fc01f85ebb470ac446cc3cb34bfcb22ab",
+    "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/offline_verify.py": "8d467c2db8d6fa7186110fdd976dd919918eb140eba40eed0c6cf27d232ebc9d",
+    "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/engineering-note.txt": "1d8b6d437fd76456c8d8a5fbe3f656047e4ea4fe6626e2b6e6f60a51356c8ad8",
+    "work/sony-firmware-20261024/stage4-windows-collab/mac-verification/requirements.lock": "9bda72ffd078a3e8902cd8c33c279aec634e2fd57de43454964313c93c5e0913"
+  },
+  "script_sha256": "9b2a37bfbd2b243f4ed4b49a4048f90686a3b07297156f2896ca68f8628bb129",
+  "results_sha256": "176405d20205bb9ebf1b09f3b5d498ae43e6ebb1659c430b35f339093dba3829",
+  "status": "PASS",
+  "test_counts": {
+    "legitimate_HS_stock_vs_prototype": 19,
+    "builder_negative_and_other_format": 8,
+    "setter_controls": 8,
+    "target_chain": 1
+  },
+  "goal_achieved": false
+}

@@ -1,0 +1,31 @@
+ 2139aa8: a9bc7bfd     	stp	x29, x30, [sp, #-0x40]!
+ 2139aac: 910003fd     	mov	x29, sp
+ 2139ab0: a90153f3     	stp	x19, x20, [sp, #0x10]
+ 2139ab4: aa0003f4     	mov	x20, x0
+ 2139ab8: d001d820     	adrp	x0, 0x5c3f000
+ 2139abc: 910103b3     	add	x19, x29, #0x40
+ 2139ac0: 9111e000     	add	x0, x0, #0x478
+ 2139ac4: f90013a0     	str	x0, [x29, #0x20]
+ 2139ac8: 97ab3f03     	bl	0xc096d4 <.text+0xef4e4>
+ 2139acc: b9400280     	ldr	w0, [x20]
+ 2139ad0: b81e8e60     	str	w0, [x19, #-0x18]!
+ 2139ad4: b001d820     	adrp	x0, 0x5c3e000
+ 2139ad8: 91222000     	add	x0, x0, #0x888
+ 2139adc: aa1303e1     	mov	x1, x19
+ 2139ae0: 97ffffe4     	bl	0x2139a70 <Application_System_Init+0x152ea2c>
+ 2139ae4: b4000160     	cbz	x0, 0x2139b10 <Application_System_Init+0x152eacc>
+ 2139ae8: f9400800     	ldr	x0, [x0, #0x10]
+ 2139aec: b9400a81     	ldr	w1, [x20, #0x8]
+ 2139af0: b9000801     	str	w1, [x0, #0x8]
+ 2139af4: f9400001     	ldr	x1, [x0]
+ 2139af8: aa1303e0     	mov	x0, x19
+ 2139afc: 97ffd3a6     	bl	0x212e994 <Application_System_Init+0x1523950>
+ 2139b00: aa1303e0     	mov	x0, x19
+ 2139b04: 97f0cd8c     	bl	0x1d6d134 <Application_System_Init+0x11620f0>
+ 2139b08: aa1303e0     	mov	x0, x19
+ 2139b0c: 97ed9b0b     	bl	0x1ca0738 <Application_System_Init+0x10956f4>
+ 2139b10: 910083a0     	add	x0, x29, #0x20
+ 2139b14: 97ab5ec4     	bl	0xc11624 <Application_System_Init+0x65e0>
+ 2139b18: a94153f3     	ldp	x19, x20, [sp, #0x10]
+ 2139b1c: a8c47bfd     	ldp	x29, x30, [sp], #0x40
+ 2139b20: d65f03c0     	ret

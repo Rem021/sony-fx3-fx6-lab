@@ -1,0 +1,77 @@
+00014158 stp        x29, x30, [sp, #-0x110]!
+0001415c mov        x29, sp
+00014160 stp        x19, x20, [sp, #0x10]
+00014164 ldr        x19, #0x14290
+00014168 stp        x21, x22, [sp, #0x20]
+0001416c stp        x23, x24, [sp, #0x30]
+00014170 ldr        x0, [x19, #0x6d0]
+00014174 cbz        x0, #0x14274
+00014178 add        x1, x29, #0x110
+0001417c mov        w3, #7
+00014180 stp        xzr, xzr, [x29, #0x40]
+00014184 mov        w0, #0x871
+00014188 mov        w2, #0xd0
+0001418c movk       w0, #0x8092, lsl #16
+00014190 str        w3, [x1, #-0xd0]!
+00014194 add        x3, x29, #0x100
+00014198 stp        xzr, xzr, [x29, #0x50]
+0001419c mov        x22, #0x100
+000141a0 stp        xzr, xzr, [x29, #0x60]
+000141a4 mov        x21, #0x200
+000141a8 stp        xzr, xzr, [x3]
+000141ac add        x20, x19, #0x480
+000141b0 stp        xzr, xzr, [x29, #0x70]
+000141b4 add        x23, x19, #0x6c0
+000141b8 stp        xzr, xzr, [x29, #0x80]
+000141bc movk       x22, #0xdead, lsl #48
+000141c0 stp        xzr, xzr, [x29, #0x90]
+000141c4 movk       x21, #0xdead, lsl #48
+000141c8 stp        xzr, xzr, [x29, #0xa0]
+000141cc stp        xzr, xzr, [x29, #0xb0]
+000141d0 stp        xzr, xzr, [x29, #0xc0]
+000141d4 stp        xzr, xzr, [x29, #0xd0]
+000141d8 stp        xzr, xzr, [x29, #0xe0]
+000141dc stp        xzr, xzr, [x29, #0xf0]
+000141e0 bl         #0x141e0 ; [{"symbol": "upm_notify_wrapper_async", "addend": 0, "type": 283, "section": 2}]
+000141e4 ldr        x0, [x19, #0x6d0]
+000141e8 bl         #0x141e8 ; [{"symbol": "osal_wait_thread_exit", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+000141ec ldr        x24, #0x14298
+000141f0 str        xzr, [x19, #0x6d0]
+000141f4 ldr        x2, [x20]
+000141f8 cmp        x20, x2
+000141fc ldr        x1, [x2], #0xfffffffffffffff8
+00014200 sub        x19, x1, #8
+00014204 b.ne       #0x1422c
+00014208 b          #0x14268
+0001420c nop        
+00014210 bl         #0x14210 ; [{"symbol": "__udif_kfree", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00014214 mov        x0, x19
+00014218 mov        x2, x19
+0001421c ldr        x1, [x0, #8]!
+00014220 cmp        x0, x20
+00014224 sub        x19, x1, #8
+00014228 b.eq       #0x14268
+0001422c ldr        x4, [x2, #0x10]
+00014230 mov        x0, x2
+00014234 str        x4, [x1, #8]
+00014238 str        x1, [x4]
+0001423c stp        x22, x21, [x2, #8]
+00014240 ldr        w1, [x24]
+00014244 cbnz       w1, #0x14210
+00014248 mov        x0, x2
+0001424c bl         #0x1424c ; [{"symbol": "kfree", "addend": 0, "type": 283, "section": "SHN_UNDEF"}]
+00014250 mov        x0, x19
+00014254 mov        x2, x19
+00014258 ldr        x1, [x0, #8]!
+0001425c cmp        x0, x20
+00014260 sub        x19, x1, #8
+00014264 b.ne       #0x1422c
+00014268 add        x20, x20, #0x18
+0001426c cmp        x23, x20
+00014270 b.ne       #0x141f4
+00014274 ldp        x19, x20, [sp, #0x10]
+00014278 mov        w0, #0
+0001427c ldp        x21, x22, [sp, #0x20]
+00014280 ldp        x23, x24, [sp, #0x30]
+00014284 ldp        x29, x30, [sp], #0x110
+00014288 ret        

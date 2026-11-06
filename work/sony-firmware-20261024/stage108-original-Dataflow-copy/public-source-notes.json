@@ -1,0 +1,28 @@
+{
+  "checked_date": "2026-10-27",
+  "method": "Read public primary project/discussion pages using web.open. No authenticated action, downloads, device operations or project code execution. Exact current commit IDs were not established.",
+  "sources": [
+    {
+      "url": "https://github.com/morluto/rea/discussions/3027",
+      "visible_date": "2026-10-13",
+      "visible_comments": 0,
+      "observation": "FX3 firmware 7.02 modification request concerned battery behaviour. The visible discussion supplied no validated MAIN HEVC HD recording or independent FX3 recovery result.",
+      "scope": "A single discussion cannot establish absence across the whole project or internet."
+    },
+    {
+      "url": "https://github.com/QAQLeonard/a7c2-fl23-research/issues/31",
+      "visible_report_dates": "2026-10-23 to 2026-10-26",
+      "observation": "Users reported no-boot/cycling indicators. Later comments reported returning through an unaffected movie application path and restoring from there.",
+      "inference": "An application-dependent recovery report does not establish an independent rescue entry for FX3 after a movie-chain modification.",
+      "scope": "User reports for A7CII, not controlled FX3 7.02 verification; no claim about failure rate, root cause, repair price or all affected units."
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE",
+      "observation": "The A7IV maintainer documents serial BootROM entry and a fastboot-compatible eMMC backup/restore payload; its transparent crypto handling explicitly excludes boot0 as not implemented.",
+      "scope": "A7IV-specific maintainer account, not FX3 rescue acceptance or evidence of a ready non-invasive Mac-only recovery path."
+    }
+  ],
+  "same_body_FX3_702_backup_restore_independent_rescue_proven": false,
+  "authorization_changed": false,
+  "Windows_UU_camera_operations": false
+}

@@ -1,0 +1,161 @@
+00002c4c stp        x29, x30, [sp, #-0x50]!
+00002c50 cmp        x1, #0
+00002c54 ccmp       x2, #0, #4, ne
+00002c58 mov        x29, sp
+00002c5c stp        x19, x20, [sp, #0x10]
+00002c60 stp        x21, x22, [sp, #0x20]
+00002c64 stp        x23, x24, [sp, #0x30]
+00002c68 b.ne       #0x2c98
+00002c6c mov        w2, #0x4b5
+00002c70 mov        w1, #1
+00002c74 mov        w0, #2
+00002c78 mov        w19, #-1
+00002c7c bl         #0x239c
+00002c80 mov        w0, w19
+00002c84 ldp        x19, x20, [sp, #0x10]
+00002c88 ldp        x21, x22, [sp, #0x20]
+00002c8c ldp        x23, x24, [sp, #0x30]
+00002c90 ldp        x29, x30, [sp], #0x50
+00002c94 ret        
+00002c98 mov        x24, x1
+00002c9c add        x19, x29, #0x50
+00002ca0 ldrh       w20, [x2, #8]
+00002ca4 mov        x23, x0
+00002ca8 ldr        w22, [x2, #0xc]
+00002cac mov        w0, #0x21
+00002cb0 stp        xzr, xzr, [x19, #-0x10]!
+00002cb4 mov        w1, w20
+00002cb8 ldr        w4, [x24, #8]
+00002cbc movk       w0, #0x94, lsl #16
+00002cc0 mov        x3, x19
+00002cc4 mov        w2, w4
+00002cc8 bl         #0x22d8
+00002ccc mov        w21, w0
+00002cd0 cbnz       w0, #0x2cdc
+00002cd4 ldr        w21, [x29, #0x44]
+00002cd8 cbz        w21, #0x2cf4
+00002cdc mov        w2, #0x4c7
+00002ce0 mov        w1, #1
+00002ce4 mov        w0, #2
+00002ce8 bl         #0x239c
+00002cec mov        w2, w21
+00002cf0 b          #0x2d24
+00002cf4 mov        x1, x19
+00002cf8 mov        w0, w22
+00002cfc mov        w3, #1
+00002d00 mov        w2, #0x18
+00002d04 bl         #0x1f20 ; osal_valloc_msg_wait
+00002d08 mov        w19, w0
+00002d0c cbz        w0, #0x2d38
+00002d10 mov        w2, #0x4d2
+00002d14 mov        w1, #1
+00002d18 mov        w0, #2
+00002d1c bl         #0x239c
+00002d20 mov        w2, w19
+00002d24 mov        w1, w20
+00002d28 mov        w0, #3
+00002d2c mov        w19, #-5
+00002d30 bl         #0x239c
+00002d34 b          #0x2c80
+00002d38 ldr        x21, [x29, #0x40]
+00002d3c mov        w0, #1
+00002d40 movk       w0, #0x1000, lsl #16
+00002d44 mov        w3, w22
+00002d48 mov        x1, x24
+00002d4c mov        x2, x21
+00002d50 stp        w0, wzr, [x21]
+00002d54 ldr        w0, [x24, #8]
+00002d58 str        w0, [x21, #8]
+00002d5c mov        x0, x24
+00002d60 bl         #0x1e80 ; ExtCmdSvc::SndMsgToUpperSync
+00002d64 mov        w19, w0
+00002d68 cbz        w0, #0x2da8
+00002d6c mov        w2, #0x4e4
+00002d70 mov        w1, #1
+00002d74 mov        w0, #2
+00002d78 bl         #0x239c
+00002d7c mov        w2, w19
+00002d80 mov        w1, w20
+00002d84 mov        w0, #3
+00002d88 bl         #0x239c
+00002d8c ldr        x1, [x29, #0x40]
+00002d90 mov        w0, w22
+00002d94 bl         #0x2150 ; osal_free_msg
+00002d98 mov        w21, w0
+00002d9c mov        w2, #0x4ea
+00002da0 cbz        w0, #0x2c80
+00002da4 b          #0x2ce0
+00002da8 ldr        w0, [x21, #4]
+00002dac cbnz       w0, #0x2e90
+00002db0 mov        x0, #0xc
+00002db4 bl         #0x1f50 ; operator new
+00002db8 mov        x21, x0
+00002dbc bl         #0x2140 ; ExtCmdSvc_PlugInCreate::ExtCmdSvc_PlugInCreate
+00002dc0 ldr        x0, [x23, #0x18]
+00002dc4 strh       w20, [x21]
+00002dc8 add        x0, x0, #8
+00002dcc str        w22, [x21, #4]
+00002dd0 bl         #0x1e40 ; pthread_mutex_lock
+00002dd4 mov        x2, x21
+00002dd8 add        x1, x24, #0x68
+00002ddc mov        x0, x23
+00002de0 bl         #0x2030 ; ExtCmdSvc::RegistListPlugInCreate
+00002de4 mov        w19, w0
+00002de8 cbz        w0, #0x2e48
+00002dec mov        w2, #0x515
+00002df0 mov        w1, #1
+00002df4 mov        w0, #2
+00002df8 bl         #0x239c
+00002dfc mov        w2, w19
+00002e00 mov        w1, w20
+00002e04 mov        w0, #3
+00002e08 bl         #0x239c
+00002e0c mov        x0, x21
+00002e10 bl         #0x1e50 ; ExtCmdSvc_PlugInCreate::~ExtCmdSvc_PlugInCreate
+00002e14 mov        x0, x21
+00002e18 mov        x1, #0xc
+00002e1c bl         #0x1f60 ; operator delete
+00002e20 ldr        x0, [x23, #0x18]
+00002e24 add        x0, x0, #8
+00002e28 bl         #0x1ed0 ; pthread_mutex_unlock
+00002e2c ldr        x1, [x29, #0x40]
+00002e30 mov        w0, w22
+00002e34 bl         #0x2150 ; osal_free_msg
+00002e38 mov        w21, w0
+00002e3c mov        w2, #0x523
+00002e40 cbz        w0, #0x2c80
+00002e44 b          #0x2ce0
+00002e48 ldr        x0, [x23, #0x18]
+00002e4c add        x0, x0, #8
+00002e50 bl         #0x1ed0 ; pthread_mutex_unlock
+00002e54 ldr        x0, [x23, #0x20]
+00002e58 add        x0, x0, #8
+00002e5c bl         #0x1e40 ; pthread_mutex_lock
+00002e60 mov        w0, #1
+00002e64 str        w0, [x21, #8]
+00002e68 ldr        x0, [x23, #0x20]
+00002e6c add        x0, x0, #8
+00002e70 bl         #0x1ed0 ; pthread_mutex_unlock
+00002e74 ldr        x1, [x29, #0x40]
+00002e78 mov        w0, w22
+00002e7c bl         #0x2150 ; osal_free_msg
+00002e80 mov        w21, w0
+00002e84 cbz        w0, #0x2c80
+00002e88 mov        w2, #0x547
+00002e8c b          #0x2ce0
+00002e90 mov        w2, #0x53e
+00002e94 mov        w1, #1
+00002e98 mov        w0, #2
+00002e9c mov        w19, #-0xa
+00002ea0 bl         #0x239c
+00002ea4 ldr        w2, [x21, #4]
+00002ea8 mov        w1, w20
+00002eac mov        w0, #3
+00002eb0 bl         #0x239c
+00002eb4 b          #0x2e74
+00002eb8 mov        x19, x0
+00002ebc mov        x0, x21
+00002ec0 mov        x1, #0xc
+00002ec4 bl         #0x1f60 ; operator delete
+00002ec8 mov        x0, x19
+00002ecc bl         #0x20b0 ; _Unwind_Resume

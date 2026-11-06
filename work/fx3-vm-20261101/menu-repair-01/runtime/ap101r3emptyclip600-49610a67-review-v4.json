@@ -1,0 +1,1818 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r3emptyclip600-49610a67",
+  "created_utc": "2026-11-02T22:06:21.681236+00:00",
+  "health_pass": false,
+  "native_health_no_assert": false,
+  "completed_requested_window": false,
+  "unsupported_drawing": true,
+  "lifecycle_pass": false,
+  "native_assertions": [],
+  "native_application_failed": false,
+  "duration_seconds": 295.3944766249915,
+  "requested_seconds": 600,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "PID_absent": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_review": true
+    }
+  ],
+  "input_SHA_reverified": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap100v1sync600-8d0d69c0/Backup-native-file-before-menu.bin",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r3-empty-clip-noop/guest.dtb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r3-empty-clip-noop/guest.cpio",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r3-empty-clip-noop/candidate.json",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+      "matches": true
+    }
+  ],
+  "missing_markers": [
+    "FX3_DATE99_CONSUMER_BOUND"
+  ],
+  "fatal_markers": [],
+  "early_stop_reason": "AP90 first new GPE rejection; quiesce and review without further changes",
+  "im_alive_last_complete_maps": {
+    "pid": 230,
+    "uptime": 285.17,
+    "LF_line": 236033,
+    "maps": [
+      "00400000-00409000 r-xp 00000000 00:02 261                                /usr/bin/im.elf",
+      "00418000-00419000 r--p 00008000 00:02 261                                /usr/bin/im.elf",
+      "00419000-0041a000 rw-p 00009000 00:02 261                                /usr/bin/im.elf"
+    ]
+  },
+  "host_gate_commands": 7,
+  "guest_done_steps": 7,
+  "sent_events": 14,
+  "received_events": 14,
+  "keys": [
+    {
+      "LF_line": 47987,
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "57193494000",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=1 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=57193494000 host_gate=1"
+    },
+    {
+      "LF_line": 48164,
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "57304576992",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=1 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=57304576992 host_gate=1"
+    },
+    {
+      "LF_line": 124658,
+      "fields": {
+        "step": "2",
+        "key": "0x15",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "133743298000",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=2 key=0x15 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=133743298000 host_gate=1"
+    },
+    {
+      "LF_line": 124714,
+      "fields": {
+        "step": "2",
+        "key": "0x15",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "133868870000",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=2 key=0x15 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=133868870000 host_gate=1"
+    },
+    {
+      "LF_line": 150634,
+      "fields": {
+        "step": "3",
+        "key": "0x15",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "169989512992",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=3 key=0x15 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=169989512992 host_gate=1"
+    },
+    {
+      "LF_line": 150686,
+      "fields": {
+        "step": "3",
+        "key": "0x15",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "170098050000",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=3 key=0x15 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=170098050000 host_gate=1"
+    },
+    {
+      "LF_line": 172428,
+      "fields": {
+        "step": "4",
+        "key": "0x3",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "198938218992",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=4 key=0x3 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=198938218992 host_gate=1"
+    },
+    {
+      "LF_line": 172493,
+      "fields": {
+        "step": "4",
+        "key": "0x3",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "199112084992",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=4 key=0x3 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=199112084992 host_gate=1"
+    },
+    {
+      "LF_line": 183725,
+      "fields": {
+        "step": "5",
+        "key": "0x3",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "215170126000",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=5 key=0x3 status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=215170126000 host_gate=1"
+    },
+    {
+      "LF_line": 183783,
+      "fields": {
+        "step": "5",
+        "key": "0x3",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "215296820992",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=5 key=0x3 status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=215296820992 host_gate=1"
+    },
+    {
+      "LF_line": 211908,
+      "fields": {
+        "step": "6",
+        "key": "0x1af",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "250847326992",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=6 key=0x1af status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=250847326992 host_gate=1"
+    },
+    {
+      "LF_line": 211964,
+      "fields": {
+        "step": "6",
+        "key": "0x1af",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "250957276000",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=6 key=0x1af status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=250957276000 host_gate=1"
+    },
+    {
+      "LF_line": 233663,
+      "fields": {
+        "step": "7",
+        "key": "0x1af",
+        "status": "1",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "279013566992",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=7 key=0x1af status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=279013566992 host_gate=1"
+    },
+    {
+      "LF_line": 233719,
+      "fields": {
+        "step": "7",
+        "key": "0x1af",
+        "status": "0",
+        "synthetic_input": "1",
+        "original_cp_key_detection": "0",
+        "destination": "0x807a0020",
+        "source": "0x00410025",
+        "bytes": "20",
+        "result": "0",
+        "monotonic_ns": "279131366000",
+        "host_gate": "1"
+      },
+      "text": "FX3_SYNTH_KEY step=7 key=0x1af status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=279131366000 host_gate=1"
+    }
+  ],
+  "key_receipts": [
+    {
+      "LF_line": 47989,
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 48161,
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 124651,
+      "fields": {
+        "step": "2",
+        "key": "0x15",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=2 key=0x15 status=1 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 124712,
+      "fields": {
+        "step": "2",
+        "key": "0x15",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=2 key=0x15 status=0 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 150622,
+      "fields": {
+        "step": "3",
+        "key": "0x15",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=3 key=0x15 status=1 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 150689,
+      "fields": {
+        "step": "3",
+        "key": "0x15",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=3 key=0x15 status=0 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 172414,
+      "fields": {
+        "step": "4",
+        "key": "0x3",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=4 key=0x3 status=1 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 172505,
+      "fields": {
+        "step": "4",
+        "key": "0x3",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=4 key=0x3 status=0 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 183701,
+      "fields": {
+        "step": "5",
+        "key": "0x3",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=5 key=0x3 status=1 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 183800,
+      "fields": {
+        "step": "5",
+        "key": "0x3",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=5 key=0x3 status=0 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 211914,
+      "fields": {
+        "step": "6",
+        "key": "0x1af",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=6 key=0x1af status=1 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 211961,
+      "fields": {
+        "step": "6",
+        "key": "0x1af",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=6 key=0x1af status=0 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 233661,
+      "fields": {
+        "step": "7",
+        "key": "0x1af",
+        "status": "1",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=7 key=0x1af status=1 from_type=1 source=0x410025 native_result=0"
+    },
+    {
+      "LF_line": 233715,
+      "fields": {
+        "step": "7",
+        "key": "0x1af",
+        "status": "0",
+        "from_type": "1",
+        "source": "0x410025",
+        "native_result": "0"
+      },
+      "text": "FX3_KEY_INPUT_RECV step=7 key=0x1af status=0 from_type=1 source=0x410025 native_result=0"
+    }
+  ],
+  "done": [
+    {
+      "LF_line": 48165,
+      "fields": {
+        "step": "1",
+        "key": "0x1ab",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "107008000",
+        "elapsed_ns": "116956000",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      },
+      "text": "FX3_KEY95_STEP_DONE step=1 key=0x1ab requested_hold_ms=100 measured_down_up_ns=107008000 elapsed_ns=116956000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1"
+    },
+    {
+      "LF_line": 124716,
+      "fields": {
+        "step": "2",
+        "key": "0x15",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "124417008",
+        "elapsed_ns": "142764000",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      },
+      "text": "FX3_KEY95_STEP_DONE step=2 key=0x15 requested_hold_ms=100 measured_down_up_ns=124417008 elapsed_ns=142764000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1"
+    },
+    {
+      "LF_line": 150687,
+      "fields": {
+        "step": "3",
+        "key": "0x15",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "106112000",
+        "elapsed_ns": "153747008",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      },
+      "text": "FX3_KEY95_STEP_DONE step=3 key=0x15 requested_hold_ms=100 measured_down_up_ns=106112000 elapsed_ns=153747008 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1"
+    },
+    {
+      "LF_line": 172495,
+      "fields": {
+        "step": "4",
+        "key": "0x3",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "170474000",
+        "elapsed_ns": "194136000",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      },
+      "text": "FX3_KEY95_STEP_DONE step=4 key=0x3 requested_hold_ms=100 measured_down_up_ns=170474000 elapsed_ns=194136000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1"
+    },
+    {
+      "LF_line": 183785,
+      "fields": {
+        "step": "5",
+        "key": "0x3",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "122896000",
+        "elapsed_ns": "185356000",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      },
+      "text": "FX3_KEY95_STEP_DONE step=5 key=0x3 requested_hold_ms=100 measured_down_up_ns=122896000 elapsed_ns=185356000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1"
+    },
+    {
+      "LF_line": 211965,
+      "fields": {
+        "step": "6",
+        "key": "0x1af",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "107295008",
+        "elapsed_ns": "121206000",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      },
+      "text": "FX3_KEY95_STEP_DONE step=6 key=0x1af requested_hold_ms=100 measured_down_up_ns=107295008 elapsed_ns=121206000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1"
+    },
+    {
+      "LF_line": 233720,
+      "fields": {
+        "step": "7",
+        "key": "0x1af",
+        "requested_hold_ms": "100",
+        "measured_down_up_ns": "116499008",
+        "elapsed_ns": "122709008",
+        "wait_result": "0",
+        "native_input_queue": "1",
+        "one_down_one_up": "1",
+        "host_next_required": "1"
+      },
+      "text": "FX3_KEY95_STEP_DONE step=7 key=0x1af requested_hold_ms=100 measured_down_up_ns=116499008 elapsed_ns=122709008 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1"
+    }
+  ],
+  "raw20": [
+    {
+      "LF_line": 47985,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "ab01000000000000010000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=ab01000000000000010000000000000001000000"
+    },
+    {
+      "LF_line": 48160,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "ab01000000000000000000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=ab01000000000000000000000000000001000000"
+    },
+    {
+      "LF_line": 124650,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "1500000000000000010000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=1500000000000000010000000000000001000000"
+    },
+    {
+      "LF_line": 124708,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "1500000000000000000000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=1500000000000000000000000000000001000000"
+    },
+    {
+      "LF_line": 150619,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "1500000000000000010000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=1500000000000000010000000000000001000000"
+    },
+    {
+      "LF_line": 150684,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "1500000000000000000000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=1500000000000000000000000000000001000000"
+    },
+    {
+      "LF_line": 172412,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "0300000000000000010000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=0300000000000000010000000000000001000000"
+    },
+    {
+      "LF_line": 172491,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "0300000000000000000000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=0300000000000000000000000000000001000000"
+    },
+    {
+      "LF_line": 183700,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "0300000000000000010000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=0300000000000000010000000000000001000000"
+    },
+    {
+      "LF_line": 183779,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "0300000000000000000000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=0300000000000000000000000000000001000000"
+    },
+    {
+      "LF_line": 211905,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "af01000000000000010000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=af01000000000000010000000000000001000000"
+    },
+    {
+      "LF_line": 211960,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "af01000000000000000000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=af01000000000000000000000000000001000000"
+    },
+    {
+      "LF_line": 233660,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "af01000000000000010000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=af01000000000000010000000000000001000000"
+    },
+    {
+      "LF_line": 233714,
+      "fields": {
+        "tag": "SYNTH_KEY20",
+        "bytes": "20",
+        "raw": "af01000000000000000000000000000001000000"
+      },
+      "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=af01000000000000000000000000000001000000"
+    }
+  ],
+  "leases": [
+    {
+      "lease": "1",
+      "allocation": {
+        "LF_line": 5955,
+        "fields": {
+          "destination": "0x80af6181",
+          "pointer": "0x7f74cca8c0",
+          "bytes": "136",
+          "lease": "1",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x80af6181 pointer=0x7f74cca8c0 bytes=136 lease=1 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 5990,
+          "fields": {
+            "destination": "0x80af6181",
+            "pointer": "0x7f74cca8c0",
+            "bytes": "136",
+            "lease": "1",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x80af6181 pointer=0x7f74cca8c0 bytes=136 lease=1 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "2",
+      "allocation": {
+        "LF_line": 6942,
+        "fields": {
+          "destination": "0x80af6182",
+          "pointer": "0x7f74cc7800",
+          "bytes": "7",
+          "lease": "2",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x80af6182 pointer=0x7f74cc7800 bytes=7 lease=2 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 6994,
+          "fields": {
+            "destination": "0x80af6182",
+            "pointer": "0x7f74cc7800",
+            "bytes": "7",
+            "lease": "2",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x80af6182 pointer=0x7f74cc7800 bytes=7 lease=2 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "3",
+      "allocation": {
+        "LF_line": 6992,
+        "fields": {
+          "destination": "0x80af6181",
+          "pointer": "0x7f74cc7180",
+          "bytes": "28",
+          "lease": "3",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x80af6181 pointer=0x7f74cc7180 bytes=28 lease=3 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 7001,
+          "fields": {
+            "destination": "0x80af6181",
+            "pointer": "0x7f74cc7180",
+            "bytes": "28",
+            "lease": "3",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x80af6181 pointer=0x7f74cc7180 bytes=28 lease=3 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "4",
+      "allocation": {
+        "LF_line": 47984,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74ca3240",
+          "bytes": "20",
+          "lease": "4",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74ca3240 bytes=20 lease=4 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 47991,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74ca3240",
+            "bytes": "20",
+            "lease": "4",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74ca3240 bytes=20 lease=4 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "5",
+      "allocation": {
+        "LF_line": 48159,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74ca33c0",
+          "bytes": "20",
+          "lease": "5",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74ca33c0 bytes=20 lease=5 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 48163,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74ca33c0",
+            "bytes": "20",
+            "lease": "5",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74ca33c0 bytes=20 lease=5 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "6",
+      "allocation": {
+        "LF_line": 124649,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c79180",
+          "bytes": "20",
+          "lease": "6",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c79180 bytes=20 lease=6 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 124652,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c79180",
+            "bytes": "20",
+            "lease": "6",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c79180 bytes=20 lease=6 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "7",
+      "allocation": {
+        "LF_line": 124706,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c78a40",
+          "bytes": "20",
+          "lease": "7",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c78a40 bytes=20 lease=7 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 124715,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c78a40",
+            "bytes": "20",
+            "lease": "7",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c78a40 bytes=20 lease=7 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "8",
+      "allocation": {
+        "LF_line": 150618,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c60fc0",
+          "bytes": "20",
+          "lease": "8",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c60fc0 bytes=20 lease=8 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 150623,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c60fc0",
+            "bytes": "20",
+            "lease": "8",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c60fc0 bytes=20 lease=8 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "9",
+      "allocation": {
+        "LF_line": 150683,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c60ac0",
+          "bytes": "20",
+          "lease": "9",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c60ac0 bytes=20 lease=9 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 150690,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c60ac0",
+            "bytes": "20",
+            "lease": "9",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c60ac0 bytes=20 lease=9 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "10",
+      "allocation": {
+        "LF_line": 172410,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c51300",
+          "bytes": "20",
+          "lease": "10",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c51300 bytes=20 lease=10 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 172416,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c51300",
+            "bytes": "20",
+            "lease": "10",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c51300 bytes=20 lease=10 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "11",
+      "allocation": {
+        "LF_line": 172490,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c51040",
+          "bytes": "20",
+          "lease": "11",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=11 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 172506,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c51040",
+            "bytes": "20",
+            "lease": "11",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=11 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "12",
+      "allocation": {
+        "LF_line": 183699,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c51040",
+          "bytes": "20",
+          "lease": "12",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=12 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 183702,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c51040",
+            "bytes": "20",
+            "lease": "12",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=12 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "13",
+      "allocation": {
+        "LF_line": 183778,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c51040",
+          "bytes": "20",
+          "lease": "13",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=13 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 183801,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c51040",
+            "bytes": "20",
+            "lease": "13",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=13 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "14",
+      "allocation": {
+        "LF_line": 211904,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c51040",
+          "bytes": "20",
+          "lease": "14",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=14 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 211915,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c51040",
+            "bytes": "20",
+            "lease": "14",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=14 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "15",
+      "allocation": {
+        "LF_line": 211959,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c51040",
+          "bytes": "20",
+          "lease": "15",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=15 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 211963,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c51040",
+            "bytes": "20",
+            "lease": "15",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=15 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "16",
+      "allocation": {
+        "LF_line": 233659,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c51300",
+          "bytes": "20",
+          "lease": "16",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c51300 bytes=20 lease=16 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 233665,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c51300",
+            "bytes": "20",
+            "lease": "16",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c51300 bytes=20 lease=16 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    },
+    {
+      "lease": "17",
+      "allocation": {
+        "LF_line": 233713,
+        "fields": {
+          "destination": "0x807a0020",
+          "pointer": "0x7f74c51040",
+          "bytes": "20",
+          "lease": "17",
+          "native_allocation": "1"
+        },
+        "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=17 native_allocation=1"
+      },
+      "frees": [
+        {
+          "LF_line": 233716,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f74c51040",
+            "bytes": "20",
+            "lease": "17",
+            "result": "0",
+            "receiver_original_free": "1"
+          },
+          "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f74c51040 bytes=20 lease=17 result=0 receiver_original_free=1"
+        }
+      ],
+      "once_free0": true
+    }
+  ],
+  "all_leases_native_free_once0": true,
+  "captures": [
+    {
+      "step": 1,
+      "key": "0x1ab",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r3emptyclip600-49610a67/ap101-step-01-key-1ab.png",
+      "error": null,
+      "raw_sha_matches": true,
+      "png_sha_matches": true,
+      "native_ring_matches": true,
+      "sequence": 219
+    },
+    {
+      "step": 2,
+      "key": "0x15",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r3emptyclip600-49610a67/ap101-step-02-key-015.png",
+      "error": null,
+      "raw_sha_matches": true,
+      "png_sha_matches": true,
+      "native_ring_matches": true,
+      "sequence": 1439
+    },
+    {
+      "step": 3,
+      "key": "0x15",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r3emptyclip600-49610a67/ap101-step-03-key-015.png",
+      "error": null,
+      "raw_sha_matches": true,
+      "png_sha_matches": true,
+      "native_ring_matches": true,
+      "sequence": 2047
+    },
+    {
+      "step": 4,
+      "key": "0x3",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r3emptyclip600-49610a67/ap101-step-04-key-003.png",
+      "error": null,
+      "raw_sha_matches": true,
+      "png_sha_matches": true,
+      "native_ring_matches": true,
+      "sequence": 2554
+    },
+    {
+      "step": 5,
+      "key": "0x3",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r3emptyclip600-49610a67/ap101-step-05-key-003.png",
+      "error": null,
+      "raw_sha_matches": true,
+      "png_sha_matches": true,
+      "native_ring_matches": true,
+      "sequence": 2850
+    },
+    {
+      "step": 6,
+      "key": "0x1af",
+      "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r3emptyclip600-49610a67/ap101-step-06-key-1af.png",
+      "error": null,
+      "raw_sha_matches": true,
+      "png_sha_matches": true,
+      "native_ring_matches": true,
+      "sequence": 3500
+    }
+  ],
+  "capture_count": 6,
+  "GPE_complete_records": 826,
+  "GPE_incomplete_records": [],
+  "GPE_nonzero_records": [
+    {
+      "LF_line": 234071,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 712,
+        "async": "1",
+        "fmt": "0",
+        "w": "32",
+        "h": "2",
+        "dst_phys": "0x43ae96100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000101",
+        "result": 5,
+        "reason": 2,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234077,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 713,
+        "async": "1",
+        "fmt": "0",
+        "w": "16",
+        "h": "2",
+        "dst_phys": "0x43ae96100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000001",
+        "result": 5,
+        "reason": 3,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234103,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 717,
+        "async": "1",
+        "fmt": "0",
+        "w": "32",
+        "h": "2",
+        "dst_phys": "0x43ae96100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000101",
+        "result": 5,
+        "reason": 2,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234109,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 718,
+        "async": "1",
+        "fmt": "0",
+        "w": "16",
+        "h": "2",
+        "dst_phys": "0x43ae96100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000001",
+        "result": 5,
+        "reason": 3,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234122,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 720,
+        "async": "1",
+        "fmt": "0",
+        "w": "32",
+        "h": "34",
+        "dst_phys": "0x43ae96100",
+        "src_phys": "0x410cadbc0",
+        "flags": "0x10000000e0001",
+        "result": 5,
+        "reason": 3,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "2",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234135,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 722,
+        "async": "1",
+        "fmt": "0",
+        "w": "32",
+        "h": "2",
+        "dst_phys": "0x43ae96100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000101",
+        "result": 5,
+        "reason": 2,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234141,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 723,
+        "async": "1",
+        "fmt": "0",
+        "w": "16",
+        "h": "2",
+        "dst_phys": "0x43ae96100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000001",
+        "result": 5,
+        "reason": 3,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234155,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 725,
+        "async": "1",
+        "fmt": "0",
+        "w": "32",
+        "h": "34",
+        "dst_phys": "0x43ae96100",
+        "src_phys": "0x410cadbc0",
+        "flags": "0x10000000e0001",
+        "result": 5,
+        "reason": 3,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "2",
+        "empty_clip_noop": "01"
+      }
+    },
+    {
+      "LF_line": 234503,
+      "fields": {
+        "op": "Flush",
+        "seq": 760,
+        "async": "0",
+        "fmt": "0",
+        "w": "0",
+        "h": "0",
+        "dst_phys": "0",
+        "src_phys": "0",
+        "flags": "0",
+        "result": 5,
+        "reason": 2,
+        "read": "1",
+        "approx_blend": "0",
+        "formula": "none",
+        "selector": "0",
+        "K": "0",
+        "const_alpha": "0",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234907,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 782,
+        "async": "1",
+        "fmt": "0",
+        "w": "32",
+        "h": "2",
+        "dst_phys": "0x43feb5100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000101",
+        "result": 5,
+        "reason": 2,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 234987,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 796,
+        "async": "1",
+        "fmt": "0",
+        "w": "32",
+        "h": "2",
+        "dst_phys": "0x43feb5100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000101",
+        "result": 5,
+        "reason": 2,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 235017,
+      "fields": {
+        "op": "BitBlit",
+        "seq": 801,
+        "async": "1",
+        "fmt": "0",
+        "w": "32",
+        "h": "2",
+        "dst_phys": "0x43feb5100",
+        "src_phys": "0x41093d500",
+        "flags": "0x1000000000101",
+        "result": 5,
+        "reason": 2,
+        "read": "1",
+        "approx_blend": "1",
+        "formula": "straight_over_v1",
+        "selector": "1",
+        "K": "255",
+        "const_alpha": "255",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    },
+    {
+      "LF_line": 235354,
+      "fields": {
+        "op": "Flush",
+        "seq": 839,
+        "async": "0",
+        "fmt": "0",
+        "w": "0",
+        "h": "0",
+        "dst_phys": "0",
+        "src_phys": "0",
+        "flags": "0",
+        "result": 5,
+        "reason": 2,
+        "read": "1",
+        "approx_blend": "0",
+        "formula": "none",
+        "selector": "0",
+        "K": "0",
+        "const_alpha": "0",
+        "rotation": "0",
+        "src_fmt": "0",
+        "empty_clip_noop": "0"
+      }
+    }
+  ],
+  "screens": [
+    {
+      "LF_line": 11179,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x407",
+        "id2": "0x2ae",
+        "id3": "0x407",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 14082,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x2ae",
+        "id2": "0x2e1",
+        "id3": "0x2ae",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x2ae id2=0x2e1 id3=0x2ae three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 15163,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x2e1",
+        "id2": "0x2dd",
+        "id3": "0x2e1",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x2e1 id2=0x2dd id3=0x2e1 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 15198,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x2dd",
+        "id2": "0",
+        "id3": "0x2dd",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x2dd id2=0 id3=0x2dd three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 48238,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0",
+        "id2": "0x2e0",
+        "id3": "0",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0 id2=0x2e0 id3=0 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 48468,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x2e0",
+        "id2": "0x275",
+        "id3": "0x2e0",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x2e0 id2=0x275 id3=0x2e0 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 127045,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x275",
+        "id2": "0x274",
+        "id3": "0x275",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x275 id2=0x274 id3=0x275 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 150680,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x274",
+        "id2": "0x273",
+        "id3": "0x274",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x274 id2=0x273 id3=0x274 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 211979,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x273",
+        "id2": "0x274",
+        "id3": "0x273",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x273 id2=0x274 id3=0x273 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "LF_line": 233804,
+      "fields": {
+        "manager": "0x7ec5480490",
+        "id1": "0x274",
+        "id2": "0x275",
+        "id3": "0x274",
+        "three_reference_args_one_call": "1",
+        "creation_not_yet_complete": "1"
+      },
+      "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ec5480490 id1=0x274 id2=0x275 id3=0x274 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    }
+  ],
+  "RM_native_branches": [
+    {
+      "LF_line": 11626,
+      "fields": {
+        "eid": "20",
+        "state": "2",
+        "if_state2_native_status0_else_request_and_count": "1"
+      },
+      "text": "FX3_MEDIA_START_BRANCH eid=20 state=2 if_state2_native_status0_else_request_and_count=1"
+    },
+    {
+      "LF_line": 11731,
+      "fields": {
+        "eid": "29",
+        "state": "2",
+        "if_state2_native_status0_else_request_and_count": "1"
+      },
+      "text": "FX3_MEDIA_START_BRANCH eid=29 state=2 if_state2_native_status0_else_request_and_count=1"
+    }
+  ],
+  "RM_native_notifications": [
+    {
+      "LF_line": 11651,
+      "fields": {
+        "eid": "23",
+        "tid": "429",
+        "mediaID": "0x1000",
+        "destination": "0x1cfe09d",
+        "status": "0",
+        "hold": "0",
+        "RemoveCnt": "1",
+        "extra16": "0",
+        "native": "1",
+        "synthetic": "0"
+      },
+      "text": "FX3_MEDIA_NOTIFY eid=23 tid=429 mediaID=0x1000 destination=0x1cfe09d status=0 hold=0 RemoveCnt=1 extra16=0 native=1 synthetic=0"
+    },
+    {
+      "LF_line": 11761,
+      "fields": {
+        "eid": "32",
+        "tid": "429",
+        "mediaID": "0x1010",
+        "destination": "0x1cfe09b",
+        "status": "0",
+        "hold": "0",
+        "RemoveCnt": "1",
+        "extra16": "0",
+        "native": "1",
+        "synthetic": "0"
+      },
+      "text": "FX3_MEDIA_NOTIFY eid=32 tid=429 mediaID=0x1010 destination=0x1cfe09b status=0 hold=0 RemoveCnt=1 extra16=0 native=1 synthetic=0"
+    }
+  ],
+  "RM_mount_count": 0,
+  "RM_timeout_count": 0,
+  "host_command_not_proven_sent": [],
+  "standby_verified": false,
+  "menu_verified": false,
+  "scope": "Independent read-only review; no changes inside completed runs; raw LF interleaving retained, not global lossless proof"
+}

@@ -1,0 +1,160 @@
+{
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "source_fragments": [
+    {
+      "VA": "0xfe0545dc",
+      "end_exclusive": "0xfe054a18",
+      "bytes": 1084,
+      "original_bytes_sha256": "5378d0cdb5431c73aa337fa358c2a9741afe694f7b0860473ac96bb83fac956d",
+      "listing": "source-fragments/fe0545dc-fe054a18.txt"
+    },
+    {
+      "VA": "0xfe04d63c",
+      "end_exclusive": "0xfe04d69c",
+      "bytes": 96,
+      "original_bytes_sha256": "86864148ae86a6614416fe96048fac0e5c3851fc06b1d93c6a8d5e6292f52361",
+      "listing": "source-fragments/fe04d63c-fe04d69c.txt"
+    },
+    {
+      "VA": "0xfe04d51c",
+      "end_exclusive": "0xfe04d584",
+      "bytes": 104,
+      "original_bytes_sha256": "22214f84eb2385a4e54c42c25d02ca64b18d87c144eea26372f5faabb3d96aea",
+      "listing": "source-fragments/fe04d51c-fe04d584.txt"
+    },
+    {
+      "VA": "0xfe04d44c",
+      "end_exclusive": "0xfe04d484",
+      "bytes": 56,
+      "original_bytes_sha256": "abf36c2ffeb01aff368c049ce489ccaf9808c18d515deff22f6078f4b8fdcb1e",
+      "listing": "source-fragments/fe04d44c-fe04d484.txt"
+    },
+    {
+      "VA": "0xfe04d4c0",
+      "end_exclusive": "0xfe04d4e8",
+      "bytes": 40,
+      "original_bytes_sha256": "171f0d2338a0a9bb0cf51b8e0c8c98c177cc455907ba21d2dd59f5d6b1c0666f",
+      "listing": "source-fragments/fe04d4c0-fe04d4e8.txt"
+    },
+    {
+      "VA": "0xfe04c7b4",
+      "end_exclusive": "0xfe04c808",
+      "bytes": 84,
+      "original_bytes_sha256": "902819dc67da3b167c365b6553d51d8b1f8089c21c69e264ea244b2c4bcaa804",
+      "listing": "source-fragments/fe04c7b4-fe04c808.txt"
+    },
+    {
+      "VA": "0xfe04b45c",
+      "end_exclusive": "0xfe04b4cc",
+      "bytes": 112,
+      "original_bytes_sha256": "8a4190471202166065596188564aed88d19022b24f51c7ca55696b67fbd6a480",
+      "listing": "source-fragments/fe04b45c-fe04b4cc.txt"
+    },
+    {
+      "VA": "0xfe057e98",
+      "end_exclusive": "0xfe057f0c",
+      "bytes": 116,
+      "original_bytes_sha256": "b899f2d5ca2d91238f778392b81d12cd450485fcf6131a950e73c8fc12a3fa25",
+      "listing": "source-fragments/fe057e98-fe057f0c.txt"
+    },
+    {
+      "VA": "0xfe057f0c",
+      "end_exclusive": "0xfe057fa0",
+      "bytes": 148,
+      "original_bytes_sha256": "32526f60614bf62087ff31b658d13e861e399f8512b563cb61d5e28b3b9b3a39",
+      "listing": "source-fragments/fe057f0c-fe057fa0.txt"
+    },
+    {
+      "VA": "0xfe057fa0",
+      "end_exclusive": "0xfe058178",
+      "bytes": 472,
+      "original_bytes_sha256": "b6a19905c3fdff06c89f9375cff6d7b35f3897d45584dae2c78d89636544296b",
+      "listing": "source-fragments/fe057fa0-fe058178.txt"
+    },
+    {
+      "VA": "0xfe058a64",
+      "end_exclusive": "0xfe058a7c",
+      "bytes": 24,
+      "original_bytes_sha256": "e7512c6fe8d8d8e1886d8c61555b06229923030c11383dc4d0e8ec3ab1eacb90",
+      "listing": "source-fragments/fe058a64-fe058a7c.txt"
+    },
+    {
+      "VA": "0xfe058b7c",
+      "end_exclusive": "0xfe058c98",
+      "bytes": 284,
+      "original_bytes_sha256": "0cabbffe1313afcd6c42427c544fba765770acd79866030581831c2eec5c0f72",
+      "listing": "source-fragments/fe058b7c-fe058c98.txt"
+    },
+    {
+      "VA": "0xfe0530b0",
+      "end_exclusive": "0xfe053134",
+      "bytes": 132,
+      "original_bytes_sha256": "f15a331c77bc0b492d49b11bef77f579ab1dcefe8ec128ebc2f6e903cc97a280",
+      "listing": "source-fragments/fe0530b0-fe053134.txt"
+    },
+    {
+      "VA": "0xfe053a1c",
+      "end_exclusive": "0xfe053a70",
+      "bytes": 84,
+      "original_bytes_sha256": "88cf33a5c0617bd63f72682e51d3e84d1276681fb67c5c44f21fe5c9c33811a5",
+      "listing": "source-fragments/fe053a1c-fe053a70.txt"
+    }
+  ],
+  "base_source": "Original pformat_config.txt: file_param path loader_nor.bin load 0xFE049000",
+  "descriptor_reader": {
+    "configuration_entry": "0xfe0545dc",
+    "query_key": "0xfa0080",
+    "key_build": [
+      "0xfe054614",
+      "0xfe054620"
+    ],
+    "original_query_call": "0xfe05462c",
+    "original_query_output_address": "0xfe208000",
+    "descriptor_stride_instruction": "0xfe0549c0: add x27,x27,#0x90",
+    "first_pair_load": "0xfe054730",
+    "partition_mode_pair_load": "0xfe054758",
+    "filename_pointer": "descriptor+0x18",
+    "pre_load_partition_selection": "0xfe054794..0xfe05479c",
+    "file_loader_call": "0xfe054834 ->0xfe057e98",
+    "original_file_open": "0xfe057ea8 ->0xfe057fa0",
+    "original_byte_read": "0xfe057ebc ->0xfe058178",
+    "inclusive_limit_calculation": "0xfe054850..0xfe054854",
+    "size_comparison_after_file_helper": "0xfe05485c"
+  },
+  "direct_callers": [
+    {
+      "PC": "0xfe0530e0",
+      "mode_argument": "0xc000000",
+      "context": "x19"
+    },
+    {
+      "PC": "0xfe053108",
+      "mode_argument": "0x9000000",
+      "context": "x19"
+    }
+  ],
+  "descriptor_in_all_22_second_records": {
+    "index": 3,
+    "start": "0x809a08e00",
+    "end": "0x809a21dff",
+    "partition": 8,
+    "mode": "0x5000000",
+    "path": "\\DmmCfg.bin",
+    "record_offset": "0x1b0",
+    "original_record_sha256": "eb7ebe0f50723118cc53f645176e85eddebcf193cdd6cc301f85c1ffff8b3ef1"
+  },
+  "filename_capacity_binding": {
+    "CP_configuration_source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/dmm-config-20261029/original-files/DmmCfg.bin",
+    "bytes": 43320,
+    "sha256": "820dc02b6a001636b93fff51d90baaced1ba75cf9bbaa90600dfc7fd7a705166",
+    "partition": 8,
+    "start": "0x809a08e00",
+    "inclusive_limit": "0x809a21dff",
+    "reserved_capacity": 102400,
+    "file_fits_reserved_capacity": true,
+    "computed_file_last_byte": "0x809a13737",
+    "parameter_fa0182_matches_start": true,
+    "parameter_fa0183_matches_capacity": true
+  },
+  "scope": "Original static contract plus separately recorded bounded original query/prefix executions. Neither source descriptors nor a fitting file prove normal record selection, mount/read success, real memory contents, a target firmware port or flash admission."
+}

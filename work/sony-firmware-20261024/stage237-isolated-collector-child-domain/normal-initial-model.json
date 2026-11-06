@@ -1,0 +1,91 @@
+{
+  "fault": null,
+  "collector_exit_status": 2560,
+  "collector_alive": false,
+  "collector_state": 10,
+  "own_worker_status": 0,
+  "own_worker_alive": false,
+  "worker_reaped": true,
+  "collector_remaining_FDs": [],
+  "host_borrowed_FDs_unchanged": true,
+  "private_messages": [
+    {
+      "event": "private message",
+      "sender": 5001,
+      "type": 1
+    },
+    {
+      "event": "private message",
+      "sender": 7002,
+      "type": 2
+    }
+  ],
+  "events": [
+    {
+      "event": "clone0",
+      "parent": 5001,
+      "child": 7002,
+      "private_VM_FDs_sighand": true,
+      "new_child_list_empty": true,
+      "new_subreaper": false
+    },
+    {
+      "event": "private message",
+      "sender": 5001,
+      "type": 1
+    },
+    {
+      "event": "private message",
+      "sender": 7002,
+      "type": 2
+    },
+    {
+      "event": "kernel task terminal",
+      "role": "own worker",
+      "pid": 7002,
+      "status": 0,
+      "kind": "SYS_exit",
+      "closed_FDs": []
+    },
+    {
+      "event": "kernel task terminal",
+      "role": "own collector",
+      "pid": 5001,
+      "status": 2560,
+      "kind": "SYS_exit",
+      "closed_FDs": []
+    }
+  ],
+  "waits": [
+    {
+      "request": -1,
+      "options": 1073741825,
+      "eligible_roles": [],
+      "returned": -10,
+      "status": null
+    },
+    {
+      "request": 7002,
+      "options": 2684354561,
+      "eligible_roles": [
+        "own worker"
+      ],
+      "returned": 0,
+      "status": null
+    },
+    {
+      "request": 7002,
+      "options": 2684354561,
+      "eligible_roles": [
+        "own worker"
+      ],
+      "returned": 7002,
+      "status": 0
+    }
+  ],
+  "source_accesses": [],
+  "collector_sleeps": 1,
+  "only_collector_created_child": true,
+  "injected_rights_all_closed": true,
+  "syscall_count": 174
+}

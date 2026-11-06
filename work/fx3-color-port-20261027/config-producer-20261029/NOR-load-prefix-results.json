@@ -1,0 +1,153 @@
+{
+  "NOR_source_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "original_initializer": {
+    "entry": "0xfe04d63c",
+    "arguments": [
+      "0x100000000"
+    ],
+    "boundary": {
+      "reason": "returned",
+      "PC": "0x400000000"
+    },
+    "registers": [
+      "0x0",
+      "0x0",
+      "0x0",
+      "0x0"
+    ],
+    "original_instructions": 22,
+    "nonstack_RAM_writes": 3,
+    "first_trace": [
+      "0xfe04d63c",
+      "0xfe04d640",
+      "0xfe04d644",
+      "0xfe04d648",
+      "0xfe04d64c",
+      "0xfe04d650",
+      "0xfe04d654",
+      "0xfe04d658",
+      "0xfe04d65c",
+      "0xfe04d660",
+      "0xfe04d664",
+      "0xfe04d668",
+      "0xfe04d66c",
+      "0xfe04d670",
+      "0xfe04d674",
+      "0xfe04d678"
+    ]
+  },
+  "original_descriptor_query": {
+    "entry": "0xfe04c7b4",
+    "arguments": [
+      "0xfa0080",
+      "0x300000000"
+    ],
+    "boundary": {
+      "reason": "returned",
+      "PC": "0x400000000"
+    },
+    "registers": [
+      "0x2400",
+      "0x100064c4c",
+      "0xffffffffffffffff",
+      "0x0"
+    ],
+    "original_instructions": 5282,
+    "nonstack_RAM_writes": 2304,
+    "first_trace": [
+      "0xfe04c7b4",
+      "0xfe04c7b8",
+      "0xfe04c7bc",
+      "0xfe04c7c0",
+      "0xfe04d51c",
+      "0xfe04d520",
+      "0xfe04d524",
+      "0xfe04d528",
+      "0xfe04d52c",
+      "0xfe04d530",
+      "0xfe04d534",
+      "0xfe04d538",
+      "0xfe04d53c",
+      "0xfe04d540",
+      "0xfe04d544",
+      "0xfe04d548"
+    ]
+  },
+  "descriptor_index": 3,
+  "descriptor_sha256": "eb7ebe0f50723118cc53f645176e85eddebcf193cdd6cc301f85c1ffff8b3ef1",
+  "original_path": "\\DmmCfg.bin",
+  "descriptor_values": {
+    "start": "0x809a08e00",
+    "end": "0x809a21dff",
+    "partition": 8,
+    "mode": "0x5000000",
+    "inclusive_capacity": 102400
+  },
+  "original_consumer_fragment": {
+    "entry": "0xfe054794",
+    "arguments": [],
+    "boundary": {
+      "reason": "before_original_FAT_mount",
+      "PC": "0xfe057f0c",
+      "arguments": [
+        "0x8",
+        "0x100064c4c",
+        "0xffffffffffffffff",
+        "0x0"
+      ],
+      "file_or_device_reply_supplied": false
+    },
+    "registers": [
+      "0x8",
+      "0x100064c4c",
+      "0xffffffffffffffff",
+      "0x0"
+    ],
+    "original_instructions": 3,
+    "nonstack_RAM_writes": 0,
+    "first_trace": [
+      "0xfe054794",
+      "0xfe054798",
+      "0xfe05479c"
+    ]
+  },
+  "original_loaded_registers": {
+    "start_X26": "0x809a08e00",
+    "end_X25": "0x809a21dff"
+  },
+  "separate_original_file_wrapper": {
+    "entry": "0xfe057e98",
+    "arguments": [
+      "0x3000001c8",
+      "0x809a08e00"
+    ],
+    "boundary": {
+      "reason": "before_original_file_open",
+      "PC": "0xfe057fa0",
+      "arguments": [
+        "0x3000001c8",
+        "0x809a08e00",
+        "0xffffffffffffffff",
+        "0x0"
+      ],
+      "file_or_device_reply_supplied": false
+    },
+    "registers": [
+      "0x3000001c8",
+      "0x809a08e00",
+      "0xffffffffffffffff",
+      "0x0"
+    ],
+    "original_instructions": 5,
+    "nonstack_RAM_writes": 0,
+    "first_trace": [
+      "0xfe057e98",
+      "0xfe057e9c",
+      "0xfe057ea0",
+      "0xfe057ea4",
+      "0xfe057ea8"
+    ]
+  },
+  "destination_preserved_in_X21": "0x809a08e00",
+  "scope": "The descriptor is copied by the original NOR query from an explicit official BK4 record. The original consumer fragment stops before FAT mount; a separate original wrapper call stops before file open. No mount success, file result, block data or native/device action is supplied. No configuration bytes are written to the physical/CP candidate."
+}

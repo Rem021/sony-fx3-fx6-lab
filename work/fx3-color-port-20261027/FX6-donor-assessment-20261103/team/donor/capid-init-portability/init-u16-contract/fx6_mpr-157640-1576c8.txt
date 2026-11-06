@@ -1,0 +1,40 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000001575e4 <_ZN3mpr8EnterRecERKNS_15enterRecInParamE>:
+  157640: 3902b3a0     	strb	w0, [x29, #0xac]
+  157644: 52822000     	mov	w0, #0x1100             // =4352
+  157648: 3902bfbf     	strb	wzr, [x29, #0xaf]
+  15764c: 790157a0     	strh	w0, [x29, #0xaa]
+  157650: b9400b00     	ldr	w0, [x24, #0x8]
+  157654: 790153b4     	strh	w20, [x29, #0xa8]
+  157658: b900b3a0     	str	w0, [x29, #0xb0]
+  15765c: b9400f00     	ldr	w0, [x24, #0xc]
+  157660: b900b7a0     	str	w0, [x29, #0xb4]
+  157664: aa1503e0     	mov	x0, x21
+  157668: 97ffad9e     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  15766c: f947ef40     	ldr	x0, [x26, #0xfd8]
+  157670: 97fe77ec     	bl	0xf5620 <_ZN3mpr6thread10normalLock4lockEv@plt>
+  157674: f9003bba     	str	x26, [x29, #0x70]
+  157678: f9438660     	ldr	x0, [x19, #0x708]
+  15767c: b953e000     	ldr	w0, [x0, #0x13e0]
+  157680: 340001c0     	cbz	w0, 0x1576b8 <_ZN3mpr8EnterRecERKNS_15enterRecInParamE+0xd4>
+  157684: 52800060     	mov	w0, #0x3                // =3
+  157688: 52800181     	mov	w1, #0xc                // =12
+  15768c: 3902b7bf     	strb	wzr, [x29, #0xad]
+  157690: 3902b3a0     	strb	w0, [x29, #0xac]
+  157694: 52822020     	mov	w0, #0x1101             // =4353
+  157698: 3902bbbf     	strb	wzr, [x29, #0xae]
+  15769c: 790157a0     	strh	w0, [x29, #0xaa]
+  1576a0: 5280d5c0     	mov	w0, #0x6ae              // =1710
+  1576a4: 3902bfbf     	strb	wzr, [x29, #0xaf]
+  1576a8: b900b3a0     	str	w0, [x29, #0xb0]
+  1576ac: aa1503e0     	mov	x0, x21
+  1576b0: 790153b4     	strh	w20, [x29, #0xa8]
+  1576b4: 97ffad8b     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  1576b8: f9438676     	ldr	x22, [x19, #0x708]
+  1576bc: 910203bb     	add	x27, x29, #0x80
+  1576c0: 52800014     	mov	w20, #0x0               // =0
+  1576c4: 910012d7     	add	x23, x22, #0x4

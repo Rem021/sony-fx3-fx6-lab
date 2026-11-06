@@ -1,0 +1,8 @@
+FX3 r28 首次只读取图时机候选（本任务只有离线实现/验证，无真实VM/Start或部署权限）。
+前提：r27必须先正式交付封存；不要在r27目录继续改实现。所有写入前核对卷UUID F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B。仅写DEL/r28-first-observation-candidate；DEL为本规格所在目录。保留r26/r26b/r27全部证据。
+目标：解决r26b首张为过渡帧、额外模型观察导致原20秒预算耗尽的问题；不承诺延迟就代表语义完成。基线r26-postkey-observation-candidate（1277清单SHA 9f6c4c047f8dc2bbb253d880b174a09e7701448bc645554b93fea1bac0d52fd2）、原返回适配r26-tool-return-preparation及封存r27短模板；参考r27-coordinator-historical-pin-confirm-cost.json（d2509bde491cd3199c3309174231822ee5724fdec7d3128fa3672408a9c8705f）和r25-coordinator-menu-observation-timing.json。
+实施最小改变：只对本次accepted key的首张未固定只读观察，在原browser alarm的arm时刻起最早约5000ms取样。若到达该路径时已经超过5000ms，不额外等5秒。原20秒全程流逝，不延长/重置/重武装；同一nonce/document/timeOrigin/run/launch/step/attempt必须在等待前/中/后校验，End/expired/unknown/身份变化立即停止走原失败回收。后续明确observe不重复此等待；未入队恢复不套用本路径。保存实际取样时刻和绑定，不能用静态host墙钟冒充browser时间。
+完整目标仍8步骤，现阶段只实现离线候选。5秒仅取样安排，不算菜单完成证明，不自动语义判断/稳定SHA判定/pin/confirm/重试/补键。每张返回模型实际看图，明确pin后重新看固定图，再独立confirm；原最多3未固定观察、10attempt/8accepted/2恢复、PAGE/server/native/清理策略保持。
+生产返回路径使用一次明确动作+完整文件loadResult+实际PNG，允许预绑定短模板并初始yield10000ms降低额外wait；生产operate路径/hash必须绑定新候选，不允许悄悄退回旧operate。保留原适配的非零无图、无current-return兜底、无重发语义。不要复制历史千项测试产物；仅沿用必要源码/引用冻结依赖，说明实际import路径和全部变化源。
+验证与改动相称：实际离线浏览器fixture覆盖延迟4.5秒的完整菜单取图、已超过取样点不加第二个5秒、等待中End/20秒到期/launch或document变化/nonce或attempt变化fail closed、不影响后续observe与未入队恢复。原关键源字节同一或列明差异。至少一次实际短Node多调用观察→明确pin→重新看固定PNG→独立confirm离线演练，模型间隔用实际工具调用，不用sleep模拟；fixture故意延迟菜单不等于真实固件。最多两次完整演练，失败留存；若预算仍不足，报告明确未通过，不通过放宽约束制造成功。
+报告实际首图时间、pin/confirm耗时、每次工具返回与下次入口、原20秒事件、所有真实身份与PNG回执、资源清理及输入前后hash。未知的模型收图/思考/调度时刻仍标unknown。产出README、REPORT、SOURCE-FREEZE、必要验证证据及SHA256SUMS。此任务成功是可复核的候选及评估；不等于八步VM验收/部署/FX6开机。不得触碰相机、USB或SD。

@@ -1,0 +1,57 @@
+{
+  "osd": {
+    "argv": [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "cc",
+      "-target",
+      "aarch64-linux-gnu.2.25",
+      "-nostdlib",
+      "-shared",
+      "-fPIC",
+      "-O2",
+      "-mno-outline-atomics",
+      "-Wl,--no-undefined",
+      "-Wl,-soname,fx3-fx3-osd-headless-v7-observe102.so",
+      "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/src/fx3-osd-headless-v25-r3.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+      "-I/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/baseline-osd.so"
+    ],
+    "exit": 0,
+    "recompiled_text_sha256": "ca50cd16d2299af1a2414823a7647d8591ca62bc1c5890f28a7db27a4a131457",
+    "frozen_text_sha256": "ca50cd16d2299af1a2414823a7647d8591ca62bc1c5890f28a7db27a4a131457",
+    "equal": true
+  },
+  "ui": {
+    "argv": [
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/toolchains/zig-aarch64-macos-0.17.0/zig",
+      "cc",
+      "-target",
+      "aarch64-linux-gnu.2.25",
+      "-nostdlib",
+      "-shared",
+      "-fPIC",
+      "-O2",
+      "-mno-outline-atomics",
+      "-Wl,--no-undefined",
+      "-DFX3_GATE_PUBLISH_INTERVAL=64",
+      "-Wl,-soname,fx3-ui-gate-v15-n64.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-probes-v1.S",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libc-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libdl-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/libpthread-2.25.so",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/guest-sdk/lib/ld-2.25.so",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r35-existing-log-observation-candidate/build/baseline-ui.so"
+    ],
+    "exit": 0,
+    "recompiled_text_sha256": "9f8e37585635aca011848b3810c560e1b20b5ca15cae711c2b35396d2e58b1ff",
+    "frozen_text_sha256": "9f8e37585635aca011848b3810c560e1b20b5ca15cae711c2b35396d2e58b1ff",
+    "equal": true
+  }
+}

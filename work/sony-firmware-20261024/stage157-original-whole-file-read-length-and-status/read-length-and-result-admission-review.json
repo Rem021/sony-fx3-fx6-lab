@@ -1,0 +1,1356 @@
+{
+  "created_utc": "2026-10-28T10:08:19.948652+00:00",
+  "original_library_sha256": "bdef58b24a3b67b4d14d4f0214b89aae0fcad19f114b4188c328f9d2c092f1d9",
+  "status": "PASS_ORIGINAL_LENGTH_AND_REPLY_ADMISSION_REFINEMENT_NOT_BACKUP_RELEASE",
+  "critical_original_instructions": [
+    {
+      "pc": "0xa124",
+      "bytes": "b76749f9",
+      "asm": "ldr x23, [x29, #0x12c8]"
+    },
+    {
+      "pc": "0xa12c",
+      "bytes": "0000170b",
+      "asm": "add w0, w0, w23"
+    },
+    {
+      "pc": "0xa134",
+      "bytes": "e0120011",
+      "asm": "add w0, w23, #4"
+    },
+    {
+      "pc": "0xa138",
+      "bytes": "3a00001b",
+      "asm": "madd w26, w1, w0, w0"
+    },
+    {
+      "pc": "0xa1bc",
+      "bytes": "f57e4092",
+      "asm": "and x21, x23, #0xffffffff"
+    },
+    {
+      "pc": "0xa200",
+      "bytes": "ff02186b",
+      "asm": "cmp w23, w24"
+    }
+  ],
+  "cases": {
+    "small_complete": {
+      "reply_status": "0x0",
+      "reply_length": 36,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              514
+            ],
+            "declared_read_return": 32
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "small_short": {
+      "reply_status": "0x1000000a",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              514
+            ],
+            "declared_read_return": 31
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "small_EOF": {
+      "reply_status": "0x1000000a",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              514
+            ],
+            "declared_read_return": 0
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "declared_wrapper_error_return": {
+      "reply_status": "0x1000000a",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              514
+            ],
+            "declared_read_return": -1
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "empty_stat_size": {
+      "reply_status": "0x0",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              0,
+              514
+            ],
+            "declared_read_return": 0
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              4,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "stat_error": {
+      "reply_status": "0x10000006",
+      "reply_length": 4,
+      "selected_dependencies": {}
+    },
+    "open_error": {
+      "reply_status": "0x10000008",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "allocation_error": {
+      "reply_status": "0x10000015",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "official_app_reference_plain": {
+      "reply_status": "0x0",
+      "reply_length": 79015716,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              79015712,
+              514
+            ],
+            "declared_read_return": 79015712
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              79015716,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              775,
+              52428799,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "official_app_reference_variant1": {
+      "reply_status": "0x10000015",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              158031432,
+              1,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              4294967295,
+              52428799,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "over_4GiB_low32_complete": {
+      "reply_status": "0x0",
+      "reply_length": 20,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              16,
+              514
+            ],
+            "declared_read_return": 16
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              20,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "near_4GiB_add4_wrap": {
+      "reply_status": "0x1000000a",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              4294967292,
+              514
+            ],
+            "declared_read_return": 2147479552
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              0,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "near_4GiB_declared_wrapper_error_alias": {
+      "reply_status": "0x0",
+      "reply_length": 3,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              4294967295,
+              514
+            ],
+            "declared_read_return": -1
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              3,
+              0,
+              268627336,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              268627336,
+              514
+            ]
+          }
+        ]
+      }
+    },
+    "pending_log_full": {
+      "reply_status": "0x0",
+      "reply_length": 11,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              7,
+              285245440
+            ],
+            "declared_read_return": 7
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              11,
+              0,
+              73175,
+              285245440
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              285245440
+            ]
+          }
+        ]
+      }
+    },
+    "pending_log_short_write": {
+      "reply_status": "0x0",
+      "reply_length": 11,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              7,
+              285245440
+            ],
+            "declared_read_return": 7
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              11,
+              0,
+              73175,
+              285245440
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              285245440
+            ]
+          }
+        ]
+      }
+    },
+    "pending_log_open_failure": {
+      "reply_status": "0x0",
+      "reply_length": 36,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              514
+            ],
+            "declared_read_return": 32
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              1089,
+              514
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              1089,
+              514
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "original_Posix_linked_cases": {
+    "linked_small_complete": {
+      "service_returned": true,
+      "reply_status": "0x0",
+      "reply_length": 36,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              268628918
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              268627336
+            ]
+          }
+        ],
+        "close": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "fsync": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          },
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ],
+        "read": [
+          {
+            "args": [
+              3,
+              285278212,
+              32,
+              268628918
+            ],
+            "declared_return": 32
+          }
+        ]
+      }
+    },
+    "linked_short_read": {
+      "service_returned": true,
+      "reply_status": "0x1000000a",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              268628918
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              268627336
+            ]
+          }
+        ],
+        "close": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "fsync": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          },
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ],
+        "read": [
+          {
+            "args": [
+              3,
+              285278212,
+              32,
+              268628918
+            ],
+            "declared_return": 31
+          }
+        ]
+      }
+    },
+    "linked_EOF_short": {
+      "service_returned": true,
+      "reply_status": "0x1000000a",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              268628918
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              268627336
+            ]
+          }
+        ],
+        "close": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "fsync": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          },
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ],
+        "read": [
+          {
+            "args": [
+              3,
+              285278212,
+              32,
+              268628918
+            ],
+            "declared_return": 0
+          }
+        ]
+      }
+    },
+    "linked_empty_size": {
+      "service_returned": true,
+      "reply_status": "0x0",
+      "reply_length": 4,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              0,
+              268628918
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              4,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              268627336
+            ]
+          }
+        ],
+        "close": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "fsync": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          },
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ],
+        "read": [
+          {
+            "args": [
+              3,
+              285278212,
+              0,
+              268628918
+            ],
+            "declared_return": 0
+          }
+        ]
+      }
+    },
+    "linked_app_plain": {
+      "service_returned": true,
+      "reply_status": "0x0",
+      "reply_length": 79015716,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              79015712,
+              268628918
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              79015716,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              775,
+              52428799,
+              268627336
+            ]
+          }
+        ],
+        "close": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "fsync": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          },
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ],
+        "read": [
+          {
+            "args": [
+              3,
+              285278212,
+              79015712,
+              268628918
+            ],
+            "declared_return": 79015712
+          }
+        ]
+      }
+    },
+    "linked_4GiB_plus16": {
+      "service_returned": true,
+      "reply_status": "0x0",
+      "reply_length": 20,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              16,
+              268628918
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              20,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              268627336
+            ]
+          }
+        ],
+        "close": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "fsync": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          },
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ],
+        "read": [
+          {
+            "args": [
+              3,
+              285278212,
+              16,
+              268628918
+            ],
+            "declared_return": 16
+          }
+        ]
+      }
+    },
+    "linked_read_error_fenced": {
+      "service_returned": false,
+      "reply_status": null,
+      "reply_length": null,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              268628918
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              268627336
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ],
+        "read": [
+          {
+            "args": [
+              3,
+              285278212,
+              32,
+              268628918
+            ],
+            "declared_return": -1
+          }
+        ]
+      }
+    },
+    "linked_open_error_fenced": {
+      "service_returned": false,
+      "reply_status": null,
+      "reply_length": null,
+      "selected_dependencies": {
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              268627336
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ]
+      }
+    },
+    "linked_stat_error_fenced": {
+      "service_returned": false,
+      "reply_status": null,
+      "reply_length": null,
+      "selected_dependencies": {}
+    },
+    "linked_fsync_error_fenced": {
+      "service_returned": false,
+      "reply_status": null,
+      "reply_length": null,
+      "selected_dependencies": {
+        "_ZN11CFileAccess4readEPvm": [
+          {
+            "args": [
+              268627856,
+              285278212,
+              32,
+              268628918
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr13CheckUnitTypeEm": [
+          {
+            "args": [
+              36,
+              0,
+              73175,
+              268627336
+            ],
+            "original_function_executed": true
+          }
+        ],
+        "_ZN6DmmMgr9dmm_allocEj": [
+          {
+            "args": [
+              285216768,
+              772,
+              73175,
+              268627336
+            ]
+          }
+        ],
+        "fsync": [
+          {
+            "args": [
+              3,
+              201589,
+              4,
+              268628918
+            ]
+          }
+        ],
+        "open": [
+          {
+            "args": [
+              268627880,
+              0,
+              73175,
+              268628918
+            ],
+            "path": "/usr/lib/appFw.so",
+            "flags": 0
+          }
+        ],
+        "read": [
+          {
+            "args": [
+              3,
+              285278212,
+              32,
+              268628918
+            ],
+            "declared_return": 32
+          }
+        ]
+      }
+    }
+  },
+  "native_size_formula": {
+    "stat_size_source": "64-bit FILE_INFO +0x820",
+    "plain_allocation_count": "(low32(N)+4) mod 2^32",
+    "variant1_allocation_count": "2*((low32(N)+4) mod 2^32) mod 2^32",
+    "read_count": "low32(N)",
+    "compare": "low32(N) == low32(wrapper read return)",
+    "payload_length": "(4+low32(N)) mod 2^32",
+    "declared_normal_whole_file_no_request_offset_or_count": true
+  },
+  "mathematical_nonwrapping_limit_from_original_size_class": {
+    "max_DMM_count": 104857599,
+    "plain_max_file_N": 104857595,
+    "variant1_max_file_N": 52428795,
+    "not_a_physical_allocation_or_free_memory_guarantee": true
+  },
+  "seek_scope": {
+    "exported_symbol_VA": "0xf8cc",
+    "has_PLT_entry_in_this_library": false,
+    "direct_B_or_BL_call_sites_in_own_text": [],
+    "does_not_exclude_indirect_calls_or_other_modules": true,
+    "no_claim_of_universal_bounded_API_absence": true
+  },
+  "required_backup_result_admission": [
+    "actual body and program fingerprint",
+    "explicit device-side bounded read/range and allocation semantics, or proven exact source-size preflight; host output cap is insufficient",
+    "returned transport with consistent total length, inner reply status and expected whole source length",
+    "strong host digest of the complete bytes; do not treat a command hash alone as backup",
+    "independent same-body restore/readback and failure-specific rescue evidence"
+  ],
+  "error_scope": {
+    "16_caller_cases_use_declared_CFileAccess_results": true,
+    "10_linked_cases_execute_six_original_CFileAccess_methods": true,
+    "negative_POSIX_errors_fenced_before_Cpp_exception_allocation": true,
+    "no_actual_Cpp_unwind_or_post_error_cleanup_proven": true,
+    "near_4GiB_negative_alias_is_declared_wrapper_return_not_actual_file_bug_proof": true
+  },
+  "sources": [
+    {
+      "title": "Linux read(2)",
+      "url": "https://man7.org/linux/man-pages/man2/read.2.html",
+      "used": "short read may be non-error; actual count must be checked; Linux single-call upper bound does not repair caller arithmetic"
+    },
+    {
+      "title": "Linux stat(3type)",
+      "url": "https://man7.org/linux/man-pages/man3/stat.3type.html",
+      "used": "st_size describes regular files/symlinks; not independent proof of raw device capacity"
+    }
+  ],
+  "new_Mac_cached_or_USB_driver_admin_Windows_camera_or_file_service_operations": 0,
+  "authorization_changed": false,
+  "owner_trial_request_pending_no_reply_treated_as_consent": true,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

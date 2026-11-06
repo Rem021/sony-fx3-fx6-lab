@@ -1,0 +1,23 @@
+{
+  "status": "PASS_HOST_ONLY_REGRESSION",
+  "checks": [
+    "old_decoder_reproduces_real_native_trace_rejection",
+    "synthetic_envelope_with_actual_untrusted_23event_trace_decodes_without_transport_proof",
+    "five_out_of_domain_phases_still_rejected",
+    "all_nine_native_trace_identifiers_accepted_as_format_only",
+    "nonce_result_and_envelope_corruption_still_rejected",
+    "rejected_synthetic_frame_preserved_before_decoder_without_accepted_receipt",
+    "confirmed_absence_allows_only_observer_to_finish_with_unknown",
+    "same_live_helper_preserves_original_context",
+    "pid_reuse_proves_old_helper_gone_without_success",
+    "metadata_error_never_proves_exit"
+  ],
+  "synthetic_private_envelope": true,
+  "synthetic_envelope_sha256": "5679ebae6345a23a3bbe8e83586a928fc4aa6e48852a7daacdaa492683dd7ba7",
+  "actual_private_receipt_recovered": false,
+  "trial11_status_still": "UNKNOWN",
+  "root_helper_launches": 0,
+  "USB_or_driver_operations": 0,
+  "network_operations": 0,
+  "original_stage248_modified": false
+}

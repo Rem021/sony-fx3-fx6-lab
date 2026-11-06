@@ -1,0 +1,221 @@
+00013c8c stp        x29, x30, [sp, #-0xb0]!
+00013c90 mov        x29, sp
+00013c94 ldr        x1, [x0]
+00013c98 stp        x19, x20, [sp, #0x10]
+00013c9c stp        x21, x22, [sp, #0x20]
+00013ca0 ldr        x1, [x1, #0x30]
+00013ca4 str        x23, [sp, #0x30]
+00013ca8 blr        x1
+00013cac tst        w0, #0xff
+00013cb0 b.eq       #0x13ce4
+00013cb4 adrp       x2, #0x1b000
+00013cb8 adrp       x0, #0x1b000
+00013cbc add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+00013cc0 add        x0, x0, #0xb49 ; literal 'UdrAPI,%d,%s:%d,""UpdaterPre Skip""\n'
+00013cc4 mov        w3, #0x85
+00013cc8 mov        w1, #0
+00013ccc bl         #0x10930 ; printf
+00013cd0 ldp        x19, x20, [sp, #0x10]
+00013cd4 ldp        x21, x22, [sp, #0x20]
+00013cd8 ldr        x23, [sp, #0x30]
+00013cdc ldp        x29, x30, [sp], #0xb0
+00013ce0 ret        
+00013ce4 add        x20, x29, #0x80
+00013ce8 adrp       x19, #0x1b000
+00013cec mov        x0, x20
+00013cf0 bl         #0x10010 ; Updater::MountPoint::MountPoint
+00013cf4 add        x1, x19, #0xb6e ; literal '/tmp_updater/updater/current'
+00013cf8 mov        x0, x20
+00013cfc bl         #0xffa0 ; Updater::MountPoint::Initialize
+00013d00 adrp       x1, #0x1b000
+00013d04 mov        x0, x20
+00013d08 add        x1, x1, #0x85f ; literal '/dev/nflasha2'
+00013d0c mov        w2, #0x410
+00013d10 bl         #0xfcd0 ; Updater::MountPoint::Mount
+00013d14 tst        w0, #0xff
+00013d18 b.ne       #0x13d88
+00013d1c bl         #0x103d0 ; __errno_location
+00013d20 ldr        w4, [x0]
+00013d24 adrp       x2, #0x1b000
+00013d28 adrp       x0, #0x1b000
+00013d2c mov        w1, #0xe
+00013d30 add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+00013d34 add        x0, x0, #0xb8b ; literal 'UdrAPI,%d,%s:%d,""%d""\n'
+00013d38 mov        w3, #0x8d
+00013d3c movk       w1, #3, lsl #16
+00013d40 bl         #0x10930 ; printf
+00013d44 mov        x0, #0x10
+00013d48 bl         #0xfd80 ; __cxa_allocate_exception
+00013d4c adrp       x1, #0x31000
+00013d50 adrp       x2, #0x31000
+00013d54 ldr        x1, [x1, #0xe30]
+00013d58 ldr        x2, [x2, #0xe88]
+00013d5c add        x1, x1, #0x10
+00013d60 str        x1, [x0]
+00013d64 mov        w1, #0xe
+00013d68 movk       w1, #3, lsl #16
+00013d6c str        w1, [x0, #8]
+00013d70 adrp       x1, #0x31000
+00013d74 strb       wzr, [x0, #0xc]
+00013d78 ldr        x1, [x1, #0xfc0]
+00013d7c bl         #0x10700 ; __cxa_throw
+00013d80 mov        x19, x0
+00013d84 b          #0x13e74
+00013d88 add        x21, x29, #0x40
+00013d8c mov        x0, x21
+00013d90 bl         #0x10580 ; Updater::StringHandler::StringHandler
+00013d94 adrp       x23, #0x1b000
+00013d98 adrp       x3, #0x1b000
+00013d9c add        x3, x3, #0xb2e ; literal 'updater'
+00013da0 add        x2, x23, #0xc18
+00013da4 add        x1, x19, #0xb6e
+00013da8 mov        x0, x21
+00013dac bl         #0x10850 ; Updater::StringHandler::SetString
+00013db0 mov        x0, x21
+00013db4 bl         #0x10250 ; Updater::DirectoryHandler::Create
+00013db8 add        x22, x29, #0x60
+00013dbc mov        x0, x22
+00013dc0 bl         #0x10580 ; Updater::StringHandler::StringHandler
+00013dc4 adrp       x3, #0x1b000
+00013dc8 add        x2, x23, #0xc18
+00013dcc add        x3, x3, #0xba3 ; literal 'updater/uincomp'
+00013dd0 add        x1, x19, #0xb6e
+00013dd4 mov        x0, x22
+00013dd8 bl         #0x10850 ; Updater::StringHandler::SetString
+00013ddc mov        x0, x22
+00013de0 bl         #0xffd0 ; Updater::StringHandler::GetCharString
+00013de4 mov        w1, #0x1241
+00013de8 movk       w1, #0x10, lsl #16
+00013dec bl         #0xfd40 ; open
+00013df0 cmn        w0, #1
+00013df4 mov        w19, w0
+00013df8 b.ne       #0x13e84
+00013dfc bl         #0x103d0 ; __errno_location
+00013e00 ldr        w4, [x0]
+00013e04 adrp       x2, #0x1b000
+00013e08 adrp       x0, #0x1b000
+00013e0c mov        w1, #5
+00013e10 add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+00013e14 add        x0, x0, #0xb8b ; literal 'UdrAPI,%d,%s:%d,""%d""\n'
+00013e18 mov        w3, #0x99
+00013e1c movk       w1, #3, lsl #16
+00013e20 bl         #0x10930 ; printf
+00013e24 mov        x0, #0x10
+00013e28 bl         #0xfd80 ; __cxa_allocate_exception
+00013e2c adrp       x1, #0x31000
+00013e30 adrp       x2, #0x31000
+00013e34 ldr        x1, [x1, #0xe30]
+00013e38 ldr        x2, [x2, #0xe88]
+00013e3c add        x1, x1, #0x10
+00013e40 str        x1, [x0]
+00013e44 mov        w1, #5
+00013e48 movk       w1, #3, lsl #16
+00013e4c str        w1, [x0, #8]
+00013e50 adrp       x1, #0x31000
+00013e54 strb       wzr, [x0, #0xc]
+00013e58 ldr        x1, [x1, #0xfc0]
+00013e5c bl         #0x10700 ; __cxa_throw
+00013e60 mov        x19, x0
+00013e64 mov        x0, x22
+00013e68 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00013e6c mov        x0, x21
+00013e70 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00013e74 mov        x0, x20
+00013e78 bl         #0xfbb0 ; Updater::MountPoint::~MountPoint
+00013e7c mov        x0, x19
+00013e80 bl         #0x107a0 ; _Unwind_Resume
+00013e84 bl         #0x10220 ; fsync
+00013e88 cbz        w0, #0x13ef8
+00013e8c mov        w0, w19
+00013e90 bl         #0x104f0 ; close
+00013e94 bl         #0x103d0 ; __errno_location
+00013e98 ldr        w4, [x0]
+00013e9c adrp       x2, #0x1b000
+00013ea0 adrp       x0, #0x1b000
+00013ea4 mov        w1, #5
+00013ea8 add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+00013eac add        x0, x0, #0xb8b ; literal 'UdrAPI,%d,%s:%d,""%d""\n'
+00013eb0 mov        w3, #0x9d
+00013eb4 movk       w1, #3, lsl #16
+00013eb8 bl         #0x10930 ; printf
+00013ebc mov        x0, #0x10
+00013ec0 bl         #0xfd80 ; __cxa_allocate_exception
+00013ec4 adrp       x1, #0x31000
+00013ec8 adrp       x2, #0x31000
+00013ecc ldr        x1, [x1, #0xe30]
+00013ed0 ldr        x2, [x2, #0xe88]
+00013ed4 add        x1, x1, #0x10
+00013ed8 str        x1, [x0]
+00013edc mov        w1, #5
+00013ee0 movk       w1, #3, lsl #16
+00013ee4 str        w1, [x0, #8]
+00013ee8 adrp       x1, #0x31000
+00013eec strb       wzr, [x0, #0xc]
+00013ef0 ldr        x1, [x1, #0xfc0]
+00013ef4 bl         #0x10700 ; __cxa_throw
+00013ef8 mov        w0, w19
+00013efc bl         #0x104f0 ; close
+00013f00 cbz        w0, #0x13f68
+00013f04 bl         #0x103d0 ; __errno_location
+00013f08 ldr        w4, [x0]
+00013f0c adrp       x2, #0x1b000
+00013f10 adrp       x0, #0x1b000
+00013f14 mov        w1, #5
+00013f18 add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+00013f1c add        x0, x0, #0xb8b ; literal 'UdrAPI,%d,%s:%d,""%d""\n'
+00013f20 mov        w3, #0xa0
+00013f24 movk       w1, #3, lsl #16
+00013f28 bl         #0x10930 ; printf
+00013f2c mov        x0, #0x10
+00013f30 bl         #0xfd80 ; __cxa_allocate_exception
+00013f34 adrp       x1, #0x31000
+00013f38 adrp       x2, #0x31000
+00013f3c ldr        x1, [x1, #0xe30]
+00013f40 ldr        x2, [x2, #0xe88]
+00013f44 add        x1, x1, #0x10
+00013f48 str        x1, [x0]
+00013f4c mov        w1, #5
+00013f50 movk       w1, #3, lsl #16
+00013f54 str        w1, [x0, #8]
+00013f58 adrp       x1, #0x31000
+00013f5c strb       wzr, [x0, #0xc]
+00013f60 ldr        x1, [x1, #0xfc0]
+00013f64 bl         #0x10700 ; __cxa_throw
+00013f68 mov        x0, x20
+00013f6c bl         #0x104d0 ; Updater::MountPoint::Umount
+00013f70 tst        w0, #0xff
+00013f74 b.ne       #0x13fdc
+00013f78 bl         #0x103d0 ; __errno_location
+00013f7c ldr        w4, [x0]
+00013f80 adrp       x2, #0x1b000
+00013f84 adrp       x0, #0x1b000
+00013f88 mov        w1, #0xf
+00013f8c add        x2, x2, #0xacd ; literal 'KeyTags.cpp'
+00013f90 add        x0, x0, #0xb8b ; literal 'UdrAPI,%d,%s:%d,""%d""\n'
+00013f94 mov        w3, #0xa4
+00013f98 movk       w1, #3, lsl #16
+00013f9c bl         #0x10930 ; printf
+00013fa0 mov        x0, #0x10
+00013fa4 bl         #0xfd80 ; __cxa_allocate_exception
+00013fa8 adrp       x1, #0x31000
+00013fac adrp       x2, #0x31000
+00013fb0 ldr        x1, [x1, #0xe30]
+00013fb4 ldr        x2, [x2, #0xe88]
+00013fb8 add        x1, x1, #0x10
+00013fbc str        x1, [x0]
+00013fc0 mov        w1, #0xf
+00013fc4 movk       w1, #3, lsl #16
+00013fc8 str        w1, [x0, #8]
+00013fcc adrp       x1, #0x31000
+00013fd0 strb       wzr, [x0, #0xc]
+00013fd4 ldr        x1, [x1, #0xfc0]
+00013fd8 bl         #0x10700 ; __cxa_throw
+00013fdc mov        x0, x22
+00013fe0 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00013fe4 mov        x0, x21
+00013fe8 bl         #0x10770 ; Updater::StringHandler::~StringHandler
+00013fec mov        x0, x20
+00013ff0 bl         #0xfbb0 ; Updater::MountPoint::~MountPoint
+00013ff4 b          #0x13cd0
+00013ff8 mov        x19, x0
+00013ffc b          #0x13e6c

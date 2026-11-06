@@ -1,0 +1,43 @@
+{
+  "created_utc": "2026-10-26T05:27:58.679581+00:00",
+  "status": "PASS_ORIGINAL_MUX_METADATA_WITH_HD_FORMAT_CLASSIFICATION_GAP",
+  "original_fragments": 36,
+  "original_stop_reasons": {
+    "returned": 34,
+    "unapproved PLT printf": 1,
+    "boundary: before_alternate_record_format_classifier": 1
+  },
+  "target_native_metadata": {
+    "valid_byte0": 1,
+    "record_format_enum4": 5,
+    "profile_enum8": 1,
+    "level_enum14": 5,
+    "rate_2c_30": [
+      30000,
+      1001
+    ],
+    "rate_34_38": [
+      30000,
+      1001
+    ],
+    "width_height_3c_3e": [
+      1920,
+      1080
+    ],
+    "bitrate_raw40": 16000,
+    "interlace_byte44": 0,
+    "byte45": 0,
+    "alternate_classifier_byte46": 0
+  },
+  "target_MPF_internal_enum": 45,
+  "target_record_format_classifier_default": 151,
+  "stock_UHD_classifier_value": 142,
+  "FF_quality8_stopped_before_printf_and_metadata_not_complete": true,
+  "default_map_entries": 8,
+  "default_map_global_construction_executed": false,
+  "target_actual_mux_open_or_recording_failure_established": false,
+  "complete_target_recording_or_recovery": false,
+  "proof_sha256": "0f253c7648a6905f41521b702725d48975773f691f7bf6e563de1ad563a2edf0",
+  "goal_complete": false,
+  "persistent_write_release": false
+}

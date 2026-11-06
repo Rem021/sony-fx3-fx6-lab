@@ -1,0 +1,24 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap80c-enum2-panel-config/candidate80c.json",
+  "base_sha256": "340feedae39e60f60f423f7a0e51dd0e0ee9657cb6e86db1c6f924c2c87b0c91",
+  "changes": [
+    "new first preload fx3-skd-hw-unavailable-v1 exact original SKData_Init mmap site only",
+    "capidv36 unchanged from AP80c; gatev10 adds passive original SKD error/data return/auth return and retires old boot event observation after original future return",
+    "DTB initrd-end only; no new ROM/RAM/device region"
+  ],
+  "initrd": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap81-skd-hardware-unavailable/guest.cpio",
+    "sha256": "4c4d6852f18380ad9eb909bd409229cca3375dbd54066ccbcc3869f1d8365b80"
+  },
+  "dtb": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap81-skd-hardware-unavailable/guest.dtb",
+    "sha256": "7122ea258c7e7789a9bf0c3ffa524a1b280e5d9ad1a3925f4aa7b3fa0d63e440"
+  },
+  "helpers": {
+    "fx3-skd-hw-unavailable-v1.c": "2d0a30d5a1e56ca3cd1956c7c24af51d07ffd660832e635ff8d9ffb2a03669e8",
+    "fx3-skd-hw-unavailable-v1.so": "9f714d6123f1b220101ec7c240e33dd2b02a94c6d6011f77891a28e452367084",
+    "fx3-capid-v36.so": "1c8f5d9daefbc1be0a10ad54ca142ba23d8877744a6bd039e7e0e2e2623df9f3",
+    "fx3-ui-gate-v10.c": "f1f523e332f8a036a8f21d910e820870e3fe1861e9d312265f8f2d908cdbddb9",
+    "fx3-ui-gate-v10.so": "34f5c03976050e8a08112573ad23948442a5c9a84860d29f303c5ac5c65fea9c"
+  }
+}

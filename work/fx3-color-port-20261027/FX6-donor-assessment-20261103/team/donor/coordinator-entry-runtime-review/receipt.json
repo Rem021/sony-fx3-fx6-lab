@@ -1,0 +1,89 @@
+{
+  "status": "ACCEPT_BOUNDED_ENTRY_AND_CLEANUP_ONLY",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/fx6-entry-no-key-20261103/runs/fx6entry-a39715a8",
+  "receipt_sha256": "426bd282bd1f35a51ba42fddfa4d9b8302bd23ad797e5b3a7f90d55e15deb032",
+  "command_sha256": "91ff6ffb5d4f1c233f317654390851f72d9593064f6ff2926d3d989947bff9a6",
+  "serial_sha256": "caecd00446ad09840606d63d199978683787ebf0fe276476ffac12e36f41a23c",
+  "frozen_argv_changed_indices": [
+    20,
+    31
+  ],
+  "model_env_equal": true,
+  "actual_platform_and_original_file_hashes": {
+    "qemu_binary": "bf4d46481998b8fb0644da3e17a333d5fc8a7b6aeb0035f1b4e03aa25c98c70d",
+    "fx3_kernel": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+    "fx3_dtb_full_binary": "b6f9f4c04d0da101565d67244629a0ad7a3954c8af004f353c16ae0c8b499de7",
+    "software_guest_cpio": "eaef24b2fe9405fb48bc7823069ad16162cd67c46e004ed6660f761fc16d230d",
+    "english_generation4_backup": "92fe4031d552e9a3d8035f852fe40617fc91445c79a8456017b9c40677e4ac8f"
+  },
+  "candidate_sha256": "ff2f927de24b801d334ce9111fb486fb2af85d24c509ab20c43eda0a69ffdc40",
+  "first_evidence_spans_checked": {
+    "verify": {
+      "byte_range": [
+        84965,
+        84990
+      ],
+      "raw": "FX3_TRACE_ABI_VERIFY_RC=0"
+    },
+    "list": {
+      "byte_range": [
+        86523,
+        86546
+      ],
+      "raw": "FX3_TRACE_ABI_LIST_RC=0"
+    },
+    "true": {
+      "byte_range": [
+        86548,
+        86571
+      ],
+      "raw": "FX3_TRACE_ABI_TRUE_RC=0"
+    },
+    "not_ready": null,
+    "natural_bootin": {
+      "byte_range": [
+        97249,
+        97276
+      ],
+      "raw": "FX3_AP_NATURAL_BOOTIN_BEGIN"
+    },
+    "im_map": {
+      "byte_range": [
+        224848,
+        224936
+      ],
+      "raw": "00400000-00409000 r-xp 00000000 00:02 1277                               /usr/bin/im.elf"
+    },
+    "ipc_send": {
+      "byte_range": [
+        1930901,
+        1931075
+      ],
+      "raw": "FX3_BOOT_QUEUE_SEND tid=241 bytes=28 source=0x830128 raw=00001500000000000000000000000000000000000000000000000000 caller_relative=0x16f1bb4 passive=1 completion_not_assumed=1"
+    }
+  },
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free_at_coordinator_review": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free_at_coordinator_review": true
+    }
+  ],
+  "runtime_receipt": {
+    "duration_seconds": 32.3797534579644,
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "API16_restored": true,
+    "key_steps": 0
+  },
+  "not_proven": [
+    "FX6 appFw execution",
+    "FX6 AV/CP",
+    "FX6 menu",
+    "IPC receive/completion",
+    "camera behavior"
+  ]
+}

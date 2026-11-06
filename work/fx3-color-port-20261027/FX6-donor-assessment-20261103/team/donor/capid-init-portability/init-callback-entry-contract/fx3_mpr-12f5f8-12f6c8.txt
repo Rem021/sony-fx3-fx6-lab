@@ -1,0 +1,58 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+000000000012ed28 <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE>:
+  12f5f8: a9b57bfd     	stp	x29, x30, [sp, #-0xb0]!
+  12f5fc: 910003fd     	mov	x29, sp
+  12f600: a90153f3     	stp	x19, x20, [sp, #0x10]
+  12f604: 910183b3     	add	x19, x29, #0x60
+  12f608: a90363f7     	stp	x23, x24, [sp, #0x30]
+  12f60c: 910223b4     	add	x20, x29, #0x88
+  12f610: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  12f614: 910203b8     	add	x24, x29, #0x80
+  12f618: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  12f61c: 52800017     	mov	w23, #0x0               // =0
+  12f620: a90573fb     	stp	x27, x28, [sp, #0x50]
+  12f624: 97fd390b     	bl	0x7da50 <_ZN3mpr8datasize4initEv@plt>
+  12f628: f00013c0     	adrp	x0, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  12f62c: f00013c1     	adrp	x1, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  12f630: f00013da     	adrp	x26, 0x3aa000 <_ZN3mpr10VpgManager6s_lockE+0x1a578>
+  12f634: f90043bf     	str	xzr, [x29, #0x80]
+  12f638: b900abbf     	str	wzr, [x29, #0xa8]
+  12f63c: b90f501f     	str	wzr, [x0, #0xf50]
+  12f640: 913d6020     	add	x0, x1, #0xf58
+  12f644: b90f583f     	str	wzr, [x1, #0xf58]
+  12f648: 2900fc1f     	stp	wzr, wzr, [x0, #0x4]
+  12f64c: b9000c1f     	str	wzr, [x0, #0xc]
+  12f650: 910263a0     	add	x0, x29, #0x98
+  12f654: a9007c1f     	stp	xzr, xzr, [x0]
+  12f658: 52800020     	mov	w0, #0x1                // =1
+  12f65c: b9008ba0     	str	w0, [x29, #0x88]
+  12f660: 52800060     	mov	w0, #0x3                // =3
+  12f664: b9008fa0     	str	w0, [x29, #0x8c]
+  12f668: 52801fe0     	mov	w0, #0xff               // =255
+  12f66c: b9009fa0     	str	w0, [x29, #0x9c]
+  12f670: 52800015     	mov	w21, #0x0               // =0
+  12f674: b90093b7     	str	w23, [x29, #0x90]
+  12f678: 52800019     	mov	w25, #0x0               // =0
+  12f67c: b90097b5     	str	w21, [x29, #0x94]
+  12f680: 52800016     	mov	w22, #0x0               // =0
+  12f684: b9009bb9     	str	w25, [x29, #0x98]
+  12f688: a9400680     	ldp	x0, x1, [x20]
+  12f68c: b900a3b6     	str	w22, [x29, #0xa0]
+  12f690: a9000660     	stp	x0, x1, [x19]
+  12f694: aa1803e2     	mov	x2, x24
+  12f698: 2a1603e1     	mov	w1, w22
+  12f69c: f9400a80     	ldr	x0, [x20, #0x10]
+  12f6a0: f9000a60     	str	x0, [x19, #0x10]
+  12f6a4: aa1303e0     	mov	x0, x19
+  12f6a8: 97fd4bde     	bl	0x82620 <_ZN3mpr8datasize17CalcStillDataSizeENS_17StillPictureParamENS_8LensTypeEPNS0_8DataSizeE@plt>
+  12f6ac: 35000100     	cbnz	w0, 0x12f6cc <_ZN11StillRemain24GetStillRemainRecordInfoEN9DefStruct9LocalTimeEN3mpr11CaptureTypeEPNS_17RecordInfoPerSlotEPNS_15CompressionTypeE+0x9a4>
+  12f6b0: b94083a0     	ldr	w0, [x29, #0x80]
+  12f6b4: aa1403e1     	mov	x1, x20
+  12f6b8: b900a7a0     	str	w0, [x29, #0xa4]
+  12f6bc: b94087a0     	ldr	w0, [x29, #0x84]
+  12f6c0: b900aba0     	str	w0, [x29, #0xa8]
+  12f6c4: 913ce340     	add	x0, x26, #0xf38

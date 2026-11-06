@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-review-snapshot-candidate/operator-helpers/deadline_cli.py",
+    "arm",
+    "--session",
+    "fx3-deadline-r24-a2792c17db55",
+    "--url",
+    "http://127.0.0.1:49966/",
+    "--launch-id",
+    "c008fda8-6c61-441e-9664-92d451ffac28",
+    "--nonce",
+    "93615104-b6b9-4edd-8ff9-a0cb767fcfd9"
+  ],
+  "start": {
+    "UTC": "2026-11-05T01:37:54.581021+00:00",
+    "host_ns": 426360102486083
+  },
+  "end": {
+    "UTC": "2026-11-05T01:37:54.642287+00:00",
+    "host_ns": 426360163761250
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"current\": {\n    \"armed_ms\": 106328.5,\n    \"deadline_ms\": 20000,\n    \"due_ms\": 126328.5,\n    \"nonce\": \"93615104-b6b9-4edd-8ff9-a0cb767fcfd9\",\n    \"state\": \"armed\"\n  },\n  \"deadline_ms\": 20000,\n  \"documentTimeOrigin\": 1793842568306.2,\n  \"events\": [\n    {\n      \"event\": \"installed\",\n      \"performance_ms\": 16200.19999998808,\n      \"script_SHA256\": \"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\",\n      \"wall_UTC\": \"2026-11-05T01:36:24.506Z\"\n    },\n    {\n      \"due_ms\": 96044.5,\n      \"event\": \"armed\",\n      \"nonce\": \"88969fb8-e700-4498-a271-a6bbb2d48cf6\",\n      \"performance_ms\": 76044.5,\n      \"wall_UTC\": \"2026-11-05T01:37:24.350Z\"\n    },\n    {\n      \"elapsed_ms\": 11103.80000001192,\n      \"event\": \"cancelled\",\n      \"nonce\": \"88969fb8-e700-4498-a271-a6bbb2d48cf6\",\n      \"performance_ms\": 87148.30000001192,\n      \"wall_UTC\": \"2026-11-05T01:37:35.454Z\"\n    },\n    {\n      \"due_ms\": 114646.10000002384,\n      \"event\": \"armed\",\n      \"nonce\": \"4a2569f1-010b-45f0-9a27-c2c5a3ae1762\",\n      \"performance_ms\": 94646.10000002384,\n      \"wall_UTC\": \"2026-11-05T01:37:42.952Z\"\n    },\n    {\n      \"elapsed_ms\": 5601.5,\n      \"event\": \"cancelled\",\n      \"nonce\": \"4a2569f1-010b-45f0-9a27-c2c5a3ae1762\",\n      \"performance_ms\": 100247.60000002384,\n      \"wall_UTC\": \"2026-11-05T01:37:48.554Z\"\n    },\n    {\n      \"due_ms\": 126328.5,\n      \"event\": \"armed\",\n      \"nonce\": \"93615104-b6b9-4edd-8ff9-a0cb767fcfd9\",\n      \"performance_ms\": 106328.60000002384,\n      \"wall_UTC\": \"2026-11-05T01:37:54.635Z\"\n    }\n  ],\n  \"expectedLaunchId\": \"c008fda8-6c61-441e-9664-92d451ffac28\",\n  \"expectedURL\": \"http://127.0.0.1:49966/\",\n  \"sealed\": false,\n  \"version\": 1\n}\n",
+  "stderr": ""
+}

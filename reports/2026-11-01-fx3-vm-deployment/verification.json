@@ -1,0 +1,65 @@
+{
+  "created_utc": "2026-11-01T10:49:21.678795+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "report_local_links_checked": 42,
+  "report_local_links_unique": 29,
+  "runtime_frozen_files_checked": 19,
+  "runtime_files_match_frozen_manifest_after_source_cleanup": true,
+  "original_kernel_hash_matches_manifest": true,
+  "final_runs_receipt_and_serial_hashes_match_record": true,
+  "source_cleanup_receipt_hash_verified": true,
+  "vm_or_gui_rerun_by_report_writer": false,
+  "report_boundaries": [
+    "L1 original core/userland passed",
+    "L2 loader verify/list passed",
+    "AP main and original qemu branch unproven",
+    "menu/capture/flash not claimed"
+  ],
+  "reference_files": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/file-manifest.json",
+      "bytes": 3477,
+      "sha256": "855823d31add76a6ae2d6977e94429840f34d84f3e2b5b8bafd9601b4fbf6311"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/metadata/final-runtime-validation.json",
+      "bytes": 3747,
+      "sha256": "f80f337b41db1a2b20cb27255d048af75d3e2c4098905f8cad916fb031a527b9"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/final-runtime-independent-proof.json",
+      "bytes": 10174,
+      "sha256": "c3887837223e2626987c2a2bd04ae1eefeedfc12622591a5d2e6edc4c1874f6b"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/host/third-party-source-cleanup-receipt.json",
+      "bytes": 25474,
+      "sha256": "592cd7b7ed06023c2fb6008fad00e556691e6c1fe60064efc3aab43fef56c0fe"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/upstream/cleanup-receipt.json",
+      "bytes": 16891,
+      "sha256": "86af9b533221dc9e388685a7f0bba548f7f49f95c2d519d6bf092d5acf6d88e5"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/fx3-audit/p12-ap-entry-independent-proof.json",
+      "bytes": 2126,
+      "sha256": "d1a3ee7baaf817c484ec4401ee2b247bf92a138b290df80b7fa26228c07f352c"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/research_notes/FX3 Mac 虚拟机部署研究/fx3-assets.md",
+      "bytes": 17553,
+      "sha256": "7a0f5ba9e849682f33de33c8160dc80c785dc5404b6c2a1321e7d77cf6b8bf23"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/research_notes/FX3 Mac 虚拟机部署研究/host-deployment.md",
+      "bytes": 11886,
+      "sha256": "d3595a6ff60cf908dc3f01cb4277cff8629a438fb17eacbe68b1a35d0d7f20bd"
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/research_notes/FX3 Mac 虚拟机部署研究/upstream.md",
+      "bytes": 14937,
+      "sha256": "3a3e03a533c96176b064b0a6c541df2590e105f9437821e7d9521b5129f063da"
+    }
+  ]
+}

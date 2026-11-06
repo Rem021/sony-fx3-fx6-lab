@@ -1,0 +1,247 @@
+{
+  "name": "glib",
+  "full_name": "glib",
+  "tap": "homebrew/core",
+  "oldnames": [
+    "glib-utils"
+  ],
+  "aliases": [],
+  "versioned_formulae": [],
+  "desc": "Core application library for C",
+  "license": "LGPL-2.1-or-later",
+  "homepage": "https://docs.gtk.org/glib/",
+  "versions": {
+    "stable": "2.90.1",
+    "head": null,
+    "bottle": true
+  },
+  "urls": {
+    "stable": {
+      "url": "https://download.gnome.org/sources/glib/2.90/glib-2.90.1.tar.xz",
+      "tag": null,
+      "revision": null,
+      "using": null,
+      "checksum": "93c941aa17d5eb1d53fe838365f29a8b4e539c222a256d974ec8f30fc413e396"
+    }
+  },
+  "patches": [
+    {
+      "strip": "p1",
+      "file": "Patches/glib/hardcoded-paths.diff"
+    }
+  ],
+  "local_patch_checksums": {
+    "Patches/glib/hardcoded-paths.diff": "d846efd0bf62918350da94f850db33b0f8727fece9bfaf8164566e3094e80c97"
+  },
+  "revision": 0,
+  "version_scheme": 0,
+  "compatibility_version": 1,
+  "autobump": true,
+  "no_autobump_message": null,
+  "skip_livecheck": false,
+  "bottle": {
+    "stable": {
+      "rebuild": 1,
+      "root_url": "https://ghcr.io/v2/homebrew/core",
+      "files": {
+        "arm64_golden_gate": {
+          "cellar": "/opt/homebrew/Cellar",
+          "url": "https://ghcr.io/v2/homebrew/core/glib/blobs/sha256:5ccb7a549258ed35cddc280882a11a854bd0ef1b2329a1ce77e43e39d2d98e3a",
+          "sha256": "5ccb7a549258ed35cddc280882a11a854bd0ef1b2329a1ce77e43e39d2d98e3a"
+        },
+        "arm64_tahoe": {
+          "cellar": "/opt/homebrew/Cellar",
+          "url": "https://ghcr.io/v2/homebrew/core/glib/blobs/sha256:56145c606a672f7b69845be6e16e8e6f1611052620e4638237116c177fe15c43",
+          "sha256": "56145c606a672f7b69845be6e16e8e6f1611052620e4638237116c177fe15c43"
+        },
+        "arm64_sequoia": {
+          "cellar": "/opt/homebrew/Cellar",
+          "url": "https://ghcr.io/v2/homebrew/core/glib/blobs/sha256:ce9568a335281cb6bd12c48fd89d7a118a046f9df16761c120826fdae116e468",
+          "sha256": "ce9568a335281cb6bd12c48fd89d7a118a046f9df16761c120826fdae116e468"
+        },
+        "arm64_linux": {
+          "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
+          "url": "https://ghcr.io/v2/homebrew/core/glib/blobs/sha256:3ce028927d1d01745efb1b6f83f1469e0bb967b801096a601b223030dfb87279",
+          "sha256": "3ce028927d1d01745efb1b6f83f1469e0bb967b801096a601b223030dfb87279"
+        },
+        "x86_64_linux": {
+          "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
+          "url": "https://ghcr.io/v2/homebrew/core/glib/blobs/sha256:ca0144204f1844125166d69208650c5b12c2fbd68bbd3fa904127c6e4fe8a3b1",
+          "sha256": "ca0144204f1844125166d69208650c5b12c2fbd68bbd3fa904127c6e4fe8a3b1"
+        }
+      }
+    }
+  },
+  "pour_bottle_only_if": null,
+  "keg_only": false,
+  "keg_only_reason": null,
+  "options": [],
+  "build_dependencies": [
+    "bison",
+    "gettext",
+    "meson",
+    "ninja",
+    "pkgconf",
+    "python-setuptools",
+    "python@3.15"
+  ],
+  "dependencies": [
+    "pcre2",
+    "gettext"
+  ],
+  "test_dependencies": [
+    "pkgconf"
+  ],
+  "recommended_dependencies": [],
+  "optional_dependencies": [],
+  "no_linkage_dependencies": [],
+  "uses_from_macos": [
+    {
+      "flex": "build"
+    },
+    "libffi",
+    "python"
+  ],
+  "uses_from_macos_bounds": [
+    {},
+    {},
+    {}
+  ],
+  "requirements": [],
+  "conflicts_with": [],
+  "conflicts_with_reasons": [],
+  "link_overwrite": [
+    "bin/gdbus-codegen",
+    "bin/glib-genmarshal",
+    "bin/glib-mkenums",
+    "bin/gtester-report",
+    "share/glib-2.0/codegen",
+    "share/glib-2.0/gdb",
+    "lib/girepository-1.0/GLib-2.0.typelib",
+    "lib/girepository-1.0/GModule-2.0.typelib",
+    "lib/girepository-1.0/GObject-2.0.typelib",
+    "lib/girepository-1.0/Gio-2.0.typelib",
+    "share/gir-1.0/GLib-2.0.gir",
+    "share/gir-1.0/GModule-2.0.gir",
+    "share/gir-1.0/GObject-2.0.gir",
+    "share/gir-1.0/Gio-2.0.gir"
+  ],
+  "caveats": null,
+  "installed": [],
+  "linked_keg": null,
+  "pinned": false,
+  "outdated": false,
+  "deprecated": false,
+  "deprecation_date": null,
+  "deprecation_reason": null,
+  "deprecation_replacement_formula": null,
+  "deprecation_replacement_cask": null,
+  "deprecate_args": null,
+  "disabled": false,
+  "disable_date": null,
+  "disable_reason": null,
+  "disable_replacement_formula": null,
+  "disable_replacement_cask": null,
+  "disable_args": null,
+  "post_install_steps": [
+    {
+      "path": {
+        "path": "{{HOMEBREW_PREFIX}}/lib/gio/modules"
+      },
+      "type": "mkdir_p"
+    }
+  ],
+  "post_install_defined": false,
+  "service": null,
+  "tap_git_head": "3ee3e34494d6b2609b1307e3cada3290bb77bf25",
+  "ruby_source_path": "Formula/g/glib.rb",
+  "ruby_source_checksum": {
+    "sha256": "e6c6094ef287cd9dd51af16a4e69cb899b732cdf92da900eb9371339099df005"
+  },
+  "variations": {
+    "x86_64_linux": {
+      "dependencies": [
+        "pcre2",
+        "dbus",
+        "util-linux",
+        "zlib-ng-compat"
+      ]
+    },
+    "arm64_linux": {
+      "dependencies": [
+        "pcre2",
+        "dbus",
+        "util-linux",
+        "zlib-ng-compat"
+      ]
+    }
+  },
+  "executables": [
+    "gapplication",
+    "gdbus",
+    "gdbus-codegen",
+    "gi-compile-repository",
+    "gi-decompile-typelib",
+    "gi-inspect-typelib",
+    "gio",
+    "gio-querymodules",
+    "glib-compile-resources",
+    "glib-compile-schemas",
+    "glib-genmarshal",
+    "glib-gettextize",
+    "glib-mkenums",
+    "gobject-query",
+    "gresource",
+    "gsettings",
+    "gtester",
+    "gtester-report"
+  ],
+  "github_packages_downloads": {
+    "source": "https://github.com/Homebrew/homebrew-core/pkgs/container/core%2Fglib",
+    "all_time": 91865884,
+    "last_30_days": 1767711,
+    "start_date": "2026-10-02",
+    "end_date": "2026-10-31",
+    "fetched_at": "2026-11-01T00:47:07Z",
+    "analytics_30d": 160386,
+    "analytics_start_date": "2026-10-02",
+    "analytics_end_date": "2026-11-01",
+    "analytics_ratio": 11.02
+  },
+  "analytics": {
+    "install": {
+      "30d": {
+        "glib": 160338,
+        "glib --HEAD": 48
+      },
+      "90d": {
+        "glib": 481913,
+        "glib --HEAD": 105
+      },
+      "365d": {
+        "glib": 2343340,
+        "glib --HEAD": 533
+      }
+    },
+    "install_on_request": {
+      "30d": {
+        "glib": 21944,
+        "glib --HEAD": 43
+      },
+      "90d": {
+        "glib": 60741,
+        "glib --HEAD": 95
+      },
+      "365d": {
+        "glib": 349883,
+        "glib --HEAD": 486
+      }
+    },
+    "build_error": {
+      "30d": {
+        "glib": 1284
+      }
+    }
+  },
+  "generated_date": "2026-11-01"
+}

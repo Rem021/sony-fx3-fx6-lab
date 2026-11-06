@@ -1,0 +1,13 @@
+{
+  "status": "PASS_NO_QEMU_FAKE_LIFECYCLE",
+  "fixture": "fake QMP/QEMU/locks/observer; no VM",
+  "cases": [
+    "normal_private_path_arm_consume_cleanup",
+    "residual_breakpoint_no_inherited_no_resume",
+    "missing_inherited_cleanup_blocks_clean",
+    "reused_private_output_rejected",
+    "observation_hard_deadline"
+  ],
+  "count": 5,
+  "adapter_sha256": "588ecd22c2b7994a7ee2e651fa6c8b19863af38af13430f8141ca75a089f7460"
+}

@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "agent-browser",
+    "--session",
+    "fx3-deadline-r24-a2792c17db55",
+    "eval",
+    "--stdin"
+  ],
+  "start": {
+    "UTC": "2026-11-05T01:38:42.858552+00:00",
+    "host_ns": 426408379920458
+  },
+  "end": {
+    "UTC": "2026-11-05T01:38:42.866435+00:00",
+    "host_ns": 426408387805875
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"accepted_next_step\": 6,\n  \"alarm_due_ms\": 168602.30000001192,\n  \"alarm_nonce\": \"5073ba19-52db-402f-98df-1ed3ef666376\",\n  \"attempt_id\": \"b163dfc8-4080-4f20-bf38-38fb05217cd2\",\n  \"base_step\": 5,\n  \"created_monotonic_ms\": 148679.30000001192,\n  \"document_time_origin\": 1793842568306.2,\n  \"expected_step\": 6,\n  \"frame\": {\n    \"PNG_sha256\": \"5aa0cd7e62b68c8c0d9538fb3b6dc8ce3c771b5fd59c53fbe5ebce91555317e7\",\n    \"content_generation\": 37,\n    \"sequence\": 1191\n  },\n  \"key\": 427,\n  \"launch_request_id\": \"c008fda8-6c61-441e-9664-92d451ffac28\",\n  \"mutation_called\": true,\n  \"observed_sequence\": 1191,\n  \"outcome\": \"accepted\",\n  \"server_request_id\": \"b163dfc8-4080-4f20-bf38-38fb05217cd2\",\n  \"updated_monotonic_ms\": 148682.39999997616\n}\n",
+  "stderr": ""
+}

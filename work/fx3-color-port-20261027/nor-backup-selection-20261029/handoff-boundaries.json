@@ -1,0 +1,126 @@
+{
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "source_fragments": [
+    {
+      "VA": "0xfe052de0",
+      "end_exclusive": "0xfe052e74",
+      "bytes": 148,
+      "original_bytes_sha256": "e495c133e8e91a136e4b480a9ff882def3268c06ca52f4cf3151c5618b3e4ea9",
+      "listing": "source-fragments/fe052de0-fe052e74.txt"
+    },
+    {
+      "VA": "0xfe052e74",
+      "end_exclusive": "0xfe052ee8",
+      "bytes": 116,
+      "original_bytes_sha256": "518b8e3694c5f6c140080073abcd366388943dbcb6df74b57ab15f4dd9a79ed5",
+      "listing": "source-fragments/fe052e74-fe052ee8.txt"
+    },
+    {
+      "VA": "0xfe052ee8",
+      "end_exclusive": "0xfe052fc0",
+      "bytes": 216,
+      "original_bytes_sha256": "93fe114844231b88ae0dbbf613a4b107fc8c92883187c56959d0df478829a3de",
+      "listing": "source-fragments/fe052ee8-fe052fc0.txt"
+    }
+  ],
+  "original_log_strings": [
+    {
+      "VA": "0xfe05e4cc",
+      "text": "LDR:CP_ESCAPE@cetus transfer complete.\n"
+    },
+    {
+      "VA": "0xfe05e4f4",
+      "text": "LDR:cpapp-b.bin@cetus transfer complete.\n"
+    },
+    {
+      "VA": "0xfe05e539",
+      "text": "LDR:Wait for transfer CP_ESCAPE@cetus.\n"
+    },
+    {
+      "VA": "0xfe05e561",
+      "text": "LDR:Wait for transfer cpapp-b.bin@cetus.\n"
+    },
+    {
+      "VA": "0xfe05e4b5",
+      "text": "LDR:Skip Config(load)\n"
+    }
+  ],
+  "cases": [
+    {
+      "name": "CP_APP_B",
+      "result": {
+        "entry": "0xfe052e74",
+        "arguments": [
+          "0x300003000"
+        ],
+        "boundary": {
+          "reason": "unmapped_external_state",
+          "PC": "0xfe052e84",
+          "address": "0x800107f20",
+          "bytes": 4
+        },
+        "registers": [
+          "0x300003000",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 5,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe052e74",
+          "0xfe052e78",
+          "0xfe052e7c",
+          "0xfe052e80",
+          "0xfe052e84"
+        ]
+      },
+      "completion_marker_supplied": false,
+      "explicit_context_input": "For CP_ESCAPE only, context+0x1b4=2 selects the original marker-check branch. No marker or transfer completion is supplied."
+    },
+    {
+      "name": "CP_ESCAPE",
+      "result": {
+        "entry": "0xfe052de0",
+        "arguments": [
+          "0x300003000"
+        ],
+        "boundary": {
+          "reason": "unmapped_external_state",
+          "PC": "0xfe052e00",
+          "address": "0x800107f30",
+          "bytes": 4
+        },
+        "registers": [
+          "0x300003000",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 9,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe052de0",
+          "0xfe052de4",
+          "0xfe052de8",
+          "0xfe052dec",
+          "0xfe052df0",
+          "0xfe052df4",
+          "0xfe052df8",
+          "0xfe052dfc",
+          "0xfe052e00"
+        ]
+      },
+      "completion_marker_supplied": false,
+      "explicit_context_input": "For CP_ESCAPE only, context+0x1b4=2 selects the original marker-check branch. No marker or transfer completion is supplied."
+    }
+  ],
+  "source_contract": {
+    "CP_APP_B_marker_address": "0x800107f20",
+    "CP_APP_B_marker_value": "0x454e524b",
+    "CP_APP_B_following_pointer_offset": 8,
+    "CP_ESCAPE_marker_address": "0x800107f30",
+    "CP_ESCAPE_marker_value": "0x50435345"
+  },
+  "scope": "Original logs and marker-consumer prefixes identify a separate handoff avenue. They do not identify the sender, prove any marker present, show DmmCfg transfer, establish firmware admission or constitute actual camera/USB operation."
+}

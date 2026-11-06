@@ -1,0 +1,14 @@
+{
+  "observations": [
+    {
+      "stage": "updater ELF metadata inventory",
+      "failure": "A section exposing iter_symbols was not an ELF SymbolTableSection, and its entries lacked st_value. Initial extraction stopped with KeyError.",
+      "resolution": "Restricted symbol parsing to the ELF symbol table section class, then reran all 65 filesystem records successfully. Original filesystem bytes were not changed."
+    },
+    {
+      "stage": "upstream Python AST parse",
+      "observation": "Python 3.14 emitted SyntaxWarning for an upstream regular-expression escape. The file was only parsed for AST facts, never imported or executed. Constants AST handling suppresses that parser-only warning after hash verification."
+    }
+  ],
+  "scope": "Development evidence only; no failed camera or firmware write."
+}

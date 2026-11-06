@@ -1,0 +1,930 @@
+{
+  "created_utc": "2026-10-26T16:50:39.442455+00:00",
+  "script_sha256": "280067f19c9f35dc0239d784610649ad2cc2f41b049b985ce55e987d62c2fcb1",
+  "reader_sha256": "eecbe9b099f9fbc8f8e06759c5e8a2ce9910e0f365ae9891fe0887353edc31ad",
+  "source_image": "work/sony-firmware-20261024/stage2/extraction/nflasha15.img",
+  "source_image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+  "files": [
+    {
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/bin/usb_insmod.sh",
+        "inode": 80962,
+        "mode": "0o100755",
+        "size": 225,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage67-connected-native-pnp/official-files/nflasha15/bin/usb_insmod.sh",
+      "bytes": 225,
+      "sha256": "5e885d964a9ab9c9e18c23453af42f7ff7da57d0aa446c1812b385206f3d8f7a",
+      "text_read_not_executed": "#!/bin/sh\n\ninsmod /kmod/usb_event.ko\ninsmod /kmod/usb_scd.ko\ninsmod /kmod/ups.ko\ninsmod /kmod/usb_otgcore.ko\ninsmod /kmod/usb_gadgetcore.ko\ninsmod /kmod/usb_portMonitor.ko\ninsmod /kmod/usbg_sen.ko\ninsmod /kmod/usb_extcmd.ko\n\n"
+    },
+    {
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/kmod/usb_extcmd.ko",
+        "inode": 70910,
+        "mode": "0o100644",
+        "size": 23112,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage67-connected-native-pnp/official-files/nflasha15/kmod/usb_extcmd.ko",
+      "bytes": 23112,
+      "sha256": "9afdcb214058ff1d8be8c6a8b0bb72e861a1b0d92b7504310ac06b4ed56d92d7",
+      "ELF_type": "ET_REL",
+      "selected_symbols": [
+        {
+          "name": "disable_inquiry_state",
+          "value": "0x608",
+          "size": 24,
+          "section": 2
+        },
+        {
+          "name": "get_inquiry_state",
+          "value": "0x620",
+          "size": 72,
+          "section": 2
+        },
+        {
+          "name": "enable_inquiry_state",
+          "value": "0x5f8",
+          "size": 16,
+          "section": 2
+        }
+      ]
+    },
+    {
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/kmod/usb_f_mass_storage.ko",
+        "inode": 70926,
+        "mode": "0o100644",
+        "size": 51696,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage67-connected-native-pnp/official-files/nflasha15/kmod/usb_f_mass_storage.ko",
+      "bytes": 51696,
+      "sha256": "1e2302456255bff8acac7d799704261cd6db73ab69e318c98ce5d3806c246adc",
+      "ELF_type": "ET_REL",
+      "selected_symbols": [
+        {
+          "name": "fsg_common_remove_lun",
+          "value": "0x150",
+          "size": 60,
+          "section": 2
+        },
+        {
+          "name": "fsg_lun_open",
+          "value": "0x4078",
+          "size": 916,
+          "section": 2
+        },
+        {
+          "name": "fsg_common_create_luns",
+          "value": "0x9c8",
+          "size": 272,
+          "section": 2
+        },
+        {
+          "name": "fsg_lun_fsync_sub",
+          "value": "0x4480",
+          "size": 56,
+          "section": 2
+        },
+        {
+          "name": "fsg_store_inquiry_string",
+          "value": "0x4980",
+          "size": 144,
+          "section": 2
+        },
+        {
+          "name": "fsg_common_create_lun",
+          "value": "0x550",
+          "size": 640,
+          "section": 2
+        },
+        {
+          "name": "fsg_lun_close",
+          "value": "0x4040",
+          "size": 52,
+          "section": 2
+        },
+        {
+          "name": "fsg_show_inquiry_string",
+          "value": "0x45a8",
+          "size": 40,
+          "section": 2
+        },
+        {
+          "name": "fsg_common_remove_luns",
+          "value": "0x190",
+          "size": 64,
+          "section": 2
+        },
+        {
+          "name": "fsg_common_set_inquiry_string",
+          "value": "0xae8",
+          "size": 120,
+          "section": 2
+        }
+      ]
+    },
+    {
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/kmod/usbg_storage.ko",
+        "inode": 70908,
+        "mode": "0o100644",
+        "size": 104288,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage67-connected-native-pnp/official-files/nflasha15/kmod/usbg_storage.ko",
+      "bytes": 104288,
+      "sha256": "b43130dbc3d9b72dc03c3acb7993639e1cefcbb43621fef809f6f617cb30b255",
+      "ELF_type": "ET_REL",
+      "selected_symbols": [
+        {
+          "name": "storage_maincnt_setEp",
+          "value": "0x4978",
+          "size": 80,
+          "section": 2
+        },
+        {
+          "name": "storage_write_cdev",
+          "value": "0x8e10",
+          "size": 88,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_setMediaAccess",
+          "value": "0x69a0",
+          "size": 100,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_reqStop",
+          "value": "0x4598",
+          "size": 52,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_startDrvCnt",
+          "value": "0x6798",
+          "size": 40,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_reqStopThread",
+          "value": "0x57c0",
+          "size": 40,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_epClearHalt",
+          "value": "0x4710",
+          "size": 64,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_freeThread",
+          "value": "0x6a80",
+          "size": 60,
+          "section": 2
+        },
+        {
+          "name": "storage_dequeue_ep",
+          "value": "0x25c0",
+          "size": 32,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_waitMediaAccess",
+          "value": "0x68e0",
+          "size": 180,
+          "section": 2
+        },
+        {
+          "name": "storage_storageIn",
+          "value": "0x2478",
+          "size": 156,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_getThread",
+          "value": "0x4930",
+          "size": 12,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_extcmdClose",
+          "value": "0x6720",
+          "size": 68,
+          "section": 2
+        },
+        {
+          "name": "storage_read",
+          "value": "0x8788",
+          "size": 20,
+          "section": 2
+        },
+        {
+          "name": "storage_write",
+          "value": "0x8df8",
+          "size": 20,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_allocThread",
+          "value": "0x47a8",
+          "size": 308,
+          "section": 2
+        },
+        {
+          "name": "storage_cmd_cmdContinue",
+          "value": "0x6ca0",
+          "size": 188,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_freeThread",
+          "value": "0x4760",
+          "size": 60,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_clearInitInfo",
+          "value": "0x4500",
+          "size": 80,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_allocThread",
+          "value": "0x6ac8",
+          "size": 360,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_reqSetMediaStatus",
+          "value": "0x67e8",
+          "size": 120,
+          "section": 2
+        },
+        {
+          "name": "storage_read_cmn",
+          "value": "0x87f8",
+          "size": 68,
+          "section": 2
+        },
+        {
+          "name": "inquiry_std",
+          "value": "0x6d60",
+          "size": 632,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_reqStart",
+          "value": "0x4558",
+          "size": 56,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_clearInitInfo",
+          "value": "0x6518",
+          "size": 368,
+          "section": 2
+        },
+        {
+          "name": "sony_storage_dev",
+          "value": "0xf0",
+          "size": 848,
+          "section": 14
+        },
+        {
+          "name": "storage_reqRemoveMassStorage",
+          "value": "0x42e8",
+          "size": 36,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_setInitInfo",
+          "value": "0x4310",
+          "size": 444,
+          "section": 2
+        },
+        {
+          "name": "storage_read_cdev",
+          "value": "0x87a0",
+          "size": 88,
+          "section": 2
+        },
+        {
+          "name": "storage_probeMassStorage",
+          "value": "0x42c0",
+          "size": 36,
+          "section": 2
+        },
+        {
+          "name": "storage_storageOut",
+          "value": "0x2520",
+          "size": 116,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_getReceiveBufP",
+          "value": "0x6690",
+          "size": 24,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_getEp",
+          "value": "0x4948",
+          "size": 40,
+          "section": 2
+        },
+        {
+          "name": "storage_ata_idleImmediate",
+          "value": "0x9440",
+          "size": 20,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_extcmdOpen",
+          "value": "0x66b0",
+          "size": 96,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_setInitInfo",
+          "value": "0x57e8",
+          "size": 3264,
+          "section": 2
+        },
+        {
+          "name": "storage_ata_flushCache",
+          "value": "0x9500",
+          "size": 20,
+          "section": 2
+        },
+        {
+          "name": "storage_detect_ExtCommand",
+          "value": "0x2420",
+          "size": 80,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_clearEp",
+          "value": "0x49d0",
+          "size": 64,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_reqSetMediaStatus",
+          "value": "0x45d8",
+          "size": 124,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_compMassStorageReset",
+          "value": "0x4658",
+          "size": 132,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_sndCmdContinue",
+          "value": "0x6a58",
+          "size": 40,
+          "section": 2
+        },
+        {
+          "name": "storage_maincnt_compResetRecovery",
+          "value": "0x46e8",
+          "size": 36,
+          "section": 2
+        },
+        {
+          "name": "storage_exec_remove",
+          "value": "0x2358",
+          "size": 100,
+          "section": 2
+        },
+        {
+          "name": "storage_set_waitResetRecovery",
+          "value": "0x25a0",
+          "size": 24,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_stopDrvCnt",
+          "value": "0x67c0",
+          "size": 40,
+          "section": 2
+        },
+        {
+          "name": "storage_execFunc",
+          "value": "0x22f0",
+          "size": 104,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_checkMediaAccess",
+          "value": "0x6860",
+          "size": 116,
+          "section": 2
+        },
+        {
+          "name": "storage_write_cmn",
+          "value": "0x8e68",
+          "size": 68,
+          "section": 2
+        },
+        {
+          "name": "storage_cmd_cmdPacket",
+          "value": "0x9f90",
+          "size": 148,
+          "section": 2
+        },
+        {
+          "name": "storage_comp_setMediaStatus",
+          "value": "0x23c8",
+          "size": 80,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_extcmdCancel",
+          "value": "0x6770",
+          "size": 32,
+          "section": 2
+        },
+        {
+          "name": "storage_drvcnt_sndCmdPacket",
+          "value": "0x6a10",
+          "size": 68,
+          "section": 2
+        },
+        {
+          "name": "checkExtCommand",
+          "value": "0xa048",
+          "size": 152,
+          "section": 2
+        },
+        {
+          "name": "storage_ata_standbyImmediate",
+          "value": "0x9360",
+          "size": 20,
+          "section": 2
+        }
+      ]
+    },
+    {
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/lib/libInfraUsbCmn.so",
+        "inode": 95222,
+        "mode": "0o100555",
+        "size": 159504,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage67-connected-native-pnp/official-files/nflasha15/lib/libInfraUsbCmn.so",
+      "bytes": 159504,
+      "sha256": "6caefd0677ee01cc6cdd54555f4422b03a86d12304c60f5372de18315bdd4396",
+      "ELF_type": "ET_DYN",
+      "selected_symbols": [
+        {
+          "name": "storage_speed_desc_ss",
+          "value": "0x32ad0",
+          "size": 24,
+          "section": 19
+        },
+        {
+          "name": "storage_langid_tbl",
+          "value": "0x32a90",
+          "size": 16,
+          "section": 19
+        },
+        {
+          "name": "_ZN15CUsbHostStorageD2Ev",
+          "value": "0x1b8ec",
+          "size": 64,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage13mes_sendEventEP8CUSB_MES",
+          "value": "0x19abc",
+          "size": 408,
+          "section": 10
+        },
+        {
+          "name": "_ZN15CUsbHostStorage17mes_on_start_funcEP8CUSB_MES",
+          "value": "0x1beb8",
+          "size": 92,
+          "section": 10
+        },
+        {
+          "name": "INQUIRY_DATA_SD",
+          "value": "0x35d30",
+          "size": 48,
+          "section": 23
+        },
+        {
+          "name": "storage_id_product",
+          "value": "0x1ca28",
+          "size": 2,
+          "section": 12
+        },
+        {
+          "name": "INQUIRY_DATA_SSD",
+          "value": "0x35d80",
+          "size": 8,
+          "section": 23
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage22proc_extcommand_keventEmhhPv",
+          "value": "0x19a60",
+          "size": 92,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage19mes_sendExtCmdEventEP8CUSB_MES",
+          "value": "0x19c54",
+          "size": 104,
+          "section": 10
+        },
+        {
+          "name": "storage_report_desc",
+          "value": "0x1ca30",
+          "size": 16,
+          "section": 12
+        },
+        {
+          "name": "_ZN15CUsbHostStorage9on_createEP7CUsbSvcP17CUSB_HOST_REGINFOP17CUSB_HOST_CREINFO",
+          "value": "0x1bafc",
+          "size": 100,
+          "section": 10
+        },
+        {
+          "name": "_ZN15CUsbHostStorage12on_stop_funcEP7CUsbSvc",
+          "value": "0x1b9d8",
+          "size": 52,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage21sendmsg_indicator_ledEb",
+          "value": "0x19e3c",
+          "size": 212,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorageD0Ev",
+          "value": "0x1996c",
+          "size": 40,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage15set_mediaStatusEP25GSTORAGE__InfoMediaStatus",
+          "value": "0x1a0bc",
+          "size": 20,
+          "section": 10
+        },
+        {
+          "name": "_ZN15CUsbHostStorage22proc_msc_host_timer_cbEP13usb_timer_obj",
+          "value": "0x1b8b4",
+          "size": 56,
+          "section": 10
+        },
+        {
+          "name": "_ZTI15CUsbHostStorage",
+          "value": "0x33700",
+          "size": 40,
+          "section": 19
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage9on_deleteEv",
+          "value": "0x19f10",
+          "size": 164,
+          "section": 10
+        },
+        {
+          "name": "_ZN15CUsbHostStorage19GetNodeTimeOutValueEv",
+          "value": "0x1be78",
+          "size": 64,
+          "section": 10
+        },
+        {
+          "name": "INQUIRY_DATA_NVME",
+          "value": "0x35d78",
+          "size": 8,
+          "section": 23
+        },
+        {
+          "name": "hstorage_vbus_adjust_regInfo",
+          "value": "0x35be0",
+          "size": 40,
+          "section": 23
+        },
+        {
+          "name": "_ZN15CUsbHostStorage13on_start_funcEP7CUsbSvc",
+          "value": "0x1b9a4",
+          "size": 52,
+          "section": 10
+        },
+        {
+          "name": "_ZN15CUsbHostStorageC1Ev",
+          "value": "0x1bb60",
+          "size": 120,
+          "section": 10
+        },
+        {
+          "name": "_ZTS15CUsbHostStorage",
+          "value": "0x1d658",
+          "size": 18,
+          "section": 12
+        },
+        {
+          "name": "STORAGE_SSP_CAP_SSAC",
+          "value": "0x1c941",
+          "size": 1,
+          "section": 12
+        },
+        {
+          "name": "storage_num_langids",
+          "value": "0x1ca2d",
+          "size": 1,
+          "section": 12
+        },
+        {
+          "name": "_ZN15CUsbHostStorage9on_deleteEv",
+          "value": "0x1b954",
+          "size": 80,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorageD1Ev",
+          "value": "0x1991c",
+          "size": 80,
+          "section": 10
+        },
+        {
+          "name": "storage_product_str",
+          "value": "0x1ca2e",
+          "size": 1,
+          "section": 12
+        },
+        {
+          "name": "storage_serial_number_str",
+          "value": "0x1ca40",
+          "size": 1,
+          "section": 12
+        },
+        {
+          "name": "storage_dual_interface_desc",
+          "value": "0x32a30",
+          "size": 48,
+          "section": 19
+        },
+        {
+          "name": "_ZTI17CUsbGadgetStorage",
+          "value": "0x335e0",
+          "size": 40,
+          "section": 19
+        },
+        {
+          "name": "INQUIRY_DATA_MS",
+          "value": "0x35cf0",
+          "size": 61,
+          "section": 23
+        },
+        {
+          "name": "_ZN15CUsbHostStorageC2Ev",
+          "value": "0x1bb60",
+          "size": 120,
+          "section": 10
+        },
+        {
+          "name": "INQUIRY_DATA_NAND",
+          "value": "0x35d70",
+          "size": 8,
+          "section": 23
+        },
+        {
+          "name": "storage_bcd_device",
+          "value": "0x1ca24",
+          "size": 2,
+          "section": 12
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorageD2Ev",
+          "value": "0x1991c",
+          "size": 80,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage17check_mediaAccessEv",
+          "value": "0x1a0d0",
+          "size": 48,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage11proc_keventEmhhPv",
+          "value": "0x19918",
+          "size": 4,
+          "section": 10
+        },
+        {
+          "name": "_ZN15CUsbHostStorage21JudgeNodeRegistNotifyEPNS_13scsi_node_tblE",
+          "value": "0x1bbd8",
+          "size": 92,
+          "section": 10
+        },
+        {
+          "name": "storage_interface_desc",
+          "value": "0x32a60",
+          "size": 48,
+          "section": 19
+        },
+        {
+          "name": "_ZN15CUsbHostStorage13mes_sendEventEP8CUSB_MES",
+          "value": "0x1bc34",
+          "size": 580,
+          "section": 10
+        },
+        {
+          "name": "_ZN15CUsbHostStorage16mes_on_stop_funcEP8CUSB_MES",
+          "value": "0x1ba0c",
+          "size": 68,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage19proc_storage_keventEmhhPv",
+          "value": "0x19994",
+          "size": 204,
+          "section": 10
+        },
+        {
+          "name": "storage_speed_desc_hs",
+          "value": "0x32aa0",
+          "size": 24,
+          "section": 19
+        },
+        {
+          "name": "storage_speed_desc_lsfs",
+          "value": "0x32ab8",
+          "size": 24,
+          "section": 19
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage9on_createEP7CUsbSvcP19CUSB_GADGET_REGINFOP19CUSB_GADGET_CREINFO",
+          "value": "0x19cbc",
+          "size": 244,
+          "section": 10
+        },
+        {
+          "name": "INQUIRY_DATA_HDD",
+          "value": "0x35d68",
+          "size": 8,
+          "section": 23
+        },
+        {
+          "name": "_ZTV15CUsbHostStorage",
+          "value": "0x33728",
+          "size": 72,
+          "section": 19
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorageC1Ev",
+          "value": "0x19db0",
+          "size": 140,
+          "section": 10
+        },
+        {
+          "name": "storage_manufacturer_str",
+          "value": "0x1ca2c",
+          "size": 1,
+          "section": 12
+        },
+        {
+          "name": "_ZN15CUsbHostStorage24proc_host_storage_keventEmhhPv",
+          "value": "0x1ba50",
+          "size": 172,
+          "section": 10
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage12set_InitInfoEP18GSTORAGE__InfoInit",
+          "value": "0x1a014",
+          "size": 168,
+          "section": 10
+        },
+        {
+          "name": "storage_id_vender",
+          "value": "0x1ca2a",
+          "size": 2,
+          "section": 12
+        },
+        {
+          "name": "INQUIRY_DATA_DEFAULT",
+          "value": "0x35cc0",
+          "size": 41,
+          "section": 23
+        },
+        {
+          "name": "_ZTV17CUsbGadgetStorage",
+          "value": "0x33608",
+          "size": 56,
+          "section": 19
+        },
+        {
+          "name": "_ZN15CUsbHostStorageD0Ev",
+          "value": "0x1b92c",
+          "size": 40,
+          "section": 10
+        },
+        {
+          "name": "storage_bos_desc",
+          "value": "0x32a08",
+          "size": 40,
+          "section": 19
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorageC2Ev",
+          "value": "0x19db0",
+          "size": 140,
+          "section": 10
+        },
+        {
+          "name": "storage_default_attributes",
+          "value": "0x1ca26",
+          "size": 1,
+          "section": 12
+        },
+        {
+          "name": "_ZN17CUsbGadgetStorage25accesslamp_control_threadEPv",
+          "value": "0x19fb4",
+          "size": 96,
+          "section": 10
+        },
+        {
+          "name": "usbgmscif_getInquiryProductInfo",
+          "value": "0x1a99c",
+          "size": 104,
+          "section": 10
+        },
+        {
+          "name": "_ZN15CUsbHostStorageD1Ev",
+          "value": "0x1b8ec",
+          "size": 64,
+          "section": 10
+        },
+        {
+          "name": "INQUIRY_DATA_BUILT_IN_MS",
+          "value": "0x35d60",
+          "size": 8,
+          "section": 23
+        },
+        {
+          "name": "_ZTS17CUsbGadgetStorage",
+          "value": "0x1d4c0",
+          "size": 20,
+          "section": 12
+        }
+      ]
+    },
+    {
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/lib/libUsbControl.so",
+        "inode": 95134,
+        "mode": "0o100555",
+        "size": 135424,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage67-connected-native-pnp/official-files/nflasha15/lib/libUsbControl.so",
+      "bytes": 135424,
+      "sha256": "2bf51f28fd5066e56afc8bbb02ddbaa96b36f57ff2a823cecf9f901781754ed9",
+      "ELF_type": "ET_DYN",
+      "selected_symbols": []
+    },
+    {
+      "image_sha256": "df0a2cf2ebb0d884605d041a6dcb701092bd36848956855b8d3d7a7164a3a1c5",
+      "entry": {
+        "path": "/lib/libusbcmd.so",
+        "inode": 95528,
+        "mode": "0o100555",
+        "size": 27208,
+        "flags": "0x0",
+        "type": 32768
+      },
+      "output": "work/sony-firmware-20261024/stage67-connected-native-pnp/official-files/nflasha15/lib/libusbcmd.so",
+      "bytes": 27208,
+      "sha256": "17763f7d9bba369fc7ef6f5935ff1b15c5e8da9e180f291d920f284618a2d787",
+      "ELF_type": "ET_DYN",
+      "selected_symbols": []
+    }
+  ],
+  "camera_or_module_execution_mount_or_modified_firmware": false,
+  "packaged_component_is_not_proof_of_current_runtime_loaded_driver": true
+}

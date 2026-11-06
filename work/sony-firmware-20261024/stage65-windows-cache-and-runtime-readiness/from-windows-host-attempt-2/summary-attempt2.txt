@@ -1,0 +1,29 @@
+task_state=STOPPED_WITH_ERROR
+directory_status=PASS; local fixed C: Windows system volume; target and ancestors ordinary directories without reparse/network/camera-storage redirection
+manifest_hash_status=PASS
+all_three_payload_hashes_status=PASS
+source_review=REUSED_COMPLETED_REVIEW; sealed sources not changed
+compile_status=PASS
+compile_exit_code=0
+compile_marker=COMPILE_ONLY_X64_ABI_OK
+dry_run_status=FAIL
+dry_run_exit_code=1
+dry_run_script_body_started=false
+cached_associations_status=NOT_RUN
+cached_associations_command_dispatched=false
+collect_attempt_count=0
+candidate_count=UNKNOWN
+binding_status=UNKNOWN
+driver_status=UNKNOWN; previous Microsoft signed USBSTOR 10.0.26100.9444 cache not revalidated
+sha256-manifest.json SHA256=443dc5851f9fe097f0ab3a0f4c64c7fb2536651318081965ef3b557360f83c1e
+Review-Fx3Msc.ps1 SHA256=7e9df2455522aede99c7dc32d987ae1421d1ea2739701089e474f3b2680e19c0
+Fx3CachedAssociations.cs SHA256=f14e6907e0e1077b3d92b38764c9aa66014563a781b4b732d8339bd4bcf0be2d
+TASK.txt SHA256=614f58d197821c3a2c71f4ef2f623d5f0d94598d091ff700315006c92a5cb773
+private_json_sha256=NOT_CREATED
+result_path=NOT_CREATED
+error=Review-Fx3Msc.ps1 cannot be loaded because running scripts is disabled on this system; SecurityError; FullyQualifiedErrorId=UnauthorizedAccess
+error_log_path=C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-cache-associations-20261026T144834Z/dryrun-attempt2.log.txt
+summary_path=C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-cache-associations-20261026T144834Z/summary-attempt2.txt
+camera_device_handles=0; camera_commands=0; hardware_validation=NOT_PERFORMED
+automatic_retries=0; elevation=false; execution_policy_changed=false; installs=false
+first_attempt_receipts_preserved=true; original four input files preserved=true

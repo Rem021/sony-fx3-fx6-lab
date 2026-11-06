@@ -1,0 +1,20 @@
+{
+  "checked_date": "2026-10-29",
+  "checks": [
+    {
+      "url": "https://support.sony.jp/electronics/support/camcorders-and-video-cameras-interchangeable-lens-camcorders/ilme-fx5/downloads",
+      "source": "Sony Japan official ILME-FX5 downloads page",
+      "method": "web open, page content retrieved; reported crawl date today",
+      "finding": "The retrieved downloads section says the page currently offers no update information.",
+      "new_full_private_FX5_package_obtained": false,
+      "all_regions_or_entire_internet_absence_proved": false
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/eed29146304bb08576711a5e702a42c27df2cd0d/scripts/parse_emmc_boot0.py",
+      "method": "Pinned raw source successfully obtained by read_public_layout.py; additional browser-tool open of commit URL returned a cache miss.",
+      "successful_pinned_source_receipt": "public-layout-reference.json",
+      "source_executed": false,
+      "scope": "Another-model metadata reference only, not evidence of a readable FX3 boot0 or payload compatibility."
+    }
+  ]
+}

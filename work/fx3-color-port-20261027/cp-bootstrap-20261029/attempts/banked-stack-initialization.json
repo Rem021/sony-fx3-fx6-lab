@@ -1,0 +1,28 @@
+{
+  "result": {
+    "entry": "0x108398",
+    "args": [],
+    "declared_optional_flag": null,
+    "boundary": {
+      "reason": "unmapped_memory_boundary",
+      "PC": "0x108398",
+      "address": "0xffffffdc",
+      "bytes": 4
+    },
+    "original_instructions": 1,
+    "original_RAM_writes": 0,
+    "flag_reads": 0,
+    "first_trace": [
+      "0x108398"
+    ],
+    "registers": [
+      "0x0",
+      "0x0",
+      "0x0",
+      "0x0"
+    ]
+  },
+  "expected_boundary": "0x10897c",
+  "expected_boundary_reached": false,
+  "scope": "Failed self-written guest setup, not a Sony firmware/hardware result."
+}

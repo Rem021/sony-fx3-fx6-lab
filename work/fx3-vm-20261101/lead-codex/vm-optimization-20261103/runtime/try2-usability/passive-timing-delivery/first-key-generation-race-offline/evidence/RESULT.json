@@ -1,0 +1,299 @@
+{
+  "scope": "offline real Chrome plus TrialState/PAGE; no QEMU",
+  "cases": {
+    "same-content-sequence-accepted": {
+      "page": {
+        "awaitingStep": null,
+        "deliveryUnknown": false,
+        "detail": "",
+        "diagnosticsHidden": true,
+        "displayed": 2,
+        "displayedGeneration": 1,
+        "frameLoaded": true,
+        "menuDisabled": true,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusGeneration": 1,
+        "statusReady": false,
+        "statusSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusSequence": 2,
+        "summary": ""
+      },
+      "server": {
+        "requests": {
+          "key": 1,
+          "confirm": 0
+        },
+        "enqueued": 1,
+        "mode": "normal",
+        "seq": 2,
+        "steps": 1,
+        "review_required": true,
+        "content_generation": 1
+      },
+      "screenshot": "same-content-sequence-accepted.png",
+      "screenshot_sha256": "fd8c4711b2a1869950846057d01ea5087456091ae03dde26ca8d04dcac3912b3"
+    },
+    "A-to-B-409-new-ready": {
+      "page": {
+        "awaitingStep": null,
+        "deliveryUnknown": false,
+        "detail": "当前画面已变化或不可用，请等待并查看最新画面。",
+        "diagnosticsHidden": false,
+        "displayed": 2,
+        "displayedGeneration": 2,
+        "frameLoaded": true,
+        "menuDisabled": false,
+        "shownSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusGeneration": 2,
+        "statusReady": true,
+        "statusSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusSequence": 2,
+        "summary": "本次按键未被接收。请看最新画面，再由您决定是否重新按键；网页不会自动重发。"
+      },
+      "server": {
+        "requests": {
+          "key": 1,
+          "confirm": 0
+        },
+        "enqueued": 0,
+        "mode": "normal",
+        "seq": 2,
+        "steps": 0,
+        "review_required": false,
+        "content_generation": 2
+      },
+      "screenshot": "A-to-B-409-new-ready.png",
+      "screenshot_sha256": "5bc12e0d22ff553e545573c5bf401a881699e245bf968a514d26cc596ed8b24e"
+    },
+    "A-to-B-manual-second-click": {
+      "page": {
+        "awaitingStep": null,
+        "deliveryUnknown": false,
+        "detail": "",
+        "diagnosticsHidden": true,
+        "displayed": 2,
+        "displayedGeneration": 2,
+        "frameLoaded": true,
+        "menuDisabled": true,
+        "shownSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusGeneration": 2,
+        "statusReady": false,
+        "statusSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusSequence": 2,
+        "summary": ""
+      },
+      "server": {
+        "requests": {
+          "key": 2,
+          "confirm": 0
+        },
+        "enqueued": 1,
+        "mode": "normal",
+        "seq": 2,
+        "steps": 1,
+        "review_required": true,
+        "content_generation": 2
+      },
+      "screenshot": "A-to-B-manual-second-click.png",
+      "screenshot_sha256": "9105b88619268597397debed93abc5cf6a5a28936540a521c23066c1331d8f6f"
+    },
+    "A-B-A-generation-409": {
+      "page": {
+        "awaitingStep": null,
+        "deliveryUnknown": false,
+        "detail": "当前画面已变化或不可用，请等待并查看最新画面。",
+        "diagnosticsHidden": false,
+        "displayed": 3,
+        "displayedGeneration": 3,
+        "frameLoaded": true,
+        "menuDisabled": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusGeneration": 3,
+        "statusReady": true,
+        "statusSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusSequence": 3,
+        "summary": "本次按键未被接收。请看最新画面，再由您决定是否重新按键；网页不会自动重发。"
+      },
+      "server": {
+        "requests": {
+          "key": 1,
+          "confirm": 0
+        },
+        "enqueued": 0,
+        "mode": "normal",
+        "seq": 3,
+        "steps": 0,
+        "review_required": false,
+        "content_generation": 3
+      },
+      "screenshot": "A-B-A-generation-409.png",
+      "screenshot_sha256": "069f33eafd75a4c96c9b3b7a36fe4dbb8f4b97b045b6f770275e3808b8ba9b19"
+    },
+    "baseline-loading-old-button-enabled": {
+      "page": {
+        "awaitingStep": null,
+        "deliveryUnknown": false,
+        "detail": "",
+        "diagnosticsHidden": true,
+        "displayed": 1,
+        "displayedGeneration": 1,
+        "frameLoaded": true,
+        "menuDisabled": false,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusGeneration": 2,
+        "statusReady": true,
+        "statusSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusSequence": 2,
+        "summary": ""
+      },
+      "server": {
+        "requests": {
+          "key": 0,
+          "confirm": 0
+        },
+        "enqueued": 0,
+        "mode": "normal",
+        "seq": 2,
+        "steps": 0,
+        "review_required": false,
+        "content_generation": 2
+      },
+      "screenshot": "baseline-loading-old-button-enabled.png",
+      "screenshot_sha256": "12049e514f6fa50dac1f0469ad8dd17729b961abe34e8f0b1a8f021df2eb466f"
+    },
+    "baseline-loading-click-409": {
+      "page": {
+        "awaitingStep": null,
+        "deliveryUnknown": false,
+        "detail": "当前画面已变化或不可用，请等待并查看最新画面。",
+        "diagnosticsHidden": false,
+        "displayed": 1,
+        "displayedGeneration": 1,
+        "frameLoaded": true,
+        "menuDisabled": true,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusGeneration": 2,
+        "statusReady": true,
+        "statusSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusSequence": 2,
+        "summary": "本次按键未被接收。请看最新画面，再由您决定是否重新按键；网页不会自动重发。"
+      },
+      "server": {
+        "requests": {
+          "key": 1,
+          "confirm": 0
+        },
+        "enqueued": 0,
+        "mode": "normal",
+        "seq": 2,
+        "steps": 0,
+        "review_required": false,
+        "content_generation": 2
+      },
+      "screenshot": "baseline-loading-click-409.png",
+      "screenshot_sha256": "4b903c2d3dcc2cb6d4a74fe04fff97fab603f5b786aec23325fd23847995bccd"
+    },
+    "candidate-loading-button-locked": {
+      "page": {
+        "awaitingStep": null,
+        "deliveryUnknown": false,
+        "detail": "",
+        "diagnosticsHidden": true,
+        "displayed": 1,
+        "displayedGeneration": 1,
+        "frameLoaded": true,
+        "menuDisabled": true,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusGeneration": 2,
+        "statusReady": true,
+        "statusSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusSequence": 2,
+        "summary": ""
+      },
+      "server": {
+        "requests": {
+          "key": 0,
+          "confirm": 0
+        },
+        "enqueued": 0,
+        "mode": "normal",
+        "seq": 2,
+        "steps": 0,
+        "review_required": false,
+        "content_generation": 2
+      },
+      "screenshot": "candidate-loading-button-locked.png",
+      "screenshot_sha256": "97efdf3e80f57e1d08a838749f8c1e46a89e4a24ce383ab47f4235c8a2aa8cec"
+    },
+    "candidate-loaded-new-frame-ready": {
+      "page": {
+        "awaitingStep": null,
+        "deliveryUnknown": false,
+        "detail": "",
+        "diagnosticsHidden": true,
+        "displayed": 2,
+        "displayedGeneration": 2,
+        "frameLoaded": true,
+        "menuDisabled": false,
+        "shownSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusGeneration": 2,
+        "statusReady": true,
+        "statusSHA": "ad0a17a6b5b0a2584a35a472b16a9fa974f2e4ca7d28699555774d46ff619ba1",
+        "statusSequence": 2,
+        "summary": ""
+      },
+      "server": {
+        "requests": {
+          "key": 0,
+          "confirm": 0
+        },
+        "enqueued": 0,
+        "mode": "normal",
+        "seq": 2,
+        "steps": 0,
+        "review_required": false,
+        "content_generation": 2
+      },
+      "screenshot": "candidate-loaded-new-frame-ready.png",
+      "screenshot_sha256": "9741b6a3e62d4e58047e278f3232afa70fea809c0722d5aeaaf51d479d045d4e"
+    },
+    "candidate-500-unknown-locked": {
+      "page": {
+        "awaitingStep": 1,
+        "deliveryUnknown": true,
+        "detail": "离线模拟服务错误。",
+        "diagnosticsHidden": false,
+        "displayed": 1,
+        "displayedGeneration": 1,
+        "frameLoaded": true,
+        "menuDisabled": true,
+        "shownSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusGeneration": 1,
+        "statusReady": true,
+        "statusSHA": "9b1c20b89945e36e9df878d009bd9bd0c0691c91349d76cbac8697793c02bff9",
+        "statusSequence": 1,
+        "summary": "按键是否送达尚未确认，已暂停新按键；请结束本轮后重新启动。"
+      },
+      "server": {
+        "requests": {
+          "key": 1,
+          "confirm": 0
+        },
+        "enqueued": 0,
+        "mode": "normal",
+        "seq": 1,
+        "steps": 0,
+        "review_required": false,
+        "content_generation": 1
+      },
+      "screenshot": "candidate-500-unknown-locked.png",
+      "screenshot_sha256": "6bb722040f43234426518573f6dbb86b7b2fdfaf26320c5382b0726dc3c4c7da"
+    }
+  },
+  "passed": true,
+  "browser_closed": true,
+  "fixture_pids_exited": [
+    true,
+    true
+  ]
+}

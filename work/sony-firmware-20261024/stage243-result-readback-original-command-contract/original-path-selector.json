@@ -1,0 +1,519 @@
+{
+  "name": "adj_cmd_set_file_path",
+  "VA": 35252,
+  "bytes": 292,
+  "sha256": "2b209c80fa3f1f20ca09ba5a019bf26a5dd050b5ed7e82d2c29c7b313e051921",
+  "instructions": [
+    {
+      "pc": 35252,
+      "word": "fd7bbca9",
+      "asm": "stp x29, x30, [sp, #-0x40]!",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35256,
+      "word": "fd030091",
+      "asm": "mov x29, sp",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35260,
+      "word": "f35301a9",
+      "asm": "stp x19, x20, [sp, #0x10]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35264,
+      "word": "f40300aa",
+      "asm": "mov x20, x0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35268,
+      "word": "f55b02a9",
+      "asm": "stp x21, x22, [sp, #0x20]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35272,
+      "word": "f76303a9",
+      "asm": "stp x23, x24, [sp, #0x30]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35276,
+      "word": "162040b9",
+      "asm": "ldr w22, [x0, #0x20]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35280,
+      "word": "c00a0051",
+      "asm": "sub w0, w22, #2",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35284,
+      "word": "1ffc0771",
+      "asm": "cmp w0, #0x1ff",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35288,
+      "word": "09010054",
+      "asm": "b.ls #0x89f8",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35292,
+      "word": "41010090",
+      "asm": "adrp x1, #0x30000",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35296,
+      "word": "22408052",
+      "asm": "mov w2, #0x201",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35300,
+      "word": "21d82c91",
+      "asm": "add x1, x1, #0xb36",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35304,
+      "word": "c00f8012",
+      "asm": "mov w0, #-0x7f",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35308,
+      "word": "69f4ff97",
+      "asm": "bl #0x5b90",
+      "target": 23440,
+      "PLT": "_Z18jiritsu_cpp_logrechPKcj"
+    },
+    {
+      "pc": 35312,
+      "word": "20408052",
+      "asm": "mov w0, #0x201",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35316,
+      "word": "30000014",
+      "asm": "b #0x8ab4",
+      "target": 35508,
+      "PLT": null
+    },
+    {
+      "pc": 35320,
+      "word": "d8060051",
+      "asm": "sub w24, w22, #1",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35324,
+      "word": "f30301aa",
+      "asm": "mov x19, x1",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35328,
+      "word": "f50318aa",
+      "asm": "mov x21, x24",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35332,
+      "word": "e003182a",
+      "asm": "mov w0, w24",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35336,
+      "word": "b6f4ff97",
+      "asm": "bl #0x5ce0",
+      "target": 23776,
+      "PLT": "_ZN6DmmMgr13CheckUnitTypeEm"
+    },
+    {
+      "pc": 35340,
+      "word": "e103002a",
+      "asm": "mov w1, w0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35344,
+      "word": "e00313aa",
+      "asm": "mov x0, x19",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35348,
+      "word": "ebf5ff97",
+      "asm": "bl #0x61c0",
+      "target": 25024,
+      "PLT": "_ZN6DmmMgr9dmm_allocEj"
+    },
+    {
+      "pc": 35352,
+      "word": "c0040035",
+      "asm": "cbnz w0, #0x8ab0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35356,
+      "word": "80a24039",
+      "asm": "ldrb w0, [x20, #0x28]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35360,
+      "word": "80feff35",
+      "asm": "cbnz w0, #0x89f0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35364,
+      "word": "600240f9",
+      "asm": "ldr x0, [x19]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35368,
+      "word": "f30100d0",
+      "asm": "adrp x19, #0x46000",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35372,
+      "word": "170440f9",
+      "asm": "ldr x23, [x0, #8]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35376,
+      "word": "60e643f9",
+      "asm": "ldr x0, [x19, #0x7c8]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35380,
+      "word": "400000b4",
+      "asm": "cbz x0, #0x8a3c",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35384,
+      "word": "02f5ff97",
+      "asm": "bl #0x5e40",
+      "target": 24128,
+      "PLT": "free"
+    },
+    {
+      "pc": 35388,
+      "word": "e003162a",
+      "asm": "mov w0, w22",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35392,
+      "word": "210080d2",
+      "asm": "mov x1, #1",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35396,
+      "word": "57f4ff97",
+      "asm": "bl #0x5ba0",
+      "target": 23456,
+      "PLT": "calloc"
+    },
+    {
+      "pc": 35400,
+      "word": "60e603f9",
+      "asm": "str x0, [x19, #0x7c8]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35404,
+      "word": "e1060091",
+      "asm": "add x1, x23, #1",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35408,
+      "word": "e20318aa",
+      "asm": "mov x2, x24",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35412,
+      "word": "1bf4ff97",
+      "asm": "bl #0x5ac0",
+      "target": 23232,
+      "PLT": "memcpy"
+    },
+    {
+      "pc": 35416,
+      "word": "e30300aa",
+      "asm": "mov x3, x0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35420,
+      "word": "048084d2",
+      "asm": "mov x4, #0x2400",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35424,
+      "word": "010080d2",
+      "asm": "mov x1, #0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35428,
+      "word": "e5058052",
+      "asm": "mov w5, #0x2f",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35432,
+      "word": "0400c2f2",
+      "asm": "movk x4, #0x1000, lsl #32",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35436,
+      "word": "bf02016b",
+      "asm": "cmp w21, w1",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35440,
+      "word": "09030054",
+      "asm": "b.ls #0x8ad0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35444,
+      "word": "60686138",
+      "asm": "ldrb w0, [x3, x1]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35448,
+      "word": "1f700171",
+      "asm": "cmp w0, #0x5c",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35452,
+      "word": "41000054",
+      "asm": "b.ne #0x8a84",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35456,
+      "word": "65682138",
+      "asm": "strb w5, [x3, x1]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35460,
+      "word": "62686138",
+      "asm": "ldrb w2, [x3, x1]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35464,
+      "word": "21040091",
+      "asm": "add x1, x1, #1",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35468,
+      "word": "5fb00071",
+      "asm": "cmp w2, #0x2c",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35472,
+      "word": "8024c29a",
+      "asm": "lsr x0, x4, x2",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35476,
+      "word": "e00320aa",
+      "asm": "mvn x0, x0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35480,
+      "word": "00949f9a",
+      "asm": "csinc x0, x0, xzr, ls",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35484,
+      "word": "80fe0737",
+      "asm": "tbnz w0, #0, #0x8a6c",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35488,
+      "word": "e00303aa",
+      "asm": "mov x0, x3",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35492,
+      "word": "e7f4ff97",
+      "asm": "bl #0x5e40",
+      "target": 24128,
+      "PLT": "free"
+    },
+    {
+      "pc": 35496,
+      "word": "7fe603f9",
+      "asm": "str xzr, [x19, #0x7c8]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35500,
+      "word": "d1ffff17",
+      "asm": "b #0x89f0",
+      "target": 35312,
+      "PLT": null
+    },
+    {
+      "pc": 35504,
+      "word": "a0028052",
+      "asm": "mov w0, #0x15",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35508,
+      "word": "0000a272",
+      "asm": "movk w0, #0x1000, lsl #16",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35512,
+      "word": "f55b42a9",
+      "asm": "ldp x21, x22, [sp, #0x20]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35516,
+      "word": "f76343a9",
+      "asm": "ldp x23, x24, [sp, #0x30]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35520,
+      "word": "801e00b9",
+      "asm": "str w0, [x20, #0x1c]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35524,
+      "word": "f35341a9",
+      "asm": "ldp x19, x20, [sp, #0x10]",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35528,
+      "word": "fd7bc4a8",
+      "asm": "ldp x29, x30, [sp], #0x40",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35532,
+      "word": "c0035fd6",
+      "asm": "ret ",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35536,
+      "word": "00008052",
+      "asm": "mov w0, #0",
+      "target": null,
+      "PLT": null
+    },
+    {
+      "pc": 35540,
+      "word": "f9ffff17",
+      "asm": "b #0x8ab8",
+      "target": 35512,
+      "PLT": null
+    }
+  ]
+}

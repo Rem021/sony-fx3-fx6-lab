@@ -1,0 +1,137 @@
+{
+  "UI_points": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "boot_points": [
+    {
+      "id": 12,
+      "va": "0x2b63224",
+      "bytes": "fd7bbca9",
+      "instruction": "stp x29, x30, [sp, #-0x40]!"
+    },
+    {
+      "id": 13,
+      "va": "0x2b63900",
+      "bytes": "b61a0591",
+      "instruction": "add x22, x21, #0x146"
+    },
+    {
+      "id": 14,
+      "va": "0x2b66de4",
+      "bytes": "a06f00b9",
+      "instruction": "str w0, [x29, #0x6c]"
+    },
+    {
+      "id": 15,
+      "va": "0x2b66e04",
+      "bytes": "a06b00b9",
+      "instruction": "str w0, [x29, #0x68]"
+    },
+    {
+      "id": 16,
+      "va": "0x2b67674",
+      "bytes": "eceeff97",
+      "instruction": "bl #0x2b63224"
+    },
+    {
+      "id": 17,
+      "va": "0x2b67678",
+      "bytes": "a06700b9",
+      "instruction": "str w0, [x29, #0x64]"
+    },
+    {
+      "id": 18,
+      "va": "0x2b60208",
+      "bytes": "ff0308d1",
+      "instruction": "sub sp, sp, #0x200"
+    },
+    {
+      "id": 19,
+      "va": "0x2dd0cb4",
+      "bytes": "e10314aa",
+      "instruction": "mov x1, x20"
+    },
+    {
+      "id": 20,
+      "va": "0x2dec7e4",
+      "bytes": "31eaff97",
+      "instruction": "bl #0x2de70a8"
+    },
+    {
+      "id": 21,
+      "va": "0x2b634dc",
+      "bytes": "fd7bbca9",
+      "instruction": "stp x29, x30, [sp, #-0x40]!"
+    },
+    {
+      "id": 22,
+      "va": "0x2b6353c",
+      "bytes": "fd7bb7a9",
+      "instruction": "stp x29, x30, [sp, #-0x90]!"
+    },
+    {
+      "id": 23,
+      "va": "0x2b63628",
+      "bytes": "1f00196b",
+      "instruction": "cmp w0, w25"
+    },
+    {
+      "id": 24,
+      "va": "0x2b63678",
+      "bytes": "76f8ff35",
+      "instruction": "cbnz w22, #0x2b63584"
+    },
+    {
+      "id": 25,
+      "va": "0x2b63624",
+      "bytes": "c0035fd6",
+      "instruction": "ret "
+    },
+    {
+      "id": 26,
+      "va": "0x2b61efc",
+      "bytes": "ff431ad1",
+      "instruction": "sub sp, sp, #0x690"
+    },
+    {
+      "id": 27,
+      "va": "0x2b62438",
+      "bytes": "c0035fd6",
+      "instruction": "ret "
+    },
+    {
+      "id": 28,
+      "va": "0x2b61a90",
+      "bytes": "ffc301d1",
+      "instruction": "sub sp, sp, #0x70"
+    },
+    {
+      "id": 29,
+      "va": "0x2b5fae4",
+      "bytes": "fd7bbca9",
+      "instruction": "stp x29, x30, [sp, #-0x40]!"
+    },
+    {
+      "id": 30,
+      "va": "0x2b63538",
+      "bytes": "c0035fd6",
+      "instruction": "ret "
+    }
+  ],
+  "selftest_id": 47,
+  "counter_count": 48,
+  "record_capacity": 64,
+  "physical": "0x41dc00000",
+  "bytes": 65536
+}

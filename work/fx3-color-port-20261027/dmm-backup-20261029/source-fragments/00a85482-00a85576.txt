@@ -1,0 +1,83 @@
+00a85482 push         {r4, r6, r7, lr}
+00a85484 add          r7, sp, #8
+00a85486 mov          r4, r0
+00a85488 cmp          r1, #1
+00a8548a beq          #0xa854dc
+00a8548c cbnz         r1, #0xa854d6
+00a8548e mov          r2, r4
+00a85490 ldrb         r1, [r4, #0x1d]
+00a85492 ldrb         r0, [r4, #0x19]
+00a85494 ldrb         r3, [r2, #0x1c]!
+00a85498 orr.w        r1, r3, r1, lsl #8
+00a8549c ldrb         r3, [r2, #2]
+00a8549e ldrb         r2, [r2, #3]
+00a854a0 orr.w        r2, r3, r2, lsl #8
+00a854a4 orr.w        r1, r1, r2, lsl #16
+00a854a8 mov          r2, r4
+00a854aa ldrb         r3, [r2, #0x18]!
+00a854ae orr.w        r0, r3, r0, lsl #8
+00a854b2 ldrb         r3, [r2, #2]
+00a854b4 ldrb         r2, [r2, #3]
+00a854b6 orr.w        r2, r3, r2, lsl #8
+00a854ba orr.w        r0, r0, r2, lsl #16
+00a854be add          r0, r1
+00a854c0 movw         r1, #0xfff
+00a854c4 addw         r0, r0, #0xfff
+00a854c8 bics         r0, r1
+00a854ca add          r4, r0
+00a854cc mov          r0, r4
+00a854ce bl           #0x498550
+00a854d2 cmp          r0, #4
+00a854d4 bhs          #0xa854dc
+00a854d6 mov.w        r0, #-1
+00a854da pop          {r4, r6, r7, pc}
+00a854dc ldrb         ip, [r4, #0x18]!
+00a854e0 ldrb         lr, [r4, #4]!
+00a854e4 ldrb         r2, [r4, #3]
+00a854e6 ldrb         r3, [r4, #2]
+00a854e8 ldrb         r0, [r4, #-0x2]
+00a854ec ldrb         r1, [r4, #-0x1]
+00a854f0 orr.w        r2, r3, r2, lsl #8
+00a854f4 ldrb         r3, [r4, #-0x3]
+00a854f8 ldrb         r4, [r4, #1]
+00a854fa orr.w        r0, r0, r1, lsl #8
+00a854fe orr.w        r4, lr, r4, lsl #8
+00a85502 orr.w        r3, ip, r3, lsl #8
+00a85506 orr.w        r2, r4, r2, lsl #16
+00a8550a orr.w        r0, r3, r0, lsl #16
+00a8550e add          r0, r2
+00a85510 pop          {r4, r6, r7, pc}
+00a85512 push         {r4, r5, r7, lr}
+00a85514 add          r7, sp, #8
+00a85516 mov          r1, r0
+00a85518 ldrb         ip, [r1, #0x18]!
+00a8551c ldrb         lr, [r1, #4]!
+00a85520 ldrb         r2, [r1, #3]
+00a85522 ldrb         r3, [r1, #2]
+00a85524 ldrb         r4, [r1, #-0x2]
+00a85528 ldrb         r5, [r1, #-0x1]
+00a8552c orr.w        r2, r3, r2, lsl #8
+00a85530 ldrb         r3, [r1, #-0x3]
+00a85534 ldrb         r1, [r1, #1]
+00a85536 orr.w        r1, lr, r1, lsl #8
+00a8553a orr.w        r1, r1, r2, lsl #16
+00a8553e orr.w        r2, ip, r3, lsl #8
+00a85542 orr.w        r3, r4, r5, lsl #8
+00a85546 orr.w        r2, r2, r3, lsl #16
+00a8554a add          r1, r2
+00a8554c adds         r2, r1, #1
+00a8554e beq          #0xa85572
+00a85550 addw         r1, r1, #0xfff
+00a85554 movw         r2, #0xfff
+00a85558 ldrb         r3, [r0, #1]
+00a8555a ldrb         r5, [r0, #2]
+00a8555c bics         r1, r2
+00a8555e ldrb         r2, [r0]
+00a85560 ldrb         r0, [r0, #3]
+00a85562 orr.w        r0, r5, r0, lsl #8
+00a85566 orr.w        r2, r2, r3, lsl #8
+00a8556a orr.w        r0, r2, r0, lsl #16
+00a8556e add          r0, r1
+00a85570 pop          {r4, r5, r7, pc}
+00a85572 movs         r0, #0
+00a85574 pop          {r4, r5, r7, pc}

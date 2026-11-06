@@ -1,0 +1,50 @@
+{
+  "module": {
+    "path": "/usr/kmod/mmc_drv.ko",
+    "sha256": "246ccbfd52b277be8d7a6575c26961997ca91cb9055851e301f7ef8ce6c0feea",
+    "bytes": 463728
+  },
+  "string_hits": [
+    {
+      "term": "image_",
+      "offset": "0x4c351",
+      "context": "b'bus_write_config_dword\\x00kimage_voffset\\x00mmc_log_error_command_log\\x00mmc_hw_set_high_speed_mode\\x00mmc_mem_exit\\x00vprintk\\x00mm'"
+    }
+  ],
+  "symbol_facts": [],
+  "kernel_pointer_candidates": [
+    {
+      "target_va": "0xffffff80085ace18",
+      "delta": "0x6ae00",
+      "offset": "0x5f3620",
+      "bytes": "a401000000000000f8380e0880ffffff50310e0880ffffff18ce5a0880ffffffa40100000000000018380e0880ffffff28390e0880ffffff08ce5a0880ffffffa40100000000000060370e0880ffffffe0340e0880ffffff"
+    }
+  ],
+  "snapshot_additional": [
+    {
+      "term": "emmc_register_wbi",
+      "offset": "0x7585a28",
+      "context": "b'_part\\x00\\x00\\x00emmc_register_crypt\\x00\\x00\\x00\\x00\\x00emmc_register_wbi\\x00\\x00\\x00\\x00\\x00\\x00\\x00emmc_register_wbi_partition\\x00\\x00\\x00\\x00\\x00emmc_register_crypt_partition\\x00\\x00\\x00tbl\\x00\\x00\\x00\\x00\\x00va_panic\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00dump_va_reg\\x00\\x00\\x00\\x00\\x00va_get_dev\\x00\\x00\\x00\\x00\\x00\\x00va_exit\\x00dump_al_sg\\x00\\x00\\x00\\x00\\x00\\x00\\x03\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\x05\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\xec\\x07\\xec\\xec\\t\\xec\\xec\\x0b\\xec\\xec\\r'"
+    },
+    {
+      "term": "wbi_device_check_valid",
+      "offset": "0x38140a0",
+      "context": "b'\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00wbi_device_check_valid\\x00\\x00emmc_wbi_read_sector\\x00\\x00\\x00\\x00emmc_wbi_write_sector\\x00\\x00\\x00emmc_wbi_open\\x00\\x00\\x00emmc_dump\\x00\\x00\\x00\\x00\\x00\\x00\\x00dump_handle\\x00\\x00\\x00\\x00\\x00dump_wbi_dev\\x00\\x00\\x00\\x00dump_ptbl_info\\x00\\x00emmc_blk_plat_suspend\\x00\\x00\\x00emmc_blk_plat_resume\\x00\\x00\\x00\\x00tbl_valid\\x00\\x00\\x00\\x00\\x00\\x00\\x00emmc_wbi_resume_post\\x00\\x00\\x00\\x00emmc_blk_plat_init\\x00\\x00'"
+    },
+    {
+      "term": "EMMC",
+      "offset": "0x6ceae92",
+      "context": "b'ID_RESOURCE_MEDIA_COMMON_DRIVER_EMMC2_HSX_SPEED_MAX\\x00\\x00\\x00BKID_RESOURCE_MEDIA_COMMON_DRIVER_EMMC2_HS200_DRVTYPE_192MB\\x00\\x00\\x00\\x00\\x00BKID_RESOURCE_MEDIA_COMMON_DRIVER_EMMC2_HS200_DRVTYPE_162MB_L\\x00\\x00\\x00BKID_RESOURCE_MEDIA_COMMON_DRIVER_EMMC2_HS200_DRVTYPE_96MB\\x00\\x00\\x00\\x00\\x00\\x00BKID_RESOURCE_MEDIA_COMMON_DRIVER_EMMC2_HS200_'"
+    },
+    {
+      "term": "nflasha5",
+      "offset": "0x645534",
+      "context": "b' pnflasha2 pnflasha3 pnflasha4 pnflasha5 pnflasha6 pnflasha7 pnflasha8 pnflasha10 pnflasha11 pnflasha12 pnflasha13 pnflasha15 pnflasha18 pnflasha23 pnflasha30\\x00\\x00\\xe4\\x89\\xdbe\\x00\\x00\\x00\\x00P\\x00@\\x00\\x00\\x00\\x00\\x82WBI: wb_default_device: sector_size=0x200,phys_sector_size=0x200\\x94V?{\\x00\\x00\\x00\\x00t\\x00a\\x00\\x00\\x00\\x00\\x86FAT-fs (cnflasha2): Volume was not p'"
+    },
+    {
+      "term": "Kernel command line:",
+      "offset": "0x537c52",
+      "context": "b'v\\x00\\x00\\x00\\x00\\x00early options\\x00\\x00\\x00\\x015%s\\x00\\x00\\x00\\x00\\x015Kernel command line: %s\\n\\x00\\x00\\x00\\x00\\x00\\x00Booting kernel\\x00\\x00Setting init args\\x00\\x00\\x00\\x00\\x00\\x00\\x00vfs_caches_init_early()\\x00mem_init()\\x00\\x00\\x00\\x00\\x00\\x00Interrupts were enabled *very* early, fixing it\\n\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00time_init()\\x00\\x00\\x00\\x00\\x00profile_init()\\x00\\x00Interrupts were enabled early\\n\\x00\\x00console_init()\\x00\\x00Too many boot '"
+    }
+  ]
+}

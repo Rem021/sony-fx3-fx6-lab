@@ -1,0 +1,24 @@
+_ZN7Updater15DecryptorModule7setDataEv
+0000b6dc stp       x29, x30, [sp, #-0x30]!
+0000b6e0 mov       x29, sp
+0000b6e4 stp       x19, x20, [sp, #0x10]
+0000b6e8 mov       x19, x0
+0000b6ec stp       x21, x22, [sp, #0x20]
+0000b6f0 bl        #0x87c0 ; _ZN7Updater15DecryptorModule13getHdDataSizeEv
+0000b6f4 mov       w22, w0
+0000b6f8 ldr       x20, [x19, #0x50]
+0000b6fc ldr       x0, [x20]
+0000b700 ldr       x21, [x0, #0x30]
+0000b704 ldr       x0, [x19]
+0000b708 ldr       x1, [x0, #0x98]
+0000b70c mov       x0, x19
+0000b710 blr       x1
+0000b714 mov       w3, w0
+0000b718 uxth      w2, w22
+0000b71c add       x1, x19, #0xb4
+0000b720 mov       x0, x20
+0000b724 mov       x4, x21
+0000b728 ldp       x19, x20, [sp, #0x10]
+0000b72c ldp       x21, x22, [sp, #0x20]
+0000b730 ldp       x29, x30, [sp], #0x30
+0000b734 br        x4

@@ -1,0 +1,46 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+00000000000b5010 <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb>:
+   b5010: a9bd7bfd     	stp	x29, x30, [sp, #-0x30]!
+   b5014: 910003fd     	mov	x29, sp
+   b5018: a90153f3     	stp	x19, x20, [sp, #0x10]
+   b501c: b0001234     	adrp	x20, 0x2fa000
+   b5020: f90013f5     	str	x21, [sp, #0x20]
+   b5024: 53001c35     	uxtb	w21, w1
+   b5028: 52820441     	mov	w1, #0x1022             // =4130
+   b502c: 3900101f     	strb	wzr, [x0, #0x4]
+   b5030: 3900501f     	strb	wzr, [x0, #0x14]
+   b5034: aa0003f3     	mov	x19, x0
+   b5038: b9000001     	str	w1, [x0]
+   b503c: f945d681     	ldr	x1, [x20, #0xba8]
+   b5040: 3900901f     	strb	wzr, [x0, #0x24]
+   b5044: 3900c01f     	strb	wzr, [x0, #0x30]
+   b5048: 39400021     	ldrb	w1, [x1]
+   b504c: 36000041     	tbz	w1, #0x0, 0xb5054 <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb+0x44>
+   b5050: 97ff1c6c     	bl	0x7c200 <_ZN3mpr15SetMovieRecTimeEPNS_17evtRecPbTimeParamE@plt>
+   b5054: f945d680     	ldr	x0, [x20, #0xba8]
+   b5058: 39400000     	ldrb	w0, [x0]
+   b505c: 36080080     	tbz	w0, #0x1, 0xb506c <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb+0x5c>
+   b5060: 2a1503e1     	mov	w1, w21
+   b5064: aa1303e0     	mov	x0, x19
+   b5068: 97ff3656     	bl	0x829c0 <_ZN3mpr14SetMoviePbTimeEPNS_17evtRecPbTimeParamEb@plt>
+   b506c: f945d680     	ldr	x0, [x20, #0xba8]
+   b5070: 39400000     	ldrb	w0, [x0]
+   b5074: 36100060     	tbz	w0, #0x2, 0xb5080 <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb+0x70>
+   b5078: aa1303e0     	mov	x0, x19
+   b507c: 97ff28fd     	bl	0x7f470 <_ZN3mpr15SetAudioRecTimeEPNS_17evtRecPbTimeParamE@plt>
+   b5080: f945d694     	ldr	x20, [x20, #0xba8]
+   b5084: 39400280     	ldrb	w0, [x20]
+   b5088: 361800c0     	tbz	w0, #0x3, 0xb50a0 <_ZN3mpr17SetRecPbTimeEventEPNS_17evtRecPbTimeParamEb+0x90>
+   b508c: aa1303e0     	mov	x0, x19
+   b5090: f94013f5     	ldr	x21, [sp, #0x20]
+   b5094: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   b5098: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+   b509c: 17ff1d65     	b	0x7c630 <_ZN3mpr14SetAudioPbTimeEPNS_17evtRecPbTimeParamE@plt>
+   b50a0: a94153f3     	ldp	x19, x20, [sp, #0x10]
+   b50a4: f94013f5     	ldr	x21, [sp, #0x20]
+   b50a8: a8c37bfd     	ldp	x29, x30, [sp], #0x30
+   b50ac: d65f03c0     	ret

@@ -1,0 +1,97 @@
+{
+  "schema": "fx3-stage181-recovery-first-research/1",
+  "created_utc": "2026-10-29T14:08:14.441100+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "previous_manifest_path": "work/sony-firmware-20261024/stage180-native-MSC-request-channel/final-receipt.json",
+  "previous_manifest_sha256": "627afd9565a43b5c68056e8808c260693b0d28af67f290a1df17de01e7030883",
+  "previous_manifest_members_verified": 163,
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/README.md",
+      "bytes": 1658,
+      "sha256": "87f9c8b4414f306da972e1998d79993d85a41ee5f2e7ce510d83b289031011ff"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/goal-status-after.json",
+      "bytes": 337762,
+      "sha256": "f3965b7785700af61363889cfc6a7dbf9d79ae86de3eb40e8e2832bc0335ff02"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/goal-status-before.json",
+      "bytes": 335230,
+      "sha256": "a1066f9913bb1ff4e89e18a8bc875786f7f4482880d4e93a5fa4865db2b46044"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/priority-change.json",
+      "bytes": 788,
+      "sha256": "513c1227d33f2e10edf7ad3adf7535ac976f71cf7fc4b7c3cebbf5e1e433dacc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/provenance.json",
+      "bytes": 5392,
+      "sha256": "2fe1a3b8976cf449975a2682b0aff9457a10ab3b1fd4c52b435f0d88128f9d24"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/readme-after.md",
+      "bytes": 70189,
+      "sha256": "064dd8d9bfc965b264edc974de91a26a57f0f4d5652ab6459f221b4e4e0338f6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/readme-before.md",
+      "bytes": 69913,
+      "sha256": "86092d4f00b1c360ebc82511719570a0cf188023e870e53d22ef367e1aa02e52"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/register_priority.py",
+      "bytes": 13472,
+      "sha256": "b4f10d232c4f9e64e648363920c97d5a393526f44a6c95238e930bfe807d6cdb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/registration-verification.json",
+      "bytes": 919,
+      "sha256": "1b4c183ee01cdc065a111de3cbd5329bc33d768cb9c5df0d4fc4c1551b8a19a2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/reports/FX3 改机失败 恢复路线.md",
+      "bytes": 7277,
+      "sha256": "e824bddb13ef343db0c774c5c75f4c7052ea448460452c30023d80ed75986fe7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/research_notes/FX3 改机失败 恢复路线/community.md",
+      "bytes": 14393,
+      "sha256": "d2899aeff6c1b42e7af43c45a07cd80c0c201698f605de843a2105e7482a98b7"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/research_notes/FX3 改机失败 恢复路线/independent-entry.md",
+      "bytes": 16445,
+      "sha256": "c110fa89cbd286aec1465cb86fc2f2d2b8961bae7084ea5f04d90b07815ef761"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage181-recovery-first-research/research_notes/FX3 改机失败 恢复路线/official.md",
+      "bytes": 8472,
+      "sha256": "ddafbd3e030d50269bcf86ff94ebb5c36419d317c875a2c4c74d207069da6931"
+    }
+  ],
+  "member_count": 13,
+  "mutable_heads_not_manifest_members": true,
+  "allowed_goal_keys_changed": [
+    "latest_stage",
+    "latest_stage_evidence",
+    "next_safe_offline_actions",
+    "progress_audit",
+    "research_activity",
+    "research_priority",
+    "updated_utc"
+  ],
+  "mutable_progress": {
+    "before_sha256": "a1066f9913bb1ff4e89e18a8bc875786f7f4482880d4e93a5fa4865db2b46044",
+    "after_sha256": "f3965b7785700af61363889cfc6a7dbf9d79ae86de3eb40e8e2832bc0335ff02",
+    "readme_before_sha256": "86092d4f00b1c360ebc82511719570a0cf188023e870e53d22ef367e1aa02e52",
+    "readme_after_sha256": "064dd8d9bfc965b264edc974de91a26a57f0f4d5652ab6459f221b4e4e0338f6"
+  },
+  "research_priority": "recovery-first",
+  "native_goal_manager_untouched": true,
+  "new_device_operations_or_test_runs": 0,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

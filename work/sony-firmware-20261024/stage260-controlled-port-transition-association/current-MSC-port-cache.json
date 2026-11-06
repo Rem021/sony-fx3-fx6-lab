@@ -1,0 +1,39 @@
+{
+  "recorded_utc": "2026-11-01T06:04:57.834746+00:00",
+  "source": "current-turn ioreg IOUSB plus complete IOService ancestry and host mount-table readbacks",
+  "source_tool_chunk": "deff59",
+  "target": {
+    "VID": 1356,
+    "PID": 3489,
+    "model": "ILME-FX3",
+    "registryID": 4295901308,
+    "locationID": 17825792,
+    "location_hex": "0x01100000"
+  },
+  "parent": {
+    "class_": "AppleUSB20XHCIARMPort",
+    "registryID": 4294969719,
+    "locationID": 17825792
+  },
+  "controller": {
+    "class_": "AppleT8112USBXHCI",
+    "registryID": 4294968306
+  },
+  "exact_IOUSBHostDevice_candidates": 1,
+  "storage_driver_classes": [
+    "IOUSBMassStorageDriver",
+    "IOUSBMassStorageDriverNub",
+    "IOUSBMassStorageInterfaceNub"
+  ],
+  "cached_IOMedia_nodes": 0,
+  "mounted_camera_media": [],
+  "user_confirmed_all_volumes_ejected": true,
+  "raw_serial_or_cache_saved": false,
+  "camera_interface_opened_or_commands_sent": false,
+  "media_node_count_zero_is_not_failure": true,
+  "native_target_binding_not_yet_updated": true,
+  "class_discovery": {
+    "IOUSBHostPort_roots": 0,
+    "AppleUSBHostPort_roots": 6
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "created_utc": "2026-10-29T10:40:55.124839+00:00",
+  "verifiers": [
+    {
+      "library": "libupdaterapi.so",
+      "verifier": "0x13574",
+      "digest": "SHA256",
+      "rsa_digest_id": "0x2a0",
+      "digest_bytes": 32,
+      "code_sha256": "8453bc0ef0125056c2654f775f95a6c5c5eeef817b0f04f9eeaefb880116f462"
+    },
+    {
+      "library": "libuudfileinputupdaterapi.so",
+      "verifier": "0x97f4",
+      "digest": "SHA256",
+      "rsa_digest_id": "0x2a0",
+      "digest_bytes": 32,
+      "code_sha256": "ac5614b7a5d88713de340c79624ce05cbe7815e0ec5851403e3bd022d3c99584"
+    }
+  ],
+  "preverification_vtables": [
+    {
+      "library": "libupdaterapi.so",
+      "vtable": "_ZTVN7Updater18UFPDecryptorModuleE",
+      "vtable_va": "0x28b90",
+      "constructor_vptr_proven": true,
+      "constructor_sequence_va": "0x12c98",
+      "constructor_got": "0x28f28",
+      "vptr_offset": 16,
+      "virtual_offset": "0xa0",
+      "slot_va": "0x28c40",
+      "raw_file_pointer": "0x0",
+      "relocation_type": 257,
+      "resolved_va": "0x12c28",
+      "symbol": "_ZN7Updater18UFPDecryptorModule29WaitForFirmwareCopyCompletionEv",
+      "key_path_va": "0x148e2",
+      "key_path": "/etc/VerificationKey.pem"
+    },
+    {
+      "library": "libuudfileinputupdaterapi.so",
+      "vtable": "_ZTVN7Updater22UUDFileDecryptorModuleE",
+      "vtable_va": "0x1b9b8",
+      "constructor_vptr_proven": true,
+      "constructor_sequence_va": "0x8714",
+      "constructor_got": "0x1bf70",
+      "vptr_offset": 16,
+      "virtual_offset": "0xa0",
+      "slot_va": "0x1ba68",
+      "raw_file_pointer": "0x0",
+      "relocation_type": 257,
+      "resolved_va": "0x7cc8",
+      "symbol": "_ZN7Updater18UFPDecryptorModule29WaitForFirmwareCopyCompletionEv",
+      "key_path_va": "0x9d42",
+      "key_path": "/etc/VerificationKey.pem"
+    }
+  ],
+  "historical_source": true,
+  "current_702_device_readback": false,
+  "sony_code_executed": false,
+  "scope": "Source hashes, original function slices, static SHA/RSA ordering and argument constants checked; no updater execution or admission trial."
+}

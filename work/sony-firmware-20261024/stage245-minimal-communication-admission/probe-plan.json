@@ -1,0 +1,59 @@
+{
+  "schema": "fx3-minimal-communication-proposal-v1",
+  "purpose": "Review only: one challenge request without authentication digest, file commands, upload or firmware write.",
+  "initial_identity": {
+    "VID": 1356,
+    "PID": 3489,
+    "mode": "MSC",
+    "actual_current_device_not_queried": true
+  },
+  "proposed_operations": [
+    {
+      "index": 1,
+      "operation": "START",
+      "kind": "control_out",
+      "setup_hex": "4301ff37aad70000",
+      "data_bytes": 0
+    },
+    {
+      "index": 2,
+      "operation": "REQUEST_ONE_CHALLENGE",
+      "kind": "bulk_out",
+      "bytes": 516,
+      "header_hex": "fffe0000",
+      "zero_payload_bytes": 512
+    },
+    {
+      "index": 3,
+      "operation": "RECEIVE_ONE_CHALLENGE",
+      "kind": "bulk_in",
+      "bytes": 516,
+      "accepted_reference_codes": [
+        2,
+        8
+      ]
+    },
+    {
+      "index": 4,
+      "operation": "STOP",
+      "kind": "control_out",
+      "setup_hex": "430100c855280000",
+      "data_bytes": 0
+    }
+  ],
+  "proposed_global_budget_ms": 10000,
+  "proposed_per_native_call_timeout_ms": 1000,
+  "time_limits_are_checks_not_a_way_to_interrupt_blocked_calls": true,
+  "max_native_transfers": 4,
+  "digest_command3_permitted": false,
+  "final_auth_command5_permitted": false,
+  "file_select_GET_DMM_upload_or_firmware_commands_permitted": false,
+  "arbitrary_payload_interface": false,
+  "automatic_retries_resets_kills_or_mode_fallback": false,
+  "guarantee_no_mode_or_driver_state_change": false,
+  "executable_or_approved": false,
+  "export_as_live_tool": false,
+  "entry_success_criterion": "requires exact device state evidence; USB ACK or matching VID/PID alone is insufficient",
+  "exit_success_criterion": "requires actual worker/session ending and driver ownership return; STOP return alone is insufficient",
+  "ambiguity": "retain UNKNOWN; no extra request or fabricated completion based only on timeout/error"
+}

@@ -1,0 +1,116 @@
+{
+  "schema": "fx3-r16-fixed-slot-guests-delivery/v1",
+  "date": "2026-11-04",
+  "outcome": "offline_generation_succeeded",
+  "tool": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r15-fixed-layout-packaging/fixed_layout.py",
+    "sha256": "b5b9bf75763b193575a007074e6701d1a1541ba9d3658ae32a164fc350eca8bc"
+  },
+  "original_source_cpio_sha256": "31ce79e9284ff45f227d2cc981faf85947d6f2e70e8ff60b447b671b26107b83",
+  "original_dtb_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-menu-osd-diagnostic-r3/vmopt-20261104-v25-menu-osd-diagnostic-r3/guest.dtb",
+  "original_dtb_sha256": "5aa2beacb0b0e1f5b83f4589f9bba8b148cd73f87b6058e0f648e05c5347855b",
+  "source_freeze_sha256": "4737db8f89660c6bb41993b37f8aa9c8f9761a1e26be1e2fbbfa7a73db760d4b",
+  "r15_delivery_sha256sums": "215d1f432ed7fd135e902418de71bc80871aa9b67b42d26ae953a3c064ed92f3",
+  "source_manifest_adaptation": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-r15-guest-SOURCE-SHA256SUMS",
+    "sha256": "05aded60ec6ecabb67381eca1f9ea8b3311599725c9d8e2cbb022db72b077d7d",
+    "binding": "SOURCE-ADAPTATION.json"
+  },
+  "outputs": {
+    "N1": {
+      "candidate_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N1/candidate.json",
+      "candidate_sha256": "ce047a951a5e7af08d19312d4e9d6440080e159c857e41edf90ce66607a31563",
+      "cpio_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N1/guest.cpio",
+      "cpio_sha256": "77081424fa73f9737434b7d0c5d2f6dc2b21215ffcc9cb3a95281dac9d4b521c",
+      "cpio_bytes": 453213884,
+      "helper_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/fx3-ui-gate-v15-n1-linker-strip.so",
+      "helper_sha256": "da4eef557353223542cfab4d0e9f9b91a42a3c77a886f42f791867d0e2a45d92",
+      "helper_bytes": 22048,
+      "original_debug_helper_sha256": "5faeb996c4c7386383a9e07ab5cc9f65c5e9e80217e5e777f15df7d26b9c8dbc",
+      "padded_slot_sha256": "26f338bc21d32a7b5d1deac70260ec25da747f0b0d38f91604eef11ca92a1148",
+      "zero_padding_bytes": 36808,
+      "allowed_change": {
+        "offset": 451339648,
+        "bytes": 58856
+      },
+      "static_generation_complete": true,
+      "outside_slot_every_byte_equal_proven_by_write": true,
+      "independent_output_hash_matched": true,
+      "independent_full_index_matched": true,
+      "independent_slot_bytes_matched": true,
+      "candidate_changed_top_level_fields": [
+        "fixed_layout_diagnostic_contract",
+        "initrd"
+      ],
+      "other_candidate_fields_equal": true,
+      "original_dtb_reference_equal": true,
+      "complete_receipt_sha256": "d4d248614c59e693763358700fdcbbab24bd71e1afa784abd7f6c382a0a12688",
+      "historical_incomplete_marker_superseded_by_COMPLETE": true,
+      "runtime_validated": false
+    },
+    "N64": {
+      "candidate_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64/candidate.json",
+      "candidate_sha256": "96666a719b1a4cf576e4d2d7ec461e10f5ce1143650450719e5273d75d970672",
+      "cpio_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/guest-N64/guest.cpio",
+      "cpio_sha256": "aaf006610b0d2b6ecf2148666b9810ece611770f25697fc5d2f09f0dadd14ba9",
+      "cpio_bytes": 453213884,
+      "helper_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r16-fixed-slot-guests/samples/fx3-ui-gate-v15-n64-linker-strip.so",
+      "helper_sha256": "3ea77f9bc94ca3f4c5edb863b20bbe1245ebde1d868e61243bf0b0d8cc3511b2",
+      "helper_bytes": 22160,
+      "original_debug_helper_sha256": "ea47aa2d2b437700f00e64d8f3c0db7cf164c2c81f90bdedfb528a0430784574",
+      "padded_slot_sha256": "6673b9beaf8a2adfbc2c68dc7337df369e484bd58ede10edff3519dcf8d258df",
+      "zero_padding_bytes": 36696,
+      "allowed_change": {
+        "offset": 451339648,
+        "bytes": 58856
+      },
+      "static_generation_complete": true,
+      "outside_slot_every_byte_equal_proven_by_write": true,
+      "independent_output_hash_matched": true,
+      "independent_full_index_matched": true,
+      "independent_slot_bytes_matched": true,
+      "candidate_changed_top_level_fields": [
+        "fixed_layout_diagnostic_contract",
+        "initrd"
+      ],
+      "other_candidate_fields_equal": true,
+      "original_dtb_reference_equal": true,
+      "complete_receipt_sha256": "e63d79eedd6816375dea92ecf15e2d4296a44a3e30a980ab5802097af36289b5",
+      "historical_incomplete_marker_superseded_by_COMPLETE": true,
+      "runtime_validated": false
+    }
+  },
+  "static_validation_passed": true,
+  "write_order": [
+    "N1",
+    "N64"
+  ],
+  "VM_started": false,
+  "deployed": false,
+  "runtime_validated": false,
+  "host_source_or_runner_pins_changed": false,
+  "guest_protocol_reimplemented": false,
+  "source_originals_modified": false,
+  "evidence": {
+    "preflight": "PREFLIGHT.json",
+    "elf_audit": [
+      "samples/N1-ELF-AUDIT.json",
+      "samples/N64-ELF-AUDIT.json"
+    ],
+    "build": [
+      "samples/N1-build.json",
+      "samples/N64-build.json"
+    ],
+    "plans": [
+      "plans-N1/plan.json",
+      "plans-N64/plan.json"
+    ],
+    "write_receipts": [
+      "guest-N1/COMPLETE.json",
+      "guest-N64/COMPLETE.json"
+    ],
+    "final_verification": "VERIFICATION.json",
+    "commands": "COMMANDS.json",
+    "report": "REPORT.md"
+  }
+}

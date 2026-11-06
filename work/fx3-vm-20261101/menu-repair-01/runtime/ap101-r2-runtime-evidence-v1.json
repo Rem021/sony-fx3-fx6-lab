@@ -1,0 +1,1015 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97",
+  "strict_health": false,
+  "requested600_completed": false,
+  "review": {
+    "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97",
+    "created_utc": "2026-11-02T21:48:56.955030+00:00",
+    "health_pass": false,
+    "native_health_no_assert": false,
+    "completed_requested_window": false,
+    "unsupported_drawing": true,
+    "lifecycle_pass": false,
+    "native_assertions": [],
+    "native_application_failed": false,
+    "duration_seconds": 153.8017568330106,
+    "requested_seconds": 600,
+    "qemu_exit": 0,
+    "process_reaped": true,
+    "PID_absent": true,
+    "locks": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+        "free_at_review": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+        "free_at_review": true
+      }
+    ],
+    "input_SHA_reverified": [
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/bin/qemu-system-aarch64",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libglib-2.0.0.dylib",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libpcre2-8.0.dylib",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/lib/libintl.8.dylib",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-minimal-linux-probe02.dtb",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/virt-original-app-loader-probe01.dtb",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-minimal-original-userspace-v2.cpio",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/share/fx3-original-app-loader-probe.cpio",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage47-runtime-provider-binding/official-files/nflasha3/vmlinux.bin",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap100v1sync600-8d0d69c0/Backup-native-file-before-menu.bin",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r2-native-state-constructor/guest.dtb",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r2-native-state-constructor/guest.cpio",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-r2-native-state-constructor/candidate.json",
+        "matches": true
+      },
+      {
+        "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/qemu-display-build/bin/qemu-gpio5-bf4d46481998b8fb",
+        "matches": true
+      }
+    ],
+    "missing_markers": [
+      "FX3_DATE98_TRACE_BOUND"
+    ],
+    "fatal_markers": [],
+    "early_stop_reason": "AP90 first new GPE rejection; quiesce and review without further changes",
+    "im_alive_last_complete_maps": {
+      "pid": 230,
+      "uptime": 148.85,
+      "LF_line": 133797,
+      "maps": [
+        "00400000-00409000 r-xp 00000000 00:02 3324                               /usr/bin/im.elf",
+        "00418000-00419000 r--p 00008000 00:02 3324                               /usr/bin/im.elf",
+        "00419000-0041a000 rw-p 00009000 00:02 3324                               /usr/bin/im.elf"
+      ]
+    },
+    "host_gate_commands": 1,
+    "guest_done_steps": 1,
+    "sent_events": 2,
+    "received_events": 2,
+    "keys": [
+      {
+        "LF_line": 128642,
+        "fields": {
+          "step": "1",
+          "key": "0x1ab",
+          "status": "1",
+          "synthetic_input": "1",
+          "original_cp_key_detection": "0",
+          "destination": "0x807a0020",
+          "source": "0x00410025",
+          "bytes": "20",
+          "result": "0",
+          "monotonic_ns": "138339031008",
+          "host_gate": "1"
+        },
+        "text": "FX3_SYNTH_KEY step=1 key=0x1ab status=1 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=138339031008 host_gate=1"
+      },
+      {
+        "LF_line": 128719,
+        "fields": {
+          "step": "1",
+          "key": "0x1ab",
+          "status": "0",
+          "synthetic_input": "1",
+          "original_cp_key_detection": "0",
+          "destination": "0x807a0020",
+          "source": "0x00410025",
+          "bytes": "20",
+          "result": "0",
+          "monotonic_ns": "138459148000",
+          "host_gate": "1"
+        },
+        "text": "FX3_SYNTH_KEY step=1 key=0x1ab status=0 synthetic_input=1 original_cp_key_detection=0 destination=0x807a0020 source=0x00410025 bytes=20 result=0 monotonic_ns=138459148000 host_gate=1"
+      }
+    ],
+    "key_receipts": [
+      {
+        "LF_line": 128638,
+        "fields": {
+          "step": "1",
+          "key": "0x1ab",
+          "status": "1",
+          "from_type": "1",
+          "source": "0x410025",
+          "native_result": "0"
+        },
+        "text": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0"
+      },
+      {
+        "LF_line": 128722,
+        "fields": {
+          "step": "1",
+          "key": "0x1ab",
+          "status": "0",
+          "from_type": "1",
+          "source": "0x410025",
+          "native_result": "0"
+        },
+        "text": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0"
+      }
+    ],
+    "done": [
+      {
+        "LF_line": 128720,
+        "fields": {
+          "step": "1",
+          "key": "0x1ab",
+          "requested_hold_ms": "100",
+          "measured_down_up_ns": "105158000",
+          "elapsed_ns": "125248000",
+          "wait_result": "0",
+          "native_input_queue": "1",
+          "one_down_one_up": "1",
+          "host_next_required": "1"
+        },
+        "text": "FX3_KEY95_STEP_DONE step=1 key=0x1ab requested_hold_ms=100 measured_down_up_ns=105158000 elapsed_ns=125248000 wait_result=0 native_input_queue=1 one_down_one_up=1 host_next_required=1"
+      }
+    ],
+    "raw20": [
+      {
+        "LF_line": 128637,
+        "fields": {
+          "tag": "SYNTH_KEY20",
+          "bytes": "20",
+          "raw": "ab01000000000000010000000000000001000000"
+        },
+        "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=ab01000000000000010000000000000001000000"
+      },
+      {
+        "LF_line": 128717,
+        "fields": {
+          "tag": "SYNTH_KEY20",
+          "bytes": "20",
+          "raw": "ab01000000000000000000000000000001000000"
+        },
+        "text": "FX3_RM_RAW tag=SYNTH_KEY20 bytes=20 raw=ab01000000000000000000000000000001000000"
+      }
+    ],
+    "leases": [
+      {
+        "lease": "1",
+        "allocation": {
+          "LF_line": 7000,
+          "fields": {
+            "destination": "0x80af6184",
+            "pointer": "0x7f80fe58c0",
+            "bytes": "136",
+            "lease": "1",
+            "native_allocation": "1"
+          },
+          "text": "FX3_RM_ALLOC destination=0x80af6184 pointer=0x7f80fe58c0 bytes=136 lease=1 native_allocation=1"
+        },
+        "frees": [
+          {
+            "LF_line": 7033,
+            "fields": {
+              "destination": "0x80af6184",
+              "pointer": "0x7f80fe58c0",
+              "bytes": "136",
+              "lease": "1",
+              "result": "0",
+              "receiver_original_free": "1"
+            },
+            "text": "FX3_RM_NATIVE_FREE destination=0x80af6184 pointer=0x7f80fe58c0 bytes=136 lease=1 result=0 receiver_original_free=1"
+          }
+        ],
+        "once_free0": true
+      },
+      {
+        "lease": "2",
+        "allocation": {
+          "LF_line": 7170,
+          "fields": {
+            "destination": "0x80af6185",
+            "pointer": "0x7f80fe5b00",
+            "bytes": "7",
+            "lease": "2",
+            "native_allocation": "1"
+          },
+          "text": "FX3_RM_ALLOC destination=0x80af6185 pointer=0x7f80fe5b00 bytes=7 lease=2 native_allocation=1"
+        },
+        "frees": [
+          {
+            "LF_line": 7212,
+            "fields": {
+              "destination": "0x80af6185",
+              "pointer": "0x7f80fe5b00",
+              "bytes": "7",
+              "lease": "2",
+              "result": "0",
+              "receiver_original_free": "1"
+            },
+            "text": "FX3_RM_NATIVE_FREE destination=0x80af6185 pointer=0x7f80fe5b00 bytes=7 lease=2 result=0 receiver_original_free=1"
+          }
+        ],
+        "once_free0": true
+      },
+      {
+        "lease": "3",
+        "allocation": {
+          "LF_line": 7216,
+          "fields": {
+            "destination": "0x80af6184",
+            "pointer": "0x7f80fe59c0",
+            "bytes": "28",
+            "lease": "3",
+            "native_allocation": "1"
+          },
+          "text": "FX3_RM_ALLOC destination=0x80af6184 pointer=0x7f80fe59c0 bytes=28 lease=3 native_allocation=1"
+        },
+        "frees": [
+          {
+            "LF_line": 7233,
+            "fields": {
+              "destination": "0x80af6184",
+              "pointer": "0x7f80fe59c0",
+              "bytes": "28",
+              "lease": "3",
+              "result": "0",
+              "receiver_original_free": "1"
+            },
+            "text": "FX3_RM_NATIVE_FREE destination=0x80af6184 pointer=0x7f80fe59c0 bytes=28 lease=3 result=0 receiver_original_free=1"
+          }
+        ],
+        "once_free0": true
+      },
+      {
+        "lease": "4",
+        "allocation": {
+          "LF_line": 128636,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f80f99c00",
+            "bytes": "20",
+            "lease": "4",
+            "native_allocation": "1"
+          },
+          "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f80f99c00 bytes=20 lease=4 native_allocation=1"
+        },
+        "frees": [
+          {
+            "LF_line": 128640,
+            "fields": {
+              "destination": "0x807a0020",
+              "pointer": "0x7f80f99c00",
+              "bytes": "20",
+              "lease": "4",
+              "result": "0",
+              "receiver_original_free": "1"
+            },
+            "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f80f99c00 bytes=20 lease=4 result=0 receiver_original_free=1"
+          }
+        ],
+        "once_free0": true
+      },
+      {
+        "lease": "5",
+        "allocation": {
+          "LF_line": 128716,
+          "fields": {
+            "destination": "0x807a0020",
+            "pointer": "0x7f80f99a80",
+            "bytes": "20",
+            "lease": "5",
+            "native_allocation": "1"
+          },
+          "text": "FX3_RM_ALLOC destination=0x807a0020 pointer=0x7f80f99a80 bytes=20 lease=5 native_allocation=1"
+        },
+        "frees": [
+          {
+            "LF_line": 128724,
+            "fields": {
+              "destination": "0x807a0020",
+              "pointer": "0x7f80f99a80",
+              "bytes": "20",
+              "lease": "5",
+              "result": "0",
+              "receiver_original_free": "1"
+            },
+            "text": "FX3_RM_NATIVE_FREE destination=0x807a0020 pointer=0x7f80f99a80 bytes=20 lease=5 result=0 receiver_original_free=1"
+          }
+        ],
+        "once_free0": true
+      }
+    ],
+    "all_leases_native_free_once0": true,
+    "captures": [
+      {
+        "step": 1,
+        "key": "0x1ab",
+        "PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/ap101-step-01-key-1ab.png",
+        "error": null,
+        "raw_sha_matches": true,
+        "png_sha_matches": true,
+        "native_ring_matches": true,
+        "sequence": 1425
+      }
+    ],
+    "capture_count": 1,
+    "GPE_complete_records": 558,
+    "GPE_incomplete_records": [],
+    "GPE_nonzero_records": [
+      {
+        "LF_line": 131188,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 712,
+          "async": "1",
+          "fmt": "0",
+          "w": "6",
+          "h": "32",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131245,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 713,
+          "async": "1",
+          "fmt": "0",
+          "w": "33",
+          "h": "32",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131252,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 714,
+          "async": "1",
+          "fmt": "0",
+          "w": "6",
+          "h": "32",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131259,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 715,
+          "async": "1",
+          "fmt": "0",
+          "w": "6",
+          "h": "6",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0v"
+        }
+      },
+      {
+        "LF_line": 131266,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 716,
+          "async": "1",
+          "fmt": "0",
+          "w": "33",
+          "h": "6",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131279,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 717,
+          "async": "1",
+          "fmt": "0",
+          "w": "6",
+          "h": "6",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131317,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 721,
+          "async": "1",
+          "fmt": "0",
+          "w": "6",
+          "h": "32",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131324,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 722,
+          "async": "1",
+          "fmt": "0",
+          "w": "33",
+          "h": "32",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131330,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 723,
+          "async": "1",
+          "fmt": "0",
+          "w": "6",
+          "h": "32",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131335,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 724,
+          "async": "1",
+          "fmt": "0",
+          "w": "6",
+          "h": "6",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131340,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 725,
+          "async": "1",
+          "fmt": "0",
+          "w": "33",
+          "h": "6",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131345,
+        "fields": {
+          "op": "BitBlit",
+          "seq": 726,
+          "async": "1",
+          "fmt": "0",
+          "w": "6",
+          "h": "6",
+          "dst_phys": "0x43feb5100",
+          "src_phys": "0x41096aa40",
+          "flags": "0x1000000000001",
+          "result": 5,
+          "reason": 3,
+          "read": "1",
+          "approx_blend": "1",
+          "formula": "straight_over_v1",
+          "selector": "1",
+          "K": "255",
+          "const_alpha": "255",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      },
+      {
+        "LF_line": 131401,
+        "fields": {
+          "op": "Flush",
+          "seq": 736,
+          "async": "0",
+          "fmt": "0",
+          "w": "0",
+          "h": "0",
+          "dst_phys": "0",
+          "src_phys": "0",
+          "flags": "0",
+          "result": 5,
+          "reason": 2,
+          "read": "1",
+          "approx_blend": "0",
+          "formula": "none",
+          "selector": "0",
+          "K": "0",
+          "const_alpha": "0",
+          "rotation": "0",
+          "src_fmt": "0"
+        }
+      }
+    ],
+    "screens": [
+      {
+        "LF_line": 11206,
+        "fields": {
+          "manager": "0x7ed179f490",
+          "id1": "0x407",
+          "id2": "0x2ae",
+          "id3": "0x407",
+          "three_reference_args_one_call": "1",
+          "creation_not_yet_complete": "1"
+        },
+        "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ed179f490 id1=0x407 id2=0x2ae id3=0x407 three_reference_args_one_call=1 creation_not_yet_complete=1"
+      },
+      {
+        "LF_line": 14114,
+        "fields": {
+          "manager": "0x7ed179f490",
+          "id1": "0x2ae",
+          "id2": "0x2e1",
+          "id3": "0x2ae",
+          "three_reference_args_one_call": "1",
+          "creation_not_yet_complete": "1"
+        },
+        "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ed179f490 id1=0x2ae id2=0x2e1 id3=0x2ae three_reference_args_one_call=1 creation_not_yet_complete=1"
+      },
+      {
+        "LF_line": 14974,
+        "fields": {
+          "manager": "0x7ed179f490",
+          "id1": "0x2e1",
+          "id2": "0x2dd",
+          "id3": "0x2e1",
+          "three_reference_args_one_call": "1",
+          "creation_not_yet_complete": "1"
+        },
+        "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ed179f490 id1=0x2e1 id2=0x2dd id3=0x2e1 three_reference_args_one_call=1 creation_not_yet_complete=1"
+      },
+      {
+        "LF_line": 15171,
+        "fields": {
+          "manager": "0x7ed179f490",
+          "id1": "0x2dd",
+          "id2": "0",
+          "id3": "0x2dd",
+          "three_reference_args_one_call": "1",
+          "creation_not_yet_complete": "1"
+        },
+        "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ed179f490 id1=0x2dd id2=0 id3=0x2dd three_reference_args_one_call=1 creation_not_yet_complete=1"
+      },
+      {
+        "LF_line": 128714,
+        "fields": {
+          "manager": "0x7ed179f490",
+          "id1": "0",
+          "id2": "0x2e0",
+          "id3": "0",
+          "three_reference_args_one_call": "1",
+          "creation_not_yet_complete": "1"
+        },
+        "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ed179f490 id1=0 id2=0x2e0 id3=0 three_reference_args_one_call=1 creation_not_yet_complete=1"
+      },
+      {
+        "LF_line": 128758,
+        "fields": {
+          "manager": "0x7ed179f490",
+          "id1": "0x2e0",
+          "id2": "0x275",
+          "id3": "0x2e0",
+          "three_reference_args_one_call": "1",
+          "creation_not_yet_complete": "1"
+        },
+        "text": "FX3_AP89_SCREEN_OPEN_ENTER manager=0x7ed179f490 id1=0x2e0 id2=0x275 id3=0x2e0 three_reference_args_one_call=1 creation_not_yet_complete=1"
+      }
+    ],
+    "RM_native_branches": [
+      {
+        "LF_line": 11580,
+        "fields": {
+          "eid": "20",
+          "state": "2",
+          "if_state2_native_status0_else_request_and_count": "1"
+        },
+        "text": "FX3_MEDIA_START_BRANCH eid=20 state=2 if_state2_native_status0_else_request_and_count=1"
+      },
+      {
+        "LF_line": 11687,
+        "fields": {
+          "eid": "29",
+          "state": "2",
+          "if_state2_native_status0_else_request_and_count": "1"
+        },
+        "text": "FX3_MEDIA_START_BRANCH eid=29 state=2 if_state2_native_status0_else_request_and_count=1"
+      }
+    ],
+    "RM_native_notifications": [
+      {
+        "LF_line": 11605,
+        "fields": {
+          "eid": "23",
+          "tid": "416",
+          "mediaID": "0x1000",
+          "destination": "0x1cfe09d",
+          "status": "0",
+          "hold": "0",
+          "RemoveCnt": "1",
+          "extra16": "0",
+          "native": "1",
+          "synthetic": "0"
+        },
+        "text": "FX3_MEDIA_NOTIFY eid=23 tid=416 mediaID=0x1000 destination=0x1cfe09d status=0 hold=0 RemoveCnt=1 extra16=0 native=1 synthetic=0"
+      },
+      {
+        "LF_line": 11714,
+        "fields": {
+          "eid": "32",
+          "tid": "416",
+          "mediaID": "0x1010",
+          "destination": "0x1cfe09b",
+          "status": "0",
+          "hold": "0",
+          "RemoveCnt": "1",
+          "extra16": "0",
+          "native": "1",
+          "synthetic": "0"
+        },
+        "text": "FX3_MEDIA_NOTIFY eid=32 tid=416 mediaID=0x1010 destination=0x1cfe09b status=0 hold=0 RemoveCnt=1 extra16=0 native=1 synthetic=0"
+      }
+    ],
+    "RM_mount_count": 0,
+    "RM_timeout_count": 0,
+    "host_command_not_proven_sent": [],
+    "standby_verified": false,
+    "menu_verified": false,
+    "scope": "Independent read-only review; no changes inside completed runs; raw LF interleaving retained, not global lossless proof"
+  },
+  "native_load": {
+    "method": "Original backup.ko Backup_load=1, native insmod return and actual source file SHA; QMP read-only bank snapshot after load, no RAM replay",
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/backup-native-load-before-AP.bin",
+    "sha256": "4ec690cf1a40ad6b521ff7a5421df3d619de18b601e584d756cd1bd4f68b8192",
+    "before_AP_bootin_marker": true,
+    "file_sha256": "552fd5f8b422f855aecbe0c3918b56f83f60fb76ea9a3b6fc7a0291c26035d9e",
+    "native_file_seen_and_module_load0": true,
+    "native_file_O_RDONLY_readback": {
+      "label": "native-load-before-AP",
+      "native_path": "/setting/Backup.bin",
+      "header_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/file100-native-load-before-AP-header.bin",
+      "source": "guest O_RDONLY two complete equal reads; observer reservation only",
+      "sequence": 2,
+      "generation": 1,
+      "bytes": 2229740,
+      "source_read_error": 0,
+      "shutdown_control": 0,
+      "restore_status": 0,
+      "restore_seen": 0,
+      "host_monotonic": 239595.9000365,
+      "valid": true,
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/Backup-native-file-native-load-before-AP.bin",
+      "sha256": "552fd5f8b422f855aecbe0c3918b56f83f60fb76ea9a3b6fc7a0291c26035d9e",
+      "fnv64": "0x5e67a72ada4f73a9",
+      "guest_fnv64": "0x5e67a72ada4f73a9",
+      "read_only_file_snapshot_not_RAM_Backup_substitution": true
+    },
+    "bank_comparison": [
+      {
+        "offset": 0,
+        "native_file_bytes": 857900,
+        "loaded_sha256": "85285ba42c9f2260baf478a13e1c1caed8eb75aa363ff1bcff26f86ba6e17851",
+        "file_sha256": "85285ba42c9f2260baf478a13e1c1caed8eb75aa363ff1bcff26f86ba6e17851",
+        "all_bytes_equal": true,
+        "payload_after_header_equal": true,
+        "difference_count": 0,
+        "first_difference_offsets": [],
+        "loaded_first64_hex": "00000004aaaaaaaa01010000424b340033030000548b000040580300ecbe0900c5e38a0130000000000000000c0000000000000000000000e9070c1908043400",
+        "loaded_checksum_valid": true
+      },
+      {
+        "offset": 860160,
+        "native_file_bytes": 1369580,
+        "loaded_sha256": "b76c2f6c8caf62aa4dd11d0466575f38e12e9b6288d2d003ce326ce5530212e8",
+        "file_sha256": "b76c2f6c8caf62aa4dd11d0466575f38e12e9b6288d2d003ce326ce5530212e8",
+        "all_bytes_equal": true,
+        "payload_after_header_equal": true,
+        "difference_count": 0,
+        "first_difference_offsets": [],
+        "loaded_first64_hex": "00000004aaaaaaaa00010000424b340033030000dd79000080ef02006cf61100b23b44093000000000000000000000000000000000000000e9070c19080a3800",
+        "loaded_checksum_valid": true
+      }
+    ],
+    "force02cf0014": 0,
+    "force01070140": 0,
+    "date02cf01b4": 0,
+    "no_RAM_replay_helper": true
+  },
+  "native_keys": {
+    "source": "work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/backup-native-load-before-AP.bin",
+    "read_only": true,
+    "keys": [
+      {
+        "key": "0x2cf1841",
+        "offset": "0x9ce74",
+        "size": 4,
+        "attr": "0x2",
+        "raw": "04000000",
+        "value_unsigned": 4
+      },
+      {
+        "key": "0x2cf1842",
+        "offset": "0x9ce78",
+        "size": 4,
+        "attr": "0x0",
+        "raw": "04000000",
+        "value_unsigned": 4
+      },
+      {
+        "key": "0x2cf0014",
+        "offset": "0x8eb51",
+        "size": 1,
+        "attr": "0x40",
+        "raw": "00",
+        "value_unsigned": 0
+      },
+      {
+        "key": "0x1070140",
+        "offset": "0x6e7ac",
+        "size": 1,
+        "attr": "0x40",
+        "raw": "00",
+        "value_unsigned": 0
+      },
+      {
+        "key": "0x2cf01b4",
+        "offset": "0x9100c",
+        "size": 1,
+        "attr": "0x40",
+        "raw": "00",
+        "value_unsigned": 0
+      }
+    ]
+  },
+  "Lead_direct_standby_accepted": "msg_60dd62839249",
+  "native_UUD_mode1_option0_is_normal_nonUUD_path": true,
+  "current_standby_PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/ap101-phaseA-before-SETUP.png",
+  "MENU_first_PNG": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/ap101-step-01-key-1ab.png",
+  "actual_steps": 1,
+  "events": 2,
+  "LEFT_executed": false,
+  "English_changed": false,
+  "new_drawing_failure": {
+    "seq": 712,
+    "LF_line": 131188,
+    "result": 5,
+    "reason": "GPE_BOUNDS",
+    "stage": "plan",
+    "native144_LF_line": 131189,
+    "decoded_geometry": {
+      "raw_fields": {
+        "dx": 501,
+        "dy": 432,
+        "dw": 6,
+        "dh": 42,
+        "cx": 501,
+        "cy": 426,
+        "cw": 136,
+        "ch": 1,
+        "ax": 0,
+        "ay": 0,
+        "sx": 0,
+        "sy": 6,
+        "sw": 6,
+        "sh": 32,
+        "asx": 0,
+        "asy": 0
+      },
+      "adjusted_destination": [
+        501,
+        432,
+        6,
+        42
+      ],
+      "intersection": [
+        501,
+        432,
+        507,
+        427
+      ],
+      "empty": true
+    },
+    "empty_intersection": true,
+    "corrected_destination_width": 6,
+    "earlier_status_width96_was_transcription_error": true
+  },
+  "final_native_file": {
+    "label": "final-before-shutdown",
+    "native_path": "/setting/Backup.bin",
+    "header_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/file100-final-before-shutdown-header.bin",
+    "source": "guest O_RDONLY two complete equal reads; observer reservation only",
+    "sequence": 4,
+    "generation": 2,
+    "bytes": 2229740,
+    "source_read_error": 0,
+    "shutdown_control": 0,
+    "restore_status": 0,
+    "restore_seen": 0,
+    "host_monotonic": 239738.864008041,
+    "valid": true,
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap101r2nativefile600-425d4d97/Backup-native-file-final-before-shutdown.bin",
+    "sha256": "eb70e888c27766b52d4e27f4353bc73d63fac325c6bb545d478bd156f588b26e",
+    "fnv64": "0x62b2fb4cbe6a60c9",
+    "guest_fnv64": "0x62b2fb4cbe6a60c9",
+    "read_only_file_snapshot_not_RAM_Backup_substitution": true,
+    "bank_checksums": [
+      {
+        "offset": 0,
+        "bytes": 857900,
+        "checksum_valid": true,
+        "checksum": 25879329
+      },
+      {
+        "offset": 860160,
+        "bytes": 1369580,
+        "checksum_valid": true,
+        "checksum": 155466674
+      }
+    ]
+  },
+  "inner_Backup_sync_all_observed_calls": 0,
+  "native_file_generation2_is_background_save_not_language_change": true,
+  "native_API_restore16": "000b00b4fd7bbba9fd030091f35301a9",
+  "process_lifecycle_pass": true,
+  "missing_DATE98_TRACE_BOUND_expected_no_32B_date_set": true,
+  "next_authority": "msg_b4d68a13192e",
+  "original_clip_proof": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-empty-clip-original-proof-v2.json"
+}

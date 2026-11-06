@@ -1,0 +1,18 @@
+{
+  "syntax_error_before_test_execution": true,
+  "initial_test_source_preserved": "history/test_shared_access.initial.py",
+  "no_fixture_was_started_on_syntax_failure": true,
+  "audit_correction": "Existing MSC driver-return reenumeration was already present; compare additions, not whole-file absence.",
+  "native_API_counts": {
+    "USBDeviceOpenSeize": {
+      "before": 0,
+      "after": 0
+    },
+    "USBDeviceReEnumerate": {
+      "before": 1,
+      "after": 1
+    }
+  },
+  "no_new_SERVICE_seize_or_reenumeration": true,
+  "new_root_or_USB_operations": 0
+}

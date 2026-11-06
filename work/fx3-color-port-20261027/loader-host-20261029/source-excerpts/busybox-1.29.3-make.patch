@@ -1,0 +1,48 @@
+diff -Naur busybox-1.29.3_orig/include/inet_common.h busybox-1.29.3/include/inet_common.h
+--- busybox-1.29.3_orig/include/inet_common.h	2018-10-09 10:40:29.224080401 +0530
++++ busybox-1.29.3/include/inet_common.h	2018-10-09 10:41:28.112082196 +0530
+@@ -20,13 +20,15 @@
+  *          & 0x4000: host instead of net,
+  *          & 0x0fff: don't resolve
+  */
+-
++#ifdef CONFIG_FEATURE_IPV6
+ int INET6_resolve(const char *name, struct sockaddr_in6 *sin6) FAST_FUNC;
++#endif
+ 
+ /* These return malloced string */
+ char *INET_rresolve(struct sockaddr_in *s_in, int numeric, uint32_t netmask) FAST_FUNC;
++#ifdef CONFIG_FEATURE_IPV6
+ char *INET6_rresolve(struct sockaddr_in6 *sin6, int numeric) FAST_FUNC;
+-
++#endif
+ POP_SAVED_FUNCTION_VISIBILITY
+ 
+ #endif
+diff -Naur busybox-1.29.3_orig/libbb/xfuncs.c busybox-1.29.3/libbb/xfuncs.c
+--- busybox-1.29.3_orig/libbb/xfuncs.c	2018-10-09 10:40:29.120080398 +0530
++++ busybox-1.29.3/libbb/xfuncs.c	2018-10-09 10:42:18.816083742 +0530
+@@ -21,6 +21,7 @@
+  * TODO: move xmalloc() and xatonum() here.
+  */
+ #include "libbb.h"
++#include <linux/fs.h>
+ 
+ /* Turn on nonblocking I/O on a fd */
+ int FAST_FUNC ndelay_on(int fd)
+diff -Naur busybox-1.29.3_orig/networking/ping.c busybox-1.29.3/networking/ping.c
+--- busybox-1.29.3_orig/networking/ping.c	2018-10-09 10:40:29.152080399 +0530
++++ busybox-1.29.3/networking/ping.c	2018-10-09 10:43:28.896085879 +0530
+@@ -116,9 +116,11 @@
+ //usage:       "1 packets transmitted, 1 packets received, 0% packet loss\n"
+ //usage:       "round-trip min/avg/max = 20.1/20.1/20.1 ms\n"
+ 
++#include "libbb.h"
++#include <netinet/in.h>
++#include <netinet/ip.h>
+ #include <net/if.h>
+ #include <netinet/ip_icmp.h>
+-#include "libbb.h"
+ #include "common_bufsiz.h"
+ 
+ #ifdef __BIONIC__

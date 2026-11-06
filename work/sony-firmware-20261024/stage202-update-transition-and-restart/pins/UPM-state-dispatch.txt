@@ -1,0 +1,56 @@
+00009450 fd7bbfa9 stp      x29, x30, [sp, #-0x10]!
+00009454 fd030091 mov      x29, sp
+00009458 c2060058 ldr      x2, #0x9530 ; literal relocation {'symbol': '', 'section': '.data', 'symbol_value': '0x0', 'addend': '0xa8', 'type': 257}
+0000945c 429c40b9 ldr      w2, [x2, #0x9c]
+00009460 5f440071 cmp      w2, #0x11
+00009464 60030054 b.eq     #0x94d0
+00009468 5f4c0071 cmp      w2, #0x13
+0000946c 60030054 b.eq     #0x94d8
+00009470 5f480071 cmp      w2, #0x12
+00009474 60030054 b.eq     #0x94e0
+00009478 5f500071 cmp      w2, #0x14
+0000947c 60030054 b.eq     #0x94e8
+00009480 5f540071 cmp      w2, #0x15
+00009484 a0030054 b.eq     #0x94f8
+00009488 5f580071 cmp      w2, #0x16
+0000948c a0030054 b.eq     #0x9500
+00009490 5f5c0071 cmp      w2, #0x17
+00009494 a0030054 b.eq     #0x9508
+00009498 5fc80071 cmp      w2, #0x32
+0000949c a0030054 b.eq     #0x9510
+000094a0 5f040071 cmp      w2, #1
+000094a4 a0030054 b.eq     #0x9518
+000094a8 5f040171 cmp      w2, #0x41
+000094ac a0030054 b.eq     #0x9520
+000094b0 5f880071 cmp      w2, #0x22
+000094b4 a0030054 b.eq     #0x9528
+000094b8 5f080071 cmp      w2, #2
+000094bc a0010054 b.eq     #0x94f0
+000094c0 00000094 bl       #0x94c0 ; relocation {'symbol': 'k_upm_off_factor_handler_active', 'section': '.text', 'symbol_value': '0x6698', 'addend': '0x0', 'type': 283}
+000094c4 fd7bc1a8 ldp      x29, x30, [sp], #0x10
+000094c8 c0035fd6 ret      
+000094cc 1f2003d5 nop      
+000094d0 00000094 bl       #0x94d0 ; relocation {'symbol': 'k_upm_off_factor_handler_inacting_app', 'section': '.text', 'symbol_value': '0x8900', 'addend': '0x0', 'type': 283}
+000094d4 fcffff17 b        #0x94c4
+000094d8 00000094 bl       #0x94d8 ; relocation {'symbol': 'k_upm_off_factor_handler_inacting_app2', 'section': '.text', 'symbol_value': '0x7300', 'addend': '0x0', 'type': 283}
+000094dc faffff17 b        #0x94c4
+000094e0 00000094 bl       #0x94e0 ; relocation {'symbol': 'k_upm_off_factor_handler_inacting_im', 'section': '.text', 'symbol_value': '0x7590', 'addend': '0x0', 'type': 283}
+000094e4 f8ffff17 b        #0x94c4
+000094e8 00000094 bl       #0x94e8 ; relocation {'symbol': 'k_upm_off_factor_handler_inacting_im2', 'section': '.text', 'symbol_value': '0x9080', 'addend': '0x0', 'type': 283}
+000094ec f6ffff17 b        #0x94c4
+000094f0 00000094 bl       #0x94f0 ; relocation {'symbol': 'k_upm_off_factor_handler_exit', 'section': '.text', 'symbol_value': '0x6628', 'addend': '0x0', 'type': 283}
+000094f4 f4ffff17 b        #0x94c4
+000094f8 00000094 bl       #0x94f8 ; relocation {'symbol': 'k_upm_off_factor_handler_inacting_liro', 'section': '.text', 'symbol_value': '0x7820', 'addend': '0x0', 'type': 283}
+000094fc f2ffff17 b        #0x94c4
+00009500 00000094 bl       #0x9500 ; relocation {'symbol': 'k_upm_off_factor_handler_inacting_cp', 'section': '.text', 'symbol_value': '0x7ba8', 'addend': '0x0', 'type': 283}
+00009504 f0ffff17 b        #0x94c4
+00009508 00000094 bl       #0x9508 ; relocation {'symbol': 'k_upm_off_factor_handler_inacting_ginf', 'section': '.text', 'symbol_value': '0x8178', 'addend': '0x0', 'type': 283}
+0000950c eeffff17 b        #0x94c4
+00009510 00000094 bl       #0x9510 ; relocation {'symbol': 'k_upm_off_factor_handler_acting_app', 'section': '.text', 'symbol_value': '0x7040', 'addend': '0x0', 'type': 283}
+00009514 ecffff17 b        #0x94c4
+00009518 00000094 bl       #0x9518 ; relocation {'symbol': 'k_upm_off_factor_handler_init', 'section': '.text', 'symbol_value': '0x6d38', 'addend': '0x0', 'type': 283}
+0000951c eaffff17 b        #0x94c4
+00009520 00000094 bl       #0x9520 ; relocation {'symbol': 'k_upm_off_factor_handler_res', 'section': '.text', 'symbol_value': '0x85b0', 'addend': '0x0', 'type': 283}
+00009524 e8ffff17 b        #0x94c4
+00009528 00000094 bl       #0x9528 ; relocation {'symbol': 'k_upm_off_factor_handler_sus', 'section': '.text', 'symbol_value': '0x83e0', 'addend': '0x0', 'type': 283}
+0000952c e6ffff17 b        #0x94c4

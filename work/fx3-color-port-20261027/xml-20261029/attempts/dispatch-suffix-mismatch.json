@@ -1,0 +1,30 @@
+{
+  "failure": "expected suffix included a trailing space for the no-param inert module; original command read back before changing expectation",
+  "cases": [
+    {
+      "case": "trusted_config",
+      "guard_queue_return": 1,
+      "guard_queue_instructions": 2133,
+      "execute_instructions": 773,
+      "boundary": {
+        "operation": "system_request_boundary",
+        "pc": "0x100104b0",
+        "command": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE=6; us_crc32sum.sh config file",
+        "native_execution": false
+      }
+    },
+    {
+      "case": "user_config",
+      "guard_queue_return": 1,
+      "guard_queue_instructions": 2070,
+      "execute_instructions": 678,
+      "boundary": {
+        "operation": "system_request_boundary",
+        "pc": "0x100104b0",
+        "command": "export EXTRACT_ROOT=/tmp_updater/updater/update; export PATH=/tmp_updater/updater/update/program:/tmp_updater/updater/bodyfs/bin:/usr/bin:$PATH; export UPDATER_ACTION_MODE=6; probe.txt",
+        "native_execution": false
+      }
+    }
+  ],
+  "native_system_calls": 0
+}

@@ -1,0 +1,918 @@
+{
+  "status": "PASS_SERIALIZED_REFERENCE_MODEL_AND_ORIGINAL_DTOR_FRAGMENTS_ONLY",
+  "created_utc": "2026-10-25T20:15:19.632411+00:00",
+  "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+  "previous_manifest_sha256": "ce3018bf50f33d641f8d287e809be326aad6b623be320ae24c2d2a2c7511bfa3",
+  "model_scope": {
+    "assumptions": [
+      "One serialized domain for enter/reserve, close, register and lifecycle accounting",
+      "All modeled experimental producers enter before activation capture; marking follows successful registration",
+      "Input dependencies are explicitly retained/released",
+      "Native queue/current observations and actual thread PC grace are additional requirements"
+    ],
+    "bounds": "Two producers, one FIFO worker, one close, one object per producer; no exceptions or weak-memory reorder model",
+    "implemented_in_firmware": false,
+    "all_consumer_coverage_proven": false,
+    "native_serialization_proven": false
+  },
+  "reference_bounded_schedule": {
+    "candidate": "Registry",
+    "data_invariant_holds_within_bound": true,
+    "states_visited": 1194,
+    "observations": 1194,
+    "counterexample": null,
+    "states_with_data_drained_but_code_still_active": 39,
+    "scope": "Serialized API actions, two producers, one worker, one close. Not weak-memory, native locking, exceptions, all consumers, or executable-code grace proof."
+  },
+  "deliberately_wrong_candidates": [
+    {
+      "candidate": "LateReservation",
+      "data_invariant_holds_within_bound": false,
+      "states_visited": 7,
+      "observations": 7,
+      "counterexample": [
+        "P0 enter",
+        "close experimental admission"
+      ],
+      "registry": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 2,
+        "fault": null,
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": true,
+        "native_restore_or_code_reclamation_authorized": false
+      },
+      "independent_truth": [
+        0,
+        0
+      ],
+      "producer_phases": [
+        1,
+        0
+      ],
+      "queue_still_nonempty": false,
+      "current_pointer_still_present": false,
+      "scope": "False-empty registry claim; other pool guards can still block unpatch. This is not a full unsafe-unload trace."
+    },
+    {
+      "candidate": "EarlyRetirement",
+      "data_invariant_holds_within_bound": false,
+      "states_visited": 141,
+      "observations": 141,
+      "counterexample": [
+        "P0 enter",
+        "close experimental admission",
+        "P0 register prepared object",
+        "P0 publish to queue",
+        "P0 finish producer accounting",
+        "worker start P0",
+        "worker enter destructor P0"
+      ],
+      "registry": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 2,
+        "fault": null,
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": true,
+        "native_restore_or_code_reclamation_authorized": false
+      },
+      "independent_truth": [
+        4,
+        0
+      ],
+      "producer_phases": [
+        4,
+        0
+      ],
+      "queue_still_nonempty": false,
+      "current_pointer_still_present": true,
+      "scope": "False-empty registry claim; other pool guards can still block unpatch. This is not a full unsafe-unload trace."
+    }
+  ],
+  "protocol_control_cases": [
+    {
+      "case": "same address and token, distinct generation",
+      "old": {
+        "address": 8192,
+        "generation": 1
+      },
+      "new": {
+        "address": 8192,
+        "generation": 2
+      },
+      "after_old_completion": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 3,
+        "fault": null,
+        "pending": [],
+        "objects": [
+          {
+            "key": {
+              "address": 8192,
+              "generation": 2
+            },
+            "epoch": 1,
+            "ticket": 2,
+            "request_token": 7,
+            "phase": "prepared"
+          }
+        ],
+        "inputs": [],
+        "tracked_data_drained": false,
+        "native_restore_or_code_reclamation_authorized": false
+      },
+      "after_both_completions": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 3,
+        "fault": null,
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": true,
+        "native_restore_or_code_reclamation_authorized": false
+      }
+    },
+    {
+      "case": "derived input survives object retirement",
+      "before_input_release": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 2,
+        "fault": null,
+        "pending": [],
+        "objects": [],
+        "inputs": [
+          {
+            "label": "query packet",
+            "generation": 1,
+            "epoch": 1
+          }
+        ],
+        "tracked_data_drained": false,
+        "native_restore_or_code_reclamation_authorized": false
+      },
+      "after": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 2,
+        "fault": null,
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": true,
+        "native_restore_or_code_reclamation_authorized": false
+      }
+    },
+    {
+      "case": "sticky fault: capacity",
+      "after_known_cleanup": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 3,
+        "fault": "object registry capacity exhausted",
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": false,
+        "native_restore_or_code_reclamation_authorized": false
+      }
+    },
+    {
+      "case": "sticky fault: serial",
+      "after_known_cleanup": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 2,
+        "fault": "ticket space exhausted; no wrap",
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": false,
+        "native_restore_or_code_reclamation_authorized": false
+      }
+    },
+    {
+      "case": "sticky fault: unknown_completion",
+      "after_known_cleanup": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 2,
+        "fault": "unmatched retirement completion",
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": false,
+        "native_restore_or_code_reclamation_authorized": false
+      }
+    },
+    {
+      "case": "sticky fault: duplicate_registration",
+      "after_known_cleanup": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 2,
+        "fault": "duplicate object generation",
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": false,
+        "native_restore_or_code_reclamation_authorized": false
+      }
+    },
+    {
+      "case": "unmarked producer and denied late admission",
+      "after": {
+        "open": false,
+        "epoch": 1,
+        "next_serial": 2,
+        "fault": null,
+        "pending": [],
+        "objects": [],
+        "inputs": [],
+        "tracked_data_drained": true,
+        "native_restore_or_code_reclamation_authorized": false
+      }
+    }
+  ],
+  "original_destructor_header_cases": [
+    {
+      "reason": "conversion block complete",
+      "steps": 15,
+      "return_u32": 74330520,
+      "calls": [],
+      "guest_write_count": 6,
+      "elapsed_seconds": 0.000825,
+      "pcs": [
+        "0x2bb0390",
+        "0x2bb0394",
+        "0x2bb0398",
+        "0x2bb039c",
+        "0x2bb03a0",
+        "0x28443a0",
+        "0x28443a4",
+        "0x28443a8",
+        "0x28443ac",
+        "0x28443b0",
+        "0x28443b4",
+        "0x28443b8",
+        "0x28443bc",
+        "0x28443c0",
+        "0x28443c4"
+      ],
+      "stores": [
+        {
+          "pc": "0x2bb039c",
+          "address": "0x11006000",
+          "size": 8,
+          "value": 74350592
+        },
+        {
+          "pc": "0x28443a0",
+          "address": "0x1002ffd0",
+          "size": 8,
+          "value": 0
+        },
+        {
+          "pc": "0x28443a0",
+          "address": "0x1002ffd8",
+          "size": 8,
+          "value": 301989888
+        },
+        {
+          "pc": "0x28443a8",
+          "address": "0x1002ffe0",
+          "size": 8,
+          "value": 0
+        },
+        {
+          "pc": "0x28443a8",
+          "address": "0x1002ffe8",
+          "size": 8,
+          "value": 0
+        },
+        {
+          "pc": "0x28443c0",
+          "address": "0x11006000",
+          "size": 8,
+          "value": 74330520
+        }
+      ],
+      "stop_pc": "0x28443c4",
+      "instruction_limit": 2000,
+      "timeout_us": 100000,
+      "logging_return_nonconsumption_proofs": [],
+      "marker_fixture": 0,
+      "original_cache_vptr": "0x46e8000",
+      "base_vptr_after": "0x46e3198",
+      "marker_unchanged": true,
+      "dependency_CV_container_cleanup_or_free_executed": false,
+      "scope": "Original destructor header changes vptr before remaining base cleanup. Synthetic object and prefix only."
+    },
+    {
+      "reason": "conversion block complete",
+      "steps": 15,
+      "return_u32": 74330520,
+      "calls": [],
+      "guest_write_count": 6,
+      "elapsed_seconds": 0.000225,
+      "pcs": [
+        "0x2bb0390",
+        "0x2bb0394",
+        "0x2bb0398",
+        "0x2bb039c",
+        "0x2bb03a0",
+        "0x28443a0",
+        "0x28443a4",
+        "0x28443a8",
+        "0x28443ac",
+        "0x28443b0",
+        "0x28443b4",
+        "0x28443b8",
+        "0x28443bc",
+        "0x28443c0",
+        "0x28443c4"
+      ],
+      "stores": [
+        {
+          "pc": "0x2bb039c",
+          "address": "0x11006000",
+          "size": 8,
+          "value": 74350592
+        },
+        {
+          "pc": "0x28443a0",
+          "address": "0x1002ffd0",
+          "size": 8,
+          "value": 0
+        },
+        {
+          "pc": "0x28443a0",
+          "address": "0x1002ffd8",
+          "size": 8,
+          "value": 301989888
+        },
+        {
+          "pc": "0x28443a8",
+          "address": "0x1002ffe0",
+          "size": 8,
+          "value": 0
+        },
+        {
+          "pc": "0x28443a8",
+          "address": "0x1002ffe8",
+          "size": 8,
+          "value": 0
+        },
+        {
+          "pc": "0x28443c0",
+          "address": "0x11006000",
+          "size": 8,
+          "value": 74330520
+        }
+      ],
+      "stop_pc": "0x28443c4",
+      "instruction_limit": 2000,
+      "timeout_us": 100000,
+      "logging_return_nonconsumption_proofs": [],
+      "marker_fixture": 2,
+      "original_cache_vptr": "0x46e8000",
+      "base_vptr_after": "0x46e3198",
+      "marker_unchanged": true,
+      "dependency_CV_container_cleanup_or_free_executed": false,
+      "scope": "Original destructor header changes vptr before remaining base cleanup. Synthetic object and prefix only."
+    }
+  ],
+  "original_sized_delete_argument_cases": [
+    {
+      "reason": "unapproved PLT _ZdlPvm",
+      "steps": 6,
+      "return_u32": 285237248,
+      "calls": [],
+      "guest_write_count": 0,
+      "elapsed_seconds": 0.000159,
+      "pcs": [
+        "0x2bb03b8",
+        "0x2bb03bc",
+        "0x2bb03c0",
+        "0x2bb03c4",
+        "0x2bb03c8",
+        "0x1593060"
+      ],
+      "stores": [],
+      "stop_pc": "0x1593060",
+      "instruction_limit": 2000,
+      "timeout_us": 100000,
+      "logging_return_nonconsumption_proofs": [],
+      "marker_fixture": 0,
+      "object_pointer": "0x11006000",
+      "size": 1240,
+      "original_free_executed": false,
+      "scope": "Independent post-base-destructor precondition; original tail-call arguments only. No actual destructor completion or free."
+    },
+    {
+      "reason": "unapproved PLT _ZdlPvm",
+      "steps": 6,
+      "return_u32": 285237248,
+      "calls": [],
+      "guest_write_count": 0,
+      "elapsed_seconds": 0.00013,
+      "pcs": [
+        "0x2bb03b8",
+        "0x2bb03bc",
+        "0x2bb03c0",
+        "0x2bb03c4",
+        "0x2bb03c8",
+        "0x1593060"
+      ],
+      "stores": [],
+      "stop_pc": "0x1593060",
+      "instruction_limit": 2000,
+      "timeout_us": 100000,
+      "logging_return_nonconsumption_proofs": [],
+      "marker_fixture": 2,
+      "object_pointer": "0x11006000",
+      "size": 1240,
+      "original_free_executed": false,
+      "scope": "Independent post-base-destructor precondition; original tail-call arguments only. No actual destructor completion or free."
+    }
+  ],
+  "static_regions": [
+    {
+      "name": "cache_destructors",
+      "start": "0x2bb0390",
+      "end_exclusive": "0x2bb03cc",
+      "instructions": [
+        {
+          "va": "0x2bb0390",
+          "bytes": "81de00d0",
+          "asm": "adrp x1, #0x4782000"
+        },
+        {
+          "va": "0x2bb0394",
+          "bytes": "21ec43f9",
+          "asm": "ldr x1, [x1, #0x7d8]"
+        },
+        {
+          "va": "0x2bb0398",
+          "bytes": "21400091",
+          "asm": "add x1, x1, #0x10"
+        },
+        {
+          "va": "0x2bb039c",
+          "bytes": "010000f9",
+          "asm": "str x1, [x0]"
+        },
+        {
+          "va": "0x2bb03a0",
+          "bytes": "0050f217",
+          "asm": "b #0x28443a0"
+        },
+        {
+          "va": "0x2bb03a4",
+          "bytes": "fd7bbea9",
+          "asm": "stp x29, x30, [sp, #-0x20]!"
+        },
+        {
+          "va": "0x2bb03a8",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "va": "0x2bb03ac",
+          "bytes": "f30b00f9",
+          "asm": "str x19, [sp, #0x10]"
+        },
+        {
+          "va": "0x2bb03b0",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0"
+        },
+        {
+          "va": "0x2bb03b4",
+          "bytes": "f7ffff97",
+          "asm": "bl #0x2bb0390"
+        },
+        {
+          "va": "0x2bb03b8",
+          "bytes": "e00313aa",
+          "asm": "mov x0, x19"
+        },
+        {
+          "va": "0x2bb03bc",
+          "bytes": "f30b40f9",
+          "asm": "ldr x19, [sp, #0x10]"
+        },
+        {
+          "va": "0x2bb03c0",
+          "bytes": "fd7bc2a8",
+          "asm": "ldp x29, x30, [sp], #0x20"
+        },
+        {
+          "va": "0x2bb03c4",
+          "bytes": "019b80d2",
+          "asm": "mov x1, #0x4d8"
+        },
+        {
+          "va": "0x2bb03c8",
+          "bytes": "268ba717",
+          "asm": "b #0x1593060"
+        }
+      ]
+    },
+    {
+      "name": "base_destructor_cleanup",
+      "start": "0x28443a0",
+      "end_exclusive": "0x2844420",
+      "instructions": [
+        {
+          "va": "0x28443a0",
+          "bytes": "fd7bbda9",
+          "asm": "stp x29, x30, [sp, #-0x30]!"
+        },
+        {
+          "va": "0x28443a4",
+          "bytes": "fd030091",
+          "asm": "mov x29, sp"
+        },
+        {
+          "va": "0x28443a8",
+          "bytes": "f35301a9",
+          "asm": "stp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x28443ac",
+          "bytes": "f30300aa",
+          "asm": "mov x19, x0"
+        },
+        {
+          "va": "0x28443b0",
+          "bytes": "60f800d0",
+          "asm": "adrp x0, #0x4752000"
+        },
+        {
+          "va": "0x28443b4",
+          "bytes": "74d240f9",
+          "asm": "ldr x20, [x19, #0x1a0]"
+        },
+        {
+          "va": "0x28443b8",
+          "bytes": "007444f9",
+          "asm": "ldr x0, [x0, #0x8e8]"
+        },
+        {
+          "va": "0x28443bc",
+          "bytes": "00400091",
+          "asm": "add x0, x0, #0x10"
+        },
+        {
+          "va": "0x28443c0",
+          "bytes": "600200f9",
+          "asm": "str x0, [x19]"
+        },
+        {
+          "va": "0x28443c4",
+          "bytes": "f51300f9",
+          "asm": "str x21, [sp, #0x20]"
+        },
+        {
+          "va": "0x28443c8",
+          "bytes": "75d640f9",
+          "asm": "ldr x21, [x19, #0x1a8]"
+        },
+        {
+          "va": "0x28443cc",
+          "bytes": "bf0214eb",
+          "asm": "cmp x21, x20"
+        },
+        {
+          "va": "0x28443d0",
+          "bytes": "c0000054",
+          "asm": "b.eq #0x28443e8"
+        },
+        {
+          "va": "0x28443d4",
+          "bytes": "800640f9",
+          "asm": "ldr x0, [x20, #8]"
+        },
+        {
+          "va": "0x28443d8",
+          "bytes": "400000b4",
+          "asm": "cbz x0, #0x28443e0"
+        },
+        {
+          "va": "0x28443dc",
+          "bytes": "5cffff97",
+          "asm": "bl #0x284414c"
+        },
+        {
+          "va": "0x28443e0",
+          "bytes": "94620091",
+          "asm": "add x20, x20, #0x18"
+        },
+        {
+          "va": "0x28443e4",
+          "bytes": "faffff17",
+          "asm": "b #0x28443cc"
+        },
+        {
+          "va": "0x28443e8",
+          "bytes": "60d240f9",
+          "asm": "ldr x0, [x19, #0x1a0]"
+        },
+        {
+          "va": "0x28443ec",
+          "bytes": "400000b4",
+          "asm": "cbz x0, #0x28443f4"
+        },
+        {
+          "va": "0x28443f0",
+          "bytes": "5036b597",
+          "asm": "bl #0x1591d30"
+        },
+        {
+          "va": "0x28443f4",
+          "bytes": "60620591",
+          "asm": "add x0, x19, #0x158"
+        },
+        {
+          "va": "0x28443f8",
+          "bytes": "82ffff97",
+          "asm": "bl #0x2844200"
+        },
+        {
+          "va": "0x28443fc",
+          "bytes": "60a20491",
+          "asm": "add x0, x19, #0x128"
+        },
+        {
+          "va": "0x2844400",
+          "bytes": "7039b597",
+          "asm": "bl #0x15929c0"
+        },
+        {
+          "va": "0x2844404",
+          "bytes": "60a20291",
+          "asm": "add x0, x19, #0xa8"
+        },
+        {
+          "va": "0x2844408",
+          "bytes": "54affd97",
+          "asm": "bl #0x27b0158"
+        },
+        {
+          "va": "0x284440c",
+          "bytes": "f51340f9",
+          "asm": "ldr x21, [sp, #0x20]"
+        },
+        {
+          "va": "0x2844410",
+          "bytes": "60a20091",
+          "asm": "add x0, x19, #0x28"
+        },
+        {
+          "va": "0x2844414",
+          "bytes": "f35341a9",
+          "asm": "ldp x19, x20, [sp, #0x10]"
+        },
+        {
+          "va": "0x2844418",
+          "bytes": "fd7bc3a8",
+          "asm": "ldp x29, x30, [sp], #0x30"
+        },
+        {
+          "va": "0x284441c",
+          "bytes": "4faffd17",
+          "asm": "b #0x27b0158"
+        }
+      ]
+    },
+    {
+      "name": "replacement_capture_before_old_delete",
+      "start": "0x2c3ddb4",
+      "end_exclusive": "0x2c3de14",
+      "instructions": [
+        {
+          "va": "0x2c3ddb4",
+          "bytes": "009b80d2",
+          "asm": "mov x0, #0x4d8"
+        },
+        {
+          "va": "0x2c3ddb8",
+          "bytes": "ba57a597",
+          "asm": "bl #0x1593ca0"
+        },
+        {
+          "va": "0x2c3ddbc",
+          "bytes": "f40300aa",
+          "asm": "mov x20, x0"
+        },
+        {
+          "va": "0x2c3ddc0",
+          "bytes": "e10317aa",
+          "asm": "mov x1, x23"
+        },
+        {
+          "va": "0x2c3ddc4",
+          "bytes": "15feff97",
+          "asm": "bl #0x2c3d618"
+        },
+        {
+          "va": "0x2c3ddc8",
+          "bytes": "600640f9",
+          "asm": "ldr x0, [x19, #8]"
+        },
+        {
+          "va": "0x2c3ddcc",
+          "bytes": "010840f9",
+          "asm": "ldr x1, [x0, #0x10]"
+        },
+        {
+          "va": "0x2c3ddd0",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20"
+        },
+        {
+          "va": "0x2c3ddd4",
+          "bytes": "0054fe97",
+          "asm": "bl #0x2bd2dd4"
+        },
+        {
+          "va": "0x2c3ddd8",
+          "bytes": "600640f9",
+          "asm": "ldr x0, [x19, #8]"
+        },
+        {
+          "va": "0x2c3dddc",
+          "bytes": "000840f9",
+          "asm": "ldr x0, [x0, #0x10]"
+        },
+        {
+          "va": "0x2c3dde0",
+          "bytes": "010040f9",
+          "asm": "ldr x1, [x0]"
+        },
+        {
+          "va": "0x2c3dde4",
+          "bytes": "170840f9",
+          "asm": "ldr x23, [x0, #0x10]"
+        },
+        {
+          "va": "0x2c3dde8",
+          "bytes": "210440f9",
+          "asm": "ldr x1, [x1, #8]"
+        },
+        {
+          "va": "0x2c3ddec",
+          "bytes": "20003fd6",
+          "asm": "blr x1"
+        },
+        {
+          "va": "0x2c3ddf0",
+          "bytes": "600640f9",
+          "asm": "ldr x0, [x19, #8]"
+        },
+        {
+          "va": "0x2c3ddf4",
+          "bytes": "140800f9",
+          "asm": "str x20, [x0, #0x10]"
+        },
+        {
+          "va": "0x2c3ddf8",
+          "bytes": "60d700d0",
+          "asm": "adrp x0, #0x472b000"
+        },
+        {
+          "va": "0x2c3ddfc",
+          "bytes": "950a00b9",
+          "asm": "str w21, [x20, #8]"
+        },
+        {
+          "va": "0x2c3de00",
+          "bytes": "961200f9",
+          "asm": "str x22, [x20, #0x20]"
+        },
+        {
+          "va": "0x2c3de04",
+          "bytes": "008446f9",
+          "asm": "ldr x0, [x0, #0xd08]"
+        },
+        {
+          "va": "0x2c3de08",
+          "bytes": "007878f8",
+          "asm": "ldr x0, [x0, x24, lsl #3]"
+        },
+        {
+          "va": "0x2c3de0c",
+          "bytes": "970201a9",
+          "asm": "stp x23, x0, [x20, #0x10]"
+        },
+        {
+          "va": "0x2c3de10",
+          "bytes": "20008052",
+          "asm": "mov w0, #1"
+        }
+      ]
+    },
+    {
+      "name": "worker_delete_before_current_clear",
+      "start": "0x2bd7750",
+      "end_exclusive": "0x2bd7788",
+      "instructions": [
+        {
+          "va": "0x2bd7750",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20"
+        },
+        {
+          "va": "0x2bd7754",
+          "bytes": "dee9ff97",
+          "asm": "bl #0x2bd1ecc"
+        },
+        {
+          "va": "0x2bd7758",
+          "bytes": "800240f9",
+          "asm": "ldr x0, [x20]"
+        },
+        {
+          "va": "0x2bd775c",
+          "bytes": "010440f9",
+          "asm": "ldr x1, [x0, #8]"
+        },
+        {
+          "va": "0x2bd7760",
+          "bytes": "e00314aa",
+          "asm": "mov x0, x20"
+        },
+        {
+          "va": "0x2bd7764",
+          "bytes": "20003fd6",
+          "asm": "blr x1"
+        },
+        {
+          "va": "0x2bd7768",
+          "bytes": "7f4600f9",
+          "asm": "str xzr, [x19, #0x88]"
+        },
+        {
+          "va": "0x2bd776c",
+          "bytes": "e00316aa",
+          "asm": "mov x0, x22"
+        },
+        {
+          "va": "0x2bd7770",
+          "bytes": "0b84ed97",
+          "asm": "bl #0x273879c"
+        },
+        {
+          "va": "0x2bd7774",
+          "bytes": "e0031aaa",
+          "asm": "mov x0, x26"
+        },
+        {
+          "va": "0x2bd7778",
+          "bytes": "0984ed97",
+          "asm": "bl #0x273879c"
+        },
+        {
+          "va": "0x2bd777c",
+          "bytes": "007885d2",
+          "asm": "mov x0, #0x2bc0"
+        },
+        {
+          "va": "0x2bd7780",
+          "bytes": "a002008b",
+          "asm": "add x0, x21, x0"
+        },
+        {
+          "va": "0x2bd7784",
+          "bytes": "67eaa697",
+          "asm": "bl #0x1592120"
+        }
+      ]
+    }
+  ],
+  "requirements_from_evidence": [
+    "Reserve producer identity before reading/acting on experimental activation, in the same serialization domain as close.",
+    "Register each object before it can carry a marked value; do not defer registration until a later request token is assigned.",
+    "Use a private ticket/generation and explicit configuration epoch; original request token is not unique configuration identity, and allocation addresses can be reused.",
+    "Keep retirement counted until all scoped cleanup has returned; reading a live-class vptr at a generic free site is insufficient because the original destructor changes it earlier.",
+    "Retain derived packets and other dependent consumers independently when they can outlive the source object; verify actual ownership paths before choosing release sites.",
+    "Registry exhaustion, identity mismatch or wrap must block clean-exit claims; this model does not supply a safe native error-return or fallback policy.",
+    "Tracked data drained is separate from queue/current idle and code no longer executing. No code restore/reclamation is authorized by this model; verified detachment, PC grace, instruction publication and all-consumer coverage remain missing."
+  ],
+  "native_mutex_allocator_free_destructor_cleanup_wait_or_thread_executed": false,
+  "firmware_hook_patch_or_runtime_registry_exported": false,
+  "native_restore_or_code_reclamation_authorized": false,
+  "camera_interface_auth_driver_files_module_WBI_or_write": false,
+  "new_remote_attempts": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

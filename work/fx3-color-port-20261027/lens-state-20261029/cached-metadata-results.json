@@ -1,0 +1,181 @@
+{
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/package-20261028/libraries/libupdaterufp.so",
+  "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+  "original_window": {
+    "va": "0x1dbc",
+    "bytes": 424,
+    "sha256": "c1012df91b2c0968ef7e2088543691f73aaa7c377d7b2c44cef8d02033d8fead"
+  },
+  "cases": [
+    {
+      "declared_metadata": {
+        "incoming_model": 2443182208,
+        "cached_model": 2443182208,
+        "incoming_region": 0,
+        "cached_region": 0,
+        "incoming_version": 258,
+        "cached_version": 257,
+        "skip_version": 0,
+        "query_live": 0
+      },
+      "returned": true,
+      "result": "0x1",
+      "boundary": null,
+      "original_cached_metadata_writes": [],
+      "instructions": 42,
+      "case": "newer_version"
+    },
+    {
+      "declared_metadata": {
+        "incoming_model": 2443182208,
+        "cached_model": 2443182208,
+        "incoming_region": 0,
+        "cached_region": 0,
+        "incoming_version": 257,
+        "cached_version": 257,
+        "skip_version": 0,
+        "query_live": 0
+      },
+      "returned": true,
+      "result": "0x142",
+      "boundary": null,
+      "original_cached_metadata_writes": [],
+      "instructions": 42,
+      "case": "same_version"
+    },
+    {
+      "declared_metadata": {
+        "incoming_model": 2443182208,
+        "cached_model": 2443182208,
+        "incoming_region": 0,
+        "cached_region": 0,
+        "incoming_version": 256,
+        "cached_version": 257,
+        "skip_version": 0,
+        "query_live": 0
+      },
+      "returned": true,
+      "result": "0x142",
+      "boundary": null,
+      "original_cached_metadata_writes": [],
+      "instructions": 42,
+      "case": "older_version"
+    },
+    {
+      "declared_metadata": {
+        "incoming_model": 2443182208,
+        "cached_model": 2443182209,
+        "incoming_region": 0,
+        "cached_region": 0,
+        "incoming_version": 258,
+        "cached_version": 257,
+        "skip_version": 0,
+        "query_live": 0
+      },
+      "returned": true,
+      "result": "0x140",
+      "boundary": null,
+      "original_cached_metadata_writes": [],
+      "instructions": 24,
+      "case": "model_mismatch"
+    },
+    {
+      "declared_metadata": {
+        "incoming_model": 2443182208,
+        "cached_model": 2443182208,
+        "incoming_region": 0,
+        "cached_region": 1,
+        "incoming_version": 258,
+        "cached_version": 257,
+        "skip_version": 0,
+        "query_live": 0
+      },
+      "returned": true,
+      "result": "0x141",
+      "boundary": null,
+      "original_cached_metadata_writes": [],
+      "instructions": 30,
+      "case": "region_mismatch"
+    },
+    {
+      "declared_metadata": {
+        "incoming_model": 2443182208,
+        "cached_model": 2443182208,
+        "incoming_region": 0,
+        "cached_region": 0,
+        "incoming_version": 256,
+        "cached_version": 257,
+        "skip_version": 1,
+        "query_live": 0
+      },
+      "returned": true,
+      "result": "0x1",
+      "boundary": null,
+      "original_cached_metadata_writes": [],
+      "instructions": 34,
+      "case": "skip_version_older"
+    },
+    {
+      "declared_metadata": {
+        "incoming_model": 2443182208,
+        "cached_model": 2443182209,
+        "incoming_region": 0,
+        "cached_region": 0,
+        "incoming_version": 258,
+        "cached_version": 257,
+        "skip_version": 1,
+        "query_live": 0
+      },
+      "returned": true,
+      "result": "0x140",
+      "boundary": null,
+      "original_cached_metadata_writes": [],
+      "instructions": 24,
+      "case": "skip_version_model_mismatch"
+    },
+    {
+      "declared_metadata": {
+        "incoming_model": 2443182208,
+        "cached_model": 2443182208,
+        "incoming_region": 0,
+        "cached_region": 0,
+        "incoming_version": 258,
+        "cached_version": 257,
+        "skip_version": 0,
+        "query_live": 1
+      },
+      "returned": false,
+      "result": null,
+      "boundary": {
+        "operation": "before_OSAL_allocation",
+        "pc": "0x400013e0",
+        "service": "0x912503d0",
+        "message_bytes": 20,
+        "native_call": false
+      },
+      "original_cached_metadata_writes": [
+        {
+          "address": "0x40025264",
+          "bytes": 2,
+          "value": 0,
+          "pc": "0x40001e04"
+        },
+        {
+          "address": "0x4002525c",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e08"
+        },
+        {
+          "address": "0x40025260",
+          "bytes": 4,
+          "value": 0,
+          "pc": "0x40001e0c"
+        }
+      ],
+      "instructions": 23,
+      "case": "normal_live_query_flag"
+    }
+  ],
+  "scope": "Original UFP metadata comparison window executes over explicitly synthetic incoming/cached model, region, version, skip flag and live-query flag. Seven cases select its existing cache-only branch, which normal lens preparation does not select; no service reply is fabricated. Live-query=1 clears cached fields then stops at original OSAL allocation entry with no allocation/send/receive. Results characterize local comparison/error rules, not actual lens identity, real state, whole preparation, normal API admission, process launch, native target loading, USB or camera."
+}

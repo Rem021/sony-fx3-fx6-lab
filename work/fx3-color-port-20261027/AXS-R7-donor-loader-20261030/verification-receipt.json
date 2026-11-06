@@ -1,0 +1,74 @@
+{
+  "created_utc": "2026-10-30T17:02:14.746392+00:00",
+  "status": "PASS_TWO_ORIGINAL_AXS_SAMPLES_AND_BOUNDED_HEADER_MODEL_NOT_TARGET_FLASH_READINESS",
+  "previous_goal_turn_classification": "progress: original historical admission data-path contract completed and sealed",
+  "previous_sealed_files_verified": 116,
+  "previous_seal_sha256": "9154e28a1a53179d13c64118316e723cb2a461555571dd815f454a430508fc6e",
+  "current_progress": "Two complete official AXS firmware members acquired/verified and a cross-version bounded header model inferred; no loader or VENICE body decode.",
+  "AXS600_complete_member_CRC_and_MD5": true,
+  "AXS601_complete_ZIP_regular_member_CRC_count": 6,
+  "AXS601_firmware_MD5_verified": true,
+  "ZIP_files_or_members_pinned": true,
+  "header_samples": 2,
+  "fitted_runs": 12,
+  "held_out_bits_verified": 694,
+  "body_readability_established": false,
+  "VENICE_reader_equivalence_established": false,
+  "own_scripts_syntax_checked": 5,
+  "initial_validation_failures_preserved_and_resolved": true,
+  "repeated_firmware_download_for_selector_fix": false,
+  "requirements_preserved": [
+    {
+      "id": "FX5_full_private_donor",
+      "status": "missing",
+      "proof_required": "Complete readable private system/menu payload and dependencies"
+    },
+    {
+      "id": "VENICE_complete_ISP_color_chain",
+      "status": "incomplete",
+      "proof_required": "Readable private inner plus full realtime ISP/sensor calibration/data-domain mapping"
+    },
+    {
+      "id": "RAM_chip_and_DMM_runtime",
+      "status": "incomplete",
+      "proof_required": "Normal hardware initialization and actual buffers/capacity/payload linked to allocation"
+    },
+    {
+      "id": "CMOS_RAW_and_calibration",
+      "status": "unproven",
+      "proof_required": "Reachable original acquisition and actual RAW samples/domain validation"
+    },
+    {
+      "id": "professional_menu_and_MAIN_recording",
+      "status": "incomplete",
+      "proof_required": "Whole professional UI/control route and target recording output"
+    },
+    {
+      "id": "exact_modified_target_firmware",
+      "status": "missing",
+      "proof_required": "Concrete classic FX3 target package carrying the requested full change"
+    },
+    {
+      "id": "classic_FX3_7_02_modified_package_admission",
+      "status": "unproven",
+      "proof_required": "Reproducible acceptance evidence for modified whole package, not original signature/repacking"
+    },
+    {
+      "id": "normal_boot_support_and_independent_recovery",
+      "status": "unproven",
+      "proof_required": "Target compatibility and independent recovery evidence sufficient for readiness"
+    },
+    {
+      "id": "stop_before_actual_flash",
+      "status": "preserved",
+      "proof_required": "No target flashing; not a substitute for earlier requirements"
+    }
+  ],
+  "whole_goal_complete": false,
+  "device_actions": 0,
+  "vendor_program_execution": false,
+  "modified_firmware_created": false,
+  "private_signing_operations": false,
+  "other_owner_files_changed": false,
+  "confirmation_pending_for_this_task": false
+}

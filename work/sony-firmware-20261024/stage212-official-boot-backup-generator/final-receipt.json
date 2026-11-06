@@ -1,0 +1,350 @@
+{
+  "schema": "fx3-stage212-official-boot-generator-v1",
+  "created_utc": "2026-10-30T01:14:59.087263+00:00",
+  "previous_manifest_sha256": "62070d9c8d226a08bc467e463d4faefdcd1aa858f7f3b9867077342e20e6eac8",
+  "previous_members_reverified": 51,
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/README.md",
+      "bytes": 7932,
+      "sha256": "535edf81d4aaeaf31d2363c83ecf983ace072a937c07a6b7a1ed0f9be1d09e00"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/analysis-refinements.json",
+      "bytes": 1561,
+      "sha256": "6620cb6d3a0c4a4cd1477472834029284b43d26933c20bde7c933b70a8d8654a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/bksb-PLT.json",
+      "bytes": 1596,
+      "sha256": "b246170e1dcb0829ab0a8230a18f4b5af73a556c74b5d5c7f8647a15bebff7e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/bksb-disassembly.txt",
+      "bytes": 18509,
+      "sha256": "3453c8843c7f201a9b4aa142fc9a50772330810334347c9313584326d299cc25"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/bksb-metadata.json",
+      "bytes": 16472,
+      "sha256": "90deb2c704e48b631bdabeed6c1ad2e1a22379871e5b9452c0a11dc773d4b0e0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/bksb.elf-word-locator.txt",
+      "bytes": 83727,
+      "sha256": "c9f5ca912217db10600c3b8fb4533d2f7f79b04626289e5107bebe4f8487a964"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/default-BKSB-layout-comparison.json",
+      "bytes": 315041,
+      "sha256": "cb72f9c6560171e7c2ba435d7bef5ea6ddace73f9b22d8f964dde567fdfb5ba2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/goal-status-after.json",
+      "bytes": 415241,
+      "sha256": "9e1f7b849250b455c7f315b821e6ca1aeeed6eebe058641b1c5c118bee0d450a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/goal-status-before.json",
+      "bytes": 408896,
+      "sha256": "cb5708a1aa0a8e335029714c4e4b6583a08526636388c1c60ce8950a3d001b77"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/implementation-review.json",
+      "bytes": 951,
+      "sha256": "a1eb75a34da7b02a1691ab3214530f52e9bcf60f9ef974bb4083fae02a53f182"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/native-goal-observed.json",
+      "bytes": 384,
+      "sha256": "9cbf2256c626940a8b29553a6f075fba518c817054c593b0084c37518b0579e6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/official-boot-writer-proof.json",
+      "bytes": 28810,
+      "sha256": "f4f087d4ed387395ec8cbf483d33cbc18fab399bcd67364ab1982542f9828e81"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/bksb.elf",
+      "bytes": 18568,
+      "sha256": "c14f9fd70302d67f45ab50b3edc130b40d471f3415bc40a20e7a30d7b815ddb9"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/body_common.sh",
+      "bytes": 137,
+      "sha256": "e50af3525f040a9a3ac62d4804958e5db49eb2c7aabc1445bcb15b420c176195"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/loader_writer.sh",
+      "bytes": 2424,
+      "sha256": "ff5f25c1e32e52fe3053ab987cf8bb38bfb96597194f9d85be67d90e48f1d342"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/nor_loader_writer.sh",
+      "bytes": 9106,
+      "sha256": "78b794fc52c5e104a899a6bf23278bd211e4a4f3c987a505bc43d648fcb5c2d6"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/pformat.elf",
+      "bytes": 1631008,
+      "sha256": "3ce2a76f477e937369f8e5b6dde2cdcb838645b53492b9a184ee16bbed389e21"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/bin/ud_nor_pformat.elf",
+      "bytes": 10336,
+      "sha256": "065955c5e6f34f622c9d35490bc3bfc84e3daeb6de882cda1cc9a7b63a15f9da"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/originals/config/common.src",
+      "bytes": 2546,
+      "sha256": "96f3bddf603788409af69fead42f6686e3701ad6f4aa2ccd3af0ef4ba986d7d2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pformat.elf-PLT.json",
+      "bytes": 7353,
+      "sha256": "ad9ec9086c921c38469d081ab2495604faddd7a07f2e2c78c2e0a489cbd69c69"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pformat.elf-selected-strings.json",
+      "bytes": 2886,
+      "sha256": "488103ce782ff2ad675a11ba4061329d306e24f5445860ad765ad991bf2a4252"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pformat.elf-word-locator.txt",
+      "bytes": 106360,
+      "sha256": "eaf9d7372a99045362a30fbb8e980211e22885fe24d222f3a4453632e4014e2e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-data-offset-and-write.bin",
+      "bytes": 172,
+      "sha256": "a7fece3720e0073e8f6a66f29328d6b708688611b85eccf20836dc0605bb54e2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-data-offset-and-write.txt",
+      "bytes": 1440,
+      "sha256": "b156be0a3a3a20c8b261490c6667c2be6a26d28320d4118a7ef5fd521ea43bcc"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-data-padding.bin",
+      "bytes": 100,
+      "sha256": "8064d089292c65b8f6c5fff3cdeab4834f217c5766ccd0f634faf8eb913bc5b0"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-data-padding.txt",
+      "bytes": 875,
+      "sha256": "e141f448bdf22f574acbe4dd50c500830dae8d710be967940d668e869262afbd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-header-offset-sizing.bin",
+      "bytes": 244,
+      "sha256": "aa073c897eb2a3c622674edd99838ffd4547031fd1b40613bc47b0b804cbc9fd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-header-offset-sizing.txt",
+      "bytes": 2169,
+      "sha256": "8fe692b389e2f3c7169e3ee6cfbcf6167a7338c0e624478831a444d82d0ceead"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-input-open-readonly.bin",
+      "bytes": 268,
+      "sha256": "c86da35d008c14e1e4c8e3e8d3876621c90df31b9d3e9e53ba1a5fc60372095b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-input-open-readonly.txt",
+      "bytes": 2322,
+      "sha256": "38e9e555d19567cebc547c445507d047873d06acf6144f4fcb51ad113c71182c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-magic-constant.bin",
+      "bytes": 4,
+      "sha256": "6236591dbe292c374ac756fb738222138cb081ec9e10d7cbeac1a8e363159835"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-magic-constant.txt",
+      "bytes": 25,
+      "sha256": "5fdd159c862603262f3e71ae7c1ed1b4cca9a7a17f8425d53a763e7b45b591ec"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-magic-table-write.bin",
+      "bytes": 120,
+      "sha256": "e863e423b282cc46a7d2bfbe44c2537d6a106b31dc81b0f0d6af31b544293f70"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-magic-table-write.txt",
+      "bytes": 1005,
+      "sha256": "c9002b25417ac30354e3f8cd6792bf55f06e5da1f29f5ad5c2f29b3bd3d337e3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-main-options.bin",
+      "bytes": 224,
+      "sha256": "3570498b6356ef7d24a1e3afde300619869a116063e59e20dc5139a2ee879569"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-main-options.txt",
+      "bytes": 1961,
+      "sha256": "69af9b6dd00414c60b348b7608a2933147783220ecfc24148129b20039901fdb"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-output-slot-record-selection.bin",
+      "bytes": 36,
+      "sha256": "b92074d2484d200d38edc9fee3acab2a30028a2eeafb9c60b9dc2074661f6dfd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-output-slot-record-selection.txt",
+      "bytes": 334,
+      "sha256": "faf1035dd19491f7efec3183ea4b9e7817855526e3f0f0dbc3fcd3a0d5e23a7b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-record-selector.bin",
+      "bytes": 208,
+      "sha256": "a155f11a5875e2e9fd552dea2d2a2d6620e4649fb606f349b154290bdbcee238"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-record-selector.txt",
+      "bytes": 1782,
+      "sha256": "ecbaa9a3889258d2223bc490299df4ec6b9fca4eddd2093c64559d9a477ca61b"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-selected-record-call.bin",
+      "bytes": 56,
+      "sha256": "02b9ca9a89d92af23a0bca710957203d4dc28ac0587e86d70357f013006bb41d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/bksb-selected-record-call.txt",
+      "bytes": 482,
+      "sha256": "4d75bda451849751f89d688a511f983553993a13407d7bc506949a784a545087"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-component-copy.bin",
+      "bytes": 96,
+      "sha256": "40b333123ec0dfb3708b670944e2c6c2f8be7a6b923fd6217518858953671cbd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-component-copy.txt",
+      "bytes": 832,
+      "sha256": "ef90375d38ac95ee40ce5dc51d38a1dbdad3a028dfe938969f9cfe10cd9cf75e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-header-struct-writes.bin",
+      "bytes": 144,
+      "sha256": "06e95b0e4a065a5f5b4e50672e20cd1236a0df2fcca47438e055a57958188df2"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-header-struct-writes.txt",
+      "bytes": 1409,
+      "sha256": "907aed33fb886f767e187c6ae34d186f20923ae52e2c09f584c98ea6105cad0d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-main-discard-write-return.bin",
+      "bytes": 24,
+      "sha256": "eb8c9719b9308b335e414199f96845cd7668538451d46481469e504b54966951"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-main-discard-write-return.txt",
+      "bytes": 205,
+      "sha256": "2ebebdc41f094c836d9a2e7ae968ad9d4dc8649cbcb709c388de0e5c8cbfa632"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-main-return.bin",
+      "bytes": 32,
+      "sha256": "e771a4624ae546c64d23980c73e17654b1051723b691739266408962e935d1c4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-main-return.txt",
+      "bytes": 320,
+      "sha256": "2fde906bcb94a8e8e9dac7400bcf6a06910ad39a0e9ff62cbcd408d7d50a6dbf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-open-map-boot-device.bin",
+      "bytes": 172,
+      "sha256": "b1e483982860b1220958e8446c6a5cfabb0a7378dd6b3a2fa5e9b4f9436cb92f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/pins/pformat-open-map-boot-device.txt",
+      "bytes": 1557,
+      "sha256": "8eedfb410bd0756928dac2c78f25958965d9440009f86b712d7fcde3ab266f34"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/prove_official_boot.py",
+      "bytes": 11821,
+      "sha256": "85fb10820ffe335e40efcbae21bacf9909e6ef25757a6598b94c9c1ca30ea374"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/readme-after.md",
+      "bytes": 89859,
+      "sha256": "f02c4ce862e4a401d8250ea1c8203aa43a2a820b425b38f0bcbf3e305903a385"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/readme-before.md",
+      "bytes": 89487,
+      "sha256": "bb8babc1b2f7ff246f66af56fac744f5c906662d486fda0defde134e4086e276"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/readme-rebased-before.md",
+      "bytes": 89487,
+      "sha256": "bb8babc1b2f7ff246f66af56fac744f5c906662d486fda0defde134e4086e276"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/recovery-component-map.json",
+      "bytes": 2025,
+      "sha256": "01e6db446744e25934e3522981714bb0be07698227bd8f268527af3de72b0255"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/seal_stage.py",
+      "bytes": 10230,
+      "sha256": "ab85fba54656b449fc060312adac83371f1207310cdfa6d3e758add22740947a"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/source-capture.json",
+      "bytes": 2386,
+      "sha256": "b542781761c70bfcc92ef1a39825a7f63a2e04046d81b63a4c0af280824e68ba"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/ud_nor_pformat.elf-PLT.json",
+      "bytes": 1259,
+      "sha256": "49dbdfe05fec5aef48233dbab93c83e5b9c5f0e3a53899462330acde193ff16e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/ud_nor_pformat.elf-selected-strings.json",
+      "bytes": 967,
+      "sha256": "e8d3c106697608a64a15ec0038ab0b317cee756ca730c962ea95e65cc14b7b57"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/ud_nor_pformat.elf-word-locator.txt",
+      "bytes": 23033,
+      "sha256": "ddcc92cd6075fb602492fe4ac644c91394c0e274e2b7b85595814ca1f8ca0a8e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/upstream-refresh.json",
+      "bytes": 917,
+      "sha256": "434dda2aeb10bbbac19a67f3884e0f5ae6be04fce7348d9559dafaa19095b521"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/verification-receipt.json",
+      "bytes": 6633,
+      "sha256": "bd9cc23c60894b1685417448748e6869e9f13295fa06cc48e07eeb0a58ab5355"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/verify_contract.py",
+      "bytes": 6663,
+      "sha256": "053253cafe4b20e67a8a4761b91a3a3400df01091b72d3e47d97c445c38e5899"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage212-official-boot-backup-generator/web-source-review.json",
+      "bytes": 1673,
+      "sha256": "abe781bf17a76fe3536468af1a38ee625234923e164d0e6893cafae65333e5c8"
+    }
+  ],
+  "member_count": 66,
+  "goal_before_sha256": "cb5708a1aa0a8e335029714c4e4b6583a08526636388c1c60ce8950a3d001b77",
+  "goal_after_sha256": "9e1f7b849250b455c7f315b821e6ca1aeeed6eebe058641b1c5c118bee0d450a",
+  "mutable_heads_not_manifest_members": true,
+  "host01_bundle_sha256_unchanged": "00f983286fea58a429ff829887a1a65230cff817b51a4b5447c1a63b1a47f1d0",
+  "new_approval_granted": false,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "native_goal_observed": "active",
+  "native_goal_status_changed_by_assistant": false,
+  "goal_complete": false,
+  "persistent_write_release": false
+}

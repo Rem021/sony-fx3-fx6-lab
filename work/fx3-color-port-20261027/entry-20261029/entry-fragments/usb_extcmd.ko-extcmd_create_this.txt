@@ -1,0 +1,32 @@
+000000d0 stp        x29, x30, [sp, #-0x20]!
+000000d4 mov        x29, sp
+000000d8 stp        x19, x20, [sp, #0x10]
+000000dc mov        w20, #0
+000000e0 ldr        x19, #0x150
+000000e4 ldr        x0, [x19, #0x10]
+000000e8 cbz        x0, #0x100
+000000ec mov        w0, w20
+000000f0 ldp        x19, x20, [sp, #0x10]
+000000f4 ldp        x29, x30, [sp], #0x20
+000000f8 ret        
+000000fc nop        
+00000100 mov        x0, #0x58
+00000104 bl         #0x104 ; relocation {"type": 283, "symbol": "extcmd_mem_alloc", "addend": 0}
+00000108 cbz        x0, #0x138
+0000010c stp        xzr, xzr, [x0]
+00000110 stp        xzr, xzr, [x0, #0x10]
+00000114 stp        xzr, xzr, [x0, #0x20]
+00000118 stp        xzr, xzr, [x0, #0x30]
+0000011c stp        xzr, xzr, [x0, #0x40]
+00000120 str        xzr, [x0, #0x50]
+00000124 str        x0, [x19, #0x10]
+00000128 mov        w0, w20
+0000012c ldp        x19, x20, [sp, #0x10]
+00000130 ldp        x29, x30, [sp], #0x20
+00000134 ret        
+00000138 ldr        x1, #0x158
+0000013c mov        w2, #0x69
+00000140 ldr        x0, #0x160
+00000144 mov        w20, #-0xc
+00000148 bl         #0x148 ; relocation {"type": 283, "symbol": "printk", "addend": 0}
+0000014c b          #0xec

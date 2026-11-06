@@ -1,0 +1,209 @@
+{
+  "scope": "same_guest_CLOCK_MONOTONIC_only_for_guest_deltas; host_monotonic_only_for_host_comparison; no cross-clock subtraction",
+  "guest_event_anchors": [
+    {
+      "line": 181456,
+      "guest_ns": 215214373008,
+      "raw": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=29421974000 wait_return_ns=215214373008 wait_enter_step=0 wait_return_step=1 tid=261 downstream_processing_unproven=1"
+    },
+    {
+      "line": 181530,
+      "guest_ns": 215350678000,
+      "raw": "FX3_KEY_INPUT_RECV step=1 key=0x1ab status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=215229301008 wait_return_ns=215350678000 wait_enter_step=1 wait_return_step=1 tid=261 downstream_processing_unproven=1"
+    },
+    {
+      "line": 181552,
+      "guest_ns": 215391062000,
+      "raw": "FX3_AP89_SCREEN_OPEN_ENTER clock_id=1 ns=215391062000 tid=376 manager=0x7ee3e5e470 id1=0 id2=0x2e0 id3=0 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "line": 181582,
+      "guest_ns": 215452114000,
+      "raw": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=215452114000 tid=376 phase=controller_init_return screen_id=0x2e0 controller=0x7edd8ac0e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1"
+    },
+    {
+      "line": 181583,
+      "guest_ns": 215453619008,
+      "raw": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=215453619008 tid=376 phase=presenter_factory_return screen_id=0x2e0 controller=0x7edd8ac0e0 presenter_return=0x7edd08c0e0 native_point=0x218fff4 native_call_returned=1 visible_pixels_unproven=1"
+    },
+    {
+      "line": 181585,
+      "guest_ns": 215460694000,
+      "raw": "FX3_AP89_SCREEN_OPEN_ENTER clock_id=1 ns=215460694000 tid=376 manager=0x7ee3e5e470 id1=0x2e0 id2=0x275 id3=0x2e0 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "line": 181587,
+      "guest_ns": 215477560000,
+      "raw": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=215477560000 tid=376 phase=controller_init_return screen_id=0x275 controller=0x7edd8ac0e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1"
+    },
+    {
+      "line": 181594,
+      "guest_ns": 215500593008,
+      "raw": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=215500593008 tid=376 phase=presenter_factory_return screen_id=0x275 controller=0x7edd8ac0e0 presenter_return=0x7edd08c0e0 native_point=0x218fff4 native_call_returned=1 visible_pixels_unproven=1"
+    },
+    {
+      "line": 185502,
+      "guest_ns": 219734227008,
+      "raw": "FX3_OSD_HEADLESS_VALIDATE clock_id=1 ns=219734227008 tid=858 bitmap_format=1 gpe_format=0 fb_format=1 width=640 height=480 row_pixels=640 span=614400 bitmap_bytes=614400 physical=0x43feb5100 token=0x402 expected_token=0x402 wire_format_bool=0 active_registered_frame=1 size_result=0 result=0"
+    },
+    {
+      "line": 185503,
+      "guest_ns": 219739324000,
+      "raw": "FX3_OSD_HEADLESS_COPY clock_id=1 ns=219739324000 tid=858 bits=0x7ee2d32100 map_begin=0x7ee2d32000 map_end=0x7ee2dc9000 map_offset=0x43feb5000 physical=0x43feb5100 span=614400 native_read_lease=1 shared_raster_guard=1 copied_equal=1"
+    },
+    {
+      "line": 185513,
+      "guest_ns": 219757729008,
+      "raw": "FX3_OSD102_COMMIT clock_id=1 ns=219757729008 tid=858 frame=1999 op=0x1003 pixel_source_seq=1999 copied_GPE_last=1005 FB=0x7f50001160 bitmap=0x7f486ab410 entry=0x7f50001198 allocation=0x50001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+    },
+    {
+      "line": 230232,
+      "guest_ns": 278299028000,
+      "raw": "FX3_KEY_INPUT_RECV step=2 key=0x15 status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=215365235008 wait_return_ns=278299028000 wait_enter_step=1 wait_return_step=2 tid=261 downstream_processing_unproven=1"
+    },
+    {
+      "line": 230312,
+      "guest_ns": 278427305008,
+      "raw": "FX3_KEY_INPUT_RECV step=2 key=0x15 status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=278330586000 wait_return_ns=278427305008 wait_enter_step=2 wait_return_step=2 tid=261 downstream_processing_unproven=1"
+    },
+    {
+      "line": 233238,
+      "guest_ns": 281210890000,
+      "raw": "FX3_AP89_SCREEN_OPEN_ENTER clock_id=1 ns=281210890000 tid=376 manager=0x7ee3e5e470 id1=0x275 id2=0x274 id3=0x275 three_reference_args_one_call=1 creation_not_yet_complete=1"
+    },
+    {
+      "line": 233244,
+      "guest_ns": 281228742000,
+      "raw": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=281228742000 tid=376 phase=controller_init_return screen_id=0x274 controller=0x7edd8ac0e0 presenter_return=0 native_point=0x218ffe8 native_call_returned=1 visible_pixels_unproven=1"
+    },
+    {
+      "line": 233245,
+      "guest_ns": 281247703008,
+      "raw": "FX3_AP89_SCREEN_CREATE clock_id=1 ns=281247703008 tid=376 phase=presenter_factory_return screen_id=0x274 controller=0x7edd8ac0e0 presenter_return=0x7edd08c0e0 native_point=0x218fff4 native_call_returned=1 visible_pixels_unproven=1"
+    },
+    {
+      "line": 233944,
+      "guest_ns": 282623807008,
+      "raw": "FX3_OSD102_COMMIT clock_id=1 ns=282623807008 tid=858 frame=2953 op=0x1003 pixel_source_seq=2953 copied_GPE_last=1205 FB=0x7f50001160 bitmap=0x7f486ab230 entry=0x7f50001178 allocation=0x50001200 token=0x401 physical=0x43ae96100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000104000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+    },
+    {
+      "line": 267141,
+      "guest_ns": 325956610000,
+      "raw": "FX3_KEY_INPUT_RECV step=3 key=0x30 status=1 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=278437103008 wait_return_ns=325956610000 wait_enter_step=2 wait_return_step=3 tid=261 downstream_processing_unproven=1"
+    },
+    {
+      "line": 267220,
+      "guest_ns": 326093020000,
+      "raw": "FX3_KEY_INPUT_RECV step=3 key=0x30 status=0 from_type=1 source=0x410025 native_result=0 clock_id=1 wait_enter_ns=325994820000 wait_return_ns=326093020000 wait_enter_step=3 wait_return_step=3 tid=261 downstream_processing_unproven=1"
+    },
+    {
+      "line": 267700,
+      "guest_ns": 326881101008,
+      "raw": "FX3_OSD102_COMMIT clock_id=1 ns=326881101008 tid=858 frame=3648 op=0x1003 pixel_source_seq=3648 copied_GPE_last=1259 FB=0x7f50001160 bitmap=0x7f486ab410 entry=0x7f50001198 allocation=0x50001340 token=0x402 physical=0x43feb5100 FBformat=1 bitmapformat=1 descriptor36=03100000000000000204000001000000000000008002e001000000008002e00100000000 native_plane_role_unproven=1 read_only_observation=1"
+    }
+  ],
+  "guest_deltas": {
+    "step1_down_queue_wait_seconds": 185.792399008,
+    "step2_down_queue_wait_seconds": 62.933792992,
+    "step3_down_queue_wait_seconds": 47.519506992,
+    "step1_receive_to_first_screen_open_seconds": 0.176688992,
+    "step1_receive_to_second_presenter_return_seconds": 0.28622,
+    "step1_receive_to_full_menu_source_commit_seconds": 4.543356,
+    "step1_full_source_validate_to_copy_seconds": 0.005096992,
+    "step1_full_source_copy_to_commit_seconds": 0.018405008,
+    "step2_receive_to_screen_open_seconds": 2.911862,
+    "step2_receive_to_full_category_source_commit_seconds": 4.324779008,
+    "step3_receive_to_full_next_category_source_commit_seconds": 0.924491008
+  },
+  "host_first_confirmed_full_UI": {
+    "v21": [
+      {
+        "step": 1,
+        "first_confirmed_full_frame_sequence": 1999,
+        "pixel_source_sequence": 1999,
+        "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "source_physical": "0x43feb5100",
+        "source_token": "0x402",
+        "host_sent_monotonic": 312095.385546333,
+        "host_first_observed_monotonic": 312100.0742045,
+        "host_sent_to_first_full_seconds": 4.688658167026006
+      },
+      {
+        "step": 2,
+        "first_confirmed_full_frame_sequence": 2953,
+        "pixel_source_sequence": 2953,
+        "PNG_sha256": "15cb5b958cf6c78c43758f3c5771ef91a90e4de9a1eb06059bb23f2dea1596fc",
+        "source_physical": "0x43ae96100",
+        "source_token": "0x401",
+        "host_sent_monotonic": 312158.632185375,
+        "host_first_observed_monotonic": 312163.279637083,
+        "host_sent_to_first_full_seconds": 4.64745170797687
+      },
+      {
+        "step": 3,
+        "first_confirmed_full_frame_sequence": 3648,
+        "pixel_source_sequence": 3648,
+        "PNG_sha256": "3d071654943844a37e1651eb74b2919150d885664a6bbde5ed23407e3f970e17",
+        "source_physical": "0x43feb5100",
+        "source_token": "0x402",
+        "host_sent_monotonic": 312206.447980958,
+        "host_first_observed_monotonic": 312207.744255583,
+        "host_sent_to_first_full_seconds": 1.29627462499775
+      }
+    ],
+    "prior_v17": [
+      {
+        "step": 1,
+        "first_confirmed_full_frame_sequence": 80,
+        "pixel_source_sequence": 80,
+        "PNG_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+        "source_physical": "0x43feb5100",
+        "source_token": "0x402",
+        "host_sent_monotonic": 308971.598188458,
+        "host_first_observed_monotonic": 309169.065928833,
+        "host_sent_to_first_full_seconds": 197.46774037496652
+      },
+      {
+        "step": 2,
+        "first_confirmed_full_frame_sequence": 437,
+        "pixel_source_sequence": 437,
+        "PNG_sha256": "15cb5b958cf6c78c43758f3c5771ef91a90e4de9a1eb06059bb23f2dea1596fc",
+        "source_physical": "0x43ae96100",
+        "source_token": "0x401",
+        "host_sent_monotonic": 309252.102986291,
+        "host_first_observed_monotonic": 309284.094253333,
+        "host_sent_to_first_full_seconds": 31.99126704200171
+      },
+      {
+        "step": 3,
+        "first_confirmed_full_frame_sequence": 691,
+        "pixel_source_sequence": 691,
+        "PNG_sha256": "3d071654943844a37e1651eb74b2919150d885664a6bbde5ed23407e3f970e17",
+        "source_physical": "0x43feb5100",
+        "source_token": "0x402",
+        "host_sent_monotonic": 309318.565557166,
+        "host_first_observed_monotonic": 309321.164853416,
+        "host_sent_to_first_full_seconds": 2.599296249973122
+      }
+    ]
+  },
+  "step1_first_visual_outcome": {
+    "step": 1,
+    "state": "visual_changed",
+    "input_received": true,
+    "visual_change_observed": true,
+    "before_sequence": 1989,
+    "before_png_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4",
+    "observed_sequence": 1996,
+    "observed_png_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+    "ack_host_monotonic": 312095.681961291,
+    "decision_host_monotonic": 312096.690621583,
+    "downstream_handler_completed": "unknown",
+    "pixel_attribution": "observed_after_this_input_not_proven_caused"
+  },
+  "step1_first_visual_outcome_is_no_card_alternation_not_menu": true,
+  "screen_create_return_is_not_visible_pixels": true,
+  "MSS_send_is_not_kernel_consume": true,
+  "guest_completed_menu_processing": null,
+  "old_run_stage_comparison_guest_ns": null
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "fx3-stage50-native-start-geometry/1",
+  "created_utc": "2026-10-26T03:39:47.870859+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/README.md",
+      "bytes": 6306,
+      "sha256": "69208334de5e14c5cf101efe3ca6cfdfb93a5557f19d1bec022c2c36b1a9a7c8"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/coordinator-observations.json",
+      "bytes": 2069,
+      "sha256": "2aa6c4c6f4b3ca672173917fe8658f91669f5faa192bfe73ce1c7320d8f669f1"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/finalize_stage50.py",
+      "bytes": 14048,
+      "sha256": "ee8472dff4b1061f3bba2cffd822cf90f586d5617f5d7c650d030e6572ae067e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/goal-status-after.json",
+      "bytes": 111861,
+      "sha256": "bbc055ab0b045a97148dd83a877f480628d9675b0064c3699e70fcf825887bc4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/goal-status-before.json",
+      "bytes": 107755,
+      "sha256": "771590f0e30ea92519dacb3c35f6983cb6adaa5c03b107b398efde4fe3e71c74"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/run-20261025/attempt-failure.json",
+      "bytes": 846,
+      "sha256": "93b83e5b999a1c2b9223b857988ca165a532b5c62a2d096b1dcc85f3b90da946"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/run-20261025/attempt-source.py",
+      "bytes": 15504,
+      "sha256": "8fa29c0f659a1ea864b50b5a13f5f004a7b2bd7d3387fe118e72956617211695"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/run-corrected-20261025/executed-source.py",
+      "bytes": 15643,
+      "sha256": "fdda87079e926e37bccbdb77297484df4e20b18ae53077d29c214e74cd661eef"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/run-corrected-20261025/source-receipt.json",
+      "bytes": 587,
+      "sha256": "29f10cf0a32ebf45a317965c7bb820d00f5e6f210d9b9696011a41890988b76e"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/run-corrected-20261025/start-geometry-results.json",
+      "bytes": 3053270,
+      "sha256": "62b66fd3d48ebc6db8afdb0c6eb95303ab3dd18b374c70436f6725310c16900d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/start_geometry.py",
+      "bytes": 15643,
+      "sha256": "fdda87079e926e37bccbdb77297484df4e20b18ae53077d29c214e74cd661eef"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage50-native-start-geometry/summary.json",
+      "bytes": 3997,
+      "sha256": "c72662644fb6650815c123fa88a1f8c9b9e76d29c0e3fa1afa6d1aafc5c8a225"
+    }
+  ],
+  "previous_manifest_sha256": "607d89313fbd18e8bcf5742e1d4d6bd1a51f45c78cbef4d9a2d7442e5ce7ee34",
+  "scope": "76original A64 fragments plus6MIPS predicates. Original encoder-side selected-record geometry production on declared graph reaches paired predicates without host output repair. Live record origin/MAIN registration/full flags/defaults/locks/logs/Start/hardware and recovery remain unproven.",
+  "mutable_progress": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage50-native-start-geometry/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage50-native-start-geometry/goal-status-after.json",
+    "before_sha256": "771590f0e30ea92519dacb3c35f6983cb6adaa5c03b107b398efde4fe3e71c74",
+    "after_sha256": "bbc055ab0b045a97148dd83a877f480628d9675b0064c3699e70fcf825887bc4",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "readme_index_entry": "- [2026-10-25 FX3 原编码输入几何生成](<work/sony-firmware-20261024/stage50-native-start-geometry/README.md>)：原通道索引/打包生成HD几何并通过配套原谓词，76段A64与6次MIPS验证；真实记录来源/MAIN登记/完整启动、硬件与恢复仍待验收。",
+  "readme_index_before_sha256": "bae4ff47e98c703a1a069913f3d495c01439f70a2dd2c60be3563480db01d14c",
+  "readme_index_after_sha256": "cfbb6fa0af56c9d0cde686ab26ecc3459abdc4e97f1736b291a27a9499a8d751",
+  "operations": {
+    "original_guest_source_code_unchanged": true,
+    "host_post_production_geometry_repair": false,
+    "native_output_PC_return_log_or_lock_adapter": false,
+    "explicit_metadata_owner_index_and_private_preset_host_fixtures": true,
+    "failed_attempt_and_source_preserved": true,
+    "new_loadable_camera_module": false,
+    "UU_Windows_camera_interfaces_auth_mode_drivers_media_module_WBI_flash": false,
+    "real_hardware_recording_backup_restore_or_independent_recovery": false,
+    "goal_complete": false,
+    "persistent_write_release": false
+  }
+}

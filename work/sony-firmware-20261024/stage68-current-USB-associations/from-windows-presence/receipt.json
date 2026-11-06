@@ -1,0 +1,89 @@
+{
+  "schema": "fx3-presence-crosscheck-receipt/1",
+  "task_state": "CACHED_CROSSCHECK_COMPLETE_NON_UNIQUE_MODEL_NODES",
+  "instruction_file": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-connected-pnp-20261026T163821Z/WINDOWS_PRESENCE_CROSSCHECK.txt",
+  "output_directory": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-presence-crosscheck-20261026T165500Z",
+  "public_directory": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-presence-crosscheck-20261026T165500Z/public",
+  "private_directory_local_only": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-presence-crosscheck-20261026T165500Z/private",
+  "preflight": {
+    "target": "C:/Users/owo/Documents/Codex/2026-10-16/rea-2/outputs/fx3-presence-crosscheck-20261026T165500Z",
+    "system_C_local_fixed_NTFS": true,
+    "ordinary_directory": true,
+    "ancestor_count": 8,
+    "reparse_network_camera_redirect": false,
+    "administrator_token": false,
+    "created_utc": "2026-10-26T17:14:39.4443066Z"
+  },
+  "observed_start_utc": "2026-10-26T17:15:31.086Z",
+  "observed_end_utc": "2026-10-26T17:15:31.497Z",
+  "command_count": 1,
+  "commands": [
+    {
+      "id": "01-sony-camera-cache",
+      "query": "Get-CimInstance Win32_PnPEntity; server-side WQL Sony USB prefix or explicit ILME-FX3/Sony DSC name/description; Select-Object first 16",
+      "server_side_filter": "PNPDeviceID LIKE 'USB\\\\VID_054C%' OR Name LIKE '%ILME-FX3%' OR Description LIKE '%ILME-FX3%' OR Name LIKE '%Sony DSC%' OR Description LIKE '%Sony DSC%'",
+      "started_utc": "2026-10-26T17:15:31.086Z",
+      "finished_utc": "2026-10-26T17:15:31.497Z",
+      "exit_code": 0,
+      "private_result": "private/01-sony-camera-cache.private.json",
+      "private_stderr": "private/01-cim-query.stderr.txt"
+    }
+  ],
+  "counts": {
+    "explicit_current_sony_camera_model_nodes": 3,
+    "explicit_historical_sony_camera_model_nodes": 0,
+    "prior_identity_matched_current_usb_root_nodes": 1,
+    "current_camera_related_nodes": 4,
+    "historical_camera_related_nodes": 0,
+    "non_camera_sony_nodes": 0,
+    "unresolved_sony_usb_storage_nodes": 0
+  },
+  "physical_camera_count": "UNKNOWN",
+  "actual_usb_vid_pid": {
+    "vid": "054C",
+    "pid": "0DA1",
+    "source": "This CIM row matching the exact previous FX3-root identity hash"
+  },
+  "same_as_old_fx3_root": true,
+  "prior_fx3_root_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+  "binding_status": "NOT_UNIQUE_CURRENT_MODEL_NODE_SET",
+  "pnputil_branch": {
+    "queries_issued": 0,
+    "status": "NOT_RUN_NON_UNIQUE_CURRENT_EXPLICIT_MODEL_NODES"
+  },
+  "unknown_fields": [
+    "Current parent-child relations",
+    "Disk interface class and enabled status",
+    "DN_STARTED",
+    "Driver INF/provider/version/reported signer",
+    "Physical camera count",
+    "Reason the earlier PnPUtil observation differed"
+  ],
+  "private_hash_manifest": "private-sha256.json",
+  "privacy_check": {
+    "public_raw_instance_id_leaks": 0,
+    "raw_nodes_checked": 4,
+    "public_files_checked": 3,
+    "new_output_only": true
+  },
+  "paths_use_forward_slashes": true,
+  "private_files_not_uploaded": true,
+  "old_connected_public_five_files_modified": false,
+  "old_results_used_to_fill_missing_metadata": false,
+  "old_tasks_rerun": false,
+  "boundaries": {
+    "cached_pnp_only": true,
+    "interface_handles_opened": 0,
+    "camera_commands": 0,
+    "card_or_media_or_camera_file_reads": 0,
+    "authentication": false,
+    "mode_or_driver_or_policy_change": false,
+    "elevation": false,
+    "scan_or_refresh": false,
+    "automatic_retry": false,
+    "probe_generation_or_execution": false,
+    "module_upload": false,
+    "WBI_or_flash": false,
+    "hardware_validation": "NOT_PERFORMED"
+  }
+}

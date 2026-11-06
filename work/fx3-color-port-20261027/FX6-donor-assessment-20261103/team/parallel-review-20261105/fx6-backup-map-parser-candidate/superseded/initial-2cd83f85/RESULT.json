@@ -1,0 +1,140 @@
+{
+  "schema": "fx6-map-parser-result-v1",
+  "task": "task_8f5be8c859b0",
+  "dispatch": "ctx_ee9fb5d365bf",
+  "status": "BLOCKED_SOURCE_CONTRACT_NOT_ACCEPTED",
+  "started": false,
+  "vm": false,
+  "qmp_rsp_guest": false,
+  "candidate": "fx6-backup-map-parser-candidate",
+  "frozen_r6_manifest": "85d6097c8b13c7d9820630bf29835745ce0d55a64e4f7de28aa751b5079b9d49",
+  "source_contract": {
+    "IM_ENDMAPS": "official /init greps /usr/bin/im.elf only",
+    "EARLY_MAPS": "official /init cats full /proc/<pid>/maps",
+    "source_file": "work/cpio/init",
+    "source_evidence": "receipts/producer-contract.md"
+  },
+  "current": {
+    "serial": "runs/r6-stop-only-20261106T2005Z/run/serial.log",
+    "decision": {
+      "code": "newest_block_incomplete",
+      "message": "newest map block has no matching END",
+      "block": {
+        "kind": "IM_ENDMAPS",
+        "pid": 239,
+        "epoch": null,
+        "begin_line": 47959,
+        "end_line": null,
+        "complete": false,
+        "overlap_with_previous": false,
+        "overlap_with_next": false
+      },
+      "diagnostics": {
+        "stray_end_count": 10
+      }
+    },
+    "replay": "receipts/replay-current-official.json",
+    "appfw_block": {
+      "kind": "IM_ENDMAPS",
+      "pid": 239,
+      "epoch": null,
+      "begin": 8955,
+      "end": 9222,
+      "complete": true,
+      "rows": 104,
+      "appfw_rows": 4,
+      "appfw_lines": [
+        9078,
+        9079,
+        9080,
+        9081
+      ],
+      "imelf_rows": 6,
+      "foreign_rows": 98
+    },
+    "latest": {
+      "kind": "IM_ENDMAPS",
+      "pid": 239,
+      "epoch": null,
+      "begin_line": 47959,
+      "end_line": null,
+      "complete": false,
+      "overlap_with_previous": false,
+      "overlap_with_next": false
+    }
+  },
+  "66ed": {
+    "serial": "cp-bind-66ed0f78/serial.log",
+    "decision": {
+      "code": "newest_block_incomplete",
+      "message": "newest map block has no matching END",
+      "block": {
+        "kind": "IM_ENDMAPS",
+        "pid": 237,
+        "epoch": null,
+        "begin_line": 69489,
+        "end_line": null,
+        "complete": false,
+        "overlap_with_previous": false,
+        "overlap_with_next": false
+      },
+      "diagnostics": {
+        "stray_end_count": 30
+      }
+    },
+    "replay": "receipts/replay-66ed-official.json",
+    "appfw_block": {
+      "kind": "EARLY_MAPS",
+      "pid": 237,
+      "epoch": 5,
+      "begin": 8029,
+      "end": null,
+      "complete": false,
+      "rows": 72,
+      "appfw_rows": 3,
+      "appfw_lines": [
+        8039,
+        8040,
+        8041
+      ],
+      "imelf_rows": 3,
+      "foreign_rows": 0
+    },
+    "latest": {
+      "kind": "IM_ENDMAPS",
+      "pid": 237,
+      "epoch": null,
+      "begin_line": 69489,
+      "end_line": null,
+      "complete": false,
+      "overlap_with_previous": false,
+      "overlap_with_next": false
+    }
+  },
+  "synthetic_full_contract": {
+    "status": "accepted_structural_only_not_actual",
+    "bias": "0x7efab5b000",
+    "block_span": [
+      8955,
+      9222
+    ],
+    "appfw_rows": 4,
+    "pt_loads": 2,
+    "static_words": 4,
+    "file": "receipts/synthetic-full-mapping.json"
+  },
+  "tests": {
+    "status": "PASS_OFFLINE_MAP_PARSER",
+    "count": 12,
+    "file": "tests/test-parser.json",
+    "sha256": "77be8bf469c211e31acdc6c355b52cc30ec45004bbcdb58ad8bb725ad3a76b92"
+  },
+  "input_seal": {
+    "count": 6,
+    "unchanged": true,
+    "file": "receipts/input-compare.json"
+  },
+  "diff": "CODE-DIFF.txt",
+  "report": "REPORT.md",
+  "note": "offline map parser candidate; no VM; official producer admission blocked; no boot/menu claim"
+}

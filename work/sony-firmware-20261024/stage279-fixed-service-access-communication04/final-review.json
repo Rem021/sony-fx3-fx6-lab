@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "reviewed_utc": "2026-11-01T14:56:36.450600+00:00",
+  "status": "FIXED_COMMUNICATION04_READY_PENDING_NEW_EXACT_APPROVAL",
+  "approval_bundle_sha256": "e257008625b7f380d7ccfbcc8c85d3fd33d6ca1e24ac4e639d5c2daf12b0d3aa",
+  "fixed_members": 100,
+  "native_helper_sha256": "32ad51d0d111b0318f28d6e92fe0df5d0c018f256683ad35624043a8f476150c",
+  "grant_id": "fx3-702-service-access-communication-20261101-04",
+  "scope": "MANUAL_RECOVERED_BOUNDED_SHARED_SERVICE_AUTH_READ0_RETURN",
+  "protocol_flow_magic": "FX3FLOW6",
+  "protocol_flow_schema": 6,
+  "stock_read0_response_header_version": 3,
+  "stock_read0_request_header_version": 2,
+  "typed_read0_header_localization_reasons": 11,
+  "typed_read0_header_localization_mask_bits": 7,
+  "canonical_authorization_must_be_false": true,
+  "check_receipts": {
+    "package-test-receipt.json": {
+      "status": "FIXED_MANUAL_RECOVERED_COMMUNICATION_PACKAGE_OFFLINE_PASS",
+      "sha256": "739717274f6e466d0d553d66b5a3d368789d267448c3f89ad8597544a9d44a74",
+      "groups": 7
+    },
+    "test-receipt.json": {
+      "status": "MANUAL_RECOVERY_ENTRY_PRIVATE_STAMP_AND_FLOW_OWN_PROCESS_PASS",
+      "sha256": "4b2fc8959efd379208f0b39f27b0c57dcd64831d2bccc867a71099b4885e56a3",
+      "groups": 8
+    },
+    "acquisition-integration-check.json": {
+      "status": "FULL_CONTROLLER_V6_ACQUISITION_FAILURE_IPC_PASS",
+      "sha256": "0b4e81f2ed64c2026f54a0df53eb5c4356d94e279a79957e422460aa6ae5ca07",
+      "groups": 5
+    },
+    "shared-access-check.json": {
+      "status": "BOUNDED_SHARED_SERVICE_FULL_FAKE_FLOW_PASS",
+      "sha256": "8ed02e26177a7c6c5bb1d5951c60ede7f1abae577d5af11016e3ffd64266da02",
+      "groups": 4
+    },
+    "header-localization-check.json": {
+      "status": "FULL_CONTROLLER_V6_BOUNDED_HEADER_LOCALIZATION_PASS",
+      "sha256": "d137c2941bf4bed73008af2e0f4c27c2c5b609166f59d324424adfb1a225dfb8",
+      "groups": 11
+    },
+    "current-binding-check.json": {
+      "status": "CURRENT_ACTUAL275_276_RECOVERY_POLICY_AND_NEW_TARGET_BOUND",
+      "sha256": "fc2d2ca8adb380dc42a681248e7e41f2697e356bbbe3b850f4bebf54e14615a3",
+      "groups": 0
+    }
+  },
+  "current_target_matches": true,
+  "current_camera_volumes_mounted": [
+    "disk10s1"
+  ],
+  "native_helper_executed": false,
+  "actual_root_journal_modified": false,
+  "new_root_or_USB_operations": 0,
+  "new_camera_trial_authorized": false,
+  "production_job_created": false,
+  "artificial_process_tests_do_not_prove_real_camera_success": true,
+  "firmware_write": false,
+  "module_upload": false,
+  "safe_first_flash_accepted": false
+}

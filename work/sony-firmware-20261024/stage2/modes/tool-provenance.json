@@ -1,0 +1,22 @@
+{
+  "analysis_date_local": "2026-10-24",
+  "python": "3.14.6",
+  "pyelftools": "0.32",
+  "capstone": "5.0.6",
+  "node": "v22.19.0",
+  "rea": {
+    "version": "6.7.0",
+    "url": "https://registry.npmjs.org/rea-agents/-/rea-agents-6.7.0.tgz",
+    "sha256": "20958a66dba1a011e50a486beb9463a343128ed368c984f94065362c13f51f90",
+    "sri_sha512_matches_registry": true,
+    "executed": false
+  },
+  "primary_tool_sources": [
+    "https://www.capstone-engine.org/lang_python.html",
+    "https://github.com/eliben/pyelftools"
+  ],
+  "isolated_environment": "stage2/modes/venv",
+  "cleanup": "Temporary references, npm tarball and task-only venv removed after analysis; original firmware, extraction files, own scripts, JSON and asm preserved",
+  "rebuild_optional_probes": "python3 -m venv venv; venv/bin/python -m pip install pyelftools==0.32 capstone==5.0.6; retrieve fixed appfw_elf.py source from reference-provenance.json into references/appfw_elf.py",
+  "primary_reproduction": "inspect_mode_routes.py uses Python standard library only"
+}

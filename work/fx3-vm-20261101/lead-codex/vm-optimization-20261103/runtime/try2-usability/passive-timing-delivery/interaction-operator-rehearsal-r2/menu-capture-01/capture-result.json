@@ -1,0 +1,187 @@
+{
+  "status": "qualified_screenshot_for_operator_review",
+  "scope": "first_MENU_reference_only",
+  "reference_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+  "session": "fx3-deadline-operator-rehearsal-r2-0b081725",
+  "url": "http://127.0.0.1:64311/",
+  "launch_id": "e49ce6f6-289a-49d2-bd0d-4e1775c909eb",
+  "alarm_nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+  "step": 1,
+  "host_started_UTC": "2026-11-04T21:38:48.428362+00:00",
+  "host_monotonic_started": 412013.974470833,
+  "screenshot_attempted": true,
+  "guest_keys_sent": 0,
+  "confirm_calls": 0,
+  "alarm_mutations": 0,
+  "timeline": [
+    {
+      "stage": "initial_receipt_write_enter",
+      "UTC": "2026-11-04T21:38:48.428500+00:00",
+      "monotonic": 412013.974477416
+    },
+    {
+      "stage": "initial_receipt_write_exit",
+      "UTC": "2026-11-04T21:38:48.428725+00:00",
+      "monotonic": 412013.974702458
+    },
+    {
+      "stage": "tab_preflight_enter",
+      "UTC": "2026-11-04T21:38:48.428728+00:00",
+      "monotonic": 412013.974704625
+    },
+    {
+      "stage": "tab_preflight_exit",
+      "UTC": "2026-11-04T21:38:48.435415+00:00",
+      "monotonic": 412013.981395416
+    },
+    {
+      "stage": "before_eval_enter",
+      "UTC": "2026-11-04T21:38:48.435472+00:00",
+      "monotonic": 412013.981448958
+    },
+    {
+      "stage": "before_eval_exit",
+      "UTC": "2026-11-04T21:38:55.742250+00:00",
+      "monotonic": 412021.288226541
+    },
+    {
+      "stage": "screenshot_enter",
+      "UTC": "2026-11-04T21:38:55.742510+00:00",
+      "monotonic": 412021.28846275
+    },
+    {
+      "stage": "screenshot_exit",
+      "UTC": "2026-11-04T21:38:55.826111+00:00",
+      "monotonic": 412021.37208725
+    },
+    {
+      "stage": "after_eval_enter",
+      "UTC": "2026-11-04T21:38:55.826640+00:00",
+      "monotonic": 412021.37258975
+    },
+    {
+      "stage": "after_eval_exit",
+      "UTC": "2026-11-04T21:38:55.834393+00:00",
+      "monotonic": 412021.380350166
+    },
+    {
+      "stage": "final_receipt_write_enter",
+      "UTC": "2026-11-04T21:38:55.834469+00:00",
+      "monotonic": 412021.380417541
+    },
+    {
+      "stage": "final_receipt_write_exit",
+      "UTC": "2026-11-04T21:38:55.835401+00:00",
+      "monotonic": 412021.381349875
+    },
+    {
+      "stage": "return_boundary",
+      "UTC": "2026-11-04T21:38:55.835404+00:00",
+      "monotonic": 412021.381351625
+    }
+  ],
+  "tab_id": null,
+  "before_eval": {
+    "before": {
+      "content_generation": 2,
+      "document_origin_token": "1793828313711.7000",
+      "document_time_origin": 1793828313711.7,
+      "due_ms": 34655.59999996424,
+      "due_token": "34655.599999964237",
+      "frame_generation": 2,
+      "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "frame_sequence": 213,
+      "kind": "ready_loaded_review",
+      "launch_id": "e49ce6f6-289a-49d2-bd0d-4e1775c909eb",
+      "performance_ms": 22025,
+      "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+      "remaining_ms": 12630.5,
+      "review_step": 1,
+      "sequence": 213,
+      "step": 1,
+      "wall_UTC": "2026-11-04T21:38:55.736Z"
+    },
+    "confirm_reserve_ms": 8000,
+    "events": [
+      {
+        "kind": "invoked",
+        "performance_ms": 14729.69999998808,
+        "wall_UTC": "2026-11-04T21:38:48.441Z"
+      },
+      {
+        "diagnostics": {
+          "alarm_nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+          "alarm_state": "armed",
+          "awaiting_step": null,
+          "delivery_unknown": false,
+          "displayed_generation": 1,
+          "displayed_sequence": 212,
+          "error": null,
+          "explicit_rejection": null,
+          "frame_generation": 1,
+          "frame_sequence": 212,
+          "frame_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "host_busy": false,
+          "input_received": true,
+          "phase": "ready",
+          "remaining_ms": 19925.39999997616,
+          "render_valid": true,
+          "review_required": true,
+          "review_step": 1,
+          "shown_sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+          "status_busy": false,
+          "steps": 1
+        },
+        "kind": "state_transition",
+        "performance_ms": 14730.19999998808,
+        "state": "ready_loaded_review",
+        "wall_UTC": "2026-11-04T21:38:48.442Z"
+      },
+      {
+        "generation": 2,
+        "kind": "reference_loaded",
+        "performance_ms": 22025.099999964237,
+        "sequence": 213,
+        "wall_UTC": "2026-11-04T21:38:55.736Z"
+      }
+    ],
+    "reference_sha": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+    "status": "ready_for_screenshot",
+    "waited_ms": 7295.600000023842
+  },
+  "screenshot_file_sha256": "e83511faf4a389e8ba124a7a1b5ca39d80c3f2b602ded896a5ae61232e7063f9",
+  "screenshot_file_bytes": 151291,
+  "after_eval": {
+    "alarm_due_ms": 34655.59999996424,
+    "alarm_nonce": "ea8300c8-4cc3-4af7-8d9a-6fa6d51354c5",
+    "alarm_state": "armed",
+    "content_generation": 2,
+    "document_time_origin": 1793828313711.7,
+    "error": null,
+    "failed_checks": [],
+    "frame_generation": 2,
+    "frame_png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+    "frame_sequence": 213,
+    "image_complete": true,
+    "image_width": 640,
+    "input_received": true,
+    "launch_id": "e49ce6f6-289a-49d2-bd0d-4e1775c909eb",
+    "location": "http://127.0.0.1:64311/",
+    "performance_ms": 22121.30000001192,
+    "phase": "ready",
+    "png_sha256": "60e9acccbc4609ac93c2694ae05fe659cd9734f257c1f55c1f763cf28d7e1292",
+    "qualified": true,
+    "remaining_ms": 12534.299999952316,
+    "render_valid": true,
+    "review_required": true,
+    "review_step": 1,
+    "sequence": 213,
+    "step": 1,
+    "wall_UTC": "2026-11-04T21:38:55.833Z"
+  },
+  "reason": "loaded_reference_identity_stable_before_and_after_screenshot",
+  "screenshot_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/interaction-operator-rehearsal-r2/menu-capture-01/menu-reference-page.png",
+  "host_finished_UTC": "2026-11-04T21:38:55.834455+00:00",
+  "host_monotonic_finished": 412021.380407708,
+  "host_elapsed_ms": 7405.937
+}

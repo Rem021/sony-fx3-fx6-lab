@@ -1,0 +1,1317 @@
+{
+  "scope": "Bounded static printable strings and ELF header/section metadata only. A string, function-name trace or VENICE label does not prove implementation recovery, active pipeline, table values, sensor calibration or color equivalence. Existing hashes reused, no repeated whole-file hashing.",
+  "modules": {
+    "av-cam": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha3/av-cam.bin",
+      "bytes": 13348560,
+      "first16_hex": "58000001c0ffffff4f52494c05000000",
+      "has_ELF_header": false,
+      "patterns": {
+        "white_balance_control": {
+          "regex": "white.?balance|\\bAWB\\b|wb_mode|WB_GAIN",
+          "total": 0,
+          "first_matches": []
+        },
+        "CCM_named": {
+          "regex": "color.?matrix|colour.?matrix|\\bCCM\\b",
+          "total": 0,
+          "first_matches": []
+        },
+        "monitor_look_stages": {
+          "regex": "MLUT_(?:YC2RGB|L1D_[ABC]_ON|MTX_[ABCD]_ON|EIGAIN|YR1D|L3D_ON)|ddl_VfxSetMlut|3D-Lut table Write",
+          "total": 23,
+          "first_matches": [
+            {
+              "file_offset": "0x38a274",
+              "text": "MLUT_YC2RGB_ON"
+            },
+            {
+              "file_offset": "0x38a30c",
+              "text": "MLUT_L1D_A_ON"
+            },
+            {
+              "file_offset": "0x38a3a4",
+              "text": "MLUT_L1D_B_ON"
+            },
+            {
+              "file_offset": "0x38a43c",
+              "text": "MLUT_L1D_C_ON"
+            },
+            {
+              "file_offset": "0x38a4d4",
+              "text": "MLUT_MTX_A_ON"
+            },
+            {
+              "file_offset": "0x38a56c",
+              "text": "MLUT_MTX_B_ON"
+            },
+            {
+              "file_offset": "0x38a604",
+              "text": "MLUT_MTX_C_ON"
+            },
+            {
+              "file_offset": "0x38a69c",
+              "text": "MLUT_MTX_D_ON"
+            },
+            {
+              "file_offset": "0x38a734",
+              "text": "MLUT_EIGAIN_ON"
+            },
+            {
+              "file_offset": "0x38a7cc",
+              "text": "MLUT_YR1D_ON"
+            },
+            {
+              "file_offset": "0x38a8fc",
+              "text": "MLUT_L3D_ON"
+            },
+            {
+              "file_offset": "0xbdfa3c",
+              "text": "MLUT_YC2RGB_REG_FILTERON_BT709F"
+            },
+            {
+              "file_offset": "0xbdfad4",
+              "text": "MLUT_YR1D_REG_THRU"
+            },
+            {
+              "file_offset": "0xbdfb6c",
+              "text": "MLUT_EIGAIN_REG_THRU"
+            },
+            {
+              "file_offset": "0xbe10cc",
+              "text": "MLUT_YR1D_SRAM_THRU"
+            },
+            {
+              "file_offset": "0xbe24fc",
+              "text": "MLUT_YC2RGB_REG_TEST"
+            },
+            {
+              "file_offset": "0xbe29bc",
+              "text": "MLUT_EIGAIN_REG_TEST"
+            },
+            {
+              "file_offset": "0xbe2a54",
+              "text": "MLUT_YR1D_REG_TEST"
+            },
+            {
+              "file_offset": "0xbe2fac",
+              "text": "MLUT_YR1D_SRAM_TEST"
+            },
+            {
+              "file_offset": "0xbe608c",
+              "text": "MLUT_YC2RGB_REG_BYPASS"
+            },
+            {
+              "file_offset": "0xbe6124",
+              "text": "MLUT_YR1D_REG_BYPASS"
+            },
+            {
+              "file_offset": "0xbe641c",
+              "text": "MLUT_YC2RGB_REG_INV2020_YC"
+            },
+            {
+              "file_offset": "0xbe64b4",
+              "text": "MLUT_YC2RGB_REG_INV709_YC"
+            }
+          ]
+        },
+        "VENICE_named_look": {
+          "regex": "MLUT_.*VENICE.*(?:SLOG3|SGAMUT|3DLUT)",
+          "total": 30,
+          "first_matches": [
+            {
+              "file_offset": "0xbe6ffc",
+              "text": "MLUT_MTX_A_REG_VENICE_LMX0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbe7ed4",
+              "text": "MLUT_L1D_B_SRAM_R_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbe7f6c",
+              "text": "MLUT_L1D_B_SRAM_G_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbe8004",
+              "text": "MLUT_L1D_B_SRAM_B_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbe809c",
+              "text": "MLUT_L1D_B_REG_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4784",
+              "text": "MLUT_L3D_SRAM_R_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf481c",
+              "text": "MLUT_L3D_SRAM_R_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf48b4",
+              "text": "MLUT_L3D_SRAM_R_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf494c",
+              "text": "MLUT_L3D_SRAM_R_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf49e4",
+              "text": "MLUT_L3D_SRAM_R_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4a7c",
+              "text": "MLUT_L3D_SRAM_R_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4b14",
+              "text": "MLUT_L3D_SRAM_R_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4bac",
+              "text": "MLUT_L3D_SRAM_R_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4c44",
+              "text": "MLUT_L3D_SRAM_G_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4cdc",
+              "text": "MLUT_L3D_SRAM_G_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4d74",
+              "text": "MLUT_L3D_SRAM_G_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4e0c",
+              "text": "MLUT_L3D_SRAM_G_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4ea4",
+              "text": "MLUT_L3D_SRAM_G_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4f3c",
+              "text": "MLUT_L3D_SRAM_G_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4fd4",
+              "text": "MLUT_L3D_SRAM_G_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf506c",
+              "text": "MLUT_L3D_SRAM_G_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf5104",
+              "text": "MLUT_L3D_SRAM_B_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf519c",
+              "text": "MLUT_L3D_SRAM_B_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf5234",
+              "text": "MLUT_L3D_SRAM_B_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf52cc",
+              "text": "MLUT_L3D_SRAM_B_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf5364",
+              "text": "MLUT_L3D_SRAM_B_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf53fc",
+              "text": "MLUT_L3D_SRAM_B_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf5494",
+              "text": "MLUT_L3D_SRAM_B_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf552c",
+              "text": "MLUT_L3D_SRAM_B_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf55c4",
+              "text": "MLUT_L3D_REG_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            }
+          ]
+        },
+        "gamma_gamut": {
+          "regex": "S.?Log3|S.?Gamut3|S.?Cinetone|EX_GAMMA_TABLE",
+          "total": 30,
+          "first_matches": [
+            {
+              "file_offset": "0xbe6ffc",
+              "text": "MLUT_MTX_A_REG_VENICE_LMX0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbe7ed4",
+              "text": "MLUT_L1D_B_SRAM_R_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbe7f6c",
+              "text": "MLUT_L1D_B_SRAM_G_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbe8004",
+              "text": "MLUT_L1D_B_SRAM_B_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbe809c",
+              "text": "MLUT_L1D_B_REG_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4784",
+              "text": "MLUT_L3D_SRAM_R_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf481c",
+              "text": "MLUT_L3D_SRAM_R_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf48b4",
+              "text": "MLUT_L3D_SRAM_R_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf494c",
+              "text": "MLUT_L3D_SRAM_R_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf49e4",
+              "text": "MLUT_L3D_SRAM_R_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4a7c",
+              "text": "MLUT_L3D_SRAM_R_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4b14",
+              "text": "MLUT_L3D_SRAM_R_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4bac",
+              "text": "MLUT_L3D_SRAM_R_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4c44",
+              "text": "MLUT_L3D_SRAM_G_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4cdc",
+              "text": "MLUT_L3D_SRAM_G_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4d74",
+              "text": "MLUT_L3D_SRAM_G_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4e0c",
+              "text": "MLUT_L3D_SRAM_G_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4ea4",
+              "text": "MLUT_L3D_SRAM_G_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4f3c",
+              "text": "MLUT_L3D_SRAM_G_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf4fd4",
+              "text": "MLUT_L3D_SRAM_G_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf506c",
+              "text": "MLUT_L3D_SRAM_G_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf5104",
+              "text": "MLUT_L3D_SRAM_B_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf519c",
+              "text": "MLUT_L3D_SRAM_B_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf5234",
+              "text": "MLUT_L3D_SRAM_B_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf52cc",
+              "text": "MLUT_L3D_SRAM_B_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf5364",
+              "text": "MLUT_L3D_SRAM_B_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf53fc",
+              "text": "MLUT_L3D_SRAM_B_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf5494",
+              "text": "MLUT_L3D_SRAM_B_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf552c",
+              "text": "MLUT_L3D_SRAM_B_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xbf55c4",
+              "text": "MLUT_L3D_REG_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            }
+          ]
+        },
+        "user_LUT": {
+          "regex": "read3DLUTFile|model_user_lut_files|LUT%03d",
+          "total": 0,
+          "first_matches": []
+        },
+        "imaging_wrapper": {
+          "regex": "infra_wrapper_imaging::.*(?:picture_profile|white_balance|gamma|noise)",
+          "total": 0,
+          "first_matches": []
+        },
+        "imager_calibration": {
+          "regex": "Imager.*[Cc]alibrat|ExecImagerCalibration|CalibrationCallbackCamCore|sjob_get_black_level|BAD.?PIXEL|DEFECT.?PIXEL|DEMOSAIC|DEBAYER",
+          "total": 0,
+          "first_matches": []
+        }
+      },
+      "previously_verified_sha256": "0cb7e03a59b4ec3d7633664ab0f7a9477892d1aaf442b9db83a7e9a62a49bdaf"
+    },
+    "appFw": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+      "bytes": 79015712,
+      "first16_hex": "7f454c46020101030000000000000000",
+      "has_ELF_header": true,
+      "patterns": {
+        "white_balance_control": {
+          "regex": "white.?balance|\\bAWB\\b|wb_mode|WB_GAIN",
+          "total": 746,
+          "first_matches": [
+            {
+              "file_offset": "0x2fa1d19",
+              "text": "BRACKET_OPTION_WHITE_BALANCE_BRACKET"
+            },
+            {
+              "file_offset": "0x2fa40c7",
+              "text": "WHITE_BALANCE_AMBIENCE"
+            },
+            {
+              "file_offset": "0x2fa40de",
+              "text": "WHITE_BALANCE_WHITE"
+            },
+            {
+              "file_offset": "0x2fa73c1",
+              "text": "SEPARATE_SETTING_FOR_MOVIE_WHITE_BALANCE"
+            },
+            {
+              "file_offset": "0x2fb52a0",
+              "text": "DRIVE_MODE_WHITE_BALANCE_BRACKET_HIGH"
+            },
+            {
+              "file_offset": "0x2fb52c6",
+              "text": "DRIVE_MODE_WHITE_BALANCE_BRACKET_LOW"
+            },
+            {
+              "file_offset": "0x2fb52eb",
+              "text": "DRIVE_MODE_WHITE_BALANCE_BRACKET_WB_BRACKET"
+            },
+            {
+              "file_offset": "0x2fb5562",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_2500K"
+            },
+            {
+              "file_offset": "0x2fb558e",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_2600K"
+            },
+            {
+              "file_offset": "0x2fb55ba",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_2700K"
+            },
+            {
+              "file_offset": "0x2fb55e6",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_2800K"
+            },
+            {
+              "file_offset": "0x2fb5612",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_2900K"
+            },
+            {
+              "file_offset": "0x2fb563e",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3000K"
+            },
+            {
+              "file_offset": "0x2fb566a",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3100K"
+            },
+            {
+              "file_offset": "0x2fb5696",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3200K"
+            },
+            {
+              "file_offset": "0x2fb56c2",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3300K"
+            },
+            {
+              "file_offset": "0x2fb56ee",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3400K"
+            },
+            {
+              "file_offset": "0x2fb571a",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3500K"
+            },
+            {
+              "file_offset": "0x2fb5746",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3600K"
+            },
+            {
+              "file_offset": "0x2fb5772",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3700K"
+            },
+            {
+              "file_offset": "0x2fb579e",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3800K"
+            },
+            {
+              "file_offset": "0x2fb57ca",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_3900K"
+            },
+            {
+              "file_offset": "0x2fb57f6",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4000K"
+            },
+            {
+              "file_offset": "0x2fb5822",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4100K"
+            },
+            {
+              "file_offset": "0x2fb584e",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4200K"
+            },
+            {
+              "file_offset": "0x2fb587a",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4300K"
+            },
+            {
+              "file_offset": "0x2fb58a6",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4400K"
+            },
+            {
+              "file_offset": "0x2fb58d2",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4500K"
+            },
+            {
+              "file_offset": "0x2fb58fe",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4600K"
+            },
+            {
+              "file_offset": "0x2fb592a",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4700K"
+            },
+            {
+              "file_offset": "0x2fb5956",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4800K"
+            },
+            {
+              "file_offset": "0x2fb5982",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_4900K"
+            },
+            {
+              "file_offset": "0x2fb59ae",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_5000K"
+            },
+            {
+              "file_offset": "0x2fb59da",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_5100K"
+            },
+            {
+              "file_offset": "0x2fb5a06",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_5200K"
+            },
+            {
+              "file_offset": "0x2fb5a32",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_5300K"
+            },
+            {
+              "file_offset": "0x2fb5a5e",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_5400K"
+            },
+            {
+              "file_offset": "0x2fb5a8a",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_5500K"
+            },
+            {
+              "file_offset": "0x2fb5ab6",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_5600K"
+            },
+            {
+              "file_offset": "0x2fb5ae2",
+              "text": "WHITE_BALANCE_COLOR_TEMP_COLOR_FILTER_5700K"
+            }
+          ]
+        },
+        "CCM_named": {
+          "regex": "color.?matrix|colour.?matrix|\\bCCM\\b",
+          "total": 0,
+          "first_matches": []
+        },
+        "monitor_look_stages": {
+          "regex": "MLUT_(?:YC2RGB|L1D_[ABC]_ON|MTX_[ABCD]_ON|EIGAIN|YR1D|L3D_ON)|ddl_VfxSetMlut|3D-Lut table Write",
+          "total": 0,
+          "first_matches": []
+        },
+        "VENICE_named_look": {
+          "regex": "MLUT_.*VENICE.*(?:SLOG3|SGAMUT|3DLUT)",
+          "total": 0,
+          "first_matches": []
+        },
+        "gamma_gamut": {
+          "regex": "S.?Log3|S.?Gamut3|S.?Cinetone|EX_GAMMA_TABLE",
+          "total": 175,
+          "first_matches": [
+            {
+              "file_offset": "0x2fa0f61",
+              "text": "STILL_GAMUT_S_GAMUT3_CINE_S_LOG3"
+            },
+            {
+              "file_offset": "0x2fa0f82",
+              "text": "STILL_GAMUT_S_GAMUT3_S_LOG3"
+            },
+            {
+              "file_offset": "0x3928351",
+              "text": "S-Log3"
+            },
+            {
+              "file_offset": "0x3985adf",
+              "text": "NID_EX_GAMMA_TABLE_REPLY"
+            },
+            {
+              "file_offset": "0x3986d89",
+              "text": "PID_SET_EX_GAMMA_TABLE_CONTROL"
+            },
+            {
+              "file_offset": "0x398d818",
+              "text": "VIDEO_COLOR_SPACE_S_GAMUT3"
+            },
+            {
+              "file_offset": "0x398d833",
+              "text": "VIDEO_COLOR_SPACE_S_GAMUT3_CINE"
+            },
+            {
+              "file_offset": "0x39a77d2",
+              "text": "PRM_HAITA_model_diff_iso_sensitivity_min_still_in_gamma_slog3"
+            },
+            {
+              "file_offset": "0x39a7810",
+              "text": "PRM_HAITA_model_diff_iso_sensitivity_min_movie_in_gamma_slog3"
+            },
+            {
+              "file_offset": "0x39a784e",
+              "text": "PRM_HAITA_model_diff_normal_iso_range_min_still_in_gamma_slog3"
+            },
+            {
+              "file_offset": "0x39a788d",
+              "text": "PRM_HAITA_model_diff_normal_iso_range_min_movie_in_gamma_slog3"
+            },
+            {
+              "file_offset": "0x39b0888",
+              "text": "PRM_HAITA_setting_pictureprofile_gamma_setting_picture_profile_model_diff_iso_sensitivity_min_in_gamma_slog3"
+            },
+            {
+              "file_offset": "0x39b08f5",
+              "text": "PRM_HAITA_setting_pictureprofile_gamma_setting_picture_profile_model_diff_normal_iso_range_min_in_gamma_slog3"
+            },
+            {
+              "file_offset": "0x39d166d",
+              "text": "VAL_HAITA_model_diff_iso_sensitivity_min_still_in_gamma_slog3_NOT_SET"
+            },
+            {
+              "file_offset": "0x39d16b3",
+              "text": "VAL_HAITA_model_diff_iso_sensitivity_min_still_in_gamma_slog3_ISO_SENSITIVITY_160"
+            },
+            {
+              "file_offset": "0x39d1705",
+              "text": "VAL_HAITA_model_diff_iso_sensitivity_min_still_in_gamma_slog3_ISO_SENSITIVITY_200"
+            },
+            {
+              "file_offset": "0x39d1757",
+              "text": "VAL_HAITA_model_diff_iso_sensitivity_min_movie_in_gamma_slog3_NOT_SET"
+            },
+            {
+              "file_offset": "0x39d179d",
+              "text": "VAL_HAITA_model_diff_iso_sensitivity_min_movie_in_gamma_slog3_ISO_SENSITIVITY_160"
+            },
+            {
+              "file_offset": "0x39d17ef",
+              "text": "VAL_HAITA_model_diff_iso_sensitivity_min_movie_in_gamma_slog3_ISO_SENSITIVITY_200"
+            },
+            {
+              "file_offset": "0x39d1841",
+              "text": "VAL_HAITA_model_diff_normal_iso_range_min_still_in_gamma_slog3_NOT_SET"
+            },
+            {
+              "file_offset": "0x39d1888",
+              "text": "VAL_HAITA_model_diff_normal_iso_range_min_still_in_gamma_slog3_ISO_SENSITIVITY_640"
+            },
+            {
+              "file_offset": "0x39d18db",
+              "text": "VAL_HAITA_model_diff_normal_iso_range_min_still_in_gamma_slog3_ISO_SENSITIVITY_800"
+            },
+            {
+              "file_offset": "0x39d192e",
+              "text": "VAL_HAITA_model_diff_normal_iso_range_min_movie_in_gamma_slog3_NOT_SET"
+            },
+            {
+              "file_offset": "0x39d1975",
+              "text": "VAL_HAITA_model_diff_normal_iso_range_min_movie_in_gamma_slog3_ISO_SENSITIVITY_640"
+            },
+            {
+              "file_offset": "0x39d19c8",
+              "text": "VAL_HAITA_model_diff_normal_iso_range_min_movie_in_gamma_slog3_ISO_SENSITIVITY_800"
+            },
+            {
+              "file_offset": "0x3a787eb",
+              "text": "VAL_setting_color_gamut_for_raw_out_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_CINE"
+            },
+            {
+              "file_offset": "0x3a78835",
+              "text": "VAL_setting_color_gamut_for_raw_out_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3"
+            },
+            {
+              "file_offset": "0x3a78952",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_CINE"
+            },
+            {
+              "file_offset": "0x3a789d8",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3"
+            },
+            {
+              "file_offset": "0x3a78a59",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_CINE_RAW_OUTPUT_ON"
+            },
+            {
+              "file_offset": "0x3a78aed",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_RAW_OUTPUT_ON"
+            },
+            {
+              "file_offset": "0x3a78b7c",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_CINE_RAW_OUTPUT_ON_CONNECT_WITH_RAW_COMPATIBLE_DEVICE_CONNECTED"
+            },
+            {
+              "file_offset": "0x3a78c3d",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_RAW_OUTPUT_ON_CONNECT_WITH_RAW_COMPATIBLE_DEVICE_CONNECTED"
+            },
+            {
+              "file_offset": "0x3a794e7",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_exposure_mode_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_CINE_RAW_OUTPUT_ON_CONNECT_WITH_RAW_COMPATIBLE_DEVICE_CONNECTED"
+            },
+            {
+              "file_offset": "0x3a795b6",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_exposure_mode_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_RAW_OUTPUT_ON_CONNECT_WITH_RAW_COMPATIBLE_DEVICE_CONNECTED"
+            },
+            {
+              "file_offset": "0x3a79680",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_exposure_mode_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_CINE_RAW_OUTPUT_ON_CONNECT_WITH_RAW_COMPATIBLE_DEVICE_CONNECTED_EXPOSURE_MODE_MOVIE"
+            },
+            {
+              "file_offset": "0x3a79763",
+              "text": "VAL_HAITA_setting_color_gamut_for_raw_out_setting_raw_output_connect_with_raw_compatible_device_exposure_mode_NOT_SET_COLOR_GAMUT_FOR_RAW_OUT_S_GAMUT3_CINE_RAW_OUTPUT_ON_CONNECT_WITH_RAW_COMPATIBLE_DEVICE_CONNECTED_EXPOSURE_MODE_MOVIE"
+            },
+            {
+              "file_offset": "0x3a7a594",
+              "text": "VAL_setting_pictureprofile_gamma0_SETTING_PICTUREPROFILE_GAMMA_SLOG3"
+            },
+            {
+              "file_offset": "0x3a7aa14",
+              "text": "VAL_setting_pictureprofile_gamma1_SETTING_PICTUREPROFILE_GAMMA_SLOG3"
+            },
+            {
+              "file_offset": "0x3a7ae94",
+              "text": "VAL_setting_pictureprofile_gamma2_SETTING_PICTUREPROFILE_GAMMA_SLOG3"
+            }
+          ]
+        },
+        "user_LUT": {
+          "regex": "read3DLUTFile|model_user_lut_files|LUT%03d",
+          "total": 11,
+          "first_matches": [
+            {
+              "file_offset": "0x3908d6a",
+              "text": "model_user_lut_files read3DLUTFile!! line[%d] lutNo[%d]"
+            },
+            {
+              "file_offset": "0x3908da2",
+              "text": "model_user_lut_files read3DLUTFile!! line[%d] read_size[%d]"
+            },
+            {
+              "file_offset": "0x3908e1f",
+              "text": "model_user_lut_files read_file sizeover!! line[%d]"
+            },
+            {
+              "file_offset": "0x3908e61",
+              "text": "model_user_lut_files::mount_lut_folder():OK"
+            },
+            {
+              "file_offset": "0x3908e8d",
+              "text": "model_user_lut_files::mount_lut_folder():NG"
+            },
+            {
+              "file_offset": "0x3908eb9",
+              "text": "model_user_lut_files::umount_lut_folder():OK"
+            },
+            {
+              "file_offset": "0x3908ee6",
+              "text": "model_user_lut_files::umount_lut_folder():NG"
+            },
+            {
+              "file_offset": "0x3908f2b",
+              "text": "%s/LUT%03d.LUT"
+            },
+            {
+              "file_offset": "0x3908f5a",
+              "text": "%s/LUT%03d.cube"
+            },
+            {
+              "file_offset": "0x3909000",
+              "text": "model_user_lut_files ERR!! line[%d]"
+            },
+            {
+              "file_offset": "0x3924b1c",
+              "text": "read3DLUTFileForCube result[%x]"
+            }
+          ]
+        },
+        "imaging_wrapper": {
+          "regex": "infra_wrapper_imaging::.*(?:picture_profile|white_balance|gamma|noise)",
+          "total": 5,
+          "first_matches": [
+            {
+              "file_offset": "0x397ab90",
+              "text": "void infra_wrapper_imaging::detail::set_base_picture_setting_i(model::setting_select_lut_t, model::is_exist_user_lut_t, model::setting_log_shooting_t, model::setting_input_signal_t, model::setting_gamut_t, model::setting_picture_profile_t, model::general_shooting_mode_t, Camera::CamUserIf::set_param"
+            },
+            {
+              "file_offset": "0x397d100",
+              "text": "void infra_wrapper_imaging::detail::set_wb_mode_i(model::setting_white_balance_t, model::model_data::white_balance_adjustment_ab_type, model::model_data::white_balance_adjustment_gm_type, model::model_data::white_balance_color_temperature_type, model::setting_priority_set_in_awb_t, Camera::CamUserIf"
+            },
+            {
+              "file_offset": "0x397dba8",
+              "text": "void infra_wrapper_imaging::detail::set_heif_gamma_i(model::setting_still_hlg_photo_t, model::exposure_mode_t, Camera::CamUserIf::set_param_heif_gamma_msg*)"
+            },
+            {
+              "file_offset": "0x397e130",
+              "text": "void infra_wrapper_imaging::detail::set_bracket_mode_i(model::setting_menu_drive_mode_t, model::setting_drive_mode_bracket_single_t, model::setting_drive_mode_cont_bracket_t, model::setting_drive_mode_white_balance_bracket_t, model::setting_drive_mode_dro_adv_bracket_t, model::setting_bracket_order_"
+            },
+            {
+              "file_offset": "0x397eb88",
+              "text": "void infra_wrapper_imaging::detail::set_picture_profile_i(model::setting_picture_profile_t, const setting_pictureprofile_black_level_type*, const model::setting_pictureprofile_gamma_t*, const model::setting_pictureprofile_black_gamma_range_t*, const setting_pictureprofile_black_gamma_level_type*, co"
+            }
+          ]
+        },
+        "imager_calibration": {
+          "regex": "Imager.*[Cc]alibrat|ExecImagerCalibration|CalibrationCallbackCamCore|sjob_get_black_level|BAD.?PIXEL|DEFECT.?PIXEL|DEMOSAIC|DEBAYER",
+          "total": 0,
+          "first_matches": []
+        }
+      },
+      "previously_verified_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "ELF_machine": 183,
+      "ELF_symbol_tables": [
+        {
+          "type": 11,
+          "bytes": 19272,
+          "entries": 803
+        }
+      ],
+      "color_named_ELF_symbols": []
+    },
+    "CP": {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha8/cpapp-b.bin",
+      "bytes": 15980568,
+      "first16_hex": "04109fe5041081e201f0a0e10c801000",
+      "has_ELF_header": false,
+      "patterns": {
+        "white_balance_control": {
+          "regex": "white.?balance|\\bAWB\\b|wb_mode|WB_GAIN",
+          "total": 8,
+          "first_matches": [
+            {
+              "file_offset": "0x144e9c",
+              "text": "CamCore: img_ddx_setter: WB_gain_r set Error! "
+            },
+            {
+              "file_offset": "0x144ecc",
+              "text": "CamCore: img_ddx_setter: WB_gain_b set Error! "
+            },
+            {
+              "file_offset": "0x1ed500",
+              "text": "FW: LiroSeq ParamCheckErr@%s[wb_mode] cur:%d req:%d"
+            },
+            {
+              "file_offset": "0xcaafde",
+              "text": "FW: SET_WB_MODE[%d: %d: %d: %d: %d]"
+            },
+            {
+              "file_offset": "0xcab3a5",
+              "text": "FW: [SEPARATE_SETTING_FOR_MOVIE] WhiteBalance:%d"
+            },
+            {
+              "file_offset": "0xcaf98d",
+              "text": "FW: LiroSeq ParamCheckErr@%s[separate_setting_for_movie_white_balance] cur:%d req:%d"
+            },
+            {
+              "file_offset": "0xef15c1",
+              "text": "AwB/C"
+            },
+            {
+              "file_offset": "0xef3017",
+              "text": "AwB^CHD6E6F/G'H?I1JVK"
+            }
+          ]
+        },
+        "CCM_named": {
+          "regex": "color.?matrix|colour.?matrix|\\bCCM\\b",
+          "total": 0,
+          "first_matches": []
+        },
+        "monitor_look_stages": {
+          "regex": "MLUT_(?:YC2RGB|L1D_[ABC]_ON|MTX_[ABCD]_ON|EIGAIN|YR1D|L3D_ON)|ddl_VfxSetMlut|3D-Lut table Write",
+          "total": 29,
+          "first_matches": [
+            {
+              "file_offset": "0x2a607c",
+              "text": "CC: CamCore 3D-Lut table Write Start"
+            },
+            {
+              "file_offset": "0x326600",
+              "text": "FW: call ddl_VfxSetMlutPre s_vfx_mlut_lookname=%d, lookname=%d,"
+            },
+            {
+              "file_offset": "0x326640",
+              "text": "FW: call ddl_VfxSetMlut lookname=%d,%d, l3d=%x,%u, reg=%x,%u"
+            },
+            {
+              "file_offset": "0x380c8c",
+              "text": "ddl_VfxSetMlutUser3D"
+            },
+            {
+              "file_offset": "0x380f68",
+              "text": "ddl_VfxSetMlutUser3DArtGen"
+            },
+            {
+              "file_offset": "0xa5b194",
+              "text": "MLUT_YC2RGB_ON"
+            },
+            {
+              "file_offset": "0xa5b224",
+              "text": "MLUT_L1D_A_ON"
+            },
+            {
+              "file_offset": "0xa5b2b4",
+              "text": "MLUT_L1D_B_ON"
+            },
+            {
+              "file_offset": "0xa5b344",
+              "text": "MLUT_L1D_C_ON"
+            },
+            {
+              "file_offset": "0xa5b3d4",
+              "text": "MLUT_MTX_A_ON"
+            },
+            {
+              "file_offset": "0xa5b464",
+              "text": "MLUT_MTX_B_ON"
+            },
+            {
+              "file_offset": "0xa5b4f4",
+              "text": "MLUT_MTX_C_ON"
+            },
+            {
+              "file_offset": "0xa5b584",
+              "text": "MLUT_MTX_D_ON"
+            },
+            {
+              "file_offset": "0xa5b614",
+              "text": "MLUT_EIGAIN_ON"
+            },
+            {
+              "file_offset": "0xa5b6a4",
+              "text": "MLUT_YR1D_ON"
+            },
+            {
+              "file_offset": "0xa5b7c4",
+              "text": "MLUT_L3D_ON"
+            },
+            {
+              "file_offset": "0xcbf1d4",
+              "text": "CC: CamCore 3D-Lut table Write End, 3D-Lut %X, GetBaseAddress %X"
+            },
+            {
+              "file_offset": "0xcec335",
+              "text": "FW: SetVfxMlutParam: VFX_ERR:0x%02x ACQUIRE_ID:%d ddl_VfxSetMlutPre error!"
+            },
+            {
+              "file_offset": "0xcec380",
+              "text": "FW: ddl_VfxSetMlut err! VFX_ERR:0x%02x ACQUIRE_ID:%d LOOKNAME:%d l3d=%x,%u reg=%x,%u"
+            },
+            {
+              "file_offset": "0xcec402",
+              "text": "FW: SetVfxMlutParam: VFX_ERR:0x%02x ACQUIRE_ID:%d  ei_gain:%d base_iso:%d ddl_VfxSetMlutEIGain error!"
+            },
+            {
+              "file_offset": "0xe28a68",
+              "text": "MLUT_YC2RGB_REG_FILTERON_BT709F"
+            },
+            {
+              "file_offset": "0xe28af4",
+              "text": "MLUT_YR1D_REG_THRU"
+            },
+            {
+              "file_offset": "0xe28b80",
+              "text": "MLUT_EIGAIN_REG_THRU"
+            },
+            {
+              "file_offset": "0xe29f30",
+              "text": "MLUT_YR1D_SRAM_THRU"
+            },
+            {
+              "file_offset": "0xe38328",
+              "text": "MLUT_YC2RGB_REG_TEST"
+            },
+            {
+              "file_offset": "0xe38788",
+              "text": "MLUT_EIGAIN_REG_TEST"
+            },
+            {
+              "file_offset": "0xe38814",
+              "text": "MLUT_YR1D_REG_TEST"
+            },
+            {
+              "file_offset": "0xe38d00",
+              "text": "MLUT_YR1D_SRAM_TEST"
+            },
+            {
+              "file_offset": "0xe3b1cc",
+              "text": "MLUT_YC2RGB_REG_INV709_YC"
+            }
+          ]
+        },
+        "VENICE_named_look": {
+          "regex": "MLUT_.*VENICE.*(?:SLOG3|SGAMUT|3DLUT)",
+          "total": 29,
+          "first_matches": [
+            {
+              "file_offset": "0xe41b2c",
+              "text": "MLUT_L1D_B_SRAM_R_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xe41bb8",
+              "text": "MLUT_L1D_B_SRAM_G_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xe41c44",
+              "text": "MLUT_L1D_B_SRAM_B_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xe41cd0",
+              "text": "MLUT_L1D_B_REG_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf32c",
+              "text": "MLUT_L3D_SRAM_R_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf3b8",
+              "text": "MLUT_L3D_SRAM_R_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf444",
+              "text": "MLUT_L3D_SRAM_R_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf4d0",
+              "text": "MLUT_L3D_SRAM_R_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf55c",
+              "text": "MLUT_L3D_SRAM_R_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf5e8",
+              "text": "MLUT_L3D_SRAM_R_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf674",
+              "text": "MLUT_L3D_SRAM_R_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf700",
+              "text": "MLUT_L3D_SRAM_R_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf78c",
+              "text": "MLUT_L3D_SRAM_G_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf818",
+              "text": "MLUT_L3D_SRAM_G_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf8a4",
+              "text": "MLUT_L3D_SRAM_G_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf930",
+              "text": "MLUT_L3D_SRAM_G_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf9bc",
+              "text": "MLUT_L3D_SRAM_G_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfa48",
+              "text": "MLUT_L3D_SRAM_G_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfad4",
+              "text": "MLUT_L3D_SRAM_G_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfb60",
+              "text": "MLUT_L3D_SRAM_G_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfbec",
+              "text": "MLUT_L3D_SRAM_B_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfc78",
+              "text": "MLUT_L3D_SRAM_B_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfd04",
+              "text": "MLUT_L3D_SRAM_B_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfd90",
+              "text": "MLUT_L3D_SRAM_B_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfe1c",
+              "text": "MLUT_L3D_SRAM_B_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfea8",
+              "text": "MLUT_L3D_SRAM_B_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebff34",
+              "text": "MLUT_L3D_SRAM_B_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebffc0",
+              "text": "MLUT_L3D_SRAM_B_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xec004c",
+              "text": "MLUT_L3D_REG_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            }
+          ]
+        },
+        "gamma_gamut": {
+          "regex": "S.?Log3|S.?Gamut3|S.?Cinetone|EX_GAMMA_TABLE",
+          "total": 34,
+          "first_matches": [
+            {
+              "file_offset": "0x1e9769",
+              "text": " pGFW: EX_GAMMA_TABLE_CONTROL[ON=%d] [ForceOff=%d] [Pointer=0x%x]"
+            },
+            {
+              "file_offset": "0xa55758",
+              "text": "S-Cinetone"
+            },
+            {
+              "file_offset": "0xa55898",
+              "text": "S-Log3/S-Gamut3.Cine paint_on"
+            },
+            {
+              "file_offset": "0xa558d8",
+              "text": "S-Log3/S-Gamut3.Cine"
+            },
+            {
+              "file_offset": "0xa55918",
+              "text": "S-Log3/S-Gamut3"
+            },
+            {
+              "file_offset": "0xe41b2c",
+              "text": "MLUT_L1D_B_SRAM_R_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xe41bb8",
+              "text": "MLUT_L1D_B_SRAM_G_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xe41c44",
+              "text": "MLUT_L1D_B_SRAM_B_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xe41cd0",
+              "text": "MLUT_L1D_B_REG_VENICE_L1D0_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf32c",
+              "text": "MLUT_L3D_SRAM_R_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf3b8",
+              "text": "MLUT_L3D_SRAM_R_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf444",
+              "text": "MLUT_L3D_SRAM_R_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf4d0",
+              "text": "MLUT_L3D_SRAM_R_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf55c",
+              "text": "MLUT_L3D_SRAM_R_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf5e8",
+              "text": "MLUT_L3D_SRAM_R_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf674",
+              "text": "MLUT_L3D_SRAM_R_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf700",
+              "text": "MLUT_L3D_SRAM_R_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf78c",
+              "text": "MLUT_L3D_SRAM_G_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf818",
+              "text": "MLUT_L3D_SRAM_G_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf8a4",
+              "text": "MLUT_L3D_SRAM_G_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf930",
+              "text": "MLUT_L3D_SRAM_G_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebf9bc",
+              "text": "MLUT_L3D_SRAM_G_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfa48",
+              "text": "MLUT_L3D_SRAM_G_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfad4",
+              "text": "MLUT_L3D_SRAM_G_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfb60",
+              "text": "MLUT_L3D_SRAM_G_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfbec",
+              "text": "MLUT_L3D_SRAM_B_0_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfc78",
+              "text": "MLUT_L3D_SRAM_B_1_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfd04",
+              "text": "MLUT_L3D_SRAM_B_2_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfd90",
+              "text": "MLUT_L3D_SRAM_B_3_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfe1c",
+              "text": "MLUT_L3D_SRAM_B_4_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebfea8",
+              "text": "MLUT_L3D_SRAM_B_5_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebff34",
+              "text": "MLUT_L3D_SRAM_B_6_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xebffc0",
+              "text": "MLUT_L3D_SRAM_B_7_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            },
+            {
+              "file_offset": "0xec004c",
+              "text": "MLUT_L3D_REG_VENICE_3DLUT_SLOG3_SGAMUT3_ACES"
+            }
+          ]
+        },
+        "user_LUT": {
+          "regex": "read3DLUTFile|model_user_lut_files|LUT%03d",
+          "total": 0,
+          "first_matches": []
+        },
+        "imaging_wrapper": {
+          "regex": "infra_wrapper_imaging::.*(?:picture_profile|white_balance|gamma|noise)",
+          "total": 0,
+          "first_matches": []
+        },
+        "imager_calibration": {
+          "regex": "Imager.*[Cc]alibrat|ExecImagerCalibration|CalibrationCallbackCamCore|sjob_get_black_level|BAD.?PIXEL|DEFECT.?PIXEL|DEMOSAIC|DEBAYER",
+          "total": 7,
+          "first_matches": [
+            {
+              "file_offset": "0x23b60c",
+              "text": "sjob_get_black_level_MON_RAW_new"
+            },
+            {
+              "file_offset": "0x2d7988",
+              "text": "ExecImagerCalibration"
+            },
+            {
+              "file_offset": "0x2e4624",
+              "text": "CalibrationCallbackCamCoreStart_SGC1"
+            },
+            {
+              "file_offset": "0x2e4680",
+              "text": "CalibrationCallbackCamCoreEnd_SGC1"
+            },
+            {
+              "file_offset": "0x2eddc4",
+              "text": "FW: Imager::getCalibrationVcycle() return err:%d"
+            },
+            {
+              "file_offset": "0x2ede3c",
+              "text": "ImagerGetCalibrationTimeAfterSleep"
+            },
+            {
+              "file_offset": "0x2edeb4",
+              "text": "FW: Imager::ImagerCalibrateADC() return err:%d"
+            }
+          ]
+        }
+      },
+      "source_manifest_sha256": "c90d00d807874a5309dc1b65b203287e83608ceee513cc57b53409333fb6bcba"
+    }
+  }
+}

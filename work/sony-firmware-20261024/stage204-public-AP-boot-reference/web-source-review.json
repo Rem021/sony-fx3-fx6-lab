@@ -1,0 +1,38 @@
+{
+  "review_date": "2026-10-29",
+  "sources": [
+    {
+      "url": "https://api.github.com/repos/DavidBuchanan314/ILCE-7M4-RE/commits/main",
+      "observed_commit": "e85e137fc3b88b7cb26e69faa9f1304184678ff7",
+      "method": "curl with normal TLS verification succeeded; no authentication or device request."
+    },
+    {
+      "url": "https://api.github.com/repos/DavidBuchanan314/ILCE-7M4-RE/git/trees/e85e137fc3b88b7cb26e69faa9f1304184678ff7?recursive=1",
+      "captured": "upstream-tree.json",
+      "entries": 98,
+      "truncated": false,
+      "use": "Actual ROM, boot0 and SRAM presence and blob identity; not inferred from web search snippets."
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/e85e137fc3b88b7cb26e69faa9f1304184678ff7/emmc_boot/README.md",
+      "use": "Author identifies A7IV2.00 boot0/SRAM and entry; fixed raw file obtained and independently byte-checked.",
+      "limit": "Browser fetch failed; exact raw bytes and blob hashes were obtained through the pinned download route. No FX3 body identity."
+    },
+    {
+      "url": "https://github.com/DavidBuchanan314/ILCE-7M4-RE/blob/main/payloads/fastboot/README.md",
+      "use": "Live web page still identifies a bare-metal A7IV payload on USB2 Multi. No inference of a built-in FX3 Fastboot mode."
+    },
+    {
+      "url": "https://github.com/YuuLuo/a7c2-service-preload",
+      "use": "Maintainer documents MSC to authenticated Senser/Jiritsu/preload root-child execution on A7CII2.01 and a separate update acceptance requirement.",
+      "limit": "Does not establish independent startup after damage or FX3 compatibility."
+    }
+  ],
+  "excluded_search_results": [
+    "Cypress/Infineon EZ-USB FX3 and bladeRF recovery results concern different hardware.",
+    "Secondary claim that absent USB strings prove no USB stack was not adopted.",
+    "Sony_MCRE describes an earlier plaintext-recovery milestone and yielded no directly usable FX3 rescue source in the checked page."
+  ],
+  "authorization_expanded": false,
+  "actual_camera_operations": 0
+}

@@ -1,0 +1,16 @@
+0000a64c stp        x29, x30, [sp, #-0x20]!
+0000a650 add        x0, x0, #0x50
+0000a654 mov        x29, sp
+0000a658 str        x19, [sp, #0x10]
+0000a65c mov        x19, x2
+0000a660 bl         #0x7380 ; Updater::Xml::DomAttributeSet::Find
+0000a664 cbz        x0, #0xa684
+0000a668 ldr        x0, [x0, #0x28]
+0000a66c add        x0, x0, #0x10
+0000a670 str        x0, [x19]
+0000a674 mov        w0, #0
+0000a678 ldr        x19, [sp, #0x10]
+0000a67c ldp        x29, x30, [sp], #0x20
+0000a680 ret        
+0000a684 mov        w0, #1
+0000a688 b          #0xa678

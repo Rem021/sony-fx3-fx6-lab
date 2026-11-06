@@ -1,0 +1,722 @@
+[
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libqrencode.so",
+    "sha256": "0103b054861b87d8a5fea8ef448be9b27258f247ab0693b6468981c7b74052a6",
+    "ELF_class": 64,
+    "endianness": "little",
+    "e_machine": 183,
+    "architecture": "AArch64",
+    "e_type": 3,
+    "entry": "0x2490",
+    "program_headers": 5,
+    "sections": [
+      {
+        "name": "",
+        "type": 0,
+        "address": "0x0",
+        "offset": 0,
+        "size": 0,
+        "entry_size": 0
+      },
+      {
+        "name": ".gnu.hash",
+        "type": 1879048182,
+        "address": "0x158",
+        "offset": 344,
+        "size": 712,
+        "entry_size": 0
+      },
+      {
+        "name": ".dynsym",
+        "type": 11,
+        "address": "0x420",
+        "offset": 1056,
+        "size": 2640,
+        "entry_size": 24
+      },
+      {
+        "name": ".dynstr",
+        "type": 3,
+        "address": "0xe70",
+        "offset": 3696,
+        "size": 1930,
+        "entry_size": 0
+      },
+      {
+        "name": ".gnu.version",
+        "type": 1879048191,
+        "address": "0x15fa",
+        "offset": 5626,
+        "size": 220,
+        "entry_size": 2
+      },
+      {
+        "name": ".gnu.version_r",
+        "type": 1879048190,
+        "address": "0x16d8",
+        "offset": 5848,
+        "size": 64,
+        "entry_size": 0
+      },
+      {
+        "name": ".rela.dyn",
+        "type": 4,
+        "address": "0x1718",
+        "offset": 5912,
+        "size": 504,
+        "entry_size": 24
+      },
+      {
+        "name": ".rela.plt",
+        "type": 4,
+        "address": "0x1910",
+        "offset": 6416,
+        "size": 1728,
+        "entry_size": 24
+      },
+      {
+        "name": ".init",
+        "type": 1,
+        "address": "0x1fd0",
+        "offset": 8144,
+        "size": 20,
+        "entry_size": 0
+      },
+      {
+        "name": ".plt",
+        "type": 1,
+        "address": "0x1ff0",
+        "offset": 8176,
+        "size": 1184,
+        "entry_size": 16
+      },
+      {
+        "name": ".text",
+        "type": 1,
+        "address": "0x2490",
+        "offset": 9360,
+        "size": 20036,
+        "entry_size": 0
+      },
+      {
+        "name": ".fini",
+        "type": 1,
+        "address": "0x72d4",
+        "offset": 29396,
+        "size": 16,
+        "entry_size": 0
+      },
+      {
+        "name": ".rodata",
+        "type": 1,
+        "address": "0x72e8",
+        "offset": 29416,
+        "size": 3784,
+        "entry_size": 0
+      },
+      {
+        "name": ".eh_frame",
+        "type": 1,
+        "address": "0x81b0",
+        "offset": 33200,
+        "size": 4,
+        "entry_size": 0
+      },
+      {
+        "name": ".init_array",
+        "type": 14,
+        "address": "0x18d08",
+        "offset": 36104,
+        "size": 8,
+        "entry_size": 8
+      },
+      {
+        "name": ".fini_array",
+        "type": 15,
+        "address": "0x18d10",
+        "offset": 36112,
+        "size": 8,
+        "entry_size": 8
+      },
+      {
+        "name": ".jcr",
+        "type": 1,
+        "address": "0x18d18",
+        "offset": 36120,
+        "size": 8,
+        "entry_size": 0
+      },
+      {
+        "name": ".data.rel.ro",
+        "type": 1,
+        "address": "0x18d20",
+        "offset": 36128,
+        "size": 96,
+        "entry_size": 0
+      },
+      {
+        "name": ".dynamic",
+        "type": 6,
+        "address": "0x18d80",
+        "offset": 36224,
+        "size": 560,
+        "entry_size": 16
+      },
+      {
+        "name": ".got",
+        "type": 1,
+        "address": "0x18fb0",
+        "offset": 36784,
+        "size": 56,
+        "entry_size": 8
+      },
+      {
+        "name": ".got.plt",
+        "type": 1,
+        "address": "0x18fe8",
+        "offset": 36840,
+        "size": 600,
+        "entry_size": 8
+      },
+      {
+        "name": ".data",
+        "type": 1,
+        "address": "0x19240",
+        "offset": 37440,
+        "size": 8,
+        "entry_size": 0
+      },
+      {
+        "name": ".bss",
+        "type": 8,
+        "address": "0x19248",
+        "offset": 37448,
+        "size": 528,
+        "entry_size": 0
+      },
+      {
+        "name": ".comment",
+        "type": 1,
+        "address": "0x0",
+        "offset": 37448,
+        "size": 64,
+        "entry_size": 1
+      },
+      {
+        "name": ".shstrtab",
+        "type": 3,
+        "address": "0x0",
+        "offset": 37512,
+        "size": 206,
+        "entry_size": 0
+      }
+    ],
+    "dynsym_count": 110,
+    "DT_NEEDED": [
+      "libpthread.so.0",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libdl.so.2",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "librt.so.1"
+    ],
+    "all_non_NOBITS_sections_within_file": true
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/libsencore.so",
+    "sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+    "ELF_class": 64,
+    "endianness": "little",
+    "e_machine": 183,
+    "architecture": "AArch64",
+    "e_type": 3,
+    "entry": "0xae90",
+    "program_headers": 6,
+    "sections": [
+      {
+        "name": "",
+        "type": 0,
+        "address": "0x0",
+        "offset": 0,
+        "size": 0,
+        "entry_size": 0
+      },
+      {
+        "name": ".gnu.hash",
+        "type": 1879048182,
+        "address": "0x190",
+        "offset": 400,
+        "size": 2744,
+        "entry_size": 0
+      },
+      {
+        "name": ".dynsym",
+        "type": 11,
+        "address": "0xc48",
+        "offset": 3144,
+        "size": 11712,
+        "entry_size": 24
+      },
+      {
+        "name": ".dynstr",
+        "type": 3,
+        "address": "0x3a08",
+        "offset": 14856,
+        "size": 12830,
+        "entry_size": 0
+      },
+      {
+        "name": ".gnu.version",
+        "type": 1879048191,
+        "address": "0x6c26",
+        "offset": 27686,
+        "size": 976,
+        "entry_size": 2
+      },
+      {
+        "name": ".gnu.version_r",
+        "type": 1879048190,
+        "address": "0x6ff8",
+        "offset": 28664,
+        "size": 240,
+        "entry_size": 0
+      },
+      {
+        "name": ".rela.dyn",
+        "type": 4,
+        "address": "0x70e8",
+        "offset": 28904,
+        "size": 5760,
+        "entry_size": 24
+      },
+      {
+        "name": ".rela.plt",
+        "type": 4,
+        "address": "0x8768",
+        "offset": 34664,
+        "size": 5976,
+        "entry_size": 24
+      },
+      {
+        "name": ".init",
+        "type": 1,
+        "address": "0x9ec0",
+        "offset": 40640,
+        "size": 20,
+        "entry_size": 0
+      },
+      {
+        "name": ".plt",
+        "type": 1,
+        "address": "0x9ee0",
+        "offset": 40672,
+        "size": 4016,
+        "entry_size": 16
+      },
+      {
+        "name": ".text",
+        "type": 1,
+        "address": "0xae90",
+        "offset": 44688,
+        "size": 47432,
+        "entry_size": 0
+      },
+      {
+        "name": ".fini",
+        "type": 1,
+        "address": "0x167d8",
+        "offset": 92120,
+        "size": 16,
+        "entry_size": 0
+      },
+      {
+        "name": ".rodata",
+        "type": 1,
+        "address": "0x167f0",
+        "offset": 92144,
+        "size": 258526,
+        "entry_size": 0
+      },
+      {
+        "name": ".eh_frame_hdr",
+        "type": 1,
+        "address": "0x559d0",
+        "offset": 350672,
+        "size": 2348,
+        "entry_size": 0
+      },
+      {
+        "name": ".eh_frame",
+        "type": 1,
+        "address": "0x56300",
+        "offset": 353024,
+        "size": 12228,
+        "entry_size": 0
+      },
+      {
+        "name": ".gcc_except_table",
+        "type": 1,
+        "address": "0x592c4",
+        "offset": 365252,
+        "size": 854,
+        "entry_size": 0
+      },
+      {
+        "name": ".init_array",
+        "type": 14,
+        "address": "0x6a580",
+        "offset": 370048,
+        "size": 32,
+        "entry_size": 8
+      },
+      {
+        "name": ".fini_array",
+        "type": 15,
+        "address": "0x6a5a0",
+        "offset": 370080,
+        "size": 8,
+        "entry_size": 8
+      },
+      {
+        "name": ".jcr",
+        "type": 1,
+        "address": "0x6a5a8",
+        "offset": 370088,
+        "size": 8,
+        "entry_size": 0
+      },
+      {
+        "name": ".data.rel.ro",
+        "type": 1,
+        "address": "0x6a5b0",
+        "offset": 370096,
+        "size": 1488,
+        "entry_size": 0
+      },
+      {
+        "name": ".dynamic",
+        "type": 6,
+        "address": "0x6ab80",
+        "offset": 371584,
+        "size": 688,
+        "entry_size": 16
+      },
+      {
+        "name": ".got",
+        "type": 1,
+        "address": "0x6ae30",
+        "offset": 372272,
+        "size": 440,
+        "entry_size": 8
+      },
+      {
+        "name": ".got.plt",
+        "type": 1,
+        "address": "0x6afe8",
+        "offset": 372712,
+        "size": 2016,
+        "entry_size": 8
+      },
+      {
+        "name": ".data",
+        "type": 1,
+        "address": "0x6b7c8",
+        "offset": 374728,
+        "size": 568,
+        "entry_size": 0
+      },
+      {
+        "name": ".bss",
+        "type": 8,
+        "address": "0x6ba00",
+        "offset": 375296,
+        "size": 1504,
+        "entry_size": 0
+      },
+      {
+        "name": ".comment",
+        "type": 1,
+        "address": "0x0",
+        "offset": 375296,
+        "size": 64,
+        "entry_size": 1
+      },
+      {
+        "name": ".shstrtab",
+        "type": 3,
+        "address": "0x0",
+        "offset": 375360,
+        "size": 238,
+        "entry_size": 0
+      }
+    ],
+    "dynsym_count": 488,
+    "DT_NEEDED": [
+      "libosal_uipc.so",
+      "libInfraUsbCmn.so",
+      "libtestcmd.so",
+      "libtestcmd_scn.so",
+      "libSTMcmdexecute.so",
+      "libpthread.so.0",
+      "libssl.so.3",
+      "libcrypto.so.3",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libdl.so.2",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "librt.so.1"
+    ],
+    "all_non_NOBITS_sections_within_file": true
+  },
+  {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage2/extraction/files/nflasha15/lib/appFw.so",
+    "sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+    "ELF_class": 64,
+    "endianness": "little",
+    "e_machine": 183,
+    "architecture": "AArch64",
+    "e_type": 3,
+    "entry": "0x1594680",
+    "program_headers": 6,
+    "sections": [
+      {
+        "name": "",
+        "type": 0,
+        "address": "0x0",
+        "offset": 0,
+        "size": 0,
+        "entry_size": 0
+      },
+      {
+        "name": ".gnu.hash",
+        "type": 1879048182,
+        "address": "0x190",
+        "offset": 400,
+        "size": 36,
+        "entry_size": 0
+      },
+      {
+        "name": ".dynsym",
+        "type": 11,
+        "address": "0x1b8",
+        "offset": 440,
+        "size": 19272,
+        "entry_size": 24
+      },
+      {
+        "name": ".dynstr",
+        "type": 3,
+        "address": "0x4d00",
+        "offset": 19712,
+        "size": 32172,
+        "entry_size": 0
+      },
+      {
+        "name": ".gnu.version",
+        "type": 1879048191,
+        "address": "0xcaac",
+        "offset": 51884,
+        "size": 1606,
+        "entry_size": 2
+      },
+      {
+        "name": ".gnu.version_r",
+        "type": 1879048190,
+        "address": "0xd0f8",
+        "offset": 53496,
+        "size": 400,
+        "entry_size": 0
+      },
+      {
+        "name": ".rela.dyn",
+        "type": 4,
+        "address": "0xd288",
+        "offset": 53896,
+        "size": 22544808,
+        "entry_size": 24
+      },
+      {
+        "name": ".rela.plt",
+        "type": 4,
+        "address": "0x158d430",
+        "offset": 22598704,
+        "size": 17520,
+        "entry_size": 24
+      },
+      {
+        "name": ".init",
+        "type": 1,
+        "address": "0x15918a0",
+        "offset": 22616224,
+        "size": 20,
+        "entry_size": 0
+      },
+      {
+        "name": ".plt",
+        "type": 1,
+        "address": "0x15918c0",
+        "offset": 22616256,
+        "size": 11712,
+        "entry_size": 16
+      },
+      {
+        "name": ".text",
+        "type": 1,
+        "address": "0x1594680",
+        "offset": 22627968,
+        "size": 27215176,
+        "entry_size": 0
+      },
+      {
+        "name": ".fini",
+        "type": 1,
+        "address": "0x2f88bc8",
+        "offset": 49843144,
+        "size": 16,
+        "entry_size": 0
+      },
+      {
+        "name": ".rodata",
+        "type": 1,
+        "address": "0x2f88be0",
+        "offset": 49843168,
+        "size": 14158234,
+        "entry_size": 0
+      },
+      {
+        "name": ".eh_frame_hdr",
+        "type": 1,
+        "address": "0x3d0957c",
+        "offset": 64001404,
+        "size": 2780,
+        "entry_size": 0
+      },
+      {
+        "name": ".eh_frame",
+        "type": 1,
+        "address": "0x3d0a058",
+        "offset": 64004184,
+        "size": 16972,
+        "entry_size": 0
+      },
+      {
+        "name": ".gcc_except_table",
+        "type": 1,
+        "address": "0x3d0e2a4",
+        "offset": 64021156,
+        "size": 5369,
+        "entry_size": 0
+      },
+      {
+        "name": ".init_array",
+        "type": 14,
+        "address": "0x3d20000",
+        "offset": 64028672,
+        "size": 2344,
+        "entry_size": 8
+      },
+      {
+        "name": ".fini_array",
+        "type": 15,
+        "address": "0x3d20928",
+        "offset": 64031016,
+        "size": 8,
+        "entry_size": 8
+      },
+      {
+        "name": ".jcr",
+        "type": 1,
+        "address": "0x3d20930",
+        "offset": 64031024,
+        "size": 8,
+        "entry_size": 0
+      },
+      {
+        "name": ".data.rel.ro",
+        "type": 1,
+        "address": "0x3d20938",
+        "offset": 64031032,
+        "size": 10302960,
+        "entry_size": 0
+      },
+      {
+        "name": ".dynamic",
+        "type": 6,
+        "address": "0x46f3f28",
+        "offset": 74333992,
+        "size": 736,
+        "entry_size": 16
+      },
+      {
+        "name": ".got",
+        "type": 1,
+        "address": "0x46f4208",
+        "offset": 74334728,
+        "size": 884192,
+        "entry_size": 8
+      },
+      {
+        "name": ".got.plt",
+        "type": 1,
+        "address": "0x47cbfe8",
+        "offset": 75218920,
+        "size": 5880,
+        "entry_size": 8
+      },
+      {
+        "name": ".data",
+        "type": 1,
+        "address": "0x47cd6e0",
+        "offset": 75224800,
+        "size": 3788880,
+        "entry_size": 0
+      },
+      {
+        "name": ".bss",
+        "type": 8,
+        "address": "0x4b6a730",
+        "offset": 79013680,
+        "size": 86356040,
+        "entry_size": 0
+      },
+      {
+        "name": ".comment",
+        "type": 1,
+        "address": "0x0",
+        "offset": 79013680,
+        "size": 64,
+        "entry_size": 1
+      },
+      {
+        "name": ".shstrtab",
+        "type": 3,
+        "address": "0x0",
+        "offset": 79013744,
+        "size": 238,
+        "entry_size": 0
+      }
+    ],
+    "dynsym_count": 803,
+    "DT_NEEDED": [
+      "libNetCommon.so",
+      "libGOConnectionManager.so",
+      "AdjChkConfig.so",
+      "libqrencode.so",
+      "libInfraSKD.so",
+      "libCertificateManager.so",
+      "libssl.so.3",
+      "libpng.so.16",
+      "libjsoncpp.so.24",
+      "libpthread.so.0",
+      "libstdc++.so.6",
+      "libm.so.6",
+      "libdl.so.2",
+      "libgcc_s.so.1",
+      "libc.so.6",
+      "librt.so.1"
+    ],
+    "all_non_NOBITS_sections_within_file": true
+  }
+]

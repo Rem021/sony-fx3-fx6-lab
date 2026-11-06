@@ -1,0 +1,97 @@
+{
+  "host_same_clock": {
+    "screenshot_command_return_ns": 421528392149541,
+    "qualified_image_return_prepared_ns": 421528400576541,
+    "click_helper_before_eval_ns": 421536657092166,
+    "click_helper_after_error_ns": 421536664382708,
+    "image_return_prepared_to_click_helper_ms": 8256.515625,
+    "screenshot_command_return_to_click_helper_ms": 8264.942625,
+    "ledger_reservation_ns": 421536657368333
+  },
+  "model_receive_time": "unknown",
+  "model_review_complete_time": "unknown",
+  "not_pure_model_thinking_interval": true,
+  "reviewed_identity": {
+    "step": 0,
+    "sha": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e",
+    "gen": 9,
+    "seq": 38
+  },
+  "nearest_server_GET_before_arm": [
+    {
+      "HAR_startedDateTime": "2026-11-05T00:17:30.090461952Z",
+      "HAR_duration_ms": 0.8169999775104224,
+      "server_phase": "ready",
+      "server_ready": true,
+      "busy": false,
+      "review_required": false,
+      "steps": 0,
+      "frame": {
+        "sequence": 126,
+        "content_generation": 19,
+        "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+      }
+    },
+    {
+      "HAR_startedDateTime": "2026-11-05T00:17:30.49576704Z",
+      "HAR_duration_ms": 0.7909999372400343,
+      "server_phase": "ready",
+      "server_ready": true,
+      "busy": false,
+      "review_required": false,
+      "steps": 0,
+      "frame": {
+        "sequence": 136,
+        "content_generation": 20,
+        "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4"
+      }
+    },
+    {
+      "HAR_startedDateTime": "2026-11-05T00:17:30.901103872Z",
+      "HAR_duration_ms": 0.6889999649897217,
+      "server_phase": "ready",
+      "server_ready": true,
+      "busy": false,
+      "review_required": false,
+      "steps": 0,
+      "frame": {
+        "sequence": 146,
+        "content_generation": 20,
+        "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4"
+      }
+    }
+  ],
+  "first_server_GET_after_error": [
+    {
+      "HAR_startedDateTime": "2026-11-05T00:17:31.305347072Z",
+      "HAR_duration_ms": 14.170000033009796,
+      "server_phase": "stopping",
+      "server_ready": false,
+      "busy": false,
+      "review_required": false,
+      "steps": 0,
+      "frame": {
+        "sequence": 146,
+        "content_generation": 20,
+        "PNG_sha256": "e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4"
+      }
+    },
+    {
+      "HAR_startedDateTime": "2026-11-05T00:17:31.722611968Z",
+      "HAR_duration_ms": 0.615999949760735,
+      "server_phase": "stopping",
+      "server_ready": false,
+      "busy": false,
+      "review_required": false,
+      "steps": 0,
+      "frame": {
+        "sequence": 151,
+        "content_generation": 21,
+        "PNG_sha256": "2914275caea536ff83d3bd1f884dfb1934e456fb782b5569240547e6add0182e"
+      }
+    }
+  ],
+  "eval_atomic_DOM_snapshot": null,
+  "exact_failing_predicate": "unknown; helper throws one merged preflight error before b.click",
+  "inference": "nearby server GET gen20/SHAe014 differs from reviewed gen9/SHA2914; supports freshness mismatch, not an atomic eval-time DOM proof"
+}

@@ -1,0 +1,407 @@
+{
+  "schema": "fx3-stage216-source-portability-proof-v1",
+  "source_files_git_blob_and_sha_verified": 24,
+  "source_lines": [
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/linux/helpers/bootrom-reader/read_page.S",
+      "source_sha256": "5210faa9d38bad75ff2215ddde9be18683fbb13f9f2fa640815649c7091a3f68",
+      "line": 2,
+      "text": ".arch armv7-a",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/linux/helpers/bootrom-reader/read_page.S#L2"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/linux/helpers/bootrom-reader/read_page.S",
+      "source_sha256": "5210faa9d38bad75ff2215ddde9be18683fbb13f9f2fa640815649c7091a3f68",
+      "line": 109,
+      "text": "page_base: .word 0xffff0",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/linux/helpers/bootrom-reader/read_page.S#L109"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/linux/helpers/bootrom-reader/read_page.S",
+      "source_sha256": "5210faa9d38bad75ff2215ddde9be18683fbb13f9f2fa640815649c7091a3f68",
+      "line": 17,
+      "text": "    cmp r1, #0x35",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/linux/helpers/bootrom-reader/read_page.S#L17"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/linux/docs/bootrom-dump.md",
+      "source_sha256": "e8d1c027b4ab492d73793cdf537e3d18dcaaf77838a6ab76c93de7ea4baf79c2",
+      "line": 22,
+      "text": "`30110_05.2025031501`. The two passes matched byte for byte.",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/linux/docs/bootrom-dump.md#L22"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/linux/docs/root-terminal.md",
+      "source_sha256": "2c1e5669d76743ea549629e907bc6e482901f390bdcf9737df1972bc5502b5a0",
+      "line": 8,
+      "text": "- `camera.setTerminalEnable(True)` enables it.",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/linux/docs/root-terminal.md#L8"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/linux/host/zve10_bootrom_dump.py",
+      "source_sha256": "3a2beb280e32eabb2d57b50f0c0bc2b5cc72914976ef4b0845d1edc3539c6a53",
+      "line": 184,
+      "text": "            camera.setTerminalEnable(True)",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/linux/host/zve10_bootrom_dump.py#L184"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/linux/host/zve10_bootrom_dump.py",
+      "source_sha256": "3a2beb280e32eabb2d57b50f0c0bc2b5cc72914976ef4b0845d1edc3539c6a53",
+      "line": 186,
+      "text": "            check_mounts(camera.dev)",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/linux/host/zve10_bootrom_dump.py#L186"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/bootrom/docs/hardware.md",
+      "source_sha256": "ead67b6a1e818fbc6ff08df27cde63e96535192edbabc3b0510ad133c6df45ce",
+      "line": 69,
+      "text": "- This is BootROM serial boot, not a runtime exploit; it needs dedicated wiring",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/bootrom/docs/hardware.md#L69"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/bootrom/docs/recovery.md",
+      "source_sha256": "aa3f8699bb33abb4bdb404503523b36544b53cdf6d3a426a2dc12b26791bc033",
+      "line": 8,
+      "text": "boot0/boot1, partition tables or physical hardware faults.",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/bootrom/docs/recovery.md#L8"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/bootrom/host/restore_rescue.py",
+      "source_sha256": "d814325331b60ed4fa14a9a1b9e5fa9ef51e67b5843f4c66870de6106cca8d80",
+      "line": 187,
+      "text": "        back = with_device(30, lambda d: fetch(d, name, rows[name]['bytes']))",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/bootrom/host/restore_rescue.py#L187"
+    },
+    {
+      "repo": "dino2048/zv-e10-toolkit",
+      "commit": "bd2b4ac03af71bd397f8b88162db1ec1671e222a",
+      "path": "reference/dino2048--zv-e10-toolkit/bootrom/host/restore_rescue.py",
+      "source_sha256": "d814325331b60ed4fa14a9a1b9e5fa9ef51e67b5843f4c66870de6106cca8d80",
+      "line": 188,
+      "text": "        ok = back == slices[name]",
+      "url": "https://github.com/dino2048/zv-e10-toolkit/blob/bd2b4ac03af71bd397f8b88162db1ec1671e222a/bootrom/host/restore_rescue.py#L188"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/docs/incidents/INCIDENT_20261028_LDSO_PRELOAD.md",
+      "source_sha256": "47f16cdcf47902af8cd144feaa8274b45b2b542eed0d02fbc36758d04539081d",
+      "line": 13,
+      "text": "**直接原因不是 preload，是 `/setting/mode/dmode` 少了换行符。**",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/docs/incidents/INCIDENT_20261028_LDSO_PRELOAD.md#L13"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/docs/incidents/INCIDENT_20261028_LDSO_PRELOAD.md",
+      "source_sha256": "47f16cdcf47902af8cd144feaa8274b45b2b542eed0d02fbc36758d04539081d",
+      "line": 31,
+      "text": "两个变量同时变了，但因果很清楚：**第 1 步之后相机没好转，第 2 步之后才好** ⇒ `dmode` 是决定性因素。",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/docs/incidents/INCIDENT_20261028_LDSO_PRELOAD.md#L31"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/docs/incidents/SD_UPDATE_RECOVERY.md",
+      "source_sha256": "1ab5a7d7bb7d08fb9169820d1c1d7b1d3263557fb857225c5de3437cac63c796",
+      "line": 134,
+      "text": "□ 整个流程能否在\"起不来\"的相机上跑通",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/docs/incidents/SD_UPDATE_RECOVERY.md#L134"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/fastboot/host/flash_partition.py",
+      "source_sha256": "e59cef4c49df33ef170143d5d3dca4dcb2dd50a91aed33d83161aa914b0ea91b",
+      "line": 70,
+      "text": "    return fetch(d, part_start_lba + byte_off // 512, nbytes // 512)",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/fastboot/host/flash_partition.py#L70"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/fastboot/host/flash_partition.py",
+      "source_sha256": "e59cef4c49df33ef170143d5d3dca4dcb2dd50a91aed33d83161aa914b0ea91b",
+      "line": 180,
+      "text": "            part_start_lba = a.part_start // 512",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/fastboot/host/flash_partition.py#L180"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/fastboot/host/flash_partition.py",
+      "source_sha256": "e59cef4c49df33ef170143d5d3dca4dcb2dd50a91aed33d83161aa914b0ea91b",
+      "line": 176,
+      "text": "            part_start_lba = 0",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/fastboot/host/flash_partition.py#L176"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/fastboot/host/flash_partition.py",
+      "source_sha256": "e59cef4c49df33ef170143d5d3dca4dcb2dd50a91aed33d83161aa914b0ea91b",
+      "line": 130,
+      "text": "                if ref is None or target[i * bgran:(i + 1) * bgran] != ref[i * bgran:(i + 1) * bgran]]",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/fastboot/host/flash_partition.py#L130"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/fastboot/host/flash_partition.py",
+      "source_sha256": "e59cef4c49df33ef170143d5d3dca4dcb2dd50a91aed33d83161aa914b0ea91b",
+      "line": 153,
+      "text": "    if a.plan_only:",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/fastboot/host/flash_partition.py#L153"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/fastboot/host/verify_partition.py",
+      "source_sha256": "bbc6ed3ccb16d6c6c89084c1dca52fe51d278ac817158c08e75d08d12f2a2295",
+      "line": 47,
+      "text": "        n = len(img) // CH",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/fastboot/host/verify_partition.py#L47"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/fastboot/host/verify_partition.py",
+      "source_sha256": "bbc6ed3ccb16d6c6c89084c1dca52fe51d278ac817158c08e75d08d12f2a2295",
+      "line": 50,
+      "text": "        for i in range(n):",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/fastboot/host/verify_partition.py#L50"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/fastboot/host/verify_partition.py",
+      "source_sha256": "bbc6ed3ccb16d6c6c89084c1dca52fe51d278ac817158c08e75d08d12f2a2295",
+      "line": 62,
+      "text": "            print('RESULT: 0 mismatching blocks -- partition matches the image exactly')",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/fastboot/host/verify_partition.py#L62"
+    },
+    {
+      "repo": "cokeenet/zve10-qemu",
+      "commit": "48e649087cee915794b262ad676c1371d718c58e",
+      "path": "reference/cokeenet--zve10-qemu/README.md",
+      "source_sha256": "9223975eebf54105517609a3331e0d67adc1577f08a3730b657b27f5936e2311",
+      "line": 29,
+      "text": "| **C** | **QEMU 仿真** | 原厂固件完整启动 + 机身 App 运行 | 🟡 启动与 App 大部分打通，显示链路未完成 |",
+      "url": "https://github.com/cokeenet/zve10-qemu/blob/48e649087cee915794b262ad676c1371d718c58e/README.md#L29"
+    }
+  ],
+  "original_bootin_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+  "original_bootin_machine": "EM_AARCH64",
+  "original_ranges": [
+    {
+      "name": "mode-read-and-commit",
+      "source": "originals/app/bin/bootin.elf",
+      "source_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "start": "0x402334",
+      "end_exclusive": "0x40240c",
+      "file_offset": 9012,
+      "bytes": 216,
+      "sha256": "6ed3582a906698a85869e5734eb9e3707a50838bb00e3caef652e94ac8441b4e",
+      "output": "raw/mode-read-and-commit"
+    },
+    {
+      "name": "mode-parse",
+      "source": "originals/app/bin/bootin.elf",
+      "source_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "start": "0x4024e8",
+      "end_exclusive": "0x4025ac",
+      "file_offset": 9448,
+      "bytes": 196,
+      "sha256": "be193795e4a1f703405514d09290980c44ca7747445c9ace9d29380b6cb56b3c",
+      "output": "raw/mode-parse"
+    },
+    {
+      "name": "mode-string",
+      "source": "originals/app/bin/bootin.elf",
+      "source_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "start": "0x403a28",
+      "end_exclusive": "0x403a2a",
+      "file_offset": 14888,
+      "bytes": 2,
+      "sha256": "ac11339ffa8f270c4f781e0a3922bb1c80d9dee6e4b6911ca34538ed9ae03caa",
+      "output": "raw/mode-string"
+    },
+    {
+      "name": "mode-path",
+      "source": "originals/app/bin/bootin.elf",
+      "source_sha256": "dab3ce4b6c28a6c9ffd9f0b893dce1d08f3ee7302a09df87e518409e728be2f2",
+      "start": "0x403bec",
+      "end_exclusive": "0x403c00",
+      "file_offset": 15340,
+      "bytes": 20,
+      "sha256": "656a901977933b444eecc5bfb03b42e8743734f48ce99f9b2a4327abd7c16b89",
+      "output": "raw/mode-path"
+    }
+  ],
+  "raw_instruction_checks": [
+    {
+      "VA": "0x402394",
+      "word": "0x97fffc57",
+      "branch_target": "0x4014f0",
+      "meaning": "b"
+    },
+    {
+      "VA": "0x4023ac",
+      "word": "0x97fffc79",
+      "branch_target": "0x401590",
+      "meaning": "b"
+    },
+    {
+      "VA": "0x402408",
+      "word": "0x97fffcb6",
+      "branch_target": "0x4016e0",
+      "meaning": "b"
+    },
+    {
+      "VA": "0x4023a4",
+      "word": "0xd28003c2",
+      "mask": "0xffffffff",
+      "expected": "0xd28003c2",
+      "meaning": "mov x2,30: requested read length"
+    },
+    {
+      "VA": "0x4023e8",
+      "word": "0x6b07001f",
+      "mask": "0xffffffff",
+      "expected": "0x6b07001f",
+      "meaning": "cmp w0,w7: returned length vs position"
+    },
+    {
+      "VA": "0x4023ec",
+      "word": "0x540007ec",
+      "branch_target": "0x4024e8",
+      "meaning": "cond"
+    },
+    {
+      "VA": "0x4024e8",
+      "word": "0x38676aa4",
+      "mask": "0xffffffff",
+      "expected": "0x38676aa4",
+      "meaning": "ldrb w4,[x21,x7]"
+    },
+    {
+      "VA": "0x402504",
+      "word": "0x7100cc9f",
+      "mask": "0xffffffff",
+      "expected": "0x7100cc9f",
+      "meaning": "cmp w4,0x33"
+    },
+    {
+      "VA": "0x402508",
+      "word": "0x54000081",
+      "branch_target": "0x402518",
+      "meaning": "cond"
+    },
+    {
+      "VA": "0x40250c",
+      "word": "0x52800026",
+      "mask": "0xffffffff",
+      "expected": "0x52800026",
+      "meaning": "mov w6,1: mode was selected"
+    },
+    {
+      "VA": "0x402510",
+      "word": "0xaa0b03e5",
+      "mask": "0xffffffff",
+      "expected": "0xaa0b03e5",
+      "meaning": "mov x5,x11: address of literal3"
+    },
+    {
+      "VA": "0x402514",
+      "word": "0x14000007",
+      "branch_target": "0x402530",
+      "meaning": "b"
+    },
+    {
+      "VA": "0x402530",
+      "word": "0x910004e7",
+      "mask": "0xffffffff",
+      "expected": "0x910004e7",
+      "meaning": "increment byte position"
+    },
+    {
+      "VA": "0x402534",
+      "word": "0x17ffffad",
+      "branch_target": "0x4023e8",
+      "meaning": "b"
+    },
+    {
+      "VA": "0x40257c",
+      "word": "0x54fffda1",
+      "branch_target": "0x402530",
+      "meaning": "cond"
+    },
+    {
+      "VA": "0x4023f8",
+      "word": "0xf9000805",
+      "mask": "0xffffffff",
+      "expected": "0xf9000805",
+      "meaning": "store selected mode pointer on loop completion"
+    }
+  ],
+  "original_text_coverage": {
+    "bytes": 7952,
+    "instruction_bytes": 7940,
+    "skipped_data_bytes": 12,
+    "skipped_addresses": [
+      "0x401928",
+      "0x401930",
+      "0x401938"
+    ],
+    "selected_ranges_have_no_skipped_words": true
+  },
+  "selected_mode_parser": {
+    "path_VA": "0x403bec",
+    "read_limit": 30,
+    "mode3_literal_VA": "0x403a28",
+    "observation": "Byte0x33 selects literal3; loop uses read return count. LF takes ignored-byte path. Selected parse accepts a single ASCII3 byte without requiringLF; not proof of full boot health.",
+    "preserve_healthy_same_body_bytes": true,
+    "community_newline_rule_not_ported": true,
+    "original_software_or_guest_execution": false
+  },
+  "address_semantics": {
+    "upstream_write": "partition-relative bytes in sparse run",
+    "upstream_verify": "absolute LBA=part_start_bytes/512+relative_bytes/512",
+    "implicit_zero_start_present_without_reference": true,
+    "implicit_zero_start_not_accepted_for_FX3": true,
+    "same_target_reference_produces_empty_diff_without_full": true,
+    "sampled_verify_not_full_coverage": true,
+    "whole_verifier_floor64KiB_does_not_cover_arbitrary_tail": true,
+    "illustrative_tail": {
+      "input_bytes": 65537,
+      "loop_chunks": 1,
+      "covered_bytes": 65536,
+      "uncovered_bytes": 1,
+      "source_derived_arithmetic_only": true
+    }
+  },
+  "no_device_backend_imported": true,
+  "upstream_code_executed": false,
+  "Sony_code_or_guest_executed": false,
+  "root_or_device_operations": 0
+}

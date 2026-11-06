@@ -1,0 +1,103 @@
+{
+  "status": "PASS_SCOPED_WBI_ZERO_DISPATCH_AND_STAGING_EXCLUSION",
+  "original_section_rows_compared_with_independent_stage203": 1399,
+  "original_section_metadata_xor_checks": 1399,
+  "stored_records": 1317,
+  "zero_fill_records": 82,
+  "instruction_checks": [
+    {
+      "VA": "0xfe0597d4",
+      "bytes": "880a4092",
+      "instruction": "and x8, x20, #7"
+    },
+    {
+      "VA": "0xfe0597dc",
+      "bytes": "2119088b",
+      "instruction": "add x1, x9, x8, lsl #6"
+    },
+    {
+      "VA": "0xfe0597e0",
+      "bytes": "e2031a32",
+      "instruction": "mov w2, #0x40"
+    },
+    {
+      "VA": "0xfe0597e8",
+      "bytes": "17c7ff97",
+      "instruction": "bl #0xfe04b444"
+    },
+    {
+      "VA": "0xfe0597ec",
+      "bytes": "171340f9",
+      "instruction": "ldr x23, [x24, #0x20]"
+    },
+    {
+      "VA": "0xfe059804",
+      "bytes": "09634039",
+      "instruction": "ldrb w9, [x24, #0x18]"
+    },
+    {
+      "VA": "0xfe059808",
+      "bytes": "080340f9",
+      "instruction": "ldr x8, [x24]"
+    },
+    {
+      "VA": "0xfe05980c",
+      "bytes": "e9070037",
+      "instruction": "tbnz w9, #0, #0xfe059908"
+    },
+    {
+      "VA": "0xfe059908",
+      "bytes": "091340f9",
+      "instruction": "ldr x9, [x24, #0x20]"
+    },
+    {
+      "VA": "0xfe059928",
+      "bytes": "170340f9",
+      "instruction": "ldr x23, [x24]"
+    },
+    {
+      "VA": "0xfe05992c",
+      "bytes": "181340f9",
+      "instruction": "ldr x24, [x24, #0x20]"
+    },
+    {
+      "VA": "0xfe05993c",
+      "bytes": "57f2ff97",
+      "instruction": "bl #0xfe056298"
+    },
+    {
+      "VA": "0xfe059940",
+      "bytes": "e8031e32",
+      "instruction": "mov w8, #4"
+    },
+    {
+      "VA": "0xfe059980",
+      "bytes": "e8df01a9",
+      "instruction": "stp x8, x23, [sp, #0x18]"
+    },
+    {
+      "VA": "0xfe059984",
+      "bytes": "f81700f9",
+      "instruction": "str x24, [sp, #0x28]"
+    },
+    {
+      "VA": "0xfe059988",
+      "bytes": "a0f2ff97",
+      "instruction": "bl #0xfe056408"
+    }
+  ],
+  "original_reference_dispatch_fragments": 2,
+  "independent_pre_DMA_fragment": 1,
+  "two_original_records_copied_byte_exact": true,
+  "default_AP_staging_region_queries": 3,
+  "overlapping_any_records": 0,
+  "flag1_zero_semantics_supported_by_Sony_reference_and_AP_dispatch": true,
+  "source_kernel_version": "FX3 GPL Ver7.00 reference, layout verified against 7.02 data",
+  "AP_code_model": "A7 IV v2.00 reference, not current target FX3 AP",
+  "actual_WBI_restore_or_DMA_executed": false,
+  "unknown_earlier_initialization_remains": true,
+  "physical_chip_capacity_inferred": false,
+  "complete_source_RAM_or_full_private_ISP_recovered": false,
+  "modified_or_flashable_firmware_produced": false,
+  "goal_complete": false
+}

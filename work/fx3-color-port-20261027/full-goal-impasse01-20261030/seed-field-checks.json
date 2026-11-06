@@ -1,0 +1,47 @@
+{
+  "created_utc": "2026-10-30T17:31:21.815477+00:00",
+  "source_model_sha256": "c00b01e7ea75d221e1fc45df2c5b20088f9ee8687a7e9df5346fae4c7987393b",
+  "basis": "Previously inferred 16-order linear prefix model and repeated public u32 field; no body cipher or signing-key trial.",
+  "observed_results": [
+    {
+      "name": "AXS600",
+      "clear_field": 309,
+      "Fibonacci_direct_seed_matches": false,
+      "Fibonacci_seed_advance_76_matches": false,
+      "observed_mask_state_hex": "0xcf1c",
+      "Fibonacci_mask_state_back_field_steps_hex": "0x42b",
+      "Galois_matched_bytes_for_advance_0_1_76_77": [
+        7,
+        1,
+        11,
+        1
+      ],
+      "source_sha256": "8b228e57f9dba27379dc171aec104408a38cf7d6045cfcbec32e28b0c98350cc",
+      "bounded_header_candidate_sha256": "58625b305d5808df599befd9a97f4136c2819b6cedb5f668d9926fe72a968717",
+      "compared_mask_bytes": 1024
+    },
+    {
+      "name": "AXS601",
+      "clear_field": 205,
+      "Fibonacci_direct_seed_matches": false,
+      "Fibonacci_seed_advance_76_matches": false,
+      "observed_mask_state_hex": "0xbe9a",
+      "Fibonacci_mask_state_back_field_steps_hex": "0xdb86",
+      "Galois_matched_bytes_for_advance_0_1_76_77": [
+        4,
+        4,
+        0,
+        2
+      ],
+      "source_sha256": "da0028a10ff74538bbac96222089e2682e4a82fdb5028e5c3ee0844519f1e277",
+      "bounded_header_candidate_sha256": "18bd203571b7a4ec8f169f79cbbba829e7d83c1e118d25542eccd61210398663",
+      "compared_mask_bytes": 1024
+    }
+  ],
+  "Fibonacci_step": "(s>>1) | (((s^(s>>2)^(s>>3)^(s>>5))&1)<<15)",
+  "Galois_step": "(s>>1) ^ (0xb400 if s&1 else 0)",
+  "scope": "Finite direct seed and 0/1/76/77-clock interpretations only. Not exhaustive PRNG/ordering exclusion, not recovered original decoder. Results captured from this turn; no new body decode.",
+  "new_usable_decode_path": false,
+  "body_cipher_trials": false,
+  "private_signing_operations": false
+}

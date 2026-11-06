@@ -1,0 +1,14 @@
+fe04d44c 082040b8 ldur     w8, [x0, #2]
+fe04d450 aa000090 adrp     x10, #0xfe061000
+fe04d454 4a5147f9 ldr      x10, [x10, #0xea0]
+fe04d458 e9031f32 mov      w9, #2
+fe04d45c 0b7d58d3 ubfx     x11, x8, #0x18, #8
+fe04d460 7f010071 cmp      w11, #0
+fe04d464 ec179f1a cset     w12, eq
+fe04d468 085d4092 and      x8, x8, #0xffffff
+fe04d46c 7ffd0371 cmp      w11, #0xff
+fe04d470 8bf57ed3 lsl      x11, x12, #2
+fe04d474 29018b9a csel     x9, x9, x11, eq
+fe04d478 4801088b add      x8, x10, x8
+fe04d47c 0001098b add      x0, x8, x9
+fe04d480 c0035fd6 ret      

@@ -1,0 +1,32 @@
+fe052348 ffc301d1 sub      sp, sp, #0x70
+fe05234c f44f05a9 stp      x20, x19, [sp, #0x50]
+fe052350 fd7b06a9 stp      x29, x30, [sp, #0x60]
+fe052354 f30300aa mov      x19, x0
+fe052358 1d008a52 mov      w29, #0x5000
+fe05235c e0031f32 mov      w0, #2
+fe052360 fc6f01a9 stp      x28, x27, [sp, #0x10]
+fe052364 fa6702a9 stp      x26, x25, [sp, #0x20]
+fe052368 f85f03a9 stp      x24, x23, [sp, #0x30]
+fe05236c f65704a9 stp      x22, x21, [sp, #0x40]
+fe052370 e30b0129 stp      w3, w2, [sp, #8]
+fe052374 f603012a mov      w22, w1
+fe052378 1d20be72 movk     w29, #0xf100, lsl #16
+fe05237c cf290094 bl       #0xfe05cab8
+fe052380 95000090 adrp     x21, #0xfe062000
+fe052384 b5e60991 add      x21, x21, #0x279
+fe052388 f703002a mov      w23, w0
+fe05238c e00315aa mov      x0, x21
+fe052390 f7fdff97 bl       #0xfe051b6c
+fe052394 a0fe0079 strh     w0, [x21, #0x7e]
+fe052398 e0031d32 mov      w0, #8
+fe05239c e2031932 mov      w2, #0x80
+fe0523a0 e3030032 mov      w3, #1
+fe0523a4 e10315aa mov      x1, x21
+fe0523a8 f4030032 mov      w20, #1
+fe0523ac 2f100094 bl       #0xfe056468
+fe0523b0 99000090 adrp     x25, #0xfe062000
+fe0523b4 95000090 adrp     x21, #0xfe062000
+fe0523b8 98000090 adrp     x24, #0xfe062000
+fe0523bc 9c000090 adrp     x28, #0xfe062000
+fe0523c0 e0031f32 mov      w0, #2
+fe0523c4 bd290094 bl       #0xfe05cab8

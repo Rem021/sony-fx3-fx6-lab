@@ -1,0 +1,590 @@
+{
+  "created_utc": "2026-10-30T16:46:27.211787+00:00",
+  "stage": "SD-frame-admission-20261030",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6362,
+      "sha256": "a50348f48b12f283aa8bd35d1936acb98a70499363fbb8a340955ddcea424a1c"
+    },
+    {
+      "path": "audit_contract.py",
+      "bytes": 14414,
+      "sha256": "9d48108096438a7a9696a46867842abb619d5c96aee2070803a9578afa0dd999"
+    },
+    {
+      "path": "capture_contract.py",
+      "bytes": 8537,
+      "sha256": "918916db7f630fbc5151e240420c55f75e468a8898e0b842df195b0f9f591fdf"
+    },
+    {
+      "path": "capture_flow.py",
+      "bytes": 1727,
+      "sha256": "0453d7205bd34c2fe8d1b2989cbec0278efa6fbceb8b14368e1f903301deeda2"
+    },
+    {
+      "path": "capture_tail_flow.py",
+      "bytes": 715,
+      "sha256": "51da4e8e0e971f5e00f30ad1ef4f508ae47bf75d85e297666ec53cc75df6ecbb"
+    },
+    {
+      "path": "flow-contract.json",
+      "bytes": 41483,
+      "sha256": "f19014e8781b5c6f1ebf5cefdf8ab70b92f990a74d2c8500c68ebe24e150d404"
+    },
+    {
+      "path": "flow-listings/libsdfileinputupdaterapi.so-0x9a20.txt",
+      "bytes": 103,
+      "sha256": "69fad26a92ab7cfd83a992bce32cecb31a564ab93ee4aa695f82641e14df4c57"
+    },
+    {
+      "path": "flow-listings/libsdfileinputupdaterapi.so-0x9a30.txt",
+      "bytes": 164,
+      "sha256": "2953c15047990bb173c9256076ef27d60d50456a1ef7316288a1331043bc52cc"
+    },
+    {
+      "path": "flow-listings/libsdfileinputupdaterapi.so-0x9c58.txt",
+      "bytes": 267,
+      "sha256": "abd14419b21d7c277610e5d8c0ad58541cadc370a2ed27b3bdbd358a9f7f609d"
+    },
+    {
+      "path": "flow-listings/libsdfileinputupdaterapi.so-0x9fc0.txt",
+      "bytes": 162,
+      "sha256": "1f4b76a39ffe4690ece8f7876a6ea10b9cc7bf35596a5dc0e27b883c82c119bd"
+    },
+    {
+      "path": "flow-listings/libsdfileinputupdaterapi.so-0x9fc8.txt",
+      "bytes": 168,
+      "sha256": "093223e0bd105d0340e6eb5bd7dad91f2225df71b5656a45c312d6965278be5a"
+    },
+    {
+      "path": "flow-listings/libsdfileinputupdaterapi.so-0xa3e4.txt",
+      "bytes": 229,
+      "sha256": "ef2ea65940153d762597add75db3282f435457eec740a3b307ac1e0a446e1174"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x9490.txt",
+      "bytes": 243,
+      "sha256": "9edef58319697d60edd00c30e49dacda1dc2d0a9efe421d7183e6c4a0896a69a"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x9574.txt",
+      "bytes": 1019,
+      "sha256": "77471a78b682ca85ebd15a63c2eb7a411e26abaa2b8c29607972ea6b2ff868b0"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x95e4.txt",
+      "bytes": 663,
+      "sha256": "6a217e56e5f7489afc97b8970e9c2a8cf4bf9096ca68a49f42d3ce27eb27cb8c"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x9630.txt",
+      "bytes": 548,
+      "sha256": "711fa3920c6bca00b91356f6cdbdb66e74ec6eee6ef787e3c398398eb372cf39"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x96b0.txt",
+      "bytes": 2701,
+      "sha256": "9333143c33d4196defca241e2470db8b05d3017b97c6b3a3932c255c9f534892"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x97f8.txt",
+      "bytes": 973,
+      "sha256": "415866fb458c89bd73dc6c81a606681e8b264911f56f65ddecb3db127eb3befd"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x9864.txt",
+      "bytes": 1855,
+      "sha256": "6593f0948790d9c76e5fd0f375919262e19e415f717b5bffb510e7aba1534879"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x993c.txt",
+      "bytes": 174,
+      "sha256": "85c0651b061da7c39ba707d1473d75f7fe2b7aed1c901cfd36635199b986d451"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x994c.txt",
+      "bytes": 3301,
+      "sha256": "deeb1c5c71b0769e1d5c6a93ce58b28acaf40651b968dfbd3d5b69277ff181b2"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x9ad4.txt",
+      "bytes": 828,
+      "sha256": "6ea63ac2ae73d2544388b738d2ccc91f4377824396d048a30260a94639765790"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x9b30.txt",
+      "bytes": 199,
+      "sha256": "5dacca34f0dd214aebecb3cbc78563baa1f5c470342bb5d6f27280df2fe5ce43"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x9b48.txt",
+      "bytes": 2067,
+      "sha256": "a32c7613e63daa250274a000dd90352b3074bc6db6d456100ebfbedfdf6f6156"
+    },
+    {
+      "path": "flow-listings/libupdatercommon.so-0x9c2c.txt",
+      "bytes": 3354,
+      "sha256": "79ca6509dffcbbfb7e1c359aa0e98424f4f32b69f73556dbd24cf992253ff5c8"
+    },
+    {
+      "path": "flow-listings/libupdatercorecommon.so-0xad34.txt",
+      "bytes": 160,
+      "sha256": "1c4ef8ec3e7d4ffda5e970dfbdd02aba6047b5f1422942bca8943d18f3d517f3"
+    },
+    {
+      "path": "flow-listings/libupdatercorecommon.so-0xbb40.txt",
+      "bytes": 108,
+      "sha256": "d259edda9de0db7294d9903eaaf2173b16a3c60f11baa5b593d3fb5454f2d6db"
+    },
+    {
+      "path": "flow-listings/libupdatercorecommon.so-0xbb78.txt",
+      "bytes": 1069,
+      "sha256": "f221fbfa1a7491dfa1cc112290cbba878dd8eda219de8ab2b38ded24d50c31c1"
+    },
+    {
+      "path": "flow-original-spans/libsdfileinputupdaterapi.so-0x9a20.bin",
+      "bytes": 8,
+      "sha256": "f289023bfc90be5c90aa1a98a40c5b356af639e69af0399f5914b2202364955c"
+    },
+    {
+      "path": "flow-original-spans/libsdfileinputupdaterapi.so-0x9a30.bin",
+      "bytes": 16,
+      "sha256": "dad3ed67e8cbd63d70c2f03ddc9650be836dc8eac0d46a9882b3946fb0b9d58b"
+    },
+    {
+      "path": "flow-original-spans/libsdfileinputupdaterapi.so-0x9c58.bin",
+      "bytes": 28,
+      "sha256": "2103cde0ecd701cec064da9cea87a08d4e781815880ecdebb18b37f87730dc30"
+    },
+    {
+      "path": "flow-original-spans/libsdfileinputupdaterapi.so-0x9fc0.bin",
+      "bytes": 8,
+      "sha256": "147d7e61ef89d1cd006cfe5d922fcde341655ce34907a053fae8845f25b08898"
+    },
+    {
+      "path": "flow-original-spans/libsdfileinputupdaterapi.so-0x9fc8.bin",
+      "bytes": 12,
+      "sha256": "7737b0f232fb10a4ba481b84587fd95c8f6665f81eeeea7fc0f80f58c3daeb67"
+    },
+    {
+      "path": "flow-original-spans/libsdfileinputupdaterapi.so-0xa3e4.bin",
+      "bytes": 24,
+      "sha256": "8e28e05b3283b1d947c618bc9c8ac35ea93f8f32d87edaa705bfe0ee2dd33744"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x9490.bin",
+      "bytes": 24,
+      "sha256": "234afbedbf9458818b818a089310e4ebe1d34efc996fab18c26ad0dd3f6acecf"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x9574.bin",
+      "bytes": 112,
+      "sha256": "88afec3d32cde5840f3a500218e4d3c53182f09a580d1b88bf87cf3e98388ba6"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x95e4.bin",
+      "bytes": 76,
+      "sha256": "1e62408fbba9cebfa313577bdffa684b6a9ac61c379f6c1a786d95f9323e1e3b"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x9630.bin",
+      "bytes": 60,
+      "sha256": "44bad4113c8d7665b7af603e25993d09f4a01b5bc2a3bcf437bc92afd45f4287"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x96b0.bin",
+      "bytes": 328,
+      "sha256": "1ddb7e8f5e8d454ac017f8c263b3677db639d434e20addd9faf95009125142bd"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x97f8.bin",
+      "bytes": 108,
+      "sha256": "a2b10b4ca810231b54072de1636e4850a7f39e6fe729a071a8248245b944fd34"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x9864.bin",
+      "bytes": 216,
+      "sha256": "39943a51bd223c6ffd3b0673ab7c98cb7bc235ad2566692fd9601ea5158c785b"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x993c.bin",
+      "bytes": 16,
+      "sha256": "546ca876d9d6810d587a85cc9c81a0562e1e44cfe756f1092d167a18b3cbe7f5"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x994c.bin",
+      "bytes": 392,
+      "sha256": "f255ab1b0b3c2067042642678f94cae98d665e129d1d7b7ccd80b8710fac79ec"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x9ad4.bin",
+      "bytes": 92,
+      "sha256": "0507dfddc5f35a7070e3b7dc2cdea453b087d76b054b711467a26683e09a3911"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x9b30.bin",
+      "bytes": 24,
+      "sha256": "eebeab18fcb9017cd13366b0ba8de215d5d78c9acb249b3002ebe0f907f45c02"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x9b48.bin",
+      "bytes": 228,
+      "sha256": "7c92fc2d71496cd8f2664f9dfdd288d543782dba038a9230d3f459f9309336bd"
+    },
+    {
+      "path": "flow-original-spans/libupdatercommon.so-0x9c2c.bin",
+      "bytes": 404,
+      "sha256": "d80e932894b8164ea21d1532067b34cd0f1fd80b6b16ddd4dddbc0da9690401c"
+    },
+    {
+      "path": "flow-original-spans/libupdatercorecommon.so-0xad34.bin",
+      "bytes": 16,
+      "sha256": "4c820fea7cb33bad807dcf69fad121f822989ed08db95235cd94e87d57d362c2"
+    },
+    {
+      "path": "flow-original-spans/libupdatercorecommon.so-0xbb40.bin",
+      "bytes": 8,
+      "sha256": "ab203c9f462e14bd4e997db2460790fd1a22f16c02c4fcef69fd84fcdc395371"
+    },
+    {
+      "path": "flow-original-spans/libupdatercorecommon.so-0xbb78.bin",
+      "bytes": 124,
+      "sha256": "b7ed8b15f1f541d3c9961ee0fddf3c31eb1f383e0d005bec87e5cec957de5822"
+    },
+    {
+      "path": "goal-status-verified.json",
+      "bytes": 679,
+      "sha256": "731d7f48ce953196bbe6f1602d310faff8eeb745badc81e5ca35fff02890236f"
+    },
+    {
+      "path": "implementation-review.json",
+      "bytes": 900,
+      "sha256": "5957ac7b5e2e4d9e581adeeeeddc831760440096e3f246de17114ca5d9164f0e"
+    },
+    {
+      "path": "index-update-receipt.json",
+      "bytes": 805,
+      "sha256": "0786238bcd8fb5f37a9c72d72f9d3a49551b900442c5bcb325221cd603c8c736"
+    },
+    {
+      "path": "length-and-data-identity-analysis.json",
+      "bytes": 2914,
+      "sha256": "0112cc0ee8b19ee1eaef482d9d2203593a131e5d02fce80346a65bc7b09a25e1"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x7d10.txt",
+      "bytes": 5392,
+      "sha256": "0f2a4f4787b6bbbe56af355d15be36a4e5ab2038d79eeb91f02474b8879d7ee9"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x81e0.txt",
+      "bytes": 2798,
+      "sha256": "959f8a14fc8b1fad6fa6921fc50b9cd5bda21418dd34708d74d8d451390e6dc4"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x8374.txt",
+      "bytes": 8916,
+      "sha256": "5e93695ca449654382acb3e007320701be26f679c9385207b983382330518ba6"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x8ad8.txt",
+      "bytes": 537,
+      "sha256": "b57264ba503c07d53f956be4f7ed89310542154af7514e1d5de4165e9597706a"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x8b0c.txt",
+      "bytes": 733,
+      "sha256": "6d168d5274831220471700a229840cdf3ee938c9076d22f6b52eb1c4482aaea8"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x8b58.txt",
+      "bytes": 1150,
+      "sha256": "a0addfe4ac25102f291378d987796357823f866d3158cd4db3d249ace69fe1fc"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x91d0.txt",
+      "bytes": 102,
+      "sha256": "ad3fb70c5ae5ede18a28744c243030e441bacb14e4b0fe76f89db378ccec3740"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x9418.txt",
+      "bytes": 2345,
+      "sha256": "08bee6b0fafa28afa6a3e48555814576681b3c514b07c1f59e797d62c1909fae"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x9534.txt",
+      "bytes": 1234,
+      "sha256": "19b47c1f05bad2a0d3593321ea8d067de850286e016f624b53aa20c9c2b1639e"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x95b8.txt",
+      "bytes": 9143,
+      "sha256": "7a37a7a8b93487ddff25523d36a4bdc3445716a2845f256f14506e1e5079bddd"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x9a28.txt",
+      "bytes": 103,
+      "sha256": "50f4c81665293a1395dc37197a4717d033c40322be5dc86c73ab5c92b5bca260"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0x9a48.txt",
+      "bytes": 2666,
+      "sha256": "da0284faad0f0a16a3bd22c486bcf5b60f27e28f5c112a51204d3c464714669a"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0xa0e8.txt",
+      "bytes": 5308,
+      "sha256": "b0bed4749a3790ee1e84a69a93d285621dfb935eddc2d82d5da6cf8791ed3388"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0xa3fc.txt",
+      "bytes": 5010,
+      "sha256": "9cfeb3b437ccf97df0745191a71b6f01ccfba8d7a4832be5fe3676de8765340d"
+    },
+    {
+      "path": "listings/libsdfileinputupdaterapi.so-0xabf0.txt",
+      "bytes": 3091,
+      "sha256": "64b375f960976e7fde94b8ed6ba36a232af9b540f18a7bbfc1c64616c5b25dc0"
+    },
+    {
+      "path": "listings/libupdatercommon.so-0x8be4.txt",
+      "bytes": 223,
+      "sha256": "7b85f2ed4068a4be9e55066464cd3518670c96468fba3e3d8126f6c8404fa87f"
+    },
+    {
+      "path": "listings/libupdatercommon.so-0x8d8c.txt",
+      "bytes": 1560,
+      "sha256": "53759cc5bf51e13060eb1cbcdc23262b15b1ab58dde24461aba3b048faa52772"
+    },
+    {
+      "path": "listings/libupdatercommon.so-0x8e44.txt",
+      "bytes": 1483,
+      "sha256": "62f13adc3714ed7c1e5f985d858b09045800412b8e4deb47a88421c1bef484fc"
+    },
+    {
+      "path": "listings/libupdatercommon.so-0x8efc.txt",
+      "bytes": 89,
+      "sha256": "c1003521a009799a43ef8997861eccda30fdbf8e0099d3f3ee4a82ac7daf4f49"
+    },
+    {
+      "path": "listings/libupdatercorecommon.so-0xacd8.txt",
+      "bytes": 233,
+      "sha256": "60a3325c517439d7246fce3fe9316fa45b526ec08ebe595e811b110692b5a7f5"
+    },
+    {
+      "path": "listings/libupdatercorecommon.so-0xad44.txt",
+      "bytes": 166,
+      "sha256": "48cf7ec2a493d0ce6770aeb1eeb2c0bf1c6c49e41c97f2b1f780a171dd0a052c"
+    },
+    {
+      "path": "listings/libupdatercorecommon.so-0xb2dc.txt",
+      "bytes": 1557,
+      "sha256": "523a9c8d3cca361950e17437b6e0581e84597b318da4c459344520d623bcc3ff"
+    },
+    {
+      "path": "listings/libupdatercorecommon.so-0xb6a4.txt",
+      "bytes": 494,
+      "sha256": "13b4eca10237e6525f66267a3012610db6a65bb5d54fccaf0d090dd6e1384ea6"
+    },
+    {
+      "path": "listings/libupdatercorecommon.so-0xb6dc.txt",
+      "bytes": 821,
+      "sha256": "6ff6684b2cd75aa470e22fc9a134f6bcc2304eaf26334cf57b90e8b92c98f4c4"
+    },
+    {
+      "path": "original-contract.json",
+      "bytes": 73930,
+      "sha256": "e459405cf0de0b66eb5b0807976907d7f5d0a22abfb39fe98e5ca3a45d446a58"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x7d10.bin",
+      "bytes": 636,
+      "sha256": "4dc07ad062b967ffc388486e44d2627a7807ead5cadb503e22bfd8f80b4e7f5b"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x81e0.bin",
+      "bytes": 308,
+      "sha256": "6427e85ac0017c1df1bab518f6ef48097596300fb82acc604ea7b90d9c673833"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x8374.bin",
+      "bytes": 988,
+      "sha256": "a2b7de0ef1f1476f5481be664b677ea08edd274c78567497f46cef2a281e6536"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x8ad8.bin",
+      "bytes": 52,
+      "sha256": "39aadc1f42f9eb6117d761044af0b7c6a66ae6292e08b651976dfc3d7bef15a4"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x8b0c.bin",
+      "bytes": 76,
+      "sha256": "c5d755f6013ed22cdcf5299a98680f01660bdf80d05e6517596eab6a54741a2e"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x8b58.bin",
+      "bytes": 124,
+      "sha256": "7b72694e39ac6b5933ceca109bed66aeca82a22d9ec30cab9f72717ed4324953"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x91d0.bin",
+      "bytes": 8,
+      "sha256": "85836cf210c024efcfad4dafdb96c510fb2aa1be17a9205570940e1b4858e0cb"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x9418.bin",
+      "bytes": 284,
+      "sha256": "cee2a911dc295a1aa638fa5e901cf5d19d405a165f8ca4f96ee5da62a33dec28"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x9534.bin",
+      "bytes": 132,
+      "sha256": "6cc46fb53dae255774f528609b423e35d9aa6918a1fa5c502c506ea816117dd3"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x95b8.bin",
+      "bytes": 1084,
+      "sha256": "5fedb0735851485fb44b85035c07d25ac2ac290b93248b61cfec735566513f58"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x9a28.bin",
+      "bytes": 8,
+      "sha256": "bd237e5d99f6462770946dd64c9d5273577f92aeb78154ba485fef49e0d73851"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0x9a48.bin",
+      "bytes": 312,
+      "sha256": "ab0ece521f1ab5829e6f76aaa3d6e0e26510a9011c1c7dc7a9f9f0bb3990a066"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0xa0e8.bin",
+      "bytes": 632,
+      "sha256": "8ae509ad0a6421fdb40c6bdc5b6888c712a5786ca339f24253a8890a62c0ee6e"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0xa3fc.bin",
+      "bytes": 568,
+      "sha256": "0c5da9a9779a76a641c1b102254e0cad92fb70d66fb8f1081c28c007c344fbeb"
+    },
+    {
+      "path": "original-spans/libsdfileinputupdaterapi.so-0xabf0.bin",
+      "bytes": 372,
+      "sha256": "d68fbf3480a215b246d080693df50a4626ee1afb359ae8816a47339104e62564"
+    },
+    {
+      "path": "original-spans/libupdatercommon.so-0x8be4.bin",
+      "bytes": 24,
+      "sha256": "16d92f1c89b12cab8c08d3a27588755096946316c3d3fd79c93ff9b047d9bb7c"
+    },
+    {
+      "path": "original-spans/libupdatercommon.so-0x8d8c.bin",
+      "bytes": 184,
+      "sha256": "8ee2e0629d5f7658e5e4627c95a44640a86fb82759c3f34bc387e0992b8f6e2b"
+    },
+    {
+      "path": "original-spans/libupdatercommon.so-0x8e44.bin",
+      "bytes": 176,
+      "sha256": "bb178657ddb8653cd19927d9d03f2a98eaa4362859d5a8273036578b41b5e88e"
+    },
+    {
+      "path": "original-spans/libupdatercommon.so-0x8efc.bin",
+      "bytes": 8,
+      "sha256": "fdee4c43eebfce433b3836c4f28ea8e17ff1111f4f16e39ed4b3130b0f5d06d9"
+    },
+    {
+      "path": "original-spans/libupdatercorecommon.so-0xacd8.bin",
+      "bytes": 28,
+      "sha256": "34c49ff1466eae40988fbbccf4afb4762f9e5536c38f779861ebfbf3ae942bde"
+    },
+    {
+      "path": "original-spans/libupdatercorecommon.so-0xad44.bin",
+      "bytes": 16,
+      "sha256": "b98f4a1813d072955d44d1d6764c722ea103e8004d03dec71a0cf4181eecd0fa"
+    },
+    {
+      "path": "original-spans/libupdatercorecommon.so-0xb2dc.bin",
+      "bytes": 164,
+      "sha256": "c0b1cfef7ebf4d71a15c2222b5b10342f19d752bce74e0af27e57212abe021f0"
+    },
+    {
+      "path": "original-spans/libupdatercorecommon.so-0xb6a4.bin",
+      "bytes": 56,
+      "sha256": "6be1613c3dc3a1e16d6eaf125cae807c47d403b4434dda1234f7df884b182fca"
+    },
+    {
+      "path": "original-spans/libupdatercorecommon.so-0xb6dc.bin",
+      "bytes": 92,
+      "sha256": "f9b3376a326657657a199965ba58a973559a568cff08ca5d4e0b74eaa499e799"
+    },
+    {
+      "path": "original-wrapper-frames.json",
+      "bytes": 3307,
+      "sha256": "8029e49b5c3af08a629e8f6cb44273b66989b2525bdc99f3ed198508b3dfba16"
+    },
+    {
+      "path": "tail-flow-contract.json",
+      "bytes": 20437,
+      "sha256": "1ebd8ad85bf5e540f841b513d236f645f20afb424d47def61716883f388d4e76"
+    },
+    {
+      "path": "tail-flow-listings/libsdfileinputupdaterapi.so-0x93d4.txt",
+      "bytes": 571,
+      "sha256": "068c061d79eb906376fdc046d4837d0884526b633f32aee490aa8f053806877a"
+    },
+    {
+      "path": "tail-flow-listings/libsdfileinputupdaterapi.so-0x99f4.txt",
+      "bytes": 104,
+      "sha256": "7e69a0129cd1a012bb25b71e4803dbeea4d9870059e66ff54ba14570a6a0ef55"
+    },
+    {
+      "path": "tail-flow-listings/libupdatercommon.so-0x94d4.txt",
+      "bytes": 172,
+      "sha256": "65103d035a4e943cdfe69a777a5992b3989eb7cd04cb652a8d517f2278422024"
+    },
+    {
+      "path": "tail-flow-listings/libupdatercorecommon.so-0xbbf4.txt",
+      "bytes": 1041,
+      "sha256": "54db305c9c27ffda0b80f746a89f977d6a3a7119b069e79992517608faa38d52"
+    },
+    {
+      "path": "tail-flow-listings/libupdatercorecommon.so-0xbc6c.txt",
+      "bytes": 1067,
+      "sha256": "d3137b5847d4859c114cda6fd949c4bbd2a6980d307b3369248b4307d98f8bd4"
+    },
+    {
+      "path": "tail-flow-original-spans/libsdfileinputupdaterapi.so-0x93d4.bin",
+      "bytes": 68,
+      "sha256": "4f0e56132ce8dc801167666ed150249e0a39725e6977332b4996e532e8f831f5"
+    },
+    {
+      "path": "tail-flow-original-spans/libsdfileinputupdaterapi.so-0x99f4.bin",
+      "bytes": 8,
+      "sha256": "65dd5bc9a69625b9105ffa5323c73f02d39ad02a0d785d4d9d92743a7d5f1a06"
+    },
+    {
+      "path": "tail-flow-original-spans/libupdatercommon.so-0x94d4.bin",
+      "bytes": 20,
+      "sha256": "0974eca31e195ffe3499e166ed9a05b050f664f01e571f1560176c9a01a2bfe7"
+    },
+    {
+      "path": "tail-flow-original-spans/libupdatercorecommon.so-0xbbf4.bin",
+      "bytes": 120,
+      "sha256": "2d7c29eabbb237d85274985a5a99ebd670aafcde18b051c3809046b36ca4ced0"
+    },
+    {
+      "path": "tail-flow-original-spans/libupdatercorecommon.so-0xbc6c.bin",
+      "bytes": 124,
+      "sha256": "2383e5a63dfe8af3189ea56c217aaed42fe20401644bb727108ca0f315df841d"
+    },
+    {
+      "path": "verification-receipt.json",
+      "bytes": 2807,
+      "sha256": "95f1de9f85e465dbdfa46d277826a72c76ffd355dfa4f2e1a4d3b9967d8f5264"
+    }
+  ],
+  "checks": "51 complete historical original functions, 29 instruction anchors, 9 vtable links, three original wrappers and 70 prior sealed files; reused RSA evidence",
+  "native_goal_status": "active",
+  "whole_goal_complete": false,
+  "hardware_or_flash_actions": 0
+}

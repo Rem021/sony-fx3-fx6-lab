@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "python3",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-review-snapshot-candidate/operator-helpers/planned_navigation_click.py",
+    "--session",
+    "fx3-deadline-r24-a2792c17db55",
+    "--url",
+    "http://127.0.0.1:49966/",
+    "--launch",
+    "c008fda8-6c61-441e-9664-92d451ffac28",
+    "--nonce",
+    "88969fb8-e700-4498-a271-a6bbb2d48cf6",
+    "--plan-sha",
+    "4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f",
+    "--step",
+    "1",
+    "--prerequisite-path",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55/step-00-prerequisite.json",
+    "--ledger",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55/ledger.json",
+    "--receipt",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/r24-vm-a2792c17db55/step-01-attempt-01/click-receipt.json"
+  ],
+  "start": {
+    "UTC": "2026-11-05T01:37:24.358987+00:00",
+    "host_ns": 426329880517500
+  },
+  "end": {
+    "UTC": "2026-11-05T01:37:24.432334+00:00",
+    "host_ns": 426329953864208
+  },
+  "returncode": 0,
+  "stdout": "{\n  \"status\": \"click_invoked\",\n  \"scripted_navigation\": true,\n  \"visual_review_at_click\": false,\n  \"plan_sha\": \"4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f\",\n  \"plan_step\": 1,\n  \"nonce\": \"88969fb8-e700-4498-a271-a6bbb2d48cf6\",\n  \"launch\": \"c008fda8-6c61-441e-9664-92d451ffac28\",\n  \"document_time_origin\": 1793842568306.2,\n  \"click_time_frame\": {\n    \"PNG_sha256\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\",\n    \"content_generation\": 29,\n    \"sequence\": 225\n  },\n  \"previous_confirm\": null,\n  \"session\": \"fx3-deadline-r24-a2792c17db55\",\n  \"tab\": null,\n  \"target\": \"\\u5b8c\\u6574Setup > Area/Date\\uff0c\\u6a59\\u8272Area/Date/Time Setting\",\n  \"key\": 427,\n  \"host_start_ns\": 426329937737875,\n  \"eval_may_have_started\": true,\n  \"guest_keys_sent_directly_by_cli\": 0,\n  \"result\": {\n    \"attempt_id\": \"f473c75f-8053-422c-be03-16270ad34277\",\n    \"base_step\": 0,\n    \"checks\": {\n      \"alarm_armed\": true,\n      \"alarm_document_matches\": true,\n      \"alarm_due_in_future\": true,\n      \"alarm_nonce_matches\": true,\n      \"delivery_known\": true,\n      \"frame_loaded\": true,\n      \"key_enabled\": true,\n      \"key_exists\": true,\n      \"no_awaiting_step\": true,\n      \"no_render_fault\": true,\n      \"page_not_busy\": true,\n      \"page_not_ending\": true,\n      \"page_not_finished\": true,\n      \"phase_ready\": true,\n      \"plan_matches\": true,\n      \"plan_step_matches\": true,\n      \"previous_confirm_matches\": true,\n      \"review_known\": true,\n      \"review_not_awaiting\": true,\n      \"server_no_error\": true,\n      \"server_no_review\": true,\n      \"server_not_busy\": true,\n      \"server_ready\": true,\n      \"server_step_matches\": true,\n      \"status_present\": true,\n      \"steps_under_eight\": true\n    },\n    \"click_called\": true,\n    \"clicked_generation\": 29,\n    \"clicked_sha\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\",\n    \"decision\": \"invoke_original_button_once\",\n    \"failed_checks\": [],\n    \"plan_sha\": \"4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f\",\n    \"plan_step\": 1,\n    \"schema\": \"fx3-planned-navigation-v1\",\n    \"scripted_navigation\": true,\n    \"server_atomic_permission\": false,\n    \"snapshot\": {\n      \"alarm\": {\n        \"armed_ms\": 76044.5,\n        \"due_ms\": 96044.5,\n        \"expected_nonce\": \"88969fb8-e700-4498-a271-a6bbb2d48cf6\",\n        \"nonce\": \"88969fb8-e700-4498-a271-a6bbb2d48cf6\",\n        \"now_ms\": 76116.5,\n        \"state\": \"armed\"\n      },\n      \"awaiting_step\": null,\n      \"canonical_sha256\": \"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\",\n      \"click_time_frame\": {\n        \"PNG_sha256\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\",\n        \"content_generation\": 29,\n        \"sequence\": 225\n      },\n      \"delivery_unknown\": false,\n      \"digest_document_time_origin\": 1793842568306.2,\n      \"document_time_origin\": 1793842568306.2,\n      \"ending\": false,\n      \"error_present\": false,\n      \"expected_launch\": \"c008fda8-6c61-441e-9664-92d451ffac28\",\n      \"expected_page_sha256\": \"852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b\",\n      \"finished\": false,\n      \"frame_loaded\": true,\n      \"identity_trusted\": true,\n      \"key\": 427,\n      \"key_enabled\": true,\n      \"key_exists\": true,\n      \"launch\": \"c008fda8-6c61-441e-9664-92d451ffac28\",\n      \"loaded\": {\n        \"displayed_sequence\": 225,\n        \"generation\": 29,\n        \"sha256\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\",\n        \"shown_sequence\": 225\n      },\n      \"page\": {\n        \"document_unchanged\": true,\n        \"exact_url\": true,\n        \"launch_identity\": true,\n        \"one_inline_script\": true,\n        \"page_fingerprint\": true,\n        \"prerequisite_document\": true,\n        \"script_unchanged_during_digest\": true,\n        \"time_origin_unchanged\": true,\n        \"top_level\": true\n      },\n      \"page_busy\": false,\n      \"phase\": \"ready\",\n      \"plan_sha\": \"4a695e1ac12340e3e019685c1b8850177db875e1955a05e9544eb40f71cff02f\",\n      \"plan_step\": 1,\n      \"prerequisite_sha256\": \"0c5823cc2a778bc2ef7a547818b5efa53f1e36c4b3416f24bade59b7a79080b1\",\n      \"previous_confirm\": null,\n      \"ready\": true,\n      \"render_fault_present\": false,\n      \"render_valid\": true,\n      \"review_awaiting\": false,\n      \"review_required\": false,\n      \"review_unknown\": false,\n      \"script_count\": 1,\n      \"scripted_navigation\": true,\n      \"server_busy\": false,\n      \"status_frame\": {\n        \"generation\": 29,\n        \"sequence\": 225,\n        \"sha256\": \"e0140ea1b701cf45e51290ee48835946edc28078954970230a56617964d56ec4\"\n      },\n      \"steps\": 0,\n      \"visual_review_at_click\": false\n    },\n    \"status\": \"click_invoked\",\n    \"step\": 1,\n    \"visual_review_at_click\": false\n  },\n  \"host_end_ns\": 426329947169125\n}\n",
+  "stderr": ""
+}

@@ -1,0 +1,46 @@
+--- ../trial_ring_usability.py
++++ trial_ring_cached.py
+@@ -38,6 +38,9 @@
+ class TrialRingReader(RingReader):
+     def __init__(self, run, qmp, state):
+         super().__init__(run, qmp)
++        # One immutable raw/PNG entry, never frame metadata or RGBA storage.
++        self._pixel_cache = None
++        self.cache_hits = self.cache_misses = 0
+         self.state = state
+         self.current_png = self.current_raw = self.current_record = None
+ 
+@@ -61,15 +64,29 @@
+             return  # torn live samples are retried; never shown to the user
+         v, raw = value
+         fmt, w, h, stride = v[7:11]
+-        pixels = rgba(raw, w, h, stride, fmt)
+-        encoded = png(w, h, pixels)
++        # validate_slot (including full FNV) has already succeeded for this seq.
++        layout = (fmt, w, h, stride)
++        cached = self._pixel_cache
++        if cached is not None and cached[0] == layout and cached[1] == raw:
++            encoded, nonuniform, all_zero = cached[2:]
++            self.cache_hits += 1
++        else:
++            # Invalidate on every miss; retain at most one validated frame.
++            self._pixel_cache = None
++            cached = None
++            pixels = rgba(raw, w, h, stride, fmt)
++            encoded = png(w, h, pixels)
++            nonuniform = any(pixels[i:i+4] != pixels[:4] for i in range(4, len(pixels), 4))
++            all_zero = raw.count(0) == len(raw)
++            self._pixel_cache = (layout, raw, encoded, nonuniform, all_zero)
++            self.cache_misses += 1
+         record = {'sequence': v[0], 'epoch': v[1], 'update_id': hex(v[3]),
+                   'pixel_source_sequence': v[4], 'token': hex(v[5]), 'physical': hex(v[6]),
+                   'native_format': fmt, 'native_bitmap_format': v[21], 'width': w, 'height': h,
+                   'stride_pixels': stride, 'span': v[11], 'fnv64': hex(v[12]), 'sha256': sha(raw),
+                   'PNG_sha256': sha(encoded), 'QMP_read_only': True,
+-                  'nonuniform_pixels': any(pixels[i:i+4] != pixels[:4] for i in range(4, len(pixels), 4)),
+-                  'all_zero_pixels': raw.count(0) == len(raw),
++                  'nonuniform_pixels': nonuniform,
++                  'all_zero_pixels': all_zero,
+                   'host_monotonic': time.monotonic(), 'committed_slot': index,
+                   'native_identity': {'FB': hex(v[13]), 'bitmap': hex(v[14]), 'entry': hex(v[15]),
+                                       'allocation': hex(v[16]), 'metadata_physical': hex(v[17]),

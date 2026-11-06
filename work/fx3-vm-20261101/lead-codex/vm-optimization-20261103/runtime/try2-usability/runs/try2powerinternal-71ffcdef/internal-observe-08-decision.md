@@ -1,0 +1,1 @@
+Viewed runs/try2powerinternal-71ffcdef/trial-step-07-key-030.png using image tool. Setup>Monitor 51/59, orange focus; brightness/display quality listed Next: DOWN to Display Option; browse original Setup categories without selecting values

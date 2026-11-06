@@ -1,0 +1,196 @@
+{
+  "results": [
+    {
+      "name": "observe_end_real_peer",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.37481033301446587
+    },
+    {
+      "name": "fragmented_stream",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07770204200642183
+    },
+    {
+      "name": "reversed_pipe_map",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.060179000021889806
+    },
+    {
+      "name": "without_storage_driver",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.060108750010840595
+    },
+    {
+      "name": "nonce_mismatch",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.05957029201090336
+    },
+    {
+      "name": "generation_mismatch",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.060212459007743746
+    },
+    {
+      "name": "zero_id",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.047699666989501566
+    },
+    {
+      "name": "expired_deadline",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06157445802818984
+    },
+    {
+      "name": "bad_stream_size_0",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06489812495419756
+    },
+    {
+      "name": "bad_stream_size_571",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06326945801265538
+    },
+    {
+      "name": "bad_stream_size_573",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.08336449996568263
+    },
+    {
+      "name": "bad_stream_size_4294967295",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06357470800867304
+    },
+    {
+      "name": "SCM_RIGHTS_rejected_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.0642737079760991
+    },
+    {
+      "name": "large_SCM_RIGHTS_rejected_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.0650444170460105
+    },
+    {
+      "name": "max_accepted_test_SCM_RIGHTS_closed",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06445100001292303
+    },
+    {
+      "name": "wrong_kernel_peer_pid_before_owner",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.048356750048696995
+    },
+    {
+      "name": "wrong_peer_birth_before_owner",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.050166833971161395
+    },
+    {
+      "name": "native_scope_denies_START",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06037891696905717
+    },
+    {
+      "name": "fake_auth_STOP_not_body_exit",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.1619203329901211
+    },
+    {
+      "name": "fake_auth_reversed_endpoints",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.1638973329681903
+    },
+    {
+      "name": "fake_auth_without_STOP_retains",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.16044791700551286
+    },
+    {
+      "name": "blocked_native_op_1_no_cleanup",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.26425383298192173
+    },
+    {
+      "name": "blocked_native_op_2_no_cleanup",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.2664834589813836
+    },
+    {
+      "name": "blocked_native_op_3_no_cleanup",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.2663320829742588
+    },
+    {
+      "name": "public_result_not_owner_state",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.06371770799160004
+    },
+    {
+      "name": "public_deadline_not_private_budget",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 2.0606671249843203
+    },
+    {
+      "name": "public_result_cannot_release_retained_owner",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.2386497079860419
+    },
+    {
+      "name": "single_use_lease_replay_denied",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07450254098512232
+    },
+    {
+      "name": "cooperative_idle_stop",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.073590875021182
+    },
+    {
+      "name": "request_limit_64",
+      "status": "PASS",
+      "processes": 1,
+      "seconds": 0.07372674997895956
+    },
+    {
+      "name": "real_observer_death_while_fake_OUT_pending",
+      "status": "PASS",
+      "processes": 0,
+      "seconds": 0.42184116697171703
+    },
+    {
+      "name": "zero_data_rights_no_descriptor_leak",
+      "status": "FAIL",
+      "error": "AssertionError({'schema': 2, 'grant_id': 'fx3-702-global-owner-channel-20261029-08', 'mode': 'fixture', 'nonce': 'ca1cb1b617e50111c44387c7f5ceead5', 'pid': 38092, 'birth_sec': 1793301835, 'birth_usec': 904443, 'native_return': 3, 'result_sha256': 'db366a6c6a9b79eef6be707e5e2c5dda4c7b22ee84c9259e6e8d1ee4632421d9', 'physical_camera_acceptance': False, 'fixture_calls': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'wire_calls': [0, 0, 0], 'global_guard_result': 0, 'frame_io_failed': False, 'fd_count_before': 3, 'fd_count_after': 3})",
+      "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage192-global-owner-fence-and-frame-IO/test_integration.py\", line 138, in case\n    try:fn();results.append({'name':name,'status':'PASS','processes':Job.serial-before,'seconds':time.monotonic()-start})\n        ~~^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage192-global-owner-fence-and-frame-IO/test_integration.py\", line 254, in zero_data_rights\n    j.conn.shutdown(socket.SHUT_WR);r=j.finish(1);assert r['wire_calls']==[0,0,0]\n                                      ~~~~~~~~^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage192-global-owner-fence-and-frame-IO/test_integration.py\", line 103, in finish\n    self.record=json.loads(out);assert self.record['native_return']==expected,self.record\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: {'schema': 2, 'grant_id': 'fx3-702-global-owner-channel-20261029-08', 'mode': 'fixture', 'nonce': 'ca1cb1b617e50111c44387c7f5ceead5', 'pid': 38092, 'birth_sec': 1793301835, 'birth_usec': 904443, 'native_return': 3, 'result_sha256': 'db366a6c6a9b79eef6be707e5e2c5dda4c7b22ee84c9259e6e8d1ee4632421d9', 'physical_camera_acceptance': False, 'fixture_calls': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 'wire_calls': [0, 0, 0], 'global_guard_result': 0, 'frame_io_failed': False, 'fd_count_before': 3, 'fd_count_after': 3}\n"
+    }
+  ]
+}

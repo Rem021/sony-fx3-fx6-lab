@@ -1,0 +1,3625 @@
+{
+  "source_sha256": "a2907111c4a22314dcb12c25889e0e3142764c6a4a910a746e43908f76e7c410",
+  "blocks": [
+    {
+      "symbol": "_ZN29SubsystemCommunicationCommand9DoExecuteEP12SenserPacket",
+      "start": "0xf894",
+      "size": 416,
+      "instructions": [
+        {
+          "va": "0xf894",
+          "bytes": "fd7bbca9",
+          "instruction": "stp x29, x30, [sp, #-0x40]!",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf898",
+          "bytes": "fd030091",
+          "instruction": "mov x29, sp",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf89c",
+          "bytes": "f35301a9",
+          "instruction": "stp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8a0",
+          "bytes": "f30300aa",
+          "instruction": "mov x19, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8a4",
+          "bytes": "f55b02a9",
+          "instruction": "stp x21, x22, [sp, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8a8",
+          "bytes": "f40301aa",
+          "instruction": "mov x20, x1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8ac",
+          "bytes": "bf3f00b9",
+          "instruction": "str wzr, [x29, #0x3c]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8b0",
+          "bytes": "00404639",
+          "instruction": "ldrb w0, [x0, #0x190]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8b4",
+          "bytes": "a0000035",
+          "instruction": "cbnz w0, #0xf8c8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8b8",
+          "bytes": "75620091",
+          "instruction": "add x21, x19, #0x18",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8bc",
+          "bytes": "e00315aa",
+          "instruction": "mov x0, x21",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8c0",
+          "bytes": "1cfbff97",
+          "instruction": "bl #0xe530",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8c4",
+          "bytes": "60090035",
+          "instruction": "cbnz w0, #0xf9f0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8c8",
+          "bytes": "75c640f9",
+          "instruction": "ldr x21, [x19, #0x188]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8cc",
+          "bytes": "150400b5",
+          "instruction": "cbnz x21, #0xf94c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8d0",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x36000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8d4",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8d8",
+          "bytes": "21800491",
+          "instruction": "add x1, x1, #0x120",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8dc",
+          "bytes": "21ecff97",
+          "instruction": "bl #0xa960",
+          "target_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "va": "0xf8e0",
+          "bytes": "a00f8012",
+          "instruction": "mov w0, #-0x7e",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8e4",
+          "bytes": "802e0039",
+          "instruction": "strb w0, [x20, #0xb]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8e8",
+          "bytes": "140080d2",
+          "instruction": "mov x20, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8ec",
+          "bytes": "60424639",
+          "instruction": "ldrb w0, [x19, #0x190]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8f0",
+          "bytes": "40020035",
+          "instruction": "cbnz w0, #0xf938",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8f4",
+          "bytes": "60620091",
+          "instruction": "add x0, x19, #0x18",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8f8",
+          "bytes": "0efbff97",
+          "instruction": "bl #0xe530",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf8fc",
+          "bytes": "e0010034",
+          "instruction": "cbz w0, #0xf938",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf900",
+          "bytes": "606a41b9",
+          "instruction": "ldr w0, [x19, #0x168]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf904",
+          "bytes": "61ba40f9",
+          "instruction": "ldr x1, [x19, #0x170]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf908",
+          "bytes": "baebff97",
+          "instruction": "bl #0xa7f0",
+          "target_symbol": "_Z11FreeOsalMsgjPv"
+        },
+        {
+          "va": "0xf90c",
+          "bytes": "0b000014",
+          "instruction": "b #0xf938",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf910",
+          "bytes": "a1f30091",
+          "instruction": "add x1, x29, #0x3c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf914",
+          "bytes": "e00315aa",
+          "instruction": "mov x0, x21",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf918",
+          "bytes": "3eecff97",
+          "instruction": "bl #0xaa10",
+          "target_symbol": "_Z18ReceiveOsalMessageP26SubsystemCommunicationInfoPj"
+        },
+        {
+          "va": "0xf91c",
+          "bytes": "60c600f9",
+          "instruction": "str x0, [x19, #0x188]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf920",
+          "bytes": "60064639",
+          "instruction": "ldrb w0, [x19, #0x181]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf924",
+          "bytes": "1f040071",
+          "instruction": "cmp w0, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf928",
+          "bytes": "00fdff54",
+          "instruction": "b.eq #0xf8c8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf92c",
+          "bytes": "7f020639",
+          "instruction": "strb wzr, [x19, #0x180]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf930",
+          "bytes": "802e0039",
+          "instruction": "strb w0, [x20, #0xb]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf934",
+          "bytes": "140080d2",
+          "instruction": "mov x20, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf938",
+          "bytes": "e00314aa",
+          "instruction": "mov x0, x20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf93c",
+          "bytes": "f35341a9",
+          "instruction": "ldp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf940",
+          "bytes": "f55b42a9",
+          "instruction": "ldp x21, x22, [sp, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf944",
+          "bytes": "fd7bc4a8",
+          "instruction": "ldp x29, x30, [sp], #0x40",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf948",
+          "bytes": "c0035fd6",
+          "instruction": "ret ",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf94c",
+          "bytes": "60be40f9",
+          "instruction": "ldr x0, [x19, #0x178]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf950",
+          "bytes": "01700091",
+          "instruction": "add x1, x0, #0x1c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf954",
+          "bytes": "bf0201eb",
+          "instruction": "cmp x21, x1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf958",
+          "bytes": "a0030054",
+          "instruction": "b.eq #0xf9cc",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf95c",
+          "bytes": "01104039",
+          "instruction": "ldrb w1, [x0, #4]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf960",
+          "bytes": "3f040071",
+          "instruction": "cmp w1, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf964",
+          "bytes": "09010054",
+          "instruction": "b.ls #0xf984",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf968",
+          "bytes": "3f080071",
+          "instruction": "cmp w1, #2",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf96c",
+          "bytes": "00030054",
+          "instruction": "b.eq #0xf9cc",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf970",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x36000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf974",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf978",
+          "bytes": "21d40491",
+          "instruction": "add x1, x1, #0x135",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf97c",
+          "bytes": "f9ebff97",
+          "instruction": "bl #0xa960",
+          "target_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "va": "0xf980",
+          "bytes": "2b000014",
+          "instruction": "b #0xfa2c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf984",
+          "bytes": "626a41b9",
+          "instruction": "ldr w2, [x19, #0x168]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf988",
+          "bytes": "0100b252",
+          "instruction": "mov w1, #-0x70000000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf98c",
+          "bytes": "d30200f0",
+          "instruction": "adrp x19, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf990",
+          "bytes": "3f00226a",
+          "instruction": "bics wzr, w1, w2",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf994",
+          "bytes": "c10200f0",
+          "instruction": "adrp x1, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf998",
+          "bytes": "73da47f9",
+          "instruction": "ldr x19, [x19, #0xfb0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf99c",
+          "bytes": "214c47f9",
+          "instruction": "ldr x1, [x1, #0xe98]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9a0",
+          "bytes": "7302819a",
+          "instruction": "csel x19, x19, x1, eq",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9a4",
+          "bytes": "161840b9",
+          "instruction": "ldr w22, [x0, #0x18]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9a8",
+          "bytes": "000680d2",
+          "instruction": "mov x0, #0x30",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9ac",
+          "bytes": "41ebff97",
+          "instruction": "bl #0xa6b0",
+          "target_symbol": "_Znwm"
+        },
+        {
+          "va": "0xf9b0",
+          "bytes": "f40300aa",
+          "instruction": "mov x20, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9b4",
+          "bytes": "e303162a",
+          "instruction": "mov w3, w22",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9b8",
+          "bytes": "e20315aa",
+          "instruction": "mov x2, x21",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9bc",
+          "bytes": "e10313aa",
+          "instruction": "mov x1, x19",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9c0",
+          "bytes": "040080d2",
+          "instruction": "mov x4, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9c4",
+          "bytes": "8fe9ff97",
+          "instruction": "bl #0xa000",
+          "target_symbol": "_ZN10MemoryDataC1EPFiPhmEPvmPFvS3_E"
+        },
+        {
+          "va": "0xf9c8",
+          "bytes": "dcffff17",
+          "instruction": "b #0xf938",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9cc",
+          "bytes": "d30200f0",
+          "instruction": "adrp x19, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9d0",
+          "bytes": "73a247f9",
+          "instruction": "ldr x19, [x19, #0xf40]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9d4",
+          "bytes": "f4ffff17",
+          "instruction": "b #0xf9a4",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9d8",
+          "bytes": "f30300aa",
+          "instruction": "mov x19, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9dc",
+          "bytes": "e00314aa",
+          "instruction": "mov x0, x20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9e0",
+          "bytes": "010680d2",
+          "instruction": "mov x1, #0x30",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9e4",
+          "bytes": "3bebff97",
+          "instruction": "bl #0xa6d0",
+          "target_symbol": "_ZdlPvm"
+        },
+        {
+          "va": "0xf9e8",
+          "bytes": "e00313aa",
+          "instruction": "mov x0, x19",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9ec",
+          "bytes": "c1ecff97",
+          "instruction": "bl #0xacf0",
+          "target_symbol": "_Unwind_Resume"
+        },
+        {
+          "va": "0xf9f0",
+          "bytes": "60024639",
+          "instruction": "ldrb w0, [x19, #0x180]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9f4",
+          "bytes": "1f100071",
+          "instruction": "cmp w0, #4",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9f8",
+          "bytes": "81f6ff54",
+          "instruction": "b.ne #0xf8c8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xf9fc",
+          "bytes": "e00315aa",
+          "instruction": "mov x0, x21",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa00",
+          "bytes": "28ecff97",
+          "instruction": "bl #0xaaa0",
+          "target_symbol": "_Z15MakeOsalMessageP26SubsystemCommunicationInfo"
+        },
+        {
+          "va": "0xfa04",
+          "bytes": "606a41b9",
+          "instruction": "ldr w0, [x19, #0x168]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa08",
+          "bytes": "61ba40f9",
+          "instruction": "ldr x1, [x19, #0x170]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa0c",
+          "bytes": "a9ecff97",
+          "instruction": "bl #0xacb0",
+          "target_symbol": "osal_snd_sync_msg"
+        },
+        {
+          "va": "0xfa10",
+          "bytes": "00f8ff34",
+          "instruction": "cbz w0, #0xf910",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa14",
+          "bytes": "210100f0",
+          "instruction": "adrp x1, #0x36000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa18",
+          "bytes": "e203002a",
+          "instruction": "mov w2, w0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa1c",
+          "bytes": "21140491",
+          "instruction": "add x1, x1, #0x105",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa20",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa24",
+          "bytes": "8beaff97",
+          "instruction": "bl #0xa450",
+          "target_symbol": "_Z10cpp_logrechPKcj"
+        },
+        {
+          "va": "0xfa28",
+          "bytes": "7f020639",
+          "instruction": "strb wzr, [x19, #0x180]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa2c",
+          "bytes": "a00f8012",
+          "instruction": "mov w0, #-0x7e",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xfa30",
+          "bytes": "c0ffff17",
+          "instruction": "b #0xf930",
+          "target_symbol": ""
+        }
+      ]
+    },
+    {
+      "symbol": "_ZN19WorkerThreadManager10onCompleteEi",
+      "start": "0xc108",
+      "size": 124,
+      "instructions": [
+        {
+          "va": "0xc108",
+          "bytes": "e30200d0",
+          "instruction": "adrp x3, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc10c",
+          "bytes": "3f080071",
+          "instruction": "cmp w1, #2",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc110",
+          "bytes": "e20200d0",
+          "instruction": "adrp x2, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc114",
+          "bytes": "636047f9",
+          "instruction": "ldr x3, [x3, #0xec0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc118",
+          "bytes": "20020054",
+          "instruction": "b.eq #0xc15c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc11c",
+          "bytes": "3f0c0071",
+          "instruction": "cmp w1, #3",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc120",
+          "bytes": "40020054",
+          "instruction": "b.eq #0xc168",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc124",
+          "bytes": "3f040071",
+          "instruction": "cmp w1, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc128",
+          "bytes": "61020054",
+          "instruction": "b.ne #0xc174",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc12c",
+          "bytes": "e40200d0",
+          "instruction": "adrp x4, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc130",
+          "bytes": "845047f9",
+          "instruction": "ldr x4, [x4, #0xea0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc134",
+          "bytes": "427047f9",
+          "instruction": "ldr x2, [x2, #0xee0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc138",
+          "bytes": "640000f9",
+          "instruction": "str x4, [x3]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc13c",
+          "bytes": "41000039",
+          "instruction": "strb w1, [x2]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc140",
+          "bytes": "3f0c0071",
+          "instruction": "cmp w1, #3",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc144",
+          "bytes": "e10200d0",
+          "instruction": "adrp x1, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc148",
+          "bytes": "000c40f9",
+          "instruction": "ldr x0, [x0, #0x18]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc14c",
+          "bytes": "e2079f1a",
+          "instruction": "cset w2, ne",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc150",
+          "bytes": "215847f9",
+          "instruction": "ldr x1, [x1, #0xeb0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc154",
+          "bytes": "22000039",
+          "instruction": "strb w2, [x1]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc158",
+          "bytes": "00001fd6",
+          "instruction": "br x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc15c",
+          "bytes": "e40200d0",
+          "instruction": "adrp x4, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc160",
+          "bytes": "842c47f9",
+          "instruction": "ldr x4, [x4, #0xe58]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc164",
+          "bytes": "f4ffff17",
+          "instruction": "b #0xc134",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc168",
+          "bytes": "e40200d0",
+          "instruction": "adrp x4, #0x6a000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc16c",
+          "bytes": "842047f9",
+          "instruction": "ldr x4, [x4, #0xe40]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc170",
+          "bytes": "f1ffff17",
+          "instruction": "b #0xc134",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc174",
+          "bytes": "427047f9",
+          "instruction": "ldr x2, [x2, #0xee0]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc178",
+          "bytes": "7f0000f9",
+          "instruction": "str xzr, [x3]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc17c",
+          "bytes": "5f000039",
+          "instruction": "strb wzr, [x2]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xc180",
+          "bytes": "f0ffff17",
+          "instruction": "b #0xc140",
+          "target_symbol": ""
+        }
+      ]
+    },
+    {
+      "symbol": "_Z9SerializePFiPhmEPvm",
+      "start": "0xb2fc",
+      "size": 228,
+      "instructions": [
+        {
+          "va": "0xb2fc",
+          "bytes": "fd7bbda9",
+          "instruction": "stp x29, x30, [sp, #-0x30]!",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb300",
+          "bytes": "fd030091",
+          "instruction": "mov x29, sp",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb304",
+          "bytes": "f35301a9",
+          "instruction": "stp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb308",
+          "bytes": "f30302aa",
+          "instruction": "mov x19, x2",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb30c",
+          "bytes": "f51300f9",
+          "instruction": "str x21, [sp, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb310",
+          "bytes": "f40301aa",
+          "instruction": "mov x20, x1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb314",
+          "bytes": "f50300aa",
+          "instruction": "mov x21, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb318",
+          "bytes": "d30500b4",
+          "instruction": "cbz x19, #0xb3d0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb31c",
+          "bytes": "e10313aa",
+          "instruction": "mov x1, x19",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb320",
+          "bytes": "e00314aa",
+          "instruction": "mov x0, x20",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb324",
+          "bytes": "a0023fd6",
+          "instruction": "blr x21",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb328",
+          "bytes": "01180011",
+          "instruction": "add w1, w0, #6",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb32c",
+          "bytes": "3f781e72",
+          "instruction": "tst w1, #0xfffffffd",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb330",
+          "bytes": "61010054",
+          "instruction": "b.ne #0xb35c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb334",
+          "bytes": "00008052",
+          "instruction": "mov w0, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb338",
+          "bytes": "99ffff97",
+          "instruction": "bl #0xb19c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb33c",
+          "bytes": "20008052",
+          "instruction": "mov w0, #1",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb340",
+          "bytes": "97ffff97",
+          "instruction": "bl #0xb19c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb344",
+          "bytes": "010080d2",
+          "instruction": "mov x1, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb348",
+          "bytes": "00008052",
+          "instruction": "mov w0, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb34c",
+          "bytes": "8dfdff97",
+          "instruction": "bl #0xa980",
+          "target_symbol": "pthread_setcancelstate"
+        },
+        {
+          "va": "0xb350",
+          "bytes": "50feff97",
+          "instruction": "bl #0xac90",
+          "target_symbol": "pthread_testcancel"
+        },
+        {
+          "va": "0xb354",
+          "bytes": "67fdff97",
+          "instruction": "bl #0xa8f0",
+          "target_symbol": "sched_yield"
+        },
+        {
+          "va": "0xb358",
+          "bytes": "feffff17",
+          "instruction": "b #0xb350",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb35c",
+          "bytes": "1f000071",
+          "instruction": "cmp w0, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb360",
+          "bytes": "6a010054",
+          "instruction": "b.ge #0xb38c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb364",
+          "bytes": "410000f0",
+          "instruction": "adrp x1, #0x16000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb368",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb36c",
+          "bytes": "214c2491",
+          "instruction": "add x1, x1, #0x913",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb370",
+          "bytes": "7cfdff97",
+          "instruction": "bl #0xa960",
+          "target_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "va": "0xb374",
+          "bytes": "010080d2",
+          "instruction": "mov x1, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb378",
+          "bytes": "00008052",
+          "instruction": "mov w0, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb37c",
+          "bytes": "81fdff97",
+          "instruction": "bl #0xa980",
+          "target_symbol": "pthread_setcancelstate"
+        },
+        {
+          "va": "0xb380",
+          "bytes": "44feff97",
+          "instruction": "bl #0xac90",
+          "target_symbol": "pthread_testcancel"
+        },
+        {
+          "va": "0xb384",
+          "bytes": "5bfdff97",
+          "instruction": "bl #0xa8f0",
+          "target_symbol": "sched_yield"
+        },
+        {
+          "va": "0xb388",
+          "bytes": "feffff17",
+          "instruction": "b #0xb380",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb38c",
+          "bytes": "80000054",
+          "instruction": "b.eq #0xb39c",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb390",
+          "bytes": "007c4093",
+          "instruction": "sxtw x0, w0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb394",
+          "bytes": "7f0200eb",
+          "instruction": "cmp x19, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb398",
+          "bytes": "62010054",
+          "instruction": "b.hs #0xb3c4",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb39c",
+          "bytes": "410000f0",
+          "instruction": "adrp x1, #0x16000",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3a0",
+          "bytes": "c00f8012",
+          "instruction": "mov w0, #-0x7f",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3a4",
+          "bytes": "21b82491",
+          "instruction": "add x1, x1, #0x92e",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3a8",
+          "bytes": "6efdff97",
+          "instruction": "bl #0xa960",
+          "target_symbol": "_Z10cpp_logrechPKc"
+        },
+        {
+          "va": "0xb3ac",
+          "bytes": "010080d2",
+          "instruction": "mov x1, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3b0",
+          "bytes": "00008052",
+          "instruction": "mov w0, #0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3b4",
+          "bytes": "73fdff97",
+          "instruction": "bl #0xa980",
+          "target_symbol": "pthread_setcancelstate"
+        },
+        {
+          "va": "0xb3b8",
+          "bytes": "36feff97",
+          "instruction": "bl #0xac90",
+          "target_symbol": "pthread_testcancel"
+        },
+        {
+          "va": "0xb3bc",
+          "bytes": "4dfdff97",
+          "instruction": "bl #0xa8f0",
+          "target_symbol": "sched_yield"
+        },
+        {
+          "va": "0xb3c0",
+          "bytes": "feffff17",
+          "instruction": "b #0xb3b8",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3c4",
+          "bytes": "730200cb",
+          "instruction": "sub x19, x19, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3c8",
+          "bytes": "9402008b",
+          "instruction": "add x20, x20, x0",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3cc",
+          "bytes": "d3ffff17",
+          "instruction": "b #0xb318",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3d0",
+          "bytes": "f35341a9",
+          "instruction": "ldp x19, x20, [sp, #0x10]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3d4",
+          "bytes": "f51340f9",
+          "instruction": "ldr x21, [sp, #0x20]",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3d8",
+          "bytes": "fd7bc3a8",
+          "instruction": "ldp x29, x30, [sp], #0x30",
+          "target_symbol": ""
+        },
+        {
+          "va": "0xb3dc",
+          "bytes": "c0035fd6",
+          "instruction": "ret ",
+          "target_symbol": ""
+        }
+      ]
+    }
+  ],
+  "GOT_relocations": {
+    "0x551c0": {
+      "type": 1027,
+      "symbol": "",
+      "value": 347513
+    },
+    "0x6a580": {
+      "type": 1027,
+      "symbol": "",
+      "value": 45096
+    },
+    "0x6a588": {
+      "type": 1027,
+      "symbol": "",
+      "value": 44688
+    },
+    "0x6a590": {
+      "type": 1027,
+      "symbol": "",
+      "value": 44724
+    },
+    "0x6a598": {
+      "type": 1027,
+      "symbol": "",
+      "value": 44780
+    },
+    "0x6a5a0": {
+      "type": 1027,
+      "symbol": "",
+      "value": 45024
+    },
+    "0x6b7c8": {
+      "type": 1027,
+      "symbol": "",
+      "value": 440264
+    },
+    "0x6b9c0": {
+      "type": 1027,
+      "symbol": "",
+      "value": 347688
+    },
+    "0x6b9e0": {
+      "type": 1027,
+      "symbol": "",
+      "value": 347763
+    },
+    "0x6a5b0": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv117__class_type_infoE",
+      "value": 16
+    },
+    "0x6a630": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv117__class_type_infoE",
+      "value": 16
+    },
+    "0x6a698": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv117__class_type_infoE",
+      "value": 16
+    },
+    "0x6a6a8": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv117__class_type_infoE",
+      "value": 16
+    },
+    "0x6a6b8": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv117__class_type_infoE",
+      "value": 16
+    },
+    "0x6aae8": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv117__class_type_infoE",
+      "value": 16
+    },
+    "0x6a5b8": {
+      "type": 257,
+      "symbol": "_ZTS13NinCooperator",
+      "value": 0
+    },
+    "0x6a5c0": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv121__vmi_class_type_infoE",
+      "value": 16
+    },
+    "0x6a640": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv121__vmi_class_type_infoE",
+      "value": 16
+    },
+    "0x6a6e0": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv121__vmi_class_type_infoE",
+      "value": 16
+    },
+    "0x6a718": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv121__vmi_class_type_infoE",
+      "value": 16
+    },
+    "0x6aaf8": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv121__vmi_class_type_infoE",
+      "value": 16
+    },
+    "0x6ab20": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv121__vmi_class_type_infoE",
+      "value": 16
+    },
+    "0x6a5c8": {
+      "type": 257,
+      "symbol": "_ZTS19WorkerThreadManager",
+      "value": 0
+    },
+    "0x6a5d8": {
+      "type": 257,
+      "symbol": "_ZTI13NinCooperator",
+      "value": 0
+    },
+    "0x6a5f0": {
+      "type": 257,
+      "symbol": "_ZTI19WorkerThreadManager",
+      "value": 0
+    },
+    "0x6a5f8": {
+      "type": 257,
+      "symbol": "_ZN19WorkerThreadManagerD1Ev",
+      "value": 0
+    },
+    "0x6ae48": {
+      "type": 1025,
+      "symbol": "_ZN19WorkerThreadManagerD1Ev",
+      "value": 49548
+    },
+    "0x6a600": {
+      "type": 257,
+      "symbol": "_ZN19WorkerThreadManagerD0Ev",
+      "value": 0
+    },
+    "0x6a608": {
+      "type": 257,
+      "symbol": "_ZN19WorkerThreadManager14getReceiveFuncEv",
+      "value": 0
+    },
+    "0x6a610": {
+      "type": 257,
+      "symbol": "_ZN19WorkerThreadManager11getSendFuncEv",
+      "value": 0
+    },
+    "0x6a618": {
+      "type": 257,
+      "symbol": "_ZN19WorkerThreadManager12registHaspIdEi",
+      "value": 0
+    },
+    "0x6a620": {
+      "type": 257,
+      "symbol": "_ZN19WorkerThreadManager10onCompleteEi",
+      "value": 0
+    },
+    "0x6a628": {
+      "type": 257,
+      "symbol": "_ZNK19WorkerThreadManager12getProductIdEv",
+      "value": 0
+    },
+    "0x6a638": {
+      "type": 257,
+      "symbol": "_ZTS14IoEventHandler",
+      "value": 0
+    },
+    "0x6a648": {
+      "type": 257,
+      "symbol": "_ZTS3Usb",
+      "value": 0
+    },
+    "0x6a658": {
+      "type": 257,
+      "symbol": "_ZTI14IoEventHandler",
+      "value": 0
+    },
+    "0x6a670": {
+      "type": 257,
+      "symbol": "_ZTI3Usb",
+      "value": 0
+    },
+    "0x6a678": {
+      "type": 257,
+      "symbol": "_ZN3UsbD1Ev",
+      "value": 0
+    },
+    "0x6afd0": {
+      "type": 1025,
+      "symbol": "_ZN3UsbD1Ev",
+      "value": 50152
+    },
+    "0x6a680": {
+      "type": 257,
+      "symbol": "_ZN3UsbD0Ev",
+      "value": 0
+    },
+    "0x6a688": {
+      "type": 257,
+      "symbol": "_ZN3Usb12handle_inputER20InitiationDispatcher",
+      "value": 0
+    },
+    "0x6a690": {
+      "type": 257,
+      "symbol": "_ZNK3Usb10get_deviceEv",
+      "value": 0
+    },
+    "0x6a6a0": {
+      "type": 257,
+      "symbol": "_ZTS8DeviceIo",
+      "value": 0
+    },
+    "0x6a6b0": {
+      "type": 257,
+      "symbol": "_ZTS10PacketData",
+      "value": 0
+    },
+    "0x6a6c0": {
+      "type": 257,
+      "symbol": "_ZTS7Command",
+      "value": 0
+    },
+    "0x6a6c8": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv120__si_class_type_infoE",
+      "value": 16
+    },
+    "0x6a750": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv120__si_class_type_infoE",
+      "value": 16
+    },
+    "0x6a768": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv120__si_class_type_infoE",
+      "value": 16
+    },
+    "0x6a780": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv120__si_class_type_infoE",
+      "value": 16
+    },
+    "0x6a798": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv120__si_class_type_infoE",
+      "value": 16
+    },
+    "0x6a7b0": {
+      "type": 257,
+      "symbol": "_ZTVN10__cxxabiv120__si_class_type_infoE",
+      "value": 16
+    },
+    "0x6a6d0": {
+      "type": 257,
+      "symbol": "_ZTS10MemoryData",
+      "value": 0
+    },
+    "0x6a6d8": {
+      "type": 257,
+      "symbol": "_ZTI10PacketData",
+      "value": 0
+    },
+    "0x6a6f8": {
+      "type": 257,
+      "symbol": "_ZTI10PacketData",
+      "value": 0
+    },
+    "0x6a730": {
+      "type": 257,
+      "symbol": "_ZTI10PacketData",
+      "value": 0
+    },
+    "0x6a760": {
+      "type": 257,
+      "symbol": "_ZTI10PacketData",
+      "value": 0
+    },
+    "0x6a7d0": {
+      "type": 257,
+      "symbol": "_ZTI10PacketData",
+      "value": 0
+    },
+    "0x6a6e8": {
+      "type": 257,
+      "symbol": "_ZTS15WriteDeviceData",
+      "value": 0
+    },
+    "0x6a708": {
+      "type": 257,
+      "symbol": "_ZTI8DeviceIo",
+      "value": 0
+    },
+    "0x6a740": {
+      "type": 257,
+      "symbol": "_ZTI8DeviceIo",
+      "value": 0
+    },
+    "0x6a720": {
+      "type": 257,
+      "symbol": "_ZTS14ReadDeviceData",
+      "value": 0
+    },
+    "0x6a758": {
+      "type": 257,
+      "symbol": "_ZTSN8NoAction15DiscardRecvDataE",
+      "value": 0
+    },
+    "0x6a770": {
+      "type": 257,
+      "symbol": "_ZTS8NoAction",
+      "value": 0
+    },
+    "0x6a778": {
+      "type": 257,
+      "symbol": "_ZTI7Command",
+      "value": 0
+    },
+    "0x6a790": {
+      "type": 257,
+      "symbol": "_ZTI7Command",
+      "value": 0
+    },
+    "0x6a7a8": {
+      "type": 257,
+      "symbol": "_ZTI7Command",
+      "value": 0
+    },
+    "0x6a7c0": {
+      "type": 257,
+      "symbol": "_ZTI7Command",
+      "value": 0
+    },
+    "0x6a848": {
+      "type": 257,
+      "symbol": "_ZTI7Command",
+      "value": 0
+    },
+    "0x6ab38": {
+      "type": 257,
+      "symbol": "_ZTI7Command",
+      "value": 0
+    },
+    "0x6a788": {
+      "type": 257,
+      "symbol": "_ZTS15DispatchCommand",
+      "value": 0
+    },
+    "0x6a7a0": {
+      "type": 257,
+      "symbol": "_ZTS13PluginCommand",
+      "value": 0
+    },
+    "0x6a7b8": {
+      "type": 257,
+      "symbol": "_ZTS24HostCommunicationCommand",
+      "value": 0
+    },
+    "0x6a7e8": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a7f0": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a7f8": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a800": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a808": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a820": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a828": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a830": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a838": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a860": {
+      "type": 257,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6a810": {
+      "type": 257,
+      "symbol": "_ZN10PacketData5resetEv",
+      "value": 0
+    },
+    "0x6a928": {
+      "type": 257,
+      "symbol": "_ZN10PacketData5resetEv",
+      "value": 0
+    },
+    "0x6a9a0": {
+      "type": 257,
+      "symbol": "_ZN10PacketData5resetEv",
+      "value": 0
+    },
+    "0x6aa18": {
+      "type": 257,
+      "symbol": "_ZN10PacketData5resetEv",
+      "value": 0
+    },
+    "0x6a818": {
+      "type": 257,
+      "symbol": "_ZN10PacketData11ResetBufferEPvmm",
+      "value": 0
+    },
+    "0x6a930": {
+      "type": 257,
+      "symbol": "_ZN10PacketData11ResetBufferEPvmm",
+      "value": 0
+    },
+    "0x6a9a8": {
+      "type": 257,
+      "symbol": "_ZN10PacketData11ResetBufferEPvmm",
+      "value": 0
+    },
+    "0x6aa20": {
+      "type": 257,
+      "symbol": "_ZN10PacketData11ResetBufferEPvmm",
+      "value": 0
+    },
+    "0x6a870": {
+      "type": 257,
+      "symbol": "_ZTI10MemoryData",
+      "value": 0
+    },
+    "0x6a878": {
+      "type": 257,
+      "symbol": "_ZN10MemoryDataD1Ev",
+      "value": 0
+    },
+    "0x6a880": {
+      "type": 257,
+      "symbol": "_ZN10MemoryDataD0Ev",
+      "value": 0
+    },
+    "0x6a888": {
+      "type": 257,
+      "symbol": "_ZNK10MemoryData5BeginEv",
+      "value": 0
+    },
+    "0x6a890": {
+      "type": 257,
+      "symbol": "_ZNK10MemoryData7GetSizeEv",
+      "value": 0
+    },
+    "0x6a898": {
+      "type": 257,
+      "symbol": "_ZNK10MemoryData11GetCapacityEv",
+      "value": 0
+    },
+    "0x6a8a0": {
+      "type": 257,
+      "symbol": "_ZNK10MemoryData9IsHealthyEv",
+      "value": 0
+    },
+    "0x6a8a8": {
+      "type": 257,
+      "symbol": "_ZN10MemoryData7ReleaseEv",
+      "value": 0
+    },
+    "0x6a8b0": {
+      "type": 257,
+      "symbol": "_ZN10MemoryData5resetEv",
+      "value": 0
+    },
+    "0x6a8b8": {
+      "type": 257,
+      "symbol": "_ZN10MemoryData11ResetBufferEPvmm",
+      "value": 0
+    },
+    "0x6a8c0": {
+      "type": 257,
+      "symbol": "_ZN10MemoryData9GetBufferEv",
+      "value": 0
+    },
+    "0x6a8c8": {
+      "type": 257,
+      "symbol": "_ZNK10MemoryData13GetBufferSizeEv",
+      "value": 0
+    },
+    "0x6a8d0": {
+      "type": 257,
+      "symbol": "_ZN10MemoryData7AdvanceEm",
+      "value": 0
+    },
+    "0x6a8d8": {
+      "type": 257,
+      "symbol": "_ZNK10MemoryData5GetIoEv",
+      "value": 0
+    },
+    "0x6a8e8": {
+      "type": 257,
+      "symbol": "_ZTI15WriteDeviceData",
+      "value": 0
+    },
+    "0x6a8f0": {
+      "type": 257,
+      "symbol": "_ZN15WriteDeviceDataD1Ev",
+      "value": 0
+    },
+    "0x6a8f8": {
+      "type": 257,
+      "symbol": "_ZN15WriteDeviceDataD0Ev",
+      "value": 0
+    },
+    "0x6a900": {
+      "type": 257,
+      "symbol": "_ZNK15WriteDeviceData5BeginEv",
+      "value": 0
+    },
+    "0x6a908": {
+      "type": 257,
+      "symbol": "_ZNK15WriteDeviceData7GetSizeEv",
+      "value": 0
+    },
+    "0x6a910": {
+      "type": 257,
+      "symbol": "_ZNK15WriteDeviceData11GetCapacityEv",
+      "value": 0
+    },
+    "0x6a918": {
+      "type": 257,
+      "symbol": "_ZNK15WriteDeviceData9IsHealthyEv",
+      "value": 0
+    },
+    "0x6a920": {
+      "type": 257,
+      "symbol": "_ZN15WriteDeviceData7ReleaseEv",
+      "value": 0
+    },
+    "0x6a938": {
+      "type": 257,
+      "symbol": "_ZN15WriteDeviceData9GetBufferEv",
+      "value": 0
+    },
+    "0x6a940": {
+      "type": 257,
+      "symbol": "_ZNK15WriteDeviceData13GetBufferSizeEv",
+      "value": 0
+    },
+    "0x6a948": {
+      "type": 257,
+      "symbol": "_ZN15WriteDeviceData7AdvanceEm",
+      "value": 0
+    },
+    "0x6a950": {
+      "type": 257,
+      "symbol": "_ZNK15WriteDeviceData5GetIoEv",
+      "value": 0
+    },
+    "0x6a960": {
+      "type": 257,
+      "symbol": "_ZTI14ReadDeviceData",
+      "value": 0
+    },
+    "0x6a968": {
+      "type": 257,
+      "symbol": "_ZN14ReadDeviceDataD1Ev",
+      "value": 0
+    },
+    "0x6a970": {
+      "type": 257,
+      "symbol": "_ZN14ReadDeviceDataD0Ev",
+      "value": 0
+    },
+    "0x6a978": {
+      "type": 257,
+      "symbol": "_ZNK14ReadDeviceData5BeginEv",
+      "value": 0
+    },
+    "0x6a980": {
+      "type": 257,
+      "symbol": "_ZNK14ReadDeviceData7GetSizeEv",
+      "value": 0
+    },
+    "0x6a988": {
+      "type": 257,
+      "symbol": "_ZNK14ReadDeviceData11GetCapacityEv",
+      "value": 0
+    },
+    "0x6a990": {
+      "type": 257,
+      "symbol": "_ZNK14ReadDeviceData9IsHealthyEv",
+      "value": 0
+    },
+    "0x6a998": {
+      "type": 257,
+      "symbol": "_ZN14ReadDeviceData7ReleaseEv",
+      "value": 0
+    },
+    "0x6a9b0": {
+      "type": 257,
+      "symbol": "_ZN14ReadDeviceData9GetBufferEv",
+      "value": 0
+    },
+    "0x6a9b8": {
+      "type": 257,
+      "symbol": "_ZNK14ReadDeviceData13GetBufferSizeEv",
+      "value": 0
+    },
+    "0x6a9c0": {
+      "type": 257,
+      "symbol": "_ZN14ReadDeviceData7AdvanceEm",
+      "value": 0
+    },
+    "0x6a9c8": {
+      "type": 257,
+      "symbol": "_ZNK14ReadDeviceData5GetIoEv",
+      "value": 0
+    },
+    "0x6a9d8": {
+      "type": 257,
+      "symbol": "_ZTIN8NoAction15DiscardRecvDataE",
+      "value": 0
+    },
+    "0x6a9e0": {
+      "type": 257,
+      "symbol": "_ZN8NoAction15DiscardRecvDataD1Ev",
+      "value": 0
+    },
+    "0x6a9e8": {
+      "type": 257,
+      "symbol": "_ZN8NoAction15DiscardRecvDataD0Ev",
+      "value": 0
+    },
+    "0x6a9f0": {
+      "type": 257,
+      "symbol": "_ZNK8NoAction15DiscardRecvData5BeginEv",
+      "value": 0
+    },
+    "0x6a9f8": {
+      "type": 257,
+      "symbol": "_ZNK8NoAction15DiscardRecvData7GetSizeEv",
+      "value": 0
+    },
+    "0x6aa00": {
+      "type": 257,
+      "symbol": "_ZNK8NoAction15DiscardRecvData11GetCapacityEv",
+      "value": 0
+    },
+    "0x6aa08": {
+      "type": 257,
+      "symbol": "_ZNK8NoAction15DiscardRecvData9IsHealthyEv",
+      "value": 0
+    },
+    "0x6aa10": {
+      "type": 257,
+      "symbol": "_ZN8NoAction15DiscardRecvData7ReleaseEv",
+      "value": 0
+    },
+    "0x6aa28": {
+      "type": 257,
+      "symbol": "_ZN8NoAction15DiscardRecvData9GetBufferEv",
+      "value": 0
+    },
+    "0x6aa30": {
+      "type": 257,
+      "symbol": "_ZNK8NoAction15DiscardRecvData13GetBufferSizeEv",
+      "value": 0
+    },
+    "0x6aa38": {
+      "type": 257,
+      "symbol": "_ZN8NoAction15DiscardRecvData7AdvanceEm",
+      "value": 0
+    },
+    "0x6aa40": {
+      "type": 257,
+      "symbol": "_ZNK8NoAction15DiscardRecvData5GetIoEv",
+      "value": 0
+    },
+    "0x6aa50": {
+      "type": 257,
+      "symbol": "_ZTI8NoAction",
+      "value": 0
+    },
+    "0x6aa58": {
+      "type": 257,
+      "symbol": "_ZN8NoActionD1Ev",
+      "value": 0
+    },
+    "0x6aa60": {
+      "type": 257,
+      "symbol": "_ZN8NoActionD0Ev",
+      "value": 0
+    },
+    "0x6aa68": {
+      "type": 257,
+      "symbol": "_ZN8NoAction9DoExecuteEP12SenserPacket",
+      "value": 0
+    },
+    "0x6aa78": {
+      "type": 257,
+      "symbol": "_ZTI15DispatchCommand",
+      "value": 0
+    },
+    "0x6aa80": {
+      "type": 257,
+      "symbol": "_ZN15DispatchCommandD1Ev",
+      "value": 0
+    },
+    "0x6aa88": {
+      "type": 257,
+      "symbol": "_ZN15DispatchCommandD0Ev",
+      "value": 0
+    },
+    "0x6aa90": {
+      "type": 257,
+      "symbol": "_ZN15DispatchCommand9DoExecuteEP12SenserPacket",
+      "value": 0
+    },
+    "0x6aaa0": {
+      "type": 257,
+      "symbol": "_ZTI13PluginCommand",
+      "value": 0
+    },
+    "0x6aaa8": {
+      "type": 257,
+      "symbol": "_ZN13PluginCommandD1Ev",
+      "value": 0
+    },
+    "0x6aab0": {
+      "type": 257,
+      "symbol": "_ZN13PluginCommandD0Ev",
+      "value": 0
+    },
+    "0x6aab8": {
+      "type": 257,
+      "symbol": "_ZN13PluginCommand9DoExecuteEP12SenserPacket",
+      "value": 0
+    },
+    "0x6aac8": {
+      "type": 257,
+      "symbol": "_ZTI24HostCommunicationCommand",
+      "value": 0
+    },
+    "0x6aad0": {
+      "type": 257,
+      "symbol": "_ZN24HostCommunicationCommandD1Ev",
+      "value": 0
+    },
+    "0x6aad8": {
+      "type": 257,
+      "symbol": "_ZN24HostCommunicationCommandD0Ev",
+      "value": 0
+    },
+    "0x6aae0": {
+      "type": 257,
+      "symbol": "_ZN24HostCommunicationCommand9DoExecuteEP12SenserPacket",
+      "value": 0
+    },
+    "0x6aaf0": {
+      "type": 257,
+      "symbol": "_ZTS12Inconcurrent",
+      "value": 0
+    },
+    "0x6ab00": {
+      "type": 257,
+      "symbol": "_ZTS23InconcurrentCommandTypeI29SubsystemCommunicationCommandE",
+      "value": 0
+    },
+    "0x6ab10": {
+      "type": 257,
+      "symbol": "_ZTI12Inconcurrent",
+      "value": 0
+    },
+    "0x6ab28": {
+      "type": 257,
+      "symbol": "_ZTS29SubsystemCommunicationCommand",
+      "value": 0
+    },
+    "0x6ab48": {
+      "type": 257,
+      "symbol": "_ZTI23InconcurrentCommandTypeI29SubsystemCommunicationCommandE",
+      "value": 0
+    },
+    "0x6ab60": {
+      "type": 257,
+      "symbol": "_ZTI29SubsystemCommunicationCommand",
+      "value": 0
+    },
+    "0x6ab68": {
+      "type": 257,
+      "symbol": "_ZN29SubsystemCommunicationCommandD1Ev",
+      "value": 0
+    },
+    "0x6ab70": {
+      "type": 257,
+      "symbol": "_ZN29SubsystemCommunicationCommandD0Ev",
+      "value": 0
+    },
+    "0x6ab78": {
+      "type": 257,
+      "symbol": "_ZN29SubsystemCommunicationCommand9DoExecuteEP12SenserPacket",
+      "value": 0
+    },
+    "0x6ae38": {
+      "type": 1025,
+      "symbol": "NinThread",
+      "value": 48124
+    },
+    "0x6ae40": {
+      "type": 1025,
+      "symbol": "pFunc_level_A",
+      "value": 440392
+    },
+    "0x6ae50": {
+      "type": 1025,
+      "symbol": "_ZN3Usb20usbif_event_handlersE",
+      "value": 440616
+    },
+    "0x6ae58": {
+      "type": 1025,
+      "symbol": "pFunc_level_B",
+      "value": 440504
+    },
+    "0x6ae60": {
+      "type": 1025,
+      "symbol": "_ZTV8NoAction",
+      "value": 436808
+    },
+    "0x6ae68": {
+      "type": 1025,
+      "symbol": "_ZN3Usb14start_callbackE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 51320
+    },
+    "0x6ae70": {
+      "type": 1025,
+      "symbol": "_ZTV10MemoryData",
+      "value": 436328
+    },
+    "0x6ae78": {
+      "type": 1025,
+      "symbol": "free",
+      "value": 0
+    },
+    "0x6ae80": {
+      "type": 1025,
+      "symbol": "_Z15SenserIfReceivePhm",
+      "value": 53232
+    },
+    "0x6ae88": {
+      "type": 1025,
+      "symbol": "__cxa_finalize",
+      "value": 0
+    },
+    "0x6ae90": {
+      "type": 1025,
+      "symbol": "mp_dmm_addr",
+      "value": 441016
+    },
+    "0x6ae98": {
+      "type": 1025,
+      "symbol": "_Z15SenserIfSndPhysPhm",
+      "value": 53356
+    },
+    "0x6aea0": {
+      "type": 1025,
+      "symbol": "pFunc_level_C",
+      "value": 440568
+    },
+    "0x6aea8": {
+      "type": 1025,
+      "symbol": "_ZN8NoAction15DiscardRecvData6bufferE",
+      "value": 441592
+    },
+    "0x6aeb0": {
+      "type": 1025,
+      "symbol": "terminal_change_function_is_disabled",
+      "value": 440736
+    },
+    "0x6aeb8": {
+      "type": 1025,
+      "symbol": "NumberOfBytesReceived",
+      "value": 440864
+    },
+    "0x6aec0": {
+      "type": 1025,
+      "symbol": "pFunc",
+      "value": 442272
+    },
+    "0x6aec8": {
+      "type": 1025,
+      "symbol": "_ZNSt6vectorIhSaIhEED1Ev",
+      "value": 57584
+    },
+    "0x6aed0": {
+      "type": 1025,
+      "symbol": "_Z17SenserIfRcvPhysCPPhm",
+      "value": 53664
+    },
+    "0x6aed8": {
+      "type": 1025,
+      "symbol": "_ZN11ThreadMutexD1Ev",
+      "value": 54760
+    },
+    "0x6aee0": {
+      "type": 1025,
+      "symbol": "adjCodeLevel",
+      "value": 442264
+    },
+    "0x6aee8": {
+      "type": 1025,
+      "symbol": "_ZTV3Usb",
+      "value": 435816
+    },
+    "0x6aef0": {
+      "type": 1025,
+      "symbol": "_ZTV24HostCommunicationCommand",
+      "value": 436928
+    },
+    "0x6aef8": {
+      "type": 1025,
+      "symbol": "_ZTV29SubsystemCommunicationCommand",
+      "value": 437080
+    },
+    "0x6af00": {
+      "type": 1025,
+      "symbol": "fp_senEndNotify",
+      "value": 441008
+    },
+    "0x6af08": {
+      "type": 1025,
+      "symbol": "_ZTV7Command",
+      "value": 436288
+    },
+    "0x6af10": {
+      "type": 1025,
+      "symbol": "_ZN3Usb13stop_callbackE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 51400
+    },
+    "0x6af18": {
+      "type": 1025,
+      "symbol": "_Z12SenserThreadPv",
+      "value": 47020
+    },
+    "0x6af20": {
+      "type": 1025,
+      "symbol": "_Z12cleanup_funcI7CommandEvPv",
+      "value": 45428
+    },
+    "0x6af28": {
+      "type": 1025,
+      "symbol": "_ZN3Usb19synch_stop_callbackE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 51468
+    },
+    "0x6af30": {
+      "type": 1025,
+      "symbol": "_ZTVN8NoAction15DiscardRecvDataE",
+      "value": 436688
+    },
+    "0x6af38": {
+      "type": 1025,
+      "symbol": "_ZN23InconcurrentCommandTypeI29SubsystemCommunicationCommandE8resourceE",
+      "value": 441616
+    },
+    "0x6af40": {
+      "type": 1025,
+      "symbol": "_Z12SenserIfSendPhm",
+      "value": 53144
+    },
+    "0x6af48": {
+      "type": 1025,
+      "symbol": "_Jv_RegisterClasses",
+      "value": 0
+    },
+    "0x6af50": {
+      "type": 1025,
+      "symbol": "_ZNSt6vectorI11HandlerSlotSaIS0_EED1Ev",
+      "value": 45624
+    },
+    "0x6af58": {
+      "type": 1025,
+      "symbol": "_ZTV13PluginCommand",
+      "value": 436888
+    },
+    "0x6af60": {
+      "type": 1025,
+      "symbol": "_Z12cleanup_funcI10PacketDataEvPv",
+      "value": 45448
+    },
+    "0x6af68": {
+      "type": 1025,
+      "symbol": "_Z15SenserIfRestartv",
+      "value": 53100
+    },
+    "0x6af70": {
+      "type": 1025,
+      "symbol": "_ZTV15DispatchCommand",
+      "value": 436848
+    },
+    "0x6af78": {
+      "type": 1025,
+      "symbol": "_Z15SenserIfRcvPhysPhm",
+      "value": 53360
+    },
+    "0x6af80": {
+      "type": 1025,
+      "symbol": "_ZN3Usb24onCompleteAuthenticationEv",
+      "value": 51764
+    },
+    "0x6af88": {
+      "type": 1025,
+      "symbol": "mp_dmm_handle",
+      "value": 441024
+    },
+    "0x6af90": {
+      "type": 1025,
+      "symbol": "_ZTV19WorkerThreadManager",
+      "value": 435688
+    },
+    "0x6af98": {
+      "type": 1025,
+      "symbol": "_ZN3Usb20senif_event_handlersE",
+      "value": 440600
+    },
+    "0x6afa0": {
+      "type": 1025,
+      "symbol": "_ZTV14ReadDeviceData",
+      "value": 436568
+    },
+    "0x6afa8": {
+      "type": 1025,
+      "symbol": "_ITM_deregisterTMCloneTable",
+      "value": 0
+    },
+    "0x6afb0": {
+      "type": 1025,
+      "symbol": "_Z17SenserIfSndPhysCPPhm",
+      "value": 53408
+    },
+    "0x6afb8": {
+      "type": 1025,
+      "symbol": "_ZTV10PacketData",
+      "value": 436168
+    },
+    "0x6afc0": {
+      "type": 1025,
+      "symbol": "__gmon_start__",
+      "value": 0
+    },
+    "0x6afc8": {
+      "type": 1025,
+      "symbol": "_ITM_registerTMCloneTable",
+      "value": 0
+    },
+    "0x6afd8": {
+      "type": 1025,
+      "symbol": "_ZTV15WriteDeviceData",
+      "value": 436448
+    },
+    "0x6afe0": {
+      "type": 1025,
+      "symbol": "_ZN24HostCommunicationCommand5mutexE",
+      "value": 441544
+    },
+    "0x6b840": {
+      "type": 257,
+      "symbol": "__gxx_personality_v0",
+      "value": 0
+    },
+    "0x6b850": {
+      "type": 257,
+      "symbol": "_Z15ProductInfoFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b8d0": {
+      "type": 257,
+      "symbol": "_Z15ProductInfoFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b860": {
+      "type": 257,
+      "symbol": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b8e0": {
+      "type": 257,
+      "symbol": "_Z18FirmwareUpdateFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b870": {
+      "type": 257,
+      "symbol": "_Z15MiconAccessFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b880": {
+      "type": 257,
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b8c0": {
+      "type": 257,
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b900": {
+      "type": 257,
+      "symbol": "_Z17AdjustControlFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b890": {
+      "type": 257,
+      "symbol": "_Z8TestModePK12SenserPacket",
+      "value": 0
+    },
+    "0x6b8a0": {
+      "type": 257,
+      "symbol": "_Z9SonarFuncPK12SenserPacket",
+      "value": 0
+    },
+    "0x6b918": {
+      "type": 257,
+      "symbol": "_ZN3Usb20active_event_handlerE15__SENIF_EVENT_TPhmi",
+      "value": 0
+    },
+    "0x6b920": {
+      "type": 257,
+      "symbol": "_ZN3Usb22inactive_event_handlerE15__SENIF_EVENT_TPhmi",
+      "value": 0
+    },
+    "0x6b928": {
+      "type": 257,
+      "symbol": "_ZN3Usb24connection_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b930": {
+      "type": 257,
+      "symbol": "_ZN3Usb16no_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b938": {
+      "type": 257,
+      "symbol": "_ZN3Usb16no_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b940": {
+      "type": 257,
+      "symbol": "_ZN3Usb16no_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b948": {
+      "type": 257,
+      "symbol": "_ZN3Usb16no_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b950": {
+      "type": 257,
+      "symbol": "_ZN3Usb16no_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b958": {
+      "type": 257,
+      "symbol": "_ZN3Usb16no_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b960": {
+      "type": 257,
+      "symbol": "_ZN3Usb16no_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b968": {
+      "type": 257,
+      "symbol": "_ZN3Usb16no_event_handlerE13__USBIF_EVENTP17usbif_event_parami",
+      "value": 0
+    },
+    "0x6b9f8": {
+      "type": 257,
+      "symbol": "usb_senif_pub",
+      "value": 0
+    },
+    "0x6b000": {
+      "type": 1026,
+      "symbol": "__fxstat",
+      "value": 0
+    },
+    "0x6b008": {
+      "type": 1026,
+      "symbol": "testcmd_init",
+      "value": 0
+    },
+    "0x6b010": {
+      "type": 1026,
+      "symbol": "_Z12tlog_encoderP9StraceLog",
+      "value": 79328
+    },
+    "0x6b018": {
+      "type": 1026,
+      "symbol": "_Z10cpp_logrechPKcjjj",
+      "value": 59824
+    },
+    "0x6b020": {
+      "type": 1026,
+      "symbol": "_ZN13PluginCommandD1Ev",
+      "value": 56940
+    },
+    "0x6b028": {
+      "type": 1026,
+      "symbol": "_ZN8DeviceIo12MappedMemoryD1Ev",
+      "value": 87192
+    },
+    "0x6b030": {
+      "type": 1026,
+      "symbol": "_Z6xxkickPhS_S_Pm",
+      "value": 89440
+    },
+    "0x6b038": {
+      "type": 1026,
+      "symbol": "_ZN8DeviceIo12MappedMemoryC1ERKS_lmii",
+      "value": 87040
+    },
+    "0x6b040": {
+      "type": 1026,
+      "symbol": "memcpy",
+      "value": 0
+    },
+    "0x6b048": {
+      "type": 1026,
+      "symbol": "_ZNK8DeviceIo5writeEPKvm",
+      "value": 86256
+    },
+    "0x6b050": {
+      "type": 1026,
+      "symbol": "_ZNK8DeviceIo4readEPvm",
+      "value": 86204
+    },
+    "0x6b058": {
+      "type": 1026,
+      "symbol": "usbif_destroy",
+      "value": 0
+    },
+    "0x6b060": {
+      "type": 1026,
+      "symbol": "fread",
+      "value": 0
+    },
+    "0x6b068": {
+      "type": 1026,
+      "symbol": "_ZSt29_Rb_tree_insert_and_rebalancebPSt18_Rb_tree_node_baseS0_RS_",
+      "value": 0
+    },
+    "0x6b070": {
+      "type": 1026,
+      "symbol": "_ZN23__pthread_cleanup_classD1Ev",
+      "value": 45640
+    },
+    "0x6b078": {
+      "type": 1026,
+      "symbol": "_Z23CleanupMassDataHandlersv",
+      "value": 46668
+    },
+    "0x6b080": {
+      "type": 1026,
+      "symbol": "_ZN10MemoryDataC1EPFiPhmEPvmPFvS3_E",
+      "value": 55044
+    },
+    "0x6b088": {
+      "type": 1026,
+      "symbol": "_ZN8DeviceIo6attachEi",
+      "value": 86972
+    },
+    "0x6b090": {
+      "type": 1026,
+      "symbol": "_ZN8NoAction15DiscardRecvDataC1Ev",
+      "value": 55860
+    },
+    "0x6b098": {
+      "type": 1026,
+      "symbol": "osal_set_msg_src",
+      "value": 0
+    },
+    "0x6b0a0": {
+      "type": 1026,
+      "symbol": "pthread_join",
+      "value": 0
+    },
+    "0x6b0a8": {
+      "type": 1026,
+      "symbol": "pipe",
+      "value": 0
+    },
+    "0x6b0b0": {
+      "type": 1026,
+      "symbol": "_ZNK8DeviceIo5ioctlEiPKv",
+      "value": 86520
+    },
+    "0x6b0b8": {
+      "type": 1026,
+      "symbol": "pthread_attr_setschedparam",
+      "value": 0
+    },
+    "0x6b0c0": {
+      "type": 1026,
+      "symbol": "osal_snd_sync_direct",
+      "value": 0
+    },
+    "0x6b0c8": {
+      "type": 1026,
+      "symbol": "isalnum",
+      "value": 0
+    },
+    "0x6b0d0": {
+      "type": 1026,
+      "symbol": "pthread_mutex_lock",
+      "value": 0
+    },
+    "0x6b0d8": {
+      "type": 1026,
+      "symbol": "strlen",
+      "value": 0
+    },
+    "0x6b0e0": {
+      "type": 1026,
+      "symbol": "_ZN19WorkerThreadManager6cancelEv",
+      "value": 49568
+    },
+    "0x6b0e8": {
+      "type": 1026,
+      "symbol": "_ZN3Usb5startEv",
+      "value": 50608
+    },
+    "0x6b0f0": {
+      "type": 1026,
+      "symbol": "_ZN3Usb22finalize_usb_interfaceEv",
+      "value": 52648
+    },
+    "0x6b0f8": {
+      "type": 1026,
+      "symbol": "_ZNK8DeviceIo5fstatER4stat",
+      "value": 86412
+    },
+    "0x6b100": {
+      "type": 1026,
+      "symbol": "EVP_PKEY_verify_recover",
+      "value": 0
+    },
+    "0x6b108": {
+      "type": 1026,
+      "symbol": "pthread_attr_setinheritsched",
+      "value": 0
+    },
+    "0x6b110": {
+      "type": 1026,
+      "symbol": "_ZN8DeviceIo4openEPKci",
+      "value": 86864
+    },
+    "0x6b118": {
+      "type": 1026,
+      "symbol": "_ZN3Usb8InstanceEv",
+      "value": 50920
+    },
+    "0x6b120": {
+      "type": 1026,
+      "symbol": "open",
+      "value": 0
+    },
+    "0x6b128": {
+      "type": 1026,
+      "symbol": "strncat",
+      "value": 0
+    },
+    "0x6b130": {
+      "type": 1026,
+      "symbol": "pthread_attr_init",
+      "value": 0
+    },
+    "0x6b138": {
+      "type": 1026,
+      "symbol": "_Z6xxstepPhS_i",
+      "value": 89116
+    },
+    "0x6b140": {
+      "type": 1026,
+      "symbol": "_Z13SenserIfStartR20InitiationDispatcherPFvvE20usb_port_selection_t",
+      "value": 52912
+    },
+    "0x6b148": {
+      "type": 1026,
+      "symbol": "_ZN18DynamicLinkLibrary5closeEv",
+      "value": 87584
+    },
+    "0x6b150": {
+      "type": 1026,
+      "symbol": "fclose",
+      "value": 0
+    },
+    "0x6b158": {
+      "type": 1026,
+      "symbol": "_ZN20InitiationDispatcher16register_handlerER14IoEventHandler",
+      "value": 85768
+    },
+    "0x6b160": {
+      "type": 1026,
+      "symbol": "_ZN10MemoryDataD1Ev",
+      "value": 54172
+    },
+    "0x6b168": {
+      "type": 1026,
+      "symbol": "sleep",
+      "value": 0
+    },
+    "0x6b170": {
+      "type": 1026,
+      "symbol": "sync",
+      "value": 0
+    },
+    "0x6b178": {
+      "type": 1026,
+      "symbol": "memcmp",
+      "value": 0
+    },
+    "0x6b180": {
+      "type": 1026,
+      "symbol": "dlsym",
+      "value": 0
+    },
+    "0x6b188": {
+      "type": 1026,
+      "symbol": "_ZN14ReadDeviceDataD1Ev",
+      "value": 57692
+    },
+    "0x6b190": {
+      "type": 1026,
+      "symbol": "_ZSt20__throw_length_errorPKc",
+      "value": 0
+    },
+    "0x6b198": {
+      "type": 1026,
+      "symbol": "EVP_PKEY_CTX_new",
+      "value": 0
+    },
+    "0x6b1a0": {
+      "type": 1026,
+      "symbol": "free",
+      "value": 0
+    },
+    "0x6b1a8": {
+      "type": 1026,
+      "symbol": "rand",
+      "value": 0
+    },
+    "0x6b1b0": {
+      "type": 1026,
+      "symbol": "memset",
+      "value": 0
+    },
+    "0x6b1b8": {
+      "type": 1026,
+      "symbol": "_ZNSt10unique_ptrI29SubsystemCommunicationCommandSt14default_deleteIS0_EED1Ev",
+      "value": 66348
+    },
+    "0x6b1c0": {
+      "type": 1026,
+      "symbol": "osal_snd_msg",
+      "value": 0
+    },
+    "0x6b1c8": {
+      "type": 1026,
+      "symbol": "_ZNK8DeviceIo5fsyncEv",
+      "value": 86360
+    },
+    "0x6b1d0": {
+      "type": 1026,
+      "symbol": "pthread_mutex_unlock",
+      "value": 0
+    },
+    "0x6b1d8": {
+      "type": 1026,
+      "symbol": "_ZN19WorkerThreadManager16setup_attributesEP14pthread_attr_t",
+      "value": 49664
+    },
+    "0x6b1e0": {
+      "type": 1026,
+      "symbol": "_ZNK8DeviceIo4pollEsi",
+      "value": 86712
+    },
+    "0x6b1e8": {
+      "type": 1026,
+      "symbol": "_Z16tlog_get_versionPhi",
+      "value": 78612
+    },
+    "0x6b1f0": {
+      "type": 1026,
+      "symbol": "_ZN24HostCommunicationCommandD1Ev",
+      "value": 56880
+    },
+    "0x6b1f8": {
+      "type": 1026,
+      "symbol": "dlerror",
+      "value": 0
+    },
+    "0x6b200": {
+      "type": 1026,
+      "symbol": "_ZN15DispatchCommandD1Ev",
+      "value": 57000
+    },
+    "0x6b208": {
+      "type": 1026,
+      "symbol": "__cxa_finalize",
+      "value": 0
+    },
+    "0x6b210": {
+      "type": 1026,
+      "symbol": "_ZSt28_Rb_tree_rebalance_for_erasePSt18_Rb_tree_node_baseRS_",
+      "value": 0
+    },
+    "0x6b218": {
+      "type": 1026,
+      "symbol": "_ZN18DynamicLinkLibrary4openEPKc",
+      "value": 87668
+    },
+    "0x6b220": {
+      "type": 1026,
+      "symbol": "_Z15tlog_file_existv",
+      "value": 78476
+    },
+    "0x6b228": {
+      "type": 1026,
+      "symbol": "srand",
+      "value": 0
+    },
+    "0x6b230": {
+      "type": 1026,
+      "symbol": "osal_rcv_msg_tmo",
+      "value": 0
+    },
+    "0x6b238": {
+      "type": 1026,
+      "symbol": "EVP_PKEY_free",
+      "value": 0
+    },
+    "0x6b240": {
+      "type": 1026,
+      "symbol": "_Z20sen_control_cache_cpimj",
+      "value": 80432
+    },
+    "0x6b248": {
+      "type": 1026,
+      "symbol": "EVP_DigestFinal_ex",
+      "value": 0
+    },
+    "0x6b250": {
+      "type": 1026,
+      "symbol": "__cxa_guard_release",
+      "value": 0
+    },
+    "0x6b258": {
+      "type": 1026,
+      "symbol": "_Z12SendResponseP12SenserPacketP10PacketData",
+      "value": 46272
+    },
+    "0x6b260": {
+      "type": 1026,
+      "symbol": "_ZN29SubsystemCommunicationCommandD1Ev",
+      "value": 64052
+    },
+    "0x6b268": {
+      "type": 1026,
+      "symbol": "access",
+      "value": 0
+    },
+    "0x6b270": {
+      "type": 1026,
+      "symbol": "pthread_mutex_init",
+      "value": 0
+    },
+    "0x6b278": {
+      "type": 1026,
+      "symbol": "read",
+      "value": 0
+    },
+    "0x6b280": {
+      "type": 1026,
+      "symbol": "_Z10cpp_logrechPKcjj",
+      "value": 50544
+    },
+    "0x6b288": {
+      "type": 1026,
+      "symbol": "_ZSt18_Rb_tree_incrementPSt18_Rb_tree_node_base",
+      "value": 0
+    },
+    "0x6b290": {
+      "type": 1026,
+      "symbol": "_ZN6Thread6createEPFPvS0_ES0_PK14pthread_attr_t",
+      "value": 87288
+    },
+    "0x6b298": {
+      "type": 1026,
+      "symbol": "_ZN3Usb12open_channelEv",
+      "value": 51804
+    },
+    "0x6b2a0": {
+      "type": 1026,
+      "symbol": "osal_valloc_msg_wait",
+      "value": 0
+    },
+    "0x6b2a8": {
+      "type": 1026,
+      "symbol": "_Z10cpp_logrechPKcj",
+      "value": 45704
+    },
+    "0x6b2b0": {
+      "type": 1026,
+      "symbol": "_Z19CreatePluginCommandPvtm",
+      "value": 57940
+    },
+    "0x6b2b8": {
+      "type": 1026,
+      "symbol": "closedir",
+      "value": 0
+    },
+    "0x6b2c0": {
+      "type": 1026,
+      "symbol": "pthread_attr_destroy",
+      "value": 0
+    },
+    "0x6b2c8": {
+      "type": 1026,
+      "symbol": "sprintf",
+      "value": 0
+    },
+    "0x6b2d0": {
+      "type": 1026,
+      "symbol": "EVP_DigestInit_ex",
+      "value": 0
+    },
+    "0x6b2d8": {
+      "type": 1026,
+      "symbol": "_Z5xxhopPhS_",
+      "value": 88988
+    },
+    "0x6b2e0": {
+      "type": 1026,
+      "symbol": "_ZN8NoActionD1Ev",
+      "value": 57060
+    },
+    "0x6b2e8": {
+      "type": 1026,
+      "symbol": "ioctl",
+      "value": 0
+    },
+    "0x6b2f0": {
+      "type": 1026,
+      "symbol": "dlopen",
+      "value": 0
+    },
+    "0x6b2f8": {
+      "type": 1026,
+      "symbol": "_Z12SenserIfStopR20InitiationDispatcher",
+      "value": 53020
+    },
+    "0x6b300": {
+      "type": 1026,
+      "symbol": "remove",
+      "value": 0
+    },
+    "0x6b308": {
+      "type": 1026,
+      "symbol": "logrec",
+      "value": 82312
+    },
+    "0x6b310": {
+      "type": 1026,
+      "symbol": "localtime",
+      "value": 0
+    },
+    "0x6b318": {
+      "type": 1026,
+      "symbol": "_Z13tlog_get_datePhi",
+      "value": 78956
+    },
+    "0x6b320": {
+      "type": 1026,
+      "symbol": "itoh",
+      "value": 88176
+    },
+    "0x6b328": {
+      "type": 1026,
+      "symbol": "pthread_attr_setdetachstate",
+      "value": 0
+    },
+    "0x6b330": {
+      "type": 1026,
+      "symbol": "atoi",
+      "value": 0
+    },
+    "0x6b338": {
+      "type": 1026,
+      "symbol": "_Z25UnloadSenserPluginModulesv",
+      "value": 56512
+    },
+    "0x6b340": {
+      "type": 1026,
+      "symbol": "_Z9SerializePFiPhmEPvm",
+      "value": 45820
+    },
+    "0x6b348": {
+      "type": 1026,
+      "symbol": "GetSenserMode",
+      "value": 84096
+    },
+    "0x6b350": {
+      "type": 1026,
+      "symbol": "_Z6xxjumpPhS_",
+      "value": 88864
+    },
+    "0x6b358": {
+      "type": 1026,
+      "symbol": "dlclose",
+      "value": 0
+    },
+    "0x6b360": {
+      "type": 1026,
+      "symbol": "senif_destroy",
+      "value": 88292
+    },
+    "0x6b368": {
+      "type": 1026,
+      "symbol": "_ZN19WorkerThreadManager10run_workerEiPFPvS0_ES0_",
+      "value": 49788
+    },
+    "0x6b370": {
+      "type": 1026,
+      "symbol": "senif_init",
+      "value": 88228
+    },
+    "0x6b378": {
+      "type": 1026,
+      "symbol": "stm_system",
+      "value": 0
+    },
+    "0x6b380": {
+      "type": 1026,
+      "symbol": "_ZN8DeviceIo5fcntlEii",
+      "value": 86812
+    },
+    "0x6b388": {
+      "type": 1026,
+      "symbol": "LoadSenserMode",
+      "value": 83840
+    },
+    "0x6b390": {
+      "type": 1026,
+      "symbol": "pthread_attr_setschedpolicy",
+      "value": 0
+    },
+    "0x6b398": {
+      "type": 1026,
+      "symbol": "getpid",
+      "value": 0
+    },
+    "0x6b3a0": {
+      "type": 1026,
+      "symbol": "_Z9CmdDecodePtPh",
+      "value": 88936
+    },
+    "0x6b3a8": {
+      "type": 1026,
+      "symbol": "_ZdlPv",
+      "value": 0
+    },
+    "0x6b3b0": {
+      "type": 1026,
+      "symbol": "testcmd_run_scenario",
+      "value": 0
+    },
+    "0x6b3b8": {
+      "type": 1026,
+      "symbol": "_ZNSt6vectorI11HandlerSlotSaIS0_EE19_M_emplace_back_auxIJS0_EEEvDpOT_",
+      "value": 46816
+    },
+    "0x6b3c0": {
+      "type": 1026,
+      "symbol": "SEN_SSL_DecryptData_Using_RSA_PublicKey",
+      "value": 91504
+    },
+    "0x6b3c8": {
+      "type": 1026,
+      "symbol": "mmap",
+      "value": 0
+    },
+    "0x6b3d0": {
+      "type": 1026,
+      "symbol": "_ZN19WorkerThreadManager4joinEv",
+      "value": 49608
+    },
+    "0x6b3d8": {
+      "type": 1026,
+      "symbol": "_Znwm",
+      "value": 0
+    },
+    "0x6b3e0": {
+      "type": 1026,
+      "symbol": "strncmp",
+      "value": 0
+    },
+    "0x6b3e8": {
+      "type": 1026,
+      "symbol": "_ZdlPvm",
+      "value": 0
+    },
+    "0x6b3f0": {
+      "type": 1026,
+      "symbol": "readdir",
+      "value": 0
+    },
+    "0x6b3f8": {
+      "type": 1026,
+      "symbol": "strncpy",
+      "value": 0
+    },
+    "0x6b400": {
+      "type": 1026,
+      "symbol": "_ZN12Inconcurrent10resource_t4lockEPK12SenserPacket",
+      "value": 56576
+    },
+    "0x6b408": {
+      "type": 1026,
+      "symbol": "_ZSt18_Rb_tree_decrementPSt18_Rb_tree_node_base",
+      "value": 0
+    },
+    "0x6b410": {
+      "type": 1026,
+      "symbol": "munmap",
+      "value": 0
+    },
+    "0x6b418": {
+      "type": 1026,
+      "symbol": "fsync",
+      "value": 0
+    },
+    "0x6b420": {
+      "type": 1026,
+      "symbol": "_Z20tlog_get_serial_codePhi",
+      "value": 79136
+    },
+    "0x6b428": {
+      "type": 1026,
+      "symbol": "opendir",
+      "value": 0
+    },
+    "0x6b430": {
+      "type": 1026,
+      "symbol": "testcmd_sndmsg",
+      "value": 0
+    },
+    "0x6b438": {
+      "type": 1026,
+      "symbol": "osal_dynamic_id",
+      "value": 0
+    },
+    "0x6b440": {
+      "type": 1026,
+      "symbol": "_ZN8DeviceIo5closeEv",
+      "value": 86132
+    },
+    "0x6b448": {
+      "type": 1026,
+      "symbol": "_Z9dmm_allocjPj",
+      "value": 60624
+    },
+    "0x6b450": {
+      "type": 1026,
+      "symbol": "_ZNSt10unique_ptrI10PacketDataSt14default_deleteIS0_EED1Ev",
+      "value": 56704
+    },
+    "0x6b458": {
+      "type": 1026,
+      "symbol": "EVP_MD_CTX_new",
+      "value": 0
+    },
+    "0x6b460": {
+      "type": 1026,
+      "symbol": "__cxa_atexit",
+      "value": 0
+    },
+    "0x6b468": {
+      "type": 1026,
+      "symbol": "_ZN18DynamicLinkLibrary13get_symbol_byEPKc",
+      "value": 87744
+    },
+    "0x6b470": {
+      "type": 1026,
+      "symbol": "snprintf",
+      "value": 0
+    },
+    "0x6b478": {
+      "type": 1026,
+      "symbol": "_Z11FreeOsalMsgjPv",
+      "value": 63576
+    },
+    "0x6b480": {
+      "type": 1026,
+      "symbol": "_ZN6Thread6cancelEv",
+      "value": 87388
+    },
+    "0x6b488": {
+      "type": 1026,
+      "symbol": "EVP_PKEY_CTX_set_rsa_padding",
+      "value": 0
+    },
+    "0x6b490": {
+      "type": 1026,
+      "symbol": "_ZNK8DeviceIo4sizeEv",
+      "value": 86576
+    },
+    "0x6b498": {
+      "type": 1026,
+      "symbol": "_ZN15WriteDeviceData7ReleaseEv",
+      "value": 54596
+    },
+    "0x6b4a0": {
+      "type": 1026,
+      "symbol": "_Z15tlog_set_pcdatePh",
+      "value": 78584
+    },
+    "0x6b4a8": {
+      "type": 1026,
+      "symbol": "_Z13tlog_get_destPhi",
+      "value": 78796
+    },
+    "0x6b4b0": {
+      "type": 1026,
+      "symbol": "pthread_create",
+      "value": 0
+    },
+    "0x6b4b8": {
+      "type": 1026,
+      "symbol": "_Z15tlog_write_fileP9StraceLog",
+      "value": 79456
+    },
+    "0x6b4c0": {
+      "type": 1026,
+      "symbol": "usleep",
+      "value": 0
+    },
+    "0x6b4c8": {
+      "type": 1026,
+      "symbol": "_Z16tlog_create_filev",
+      "value": 79564
+    },
+    "0x6b4d0": {
+      "type": 1026,
+      "symbol": "memmove",
+      "value": 0
+    },
+    "0x6b4d8": {
+      "type": 1026,
+      "symbol": "_ZN3Usb4stopEPFv13__USBIF_EVENTP17usbif_event_paramiE",
+      "value": 50752
+    },
+    "0x6b4e0": {
+      "type": 1026,
+      "symbol": "time",
+      "value": 0
+    },
+    "0x6b4e8": {
+      "type": 1026,
+      "symbol": "_ZN29SubsystemCommunicationCommand16TransactionStartEPK12SenserPacketPKvS4_",
+      "value": 64268
+    },
+    "0x6b4f0": {
+      "type": 1026,
+      "symbol": "__errno_location",
+      "value": 0
+    },
+    "0x6b4f8": {
+      "type": 1026,
+      "symbol": "sched_yield",
+      "value": 0
+    },
+    "0x6b500": {
+      "type": 1026,
+      "symbol": "osal_unreg_msg_queue_cb",
+      "value": 0
+    },
+    "0x6b508": {
+      "type": 1026,
+      "symbol": "Regist_HaspId",
+      "value": 82672
+    },
+    "0x6b510": {
+      "type": 1026,
+      "symbol": "_Z15GetPluginModulePKcth",
+      "value": 56168
+    },
+    "0x6b518": {
+      "type": 1026,
+      "symbol": "_ZN7CommandD2Ev",
+      "value": 56820
+    },
+    "0x6b520": {
+      "type": 1026,
+      "symbol": "Read_Hasp",
+      "value": 82528
+    },
+    "0x6b528": {
+      "type": 1026,
+      "symbol": "mkdir",
+      "value": 0
+    },
+    "0x6b530": {
+      "type": 1026,
+      "symbol": "_Z10cpp_logrechPKc",
+      "value": 45152
+    },
+    "0x6b538": {
+      "type": 1026,
+      "symbol": "sen_dma_transfer",
+      "value": 80932
+    },
+    "0x6b540": {
+      "type": 1026,
+      "symbol": "pthread_setcancelstate",
+      "value": 0
+    },
+    "0x6b548": {
+      "type": 1026,
+      "symbol": "_ZNSt6vectorIhSaIhEEC1EmRKS0_",
+      "value": 57340
+    },
+    "0x6b550": {
+      "type": 1026,
+      "symbol": "_ZN3Usb24initialize_usb_interfaceE20usb_port_selection_t",
+      "value": 51948
+    },
+    "0x6b558": {
+      "type": 1026,
+      "symbol": "_Z14cppdump_logrechPKcPhj",
+      "value": 45660
+    },
+    "0x6b560": {
+      "type": 1026,
+      "symbol": "_ZN8DeviceIo6detachEv",
+      "value": 86112
+    },
+    "0x6b568": {
+      "type": 1026,
+      "symbol": "_ZN24HostCommunicationCommandC1EPK12SenserPacketRK15CommandCodeType",
+      "value": 57120
+    },
+    "0x6b570": {
+      "type": 1026,
+      "symbol": "fopen",
+      "value": 0
+    },
+    "0x6b578": {
+      "type": 1026,
+      "symbol": "htoi",
+      "value": 88128
+    },
+    "0x6b580": {
+      "type": 1026,
+      "symbol": "close",
+      "value": 0
+    },
+    "0x6b588": {
+      "type": 1026,
+      "symbol": "_Z18ReceiveOsalMessageP26SubsystemCommunicationInfoPj",
+      "value": 61664
+    },
+    "0x6b590": {
+      "type": 1026,
+      "symbol": "_ZN4Blog5writeEP12LOGREC_PARAM",
+      "value": 81604
+    },
+    "0x6b598": {
+      "type": 1026,
+      "symbol": "RAND_bytes",
+      "value": 0
+    },
+    "0x6b5a0": {
+      "type": 1026,
+      "symbol": "_ZNSt10unique_ptrI10PacketDataSt14default_deleteIS0_EE5resetEPS0_",
+      "value": 46784
+    },
+    "0x6b5a8": {
+      "type": 1026,
+      "symbol": "_ZNSt8_Rb_treeIiSt4pairIKiP14IoEventHandlerESt10_Select1stIS4_ESt4lessIiESaIS4_EE24_M_get_insert_unique_posERS1_",
+      "value": 85356
+    },
+    "0x6b5b0": {
+      "type": 1026,
+      "symbol": "pthread_cancel",
+      "value": 0
+    },
+    "0x6b5b8": {
+      "type": 1026,
+      "symbol": "_Z16tlog_update_fileiP10StraceData",
+      "value": 79752
+    },
+    "0x6b5c0": {
+      "type": 1026,
+      "symbol": "_ZN15WriteDeviceDataD1Ev",
+      "value": 57588
+    },
+    "0x6b5c8": {
+      "type": 1026,
+      "symbol": "write",
+      "value": 0
+    },
+    "0x6b5d0": {
+      "type": 1026,
+      "symbol": "_Z15MakeOsalMessageP26SubsystemCommunicationInfo",
+      "value": 61496
+    },
+    "0x6b5d8": {
+      "type": 1026,
+      "symbol": "_ZN19WorkerThreadManager20start_authenticationEPFvvE",
+      "value": 49960
+    },
+    "0x6b5e0": {
+      "type": 1026,
+      "symbol": "_Z5ParsePK12SenserPacket",
+      "value": 59892
+    },
+    "0x6b5e8": {
+      "type": 1026,
+      "symbol": "flock",
+      "value": 0
+    },
+    "0x6b5f0": {
+      "type": 1026,
+      "symbol": "malloc",
+      "value": 0
+    },
+    "0x6b5f8": {
+      "type": 1026,
+      "symbol": "_ZN10MemoryData7ReleaseEv",
+      "value": 54112
+    },
+    "0x6b600": {
+      "type": 1026,
+      "symbol": "_Z12tlog_decoderP9StraceLog",
+      "value": 79296
+    },
+    "0x6b608": {
+      "type": 1026,
+      "symbol": "_ZNSt12_Vector_baseIhSaIhEED2Ev",
+      "value": 57568
+    },
+    "0x6b610": {
+      "type": 1026,
+      "symbol": "_Z13tlog_set_haspi",
+      "value": 78532
+    },
+    "0x6b618": {
+      "type": 1026,
+      "symbol": "_ZN3Usb15spin_wait_whileENS_10state_typeE",
+      "value": 52196
+    },
+    "0x6b620": {
+      "type": 1026,
+      "symbol": "_ZN18DynamicLinkLibrary14handle_dlerrorEv",
+      "value": 87636
+    },
+    "0x6b628": {
+      "type": 1026,
+      "symbol": "abort",
+      "value": 0
+    },
+    "0x6b630": {
+      "type": 1026,
+      "symbol": "_Z8dmm_freej",
+      "value": 61140
+    },
+    "0x6b638": {
+      "type": 1026,
+      "symbol": "_Z14tlog_read_fileP9StraceLog",
+      "value": 79332
+    },
+    "0x6b640": {
+      "type": 1026,
+      "symbol": "EVP_PKEY_CTX_free",
+      "value": 0
+    },
+    "0x6b648": {
+      "type": 1026,
+      "symbol": "_Z16tlog_set_apptypeh",
+      "value": 78544
+    },
+    "0x6b650": {
+      "type": 1026,
+      "symbol": "pthread_mutex_destroy",
+      "value": 0
+    },
+    "0x6b658": {
+      "type": 1026,
+      "symbol": "_ZN6Thread4joinEPPv",
+      "value": 87488
+    },
+    "0x6b660": {
+      "type": 1026,
+      "symbol": "__gxx_personality_v0",
+      "value": 0
+    },
+    "0x6b668": {
+      "type": 1026,
+      "symbol": "EVP_PKEY_verify_recover_init",
+      "value": 0
+    },
+    "0x6b670": {
+      "type": 1026,
+      "symbol": "_ZN3Usb13close_channelEv",
+      "value": 51908
+    },
+    "0x6b678": {
+      "type": 1026,
+      "symbol": "_ZNSt8_Rb_treeIiSt4pairIKiP14IoEventHandlerESt10_Select1stIS4_ESt4lessIiESaIS4_EE4findERS1_",
+      "value": 84580
+    },
+    "0x6b680": {
+      "type": 1026,
+      "symbol": "fgetc",
+      "value": 0
+    },
+    "0x6b688": {
+      "type": 1026,
+      "symbol": "_ZNSt8_Rb_treeIiSt4pairIKiP14IoEventHandlerESt10_Select1stIS4_ESt4lessIiESaIS4_EE29_M_get_insert_hint_unique_posESt23_Rb_tree_const_iteratorIS4_ERS1_",
+      "value": 85512
+    },
+    "0x6b690": {
+      "type": 1026,
+      "symbol": "_ZN20InitiationDispatcher14remove_handlerER14IoEventHandler",
+      "value": 84664
+    },
+    "0x6b698": {
+      "type": 1026,
+      "symbol": "_Z9SerializeP10PacketDatam",
+      "value": 46048
+    },
+    "0x6b6a0": {
+      "type": 1026,
+      "symbol": "_ZN10CoreModule4openEv",
+      "value": 84120
+    },
+    "0x6b6a8": {
+      "type": 1026,
+      "symbol": "osal_reg_sync_msg_queue_cb",
+      "value": 0
+    },
+    "0x6b6b0": {
+      "type": 1026,
+      "symbol": "_Z18sen_control_dmm_cpiiPmj",
+      "value": 80660
+    },
+    "0x6b6b8": {
+      "type": 1026,
+      "symbol": "EVP_sha256",
+      "value": 0
+    },
+    "0x6b6c0": {
+      "type": 1026,
+      "symbol": "_ZN7CommandD1Ev",
+      "value": 56820
+    },
+    "0x6b6c8": {
+      "type": 1026,
+      "symbol": "pthread_testcancel",
+      "value": 0
+    },
+    "0x6b6d0": {
+      "type": 1026,
+      "symbol": "usbif_initialize",
+      "value": 0
+    },
+    "0x6b6d8": {
+      "type": 1026,
+      "symbol": "osal_snd_sync_msg",
+      "value": 0
+    },
+    "0x6b6e0": {
+      "type": 1026,
+      "symbol": "pthread_self",
+      "value": 0
+    },
+    "0x6b6e8": {
+      "type": 1026,
+      "symbol": "poll",
+      "value": 0
+    },
+    "0x6b6f0": {
+      "type": 1026,
+      "symbol": "fwrite",
+      "value": 0
+    },
+    "0x6b6f8": {
+      "type": 1026,
+      "symbol": "_Unwind_Resume",
+      "value": 0
+    },
+    "0x6b700": {
+      "type": 1026,
+      "symbol": "_ZN12Inconcurrent10resource_t6unlockEv",
+      "value": 56700
+    },
+    "0x6b708": {
+      "type": 1026,
+      "symbol": "EVP_MD_CTX_free",
+      "value": 0
+    },
+    "0x6b710": {
+      "type": 1026,
+      "symbol": "getpagesize",
+      "value": 0
+    },
+    "0x6b718": {
+      "type": 1026,
+      "symbol": "__cxa_guard_acquire",
+      "value": 0
+    },
+    "0x6b720": {
+      "type": 1026,
+      "symbol": "_ZN7Command7ExecuteEP12SenserPacket",
+      "value": 56072
+    },
+    "0x6b728": {
+      "type": 1026,
+      "symbol": "PEM_read_PUBKEY",
+      "value": 0
+    },
+    "0x6b730": {
+      "type": 1026,
+      "symbol": "pthread_attr_setscope",
+      "value": 0
+    },
+    "0x6b738": {
+      "type": 1026,
+      "symbol": "strnlen",
+      "value": 0
+    },
+    "0x6b740": {
+      "type": 1026,
+      "symbol": "lseek",
+      "value": 0
+    },
+    "0x6b748": {
+      "type": 1026,
+      "symbol": "SEN_SSL_GenerateDigestData",
+      "value": 91164
+    },
+    "0x6b750": {
+      "type": 1026,
+      "symbol": "_ZN19WorkerThreadManager11run_workersEv",
+      "value": 49996
+    },
+    "0x6b758": {
+      "type": 1026,
+      "symbol": "fcntl",
+      "value": 0
+    },
+    "0x6b760": {
+      "type": 1026,
+      "symbol": "__gmon_start__",
+      "value": 0
+    },
+    "0x6b768": {
+      "type": 1026,
+      "symbol": "SEN_SSL_GenerateRandomData",
+      "value": 91108
+    },
+    "0x6b770": {
+      "type": 1026,
+      "symbol": "_Z17tlog_set_userinfoPh",
+      "value": 78556
+    },
+    "0x6b778": {
+      "type": 1026,
+      "symbol": "__cxa_pure_virtual",
+      "value": 0
+    },
+    "0x6b780": {
+      "type": 1026,
+      "symbol": "_ZN15WriteDeviceDataC1EiPFiiEm",
+      "value": 57784
+    },
+    "0x6b788": {
+      "type": 1026,
+      "symbol": "EVP_DigestUpdate",
+      "value": 0
+    },
+    "0x6b790": {
+      "type": 1026,
+      "symbol": "osal_free_msg",
+      "value": 0
+    },
+    "0x6b798": {
+      "type": 1026,
+      "symbol": "fmemopen",
+      "value": 0
+    },
+    "0x6b7a0": {
+      "type": 1026,
+      "symbol": "_ZNK3Usb4pushENS_10event_typeE",
+      "value": 50872
+    },
+    "0x6b7a8": {
+      "type": 1026,
+      "symbol": "_ZN3UsbD1Ev",
+      "value": 50152
+    },
+    "0x6b7b0": {
+      "type": 1026,
+      "symbol": "printf",
+      "value": 0
+    },
+    "0x6b7b8": {
+      "type": 1026,
+      "symbol": "pthread_mutex_trylock",
+      "value": 0
+    },
+    "0x6b7c0": {
+      "type": 1026,
+      "symbol": "rmdir",
+      "value": 0
+    }
+  }
+}

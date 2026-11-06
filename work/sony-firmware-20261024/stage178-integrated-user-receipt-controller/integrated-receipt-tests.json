@@ -1,0 +1,216 @@
+{
+  "status": "PASS_INTEGRATED_USER_RECEIPT_WRAPPER_AND_SUPERVISOR",
+  "checks": 13,
+  "cases": [
+    {
+      "name": "actual_wrapper_keeps_command_runner_separate_from_completed_open_request"
+    },
+    {
+      "name": "same_production_wrapper_user_stdout_consumed_by_full_identity_ACK_SHA_supervisor",
+      "result": {
+        "status": "PROVIDER_OBSERVATION_COMPLETED",
+        "helper_terminal_verified": true,
+        "helper_identity": {
+          "pid": 53311,
+          "uid": 501,
+          "birth_sec": 1793275812,
+          "birth_usec": 548129,
+          "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage178-integrated-user-receipt-controller/runs/integrated-receipt-tests/normal/staged-grant/helper"
+        },
+        "relay_returncode": 0,
+        "native": {
+          "status_code": 0,
+          "capture_attempted": true,
+          "claim_attempted": true,
+          "interface_claimed_in_this_trial": true,
+          "cleanup_error": false,
+          "clock_invalid": false,
+          "active_native_call_phase": 0,
+          "events": [
+            {
+              "phase": 1,
+              "raw_return": 0
+            },
+            {
+              "phase": 2,
+              "raw_return": 0
+            },
+            {
+              "phase": 3,
+              "raw_return": 0
+            },
+            {
+              "phase": 4,
+              "raw_return": 0
+            },
+            {
+              "phase": 5,
+              "raw_return": 0
+            },
+            {
+              "phase": 6,
+              "raw_return": 0
+            },
+            {
+              "phase": 7,
+              "raw_return": 0
+            },
+            {
+              "phase": 8,
+              "raw_return": 0
+            },
+            {
+              "phase": 9,
+              "raw_return": 0
+            },
+            {
+              "phase": 10,
+              "raw_return": 0
+            },
+            {
+              "phase": 11,
+              "raw_return": 0
+            },
+            {
+              "phase": 12,
+              "raw_return": 0
+            }
+          ],
+          "same_camera_firmware_or_HEVC_recording_proven": false,
+          "native_driver_return_independently_proven": false
+        },
+        "receipt": {
+          "schema": 2,
+          "grant_id": "fx3-702-msc-owner-20261029-06",
+          "mode": "fixture",
+          "nonce": "b9eac8f409fc7ed23e050f44ebd4e0de",
+          "pid": 53311,
+          "birth_sec": 1793275812,
+          "birth_usec": 548129,
+          "native_return": 0,
+          "result_sha256": "4e691b47cd8d239357738f5e5116802115523bd44096fbcd0b0195c7796f8599",
+          "physical_camera_acceptance": false,
+          "fixture_calls": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0
+      }
+    },
+    {
+      "name": "actual_wrapper_replay_preserves_result_and_does_not_reenter_helper"
+    },
+    {
+      "name": "bad_installed_hash_preserves_readable_user_output_and_command_exit78"
+    },
+    {
+      "name": "missing_result_retains_UNKNOWN_and_specific_errno_without_restart",
+      "state": {
+        "status": "UNKNOWN_TERMINAL_RECEIPT_MISMATCH",
+        "helper_terminal_verified": true,
+        "receipt_error": {
+          "category": "receipt_fields_or_read_error",
+          "exception_type": "FileNotFoundError",
+          "errno": 2,
+          "metadata": {}
+        },
+        "restarted_or_killed": false,
+        "physical_acceptance": false,
+        "Terminal_launch_returncode": 0
+      }
+    },
+    {
+      "name": "actual05_root0600_receipt_rejected_with_owner_reason_before_contents",
+      "reason": {
+        "category": "helper_receipt_file_identity_or_size",
+        "exception_type": "ReceiptRejected",
+        "errno": null,
+        "metadata": {
+          "uid": 0,
+          "mode": "0o600",
+          "bytes": 586
+        }
+      }
+    },
+    {
+      "name": "private_reader_rejects_empty",
+      "reason": {
+        "category": "helper_receipt_file_identity_or_size",
+        "exception_type": "ReceiptRejected",
+        "errno": null,
+        "metadata": {
+          "uid": 501,
+          "mode": "0o600",
+          "bytes": 0
+        }
+      }
+    },
+    {
+      "name": "private_reader_rejects_wide-mode",
+      "reason": {
+        "category": "helper_receipt_file_identity_or_size",
+        "exception_type": "ReceiptRejected",
+        "errno": null,
+        "metadata": {
+          "uid": 501,
+          "mode": "0o644",
+          "bytes": 2
+        }
+      }
+    },
+    {
+      "name": "private_reader_rejects_oversize",
+      "reason": {
+        "category": "helper_receipt_file_identity_or_size",
+        "exception_type": "ReceiptRejected",
+        "errno": null,
+        "metadata": {
+          "uid": 501,
+          "mode": "0o600",
+          "bytes": 16385
+        }
+      }
+    },
+    {
+      "name": "private_reader_rejects_invalid-json",
+      "reason": {
+        "category": "helper_receipt_not_JSON",
+        "exception_type": "ReceiptRejected",
+        "errno": null,
+        "metadata": {}
+      }
+    },
+    {
+      "name": "private_reader_rejects_nonobject",
+      "reason": {
+        "category": "helper_receipt_not_object",
+        "exception_type": "ReceiptRejected",
+        "errno": null,
+        "metadata": {}
+      }
+    },
+    {
+      "name": "result_symlink_not_followed"
+    },
+    {
+      "name": "production_source_uses_user_stdout_only_no_new_native_grant_consumed"
+    }
+  ],
+  "new_root_sudo_Terminal_or_native_IOKit_execution": false,
+  "camera_operations": 0,
+  "actual_root_owned05_file_metadata_checked": true,
+  "actual_root_owned05_contents_read_or_permissions_changed": false
+}

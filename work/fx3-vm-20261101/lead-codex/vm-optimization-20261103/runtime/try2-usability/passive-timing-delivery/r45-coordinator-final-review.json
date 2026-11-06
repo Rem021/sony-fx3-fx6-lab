@@ -1,0 +1,32 @@
+{
+  "reviewed_utc": "2026-11-05T11:34:20.799160+00:00",
+  "status": "failed_evidence_independently_reviewed",
+  "run": "v44review-n64-r44-6583e25e",
+  "formal_Orca_dispatch": false,
+  "original_user_approval_independently_verified": false,
+  "task_manifest": {
+    "count": 554,
+    "SHA256": "82f91be572e61b896718d8f7c8689d3c7a79cac3edf28fb0a4d02bd41f49a614",
+    "mismatches": 0
+  },
+  "native_manifest": {
+    "count": 150,
+    "SHA256": "8e500b1c1bc76146533b5e4d36db1eb657d0309d79f97b8f34ce05fb5ae0b79f",
+    "mismatches": 0
+  },
+  "visual_review": {
+    "steps_1_to_7_all_pinned_images_actually_viewed": true,
+    "all_match_targets": true,
+    "seven_confirm_receipts": "confirmed_and_cancelled"
+  },
+  "step8": "not_posted; mutation_called=false; not_eligible_armed while deadline still future",
+  "cleanup": "unknown, retain failure; observed cleanup.py armed-close path conflicts with cleanup_evidence.certify nonarmed-only/dispose requirements",
+  "independent_resources": {
+    "runner53378_absent": true,
+    "qemu53782_absent": true,
+    "two_locks_free": true,
+    "port58245_closed": true
+  },
+  "no_second_Start": true,
+  "next": "offline isolated r46, no VM or deployment"
+}

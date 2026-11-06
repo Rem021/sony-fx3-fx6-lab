@@ -1,0 +1,83 @@
+{
+  "source_library_sha256": "6441a8c33e586685bcd3fcc9b6b43803c1c5660fbbca13e3ebd8239f7677b8fb",
+  "original_fdat_sha256": "694c4e9ea53bce6785521078bcb5728068e6ef3da8f0f052ff5ce23b1cb2b768",
+  "cases": [
+    {
+      "marker_fixture": false,
+      "selected_image": "/usr/bin/udtrbody.bin",
+      "stopped_pc": "0x7d70",
+      "original_instructions_until_boundary": 1427,
+      "assembled_image_bytes": 1253376,
+      "assembled_image_sha256": "62e86fad175e0326969d5f1cea29d780feb496ce8034acd2c9c3954320d8ccaa",
+      "plaintext_cursor_after": 1253888,
+      "events": [
+        {
+          "operation": "directory_request_only",
+          "path": "/tmp_updater/updater"
+        },
+        {
+          "operation": "memory_sink_open",
+          "path": "/tmp_updater/updater/bodyimg",
+          "flags": 577
+        },
+        {
+          "operation": "memory_sink_close"
+        },
+        {
+          "operation": "declared_stat_fixture",
+          "path": "/root/IAMUPDATER",
+          "exists": false
+        },
+        {
+          "operation": "mountpoint_initialize_record_only",
+          "path": "/tmp_updater/updater/bodyfs"
+        },
+        {
+          "operation": "mount_request_boundary",
+          "image": "/usr/bin/udtrbody.bin",
+          "flags": 1025,
+          "native_call_executed": false
+        }
+      ]
+    },
+    {
+      "marker_fixture": true,
+      "selected_image": "/tmp_updater/updater/bodyimg",
+      "stopped_pc": "0x7d70",
+      "original_instructions_until_boundary": 1427,
+      "assembled_image_bytes": 1253376,
+      "assembled_image_sha256": "62e86fad175e0326969d5f1cea29d780feb496ce8034acd2c9c3954320d8ccaa",
+      "plaintext_cursor_after": 1253888,
+      "events": [
+        {
+          "operation": "directory_request_only",
+          "path": "/tmp_updater/updater"
+        },
+        {
+          "operation": "memory_sink_open",
+          "path": "/tmp_updater/updater/bodyimg",
+          "flags": 577
+        },
+        {
+          "operation": "memory_sink_close"
+        },
+        {
+          "operation": "declared_stat_fixture",
+          "path": "/root/IAMUPDATER",
+          "exists": true
+        },
+        {
+          "operation": "mountpoint_initialize_record_only",
+          "path": "/tmp_updater/updater/bodyfs"
+        },
+        {
+          "operation": "mount_request_boundary",
+          "image": "/tmp_updater/updater/bodyimg",
+          "flags": 1025,
+          "native_call_executed": false
+        }
+      ]
+    }
+  ],
+  "scope": "Original BaseBodyLoader constructor, header checks, createBodyImage, thread running flag and beginning of bodyExecute select the image. stat presence/absence is a declared fixture, not an observed camera/rootfs state. Plaintext ring, file/directory and mutex adapters remain synthetic. Execution stops at the mount helper entry; no mount, chassis check, dlopen, target library, USB or camera execution. Incoming image assembly does not by itself mean that image is selected."
+}

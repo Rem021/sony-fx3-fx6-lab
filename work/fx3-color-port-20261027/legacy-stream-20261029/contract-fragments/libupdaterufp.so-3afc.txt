@@ -1,0 +1,52 @@
+00003afc sub        sp, sp, #0x220
+00003b00 stp        x29, x30, [sp, #-0x30]!
+00003b04 mov        x29, sp
+00003b08 stp        x19, x20, [sp, #0x10]
+00003b0c stp        x21, x22, [sp, #0x20]
+00003b10 str        wzr, [x29, #0x3c]
+00003b14 str        xzr, [x29, #0x40]
+00003b18 cbnz       x1, #0x3b38
+00003b1c mov        w19, #1
+00003b20 ldp        x21, x22, [sp, #0x20]
+00003b24 mov        w0, w19
+00003b28 ldp        x19, x20, [sp, #0x10]
+00003b2c ldp        x29, x30, [sp], #0x30
+00003b30 add        sp, sp, #0x220
+00003b34 ret        
+00003b38 mov        x3, x1
+00003b3c mov        x21, x0
+00003b40 add        x1, x29, #0x40
+00003b44 mov        x0, x3
+00003b48 mov        w2, #1
+00003b4c bl         #0x1370 ; Fsys_Open
+00003b50 cbnz       w0, #0x3b1c
+00003b54 ldr        x0, [x29, #0x40]
+00003b58 add        x1, x29, #0x3c
+00003b5c bl         #0x14e0 ; udtr_cmd_search_chank
+00003b60 uxth       w19, w0
+00003b64 cbnz       w19, #0x3bb4
+00003b68 add        x22, x29, #0x48
+00003b6c ldr        x0, [x29, #0x40]
+00003b70 mov        x1, x22
+00003b74 mov        w2, #0x204
+00003b78 mov        x20, #0
+00003b7c bl         #0x1440 ; Fsys_Read
+00003b80 cmp        w0, #0
+00003b84 b.gt       #0x3b94
+00003b88 mov        w19, #3
+00003b8c b          #0x3bb4
+00003b90 bl         #0x15b0 ; Dec_Scramble
+00003b94 add        x0, x22, x20
+00003b98 add        x20, x20, #0x10
+00003b9c cmp        x20, #0x210
+00003ba0 b.ne       #0x3b90
+00003ba4 mov        x1, x22
+00003ba8 mov        x0, x21
+00003bac mov        x2, #0x204
+00003bb0 bl         #0x1300 ; memcpy
+00003bb4 ldr        x0, [x29, #0x40]
+00003bb8 bl         #0x13f0 ; Fsys_Close
+00003bbc cmp        w0, #0
+00003bc0 mov        w0, #3
+00003bc4 csel       w19, w19, w0, eq
+00003bc8 b          #0x3b20

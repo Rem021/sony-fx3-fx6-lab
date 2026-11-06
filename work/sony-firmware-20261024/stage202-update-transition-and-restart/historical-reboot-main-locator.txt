@@ -1,0 +1,498 @@
+00400d30 000000b0 adrp    x0, #0x401000
+00400d34 fd7bb5a9 stp     x29, x30, [sp, #-0xb0]!
+00400d38 00b82791 add     x0, x0, #0x9ee
+00400d3c fd030091 mov     x29, sp
+00400d40 f35301a9 stp     x19, x20, [sp, #0x10]
+00400d44 010040f9 ldr     x1, [x0]
+00400d48 00204039 ldrb    w0, [x0, #8]
+00400d4c a14300f9 str     x1, [x29, #0x80]
+00400d50 a0230239 strb    w0, [x29, #0x88]
+00400d54 c0178052 mov     w0, #0xbe
+00400d58 201fa072 movk    w0, #0xf9, lsl #16
+00400d5c f55b02a9 stp     x21, x22, [sp, #0x20]
+00400d60 f76303a9 stp     x23, x24, [sp, #0x30]
+00400d64 f96b04a9 stp     x25, x26, [sp, #0x40]
+00400d68 fb7305a9 stp     x27, x28, [sp, #0x50]
+00400d6c bf270239 strb    wzr, [x29, #0x89]
+00400d70 bfd30079 strh    wzr, [x29, #0x68]
+00400d74 bf3b00f9 str     xzr, [x29, #0x70]
+00400d78 daffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00400d7c f303002a mov     w19, w0
+00400d80 400f8052 mov     w0, #0x7a
+00400d84 201fa072 movk    w0, #0xf9, lsl #16
+00400d88 d6ffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00400d8c f403002a mov     w20, w0
+00400d90 9cffff97 bl      #0x400c00 ; get_power_IC_type
+00400d94 01040051 sub     w1, w0, #1
+00400d98 3f180071 cmp     w1, #6
+00400d9c c8350054 b.hi    #0x401454
+00400da0 020000b0 adrp    x2, #0x401000
+00400da4 42802791 add     x2, x2, #0x9e0
+00400da8 41586178 ldrh    w1, [x2, w1, uxtw #1]
+00400dac 62000010 adr     x2, #0x400db8
+00400db0 41a8218b add     x1, x2, w1, sxth #2
+00400db4 20001fd6 br      x1
+00400db8 000000b0 adrp    x0, #0x401000
+00400dbc 00e42f91 add     x0, x0, #0xbf9
+00400dc0 80ffff97 bl      #0x400bc0 ; puts
+00400dc4 c2018052 mov     w2, #0xe
+00400dc8 a1008052 mov     w1, #5
+00400dcc 000000b0 adrp    x0, #0x401000
+00400dd0 00883091 add     x0, x0, #0xc22
+00400dd4 31020094 bl      #0x401698
+00400dd8 a0100035 cbnz    w0, #0x400fec
+00400ddc 000000b0 adrp    x0, #0x401000
+00400de0 01008052 mov     w1, #0
+00400de4 00b03091 add     x0, x0, #0xc2c
+00400de8 ceffff97 bl      #0x400d20 ; printf
+00400dec 8e020094 bl      #0x401824
+00400df0 e00f0035 cbnz    w0, #0x400fec
+00400df4 000000b0 adrp    x0, #0x401000
+00400df8 01008052 mov     w1, #0
+00400dfc 00143191 add     x0, x0, #0xc45
+00400e00 c8ffff97 bl      #0x400d20 ; printf
+00400e04 5c020094 bl      #0x401774
+00400e08 e103002a mov     w1, w0
+00400e0c 000000b0 adrp    x0, #0x401000
+00400e10 00783191 add     x0, x0, #0xc5e
+00400e14 c3ffff97 bl      #0x400d20 ; printf
+00400e18 75000014 b       #0x400fec
+00400e1c 000000b0 adrp    x0, #0x401000
+00400e20 00dc3191 add     x0, x0, #0xc77
+00400e24 67ffff97 bl      #0x400bc0 ; puts
+00400e28 02008052 mov     w2, #0
+00400e2c 21008052 mov     w1, #1
+00400e30 e7ffff17 b       #0x400dcc
+00400e34 000000b0 adrp    x0, #0x401000
+00400e38 00803291 add     x0, x0, #0xca0
+00400e3c 61ffff97 bl      #0x400bc0 ; puts
+00400e40 e203142a mov     w2, w20
+00400e44 e103132a mov     w1, w19
+00400e48 a0c30191 add     x0, x29, #0x70
+00400e4c 43008052 mov     w3, #2
+00400e50 94ffff97 bl      #0x400ca0 ; UdtrGpioOpen
+00400e54 a03b40f9 ldr     x0, [x29, #0x70]
+00400e58 96ffff97 bl      #0x400cb0 ; UdtrGpioClose
+00400e5c 801a8052 mov     w0, #0xd4
+00400e60 201fa072 movk    w0, #0xf9, lsl #16
+00400e64 9fffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00400e68 f503002a mov     w21, w0
+00400e6c 20168052 mov     w0, #0xb1
+00400e70 201fa072 movk    w0, #0xf9, lsl #16
+00400e74 9bffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00400e78 f303002a mov     w19, w0
+00400e7c a00d8052 mov     w0, #0x6d
+00400e80 201fa072 movk    w0, #0xf9, lsl #16
+00400e84 97ffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00400e88 f403002a mov     w20, w0
+00400e8c 020000b0 adrp    x2, #0x401000
+00400e90 e303152a mov     w3, w21
+00400e94 42183391 add     x2, x2, #0xcc6
+00400e98 a0a30191 add     x0, x29, #0x68
+00400e9c 410080d2 mov     x1, #2
+00400ea0 74ffff97 bl      #0x400c70 ; snprintf
+00400ea4 a1a30191 add     x1, x29, #0x68
+00400ea8 a0030291 add     x0, x29, #0x80
+00400eac 420080d2 mov     x2, #2
+00400eb0 50ffff97 bl      #0x400bf0 ; strncat
+00400eb4 e203142a mov     w2, w20
+00400eb8 e103132a mov     w1, w19
+00400ebc a0030291 add     x0, x29, #0x80
+00400ec0 f6010094 bl      #0x401698
+00400ec4 40090035 cbnz    w0, #0x400fec
+00400ec8 e0098012 mov     w0, #-0x50
+00400ecc bf7f09a9 stp     xzr, xzr, [x29, #0x90]
+00400ed0 930000f0 adrp    x19, #0x413000
+00400ed4 01008052 mov     w1, #0
+00400ed8 a0430239 strb    w0, [x29, #0x90]
+00400edc 00048052 mov     w0, #0x20
+00400ee0 bf5300f9 str     xzr, [x29, #0xa0]
+00400ee4 a05b0239 strb    w0, [x29, #0x96]
+00400ee8 60ea40f9 ldr     x0, [x19, #0x1d0]
+00400eec bfab00b9 str     wzr, [x29, #0xa8]
+00400ef0 58ffff97 bl      #0x400c50 ; UdtrGpioWrite
+00400ef4 a0000034 cbz     w0, #0x400f08
+00400ef8 e103002a mov     w1, w0
+00400efc 000000b0 adrp    x0, #0x401000
+00400f00 00e82991 add     x0, x0, #0xa7a
+00400f04 c4ffff17 b       #0x400e14
+00400f08 a1430291 add     x1, x29, #0x90
+00400f0c 420080d2 mov     x2, #2
+00400f10 00008052 mov     w0, #0
+00400f14 43686138 ldrb    w3, [x2, x1]
+00400f18 42040091 add     x2, x2, #1
+00400f1c 5f5400f1 cmp     x2, #0x15
+00400f20 0000034a eor     w0, w0, w3
+00400f24 81ffff54 b.ne    #0x400f14
+00400f28 000c0052 eor     w0, w0, #0xf
+00400f2c 820380d2 mov     x2, #0x1c
+00400f30 a09b0239 strb    w0, [x29, #0xa6]
+00400f34 800000f0 adrp    x0, #0x413000
+00400f38 00e041b9 ldr     w0, [x0, #0x1e0]
+00400f3c 6dffff97 bl      #0x400cf0 ; write
+00400f40 a000f836 tbz     w0, #0x1f, #0x400f54
+00400f44 e103002a mov     w1, w0
+00400f48 000000b0 adrp    x0, #0x401000
+00400f4c 00782a91 add     x0, x0, #0xa9e
+00400f50 b1ffff17 b       #0x400e14
+00400f54 60ea40f9 ldr     x0, [x19, #0x1d0]
+00400f58 21008052 mov     w1, #1
+00400f5c 74420791 add     x20, x19, #0x1d0
+00400f60 3cffff97 bl      #0x400c50 ; UdtrGpioWrite
+00400f64 a0fcff35 cbnz    w0, #0x400ef8
+00400f68 03020094 bl      #0x401774
+00400f6c 00040035 cbnz    w0, #0x400fec
+00400f70 c0178052 mov     w0, #0xbe
+00400f74 201fa072 movk    w0, #0xf9, lsl #16
+00400f78 5affff97 bl      #0x400ce0 ; Backup_read_4Byte
+00400f7c f303002a mov     w19, w0
+00400f80 400f8052 mov     w0, #0x7a
+00400f84 201fa072 movk    w0, #0xf9, lsl #16
+00400f88 56ffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00400f8c e203002a mov     w2, w0
+00400f90 e103132a mov     w1, w19
+00400f94 e00314aa mov     x0, x20
+00400f98 63008052 mov     w3, #3
+00400f9c 41ffff97 bl      #0x400ca0 ; UdtrGpioOpen
+00400fa0 60020034 cbz     w0, #0x400fec
+00400fa4 e103002a mov     w1, w0
+00400fa8 000000b0 adrp    x0, #0x401000
+00400fac 00243391 add     x0, x0, #0xcc9
+00400fb0 99ffff17 b       #0x400e14
+00400fb4 000000b0 adrp    x0, #0x401000
+00400fb8 130000b0 adrp    x19, #0x401000
+00400fbc 00043491 add     x0, x0, #0xd01
+00400fc0 73863491 add     x19, x19, #0xd21
+00400fc4 fffeff97 bl      #0x400bc0 ; puts
+00400fc8 e00313aa mov     x0, x19
+00400fcc 3dffff97 bl      #0x400cc0 ; system
+00400fd0 e203002a mov     w2, w0
+00400fd4 5f1840f2 tst     x2, #0x7f
+00400fd8 a0010054 b.eq    #0x40100c
+00400fdc 000000b0 adrp    x0, #0x401000
+00400fe0 e10313aa mov     x1, x19
+00400fe4 00003591 add     x0, x0, #0xd40
+00400fe8 4effff97 bl      #0x400d20 ; printf
+00400fec f35341a9 ldp     x19, x20, [sp, #0x10]
+00400ff0 00008012 mov     w0, #-1
+00400ff4 f55b42a9 ldp     x21, x22, [sp, #0x20]
+00400ff8 f76343a9 ldp     x23, x24, [sp, #0x30]
+00400ffc f96b44a9 ldp     x25, x26, [sp, #0x40]
+00401000 fb7345a9 ldp     x27, x28, [sp, #0x50]
+00401004 fd7bcba8 ldp     x29, x30, [sp], #0xb0
+00401008 c0035fd6 ret     
+0040100c 423c48d3 ubfx    x2, x2, #8, #8
+00401010 a2000034 cbz     w2, #0x401024
+00401014 00000090 adrp    x0, #0x401000
+00401018 e10313aa mov     x1, x19
+0040101c 00903591 add     x0, x0, #0xd64
+00401020 f2ffff17 b       #0x400fe8
+00401024 20008052 mov     w0, #1
+00401028 fafeff97 bl      #0x400c10 ; sleep
+0040102c f0ffff17 b       #0x400fec
+00401030 801a8052 mov     w0, #0xd4
+00401034 940000d0 adrp    x20, #0x413000
+00401038 201fa072 movk    w0, #0xf9, lsl #16
+0040103c 950000d0 adrp    x21, #0x413000
+00401040 9a0000d0 adrp    x26, #0x413000
+00401044 27ffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00401048 f303002a mov     w19, w0
+0040104c 20168052 mov     w0, #0xb1
+00401050 201fa072 movk    w0, #0xf9, lsl #16
+00401054 23ffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00401058 f803002a mov     w24, w0
+0040105c a00d8052 mov     w0, #0x6d
+00401060 201fa072 movk    w0, #0xf9, lsl #16
+00401064 1fffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00401068 f903002a mov     w25, w0
+0040106c c0178052 mov     w0, #0xbe
+00401070 201fa072 movk    w0, #0xf9, lsl #16
+00401074 1bffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00401078 f603002a mov     w22, w0
+0040107c 400f8052 mov     w0, #0x7a
+00401080 201fa072 movk    w0, #0xf9, lsl #16
+00401084 17ffff97 bl      #0x400ce0 ; Backup_read_4Byte
+00401088 f703002a mov     w23, w0
+0040108c 02000090 adrp    x2, #0x401000
+00401090 e303132a mov     w3, w19
+00401094 42183391 add     x2, x2, #0xcc6
+00401098 a0a30191 add     x0, x29, #0x68
+0040109c 410080d2 mov     x1, #2
+004010a0 f4feff97 bl      #0x400c70 ; snprintf
+004010a4 a1a30191 add     x1, x29, #0x68
+004010a8 a0030291 add     x0, x29, #0x80
+004010ac 420080d2 mov     x2, #2
+004010b0 d0feff97 bl      #0x400bf0 ; strncat
+004010b4 a0030291 add     x0, x29, #0x80
+004010b8 41008052 mov     w1, #2
+004010bc c9feff97 bl      #0x400be0 ; open
+004010c0 80e201b9 str     w0, [x20, #0x1e0]
+004010c4 e403002a mov     w4, w0
+004010c8 0002f836 tbz     w0, #0x1f, #0x401108
+004010cc 01000090 adrp    x1, #0x401000
+004010d0 00000090 adrp    x0, #0x401000
+004010d4 a3030291 add     x3, x29, #0x80
+004010d8 21e02791 add     x1, x1, #0x9f8
+004010dc 00243691 add     x0, x0, #0xd89
+004010e0 62268052 mov     w2, #0x133
+004010e4 13008012 mov     w19, #-1
+004010e8 0effff97 bl      #0x400d20 ; printf
+004010ec 01000090 adrp    x1, #0x401000
+004010f0 000000b0 adrp    x0, #0x402000
+004010f4 e303132a mov     w3, w19
+004010f8 e23b8052 mov     w2, #0x1df
+004010fc 21a02991 add     x1, x1, #0xa68
+00401100 007c0291 add     x0, x0, #0x9f
+00401104 6f000014 b       #0x4012c0
+00401108 41e88cd2 mov     x1, #0x6742
+0040110c 62028052 mov     w2, #0x13
+00401110 8100a8f2 movk    x1, #0x4004, lsl #16
+00401114 cbfeff97 bl      #0x400c40 ; ioctl
+00401118 f303002a mov     w19, w0
+0040111c 80010034 cbz     w0, #0x40114c
+00401120 80e241b9 ldr     w0, [x20, #0x1e0]
+00401124 ebfeff97 bl      #0x400cd0 ; close
+00401128 dafeff97 bl      #0x400c90 ; __errno_location
+0040112c 030040b9 ldr     w3, [x0]
+00401130 01000090 adrp    x1, #0x401000
+00401134 00000090 adrp    x0, #0x401000
+00401138 21e02791 add     x1, x1, #0x9f8
+0040113c 00143791 add     x0, x0, #0xdc5
+00401140 42278052 mov     w2, #0x13a
+00401144 f7feff97 bl      #0x400d20 ; printf
+00401148 e9ffff17 b       #0x4010ec
+0040114c 80e241b9 ldr     w0, [x20, #0x1e0]
+00401150 21e88cd2 mov     x1, #0x6741
+00401154 02008252 mov     w2, #0x1000
+00401158 8100a8f2 movk    x1, #0x4004, lsl #16
+0040115c b9feff97 bl      #0x400c40 ; ioctl
+00401160 f303002a mov     w19, w0
+00401164 60010034 cbz     w0, #0x401190
+00401168 80e241b9 ldr     w0, [x20, #0x1e0]
+0040116c d9feff97 bl      #0x400cd0 ; close
+00401170 c8feff97 bl      #0x400c90 ; __errno_location
+00401174 030040b9 ldr     w3, [x0]
+00401178 01000090 adrp    x1, #0x401000
+0040117c 00000090 adrp    x0, #0x401000
+00401180 02288052 mov     w2, #0x140
+00401184 21e02791 add     x1, x1, #0x9f8
+00401188 001c3891 add     x0, x0, #0xe07
+0040118c eeffff17 b       #0x401144
+00401190 e203192a mov     w2, w25
+00401194 e103182a mov     w1, w24
+00401198 a0420791 add     x0, x21, #0x1d0
+0040119c 43008052 mov     w3, #2
+004011a0 c0feff97 bl      #0x400ca0 ; UdtrGpioOpen
+004011a4 60010034 cbz     w0, #0x4011d0
+004011a8 80e241b9 ldr     w0, [x20, #0x1e0]
+004011ac c9feff97 bl      #0x400cd0 ; close
+004011b0 b8feff97 bl      #0x400c90 ; __errno_location
+004011b4 030040b9 ldr     w3, [x0]
+004011b8 01000090 adrp    x1, #0x401000
+004011bc 00000090 adrp    x0, #0x401000
+004011c0 21e02791 add     x1, x1, #0x9f8
+004011c4 00303991 add     x0, x0, #0xe4c
+004011c8 e2288052 mov     w2, #0x147
+004011cc d5feff97 bl      #0x400d20 ; printf
+004011d0 e203172a mov     w2, w23
+004011d4 e103162a mov     w1, w22
+004011d8 40630791 add     x0, x26, #0x1d8
+004011dc 43008052 mov     w3, #2
+004011e0 b0feff97 bl      #0x400ca0 ; UdtrGpioOpen
+004011e4 f303002a mov     w19, w0
+004011e8 e0130034 cbz     w0, #0x401464
+004011ec 80e241b9 ldr     w0, [x20, #0x1e0]
+004011f0 b8feff97 bl      #0x400cd0 ; close
+004011f4 a7feff97 bl      #0x400c90 ; __errno_location
+004011f8 030040b9 ldr     w3, [x0]
+004011fc 01000090 adrp    x1, #0x401000
+00401200 00000090 adrp    x0, #0x401000
+00401204 c2298052 mov     w2, #0x14e
+00401208 21e02791 add     x1, x1, #0x9f8
+0040120c 00103a91 add     x0, x0, #0xe84
+00401210 cdffff17 b       #0x401144
+00401214 36430591 add     x22, x25, #0x150
+00401218 e00316aa mov     x0, x22
+0040121c 6f010094 bl      #0x4017d8
+00401220 c0fe0079 strh    w0, [x22, #0x7e]
+00401224 a0ea40f9 ldr     x0, [x21, #0x1d0]
+00401228 01008052 mov     w1, #0
+0040122c 89feff97 bl      #0x400c50 ; UdtrGpioWrite
+00401230 f303002a mov     w19, w0
+00401234 00010034 cbz     w0, #0x401254
+00401238 e303002a mov     w3, w0
+0040123c 022c8052 mov     w2, #0x160
+00401240 01000090 adrp    x1, #0x401000
+00401244 00000090 adrp    x0, #0x401000
+00401248 21402891 add     x1, x1, #0xa10
+0040124c 00083b91 add     x0, x0, #0xec2
+00401250 0e000014 b       #0x401288
+00401254 80e241b9 ldr     w0, [x20, #0x1e0]
+00401258 e10316aa mov     x1, x22
+0040125c 021080d2 mov     x2, #0x80
+00401260 a4feff97 bl      #0x400cf0 ; write
+00401264 f303002a mov     w19, w0
+00401268 c003f836 tbz     w0, #0x1f, #0x4012e0
+0040126c 89feff97 bl      #0x400c90 ; __errno_location
+00401270 030040b9 ldr     w3, [x0]
+00401274 01000090 adrp    x1, #0x401000
+00401278 00000090 adrp    x0, #0x401000
+0040127c 21402891 add     x1, x1, #0xa10
+00401280 00d03b91 add     x0, x0, #0xef4
+00401284 c22c8052 mov     w2, #0x166
+00401288 a6feff97 bl      #0x400d20 ; printf
+0040128c 01000090 adrp    x1, #0x401000
+00401290 000000b0 adrp    x0, #0x402000
+00401294 e303132a mov     w3, w19
+00401298 21002991 add     x1, x1, #0xa40
+0040129c 00680391 add     x0, x0, #0xda
+004012a0 e2368052 mov     w2, #0x1b7
+004012a4 9ffeff97 bl      #0x400d20 ; printf
+004012a8 01000090 adrp    x1, #0x401000
+004012ac 00000090 adrp    x0, #0x401000
+004012b0 e303132a mov     w3, w19
+004012b4 21a02991 add     x1, x1, #0xa68
+004012b8 00cc3f91 add     x0, x0, #0xff3
+004012bc a23c8052 mov     w2, #0x1e5
+004012c0 98feff97 bl      #0x400d20 ; printf
+004012c4 80e241b9 ldr     w0, [x20, #0x1e0]
+004012c8 82feff97 bl      #0x400cd0 ; close
+004012cc a0ea40f9 ldr     x0, [x21, #0x1d0]
+004012d0 78feff97 bl      #0x400cb0 ; UdtrGpioClose
+004012d4 40ef40f9 ldr     x0, [x26, #0x1d8]
+004012d8 76feff97 bl      #0x400cb0 ; UdtrGpioClose
+004012dc 44ffff17 b       #0x400fec
+004012e0 a0ea40f9 ldr     x0, [x21, #0x1d0]
+004012e4 21008052 mov     w1, #1
+004012e8 5afeff97 bl      #0x400c50 ; UdtrGpioWrite
+004012ec f303002a mov     w19, w0
+004012f0 400e0034 cbz     w0, #0x4014b8
+004012f4 e303002a mov     w3, w0
+004012f8 822d8052 mov     w2, #0x16c
+004012fc d1ffff17 b       #0x401240
+00401300 dc420391 add     x28, x22, #0xd0
+00401304 80e241b9 ldr     w0, [x20, #0x1e0]
+00401308 e1031caa mov     x1, x28
+0040130c 021080d2 mov     x2, #0x80
+00401310 48feff97 bl      #0x400c30 ; read
+00401314 f303002a mov     w19, w0
+00401318 e005f836 tbz     w0, #0x1f, #0x4013d4
+0040131c 5dfeff97 bl      #0x400c90 ; __errno_location
+00401320 030040b9 ldr     w3, [x0]
+00401324 01000090 adrp    x1, #0x401000
+00401328 00000090 adrp    x0, #0x401000
+0040132c 21a02891 add     x1, x1, #0xa28
+00401330 00b03c91 add     x0, x0, #0xf2c
+00401334 02308052 mov     w2, #0x180
+00401338 7afeff97 bl      #0x400d20 ; printf
+0040133c e303132a mov     w3, w19
+00401340 e10318aa mov     x1, x24
+00401344 e00317aa mov     x0, x23
+00401348 c2378052 mov     w2, #0x1be
+0040134c 75feff97 bl      #0x400d20 ; printf
+00401350 00c48952 mov     w0, #0x4e20
+00401354 d6420391 add     x22, x22, #0xd0
+00401358 4afeff97 bl      #0x400c80 ; usleep
+0040135c c0064039 ldrb    w0, [x22, #1]
+00401360 1f0c0071 cmp     w0, #3
+00401364 00010054 b.eq    #0x401384
+00401368 a0430291 add     x0, x29, #0x90
+0040136c b3000094 bl      #0x401638
+00401370 a13f40f9 ldr     x1, [x29, #0x78]
+00401374 a04b40f9 ldr     x0, [x29, #0x90]
+00401378 000001cb sub     x0, x0, x1
+0040137c 1f001beb cmp     x0, x27
+00401380 a9f4ff54 b.ls    #0x401214
+00401384 33f9ff35 cbnz    w19, #0x4012a8
+00401388 40ef40f9 ldr     x0, [x26, #0x1d8]
+0040138c 01008052 mov     w1, #0
+00401390 30feff97 bl      #0x400c50 ; UdtrGpioWrite
+00401394 f303002a mov     w19, w0
+00401398 60f9ff34 cbz     w0, #0x4012c4
+0040139c e303002a mov     w3, w0
+004013a0 01000090 adrp    x1, #0x401000
+004013a4 00000090 adrp    x0, #0x401000
+004013a8 21602991 add     x1, x1, #0xa58
+004013ac 00083b91 add     x0, x0, #0xec2
+004013b0 823a8052 mov     w2, #0x1d4
+004013b4 5bfeff97 bl      #0x400d20 ; printf
+004013b8 01000090 adrp    x1, #0x401000
+004013bc 000000b0 adrp    x0, #0x402000
+004013c0 e303132a mov     w3, w19
+004013c4 623d8052 mov     w2, #0x1eb
+004013c8 21a02991 add     x1, x1, #0xa68
+004013cc 00c00091 add     x0, x0, #0x30
+004013d0 bcffff17 b       #0x4012c0
+004013d4 a0ea40f9 ldr     x0, [x21, #0x1d0]
+004013d8 21008052 mov     w1, #1
+004013dc 1dfeff97 bl      #0x400c50 ; UdtrGpioWrite
+004013e0 f303002a mov     w19, w0
+004013e4 80000034 cbz     w0, #0x4013f4
+004013e8 e303002a mov     w3, w0
+004013ec c2308052 mov     w2, #0x186
+004013f0 3c000014 b       #0x4014e0
+004013f4 e0031caa mov     x0, x28
+004013f8 f8000094 bl      #0x4017d8
+004013fc 033c0053 uxth    w3, w0
+00401400 84ff4079 ldrh    w4, [x28, #0x7e]
+00401404 7f00046b cmp     w3, w4
+00401408 20010054 b.eq    #0x40142c
+0040140c 01000090 adrp    x1, #0x401000
+00401410 00000090 adrp    x0, #0x401000
+00401414 21a02891 add     x1, x1, #0xa28
+00401418 008c3d91 add     x0, x0, #0xf63
+0040141c 82318052 mov     w2, #0x18c
+00401420 40feff97 bl      #0x400d20 ; printf
+00401424 13008012 mov     w19, #-1
+00401428 c5ffff17 b       #0x40133c
+0040142c c3424339 ldrb    w3, [x22, #0xd0]
+00401430 7f400071 cmp     w3, #0x10
+00401434 e0f8ff54 b.eq    #0x401350
+00401438 01000090 adrp    x1, #0x401000
+0040143c 00000090 adrp    x0, #0x401000
+00401440 04028052 mov     w4, #0x10
+00401444 82328052 mov     w2, #0x194
+00401448 21a02891 add     x1, x1, #0xa28
+0040144c 009c3e91 add     x0, x0, #0xfa7
+00401450 f4ffff17 b       #0x401420
+00401454 e103002a mov     w1, w0
+00401458 000000b0 adrp    x0, #0x402000
+0040145c 00a40191 add     x0, x0, #0x69
+00401460 6dfeff17 b       #0x400e14
+00401464 990000d0 adrp    x25, #0x413000
+00401468 021080d2 mov     x2, #0x80
+0040146c 37430591 add     x23, x25, #0x150
+00401470 01008052 mov     w1, #0
+00401474 e00317aa mov     x0, x23
+00401478 fb6f98d2 mov     x27, #0xc37f
+0040147c 18000090 adrp    x24, #0x401000
+00401480 3b39a0f2 movk    x27, #0x1c9, lsl #16
+00401484 18032991 add     x24, x24, #0xa40
+00401488 e6fdff97 bl      #0x400c20 ; memset
+0040148c 20028052 mov     w0, #0x11
+00401490 20430539 strb    w0, [x25, #0x150]
+00401494 60008052 mov     w0, #3
+00401498 e0060039 strb    w0, [x23, #1]
+0040149c a0e30191 add     x0, x29, #0x78
+004014a0 170000b0 adrp    x23, #0x402000
+004014a4 f7520491 add     x23, x23, #0x114
+004014a8 64000094 bl      #0x401638
+004014ac a03f40f9 ldr     x0, [x29, #0x78]
+004014b0 a04b00f9 str     x0, [x29, #0x90]
+004014b4 afffff17 b       #0x401370
+004014b8 00c48952 mov     w0, #0x4e20
+004014bc 960000d0 adrp    x22, #0x413000
+004014c0 f0fdff97 bl      #0x400c80 ; usleep
+004014c4 a0ea40f9 ldr     x0, [x21, #0x1d0]
+004014c8 01008052 mov     w1, #0
+004014cc e1fdff97 bl      #0x400c50 ; UdtrGpioWrite
+004014d0 f303002a mov     w19, w0
+004014d4 60f1ff34 cbz     w0, #0x401300
+004014d8 e303132a mov     w3, w19
+004014dc 422f8052 mov     w2, #0x17a
+004014e0 01000090 adrp    x1, #0x401000
+004014e4 00000090 adrp    x0, #0x401000
+004014e8 21a02891 add     x1, x1, #0xa28
+004014ec 00083b91 add     x0, x0, #0xec2
+004014f0 92ffff17 b       #0x401338
+004014f4 00000000 udf     #0

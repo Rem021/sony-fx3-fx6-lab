@@ -1,0 +1,7 @@
+{
+  "status": "GETTER_PARSER_ASSUMPTION_RETAINED",
+  "script_sha256": "4d466f057035e4d24097c0451106f737e58e19cad74c5a4fdf39ca8ba900eddb",
+  "failure": "Getter0x292e9b4 uses movx1 immediate then register add; previous immediate-only leaf parser returnsNone.",
+  "action": "Recognize and bind the exact original five-instruction accessor; continue executing original getter instructions with no adapter.",
+  "camera_actions": false
+}

@@ -1,0 +1,1270 @@
+{
+  "fragments": [
+    {
+      "label": "app-execute-update",
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "va": "0x2eae880",
+      "bytes": 624,
+      "sha256": "c4d067641348af6093bd102e800bae61d6a89a3fefeaf9d89497b36c8fcac69b",
+      "literals": [
+        {
+          "site": "0x2eae890",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eae898",
+          "va": "0x3966000",
+          "text": ".output_yc_size        = 0x%x"
+        },
+        {
+          "site": "0x2eae8a0",
+          "va": "0x392b000",
+          "text": "%s(%d) Success upm_power_save_reload(display, display)"
+        },
+        {
+          "site": "0x2eae8a4",
+          "va": "0x392bfe4",
+          "text": "%s%s(%d) ================================"
+        },
+        {
+          "site": "0x2eae8a8",
+          "va": "0x399fc18",
+          "text": "execute_update"
+        },
+        {
+          "site": "0x2eae8b4",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2eae8e4",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eae8ec",
+          "va": "0x399fbdd",
+          "text": "infra_wrapper_updater.cpp"
+        },
+        {
+          "site": "0x2eae8f0",
+          "va": "0x2f88eec",
+          "text": "assert at %s:%d"
+        },
+        {
+          "site": "0x2eae8f4",
+          "va": "0x399fbdd",
+          "text": "infra_wrapper_updater.cpp"
+        },
+        {
+          "site": "0x2eae8f8",
+          "va": "0x2f88eec",
+          "text": "assert at %s:%d"
+        },
+        {
+          "site": "0x2eae900",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eae908",
+          "va": "0x399fc28",
+          "text": "void infra_wrapper_updater::detail::execute_update(const infra_wrapper_updater::execute_update_in_t&, infra_wrapper_updater::execute_update_out_t&)"
+        },
+        {
+          "site": "0x2eae910",
+          "va": "0x379a621",
+          "text": "function:%s"
+        },
+        {
+          "site": "0x2eae914",
+          "va": "0x399fc28",
+          "text": "void infra_wrapper_updater::detail::execute_update(const infra_wrapper_updater::execute_update_in_t&, infra_wrapper_updater::execute_update_out_t&)"
+        },
+        {
+          "site": "0x2eae918",
+          "va": "0x379a621",
+          "text": "function:%s"
+        },
+        {
+          "site": "0x2eae920",
+          "va": "0x399fbdd",
+          "text": "infra_wrapper_updater.cpp"
+        },
+        {
+          "site": "0x2eae924",
+          "va": "0x2f88eec",
+          "text": "assert at %s:%d"
+        },
+        {
+          "site": "0x2eae930",
+          "va": "0x399fc28",
+          "text": "void infra_wrapper_updater::detail::execute_update(const infra_wrapper_updater::execute_update_in_t&, infra_wrapper_updater::execute_update_out_t&)"
+        },
+        {
+          "site": "0x2eae934",
+          "va": "0x379a621",
+          "text": "function:%s"
+        },
+        {
+          "site": "0x2eae940",
+          "va": "0x399fbdd",
+          "text": "infra_wrapper_updater.cpp"
+        },
+        {
+          "site": "0x2eae944",
+          "va": "0x2f88efc",
+          "text": "assert at %s:%d\n"
+        },
+        {
+          "site": "0x2eae954",
+          "va": "0x399fc28",
+          "text": "void infra_wrapper_updater::detail::execute_update(const infra_wrapper_updater::execute_update_in_t&, infra_wrapper_updater::execute_update_out_t&)"
+        },
+        {
+          "site": "0x2eae958",
+          "va": "0x2f88f0d",
+          "text": "function:%s\n"
+        },
+        {
+          "site": "0x2eae9ac",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eae9b8",
+          "va": "0x399f698",
+          "text": "%s%s(%d) [execute_update] GO_UPDATE"
+        },
+        {
+          "site": "0x2eae9fc",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eaea18",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eaea24",
+          "va": "0x399f6bc",
+          "text": "%s%s(%d) [execute_update] can't go update [err:%04x]"
+        },
+        {
+          "site": "0x2eaea34",
+          "va": "0x399f6bc",
+          "text": "%s%s(%d) [execute_update] can't go update [err:%04x]"
+        },
+        {
+          "site": "0x2eaea4c",
+          "va": "0x399f6bc",
+          "text": "%s%s(%d) [execute_update] can't go update [err:%04x]"
+        },
+        {
+          "site": "0x2eaeaa0",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eaeaac",
+          "va": "0x399f6f1",
+          "text": "%s%s(%d) [execute_update] %s: OsalErr = %d"
+        },
+        {
+          "site": "0x2eaeac4",
+          "va": "0x399f6f1",
+          "text": "%s%s(%d) [execute_update] %s: OsalErr = %d"
+        },
+        {
+          "site": "0x2eaeae0",
+          "va": "0x399f6f1",
+          "text": "%s%s(%d) [execute_update] %s: OsalErr = %d"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x2eae8bc",
+          "target": "0x2f6ff0c",
+          "label": null
+        },
+        {
+          "site": "0x2eae8c4",
+          "target": "0x2eadbb0",
+          "label": null
+        },
+        {
+          "site": "0x2eae90c",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2eae91c",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2eae92c",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2eae938",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2eae94c",
+          "target": "0x15927c0",
+          "label": "printf"
+        },
+        {
+          "site": "0x2eae95c",
+          "target": "0x15927c0",
+          "label": "printf"
+        },
+        {
+          "site": "0x2eae968",
+          "target": "0x1592ec0",
+          "label": "usleep"
+        },
+        {
+          "site": "0x2eae96c",
+          "target": "0x2ebf3b0",
+          "label": null
+        },
+        {
+          "site": "0x2eae970",
+          "target": "0x2eae97c",
+          "label": null
+        },
+        {
+          "site": "0x2eae998",
+          "target": "0x2eacf18",
+          "label": null
+        },
+        {
+          "site": "0x2eae9c4",
+          "target": "0x2f6ff0c",
+          "label": null
+        },
+        {
+          "site": "0x2eae9e4",
+          "target": "0x2eae978",
+          "label": null
+        },
+        {
+          "site": "0x2eae9ec",
+          "target": "0x2eae978",
+          "label": null
+        },
+        {
+          "site": "0x2eaea3c",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2eaea54",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2eaea58",
+          "target": "0x2eae9c8",
+          "label": null
+        },
+        {
+          "site": "0x2eaea60",
+          "target": "0x2eaea18",
+          "label": null
+        },
+        {
+          "site": "0x2eaea68",
+          "target": "0x2eaea18",
+          "label": null
+        },
+        {
+          "site": "0x2eaea70",
+          "target": "0x2eaea18",
+          "label": null
+        },
+        {
+          "site": "0x2eaea78",
+          "target": "0x2eaea18",
+          "label": null
+        },
+        {
+          "site": "0x2eaea80",
+          "target": "0x2eaea18",
+          "label": null
+        },
+        {
+          "site": "0x2eaea88",
+          "target": "0x2eaea18",
+          "label": null
+        },
+        {
+          "site": "0x2eaea90",
+          "target": "0x2eaea18",
+          "label": null
+        },
+        {
+          "site": "0x2eaea98",
+          "target": "0x2eaea18",
+          "label": null
+        },
+        {
+          "site": "0x2eaeacc",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2eaeae8",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2eaeaec",
+          "target": "0x2eae9c8",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/app-execute-update.txt"
+    },
+    {
+      "label": "app-initialize-wrapper",
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "va": "0x2eadbb0",
+      "bytes": 324,
+      "sha256": "2676ac2f7dafa5d3e2cd84e558757887e7a87e823ba71704fcce0a1cfcddb1b1",
+      "literals": [
+        {
+          "site": "0x2eadc04",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eadc08",
+          "va": "0x3966000",
+          "text": ".output_yc_size        = 0x%x"
+        },
+        {
+          "site": "0x2eadc10",
+          "va": "0x399fe80",
+          "text": "load_im"
+        },
+        {
+          "site": "0x2eadc14",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2eadc18",
+          "va": "0x396b012",
+          "text": "%s%s(%d) Failure IM_open() [Error:0x%08X]"
+        },
+        {
+          "site": "0x2eadc20",
+          "va": "0x399fe80",
+          "text": "load_im"
+        },
+        {
+          "site": "0x2eadc24",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2eadc28",
+          "va": "0x396b012",
+          "text": "%s%s(%d) Failure IM_open() [Error:0x%08X]"
+        },
+        {
+          "site": "0x2eadc38",
+          "va": "0x399fe80",
+          "text": "load_im"
+        },
+        {
+          "site": "0x2eadc3c",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2eadc40",
+          "va": "0x396b012",
+          "text": "%s%s(%d) Failure IM_open() [Error:0x%08X]"
+        },
+        {
+          "site": "0x2eadc48",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eadc50",
+          "va": "0x399fbdd",
+          "text": "infra_wrapper_updater.cpp"
+        },
+        {
+          "site": "0x2eadc58",
+          "va": "0x2f88eec",
+          "text": "assert at %s:%d"
+        },
+        {
+          "site": "0x2eadc5c",
+          "va": "0x399fbdd",
+          "text": "infra_wrapper_updater.cpp"
+        },
+        {
+          "site": "0x2eadc60",
+          "va": "0x2f88eec",
+          "text": "assert at %s:%d"
+        },
+        {
+          "site": "0x2eadc68",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eadc70",
+          "va": "0x399fe88",
+          "text": "void infra_wrapper_updater::detail::load_im()"
+        },
+        {
+          "site": "0x2eadc78",
+          "va": "0x379a621",
+          "text": "function:%s"
+        },
+        {
+          "site": "0x2eadc7c",
+          "va": "0x399fe88",
+          "text": "void infra_wrapper_updater::detail::load_im()"
+        },
+        {
+          "site": "0x2eadc80",
+          "va": "0x379a621",
+          "text": "function:%s"
+        },
+        {
+          "site": "0x2eadc88",
+          "va": "0x399fbdd",
+          "text": "infra_wrapper_updater.cpp"
+        },
+        {
+          "site": "0x2eadc8c",
+          "va": "0x2f88eec",
+          "text": "assert at %s:%d"
+        },
+        {
+          "site": "0x2eadc98",
+          "va": "0x399fe88",
+          "text": "void infra_wrapper_updater::detail::load_im()"
+        },
+        {
+          "site": "0x2eadc9c",
+          "va": "0x379a621",
+          "text": "function:%s"
+        },
+        {
+          "site": "0x2eadca8",
+          "va": "0x399fbdd",
+          "text": "infra_wrapper_updater.cpp"
+        },
+        {
+          "site": "0x2eadcac",
+          "va": "0x2f88efc",
+          "text": "assert at %s:%d\n"
+        },
+        {
+          "site": "0x2eadcbc",
+          "va": "0x399fe88",
+          "text": "void infra_wrapper_updater::detail::load_im()"
+        },
+        {
+          "site": "0x2eadcc0",
+          "va": "0x2f88f0d",
+          "text": "function:%s\n"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x2eadbf0",
+          "target": "0x2eadaec",
+          "label": null
+        },
+        {
+          "site": "0x2eadc30",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2eadc54",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2eadc74",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2eadc84",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2eadc94",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2eadca0",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2eadcb4",
+          "target": "0x15927c0",
+          "label": "printf"
+        },
+        {
+          "site": "0x2eadcc4",
+          "target": "0x15927c0",
+          "label": "printf"
+        },
+        {
+          "site": "0x2eadcd0",
+          "target": "0x1592ec0",
+          "label": "usleep"
+        },
+        {
+          "site": "0x2eadcd4",
+          "target": "0x2ebf3b0",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/app-initialize-wrapper.txt"
+    },
+    {
+      "label": "app-initialize-rpc",
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "va": "0x2eadaec",
+      "bytes": 196,
+      "sha256": "e1de2e7540f1793effa63614bda1b4ec5bb997577124b56425858165bb3a9fac",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x2eadb28",
+          "target": "0x1594120",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x2eadb3c",
+          "target": "0x1591e00",
+          "label": "osal_set_msg_src"
+        },
+        {
+          "site": "0x2eadb58",
+          "target": "0x1593de0",
+          "label": "osal_snd_sync_msg"
+        },
+        {
+          "site": "0x2eadb94",
+          "target": "0x15943d0",
+          "label": "osal_free_msg"
+        }
+      ],
+      "disassembly": "entry-fragments/app-initialize-rpc.txt"
+    },
+    {
+      "label": "app-sync-rpc",
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "va": "0x2eacf18",
+      "bytes": 344,
+      "sha256": "b6f6ba41c71af88aaf664150fead618b5eccb1feee1d4518a9a8d9781fb6a7e7",
+      "literals": [
+        {
+          "site": "0x2eacf58",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eacf5c",
+          "va": "0x3966000",
+          "text": ".output_yc_size        = 0x%x"
+        },
+        {
+          "site": "0x2eacf60",
+          "va": "0x3973000",
+          "text": "uint32_t)"
+        },
+        {
+          "site": "0x2eacf64",
+          "va": "0x399f488",
+          "text": "send_sync_msg"
+        },
+        {
+          "site": "0x2eacf68",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2eacf6c",
+          "va": "0x3973c22",
+          "text": "%s%s(%d) ret = 0x%08X"
+        },
+        {
+          "site": "0x2eacf78",
+          "va": "0x399f488",
+          "text": "send_sync_msg"
+        },
+        {
+          "site": "0x2eacf7c",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2eacf80",
+          "va": "0x3973c22",
+          "text": "%s%s(%d) ret = 0x%08X"
+        },
+        {
+          "site": "0x2eacf90",
+          "va": "0x399f488",
+          "text": "send_sync_msg"
+        },
+        {
+          "site": "0x2eacf94",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2eacf98",
+          "va": "0x3973c22",
+          "text": "%s%s(%d) ret = 0x%08X"
+        },
+        {
+          "site": "0x2eacff0",
+          "va": "0x399f000",
+          "text": ". osal_err = 0x%08X"
+        },
+        {
+          "site": "0x2eacff4",
+          "va": "0x3966000",
+          "text": ".output_yc_size        = 0x%x"
+        },
+        {
+          "site": "0x2eacff8",
+          "va": "0x3973000",
+          "text": "uint32_t)"
+        },
+        {
+          "site": "0x2eacffc",
+          "va": "0x399f488",
+          "text": "send_sync_msg"
+        },
+        {
+          "site": "0x2ead000",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2ead004",
+          "va": "0x3973c22",
+          "text": "%s%s(%d) ret = 0x%08X"
+        },
+        {
+          "site": "0x2ead00c",
+          "va": "0x399f488",
+          "text": "send_sync_msg"
+        },
+        {
+          "site": "0x2ead010",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2ead014",
+          "va": "0x3973c22",
+          "text": "%s%s(%d) ret = 0x%08X"
+        },
+        {
+          "site": "0x2ead020",
+          "va": "0x3966d47",
+          "text": "[INFRA_WRAPPER]"
+        },
+        {
+          "site": "0x2ead024",
+          "va": "0x3973c22",
+          "text": "%s%s(%d) ret = 0x%08X"
+        },
+        {
+          "site": "0x2ead02c",
+          "va": "0x399f488",
+          "text": "send_sync_msg"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x2eacf50",
+          "target": "0x1594120",
+          "label": "osal_valloc_msg_wait"
+        },
+        {
+          "site": "0x2eacf88",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2eacfa0",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2eacfc8",
+          "target": "0x1591e00",
+          "label": "osal_set_msg_src"
+        },
+        {
+          "site": "0x2eacfd8",
+          "target": "0x1591c40",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x2eacfe4",
+          "target": "0x1593de0",
+          "label": "osal_snd_sync_msg"
+        },
+        {
+          "site": "0x2ead01c",
+          "target": "0x2f6fe3c",
+          "label": null
+        },
+        {
+          "site": "0x2ead034",
+          "target": "0x2f6be48",
+          "label": null
+        },
+        {
+          "site": "0x2ead040",
+          "target": "0x15943d0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x2ead044",
+          "target": "0x2eacfa4",
+          "label": null
+        },
+        {
+          "site": "0x2ead058",
+          "target": "0x1591c40",
+          "label": "memcpy"
+        },
+        {
+          "site": "0x2ead064",
+          "target": "0x15943d0",
+          "label": "osal_free_msg"
+        },
+        {
+          "site": "0x2ead06c",
+          "target": "0x2eacfa8",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/app-sync-rpc.txt"
+    },
+    {
+      "label": "app-execute-update-caller",
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "va": "0x2ddfdd0",
+      "bytes": 512,
+      "sha256": "a4265dd2de2909124ac32b7373dfd0a164ce23eb98dbdac13025f032f230fde4",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x2ddfdd0",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddfddc",
+          "target": "0x2eae280",
+          "label": null
+        },
+        {
+          "site": "0x2ddfdf0",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2ddfe10",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddfe1c",
+          "target": "0x2eae4b0",
+          "label": null
+        },
+        {
+          "site": "0x2ddfe30",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2ddfe50",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddfe5c",
+          "target": "0x2eae698",
+          "label": null
+        },
+        {
+          "site": "0x2ddfe70",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2ddfe90",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddfe9c",
+          "target": "0x2eae880",
+          "label": null
+        },
+        {
+          "site": "0x2ddfeb0",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2ddfed0",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddfedc",
+          "target": "0x2eaeaf0",
+          "label": null
+        },
+        {
+          "site": "0x2ddfef0",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2ddff10",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddff1c",
+          "target": "0x2eaec48",
+          "label": null
+        },
+        {
+          "site": "0x2ddff30",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2ddff50",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddff5c",
+          "target": "0x2eaeda0",
+          "label": null
+        },
+        {
+          "site": "0x2ddff70",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2ddff84",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddff88",
+          "target": "0x2eb1c14",
+          "label": null
+        },
+        {
+          "site": "0x2ddff98",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2ddffac",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2ddffb0",
+          "target": "0x2eb1ed8",
+          "label": null
+        },
+        {
+          "site": "0x2ddffc0",
+          "target": "0x2f6eae8",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/app-execute-update-caller.txt"
+    },
+    {
+      "label": "app-public-key-extract-caller",
+      "source_sha256": "545c5053a74e04ffbf2bbaaf80f558092dd545ed2298b2395ca547dbba58290f",
+      "va": "0x2de2540",
+      "bytes": 512,
+      "sha256": "77f2215a68ebf698427a9265362bec1678468ff4ee429a84788e8db6386cb56d",
+      "literals": [],
+      "calls": [
+        {
+          "site": "0x2de2540",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de2560",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de256c",
+          "target": "0x2e10344",
+          "label": null
+        },
+        {
+          "site": "0x2de2580",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de25a0",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de25ac",
+          "target": "0x2e103ec",
+          "label": null
+        },
+        {
+          "site": "0x2de25c0",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de25e0",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de25ec",
+          "target": "0x2e104b4",
+          "label": null
+        },
+        {
+          "site": "0x2de2600",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de2620",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de262c",
+          "target": "0x2e10584",
+          "label": null
+        },
+        {
+          "site": "0x2de2640",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de2660",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de266c",
+          "target": "0x2e10624",
+          "label": null
+        },
+        {
+          "site": "0x2de2680",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de2694",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de2698",
+          "target": "0x2ea9eb4",
+          "label": null
+        },
+        {
+          "site": "0x2de26a8",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de26bc",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de26c0",
+          "target": "0x2ea9ee4",
+          "label": null
+        },
+        {
+          "site": "0x2de26d0",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de26e4",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de26e8",
+          "target": "0x2ea9f14",
+          "label": null
+        },
+        {
+          "site": "0x2de26f8",
+          "target": "0x2f6eae8",
+          "label": null
+        },
+        {
+          "site": "0x2de270c",
+          "target": "0x2f6ea24",
+          "label": null
+        },
+        {
+          "site": "0x2de2710",
+          "target": "0x2ea9f18",
+          "label": null
+        },
+        {
+          "site": "0x2de2720",
+          "target": "0x2f6eae8",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/app-public-key-extract-caller.txt"
+    },
+    {
+      "label": "ufp-execute-callback",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "va": "0x3034",
+      "bytes": 320,
+      "sha256": "4bd189e04bd1ae39c53ce7c7bd7ed9fd7abec99c7d3e2a62cc2c8bfaf7e0f4d7",
+      "literals": [
+        {
+          "site": "0x3140",
+          "va": "0x3d61",
+          "text": "/usr/bin/up.sh"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x30a0",
+          "target": "0x1450",
+          "label": "stm_system"
+        },
+        {
+          "site": "0x30a4",
+          "target": "0x2094",
+          "label": null
+        },
+        {
+          "site": "0x30c0",
+          "target": "0x308c",
+          "label": null
+        },
+        {
+          "site": "0x30c4",
+          "target": "0x2728",
+          "label": null
+        },
+        {
+          "site": "0x30e8",
+          "target": "0x15c0",
+          "label": "Backup_write"
+        },
+        {
+          "site": "0x30fc",
+          "target": "0x30a8",
+          "label": null
+        },
+        {
+          "site": "0x3104",
+          "target": "0x1420",
+          "label": "Backup_sync_subsystem"
+        },
+        {
+          "site": "0x3148",
+          "target": "0x1450",
+          "label": "stm_system"
+        },
+        {
+          "site": "0x314c",
+          "target": "0x1f64",
+          "label": null
+        },
+        {
+          "site": "0x3150",
+          "target": "0x1ffc",
+          "label": null
+        },
+        {
+          "site": "0x3154",
+          "target": "0x30a4",
+          "label": null
+        },
+        {
+          "site": "0x3158",
+          "target": "0x2f48",
+          "label": null
+        },
+        {
+          "site": "0x3168",
+          "target": "0x22e0",
+          "label": null
+        },
+        {
+          "site": "0x316c",
+          "target": "0x30f8",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/ufp-execute-callback.txt"
+    },
+    {
+      "label": "ufp-body-prepare",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "va": "0x2728",
+      "bytes": 156,
+      "sha256": "f96b07681d36f766f09e253bcfaba60e75c04421c1017a98706a5ba3a1c9fcd9",
+      "literals": [
+        {
+          "site": "0x2758",
+          "va": "0x3df1",
+          "text": "BODYDATA.DAT"
+        },
+        {
+          "site": "0x2760",
+          "va": "0x3e2d",
+          "text": "%s/%s"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x2748",
+          "target": "0x1380",
+          "label": "memset"
+        },
+        {
+          "site": "0x276c",
+          "target": "0x14c0",
+          "label": "snprintf"
+        },
+        {
+          "site": "0x2778",
+          "target": "0x1410",
+          "label": "udtr_get_firm_info_inmedia"
+        },
+        {
+          "site": "0x27a8",
+          "target": "0x26e8",
+          "label": null
+        },
+        {
+          "site": "0x27ac",
+          "target": "0x1330",
+          "label": "udtr_conv_stat2err"
+        }
+      ],
+      "disassembly": "entry-fragments/ufp-body-prepare.txt"
+    },
+    {
+      "label": "ufp-lens-prepare",
+      "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+      "va": "0x2f48",
+      "bytes": 236,
+      "sha256": "964e8dbd138bd158bfd88a8c57368add31db31dd81713e409073d0b5ca5b9cbe",
+      "literals": [
+        {
+          "site": "0x2f7c",
+          "va": "0x3da7",
+          "text": "LENSDATA.DAT"
+        },
+        {
+          "site": "0x2f84",
+          "va": "0x3e2d",
+          "text": "%s/%s"
+        }
+      ],
+      "calls": [
+        {
+          "site": "0x2f68",
+          "target": "0x1380",
+          "label": "memset"
+        },
+        {
+          "site": "0x2f90",
+          "target": "0x14c0",
+          "label": "snprintf"
+        },
+        {
+          "site": "0x2f9c",
+          "target": "0x1410",
+          "label": "udtr_get_firm_info_inmedia"
+        },
+        {
+          "site": "0x2ffc",
+          "target": "0x1928",
+          "label": null
+        },
+        {
+          "site": "0x3008",
+          "target": "0x184c",
+          "label": null
+        },
+        {
+          "site": "0x3024",
+          "target": "0x26e8",
+          "label": null
+        },
+        {
+          "site": "0x3028",
+          "target": "0x1330",
+          "label": "udtr_conv_stat2err"
+        },
+        {
+          "site": "0x3030",
+          "target": "0x2fdc",
+          "label": null
+        }
+      ],
+      "disassembly": "entry-fragments/ufp-lens-prepare.txt"
+    }
+  ],
+  "scope": "Bounded static original instruction fragments and conservatively tracked read-only string addresses. No whole-program/normal UI admission or authentication claim; no code or device execution."
+}

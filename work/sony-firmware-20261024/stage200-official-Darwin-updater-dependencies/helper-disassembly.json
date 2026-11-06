@@ -1,0 +1,1723 @@
+{
+  "helpers": [
+    {
+      "label": "historical2.05-init",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/bin/ud_darwin_init.elf",
+      "sha256": "c943c7462e4d94b834b891555a2224c4a2c34d722204368e66d6d97d3eca91ad",
+      "entry": "0x401100",
+      "text": {
+        "VA": "0x400be0",
+        "file_offset": "0xbe0",
+        "bytes": 1932
+      },
+      "PLT": {
+        "0x400ab0": {
+          "name": "osal_snd_sync_direct",
+          "GOT_slot": "0x412000"
+        },
+        "0x400ac0": {
+          "name": "open",
+          "GOT_slot": "0x412008"
+        },
+        "0x400ad0": {
+          "name": "memset",
+          "GOT_slot": "0x412010"
+        },
+        "0x400ae0": {
+          "name": "read",
+          "GOT_slot": "0x412018"
+        },
+        "0x400af0": {
+          "name": "sprintf",
+          "GOT_slot": "0x412020"
+        },
+        "0x400b00": {
+          "name": "ioctl",
+          "GOT_slot": "0x412028"
+        },
+        "0x400b10": {
+          "name": "UdtrGpioWrite",
+          "GOT_slot": "0x412030"
+        },
+        "0x400b20": {
+          "name": "__libc_start_main",
+          "GOT_slot": "0x412038"
+        },
+        "0x400b30": {
+          "name": "usleep",
+          "GOT_slot": "0x412040"
+        },
+        "0x400b40": {
+          "name": "__errno_location",
+          "GOT_slot": "0x412048"
+        },
+        "0x400b50": {
+          "name": "UdtrGpioOpen",
+          "GOT_slot": "0x412050"
+        },
+        "0x400b60": {
+          "name": "UdtrGpioClose",
+          "GOT_slot": "0x412058"
+        },
+        "0x400b70": {
+          "name": "close",
+          "GOT_slot": "0x412060"
+        },
+        "0x400b80": {
+          "name": "Backup_read_4Byte",
+          "GOT_slot": "0x412068"
+        },
+        "0x400b90": {
+          "name": "write",
+          "GOT_slot": "0x412070"
+        },
+        "0x400ba0": {
+          "name": "abort",
+          "GOT_slot": "0x412078"
+        },
+        "0x400bb0": {
+          "name": "__gmon_start__",
+          "GOT_slot": "0x412080"
+        },
+        "0x400bc0": {
+          "name": "strcat",
+          "GOT_slot": "0x412088"
+        },
+        "0x400bd0": {
+          "name": "printf",
+          "GOT_slot": "0x412090"
+        }
+      },
+      "unwind_function_ranges": [],
+      "calls": [
+        {
+          "site": "0x400c24",
+          "kind": "bl",
+          "target": "0x400b80",
+          "import": "Backup_read_4Byte"
+        },
+        {
+          "site": "0x400c34",
+          "kind": "bl",
+          "target": "0x400b80",
+          "import": "Backup_read_4Byte"
+        },
+        {
+          "site": "0x400c44",
+          "kind": "bl",
+          "target": "0x400b80",
+          "import": "Backup_read_4Byte"
+        },
+        {
+          "site": "0x400c64",
+          "kind": "bl",
+          "target": "0x400ac0",
+          "import": "open"
+        },
+        {
+          "site": "0x400c90",
+          "kind": "bl",
+          "target": "0x400b00",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x400ca8",
+          "kind": "bl",
+          "target": "0x400b00",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x400ccc",
+          "kind": "bl",
+          "target": "0x400b00",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x400ce4",
+          "kind": "bl",
+          "target": "0x400b00",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x400d04",
+          "kind": "bl",
+          "target": "0x400b00",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x400d0c",
+          "kind": "bl",
+          "target": "0x400b70",
+          "import": "close"
+        },
+        {
+          "site": "0x400d28",
+          "kind": "bl",
+          "target": "0x400af0",
+          "import": "sprintf"
+        },
+        {
+          "site": "0x400d34",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "strcat"
+        },
+        {
+          "site": "0x400d40",
+          "kind": "bl",
+          "target": "0x400ac0",
+          "import": "open"
+        },
+        {
+          "site": "0x400d6c",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "printf"
+        },
+        {
+          "site": "0x400d88",
+          "kind": "b",
+          "target": "0x400f04"
+        },
+        {
+          "site": "0x400d98",
+          "kind": "bl",
+          "target": "0x400b00",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x400da8",
+          "kind": "bl",
+          "target": "0x400b70",
+          "import": "close"
+        },
+        {
+          "site": "0x400dac",
+          "kind": "bl",
+          "target": "0x400b40",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x400dc8",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "printf"
+        },
+        {
+          "site": "0x400dcc",
+          "kind": "b",
+          "target": "0x400d70"
+        },
+        {
+          "site": "0x400de0",
+          "kind": "bl",
+          "target": "0x400b00",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x400df0",
+          "kind": "bl",
+          "target": "0x400b70",
+          "import": "close"
+        },
+        {
+          "site": "0x400df4",
+          "kind": "bl",
+          "target": "0x400b40",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x400e10",
+          "kind": "b",
+          "target": "0x400dc8"
+        },
+        {
+          "site": "0x400e24",
+          "kind": "bl",
+          "target": "0x400b50",
+          "import": "UdtrGpioOpen"
+        },
+        {
+          "site": "0x400e34",
+          "kind": "bl",
+          "target": "0x400b70",
+          "import": "close"
+        },
+        {
+          "site": "0x400e38",
+          "kind": "bl",
+          "target": "0x400b40",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x400e54",
+          "kind": "b",
+          "target": "0x400dc8"
+        },
+        {
+          "site": "0x400e60",
+          "kind": "bl",
+          "target": "0x4012a0"
+        },
+        {
+          "site": "0x400e70",
+          "kind": "bl",
+          "target": "0x400b10",
+          "import": "UdtrGpioWrite"
+        },
+        {
+          "site": "0x400e94",
+          "kind": "b",
+          "target": "0x400ecc"
+        },
+        {
+          "site": "0x400ea4",
+          "kind": "bl",
+          "target": "0x400b90",
+          "import": "write"
+        },
+        {
+          "site": "0x400eb0",
+          "kind": "bl",
+          "target": "0x400b40",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x400ecc",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "printf"
+        },
+        {
+          "site": "0x400ee8",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "printf"
+        },
+        {
+          "site": "0x400f04",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "printf"
+        },
+        {
+          "site": "0x400f08",
+          "kind": "b",
+          "target": "0x400fb8"
+        },
+        {
+          "site": "0x400f14",
+          "kind": "bl",
+          "target": "0x400b10",
+          "import": "UdtrGpioWrite"
+        },
+        {
+          "site": "0x400f28",
+          "kind": "b",
+          "target": "0x400e84"
+        },
+        {
+          "site": "0x400f3c",
+          "kind": "bl",
+          "target": "0x400ae0",
+          "import": "read"
+        },
+        {
+          "site": "0x400f48",
+          "kind": "bl",
+          "target": "0x400b40",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x400f64",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "printf"
+        },
+        {
+          "site": "0x400f7c",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "printf"
+        },
+        {
+          "site": "0x400f88",
+          "kind": "bl",
+          "target": "0x400b30",
+          "import": "usleep"
+        },
+        {
+          "site": "0x400f9c",
+          "kind": "bl",
+          "target": "0x401240"
+        },
+        {
+          "site": "0x400fbc",
+          "kind": "bl",
+          "target": "0x400b70",
+          "import": "close"
+        },
+        {
+          "site": "0x400fc4",
+          "kind": "bl",
+          "target": "0x400b60",
+          "import": "UdtrGpioClose"
+        },
+        {
+          "site": "0x400ff0",
+          "kind": "bl",
+          "target": "0x400b10",
+          "import": "UdtrGpioWrite"
+        },
+        {
+          "site": "0x401004",
+          "kind": "b",
+          "target": "0x4010e8"
+        },
+        {
+          "site": "0x40100c",
+          "kind": "bl",
+          "target": "0x4012a0"
+        },
+        {
+          "site": "0x401034",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "printf"
+        },
+        {
+          "site": "0x40103c",
+          "kind": "b",
+          "target": "0x400f68"
+        },
+        {
+          "site": "0x401064",
+          "kind": "b",
+          "target": "0x401034"
+        },
+        {
+          "site": "0x401090",
+          "kind": "bl",
+          "target": "0x400ad0",
+          "import": "memset"
+        },
+        {
+          "site": "0x4010b0",
+          "kind": "bl",
+          "target": "0x401240"
+        },
+        {
+          "site": "0x4010bc",
+          "kind": "b",
+          "target": "0x400fa0"
+        },
+        {
+          "site": "0x4010c8",
+          "kind": "bl",
+          "target": "0x400b30",
+          "import": "usleep"
+        },
+        {
+          "site": "0x4010d4",
+          "kind": "bl",
+          "target": "0x400b10",
+          "import": "UdtrGpioWrite"
+        },
+        {
+          "site": "0x4010f8",
+          "kind": "b",
+          "target": "0x400f64"
+        },
+        {
+          "site": "0x401124",
+          "kind": "bl",
+          "target": "0x400b20",
+          "import": "__libc_start_main"
+        },
+        {
+          "site": "0x401128",
+          "kind": "bl",
+          "target": "0x400ba0",
+          "import": "abort"
+        },
+        {
+          "site": "0x401154",
+          "kind": "b",
+          "target": "0x400bb0",
+          "import": "__gmon_start__"
+        },
+        {
+          "site": "0x4011f0",
+          "kind": "bl",
+          "target": "0x401160"
+        },
+        {
+          "site": "0x401218",
+          "kind": "b",
+          "target": "0x401198"
+        },
+        {
+          "site": "0x40123c",
+          "kind": "b",
+          "target": "0x401198"
+        },
+        {
+          "site": "0x401274",
+          "kind": "bl",
+          "target": "0x400ab0",
+          "import": "osal_snd_sync_direct"
+        },
+        {
+          "site": "0x401324",
+          "kind": "bl",
+          "target": "0x400a78"
+        }
+      ],
+      "string_candidates": [
+        {
+          "site": "0x400be8",
+          "address": "0x4013a0",
+          "value": "/dev/sio",
+          "locator_only": true
+        },
+        {
+          "site": "0x400c60",
+          "address": "0x401420",
+          "value": "/dev/gpio",
+          "locator_only": true
+        },
+        {
+          "site": "0x400d5c",
+          "address": "0x4013b0",
+          "value": "device_initialize",
+          "locator_only": true
+        },
+        {
+          "site": "0x400d60",
+          "address": "0x40142d",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver open failed [%s], ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400d80",
+          "address": "0x401410",
+          "value": "darwin_com_init",
+          "locator_only": true
+        },
+        {
+          "site": "0x400d84",
+          "address": "0x40169a",
+          "value": "[UD_COM_PIC] %s:%d:device_initialize() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400dbc",
+          "address": "0x4013b0",
+          "value": "device_initialize",
+          "locator_only": true
+        },
+        {
+          "site": "0x400dc0",
+          "address": "0x401469",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver ioctl(SIO_BAUD) failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e08",
+          "address": "0x4013b0",
+          "value": "device_initialize",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e0c",
+          "address": "0x4014ab",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver ioctl(SIO_CONTROL) failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e4c",
+          "address": "0x4013b0",
+          "value": "device_initialize",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e50",
+          "address": "0x4014f0",
+          "value": "[UD_COM_PIC] %s:%d:Gpio CS port open failed, ERRNO[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e8c",
+          "address": "0x4013c8",
+          "value": "darwin_send_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e90",
+          "address": "0x401528",
+          "value": "[UD_COM_PIC] %s:%d:GPIO write failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400ec0",
+          "address": "0x4013c8",
+          "value": "darwin_send_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x400ec4",
+          "address": "0x40155a",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver write failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400edc",
+          "address": "0x4013f8",
+          "value": "darwin_change_state",
+          "locator_only": true
+        },
+        {
+          "site": "0x400ee0",
+          "address": "0x4016d5",
+          "value": "[UD_COM_PIC] %s:%d:darwin_send_data() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400ef8",
+          "address": "0x401410",
+          "value": "darwin_com_init",
+          "locator_only": true
+        },
+        {
+          "site": "0x400efc",
+          "address": "0x40165d",
+          "value": "[UD_COM_PIC] %s:%d:darwin_change_state() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400f58",
+          "address": "0x4013e0",
+          "value": "darwin_recv_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x400f5c",
+          "address": "0x401592",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver read failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400f74",
+          "address": "0x40170f",
+          "value": "[UD_COM_PIC] %s:%d:darwin_recv_data() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401028",
+          "address": "0x4013e0",
+          "value": "darwin_recv_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x40102c",
+          "address": "0x4015c9",
+          "value": "[UD_COM_PIC] %s:%d:crc error : crc_cal = 0x%x, prx_buf->crc = 0x%x\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x40105c",
+          "address": "0x4013e0",
+          "value": "darwin_recv_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x401060",
+          "address": "0x40160d",
+          "value": "[UD_COM_PIC] %s:%d:com id error : com_id_fld = 0x%x, COM_ID_NOTIFY_REG = 0x%x \n",
+          "locator_only": true
+        },
+        {
+          "site": "0x4010ac",
+          "address": "0x4013f8",
+          "value": "darwin_change_state",
+          "locator_only": true
+        },
+        {
+          "site": "0x4010f0",
+          "address": "0x4013e0",
+          "value": "darwin_recv_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x4010f4",
+          "address": "0x401528",
+          "value": "[UD_COM_PIC] %s:%d:GPIO write failed, ERRMSG[%d]\n",
+          "locator_only": true
+        }
+      ],
+      "undecoded_words": [
+        "0x401130",
+        "0x401138",
+        "0x401140"
+      ],
+      "text_scan_scope": "all4B alignments may include data; selected function code must be separately checked"
+    },
+    {
+      "label": "official7.02-firmup",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "entry": "0x401128",
+      "text": {
+        "VA": "0x400c30",
+        "file_offset": "0xc30",
+        "bytes": 3264
+      },
+      "PLT": {
+        "0x400af0": {
+          "name": "memcpy",
+          "GOT_slot": "0x413000"
+        },
+        "0x400b00": {
+          "name": "osal_snd_sync_direct",
+          "GOT_slot": "0x413008"
+        },
+        "0x400b10": {
+          "name": "open",
+          "GOT_slot": "0x413010"
+        },
+        "0x400b20": {
+          "name": "memset",
+          "GOT_slot": "0x413018"
+        },
+        "0x400b30": {
+          "name": "read",
+          "GOT_slot": "0x413020"
+        },
+        "0x400b40": {
+          "name": "sprintf",
+          "GOT_slot": "0x413028"
+        },
+        "0x400b50": {
+          "name": "ioctl",
+          "GOT_slot": "0x413030"
+        },
+        "0x400b60": {
+          "name": "UdtrGpioWrite",
+          "GOT_slot": "0x413038"
+        },
+        "0x400b70": {
+          "name": "__libc_start_main",
+          "GOT_slot": "0x413040"
+        },
+        "0x400b80": {
+          "name": "usleep",
+          "GOT_slot": "0x413048"
+        },
+        "0x400b90": {
+          "name": "__errno_location",
+          "GOT_slot": "0x413050"
+        },
+        "0x400ba0": {
+          "name": "UdtrGpioOpen",
+          "GOT_slot": "0x413058"
+        },
+        "0x400bb0": {
+          "name": "UdtrGpioClose",
+          "GOT_slot": "0x413060"
+        },
+        "0x400bc0": {
+          "name": "close",
+          "GOT_slot": "0x413068"
+        },
+        "0x400bd0": {
+          "name": "Backup_read_4Byte",
+          "GOT_slot": "0x413070"
+        },
+        "0x400be0": {
+          "name": "__xstat",
+          "GOT_slot": "0x413078"
+        },
+        "0x400bf0": {
+          "name": "abort",
+          "GOT_slot": "0x413080"
+        },
+        "0x400c00": {
+          "name": "__gmon_start__",
+          "GOT_slot": "0x413088"
+        },
+        "0x400c10": {
+          "name": "strcat",
+          "GOT_slot": "0x413090"
+        },
+        "0x400c20": {
+          "name": "printf",
+          "GOT_slot": "0x413098"
+        }
+      },
+      "unwind_function_ranges": [],
+      "calls": [
+        {
+          "site": "0x400c7c",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "Backup_read_4Byte"
+        },
+        {
+          "site": "0x400c8c",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "Backup_read_4Byte"
+        },
+        {
+          "site": "0x400c9c",
+          "kind": "bl",
+          "target": "0x400bd0",
+          "import": "Backup_read_4Byte"
+        },
+        {
+          "site": "0x400cb8",
+          "kind": "bl",
+          "target": "0x400b40",
+          "import": "sprintf"
+        },
+        {
+          "site": "0x400cc4",
+          "kind": "bl",
+          "target": "0x400c10",
+          "import": "strcat"
+        },
+        {
+          "site": "0x400cd4",
+          "kind": "bl",
+          "target": "0x4012c8"
+        },
+        {
+          "site": "0x400cf8",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400d08",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x400d14",
+          "kind": "bl",
+          "target": "0x400bb0",
+          "import": "UdtrGpioClose"
+        },
+        {
+          "site": "0x400d44",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400d50",
+          "kind": "bl",
+          "target": "0x4018e0"
+        },
+        {
+          "site": "0x400d64",
+          "kind": "bl",
+          "target": "0x400b10",
+          "import": "open"
+        },
+        {
+          "site": "0x400d88",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400d9c",
+          "kind": "bl",
+          "target": "0x4018e0"
+        },
+        {
+          "site": "0x400db0",
+          "kind": "bl",
+          "target": "0x400b10",
+          "import": "open"
+        },
+        {
+          "site": "0x400dd4",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400e14",
+          "kind": "bl",
+          "target": "0x400b20",
+          "import": "memset"
+        },
+        {
+          "site": "0x400e3c",
+          "kind": "bl",
+          "target": "0x401268"
+        },
+        {
+          "site": "0x400e78",
+          "kind": "b",
+          "target": "0x400cf8"
+        },
+        {
+          "site": "0x400e80",
+          "kind": "bl",
+          "target": "0x400b80",
+          "import": "usleep"
+        },
+        {
+          "site": "0x400e84",
+          "kind": "bl",
+          "target": "0x401544"
+        },
+        {
+          "site": "0x400ea0",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400eb8",
+          "kind": "bl",
+          "target": "0x401268"
+        },
+        {
+          "site": "0x400ebc",
+          "kind": "b",
+          "target": "0x400e48"
+        },
+        {
+          "site": "0x400ed8",
+          "kind": "bl",
+          "target": "0x400b30",
+          "import": "read"
+        },
+        {
+          "site": "0x400f04",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400f0c",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x400f10",
+          "kind": "b",
+          "target": "0x400d8c"
+        },
+        {
+          "site": "0x400f18",
+          "kind": "bl",
+          "target": "0x401400"
+        },
+        {
+          "site": "0x400f54",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400f80",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400f88",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x400f8c",
+          "kind": "b",
+          "target": "0x400d94"
+        },
+        {
+          "site": "0x400fa4",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400fbc",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x400fc8",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x400fcc",
+          "kind": "b",
+          "target": "0x400dd8"
+        },
+        {
+          "site": "0x400fdc",
+          "kind": "bl",
+          "target": "0x401670"
+        },
+        {
+          "site": "0x400fe8",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x400fec",
+          "kind": "b",
+          "target": "0x400d94"
+        },
+        {
+          "site": "0x401008",
+          "kind": "bl",
+          "target": "0x400b30",
+          "import": "read"
+        },
+        {
+          "site": "0x401034",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x40103c",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x401040",
+          "kind": "b",
+          "target": "0x400dd8"
+        },
+        {
+          "site": "0x401048",
+          "kind": "bl",
+          "target": "0x401400"
+        },
+        {
+          "site": "0x401080",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x4010d0",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x4010d8",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x4010dc",
+          "kind": "b",
+          "target": "0x400dd8"
+        },
+        {
+          "site": "0x4010f4",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x40110c",
+          "kind": "b",
+          "target": "0x400fbc"
+        },
+        {
+          "site": "0x40111c",
+          "kind": "bl",
+          "target": "0x401670"
+        },
+        {
+          "site": "0x401124",
+          "kind": "b",
+          "target": "0x401038"
+        },
+        {
+          "site": "0x40114c",
+          "kind": "bl",
+          "target": "0x400b70",
+          "import": "__libc_start_main"
+        },
+        {
+          "site": "0x401150",
+          "kind": "bl",
+          "target": "0x400bf0",
+          "import": "abort"
+        },
+        {
+          "site": "0x40117c",
+          "kind": "b",
+          "target": "0x400c00",
+          "import": "__gmon_start__"
+        },
+        {
+          "site": "0x401218",
+          "kind": "bl",
+          "target": "0x401188"
+        },
+        {
+          "site": "0x401240",
+          "kind": "b",
+          "target": "0x4011c0"
+        },
+        {
+          "site": "0x401264",
+          "kind": "b",
+          "target": "0x4011c0"
+        },
+        {
+          "site": "0x40129c",
+          "kind": "bl",
+          "target": "0x400b00",
+          "import": "osal_snd_sync_direct"
+        },
+        {
+          "site": "0x4012ec",
+          "kind": "bl",
+          "target": "0x400b10",
+          "import": "open"
+        },
+        {
+          "site": "0x401318",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x40133c",
+          "kind": "bl",
+          "target": "0x400b50",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x40134c",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x401350",
+          "kind": "bl",
+          "target": "0x400b90",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x40136c",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x401370",
+          "kind": "b",
+          "target": "0x40131c"
+        },
+        {
+          "site": "0x401384",
+          "kind": "bl",
+          "target": "0x400b50",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x401394",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x401398",
+          "kind": "bl",
+          "target": "0x400b90",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x4013b4",
+          "kind": "b",
+          "target": "0x40136c"
+        },
+        {
+          "site": "0x4013cc",
+          "kind": "bl",
+          "target": "0x400ba0",
+          "import": "UdtrGpioOpen"
+        },
+        {
+          "site": "0x4013dc",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x4013e0",
+          "kind": "bl",
+          "target": "0x400b90",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x4013fc",
+          "kind": "b",
+          "target": "0x40136c"
+        },
+        {
+          "site": "0x4014a8",
+          "kind": "b",
+          "target": "0x401480"
+        },
+        {
+          "site": "0x4014c8",
+          "kind": "b",
+          "target": "0x4014a4"
+        },
+        {
+          "site": "0x4014e8",
+          "kind": "b",
+          "target": "0x401430"
+        },
+        {
+          "site": "0x4014f4",
+          "kind": "b",
+          "target": "0x4014e4"
+        },
+        {
+          "site": "0x401564",
+          "kind": "bl",
+          "target": "0x4014f8"
+        },
+        {
+          "site": "0x401574",
+          "kind": "bl",
+          "target": "0x400b60",
+          "import": "UdtrGpioWrite"
+        },
+        {
+          "site": "0x401598",
+          "kind": "b",
+          "target": "0x4015f4"
+        },
+        {
+          "site": "0x4015cc",
+          "kind": "bl",
+          "target": "0x400b50",
+          "import": "ioctl"
+        },
+        {
+          "site": "0x4015d8",
+          "kind": "bl",
+          "target": "0x400b90",
+          "import": "__errno_location"
+        },
+        {
+          "site": "0x4015f4",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x401614",
+          "kind": "bl",
+          "target": "0x400b60",
+          "import": "UdtrGpioWrite"
+        },
+        {
+          "site": "0x401628",
+          "kind": "b",
+          "target": "0x401588"
+        },
+        {
+          "site": "0x401630",
+          "kind": "bl",
+          "target": "0x4014f8"
+        },
+        {
+          "site": "0x401664",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x40166c",
+          "kind": "b",
+          "target": "0x4015f8"
+        },
+        {
+          "site": "0x401684",
+          "kind": "bl",
+          "target": "0x4012c8"
+        },
+        {
+          "site": "0x4016a8",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x4016b4",
+          "kind": "bl",
+          "target": "0x400bc0",
+          "import": "close"
+        },
+        {
+          "site": "0x4016c0",
+          "kind": "bl",
+          "target": "0x400bb0",
+          "import": "UdtrGpioClose"
+        },
+        {
+          "site": "0x4016f8",
+          "kind": "bl",
+          "target": "0x400b20",
+          "import": "memset"
+        },
+        {
+          "site": "0x401734",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x40173c",
+          "kind": "bl",
+          "target": "0x401268"
+        },
+        {
+          "site": "0x401744",
+          "kind": "bl",
+          "target": "0x401268"
+        },
+        {
+          "site": "0x40175c",
+          "kind": "bl",
+          "target": "0x401268"
+        },
+        {
+          "site": "0x401764",
+          "kind": "bl",
+          "target": "0x400b80",
+          "import": "usleep"
+        },
+        {
+          "site": "0x401768",
+          "kind": "bl",
+          "target": "0x401544"
+        },
+        {
+          "site": "0x401798",
+          "kind": "b",
+          "target": "0x4016a8"
+        },
+        {
+          "site": "0x4017c8",
+          "kind": "bl",
+          "target": "0x400c20",
+          "import": "printf"
+        },
+        {
+          "site": "0x4017cc",
+          "kind": "b",
+          "target": "0x4016ac"
+        },
+        {
+          "site": "0x4017f0",
+          "kind": "b",
+          "target": "0x4017c8"
+        },
+        {
+          "site": "0x40181c",
+          "kind": "bl",
+          "target": "0x400b20",
+          "import": "memset"
+        },
+        {
+          "site": "0x40183c",
+          "kind": "bl",
+          "target": "0x400af0",
+          "import": "memcpy"
+        },
+        {
+          "site": "0x401844",
+          "kind": "bl",
+          "target": "0x400b80",
+          "import": "usleep"
+        },
+        {
+          "site": "0x401848",
+          "kind": "bl",
+          "target": "0x401544"
+        },
+        {
+          "site": "0x40185c",
+          "kind": "b",
+          "target": "0x40180c"
+        },
+        {
+          "site": "0x401894",
+          "kind": "bl",
+          "target": "0x400ab8"
+        },
+        {
+          "site": "0x4018ec",
+          "kind": "b",
+          "target": "0x400be0",
+          "import": "__xstat"
+        }
+      ],
+      "string_candidates": [
+        {
+          "site": "0x400c38",
+          "address": "0x401920",
+          "value": "/dev/sio",
+          "locator_only": true
+        },
+        {
+          "site": "0x400cec",
+          "address": "0x4019a8",
+          "value": "darwin_com_init",
+          "locator_only": true
+        },
+        {
+          "site": "0x400cf0",
+          "address": "0x4019d5",
+          "value": "[UD_COM_PIC] %s:%d:device_initialize() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400d3c",
+          "address": "0x401d15",
+          "value": "OLD version boo = %04x, boo_ex = %04x, core = %04x, core ex = %04x \n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400d7c",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x400d80",
+          "address": "0x401d5a",
+          "value": "[UD_COM_PIC] %s:%d:%s cannot be opened.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400dc8",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x400dcc",
+          "address": "0x401d5a",
+          "value": "[UD_COM_PIC] %s:%d:%s cannot be opened.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e34",
+          "address": "0x401c99",
+          "value": "[UD_COM_PIC] %s:%d:darwin_send_recv_data() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e38",
+          "address": "0x401960",
+          "value": "darwin_change_state",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e70",
+          "address": "0x4019a8",
+          "value": "darwin_com_init",
+          "locator_only": true
+        },
+        {
+          "site": "0x400e74",
+          "address": "0x401cd8",
+          "value": "[UD_COM_PIC] %s:%d:darwin_change_state() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400ef8",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x400efc",
+          "address": "0x401d83",
+          "value": "[UD_COM_PIC] %s:%d:%s cannot be read.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400f40",
+          "address": "0x401daa",
+          "value": "NEW boo version = %04x, boo ex version = %04x\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400f70",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x400f74",
+          "address": "0x401dd9",
+          "value": "[UD_COM_PIC] %s:%d:Boo Firm-Up is not needed.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400f98",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x400f9c",
+          "address": "0x401e08",
+          "value": "[UD_COM_PIC] %s:%d:NEW version boo is not found.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x400fb0",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x400fb4",
+          "address": "0x401e3a",
+          "value": "[UD_COM_PIC] %s:%d:NEW version boo is invalid.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401028",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x40102c",
+          "address": "0x401d83",
+          "value": "[UD_COM_PIC] %s:%d:%s cannot be read.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401070",
+          "address": "0x401e6a",
+          "value": "NEW core version = %04x, core ex version = %04x\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x4010c0",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x4010c4",
+          "address": "0x401e9b",
+          "value": "[UD_COM_PIC] %s:%d:Core Firm-Up is not needed.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x4010e8",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x4010ec",
+          "address": "0x401ecb",
+          "value": "[UD_COM_PIC] %s:%d:NEW version core is not found.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401104",
+          "address": "0x4019d0",
+          "value": "main",
+          "locator_only": true
+        },
+        {
+          "site": "0x401108",
+          "address": "0x401efe",
+          "value": "[UD_COM_PIC] %s:%d:NEW version core is invalid.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401308",
+          "address": "0x401930",
+          "value": "device_initialize",
+          "locator_only": true
+        },
+        {
+          "site": "0x40130c",
+          "address": "0x401b9b",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver open failed [%s], ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401360",
+          "address": "0x401930",
+          "value": "device_initialize",
+          "locator_only": true
+        },
+        {
+          "site": "0x401364",
+          "address": "0x401bd7",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver ioctl(SIO_BAUD) failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x4013ac",
+          "address": "0x401930",
+          "value": "device_initialize",
+          "locator_only": true
+        },
+        {
+          "site": "0x4013b0",
+          "address": "0x401c19",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver ioctl(SIO_CONTROL) failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x4013f4",
+          "address": "0x401930",
+          "value": "device_initialize",
+          "locator_only": true
+        },
+        {
+          "site": "0x4013f8",
+          "address": "0x401c5e",
+          "value": "[UD_COM_PIC] %s:%d:Gpio CS port open failed, ERRNO[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401590",
+          "address": "0x401948",
+          "value": "darwin_send_recv_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x401594",
+          "address": "0x401ae1",
+          "value": "[UD_COM_PIC] %s:%d:GPIO write failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x4015e8",
+          "address": "0x401948",
+          "value": "darwin_send_recv_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x4015ec",
+          "address": "0x401b13",
+          "value": "[UD_COM_PIC] %s:%d:SIO driver write failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401654",
+          "address": "0x401948",
+          "value": "darwin_send_recv_data",
+          "locator_only": true
+        },
+        {
+          "site": "0x401658",
+          "address": "0x401b4b",
+          "value": "[UD_COM_PIC] %s:%d:com id error : com_id_fld = 0x%x, COM_ID_NOTIFY_REG = 0x%x \n",
+          "locator_only": true
+        },
+        {
+          "site": "0x40169c",
+          "address": "0x4019b8",
+          "value": "darwin_com_firmup",
+          "locator_only": true
+        },
+        {
+          "site": "0x4016a0",
+          "address": "0x4019d5",
+          "value": "[UD_COM_PIC] %s:%d:device_initialize() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401704",
+          "address": "0x401978",
+          "value": "darwin_start_update",
+          "locator_only": true
+        },
+        {
+          "site": "0x401724",
+          "address": "0x401a10",
+          "value": "%s : g_size = %d\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x401790",
+          "address": "0x4019b8",
+          "value": "darwin_com_firmup",
+          "locator_only": true
+        },
+        {
+          "site": "0x401794",
+          "address": "0x401a22",
+          "value": "[UD_COM_PIC] %s:%d:darwin_start_update() failed, ERRMSG[%d]\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x4017bc",
+          "address": "0x401990",
+          "value": "darwin_do_update",
+          "locator_only": true
+        },
+        {
+          "site": "0x4017c0",
+          "address": "0x401a5f",
+          "value": "[UD_COM_PIC] %s:%d:error: com_id_fld is not COM_ID_NOTIFY_REG.\n",
+          "locator_only": true
+        },
+        {
+          "site": "0x4017e8",
+          "address": "0x401990",
+          "value": "darwin_do_update",
+          "locator_only": true
+        },
+        {
+          "site": "0x4017ec",
+          "address": "0x401a9f",
+          "value": "[UD_COM_PIC] %s:%d:error: dwn_stat is not COM_DWN_STAT_UPDATING.\n",
+          "locator_only": true
+        }
+      ],
+      "undecoded_words": [
+        "0x401158",
+        "0x401160",
+        "0x401168"
+      ],
+      "text_scan_scope": "all4B alignments may include data; selected function code must be separately checked"
+    }
+  ],
+  "scope": "ELF mapping and candidate string references; FDE ranges do not establish entry reachability",
+  "original_or_guest_execution": false,
+  "root_or_device_operations": 0
+}

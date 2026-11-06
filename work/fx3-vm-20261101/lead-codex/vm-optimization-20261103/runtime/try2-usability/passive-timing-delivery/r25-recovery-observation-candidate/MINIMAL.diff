@@ -1,0 +1,375 @@
+--- r24/runtime-wrapper/operate.py
++++ r25/runtime-wrapper/operate.py
+@@ -5,7 +5,7 @@
+ from common import *
+ from review_snapshot_cli import validate_capture
+ from later_capture import current_guard
+-from untimed_image import snapshot
++from recovery_guard import pending,click_guard,durable_pending
+ 
+ def savepath(p,x):p.write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+ def argbase(c,nonce):return ['--session',CFG['session'],'--url',c['url'],'--launch-id',c['launch_id'],'--nonce',nonce]
+@@ -32,18 +32,19 @@
+   return {'status':'initial_standby_review_recorded','prerequisite_path':str(prerequisite_record(0,cap_path,target)),
+           'scripted_navigation':True,'visual_review_at_click':False}
+  if action=='recovery_review':
+-  target=sys.argv[2];assert target.strip();v=read('pending-recovery-review.json')
+-  cap=json.loads(Path(v['capture_result']).read_text());assert sha(cap['screenshot_path'])==cap['screenshot_sha256']
+-  v.update(status='explicit_recovery_image_reviewed',review_target=target,**stamp());write('pending-recovery-review.json',v)
+-  return {'status':v['status']}
++  target=sys.argv[2];assert target.strip();v,cap=pending(False)
++  v.update(status='explicit_recovery_image_reviewed',review_target=target,reviewed_png_sha256=cap['screenshot_sha256'],reviewed_receipt_sha256=v['capture_sha256'],**stamp());durable_pending(v)
++  return {'status':v['status'],'observation_id':cap['observation_id'],'input_permission':False}
+  if action=='click':
+   step=int(sys.argv[2]);target=sys.argv[3];row=CFG['steps'][step-1];assert 1<=step<=8 and target.strip()
+   prior_path=HERE/('step-%02d-prerequisite.json'%(step-1));prior=prerequisite(prior_path,step,c['launch_id'])
+   ledger=read('ledger.json') if (HERE/'ledger.json').exists() else {'attempts':[],'recoveries':[]}
+   assert len(ledger['attempts'])<10
+-  if (HERE/'pending-recovery-review.json').exists():assert read('pending-recovery-review.json')['status']=='explicit_recovery_image_reviewed'
++  recovery=click_guard(step,ledger)
+   attempt=len(ledger['attempts'])+1;folder=HERE/('step-%02d-attempt-%02d'%(step,attempt));folder.mkdir();nonce=str(__import__('uuid').uuid4());prefix=folder.name
+   a={**row,'attempt_number':attempt,'nonce':nonce,'path':str(folder),'scripted_action_target':target,'scripted_navigation':True,'visual_review_at_click':False,'plan_sha':PLAN_SHA,'host_wall_ns':time.time_ns(),**stamp()};savepath(folder/'identity.json',a);write('current-attempt.json',a)
++  if recovery:
++   recovery.update(status='consumed_by_explicit_new_click',next_nonce=nonce,next_attempt_number=attempt,**stamp());durable_pending(recovery)
+   arm=dl(prefix+'-arm','arm',nonce);assert arm['deadline_ms']==20000 and arm['current']['state']=='armed' and arm['current']['nonce']==nonce
+   r=helper(prefix+'-click','planned_navigation_click.py',['--session',CFG['session'],'--url',c['url'],'--launch',c['launch_id'],'--nonce',nonce,'--plan-sha',PLAN_SHA,'--step',str(step),'--prerequisite-path',str(prior_path),'--ledger',str(HERE/'ledger.json'),'--receipt',str(folder/'click-receipt.json')],watch=True)
+   assert r['status']=='click_invoked'
+@@ -53,8 +54,9 @@
+    assert len(ledger['recoveries'])<2 and not any(x['step']==step for x in ledger['recoveries'])
+    b={k:outcome[k] for k in ('attempt_id','document_time_origin','launch_request_id','key','base_step','expected_step')};b.update(PNG_sha256=outcome['frame']['PNG_sha256'],content_generation=outcome['frame']['content_generation'],sequence=outcome['frame']['sequence'],nonce=nonce);savepath(folder/'binding.json',b)
+    out=folder/'recovery-review';r=helper(prefix+'-recovery-capture','recovery_tools.py',['capture',*argbase(c,nonce),'--binding',str(folder/'binding.json'),'--out',str(out)])
+-   assert r['status']=='qualified_review_screenshot';p=Path(r['screenshot_path']);assert p==out/'review-page.png' and p.is_file() and not p.is_symlink() and sha(p)==r['screenshot_sha256'] and p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+-   value={'status':r['status'],'screenshot_path':str(p),'screenshot_sha256':sha(p),'step':step,'attempt':attempt};write('current-return.json',value);return value
++   assert r['status']=='qualified_recovery_observation';p=Path(r['screenshot_path']);assert p==out/'observation.png' and p.is_file() and not p.is_symlink() and sha(p)==r['screenshot_sha256'] and p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
++   a['recovery_capture_sha256']=sha(out/'observation-result.json');savepath(folder/'identity.json',a);write('current-attempt.json',a)
++   value={'observation_path':str(out/'observation-result.json'),'observation_sha256':a['recovery_capture_sha256'],'input_permission':False,'status':r['status'],'screenshot_path':str(p),'screenshot_sha256':sha(p),'step':step,'attempt':attempt};write('current-return.json',value);return value
+   assert outcome['outcome']=='accepted',outcome
+   out=folder/'capture';cfg={'url':c['url'],'launch_id':c['launch_id'],'nonce':nonce,'step':step,'attempt_id':aid,'prefix':prefix};savepath(folder/'capture-config.json',cfg)
+   args=['capture','--session',CFG['session'],'--url',c['url'],'--launch',c['launch_id'],'--nonce',nonce,'--step',str(step),'--attempt',aid,'--out',str(out)]
+@@ -78,10 +80,12 @@
+   return {'status':r['status'],'step':step,'elapsed_ms':r['browser_result']['cancelled']['events'][-1].get('elapsed_ms')}
+  if action=='recovery_cancel':
+   a=read('current-attempt.json');folder=Path(a['path']);out=folder/'recovery-cancel';target=sys.argv[2]
+-  r=helper(folder.name+'-recovery-cancel','recovery_tools.py',['cancel',*argbase(c,a['nonce']),'--binding',str(folder/'binding.json'),'--out',str(out),'--review',str(folder/'recovery-review/review-result.json'),'--target',target,'--ledger',str(HERE/'ledger.json')],watch=True)
+-  assert r['status']=='cancelled_unqueued_alarm_only';p=Path(r['current_screenshot_path']);assert p==out/'current-after-cancel.png' and p.is_file() and not p.is_symlink() and sha(p)==r['current_screenshot_sha256'] and p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+-  # Capture result supplies a new image; next separate operator call must review it.
+-  fresh=snapshot(folder.name+'-cancel-pinned',folder/'cancel-pinned',a['step']-1);write('pending-recovery-review.json',{'status':'requires_separate_explicit_review','capture_result':str(folder/'cancel-pinned/capture-result.json')});value={**fresh,'status':r['status']};write('current-return.json',value);return value
++  r=helper(folder.name+'-recovery-cancel','recovery_tools.py',['cancel',*argbase(c,a['nonce']),'--binding',str(folder/'binding.json'),'--out',str(out),'--review',str(folder/'recovery-review/observation-result.json'),'--review-sha',a['recovery_capture_sha256'],'--target',target,'--ledger',str(HERE/'ledger.json')],watch=True)
++  assert r['status']=='cancelled_unqueued_alarm_only';p=Path(r['current_screenshot_path']);assert p==out/'observation/observation.png' and p.is_file() and not p.is_symlink() and sha(p)==r['current_screenshot_sha256'] and p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
++  # The cancel helper already captured a distinct immutable observation after cancellation.
++  v={'status':'requires_separate_explicit_review','step':a['step'],'attempt_number':a['attempt_number'],'attempt_id':a['attempt_id'],'nonce':a['nonce'],'binding_sha256':sha(folder/'binding.json'),'capture_result':r['observation_path'],'capture_sha256':r['observation_sha256'],'cancel_path':str(out/'cancel-result.json'),'cancel_sha256':sha(out/'cancel-result.json')}
++  durable_pending(v)
++  value={'status':r['status'],'observation_status':'qualified_recovery_observation','observation_path':v['capture_result'],'screenshot_path':str(p),'screenshot_sha256':sha(p),'input_permission':False};write('current-return.json',value);return value
+  raise ValueError(action)
+ def run_action(action):
+  try:
+--- r24/runtime-wrapper/preflight.py
++++ r25/runtime-wrapper/preflight.py
+@@ -8,6 +8,9 @@
+  def group(label,pairs):
+   groups[label]=[{'path':str(p),'expected':h,'actual':sha(p),'match':sha(p)==h} for p,h in pairs];assert all(r['match'] for r in groups[label])
+  group('pins',[(FROZEN/'SHA256SUMS','dcbbb11fc1942a480b8624e53d769e29b93fec3c884401811cc0599fea3b02ef'),(FROZEN/'SOURCE-FREEZE.json','31ee6b1d00fecfc5ac53e874b144230d2430208277c295d74c4a804fbe1135ec')])
++ group('r24_manifest',[(SOURCE.parent.parent/'r24-review-snapshot-candidate/SHA256SUMS','51dd439d251efb5887ca1843f44b2c7137b30acdc14a6fc2389995620c29d36a')])
++ r24=SOURCE.parent.parent/'r24-review-snapshot-candidate'
++ group('r24_delivery151',[(r24/f,h) for h,f in (line.split('  ',1) for line in (r24/'SHA256SUMS').read_text().splitlines())])
+  group('source40',[(FROZEN/f,h) for f,h in json.loads((FROZEN/'SOURCE-FREEZE.json').read_text()).items()])
+  group('delivery145',[(FROZEN/f,h) for h,f in (line.split('  ',1) for line in (FROZEN/'SHA256SUMS').read_text().splitlines())])
+  group('fixed14',[(root/x['path'],x['expected_sha256']) for x in json.loads((FROZEN/'FIXED-INPUT-14.json').read_text())['files']])
+--- r24/operator-helpers/recovery_cancel.js
++++ r25/operator-helpers/recovery_cancel.js
+@@ -1,5 +1,6 @@
+ (async function explicitRecoveryCancel(c){
+  'use strict';
++ const originalDocument=document,originalOrigin=performance.timeOrigin;
+  const PAGE_SHA='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b';
+  const hash=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+  let cancel_invoked=false;
+@@ -14,10 +15,10 @@
+   if(!helper||!desc||desc.configurable||desc.writable||desc.value!==helper||
+      typeof helper.status!=='function'||typeof helper.cancel!=='function')return fail('deadline_identity');
+   const review=c.review;
+-  if(review.status!=='qualified_review_screenshot'||review.attempt_id!==c.binding.attempt_id||
+-     review.nonce!==c.nonce||review.launch_id!==c.launch_id||
+-     !/^[0-9a-f]{64}$/.test(review.PNG_sha256)||
+-     !Number.isSafeInteger(review.content_generation)||review.content_generation<=0||
++  if(review.status!=='qualified_recovery_observation'||review.binding?.attempt_id!==c.binding.attempt_id||
++     review.binding?.nonce!==c.nonce||review.binding?.launch_request_id!==c.launch_id||
++     !/^[0-9a-f]{64}$/.test(review.before.PNG_sha256)||
++     !Number.isSafeInteger(review.before.content_generation)||review.before.content_generation<=0||
+      !review.screenshot_sha256)return fail('review_receipt');
+   const first=helper.status(),a=window.fx3KeyAttemptOutcome?.();
+   if(!a||a.attempt_id!==c.binding.attempt_id||a.alarm_nonce!==c.nonce||
+@@ -36,17 +37,15 @@
+      fresh.steps!==a.base_step||fresh.launch_request_id!==c.launch_id||!fresh.frame||!fresh.render_valid||
+      ending||finished||busy||deliveryUnknown||reviewUnknown||awaitingStep!==null||reviewAwaiting||renderFault)
+      return fail('server_status_not_ready');
+-  // Ordinary page tick may still be loading. No key, confirm or alarm mutation while waiting.
+-  const limit=Math.min(performance.now()+2000,first.current.due_ms-1000);
+-  while(performance.now()<limit && (!lastStatus||!frameLoadedFor(lastStatus)||
+-        !image.complete||image.naturalWidth<=0||shownSHA!==fresh.frame.PNG_sha256||
+-        displayedGeneration!==fresh.frame.content_generation))
+-    await new Promise(resolve=>setTimeout(resolve,50));
++  // Cancellation is alarm cleanup after explicit historical observation, never key permission.
++  // Fresh server and current PAGE lifecycle must both be ready; no cross-await frame equality.
+   if(!lastStatus||!frameLoadedFor(lastStatus)||!image.complete||image.naturalWidth<=0||
+-     shownSHA!==fresh.frame.PNG_sha256||displayedGeneration!==fresh.frame.content_generation||
+-     lastStatus.steps!==a.base_step||lastStatus.launch_request_id!==c.launch_id)return fail('loaded_frame_not_current');
++     lastStatus.steps!==a.base_step||lastStatus.launch_request_id!==c.launch_id||
++     review.before.document_id!==reviewDocumentId||review.after.document_id!==reviewDocumentId||
++     review.before.document_time_origin!==performance.timeOrigin||review.after.document_time_origin!==performance.timeOrigin||
++     reviewProtocolUnknown||reviewTerminated)return fail('loaded_frame_or_document_not_ready');
+   const now=helper.status(),q=window.fx3KeyAttemptRecoveryEligibility?.(c.binding);
+-  if(!q?.eligible||window.fx3KeyAttemptOutcome?.().attempt_id!==a.attempt_id||
++  if(document!==originalDocument||document.scripts.length!==1||document.scripts[0]!==scripts[0]||scripts[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;')!==canonical||location.href!==c.url||performance.timeOrigin!==originalOrigin||!q?.eligible||window.fx3KeyAttemptOutcome?.().attempt_id!==a.attempt_id||
+      now.current?.nonce!==c.nonce||now.current?.state!=='armed'||
+      now.current.due_ms!==first.current.due_ms||performance.now()>=now.current.due_ms)return fail('last_identity_or_eligibility');
+   // The only mutation: cancel this already proved unqueued test alarm.
+@@ -59,10 +58,10 @@
+      !Number.isFinite(event.elapsed_ms)||event.elapsed_ms<0||event.elapsed_ms>=20000)
+     return {status:'unknown',reason:'cancel_receipt_mismatch',cancel_invoked,alarm_cancel_receipt:receipt};
+   return {status:'cancelled_unqueued_alarm_only',cancel_invoked,attempt_id:a.attempt_id,
+-    nonce:c.nonce,alarm_cancel_receipt:receipt,
+-    old_review:{sha:review.PNG_sha256,generation:review.content_generation},
++    nonce:c.nonce,alarm_cancel_receipt:receipt,alarm_cancel_identity_json:JSON.stringify(receipt),
++    old_review:{sha:review.before.PNG_sha256,generation:review.before.content_generation},
+     current_frame:{sha:shownSHA,generation:displayedGeneration,sequence:displayed},
+-    historical_review_not_current:review.PNG_sha256!==shownSHA||review.content_generation!==displayedGeneration,
++    historical_review_not_current:review.before.PNG_sha256!==shownSHA||review.before.content_generation!==displayedGeneration,
+     no_visual_approval:true,no_guest_key:true,no_confirm_visual:true,server_atomic_permission:false,
+     due_ms:receipt.current.due_ms,elapsed_ms:elapsed,performance_ms:performance.now()};
+  }catch(e){return {status:cancel_invoked?'unknown':'refused',reason:String(e),cancel_invoked};}
+--- r24/operator-helpers/recovery_readonly.js
++++ r25/operator-helpers/recovery_readonly.js
+@@ -1,23 +1,27 @@
+-(async function recoveryReadOnly(c){
++(async function recoveryObservationRead(c){
+  'use strict';
+- const PAGE_SHA='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b';
+- const hash=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
++ const doc=document,origin=performance.timeOrigin,scripts=[...document.scripts],script=scripts[0],text=script?.textContent;
++ const hash=text===undefined?null:[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;'))))].map(x=>x.toString(16).padStart(2,'0')).join('');
++ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),2000);let fresh;
++ try{const response=await fetch('/api/status',{cache:'no-store',signal:controller.signal});if(!response.ok)throw Error('status_http');fresh=await response.json();}catch(_){return {qualified:false,reason:'fresh_status_unknown',performance_ms:performance.now()};}finally{clearTimeout(timer);}
++ // Everything below is one synchronous browser job, not screenshot/server/guest atomicity.
+  const fail=reason=>({qualified:false,reason,performance_ms:performance.now()});
+- if(!c||location.href!==c.url||window.top!==window||document.title!=='FX3 固件菜单试用')return fail('document_url');
+- const scripts=[...document.scripts];if(scripts.length!==1||scripts[0].src)return fail('script_shape');
+- const canonical=scripts[0].textContent.replace(/^const token=[^\r\n]*;$/m,'const token=__TOKEN__;');
+- if(await hash(canonical)!==PAGE_SHA)return fail('PAGE_fingerprint');
+- const a=window.fx3KeyAttemptOutcome?.(),h=window.__fx3InteractionDeadlineV1?.status?.(),s=lastStatus;
+- if(!a||!h||!s||!c.binding||a.attempt_id!==c.binding.attempt_id||
+-    a.alarm_nonce!==c.nonce||h.current?.nonce!==c.nonce||h.current.state!=='armed'||
+-    h.expectedLaunchId!==c.launch_id||h.expectedURL!==c.url||h.documentTimeOrigin!==performance.timeOrigin||
+-    !Number.isFinite(h.current.due_ms)||performance.now()>=h.current.due_ms)return fail('attempt_alarm_identity');
+- const eligibility=window.fx3KeyAttemptRecoveryEligibility?.(c.binding);
+- if(!eligibility?.eligible)return fail('not_proven_unqueued_or_not_ready:'+eligibility?.reason);
+- if(!s.frame||!frameLoadedFor(s)||!image.complete||image.naturalWidth<=0||
+-    s.frame.PNG_sha256!==shownSHA||s.frame.content_generation!==displayedGeneration)return fail('current_loaded_frame');
+- return {qualified:true,attempt_id:a.attempt_id,nonce:c.nonce,launch_id:c.launch_id,
+-   document_time_origin:performance.timeOrigin,alarm_due_ms:h.current.due_ms,
+-   sequence:displayed,PNG_sha256:shownSHA,content_generation:displayedGeneration,
+-   performance_ms:performance.now(),server_atomic_permission:false};
++ if(!c||document!==doc||performance.timeOrigin!==origin||location.href!==c.url||window.top!==window||document.title!=='FX3 固件菜单试用'||scripts.length!==1||script.src||script.textContent!==text||hash!=='852c83d673478a8f3db8a4d71989259c476a2325f2655a8dd3c8f8e46acfa55b')return fail('document_or_PAGE_identity');
++ const a=window.fx3KeyAttemptOutcome?.(),h=window.__fx3InteractionDeadlineV1?.status?.(),s=lastStatus,b=c.binding;
++ if(!fresh||fresh.phase!=='ready'||!fresh.ready||fresh.busy||fresh.review_required||fresh.error||fresh.review_protocol_unknown||!fresh.render_valid||fresh.launch_request_id!==c.launch_id||fresh.steps!==b?.base_step)return fail('fresh_server_lifecycle');
++ if(!a||!b||!h||!s||document!==attemptDocument||origin!==a.document_time_origin||origin!==b.document_time_origin||
++    a.attempt_id!==b.attempt_id||a.launch_request_id!==b.launch_request_id||a.launch_request_id!==c.launch_id||a.key!==b.key||a.base_step!==b.base_step||a.expected_step!==b.expected_step||
++    a.frame?.PNG_sha256!==b.PNG_sha256||a.frame?.content_generation!==b.content_generation||a.frame?.sequence!==b.sequence||a.alarm_nonce!==b.nonce||b.nonce!==c.nonce||
++    !['not_posted','explicit_rejected_unqueued'].includes(a.outcome)||(a.outcome==='not_posted'&&a.mutation_called)||(a.outcome==='explicit_rejected_unqueued'&&(!a.mutation_called||a.server_request_id!==a.attempt_id)))return fail('attributed_unqueued_binding');
++ const desc=Object.getOwnPropertyDescriptor(window,'__fx3InteractionDeadlineV1');
++ if(!desc||desc.configurable||desc.writable||h.version!==1||h.sealed||h.deadline_ms!==20000||h.expectedLaunchId!==c.launch_id||h.expectedURL!==c.url||h.documentTimeOrigin!==origin||
++    h.current?.nonce!==c.nonce||h.current.state!==c.mode||h.current.deadline_ms!==20000||!Number.isFinite(h.current.armed_ms)||!Number.isFinite(h.current.due_ms)||h.current.due_ms!==a.alarm_due_ms||h.current.due_ms!==h.current.armed_ms+20000)return fail('alarm_identity');
++ if(c.mode==='armed'){
++  if(performance.now()>=h.current.due_ms||!window.fx3KeyAttemptRecoveryEligibility?.(b)?.eligible)return fail('not_eligible_armed');
++ }else if(c.mode==='cancelled'){
++  const receipt=c.cancel_identity_json?JSON.parse(c.cancel_identity_json):null,cr=receipt?.current,ce=receipt?.events?.filter(e=>e.event==='cancelled'&&e.nonce===c.nonce).at(-1);
++  if(!ce||ce.elapsed_ms!==cr?.cancelled_ms-cr?.armed_ms||ce.performance_ms<cr?.cancelled_ms||ce.performance_ms>performance.now()||receipt?.version!==1||receipt.sealed||receipt.deadline_ms!==20000||receipt.expectedURL!==c.url||receipt.expectedLaunchId!==c.launch_id||receipt.documentTimeOrigin!==origin||cr?.state!=='cancelled'||cr.nonce!==c.nonce||cr.due_ms!==h.current.due_ms||cr.armed_ms!==h.current.armed_ms||cr.cancelled_ms!==h.current.cancelled_ms||!Number.isFinite(cr.cancelled_ms)||cr.cancelled_ms<cr.armed_ms||cr.cancelled_ms>=cr.due_ms||!h.events.some(e=>e.event==='cancelled'&&e.nonce===c.nonce&&e.elapsed_ms===cr.cancelled_ms-cr.armed_ms&&e.performance_ms>=cr.cancelled_ms&&e.performance_ms<=performance.now()))return fail('cancel_receipt_identity');
++ }else return fail('observation_mode');
++ if(s.launch_request_id!==c.launch_id||s.steps!==b.base_step||s.phase!=='ready'||!s.ready||s.busy||s.review_required||s.error||!s.render_valid||ending||finished||busy||awaitingStep!==null||deliveryUnknown||reviewUnknown||reviewAwaiting||renderFault||reviewProtocolUnknown||reviewTerminated||!s.frame||!frameLoadedFor(s)||!image.complete||image.naturalWidth<=0)return fail('lifecycle_not_ready');
++ return {qualified:true,alarm_budget_ms:h.deadline_ms,alarm_due_exact_in_browser:h.current.due_ms===h.current.armed_ms+20000,fresh_server_lifecycle:{phase:fresh.phase,ready:fresh.ready,busy:fresh.busy,review_required:fresh.review_required,error:fresh.error??null,steps:fresh.steps,launch_id:fresh.launch_request_id,render_valid:fresh.render_valid,protocol_unknown:!!fresh.review_protocol_unknown},mode:c.mode,attempt_id:a.attempt_id,nonce:c.nonce,launch_id:c.launch_id,document_time_origin:origin,document_id:reviewDocumentId,step:s.steps,attempt_binding:b,attempt_outcome:a.outcome,mutation_called:a.mutation_called,alarm_state:h.current.state,alarm_due_ms:h.current.due_ms,alarm_armed_ms:h.current.armed_ms,alarm_cancelled_ms:h.current.cancelled_ms??null,phase:s.phase,ready:s.ready,busy:s.busy,review_required:s.review_required,error:s.error??null,delivery_unknown:deliveryUnknown,review_unknown:reviewUnknown,protocol_unknown:reviewProtocolUnknown,ending,finished,sequence:displayed,PNG_sha256:shownSHA,content_generation:displayedGeneration,server_frame:structuredClone(s.frame),performance_ms:performance.now(),server_atomic_permission:false};
+ })
+--- r24/operator-helpers/recovery_tools.py
++++ r25/operator-helpers/recovery_tools.py
+@@ -3,6 +3,7 @@
+ import argparse,fcntl,hashlib,json,re,subprocess,time
+ from pathlib import Path
+ from urllib.parse import urlsplit
++from recovery_observation import observe,validate
+ HERE=Path(__file__).resolve().parent
+ UUID=re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+ SESSION=re.compile(r'fx3-deadline-[A-Za-z0-9_-]+')
+@@ -29,28 +30,14 @@
+  source=(HERE/name).read_text()+'('+json.dumps(config,ensure_ascii=False)+')'
+  return json.loads(call(session,['eval','--stdin'],source,timeout=15))
+ def capture(session,url,launch,nonce,binding,out):
+- tab=check(session,url,launch,nonce,binding);out=Path(out);out.mkdir() # exclusive
+- c={'url':url,'launch_id':launch,'nonce':nonce,'binding':binding}
+- receipt={'status':'unknown','scope':'read_only_unqueued_review','session':session,'tab':tab,'binding':binding,'host_start_ns':time.monotonic_ns(),'guest_keys_sent':0,'confirm_calls':0,'alarm_mutations':0}
+- try:
+-  first=evaluate(session,'recovery_readonly.js',c);receipt['before']=first
+-  if not first.get('qualified'):receipt.update(status='refused',reason=first.get('reason'));return receipt
+-  image=out/'review-page.png';call(session,['screenshot',str(image)],timeout=12)
+-  receipt['screenshot_sha256']=sha(image);receipt['screenshot_path']=str(image)
+-  second=evaluate(session,'recovery_readonly.js',c);receipt['after']=second
+-  fields=('attempt_id','nonce','launch_id','document_time_origin','alarm_due_ms','PNG_sha256','content_generation')
+-  if not second.get('qualified') or any(first.get(k)!=second.get(k) for k in fields):receipt.update(status='refused',reason='post_screenshot_identity_changed');return receipt
+-  receipt.update(status='qualified_review_screenshot',attempt_id=first['attempt_id'],nonce=nonce,launch_id=launch,PNG_sha256=first['PNG_sha256'],content_generation=first['content_generation'],sequence=first['sequence'],server_atomic_permission=False)
+-  return receipt
+- except BaseException as e:receipt.update(status='unknown',error=repr(e));return receipt
+- finally:
+-  receipt['host_end_ns']=time.monotonic_ns();(out/'review-result.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+-def _cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out):
++ check(session,url,launch,nonce,binding)
++ return observe(session,url,launch,nonce,binding,out,'armed',call,evaluate)
++def _cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out,review_sha=None):
+  tab=check(session,url,launch,nonce,binding);out=Path(out);out.mkdir()
+  receipt={'status':'unknown','scope':'explicit_unqueued_alarm_cleanup_only','session':session,'tab':tab,'binding':binding,'review':str(review),'target':target,'host_start_ns':time.monotonic_ns(),'guest_keys_sent':0,'confirm_calls':0,'new_alarm_calls':0}
+  try:
+-  reviewed=json.loads(Path(review).read_text())
+-  if not target.strip() or len(target)>500 or reviewed.get('status')!='qualified_review_screenshot' or reviewed.get('binding')!=binding or reviewed.get('nonce')!=nonce or reviewed.get('launch_id')!=launch:
++  reviewed=validate(review,binding,'armed',review_sha)
++  if not target.strip() or len(target)>500 or reviewed.get('status')!='qualified_recovery_observation' or reviewed.get('binding')!=binding:
+    receipt.update(status='refused',reason='operator_review_binding');return receipt
+   c={'url':url,'launch_id':launch,'nonce':nonce,'binding':binding,'review':reviewed,'target':target}
+   receipt['eval_may_have_started']=True
+@@ -58,17 +45,22 @@
+   result=evaluate(session,'recovery_cancel.js',c);receipt['browser_result']=result;receipt['status']=result.get('status','unknown')
+   receipt['alarm_cleanup_status']='confirmed_cancelled' if receipt['status']=='cancelled_unqueued_alarm_only' else 'unknown_or_refused'
+   if receipt['status']=='cancelled_unqueued_alarm_only':
+-   image=out/'current-after-cancel.png';call(session,['screenshot',str(image)],timeout=12)
+-   receipt['current_screenshot_path']=str(image);receipt['current_screenshot_sha256']=sha(image)
++   observation=observe(session,url,launch,nonce,binding,out/'observation','cancelled',call,evaluate,result['alarm_cancel_receipt'],result['alarm_cancel_identity_json'])
++   receipt['observation']=observation
++   receipt['observation_path']=str(out/'observation/observation-result.json')
++   receipt['observation_sha256']=sha(Path(receipt['observation_path']))
++   if observation['status']!='qualified_recovery_observation':
++    receipt.update(status='cancelled_observation_unknown',current_screenshot_status='unknown');return receipt
++   receipt['current_screenshot_path']=observation['screenshot_path'];receipt['current_screenshot_sha256']=observation['screenshot_sha256']
+    receipt['current_screenshot_status']='delivered_requires_separate_operator_review'
+   return receipt
+  except BaseException as e:
+   receipt.update(status='cancelled_screenshot_unknown' if receipt.get('alarm_cleanup_status')=='confirmed_cancelled' else ('unknown' if receipt.get('eval_may_have_started') else 'refused'),error=repr(e))
+   return receipt
+  finally:receipt['host_end_ns']=time.monotonic_ns();(out/'cancel-result.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
+-def cancel(session,url,launch,nonce,binding,review,target,out,ledger=None):
++def cancel(session,url,launch,nonce,binding,review,target,out,ledger=None,review_sha=None):
+     """Production calls require a locked ledger; None is offline fixture only."""
+-    if ledger is None:return _cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out)
++    if ledger is None:return _cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out,review_sha)
+     path=Path(ledger)
+     if not path.parent.is_dir():raise ValueError('existing ledger parent')
+     with path.open('a+') as f:
+@@ -83,7 +75,7 @@
+         reservation={'step':step,'attempt_id':aid,'nonce':nonce,'status':'reserved_unknown','host_ns':time.monotonic_ns()}
+         state['recoveries'].append(reservation)
+         f.seek(0);f.truncate();f.write(json.dumps(state,indent=2)+'\n');f.flush();__import__('os').fsync(f.fileno())
+-        result=_cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out)
++        result=_cancel_unbudgeted(session,url,launch,nonce,binding,review,target,out,review_sha)
+         reservation['status']=result['status']
+         reservation['alarm_cleanup_status']=result.get('alarm_cleanup_status','unknown')
+         reservation['current_screenshot_status']=result.get('current_screenshot_status','unknown')
+@@ -93,8 +85,8 @@
+ if __name__=='__main__':
+  p=argparse.ArgumentParser();p.add_argument('action',choices=('capture','cancel'))
+  for k in ('session','url','launch-id','nonce','binding','out'):p.add_argument('--'+k,required=True)
+- p.add_argument('--review');p.add_argument('--target');p.add_argument('--ledger');a=p.parse_args()
++ p.add_argument('--review');p.add_argument('--review-sha');p.add_argument('--target');p.add_argument('--ledger');a=p.parse_args()
+  if a.action=='cancel' and not a.ledger:p.error('--ledger required for cancel')
+  binding=json.loads(Path(a.binding).read_text());c=(a.session,a.url,a.launch_id,a.nonce,binding)
+- result=capture(*c,a.out) if a.action=='capture' else cancel(*c,a.review,a.target or '',a.out,a.ledger)
+- print(json.dumps(result,ensure_ascii=False,indent=2));raise SystemExit(0 if result['status'] in ('qualified_review_screenshot','cancelled_unqueued_alarm_only') else 2)
++ result=capture(*c,a.out) if a.action=='capture' else cancel(*c,a.review,a.target or '',a.out,a.ledger,a.review_sha)
++ print(json.dumps(result,ensure_ascii=False,indent=2));raise SystemExit(0 if result['status'] in ('qualified_recovery_observation','cancelled_unqueued_alarm_only') else 2)
+--- /dev/null
++++ r25/operator-helpers/recovery_observation.py
+@@ -0,0 +1,50 @@
++"""Immutable interval browser observation; no firmware-frame identity or input permit."""
++import hashlib,json,math,os,uuid
++from pathlib import Path
++SCHEMA='fx3-recovery-observation-r25-v1'
++IDENTITY=('mode','attempt_id','nonce','launch_id','document_time_origin','document_id','step','attempt_binding','attempt_outcome','mutation_called','alarm_state','alarm_due_ms','alarm_armed_ms','alarm_cancelled_ms')
++def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
++def regular(p):
++ p=Path(p)
++ if not p.is_absolute() or p.is_symlink() or not p.is_file():raise ValueError('regular_absolute_observation_file')
++ return p
++
++def valid_states(before,after,binding,mode):
++ for s in (before,after):
++  if (s.get('qualified') is not True or s.get('mode')!=mode or s.get('attempt_binding')!=binding or s.get('attempt_id')!=binding['attempt_id'] or s.get('nonce')!=binding['nonce'] or s.get('launch_id')!=binding['launch_request_id'] or s.get('document_time_origin')!=binding['document_time_origin'] or not s.get('document_id') or s.get('step')!=binding['base_step'] or s.get('alarm_state')!=mode or s.get('phase')!='ready' or s.get('ready') is not True or any(s.get(k) for k in ('busy','review_required','error','delivery_unknown','review_unknown','protocol_unknown','ending','finished')) or s.get('attempt_outcome') not in ('not_posted','explicit_rejected_unqueued')):raise ValueError('recovery_observation_lifecycle')
++  if s['attempt_outcome']=='not_posted' and s.get('mutation_called') is not False:raise ValueError('not_posted_mutation')
++  if s.get('alarm_budget_ms')!=20000 or s.get('alarm_due_exact_in_browser') is not True:raise ValueError('alarm_20s_browser_identity')
++  fresh=s.get('fresh_server_lifecycle',{})
++  if fresh.get('phase')!='ready' or fresh.get('ready') is not True or fresh.get('steps')!=binding['base_step'] or fresh.get('launch_id')!=binding['launch_request_id'] or any(fresh.get(k) for k in ('busy','review_required','error','protocol_unknown')) or fresh.get('render_valid') is not True:raise ValueError('fresh_server_lifecycle')
++  if mode=='armed' and s['performance_ms']>=s['alarm_due_ms']:raise ValueError('expired_alarm')
++  if mode=='cancelled' and (not isinstance(s['alarm_cancelled_ms'],(int,float)) or not s['alarm_armed_ms']<=s['alarm_cancelled_ms']<s['alarm_due_ms']):raise ValueError('cancelled_alarm_identity')
++ if any(before.get(k)!=after.get(k) for k in IDENTITY) or after['performance_ms']<before['performance_ms'] or after['sequence']<before['sequence']:raise ValueError('recovery_observation_identity_changed')
++
++def observe(session,url,launch,nonce,binding,out,mode,call,evaluate,cancel_receipt=None,cancel_identity_json=None):
++ import time
++ out=Path(out);out.mkdir() # new directory makes acquisition source exclusive
++ c={'url':url,'launch_id':launch,'nonce':nonce,'binding':binding,'mode':mode,'cancel_receipt':cancel_receipt,'cancel_identity_json':cancel_identity_json}
++ receipt={'schema':SCHEMA,'status':'unknown','observation_id':str(uuid.uuid4()),'binding':binding,'mode':mode,'source':{'method':'agent-browser screenshot','session':session,'url':url},'host_start_ns':time.monotonic_ns(),'input_permission':False,'postkey_confirmation':False,'firmware_generation':None,'causality':'not asserted; browser capture occurred between two lifecycle observations'}
++ try:
++  before=evaluate(session,'recovery_readonly.js',c);receipt['before']=before
++  if not before.get('qualified'):receipt.update(status='refused',reason=before.get('reason'));return receipt
++  image=out/'observation.png';call(session,['screenshot',str(image)],timeout=12)
++  image=regular(image);data=image.read_bytes()
++  if not data.startswith(b'\x89PNG\r\n\x1a\n') or len(data)>16*1024*1024:raise ValueError('observation_png')
++  receipt.update(screenshot_path=str(image),screenshot_sha256=sha(image),screenshot_byte_length=len(data))
++  after=evaluate(session,'recovery_readonly.js',c);receipt['after']=after;valid_states(before,after,binding,mode)
++  receipt.update(status='qualified_recovery_observation',frame_changed=any(before[k]!=after[k] for k in ('PNG_sha256','content_generation','sequence')))
++  return receipt
++ except BaseException as e:receipt.update(status='unknown',error=repr(e));return receipt
++ finally:
++  receipt['host_end_ns']=time.monotonic_ns();(out/'observation-result.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n')
++
++def validate(path,binding,mode,expected_sha):
++ path=regular(path)
++ if not expected_sha or sha(path)!=expected_sha:raise ValueError('observation_receipt_hash')
++ v=json.loads(path.read_text())
++ if v.get('schema')!=SCHEMA or v.get('status')!='qualified_recovery_observation' or v.get('binding')!=binding or v.get('mode')!=mode or v.get('input_permission') is not False or v.get('postkey_confirmation') is not False or v.get('firmware_generation') is not None or v.get('source',{}).get('method')!='agent-browser screenshot':raise ValueError('observation_receipt_contract')
++ valid_states(v['before'],v['after'],binding,mode)
++ p=regular(v['screenshot_path'])
++ if p!=path.parent/'observation.png' or not p.read_bytes().startswith(b'\x89PNG\r\n\x1a\n') or sha(p)!=v['screenshot_sha256'] or p.stat().st_size!=v['screenshot_byte_length']:raise ValueError('observation_image_hash')
++ return v
+--- /dev/null
++++ r25/runtime-wrapper/recovery_guard.py
+@@ -0,0 +1,37 @@
++"""Host evidence links for one explicit unqueued recovery; never authorizes a key."""
++from common import *
++from recovery_observation import validate
++
++def pinned(path,expected):
++ p=Path(path)
++ if p.is_symlink() or not p.is_file() or sha(p)!=expected:raise ValueError('recovery_link_hash')
++ return json.loads(p.read_text())
++def pending(require_review):
++ v=read('pending-recovery-review.json');a=read('current-attempt.json');folder=Path(a['path'])
++ if v.get('status')!=('explicit_recovery_image_reviewed' if require_review else 'requires_separate_explicit_review'):raise ValueError('recovery_review_state_or_replay')
++ if any(v.get(k)!=a.get(k) for k in ('step','attempt_number','attempt_id','nonce')):raise ValueError('recovery_attempt_changed')
++ b=pinned(folder/'binding.json',v['binding_sha256'])
++ cr=pinned(v['cancel_path'],v['cancel_sha256']);br=cr.get('browser_result',{});alarm=br.get('alarm_cancel_receipt',{})
++ if cr.get('status')!='cancelled_unqueued_alarm_only' or cr.get('binding')!=b or br.get('nonce')!=a['nonce'] or alarm.get('current',{}).get('nonce')!=a['nonce'] or alarm.get('current',{}).get('state')!='cancelled':raise ValueError('recovery_cancel_binding')
++ cap=validate(v['capture_result'],b,'cancelled',v['capture_sha256'])
++ if cr['observation_path']!=v['capture_result'] or cr['observation_sha256']!=v['capture_sha256'] or cap['source']['url']!=identity()['url'] or cap['source']['session']!=CFG['session']:raise ValueError('recovery_source_link')
++ records=read('ledger.json')['recoveries'];matches=[r for r in records if r['attempt_id']==a['attempt_id'] and r['nonce']==a['nonce'] and r['step']==a['step']]
++ if len(matches)!=1 or matches[0].get('status')!='cancelled_unqueued_alarm_only' or matches[0].get('current_screenshot_status')!='delivered_requires_separate_operator_review':raise ValueError('recovery_ledger_link')
++ if require_review and (not v.get('review_target','').strip() or v.get('reviewed_png_sha256')!=cap['screenshot_sha256'] or v.get('reviewed_receipt_sha256')!=v['capture_sha256']):raise ValueError('recovery_explicit_review_link')
++ # Same live lifecycle and same cancelled nonce, but no historical SHA/gen equality.
++ code=(CANDIDATE_OPS/'recovery_readonly.js').read_text()+'('+json.dumps({'url':identity()['url'],'launch_id':identity()['launch_id'],'nonce':a['nonce'],'binding':b,'mode':'cancelled','cancel_receipt':alarm,'cancel_identity_json':br['alarm_cancel_identity_json']})+')'
++ live=ev(folder.name+'-recovery-current-lifecycle',code)
++ if not live.get('qualified') or live.get('document_id')!=cap['before']['document_id'] or live.get('document_time_origin')!=cap['before']['document_time_origin']:raise ValueError('recovery_live_lifecycle')
++ return v,cap
++
++def click_guard(step,ledger):
++ if len(ledger['attempts'])>=10 or len(ledger['recoveries'])>2:raise ValueError('navigation_budget')
++ if not (HERE/'current-attempt.json').exists():return None
++ a=read('current-attempt.json')
++ if a['step']!=step:return None
++ # A same-step repeat always requires its exact distinct reviewed recovery observation.
++ return pending(True)[0]
++
++def durable_pending(v):
++ p=HERE/'pending-recovery-review.json'
++ with p.open('w') as f:f.write(json.dumps(v,ensure_ascii=False,indent=2)+'\n');f.flush();os.fsync(f.fileno())

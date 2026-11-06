@@ -1,0 +1,7 @@
+{
+  "outcome": "independent cluster oracle exceeded partition bound",
+  "reason": "The FAT16-named helper supports FAT12 and FAT16; the first independent oracle incorrectly assumed 16-bit entries.",
+  "correction": "Use the BPB-derived cluster count/FAT width and decode packed 12-bit entries when appropriate. Existing first output is preserved and compared byte-for-byte on retry.",
+  "counted_as_passing_case": false,
+  "partition_or_original_modified": false
+}

@@ -1,0 +1,767 @@
+{
+  "source": "work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/runs/vmopt-20261103-ap105-baseline-45d987f9/serial.log",
+  "raw_event_lines": 799,
+  "unique_events": 799,
+  "duplicate_event_lines": [],
+  "duplicate_count": 0,
+  "alloc_total": 323,
+  "alloc_gpe_module_0x82": 182,
+  "alloc_other_module": 141,
+  "alloc_other_by_module_caller": [
+    {
+      "module": "0x11e",
+      "caller": "0x7fa4847964",
+      "count": 1
+    },
+    {
+      "module": "0x16f",
+      "caller": "0x7f8c64a5fc",
+      "count": 1
+    },
+    {
+      "module": "0xd5",
+      "caller": "0x7f8e6ff860",
+      "count": 3
+    },
+    {
+      "module": "0xd5",
+      "caller": "0x7f8e6db068",
+      "count": 1
+    },
+    {
+      "module": "0x1ae",
+      "caller": "0x7f1c559d20",
+      "count": 1
+    },
+    {
+      "module": "0x1d5",
+      "caller": "0x7f1c4aa328",
+      "count": 1
+    },
+    {
+      "module": "0x13e",
+      "caller": "0x7f1c12c238",
+      "count": 1
+    },
+    {
+      "module": "0xaf",
+      "caller": "0x7f1c041420",
+      "count": 1
+    },
+    {
+      "module": "0xaf",
+      "caller": "0x7f1c041434",
+      "count": 1
+    },
+    {
+      "module": "0x94",
+      "caller": "0x7efb27ddb4",
+      "count": 1
+    },
+    {
+      "module": "0x94",
+      "caller": "0x7efb27dddc",
+      "count": 1
+    },
+    {
+      "module": "0x238",
+      "caller": "0x7f1c0b6e80",
+      "count": 1
+    },
+    {
+      "module": "0x238",
+      "caller": "0x7f1c0b51b0",
+      "count": 1
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efca9b638",
+      "count": 5
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efc9d50ec",
+      "count": 58
+    },
+    {
+      "module": "0x1e1",
+      "caller": "0x7efca9b638",
+      "count": 1
+    },
+    {
+      "module": "0x1a0",
+      "caller": "0x7ef6021714",
+      "count": 1
+    },
+    {
+      "module": "0x1a0",
+      "caller": "0x7ef6015660",
+      "count": 1
+    },
+    {
+      "module": "0x11d",
+      "caller": "0x7ef579d374",
+      "count": 2
+    },
+    {
+      "module": "0x1ac",
+      "caller": "0x7efca9b638",
+      "count": 2
+    },
+    {
+      "module": "0x169",
+      "caller": "0x7ef9bd5de4",
+      "count": 1
+    },
+    {
+      "module": "0x169",
+      "caller": "0x7efca9b638",
+      "count": 1
+    },
+    {
+      "module": "0x2f5",
+      "caller": "0x7efca9b638",
+      "count": 1
+    },
+    {
+      "module": "0x2f5",
+      "caller": "0x7eed4929cc",
+      "count": 1
+    },
+    {
+      "module": "0x300",
+      "caller": "0x7efca9b638",
+      "count": 1
+    },
+    {
+      "module": "0xc7",
+      "caller": "0x7f04c5fd48",
+      "count": 1
+    },
+    {
+      "module": "0x30",
+      "caller": "0x7f04cda3ac",
+      "count": 4
+    },
+    {
+      "module": "0xc7",
+      "caller": "0x7f04e57cc0",
+      "count": 1
+    },
+    {
+      "module": "0x3c",
+      "caller": "0x7f04ca0c48",
+      "count": 1
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efca3cff0",
+      "count": 15
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efc9d63e4",
+      "count": 5
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efca97b68",
+      "count": 1
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efc9d9c40",
+      "count": 1
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efc9d9b84",
+      "count": 1
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efca9a030",
+      "count": 2
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efca99d28",
+      "count": 1
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efcaac400",
+      "count": 11
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efca3d2b0",
+      "count": 4
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efca3defc",
+      "count": 1
+    },
+    {
+      "module": "0x94",
+      "caller": "0x7ee91b0f20",
+      "count": 1
+    },
+    {
+      "module": "0x1cf",
+      "caller": "0x7efca99ea8",
+      "count": 1
+    }
+  ],
+  "release_total": 294,
+  "complete_total": 182,
+  "gpe_source_completes": 182,
+  "qid_rows": [
+    {
+      "qid": "0",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x11e": 1
+      },
+      "first_ns": 16785486000,
+      "last_ns": 16785486000
+    },
+    {
+      "qid": "0x816f610f",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x16f": 1
+      },
+      "first_ns": 17731360000,
+      "last_ns": 17731360000
+    },
+    {
+      "qid": "0x80d56117",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0xd5": 1
+      },
+      "first_ns": 21187040000,
+      "last_ns": 21187040000
+    },
+    {
+      "qid": "0x80d56118",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0xd5": 1
+      },
+      "first_ns": 21242532992,
+      "last_ns": 21242532992
+    },
+    {
+      "qid": "0x80d56119",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0xd5": 1
+      },
+      "first_ns": 21248420000,
+      "last_ns": 21248420000
+    },
+    {
+      "qid": "0x80d5611a",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0xd5": 1
+      },
+      "first_ns": 21298574992,
+      "last_ns": 21298574992
+    },
+    {
+      "qid": "0x81ae611b",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1ae": 1
+      },
+      "first_ns": 21786444992,
+      "last_ns": 21786444992
+    },
+    {
+      "qid": "0x81d56142",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1d5": 1
+      },
+      "first_ns": 22112210992,
+      "last_ns": 22112210992
+    },
+    {
+      "qid": "0x813e6180",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x13e": 1
+      },
+      "first_ns": 22687608000,
+      "last_ns": 22687608000
+    },
+    {
+      "qid": "0x80af6181",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0xaf": 1
+      },
+      "first_ns": 23843698992,
+      "last_ns": 23843698992
+    },
+    {
+      "qid": "0x80af6182",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0xaf": 1
+      },
+      "first_ns": 23870432992,
+      "last_ns": 23870432992
+    },
+    {
+      "qid": "0x80946186",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x94": 1
+      },
+      "first_ns": 25967212000,
+      "last_ns": 25967212000
+    },
+    {
+      "qid": "0x80946187",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x94": 1
+      },
+      "first_ns": 25971120000,
+      "last_ns": 25971120000
+    },
+    {
+      "qid": "0x82386188",
+      "alloc": 2,
+      "release": 2,
+      "complete": 0,
+      "modules": {
+        "0x238": 2
+      },
+      "first_ns": 26708130992,
+      "last_ns": 27484574000
+    },
+    {
+      "qid": "0x81cf6188",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 1
+      },
+      "first_ns": 30653756000,
+      "last_ns": 30653756000
+    },
+    {
+      "qid": "0x81cf6189",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 1
+      },
+      "first_ns": 30656470000,
+      "last_ns": 30656470000
+    },
+    {
+      "qid": "0x81cf618a",
+      "alloc": 1,
+      "release": 1,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 1
+      },
+      "first_ns": 30665112000,
+      "last_ns": 30665112000
+    },
+    {
+      "qid": "0x81e1618a",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1e1": 1
+      },
+      "first_ns": 30679432000,
+      "last_ns": 30679432000
+    },
+    {
+      "qid": "0x81a0618c",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1a0": 1
+      },
+      "first_ns": 30747908992,
+      "last_ns": 30747908992
+    },
+    {
+      "qid": "0x81a0618f",
+      "alloc": 1,
+      "release": 1,
+      "complete": 0,
+      "modules": {
+        "0x1a0": 1
+      },
+      "first_ns": 30756096992,
+      "last_ns": 30756096992
+    },
+    {
+      "qid": "0x811d6190",
+      "alloc": 1,
+      "release": 1,
+      "complete": 0,
+      "modules": {
+        "0x11d": 1
+      },
+      "first_ns": 30761880992,
+      "last_ns": 30761880992
+    },
+    {
+      "qid": "0x81cf6190",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 1
+      },
+      "first_ns": 30794210000,
+      "last_ns": 30794210000
+    },
+    {
+      "qid": "0x81ac6191",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1ac": 1
+      },
+      "first_ns": 30799548000,
+      "last_ns": 30799548000
+    },
+    {
+      "qid": "0x81ac6192",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1ac": 1
+      },
+      "first_ns": 30807582000,
+      "last_ns": 30807582000
+    },
+    {
+      "qid": "0x81cf6194",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 1
+      },
+      "first_ns": 30838906000,
+      "last_ns": 30838906000
+    },
+    {
+      "qid": "0x81696195",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x169": 1
+      },
+      "first_ns": 30897926992,
+      "last_ns": 30897926992
+    },
+    {
+      "qid": "0x81696196",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x169": 1
+      },
+      "first_ns": 30912284992,
+      "last_ns": 30912284992
+    },
+    {
+      "qid": "0x811d6197",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x11d": 1
+      },
+      "first_ns": 31017246992,
+      "last_ns": 31017246992
+    },
+    {
+      "qid": "0x81cf6198",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 1
+      },
+      "first_ns": 31021800992,
+      "last_ns": 31021800992
+    },
+    {
+      "qid": "0x82f56199",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x2f5": 1
+      },
+      "first_ns": 31043250000,
+      "last_ns": 31043250000
+    },
+    {
+      "qid": "0x82f5619d",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x2f5": 1
+      },
+      "first_ns": 31122804000,
+      "last_ns": 31122804000
+    },
+    {
+      "qid": "0x8300619e",
+      "alloc": 1,
+      "release": 0,
+      "complete": 0,
+      "modules": {
+        "0x300": 1
+      },
+      "first_ns": 31147840000,
+      "last_ns": 31147840000
+    },
+    {
+      "qid": "0x80c7619f",
+      "alloc": 2,
+      "release": 2,
+      "complete": 0,
+      "modules": {
+        "0xc7": 2
+      },
+      "first_ns": 31241490992,
+      "last_ns": 37407760992
+    },
+    {
+      "qid": "0x8030619f",
+      "alloc": 4,
+      "release": 4,
+      "complete": 0,
+      "modules": {
+        "0x30": 4
+      },
+      "first_ns": 37246376992,
+      "last_ns": 37313502992
+    },
+    {
+      "qid": "0x803c619f",
+      "alloc": 1,
+      "release": 1,
+      "complete": 0,
+      "modules": {
+        "0x3c": 1
+      },
+      "first_ns": 37436244992,
+      "last_ns": 37436244992
+    },
+    {
+      "qid": "0x81cf619f",
+      "alloc": 6,
+      "release": 6,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 6
+      },
+      "first_ns": 37605776000,
+      "last_ns": 37773062992
+    },
+    {
+      "qid": "0x81cf61c0",
+      "alloc": 59,
+      "release": 58,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 59
+      },
+      "first_ns": 37949666992,
+      "last_ns": 49764316000
+    },
+    {
+      "qid": "0x81cf61c1",
+      "alloc": 24,
+      "release": 24,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 24
+      },
+      "first_ns": 40059888992,
+      "last_ns": 45284600992
+    },
+    {
+      "qid": "0x81cf61c2",
+      "alloc": 5,
+      "release": 5,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 5
+      },
+      "first_ns": 41125950000,
+      "last_ns": 45871038992
+    },
+    {
+      "qid": "0x809461c2",
+      "alloc": 1,
+      "release": 1,
+      "complete": 0,
+      "modules": {
+        "0x94": 1
+      },
+      "first_ns": 46046750992,
+      "last_ns": 46046750992
+    },
+    {
+      "qid": "0x81cf61c4",
+      "alloc": 2,
+      "release": 2,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 2
+      },
+      "first_ns": 46253554000,
+      "last_ns": 46273612992
+    },
+    {
+      "qid": "0x81cf61c5",
+      "alloc": 4,
+      "release": 4,
+      "complete": 0,
+      "modules": {
+        "0x1cf": 4
+      },
+      "first_ns": 49855396992,
+      "last_ns": 50010106000
+    },
+    {
+      "qid": "0x808261c1",
+      "alloc": 79,
+      "release": 79,
+      "complete": 79,
+      "modules": {
+        "0x82": 79
+      },
+      "first_ns": 55792636000,
+      "last_ns": 1175209748992
+    },
+    {
+      "qid": "0x808261c2",
+      "alloc": 102,
+      "release": 102,
+      "complete": 102,
+      "modules": {
+        "0x82": 102
+      },
+      "first_ns": 379456362000,
+      "last_ns": 1169960704000
+    },
+    {
+      "qid": "0x808261c3",
+      "alloc": 1,
+      "release": 1,
+      "complete": 1,
+      "modules": {
+        "0x82": 1
+      },
+      "first_ns": 1114453670000,
+      "last_ns": 1114453670000
+    }
+  ],
+  "gpe_qids": [
+    "0x808261c1",
+    "0x808261c2",
+    "0x808261c3"
+  ],
+  "non_gpe_qids": [
+    "0",
+    "0x8030619f",
+    "0x803c619f",
+    "0x80946186",
+    "0x80946187",
+    "0x809461c2",
+    "0x80af6181",
+    "0x80af6182",
+    "0x80c7619f",
+    "0x80d56117",
+    "0x80d56118",
+    "0x80d56119",
+    "0x80d5611a",
+    "0x811d6190",
+    "0x811d6197",
+    "0x813e6180",
+    "0x81696195",
+    "0x81696196",
+    "0x816f610f",
+    "0x81a0618c",
+    "0x81a0618f",
+    "0x81ac6191",
+    "0x81ac6192",
+    "0x81ae611b",
+    "0x81cf6188",
+    "0x81cf6189",
+    "0x81cf618a",
+    "0x81cf6190",
+    "0x81cf6194",
+    "0x81cf6198",
+    "0x81cf619f",
+    "0x81cf61c0",
+    "0x81cf61c1",
+    "0x81cf61c2",
+    "0x81cf61c4",
+    "0x81cf61c5",
+    "0x81d56142",
+    "0x81e1618a",
+    "0x82386188",
+    "0x82f56199",
+    "0x82f5619d",
+    "0x8300619e"
+  ],
+  "saw_unfetched": 0
+}

@@ -1,0 +1,372 @@
+{
+  "status": "CURRENT_GPIO_REGISTERS_AND_STATIC_SIO_RATE_DIFFERENCE_BOUND",
+  "current_kernel_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+  "GPIO": {
+    "ioctl": "0xc0104702",
+    "param_bytes": 16,
+    "portid_offset": 4,
+    "bitnum_offset": 8,
+    "value_offset": 12,
+    "current_mode9_write_order": [
+      "PORTSEL_SET+0x34",
+      "INEN_SET+0x24",
+      "WDATA_SET+0x44",
+      "DIR_SET+0x04"
+    ],
+    "bitmask": 4,
+    "GPIO4_physical_base": "0xf1021000",
+    "resources": [
+      {
+        "port": 0,
+        "record_offset": 6552976,
+        "name": "gpio_p0",
+        "physical": "0xf101d000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff101d000"
+      },
+      {
+        "port": 1,
+        "record_offset": 6553128,
+        "name": "gpio_p1",
+        "physical": "0xf101e000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff101e000"
+      },
+      {
+        "port": 2,
+        "record_offset": 6553280,
+        "name": "gpio_p2",
+        "physical": "0xf101f000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff101f000"
+      },
+      {
+        "port": 3,
+        "record_offset": 6553432,
+        "name": "gpio_p3",
+        "physical": "0xf1020000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1020000"
+      },
+      {
+        "port": 4,
+        "record_offset": 6553584,
+        "name": "gpio_p4",
+        "physical": "0xf1021000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1021000"
+      },
+      {
+        "port": 5,
+        "record_offset": 6553736,
+        "name": "gpio_p5",
+        "physical": "0xf1022000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1022000"
+      },
+      {
+        "port": 6,
+        "record_offset": 6553888,
+        "name": "gpio_p6",
+        "physical": "0xf1023000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1023000"
+      },
+      {
+        "port": 7,
+        "record_offset": 6554040,
+        "name": "gpio_p7",
+        "physical": "0xf1024000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1024000"
+      },
+      {
+        "port": 8,
+        "record_offset": 6554192,
+        "name": "gpio_p8",
+        "physical": "0xf1025000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1025000"
+      },
+      {
+        "port": 9,
+        "record_offset": 6554344,
+        "name": "gpio_p9",
+        "physical": "0xf1026000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1026000"
+      },
+      {
+        "port": 10,
+        "record_offset": 6554496,
+        "name": "gpio_p10",
+        "physical": "0xf1027000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1027000"
+      },
+      {
+        "port": 11,
+        "record_offset": 6554648,
+        "name": "gpio_p11",
+        "physical": "0xf1028000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1028000"
+      },
+      {
+        "port": 12,
+        "record_offset": 6554800,
+        "name": "gpio_p12",
+        "physical": "0xf1029000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff1029000"
+      },
+      {
+        "port": 13,
+        "record_offset": 6554952,
+        "name": "gpio_p13",
+        "physical": "0xf102a000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff102a000"
+      },
+      {
+        "port": 14,
+        "record_offset": 6555104,
+        "name": "gpio_p14",
+        "physical": "0xf102b000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff102b000"
+      },
+      {
+        "port": 15,
+        "record_offset": 6555256,
+        "name": "gpio_p15",
+        "physical": "0xf102c000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff102c000"
+      },
+      {
+        "port": 16,
+        "record_offset": 6555408,
+        "name": "gpio_p16",
+        "physical": "0xf102d000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff102d000"
+      },
+      {
+        "port": 17,
+        "record_offset": 6555560,
+        "name": "gpio_p17",
+        "physical": "0xf102e000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff102e000"
+      },
+      {
+        "port": 18,
+        "record_offset": 6555712,
+        "name": "gpio_p18",
+        "physical": "0xf102f000",
+        "size": 4096,
+        "initial_virtual": "0xfffffffff102f000"
+      }
+    ],
+    "reference_init_write_order": [
+      "WDATA_SET+0x44",
+      "DIR_SET+0x04",
+      "PORTSEL_SET+0x34",
+      "PORTSEL_CLR+0x38 for SIO pins0,1,3"
+    ],
+    "reference_explicit_INEN_SET": false,
+    "modes_share_final_CS_mux_direction_high_intent": true,
+    "initial_state_or_transient_pin_levels_proven": false
+  },
+  "SIO": {
+    "current7_02_helper_request42": "0x40046742",
+    "current7_02_helper_request42_value": 19,
+    "current7_02_helper_request41": "0x40046741",
+    "current7_02_helper_request41_value": 4096,
+    "historical2_05_request42_stores_at_channel_offset": 12,
+    "historical2_05_request41_stores_low_high_at": [
+      8,
+      9
+    ],
+    "historical2_05_rate_register_offsets": [
+      20,
+      24
+    ],
+    "reference_payload_rate_index": 3,
+    "reference_low_register_value": "0x03000000",
+    "historical_path_given_current_request_low_value": "0x13000000",
+    "same_effective_frequency_proven": false,
+    "current7_02_installed_p1_module_identity_proven": false,
+    "rate_is_not_assumed_Hz": true
+  },
+  "additional_original_ranges": [
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+      "source_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "start": 6552976,
+      "end_exclusive": 6555864,
+      "bytes": 2888,
+      "sha256": "5ee69854c497772b928a148d397d490479983d17e1204289841299e2658999d7",
+      "layout": "kernel_file_offset",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/current-GPIO-resources.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+      "source_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "start": 6469120,
+      "end_exclusive": 6470944,
+      "bytes": 1824,
+      "sha256": "08c53eca367f42f53382a52207a98e12c5aab0c7b3a7b6de6f5f564696993447",
+      "layout": "kernel_file_offset",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/current-GPIO-state-defaults.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+      "source_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "start": 4617896,
+      "end_exclusive": 4617900,
+      "bytes": 4,
+      "sha256": "791a1e884e2efd540a554ea5e56f2edaa6f4c88aeb69aaf03ab7880b01605d1d",
+      "layout": "kernel_file_offset",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/current-GPIO-ioctl-switch.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage182-boot-selector-and-recovery-admission/current-updater-evidence/p3-main/vmlinux.bin",
+      "source_sha256": "da4a66fa29f6b4033233c0d8e7bd9a6f0ffab0cc18d85a44aa6f3830b7c4820c",
+      "start": 6471824,
+      "end_exclusive": 6471888,
+      "bytes": 64,
+      "sha256": "cad5b697268a267eb3882f357498faa7916716136a74bbe3bf5a220af7e269e3",
+      "layout": "kernel_file_offset",
+      "kind": "data",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/current-GPIO-file-operations.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "start": 4199216,
+      "end_exclusive": 4199236,
+      "bytes": 20,
+      "sha256": "6a92bbe45000c2e2acc9ab6c1b37888a5e76e7437c1c842651d05a97f1662889",
+      "layout": "ELF_VA",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/current-helper-SIO-request42.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/official7.02-Ubody/bin/ud_darwin_firmup.elf",
+      "source_sha256": "f0b0fd8fd1fd3c2c348744faeb9b0267668b99ebf5875560ef2fd7dddb424ea8",
+      "start": 4199284,
+      "end_exclusive": 4199304,
+      "bytes": 20,
+      "sha256": "b3e14109b29838e27dfba0214b805a0bffb9bd5f4911053c4292fa42f2f8b243",
+      "layout": "ELF_VA",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/current-helper-SIO-request41.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/kmod/sio.ko",
+      "source_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+      "start": 4608,
+      "end_exclusive": 4672,
+      "bytes": 64,
+      "sha256": "7419579d27d7220fcecedce73bc6f3247ea0cdd26fb14d8cf757fc57610c3904",
+      "layout": "ELF_text_offset",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/historical-SIO-config-dispatch.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/kmod/sio.ko",
+      "source_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+      "start": 4856,
+      "end_exclusive": 4940,
+      "bytes": 84,
+      "sha256": "4dc79f11ef031d65a840f10d82c454b99733fb14a2806a6ebabbf20595c15a90",
+      "layout": "ELF_text_offset",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/historical-SIO-config-storage.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage200-official-Darwin-updater-dependencies/originals/historical2.05-p1/usr/kmod/sio.ko",
+      "source_sha256": "a53bc267050ed81e3d81d99287a7ae541381ecea88d2f4f5948e29b45af02eb0",
+      "start": 2692,
+      "end_exclusive": 2784,
+      "bytes": 92,
+      "sha256": "125b09773efc6500f587c24dce570dd3135d4130472199b7b73e1d51826526ab",
+      "layout": "ELF_text_offset",
+      "kind": "code",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/pins/historical-SIO-rate-register-writes.txt"
+    }
+  ],
+  "source_line_pins": [
+    {
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/darwin.c",
+      "source_sha256": "220ce98b18773a66df1aa499e2f9aa6e82dadb6a409d6130f65a5511d8088a1b",
+      "start_line": 14,
+      "end_line_inclusive": 38,
+      "sha256": "86c3329b07bfb7794c463fc405d8470970963abda55c8362dcb52a3ca5df2086",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/reference-SIO-registers-and-rate.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/darwin.c",
+      "source_sha256": "220ce98b18773a66df1aa499e2f9aa6e82dadb6a409d6130f65a5511d8088a1b",
+      "start_line": 41,
+      "end_line_inclusive": 56,
+      "sha256": "4d8ce55f05f2b9583d1ad27bbbf75a8fbbc3f774ddd29b16a3962df2db556562",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/reference-GPIO-pins.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage205-FX3-hardware-profile-differences/reference/payloads/fastboot/src/darwin.c",
+      "source_sha256": "220ce98b18773a66df1aa499e2f9aa6e82dadb6a409d6130f65a5511d8088a1b",
+      "start_line": 153,
+      "end_line_inclusive": 165,
+      "sha256": "e2049e54d5cc72c81ffaca9f4569081862289461c924b3b4b0cda896d84264d2",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/reference-GPIO-init.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/reference-source/linux-kernel/drivers/char/gpio-sn.c",
+      "source_sha256": "ee4d0609fd8d75c9334a185b2ddf8073f72b22f20a5230a09578e6e905a619a9",
+      "start_line": 163,
+      "end_line_inclusive": 211,
+      "sha256": "46d704c18a5e042dca1683fc7282f8d7e6a3487e8859edd731ce0db102f27d45",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/GPL-mode-writes.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/reference-source/linux-kernel/drivers/char/gpio-sn.h",
+      "source_sha256": "ca11b568ceaa38942b0aa3c01961c0787fb1736c19c491d87f8c35c410ecb893",
+      "start_line": 32,
+      "end_line_inclusive": 60,
+      "sha256": "dbbdce7f197f4c2947aabd94a3f435829c81a0f56285a263f745e7572917af00",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/GPL-register-offsets.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/reference-source/linux-kernel/include/linux/gpio/gpio.h",
+      "source_sha256": "c249420e7a50e39363081fdab5da66cbc32a5e3f8a10e1b32fd29433c5eb6a36",
+      "start_line": 31,
+      "end_line_inclusive": 44,
+      "sha256": "77688a91c05e670b420323c26910fa2054b22866641f6f5b574fc6f3de014aaf",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/GPL-command-mode-values.txt"
+    },
+    {
+      "source": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/reference-source/linux-kernel/include/linux/gpio/gpio.h",
+      "source_sha256": "c249420e7a50e39363081fdab5da66cbc32a5e3f8a10e1b32fd29433c5eb6a36",
+      "start_line": 74,
+      "end_line_inclusive": 83,
+      "sha256": "b6606b16d100d859708374cdee31e8ea1b11eae4b1653d12fdcf064a7b419b0a",
+      "output": "work/sony-firmware-20261024/stage209-current-GPIO-driver-and-link-timing/source-pins/GPL-port-layout.txt"
+    }
+  ],
+  "driver_GPIO_file_operations_pointer_bound": true,
+  "Sony_code_or_guest_execution": false,
+  "root_or_device_operations": 0,
+  "limits": [
+    "Current GPIO evidence is package main kernel, not same-body installed p1 attestation",
+    "Reference GPIO init omits explicit input-enable and changes write order; prior pin state not observed",
+    "SIO register interpretation uses separately labeled historical2.05 module; current helper request19 is exact7.02",
+    "Different divider words do not prove different Hz without clock parents and hardware formula",
+    "No MCU transport, boot entry, backup/restore, modified flash or long-record acceptance"
+  ]
+}

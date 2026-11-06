@@ -1,0 +1,21 @@
+{
+  "compile_argv": [
+    "xcrun",
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-deprecated-declarations",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/test_claim_trace.c",
+    "-o",
+    "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/artifacts/test-claim-trace"
+  ],
+  "executable_sha256": "21e76e6f66845bd0a5553f70623ad09271fff22b24eb9d9cfa494a19b9cdf59b",
+  "result": {
+    "status": "PASS_EXACT_TRACE_RETURN_BITS_ORDER_CAPACITY_AND_BUDGET",
+    "checks": 3,
+    "device_operations": 0
+  },
+  "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage173-Terminal-owner-launch-and-login-guard/artifacts/test-claim-trace:\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n"
+}

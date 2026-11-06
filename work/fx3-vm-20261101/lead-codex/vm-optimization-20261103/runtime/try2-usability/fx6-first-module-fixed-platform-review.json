@@ -1,0 +1,38 @@
+{
+  "schema": "fx6-first-module-frozen-fx3-image-only-review-v1",
+  "utc": "2026-11-03T13:56:27.393811+00:00",
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/runs/fixed-fx3-c72ee0b9",
+  "runner_sha256": "527c789ed3be11c0c0387ce8ea5fb0e9837bf3ddc5a03ecd5d57d18f39bb0f41",
+  "candidate_sha256": "42cddf844eb37a4712feb59a0c595ab9746eee21b37b210a7f81741bdb16797c",
+  "mode": "first-module",
+  "maximum_seconds": 180,
+  "observed_host_seconds": 2.514985582965892,
+  "stop_reason": "original_devno_insmod_rc",
+  "first_module_marker": "FX3_INSMOD_RC_/kmod/devno.ko=0",
+  "first_module_rc": 0,
+  "serial_sha256": "034552e396f4dbd49aa55e85fb931272d009e41cf7c0a413d85b373b9c7b8536",
+  "serial_bytes": 65464,
+  "serial_has_next_modules_before_host_stop": {
+    "osal_utm_rc0": true,
+    "osal_uipc_rc0": true
+  },
+  "fault_markers": [],
+  "cpuset_not_ready": false,
+  "simulation_guard": false,
+  "ap_guard": false,
+  "qemu_pid": 68544,
+  "qemu_exit": 0,
+  "process_reaped": true,
+  "pid_absent": true,
+  "locks": [
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/outputs/fx3-vm/.run.lock",
+      "free": true
+    },
+    {
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/.run.lock",
+      "free": true
+    }
+  ],
+  "meaning": "Image-only early module boundary; polling can overshoot marker and did so by two modules. No firmware helper, AP, AV, CP, OSD, color, UI, or physical device acceptance. Do not alter FX3 helper old VA to force green."
+}

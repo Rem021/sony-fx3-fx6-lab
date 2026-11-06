@@ -1,0 +1,19 @@
+--- /Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/lead-codex/vm-optimization-20261103/runtime/try2-usability/passive-timing-delivery/v25-r15-snapshot-tail/fx3-ui-gate-v15.c
++++ src/fx3-ui-r35.c
+@@ -31,6 +31,7 @@
+ static U add(U *p,U n){return __atomic_add_fetch(p,n,__ATOMIC_RELAXED);}static U load(U *p){return __atomic_load_n(p,__ATOMIC_RELAXED);}static void save(U *p,U n){__atomic_store_n(p,n,__ATOMIC_RELAXED);}
+ static void peak(U *p,U n){U old=load(p);while(old<n&&!__atomic_compare_exchange_n(p,&old,n,0,__ATOMIC_RELAXED,__ATOMIC_RELAXED)){} }
+ static U now(void){struct ts t={0};return clock_gettime(7,&t)?0:(U)t.s*1000000000UL+t.n;}
++#include "r35-log.inc"
+ static int publication_due(U visit){U done=load(&mirror_published);return FX3_GATE_PUBLISH_INTERVAL==1||(visit>done&&visit-done>=64);}
+ static void mirror(void){if(!ram)return;U visit=add(&mirror_visit,1);if(!publication_due(visit))return;if(__atomic_test_and_set(&mirror_lock,__ATOMIC_ACQUIRE)){add(&st.mirror_skip,1);return;}if(!publication_due(visit)){__atomic_clear(&mirror_lock,__ATOMIC_RELEASE);return;}U bank=ram[2]^1;volatile U *out=ram+0x100/8+bank*(0x1000/8);U *in=(U *)&st;for(U i=0;i<sizeof st/8;i++)out[i]=load(in+i);__asm__ volatile("dmb sy":::"memory");ram[2]=bank;ram[3]=++mirror_serial;peak(&mirror_published,visit);__asm__ volatile("dmb sy":::"memory");__atomic_clear(&mirror_lock,__ATOMIC_RELEASE);}
+ static unsigned int bucket(U n){return n<=2?(unsigned int)n:n<=10?3:n<=100?4:5;}
+@@ -142,7 +143,7 @@
+  if(id==9)a18=(W)r[3];if(id==10)a18=(W)r[0];
+  if(id==5||id==9||id==10){peak(&st.peak_all,a18);add(&st.field_samples,1);add(&st.hist[bucket(a18)],1);}
+  if(id==11){add(&st.dequeue_total,1);msg=*(U *)r[20];if(msg){type=*(W *)msg;if(message_source)src=message_source((void *)msg);if(type==0x150000&&src==0x830128)add(&st.timer_dequeue,1);}}
+- if(n<=50||n%1000==0){save(&st.last_ns,now());dprintf(2,"FX3_UI_GATE_SAMPLE id=%lu n=%lu tid=%ld pc=%#lx object=%#lx a18=%lu a12=%lu a13=%lu r0=%#lx decision_a18=%u elapsed=%lu old_time=%lu new_time=%lu message=%#lx type=%#lx source=%#lx observed_only=1\n",id,n,syscall(178),c->pc-app_base,obj,a18,a12,a13,r[0],decision_a18,elapsed,id==7?r[22]-r[0]:0,id==7?r[22]:0,msg,type,src);}
++ if(n<=50||n%1000==0){save(&st.last_ns,now());char r35_text[185];r35_suffix(r35_text);dprintf(2,"FX3_UI_GATE_SAMPLE id=%lu n=%lu tid=%ld pc=%#lx object=%#lx a18=%lu a12=%lu a13=%lu r0=%#lx decision_a18=%u elapsed=%lu old_time=%lu new_time=%lu message=%#lx type=%#lx source=%#lx observed_only=1%s\n",id,n,syscall(178),c->pc-app_base,obj,a18,a12,a13,r[0],decision_a18,elapsed,id==7?r[22]-r[0]:0,id==7?r[22]:0,msg,type,src,r35_text);}
+  mirror();snapshot_serve(id,0);*__errno_location()=saved;
+ }
+ static void sync_code(unsigned char *p,U n){U ctr;__asm__ volatile("mrs %0,ctr_el0":"=r"(ctr));U dc=4UL<<((ctr>>16)&15),ic=4UL<<(ctr&15);for(U a=(U)p&~(dc-1);a<(U)p+n;a+=dc)__asm__ volatile("dc cvau,%0"::"r"(a):"memory");__asm__ volatile("dsb ish":::"memory");for(U a=(U)p&~(ic-1);a<(U)p+n;a+=ic)__asm__ volatile("ic ivau,%0"::"r"(a):"memory");__asm__ volatile("dsb ish;isb":::"memory");}

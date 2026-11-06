@@ -1,0 +1,37 @@
+{
+  "base": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/ap101-v1-native-backup-file/candidate.json",
+  "base_sha256": "f580c330fe8e09897d5f713d17d0885bbe398617abe6d9f8cc60860b22052c0d",
+  "changed_member_bodies": [
+    "init",
+    "simulation/fx3-cp-backup-reset-v1.ko"
+  ],
+  "all_other_members_unchanged": true,
+  "DTB_only_initrd_end": true,
+  "constructor_approval": "msg_554068dbc450",
+  "constructor_model_sha256": "f4d7a1fa048d3548840fb2b9dd91e9538b19a34e48089a01ee466c02d3c277ca",
+  "ASan_UBSan_test": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/helpers/check-native101-backend-v1.log",
+    "sha256": "b81f475d22b4447c4a840f9ca67e20978765c3a05a5008dca259798c701d9849"
+  },
+  "native_input_file_unchanged": {
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap100v1sync600-8d0d69c0/Backup-native-file-before-menu.bin",
+    "sha256": "552fd5f8b422f855aecbe0c3918b56f83f60fb76ea9a3b6fc7a0291c26035d9e",
+    "bytes": 2229740,
+    "native_bank_checks": [
+      {
+        "file_offset": 0,
+        "bytes": 857900,
+        "checksum": 25879493,
+        "checksum_valid": true,
+        "sha256": "85285ba42c9f2260baf478a13e1c1caed8eb75aa363ff1bcff26f86ba6e17851"
+      },
+      {
+        "file_offset": 860160,
+        "bytes": 1369580,
+        "checksum": 155466674,
+        "checksum_valid": true,
+        "sha256": "b76c2f6c8caf62aa4dd11d0466575f38e12e9b6288d2d003ce326ce5530212e8"
+      }
+    ]
+  }
+}

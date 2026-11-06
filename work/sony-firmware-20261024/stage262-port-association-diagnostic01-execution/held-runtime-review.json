@@ -1,0 +1,33 @@
+{
+  "recorded_utc": "2026-11-01T06:55:56.103572+00:00",
+  "status": "HELD_NO_NEW_DEVICE_ACTIONS",
+  "upstream_reference": "https://github.com/ma1co/Sony-PMCA-RE/blob/a82f5baaa8e9c3d9f28f94699e860fb2e48cc8e0/pmca/commands/usb.py#L625-L635",
+  "upstream_SERVICE_wait_iterations": 10,
+  "upstream_SERVICE_wait_sleep_seconds": 0.5,
+  "our_SERVICE_wait_seconds": 2,
+  "our_samples": 20,
+  "finding": "Our fixed wait is shorter than pinned upstream5s. Our2s window did not observeSERVICE; later cache sees it at the same physical anchor. Exact enumeration latency and sole cause are not measured.",
+  "ordinary_restart_reference": "https://helpguide.sony.net/ilc/2210/v1/en/contents/TP1000844060.html",
+  "ordinary_restart_limit": "General troubleshooting only, not proof of service exit or firmware-brick recovery. No power/disconnect/reset action taken.",
+  "current_service_node": {
+    "uid": 501,
+    "candidate_count": 1,
+    "registryID": 4295926235,
+    "physical_port_registryID": 4294968654,
+    "logical_port_registryID": 4294969719,
+    "anchor_available": true,
+    "USB_interface_opened": false,
+    "serial_selected": false
+  },
+  "root_helper_retained": true,
+  "all_logged_MSC_calls_returned": true,
+  "initial_MSC_objects_disposed": true,
+  "SERVICE_objects_ever_opened": false,
+  "current_helper_has_cooperative_HELD_exit": false,
+  "held_branch": "native infinite pause loop; no fixture termination gate compiled",
+  "consequences": "Keep original helper/observer and UNKNOWN. Do not launch competing USB helpers, extend expired window, kill, reset, clear software fence, or turn this into COMPLETE.",
+  "recovery_prerequisites": [
+    "User screen observation; still pending.",
+    "Review exact current state and a distinct bounded recovery procedure before further actions."
+  ]
+}

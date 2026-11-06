@@ -1,0 +1,13 @@
+0040f040 movw       r1, #0x143c
+0040f044 movw       r5, #0x15d8
+0040f048 str.w      r0, [fp, r1]
+0040f04c mov.w      r1, #0x1440
+0040f050 ldr.w      r0, [fp, #0x3e8]
+0040f054 subs       r0, r0, r2
+0040f056 str.w      r0, [fp, r1]
+0040f05a movw       r1, #0x1488
+0040f05e movs       r0, #6
+0040f060 str.w      r0, [fp, r1]
+0040f064 movs       r0, #4
+0040f066 movw       r1, #0x15e4
+0040f06a str.w      r0, [fp, r5]

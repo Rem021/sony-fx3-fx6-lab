@@ -1,0 +1,97 @@
+{
+  "ABI": 2,
+  "fixture": {
+    "path": "artifacts/owner-fixture.dylib",
+    "bytes": 35264,
+    "sha256": "690e2374fdc8a5e189235a70da45be6320871c8102606871950b8d29df9fa56b",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-fvisibility=hidden",
+      "-dynamiclib",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/owner_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/owner_ipc.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/owner_fixture.c",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/artifacts/owner-fixture.dylib"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/artifacts/owner-fixture.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/artifacts/owner-fixture.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+    "symbols": "00000000000016e0 T _fx3_ipc_fixture_entered\n00000000000016b0 T _fx3_ipc_fixture_release\n000000000000158c T _fx3_ipc_init\n000000000000170c T _fx3_ipc_install_handlers\n00000000000014e8 T _fx3_ipc_layout\n0000000000001684 T _fx3_ipc_pending\n00000000000018b4 T _fx3_ipc_remove_handlers\n0000000000001628 T _fx3_ipc_stop\n0000000000001658 T _fx3_ipc_stop_requested\n0000000000001b88 T _fx3_owner_fixture_block\n00000000000019ec T _fx3_owner_fixture_calls\n0000000000001960 T _fx3_owner_fixture_marker\n000000000000196c T _fx3_owner_fixture_reset\n0000000000001a3c T _fx3_owner_fixture_size\n0000000000001ae0 T _fx3_owner_run\n"
+  },
+  "native": {
+    "path": "artifacts/owner-iokit.dylib",
+    "bytes": 37216,
+    "sha256": "586c845ec1d6672018fb5b632e743b1cb56ed8b585d4fcd8d7c98b733de7c9b1",
+    "compile_argv": [
+      "xcrun",
+      "clang",
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-fvisibility=hidden",
+      "-dynamiclib",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/owner_core.c",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/owner_ipc.c",
+      "-Wno-deprecated-declarations",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/owner_iokit.c",
+      "-framework",
+      "IOKit",
+      "-framework",
+      "CoreFoundation",
+      "-framework",
+      "DiskArbitration",
+      "-o",
+      "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/artifacts/owner-iokit.dylib"
+    ],
+    "compiler_stderr": "",
+    "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/artifacts/owner-iokit.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage154-isolated-owner-supervisor/artifacts/owner-iokit.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)\n\t/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 5027.0.63)\n\t/System/Library/Frameworks/DiskArbitration.framework/Versions/A/DiskArbitration (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+    "symbols": "00000000000018b8 T _fx3_ipc_fixture_entered\n0000000000001888 T _fx3_ipc_fixture_release\n0000000000001764 T _fx3_ipc_init\n00000000000018e4 T _fx3_ipc_install_handlers\n00000000000016c0 T _fx3_ipc_layout\n000000000000185c T _fx3_ipc_pending\n0000000000001a8c T _fx3_ipc_remove_handlers\n0000000000001800 T _fx3_ipc_stop\n0000000000001830 T _fx3_ipc_stop_requested\n0000000000001b38 T _fx3_owner_run\n"
+  },
+  "sources": [
+    {
+      "path": "owner_trial.h",
+      "sha256": "b900581fded4da9d2d862987963a4851b85efbdbac18bbe54208548a5e053294"
+    },
+    {
+      "path": "owner_core.c",
+      "sha256": "d562fd3c3acc6c514500ce0cc090242133527d53a0f4b481624dbbf0fce9e8cd"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "753e2522fb4fec2f74a9b6769aad296131ca23f7393f5dee67a19571c1850710"
+    },
+    {
+      "path": "owner_iokit.c",
+      "sha256": "236fe4c122372a13f8a5b3d4ae25bc4ccc1b7e14af47363fcde4e62e0a999afc"
+    },
+    {
+      "path": "owner_fixture.c",
+      "sha256": "b80ad49bae2872ffaff86adfeb8dabc12d118e7ee5b036e922083bd849068f42"
+    },
+    {
+      "path": "owner_binding.py",
+      "sha256": "a54a9871477fba5e6359af5a6c2ae0768676703fcb80271ab9b7c0b2f7c57142"
+    },
+    {
+      "path": "shared_job.py",
+      "sha256": "305a6baa34366713282a95bc4acb92a3e36605b45fb144793384115fb7a20028"
+    },
+    {
+      "path": "owner_worker.py",
+      "sha256": "21530b1a1b5701a8cc90bb3e46f4386182feedacda341dc3d6f292493e2c0daf"
+    },
+    {
+      "path": "owner_supervisor.py",
+      "sha256": "f30f7d56c6d753d6f93b21631dd4442a98ec99fd859c5c38512cb73cea9a81db"
+    }
+  ],
+  "native_candidate_loaded": false,
+  "new_device_operations": 0,
+  "sdk": "/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+}

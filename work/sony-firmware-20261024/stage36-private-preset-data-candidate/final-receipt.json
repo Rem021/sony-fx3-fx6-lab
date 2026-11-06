@@ -1,0 +1,76 @@
+{
+  "schema": "fx3-stage36-private-preset-data-candidate/1",
+  "created_utc": "2026-10-25T23:38:58.949846+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/README.md",
+      "bytes": 5592,
+      "sha256": "2fcf5727592461683bd71659371827d6c609bcf9b6ed0cfc5b02059c5a1905fd"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/coordinator-observations.json",
+      "bytes": 2510,
+      "sha256": "213741d7b0168e782da98e219c8e12676ba6368a904f97305172a3d4367a8105"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/goal-status-after.json",
+      "bytes": 61326,
+      "sha256": "78d33470bd492814e69c90dbf5aa95a6e1070a3c5aae71a620b3e39fc4fbdb29"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/goal-status-before.json",
+      "bytes": 58568,
+      "sha256": "74b7de7eefd012add493511b207525642cb9c336290090cb8390ed968afb62d3"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/next-native-writer-anchors.json",
+      "bytes": 19639,
+      "sha256": "2cdbfbb38819f167170ed30b9cbf64ecfb5379c9165c0d56b39bb5bcfceea42d"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/private_preset.py",
+      "bytes": 14017,
+      "sha256": "188f85924067ca3b552c70c37834b6409fcfa1cc26ca8f383e75b9a83281dc9c"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/run-20261025/private-preset-results.json",
+      "bytes": 527559,
+      "sha256": "1949cd5abe105a4423dac22198e1058f1ae4c13e81c48258a58ceeffa207a2d4"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/run-20261025/source-receipt.json",
+      "bytes": 791,
+      "sha256": "a70a756cdf328e81d3078b5ce6f31b55849b794d95fb57bc8dd26b6764e338d5"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/run-20261025/summary.json",
+      "bytes": 458,
+      "sha256": "884d42e5c652d5707cac207acdfe167252ca1c28a2bcea77a4b5c29f2fdf9174"
+    }
+  ],
+  "previous_manifest_sha256": "aa0312ec3026f1ade12d375777ed6255a763ac7ddfc16c07a4b813b1285ff0c3",
+  "scope": "18 original bounded executions around explicit per-instance FF data candidate. Native partial packing sees16M; no native MAIN writer, whole command/HAL/recording or recovery.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage36-private-preset-data-candidate/goal-status-after.json",
+    "before_sha256": "74b7de7eefd012add493511b207525642cb9c336290090cb8390ed968afb62d3",
+    "after_sha256": "78d33470bd492814e69c90dbf5aa95a6e1070a3c5aae71a620b3e39fc4fbdb29",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "explicit_host_fixture_pointer_and_rate_inputs": true,
+    "native_MAIN_writer_implemented": false,
+    "native_output_adapters": false,
+    "actual_constructor_parameter_command_Hal_recording_or_restore": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "bootable_firmware_loadable_module_or_device_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 MAIN FF 私有16M数据候选](<work/sony-firmware-20261024/stage36-private-preset-data-candidate/README.md>)：原封装片段消费私有副本生成16M目标字段，其它字段/客体/原件不变；复选指针不清除旧参数包，原生写者、硬件与恢复仍未验证。"
+}

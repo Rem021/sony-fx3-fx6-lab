@@ -1,0 +1,201 @@
+{
+  "schema": "fx3-native-pnp-sanitized-observations/1",
+  "scope": "This invocation's PnPUtil cached metadata only",
+  "raw_output_decoding": "Windows code page 936, raw files left unchanged",
+  "hash_algorithm": "SHA256(UTF8(instance_id.ToUpperInvariant()))",
+  "usb_root": {
+    "node_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+    "vid": "054C",
+    "pid": "0DA1",
+    "model": "ILME-FX3",
+    "matched_usb_root_count": 1,
+    "status": "Disconnected",
+    "signer_name": "Microsoft Windows",
+    "driver_status": "Best Ranked / Installed",
+    "properties": {
+      "DEVPKEY_Device_DeviceDesc": "USB 大容量存储设备",
+      "DEVPKEY_Device_Service": "USBSTOR",
+      "DEVPKEY_Device_Class": "USB",
+      "DEVPKEY_Device_ClassGuid": "{36fc9e60-c465-11cf-8056-444553540000}",
+      "DEVPKEY_Device_ConfigFlags": "0x00000000 (0)",
+      "DEVPKEY_Device_IsPresent": "FALSE",
+      "DEVPKEY_Device_HasProblem": "FALSE",
+      "DEVPKEY_Device_ProblemCode": "UNKNOWN",
+      "DEVPKEY_Device_DevNodeStatus": "UNKNOWN",
+      "DEVPKEY_Device_BusReportedDeviceDesc": "ILME-FX3",
+      "DEVPKEY_Device_DriverDate": "21/6/2006 0:00:00",
+      "DEVPKEY_Device_DriverVersion": "10.0.26100.9444",
+      "DEVPKEY_Device_DriverDesc": "USB Mass Storage Device",
+      "DEVPKEY_Device_DriverInfPath": "usbstor.inf",
+      "DEVPKEY_Device_DriverInfSection": "USBSTOR_BULK.NT",
+      "DEVPKEY_Device_DriverProvider": "Microsoft"
+    },
+    "disk_interface_guid_observed": false
+  },
+  "disk_nodes": [
+    {
+      "node_sha256": "c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172",
+      "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "parent_matches_fx3_usb_root": true,
+      "status": "Disconnected",
+      "driver_signer": "Microsoft Windows",
+      "driver_status": "Best Ranked / Installed",
+      "disk_interface_guid_observed": false,
+      "interface_statuses": [],
+      "interface_field_labels": [],
+      "properties": {
+        "DEVPKEY_Device_DeviceDesc": "磁盘驱动器",
+        "DEVPKEY_Device_Service": "disk",
+        "DEVPKEY_Device_Class": "DiskDrive",
+        "DEVPKEY_Device_ClassGuid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+        "DEVPKEY_Device_ConfigFlags": "0x00000000 (0)",
+        "DEVPKEY_Device_IsPresent": "FALSE",
+        "DEVPKEY_Device_HasProblem": "FALSE",
+        "DEVPKEY_Device_ProblemCode": "UNKNOWN",
+        "DEVPKEY_Device_DevNodeStatus": "UNKNOWN",
+        "DEVPKEY_Device_BusReportedDeviceDesc": "Sony DSC USB Device",
+        "DEVPKEY_Device_DriverDate": "21/6/2006 0:00:00",
+        "DEVPKEY_Device_DriverVersion": "10.0.26100.9711",
+        "DEVPKEY_Device_DriverDesc": "Disk drive",
+        "DEVPKEY_Device_DriverInfPath": "disk.inf",
+        "DEVPKEY_Device_DriverInfSection": "disk_install.NT",
+        "DEVPKEY_Device_DriverProvider": "Microsoft"
+      }
+    },
+    {
+      "node_sha256": "ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b",
+      "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "parent_matches_fx3_usb_root": true,
+      "status": "Disconnected",
+      "driver_signer": "Microsoft Windows",
+      "driver_status": "Best Ranked / Installed",
+      "disk_interface_guid_observed": false,
+      "interface_statuses": [],
+      "interface_field_labels": [],
+      "properties": {
+        "DEVPKEY_Device_DeviceDesc": "磁盘驱动器",
+        "DEVPKEY_Device_Service": "disk",
+        "DEVPKEY_Device_Class": "DiskDrive",
+        "DEVPKEY_Device_ClassGuid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+        "DEVPKEY_Device_ConfigFlags": "0x00000000 (0)",
+        "DEVPKEY_Device_IsPresent": "FALSE",
+        "DEVPKEY_Device_HasProblem": "FALSE",
+        "DEVPKEY_Device_ProblemCode": "UNKNOWN",
+        "DEVPKEY_Device_DevNodeStatus": "UNKNOWN",
+        "DEVPKEY_Device_BusReportedDeviceDesc": "Sony DSC USB Device",
+        "DEVPKEY_Device_DriverDate": "21/6/2006 0:00:00",
+        "DEVPKEY_Device_DriverVersion": "10.0.26100.9711",
+        "DEVPKEY_Device_DriverDesc": "Disk drive",
+        "DEVPKEY_Device_DriverInfPath": "disk.inf",
+        "DEVPKEY_Device_DriverInfSection": "disk_install.NT",
+        "DEVPKEY_Device_DriverProvider": "Microsoft"
+      }
+    },
+    {
+      "node_sha256": "4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c",
+      "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "parent_matches_fx3_usb_root": true,
+      "status": "Disconnected",
+      "driver_signer": "Microsoft Windows",
+      "driver_status": "Best Ranked / Installed",
+      "disk_interface_guid_observed": false,
+      "interface_statuses": [],
+      "interface_field_labels": [],
+      "properties": {
+        "DEVPKEY_Device_DeviceDesc": "磁盘驱动器",
+        "DEVPKEY_Device_Service": "disk",
+        "DEVPKEY_Device_Class": "DiskDrive",
+        "DEVPKEY_Device_ClassGuid": "{4d36e967-e325-11ce-bfc1-08002be10318}",
+        "DEVPKEY_Device_ConfigFlags": "0x00000000 (0)",
+        "DEVPKEY_Device_IsPresent": "FALSE",
+        "DEVPKEY_Device_HasProblem": "FALSE",
+        "DEVPKEY_Device_ProblemCode": "UNKNOWN",
+        "DEVPKEY_Device_DevNodeStatus": "UNKNOWN",
+        "DEVPKEY_Device_BusReportedDeviceDesc": "Sony DSC USB Device",
+        "DEVPKEY_Device_DriverDate": "21/6/2006 0:00:00",
+        "DEVPKEY_Device_DriverVersion": "10.0.26100.9711",
+        "DEVPKEY_Device_DriverDesc": "Disk drive",
+        "DEVPKEY_Device_DriverInfPath": "disk.inf",
+        "DEVPKEY_Device_DriverInfSection": "disk_install.NT",
+        "DEVPKEY_Device_DriverProvider": "Microsoft"
+      }
+    }
+  ],
+  "relations": [
+    {
+      "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "child_sha256": "c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172",
+      "exact_parent_hash_matches_fx3": true,
+      "evidence": "Current /enum-devicetree output plus child's DEVPKEY_Device_Parent"
+    },
+    {
+      "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "child_sha256": "ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b",
+      "exact_parent_hash_matches_fx3": true,
+      "evidence": "Current /enum-devicetree output plus child's DEVPKEY_Device_Parent"
+    },
+    {
+      "parent_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "child_sha256": "4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c",
+      "exact_parent_hash_matches_fx3": true,
+      "evidence": "Current /enum-devicetree output plus child's DEVPKEY_Device_Parent"
+    }
+  ],
+  "interfaces": [
+    {
+      "node_sha256": "1ce16c7e029a23fb1890f095ea738228e16e35118558aa6f47175660344d14dd",
+      "interface_class_guid": "a5dcbf10-6530-11d2-901f-00c04fb951ed",
+      "source_line": 7,
+      "state_tokens": [
+        "DISABLED"
+      ],
+      "enabled_state": "DISABLED",
+      "raw_path_exported": false
+    },
+    {
+      "node_sha256": "c31c3c087df915a47a957f3507a1293234724b954fbccdc7ed14cd6869c50172",
+      "interface_class_guid": "53f56307-b6bf-11d0-94f2-00a0c91efb8b",
+      "source_line": 13,
+      "state_tokens": [
+        "DISABLED"
+      ],
+      "enabled_state": "DISABLED",
+      "raw_path_exported": false
+    },
+    {
+      "node_sha256": "ca33b705497de8ffc3d22e9d35a2fda68c792ad7f1d44ec87640d61ff07e606b",
+      "interface_class_guid": "53f56307-b6bf-11d0-94f2-00a0c91efb8b",
+      "source_line": 19,
+      "state_tokens": [
+        "DISABLED"
+      ],
+      "enabled_state": "DISABLED",
+      "raw_path_exported": false
+    },
+    {
+      "node_sha256": "4af1f4a1ef0b1a49e5962db290fca92093e4122473e09c106ba9ed8003104a7c",
+      "interface_class_guid": "53f56307-b6bf-11d0-94f2-00a0c91efb8b",
+      "source_line": 25,
+      "state_tokens": [
+        "DISABLED"
+      ],
+      "enabled_state": "DISABLED",
+      "raw_path_exported": false
+    }
+  ],
+  "traced_node_count": 4,
+  "max_authorized_node_count": 16,
+  "counts": {
+    "matched_usb_roots": 1,
+    "cached_disk_candidates": 3,
+    "current_connected_usb_roots": 0,
+    "current_connected_disk_candidates": 0
+  },
+  "binding_status": "MISSING_CURRENT_CONNECTED_CANDIDATE",
+  "cached_candidate_cardinality": "MULTIPLE_3",
+  "node_enable_status": "UNKNOWN: no current devnode status supplied",
+  "cached_has_problem": "FALSE for all four nodes",
+  "problem_codes": "UNKNOWN",
+  "camera_firmware_version": "UNKNOWN: not queried",
+  "hardware_validation": "NOT_PERFORMED"
+}

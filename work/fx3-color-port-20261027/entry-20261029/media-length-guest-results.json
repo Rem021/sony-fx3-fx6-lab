@@ -1,0 +1,196 @@
+{
+  "source_sha256": "f2e7d27602e3f7b236fc41dd93fccf53ba24f0793fd454e7fec171ae378beca7",
+  "original_functions": [
+    "0x3a00 udtr_cmd_search_chank",
+    "0x3bcc udtr_write_firm_from_media"
+  ],
+  "cases": [
+    {
+      "case": "original_7_02",
+      "source_sha256": "f040affe234a8b6ec996ba616108c0014573f3cf28deb8b442fd0be091cac854",
+      "returned": true,
+      "result": 3,
+      "boundary": null,
+      "events": [
+        {
+          "operation": "read_only_open_fixture"
+        },
+        {
+          "operation": "relative_seek",
+          "before": 0,
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "operation": "read",
+          "offset": 8,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "read",
+          "offset": 12,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "relative_seek",
+          "before": 16,
+          "amount": 4,
+          "after": 20
+        },
+        {
+          "operation": "read",
+          "offset": 20,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "read",
+          "offset": 24,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "relative_seek",
+          "before": 28,
+          "amount": 4,
+          "after": 32
+        },
+        {
+          "operation": "read",
+          "offset": 32,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "read",
+          "offset": 36,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "relative_seek",
+          "before": 40,
+          "amount": 84,
+          "after": 124
+        },
+        {
+          "operation": "read",
+          "offset": 124,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "read",
+          "offset": 128,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "original_parser_length",
+          "value": 811876624
+        },
+        {
+          "operation": "read_only_close_fixture"
+        }
+      ],
+      "instructions": 203
+    },
+    {
+      "case": "length_prefix_only",
+      "declared_length": 2097152,
+      "prefix_bytes": 16,
+      "prefix_sha256": "2695d275c666237033cd0f7c2ac98d6d7a4d92b6be5790c9d55e2b0d35902b8b",
+      "returned": false,
+      "result": null,
+      "boundary": {
+        "operation": "payload_read_boundary",
+        "requested_bytes": 2097152,
+        "file_offset": 16
+      },
+      "events": [
+        {
+          "operation": "read_only_open_fixture"
+        },
+        {
+          "operation": "relative_seek",
+          "before": 0,
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "operation": "read",
+          "offset": 8,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "read",
+          "offset": 12,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "original_parser_length",
+          "value": 2097152
+        },
+        {
+          "operation": "payload_read_boundary",
+          "requested_bytes": 2097152,
+          "file_offset": 16
+        }
+      ],
+      "instructions": 84
+    },
+    {
+      "case": "length_prefix_only",
+      "declared_length": 2097153,
+      "prefix_bytes": 16,
+      "prefix_sha256": "9eaf5e90044be11685612a9ae7b4b3f834d407d70b910f7d6a9d1371b0ef1993",
+      "returned": true,
+      "result": 3,
+      "boundary": null,
+      "events": [
+        {
+          "operation": "read_only_open_fixture"
+        },
+        {
+          "operation": "relative_seek",
+          "before": 0,
+          "amount": 8,
+          "after": 8
+        },
+        {
+          "operation": "read",
+          "offset": 8,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "read",
+          "offset": 12,
+          "requested_bytes": 4,
+          "actual_bytes": 4
+        },
+        {
+          "operation": "original_parser_length",
+          "value": 2097153
+        },
+        {
+          "operation": "read_only_close_fixture"
+        }
+      ],
+      "instructions": 92
+    },
+    {
+      "case": "null_input",
+      "returned": true,
+      "result": 3,
+      "boundary": null,
+      "events": [],
+      "instructions": 18
+    }
+  ],
+  "scope": "Original chunk search and staging size test in synthetic Unicorn RAM. Fsys is read-only host I/O; fixtures are sixteen-byte length prefixes only. Payload reads stop execution, all native mounts/writes/process/device calls are unmodelled and forbidden. The 2 MiB staging gate is the lens/media helper, not the normal body update route or the separate MSC upload callback. This is neither whole-container validation nor a flash test."
+}

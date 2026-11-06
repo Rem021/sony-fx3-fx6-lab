@@ -1,0 +1,250 @@
+__Z13checkFileModePKcPhi
+00001dbc stp       x24, x23, [sp, #-0x40]!
+00001dc0 stp       x22, x21, [sp, #0x10]
+00001dc4 stp       x20, x19, [sp, #0x20]
+00001dc8 stp       x29, x30, [sp, #0x30]
+00001dcc add       x29, sp, #0x30
+00001dd0 sub       sp, sp, #0x260
+00001dd4 adrp      x8, #0x20000
+00001dd8 ldr       x8, [x8, #0x70]
+00001ddc ldr       x8, [x8]
+00001de0 stur      x8, [x29, #-0x38]
+00001de4 cbz       x1, #0x1ed4
+00001de8 cmp       w2, #0x1f
+00001dec b.le      #0x1ed4
+00001df0 mov       x20, x1
+00001df4 mov       x19, x0
+00001df8 adrp      x8, #0x20000
+00001dfc add       x8, x8, #0x138
+00001e00 add       x21, sp, #0x18
+00001e04 add       x9, x8, #0x18
+00001e08 add       x8, x8, #0x40
+00001e0c str       xzr, [sp, #0x1f0]
+00001e10 str       x8, [sp, #0x1c0]
+00001e14 stp       x9, xzr, [sp, #0x18]
+00001e18 add       x0, x21, #0x1a8
+00001e1c add       x1, x21, #0x10
+00001e20 bl        #0x16740 ; __ZNSt3__18ios_base4initEPv
+00001e24 str       xzr, [sp, #0x248]
+00001e28 mov       w8, #-1
+00001e2c str       w8, [sp, #0x250]
+00001e30 adrp      x22, #0x20000
+00001e34 add       x22, x22, #0xc8
+00001e38 add       x8, x22, #0x18
+00001e3c add       x9, x22, #0x40
+00001e40 str       x8, [sp, #0x18]
+00001e44 str       x9, [sp, #0x1c0]
+00001e48 add       x0, x21, #0x10
+00001e4c bl        #0xc694 ; __ZNSt3__113basic_filebufIcNS_11char_traitsIcEEEC2Ev
+00001e50 add       x0, x21, #0x10
+00001e54 mov       x1, x19
+00001e58 mov       w2, #8
+00001e5c bl        #0xc564 ; __ZNSt3__113basic_filebufIcNS_11char_traitsIcEEE4openEPKcj
+00001e60 cbnz      x0, #0x1e80
+00001e64 ldr       x8, [sp, #0x18]
+00001e68 ldur      x8, [x8, #-0x18]
+00001e6c add       x9, sp, #0x18
+00001e70 add       x0, x9, x8
+00001e74 ldr       w8, [x0, #0x20]
+00001e78 orr       w1, w8, #4
+00001e7c bl        #0x1674c ; __ZNSt3__18ios_base5clearEj
+00001e80 ldr       x8, [sp, #0x18]
+00001e84 ldur      x8, [x8, #-0x18]
+00001e88 add       x9, sp, #0x18
+00001e8c add       x8, x9, x8
+00001e90 ldrb      w8, [x8, #0x20]
+00001e94 mov       w9, #5
+00001e98 tst       w8, w9
+00001e9c b.eq      #0x1f0c
+00001ea0 adrp      x3, #0x17000
+00001ea4 add       x3, x3, #0xf90
+00001ea8 str       x19, [sp]
+00001eac adrp      x4, #0x1d000
+00001eb0 add       x4, x4, #0x3b8
+00001eb4 adrp      x6, #0x18000
+00001eb8 add       x6, x6, #0x294
+00001ebc mov       w0, #1
+00001ec0 mov       w1, #4
+00001ec4 mov       w2, #2
+00001ec8 mov       w5, #0x207
+00001ecc bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00001ed0 b         #0x1f80
+00001ed4 adrp      x3, #0x17000
+00001ed8 add       x3, x3, #0xf90
+00001edc str       x2, [sp]
+00001ee0 adrp      x4, #0x1d000
+00001ee4 add       x4, x4, #0x3b8
+00001ee8 adrp      x6, #0x18000
+00001eec add       x6, x6, #0x2d8
+00001ef0 mov       w0, #1
+00001ef4 mov       w1, #4
+00001ef8 mov       w2, #2
+00001efc mov       w5, #0x200
+00001f00 bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00001f04 mov       w20, #0
+00001f08 b         #0x1fb8
+00001f0c add       x0, sp, #0x18
+00001f10 mov       x1, x20
+00001f14 mov       w2, #0x20
+00001f18 bl        #0x16698 ; __ZNSt3__113basic_istreamIcNS_11char_traitsIcEEE4readEPcl
+00001f1c ldr       w23, [x0, #8]
+00001f20 add       x0, x21, #0x10
+00001f24 bl        #0xb7d8 ; __ZNSt3__113basic_filebufIcNS_11char_traitsIcEEE5closeEv
+00001f28 cbnz      x0, #0x1f48
+00001f2c ldr       x8, [sp, #0x18]
+00001f30 ldur      x8, [x8, #-0x18]
+00001f34 add       x9, sp, #0x18
+00001f38 add       x0, x9, x8
+00001f3c ldr       w8, [x0, #0x20]
+00001f40 orr       w1, w8, #4
+00001f44 bl        #0x1674c ; __ZNSt3__18ios_base5clearEj
+00001f48 cmp       w23, #0x1f
+00001f4c b.gt      #0x1fec
+00001f50 adrp      x3, #0x17000
+00001f54 add       x3, x3, #0xf90
+00001f58 stp       x19, x23, [sp]
+00001f5c adrp      x4, #0x1d000
+00001f60 add       x4, x4, #0x3b8
+00001f64 adrp      x6, #0x18000
+00001f68 add       x6, x6, #0x914
+00001f6c mov       w0, #1
+00001f70 mov       w1, #4
+00001f74 mov       w2, #2
+00001f78 mov       w5, #0x20f
+00001f7c bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00001f80 mov       w20, #0
+00001f84 add       x8, x22, #0x18
+00001f88 add       x9, x22, #0x40
+00001f8c str       x8, [sp, #0x18]
+00001f90 str       x9, [sp, #0x1c0]
+00001f94 add       x0, x21, #0x10
+00001f98 bl        #0xb764 ; __ZNSt3__113basic_filebufIcNS_11char_traitsIcEEED2Ev
+00001f9c adrp      x8, #0x20000
+00001fa0 add       x8, x8, #0x118
+00001fa4 add       x0, sp, #0x18
+00001fa8 add       x1, x8, #8
+00001fac bl        #0x166c8 ; __ZNSt3__113basic_istreamIcNS_11char_traitsIcEEED2Ev
+00001fb0 add       x0, x21, #0x1a8
+00001fb4 bl        #0x16758 ; __ZNSt3__19basic_iosIcNS_11char_traitsIcEEED2Ev
+00001fb8 ldur      x8, [x29, #-0x38]
+00001fbc adrp      x9, #0x20000
+00001fc0 ldr       x9, [x9, #0x70]
+00001fc4 ldr       x9, [x9]
+00001fc8 cmp       x9, x8
+00001fcc b.ne      #0x2138
+00001fd0 mov       x0, x20
+00001fd4 add       sp, sp, #0x260
+00001fd8 ldp       x29, x30, [sp, #0x30]
+00001fdc ldp       x20, x19, [sp, #0x20]
+00001fe0 ldp       x22, x21, [sp, #0x10]
+00001fe4 ldp       x24, x23, [sp], #0x40
+00001fe8 ret       
+00001fec ldrb      w8, [x20]
+00001ff0 cmp       w8, #0x41
+00001ff4 b.eq      #0x2050
+00001ff8 cmp       w8, #0x3a
+00001ffc b.ne      #0x2100
+00002000 ldrb      w8, [x20, #1]
+00002004 cmp       w8, #0x30
+00002008 b.ne      #0x2100
+0000200c ldrb      w8, [x20, #2]
+00002010 cmp       w8, #0x32
+00002014 b.ne      #0x2100
+00002018 mov       w20, #1
+0000201c adrp      x3, #0x17000
+00002020 add       x3, x3, #0xf90
+00002024 str       x19, [sp]
+00002028 adrp      x4, #0x1d000
+0000202c add       x4, x4, #0x3b8
+00002030 adrp      x6, #0x18000
+00002034 add       x6, x6, #0x97c
+00002038 mov       w0, #1
+0000203c mov       w1, #4
+00002040 mov       w2, #2
+00002044 mov       w5, #0x214
+00002048 bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+0000204c b         #0x1f84
+00002050 ldrb      w8, [x20, #1]
+00002054 cmp       w8, #0x58
+00002058 b.ne      #0x2100
+0000205c ldrb      w8, [x20, #2]
+00002060 cmp       w8, #0x53
+00002064 b.ne      #0x2100
+00002068 ldrb      w8, [x20, #3]
+0000206c cmp       w8, #0x2d
+00002070 b.ne      #0x2100
+00002074 ldrb      w8, [x20, #4]
+00002078 cmp       w8, #0x41
+0000207c b.ne      #0x2100
+00002080 ldrb      w8, [x20, #5]
+00002084 cmp       w8, #0x52
+00002088 b.ne      #0x2100
+0000208c ldrb      w8, [x20, #6]
+00002090 cmp       w8, #0x31
+00002094 b.ne      #0x2100
+00002098 ldrb      w8, [x20, #7]
+0000209c cmp       w8, #0x20
+000020a0 b.ne      #0x2100
+000020a4 ldrb      w8, [x20, #8]
+000020a8 cmp       w8, #0x55
+000020ac b.ne      #0x2100
+000020b0 ldrb      w8, [x20, #9]
+000020b4 cmp       w8, #0x50
+000020b8 b.ne      #0x2100
+000020bc ldrb      w8, [x20, #0xa]
+000020c0 cmp       w8, #0x44
+000020c4 b.ne      #0x2100
+000020c8 ldrb      w8, [x20, #0xb]
+000020cc cmp       w8, #0x41
+000020d0 b.ne      #0x2100
+000020d4 ldrb      w8, [x20, #0xc]
+000020d8 cmp       w8, #0x54
+000020dc b.ne      #0x2100
+000020e0 ldrb      w8, [x20, #0xd]
+000020e4 cmp       w8, #0x45
+000020e8 b.ne      #0x2100
+000020ec ldrb      w8, [x20, #0xe]
+000020f0 cmp       w8, #0x20
+000020f4 b.ne      #0x2100
+000020f8 ldrb      w8, [x20, #0xf]
+000020fc cbz       w8, #0x213c
+00002100 adrp      x6, #0x18000
+00002104 add       x6, x6, #0xa2c
+00002108 mov       w5, #0x22e
+0000210c mov       w20, #2
+00002110 str       x19, [sp]
+00002114 adrp      x3, #0x17000
+00002118 add       x3, x3, #0xf90
+0000211c adrp      x4, #0x1d000
+00002120 add       x4, x4, #0x3b8
+00002124 mov       w0, #1
+00002128 mov       w1, #4
+0000212c mov       w2, #2
+00002130 bl        #0x165c0 ; __ZN10VFAMLogger8WriteLogEiNS_9LOG_LEVELENS_13TARGET_MODULEEPKwPKciS3_z
+00002134 b         #0x1f84
+00002138 bl        #0x16818 ; ___stack_chk_fail
+0000213c adrp      x6, #0x18000
+00002140 add       x6, x6, #0x9cc
+00002144 mov       w5, #0x22a
+00002148 b         #0x210c
+0000214c b         #0x2160
+00002150 mov       x19, x0
+00002154 b         #0x217c
+00002158 mov       x19, x0
+0000215c b         #0x2190
+00002160 mov       x19, x0
+00002164 add       x0, sp, #0x18
+00002168 bl        #0x16ec ; __ZNSt3__114basic_ifstreamIcNS_11char_traitsIcEEED1Ev
+0000216c b         #0x2198
+00002170 mov       x19, x0
+00002174 add       x0, x21, #0x10
+00002178 bl        #0xb764 ; __ZNSt3__113basic_filebufIcNS_11char_traitsIcEEED2Ev
+0000217c adrp      x8, #0x20000
+00002180 add       x8, x8, #0x118
+00002184 add       x0, sp, #0x18
+00002188 add       x1, x8, #8
+0000218c bl        #0x166c8 ; __ZNSt3__113basic_istreamIcNS_11char_traitsIcEEED2Ev
+00002190 add       x0, x21, #0x1a8
+00002194 bl        #0x16758 ; __ZNSt3__19basic_iosIcNS_11char_traitsIcEEED2Ev
+00002198 mov       x0, x19
+0000219c bl        #0x165a8 ; __Unwind_Resume

@@ -1,0 +1,40 @@
+{
+  "run": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103v4ldec600-71ce5752",
+  "serial_SHA256": "763b67b58721879e72c500fff7613c166585a8811af3490d016a97a7909f87f2",
+  "line_basis": "LF only, one based",
+  "markers": {
+    "FX3_AP100_CONTROLLED_CLEANUP_BEGIN": [
+      {
+        "LF": 82483,
+        "text": "FX3_AP100_CONTROLLED_CLEANUP_BEGIN acceptance_window_closed=1\r"
+      }
+    ],
+    "FX3_AP100_CONTROLLED_CLEANUP_END": [],
+    "fx3_sync100_unbind_v1": [],
+    "FX3_SYNC100_API_BIND phase=restored": [],
+    "FX3_SYNC100_SHUTDOWN": [],
+    "FX3_FILE100_MODULE_RESTORE_REQUEST": []
+  },
+  "header_after": {
+    "label": "after-device-restore",
+    "native_path": "/setting/Backup.bin",
+    "header_path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103v4ldec600-71ce5752/file100-after-device-restore-header.bin",
+    "source": "guest O_RDONLY two complete equal reads; observer reservation only",
+    "sequence": 4,
+    "generation": 2,
+    "bytes": 2229740,
+    "source_read_error": 0,
+    "shutdown_control": 269229737,
+    "restore_status": 0,
+    "restore_seen": 0,
+    "host_monotonic": 264294.27940725,
+    "valid": true,
+    "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/runtime/runs/ap103v4ldec600-71ce5752/Backup-native-file-after-device-restore.bin",
+    "sha256": "be048e8557acc93208425687f823993fc70542036158adea77ae87db74dd53bd",
+    "fnv64": "0x57ec0510b2c3ca4a",
+    "guest_fnv64": "0x57ec0510b2c3ca4a",
+    "read_only_file_snapshot_not_RAM_Backup_substitution": true
+  },
+  "API16": "5000005800021fd6bcfc4d0080ffffff",
+  "scope": "Old guest exited; script BEGIN proves control was handled. No completed native restoration at final read. Exact in-script substage remains unobserved."
+}

@@ -1,0 +1,180 @@
+{
+  "NOR_sha256": "4358c839cfb1f22d5eb4e53d67817c42c4e877ba8b0aff375d355ce6294c4942",
+  "entry": "0xfe04fab0",
+  "cases": [
+    {
+      "name": "offset_outside_64MiB",
+      "result": {
+        "entry": "0xfe04fab0",
+        "arguments": [
+          "0x10000000",
+          "0x4000000",
+          "0x4"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0x3",
+          "0x4000000",
+          "0x4",
+          "0x0"
+        ],
+        "original_instructions": 15,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe04fab0",
+          "0xfe04fab4",
+          "0xfe04fab8",
+          "0xfe04fabc",
+          "0xfe04fac0",
+          "0xfe04fac4",
+          "0xfe04fac8",
+          "0xfe04facc",
+          "0xfe04fad0",
+          "0xfe04fad4",
+          "0xfe04fd1c",
+          "0xfe04fd20",
+          "0xfe04fd24",
+          "0xfe04fd28",
+          "0xfe04fd2c"
+        ]
+      },
+      "controller_or_flash_data_supplied": false,
+      "physical_destination_written": false
+    },
+    {
+      "name": "length_above_64MiB",
+      "result": {
+        "entry": "0xfe04fab0",
+        "arguments": [
+          "0x10000000",
+          "0x0",
+          "0x4000001"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0x3",
+          "0x0",
+          "0x4000001",
+          "0x0"
+        ],
+        "original_instructions": 18,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe04fab0",
+          "0xfe04fab4",
+          "0xfe04fab8",
+          "0xfe04fabc",
+          "0xfe04fac0",
+          "0xfe04fac4",
+          "0xfe04fac8",
+          "0xfe04facc",
+          "0xfe04fad0",
+          "0xfe04fad4",
+          "0xfe04fad8",
+          "0xfe04fadc",
+          "0xfe04fae0",
+          "0xfe04fd1c",
+          "0xfe04fd20",
+          "0xfe04fd24"
+        ]
+      },
+      "controller_or_flash_data_supplied": false,
+      "physical_destination_written": false
+    },
+    {
+      "name": "zero_length",
+      "result": {
+        "entry": "0xfe04fab0",
+        "arguments": [
+          "0x10000000",
+          "0x0",
+          "0x0"
+        ],
+        "boundary": {
+          "reason": "returned",
+          "PC": "0x400000000"
+        },
+        "registers": [
+          "0x0",
+          "0x0",
+          "0x0",
+          "0x0"
+        ],
+        "original_instructions": 21,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe04fab0",
+          "0xfe04fab4",
+          "0xfe04fab8",
+          "0xfe04fabc",
+          "0xfe04fac0",
+          "0xfe04fac4",
+          "0xfe04fac8",
+          "0xfe04facc",
+          "0xfe04fad0",
+          "0xfe04fad4",
+          "0xfe04fad8",
+          "0xfe04fadc",
+          "0xfe04fae0",
+          "0xfe04fae4",
+          "0xfe04fc50",
+          "0xfe04fc54"
+        ]
+      },
+      "controller_or_flash_data_supplied": false,
+      "physical_destination_written": false
+    },
+    {
+      "name": "valid_range_without_controller_state",
+      "result": {
+        "entry": "0xfe04fab0",
+        "arguments": [
+          "0x10000000",
+          "0x0",
+          "0x4"
+        ],
+        "boundary": {
+          "reason": "before_unknown_RAM_read",
+          "PC": "0xfe04faf0",
+          "address": "0xfe061eea",
+          "bytes": 1
+        },
+        "registers": [
+          "0x3",
+          "0x0",
+          "0x4",
+          "0x0"
+        ],
+        "original_instructions": 17,
+        "nonstack_RAM_writes": 0,
+        "first_trace": [
+          "0xfe04fab0",
+          "0xfe04fab4",
+          "0xfe04fab8",
+          "0xfe04fabc",
+          "0xfe04fac0",
+          "0xfe04fac4",
+          "0xfe04fac8",
+          "0xfe04facc",
+          "0xfe04fad0",
+          "0xfe04fad4",
+          "0xfe04fad8",
+          "0xfe04fadc",
+          "0xfe04fae0",
+          "0xfe04fae4",
+          "0xfe04fae8",
+          "0xfe04faec"
+        ]
+      },
+      "controller_or_flash_data_supplied": false,
+      "physical_destination_written": false
+    }
+  ],
+  "scope": "Original argument-validation and zero-length paths only; valid nonzero request stops at unknown controller context. Return0 for zero bytes is not a completed flash copy. No registers, storage contents, native Sony program or actual camera action."
+}

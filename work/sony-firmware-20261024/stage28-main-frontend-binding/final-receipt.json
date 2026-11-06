@@ -1,0 +1,69 @@
+{
+  "schema": "fx3-stage28-main-frontend-binding/1",
+  "created_utc": "2026-10-25T21:51:49.455478+00:00",
+  "volume_uuid": "F9404A58-A1C4-409F-8E78-9A6B7EEB3F7B",
+  "files": [
+    {
+      "path": "work/sony-firmware-20261024/stage28-main-frontend-binding/README.md",
+      "bytes": 6671,
+      "sha256": "ed9dcaf11fa6da6c77edaa59f5033f457bf7a166bd9d5a05c50a7e6f22846acf"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage28-main-frontend-binding/coordinator-observations.json",
+      "bytes": 1905,
+      "sha256": "7f8a6b68a8aee6aae8403e9a7e4483ecb7071426c1fa9f4a09284ebd152bd939"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage28-main-frontend-binding/goal-status-after.json",
+      "bytes": 42193,
+      "sha256": "9e4bedcd618d766de8ffaa5021edb475f8e1e217498f7679e3b199a7408055aa"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage28-main-frontend-binding/goal-status-before.json",
+      "bytes": 40256,
+      "sha256": "407a5354ec1e911b18d2dff59431e8efbfb1a7e995ce2cff36ef1e960fc11b54"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage28-main-frontend-binding/main_frontend_binding.py",
+      "bytes": 13183,
+      "sha256": "b447061c2db9848f8be4bb6a7f5b59bafa555bc73f915c3651e222c421241065"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage28-main-frontend-binding/run-20261025/main-frontend-binding-results.json",
+      "bytes": 91323,
+      "sha256": "34eab7d03bf9ad644d0969eaf8c135aa27478c6a04c793fc7bdd3b47102e6f6f"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage28-main-frontend-binding/run-20261025/source-receipt.json",
+      "bytes": 895,
+      "sha256": "b285e1309f7fc4c1bf54c74d087bd938e87d414a19175f4c9184c92366f70d38"
+    },
+    {
+      "path": "work/sony-firmware-20261024/stage28-main-frontend-binding/run-20261025/summary.json",
+      "bytes": 500,
+      "sha256": "d0afc889edb218f59b234830e2aefdf42499479e60479ce202e9c32fea1cb84b"
+    }
+  ],
+  "previous_manifest_sha256": "4b493ffbd24787ac933f098f6a0806f77a9578eab21be437c5977f8eddb74a5e",
+  "scope": "7scenarios/12bounded phases in original factory/partial-construction/frontend/action-entry code; no whole construction, live routing, frontend completion, resources/hardware or restore.",
+  "mutable_progress": {
+    "path": "work/sony-firmware-20261024/GOAL_STATUS.json",
+    "before_snapshot": "work/sony-firmware-20261024/stage28-main-frontend-binding/goal-status-before.json",
+    "after_snapshot": "work/sony-firmware-20261024/stage28-main-frontend-binding/goal-status-after.json",
+    "before_sha256": "407a5354ec1e911b18d2dff59431e8efbfb1a7e995ce2cff36ef1e960fc11b54",
+    "after_sha256": "9e4bedcd618d766de8ffaa5021edb475f8e1e217498f7679e3b199a7408055aa",
+    "policy": "Canonical mutable; stage snapshots immutable."
+  },
+  "operations": {
+    "guest_only_original_bounded_fragments": true,
+    "native_output_adapters": false,
+    "actual_allocator_whole_constructor_frontend_FSM_clock_timing_FSM_resources_or_hardware": false,
+    "new_Windows_UU_attempts": false,
+    "camera_interface_auth_driver_files_module_WBI_or_write": false,
+    "modified_firmware_or_patch_exported": false
+  },
+  "goal_complete": false,
+  "persistent_write_release": false,
+  "authorization_unchanged": true,
+  "readme_index_entry": "- [2026-10-25 FX3 主录前端与动作接口](<work/sony-firmware-20261024/stage28-main-frontend-binding/README.md>)：原构造分支把索引0/0x805700f9接到ext-ISP前端，并将普通Open回调绑定timing_normal；前端参数转交、完整硬件接受及恢复仍未验证。"
+}

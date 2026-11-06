@@ -1,0 +1,24 @@
+{
+  "status": "PASS_NO_QEMU_FAKE_RUNNER",
+  "fixture": "fake launcher/QMP/RSP/locks/process/map/TLS; no VM",
+  "cases": [
+    "full_runner_normal_two_keys_clean",
+    "observed_callback_false_not_clean",
+    "false_inherited_and_wait_timeout_not_clean_lock_retained",
+    "qmp_stop_exception_fallback_no_clean",
+    "no_current_map_unknown",
+    "no_hit_deadline_unknown",
+    "inherited_callback_timeout_not_clean",
+    "qmp_quit_failure_not_clean",
+    "lock_release_failure_not_clean",
+    "stop_only_separates_observation_host_cleanup_guest_restore",
+    "stop_only_main_gates_launch_once_zero_guest_writes_receipt",
+    "uuid_failure_rejected_root_and_receipt_preserved_no_launch",
+    "hash_drift_or_error_exit_nonzero_but_observations_preserved",
+    "cleanup_switches_rsp_phase_before_observer_z1",
+    "expired_observation_total_remaining_z1_sent_before_cleanup",
+    "partial_launch_failure_cleanup"
+  ],
+  "count": 16,
+  "runner_sha256": "dfaa07a88cd3e46955364141febb4349cbc13ca7fea2aa41314a4f8eeef594c5"
+}

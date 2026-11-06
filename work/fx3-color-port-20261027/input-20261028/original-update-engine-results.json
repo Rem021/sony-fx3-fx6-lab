@@ -1,0 +1,205 @@
+{
+  "status": "PASS_ORIGINAL_INTERIM_UPDATE_ENGINE_EXTRACTED",
+  "packages": [
+    {
+      "version": "2.04",
+      "source": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA1Data_ILMEFX3V204.dat",
+        "source_sha256": "774982ecfbeae1cd9d822a2da6599cc390438ae4012b3f9ba8c43e75ec4e9068",
+        "outer_crc32": "0x5aec5feb",
+        "outer_crc32_matches": true,
+        "chunks": [
+          {
+            "type": "DATV",
+            "offset": 16,
+            "bytes": 4
+          },
+          {
+            "type": "PROV",
+            "offset": 28,
+            "bytes": 4
+          },
+          {
+            "type": "UDID",
+            "offset": 40,
+            "bytes": 76
+          },
+          {
+            "type": "FDAT",
+            "offset": 124,
+            "bytes": 779108624
+          },
+          {
+            "type": "DEND",
+            "offset": 779108756,
+            "bytes": 4
+          }
+        ],
+        "key_name": "key_cxd90057_k0",
+        "blocks": 760848,
+        "plaintext_bytes": 776064000,
+        "header": {
+          "magic": "UDTRFIRM",
+          "firmware_version": "2.04",
+          "model_id": "0x91030080",
+          "region_id": "0x0",
+          "firmware_offset": 1253888,
+          "firmware_size": 774810112,
+          "filesystem_count": 2,
+          "header_crc32_matches": true,
+          "filesystems": [
+            {
+              "mode": "U",
+              "offset": 512,
+              "size": 1253376
+            },
+            {
+              "mode": "P",
+              "offset": 512,
+              "size": 0
+            }
+          ]
+        },
+        "unique_blocks_checked": 19009,
+        "all_plaintext_blocks_checked": false,
+        "tail_bytes": 272,
+        "tail_sha256": "0d66803c26883bf48a430e489570cf86559b0e016d5956137bf659428a16c04e",
+        "scope": "Read-only decryption and structural checks, not complete camera admission, signature, execution or boot verification."
+      },
+      "members": [
+        {
+          "member": "0400_updater/dev/nflasha1",
+          "bytes": 19377152,
+          "sha256": "e5b71cc24bf5232c2e182a979b60c5f080dcbabe2775b32214dc0f394cf53c67",
+          "crc32": "cc3a8d60",
+          "output": "original-update-engine/2.04/nflasha1"
+        },
+        {
+          "member": "0401_updater_sum/updater.sum",
+          "bytes": 145,
+          "sha256": "19a1659991376e125db05440a913aa8a3e28bdf53861e4b1f2cde6197485e38a",
+          "crc32": "c663ea3b",
+          "output": "original-update-engine/2.04/updater.sum"
+        },
+        {
+          "member": "0300_partconf/partinf.conf",
+          "bytes": 3999,
+          "sha256": "3d96228d4ed2db3cb4295aa854edf0ad8895440167f132144cdec4f8cfdad189",
+          "crc32": "1349caf6",
+          "output": "original-update-engine/2.04/partinf.conf"
+        },
+        {
+          "member": "0100_config/mount.conf",
+          "bytes": 1248,
+          "sha256": "ea0132091f3bb8d675b3ae7aecfbb1ca2459864a2e2812c0f7dd66fbb877d1a3",
+          "crc32": "7e144f99",
+          "output": "original-update-engine/2.04/mount.conf"
+        }
+      ],
+      "original_updater_sum": "5,ffffffff,00000000,000001ed,00000000,000003e8,root,root,-1,-1,dev,\n0,cc3a8d60,0127ac00,000001a4,00000000,000003e8,root,root,-1,-1,dev/nflasha1,\n",
+      "updater_crc32_matches": true,
+      "source_checkpoint": "../tail-20261028"
+    },
+    {
+      "version": "2.05",
+      "source": {
+        "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/tail-20261028/interim-members/mspack/FirmwareA2Data_ILMEFX3V205.dat",
+        "source_sha256": "dc411c1e1ea77e1c8614d6045a345d85553e46f60ec9105e6236299a3620740a",
+        "outer_crc32": "0xaf5ffe93",
+        "outer_crc32_matches": true,
+        "chunks": [
+          {
+            "type": "DATV",
+            "offset": 16,
+            "bytes": 4
+          },
+          {
+            "type": "PROV",
+            "offset": 28,
+            "bytes": 4
+          },
+          {
+            "type": "UDID",
+            "offset": 40,
+            "bytes": 76
+          },
+          {
+            "type": "FDAT",
+            "offset": 124,
+            "bytes": 756423952
+          },
+          {
+            "type": "DEND",
+            "offset": 756424084,
+            "bytes": 4
+          }
+        ],
+        "key_name": "key_cxd90057_k0",
+        "blocks": 738695,
+        "plaintext_bytes": 753468416,
+        "header": {
+          "magic": "UDTRFIRM",
+          "firmware_version": "2.05",
+          "model_id": "0x91030080",
+          "region_id": "0x0",
+          "firmware_offset": 1253888,
+          "firmware_size": 752214528,
+          "filesystem_count": 2,
+          "header_crc32_matches": true,
+          "filesystems": [
+            {
+              "mode": "U",
+              "offset": 512,
+              "size": 1253376
+            },
+            {
+              "mode": "P",
+              "offset": 512,
+              "size": 0
+            }
+          ]
+        },
+        "unique_blocks_checked": 19009,
+        "all_plaintext_blocks_checked": false,
+        "tail_bytes": 272,
+        "tail_sha256": "6030dd38e0e1b154ff8cea5d5c165b66d53e9b1dfac199b483654f4e501ae461",
+        "scope": "Read-only decryption and structural checks, not complete camera admission, signature, execution or boot verification."
+      },
+      "members": [
+        {
+          "member": "0400_updater/dev/nflasha1",
+          "bytes": 19377152,
+          "sha256": "ab2cd5372fed3c742b586e28484c6bf0aa6ebfba1f6d8e450a19191abc5b6591",
+          "crc32": "4c6a5739",
+          "output": "original-update-engine/2.05/nflasha1"
+        },
+        {
+          "member": "0401_updater_sum/updater.sum",
+          "bytes": 145,
+          "sha256": "207afc3a673aa093d07ff730e51e4008b1e050cf939cd1d6ec916ae025c03f0f",
+          "crc32": "418cf644",
+          "output": "original-update-engine/2.05/updater.sum"
+        },
+        {
+          "member": "0300_partconf/partinf.conf",
+          "bytes": 3999,
+          "sha256": "3d96228d4ed2db3cb4295aa854edf0ad8895440167f132144cdec4f8cfdad189",
+          "crc32": "1349caf6",
+          "output": "original-update-engine/2.05/partinf.conf"
+        },
+        {
+          "member": "0100_config/mount.conf",
+          "bytes": 1248,
+          "sha256": "ea0132091f3bb8d675b3ae7aecfbb1ca2459864a2e2812c0f7dd66fbb877d1a3",
+          "crc32": "7e144f99",
+          "output": "original-update-engine/2.05/mount.conf"
+        }
+      ],
+      "original_updater_sum": "5,ffffffff,00000000,000001ed,00000000,000003e8,root,root,-1,-1,dev,\n0,4c6a5739,0127ac00,000001a4,00000000,000003e8,root,root,-1,-1,dev/nflasha1,\n",
+      "updater_crc32_matches": true,
+      "source_checkpoint": "../tail-20261028"
+    }
+  ],
+  "images_identical": false,
+  "scope": "Only original selected members extracted. Actual CBC read blocks and original updater CRC32 checked; full package plaintext coverage, tail verification, installer/updater execution and camera admission not established."
+}

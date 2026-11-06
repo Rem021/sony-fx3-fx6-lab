@@ -1,0 +1,40 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-vm-20261101/menu-repair-01/original-uipc/ap-projection/regular-files/usr/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000117600 <_ZN16XavcsMovieWriter18SetVideoSampleInfoEP10libXavcMp4RSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEjm>:
+  117600: a9b57bfd     	stp	x29, x30, [sp, #-0xb0]!
+  117604: 910003fd     	mov	x29, sp
+  117608: a90153f3     	stp	x19, x20, [sp, #0x10]
+  11760c: f9400033     	ldr	x19, [x1]
+  117610: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  117614: aa0303f6     	mov	x22, x3
+  117618: a90363f7     	stp	x23, x24, [sp, #0x30]
+  11761c: 2a0203f7     	mov	w23, w2
+  117620: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  117624: aa0103f9     	mov	x25, x1
+  117628: a90573fb     	stp	x27, x28, [sp, #0x50]
+  11762c: 910223bb     	add	x27, x29, #0x88
+  117630: 9101e3bc     	add	x28, x29, #0x78
+  117634: 52800015     	mov	w21, #0x0               // =0
+  117638: d2800038     	mov	x24, #0x1               // =1
+  11763c: d28041fa     	mov	x26, #0x20f             // =527
+  117640: f90037a0     	str	x0, [x29, #0x68]
+  117644: f9400720     	ldr	x0, [x25, #0x8]
+  117648: eb13001f     	cmp	x0, x19
+  11764c: 54000780     	b.eq	0x11773c <_ZN16XavcsMovieWriter18SetVideoSampleInfoEP10libXavcMp4RSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEjm+0x13c>
+  117650: 39400260     	ldrb	w0, [x19]
+  117654: 110006b5     	add	w21, w21, #0x1
+  117658: 52800014     	mov	w20, #0x0               // =0
+  11765c: 7100241f     	cmp	w0, #0x9
+  117660: 54000568     	b.hi	0x11770c <_ZN16XavcsMovieWriter18SetVideoSampleInfoEP10libXavcMp4RSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEjm+0x10c>
+  117664: 9ac02301     	lsl	x1, x24, x0
+  117668: ea1a003f     	tst	x1, x26
+  11766c: 54000500     	b.eq	0x11770c <_ZN16XavcsMovieWriter18SetVideoSampleInfoEP10libXavcMp4RSt6vectorIN3mpr16VideoEncodeTable9VideoInfoESaIS5_EEjm+0x10c>
+  117670: b9402661     	ldr	w1, [x19, #0x24]
+  117674: 7100001f     	cmp	w0, #0x0
+  117678: 1a9f17e0     	cset	w0, eq
+  11767c: 6b1702bf     	cmp	w21, w23
+  117680: b90097a1     	str	w1, [x29, #0x94]
+  117684: b9401e61     	ldr	w1, [x19, #0x1c]

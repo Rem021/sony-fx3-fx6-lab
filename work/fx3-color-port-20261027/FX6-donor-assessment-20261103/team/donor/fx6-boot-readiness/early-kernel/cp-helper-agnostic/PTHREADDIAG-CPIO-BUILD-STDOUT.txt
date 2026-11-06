@@ -1,0 +1,24 @@
+{
+  "schema": "fx6-hybrid-pthreaddiag-cpio-v1",
+  "source": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal21.cpio",
+  "source_sha256": "238ff1b7a7f2afd2231b4994e28e5b29d037bc5fa2fc7fc17c76a63640f73e6d",
+  "source_bytes": 453184500,
+  "output": "/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/fx6-boot-readiness/early-kernel/cp-helper-agnostic/guest-hybrid-fx6kernel-capid-grmreal22.cpio",
+  "output_sha256": "2d4bd844249a641cd8fc8c566f1af31d641d257e2ab21e8df8935d6e3cf31d52",
+  "output_bytes": 453184500,
+  "fixed_bytes": 453184500,
+  "init": {
+    "changed": 1,
+    "old_bytes": 21195,
+    "new_bytes": 21223,
+    "preload_added": "/usr/lib/libgrm.so:"
+  },
+  "new_members": [
+    {
+      "name": "usr/lib/libpthread-diag.so",
+      "bytes": 4680,
+      "sha256": "7d0ff03c3fb9e38559e0426c8072634ffaf4978cea40609f8b92721fe7834142"
+    }
+  ],
+  "source_member_count": 1158
+}

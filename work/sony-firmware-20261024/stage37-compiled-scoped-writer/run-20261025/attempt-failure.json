@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage37-compiled-scoped-writer/compiled_writer.py\", line 258, in main\n    try:run(out)\n        ~~~^^^^^\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage37-compiled-scoped-writer/compiled_writer.py\", line 217, in run\n    positive_case=positive(blob,code,ro,descriptor);negative_cases=negatives(blob,code,ro,descriptor)\n  File \"/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage37-compiled-scoped-writer/compiled_writer.py\", line 124, in positive\n    assert len(relevant)==2 and all(CODE<=int(z['pc'],16)<CODE+len(code) for z in relevant)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "passing_result": false
+}

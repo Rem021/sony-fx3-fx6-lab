@@ -1,0 +1,41 @@
+
+/Volumes/KAFU2T/AI/Projects/Mac/work/fx3-color-port-20261027/FX6-donor-assessment-20261103/team/donor/nflasha15-files/lib/libmpr.so:	file format elf64-littleaarch64
+
+Disassembly of section .text:
+
+0000000000155d78 <_ZN3mpr20IntegRecordMovieInitEjPKjjt>:
+  155d78: a9b67bfd     	stp	x29, x30, [sp, #-0xa0]!
+  155d7c: 910003fd     	mov	x29, sp
+  155d80: a90363f7     	stp	x23, x24, [sp, #0x30]
+  155d84: 2a0003f8     	mov	w24, w0
+  155d88: 52800020     	mov	w0, #0x1                // =1
+  155d8c: a9025bf5     	stp	x21, x22, [sp, #0x20]
+  155d90: 9101c3b5     	add	x21, x29, #0x70
+  155d94: a9046bf9     	stp	x25, x26, [sp, #0x40]
+  155d98: 3901d3a0     	strb	w0, [x29, #0x74]
+  155d9c: 52842200     	mov	w0, #0x2110             // =8464
+  155da0: aa0103fa     	mov	x26, x1
+  155da4: 52800301     	mov	w1, #0x18               // =24
+  155da8: 7900e3a0     	strh	w0, [x29, #0x70]
+  155dac: 52802e00     	mov	w0, #0x170              // =368
+  155db0: 53003c76     	uxth	w22, w3
+  155db4: a90153f3     	stp	x19, x20, [sp, #0x10]
+  155db8: 7900e7a0     	strh	w0, [x29, #0x72]
+  155dbc: aa1503e0     	mov	x0, x21
+  155dc0: 2a0203f9     	mov	w25, w2
+  155dc4: 290f0bb8     	stp	w24, w2, [x29, #0x78]
+  155dc8: 29107fb6     	stp	w22, wzr, [x29, #0x80]
+  155dcc: b00079d4     	adrp	x20, 0x108e000
+  155dd0: a90573fb     	stp	x27, x28, [sp, #0x50]
+  155dd4: 97ffb3c3     	bl	0x142ce0 <_ZN9execqueueIN3mpr12execRecMovieEE11exit_threadEPv+0x11c>
+  155dd8: d00079a0     	adrp	x0, 0x108b000
+  155ddc: f9438693     	ldr	x19, [x20, #0x708]
+  155de0: f943d000     	ldr	x0, [x0, #0x7a0]
+  155de4: b9145676     	str	w22, [x19, #0x1454]
+  155de8: 52800056     	mov	w22, #0x2               // =2
+  155dec: 97fe5ab5     	bl	0xec8c0 <_ZN3mpr5Codec20SetCbFuncForRecMovieEPFvNS0_9IntFactorEP12PayloadCodecE@plt>
+  155df0: 350011e0     	cbnz	w0, 0x15602c <_ZN3mpr20IntegRecordMovieInitEjPKjjt+0x2b4>
+  155df4: b00079db     	adrp	x27, 0x108e000
+  155df8: 2a0003f6     	mov	w22, w0
+  155dfc: d2800017     	mov	x23, #0x0               // =0
+  155e00: 529fffe2     	mov	w2, #0xffff             // =65535

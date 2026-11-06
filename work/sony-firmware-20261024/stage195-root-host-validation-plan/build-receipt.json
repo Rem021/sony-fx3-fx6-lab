@@ -1,0 +1,175 @@
+{
+  "schema": 1,
+  "root_candidate_executed": false,
+  "specific_admin_approval": false,
+  "camera_or_root_operations": 0,
+  "native_build_released": false,
+  "native_helper_executed": false,
+  "host_only": true,
+  "root_uid_required_by_root_candidate": true,
+  "owner_USB_firmware_backends_linked": false,
+  "builds": {
+    "root_host": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/host_trial.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/host_transport.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/helper_hello.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/host_login.c",
+        "-framework",
+        "Security",
+        "-lbsm",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/root-host-helper"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/root-host-helper",
+      "sha256": "fb150a18a4efc9d827f293b912aa56c21e14488670817256c12b39c1356c32cb",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/root-host-helper:\n\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.0.55)\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+      "undefined_symbols": "_CC_SHA256\n_CC_SHA256_Final\n_CC_SHA256_Init\n_CC_SHA256_Update\n_SessionGetInfo\n___chkstk_darwin\n___error\n___memcpy_chk\n___stack_chk_fail\n___stack_chk_guard\n___stderrp\n_bzero\n_calloc\n_clock_gettime\n_close\n_connect\n_fcntl\n_flock\n_fprintf\n_fstat\n_fstatfs\n_fsync\n_getaudit_addr\n_getauid\n_geteuid\n_getpeereid\n_getpid\n_getsockopt\n_getuid\n_lstat\n_memcmp\n_memcpy\n_nanosleep\n_open\n_openat\n_poll\n_pread\n_printf\n_proc_pidpath\n_puts\n_pwrite\n_recvmsg\n_send\n_setsockopt\n_sigaction\n_snprintf\n_socket\n_stat\n_strcmp\n_strlen\n_strtoul\n_sysctl\n_write\n"
+    },
+    "fixture": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-DHOST_FIXTURE",
+        "-DFX3_ENTRY_FIXTURE",
+        "-fsanitize=address,undefined",
+        "-fno-sanitize-recover=all",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/host_trial.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/host_transport.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/helper_hello.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/entry_support.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/frame_io.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/global_guard.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/host_login.c",
+        "-framework",
+        "Security",
+        "-lbsm",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/host-fixture-helper"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/host-fixture-helper",
+      "sha256": "907e75c50590840cd435c3e622fa025f0d1e71f640a034e2444cc40d0021eda1",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/host-fixture-helper:\n\t/System/Library/Frameworks/Security.framework/Versions/A/Security (compatibility version 1.0.0, current version 62460.0.55)\n\t/usr/lib/libbsm.0.dylib (compatibility version 1.0.0, current version 1.0.0)\n\t@rpath/libclang_rt.asan_osx_dynamic.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+      "undefined_symbols": "_CC_SHA256\n_CC_SHA256_Final\n_CC_SHA256_Init\n_CC_SHA256_Update\n_SessionGetInfo\n___asan_init\n___asan_memcpy\n___asan_memset\n___asan_option_detect_stack_use_after_return\n___asan_register_image_globals\n___asan_report_load1\n___asan_report_load2\n___asan_report_load4\n___asan_report_load8\n___asan_report_load_n\n___asan_report_store1\n___asan_report_store4\n___asan_report_store8\n___asan_report_store_n\n___asan_set_shadow_00\n___asan_set_shadow_f5\n___asan_set_shadow_f8\n___asan_shadow_memory_dynamic_address\n___asan_stack_free_6\n___asan_stack_free_7\n___asan_stack_free_8\n___asan_stack_malloc_0\n___asan_stack_malloc_1\n___asan_stack_malloc_2\n___asan_stack_malloc_3\n___asan_stack_malloc_4\n___asan_stack_malloc_6\n___asan_stack_malloc_7\n___asan_stack_malloc_8\n___asan_unregister_image_globals\n___asan_version_mismatch_check_apple_clang_2100\n___error\n___stack_chk_fail\n___stack_chk_guard\n___stderrp\n___ubsan_handle_add_overflow_abort\n___ubsan_handle_out_of_bounds_abort\n___ubsan_handle_pointer_overflow_abort\n___ubsan_handle_sub_overflow_abort\n___ubsan_handle_type_mismatch_v1_abort\n_calloc\n_clock_gettime\n_close\n_connect\n_fcntl\n_flock\n_fprintf\n_fstat\n_fstatfs\n_fsync\n_getaudit_addr\n_getauid\n_geteuid\n_getpeereid\n_getpid\n_getsockopt\n_getuid\n_lstat\n_memcmp\n_nanosleep\n_open\n_openat\n_poll\n_pread\n_printf\n_proc_pidpath\n_puts\n_pwrite\n_realpath$DARWIN_EXTSN\n_recvmsg\n_send\n_setsockopt\n_sigaction\n_snprintf\n_socket\n_strcmp\n_strlen\n_strncmp\n_strtoul\n_sysctl\n_write\n"
+    },
+    "ipc": {
+      "argv": [
+        "/usr/bin/xcrun",
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-g",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-deprecated-declarations",
+        "-fvisibility=hidden",
+        "-dynamiclib",
+        "-DFX3_ENTRY_FIXTURE",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/owner_ipc.c",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/entry_support.c",
+        "-o",
+        "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/entry-ipc.dylib"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "path": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/entry-ipc.dylib",
+      "sha256": "2206ed49cbd2ef784549bc409479060515c21b5c614df7b08f2e6b74239c1ae5",
+      "dependencies": "/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/entry-ipc.dylib:\n\t/Volumes/KAFU2T/AI/Projects/Mac/work/sony-firmware-20261024/stage195-root-host-validation-plan/artifacts/entry-ipc.dylib (compatibility version 0.0.0, current version 0.0.0)\n\t/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1359.0.0)\n",
+      "undefined_symbols": "___error\n___stack_chk_fail\n___stack_chk_guard\n_bzero\n_clock_gettime\n_proc_pidpath\n_sigaction\n_sysctl\n"
+    }
+  },
+  "sources": [
+    {
+      "path": "entry_shared.h",
+      "sha256": "e1e0e36943297f26c3e8be260025a13213e78aa07e128cf154f9f9e906cfff76"
+    },
+    {
+      "path": "entry_support.c",
+      "sha256": "a88f60b22e8f9d87ee9aafe7a1dcb459269c8b0088d88f2e161fc827234b2360"
+    },
+    {
+      "path": "frame_io.c",
+      "sha256": "47f1adaf0bf23d20960cd7b82f779844499728ee3d2e3e8a8c838d9d0cfe704f"
+    },
+    {
+      "path": "frame_io.h",
+      "sha256": "40614afaf8012429b4ee1ebbccec9ef4843d80ec18e5744c06f949aa04ae362a"
+    },
+    {
+      "path": "global_guard.c",
+      "sha256": "a9249ae20c5b823e69aca3af6bc031c7648d3a2aa77854f60ece34617f342526"
+    },
+    {
+      "path": "global_guard.h",
+      "sha256": "9194919d0d3360a74bacf6b3adb9c46d96e25b42fa6ef7840ef0e137eb069828"
+    },
+    {
+      "path": "helper_hello.c",
+      "sha256": "1abb78a7be05edf5362b68edd582fa8bc7d887ef1320b3fe87ef3ff8a525a719"
+    },
+    {
+      "path": "helper_hello.h",
+      "sha256": "818c425c531a630658ecdb42919733f74d7e76be70c300264b755f6c6c1f1fcf"
+    },
+    {
+      "path": "host_login.c",
+      "sha256": "dafa1ed148bccce52de445172e8bd4a7ca98f29636135573b5ac00b612a82834"
+    },
+    {
+      "path": "host_login.h",
+      "sha256": "ada67f964b1db6feb21d43c5eeddb5594e56004b53d0e878625c9e67d3114de0"
+    },
+    {
+      "path": "host_target.h",
+      "sha256": "b181856c8425512188a8478661b00c62a3394bdc1350264e1c9dac4161e0e58e"
+    },
+    {
+      "path": "host_transport.c",
+      "sha256": "393749d0348df3220ee563da404ba61f9148455d8073de61187a3278e7e5d303"
+    },
+    {
+      "path": "host_transport.h",
+      "sha256": "e94e5d8bd968c4477ea7886630129d1df4e353cb55438f18c3ccf3ea7cde15a6"
+    },
+    {
+      "path": "host_trial.c",
+      "sha256": "4cc8d42ea871a47c4ad98ff135b482c9e1d1c09921e2ff633c0ba44d4a697172"
+    },
+    {
+      "path": "owner_ipc.c",
+      "sha256": "b4402e71c72372e6cef0df671394c638b2f1fe28bb4b085260321b6d0391eaa2"
+    },
+    {
+      "path": "owner_trial.h",
+      "sha256": "151cb85a23f3b57df3685c7562984268fe5b5efd28b5c17d00f4b793cef015be"
+    }
+  ]
+}

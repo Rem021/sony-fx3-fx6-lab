@@ -1,0 +1,5 @@
+{
+  "failure": "Test expectation failed on snapshot error; core could use partly populated failed baseline, fixture also inferred post phase from close status",
+  "fix": "Require successfully read baseline before post comparison, and inject fixture faults using the actual native phase marker",
+  "real_IOKit_library_loaded_or_device_operations": false
+}

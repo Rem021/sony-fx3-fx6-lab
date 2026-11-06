@@ -1,0 +1,84 @@
+{
+  "receipt_status": "unknown",
+  "clicks": 1,
+  "keyPOST": 1,
+  "pending": 1,
+  "PAGE_attempt": {
+    "accepted_next_step": 1,
+    "alarm_due_ms": 20038.5,
+    "alarm_nonce": "0adabc2a-79fa-4279-a77d-c81358a81711",
+    "attempt_id": "a0387ba6-e477-47e3-babb-4166ff0c59d1",
+    "base_step": 0,
+    "created_monotonic_ms": 50.5,
+    "document_time_origin": 1793838438534.4,
+    "expected_step": 1,
+    "frame": {
+      "PNG_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+      "content_generation": 1,
+      "sequence": 1
+    },
+    "key": 427,
+    "launch_request_id": "73b5a888-cc00-4a0d-b2de-f5e423654405",
+    "mutation_called": true,
+    "observed_sequence": 1,
+    "outcome": "accepted",
+    "server_request_id": "a0387ba6-e477-47e3-babb-4166ff0c59d1",
+    "updated_monotonic_ms": 52.60000002384186
+  },
+  "rejections": {
+    "schema": "fx3-host-key-rejection-v1",
+    "scope": "TrialState.submit explicit refusals only; host monotonic clock",
+    "capacity": 64,
+    "total": 1,
+    "truncated": 0,
+    "records": [
+      {
+        "host_monotonic_ns": 422123959238625,
+        "http_status": 409,
+        "reason": "frame_identity_or_render_invalid",
+        "failed_predicates": [
+          "sha_mismatch",
+          "generation_mismatch"
+        ],
+        "observed_sequence": 1,
+        "observed_cached": true,
+        "observed_png_sha256": "21153d75b3e014c02914e50785e2f8a4f668c7e399da35672a426278b3848739",
+        "observed_content_generation": 1,
+        "current_sequence": 2,
+        "current_png_sha256": "d44932c3f6c373e71b954b24933c25645314341c289622e56f93f54cc1685f6a",
+        "current_content_generation": 2,
+        "render_valid": true,
+        "phase": "ready",
+        "ready": true,
+        "busy": false,
+        "pending_count": 0,
+        "review_required": false,
+        "steps": 0,
+        "stop_requested": false,
+        "error_present": false,
+        "request_id": "309b4623-0eb4-4269-9248-284bd5252bbf"
+      }
+    ]
+  },
+  "reserved_before_eval": [
+    {
+      "status": "reserved_unknown",
+      "reservation_id": "feda0757-d672-4cba-a9f0-5912301619ea",
+      "key": 427,
+      "host_ns": 422124108485916
+    }
+  ],
+  "ledger_final": {
+    "attempts": [
+      {
+        "status": "unknown",
+        "reservation_id": "feda0757-d672-4cba-a9f0-5912301619ea",
+        "key": 427,
+        "host_ns": 422124108485916,
+        "attempt_id": null,
+        "step": null
+      }
+    ],
+    "recoveries": []
+  }
+}

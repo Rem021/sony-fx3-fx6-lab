@@ -1,0 +1,10 @@
+00569f74 842a02e3     movw r2, #0x2a84
+00569f78 d22040e3     movt r2, #0xd2
+00569f7c 002080e5     str r2, [r0]
+00569f80 1300a0e3     mov r0, #0x13
+00569f84 000081e5     str r0, [r1]
+00569f88 1eff2fe1     bx lr
+00569f8c 0020a0e3     mov r2, #0
+00569f90 002080e5     str r2, [r0]
+00569f94 002081e5     str r2, [r1]
+00569f98 1eff2fe1     bx lr
